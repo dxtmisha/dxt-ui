@@ -1,0 +1,51 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/bin/dxt-build-publish-packages - Publish Packages'/>
+
+# dxt-build-publish-packages
+
+The `dxt-build-publish-packages` command provides automated publishing of npm packages across the workspace. It uses `BuildPublishPackages` and `PackageFile` to scan active library folders, track versions, and publish packages to npm when new versions are detected.
+
+## Key Features
+
+- **Automated Monorepo Scanning**: Automatically detects active package directories under `/packages/` that contain a valid `package.json`.
+- **Incremental Version-Based Caching**: Avoids redundant publications by maintaining a local publication cache in `./logs/ui-publish.log.json`. It only triggers publish operations if a package's version has changed compared to the cache.
+- **Intelligent Script Resolution**: Automatically executes the `"publish-to-npm"` script if it is defined in the package's scripts, falling back to standard `npm publish --access public`.
+- **Publish Exclusion**: Automatically skips packages marked as private (`"private": true`) or explicitly flagged to prevent publication (`"ui-no-publish": true`).
+
+## How does it work?
+
+The package publication workflow automates checks and publish dispatching:
+
+1. **Scan Directories**: The `BuildPublishPackages` class scans the target packages directory (by default, `/packages/`) and reads the publication cache log from `./logs/ui-publish.log.json`.
+2. **Filter & Validate**: For each directory, it instantiates a `PackageFile` wrapper to verify that it is a package and that it is not excluded from publishing.
+3. **Execute Publish**: If an update is required or the package is not yet logged:
+   - If `"publish-to-npm"` script exists, it executes `npm run publish-to-npm`.
+   - Otherwise, it falls back to executing `npm publish --access public`.
+4. **Log Synchronization**: Upon successful publication of a package, its version is updated in the in-memory cache.
+5. **Persist Logs**: If one or more packages were successfully published, the updated cache is saved back to `./logs/ui-publish.log.json`.
+
+## Additional Information
+
+### Log Caching File (`ui-publish.log.json`)
+
+The local publication cache is stored at:
+```
+./logs/ui-publish.log.json
+```
+If you wish to force-republish all packages regardless of version consistency, you can delete this file or reset its contents to empty `{}`.
+
+### Excluding Packages from Publishing
+
+If you want a package to be ignored by the publisher, add one of the following properties to its `package.json`:
+```json
+{
+  "private": true
+}
+```
+or:
+```json
+{
+  "ui-no-publish": true
+}
+```

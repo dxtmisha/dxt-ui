@@ -10568,6 +10568,16 @@
             "type": "var",
             "value": "{layout.paddingX}"
           },
+          "iconPaddingX": {
+            "name": "--d1-window-iconPaddingX",
+            "type": "var",
+            "value": "{layout.paddingX}"
+          },
+          "iconPaddingY": {
+            "name": "--d1-window-iconPaddingY",
+            "type": "var",
+            "value": "{layout.paddingY}"
+          },
           "backgroundColor": {
             "name": "--d1-window-backgroundColor",
             "type": "var",

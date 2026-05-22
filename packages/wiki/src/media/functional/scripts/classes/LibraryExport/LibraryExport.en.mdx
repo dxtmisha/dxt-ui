@@ -4,18 +4,18 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # LibraryExport Class
 
-The `LibraryExport` class is responsible for aggregating and generating a unified export file for the library. It scans designated directories for TypeScript and Vue files, creating a single entry point that simplifies library imports.
+The `LibraryExport` class is responsible for aggregating and generating a unified export file for the library. It scans designated subfolders for TypeScript and Vue files, automatically compiling all exports into a single public interface to simplify library imports.
 
 ## Key Features
 
-- **Unified Export Generation** — creates a comprehensive entry point for all exportable components and utilities.
-- **Smart File Identification** — automatically handles exports for `.ts` files (using `export *`) and `.vue` files (using `import` then `export const`).
-- **Style Integration** — automatically includes global CSS or SCSS styles if they exist.
-- **Filtering** — excludes test files (`.test.`) and files marked with the `UI_FLAG_NOT_EXPORT` flag.
+- **Unified Export Generation** — Creates a comprehensive public entry point for all components, composables, functions, and classes.
+- **Smart Module Detection** — Automatically applies standard wildcard exports (`export *`) for TypeScript utilities and creates named exports for Vue SFC components.
+- **Style Integration** — Automatically checks for and integrates global CSS or SCSS stylesheets.
+- **Intelligent Filtering** — Excludes unit test files (`.test.`) and modules marked with the `// export:none` directive.
 
 ## Initialization
 
-Initialize and run the export generator using the `make` method.
+Initialize and execute the library export generator using the `make` method:
 
 ```typescript
 import { LibraryExport } from '@dxtmisha/scripts'
@@ -26,21 +26,37 @@ generator.make()
 
 ## Methods
 
-### Generation
+### Core Execution
 
-- `make(): void` — the main entry point that triggers the file discovery and generation process.
+#### `make`
+Triggers the main library compilation and entry point generation. It scans all configured subdirectories, collects the valid files, filters out test/none-export modules, and writes the unified import/export statements into the designated destination file.
 
-## Example of Generated Output
+**Parameters:**
+- No parameters required.
 
-The generated file aggregate imports and exports like this:
+**Returns:** `void` — Modifies the target `library.ts` file on the filesystem and logs progress to the console.
 
 ```typescript
-import './style.css'
+import { LibraryExport } from '@dxtmisha/scripts'
 
-// Components
-import _DxtButton from './components/DxtButton/DxtButton.vue'
-export const DxtButton = _DxtButton
-
-// Utilities
-export * from './functions/myFunction'
+new LibraryExport().make()
 ```
+
+### Helper Methods
+
+- `getPath(directory: string): string[]` — Returns the directory path components based on `UI_DIR_IN` and the specified directory name.
+- `isExport(path: string | string[]): boolean` — Evaluates if a file path is suitable for export by verifying it is not a test file and does not match `UI_FLAG_NOT_EXPORT`.
+- `getDirectory(): LibraryFiles` — Collects recursively all indexable files within the configured export folders and aggregates them.
+- `getName(name: string): string` — Converts the first character of the directory name to uppercase to standardize comments in the generated file.
+- `getFile(path: string | string[]): string` — Reads the file contents at the given path from the filesystem.
+- `initFile(): string` — Builds the raw content of the output library file, including imports, style setups, and wildcard/named exports.
+- `initStyles(): string` — Generates imports for global stylesheets (`style.scss` or `style.css`) if they are present in the root of the source directory.
+
+## Dependencies and Configurations
+
+The `LibraryExport` class interacts with several global configurations to perform structural generation:
+
+- `UI_DIRS_LIST_EXPORT` — Specifies the active folders that are scanned recursively for exports (`classes`, `components`, `composables`, `functions`, `global`, `types`).
+- `UI_DIRS_FILE_EXPORT` — Sets the destination output path of the compiled library file (`src/library.ts`).
+- `UI_DIR_IN` — Identifies the root source directory containing the modules (`src`).
+- `UI_FLAG_NOT_EXPORT` — Holds the regular expression matching the non-export directive (`/\/\/ *export:none/`).

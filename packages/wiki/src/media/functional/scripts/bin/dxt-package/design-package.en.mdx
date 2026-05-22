@@ -1,0 +1,48 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/bin/dxt-package - Package Structure Initialization'/>
+
+# dxt-package
+
+The `dxt-package` command automates the initialization of a new package's structure and development environment based on predefined templates. Under the hood, it uses the `PackageInit` and `PackageInitItem` classes to process empty package directories and scaffold them appropriately.
+
+## Key Features
+
+- **Automated Directory Scanning**: Automatically scans the configured base directory (defaults to `packages/`) and identifies empty package folders that require initialization.
+- **Template-Based Scaffolding**: Supports applying specific templates to customize the generation process, adapting the scaffolded structure based on the provided package `type`.
+- **Flexible Configuration**: Allows overriding the default package type, templates, and target base directory via command-line arguments.
+
+## How does it work?
+
+The package initialization workflow streamlines the creation of new packages:
+
+1. The script reads the provided arguments to determine the package `type` (defaulting to `library`), `templates`, and target `dir`.
+2. It scans the target directory to find any empty folders (directories with no children).
+3. For each empty directory found, it initializes a `PackageInitItem` instance, passing the package path, type, and templates.
+4. The system then processes these configurations to scaffold the required files and environment structure for the package, making it ready for development.
+
+## How to configure and run
+
+To initialize newly created empty package folders with the default `library` type, run:
+```bash
+npx dxt-package
+```
+
+To specify a custom package type (e.g., `vue`), run:
+```bash
+npx dxt-package vue
+```
+
+To specify a custom type and apply specific templates, pass them as arguments:
+```bash
+npx dxt-package vue "template1,template2"
+```
+
+You can also specify a custom base directory as the third argument:
+```bash
+npx dxt-package vue "template1" "packages/custom-dir"
+```
+
+## Generated Structure
+
+When the command processes an empty directory, it scaffolds the base files necessary for the given package type and templates. This typically includes structural files, base configurations, and entry points, transforming an empty folder into a fully functional package environment within the workspace.

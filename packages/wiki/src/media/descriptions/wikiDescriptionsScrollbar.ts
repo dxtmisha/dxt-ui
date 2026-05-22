@@ -30,7 +30,7 @@ export const wikiDescriptionsScrollbar: StorybookComponentsDescriptionItem = {
     ]
   },
   render: `
-      <D1Scrollbar
+      <DesignComponent
         class="wiki-storybook-item--widescreen wiki-storybook-item--squared--sm"
         v-bind="args"
       >
@@ -55,7 +55,7 @@ export const wikiDescriptionsScrollbar: StorybookComponentsDescriptionItem = {
 
           <p>Emerging technologies like CSS container queries and new scrolling APIs continue to expand the possibilities for creating more sophisticated scrolling experiences. The integration of these technologies with existing design systems requires careful planning and consideration of backward compatibility.</p>
         </div>
-      </D1Scrollbar>
+      </DesignComponent>
     `,
   import: [],
   stories: [],

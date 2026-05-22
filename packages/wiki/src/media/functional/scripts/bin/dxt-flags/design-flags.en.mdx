@@ -1,0 +1,41 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/bin/dxt-flags - Flag Sprite Generator'/>
+
+# dxt-flags
+
+The `dxt-flags` command provides an automated utility to compile a directory of SVG flag icons into a single optimized WebP sprite image and generate a corresponding CSS position mapping stylesheet. It uses the `DesignFlags` class to handle canvas-based rendering and grid calculations.
+
+> **Note**: This script is intended exclusively for internal use within the `dxt-ui` project repository.
+
+## Key Features
+
+- **Automated Sprite Composition**: Merges multiple separate SVG files into a single, high-performance WebP sprite sheet.
+- **Dynamic Position Mapping**: Automatically computes precise percentage-based coordinates and writes a CSS stylesheet with utility positioning classes.
+- **High-DPI Scaling**: Renders flags using high-performance canvas libraries at a 2x scaling factor for optimal crispness.
+
+## How does it work?
+
+The flag generation workflow automates the assembly of the sprite and utility styles:
+
+1. The script scans the default flag icons directory for all `.svg` files.
+2. It initializes a blank canvas using high-performance rendering tools, calculating the grid columns and rows based on the flag count.
+3. It loops through the discovered SVG files, loading each into memory and drawing them into the calculated grid positions while preserving layout spacing and proportions.
+4. It records the coordinates and names of every flag to build the position mapping records.
+5. It exports the combined canvas buffer into a `.webp` sprite image file and writes the utility stylesheet containing the CSS background position mappings.
+
+## How to configure and run
+
+No complex setup is required to run the flag sprite generator. Simply place your SVG flag icons into the standard `src/assets/flags` directory.
+
+To trigger the sprite and stylesheet compilation, execute:
+```bash
+npx dxt-flags
+```
+
+## Generated File Structure
+
+Upon successful execution, the tool exports the compiled assets directly to the configured workspace paths:
+
+- `src/assets/flags.webp`: The compiled, high-dpi combined sprite image containing all flag icons.
+- `src/styles/flags.css`: The generated CSS stylesheet mapping each individual flag modifier class (e.g. `.ui-sys-flags--us`) to its precise background position percentage.

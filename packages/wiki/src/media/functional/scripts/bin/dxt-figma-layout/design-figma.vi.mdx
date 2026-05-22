@@ -1,0 +1,45 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/bin/dxt-figma-layout - Tích hợp Layout Figma'/>
+
+# dxt-figma-layout
+
+Lệnh `dxt-figma-layout` cung cấp giao diện dòng lệnh (CLI) để truy xuất cấu trúc layout và hình ảnh thành phần trực tiếp từ Figma. Lệnh này sử dụng bộ điều phối `DesignFigma` và ứng dụng khách `FigmaApi` ở bên dưới để trích xuất các tài nguyên ảnh vector SVG dựa trên khóa tệp và ID nút Figma mục tiêu.
+
+> **Lưu ý**: Yêu cầu bắt buộc phải có gói đăng ký Figma doanh nghiệp (Figma Enterprise hoặc Organization) để thực thi lệnh này và truy xuất các tài nguyên layout.
+
+## Các tính năng chính
+
+- **Tự động Truy xuất Hình ảnh**: Thu thập các layout vector và raster mục tiêu từ tệp Figma dưới định dạng SVG sạch.
+- **Xác thực dựa trên Cấu hình**: Tự động trích xuất mã thông báo (token) truy cập Figma API từ cấu hình hệ thống.
+- **Hỗ trợ Đối số Linh hoạt**: Cho phép nhắm mục tiêu động vào các tệp cụ thể và nút cụ thể thông qua tham số dòng lệnh.
+
+## Nó hoạt động như thế nào?
+
+Quy trình tích hợp layout tự động hóa việc truy xuất tài nguyên:
+
+1. Tập lệnh đọc khóa tệp Figma mục tiêu và mã định danh nút tùy chọn được truyền trực tiếp từ các đối số dòng lệnh.
+2. Nó khởi tạo bộ điều khiển `DesignFigma`, truyền các tham số mục tiêu cùng với mã thông báo Figma hệ thống được tự động phân giải.
+3. Ứng dụng khách `FigmaApi` gửi một yêu cầu HTTP an toàn đến điểm cuối `fileImages` của Figma, yêu cầu các nút ở định dạng SVG với các tham số bảo toàn ID cụ thể.
+4. Nó nhận về bản đồ hình ảnh chứa các URL cho tài nguyên đã biên dịch và in kết quả bản đồ JSON trực tiếp ra bảng điều khiển (console).
+
+## Cách thiết lập và khởi chạy
+
+Không yêu cầu thiết lập phức tạp để chạy bộ tích hợp layout. Hãy đảm bảo rằng mã thông báo Figma API của bạn được cấu hình trong môi trường hoặc cấu hình thuộc tính trước khi thực thi.
+
+Để truy xuất hình ảnh layout, hãy chạy lệnh truyền vào khóa tệp Figma và ID nút cụ thể:
+```bash
+npx dxt-figma-layout [fileKey] [nodeId]
+```
+
+Ví dụ:
+```bash
+npx dxt-figma-layout abc123xyz456 1-24
+```
+
+## Đối số CLI
+
+Lệnh chấp nhận hai tham số vị trí:
+
+- `fileKey`: Mã định danh duy nhất của tệp Figma (thường tìm thấy trong URL tệp Figma).
+- `nodeId`: ID nút cụ thể bên trong tệp (ví dụ: `1-24` hoặc `1:24`) cần truy xuất.

@@ -1,0 +1,33 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/BuildPublishPackages - Monorepo Package Publisher' />
+
+# BuildPublishPackages Class
+
+The `BuildPublishPackages` class is a utility responsible for automated publishing of npm packages across the monorepo workspace. It scans the `packages` directory, determines version changes compared to a local log cache, and publishes updated packages to npm.
+
+## Key Features
+
+- **Automated Directory Scanning** — Scans the packages folder (`packages/`) for directories containing a valid `package.json`.
+- **Incremental Version-Based Caching** — Compares the package version with `./logs/ui-publish.log.json` to prevent republishing unchanged code.
+- **Intelligent Script Resolution** — Runs `publish-to-npm` if defined in `package.json` scripts, otherwise falls back to standard `npm publish --access public`.
+- **Publish Exclusion** — Skips packages marked as private (`"private": true`) or with `"ui-no-publish": true`.
+
+## Initialization
+
+You can create an instance of `BuildPublishPackages` by optionally passing a custom packages directory path.
+
+```typescript
+import { BuildPublishPackages } from './BuildPublishPackages'
+
+const publisher = new BuildPublishPackages()
+await publisher.make()
+```
+
+## Methods
+
+- `make(): Promise<void>` — Initiates scanning and triggers the publication process for each detected package.
+- `isUpdate(packageFile: PackageFile): boolean` — Checks whether the package's version in `package.json` is different from the version stored in the log file.
+- `getVersionLog(name: string): string` — Retrieves the cached version of the package from the publish log.
+- `updateLog(packageFile: PackageFile): void` — Updates the in-memory publish log with the current package version.
+- `saveLog(): void` — Saves the in-memory publish log to the `./logs/ui-publish.log.json` file.

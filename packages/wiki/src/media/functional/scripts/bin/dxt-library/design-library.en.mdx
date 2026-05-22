@@ -1,0 +1,40 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/bin/dxt-library - Library Entry Point Generator'/>
+
+# dxt-library
+
+The `dxt-library` command is a CLI utility that generates a consolidated entry point (`src/library.ts`) for the entire UI library. It uses the `LibraryExport` class to scan primary subfolders and dynamically compile all exports into a single public interface.
+
+## Key Features
+
+- **Unified Entry Point**: Compiles multiple directories into a single optimized export interface.
+- **Smart Module Handling**: Automatically handles wildcard exports for TypeScript utilities and creates named exports for Vue components.
+- **Intelligent Filtering**: Excludes unit test files and files marked with a non-export directive.
+- **Global Style Bundling**: Automatically incorporates global styles into the generated entry file.
+
+## How does it work?
+
+The entry point compilation workflow automates the assembly of all module exports:
+
+1. The script scans the designated source subdirectories (`classes`, `components`, `composables`, `functions`, `global`, `types`) using recursive directory reading tools.
+2. It filters out unit test files (containing `.test.`) and files containing the `// export:none` directive.
+3. For each valid TypeScript file (`.ts`), it appends a standard wildcard export.
+4. For each Vue SFC file (`.vue`), it generates an import and maps it to a named constant export for clean consumption.
+5. It checks for the existence of `style.scss` or `style.css` in the base input directory and prepends their import statements if found.
+6. It writes the compiled code directly to `src/library.ts`.
+
+## How to configure and run
+
+No complex setup is required to run the library entry point generator. The script automatically reads configurations and processes the preset export directories.
+
+To execute the generation workflow, run:
+```bash
+npx dxt-library
+```
+
+## Generated File Structure
+
+Upon successful execution, the tool creates or updates the following file in the package:
+
+- `src/library.ts`: The unified entry point containing all imports, named component exports, and wildcards.

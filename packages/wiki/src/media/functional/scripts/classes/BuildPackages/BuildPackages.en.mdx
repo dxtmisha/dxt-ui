@@ -1,0 +1,34 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/BuildPackages - Library Builder for Monorepo' />
+
+# BuildPackages Class
+
+The `BuildPackages` class is a utility responsible for rebuilding changed npm packages across the monorepo workspace. It scans the `packages` directory, determines version changes compared to a local log cache, and incrementally builds only packages with updated versions.
+
+## Key Features
+
+- **Automated Directory Scanning** — Scans the packages folder (`packages/`) for directories containing a valid `package.json`.
+- **Incremental Version-Based Caching** — Compares the package version with `./logs/ui-build.log.json` to prevent rebuilding unchanged code.
+- **Intelligent Script Resolution** — Runs `build-recovery` if defined in `package.json` scripts, otherwise falls back to `build`.
+- **Test Package Filtering** — Ignores packages marked with `"ui-test": true`.
+
+## Initialization
+
+You can create an instance of `BuildPackages` by optionally passing a custom packages directory path.
+
+```typescript
+import { BuildPackages } from './BuildPackages'
+
+const builder = new BuildPackages()
+await builder.make()
+```
+
+## Methods
+
+- `make(): Promise<void>` — Initiates scanning and triggers the incremental build process for each detected package.
+- `build(packageFile: PackageFile): Promise<boolean>` — Executes the actual build command (`npm run build-recovery` or `npm run build`) for the package.
+- `isUpdate(packageFile: PackageFile): boolean` — Checks whether the package's version in `package.json` is different from the version stored in the log file.
+- `getVersionLog(name: string): string` — Retrieves the cached version of the package from the build log.
+- `updateLog(packageFile: PackageFile): void` — Updates the in-memory build log with the current package version.
+- `saveLog(): void` — Saves the in-memory build log to the `./logs/ui-build.log.json` file.

@@ -1,0 +1,45 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/bin/dxt-figma-layout - Figma Layout Integrator'/>
+
+# dxt-figma-layout
+
+The `dxt-figma-layout` command provides CLI access for fetching components layout and image structures directly from Figma. It utilizes the `DesignFigma` orchestrator and `FigmaApi` client internally to extract SVG image assets based on target Figma keys and node IDs.
+
+> **Warning**: A corporate Figma subscription (Figma Enterprise or Organization) is strictly required to execute this command and fetch target layout assets.
+
+## Key Features
+
+- **Automated Image Fetching**: Retrieves target vector and raster layouts from Figma files in clean SVG format.
+- **Config-Driven Authentication**: Automatically extracts the Figma API access token from the system configurations.
+- **Flexible Arguments Support**: Allows targeting specific files and specific nodes dynamically through CLI parameters.
+
+## How does it work?
+
+The layout integration workflow automates asset retrieval:
+
+1. The script reads the target Figma file key and optional node identifier passed directly from the command line arguments.
+2. It instantiates the `DesignFigma` controller, passing the target parameters along with the automatically resolved system Figma token.
+3. The underlying `FigmaApi` client issues a secure HTTP request to Figma's `fileImages` endpoint, requesting the nodes in SVG format with specific ID preservation parameters.
+4. It receives the image mapping containing URLs for the compiled assets and prints the resulting JSON map directly to the console.
+
+## How to configure and run
+
+No complex setup is required to run the layout integrator. Ensure that your Figma API token is configured in the environment or properties configuration before execution.
+
+To retrieve layout images, execute the command passing your Figma file key and specific node ID:
+```bash
+npx dxt-figma-layout [fileKey] [nodeId]
+```
+
+Example:
+```bash
+npx dxt-figma-layout abc123xyz456 1-24
+```
+
+## CLI Arguments
+
+The command accepts two positional parameters:
+
+- `fileKey`: The unique identifier of the Figma file (typically found in the Figma file URL).
+- `nodeId`: The specific node ID inside the file (e.g. `1-24` or `1:24`) to fetch.

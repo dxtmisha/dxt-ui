@@ -13,11 +13,12 @@ To create a demo page for a specific component (e.g., Badge, Button, Checkbox) i
 
 ### 2. Creating the Demo Page
 - Create the file `packages/demo/src/pages/components/Demo[Component]Page.vue`.
-- **Auxiliary Components**: Explore the contents of `packages/demo/src/components`. It contains helper components for demo page layout:
-    - `DemoLinkBlack`: Back link (use at the top of the page).
-    - `DemoFlex`: Helper wrapper for flexible layout with system spacing (use when grouping is needed).
-    - `DemoValue`: To display current values of variables/models.
-    - `DemoLink`: For regular links.
+- **Auxiliary Components (MANDATORY)**: You **MUST** explore the contents of `packages/demo/src/components` and use the helper components defined there. **Do NOT invent your own custom components, wrappers, or logging panels if a corresponding helper is already provided.**
+    - `DemoBox`: Box container with system border, padding, and rounded corners (use to group and visually isolate elements).
+    - `DemoFlex`: Flex container with standard spacing tokens (use for horizontal row layout or grouping of inline elements).
+    - `DemoLink`: Regular navigation link.
+    - `DemoLinkBlack`: Back link pointing to the home page (use at the top of every demo page).
+    - `DemoValue`: Display helper for model values and event tracking variables.
 - **Imports**: Import the necessary components from `../../components/[Name].vue`.
 - **Template Structure**:
     - Use `<DemoLinkBlack/>` at the beginning.

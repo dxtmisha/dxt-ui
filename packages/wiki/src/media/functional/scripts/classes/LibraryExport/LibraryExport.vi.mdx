@@ -4,18 +4,18 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # Lớp LibraryExport
 
-Lớp `LibraryExport` chịu trách nhiệm tổng hợp và tạo ra một tệp xuất bản (export) thống nhất cho thư viện. Nó quét các thư mục được chỉ định để tìm các tệp TypeScript và Vue, tạo ra một điểm nhập duy nhất giúp đơn giản hóa việc nhập thư viện.
+Lớp `LibraryExport` chịu trách nhiệm tổng hợp và tạo ra một tệp xuất bản (export) thống nhất cho thư viện. Nó quét các thư mục con được chỉ định để tìm các tệp TypeScript và Vue, tự động biên dịch tất cả các xuất bản thành một giao diện công khai duy nhất để đơn giản hóa việc nhập thư viện.
 
 ## Các tính năng chính
 
-- **Tạo xuất bản thống nhất** — tạo ra một điểm nhập toàn diện cho tất cả các thành phần và tiện ích có thể xuất bản.
-- **Nhận dạng tệp thông minh** — tự động xử lý xuất bản cho các tệp `.ts` (sử dụng `export *`) và các tệp `.vue` (sử dụng `import` sau đó là `export const`).
-- **Tích hợp phong cách (Style)** — tự động bao gồm các kiểu CSS hoặc SCSS toàn cục nếu chúng tồn tại.
-- **Bộ lọc** — loại trừ các tệp kiểm thử (`.test.`) và các tệp được đánh dấu bằng cờ `UI_FLAG_NOT_EXPORT`.
+- **Tạo xuất bản thống nhất** — Tạo ra một điểm nhập công khai toàn diện cho tất cả các thành phần, composables, hàm và lớp.
+- **Phát hiện mô-đun thông minh** — Tự động áp dụng các xuất bản ký tự đại diện tiêu chuẩn (`export *`) cho các tiện ích TypeScript và tạo các xuất bản có tên cho các thành phần Vue SFC.
+- **Tích hợp phong cách** — Tự động kiểm tra và tích hợp các bảng kiểu dáng CSS hoặc SCSS toàn cục.
+- **Bộ lọc thông minh** — Loại trừ các tệp kiểm thử đơn vị (`.test.`) và các mô-đun được đánh dấu bằng chỉ thị `// export:none`.
 
 ## Khởi tạo
 
-Khởi tạo và chạy trình tạo xuất bản bằng phương thức `make`.
+Khởi tạo và thực thi trình tạo xuất bản thư viện bằng phương thức `make`:
 
 ```typescript
 import { LibraryExport } from '@dxtmisha/scripts'
@@ -26,21 +26,37 @@ generator.make()
 
 ## Các phương thức
 
-### Tạo dữ liệu
+### Thực thi cốt lõi
 
-- `make(): void` — điểm nhập chính kích hoạt quá trình khám phá và tạo tệp.
+#### `make`
+Kích hoạt quá trình biên dịch thư viện và tạo điểm truy cập. Lớp này quét tất cả các thư mục con được cấu hình, thu thập các tệp hợp lệ, lọc bỏ các mô-đun kiểm thử/không xuất bản, và ghi các câu lệnh nhập/xuất bản thống nhất vào tệp đích được chỉ định.
 
-## Ví dụ về đầu ra được tạo
+**Tham số:**
+- Không yêu cầu tham số.
 
-Tệp được tạo tổng hợp các lệnh nhập và xuất bản như sau:
+**Trả về:** `void` — Thay đổi tệp `library.ts` đích trên hệ thống tệp và ghi lại tiến trình vào bảng điều khiển (console).
 
 ```typescript
-import './style.css'
+import { LibraryExport } from '@dxtmisha/scripts'
 
-// Components
-import _DxtButton from './components/DxtButton/DxtButton.vue'
-export const DxtButton = _DxtButton
-
-// Utilities
-export * from './functions/myFunction'
+new LibraryExport().make()
 ```
+
+### Các phương thức hỗ trợ
+
+- `getPath(directory: string): string[]` — Trả về các thành phần đường dẫn thư mục dựa trên `UI_DIR_IN` và tên thư mục được chỉ định.
+- `isExport(path: string | string[]): boolean` — Đánh giá xem một đường dẫn tệp có phù hợp để xuất bản hay không bằng cách xác minh nó không phải là tệp kiểm thử và không khớp với `UI_FLAG_NOT_EXPORT`.
+- `getDirectory(): LibraryFiles` — Thu thập đệ quy tất cả các tệp có thể lập chỉ mục trong các thư mục xuất bản được cấu hình và tổng hợp chúng.
+- `getName(name: string): string` — Chuyển đổi ký tự đầu tiên của tên thư mục thành chữ hoa để tiêu chuẩn hóa các chú thích trong tệp được tạo sinh.
+- `getFile(path: string | string[]): string` — Đọc nội dung tệp tại đường dẫn đã cho từ hệ thống tệp.
+- `initFile(): string` — Xây dựng nội dung thô của tệp thư viện đầu ra, bao gồm các lệnh nhập, thiết lập phong cách và các xuất bản ký tự đại diện/có tên.
+- `initStyles(): string` — Tạo ra các lệnh nhập cho bảng kiểu dáng toàn cục (`style.scss` hoặc `style.css`) nếu chúng tồn tại trong thư mục gốc nguồn.
+
+## Các phụ thuộc và cấu hình
+
+Lớp `LibraryExport` tương tác với một số cấu hình toàn cục để thực hiện tạo sinh cấu trúc:
+
+- `UI_DIRS_LIST_EXPORT` — Chỉ định các thư mục hoạt động được quét đệ quy để tìm các xuất bản (`classes`, `components`, `composables`, `functions`, `global`, `types`).
+- `UI_DIRS_FILE_EXPORT` — Thiết lập đường dẫn đầu ra đích của tệp thư viện đã biên dịch (`src/library.ts`).
+- `UI_DIR_IN` — Xác định thư mục nguồn gốc chứa các mô-đun (`src`).
+- `UI_FLAG_NOT_EXPORT` — Giữ biểu thức chính quy khớp với chỉ thị không xuất bản (`/\/\/ *export:none/`).

@@ -1,0 +1,33 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/scripts/Classes/BuildPublishPackages - Публикатор пакетов монорепозитория' />
+
+# Класс BuildPublishPackages
+
+Класс `BuildPublishPackages` — это утилита, отвечающая за автоматическую публикацию npm-пакетов в рабочем пространстве монорепозитория. Он сканирует директорию `packages`, определяет изменения версий по сравнению с локальным кэшем логов и публикует обновленные пакеты в npm.
+
+## Ключевые возможности
+
+- **Автоматическое сканирование директорий** — сканирует папку пакетов (`packages/`) на наличие директорий с корректным файлом `package.json`.
+- **Инкрементальное кэширование по версиям** — сравнивает версию пакета с данными в `./logs/ui-publish.log.json` для предотвращения повторной публикации неизмененного кода.
+- **Интеллектуальный выбор скрипта** — запускает `publish-to-npm`, если он объявлен в скриптах `package.json`, иначе переходит к стандартной публикации `npm publish --access public`.
+- **Исключение из публикации** — игнорирует пакеты, отмеченные свойством `"private": true` или `"ui-no-publish": true`.
+
+## Инициализация
+
+Вы можете создать экземпляр `BuildPublishPackages`, опционально передав кастомный путь к директории пакетов.
+
+```typescript
+import { BuildPublishPackages } from './BuildPublishPackages'
+
+const publisher = new BuildPublishPackages()
+await publisher.make()
+```
+
+## Методы
+
+- `make(): Promise<void>` — инициализирует сканирование и запускает процесс публикации для каждого обнаруженного пакета.
+- `isUpdate(packageFile: PackageFile): boolean` — проверяет, отличается ли текущая версия пакета в `package.json` от версии, сохраненной в файле лога.
+- `getVersionLog(name: string): string` — возвращает кэшированную версию пакета из лога публикации.
+- `updateLog(packageFile: PackageFile): void` — обновляет оперативную копию лога публикации текущей версией пакета.
+- `saveLog(): void` — сохраняет лог публикации из оперативной памяти в файл `./logs/ui-publish.log.json`.

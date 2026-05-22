@@ -1,0 +1,34 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/BuildPackages - Bộ xây dựng gói Monorepo' />
+
+# Lớp BuildPackages
+
+Lớp `BuildPackages` là một tiện ích chịu trách nhiệm xây dựng lại các gói npm đã thay đổi trong không gian làm việc monorepo. Nó quét thư mục `packages`, xác định các thay đổi phiên bản so với bộ nhớ đệm nhật ký cục bộ và thực hiện biên dịch tăng dần chỉ cho các gói có phiên bản được cập nhật.
+
+## Các tính năng chính
+
+- **Tự động quét thư mục** — Quét thư mục gói (`packages/`) để tìm các thư mục chứa tệp `package.json` hợp lệ.
+- **Bộ nhớ đệm tăng dần theo phiên bản** — So sánh phiên bản gói với dữ liệu trong `./logs/ui-build.log.json` để ngăn việc xây dựng lại mã chưa thay đổi.
+- **Giải quyết tập lệnh thông minh** — Chạy `build-recovery` nếu được định nghĩa trong tập lệnh `package.json`, ngược lại sẽ chuyển sang xây dựng mặc định `build`.
+- **Lọc gói thử nghiệm** — Bỏ qua các gói được đánh dấu bằng thuộc tính `"ui-test": true`.
+
+## Khởi tạo
+
+Bạn có thể tạo một phiên bản của `BuildPackages` bằng cách truyền tùy chọn đường dẫn thư mục gói tùy chỉnh.
+
+```typescript
+import { BuildPackages } from './BuildPackages'
+
+const builder = new BuildPackages()
+await builder.make()
+```
+
+## Các phương thức
+
+- `make(): Promise<void>` — Khởi tạo quá trình quét và kích hoạt quy trình xây dựng tăng dần cho từng gói được phát hiện.
+- `build(packageFile: PackageFile): Promise<boolean>` — Thực thi lệnh xây dựng thực tế (`npm run build-recovery` hoặc `npm run build`) cho gói được chỉ định.
+- `isUpdate(packageFile: PackageFile): boolean` — Kiểm tra xem phiên bản hiện tại của gói trong `package.json` có khác với phiên bản được lưu trữ trong tệp nhật ký hay không.
+- `getVersionLog(name: string): string` — Lấy phiên bản được lưu trong bộ nhớ đệm của gói từ nhật ký xây dựng.
+- `updateLog(packageFile: PackageFile): void` — Cập nhật bản ghi nhật ký xây dựng trong bộ nhớ với phiên bản gói hiện tại.
+- `saveLog(): void` — Lưu nhật ký xây dựng từ bộ nhớ tạm vào tệp `./logs/ui-build.log.json`.

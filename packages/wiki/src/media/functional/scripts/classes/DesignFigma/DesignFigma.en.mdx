@@ -1,0 +1,54 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/DesignFigma - Figma Layout Integrator Class'/>
+
+# DesignFigma Class
+
+The `DesignFigma` class provides the core controller behavior for connecting to Figma's REST API and extracting layout coordinates and vector image structures. It abstracts token authorization and simplifies batch node image requests into clean, async workflows.
+
+> **Warning**: A corporate Figma subscription (Figma Enterprise or Organization) is strictly required to utilize this class and communicate with the Figma target endpoints.
+
+## Key Features
+
+- **Decoupled API Authorizer** — automatically falls back to system properties to retrieve active Figma tokens.
+- **SVG Generation Options** — requests nodes with preserved ID tags and outline text parameters.
+- **Safe Network Execution** — handles network errors and API limitations gracefully, returning clean, undefined fallbacks.
+
+## Initialization
+
+Initialize a new `DesignFigma` instance with the required Figma file credentials.
+
+**Parameters:**
+- `fileKey: string` — The unique ID of the target Figma file.
+- `nodeId?: string` — The specific node ID inside the file to target.
+- `token?: string` — Optional Figma API token. Defaults to `PropertiesConfig.getFigmaToken()`.
+
+```typescript
+import { DesignFigma } from '@dxtmisha/scripts'
+
+const integrator = new DesignFigma('abc123xyz456', '1-24')
+await integrator.make()
+```
+
+## Methods
+
+### `make`
+
+The main orchestrator method that triggers vector asset retrieval and logs the output mapping to the console.
+
+**Returns:** `Promise<void>`
+
+```typescript
+await integrator.make()
+```
+
+### `initImage`
+
+Requests vector layout image URLs from the Figma API for the specified node IDs in SVG format.
+
+**Returns:** `Promise<Record<string, string> | undefined>` — A promise that resolves to an object mapping node IDs to their respective SVG URLs, or `undefined` on error.
+
+```typescript
+const images = await integrator.initImage()
+console.log(images) // { "1-24": "https://..." }
+```

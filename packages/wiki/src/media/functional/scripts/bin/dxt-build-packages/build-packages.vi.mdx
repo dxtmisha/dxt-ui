@@ -1,0 +1,45 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/bin/dxt-build-packages - Xây Dựng Gói'/>
+
+# dxt-build-packages
+
+Lệnh `dxt-build-packages` cung cấp khả năng tự động xây dựng (build) các gói npm đã thay đổi trong không gian làm việc. Công cụ này sử dụng `BuildPackages` và `PackageFile` để quét các thư mục thư viện hoạt động, theo dõi các phiên bản và biên dịch tăng dần các cấu trúc gói khi phát hiện thay đổi.
+
+## Các tính năng chính
+
+- **Tự động quét Monorepo**: Tự động phát hiện các thư mục gói đang hoạt động dưới `/packages/` có chứa tệp `package.json` hợp lệ.
+- **Bộ nhớ đệm tăng dần dựa trên Phiên bản**: Tránh các hoạt động xây dựng dư thừa bằng cách duy trì bộ nhớ đệm xây dựng cục bộ trong `./logs/ui-build.log.json`. Nó chỉ kích hoạt các hoạt động xây dựng nếu phiên bản hiện tại của gói trong `package.json` thay đổi so với phiên bản được lưu trong bộ nhớ đệm.
+- **Giải quyết Tập lệnh Thông minh**: Tự động thực thi tập lệnh `"build-recovery"` nếu nó được định nghĩa trong các tập lệnh của gói, và chuyển sang tập lệnh tiêu chuẩn `"build"` nếu không tìm thấy tập lệnh đầu tiên.
+- **Loại trừ Gói Thử nghiệm**: Tự động bỏ qua các gói được đánh dấu là thử nghiệm (chứa `"ui-test": true` trong tệp `package.json`).
+
+## Nó hoạt động như thế nào?
+
+Quy trình biên dịch gói tự động hóa việc kiểm tra và gửi lệnh xây dựng:
+
+1. **Quét Thư mục**: Lớp `BuildPackages` quét thư mục gói mục tiêu (mặc định là `/packages/`) và đọc tệp nhật ký bộ nhớ đệm xây dựng `./logs/ui-build.log.json`.
+2. **Lọc & Xác thực**: Đối với mỗi thư mục, nó khởi tạo một trình bao bọc `PackageFile` để xác minh rằng đó là một gói hợp lệ, không phải là gói thử nghiệm và phiên bản hiện tại của nó khác với phiên bản được ghi lại trong bộ nhớ đệm xây dựng.
+3. **Thực thi Xây dựng**: Nếu yêu cầu cập nhật, nó sẽ kiểm tra các tập lệnh trong tệp `package.json`:
+   - Nếu tồn tại tập lệnh `"build-recovery"`, nó sẽ thực thi `npm run build-recovery`.
+   - Ngược lại, nếu tồn tại tập lệnh `"build"`, nó sẽ thực thi `npm run build`.
+4. **Đồng bộ hóa Nhật ký**: Sau khi biên dịch thành công một gói, phiên bản của nó được cập nhật trong bộ nhớ đệm trong bộ nhớ tạm (in-memory cache).
+5. **Lưu trữ Nhật ký**: Nếu một hoặc nhiều gói được xây dựng thành công, bộ nhớ đệm cập nhật sẽ được lưu lại vào `./logs/ui-build.log.json`.
+
+## Thông tin chi tiết bổ sung
+
+### Tệp bộ nhớ đệm nhật ký (`ui-build.log.json`)
+
+Bộ nhớ đệm cục bộ được lưu trữ tại:
+```
+./logs/ui-build.log.json
+```
+Nếu bạn muốn buộc xây dựng lại tất cả các gói bất kể tính nhất quán của phiên bản, bạn có thể xóa tệp này hoặc đặt lại nội dung của nó thành dấu ngoặc nhọn trống `{}`.
+
+### Loại trừ các gói thử nghiệm
+
+Nếu bạn muốn một gói được bỏ qua bởi trình xây dựng, hãy thêm thuộc tính sau vào tệp `package.json` của gói đó:
+```json
+{
+  "ui-test": true
+}
+```

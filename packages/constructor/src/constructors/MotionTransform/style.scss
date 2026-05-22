@@ -1,6 +1,8 @@
 @use "@dxtmisha/styles/properties" as ui;
 
 @mixin mixinMotionTransform {
+  $this: &;
+
   @include ui.initByCustom('sys.left', auto);
   @include ui.initByCustom('sys.top', auto);
   @include ui.initByCustom('sys.height', auto);
@@ -54,7 +56,7 @@
     top: 0;
   }
 
-  &__background {
+  &__scrim {
     visibility: hidden;
     position: fixed;
     inset: 0;
@@ -139,6 +141,13 @@
       @include ui.scale(none);
 
       transition-duration: ui.v('d.sys.transitionDuration.container.open');
+
+      & + #{$this}__scrim {
+        opacity: 1;
+        transition-duration: 90ms;
+        transition-timing-function: ui.v('d.sys.transitionFunction.standard');
+        visibility: visible;
+      }
     }
   }
 
@@ -194,7 +203,7 @@
     &,
     &__head,
     &__body,
-    &__background {
+    &__scrim {
       transition-delay: 0.1ms !important;
       transition-duration: 0.1ms !important;
     }

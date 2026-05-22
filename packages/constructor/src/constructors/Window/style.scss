@@ -224,8 +224,11 @@
   &[data-status="open"] {
     @include ui.initByCustom('opacity', 1);
     @include ui.initByCustom('transform', none);
-    @include ui.initByCustom('transition', background #{ui.v('d.sys.transitionDuration.fade.enter')} linear);
-    @include ui.initByCustom('transitionBody', #{opacity #{ui.v('d.sys.transitionDuration.xs')} linear, transform #{ui.v('d.sys.transitionDuration.fade.enter')} #{ui.v('d.sys.transitionFunction.deceleration')}});
+    @include ui.initByCustom('transition', background #{ui.v('d.sys.transitionDuration.fade.exit')} linear);
+    @include ui.initByCustom(
+            'transitionBody',
+            #{opacity #{ui.v('d.sys.transitionDuration.xs')} linear, transform #{ui.v('d.sys.transitionDuration.fade.enter')} #{ui.v('d.sys.transitionFunction.deceleration')}
+    });
 
     display: flex;
     @include ui.contentVisibility(visible);
@@ -244,6 +247,7 @@
   }
 
   @include ui.mediaPrefersReducedMotion {
+
     &,
     &__body,
     &__background {
@@ -254,6 +258,7 @@
 
   @at-root {
     body[data-scroll="scroll"] {
+
       &:has(>[data-window-teleport]>#{ui.c('??-overscroll')}:not([data-window-menu="menu"])[data-status="display"]),
       &:has(>[data-window-teleport]>#{ui.c('??-overscroll')}:not([data-window-menu="menu"])[data-status="preparation"]),
       &:has(>[data-window-teleport]>#{ui.c('??-overscroll')}:not([data-window-menu="menu"])[data-status="flash"]),
@@ -269,9 +274,11 @@
     0% {
       transform: scale(1)
     }
+
     50% {
       transform: scale(1.02)
     }
+
     100% {
       transform: scale(1)
     }

@@ -36,7 +36,7 @@ export class WindowHidden {
   ) {
     onMounted(() => {
       watch(
-        this.open.item,
+        this.open.openEnd,
         (newValue: boolean) => {
           if (
             !this.props.inert

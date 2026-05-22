@@ -1,0 +1,48 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/bin/dxt-constructor - Component Constructor Scaffolding'/>
+
+# dxt-constructor
+
+The `dxt-constructor` command provides automated generation of core constructor files, types, properties configurations, and library entry points for components in the design system. It uses `DesignConstructors` and `DesignConstructor` underneath to orchestrate bulk or targeted component initialization.
+
+## Key Features
+
+- **Targeted or Bulk Generation**: Detects empty structural folders or accepts a specific component name to scaffold constructor assets.
+- **Unified Style Consolidation**: Automatically generates and aggregates component SCSS exports in `packages/library/style.scss`.
+- **Complete Code & Types Scaffolding**: Automatically creates properties configurations (`properties.json`), types (`types.ts`, `basicTypes.ts`), component styling files (`style.scss`), code files (`Constructors.ts`, `ConstructorsDesign.tsx`), and exports structure (`index.ts`).
+
+## How does it work?
+
+The constructor scaffolding workflow automates component integration:
+
+1. The script identifies the targeted component name passed as an argument, or automatically scans the configured system directory for all component names.
+2. It clears the shared `PropertiesCache` to ensure the generation uses completely up-to-date configuration states.
+3. For each component, it invokes the `DesignConstructor` generator to construct properties JSON, properties TypeScript types, basic types, styles, code files, and entry index structures.
+4. It loops through all component directories to collect their individual styles and compiles them into a centralized `@forward` rule set.
+5. It updates `package.json` exports to expose the component's entry points and writes the library mapping files.
+
+## How to configure and run
+
+No complex configurations are necessary to run the constructor builder. The tool is designed to scan the constructors directories and integrate them seamlessly.
+
+To scaffold all component constructors in the workspace, run:
+```bash
+npx dxt-constructor
+```
+
+To target a specific component (e.g. `Button`), specify its name as an argument:
+```bash
+npx dxt-constructor Button
+```
+
+## Generated File Structure
+
+When a component constructor is initialized or updated, the tool scaffolds the following files inside its directory:
+
+- `properties.json`: Keeps the raw component properties configuration.
+- `props.ts`: Defines React/Vue prop structures based on configurations.
+- `types.ts` & `basicTypes.ts`: Contains standard TypeScript types.
+- `style.scss`: Manages component baseline SCSS styles.
+- `Constructors.ts` & `ConstructorsDesign.tsx`: Holds the constructor's core behavior code.
+- `index.ts`: Exposes public interfaces and exports.

@@ -3,6 +3,12 @@
   "padding": {
     "_type": "var"
   },
+  "iconPaddingX": {
+    "_type": "var"
+  },
+  "iconPaddingY": {
+    "_type": "var"
+  },
   "sysMarginRight": {
     "_type": "var"
   },

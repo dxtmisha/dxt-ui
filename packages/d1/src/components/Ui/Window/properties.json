@@ -1,6 +1,8 @@
 {
   "main": "{d.window}",
   "padding": "{layout.paddingX}",
+  "iconPaddingX": "{layout.paddingX}",
+  "iconPaddingY": "{layout.paddingY}",
   "width": {
     "sm": "{ref.spacing.px} * 512",
     "md": "{ref.spacing.px} * 768",

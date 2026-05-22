@@ -1,4 +1,4 @@
-import { nextTick, type ToRefs, watch } from 'vue'
+import { nextTick, onMounted, type ToRefs, watch } from 'vue'
 import { type ConstrEmit, EventItem } from '@dxtmisha/functional'
 
 import { TooltipStyle } from './TooltipStyle'
@@ -18,7 +18,7 @@ export class TooltipOpen {
   protected timeoutHide?: any
   protected timeoutTo?: any
 
-  protected readonly event: EventItem<Window, Event, any>
+  protected event?: EventItem<Window, Event, any>
 
   /**
    * Constructor
@@ -37,11 +37,13 @@ export class TooltipOpen {
     protected readonly position: TooltipPosition,
     protected readonly emits?: ConstrEmit<TooltipEmits>
   ) {
-    this.event = new EventItem(window, ['scroll-sync'], this.onScroll)
+    onMounted(() => {
+      this.event = new EventItem(window, ['scroll-sync'], this.onScroll)
 
-    watch([refs.open], () => {
-      this.toggle(Boolean(this.props.open)).then()
-    }, { immediate: this.props.open })
+      watch([refs.open], () => {
+        this.toggle(Boolean(this.props.open)).then()
+      }, { immediate: this.props.open })
+    })
   }
 
   /**
@@ -117,7 +119,7 @@ export class TooltipOpen {
    */
   eventStart() {
     if (!this.props.embedded) {
-      this.event.start()
+      this.event?.start()
     }
   }
 
@@ -127,7 +129,7 @@ export class TooltipOpen {
    * Остановка прослушивания событий скролла.
    */
   eventStop() {
-    this.event.stop()
+    this.event?.stop()
   }
 
   /**

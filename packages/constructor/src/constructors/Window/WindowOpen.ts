@@ -26,6 +26,7 @@ import type { WindowProps } from './props'
  */
 export class WindowOpen {
   readonly item = ref<boolean>(false)
+  readonly openEnd = ref<boolean>(false)
 
   protected readonly first = ref<boolean>(false)
   protected clicks: number = 0
@@ -152,6 +153,7 @@ export class WindowOpen {
 
                 if (!this.props.embedded) {
                   this.tabIndex.goTo()
+                  this.openEnd.value = true
                 }
               })
               this.emit.on(this.item.value)
@@ -299,6 +301,7 @@ export class WindowOpen {
 
       this.resetClicks()
       this.tabIndex.reset()
+      this.openEnd.value = false
       this.emit.on(this.item.value)
     }, 48)
 

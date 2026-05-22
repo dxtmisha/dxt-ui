@@ -13,6 +13,8 @@
   & {
     --d1-window-menuSizeMultiplier: 1;
     --d1-window-padding: var(--d1-layout-paddingX);
+    --d1-window-iconPaddingX: var(--d1-layout-paddingX);
+    --d1-window-iconPaddingY: var(--d1-layout-paddingY);
     --d1-window-backgroundColor: var(--d1-sys-palette-scrim);
     --d1-window-backgroundOpacity: var(--d1-sys-opacity-scrim);
     

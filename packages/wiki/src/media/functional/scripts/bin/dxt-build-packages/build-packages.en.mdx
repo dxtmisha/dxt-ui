@@ -1,0 +1,45 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/bin/dxt-build-packages - Build Packages'/>
+
+# dxt-build-packages
+
+The `dxt-build-packages` command provides automated building of changed npm packages across the workspace. It uses `BuildPackages` and `PackageFile` to scan for active library folders, track versions, and incrementally compile package structures when changes are detected.
+
+## Key Features
+
+- **Automated Monorepo Scanning**: Automatically detects active package directories under `/packages/` that contain a valid `package.json`.
+- **Incremental Version-Based Caching**: Avoids redundant builds by maintaining a local build cache in `./logs/ui-build.log.json`. It only triggers build operations if a package's version has changed compared to the cache.
+- **Intelligent Script Resolution**: Automatically executes `"build-recovery"` script if it is defined in the package's scripts, falling back to the standard `"build"` script.
+- **Test Package Exclusion**: Automatically skips packages marked as tests (`"ui-test": true` in `package.json`).
+
+## How does it work?
+
+The package compilation workflow automates checks and build dispatching:
+
+1. **Scan Directories**: The `BuildPackages` class scans the target packages directory (by default, `/packages/`) and reads the build cache log `./logs/ui-build.log.json`.
+2. **Filter & Validate**: For each directory, it instantiates a `PackageFile` wrapper to verify that it is a package, that it is not a test package, and that its current version differs from the version recorded in the build cache.
+3. **Execute Build**: If an update is required, it checks the package's `package.json` scripts:
+   - If `"build-recovery"` script exists, it executes `npm run build-recovery`.
+   - Otherwise, if `"build"` script exists, it executes `npm run build`.
+4. **Log Synchronization**: Upon successful compilation of a package, its version is updated in the in-memory cache.
+5. **Persist Logs**: If one or more packages were successfully built, the updated cache is saved back to `./logs/ui-build.log.json`.
+
+## Additional Information
+
+### Log Caching File (`ui-build.log.json`)
+
+The local cache is stored at:
+```
+./logs/ui-build.log.json
+```
+If you wish to force-rebuild all packages regardless of version consistency, you can delete this file or reset its contents to empty `{}`.
+
+### Excluding Test Packages
+
+If you want a package to be ignored by the builder, add the following property to its `package.json`:
+```json
+{
+  "ui-test": true
+}
+```

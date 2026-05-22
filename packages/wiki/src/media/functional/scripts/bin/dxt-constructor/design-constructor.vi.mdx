@@ -1,0 +1,48 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/bin/dxt-constructor - Tạo Khung Bộ Dựng Thành Phần'/>
+
+# dxt-constructor
+
+Lệnh `dxt-constructor` cung cấp khả năng tự động tạo sinh các tệp cốt lõi của bộ dựng thành phần (constructor), kiểu dữ liệu (types), cấu hình thuộc tính (properties) và các điểm xuất thư viện cho các thành phần trong hệ thống thiết kế. Lệnh này sử dụng `DesignConstructors` và `DesignConstructor` làm nền tảng để điều phối quá trình khởi tạo hàng loạt hoặc khởi tạo riêng biệt cho một thành phần.
+
+## Các tính năng chính
+
+- **Tạo sinh Mục tiêu hoặc Hàng loạt**: Có khả năng khởi tạo tất cả các thành phần bên trong thư mục chứa bộ dựng hoặc tập trung khởi tạo duy nhất cho một thành phần được truyền dưới dạng đối số.
+- **Hợp nhất Phong cách**: Tự động tạo sinh và tổng hợp các xuất SCSS của thành phần vào tệp tập trung `packages/library/style.scss`.
+- **Tạo sinh Mã nguồn & Kiểu dữ liệu Đầy đủ**: Tự động tạo các cấu hình thuộc tính (`properties.json`), kiểu dữ liệu (`types.ts`, `basicTypes.ts`), tệp phong cách thành phần (`style.scss`), các tệp mã nguồn (`Constructors.ts`, `ConstructorsDesign.tsx`) và cấu trúc tệp xuất (`index.ts`).
+
+## Nó hoạt động như thế nào?
+
+Quy trình tạo khung bộ dựng tự động hóa quá trình tích hợp các thành phần:
+
+1. Tập lệnh nhận dạng tên thành phần mục tiêu được truyền làm đối số hoặc tự động quét thư mục hệ thống đã được cấu hình để thu thập tất cả tên thành phần.
+2. Tiến hành xóa bộ nhớ đệm thuộc tính dùng chung `PropertiesCache` để đảm bảo quá trình tạo sinh sử dụng các trạng thái cấu hình hoàn toàn cập nhật mới nhất.
+3. Đối với mỗi thành phần, nó triệu gọi trình tạo `DesignConstructor` để xây dựng cấu trúc thuộc tính JSON, các kiểu dữ liệu TypeScript cho thuộc tính, kiểu dữ liệu cơ bản, phong cách, các tệp mã và cấu trúc tệp chỉ mục.
+4. Lặp qua tất cả thư mục thành phần để thu thập phong cách riêng biệt của từng thành phần và biên dịch chúng thành một bộ quy tắc `@forward` tập trung.
+5. Cập nhật các xuất của `package.json` để hiển thị các điểm xuất của thành phần và viết các tệp ánh xạ thư viện tương ứng.
+
+## Cách thiết lập và khởi chạy
+
+Toàn bộ quy trình sẽ không thiết lập ràng buộc với những cấu hình phức tạp. Công cụ này chủ động quét các thư mục bộ dựng và tích hợp chúng vào không gian làm việc một cách liền mạch.
+
+Để thiết lập cấu trúc khung cho tất cả các bộ dựng thành phần trong vùng làm việc, hãy chạy:
+```bash
+npx dxt-constructor
+```
+
+Để nhắm mục tiêu vào một thành phần cụ thể (ví dụ: `Button`), hãy truyền tên thành phần đó làm đối số:
+```bash
+npx dxt-constructor Button
+```
+
+## Cấu trúc tệp được tạo sinh
+
+Khi một bộ dựng thành phần được khởi tạo hoặc cập nhật, công cụ sẽ tự động thiết lập cấu trúc khung gồm các tệp sau bên trong thư mục của nó:
+
+- `properties.json`: Lưu giữ cấu hình thuộc tính thô của thành phần.
+- `props.ts`: Định nghĩa cấu trúc prop cho React/Vue dựa trên cấu hình thuộc tính.
+- `types.ts` & `basicTypes.ts`: Chứa các định dạng kiểu dữ liệu TypeScript chuẩn.
+- `style.scss`: Quản lý phong cách SCSS cơ bản của thành phần.
+- `Constructors.ts` & `ConstructorsDesign.tsx`: Chứa mã nguồn hành vi cốt lõi của bộ dựng.
+- `index.ts`: Hiển thị các giao diện và xuất công khai.

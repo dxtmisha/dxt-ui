@@ -16,7 +16,7 @@ import { TooltipOpen } from './TooltipOpen'
 import { TooltipEvent } from './TooltipEvent'
 
 import type { RoleType } from '../../types/roleTypes'
-import type { TooltipControl } from './basicTypes'
+import type { TooltipControl, TooltipControlBinds } from './basicTypes'
 import type { TooltipComponents, TooltipEmits, TooltipSlots } from './types'
 import type { TooltipProps } from './props'
 
@@ -118,7 +118,8 @@ export class Tooltip {
       this.refs,
       this.style,
       this.status,
-      this.position
+      this.position,
+      this.emits
     )
     this.event = new TooltipEventConstructor(
       this.props,
@@ -174,12 +175,12 @@ export class Tooltip {
    * Computed bindings for the control element/
    * Вычисляемые привязки для элемента управления
    */
-  readonly bindsControl = computed<TooltipControl['binds']>(() => {
+  readonly bindsControl = computed<TooltipControlBinds>(() => {
     const data = {
       class: this.classes.getControl(),
-      onclick: this.event.onClick,
-      onmouseover: this.event.onMouseover,
-      onmouseout: this.event.onMouseout
+      onClick: this.event.onClick,
+      onMouseover: this.event.onMouseover,
+      onMouseout: this.event.onMouseout
     }
 
     if (this.props.interactive) {

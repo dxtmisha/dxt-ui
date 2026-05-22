@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.65.1] - 2026-05-22
+
+### Added
+- **D1Window**: Added `iconPaddingX` and `iconPaddingY` design tokens to the `D1Window` component styles (`properties.json` and `styleToken.scss`) to allow independent configuration of internal icon paddings.
+
 ## [0.65.0] - 2026-05-22
 
 ### Added

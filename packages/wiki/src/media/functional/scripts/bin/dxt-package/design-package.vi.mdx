@@ -1,0 +1,48 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/bin/dxt-package - Khởi tạo Cấu trúc Package'/>
+
+# dxt-package
+
+Lệnh `dxt-package` tự động hóa việc khởi tạo cấu trúc package mới và môi trường phát triển dựa trên các mẫu được xác định trước. Dưới mui xe, nó sử dụng các lớp `PackageInit` và `PackageInitItem` để xử lý các thư mục package trống và tạo bộ khung nền tảng cho chúng.
+
+## Các tính năng chính
+
+- **Tự động Quét Thư mục**: Tự động quét thư mục cơ sở được định cấu hình (mặc định là `packages/`) và xác định các thư mục package trống cần được khởi tạo.
+- **Tạo khung dựa trên mẫu**: Hỗ trợ áp dụng các mẫu cụ thể để tùy chỉnh quá trình tạo, điều chỉnh cấu trúc khung dựa trên `type` của package được cung cấp.
+- **Cấu hình Linh hoạt**: Cho phép ghi đè loại package mặc định, các mẫu và thư mục cơ sở đích thông qua các đối số dòng lệnh.
+
+## Cách thức hoạt động?
+
+Quy trình khởi tạo package giúp đơn giản hóa việc tạo các package mới:
+
+1. Script đọc các đối số được cung cấp để xác định `type` của package (mặc định là `library`), các `templates` và thư mục đích `dir`.
+2. Nó quét thư mục đích để tìm bất kỳ thư mục trống nào (các thư mục không chứa phần tử con).
+3. Đối với mỗi thư mục trống được tìm thấy, nó khởi tạo một phiên bản `PackageInitItem`, truyền vào đường dẫn package, loại và các mẫu.
+4. Sau đó, hệ thống xử lý các cấu hình này để tạo ra các tệp bắt buộc và cấu trúc môi trường cho package, giúp nó sẵn sàng để phát triển.
+
+## Cấu hình và khởi chạy
+
+Để khởi tạo các thư mục package trống mới được tạo với loại `library` mặc định, hãy chạy:
+```bash
+npx dxt-package
+```
+
+Để chỉ định một loại package tùy chỉnh (ví dụ: `vue`), hãy chạy:
+```bash
+npx dxt-package vue
+```
+
+Để chỉ định loại tùy chỉnh và áp dụng các mẫu cụ thể, hãy truyền chúng dưới dạng đối số:
+```bash
+npx dxt-package vue "template1,template2"
+```
+
+Bạn cũng có thể chỉ định một thư mục cơ sở tùy chỉnh làm đối số thứ ba:
+```bash
+npx dxt-package vue "template1" "packages/custom-dir"
+```
+
+## Cấu trúc được tạo
+
+Khi lệnh xử lý một thư mục trống, nó sẽ tạo ra các tệp cơ sở cần thiết cho loại package và các mẫu đã cho. Điều này thường bao gồm các tệp cấu trúc, cấu hình cơ bản và điểm truy cập, biến một thư mục trống thành một môi trường package đầy đủ chức năng trong không gian làm việc.

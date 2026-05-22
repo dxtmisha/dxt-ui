@@ -1,0 +1,54 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/DesignFigma - Lớp tích hợp Layout Figma'/>
+
+# Lớp DesignFigma
+
+Lớp `DesignFigma` cung cấp hành vi bộ điều khiển cốt lõi để kết nối với REST API của Figma và trích xuất các tọa độ layout cũng như cấu trúc hình ảnh vector. Nó trừu tượng hóa việc ủy quyền mã thông báo và đơn giản hóa các yêu cầu hình ảnh nút hàng loạt thành các quy trình bất đồng bộ sạch sẽ.
+
+> **Lưu ý**: Yêu cầu bắt buộc phải có gói đăng ký Figma doanh nghiệp (Figma Enterprise hoặc Organization) để sử dụng lớp này và giao tiếp với các điểm cuối Figma mục tiêu.
+
+## Các tính năng chính
+
+- **Ủy quyền API Tách biệt** — Tự động tìm lại các thuộc tính hệ thống để truy xuất mã thông báo Figma đang hoạt động.
+- **Tùy chọn Tạo sinh SVG** — Yêu cầu các nút với thẻ ID được bảo toàn và tham số viền chữ.
+- **Thực thi Mạng An toàn** — Xử lý các lỗi mạng và giới hạn API một cách mượt mờ, trả về các giá trị dự phòng `undefined` an toàn.
+
+## Khởi tạo
+
+Khởi tạo một phiên bản `DesignFigma` mới với thông tin xác thực tệp Figma được yêu cầu.
+
+**Tham số:**
+- `fileKey: string` — ID duy nhất của tệp Figma mục tiêu.
+- `nodeId?: string` — ID nút cụ thể bên trong tệp cần nhắm mục tiêu.
+- `token?: string` — Mã thông báo Figma API tùy chọn. Mặc định là `PropertiesConfig.getFigmaToken()`.
+
+```typescript
+import { DesignFigma } from '@dxtmisha/scripts'
+
+const integrator = new DesignFigma('abc123xyz456', '1-24')
+await integrator.make()
+```
+
+## Các phương thức
+
+### `make`
+
+Phương thức điều phối chính kích hoạt quá trình truy xuất tài nguyên vector và in bản đồ kết quả ra console.
+
+**Trả về:** `Promise<void>`
+
+```typescript
+await integrator.make()
+```
+
+### `initImage`
+
+Yêu cầu các URL hình ảnh layout vector từ Figma API cho các ID nút được chỉ định dưới định dạng SVG.
+
+**Trả về:** `Promise<Record<string, string> | undefined>` — Một hứa hẹn (promise) phân giải thành một đối tượng ánh xạ các ID nút tới các URL SVG tương ứng của chúng, hoặc `undefined` khi xảy ra lỗi.
+
+```typescript
+const images = await integrator.initImage()
+console.log(images) // { "1-24": "https://..." }
+```

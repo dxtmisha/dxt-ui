@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.65.2] - 2026-05-22
+
+### Added
+- **MenuCountry**: Introduced the `MenuCountry` constructor component for standardized country selection menus.
+- **Teleport**: Extended `TeleportInclude` with `isTeleportElement` to query and verify teleport target nodes reactively in the DOM.
+
+### Changed / Improved
+- **Window**: Introduced `WindowEventClickType` to consolidate `MouseEvent`, `TouchEvent`, and `KeyboardEvent` into a single, standardized type signature.
+- **Window**: Standardized control element event properties from lowercase/kebab-case (`onclick`, `oncontextmenu`) to standard camelCase (`onClick`, `onContextmenu`) inside `WindowControlItem` type definitions and instantiations.
+- **Window**: Refactored `WindowEvent` handler signatures and safely checked target elements before updating window verification.
+- **Window**: Refactored `WindowHidden` to skip/ignore teleport target elements during inert and attribute visibility iterations, preventing unintended focus-trapping or styling restrictions.
+- **Window**: Removed debug log inside `WindowStatic.isStatic()`.
+
+## [0.65.1] - 2026-05-22
+
+### Added
+- **Window**: Added `iconPaddingX` and `iconPaddingY` variables to Window custom properties under `properties.json`.
+
+### Changed / Improved
+- **Tooltip**: Deferred the registration of `scroll-sync` event listeners and the `open` status watcher until `onMounted` within `TooltipOpen` to improve SSR hydration stability.
+- **Tooltip**: Standardized control event listener properties in type definitions and bindings from lowercase/kebab-case (`onclick`, `onmouseover`, `onmouseout`) to camelCase (`onClick`, `onMouseover`, `onMouseout`).
+- **Window**: Introduced a new `openEnd` reactive boolean ref in `WindowOpen` to track the actual completion of opening transitions.
+- **Window**: Refactored `WindowHidden` visibility and inert watchers to observe `openEnd` instead of `open.item` to avoid screen flashing or pre-mature focus-trapping.
+- **Window**: Adjusted transition properties for opening states in SCSS to utilize standard fade exit duration.
+- **MotionTransform**: Renamed the internal component background class/element from `&__background` to `&__scrim` in SCSS to align with naming conventions.
+
 ## [0.65.0] - 2026-05-22
 
 ### Changed / Improved

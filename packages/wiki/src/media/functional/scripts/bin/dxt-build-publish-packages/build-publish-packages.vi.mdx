@@ -1,0 +1,51 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/bin/dxt-build-publish-packages - Công Bố Gói'/>
+
+# dxt-build-publish-packages
+
+Lệnh `dxt-build-publish-packages` cung cấp khả năng tự động công bố (publish) các gói npm trong không gian làm việc. Công cụ này sử dụng `BuildPublishPackages` và `PackageFile` để quét các thư mục thư viện hoạt động, theo dõi các phiên bản và công bố gói lên npm khi phát hiện phiên bản mới.
+
+## Các tính năng chính
+
+- **Tự động quét Monorepo**: Tự động phát hiện các thư mục gói đang hoạt động dưới `/packages/` có chứa tệp `package.json` hợp lệ.
+- **Bộ nhớ đệm tăng dần dựa trên Phiên bản**: Tránh các hoạt động công bố dư thừa bằng cách duy trì bộ nhớ đệm công bố cục bộ trong `./logs/ui-publish.log.json`. Nó chỉ kích hoạt các hoạt động công bố nếu phiên bản hiện tại của gói trong `package.json` thay đổi so với phiên bản được lưu trong bộ nhớ đệm.
+- **Giải quyết Tập lệnh Thông minh**: Tự động thực thi tập lệnh `"publish-to-npm"` nếu nó được định nghĩa trong các tập lệnh của gói, và chuyển sang lệnh tiêu chuẩn `npm publish --access public` nếu không tìm thấy tập lệnh đầu tiên.
+- **Loại trừ Công bố**: Tự động bỏ qua các gói được đánh dấu là riêng tư (`"private": true`) hoặc có thuộc tính `"ui-no-publish": true` trong tệp `package.json`.
+
+## Nó hoạt động như thế nào?
+
+Quy trình công bố gói tự động hóa việc kiểm tra và gửi lệnh công bố:
+
+1. **Quét Thư mục**: Lớp `BuildPublishPackages` quét thư mục gói mục tiêu (mặc định là `/packages/`) và đọc tệp nhật ký bộ nhớ đệm công bố `./logs/ui-publish.log.json`.
+2. **Lọc & Xác thực**: Đối với mỗi thư mục, nó khởi tạo một trình bao bọc `PackageFile` để xác minh rằng đó là một gói hợp lệ và không bị loại trừ khỏi quy trình công bố.
+3. **Thực thi Công bố**: Nếu phát hiện phiên bản mới hoặc gói chưa được ghi nhận trong bộ nhớ đệm:
+   - Nếu tồn tại tập lệnh `"publish-to-npm"`, nó sẽ thực thi `npm run publish-to-npm`.
+   - Ngược lại, nó sẽ thực thi lệnh `npm publish --access public`.
+4. **Đồng bộ hóa Nhật ký**: Sau khi công bố thành công một gói, phiên bản của nó được cập nhật trong bộ nhớ đệm trong bộ nhớ tạm (in-memory cache).
+5. **Lưu trữ Nhật ký**: Nếu một hoặc nhiều gói được công bố thành công, bộ nhớ đệm cập nhật sẽ được lưu lại vào `./logs/ui-publish.log.json`.
+
+## Thông tin chi tiết bổ sung
+
+### Tệp bộ nhớ đệm nhật ký (`ui-publish.log.json`)
+
+Bộ nhớ đệm cục bộ được lưu trữ tại:
+```
+./logs/ui-publish.log.json
+```
+Nếu bạn muốn buộc công bố lại tất cả các gói bất kể tính nhất quán của phiên bản, bạn có thể xóa tệp này hoặc đặt lại nội dung của nó thành dấu ngoặc nhọn trống `{}`.
+
+### Loại trừ các gói khỏi quy trình công bố
+
+Nếu bạn muốn một gói được bỏ qua bởi trình công bố, hãy thêm một trong các thuộc tính sau vào tệp `package.json` của gói đó:
+```json
+{
+  "private": true
+}
+```
+hoặc:
+```json
+{
+  "ui-no-publish": true
+}
+```

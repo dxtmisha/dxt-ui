@@ -12,16 +12,20 @@ import DemoClientOnlyPage from './pages/components/DemoClientOnlyPage.vue'
 import DemoIconPage from './pages/components/DemoIconPage.vue'
 import DemoImagePage from './pages/components/DemoImagePage.vue'
 import DemoInputPage from './pages/components/DemoInputPage.vue'
+import DemoListPage from './pages/components/DemoListPage.vue'
 import DemoMaskPage from './pages/components/DemoMaskPage.vue'
+import DemoMenuPage from './pages/components/DemoMenuPage.vue'
 import DemoMenuCountryPage from './pages/components/DemoMenuCountryPage.vue'
 import DemoMotionAxisPage from './pages/components/DemoMotionAxisPage.vue'
 import DemoMotionTransformPage from './pages/components/DemoMotionTransformPage.vue'
 import DemoPageAreaPage from './pages/components/DemoPageAreaPage.vue'
 import DemoProgressPage from './pages/components/DemoProgressPage.vue'
 import DemoRadioPage from './pages/components/DemoRadioPage.vue'
+import DemoScrollbarPage from './pages/components/DemoScrollbarPage.vue'
 import DemoSnackbarPage from './pages/components/DemoSnackbarPage.vue'
 import DemoSwitchPage from './pages/components/DemoSwitchPage.vue'
 import DemoTabsPage from './pages/components/DemoTabsPage.vue'
+import DemoTooltipPage from './pages/components/DemoTooltipPage.vue'
 import DemoWindowPage from './pages/components/DemoWindowPage.vue'
 
 export const routes: RouteRecordRaw[] = [
@@ -76,9 +80,19 @@ export const routes: RouteRecordRaw[] = [
     component: DemoInputPage
   },
   {
+    path: '/component-list',
+    name: 'component-list',
+    component: DemoListPage
+  },
+  {
     path: '/component-mask',
     name: 'component-mask',
     component: DemoMaskPage
+  },
+  {
+    path: '/component-menu',
+    name: 'component-menu',
+    component: DemoMenuPage
   },
   {
     path: '/component-menu-country',
@@ -111,6 +125,11 @@ export const routes: RouteRecordRaw[] = [
     component: DemoRadioPage
   },
   {
+    path: '/component-scrollbar',
+    name: 'component-scrollbar',
+    component: DemoScrollbarPage
+  },
+  {
     path: '/component-snackbar',
     name: 'component-snackbar',
     component: DemoSnackbarPage
@@ -124,6 +143,11 @@ export const routes: RouteRecordRaw[] = [
     path: '/component-tabs',
     name: 'component-tabs',
     component: DemoTabsPage
+  },
+  {
+    path: '/component-tooltip',
+    name: 'component-tooltip',
+    component: DemoTooltipPage
   },
   {
     path: '/component-window',
