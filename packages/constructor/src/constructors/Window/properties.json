@@ -183,7 +183,7 @@
       "body": {
         "top": "auto",
         "max-width": "100dvw - ({??padding} * 2)",
-        "max-height": "100dvh - ({??padding} * 2)"
+        "max-height": "100dvh - ({??padding} * 6)"
       },
       "#teleport": {
         "position": "static",

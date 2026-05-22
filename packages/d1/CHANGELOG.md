@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.65.0] - 2026-05-22
+
+### Added
+- **Exports**: Exposed `./D1TextDescription` and `./D1TextLabel` in the package exports mapping.
+- **Scrollbar**: Added the `clientOnly` property description to the Storybook metadata properties definitions list.
+
+### Changed / Improved
+- **D1Chip**: Adjusted height property definitions for all sizing classes. Increased `sm` from 6 to 8 (24px to 32px), `md` from 8 to 10 (32px to 40px), and `lg` from 10 to 12 (40px to 48px).
+- **D1Window**: Updated styles for the body selector to introduce a border outline (including `border-width`, `@include ui.borderColor`, and `@include ui.borderOpacity`). Increased the adaptive height subtraction margin to `6` times the window padding variable.
+- **Maintenance**: Refactored the package script to run general `dxt-ui` utility tasks.
+
 ## [0.64.0] - 2026-05-20
 
 ### Added

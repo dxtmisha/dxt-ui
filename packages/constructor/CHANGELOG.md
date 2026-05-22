@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.65.0] - 2026-05-22
+
+### Changed / Improved
+- **ModelInclude**: Fixed `syncValue` reactivity watching by removing the `immediate` trigger option from the watcher to prevent unintended early state emissions during setup.
+- **ModelValueInclude**: Refactored the internal state synchronization flow. Replaced the immediate array watcher on `inputValue` with initial assignment and a direct reactive watch. Added a dedicated `update` helper method and enhanced bilingual JSDoc annotations (EN/RU).
+- **MotionAxis**: Added bilingual JSDoc comments detailing the `isInDom` and `isInDomSlide` utility functions.
+- **Window**: Adjusted `adaptive` body property definitions in `properties.json`, increasing the subtraction modifier for `max-height` in adaptive mode from `({??padding} * 2)` to `({??padding} * 6)` to optimize layout display and avoid screen clipping.
+
 ## [0.64.0] - 2026-05-20
 
 ### Added

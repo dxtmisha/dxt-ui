@@ -228,11 +228,14 @@
           top: auto;
           
           max-width: calc(100dvw - (var(--d1-window-padding) * 2));
-          max-height: calc(100dvh - (var(--d1-window-padding) * 2));
+          max-height: calc(100dvh - (var(--d1-window-padding) * 6));
           
           background: var(--d1-sys-background-3);
           
           border-radius: var(--d1-sys-rounded-lg);
+          border-width: var(--d1-sys-spacing-outline);
+          @include ui.borderColor(#{var(--d1-sys-palette-outline)});
+          @include ui.borderOpacity(#{var(--d1-sys-opacity-outlineMedium)});
           
           box-shadow: var(--d1-sys-shadow-lg);
         }

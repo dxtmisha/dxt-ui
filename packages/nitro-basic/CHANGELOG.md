@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.5] - 2026-05-22
+
+### Added
+- **Teleport SSR Selector**: Introduced a new `teleportBody` parameter in `NitroAppOptions` to specify the custom target selector for teleporting elements during server-side rendering (SSR).
+- **Application Context Teleports**: Integrated Vue application context provisioning inside `uiCreateApp` to inject `__ui-teleport-ssr-body__` with the specified selector (defaulting to `'#teleports'`), ensuring reliable element teleportation.
+
 ## [0.1.0] - 2026-05-01
 
 ### Added

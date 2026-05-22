@@ -137,6 +137,13 @@ export class MotionAxis {
     }
   })
 
+  /**
+   * Checking the element for inclusion in the DOM by key.
+   * 
+   * Проверка элемента на включение в DOM по ключу.
+   * @param key element key/ ключ элемента
+   * @returns Returns true if the element is included in the DOM/ Возвращает true если элемент включен в DOM
+   */
   isInDom(key: string): boolean {
     return this.props.inDom
       || this.isInDomSlide(key)
@@ -145,6 +152,13 @@ export class MotionAxis {
       || this.status.isActive(key)
   }
 
+  /**
+   * Checking the element for inclusion in the DOM by key in slide.
+   * 
+   * Проверка элемента на включение в DOM по ключу в слайде.
+   * @param key element key/ ключ элемента
+   * @returns Returns true if the element is included in the DOM/ Возвращает true если элемент включен в DOM
+   */
   isInDomSlide(key: string): boolean {
     return Boolean(
       this.props.inDomSlide

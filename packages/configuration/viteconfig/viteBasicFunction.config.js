@@ -24,6 +24,7 @@ import { browserslistToTargets } from 'lightningcss'
  * @param fileCssName name of the output CSS file / имя выходного CSS файла
  * @param rollupTypes whether to use rollupTypes in dts plugin / использовать ли rollupTypes в плагине dts
  * @param bundledPackages packages to bundle types for / пакеты, типы которых нужно собрать
+ * @param browserslistValue browserslist query / запрос browserslist
  * @returns Vite config / конфигурация Vite
  */
 export const viteBasicFunction = (
@@ -71,7 +72,8 @@ export const viteBasicFunction = (
   externalExtended = [],
   fileCssName = 'style.css',
   rollupTypes = false,
-  bundledPackages = undefined
+  bundledPackages = undefined,
+  browserslistValue = '>= 5%'
 ) => defineConfig({
   build: {
     target,
@@ -118,7 +120,7 @@ export const viteBasicFunction = (
     transformer: 'lightningcss',
     lightningcss: {
       // Настройки целей браузеров (автоматически берет из browserslist если не задано)
-      targets: browserslistToTargets(browserslist('>= 0.25%'))
+      targets: browserslistToTargets(browserslist((browserslistValue)))
     }
   },
   plugins: [

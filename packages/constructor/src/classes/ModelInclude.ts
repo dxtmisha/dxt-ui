@@ -28,7 +28,7 @@ export class ModelInclude<Value = string> {
     if (syncValue) {
       watch(syncValue, (newValue: Value) => {
         this.emit(newValue)
-      }, { immediate: true })
+      })
     }
   }
 

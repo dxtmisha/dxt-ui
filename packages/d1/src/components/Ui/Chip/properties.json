@@ -75,13 +75,13 @@
   },
   "~size": {
     "sm": {
-      "height": "{ref.spacing.6}"
-    },
-    "md": {
       "height": "{ref.spacing.8}"
     },
-    "lg": {
+    "md": {
       "height": "{ref.spacing.10}"
+    },
+    "lg": {
+      "height": "{ref.spacing.12}"
     },
     "_default": "md"
   },

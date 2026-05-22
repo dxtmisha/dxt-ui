@@ -33,6 +33,9 @@
       },
       "#body": {
         "background": "{sys.background.3}",
+        "border-width": "{sys.spacing.outline}",
+        "border-color": "{sys.palette.outline}",
+        "border-opacity": "{sys.opacity.outlineMedium}",
         "border-radius": "{sys.rounded.lg}",
         "box-shadow": "{sys.shadow.lg}"
       }

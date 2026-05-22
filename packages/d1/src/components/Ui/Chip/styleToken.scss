@@ -447,15 +447,15 @@
     
     &--size {
       &--sm {
-        @include ui.height(#{var(--d1-ref-spacing-6)});
-      }
-      
-      &--md {
         @include ui.height(#{var(--d1-ref-spacing-8)});
       }
       
-      &--lg {
+      &--md {
         @include ui.height(#{var(--d1-ref-spacing-10)});
+      }
+      
+      &--lg {
+        @include ui.height(#{var(--d1-ref-spacing-12)});
       }
     }
     

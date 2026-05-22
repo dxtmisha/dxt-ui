@@ -12,6 +12,7 @@
  * @param fileCssName name of the output CSS file / имя выходного CSS файла
  * @param rollupTypes whether to use rollupTypes in dts plugin / использовать ли rollupTypes в плагине dts
  * @param bundledPackages packages to bundle types for / пакеты, типы которых нужно собрать
+ * @param browserslistValue browserslist query / запрос browserslist
  * @returns Vite config / конфигурация Vite
  */
 export declare const viteBasicFunction: (
