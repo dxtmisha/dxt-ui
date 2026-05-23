@@ -1,6 +1,7 @@
 import { computed, type Ref, ref } from 'vue'
 import {
   goScroll,
+  isInput,
   type ListDataItem,
   type ListSelectedItem
 } from '@dxtmisha/functional'
@@ -201,6 +202,7 @@ export class ListFocus {
       max > 0
       && this.element.value
       && this.props.control
+      && !isInput(document.activeElement)
     ) {
       const element = this.getElement()
 

@@ -22,6 +22,16 @@ export const wikiMenuButton: StorybookArgsToList = {
       }
     }
   },
+  'menuButton.hideValueIcon': {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.option,
+      description: {
+        en: 'Whether to hide the value if an icon is present',
+        ru: 'Скрывать ли значение, если присутствует иконка'
+      }
+    }
+  },
   'menuButton.inputSearchAttrs': wikiSelect['select.inputSearchAttrs'],
   'menuButton.labelSeparator': {
     type: StorybookControl.string,

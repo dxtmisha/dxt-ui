@@ -9,7 +9,7 @@ import {
 
 import { MenuButton } from './MenuButton'
 
-import type { MenuControlItem } from '../Menu/basicTypes'
+import type { MenuControlItem } from '../Menu'
 import {
   type MenuButtonPropsBasic
 } from './props'
@@ -22,7 +22,15 @@ import {
 } from './types'
 
 /**
- * MenuButtonDesign
+ * Class representing the design constructor and renderer for the MenuButton component.
+ * It manages class generation, styles, template rendering, and exposes internal states
+ * such as menu visibility, validation capability, and dynamic layouts for components
+ * composed of trigger buttons and dropdown lists.
+ *
+ * Класс, представляющий конструктор дизайна и рендерер для компонента MenuButton.
+ * Управляет генерацией классов, стилей, рендерингом шаблонов и предоставляет доступ к
+ * внутренним состояниям, таким как видимость меню, возможность валидации и динамическая разметка
+ * для компонентов, состоящих из кнопок-триггеров и выпадающих списков.
  */
 export class MenuButtonDesign<
   COMP extends MenuButtonComponents,
@@ -30,22 +38,25 @@ export class MenuButtonDesign<
   CLASSES extends MenuButtonClasses,
   P extends MenuButtonPropsBasic
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
-    COMP,
-    MenuButtonEmits,
-    EXPOSE,
-    MenuButtonSlots,
-    CLASSES,
-    P
-  > {
+  HTMLDivElement,
+  COMP,
+  MenuButtonEmits,
+  EXPOSE,
+  MenuButtonSlots,
+  CLASSES,
+  P
+> {
+  /** Instance of the MenuButton controller / Экземпляр контроллера MenuButton */
   protected readonly item: MenuButton
 
   /**
-   * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor constructors item class/ класс элемента конструкторов
+   * Constructor for MenuButtonDesign.
+   *
+   * Конструктор для MenuButtonDesign.
+   * @param name class name / название класса
+   * @param props properties / свойства
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor constructors item class / класс элемента конструкторов
    */
   constructor(
     name: string,
@@ -74,9 +85,10 @@ export class MenuButtonDesign<
   }
 
   /**
-   * Initialization of all the necessary properties for work
+   * Initializes expose properties, linking internal methods and state to the component instance.
    *
-   * Инициализация всех необходимых свойств для работы.
+   * Инициализирует свойства expose, связывая внутренние методы и состояние с экземпляром компонента.
+   * @returns expose configuration object / конфигурируемый объект expose
    */
   protected initExpose(): EXPOSE {
     return {
@@ -88,9 +100,10 @@ export class MenuButtonDesign<
   }
 
   /**
-   * Improvement of the obtained list of classes.
+   * Initializes and extends component CSS class names.
    *
-   * Доработка полученного списка классов.
+   * Инициализирует и дополняет имена CSS-классов компонента.
+   * @returns partial map of classes / частичная карта классов
    */
   protected initClasses(): Partial<CLASSES> {
     return {
@@ -107,23 +120,28 @@ export class MenuButtonDesign<
   }
 
   /**
-   * Refinement of the received list of styles.
+   * Initializes dynamic styles for the component.
    *
-   * Доработка полученного списка стилей.
+   * Инициализирует динамические стили для компонента.
+   * @returns style mapping object / объект маппинга стилей
    */
   protected initStyles(): ConstrStyles {
     return {}
   }
 
   /**
-   * A method for rendering.
+   * Core rendering method that outputs the VNode hierarchy for the menu structure.
    *
-   * Метод для рендеринга.
+   * Основной метод рендеринга, выводящий иерархию VNode для структуры меню.
+   * @returns array of VNodes representing the template / массив VNode, представляющих шаблон
    */
   protected initRender(): VNode[] {
     return this.item.menu.render(
       {
-        control: (props: MenuControlItem) => this.renderButton(props),
+        control: (props: MenuControlItem) => [
+          this.renderControl(props),
+          this.renderInput()
+        ],
         title: props => this.renderTitle(props),
         footer: props => this.initSlot('footer', undefined, props),
         contextTop: props => this.initSlot('contextTop', undefined, props),
@@ -136,16 +154,34 @@ export class MenuButtonDesign<
     )
   }
 
-  protected readonly renderButton = (props: MenuControlItem): VNode[] => {
+  /**
+   * Renders the trigger button component using bindings and labels.
+   *
+   * Рендерит компонент кнопки-триггера, используя привязки и метки.
+   * @param props control item properties / свойства элемента управления
+   * @returns rendered button nodes / отрендеренные узлы кнопки
+   */
+  protected readonly renderControl = (props: MenuControlItem): VNode[] => {
     return this.item.button.render(
       props.binds,
-      { default: () => this.renderButtonLabel(props.selectedNames?.value) }
+      {
+        default: () => this.renderControlLabel(props.selectedNames?.value)
+      }
     )
   }
 
-  protected readonly renderButtonLabel = (selectedNames?: ListNames): VNode[] => {
-    const hasValue = selectedNames && selectedNames.length > 0
+  /**
+   * Formats and renders the inner contents of the button, handling labels, separators, and values.
+   *
+   * Форматирует и рендерит внутреннее содержимое кнопки, обрабатывая метки, разделители и значения.
+   * @param selectedNames list of selected option labels / список меток выбранных опций
+   * @returns array of rendered nodes / массив отрендеренных узлов
+   */
+  protected readonly renderControlLabel = (selectedNames?: ListNames): VNode[] => {
     const children: any[] = []
+    const hasValue = selectedNames
+      && selectedNames.length > 0
+      && !(this.props.hideValueIcon && this.props.icon)
 
     if (
       this.props.label
@@ -180,10 +216,28 @@ export class MenuButtonDesign<
   }
 
   /**
-   * Render title element.
+   * Renders the hidden input element used to carry the value.
    *
-   * Рендер элемента заголовка.
-   * @param props data for the transferable property/ данные для передаваемого свойства
+   * Рендерит скрытый элемент ввода, используемый для передачи значения.
+   * @returns hidden input node / узел скрытого ввода
+   */
+  protected readonly renderInput = (): VNode => {
+    return h(
+      'input',
+      {
+        name: this.props.name,
+        value: this.item.value.get(),
+        type: 'hidden'
+      }
+    )
+  }
+
+  /**
+   * Renders the title element, including search inputs and slot wrappers.
+   *
+   * Рендерит элемент заголовка, включая поля ввода поиска и обертки слотов.
+   * @param props data for the transferable property / данные для передаваемого свойства
+   * @returns list of children nodes representing the title / список дочерних узлов, представляющих заголовок
    */
   protected readonly renderTitle = (props: MenuControlItem) => {
     const children: any[] = []
@@ -198,10 +252,11 @@ export class MenuButtonDesign<
   }
 
   /**
-   * Render filter input.
+   * Renders the search filter input component within the dropdown menu header.
    *
-   * Рендер фильтра ввода.
-   * @param props data for the transferable property/ данные для передаваемого свойства
+   * Рендерит компонент ввода фильтра поиска внутри заголовка выпадающего меню.
+   * @param props data for the transferable property / данные для передаваемого свойства
+   * @returns search input node / узел поля ввода поиска
    */
   protected readonly renderFilterInput = (props: MenuControlItem): VNode => {
     return h(

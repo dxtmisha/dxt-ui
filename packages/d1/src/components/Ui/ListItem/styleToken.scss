@@ -22,6 +22,7 @@
     
     @include ui.gradientOpacity(#{0}); @include ui.gradient('init');
     @include ui.paletteGradient(#{var(--d1-sys-palette-primary)});
+    outline: none;
     
     border-radius: calc(var(--sys-height) * var(--d1-sys-rounded-adaptive-sm));
     @include ui.borderOpacity(#{var(--d1-sys-opacity-outline)});

@@ -10,6 +10,7 @@
   "border-color": "{sys.palette.outline}",
   "border-opacity": "{sys.opacity.outline}",
   "border-radius": "var(--sys-height) * {sys.rounded.adaptive.sm}",
+  "outline": "none",
   "media|md": {
     "paddingY": "{sys.spacing.x}"
   },

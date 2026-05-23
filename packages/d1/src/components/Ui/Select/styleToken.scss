@@ -12,7 +12,7 @@
   // :style [!] System label / Системная метка
   & {
     &__input {
-      @include ui.marginX(#{var(--d1-layout-paddingX)});
+      @include ui.marginX(#{var(--d1-sys-spacing-sm)});
       @include ui.marginY(#{var(--d1-layout-paddingY)});
     }
   }

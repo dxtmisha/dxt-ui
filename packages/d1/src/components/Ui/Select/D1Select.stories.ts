@@ -28,6 +28,11 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const Select: Story = {
+  args: {
+    editValue: true
+  },
+
+  // :story-main [!] System label / Системная метка
   // :story-main [!] System label / Системная метка
   render: (args: any) => ({
     components: { D1Select },
@@ -36,7 +41,6 @@ export const Select: Story = {
       <D1Select v-bind="args" />
     `
   })
-  // :story-main [!] System label / Системная метка
 }
 
 // :story-items [!] System label / Системная метка

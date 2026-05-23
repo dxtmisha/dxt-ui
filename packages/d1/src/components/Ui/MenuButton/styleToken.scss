@@ -20,6 +20,11 @@
       
       @include ui.colorOpacity(#{var(--d1-sys-opacity-primary-medium)}); @include ui.color('init');
     }
+    
+    &__input {
+      @include ui.marginX(#{var(--d1-sys-spacing-sm)});
+      @include ui.marginY(#{var(--d1-layout-paddingY)});
+    }
   }
   // :style [!] System label / Системная метка
 

@@ -7,7 +7,7 @@ import type { IconPropsBasic, IconValue } from '../Icon'
 import type { InputPropsBasic } from '../Input'
 import type { MenuPropsBasic, MenuPropsInclude } from '../Menu'
 
-import type { FieldSelectProps } from '../../types/fieldTypes'
+import type { FieldSelectLiteProps } from '../../types/fieldTypes'
 
 type MenuButtonPropsToken = {
   // :type [!] System label / Системная метка
@@ -21,26 +21,21 @@ export type MenuButtonPropsBasic<
   Menu extends MenuPropsBasic = MenuPropsBasic
 > = LabelProps
   & ButtonPropsInclude<Button>
-  & Omit<
-    FieldSelectProps,
-    'placeholder'
-    | 'validationMessage'
-    | 'validationCode'
-    | 'arrow'
-    | 'arrowAlign'
-    | 'arrowStep'
-  >
+  & FieldSelectLiteProps
   & MenuPropsInclude<Menu>
   & {
     // Value
     /** Separator for the displayed labels of the selected values/ Разделитель отображаемых меток выбранных значений */
     labelSeparator?: string
 
+    /** Icon displayed in the button when a value is selected/ Иконка, отображаемая в кнопке при выборе значения */
     icon?: IconValue<Icon>
 
     // Style
     /** Whether to hide the label when a value is selected/ Скрывать ли метку, если выбрано значение */
     hideLabelValue?: boolean
+    /** Whether to hide the value if an icon is present / Скрывать ли значение, если присутствует иконка */
+    hideValueIcon?: boolean
     /** Whether to hide the list/ Скрывать ли список */
     hideList?: boolean
     /** Whether to show the search input/ Показывать ли поле поиска */
@@ -71,6 +66,8 @@ export type MenuButtonProps = MenuButtonPropsBasic & MenuButtonPropsToken
  */
 export const defaultsMenuButton = {
   labelSeparator: ':',
+  hideLabelValue: true,
+  hideValueIcon: true,
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

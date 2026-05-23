@@ -1,5 +1,5 @@
 import { onUnmounted, type Ref } from 'vue'
-import { EventItem, getRef, isDomRuntime, isElementVisible, isFunction } from '@dxtmisha/functional'
+import { EventItem, getRef, isDomRuntime, isElementVisible, isFunction, isInput } from '@dxtmisha/functional'
 
 /**
  * Class for managing focus and tab index of elements
@@ -40,6 +40,7 @@ export class TabIndexInclude<E extends HTMLElement = HTMLElement> {
   goTo(): this {
     if (
       this.isElement()
+      && isInput(this.element.value)
       && this.active()
       && this.activeOpen()
       && isDomRuntime()

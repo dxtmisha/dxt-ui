@@ -1,5 +1,5 @@
 import { onMounted, watch } from 'vue'
-import { isDomRuntime } from '@dxtmisha/functional'
+import { isDomRuntime, isInput } from '@dxtmisha/functional'
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 
 import { WindowClassesData } from './WindowClassesData'
@@ -97,6 +97,10 @@ export class WindowHidden {
    * Скрывает элементы вне окна, добавляя атрибут aria-hidden.
    */
   protected toHidden(): void {
+    if (isInput(document.activeElement)) {
+      return
+    }
+
     windowOpenCounter++
 
     const elements = this.findElements()

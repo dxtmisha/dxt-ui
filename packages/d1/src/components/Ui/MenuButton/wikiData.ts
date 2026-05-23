@@ -5,9 +5,6 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
-  { name: 'arrow', type: 'string', option: ['none', 'auto', 'carousel', 'stepper'] },
-  { name: 'arrowAlign', type: 'string', option: ['center', 'right', 'left'] },
-  { name: 'arrowStep', type: 'NumberOrString | undefined' },
   { name: 'autocapitalize', type: 'string | undefined', option: ['off', 'none', 'sentences', 'words', 'characters'] },
   { name: 'autocomplete', type: 'string | undefined' },
   { name: 'autocorrect', type: 'string | undefined', option: ['on', 'off'] },
@@ -20,6 +17,8 @@ const propsNames: StorybookProps = [
   { name: 'form', type: 'string | undefined' },
   { name: 'hideLabelValue', type: 'boolean | undefined' },
   { name: 'hideList', type: 'boolean | undefined' },
+  { name: 'hideValueIcon', type: 'boolean | undefined' },
+  { name: 'icon', type: 'IconValue<IconPropsBasic> | undefined' },
   { name: 'iconArrowDown', type: 'IconValue<IconPropsBasic> | undefined' },
   { name: 'iconSearch', type: 'IconValue<IconPropsBasic> | undefined' },
   { name: 'id', type: 'string | number | undefined' },
@@ -40,11 +39,10 @@ const propsNames: StorybookProps = [
   { name: 'option', type: 'ListRecord | undefined' },
   { name: 'readonly', type: 'boolean | undefined' },
   { name: 'required', type: 'boolean | undefined' },
-  { name: 'selectionStyle', type: 'string', option: ['checkbox', 'none', 'radio', 'auto', 'checkmark'] },
+  { name: 'selectionStyle', type: 'string', option: ['checkbox', 'none', 'radio', 'checkmark', 'auto'] },
   { name: 'showSearch', type: 'boolean | undefined' },
   { name: 'spellcheck', type: 'string', option: ['true', 'false'] },
   { name: 'tabindex', type: 'number | undefined' },
-  { name: 'validationCode', type: 'FieldValidityCode | undefined' },
   { name: 'value', type: 'Value' }
   // :propsList [!] System label / Системная метка
 ]

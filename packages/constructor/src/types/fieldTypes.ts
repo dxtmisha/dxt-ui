@@ -320,8 +320,9 @@ export type FieldInputProps<Value = any>
       /** Datalist id reference/ Ссылка на datalist */
       list?: string
 
-      // Style
+      /** Icon name for password visibility/ Имя иконки для видимости пароля */
       iconVisibility?: string
+      /** Icon name for password hidden state/ Имя иконки для скрытого пароля */
       iconVisibilityOff?: string
     }
 
@@ -375,16 +376,30 @@ export type FieldTextareaProps<Value = any>
  */
 export type FieldSelectProps<Value = any>
   = Omit<FieldBasicProps<Value>, 'type'> & Omit<FieldStepProps, 'min' | 'step'> & FieldArrowProps & FieldUxProps & {
-    // Value
+    /** Selected item option/ Выбранный вариант элемента списка */
     option?: ListRecord
 
-    // Style
     /** Multiple selection mode/ Режим множественного выбора */
     multiple?: boolean
 
     /** Selection style/ Стиль выбора */
     selectionStyle?: ListItemPropsBasic['selectionStyle'] | 'auto'
   }
+
+/**
+ * Simplified properties for lightweight select component/
+ * Упрощенный набор свойств для облегченного компонента выбора
+ */
+export type FieldSelectLiteProps<Value = any>
+  = Omit<
+    FieldSelectProps<Value>,
+    'placeholder'
+    | 'validationMessage'
+    | 'validationCode'
+    | 'arrow'
+    | 'arrowAlign'
+    | 'arrowStep'
+  >
 
 /**
  * All possible field properties combined/
