@@ -30,14 +30,14 @@ export class MenuButtonDesign<
   CLASSES extends MenuButtonClasses,
   P extends MenuButtonPropsBasic
 > extends DesignConstructorAbstract<
-  HTMLDivElement,
-  COMP,
-  MenuButtonEmits,
-  EXPOSE,
-  MenuButtonSlots,
-  CLASSES,
-  P
-> {
+    HTMLDivElement,
+    COMP,
+    MenuButtonEmits,
+    EXPOSE,
+    MenuButtonSlots,
+    CLASSES,
+    P
+  > {
   protected readonly item: MenuButton
 
   /**
@@ -154,13 +154,14 @@ export class MenuButtonDesign<
         || !this.props.hideLabelValue
       )
     ) {
-      children.push(
-        h('span', { class: this.classes?.value.label }, this.props.label)
-      )
-
       if (hasValue) {
         children.push(
+          h('span', { class: this.classes?.value.label }, this.props.label),
           h('span', { class: this.classes?.value.separator }, this.props.labelSeparator)
+        )
+      } else {
+        children.push(
+          this.props.label
         )
       }
     }

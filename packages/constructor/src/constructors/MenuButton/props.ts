@@ -21,22 +21,26 @@ export type MenuButtonPropsBasic<
   Menu extends MenuPropsBasic = MenuPropsBasic
 > = LabelProps
   & ButtonPropsInclude<Button>
-  & Omit<FieldSelectProps, 'placeholder' | 'validationMessage'>
+  & Omit<
+    FieldSelectProps,
+    'placeholder'
+    | 'validationMessage'
+    | 'validationCode'
+    | 'arrow'
+    | 'arrowAlign'
+    | 'arrowStep'
+  >
   & MenuPropsInclude<Menu>
   & {
     // Value
-    /**
-     * Separator for the displayed labels of the selected values/
-     * Разделитель отображаемых меток выбранных значений
-     */
+    /** Separator for the displayed labels of the selected values/ Разделитель отображаемых меток выбранных значений */
     labelSeparator?: string
-    /**
-     * Whether to hide the label when a value is selected/
-     * Скрывать ли метку, если выбрано значение
-     */
-    hideLabelValue?: boolean
+
+    icon?: IconValue<Icon>
 
     // Style
+    /** Whether to hide the label when a value is selected/ Скрывать ли метку, если выбрано значение */
+    hideLabelValue?: boolean
     /** Whether to hide the list/ Скрывать ли список */
     hideList?: boolean
     /** Whether to show the search input/ Показывать ли поле поиска */

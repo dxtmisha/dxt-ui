@@ -1,7 +1,7 @@
 {
   "main": "{d.select}",
   "#input": {
-    "marginX": "{layout.paddingX}",
+    "marginX": "{sys.spacing.sm}",
     "marginY": "{layout.paddingY}"
   }
 }

@@ -1,3 +1,14 @@
 {
-  "main": "{d.menuButton}"
+  "main": "{d.menuButton}",
+  "#separator": {
+    "padding-right": "{?sys.spacing.x}",
+    "color-opacity": "{sys.opacity.primary.medium}"
+  },
+  "#label": {
+    "color-opacity": "{sys.opacity.primary.medium}"
+  },
+  "#input": {
+    "marginX": "{sys.spacing.sm}",
+    "marginY": "{layout.paddingY}"
+  }
 }

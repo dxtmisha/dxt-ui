@@ -20,6 +20,18 @@ export type MenuButtonProps = MenuButtonPropsBasic & PropsToken
  */
 export const defaults: object = {
   ...defaultsMenuButton,
+  iconArrowDown: 'keyboard_arrow_down',
+  iconSearch: 'search',
+  menuAttrs: {
+    itemAttrs: {
+      dense: true
+    }
+  },
+  inputSearchAttrs: {
+    fieldAttrs: {
+      size: 'sm'
+    }
+  },
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

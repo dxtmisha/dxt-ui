@@ -38,7 +38,6 @@ const propsNames: StorybookProps = [
   { name: 'onUpdate:modelValue', type: '((value: any) => void) | undefined' },
   { name: 'onUpdate:value', type: '((value: any) => void) | undefined' },
   { name: 'option', type: 'ListRecord | undefined' },
-  { name: 'placeholder', type: 'string | undefined' },
   { name: 'readonly', type: 'boolean | undefined' },
   { name: 'required', type: 'boolean | undefined' },
   { name: 'selectionStyle', type: 'string', option: ['checkbox', 'none', 'radio', 'auto', 'checkmark'] },
@@ -46,7 +45,6 @@ const propsNames: StorybookProps = [
   { name: 'spellcheck', type: 'string', option: ['true', 'false'] },
   { name: 'tabindex', type: 'number | undefined' },
   { name: 'validationCode', type: 'FieldValidityCode | undefined' },
-  { name: 'validationMessage', type: 'string | undefined' },
   { name: 'value', type: 'Value' }
   // :propsList [!] System label / Системная метка
 ]

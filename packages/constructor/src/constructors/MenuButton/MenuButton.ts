@@ -13,8 +13,8 @@ import { FieldEventInclude } from '../../classes/Field/FieldEventInclude'
 import { MenuInclude } from '../Menu'
 import { ButtonInclude } from '../Button'
 
-import { SelectInput } from '../Select/SelectInput'
-import { SelectFilter } from '../Select/SelectFilter'
+import { SelectInput } from '../Select'
+import { SelectFilter } from '../Select'
 
 import type { MenuButtonComponents, MenuButtonEmits, MenuButtonSlots } from './types'
 import type { MenuButtonProps } from './props'
@@ -161,6 +161,7 @@ export class MenuButton {
       this.components,
       undefined,
       computed(() => ({
+        icon: this.props.icon,
         disabled: this.props.disabled,
         readonly: this.props.readonly,
         iconTrailing: this.iconTrailing.value

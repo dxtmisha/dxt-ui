@@ -11,6 +11,15 @@
   // Стили из токенов
   // :style [!] System label / Системная метка
   & {
+    &__label {
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-primary-medium)}); @include ui.color('init');
+    }
+    
+    &__separator {
+      @include ui.paddingRight(#{var(--d1-sys-spacing-x)});
+      
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-primary-medium)}); @include ui.color('init');
+    }
   }
   // :style [!] System label / Системная метка
 
