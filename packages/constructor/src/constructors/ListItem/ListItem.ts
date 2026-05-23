@@ -164,6 +164,9 @@ export class ListItem {
 
   /** values for the class/ значения для класса */
   readonly classes = computed<ConstrClassObject>(() => ({
+    [`${this.className}--selected`]: this.props.selected && this.props.selectionStyle === 'none',
+    [`${this.className}--selectionStyle`]: this.props.selectionStyle !== 'none',
+    [`${this.className}--selectionStyle--${this.props.selectionStyle}`]: Boolean(this.props.selectionStyle),
     [`${this.className}--description`]: this.description.is.value,
     [getClassTagAStatic(this.classDesign)]: true
   }))

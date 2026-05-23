@@ -90,6 +90,19 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
+  controlPosition: {
+    type: StorybookControl.select,
+    options: {
+      category: StorybookCategory.style,
+      type: 'string',
+      options: ['start', 'end'],
+      description: {
+        en: 'Position of the control element',
+        ru: 'Положение элемента управления'
+      }
+    },
+    isDemo: true
+  },
   dense: {
     type: StorybookControl.boolean,
     options: {
@@ -338,6 +351,19 @@ export const wikiStyle: StorybookArgsToList = {
       description: {
         en: 'Makes the component fully rounded (circular)',
         ru: 'Делает компонент полностью скругленным (круглым)'
+      }
+    },
+    isDemo: true
+  },
+  selectionStyle: {
+    type: StorybookControl.select,
+    options: {
+      category: StorybookCategory.style,
+      type: 'string',
+      options: ['radio', 'checkbox', 'checkmark', 'none'],
+      description: {
+        en: 'Selection style',
+        ru: 'Стиль выбора'
       }
     },
     isDemo: true

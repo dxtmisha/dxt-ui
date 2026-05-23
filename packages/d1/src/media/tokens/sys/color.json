@@ -1,0 +1,51 @@
+{
+  "primary": {
+    "high": "rgba({sys.palette.primary}, {sys.opacity.primary.high})",
+    "medium": "rgba({sys.palette.primary}, {sys.opacity.primary.medium})",
+    "disabled": "rgba({sys.palette.primary}, {sys.opacity.primary.disabled})"
+  },
+  "primaryVariant": {
+    "high": "rgba({sys.palette.primaryVariant}, {sys.opacity.primary.high})",
+    "medium": "rgba({sys.palette.primaryVariant}, {sys.opacity.primary.medium})",
+    "disabled": "rgba({sys.palette.primaryVariant}, {sys.opacity.primary.disabled})"
+  },
+  "warning": {
+    "high": "rgba({sys.palette.warning}, {sys.opacity.primary.high})",
+    "medium": "rgba({sys.palette.warning}, {sys.opacity.primary.medium})",
+    "disabled": "rgba({sys.palette.warning}, {sys.opacity.primary.disabled})"
+  },
+  "success": {
+    "high": "rgba({sys.palette.success}, {sys.opacity.primary.high})",
+    "medium": "rgba({sys.palette.success}, {sys.opacity.primary.medium})",
+    "disabled": "rgba({sys.palette.success}, {sys.opacity.primary.disabled})"
+  },
+  "error": {
+    "high": "rgba({sys.palette.error}, {sys.opacity.primary.high})",
+    "medium": "rgba({sys.palette.error}, {sys.opacity.primary.medium})",
+    "disabled": "rgba({sys.palette.error}, {sys.opacity.primary.disabled})"
+  },
+  "surface": {
+    "high": "rgba({sys.palette.surface}, {sys.opacity.surface.high})",
+    "medium": "rgba({sys.palette.surface}, {sys.opacity.surface.medium})",
+    "disabled": "rgba({sys.palette.surface}, {sys.opacity.surface.disabled})"
+  },
+  "onPrimary": {
+    "high": "rgba({sys.palette.onPrimary}, {sys.opacity.primary.high})",
+    "medium": "rgba({sys.palette.onPrimary}, {sys.opacity.primary.medium})",
+    "disabled": "rgba({sys.palette.onPrimary}, {sys.opacity.primary.disabled})"
+  },
+  "onSurface": {
+    "high": "rgba({sys.palette.onSurface}, {sys.opacity.surface.high})",
+    "medium": "rgba({sys.palette.onSurface}, {sys.opacity.surface.medium})",
+    "disabled": "rgba({sys.palette.onSurface}, {sys.opacity.surface.disabled})"
+  },
+  "focus": "rgba({sys.palette.primary}, {sys.opacity.focus})",
+  "hover": "rgba({sys.palette.primary}, {sys.opacity.hover})",
+  "pressed": "rgba({sys.palette.primary}, {sys.opacity.pressed})",
+  "dragged": "rgba({sys.palette.primary}, {sys.opacity.dragged})",
+  "selected": "rgba({sys.palette.primary}, {sys.opacity.selected})",
+  "disabled": "rgba({sys.palette.onSurface}, {sys.opacity.disabled})",
+  "outline": "rgba({sys.palette.outline}, {sys.opacity.outline})",
+  "outlineVariant": "rgba({sys.palette.outlineVariant}, {sys.opacity.outlineVariant})",
+  "scrim": "rgba({sys.palette.scrim}, {sys.opacity.scrim})"
+}

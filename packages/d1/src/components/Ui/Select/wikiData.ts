@@ -69,6 +69,7 @@ const propsNames: StorybookProps = [
   { name: 'readonly', type: 'boolean | undefined' },
   { name: 'required', type: 'boolean | undefined' },
   { name: 'selected', type: 'boolean | undefined' },
+  { name: 'selectionStyle', type: 'string', option: ['checkbox', 'none', 'radio', 'auto', 'checkmark'] },
   { name: 'showSearch', type: 'boolean | undefined' },
   { name: 'spellcheck', type: 'string', option: ['true', 'false'] },
   { name: 'suffix', type: 'string | number | undefined' },

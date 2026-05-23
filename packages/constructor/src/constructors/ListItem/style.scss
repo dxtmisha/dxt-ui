@@ -36,7 +36,7 @@
     @include ui.paddingX(ui.v('??paddingX', 0));
     @include ui.paddingY(ui.v('??paddingY', 0));
 
-    & ~ {
+    &~ {
       @include ui.subclass('icon') {
         @include ui.marginRight(#{calc(ui.v('??margin') - ui.v('??paddingX', 0) - ui.v('??shift', 0))});
       }
@@ -82,6 +82,13 @@
     z-index: 4;
   }
 
+  &__control {
+    @include ui.flexCenter;
+    order: 28;
+    @include ui.marginRight(ui.v('??paddingX', 0));
+    pointer-events: none;
+  }
+
   &__ripple {
     order: 32;
   }
@@ -90,6 +97,15 @@
   &--disabled,
   &--loading {
     cursor: default;
+  }
+
+  &--controlPosition {
+    &--start {
+      @include ui.subclass('control') {
+        @include ui.marginLeft(ui.v('??paddingX', 0));
+        @include ui.marginRight(0);
+      }
+    }
   }
 
   &--fill {
@@ -113,6 +129,7 @@
       @include ui.subclass('icon') {
         @include ui.initByCustom('margin', #{calc((ui.v('??height') - ui.v('?icon._width')) / 2)});
       }
+
       @include ui.subclass('trailing') {
         @include ui.initByCustom('margin', #{calc((ui.v('??height') - ui.v('?icon._width')) / 2)});
       }
@@ -122,6 +139,7 @@
       @include ui.subclass('icon') {
         @include ui.initByCustom('margin', #{ui.v('??paddingX')});
       }
+
       @include ui.subclass('trailing') {
         @include ui.initByCustom('margin', #{ui.v('??paddingX')});
       }
@@ -143,9 +161,10 @@
   }
 
   @at-root {
-    & + &[data-divider="active"],
-    #{ui.c('?listGroup')} + &[data-divider="active"],
-    [data-divider="active"] + &[data-divider="active"] {
+
+    &+&[data-divider="active"],
+    #{ui.c('?listGroup')}+&[data-divider="active"],
+    [data-divider="active"]+&[data-divider="active"] {
       border-top-style: solid;
       border-top-width: ui.v('??borderWidth');
       @include ui.borderColor(ui.v('??borderColor'));

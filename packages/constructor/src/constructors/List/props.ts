@@ -63,6 +63,9 @@ export type ListPropsBasic<
     /** Whether to show dividers between items/ Показывать ли разделители между элементами */
     divider?: boolean
 
+    /** Selection style/ Стиль выбора */
+    selectionStyle?: ListItem['selectionStyle']
+
     /** Additional attributes for list items/ Дополнительные атрибуты для элементов списка */
     itemAttrs?: ConstrBind<ListItem>
     /** Attributes for the item management component/ Атрибуты для компонента управления элементом */

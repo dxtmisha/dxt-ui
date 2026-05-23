@@ -1,7 +1,11 @@
-import type { IconPropsBasic, IconTrailingPropsInclude } from '../Icon'
+import type { ConstrBind } from '@dxtmisha/functional'
+
+import type { IconPropsBasic, IconTrailingPropsInclude, IconValue } from '../Icon'
 import type { BadgePropsBasic, BadgePropsInclude } from '../Badge'
 import type { ProgressPropsBasic, ProgressPropsInclude } from '../Progress'
 import type { SkeletonPropsInclude } from '../Skeleton'
+import type { CheckboxPropsBasic } from '../Checkbox'
+import type { RadioPropsBasic } from '../Radio'
 import type { AriaRolePropsInclude } from '../../types/ariaTypes'
 
 import type { LabelHighlightProps } from '../../types/labelTypes'
@@ -16,12 +20,12 @@ export type ListItemPropsToken = {
   // :type [!] System label / Системная метка
   focus?: boolean
   open?: boolean
-  selected?: boolean
   selectedChild?: boolean
   readonly?: boolean
   disabled?: boolean
   iconTop?: boolean
   iconAlign?: 'center' | 'edge'
+  controlPosition?: 'start' | 'end'
   fill?: string | 'custom'
   divider?: boolean
   // :type [!] System label / Системная метка
@@ -30,7 +34,9 @@ export type ListItemPropsToken = {
 export type ListItemPropsBasic<
   Icon extends IconPropsBasic = IconPropsBasic,
   Badge extends BadgePropsBasic = BadgePropsBasic,
-  Progress extends ProgressPropsBasic = ProgressPropsBasic
+  Progress extends ProgressPropsBasic = ProgressPropsBasic,
+  Checkbox extends CheckboxPropsBasic = CheckboxPropsBasic,
+  Radio extends RadioPropsBasic = RadioPropsBasic
 > = LabelHighlightProps
   & DescriptionProps
   & PrefixProps
@@ -58,8 +64,19 @@ export type ListItemPropsBasic<
     /** Whether to show a divider/ Показывать ли разделитель */
     divider?: boolean
 
+    /** Selection style/ Стиль выбора */
+    selectionStyle?: 'radio' | 'checkbox' | 'checkmark' | 'none'
+
     /** Tab index for keyboard navigation/ Индекс табуляции для навигации с клавиатуры */
     tabindex?: number | string
+
+    /** Attributes for the checkbox / Атрибуты для флажка */
+    checkboxAttrs?: ConstrBind<Checkbox>
+    /** Attributes for the radio button / Атрибуты для радиокнопки */
+    radioAttrs?: ConstrBind<Radio>
+
+    /** Icon name for the checkbox / Название иконки для флажка */
+    iconCheckbox?: IconValue<Icon>
 
     /** Technical/ Технические свойства */
     /** Item type/ Тип элемента */
@@ -87,9 +104,11 @@ export type ListItemProps = ListItemPropsBasic & ListItemPropsToken
 export const defaultsListItem = {
   tabindex: '-1',
   role: 'option',
+  selectionStyle: 'none',
   ...{
     // :default [!] System label / Системная метка
-    iconAlign: 'center'
+    iconAlign: 'center',
+    controlPosition: 'end'
     // :default [!] System label / Системная метка
   }
 }

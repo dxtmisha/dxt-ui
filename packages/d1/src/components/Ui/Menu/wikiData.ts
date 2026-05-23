@@ -36,6 +36,7 @@ const propsNames: StorybookProps = [
   { name: 'roleItem', type: 'string | undefined' },
   { name: 'roleList', type: 'string | undefined' },
   { name: 'selected', type: 'ListSelectedList | undefined' },
+  { name: 'selectionStyle', type: 'string', option: ['checkbox', 'none', 'radio', 'checkmark'] },
   { name: 'step', type: 'string | number | undefined' },
   { name: 'tag', type: 'string | undefined' },
   { name: 'windowAttrs', type: 'ConstrBind<WindowProps> | undefined' }

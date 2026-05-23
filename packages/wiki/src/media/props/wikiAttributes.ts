@@ -43,6 +43,17 @@ export const wikiAttributes: StorybookArgsToList = {
     },
     hide: true
   },
+  checkboxAttrs: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.attributes,
+      description: {
+        en: 'Additional attributes for the Checkbox component',
+        ru: 'Дополнительные атрибуты для компонента Checkbox'
+      }
+    },
+    hide: true
+  },
   chipAttrs: {
     type: StorybookControl.object,
     options: {
@@ -149,6 +160,17 @@ export const wikiAttributes: StorybookArgsToList = {
       description: {
         en: 'Additional attributes for the MotionTransform component',
         ru: 'Дополнительные атрибуты для компонента MotionTransform'
+      }
+    },
+    hide: true
+  },
+  radioAttrs: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.attributes,
+      description: {
+        en: 'Additional attributes for the Radio component',
+        ru: 'Дополнительные атрибуты для компонента Radio'
       }
     },
     hide: true

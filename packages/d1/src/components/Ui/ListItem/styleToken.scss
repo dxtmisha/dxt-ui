@@ -132,6 +132,60 @@
       }
     }
     
+    &--controlPosition {
+      &--start {
+        & .d1-listItem__control {
+          order: 4;
+        }
+      }
+      
+      &--end {
+        & .d1-listItem__control {
+          order: 28;
+        }
+      }
+      
+      &--autoSm {
+        @media screen and (min-width: 640px) {
+          & .d1-listItem__control {
+            order: 4;
+          }
+        }
+      }
+      
+      &--autoMd {
+        @media screen and (min-width: 768px) {
+          & .d1-listItem__control {
+            order: 4;
+          }
+        }
+      }
+      
+      &--autoLg {
+        @media screen and (min-width: 1024px) {
+          & .d1-listItem__control {
+            order: 4;
+          }
+        }
+      }
+      
+      &--autoXl {
+        @media screen and (min-width: 1280px) {
+          & .d1-listItem__control {
+            order: 4;
+          }
+        }
+      }
+      
+      &--auto2xl {
+        @media screen and (min-width: 1536px) {
+          & .d1-listItem__control {
+            order: 4;
+          }
+        }
+      }
+    }
+    
     &--fill {
       &--custom {
         --d1-listItem-fill: var(--d1-listItem-sys-fill);

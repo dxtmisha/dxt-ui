@@ -2,7 +2,9 @@ import { h, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
-  DesignConstructorAbstract
+  DesignConstructorAbstract,
+  getBind,
+  toBinds
 } from '@dxtmisha/functional'
 
 import { ListItem } from './ListItem'
@@ -27,14 +29,14 @@ export class ListItemDesign<
   CLASSES extends ListItemClasses,
   P extends ListItemPropsBasic
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
-    COMP,
-    ListItemEmits,
-    EXPOSE,
-    ListItemSlots,
-    CLASSES,
-    P
-  > {
+  HTMLDivElement,
+  COMP,
+  ListItemEmits,
+  EXPOSE,
+  ListItemSlots,
+  CLASSES,
+  P
+> {
   protected readonly item: ListItem
 
   /**
@@ -98,6 +100,7 @@ export class ListItemDesign<
         description: this.getSubClass('description'),
         icon: this.getSubClass('icon'),
         trailing: this.getSubClass('trailing'),
+        control: this.getSubClass('control'),
         badge: this.getSubClass('badge'),
         input: this.getSubClass('input')
         // :classes [!] System label / Системная метка
@@ -136,6 +139,7 @@ export class ListItemDesign<
     children.push(
       ...this.item.icon.render(),
       ...this.item.progress.render(),
+      ...this.renderControl(),
       ...this.item.ripple.render()
     )
 
@@ -196,5 +200,62 @@ export class ListItemDesign<
         ]
       )
     ]
+  }
+
+  /**
+   * Method for rendering the control part of the component.
+   *
+   * Метод для рендеринга управляющей части компонента.
+   */
+  readonly renderControl = (): VNode[] => {
+    const children: VNode[] = []
+
+    switch (this.props.selectionStyle) {
+      case 'checkbox':
+        this.components.renderAdd(
+          children,
+          'checkbox',
+          toBinds(
+            this.props.checkboxAttrs,
+            {
+              value: this.props.selected
+            }
+          )
+        )
+        break
+      case 'radio':
+        this.components.renderAdd(
+          children,
+          'radio',
+          toBinds(
+            this.props.radioAttrs,
+            {
+              value: this.props.selected
+            }
+          )
+        )
+        break
+      case 'checkmark':
+        if (this.props.selected) {
+          this.components.renderAdd(
+            children,
+            'icon',
+            getBind(this.props.iconCheckbox, 'icon')
+          )
+        }
+        break
+    }
+
+    if (children.length > 0) {
+      return [
+        h(
+          'div',
+          { class: this.classes?.value.control },
+          children
+        )
+      ]
+    }
+
+    return []
   }
 }

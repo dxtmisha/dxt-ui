@@ -12,10 +12,12 @@ import {
   type ListItemSlots
 } from '@dxtmisha/constructor/ListItem'
 
-import D1Icon from '../Icon/D1Icon.vue'
-import D1Badge from '../Badge/D1Badge.vue'
-import D1Progress from '../Progress/D1Progress.vue'
-import D1Ripple from '../Ripple/D1Ripple.vue'
+import { D1Icon } from '../Icon'
+import { D1Badge } from '../Badge'
+import { D1Progress } from '../Progress'
+import { D1Ripple } from '../Ripple'
+import { D1Checkbox } from '../Checkbox'
+import { D1Radio } from '../Radio'
 
 import { defaults, type ListItemProps, propsValues } from './props'
 import './styleToken.scss'
@@ -33,12 +35,12 @@ const classesToken = computed<ConstrClasses>(() => ({
     'd1-listItem': true,
     'd1-listItem--focus': props.focus,
     'd1-listItem--open': props.open,
-    'd1-listItem--selected': props.selected,
     'd1-listItem--selectedChild': props.selectedChild,
     'd1-listItem--readonly': props.readonly,
     'd1-listItem--disabled': props.disabled,
     'd1-listItem--iconTop': props.iconTop,
     [`d1-listItem--iconAlign--${props.iconAlign}`]: inArray(propsValues.iconAlign, props.iconAlign),
+    [`d1-listItem--controlPosition--${props.controlPosition}`]: inArray(propsValues.controlPosition, props.controlPosition),
     'd1-listItem--fill--custom': isFilled(props.fill) && !inArray(propsValues.fill, props.fill),
     'd1-listItem--divider': props.divider,
     [`d1-listItem--size--${props.size}`]: inArray(propsValues.size, props.size),
@@ -64,7 +66,9 @@ const design = new ListItemDesign(
       icon: D1Icon,
       badge: D1Badge,
       progress: D1Progress,
-      ripple: D1Ripple
+      ripple: D1Ripple,
+      checkbox: D1Checkbox,
+      radio: D1Radio
     }
   }
 )

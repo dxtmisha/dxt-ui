@@ -19,9 +19,13 @@ import type { EventClickEmits, EventClickExpose } from '../../types/eventClickTy
  */
 export type ListItemComponents
   = IconComponentInclude
-    & BadgeComponentInclude
-    & ProgressComponentInclude
-    & RippleComponentInclude
+  & BadgeComponentInclude
+  & ProgressComponentInclude
+  & RippleComponentInclude
+  & {
+    checkbox?: object
+    radio?: object
+  }
 
 /**
  * Type describing available events.
@@ -75,6 +79,7 @@ export type ListItemClasses = {
   description: string
   icon: string
   trailing: string
+  control: string
   badge: string
   input: string
   // :classes [!] System label / Системная метка

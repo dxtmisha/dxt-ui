@@ -29,11 +29,14 @@
   "#description": {},
   "#icon": {},
   "#trailing": {},
+  "#control": {},
   "#badge": {},
   "#input": {},
   "~focus": {},
   "~open": {},
-  "~selected": {},
+  "~selected": {
+    "_prop": false
+  },
   "~selectedChild": {},
   "~readonly": {},
   "~disabled": {},
@@ -42,6 +45,23 @@
     "~center": {},
     "~edge": {},
     "_default": "center"
+  },
+  "~controlPosition": {
+    "~start": {
+      "#control": {
+        "order": "4"
+      }
+    },
+    "~end": {
+      "#control": {
+        "order": "28"
+      }
+    },
+    "group|auto": {
+      "link|controlPosition-start": "{??controlPosition.start}",
+      "_type": "media-group"
+    },
+    "_default": "end"
   },
   "~fill": {
     "_type": "state",

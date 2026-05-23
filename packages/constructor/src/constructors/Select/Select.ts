@@ -1,6 +1,7 @@
 import { computed, type Ref, type ToRefs } from 'vue'
 import { type ConstrEmit, type DesignComp, executeFunction, isFilled } from '@dxtmisha/functional'
 
+import { type ListItemPropsBasic } from '../ListItem'
 import { FieldElementInclude } from '../../classes/Field/FieldElementInclude'
 import { FieldChangeInclude } from '../../classes/Field/FieldChangeInclude'
 import { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
@@ -164,6 +165,7 @@ export class Select {
         max: this.props.max,
         filterMode: this.props.filterMode,
         hideList: this.props.hideList,
+        selectionStyle: this.selectionStyle.value,
         onClick: this.event.onSelect,
         onClickSlot: this.onClick,
         onUpdateValue: this.isArrow() ? this.event.onValue : undefined,
@@ -182,6 +184,15 @@ export class Select {
       this.slots?.contextTop
       || this.slots?.contextBottom
     )
+  })
+
+  /** Selection style/ Стиль выбора */
+  protected readonly selectionStyle = computed<ListItemPropsBasic['selectionStyle']>(() => {
+    if (this.props.selectionStyle === 'auto') {
+      return this.props.multiple ? 'checkbox' : 'radio'
+    }
+
+    return this.props.selectionStyle
   })
 
   /** Computes the trailing icon value/ Вычисляет значение иконки трейлинга */

@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.65.2] - 2026-05-23
+
+### Added
+- **D1ListItem**: Integrated the new `checkbox` and `radio` components (`D1Checkbox` and `D1Radio`) into the component rendering.
+- **D1ListItem**: Supported `controlPosition` prop with adaptive screen sizes (`autoSm`, `autoMd`, `autoLg`, `autoXl`, `auto2xl`) for responsive order positioning of built-in controls.
+- **D1ListItem**: Added `iconCheckbox` default value to `'check'`.
+- **D1ListItem**: Documented the new list item selection properties (`checkboxAttrs`, `radioAttrs`, `iconCheckbox`, `selectionStyle`, `controlPosition`) in Storybook/Wiki metadata properties definitions.
+
+### Changed / Improved
+- **D1ListItem**: Removed `selected` property from `PropsToken`.
+
 ## [0.65.1] - 2026-05-22
 
 ### Added

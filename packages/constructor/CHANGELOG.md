@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.65.3] - 2026-05-23
+
+### Added
+- **ListItem**: Added `selectionStyle` prop (`checkbox`, `radio`, `checkmark`, `none`) to allow built-in selection controls.
+- **ListItem**: Added `checkboxAttrs` and `radioAttrs` props for passing custom properties to the selection components.
+- **ListItem**: Added `iconCheckbox` prop to allow specifying a custom checkmark icon.
+- **ListItem**: Added BEM subclass `#control` to support rendering built-in selection controls.
+- **ListItem**: Added `controlPosition` prop (`start` or `end`) to customize the alignment and order of the control part in the list item.
+- **List / Menu**: Forwarded the new `selectionStyle` prop to list items.
+- **Select**: Added `selectionStyle` prop (supporting `'auto'` or specific selection styles), dynamically resolving to `'checkbox'` for multi-select, and `'radio'` for single-select.
+
+### Changed / Improved
+- **ListItem**: Refactored `ListItemComponents` typing to make `checkbox` and `radio` elements optional to maintain compatibility.
+- **ListItem**: Removed `selected` from `ListItemPropsToken` to allow the value to be resolved correctly.
+- **Field**: Expanded `FieldSelectProps` types with `selectionStyle` property definition.
+
 ## [0.65.2] - 2026-05-22
 
 ### Added

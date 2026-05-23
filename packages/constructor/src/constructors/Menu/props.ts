@@ -68,6 +68,9 @@ export type MenuPropsBasic<
     /** Step for navigation/ Шаг для навигации */
     step?: string | number
 
+    /** Selection style/ Стиль выбора */
+    selectionStyle?: ListItem['selectionStyle']
+
     /** Additional attributes for the List component/ Дополнительные атрибуты для компонента списка */
     listAttrs?: ConstrBind<List>
     /** Additional attributes for the List Item components/ Дополнительные атрибуты для компонентов элементов списка */

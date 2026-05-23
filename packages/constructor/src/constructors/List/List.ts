@@ -155,6 +155,7 @@ export class List {
     return {
       tag: this.props.tag,
       divider: this.props.divider,
+      selectionStyle: this.props.selectionStyle,
       onClick: this.event.onClick,
       ...(this.props.itemAttrs ?? {}),
       listId: this.id
@@ -320,7 +321,8 @@ export class List {
         'iconTurn': open,
         'iconTrailing': icon,
         'iconTrailingTurnOnly': true,
-        'data-status': open ? 'open' : 'close'
+        'data-status': open ? 'open' : 'close',
+        'selectionStyle': 'none'
       }
     )
   }

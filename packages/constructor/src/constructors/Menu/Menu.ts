@@ -164,6 +164,7 @@ export class Menu {
       max: this.props.max,
 
       tag: this.props.tag,
+      selectionStyle: this.props.selectionStyle,
       onClick: this.onClick,
       onClose: this.window.expose.toClose,
 

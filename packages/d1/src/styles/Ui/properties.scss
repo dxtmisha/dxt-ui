@@ -3293,6 +3293,267 @@
               ),
             ),
           ),
+          'color':(
+            index: 'color',
+            name: 'color',
+            type: 'var',
+            value: (
+              'primary':(
+                index: 'primary',
+                name: 'primary',
+                type: 'var',
+                value: (
+                  'high':(
+                    index: 'high',
+                    name: '--d1-sys-color-primary-high',
+                    type: 'var',
+                    value: 'rgba(var(--d1-sys-palette-primary), var(--d1-sys-opacity-primary-high))',
+                  ),
+                  'medium':(
+                    index: 'medium',
+                    name: '--d1-sys-color-primary-medium',
+                    type: 'var',
+                    value: 'rgba(var(--d1-sys-palette-primary), var(--d1-sys-opacity-primary-medium))',
+                  ),
+                  'disabled':(
+                    index: 'disabled',
+                    name: '--d1-sys-color-primary-disabled',
+                    type: 'var',
+                    value: 'rgba(var(--d1-sys-palette-primary), var(--d1-sys-opacity-primary-disabled))',
+                  ),
+                ),
+              ),
+              'primaryVariant':(
+                index: 'primaryVariant',
+                name: 'primaryVariant',
+                type: 'var',
+                value: (
+                  'high':(
+                    index: 'high',
+                    name: '--d1-sys-color-primaryVariant-high',
+                    type: 'var',
+                    value: 'rgba(var(--d1-sys-palette-primaryVariant), var(--d1-sys-opacity-primary-high))',
+                  ),
+                  'medium':(
+                    index: 'medium',
+                    name: '--d1-sys-color-primaryVariant-medium',
+                    type: 'var',
+                    value: 'rgba(var(--d1-sys-palette-primaryVariant), var(--d1-sys-opacity-primary-medium))',
+                  ),
+                  'disabled':(
+                    index: 'disabled',
+                    name: '--d1-sys-color-primaryVariant-disabled',
+                    type: 'var',
+                    value: 'rgba(var(--d1-sys-palette-primaryVariant), var(--d1-sys-opacity-primary-disabled))',
+                  ),
+                ),
+              ),
+              'warning':(
+                index: 'warning',
+                name: 'warning',
+                type: 'var',
+                value: (
+                  'high':(
+                    index: 'high',
+                    name: '--d1-sys-color-warning-high',
+                    type: 'var',
+                    value: 'rgba(var(--d1-sys-palette-warning), var(--d1-sys-opacity-primary-high))',
+                  ),
+                  'medium':(
+                    index: 'medium',
+                    name: '--d1-sys-color-warning-medium',
+                    type: 'var',
+                    value: 'rgba(var(--d1-sys-palette-warning), var(--d1-sys-opacity-primary-medium))',
+                  ),
+                  'disabled':(
+                    index: 'disabled',
+                    name: '--d1-sys-color-warning-disabled',
+                    type: 'var',
+                    value: 'rgba(var(--d1-sys-palette-warning), var(--d1-sys-opacity-primary-disabled))',
+                  ),
+                ),
+              ),
+              'success':(
+                index: 'success',
+                name: 'success',
+                type: 'var',
+                value: (
+                  'high':(
+                    index: 'high',
+                    name: '--d1-sys-color-success-high',
+                    type: 'var',
+                    value: 'rgba(var(--d1-sys-palette-success), var(--d1-sys-opacity-primary-high))',
+                  ),
+                  'medium':(
+                    index: 'medium',
+                    name: '--d1-sys-color-success-medium',
+                    type: 'var',
+                    value: 'rgba(var(--d1-sys-palette-success), var(--d1-sys-opacity-primary-medium))',
+                  ),
+                  'disabled':(
+                    index: 'disabled',
+                    name: '--d1-sys-color-success-disabled',
+                    type: 'var',
+                    value: 'rgba(var(--d1-sys-palette-success), var(--d1-sys-opacity-primary-disabled))',
+                  ),
+                ),
+              ),
+              'error':(
+                index: 'error',
+                name: 'error',
+                type: 'var',
+                value: (
+                  'high':(
+                    index: 'high',
+                    name: '--d1-sys-color-error-high',
+                    type: 'var',
+                    value: 'rgba(var(--d1-sys-palette-error), var(--d1-sys-opacity-primary-high))',
+                  ),
+                  'medium':(
+                    index: 'medium',
+                    name: '--d1-sys-color-error-medium',
+                    type: 'var',
+                    value: 'rgba(var(--d1-sys-palette-error), var(--d1-sys-opacity-primary-medium))',
+                  ),
+                  'disabled':(
+                    index: 'disabled',
+                    name: '--d1-sys-color-error-disabled',
+                    type: 'var',
+                    value: 'rgba(var(--d1-sys-palette-error), var(--d1-sys-opacity-primary-disabled))',
+                  ),
+                ),
+              ),
+              'surface':(
+                index: 'surface',
+                name: 'surface',
+                type: 'var',
+                value: (
+                  'high':(
+                    index: 'high',
+                    name: '--d1-sys-color-surface-high',
+                    type: 'var',
+                    value: 'rgba(var(--d1-sys-palette-surface), var(--d1-sys-opacity-surface-high))',
+                  ),
+                  'medium':(
+                    index: 'medium',
+                    name: '--d1-sys-color-surface-medium',
+                    type: 'var',
+                    value: 'rgba(var(--d1-sys-palette-surface), var(--d1-sys-opacity-surface-medium))',
+                  ),
+                  'disabled':(
+                    index: 'disabled',
+                    name: '--d1-sys-color-surface-disabled',
+                    type: 'var',
+                    value: 'rgba(var(--d1-sys-palette-surface), var(--d1-sys-opacity-surface-disabled))',
+                  ),
+                ),
+              ),
+              'onPrimary':(
+                index: 'onPrimary',
+                name: 'onPrimary',
+                type: 'var',
+                value: (
+                  'high':(
+                    index: 'high',
+                    name: '--d1-sys-color-onPrimary-high',
+                    type: 'var',
+                    value: 'rgba(var(--d1-sys-palette-onPrimary), var(--d1-sys-opacity-primary-high))',
+                  ),
+                  'medium':(
+                    index: 'medium',
+                    name: '--d1-sys-color-onPrimary-medium',
+                    type: 'var',
+                    value: 'rgba(var(--d1-sys-palette-onPrimary), var(--d1-sys-opacity-primary-medium))',
+                  ),
+                  'disabled':(
+                    index: 'disabled',
+                    name: '--d1-sys-color-onPrimary-disabled',
+                    type: 'var',
+                    value: 'rgba(var(--d1-sys-palette-onPrimary), var(--d1-sys-opacity-primary-disabled))',
+                  ),
+                ),
+              ),
+              'onSurface':(
+                index: 'onSurface',
+                name: 'onSurface',
+                type: 'var',
+                value: (
+                  'high':(
+                    index: 'high',
+                    name: '--d1-sys-color-onSurface-high',
+                    type: 'var',
+                    value: 'rgba(var(--d1-sys-palette-onSurface), var(--d1-sys-opacity-surface-high))',
+                  ),
+                  'medium':(
+                    index: 'medium',
+                    name: '--d1-sys-color-onSurface-medium',
+                    type: 'var',
+                    value: 'rgba(var(--d1-sys-palette-onSurface), var(--d1-sys-opacity-surface-medium))',
+                  ),
+                  'disabled':(
+                    index: 'disabled',
+                    name: '--d1-sys-color-onSurface-disabled',
+                    type: 'var',
+                    value: 'rgba(var(--d1-sys-palette-onSurface), var(--d1-sys-opacity-surface-disabled))',
+                  ),
+                ),
+              ),
+              'focus':(
+                index: 'focus',
+                name: '--d1-sys-color-focus',
+                type: 'var',
+                value: 'rgba(var(--d1-sys-palette-primary), var(--d1-sys-opacity-focus))',
+              ),
+              'hover':(
+                index: 'hover',
+                name: '--d1-sys-color-hover',
+                type: 'var',
+                value: 'rgba(var(--d1-sys-palette-primary), var(--d1-sys-opacity-hover))',
+              ),
+              'pressed':(
+                index: 'pressed',
+                name: '--d1-sys-color-pressed',
+                type: 'var',
+                value: 'rgba(var(--d1-sys-palette-primary), var(--d1-sys-opacity-pressed))',
+              ),
+              'dragged':(
+                index: 'dragged',
+                name: '--d1-sys-color-dragged',
+                type: 'var',
+                value: 'rgba(var(--d1-sys-palette-primary), var(--d1-sys-opacity-dragged))',
+              ),
+              'selected':(
+                index: 'selected',
+                name: '--d1-sys-color-selected',
+                type: 'var',
+                value: 'rgba(var(--d1-sys-palette-primary), var(--d1-sys-opacity-selected))',
+              ),
+              'disabled':(
+                index: 'disabled',
+                name: '--d1-sys-color-disabled',
+                type: 'var',
+                value: 'rgba(var(--d1-sys-palette-onSurface), var(--d1-sys-opacity-disabled))',
+              ),
+              'outline':(
+                index: 'outline',
+                name: '--d1-sys-color-outline',
+                type: 'var',
+                value: 'rgba(var(--d1-sys-palette-outline), var(--d1-sys-opacity-outline))',
+              ),
+              'outlineVariant':(
+                index: 'outlineVariant',
+                name: '--d1-sys-color-outlineVariant',
+                type: 'var',
+                value: 'rgba(var(--d1-sys-palette-outlineVariant), var(--d1-sys-opacity-outlineVariant))',
+              ),
+              'scrim':(
+                index: 'scrim',
+                name: '--d1-sys-color-scrim',
+                type: 'var',
+                value: 'rgba(var(--d1-sys-palette-scrim), var(--d1-sys-opacity-scrim))',
+              ),
+            ),
+          ),
           'font':(
             index: 'font',
             name: 'font',
