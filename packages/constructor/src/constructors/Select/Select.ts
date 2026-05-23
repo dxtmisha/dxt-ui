@@ -11,7 +11,7 @@ import { FieldAttributesInclude } from '../../classes/Field/FieldAttributesInclu
 import { FieldEventInclude } from '../../classes/Field/FieldEventInclude'
 
 import { MenuInclude } from '../Menu'
-import { FieldInclude } from '../Field/FieldInclude'
+import { FieldInclude } from '../Field'
 
 import { SelectInput } from './SelectInput'
 import { SelectFilter } from './SelectFilter'
@@ -153,7 +153,7 @@ export class Select {
       this.components,
       computed(() => ({
         windowAttrs: {
-          hide: !isFilled(this.props.option) && !this.isSlot.value,
+          hide: !isFilled(this.props.option) && !this.isSlot(),
           widthMatch: true
         },
         tag: 'span',
@@ -178,14 +178,6 @@ export class Select {
     this.filter = new SelectFilterConstructor()
   }
 
-  /** Checks whether there are slots for context areas/ Проверяет, есть ли слоты для контекстных областей */
-  protected readonly isSlot = computed<boolean>(() => {
-    return Boolean(
-      this.slots?.contextTop
-      || this.slots?.contextBottom
-    )
-  })
-
   /** Selection style/ Стиль выбора */
   protected readonly selectionStyle = computed<ListItemPropsBasic['selectionStyle']>(() => {
     if (this.props.selectionStyle === 'auto') {
@@ -204,13 +196,6 @@ export class Select {
     return undefined
   })
 
-  /** Handles click on option in slot/ Обрабатывает клик по опции в слоте */
-  protected readonly onClick = (value?: string) => {
-    if (value) {
-      this.value.set(value)
-    }
-  }
-
   /**
    * Checks whether arrow is set.
    *
@@ -218,5 +203,24 @@ export class Select {
    */
   protected isArrow(): boolean {
     return Boolean(this.props.arrow) && this.props.arrow !== 'none'
+  }
+
+  /**
+   * Checks whether there are slots for context areas.
+   *
+   * Проверяет, есть ли слоты для контекстных областей
+   */
+  protected isSlot(): boolean {
+    return Boolean(
+      this.slots?.contextTop
+      || this.slots?.contextBottom
+    )
+  }
+
+  /** Handles click on option in slot/ Обрабатывает клик по опции в слоте */
+  protected readonly onClick = (value?: string) => {
+    if (value) {
+      this.value.set(value)
+    }
   }
 }

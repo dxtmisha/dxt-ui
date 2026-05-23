@@ -327,6 +327,10 @@
     "./MenuCountry": {
       "types": "./dist/src/constructors/MenuCountry/index.d.ts",
       "default": "./dist/menuCountry.js"
+    },
+    "./MenuButton": {
+      "types": "./dist/src/constructors/MenuButton/index.d.ts",
+      "default": "./dist/menuButton.js"
     }
   },
   "buildOptions": {

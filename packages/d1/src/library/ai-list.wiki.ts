@@ -40,6 +40,7 @@ import D1ListItem from '../../src/components/Ui/ListItem/D1ListItemAiWiki.vue'
 import D1ListMenu from '../../src/components/Ui/ListMenu/D1ListMenuAiWiki.vue'
 import D1Mask from '../../src/components/Ui/Mask/D1MaskAiWiki.vue'
 import D1Menu from '../../src/components/Ui/Menu/D1MenuAiWiki.vue'
+import D1MenuButton from '../../src/components/Ui/MenuButton/D1MenuButtonAiWiki.vue'
 import D1MenuCountry from '../../src/components/Ui/MenuCountry/D1MenuCountryAiWiki.vue'
 import D1Modal from '../../src/components/Ui/Modal/D1ModalAiWiki.vue'
 import D1MotionAxis from '../../src/components/Ui/MotionAxis/D1MotionAxisAiWiki.vue'
@@ -107,6 +108,7 @@ export const aiList: any[] = [
   D1ListMenu,
   D1Mask,
   D1Menu,
+  D1MenuButton,
   D1MenuCountry,
   D1Modal,
   D1MotionAxis,

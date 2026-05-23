@@ -1,37 +1,40 @@
 import type { ConstrBind } from '@dxtmisha/functional'
 
+import type { LabelProps } from '../../types/labelTypes'
+
+import type { ButtonPropsBasic, ButtonPropsInclude } from '../Button'
 import type { IconPropsBasic, IconValue } from '../Icon'
-import type { FieldPropsBasic, FieldPropsInclude } from '../Field'
-import type { FieldLabelPropsBasic } from '../FieldLabel'
-import type { FieldMessagePropsBasic } from '../FieldMessage'
-import type { FieldCounterPropsBasic } from '../FieldCounter'
 import type { InputPropsBasic } from '../Input'
-import type { ProgressPropsBasic } from '../Progress'
 import type { MenuPropsBasic, MenuPropsInclude } from '../Menu'
 
 import type { FieldSelectProps } from '../../types/fieldTypes'
 
-export type SelectPropsToken = {
+type MenuButtonPropsToken = {
   // :type [!] System label / Системная метка
   // :type [!] System label / Системная метка
 }
 
-export type SelectPropsBasic<
+export type MenuButtonPropsBasic<
   Icon extends IconPropsBasic = IconPropsBasic,
-  Field extends FieldPropsBasic = FieldPropsBasic,
-  FieldLabel extends FieldLabelPropsBasic = FieldLabelPropsBasic,
-  FieldMessage extends FieldMessagePropsBasic = FieldMessagePropsBasic,
-  FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic,
+  Button extends ButtonPropsBasic = ButtonPropsBasic,
   Input extends InputPropsBasic = InputPropsBasic,
-  Progress extends ProgressPropsBasic = ProgressPropsBasic,
   Menu extends MenuPropsBasic = MenuPropsBasic
-> = FieldPropsInclude<Icon, Field, FieldLabel, FieldMessage, FieldCounter, Progress>
-  & FieldSelectProps
+> = LabelProps
+  & ButtonPropsInclude<Button>
+  & Omit<FieldSelectProps, 'placeholder' | 'validationMessage'>
   & MenuPropsInclude<Menu>
   & {
     // Value
-    /** Whether the value is editable/ Редактируемое ли значение */
-    editValue?: boolean
+    /**
+     * Separator for the displayed labels of the selected values/
+     * Разделитель отображаемых меток выбранных значений
+     */
+    labelSeparator?: string
+    /**
+     * Whether to hide the label when a value is selected/
+     * Скрывать ли метку, если выбрано значение
+     */
+    hideLabelValue?: boolean
 
     // Style
     /** Whether to hide the list/ Скрывать ли список */
@@ -55,14 +58,15 @@ export type SelectPropsBasic<
  *
  * Тип, описывающий входящие свойства.
  */
-export type SelectProps = SelectPropsBasic & SelectPropsToken
+export type MenuButtonProps = MenuButtonPropsBasic & MenuButtonPropsToken
 
 /**
  * Default value for property.
  *
  * Значение по умолчанию для свойства.
  */
-export const defaultsSelect = {
+export const defaultsMenuButton = {
+  labelSeparator: ':',
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

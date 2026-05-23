@@ -3,6 +3,7 @@ import { type ConstrBind, type DesignComponents, getBind, getRef, type RefOrNorm
 
 import type { ButtonComponentInclude, ButtonPropsInclude } from './basicTypes'
 import type { ButtonPropsBasic } from './props'
+import type { ButtonSlots } from './types'
 
 /**
  * ButtonInclude class provides functionality for conditionally rendering button components
@@ -62,8 +63,12 @@ export class ButtonInclude<
    * массив, если компонент не может быть отрисованы.
    *
    * @param props additional properties/ дополнительные свойства
+   * @param slots additional slots/ дополнительные слоты
    */
-  readonly render = (props?: RefOrNormal<ConstrBind<ButtonPropsBasic>>): VNode[] => {
+  readonly render = (
+    props?: RefOrNormal<ConstrBind<ButtonPropsBasic>>,
+    slots?: ButtonSlots
+  ): VNode[] => {
     if (
       this.components
       && (
@@ -78,7 +83,7 @@ export class ButtonInclude<
           ...this.binds.value,
           ...getRef(props)
         },
-        undefined,
+        slots as any,
         this.index ?? 'button'
       )
     }
