@@ -5,29 +5,29 @@ import {
   type ConstrStyles
 } from '@dxtmisha/functional'
 import {
-  MenuButtonDesign,
-  type MenuButtonEmits,
-  type MenuButtonSlots
-} from '@dxtmisha/constructor/MenuButton'
+  MenuChipDesign,
+  type MenuChipEmits,
+  type MenuChipSlots
+} from '@dxtmisha/constructor/MenuChip'
 
 import { D1Menu } from '../Menu'
-import { D1Button } from '../Button'
+import { D1Chip } from '../Chip'
 import { D1Input } from '../Input'
 
-import { defaults, type MenuButtonProps } from './props'
+import { defaults, type MenuChipProps } from './props'
 import './styleToken.scss'
 
 defineOptions({
-  name: 'D1MenuButton'
+  name: 'D1MenuChip'
 })
 
-const emits = defineEmits<MenuButtonEmits>()
-const props = withDefaults(defineProps<MenuButtonProps>(), defaults)
+const emits = defineEmits<MenuChipEmits>()
+const props = withDefaults(defineProps<MenuChipProps>(), defaults)
 
 const classesToken = computed<ConstrClasses>(() => ({
   main: {
     // :classes-values [!] System label / Системная метка
-    'd1-menuButton': true
+    'd1-menuChip': true
     // :classes-values [!] System label / Системная метка
   }
 }))
@@ -36,8 +36,8 @@ const stylesToken = computed<ConstrStyles>(() => ({
   // :styles-values [!] System label / Системная метка
 }))
 
-const design = new MenuButtonDesign(
-  'd1.menuButton',
+const design = new MenuChipDesign(
+  'd1.menuChip',
   props,
   {
     emits,
@@ -45,21 +45,15 @@ const design = new MenuButtonDesign(
     styles: stylesToken,
     components: {
       menu: D1Menu,
-      button: D1Button,
+      chip: D1Chip,
       input: D1Input
-    },
-    compMod: {
-      button: {
-        secondary: true,
-        size: 'sm'
-      }
     }
   }
 )
 
 const render = design.render()
 
-defineSlots<MenuButtonSlots>()
+defineSlots<MenuChipSlots>()
 defineExpose(design.expose())
 </script>
 

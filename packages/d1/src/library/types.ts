@@ -41,6 +41,7 @@ import _D1ListMenu from '../components/Ui/ListMenu/D1ListMenu.vue'
 import _D1Mask from '../components/Ui/Mask/D1Mask.vue'
 import _D1Menu from '../components/Ui/Menu/D1Menu.vue'
 import _D1MenuButton from '../components/Ui/MenuButton/D1MenuButton.vue'
+import _D1MenuChip from '../components/Ui/MenuChip/D1MenuChip.vue'
 import _D1MenuCountry from '../components/Ui/MenuCountry/D1MenuCountry.vue'
 import _D1Modal from '../components/Ui/Modal/D1Modal.vue'
 import _D1MotionAxis from '../components/Ui/MotionAxis/D1MotionAxis.vue'
@@ -110,6 +111,7 @@ declare module '@vue/runtime-core' {
     D1Mask: typeof _D1Mask
     D1Menu: typeof _D1Menu
     D1MenuButton: typeof _D1MenuButton
+    D1MenuChip: typeof _D1MenuChip
     D1MenuCountry: typeof _D1MenuCountry
     D1Modal: typeof _D1Modal
     D1MotionAxis: typeof _D1MotionAxis

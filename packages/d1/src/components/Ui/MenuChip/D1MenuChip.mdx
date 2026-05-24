@@ -1,0 +1,56 @@
+import {Canvas, Meta} from '@storybook/addon-docs/blocks'
+import {
+    StorybookDescriptions,
+    StorybookMain
+} from '@dxtmisha/wiki/storybook'
+
+import * as MenuChip from './D1MenuChip.stories'
+import {MenuChipWikiStorybook} from './wiki'
+
+[//]: # (:documentation-import [!] System label / Системная метка)
+[//]: # (:documentation-import [!] System label / Системная метка)
+
+<Meta of={MenuChip}/>
+<StorybookMain
+    name={MenuChipWikiStorybook.getName()}
+    description={MenuChipWikiStorybook.getDescription()}
+    story={MenuChip.MenuChip}
+/>
+
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+<StorybookDescriptions componentName={'MenuChip'} type={'menuChip'}/>
+<Canvas of={MenuChip.MenuChipBasic}/>
+
+<StorybookDescriptions componentName={'Value'} type={'value'}/>
+<StorybookDescriptions componentName={'Value'} type={'v-model'}/>
+<Canvas of={MenuChip.MenuChipVModel}/>
+
+<StorybookDescriptions componentName={'Style'} type={'isSkeleton'}/>
+<Canvas of={MenuChip.MenuChipSkeleton}/>
+    
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+[//]: # (:documentation-events [!] System label / Системная метка)
+## Events
+
+<StorybookDescriptions componentName={'Event'} type={'input'}/>
+<StorybookDescriptions componentName={'Event'} type={'change'}/>
+    
+[//]: # (:documentation-events [!] System label / Системная метка)
+
+[//]: # (:documentation-expose [!] System label / Системная метка)
+## Expose
+
+<StorybookDescriptions componentName={'Expose'} type={'selected'}/>
+<StorybookDescriptions componentName={'Expose'} type={'validation'}/>
+    
+[//]: # (:documentation-expose [!] System label / Системная метка)
+
+[//]: # (:documentation-slots [!] System label / Системная метка)
+## Slots
+
+<StorybookDescriptions componentName={'Slot'} type={'default'} />
+<StorybookDescriptions componentName={'Menu'} type={'slots'}/>
+    
+[//]: # (:documentation-slots [!] System label / Системная метка)

@@ -15,6 +15,7 @@ import DemoInputPage from './pages/components/DemoInputPage.vue'
 import DemoListPage from './pages/components/DemoListPage.vue'
 import DemoMaskPage from './pages/components/DemoMaskPage.vue'
 import DemoMenuPage from './pages/components/DemoMenuPage.vue'
+import DemoMenuButtonPage from './pages/components/DemoMenuButtonPage.vue'
 import DemoMenuCountryPage from './pages/components/DemoMenuCountryPage.vue'
 import DemoMotionAxisPage from './pages/components/DemoMotionAxisPage.vue'
 import DemoMotionTransformPage from './pages/components/DemoMotionTransformPage.vue'
@@ -94,6 +95,11 @@ export const routes: RouteRecordRaw[] = [
     path: '/component-menu',
     name: 'component-menu',
     component: DemoMenuPage
+  },
+  {
+    path: '/component-menu-button',
+    name: 'component-menu-button',
+    component: DemoMenuButtonPage
   },
   {
     path: '/component-menu-country',

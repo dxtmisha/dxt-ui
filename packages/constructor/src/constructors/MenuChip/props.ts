@@ -1,25 +1,25 @@
 import type { LabelProps } from '../../types/labelTypes'
 
-import type { ButtonPropsBasic, ButtonPropsInclude } from '../Button'
+import type { ChipPropsBasic, ChipPropsInclude } from '../Chip'
 import type { IconPropsBasic } from '../Icon'
 import type { InputPropsBasic } from '../Input'
 import type { MenuPropsBasic, MenuPropsInclude } from '../Menu'
 
-import type { MenuButtonPropsTool } from './basicTypes'
 import type { FieldSelectLiteProps } from '../../types/fieldTypes'
+import type { MenuButtonPropsTool } from '../MenuButton'
 
-type MenuButtonPropsToken = {
+type MenuChipPropsToken = {
   // :type [!] System label / Системная метка
   // :type [!] System label / Системная метка
 }
 
-export type MenuButtonPropsBasic<
+export type MenuChipPropsBasic<
   Icon extends IconPropsBasic = IconPropsBasic,
-  Button extends ButtonPropsBasic = ButtonPropsBasic,
+  Chip extends ChipPropsBasic = ChipPropsBasic,
   Input extends InputPropsBasic = InputPropsBasic,
   Menu extends MenuPropsBasic = MenuPropsBasic
 > = LabelProps
-  & ButtonPropsInclude<Button>
+  & ChipPropsInclude<Chip>
   & FieldSelectLiteProps
   & MenuPropsInclude<Menu>
   & MenuButtonPropsTool<Icon, Input>
@@ -29,14 +29,14 @@ export type MenuButtonPropsBasic<
  *
  * Тип, описывающий входящие свойства.
  */
-export type MenuButtonProps = MenuButtonPropsBasic & MenuButtonPropsToken
+export type MenuChipProps = MenuChipPropsBasic & MenuChipPropsToken
 
 /**
  * Default value for property.
  *
  * Значение по умолчанию для свойства.
  */
-export const defaultsMenuButton = {
+export const defaultsMenuChip = {
   labelSeparator: ':',
   hideLabelValue: true,
   hideValueIcon: true,

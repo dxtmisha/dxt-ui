@@ -41,6 +41,7 @@ import { wikiMask } from './wikiMask'
 import { wikiMenu } from './wikiMenu'
 import { wikiMenuCountry } from './wikiMenuCountry'
 import { wikiMenuButton } from './wikiMenuButton'
+import { wikiMenuChip } from './wikiMenuChip'
 import { wikiMotionAxis } from './wikiMotionAxis'
 import { wikiMotionTransform } from './wikiMotionTransform'
 import { wikiProgress } from './wikiProgress'
@@ -98,6 +99,7 @@ export const wiki: StorybookArgsToList = {
   ...wikiMenu,
   ...wikiMenuCountry,
   ...wikiMenuButton,
+  ...wikiMenuChip,
   ...wikiMotionAxis,
   ...wikiMotionTransform,
   ...wikiProgress,

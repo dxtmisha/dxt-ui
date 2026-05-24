@@ -2,6 +2,7 @@ import { computed, type VNode } from 'vue'
 import { type ConstrBind, type DesignComponents, getBind, getRef, type RefOrNormal, toBinds } from '@dxtmisha/functional'
 
 import type { ChipComponentInclude, ChipPropsInclude } from './basicTypes'
+import type { ChipSlots } from './types'
 import type { ChipPropsBasic } from './props'
 
 /**
@@ -25,7 +26,7 @@ export class ChipInclude<Props extends ChipPropsInclude = ChipPropsInclude> {
    * @param index index identifier/ идентификатор индекса
    */
   constructor(
-    protected readonly props: Readonly<Props>,
+    protected readonly props: Readonly<Props> | undefined,
     protected readonly className: string,
     protected readonly components?: DesignComponents<ChipComponentInclude, Props>,
     protected readonly extra?: RefOrNormal<ConstrBind<ChipPropsBasic>>,
@@ -38,7 +39,7 @@ export class ChipInclude<Props extends ChipPropsInclude = ChipPropsInclude> {
    */
   readonly binds = computed(
     () => toBinds(
-      this.props.chipAttrs,
+      this.props?.chipAttrs,
       getBind(
         getRef(this.props),
         getRef(this.extra),
@@ -57,8 +58,12 @@ export class ChipInclude<Props extends ChipPropsInclude = ChipPropsInclude> {
    * массив, если компонент не может быть отрисован.
    *
    * @param props additional properties/ дополнительные свойства
+   * @param slots slots/ слоты
    */
-  readonly render = (props?: RefOrNormal<ConstrBind<ChipPropsBasic>>): VNode[] => {
+  readonly render = (
+    props?: RefOrNormal<ConstrBind<ChipPropsBasic>>,
+    slots?: ChipSlots
+  ): VNode[] => {
     if (
       this.components
       && (
@@ -73,7 +78,7 @@ export class ChipInclude<Props extends ChipPropsInclude = ChipPropsInclude> {
           ...this.binds.value,
           ...getRef(props)
         },
-        undefined,
+        slots as any,
         this.index ?? 'chip'
       )
     }

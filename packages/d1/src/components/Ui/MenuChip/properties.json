@@ -1,5 +1,5 @@
 {
-  "main": "{d.menuButton}",
+  "main": "{d.menuChip}",
   "#separator": {
     "margin-right": "{sys.spacing.x}"
   },

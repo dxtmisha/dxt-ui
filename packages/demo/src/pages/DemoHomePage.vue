@@ -20,6 +20,7 @@ import DemoLink from '../components/DemoLink.vue'
         <DemoLink label="List" name="component-list"/>
         <DemoLink label="Mask" name="component-mask"/>
         <DemoLink label="Menu" name="component-menu"/>
+        <DemoLink label="MenuButton" name="component-menu-button"/>
         <DemoLink label="MenuCountry" name="component-menu-country"/>
         <DemoLink label="Motion Axis" name="component-motion-axis"/>
         <DemoLink label="Motion Transform" name="component-motion-transform"/>

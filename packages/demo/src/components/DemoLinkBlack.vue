@@ -3,9 +3,11 @@ import DemoLink from './DemoLink.vue'
 </script>
 
 <template>
-  <DemoLink label="Black" name="home"/>
+  <DemoLink class="demo-link-black" label="Black" name="home"/>
 </template>
 
 <style lang="scss">
-
+.demo-link-black {
+  padding-bottom: var(--sys-spacing-x);
+}
 </style>

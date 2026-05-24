@@ -1,7 +1,7 @@
 import type { ConstrClass } from '@dxtmisha/functional'
 
 import type { MenuComponentInclude, MenuExposeInclude, MenuSlotInclude } from '../Menu'
-import type { ButtonComponentInclude } from '../Button'
+import type { ChipComponentInclude } from '../Chip'
 import type { InputComponentInclude } from '../Input'
 
 import type { FieldBasicEmits, FieldBasicExpose } from '../../types/fieldTypes'
@@ -11,8 +11,8 @@ import type { FieldBasicEmits, FieldBasicExpose } from '../../types/fieldTypes'
  *
  * Интерфейс для описания, какие компоненты надо подключить для работы.
  */
-export type MenuButtonComponents = MenuComponentInclude
-  & ButtonComponentInclude
+export type MenuChipComponents = MenuComponentInclude
+  & ChipComponentInclude
   & InputComponentInclude
 
 /**
@@ -20,14 +20,14 @@ export type MenuButtonComponents = MenuComponentInclude
  *
  * Тип, описывающий доступные события.
  */
-export type MenuButtonEmits = FieldBasicEmits
+export type MenuChipEmits = FieldBasicEmits
 
 /**
  * Type describing available properties.
  *
  * Тип, описывающий доступные свойства.
  */
-export interface MenuButtonExpose extends FieldBasicExpose, MenuExposeInclude {
+export interface MenuChipExpose extends FieldBasicExpose, MenuExposeInclude {
 }
 
 /**
@@ -35,7 +35,7 @@ export interface MenuButtonExpose extends FieldBasicExpose, MenuExposeInclude {
  *
  * Тип, описывающий доступные слоты.
  */
-export interface MenuButtonSlots extends MenuSlotInclude {
+export interface MenuChipSlots extends MenuSlotInclude {
   default?(props: any): any
 }
 
@@ -44,7 +44,7 @@ export interface MenuButtonSlots extends MenuSlotInclude {
  *
  * Тип, описывающий подклассы.
  */
-export type MenuButtonClasses = {
+export type MenuChipClasses = {
   main: ConstrClass
   // :classes [!] System label / Системная метка
   label: string

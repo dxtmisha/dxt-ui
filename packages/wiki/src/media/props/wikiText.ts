@@ -142,6 +142,18 @@ export const wikiText: StorybookArgsToList = {
     },
     hide: true
   },
+  textNotFound: {
+    type: StorybookControl.text,
+    options: {
+      category: StorybookCategory.text,
+      type: 'string | (() => string)',
+      description: {
+        en: 'Nothing found text',
+        ru: 'Текст о том, что ничего не найдено'
+      }
+    },
+    hide: true
+  },
   textNotifications: {
     type: StorybookControl.text,
     options: {

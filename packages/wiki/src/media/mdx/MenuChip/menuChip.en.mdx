@@ -1,0 +1,57 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+Component for creating chip-based dropdown selection lists with optional header search and custom trigger styles.
+
+MenuChip is a compact dropdown selector that replaces the standard field outline of a select component with a clean chip trigger. It combines the Chip and dropdown Menu/List architectures to display selected values with highly configurable separators and value hiding rules, and includes integrated hidden inputs for native form integration.
+
+**Key features:**
+
+- Chip-based trigger instead of standard text field input
+- Displays selected values with custom separators
+- Supports hiding value when an icon is present (hideValueIcon)
+- Supports hiding label when a value is selected (hideLabelValue)
+- Dropdown options menu with search/filtering in the header (showSearch)
+- Single or multiple value selection support
+- Hidden input for native form data carrying
+- Responsive design for mobile environments
+
+**Typical use cases:**
+
+- Clean compact category filters in horizontal scroll lists
+- Toolbar selectors (e.g., status selectors, tagging filters, layout modes, language selection)
+- Compact dropdowns where a standard field border or button border is undesirable
+- Mobile action-trigger selectors
+
+<Source
+    code={`
+<script setup>
+import { ref } from 'vue'
+
+const selectedLanguage = ref('en')
+const languages = [
+  { label: 'English', value: 'en' },
+  { label: 'Russian', value: 'ru' },
+  { label: 'Vietnamese', value: 'vi' }
+]
+</script>
+
+<template>
+  <!-- Simple menu chip -->
+  <MenuChip
+    v-model="selectedLanguage"
+    label="Language"
+    :option="languages"
+  />
+
+  <!-- Compact layout with settings icon (hides value display) -->
+  <MenuChip
+    v-model="selectedLanguage"
+    label="Settings"
+    icon="settings"
+    hideValueIcon
+    :option="languages"
+  />
+</template>
+  `}
+    language="html"
+/>

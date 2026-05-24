@@ -40,6 +40,7 @@ import { wikiDescriptionsListMenu } from './wikiDescriptionsListMenu'
 import { wikiDescriptionsMask } from './wikiDescriptionsMask'
 import { wikiDescriptionsMenu } from './wikiDescriptionsMenu'
 import { wikiDescriptionsMenuButton } from './wikiDescriptionsMenuButton'
+import { wikiDescriptionsMenuChip } from './wikiDescriptionsMenuChip'
 import { wikiDescriptionsMenuCountry } from './wikiDescriptionsMenuCountry'
 import { wikiDescriptionsModal } from './wikiDescriptionsModal'
 import { wikiDescriptionsMotionAxis } from './wikiDescriptionsMotionAxis'
@@ -108,6 +109,7 @@ export const wikiDescriptions: StorybookComponentsDescription = [
   wikiDescriptionsMask,
   wikiDescriptionsMenu,
   wikiDescriptionsMenuButton,
+  wikiDescriptionsMenuChip,
   wikiDescriptionsMenuCountry,
   wikiDescriptionsModal,
   wikiDescriptionsMotionAxis,

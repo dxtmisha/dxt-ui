@@ -7,62 +7,51 @@ import {
   toBinds
 } from '@dxtmisha/functional'
 
-import { MenuButton } from './MenuButton'
+import { MenuChip } from './MenuChip'
 
-import type { MenuControlItem } from '../Menu'
 import {
-  type MenuButtonPropsBasic
+  type MenuChipPropsBasic
 } from './props'
 import {
-  type MenuButtonClasses,
-  type MenuButtonComponents,
-  type MenuButtonEmits,
-  type MenuButtonExpose,
-  type MenuButtonSlots
+  type MenuChipClasses,
+  type MenuChipComponents,
+  type MenuChipEmits,
+  type MenuChipExpose,
+  type MenuChipSlots
 } from './types'
+import type { MenuControlItem } from '../Menu/basicTypes'
 
 /**
- * Class representing the design constructor and renderer for the MenuButton component.
- * It manages class generation, styles, template rendering, and exposes internal states
- * such as menu visibility, validation capability, and dynamic layouts for components
- * composed of trigger buttons and dropdown lists.
- *
- * Класс, представляющий конструктор дизайна и рендерер для компонента MenuButton.
- * Управляет генерацией классов, стилей, рендерингом шаблонов и предоставляет доступ к
- * внутренним состояниям, таким как видимость меню, возможность валидации и динамическая разметка
- * для компонентов, состоящих из кнопок-триггеров и выпадающих списков.
+ * MenuChipDesign
  */
-export class MenuButtonDesign<
-  COMP extends MenuButtonComponents,
-  EXPOSE extends MenuButtonExpose,
-  CLASSES extends MenuButtonClasses,
-  P extends MenuButtonPropsBasic
+export class MenuChipDesign<
+  COMP extends MenuChipComponents,
+  EXPOSE extends MenuChipExpose,
+  CLASSES extends MenuChipClasses,
+  P extends MenuChipPropsBasic
 > extends DesignConstructorAbstract<
   HTMLDivElement,
   COMP,
-  MenuButtonEmits,
+  MenuChipEmits,
   EXPOSE,
-  MenuButtonSlots,
+  MenuChipSlots,
   CLASSES,
   P
 > {
-  /** Instance of the MenuButton controller / Экземпляр контроллера MenuButton */
-  protected readonly item: MenuButton
+  protected readonly item: MenuChip
 
   /**
-   * Constructor for MenuButtonDesign.
-   *
-   * Конструктор для MenuButtonDesign.
-   * @param name class name / название класса
-   * @param props properties / свойства
-   * @param options list of additional parameters / список дополнительных параметров
-   * @param ItemConstructor constructors item class / класс элемента конструкторов
+   * Constructor
+   * @param name class name/ название класса
+   * @param props properties/ свойства
+   * @param options list of additional parameters/ список дополнительных параметров
+   * @param ItemConstructor constructors item class/ класс элемента конструкторов
    */
   constructor(
     name: string,
     props: Readonly<P>,
-    options?: ConstrOptions<COMP, MenuButtonEmits, P>,
-    ItemConstructor: typeof MenuButton = MenuButton
+    options?: ConstrOptions<COMP, MenuChipEmits, P>,
+    ItemConstructor: typeof MenuChip = MenuChip
   ) {
     super(
       name,
@@ -85,10 +74,9 @@ export class MenuButtonDesign<
   }
 
   /**
-   * Initializes expose properties, linking internal methods and state to the component instance.
+   * Initialization of all the necessary properties for work
    *
-   * Инициализирует свойства expose, связывая внутренние методы и состояние с экземпляром компонента.
-   * @returns expose configuration object / конфигурируемый объект expose
+   * Инициализация всех необходимых свойств для работы.
    */
   protected initExpose(): EXPOSE {
     return {
@@ -100,10 +88,9 @@ export class MenuButtonDesign<
   }
 
   /**
-   * Initializes and extends component CSS class names.
+   * Improvement of the obtained list of classes.
    *
-   * Инициализирует и дополняет имена CSS-классов компонента.
-   * @returns partial map of classes / частичная карта классов
+   * Доработка полученного списка классов.
    */
   protected initClasses(): Partial<CLASSES> {
     return {
@@ -120,20 +107,18 @@ export class MenuButtonDesign<
   }
 
   /**
-   * Initializes dynamic styles for the component.
+   * Refinement of the received list of styles.
    *
-   * Инициализирует динамические стили для компонента.
-   * @returns style mapping object / объект маппинга стилей
+   * Доработка полученного списка стилей.
    */
   protected initStyles(): ConstrStyles {
     return {}
   }
 
   /**
-   * Core rendering method that outputs the VNode hierarchy for the menu structure.
+   * A method for rendering.
    *
-   * Основной метод рендеринга, выводящий иерархию VNode для структуры меню.
-   * @returns array of VNodes representing the template / массив VNode, представляющих шаблон
+   * Метод для рендеринга.
    */
   protected initRender(): VNode[] {
     return this.item.menu.render(
@@ -162,7 +147,7 @@ export class MenuButtonDesign<
    * @returns rendered button nodes / отрендеренные узлы кнопки
    */
   protected readonly renderControl = (props: MenuControlItem): VNode[] => {
-    return this.item.button.render(
+    return this.item.chip.render(
       {
         ...props.binds,
         iconTurn: props.open.value

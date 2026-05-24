@@ -1,11 +1,11 @@
 @use "../../../styles/Ui/properties";
 @use "@dxtmisha/styles/properties" as ui;
-@use "@dxtmisha/constructor/style.scss" as MenuButton;
+@use "@dxtmisha/constructor/style.scss" as MenuChip;
 
-@include ui.initDesignBasic('d1.menuButton') {
+@include ui.initDesignBasic('d1.menuChip') {
   // Basic styles for a component
   // Базовый стили для компонента
-  @include MenuButton.mixinMenuButton;
+  @include MenuChip.mixinMenuChip;
 
   // Styles from tokens
   // Стили из токенов

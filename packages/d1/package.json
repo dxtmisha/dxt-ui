@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/d1",
   "private": false,
-  "version": "0.66.0",
+  "version": "0.67.0",
   "type": "module",
   "description": "DXT-UI component library",
   "keywords": [
@@ -331,6 +331,10 @@
     "./D1MenuButton": {
       "types": "./dist/src/library/D1MenuButton.d.ts",
       "default": "./dist/D1MenuButton.js"
+    },
+    "./D1MenuChip": {
+      "types": "./dist/src/library/D1MenuChip.d.ts",
+      "default": "./dist/D1MenuChip.js"
     }
   },
   "buildOptions": {
