@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.67.0] - 2026-05-24
+
+### Added
+- **D1MenuButton**: Implemented the new `D1MenuButton` component as a fully-styled D1 design system component wrapping the core `MenuButton` constructor.
+- **D1MenuButton**: Added detailed interactive stories (`D1MenuButton.stories.ts`), MDX documentation (`D1MenuButton.mdx`), properties definition, and design token configurations (`properties.json`, `styleToken.scss`).
+- **D1MenuButton**: Included custom `D1MenuButtonAiWiki.vue` preview mapping to demonstrate component usage under various configurations.
+
+### Changed / Improved
+- **D1ListItem**: Updated layout styling and margin properties under `styleToken.scss` and `properties.json` to support selection indicators.
+- **D1Select / D1Menu**: Updated design templates and stories to align with the core constructor refactoring.
+
 ## [0.65.2] - 2026-05-23
 
 ### Added

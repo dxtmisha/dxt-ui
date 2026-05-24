@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.10] - 2026-05-24
+
+### Added
+- **isTab**: Introduced `isTab` utility function to reliably detect Tab key presses across different browser environments by checking `key`, `code`, and `keyCode`.
+- **isTab**: Added comprehensive unit tests in `src/functions/__tests__/isTab.test.ts` to verify tab-detection behavior under multiple key configurations.
+
+### Changed / Improved
+- **isInput**: Refactored `isInput` helper to correctly return `false` for elements with `readonly` or `disabled` attributes.
+- **getKey**: Updated return type of `getKey` helper function to return `string | number | undefined` instead of forcing a strict `string`.
+- **ErrorCenter**: Enhanced `ErrorCenterCauseItem` type inside `errorCenter.ts` with generic parameter support (`ErrorCenterCauseItem<D = any>`) to support strictly-typed structures for error cause detail records.
+- **Maintenance**: Excluded auto-generated AI description files from package assets, standardized type outputs and version bumped to `1.2.10`.
+
 ## [1.2.5] - 2026-05-17
 
 ### Changed / Improved

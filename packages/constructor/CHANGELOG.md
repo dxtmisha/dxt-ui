@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.67.0] - 2026-05-24
+
+### Added
+- **MenuButton**: Introduced the `MenuButton` constructor component for creating action buttons that trigger standard interactive dropdown overlay menus.
+- **Select**: Introduced the base `SelectAbstract` class to encapsulate shared selection, focus, and state logic between `Select` and `Menu` components.
+- **Window**: Created the `WindowOpen` class helper to coordinate entry transitions and open-end triggers.
+
+### Changed / Improved
+- **List**: Refactored list focus, navigation, search, and interaction models (`List.ts`, `ListFocus.ts`, `ListGo.ts`, `ListSearch.ts`, and `ListControl.ts`) to improve keyboard-guided list traversing.
+- **Select**: Re-engineered the core `Select` class to subclass `SelectAbstract`, simplifying the code structure and improving state management.
+- **TabIndexInclude**: Replaced the redundant internal `isTab` handler with the new global `isTab` utility from `@dxtmisha/functional-basic`, and wrapped focus resets in `requestAnimationFrame` inside `reset()` for better browser compatibility.
+- **Window**: Refactored visibility and inert triggers inside `WindowHidden` and event handler registrations inside `WindowEvent` to leverage the lifecycle mounting changes.
+- **ButtonInclude**: Refactored keydown tracking and event handling to provide safer execution paths.
+- **Cleanups**: Removed leftover debug logs inside `TabIndexInclude`, `ListFocus`, and `WindowEvent`.
+
 ## [0.65.3] - 2026-05-23
 
 ### Added
