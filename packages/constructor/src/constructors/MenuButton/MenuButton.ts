@@ -100,7 +100,7 @@ export class MenuButton extends SelectAbstract {
       '',
       this.className,
       this.components,
-      undefined,
+      this.props,
       computed(() => ({
         icon: this.props.icon,
         disabled: this.props.disabled,

@@ -31,7 +31,8 @@ const propsNames: StorybookProps = [
   { name: 'selected', type: 'ListSelectedList | undefined' },
   { name: 'selectionStyle', type: 'string', option: ['checkbox', 'none', 'radio', 'checkmark'] },
   { name: 'tabindex', type: 'string | number | undefined' },
-  { name: 'tag', type: 'string | undefined', option: ['div', 'button', 'a', 'span'] }
+  { name: 'tag', type: 'string | undefined', option: ['div', 'button', 'a', 'span'] },
+  { name: 'textNotFound', type: 'TextValue' }
   // :propsList [!] System label / Системная метка
 ]
 

@@ -119,7 +119,6 @@ export class SnackbarData {
    */
   readonly pause = (): void => {
     this.item.value.forEach(item => item.resumableTimer?.pause())
-    console.log('pause')
   }
 
   /**

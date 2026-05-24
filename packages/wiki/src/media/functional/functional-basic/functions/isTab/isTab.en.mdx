@@ -1,0 +1,30 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/isTab - Check for Tab key press'/>
+
+# `isTab`
+
+Checks if the pressed key is `Tab`. This function is useful for handling keyboard events when you need to react to focus navigation or trap focus, while supporting accessibility (a11y) and older browsers.
+
+**Parameters:**
+- `event: KeyboardEvent` — the keyboard event object.
+
+**Returns:**
+`boolean` — `true` if the `Tab` key is pressed, otherwise `false`.
+
+**Supported event properties:**
+The function checks the following event properties for maximum compatibility:
+- `code`: `'Tab'`
+- `key`: `'Tab'`
+- `keyCode`: `9`
+
+```typescript
+import { isTab } from '@dxtmisha/functional-basic'
+
+const onKeyDown = (event: KeyboardEvent) => {
+  if (isTab(event)) {
+    console.log('Tab pressed')
+    // Perform action
+  }
+}
+```

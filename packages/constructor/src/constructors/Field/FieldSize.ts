@@ -51,7 +51,7 @@ export class FieldSize {
 
       this.title = elementPrefix?.offsetLeft ?? elementSpace?.offsetLeft ?? 0
 
-      if (this.left < 0) {
+      if (this.left <= 0) {
         this.update(limit - 1)
       } else {
         this.make()

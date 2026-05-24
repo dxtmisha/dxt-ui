@@ -16,6 +16,8 @@ export const isInput = (element: HTMLElement | EventTarget | null): boolean => {
       || element.isContentEditable
       || element.getAttribute('contenteditable') === 'true'
     )
+    && !(element as HTMLInputElement)?.readOnly
+    && !(element as HTMLInputElement)?.disabled
   }
 
   return false

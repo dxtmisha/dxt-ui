@@ -17,8 +17,6 @@ let windowOpenCounter: number = 0
  * Класс для управления скрытием элементов вне окна при его открытии.
  */
 export class WindowHidden {
-  protected elements: HTMLElement[] = []
-
   /**
    * Constructor
    * @param props input data / входные данные
@@ -92,12 +90,25 @@ export class WindowHidden {
   }
 
   /**
+   * Returns all elements currently blocked by a window (having the data-window-block attribute).
+   *
+   * Возвращает все элементы, заблокированные в данный момент окном (имеющие атрибут data-window-block).
+   * @returns array of blocked elements / массив заблокированных элементов
+   */
+  protected findBlockedElements(): NodeListOf<HTMLElement> {
+    return document.querySelectorAll<HTMLElement>('[data-window-block]')
+  }
+
+  /**
    * Hides elements outside the window by adding aria-hidden attribute.
    *
    * Скрывает элементы вне окна, добавляя атрибут aria-hidden.
    */
   protected toHidden(): void {
-    if (isInput(document.activeElement)) {
+    if (
+      !this.props.autoTabIndex
+      || isInput(document.activeElement)
+    ) {
       return
     }
 
@@ -108,7 +119,6 @@ export class WindowHidden {
     if (elements) {
       const aria = this.getAriaData()
 
-      this.elements = []
       elements.forEach((element: HTMLElement) => {
         if (
           element.hasAttribute(aria.key)
@@ -119,15 +129,12 @@ export class WindowHidden {
         }
 
         element.setAttribute(aria.key, aria.value)
+        element.setAttribute('data-window-block', 'true')
 
         if (!this.classes.isWindowOrTeleport(element)) {
           element.setAttribute('inert', '')
         }
-
-        this.elements.push(element)
       })
-    } else {
-      this.elements = []
     }
   }
 
@@ -137,16 +144,22 @@ export class WindowHidden {
    * Показывает ранее скрытые элементы, удаляя атрибут aria-hidden.
    */
   protected toShow(): void {
-    if (--windowOpenCounter > 0) {
+    const blockedElements = this.findBlockedElements()
+
+    if (
+      --windowOpenCounter > 0
+      || blockedElements.length === 0
+    ) {
+      windowOpenCounter = 0
       return
     }
 
     const aria = this.getAriaData()
-    this.elements
-      .forEach((element: HTMLElement) => {
-        element.removeAttribute(aria.key)
-        element.removeAttribute('inert')
-      })
-    this.elements = []
+
+    blockedElements.forEach((element: HTMLElement) => {
+      element.removeAttribute(aria.key)
+      element.removeAttribute('inert')
+      element.removeAttribute('data-window-block')
+    })
   }
 }

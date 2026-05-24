@@ -1,5 +1,10 @@
 import { type MenuButtonPropsBasic, defaultsMenuButton } from '@dxtmisha/constructor/MenuButton'
 
+import type { IconProps } from '../Icon'
+import type { ButtonProps } from '../Button'
+import type { InputProps } from '../Input'
+import type { MenuProps } from '../Menu'
+
 export const propsValues = {
   // :values [!] System label / Системная метка
   // :values [!] System label / Системная метка
@@ -13,7 +18,12 @@ type PropsToken = {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export type MenuButtonProps = MenuButtonPropsBasic & PropsToken
+export type MenuButtonProps = MenuButtonPropsBasic<
+  IconProps,
+  ButtonProps,
+  InputProps,
+  MenuProps
+> & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства

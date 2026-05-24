@@ -67,5 +67,6 @@ export type ListClasses = {
   group: string
   menu: string
   menuGroup: string
+  none: string
   // :classes [!] System label / Системная метка
 }

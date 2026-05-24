@@ -3,19 +3,19 @@ import { type ConstrClassObject, type ConstrEmit, type DesignComp } from '@dxtmi
 
 import { getClassTagAStatic } from '../../functions/getClassTagAStatic'
 
+import { BadgeInclude } from '../Badge'
 import { IconTrailingInclude } from '../Icon'
 import { ProgressInclude } from '../Progress'
 import { RippleInclude } from '../Ripple'
 import { SkeletonInclude } from '../Skeleton'
-import { EventClickInclude } from '../../classes/EventClickInclude'
-import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
+import { EventClickInclude } from '../../classes/EventClickInclude'
 import { LabelHighlightInclude } from '../../classes/LabelHighlightInclude'
 import { PrefixInclude } from '../../classes/PrefixInclude'
 import { CaptionInclude } from '../../classes/CaptionInclude'
 import { SuffixInclude } from '../../classes/SuffixInclude'
 import { DescriptionInclude } from '../../classes/DescriptionInclude'
-import { BadgeInclude } from '../Badge/BadgeInclude'
 
 import { EnabledInclude } from '../../classes/EnabledInclude'
 
@@ -178,6 +178,7 @@ export class ListItem {
       'data-value': this.props.index ?? this.props.value,
       'data-divider': this.props.divider ? 'active' : undefined,
       'data-parent': this.props.parent,
+      'data-highlight': this.label.isHighlight() ? this.props.highlight : undefined,
       'data-list-id': this.props.listId,
       ...this.event.binds
     }

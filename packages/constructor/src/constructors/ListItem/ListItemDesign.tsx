@@ -29,14 +29,14 @@ export class ListItemDesign<
   CLASSES extends ListItemClasses,
   P extends ListItemPropsBasic
 > extends DesignConstructorAbstract<
-  HTMLDivElement,
-  COMP,
-  ListItemEmits,
-  EXPOSE,
-  ListItemSlots,
-  CLASSES,
-  P
-> {
+    HTMLDivElement,
+    COMP,
+    ListItemEmits,
+    EXPOSE,
+    ListItemSlots,
+    CLASSES,
+    P
+  > {
   protected readonly item: ListItem
 
   /**

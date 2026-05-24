@@ -1,22 +1,29 @@
 {
   "main": "{d.list}",
-  "space": {
+  "#space": {
     "height": "{sys.spacing.lg}"
   },
-  "line": {
+  "#line": {
     "margin-x": "{sys.spacing.x}",
     "margin-y": "{sys.spacing.sm}",
     "height": "{sys.spacing.outline}",
     "background-color": "{sys.palette.outline}",
     "background-opacity": "{sys.opacity.outline}"
   },
-  "subtitle": {
+  "#subtitle": {
     "margin-x": "{sys.spacing.x} + {sys.spacing.xs}",
     "margin-top": "{sys.spacing.lg}",
     "margin-bottom": "{sys.spacing.sm}",
     "link|font": "{font.labelMedium}",
     "color": "{sys.palette.onSurface}",
     "color-opacity": "{sys.opacity.surface.medium}"
+  },
+  "#none": {
+    "padding-x": "{?layout.paddingX}",
+    "padding-y": "{?layout.paddingY}",
+    "text-align": "center",
+    "color": "{sys.palette.onSurface}",
+    "color-opacity": "{sys.opacity.surface.disabled}"
   },
   "focus-visible": {
     "outline": "{outline.md}"

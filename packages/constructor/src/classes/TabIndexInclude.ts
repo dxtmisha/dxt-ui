@@ -1,5 +1,5 @@
 import { onUnmounted, type Ref } from 'vue'
-import { EventItem, getRef, isDomRuntime, isElementVisible, isFunction, isInput } from '@dxtmisha/functional'
+import { EventItem, getRef, isDomRuntime, isElementVisible, isFunction, isTab } from '@dxtmisha/functional'
 
 /**
  * Class for managing focus and tab index of elements
@@ -40,7 +40,7 @@ export class TabIndexInclude<E extends HTMLElement = HTMLElement> {
   goTo(): this {
     if (
       this.isElement()
-      && isInput(this.element.value)
+      // && !isInput(this.element.value)
       && this.active()
       && this.activeOpen()
       && isDomRuntime()
@@ -62,12 +62,18 @@ export class TabIndexInclude<E extends HTMLElement = HTMLElement> {
       this.active()
       && this.activeClose()
     ) {
-      if (
-        this.oldElement
-        && ('focus' in this.oldElement)
-      ) {
-        this.oldElement.focus()
-      }
+      requestAnimationFrame(() => {
+        if (
+          this.oldElement
+          && ('focus' in this.oldElement)
+          && (
+            !document.activeElement?.closest('body')
+            || document.activeElement === document.body
+          )
+        ) {
+          this.oldElement.focus()
+        }
+      })
 
       this.stopEvent()
     }
@@ -113,18 +119,6 @@ export class TabIndexInclude<E extends HTMLElement = HTMLElement> {
    */
   protected isElement(): this is { element: Ref<E> } {
     return this.getElement() !== undefined
-  }
-
-  /**
-   * Check if the event is a Tab key event.
-   *
-   * Проверяет, является ли событие событием клавиши Tab.
-   * @param event Keyboard event/ Событие клавиатуры
-   */
-  protected isTab(event: KeyboardEvent): boolean {
-    return event.key === 'Tab'
-      || event.code === 'Tab'
-      || event.keyCode === 9
   }
 
   /**
@@ -235,14 +229,17 @@ export class TabIndexInclude<E extends HTMLElement = HTMLElement> {
    * @param event Keyboard event/ Событие клавиатуры
    */
   protected listenEvent = (event: KeyboardEvent): void => {
-    if (!this.isTab(event)) {
+    if (!isTab(event)) {
       return
     }
 
     const focusActive = document.activeElement as HTMLElement
-    console.log('focusActive', focusActive, this.findLastElement())
+
     if (focusActive) {
-      if (this.isShift(event)) {
+      if (focusActive === document.body) {
+        this.findFirstElement()?.focus()
+        event.preventDefault()
+      } else if (this.isShift(event)) {
         if (focusActive === this.findFirstElement()) {
           this.findLastElement()?.focus()
           event.preventDefault()

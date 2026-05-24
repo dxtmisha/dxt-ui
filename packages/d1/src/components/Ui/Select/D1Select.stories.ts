@@ -33,7 +33,6 @@ export const Select: Story = {
   },
 
   // :story-main [!] System label / Системная метка
-  // :story-main [!] System label / Системная метка
   render: (args: any) => ({
     components: { D1Select },
     setup: () => ({ args }),
@@ -41,6 +40,7 @@ export const Select: Story = {
       <D1Select v-bind="args" />
     `
   })
+  // :story-main [!] System label / Системная метка
 }
 
 // :story-items [!] System label / Системная метка

@@ -35,14 +35,14 @@ export class ListDesign<
   CLASSES extends ListClasses,
   P extends ListPropsBasic
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
-    COMP,
-    ListEmits,
-    EXPOSE,
-    ListSlots,
-    CLASSES,
-    P
-  > {
+  HTMLDivElement,
+  COMP,
+  ListEmits,
+  EXPOSE,
+  ListSlots,
+  CLASSES,
+  P
+> {
   protected readonly item: List
 
   /**
@@ -109,7 +109,8 @@ export class ListDesign<
         management: this.getSubClass('management'),
         group: this.getSubClass('group'),
         menu: this.getSubClass('menu'),
-        menuGroup: this.getSubClass('menuGroup')
+        menuGroup: this.getSubClass('menuGroup'),
+        none: this.getSubClass('none')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -203,6 +204,32 @@ export class ListDesign<
         props.binds
       )
     ) as VNode
+  }
+
+  /**
+   * Generates an element indicating that nothing was found.
+   *
+   * Генерирует элемент, указывающий на то, что ничего не найдено.
+   */
+  readonly renderNone = (): VNode[] => {
+    if (this.props.filterMode) {
+      return [
+        h(
+          'div',
+          {
+            class: this.classes?.value.none,
+            ...AriaStaticInclude.live('polite'),
+            ...AriaStaticInclude.atomic(true)
+          },
+          h(
+            'span',
+            this.item.text.notFound.value
+          )
+        )
+      ]
+    }
+
+    return []
   }
 
   /**
@@ -372,6 +399,7 @@ export class ListDesign<
       }
     })
 
+    children.push(...this.renderNone())
     children.push(h('div'))
     return children
   }

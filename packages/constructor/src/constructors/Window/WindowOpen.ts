@@ -30,6 +30,7 @@ export class WindowOpen {
 
   protected readonly first = ref<boolean>(false)
   protected clicks: number = 0
+  protected timer?: any
 
   /**
    * Constructor
@@ -75,6 +76,32 @@ export class WindowOpen {
         && this.first.value
       )
   })
+
+  /**
+   * Checks if the element is still in the DOM, and if not, closes the window.
+   *
+   * Проверяет, находится ли элемент все еще в DOM, и если нет, закрывает окно.
+   * @returns true if the element is in the DOM, or false if it was closed / true, если элемент в DOM, или false, если окно было закрыто
+   */
+  async checkInDom(): Promise<boolean> {
+    const main = this.element.getMain()
+
+    if (this.item.value) {
+      if (
+        !main
+        || !document.body.contains(main)
+      ) {
+        clearTimeout(this.timer)
+        this.item.value = false
+        this.openEnd.value = false
+        return false
+      }
+    } else {
+      clearTimeout(this.timer)
+    }
+
+    return true
+  }
 
   /**
    * Checks if the window is open.
@@ -156,7 +183,9 @@ export class WindowOpen {
                   this.openEnd.value = true
                 }
               })
+
               this.emit.on(this.item.value)
+              this.timer = setInterval(() => this.checkInDom(), 400)
             })
           })
         })

@@ -1,5 +1,10 @@
 import { computed, type Ref, type ToRefs } from 'vue'
-import { type ConstrEmit, type DesignComp, executeFunction, isFilled } from '@dxtmisha/functional'
+import {
+  type ConstrEmit,
+  type DesignComp,
+  executeFunction,
+  isFilled
+} from '@dxtmisha/functional'
 
 import type { IconValue } from '../Icon'
 import type { ListItemPropsBasic } from '../ListItem'
@@ -16,6 +21,7 @@ import { FieldEventInclude } from '../../classes/Field/FieldEventInclude'
 import { SelectInput } from './SelectInput'
 import { SelectFilter } from './SelectFilter'
 
+import type { WindowEmitOptions } from '../Window'
 import type { SelectComponents, SelectEmits, SelectSlots } from './types'
 import type { SelectProps } from './props'
 
@@ -171,13 +177,23 @@ export abstract class SelectAbstract {
         filterMode: this.props.filterMode,
         hideList: this.props.hideList,
         selectionStyle: this.selectionStyle.value,
+        isSelectedByValue: true,
         onClick: this.event.onSelect,
         onClickSlot: this.onClick,
         onUpdateValue: this.isArrow() ? this.event.onValue : undefined,
-        isSelectedByValue: true,
+        onWindow: this.onWindow,
         ariaMultiselectable: this.props.multiple
       }))
     )
+  }
+
+  /**
+   * Handles the input value change event to open the menu.
+   *
+   * Обрабатывает событие изменения значения ввода для открытия меню.
+   */
+  readonly onInputValue = () => {
+    this.menu.getElement()?.toOpen()
   }
 
   /** Computes the trailing icon value / Вычисляет значение иконки трейлинга */
@@ -224,11 +240,29 @@ export abstract class SelectAbstract {
   /**
    * Handles click on option in slot.
    *
-   * Обрабатывает клик по опции в слоте
+   * Обрабатывает клик по опции в слоте.
+   * @param value selected value / выбранное значение
    */
   protected readonly onClick = (value?: string) => {
     if (value) {
       this.value.set(value)
+    }
+  }
+
+  /**
+   * Handles the window change event to set target element focus if search is enabled.
+   *
+   * Обрабатывает событие изменения окна для установки фокуса на элемент ввода, если включен поиск.
+   * @param options window option data / параметры окна
+   */
+  protected readonly onWindow = ({ element, open }: WindowEmitOptions): void => {
+    if (
+      open
+      && this.props.showSearch
+    ) {
+      requestAnimationFrame(() => {
+        element.querySelector<HTMLInputElement>('input[data-menu-control]')?.focus()
+      })
     }
   }
 }

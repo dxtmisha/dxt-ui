@@ -1,0 +1,192 @@
+import type { StorybookComponentsDescriptionItem } from '../../types/storybookTypes'
+
+/**
+ * Descriptions for MenuButton component properties
+ *
+ * Описания свойств компонента MenuButton
+ */
+export const wikiDescriptionsMenuButton: StorybookComponentsDescriptionItem = {
+  name: 'MenuButton',
+  description: {
+    en: 'Button-based dropdown selector combining Button, Menu, and Select for clean, compact selection interfaces',
+    ru: 'Кнопочный выпадающий селектор, объединяющий Button, Menu и Select для компактных интерфейсов выбора'
+  },
+  possibilities: {
+    en: [
+      'button trigger interface instead of standard field outline',
+      'displays selected value names with a custom separator',
+      'supports hiding the value when an icon is present (hideValueIcon)',
+      'supports hiding the label when a value is selected (hideLabelValue)',
+      'built-in search and filtering inside the dropdown header',
+      'single or multiple value selection',
+      'standard form data integration via a hidden input element'
+    ],
+    ru: [
+      'интерфейс кнопки-триггера вместо стандартной рамки поля',
+      'отображает имена выбранных значений с настраиваемым разделителем',
+      'поддержка скрытия значения при наличии иконки (hideValueIcon)',
+      'поддержка скрытия метки при выборе значения (hideLabelValue)',
+      'встроенный поиск и фильтрация внутри заголовка выпадающего меню',
+      'одиночный или множественный выбор значений',
+      'стандартная интеграция данных формы через скрытый элемент ввода input'
+    ]
+  },
+  import: [
+    'import { ref } from \'vue\''
+  ],
+  render: `
+      <DesignComponent v-bind="args" />
+    `,
+  stories: [
+    {
+      id: 'MenuButtonBasic',
+      name: {
+        en: 'Basic',
+        ru: 'Базовые'
+      },
+      setup: `
+      const options = ref([
+        { label: 'English', value: 'en' },
+        { label: 'Russian', value: 'ru' },
+        { label: 'Vietnamese', value: 'vi' },
+        { label: 'Spanish', value: 'es' }
+      ])
+      const value1 = ref('en')
+      const value2 = ref('ru')
+      const value3 = ref('vi')
+
+      return { options, value1, value2, value3 }
+      `,
+      template: `
+        <div class="wiki-storybook-flex">
+          <DesignComponent
+            v-model="value1"
+            type="menuButton"
+            label="Language"
+            :option="options"
+          />
+          <DesignComponent
+            v-model="value2"
+            type="menuButton"
+            label="With search"
+            showSearch
+            :option="options"
+          />
+          <DesignComponent
+            v-model="value3"
+            type="menuButton"
+            label="Hide value if icon"
+            icon="settings"
+            hideValueIcon
+            :option="options"
+          />
+        </div>
+      `
+    },
+    {
+      id: 'MenuButtonVModel',
+      name: {
+        en: 'Two-way binding (v-model)',
+        ru: 'Двусторонняя привязка (v-model)'
+      },
+      setup: `
+      const valueSingle = ref('option2')
+      const valueMultiple = ref(['option1', 'option3'])
+      const options = [
+        { label: 'First option', value: 'option1' },
+        { label: 'Second option', value: 'option2' },
+        { label: 'Third option', value: 'option3' }
+      ]
+
+      return { valueSingle, valueMultiple, options }
+      `,
+      template: `
+        <div class="wiki-storybook-flex-column">
+          <div class="wiki-storybook-flex-align-center">
+            <span>Value: <strong>{{ valueSingle }}</strong></span>
+            <button class="wiki-storybook-button" @click="valueSingle = 'option1'">option 1</button>
+            <button class="wiki-storybook-button" @click="valueSingle = 'option2'">option 2</button>
+            <button class="wiki-storybook-button" @click="valueSingle = 'option3'">option 3</button>
+          </div>
+
+          <DesignComponent
+            v-model="valueSingle"
+            type="menuButton"
+            label="Single select"
+            :option="options"
+          />
+
+          <div class="wiki-storybook-flex-align-center">
+            <span>Value: <strong>{{ valueMultiple }}</strong></span>
+            <button class="wiki-storybook-button" @click="valueMultiple = ['option1', 'option2']">option 1, 2</button>
+            <button class="wiki-storybook-button wiki-storybook-button--warning" @click="valueMultiple = []">Clear</button>
+          </div>
+
+          <DesignComponent
+            v-model="valueMultiple"
+            type="menuButton"
+            label="Multiple select"
+            multiple
+            :option="options"
+          />
+        </div>
+      `
+    },
+    {
+      id: 'MenuButtonSkeleton',
+      name: {
+        en: 'Skeleton',
+        ru: 'Скелетон'
+      },
+      components: ['Skeleton'],
+      template: `
+        <DesignSkeleton :active="true" style="max-width:320px">
+          <div class="wiki-storybook-flex-column">
+            <DesignComponent
+              type="menuButton"
+              label="Loading menu button"
+              :option="[
+                { label: 'First option', value: 'option1' },
+                { label: 'Second option', value: 'option2' },
+                { label: 'Third option', value: 'option3' }
+              ]"
+              :buttonAttrs="{isSkeleton: true}"
+            />
+          </div>
+        </DesignSkeleton>
+      `
+    }
+  ],
+  documentation: {
+    body: `
+<StorybookDescriptions componentName={'MenuButton'} type={'menuButton'}/>
+<Canvas of={Component.MenuButtonBasic}/>
+
+<StorybookDescriptions componentName={'Value'} type={'value'}/>
+<StorybookDescriptions componentName={'Value'} type={'v-model'}/>
+<Canvas of={Component.MenuButtonVModel}/>
+
+<StorybookDescriptions componentName={'Style'} type={'isSkeleton'}/>
+<Canvas of={Component.MenuButtonSkeleton}/>
+    `,
+    events: `
+<StorybookDescriptions componentName={'Event'} type={'input'}/>
+<StorybookDescriptions componentName={'Event'} type={'change'}/>
+    `,
+    expose: `
+<StorybookDescriptions componentName={'Expose'} type={'selected'}/>
+<StorybookDescriptions componentName={'Expose'} type={'validation'}/>
+    `,
+    slots: `
+<StorybookDescriptions componentName={'Slot'} type={'default'} />
+<StorybookDescriptions componentName={'Menu'} type={'slots'}/>
+    `
+  },
+  ai: {
+    description: `
+Button-based dropdown selector combining a trigger Button and a dropdown Menu. Designed for space-saving select dropdowns where a standard text field outline is undesirable.
+Displays selected values with configurable label separators (labelSeparator) and label hiding options (hideLabelValue, hideValueIcon).
+Integrated hidden inputs provide standard form data carrying, while optional header search components (showSearch) allow filterable options lists.
+    `
+  }
+}

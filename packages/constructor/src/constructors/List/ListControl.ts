@@ -1,5 +1,5 @@
 import { computed, onUnmounted, watch } from 'vue'
-import { EventItem, isDomRuntime, ListDataRef } from '@dxtmisha/functional'
+import { EventItem, getKey, isDomRuntime, isInput, ListDataRef } from '@dxtmisha/functional'
 
 import { ListSearch } from './ListSearch'
 import { ListGo } from './ListGo'
@@ -84,8 +84,27 @@ export class ListControl {
    * @param target selected element/ выбранный элемент
    */
   protected isNotInput(target: HTMLElement): boolean {
-    return ['INPUT', 'TEXTAREA'].indexOf(target.nodeName) === -1
-      || Boolean(this.getActiveElement())
+    return !isInput(target)
+      || !this.getActiveElement()
+  }
+
+  protected isControlKey(event: KeyboardEvent): boolean {
+    const key = getKey(event)
+
+    return key !== undefined
+      && [
+        'ArrowUp',
+        'ArrowDown',
+        'Enter',
+        'Backspace',
+        'Escape',
+        'Esc',
+        38,
+        40,
+        13,
+        8,
+        37
+      ].indexOf(key) !== -1
   }
 
   /**
@@ -147,13 +166,14 @@ export class ListControl {
    *
    * Обновляет значение поиска на основе ввода с клавиатуры.
    * @param event keyboard event / событие клавиатуры
+   * @param isAdd indicates if the key should be added to the search string / указывает, следует ли добавлять ключ к строке поиска
    */
-  protected updateSearch(event: KeyboardEvent) {
+  protected updateSearch(event: KeyboardEvent, isAdd: boolean = true) {
     const element = this.getActiveElement()
 
     if (element) {
       requestAnimationFrame(() => this.search.set(element.value))
-    } else {
+    } else if (isAdd) {
       this.search.add(event.key)
     }
   }
@@ -165,65 +185,69 @@ export class ListControl {
    * @param event event object/ объект события
    */
   protected readonly on = (event: KeyboardEvent) => {
-    if (
-      this.isNotInput(event.target as HTMLElement)
-      && this.data.getLength()
-    ) {
-      if (event.type === 'keypress') {
-        this.updateSearch(event)
-      } else {
-        const key = event.code || event.key || (event as any).keyCode
+    if (!this.data.getLength()) {
+      return
+    }
 
-        switch (key) {
-          case 'Backspace':
-          case 8:
-            this.updateSearch(event)
-            break
-          case 'ArrowUp':
-          case 38:
-            event.preventDefault()
-            this.go.previous()
-            break
-          case 'ArrowDown':
-          case 40:
-            event.preventDefault()
-            this.go.next()
-            break
-          case 'Enter':
-          case 'ArrowRight':
-          case ' ':
-          case 13:
-          case 39:
+    if (event.type === 'keypress') {
+      this.updateSearch(event)
+    } else if (
+      this.isNotInput(event.target as HTMLElement)
+      || this.isControlKey(event)
+    ) {
+      const key = getKey(event)
+
+      switch (key) {
+        case 'Backspace':
+        case 8:
+          this.updateSearch(event)
+          break
+        case 'ArrowUp':
+        case 38:
+          event.preventDefault()
+          this.go.previous()
+          break
+        case 'ArrowDown':
+        case 40:
+          event.preventDefault()
+          this.go.next()
+          break
+        case 'Enter':
+        case 'ArrowRight':
+        case ' ':
+        case 13:
+        case 39:
+          event.preventDefault()
+          this.go.open()
+          break
+        case 'ArrowLeft':
+        case 'Escape':
+        case 'Esc':
+        case 27:
+        case 37:
+          event.preventDefault()
+          this.go.close()
+          break
+        case 'Home':
+        case 36:
+          event.preventDefault()
+          this.go.first()
+          break
+        case 'End':
+        case 35:
+          event.preventDefault()
+          this.go.last()
+          break
+        case 'Space':
+        case 32:
+          if (!this.getActiveElement()) {
             event.preventDefault()
             this.go.open()
-            break
-          case 'ArrowLeft':
-          case 'Escape':
-          case 'Esc':
-          case 27:
-          case 37:
-            event.preventDefault()
-            this.go.close()
-            break
-          case 'Home':
-          case 36:
-            event.preventDefault()
-            this.go.first()
-            break
-          case 'End':
-          case 35:
-            event.preventDefault()
-            this.go.last()
-            break
-          case 'Space':
-          case 32:
-            if (!this.getActiveElement()) {
-              event.preventDefault()
-              this.go.open()
-            }
-            break
-        }
+          }
+          break
       }
+    } else {
+      this.updateSearch(event, false)
     }
   }
 }

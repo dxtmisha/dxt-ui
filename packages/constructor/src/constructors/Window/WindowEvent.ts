@@ -76,11 +76,19 @@ export class WindowEvent {
    */
   readonly onKeydown = async (event: WindowEventClickType): Promise<void> => {
     if (
-      isEnter(event as KeyboardEvent, false)
-      || this.isArrowDown(event as KeyboardEvent)
+      (
+        isEnter(event as KeyboardEvent, false)
+        || this.isArrowDown(event as KeyboardEvent)
+      )
+      && !this.open.item.value
     ) {
       event.preventDefault()
       await this.onClick(event)
+    } else if (
+      this.isTab(event as KeyboardEvent)
+      && this.open.item.value
+    ) {
+      await this.onGlobal(event)
     }
   }
 
@@ -169,6 +177,18 @@ export class WindowEvent {
   }
 
   /**
+   * Checks if the tab key is pressed.
+   *
+   * Проверяет, нажата ли клавиша Tab.
+   * @param event event object/ объект события
+   */
+  protected isTab(event: KeyboardEvent): boolean {
+    return event.key === 'Tab'
+      || event.code === 'Tab'
+      || event.keyCode === 9
+  }
+
+  /**
    * Event activation.
    *
    * Активация события.
@@ -195,6 +215,7 @@ export class WindowEvent {
   protected readonly onGlobal = async (event?: Event): Promise<void> => {
     if (
       !event
+      || this.isTab(event as KeyboardEvent)
       || (event.type === 'click' && (!this.props.contextmenu || this.open.item.value))
       || (event.type === 'contextmenu' && this.props.contextmenu)
     ) {

@@ -7,6 +7,12 @@
     }
   }
 
+  &>*[data-list-id]~&__none {
+    span {
+      display: none;
+    }
+  }
+
   &--axis {
     &--x {
       display: flex;

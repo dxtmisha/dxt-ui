@@ -1,3 +1,4 @@
+import type { Ref } from 'vue'
 import {
   type ConstrEmit,
   isSelected,
@@ -15,17 +16,20 @@ import type { ListEmits } from './types'
  * Класс для работы с фокусировкой элемента.
  */
 export class ListGo {
+  /** Current item index in the map / Текущий индекс элемента в карте */
   protected index: number = -1
 
   /**
    * Constructor
    * @param props input data/ входные данные
+   * @param element input element/ элемент ввода
    * @param focus object of the class for working with focus/ объект класса для работы с фокусировкой
    * @param data object of the class for working with the list/ объект класса для работы со списком
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
    */
   constructor(
     protected readonly props: ListProps,
+    protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly focus: ListFocus,
     protected readonly data: ListDataRef,
     protected readonly emits?: ConstrEmit<ListEmits>
@@ -36,7 +40,8 @@ export class ListGo {
    * Changing the index in focus by the number in the array.
    *
    * Изменение значения в фокусе по номеру в массиве.
-   * @param index number in the array/ номер в массиве
+   * @param index number in the array / номер в массиве
+   * @returns true if the index was changed, false otherwise / true, если индекс был изменен, иначе false
    */
   set(index: number): boolean {
     if (this.index !== index) {
@@ -56,9 +61,9 @@ export class ListGo {
    * Changes the selected element.
    *
    * Изменяет выбранный элемент.
-   * @param value new value/ новое значение
+   * @param value new value / новое значение
    */
-  preparation(value: any) {
+  preparation(value: any): void {
     const map = this.data.map.value
     const index = map.findIndex(item => isSelected(item.index, value))
 
@@ -74,11 +79,11 @@ export class ListGo {
   }
 
   /**
-   * Scrolls the element to the selected element
+   * Scrolls the element to the selected element.
    *
-   * Прокрутить элемент до выбранного элемента
+   * Прокрутить элемент до выбранного элемента.
    */
-  preparationBySelected() {
+  preparationBySelected(): void {
     if (this.props.selected) {
       requestAnimationFrame(() => this.preparation(this.props.selected))
     }
@@ -89,14 +94,17 @@ export class ListGo {
    *
    * Перемещает выбранное значение назад.
    */
-  previous() {
-    if (this.isFirstByParent()) {
+  previous(): void {
+    if (
+      this.isFirstByParent()
+      || !this.isItemElement()
+    ) {
       return
     }
 
     this.setByIndex(this.index - 1)
 
-    if (!this.focus.toElementFocus()) {
+    if (!this.focus.isElementFocus()) {
       this.previous()
     }
   }
@@ -106,14 +114,17 @@ export class ListGo {
    *
    * Перемещает выбранное значение вперед.
    */
-  next() {
-    if (this.isLastByParent()) {
+  next(): void {
+    if (
+      this.isLastByParent()
+      || !this.isItemElement()
+    ) {
       return
     }
 
     this.setByIndex(this.index + 1)
 
-    if (!this.focus.toElementFocus()) {
+    if (!this.focus.isElementFocus()) {
       this.next()
     }
   }
@@ -123,7 +134,7 @@ export class ListGo {
    *
    * Перемещает к первому элементу.
    */
-  first() {
+  first(): void {
     const parent = this.getParentId()
     const item = this.data.getFirstItemByParent(parent)
 
@@ -138,7 +149,7 @@ export class ListGo {
    *
    * Перемещает к последнему элементу.
    */
-  last() {
+  last(): void {
     const parent = this.getParentId()
     const item = this.data.getLastItemByParent(parent)
 
@@ -153,7 +164,7 @@ export class ListGo {
    *
    * Сброс всех записей до начального состояния.
    */
-  reset() {
+  reset(): void {
     this.index = -1
     this.focus.reset()
   }
@@ -202,14 +213,44 @@ export class ListGo {
    *
    * Останавливает событие.
    */
-  stop() {
+  stop(): void {
     this.focus.reset()
+  }
+
+  /**
+   * Focuses on the element that has highlight attribute.
+   *
+   * Фокусируется на элементе, который имеет атрибут подсветки.
+   * @returns this instance / этот экземпляр
+   */
+  toHighlight(): this {
+    const element = this.element.value?.querySelector<HTMLElement>('[data-highlight]')
+
+    if (element) {
+      this.preparation(element.dataset.value ?? '')
+      this.setByIndex(this.index)
+    }
+
+    return this
+  }
+
+  /**
+   * Checks if there's any selectable item in the element.
+   *
+   * Проверяет, есть ли в элементе какой-либо выбираемый элемент.
+   * @returns true if exists, false otherwise / true, если существует, иначе false
+   */
+  protected isItemElement(): boolean {
+    return Boolean(
+      this.element.value?.querySelector<HTMLElement>('[data-value]')
+    )
   }
 
   /**
    * Checks if the current element is the first in the parent group.
    *
    * Проверяет, является ли текущий элемент первым в родительской группе.
+   * @returns true if first by parent, false otherwise / true, если первый по родителю, иначе false
    */
   protected isFirstByParent(): boolean {
     const parent = this.getParentId()
@@ -228,6 +269,7 @@ export class ListGo {
    * Checks if the current element is the last in the parent group.
    *
    * Проверяет, является ли текущий элемент последним в родительской группе.
+   * @returns true if last by parent, false otherwise / true, если последний по родителю, иначе false
    */
   protected isLastByParent(): boolean {
     const parent = this.getParentId()
@@ -246,6 +288,7 @@ export class ListGo {
    * Checks if the element is in a window.
    *
    * Проверяет, находится ли элемент в окне.
+   * @returns HTML element if in window, undefined otherwise / HTML-элемент, если в окне, иначе undefined
    */
   protected getMainItem(): HTMLDivElement | undefined {
     const parent = this.getParentId()
@@ -264,6 +307,7 @@ export class ListGo {
    * Returns the parent identifier.
    *
    * Возвращает идентификатор родителя.
+   * @returns parent identifier or undefined / идентификатор родителя или undefined
    */
   protected getParentId(): string | undefined {
     return this.focus.item.value?.parent
@@ -273,7 +317,7 @@ export class ListGo {
    * Changing the index in focus by the number in the array.
    *
    * Изменение значения в фокусе по номеру в массиве.
-   * @param index number in the array/ номер в массиве
+   * @param index number in the array / номер в массиве
    */
   protected setByIndex(index: number): void {
     const length = this.data.getLengthByMap()

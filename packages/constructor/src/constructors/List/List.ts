@@ -1,4 +1,12 @@
-import { toRef, type Ref, type ToRefs, computed, onMounted, nextTick } from 'vue'
+import {
+  toRef,
+  type Ref,
+  type ToRefs,
+  computed,
+  onMounted,
+  nextTick,
+  watch
+} from 'vue'
 import {
   type ConstrBind,
   type ConstrEmit,
@@ -12,6 +20,7 @@ import {
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { EventClickInclude } from '../../classes/EventClickInclude'
+import { TextInclude } from '../../classes/TextInclude'
 
 import { WindowClassesInclude } from '../Window'
 
@@ -32,8 +41,9 @@ let listIdMax = 1
  * List
  */
 export class List {
-  readonly search: ListSearch
   readonly focus: ListFocus
+  readonly search: ListSearch
+  readonly text: TextInclude
 
   readonly data: ListDataRef
   readonly event: EventClickInclude
@@ -63,6 +73,7 @@ export class List {
    * @param constructors.ListFocusConstructor class for working with focus/ класс для работы с фокусом
    * @param constructors.ListGoConstructor class for working with navigation/ класс для работы с навигацией
    * @param constructors.ListSearchConstructor class for working with search/ класс для работы с поиском
+   * @param constructors.TextIncludeConstructor class for working with text/ класс для работы с текстом
    * @param constructors.WindowClassesIncludeConstructor class for working with window classes/ класс для работы с классами окна
    */
   constructor(
@@ -82,6 +93,7 @@ export class List {
       ListGoConstructor?: typeof ListGo
       ListSearchConstructor?: typeof ListSearch
       WindowClassesIncludeConstructor?: typeof WindowClassesInclude
+      TextIncludeConstructor?: typeof TextInclude
     }
   ) {
     const {
@@ -91,11 +103,13 @@ export class List {
       ListFocusConstructor = ListFocus,
       ListGoConstructor = ListGo,
       ListSearchConstructor = ListSearch,
-      WindowClassesIncludeConstructor = WindowClassesInclude
+      WindowClassesIncludeConstructor = WindowClassesInclude,
+      TextIncludeConstructor = TextInclude
     } = constructors ?? {}
 
-    this.search = new ListSearchConstructor(this.props)
     this.focus = new ListFocusConstructor(this.props, this.element, this.id)
+    this.search = new ListSearchConstructor(this.props)
+    this.text = new TextIncludeConstructor(this.props)
 
     this.data = new ListDataRefConstructor(
       toRef(this.props, 'list'),
@@ -111,7 +125,13 @@ export class List {
       this.refs.max
     )
 
-    this.go = new ListGoConstructor(this.props, this.focus, this.data, this.emits)
+    this.go = new ListGoConstructor(
+      this.props,
+      this.element,
+      this.focus,
+      this.data,
+      this.emits
+    )
     this.control = new ListControlConstructor(this.props, this.search, this.data, this.go)
 
     this.event = new EventClickIncludeConstructor(undefined, undefined, emits)
@@ -121,6 +141,8 @@ export class List {
       onMounted(async () => {
         await nextTick()
         this.go.preparationBySelected()
+
+        watch(this.search.item, () => this.go.toHighlight())
       })
     }
   }

@@ -31,14 +31,14 @@ export class SelectDesign<
   CLASSES extends SelectClasses,
   P extends SelectPropsBasic
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
-    COMP,
-    SelectEmits,
-    EXPOSE,
-    SelectSlots,
-    CLASSES,
-    P
-  > {
+  HTMLDivElement,
+  COMP,
+  SelectEmits,
+  EXPOSE,
+  SelectSlots,
+  CLASSES,
+  P
+> {
   protected readonly item: Select
 
   /**
@@ -206,10 +206,9 @@ export class SelectDesign<
           ref: this.element,
           id: input.id,
           value: this.item.value.get(),
-          class: [
-            props.classesWindow.controlOpenOnly,
-            className
-          ],
+          class: className,
+          autocomplete: 'off',
+          onInput: this.item.onInputValue,
           ...AriaStaticInclude.role('combobox')
         },
         isEdit ? undefined : menuControl

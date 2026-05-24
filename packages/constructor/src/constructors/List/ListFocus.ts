@@ -46,9 +46,20 @@ export class ListFocus {
   }
 
   /**
+   * Checks if the active focused element and its DOM representation exist.
+   *
+   * Проверяет, существует ли активный сфокусированный элемент и его представление в DOM.
+   * @returns true if the focused element exists, false otherwise / true, если сфокусированный элемент существует, иначе false
+   */
+  isElementFocus(): boolean {
+    return Boolean(this.item.value && this.getElement())
+  }
+
+  /**
    * Checks if the element is an item.
    *
    * Проверяет, является ли элемент элементом.
+   * @returns true if the element is an item, false otherwise / true, если элемент является элементом, иначе false
    */
   isItem(): boolean {
     return this.item.value?.type === 'item'
@@ -58,6 +69,7 @@ export class ListFocus {
    * Checks if the element is a group.
    *
    * Проверяет, является ли элемент группой.
+   * @returns true if the element is a group, false otherwise / true, если элемент является группой, иначе false
    */
   isGroup(): boolean {
     return this.item.value?.type === 'group'
@@ -67,6 +79,7 @@ export class ListFocus {
    * Checks if the element is a menu.
    *
    * Проверяет, является ли элемент меню.
+   * @returns true if the element is a menu, false otherwise / true, если элемент является меню, иначе false
    */
   isMenu(): boolean {
     return this.item.value?.type === 'menu'
@@ -76,6 +89,7 @@ export class ListFocus {
    * Checks if the group or menu is open.
    *
    * Проверяет, открыта ли группа или меню.
+   * @returns true if the group or menu is open, false otherwise / true, если группа или меню открыты, иначе false
    */
   isOpen(): boolean {
     const element = this.getElement()
@@ -94,6 +108,7 @@ export class ListFocus {
    * Returns the selected element.
    *
    * Возвращает выбранный элемент.
+   * @returns the selected element / выбранный элемент
    */
   get(): ListDataItem | undefined {
     return this.item.value
@@ -104,6 +119,7 @@ export class ListFocus {
    *
    * Возвращает селектор нужного элемента по его индексу.
    * @param index element index/ индекс элемента
+   * @returns selector string / строка селектора
    */
   getSelector(index?: string): string {
     return `[data-list-id="${this.listId}"][data-value="${index ?? this.item.value?.index}"]`
@@ -114,6 +130,7 @@ export class ListFocus {
    *
    * Возвращает HTML элемент выбранного элемента.
    * @param index element index/ индекс элемента
+   * @returns HTML element/ HTML-элемент
    */
   getElement(index?: string): HTMLDivElement | undefined {
     return document.querySelector<HTMLDivElement>(this.getSelector(index)) ?? undefined
@@ -124,6 +141,7 @@ export class ListFocus {
    *
    * Изменяет выбранный элемент.
    * @param item new value/ новое значение
+   * @returns this instance / этот экземпляр
    */
   set(item: ListDataItem | undefined): this {
     if (this.item.value !== item) {
@@ -138,6 +156,7 @@ export class ListFocus {
    * Resets the selected element.
    *
    * Сбрасывает выбранный элемент.
+   * @returns this instance / этот экземпляр
    */
   reset(): this {
     this.set(undefined)
@@ -149,24 +168,16 @@ export class ListFocus {
    *
    * Выполняет клик на выбранном элементе.
    */
-  click() {
+  click(): void {
     this.getElement()?.click()
-  }
-
-  /**
-   * Moves to the value in focus.
-   *
-   * Перемещает к значению в фокусе.
-   */
-  toElementFocus(): boolean {
-    return Boolean(this.item.value && this.getElement())
   }
 
   /**
    * Scrolls to the desired element by its index.
    *
    * Скроллирует к нужному элементу по его индексу.
-   * @param index element index/ индекс элемента
+   * @param index element index / индекс элемента
+   * @returns this instance / этот экземпляр
    */
   toElementSelected(index: string): this {
     this.toElement(this.getElement(index))
@@ -177,9 +188,9 @@ export class ListFocus {
    * Scrolls to the desired element.
    *
    * Скроллирует к нужному элементу.
-   * @param element the element to scroll to/ элемент, до которого надо проскроллить
+   * @param element the element to scroll to / элемент, до которого надо проскроллить
    */
-  protected toElement(element?: HTMLElement) {
+  protected toElement(element?: HTMLElement): void {
     const selector = '*[data-window-body]'
 
     if (

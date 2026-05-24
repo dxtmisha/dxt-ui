@@ -1,0 +1,30 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/isTab - Kiểm tra nhấn phím Tab'/>
+
+# `isTab`
+
+Kiểm tra xem phím được nhấn có phải là `Tab` hay không. Hàm này hữu ích để xử lý các sự kiện bàn phím khi bạn cần phản ứng với việc điều hướng tiêu điểm (focus navigation) hoặc giữ tiêu điểm (trap focus), đồng thời hỗ trợ khả năng truy cập (a11y) và các trình duyệt cũ.
+
+**Tham số:**
+- `event: KeyboardEvent` — đối tượng sự kiện bàn phím.
+
+**Trả về:**
+`boolean` — `true` nếu phím `Tab` được nhấn, ngược lại là `false`.
+
+**Các thuộc tính sự kiện được hỗ trợ:**
+Hàm kiểm tra các thuộc tính sự kiện sau để đảm bảo khả năng tương thích tối đa:
+- `code`: `'Tab'`
+- `key`: `'Tab'`
+- `keyCode`: `9`
+
+```typescript
+import { isTab } from '@dxtmisha/functional-basic'
+
+const onKeyDown = (event: KeyboardEvent) => {
+  if (isTab(event)) {
+    console.log('Đã nhấn Tab')
+    // Thực hiện hành động
+  }
+}
+```

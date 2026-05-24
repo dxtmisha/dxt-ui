@@ -9,8 +9,10 @@ import type { ListProps } from './props'
  * Класс для работы с поиском.
  */
 export class ListSearch {
+  /** Search item value / Элемент значения поиска */
   readonly item = ref<string>()
 
+  /** Timeout identifier for resetting search / Идентификатор тайм-аута для сброса поиска */
   protected timeout?: any
 
   /**
@@ -29,9 +31,9 @@ export class ListSearch {
    * Adds a new character to the search.
    *
    * Добавляет новый символ к поиску.
-   * @param char new character/ новый символ
+   * @param char new character / новый символ
    */
-  add(char: string) {
+  add(char: string): void {
     this.addChar(char)
       .makeReset()
   }
@@ -40,9 +42,9 @@ export class ListSearch {
    * Sets the search string.
    *
    * Устанавливает строку поиска.
-   * @param value new value/ новое значение
+   * @param value new value / новое значение
    */
-  set(value?: string) {
+  set(value?: string): void {
     const data = this.getValue(value)
 
     if (this.item.value !== data) {
@@ -54,6 +56,7 @@ export class ListSearch {
    * Resets the search string.
    *
    * Сбрасывает строку поиска.
+   * @returns this instance / этот экземпляр
    */
   reset(): this {
     this.set()
@@ -64,7 +67,8 @@ export class ListSearch {
    * Returns a processed value.
    *
    * Возвращает обработанное значение.
-   * @param value source value/ исходное значение
+   * @param value source value / исходное значение
+   * @returns processed value or undefined / обработанное значение или undefined
    */
   protected getValue(value?: string): string | undefined {
     if (isFilled(value)) {
@@ -78,7 +82,8 @@ export class ListSearch {
    * Appends a character to the search string.
    *
    * Добавляет символ к строке поиска.
-   * @param char new character/ новый символ
+   * @param char new character / новый символ
+   * @returns this instance / этот экземпляр
    */
   protected addChar(char: string): this {
     if (
@@ -97,6 +102,7 @@ export class ListSearch {
    * Schedules reset to the initial state after a delay.
    *
    * Планирует сброс к исходному состоянию после задержки.
+   * @returns this instance / этот экземпляр
    */
   protected makeReset(): this {
     if (this.timeout) {

@@ -13,6 +13,7 @@ export type TextIndex = 'cancel'
   | 'increment'
   | 'loading'
   | 'next'
+  | 'notFound'
   | 'notifications'
   | 'ok'
   | 'previous'
@@ -87,6 +88,12 @@ export type TextNextPropsInclude = {
   textNext?: TextValue
 }
 
+/** Interface for including not found text/ Интерфейс для включения текста «ничего не найдено» */
+export type TextNotFoundPropsInclude = {
+  /** Nothing found text/ Текст о том, что ничего не найдено */
+  textNotFound?: TextValue
+}
+
 /** Interface for including notifications text/ Интерфейс для включения текста уведомлений */
 export type TextNotificationsPropsInclude = {
   /** Notifications text/ Текст уведомлений */
@@ -123,6 +130,7 @@ export type TextAllPropsInclude = TextCancelPropsInclude
   & TextIncrementPropsInclude
   & TextLoadingPropsInclude
   & TextNextPropsInclude
+  & TextNotFoundPropsInclude
   & TextNotificationsPropsInclude
   & TextOkPropsInclude
   & TextPreviousPropsInclude

@@ -40,6 +40,16 @@
       @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)});
     }
     
+    &__none {
+      @include ui.paddingX(#{var(--d1-layout-paddingX)});
+      @include ui.paddingY(#{var(--d1-layout-paddingY)});
+      
+      @include ui.textAlign(#{center});
+      
+      @include ui.color(#{var(--d1-sys-palette-onSurface)});
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-disabled)});
+    }
+    
     &:focus-visible {
       @include ui.outlineOpacity(#{var(--d1-sys-opacity-outline)});
       

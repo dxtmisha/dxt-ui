@@ -7,6 +7,7 @@ import type {
 
 import type { RoleType } from '../../types/roleTypes'
 import type { AriaMultiselectablePropsInclude, AriaRolePropsInclude } from '../../types/ariaTypes'
+import type { TextNotFoundPropsInclude } from '../../types/textTypes'
 
 import type { IconPropsBasic, IconValue } from '../Icon'
 import type { ListItemPropsBasic } from '../ListItem'
@@ -23,6 +24,7 @@ export type ListPropsBasic<
   ListItem extends ListItemPropsBasic = ListItemPropsBasic
 > = AriaRolePropsInclude
   & AriaMultiselectablePropsInclude
+  & TextNotFoundPropsInclude
   & {
     /** Status/ Статус */
     /** Currently focused item/ Элемент, на котором установлен фокус */

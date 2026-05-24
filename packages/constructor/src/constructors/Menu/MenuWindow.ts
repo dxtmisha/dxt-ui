@@ -38,7 +38,6 @@ export class MenuWindow {
       opening: this.opening,
       closing: this.closing,
       role: 'menu',
-      autoTabIndex: false,
       openOnArrowDown: true
     }
   }
