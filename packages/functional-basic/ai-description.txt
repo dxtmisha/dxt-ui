@@ -1,5 +1,14 @@
-This library is a high-level isomorphic utility suite for frontend application development, specifically optimized for Server-Side Rendering (SSR) environments. Its core purpose is to provide a standardized, context-isolated architecture for HTTP transport, internationalization (i18n), error management, metadata control, and DOM state synchronization.
+Core Purpose
+A comprehensive, framework-agnostic utility library designed to simplify common frontend development tasks, including HTTP API communication (with caching and SSR hydration), state management (cookies, local/session storage), internationalization (Geo, Datetime, Translation), and DOM/Event management.
 
-Study this library's API when implementing standardized Fetch-based request logic featuring built-in caching, jittered retries, and automated SSR hydration; managing dynamic SEO metadata (Open Graph and Twitter Cards) with DOM-synchronization; or implementing complex locale-aware data formatting including currencies, relative times, and country-specific phone masks. It is indispensable for handling SSR data isolation via specialized storage abstractions (ServerStorage, DataStorage) and for executing high-performance client-side search with regex-based match highlighting. The library also provides advanced lifecycle management for DOM events, including specialized observers for element resizing and scroll-sync optimizations.
+Usage Scenarios
+Study this library when you need:
+1. Robust API Integration: Standardized fetching, request cancellation (AbortController), automated error handling/retry logic, and response caching.
+2. SSR Data Synchronization: Managing data consistency between server and client via hydration scripts.
+3. Feature-Rich State Persistence: Handling cookies (with SameSite/Secure options) and browser storage (with TTL/caching capabilities).
+4. Complex DOM/UI Logic: Managing event listeners with lifecycle auto-cleanup, scrollbar width calculations, and global loading state management.
+5. Localization/I18n: Handling currency, date formatting, and translation file loading dynamically.
+6. Search Functionality: Implementing client-side search with regex matching and highlight formatting for list data.
 
-Technically, it acts as an abstracted transport and utility layer between native Web APIs (Fetch, Intl, BroadcastChannel, ResizeObserver) and application-level logic. It facilitates data consistency between server and client through script-based hydration and provides a centralized ErrorCenter for standardized fault handling across disparate application modules.
+Integration Context
+This library acts as a foundational "glue" layer. It is built using native Web APIs (Fetch, BroadcastChannel, ResizeObserver, Intl) and is intended to be initialized globally. It provides abstract classes that can be extended or injected to fit various architectures (e.g., SSR frameworks like Nuxt or Next.js, or standard SPA setups). It centralizes configuration for API paths, translation endpoints, and geo-data, serving as a unified utility core for the application.
