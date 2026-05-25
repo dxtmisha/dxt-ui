@@ -28,14 +28,14 @@ export class ImageDesign<
   CLASSES extends ImageClasses,
   P extends ImagePropsBasic
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
-    COMP,
-    ImageEmits,
-    EXPOSE,
-    ImageSlots,
-    CLASSES,
-    P
-  > {
+  HTMLDivElement,
+  COMP,
+  ImageEmits,
+  EXPOSE,
+  ImageSlots,
+  CLASSES,
+  P
+> {
   protected readonly item: Image
 
   /**
@@ -74,8 +74,8 @@ export class ImageDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      type: this.item.type.item,
-      data: this.item.data.image
+      getType: () => this.item.type.item.value,
+      getData: () => this.item.data.image.value
     } as EXPOSE
   }
 

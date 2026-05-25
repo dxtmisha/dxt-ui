@@ -1,12 +1,15 @@
-- `type: ComputedRef<ImageTypeItem>` — Type of the loaded image.
+- `getType(): ImageTypeItem` — Returns the current type of the loaded image or icon.
 
 > **ImageTypeItem values:**
 > `pdf`, `file`, `array`, `image`, `flag`, `flag-compressed`, `color`, `public`, `filled`, `outlined`, `round`, `sharp`, `two-tone`, `material`, `icon`.
 
-- `data: Ref<ImageEventItem>` — Information about the loaded image, including its source and metadata.
+- `getData(): ImageEventItem` — Returns information about the loaded image, including its source and metadata.
 
-> **ImageEventItem:**
-> - `src: string` — source URL.
-> - `width: number` — image width.
-> - `height: number` — image height.
-> - `image: HTMLImageElement` — DOM element of the image.
+> **ImageEventItem can be:**
+> - `undefined` — If no image data is loaded or available.
+> - `string` — If only the URL, path, or text representation is available (e.g., for some icon types).
+> - `ImageItem` — An object containing the loaded image's metadata and DOM element:
+>   - `src: string` — The source URL.
+>   - `width: number` — The image width.
+>   - `height: number` — The image height.
+>   - `image: HTMLImageElement` — The DOM image element.

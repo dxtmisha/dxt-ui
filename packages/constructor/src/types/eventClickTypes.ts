@@ -1,4 +1,3 @@
-import type { Ref } from 'vue'
 import type { RouteLocationRaw } from 'vue-router'
 
 /**
@@ -32,10 +31,10 @@ export type EventClickEmits = {
  * Exposed properties for click functionality/ Экспонируемые свойства для функциональности клика
  */
 export interface EventClickExpose {
-  /** Reactive value reference/ Реактивная ссылка на значение */
-  value?: Ref<EventClickValue['value']>
-  /** Reactive detail reference/ Реактивная ссылка на детали */
-  detail?: Ref<EventClickValue['detail']>
+  /** Returns the click event value/ Возвращает значение события клика */
+  getValue?: () => EventClickValue['value'] | undefined
+  /** Returns the click event detail/ Возвращает детали события клика */
+  getDetail?: () => EventClickValue['detail'] | undefined
 }
 
 /**

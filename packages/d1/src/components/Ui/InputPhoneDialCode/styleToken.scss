@@ -1,0 +1,19 @@
+@use "../../../styles/Ui/properties";
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/style.scss" as InputPhoneDialCode;
+
+@include ui.initDesignBasic('d1.inputPhoneDialCode') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include InputPhoneDialCode.mixinInputPhoneDialCode;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

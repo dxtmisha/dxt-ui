@@ -27,17 +27,17 @@ export type IconPropsBasic<
   & AriaLabelPropsInclude
   & EventClickProps
   & {
-    /** Status/ Статус */
+    // Status
     /** Активное состояние иконки/ Active state of the icon */
     active?: boolean
 
-    /** Icon/ Иконка */
+    // Icon
     /** Value of the main icon/ Значение основной иконки */
     icon?: ImageValue<Image>
     /** Value of the active icon/ Значение активной иконки */
     iconActive?: ImageValue<Image>
 
-    /** ARIA/ ARIA */
+    // ARIA
     /** ARIA role for the icon/ ARIA-роль для иконки */
     role?: RoleType
     /** Tab index for keyboard navigation/ Индекс табуляции для навигации с клавиатуры */

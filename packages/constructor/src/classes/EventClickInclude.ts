@@ -48,12 +48,12 @@ export class EventClickInclude {
   /**
    * Exported values
    *
-   * Экспортируемые значения
+   * Экспонируемые значения
    */
   get expose(): EventClickExpose {
     return {
-      value: this.refs?.value,
-      detail: this.refs?.detail
+      getValue: () => this.refs?.value?.value,
+      getDetail: () => this.refs?.detail?.value
     }
   }
 

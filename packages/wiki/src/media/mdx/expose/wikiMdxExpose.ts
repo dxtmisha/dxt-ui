@@ -8,6 +8,10 @@ import exposeDescriptionIdEn from './expose.descriptionId.en.mdx'
 import exposeDescriptionIdRu from './expose.descriptionId.ru.mdx'
 import exposeDetailEn from './expose.detail.en.mdx'
 import exposeDetailRu from './expose.detail.ru.mdx'
+import exposeGetDetailEn from './expose.getDetail.en.mdx'
+import exposeGetDetailRu from './expose.getDetail.ru.mdx'
+import exposeGetValueEn from './expose.getValue.en.mdx'
+import exposeGetValueRu from './expose.getValue.ru.mdx'
 import exposeIdEn from './expose.id.en.mdx'
 import exposeIdRu from './expose.id.ru.mdx'
 import exposeLabelIdEn from './expose.labelId.en.mdx'
@@ -39,6 +43,14 @@ export const wikiMdxExpose: StorybookComponentsMdxItem = {
     detail: {
       en: exposeDetailEn,
       ru: exposeDetailRu
+    },
+    getDetail: {
+      en: exposeGetDetailEn,
+      ru: exposeGetDetailRu
+    },
+    getValue: {
+      en: exposeGetValueEn,
+      ru: exposeGetValueRu
     },
     id: {
       en: exposeIdEn,

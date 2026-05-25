@@ -1,4 +1,3 @@
-import type { ComputedRef } from 'vue'
 import { type ConstrClass } from '@dxtmisha/functional'
 
 import type { ImageEventData, ImageEventItem, ImageTypeItem } from './basicTypes'
@@ -27,9 +26,9 @@ export type ImageEmits = {
  */
 export type ImageExpose = {
   /** Current image type/ Текущий тип изображения */
-  type: ComputedRef<ImageTypeItem>
+  getType: () => ImageTypeItem
   /** Current image data/ Текущие данные изображения */
-  data: ComputedRef<ImageEventItem>
+  getData: () => ImageEventItem
 }
 
 /**

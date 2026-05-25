@@ -183,8 +183,8 @@ export const wikiDescriptionsButton: StorybookComponentsDescriptionItem = {
 <StorybookDescriptions componentName={'Event'} type={'click'}/>
     `,
     expose: `
-<StorybookDescriptions componentName={'Expose'} type={'value'}/>
-<StorybookDescriptions componentName={'Expose'} type={'detail'}/>
+<StorybookDescriptions componentName={'Expose'} type={'getValue'}/>
+<StorybookDescriptions componentName={'Expose'} type={'getDetail'}/>
     `,
     slots: `
 <StorybookDescriptions componentName={'Slot'} type={'default'}/>
