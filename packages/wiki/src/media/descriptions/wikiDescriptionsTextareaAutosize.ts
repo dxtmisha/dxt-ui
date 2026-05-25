@@ -52,6 +52,7 @@ export const wikiDescriptionsTextareaAutosize: StorybookComponentsDescriptionIte
 Low-level functional engine for multi-line inputs that provides precise, real-time height adjustment based on content. Implements a reliable cloning mechanism to calculate scroll-free container heights while respecting parent padding and font styles.
 Features automated height synchronization during content changes, supporting smooth CSS transitions and native textarea attributes via inputAttrs. Operates as a foundational tool for the Textarea component, ensuring character entry never triggers unwanted shift or overflow.
 Primarily integrated as a subcomponent; should generally not be manually used for standalone input fields. Controlled via reactive value bindings, serving as the high-performance core for any dynamic data entry element requiring responsive layout scaling.
-    `
+    `,
+    hide: true
   }
 }

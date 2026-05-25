@@ -1,7 +1,9 @@
-import { computed, type Ref, type ToRefs } from 'vue'
+import { computed, type ComputedRef, type Ref, type ToRefs } from 'vue'
 import {
   type ConstrEmit,
   type DesignComp,
+  forEach,
+  type GeoFlagNational,
   GeoFlagRef,
   type ListSelectedList,
   type NumberOrStringOrBoolean
@@ -32,6 +34,9 @@ export class MenuCountry {
 
   /** Model manager / Менеджер модели */
   readonly model: ModelInclude<ListSelectedList | undefined>
+
+  /** List of flags / Список флагов */
+  readonly flagList: ComputedRef<GeoFlagNational[]>
 
   /**
    * Constructor
@@ -69,7 +74,7 @@ export class MenuCountry {
       ModelIncludeConstructor = ModelInclude
     } = constructors ?? {}
 
-    const flagList = new GeoFlagRef().getNational(this.refs.countryList)
+    this.flagList = new GeoFlagRef(this.refs.language).getNational(this.refs.countryList)
 
     this.event = new EventClickIncludeConstructor(undefined, undefined, this.emits)
     this.model = new ModelIncludeConstructor('selected', this.emits)
@@ -79,7 +84,7 @@ export class MenuCountry {
       this.className,
       this.components,
       computed(() => ({
-        'list': flagList.value,
+        'list': this.list.value,
         'selected': this.props.selected,
         'isSelectedByValue': this.props.isSelectedByValue,
         'onClick': this.event.onClick,
@@ -88,4 +93,25 @@ export class MenuCountry {
       }))
     )
   }
+
+  /** List of flags / Список флагов */
+  protected readonly list = computed<GeoFlagNational[]>(() => {
+    if (this.props.showPhoneCode) {
+      return forEach(
+        this.flagList.value,
+        (flag) => {
+          if (flag.phoneCode) {
+            return {
+              ...flag,
+              caption: `+${flag.phoneCode}`
+            }
+          }
+
+          return undefined
+        }
+      ) as GeoFlagNational[]
+    }
+
+    return this.flagList.value
+  })
 }

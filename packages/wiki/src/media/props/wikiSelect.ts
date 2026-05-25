@@ -54,15 +54,5 @@ export const wikiSelect: StorybookArgsToList = {
         { label: 'Documents', value: 'documents', icon: 'description' }
       ]
     }
-  },
-  'select.showSearch': {
-    type: StorybookControl.boolean,
-    options: {
-      category: StorybookCategory.option,
-      description: {
-        en: 'Shows a search/filter field inside the dropdown menu',
-        ru: 'Отображает поле поиска/фильтра внутри выпадающего меню'
-      }
-    }
   }
 }

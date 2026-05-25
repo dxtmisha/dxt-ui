@@ -131,6 +131,17 @@ export const wikiAttributes: StorybookArgsToList = {
     },
     hide: true
   },
+  inputSearchAttrs: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.attributes,
+      description: {
+        en: 'Additional attributes for the search input',
+        ru: 'Дополнительные атрибуты для поля поиска'
+      }
+    },
+    hide: true
+  },
   menuAttrs: {
     type: StorybookControl.object,
     options: {

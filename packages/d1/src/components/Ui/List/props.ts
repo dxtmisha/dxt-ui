@@ -28,6 +28,12 @@ export const defaults: object = {
   ...defaultsList,
   iconArrowDown: 'keyboard_arrow_down',
   iconArrowRight: 'keyboard_arrow_right',
+  iconSearch: 'search',
+  inputSearchAttrs: {
+    fieldAttrs: {
+      size: 'sm'
+    }
+  },
   ...{
     // :default [!] System label / Системная метка
     axis: 'y'

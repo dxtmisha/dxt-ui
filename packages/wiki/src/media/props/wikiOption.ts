@@ -333,6 +333,26 @@ export const wikiOption: StorybookArgsToList = {
     },
     isDemo: true
   },
+  showPhoneCode: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.option,
+      description: {
+        en: 'Whether to show the phone code',
+        ru: 'Показывать ли код телефона'
+      }
+    }
+  },
+  showSearch: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.option,
+      description: {
+        en: 'Whether to show the search field',
+        ru: 'Показывать ли поле поиска'
+      }
+    }
+  },
   tag: {
     type: StorybookControl.string,
     options: {

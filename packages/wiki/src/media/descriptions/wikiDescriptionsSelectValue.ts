@@ -80,6 +80,7 @@ export const wikiDescriptionsSelectValue: StorybookComponentsDescriptionItem = {
 Specialized display engine used within Select, Combobox, or Autocomplete controls to render selected state. Dynamically switches between a simple text label for single selection and a group of Chips for multiple selection.
 Features automated Chip management, including removal event handling and integration with the Select data model. Supports empty state placeholders, custom Chip attributes (icons, outlines), and handles disabled/readonly states to prevent interaction.
 Controlled via the multiple and value props, requiring an array of objects even for single selection. Use as a foundational element when building custom selection fields requiring standardized token-based or text-based value representation.
-    `
+    `,
+    hide: true
   }
 }

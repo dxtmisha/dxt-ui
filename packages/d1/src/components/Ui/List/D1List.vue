@@ -14,6 +14,7 @@ import {
 import { D1ListItem } from '../ListItem'
 import { D1ListGroup } from '../ListGroup'
 import { D1ListMenu } from '../ListMenu'
+import { D1Input } from '../Input'
 
 import { defaults, type ListProps, propsValues } from './props'
 import './styleToken.scss'
@@ -49,7 +50,8 @@ const design = new ListDesign(
     components: {
       listItem: D1ListItem,
       listGroup: D1ListGroup,
-      listMenu: D1ListMenu
+      listMenu: D1ListMenu,
+      input: D1Input
     }
   }
 )

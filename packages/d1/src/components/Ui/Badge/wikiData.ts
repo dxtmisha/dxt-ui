@@ -19,6 +19,7 @@ const propsNames: StorybookProps = [
   { name: 'label', type: 'NumberOrString | undefined' },
   { name: 'labelId', type: 'string | undefined' },
   { name: 'labelMax', type: 'NumberOrString | undefined' },
+  { name: 'language', type: 'string | undefined' },
   { name: 'outline', type: 'boolean | undefined' },
   { name: 'overlap', type: 'string', option: ['rectangular', 'circular', 'static'] },
   { name: 'palette', type: 'string', option: ['red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose', 'slate', 'gray', 'zinc', 'neutral', 'stone', 'black', 'white'] },

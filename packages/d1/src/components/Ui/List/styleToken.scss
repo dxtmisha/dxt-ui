@@ -40,6 +40,11 @@
       @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)});
     }
     
+    &__filterInput {
+      @include ui.paddingX(#{var(--d1-sys-spacing-sm)});
+      @include ui.paddingY(#{var(--d1-sys-spacing-xs)});
+    }
+    
     &__none {
       @include ui.paddingX(#{var(--d1-layout-paddingX)});
       @include ui.paddingY(#{var(--d1-layout-paddingY)});

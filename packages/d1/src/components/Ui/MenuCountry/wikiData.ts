@@ -8,11 +8,13 @@ const propsNames: StorybookProps = [
   { name: 'countryList', type: 'string[] | undefined' },
   { name: 'disabled', type: 'boolean | undefined' },
   { name: 'isSelectedByValue', type: 'boolean | undefined' },
+  { name: 'language', type: 'string | undefined' },
   { name: 'menuAttrs', type: 'ConstrBind<MenuProps> | undefined' },
-  { name: 'modelSelected', type: 'string | undefined' },
-  { name: 'onUpdate:modelSelected', type: '((value: string) => void) | undefined' },
-  { name: 'onUpdate:selected', type: '((value: string) => void) | undefined' },
-  { name: 'selected', type: 'ListSelectedList | undefined' }
+  { name: 'modelSelected', type: 'ListSelectedList | undefined' },
+  { name: 'onUpdate:modelSelected', type: '((value: ListSelectedList) => void) | undefined' },
+  { name: 'onUpdate:selected', type: '((value: ListSelectedList) => void) | undefined' },
+  { name: 'selected', type: 'ListSelectedList | undefined' },
+  { name: 'showPhoneCode', type: 'boolean | undefined' }
   // :propsList [!] System label / Системная метка
 ]
 

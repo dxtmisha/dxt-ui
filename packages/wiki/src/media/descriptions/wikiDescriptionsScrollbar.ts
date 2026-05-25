@@ -106,6 +106,7 @@ export const wikiDescriptionsScrollbar: StorybookComponentsDescriptionItem = {
 Structural container that provides custom scrolling behavior and visual status indicators (borders/dividers) based on content overflow. Essential for maintaining spatial context in fixed-height areas like menus, modals, and sidebars.
 Features dynamic scroll position detection to show/hide top and bottom dividers based on visibility of content edges. Supports custom border styling, inverse divider logic, and specialized visibility controls for different scroll states.
 Controlled via the tag and divider props, requiring a defined height or max-height to enable active scrolling. Use as a base wrapper for any dense content block requiring clear visual cues that more data is available above or below.
-    `
+    `,
+    hide: true
   }
 }

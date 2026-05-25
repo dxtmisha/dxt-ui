@@ -12,24 +12,24 @@ describe('GeoFlagRef', () => {
 
   describe('initialization and reactivity', () => {
     it('initializes correctly with a string code', () => {
-      expect(geoFlagRef.getCode().value).toBe(initialCode)
+      expect(geoFlagRef.getCode()).toBe(initialCode)
     })
 
     it('initializes correctly with a ref code', () => {
       const codeRef = ref('EN')
       const gr = new GeoFlagRef(codeRef)
-      expect(gr.getCode().value).toBe('EN')
+      expect(gr.getCode()).toBe('EN')
     })
 
     it('updates when the code ref changes', async () => {
       const codeRef = ref('RU')
       const gr = new GeoFlagRef(codeRef)
-      expect(gr.getCode().value).toBe('RU')
+      expect(gr.getCode()).toBe('RU')
 
       codeRef.value = 'US'
       await nextTick()
 
-      expect(gr.getCode().value).toBe('US')
+      expect(gr.getCode()).toBe('US')
       // Check if the derived flag data also updates
       expect(gr.getFlag().value).toBeDefined()
     })
@@ -37,7 +37,7 @@ describe('GeoFlagRef', () => {
 
   describe('Information Retrieval Methods', () => {
     it('getCode returns the reactive code', () => {
-      expect(geoFlagRef.getCode().value).toBe(initialCode)
+      expect(geoFlagRef.getCode()).toBe(initialCode)
     })
 
     it('get returns flag information for a code', () => {

@@ -28,6 +28,16 @@ export class ListSearch {
   readonly highlight = computed<string | undefined>(() => this.item.value ?? this.props.highlight)
 
   /**
+   * Checks if search is enabled.
+   *
+   * Проверяет, включен ли поиск.
+   * @returns true if search is enabled, false otherwise / true, если поиск включен, иначе false
+   */
+  is(): boolean {
+    return Boolean(this.highlight.value)
+  }
+
+  /**
    * Adds a new character to the search.
    *
    * Добавляет новый символ к поиску.

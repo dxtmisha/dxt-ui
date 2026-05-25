@@ -11,6 +11,7 @@ import type { TextNotFoundPropsInclude } from '../../types/textTypes'
 
 import type { IconPropsBasic, IconValue } from '../Icon'
 import type { ListItemPropsBasic } from '../ListItem'
+import type { InputPropsBasic } from '../Input'
 
 export type ListPropsToken = {
   // :type [!] System label / Системная метка
@@ -21,7 +22,8 @@ export type ListPropsToken = {
 
 export type ListPropsBasic<
   Icon extends IconPropsBasic = IconPropsBasic,
-  ListItem extends ListItemPropsBasic = ListItemPropsBasic
+  ListItem extends ListItemPropsBasic = ListItemPropsBasic,
+  Input extends InputPropsBasic = InputPropsBasic,
 > = AriaRolePropsInclude
   & AriaMultiselectablePropsInclude
   & TextNotFoundPropsInclude
@@ -45,6 +47,8 @@ export type ListPropsBasic<
     highlight?: string
     /** Starting length for search highlighting/ Начальная длина для подсветки поиска */
     highlightLengthStart?: number
+    /** Whether to show the search input/ Показывать ли поле поиска */
+    showSearch?: boolean
     /** Whether to enable filtering mode/ Включен ли режим фильтрации */
     filterMode?: boolean
 
@@ -76,11 +80,15 @@ export type ListPropsBasic<
     itemGroupAttrs?: ConstrBind<ListItem>
     /** Attributes for the item menu component/ Атрибуты для компонента меню элемента */
     itemMenuAttrs?: ConstrBind<ListItem>
+    /** Additional attributes for the search input/ Дополнительные атрибуты для поля поиска */
+    inputSearchAttrs?: ConstrBind<Input>
 
     /** Icon for the down arrow/ Иконка для стрелки вниз */
     iconArrowDown?: IconValue<Icon>
     /** Icon for the right arrow/ Иконка для стрелки вправо */
     iconArrowRight?: IconValue<Icon>
+    /** Icon for the search/ Иконка для поиска */
+    iconSearch?: IconValue<Icon>
 
     /** ARIA/ ARIA */
     /** ARIA role for items/ ARIA-роль для элементов */

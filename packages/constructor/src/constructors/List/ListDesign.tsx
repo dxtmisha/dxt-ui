@@ -110,6 +110,7 @@ export class ListDesign<
         group: this.getSubClass('group'),
         menu: this.getSubClass('menu'),
         menuGroup: this.getSubClass('menuGroup'),
+        filterInput: this.getSubClass('filterInput'),
         none: this.getSubClass('none')
         // :classes [!] System label / Системная метка
       }
@@ -142,7 +143,10 @@ export class ListDesign<
         onFocus: this.item.control.onFocus,
         onBlur: this.item.control.onBlur
       },
-      this.renderData()
+      [
+        ...this.renderFilterInput(),
+        ...this.renderData()
+      ]
     )
   }
 
@@ -204,6 +208,43 @@ export class ListDesign<
         props.binds
       )
     ) as VNode
+  }
+
+  /**
+   * Render filter input.
+   *
+   * Рендер фильтра ввода.
+   */
+  protected readonly renderFilterInput = (): VNode[] => {
+    if (this.props.showSearch) {
+      return [
+        h(
+          'div',
+          {
+            class: [
+              this.classes?.value.filterInput,
+              this.item.windowClasses.get().static
+            ]
+          },
+          this.components.renderOne(
+            'input',
+            toBinds(
+              {
+                ref: this.item.control.inputElement,
+                icon: this.props.iconSearch,
+                onInputLite: this.item.control.onInput,
+                inputAttrs: {
+                  'data-menu-control': '1'
+                }
+              },
+              this.props.inputSearchAttrs
+            )
+          )
+        )
+      ]
+    }
+
+    return []
   }
 
   /**
@@ -399,7 +440,10 @@ export class ListDesign<
       }
     })
 
-    children.push(...this.renderNone())
+    if (type === 'item') {
+      children.push(...this.renderNone())
+    }
+
     children.push(h('div'))
     return children
   }

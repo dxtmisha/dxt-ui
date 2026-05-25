@@ -366,7 +366,10 @@ export const wikiStyle: StorybookArgsToList = {
         ru: 'Стиль выбора'
       }
     },
-    isDemo: true
+    isDemo: true,
+    demoOptions: {
+      selected: 'task-management'
+    }
   },
   size: {
     type: StorybookControl.select,

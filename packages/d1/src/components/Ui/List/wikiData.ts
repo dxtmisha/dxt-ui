@@ -16,6 +16,8 @@ const propsNames: StorybookProps = [
   { name: 'highlightLengthStart', type: 'number | undefined' },
   { name: 'iconArrowDown', type: 'IconValue<IconProps> | undefined' },
   { name: 'iconArrowRight', type: 'IconValue<IconProps> | undefined' },
+  { name: 'iconSearch', type: 'IconValue<IconProps> | undefined' },
+  { name: 'inputSearchAttrs', type: 'ConstrBind<InputPropsBasic> | undefined' },
   { name: 'itemAttrs', type: 'ConstrBind<ListItemProps> | undefined' },
   { name: 'itemGroupAttrs', type: 'ConstrBind<ListItemProps> | undefined' },
   { name: 'itemManagementAttrs', type: 'ConstrBind<ListItemProps> | undefined' },
@@ -30,6 +32,7 @@ const propsNames: StorybookProps = [
   { name: 'roleItem', type: 'string | undefined' },
   { name: 'selected', type: 'ListSelectedList | undefined' },
   { name: 'selectionStyle', type: 'string', option: ['checkbox', 'none', 'radio', 'checkmark'] },
+  { name: 'showSearch', type: 'boolean | undefined' },
   { name: 'tabindex', type: 'string | number | undefined' },
   { name: 'tag', type: 'string | undefined', option: ['div', 'button', 'a', 'span'] },
   { name: 'textNotFound', type: 'TextValue' }

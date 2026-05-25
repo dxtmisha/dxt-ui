@@ -1,10 +1,12 @@
+import type { ComputedRef } from 'vue'
+
 import type { ConstrClass, ListList, ListNames } from '@dxtmisha/functional'
 import type { EventClickEmits } from '../../types/eventClickTypes'
 
 import type { ListItemComponentInclude } from '../ListItem'
 import type { ListGroupComponentInclude } from '../ListGroup'
 import type { ListMenuComponentInclude } from '../ListMenu'
-import type { ComputedRef } from 'vue'
+import type { InputComponentInclude } from '../Input'
 
 /**
  * Interface for describing which components need to be connected for work.
@@ -13,8 +15,9 @@ import type { ComputedRef } from 'vue'
  */
 export type ListComponents
   = ListItemComponentInclude
-    & ListGroupComponentInclude
-    & ListMenuComponentInclude
+  & ListGroupComponentInclude
+  & ListMenuComponentInclude
+  & InputComponentInclude
 
 /**
  * Type describing available events.
@@ -23,10 +26,10 @@ export type ListComponents
  */
 export type ListEmits
   = EventClickEmits
-    & {
-      /** Event for closing the list/ Событие закрытия списка */
-      close: []
-    }
+  & {
+    /** Event for closing the list/ Событие закрытия списка */
+    close: []
+  }
 
 /**
  * Type describing available properties.
@@ -67,6 +70,7 @@ export type ListClasses = {
   group: string
   menu: string
   menuGroup: string
+  filterInput: string
   none: string
   // :classes [!] System label / Системная метка
 }

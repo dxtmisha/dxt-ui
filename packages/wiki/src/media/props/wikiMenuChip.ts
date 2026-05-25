@@ -12,6 +12,5 @@ export const wikiMenuChip: StorybookArgsToList = {
   'menuChip.hideValueIcon': wikiMenuButton['menuButton.hideValueIcon'],
   'menuChip.inputSearchAttrs': wikiMenuButton['menuButton.inputSearchAttrs'],
   'menuChip.labelSeparator': wikiMenuButton['menuButton.labelSeparator'],
-  'menuChip.option': wikiMenuButton['menuButton.option'],
-  'menuChip.showSearch': wikiMenuButton['menuButton.showSearch']
+  'menuChip.option': wikiMenuButton['menuButton.option']
 }

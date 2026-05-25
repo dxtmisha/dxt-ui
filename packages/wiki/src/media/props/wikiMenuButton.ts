@@ -43,6 +43,5 @@ export const wikiMenuButton: StorybookArgsToList = {
       }
     }
   },
-  'menuButton.option': wikiSelect['select.option'],
-  'menuButton.showSearch': wikiSelect['select.showSearch']
+  'menuButton.option': wikiSelect['select.option']
 }

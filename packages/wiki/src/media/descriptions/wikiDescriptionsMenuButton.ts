@@ -34,9 +34,6 @@ export const wikiDescriptionsMenuButton: StorybookComponentsDescriptionItem = {
   import: [
     'import { ref } from \'vue\''
   ],
-  render: `
-      <DesignComponent v-bind="args" />
-    `,
   stories: [
     {
       id: 'MenuButtonBasic',
@@ -183,6 +180,17 @@ export const wikiDescriptionsMenuButton: StorybookComponentsDescriptionItem = {
     `
   },
   ai: {
+    render: `
+<div :class="classDemo.item">
+  <MenuButton :menu-attrs="{windowAttrs: {open: true}, embedded: true}" v-bind="args">
+    <template #default="{ binds }">
+      <button class="wiki-storybook-button" v-bind="binds">
+        Open Menu
+      </button>
+    </template>
+  </MenuButton>
+</div>
+    `,
     description: `
 Button-based dropdown selector combining a trigger Button and a dropdown Menu. Designed for space-saving select dropdowns where a standard text field outline is undesirable.
 Displays selected values with configurable label separators (labelSeparator) and label hiding options (hideLabelValue, hideValueIcon).

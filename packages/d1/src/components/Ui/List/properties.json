@@ -25,6 +25,10 @@
     "color": "{sys.palette.onSurface}",
     "color-opacity": "{sys.opacity.surface.disabled}"
   },
+  "#filterInput": {
+    "paddingX": "{sys.spacing.sm}",
+    "paddingY": "{sys.spacing.xs}"
+  },
   "focus-visible": {
     "outline": "{outline.md}"
   }

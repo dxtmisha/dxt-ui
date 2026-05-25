@@ -10,22 +10,30 @@ type MenuCountryPropsToken = {
 
 export type MenuCountryPropsBasic<
   Menu extends MenuPropsBasic = MenuPropsBasic
-> = MenuPropsInclude<Menu> & ModelPropsSelected & {
-  // Status
-  /** List of selected items/ Список выбранных элементов */
-  selected?: ListSelectedList
+> = MenuPropsInclude<Menu>
+  & ModelPropsSelected<ListSelectedList>
+  & {
+    // Status
+    /** List of selected items/ Список выбранных элементов */
+    selected?: ListSelectedList
 
-  // Value
-  /**
-   * Filter countries by code (ISO 3166-1 alpha-2)/
-   * Фильтр стран по кодам (ISO 3166-1 alpha-2)
-   */
-  countryList?: string[]
+    // Value
+    /**
+     * Filter countries by code (ISO 3166-1 alpha-2)/
+     * Фильтр стран по кодам (ISO 3166-1 alpha-2)
+     */
+    countryList?: string[]
 
-  // Technical
-  /** Whether selection is determined by value/ Определяется ли выбор по значению */
-  isSelectedByValue?: boolean
-}
+    // Style
+    /** Whether to show the phone code/ Показывать ли код телефона */
+    showPhoneCode?: boolean
+
+    // Technical
+    /** Whether selection is determined by value/ Определяется ли выбор по значению */
+    isSelectedByValue?: boolean
+    /** Representation language/ Язык представления */
+    language?: string
+  }
 
 /**
  * Type describing incoming properties.

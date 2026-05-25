@@ -285,7 +285,7 @@ export class GeoFlag {
    * @param code country code / код страны
    * @returns country information / информация о стране
    */
-  get(code = this.code): GeoFlagItem | undefined {
+  get(code: string = this.getCode()): GeoFlagItem | undefined {
     const data = Geo.find(code)
 
     if (data) {
@@ -297,11 +297,22 @@ export class GeoFlag {
         standard: data.standard,
         icon: GeoFlag.flags?.[data.country],
         label: country,
-        value: data.country
+        value: data.country,
+        phoneCode: data.phoneCode
       }
     }
 
     return undefined
+  }
+
+  /**
+   * Returns the country code.
+   *
+   * Возвращает код страны.
+   * @returns country code / код страны
+   */
+  getCode(): string {
+    return this.code || Geo.getLocation()
   }
 
   /**
@@ -311,7 +322,7 @@ export class GeoFlag {
    * @param code country code / код страны
    * @returns flag icon identifier / идентификатор иконки флага
    */
-  getFlag(code = this.code): string | undefined {
+  getFlag(code: string = this.getCode()): string | undefined {
     return this.get(code)?.icon
   }
 

@@ -180,6 +180,17 @@ export const wikiDescriptionsMenuChip: StorybookComponentsDescriptionItem = {
     `
   },
   ai: {
+    render: `
+<div :class="classDemo.item">
+  <MenuChip :menu-attrs="{windowAttrs: {open: true}, embedded: true}" v-bind="args">
+    <template #default="{ binds }">
+      <button class="wiki-storybook-button" v-bind="binds">
+        Open Menu
+      </button>
+    </template>
+  </MenuChip>
+</div>
+    `,
     description: `
 Chip-based dropdown selector combining a trigger Chip and a dropdown Menu. Designed for space-saving select dropdowns where a standard text field outline or large button trigger is undesirable.
 Displays selected values with configurable label separators (labelSeparator) and label hiding options (hideLabelValue, hideValueIcon).

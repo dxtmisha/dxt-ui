@@ -46,6 +46,9 @@ export type LabelNumberProps = LabelProps & {
   labelMax?: NumberOrString
   /** Enable number formatting/ Включить форматирование чисел */
   formatting?: boolean
+
+  /** Representation language/ Язык представления */
+  language?: string
 }
 
 /**

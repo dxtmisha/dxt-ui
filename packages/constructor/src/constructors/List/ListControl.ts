@@ -1,9 +1,10 @@
-import { computed, onUnmounted, watch } from 'vue'
+import { computed, nextTick, onMounted, onUnmounted, ref, watch, type Ref } from 'vue'
 import { EventItem, getKey, isDomRuntime, isInput, ListDataRef } from '@dxtmisha/functional'
 
 import { ListSearch } from './ListSearch'
 import { ListGo } from './ListGo'
 
+import type { FieldValidationItem } from '../../types/fieldTypes'
 import type { ListProps } from './props'
 
 /**
@@ -14,35 +15,42 @@ import type { ListProps } from './props'
  * Предоставляет клавиатурные сокращения, функциональность поиска и элементы управления навигацией.
  */
 export class ListControl {
+  /** Reference to the input element / Ссылка на элемент ввода */
+  readonly inputElement = ref<Record<string, any>>()
+
+  /** Event manager for tracking keyboard events / Менеджер событий для отслеживания событий клавиатуры */
   protected event?: EventItem<HTMLElement, any>
 
   /**
    * Creates an instance of ListControl for managing keyboard navigation and events.
    *
    * Создает экземпляр ListControl для управления навигацией с клавиатуры и событиями.
-   * @param props input data/ входные данные
+   * @param props input data / входные данные
+   * @param element reference to the element / ссылка на элемент
    * @param search search functionality controller / контроллер функциональности поиска
    * @param data list data manager / менеджер данных списка
    * @param go navigation controller / контроллер навигации
    */
   constructor(
     protected readonly props: ListProps,
+    protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly search: ListSearch,
     protected readonly data: ListDataRef,
     protected readonly go: ListGo
   ) {
-    watch(
-      this.isActive,
-      (status) => {
-        if (status) {
-          this.start()
-        } else {
-          this.stop()
-        }
-      },
-      { immediate: true }
-    )
-
+    onMounted(() => {
+      watch(
+        this.isActive,
+        (status) => {
+          if (status) {
+            this.start()
+          } else {
+            this.stop()
+          }
+        },
+        { immediate: true }
+      )
+    })
     onUnmounted(() => this.stop())
   }
 
@@ -50,6 +58,7 @@ export class ListControl {
    * Checks if the menu is active.
    *
    * Проверяет, активное ли меню.
+   * @returns true if control mode is active / true, если режим управления активен
    */
   readonly isActive = computed<boolean>(() => {
     return Boolean(this.props.control)
@@ -78,31 +87,53 @@ export class ListControl {
   }
 
   /**
+   * Handler for the input event.
+   *
+   * Обработчик события ввода.
+   * @param data field validation data / данные валидации поля
+   */
+  readonly onInput = (data: FieldValidationItem) => {
+    this.search.set(data.value)
+  }
+
+  /**
    * Checks if the event target is not an input.
    *
    * Проверяет, не является ли цель события input.
-   * @param target selected element/ выбранный элемент
+   * @param target selected element / выбранный элемент
+   * @returns true if target is not an input / true, если цель не является полем ввода
    */
   protected isNotInput(target: HTMLElement): boolean {
     return !isInput(target)
       || !this.getActiveElement()
   }
 
+  /**
+   * Checks if the pressed key is a control key.
+   *
+   * Проверяет, является ли нажатая клавиша управляющей.
+   * @param event keyboard event / событие клавиатуры
+   * @returns true if it is a control key / true, если клавиша является управляющей
+   */
   protected isControlKey(event: KeyboardEvent): boolean {
     const key = getKey(event)
 
     return key !== undefined
       && [
         'ArrowUp',
+        38,
+
         'ArrowDown',
+        40,
+
         'Enter',
+        13,
+
         'Backspace',
+        8,
+
         'Escape',
         'Esc',
-        38,
-        40,
-        13,
-        8,
         37
       ].indexOf(key) !== -1
   }
@@ -134,17 +165,29 @@ export class ListControl {
    * Запускает событие.
    */
   protected start() {
-    if (isDomRuntime()) {
-      if (!this.event) {
-        this.event = new EventItem<HTMLElement, any>(
-          document.body,
-          ['keydown', 'keypress'],
-          this.on
-        )
-      }
+    if (!this.event) {
+      this.event = new EventItem<HTMLElement, any>(
+        document.body,
+        ['keydown', 'keypress'],
+        this.on
+      )
+    }
 
+    if (!this.event.isActive()) {
       this.go.reset()
       this.event.start()
+
+      if (this.props.control) {
+        nextTick().then(() => {
+          requestAnimationFrame(() => {
+            const element = this.element.value?.querySelector<HTMLInputElement>('[data-menu-control="1"]')
+
+            if (element) {
+              element.focus()
+            }
+          })
+        })
+      }
     }
   }
 
@@ -182,25 +225,26 @@ export class ListControl {
    * Method for tracking keys when a window is open.
    *
    * Метод для отслеживания нажатий при открытом окне.
-   * @param event event object/ объект события
+   * @param event event object / объект события
    */
   protected readonly on = (event: KeyboardEvent) => {
     if (!this.data.getLength()) {
       return
     }
 
-    if (event.type === 'keypress') {
-      this.updateSearch(event)
-    } else if (
+    const isKeypress = event.type === 'keypress'
+
+    if (
       this.isNotInput(event.target as HTMLElement)
       || this.isControlKey(event)
+      || !isKeypress
     ) {
       const key = getKey(event)
 
       switch (key) {
         case 'Backspace':
         case 8:
-          this.updateSearch(event)
+          this.updateSearch(event, false)
           break
         case 'ArrowUp':
         case 38:
@@ -247,7 +291,7 @@ export class ListControl {
           break
       }
     } else {
-      this.updateSearch(event, false)
+      this.updateSearch(event, isKeypress)
     }
   }
 }

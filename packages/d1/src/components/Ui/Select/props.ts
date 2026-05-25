@@ -39,15 +39,9 @@ export type SelectProps = SelectPropsBasic<
 export const defaults: object = {
   ...defaultsSelect,
   iconArrowDown: 'keyboard_arrow_down',
-  iconSearch: 'search',
   menuAttrs: {
     itemAttrs: {
       dense: true
-    }
-  },
-  inputSearchAttrs: {
-    fieldAttrs: {
-      size: 'sm'
     }
   },
   ...{

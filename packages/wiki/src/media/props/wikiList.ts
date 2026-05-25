@@ -20,6 +20,17 @@ export const wikiList: StorybookArgsToList = {
       }
     }
   },
+  'list.inputSearchAttrs': {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Additional attributes for the search input',
+        ru: 'Дополнительные атрибуты для поля поиска'
+      }
+    },
+    hide: true
+  },
   'list.itemAttrs': {
     type: StorybookControl.object,
     options: {

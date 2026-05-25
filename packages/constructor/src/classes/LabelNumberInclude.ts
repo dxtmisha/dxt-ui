@@ -61,7 +61,7 @@ export class LabelNumberInclude extends LabelInclude {
         props.label,
         props.labelMax,
         props.formatting,
-        GeoRef.getLanguage().value
+        props.language || GeoRef.getLanguage().value
       ).toString()
     }
 

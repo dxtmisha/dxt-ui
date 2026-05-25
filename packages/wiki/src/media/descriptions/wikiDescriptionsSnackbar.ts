@@ -81,6 +81,7 @@ export const wikiDescriptionsSnackbar: StorybookComponentsDescriptionItem = {
 Centralized notification management system (orchestrator) that coordinates the lifecycle and queue of temporary messages. Ideal for global system alerts, user feedback, and asynchronous status updates across the application.
 Features an intelligent queue manager with support for priority containers, automatic lifecycle hooks (show/hide), and flexible screen anchoring (vertical/horizontal positioning). Includes programmatic control over message stack, custom auto-hide delays, and teleport-based rendering to ensure overlay priority over all content.
 Controlled via an exposed API (add, remove, clear) and configurable global settings like delay and origin. Place a single instance at the root of the application (e.g., App.vue) to manage consistent notification patterns throughout the entire user session.
-    `
+    `,
+    hide: true
   }
 }

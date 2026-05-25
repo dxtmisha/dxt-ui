@@ -91,6 +91,7 @@ export const wikiDescriptionsPageArea: StorybookComponentsDescriptionItem = {
 The PageArea component serves as a foundational structural unit for application pages.
 It helps define the main content zones and ensures consistent layout management across different views.
 Typically used as a root-level container within a specific page or sub-section to organize content blocks and handle area-specific logic.
-    `
+    `,
+    hide: true
   }
 }

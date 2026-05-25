@@ -1,5 +1,4 @@
 import {
-  toRef,
   type Ref,
   type ToRefs,
   computed,
@@ -112,7 +111,7 @@ export class List {
     this.text = new TextIncludeConstructor(this.props)
 
     this.data = new ListDataRefConstructor(
-      toRef(this.props, 'list'),
+      this.refs.list,
       this.focus.focus,
       this.search.highlight,
       this.refs.highlightLengthStart,
@@ -132,7 +131,13 @@ export class List {
       this.data,
       this.emits
     )
-    this.control = new ListControlConstructor(this.props, this.search, this.data, this.go)
+    this.control = new ListControlConstructor(
+      this.props,
+      this.element,
+      this.search,
+      this.data,
+      this.go
+    )
 
     this.event = new EventClickIncludeConstructor(undefined, undefined, emits)
     this.windowClasses = new WindowClassesIncludeConstructor(classDesign)
@@ -166,7 +171,8 @@ export class List {
    * Вычисляемые CSS классы для компонента ячейки.
    */
   readonly classes = computed<ConstrClass>(() => ({
-    [`${this.className}--highlightActive`]: Boolean(this.props.filterMode) && this.data.isHighlight()
+    [`${this.className}--highlightActive`]: Boolean(this.props.filterMode) && this.data.isHighlight(),
+    [`${this.className}--searchActive`]: Boolean(this.props.filterMode) && this.search.is()
   }))
 
   /**
@@ -213,8 +219,9 @@ export class List {
       this.itemBinds.value,
       item,
       {
-        key: item.value,
-        role: this.props.roleItem
+        'key': item.value,
+        'role': this.props.roleItem,
+        'data-item': true
       }
     )
   }
