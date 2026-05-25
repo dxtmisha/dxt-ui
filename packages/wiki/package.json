@@ -71,5 +71,6 @@
     "@storybook/addon-docs": "*",
     "react": "*",
     "vue": "*"
-  }
+  },
+  "ui-priority": 400
 }

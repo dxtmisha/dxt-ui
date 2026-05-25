@@ -31,18 +31,14 @@ export class BuildPackages {
    * Сканирует директорию пакетов и собирает каждый пакет, содержащий package.json.
    */
   async make(): Promise<void> {
-    const list = PropertiesFile.readDir(this.path)
+    const list = this.getList()
     let changed = 0
 
     console.info(`Build packages(${list.length})...`)
 
-    for (const folder of list) {
-      const packageFile = new PackageFile([this.path, folder])
-
+    for (const packageFile of list) {
       if (
-        packageFile.is()
-        && !packageFile.isTest()
-        && this.isUpdate(packageFile)
+        this.isUpdate(packageFile)
         && await this.build(packageFile)
       ) {
         this.updateLog(packageFile)
@@ -78,6 +74,36 @@ export class BuildPackages {
     return !packageFile.isVersionConsistency(
       this.getVersionLog(packageFile.getName())
     )
+  }
+
+  /**
+   * Scans the packages directory and returns a list of packages sorted by the ui-priority property in package.json.
+   * If a package does not have a priority, it defaults to 500.
+   *
+   * Сканирует директорию пакетов и возвращает список пакетов, отсортированный по свойству ui-priority в package.json.
+   * Если у пакета нет приоритета, по умолчанию устанавливается значение 500.
+   * @returns sorted list of package files / отсортированный список файлов пакетов
+   */
+  private getList(): PackageFile[] {
+    const list = PropertiesFile.readDir(this.path)
+    const packages: PackageFile[] = []
+
+    for (const folder of list) {
+      const packageFile = new PackageFile([this.path, folder])
+
+      if (
+        packageFile.is()
+        && !packageFile.isTest()
+      ) {
+        packages.push(packageFile)
+      }
+    }
+
+    return packages.sort((a, b) => {
+      const priorityA = a.get()?.['ui-priority'] ?? 500
+      const priorityB = b.get()?.['ui-priority'] ?? 500
+      return priorityA - priorityB
+    })
   }
 
   /**

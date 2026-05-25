@@ -1,0 +1,30 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/getLength - Độ dài hoặc kích thước của giá trị'/>
+
+# `getLength`
+
+Trả về độ dài hoặc kích thước của các kiểu dữ liệu khác nhau bao gồm Mảng, Đối tượng (Object), Map, Set và Chuỗi. Nếu giá trị là null, undefined hoặc kiểu không được hỗ trợ (như số hoặc boolean), hàm trả về `0`.
+
+**Tham số:**
+- `value: any` — Giá trị đầu vào cần đo độ dài/kích thước.
+
+**Trả về:**
+- `number` — Độ dài hoặc kích thước của giá trị.
+
+```typescript
+import { getLength } from '@dxtmisha/functional-basic'
+
+console.log(getLength('xin chào')) // 8
+console.log(getLength([1, 2, 3])) // 3
+console.log(getLength({ a: 1, b: 2 })) // 2
+
+const map = new Map([['key', 'value']])
+console.log(getLength(map)) // 1
+
+const set = new Set([1, 2, 2])
+console.log(getLength(set)) // 2
+
+console.log(getLength(null)) // 0
+console.log(getLength(123)) // 0
+```

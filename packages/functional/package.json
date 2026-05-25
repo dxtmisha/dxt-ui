@@ -77,5 +77,6 @@
     "vue": "*"
   },
   "dependencies": {},
-  "sideEffects": false
+  "sideEffects": false,
+  "ui-priority": 200
 }

@@ -73,5 +73,6 @@
     "vue": "*",
     "vue-router": "*"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "ui-priority": 300
 }

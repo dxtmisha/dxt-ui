@@ -44,5 +44,6 @@
   },
   "peerDependenciesMeta": {},
   "dependencies": {},
-  "devDependencies": {}
+  "devDependencies": {},
+  "ui-priority": 400
 }

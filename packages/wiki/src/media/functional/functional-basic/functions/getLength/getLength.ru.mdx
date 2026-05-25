@@ -1,0 +1,30 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/getLength - Длина или размер значения'/>
+
+# `getLength`
+
+Возвращает длину или размер различных типов данных, включая массивы, объекты, Map, Set и строки. Если значение равно null, undefined или имеет неподдерживаемый тип (например, число или булево), возвращает `0`.
+
+**Параметры:**
+- `value: any` — Входное значение для измерения.
+
+**Возвращает:**
+- `number` — Длина или размер переданного значения.
+
+```typescript
+import { getLength } from '@dxtmisha/functional-basic'
+
+console.log(getLength('привет')) // 6
+console.log(getLength([1, 2, 3])) // 3
+console.log(getLength({ a: 1, b: 2 })) // 2
+
+const map = new Map([['key', 'value']])
+console.log(getLength(map)) // 1
+
+const set = new Set([1, 2, 2])
+console.log(getLength(set)) // 2
+
+console.log(getLength(null)) // 0
+console.log(getLength(123)) // 0
+```

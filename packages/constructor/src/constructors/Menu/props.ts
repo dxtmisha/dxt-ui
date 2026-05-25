@@ -44,6 +44,8 @@ export type MenuPropsBasic<
     highlight?: string
     /** Starting length for search highlighting/ Начальная длина для подсветки поиска */
     highlightLengthStart?: number
+    /** Whether to show the search input/ Показывать ли поле поиска */
+    showSearch?: boolean
     /** Whether to enable filtering mode/ Включен ли режим фильтрации */
     filterMode?: boolean
 

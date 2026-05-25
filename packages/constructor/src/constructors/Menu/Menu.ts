@@ -7,7 +7,6 @@ import { BarsInclude } from '../Bars'
 import { WindowInclude } from '../Window'
 
 import { MenuRequest } from './MenuRequest'
-import { MenuSearch } from './MenuSearch'
 
 import { MenuWindow } from './MenuWindow'
 import { MenuValue } from './MenuValue'
@@ -25,8 +24,6 @@ import type { EventClickValue } from '../../types/eventClickTypes'
 export class Menu {
   /** Request handler for list data/ Обработчик запросов данных списка */
   readonly request: MenuRequest
-  /** Search helper for menu filtering/ Вспомогательный класс поиска для фильтрации меню */
-  readonly search: MenuSearch
   /** Value manager for selected handling/ Менеджер выбранного значения */
   readonly value: MenuValue
 
@@ -64,7 +61,6 @@ export class Menu {
    * @param constructors.ListDataRefConstructor class for working with list data/ класс для работы с данными списка
    * @param constructors.MenuGoConstructor class for working with navigation/ класс для работы с навигацией
    * @param constructors.MenuRequestConstructor class for working with request/ класс для работы с запросом
-   * @param constructors.MenuSearchConstructor class for working with search/ класс для работы с поиском
    * @param constructors.MenuValueConstructor class for working with value/ класс для работы со значением
    * @param constructors.MenuWindowConstructor class for working with menu window/ класс для работы с окном меню
    * @param constructors.WindowIncludeConstructor class for working with window/ класс для работы с окном
@@ -84,7 +80,6 @@ export class Menu {
       ListDataRefConstructor?: typeof ListDataRef
       MenuGoConstructor?: typeof MenuGo
       MenuRequestConstructor?: typeof MenuRequest
-      MenuSearchConstructor?: typeof MenuSearch
       MenuValueConstructor?: typeof MenuValue
       MenuWindowConstructor?: typeof MenuWindow
       WindowIncludeConstructor?: typeof WindowInclude
@@ -96,14 +91,12 @@ export class Menu {
       ListDataRefConstructor = ListDataRef,
       MenuGoConstructor = MenuGo,
       MenuRequestConstructor = MenuRequest,
-      MenuSearchConstructor = MenuSearch,
       MenuValueConstructor = MenuValue,
       MenuWindowConstructor = MenuWindow,
       WindowIncludeConstructor = WindowInclude
     } = constructors ?? {}
 
     this.request = new MenuRequestConstructor(this.props)
-    this.search = new MenuSearchConstructor(this.props)
     this.value = new MenuValueConstructor(this.props, this.refs, this.emits)
 
     this.data = new ListDataRefConstructor(
@@ -156,6 +149,8 @@ export class Menu {
    */
   readonly binds = computed<ListPropsBasic>(() => {
     return {
+      highlightLengthStart: this.props.highlightLengthStart,
+      showSearch: this.props.showSearch,
       filterMode: this.props.filterMode,
 
       liteThreshold: this.props.liteThreshold,

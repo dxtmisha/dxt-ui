@@ -31,14 +31,14 @@ export class MenuDesign<
   CLASSES extends MenuClasses,
   P extends MenuPropsBasic
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
-    COMP,
-    MenuEmits,
-    EXPOSE,
-    MenuSlots,
-    CLASSES,
-    P
-  > {
+  HTMLDivElement,
+  COMP,
+  MenuEmits,
+  EXPOSE,
+  MenuSlots,
+  CLASSES,
+  P
+> {
   protected readonly item: Menu
 
   /**
@@ -191,7 +191,7 @@ export class MenuDesign<
                 class: this.classes?.value.list,
 
                 selected: this.item.value.selected.value,
-                highlight: this.item.search.value.value,
+                highlight: this.props.highlight,
 
                 list,
                 lite: this.item.menuWindow.lite.value,

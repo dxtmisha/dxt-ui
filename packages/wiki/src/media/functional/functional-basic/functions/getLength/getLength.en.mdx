@@ -1,0 +1,30 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/getLength - Length or size of a value'/>
+
+# `getLength`
+
+Returns the length or size of various data types including Arrays, Objects, Maps, Sets, and Strings. If the value is null, undefined, or an unsupported type (such as number or boolean), it returns `0`.
+
+**Parameters:**
+- `value: any` — The input value to measure.
+
+**Returns:**
+- `number` — The length or size of the value.
+
+```typescript
+import { getLength } from '@dxtmisha/functional-basic'
+
+console.log(getLength('hello')) // 5
+console.log(getLength([1, 2, 3])) // 3
+console.log(getLength({ a: 1, b: 2 })) // 2
+
+const map = new Map([['key', 'value']])
+console.log(getLength(map)) // 1
+
+const set = new Set([1, 2, 2])
+console.log(getLength(set)) // 2
+
+console.log(getLength(null)) // 0
+console.log(getLength(123)) // 0
+```

@@ -1,4 +1,5 @@
 import { ref } from 'vue'
+import { getLength } from '@dxtmisha/functional-basic'
 
 import { MenuRequest } from './MenuRequest'
 
@@ -12,7 +13,6 @@ import type { MenuProps } from './props'
  */
 export class MenuWindow {
   readonly lite = ref<boolean>()
-  readonly control = ref<boolean>()
 
   /**
    * Constructor
@@ -52,10 +52,12 @@ export class MenuWindow {
   protected readonly preparation = async (): Promise<void> => {
     await this.request.preparation()
 
+    const list = this.request.item.value
+
     if (
-      this.props.list
+      list
       && this.props.liteThreshold
-      && Number(this.props.liteThreshold) <= Object.keys(this.props.list).length
+      && Number(this.props.liteThreshold) <= getLength(list)
     ) {
       this.lite.value = true
     }
@@ -70,7 +72,6 @@ export class MenuWindow {
    */
   protected readonly opening = async (): Promise<boolean> => {
     this.lite.value = false
-    this.control.value = true
 
     return true
   }
@@ -84,7 +85,6 @@ export class MenuWindow {
    */
   protected readonly closing = async (): Promise<boolean> => {
     this.lite.value = false
-    this.control.value = false
 
     return true
   }

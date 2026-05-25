@@ -51,5 +51,6 @@
   "dependencies": {
     "fflate": "*"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "ui-priority": 450
 }

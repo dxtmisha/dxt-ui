@@ -89,6 +89,7 @@ export class MenuRequest {
         && this.buffer.value !== undefined
       ) {
         callback(this.buffer.value)
+        return
       }
 
       this.progress.value = true
