@@ -2,7 +2,6 @@ import type { ConstrClass } from '@dxtmisha/functional'
 
 import type { MenuComponentInclude, MenuExposeInclude, MenuSlotInclude } from '../Menu'
 import type { ChipComponentInclude } from '../Chip'
-import type { InputComponentInclude } from '../Input'
 
 import type { FieldBasicEmits, FieldBasicExpose } from '../../types/fieldTypes'
 
@@ -13,7 +12,6 @@ import type { FieldBasicEmits, FieldBasicExpose } from '../../types/fieldTypes'
  */
 export type MenuChipComponents = MenuComponentInclude
   & ChipComponentInclude
-  & InputComponentInclude
 
 /**
  * Type describing available events.
@@ -50,6 +48,5 @@ export type MenuChipClasses = {
   label: string
   separator: string
   selected: string
-  input: string
   // :classes [!] System label / Системная метка
 }

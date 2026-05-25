@@ -31,14 +31,14 @@ export class MenuDesign<
   CLASSES extends MenuClasses,
   P extends MenuPropsBasic
 > extends DesignConstructorAbstract<
-  HTMLDivElement,
-  COMP,
-  MenuEmits,
-  EXPOSE,
-  MenuSlots,
-  CLASSES,
-  P
-> {
+    HTMLDivElement,
+    COMP,
+    MenuEmits,
+    EXPOSE,
+    MenuSlots,
+    CLASSES,
+    P
+  > {
   protected readonly item: Menu
 
   /**

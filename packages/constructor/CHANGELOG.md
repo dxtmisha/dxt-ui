@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.67.1] - 2026-05-25
+
+### Changed / Improved
+- **MenuButton**: Cleaned up component architecture by removing duplicate search/filter input handling, including `iconSearch` and `inputSearchAttrs` props, fully delegating search logic to the parent `Menu` component.
+- **MenuChip**: Removed duplicate search/filter input implementation to offload option filtering and input rendering entirely to the `Menu` layer.
+- **Select**: Simplified filtering design by deleting the custom `SelectFilter` class and delegating list searching/filtering to `Menu`. Kept `SelectInput` and `onInputValue` to support native-like text input interaction.
+- **SelectAbstract**: Streamlined selection setup by passing `showSearch` property directly to `MenuInclude` configuration, and removed outdated callbacks such as `onWindow` and search event triggers.
+- **Formatting and Typing**: Cleaned up minor layout spacing issues and standardized type intersections for `InputPhoneDialCode`, `List`, `ListItem`, `Menu`, `MotionAxis`, and `Tooltip`.
+
 ## [0.67.0] - 2026-05-24
 
 ### Added

@@ -8,9 +8,9 @@ import type { MenuCountryComponentInclude, MenuCountryEmits, MenuCountryExposeIn
  *
  * Интерфейс для описания, какие компоненты надо подключить для работы.
  */
-export type InputPhoneDialCodeComponents =
-  ButtonComponentInclude
-  & MenuCountryComponentInclude
+export type InputPhoneDialCodeComponents
+  = ButtonComponentInclude
+    & MenuCountryComponentInclude
 
 /**
  * Type describing available events.

@@ -3,8 +3,7 @@ import {
   type ConstrOptions,
   type ConstrStyles,
   DesignConstructorAbstract,
-  type ListNames,
-  toBinds
+  type ListNames
 } from '@dxtmisha/functional'
 
 import { MenuChip } from './MenuChip'
@@ -30,14 +29,14 @@ export class MenuChipDesign<
   CLASSES extends MenuChipClasses,
   P extends MenuChipPropsBasic
 > extends DesignConstructorAbstract<
-  HTMLDivElement,
-  COMP,
-  MenuChipEmits,
-  EXPOSE,
-  MenuChipSlots,
-  CLASSES,
-  P
-> {
+    HTMLDivElement,
+    COMP,
+    MenuChipEmits,
+    EXPOSE,
+    MenuChipSlots,
+    CLASSES,
+    P
+  > {
   protected readonly item: MenuChip
 
   /**
@@ -99,8 +98,7 @@ export class MenuChipDesign<
         // :classes [!] System label / Системная метка
         label: this.getSubClass('label'),
         separator: this.getSubClass('separator'),
-        selected: this.getSubClass('selected'),
-        input: this.getSubClass('input')
+        selected: this.getSubClass('selected')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -133,8 +131,7 @@ export class MenuChipDesign<
         contextBottom: props => this.initSlot('contextBottom', undefined, props)
       },
       {
-        selected: this.item.value.item.value,
-        highlight: this.item.filter.get()
+        selected: this.item.value.item.value
       }
     )
   }
@@ -230,44 +227,8 @@ export class MenuChipDesign<
   protected readonly renderTitle = (props: MenuControlItem) => {
     const children: any[] = []
 
-    if (this.props.showSearch) {
-      children.push(this.renderFilterInput(props))
-    }
-
     this.initSlot('title', children, props)
 
     return children
-  }
-
-  /**
-   * Renders the search filter input component within the dropdown menu header.
-   *
-   * Рендерит компонент ввода фильтра поиска внутри заголовка выпадающего меню.
-   * @param props data for the transferable property / данные для передаваемого свойства
-   * @returns search input node / узел поля ввода поиска
-   */
-  protected readonly renderFilterInput = (props: MenuControlItem): VNode => {
-    return h(
-      'div',
-      {
-        class: [
-          this.classes?.value.input,
-          props.classesWindow.static
-        ]
-      },
-      this.components.renderOne(
-        'input',
-        toBinds(
-          {
-            icon: this.props.iconSearch,
-            onInputLite: this.item.filter.onInput,
-            inputAttrs: {
-              'data-menu-control': '1'
-            }
-          },
-          this.props.inputSearchAttrs
-        )
-      )
-    )
   }
 }

@@ -3,8 +3,7 @@ import {
   type ConstrOptions,
   type ConstrStyles,
   DesignConstructorAbstract,
-  type ListNames,
-  toBinds
+  type ListNames
 } from '@dxtmisha/functional'
 
 import { MenuButton } from './MenuButton'
@@ -112,8 +111,7 @@ export class MenuButtonDesign<
         // :classes [!] System label / Системная метка
         label: this.getSubClass('label'),
         separator: this.getSubClass('separator'),
-        selected: this.getSubClass('selected'),
-        input: this.getSubClass('input')
+        selected: this.getSubClass('selected')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -142,14 +140,13 @@ export class MenuButtonDesign<
           this.renderControl(props),
           this.renderInput()
         ],
-        title: props => this.renderTitle(props),
+        title: props => this.initSlot('title', undefined, props),
         footer: props => this.initSlot('footer', undefined, props),
         contextTop: props => this.initSlot('contextTop', undefined, props),
         contextBottom: props => this.initSlot('contextBottom', undefined, props)
       },
       {
-        selected: this.item.value.item.value,
-        highlight: this.item.filter.get()
+        selected: this.item.value.item.value
       }
     )
   }
@@ -232,57 +229,6 @@ export class MenuButtonDesign<
         value: this.item.value.get(),
         type: 'hidden'
       }
-    )
-  }
-
-  /**
-   * Renders the title element, including search inputs and slot wrappers.
-   *
-   * Рендерит элемент заголовка, включая поля ввода поиска и обертки слотов.
-   * @param props data for the transferable property / данные для передаваемого свойства
-   * @returns list of children nodes representing the title / список дочерних узлов, представляющих заголовок
-   */
-  protected readonly renderTitle = (props: MenuControlItem) => {
-    const children: any[] = []
-
-    if (this.props.showSearch) {
-      children.push(this.renderFilterInput(props))
-    }
-
-    this.initSlot('title', children, props)
-
-    return children
-  }
-
-  /**
-   * Renders the search filter input component within the dropdown menu header.
-   *
-   * Рендерит компонент ввода фильтра поиска внутри заголовка выпадающего меню.
-   * @param props data for the transferable property / данные для передаваемого свойства
-   * @returns search input node / узел поля ввода поиска
-   */
-  protected readonly renderFilterInput = (props: MenuControlItem): VNode => {
-    return h(
-      'div',
-      {
-        class: [
-          this.classes?.value.input,
-          props.classesWindow.static
-        ]
-      },
-      this.components.renderOne(
-        'input',
-        toBinds(
-          {
-            icon: this.props.iconSearch,
-            onInputLite: this.item.filter.onInput,
-            inputAttrs: {
-              'data-menu-control': '1'
-            }
-          },
-          this.props.inputSearchAttrs
-        )
-      )
     )
   }
 }

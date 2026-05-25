@@ -13,8 +13,6 @@ import { MenuInclude } from '../Menu'
 import { ChipInclude } from '../Chip'
 
 import { SelectAbstract } from '../Select/SelectAbstract'
-import { SelectInput } from '../Select'
-import { SelectFilter } from '../Select'
 
 import type { MenuChipComponents, MenuChipEmits, MenuChipSlots } from './types'
 import type { MenuChipProps } from './props'
@@ -58,8 +56,6 @@ export class MenuChip extends SelectAbstract {
       FieldValidationIncludeConstructor?: typeof FieldValidationInclude
       FieldValueIncludeConstructor?: typeof FieldValueInclude
       MenuIncludeConstructor?: typeof MenuInclude
-      SelectFilterConstructor?: typeof SelectFilter
-      SelectInputConstructor?: typeof SelectInput
     }
   ) {
     super(

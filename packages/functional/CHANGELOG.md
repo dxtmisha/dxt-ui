@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.12.3] - 2026-05-25
+
+### Changed / Improved
+- **Build System**: Configured `ui-priority: 200` inside `package.json` to ensure prioritized dependency order sorting during workspace build actions.
+- **Maintenance**: Version bumped to `1.12.3` for consistency.
+
+## [1.12.2] - 2026-05-25
+
+### Changed / Improved
+- **Tests**: Configured vitest runner execution environment via the `--no-webstorage` flag inside `package.json` to avoid persistent localStorage/sessionStorage warning outputs.
+
 ## [1.12.1] - 2026-05-21
 
 ### Fixed

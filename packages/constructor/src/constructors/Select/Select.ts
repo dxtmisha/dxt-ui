@@ -14,7 +14,6 @@ import { FieldInclude } from '../Field'
 
 import { SelectAbstract } from './SelectAbstract'
 import { SelectInput } from './SelectInput'
-import { SelectFilter } from './SelectFilter'
 
 import type { SelectComponents, SelectEmits, SelectSlots } from './types'
 import type { SelectProps } from './props'
@@ -29,6 +28,9 @@ import type { SelectProps } from './props'
 export class Select extends SelectAbstract {
   /** Object for working with field / Объект для работы с полем */
   readonly field: FieldInclude
+
+  /** Select input manager / Менеджер ввода выбора */
+  readonly input: SelectInput
 
   /**
    * Constructor for the Select component.
@@ -52,7 +54,6 @@ export class Select extends SelectAbstract {
    * @param constructors.FieldValidationIncludeConstructor class for working with field validation / класс для работы с валидацией поля
    * @param constructors.FieldValueIncludeConstructor class for working with field value / класс для работы со значением поля
    * @param constructors.MenuIncludeConstructor class for working with menu / класс для работы с меню
-   * @param constructors.SelectFilterConstructor class for working with select filter / класс для работы с фильтром выбора
    * @param constructors.SelectInputConstructor class for working with select input / класс для работы с вводом выбора
    */
   constructor(
@@ -74,7 +75,6 @@ export class Select extends SelectAbstract {
       FieldValidationIncludeConstructor?: typeof FieldValidationInclude
       FieldValueIncludeConstructor?: typeof FieldValueInclude
       MenuIncludeConstructor?: typeof MenuInclude
-      SelectFilterConstructor?: typeof SelectFilter
       SelectInputConstructor?: typeof SelectInput
     }
   ) {
@@ -91,8 +91,16 @@ export class Select extends SelectAbstract {
     )
 
     const {
-      FieldIncludeConstructor = FieldInclude
+      FieldIncludeConstructor = FieldInclude,
+      SelectInputConstructor = SelectInput
     } = constructors ?? {}
+
+    this.input = new SelectInputConstructor(
+      this.props,
+      this.attributes,
+      this.value,
+      this.event
+    )
 
     this.field = new FieldIncludeConstructor(
       this.props,
@@ -110,5 +118,14 @@ export class Select extends SelectAbstract {
         cancel: this.props.cancel ?? (this.props.multiple ? 'auto' : 'none')
       }))
     )
+  }
+
+  /**
+   * Handles the input value change event to open the menu.
+   *
+   * Обрабатывает событие изменения значения ввода для открытия меню.
+   */
+  readonly onInputValue = () => {
+    this.menu.getElement()?.toOpen()
   }
 }

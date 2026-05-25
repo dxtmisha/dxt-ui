@@ -31,14 +31,14 @@ export class SelectDesign<
   CLASSES extends SelectClasses,
   P extends SelectPropsBasic
 > extends DesignConstructorAbstract<
-  HTMLDivElement,
-  COMP,
-  SelectEmits,
-  EXPOSE,
-  SelectSlots,
-  CLASSES,
-  P
-> {
+    HTMLDivElement,
+    COMP,
+    SelectEmits,
+    EXPOSE,
+    SelectSlots,
+    CLASSES,
+    P
+  > {
   protected readonly item: Select
 
   /**
@@ -98,7 +98,6 @@ export class SelectDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        input: this.getSubClass('input')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -151,8 +150,7 @@ export class SelectDesign<
         contextBottom: props => this.initSlot('contextBottom', undefined, props)
       },
       {
-        selected: this.item.value.item.value,
-        highlight: this.item.filter.get()
+        selected: this.item.value.item.value
       }
     )
   }
@@ -253,43 +251,8 @@ export class SelectDesign<
   protected readonly renderTitle = (props: MenuControlItem) => {
     const children: any[] = []
 
-    if (this.props.showSearch) {
-      children.push(this.renderFilterInput(props))
-    }
-
     this.initSlot('title', children, props)
 
     return children
-  }
-
-  /**
-   * Render filter input.
-   *
-   * Рендер фильтра ввода.
-   * @param props data for the transferable property/ данные для передаваемого свойства
-   */
-  protected readonly renderFilterInput = (props: MenuControlItem): VNode => {
-    return h(
-      'div',
-      {
-        class: [
-          this.classes?.value.input,
-          props.classesWindow.static
-        ]
-      },
-      this.components.renderOne(
-        'input',
-        toBinds(
-          {
-            icon: this.props.iconSearch,
-            onInputLite: this.item.filter.onInput,
-            inputAttrs: {
-              'data-menu-control': '1'
-            }
-          },
-          this.props.inputSearchAttrs
-        )
-      )
-    )
   }
 }

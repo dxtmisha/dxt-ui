@@ -12,7 +12,6 @@ import {
 
 import { D1Menu } from '../Menu'
 import { D1Chip } from '../Chip'
-import { D1Input } from '../Input'
 
 import { defaults, type MenuChipProps } from './props'
 import './styleToken.scss'
@@ -45,8 +44,7 @@ const design = new MenuChipDesign(
     styles: stylesToken,
     components: {
       menu: D1Menu,
-      chip: D1Chip,
-      input: D1Input
+      chip: D1Chip
     }
   }
 )

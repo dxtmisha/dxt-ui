@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.1] - 2026-05-25
+
+### Changed / Improved
+- **Maintenance**: Incremented version to `1.3.1` to align with monorepo release updates.
+
+## [1.3.0] - 2026-05-25
+
+### Added
+- **`getLength`**: Introduced a new `getLength` utility function to determine the length/size of strings, arrays, Maps, Sets, and objects reactively and safely, accompanied by complete bilingual JSDocs.
+- **Tests**: Created a comprehensive unit test suite (`getLength.test.ts`) to validate length computation across all supported data types.
+
+### Changed / Improved
+- **Build System**: Added `ui-priority: 100` attribute to `package.json` to facilitate prioritized build sorting of foundational libraries.
+
+## [1.2.11] - 2026-05-25
+
+### Changed / Improved
+- **Tests**: Configured the vitest runner command to execute with `NODE_OPTIONS="--no-webstorage"` in `package.json` to prevent environment-related web storage warnings.
+
 ## [1.2.10] - 2026-05-24
 
 ### Added

@@ -1,7 +1,6 @@
 import { type MenuChipPropsBasic, defaultsMenuChip } from '@dxtmisha/constructor/MenuChip'
 import type { IconProps } from '../Icon'
 import type { ChipProps } from '../Chip'
-import type { InputProps } from '../Input'
 import type { MenuProps } from '../Menu'
 
 export const propsValues = {
@@ -20,7 +19,6 @@ type PropsToken = {
 export type MenuChipProps = MenuChipPropsBasic<
   IconProps,
   ChipProps,
-  InputProps,
   MenuProps
 > & PropsToken
 
@@ -30,17 +28,6 @@ export type MenuChipProps = MenuChipPropsBasic<
 export const defaults: object = {
   ...defaultsMenuChip,
   iconArrowDown: 'keyboard_arrow_down',
-  iconSearch: 'search',
-  menuAttrs: {
-    itemAttrs: {
-      dense: true
-    }
-  },
-  inputSearchAttrs: {
-    fieldAttrs: {
-      size: 'sm'
-    }
-  },
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

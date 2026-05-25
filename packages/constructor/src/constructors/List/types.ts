@@ -15,9 +15,9 @@ import type { InputComponentInclude } from '../Input'
  */
 export type ListComponents
   = ListItemComponentInclude
-  & ListGroupComponentInclude
-  & ListMenuComponentInclude
-  & InputComponentInclude
+    & ListGroupComponentInclude
+    & ListMenuComponentInclude
+    & InputComponentInclude
 
 /**
  * Type describing available events.
@@ -26,10 +26,10 @@ export type ListComponents
  */
 export type ListEmits
   = EventClickEmits
-  & {
+    & {
     /** Event for closing the list/ Событие закрытия списка */
-    close: []
-  }
+      close: []
+    }
 
 /**
  * Type describing available properties.

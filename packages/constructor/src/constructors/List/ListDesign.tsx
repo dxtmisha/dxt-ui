@@ -35,14 +35,14 @@ export class ListDesign<
   CLASSES extends ListClasses,
   P extends ListPropsBasic
 > extends DesignConstructorAbstract<
-  HTMLDivElement,
-  COMP,
-  ListEmits,
-  EXPOSE,
-  ListSlots,
-  CLASSES,
-  P
-> {
+    HTMLDivElement,
+    COMP,
+    ListEmits,
+    EXPOSE,
+    ListSlots,
+    CLASSES,
+    P
+  > {
   protected readonly item: List
 
   /**

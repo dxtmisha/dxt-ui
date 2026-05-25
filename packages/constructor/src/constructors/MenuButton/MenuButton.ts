@@ -13,8 +13,6 @@ import { MenuInclude } from '../Menu'
 import { ButtonInclude } from '../Button'
 
 import { SelectAbstract } from '../Select/SelectAbstract'
-import { SelectInput } from '../Select'
-import { SelectFilter } from '../Select'
 
 import type { MenuButtonComponents, MenuButtonEmits, MenuButtonSlots } from './types'
 import type { MenuButtonProps } from './props'
@@ -54,8 +52,6 @@ export class MenuButton extends SelectAbstract {
    * @param constructors.FieldValidationIncludeConstructor field validation class constructor / конструктор класса field validation
    * @param constructors.FieldValueIncludeConstructor field value class constructor / конструктор класса field value
    * @param constructors.MenuIncludeConstructor menu include class constructor / конструктор класса menu include
-   * @param constructors.SelectFilterConstructor select filter class constructor / конструктор класса select filter
-   * @param constructors.SelectInputConstructor select input class constructor / конструктор класса select input
    */
   constructor(
     protected readonly props: MenuButtonProps,
@@ -76,8 +72,6 @@ export class MenuButton extends SelectAbstract {
       FieldValidationIncludeConstructor?: typeof FieldValidationInclude
       FieldValueIncludeConstructor?: typeof FieldValueInclude
       MenuIncludeConstructor?: typeof MenuInclude
-      SelectFilterConstructor?: typeof SelectFilter
-      SelectInputConstructor?: typeof SelectInput
     }
   ) {
     super(

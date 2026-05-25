@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.67.1] - 2026-05-25
+
+### Changed / Improved
+- **D1MenuButton**: Cleaned up component structure by removing the unused sub-input component reference, default props (`iconSearch`, `inputSearchAttrs`), `#input` properties schema, and related styling rules, since search/filter is now handled natively by the dropdown menu.
+- **D1MenuChip**: Removed obsolete sub-input references, default properties, and styling definitions to match the constructor-level search delegation.
+- **D1Select**: Cleaned up unused input component registration, token properties, and style classes, delegating search input handling to the overlay menu component.
+- **Tokens & Theme**: Formally registered the `select` component in `src/styles/Ui/list.json` to define and bind the standard design token `--d1-select-main` mapping to `{d.select}`.
+
 ## [0.67.0] - 2026-05-24
 
 ### Added

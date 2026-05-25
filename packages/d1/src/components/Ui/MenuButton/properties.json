@@ -5,9 +5,5 @@
   },
   "#label": {
     "color-opacity": "{sys.opacity.primary.medium}"
-  },
-  "#input": {
-    "marginX": "{sys.spacing.sm}",
-    "marginY": "{layout.paddingY}"
   }
 }

@@ -18,11 +18,6 @@
     &__separator {
       @include ui.marginRight(#{var(--d1-sys-spacing-x)});
     }
-    
-    &__input {
-      @include ui.marginX(#{var(--d1-sys-spacing-sm)});
-      @include ui.marginY(#{var(--d1-layout-paddingY)});
-    }
   }
   // :style [!] System label / Системная метка
 

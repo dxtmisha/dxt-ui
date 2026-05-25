@@ -11,10 +11,7 @@
   // Стили из токенов
   // :style [!] System label / Системная метка
   & {
-    &__input {
-      @include ui.marginX(#{var(--d1-sys-spacing-sm)});
-      @include ui.marginY(#{var(--d1-layout-paddingY)});
-    }
+    --d1-select-main: var(--d-select);
   }
   // :style [!] System label / Системная метка
 

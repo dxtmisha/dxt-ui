@@ -2,7 +2,6 @@ import type { LabelProps } from '../../types/labelTypes'
 
 import type { ChipPropsBasic, ChipPropsInclude } from '../Chip'
 import type { IconPropsBasic } from '../Icon'
-import type { InputPropsBasic } from '../Input'
 import type { MenuPropsBasic, MenuPropsInclude } from '../Menu'
 
 import type { FieldSelectLiteProps } from '../../types/fieldTypes'
@@ -16,13 +15,12 @@ type MenuChipPropsToken = {
 export type MenuChipPropsBasic<
   Icon extends IconPropsBasic = IconPropsBasic,
   Chip extends ChipPropsBasic = ChipPropsBasic,
-  Input extends InputPropsBasic = InputPropsBasic,
   Menu extends MenuPropsBasic = MenuPropsBasic
 > = LabelProps
   & ChipPropsInclude<Chip>
   & FieldSelectLiteProps
   & MenuPropsInclude<Menu>
-  & MenuButtonPropsTool<Icon, Input>
+  & MenuButtonPropsTool<Icon>
 
 /**
  * Type describing incoming properties.

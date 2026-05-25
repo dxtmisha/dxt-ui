@@ -10,16 +10,16 @@ import type { TooltipProps } from './props'
  */
 export type TooltipControlBinds
   = AriaList
-  & {
+    & {
     /** CSS class for the control element/ CSS-класс для элемента управления */
-    class: string
-    /** Click event handler/ Обработчик события клика */
-    onClick: () => void
-    /** Mouse over event handler/ Обработчик события наведения мыши */
-    onMouseover: (event: MouseEvent) => void
-    /** Mouse out event handler/ Обработчик события ухода мыши */
-    onMouseout: (event: MouseEvent) => void
-  }
+      class: string
+      /** Click event handler/ Обработчик события клика */
+      onClick: () => void
+      /** Mouse over event handler/ Обработчик события наведения мыши */
+      onMouseover: (event: MouseEvent) => void
+      /** Mouse out event handler/ Обработчик события ухода мыши */
+      onMouseout: (event: MouseEvent) => void
+    }
 
 /**
  * Type describing the tooltip control/
@@ -27,12 +27,12 @@ export type TooltipControlBinds
  */
 export type TooltipControl
   = TooltipControlBinds
-  & {
+    & {
     /** Reactive state of the tooltip open state/ Реактивное состояние открытости тултипа */
-    open: Ref<boolean>
-    /** Control bindings/ Привязки управления */
-    binds: Record<string, any>
-  }
+      open: Ref<boolean>
+      /** Control bindings/ Привязки управления */
+      binds: Record<string, any>
+    }
 
 /**
  * Component map for including the Tooltip component/

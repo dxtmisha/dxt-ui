@@ -33,14 +33,14 @@ export class InputPhoneDialCodeDesign<
   CLASSES extends InputPhoneDialCodeClasses,
   P extends InputPhoneDialCodePropsBasic
 > extends DesignConstructorAbstract<
-  HTMLDivElement,
-  COMP,
-  InputPhoneDialCodeEmits,
-  EXPOSE,
-  InputPhoneDialCodeSlots,
-  CLASSES,
-  P
-> {
+    HTMLDivElement,
+    COMP,
+    InputPhoneDialCodeEmits,
+    EXPOSE,
+    InputPhoneDialCodeSlots,
+    CLASSES,
+    P
+  > {
   /** Instance of the InputPhoneDialCode logic controller / Экземпляр контроллера логики InputPhoneDialCode */
   protected readonly item: InputPhoneDialCode
 

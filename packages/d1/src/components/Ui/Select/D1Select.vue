@@ -13,7 +13,6 @@ import {
 import { D1Menu } from '../Menu'
 import { D1Field } from '../Field'
 import { D1SelectValue } from '../SelectValue'
-import { D1Input } from '../Input'
 
 import { defaults, type SelectProps } from './props'
 import './styleToken.scss'
@@ -47,8 +46,7 @@ const design = new SelectDesign(
     components: {
       menu: D1Menu,
       field: D1Field,
-      selectValue: D1SelectValue,
-      input: D1Input
+      selectValue: D1SelectValue
     }
   }
 )

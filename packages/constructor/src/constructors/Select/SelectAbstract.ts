@@ -18,10 +18,6 @@ import { FieldCodeInclude } from '../../classes/Field/FieldCodeInclude'
 import { FieldValidationInclude } from '../../classes/Field/FieldValidationInclude'
 import { FieldEventInclude } from '../../classes/Field/FieldEventInclude'
 
-import { SelectInput } from './SelectInput'
-import { SelectFilter } from './SelectFilter'
-
-import type { WindowEmitOptions } from '../Window'
 import type { SelectComponents, SelectEmits, SelectSlots } from './types'
 import type { SelectProps } from './props'
 
@@ -53,11 +49,6 @@ export abstract class SelectAbstract {
   /** Field event manager / Менеджер событий поля */
   readonly event: FieldEventInclude
 
-  /** Select input manager / Менеджер ввода выбора */
-  readonly input: SelectInput
-  /** Select filter manager / Менеджер фильтра выбора */
-  readonly filter: SelectFilter
-
   /** Dropdown menu inclusion manager / Менеджер включения выпадающего меню */
   readonly menu: MenuInclude
 
@@ -82,8 +73,6 @@ export abstract class SelectAbstract {
    * @param constructors.FieldValidationIncludeConstructor class for working with field validation / класс для работы с валидацией поля
    * @param constructors.FieldValueIncludeConstructor class for working with field value / класс для работы со значением поля
    * @param constructors.MenuIncludeConstructor class for working with menu / класс для работы с меню
-   * @param constructors.SelectFilterConstructor class for working with select filter / класс для работы с фильтром выбора
-   * @param constructors.SelectInputConstructor class for working with select input / класс для работы с вводом выбора
    */
   constructor(
     protected readonly props: SelectProps,
@@ -103,8 +92,6 @@ export abstract class SelectAbstract {
       FieldValidationIncludeConstructor?: typeof FieldValidationInclude
       FieldValueIncludeConstructor?: typeof FieldValueInclude
       MenuIncludeConstructor?: typeof MenuInclude
-      SelectFilterConstructor?: typeof SelectFilter
-      SelectInputConstructor?: typeof SelectInput
     }
   ) {
     const {
@@ -115,9 +102,7 @@ export abstract class SelectAbstract {
       FieldEventIncludeConstructor = FieldEventInclude,
       FieldValidationIncludeConstructor = FieldValidationInclude,
       FieldValueIncludeConstructor = FieldValueInclude,
-      MenuIncludeConstructor = MenuInclude,
-      SelectFilterConstructor = SelectFilter,
-      SelectInputConstructor = SelectInput
+      MenuIncludeConstructor = MenuInclude
     } = constructors ?? {}
 
     this.attributes = new FieldAttributesIncludeConstructor(this.props)
@@ -150,14 +135,6 @@ export abstract class SelectAbstract {
       this.emits
     )
 
-    this.input = new SelectInputConstructor(
-      this.props,
-      this.attributes,
-      this.value,
-      this.event
-    )
-    this.filter = new SelectFilterConstructor()
-
     this.menu = new MenuIncludeConstructor(
       this.props,
       this.className,
@@ -174,6 +151,7 @@ export abstract class SelectAbstract {
         autoClose: !this.props.multiple,
         list: executeFunction(this.props.option),
         max: this.props.max,
+        showSearch: this.props.showSearch,
         filterMode: this.props.filterMode,
         hideList: this.props.hideList,
         selectionStyle: this.selectionStyle.value,
@@ -181,19 +159,9 @@ export abstract class SelectAbstract {
         onClick: this.event.onSelect,
         onClickSlot: this.onClick,
         onUpdateValue: this.isArrow() ? this.event.onValue : undefined,
-        onWindow: this.onWindow,
         ariaMultiselectable: this.props.multiple
       }))
     )
-  }
-
-  /**
-   * Handles the input value change event to open the menu.
-   *
-   * Обрабатывает событие изменения значения ввода для открытия меню.
-   */
-  readonly onInputValue = () => {
-    this.menu.getElement()?.toOpen()
   }
 
   /** Computes the trailing icon value / Вычисляет значение иконки трейлинга */
@@ -246,23 +214,6 @@ export abstract class SelectAbstract {
   protected readonly onClick = (value?: string) => {
     if (value) {
       this.value.set(value)
-    }
-  }
-
-  /**
-   * Handles the window change event to set target element focus if search is enabled.
-   *
-   * Обрабатывает событие изменения окна для установки фокуса на элемент ввода, если включен поиск.
-   * @param options window option data / параметры окна
-   */
-  protected readonly onWindow = ({ element, open }: WindowEmitOptions): void => {
-    if (
-      open
-      && this.props.showSearch
-    ) {
-      requestAnimationFrame(() => {
-        element.querySelector<HTMLInputElement>('input[data-menu-control]')?.focus()
-      })
     }
   }
 }

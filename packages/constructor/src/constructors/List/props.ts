@@ -23,7 +23,7 @@ export type ListPropsToken = {
 export type ListPropsBasic<
   Icon extends IconPropsBasic = IconPropsBasic,
   ListItem extends ListItemPropsBasic = ListItemPropsBasic,
-  Input extends InputPropsBasic = InputPropsBasic,
+  Input extends InputPropsBasic = InputPropsBasic
 > = AriaRolePropsInclude
   & AriaMultiselectablePropsInclude
   & TextNotFoundPropsInclude

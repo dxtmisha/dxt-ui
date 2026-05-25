@@ -139,7 +139,7 @@ export class MotionAxis {
 
   /**
    * Checking the element for inclusion in the DOM by key.
-   * 
+   *
    * Проверка элемента на включение в DOM по ключу.
    * @param key element key/ ключ элемента
    * @returns Returns true if the element is included in the DOM/ Возвращает true если элемент включен в DOM
@@ -154,7 +154,7 @@ export class MotionAxis {
 
   /**
    * Checking the element for inclusion in the DOM by key in slide.
-   * 
+   *
    * Проверка элемента на включение в DOM по ключу в слайде.
    * @param key element key/ ключ элемента
    * @returns Returns true if the element is included in the DOM/ Возвращает true если элемент включен в DOM

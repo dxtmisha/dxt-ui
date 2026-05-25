@@ -12,7 +12,6 @@ import {
 
 import { D1Menu } from '../Menu'
 import { D1Button } from '../Button'
-import { D1Input } from '../Input'
 
 import { defaults, type MenuButtonProps } from './props'
 import './styleToken.scss'
@@ -45,8 +44,7 @@ const design = new MenuButtonDesign(
     styles: stylesToken,
     components: {
       menu: D1Menu,
-      button: D1Button,
-      input: D1Input
+      button: D1Button
     },
     compMod: {
       button: {

@@ -19,13 +19,13 @@ import type { EventClickEmits, EventClickExpose } from '../../types/eventClickTy
  */
 export type ListItemComponents
   = IconComponentInclude
-  & BadgeComponentInclude
-  & ProgressComponentInclude
-  & RippleComponentInclude
-  & {
-    checkbox?: object
-    radio?: object
-  }
+    & BadgeComponentInclude
+    & ProgressComponentInclude
+    & RippleComponentInclude
+    & {
+      checkbox?: object
+      radio?: object
+    }
 
 /**
  * Type describing available events.

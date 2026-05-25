@@ -10295,6 +10295,17 @@
           }
         }
       },
+      "select": {
+        "name": "d1-select",
+        "type": "component",
+        "value": {
+          "main": {
+            "name": "--d1-select-main",
+            "type": "var",
+            "value": "{d.select}"
+          }
+        }
+      },
       "skeleton": {
         "name": "d1-skeleton",
         "type": "component",

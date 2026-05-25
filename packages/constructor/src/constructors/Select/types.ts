@@ -2,7 +2,6 @@ import type { ConstrClass } from '@dxtmisha/functional'
 import type { MenuComponentInclude, MenuExposeInclude, MenuSlotInclude } from '../Menu'
 import type { FieldComponentInclude, FieldSlotsInclude } from '../Field'
 import type { SelectValueComponentInclude } from '../SelectValue'
-import type { InputComponentInclude } from '../Input'
 
 import type { FieldBasicEmits, FieldBasicExpose } from '../../types/fieldTypes'
 
@@ -15,7 +14,6 @@ export type SelectComponents
   = MenuComponentInclude
     & FieldComponentInclude
     & SelectValueComponentInclude
-    & InputComponentInclude
 
 /**
  * Type describing available events.
@@ -48,6 +46,5 @@ export interface SelectSlots extends FieldSlotsInclude, MenuSlotInclude {
 export type SelectClasses = {
   main: ConstrClass
   // :classes [!] System label / Системная метка
-  input: string
   // :classes [!] System label / Системная метка
 }

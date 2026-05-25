@@ -1,8 +1,7 @@
 import type { LabelProps } from '../../types/labelTypes'
 
 import type { ButtonPropsBasic, ButtonPropsInclude } from '../Button'
-import type { IconPropsBasic, IconValue } from '../Icon'
-import type { InputPropsBasic } from '../Input'
+import type { IconPropsBasic } from '../Icon'
 import type { MenuPropsBasic, MenuPropsInclude } from '../Menu'
 
 import type { MenuButtonPropsTool } from './basicTypes'
@@ -16,17 +15,12 @@ type MenuButtonPropsToken = {
 export type MenuButtonPropsBasic<
   Icon extends IconPropsBasic = IconPropsBasic,
   Button extends ButtonPropsBasic = ButtonPropsBasic,
-  Input extends InputPropsBasic = InputPropsBasic,
   Menu extends MenuPropsBasic = MenuPropsBasic
 > = LabelProps
   & ButtonPropsInclude<Button>
   & FieldSelectLiteProps
   & MenuPropsInclude<Menu>
-  & MenuButtonPropsTool<Icon, Input>
-  & {
-    /** Icon for the down arrow/ Иконка для стрелки вниз */
-    iconArrowDown?: IconValue<Icon>
-  }
+  & MenuButtonPropsTool<Icon>
 
 /**
  * Type describing incoming properties.

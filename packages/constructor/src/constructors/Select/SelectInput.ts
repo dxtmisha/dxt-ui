@@ -50,7 +50,6 @@ export class SelectInput {
         'placeholder': this.props.placeholder,
         'data-menu-control': '1',
         'onInput': this.isEdit.value ? this.event.onInput : this.event.onSelect
-        // 'onKeydown': this.onKeydown
       }
     ) as ConstrBind<Partial<HTMLInputElement>>
   })

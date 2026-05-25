@@ -5,7 +5,6 @@ import type { FieldProps } from '../Field'
 import type { FieldLabelProps } from '../FieldLabel'
 import type { FieldMessageProps } from '../FieldMessage'
 import type { FieldCounterProps } from '../FieldCounter'
-import type { InputProps } from '../Input'
 import type { ProgressProps } from '../Progress'
 import type { MenuProps } from '../Menu'
 
@@ -28,7 +27,6 @@ export type SelectProps = SelectPropsBasic<
   FieldLabelProps,
   FieldMessageProps,
   FieldCounterProps,
-  InputProps,
   ProgressProps,
   MenuProps
 > & PropsToken

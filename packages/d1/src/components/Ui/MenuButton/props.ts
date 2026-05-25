@@ -2,7 +2,6 @@ import { type MenuButtonPropsBasic, defaultsMenuButton } from '@dxtmisha/constru
 
 import type { IconProps } from '../Icon'
 import type { ButtonProps } from '../Button'
-import type { InputProps } from '../Input'
 import type { MenuProps } from '../Menu'
 
 export const propsValues = {
@@ -21,7 +20,6 @@ type PropsToken = {
 export type MenuButtonProps = MenuButtonPropsBasic<
   IconProps,
   ButtonProps,
-  InputProps,
   MenuProps
 > & PropsToken
 
@@ -31,17 +29,6 @@ export type MenuButtonProps = MenuButtonPropsBasic<
 export const defaults: object = {
   ...defaultsMenuButton,
   iconArrowDown: 'keyboard_arrow_down',
-  iconSearch: 'search',
-  menuAttrs: {
-    itemAttrs: {
-      dense: true
-    }
-  },
-  inputSearchAttrs: {
-    fieldAttrs: {
-      size: 'sm'
-    }
-  },
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка
