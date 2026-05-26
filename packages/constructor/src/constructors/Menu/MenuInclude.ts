@@ -53,7 +53,7 @@ export class MenuInclude<
    */
   readonly is = computed(() => Boolean(!this.props.disabled && this.components))
 
-  readonly isOpen = computed<boolean>(() => Boolean(this.element.value?.open))
+  readonly isOpen = computed<boolean>(() => Boolean(this.element.value?.getOpen()))
 
   /** Computed bindings for the menu/ Вычисляемые привязки для меню */
   readonly binds = computed<PropsExtra>(() => {
@@ -73,7 +73,7 @@ export class MenuInclude<
 
   /** Menu expose functionality/ Функциональность экспорта меню */
   readonly expose: MenuExposeInclude = {
-    open: computed(() => Boolean(this.element.value?.open)),
+    getOpen: () => Boolean(this.element.value?.getOpen()),
     setOpen: async (open: boolean) => this.element.value?.setOpen(open),
     toOpen: async () => this.element.value?.toOpen(),
     toClose: async () => this.element.value?.toClose(),

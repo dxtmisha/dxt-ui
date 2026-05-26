@@ -80,8 +80,8 @@ export class MotionTransformDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      open: this.item.state.open,
-      isShow: this.item.state.isShow,
+      getOpen: () => this.item.state.open.value,
+      isShow: () => this.item.state.isShow.value,
 
       setOpen: this.item.go.to,
       toOpen: this.item.go.open,

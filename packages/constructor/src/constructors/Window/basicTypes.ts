@@ -1,4 +1,4 @@
-import type { ComputedRef, Ref } from 'vue'
+import type { Ref } from 'vue'
 import type { ConstrBind } from '@dxtmisha/functional'
 
 import type { AriaList } from '../../types/ariaTypes'
@@ -125,31 +125,31 @@ export type WindowControlBasic = {
  */
 export type WindowControlItem
   = WindowControlBasic
-    & {
+  & {
     /** CSS class string/ Строка CSS класса */
+    class: string
+    /** Reactive open state/ Реактивное состояние открытия */
+    open: Ref<boolean>
+    /** Click event handler/ Обработчик события клика */
+    onClick: WindowEventClick
+    /** Keydown event handler/ Обработчик события нажатия клавиши */
+    onKeydown: WindowEventClick
+    /** Context menu event handler/ Обработчик события контекстного меню */
+    onContextmenu: WindowEventClick
+    /** Binding properties/ Свойства привязки */
+    binds:
+    AriaList
+    & {
+      /** Binding class/ Класс привязки */
       class: string
-      /** Reactive open state/ Реактивное состояние открытия */
-      open: Ref<boolean>
-      /** Click event handler/ Обработчик события клика */
+      /** Click event handler for binding/ Обработчик события клика для привязки */
       onClick: WindowEventClick
       /** Keydown event handler/ Обработчик события нажатия клавиши */
       onKeydown: WindowEventClick
-      /** Context menu event handler/ Обработчик события контекстного меню */
+      /** Context menu event handler for binding/ Обработчик события контекстного меню для привязки */
       onContextmenu: WindowEventClick
-      /** Binding properties/ Свойства привязки */
-      binds:
-        AriaList
-        & {
-          /** Binding class/ Класс привязки */
-          class: string
-          /** Click event handler for binding/ Обработчик события клика для привязки */
-          onClick: WindowEventClick
-          /** Keydown event handler/ Обработчик события нажатия клавиши */
-          onKeydown: WindowEventClick
-          /** Context menu event handler for binding/ Обработчик события контекстного меню для привязки */
-          onContextmenu: WindowEventClick
-        }
     }
+  }
 
 /**
  * Component map for including the Window component/
@@ -173,25 +173,14 @@ export type WindowEmitsInclude = {
  * Interface for window expose inclusion/
  * Интерфейс для включения expose окна
  */
-export interface WindowExposeInclude {
+export interface WindowExposeInclude extends Omit<WindowExpose, 'getId' | 'getControl'> {
+  /** Returns reference to the window element/ Возвращает ссылку на элемент окна */
+  getWindowElement(): ConstrBind<WindowExpose> | undefined
+
   /** Unique window identifier/ Уникальный идентификатор окна */
-  id: ComputedRef<string | undefined>
-  /** Whether the window is open/ Открыто ли окно */
-  open: ComputedRef<boolean>
+  getId(): string | undefined
   /** Window control data/ Данные управления окном */
-  control: ComputedRef<WindowControlItem | undefined>
-
-  /** Sets the window open state/ Устанавливает состояние открытия окна */
-  setOpen: WindowExpose['setOpen']
-  /** Opens the window/ Открывает окно */
-  toOpen: WindowExpose['toOpen']
-  /** Closes the window/ Закрывает окно */
-  toClose: WindowExpose['toClose']
-  /** Toggles the window state/ Переключает состояние окна */
-  toggle: WindowExpose['toggle']
-
-  /** Reactive reference to the window element/ Реактивная ссылка на элемент окна */
-  windowElement: Ref<ConstrBind<WindowExpose> | undefined>
+  getControl(): WindowControlItem | undefined
 }
 
 /**

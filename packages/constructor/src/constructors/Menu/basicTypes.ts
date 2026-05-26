@@ -1,4 +1,4 @@
-import type { ComputedRef, Ref } from 'vue'
+import type { Ref } from 'vue'
 import type { ConstrBind, NumberOrStringOrBoolean } from '@dxtmisha/functional'
 import type { WindowControlItem } from '../Window'
 
@@ -33,7 +33,7 @@ export type MenuComponentInclude = {
 /** Type for menu expose functionality/ Тип для функциональности экспорта меню */
 export interface MenuExposeInclude extends ListExpose {
   /** Whether the menu is currently open/ Открыто ли меню в данный момент */
-  open: ComputedRef<boolean>
+  getOpen(): boolean
 
   /** Sets the open state of the menu/ Устанавливает состояние открытия меню */
   setOpen(open: boolean): Promise<void>

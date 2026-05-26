@@ -1,4 +1,4 @@
-import type { ComputedRef, Ref } from 'vue'
+import type { ComputedRef } from 'vue'
 import type { ConstrBind } from '@dxtmisha/functional'
 
 import type { AriaRoleControlPropsInclude } from '../../types/ariaTypes'
@@ -110,8 +110,8 @@ export type MotionTransformEmitsInclude = {
  * Интерфейс для включения expose MotionTransform
  */
 export interface MotionTransformExposeInclude extends MotionTransformExpose {
-  /** Reference to the MotionTransform component instance/ Ссылка на экземпляр компонента MotionTransform */
-  motionTransformElement: Ref<ConstrBind<MotionTransformExpose> | undefined>
+  /** Returns the MotionTransform component instance/ Возвращает экземпляр компонента MotionTransform */
+  getMotionTransformElement(): ConstrBind<MotionTransformExpose> | undefined
 }
 
 /**

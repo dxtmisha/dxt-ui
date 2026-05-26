@@ -1,4 +1,3 @@
-import type { ComputedRef, Ref } from 'vue'
 import type { ConstrClass } from '@dxtmisha/functional'
 
 import type { ModelEmitsOpen } from '../../types/modelTypes'
@@ -34,14 +33,14 @@ export type MotionTransformEmits = ModelEmitsOpen & {
  * Тип, описывающий доступные свойства.
  */
 export interface MotionTransformExpose {
-  /** Reactive state of window visibility/ Реактивное состояние видимости окна */
-  open: Ref<boolean>
+  /** Returns state of window visibility/ Возвращает состояние видимости окна */
+  getOpen(): boolean
 
   /**
-   * Computed state indicating if component is shown or being prepared for display/
-   * Вычисляемое состояние, указывающее отображается ли компонент или готовится к отображению
+   * Returns computed state indicating if component is shown or being prepared for display/
+   * Возвращает вычисляемое состояние, указывающее отображается ли компонент или готовится к отображению
    */
-  isShow: ComputedRef<boolean>
+  isShow(): boolean
 
   /** Sets open state/ Устанавливает состояние открытия */
   setOpen(open: boolean): void

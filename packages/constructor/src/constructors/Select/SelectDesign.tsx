@@ -31,14 +31,14 @@ export class SelectDesign<
   CLASSES extends SelectClasses,
   P extends SelectPropsBasic
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
-    COMP,
-    SelectEmits,
-    EXPOSE,
-    SelectSlots,
-    CLASSES,
-    P
-  > {
+  HTMLDivElement,
+  COMP,
+  SelectEmits,
+  EXPOSE,
+  SelectSlots,
+  CLASSES,
+  P
+> {
   protected readonly item: Select
 
   /**
@@ -118,7 +118,7 @@ export class SelectDesign<
    * Метод для рендеринга.
    */
   protected initRender(): VNode[] {
-    const open = this.item.menu.expose.open.value
+    const open = this.item.menu.expose.getOpen()
 
     return this.item.field.render(
       {

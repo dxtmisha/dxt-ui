@@ -28,14 +28,14 @@ export class WindowDesign<
   CLASSES extends WindowClasses,
   P extends WindowPropsBasic
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
-    COMP,
-    WindowEmits,
-    EXPOSE,
-    WindowSlots,
-    CLASSES,
-    P
-  > {
+  HTMLDivElement,
+  COMP,
+  WindowEmits,
+  EXPOSE,
+  WindowSlots,
+  CLASSES,
+  P
+> {
   protected readonly item: Window
 
   /**
@@ -78,13 +78,14 @@ export class WindowDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      id: this.item.classes.getId(),
-      open: this.item.open.item,
+      getId: () => this.item.classes.getId(),
+      getOpen: () => this.item.open.item.value,
+      getControl: () => this.item.slotData.value,
+
       setOpen: this.item.open.set,
       toOpen: this.item.open.open,
       toClose: this.item.open.close,
-      toggle: this.item.open.toggle,
-      control: this.item.slotData
+      toggle: this.item.open.toggle
     } as EXPOSE
   }
 

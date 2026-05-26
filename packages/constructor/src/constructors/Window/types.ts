@@ -1,4 +1,3 @@
-import type { ComputedRef, Ref } from 'vue'
 import type { ConstrClass } from '@dxtmisha/functional'
 
 import type { ScrollbarComponentInclude, ScrollbarEmitsInclude } from '../Scrollbar'
@@ -38,23 +37,14 @@ export type WindowEmits
  * Тип, описывающий доступные свойства.
  */
 export interface WindowExpose {
-  /**
-   * Unique identifier of the window/
-   * Уникальный идентификатор окна
-   */
-  id: string
+  /** Unique identifier of the window/ Уникальный идентификатор окна */
+  getId(): string
 
-  /**
-   * Reactive state of window visibility/
-   * Реактивное состояние видимости окна
-   */
-  open: Ref<boolean>
+  /** Reactive state of window visibility/ Реактивное состояние видимости окна */
+  getOpen(): boolean
 
-  /**
-   * Control item data for window management/
-   * Данные элемента управления для управления окном
-   */
-  control: ComputedRef<WindowControlItem>
+  /** Control item data for window management/ Данные элемента управления для управления окном */
+  getControl(): WindowControlItem
 
   /**
    * Sets window open state/

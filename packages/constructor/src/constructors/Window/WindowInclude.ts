@@ -80,15 +80,16 @@ export class WindowInclude<
    * Вспомогательные методы expose для состояния и действий окна
    */
   readonly expose: WindowExposeInclude = {
-    id: computed(() => String(this.element.value?.id)),
-    open: computed(() => Boolean(this.element.value?.open)),
-    control: computed(() => this.element.value?.control as any),
+    getWindowElement: () => this.element.value,
+
+    getId: () => this.element.value?.getId(),
+    getOpen: () => Boolean(this.element.value?.getOpen()),
+    getControl: () => this.element.value?.getControl(),
+
     setOpen: async (open: boolean) => this.element.value?.setOpen(open),
     toOpen: async () => this.element.value?.toOpen(),
     toClose: async () => this.element.value?.toClose(),
-    toggle: async () => this.element.value?.toggle(),
-
-    windowElement: this.element
+    toggle: async () => this.element.value?.toggle()
   }
 
   /**

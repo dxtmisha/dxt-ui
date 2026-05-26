@@ -53,7 +53,7 @@ export class MenuCountryInclude<
    */
   readonly is = computed(() => Boolean(!this.props.disabled && this.components))
 
-  readonly isOpen = computed<boolean>(() => Boolean(this.element.value?.open))
+  readonly isOpen = computed<boolean>(() => Boolean(this.element.value?.getOpen()))
 
   /** Computed bindings for the menu country / Вычисляемые привязки для menu country */
   readonly binds = computed<PropsExtra>(() => {
@@ -73,7 +73,7 @@ export class MenuCountryInclude<
 
   /** Menu country expose functionality / Функциональность экспорта menu country */
   readonly expose: MenuCountryExposeInclude = {
-    open: computed(() => Boolean(this.element.value?.open)),
+    getOpen: () => Boolean(this.element.value?.getOpen()),
     setOpen: async (open: boolean) => this.element.value?.setOpen(open),
     toOpen: async () => this.element.value?.toOpen(),
     toClose: async () => this.element.value?.toClose(),

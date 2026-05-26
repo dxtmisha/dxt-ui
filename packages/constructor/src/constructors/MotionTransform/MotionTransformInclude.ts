@@ -69,14 +69,14 @@ export class MotionTransformInclude<
    * Вспомогательные методы expose для состояния и действий MotionTransform
    */
   readonly expose: MotionTransformExposeInclude = {
-    open: computed(() => Boolean(this.element.value?.open)),
-    isShow: computed(() => Boolean(this.element.value?.isShow)),
+    getOpen: () => Boolean(this.element.value?.getOpen?.()),
+    isShow: () => Boolean(this.element.value?.isShow?.()),
     setOpen: async (open: boolean) => this.element.value?.setOpen(open),
     toOpen: async () => this.element.value?.toOpen(),
     toClose: async () => this.element.value?.toClose(),
     toggle: async () => this.element.value?.toggle(),
 
-    motionTransformElement: this.element
+    getMotionTransformElement: () => this.element.value
   }
 
   /**
