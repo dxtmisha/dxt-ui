@@ -44,10 +44,10 @@ export abstract class ComponentIncludeAbstract<
    * @param extra additional properties or attributes / дополнительные свойства или атрибуты
    * @param index unique index key for rendering / уникальный ключ индекса для рендеринга
    */
-  protected constructor(
+  constructor(
     protected readonly className: string,
     protected readonly props: ComponentIncludeProps<Props>,
-    protected readonly components?: DesignComponents<Record<string, object | undefined>, Props>,
+    protected readonly components?: DesignComponents<any, Props>,
     protected readonly extra?: ComponentIncludeExtra<PropsExtra>,
     protected readonly index?: string
   ) {

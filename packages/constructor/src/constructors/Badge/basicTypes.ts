@@ -23,4 +23,7 @@ export type BadgePropsInclude<
   badge?: string | number | ConstrBind<Badge>
   /** Whether to show only a dot/ Показывать ли только точку */
   badgeDot?: boolean
+
+  /** Additional attributes for Badge component / Дополнительные атрибуты для компонента Badge */
+  badgeAttrs?: ConstrBind<Badge>
 }

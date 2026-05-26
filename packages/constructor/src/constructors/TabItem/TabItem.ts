@@ -88,8 +88,8 @@ export class TabItem {
       this.skeleton
     )
     this.badge = new BadgeIncludeConstructor(
-      this.props,
       this.className,
+      this.props,
       this.components,
       {
         overlap: 'static'

@@ -1,14 +1,15 @@
-import { computed, type VNode } from 'vue'
 import {
   type ConstrBind,
-  type DesignComponents,
-  getRef,
-  type RefOrNormal,
-  toBinds
+  type DesignComponents
 } from '@dxtmisha/functional'
+
+import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
+
+import type { ComponentIncludeExposeItem, ComponentIncludeExtra } from '../../types/componentInclude'
 
 import type { ArrowComponentInclude, ArrowPropsInclude } from './basicTypes'
 import type { ArrowProps } from './props'
+import type { ArrowExpose, ArrowSlots } from './types'
 
 /**
  * ArrowInclude class provides functionality for conditionally rendering arrow components
@@ -21,65 +22,64 @@ import type { ArrowProps } from './props'
  */
 export class ArrowInclude<
   Props extends ArrowPropsInclude = ArrowPropsInclude,
-  PropsExtra extends ConstrBind<ArrowProps> = ConstrBind<ArrowProps>
+  PropsExtra extends ArrowProps = ArrowProps
+> extends ComponentIncludeAbstract<
+  Props,
+  PropsExtra,
+  ArrowExpose,
+  ArrowSlots
 > {
+  protected readonly exposeItems: ComponentIncludeExposeItem<any>[] | undefined = undefined
+
+  protected name = 'arrow'
+  protected propsAttrsName = 'arrowAttrs'
+
   /**
    * Constructor
-   * @param props input parameter/ входной параметр
-   * @param className class name/ название класса
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param elementTarget target element or selector/ целевой элемент или селектор
-   * @param extra additional parameter or property name/ дополнительный параметр или имя свойства
-   * @param index index identifier/ идентификатор индекса
+   * @param className class name / название класса
+   * @param props input parameter / входной параметр
+   * @param components object for working with components / объект для работы с компонентами
+   * @param extra additional parameter or property name / дополнительный параметр или имя свойства
+   * @param index index identifier / идентификатор индекса
+   * @param elementTarget target element or selector / целевой элемент или селектор
    */
   constructor(
-    protected readonly props: Readonly<Props>,
-    protected readonly className: string,
-    protected readonly components?: DesignComponents<ArrowComponentInclude, Props>,
-    protected readonly elementTarget?: HTMLElement | string,
-    protected readonly extra?: RefOrNormal<PropsExtra>,
-    protected readonly index?: string
+    className: string,
+    props: Readonly<Props>,
+    components?: DesignComponents<ArrowComponentInclude, Props>,
+    extra?: ComponentIncludeExtra<PropsExtra>,
+    index?: string,
+    protected readonly elementTarget?: HTMLElement | string
   ) {
+    super(className, props, components, extra, index)
   }
 
   /**
-   * Checks whether arrow should be displayed/
+   * Checks whether arrow should be displayed /
    * Проверяет, нужно ли отображать стрелку
    */
-  readonly is = computed(() => Boolean(
-    this.props.arrowShow
-  ))
+  override get is(): boolean {
+    const props = this.getProps()
 
-  /** Computed bindings for the arrow/ Вычисляемые привязки для стрелки */
-  readonly binds = computed<PropsExtra>(() => {
-    return toBinds<PropsExtra>(
-      getRef(this.extra),
-      this.props.arrowAttrs,
-      {
-        class: `${this.className}__arrow`,
-        elementTarget: this.elementTarget
-      }
-    )
-  })
+    return Boolean(props.arrowShow)
+  }
 
   /**
-   * Render the Arrow component
+   * Combines input attributes with internal component bindings.
    *
-   * Рендер компонента стрелки
+   * Объединяет входные атрибуты со внутренними привязками компонента.
+   * @returns resolved bindings / разрешенные привязки
    */
-  readonly render = (): VNode[] => {
-    if (
-      this.components
-      && this.is.value
-    ) {
-      return this.components.render(
-        'arrow',
-        this.binds.value,
-        undefined,
-        this.index
-      )
-    }
+  protected override toBinds(): ConstrBind<PropsExtra> {
+    const props = this.getProps()
+    const binds = super.toBinds()
 
-    return []
+    return {
+      ...binds,
+
+      position: props.arrowPosition,
+
+      elementTarget: this.elementTarget
+    }
   }
 }

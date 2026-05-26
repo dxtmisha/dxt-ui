@@ -133,8 +133,8 @@ export class ListItem {
     this.suffix = new SuffixIncludeConstructor(props, className, slots)
     this.description = new DescriptionIncludeConstructor(props, className, slots, skeleton)
     this.badge = new BadgeIncludeConstructor(
-      props,
       className,
+      props,
       components,
       {
         overlap: 'static'

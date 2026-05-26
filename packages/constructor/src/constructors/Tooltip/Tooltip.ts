@@ -130,9 +130,11 @@ export class Tooltip {
     )
 
     this.arrow = new ArrowIncludeConstructor(
-      this.props,
       this.className,
+      this.props,
       this.components,
+      undefined,
+      undefined,
       this.classes.getSelectorControl()
     )
 

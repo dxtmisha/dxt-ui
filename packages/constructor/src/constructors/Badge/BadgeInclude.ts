@@ -1,8 +1,15 @@
-import { computed, type VNode } from 'vue'
-import { type ConstrBind, type DesignComponents, getBind, getRef, type RefOrNormal, toBind } from '@dxtmisha/functional'
+import {
+  getBind,
+  getRef
+} from '@dxtmisha/functional'
 
-import type { BadgeComponentInclude, BadgePropsInclude } from './basicTypes'
+import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
+
+import type { ComponentIncludeExposeItem } from '../../types/componentInclude'
+
+import type { BadgePropsInclude } from './basicTypes'
 import type { BadgeProps } from './props'
+import type { BadgeExpose, BadgeSlots } from './types'
 
 /**
  * BadgeInclude class provides functionality for conditionally rendering badge components
@@ -12,67 +19,49 @@ import type { BadgeProps } from './props'
  * Класс BadgeInclude предоставляет функциональность для условного рендеринга компонентов
  * бейджа внутри других компонентов. Он управляет логикой определения необходимости
  * отображения бейджа и настраивает соответствующие свойства.
- *
- * @template Props - Properties interface extending BadgePropsInclude
  */
-export class BadgeInclude<Props extends BadgePropsInclude = BadgePropsInclude> {
+export class BadgeInclude extends ComponentIncludeAbstract<
+  BadgePropsInclude,
+  BadgeProps,
+  BadgeExpose,
+  BadgeSlots
+> {
+  protected readonly exposeItems: ComponentIncludeExposeItem<any>[] | undefined = undefined
+
+  protected name = 'badge'
+  protected propsAttrsName = 'badgeAttrs'
+
   /**
-   * Constructor
-   * @param props input parameter/ входной параметр
-   * @param className class name/ название класса
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param extra additional parameter/ дополнительный параметр
+   * Checks whether a badge is specified for rendering the component /
+   * Проверяет, указан ли бейдж для отображения компонента
    */
-  constructor(
-    protected readonly props: Readonly<Props>,
-    protected readonly className: string,
-    protected readonly components?: DesignComponents<BadgeComponentInclude, Props>,
-    protected readonly extra?: RefOrNormal<ConstrBind<BadgeProps>>
-  ) {
+  override get is(): boolean {
+    const props = this.getProps()
+
+    return Boolean(props.badge || props.badgeDot)
   }
 
   /**
-   * Checks whether a badge is specified for rendering the component/
-   * Проверяет, указан ли бейдж для отображения компонента
-   */
-  readonly is = computed(() => Boolean(this.props.badge || this.props.badgeDot))
-
-  /**
-   * list of properties for the badge component/ список свойств для компонента бейджа
-   */
-  readonly binds = computed(() => getBind(
-    this.props.badgeDot ? {} : this.props.badge,
-    {
-      dot: this.props.badgeDot,
-      ...toBind(
-        getRef(this.extra) ?? {},
-        {
-          class: `${this.className}__badge`
-        }
-      )
-    },
-    'label',
-    true
-  ))
-
-  /**
-   * Render of the badge component
+   * Resolves and returns design properties specifically bound for the badge.
    *
-   * Рендер компонента бейджа
+   * Разрешает и возвращает свойства дизайна, привязанные именно к бейджу.
+   * @returns resolved badge properties or undefined / разрешенные свойства бейджа или undefined
    */
-  readonly render = (): VNode[] => {
-    if (
-      this.components
-      && this.is.value
-    ) {
-      return this.components.render(
-        'badge',
-        this.binds.value,
-        undefined,
-        'badge'
-      )
+  protected override getExtra(): BadgeProps | undefined {
+    const props = this.getProps()
+
+    if (props.badgeDot) {
+      return {
+        dot: props.badgeDot,
+        ...getRef(this.extra)
+      }
     }
 
-    return []
+    return getBind(
+      props.badge,
+      getRef(this.extra),
+      'label',
+      true
+    ) as BadgeProps
   }
 }

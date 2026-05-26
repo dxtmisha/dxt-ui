@@ -10,6 +10,17 @@ import {
  * Объект wikiAttributes содержит описание всех свойств атрибутов
  */
 export const wikiAttributes: StorybookArgsToList = {
+  badgeAttrs: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.attributes,
+      description: {
+        en: 'Additional attributes for the Badge component',
+        ru: 'Дополнительные атрибуты для компонента Badge'
+      }
+    },
+    hide: true
+  },
   buttonAttrs: {
     type: StorybookControl.object,
     options: {
@@ -160,6 +171,17 @@ export const wikiAttributes: StorybookArgsToList = {
       description: {
         en: 'Additional attributes for the Menu root container',
         ru: 'Дополнительные атрибуты для корневого контейнера Menu'
+      }
+    },
+    hide: true
+  },
+  menuCountryAttrs: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.attributes,
+      description: {
+        en: 'Additional attributes for the MenuCountry component',
+        ru: 'Дополнительные атрибуты для компонента MenuCountry'
       }
     },
     hide: true
