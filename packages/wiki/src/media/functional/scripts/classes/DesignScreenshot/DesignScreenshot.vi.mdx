@@ -1,0 +1,55 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/DesignScreenshot - Chụp ảnh màn hình tự động'/>
+
+# Lớp DesignScreenshot
+
+Lớp `DesignScreenshot` là một tiện ích chuyên dụng dành cho nhà phát triển được thiết kế để tự động chụp ảnh màn hình của thành phần/trang, sao chép mã nguồn HTML và các định nghĩa kiểu CSS bằng cách khởi chạy một máy chủ phát triển cục bộ trong nền và quét nó bằng trình duyệt không đầu (headless browser).
+
+## Tính năng chính
+
+- **Tự động Khởi chạy Server** — khởi chạy tiến trình con `npm run dev` trong nền và đọc dữ liệu luồng đầu ra của nó.
+- **Tự động Phát hiện Port** — phân tích luồng đầu ra của terminal để trích xuất URL máy chủ cục bộ (`http://localhost:...`).
+- **Quy trình Chụp Thống nhất** — sử dụng `BrowserItem` để chụp ảnh màn hình toàn trang, lấy mã nguồn HTML body và trích xuất các kiểu CSS đang hoạt động, ghi tất cả các tệp vào thư mục `./ai-screenshot/`.
+- **Vòng lặp Tự kết thúc** — tự động dừng tiến trình máy chủ con trong nền ngay khi việc chụp ảnh màn hình hoàn tất thành công để bảo toàn tài nguyên hệ thống.
+
+## Khởi tạo
+
+`DesignScreenshot` có thể được khởi tạo với tiền tố đường dẫn tệp đầu ra tùy chọn.
+
+**Tham số khởi tạo:**
+- `file: string` — (Tùy chọn) Tiền tố đường dẫn tệp đầu ra (mặc định: `'./ai-screenshot/screenshot'`).
+
+```typescript
+import { DesignScreenshot } from '@dxtmisha/scripts'
+
+const capturer = new DesignScreenshot('./ai-screenshot/mockup-preview')
+```
+
+## Phương thức
+
+### Điều khiển
+
+#### `make`
+Bắt đầu quá trình chụp ảnh màn hình: tạo cấu trúc thư mục đầu ra, khởi chạy máy chủ phát triển cục bộ và gắn các bộ lắng nghe luồng đầu ra để kích hoạt việc chụp ảnh màn hình.
+
+**Trả về:** `Promise<void>`
+
+```typescript
+await capturer.make()
+```
+
+#### `makeUrl`
+Trích xuất địa chỉ máy chủ cục bộ từ luồng đầu ra của lệnh terminal.
+
+**Tham số khởi tạo:**
+- `data: string` — Khối dữ liệu stdout của terminal.
+
+**Trả về:** `this`
+
+### Các Phương thức & Thuộc tính được Bảo vệ (Protected)
+
+- `isReading: boolean` — Cờ bảo vệ để ngăn chặn việc gọi chụp ảnh màn hình chồng chéo.
+- `url?: string` — Địa chỉ máy chủ phát triển cục bộ được phát hiện.
+- `listener(): Promise<boolean>` — Trình kích hoạt trình duyệt không đầu giúp chụp ảnh màn hình, mã HTML body và biểu kiểu kiểu CSS.
+- `makeServer(): this` — Khởi chạy tiến trình con `npm run dev` trong nền.

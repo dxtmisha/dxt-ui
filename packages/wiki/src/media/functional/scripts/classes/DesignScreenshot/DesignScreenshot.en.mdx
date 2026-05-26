@@ -1,0 +1,55 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/DesignScreenshot - Automatic Screenshot Capturer'/>
+
+# DesignScreenshot Class
+
+The `DesignScreenshot` class is a specialized developer utility designed to automatically capture component/page screenshots, HTML bodies, and style definitions by spawning a local development server in the background and scanning it using a headless browser.
+
+## Key Features
+
+- **Automated Server Spawning** — spawns an `npm run dev` child process in a background shell and reads its stream output.
+- **Port Autodiscovery** — parses the terminal output stream to extract the local server URL (`http://localhost:...`).
+- **Unified Capture Pipeline** — uses `BrowserItem` to capture full-page screenshots, get HTML bodies, and extract active CSS stylesheets, dumping all files into the `./ai-screenshot/` folder.
+- **Self-Terminating Loop** — automatically kills the spawned child server process as soon as the capture succeeds to preserve system resources.
+
+## Initialization
+
+`DesignScreenshot` can be initialized with an optional output filename prefix.
+
+**Constructor Parameters:**
+- `file: string` — (Optional) The output file path prefix (default: `'./ai-screenshot/screenshot'`).
+
+```typescript
+import { DesignScreenshot } from '@dxtmisha/scripts'
+
+const capturer = new DesignScreenshot('./ai-screenshot/mockup-preview')
+```
+
+## Methods
+
+### Control
+
+#### `make`
+Starts the screenshot generation process: creates the output directory structure, spawns the development server, and hooks up output listeners to trigger the capture.
+
+**Returns:** `Promise<void>`
+
+```typescript
+await capturer.make()
+```
+
+#### `makeUrl`
+Extracts the local server address from raw command output.
+
+**Parameters:**
+- `data: string` — The terminal stdout chunk.
+
+**Returns:** `this`
+
+### Protected Methods & Fields
+
+- `isReading: boolean` — Guard flag to prevent multiple overlapping capture calls.
+- `url?: string` — The discovered local development server address.
+- `listener(): Promise<boolean>` — Headless browser trigger that captures screenshots, HTML bodies, and stylesheets.
+- `makeServer(): this` — Spawns the `npm run dev` background process.

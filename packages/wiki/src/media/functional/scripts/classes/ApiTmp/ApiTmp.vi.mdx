@@ -1,0 +1,52 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/ApiTmp - Tiện ích tệp tạm thời cho lời nhắc AI'/>
+
+# Lớp ApiTmp
+
+Lớp `ApiTmp` là một tiện ích phụ trợ được thiết kế để quản lý các tệp lời nhắc tạm thời trên hệ thống tệp tin trong thư mục `./ai-tmp`. Lớp này chủ yếu được sử dụng bởi các dịch vụ AI dựa trên CLI để ghi các nội dung nhập văn bản lớn vào các tệp văn bản nhằm tránh vi phạm giới hạn độ dài đối số của terminal.
+
+## Tính năng chính
+
+- **Đệm đĩa An toàn** — ghi các khối lời nhắc lớn vào đĩa cục bộ trong quá trình tạo phản hồi.
+- **Định danh Duy nhất** — tự động tăng ID tệp tin để ngăn chặn xung đột khi thực hiện ghi tệp đồng thời.
+- **Hành động Dọn dẹp Sạch sẽ** — cung cấp phương thức để xóa sạch thư mục tệp tạm thời ngay lập tức, phục hồi dung lượng đĩa hệ thống.
+
+## Khởi tạo
+
+Lớp `ApiTmp` có thể được khởi tạo trực tiếp.
+
+```typescript
+import { ApiTmp } from '@dxtmisha/scripts'
+
+const tmp = new ApiTmp()
+```
+
+## Phương thức
+
+### Quản lý Tệp tin
+
+#### `createFile`
+Ghi nội dung lời nhắc vào một tệp tạm thời có đánh số duy nhất và trả về một chuỗi hướng dẫn tham chiếu định dạng dành cho dòng lệnh.
+
+**Tham số khởi tạo:**
+- `content: string` — Nội dung văn bản của lời nhắc cần ghi vào đĩa.
+
+**Trả về:** `string` — Một chuỗi tham chiếu đường dẫn định dạng (ví dụ: `Please read the following file as it contains the prompt instructions: @./ai-tmp/Prompt-1.txt`).
+
+```typescript
+const promptReference = tmp.createFile('Xin chào Claude, vui lòng tạo các SCSS mixins tiêu chuẩn.')
+```
+
+#### `removeFile`
+Xóa sạch toàn bộ thư mục tệp tạm thời `./ai-tmp` khỏi hệ thống tệp tin.
+
+**Trả về:** `void`
+
+```typescript
+tmp.removeFile()
+```
+
+### Các Helper được Bảo vệ (Protected)
+
+- `getFileName(): string` — Tạo đường dẫn tệp tin tăng dần duy nhất (ví dụ: `./ai-tmp/Prompt-1.txt`).

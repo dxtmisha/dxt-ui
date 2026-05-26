@@ -1,0 +1,121 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/scripts/Classes/FigmaApi - Клиент Figma REST API'/>
+
+# Класс FigmaApi
+
+Класс `FigmaApi` представляет собой полнофункциональную обертку для прямой работы с **Figma REST API**. Он упрощает выполнение HTTP-запросов для получения файлов, узлов (слоев), экспорта графических ресурсов, стилей, а также отдельных ассетов из общих библиотек команды.
+
+## Ключевые особенности
+
+- **Стандартизированная маршрутизация запросов** — автоматическое конструирование URL конечных точек API в соответствии с паттернами Figma.
+- **Работа со структурой слоев и узлов** — детальное извлечение метаданных, ограничивающих рамок (bounding boxes) и стилей конкретных слоев макета.
+- **Экспорт графических ресурсов** — интеграция с движком рендеринга Figma для генерации и получения временных URL-адресов изображений узлов в различных форматах (SVG, PNG, JPG, PDF).
+- **Управление стилями** — получение каталогов стилей файлов или конкретных стилей по ключу.
+- **Цепочечный Fluent-интерфейс** — удобные методы-сеттеры для динамического переключения токена, файла или контекста целевого узла с поддержкой чейнинга.
+
+## Инициализация
+
+Для работы `FigmaApi` требуются персональный токен доступа и ключ файла Figma.
+
+**Параметры конструктора:**
+- `token: string` — Персональный токен доступа Figma Personal Access Token.
+- `fileKey: string` — Ключ целевого файла Figma (извлекается из URL файла).
+- `nodeId?: string` — (Опционально) Идентификатор целевого слоя или узла.
+
+```typescript
+import { FigmaApi } from '@dxtmisha/scripts'
+
+const api = new FigmaApi(
+  'figd_xxxxxxxxxxxxxxxxxxxxx',
+  'abcde12345XYZ'
+)
+```
+
+---
+
+## Методы
+
+### Методы HTTP-запросов к API
+
+#### `files`
+Получает метаданные документа и полное JSON-дерево макета целевого файла Figma.
+
+**Параметры:**
+- `parameters: FigmaFilesParams` — (Опционально) Параметры запроса, такие как глубина обхода, версия макета или геометрия.
+
+**Возвращает:** `Promise<FigmaFilesResult | undefined>`
+
+```typescript
+const fileData = await api.files({ depth: 2 })
+```
+
+#### `fileNodes`
+Возвращает полное дерево конкретных узлов или слоев макета внутри указанного файла.
+
+**Параметры:**
+- `parameters: FigmaFileNodesParams` — Идентификаторы целевых узлов, а также модификаторы геометрии или версий.
+
+**Возвращает:** `Promise<FigmaFileNodesResult | undefined>`
+
+```typescript
+const nodes = await api.fileNodes({ ids: '0:1' })
+```
+
+#### `fileImages`
+Запускает рендеринг целевых узлов макета на серверах Figma и возвращает ссылки на сгенерированные файлы изображений.
+
+**Параметры:**
+- `parameters: FigmaFileImagesParams` — Массив ID узлов, масштаб экспорта и формат (например, `'svg'`, `'png'`).
+
+**Возвращает:** `Promise<FigmaFileImagesResult | undefined>`
+
+```typescript
+const images = await api.fileImages({
+  ids: '12:34',
+  format: 'svg'
+})
+```
+
+#### `fileStyles`
+Возвращает список стилей, объявленных непосредственно внутри целевого файла Figma.
+
+**Возвращает:** `Promise<FigmaFileStylesResult | undefined>`
+
+```typescript
+const stylesList = await api.fileStyles()
+```
+
+#### `styles`
+Получает детальные метаданные конкретного стиля по его уникальному ключу.
+
+**Параметры:**
+- `key: string` — Уникальный ключ стиля.
+
+**Возвращает:** `Promise<FigmaStylesResult | undefined>`
+
+```typescript
+const styleMeta = await api.styles('1234abcd5678')
+```
+
+---
+
+### Сеттеры конфигурации
+Все методы-сеттеры поддерживают чейнинг и возвращают экземпляр `this`.
+
+- `setToken(token: string): this` — Меняет активный токен доступа.
+- `setFileKey(fileKey: string): this` — Меняет ключ целевого файла.
+- `setNodeId(nodeId?: string): this` — Изменяет используемый по умолчанию ID узла.
+- `getUrl(method: FigmaApiEndpoint, parameters?: Record<string, any>, key?: string): string` — Конструирует абсолютный URL-адрес для запроса к API.
+
+---
+
+## Типы
+
+### FigmaApiEndpoint
+Перечисление поддерживаемых конечных точек Figma REST API:
+- `files` — `"/v1/files/:file_key"`
+- `fileNodes` — `"/v1/files/:file_key/nodes"`
+- `fileImages` — `"/v1/images/:file_key"`
+- `fileStyles` — `"/v1/files/:file_key/styles"`
+- `styles` — `"/v1/styles/:key"`

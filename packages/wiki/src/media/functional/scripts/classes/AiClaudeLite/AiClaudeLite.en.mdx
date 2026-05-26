@@ -1,0 +1,38 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/AiClaudeLite - Claude AI Service Lite Class'/>
+
+# AiClaudeLite Class
+
+The `AiClaudeLite` class is a lightweight implementation of `AiAbstract` that wraps the Anthropic SDK. It provides support for prompt context accumulation, multimodal inputs (images), and robust text generation using Claude models.
+
+## Key Features
+
+- **Multimodal Support** — converts accumulated images into Anthropic's expected base64 format for image content blocks.
+- **Structured Content Processing** — formats both plain text and base64 images into structured message content before making request calls.
+- **Text Extraction** — parses Anthropic's message content block array and joins text blocks to return a clean string result.
+
+## Initialization
+
+`AiClaudeLite` requires manual credentials injection through the constructor.
+
+**Constructor Parameters:**
+- `key: string` — The API key for the Anthropic service.
+- `model: string` — The initial model identifier (e.g., 'claude-3-5-sonnet-20241022').
+
+```typescript
+import { AiClaudeLite } from '@dxtmisha/scripts'
+
+const ai = new AiClaudeLite(process.env.ANTHROPIC_API_KEY, 'claude-3-5-sonnet-20241022')
+```
+
+## Methods
+
+### Internal Implementation Hooks
+
+These protected methods implement the required extension interface of `AiAbstract`:
+
+- `init(): void` — Initializes the `Anthropic` client instance using the provided key.
+- `toImages(): any` — Translates accumulated `images` into the structured `{ type: 'image', source: { ... } }` array for Claude.
+- `toContents(): any` — Translates accumulated additional `contents` into the structured `{ type: 'text', text: content }` array.
+- `response(model: string, contents: string): Promise<string>` — Performs the `messages.create` API call, passing all formatted blocks, and parses the text response.

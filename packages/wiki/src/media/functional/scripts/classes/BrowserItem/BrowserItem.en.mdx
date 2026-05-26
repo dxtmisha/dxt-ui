@@ -1,0 +1,136 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/BrowserItem - Headless Browser Manager'/>
+
+# BrowserItem Class
+
+The `BrowserItem` class is a high-level wrapper around **Puppeteer**, designed to manage Chromium browser instances, configure viewports, evaluate scripts in browser contexts, and capture either full-page or sliced multi-page screenshots.
+
+## Key Features
+
+- **Automated Browser Lifecycle** — lazily launches and manages single or multiple headless browser instances.
+- **Dynamic Viewport Configuration** — auto-configures custom viewport dimensions, scale factor, and error logging on launch.
+- **Flexible Screenshot Pipelines** — supports capturing full scrollable pages or slicing pages into multiple sequentially saved files.
+- **DOM & Style Extraction** — direct methods to retrieve raw HTML source, active CSS sheets, or page metrics.
+- **Sandbox Safe Evaluation** — safe evaluation of callbacks in the active browser window context.
+
+## Initialization
+
+`BrowserItem` is initialized with a target URL and optional screenshot configuration parameters.
+
+**Constructor Parameters:**
+- `url: string` — The webpage URL to load and capture.
+- `options: ScreenshotOptions` — (Optional) Viewport, formatting, quality, and timeout options.
+
+```typescript
+import { BrowserItem } from '@dxtmisha/scripts'
+
+const browserItem = new BrowserItem('http://localhost:5173', {
+  width: 1280,
+  height: 800,
+  format: 'png',
+  fullPage: true
+})
+```
+
+---
+
+## Getters
+
+### Configuration Getters
+- `args: string[]` — Puppeteer launch arguments.
+- `waitUntil: PuppeteerLifeCycleEvent | PuppeteerLifeCycleEvent[]` — Navigating load condition.
+- `timeout: number` — The maximum timeout for loading in milliseconds.
+- `format: 'png' | 'jpeg' | 'webp'` — Target screenshot image format.
+- `width: number` — Viewport width.
+- `height: number` — Viewport height.
+- `quality: number` — Capture quality (0-100) for JPEG/WebP formats.
+- `fullPage: boolean` — Whether to capture the entire page as a single image.
+- `extension: string` — Derived file extension (e.g. `".png"`, `".jpg"`).
+
+---
+
+## Methods
+
+### Core Lifecycle
+
+#### `getBrowser`
+Lazily initializes and retrieves the Puppeteer browser instance.
+
+**Returns:** `Promise<Browser>`
+
+```typescript
+const browser = await browserItem.getBrowser()
+```
+
+#### `getPage`
+Creates or retrieves the browser page instance, configuring viewports and standard log listeners.
+
+**Returns:** `Promise<Page>`
+
+```typescript
+const page = await browserItem.getPage()
+```
+
+#### `getResponse`
+Navigates the page to the target URL, applying `waitUntil` and `timeout` options.
+
+**Returns:** `Promise<HTTPResponse | undefined>`
+
+```typescript
+const response = await browserItem.getResponse()
+```
+
+---
+
+### Capture & Actions
+
+#### `screenshot`
+Triggers the screenshot capture process, saving the result to the output directory. Chooses between full-page capture or slicing based on options.
+
+**Parameters:**
+- `outputPath: string` — Path where the screenshot(s) will be saved.
+
+**Returns:** `Promise<this>`
+
+```typescript
+await browserItem.screenshot('./dist/screenshots/homepage')
+```
+
+#### `evaluate`
+Evaluates a custom function in the page context.
+
+**Parameters:**
+- `pageFunction: Func | string` — Code or function to evaluate.
+- `...args: Params` — Additional arguments passed to the function.
+
+**Returns:** `Promise<Awaited<ReturnType<Func>> | undefined>`
+
+```typescript
+const title = await browserItem.evaluate(() => document.title)
+```
+
+---
+
+### Utilities
+
+### DOM Extraction
+- `getDom(): Promise<string>` — Retrieves the entire document HTML content.
+- `getBody(): Promise<string>` — Retrieves the internal HTML of `document.body`.
+- `getStyles(): Promise<string>` — Extracts and joins all active CSS style rules.
+- `getMetrics(): Promise<ScreenshotMetrics>` — Reads total scrollable width and height.
+- `reset(): Promise<this>` — Resets page, metric, and response states.
+
+---
+
+## Types
+
+### ScreenshotOptions
+- `args?: string[]` — Custom Chromium flags.
+- `waitUntil?: PuppeteerLifeCycleEvent | PuppeteerLifeCycleEvent[]` — Load trigger condition.
+- `timeout?: number` — Load timeout.
+- `format?: 'png' | 'jpeg' | 'webp'` — Target image format.
+- `width?: number` — Initial viewport width.
+- `height?: number` — Initial viewport height.
+- `quality?: number` — Image quality scale.
+- `fullPage?: boolean` — Enable full page screenshot.

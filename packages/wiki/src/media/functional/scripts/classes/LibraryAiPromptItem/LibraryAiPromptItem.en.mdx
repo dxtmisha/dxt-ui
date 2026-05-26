@@ -1,0 +1,67 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/LibraryAiPromptItem - AI Prompt Aggregator Item'/>
+
+# LibraryAiPromptItem Class
+
+The `LibraryAiPromptItem` class represents an individual target module or package context block in the AI prompt generation pipeline. It manages discovering, reading, caching, and formatting module-specific resources (such as descriptions, instructions, TypeScript types, and UI screenshot lists) into a coherent section.
+
+## Key Features
+
+- **Module Discovered Context** — checks for the existence of descriptions, metadata, types, and screenshots within a target subdirectory.
+- **Package Manifest Parsing** — loads and parses the module's `package.json` to extract its official project name.
+- **Structured Content Bundling** — aggregates discovered files into a single, clean markdown output detailing location, purpose, types, and visual assets.
+- **Flexible Path Standardizer** — translates relative paths inside raw instruction sheets into absolute, codebase-relative paths.
+- **Smart Resource Caching** — caches package JSON structures internally to prevent redundant disk read operations.
+
+## Initialization
+
+`LibraryAiPromptItem` is initialized with the directory path segments representing the targeted module.
+
+**Constructor Parameters:**
+- `dir: string[]` — The path segments to the module directory (e.g. `['packages', 'scripts']`).
+
+```typescript
+import { LibraryAiPromptItem } from '@dxtmisha/scripts'
+
+const item = new LibraryAiPromptItem(['packages', 'scripts'])
+```
+
+---
+
+## Methods
+
+### Execution
+
+#### `make`
+Core orchestrator that runs status checks for each type of resource (description, info, types, screenshots), aggregates whatever files are present, and formats them into a unified, clean markdown block for the module.
+
+**Returns:** `string | undefined`
+
+```typescript
+const promptBlock = item.make()
+```
+
+---
+
+### Status Checkers
+All status checkers return `boolean`.
+- `isPrompt()` — Returns `true` if *any* of description, info, types, or screenshots exist for the module.
+- `isDescription()` — Verifies if `description.txt` exists.
+- `isInfo()` — Verifies if `info.txt` exists.
+- `isTypes()` — Verifies if `ai-types.txt` exists.
+- `isScreenshot()` — Verifies if `ai-screenshot` directory exists.
+
+---
+
+### Public & Protected Helpers
+- `getProjectName(): string` — Reads the project name from the local `package.json` manifest.
+- `getPath(dirFile: string): string[]` — Returns complete path segment array for the specified file in the module folder.
+- `getPathString(): string` — Returns the module path segments joined by a slash.
+- `getPackageJson(): Record<string, any>` — Reads and caches `package.json` manifest content.
+- `readFile(dirFile: string): string` — Reads specified file content, updating references to match absolute module directory mapping.
+- `getDescription(): string | undefined` — Formats the module description section if present.
+- `getInfo(): string | undefined` — Formats the module core overview section if present.
+- `getTypes(): string | undefined` — Formats the module type definition catalog links if present.
+- `getScreenshot(): string | undefined` — Formats visual reference links and screenshots list if present.
+- `getScreenshotList(): string[] | undefined` — Lists files inside the `ai-screenshot` subdirectory.

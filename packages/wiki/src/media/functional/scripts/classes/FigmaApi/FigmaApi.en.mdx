@@ -1,0 +1,121 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/FigmaApi - Figma REST API Client'/>
+
+# FigmaApi Class
+
+The `FigmaApi` class is a comprehensive wrapper designed to interact directly with the **Figma REST API**. It simplifies the process of making HTTP requests to fetch files, specific layer nodes, export images, styles, and individual shared team library assets.
+
+## Key Features
+
+- **Standardized API Request Routing** — constructs secure request endpoints automatically using standard Figma patterns.
+- **Node & Component Slicing** — retrieves granular node metadata, bounding boxes, and styles for specific canvas layers.
+- **Asset Image Export** — wraps the Figma image rendering engine to retrieve temporary URLs of rendered nodes in various formats (SVG, PNG, JPG, PDF).
+- **Style Management** — fetches file style catalogs or specific styles by key.
+- **Fluent Setters** — chainable setter methods to dynamically change the token, file, or target node context.
+
+## Initialization
+
+`FigmaApi` requires a personal access token and a target Figma file key for construction.
+
+**Constructor Parameters:**
+- `token: string` — Figma Personal Access Token.
+- `fileKey: string` — The target Figma file key (found in the file URL).
+- `nodeId?: string` — (Optional) The target canvas node layer ID.
+
+```typescript
+import { FigmaApi } from '@dxtmisha/scripts'
+
+const api = new FigmaApi(
+  'figd_xxxxxxxxxxxxxxxxxxxxx',
+  'abcde12345XYZ'
+)
+```
+
+---
+
+## Methods
+
+### Endpoint Request Methods
+
+#### `files`
+Retrieves document metadata and the complete JSON tree of the target Figma file.
+
+**Parameters:**
+- `parameters: FigmaFilesParams` — (Optional) Query parameters such as version, depth, or geometry selection.
+
+**Returns:** `Promise<FigmaFilesResult | undefined>`
+
+```typescript
+const fileData = await api.files({ depth: 2 })
+```
+
+#### `fileNodes`
+Retrieves full node subtrees for one or more specific canvas layers within the file.
+
+**Parameters:**
+- `parameters: FigmaFileNodesParams` — Target node IDs and specific scale, geometry, or version modifiers.
+
+**Returns:** `Promise<FigmaFileNodesResult | undefined>`
+
+```typescript
+const nodes = await api.fileNodes({ ids: '0:1' })
+```
+
+#### `fileImages`
+Triggers the rendering of target canvas nodes and returns URLs to the generated image files.
+
+**Parameters:**
+- `parameters: FigmaFileImagesParams` — Node IDs, scale, and format (e.g. `'svg'`, `'png'`).
+
+**Returns:** `Promise<FigmaFileImagesResult | undefined>`
+
+```typescript
+const images = await api.fileImages({
+  ids: '12:34',
+  format: 'svg'
+})
+```
+
+#### `fileStyles`
+Fetches a list of styles defined directly inside the target Figma file.
+
+**Returns:** `Promise<FigmaFileStylesResult | undefined>`
+
+```typescript
+const stylesList = await api.fileStyles()
+```
+
+#### `styles`
+Fetches detailed metadata of a specific style using its unique style key.
+
+**Parameters:**
+- `key: string` — The unique style key.
+
+**Returns:** `Promise<FigmaStylesResult | undefined>`
+
+```typescript
+const styleMeta = await api.styles('1234abcd5678')
+```
+
+---
+
+### Configuration Setters
+All setters are chainable and return `this`.
+
+- `setToken(token: string): this` — Changes the active access token.
+- `setFileKey(fileKey: string): this` — Changes the target file key.
+- `setNodeId(nodeId?: string): this` — Changes the default target node ID.
+- `getUrl(method: FigmaApiEndpoint, parameters?: Record<string, any>, key?: string): string` — Constructs the absolute API request URL.
+
+---
+
+## Types
+
+### FigmaApiEndpoint
+Defines the targeted Figma REST endpoints:
+- `files` — `"/v1/files/:file_key"`
+- `fileNodes` — `"/v1/files/:file_key/nodes"`
+- `fileImages` — `"/v1/images/:file_key"`
+- `fileStyles` — `"/v1/files/:file_key/styles"`
+- `styles` — `"/v1/styles/:key"`

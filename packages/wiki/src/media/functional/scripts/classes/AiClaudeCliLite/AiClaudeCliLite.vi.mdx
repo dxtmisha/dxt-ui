@@ -1,0 +1,39 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/AiClaudeCliLite - Lớp Claude CLI Rút gọn'/>
+
+# Lớp AiClaudeCliLite
+
+Lớp `AiClaudeCliLite` là một triển khai gọn nhẹ của `AiAbstract` tương tác với công cụ Claude CLI chính thức thông qua các lệnh terminal shell của hệ thống. Nó quản lý các tệp lời nhắc tạm thời bằng cách sử dụng `ApiTmp` nhằm vượt qua giới hạn độ dài đối số của terminal.
+
+## Tính năng chính
+
+- **Thực thi Shell CLI** — tận dụng shell hệ thống (`node:child_process`) để gọi các lệnh CLI `claude`.
+- **Định tuyến Tệp Tạm thời** — sử dụng `ApiTmp` để ghi các lời nhắc/nội dung dài vào các tệp `.txt` cục bộ, định dạng tham chiếu tới chúng bằng ký tự `@` để đảm bảo thực thi đáng tin cậy.
+- **An toàn Lời nhắc** — tự động thoát các dấu ngoặc kép và thực thi định dạng phản hồi nghiêm ngặt (ví dụ: `Output strictly the code/answer. No preamble, no chatter, no reasoning`).
+- **Dọn dẹp Tài nguyên** — tự động xóa tất cả các thư mục và tệp tạm thời khi hoàn thành phản hồi hoặc xảy ra lỗi.
+
+## Khởi tạo
+
+`AiClaudeCliLite` yêu cầu truyền thông tin xác thực thủ công thông qua constructor.
+
+**Tham số khởi tạo:**
+- `key: string` — API key cho dịch vụ Anthropic.
+- `model: string` — Định danh mô hình ban đầu.
+
+```typescript
+import { AiClaudeCliLite } from '@dxtmisha/scripts'
+
+const ai = new AiClaudeCliLite(process.env.ANTHROPIC_API_KEY, 'claude-3-5-sonnet-20241022')
+```
+
+## Phương thức
+
+### Các Hook Triển khai Nội bộ
+
+Các phương thức protected này triển khai giao diện mở rộng được yêu cầu của `AiAbstract`:
+
+- `init(): void` — Thiết lập `this.ai` thành một đối tượng trống.
+- `toImages(): any` — Trả về một mảng trống `[]` (xử lý hình ảnh bị bỏ qua đối với thực thi CLI).
+- `toContents(): any` — Chuyển đổi nội dung `contents` đã tích lũy thành các tệp tạm thời bằng cách sử dụng `ApiTmp.createFile` và trả về các đường dẫn định dạng của chúng.
+- `response(model: string, contents: string): Promise<string>` — Liên kết tất cả các tệp tạm thời, xử lý ký tự ngoặc kép, xây dựng câu lệnh thực thi shell, chạy nó và dọn dẹp tài nguyên.

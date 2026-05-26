@@ -1,0 +1,29 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/AiClaudeCli - Claude CLI Service Class'/>
+
+# AiClaudeCli Class
+
+The `AiClaudeCli` class is a concrete implementation of `AiClaudeCliLite` that integrates with the project's environment settings. It automatically loads credentials using `getConfigAi()` to invoke Claude through the shell terminal.
+
+## Key Features
+
+- **Automated Configuration** — loads API keys and models automatically from the project environment using `getConfigAi()`.
+- **Shell-based Generation** — inherits the CLI runner mechanics of `AiClaudeCliLite` to execute terminal commands.
+
+## Initialization
+
+The `AiClaudeCli` class can be instantiated directly without constructor arguments since it automatically retrieves credentials from the environment.
+
+```typescript
+import { AiClaudeCli } from '@dxtmisha/scripts'
+
+const ai = new AiClaudeCli()
+
+// Generate text through system CLI
+const response = await ai.generate('Write a quick sort algorithm in TypeScript.')
+```
+
+## Methods
+
+This class does not define additional public methods. It inherits all configuration and execution methods from `AiClaudeCliLite` and `AiAbstract`.

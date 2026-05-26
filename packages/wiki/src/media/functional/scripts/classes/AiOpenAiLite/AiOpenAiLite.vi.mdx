@@ -1,0 +1,38 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/AiOpenAiLite - Lớp OpenAI Rút gọn'/>
+
+# Lớp AiOpenAiLite
+
+Lớp `AiOpenAiLite` là một triển khai gọn nhẹ của `AiAbstract` bao bọc OpenAI SDK. Nó cung cấp hỗ trợ toàn diện cho việc tích lũy ngữ cảnh lời nhắc, chuyển đổi hình ảnh đa phương thức base64 và hoàn thành cuộc hội thoại (chat completion) mạnh mẽ.
+
+## Tính năng chính
+
+- **Hỗ Hợp Đa Phương Thức** — chuyển đổi hình ảnh tích lũy thành cấu trúc URL dữ liệu (`data:mime;base64,data`) theo yêu cầu của giao diện khối `image_url` của OpenAI.
+- **Xử lý Nội dung theo Cấu trúc** — định dạng cả các văn bản thuần túy và khối hình ảnh thành một danh sách tải trọng người dùng thống nhất trước khi yêu cầu hoàn thành hội thoại.
+- **Tích hợp SDK Tiêu chuẩn** — gọi trực tiếp đến API endpoint `chat.completions.create` và xử lý kết quả trả về một cách an toàn.
+
+## Khởi tạo
+
+`AiOpenAiLite` yêu cầu truyền thông tin xác thực thủ công thông qua constructor.
+
+**Tham số khởi tạo:**
+- `key: string` — API key cho dịch vụ OpenAI.
+- `model: string` — Định danh mô hình ban đầu (ví dụ: 'gpt-4o').
+
+```typescript
+import { AiOpenAiLite } from '@dxtmisha/scripts'
+
+const ai = new AiOpenAiLite(process.env.OPENAI_API_KEY, 'gpt-4o')
+```
+
+## Phương thức
+
+### Các Hook Triển khai Nội bộ
+
+Các phương thức protected này triển khai giao diện mở rộng được yêu cầu của `AiAbstract`:
+
+- `init(): void` — Khởi tạo thực thể client `OpenAI` bằng cách sử dụng key được cung cấp.
+- `toImages(): any` — Chuyển đổi `images` đã tích lũy thành mảng cấu trúc `{ type: 'image_url', image_url: { url: ... } }`.
+- `toContents(): any` — Chuyển đổi nội dung `contents` bổ sung đã tích lũy thành mảng cấu trúc `{ type: 'text', text: content }`.
+- `response(model: string, contents: string): Promise<string>` — Thực hiện lệnh gọi API chat completions và trích xuất nội dung văn bản một cách an toàn từ lựa chọn phản hồi đầu tiên.

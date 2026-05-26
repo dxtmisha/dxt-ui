@@ -1,0 +1,52 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/ApiTmp - Temporary File Helper for AI prompts'/>
+
+# ApiTmp Class
+
+The `ApiTmp` class is a helper utility designed to manage temporary prompt files on the filesystem under the `./ai-tmp` directory. It is primarily used by CLI-based AI services to dump large text inputs into text files to prevent terminal argument length violations.
+
+## Key Features
+
+- **Safe Disk Buffering** — writes large prompt blocks to the local disk during generation.
+- **Unique Identifiers** — automatically increments file IDs to prevent concurrent write collisions.
+- **Clean PURGE Actions** — provides methods to instantly delete temporary directories and recover system disk space.
+
+## Initialization
+
+The `ApiTmp` class can be instantiated directly.
+
+```typescript
+import { ApiTmp } from '@dxtmisha/scripts'
+
+const tmp = new ApiTmp()
+```
+
+## Methods
+
+### Files Management
+
+#### `createFile`
+Writes prompt content to a uniquely numbered temporary file and returns a formatted command-line reference instruction.
+
+**Parameters:**
+- `content: string` — The text content of the prompt to write to disk.
+
+**Returns:** `string` — A formatted path reference string (e.g., `Please read the following file as it contains the prompt instructions: @./ai-tmp/Prompt-1.txt`).
+
+```typescript
+const promptReference = tmp.createFile('Hello Claude, please generate standard SCSS mixins.')
+```
+
+#### `removeFile`
+Cleans up the entire temporary file directory `./ai-tmp` from the filesystem.
+
+**Returns:** `void`
+
+```typescript
+tmp.removeFile()
+```
+
+### Protected Helpers
+
+- `getFileName(): string` — Generates a unique, incremented file path (e.g., `./ai-tmp/Prompt-1.txt`).

@@ -1,0 +1,38 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/AiOpenAiLite - OpenAI Service Lite Class'/>
+
+# AiOpenAiLite Class
+
+The `AiOpenAiLite` class is a lightweight implementation of `AiAbstract` that wraps the OpenAI SDK. It provides comprehensive support for prompt context accumulation, multimodal base64 image conversion, and robust chat completion.
+
+## Key Features
+
+- **Multimodal Support** — parses accumulated images into the data URL structure (`data:mime;base64,data`) required by OpenAI's `image_url` block interface.
+- **Structured Content Processing** — formats both plain text statements and image blocks into a unified user payload list before requesting completions.
+- **Standard SDK Integration** — directly invokes the native `chat.completions.create` endpoint and handles choices safely.
+
+## Initialization
+
+`AiOpenAiLite` requires manual credentials injection through the constructor.
+
+**Constructor Parameters:**
+- `key: string` — The API key for the OpenAI service.
+- `model: string` — The initial model identifier (e.g., 'gpt-4o').
+
+```typescript
+import { AiOpenAiLite } from '@dxtmisha/scripts'
+
+const ai = new AiOpenAiLite(process.env.OPENAI_API_KEY, 'gpt-4o')
+```
+
+## Methods
+
+### Internal Implementation Hooks
+
+These protected methods implement the required extension interface of `AiAbstract`:
+
+- `init(): void` — Initializes the `OpenAI` client instance using the provided key.
+- `toImages(): any` — Translates accumulated `images` into structured `{ type: 'image_url', image_url: { url: ... } }` arrays.
+- `toContents(): any` — Translates accumulated additional `contents` into structured `{ type: 'text', text: content }` arrays.
+- `response(model: string, contents: string): Promise<string>` — Performs the chat completions API call and extracts the text content from the first response choice safely.
