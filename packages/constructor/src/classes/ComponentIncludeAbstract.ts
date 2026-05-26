@@ -18,7 +18,7 @@ import type { ComponentIncludeExposeItem, ComponentIncludeExtra, ComponentInclud
  * включения, рендеринга и управления состоянием субкомпонентов внутри основного компонента.
  * Он инкапсулирует общую логику для привязок (binds), экспорта API-методов дочерних элементов и рендеринга.
  */
-export abstract class ComponentInclude<
+export abstract class ComponentIncludeAbstract<
   Props extends Record<string, any>,
   PropsExtra extends Record<string, any>,
   ComponentCode extends string,
