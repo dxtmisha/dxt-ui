@@ -26,11 +26,11 @@ export class BarsInclude<
   Props extends BarsPropsInclude = BarsPropsInclude,
   PropsExtra extends BarsProps = BarsProps
 > extends ComponentIncludeAbstract<
-  Props,
-  PropsExtra,
-  BarsExpose,
-  BarsSlots
-> {
+    Props,
+    PropsExtra,
+    BarsExpose,
+    BarsSlots
+  > {
   protected readonly exposeItems: ComponentIncludeExposeItem<any>[] | undefined = undefined
 
   protected name = 'bars'

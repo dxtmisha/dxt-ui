@@ -1,5 +1,5 @@
-import { onMounted, watch } from 'vue'
-import { type ConstrEmit, EventItem, isDomRuntime, isEnter } from '@dxtmisha/functional'
+import { onMounted, onUnmounted, watch } from 'vue'
+import { type ConstrEmit, EventItem, isEnter } from '@dxtmisha/functional'
 
 import { MotionTransformElement } from './MotionTransformElement'
 import { MotionTransformState } from './MotionTransformState'
@@ -32,15 +32,14 @@ export class MotionTransformEvent {
     protected readonly emits?: ConstrEmit<MotionTransformEmits>
   ) {
     onMounted(() => {
-      if (isDomRuntime()) {
-        this.item = new EventItem(document.body, 'click', this.listener)
-      }
+      this.item = new EventItem(document.body, 'click', this.listener)
 
       watch(
         this.state.open,
         () => this.item?.toggle(this.state.open.value)
       )
     })
+    onUnmounted(() => this.stop())
   }
 
   /**

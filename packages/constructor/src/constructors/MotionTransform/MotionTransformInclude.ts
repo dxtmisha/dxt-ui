@@ -7,8 +7,8 @@ import {
 import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
 
 import type { ComponentIncludeExposeItem, ComponentIncludeExtra } from '../../types/componentInclude'
-import type { MotionTransformProps } from './props'
 import type { MotionTransformEmits, MotionTransformSlots } from './types'
+import type { MotionTransformProps } from './props'
 import type {
   MotionTransformComponentInclude,
   MotionTransformEmitOptions,
@@ -22,6 +22,9 @@ import type {
  *
  * Класс возвращает данные для работы с компонентом MotionTransform.
  * Расширяет ComponentIncludeAbstract для управления состояниями анимации перехода, рендером и привязками.
+ *
+ * @template Props - Properties interface extending MotionTransformPropsInclude / Интерфейс свойств, расширяющий MotionTransformPropsInclude
+ * @template PropsExtra - Extra properties interface / Дополнительный интерфейс свойств
  */
 export class MotionTransformInclude<
   Props extends MotionTransformPropsInclude = MotionTransformPropsInclude,
@@ -43,17 +46,22 @@ export class MotionTransformInclude<
     { name: 'toggle' }
   ]
 
+  /** Component sub-name / Дополнительное имя компонента */
   protected name = 'motionTransform'
+
+  /** Property name containing raw attributes / Имя свойства, содержащего сырые атрибуты */
   protected propsAttrsName = 'motionTransformAttrs'
 
   /**
-   * Constructor
+   * Constructor for initializing MotionTransform properties and inclusion managers.
+   *
+   * Конструктор для инициализации свойств MotionTransform и включенных менеджеров.
+   * @param className base class name of the parent component / имя базового класса родительского компонента
    * @param props input parameter / входной параметр
-   * @param className class name / название класса
-   * @param components object for working with components / объект для работы с компонентами
-   * @param emits the function is called when an event is triggered / функция вызывается при срабатывании события
+   * @param components design components registry / реестр дизайн-компонентов
    * @param extra additional parameter or property name / дополнительный параметр или имя свойства
-   * @param index index identifier / идентификатор индекса
+   * @param index unique index key for rendering / уникальный ключ индекса для рендеринга
+   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
    */
   constructor(
     className: string,
@@ -64,20 +72,6 @@ export class MotionTransformInclude<
     protected readonly emits?: ConstrEmit<MotionTransformEmits>
   ) {
     super(className, props, components, extra, index)
-  }
-
-  /**
-   * Emits 'transform' event upward /
-   * Поднимает событие 'transform' наверх
-   * @param event native event / нативное событие
-   * @param options payload / параметры события
-   */
-  readonly onTransform = (
-    event: Event | undefined,
-    options: MotionTransformEmitOptions
-  ) => {
-    this.emits?.('transform', event, options)
-    this.emits?.('transformLite', options)
   }
 
   /**
@@ -94,15 +88,14 @@ export class MotionTransformInclude<
 
     return {
       ...super.getAttrs(attrs),
-
       open: props.open
     }
   }
 
   /**
-   * Combines input attributes with internal component bindings.
+   * Builds and resolves all HTML attributes and classes for binding.
    *
-   * Объединяет входные атрибуты со внутренними привязками компонента.
+   * Создает и разрешает все HTML-атрибуты и классы для привязки.
    * @returns resolved bindings / разрешенные привязки
    */
   protected override toBinds(): ConstrBind<PropsExtra> {
@@ -110,10 +103,8 @@ export class MotionTransformInclude<
 
     return {
       ...super.toBinds(),
-
       clickOpen: props.clickOpen,
       autoClose: props.autoClose,
-
       onTransform: this.onTransform
     }
   }
@@ -125,17 +116,24 @@ export class MotionTransformInclude<
    * @returns exposed API object / объект экспортируемого API
    */
   protected toExpose(): MotionTransformExposeInclude {
-    const data: Record<string, any> = {}
-
-    if (this.exposeItems) {
-      this.exposeItems.forEach((item) => {
-        data[item.name] = this.getExposeItem(item)
-      })
-    }
-
     return {
       ...super.toExpose(),
       getMotionTransformElement: () => this.element.value
     }
+  }
+
+  /**
+   * Emits 'transform' event upward.
+   *
+   * Поднимает событие 'transform' наверх.
+   * @param event native event / нативное событие
+   * @param options payload / параметры события
+   */
+  protected readonly onTransform = (
+    event: Event | undefined,
+    options: MotionTransformEmitOptions
+  ) => {
+    this.emits?.('transform', event, options)
+    this.emits?.('transformLite', options)
   }
 }

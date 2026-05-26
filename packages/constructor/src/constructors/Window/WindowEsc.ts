@@ -105,7 +105,10 @@ export class WindowEsc {
    * Создать и инициализировать обработчик событий.
    */
   protected make(): void {
-    if (isDomRuntime() && !this.event) {
+    if (
+      !this.event
+      && isDomRuntime()
+    ) {
       this.event = new EventItem<HTMLElement, any>(
         document.body,
         'keydown',

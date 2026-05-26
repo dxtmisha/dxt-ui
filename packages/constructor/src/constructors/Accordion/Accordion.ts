@@ -10,40 +10,52 @@ import type { AccordionComponents, AccordionEmits, AccordionSlots } from './type
 import type { AccordionProps } from './props'
 
 /**
- * Accordion
+ * Class representing the core logic and state manager for the Accordion component.
+ * It coordinates panel open/close states, transitions, accessibility identifiers,
+ * dynamic cells, and reactive model updates.
+ *
+ * Класс, представляющий основную логику и менеджер состояния для компонента Accordion.
+ * Координирует состояния открытия/закрытия панели, переходы анимации, идентификаторы
+ * доступности, динамические ячейки и реактивные обновления модели.
  */
 export class Accordion {
-  /** Motion transform manager/ Менеджер анимации перехода */
+  /** Motion transform manager for transition animation / Менеджер анимации переходов */
   readonly motionTransform: MotionTransformInclude
 
-  /** Event manager/ Менеджер событий */
+  /** Event manager for click events / Менеджер клик-событий */
   readonly event: EventClickInclude
 
-  /** Open state/ Состояние открытия */
+  /** Open state reference / Ссылка на состояние открытия */
   readonly open = ref<boolean>(false)
-  /** Model manager/ Менеджер модели */
+
+  /** Model synchronization manager / Менеджер синхронизации модели */
   readonly model: ModelInclude<boolean>
 
-  /** Head element reference/ Ссылка на элемент заголовка */
+  /** Reference to the head cell component / Ссылка на компонент ячейки заголовка */
   readonly elementHead = ref<CellExpose>()
 
+  /** Unique element identifier for label ARIA binding / Уникальный идентификатор элемента для ARIA-привязки метки */
   protected readonly labelId: string = getElementId()
+
+  /** Unique element identifier for description ARIA binding / Уникальный идентификатор элемента для ARIA-привязки описания */
   protected readonly descriptionId: string = getElementId()
 
   /**
-   * Constructor
-   * @param props input data/ входные данные
-   * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
-   * @param element input element/ элемент ввода
-   * @param classDesign design name/ название дизайна
-   * @param className class name/ название класса
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param slots object for working with slots/ объект для работы со слотами
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param constructors object with classes/ объект с классами
-   * @param constructors.EventClickIncludeConstructor class for working with event click/ класс для работы с событием клика
-   * @param constructors.ModelIncludeConstructor class for working with model/ класс для работы с моделью
-   * @param constructors.MotionTransformIncludeConstructor class for working with motion transform/ класс для работы с анимацией перехода
+   * Constructor for initializing Accordion properties and inclusion managers.
+   *
+   * Конструктор для инициализации свойств Accordion и включенных менеджеров.
+   * @param props input data / входные данные
+   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
+   * @param element input element / элемент ввода
+   * @param classDesign design name / название дизайна
+   * @param className class name / название класса
+   * @param components object for working with components / объект для работы с компонентами
+   * @param slots object for working with slots / объект для работы со слотами
+   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
+   * @param constructors object with classes / объект с классами
+   * @param constructors.EventClickIncludeConstructor class for working with event click / класс для работы с событием клика
+   * @param constructors.ModelIncludeConstructor class for working with model / класс для работы с моделью
+   * @param constructors.MotionTransformIncludeConstructor class for working with motion transform / класс для работы с анимацией перехода
    */
   constructor(
     protected readonly props: AccordionProps,
@@ -92,9 +104,9 @@ export class Accordion {
   }
 
   /**
-   * Computed bindings for the cell.
+   * Computed bindings for the header cell.
    *
-   * Вычисляемые привязки для ячейки.
+   * Вычисляемые привязки для ячейки заголовка.
    */
   readonly bindsCell = computed(() => {
     return {

@@ -7,6 +7,7 @@ const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
   { name: 'adaptive', type: 'string', option: ['iconAlways', 'auto', 'iconSm', 'iconMd', 'iconLg', 'iconXl', 'icon2xl', 'fullSm', 'fullMd', 'fullLg', 'fullXl', 'full2xl'] },
   { name: 'badge', type: 'string | number | ConstrBind<BadgeProps> | undefined' },
+  { name: 'badgeAttrs', type: 'ConstrBind<BadgeProps> | undefined' },
   { name: 'badgeDot', type: 'boolean | undefined' },
   { name: 'container', type: 'string', option: ['iconSm', 'iconMd', 'iconLg', 'iconXl', 'icon2xl', 'fullSm', 'fullMd', 'fullLg', 'fullXl', 'full2xl'] },
   { name: 'detail', type: 'Record<string, any> | undefined' },

@@ -24,11 +24,11 @@ export class ArrowInclude<
   Props extends ArrowPropsInclude = ArrowPropsInclude,
   PropsExtra extends ArrowProps = ArrowProps
 > extends ComponentIncludeAbstract<
-  Props,
-  PropsExtra,
-  ArrowExpose,
-  ArrowSlots
-> {
+    Props,
+    PropsExtra,
+    ArrowExpose,
+    ArrowSlots
+  > {
   protected readonly exposeItems: ComponentIncludeExposeItem<any>[] | undefined = undefined
 
   protected name = 'arrow'

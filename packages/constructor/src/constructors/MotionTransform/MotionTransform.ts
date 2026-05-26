@@ -1,4 +1,4 @@
-import { computed, onUnmounted, type Ref, type ToRefs, watch } from 'vue'
+import { type Ref, type ToRefs } from 'vue'
 import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
@@ -115,6 +115,7 @@ export class MotionTransform {
     this.size = new MotionTransformSizeConstructor(this.element)
     this.state = new MotionTransformStateConstructor(
       props,
+      refs,
       this.element,
       this.tabIndex,
       this.size
@@ -131,20 +132,39 @@ export class MotionTransform {
     this.teleport = new TeleportIncludeConstructor()
 
     new ModelIncludeConstructor('open', this.emits, this.state.open)
-
-    watch([refs.open], () => this.state.set(Boolean(props.open)))
-
-    onUnmounted(() => this.event.stop())
   }
 
   /**
-   * Computed slot data for managing slots/
-   * Вычисляемые данные слотов для управления слотами
+   * Props for the head element.
+   *
+   * Свойства для элемента заголовка.
    */
-  readonly slotData = computed<MotionTransformControlItem>(() => {
+  getPropsHead() {
+    const props = {
+      onClick: this.event.onClick
+    }
+
+    if (this.props.clickOpen) {
+      return {
+        ...props,
+        onKeydown: this.event.onKeydown,
+        ...this.getSlotData().binds
+      }
+    }
+
+    return props
+  }
+
+  /**
+   * Returns data for managing slot data.
+   *
+   * Возвращает данные для управления данными слотами.
+   * @returns slot data object / объект данных слотов
+   */
+  getSlotData(): MotionTransformControlItem {
     return {
-      isOpen: this.state.isOpen,
-      isShow: this.state.isShow,
+      isOpen: this.state.isOpen(),
+      isShow: this.state.isShow(),
       classes: MotionTransformElement.getClassesList(this.className),
       idControl: this.element.idControl,
       idBody: this.element.idBody,
@@ -152,17 +172,8 @@ export class MotionTransform {
         this.element.idControl,
         this.element.idBody,
         undefined,
-        this.state.isOpen.value
+        this.state.isOpen()
       )
     }
-  })
-
-  /**
-   * Returns data for managing slot data.
-   *
-   * Возвращает данные для управления данными слотами.
-   */
-  getSlotData(): MotionTransformControlItem {
-    return this.slotData.value
   }
 }

@@ -1,4 +1,4 @@
-import { computed, h, ref, type VNode } from 'vue'
+import { h, ref, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -81,7 +81,7 @@ export class MotionTransformDesign<
   protected initExpose(): EXPOSE {
     return {
       getOpen: () => this.item.state.open.value,
-      isShow: () => this.item.state.isShow.value,
+      isShow: () => this.item.state.isShow(),
 
       setOpen: this.item.go.to,
       toOpen: this.item.go.open,
@@ -153,7 +153,13 @@ export class MotionTransformDesign<
     return [
       h(
         'div',
-        this.propsMain.value,
+        {
+          ...this.getAttrs(),
+          ref: this.element,
+          key: 'main',
+          class: this.classes?.value.main,
+          onTransitionend: this.item.event.onTransitionend
+        },
         [
           ...this.renderHead(),
           ...this.renderBody()
@@ -171,12 +177,12 @@ export class MotionTransformDesign<
     return [
       h(
         'div',
-        this.propsHead.value,
-        this.initSlot(
-          'head',
-          undefined,
-          this.item.getSlotData()
-        )
+        {
+          key: 'head',
+          class: this.classes?.value.head,
+          ...this.item.getPropsHead()
+        },
+        this.initSlot('head', undefined, this.item.getSlotData())
       )
     ]
   }
@@ -189,17 +195,23 @@ export class MotionTransformDesign<
   readonly renderBody = () => {
     if (
       this.props.inDom
-      || this.item.state.isShow.value
+      || this.item.state.isShow()
     ) {
       return [
         h(
           this.props.tagBody ?? 'div',
-          this.propsBody.value,
-          this.initSlot(
-            'body',
-            undefined,
-            this.item.getSlotData()
-          )
+          {
+            key: 'body',
+            id: this.item.element.idBody,
+            class: this.classes?.value.body,
+            ...AriaStaticInclude.role('region'),
+            ...AriaStaticInclude.modal(
+              false,
+              this.props.ariaLabelledby,
+              this.props.ariaDescribedby
+            )
+          },
+          this.initSlot('body', undefined, this.item.getSlotData())
         )
       ]
     }
@@ -215,71 +227,13 @@ export class MotionTransformDesign<
   readonly renderScrim = (): VNode[] => {
     if (this.item.state.teleport.value) {
       return [
-        h(
-          'div',
-          {
-            key: 'scrim',
-            class: this.classes?.value.scrim
-          }
-        )
+        h('div', {
+          key: 'scrim',
+          class: this.classes?.value.scrim
+        })
       ]
     }
 
     return []
   }
-
-  /**
-   * Props for the main element.
-   *
-   * Свойства для главного элемента.
-   */
-  protected readonly propsMain = computed(() => ({
-    ...this.getAttrs(),
-    ref: this.element,
-    key: 'main',
-    class: this.classes?.value.main,
-    onTransitionend: this.item.event.onTransitionend
-  }))
-
-  /**
-   * Props for the head element.
-   *
-   * Свойства для элемента заголовка.
-   */
-  protected readonly propsHead = computed(() => {
-    const props = {
-      key: 'head',
-      class: this.classes?.value.head,
-      onClick: this.item.event.onClick
-    }
-
-    if (this.props.clickOpen) {
-      return {
-        ...props,
-        onKeydown: this.item.event.onKeydown,
-        ...this.item.slotData.value.binds
-      }
-    }
-
-    return props
-  })
-
-  /**
-   * Props for the body element.
-   *
-   * Свойства для элемента тела.
-   */
-  protected readonly propsBody = computed(() => {
-    return {
-      key: 'body',
-      id: this.item.element.idBody,
-      class: this.classes?.value.body,
-      ...AriaStaticInclude.role('region'),
-      ...AriaStaticInclude.modal(
-        false,
-        this.props.ariaLabelledby,
-        this.props.ariaDescribedby
-      )
-    }
-  })
 }

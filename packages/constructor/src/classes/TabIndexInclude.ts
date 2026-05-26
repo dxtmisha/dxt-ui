@@ -40,7 +40,6 @@ export class TabIndexInclude<E extends HTMLElement = HTMLElement> {
   goTo(): this {
     if (
       this.isElement()
-      // && !isInput(this.element.value)
       && this.active()
       && this.activeOpen()
       && isDomRuntime()

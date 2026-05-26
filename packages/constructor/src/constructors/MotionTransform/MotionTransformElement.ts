@@ -1,4 +1,4 @@
-import { computed, type Ref } from 'vue'
+import { type Ref } from 'vue'
 import { getElementId } from '@dxtmisha/functional'
 
 import { __MOTION_TRANSFORM_TYPE_BODY_NAME, type MotionTransformClassList, type MotionTransformStyle } from './basicTypes'
@@ -31,7 +31,6 @@ export class MotionTransformElement {
     protected readonly className: string
   ) {
     this.classes = MotionTransformElement.getClassesList(className)
-
     this.style = {
       top: `--${this.className}-sys-top`,
       left: `--${this.className}-sys-left`,
@@ -48,9 +47,6 @@ export class MotionTransformElement {
       bodyHeight: `--${this.className}-sys-body-height`
     }
   }
-
-  /** Checks if the element exists/ Проверяет, есть ли элемент */
-  readonly is = computed<boolean>(() => Boolean(this.element.value))
 
   /**
    * Checks if the click event is prohibited.

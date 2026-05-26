@@ -37,14 +37,14 @@ export class MenuButtonDesign<
   CLASSES extends MenuButtonClasses,
   P extends MenuButtonPropsBasic
 > extends DesignConstructorAbstract<
-  HTMLDivElement,
-  COMP,
-  MenuButtonEmits,
-  EXPOSE,
-  MenuButtonSlots,
-  CLASSES,
-  P
-> {
+    HTMLDivElement,
+    COMP,
+    MenuButtonEmits,
+    EXPOSE,
+    MenuButtonSlots,
+    CLASSES,
+    P
+  > {
   /** Instance of the MenuButton controller / Экземпляр контроллера MenuButton */
   protected readonly item: MenuButton
 

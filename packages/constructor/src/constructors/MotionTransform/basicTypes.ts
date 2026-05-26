@@ -1,4 +1,3 @@
-import type { ComputedRef } from 'vue'
 import type { ConstrBind } from '@dxtmisha/functional'
 
 import type { AriaRoleControlPropsInclude } from '../../types/ariaTypes'
@@ -71,9 +70,9 @@ export type MotionTransformStyle = {
  */
 export type MotionTransformControlItem = {
   /** Reactive open state/ Реактивное состояние открытия */
-  isOpen: ComputedRef<boolean>
+  isOpen: boolean
   /** Visible or preparing to show/ Видим либо готовится к показу */
-  isShow: ComputedRef<boolean>
+  isShow: boolean
   /** Helper CSS classes/ Вспомогательные CSS‑классы */
   classes: MotionTransformClassList
   /** Helper style variables/ Вспомогательные стилевые переменные */

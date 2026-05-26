@@ -163,7 +163,7 @@ export class AccordionDesign<
         this.props.cellAttrs,
         {
           ref: this.item.elementHead,
-          iconTurn: isOpen.value,
+          iconTurn: isOpen,
           class: this.classes?.value.head
         }
       ),

@@ -6,6 +6,7 @@ import { defaults } from './props'
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
   { name: 'badge', type: 'string | number | ConstrBind<BadgeProps> | undefined' },
+  { name: 'badgeAttrs', type: 'ConstrBind<BadgeProps> | undefined' },
   { name: 'badgeDot', type: 'boolean | undefined' },
   { name: 'caption', type: 'string | number | undefined' },
   { name: 'captionDecorative', type: 'boolean | undefined' },

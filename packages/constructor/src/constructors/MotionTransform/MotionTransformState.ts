@@ -1,4 +1,4 @@
-import { computed, ref, watch } from 'vue'
+import { onMounted, ref, type ToRefs, watch } from 'vue'
 
 import { TabIndexInclude } from '../../classes/TabIndexInclude'
 import { MotionTransformElement } from './MotionTransformElement'
@@ -24,33 +24,52 @@ export class MotionTransformState {
    *
    * Конструктор.
    * @param props input data/ входные данные
+   * @param refs reactive proxies/ реактивные прокси
    * @param element class object for managing an element/ объект класса для управления элементом
    * @param tabIndex class object for managing tab indices/ объект класса для управления табуляцией
    * @param size class object for managing sizes/ объект класса для управления размерами
    */
   constructor(
     props: MotionTransformProps,
+    refs: ToRefs<MotionTransformProps>,
     protected element: MotionTransformElement,
     protected tabIndex: TabIndexInclude<HTMLDivElement>,
     protected size: MotionTransformSize
   ) {
-    watch([this.element.element, this.show], this.makeShow)
-    watch([this.element.element, this.open], this.makeOpen)
-    watch([this.element.element, this.teleport], this.makeTeleport)
+    onMounted(() => {
+      watch([this.element.element, this.show], this.makeShow, { immediate: true })
+      watch([this.element.element, this.open], this.makeOpen, { immediate: true })
+      watch([this.element.element, this.teleport], this.makeTeleport, { immediate: true })
+      watch([refs.open], () => this.set(Boolean(props.open)))
 
-    if (props.open) {
-      requestAnimationFrame(() => {
-        this.open.value = Boolean(props.open)
-        this.calculations()
-      })
-    }
+      if (props.open) {
+        requestAnimationFrame(() => {
+          this.open.value = Boolean(props.open)
+          this.calculations()
+        })
+      }
+    })
   }
 
-  /** Computed open flag/ Вычисляемый флаг открытия */
-  readonly isOpen = computed(() => this.open.value)
+  /**
+   * Checks if the element is open.
+   *
+   * Проверяет, открыт ли элемент.
+   * @returns open status / статус открытия
+   */
+  isOpen(): boolean {
+    return this.open.value
+  }
 
-  /** Checks if the element should be shown/ Проверяет, следует ли показывать элемент */
-  readonly isShow = computed<boolean>(() => this.open.value || this.show.value)
+  /**
+   * Checks if the element should be shown.
+   *
+   * Проверяет, следует ли показывать элемент.
+   * @returns visibility status / статус видимости
+   */
+  isShow(): boolean {
+    return this.open.value || this.show.value
+  }
 
   /**
    * Checks if teleportation should be disabled.
@@ -185,7 +204,7 @@ export class MotionTransformState {
    */
   protected toTeleport(): void {
     if (this.element.isWindow()) {
-      this.teleport.value = this.isShow.value
+      this.teleport.value = this.isShow()
     }
   }
 
@@ -246,7 +265,7 @@ export class MotionTransformState {
 
       if (
         this.element.isWindow()
-        && this.isShow.value
+        && this.isShow()
       ) {
         context.style.setProperty(style.contextWidth, this.size.contextWidth)
         context.style.setProperty(style.contextHeight, this.size.contextHeight)
