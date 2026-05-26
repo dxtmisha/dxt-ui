@@ -155,10 +155,9 @@ export class MenuDesign<
   readonly renderTitle = (
     props: WindowControlItem
   ): VNode[] => {
-    const children: any[] = []
-    if (this.item.bars.is.value) {
-      children.push(...this.item.bars.render())
-    }
+    const children: any[] = [
+      ...this.item.bars.render()
+    ]
 
     this.initSlot('title', children, this.getBinds(props))
 

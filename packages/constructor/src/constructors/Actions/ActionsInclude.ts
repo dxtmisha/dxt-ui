@@ -1,17 +1,18 @@
-import { computed, type VNode } from 'vue'
+import { type VNode } from 'vue'
 import {
   type ConstrBind,
   type ConstrEmit,
-  type DesignComponents,
-  getRef,
-  type RefOrNormal,
-  toBinds
+  type DesignComponents
 } from '@dxtmisha/functional'
 
+import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
+
+import type { ComponentIncludeExposeItem, ComponentIncludeExtra } from '../../types/componentInclude'
 import type { EventClickValue } from '../../types/eventClickTypes'
 
 import type { ActionsComponentInclude, ActionsEmitsInclude, ActionsPropsInclude } from './basicTypes'
 import type { ActionsProps } from './props'
+import type { ActionsExpose, ActionsSlots } from './types'
 
 /**
  * ActionsInclude class provides functionality for conditionally rendering actions components
@@ -24,86 +25,97 @@ import type { ActionsProps } from './props'
  */
 export class ActionsInclude<
   Props extends ActionsPropsInclude = ActionsPropsInclude,
-  PropsExtra extends ConstrBind<ActionsProps> = ConstrBind<ActionsProps>
-> {
+  PropsExtra extends ActionsProps = ActionsProps
+> extends ComponentIncludeAbstract<
+    Props,
+    PropsExtra,
+    ActionsExpose,
+    ActionsSlots
+  > {
+  protected readonly exposeItems: ComponentIncludeExposeItem<any>[] | undefined = undefined
+
+  protected name = 'actions'
+  protected propsAttrsName = 'actionsAttrs'
+
   /**
    * Constructor
-   * @param props input parameter/ входной параметр
-   * @param className class name/ название класса
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param extra additional parameter or property name/ дополнительный параметр или имя свойства
-   * @param index index identifier/ идентификатор индекса
+   * @param className class name / название класса
+   * @param props input parameter / входной параметр
+   * @param components object for working with components / объект для работы с компонентами
+   * @param extra additional parameter or property name / дополнительный параметр или имя свойства
+   * @param index index identifier / идентификатор индекса
+   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
    */
   constructor(
-    protected readonly props: Readonly<Props>,
-    protected readonly className: string,
-    protected readonly components?: DesignComponents<ActionsComponentInclude, Props>,
-    protected readonly emits?: ConstrEmit<ActionsEmitsInclude>,
-    protected readonly extra?: RefOrNormal<PropsExtra>,
-    protected readonly index?: string
+    className: string,
+    props: Readonly<Props>,
+    components?: DesignComponents<ActionsComponentInclude, Props>,
+    extra?: ComponentIncludeExtra<PropsExtra>,
+    index?: string,
+    protected readonly emits?: ConstrEmit<ActionsEmitsInclude>
   ) {
+    super(className, props, components, extra, index)
   }
 
   /**
-   * Checks whether actions should be displayed/
+   * Checks whether actions should be displayed /
    * Проверяет, нужно ли отображать действия
    */
-  readonly is = computed(() => Boolean(
-    !this.props.actionsHide
-    && (
-      this.binds.value.list
-      || this.binds.value.listSecondary
-    )
-  ))
+  get is(): boolean {
+    const props = this.getProps()
 
-  /** Computed bindings for the actions/ Вычисляемые привязки для действий */
-  readonly binds = computed<PropsExtra>(() => {
-    const props = toBinds<PropsExtra>(
-      getRef(this.extra),
-      this.props.actionsAttrs,
-      { class: `${this.className}__actions` }
-    )
-
-    return {
-      ...props,
-
-      list: this.props.actionsList ?? props.list,
-      listSecondary: this.props.actionsSecondary ?? props.listSecondary,
-      onClick: this.onClick
-    }
-  })
-
-  /**
-   * Render the Actions component
-   *
-   * Рендер компонента действий
-   */
-  readonly render = (): VNode[] => {
-    if (
-      this.components
-      && this.is.value
-    ) {
-      return this.components.render(
-        'actions',
-        this.binds.value,
-        undefined,
-        this.index
+    return Boolean(
+      !props.actionsHide
+      && (
+        this.binds.value.list
+        || this.binds.value.listSecondary
       )
-    }
-
-    return []
+    )
   }
 
   /**
-   * Handles click events from Actions and emits related events/
+   * Handles click events from Actions and emits related events /
    * Обрабатывает клики по действиям и испускает связанные события
-   *
-   * @param event native mouse event/ native событие мыши
-   * @param value payload with { type, value, detail }/ данные события с { type, value, detail }
+   * @param event native mouse event / native событие мыши
+   * @param value payload with { type, value, detail } / данные события с { type, value, detail }
    */
-  protected readonly onClick = (event: MouseEvent, value: EventClickValue) => {
+  readonly onClick = (event: MouseEvent, value: EventClickValue) => {
     this.emits?.('actions', event, value)
     this.emits?.('actionsLite', value)
+  }
+
+  /**
+   * Renders the Actions component /
+   * Рендер компонента действий
+   * @param slotsChildren sub-component slots / слоты субкомпонента
+   * @param attrs additional override attributes / дополнительные переопределяющие атрибуты
+   * @returns array of VNodes / массив VNode
+   */
+  readonly render = (
+    slotsChildren?: ActionsSlots,
+    attrs?: ConstrBind<PropsExtra>
+  ): VNode[] => super.initRender(
+    slotsChildren,
+    attrs,
+    () => this.is
+  )
+
+  /**
+   * Combines input attributes with internal component bindings.
+   *
+   * Объединяет входные атрибуты со внутренними привязками компонента.
+   * @returns resolved bindings / разрешенные привязки
+   */
+  protected override toBinds(): ConstrBind<PropsExtra> {
+    const props = this.getProps()
+    const binds = super.toBinds()
+
+    return {
+      ...binds,
+
+      list: props.actionsList ?? binds.list,
+      listSecondary: props.actionsSecondary ?? binds.listSecondary,
+      onClick: this.onClick
+    }
   }
 }

@@ -95,7 +95,22 @@ export class MotionTransformInclude<
     return {
       ...super.getAttrs(attrs),
 
-      open: props.open,
+      open: props.open
+    }
+  }
+
+  /**
+   * Combines input attributes with internal component bindings.
+   *
+   * Объединяет входные атрибуты со внутренними привязками компонента.
+   * @returns resolved bindings / разрешенные привязки
+   */
+  protected override toBinds(): ConstrBind<PropsExtra> {
+    const props = this.getProps()
+
+    return {
+      ...super.toBinds(),
+
       clickOpen: props.clickOpen,
       autoClose: props.autoClose,
 

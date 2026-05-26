@@ -102,13 +102,14 @@ export class SnackbarItem {
       { onClick: this.event.onClick }
     )
     this.actions = new ActionsConstructor(
-      props,
       className,
+      props,
       components,
-      emits,
-      {
+      () => ({
         align: 'left'
-      }
+      }),
+      undefined,
+      emits
     )
 
     this.area = new AreaConstructor(props)

@@ -1,17 +1,17 @@
-import { computed, ref, type VNode } from 'vue'
+import { type VNode } from 'vue'
 import {
   type ConstrBind,
   type ConstrEmit,
-  type DesignComponents,
-  getRef,
-  type RefOrNormal,
-  toBinds
+  type DesignComponents
 } from '@dxtmisha/functional'
 
+import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
+
+import type { ComponentIncludeExposeItem, ComponentIncludeExtra } from '../../types/componentInclude'
 import type { EventClickValue } from '../../types/eventClickTypes'
 
 import type { BarsComponentInclude, BarsEmitsInclude, BarsPropsInclude } from './basicTypes'
-import type { BarsExpose } from './types'
+import type { BarsExpose, BarsSlots } from './types'
 import type { BarsProps } from './props'
 
 /**
@@ -25,102 +25,107 @@ import type { BarsProps } from './props'
  */
 export class BarsInclude<
   Props extends BarsPropsInclude = BarsPropsInclude,
-  PropsExtra extends ConstrBind<BarsProps> = ConstrBind<BarsProps>
-> {
-  /** Element reference/ Ссылка на элемент */
-  readonly element = ref<BarsExpose>()
+  PropsExtra extends BarsProps = BarsProps
+> extends ComponentIncludeAbstract<
+    Props,
+    PropsExtra,
+    BarsExpose,
+    BarsSlots
+  > {
+  protected readonly exposeItems: ComponentIncludeExposeItem<any>[] | undefined = undefined
+
+  protected name = 'bars'
+  protected propsAttrsName = 'barsAttrs'
 
   /**
    * Constructor
-   * @param props input parameter/ входной параметр
-   * @param className class name/ название класса
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param extra additional parameter or property name/ дополнительный параметр или имя
-   * @param labelId identifier for the label/ идентификатор для метки
-   * @param descriptionId identifier for the description/ идентификатор для описания
-   * @param index index identifier/ идентификатор индекса
+   * @param className class name / название класса
+   * @param props input parameter / входной параметр
+   * @param components object for working with components / объект для работы с компонентами
+   * @param extra additional parameter or property name / дополнительный параметр или имя
+   * @param labelId identifier for the label / идентификатор для метки
+   * @param descriptionId identifier for the description / идентификатор для описания
+   * @param index index identifier / идентификатор индекса
+   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
    */
   constructor(
-    protected readonly props: Readonly<Props>,
-    protected readonly className: string,
-    protected readonly components?: DesignComponents<BarsComponentInclude, Props>,
+    className: string,
+    props: Readonly<Props>,
+    components?: DesignComponents<BarsComponentInclude, Props>,
+    extra?: ComponentIncludeExtra<PropsExtra>,
+    index?: string,
     protected readonly emits?: ConstrEmit<BarsEmitsInclude>,
-    protected readonly extra?: RefOrNormal<PropsExtra>,
     protected readonly labelId?: string,
-    protected readonly descriptionId?: string,
-    protected readonly index?: string
+    protected readonly descriptionId?: string
   ) {
+    super(className, props, components, extra, index)
   }
 
   /**
-   * Checks whether bars should be displayed/
+   * Checks whether bars should be displayed /
    * Проверяет, нужно ли отображать панели
    */
-  readonly is = computed(() => Boolean(
-    this.props.barsLabel
-    || this.props.barsDescription
-    || this.props.barsBackHide !== true
-  ))
+  get is(): boolean {
+    const props = this.getProps()
 
-  /** Computed bindings for the bars/ Вычисляемые привязки для панелей */
-  readonly binds = computed<PropsExtra>(() => {
-    const props = toBinds<PropsExtra>(
-      getRef(this.extra),
-      this.props.barsAttrs,
-      { class: `${this.className}__bars` }
+    return !props.barsHide && Boolean(
+      props.barsLabel
+      || props.barsDescription
+      || props.barsBackHide !== true
     )
-
-    return {
-      ...props,
-
-      labelId: this.labelId,
-      label: this.props.barsLabel,
-      descriptionId: this.descriptionId,
-      description: this.props.barsDescription,
-      backHide: this.props.barsBackHide,
-      bars: this.props.barsList
-    }
-  })
-
-  /**
-   * Render the Bars component
-   *
-   * Рендер компонента панелей
-   */
-  readonly render = (): VNode[] => {
-    if (
-      this.components
-      && !this.props.barsHide
-    ) {
-      return this.components.render(
-        'bars',
-        {
-          ref: this.element,
-          ...this.binds.value,
-          onClick: this.onClick
-        },
-        undefined,
-        this.index ?? 'bars'
-      )
-    }
-
-    return []
   }
 
   /**
-   * Handles click events from Bars and emits related events/
+   * Handles click events from Bars and emits related events /
    * Обрабатывает клики по панелям и испускает связанные события
-   *
-   * @param event native mouse event/ native событие мыши
-   * @param value payload with { type, value, detail }/ данные события с { type, value, detail }
+   * @param event native mouse event / native событие мыши
+   * @param value payload with { type, value, detail } / данные события с { type, value, detail }
    */
-  protected readonly onClick = (event: MouseEvent, value: EventClickValue) => {
+  readonly onClick = (event: MouseEvent, value: EventClickValue) => {
     this.emits?.('bars', event, value)
     this.emits?.('barsLite', value)
 
     if (value.type === 'back') {
       this.emits?.('barsBack', value)
+    }
+  }
+
+  /**
+   * Render the Bars component /
+   * Рендер компонента панелей
+   * @param slotsChildren sub-component slots / слоты субкомпонента
+   * @param attrs additional override attributes / дополнительные переопределяющие атрибуты
+   * @returns array of VNodes / массив VNode
+   */
+  readonly render = (
+    slotsChildren?: BarsSlots,
+    attrs?: ConstrBind<PropsExtra>
+  ): VNode[] => super.initRender(
+    slotsChildren,
+    attrs,
+    () => this.is
+  )
+
+  /**
+   * Combines input attributes with internal component bindings.
+   *
+   * Объединяет входные атрибуты со внутренними привязками компонента.
+   * @returns resolved bindings / разрешенные привязки
+   */
+  protected override toBinds(): ConstrBind<PropsExtra> {
+    const props = this.getProps()
+    const binds = super.toBinds()
+
+    return {
+      ...binds,
+
+      labelId: this.labelId,
+      label: props.barsLabel,
+      descriptionId: this.descriptionId,
+      description: props.barsDescription,
+      backHide: props.barsBackHide,
+      bars: props.barsList,
+      onClick: this.onClick
     }
   }
 }

@@ -112,9 +112,11 @@ export class Menu {
     this.go = new MenuGoConstructor(this.props, this.value, this.data)
 
     this.bars = new BarsIncludeConstructor(
-      this.props,
       this.className,
+      this.props,
       this.components,
+      undefined,
+      undefined,
       this.emits
     )
 

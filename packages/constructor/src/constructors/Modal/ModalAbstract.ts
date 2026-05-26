@@ -67,21 +67,23 @@ export abstract class ModalAbstract {
     const descriptionId: string = getElementId()
 
     this.bars = new BarsConstructor(
-      props,
       className,
+      props,
       components,
-      emits,
       extraBars,
+      undefined,
+      emits,
       labelId,
       descriptionId
     )
 
     this.actions = new ActionsConstructor(
-      props,
       className,
+      props,
       components,
-      emits,
-      extraActions
+      extraActions,
+      undefined,
+      emits
     )
 
     this.window = new WindowConstructor(

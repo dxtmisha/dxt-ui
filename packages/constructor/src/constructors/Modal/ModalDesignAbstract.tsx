@@ -133,11 +133,9 @@ export abstract class ModalDesignAbstract<
   protected readonly renderTitle = (
     props: WindowControlItem
   ): VNode[] => {
-    const children: any[] = []
-
-    if (this.item.bars.is.value) {
-      children.push(...this.item.bars.render())
-    }
+    const children: any[] = [
+      ...this.item.bars.render()
+    ]
 
     if (
       this.slots
@@ -206,7 +204,7 @@ export abstract class ModalDesignAbstract<
   ): VNode[] => {
     const children: any[] = []
 
-    if (this.item.actions.is.value) {
+    if (this.item.actions.is) {
       children.push(...this.item.actions.render())
     }
 
