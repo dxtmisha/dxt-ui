@@ -28,14 +28,14 @@ export class ImageDesign<
   CLASSES extends ImageClasses,
   P extends ImagePropsBasic
 > extends DesignConstructorAbstract<
-  HTMLDivElement,
-  COMP,
-  ImageEmits,
-  EXPOSE,
-  ImageSlots,
-  CLASSES,
-  P
-> {
+    HTMLDivElement,
+    COMP,
+    ImageEmits,
+    EXPOSE,
+    ImageSlots,
+    CLASSES,
+    P
+  > {
   protected readonly item: Image
 
   /**

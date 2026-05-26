@@ -85,7 +85,7 @@ export type ImageUint8ArrayCache = ImageUint8ArrayItem[]
 export type ImageItem
   = ImageSize
     & {
-      /** Image element/ Элемент изображения */
+    /** Image element/ Элемент изображения */
       image: HTMLImageElement
       /** Source URL/ URL-источник */
       src: string
@@ -107,7 +107,7 @@ export type ImageEventType = {
 export type ImageEventData
   = ImageEventType
     & {
-      /** Image event data/ Данные события изображения */
+    /** Image event data/ Данные события изображения */
       image: ImageEventItem
     }
 
@@ -129,4 +129,7 @@ export type ImageEmitsInclude = ImageEmits
 export type ImagePropsInclude<Image extends ImagePropsBasic = ImagePropsBasic> = {
   /** Image value or attributes/ Значение или атрибуты изображения */
   image?: string | ConstrBind<Image>
+
+  /** Additional image parameters/ Дополнительные параметры изображения */
+  imageAttrs?: ConstrBind<Image>
 }

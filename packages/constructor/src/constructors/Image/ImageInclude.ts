@@ -1,53 +1,82 @@
-import { computed, type VNode } from 'vue'
+import { type VNode } from 'vue'
 import { type ConstrEmit, type DesignComponents, getBind, getRef, type RefOrNormal } from '@dxtmisha/functional'
 
+import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
+
 import type { ImageEventData, ImageComponentInclude, ImageEmitsInclude, ImagePropsInclude } from './basicTypes'
+import type { ImageProps } from './props'
+import type { ImageExpose, ImageSlots } from './types'
 
 /**
- * Класс для подключения и работы с компонентом изображения.
- *
  * A class for connecting to and working with the image component.
+ * It extends ComponentIncludeAbstract to manage state, binding, and rendering logic for images.
+ *
+ * Класс для подключения и работы с компонентом изображения.
+ * Он расширяет ComponentIncludeAbstract для управления состоянием, привязками и логикой рендеринга изображений.
  */
-export class ImageInclude {
+export class ImageInclude extends ComponentIncludeAbstract<
+  ImagePropsInclude,
+  ImageProps,
+  'imageAttrs',
+  ImageComponentInclude,
+  ImageExpose,
+  ImageSlots
+> {
+  /** Sub-component key identifier / Идентификатор ключа субкомпонента */
+  protected name = 'image'
+  /** Property name containing image attributes / Имя свойства, содержащего атрибуты изображения */
+  protected propsAttrsName = 'imageAttrs'
+
   /**
    * Constructor for working with images.
    *
    * Конструктор для работы с изображениями.
-   * @param props input parameter/ входной параметр
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param extra additional parameter/ дополнительный параметр
+   * @param className base class name of the parent / имя базового класса родителя
+   * @param props input component properties / входные свойства компонента
+   * @param components registry of design components / реестр дизайн-компонентов
+   * @param extra additional design attributes or settings / дополнительные дизайн-атрибуты или настройки
+   * @param emits constructor emitter for component events / конструктор событий для событий компонента
    */
   constructor(
-    protected readonly props: ImagePropsInclude,
-    protected readonly components?: DesignComponents<ImageComponentInclude, ImagePropsInclude>,
-    protected readonly emits?: ConstrEmit<ImageEmitsInclude>,
-    protected readonly extra?: RefOrNormal<Record<string, any>>
+    className: string,
+    props: ImagePropsInclude,
+    components?: DesignComponents<ImageComponentInclude, ImagePropsInclude>,
+    extra?: RefOrNormal<Record<string, any>>,
+    protected readonly emits?: ConstrEmit<ImageEmitsInclude>
   ) {
+    super(className, props, components, extra)
   }
 
   /**
-   * Проверяет, есть ли изображение/ Checks if an image exists
+   * Renders the image component if a valid image is provided in properties.
+   *
+   * Рендерит компонент изображения, если в свойствах указано корректное изображение.
+   * @returns array of VNodes / массив VNode
    */
-  readonly isImage = computed<boolean>(() => Boolean(this.props.image))
+  readonly render = (): VNode[] => super.initRender(
+    undefined,
+    undefined,
+    () => Boolean(this.getProps().image)
+  )
 
   /**
-   * Возвращает данные для передачи компоненту/ Returns data to pass to the component
+   * Handles the image load event and propagates it via emits.
+   *
+   * Обрабатывает событие загрузки изображения и передает его через emits.
+   * @param event image event payload data / данные события изображения
    */
-  readonly bind = computed(() => getBind(this.props.image, getRef(this.extra), 'value'))
+  readonly onLoad = (event: ImageEventData) => this.emits?.('load', event)
 
-  render(): VNode[] {
-    if (
-      this.components
-      && this.isImage.value
-    ) {
-      return this.components.render('image', this.bind.value)
-    }
-
-    return []
-  }
-
-  onLoad(event: ImageEventData) {
-    this.emits?.('load', event)
+  /**
+   * Resolves and returns design properties specifically bound for the image.
+   *
+   * Разрешает и возвращает свойства дизайна, привязанные именно к изображению.
+   * @returns resolved image properties or undefined / разрешенные свойства изображения или undefined
+   */
+  protected getExtra(): ImageProps | undefined {
+    return getBind(
+      this.getProps().image,
+      getRef(this.extra), 'value'
+    ) as ImageProps
   }
 }

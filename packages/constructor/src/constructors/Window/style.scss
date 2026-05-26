@@ -62,6 +62,7 @@
   &__image {
     position: relative;
     height: ui.v('??imageSizeValue');
+    border-radius: 0;
   }
 
   &__close {
@@ -225,62 +226,61 @@
     @include ui.initByCustom('opacity', 1);
     @include ui.initByCustom('transform', none);
     @include ui.initByCustom('transition', background #{ui.v('d.sys.transitionDuration.fade.exit')} linear);
-    @include ui.initByCustom(
-            'transitionBody',
-            #{opacity #{ui.v('d.sys.transitionDuration.xs')} linear, transform #{ui.v('d.sys.transitionDuration.fade.enter')} #{ui.v('d.sys.transitionFunction.deceleration')}
+    @include ui.initByCustom('transitionBody',
+      #{opacity #{ui.v('d.sys.transitionDuration.xs')} linear, transform #{ui.v('d.sys.transitionDuration.fade.enter')} #{ui.v('d.sys.transitionFunction.deceleration')}
     });
 
-    display: flex;
-    @include ui.contentVisibility(visible);
+  display: flex;
+  @include ui.contentVisibility(visible);
 
-    @include ui.backgroundOpacity(ui.v('??backgroundOpacity'));
+  @include ui.backgroundOpacity(ui.v('??backgroundOpacity'));
+}
+
+&[data-status="hide"] {
+  @include ui.initByCustom('opacity', 0);
+  @include ui.initByCustom('transform', none);
+  @include ui.initByCustom('transition', background #{ui.v('d.sys.transitionDuration.fade.exit')} linear);
+  @include ui.initByCustom('transitionBody', opacity #{ui.v('d.sys.transitionDuration.fade.exit')} linear);
+
+  display: flex;
+  @include ui.contentVisibility(visible);
+}
+
+@include ui.mediaPrefersReducedMotion {
+
+  &,
+  &__body,
+  &__background {
+    transition-delay: 0.1ms !important;
+    transition-duration: 0.1ms !important;
   }
+}
 
-  &[data-status="hide"] {
-    @include ui.initByCustom('opacity', 0);
-    @include ui.initByCustom('transform', none);
-    @include ui.initByCustom('transition', background #{ui.v('d.sys.transitionDuration.fade.exit')} linear);
-    @include ui.initByCustom('transitionBody', opacity #{ui.v('d.sys.transitionDuration.fade.exit')} linear);
+@at-root {
+  body[data-scroll="scroll"] {
 
-    display: flex;
-    @include ui.contentVisibility(visible);
-  }
-
-  @include ui.mediaPrefersReducedMotion {
-
-    &,
-    &__body,
-    &__background {
-      transition-delay: 0.1ms !important;
-      transition-duration: 0.1ms !important;
+    &:has(>[data-window-teleport]>#{ui.c('??-overscroll')}:not([data-window-menu="menu"])[data-status="display"]),
+    &:has(>[data-window-teleport]>#{ui.c('??-overscroll')}:not([data-window-menu="menu"])[data-status="preparation"]),
+    &:has(>[data-window-teleport]>#{ui.c('??-overscroll')}:not([data-window-menu="menu"])[data-status="flash"]),
+    &:has(>[data-window-teleport]>#{ui.c('??-overscroll')}:not([data-window-menu="menu"])[data-status="open"]),
+    &:has(>[data-window-teleport]>#{ui.c('??-overscroll')}:not([data-window-menu="menu"])[data-status="hide"]) {
+      overflow-y: hidden;
+      padding-right: var(--sys-scrollbar-offset);
     }
   }
+}
 
-  @at-root {
-    body[data-scroll="scroll"] {
-
-      &:has(>[data-window-teleport]>#{ui.c('??-overscroll')}:not([data-window-menu="menu"])[data-status="display"]),
-      &:has(>[data-window-teleport]>#{ui.c('??-overscroll')}:not([data-window-menu="menu"])[data-status="preparation"]),
-      &:has(>[data-window-teleport]>#{ui.c('??-overscroll')}:not([data-window-menu="menu"])[data-status="flash"]),
-      &:has(>[data-window-teleport]>#{ui.c('??-overscroll')}:not([data-window-menu="menu"])[data-status="open"]),
-      &:has(>[data-window-teleport]>#{ui.c('??-overscroll')}:not([data-window-menu="menu"])[data-status="hide"]) {
-        overflow-y: hidden;
-        padding-right: var(--sys-scrollbar-offset);
-      }
-    }
+@keyframes #{ui.n('??persistent')} {
+  0% {
+    transform: scale(1)
   }
 
-  @keyframes #{ui.n('??persistent')} {
-    0% {
-      transform: scale(1)
-    }
-
-    50% {
-      transform: scale(1.02)
-    }
-
-    100% {
-      transform: scale(1)
-    }
+  50% {
+    transform: scale(1.02)
   }
+
+  100% {
+    transform: scale(1)
+  }
+}
 }

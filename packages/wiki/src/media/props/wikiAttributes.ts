@@ -142,6 +142,17 @@ export const wikiAttributes: StorybookArgsToList = {
     },
     hide: true
   },
+  imageAttrs: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.attributes,
+      description: {
+        en: 'Additional attributes for the image element',
+        ru: 'Дополнительные атрибуты для элемента изображения'
+      }
+    },
+    hide: true
+  },
   menuAttrs: {
     type: StorybookControl.object,
     options: {

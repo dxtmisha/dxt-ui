@@ -272,6 +272,7 @@ export class Window {
       emits
     )
     this.image = new ImageConstructor(
+      className,
       props,
       components,
       emits

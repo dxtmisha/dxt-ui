@@ -22,9 +22,9 @@ export abstract class ComponentIncludeAbstract<
   Props extends Record<string, any>,
   PropsExtra extends Record<string, any>,
   ComponentCode extends string,
+  ComponentInclude extends Record<string, object | undefined> = { [key in ComponentCode]: object | undefined },
   ComponentExpose extends Record<string, any> = Record<string, any>,
-  ComponentSlots extends Record<string, any> = Record<string, any>,
-  ComponentInclude extends Record<string, object | undefined> = { [key in ComponentCode]: object | undefined }
+  ComponentSlots extends Record<string, any> = Record<string, any>
 > {
   /** Reference to the sub-component element / Ссылка на элемент субкомпонента */
   protected readonly element = ref<ConstrBind<ComponentExpose> | undefined>()
@@ -34,7 +34,7 @@ export abstract class ComponentIncludeAbstract<
   /** Component sub-name or code identifier / Дополнительное имя компонента или идентификатор кода */
   protected abstract readonly name: string
   /** Property name containing raw attributes to pass / Имя свойства, содержащего сырые атрибуты для передачи */
-  protected abstract readonly propsAttrsName?: ComponentIncludePropsAttrs<Props>
+  protected abstract readonly propsAttrsName?: ComponentIncludePropsAttrs<Props> | string
 
   /**
    * Abstract constructor for initializing basic component inclusion properties.
@@ -69,26 +69,14 @@ export abstract class ComponentIncludeAbstract<
    * Рендерит включенный компонент в виде массива VNode.
    * @param slotsChildren sub-component slots / слоты субкомпонента
    * @param attrs additional override attributes / дополнительные переопределяющие атрибуты
+   * @param isShow function returns true if the component should be rendered / функция возвращает true, если компонент должен быть отрисован
    * @returns array of VNodes / массив VNode
    */
   readonly render = (
     slotsChildren?: ComponentSlots,
-    attrs?: ConstrBind<PropsExtra>
-  ): VNode[] => {
-    if (this.components) {
-      return this.components.render(
-        this.name,
-        {
-          ref: this.element,
-          ...this.getAttrs(attrs)
-        },
-        slotsChildren as RawSlots,
-        this.index
-      )
-    }
-
-    return []
-  }
+    attrs?: ConstrBind<PropsExtra>,
+    isShow: () => boolean = () => true
+  ): VNode[] => this.initRender(slotsChildren, attrs, isShow)
 
   /**
    * Generates the CSS class name according to BEM structure.
@@ -206,5 +194,37 @@ export abstract class ComponentIncludeAbstract<
     }
 
     return data as ComponentExpose
+  }
+
+  /**
+   * Initializes and renders the included component.
+   *
+   * Инициализирует и рендерит включенный компонент.
+   * @param slotsChildren sub-component slots / слоты субкомпонента
+   * @param attrs additional override attributes / дополнительные переопределяющие атрибуты
+   * @param isShow function returns true if the component should be rendered / функция возвращает true, если компонент должен быть отрисован
+   * @returns array of VNodes / массив VNode
+   */
+  protected initRender(
+    slotsChildren?: ComponentSlots,
+    attrs?: ConstrBind<PropsExtra>,
+    isShow: () => boolean = () => true
+  ): VNode[] {
+    if (
+      this.components
+      && isShow()
+    ) {
+      return this.components.render(
+        this.name,
+        {
+          ref: this.element,
+          ...this.getAttrs(attrs)
+        },
+        slotsChildren as RawSlots,
+        this.index
+      )
+    }
+
+    return []
   }
 }

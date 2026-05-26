@@ -125,31 +125,31 @@ export type WindowControlBasic = {
  */
 export type WindowControlItem
   = WindowControlBasic
-  & {
-    /** CSS class string/ Строка CSS класса */
-    class: string
-    /** Reactive open state/ Реактивное состояние открытия */
-    open: Ref<boolean>
-    /** Click event handler/ Обработчик события клика */
-    onClick: WindowEventClick
-    /** Keydown event handler/ Обработчик события нажатия клавиши */
-    onKeydown: WindowEventClick
-    /** Context menu event handler/ Обработчик события контекстного меню */
-    onContextmenu: WindowEventClick
-    /** Binding properties/ Свойства привязки */
-    binds:
-    AriaList
     & {
-      /** Binding class/ Класс привязки */
+    /** CSS class string/ Строка CSS класса */
       class: string
-      /** Click event handler for binding/ Обработчик события клика для привязки */
+      /** Reactive open state/ Реактивное состояние открытия */
+      open: Ref<boolean>
+      /** Click event handler/ Обработчик события клика */
       onClick: WindowEventClick
       /** Keydown event handler/ Обработчик события нажатия клавиши */
       onKeydown: WindowEventClick
-      /** Context menu event handler for binding/ Обработчик события контекстного меню для привязки */
+      /** Context menu event handler/ Обработчик события контекстного меню */
       onContextmenu: WindowEventClick
+      /** Binding properties/ Свойства привязки */
+      binds:
+        AriaList
+        & {
+          /** Binding class/ Класс привязки */
+          class: string
+          /** Click event handler for binding/ Обработчик события клика для привязки */
+          onClick: WindowEventClick
+          /** Keydown event handler/ Обработчик события нажатия клавиши */
+          onKeydown: WindowEventClick
+          /** Context menu event handler for binding/ Обработчик события контекстного меню для привязки */
+          onContextmenu: WindowEventClick
+        }
     }
-  }
 
 /**
  * Component map for including the Window component/
