@@ -1,7 +1,4 @@
-import {
-  getBind,
-  getRef
-} from '@dxtmisha/functional'
+import { getBind } from '@dxtmisha/functional'
 
 import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
 
@@ -49,17 +46,18 @@ export class BadgeInclude extends ComponentIncludeAbstract<
    */
   protected override getExtra(): BadgeProps | undefined {
     const props = this.getProps()
+    const extra = super.getExtra()
 
     if (props.badgeDot) {
       return {
         dot: props.badgeDot,
-        ...getRef(this.extra)
+        ...extra
       }
     }
 
     return getBind(
       props.badge,
-      getRef(this.extra),
+      extra,
       'label',
       true
     ) as BadgeProps

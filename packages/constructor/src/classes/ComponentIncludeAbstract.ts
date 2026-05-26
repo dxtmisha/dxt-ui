@@ -101,7 +101,7 @@ export abstract class ComponentIncludeAbstract<
    * @returns component properties / свойства компонента
    */
   protected getProps(): Props {
-    return executeFunction(this.props)
+    return executeFunction(this.props) ?? {} as Props
   }
 
   /**

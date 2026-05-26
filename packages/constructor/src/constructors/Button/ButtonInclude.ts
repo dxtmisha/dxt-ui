@@ -1,9 +1,8 @@
-import { computed, type VNode } from 'vue'
-import { type ConstrBind, type DesignComponents, getBind, getRef, type RefOrNormal, toBinds } from '@dxtmisha/functional'
+import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
 
-import type { ButtonComponentInclude, ButtonPropsInclude } from './basicTypes'
+import type { ButtonPropsInclude } from './basicTypes'
 import type { ButtonPropsBasic } from './props'
-import type { ButtonSlots } from './types'
+import type { ButtonExpose } from './types'
 
 /**
  * ButtonInclude class provides functionality for conditionally rendering button components
@@ -13,81 +12,25 @@ import type { ButtonSlots } from './types'
  * Класс ButtonInclude предоставляет функциональность для условного рендеринга компонентов
  * кнопки внутри других компонентов. Он управляет логикой определения необходимости
  * отображения кнопки и настраивает соответствующие свойства.
- *
- * @template Props - Properties interface extending ButtonPropsInclude
  */
-export class ButtonInclude<
-  Props extends ButtonPropsInclude = ButtonPropsInclude,
-  PropsBasic extends ButtonPropsBasic = ButtonPropsBasic
+export class ButtonInclude extends ComponentIncludeAbstract<
+  ButtonPropsInclude,
+  ButtonPropsBasic,
+  ButtonExpose,
+  any
 > {
-  /**
-   * Constructor
-   * @param label label text or bind/ текст метки или привязка
-   * @param className class name/ название класса
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param props input parameter/ входной параметр
-   * @param extra additional parameter/ дополнительный параметр
-   * @param index index identifier/ идентификатор индекса
-   */
-  constructor(
-    protected readonly label: RefOrNormal<string | ConstrBind<PropsBasic>>,
-    protected readonly className: string,
-    protected readonly components?: DesignComponents<ButtonComponentInclude, Props>,
-    protected readonly props?: Props,
-    protected readonly extra?: RefOrNormal<ConstrBind<ButtonPropsBasic>>,
-    protected readonly index?: string
-  ) {
-  }
+  protected override readonly name = 'button'
+  protected override readonly propsAttrsName = 'buttonAttrs'
 
   /**
-   * Computed bindings for the button/ Вычисляемые привязки для кнопки
+   * Checks whether the button should be displayed /
+   * Проверяет, нужно ли отображать кнопку
    */
-  readonly binds = computed(
-    () => toBinds(
-      this.props?.buttonAttrs,
-      getBind(
-        getRef(this.label),
-        getRef(this.extra),
-        'label'
-      )
+  override get is(): boolean {
+    return (
+      'label' in this.binds.value
+      || 'icon' in this.binds.value
+      || 'iconTrailing' in this.binds.value
     )
-  )
-
-  /**
-   * Renders the button component with provided properties and configuration.
-   * Returns an array of VNode elements representing the rendered button, or an empty
-   * array if the component cannot be rendered.
-   *
-   * Обрисовывает компонент кнопки с предоставленными свойствами и конфигурацией.
-   * Возвращает массив VNode элементов, представляющих отрисованную кнопку, или пустой
-   * массив, если компонент не может быть отрисованы.
-   *
-   * @param props additional properties/ дополнительные свойства
-   * @param slots additional slots/ дополнительные слоты
-   */
-  readonly render = (
-    props?: RefOrNormal<ConstrBind<ButtonPropsBasic>>,
-    slots?: ButtonSlots
-  ): VNode[] => {
-    if (
-      this.components
-      && (
-        ('label' in this.binds.value)
-        || ('icon' in this.binds.value)
-        || ('iconTrailing' in this.binds.value)
-      )
-    ) {
-      return this.components.render(
-        'button',
-        {
-          ...this.binds.value,
-          ...getRef(props)
-        },
-        slots as any,
-        this.index ?? 'button'
-      )
-    }
-
-    return []
   }
 }

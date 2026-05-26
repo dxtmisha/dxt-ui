@@ -1,4 +1,4 @@
-import { type ConstrEmit, type DesignComponents, getBind, getRef, type RefOrNormal } from '@dxtmisha/functional'
+import { type ConstrEmit, type DesignComponents, getBind, type RefOrNormal } from '@dxtmisha/functional'
 
 import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
 
@@ -69,7 +69,8 @@ export class ImageInclude extends ComponentIncludeAbstract<
   protected getExtra(): ImageProps | undefined {
     return getBind(
       this.getProps().image,
-      getRef(this.extra), 'value'
+      super.getExtra(),
+      'value'
     ) as ImageProps
   }
 }

@@ -1,4 +1,4 @@
-import { computed, type Ref, type ToRefs } from 'vue'
+import { type Ref, type ToRefs } from 'vue'
 import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
 import { FieldElementInclude } from '../../classes/Field/FieldElementInclude'
@@ -91,16 +91,15 @@ export class MenuButton extends SelectAbstract {
     } = constructors ?? {}
 
     this.button = new ButtonConstructor(
-      '',
       this.className,
-      this.components,
       this.props,
-      computed(() => ({
+      this.components,
+      () => ({
         icon: this.props.icon,
         disabled: this.props.disabled,
         readonly: this.props.readonly,
         iconTrailing: this.iconTrailing.value
-      }))
+      })
     )
   }
 }

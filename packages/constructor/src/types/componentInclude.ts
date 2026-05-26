@@ -1,7 +1,7 @@
 import type { ConstrBind, RefOrNormal } from '@dxtmisha/functional'
 
 /** Component properties type or function returning properties / Тип свойств компонента или функция, возвращающая свойства */
-export type ComponentIncludeProps<Props extends Record<string, any>> = Readonly<Props> | (() => Props)
+export type ComponentIncludeProps<Props extends Record<string, any>> = Readonly<ConstrBind<Props>> | (() => ConstrBind<Props>) | undefined
 /** Component properties attribute names / Имена атрибутов свойств компонента */
 export type ComponentIncludePropsAttrs<Props extends Record<string, any>> = keyof Props | undefined
 /**

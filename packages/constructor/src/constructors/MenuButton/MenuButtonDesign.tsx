@@ -37,14 +37,14 @@ export class MenuButtonDesign<
   CLASSES extends MenuButtonClasses,
   P extends MenuButtonPropsBasic
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
-    COMP,
-    MenuButtonEmits,
-    EXPOSE,
-    MenuButtonSlots,
-    CLASSES,
-    P
-  > {
+  HTMLDivElement,
+  COMP,
+  MenuButtonEmits,
+  EXPOSE,
+  MenuButtonSlots,
+  CLASSES,
+  P
+> {
   /** Instance of the MenuButton controller / Экземпляр контроллера MenuButton */
   protected readonly item: MenuButton
 
@@ -161,11 +161,11 @@ export class MenuButtonDesign<
   protected readonly renderControl = (props: MenuControlItem): VNode[] => {
     return this.item.button.render(
       {
-        ...props.binds,
-        iconTurn: props.open.value
+        default: () => this.renderControlLabel(props.selectedNames?.value)
       },
       {
-        default: () => this.renderControlLabel(props.selectedNames?.value)
+        ...props.binds,
+        iconTurn: props.open.value
       }
     )
   }

@@ -53,10 +53,9 @@ export class InputPhoneDialCode {
     } = constructors ?? {}
 
     this.button = new ButtonConstructor(
-      '',
       this.className,
-      this.components,
-      this.props
+      this.props,
+      this.components
     )
 
     this.menu = new MenuCountryConstructor(

@@ -95,10 +95,9 @@ export class SnackbarItem {
 
     this.icon = new IconConstructor(props, className, components)
     this.button = new ButtonConstructor(
-      computed(() => this.props.button),
       className,
+      () => this.props?.button,
       components,
-      undefined,
       { onClick: this.event.onClick }
     )
     this.actions = new ActionsConstructor(
