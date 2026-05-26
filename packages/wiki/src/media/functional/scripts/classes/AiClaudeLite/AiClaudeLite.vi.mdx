@@ -1,0 +1,38 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/AiClaudeLite - Lớp Claude AI Cơ bản Rút gọn'/>
+
+# Lớp AiClaudeLite
+
+Lớp `AiClaudeLite` là một triển khai gọn nhẹ của `AiAbstract` bao bọc Anthropic SDK. Nó cung cấp hỗ trợ cho việc tích lũy ngữ cảnh lời nhắc, đầu vào đa phương thức (hình ảnh) và tạo văn bản mạnh mẽ bằng các mô hình Claude.
+
+## Tính năng chính
+
+- **Hỗ trợ Đa phương thức** — chuyển đổi hình ảnh tích lũy sang định dạng base64 được yêu cầu bởi Anthropic cho các khối nội dung hình ảnh.
+- **Xử lý Nội dung theo Cấu trúc** — định dạng cả văn bản thường và hình ảnh base64 thành nội dung tin nhắn có cấu trúc trước khi thực hiện cuộc gọi yêu cầu.
+- **Trích xuất Văn bản** — phân tích mảng khối nội dung trong phản hồi của Anthropic và nối các khối văn bản để trả về kết quả là một chuỗi văn bản sạch.
+
+## Khởi tạo
+
+`AiClaudeLite` yêu cầu truyền thông tin xác thực thủ công thông qua constructor.
+
+**Tham số khởi tạo:**
+- `key: string` — API key cho dịch vụ Anthropic.
+- `model: string` — Định danh mô hình ban đầu (ví dụ: 'claude-3-5-sonnet-20241022').
+
+```typescript
+import { AiClaudeLite } from '@dxtmisha/scripts'
+
+const ai = new AiClaudeLite(process.env.ANTHROPIC_API_KEY, 'claude-3-5-sonnet-20241022')
+```
+
+## Phương thức
+
+### Các Hook Triển khai Nội bộ
+
+Các phương thức protected này triển khai giao diện mở rộng được yêu cầu của `AiAbstract`:
+
+- `init(): void` — Khởi tạo thực thể client `Anthropic` bằng cách sử dụng key được cung cấp.
+- `toImages(): any` — Chuyển đổi `images` đã tích lũy thành mảng cấu trúc `{ type: 'image', source: { ... } }` dành cho Claude.
+- `toContents(): any` — Chuyển đổi nội dung văn bản `contents` bổ sung đã tích lũy thành mảng cấu trúc `{ type: 'text', text: content }`.
+- `response(model: string, contents: string): Promise<string>` — Thực hiện lệnh gọi API `messages.create`, truyền tất cả các khối đã định dạng và phân tích cú pháp phản hồi văn bản.

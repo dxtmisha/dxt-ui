@@ -1,0 +1,35 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/AiOpenAi - Lớp OpenAI'/>
+
+# Lớp AiOpenAi
+
+Lớp `AiOpenAi` là một triển khai cụ thể của `AiOpenAiLite` tích hợp với các cấu hình môi trường của dự án. Nó tự động tải thông tin xác thực bằng cách sử dụng `getConfigAi()` để khởi tạo client OpenAI.
+
+## Tính năng chính
+
+- **Cấu hình Tự động** — tự động tải API key và mô hình mặc định bằng cách sử dụng `getConfigAi()`.
+- **Kế thừa các Tính năng của OpenAI** — hỗ trợ tất cả các tính năng của `AiOpenAiLite`, bao gồm đầu vào đa phương thức (hình ảnh), tích lũy lời nhắc và tạo văn bản.
+
+## Khởi tạo
+
+Lớp `AiOpenAi` có thể được khởi tạo trực tiếp mà không cần tham số trong constructor vì nó tự động lấy thông tin xác thực từ môi trường.
+
+```typescript
+import { AiOpenAi } from '@dxtmisha/scripts'
+
+const ai = new AiOpenAi()
+
+// Thiết lập mô hình (tùy chọn, nếu mô hình mặc định chưa được đặt hoặc cần ghi đè)
+ai.setModel('gpt-4o')
+
+// Tích lũy ngữ cảnh
+ai.addPrompt('Bạn là một nhà phát triển TypeScript chuyên nghiệp.')
+
+// Tạo văn bản
+const response = await ai.generate('Tạo một enum cho các vai trò người dùng (user roles).')
+```
+
+## Phương thức
+
+Lớp này không định nghĩa thêm phương thức public nào khác. Nó kế thừa tất cả các phương thức cấu hình và thực thi từ `AiOpenAiLite` và `AiAbstract`.

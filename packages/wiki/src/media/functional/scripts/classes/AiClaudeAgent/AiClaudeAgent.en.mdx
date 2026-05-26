@@ -1,0 +1,32 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/AiClaudeAgent - Claude Agent SDK Service Class'/>
+
+# AiClaudeAgent Class
+
+The `AiClaudeAgent` class is a concrete implementation of `AiClaudeAgentLite` that integrates with the project's environment settings. It automatically loads configurations and API keys using `getConfigAi()` to initialize Claude in agent mode.
+
+## Key Features
+
+- **Automated Configuration** — loads API keys and default models automatically using `getConfigAi()`.
+- **Inherited Agent Features** — supports all features of `AiClaudeAgentLite`, including query execution via the Agent SDK, text streams processing, and file editing permission modes.
+
+## Initialization
+
+The `AiClaudeAgent` class can be instantiated directly without constructor arguments since it automatically retrieves credentials from the environment.
+
+```typescript
+import { AiClaudeAgent } from '@dxtmisha/scripts'
+
+const agent = new AiClaudeAgent()
+
+// Accumulate instructions/contents
+agent.addContent('Ensure all helper files are placed in the utils folder.')
+
+// Run query in agent mode
+const response = await agent.generate('Refactor the format functions inside helper.ts.')
+```
+
+## Methods
+
+This class does not define additional public methods. It inherits all configuration and execution methods from `AiClaudeAgentLite` and `AiAbstract`.

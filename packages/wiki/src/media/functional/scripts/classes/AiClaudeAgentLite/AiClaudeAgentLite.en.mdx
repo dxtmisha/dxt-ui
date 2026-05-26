@@ -1,0 +1,38 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/AiClaudeAgentLite - Claude Agent SDK Lite Class'/>
+
+# AiClaudeAgentLite Class
+
+The `AiClaudeAgentLite` class is a lightweight implementation of `AiAbstract` that uses the `@anthropic-ai/claude-agent-sdk` to interact with Claude in **Agent Mode**. In agent mode, Claude can run tasks using an interactive tool-calling loop, handle local environments, and perform complex edits.
+
+## Key Features
+
+- **Agent Loops** — utilizes the interactive `query` generator loop from the Agent SDK.
+- **Auto-Accepting Edits** — configured by default with `permissionMode: 'acceptEdits'` and `allowDangerouslySkipPermissions: true` to enable direct, automated local file manipulations.
+- **Graceful Error Handling** — wraps execution loops in try-catch blocks and reports errors to `console.error`.
+
+## Initialization
+
+`AiClaudeAgentLite` requires manual credentials injection through the constructor.
+
+**Constructor Parameters:**
+- `key: string` — The API key for the Anthropic service.
+- `model: string` — The initial model identifier.
+
+```typescript
+import { AiClaudeAgentLite } from '@dxtmisha/scripts'
+
+const agent = new AiClaudeAgentLite(process.env.ANTHROPIC_API_KEY, 'claude-3-5-sonnet-20241022')
+```
+
+## Methods
+
+### Internal Implementation Hooks
+
+These protected methods implement the required extension interface of `AiAbstract`:
+
+- `init(): void` — Sets `this.ai` to an empty object to satisfy the baseline initialization contract.
+- `toImages(): any` — Returns an empty array `[]` (image handling is currently ignored or delegated in agent mode).
+- `toContents(): any` — Formats and joins accumulated text instructions `contents` using double newlines `\n\n`.
+- `response(model: string, contents: string): Promise<string>` — Orchestrates the Agent SDK `query` generator, listening to the stream messages, capturing the successful `result`, and returning it as a string.

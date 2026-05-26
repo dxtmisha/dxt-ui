@@ -1,0 +1,35 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/AiOpenAi - OpenAI Service Class'/>
+
+# AiOpenAi Class
+
+The `AiOpenAi` class is a concrete implementation of `AiOpenAiLite` that integrates with the project's environment settings. It automatically loads credentials using `getConfigAi()` to initialize the OpenAI client.
+
+## Key Features
+
+- **Automated Configuration** — loads API keys and default models automatically using `getConfigAi()`.
+- **Inherited OpenAI Features** — supports all features of `AiOpenAiLite`, including multimodal inputs (images), prompt accumulation, and text generation.
+
+## Initialization
+
+The `AiOpenAi` class can be instantiated directly without constructor arguments since it automatically retrieves credentials from the environment.
+
+```typescript
+import { AiOpenAi } from '@dxtmisha/scripts'
+
+const ai = new AiOpenAi()
+
+// Set model (optional, if default is not set or needs to be overridden)
+ai.setModel('gpt-4o')
+
+// Accumulate context
+ai.addPrompt('You are a professional TypeScript developer.')
+
+// Generate text
+const response = await ai.generate('Create an enum for user roles.')
+```
+
+## Methods
+
+This class does not define additional public methods. It inherits all configuration and execution methods from `AiOpenAiLite` and `AiAbstract`.

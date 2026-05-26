@@ -1,0 +1,136 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/BrowserItem - Quản lý Trình duyệt Không đầu'/>
+
+# Lớp BrowserItem
+
+Lớp `BrowserItem` là một lớp bọc cấp cao xung quanh **Puppeteer**, được thiết kế để quản lý các phiên bản trình duyệt Chromium, cấu hình viewport, thực thi script trong ngữ cảnh trình duyệt và chụp ảnh màn hình toàn trang hoặc cắt trang thành nhiều phần.
+
+## Tính năng chính
+
+- **Vòng đời Tự động** — khởi chạy và quản lý lười biếng một hoặc nhiều phiên bản trình duyệt không đầu.
+- **Cấu hình Viewport Động** — tự động cấu hình kích thước viewport, tỉ lệ và xử lý các lỗi console khi khởi chạy.
+- **Quy trình Chụp Linh hoạt** — hỗ trợ chụp toàn bộ trang cuộn hoặc chia trang thành nhiều tệp ảnh lưu tuần tự.
+- **Trích xuất DOM & Kiểu dáng** — cung cấp các phương thức trực tiếp để lấy mã nguồn HTML thô, biểu kiểu CSS đang hoạt động hoặc thông số kích thước trang.
+- **Thực thi An toàn trong Sandbox** — thực thi các hàm callback an toàn trong ngữ cảnh cửa sổ trình duyệt đang hoạt động.
+
+## Khởi tạo
+
+`BrowserItem` được khởi tạo bằng một URL đích và một đối tượng cấu hình tùy chọn.
+
+**Tham số khởi tạo:**
+- `url: string` — URL trang web cần tải và chụp ảnh.
+- `options: ScreenshotOptions` — (Tùy chọn) Kích thước viewport, định dạng, chất lượng và thời gian chờ.
+
+```typescript
+import { BrowserItem } from '@dxtmisha/scripts'
+
+const browserItem = new BrowserItem('http://localhost:5173', {
+  width: 1280,
+  height: 800,
+  format: 'png',
+  fullPage: true
+})
+```
+
+---
+
+## Getters
+
+### Getters Cấu hình
+- `args: string[]` — Các đối số khởi chạy trình duyệt của Puppeteer.
+- `waitUntil: PuppeteerLifeCycleEvent | PuppeteerLifeCycleEvent[]` — Điều kiện hoàn thành việc tải trang.
+- `timeout: number` — Thời gian chờ tối đa khi tải trang (ms).
+- `format: 'png' | 'jpeg' | 'webp'` — Định dạng hình ảnh đầu ra.
+- `width: number` — Chiều rộng viewport.
+- `height: number` — Chiều cao viewport.
+- `quality: number` — Chất lượng ảnh chụp (0-100) dành cho định dạng JPEG/WebP.
+- `fullPage: boolean` — Trạng thái chụp toàn bộ trang.
+- `extension: string` — Phần mở rộng tệp tương ứng (ví dụ: `".png"`, `".jpg"`).
+
+---
+
+## Phương thức
+
+### Quản lý Vòng đời
+
+#### `getBrowser`
+Khởi tạo lười biếng và trả về đối tượng trình duyệt Puppeteer.
+
+**Trả về:** `Promise<Browser>`
+
+```typescript
+const browser = await browserItem.getBrowser()
+```
+
+#### `getPage`
+Tạo mới hoặc trả về đối tượng trang trình duyệt, cấu hình kích thước viewport và gắn các trình lắng nghe ghi log lỗi console.
+
+**Trả về:** `Promise<Page>`
+
+```typescript
+const page = await browserItem.getPage()
+```
+
+#### `getResponse`
+Điều hướng trang đến URL đích với các cấu hình `waitUntil` và `timeout` tương ứng.
+
+**Trả về:** `Promise<HTTPResponse | undefined>`
+
+```typescript
+const response = await browserItem.getResponse()
+```
+
+---
+
+### Chụp ảnh & Hành động
+
+#### `screenshot`
+Kích hoạt quy trình chụp ảnh màn hình và lưu vào đường dẫn được chỉ định. Tự động chọn giữa chụp toàn trang hoặc cắt lát trang dựa trên cấu hình.
+
+**Tham số:**
+- `outputPath: string` — Đường dẫn lưu tệp hình ảnh.
+
+**Trả về:** `Promise<this>`
+
+```typescript
+await browserItem.screenshot('./dist/screenshots/homepage')
+```
+
+#### `evaluate`
+Thực thi một hàm tùy chỉnh bên trong ngữ cảnh trang trình duyệt.
+
+**Tham số:**
+- `pageFunction: Func | string` — Đoạn mã hoặc hàm cần thực thi.
+- `...args: Params` — Các đối số bổ sung truyền vào hàm.
+
+**Trả về:** `Promise<Awaited<ReturnType<Func>> | undefined>`
+
+```typescript
+const title = await browserItem.evaluate(() => document.title)
+```
+
+---
+
+### Tiện ích
+
+### Trích xuất DOM
+- `getDom(): Promise<string>` — Lấy toàn bộ nội dung HTML của tài liệu.
+- `getBody(): Promise<string>` — Lấy mã nguồn HTML bên trong thẻ `document.body`.
+- `getStyles(): Promise<string>` — Trích xuất và hợp nhất tất cả quy tắc CSS đang hoạt động.
+- `getMetrics(): Promise<ScreenshotMetrics>` — Đọc tổng chiều rộng và chiều cao có thể cuộn của trang.
+- `reset(): Promise<this>` — Khởi động lại trạng thái của trang, kích thước mét và phản hồi.
+
+---
+
+## Kiểu dữ liệu
+
+### ScreenshotOptions
+- `args?: string[]` — Cấu hình cờ Chromium tùy chỉnh.
+- `waitUntil?: PuppeteerLifeCycleEvent | PuppeteerLifeCycleEvent[]` — Điều kiện dừng để hoàn tất tải trang.
+- `timeout?: number` — Thời gian chờ tối đa.
+- `format?: 'png' | 'jpeg' | 'webp'` — Định dạng hình ảnh đích.
+- `width?: number` — Chiều rộng viewport ban đầu.
+- `height?: number` — Chiều cao viewport ban đầu.
+- `quality?: number` — Chất lượng nén hình ảnh.
+- `fullPage?: boolean` — Chế độ chụp toàn trang.

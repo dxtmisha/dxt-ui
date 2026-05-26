@@ -1,0 +1,35 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/AiClaude - Claude AI Service Class'/>
+
+# AiClaude Class
+
+The `AiClaude` class is a concrete implementation of `AiClaudeLite` that automatically integrates with the project's environment settings. It initializes the Anthropic AI client using credentials loaded via `getConfigAi()`.
+
+## Key Features
+
+- **Automated Configuration** — loads API keys and default models automatically using `getConfigAi()`.
+- **Inherited Claude Features** — supports all features of `AiClaudeLite`, including multimodal inputs (images), prompt accumulation, and text generation.
+
+## Initialization
+
+The `AiClaude` class can be instantiated directly without constructor arguments since it automatically retrieves credentials from the environment.
+
+```typescript
+import { AiClaude } from '@dxtmisha/scripts'
+
+const ai = new AiClaude()
+
+// Set model (optional, if default is not set or needs to be overridden)
+ai.setModel('claude-3-5-sonnet-20241022')
+
+// Accumulate context
+ai.addPrompt('You are a helpful assistant.')
+
+// Generate text
+const response = await ai.generate('Explain quantum computing.')
+```
+
+## Methods
+
+This class does not define additional public methods. It inherits all configuration and execution methods from `AiClaudeLite` and `AiAbstract`.

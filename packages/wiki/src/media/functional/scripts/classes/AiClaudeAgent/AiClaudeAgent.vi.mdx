@@ -1,0 +1,32 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/AiClaudeAgent - Lớp Dịch vụ Claude Agent SDK'/>
+
+# Lớp AiClaudeAgent
+
+Lớp `AiClaudeAgent` là một triển khai cụ thể của `AiClaudeAgentLite` tích hợp với các cấu hình môi trường của dự án. Nó tự động tải các cấu hình và API key bằng cách sử dụng `getConfigAi()` để khởi tạo Claude trong chế độ tác nhân (agent mode).
+
+## Tính năng chính
+
+- **Cấu hình Tự động** — tự động tải API key và mô hình mặc định bằng cách sử dụng `getConfigAi()`.
+- **Kế thừa các Tính năng Tác nhân** — hỗ trợ tất cả các tính năng của `AiClaudeAgentLite`, bao gồm thực thi truy vấn thông qua Agent SDK, xử lý luồng tin nhắn và chế độ quyền cho phép chỉnh sửa tệp tin.
+
+## Khởi tạo
+
+Lớp `AiClaudeAgent` có thể được khởi tạo trực tiếp mà không cần tham số trong constructor vì nó tự động lấy thông tin xác thực từ môi trường.
+
+```typescript
+import { AiClaudeAgent } from '@dxtmisha/scripts'
+
+const agent = new AiClaudeAgent()
+
+// Tích lũy hướng dẫn/nội dung
+agent.addContent('Đảm bảo tất cả các tệp phụ trợ đều nằm trong thư mục utils.')
+
+// Chạy truy vấn trong chế độ tác nhân
+const response = await agent.generate('Tối ưu hóa các hàm định dạng bên trong helper.ts.')
+```
+
+## Phương thức
+
+Lớp này không định nghĩa thêm phương thức public nào khác. Nó kế thừa tất cả các phương thức cấu hình và thực thi từ `AiClaudeAgentLite` và `AiAbstract`.

@@ -1,0 +1,38 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/AiClaudeAgentLite - Lớp Claude Agent SDK Rút gọn'/>
+
+# Lớp AiClaudeAgentLite
+
+Lớp `AiClaudeAgentLite` là một triển khai gọn nhẹ của `AiAbstract` sử dụng `@anthropic-ai/claude-agent-sdk` để tương tác với Claude trong **Chế độ Tác nhân** (Agent Mode). Trong chế độ tác nhân, Claude có thể chạy các tác vụ bằng cách sử dụng vòng lặp gọi công cụ tương tác, quản lý môi trường cục bộ và thực hiện các chỉnh sửa tệp tin phức tạp.
+
+## Tính năng chính
+
+- **Vòng lặp Tác nhân** — sử dụng vòng lặp tạo `query` tương tác từ Agent SDK.
+- **Tự động Chấp nhận Chỉnh sửa** — được cấu hình mặc định với `permissionMode: 'acceptEdits'` và `allowDangerouslySkipPermissions: true` để cho phép thao tác trực tiếp, tự động trên các tệp tin cục bộ.
+- **Xử lý Lỗi Tốt** — bao bọc các vòng lặp thực thi trong các khối try-catch và báo cáo lỗi qua `console.error`.
+
+## Khởi tạo
+
+`AiClaudeAgentLite` yêu cầu truyền thông tin xác thực thủ công thông qua constructor.
+
+**Tham số khởi tạo:**
+- `key: string` — API key cho dịch vụ Anthropic.
+- `model: string` — Định danh mô hình ban đầu.
+
+```typescript
+import { AiClaudeAgentLite } from '@dxtmisha/scripts'
+
+const agent = new AiClaudeAgentLite(process.env.ANTHROPIC_API_KEY, 'claude-3-5-sonnet-20241022')
+```
+
+## Phương thức
+
+### Các Hook Triển khai Nội bộ
+
+Các phương thức protected này triển khai giao diện mở rộng được yêu cầu của `AiAbstract`:
+
+- `init(): void` — Thiết lập `this.ai` thành một đối tượng trống để đáp ứng hợp đồng khởi tạo cơ sở.
+- `toImages(): any` — Trả về một mảng trống `[]` (xử lý hình ảnh hiện đang bị bỏ qua hoặc ủy quyền trong chế độ tác nhân).
+- `toContents(): any` — Định dạng và nối các hướng dẫn văn bản `contents` đã tích lũy bằng cách sử dụng dòng trống đôi `\n\n`.
+- `response(model: string, contents: string): Promise<string>` — Điều phối trình tạo `query` của Agent SDK, lắng nghe các tin nhắn truyền trực tuyến, nắm bắt kết quả `result` thành công và trả về dưới dạng chuỗi văn bản.

@@ -1,0 +1,121 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/FigmaApi - Figma REST API Client'/>
+
+# Lớp FigmaApi
+
+Lớp `FigmaApi` là một lớp bọc hoàn chỉnh được thiết kế để tương tác trực tiếp với **Figma REST API**. Lớp này đơn giản hóa quy trình gửi yêu cầu HTTP để lấy thông tin tệp, các nút (layer) cụ thể trên canvas, xuất hình ảnh, kiểu dáng (styles) cũng như các tài nguyên thư mục dùng chung của nhóm.
+
+## Tính năng chính
+
+- **Định tuyến Yêu cầu API Thống nhất** — tự động xây dựng các điểm cuối (endpoints) yêu cầu an toàn theo đúng cấu trúc của Figma.
+- **Trích xuất Cấu trúc Lớp & Thành phần** — lấy dữ liệu chi tiết của nút (metadata), khung bao giới hạn (bounding boxes) và kiểu dáng của các lớp canvas cụ thể.
+- **Xuất Tài nguyên Hình ảnh** — tích hợp với công cụ kết xuất của Figma để lấy các URL tạm thời của hình ảnh kết xuất từ các nút canvas ở nhiều định dạng khác nhau (SVG, PNG, JPG, PDF).
+- **Quản lý Kiểu dáng** — lấy danh mục các kiểu dáng được định nghĩa trong tệp hoặc các kiểu dáng cụ thể theo khóa.
+- **Giao diện Fluent linh hoạt** — các phương thức thiết lập (setters) hỗ trợ nối chuỗi (chaining) để thay đổi động các ngữ cảnh về token, tệp hoặc nút đích.
+
+## Khởi tạo
+
+`FigmaApi` yêu cầu một token truy cập cá nhân và một khóa tệp Figma đích khi khởi tạo.
+
+**Tham số khởi tạo:**
+- `token: string` — Token truy cập cá nhân Figma Personal Access Token.
+- `fileKey: string` — Khóa của tệp Figma đích (được tìm thấy trong URL của tệp).
+- `nodeId?: string` — (Tùy chọn) ID của lớp/nút canvas đích.
+
+```typescript
+import { FigmaApi } from '@dxtmisha/scripts'
+
+const api = new FigmaApi(
+  'figd_xxxxxxxxxxxxxxxxxxxxx',
+  'abcde12345XYZ'
+)
+```
+
+---
+
+## Phương thức
+
+### Phương thức Gửi yêu cầu Điểm cuối
+
+#### `files`
+Lấy siêu dữ liệu tài liệu và cây cấu trúc JSON đầy đủ của tệp Figma đích.
+
+**Tham số:**
+- `parameters: FigmaFilesParams` — (Tùy chọn) Các tham số truy vấn bổ sung như độ sâu, phiên bản hoặc thông số hình học.
+
+**Trả về:** `Promise<FigmaFilesResult | undefined>`
+
+```typescript
+const fileData = await api.files({ depth: 2 })
+```
+
+#### `fileNodes`
+Lấy cây cấu trúc của một hoặc nhiều nút canvas cụ thể bên trong tệp.
+
+**Tham số:**
+- `parameters: FigmaFileNodesParams` — Danh sách các ID nút đích cùng với các bộ sửa đổi phiên bản hoặc hình học.
+
+**Trả về:** `Promise<FigmaFileNodesResult | undefined>`
+
+```typescript
+const nodes = await api.fileNodes({ ids: '0:1' })
+```
+
+#### `fileImages`
+Kích hoạt kết xuất các nút canvas đích và trả về danh sách các URL của các tệp hình ảnh được tạo ra.
+
+**Tham số:**
+- `parameters: FigmaFileImagesParams` — Danh sách ID các nút, tỉ lệ và định dạng ảnh xuất ra (ví dụ: `'svg'`, `'png'`).
+
+**Trả về:** `Promise<FigmaFileImagesResult | undefined>`
+
+```typescript
+const images = await api.fileImages({
+  ids: '12:34',
+  format: 'svg'
+})
+```
+
+#### `fileStyles`
+Lấy danh sách các kiểu dáng được định nghĩa trực tiếp bên trong tệp Figma đích.
+
+**Trả về:** `Promise<FigmaFileStylesResult | undefined>`
+
+```typescript
+const stylesList = await api.fileStyles()
+```
+
+#### `styles`
+Lấy siêu dữ liệu chi tiết của một kiểu dáng cụ thể bằng khóa kiểu dáng duy nhất của nó.
+
+**Tham số:**
+- `key: string` — Khóa duy nhất của kiểu dáng.
+
+**Trả về:** `Promise<FigmaStylesResult | undefined>`
+
+```typescript
+const styleMeta = await api.styles('1234abcd5678')
+```
+
+---
+
+### Thiết lập Cấu hình
+Tất cả các phương thức thiết lập đều hỗ trợ nối chuỗi (chaining) và trả về `this`.
+
+- `setToken(token: string): this` — Thay đổi token truy cập đang hoạt động.
+- `setFileKey(fileKey: string): this` — Thay đổi khóa tệp Figma đích.
+- `setNodeId(nodeId?: string): this` — Thay đổi ID nút canvas đích mặc định.
+- `getUrl(method: FigmaApiEndpoint, parameters?: Record<string, any>, key?: string): string` — Xây dựng URL yêu cầu API tuyệt đối.
+
+---
+
+## Kiểu dữ liệu
+
+### FigmaApiEndpoint
+Xác định các điểm cuối REST API của Figma được nhắm tới:
+- `files` — `"/v1/files/:file_key"`
+- `fileNodes` — `"/v1/files/:file_key/nodes"`
+- `fileImages` — `"/v1/images/:file_key"`
+- `fileStyles` — `"/v1/files/:file_key/styles"`
+- `styles` — `"/v1/styles/:key"`

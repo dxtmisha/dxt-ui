@@ -1,0 +1,64 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/LibraryAiPrompt - AI Prompt Consolidator'/>
+
+# Lớp LibraryAiPrompt
+
+Lớp `LibraryAiPrompt` là một tiện ích dành cho nhà phát triển được thiết kế để quét các thư mục một cách đệ quy, thu thập các mô tả markdown, thông số kỹ thuật, các tệp TypeScript và tham chiếu ảnh chụp màn hình, sau đó đóng gói chúng thành một tệp prompt ngữ cảnh duy nhất dành cho các Mô hình Ngôn ngữ Lớn (LLMs).
+
+## Tính năng chính
+
+- **Tổng hợp Prompt Tự động** — hợp nhất các hướng dẫn lập trình toàn cục, tiêu chuẩn triển khai thành phần Vue SFC và hướng dẫn cụ thể của từng mô-đun.
+- **Trình quét Thư mục Đệ quy** — tự động quét qua các không gian làm việc và thư mục con của thành phần để trích xuất các cấu hình prompt đang hoạt động.
+- **Định dạng Bố cục theo Thứ tự** — tổ chức các phần với tiêu đề phân cấp rõ ràng, phân chia mã nguồn, kiểu dữ liệu và mô tả kiến trúc một cách logic.
+- **Tiêu chuẩn Quy tắc Ưu tiên cao** — phân tích tệp hướng dẫn chuyên dụng để đưa các quy tắc ghi đè lên vị trí đầu tiên với mức độ ưu tiên cao nhất.
+- **Tích hợp Hệ thống Tệp** — sử dụng lớp `PropertiesFile` để tải tài nguyên và xuất tệp prompt đã hoàn thành đến thư mục chỉ định.
+
+## Khởi tạo
+
+`LibraryAiPrompt` có thể được khởi tạo với một mảng tùy chọn chứa các đường dẫn thư mục bổ sung cần quét.
+
+**Tham số khởi tạo:**
+- `dirs: string[]` — (Tùy chọn) Danh sách đường dẫn thư mục bổ sung cần quét.
+
+```typescript
+import { LibraryAiPrompt } from '@dxtmisha/scripts'
+
+const consolidator = new LibraryAiPrompt(['custom/path/to/modules'])
+```
+
+---
+
+## Phương thức
+
+### Thực thi
+
+#### `make`
+Phương thức điều phối cốt lõi giúp kích hoạt quét thư mục, định dạng quy tắc tiêu đề, đóng gói các prompt mô-đun tìm thấy, nối thêm các hướng dẫn ưu tiên cao và ghi kết quả hợp nhất ra tệp.
+
+```typescript
+consolidator.make()
+```
+
+---
+
+### API quét được Bảo vệ (Protected)
+
+#### `getList`
+Quét đệ quy qua các thư mục cho đến giới hạn độ sâu chỉ định, bỏ qua các tệp ẩn và trả về danh sách các đối tượng `LibraryAiPromptItem` thu thập được.
+
+**Tham số:**
+- `dirs: string[]` — (Mặc định: biến `dirs` nội bộ) Các thư mục đích cần quét.
+- `path: string[]` — Các phân đoạn đường dẫn tích lũy hiện tại.
+- `limit: number` — (Mặc định: `4`) Giới hạn độ sâu quét đệ quy để tránh vòng lặp vô hạn.
+
+**Trả về:** `LibraryAiPromptItem[]`
+
+---
+
+### Phương thức Trợ giúp được Bảo vệ (Protected)
+- `isFileOnDirs(dirs: string[]): boolean` — Phương thức trợ giúp kiểm tra xem có đường dẫn nào trong danh sách là tệp trực tiếp hay không.
+- `getInstruction(): string | undefined` — Định dạng và trả về các hướng dẫn ưu tiên cao nếu tệp tương ứng tồn tại.
+- `getVuePrompt(): string` — Đọc và định dạng hướng dẫn tiêu chuẩn tạo Vue SFC.
+- `getGlobalPrompt(): string` — Đọc và định dạng hướng dẫn mã nguồn sạch toàn cục.
+- `write(prompts: string[]): this` — Lưu các chuỗi prompt đã tổng hợp vào tệp đích.

@@ -1,0 +1,39 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/AiClaudeCliLite - Claude CLI Service Lite Class'/>
+
+# AiClaudeCliLite Class
+
+The `AiClaudeCliLite` class is a lightweight implementation of `AiAbstract` that interacts with the official Claude CLI tool via system shell commands. It manages temporary prompt files using `ApiTmp` to bypass terminal argument length limits.
+
+## Key Features
+
+- **CLI Shell Execution** — leverages the system shell (`node:child_process`) to invoke `claude` CLI commands.
+- **Temporary File Routing** — utilizes `ApiTmp` to dump long prompts/contents into local `.txt` files, formatting references to them with `@` annotations to ensure reliable execution.
+- **Prompt Safety** — automatically escapes double quotes and enforces strict answering format (e.g., `Output strictly the code/answer. No preamble, no chatter, no reasoning`).
+- **Resource Cleanup** — automatically purges all temporary folders and files upon final response resolution or error.
+
+## Initialization
+
+`AiClaudeCliLite` requires manual credentials injection through the constructor.
+
+**Constructor Parameters:**
+- `key: string` — The API key for the Anthropic service.
+- `model: string` — The initial model identifier.
+
+```typescript
+import { AiClaudeCliLite } from '@dxtmisha/scripts'
+
+const ai = new AiClaudeCliLite(process.env.ANTHROPIC_API_KEY, 'claude-3-5-sonnet-20241022')
+```
+
+## Methods
+
+### Internal Implementation Hooks
+
+These protected methods implement the required extension interface of `AiAbstract`:
+
+- `init(): void` — Sets `this.ai` to an empty object.
+- `toImages(): any` — Returns an empty array `[]` (image handling is ignored for CLI execution).
+- `toContents(): any` — Converts accumulated `contents` into temporary files using `ApiTmp.createFile` and returns their formatted paths.
+- `response(model: string, contents: string): Promise<string>` — Bundles all temporary files, escapes quote blocks, constructs the shell execution statement, runs it, and cleans up resources.

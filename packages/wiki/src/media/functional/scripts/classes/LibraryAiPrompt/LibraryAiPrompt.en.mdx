@@ -1,0 +1,64 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/LibraryAiPrompt - AI Prompt Consolidator'/>
+
+# LibraryAiPrompt Class
+
+The `LibraryAiPrompt` class is a developer utility designed to scan directories recursively, compile markdown descriptions, specifications, TypeScript files, and screenshot references, and bundle them into a single consolidated context prompt file for Large Language Models (LLMs).
+
+## Key Features
+
+- **Automated Prompt Aggregation** — consolidates global coding guidelines, Vue component implementation standards, and module instructions.
+- **Recursive Directory Crawler** — recursively searches target workspaces and component subdirectories to extract active prompt configurations.
+- **Ordered Layout Formatting** — formats sections with clear hierarchical headers, dividing code, types, and architectural descriptions logically.
+- **High-Priority Rules Standard** — parses dedicated instruction files to prepend final instructions with overriding authority.
+- **File System Integration** — utilizes `PropertiesFile` to load resources and export the finished file to the defined destination.
+
+## Initialization
+
+`LibraryAiPrompt` can be initialized with an optional array of extra folders to search.
+
+**Constructor Parameters:**
+- `dirs: string[]` — (Optional) Additional directory paths to scan.
+
+```typescript
+import { LibraryAiPrompt } from '@dxtmisha/scripts'
+
+const consolidator = new LibraryAiPrompt(['custom/path/to/modules'])
+```
+
+---
+
+## Methods
+
+### Execution
+
+#### `make`
+Core orchestrator that triggers directory scanning, formats the header rules, bundles found module prompts, appends overriding instructions, and writes the consolidated result.
+
+```typescript
+consolidator.make()
+```
+
+---
+
+### Protected Crawlers & Bundlers
+
+#### `getList`
+Recursively crawls directories up to a specific depth limit, ignoring hidden files and returning compiled `LibraryAiPromptItem` instances.
+
+**Parameters:**
+- `dirs: string[]` — (Default: internal `dirs`) Target subdirectories to scan.
+- `path: string[]` — Current accumulated path segments.
+- `limit: number` — (Default: `4`) Limit to avoid infinite symlink recursion.
+
+**Returns:** `LibraryAiPromptItem[]`
+
+---
+
+### Protected Helpers
+- `isFileOnDirs(dirs: string[]): boolean` — Helper that verifies if any targeted path is a direct file.
+- `getInstruction(): string | undefined` — Formats high-priority override instructions if the file exists.
+- `getVuePrompt(): string` — Reads and formats standard Vue SFC creation guidelines.
+- `getGlobalPrompt(): string` — Reads and formats global clean-code guidelines.
+- `write(prompts: string[]): this` — Saves the compiled strings into the destination prompt file.

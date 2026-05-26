@@ -1,0 +1,136 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/scripts/Classes/BrowserItem - Менеджер безголового браузера'/>
+
+# Класс BrowserItem
+
+Класс `BrowserItem` представляет собой высокоуровневую обертку над **Puppeteer**, предназначенную для управления экземплярами браузера Chromium, настройки области просмотра (viewport), выполнения скриптов в контексте браузера и создания скриншотов всей страницы либо ее постраничной нарезки.
+
+## Ключевые особенности
+
+- **Автоматический жизненный цикл** — ленивая инициализация и автоматическое управление жизненным циклом безголового браузера.
+- **Динамическая настройка Viewport** — конфигурирование размеров экрана, масштаба и обработка ошибок консоли при запуске.
+- **Гибкие конвейеры захвата** — поддержка скриншотов всей страницы целиком или постраничной нарезки в несколько последовательных файлов.
+- **Извлечение стилей и DOM** — встроенные методы для получения исходного HTML-кода, активных таблиц стилей CSS или метрик страницы.
+- **Безопасное выполнение скриптов** — выполнение пользовательских callback-функций непосредственно в активном контексте окна браузера.
+
+## Инициализация
+
+`BrowserItem` инициализируется целевым URL-адресом и необязательным объектом параметров конфигурации скриншота.
+
+**Параметры конструктора:**
+- `url: string` — URL-адрес веб-страницы для загрузки и захвата.
+- `options: ScreenshotOptions` — (Опционально) Параметры viewport, формата, качества изображения и таймаута.
+
+```typescript
+import { BrowserItem } from '@dxtmisha/scripts'
+
+const browserItem = new BrowserItem('http://localhost:5173', {
+  width: 1280,
+  height: 800,
+  format: 'png',
+  fullPage: true
+})
+```
+
+---
+
+## Геттеры
+
+### Геттеры конфигурации
+- `args: string[]` — Аргументы запуска Puppeteer.
+- `waitUntil: PuppeteerLifeCycleEvent | PuppeteerLifeCycleEvent[]` — Условие завершения загрузки страницы.
+- `timeout: number` — Максимальный таймаут загрузки в миллисекундах.
+- `format: 'png' | 'jpeg' | 'webp'` — Целевой формат изображения скриншота.
+- `width: number` — Ширина области просмотра.
+- `height: number` — Высота области просмотра.
+- `quality: number` — Качество скриншота (0-100) для форматов JPEG/WebP.
+- `fullPage: boolean` — Флаг захвата всей страницы целиком.
+- `extension: string` — Вычисляемое расширение файла (например, `".png"`, `".jpg"`).
+
+---
+
+## Методы
+
+### Управление жизненным циклом
+
+#### `getBrowser`
+Выполняет ленивую инициализацию и возвращает экземпляр браузера Puppeteer.
+
+**Возвращает:** `Promise<Browser>`
+
+```typescript
+const browser = await browserItem.getBrowser()
+```
+
+#### `getPage`
+Создает или возвращает экземпляр страницы браузера, настраивая размеры viewport и подключая стандартные слушатели логирования.
+
+**Возвращает:** `Promise<Page>`
+
+```typescript
+const page = await browserItem.getPage()
+```
+
+#### `getResponse`
+Переходит по целевому URL-адресу с учетом заданных опций `waitUntil` и `timeout`.
+
+**Возвращает:** `Promise<HTTPResponse | undefined>`
+
+```typescript
+const response = await browserItem.getResponse()
+```
+
+---
+
+### Захват и Действия
+
+#### `screenshot`
+Запускает процесс создания скриншота с сохранением в указанный путь. Автоматически выбирает режим захвата всей страницы или постраничной нарезки.
+
+**Параметры:**
+- `outputPath: string` — Путь к файлу для сохранения скриншотов.
+
+**Возвращает:** `Promise<this>`
+
+```typescript
+await browserItem.screenshot('./dist/screenshots/homepage')
+```
+
+#### `evaluate`
+Выполняет пользовательскую функцию в контексте загруженной страницы.
+
+**Параметры:**
+- `pageFunction: Func | string` — Код или функция для выполнения.
+- `...args: Params` — Дополнительные аргументы, передаваемые в функцию.
+
+**Возвращает:** `Promise<Awaited<ReturnType<Func>> | undefined>`
+
+```typescript
+const title = await browserItem.evaluate(() => document.title)
+```
+
+---
+
+### Утилиты
+
+### Извлечение DOM-данных
+- `getDom(): Promise<string>` — Возвращает полный HTML-код документа.
+- `getBody(): Promise<string>` — Возвращает внутреннее HTML-содержимое тега `document.body`.
+- `getStyles(): Promise<string>` — Извлекает и объединяет все активные CSS-правила.
+- `getMetrics(): Promise<ScreenshotMetrics>` — Возвращает прокручиваемые размеры страницы (ширину и высоту).
+- `reset(): Promise<this>` — Сбрасывает состояние страницы, метрик и ответов.
+
+---
+
+## Типы
+
+### ScreenshotOptions
+- `args?: string[]` — Пользовательские флаги Chromium.
+- `waitUntil?: PuppeteerLifeCycleEvent | PuppeteerLifeCycleEvent[]` — Триггер-условие окончания загрузки.
+- `timeout?: number` — Максимальный лимит времени на загрузку.
+- `format?: 'png' | 'jpeg' | 'webp'` — Формат изображения.
+- `width?: number` — Начальная ширина области просмотра.
+- `height?: number` — Начальная высота области просмотра.
+- `quality?: number` — Качество сжатия изображения.
+- `fullPage?: boolean` — Флаг захвата полной страницы.

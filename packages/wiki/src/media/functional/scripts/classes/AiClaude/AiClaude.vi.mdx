@@ -1,0 +1,35 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/AiClaude - Lớp Dịch vụ Claude AI'/>
+
+# Lớp AiClaude
+
+Lớp `AiClaude` là một triển khai cụ thể của `AiClaudeLite` tự động tích hợp với các cấu hình môi trường của dự án. Nó khởi tạo client Anthropic AI bằng cách sử dụng thông tin xác thực được tải thông qua `getConfigAi()`.
+
+## Tính năng chính
+
+- **Cấu hình Tự động** — tự động tải API key và mô hình mặc định bằng cách sử dụng `getConfigAi()`.
+- **Kế thừa các Tính năng của Claude** — hỗ trợ tất cả các tính năng của `AiClaudeLite`, bao gồm đầu vào đa phương thức (hình ảnh), tích lũy lời nhắc và tạo văn bản.
+
+## Khởi tạo
+
+Lớp `AiClaude` có thể được khởi tạo trực tiếp mà không cần tham số trong constructor vì nó tự động lấy thông tin xác thực từ môi trường.
+
+```typescript
+import { AiClaude } from '@dxtmisha/scripts'
+
+const ai = new AiClaude()
+
+// Thiết lập mô hình (tùy chọn, nếu mô hình mặc định chưa được đặt hoặc cần ghi đè)
+ai.setModel('claude-3-5-sonnet-20241022')
+
+// Tích lũy ngữ cảnh
+ai.addPrompt('Bạn là một trợ lý hữu ích.')
+
+// Tạo văn bản
+const response = await ai.generate('Giải thích về máy tính lượng tử.')
+```
+
+## Phương thức
+
+Lớp này không định nghĩa thêm phương thức public nào khác. Nó kế thừa tất cả các phương thức cấu hình và thực thi từ `AiClaudeLite` và `AiAbstract`.

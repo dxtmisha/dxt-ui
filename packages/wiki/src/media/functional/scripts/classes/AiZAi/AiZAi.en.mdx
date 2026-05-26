@@ -1,0 +1,35 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/AiZAi - Z.ai (Zhipu AI) Service Class'/>
+
+# AiZAi Class
+
+The `AiZAi` class is a concrete implementation of `AiZAiLite` that integrates with the project's environment settings. It automatically loads credentials using `getConfigAi()` to initialize the Zhipu AI client (Z.ai).
+
+## Key Features
+
+- **Automated Configuration** — loads API keys and default models automatically using `getConfigAi()`.
+- **Inherited Z.ai Features** — supports all features of `AiZAiLite` and `AiOpenAiLite` using OpenAI-compatible endpoints configured with the Z.ai base URL.
+
+## Initialization
+
+The `AiZAi` class can be instantiated directly without constructor arguments since it automatically retrieves credentials from the environment.
+
+```typescript
+import { AiZAi } from '@dxtmisha/scripts'
+
+const ai = new AiZAi()
+
+// Set model (optional, if default is not set or needs to be overridden)
+ai.setModel('glm-4')
+
+// Accumulate context
+ai.addPrompt('You are a helpful assistant.')
+
+// Generate text
+const response = await ai.generate('Explain the concept of monads.')
+```
+
+## Methods
+
+This class does not define additional public methods. It inherits all configuration and execution methods from `AiZAiLite`, `AiOpenAiLite`, and `AiAbstract`.

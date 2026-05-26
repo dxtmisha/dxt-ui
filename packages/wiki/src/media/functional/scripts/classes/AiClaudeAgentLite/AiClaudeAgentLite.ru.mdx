@@ -1,0 +1,38 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/scripts/Classes/AiClaudeAgentLite - Легковесный класс Claude Agent SDK'/>
+
+# Класс AiClaudeAgentLite
+
+Класс `AiClaudeAgentLite` представляет собой легковесную реализацию `AiAbstract`, использующую пакет `@anthropic-ai/claude-agent-sdk` для взаимодействия с Claude в **Режиме агента**. В этом режиме Claude может выполнять задачи, используя интерактивный цикл вызова инструментов, управлять локальным окружением и совершать сложные изменения файлов.
+
+## Ключевые особенности
+
+- **Циклы агента** — использует интерактивный цикл генератора `query` из Agent SDK.
+- **Автоматическое принятие правок** — настроен по умолчанию с `permissionMode: 'acceptEdits'` и `allowDangerouslySkipPermissions: true` для включения прямого автоматизированного редактирования локальных файлов.
+- **Отказоустойчивость** — оборачивает циклы выполнения в блоки try-catch и логирует ошибки в `console.error`.
+
+## Инициализация
+
+`AiClaudeAgentLite` требует ручной передачи учетных данных через конструктор.
+
+**Параметры конструктора:**
+- `key: string` — API-ключ для сервиса Anthropic.
+- `model: string` — начальный идентификатор модели.
+
+```typescript
+import { AiClaudeAgentLite } from '@dxtmisha/scripts'
+
+const agent = new AiClaudeAgentLite(process.env.ANTHROPIC_API_KEY, 'claude-3-5-sonnet-20241022')
+```
+
+## Методы
+
+### Внутренние хуки реализации
+
+Эти защищенные методы реализуют обязательный интерфейс расширения `AiAbstract`:
+
+- `init(): void` — Устанавливает `this.ai` в пустой объект для удовлетворения базового контракта инициализации.
+- `toImages(): any` — Возвращает пустой массив `[]` (обработка изображений в настоящее время игнорируется или делегируется в режиме агента).
+- `toContents(): any` — Форматирует и объединяет накопленные текстовые инструкции `contents` с помощью двойного переноса строки `\n\n`.
+- `response(model: string, contents: string): Promise<string>` — Организует генератор `query` из Agent SDK, прослушивая потоковые сообщения, извлекая успешный `result` и возвращая его в виде строки.
