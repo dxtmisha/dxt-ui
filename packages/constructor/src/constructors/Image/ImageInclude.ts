@@ -1,4 +1,3 @@
-import { type VNode } from 'vue'
 import { type ConstrEmit, type DesignComponents, getBind, getRef, type RefOrNormal } from '@dxtmisha/functional'
 
 import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
@@ -46,16 +45,12 @@ export class ImageInclude extends ComponentIncludeAbstract<
   }
 
   /**
-   * Renders the image component if a valid image is provided in properties.
-   *
-   * Рендерит компонент изображения, если в свойствах указано корректное изображение.
-   * @returns array of VNodes / массив VNode
+   * Checks whether the image should be displayed /
+   * Проверяет, нужно ли отображать изображение
    */
-  readonly render = (): VNode[] => super.initRender(
-    undefined,
-    undefined,
-    () => Boolean(this.getProps().image)
-  )
+  override get is(): boolean {
+    return Boolean(this.getProps().image)
+  }
 
   /**
    * Handles the image load event and propagates it via emits.

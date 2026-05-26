@@ -10,6 +10,7 @@ import DemoLink from '../components/DemoLink.vue'
       </D1Group>
       <D1Group label="Components">
         <DemoLink label="Accordion" name="component-accordion"/>
+        <DemoLink label="ActionSheet" name="component-action-sheet"/>
         <DemoLink label="Actions" name="component-actions"/>
         <DemoLink label="Badge" name="component-badge"/>
         <DemoLink label="Button" name="component-button"/>

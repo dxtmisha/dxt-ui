@@ -1,4 +1,3 @@
-import { type VNode } from 'vue'
 import {
   type ConstrBind,
   type ConstrEmit,
@@ -27,11 +26,11 @@ export class ActionsInclude<
   Props extends ActionsPropsInclude = ActionsPropsInclude,
   PropsExtra extends ActionsProps = ActionsProps
 > extends ComponentIncludeAbstract<
-    Props,
-    PropsExtra,
-    ActionsExpose,
-    ActionsSlots
-  > {
+  Props,
+  PropsExtra,
+  ActionsExpose,
+  ActionsSlots
+> {
   protected readonly exposeItems: ComponentIncludeExposeItem<any>[] | undefined = undefined
 
   protected name = 'actions'
@@ -61,7 +60,7 @@ export class ActionsInclude<
    * Checks whether actions should be displayed /
    * Проверяет, нужно ли отображать действия
    */
-  get is(): boolean {
+  override get is(): boolean {
     const props = this.getProps()
 
     return Boolean(
@@ -83,22 +82,6 @@ export class ActionsInclude<
     this.emits?.('actions', event, value)
     this.emits?.('actionsLite', value)
   }
-
-  /**
-   * Renders the Actions component /
-   * Рендер компонента действий
-   * @param slotsChildren sub-component slots / слоты субкомпонента
-   * @param attrs additional override attributes / дополнительные переопределяющие атрибуты
-   * @returns array of VNodes / массив VNode
-   */
-  readonly render = (
-    slotsChildren?: ActionsSlots,
-    attrs?: ConstrBind<PropsExtra>
-  ): VNode[] => super.initRender(
-    slotsChildren,
-    attrs,
-    () => this.is
-  )
 
   /**
    * Combines input attributes with internal component bindings.

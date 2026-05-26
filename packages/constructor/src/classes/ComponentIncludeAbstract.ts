@@ -62,6 +62,14 @@ export abstract class ComponentIncludeAbstract<
   }
 
   /**
+   * Checks whether the component should be displayed /
+   * Проверяет, нужно ли отображать компонент
+   */
+  get is(): boolean {
+    return true
+  }
+
+  /**
    * Renders the included component as a VNode array.
    *
    * Рендерит включенный компонент в виде массива VNode.
@@ -73,7 +81,7 @@ export abstract class ComponentIncludeAbstract<
   readonly render = (
     slotsChildren?: ComponentSlots,
     attrs?: ConstrBind<PropsExtra>,
-    isShow: () => boolean = () => true
+    isShow: () => boolean = () => this.is
   ): VNode[] => this.initRender(slotsChildren, attrs, isShow)
 
   /**
@@ -206,7 +214,7 @@ export abstract class ComponentIncludeAbstract<
   protected initRender(
     slotsChildren?: ComponentSlots,
     attrs?: ConstrBind<PropsExtra>,
-    isShow: () => boolean = () => true
+    isShow: () => boolean = () => this.is
   ): VNode[] {
     if (
       this.components

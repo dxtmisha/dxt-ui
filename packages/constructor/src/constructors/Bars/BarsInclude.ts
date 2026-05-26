@@ -1,4 +1,3 @@
-import { type VNode } from 'vue'
 import {
   type ConstrBind,
   type ConstrEmit,
@@ -27,11 +26,11 @@ export class BarsInclude<
   Props extends BarsPropsInclude = BarsPropsInclude,
   PropsExtra extends BarsProps = BarsProps
 > extends ComponentIncludeAbstract<
-    Props,
-    PropsExtra,
-    BarsExpose,
-    BarsSlots
-  > {
+  Props,
+  PropsExtra,
+  BarsExpose,
+  BarsSlots
+> {
   protected readonly exposeItems: ComponentIncludeExposeItem<any>[] | undefined = undefined
 
   protected name = 'bars'
@@ -65,7 +64,7 @@ export class BarsInclude<
    * Checks whether bars should be displayed /
    * Проверяет, нужно ли отображать панели
    */
-  get is(): boolean {
+  override get is(): boolean {
     const props = this.getProps()
 
     return !props.barsHide && Boolean(
@@ -89,22 +88,6 @@ export class BarsInclude<
       this.emits?.('barsBack', value)
     }
   }
-
-  /**
-   * Render the Bars component /
-   * Рендер компонента панелей
-   * @param slotsChildren sub-component slots / слоты субкомпонента
-   * @param attrs additional override attributes / дополнительные переопределяющие атрибуты
-   * @returns array of VNodes / массив VNode
-   */
-  readonly render = (
-    slotsChildren?: BarsSlots,
-    attrs?: ConstrBind<PropsExtra>
-  ): VNode[] => super.initRender(
-    slotsChildren,
-    attrs,
-    () => this.is
-  )
 
   /**
    * Combines input attributes with internal component bindings.
