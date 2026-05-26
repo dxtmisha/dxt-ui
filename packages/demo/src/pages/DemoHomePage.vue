@@ -9,6 +9,7 @@ import DemoLink from '../components/DemoLink.vue'
         <DemoLink label="Api" name="test-api"/>
       </D1Group>
       <D1Group label="Components">
+        <DemoLink label="Accordion" name="component-accordion"/>
         <DemoLink label="Actions" name="component-actions"/>
         <DemoLink label="Badge" name="component-badge"/>
         <DemoLink label="Button" name="component-button"/>

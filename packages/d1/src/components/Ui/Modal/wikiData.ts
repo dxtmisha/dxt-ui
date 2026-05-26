@@ -18,6 +18,7 @@ const propsNames: StorybookProps = [
   { name: 'barsList', type: 'ConstrBind<ButtonProps>[] | undefined' },
   { name: 'disabled', type: 'boolean | undefined' },
   { name: 'image', type: 'string | ConstrBind<ImageProps> | undefined' },
+  { name: 'imageAttrs', type: 'ConstrBind<ImageProps> | undefined' },
   { name: 'imagePosition', type: 'string', option: ['top', 'left'] },
   { name: 'open', type: 'boolean | undefined' },
   { name: 'width', type: 'string', option: ['sm', 'md', 'lg', 'xl', 'auto'] },

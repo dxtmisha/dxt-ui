@@ -1,15 +1,14 @@
-import { computed, ref, type VNode } from 'vue'
 import {
   type ConstrBind,
   type DesignComponents,
-  getRef,
-  type RefOrNormal,
-  toBind,
   type ConstrEmit
 } from '@dxtmisha/functional'
 
+import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
+
+import type { ComponentIncludeExposeItem, ComponentIncludeExtra } from '../../types/componentInclude'
 import type { MotionTransformProps } from './props'
-import type { MotionTransformEmits, MotionTransformExpose, MotionTransformSlots } from './types'
+import type { MotionTransformEmits, MotionTransformSlots } from './types'
 import type {
   MotionTransformComponentInclude,
   MotionTransformEmitOptions,
@@ -18,72 +17,60 @@ import type {
 } from './basicTypes'
 
 /**
- * The class returns data for working with the MotionTransform component
+ * The class returns data for working with the MotionTransform component.
+ * It extends ComponentIncludeAbstract to manage transition states, renders, and bindings.
  *
- * Класс возвращает данные для работы с компонентом MotionTransform
+ * Класс возвращает данные для работы с компонентом MotionTransform.
+ * Расширяет ComponentIncludeAbstract для управления состояниями анимации перехода, рендером и привязками.
  */
 export class MotionTransformInclude<
   Props extends MotionTransformPropsInclude = MotionTransformPropsInclude,
-  PropsExtra extends ConstrBind<MotionTransformProps> = ConstrBind<MotionTransformProps>
-> {
+  PropsExtra extends MotionTransformProps = MotionTransformProps
+> extends ComponentIncludeAbstract<
+    Props,
+    PropsExtra,
+    MotionTransformExposeInclude,
+    MotionTransformSlots
+  > {
+  /** List of methods to expose from the sub-component / Список методов для экспорта из субкомпонента */
+  protected readonly exposeItems: ComponentIncludeExposeItem<any>[] | undefined = [
+    { name: 'getOpen', type: 'boolean' },
+    { name: 'isShow', type: 'boolean' },
+
+    { name: 'setOpen' },
+    { name: 'toOpen' },
+    { name: 'toClose' },
+    { name: 'toggle' }
+  ]
+
+  protected name = 'motionTransform'
+  protected propsAttrsName = 'motionTransformAttrs'
+
   /**
    * Constructor
-   * @param props input parameter/ входной параметр
-   * @param className class name/ название класса
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param emits the function is called when an event is triggered/ функция вызывается при срабатывании события
-   * @param extra additional parameter or property name/ дополнительный параметр или имя свойства
-   * @param index index identifier/ идентификатор индекса
+   * @param props input parameter / входной параметр
+   * @param className class name / название класса
+   * @param components object for working with components / объект для работы с компонентами
+   * @param emits the function is called when an event is triggered / функция вызывается при срабатывании события
+   * @param extra additional parameter or property name / дополнительный параметр или имя свойства
+   * @param index index identifier / идентификатор индекса
    */
   constructor(
-    protected readonly props: Readonly<Props>,
-    protected readonly className: string,
-    protected readonly components?: DesignComponents<MotionTransformComponentInclude, Props>,
-    protected readonly emits?: ConstrEmit<MotionTransformEmits>,
-    protected readonly extra?: RefOrNormal<PropsExtra>,
-    protected readonly index?: string
+    className: string,
+    props: Readonly<Props>,
+    components?: DesignComponents<MotionTransformComponentInclude, Props>,
+    extra?: ComponentIncludeExtra<PropsExtra>,
+    index?: string,
+    protected readonly emits?: ConstrEmit<MotionTransformEmits>
   ) {
-  }
-
-  /** Reference to MotionTransform element expose/ Ссылка на expose элемента MotionTransform */
-  readonly element = ref<ConstrBind<MotionTransformExpose> | undefined>()
-
-  /** Computed bindings for MotionTransform/ Вычисляемые привязки для MotionTransform */
-  readonly binds = computed<PropsExtra>(() => {
-    const props = toBind<PropsExtra>(
-      getRef(this.extra) ?? {},
-      this.props.motionTransformAttrs ?? {}
-    )
-
-    return {
-      ...props,
-
-      open: this.props.open,
-      clickOpen: this.props.clickOpen,
-      autoClose: this.props.autoClose
-    }
-  })
-
-  /**
-   * Expose helpers for MotionTransform state and actions/
-   * Вспомогательные методы expose для состояния и действий MotionTransform
-   */
-  readonly expose: MotionTransformExposeInclude = {
-    getOpen: () => Boolean(this.element.value?.getOpen?.()),
-    isShow: () => Boolean(this.element.value?.isShow?.()),
-    setOpen: async (open: boolean) => this.element.value?.setOpen(open),
-    toOpen: async () => this.element.value?.toOpen(),
-    toClose: async () => this.element.value?.toClose(),
-    toggle: async () => this.element.value?.toggle(),
-
-    getMotionTransformElement: () => this.element.value
+    super(className, props, components, extra, index)
   }
 
   /**
-   * Emits 'transform' event upward/
+   * Emits 'transform' event upward /
    * Поднимает событие 'transform' наверх
-   * @param event native event/ нативное событие
-   * @param options payload/ параметры события
+   * @param event native event / нативное событие
+   * @param options payload / параметры события
    */
   readonly onTransform = (
     event: Event | undefined,
@@ -94,31 +81,46 @@ export class MotionTransformInclude<
   }
 
   /**
-   * Render the MotionTransform component with slots/
-   * Рендер компонента MotionTransform со слотами
-   * @param slotsChildren slots passed to the component/ слоты, передаваемые компоненту
-   * @param attrs additional attributes/ дополнительные атрибуты
+   * Combines input attributes with internal component bindings.
+   *
+   * Объединяет входные атрибуты со внутренними привязками компонента.
+   * @param attrs attributes to merge / атрибуты для объединения
+   * @returns merged binding attributes / объединенные атрибуты привязки
    */
-  readonly render = (
-    slotsChildren: MotionTransformSlots,
-    attrs?: ConstrBind<MotionTransformProps>
-  ): VNode[] => {
-    if (this.components) {
-      return this.components.render(
-        'motionTransform',
-        {
-          onTransform: this.onTransform,
-          ...toBind(
-            attrs ?? {},
-            this.binds.value
-          ),
-          ref: this.element
-        },
-        slotsChildren as unknown as Record<string, any>,
-        this.index
-      )
+  protected override getAttrs(
+    attrs?: ConstrBind<PropsExtra>
+  ): ConstrBind<PropsExtra> {
+    const props = this.getProps()
+
+    return {
+      ...super.getAttrs(attrs),
+
+      open: props.open,
+      clickOpen: props.clickOpen,
+      autoClose: props.autoClose,
+
+      onTransform: this.onTransform
+    }
+  }
+
+  /**
+   * Collects and exposes defined proxy methods of the sub-component.
+   *
+   * Собирает и экспортирует определенные прокси-методы субкомпонента.
+   * @returns exposed API object / объект экспортируемого API
+   */
+  protected toExpose(): MotionTransformExposeInclude {
+    const data: Record<string, any> = {}
+
+    if (this.exposeItems) {
+      this.exposeItems.forEach((item) => {
+        data[item.name] = this.getExposeItem(item)
+      })
     }
 
-    return []
+    return {
+      ...super.toExpose(),
+      getMotionTransformElement: () => this.element.value
+    }
   }
 }

@@ -17,8 +17,6 @@ import type { ImageExpose, ImageSlots } from './types'
 export class ImageInclude extends ComponentIncludeAbstract<
   ImagePropsInclude,
   ImageProps,
-  'imageAttrs',
-  ImageComponentInclude,
   ImageExpose,
   ImageSlots
 > {

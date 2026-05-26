@@ -29,6 +29,7 @@ const propsNames: StorybookProps = [
   { name: 'iconError', type: 'IconValue<IconProps> | undefined' },
   { name: 'iconSuccess', type: 'IconValue<IconProps> | undefined' },
   { name: 'image', type: 'string | ConstrBind<ImageProps> | undefined' },
+  { name: 'imageAttrs', type: 'ConstrBind<ImageProps> | undefined' },
   { name: 'imagePosition', type: 'string', option: ['top', 'left'] },
   { name: 'label', type: 'NumberOrString | undefined' },
   { name: 'labelId', type: 'string | undefined' },

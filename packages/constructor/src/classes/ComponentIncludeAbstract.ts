@@ -21,8 +21,6 @@ import type { ComponentIncludeExposeItem, ComponentIncludeExtra, ComponentInclud
 export abstract class ComponentIncludeAbstract<
   Props extends Record<string, any>,
   PropsExtra extends Record<string, any>,
-  ComponentCode extends string,
-  ComponentInclude extends Record<string, object | undefined> = { [key in ComponentCode]: object | undefined },
   ComponentExpose extends Record<string, any> = Record<string, any>,
   ComponentSlots extends Record<string, any> = Record<string, any>
 > {
@@ -49,7 +47,7 @@ export abstract class ComponentIncludeAbstract<
   protected constructor(
     protected readonly className: string,
     protected readonly props: ComponentIncludeProps<Props>,
-    protected readonly components?: DesignComponents<ComponentInclude, Props>,
+    protected readonly components?: DesignComponents<Record<string, object | undefined>, Props>,
     protected readonly extra?: ComponentIncludeExtra<PropsExtra>,
     protected readonly index?: string
   ) {

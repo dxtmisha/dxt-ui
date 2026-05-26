@@ -28,10 +28,9 @@ type Story = StoryObj<typeof meta>
 
 export const Window: Story = {
   args: {
-    image: "https://oboitd.ru/images/goods/big/20221019093936_Priroda_8361-M.jpg"
+    image: 'https://oboitd.ru/images/goods/big/20221019093936_Priroda_8361-M.jpg'
   },
 
-  // :story-main [!] System label / Системная метка
   // :story-main [!] System label / Системная метка
   render: (args: any) => ({
     components: { D1Window },
@@ -74,6 +73,7 @@ export const Window: Story = {
       </D1Window>
     `
   })
+  // :story-main [!] System label / Системная метка
 }
 
 // :story-items [!] System label / Системная метка

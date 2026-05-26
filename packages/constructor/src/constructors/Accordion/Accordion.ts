@@ -67,17 +67,19 @@ export class Accordion {
     } = constructors ?? {}
 
     this.motionTransform = new MotionTransformIncludeConstructor(
-      this.props,
       this.className,
+      this.props,
       this.components,
-      this.emits,
-      computed(() => ({
-        section: true,
-        adaptive: 'planeAlways',
-        inDom: true,
-        ariaLabelledby: this.labelId,
-        ariaDescribedby: this.descriptionId
-      }))
+      () => ({
+        'section': true,
+        'adaptive': 'planeAlways',
+        'inDom': true,
+        'ariaLabelledby': this.labelId,
+        'ariaDescribedby': this.descriptionId,
+        'data-divider': this.props.divider ? 'divider' : undefined
+      }),
+      undefined,
+      this.emits
     )
 
     this.event = new EventClickIncludeConstructor(

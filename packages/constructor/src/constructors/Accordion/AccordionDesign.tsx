@@ -120,8 +120,7 @@ export class AccordionDesign<
       },
       {
         ...this.getAttrs(),
-        'class': this.classes?.value.main,
-        'data-divider': this.props.divider ? 'divider' : undefined,
+        class: this.classes?.value.main,
         ...this.item.model.getBinds()
       }
     )

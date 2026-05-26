@@ -4,6 +4,7 @@ import DemoHomePage from './pages/DemoHomePage.vue'
 
 import DemoApiPage from './pages/DemoApiPage.vue'
 
+import DemoAccordionPage from './pages/components/DemoAccordionPage.vue'
 import DemoActionsPage from './pages/components/DemoActionsPage.vue'
 import DemoBadgePage from './pages/components/DemoBadgePage.vue'
 import DemoButtonPage from './pages/components/DemoButtonPage.vue'
@@ -40,6 +41,11 @@ export const routes: RouteRecordRaw[] = [
     path: '/test-api',
     name: 'test-api',
     component: DemoApiPage
+  },
+  {
+    path: '/component-accordion',
+    name: 'component-accordion',
+    component: DemoAccordionPage
   },
   {
     path: '/component-actions',

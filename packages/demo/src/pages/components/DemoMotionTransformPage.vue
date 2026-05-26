@@ -1,10 +1,24 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
+import type { MotionTransformExpose } from '@dxtmisha/constructor/MotionTransform'
 import DemoLinkBlack from '../../components/DemoLinkBlack.vue'
 import DemoFlex from '../../components/DemoFlex.vue'
 import DemoValue from '../../components/DemoValue.vue'
 
+/** Reactive value for manual V-Model control / Реактивное значение для ручного управления V-Model */
 const openManual = ref(false)
+
+/** Ref to the MotionTransform component instance / Ссылка на экземпляр компонента MotionTransform */
+const mtRef = ref<MotionTransformExpose | null>(null)
+
+/** Reactive value for printing the component status / Реактивное значение для вывода статуса компонента */
+const statusValue = computed<string>(() => {
+  if (mtRef.value) {
+    return `isOpen: ${mtRef.value.getOpen()}, isShow: ${mtRef.value.isShow()}`
+  } else {
+    return 'Ref not initialized'
+  }
+})
 </script>
 
 <template>
@@ -107,6 +121,40 @@ const openManual = ref(false)
           </template>
         </D1MotionTransform>
         <DemoValue :value="openManual" />
+      </D1Group>
+
+      <D1Group label="Control via Ref Methods">
+        <DemoFlex>
+          <D1Button
+            label="Open (toOpen)"
+            @click="mtRef?.toOpen()"
+          />
+          <D1Button
+            label="Open (setOpen)"
+            @click="mtRef?.setOpen(true)"
+          />
+          <D1Button
+            label="Close (toClose)"
+            @click="mtRef?.toClose()"
+          />
+          <D1Button
+            label="Close (setOpen false)"
+            @click="mtRef?.setOpen(false)"
+          />
+          <D1Button
+            label="Toggle (toggle)"
+            @click="mtRef?.toggle()"
+          />
+        </DemoFlex>
+        <D1MotionTransform ref="mtRef">
+          <template #head>
+            <span>Methods Control Demo</span>
+          </template>
+          <template #body>
+            <span>This component is controlled programmatically via its exposed methods: toOpen, toClose, and toggle. You can also inspect its state using getOpen() and isShow().</span>
+          </template>
+        </D1MotionTransform>
+        <DemoValue :value="statusValue" />
       </D1Group>
     </D1Section>
   </D1Page>
