@@ -28,20 +28,10 @@ export class SkeletonInclude {
    */
   constructor(
     protected readonly props: SkeletonPropsInclude,
-    classDesign: string,
+    readonly classDesign: string,
     protected readonly classesList?: (keyof SkeletonClassesList)[]
   ) {
     this.classesSkeleton = Skeleton.getClassesListByDesign(classDesign)
-  }
-
-  /**
-   * Indicates whether the Skeleton status is enabled.
-   *
-   * Указывает, включён ли статус Skeleton.
-   * @returns status indicator / индикатор статуса
-   */
-  isSkeleton(): boolean {
-    return Boolean(this.status && this.status.value)
   }
 
   /**
@@ -75,5 +65,15 @@ export class SkeletonInclude {
     return {
       isSkeleton: this.props.isSkeleton
     }
+  }
+
+  /**
+   * Indicates whether the Skeleton status is enabled.
+   *
+   * Указывает, включён ли статус Skeleton.
+   * @returns status indicator / индикатор статуса
+   */
+  isSkeleton(): boolean {
+    return Boolean(this.status && this.status.value)
   }
 }

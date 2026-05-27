@@ -1,62 +1,59 @@
-import { computed, type ComputedRef, inject, provide, type Ref, type ToRefs } from 'vue'
-import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
+import { computed, type ComputedRef, inject, provide } from 'vue'
 
 import type { SkeletonClassesList } from './basicTypes'
-import type { SkeletonComponents, SkeletonEmits, SkeletonSlots } from './types'
 import type { SkeletonProps } from './props'
 
 import { SKELETON_NAME_STATUS } from './const'
 
 /**
- * Skeleton
+ * Class for managing the Skeleton component logic.
+ * It coordinates reactive loading states via parent-child provider injection and resolves CSS class lists.
+ *
+ * Класс для управления логикой компонента Skeleton.
+ * Координирует реактивные состояния загрузки через внедрение провайдера между родителем и потомком и разрешает списки классов CSS.
  */
 export class Skeleton {
+  /** Reactive computed status of the parent skeleton / Реактивный вычисляемый статус родительского скелетона */
   protected status?: ComputedRef<boolean>
 
   /**
    * Returns the list of available classes.
    *
-   * Возвращает список доступных классов для текуший элемента.
+   * Возвращает список доступных классов для текущего элемента.
    */
   readonly classes: SkeletonClassesList
 
   /**
    * Constructor
-   * @param props input data/ входные данные
-   * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
-   * @param element input element/ элемент ввода
-   * @param className class name/ название класса
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param slots object for working with slots/ объект для работы со слотами
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   *
+   * Конструктор
+   * @param props input data / входные данные
+   * @param className class name / название класса
    */
   constructor(
     protected readonly props: SkeletonProps,
-    protected readonly refs: ToRefs<SkeletonProps>,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly className: string,
-    protected readonly components?: DesignComp<SkeletonComponents, SkeletonProps>,
-    protected readonly slots?: SkeletonSlots,
-    protected readonly emits?: ConstrEmit<SkeletonEmits>
+    protected readonly className: string
   ) {
     this.status = inject<ComputedRef<boolean> | undefined>(SKELETON_NAME_STATUS, undefined)
     this.classes = Skeleton.getClassesList(this.className)
 
-    provide(SKELETON_NAME_STATUS, this.isActive)
+    provide(SKELETON_NAME_STATUS, computed<boolean>(() => this.isActive()))
   }
 
   /**
    * Checks if the loading mode is enabled.
    *
    * Проверяет, включен ли режим загрузки.
+   * @returns status of the loading mode / статус режима загрузки
    */
-  readonly isActive = computed<boolean>(() => Boolean(this.status?.value || this.props.active))
+  readonly isActive = (): boolean => Boolean(this.status?.value || this.props.active)
 
   /**
    * Returns the list of available classes.
    *
    * Возвращает список доступных классов.
-   * @param className class name/ название класса
+   * @param className class name / название класса
+   * @returns list of available classes / список доступных классов
    */
   static getClassesList(className: string): SkeletonClassesList {
     return {
@@ -76,7 +73,8 @@ export class Skeleton {
    * Returns a list of available classes by design name.
    *
    * Возвращает список доступных классов по названию дизайна.
-   * @param design design name/ названия дизайна
+   * @param design design name / название дизайна
+   * @returns list of available classes / список доступных классов
    */
   static getClassesListByDesign(design: string): SkeletonClassesList {
     return this.getClassesList(`${design}-skeleton`)

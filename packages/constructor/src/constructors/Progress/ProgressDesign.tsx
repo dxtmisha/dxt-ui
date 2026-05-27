@@ -67,12 +67,7 @@ export class ProgressDesign<
     this.item = new ItemConstructor(
       this.props,
       this.refs,
-      this.element,
-      this.getDesign(),
-      this.getName(),
-      this.components,
-      this.slots,
-      this.emits
+      this.getName()
     )
 
     this.init()

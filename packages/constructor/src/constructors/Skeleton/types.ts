@@ -1,4 +1,3 @@
-import type { ComputedRef } from 'vue'
 import type { ConstrClass } from '@dxtmisha/functional'
 import type { SkeletonClassesList } from './basicTypes'
 
@@ -22,8 +21,11 @@ export type SkeletonEmits = {}
  * Тип, описывающий доступные свойства.
  */
 export interface SkeletonExpose {
-  /** Whether the skeleton is currently active/ Активен ли скелет в данный момент */
-  isActive: ComputedRef<boolean>
+  /**
+   * Whether the skeleton is currently active / Активен ли скелет в данный момент
+   * @returns active status / статус активности
+   */
+  isActive(): boolean
 }
 
 /**

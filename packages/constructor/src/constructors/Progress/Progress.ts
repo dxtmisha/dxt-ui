@@ -2,22 +2,18 @@ import {
   onMounted,
   onUnmounted,
   ref,
-  type Ref,
   type ToRefs,
   watch
 } from 'vue'
 import {
   type ConstrClassObject,
-  type ConstrEmit,
   type ConstrStyles,
-  type DesignComp,
   toNumber
 } from '@dxtmisha/functional'
 
 import { ClientOnlyInclude } from '../../classes/ClientOnlyInclude'
 import { TextInclude } from '../../classes/TextInclude'
 
-import type { ProgressComponents, ProgressEmits, ProgressSlots } from './types'
 import type { ProgressProps } from './props'
 
 /**
@@ -49,23 +45,13 @@ export class Progress {
    * Конструктор для управления прогрессом.
    * @param props input data / входные данные
    * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
-   * @param element input element / элемент ввода
-   * @param classDesign design name / название дизайна
    * @param className class name / название класса
-   * @param components object for working with components / объект для работы с компонентами
-   * @param slots object for working with slots / объект для работы со слотами
-   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
    * @param constructors object with helper classes / объект с вспомогательными классами
    */
   constructor(
     protected readonly props: ProgressProps,
     protected readonly refs: ToRefs<ProgressProps>,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly classDesign: string,
     protected readonly className: string,
-    protected readonly components?: DesignComp<ProgressComponents, ProgressProps>,
-    protected readonly slots?: ProgressSlots,
-    protected readonly emits?: ConstrEmit<ProgressEmits>,
     constructors?: {
       TextIncludeConstructor?: typeof TextInclude
       ClientOnlyIncludeConstructor?: typeof ClientOnlyInclude
