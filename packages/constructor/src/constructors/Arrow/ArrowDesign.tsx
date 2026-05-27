@@ -2,14 +2,12 @@ import { h, nextTick, ref, type VNode, watch } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
-  DesignConstructorAbstract,
-  isDomRuntime
+  DesignConstructorAbstract
 } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { Arrow } from './Arrow'
 
-import { ArrowDirection } from './basicTypes'
 import {
   type ArrowPropsBasic
 } from './props'
@@ -22,7 +20,13 @@ import {
 } from './types'
 
 /**
- * ArrowDesign
+ * ArrowDesign.
+ * Class for managing the visual representation of the arrow.
+ * It handles rendering of the arrow SVG and its border, as well as managing reactive points for the polygon.
+ *
+ * ArrowDesign.
+ * Класс для управления визуальным представлением стрелки.
+ * Управляет рендерингом SVG стрелки и её границы, а также управляет реактивными точками для полигона.
  */
 export class ArrowDesign<
   COMP extends ArrowComponents,
@@ -38,15 +42,18 @@ export class ArrowDesign<
     CLASSES,
     P
   > {
+  /** Arrow logic instance / Экземпляр логики стрелки */
   protected readonly item: Arrow
+
+  /** Reactive string for SVG points / Реактивная строка для точек SVG */
   protected readonly points = ref<string>('')
 
   /**
    * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor arrow item class/ класс элемента стрелки
+   * @param name class name / название класса
+   * @param props properties / свойства
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor arrow item class / класс элемента стрелки
    */
   constructor(
     name: string,
@@ -64,11 +71,7 @@ export class ArrowDesign<
       this.props,
       this.refs,
       this.element,
-      this.getDesign(),
-      this.getName(),
-      this.components,
-      this.slots,
-      this.emits
+      this.getName()
     )
 
     this.init()
@@ -76,16 +79,17 @@ export class ArrowDesign<
     watch([this.classes], () => {
       nextTick().then(
         () => requestAnimationFrame(() => {
-          this.points.value = this.getRePoints()
+          this.points.value = this.item.points
         })
       )
     }, { immediate: true })
   }
 
   /**
-   * Initialization of all the necessary properties for work
+   * Initialization of all the necessary properties for work.
    *
    * Инициализация всех необходимых свойств для работы.
+   * @returns expose object / объект expose
    */
   protected initExpose(): EXPOSE {
     return {
@@ -97,10 +101,11 @@ export class ArrowDesign<
    * Improvement of the obtained list of classes.
    *
    * Доработка полученного списка классов.
+   * @returns classes object / объект классов
    */
   protected initClasses(): Partial<CLASSES> {
     return {
-      main: this.item.classes.value,
+      main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
         mask: this.getSubClass('mask'),
@@ -118,10 +123,11 @@ export class ArrowDesign<
    * Refinement of the received list of styles.
    *
    * Доработка полученного списка стилей.
+   * @returns styles object / объект стилей
    */
   protected initStyles(): ConstrStyles {
     return {
-      ...this.item.styles.value
+      ...this.item.styles
     }
   }
 
@@ -129,9 +135,10 @@ export class ArrowDesign<
    * A method for rendering.
    *
    * Метод для рендеринга.
+   * @returns VNode or undefined / VNode или undefined
    */
   protected initRender(): VNode | undefined {
-    if (!isDomRuntime()) {
+    if (!this.item.clientOnly.isRender) {
       return undefined
     }
 
@@ -139,7 +146,7 @@ export class ArrowDesign<
       ...this.renderArrow()
     ]
 
-    if (this.item.parent.isBorder.value) {
+    if (this.item.parent.isBorder()) {
       children.push(
         ...this.renderBorder()
       )
@@ -157,8 +164,9 @@ export class ArrowDesign<
    * Method for rendering an arrow.
    *
    * Метод для рендеринга стрелки.
+   * @returns list of nodes / список узлов
    */
-  protected renderArrow(): VNode[] {
+  readonly renderArrow = (): VNode[] => {
     return [
       h(
         'svg',
@@ -192,34 +200,14 @@ export class ArrowDesign<
    * Method for rendering a border.
    *
    * Метод для рендеринга границы.
+   * @returns list of nodes / список узлов
    */
-  protected renderBorder(): VNode[] {
+  readonly renderBorder = (): VNode[] => {
     return [
       h('div', {
         key: 'border',
         class: this.classes?.value.border
       })
     ]
-  }
-
-  /**
-   * Gets the points for the arrow.
-   *
-   * Получает точки для стрелки.
-   */
-  protected readonly getRePoints = (): string => {
-    const width = this.item.elementItem.getWidth()
-    const height = this.item.elementItem.getHeight()
-
-    switch (this.item.direction.value) {
-      case ArrowDirection.BOTTOM:
-        return `0, 0 ${width / 2}, ${height} ${width}, 0`
-      case ArrowDirection.LEFT:
-        return `${width}, 0 0, ${height / 2} ${width}, ${height}`
-      case ArrowDirection.RIGHT:
-        return `0, 0 ${width}, ${height / 2} 0, ${height}`
-      default:
-        return `0, ${height} ${width / 2}, 0 ${width}, ${height}`
-    }
   }
 }

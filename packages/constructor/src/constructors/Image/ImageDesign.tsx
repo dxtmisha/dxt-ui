@@ -109,11 +109,11 @@ export class ImageDesign<
    * Метод для рендеринга.
    */
   protected initRender(): VNode {
-    if (this.item.img.isPicture.value) {
+    if (this.item.img.isPicture()) {
       return this.renderPicture()
     }
 
-    if (this.item.img.is.value) {
+    if (this.item.img.is()) {
       return this.renderImg()
     }
 

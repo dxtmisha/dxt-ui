@@ -1,22 +1,51 @@
-import { computed, type Ref, ref, toRefs, type WatchHandle, watch, onMounted } from 'vue'
-import { type ConstrBind, forEach, isArray, isNumber, useLazyItemByMarginRef } from '@dxtmisha/functional'
+import {
+  computed,
+  type Ref,
+  ref,
+  toRefs,
+  type WatchHandle,
+  watch,
+  onMounted
+} from 'vue'
+import {
+  type ConstrBind,
+  forEach,
+  isArray,
+  isNumber,
+  useLazyItemByMarginRef
+} from '@dxtmisha/functional'
 
-import { ImageType } from './ImageType'
-import { ImagePosition } from './ImagePosition'
 import { ImageBackground } from './ImageBackground'
+import { ImagePosition } from './ImagePosition'
+import { ImageType } from './ImageType'
 
 import { type ImageAttrs, type ImagePictureList, ImageTypeValue } from './basicTypes'
 import type { ImageProps } from './props'
 
 /**
  * A class for working with the img tag.
+ * It manages attributes, styles, and lazy loading for the HTML img and picture elements.
  *
  * Класс для работы с тегом img.
+ * Управляет атрибутами, стилями и ленивой загрузкой для элементов HTML img и picture.
  */
 export class ImageImg {
+  /** Lazy initialization status / Статус отложенной инициализации */
   protected lazyInit = ref<boolean>(false)
+
+  /** Watch handle for lazy loading / Дескриптор наблюдения за ленивой загрузкой */
   protected lazyStatus?: WatchHandle
 
+  /**
+   * Constructor for creating a manager for the img tag.
+   *
+   * Конструктор для создания менеджера для тега img.
+   * @param props input data / входные данные
+   * @param element image element / элемент изображения
+   * @param type class for working with types / класс для работы с типами
+   * @param position class for working with position / класс для работы с позицией
+   * @param background class for working with background / класс для работы с фоном
+   */
   constructor(
     protected readonly props: ImageProps,
     protected readonly element: Ref<HTMLElement | undefined>,
@@ -50,28 +79,41 @@ export class ImageImg {
   }
 
   /**
-   * Determines whether to use the img tag/ Определяет, использовать ли тег img
+   * Determines whether to use the img tag.
+   *
+   * Определяет, использовать ли тег img.
+   * @returns true if tag is used / true, если тег используется
    */
-  readonly is = computed<boolean>(() => {
+  is(): boolean {
     return Boolean(this.props.tagImg)
       && this.isType()
-  })
+  }
 
   /**
-   * Determines whether lazy loading is enabled/ Определяет, включена ли ленивя загрузка
+   * Determines whether lazy loading is enabled.
+   *
+   * Определяет, включена ли ленивя загрузка.
+   * @returns true if lazy loading is enabled / true, если ленивя загрузка включена
    */
-  readonly isLazy = computed<boolean>(() => {
+  isLazy(): boolean {
     return Boolean(this.props.lazy) && !this.lazyInit.value
-  })
+  }
 
   /**
-   * Determines whether to use the picture tag/ Определяет, использовать ли тег picture
+   * Determines whether to use the picture tag.
+   *
+   * Определяет, использовать ли тег picture.
+   * @returns true if picture tag is used / true, если тег picture используется
    */
-  readonly isPicture = computed(() => this.is.value && Boolean(this.props.picture))
+  isPicture(): boolean {
+    return this.is() && Boolean(this.props.picture)
+  }
 
   /**
-   * Calculates all properties for binding to the element/
-   * Вычисляет все свойства для привязки к элементу
+   * Calculates all properties for binding to the element.
+   *
+   * Вычисляет все свойства для привязки к элементу.
+   * @returns attributes for binding / атрибуты для привязки
    */
   readonly binds = computed<ConstrBind<ImageAttrs>>(
     () => {
@@ -79,15 +121,15 @@ export class ImageImg {
         key: 'img'
       }
 
-      if (this.is.value) {
-        attrs.src = this.background.imageSrc.value
+      if (this.is()) {
+        attrs.src = this.background.imageSrc
         attrs.alt = this.props.alt ?? ''
         attrs.width = '100%'
         attrs.height = '100%'
-        attrs.style = this.styles.value
+        attrs.style = this.styles
 
         if (this.props.lazy) {
-          attrs.loading = this.isLazy.value ? 'lazy' : 'auto'
+          attrs.loading = this.isLazy() ? 'lazy' : 'auto'
         }
 
         if (this.props.srcset) {
@@ -100,8 +142,10 @@ export class ImageImg {
   )
 
   /**
-   * Calculates the picture sources for different resolutions/
-   * Вычисляет источники picture для разных разрешений
+   * Calculates the picture sources for different resolutions.
+   *
+   * Вычисляет источники picture для разных разрешений.
+   * @returns list of picture sources / список источников изображений
    */
   readonly picture = computed<ImagePictureList | undefined>(() => {
     if (!this.props.picture) {
@@ -125,15 +169,16 @@ export class ImageImg {
   })
 
   /**
-   * Calculates styles for binding to the element.
+   * Returns styles for binding to the element.
    *
-   * Вычисляет стили для привязки к элементу.
+   * Возвращает стили для привязки к элементу.
+   * @returns styles object / объект стилей
    */
-  readonly styles = computed<Record<string, any>>(() => {
+  get styles(): Record<string, any> {
     const styles: any = {
-      'object-position': `${this.position.x.value} ${this.position.y.value}`,
-      '--sys-transform-originX': this.position.x.value,
-      '--sys-transform-originY': this.position.y.value
+      'object-position': `${this.position.x} ${this.position.y}`,
+      '--sys-transform-originX': this.position.x,
+      '--sys-transform-originY': this.position.y
     }
 
     if (this.isSize()) {
@@ -141,12 +186,13 @@ export class ImageImg {
     }
 
     return styles
-  })
+  }
 
   /**
    * Checks if the type is file or image.
    *
    * Проверяет, является ли тип файлом или изображением.
+   * @returns true if type matches / true, если тип совпадает
    */
   protected isType(): boolean {
     const type = this.type.item.value
@@ -157,6 +203,7 @@ export class ImageImg {
    * Checks if the size is contained or cover.
    *
    * Проверяет, является ли размер contain или cover.
+   * @returns true if size matches / true, если размер совпадает
    */
   protected isSize(): boolean {
     const size = this.background.size.value
@@ -168,6 +215,7 @@ export class ImageImg {
    * Returns the value for the transform scale.
    *
    * Возвращает значение для свойства transform scale.
+   * @returns scale value / значение масштаба
    */
   protected getSize() {
     return this.background.size.value
@@ -179,6 +227,7 @@ export class ImageImg {
    * Returns the srcset attribute value.
    *
    * Возвращает значение атрибута srcset.
+   * @returns srcset string or undefined / строка srcset или undefined
    */
   protected getSrcset(): string | undefined {
     if (!this.props.srcset) {
@@ -198,7 +247,8 @@ export class ImageImg {
    * Converts the srcset key to a string.
    *
    * Преобразует ключ srcset в строку.
-   * @param key key/ ключ
+   * @param key key / ключ
+   * @returns srcset key string / строка ключа srcset
    */
   protected toSrcsetKey(key: string | number): string {
     return isNumber(key) ? `${key}w` : String(key)

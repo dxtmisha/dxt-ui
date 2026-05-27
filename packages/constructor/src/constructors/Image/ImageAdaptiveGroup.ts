@@ -9,19 +9,27 @@ import { ImageCalculationList } from './ImageCalculationList'
  * Класс для работы с масштабированием изображения по физическому размеру объекта на изображении.
  */
 export class ImageAdaptiveGroup {
+  /** List of all elements for tracking / Список всех элементов для отслеживания */
   protected static objects: ImageAdaptiveItem[] = []
+
+  /** List of elements that are currently being calculated / Список элементов, которые рассчитываются в данный момент */
   protected static objectsAdaptive: ImageAdaptiveItem[] = []
 
+  /** Cache of IDs of visible elements / Кэш идентификаторов видимых элементов */
   private static cache: string[] = []
 
+  /** Scroll event handler / Обработчик события прокрутки */
   protected static event?: EventItem<Window, Event, any>
+
+  /** Flag for tracking the frame calculation time / Флаг для отслеживания времени вычисления кадра */
   protected static time?: boolean
 
   /**
    * Checks if an element is present in the list.
    *
    * Проверяет, присутствует ли элемент в списке.
-   * @param item object for working with images/ объект для работы с изображениями
+   * @param item object for working with images / объект для работы с изображениями
+   * @returns element status / статус элемента
    */
   static is(item: ImageAdaptiveItem): boolean {
     return this.objects.findIndex(itemValue => itemValue === item) !== -1
@@ -31,7 +39,7 @@ export class ImageAdaptiveGroup {
    * Adding a new element for tracking.
    *
    * Добавление нового элемента для отслеживания.
-   * @param item object for working with images/ объект для работы с изображениями
+   * @param item object for working with images / объект для работы с изображениями
    */
   static add(item: ImageAdaptiveItem): void {
     if (!this.is(item)) {
@@ -43,8 +51,8 @@ export class ImageAdaptiveGroup {
   /**
    * Removal of the element.
    *
-   * Удаления элемента.
-   * @param item object for working with images/ объект для работы с изображениями
+   * Удаление элемента.
+   * @param item object for working with images / объект для работы с изображениями
    */
   static remove(item: ImageAdaptiveItem): void {
     const key = this.objects.findIndex(itemValue => itemValue === item)
@@ -97,10 +105,11 @@ export class ImageAdaptiveGroup {
   /**
    * Returns a list of elements that are visible or constantly being calculated.
    *
-   * Возвращает список элементов, которые видны или постоянно вычисляются.
+   * Возвращает список идентификаторов элементов, которые видны или постоянно вычисляются.
+   * @returns list of IDs / список идентификаторов
    */
   protected static getItemIdByVisible(): string[] {
-    return forEach(this.objectsAdaptive, item => item.getId())
+    return forEach(this.objectsAdaptive, item => item.id)
   }
 
   /**
@@ -158,9 +167,9 @@ export class ImageAdaptiveGroup {
       const element = item.element.value
 
       if (element) {
-        ImageCalculationList.get(item.group.value)
-          .makeWidth(item.width.value)
-          .makeHeight(item.height.value)
+        ImageCalculationList.get(item.group)
+          .makeWidth(item.width)
+          .makeHeight(item.height)
           .makeOffsetWidth(element.offsetWidth)
           .makeOffsetHeight(element.offsetHeight)
       }
@@ -176,15 +185,15 @@ export class ImageAdaptiveGroup {
     if (ImageCalculationList.isSize()) {
       this.objectsAdaptive.forEach((item) => {
         const element = item.element.value
-        const calculation = ImageCalculationList.get(item.group.value)
+        const calculation = ImageCalculationList.get(item.group)
 
         if (element) {
-          const width = calculation.getWidth()
-          const height = calculation.getHeight()
+          const width = calculation.width
+          const height = calculation.height
 
           item.setPercent(
-            item.width.value * (width ? 1 / width : 0) * (calculation.getOffsetWidth() / element.offsetWidth),
-            item.height.value * (height ? 1 / height : 0) * (calculation.getOffsetHeight() / element.offsetHeight)
+            item.width * (width ? 1 / width : 0) * (calculation.offsetWidth / element.offsetWidth),
+            item.height * (height ? 1 / height : 0) * (calculation.offsetHeight / element.offsetHeight)
           )
         }
       })
@@ -203,7 +212,7 @@ export class ImageAdaptiveGroup {
   protected static makeFactorMax(): void {
     if (ImageCalculationList.isSize()) {
       this.objectsAdaptive.forEach((item) => {
-        ImageCalculationList.get(item.group.value)
+        ImageCalculationList.get(item.group)
           .makeFactorMax(item.factor.value)
       })
     }
@@ -213,6 +222,7 @@ export class ImageAdaptiveGroup {
    * Checks if there is an active element at the moment.
    *
    * Проверяет, есть ли в текущий момент активный элемент.
+   * @returns active element status / статус активного элемента
    */
   private static isAdaptive(): boolean {
     return Boolean(this.objects.find(item => item.is()))
@@ -222,7 +232,8 @@ export class ImageAdaptiveGroup {
    * Checks whether the composition of visible elements has changed.
    *
    * Проверяет, изменился ли состав видимых элементов.
-   * @param visible list of indices of visible elements/ список индексов видимых элементов
+   * @param visible list of IDs of visible elements / список идентификаторов видимых элементов
+   * @returns cache status / статус кэша
    */
   private static isCache(visible: string[]): boolean {
     return this.cache.join('|') !== visible.join('|')

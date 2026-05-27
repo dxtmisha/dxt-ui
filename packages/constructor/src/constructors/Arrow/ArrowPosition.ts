@@ -70,7 +70,7 @@ export class ArrowPosition {
    * Получает минимальное значение для позиции стрелки.
    */
   protected getMinValue(): number {
-    return this.parent.getBorderRadius() + (this.elementItem.getWidth() / 2)
+    return this.parent.borderRadiusNumber + (this.elementItem.width / 2)
   }
 
   /**

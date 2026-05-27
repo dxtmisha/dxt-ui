@@ -29,13 +29,19 @@ export class ArrowInclude<
     ArrowExpose,
     ArrowSlots
   > {
+  /** Items to expose / Элементы для экспозиции */
   protected readonly exposeItems: ComponentIncludeExposeItem<any>[] | undefined = undefined
 
+  /** Component name / Имя компонента */
   protected name = 'arrow'
+
+  /** Attribute name for props / Имя атрибута для свойств */
   protected propsAttrsName = 'arrowAttrs'
 
   /**
-   * Constructor
+   * Constructor for ArrowInclude
+   *
+   * Конструктор для ArrowInclude
    * @param className class name / название класса
    * @param props input parameter / входной параметр
    * @param components object for working with components / объект для работы с компонентами

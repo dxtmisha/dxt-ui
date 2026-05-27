@@ -119,7 +119,7 @@ export class Image {
   /**
    * Determines the tag to use/ Определяет используемый тег
    */
-  readonly tag = computed<string>(() => this.img.is.value ? 'img' : 'span')
+  readonly tag = computed<string>(() => this.img.is() ? 'img' : 'span')
 
   /**
    * Values for the text. Text is used for the type of icon that works as a background.
@@ -179,7 +179,7 @@ export class Image {
       notranslate: true
     }
 
-    if (this.img.is.value) {
+    if (this.img.is()) {
       data[`${this.className}--img`] = true
     }
 
@@ -214,22 +214,22 @@ export class Image {
         case ImageTypeValue.image:
         case ImageTypeValue.array:
           return {
-            'background-image': this.background.image.value,
+            'background-image': this.background.image,
             'background-size': this.background.size.value,
-            'background-position-x': this.position.x.value,
-            'background-position-y': this.position.y.value
+            'background-position-x': this.position.x,
+            'background-position-y': this.position.y
           }
         case ImageTypeValue.icon:
           return {
-            'background-image': this.background.image.value
+            'background-image': this.background.image
           }
         case ImageTypeValue.flag:
           return {
-            'background-image': this.background.image.value,
+            'background-image': this.background.image,
             'background-size': 'contain'
           }
         case ImageTypeValue.public:
-          return { 'mask-image': this.background.image.value }
+          return { 'mask-image': this.background.image }
         case ImageTypeValue.color:
           if (isString(value)) {
             return { 'background-color': value }

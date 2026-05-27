@@ -1,5 +1,3 @@
-import { computed } from 'vue'
-
 import { ImageCoordinator } from './ImageCoordinator'
 
 import type { ImageProps } from './props'
@@ -25,25 +23,27 @@ export class ImagePosition {
    * Returns the position on the left.
    *
    * Возвращает позицию слева.
+   * @returns horizontal position / горизонтальная позиция
    */
-  readonly x = computed<string>(() => {
+  get x(): string {
     if (this.coordinator.is()) {
-      return `${this.coordinator.coordinator.value[3] + (this.coordinator.size.value.width / 2)}%`
+      return `${this.coordinator.coordinator[3] + (this.coordinator.size.width / 2)}%`
     }
 
     return this.props.x?.toString() || 'center'
-  })
+  }
 
   /**
    * Returns the position on the top.
    *
    * Возвращает позицию сверху.
+   * @returns vertical position / вертикальная позиция
    */
-  readonly y = computed<string>(() => {
+  get y(): string {
     if (this.coordinator.is()) {
-      return `${this.coordinator.coordinator.value[0] + (this.coordinator.size.value.height / 2)}%`
+      return `${this.coordinator.coordinator[0] + (this.coordinator.size.height / 2)}%`
     }
 
     return this.props.y?.toString() || 'center'
-  })
+  }
 }

@@ -1,81 +1,74 @@
-import { computed, type Ref, watch } from 'vue'
-import { isDomRuntime, toNumber } from '@dxtmisha/functional'
+import { onMounted, ref, type Ref, watch } from 'vue'
+import { toNumber } from '@dxtmisha/functional'
+
 import { ArrowElement } from './ArrowElement'
 
 /**
  * Class for working with the parent element.
+ * It manages style tracking and coordinate synchronization with the element that contains the arrow.
  *
  * Класс для работы с родительским элементом.
+ * Управляет отслеживанием стилей и синхронизацией координат с элементом, в котором находится стрелка.
  */
 export class ArrowParent {
+  /** Computed styles of the parent element / Вычисленные стили родительского элемента */
+  protected readonly styles = ref<CSSStyleDeclaration>()
+  protected readonly borderColorParent = ref<string>()
+
   /**
    * Constructor
-   * @param element input element/ элемент ввода
-   * @param className class name/ название класса
-   * @param elementItem arrow element/ элемент стрелки
+   * @param element input element / элемент ввода
+   * @param className class name / название класса
+   * @param elementItem arrow element / элемент стрелки
    */
   constructor(
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly className: string,
     protected readonly elementItem: ArrowElement
   ) {
-    if (isDomRuntime()) {
-      watch(element, this.make)
-    }
+    onMounted(() => {
+      watch(element, this.make, { immediate: true })
+    })
   }
 
-  /** Checks if the parent element has a border/ Проверяет, есть ли у родительского элемента граница */
-  readonly isBorder = computed<boolean>(
-    () => this.borderWidth.value !== '0px'
-  )
-
-  /** Parent element/ Родительский элемент **/
-  readonly elementParent = computed<HTMLElement | undefined>(() => {
+  /** Parent element / Родительский элемент */
+  get elementParent(): HTMLElement | undefined {
     return this.element.value?.parentElement as HTMLElement | undefined
-  })
+  }
 
-  /** Background color of the parent element/ Цвет фона родительского элемента **/
-  readonly background = computed<string>(
-    () => this.getStyles()?.backgroundColor ?? 'transparent'
-  )
+  /** Background color of the parent element / Цвет фона родительского элемента */
+  get background(): string {
+    return this.styles.value?.backgroundColor ?? 'transparent'
+  }
 
-  /** Border color of the parent element/ Цвет границы родительского элемента **/
-  readonly borderWidth = computed<string>(
-    () => this.getStyles()?.borderWidth ?? '0px'
-  )
+  /** Border width of the parent element / Ширина границы родительского элемента */
+  get borderWidth(): string {
+    return this.styles.value?.borderWidth ?? '0px'
+  }
 
-  /** Border color of the parent element/ Цвет границы родительского элемента **/
-  readonly borderColor = computed<string>(
-    () => this.getStyles()?.borderColor ?? 'transparent'
-  )
+  /** Border color of the parent element / Цвет границы родительского элемента */
+  get borderColor(): string {
+    return this.borderColorParent.value ?? 'transparent'
+  }
 
-  /** Border radius of the parent element/ Радиус границы родительского элемента **/
-  readonly borderRadius = computed<string>(
-    () => this.getStyles()?.borderRadius ?? '0px'
-  )
+  /** Border radius of the parent element / Радиус границы родительского элемента */
+  get borderRadius(): string {
+    return this.styles.value?.borderRadius ?? '0px'
+  }
 
-  /**
-   * Get border width as number.
-   *
-   * Получить ширину границы в виде числа.
-   */
-  getBorderRadius(): number {
-    return toNumber(this.borderRadius.value)
+  /** Get border radius as number / Получить радиус границы в виде числа */
+  get borderRadiusNumber(): number {
+    return toNumber(this.borderRadius)
   }
 
   /**
-   * Get computed styles of the parent element.
+   * Checks if the parent element has a border.
    *
-   * Получить вычисленные стили родительского элемента.
+   * Проверяет, есть ли у родительского элемента граница.
+   * @returns border presence status / статус наличия границы
    */
-  protected getStyles() {
-    const parent = this.elementParent.value
-
-    if (parent) {
-      return getComputedStyle(parent)
-    }
-
-    return undefined
+  isBorder(): boolean {
+    return this.borderWidth !== '0px'
   }
 
   /**
@@ -85,13 +78,16 @@ export class ArrowParent {
    */
   protected readonly make = (): void => {
     requestAnimationFrame(() => {
-      if (this.elementParent.value) {
-        const elementParent = this.elementParent.value
+      const elementParent = this.elementParent
+
+      if (elementParent) {
+        this.styles.value = getComputedStyle(elementParent)
+        this.borderColorParent.value = this.styles.value.borderColor
 
         elementParent.classList.add(`${this.className}__parent`)
-        elementParent.style.setProperty(`--${this.className}-sys-height`, String(this.elementItem.getHeight()))
+        elementParent.style.setProperty(`--${this.className}-sys-height`, String(this.elementItem.height))
 
-        if (this.isBorder.value) {
+        if (this.isBorder()) {
           elementParent.dataset.arrow = 'border'
         }
       }

@@ -12,7 +12,8 @@ export class ImageUint8Array {
    * Check if the value is an image in Uint8Array or ArrayBuffer format.
    *
    * Проверяет, является ли значение изображением в формате Uint8Array или ArrayBuffer.
-   * @param value image/ изображение
+   * @param value image / изображение
+   * @returns true if the value is a Uint8Array or ArrayBuffer / true, если значение является Uint8Array или ArrayBuffer
    */
   static is(value: unknown): value is ImageUint8ArrayType {
     return value instanceof Uint8Array || value instanceof ArrayBuffer
@@ -22,8 +23,9 @@ export class ImageUint8Array {
    * Create an image from a Uint8Array or ArrayBuffer.
    *
    * Создает изображение из Uint8Array или ArrayBuffer.
-   * @param value image/ изображение
-   * @param type image type/ тип изображения
+   * @param value image / изображение
+   * @param type image type / тип изображения
+   * @returns image object or undefined / объект изображения или undefined
    */
   static createImage(
     value: ImageUint8ArrayType,
@@ -54,7 +56,8 @@ export class ImageUint8Array {
    * Convert an image to a Uint8Array.
    *
    * Преобразует изображение в Uint8Array.
-   * @param value image/ изображение
+   * @param value image / изображение
+   * @returns image as a Uint8Array / изображение в формате Uint8Array
    */
   static toUint8Array(value: ImageUint8ArrayType): Uint8Array<ArrayBuffer> {
     if (value instanceof ArrayBuffer) {
@@ -68,8 +71,9 @@ export class ImageUint8Array {
    * Get cache item.
    *
    * Получает элемент из кэша.
-   * @param value image/ изображение
-   * @param type image type/ тип изображения
+   * @param value image / изображение
+   * @param type image type / тип изображения
+   * @returns cache item if found, otherwise undefined / элемент кэша, если найден, иначе undefined
    */
   protected static getCacheItem(
     value: ImageUint8ArrayType,
@@ -82,9 +86,9 @@ export class ImageUint8Array {
    * Add cache item.
    *
    * Добавляет элемент в кэш.
-   * @param value image/ изображение
-   * @param type image type/ тип изображения
-   * @param src image src/ src изображения
+   * @param value image / изображение
+   * @param type image type / тип изображения
+   * @param src image src / src изображения
    */
   protected static addCacheItem(
     value: ImageUint8ArrayType,

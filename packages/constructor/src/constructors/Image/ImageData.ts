@@ -1,4 +1,4 @@
-import { type ComputedRef, type Ref, watch } from 'vue'
+import { type ComputedRef, onMounted, type Ref, watch } from 'vue'
 import {
   computedAsync,
   type ConstrEmit,
@@ -13,9 +13,8 @@ import { ClientOnlyInclude } from '../../classes/ClientOnlyInclude'
 
 import { ImageFile } from './ImageFile'
 import { ImagePdf } from './ImagePdf'
-import { ImageUint8Array } from './ImageUint8Array'
-
 import { ImageType } from './ImageType'
+import { ImageUint8Array } from './ImageUint8Array'
 
 import { type ImageEventItem, type ImageItem, ImageTypeValue } from './basicTypes'
 import { type ImageEmits } from './types'
@@ -50,22 +49,25 @@ export class ImageData {
       () => this.initSsr()
     )
 
-    if (emits) {
-      watch(this.image, (image) => {
-        if (typeof image === 'object') {
-          emits('load', {
-            type: this.type.item.value,
-            image
-          })
-        }
-      })
-    }
+    onMounted(() => {
+      if (emits) {
+        watch(this.image, (image) => {
+          if (typeof image === 'object') {
+            emits('load', {
+              type: this.type.item.value,
+              image
+            })
+          }
+        })
+      }
+    })
   }
 
   /**
    * Checks if there are values.
    *
    * Проверяет, есть ли значения.
+   * @returns true if the value is not undefined / true, если значение не является undefined
    */
   is(): this is { image: Exclude<ImageEventItem, Undefined> } {
     return this.image.value !== undefined
@@ -75,6 +77,7 @@ export class ImageData {
    * Checks if the value is a link, that is, a type of string.
    *
    * Проверяет, является ли значение ссылкой, то есть видом строки.
+   * @returns true if the value is a string link / true, если значение является строковой ссылкой
    */
   isLink(): this is { image: Ref<string> } {
     return this.is() && typeof this.image.value === 'string'
@@ -84,6 +87,7 @@ export class ImageData {
    * Checks if the value is an image object.
    *
    * Проверяет, является ли значение объектом изображения.
+   * @returns true if the value is an image object / true, если значение является объектом изображения
    */
   isImage(): this is { image: Ref<ImageItem> } {
     return this.is() && typeof this.image.value !== 'string'
@@ -93,6 +97,7 @@ export class ImageData {
    * Data initialization.
    *
    * Инициализация данных.
+   * @returns initialized image event item / инициализированный элемент события изображения
    */
   protected async init(): Promise<ImageEventItem> {
     const image = this.props.value
@@ -140,6 +145,7 @@ export class ImageData {
    * Data initialization for server-side rendering (SSR).
    *
    * Инициализация данных для серверного рендеринга (SSR).
+   * @returns initialized image event item for SSR / инициализированный элемент события изображения для SSR
    */
   protected initSsr(): ImageEventItem {
     const image = this.props.value

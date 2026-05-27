@@ -1,20 +1,34 @@
-import { nextTick, onMounted, onUnmounted, type Ref, type ToRefs, watch } from 'vue'
-import { EventItem, EventRef, isDomRuntime } from '@dxtmisha/functional'
+import {
+  nextTick,
+  onMounted,
+  onUnmounted,
+  type Ref,
+  type ToRefs,
+  watch
+} from 'vue'
+import { EventItem, EventRef } from '@dxtmisha/functional'
 
 import { ArrowElementTarget } from './ArrowElementTarget'
-import { ArrowPosition } from './ArrowPosition'
 import { ArrowParent } from './ArrowParent'
+import { ArrowPosition } from './ArrowPosition'
 
 import type { ArrowProps } from './props'
 
 /**
  * Class for managing arrow events.
+ * It handles element resizing, scrolling, and updates the arrow's position accordingly.
  *
  * Класс для управления событиями стрелки.
+ * Обрабатывает изменение размеров элементов, прокрутку и соответствующим образом обновляет положение стрелки.
  */
 export class ArrowEvent {
+  /** Event for the arrow element / Событие для элемента стрелки */
   protected eventItem?: EventRef<HTMLElement, any>
+
+  /** Event for the target element / Событие для целевого элемента */
   protected eventTarget?: EventRef<HTMLElement, any>
+
+  /** Event for the window (scrolling and resizing) / Событие для окна (прокрутка и изменение размера) */
   protected eventBody?: EventItem<any, any>
 
   /**
@@ -34,18 +48,16 @@ export class ArrowEvent {
     protected readonly parent: ArrowParent,
     protected readonly position: ArrowPosition
   ) {
-    if (isDomRuntime()) {
-      onMounted(async () => {
-        await nextTick()
+    onMounted(async () => {
+      await nextTick()
 
-        watch(this.elementTarget.element, this.makeEvents)
-        watch([...Object.values(this.refs)], this.update, { immediate: true })
-      })
+      watch(this.elementTarget.element, this.makeEvents, { immediate: true })
+      watch([...Object.values(this.refs)], this.update, { immediate: true })
+    })
 
-      onUnmounted(() => {
-        this.stopEvents()
-      })
-    }
+    onUnmounted(() => {
+      this.stopEvents()
+    })
   }
 
   /**
@@ -67,6 +79,7 @@ export class ArrowEvent {
    * Start events.
    *
    * Запустить события.
+   * @returns current class instance / текущий экземпляр класса
    */
   protected startEvents(): this {
     this.eventItem?.start()
@@ -80,6 +93,7 @@ export class ArrowEvent {
    * Stop events.
    *
    * Остановить события.
+   * @returns current class instance / текущий экземпляр класса
    */
   protected stopEvents(): this {
     this.eventItem?.stop()
@@ -93,6 +107,7 @@ export class ArrowEvent {
    * Initialize events.
    *
    * Инициализировать события.
+   * @returns current class instance / текущий экземпляр класса
    */
   protected initEvents(): this {
     if (!this.eventItem) {
