@@ -139,7 +139,7 @@ export class Cell {
    * Вычисляемые CSS классы для компонента ячейки.
    */
   readonly classes = computed<ConstrClass>(() => ({
-    [`${this.className}--description`]: this.description.is.value,
+    [`${this.className}--description`]: this.description.is,
     [getClassTagAStatic(this.classDesign)]: true
   }))
 

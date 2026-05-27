@@ -80,7 +80,7 @@ export class SuffixInclude {
             'id': this.id.value,
             'class': {
               [`${this.className}__suffix`]: true,
-              ...this.skeleton?.classes.value
+              ...this.skeleton?.classes
             },
             'data-event-type': 'suffix'
           },

@@ -1,5 +1,12 @@
 import { computed, reactive, type Ref, type ToRefs } from 'vue'
-import { type ConstrClass, type ConstrEmit, type DesignComp, forEach, getBind, toBind } from '@dxtmisha/functional'
+import {
+  type ConstrClass,
+  type ConstrEmit,
+  type DesignComp,
+  forEach,
+  getBind,
+  toBinds
+} from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { LabelInclude } from '../../classes/LabelInclude'
@@ -21,26 +28,25 @@ import type { EventClickValue } from '../../types/eventClickTypes'
  * Bars
  */
 export class Bars {
-  /** Управление action‑режимом */
-  readonly action: BarsAction
+  /** Подключение скелетона для текста/описания */
+  readonly skeleton: SkeletonInclude
+  /** Helper for Window CSS classes/ Вспомогательный класс для CSS‑классов Window */
+  readonly windowClasses: WindowClassesInclude
+  /** Helper for MotionTransform CSS classes/ Вспомогательный класс для CSS‑классов MotionTransform */
+  readonly motionTransformClasses: MotionTransformClassesInclude
+  /** Text object/ Объект текста */
+  readonly text: TextInclude
 
   /** Label object/ Объект метки */
   readonly label: LabelInclude
   /** Description object/ Объект описания */
   readonly description: DescriptionInclude
 
+  /** Управление action‑режимом */
+  readonly action: BarsAction
+
   /** Event object/ Объект события */
   readonly event: EventClickInclude
-
-  /** Helper for Window CSS classes/ Вспомогательный класс для CSS‑классов Window */
-  readonly windowClasses: WindowClassesInclude
-  /** Helper for MotionTransform CSS classes/ Вспомогательный класс для CSS‑классов MotionTransform */
-  readonly motionTransformClasses: MotionTransformClassesInclude
-  /** Подключение скелетона для текста/описания */
-  readonly skeleton: SkeletonInclude
-
-  /** Text object/ Объект текста */
-  readonly text: TextInclude
 
   /**
    * Constructor
@@ -96,9 +102,10 @@ export class Bars {
       WindowClassesConstructor = WindowClassesInclude
     } = constructors ?? {}
 
-    const skeleton = new SkeletonConstructor(this.props, this.classDesign, ['classTextVariant'])
-
-    this.action = new BarsActionConstructor(this.props, this.refs)
+    this.skeleton = new SkeletonConstructor(this.props, this.classDesign, ['classTextVariant'])
+    this.windowClasses = new WindowClassesConstructor(classDesign)
+    this.motionTransformClasses = new MotionTransformClassesConstructor(classDesign)
+    this.text = new TextConstructor(this.props)
 
     this.label = new LabelConstructor(this.labelBinds,
       className,
@@ -107,24 +114,20 @@ export class Bars {
       undefined,
       undefined,
       undefined,
-      skeleton
+      this.skeleton
     )
-    this.description = new DescriptionConstructor(this.descriptionBinds, className, slots, skeleton)
+    this.description = new DescriptionConstructor(this.descriptionBinds, className, slots, this.skeleton)
 
-    this.event = new EventConstructor(undefined, undefined, emits)
-
-    this.windowClasses = new WindowClassesConstructor(classDesign)
-    this.motionTransformClasses = new MotionTransformClassesConstructor(classDesign)
-    this.skeleton = skeleton
-    this.text = new TextConstructor(this.props)
+    this.action = new BarsActionConstructor(this.props, this.refs)
 
     new ModelConstructor('action', this.emits, this.action.action)
+    this.event = new EventConstructor(undefined, undefined, emits)
   }
 
   /** Returns the button data/ Возвращает данные кнопки */
   readonly backBinds = computed<BarsProps['buttonAttrs']>(
     () => this.initItem(
-      toBind(
+      toBinds(
         {
           icon: {
             icon: this.props.iconBack,
@@ -139,7 +142,7 @@ export class Bars {
           onClick: this.onClickBack,
           ...AriaStaticInclude.label(this.text.close.value)
         },
-        this.props.backButton ?? {}
+        this.props.backButton
       ),
       'main-back'
     )
@@ -174,7 +177,7 @@ export class Bars {
    * Возвращает значение для свойства aria-live.
    */
   readonly ariaLive = computed<'polite' | 'off' | undefined>(() => {
-    if (this.action.isPossible.value) {
+    if (this.action.isPossible()) {
       return 'polite'
     }
 
@@ -209,11 +212,11 @@ export class Bars {
     return {
       isSkeleton: this.props.isSkeleton,
       onClick: this.event.onClick,
-      ...toBind(
-        this.props.buttonAttrs ?? {},
-        item ?? {}
+      ...toBinds(
+        this.props.buttonAttrs,
+        item
       ),
-      key: `${isAction ? 'action' : ''}Bar-${item?.value ?? key}`,
+      key: `${isAction ? 'action' : 'main'}Bar-${item?.value ?? key}`,
       icon: getBind(item?.icon, { animationShow: isAction }, 'icon')
     }
   }

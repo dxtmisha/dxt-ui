@@ -1,72 +1,32 @@
-import { computed, type Ref, type ToRefs } from 'vue'
-import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
-
-import { type ActionsInclude } from '../Actions'
-import { type BarsInclude } from '../Bars'
-import { type WindowInclude } from '../Window'
-
 import { ModalAbstract } from './ModalAbstract'
+import { type WindowProps } from '../Window'
 
-import type { ModalComponents, ModalEmits, ModalSlots } from './types'
-import type { ModalProps } from './props'
+import type { ComponentIncludeExtra } from '../../types/componentInclude'
 
 /**
- * Modal
+ * Class for managing a modal window component.
+ * It extends the abstract modal logic (ModalAbstract) to provide concrete modal behaviors, combining top/bottom bars, action buttons, and window overlays into a cohesive modal interface.
  *
- * The class for working with a modal window.
- * Класс для работы с модальным окном.
+ * Класс для управления компонентом модального окна.
+ * Расширяет абстрактную логику модального окна (ModalAbstract) для обеспечения конкретного поведения, объединяя верхние/нижние панели, кнопки действий и оверлеи окон в единый модальный интерфейс.
  */
 export class Modal extends ModalAbstract {
   /**
-   * Constructor
-   * @param props input data/ входные данные
-   * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
-   * @param element input element/ элемент ввода
-   * @param classDesign design name/ название дизайна
-   * @param className class name/ название класса
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param slots object for working with slots/ объект для работы со слотами
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param constructors object with classes/ объект с классами
-   * @param constructors.ActionsConstructor class for creating actions/ класс для создания действий
-   * @param constructors.BarsConstructor class for creating bars/ класс для создания панелей
-   * @param constructors.WindowConstructor class for creating a window/ класс для создания окна
+   * Retrieves additional properties for the window sub-component.
+   *
+   * Возвращает дополнительные свойства для подкомпонента окна.
+   * @returns object with additional window properties / объект с дополнительными свойствами окна
    */
-  constructor(
-    protected readonly props: ModalProps,
-    protected readonly refs: ToRefs<ModalProps>,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
-    protected readonly components?: DesignComp<ModalComponents, ModalProps>,
-    protected readonly slots?: ModalSlots,
-    protected readonly emits?: ConstrEmit<ModalEmits>,
-    constructors?: {
-      ActionsConstructor?: typeof ActionsInclude
-      BarsConstructor?: typeof BarsInclude
-      WindowConstructor?: typeof WindowInclude
-    }
-  ) {
-    super(
-      props,
-      refs,
-      element,
-      classDesign,
-      className,
-      components,
-      slots,
-      emits,
-      computed(() => ({
-        open: props.open,
-        image: props.image,
+  protected override getExtraWindow(): ComponentIncludeExtra<WindowProps> {
+    return {
+      ...super.getExtraWindow(),
 
-        adaptive: 'modal',
-        imagePosition: props.imagePosition,
-        closeButton: props.barsBackHide
-      })),
-      undefined,
-      undefined,
-      constructors
-    )
+      open: this.props.open,
+      image: this.props.image,
+
+      adaptive: 'modal',
+      imagePosition: this.props.imagePosition,
+      closeButton: this.props.barsBackHide
+    }
   }
 }

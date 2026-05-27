@@ -1,65 +1,78 @@
-import { computed, ref, type ToRefs, watch } from 'vue'
+import { ref, type ToRefs, watch } from 'vue'
 import type { BarsProps } from './props'
 
 /**
- * Управление action‑режимом для Bars.
+ * Class for managing the action mode of the Bars component.
+ * It tracks the active state of action bars and triggers panel updates.
  *
- * Controls Bars action mode.
+ * Класс для управления режимом действий (action-режимом) компонента Bars.
+ * Отслеживает активное состояние панели действий и инициирует обновления панели.
  */
 export class BarsAction {
-  /** Текущее состояние action‑режима / Current action mode state */
+  /** Current action mode state / Текущее состояние action-режима */
   readonly action = ref<boolean>(false)
 
   /**
-   * Constructor
-   * @param props input data/ входные данные
-   * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
+   * Constructor for initializing BarsAction properties.
+   *
+   * Конструктор для инициализации свойств BarsAction.
+   * @param props input data / входные данные
+   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
    */
   constructor(
     protected readonly props: BarsProps,
     protected readonly refs: ToRefs<BarsProps>
   ) {
-    if (refs.action) {
-      watch(
-        refs.action,
-        (action) => {
-          this.action.value = Boolean(action)
-        },
-        { immediate: true }
-      )
-    }
+    watch(
+      [refs.action],
+      () => {
+        this.action.value = Boolean(this.props.action)
+      },
+      { immediate: true }
+    )
   }
 
   /**
    * Checks if action mode is possible.
    *
    * Проверяет, возможен ли режим действий.
+   * @returns status check result / результат проверки возможности
    */
-  readonly isPossible = computed<boolean>(() => Boolean(
-    this.props.actionLabel
-    || this.props.actionDescription
-    || this.props.actionBars
-  ))
+  isPossible(): boolean {
+    return Boolean(
+      this.props.actionLabel
+      || this.props.actionDescription
+      || this.props.actionBars
+    )
+  }
 
   /**
-   * Включить action‑режим.
+   * Sets the action mode state.
    *
-   * Enable action mode.
+   * Устанавливает состояние режима действий.
+   * @param value new state value / новое значение состояния
    */
-  open() {
-    if (!this.action.value) {
-      this.action.value = true
+  set(value: boolean): void {
+    if (this.action.value !== value) {
+      this.action.value = value
     }
   }
 
   /**
-   * Выключить action‑режим.
+   * Enables the action mode.
    *
-   * Disable action mode.
+   * Включает режим действий (action-режим).
    */
-  close() {
-    if (this.action.value) {
-      this.action.value = false
-    }
+  open(): void {
+    this.set(true)
+  }
+
+  /**
+   * Disables the action mode.
+   *
+   * Выключает режим действий (action-режим).
+   */
+  close(): void {
+    this.set(false)
   }
 }

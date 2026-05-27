@@ -8,7 +8,7 @@ export type ComponentIncludePropsAttrs<Props extends Record<string, any>> = keyo
  * Extra attributes type for the component or function returning them /
  * Дополнительный тип атрибутов для компонента или функция, возвращающая их
  */
-export type ComponentIncludeExtra<PropsExtra extends Record<string, any>> = RefOrNormal<ConstrBind<PropsExtra>> | (() => ConstrBind<PropsExtra>) | undefined
+export type ComponentIncludeExtra<PropsExtra extends Record<string, any> = Record<string, any>> = RefOrNormal<ConstrBind<PropsExtra>> | (() => ConstrBind<PropsExtra>) | undefined
 
 /**
  * Shape of a sub-component exposed API method configuration /

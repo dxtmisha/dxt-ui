@@ -1,4 +1,4 @@
-import { computed, type Ref, type ToRefs } from 'vue'
+import { type Ref, type ToRefs } from 'vue'
 import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
 import { WindowInclude } from '../Window'
@@ -50,17 +50,18 @@ export class ListMenu {
     this.open = new ListGroupOpenConstructor(this.props)
 
     this.window = new WindowIncludeConstructor(
-      this.props,
       this.className,
+      this.props,
       this.components,
-      this.emits,
-      computed(() => ({
+      () => ({
         adaptive: 'menu',
         axis: this.props.axis,
         onWindow: this.open.onOpen,
         role: 'menu',
         ariaHaspopup: 'menu'
-      }))
+      }),
+      undefined,
+      this.emits
     )
   }
 }

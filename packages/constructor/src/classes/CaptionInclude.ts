@@ -43,7 +43,7 @@ export class CaptionInclude {
     const binds = {
       'class': {
         [`${this.className}__caption`]: true,
-        ...this.skeleton?.classes.value
+        ...this.skeleton?.classes
       },
       'data-event-type': 'caption'
     }

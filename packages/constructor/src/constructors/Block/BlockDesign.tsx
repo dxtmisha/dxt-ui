@@ -204,10 +204,10 @@ export class BlockDesign<
       )
     }
 
-    if (this.item.description.is.value) {
+    if (this.item.description.is) {
       Object.assign(
         props,
-        AriaStaticInclude.describedby(this.item.description.id.value)
+        AriaStaticInclude.describedby(this.item.description.id)
       )
     }
 

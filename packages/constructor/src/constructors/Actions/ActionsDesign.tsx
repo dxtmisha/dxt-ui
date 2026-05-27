@@ -136,7 +136,7 @@ export class ActionsDesign<
   protected readonly renderList = (): VNode[] => {
     const children: any[] = []
 
-    if (this.item.isList.value) {
+    if (this.item.isList()) {
       if (this.props.list) {
         this.props.list.forEach((item, key) => {
           this.components.renderAdd(
@@ -144,16 +144,14 @@ export class ActionsDesign<
             'button',
             toBinds(
               {
-                onClick: this.item.event.onClick
-              },
-              this.props.buttonAttrs,
-              item,
-              {
                 class: [
                   this.classes?.value.item,
                   this.classes?.value.list
-                ]
-              }
+                ],
+                onClick: this.item.event.onClick
+              },
+              this.props.buttonAttrs,
+              item
             ),
             undefined,
             `list-${key}`
@@ -175,21 +173,22 @@ export class ActionsDesign<
   protected readonly renderSecondary = (): VNode[] => {
     const children: any[] = []
 
-    if (this.item.isSecondary.value) {
+    if (this.item.isSecondary()) {
       if (this.props.listSecondary) {
         this.props.listSecondary.forEach((item, key) => {
           this.components.renderAdd(
             children,
             'button',
             toBinds(
-              this.props.buttonSecondaryAttrs,
-              item,
               {
                 class: [
                   this.classes?.value.item,
                   this.classes?.value.secondary
-                ]
-              }
+                ],
+                onClick: this.item.event.onClick
+              },
+              this.props.buttonSecondaryAttrs,
+              item
             ),
             undefined,
             `secondary-${key}`

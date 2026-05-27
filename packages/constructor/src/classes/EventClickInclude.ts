@@ -1,4 +1,3 @@
-import { toRefs, type ToRefs } from 'vue'
 import { type ConstrEmit, type ConstrHrefProps, isEnter, isObjectNotArray, RouterItemRef } from '@dxtmisha/functional'
 
 import { EnabledInclude } from './EnabledInclude'
@@ -11,58 +10,62 @@ import type {
 } from '../types/eventClickTypes'
 
 /**
- * Base class for working with button events
+ * Base class for managing button events and click logic.
+ * It handles standard browser clicks, keyboard interactions, router navigation, and emits click events.
  *
- * Базовый класс для работы с событиями кнопки
+ * Базовый класс для управления событиями кнопки и логикой клика.
+ * Обрабатывает стандартные клики браузера, клавиатурные взаимодействия, навигацию роутера и вызывает события клика.
  */
 export class EventClickInclude {
-  protected readonly refs?: ToRefs<EventClickProps>
-
   /**
-   * Constructor
-   * @param props input data/ входные данные
-   * @param enabled Object for working with activity status/ Объект для работы со статусом активности
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   * Constructor for initializing EventClickInclude.
+   *
+   * Конструктор для инициализации EventClickInclude.
+   * @param props input properties / входные свойства
+   * @param enabled object for activity status management / объект для управления статусом активности
+   * @param emits callback function for triggering events / функция обратного вызова для вызова событий
    */
   constructor(
     protected readonly props?: EventClickProps,
     protected readonly enabled?: EnabledInclude,
     protected readonly emits?: ConstrEmit<EventClickEmits>
   ) {
-    this.refs = props ? toRefs(props) : undefined
   }
 
   /**
-   * Returns bindings for the element.
+   * Returns binding properties for the HTML element.
    *
-   * Возвращает привязки для элемента.
+   * Возвращает свойства привязки для HTML-элемента.
+   * @returns object containing event and link bindings / объект, содержащий привязки событий и ссылок
    */
   get binds() {
     return {
-      ...this.getHref(),
+      ...this.href,
       onClick: this.onClick,
       onKeydown: this.onKeydown
     }
   }
 
   /**
-   * Exported values
+   * Exported component values.
    *
-   * Экспонируемые значения
+   * Экспонируемые значения компонента.
+   * @returns object with exported values and details / объект с экспонируемыми значениями и деталями
    */
   get expose(): EventClickExpose {
     return {
-      getValue: () => this.refs?.value?.value,
-      getDetail: () => this.refs?.detail?.value
+      getValue: () => this.props?.value,
+      getDetail: () => this.props?.detail
     }
   }
 
   /**
-   * Returns the link value
+   * Link value properties.
    *
-   * Возвращает значение ссылки
+   * Свойства значения ссылки.
+   * @returns computed link properties / вычисленные свойства ссылки
    */
-  getHref(): ConstrHrefProps {
+  get href(): ConstrHrefProps {
     const to = this.props?.to
 
     if (
@@ -79,11 +82,11 @@ export class EventClickInclude {
   }
 
   /**
-   * Event trigger function
+   * Event trigger function for click events.
    *
-   * Функция вызова события
-   * @param event event object/ объект события
-   * @param options data object/ объект с данными
+   * Функция вызова события для событий клика.
+   * @param event mouse event object / объект события мыши
+   * @param options optional event value options / необязательные параметры значения события
    */
   readonly onClick = (
     event: MouseEvent,
@@ -113,11 +116,11 @@ export class EventClickInclude {
   }
 
   /**
-   * Event trigger function when pressing the space bar or enter key
+   * Event trigger function when pressing the Space or Enter key.
    *
-   * Функция вызова события при нажатии на пробел или клавишу Enter
-   * @param event event object/ объект события
-   * @param options data object/ объект с данными
+   * Функция вызова события при нажатии на клавишу Пробел или Enter.
+   * @param event keyboard event object / объект события клавиатуры
+   * @param options optional event value options / необязательные параметры значения события
    */
   readonly onKeydown = (
     event: KeyboardEvent,
@@ -130,9 +133,11 @@ export class EventClickInclude {
   }
 
   /**
-   * Parameters for the event
+   * Standardized click options and payload values for the event.
    *
-   * Параметры для события
+   * Стандартизированные параметры клика и значения полезной нагрузки для события.
+   * @param event mouse event object / объект события мыши
+   * @returns processed click payload / обработанная полезная нагрузка клика
    */
   protected getOptions(event: MouseEvent): EventClickValue {
     return {
@@ -143,9 +148,11 @@ export class EventClickInclude {
   }
 
   /**
-   * Returns the type of the selected item
+   * Returns the type of the target element based on the `data-event-type` attribute.
    *
-   * Возвращает тип выбранного элемента
+   * Возвращает тип целевого элемента на основе атрибута `data-event-type`.
+   * @param event mouse event object / объект события мыши
+   * @returns detected target type / определенный тип целевого элемента
    */
   protected getTargetType(event: MouseEvent) {
     const type = (event.target as HTMLElement)
@@ -157,9 +164,10 @@ export class EventClickInclude {
   }
 
   /**
-   * Changing the link through the router
+   * Performs client-side navigation using the router if `to` property is set.
    *
-   * Изменение ссылки через router
+   * Выполняет клиентскую навигацию с использованием роутера, если установлено свойство `to`.
+   * @returns true if navigation was handled by the router, false otherwise / true, если навигация была обработана роутером, иначе false
    */
   protected toRouter(): boolean {
     if (this.props?.to) {
@@ -171,11 +179,11 @@ export class EventClickInclude {
   }
 
   /**
-   * Triggers the click event
+   * Triggers the component click emits (click and clickLite).
    *
-   * Вызывает событие клика
-   * @param event event object/ объект события
-   * @param options data object/ объект с данными
+   * Вызывает события клика компонента (click и clickLite).
+   * @param event mouse event object / объект события мыши
+   * @param options processed click payload / обработанная полезная нагрузка клика
    */
   protected emit(
     event: MouseEvent,

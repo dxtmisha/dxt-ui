@@ -122,11 +122,12 @@ export class Menu {
 
     this.menuWindow = new MenuWindowConstructor(this.props, this.request)
     this.window = new WindowIncludeConstructor(
-      this.props,
       this.className,
+      this.props,
       this.components,
-      this.emits,
-      this.menuWindow.getExtra()
+      this.menuWindow.getExtra(),
+      undefined,
+      this.emits
     )
 
     this.event = new EventClickIncludeConstructor(undefined, undefined, this.emits)

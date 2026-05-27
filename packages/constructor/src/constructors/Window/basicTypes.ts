@@ -173,14 +173,9 @@ export type WindowEmitsInclude = {
  * Interface for window expose inclusion/
  * Интерфейс для включения expose окна
  */
-export interface WindowExposeInclude extends Omit<WindowExpose, 'getId' | 'getControl'> {
+export interface WindowExposeInclude extends WindowExpose {
   /** Returns reference to the window element/ Возвращает ссылку на элемент окна */
   getWindowElement(): ConstrBind<WindowExpose> | undefined
-
-  /** Unique window identifier/ Уникальный идентификатор окна */
-  getId(): string | undefined
-  /** Window control data/ Данные управления окном */
-  getControl(): WindowControlItem | undefined
 }
 
 /**

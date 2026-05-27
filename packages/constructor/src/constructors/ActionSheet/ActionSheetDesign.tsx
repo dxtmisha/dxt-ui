@@ -1,8 +1,8 @@
 import { h, type VNode } from 'vue'
 import { toBinds } from '@dxtmisha/functional'
 
-import { ModalDesignAbstract } from '../Modal/ModalDesignAbstract'
 import { ActionSheet } from './ActionSheet'
+import { ModalDesignAbstract } from '../Modal'
 
 import { type WindowControlItem } from '../Window'
 import {

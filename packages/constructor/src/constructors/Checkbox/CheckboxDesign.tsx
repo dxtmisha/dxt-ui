@@ -128,8 +128,8 @@ export class CheckboxDesign<
         ...this.getAttrs(),
         ref: this.element,
         class: this.classes?.value.main,
-        ...AriaStaticInclude.labelledby(this.item.label.id.value),
-        ...AriaStaticInclude.describedby(this.item.description.id.value)
+        ...AriaStaticInclude.labelledby(this.item.label.id),
+        ...AriaStaticInclude.describedby(this.item.description.id)
       },
       [
         this.renderInputHidden(),
@@ -238,8 +238,8 @@ export class CheckboxDesign<
    */
   readonly renderInfo = (): VNode[] => {
     if (
-      this.item.label.is.value
-      || this.item.description.is.value
+      this.item.label.is
+      || this.item.description.is
     ) {
       return [h(
         'span',

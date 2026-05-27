@@ -168,8 +168,8 @@ export class Tooltip {
       onMouseout: this.event.onMouseout,
       onTransitionend: this.event.onTransitionend,
       ...AriaStaticInclude.role(this.role.value),
-      ...AriaStaticInclude.labelledby(this.label.id.value),
-      ...AriaStaticInclude.describedby(this.description.id.value)
+      ...AriaStaticInclude.labelledby(this.label.id),
+      ...AriaStaticInclude.describedby(this.description.id)
     }
   })
 

@@ -80,7 +80,7 @@ export class PrefixInclude {
             'id': this.id.value,
             'class': {
               [`${this.className}__prefix`]: true,
-              ...this.skeleton?.classes.value
+              ...this.skeleton?.classes
             },
             'data-event-type': 'prefix'
           },

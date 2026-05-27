@@ -1,29 +1,42 @@
-import { computed, type Ref, type VNode } from 'vue'
-import { type ConstrClass, getElementId, getRef, isFilled, type RefOrNormal, render, toBinds } from '@dxtmisha/functional'
+import { type Ref, type VNode } from 'vue'
+import {
+  type ConstrClass,
+  getElementId,
+  getRef,
+  isFilled,
+  type RefOrNormal,
+  render,
+  toBinds
+} from '@dxtmisha/functional'
 
 import { SkeletonInclude } from '../constructors/Skeleton'
 
 import type { LabelAlternativeSlots, LabelProps, LabelSlots } from '../types/labelTypes'
 
 /**
- * Use for adding text
+ * Utility class for connecting and rendering label elements.
+ * It manages label states, slots, dynamic translations, and loading skeletons.
  *
- * Использование для добавления текста
+ * Утилитарный класс для подключения и рендеринга элементов меток.
+ * Управляет состояниями меток, слотами, динамическими переводами и скелетонами загрузки.
  */
 export class LabelInclude {
+  /** Default element identifier / Идентификатор элемента по умолчанию */
   protected readonly elementIdDefault = getElementId()
 
   /**
-   * Constructor
-   * @param props input property/ входное свойство
-   * @param className class name/ название класса
-   * @param classesExtra additional classes/ дополнительные классы
-   * @param slots object for working with slots/ объект для работы со слотами
-   * @param elementsExtra additional elements/ дополнительные элементы
-   * @param labelReplacing additional elements/ дополнительные элементы
-   * @param alternativeSlots alternative slots/ альтернативные слоты
-   * @param skeleton optional skeleton for loading state/ необязательный скелетон для состояния загрузки
-   * @param tag tag name/ имя тега
+   * Constructor for initializing LabelInclude properties.
+   *
+   * Конструктор для инициализации свойств LabelInclude.
+   * @param props input properties / входные свойства
+   * @param className base class name / название базового класса
+   * @param classesExtra additional CSS classes / дополнительные CSS-классы
+   * @param slots slots dictionary / объект слотов
+   * @param elementsExtra callback for extra VNode elements / коллбэк для дополнительных VNode-элементов
+   * @param labelReplacing reactive ref for replacing the label text / реактивная ссылка для замены текста метки
+   * @param alternativeSlots flag to use alternative slot name / флаг использования альтернативного имени слота
+   * @param skeleton optional loading skeleton include / необязательный скелетон загрузки
+   * @param tag HTML tag for wrapping element / HTML-тег для оборачивающего элемента
    */
   constructor(
     protected readonly props: Readonly<LabelProps>,
@@ -38,8 +51,13 @@ export class LabelInclude {
   ) {
   }
 
-  /** Label presence check/ Проверка наличия метки */
-  readonly is = computed<boolean>(() => {
+  /**
+   * Label presence check.
+   *
+   * Проверка наличия метки.
+   * @returns checking result / результат проверки
+   */
+  get is(): boolean {
     if (
       this.props.label
       || this.labelReplacing?.value
@@ -56,19 +74,25 @@ export class LabelInclude {
     }
 
     return false
-  })
-
-  /** Identifier for the element/ Идентификатор для элемента */
-  readonly id = computed<string>(
-    () => this.props.labelId || this.elementIdDefault
-  )
+  }
 
   /**
-   * Render the label
+   * Identifier for the element.
    *
-   * Рендер метки
-   * @param childrenExtra additional children/ дополнительные дочерние элементы
-   * @param props additional properties/ дополнительные свойства
+   * Идентификатор для элемента.
+   * @returns unique identifier / уникальный идентификатор
+   */
+  get id(): string {
+    return this.props.labelId || this.elementIdDefault
+  }
+
+  /**
+   * Renders the label element with children and properties.
+   *
+   * Рендерит элемент метки с дочерними элементами и свойствами.
+   * @param childrenExtra additional children elements / дополнительные дочерние элементы
+   * @param props additional HTML properties / дополнительные HTML-свойства
+   * @returns array of rendered virtual nodes / массив отрендеренных виртуальных узлов
    */
   render(
     childrenExtra?: any[],
@@ -76,7 +100,7 @@ export class LabelInclude {
   ): VNode[] {
     const elements: any[] = []
 
-    if (this.is.value) {
+    if (this.is) {
       const children: any[] = [
         ...this.initLabel(),
         ...this.initLabelReplacing(),
@@ -97,7 +121,7 @@ export class LabelInclude {
             getRef(this.tag),
             toBinds(
               {
-                id: this.id.value,
+                id: this.id,
                 class: this.getClassName()
               },
               props
@@ -113,9 +137,10 @@ export class LabelInclude {
   }
 
   /**
-   * Get the class name for the label
+   * Resolves the list of class names for the label element.
    *
-   * Получение имени класса для метки
+   * Разрешает список имен классов для элемента метки.
+   * @returns resolved CSS classes / разрешенные CSS-классы
    */
   protected getClassName(): ConstrClass {
     const classes: ConstrClass = [`${this.className}__label`]
@@ -125,16 +150,17 @@ export class LabelInclude {
     }
 
     if (this.skeleton) {
-      classes.push(this.skeleton.classes.value)
+      classes.push(this.skeleton.classes)
     }
 
     return classes
   }
 
   /**
-   * Adds the label text if it exists
+   * Resolves the static label text content.
    *
-   * Добавляет текст метки, если он есть
+   * Разрешает статический текст метки.
+   * @returns array containing the text / массив, содержащий текст
    */
   protected initLabel(): any[] {
     if (
@@ -148,9 +174,10 @@ export class LabelInclude {
   }
 
   /**
-   * Adds alternative label text if it exists
+   * Resolves the dynamic highlighted or replaced label text.
    *
-   * Добавляет альтернативный текст метки, если он есть
+   * Разрешает динамический подсвеченный или замененный текст метки.
+   * @returns array with virtual span node / массив с виртуальным узлом span
    */
   protected initLabelReplacing(): any[] {
     if (isFilled(this.labelReplacing?.value)) {
@@ -168,9 +195,10 @@ export class LabelInclude {
   }
 
   /**
-   * Adds a slot for the label if it exists
+   * Resolves the slot content for the label element.
    *
-   * Добавляет слот для метки, если он есть
+   * Разрешает содержимое слота для элемента метки.
+   * @returns array with resolved slot content / массив с разрешенным содержимым слота
    */
   protected initSlot(): any[] {
     if (this.slots) {

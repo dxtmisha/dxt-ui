@@ -1,4 +1,4 @@
-import { computed, type Ref, type ToRefs } from 'vue'
+import { type Ref, type ToRefs } from 'vue'
 import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
 import { AreaInclude } from '../../classes/AreaInclude'
@@ -48,28 +48,32 @@ export class Actions {
     } = constructors ?? {}
 
     this.area = new AreaIncludeConstructor(props)
-    this.event = new EventConstructor(
-      undefined,
-      undefined,
-      emits
+    this.event = new EventConstructor(undefined, undefined, emits)
+  }
+
+  /**
+   * Checks if the main list needs to be displayed.
+   *
+   * Проверяет, нужно ли выводить главный список.
+   * @returns main list visibility status / статус видимости главного списка
+   */
+  isList(): boolean {
+    return Boolean(
+      this.props.list
+      || (this.slots && 'default' in this.slots)
     )
   }
 
   /**
-   * Checks if the main list needs to be displayed/
-   * Проверяет, нужно ли выводить главный список
+   * Checks if the secondary list needs to be displayed.
+   *
+   * Проверяет, нужно ли выводить второстепенный список.
+   * @returns secondary list visibility status / статус видимости второстепенного списка
    */
-  readonly isList = computed<boolean>(() => Boolean(
-    this.props.list
-    || (this.slots && 'default' in this.slots)
-  ))
-
-  /**
-   * Checks if the secondary list needs to be displayed/
-   * Проверяет, нужно ли выводить второстепенный список
-   */
-  readonly isSecondary = computed<boolean>(() => Boolean(
-    this.props.listSecondary
-    || (this.slots && 'secondary' in this.slots)
-  ))
+  isSecondary(): boolean {
+    return Boolean(
+      this.props.listSecondary
+      || (this.slots && 'secondary' in this.slots)
+    )
+  }
 }

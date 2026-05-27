@@ -32,11 +32,13 @@ export class ApiHeaders {
     const headers = { ...executeFunction(this.headers) }
 
     if (isObjectNotArray(value)) {
-      Object.assign(headers, value)
+      for (const key in value) {
+        headers[key.toLowerCase()] = value[key]
+      }
     }
 
     if (isFilled(type)) {
-      headers['Content-Type'] = type
+      headers['content-type'] = type
     }
 
     return headers

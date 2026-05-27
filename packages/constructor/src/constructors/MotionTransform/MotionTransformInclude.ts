@@ -7,14 +7,14 @@ import {
 import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
 
 import type { ComponentIncludeExposeItem, ComponentIncludeExtra } from '../../types/componentInclude'
-import type { MotionTransformEmits, MotionTransformSlots } from './types'
-import type { MotionTransformProps } from './props'
 import type {
   MotionTransformComponentInclude,
   MotionTransformEmitOptions,
   MotionTransformExposeInclude,
   MotionTransformPropsInclude
 } from './basicTypes'
+import type { MotionTransformEmits, MotionTransformSlots } from './types'
+import type { MotionTransformProps } from './props'
 
 /**
  * The class returns data for working with the MotionTransform component.
@@ -36,9 +36,9 @@ export class MotionTransformInclude<
     MotionTransformSlots
   > {
   /** List of methods to expose from the sub-component / Список методов для экспорта из субкомпонента */
-  protected readonly exposeItems: ComponentIncludeExposeItem<any>[] | undefined = [
-    { name: 'getOpen', type: 'boolean' },
+  protected readonly exposeItems: ComponentIncludeExposeItem[] | undefined = [
     { name: 'isShow', type: 'boolean' },
+    { name: 'getOpen', type: 'boolean' },
 
     { name: 'setOpen' },
     { name: 'toOpen' },

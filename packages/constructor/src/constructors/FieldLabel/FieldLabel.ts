@@ -105,7 +105,7 @@ export class FieldLabel {
    */
   readonly classes = computed<ConstrClassObject>(() => {
     return {
-      ...this.skeleton.classes.value
+      ...this.skeleton.classes
     }
   })
 }

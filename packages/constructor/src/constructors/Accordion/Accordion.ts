@@ -1,5 +1,5 @@
-import { computed, ref, type Ref, type ToRefs } from 'vue'
-import { type ConstrEmit, type DesignComp, getElementId } from '@dxtmisha/functional'
+import { ref, type Ref, type ToRefs } from 'vue'
+import { type ConstrEmit, type DesignComp, getElementId, toBinds } from '@dxtmisha/functional'
 
 import { EventClickInclude } from '../../classes/EventClickInclude'
 import { MotionTransformInclude } from '../MotionTransform'
@@ -104,22 +104,26 @@ export class Accordion {
   }
 
   /**
-   * Computed bindings for the header cell.
+   * Returns bindings for the header cell.
    *
-   * Вычисляемые привязки для ячейки заголовка.
+   * Возвращает привязки для ячейки заголовка.
+   * @returns bindings object / объект привязок
    */
-  readonly bindsCell = computed(() => {
-    return {
-      ref: this.elementHead,
-      icon: this.props.icon,
-      iconTrailing: this.props.iconArrowDown,
-      label: this.props.label,
-      description: this.props.description,
-      dynamic: true,
-      labelId: this.labelId,
-      descriptionId: this.descriptionId,
-      onClick: this.event.onClick,
-      onKeydown: this.event.onKeydown
-    }
-  })
+  get bindsCell() {
+    return toBinds(
+      this.props.cellAttrs,
+      {
+        ref: this.elementHead,
+        icon: this.props.icon,
+        iconTrailing: this.props.iconArrowDown,
+        label: this.props.label,
+        description: this.props.description,
+        dynamic: true,
+        labelId: this.labelId,
+        descriptionId: this.descriptionId,
+        onClick: this.event.onClick,
+        onKeydown: this.event.onKeydown
+      }
+    )
+  }
 }

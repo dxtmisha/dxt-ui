@@ -109,7 +109,7 @@ export class Anchor {
   readonly isHide = computed<boolean>(() => {
     return this.props.hide
       || (
-        !this.label.is.value
+        !this.label.is
         && !this.props.isCopy
       )
   })

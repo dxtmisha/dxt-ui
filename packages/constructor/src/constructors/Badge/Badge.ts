@@ -73,7 +73,7 @@ export class Badge {
   readonly autoHide = computed(
     () => !this.props.dot
       && !isFilled(this.icon.isIcon.value)
-      && !isFilled(this.label.is.value)
+      && !isFilled(this.label.is)
   )
 
   /**

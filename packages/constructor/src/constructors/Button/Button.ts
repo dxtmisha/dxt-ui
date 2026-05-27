@@ -125,7 +125,7 @@ export class Button {
   readonly classes = computed<ConstrClass>(() => ({
     [`${this.className}--icon`]: this.icon.isIcon.value,
     [getClassTagAStatic(this.classDesign)]: true,
-    ...this.skeleton.classes.value
+    ...this.skeleton.classes
   }))
 
   /**
@@ -157,7 +157,7 @@ export class Button {
    */
   readonly eventList = computed(() => {
     const events: Record<string, any> = {
-      ...this.event.getHref(),
+      ...this.event.href,
       onClick: this.event.onClick
     }
 

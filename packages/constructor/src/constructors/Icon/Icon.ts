@@ -119,7 +119,7 @@ export class Icon {
    * Values for the class/ Значения для класса
    */
   readonly classes = computed<ConstrClassObject>(() => ({
-    ...this.skeleton.classes.value
+    ...this.skeleton.classes
   }))
 
   /**

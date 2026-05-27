@@ -144,7 +144,7 @@ export class FieldMessageDesign<
         id: this.props.helperId,
         class: [
           this.classes?.value.info,
-          this.item.skeleton.classes.value
+          this.item.skeleton.classes
         ]
       }
 

@@ -1,16 +1,12 @@
-import { computed, ref, type VNode } from 'vue'
 import {
   type ConstrBind,
   type ConstrEmit,
-  type DesignComponents,
-  getRef,
-  type RefOrNormal,
-  toBind,
-  toBinds
+  type DesignComponents
 } from '@dxtmisha/functional'
 
-import type { WindowProps } from './props'
-import type { WindowExpose, WindowSlots } from './types'
+import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
+
+import type { ComponentIncludeExposeItem, ComponentIncludeExtra } from '../../types/componentInclude'
 import type {
   WindowComponentInclude,
   WindowEmitOptions,
@@ -18,125 +14,128 @@ import type {
   WindowExposeInclude,
   WindowPropsInclude
 } from './basicTypes'
+import type { WindowSlots } from './types'
+import type { WindowProps } from './props'
 
 /**
- * The class returns data for working with the Window component
+ * WindowInclude class provides functionality for working with the Window component.
+ * It manages the reactive bindings, rendering, and expose API of the window component.
  *
- * Класс возвращает данные для работы с компонентом Window
+ * Класс WindowInclude предоставляет функциональность для работы с компонентом Window.
+ * Он управляет реактивными привязками, рендерингом и экспортируемым API компонента окна.
  */
 export class WindowInclude<
   Props extends WindowPropsInclude = WindowPropsInclude,
-  PropsExtra extends ConstrBind<WindowProps> = ConstrBind<WindowProps>
-> {
+  PropsExtra extends WindowProps = WindowProps
+> extends ComponentIncludeAbstract<
+    Props,
+    PropsExtra,
+    WindowExposeInclude,
+    WindowSlots
+  > {
+  protected readonly exposeItems: ComponentIncludeExposeItem[] | undefined = [
+    { name: 'getId' },
+    { name: 'getOpen', type: 'boolean' },
+    { name: 'getControl' },
+
+    { name: 'setOpen' },
+    { name: 'toOpen' },
+    { name: 'toClose' },
+    { name: 'toggle' }
+  ]
+
+  protected name = 'window'
+  protected propsAttrsName = 'windowAttrs'
+
   /**
    * Constructor
-   * @param props input parameter/ входной параметр
-   * @param className class name/ название класса
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param extra additional parameter or property name/ дополнительный параметр или имя свойства
-   * @param ariaLabelledby identifier for the label/ идентификатор для метки
-   * @param ariaDescribedby identifier for the description/ идентификатор для описания
-   * @param index index identifier/ идентификатор индекса
+   * @param className class name / название класса
+   * @param props input parameter / входной параметр
+   * @param components object for working with components / объект для работы с компонентами
+   * @param extra additional parameter or property name / дополнительный параметр или имя свойства
+   * @param index index identifier / идентификатор индекса
+   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
+   * @param ariaLabelledby identifier for the label / идентификатор для метки
+   * @param ariaDescribedby identifier for the description / идентификатор для описания
    */
   constructor(
-    protected readonly props: Readonly<Props>,
-    protected readonly className: string,
-    protected readonly components?: DesignComponents<WindowComponentInclude, Props>,
+    className: string,
+    props: Readonly<Props>,
+    components?: DesignComponents<WindowComponentInclude, Props>,
+    extra?: ComponentIncludeExtra<PropsExtra>,
+    index?: string,
     protected readonly emits?: ConstrEmit<WindowEmitsInclude>,
-    protected readonly extra?: RefOrNormal<PropsExtra>,
     protected readonly ariaLabelledby?: string,
-    protected readonly ariaDescribedby?: string,
-    protected readonly index?: string
+    protected readonly ariaDescribedby?: string
   ) {
-  }
-
-  /** Reference to window element expose/ Ссылка на expose элемента окна */
-  readonly element = ref<ConstrBind<WindowExpose> | undefined>()
-
-  /** Computed bindings for the window/ Вычисляемые привязки для окна */
-  readonly binds = computed<PropsExtra>(() => {
-    return toBinds<PropsExtra>(
-      getRef(this.extra),
-      {
-        class: `${this.className}__window`,
-
-        disabled: this.props.disabled,
-        autoClose: this.props.autoClose,
-
-        preparation: this.getPreparation,
-        opening: this.getOpening,
-        closing: this.getClosing,
-
-        ariaLabelledby: this.ariaLabelledby,
-        ariaDescribedby: this.ariaDescribedby
-      },
-      this.props.windowAttrs
-    )
-  })
-
-  /**
-   * Expose helpers for window state and actions/
-   * Вспомогательные методы expose для состояния и действий окна
-   */
-  readonly expose: WindowExposeInclude = {
-    getWindowElement: () => this.element.value,
-
-    getId: () => this.element.value?.getId(),
-    getOpen: () => Boolean(this.element.value?.getOpen()),
-    getControl: () => this.element.value?.getControl(),
-
-    setOpen: async (open: boolean) => this.element.value?.setOpen(open),
-    toOpen: async () => this.element.value?.toOpen(),
-    toClose: async () => this.element.value?.toClose(),
-    toggle: async () => this.element.value?.toggle()
+    super(className, props, components, extra, index)
   }
 
   /**
-   * Render the Window component with slots/
-   * Рендер компонента Window со слотами
-   * @param slotsChildren slots passed to the window/ слоты, передаваемые окну
-   * @param attrs additional attributes/ дополнительные атрибуты
+   * Returns preparation result /
+   * Возвращает результат preparation
    */
-  readonly render = (
-    slotsChildren: WindowSlots,
-    attrs?: Record<string, any>
-  ): VNode[] => {
-    if (this.components) {
-      return this.components.render(
-        'window',
-        {
-          ...toBind(
-            attrs ?? {},
-            this.binds.value
-          ),
-          ref: this.element,
-          onWindow: this.onWindow
-        },
-        slotsChildren as unknown as Record<string, any>,
-        this.index
-      )
-    }
-
-    return []
-  }
-
-  /** Returns preparation result/ Возвращает результат preparation */
   protected readonly getPreparation = () =>
-    getRef(this.extra)?.preparation?.() ?? this.props.windowAttrs?.preparation?.()
-
-  /** Returns opening result/ Возвращает результат opening */
-  protected readonly getOpening = () =>
-    getRef(this.extra)?.opening?.() ?? this.props.windowAttrs?.opening?.() ?? true
-
-  /** Returns closing result/ Возвращает результат closing */
-  protected readonly getClosing = () =>
-    getRef(this.extra)?.closing?.() ?? this.props.windowAttrs?.closing?.() ?? true
+    this.getExtra()?.preparation?.() ?? this.getProps().windowAttrs?.preparation?.()
 
   /**
-   * Emits 'window' event upward/
+   * Returns opening result /
+   * Возвращает результат opening
+   */
+  protected readonly getOpening = () =>
+    this.getExtra()?.opening?.() ?? this.getProps().windowAttrs?.opening?.() ?? true
+
+  /**
+   * Returns closing result /
+   * Возвращает результат closing
+   */
+  protected readonly getClosing = () =>
+    this.getExtra()?.closing?.() ?? this.getProps().windowAttrs?.closing?.() ?? true
+
+  /**
+   * Combines input attributes with internal component bindings.
+   *
+   * Объединяет входные атрибуты со внутренними привязками компонента.
+   * @returns resolved bindings / разрешенные привязки
+   */
+  protected override toBinds(): ConstrBind<PropsExtra> {
+    const props = this.getProps()
+    const binds = super.toBinds()
+
+    return {
+      ...binds,
+
+      disabled: props.disabled,
+      autoClose: props.autoClose,
+
+      preparation: this.getPreparation,
+      opening: this.getOpening,
+      closing: this.getClosing,
+
+      ariaLabelledby: this.ariaLabelledby,
+      ariaDescribedby: this.ariaDescribedby,
+
+      onWindow: this.onWindow
+    }
+  }
+
+  /**
+   * Collects and exposes defined proxy methods of the sub-component.
+   *
+   * Собирает и экспортирует определенные прокси-методы субкомпонента.
+   * @returns exposed API object / объект экспортируемого API
+   */
+  protected override toExpose(): WindowExposeInclude {
+    return {
+      ...super.toExpose(),
+      getWindowElement: () => this.element.value
+    }
+  }
+
+  /**
+   * Emits 'window' event upward /
    * Поднимает событие 'window' наверх
-   * @param options event payload/ параметры события
+   * @param options event payload / параметры события
    */
   protected readonly onWindow = (options: WindowEmitOptions) => {
     this.emits?.('window', options)

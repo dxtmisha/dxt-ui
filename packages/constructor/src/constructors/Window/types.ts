@@ -38,13 +38,13 @@ export type WindowEmits
  */
 export interface WindowExpose {
   /** Unique identifier of the window/ Уникальный идентификатор окна */
-  getId(): string
+  getId(): string | undefined
 
   /** Reactive state of window visibility/ Реактивное состояние видимости окна */
   getOpen(): boolean
 
   /** Control item data for window management/ Данные элемента управления для управления окном */
-  getControl(): WindowControlItem
+  getControl(): WindowControlItem | undefined
 
   /**
    * Sets window open state/
