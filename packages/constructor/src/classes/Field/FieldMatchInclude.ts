@@ -70,7 +70,7 @@ export class FieldMatchInclude {
       }
 
       if (this.text) {
-        return this.text.entriesMatch.value ?? ''
+        return this.text.entriesMatch ?? ''
       }
     }
 

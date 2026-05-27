@@ -109,7 +109,7 @@ export class ClientOnlyDesign<
    * Метод для рендеринга.
    */
   protected initRender(): VNode | undefined {
-    if (this.item.clientOnly.is()) {
+    if (this.item.clientOnly.isRender) {
       return this.initSlot('default')
     }
 

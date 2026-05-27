@@ -159,8 +159,8 @@ export class Field {
     )
 
     this.progress = new ProgressIncludeConstructor(
-      this.props,
       this.className,
+      this.props,
       this.components,
       {
         circular: true,

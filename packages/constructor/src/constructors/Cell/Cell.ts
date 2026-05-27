@@ -94,8 +94,8 @@ export class Cell {
     } = constructors ?? {}
 
     const progress = new ProgressConstructor(
-      props,
       className,
+      props,
       components,
       {
         position: 'bottom'

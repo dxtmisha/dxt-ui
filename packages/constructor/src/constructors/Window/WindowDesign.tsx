@@ -134,7 +134,7 @@ export class WindowDesign<
       if (
         (
           this.item.staticMode.item.value
-          && this.item.clientOnly.is()
+          && this.item.clientOnly.isRender
         )
         || this.props.embedded
       ) {
@@ -258,7 +258,7 @@ export class WindowDesign<
             this.item.classes.list.close
           ],
           icon: this.props.iconClose,
-          ...AriaStaticInclude.label(this.item.text.close.value)
+          ...AriaStaticInclude.label(this.item.text.close)
         }
       )
     }

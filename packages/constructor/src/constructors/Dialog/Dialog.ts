@@ -175,7 +175,7 @@ export class Dialog extends ModalAbstract {
           getBind(
             this.props.buttonClose,
             {
-              label: this.text.close.value,
+              label: this.text.close,
               value: 'close',
               class: this.windowClasses.get().close,
               onClick: () => this.emits?.('close')
@@ -191,7 +191,7 @@ export class Dialog extends ModalAbstract {
           getBind(
             this.props.buttonOk,
             {
-              label: this.text.ok.value,
+              label: this.text.ok,
               value: 'ok',
               class: this.props.clickOkAndClose ? this.windowClasses.get().close : undefined,
               onClick: () => this.emits?.('ok')

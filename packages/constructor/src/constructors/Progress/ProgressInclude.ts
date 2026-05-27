@@ -1,79 +1,69 @@
-import { computed, type VNode } from 'vue'
-import { type ConstrBind, type DesignComponents, getBind, getRef, type RefOrNormal, toBinds } from '@dxtmisha/functional'
+import { computed } from 'vue'
+import { getBind } from '@dxtmisha/functional'
 
+import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 
 import type { AriaList } from '../../types/ariaTypes'
-import type { ProgressComponentInclude, ProgressPropsInclude } from './basicTypes'
+import type { ProgressPropsInclude } from './basicTypes'
 import type { ProgressProps } from './props'
+import type { ProgressExpose, ProgressSlots } from './types'
 
 /**
- * The class returns data for working with the Progress component
+ * ProgressInclude class provides functionality for conditionally rendering progress components
+ * within other components. It manages the logic for determining when to display a progress bar
+ * and configures the appropriate properties.
  *
- * Класс возвращает данные для работы с компонентом Progress
+ * Класс ProgressInclude предоставляет функциональность для условного рендеринга компонентов
+ * прогресса внутри других компонентов. Он управляет логикой определения необходимости
+ * отображения индикатора прогресса и настраивает соответствующие свойства.
  */
-export class ProgressInclude {
+export class ProgressInclude extends ComponentIncludeAbstract<
+  ProgressPropsInclude,
+  ProgressProps,
+  ProgressExpose,
+  ProgressSlots
+> {
+  protected readonly name = 'progress'
+  protected readonly propsAttrsName = undefined
+
   /**
-   * Constructor
-   * @param props input parameter/ входной параметр
-   * @param className class name/ название класса
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param extra additional parameter or property name/ дополнительный параметр или имя свойства
+   * Checks whether progress should be displayed /
+   * Проверяет, нужно ли отображать индикатор прогресса
    */
-  constructor(
-    protected readonly props: ProgressPropsInclude,
-    protected readonly className: string,
-    protected readonly components?: DesignComponents<ProgressComponentInclude, ProgressPropsInclude>,
-    protected readonly extra?: RefOrNormal<ConstrBind<ProgressProps>>
-  ) {
+  override get is(): boolean {
+    return Boolean(this.getProps().loading)
   }
 
   /**
-   * Checks if data is available for the Progress component/
-   * Проверяет, есть ли данные для компонента Progress
-   */
-  readonly is = computed<boolean>(() => Boolean(this.props.loading))
-
-  /**
-   * list of aria properties for the progress component/
+   * list of aria properties for the progress component /
    * список aria свойств для компонента Progress
    */
   readonly aria = computed<AriaList>(
-    () => AriaStaticInclude.disabled(this.is.value)
+    () => AriaStaticInclude.disabled(this.is)
   )
 
   /**
-   * list of properties for the progress component/ список свойств для компонента Progress
+   * Generates the CSS class name according to BEM structure.
+   *
+   * Генерирует имя CSS-класса в соответствии с BEM-структурой.
+   * @returns BEM-formatted class name / имя класса в формате BEM
    */
-  readonly binds = computed(() => {
-    const extra = getRef(this.extra)
-
-    return getBind(
-      this.props.loading,
-      toBinds(
-        extra,
-        { class: `${this.className}__loading` }
-      ),
-      'visible'
-    )
-  })
+  protected override getClassName(): string {
+    return `${this.className}__loading`
+  }
 
   /**
-   * Рендер компонента Progress
+   * Resolves and returns design properties specifically bound for the progress indicator.
+   *
+   * Разрешает и возвращает свойства дизайна, привязанные именно к прогрессу.
+   * @returns resolved progress properties or undefined / разрешенные свойства прогресса или undefined
    */
-  readonly render = (): VNode[] => {
-    if (
-      this.components
-      && this.props.loading
-    ) {
-      return this.components.render(
-        'progress',
-        this.binds.value,
-        undefined,
-        'progress'
-      )
-    }
-
-    return []
+  protected override getExtra(): ProgressProps | undefined {
+    return getBind(
+      this.getProps().loading,
+      super.getExtra(),
+      'visible'
+    ) as ProgressProps
   }
 }

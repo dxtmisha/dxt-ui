@@ -1,5 +1,4 @@
 import {
-  computed,
   onMounted,
   onUnmounted,
   ref,
@@ -23,31 +22,40 @@ import type { ProgressProps } from './props'
 
 /**
  * Base class for working with the loader.
+ * It manages loader states, transitions, accessibility attributes, and dynamic value calculations.
  *
  * Базовый класс для работы с загрузчиком.
+ * Управляет состояниями загрузчика, анимациями, атрибутами доступности и вычислением динамических значений.
  */
 export class Progress {
+  /** Timer instance for delayed visibility updates / Экземпляр таймера для отложенного обновления видимости */
   protected timeout?: any
 
+  /** Reactive state for hiding animation / Реактивное состояние для анимации скрытия */
   readonly hide = ref<boolean>(false)
+
+  /** Reactive state for visibility status / Реактивное состояние для статуса видимости */
   readonly visible = ref<boolean>(false)
 
+  /** Instance for client-only rendering / Экземпляр для рендеринга только на клиенте */
   readonly clientOnly: ClientOnlyInclude
+
+  /** Instance for handling localized text strings / Экземпляр для обработки локализованных текстовых строк */
   readonly text: TextInclude
 
   /**
-   * Constructor
-   * @param props input data/ входные данные
-   * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
-   * @param element input element/ элемент ввода
-   * @param classDesign design name/ название дизайна
-   * @param className class name/ название класса
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param slots object for working with slots/ объект для работы со слотами
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param constructors object with classes/ объект с классами
-   * @param constructors.TextIncludeConstructor class for working with text/ класс для работы с текстом
-   * @param constructors.ClientOnlyIncludeConstructor class for client-only rendering/ класс для рендеринга только на клиенте
+   * Constructor for progress control.
+   *
+   * Конструктор для управления прогрессом.
+   * @param props input data / входные данные
+   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
+   * @param element input element / элемент ввода
+   * @param classDesign design name / название дизайна
+   * @param className class name / название класса
+   * @param components object for working with components / объект для работы с компонентами
+   * @param slots object for working with slots / объект для работы со слотами
+   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
+   * @param constructors object with helper classes / объект с вспомогательными классами
    */
   constructor(
     protected readonly props: ProgressProps,
@@ -85,35 +93,45 @@ export class Progress {
   }
 
   /**
-   * Checks if the component is in progress bar mode.
-   *
-   * Проверяет, находится ли компонент в режиме прогресс-бара.
-   */
-  readonly isProgressbar = computed<boolean>(() => this.isValue())
-
-  /**
    * Returns the tag type for the element.
    *
    * Возвращает тип тега для элемента.
+   * @returns tag type / тип тега
    */
-  readonly tag = computed<string>(() => this.props.circular ? 'svg' : 'div')
+  get tag(): string {
+    return this.props.circular ? 'svg' : 'div'
+  }
 
   /**
    * Returns values.
    *
    * Возвращает значения.
+   * @returns current progress value / текущее значение прогресса
    */
-  readonly value = computed(() => toNumber(this.props.value ?? 0))
+  get value(): number {
+    return toNumber(this.props.value ?? 0)
+  }
+
+  /**
+   * Returns the maximum allowable value.
+   *
+   * Возвращает максимально допустимое значение.
+   * @returns maximum value / максимальное значение
+   */
+  get max(): number {
+    return toNumber(this.props.max ?? 100)
+  }
 
   /**
    * Returns values in percentages.
    *
    * Возвращает значения в процентах.
+   * @returns calculated percentage / вычисленный процент
    */
-  readonly valueInPercent = computed<string | null>(() => {
+  get valueInPercent(): string | null {
     if (this.isValue()) {
-      const value = this.value.value
-      const percent = (100 / this.getMax() * value)
+      const value = this.value
+      const percent = (100 / this.max * value)
 
       if (this.props.circular) {
         return percent.toString()
@@ -123,14 +141,15 @@ export class Progress {
     }
 
     return null
-  })
+  }
 
   /**
    * Returns the label text.
    *
    * Возвращает текст метки.
+   * @returns aria-label or loading text / aria-label или текст загрузки
    */
-  readonly label = computed<string | undefined>(() => {
+  get label(): string | undefined {
     if (this.props.ariaLabel) {
       return this.props.ariaLabel
     }
@@ -139,56 +158,68 @@ export class Progress {
       !this.isValue()
       && this.props.visible
     ) {
-      return this.text.loading.value
+      return this.text.loading
     }
 
     return undefined
-  })
+  }
 
   /**
    * Returns the role for the component.
    *
    * Возвращает роль для компонента.
+   * @returns aria role string / строка роли aria
    */
-  readonly role = computed(() => {
+  get role(): string {
     if (this.isValue()) {
       return 'progressbar'
     }
 
     return 'status'
-  })
+  }
 
   /**
    * Values for the class.
    *
    * Значения для класса.
+   * @returns list of computed classes / список вычисленных классов
    */
-  readonly classes = computed<ConstrClassObject>(() => {
+  get classes(): ConstrClassObject {
     return {
       [`${this.className}--hide`]: this.hide.value,
       [`${this.className}--visible`]: this.visible.value,
       [`${this.className}--value`]: this.isValue(),
-      [`${this.className}--clientOnly`]: !this.clientOnly.is()
+      [`${this.className}--clientOnly`]: !this.clientOnly.isRender
     }
-  })
+  }
 
   /**
    * Returns the property for style.
    *
    * Возвращает свойство для стиля.
+   * @returns custom CSS variables / пользовательские переменные CSS
    */
-  readonly styles = computed<ConstrStyles>(() => {
+  get styles(): ConstrStyles {
     return {
-      [`--${this.className}-sys-value`]: this.valueInPercent.value
+      [`--${this.className}-sys-value`]: this.valueInPercent
     }
-  })
+  }
+
+  /**
+   * Checks if there are any values.
+   *
+   * Проверяет, есть ли значения.
+   * @returns check result / результат проверки
+   */
+  isValue(): this is { props: { value: number } } {
+    return this.value > 0
+  }
 
   /**
    * Monitors the animation event for hiding the element.
    *
    * Следит за событием анимации для скрытия элемента.
-   * @param animationName A string containing the value of the animation-name that generated the animation/
-   * Является DOMString содержащей значения animation-name CSS-свойств связанных с transition
+   * @param event DOM animation event / событие анимации DOM
    */
   readonly onAnimation = ({ animationName }: AnimationEvent): void => {
     if (animationName.match('-hidden')) {
@@ -197,30 +228,12 @@ export class Progress {
   }
 
   /**
-   * Checks if there are any values.
-   *
-   * Проверяет, есть ли значения.
-   */
-  isValue(): this is { props: { value: number } } {
-    return this.value.value > 0
-  }
-
-  /**
-   * Returns the maximum allowable value.
-   *
-   * Возвращает максимально допустимое значение.
-   */
-  getMax(): number {
-    return toNumber(this.props.max ?? 100)
-  }
-
-  /**
    * Method triggers when the visible property changes to change the status of the output of the element.
    *
    * Метод срабатывает при изменении свойства visible для изменения статуса вывода элемента.
    */
   protected readonly switch = (): void => {
-    if (!this.clientOnly.is()) {
+    if (!this.clientOnly.isRender) {
       return
     }
 
@@ -248,6 +261,7 @@ export class Progress {
    * Updates dependent data when the visible property changes.
    *
    * Обновляет зависимые данные при изменении свойства visible.
+   * @returns current instance / текущий экземпляр
    */
   protected update(): this {
     this.hide.value = !this.props.visible
@@ -260,6 +274,7 @@ export class Progress {
    * Resets values to their initial state.
    *
    * Сбрасывает значения до начального положения.
+   * @returns current instance / текущий экземпляр
    */
   protected reset(): this {
     this.hide.value = false

@@ -2,10 +2,11 @@ import { ref, type Ref, type ToRefs } from 'vue'
 import { type ConstrEmit, type DesignComp, getElementId, toBinds } from '@dxtmisha/functional'
 
 import { EventClickInclude } from '../../classes/EventClickInclude'
-import { MotionTransformInclude } from '../MotionTransform'
 import { ModelInclude } from '../../classes/ModelInclude'
 
-import type { CellExpose } from '../Cell'
+import { type CellExpose } from '../Cell'
+import { MotionTransformInclude } from '../MotionTransform'
+
 import type { AccordionComponents, AccordionEmits, AccordionSlots } from './types'
 import type { AccordionProps } from './props'
 

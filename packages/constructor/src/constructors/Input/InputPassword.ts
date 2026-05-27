@@ -38,7 +38,7 @@ export class InputPassword {
         icon: this.props.iconVisibilityOff,
         iconActive: this.props.iconVisibility,
         dynamic: true,
-        ariaLabel: this.visibility.item.value ? this.text.hide.value : this.text.show.value
+        ariaLabel: this.visibility.item.value ? this.text.hide : this.text.show
       }
     }
 

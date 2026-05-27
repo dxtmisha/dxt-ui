@@ -1,4 +1,4 @@
-import { computed, onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import type { ClientOnlyPropsInclude } from '../types/clientOnlyTypes'
 
 /**
@@ -22,16 +22,11 @@ export class ClientOnlyInclude {
     })
   }
 
-  /** Is the component ready for rendering / Готов ли компонент к рендерингу */
-  readonly isRender = computed(() => (this.props && !this.props.clientOnly) || this.isMounted.value)
-
   /**
-   * Returns the rendering state.
-   *
-   * Возвращает состояние рендеринга.
+   * Is the component ready for rendering / Готов ли компонент к рендерингу
    * @returns {boolean}
    */
-  is(): boolean {
-    return this.isRender.value
+  get isRender(): boolean {
+    return (this.props && !this.props.clientOnly) || this.isMounted.value
   }
 }

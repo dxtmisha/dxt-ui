@@ -140,7 +140,7 @@ export class Bars {
             this.motionTransformClasses.get().close
           ],
           onClick: this.onClickBack,
-          ...AriaStaticInclude.label(this.text.close.value)
+          ...AriaStaticInclude.label(this.text.close)
         },
         this.props.backButton
       ),

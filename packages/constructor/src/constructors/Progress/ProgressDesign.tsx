@@ -1,4 +1,4 @@
-import { computed, h, type VNode } from 'vue'
+import { h, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -20,7 +20,11 @@ import {
 } from './types'
 
 /**
- * ProgressDesign
+ * Class design for Progress.
+ * It coordinates classes, styles, attributes, and structural virtual nodes for progress visualization.
+ *
+ * Класс дизайна для Progress.
+ * Координирует классы, стили, атрибуты и структурные виртуальные узлы для визуализации процесса.
  */
 export class ProgressDesign<
   COMP extends ProgressComponents,
@@ -36,14 +40,17 @@ export class ProgressDesign<
     CLASSES,
     P
   > {
+  /** Instance for progress control logic / Экземпляр логики управления прогрессом */
   protected readonly item: Progress
 
   /**
-   * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor progress item class/ класс элемента progress
+   * Constructor for ProgressDesign.
+   *
+   * Конструктор для ProgressDesign.
+   * @param name class name / название класса
+   * @param props properties / свойства
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor progress item class / класс элемента progress
    */
   constructor(
     name: string,
@@ -72,9 +79,10 @@ export class ProgressDesign<
   }
 
   /**
-   * Initialization of all the necessary properties for work
+   * Initialization of all the necessary properties for work.
    *
    * Инициализация всех необходимых свойств для работы.
+   * @returns exposed properties / экспортируемые свойства
    */
   protected initExpose(): EXPOSE {
     return {} as EXPOSE
@@ -84,10 +92,11 @@ export class ProgressDesign<
    * Improvement of the obtained list of classes.
    *
    * Доработка полученного списка классов.
+   * @returns refined class list / доработанный список классов
    */
   protected initClasses(): Partial<CLASSES> {
     return {
-      main: this.item.classes.value,
+      main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
         circle: this.getSubClass('circle'),
@@ -102,20 +111,22 @@ export class ProgressDesign<
    * Refinement of the received list of styles.
    *
    * Доработка полученного списка стилей.
+   * @returns refined styles / доработанные стили
    */
   protected initStyles(): ConstrStyles {
-    return this.item.styles.value
+    return this.item.styles
   }
 
   /**
-   * A method for rendering.
+   * A method for rendering the main component.
    *
-   * Метод для рендеринга.
+   * Метод для рендеринга основного компонента.
+   * @returns rendered virtual node / отрендеренный виртуальный узел
    */
   protected initRender(): VNode | undefined {
     if (
-      this.item.clientOnly.isRender.value
-      || this.item.isProgressbar.value
+      this.item.clientOnly.isRender
+      || this.item.isValue()
     ) {
       const children: any[] = [
         ...this.renderCircle(),
@@ -123,8 +134,8 @@ export class ProgressDesign<
       ]
 
       return h(
-        this.item.tag.value,
-        this.propsMain.value,
+        this.item.tag,
+        this.attrsMain,
         children
       )
     }
@@ -136,6 +147,7 @@ export class ProgressDesign<
    * Render elements for the circular loader.
    *
    * Рендер элементов для кругового загрузчика.
+   * @returns list of virtual nodes for the circle / список виртуальных узлов для круга
    */
   readonly renderCircle = (): VNode[] => {
     if (this.props.circular) {
@@ -161,9 +173,10 @@ export class ProgressDesign<
   }
 
   /**
-   * Render dot at the end.
+   * Render dot at the end of the progress indicator.
    *
-   * Рендер точки в конце.
+   * Рендер точки в конце индикатора прогресса.
+   * @returns list of virtual nodes for the point / список виртуальных узлов для точки
    */
   readonly renderPoint = (): VNode[] => {
     if (
@@ -180,16 +193,19 @@ export class ProgressDesign<
   }
 
   /**
-   * Props for the main element/ Свойства для главного элемента
+   * Properties for the main element.
+   *
+   * Свойства для главного элемента.
+   * @returns {Record<string, any>} main element properties / свойства главного элемента
    */
-  protected readonly propsMain = computed(() => {
+  get attrsMain(): Record<string, any> {
     const props: Record<string, any> = {
       ...this.getAttrs(),
       class: this.classes?.value.main,
       style: this.styles?.value,
       onAnimationend: this.item.onAnimation,
-      ...AriaStaticInclude.role(this.item.role.value),
-      ...AriaStaticInclude.label(this.item.label.value)
+      ...AriaStaticInclude.role(this.item.role),
+      ...AriaStaticInclude.label(this.item.label)
     }
 
     if (this.props.circular) {
@@ -208,5 +224,5 @@ export class ProgressDesign<
     }
 
     return props
-  })
+  }
 }

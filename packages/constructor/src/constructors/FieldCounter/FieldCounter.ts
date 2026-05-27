@@ -85,15 +85,15 @@ export class FieldCounter {
       const remaining = this.getRemaining()
 
       if (remaining <= 0) {
-        return this.text.characterLimit.value
+        return this.text.characterLimit
       }
 
       if (
         remaining <= this.getMaxlengthOnce()
-        && this.text.characterRemaining.value
+        && this.text.characterRemaining
       ) {
         return applyTemplate(
-          this.text.characterRemaining.value,
+          this.text.characterRemaining,
           { left: remaining }
         )
       }

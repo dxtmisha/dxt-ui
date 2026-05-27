@@ -69,7 +69,7 @@ export class ImageAdaptiveItem {
   readonly active = computed<boolean>(
     () => Boolean(
       this.props.adaptive
-      && this.clientOnly.isRender.value
+      && this.clientOnly.isRender
       && (this.width.value || this.height.value)
     )
     && this.data.isImage()

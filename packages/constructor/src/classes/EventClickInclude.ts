@@ -1,4 +1,10 @@
-import { type ConstrEmit, type ConstrHrefProps, isEnter, isObjectNotArray, RouterItemRef } from '@dxtmisha/functional'
+import {
+  type ConstrEmit,
+  type ConstrHrefProps,
+  isEnter,
+  isObjectNotArray,
+  RouterItemRef
+} from '@dxtmisha/functional'
 
 import { EnabledInclude } from './EnabledInclude'
 

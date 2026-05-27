@@ -264,7 +264,7 @@ export class ListDesign<
           },
           h(
             'span',
-            this.item.text.notFound.value
+            this.item.text.notFound
           )
         )
       ]

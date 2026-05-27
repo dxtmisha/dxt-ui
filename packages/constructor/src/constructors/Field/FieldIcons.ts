@@ -68,7 +68,7 @@ export class FieldIcons {
       'icon': this.props.iconClose,
       'dynamic': true,
       'data-event-type': 'cancel',
-      'ariaLabel': this.text.cancel.value
+      'ariaLabel': this.text.cancel
     }
   })
 
@@ -84,7 +84,7 @@ export class FieldIcons {
       'disabled': this.props.disabled || this.props.disabledPrevious,
       'dynamic': true,
       'data-event-type': 'previous',
-      'ariaLabel': this.props.arrowCarousel ? this.text.previous.value : this.text.decrement.value
+      'ariaLabel': this.props.arrowCarousel ? this.text.previous : this.text.decrement
     }
   })
 
@@ -100,7 +100,7 @@ export class FieldIcons {
       'disabled': this.props.disabled || this.props.disabledNext,
       'dynamic': true,
       'data-event-type': 'next',
-      'ariaLabel': this.props.arrowCarousel ? this.text.next.value : this.text.increment.value
+      'ariaLabel': this.props.arrowCarousel ? this.text.next : this.text.increment
     }
   })
 }

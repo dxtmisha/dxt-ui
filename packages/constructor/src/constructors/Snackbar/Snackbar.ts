@@ -86,7 +86,7 @@ export class Snackbar {
       onMouseenter: this.data.pause,
       onMouseleave: this.data.resume,
       ...AriaStaticInclude.role('region'),
-      ...AriaStaticInclude.label(this.text.notifications.value)
+      ...AriaStaticInclude.label(this.text.notifications)
     }
   })
 

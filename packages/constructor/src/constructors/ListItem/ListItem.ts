@@ -105,8 +105,8 @@ export class ListItem {
     } = constructors ?? {}
 
     const progress = new ProgressIncludeConstructor(
-      props,
       className,
+      props,
       components,
       {
         circular: true

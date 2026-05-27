@@ -118,8 +118,8 @@ export class Checkbox {
 
     this.skeleton = new SkeletonConstructor(this.props, this.classDesign, ['classText'])
     this.progress = new ProgressConstructor(
-      this.props,
       this.className,
+      this.props,
       this.components,
       {
         circular: true,

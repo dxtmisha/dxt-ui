@@ -80,8 +80,8 @@ export class Button {
     } = constructors ?? {}
 
     const progress = new ProgressConstructor(
-      props,
       className,
+      props,
       components,
       {
         circular: true,
@@ -143,7 +143,7 @@ export class Button {
         tabindex: '0',
         ...aria,
         ...AriaStaticInclude.role('button'),
-        ...AriaStaticInclude.disabled(this.progress.is.value || !this.enabled.isEnabled.value)
+        ...AriaStaticInclude.disabled(this.progress.is || !this.enabled.isEnabled.value)
       }
     }
 

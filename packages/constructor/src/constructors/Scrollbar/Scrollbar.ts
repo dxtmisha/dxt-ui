@@ -79,6 +79,6 @@ export class Scrollbar {
    * Возвращает значения для класса.
    */
   readonly classes = computed<ConstrClassObject>(() => ({
-    [`${this.className}--disabled`]: this.clientOnly.is() && Boolean(this.width.item.value)
+    [`${this.className}--disabled`]: this.clientOnly.isRender && Boolean(this.width.item.value)
   }))
 }
