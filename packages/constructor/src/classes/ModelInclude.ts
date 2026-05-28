@@ -1,4 +1,4 @@
-import { isReadonly, isRef, type Ref, watch } from 'vue'
+import { isReadonly, isRef, onMounted, type Ref, watch } from 'vue'
 import {
   isFunction,
   type RefType,
@@ -25,11 +25,13 @@ export class ModelInclude<Value = string> {
     protected readonly emits?: any,
     protected readonly syncValue?: RefType<Value>
   ) {
-    if (syncValue) {
-      watch(syncValue, (newValue: Value) => {
-        this.emit(newValue)
-      })
-    }
+    onMounted(() => {
+      if (syncValue) {
+        watch(syncValue, (newValue: Value) => {
+          this.emit(newValue)
+        })
+      }
+    })
   }
 
   /**

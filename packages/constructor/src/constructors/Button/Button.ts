@@ -143,7 +143,7 @@ export class Button {
         tabindex: '0',
         ...aria,
         ...AriaStaticInclude.role('button'),
-        ...AriaStaticInclude.disabled(this.progress.is || !this.enabled.isEnabled.value)
+        ...AriaStaticInclude.disabled(this.progress.is || !this.enabled.isEnabled)
       }
     }
 

@@ -78,7 +78,7 @@ export class SelectValue {
 
   /** Icon for canceling selection/ Иконка для отмены выбора */
   readonly iconTrailing = computed<ConstrBind<IconProps> | undefined>(() => {
-    if (this.enabled.isEnabled.value) {
+    if (this.enabled.isEnabled) {
       return {
         icon: this.props.iconCancel,
         dynamic: true,

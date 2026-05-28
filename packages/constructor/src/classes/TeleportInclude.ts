@@ -1,4 +1,4 @@
-import { computed, h, inject, Teleport, type VNode } from 'vue'
+import { h, inject, Teleport, type VNode } from 'vue'
 import {
   domQuerySelector,
   getRef,
@@ -25,6 +25,8 @@ export class TeleportInclude {
 
   /**
    * Constructor
+   *
+   * Конструктор
    * @param toDefault default teleport target / цель телепортации по умолчанию
    */
   constructor(
@@ -32,8 +34,13 @@ export class TeleportInclude {
   ) {
   }
 
-  /** Computed teleport target / Вычисляемая цель телепортации */
-  readonly to = computed<string>(() => {
+  /**
+   * Teleport target.
+   *
+   * Цель телепортации.
+   * @returns teleport target selector / селектор цели телепортации
+   */
+  get to(): string {
     const to = getRef(this.toDefault)
 
     if (to === TELEPORT_BODY_NAME) {
@@ -41,7 +48,7 @@ export class TeleportInclude {
     }
 
     return to
-  })
+  }
 
   /**
    * Checks if the element is a teleport item.
@@ -51,7 +58,7 @@ export class TeleportInclude {
    * @returns true if the element is a teleport item, false otherwise / true, если элемент является элементом телепорта, иначе false
    */
   isTeleportElement(element: HTMLElement): boolean {
-    return domQuerySelector(this.to.value) === element
+    return domQuerySelector(this.to) === element
   }
 
   /**
@@ -73,7 +80,7 @@ export class TeleportInclude {
           {
             ...props,
             key: 'teleport',
-            to: this.to.value
+            to: this.to
           },
           children
         )

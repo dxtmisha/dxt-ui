@@ -25,7 +25,7 @@ export class RippleInclude {
       && this.components.is('ripple')
       && (
         !this.enabled
-        || this.enabled.isEnabled.value
+        || this.enabled.isEnabled
       )
     ) {
       return this.components.render(

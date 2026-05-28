@@ -127,7 +127,7 @@ export class ButtonDesign<
 
         'data-value': this.props.value,
 
-        'disabled': this.item.enabled.isDisabledOrUndefined.value,
+        'disabled': this.item.enabled.isDisabledOrUndefined,
         ...this.item.eventList.value,
         ...this.item.aria.value
       },

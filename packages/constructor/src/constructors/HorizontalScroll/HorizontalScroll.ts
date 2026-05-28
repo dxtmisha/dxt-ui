@@ -63,7 +63,7 @@ export class HorizontalScroll {
   readonly binds = computed(() => {
     return {
       ref: this.element,
-      ...this.scroll.binds.value
+      ...this.scroll.binds
     }
   })
 

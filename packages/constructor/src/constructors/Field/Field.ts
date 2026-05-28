@@ -237,8 +237,8 @@ export class Field {
    */
   protected getDescribedby(): string {
     const list: string[] = [
-      this.prefix.describedby.value,
-      this.suffix.describedby.value,
+      this.prefix.describedby,
+      this.suffix.describedby,
       this.fieldLabel.id.value,
       this.fieldMessage.id.value
     ]

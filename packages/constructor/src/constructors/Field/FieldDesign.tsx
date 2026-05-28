@@ -303,7 +303,7 @@ export class FieldDesign<
   readonly renderBodyScoreboardSpace = (): VNode[] => {
     const children: any[] = []
 
-    if (this.item.caption.is.value) {
+    if (this.item.caption.is) {
       children.push(
         h(
           'span',

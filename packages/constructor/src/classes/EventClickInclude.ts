@@ -107,10 +107,10 @@ export class EventClickInclude {
         const optionsItem = this.getOptions(event)
 
         if (
-          this.enabled.isEnabled.value
+          this.enabled.isEnabled
           || (
             optionsItem.type === 'icon-trailing'
-            && !this.enabled.isDisabled.value
+            && !this.enabled.isDisabled
           )
         ) {
           this.emit(event, optionsItem)

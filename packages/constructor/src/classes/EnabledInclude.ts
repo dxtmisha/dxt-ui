@@ -1,5 +1,3 @@
-import { computed } from 'vue'
-
 import { AriaStaticInclude } from './AriaStaticInclude'
 import { ProgressInclude } from '../constructors/Progress'
 
@@ -14,8 +12,8 @@ import type { EnabledProps } from '../types/enabledTypes'
 export class EnabledInclude {
   /**
    * Constructor
-   * @param props input property/ входное свойство
-   * @param progress object for working with progress/ объект для работы с прогрессами
+   * @param props input property / входное свойство
+   * @param progress object for working with progress / объект для работы с прогрессами
    */
   constructor(
     protected readonly props: EnabledProps,
@@ -24,44 +22,55 @@ export class EnabledInclude {
   }
 
   /**
-   * Checks if the element is active
+   * Checks if the element is active.
    *
-   * Проверяет, активен ли элемент
+   * Проверяет, активен ли элемент.
+   * @returns active state / состояние активности
    */
-  readonly isEnabled = computed<boolean>(() =>
-    !this.props.disabled
-    && !this.props.readonly
-    && (
-      !this.progress
-      || !this.progress.is
-    )
-    && Boolean(
-      !('dynamic' in this.props)
-      || this.props.dynamic
-    )
-  )
+  get isEnabled(): boolean {
+    return !this.props.disabled
+      && !this.props.readonly
+      && (
+        !this.progress
+        || !this.progress.is
+      )
+      && Boolean(
+        !('dynamic' in this.props)
+        || this.props.dynamic
+      )
+  }
 
   /**
-   * checks if the read-only status is enabled/ проверяет, включён ли статус "только для чтения"
+   * checks if the read-only status is enabled / проверяет, включён ли статус "только для чтения"
+   * @returns readonly state / состояние только для чтения
    */
-  readonly isReadonly = computed<boolean>(() => Boolean(this.props.readonly))
+  get isReadonly(): boolean {
+    return Boolean(this.props.readonly)
+  }
 
   /**
-   * checks if the element is disabled/ проверяет, отключён ли элемент
+   * checks if the element is disabled / проверяет, отключён ли элемент
+   * @returns disabled state / состояние отключения
    */
-  readonly isDisabled = computed<boolean>(() => Boolean(this.props.disabled))
+  get isDisabled(): boolean {
+    return Boolean(this.props.disabled)
+  }
 
   /**
-   * checks if the element is disabled or the value is empty/
+   * checks if the element is disabled or the value is empty /
    * проверяет, отключён ли элемент или пустое ли значение
+   * @returns disabled state or undefined / состояние отключения или undefined
    */
-  readonly isDisabledOrUndefined = computed<boolean | undefined>(() => this.isDisabled.value || undefined)
+  get isDisabledOrUndefined(): boolean | undefined {
+    return this.isDisabled || undefined
+  }
 
   /**
-   * list of aria properties for the enabled state/
+   * list of aria properties for the enabled state /
    * список aria свойств для состояния активности
+   * @returns aria properties list / список свойств aria
    */
-  readonly aria = computed<AriaList>(
-    () => AriaStaticInclude.disabled(!this.isEnabled.value)
-  )
+  get aria(): AriaList {
+    return AriaStaticInclude.disabled(!this.isEnabled)
+  }
 }
