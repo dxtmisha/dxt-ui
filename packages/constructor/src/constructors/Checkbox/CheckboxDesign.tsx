@@ -162,7 +162,7 @@ export class CheckboxDesign<
    */
   readonly renderInput = (): VNode => {
     return h('input', toBinds(
-      this.item.attributes.listForCheckbox.value,
+      this.item.attributes.listForCheckbox,
       {
         class: this.classes?.value.input,
         type: this.item.type,

@@ -1,9 +1,9 @@
 import { type ConstrEmit } from '@dxtmisha/functional'
 
-import { ModelInclude } from '../ModelInclude'
 import { FieldChangeInclude } from './FieldChangeInclude'
 import { FieldValueInclude } from './FieldValueInclude'
 import { FieldValidationInclude } from './FieldValidationInclude'
+import { ModelInclude } from '../ModelInclude'
 
 import type { FieldAllProps, FieldBasicEmits, FieldValidationItem } from '../../types/fieldTypes'
 
@@ -13,17 +13,19 @@ import type { FieldAllProps, FieldBasicEmits, FieldValidationItem } from '../../
  * Класс для работы с событиями.
  */
 export class FieldEventInclude {
+  /** Model inclusion instance / Экземпляр включения модели */
   protected readonly model: ModelInclude
 
   /**
    * Constructor
-   * @param props input data/ входные данные
-   * @param change object for working with data change label/ объект для работы с меткой об изменении данных
-   * @param value object for working with values/ объект для работы со значениями
-   * @param validation object for working with validity/ объект для работы с валидностью
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   *
+   * Конструктор
+   * @param props input data / входные данные
+   * @param change object for working with data change label / объект для работы с меткой об изменении данных
+   * @param value object for working with values / объект для работы со значениями
+   * @param validation object for working with validity / объект для работы с валидностью
+   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
    */
-
   constructor(
     protected readonly props: FieldAllProps,
     protected readonly change: FieldChangeInclude,
@@ -42,17 +44,14 @@ export class FieldEventInclude {
    * Checks if it is possible to change the value.
    *
    * Проверяет, возможно ли изменение значения.
+   * @returns true if possible / true, если возможно
    */
   isEnabled(): boolean {
     return this.props.disabled !== true
       && this.props.readonly !== true
   }
 
-  /**
-   * Events for losing focus.
-   *
-   * События для потери фокуса.
-   */
+  /** Events for losing focus / События для потери фокуса */
   readonly onBlur = () => {
     this.change.to()
   }
@@ -61,8 +60,8 @@ export class FieldEventInclude {
    * Call of data change event.
    *
    * Вызов события изменения данных.
-   * @param event event object/ объект события
-   * @param data object with data/ объект с данными
+   * @param event event object / объект события
+   * @param data object with data / объект с данными
    */
   readonly onInput = (
     event: InputEvent,
@@ -87,7 +86,7 @@ export class FieldEventInclude {
    * Triggering the change event after losing focus.
    *
    * Вызов события изменения после потери фокуса.
-   * @param event event object/ объект события
+   * @param event event object / объект события
    */
   readonly onChange = (event?: InputEvent | Event): void => {
     if (this.isEnabled()) {
@@ -104,8 +103,8 @@ export class FieldEventInclude {
    * Triggering the event for select change.
    *
    * Вызов события для изменения селект.
-   * @param event event object/ объект события
-   * @param data object with data/ объект с данными
+   * @param event event object / объект события
+   * @param data object with data / объект с данными
    */
   readonly onSelect = (
     event: Event,
@@ -121,7 +120,7 @@ export class FieldEventInclude {
    * Triggering the event for changes in the checkbox.
    *
    * Вызов события для изменения в checkbox.
-   * @param event event object/ объект события
+   * @param event event object / объект события
    */
   readonly onChecked = (event: Event): void => {
     if (this.isEnabled()) {
@@ -134,7 +133,7 @@ export class FieldEventInclude {
    * Triggering the event for changes in the radio.
    *
    * Вызов события для изменения в radio.
-   * @param event event object/ объект события
+   * @param event event object / объект события
    */
   readonly onRadio = (event: Event): void => {
     if (this.isEnabled()) {
@@ -144,9 +143,10 @@ export class FieldEventInclude {
   }
 
   /**
-   * Triggering the event to delete all values.<br>
+   * Triggering the event to delete all values.
+   *
    * Вызов события для удаления всех значений.
-   * @param event event object/ объект события
+   * @param event event object / объект события
    */
   readonly onClear = (event: MouseEvent): void => {
     if (this.isEnabled()) {
@@ -159,7 +159,7 @@ export class FieldEventInclude {
    * Triggering the event to set a specific value.
    *
    * Вызов события для установки конкретного значения.
-   * @param value new value/ новое значение
+   * @param value new value / новое значение
    */
   readonly onValue = (value: any): void => {
     if (this.isEnabled()) {
@@ -172,15 +172,16 @@ export class FieldEventInclude {
    * Triggering the event.
    *
    * Вызов события.
-   * @param event event object/ объект события
-   * @param type event type/ тип события
+   * @param event event object / объект события
+   * @param type event type / тип события
+   * @returns current instance / текущий экземпляр
    */
   readonly on = <E>(
     event?: E,
     type: string & keyof FieldBasicEmits = 'input'
   ): this => {
     if (type === 'input') {
-      this.model.emit(this.value.itemByFull.value)
+      this.model.emit(this.value.itemByFull)
     }
 
     const data = {
@@ -198,7 +199,8 @@ export class FieldEventInclude {
    * Checks whether additional data needs to be generated for the current event.
    *
    * Проверяет, надо ли генерировать дополнительные данные для текущего события.
-   * @param type event type/ тип события
+   * @param type event type / тип события
+   * @returns true if value is required / true, если значение требуется
    */
   protected isValue(
     type: string & keyof FieldBasicEmits
@@ -210,10 +212,11 @@ export class FieldEventInclude {
    * Returns input data.
    *
    * Возвращает данные об вводе.
+   * @returns validation item data / данные элемента валидации
    */
   protected getData(): FieldValidationItem {
     return {
-      value: this.value.itemByFull.value,
+      value: this.value.itemByFull,
       valueInput: this.value.item.value,
       detail: this.props.detail
     }
@@ -223,7 +226,8 @@ export class FieldEventInclude {
    * Returns validity data.
    *
    * Возвращает данные валидности.
-   * @param type event type/ тип события
+   * @param type event type / тип события
+   * @returns validation item data / данные элемента валидации
    */
   protected getValidation(
     type: string & keyof FieldBasicEmits
@@ -246,7 +250,8 @@ export class FieldEventInclude {
    * Triggering the event and change event.
    *
    * Вызов события и события изменения.
-   * @param event event object/ объект события
+   * @param event event object / объект события
+   * @returns current instance / текущий экземпляр
    */
   protected onAndChange(event?: InputEvent | Event): this {
     this.on(event)

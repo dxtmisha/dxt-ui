@@ -41,7 +41,7 @@ export class SelectInput {
    */
   readonly binds = computed<ConstrBind<Partial<HTMLInputElement>> | undefined>(() => {
     return toBinds(
-      this.attributes.listForInput.value,
+      this.attributes.listForInput,
       {
         'name': this.props.name,
         'type': 'text',

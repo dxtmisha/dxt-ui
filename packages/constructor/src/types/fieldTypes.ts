@@ -1,4 +1,4 @@
-import type { ComputedRef, ShallowRef } from 'vue'
+import type { ShallowRef } from 'vue'
 import type { ListRecord, NumberOrString, NumberOrStringOrBoolean } from '@dxtmisha/functional'
 import type { ListItemPropsBasic } from '../constructors/ListItem'
 import type { ModelEmits, ModelProps } from './modelTypes'
@@ -159,7 +159,7 @@ export type FieldBasicExpose<T = string> = {
   /** Checks validity of the field and returns status/ Проверяет валидность поля и возвращает статус */
   checkValidity: () => boolean
   /** Reactive reference to the validation message/ Реактивная ссылка на сообщение валидации */
-  validationMessage: ComputedRef<string>
+  validationMessage: string
 }
 
 /**

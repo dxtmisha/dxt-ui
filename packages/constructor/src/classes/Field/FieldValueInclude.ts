@@ -1,10 +1,9 @@
-import { computed, ref, type ToRefs, watch } from 'vue'
+import { onMounted, ref, type ToRefs, watch } from 'vue'
 import {
   anyToString,
+  getLength,
   getRef,
-  isArray,
   isFilled,
-  isObject,
   type RefOrNormal,
   setValues,
   toArray,
@@ -21,22 +20,23 @@ import type { FieldValueProps } from '../../types/fieldTypes'
  * Класс для работы со значениями инпута.
  */
 export class FieldValueInclude<Value = any> {
-  /** Current value/ Текущее значение */
+  /** Current value / Текущее значение */
   readonly item = ref<Value>()
-  /** Indicates if the value is complete/ Указывает, полное ли значение */
+  /** Indicates if the value is complete / Указывает, полное ли значение */
   readonly isFull = ref<boolean>(true)
 
-  /** Indicates if there are temporary values/ Указывает, есть ли временные значения */
+  /** Indicates if there are temporary values / Указывает, есть ли временные значения */
   protected readonly hasEdit = ref<boolean>(false)
 
   /**
    * Constructor
-   * @param props input data /<br>входные данные
-   * @param refs input data in the form of reactive elements /<br>входные данные в виде реактивных элементов
-   * @param element object for working with the input element /<br>объект для работы с элементом ввода
-   * @param original original values /<br>оригинальные значения
+   *
+   * Конструктор
+   * @param props input data / входные данные
+   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
+   * @param element object for working with the input element / объект для работы с элементом ввода
+   * @param original original values / оригинальные значения
    */
-
   constructor(
     protected readonly props: FieldValueProps<Value>,
     protected readonly refs: ToRefs<FieldValueProps<Value>>,
@@ -45,62 +45,74 @@ export class FieldValueInclude<Value = any> {
   ) {
     this.item.value = this.getOriginal()
 
-    watch([
-      refs.value,
-      refs.modelValue
-    ], this.update)
+    onMounted(() => {
+      watch([
+        refs.value,
+        refs.modelValue
+      ], this.update)
+    })
   }
 
-  /** Checks if there are values or temporary values/ Проверяет, есть ли значения или временные значения */
-  readonly is = computed<boolean>(() => {
-    return this.hasEdit.value
-      || this.boolean.value
-      || Boolean(this.props.placeholder)
-  })
-
-  /** Checks if there are any values/ Проверяет, есть ли значения */
-  readonly isValue = computed<boolean>(() => this.hasEdit.value || this.boolean.value)
-
-  /** Returns the current value if isFull is true/ Возвращает текущее значение, если isFull истинно */
-  readonly itemByFull = computed<Value | undefined>(() => this.isFull.value ? this.item.value : undefined)
+  /** Returns the current value if isFull is true / Возвращает текущее значение, если isFull истинно */
+  get itemByFull(): Value | undefined {
+    return this.isFull.value ? this.item.value : undefined
+  }
 
   /**
-   * Returns the current value, converted to a number/
-   * Возвращает текущее значение, преобразованное в номер
+   * Returns the current value, converted to a number.
+   *
+   * Возвращает текущее значение, преобразованное в номер.
    */
-  readonly number = computed<number>(() => {
-    if (this.boolean.value) {
-      return toNumber(this.string.value)
+  get number(): number {
+    if (this.boolean) {
+      return toNumber(this.string)
     }
 
     return 0
-  })
+  }
 
-  /** Returns the current value of type string/ Возвращает текущее значение типа string */
-  readonly string = computed<string>(() => anyToString(this.item.value))
+  /** Returns the current value of type string / Возвращает текущее значение типа string */
+  get string(): string {
+    return anyToString(this.item.value)
+  }
 
-  /** Returns the current value of type boolean/ Возвращает текущее значение типа boolean */
-  readonly boolean = computed<boolean>(() => isFilled(this.item.value))
+  /** Returns the current value of type boolean / Возвращает текущее значение типа boolean */
+  get boolean(): boolean {
+    return isFilled(this.item.value)
+  }
 
-  /** Returns the length of the entered value/ Возвращает длину введенного значения */
-  readonly length = computed<number>(() => {
-    const value = this.item.value
+  /** Returns the length of the entered value / Возвращает длину введенного значения */
+  get length(): number {
+    return getLength(this.item.value)
+  }
 
-    if (isArray(value)) {
-      return value.length
-    }
+  /**
+   * Checks if there are values or temporary values.
+   *
+   * Проверяет, есть ли значения или временные значения.
+   * @returns true if has values or temporary values / true, если есть значения или временные значения
+   */
+  is(): boolean {
+    return this.hasEdit.value
+      || this.boolean
+      || Boolean(this.props.placeholder)
+  }
 
-    if (isObject(value)) {
-      return Object.keys(value).length
-    }
-
-    return this.string.value.length ?? 0
-  })
+  /**
+   * Checks if there are any values.
+   *
+   * Проверяет, есть ли значения.
+   * @returns true if has values / true, если есть значения
+   */
+  isValue(): boolean {
+    return this.hasEdit.value || this.boolean
+  }
 
   /**
    * Returns the current value.
    *
    * Возвращает текущее значение.
+   * @returns current value / текущее значение
    */
   get(): Value | undefined {
     return this.item.value
@@ -110,6 +122,7 @@ export class FieldValueInclude<Value = any> {
    * Returns the current value as an array.
    *
    * Возвращает текущее значение в виде массива.
+   * @returns array of values / массив значений
    */
   getToArray(): Value[] {
     return toArray(this.item.value) as Value[]
@@ -119,7 +132,8 @@ export class FieldValueInclude<Value = any> {
    * Changes the value.
    *
    * Изменяет значение.
-   * @param value changeable value/ изменяемое значение
+   * @param value changeable value / изменяемое значение
+   * @returns current instance / текущий экземпляр
    */
   set(value: any): this {
     if (this.isDifference(value)) {
@@ -150,7 +164,8 @@ export class FieldValueInclude<Value = any> {
    * Changes the values by the selected element.
    *
    * Изменяет значения по выбранному элементу.
-   * @param event event object/ объект события
+   * @param eventValue event object or values / объект события или значения
+   * @returns current instance / текущий экземпляр
    */
   setByEvent(event: Event): this
   setByEvent(value: Record<string, any>): this
@@ -190,7 +205,8 @@ export class FieldValueInclude<Value = any> {
    * Changes the values by the selected element.
    *
    * Изменяет значения по выбранному элементу.
-   * @param target selected elements/ выбранные элементы
+   * @param target selected elements / выбранные элементы
+   * @returns current instance / текущий экземпляр
    */
   setByTarget(target: HTMLInputElement): this {
     return this.set(
@@ -204,7 +220,8 @@ export class FieldValueInclude<Value = any> {
    * Changes the value by the checked property.
    *
    * Изменяет значение по свойству checked.
-   * @param event event value/ значение события
+   * @param event event value / значение события
+   * @returns current instance / текущий экземпляр
    */
   setByChecked(event: Event): this {
     const input = event.target as HTMLInputElement
@@ -216,7 +233,8 @@ export class FieldValueInclude<Value = any> {
    * Changes the value for radio type.
    *
    * Изменяет значение для типа radio.
-   * @param event event object/ объект события
+   * @param event event object / объект события
+   * @returns current instance / текущий экземпляр
    */
   setByRadio(event: Event): this {
     const input = event.target as HTMLInputElement
@@ -229,7 +247,7 @@ export class FieldValueInclude<Value = any> {
    * Sets the isFull value.
    *
    * Устанавливает значение isFull.
-   * @param isFull isFull value/ значение isFull
+   * @param isFull isFull value / значение isFull
    */
   setFull(isFull: boolean) {
     this.isFull.value = isFull
@@ -239,7 +257,7 @@ export class FieldValueInclude<Value = any> {
    * Sets the hasEdit value.
    *
    * Устанавливает значение hasEdit.
-   * @param hasEdit hasEdit value/ значение hasEdit
+   * @param hasEdit hasEdit value / значение hasEdit
    */
   setHasEdit(hasEdit: boolean) {
     this.hasEdit.value = hasEdit
@@ -249,6 +267,7 @@ export class FieldValueInclude<Value = any> {
    * Sets the value to the original one.
    *
    * Устанавливает значение на оригинальное.
+   * @returns current instance / текущий экземпляр
    */
   setToOriginal(): this {
     this.item.value = this.getOriginal()
@@ -259,6 +278,7 @@ export class FieldValueInclude<Value = any> {
    * Clear all values to the original ones.
    *
    * Очисти все значения до оригинальных.
+   * @returns current instance / текущий экземпляр
    */
   clear(): this {
     this.item.value = getRef(this.original)
@@ -274,7 +294,8 @@ export class FieldValueInclude<Value = any> {
    * Is the selected type a checkbox.
    *
    * Является ли выбранный тип чекбокс.
-   * @param target selected elements/ выбранные элементы
+   * @param target selected elements / выбранные элементы
+   * @returns true if target is checkbox / true, если элемент чекбокс
    */
   protected isCheckbox(target: HTMLInputElement): boolean {
     return target.type === 'checkbox'
@@ -284,28 +305,26 @@ export class FieldValueInclude<Value = any> {
    * Checks if the value has actually been changed.
    *
    * Проверяет, было ли значение действительно изменено.
-   * @param value value to check/ значение для проверки
+   * @param value value to check / значение для проверки
+   * @returns true if there is difference / true, если значения различаются
    */
   protected isDifference(
     value: any = this.getOriginal()
   ): boolean {
-    return this.string.value !== anyToString(value)
+    return this.string !== anyToString(value)
   }
 
   /**
    * Returns the original value.
    *
    * Возвращает оригинальное значение.
+   * @returns original value / оригинальное значение
    */
   protected getOriginal(): any {
     return this.props.value || this.props.modelValue || getRef(this.original)
   }
 
-  /**
-   * Changes the values to the original ones.
-   *
-   * Изменяет значения на оригинальные.
-   */
+  /** Changes the values to the original ones / Изменяет значения на оригинальные */
   protected readonly update = (): void => {
     if (
       this.isEdit(this.props.value)
@@ -319,9 +338,10 @@ export class FieldValueInclude<Value = any> {
    * Checks if the value is being edited.
    *
    * Проверяет, редактируется ли значение.
-   * @param value value to check/ значение для проверки
+   * @param value value to check / значение для проверки
+   * @returns true if value is edited / true, если значение редактируется
    */
   protected isEdit(value?: Value): boolean {
-    return value !== undefined && anyToString(value) !== this.string.value
+    return value !== undefined && anyToString(value) !== this.string
   }
 }

@@ -123,11 +123,11 @@ export class FieldInclude<
    */
   readonly valueBinds = computed<ConstrBind<PropsExtra>>(() => ({
     ...this.binds.value,
-    isValue: this.value.is.value,
+    isValue: this.value.is(),
     value: this.value.item.value,
-    cancelShow: this.value.boolean.value,
+    cancelShow: this.value.boolean,
 
-    counter: this.value.length.value,
+    counter: this.value.length,
 
     disabledPrevious: this.arrow?.disabledPrevious,
     disabledNext: this.arrow?.disabledNext

@@ -143,7 +143,7 @@ export class Textarea {
    * Возвращает свойства для элемента ввода.
    */
   readonly bindsInput = computed(() => toBinds(
-    this.attributes.listForInput.value,
+    this.attributes.listForInput,
     this.props.textareaAttrs,
     {
       cols: this.props.cols,

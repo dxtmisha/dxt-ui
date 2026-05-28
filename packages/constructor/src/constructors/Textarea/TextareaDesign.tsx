@@ -122,7 +122,7 @@ export class TextareaDesign<
       {
         ...this.getAttrs(),
         class: this.classes?.value.main,
-        validationMessage: this.item.validation.message.value
+        validationMessage: this.item.validation.message
       }
     )
   }

@@ -1,14 +1,16 @@
 import type { FieldAllProps } from '../../types/fieldTypes'
 
 /**
- * Class for processing standard error text
+ * Class for processing standard error text.
  *
- * Класс для обработки стандартного текста ошибки
+ * Класс для обработки стандартного текста ошибки.
  */
 export class FieldCodeInclude {
   /**
    * Constructor
-   * @param props input data/ входные данные
+   *
+   * Конструктор
+   * @param props input data / входные данные
    */
   constructor(
     protected readonly props: FieldAllProps
@@ -16,10 +18,11 @@ export class FieldCodeInclude {
   }
 
   /**
-   * Returns error text
+   * Returns error text.
    *
-   * Возвращает текст ошибки
-   * @param state object with validity state/ объект с данными валидности
+   * Возвращает текст ошибки.
+   * @param state object with validity state / объект с данными валидности
+   * @returns error text or undefined / текст ошибки или undefined
    */
   get(state?: ValidityState): string | undefined {
     const validationCode = this.props.validationCode
@@ -47,10 +50,11 @@ export class FieldCodeInclude {
   }
 
   /**
-   * Returns error key (first matched)
+   * Returns error key (first matched).
    *
-   * Возвращает ключ ошибки (первый найденный)
-   * @param state object with validity state/ объект с данными валидности
+   * Возвращает ключ ошибки (первый найденный).
+   * @param state object with validity state / объект с данными валидности
+   * @returns validation key or undefined / ключ валидации или undefined
    */
   protected getIndex(state: ValidityState): keyof ValidityState | undefined {
     const data = Object.entries(state) as ([keyof ValidityState, boolean])[]

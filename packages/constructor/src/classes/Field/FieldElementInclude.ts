@@ -9,10 +9,11 @@ import type { FieldAllProps, FieldElementInput } from '../../types/fieldTypes'
 export class FieldElementInclude {
   /**
    * Constructor
-   * @param props input data/ входные данные
-   * @param element input element/ элемент ввода
+   *
+   * Конструктор
+   * @param props input data / входные данные
+   * @param element input element / элемент ввода
    */
-
   constructor(
     protected readonly props: FieldAllProps,
     protected readonly element: Ref<FieldElementInput>
@@ -23,6 +24,7 @@ export class FieldElementInclude {
    * Returns the input element.
    *
    * Возвращает элемент ввода.
+   * @returns input element or undefined / элемент ввода или undefined
    */
   get(): HTMLInputElement | undefined {
     const element = this.element.value
@@ -42,6 +44,7 @@ export class FieldElementInclude {
    * Returns a reference to the input element.
    *
    * Возвращает ссылку на элемент ввода.
+   * @returns ref to the input element / ссылка на элемент ввода
    */
   getElement(): Ref<FieldElementInput> {
     return this.element
@@ -51,7 +54,8 @@ export class FieldElementInclude {
    * Search for an element by its name inside a group or by selector.
    *
    * Поиск элемента по его названию внутри группы или по селектору.
-   * @param nameSelectors element name or selector /<br>название элемента или селектор
+   * @param nameSelectors element name or selector / название элемента или селектор
+   * @returns input element or undefined / элемент ввода или undefined
    */
   findByName(nameSelectors: string | HTMLInputElement): HTMLInputElement | undefined {
     if (nameSelectors instanceof Element) {
@@ -81,6 +85,7 @@ export class FieldElementInclude {
    * Clear all values to the original ones.
    *
    * Очисти все значения до оригинальных.
+   * @returns current instance / текущий экземпляр
    */
   clear(): this {
     const element = this.element.value

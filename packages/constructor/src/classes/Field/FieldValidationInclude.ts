@@ -12,12 +12,12 @@ import type { FieldMatchInclude } from './FieldMatchInclude'
 import type { FieldAllProps, FieldValidationItem } from '../../types/fieldTypes'
 
 /**
- * Class for working with validity
+ * Class for working with validity.
  *
- * Класс для работы с валидностью
+ * Класс для работы с валидностью.
  */
 export class FieldValidationInclude {
-  /** Internal validation state/ Внутреннее состояние валидации */
+  /** Internal validation state / Внутреннее состояние валидации */
   protected readonly validation = ref<FieldValidationItem>()
 
   /** Client only / Клиентская часть */
@@ -25,12 +25,14 @@ export class FieldValidationInclude {
 
   /**
    * Constructor
-   * @param props input data/ входные данные
-   * @param attributes object for working with input attributes/ объект для работы с атрибутами ввода
-   * @param value object for value work/ объект для работы со значениями
-   * @param change object for change state/ объект для состояния изменения
-   * @param code object for error codes/ объект для работы с кодами ошибок
-   * @param match object for match checking/ объект для проверки совпадений
+   *
+   * Конструктор
+   * @param props input data / входные данные
+   * @param attributes object for working with input attributes / объект для работы с атрибутами ввода
+   * @param value object for value work / объект для работы со значениями
+   * @param change object for change state / объект для состояния изменения
+   * @param code object for error codes / объект для работы с кодами ошибок
+   * @param match object for match checking / объект для проверки совпадений
    */
   constructor(
     protected readonly props: FieldAllProps,
@@ -42,12 +44,12 @@ export class FieldValidationInclude {
   ) {
   }
 
-  /** Hidden input element for native validation/ Скрытый input для нативной валидации */
+  /** Hidden input element for native validation / Скрытый input для нативной валидации */
   protected readonly input = computed<FieldInputCheckInclude | undefined>(
     () => {
       if (this.clientOnly.isRender) {
         return new FieldInputCheckInclude(
-          this.attributes.listForCheck.value,
+          this.attributes.listForCheck,
           undefined,
           this.code
         )
@@ -57,7 +59,11 @@ export class FieldValidationInclude {
     }
   )
 
-  /** Returns error data/ Возвращает данные об ошибке */
+  /**
+   * Returns error data.
+   *
+   * Возвращает данные об ошибке.
+   */
   readonly item = computed<FieldValidationItem>(() => {
     const global = this.checkGlobal()
 
@@ -74,8 +80,13 @@ export class FieldValidationInclude {
     return this.getValidationItemNone()
   })
 
-  /** Returns error string/ Возвращает строку об ошибке */
-  readonly message = computed<string>(() => {
+  /**
+   * Returns error string.
+   *
+   * Возвращает строку об ошибке.
+   * @returns validation message / текст ошибки
+   */
+  get message(): string {
     if (this.props.validationMessage) {
       return this.props.validationMessage
     }
@@ -92,31 +103,34 @@ export class FieldValidationInclude {
     }
 
     return ''
-  })
+  }
 
   /**
-   * Checks if there is an error
+   * Checks if there is an error.
    *
-   * Проверяет, есть ли ошибка
+   * Проверяет, есть ли ошибка.
+   * @returns true if has error / true, если есть ошибка
    */
   isError(): boolean {
     return !this.item.value?.status
   }
 
   /**
-   * Checks whether the element has constraints and satisfies them
+   * Checks whether the element has constraints and satisfies them.
    *
-   * Проверяет, имеет ли элемент ограничения и удовлетворяет ли им
+   * Проверяет, имеет ли элемент ограничения и удовлетворяет ли им.
+   * @returns true if satisfies constraints / true, если удовлетворяет ограничениям
    */
   readonly checkValidity = (): boolean => {
     return !this.isError()
   }
 
   /**
-   * Changes the validity data
+   * Changes the validity data.
    *
-   * Изменяет данные о валидности
-   * @param validation values for validity/ значения для валидности
+   * Изменяет данные о валидности.
+   * @param validation values for validity / значения для валидности
+   * @returns current instance / текущий экземпляр
    */
   set(validation: Record<string, any> | FieldValidationItem): this {
     if (
@@ -142,9 +156,10 @@ export class FieldValidationInclude {
   }
 
   /**
-   * Returns an empty validation item
+   * Returns an empty validation item.
    *
-   * Возвращает пустой элемент валидации
+   * Возвращает пустой элемент валидации.
+   * @returns empty validation item / пустой элемент валидации
    */
   protected getValidationItemNone(): FieldValidationItem {
     return {
@@ -155,9 +170,10 @@ export class FieldValidationInclude {
   }
 
   /**
-   * Check for global data
+   * Check for global data.
    *
-   * Проверка для глобальных данных
+   * Проверка для глобальных данных.
+   * @returns validation item or undefined / элемент валидации или undefined
    */
   protected checkGlobal(): FieldValidationItem | undefined {
     if (this.props.validationMessage) {
@@ -173,9 +189,10 @@ export class FieldValidationInclude {
   }
 
   /**
-   * Check for selected data
+   * Check for selected data.
    *
-   * Проверка для выбранных данных
+   * Проверка для выбранных данных.
+   * @returns validation item or undefined / элемент валидации или undefined
    */
   protected checkItem(): FieldValidationItem | undefined {
     const values = this.value.getToArray()
@@ -195,10 +212,11 @@ export class FieldValidationInclude {
   }
 
   /**
-   * Checks the value using hidden input element
-   * @param value value to check/ значение для проверки
+   * Checks the value using hidden input element.
    *
-   * Проверяет значение с помощью скрытого input
+   * Проверяет значение с помощью скрытого input.
+   * @param value value to check / значение для проверки
+   * @returns validation item or undefined / элемент валидации или undefined
    */
   protected checkByInput(value: any): FieldValidationItem | undefined {
     return this.input.value?.check(value)

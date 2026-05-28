@@ -129,7 +129,7 @@ export class SelectDesign<
         focus: open,
         iconTurn: open,
         class: this.classes?.value.main,
-        validationMessage: this.item.validation.message.value
+        validationMessage: this.item.validation.message
       }
     )
   }

@@ -16,19 +16,21 @@ import type {
 } from '../../types/fieldTypes'
 
 /**
- * The class creates hidden input and runs native validation for pattern
+ * The class creates hidden input and runs native validation for pattern.
  *
- * Класс создаёт скрытый input и выполняет нативную валидацию по паттерну
+ * Класс создаёт скрытый input и выполняет нативную валидацию по паттерну.
  */
 export class FieldInputCheckInclude<Value = any> {
-  /** Hidden input element for native validation/ Скрытый input для нативной валидации */
+  /** Hidden input element for native validation / Скрытый input для нативной валидации */
   readonly input: HTMLInputElement | undefined
 
   /**
    * Constructor
-   * @param pattern property for verification/ свойство для проверки
-   * @param group group name/ название группы
-   * @param code object for error codes/ объект для работы с кодами ошибок
+   *
+   * Конструктор
+   * @param pattern property for verification / свойство для проверки
+   * @param group group name / название группы
+   * @param code object for error codes / объект для работы с кодами ошибок
    */
   constructor(
     readonly pattern: FieldPatternItemOrFunction,
@@ -43,9 +45,11 @@ export class FieldInputCheckInclude<Value = any> {
   }
 
   /**
-   * Runs validation and returns result
+   * Runs validation and returns result.
    *
-   * Выполняет проверку и возвращает результат
+   * Выполняет проверку и возвращает результат.
+   * @param value value to check / значение для проверки
+   * @returns validation item data / данные элемента валидации
    */
   check(value: Value): FieldValidationItem {
     const input = this.input
@@ -71,10 +75,11 @@ export class FieldInputCheckInclude<Value = any> {
   }
 
   /**
-   * Runs validation by input and returns result
+   * Runs validation by input and returns result.
    *
-   * Выполняет проверку по инпуту и возвращает результат
-   * @param input input element/ элемент инпута
+   * Выполняет проверку по инпуту и возвращает результат.
+   * @param input input element / элемент инпута
+   * @returns validation item data / данные элемента валидации
    */
   checkByInput(
     input: FieldElementDom
@@ -93,9 +98,10 @@ export class FieldInputCheckInclude<Value = any> {
   }
 
   /**
-   * Returns attributes for internal input
+   * Returns attributes for internal input.
    *
-   * Возвращает атрибуты для внутреннего инпута
+   * Возвращает атрибуты для внутреннего инпута.
+   * @returns element attributes / атрибуты элемента
    */
   protected getAttributes(): FieldPatternElement {
     const pattern = this.pattern
@@ -116,13 +122,15 @@ export class FieldInputCheckInclude<Value = any> {
   }
 
   /**
-   * Returns the default group name
+   * Returns the default group name.
    *
-   * Возвращает название группы по умолчанию
+   * Возвращает название группы по умолчанию.
+   * @returns group name / название группы
    */
   static getGroupDefault(): string {
     return 'check'
   }
 }
 
+/** List of input check classes / Список классов проверки ввода */
 export type FieldInputCheckListInclude = Record<string, FieldInputCheckInclude>

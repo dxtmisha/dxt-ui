@@ -10,17 +10,23 @@ import type { FieldAllProps, FieldType } from '../../types/fieldTypes'
 export class FieldTypeInclude {
   /**
    * Constructor
-   * @param props input data/ входные данные
-   * @param visibility object for working with visualization/ объект для работы с визуализацией
+   *
+   * Конструктор
+   * @param props input data / входные данные
+   * @param visibility object for working with visualization / объект для работы с визуализацией
    */
-
   constructor(
     protected readonly props: FieldAllProps,
     protected readonly visibility?: FieldVisibilityInclude
   ) {
   }
 
-  /** Returns the input type/ Возвращает тип ввода */
+  /**
+   * Returns the input type.
+   *
+   * Возвращает тип ввода.
+   * @returns type value / значение типа
+   */
   get item(): FieldType {
     const type = this.props.type
 
@@ -38,6 +44,7 @@ export class FieldTypeInclude {
    * Returns the input type.
    *
    * Возвращает тип ввода.
+   * @returns type value / значение типа
    */
   get(): FieldType {
     return this.item

@@ -39,7 +39,7 @@ export class CheckboxIcon {
    */
   protected getIcon(): IconValue | undefined {
     if (
-      this.value.boolean.value
+      this.value.boolean
       && !this.props.loading
     ) {
       if (this.props.indeterminate) {

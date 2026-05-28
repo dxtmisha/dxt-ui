@@ -9,17 +9,19 @@ import { FieldInputCheckInclude } from './FieldInputCheckInclude'
 import type { FieldAllProps, FieldValidationItem } from '../../types/fieldTypes'
 
 /**
- * Class for checking input value matching with another element
+ * Class for checking input value matching with another element.
  *
- * Класс для проверки совпадения вводимого значения с другим элементом
+ * Класс для проверки совпадения вводимого значения с другим элементом.
  */
 export class FieldMatchInclude {
   /**
    * Constructor
-   * @param props input data/ входные данные
-   * @param element object for working with input element/ объект для работы с элементом ввода
-   * @param value object for working with value/ объект для работы со значениями
-   * @param text object for working with texts/ объект для работы с текстами
+   *
+   * Конструктор
+   * @param props input data / входные данные
+   * @param element object for working with input element / объект для работы с элементом ввода
+   * @param value object for working with value / объект для работы со значениями
+   * @param text object for working with texts / объект для работы с текстами
    */
   constructor(
     protected readonly props: FieldAllProps,
@@ -30,20 +32,22 @@ export class FieldMatchInclude {
   }
 
   /**
-   * Checks whether matching verification is enabled
+   * Checks whether matching verification is enabled.
    *
-   * Проверяет, включена ли проверка совпадения
+   * Проверяет, включена ли проверка совпадения.
+   * @returns true if matching is enabled / true, если проверка включена
    */
   is(): boolean {
     return Boolean(this.props.match)
   }
 
   /**
-   * Returns selector used to find external element
+   * Returns selector used to find external element.
    *
-   * Возвращает селектор для поиска внешнего элемента
+   * Возвращает селектор для поиска внешнего элемента.
+   * @returns selector or undefined / селектор или undefined
    */
-  getSelectors() {
+  getSelectors(): string | HTMLInputElement | undefined {
     if (this.is()) {
       if (isObject(this.props.match)) {
         return this.props.match.name
@@ -56,9 +60,10 @@ export class FieldMatchInclude {
   }
 
   /**
-   * Returns validation error text
+   * Returns validation error text.
    *
-   * Возвращает текст ошибки валидации
+   * Возвращает текст ошибки валидации.
+   * @returns validation message / текст ошибки
    */
   getValidationMessage(): string {
     if (this.is()) {
@@ -78,9 +83,10 @@ export class FieldMatchInclude {
   }
 
   /**
-   * Checks value against external element
+   * Checks value against external element.
    *
-   * Проверяет совпадение значения с внешним элементом
+   * Проверяет совпадение значения с внешним элементом.
+   * @returns validation item data or undefined / данные элемента валидации или undefined
    */
   check(): FieldValidationItem | undefined {
     const selectors = this.getSelectors()
@@ -90,7 +96,7 @@ export class FieldMatchInclude {
 
       if (
         input
-        && anyToString(input.value) !== this.value.string.value
+        && anyToString(input.value) !== this.value.string
       ) {
         return {
           group: FieldInputCheckInclude.getGroupDefault(),

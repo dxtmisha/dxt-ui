@@ -10,8 +10,10 @@ import type { FieldAllProps } from '../../types/fieldTypes'
 export class FieldInputModeInclude {
   /**
    * Constructor
-   * @param props input data/ входные данные
-   * @param type object for working with input type/ объект для работы с типом ввода
+   *
+   * Конструктор
+   * @param props input data / входные данные
+   * @param type object for working with input type / объект для работы с типом ввода
    */
   constructor(
     protected readonly props: FieldAllProps,
@@ -19,7 +21,12 @@ export class FieldInputModeInclude {
   ) {
   }
 
-  /** Returns the keyboard name/ Возвращает название клавиатуры */
+  /**
+   * Returns the keyboard name.
+   *
+   * Возвращает название клавиатуры.
+   * @returns keyboard name or undefined / название клавиатуры или undefined
+   */
   get item(): string | undefined {
     if (this.props.inputMode) {
       return this.props.inputMode
@@ -45,6 +52,12 @@ export class FieldInputModeInclude {
     }
   }
 
+  /**
+   * Returns the autocomplete mode.
+   *
+   * Возвращает режим автозаполнения.
+   * @returns autocomplete mode or undefined / режим автозаполнения или undefined
+   */
   get autocomplete(): string | undefined {
     if (this.props.autocomplete) {
       return this.props.autocomplete

@@ -13,9 +13,11 @@ import type { FieldAllProps, FieldArrowProps } from '../../types/fieldTypes'
 export class FieldArrowInclude {
   /**
    * Constructor
-   * @param props input data/ входные данные
-   * @param value object for working with values/ объект для работы со значениями
-   * @param type object for working with input type/ объект для работы с типом ввода
+   *
+   * Конструктор
+   * @param props input data / входные данные
+   * @param value object for working with values / объект для работы со значениями
+   * @param type object for working with input type / объект для работы с типом ввода
    */
   constructor(
     protected readonly props: FieldAllProps,
@@ -25,28 +27,40 @@ export class FieldArrowInclude {
   }
 
   /**
-   * Indicates if arrows are enabled/ Указывает, включены ли стрелки
+   * Indicates if arrows are enabled.
    *
-   * @return true if arrows are enabled/ true, если стрелки включены
+   * Указывает, включены ли стрелки.
+   * @returns true if arrows are enabled / true, если стрелки включены
    */
   get is(): boolean {
     return Boolean(this.props.arrow && this.props.arrow !== 'none')
   }
 
-  /** Indicates if the previous button is disabled/ Указывает, отключена ли кнопка предыдущего */
+  /**
+   * Indicates if the previous button is disabled.
+   *
+   * Указывает, отключена ли кнопка предыдущего.
+   * @returns true if previous is disabled / true, если кнопка предыдущего отключена
+   */
   get disabledPrevious(): boolean {
-    return !this.isPrevious(this.value.number.value)
+    return !this.isPrevious(this.value.number)
   }
 
-  /** Indicates if the next button is disabled/ Указывает, отключена ли кнопка следующего */
+  /**
+   * Indicates if the next button is disabled.
+   *
+   * Указывает, отключена ли кнопка следующего.
+   * @returns true if next is disabled / true, если кнопка следующего отключена
+   */
   get disabledNext(): boolean {
-    return !this.isNext(this.value.number.value)
+    return !this.isNext(this.value.number)
   }
 
   /**
    * Checks if the arrow type is carousel.
    *
    * Проверяет, является ли тип стрелок carousel.
+   * @returns true if carousel type / true, если тип carousel
    */
   isCarousel(): boolean {
     return this.get() === 'carousel'
@@ -56,6 +70,7 @@ export class FieldArrowInclude {
    * Checks if the arrow type is stepper.
    *
    * Проверяет, является ли тип стрелок stepper.
+   * @returns true if stepper type / true, если тип stepper
    */
   isStepper(): boolean {
     return this.get() === 'stepper'
@@ -65,7 +80,8 @@ export class FieldArrowInclude {
    * Checks if it is possible to decrease the value.
    *
    * Проверяет, можно ли уменьшить значение.
-   * @param value values for checking/ значения для проверки
+   * @param value values for checking / значения для проверки
+   * @returns true if decrease is possible / true, если уменьшение возможно
    */
   isPrevious(value: number): boolean {
     const min = this.min
@@ -76,7 +92,8 @@ export class FieldArrowInclude {
    * Checks if it is possible to increase the value.
    *
    * Проверяет, можно ли увеличить значение.
-   * @param value values for checking/ значения для проверки
+   * @param value values for checking / значения для проверки
+   * @returns true if increase is possible / true, если увеличение возможно
    */
   isNext(value: number): boolean {
     const max = this.max
@@ -87,6 +104,7 @@ export class FieldArrowInclude {
    * Returns arrow type.
    *
    * Возвращает тип стрелок.
+   * @returns arrow type / тип стрелок
    */
   get(): FieldArrowProps['arrow'] | undefined {
     switch (this.props.arrow) {
@@ -108,6 +126,7 @@ export class FieldArrowInclude {
    * Returns arrow alignment.
    *
    * Возвращает выравнивание стрелок.
+   * @returns alignment string or undefined / строка выравнивания или undefined
    */
   align(): string | undefined {
     return this.props.arrowAlign
@@ -117,9 +136,10 @@ export class FieldArrowInclude {
    * Decreases the value.
    *
    * Уменьшает значение.
+   * @returns current instance / текущий экземпляр
    */
   previous(): this {
-    const value = this.value.number.value - this.step
+    const value = this.value.number - this.step
 
     if (this.isPrevious(value)) {
       this.value.set(value.toString())
@@ -134,9 +154,10 @@ export class FieldArrowInclude {
    * Increases the value.
    *
    * Увеличивает значение.
+   * @returns current instance / текущий экземпляр
    */
   next(): this {
-    const value = this.value.number.value + this.step
+    const value = this.value.number + this.step
 
     if (this.isNext(value)) {
       this.value.set(value.toString())
@@ -151,6 +172,7 @@ export class FieldArrowInclude {
    * Decreases to the minimum value.
    *
    * Уменьшает до минимального значения.
+   * @returns current instance / текущий экземпляр
    */
   toMin(): this {
     if (!this.disabledPrevious) {
@@ -166,8 +188,9 @@ export class FieldArrowInclude {
 
   /**
    * Increases to the maximum value.
-   * s
+   *
    * Увеличивает до максимального значения.
+   * @returns current instance / текущий экземпляр
    */
   toMax(): this {
     if (!this.disabledNext) {
@@ -181,17 +204,17 @@ export class FieldArrowInclude {
     return this
   }
 
-  /** Returns the change step/ Возвращает шаг изменения */
+  /** Change step / Шаг изменения */
   protected get step(): number {
     return toNumber(this.props.arrowStep ?? this.props.step ?? 1)
   }
 
-  /** Returns the minimum value/ Возвращает минимальное значение */
+  /** Minimum value / Минимальное значение */
   protected get min(): number | undefined {
     return toNumber(this.props.min) ?? undefined
   }
 
-  /** Returns the maximum value/ Возвращает максимальное значение */
+  /** Maximum value / Максимальное значение */
   protected get max(): number | undefined {
     return toNumber(this.props.max) || undefined
   }

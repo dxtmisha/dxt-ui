@@ -15,17 +15,23 @@ const PATTERNS: Record<string, string> = {
 export class FieldPatternInclude {
   /**
    * Constructor
-   * @param props input data/ входные данные
-   * @param type object for working with input type/ объект для работы с типом ввода
+   *
+   * Конструктор
+   * @param props input data / входные данные
+   * @param type object for working with input type / объект для работы с типом ввода
    */
-
   constructor(
     protected readonly props: FieldAllProps,
     protected readonly type?: FieldTypeInclude
   ) {
   }
 
-  /** Returns regular expressions/ Возвращает регулярные выражения */
+  /**
+   * Returns regular expressions.
+   *
+   * Возвращает регулярные выражения.
+   * @returns pattern string or undefined / строка паттерна или undefined
+   */
   get item(): string | undefined {
     if (this.props.pattern) {
       return this.props.pattern

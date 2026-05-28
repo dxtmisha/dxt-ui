@@ -122,7 +122,7 @@ export class InputDesign<
       {
         ...this.getAttrs(),
         class: this.classes?.value.main,
-        validationMessage: this.item.validation.message.value
+        validationMessage: this.item.validation.message
       }
     )
   }
@@ -141,7 +141,7 @@ export class InputDesign<
     return [h(
       'input',
       toBinds(
-        this.item.attributes.listForInput.value,
+        this.item.attributes.listForInput,
         input.binds,
         {
           ref: this.element,
@@ -166,7 +166,7 @@ export class InputDesign<
       class: input.className,
       align: this.props.align,
       inputAttrs: toBinds(
-        this.item.attributes.listForInput.value,
+        this.item.attributes.listForInput,
         input.binds
       ),
       onBlur: this.item.event.onBlur,

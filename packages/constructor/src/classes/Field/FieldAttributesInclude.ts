@@ -1,4 +1,3 @@
-import { computed } from 'vue'
 import { toBinds } from '@dxtmisha/functional'
 
 import { FieldTypeInclude } from './FieldTypeInclude'
@@ -15,12 +14,12 @@ import type { FieldAllProps } from '../../types/fieldTypes'
 export class FieldAttributesInclude {
   /**
    * Constructor
-   * @param props input data/ входные данные
-   * @param type object for working with input type/ объект для работы с типом ввода
-   * @param pattern object for working with checks by regular expressions/
+   * @param props input data / входные данные
+   * @param type object for working with input type / объект для работы с типом ввода
+   * @param pattern object for working with checks by regular expressions /
    * объект для работы с проверкой по регулярным выражениям
-   * @param inputMode object for working with the keyboard/ объект для работы с клавиатурой
-   * @param typeDefault default value for type/ значение по умолчанию для типа
+   * @param inputMode object for working with the keyboard / объект для работы с клавиатурой
+   * @param typeDefault default value for type / значение по умолчанию для типа
    */
   constructor(
     protected readonly props: FieldAllProps,
@@ -31,17 +30,27 @@ export class FieldAttributesInclude {
   ) {
   }
 
-  /** Returns data for verification/ Возвращает данные для проверки */
-  readonly list = computed<Record<string, any>>(() => {
+  /**
+   * Returns data for verification.
+   *
+   * Возвращает данные для проверки.
+   * @returns data record / объект с данными
+   */
+  get list(): Record<string, any> {
     return {
       type: this.typeDefault,
       ...this.getData(this.getAttributes())
     }
-  })
+  }
 
-  /** Returns data for verification/ Возвращает данные для проверки */
-  readonly listForCheck = computed<Record<string, any>>(() => {
-    const data = this.list.value
+  /**
+   * Returns data for verification.
+   *
+   * Возвращает данные для проверки.
+   * @returns data record / объект с данными
+   */
+  get listForCheck(): Record<string, any> {
+    const data = this.list
 
     if (
       this.props.min
@@ -55,20 +64,30 @@ export class FieldAttributesInclude {
     }
 
     return data
-  })
+  }
 
-  /** Returns data for the input element/ Возвращает данные для элемента ввода */
-  readonly listForInput = computed<Record<string, any>>(() => {
+  /**
+   * Returns data for the input element.
+   *
+   * Возвращает данные для элемента ввода.
+   * @returns data record / объект с данными
+   */
+  get listForInput(): Record<string, any> {
     return this.getData(this.getInputAttributes())
-  })
+  }
 
-  /** Returns data for the checkbox element/ Возвращает данные для элемента checkbox */
-  readonly listForCheckbox = computed<Record<string, any>>(() => {
+  /**
+   * Returns data for the checkbox element.
+   *
+   * Возвращает данные для элемента checkbox.
+   * @returns data record / объект с данными
+   */
+  get listForCheckbox(): Record<string, any> {
     return {
       ...this.getData(this.getInputAttributes()),
       value: this.props.valueVariant
     }
-  })
+  }
 
   /**
    * Returns the list of attributes to be set on the input element.
