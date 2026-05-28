@@ -9,16 +9,17 @@ import {
 } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
-import { LabelInclude } from '../../classes/LabelInclude'
 import { DescriptionInclude } from '../../classes/DescriptionInclude'
 import { EventClickInclude } from '../../classes/EventClickInclude'
+import { LabelInclude } from '../../classes/LabelInclude'
 import { ModelInclude } from '../../classes/ModelInclude'
+import { TextInclude } from '../../classes/TextInclude'
 
-import { BarsAction } from './BarsAction'
-import { WindowClassesInclude } from '../Window'
 import { MotionTransformClassesInclude } from '../MotionTransform'
 import { SkeletonInclude } from '../Skeleton'
-import { TextInclude } from '../../classes/TextInclude'
+import { WindowClassesInclude } from '../Window'
+
+import { BarsAction } from './BarsAction'
 
 import type { BarsComponents, BarsEmits, BarsSlots } from './types'
 import type { BarsProps } from './props'
@@ -124,6 +125,39 @@ export class Bars {
     this.event = new EventConstructor(undefined, undefined, emits)
   }
 
+  /**
+   * Returns the button name.
+   *
+   * Возвращает название кнопки.
+   */
+  get backLabel(): string | number | undefined {
+    return this.action.action.value ? undefined : this.backBinds.value?.label
+  }
+
+  /**
+   * Returns the value for the aria-live property.
+   *
+   * Возвращает значение для свойства aria-live.
+   */
+  get ariaLive(): 'polite' | 'off' | undefined {
+    if (this.action.isPossible()) {
+      return 'polite'
+    }
+
+    return undefined
+  }
+
+  /**
+   * Values for the class.
+   *
+   * Значения для класса.
+   */
+  get classes(): ConstrClass {
+    return {
+      [`${this.className}--action`]: this.action.action.value
+    }
+  }
+
   /** Returns the button data/ Возвращает данные кнопки */
   readonly backBinds = computed<BarsProps['buttonAttrs']>(
     () => this.initItem(
@@ -156,33 +190,6 @@ export class Bars {
    * Возвращает список активных кнопок управления
    */
   readonly actionBarsBinds = computed<BarsProps['bars']>(() => this.initList(this.props.actionBars, true))
-
-  /** Returns the button name/ Возвращает название кнопки */
-  readonly backLabel = computed<string | number | undefined>(() => this.action.action.value ? undefined : this.backBinds.value?.label)
-
-  /**
-   * Values for the class.
-   *
-   * Значения для класса.
-   */
-  readonly classes = computed<ConstrClass>(() => {
-    return {
-      [`${this.className}--action`]: this.action.action.value
-    }
-  })
-
-  /**
-   * Returns the value for the aria-live property.
-   *
-   * Возвращает значение для свойства aria-live.
-   */
-  readonly ariaLive = computed<'polite' | 'off' | undefined>(() => {
-    if (this.action.isPossible()) {
-      return 'polite'
-    }
-
-    return undefined
-  })
 
   /** Binds for label text/ Привязки для текста метки */
   protected readonly labelBinds = reactive({

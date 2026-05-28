@@ -1,4 +1,4 @@
-import { computed, onMounted, onUnmounted, type Ref, type ToRefs, watch } from 'vue'
+import { onMounted, onUnmounted, type Ref, type ToRefs, watch } from 'vue'
 import { type ConstrClassObject, type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
@@ -275,6 +275,7 @@ export class Window {
       className,
       props,
       components,
+      undefined,
       emits
     )
     this.esc = new WindowEscConstructor(
@@ -300,45 +301,76 @@ export class Window {
     onUnmounted(this.stop)
   }
 
-  /** Checks if the role is a menu/ Проверяет, является ли роль меню */
-  isMenu(): boolean {
-    return this.props.role === 'menu'
-      || this.props.role === 'menuitemcheckbox'
-      || this.props.role === 'menuitemradio'
+  /**
+   * Returns attributes for the main element.
+   *
+   * Возвращает атрибуты для главного элемента.
+   */
+  get binds() {
+    const props: Record<string, any> = {
+      'key': 'main',
+      'data-window': this.classes.getId(),
+      'onTransitionend': this.event.onTransition
+    }
+
+    if (this.staticMode.is()) {
+      return props
+    }
+
+    return {
+      ...props,
+      ...AriaStaticInclude.role(this.props.role),
+      ...AriaStaticInclude.modal(
+        true,
+        this.props.ariaLabelledby,
+        this.props.ariaDescribedby
+      )
+    }
   }
 
   /** Returns data for managing slot data/ Возвращает данные для управления данными слотами */
-  readonly slotData = computed<WindowControlItem>(() => ({
-    classesWindow: this.classes.list,
-    class: this.classes.list.controlId,
-    open: this.open.item,
-    onClick: this.event.onClick,
-    onKeydown: this.event.onKeydown,
-    onContextmenu: this.event.onContextmenu,
-    binds: {
+  get slotData(): WindowControlItem {
+    return {
+      classesWindow: this.classes.list,
       class: this.classes.list.controlId,
+      open: this.open.item,
       onClick: this.event.onClick,
       onKeydown: this.event.onKeydown,
       onContextmenu: this.event.onContextmenu,
-      ...AriaStaticInclude.control(
-        this.classes.getControlId(),
-        this.open.inDom.value ? this.classes.getId() : undefined,
-        this.props.ariaHaspopup,
-        this.open.item.value
-      )
+      binds: {
+        class: this.classes.list.controlId,
+        onClick: this.event.onClick,
+        onKeydown: this.event.onKeydown,
+        onContextmenu: this.event.onContextmenu,
+        ...AriaStaticInclude.control(
+          this.classes.getControlId(),
+          this.open.inDom ? this.classes.getId() : undefined,
+          this.props.ariaHaspopup,
+          this.open.item.value
+        )
+      }
     }
-  }))
+  }
 
   /**
    * Returns the list of available classes.
    *
    * Возвращает список доступных классов.
    */
-  readonly classesList = computed<ConstrClassObject>(() => ({
-    [this.classes.getId()]: true,
-    [`${this.className}--staticMode`]: this.staticMode.item.value,
-    [`${this.className}--embedded`]: Boolean(this.props.embedded)
-  }))
+  get classesList(): ConstrClassObject {
+    return {
+      [this.classes.getId()]: true,
+      [`${this.className}--staticMode`]: this.staticMode.item.value,
+      [`${this.className}--embedded`]: Boolean(this.props.embedded)
+    }
+  }
+
+  /** Checks if the role is a menu/ Проверяет, является ли роль меню */
+  isMenu(): boolean {
+    return this.props.role === 'menu'
+      || this.props.role === 'menuitemcheckbox'
+      || this.props.role === 'menuitemradio'
+  }
 
   /**
    * Restores the data to its previous state.

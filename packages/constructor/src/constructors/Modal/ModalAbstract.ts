@@ -1,3 +1,4 @@
+import type { Ref, ToRefs } from 'vue'
 import {
   type ConstrEmit,
   type DesignComp,
@@ -11,7 +12,6 @@ import { WindowInclude, type WindowProps } from '../Window'
 import type { ComponentIncludeExtra } from '../../types/componentInclude'
 import type { ModalComponents, ModalEmits, ModalSlots } from './types'
 import type { ModalProps } from './props'
-import type { Ref, ToRefs } from 'vue'
 
 /**
  * Abstract class representing the base logic and structure for a modal window component.

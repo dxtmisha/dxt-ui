@@ -29,14 +29,14 @@ export class BarsDesign<
   CLASSES extends BarsClasses,
   P extends BarsProps
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
-    COMP,
-    BarsEmits,
-    EXPOSE,
-    BarsSlots,
-    CLASSES,
-    P
-  > {
+  HTMLDivElement,
+  COMP,
+  BarsEmits,
+  EXPOSE,
+  BarsSlots,
+  CLASSES,
+  P
+> {
   protected readonly item: Bars
 
   /**
@@ -88,7 +88,7 @@ export class BarsDesign<
    */
   protected initClasses(): Partial<CLASSES> {
     return {
-      main: this.item.classes.value,
+      main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
         context: this.getSubClass('context'),
@@ -119,7 +119,7 @@ export class BarsDesign<
       {
         ...this.getAttrs(),
         class: this.classes?.value.main,
-        ...AriaStaticInclude.live(this.item.ariaLive.value)
+        ...AriaStaticInclude.live(this.item.ariaLive)
       },
       [
         ...this.renderBackButton(),
@@ -151,7 +151,7 @@ export class BarsDesign<
         'button',
         {
           ...this.item.backBinds.value,
-          label: this.item.backLabel.value,
+          label: this.item.backLabel,
           selected: this.item.action.action.value
         }
       ) as VNode

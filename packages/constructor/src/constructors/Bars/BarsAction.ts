@@ -1,4 +1,4 @@
-import { ref, type ToRefs, watch } from 'vue'
+import { onMounted, ref, type ToRefs, watch } from 'vue'
 import type { BarsProps } from './props'
 
 /**
@@ -23,13 +23,15 @@ export class BarsAction {
     protected readonly props: BarsProps,
     protected readonly refs: ToRefs<BarsProps>
   ) {
-    watch(
-      [refs.action],
-      () => {
-        this.action.value = Boolean(this.props.action)
-      },
-      { immediate: true }
-    )
+    onMounted(() => {
+      watch(
+        [refs.action],
+        () => {
+          this.action.value = Boolean(this.props.action)
+        },
+        { immediate: true }
+      )
+    })
   }
 
   /**

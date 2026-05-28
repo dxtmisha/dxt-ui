@@ -1,4 +1,4 @@
-import { computed, h, type VNode } from 'vue'
+import { h, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -28,14 +28,14 @@ export class WindowDesign<
   CLASSES extends WindowClasses,
   P extends WindowPropsBasic
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
-    COMP,
-    WindowEmits,
-    EXPOSE,
-    WindowSlots,
-    CLASSES,
-    P
-  > {
+  HTMLDivElement,
+  COMP,
+  WindowEmits,
+  EXPOSE,
+  WindowSlots,
+  CLASSES,
+  P
+> {
   protected readonly item: Window
 
   /**
@@ -80,7 +80,7 @@ export class WindowDesign<
     return {
       getId: () => this.item.classes.getId(),
       getOpen: () => this.item.open.item.value,
-      getControl: () => this.item.slotData.value,
+      getControl: () => this.item.slotData,
 
       setOpen: this.item.open.set,
       toOpen: this.item.open.open,
@@ -96,7 +96,7 @@ export class WindowDesign<
    */
   protected initClasses(): Partial<CLASSES> {
     return {
-      main: this.item.classesList.value,
+      main: this.item.classesList,
       ...{
         // :classes [!] System label / Системная метка
         body: this.getSubClass('body'),
@@ -128,9 +128,9 @@ export class WindowDesign<
   protected initRender(): VNode[] {
     const main: any[] = []
 
-    this.initSlot('control', main, this.item.slotData.value)
+    this.initSlot('control', main, this.item.slotData)
 
-    if (this.item.open.inDom.value) {
+    if (this.item.open.inDom) {
       if (
         (
           this.item.staticMode.item.value
@@ -166,7 +166,12 @@ export class WindowDesign<
   readonly renderMain = (): VNode => {
     return h(
       'div',
-      this.propsMain.value,
+      {
+        ref: this.element,
+        class: this.classes?.value.main,
+        style: this.styles?.value,
+        ...this.item.binds
+      },
       this.renderBody()
     )
   }
@@ -203,9 +208,9 @@ export class WindowDesign<
   readonly renderBodyGroup = (): VNode[] => {
     const children: any[] = []
 
-    this.initSlot('title', children, this.item.slotData.value)
+    this.initSlot('title', children, this.item.slotData)
     children.push(this.renderBodyContext())
-    this.initSlot('footer', children, this.item.slotData.value)
+    this.initSlot('footer', children, this.item.slotData)
 
     return [
       h('div', {
@@ -229,7 +234,7 @@ export class WindowDesign<
         'divider': this.props.divider,
         'data-window-body': '1'
       },
-      () => this.initSlot('default', undefined, this.item.slotData.value)
+      () => this.initSlot('default', undefined, this.item.slotData)
     )
   }
 
@@ -265,34 +270,4 @@ export class WindowDesign<
 
     return []
   }
-
-  /**
-   * Props for the main element.
-   *
-   * Свойства для главного элемента.
-   */
-  protected readonly propsMain = computed<Record<string, any>>(() => {
-    const props: Record<string, any> = {
-      'key': 'main',
-      'ref': this.element,
-      'class': this.classes?.value.main,
-      'style': this.styles?.value,
-      'data-window': this.item.classes.getId(),
-      'onTransitionend': this.item.event.onTransition
-    }
-
-    if (this.item.staticMode.isStaticMod()) {
-      return props
-    }
-
-    return {
-      ...props,
-      ...AriaStaticInclude.role(this.props.role),
-      ...AriaStaticInclude.modal(
-        true,
-        this.props.ariaLabelledby,
-        this.props.ariaDescribedby
-      )
-    }
-  })
 }

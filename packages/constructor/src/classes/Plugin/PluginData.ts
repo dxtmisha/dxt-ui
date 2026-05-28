@@ -37,7 +37,7 @@ export class PluginData {
    * @param code code to check / код для проверки
    */
   hasComponent(code: string): boolean {
-    return Boolean(code.match(new RegExp(this.componentsReg, 'i')))
+    return new RegExp(this.componentsReg, 'i').test(code)
   }
 
   /**
@@ -47,9 +47,7 @@ export class PluginData {
    * @param code code to check / код для проверки
    */
   hasVars(code: string): boolean {
-    return Boolean(
-      code.match(new RegExp(this.styleVarsReg, 'i'))
-    )
+    return new RegExp(this.styleVarsReg, 'i').test(code)
   }
 
   /**
@@ -87,7 +85,7 @@ export class PluginData {
         if (
           info
           && !list.find(item => item.name === info.name)
-          && !code.match(`${this.getPackageName()}/${info.name}`)
+          && !(new RegExp(`import {[^}]*${info.name}[^}]*} from ['"]${this.getPackageName()}\\/${info.name}['"]`)).test(code)
         ) {
           list.push(info)
         }
@@ -124,9 +122,7 @@ export class PluginData {
   protected findComponent(component: string): PluginComponentItem | undefined {
     return this.componentsList.find(
       item => item.name === component
-        || Boolean(
-          component.match(new RegExp(item.reg, 'i'))
-        )
+        || new RegExp(item.reg, 'i').test(component)
     )
   }
 

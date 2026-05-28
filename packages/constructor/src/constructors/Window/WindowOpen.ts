@@ -1,4 +1,4 @@
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import { frame } from '@dxtmisha/functional'
 
 import { TabIndexInclude } from '../../classes/TabIndexInclude'
@@ -67,15 +67,16 @@ export class WindowOpen {
    * Checks whether the element should be kept in the DOM.
    *
    * Проверяет, надо ли элемент оставить в DOM.
+   * @returns check result / результат проверки
    */
-  readonly inDom = computed<boolean>(() => {
+  get inDom(): boolean {
     return this.item.value
       || this.props.staticMode
       || (
         Boolean(this.props.inDom)
         && this.first.value
       )
-  })
+  }
 
   /**
    * Checks if the element is still in the DOM, and if not, closes the window.

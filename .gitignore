@@ -25,3 +25,4 @@ dist-ssr
 *.sln
 *.sw?
 packages/wiki/src/classes/WikiStorybook.ts
+packages/scripts/src/classes/Design/DesignReplace.ts

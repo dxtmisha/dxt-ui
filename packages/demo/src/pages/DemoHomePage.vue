@@ -13,6 +13,7 @@ import DemoLink from '../components/DemoLink.vue'
         <DemoLink label="ActionSheet" name="component-action-sheet"/>
         <DemoLink label="Actions" name="component-actions"/>
         <DemoLink label="Badge" name="component-badge"/>
+        <DemoLink label="Bars" name="component-bars"/>
         <DemoLink label="Button" name="component-button"/>
         <DemoLink label="Checkbox" name="component-checkbox"/>
         <DemoLink label="ClientOnly" name="component-client-only"/>

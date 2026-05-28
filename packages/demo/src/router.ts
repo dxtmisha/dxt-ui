@@ -8,6 +8,7 @@ import DemoAccordionPage from './pages/components/DemoAccordionPage.vue'
 import DemoActionSheetPage from './pages/components/DemoActionSheetPage.vue'
 import DemoActionsPage from './pages/components/DemoActionsPage.vue'
 import DemoBadgePage from './pages/components/DemoBadgePage.vue'
+import DemoBarsPage from './pages/components/DemoBarsPage.vue'
 import DemoButtonPage from './pages/components/DemoButtonPage.vue'
 import DemoCheckboxPage from './pages/components/DemoCheckboxPage.vue'
 import DemoClientOnlyPage from './pages/components/DemoClientOnlyPage.vue'
@@ -62,6 +63,11 @@ export const routes: RouteRecordRaw[] = [
     path: '/component-badge',
     name: 'component-badge',
     component: DemoBadgePage
+  },
+  {
+    path: '/component-bars',
+    name: 'component-bars',
+    component: DemoBarsPage
   },
   {
     path: '/component-button',

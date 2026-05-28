@@ -30,7 +30,7 @@ export class WindowStatic {
     onMounted(() => {
       watch([refs.staticMode], this.make)
 
-      if (this.isStaticMod()) {
+      if (this.is()) {
         requestAnimationFrame(this.listener)
       }
     })
@@ -41,7 +41,7 @@ export class WindowStatic {
    *
    * Проверяет, включен ли режим статичности.
    */
-  isStaticMod(): boolean {
+  is(): boolean {
     return Boolean(this.props.staticMode)
   }
 
@@ -101,7 +101,7 @@ export class WindowStatic {
    * Выполняет проверку статуса и активизирует события при включении.
    */
   protected readonly make = (): void => {
-    if (this.isStaticMod()) {
+    if (this.is()) {
       this.start()
     } else {
       this.stop()
