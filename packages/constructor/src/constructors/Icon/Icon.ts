@@ -1,19 +1,20 @@
-import { computed, type ComputedRef, type Ref, type ToRefs } from 'vue'
+import { type Ref, type ToRefs } from 'vue'
 import {
   type ConstrClassObject,
   type ConstrEmit,
   type DesignComp,
-  getBindRef
+  getBind
 } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { EventClickInclude } from '../../classes/EventClickInclude'
-import { SkeletonInclude } from '../Skeleton'
 
 import type { ImageEventData } from '../Image'
+import { SkeletonInclude } from '../Skeleton'
+
+import type { IconEventLoad } from './basicTypes'
 import type { IconComponents, IconEmits, IconSlots } from './types'
 import type { IconProps } from './props'
-import type { IconEventLoad } from './basicTypes'
 
 /**
  * Base class for working with icons.
@@ -21,16 +22,6 @@ import type { IconEventLoad } from './basicTypes'
  * Базовый класс для работы с иконками.
  */
 export class Icon {
-  /**
-   * Returns the property for the base icon/ Возвращает свойство для базовой иконки
-   */
-  readonly iconBind: ComputedRef<IconEventLoad['iconBind']>
-
-  /**
-   * Returns the property for the additional icon/ Возвращает свойство для дополнительной иконки
-   */
-  readonly iconActiveBind: ComputedRef<IconEventLoad['iconActiveBind']>
-
   /**
    * An object for working with the Skeleton/ Объект для работы с Skeleton
    */
@@ -74,29 +65,6 @@ export class Icon {
       SkeletonIncludeConstructor = SkeletonInclude
     } = constructors ?? {}
 
-    this.iconBind = getBindRef(
-      refs.icon,
-      computed(() => ({
-        key: 'mainIcon',
-        class: `${className}__icon`,
-        turn: this.props.turn,
-        disabled: this.props.disabled,
-        hide: this.isActive.value,
-        onLoad: this.onLoad
-      }))
-    )
-
-    this.iconActiveBind = getBindRef(
-      refs.iconActive,
-      computed(() => ({
-        key: 'activeIcon',
-        class: `${className}__iconActive`,
-        turn: this.props.turn,
-        disabled: this.props.disabled,
-        hide: !this.isActive.value
-      }))
-    )
-
     this.event = new EventClickIncludeConstructor(
       props,
       undefined,
@@ -113,21 +81,25 @@ export class Icon {
   /**
    * Checks if the additional icon is active/ Проверяет, активна ли дополнительная иконка
    */
-  readonly isActive = computed<boolean>(() => Boolean(this.props.active && this.props.iconActive))
+  get isActive(): boolean {
+    return Boolean(this.props.active && this.props.iconActive)
+  }
 
   /**
    * Values for the class/ Значения для класса
    */
-  readonly classes = computed<ConstrClassObject>(() => ({
-    ...this.skeleton.classes
-  }))
+  get classes(): ConstrClassObject {
+    return {
+      ...this.skeleton.classes
+    }
+  }
 
   /**
    * Computed bindings for the icon element.
    *
    * Вычисляемые привязки для элемента иконки.
    */
-  readonly binds = computed<any>(() => {
+  get binds(): any {
     const props = {
       key: 'icon',
       ...AriaStaticInclude.role(this.getRole()),
@@ -146,7 +118,40 @@ export class Icon {
       ...props,
       ...AriaStaticInclude.hidden()
     }
-  })
+  }
+
+  /**
+   * Returns the property for the base icon/ Возвращает свойство для базовой иконки
+   */
+  get iconBind(): IconEventLoad['iconBind'] {
+    return getBind(
+      this.props.icon,
+      {
+        key: 'mainIcon',
+        class: `${this.className}__icon`,
+        turn: this.props.turn,
+        disabled: this.props.disabled,
+        hide: this.isActive,
+        onLoad: this.onLoad
+      }
+    )
+  }
+
+  /**
+   * Returns the property for the additional icon/ Возвращает свойство для дополнительной иконки
+   */
+  get iconActiveBind(): IconEventLoad['iconActiveBind'] {
+    return getBind(
+      this.props.iconActive,
+      {
+        key: 'activeIcon',
+        class: `${this.className}__iconActive`,
+        turn: this.props.turn,
+        disabled: this.props.disabled,
+        hide: !this.isActive
+      }
+    )
+  }
 
   /**
    * Get the ARIA role for the icon element.

@@ -1,4 +1,4 @@
-import { computed, h, type VNode } from 'vue'
+import { h, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -27,14 +27,14 @@ export class IconDesign<
   CLASSES extends IconClasses,
   P extends IconPropsBasic
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
-    COMP,
-    IconEmits,
-    EXPOSE,
-    IconSlots,
-    CLASSES,
-    P
-  > {
+  HTMLDivElement,
+  COMP,
+  IconEmits,
+  EXPOSE,
+  IconSlots,
+  CLASSES,
+  P
+> {
   protected readonly item: Icon
 
   /**
@@ -77,7 +77,7 @@ export class IconDesign<
   protected initExpose(): EXPOSE {
     return {
       ...this.item.event.expose,
-      isActive: this.item.isActive
+      isActive: () => this.item.isActive
     } as EXPOSE
   }
 
@@ -87,7 +87,7 @@ export class IconDesign<
    */
   protected initClasses(): Partial<CLASSES> {
     return {
-      main: this.item.classes.value,
+      main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
         // :classes [!] System label / Системная метка
@@ -121,19 +121,16 @@ export class IconDesign<
       children.push(this.renderIconActive())
     }
 
-    return h('span', this.propsMain.value, children)
+    return h(
+      'span',
+      {
+        ...this.getAttrs(),
+        ...this.item.binds,
+        class: this.classes?.value.main
+      },
+      children
+    )
   }
-
-  /**
-   * Computed properties for the main element.
-   *
-   * Вычисляемые свойства для главного элемента.
-   */
-  readonly propsMain = computed<any>(() => ({
-    ...this.getAttrs(),
-    ...this.item.binds.value,
-    class: this.classes?.value.main
-  }))
 
   /**
    * Render the main icon.
@@ -143,7 +140,7 @@ export class IconDesign<
   readonly renderIcon = (): VNode | undefined => {
     return this.components.renderOne(
       'image',
-      this.item.iconBind.value,
+      this.item.iconBind,
       undefined,
       'icon'
     )
@@ -157,7 +154,7 @@ export class IconDesign<
   readonly renderIconActive = (): VNode | undefined => {
     return this.components.renderOne(
       'image',
-      this.item.iconActiveBind.value,
+      this.item.iconActiveBind,
       undefined,
       'iconActive'
     )

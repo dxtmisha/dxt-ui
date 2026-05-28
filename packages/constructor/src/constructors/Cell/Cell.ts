@@ -6,21 +6,20 @@ import {
 } from '@dxtmisha/functional'
 import { getClassTagAStatic } from '../../functions/getClassTagAStatic'
 
-import { LabelInclude } from '../../classes/LabelInclude'
 import { CaptionInclude } from '../../classes/CaptionInclude'
 import { DescriptionInclude } from '../../classes/DescriptionInclude'
 import { EnabledInclude } from '../../classes/EnabledInclude'
+import { EventClickInclude } from '../../classes/EventClickInclude'
+import { LabelInclude } from '../../classes/LabelInclude'
 
 import { IconTrailingInclude } from '../Icon'
 import { ProgressInclude } from '../Progress'
 import { RippleInclude } from '../Ripple'
 import { SkeletonInclude } from '../Skeleton'
 
-import { EventClickInclude } from '../../classes/EventClickInclude'
-
+import type { CellClassesSub } from './basicTypes'
 import type { CellComponents, CellEmits, CellSlots } from './types'
 import type { CellProps } from './props'
-import type { CellClassesSub } from './basicTypes'
 
 /**
  * Cell

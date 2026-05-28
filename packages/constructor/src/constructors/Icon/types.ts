@@ -1,6 +1,7 @@
-import type { ComputedRef } from 'vue'
 import type { ConstrClass } from '@dxtmisha/functional'
+
 import type { EventClickEmits, EventClickExpose } from '../../types/eventClickTypes'
+
 import type { ImageComponentInclude, ImageEmitsInclude } from '../Image'
 
 /**
@@ -23,8 +24,10 @@ export type IconEmits = ImageEmitsInclude & EventClickEmits
  * Тип, описывающий доступные свойства.
  */
 export interface IconExpose extends EventClickExpose {
-  /** Whether the icon is currently active/ Активна ли иконка в данный момент */
-  isActive: ComputedRef<boolean>
+  /**
+   * Whether the icon is currently active / Активна ли иконка в данный момент
+   */
+  isActive(): boolean
 }
 
 /**

@@ -39,37 +39,43 @@ export class IconTrailingInclude<
   }
 
   /**
+   * list of properties for the secondary icon component/ список свойств для вторичного компонента иконки
+   */
+  get trailingBind(): ConstrBind<IconPropsBasic> {
+    return getBind(
+      this.props.iconTrailing,
+      {
+        turn: this.props.iconTurn,
+        asPalette: this.props.iconPalette,
+        dir: this.props.iconDir,
+        end: true,
+        high: true,
+        ...toBinds(
+          this.getExtra(),
+          this.props.iconAttrs,
+          this.getClasses(this.props.iconAttrs?.class, 'trailing')
+        ),
+        ...this.getEventType('icon-trailing')
+      },
+      'icon'
+    )
+  }
+
+  /**
    * Checks whether an icon is specified for rendering the component/
    * Проверяет, указана ли иконка для отображения компонента
    */
-  readonly isIconTrailing = computed<boolean>(() => Boolean(this.props.iconTrailing))
+  isIconTrailing(): boolean {
+    return Boolean(this.props.iconTrailing)
+  }
 
   /**
    * Checks if there is at least one icon/
    * Проверяет, есть ли хотя бы одна иконка
    */
-  readonly hasAtLeastOneIcon = computed<boolean>(() => Boolean(this.props.iconTrailing || this.props.icon))
-
-  /**
-   * list of properties for the secondary icon component/ список свойств для вторичного компонента иконки
-   */
-  readonly trailingBind = computed(() => getBind(
-    this.props.iconTrailing,
-    {
-      turn: this.props.iconTurn,
-      asPalette: this.props.iconPalette,
-      dir: this.props.iconDir,
-      end: true,
-      high: true,
-      ...toBinds(
-        this.getExtra(),
-        this.props.iconAttrs,
-        this.getClasses(this.props.iconAttrs?.class, 'trailing')
-      ),
-      ...this.getEventType('icon-trailing')
-    },
-    'icon'
-  ))
+  hasAtLeastOneIcon(): boolean {
+    return Boolean(this.props.iconTrailing || this.props.icon)
+  }
 
   /**
    * Render of the secondary icon component
@@ -83,7 +89,7 @@ export class IconTrailingInclude<
     ) {
       return this.components.render(
         'icon',
-        this.trailingBind.value,
+        this.trailingBind,
         undefined,
         'iconTrailing'
       )

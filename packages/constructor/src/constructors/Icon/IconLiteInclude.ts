@@ -1,4 +1,4 @@
-import { computed, type VNode } from 'vue'
+import { type VNode } from 'vue'
 import {
   type ConstrBind,
   type ConstrClass,
@@ -37,20 +37,24 @@ export class IconLiteInclude<Props extends IconLitePropsInclude = IconLitePropsI
    * Checks whether an icon is specified for rendering the component/
    * Проверяет, указана ли иконка для отображения компонента
    */
-  readonly isIcon = computed<boolean>(() => Boolean(this.props.icon))
+  get isIcon(): boolean {
+    return Boolean(this.props.icon)
+  }
 
   /**
    * List of properties for the icon component/ Список свойств для компонента иконки
    */
-  readonly iconBind = computed(() => getBind(
-    this.props.icon,
-    {
-      ...this.getExtra(),
-      ...this.getClasses(),
-      ...this.getEventType()
-    },
-    'icon'
-  ))
+  get iconBind(): ConstrBind<IconPropsBasic> {
+    return getBind(
+      this.props.icon,
+      {
+        ...this.getExtra(),
+        ...this.getClasses(),
+        ...this.getEventType()
+      },
+      'icon'
+    )
+  }
 
   /**
    * Render of the Icon component
@@ -64,7 +68,7 @@ export class IconLiteInclude<Props extends IconLitePropsInclude = IconLitePropsI
     ) {
       return this.components.render(
         'icon',
-        this.iconBind.value
+        this.iconBind
       )
     }
 

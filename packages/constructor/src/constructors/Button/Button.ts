@@ -123,7 +123,7 @@ export class Button {
 
   /** values for the class/ значения для класса */
   readonly classes = computed<ConstrClass>(() => ({
-    [`${this.className}--icon`]: this.icon.isIcon.value,
+    [`${this.className}--icon`]: this.icon.isIcon,
     [getClassTagAStatic(this.classDesign)]: true,
     ...this.skeleton.classes
   }))

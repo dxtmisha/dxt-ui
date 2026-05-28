@@ -4,10 +4,10 @@ import type { IconComponentInclude } from '../Icon'
 import type { ProgressComponentInclude } from '../Progress'
 import type { RippleComponentInclude } from '../Ripple'
 
+import type { CaptionSlots } from '../../types/captionTypes'
+import type { DescriptionSlots } from '../../types/descriptionTypes'
 import type { EventClickEmits, EventClickExpose } from '../../types/eventClickTypes'
 import type { LabelSlots } from '../../types/labelTypes'
-import type { DescriptionSlots } from '../../types/descriptionTypes'
-import type { CaptionSlots } from '../../types/captionTypes'
 
 import type { CellClassesSub } from './basicTypes'
 
@@ -18,8 +18,8 @@ import type { CellClassesSub } from './basicTypes'
  */
 export type CellComponents
   = IconComponentInclude
-    & ProgressComponentInclude
-    & RippleComponentInclude
+  & ProgressComponentInclude
+  & RippleComponentInclude
 
 /**
  * Type describing available events.

@@ -1,8 +1,9 @@
-import type { RoleType } from '../../types/roleTypes'
-import type { EventClickProps } from '../../types/eventClickTypes'
 import type { ImagePropsBasic, ImageValue } from '../Image'
 import type { SkeletonPropsInclude } from '../Skeleton'
+
 import type { AriaLabelPropsInclude } from '../../types/ariaTypes'
+import type { EventClickProps } from '../../types/eventClickTypes'
+import type { RoleType } from '../../types/roleTypes'
 
 export type IconPropsToken = {
   // :type [!] System label / Системная метка

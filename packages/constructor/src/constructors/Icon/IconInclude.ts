@@ -1,4 +1,3 @@
-import { computed } from 'vue'
 import { type ConstrBind, type DesignComponents, getBind, getRef, type RefOrNormal, toBinds } from '@dxtmisha/functional'
 
 import { IconLiteInclude } from './IconLiteInclude'
@@ -22,8 +21,8 @@ export class IconInclude<
    * @param extra additional parameter/ дополнительный параметр
    * @param turn should the icon be flipped/ надо ли перевернуть иконку
    * @param dir should the icon be mirrored/ надо ли зеркально отображать иконка
-   * @param start add sorting at the beginning/ добавить сортировку в начале
-   * @param end add sorting at the end/ добавить сортировку в конце
+   * @param start add sorting at the beginning/ добавить sorting в начале
+   * @param end add sorting at the end/ добавить sorting в конце
    */
   constructor(
     protected readonly props: Readonly<Props>,
@@ -41,24 +40,26 @@ export class IconInclude<
   /**
    * List of properties for the icon component/ Список свойств для компонента иконки
    */
-  readonly iconBind = computed(() => getBind(
-    this.props.icon,
-    {
-      active: this.props.selected,
-      turn: getRef(this.turn) ?? this.props.iconTurn,
-      hide: this.props.iconHide,
-      asPalette: this.props.iconPalette,
-      animationType: 'type2',
-      dir: getRef(this.dir) ?? this.props.iconDir,
-      start: this.start,
-      end: this.end,
-      ...toBinds(
-        this.getExtra(),
-        this.props.iconAttrs,
-        this.getClasses(this.props.iconAttrs?.class)
-      ),
-      ...this.getEventType()
-    },
-    'icon'
-  ))
+  override get iconBind(): ConstrBind<IconPropsBasic> {
+    return getBind(
+      this.props.icon,
+      {
+        active: this.props.selected,
+        turn: getRef(this.turn) ?? this.props.iconTurn,
+        hide: this.props.iconHide,
+        asPalette: this.props.iconPalette,
+        animationType: 'type2',
+        dir: getRef(this.dir) ?? this.props.iconDir,
+        start: this.start,
+        end: this.end,
+        ...toBinds(
+          this.getExtra(),
+          this.props.iconAttrs,
+          this.getClasses(this.props.iconAttrs?.class)
+        ),
+        ...this.getEventType()
+      },
+      'icon'
+    )
+  }
 }
