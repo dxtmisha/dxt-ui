@@ -32,14 +32,14 @@ export class ActionsDesign<
   CLASSES extends ActionsClasses,
   P extends ActionsPropsBasic
 > extends DesignConstructorAbstract<
-  HTMLDivElement,
-  COMP,
-  ActionsEmits,
-  EXPOSE,
-  ActionsSlots,
-  CLASSES,
-  P
-> {
+    HTMLDivElement,
+    COMP,
+    ActionsEmits,
+    EXPOSE,
+    ActionsSlots,
+    CLASSES,
+    P
+  > {
   /** Actions class instance managing component logic / Экземпляр класса Actions, управляющий логикой компонента */
   protected readonly item: Actions
 

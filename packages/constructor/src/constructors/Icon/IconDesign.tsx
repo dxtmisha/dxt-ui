@@ -27,14 +27,14 @@ export class IconDesign<
   CLASSES extends IconClasses,
   P extends IconPropsBasic
 > extends DesignConstructorAbstract<
-  HTMLDivElement,
-  COMP,
-  IconEmits,
-  EXPOSE,
-  IconSlots,
-  CLASSES,
-  P
-> {
+    HTMLDivElement,
+    COMP,
+    IconEmits,
+    EXPOSE,
+    IconSlots,
+    CLASSES,
+    P
+  > {
   protected readonly item: Icon
 
   /**

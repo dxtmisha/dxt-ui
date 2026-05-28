@@ -3,10 +3,10 @@ import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
 import { TouchEventInclude } from '../../classes/TouchEventInclude'
 
-import { type ActionsInclude, type ActionsProps } from '../Actions'
-import { type BarsInclude, type BarsProps } from '../Bars'
+import type { ActionsInclude, ActionsProps } from '../Actions'
+import type { BarsInclude, BarsProps } from '../Bars'
 import { ModalAbstract } from '../Modal'
-import { type WindowInclude, type WindowProps } from '../Window'
+import type { WindowInclude, WindowProps } from '../Window'
 
 import type { TouchEventTypeY } from '../../types/touchEventTypes'
 import type { ComponentIncludeExtra } from '../../types/componentInclude'

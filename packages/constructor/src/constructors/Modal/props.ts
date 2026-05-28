@@ -3,6 +3,8 @@ import type { BarsPropsBasic, BarsPropsInclude } from '../Bars'
 import type { ActionsPropsBasic, ActionsPropsInclude } from '../Actions'
 import type { ImagePropsBasic, ImagePropsInclude } from '../Image'
 
+import type { ModelPropsOpen } from '../../types/modelTypes'
+
 export type ModalPropsToken = {
   // :type [!] System label / Системная метка
   imagePosition?: 'top' | 'left'
@@ -17,7 +19,9 @@ export type ModalPropsBasic<
 > = WindowPropsInclude<Window>
   & BarsPropsInclude<Bars>
   & ActionsPropsInclude<Actions>
-  & ImagePropsInclude<Image> & {
+  & ImagePropsInclude<Image>
+  & ModelPropsOpen
+  & {
     /** Status/ Статус */
     /** Whether the modal is open/ Открыто ли модальное окно */
     open?: boolean

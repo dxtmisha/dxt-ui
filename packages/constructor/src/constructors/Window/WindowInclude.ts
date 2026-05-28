@@ -5,6 +5,7 @@ import {
 } from '@dxtmisha/functional'
 
 import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
+import type { ModelInclude } from '../../classes/ModelInclude'
 
 import type { ComponentIncludeExposeItem, ComponentIncludeExtra } from '../../types/componentInclude'
 import type {
@@ -57,6 +58,7 @@ export class WindowInclude<
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
    * @param ariaLabelledby identifier for the label / идентификатор для метки
    * @param ariaDescribedby identifier for the description / идентификатор для описания
+   * @param model instance for managing modal open state / экземпляр для управления состоянием открытия модального окна
    */
   constructor(
     className: string,
@@ -66,7 +68,8 @@ export class WindowInclude<
     index?: string,
     protected readonly emits?: ConstrEmit<WindowEmitsInclude>,
     protected readonly ariaLabelledby?: string,
-    protected readonly ariaDescribedby?: string
+    protected readonly ariaDescribedby?: string,
+    protected readonly model?: ModelInclude<boolean>
   ) {
     super(className, props, components, extra, index)
   }
@@ -139,5 +142,6 @@ export class WindowInclude<
    */
   protected readonly onWindow = (options: WindowEmitOptions) => {
     this.emits?.('window', options)
+    this.model?.emit(options.open)
   }
 }

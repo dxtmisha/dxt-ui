@@ -2,8 +2,7 @@ import { h, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
-  DesignConstructorAbstract,
-  toBinds
+  DesignConstructorAbstract
 } from '@dxtmisha/functional'
 
 import type { ModalAbstract } from './ModalAbstract'
@@ -104,12 +103,10 @@ export abstract class ModalDesignAbstract<
         default: this.renderDefault,
         footer: this.renderFooter
       },
-      toBinds(
-        {
-          class: this.classes?.value.main
-        },
-        this.getAttrs()
-      )
+      {
+        ...this.getAttrs(),
+        class: this.classes?.value.main
+      }
     )
   }
 
@@ -118,7 +115,7 @@ export abstract class ModalDesignAbstract<
    * Генерирует данные для контроля.
    * @param props data for the transferable property/ данные для передаваемого свойства
    */
-  protected readonly renderControl = (
+  readonly renderControl = (
     props: WindowControlItem
   ): VNode | undefined => {
     return this.initSlot('control', undefined, props)
@@ -130,7 +127,7 @@ export abstract class ModalDesignAbstract<
    * Генерирует данные для заголовка.
    * @param props data for the transferable property/ данные для передаваемого свойства
    */
-  protected readonly renderTitle = (
+  readonly renderTitle = (
     props: WindowControlItem
   ): VNode[] => {
     const children: any[] = [
@@ -159,7 +156,7 @@ export abstract class ModalDesignAbstract<
    * Генерирует тела.
    * @param props data for the transferable property/ данные для передаваемого свойства
    */
-  protected readonly renderDefault = (
+  readonly renderDefault = (
     props: WindowControlItem
   ): VNode[] => {
     const children: any[] = []
@@ -199,7 +196,7 @@ export abstract class ModalDesignAbstract<
    * Генерирует данные для нужной части.
    * @param props data for the transferable property/ данные для передаваемого свойства
    */
-  protected readonly renderFooter = (
+  readonly renderFooter = (
     props: WindowControlItem
   ): VNode[] => {
     const children: any[] = []

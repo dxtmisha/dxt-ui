@@ -17,6 +17,7 @@ import DemoImagePage from './pages/components/DemoImagePage.vue'
 import DemoInputPage from './pages/components/DemoInputPage.vue'
 import DemoListPage from './pages/components/DemoListPage.vue'
 import DemoMaskPage from './pages/components/DemoMaskPage.vue'
+import DemoModalPage from './pages/components/DemoModalPage.vue'
 import DemoMenuPage from './pages/components/DemoMenuPage.vue'
 import DemoMenuButtonPage from './pages/components/DemoMenuButtonPage.vue'
 import DemoMenuCountryPage from './pages/components/DemoMenuCountryPage.vue'
@@ -108,6 +109,11 @@ export const routes: RouteRecordRaw[] = [
     path: '/component-mask',
     name: 'component-mask',
     component: DemoMaskPage
+  },
+  {
+    path: '/component-modal',
+    name: 'component-modal',
+    component: DemoModalPage
   },
   {
     path: '/component-menu',

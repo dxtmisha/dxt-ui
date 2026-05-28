@@ -29,14 +29,14 @@ export class BarsDesign<
   CLASSES extends BarsClasses,
   P extends BarsProps
 > extends DesignConstructorAbstract<
-  HTMLDivElement,
-  COMP,
-  BarsEmits,
-  EXPOSE,
-  BarsSlots,
-  CLASSES,
-  P
-> {
+    HTMLDivElement,
+    COMP,
+    BarsEmits,
+    EXPOSE,
+    BarsSlots,
+    CLASSES,
+    P
+  > {
   protected readonly item: Bars
 
   /**

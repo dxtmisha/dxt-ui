@@ -1,9 +1,11 @@
-import type { Ref, ToRefs } from 'vue'
+import { onMounted, ref, watch, type Ref, type ToRefs } from 'vue'
 import {
   type ConstrEmit,
   type DesignComp,
   getElementId
 } from '@dxtmisha/functional'
+
+import { ModelInclude } from '../../classes/ModelInclude'
 
 import { ActionsInclude, type ActionsProps } from '../Actions'
 import { BarsInclude, type BarsProps } from '../Bars'
@@ -27,6 +29,11 @@ export abstract class ModalAbstract {
   readonly bars: BarsInclude
   /** Instance for managing action buttons or controls / Экземпляр для управления кнопками действий или элементами управления */
   readonly actions: ActionsInclude
+
+  /** Open state reference / Ссылка на состояние открытия */
+  readonly open = ref<boolean>(false)
+  /** Model synchronization manager / Менеджер синхронизации модели */
+  readonly model: ModelInclude<boolean>
 
   /**
    * Constructor for initializing all sub-components of the modal window.
@@ -61,36 +68,44 @@ export abstract class ModalAbstract {
     protected readonly extraBars?: () => ComponentIncludeExtra<BarsProps>,
     protected readonly extraActions?: () => ComponentIncludeExtra<ActionsProps>,
     constructors?: {
-      WindowConstructor?: typeof WindowInclude
-      BarsConstructor?: typeof BarsInclude
       ActionsConstructor?: typeof ActionsInclude
+      BarsConstructor?: typeof BarsInclude
+      ModelIncludeConstructor?: typeof ModelInclude
+      WindowConstructor?: typeof WindowInclude
     }
   ) {
     const {
-      WindowConstructor = WindowInclude,
+      ActionsConstructor = ActionsInclude,
       BarsConstructor = BarsInclude,
-      ActionsConstructor = ActionsInclude
+      ModelIncludeConstructor = ModelInclude,
+      WindowConstructor = WindowInclude
     } = constructors ?? {}
 
     const labelId: string = getElementId()
     const descriptionId: string = getElementId()
 
+    this.model = new ModelIncludeConstructor('open', this.emits, this.open)
+
     this.window = new WindowConstructor(
       className,
       props,
       components,
-      this.getExtraWindow(),
+      () => ({
+        open: this.open.value,
+        ...this.getExtraWindow()
+      }),
       undefined,
       emits,
       labelId,
-      descriptionId
+      descriptionId,
+      this.model
     )
 
     this.bars = new BarsConstructor(
       className,
       props,
       components,
-      this.getExtraBars(),
+      () => this.getExtraBars(),
       undefined,
       emits,
       labelId,
@@ -101,10 +116,16 @@ export abstract class ModalAbstract {
       className,
       props,
       components,
-      this.getExtraActions(),
+      () => this.getExtraActions(),
       undefined,
       emits
     )
+
+    onMounted(() => {
+      watch([refs.open], () => {
+        this.open.value = Boolean(this.props.open)
+      }, { immediate: true })
+    })
   }
 
   /**

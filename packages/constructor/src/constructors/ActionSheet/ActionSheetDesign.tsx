@@ -101,7 +101,7 @@ export class ActionSheetDesign<
    * Генерирует данные для заголовка.
    * @param props data for the transferable property/ данные для передаваемого свойства
    */
-  protected readonly renderTitleTouch = (
+  readonly renderTitleTouch = (
     props: WindowControlItem
   ): VNode[] => {
     const children: any[] = this.renderTitle(props)

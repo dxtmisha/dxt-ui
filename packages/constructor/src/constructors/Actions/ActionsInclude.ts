@@ -26,11 +26,11 @@ export class ActionsInclude<
   Props extends ActionsPropsInclude = ActionsPropsInclude,
   PropsExtra extends ActionsProps = ActionsProps
 > extends ComponentIncludeAbstract<
-  Props,
-  PropsExtra,
-  ActionsExpose,
-  ActionsSlots
-> {
+    Props,
+    PropsExtra,
+    ActionsExpose,
+    ActionsSlots
+  > {
   /** Component name / Имя компонента */
   protected name = 'actions'
 

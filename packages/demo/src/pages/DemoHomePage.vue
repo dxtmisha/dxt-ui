@@ -22,6 +22,7 @@ import DemoLink from '../components/DemoLink.vue'
         <DemoLink label="Input" name="component-input"/>
         <DemoLink label="List" name="component-list"/>
         <DemoLink label="Mask" name="component-mask"/>
+        <DemoLink label="Modal" name="component-modal"/>
         <DemoLink label="Menu" name="component-menu"/>
         <DemoLink label="MenuButton" name="component-menu-button"/>
         <DemoLink label="MenuCountry" name="component-menu-country"/>

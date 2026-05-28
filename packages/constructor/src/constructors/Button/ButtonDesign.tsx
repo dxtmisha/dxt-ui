@@ -31,14 +31,14 @@ export class ButtonDesign<
   CLASSES extends ButtonClasses,
   P extends ButtonPropsBasic
 > extends DesignConstructorAbstract<
-  HTMLDivElement,
-  COMP,
-  ButtonEmits,
-  EXPOSE,
-  ButtonSlots,
-  CLASSES,
-  P
-> {
+    HTMLDivElement,
+    COMP,
+    ButtonEmits,
+    EXPOSE,
+    ButtonSlots,
+    CLASSES,
+    P
+  > {
   /** Button control item instance / Экземпляр элемента управления кнопкой */
   protected readonly item: Button
 

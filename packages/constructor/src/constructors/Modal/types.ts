@@ -9,6 +9,8 @@ import type {
 import type { BarsComponentInclude, BarsEmitsInclude } from '../Bars'
 import type { ActionsComponentInclude, ActionsEmitsInclude } from '../Actions'
 
+import type { ModelEmitsOpen } from '../../types/modelTypes'
+
 /**
  * Interface for describing which components need to be connected for work.
  *
@@ -28,6 +30,7 @@ export type ModalEmits
   = WindowEmitsInclude
     & BarsEmitsInclude
     & ActionsEmitsInclude
+    & ModelEmitsOpen
 
 /**
  * Type describing available properties.

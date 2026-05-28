@@ -29,14 +29,14 @@ export class MotionTransformDesign<
   CLASSES extends MotionTransformClasses,
   P extends MotionTransformPropsBasic
 > extends DesignConstructorAbstract<
-  HTMLDivElement,
-  COMP,
-  MotionTransformEmits,
-  EXPOSE,
-  MotionTransformSlots,
-  CLASSES,
-  P
-> {
+    HTMLDivElement,
+    COMP,
+    MotionTransformEmits,
+    EXPOSE,
+    MotionTransformSlots,
+    CLASSES,
+    P
+  > {
   /** Substrate context element / Элемент подложки контекста */
   protected elementContext = ref<HTMLDivElement>()
   /** MotionTransform controller instance / Экземпляр контроллера MotionTransform */

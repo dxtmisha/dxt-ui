@@ -18,8 +18,8 @@ import type { CellClassesSub } from './basicTypes'
  */
 export type CellComponents
   = IconComponentInclude
-  & ProgressComponentInclude
-  & RippleComponentInclude
+    & ProgressComponentInclude
+    & RippleComponentInclude
 
 /**
  * Type describing available events.

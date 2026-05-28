@@ -20,6 +20,9 @@ const propsNames: StorybookProps = [
   { name: 'image', type: 'string | ConstrBind<ImageProps> | undefined' },
   { name: 'imageAttrs', type: 'ConstrBind<ImageProps> | undefined' },
   { name: 'imagePosition', type: 'string', option: ['top', 'left'] },
+  { name: 'modelOpen', type: 'boolean | undefined' },
+  { name: 'onUpdate:modelOpen', type: '((value: boolean) => void) | undefined' },
+  { name: 'onUpdate:open', type: '((value: boolean) => void) | undefined' },
   { name: 'open', type: 'boolean | undefined' },
   { name: 'width', type: 'string', option: ['sm', 'md', 'lg', 'xl', 'auto'] },
   { name: 'windowAttrs', type: 'ConstrBind<WindowProps> | undefined' }
