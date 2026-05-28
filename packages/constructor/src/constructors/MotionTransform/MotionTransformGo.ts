@@ -1,49 +1,49 @@
 import { MotionTransformState } from './MotionTransformState'
 
 /**
- * Class for managing control actions.
+ * Class for managing control actions and open/close state transitions.
  *
- * Класс для управления действиями управления.
+ * Класс для управления действиями перехода состояний открытия/закрытия.
  */
 export class MotionTransformGo {
   /**
-   * Constructor.
+   * Constructor for creating a MotionTransformGo instance.
    *
-   * Конструктор.
-   * @param state class object for status management/ объект класса для управления статусом
+   * Конструктор для создания экземпляра MotionTransformGo.
+   * @param state state manager / менеджер состояния
    */
   constructor(
     protected readonly state: MotionTransformState
   ) {}
 
   /**
-   * Opens.
+   * Opens the transform container.
    *
-   * Открывает.
+   * Открывает контейнер трансформации.
    */
   readonly open = () => this.state.set(true)
 
   /**
-   * Closes.
+   * Closes the transform container.
    *
-   * Закрывает.
+   * Закрывает контейнер трансформации.
    */
   readonly close = () => {
     this.state.set(false)
   }
 
   /**
-   * Switching.
+   * Toggles the open/closed state of the transform container.
    *
-   * Переключение.
+   * Переключает открытое/закрытое состояние контейнера трансформации.
    */
   readonly toggle = () => this.state.toggle()
 
   /**
-   * State changes.
+   * Changes the state to the specified open/closed boolean.
    *
-   * Изменение состояния.
-   * @param open opening status/ статус открытия
+   * Изменяет состояние на указанное булево значение открытия/закрытия.
+   * @param open target opening status / целевой статус открытия
    */
   readonly to = (open: boolean) => this.state.set(open)
 }

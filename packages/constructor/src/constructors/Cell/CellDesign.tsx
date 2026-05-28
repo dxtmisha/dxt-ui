@@ -1,11 +1,10 @@
-import { computed, h, type VNode } from 'vue'
+import { h, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
   DesignConstructorAbstract
 } from '@dxtmisha/functional'
 
-import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { Cell } from './Cell'
 
 import {
@@ -20,30 +19,35 @@ import {
 } from './types'
 
 /**
- * CellDesign
+ * CellDesign handles component integration, styles, classes, and markup rendering for the Cell constructor.
+ *
+ * CellDesign управляет интеграцией компонентов, стилями, классами и рендерингом разметки для конструктора Cell.
  */
 export class CellDesign<
   COMP extends CellComponents,
   EXPOSE extends CellExpose,
   CLASSES extends CellClasses,
   P extends CellPropsBasic
-> extends DesignConstructorAbstract<
-    HTMLDivElement,
-    COMP,
-    CellEmits,
-    EXPOSE,
-    CellSlots,
-    CLASSES,
-    P
-  > {
+ > extends DesignConstructorAbstract<
+  HTMLDivElement,
+  COMP,
+  CellEmits,
+  EXPOSE,
+  CellSlots,
+  CLASSES,
+  P
+> {
+  /** Cell controller instance / Экземпляр контроллера ячейки (Cell) */
   protected readonly item: Cell
 
   /**
-   * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor cell item class/ класс элемента ячейки
+   * Constructor for CellDesign.
+   *
+   * Конструктор для CellDesign.
+   * @param name class name / имя класса
+   * @param props properties / свойства
+   * @param options additional design options / дополнительные параметры дизайна
+   * @param ItemConstructor class constructor for the cell item / конструктор класса элемента ячейки
    */
   constructor(
     name: string,
@@ -72,9 +76,10 @@ export class CellDesign<
   }
 
   /**
-   * Initialization of all the necessary properties for work
+   * Initializes exposed interface for the cell component.
    *
-   * Инициализация всех необходимых свойств для работы.
+   * Инициализирует экспортируемые свойства для компонента ячейки.
+   * @returns exposed object / экспортируемый объект
    */
   protected initExpose(): EXPOSE {
     return {
@@ -83,13 +88,14 @@ export class CellDesign<
   }
 
   /**
-   * Improvement of the obtained list of classes.
+   * Initializes classes for elements in the cell component.
    *
-   * Доработка полученного списка классов.
+   * Инициализирует классы для элементов компонента ячейки.
+   * @returns object with classes / объект с классами
    */
   protected initClasses(): Partial<CLASSES> {
     return {
-      main: this.item.classes.value,
+      main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
         context: this.getSubClass('context'),
@@ -107,23 +113,29 @@ export class CellDesign<
   }
 
   /**
-   * Refinement of the received list of styles.
+   * Initializes styles for the cell component.
    *
-   * Доработка полученного списка стилей.
+   * Инициализирует стили для компонента ячейки.
+   * @returns styles object / объект стилей
    */
   protected initStyles(): ConstrStyles {
     return {}
   }
 
   /**
-   * A method for rendering.
+   * Main render function for the cell component.
    *
-   * Метод для рендеринга.
+   * Основная функция рендеринга для компонента ячейки.
+   * @returns virtual node (VNode) / виртуальный узел (VNode)
    */
   protected initRender(): VNode {
     return h(
       this.props.tag ?? 'div',
-      this.propsMain.value,
+      {
+        ...this.getAttrs(),
+        class: this.classes?.value.main,
+        ...this.item.binds
+      },
       [
         ...this.item.icon.render(),
         ...this.renderContext(),
@@ -136,9 +148,10 @@ export class CellDesign<
   }
 
   /**
-   * Generates text elements.
+   * Renders the text context container containing label, caption, and description.
    *
-   * Генерирует элементы текста.
+   * Рендерит контейнер текстового контекста, содержащий метку, подпись и описание.
+   * @returns array of virtual nodes (VNode) / массив виртуальных узлов (VNode)
    */
   protected renderContext = (): VNode[] => {
     return [
@@ -158,9 +171,10 @@ export class CellDesign<
   }
 
   /**
-   * Generates a slot for elements on the right.
+   * Renders trailing elements container if a trailing slot is provided.
    *
-   * Генерирует слот для элементов справа.
+   * Рендерит контейнер хвостовых элементов, если передан слот trailing.
+   * @returns array of virtual nodes (VNode) / массив виртуальных узлов (VNode)
    */
   protected renderTrailing = (): VNode[] => {
     if (
@@ -174,7 +188,7 @@ export class CellDesign<
             key: 'trailing',
             class: this.classes?.value.contextTrailing
           },
-          this.initSlot('trailing', undefined, this.item.getClassesSub())
+          this.initSlot('trailing', undefined, this.item.classesSub)
         )
       ]
     }
@@ -183,9 +197,10 @@ export class CellDesign<
   }
 
   /**
-   * Generates a slot for elements on the right.
+   * Renders the inner body container if a body slot is provided.
    *
-   * Генерирует слот для элементов справа.
+   * Рендерит контейнер внутреннего тела, если передан слот body.
+   * @returns array of virtual nodes (VNode) / массив виртуальных узлов (VNode)
    */
   protected renderBody = (): VNode[] => {
     if (
@@ -199,36 +214,11 @@ export class CellDesign<
             key: 'body',
             class: this.classes?.value.body
           },
-          this.initSlot('body', undefined, this.item.getClassesSub())
+          this.initSlot('body', undefined, this.item.classesSub)
         )
       ]
     }
 
     return []
   }
-
-  /**
-   * Props for the main element.
-   *
-   * Свойства для главного элемента.
-   */
-  protected readonly propsMain = computed(() => {
-    const props = {
-      ...this.getAttrs(),
-      'class': this.classes?.value.main,
-      'data-value': this.props.value,
-      'data-divider': this.props.divider ? 'active' : undefined,
-      ...this.item.event.binds,
-      ...AriaStaticInclude.role(this.item.role.value)
-    }
-
-    if (this.props.dynamic) {
-      return {
-        ...props,
-        tabindex: '0'
-      }
-    }
-
-    return props
-  })
 }

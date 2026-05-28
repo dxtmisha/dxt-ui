@@ -79,13 +79,6 @@ export class Icon {
   }
 
   /**
-   * Checks if the additional icon is active/ Проверяет, активна ли дополнительная иконка
-   */
-  get isActive(): boolean {
-    return Boolean(this.props.active && this.props.iconActive)
-  }
-
-  /**
    * Values for the class/ Значения для класса
    */
   get classes(): ConstrClassObject {
@@ -131,7 +124,7 @@ export class Icon {
         class: `${this.className}__icon`,
         turn: this.props.turn,
         disabled: this.props.disabled,
-        hide: this.isActive,
+        hide: this.isActive(),
         onLoad: this.onLoad
       }
     )
@@ -148,9 +141,16 @@ export class Icon {
         class: `${this.className}__iconActive`,
         turn: this.props.turn,
         disabled: this.props.disabled,
-        hide: !this.isActive
+        hide: !this.isActive()
       }
     )
+  }
+
+  /**
+   * Checks if the additional icon is active/ Проверяет, активна ли дополнительная иконка
+   */
+  isActive(): boolean {
+    return Boolean(this.props.active && this.props.iconActive)
   }
 
   /**

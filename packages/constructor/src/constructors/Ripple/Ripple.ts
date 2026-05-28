@@ -12,19 +12,22 @@ import type { RippleProps } from './props'
  * Базовый класс Ripple для работы во Vue.
  */
 export class Ripple {
+  /** Ripple item manager instance / Экземпляр менеджера эффекта свечения */
   protected readonly item: RippleItem
 
   /**
-   * Constructor
-   * @param props input data/ входные данные
-   * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
-   * @param element input element/ элемент ввода
-   * @param className class name/ название класса
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param slots object for working with slots/ объект для работы со слотами
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param constructors object with classes/ объект с классами
-   * @param constructors.RippleItemConstructor class for working with ripple item/ класс для работы с элементом волны
+   * Constructor for creating a ripple instance.
+   *
+   * Конструктор для создания экземпляра эффекта свечения (ripple).
+   * @param props input properties / входные свойства
+   * @param refs input properties in the form of reactive references / входные свойства в виде реактивных ссылок
+   * @param element target element where ripples are rendered / целевой элемент, в котором рендерятся волны
+   * @param className base CSS class name / базовое имя CSS-класса
+   * @param components object for working with components / объект для работы с компонентами
+   * @param slots object for working with slots / объект для работы со слотами
+   * @param emits callback function triggered on events / функция обратного вызова, запускаемая при событиях
+   * @param constructors optional class constructor overrides / необязательные переопределения конструкторов классов
+   * @param constructors.RippleItemConstructor class constructor for the ripple item / конструктор класса элемента волны
    */
   constructor(
     protected readonly props: RippleProps,
@@ -46,10 +49,10 @@ export class Ripple {
   }
 
   /**
-   * The click event adds a wave effect element.
+   * Click event handler that adds a new ripple effect element at the cursor coordinates.
    *
-   * Событие клика добавляет элемент эффекта волна.
-   * @param event click event/ событие клика
+   * Обработчик события клика, который добавляет новый элемент эффекта волны по координатам курсора.
+   * @param event mouse click event / событие клика мыши
    */
   readonly onClick = (event: MouseEvent) => this.item.add(event.offsetX, event.offsetY)
 }

@@ -10,19 +10,24 @@ import type { MotionTransformProps } from './props'
  * Класс для работы с элементами и классами.
  */
 export class MotionTransformElement {
+  /** Base unique identifier string / Базовая строка уникального идентификатора */
   readonly id = getElementId()
+  /** Control element ID string / Строка идентификатора элемента управления */
   readonly idControl = `${this.id}-control`
+  /** Body element ID string / Строка идентификатора элемента тела */
   readonly idBody = `${this.id}-body`
 
+  /** List of design classes / Список классов дизайна */
   readonly classes: MotionTransformClassList
+  /** CSS custom properties keys map / Карта ключей пользовательских CSS-свойств */
   readonly style: MotionTransformStyle
 
   /**
    * Constructor
-   * @param props input data/ входные данные
-   * @param element window element/ элемент окна
-   * @param elementContext substrate element/ элемент подложка
-   * @param className class name/ название класса
+   * @param props input properties / входные свойства
+   * @param element window element / элемент окна
+   * @param elementContext substrate element / элемент подложка
+   * @param className base class name / название класса
    */
   constructor(
     protected readonly props: MotionTransformProps,
@@ -49,10 +54,46 @@ export class MotionTransformElement {
   }
 
   /**
-   * Checks if the click event is prohibited.
+   * Returns the identifier selector.
    *
-   * Проверяет, запрещено ли событие клика.
-   * @param target selected element/ выбранный элемент
+   * Возвращает селектор идентификатора.
+   */
+  get idSelector(): string {
+    return `#${getElementId(this.element.value)}`
+  }
+
+  /**
+   * Returns the title element.
+   *
+   * Возвращает элемент заголовка.
+   */
+  get elementHead(): HTMLDivElement | undefined {
+    return this.getElement()?.querySelector<HTMLDivElement>(`.${this.className}__head`) || undefined
+  }
+
+  /**
+   * Returns the body element.
+   *
+   * Возвращает элемент тела.
+   */
+  get elementBody(): HTMLDivElement | undefined {
+    return this.getElement()?.querySelector<HTMLDivElement>(`.${this.className}__body`) || undefined
+  }
+
+  /**
+   * Returns the sizes of elements.
+   *
+   * Возвращает размеры элементов.
+   */
+  get rect(): DOMRect | undefined {
+    return this.getElementContext()?.getBoundingClientRect()
+  }
+
+  /**
+   * Checks if click interaction is allowed on the target element.
+   *
+   * Проверяет, разрешено ли взаимодействие по клику на целевом элементе.
+   * @param target target element to inspect / целевой элемент для проверки
    */
   isClick(target: HTMLElement): boolean {
     return Boolean(
@@ -62,40 +103,40 @@ export class MotionTransformElement {
   }
 
   /**
-   * Checks if the click event is prohibited in the global area.
+   * Checks if click is allowed in the global page area.
    *
-   * Проверяет, запрещено ли событие клика в глобальной области.
-   * @param target selected element/ выбранный элемент
+   * Проверяет, разрешено ли событие клика в глобальной области страницы.
+   * @param target target element to inspect / целевой элемент для проверки
    */
   isClickGlobal(target: HTMLElement): boolean {
     return !target.closest<HTMLElement>(`.${this.classes.noneGlobal}`)
   }
 
   /**
-   * Checks if the window needs to be closed on click.
+   * Checks if the event target corresponds to close triggers.
    *
-   * Проверяет, нужно ли закрыть окно при клике.
-   * @param target selected element/ выбранный элемент
+   * Проверяет, соответствует ли цель события триггерам закрытия.
+   * @param target target element to inspect / целевой элемент для проверки
    */
   isClose(target: HTMLElement): boolean {
-    return Boolean(target.closest<HTMLElement>(`${this.getId()} .${this.classes.close}`))
+    return Boolean(target.closest<HTMLElement>(`${this.idSelector} .${this.classes.close}`))
   }
 
   /**
-   * Checks if the element is outside the body.
+   * Checks if the target is located outside the body element.
    *
-   * Проверяет, является ли элемент за предел тела.
-   * @param target selected element/ выбранный элемент
+   * Проверяет, находится ли цель за пределами элемента тела.
+   * @param target target element to inspect / целевой элемент для проверки
    */
   isOutside(target: HTMLElement): boolean {
-    return !target.closest(this.getId())
+    return !target.closest(this.idSelector)
   }
 
   /**
-   * Checks if the element needs to be ignored.
+   * Checks if the target matches any elements configured to be ignored.
    *
-   * Проверяет, нужно ли игнорировать элемент.
-   * @param target selected element/ выбранный элемент
+   * Проверяет, соответствует ли цель элементам, настроенным на игнорирование.
+   * @param target target element to inspect / целевой элемент для проверки
    */
   isIgnore(target: HTMLElement): boolean {
     return !(this.props.ignore && target.closest(getElementId(this.props.ignore, '')))
@@ -103,9 +144,9 @@ export class MotionTransformElement {
   }
 
   /**
-   * Is the animation for slide changes enabled.
+   * Checks if slide animations are enabled for the element.
    *
-   * Включено ли анимация на изменения слайда.
+   * Проверяет, включена ли анимация смены слайдов для элемента.
    */
   isAnimation(): boolean {
     return Boolean(
@@ -115,9 +156,9 @@ export class MotionTransformElement {
   }
 
   /**
-   * Is window mode enabled.
+   * Checks if the component is running in window modal mode.
    *
-   * Включен ли режим окна.
+   * Проверяет, работает ли компонент в режиме модального окна.
    */
   isWindow(): boolean {
     return Boolean(
@@ -128,18 +169,18 @@ export class MotionTransformElement {
   }
 
   /**
-   * Checks whether the title needs to be left.
+   * Checks if section mode is active.
    *
-   * Проверяет, надо ли оставить заголовок.
+   * Проверяет, активен ли режим секции.
    */
   isSection(): boolean {
     return Boolean(this.props.section)
   }
 
   /**
-   * Returns the main element.
+   * Returns the main window element.
    *
-   * Возвращает главного элемента.
+   * Возвращает главный элемент окна.
    */
   getElement(): HTMLDivElement | undefined {
     return this.element.value
@@ -155,46 +196,10 @@ export class MotionTransformElement {
   }
 
   /**
-   * Returns the title element.
+   * Generates a classes map based on a base class name.
    *
-   * Возвращает элемент заголовка.
-   */
-  getElementHead(): HTMLDivElement | undefined {
-    return this.getElement()?.querySelector<HTMLDivElement>(`.${this.className}__head`) || undefined
-  }
-
-  /**
-   * Returns the body element.
-   *
-   * Возвращает элемент тела.
-   */
-  getElementBody(): HTMLDivElement | undefined {
-    return this.getElement()?.querySelector<HTMLDivElement>(`.${this.className}__body`) || undefined
-  }
-
-  /**
-   * Returns the identifier.
-   *
-   * Возвращает идентификатор.
-   */
-  getId(): string {
-    return `#${getElementId(this.element.value)}`
-  }
-
-  /**
-   * Returns the sizes of elements.
-   *
-   * Возвращает размеры элементов.
-   */
-  getRect(): DOMRect | undefined {
-    return this.getElementContext()?.getBoundingClientRect()
-  }
-
-  /**
-   * Returns the list of available classes.
-   *
-   * Возвращает список доступных классов.
-   * @param className class name/ название класса
+   * Генерирует карту классов на основе базового имени класса.
+   * @param className base class name / имя класса
    */
   static getClassesList(className: string): MotionTransformClassList {
     return {
@@ -210,10 +215,10 @@ export class MotionTransformElement {
   }
 
   /**
-   * Returns a list of available classes by design name.
+   * Generates a classes map using a design system system token.
    *
-   * Возвращает список доступных классов по названию дизайна.
-   * @param design design name/ названия дизайна
+   * Генерирует карту классов по системному префиксу дизайна.
+   * @param design design prefix / префикс дизайна
    */
   static getClassesListByDesign(design: string) {
     return this.getClassesList(`${design}-motionTransform`)

@@ -45,11 +45,11 @@ export class MotionTransformSize {
    * Обновить все размеры.
    */
   update(): void {
-    const rect = this.element.getRect()
+    const rect = this.element.rect
 
     if (rect) {
-      const elementHead = this.element.getElementHead()
-      const elementBody = this.element.getElementBody()
+      const elementHead = this.element.elementHead
+      const elementBody = this.element.elementBody
 
       const scale = 1 / window.innerWidth * rect.width
       const headScale = 1 / rect.width * window.innerWidth

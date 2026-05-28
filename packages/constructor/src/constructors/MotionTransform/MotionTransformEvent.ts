@@ -9,21 +9,22 @@ import type { MotionTransformEmits } from './types'
 import type { MotionTransformProps } from './props'
 
 /**
- * Class for event management.
+ * Class for event management in the MotionTransform system.
  *
- * Класс для управления событиями.
+ * Класс для управления событиями в системе MotionTransform.
  */
 export class MotionTransformEvent {
+  /** Pointer click event item listener instance / Экземпляр слушателя событий клика указателя (pointer click) */
   protected item?: EventItem<HTMLElement, PointerEvent>
 
   /**
-   * Constructor.
+   * Constructor for creating a MotionTransformEvent instance.
    *
-   * Конструктор.
-   * @param props input data/ входные данные
-   * @param element class object for managing an element/ объект класса для управления элементом
-   * @param state class object for status management/ объект класса для управления статусом
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   * Конструктор для создания экземпляра MotionTransformEvent.
+   * @param props input properties / входные свойства
+   * @param element helper object for element operations / вспомогательный объект для работы с элементами
+   * @param state state manager / менеджер состояния
+   * @param emits callback function triggered on events / функция обратного вызова, запускаемая при событиях
    */
   constructor(
     protected readonly props: MotionTransformProps,
@@ -43,9 +44,10 @@ export class MotionTransformEvent {
   }
 
   /**
-   * Stopping event listening.
+   * Stops listening to the document click events.
    *
-   * Остановка прослушивания события.
+   * Останавливает прослушивание событий клика по документу.
+   * @returns current instance / текущий экземпляр
    */
   stop(): this {
     this.item?.stop()
@@ -53,57 +55,11 @@ export class MotionTransformEvent {
   }
 
   /**
-   * Click event on the title.
+   * Triggers the transform events.
    *
-   * Событие клика на заголовок.
-   * @param event event object/ объект события
-   */
-  readonly onClick = (event: Event) => {
-    if (this.isTrigger(event.target as HTMLElement)) {
-      this.emit(event, 'head')
-      this.state.toggle()
-    }
-  }
-
-  /**
-   * Events of pressing a key.
-   *
-   * События нажатия на клавишу.
-   * @param event event object/ объект события
-   */
-  readonly onKeydown = async (event: KeyboardEvent): Promise<void> => {
-    if (
-      isEnter(event as KeyboardEvent)
-      && this.isTrigger(event.target as HTMLElement)
-    ) {
-      event.preventDefault()
-
-      this.emit(event, 'head')
-      this.state.toggle()
-    }
-  }
-
-  /**
-   * End of animation event.
-   *
-   * Событие окончания анимации.
-   * @param event event object/ объект события
-   */
-  readonly onTransitionend = (event: TransitionEvent) => {
-    if (
-      this.element.getElement() === event.target
-      && event.propertyName === 'height'
-    ) {
-      this.state.reset()
-    }
-  }
-
-  /**
-   * Event call.
-   *
-   * Вызов события.
-   * @param event event object/ объект события
-   * @param type event type/ тип события
+   * Вызывает события трансформации (transform).
+   * @param event native event object / объект нативного события
+   * @param type event trigger source type / тип источника запуска события
    */
   emit(
     event: Event | undefined,
@@ -118,6 +74,69 @@ export class MotionTransformEvent {
     this.emits?.('transformLite', options)
   }
 
+  /**
+   * Click event handler for the title/head element.
+   *
+   * Обработчик события клика на элемент заголовка/шапки.
+   * @param event native event object / объект нативного события
+   */
+  readonly onClick = (event: Event) => {
+    if (this.isTrigger(event.target as HTMLElement)) {
+      this.emit(event, 'head')
+      this.state.toggle()
+    }
+  }
+
+  /**
+   * Keydown event handler for keyboard interactions.
+   *
+   * Обработчик события нажатия клавиши для взаимодействия с клавиатурой.
+   * @param event keyboard event object / объект события клавиатуры
+   */
+  readonly onKeydown = async (event: KeyboardEvent): Promise<void> => {
+    if (
+      isEnter(event as KeyboardEvent)
+      && this.isTrigger(event.target as HTMLElement)
+    ) {
+      event.preventDefault()
+
+      this.emit(event, 'head')
+      this.state.toggle()
+    }
+  }
+
+  /**
+   * Transition end handler that resets state when height transitions finish.
+   *
+   * Обработчик завершения анимации перехода, сбрасывающий состояние после окончания перехода высоты.
+   * @param event transition event object / объект события окончания перехода
+   */
+  readonly onTransitionend = (event: TransitionEvent) => {
+    if (
+      this.element.getElement() === event.target
+      && event.propertyName === 'height'
+    ) {
+      this.state.reset()
+    }
+  }
+
+  /**
+   * Checks if the target element acts as a trigger for opening.
+   *
+   * Проверяет, является ли целевой элемент триггером для открытия.
+   * @param target target element to inspect / целевой элемент для проверки
+   * @returns true if target is a trigger / true, если цель является триггером
+   */
+  protected isTrigger(target: HTMLElement): boolean {
+    return Boolean(this.props.clickOpen && this.element.isClick(target))
+  }
+
+  /**
+   * Document-level pointer click listener for handling auto-close and closing triggers.
+   *
+   * Слушатель кликов на уровне документа для обработки автозакрытия и триггеров закрытия.
+   * @param event pointer event object / объект события указателя (pointer)
+   */
   protected listener = (event: PointerEvent) => {
     const target = event.target as HTMLDivElement
 
@@ -136,15 +155,5 @@ export class MotionTransformEvent {
       this.emit(event, 'body')
       this.state.set(false)
     }
-  }
-
-  /**
-   * Checks if the event target is a trigger for opening.
-   *
-   * Проверяет, является ли цель события триггером для открытия.
-   * @param target event target/ цель события
-   */
-  protected isTrigger(target: HTMLElement): boolean {
-    return Boolean(this.props.clickOpen && this.element.isClick(target))
   }
 }

@@ -5,7 +5,6 @@ import {
   DesignConstructorAbstract
 } from '@dxtmisha/functional'
 
-import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { MotionTransform } from './MotionTransform'
 
 import {
@@ -20,7 +19,9 @@ import {
 } from './types'
 
 /**
- * MotionTransformDesign
+ * MotionTransformDesign handles component integration, styles, classes, and markup rendering for the MotionTransform constructor.
+ *
+ * MotionTransformDesign управляет интеграцией компонентов, стилями, классами и рендерингом разметки для конструктора MotionTransform.
  */
 export class MotionTransformDesign<
   COMP extends MotionTransformComponents,
@@ -28,23 +29,27 @@ export class MotionTransformDesign<
   CLASSES extends MotionTransformClasses,
   P extends MotionTransformPropsBasic
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
-    COMP,
-    MotionTransformEmits,
-    EXPOSE,
-    MotionTransformSlots,
-    CLASSES,
-    P
-  > {
+  HTMLDivElement,
+  COMP,
+  MotionTransformEmits,
+  EXPOSE,
+  MotionTransformSlots,
+  CLASSES,
+  P
+> {
+  /** Substrate context element / Элемент подложки контекста */
   protected elementContext = ref<HTMLDivElement>()
+  /** MotionTransform controller instance / Экземпляр контроллера MotionTransform */
   protected readonly item: MotionTransform
 
   /**
-   * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor class for working with the item/ класс для работы с элементом
+   * Constructor for MotionTransformDesign.
+   *
+   * Конструктор для MotionTransformDesign.
+   * @param name class name / имя класса
+   * @param props properties / свойства
+   * @param options additional design options / дополнительные параметры дизайна
+   * @param ItemConstructor class constructor for the transform item / конструктор класса элемента трансформации
    */
   constructor(
     name: string,
@@ -74,9 +79,10 @@ export class MotionTransformDesign<
   }
 
   /**
-   * Initialization of all the necessary properties for work
+   * Initializes exposed interface for the transform component.
    *
-   * Инициализация всех необходимых свойств для работы.
+   * Инициализирует экспортируемые свойства для компонента трансформации.
+   * @returns exposed object / экспортируемый объект
    */
   protected initExpose(): EXPOSE {
     return {
@@ -91,9 +97,10 @@ export class MotionTransformDesign<
   }
 
   /**
-   * Improvement of the obtained list of classes.
+   * Initializes classes for elements in the transform component.
    *
-   * Доработка полученного списка классов.
+   * Инициализирует классы для элементов компонента трансформации.
+   * @returns object with classes / объект с классами
    */
   protected initClasses(): Partial<CLASSES> {
     return {
@@ -112,18 +119,20 @@ export class MotionTransformDesign<
   }
 
   /**
-   * Refinement of the received list of styles.
+   * Initializes styles for the transform component.
    *
-   * Доработка полученного списка стилей.
+   * Инициализирует стили для компонента трансформации.
+   * @returns styles object / объект стилей
    */
   protected initStyles(): ConstrStyles {
     return {}
   }
 
   /**
-   * A method for rendering.
+   * Main render function for the transform component.
    *
-   * Метод для рендеринга.
+   * Основная функция рендеринга для компонента трансформации.
+   * @returns virtual node (VNode) / виртуальный узел (VNode)
    */
   protected initRender(): VNode {
     const children: any[] = [
@@ -178,11 +187,10 @@ export class MotionTransformDesign<
       h(
         'div',
         {
-          key: 'head',
           class: this.classes?.value.head,
-          ...this.item.getPropsHead()
+          ...this.item.bindsHead
         },
-        this.initSlot('head', undefined, this.item.getSlotData())
+        this.initSlot('head', undefined, this.item.slotData)
       )
     ]
   }
@@ -201,17 +209,10 @@ export class MotionTransformDesign<
         h(
           this.props.tagBody ?? 'div',
           {
-            key: 'body',
-            id: this.item.element.idBody,
             class: this.classes?.value.body,
-            ...AriaStaticInclude.role('region'),
-            ...AriaStaticInclude.modal(
-              false,
-              this.props.ariaLabelledby,
-              this.props.ariaDescribedby
-            )
+            ...this.item.bindsBody
           },
-          this.initSlot('body', undefined, this.item.getSlotData())
+          this.initSlot('body', undefined, this.item.slotData)
         )
       ]
     }
