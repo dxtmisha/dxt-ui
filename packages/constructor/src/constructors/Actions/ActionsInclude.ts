@@ -6,7 +6,7 @@ import {
 
 import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
 
-import type { ComponentIncludeExposeItem, ComponentIncludeExtra } from '../../types/componentInclude'
+import type { ComponentIncludeExtra } from '../../types/componentInclude'
 import type { EventClickValue } from '../../types/eventClickTypes'
 
 import type { ActionsComponentInclude, ActionsEmitsInclude, ActionsPropsInclude } from './basicTypes'
@@ -26,18 +26,21 @@ export class ActionsInclude<
   Props extends ActionsPropsInclude = ActionsPropsInclude,
   PropsExtra extends ActionsProps = ActionsProps
 > extends ComponentIncludeAbstract<
-    Props,
-    PropsExtra,
-    ActionsExpose,
-    ActionsSlots
-  > {
-  protected readonly exposeItems: ComponentIncludeExposeItem<any>[] | undefined = undefined
-
+  Props,
+  PropsExtra,
+  ActionsExpose,
+  ActionsSlots
+> {
+  /** Component name / Имя компонента */
   protected name = 'actions'
+
+  /** Property name for attributes / Имя свойства для атрибутов */
   protected propsAttrsName = 'actionsAttrs'
 
   /**
-   * Constructor
+   * Constructor for ActionsInclude class.
+   *
+   * Конструктор для класса ActionsInclude.
    * @param className class name / название класса
    * @param props input parameter / входной параметр
    * @param components object for working with components / объект для работы с компонентами
@@ -57,8 +60,10 @@ export class ActionsInclude<
   }
 
   /**
-   * Checks whether actions should be displayed /
-   * Проверяет, нужно ли отображать действия
+   * Checks whether actions should be displayed.
+   *
+   * Проверяет, нужно ли отображать действия.
+   * @returns visibility status / статус видимости
    */
   override get is(): boolean {
     const props = this.getProps()
@@ -73,10 +78,11 @@ export class ActionsInclude<
   }
 
   /**
-   * Handles click events from Actions and emits related events /
-   * Обрабатывает клики по действиям и испускает связанные события
+   * Handles click events from Actions and emits related events.
+   *
+   * Обрабатывает клики по действиям и испускает связанные события.
    * @param event native mouse event / native событие мыши
-   * @param value payload with { type, value, detail } / данные события с { type, value, detail }
+   * @param value payload with event details / данные события с подробностями
    */
   readonly onClick = (event: MouseEvent, value: EventClickValue) => {
     this.emits?.('actions', event, value)

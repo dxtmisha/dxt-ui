@@ -19,7 +19,11 @@ import {
 } from './types'
 
 /**
- * ButtonDesign
+ * ButtonDesign constructor class responsible for assembling and rendering the Button component.
+ * It manages class resolution, styles initialization, and the final DOM VNode rendering tree.
+ *
+ * Класс-конструктор ButtonDesign, отвечающий за сборку и рендеринг компонента кнопки.
+ * Управляет разрешением классов, инициализацией стилей и финальным деревом рендеринга VNode DOM.
  */
 export class ButtonDesign<
   COMP extends ButtonComponents,
@@ -27,22 +31,23 @@ export class ButtonDesign<
   CLASSES extends ButtonClasses,
   P extends ButtonPropsBasic
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
-    COMP,
-    ButtonEmits,
-    EXPOSE,
-    ButtonSlots,
-    CLASSES,
-    P
-  > {
+  HTMLDivElement,
+  COMP,
+  ButtonEmits,
+  EXPOSE,
+  ButtonSlots,
+  CLASSES,
+  P
+> {
+  /** Button control item instance / Экземпляр элемента управления кнопкой */
   protected readonly item: Button
 
   /**
    * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor button item class/ класс элемента кнопки
+   * @param name class name / название класса
+   * @param props properties / свойства
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor button item class / класс элемента кнопки
    */
   constructor(
     name: string,
@@ -71,9 +76,10 @@ export class ButtonDesign<
   }
 
   /**
-   * Initialization of all the necessary properties for work
+   * Initialization of all the necessary properties for work.
    *
    * Инициализация всех необходимых свойств для работы.
+   * @returns exposed properties object / объект экспортируемых свойств
    */
   protected initExpose(): EXPOSE {
     return {
@@ -85,10 +91,11 @@ export class ButtonDesign<
    * Improvement of the obtained list of classes.
    *
    * Доработка полученного списка классов.
+   * @returns custom classes object / объект пользовательских классов
    */
   protected initClasses(): Partial<CLASSES> {
     return {
-      main: this.item.classes.value,
+      main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
         label: this.getSubClass('label'),
@@ -104,6 +111,7 @@ export class ButtonDesign<
    * Refinement of the received list of styles.
    *
    * Доработка полученного списка стилей.
+   * @returns custom styles object / объект пользовательских стилей
    */
   protected initStyles(): ConstrStyles {
     return {}
@@ -113,10 +121,11 @@ export class ButtonDesign<
    * A method for rendering.
    *
    * Метод для рендеринга.
+   * @returns virtual node / виртуальная нода
    */
   protected initRender(): VNode {
     return h(
-      this.item.tag.value,
+      this.item.tag,
       {
         ...this.getAttrs(),
         'ref': this.element,
@@ -128,8 +137,8 @@ export class ButtonDesign<
         'data-value': this.props.value,
 
         'disabled': this.item.enabled.isDisabledOrUndefined,
-        ...this.item.eventList.value,
-        ...this.item.aria.value
+        ...this.item.eventList,
+        ...this.item.aria
       },
       [
         ...this.item.progress.render(),

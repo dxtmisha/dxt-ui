@@ -19,12 +19,17 @@ export class ButtonInclude extends ComponentIncludeAbstract<
   ButtonExpose,
   any
 > {
+  /** Name of the component for style prefixing and resolution / Имя компонента для префикса стилей и разрешения */
   protected override readonly name = 'button'
+
+  /** Key name for passing additional attributes / Имя ключа для передачи дополнительных атрибутов */
   protected override readonly propsAttrsName = 'buttonAttrs'
 
   /**
-   * Checks whether the button should be displayed /
-   * Проверяет, нужно ли отображать кнопку
+   * Checks whether the button should be displayed.
+   *
+   * Проверяет, нужно ли отображать кнопку.
+   * @returns check result / результат проверки
    */
   override get is(): boolean {
     return (

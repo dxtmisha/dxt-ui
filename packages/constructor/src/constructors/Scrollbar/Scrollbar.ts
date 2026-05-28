@@ -1,4 +1,4 @@
-import { computed, type Ref, type ToRefs } from 'vue'
+import { type Ref, type ToRefs } from 'vue'
 import {
   type ConstrClassObject,
   type ConstrEmit,
@@ -7,6 +7,7 @@ import {
 } from '@dxtmisha/functional'
 
 import { ClientOnlyInclude } from '../../classes/ClientOnlyInclude'
+
 import { ScrollbarBorder } from './ScrollbarBorder'
 
 import type { ScrollbarComponents, ScrollbarEmits, ScrollbarSlots } from './types'
@@ -20,26 +21,31 @@ import type { ScrollbarPropsBasic } from './props'
  * Он обрабатывает вычисления ширины скролла и отображение границ на основе позиции скролла.
  */
 export class Scrollbar {
+  /** Client-only rendering include / Подключение рендеринга только на клиенте */
   readonly clientOnly: ClientOnlyInclude
+
+  /** Scrollbar width reference / Ссылка на ширину полосы прокрутки */
   readonly width: ScrollbarWidthRef
+
+  /** Scrollbar border manager / Управление границей полосы прокрутки */
   readonly border: ScrollbarBorder
 
   /**
    * Constructor for Scrollbar class.
    *
    * Конструктор класса Scrollbar.
-   * @param props input data/ входные данные
-   * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
-   * @param element input element/ элемент ввода
-   * @param classDesign design name/ название дизайна
-   * @param className class name/ название класса
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param slots object for working with slots/ объект для работы со слотами
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param constructors object with classes/ объект с классами
-   * @param constructors.ScrollbarBorderConstructor class for working with scrollbar border/ класс для работы с границей скролла
-   * @param constructors.ScrollbarWidthRefConstructor class for working with scrollbar width/ класс для работы с шириной скролла
-   * @param constructors.ClientOnlyIncludeConstructor class for client-only rendering/ класс для рендеринга только на клиенте
+   * @param props input data / входные данные
+   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
+   * @param element input element / элемент ввода
+   * @param classDesign design name / название дизайна
+   * @param className class name / название класса
+   * @param components object for working with components / объект для работы с компонентами
+   * @param slots object for working with slots / объект для работы со слотами
+   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
+   * @param constructors object with classes / объект с классами
+   * @param constructors.ScrollbarBorderConstructor class for working with scrollbar border / класс для работы с границей скролла
+   * @param constructors.ScrollbarWidthRefConstructor class for working with scrollbar width / класс для работы с шириной скролла
+   * @param constructors.ClientOnlyIncludeConstructor class for client-only rendering / класс для рендеринга только на клиенте
    */
   constructor(
     protected readonly props: ScrollbarPropsBasic,
@@ -77,8 +83,11 @@ export class Scrollbar {
    * Returns values for the class.
    *
    * Возвращает значения для класса.
+   * @returns classes values / значения классов
    */
-  readonly classes = computed<ConstrClassObject>(() => ({
-    [`${this.className}--disabled`]: this.clientOnly.isRender && Boolean(this.width.item.value)
-  }))
+  get classes(): ConstrClassObject {
+    return {
+      [`${this.className}--disabled`]: this.clientOnly.isRender && Boolean(this.width.item.value)
+    }
+  }
 }

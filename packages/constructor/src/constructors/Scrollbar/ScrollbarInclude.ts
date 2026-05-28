@@ -47,7 +47,7 @@ export class ScrollbarInclude<Props extends ScrollbarPropsInclude = ScrollbarPro
             tag,
             class: `${this.className}__scrollbar`,
             ...(props ?? {}),
-            ...this.getScrollbarEvents()
+            ...this.scrollbarEvents
           },
           this.props.scrollbarAttrs ?? {}
         ),
@@ -66,7 +66,7 @@ export class ScrollbarInclude<Props extends ScrollbarPropsInclude = ScrollbarPro
    * Returns event handlers for scrollbar
    * Возвращает обработчики событий для скроллбара
    */
-  protected getScrollbarEvents() {
+  protected get scrollbarEvents() {
     return {
       onTop: (isTop: boolean) => this.emits?.('scrollbarTop', isTop),
       onReachTop: () => this.emits?.('scrollbarReachTop'),

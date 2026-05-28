@@ -4,7 +4,7 @@ import { type ConstrEmit, type DesignComp, getElementId, toBinds } from '@dxtmis
 import { EventClickInclude } from '../../classes/EventClickInclude'
 import { ModelInclude } from '../../classes/ModelInclude'
 
-import { type CellExpose } from '../Cell'
+import type { CellExpose } from '../Cell'
 import { MotionTransformInclude } from '../MotionTransform'
 
 import type { AccordionComponents, AccordionEmits, AccordionSlots } from './types'

@@ -86,7 +86,7 @@ export class ScrollbarDesign<
    */
   protected initClasses(): Partial<CLASSES> {
     return {
-      main: this.item.classes.value,
+      main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
         // :classes [!] System label / Системная метка

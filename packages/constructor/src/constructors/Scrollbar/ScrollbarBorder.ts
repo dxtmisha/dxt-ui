@@ -1,4 +1,4 @@
-import { onUnmounted, type ToRefs, watch } from 'vue'
+import { onMounted, onUnmounted, type ToRefs, watch } from 'vue'
 import {
   type ConstrEmit,
   type ConstrValue,
@@ -48,14 +48,15 @@ export class ScrollbarBorder {
     protected readonly className: string,
     protected readonly emits?: ConstrEmit<ScrollbarEmits>
   ) {
-    watch([
-      this.element,
-      refs.divider,
-      refs.dividerTop,
-      refs.dividerBottom,
-      refs.inverse
-    ], this.reset, { immediate: true })
-
+    onMounted(() => {
+      watch([
+        this.element,
+        refs.divider,
+        refs.dividerTop,
+        refs.dividerBottom,
+        refs.inverse
+      ], this.reset, { immediate: true })
+    })
     onUnmounted(() => this.stop())
   }
 

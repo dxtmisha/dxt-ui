@@ -8,25 +8,32 @@ import type { ActionsComponents, ActionsEmits, ActionsSlots } from './types'
 import type { ActionsProps } from './props'
 
 /**
- * Actions
+ * Class Actions manages the core logic of the actions component.
+ * It is responsible for handling click events and determining the visibility of action lists.
+ *
+ * Класс Actions управляет основной логикой компонента действий.
+ * Отвечает за обработку событий клика и определение видимости списков действий.
  */
 export class Actions {
+  /** Object for working with area values / Объект для работы со значениями области */
   readonly area: AreaInclude
+
+  /** Object for handling click events / Объект для обработки событий клика */
   readonly event: EventClickInclude
 
   /**
-   * Constructor
-   * @param props input data/ входные данные
-   * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
-   * @param element input element/ элемент ввода
-   * @param classDesign design name/ название дизайна
-   * @param className class name/ название класса
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param slots object for working with slots/ объект для работы со слотами
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param constructors object with classes/ объект с классами
-   * @param constructors.EventConstructor class for creating an event/ класс для создания события
-   * @param constructors.AreaIncludeConstructor class for working with area value/ класс для работы со значением области
+   * Constructor for the Actions class.
+   *
+   * Конструктор для класса Actions.
+   * @param props input data / входные данные
+   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
+   * @param element input element / элемент ввода
+   * @param classDesign design name / название дизайна
+   * @param className class name / название класса
+   * @param components object for working with components / объект для работы с компонентами
+   * @param slots object for working with slots / объект для работы со слотами
+   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
+   * @param constructors object with classes / объект с классами
    */
   constructor(
     protected readonly props: ActionsProps,

@@ -20,7 +20,11 @@ import {
 } from './types'
 
 /**
- * ActionsDesign
+ * ActionsDesign is a design constructor for the Actions component.
+ * It connects the Actions logic, sets up slots, classes, styles, and defines the rendering function.
+ *
+ * ActionsDesign — конструктор дизайна для компонента Actions.
+ * Он связывает логику Actions, настраивает слоты, классы, стили и определяет функцию рендеринга.
  */
 export class ActionsDesign<
   COMP extends ActionsComponents,
@@ -28,22 +32,25 @@ export class ActionsDesign<
   CLASSES extends ActionsClasses,
   P extends ActionsPropsBasic
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
-    COMP,
-    ActionsEmits,
-    EXPOSE,
-    ActionsSlots,
-    CLASSES,
-    P
-  > {
+  HTMLDivElement,
+  COMP,
+  ActionsEmits,
+  EXPOSE,
+  ActionsSlots,
+  CLASSES,
+  P
+> {
+  /** Actions class instance managing component logic / Экземпляр класса Actions, управляющий логикой компонента */
   protected readonly item: Actions
 
   /**
-   * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor actions item class/ класс элемента действий
+   * Constructor for the ActionsDesign class.
+   *
+   * Конструктор для класса ActionsDesign.
+   * @param name class name / название класса
+   * @param props properties / свойства
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor actions item class / класс элемента действий
    */
   constructor(
     name: string,
@@ -72,9 +79,10 @@ export class ActionsDesign<
   }
 
   /**
-   * Initialization of all the necessary properties for work
+   * Initialization of all the necessary properties for exposure.
    *
-   * Инициализация всех необходимых свойств для работы.
+   * Инициализация всех необходимых свойств для экспозиции.
+   * @returns exposed properties / экспонируемые свойства
    */
   protected initExpose(): EXPOSE {
     return {} as EXPOSE
@@ -84,6 +92,7 @@ export class ActionsDesign<
    * Improvement of the obtained list of classes.
    *
    * Доработка полученного списка классов.
+   * @returns initialized classes / инициализированные классы
    */
   protected initClasses(): Partial<CLASSES> {
     return {
@@ -103,15 +112,17 @@ export class ActionsDesign<
    * Refinement of the received list of styles.
    *
    * Доработка полученного списка стилей.
+   * @returns initialized styles / инициализированные стили
    */
   protected initStyles(): ConstrStyles {
     return {}
   }
 
   /**
-   * A method for rendering.
+   * A method for rendering the component.
    *
-   * Метод для рендеринга.
+   * Метод для рендеринга компонента.
+   * @returns component virtual node / виртуальный узел компонента
    */
   protected initRender(): VNode {
     return h(
@@ -129,11 +140,12 @@ export class ActionsDesign<
   }
 
   /**
-   * List rendering.
+   * List rendering method.
    *
-   * Рендеринг списка.
+   * Метод рендеринга списка.
+   * @returns array of list virtual nodes / массив виртуальных узлов списка
    */
-  protected readonly renderList = (): VNode[] => {
+  readonly renderList = (): VNode[] => {
     const children: any[] = []
 
     if (this.item.isList()) {
@@ -166,11 +178,12 @@ export class ActionsDesign<
   }
 
   /**
-   * Secondary list rendering.
+   * Secondary list rendering method.
    *
-   * Рендеринг вторичного списка.
+   * Метод рендеринга вторичного списка.
+   * @returns array of secondary list virtual nodes / массив виртуальных узлов вторичного списка
    */
-  protected readonly renderSecondary = (): VNode[] => {
+  readonly renderSecondary = (): VNode[] => {
     const children: any[] = []
 
     if (this.item.isSecondary()) {
@@ -203,11 +216,12 @@ export class ActionsDesign<
   }
 
   /**
-   * Separator rendering.
+   * Separator rendering method.
    *
-   * Рендеринг разделителя.
+   * Метод рендеринга разделителя.
+   * @returns array of separator virtual nodes / массив виртуальных узлов разделителя
    */
-  protected readonly renderSpacer = (): VNode[] => {
+  readonly renderSpacer = (): VNode[] => {
     return [h('div', { class: this.classes?.value.spacer })]
   }
 }
