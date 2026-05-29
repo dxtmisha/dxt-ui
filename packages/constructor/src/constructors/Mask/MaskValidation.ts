@@ -66,7 +66,7 @@ export class MaskValidation {
    * Проверяет корректность заполнения значений.
    */
   checkValidity(): boolean {
-    return this.item.value === undefined
+    return this.item.value === undefined || Boolean(this.item.value.status)
   }
 
   /**

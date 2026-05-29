@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
+import { Geo } from '@dxtmisha/functional-basic'
 import { useDemoEvent } from '../../composables/useDemoEvent'
 
 import DemoLinkBlack from '../../components/DemoLinkBlack.vue'
@@ -11,7 +12,22 @@ const valuePhone = ref('+7 (900) 123-45-67')
 const valueDate = ref('2005-02-12')
 const valueNumber = ref('123456')
 const valueCurrency = ref('123456.7')
+const valueGroups = ref('12ab')
 
+const specialGroups = {
+  n: {
+    match: /[0-9]/,
+    view: 'N'
+  },
+  a: {
+    match: /[a-zA-Z]/,
+    view: 'A'
+  }
+}
+
+onMounted(() => {
+  console.log('Geo', Geo.getStandard())
+})
 </script>
 
 <template>
@@ -28,6 +44,16 @@ const valueCurrency = ref('123456.7')
           @input-lite="valuePhone = $event.value"
         />
         <DemoValue :value="valuePhone"/>
+      </D1Group>
+
+      <D1Group label="Mask with Different Groups (Custom)">
+        <D1Mask
+          :value="valueGroups"
+          mask="n-n-a-a"
+          :special="specialGroups"
+          @input-lite="valueGroups = $event.value"
+        />
+        <DemoValue :value="valueGroups"/>
       </D1Group>
 
       <D1Group label="Date Mask">

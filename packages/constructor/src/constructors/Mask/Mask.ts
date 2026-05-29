@@ -1,4 +1,4 @@
-import { computed, type Ref, type ToRefs, watch } from 'vue'
+import { computed, onMounted, type Ref, type ToRefs, watch } from 'vue'
 import {
   anyToString,
   type ConstrClassObject,
@@ -189,35 +189,35 @@ export class Mask {
       MaskViewConstructor = MaskView
     } = constructors
 
-    this.type = new MaskTypeConstructor(this.props)
+    this.type = new MaskTypeConstructor(props)
     this.buffer = new MaskBufferConstructor()
     this.focus = new MaskFocusConstructor(this.buffer)
     this.characterLength = new MaskCharacterLengthConstructor()
     this.rubberItem = new MaskRubberItemConstructor()
     this.rubberTransition = new MaskRubberTransitionConstructor()
 
-    this.date = new MaskDateConstructor(this.props, this.type)
-    this.format = new MaskFormatConstructor(this.props, this.type, this.rubberItem)
+    this.date = new MaskDateConstructor(props, this.type)
+    this.format = new MaskFormatConstructor(props, this.type, this.rubberItem)
 
     this.special = new MaskSpecialConstructor(
-      this.props,
+      props,
       this.type,
       this.date,
       this.format
     )
 
-    this.match = new MaskMatchConstructor(this.props, this.special)
+    this.match = new MaskMatchConstructor(props, this.special)
     this.pattern = new MaskPatternConstructor(
-      this.props,
+      props,
       this.type,
       this.date,
       this.special
     )
 
-    this.right = new MaskRightConstructor(this.props, this.type)
+    this.right = new MaskRightConstructor(props, this.type)
 
     this.rubber = new MaskRubberConstructor(
-      this.props,
+      props,
       this.type,
       this.rubberItem,
       this.rubberTransition,
@@ -227,7 +227,7 @@ export class Mask {
     )
 
     this.item = new MaskItemConstructor(
-      this.props,
+      props,
       this.type,
       this.rubberItem,
       this.characterLength,
@@ -242,7 +242,7 @@ export class Mask {
     )
 
     this.character = new MaskCharacterConstructor(
-      this.props,
+      props,
       this.rubberItem,
       this.characterLength,
       this.special,
@@ -258,7 +258,7 @@ export class Mask {
     )
 
     this.value = new MaskValueConstructor(
-      this.props,
+      props,
       this.type,
       this.date,
       this.format,
@@ -273,7 +273,7 @@ export class Mask {
     )
 
     this.view = new MaskViewConstructor(
-      this.props,
+      props,
       this.type,
       this.date,
       this.format,
@@ -287,7 +287,7 @@ export class Mask {
 
     this.emit = new MaskEmitConstructor(
       this.validation,
-      this.emits
+      emits
     )
 
     this.data = new MaskDataConstructor(
@@ -305,7 +305,7 @@ export class Mask {
       this.valueBasic,
       this.value,
       this.emit,
-      this.element
+      element
     )
 
     this.event = new MaskEventConstructor(
@@ -319,10 +319,12 @@ export class Mask {
       this.data
     )
 
-    watch([refs.value], () => this.reset(props.value))
-    watch(this.basic, () => this.data.goSelection(false))
+    onMounted(() => {
+      watch([refs.value], () => this.reset(props.value))
+      watch(this.basic, () => this.data.goSelection(false))
 
-    watch([GeoRef.getStandard(), refs.language], () => this.reset(this.value.getValueCache()))
+      watch([GeoRef.getStandard(), refs.language], () => this.reset(this.value.getValueCache()))
+    })
 
     if (props.value) {
       this.data.reset(anyToString(props.value))
@@ -345,7 +347,7 @@ export class Mask {
   })
 
   /** Returns the properties for the input element/ Возвращает свойства для элемента ввода */
-  readonly binds = computed(() => {
+  get binds() {
     return toBinds(
       this.props.inputAttrs,
       {
@@ -363,13 +365,15 @@ export class Mask {
         onClick: this.event.onClick
       }
     )
-  })
+  }
 
   /** Values for CSS class/ Значения для CSS-класса */
-  readonly classes = computed<ConstrClassObject>(() => ({
-    [`${this.className}--value`]: this.characterLength.is(),
-    [`${this.className}--end`]: this.right.isEnd()
-  }))
+  get classes(): ConstrClassObject {
+    return {
+      [`${this.className}--value`]: this.characterLength.is(),
+      [`${this.className}--end`]: this.right.isEnd()
+    }
+  }
 
   /**
    * Sets new value and reinitializes mask.

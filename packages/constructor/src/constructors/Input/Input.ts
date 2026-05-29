@@ -195,11 +195,13 @@ export class Input {
       }))
     )
     this.mask = new MaskIncludeConstructor(
-      this.props,
       this.className,
+      this.props,
+      this.components,
+      undefined,
+      undefined,
       this.value,
       '',
-      this.components,
       this.type
     )
   }

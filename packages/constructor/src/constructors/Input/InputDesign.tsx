@@ -134,7 +134,7 @@ export class InputDesign<
    * @param input data for the input element/ данные для элемента ввода
    */
   protected readonly renderInput = (input: FieldControl): VNode[] => {
-    if (this.item.mask.isActive()) {
+    if (this.item.mask.is) {
       return this.renderMask(input)
     }
 

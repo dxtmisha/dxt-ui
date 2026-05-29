@@ -92,7 +92,7 @@ export class MaskDesign<
    */
   protected initClasses(): Partial<CLASSES> {
     return {
-      main: this.item.classes.value,
+      main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
         input: this.getSubClass('input'),
@@ -159,7 +159,7 @@ export class MaskDesign<
       h(
         'input',
         {
-          ...this.item.binds.value,
+          ...this.item.binds,
           ref: this.element,
           class: this.classes?.value.input,
           value: this.item.basic.value

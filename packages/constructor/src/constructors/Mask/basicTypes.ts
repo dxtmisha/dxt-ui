@@ -1,6 +1,7 @@
 import type { ConstrBind, GeoDate } from '@dxtmisha/functional'
 import type { FieldPatternItemOrFunction, FieldValidationItem } from '../../types/fieldTypes'
 import type { MaskPropsBasic } from './props'
+import type { ModelProps } from '../../types/modelTypes.ts'
 
 /** Mask type options/ Опции типа маски */
 export type MaskTypeItem = GeoDate
@@ -85,9 +86,11 @@ export type MaskComponentInclude = {
 /** Interface for including mask properties/ Интерфейс для включения свойств маски */
 export type MaskPropsInclude<
   Mask extends MaskPropsBasic = MaskPropsBasic
-> = {
+> = ModelProps & {
   /** Field name/ Имя поля */
   name?: string
+  /** Controlled value (without v-model)/ Контролируемое значение (без v-model) */
+  value?: string
   /** Mask value or attributes/ Значение или атрибуты маски */
   mask?: string | ConstrBind<Mask>
   /** Whether the mask is visible/ Видима ли маска */
