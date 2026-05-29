@@ -1,10 +1,10 @@
 import { type Ref, type VNode } from 'vue'
 import {
-  type ConstrClass,
+  type ConstrClass, executeFunctionRef,
   getElementId,
   getRef,
   isFilled,
-  type RefOrNormal,
+  type RefOrNormal, type RefOrNormalOrFunction,
   render,
   toBinds
 } from '@dxtmisha/functional'
@@ -39,7 +39,7 @@ export class LabelInclude {
    * @param tag HTML tag for wrapping element / HTML-тег для оборачивающего элемента
    */
   constructor(
-    protected readonly props: Readonly<LabelProps>,
+    protected readonly props: RefOrNormalOrFunction<LabelProps>,
     protected readonly className: string,
     protected readonly classesExtra?: ConstrClass,
     protected readonly slots?: LabelSlots | LabelAlternativeSlots,
@@ -59,7 +59,7 @@ export class LabelInclude {
    */
   get is(): boolean {
     if (
-      this.props.label
+      this.getProps().label
       || this.labelReplacing?.value
     ) {
       return true
@@ -83,7 +83,7 @@ export class LabelInclude {
    * @returns unique identifier / уникальный идентификатор
    */
   get id(): string {
-    return this.props.labelId || this.elementIdDefault
+    return this.getProps().labelId || this.elementIdDefault
   }
 
   /**
@@ -137,6 +137,16 @@ export class LabelInclude {
   }
 
   /**
+   * Returns properties resolving functions if needed.
+   *
+   * Возвращает свойства, разрешая функции при необходимости.
+   * @returns resolved label properties / разрешенные свойства метки
+   */
+  protected getProps(): LabelProps {
+    return executeFunctionRef(this.props)
+  }
+
+  /**
    * Resolves the list of class names for the label element.
    *
    * Разрешает список имен классов для элемента метки.
@@ -163,11 +173,13 @@ export class LabelInclude {
    * @returns array containing the text / массив, содержащий текст
    */
   protected initLabel(): any[] {
+    const label = this.getProps().label
+
     if (
       !this.labelReplacing?.value
-      && isFilled(this.props.label)
+      && isFilled(label)
     ) {
-      return [this.props.label]
+      return [label]
     }
 
     return []

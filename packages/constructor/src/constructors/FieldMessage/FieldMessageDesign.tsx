@@ -164,13 +164,7 @@ export class FieldMessageDesign<
         props.innerHTML = this.props.helperMessage
       }
 
-      return [
-        h(
-          'div',
-          props,
-          children
-        )
-      ]
+      return [h('div', props, children)]
     }
 
     return []
@@ -198,13 +192,7 @@ export class FieldMessageDesign<
         props.innerHTML = this.props.validationMessage
       }
 
-      return [
-        h(
-          'div',
-          props,
-          children
-        )
-      ]
+      return [h('div', props, children)]
     }
 
     return []

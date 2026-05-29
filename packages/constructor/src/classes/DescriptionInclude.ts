@@ -1,5 +1,14 @@
 import { type VNode } from 'vue'
-import { getElementId, getRef, isFilled, type RefOrNormal, render, toBinds } from '@dxtmisha/functional'
+import {
+  getElementId,
+  getRef,
+  isFilled,
+  type RefOrNormal,
+  render,
+  toBinds,
+  executeFunctionRef,
+  type RefOrNormalOrFunction
+} from '@dxtmisha/functional'
 
 import { SkeletonInclude } from '../constructors/Skeleton'
 
@@ -27,7 +36,7 @@ export class DescriptionInclude {
    * @param tag HTML tag for wrapping element / HTML-тег для оборачивающего элемента
    */
   constructor(
-    protected readonly props: Readonly<DescriptionProps>,
+    protected readonly props: RefOrNormalOrFunction<DescriptionProps>,
     protected readonly className: string,
     protected readonly slots?: DescriptionSlots,
     protected readonly skeleton?: SkeletonInclude,
@@ -42,7 +51,7 @@ export class DescriptionInclude {
    * @returns checking result / результат проверки
    */
   get is(): boolean {
-    return Boolean(this.props.description || this.slots?.description)
+    return Boolean(this.getProps().description || this.slots?.description)
   }
 
   /**
@@ -52,7 +61,7 @@ export class DescriptionInclude {
    * @returns unique identifier / уникальный идентификатор
    */
   get id(): string {
-    return this.props?.descriptionId || this.elementIdDefault
+    return this.getProps()?.descriptionId || this.elementIdDefault
   }
 
   /**
@@ -68,9 +77,10 @@ export class DescriptionInclude {
     props: Record<string, any> = {}
   ): VNode[] {
     const children: any[] = []
+    const description = this.getProps().description
 
-    if (isFilled(this.props.description)) {
-      children.push(this.props.description)
+    if (isFilled(description)) {
+      children.push(description)
     }
 
     if (this.slots?.description) {
@@ -102,5 +112,15 @@ export class DescriptionInclude {
     }
 
     return []
+  }
+
+  /**
+   * Returns properties resolving functions if needed.
+   *
+   * Возвращает свойства, разрешая функции при необходимости.
+   * @returns resolved description properties / разрешенные свойства описания
+   */
+  protected getProps(): DescriptionProps {
+    return executeFunctionRef(this.props)
   }
 }

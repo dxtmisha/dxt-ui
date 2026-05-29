@@ -1,14 +1,12 @@
 import {
-  type ConstrBind,
   type ConstrEmit,
   type DesignComponents
 } from '@dxtmisha/functional'
 
 import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
 
-import type { ComponentIncludeExposeItem, ComponentIncludeExtra } from '../../types/componentInclude'
+import type { ComponentIncludeExtra } from '../../types/componentInclude'
 import type { EventClickValue } from '../../types/eventClickTypes'
-
 import type { BarsComponentInclude, BarsEmitsInclude, BarsPropsInclude } from './basicTypes'
 import type { BarsExpose, BarsSlots } from './types'
 import type { BarsProps } from './props'
@@ -31,8 +29,6 @@ export class BarsInclude<
     BarsExpose,
     BarsSlots
   > {
-  protected readonly exposeItems: ComponentIncludeExposeItem<any>[] | undefined = undefined
-
   protected name = 'bars'
   protected propsAttrsName = 'barsAttrs'
 
@@ -95,7 +91,7 @@ export class BarsInclude<
    * Объединяет входные атрибуты со внутренними привязками компонента.
    * @returns resolved bindings / разрешенные привязки
    */
-  protected override toBinds(): ConstrBind<PropsExtra> {
+  protected override toBinds() {
     const props = this.getProps()
     const binds = super.toBinds()
 

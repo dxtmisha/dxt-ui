@@ -86,11 +86,7 @@ export class FieldMessage {
    * @returns slot data object / объект данных слота
    */
   get slotHelperData(): FieldMessageSlot {
-    return {
-      message: this.props.helperMessage,
-      helperMessage: this.props.helperMessage,
-      validationMessage: this.props.validationMessage
-    }
+    return this.getSlotData(this.props.helperMessage)
   }
 
   /**
@@ -100,11 +96,7 @@ export class FieldMessage {
    * @returns slot data object / объект данных слота
    */
   get slotValidationData(): FieldMessageSlot {
-    return {
-      message: this.props.validationMessage,
-      helperMessage: this.props.helperMessage,
-      validationMessage: this.props.validationMessage
-    }
+    return this.getSlotData(this.props.validationMessage)
   }
 
   /**
@@ -133,7 +125,7 @@ export class FieldMessage {
    * @returns boolean value / логическое значение
    */
   isHelper(): boolean {
-    return Boolean(this.props.helperMessage) || Boolean(this.slots && 'helper' in this.slots)
+    return Boolean(this.props.helperMessage || this.slots?.helper)
   }
 
   /**
@@ -143,6 +135,21 @@ export class FieldMessage {
    * @returns boolean value / логическое значение
    */
   isValidation(): boolean {
-    return Boolean(this.props.validationMessage) || Boolean(this.slots && 'validation' in this.slots)
+    return Boolean(this.props.validationMessage || this.slots?.validation)
+  }
+
+  /**
+   * Get common slot data for messages.
+   *
+   * Получить общие данные слота для сообщений.
+   * @param message main message / основное сообщение
+   * @returns slot data object / объект данных слота
+   */
+  protected getSlotData(message?: string): FieldMessageSlot {
+    return {
+      message,
+      helperMessage: this.props.helperMessage,
+      validationMessage: this.props.validationMessage
+    }
   }
 }

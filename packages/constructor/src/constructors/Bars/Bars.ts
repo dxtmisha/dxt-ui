@@ -1,4 +1,4 @@
-import { computed, reactive, type Ref, type ToRefs } from 'vue'
+import { computed, type Ref, type ToRefs } from 'vue'
 import {
   type ConstrClass,
   type ConstrEmit,
@@ -103,12 +103,16 @@ export class Bars {
       WindowClassesConstructor = WindowClassesInclude
     } = constructors
 
-    this.skeleton = new SkeletonConstructor(this.props, this.classDesign, ['classTextVariant'])
+    this.skeleton = new SkeletonConstructor(props, classDesign, ['classTextVariant'])
     this.windowClasses = new WindowClassesConstructor(classDesign)
     this.motionTransformClasses = new MotionTransformClassesConstructor(classDesign)
-    this.text = new TextConstructor(this.props)
+    this.text = new TextConstructor(props)
 
-    this.label = new LabelConstructor(this.labelBinds,
+    this.label = new LabelConstructor(
+      () => ({
+        label: this.action.action.value ? this.props.actionLabel : this.props.label,
+        labelId: this.props.labelId
+      }),
       className,
       undefined,
       slots,
@@ -117,12 +121,20 @@ export class Bars {
       undefined,
       this.skeleton
     )
-    this.description = new DescriptionConstructor(this.descriptionBinds, className, slots, this.skeleton)
+    this.description = new DescriptionConstructor(
+      () => ({
+        description: this.action.action.value ? this.props.actionDescription : this.props.description,
+        descriptionId: this.props.descriptionId
+      }),
+      className,
+      slots,
+      this.skeleton
+    )
 
-    this.action = new BarsActionConstructor(this.props, this.refs)
+    this.action = new BarsActionConstructor(props, refs)
 
-    new ModelConstructor('action', this.emits, this.action.action)
     this.event = new EventConstructor(undefined, undefined, emits)
+    new ModelConstructor('action', emits, this.action.action)
   }
 
   /**
@@ -190,18 +202,6 @@ export class Bars {
    * Возвращает список активных кнопок управления
    */
   readonly actionBarsBinds = computed<BarsProps['bars']>(() => this.initList(this.props.actionBars, true))
-
-  /** Binds for label text/ Привязки для текста метки */
-  protected readonly labelBinds = reactive({
-    label: computed(() => this.action.action.value ? this.props.actionLabel : this.props.label),
-    labelId: computed(() => this.props.labelId)
-  })
-
-  /** Binds for description text/ Привязки для текста описания */
-  protected readonly descriptionBinds = reactive({
-    description: computed(() => this.action.action.value ? this.props.actionDescription : this.props.description),
-    descriptionId: computed(() => this.props.descriptionId)
-  })
 
   /**
    * Prepares all parameters for the button.

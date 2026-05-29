@@ -1,5 +1,4 @@
 import {
-  type ConstrBind,
   type DesignComponents,
   executeFunctionRef,
   getElementId,
@@ -11,14 +10,8 @@ import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract
 
 import { FieldCounterInclude } from '../FieldCounter'
 
-import type {
-  ComponentIncludeExtra,
-  ComponentIncludeProps
-} from '../../types/componentInclude'
-import type {
-  FieldMessageComponentInclude,
-  FieldMessagePropsInclude
-} from './basicTypes'
+import type { ComponentIncludeExtra, ComponentIncludeProps } from '../../types/componentInclude'
+import type { FieldMessageComponentInclude, FieldMessagePropsInclude } from './basicTypes'
 import type { FieldMessagePropsBasic } from './props'
 
 /**
@@ -33,17 +26,17 @@ export class FieldMessageInclude<
     Props,
     PropsExtra
   > {
-  /** Unique identifier for the helper message / Уникальный идентификатор для вспомогательного сообщения */
-  readonly helperId: string = getElementId()
+  /** Default unique identifier for the helper message / Уникальный идентификатор по умолчанию для вспомогательного сообщения */
+  readonly helperIdDefault: string = getElementId()
 
-  /** Unique identifier for the validation message / Уникальный идентификатор для сообщения валидации */
-  readonly validationId: string = getElementId()
+  /** Default unique identifier for the validation message / Уникальный идентификатор по умолчанию для сообщения валидации */
+  readonly validationIdDefault: string = getElementId()
 
-  /** Unique identifier for the counter / Уникальный идентификатор для счетчика */
-  readonly counterId: string = getElementId()
+  /** Default unique identifier for the counter / Уникальный идентификатор по умолчанию для счетчика */
+  readonly counterIdDefault: string = getElementId()
 
   /** Field counter include / Подключение счетчика поля */
-  private readonly fieldCounter: FieldCounterInclude
+  protected readonly fieldCounter: FieldCounterInclude
 
   /** Component name / Название компонента */
   protected readonly name = 'fieldMessage'
@@ -104,6 +97,36 @@ export class FieldMessageInclude<
   }
 
   /**
+   * Get the helper message identifier.
+   *
+   * Получить идентификатор вспомогательного сообщения.
+   * @returns unique helper message ID / уникальный идентификатор вспомогательного сообщения
+   */
+  get helperId(): string {
+    return this.getProps().helperId ?? this.helperIdDefault
+  }
+
+  /**
+   * Get the validation message identifier.
+   *
+   * Получить идентификатор сообщения валидации.
+   * @returns unique validation message ID / уникальный идентификатор сообщения валидации
+   */
+  get validationId(): string {
+    return this.getProps().validationId ?? this.validationIdDefault
+  }
+
+  /**
+   * Get the character counter identifier.
+   *
+   * Получить идентификатор счетчика символов.
+   * @returns unique counter ID / уникальный идентификатор счетчика
+   */
+  get counterId(): string {
+    return this.getProps().counterId ?? this.counterIdDefault
+  }
+
+  /**
    * Returns the validation message.
    *
    * Возвращает сообщение валидации.
@@ -118,25 +141,13 @@ export class FieldMessageInclude<
   }
 
   /**
-   * Checks if the validation message should be displayed.
-   *
-   * Проверяет, нужно ли отображать сообщение валидации.
-   * @returns boolean value indicating display status / логическое значение, указывающее на статус отображения
-   */
-  isValidationMessage(): boolean {
-    return isFilled(this.validation)
-  }
-
-  /**
    * Checks if the counter should be displayed.
    *
    * Проверяет, нужно ли отображать счетчик.
    * @returns boolean value indicating whether to show the counter / логическое значение, указывающее, нужно ли показывать счетчик
    */
   showCounter(): boolean {
-    return Boolean(
-      executeFunctionRef(this.isCounter)
-    )
+    return Boolean(executeFunctionRef(this.isCounter))
   }
 
   /**
@@ -145,7 +156,7 @@ export class FieldMessageInclude<
    * Объединяет входные атрибуты со внутренними привязками компонента.
    * @returns combined bindings object / объект объединенных привязок
    */
-  protected override toBinds(): ConstrBind<PropsExtra> {
+  protected override toBinds() {
     const props = this.getProps()
     const binds = {
       ...super.toBinds(),
