@@ -92,7 +92,7 @@ export class ImageCalculation {
    * @returns true if sizes are present / true, если размеры присутствуют
    */
   isSize(): boolean {
-    return Boolean(this.size.width || this.size.width)
+    return Boolean(this.size.width || this.size.height)
   }
 
   /**

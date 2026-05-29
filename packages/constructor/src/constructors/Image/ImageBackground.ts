@@ -64,14 +64,18 @@ export class ImageBackground {
   get imageSrc(): string | null {
     const image = this.data.image.value
 
-    switch (typeof image) {
-      case 'string':
-        return image
-      case 'object':
-        return image.src
-      default:
-        return null
+    if (image) {
+      switch (typeof image) {
+        case 'string':
+          return image
+        case 'object':
+          return image.src
+        default:
+          return null
+      }
     }
+
+    return null
   }
 
   /**
@@ -123,7 +127,10 @@ export class ImageBackground {
   ): string | null {
     const image = this.data.image.value
 
-    if (typeof image === 'object') {
+    if (
+      image
+      && typeof image === 'object'
+    ) {
       return image.height < image.width ? `auto ${height}` : `${width} auto`
     }
 

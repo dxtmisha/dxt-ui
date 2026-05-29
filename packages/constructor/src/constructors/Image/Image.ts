@@ -1,6 +1,5 @@
-import { computed, onUnmounted, type Ref } from 'vue'
+import { computed, type Ref } from 'vue'
 import {
-  type ConstrBind,
   type ConstrClassObject,
   type ConstrEmit,
   type ConstrStyles,
@@ -29,16 +28,28 @@ import type { ImageProps } from './props'
  * Базовый класс для работы с изображениями и иконками.
  */
 export class Image {
+  /** Object for working with client-side rendering / Объект для работы с рендерингом на стороне клиента */
   readonly clientOnly: ClientOnlyInclude
 
+  /** Image type manager / Менеджер типа изображения */
   readonly type: ImageType
+
+  /** Image data manager / Менеджер данных изображения */
   readonly data: ImageData
 
+  /** Image coordinates manager / Менеджер координат изображения */
   readonly coordinator: ImageCoordinator
+
+  /** Image position manager / Менеджер позиции изображения */
   readonly position: ImagePosition
+
+  /** Adaptive image item manager / Менеджер адаптивного элемента изображения */
   readonly adaptiveItem: ImageAdaptiveItem
+
+  /** Image background manager / Менеджер фона изображения */
   readonly background: ImageBackground
 
+  /** Image tag manager / Менеджер тега изображения */
   readonly img: ImageImg
 
   /**
@@ -112,14 +123,117 @@ export class Image {
       this.position,
       this.background
     )
-
-    onUnmounted(() => this.adaptiveItem.remove())
   }
 
   /**
-   * Determines the tag to use/ Определяет используемый тег
+   * Determines the tag to use.
+   *
+   * Определяет используемый тег.
    */
-  readonly tag = computed<string>(() => this.img.is() ? 'img' : 'span')
+  get tag(): string {
+    return this.img.is() ? 'img' : 'span'
+  }
+
+  /**
+   * Values for the class.
+   *
+   * Значения для класса.
+   */
+  get classes(): ConstrClassObject {
+    const type = this.type.item.value
+    const data: ConstrClassObject = {
+      [`${this.className}--type--${type}`]: type !== undefined,
+      [`${this.className}--background`]: this.background.isImage(),
+      notranslate: true
+    }
+
+    if (this.img.is()) {
+      data[`${this.className}--img`] = true
+    }
+
+    switch (type) {
+      case 'outlined':
+        data['material-symbols-outlined'] = true
+        break
+      case 'round':
+        data['material-symbols-rounded'] = true
+        break
+      case 'sharp':
+        data['material-symbols-sharp'] = true
+        break
+      case 'material':
+        data['material-icons'] = true
+        break
+    }
+
+    return data
+  }
+
+  /**
+   * Calculates all properties for the style of the element.
+   *
+   * Вычисляет все свойства для стиля элемента.
+   */
+  get styles(): ConstrStyles {
+    const value = this.props.value
+
+    if (value) {
+      switch (this.type.item.value) {
+        case ImageTypeValue.file:
+        case ImageTypeValue.image:
+        case ImageTypeValue.array:
+          return {
+            'background-image': this.background.image,
+            'background-size': this.background.size.value,
+            'background-position-x': this.position.x,
+            'background-position-y': this.position.y
+          }
+        case ImageTypeValue.icon:
+          return {
+            'background-image': this.background.image
+          }
+        case ImageTypeValue.flag:
+          return {
+            'background-image': this.background.image,
+            'background-size': 'contain'
+          }
+        case ImageTypeValue.public:
+          return { 'mask-image': this.background.image }
+        case ImageTypeValue.color:
+          if (isString(value)) {
+            return { 'background-color': value }
+          }
+      }
+    }
+
+    return {} as ConstrStyles
+  }
+
+  /**
+   * Computed bindings for the image element.
+   *
+   * Вычисляемые привязки для элемента изображения.
+   */
+  get binds() {
+    return {
+      translate: 'no',
+      ...AriaStaticInclude.role('img'),
+      ...AriaStaticInclude.label(this.props.alt),
+      ...AriaStaticInclude.hidden()
+    }
+  }
+
+  /**
+   * Bindings for the image value.
+   *
+   * Привязки для значения изображения.
+   */
+  get valueBinds() {
+    return {
+      key: 'value',
+      data: this.data.image.value
+    }
+  }
 
   /**
    * Values for the text. Text is used for the type of icon that works as a background.
@@ -165,100 +279,4 @@ export class Image {
 
     return undefined
   })
-
-  /**
-   * Values for the class.
-   *
-   * Значения для класса.
-   */
-  readonly classes = computed<ConstrClassObject>(() => {
-    const type = this.type.item.value
-    const data = {
-      [`${this.className}--type--${type}`]: type !== undefined,
-      [`${this.className}--background`]: this.background.isImage(),
-      notranslate: true
-    }
-
-    if (this.img.is()) {
-      data[`${this.className}--img`] = true
-    }
-
-    switch (type) {
-      case 'outlined':
-        data['material-symbols-outlined'] = true
-        break
-      case 'round':
-        data['material-symbols-rounded'] = true
-        break
-      case 'sharp':
-        data['material-symbols-sharp'] = true
-        break
-      case 'material':
-        data['material-icons'] = true
-        break
-    }
-
-    return data
-  })
-
-  /**
-   * Calculates all properties for the style of the element/
-   * Вычисляет все свойства для стиля элемента
-   */
-  readonly styles = computed<ConstrStyles>(() => {
-    const value = this.props.value
-
-    if (value) {
-      switch (this.type.item.value) {
-        case ImageTypeValue.file:
-        case ImageTypeValue.image:
-        case ImageTypeValue.array:
-          return {
-            'background-image': this.background.image,
-            'background-size': this.background.size.value,
-            'background-position-x': this.position.x,
-            'background-position-y': this.position.y
-          }
-        case ImageTypeValue.icon:
-          return {
-            'background-image': this.background.image
-          }
-        case ImageTypeValue.flag:
-          return {
-            'background-image': this.background.image,
-            'background-size': 'contain'
-          }
-        case ImageTypeValue.public:
-          return { 'mask-image': this.background.image }
-        case ImageTypeValue.color:
-          if (isString(value)) {
-            return { 'background-color': value }
-          }
-      }
-    }
-
-    return {} as ConstrStyles
-  })
-
-  /**
-   * Computed bindings for the image element.
-   *
-   * Вычисляемые привязки для элемента изображения.
-   */
-  readonly binds = computed(() => ({
-    translate: 'no',
-    ...AriaStaticInclude.role('img'),
-    ...AriaStaticInclude.label(this.props.alt),
-    ...AriaStaticInclude.hidden()
-  }))
-
-  /**
-   * Bindings for the image value.
-   *
-   * Привязки для значения изображения.
-   */
-  readonly valueBinds = computed<ConstrBind<any>>(() => ({
-    key: 'value',
-    data: this.data.image.value
-  }))
 }

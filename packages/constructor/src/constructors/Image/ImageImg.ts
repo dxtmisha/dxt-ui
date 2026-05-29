@@ -130,6 +130,7 @@ export class ImageImg {
 
         if (this.props.lazy) {
           attrs.loading = this.isLazy() ? 'lazy' : 'auto'
+          attrs.fetchPriority = this.props.fetchPriority
         }
 
         if (this.props.srcset) {

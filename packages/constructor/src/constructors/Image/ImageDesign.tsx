@@ -86,7 +86,7 @@ export class ImageDesign<
    */
   protected initClasses(): Partial<CLASSES> {
     return {
-      main: this.item.classes.value,
+      main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
         // :classes [!] System label / Системная метка
@@ -100,7 +100,7 @@ export class ImageDesign<
    * Доработка полученного списка стилей.
    */
   protected initStyles(): ConstrStyles {
-    return this.item.styles.value
+    return this.item.styles
   }
 
   /**
@@ -143,7 +143,7 @@ export class ImageDesign<
    */
   readonly propsMain = computed<any>(() => ({
     ...this.propsImage.value,
-    ...this.item.binds.value,
+    ...this.item.binds,
     style: this.styles?.value
   }))
 
@@ -194,7 +194,7 @@ export class ImageDesign<
     if (this.item.type.item.value === ImageTypeValue.pdf) {
       return h(
         'object',
-        this.item.valueBinds.value
+        this.item.valueBinds
       )
     }
 

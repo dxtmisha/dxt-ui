@@ -96,7 +96,7 @@ export class ImageAdaptiveItem {
       && this.clientOnly.isRender()
       && (this.width || this.height)
     )
-    && this.data.isImage()
+      && this.data.isImage()
   }
 
   /**
@@ -197,8 +197,16 @@ export class ImageAdaptiveItem {
 
       switch (this.type) {
         case ImageAdaptiveItemType.x:
+          if (!data.width) {
+            return 0
+          }
+
           return data.height * (this.element.value.offsetWidth * this.percent.value.width / data.width)
         case ImageAdaptiveItemType.y:
+          if (!data.height) {
+            return 0
+          }
+
           return data.width * (this.element.value.offsetHeight * this.percent.value.height / data.height)
       }
     }
