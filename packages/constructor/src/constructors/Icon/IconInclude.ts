@@ -1,4 +1,12 @@
-import { type ConstrBind, type DesignComponents, executeFunction, getBind, getRef, type RefOrNormal, toBinds } from '@dxtmisha/functional'
+import {
+  type ConstrBind,
+  type DesignComponents,
+  executeFunctionRef,
+  getBind,
+  type RefOrNormal,
+  type RefOrNormalOrFunction,
+  toBinds
+} from '@dxtmisha/functional'
 
 import { IconLiteInclude } from './IconLiteInclude'
 
@@ -33,10 +41,10 @@ export class IconInclude<
     protected readonly className: string,
     protected readonly components?: DesignComponents<IconComponentInclude, Props>,
     protected readonly extra?: RefOrNormal<ConstrBind<IconPropsBasic>>,
-    protected readonly turn?: RefOrNormal<boolean> | (() => boolean),
-    protected readonly dir?: RefOrNormal<boolean> | (() => boolean),
-    protected readonly start: RefOrNormal<boolean | undefined> | (() => boolean | undefined) = false,
-    protected readonly end: RefOrNormal<boolean | undefined> | (() => boolean | undefined) = false
+    protected readonly turn?: RefOrNormalOrFunction<boolean>,
+    protected readonly dir?: RefOrNormalOrFunction<boolean>,
+    protected readonly start: RefOrNormalOrFunction<boolean | undefined> = false,
+    protected readonly end: RefOrNormalOrFunction<boolean | undefined> = false
   ) {
     super(props, className, components, extra)
   }
@@ -49,13 +57,13 @@ export class IconInclude<
       props.icon,
       {
         active: props.selected,
-        turn: getRef(executeFunction(this.turn)) ?? props.iconTurn,
+        turn: executeFunctionRef(this.turn) ?? props.iconTurn,
         hide: props.iconHide,
         asPalette: props.iconPalette,
         animationType: 'type2',
-        dir: getRef(executeFunction(this.dir)) ?? props.iconDir,
-        start: getRef(executeFunction(this.start)),
-        end: getRef(executeFunction(this.end)),
+        dir: executeFunctionRef(this.dir) ?? props.iconDir,
+        start: executeFunctionRef(this.start),
+        end: executeFunctionRef(this.end),
         ...toBinds(
           this.getExtra(),
           props.iconAttrs,

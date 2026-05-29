@@ -39,7 +39,7 @@ export class Checkbox {
   readonly event: FieldEventInclude
   readonly icon: CheckboxIcon
   readonly label: LabelInclude
-  readonly message: FieldMessageInclude
+  readonly message: FieldMessageInclude<any, any>
   readonly progress: ProgressInclude
   readonly ripple: RippleInclude
   readonly skeleton: SkeletonInclude
@@ -161,10 +161,12 @@ export class Checkbox {
     )
 
     this.message = new FieldMessageConstructor(
-      this.props,
       this.className,
+      this.props,
       this.components,
-      this.validation.message
+      undefined,
+      undefined,
+      () => this.validation.message
     )
 
     this.icon = new CheckboxIconConstructor(this.props, this.value)

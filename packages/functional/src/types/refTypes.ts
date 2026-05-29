@@ -19,6 +19,14 @@ export type RefUndefined<T> = RefType<T | undefined>
 export type RefOrNormal<T> = RefType<T> | T
 
 /**
+ * Union type that can be either a Vue reactive reference or a normal value or
+ * a function that returns a Vue reactive reference or a normal value/
+ * Объединенный тип, который может быть либо Vue реактивной ссылкой, либо обычным
+ * значением, либо функцией, которая возвращает Vue реактивную ссылку или обычное значение
+ */
+export type RefOrNormalOrFunction<T> = RefOrNormal<T> | (() => RefOrNormal<T>)
+
+/**
  * Union type for Vue raw children content
  * (strings, numbers, booleans, VNodes, arrays, functions)/
  * Объединенный тип для Vue сырого содержимого дочерних элементов

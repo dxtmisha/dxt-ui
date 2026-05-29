@@ -1,4 +1,4 @@
-import { computed, type Ref, type ToRefs } from 'vue'
+import { type Ref, type ToRefs } from 'vue'
 import { type ConstrClassObject, type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
 import { LabelInclude } from '../../classes/LabelInclude'
@@ -102,10 +102,11 @@ export class FieldLabel {
    *
    * Значения для класса.
    * Возвращает объект классов, включающий классы скелетона, если он активен.
+   * @returns object of class names / объект названий классов
    */
-  readonly classes = computed<ConstrClassObject>(() => {
+  get classes(): ConstrClassObject {
     return {
       ...this.skeleton.classes
     }
-  })
+  }
 }

@@ -1,0 +1,26 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Functions/executeFunctionRef - Function & Ref Resolver'/>
+
+# `executeFunctionRef`
+
+A utility function that executes the argument if it is a function, and unwraps the resulting Vue `Ref` if it is reactive. If the argument is a reactive `Ref` or an ordinary value, it unwraps or returns it directly. This is useful for resolving values that might be static, reactive, or dynamically returned from a getter function.
+
+**Parameters:**
+- `data: RefOrNormalOrFunction<T>` — A reactive reference (`Ref`), a plain value, or a function returning them.
+
+**Returns:**
+- `T` — The fully resolved and unwrapped value.
+
+```typescript
+import { ref } from 'vue'
+import { executeFunctionRef } from '@dxtmisha/functional'
+
+const count = ref(10)
+const normalValue = 20
+const getter = () => ref(30)
+
+console.log(executeFunctionRef(count))       // 10
+console.log(executeFunctionRef(normalValue)) // 20
+console.log(executeFunctionRef(getter))      // 30
+```

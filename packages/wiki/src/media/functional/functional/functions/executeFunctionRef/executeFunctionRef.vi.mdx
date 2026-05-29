@@ -1,0 +1,26 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Functions/executeFunctionRef - Giải quyết hàm và tham chiếu'/>
+
+# `executeFunctionRef`
+
+Một hàm tiện ích thực thi đối số nếu nó là một hàm, và mở gói (unwrap) biến Vue `Ref` kết quả nếu nó có tính phản ứng. Nếu đối số là một `Ref` phản ứng hoặc một giá trị thông thường, nó sẽ mở gói hoặc trả về trực tiếp. Điều này rất hữu ích để giải quyết các giá trị có thể là tĩnh, phản ứng hoặc được trả về động từ một hàm getter.
+
+**Tham số:**
+- `data: RefOrNormalOrFunction<T>` — Một biến phản ứng (`Ref`), một giá trị thông thường, hoặc một hàm trả về chúng.
+
+**Trả về:**
+- `T` — Giá trị đã được giải quyết và mở gói hoàn toàn.
+
+```typescript
+import { ref } from 'vue'
+import { executeFunctionRef } from '@dxtmisha/functional'
+
+const count = ref(10)
+const normalValue = 20
+const getter = () => ref(30)
+
+console.log(executeFunctionRef(count))       // 10
+console.log(executeFunctionRef(normalValue)) // 20
+console.log(executeFunctionRef(getter))      // 30
+```

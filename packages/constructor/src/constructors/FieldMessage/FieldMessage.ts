@@ -1,4 +1,4 @@
-import { computed, type Ref, type ToRefs } from 'vue'
+import { type Ref, type ToRefs } from 'vue'
 import { type ConstrClassObject, type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
 import { FieldCounterInclude } from '../FieldCounter'
@@ -10,32 +10,36 @@ import type { FieldMessageSlot } from './basicTypes'
 import type { FieldMessageProps } from './props'
 
 /**
- * FieldMessage
+ * Manager for handling helper messages, validation messages, and counters.
+ * It coordinates text output for information or validation and controls the associated character counters.
+ *
+ * Менеджер для обработки вспомогательных сообщений, сообщений валидации и счетчиков.
+ * Координирует вывод текста для информации или валидации и управляет соответствующими счетчиками символов.
  */
 export class FieldMessage {
-  /** Field counter functionality/ Функциональность счетчика поля */
+  /** Field counter functionality / Функциональность счетчика поля */
   readonly fieldCounter: FieldCounterInclude
 
-  /** Message functionality/ Функциональность сообщений */
+  /** Message functionality / Функциональность сообщений */
   readonly message: FieldMessageMessage
 
-  /** Skeleton include/ Подключение скелетона */
+  /** Skeleton include / Подключение скелетона */
   readonly skeleton: SkeletonInclude
 
   /**
    * Constructor
-   * @param props input data/ входные данные
-   * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
-   * @param element input element/ элемент ввода
-   * @param classDesign design name/ название дизайна
-   * @param className class name/ название класса
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param slots object for working with slots/ объект для работы со слотами
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param constructors object with classes/ объект с классами
-   * @param constructors.FieldCounterIncludeConstructor class for working with field counter/ класс для работы со счетчиком поля
-   * @param constructors.FieldMessageMessageConstructor class for working with messages/ класс для работы с сообщениями
-   * @param constructors.SkeletonIncludeConstructor class for working with skeleton/ класс для работы со скелетоном
+   * @param props input data / входные данные
+   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
+   * @param element input element / элемент ввода
+   * @param classDesign design name / название дизайна
+   * @param className class name / название класса
+   * @param components object for working with components / объект для работы с компонентами
+   * @param slots object for working with slots / объект для работы со слотами
+   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
+   * @param constructors object with classes / объект с классами
+   * @param constructors.FieldCounterIncludeConstructor class for working with field counter / класс для работы со счетчиком поля
+   * @param constructors.FieldMessageMessageConstructor class for working with messages / класс для работы с сообщениями
+   * @param constructors.SkeletonIncludeConstructor class for working with skeleton / класс для работы со скелетоном
    */
   constructor(
     protected readonly props: FieldMessageProps,
@@ -73,59 +77,81 @@ export class FieldMessage {
   }
 
   /**
-   * Checks if there are values for outputting the element/ Проверяет, есть ли значения для вывода элемента
+   * Returns data for the main style class.
+   *
+   * Возвращает данные для главного класса стиля.
+   * @returns object of class names / объект названий классов
    */
-  readonly is = computed<boolean>(() => {
+  get classes(): ConstrClassObject {
+    return {
+      [`${this.className}--validation`]: this.message.isValidation()
+    }
+  }
+
+  /**
+   * Data for helper slot.
+   *
+   * Данные для слота helper.
+   * @returns slot data object / объект данных слота
+   */
+  get slotHelperData(): FieldMessageSlot {
+    return {
+      message: this.props.helperMessage,
+      helperMessage: this.props.helperMessage,
+      validationMessage: this.props.validationMessage
+    }
+  }
+
+  /**
+   * Data for validation slot.
+   *
+   * Данные для слота validation.
+   * @returns slot data object / объект данных слота
+   */
+  get slotValidationData(): FieldMessageSlot {
+    return {
+      message: this.props.validationMessage,
+      helperMessage: this.props.helperMessage,
+      validationMessage: this.props.validationMessage
+    }
+  }
+
+  /**
+   * Checks if there are values for outputting the element.
+   *
+   * Проверяет, есть ли значения для вывода элемента.
+   * @returns boolean value / логическое значение
+   */
+  is(): boolean {
     return (
-      this.props.forceShow
-      || !this.props.disabled
+      (
+        this.props.forceShow
+        || !this.props.disabled
+      )
+      && (
+        this.message.is()
+        || this.fieldCounter.is
+      )
     )
-    && (
-      this.message.is.value
-      || this.fieldCounter.is
-    )
-  })
+  }
 
   /**
    * Checks if there is a helper message.
    *
    * Проверяет, есть ли вспомогательное сообщение.
+   * @returns boolean value / логическое значение
    */
-  readonly isHelper = computed<boolean>(() => {
+  isHelper(): boolean {
     return Boolean(this.props.helperMessage) || Boolean(this.slots && 'helper' in this.slots)
-  })
+  }
 
   /**
    * Checks if there is a validation message.
    *
    * Проверяет, есть ли сообщение о валидации.
+   * @returns boolean value / логическое значение
    */
-  readonly isValidation = computed<boolean>(() => {
+  isValidation(): boolean {
     return Boolean(this.props.validationMessage) || Boolean(this.slots && 'validation' in this.slots)
-  })
-
-  /**
-   * Returns data for the main style class/ Возвращает данные для главного класса стиля
-   */
-  readonly classes = computed<ConstrClassObject>(() => ({
-    [`${this.className}--validation`]: this.message.isValidation.value
-  }))
-
-  /**
-   * Data for helper slot/ Данные для слота helper
-   */
-  readonly slotHelperData = computed<FieldMessageSlot>(() => ({
-    message: this.props.helperMessage,
-    helperMessage: this.props.helperMessage,
-    validationMessage: this.props.validationMessage
-  }))
-
-  /**
-   * Data for validation slot/ Данные для слота validation
-   */
-  readonly slotValidationData = computed<FieldMessageSlot>(() => ({
-    message: this.props.validationMessage,
-    helperMessage: this.props.helperMessage,
-    validationMessage: this.props.validationMessage
-  }))
+  }
 }

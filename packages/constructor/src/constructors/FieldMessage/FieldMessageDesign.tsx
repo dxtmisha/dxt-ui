@@ -20,7 +20,11 @@ import {
 } from './types'
 
 /**
- * FieldMessageDesign
+ * Constructor class for the FieldMessage component design.
+ * It manages class lists, style lists, and renders information (helper) or error (validation) and character counter.
+ *
+ * Класс-конструктор для дизайна компонента FieldMessage.
+ * Управляет списками классов, стилей, а также выполняет рендеринг информации (вспомогательного сообщения), ошибки (валидации) и счетчика символов.
  */
 export class FieldMessageDesign<
   COMP extends FieldMessageComponents,
@@ -28,22 +32,23 @@ export class FieldMessageDesign<
   CLASSES extends FieldMessageClasses,
   P extends FieldMessagePropsBasic
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
-    COMP,
-    FieldMessageEmits,
-    EXPOSE,
-    FieldMessageSlots,
-    CLASSES,
-    P
-  > {
+  HTMLDivElement,
+  COMP,
+  FieldMessageEmits,
+  EXPOSE,
+  FieldMessageSlots,
+  CLASSES,
+  P
+> {
+  /** Main component instance / Основной экземпляр компонента */
   protected readonly item: FieldMessage
 
   /**
    * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor class for working with the element/ класс для работы с элементом
+   * @param name class name / название класса
+   * @param props properties / свойства
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor class for working with the element / класс для работы с элементом
    */
   constructor(
     name: string,
@@ -72,9 +77,10 @@ export class FieldMessageDesign<
   }
 
   /**
-   * Initialization of all the necessary properties for work
+   * Initialization of all the necessary properties for work.
    *
    * Инициализация всех необходимых свойств для работы.
+   * @returns exposed properties / экспортируемые свойства
    */
   protected initExpose(): EXPOSE {
     return {} as EXPOSE
@@ -84,10 +90,11 @@ export class FieldMessageDesign<
    * Improvement of the obtained list of classes.
    *
    * Доработка полученного списка классов.
+   * @returns list of classes / список классов
    */
   protected initClasses(): Partial<CLASSES> {
     return {
-      main: this.item.classes.value,
+      main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
         info: this.getSubClass('info'),
@@ -101,6 +108,7 @@ export class FieldMessageDesign<
    * Refinement of the received list of styles.
    *
    * Доработка полученного списка стилей.
+   * @returns list of styles / список стилей
    */
   protected initStyles(): ConstrStyles {
     return {}
@@ -110,9 +118,10 @@ export class FieldMessageDesign<
    * A method for rendering.
    *
    * Метод для рендеринга.
+   * @returns rendered virtual node or undefined / отрендеренная виртуальная нода или undefined
    */
   protected initRender(): VNode | undefined {
-    if (this.item.is.value) {
+    if (this.item.is()) {
       return h(
         'div',
         {
@@ -135,9 +144,10 @@ export class FieldMessageDesign<
    * Rendering text.
    *
    * Рендеринг текста.
+   * @returns array of virtual nodes / массив виртуальных нод
    */
-  protected renderInfo = (): VNode[] => {
-    if (this.item.isHelper.value) {
+  readonly renderInfo = (): VNode[] => {
+    if (this.item.isHelper()) {
       const children: VNode[] = []
       const props: Record<string, any> = {
         key: 'message',
@@ -148,7 +158,7 @@ export class FieldMessageDesign<
         ]
       }
 
-      this.initSlot('helper', children, this.item.slotHelperData.value)
+      this.initSlot('helper', children, this.item.slotHelperData)
 
       if (children.length < 1) {
         props.innerHTML = this.props.helperMessage
@@ -170,9 +180,10 @@ export class FieldMessageDesign<
    * Rendering error.
    *
    * Рендеринг ошибки.
+   * @returns array of virtual nodes / массив виртуальных нод
    */
-  protected renderError = (): VNode[] => {
-    if (this.item.isValidation.value) {
+  readonly renderError = (): VNode[] => {
+    if (this.item.isValidation()) {
       const children: VNode[] = []
       const props: Record<string, any> = {
         key: 'message',
@@ -181,7 +192,7 @@ export class FieldMessageDesign<
         ...AriaStaticInclude.role('alert')
       }
 
-      this.initSlot('validation', children, this.item.slotValidationData.value)
+      this.initSlot('validation', children, this.item.slotValidationData)
 
       if (children.length < 1) {
         props.innerHTML = this.props.validationMessage

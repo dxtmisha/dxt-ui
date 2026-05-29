@@ -1,19 +1,18 @@
-import { computed } from 'vue'
 import { isFilled } from '@dxtmisha/functional'
 
 import type { FieldMessageProps } from './props'
 import type { FieldMessageSlots } from './types'
 
 /**
- * Class for working with text
+ * Class for managing message strings (both helper and validation text).
  *
- * Класс для работы с текстом
+ * Класс для работы со строками сообщений (как вспомогательными текстами, так и текстами валидации).
  */
 export class FieldMessageMessage {
   /**
    * Constructor
-   * @param props input data/ входные данные
-   * @param slots object for working with slots/ объект для работы со слотами
+   * @param props input data / входные данные
+   * @param slots object for working with slots / объект для работы со слотами
    */
   constructor(
     protected readonly props: Readonly<FieldMessageProps>,
@@ -21,26 +20,13 @@ export class FieldMessageMessage {
   ) {
   }
 
-  /** Checks if there is text/ Проверяет, есть ли текст */
-  readonly is = computed<boolean>(() =>
-    isFilled(this.item.value)
-    || Boolean(
-      this.slots
-      && (
-        'helper' in this.slots
-        || 'validation' in this.slots
-      )
-    )
-  )
-
-  /** Checks if there is an error/ Проверяет, есть ли ошибка */
-  readonly isValidation = computed<boolean>(() =>
-    isFilled(this.props.validationMessage)
-    || Boolean(this.slots && 'validation' in this.slots)
-  )
-
-  /** Returns text/ Возвращает текст */
-  readonly item = computed<string>(() => {
+  /**
+   * Returns text of the active message.
+   *
+   * Возвращает текст активного сообщения.
+   * @returns message text / текст сообщения
+   */
+  get item(): string {
     if (this.props.validationMessage) {
       return this.props.validationMessage
     }
@@ -50,5 +36,37 @@ export class FieldMessageMessage {
     }
 
     return ''
-  })
+  }
+
+  /**
+   * Checks if there is any message text or active slot.
+   *
+   * Проверяет, есть ли текст сообщения или активный слот.
+   * @returns boolean value / логическое значение
+   */
+  is(): boolean {
+    return (
+      isFilled(this.item)
+      || Boolean(
+        this.slots
+        && (
+          'helper' in this.slots
+          || 'validation' in this.slots
+        )
+      )
+    )
+  }
+
+  /**
+   * Checks if there is an error validation message or active validation slot.
+   *
+   * Проверяет, есть ли сообщение об ошибке валидации или активный слот валидации.
+   * @returns boolean value / логическое значение
+   */
+  isValidation(): boolean {
+    return (
+      isFilled(this.props.validationMessage)
+      || Boolean(this.slots && 'validation' in this.slots)
+    )
+  }
 }

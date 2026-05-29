@@ -141,21 +141,23 @@ export class Field {
     this.suffix = new SuffixIncludeConstructor(this.props, this.className, this.slots)
 
     this.fieldLabel = new FieldLabelIncludeConstructor(
-      this.props,
       this.className,
+      this.props,
       this.components,
+      this.skeleton.binds,
+      undefined,
       this.slots,
       this.id,
-      this.refs.counterTop,
-      this.skeleton.binds
+      this.refs.counterTop
     )
     this.fieldMessage = new FieldMessageIncludeConstructor(
-      this.props,
       this.className,
+      this.props,
       this.components,
+      this.skeleton.binds,
       undefined,
-      computed(() => !this.props.counterTop),
-      this.skeleton.binds
+      undefined,
+      () => !this.props.counterTop
     )
 
     this.progress = new ProgressIncludeConstructor(
@@ -239,8 +241,8 @@ export class Field {
     const list: string[] = [
       this.prefix.describedby,
       this.suffix.describedby,
-      this.fieldLabel.id.value,
-      this.fieldMessage.id.value
+      this.fieldLabel.id,
+      this.fieldMessage.id
     ]
 
     return list.join(' ').trim()

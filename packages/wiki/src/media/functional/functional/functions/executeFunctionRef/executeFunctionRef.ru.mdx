@@ -1,0 +1,26 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional/Functions/executeFunctionRef - Разрешение функции и ссылки'/>
+
+# `executeFunctionRef`
+
+Утилитарная функция, которая выполняет аргумент, если он является функцией, и распаковывает полученную Vue-переменную `Ref`, если она реактивна. Если аргумент представляет собой реактивную ссылку `Ref` или обычное значение, она распаковывает или возвращает его напрямую. Это крайне полезно для получения конечного значения, которое может быть статическим, реактивным или динамически возвращаться функцией-геттером.
+
+**Параметры:**
+- `data: RefOrNormalOrFunction<T>` — Реактивная переменная (`Ref`), обычное значение или функция, возвращающая их.
+
+**Возвращает:**
+- `T` — Полностью разрешенное и распакованное значение.
+
+```typescript
+import { ref } from 'vue'
+import { executeFunctionRef } from '@dxtmisha/functional'
+
+const count = ref(10)
+const normalValue = 20
+const getter = () => ref(30)
+
+console.log(executeFunctionRef(count))       // 10
+console.log(executeFunctionRef(normalValue)) // 20
+console.log(executeFunctionRef(getter))      // 30
+```

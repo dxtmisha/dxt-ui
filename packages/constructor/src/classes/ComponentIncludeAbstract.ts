@@ -3,11 +3,16 @@ import {
   type ConstrBind,
   type DesignComponents,
   executeFunction,
-  getRef,
+  executeFunctionRef,
   type RawSlots,
   toBinds
 } from '@dxtmisha/functional'
-import type { ComponentIncludeExposeItem, ComponentIncludeExtra, ComponentIncludeProps, ComponentIncludePropsAttrs } from '../types/componentInclude'
+import type {
+  ComponentIncludeExposeItem,
+  ComponentIncludeExtra,
+  ComponentIncludeProps,
+  ComponentIncludePropsAttrs
+} from '../types/componentInclude'
 
 /**
  * ComponentInclude is an abstract base class designed to facilitate the programmatic
@@ -22,12 +27,16 @@ export abstract class ComponentIncludeAbstract<
   Props extends Record<string, any>,
   PropsExtra extends Record<string, any>,
   ComponentExpose extends Record<string, any> = Record<string, any>,
-  ComponentSlots extends Record<string, any> = Record<string, any>
+  ComponentSlots extends Record<string, any> = Record<string, any>,
+  PartialPropsExtra extends Record<string, any> = Partial<ConstrBind<PropsExtra>>
 > {
   /** Reference to the sub-component element / Ссылка на элемент субкомпонента */
   protected readonly element = ref<ConstrBind<ComponentExpose> | undefined>()
   /** List of methods to expose from the sub-component / Список методов для экспорта из субкомпонента */
-  protected readonly exposeItems: ComponentIncludeExposeItem<any>[] | undefined
+  protected readonly exposeItems: ComponentIncludeExposeItem[] | undefined
+
+  /** Determines whether to initialize the element reference during binding / Определяет, нужно ли инициализировать ссылку на элемент при привязке */
+  protected readonly hasInitElement: boolean = true
 
   /** Component sub-name or code identifier / Дополнительное имя компонента или идентификатор кода */
   protected abstract readonly name: string
@@ -54,7 +63,7 @@ export abstract class ComponentIncludeAbstract<
   }
 
   /** Computed binding object for the component / Вычисляемый объект привязки для компонента */
-  readonly binds = computed<ConstrBind<PropsExtra>>(() => this.toBinds())
+  readonly binds = computed<PartialPropsExtra>(() => this.toBinds())
 
   /** Exposes the API methods and properties / Экспортирует API-методы и свойства */
   get expose(): ComponentExpose {
@@ -80,7 +89,7 @@ export abstract class ComponentIncludeAbstract<
    */
   readonly render = (
     slotsChildren?: ComponentSlots,
-    attrs?: ConstrBind<PropsExtra>,
+    attrs?: PartialPropsExtra,
     isShow: () => boolean = () => this.is
   ): VNode[] => this.initRender(slotsChildren, attrs, isShow)
 
@@ -120,8 +129,8 @@ export abstract class ComponentIncludeAbstract<
    * Разрешает и возвращает дополнительные атрибуты.
    * @returns extra attributes or undefined / дополнительные атрибуты или undefined
    */
-  protected getExtra(): PropsExtra | undefined {
-    return getRef(executeFunction(this.extra))
+  protected getExtra(): PartialPropsExtra | undefined {
+    return executeFunctionRef(this.extra) as PartialPropsExtra
   }
 
   /**
@@ -131,9 +140,9 @@ export abstract class ComponentIncludeAbstract<
    * @param attrs attributes to merge / атрибуты для объединения
    * @returns merged binding attributes / объединенные атрибуты привязки
    */
-  protected getAttrs(attrs?: ConstrBind<PropsExtra>): ConstrBind<PropsExtra> {
+  protected getAttrs(attrs?: PartialPropsExtra): PartialPropsExtra {
     if (attrs) {
-      return toBinds<PropsExtra>(
+      return toBinds(
         attrs,
         this.binds.value
       )
@@ -174,14 +183,21 @@ export abstract class ComponentIncludeAbstract<
    * Создает и разрешает все HTML-атрибуты и классы для привязки.
    * @returns resolved bindings / разрешенные привязки
    */
-  protected toBinds(): ConstrBind<PropsExtra> {
-    return toBinds<PropsExtra>(
+  protected toBinds(): PartialPropsExtra {
+    const binds = toBinds<PartialPropsExtra>(
       this.getExtra(),
       this.getPropsAttrs(),
-      {
-        class: this.getClassName()
-      }
+      { class: this.getClassName() }
     )
+
+    if (this.hasInitElement) {
+      return {
+        ref: this.element,
+        ...binds
+      }
+    }
+
+    return binds
   }
 
   /**
@@ -213,7 +229,7 @@ export abstract class ComponentIncludeAbstract<
    */
   protected initRender(
     slotsChildren?: ComponentSlots,
-    attrs?: ConstrBind<PropsExtra>,
+    attrs?: PartialPropsExtra,
     isShow: () => boolean = () => this.is
   ): VNode[] {
     if (
@@ -222,10 +238,7 @@ export abstract class ComponentIncludeAbstract<
     ) {
       return this.components.render(
         this.name,
-        {
-          ref: this.element,
-          ...this.getAttrs(attrs)
-        },
+        this.getAttrs(attrs),
         slotsChildren as RawSlots,
         this.index
       )

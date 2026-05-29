@@ -40,13 +40,13 @@ export class FieldCounter {
     protected readonly components?: DesignComp<FieldCounterComponents, FieldCounterProps>,
     protected readonly slots?: FieldCounterSlots,
     protected readonly emits?: ConstrEmit<FieldCounterEmits>,
-    constructors?: {
+    constructors: {
       TextIncludeConstructor?: typeof TextInclude
-    }
+    } = {}
   ) {
     const {
       TextIncludeConstructor = TextInclude
-    } = constructors ?? {}
+    } = constructors
 
     this.text = new TextIncludeConstructor(this.props)
   }

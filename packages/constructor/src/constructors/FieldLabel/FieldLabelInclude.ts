@@ -1,115 +1,155 @@
-import { computed, type VNode } from 'vue'
+import { type VNode } from 'vue'
 import {
   type ConstrBind,
   type DesignComponents,
+  executeFunctionRef,
   getElementId,
   getRef,
   isFilled,
-  type RawSlots,
   type RefOrNormal,
-  type RefType,
-  toBinds
+  type RefOrNormalOrFunction
 } from '@dxtmisha/functional'
 
+import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
 import { FieldCounterInclude } from '../FieldCounter'
 
+import type {
+  ComponentIncludeExtra,
+  ComponentIncludeProps
+} from '../../types/componentInclude'
 import type { FieldLabelComponentInclude, FieldLabelPropsInclude, FieldLabelSlotsInclude } from './basicTypes'
 import type { FieldLabelPropsBasic } from './props'
 
 /**
- * The class returns data for working with the FieldLabel component
+ * The class returns data for working with the FieldLabel component.
  *
- * Класс возвращает данные для работы с компонентом FieldLabel
+ * Класс возвращает данные для работы с компонентом FieldLabel.
  */
 export class FieldLabelInclude<
   Props extends FieldLabelPropsInclude = FieldLabelPropsInclude,
-  PropsExtra extends ConstrBind<FieldLabelPropsBasic> = ConstrBind<FieldLabelPropsBasic>
+  PropsExtra extends FieldLabelPropsBasic = FieldLabelPropsBasic
+> extends ComponentIncludeAbstract<
+  Props,
+  PropsExtra,
+  Record<string, any>,
+  FieldLabelSlotsInclude
 > {
-  protected readonly labelId: string = getElementId()
-  protected readonly counterId: string = getElementId()
+  /** Component name / Название компонента */
+  protected readonly name = 'fieldLabel'
 
-  /** Field counter include/ Подключение счетчика поля */
-  private readonly fieldCounter: FieldCounterInclude
+  /** Name of the property for component attributes / Название свойства для атрибутов компонента */
+  protected readonly propsAttrsName = 'fieldLabelAttrs'
+
+  /** Field counter include / Подключение счетчика поля */
+  protected readonly fieldCounter: FieldCounterInclude
+
+  /** Unique identifier for the label / Уникальный идентификатор для метки */
+  protected readonly labelId: string = getElementId()
+
+  /** Unique identifier for the counter / Уникальный идентификатор для счетчика */
+  protected readonly counterId: string = getElementId()
 
   /**
    * Constructor
-   * @param props input parameter/ входной параметр
-   * @param className class name/ название класса
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param slots object for working with slots/ объект для работы со слотами
-   * @param forId element ID/ идентификатор элемента
-   * @param isCounter whether to display the counter/ отображать ли счетчик
-   * @param extra additional parameter or property name/ дополнительный параметр или имя свойства
-   * @param index index identifier/ идентификатор индекса
+   * @param className class name / название класса
+   * @param props input parameter / входной параметр
+   * @param components object for working with components / объект для работы с компонентами
+   * @param extra additional parameter or property name / дополнительный параметр или имя свойства
+   * @param index index identifier / идентификатор индекса
+   * @param slots object for working with slots / объект для работы со слотами
+   * @param forId element ID / идентификатор элемента
+   * @param isCounter whether to display the counter / отображать ли счетчик
    */
   constructor(
-    protected readonly props: Readonly<Props>,
-    protected readonly className: string,
-    protected readonly components?: DesignComponents<FieldLabelComponentInclude, Props>,
+    className: string,
+    props: ComponentIncludeProps<Props>,
+    components?: DesignComponents<FieldLabelComponentInclude, Props>,
+    extra?: ComponentIncludeExtra<PropsExtra>,
+    index?: string,
     protected readonly slots?: FieldLabelSlotsInclude,
     protected readonly forId?: RefOrNormal<string>,
-    protected readonly isCounter?: RefType<boolean | undefined>,
-    protected readonly extra?: RefOrNormal<PropsExtra>,
-    protected readonly index?: string
+    protected readonly isCounter?: RefOrNormalOrFunction<boolean | undefined>
   ) {
+    super(className, props, components, extra, index)
+
     this.fieldCounter = new FieldCounterInclude(this.className, this.props)
   }
 
-  /** Checks if label should be displayed/ Проверяет, надо ли отображать метку */
-  readonly is = computed<boolean>(() => isFilled(this.props.label) || Boolean(this.isCounter?.value))
+  /**
+   * Checks whether the component should be displayed.
+   *
+   * Проверяет, нужно ли отображать компонент.
+   */
+  override get is(): boolean {
+    return isFilled(this.getProps().label) || this.showCounter()
+  }
 
-  /** Returns the identifier/ Возвращает идентификатор */
-  readonly id = computed<string>(() => {
+  /**
+   * Returns the identifier.
+   *
+   * Возвращает идентификатор.
+   */
+  get id(): string {
     if (
-      this.isCounter?.value
-      && this.props.counterShow
+      this.showCounter()
+      && this.getProps().counterShow
     ) {
       return this.counterId
     }
 
     return ''
-  })
-
-  /** Computed bindings for FieldLabel/ Вычисляемые привязки для FieldLabel */
-  readonly binds = computed<PropsExtra>(() =>
-    toBinds<PropsExtra>(
-      getRef(this.extra),
-      this.isCounter?.value
-        ? this.fieldCounter.bindsIntermediary
-        : {},
-      {
-        for: getRef(this.forId),
-        label: this.props.label,
-        required: this.props.required,
-
-        labelId: this.labelId,
-        counterId: this.counterId
-      },
-      this.props.fieldLabelAttrs
-    )
-  )
+  }
 
   /**
-   * Render the FieldLabel component/ Рендер компонента FieldLabel
+   * Checks if the counter should be displayed.
+   *
+   * Проверяет, нужно ли отображать счетчик.
+   * @returns boolean value indicating whether to show the counter / логическое значение, указывающее, нужно ли показывать счетчик
    */
-  readonly render = (): VNode[] => {
-    if (
-      this.components
-      && this.is.value
-    ) {
-      return this.components.render(
-        'fieldLabel',
-        {
-          ...toBinds(
-            this.binds.value,
-            { class: `${this.className}__fieldLabel` }
-          )
-        },
-        this.slots as RawSlots,
-        this.index
-      )
+  showCounter(): boolean {
+    return Boolean(
+      executeFunctionRef(this.isCounter)
+    )
+  }
+
+  /**
+   * Initializes and renders the included component.
+   *
+   * Инициализирует и рендерит включенный компонент.
+   */
+  protected override initRender(
+    slotsChildren?: FieldLabelSlotsInclude,
+    attrs?: ConstrBind<PropsExtra>,
+    isShow: () => boolean = () => this.is
+  ): VNode[] {
+    return super.initRender(slotsChildren ?? this.slots, attrs, isShow)
+  }
+
+  /**
+   * Combines input attributes with internal component bindings.
+   *
+   * Объединяет входные атрибуты со внутренними привязками компонента.
+   */
+  protected override toBinds(): ConstrBind<PropsExtra> {
+    const props = this.getProps()
+    const binds = {
+      ...super.toBinds(),
+
+      for: getRef(this.forId),
+      label: props.label,
+      required: props.required,
+
+      labelId: this.labelId,
+      counterId: this.counterId
     }
 
-    return []
+    if (this.showCounter()) {
+      return {
+        ...binds,
+        ...this.fieldCounter.bindsIntermediary
+      }
+    }
+
+    return binds
   }
 }
