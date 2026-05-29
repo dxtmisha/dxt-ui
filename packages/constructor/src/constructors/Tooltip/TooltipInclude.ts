@@ -1,13 +1,6 @@
-import { computed, ref, type VNode } from 'vue'
-import {
-  type ConstrBind,
-  type DesignComponents,
-  getRef,
-  type RefOrNormal,
-  toBinds
-} from '@dxtmisha/functional'
+import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
 
-import type { TooltipComponentInclude, TooltipPropsInclude } from './basicTypes'
+import type { TooltipPropsInclude } from './basicTypes'
 import type { TooltipExpose, TooltipSlots } from './types'
 import type { TooltipProps } from './props'
 
@@ -20,68 +13,25 @@ import type { TooltipProps } from './props'
  * подсказки внутри других компонентов. Он управляет логикой определения необходимости
  * отображения подсказки и настраивает соответствующие свойства.
  */
-export class TooltipInclude<
-  Props extends TooltipPropsInclude = TooltipPropsInclude,
-  PropsExtra extends ConstrBind<TooltipProps> = ConstrBind<TooltipProps>
+export class TooltipInclude extends ComponentIncludeAbstract<
+  TooltipPropsInclude,
+  TooltipProps,
+  TooltipExpose,
+  TooltipSlots
 > {
-  readonly element = ref<TooltipExpose>()
-
-  /**
-   * Constructor
-   * @param props input parameter/ входной параметр
-   * @param className class name/ название класса
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param extra additional parameter or property name/ дополнительный параметр или имя свойства
-   * @param index index identifier/ идентификатор индекса
-   */
-  constructor(
-    protected readonly props: Readonly<Props>,
-    protected readonly className: string,
-    protected readonly components?: DesignComponents<TooltipComponentInclude, Props>,
-    protected readonly extra?: RefOrNormal<PropsExtra>,
-    protected readonly index?: string
-  ) {
-  }
-
-  /** Computed bindings for the tooltip/ Вычисляемые привязки для подсказки */
-  readonly binds = computed<PropsExtra>(() => {
-    return toBinds<PropsExtra>(
-      getRef(this.extra),
-      this.props.tooltipAttrs,
-      {
-        ref: this.element,
-        class: `${this.className}__tooltip`
-      }
-    )
-  })
-
-  /**
-   * Render the Tooltip component
-   *
-   * Рендер компонента подсказки
-   */
-  readonly render = (
-    slotsChildren: TooltipSlots
-  ): VNode[] => {
-    if (this.components) {
-      return this.components.render(
-        'tooltip',
-        this.binds.value,
-        slotsChildren as unknown as Record<string, any>,
-        this.index
-      )
-    }
-
-    return []
-  }
+  /** Component sub-name / Дополнительное имя компонента */
+  protected readonly name = 'tooltip'
+  /** Property name for attributes / Имя свойства для атрибутов */
+  protected readonly propsAttrsName = 'tooltipAttrs'
 
   /**
    * Get the tooltip element.
    *
    * Получить элемент подсказки.
+   * @returns tooltip element or undefined / элемент подсказки или undefined
    */
   getElement(): TooltipExpose | undefined {
-    return this.element.value
+    return this.element.value as TooltipExpose | undefined
   }
 
   /**
@@ -106,7 +56,7 @@ export class TooltipInclude<
    * Toggle the tooltip.
    *
    * Переключить подсказку.
-   * @param open open status/ статус открытия
+   * @param open open status / статус открытия
    */
   toggle(open: boolean): void {
     this.getElement()?.toggle(open)

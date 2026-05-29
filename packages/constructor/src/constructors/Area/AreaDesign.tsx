@@ -109,7 +109,7 @@ export class AreaDesign<
    * Метод для рендеринга.
    */
   protected initRender(): VNode | undefined {
-    const area = this.item.area.value
+    const area = this.item.area
 
     if (this.slots) {
       if (

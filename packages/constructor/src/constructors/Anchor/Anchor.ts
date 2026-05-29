@@ -77,13 +77,13 @@ export class Anchor {
     this.label = new LabelIncludeConstructor(props, className, undefined, slots)
     this.text = new TextIncludeConstructor(this.props)
     this.tooltip = new TooltipIncludeConstructor(
-      this.props,
       this.className,
+      this.props,
       this.components,
-      computed(() => ({
+      () => ({
         description: this.text.copiedClipboard,
         interactive: false
-      }))
+      })
     )
 
     this.href = new AnchorHrefConstructor(this.props)

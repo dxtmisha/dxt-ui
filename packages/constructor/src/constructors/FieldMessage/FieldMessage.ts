@@ -14,7 +14,7 @@ import type { FieldMessageProps } from './props'
  */
 export class FieldMessage {
   /** Field counter functionality/ Функциональность счетчика поля */
-  readonly fieldCounter: FieldCounterInclude<FieldMessageProps>
+  readonly fieldCounter: FieldCounterInclude
 
   /** Message functionality/ Функциональность сообщений */
   readonly message: FieldMessageMessage
@@ -59,8 +59,8 @@ export class FieldMessage {
     } = constructors ?? {}
 
     this.fieldCounter = new FieldCounterIncludeConstructor(
-      this.props,
       this.className,
+      this.props,
       this.components
     )
 
@@ -82,7 +82,7 @@ export class FieldMessage {
     )
     && (
       this.message.is.value
-      || this.fieldCounter.isCounter.value
+      || this.fieldCounter.is
     )
   })
 

@@ -112,7 +112,7 @@ export class PageAreaDesign<
   protected initRender(): VNode | undefined {
     let componentName = 'group'
 
-    switch (this.item.area.value) {
+    switch (this.item.area) {
       case 'container':
         componentName = 'page'
         break

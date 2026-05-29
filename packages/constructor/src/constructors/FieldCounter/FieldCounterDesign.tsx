@@ -111,7 +111,7 @@ export class FieldCounterDesign<
    * Метод для рендеринга.
    */
   protected initRender(): VNode[] | undefined {
-    if (this.item.is.value) {
+    if (this.item.is()) {
       return [
         h(
           'span', {
@@ -134,7 +134,7 @@ export class FieldCounterDesign<
    * Рендер скрытого элемента для скринридера.
    */
   readonly renderAria = (): VNode[] => {
-    if (this.item.ariaText.value) {
+    if (this.item.ariaText) {
       return [
         h(
           'div',
@@ -147,7 +147,7 @@ export class FieldCounterDesign<
               'span',
               {
                 ...AriaStaticInclude.role('img'),
-                ...AriaStaticInclude.label(this.item.ariaText.value)
+                ...AriaStaticInclude.label(this.item.ariaText)
               }
             )
           ]

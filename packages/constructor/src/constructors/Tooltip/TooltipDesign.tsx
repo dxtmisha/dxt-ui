@@ -19,7 +19,9 @@ import {
 } from './types'
 
 /**
- * TooltipDesign
+ * TooltipDesign component class for rendering the tooltip layout and slots.
+ *
+ * Класс компонента TooltipDesign для рендеринга разметки и слотов подсказки.
  */
 export class TooltipDesign<
   COMP extends TooltipComponents,
@@ -35,14 +37,15 @@ export class TooltipDesign<
     CLASSES,
     P
   > {
+  /** Tooltip controller instance / Экземпляр контроллера подсказки */
   protected readonly item: Tooltip
 
   /**
    * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor tooltip item class/ класс элемента тултипа
+   * @param name class name / название класса
+   * @param props properties / свойства
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor tooltip item class / класс элемента тултипа
    */
   constructor(
     name: string,
@@ -71,9 +74,10 @@ export class TooltipDesign<
   }
 
   /**
-   * Initialization of all the necessary properties for work
+   * Initialization of all the necessary properties for work.
    *
    * Инициализация всех необходимых свойств для работы.
+   * @returns exposed API object / объект экспортируемого API
    */
   protected initExpose(): EXPOSE {
     return {
@@ -85,6 +89,7 @@ export class TooltipDesign<
    * Improvement of the obtained list of classes.
    *
    * Доработка полученного списка классов.
+   * @returns partial classes object / частичный объект классов
    */
   protected initClasses(): Partial<CLASSES> {
     return {
@@ -103,6 +108,7 @@ export class TooltipDesign<
    * Refinement of the received list of styles.
    *
    * Доработка полученного списка стилей.
+   * @returns styles object / объект стилей
    */
   protected initStyles(): ConstrStyles {
     return {}
@@ -112,6 +118,7 @@ export class TooltipDesign<
    * A method for rendering.
    *
    * Метод для рендеринга.
+   * @returns array of VNodes / массив VNode
    */
   protected initRender(): VNode[] {
     return [
@@ -124,10 +131,11 @@ export class TooltipDesign<
    * Rendering of the control slot.
    *
    * Рендеринг слота управления.
+   * @returns array of VNodes / массив VNode
    */
   protected readonly renderControl = (): VNode[] => {
     return [
-      this.initSlot('control', undefined, this.item.slotData.value) as VNode
+      this.initSlot('control', undefined, this.item.slotData) as VNode
     ]
   }
 
@@ -135,16 +143,17 @@ export class TooltipDesign<
    * Rendering of the tooltip.
    *
    * Рендеринг тултипа.
+   * @returns array of VNodes / массив VNode
    */
   protected readonly renderTooltip = (): VNode[] => {
-    if (this.item.status.isShow.value) {
+    if (this.item.status.isShow()) {
       const children: any[] = [
         ...this.item.label.render(),
         ...this.item.description.render(),
         ...this.renderBody()
       ]
 
-      if (this.item.status.isArray.value) {
+      if (this.item.status.isArray()) {
         children.push(
           ...this.item.arrow.render()
         )
@@ -155,7 +164,7 @@ export class TooltipDesign<
         {
           ref: this.element,
           class: this.classes?.value.main,
-          ...this.item.binds.value
+          ...this.item.binds
         },
         children
       )
@@ -174,6 +183,7 @@ export class TooltipDesign<
    * Rendering of the body slot.
    *
    * Рендеринг слота тела.
+   * @returns array of VNodes / массив VNode
    */
   protected readonly renderBody = (): VNode[] => {
     if (

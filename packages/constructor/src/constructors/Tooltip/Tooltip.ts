@@ -1,4 +1,4 @@
-import { computed, onUnmounted, type Ref, type ToRefs } from 'vue'
+import { type Ref, type ToRefs } from 'vue'
 import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
@@ -21,27 +21,29 @@ import type { TooltipComponents, TooltipEmits, TooltipSlots } from './types'
 import type { TooltipProps } from './props'
 
 /**
- * Tooltip
+ * Tooltip controller class managing classes, styles, states, position, teleport, and elements.
+ *
+ * Класс контроллера Tooltip, управляющий классами, стилями, состояниями, позицией, телепортом и элементами.
  */
 export class Tooltip {
-  /** Class manager for tooltip classes/ Менеджер классов для подсказки */
+  /** Class manager for tooltip classes / Менеджер классов для подсказки */
   readonly classes: TooltipClassesData
-  /** Style manager for tooltip styles/ Менеджер стилей для подсказки */
+  /** Style manager for tooltip styles / Менеджер стилей для подсказки */
   readonly style: TooltipStyle
-  /** Status manager for tooltip state/ Менеджер статуса для состояния подсказки */
+  /** Status manager for tooltip state / Менеджер статуса для состояния подсказки */
   readonly status: TooltipStatus
-  /** Position manager for tooltip placement/ Менеджер позиции для размещения подсказки */
+  /** Position manager for tooltip placement / Менеджер позиции для размещения подсказки */
   readonly position: TooltipPosition
-  /** Open manager for tooltip visibility/ Менеджер открытия для видимости подсказки */
+  /** Open manager for tooltip visibility / Менеджер открытия для видимости подсказки */
   readonly open: TooltipOpen
-  /** Event manager for tooltip interactions/ Менеджер событий для взаимодействий с подсказкой */
+  /** Event manager for tooltip interactions / Менеджер событий для взаимодействий с подсказкой */
   readonly event: TooltipEvent
 
-  /** Arrow manager/ Менеджер стрелки */
+  /** Arrow manager / Менеджер стрелки */
   readonly arrow: ArrowInclude
-  /** Label manager/ Менеджер метки */
+  /** Label manager / Менеджер метки */
   readonly label: LabelInclude
-  /** Description manager/ Менеджер описания */
+  /** Description manager / Менеджер описания */
   readonly description: DescriptionInclude
 
   /** Teleport manager for window placement in DOM / Менеджер телепортации для размещения окна в DOM */
@@ -49,25 +51,25 @@ export class Tooltip {
 
   /**
    * Constructor
-   * @param props input data/ входные данные
-   * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
-   * @param element input element/ элемент ввода
-   * @param classDesign design name/ название дизайна
-   * @param className class name/ название класса
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param slots object for working with slots/ объект для работы со слотами
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param constructors object with classes/ объект с классами
-   * @param constructors.ArrowIncludeConstructor class for working with arrow/ класс для работы со стрелкой
-   * @param constructors.DescriptionIncludeConstructor class for working with description/ класс для работы с описанием
-   * @param constructors.LabelIncludeConstructor class for working with label/ класс для работы с меткой
-   * @param constructors.TeleportIncludeConstructor class for working with teleport/ класс для работы с телепортом
-   * @param constructors.TooltipClassesConstructor class for working with classes/ класс для работы с классами
-   * @param constructors.TooltipEventConstructor class for working with events/ класс для работы с событиями
-   * @param constructors.TooltipOpenConstructor class for working with open state/ класс для работы с состоянием открытия
-   * @param constructors.TooltipPositionConstructor class for working with position/ класс для работы с позицией
-   * @param constructors.TooltipStatusConstructor class for working with status/ класс для работы со статусом
-   * @param constructors.TooltipStyleConstructor class for working with styles/ класс для работы со стилями
+   * @param props input data / входные данные
+   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
+   * @param element input element / элемент ввода
+   * @param classDesign design name / название дизайна
+   * @param className class name / название класса
+   * @param components object for working with components / объект для работы с компонентами
+   * @param slots object for working with slots / объект для работы со слотами
+   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
+   * @param constructors object with classes / объект с классами
+   * @param constructors.ArrowIncludeConstructor class for working with arrow / класс для работы со стрелкой
+   * @param constructors.DescriptionIncludeConstructor class for working with description / класс для работы с описанием
+   * @param constructors.LabelIncludeConstructor class for working with label / класс для работы с меткой
+   * @param constructors.TeleportIncludeConstructor class for working with teleport / класс для работы с телепортом
+   * @param constructors.TooltipClassesConstructor class for working with classes / класс для работы с классами
+   * @param constructors.TooltipEventConstructor class for working with events / класс для работы с событиями
+   * @param constructors.TooltipOpenConstructor class for working with open state / класс для работы с состоянием открытия
+   * @param constructors.TooltipPositionConstructor class for working with position / класс для работы с позицией
+   * @param constructors.TooltipStatusConstructor class for working with status / класс для работы со статусом
+   * @param constructors.TooltipStyleConstructor class for working with styles / класс для работы со стилями
    */
   constructor(
     protected readonly props: TooltipProps,
@@ -151,33 +153,42 @@ export class Tooltip {
     )
 
     this.teleport = new TeleportIncludeConstructor()
+  }
 
-    onUnmounted(() => {
-      this.open.eventStop()
-    })
+  /** Computed role for the tooltip / Вычисляемая роль для подсказки */
+  get role(): RoleType {
+    if (this.props.interactive) {
+      return 'region'
+    }
+
+    return 'tooltip'
   }
 
   /**
-   * Computed bindings for the tooltip element/
-   * Вычисляемые привязки для элемента подсказки
+   * Computed bindings for the tooltip element.
+   *
+   * Вычисляемые привязки для элемента подсказки.
+   * @returns bindings object / объект привязок
    */
-  readonly binds = computed(() => {
+  get binds() {
     return {
       id: this.classes.getIdItem(),
       onMouseover: this.event.onMouseoverTooltip,
       onMouseout: this.event.onMouseout,
       onTransitionend: this.event.onTransitionend,
-      ...AriaStaticInclude.role(this.role.value),
+      ...AriaStaticInclude.role(this.role),
       ...AriaStaticInclude.labelledby(this.label.id),
       ...AriaStaticInclude.describedby(this.description.id)
     }
-  })
+  }
 
   /**
-   * Computed bindings for the control element/
-   * Вычисляемые привязки для элемента управления
+   * Computed bindings for the control element.
+   *
+   * Вычисляемые привязки для элемента управления.
+   * @returns binds control object / объект привязок управления
    */
-  readonly bindsControl = computed<TooltipControlBinds>(() => {
+  get bindsControl(): TooltipControlBinds {
     const data = {
       class: this.classes.getControl(),
       onClick: this.event.onClick,
@@ -197,23 +208,14 @@ export class Tooltip {
       ...data,
       ...AriaStaticInclude.describedby(this.classes.getIdItem())
     }
-  })
+  }
 
-  /** Data for the control slot/ Данные для слота управления */
-  readonly slotData = computed<TooltipControl>(() => {
+  /** Data for the control slot / Данные для слота управления */
+  get slotData(): TooltipControl {
     return {
-      ...this.bindsControl.value,
+      ...this.bindsControl,
       open: this.status.open,
-      binds: this.bindsControl.value
+      binds: this.bindsControl
     }
-  })
-
-  /** Computed role for the tooltip/ Вычисляемая роль для подсказки */
-  readonly role = computed<RoleType>(() => {
-    if (this.props.interactive) {
-      return 'region'
-    }
-
-    return 'tooltip'
-  })
+  }
 }

@@ -5,7 +5,6 @@ import {
   DesignConstructorAbstract
 } from '@dxtmisha/functional'
 
-import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { Block } from './Block'
 
 import {
@@ -20,7 +19,9 @@ import {
 } from './types'
 
 /**
- * BlockDesign
+ * BlockDesign component class for rendering the block component layout and slots.
+ *
+ * Класс компонента BlockDesign для рендеринга разметки и слотов компонента блока.
  */
 export class BlockDesign<
   COMP extends BlockComponents,
@@ -28,22 +29,23 @@ export class BlockDesign<
   CLASSES extends BlockClasses,
   P extends BlockPropsBasic
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
-    COMP,
-    BlockEmits,
-    EXPOSE,
-    BlockSlots,
-    CLASSES,
-    P
-  > {
+  HTMLDivElement,
+  COMP,
+  BlockEmits,
+  EXPOSE,
+  BlockSlots,
+  CLASSES,
+  P
+> {
+  /** Block controller instance / Экземпляр контроллера блока */
   protected readonly item: Block
 
   /**
    * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor block item class/ класс элемента блока
+   * @param name class name / название класса
+   * @param props properties / свойства
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor block item class / класс элемента блока
    */
   constructor(
     name: string,
@@ -72,9 +74,10 @@ export class BlockDesign<
   }
 
   /**
-   * Initialization of all the necessary properties for work
+   * Initialization of all the necessary properties for work.
    *
    * Инициализация всех необходимых свойств для работы.
+   * @returns exposed API object / объект экспортируемого API
    */
   protected initExpose(): EXPOSE {
     return {} as EXPOSE
@@ -84,6 +87,7 @@ export class BlockDesign<
    * Improvement of the obtained list of classes.
    *
    * Доработка полученного списка классов.
+   * @returns partial classes object / частичный объект классов
    */
   protected initClasses(): Partial<CLASSES> {
     return {
@@ -103,6 +107,7 @@ export class BlockDesign<
    * Refinement of the received list of styles.
    *
    * Доработка полученного списка стилей.
+   * @returns styles object / объект стилей
    */
   protected initStyles(): ConstrStyles {
     return {}
@@ -112,6 +117,7 @@ export class BlockDesign<
    * A method for rendering.
    *
    * Метод для рендеринга.
+   * @returns rendered VNode / отрисованный VNode
    */
   protected initRender(): VNode {
     const children: any[] = [
@@ -120,16 +126,25 @@ export class BlockDesign<
 
     this.initSlot('default', children)
 
-    return h(this.item.tag.value, this.getProps(), children)
+    return h(
+      this.item.tag,
+      {
+        ...this.getAttrs(),
+        class: this.classes?.value.main,
+        ...this.item.binds
+      },
+      children
+    )
   }
 
   /**
    * Headline rendering.
    *
    * Рендеринг заголовка.
+   * @returns array of VNodes / массив VNode
    */
-  protected readonly renderHeadline = (): VNode[] => {
-    if (this.item.isHeadline.value) {
+  readonly renderHeadline = (): VNode[] => {
+    if (this.item.isHeadline()) {
       const children: any[] = []
 
       if (this.props.headline) {
@@ -153,8 +168,9 @@ export class BlockDesign<
    * Header rendering.
    *
    * Рендеринг заголовка.
+   * @returns array of VNodes / массив VNode
    */
-  protected readonly renderHeader = (): VNode[] => {
+  readonly renderHeader = (): VNode[] => {
     if (this.item.header.is.value) {
       return this.item.header.render()
     }
@@ -166,8 +182,9 @@ export class BlockDesign<
    * Body rendering.
    *
    * Рендеринг тела.
+   * @returns array of VNodes / массив VNode
    */
-  protected readonly renderBody = (): VNode[] => {
+  readonly renderBody = (): VNode[] => {
     const children: any[] = [
       ...this.renderHeadline(),
       ...this.renderHeader(),
@@ -184,33 +201,5 @@ export class BlockDesign<
     }
 
     return []
-  }
-
-  /**
-   * Returns properties for the main element.
-   *
-   * Возвращает свойства для главного элемента.
-   */
-  protected getProps() {
-    const props = {
-      ...this.getAttrs(),
-      class: this.classes?.value.main
-    }
-
-    if (this.props.label) {
-      Object.assign(
-        props,
-        AriaStaticInclude.labelledby(this.item.labelId)
-      )
-    }
-
-    if (this.item.description.is) {
-      Object.assign(
-        props,
-        AriaStaticInclude.describedby(this.item.description.id)
-      )
-    }
-
-    return props
   }
 }

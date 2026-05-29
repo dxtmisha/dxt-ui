@@ -1,7 +1,8 @@
-import { computed, type Ref, type ToRefs } from 'vue'
+import { type Ref, type ToRefs } from 'vue'
 import { type ConstrEmit, type DesignComp, getElementId } from '@dxtmisha/functional'
 
 import { AreaInclude } from '../../classes/AreaInclude'
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { DescriptionInclude } from '../../classes/DescriptionInclude'
 
 import { HeaderInclude } from '../Header'
@@ -10,46 +11,36 @@ import type { BlockComponents, BlockEmits, BlockSlots } from './types'
 import type { BlockProps } from './props'
 
 /**
- * Block
+ * Block controller class managing description, headers, labels, tags, and aria-bindings.
+ *
+ * Класс контроллера Block, управляющий описанием, заголовками, метками, тегами и aria-привязками.
  */
 export class Block {
-  /**
-   * Object for working with description/
-   * Объект для работы с описанием
-   */
+  /** Object for working with description / Объект для работы с описанием */
   readonly description: DescriptionInclude
 
-  /**
-   * Object for working with header/
-   * Объект для работы с шапкой
-   */
+  /** Object for working with header / Объект для работы с шапкой */
   readonly header: HeaderInclude
 
-  /**
-   * Object for working with area value/
-   * Объект для работы со значением области
-   */
+  /** Object for working with area value / Объект для работы со значением области */
   readonly area: AreaInclude
 
-  /**
-   * Identifier for the label/
-   * Идентификатор для метки
-   */
+  /** Identifier for the label / Идентификатор для метки */
   readonly labelId: string = getElementId()
 
   /**
    * Constructor
-   * @param props input data/ входные данные
-   * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
-   * @param element input element/ элемент ввода
-   * @param classDesign design name/ название дизайна
-   * @param className class name/ название класса
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param slots object for working with slots/ объект для работы со слотами
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param constructors object with classes/ объект с классами
-   * @param constructors.AreaIncludeConstructor class for working with area value/ класс для работы со значением области
-   * @param constructors.DescriptionIncludeConstructor class for working with the description/ класс для работы с описанием
+   * @param props input data / входные данные
+   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
+   * @param element input element / элемент ввода
+   * @param classDesign design name / название дизайна
+   * @param className class name / название класса
+   * @param components object for working with components / объект для работы с компонентами
+   * @param slots object for working with slots / объект для работы со слотами
+   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
+   * @param constructors object with classes / объект с классами
+   * @param constructors.AreaIncludeConstructor class for working with area value / класс для работы со значением области
+   * @param constructors.DescriptionIncludeConstructor class for working with the description / класс для работы с описанием
    */
   constructor(
     protected readonly props: BlockProps,
@@ -86,21 +77,51 @@ export class Block {
   }
 
   /**
-   * Checks if the headline exists/
-   * Проверяет, существует ли заголовок
+   * Tag name.
+   *
+   * Название тега.
+   * @returns tag name / название тега
    */
-  readonly isHeadline = computed<boolean>(() => {
+  get tag(): string {
+    return this.props.tag || 'div'
+  }
+
+  /**
+   * Computed bindings for the main element.
+   *
+   * Вычисляемые привязки для главного элемента.
+   * @returns bindings object / объект привязок
+   */
+  get binds() {
+    const props = {}
+
+    if (this.props.label) {
+      Object.assign(
+        props,
+        AriaStaticInclude.labelledby(this.labelId)
+      )
+    }
+
+    if (this.description.is) {
+      Object.assign(
+        props,
+        AriaStaticInclude.describedby(this.description.id)
+      )
+    }
+
+    return props
+  }
+
+  /**
+   * Checks if the headline exists.
+   *
+   * Проверяет, существует ли заголовок.
+   * @returns true if headline exists / true, если заголовок существует
+   */
+  isHeadline(): boolean {
     return Boolean(
       this.props.headline
       || (this.slots && 'headline' in this.slots)
     )
-  })
-
-  /**
-   * Tag name/
-   * Название тега
-   */
-  readonly tag = computed<string>(() => {
-    return this.props.tag || 'div'
-  })
+  }
 }

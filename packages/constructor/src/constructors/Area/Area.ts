@@ -1,4 +1,4 @@
-import { computed, type Ref, type ToRefs } from 'vue'
+import { type Ref, type ToRefs } from 'vue'
 import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 import { getAreaValue } from '../../functions/getAreaValue'
 
@@ -11,14 +11,14 @@ import type { AreaProps } from './props'
 export class Area {
   /**
    * Constructor
-   * @param props input data/ входные данные
-   * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
-   * @param element input element/ элемент ввода
-   * @param classDesign design name/ название дизайна
-   * @param className class name/ название класса
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param slots object for working with slots/ объект для работы со слотами
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   * @param props input data / входные данные
+   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
+   * @param element input element / элемент ввода
+   * @param classDesign design name / название дизайна
+   * @param className class name / название класса
+   * @param components object for working with components / объект для работы с компонентами
+   * @param slots object for working with slots / объект для работы со слотами
+   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
    */
   constructor(
     protected readonly props: AreaProps,
@@ -32,6 +32,8 @@ export class Area {
   ) {
   }
 
-  /** The property of the current area value/ Свойство текущего значения области */
-  readonly area = computed<string | undefined>(() => getAreaValue() ?? this.props.areaDefault)
+  /** The property of the current area value / Свойство текущего значения области */
+  get area(): string | undefined {
+    return getAreaValue() ?? this.props.areaDefault
+  }
 }

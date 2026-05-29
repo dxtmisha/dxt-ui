@@ -17,7 +17,7 @@ export class FieldLabel {
   readonly label: LabelInclude
 
   /** Field counter include/ Подключение счетчика поля */
-  readonly fieldCounter: FieldCounterInclude<FieldLabelProps>
+  readonly fieldCounter: FieldCounterInclude
 
   /** Progress include/ Подключение прогресса */
   readonly progress: ProgressInclude
@@ -78,8 +78,8 @@ export class FieldLabel {
     )
 
     this.fieldCounter = new FieldCounterConstructor(
-      this.props,
       this.className,
+      this.props,
       this.components
     )
 

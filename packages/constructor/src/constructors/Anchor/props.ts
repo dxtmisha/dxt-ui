@@ -54,7 +54,7 @@ export type AnchorProps = AnchorPropsBasic & AnchorPropsToken
  */
 export const defaultsAnchor = {
   shift: 64,
-  delayHide: 3_072,
+  delayHide: 2_048,
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

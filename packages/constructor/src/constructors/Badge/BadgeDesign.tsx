@@ -87,7 +87,7 @@ export class BadgeDesign<
    */
   protected initClasses(): Partial<CLASSES> {
     return {
-      main: this.item.classes.value,
+      main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
         label: this.getSubClass('label'),
@@ -116,7 +116,7 @@ export class BadgeDesign<
 
     if (!this.props.dot) {
       children.push(
-        ...this.item.label.render(undefined, this.item.aria.value),
+        ...this.item.label.render(undefined, this.item.aria),
         ...this.item.icon.renderIcon()
       )
     }

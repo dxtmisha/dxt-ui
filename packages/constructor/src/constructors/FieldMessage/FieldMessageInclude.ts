@@ -53,7 +53,7 @@ export class FieldMessageInclude<
     protected readonly extra?: RefOrNormal<PropsExtra>,
     protected readonly index?: string
   ) {
-    this.fieldCounter = new FieldCounterInclude(this.props, this.className)
+    this.fieldCounter = new FieldCounterInclude(this.className, this.props)
   }
 
   /** Checks if validation message should be displayed/ Проверяет, надо ли отображать сообщение валидации */
@@ -95,7 +95,7 @@ export class FieldMessageInclude<
     return toBinds<PropsExtra>(
       getRef(this.extra),
       this.isCounter?.value
-        ? this.fieldCounter.bindsIntermediary.value
+        ? this.fieldCounter.bindsIntermediary
         : {},
       {
         disabled: this.props.disabled,

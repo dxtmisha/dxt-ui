@@ -51,37 +51,14 @@ export class FieldCounter {
     this.text = new TextIncludeConstructor(this.props)
   }
 
-  /** Checks if it is necessary to display the number of input characters/ Проверяет, надо ли выводить количество вводимых символов */
-  readonly is = computed<boolean>(() => this.props.counter !== undefined || this.isMax.value)
-
-  /** Checks if it is necessary to display the maximum available number of characters/ Проверяет, надо ли выводить максимальное доступное количество символов */
-  readonly isMax = computed<boolean>(() => this.getMax() > 0)
-
-  /** Returns text for output/ Возвращает текст для вывода */
-  readonly item = computed<string>(() => {
-    const counter = this.getCounter().toString()
-    const max = this.getMax().toString()
-
-    if (isFilled(this.props.template)) {
-      return this.props.template
-        .replace('[c]', counter)
-        .replace('[m]', max)
-    }
-
-    if (this.isMax.value) {
-      return `${counter} / ${max}`
-    }
-
-    return counter
-  })
-
   /**
    * Returns the text for the screen reader.
    *
    * Возвращает текст для скринридера.
+   * @returns aria text or undefined / текст для скринридера или undefined
    */
-  readonly ariaText = computed<string | undefined>(() => {
-    if (this.isMax.value) {
+  get ariaText(): string | undefined {
+    if (this.isMax()) {
       const remaining = this.getRemaining()
 
       if (remaining <= 0) {
@@ -100,7 +77,49 @@ export class FieldCounter {
     }
 
     return undefined
+  }
+
+  /**
+   * Returns text for output.
+   *
+   * Возвращает текст для вывода.
+   */
+  readonly item = computed<string>(() => {
+    const counter = this.getCounter().toString()
+    const max = this.getMax().toString()
+
+    if (isFilled(this.props.template)) {
+      return this.props.template
+        .replace('[c]', counter)
+        .replace('[m]', max)
+    }
+
+    if (this.isMax()) {
+      return `${counter} / ${max}`
+    }
+
+    return counter
   })
+
+  /**
+   * Checks if it is necessary to display the number of input characters.
+   *
+   * Проверяет, надо ли выводить количество вводимых символов.
+   * @returns true if the counter should be displayed / true, если счетчик должен быть выведен
+   */
+  is(): boolean {
+    return this.props.counter !== undefined || this.isMax()
+  }
+
+  /**
+   * Checks if it is necessary to display the maximum available number of characters.
+   *
+   * Проверяет, надо ли выводить максимальное доступное количество символов.
+   * @returns true if max limit is displayed / true, если выводится максимальный лимит
+   */
+  isMax(): boolean {
+    return this.getMax() > 0
+  }
 
   /**
    * Returns the number of input characters.

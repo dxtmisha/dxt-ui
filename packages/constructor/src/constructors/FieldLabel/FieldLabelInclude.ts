@@ -52,7 +52,7 @@ export class FieldLabelInclude<
     protected readonly extra?: RefOrNormal<PropsExtra>,
     protected readonly index?: string
   ) {
-    this.fieldCounter = new FieldCounterInclude(this.props, this.className)
+    this.fieldCounter = new FieldCounterInclude(this.className, this.props)
   }
 
   /** Checks if label should be displayed/ Проверяет, надо ли отображать метку */
@@ -75,7 +75,7 @@ export class FieldLabelInclude<
     toBinds<PropsExtra>(
       getRef(this.extra),
       this.isCounter?.value
-        ? this.fieldCounter.bindsIntermediary.value
+        ? this.fieldCounter.bindsIntermediary
         : {},
       {
         for: getRef(this.forId),

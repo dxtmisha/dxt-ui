@@ -29,14 +29,14 @@ export class CellDesign<
   CLASSES extends CellClasses,
   P extends CellPropsBasic
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
-    COMP,
-    CellEmits,
-    EXPOSE,
-    CellSlots,
-    CLASSES,
-    P
-  > {
+  HTMLDivElement,
+  COMP,
+  CellEmits,
+  EXPOSE,
+  CellSlots,
+  CLASSES,
+  P
+> {
   /** Cell controller instance / Экземпляр контроллера ячейки (Cell) */
   protected readonly item: Cell
 
@@ -153,7 +153,7 @@ export class CellDesign<
    * Рендерит контейнер текстового контекста, содержащий метку, подпись и описание.
    * @returns array of virtual nodes (VNode) / массив виртуальных узлов (VNode)
    */
-  protected renderContext = (): VNode[] => {
+  readonly renderContext = (): VNode[] => {
     return [
       h(
         'div',
@@ -176,7 +176,7 @@ export class CellDesign<
    * Рендерит контейнер хвостовых элементов, если передан слот trailing.
    * @returns array of virtual nodes (VNode) / массив виртуальных узлов (VNode)
    */
-  protected renderTrailing = (): VNode[] => {
+  readonly renderTrailing = (): VNode[] => {
     if (
       this.slots
       && 'trailing' in this.slots
@@ -202,7 +202,7 @@ export class CellDesign<
    * Рендерит контейнер внутреннего тела, если передан слот body.
    * @returns array of virtual nodes (VNode) / массив виртуальных узлов (VNode)
    */
-  protected renderBody = (): VNode[] => {
+  readonly renderBody = (): VNode[] => {
     if (
       this.slots
       && 'body' in this.slots

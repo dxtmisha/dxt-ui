@@ -30,14 +30,14 @@ export class AnchorDesign<
   CLASSES extends AnchorClasses,
   P extends AnchorPropsBasic
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
-    COMP,
-    AnchorEmits,
-    EXPOSE,
-    AnchorSlots,
-    CLASSES,
-    P
-  > {
+  HTMLDivElement,
+  COMP,
+  AnchorEmits,
+  EXPOSE,
+  AnchorSlots,
+  CLASSES,
+  P
+> {
   protected readonly item: Anchor
 
   /**
@@ -190,10 +190,7 @@ export class AnchorDesign<
    */
   readonly renderIcon = (): VNode[] => {
     if (this.item.icon.is()) {
-      return this.components.render(
-        'icon',
-        this.item.icon.binds.value
-      )
+      return this.components.render('icon', this.item.icon.binds)
     }
 
     return []

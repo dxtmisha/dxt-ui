@@ -11,16 +11,18 @@ import type { TooltipProps } from './props'
  * Класс для работы с событиями.
  */
 export class TooltipEvent {
+  /** Next transition indicator / Флаг следующего перехода */
   protected next: boolean = false
+  /** Timeout for focus reset / Таймаут сброса фокуса */
   protected timeout?: any
 
   /**
    * Constructor
-   * @param props input data/ входные данные
-   * @param classes object for working with the class/ объект для работы с классом
-   * @param style object for working with styles/ объект для работы со стилями
-   * @param status object for working with statuses/ объект для работы со статусами
-   * @param open data opening management/ управление открытием данных
+   * @param props input data / входные данные
+   * @param classes object for working with the class / объект для работы с классом
+   * @param style object for working with styles / объект для работы со стилями
+   * @param status object for working with statuses / объект для работы со статусами
+   * @param open data opening management / управление открытием данных
    */
   constructor(
     protected readonly props: Readonly<TooltipProps>,
@@ -52,7 +54,7 @@ export class TooltipEvent {
    * Element management events on receiving focus.
    *
    * События управления элементом при получении фокуса.
-   * @param target selected element/ выбранный элемент
+   * @param event mouse event / событие мыши
    */
   readonly onMouseover = ({ target }: MouseEvent): void => {
     if (this.isNotEmbedded()) {
@@ -84,7 +86,7 @@ export class TooltipEvent {
    * Element management events on losing focus.
    *
    * События управления элементом при потере фокуса.
-   * @param relatedTarget selected element/ выбранный элемент
+   * @param event mouse event / событие мыши
    */
   readonly onMouseout = ({ relatedTarget }: MouseEvent): void => {
     if (
@@ -101,7 +103,7 @@ export class TooltipEvent {
    * Event of the end of the transition.
    *
    * Событие окончания трансформации.
-   * @param event event data/ данные события
+   * @param event event data / данные события
    */
   readonly onTransitionend = (event: TransitionEvent): void => {
     if (
@@ -112,6 +114,12 @@ export class TooltipEvent {
     }
   }
 
+  /**
+   * Checks if the component is not embedded.
+   *
+   * Проверяет, не встроен ли компонент.
+   * @returns true if not embedded / true, если не встроен
+   */
   protected isNotEmbedded(): boolean {
     return Boolean(!this.props.embedded)
   }

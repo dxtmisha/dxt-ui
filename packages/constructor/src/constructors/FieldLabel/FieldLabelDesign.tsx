@@ -121,7 +121,7 @@ export class FieldLabelDesign<
     if (
       this.item.label.is
       || this.item.progress.is
-      || this.item.fieldCounter.isCounter.value
+      || this.item.fieldCounter.is
     ) {
       return h(
         'label',

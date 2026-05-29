@@ -1,4 +1,3 @@
-import { computed } from 'vue'
 import type { AnchorProps } from './props'
 
 /**
@@ -16,14 +15,14 @@ export class AnchorHref {
   ) {
   }
 
-  /** Computed href attribute/ Вычисляемый атрибут href */
-  readonly href = computed<string | undefined>(() => {
+  /** Href attribute / Вычисляемый атрибут href */
+  get href(): string | undefined {
     if (this.props.name) {
       return `#${this.props.name}`
     }
 
     return undefined
-  })
+  }
 
   /**
    * Check if href exists
@@ -31,7 +30,7 @@ export class AnchorHref {
    * Проверить, существует ли href
    */
   is() {
-    return Boolean(this.href.value)
+    return Boolean(this.href)
   }
 
   /**
@@ -40,7 +39,7 @@ export class AnchorHref {
    * Получить значение href
    */
   get(): string | undefined {
-    return this.href.value
+    return this.href
   }
 
   /**
@@ -49,6 +48,6 @@ export class AnchorHref {
    * Получить полную ссылку
    */
   getLink() {
-    return `${location.origin}${location.pathname}${this.href.value}`
+    return `${location.origin}${location.pathname}${this.href}`
   }
 }

@@ -129,7 +129,7 @@ export class ButtonGroupDesign<
   protected readonly renderList = (): VNode[] => {
     const children: any[] = []
 
-    if (this.item.isList.value) {
+    if (this.item.isList()) {
       if (this.props.list) {
         this.props.list.forEach((item, key) => {
           this.components.renderAdd(

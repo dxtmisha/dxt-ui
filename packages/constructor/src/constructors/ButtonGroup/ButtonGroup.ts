@@ -1,4 +1,4 @@
-import { computed, type Ref, type ToRefs } from 'vue'
+import { type Ref, type ToRefs } from 'vue'
 import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
 import { AreaInclude } from '../../classes/AreaInclude'
@@ -56,11 +56,15 @@ export class ButtonGroup {
   }
 
   /**
-   * Checks if the main list needs to be displayed/
-   * Проверяет, нужно ли выводить главный список
+   * Checks if the main list needs to be displayed.
+   *
+   * Проверяет, нужно ли выводить главный список.
+   * @returns true if the list should be displayed / true, если список должен быть выведен
    */
-  readonly isList = computed<boolean>(() => Boolean(
-    this.props.list
-    || (this.slots && 'default' in this.slots)
-  ))
+  isList(): boolean {
+    return Boolean(
+      this.props.list
+      || (this.slots && 'default' in this.slots)
+    )
+  }
 }

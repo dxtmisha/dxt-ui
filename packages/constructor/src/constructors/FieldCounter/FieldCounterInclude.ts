@@ -1,100 +1,87 @@
-import { computed, type VNode } from 'vue'
 import {
-  type ConstrBind,
-  type DesignComponents,
-  getRef,
   isFilled,
-  isNull,
-  type RefOrNormal,
-  toBinds
+  isNull
 } from '@dxtmisha/functional'
 
+import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
+
+import type { ComponentIncludeExposeItem } from '../../types/componentInclude'
 import type {
-  FieldCounterComponentInclude,
   FieldCounterPropsInclude
 } from './basicTypes'
 import type { FieldCounterProps } from './props'
 
 /**
- * The class returns data for working with the FieldCounter component
+ * FieldCounterInclude class provides functionality for conditionally rendering field counter components
+ * within other components. It manages the logic for determining when to display a field counter
+ * and configures the appropriate properties.
  *
- * Класс возвращает данные для работы с компонентом FieldCounter
+ * Класс FieldCounterInclude предоставляет функциональность для условного рендеринга компонентов
+ * счетчика поля внутри других компонентов. Он управляет логикой определения необходимости
+ * отображения счетчика поля и настраивает соответствующие свойства.
  */
-export class FieldCounterInclude<
-  Props extends FieldCounterPropsInclude = FieldCounterPropsInclude,
-  PropsExtra extends ConstrBind<FieldCounterProps> = ConstrBind<FieldCounterProps>
+export class FieldCounterInclude extends ComponentIncludeAbstract<
+  FieldCounterPropsInclude,
+  FieldCounterProps
 > {
+  /** Expose configuration items / Конфигурация экспортируемых свойств */
+  protected readonly exposeItems: ComponentIncludeExposeItem<any>[] | undefined = undefined
+
+  /** Component sub-name or code identifier / Дополнительное имя компонента или идентификатор кода */
+  protected readonly name = 'fieldCounter'
+  /** Property name containing raw attributes to pass / Имя свойства, содержащего сырые атрибуты для передачи */
+  protected readonly propsAttrsName = 'fieldCounterAttrs'
+
   /**
-   * Constructor
-   * @param props input parameter/ входной параметр
-   * @param className class name/ название класса
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param extra additional parameter or property name/ дополнительный параметр или имя свойства
-   * @param index index identifier/ идентификатор индекса
+   * Checks whether the field counter should be displayed.
+   *
+   * Проверяет, нужно ли отображать счетчик поля.
+   * @returns true if the counter should be displayed / true, если счетчик должен быть отображен
    */
-  constructor(
-    protected readonly props: Readonly<Props>,
-    protected readonly className: string,
-    protected readonly components?: DesignComponents<FieldCounterComponentInclude, Props>,
-    protected readonly extra?: RefOrNormal<PropsExtra>,
-    protected readonly index?: string
-  ) {
+  override get is(): boolean {
+    const props = this.getProps()
+    return Boolean(
+      props.counterShow && (
+        !isNull(props.counter)
+        || isFilled(props.maxlength)
+      )
+    )
   }
 
-  /** Checks if counter should be displayed/ Проверяет, надо ли отображать счетчик */
-  readonly isCounter = computed<boolean>(() =>
-    Boolean(
-      this.props.counterShow && (
-        !isNull(this.props.counter)
-        || isFilled(this.props.maxlength)
-      )
-    )
-  )
-
-  /** Computed bindings for FieldCounter/ Вычисляемые привязки для FieldCounter */
-  readonly binds = computed<PropsExtra>(() => {
-    return toBinds<PropsExtra>(
-      getRef(this.extra),
-      {
-        id: this.props.counterId,
-        counter: this.props.counter,
-        maxlength: this.props.maxlength,
-        template: this.props.counterTemplate
-      },
-      this.props.fieldCounterAttrs
-    )
-  })
-
-  /** Intermediate bindings for FieldCounter/ Промежуточные привязки для FieldCounter */
-  readonly bindsIntermediary = computed<FieldCounterPropsInclude>(() => {
+  /**
+   * Returns the intermediate bindings for the field counter.
+   *
+   * Возвращает промежуточные привязки для счетчика поля.
+   * @returns intermediate counter properties / промежуточные свойства счетчика
+   */
+  get bindsIntermediary(): FieldCounterPropsInclude {
+    const props = this.getProps()
     return {
-      counter: this.props.counter,
-      counterShow: this.props.counterShow,
-      counterTemplate: this.props.counterTemplate,
-      maxlength: this.props.maxlength,
-      fieldCounterAttrs: this.props.fieldCounterAttrs
+      counter: props.counter,
+      counterShow: props.counterShow,
+      counterTemplate: props.counterTemplate,
+      maxlength: props.maxlength,
+      fieldCounterAttrs: props.fieldCounterAttrs
     }
-  })
+  }
 
   /**
-   * Render the FieldCounter component/
-   * Рендер компонента FieldCounter
+   * Combines input attributes with internal component bindings.
+   *
+   * Объединяет входные атрибуты со внутренними привязками компонента.
+   * @returns resolved bindings / разрешенные привязки
    */
-  readonly render = (): VNode[] => {
-    if (this.components && this.isCounter.value) {
-      return this.components.render(
-        'fieldCounter',
-        {
-          ...toBinds(
-            this.binds.value,
-            { class: `${this.className}__fieldCounter` }
-          )
-        },
-        undefined,
-        this.index
-      )
-    }
+  protected override toBinds(): FieldCounterProps {
+    const props = this.getProps()
+    const binds = super.toBinds()
 
-    return []
+    return {
+      ...binds,
+
+      id: props.counterId,
+      counter: props.counter,
+      maxlength: props.maxlength,
+      template: props.counterTemplate
+    }
   }
 }

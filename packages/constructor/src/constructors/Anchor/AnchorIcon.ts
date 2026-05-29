@@ -1,4 +1,3 @@
-import { computed } from 'vue'
 import type { ConstrBind } from '@dxtmisha/functional'
 
 import { AnchorEvent } from './AnchorEvent'
@@ -24,7 +23,7 @@ export class AnchorIcon {
   }
 
   /** Icon to display/ Иконка для отображения */
-  readonly icon = computed<IconValue | undefined>(() => {
+  get icon(): IconValue | undefined {
     if (this.props.hide) {
       return undefined
     }
@@ -34,16 +33,16 @@ export class AnchorIcon {
     }
 
     return this.props.iconLink
-  })
+  }
 
   /** Binds for the icon/ Привязки для иконки */
-  readonly binds = computed<ConstrBind<IconProps>>(() => {
+  get binds(): ConstrBind<IconProps> {
     return {
-      icon: this.icon.value,
+      icon: this.icon,
       iconActive: this.props.isCopy ? this.props.iconContentCopy : undefined,
       active: this.event.isCopy()
     }
-  })
+  }
 
   /**
    * Check if the icon is set
@@ -51,6 +50,6 @@ export class AnchorIcon {
    * Проверяет, установлена ли иконка
    */
   is(): boolean {
-    return Boolean(this.icon.value)
+    return Boolean(this.icon)
   }
 }
