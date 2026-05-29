@@ -5,16 +5,14 @@ import type { ConstrClass } from '@dxtmisha/functional'
  *
  * Интерфейс для описания, какие компоненты надо подключить для работы.
  */
-export type ArrowComponents = {
-}
+export type ArrowComponents = {}
 
 /**
  * Type describing available events.
  *
  * Тип, описывающий доступные события.
  */
-export type ArrowEmits = {
-}
+export type ArrowEmits = {}
 
 /**
  * Type describing available properties.
@@ -32,7 +30,6 @@ export interface ArrowExpose {
  * Тип, описывающий доступные слоты.
  */
 export interface ArrowSlots {
-  // default? (props: any): any
 }
 
 /**

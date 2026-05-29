@@ -61,4 +61,15 @@ export class TooltipInclude extends ComponentIncludeAbstract<
   toggle(open: boolean): void {
     this.getElement()?.toggle(open)
   }
+
+  protected toBinds() {
+    const props = this.getProps()
+
+    return {
+      ...super.toBinds(),
+
+      label: props.tooltipLabel,
+      description: props.tooltipDescription
+    }
+  }
 }

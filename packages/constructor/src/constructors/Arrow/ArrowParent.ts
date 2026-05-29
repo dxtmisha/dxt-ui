@@ -1,4 +1,4 @@
-import { onMounted, ref, type Ref, watch } from 'vue'
+import { onMounted, onUnmounted, ref, type Ref, watch } from 'vue'
 import { toNumber } from '@dxtmisha/functional'
 
 import { ArrowElement } from './ArrowElement'
@@ -29,6 +29,7 @@ export class ArrowParent {
     onMounted(() => {
       watch(element, this.make, { immediate: true })
     })
+    onUnmounted(() => this.unset())
   }
 
   /** Parent element / Родительский элемент */
@@ -92,5 +93,20 @@ export class ArrowParent {
         }
       }
     })
+  }
+
+  /**
+   * Unset styles for the parent element.
+   *
+   * Сброс стилей для родительского элемента.
+   */
+  protected readonly unset = (): void => {
+    const elementParent = this.elementParent
+
+    if (elementParent) {
+      elementParent.classList.remove(`${this.className}__parent`)
+      elementParent.style.removeProperty(`--${this.className}-sys-height`)
+      delete elementParent.dataset.arrow
+    }
   }
 }

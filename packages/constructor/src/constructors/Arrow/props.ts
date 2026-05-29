@@ -4,7 +4,6 @@ import type { ClientOnlyPropsInclude } from '../../types/clientOnlyTypes'
 export type ArrowPropsToken = {
   // :type [!] System label / Системная метка
   position?: 'auto' | 'top' | 'bottom' | 'left' | 'right'
-  inverse?: boolean
   // :type [!] System label / Системная метка
 }
 

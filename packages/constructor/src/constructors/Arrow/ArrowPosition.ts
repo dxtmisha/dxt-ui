@@ -61,7 +61,8 @@ export class ArrowPosition {
    * Проверяет, находится ли стрелка в направлении X.
    */
   isX() {
-    return this.direction.value === ArrowDirection.TOP || this.direction.value === ArrowDirection.BOTTOM
+    return this.direction.value === ArrowDirection.TOP
+      || this.direction.value === ArrowDirection.BOTTOM
   }
 
   /**

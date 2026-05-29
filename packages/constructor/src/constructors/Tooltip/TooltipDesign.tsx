@@ -153,7 +153,7 @@ export class TooltipDesign<
         ...this.renderBody()
       ]
 
-      if (this.item.status.isArray()) {
+      if (this.item.status.isArrow()) {
         children.push(
           ...this.item.arrow.render()
         )

@@ -5,18 +5,14 @@ import type { ConstrClass } from '@dxtmisha/functional'
  *
  * Интерфейс для описания, какие компоненты надо подключить для работы.
  */
-export type AreaComponents = {
-  // componentName: object
-}
+export type AreaComponents = {}
 
 /**
  * Type describing available events.
  *
  * Тип, описывающий доступные события.
  */
-export type AreaEmits = {
-  // load: [value: string]
-}
+export type AreaEmits = {}
 
 /**
  * Type describing available properties.

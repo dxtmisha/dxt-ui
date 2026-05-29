@@ -62,12 +62,12 @@ export class TooltipStatus {
   }
 
   /**
-   * Checks if the content is an array.
+   * Checks if the arrow needs to be displayed.
    *
-   * Проверяет, является ли содержимое массивом.
-   * @returns true if the content is an array / true, если содержимое является массивом
+   * Проверяет, нужно ли отображать стрелку.
+   * @returns true if the arrow needs to be displayed / true, если стрелку нужно отобразить
    */
-  isArray(): boolean {
+  isArrow(): boolean {
     return Boolean(this.props.arrowShow && this.preparation.value)
   }
 

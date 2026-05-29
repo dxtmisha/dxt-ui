@@ -1,9 +1,9 @@
 import { nextTick, onMounted, onUnmounted, type ToRefs, watch } from 'vue'
 import { type ConstrEmit, EventItem } from '@dxtmisha/functional'
 
-import { TooltipStyle } from './TooltipStyle'
-import { TooltipStatus } from './TooltipStatus'
 import { TooltipPosition } from './TooltipPosition'
+import { TooltipStatus } from './TooltipStatus'
+import { TooltipStyle } from './TooltipStyle'
 
 import type { TooltipProps } from './props'
 import type { TooltipEmits } from './types'
@@ -23,6 +23,7 @@ export class TooltipOpen {
 
   /** Scroll-sync event listener / Слушатель событий синхронизации скролла */
   protected event?: EventItem<Window, Event, any>
+  protected eventBody?: EventItem<HTMLElement, Event, any>
 
   /**
    * Constructor
@@ -43,6 +44,7 @@ export class TooltipOpen {
   ) {
     onMounted(() => {
       this.event = new EventItem(window, ['scroll-sync'], this.onScroll)
+      this.eventBody = new EventItem(document.body, ['mouseleave'], this.onScroll)
 
       watch([refs.open], () => {
         this.toggle(Boolean(this.props.open)).then()
@@ -70,6 +72,7 @@ export class TooltipOpen {
     ) {
       clearTimeout(this.timeout)
       clearTimeout(this.timeoutHide)
+      this.noHide()
 
       if (open) {
         this.status.setOpen(open)
@@ -105,7 +108,7 @@ export class TooltipOpen {
             this.status.setPreparation(false)
             this.emits?.('tooltip', false)
           }, 128)
-        }, flesh ? 48 : 256)
+        }, flesh ? 48 : 384)
       }
     }
   }
@@ -127,6 +130,7 @@ export class TooltipOpen {
   eventStart() {
     if (!this.props.embedded) {
       this.event?.start()
+      this.eventBody?.start()
     }
   }
 
@@ -137,6 +141,7 @@ export class TooltipOpen {
    */
   eventStop() {
     this.event?.stop()
+    this.eventBody?.stop()
   }
 
   /**

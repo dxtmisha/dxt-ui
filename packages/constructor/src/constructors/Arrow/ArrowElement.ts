@@ -26,9 +26,7 @@ export class ArrowElement {
     const size = this.getStyleArrowWidth()
 
     if (size) {
-      return Number(
-        size.replace(/[^0-9]+/ig, '')
-      )
+      return parseFloat(size)
     }
 
     return 0
@@ -41,9 +39,7 @@ export class ArrowElement {
     const size = this.getStyleArrowHeight()
 
     if (size) {
-      return Number(
-        size.replace(/[^0-9]+/ig, '')
-      )
+      return parseFloat(size)
     }
 
     return 0
@@ -76,7 +72,9 @@ export class ArrowElement {
    * @returns bounding rectangle or undefined / ограничивающий прямоугольник или undefined
    */
   getRectBorder(): DOMRect | undefined {
-    return this.element.value?.querySelector(`.${this.className}__border`)?.getBoundingClientRect() ?? undefined
+    return this.element.value
+      ?.querySelector(`.${this.className}__border`)
+      ?.getBoundingClientRect()
   }
 
   /**
@@ -86,7 +84,9 @@ export class ArrowElement {
    * @returns bounding rectangle or undefined / ограничивающий прямоугольник или undefined
    */
   getRectArrowLine(): DOMRect | undefined {
-    return this.element.value?.querySelector(`.${this.className}__arrowLine`)?.getBoundingClientRect() ?? undefined
+    return this.element.value
+      ?.querySelector(`.${this.className}__arrowLine`)
+      ?.getBoundingClientRect()
   }
 
   /** The name of the arrow width variable / Имя переменной ширины стрелки */
@@ -108,9 +108,7 @@ export class ArrowElement {
   protected getStyleArrowWidth(): string | undefined {
     if (this.is()) {
       return getComputedStyle(this.element.value)
-        .getPropertyValue(
-          this.nameArrowWidth
-        )
+        .getPropertyValue(this.nameArrowWidth)
     }
 
     return undefined
@@ -125,9 +123,7 @@ export class ArrowElement {
   protected getStyleArrowHeight(): string | undefined {
     if (this.is()) {
       return getComputedStyle(this.element.value)
-        .getPropertyValue(
-          this.nameArrowHeight
-        )
+        .getPropertyValue(this.nameArrowHeight)
     }
 
     return undefined
