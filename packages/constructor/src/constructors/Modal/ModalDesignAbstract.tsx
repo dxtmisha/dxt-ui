@@ -51,7 +51,7 @@ export abstract class ModalDesignAbstract<
     name: string,
     props: Readonly<P>,
     options?: ConstrOptions<COMP, EMITS, P>,
-    ItemConstructor?: typeof ModalAbstract
+    ItemConstructor?: any
   ) {
     super(
       name,
@@ -68,7 +68,7 @@ export abstract class ModalDesignAbstract<
    *
    * Инициализация основного элемента
    */
-  protected abstract initItem(ItemConstructor?: typeof ModalAbstract): ITEM
+  protected abstract initItem(ItemConstructor?: any): ITEM
 
   /**
    * Initialization of all the necessary properties for work

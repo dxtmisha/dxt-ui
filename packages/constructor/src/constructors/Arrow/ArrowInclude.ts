@@ -1,12 +1,10 @@
 import {
-  type ConstrBind,
   type DesignComponents
 } from '@dxtmisha/functional'
 
 import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
 
-import type { ComponentIncludeExposeItem, ComponentIncludeExtra } from '../../types/componentInclude'
-
+import type { ComponentIncludeExtra } from '../../types/componentInclude'
 import type { ArrowComponentInclude, ArrowPropsInclude } from './basicTypes'
 import type { ArrowProps } from './props'
 import type { ArrowExpose, ArrowSlots } from './types'
@@ -29,12 +27,8 @@ export class ArrowInclude<
     ArrowExpose,
     ArrowSlots
   > {
-  /** Items to expose / Элементы для экспозиции */
-  protected readonly exposeItems: ComponentIncludeExposeItem<any>[] | undefined = undefined
-
   /** Component name / Имя компонента */
   protected name = 'arrow'
-
   /** Attribute name for props / Имя атрибута для свойств */
   protected propsAttrsName = 'arrowAttrs'
 
@@ -65,9 +59,7 @@ export class ArrowInclude<
    * Проверяет, нужно ли отображать стрелку
    */
   override get is(): boolean {
-    const props = this.getProps()
-
-    return Boolean(props.arrowShow)
+    return Boolean(this.getProps().arrowShow)
   }
 
   /**
@@ -76,7 +68,7 @@ export class ArrowInclude<
    * Объединяет входные атрибуты со внутренними привязками компонента.
    * @returns resolved bindings / разрешенные привязки
    */
-  protected override toBinds(): ConstrBind<PropsExtra> {
+  protected override toBinds() {
     const props = this.getProps()
     const binds = super.toBinds()
 

@@ -48,7 +48,6 @@ export class MotionTransformInclude<
 
   /** Component sub-name / Дополнительное имя компонента */
   protected name = 'motionTransform'
-
   /** Property name containing raw attributes / Имя свойства, содержащего сырые атрибуты */
   protected propsAttrsName = 'motionTransformAttrs'
 
@@ -83,7 +82,7 @@ export class MotionTransformInclude<
    */
   protected override getAttrs(
     attrs?: ConstrBind<PropsExtra>
-  ): ConstrBind<PropsExtra> {
+  ) {
     const props = this.getProps()
 
     return {
@@ -98,11 +97,12 @@ export class MotionTransformInclude<
    * Создает и разрешает все HTML-атрибуты и классы для привязки.
    * @returns resolved bindings / разрешенные привязки
    */
-  protected override toBinds(): ConstrBind<PropsExtra> {
+  protected override toBinds() {
     const props = this.getProps()
 
     return {
       ...super.toBinds(),
+
       clickOpen: props.clickOpen,
       autoClose: props.autoClose,
       onTransform: this.onTransform

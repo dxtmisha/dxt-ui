@@ -55,7 +55,7 @@ export class ImageType {
   readonly item = computed<ImageTypeItem>(() => {
     const image = this.props.value
 
-    if (this.clientOnly.isRender) {
+    if (this.clientOnly.isRender()) {
       if (image instanceof File) {
         return ImageTypeValue.file
       }

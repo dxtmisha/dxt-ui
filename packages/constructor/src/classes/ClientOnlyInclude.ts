@@ -26,7 +26,7 @@ export class ClientOnlyInclude {
    * Is the component ready for rendering / Готов ли компонент к рендерингу
    * @returns {boolean}
    */
-  get isRender(): boolean {
+  isRender(): boolean {
     return (this.props && !this.props.clientOnly) || this.isMounted.value
   }
 }

@@ -4,11 +4,11 @@ import {
   type ConstrClass,
   type DesignComponents,
   executeFunction,
-  getBind,
-  getRef,
-  type RefOrNormal
+  executeFunctionRef,
+  getBind
 } from '@dxtmisha/functional'
 
+import type { ComponentIncludeExtra } from '../../types/componentInclude'
 import type { IconComponentInclude, IconLitePropsInclude } from './basicTypes'
 import type { IconPropsBasic } from './props'
 
@@ -33,7 +33,7 @@ export class IconLiteInclude<Props extends IconLitePropsInclude = IconLitePropsI
     protected readonly props: Readonly<Props> | (() => Readonly<Props>),
     protected readonly className: string,
     protected readonly components?: DesignComponents<IconComponentInclude, Props>,
-    protected readonly extra?: RefOrNormal<ConstrBind<IconPropsBasic>>
+    protected readonly extra?: ComponentIncludeExtra<IconPropsBasic>
   ) {
   }
 
@@ -97,7 +97,7 @@ export class IconLiteInclude<Props extends IconLitePropsInclude = IconLitePropsI
    * @returns additional properties / дополнительные свойства
    */
   protected getExtra() {
-    return getRef(this.extra)
+    return executeFunctionRef(this.extra)
   }
 
   /**

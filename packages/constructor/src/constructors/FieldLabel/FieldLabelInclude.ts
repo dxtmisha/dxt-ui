@@ -130,7 +130,7 @@ export class FieldLabelInclude<
    *
    * Объединяет входные атрибуты со внутренними привязками компонента.
    */
-  protected override toBinds(): ConstrBind<PropsExtra> {
+  protected override toBinds() {
     const props = this.getProps()
     const binds = {
       ...super.toBinds(),

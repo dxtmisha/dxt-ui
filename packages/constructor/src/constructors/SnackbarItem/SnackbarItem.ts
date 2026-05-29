@@ -8,7 +8,7 @@ import { EventClickInclude } from '../../classes/EventClickInclude'
 import { LabelInclude } from '../../classes/LabelInclude'
 import { TextInclude } from '../../classes/TextInclude'
 
-import { ActionsInclude } from '../Actions'
+import { ActionsInclude, type ActionsProps } from '../Actions'
 import { ButtonInclude } from '../Button'
 import { IconTrailingInclude } from '../Icon'
 
@@ -89,11 +89,12 @@ export class SnackbarItem {
       TextConstructor = TextInclude
     } = constructors
 
-    this.label = new LabelConstructor(props, className, undefined, slots)
-    this.description = new DescriptionConstructor(props, className, slots)
     this.event = new EventConstructor(undefined, undefined, emits)
 
+    this.label = new LabelConstructor(props, className, undefined, slots)
+    this.description = new DescriptionConstructor(props, className, slots)
     this.icon = new IconConstructor(props, className, components)
+
     this.button = new ButtonConstructor(
       className,
       () => this.props?.button,
@@ -104,9 +105,7 @@ export class SnackbarItem {
       className,
       props,
       components,
-      () => ({
-        align: 'left'
-      }),
+      { align: 'left' } as ActionsProps,
       undefined,
       emits
     )

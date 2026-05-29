@@ -1,5 +1,4 @@
 import {
-  type ConstrBind,
   type ConstrEmit,
   type DesignComponents
 } from '@dxtmisha/functional'
@@ -8,7 +7,6 @@ import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract
 
 import type { ComponentIncludeExtra } from '../../types/componentInclude'
 import type { EventClickValue } from '../../types/eventClickTypes'
-
 import type { ActionsComponentInclude, ActionsEmitsInclude, ActionsPropsInclude } from './basicTypes'
 import type { ActionsProps } from './props'
 import type { ActionsExpose, ActionsSlots } from './types'
@@ -33,7 +31,6 @@ export class ActionsInclude<
   > {
   /** Component name / Имя компонента */
   protected name = 'actions'
-
   /** Property name for attributes / Имя свойства для атрибутов */
   protected propsAttrsName = 'actionsAttrs'
 
@@ -95,7 +92,7 @@ export class ActionsInclude<
    * Объединяет входные атрибуты со внутренними привязками компонента.
    * @returns resolved bindings / разрешенные привязки
    */
-  protected override toBinds(): ConstrBind<PropsExtra> {
+  protected override toBinds() {
     const props = this.getProps()
     const binds = super.toBinds()
 

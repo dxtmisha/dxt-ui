@@ -120,7 +120,7 @@ export class ProgressDesign<
    */
   protected initRender(): VNode | undefined {
     if (
-      this.item.clientOnly.isRender
+      this.item.clientOnly.isRender()
       || this.item.isValue()
     ) {
       const children: any[] = [

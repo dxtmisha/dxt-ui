@@ -93,7 +93,7 @@ export class ImageAdaptiveItem {
   get active(): boolean {
     return Boolean(
       this.props.adaptive
-      && this.clientOnly.isRender
+      && this.clientOnly.isRender()
       && (this.width || this.height)
     )
     && this.data.isImage()

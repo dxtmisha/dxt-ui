@@ -78,30 +78,23 @@ export class Arrow {
       ArrowPositionConstructor = ArrowPosition
     } = constructors
 
-    this.clientOnly = new ClientOnlyInclude(this.props)
+    this.clientOnly = new ClientOnlyInclude(props)
 
-    this.elementItem = new ArrowElementConstructor(
-      this.element,
-      this.className
-    )
-    this.elementTarget = new ArrowElementTargetConstructor(this.props)
-    this.parent = new ArrowParentConstructor(
-      this.element,
-      this.className,
-      this.elementItem
-    )
+    this.elementItem = new ArrowElementConstructor(element, className)
+    this.elementTarget = new ArrowElementTargetConstructor(props)
+    this.parent = new ArrowParentConstructor(element, className, this.elementItem)
 
     this.position = new ArrowPositionConstructor(
-      this.props,
+      props,
       this.elementItem,
       this.elementTarget,
       this.parent
     )
 
     this.event = new ArrowEventConstructor(
-      this.props,
-      this.refs,
-      this.element,
+      props,
+      refs,
+      element,
       this.elementTarget,
       this.parent,
       this.position

@@ -138,7 +138,7 @@ export class ArrowDesign<
    * @returns VNode or undefined / VNode или undefined
    */
   protected initRender(): VNode | undefined {
-    if (!this.item.clientOnly.isRender) {
+    if (!this.item.clientOnly.isRender()) {
       return undefined
     }
 
@@ -147,9 +147,7 @@ export class ArrowDesign<
     ]
 
     if (this.item.parent.isBorder()) {
-      children.push(
-        ...this.renderBorder()
-      )
+      children.push(...this.renderBorder())
     }
 
     return h('div', {

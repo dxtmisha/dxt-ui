@@ -1,8 +1,9 @@
 import { type VNode } from 'vue'
-import { type ConstrBind, type DesignComponents, getBind, type RefOrNormal, toBinds } from '@dxtmisha/functional'
+import { type ConstrBind, type DesignComponents, getBind, toBinds } from '@dxtmisha/functional'
 
 import { IconInclude } from './IconInclude'
 
+import type { ComponentIncludeExtra } from '../../types/componentInclude'
 import type { IconComponentInclude, IconTrailingPropsInclude } from './basicTypes'
 import type { IconPropsBasic } from './props'
 
@@ -29,7 +30,7 @@ export class IconTrailingInclude<
     protected readonly props: Readonly<Props> | (() => Readonly<Props>),
     protected readonly className: string,
     protected readonly components?: DesignComponents<IconComponentInclude, Props>,
-    protected readonly extra?: RefOrNormal<ConstrBind<IconPropsBasic>>
+    protected readonly extra?: ComponentIncludeExtra<IconPropsBasic>
   ) {
     super(
       props,

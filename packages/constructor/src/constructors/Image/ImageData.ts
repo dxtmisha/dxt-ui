@@ -113,7 +113,7 @@ export class ImageData {
         case ImageTypeValue.file:
           try {
             if (
-              !this.clientOnly.isRender
+              !this.clientOnly.isRender()
               || this.props.lazy
             ) {
               return image

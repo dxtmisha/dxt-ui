@@ -67,7 +67,7 @@ export class FieldCounterInclude extends ComponentIncludeAbstract<
    * Объединяет входные атрибуты со внутренними привязками компонента.
    * @returns resolved bindings / разрешенные привязки
    */
-  protected override toBinds(): FieldCounterProps {
+  protected override toBinds() {
     const props = this.getProps()
     const binds = super.toBinds()
 

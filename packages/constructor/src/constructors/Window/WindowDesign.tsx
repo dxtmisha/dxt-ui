@@ -134,7 +134,7 @@ export class WindowDesign<
       if (
         (
           this.item.staticMode.item.value
-          && this.item.clientOnly.isRender
+          && this.item.clientOnly.isRender()
         )
         || this.props.embedded
       ) {

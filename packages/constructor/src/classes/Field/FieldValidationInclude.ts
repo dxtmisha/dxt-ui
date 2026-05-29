@@ -47,7 +47,7 @@ export class FieldValidationInclude {
   /** Hidden input element for native validation / Скрытый input для нативной валидации */
   protected readonly input = computed<FieldInputCheckInclude | undefined>(
     () => {
-      if (this.clientOnly.isRender) {
+      if (this.clientOnly.isRender()) {
         return new FieldInputCheckInclude(
           this.attributes.listForCheck,
           undefined,

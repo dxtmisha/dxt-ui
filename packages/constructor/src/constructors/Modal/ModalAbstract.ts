@@ -2,6 +2,7 @@ import { onMounted, ref, watch, type Ref, type ToRefs } from 'vue'
 import {
   type ConstrEmit,
   type DesignComp,
+  executeFunctionRef,
   getElementId
 } from '@dxtmisha/functional'
 
@@ -64,9 +65,9 @@ export abstract class ModalAbstract {
     protected readonly components?: DesignComp<ModalComponents, ModalProps>,
     protected readonly slots?: ModalSlots,
     protected readonly emits?: ConstrEmit<ModalEmits>,
-    protected readonly extraWindow?: () => ComponentIncludeExtra<WindowProps>,
-    protected readonly extraBars?: () => ComponentIncludeExtra<BarsProps>,
-    protected readonly extraActions?: () => ComponentIncludeExtra<ActionsProps>,
+    extraWindow?: () => ComponentIncludeExtra<WindowProps>,
+    extraBars?: () => ComponentIncludeExtra<BarsProps>,
+    extraActions?: () => ComponentIncludeExtra<ActionsProps>,
     constructors: {
       ActionsConstructor?: typeof ActionsInclude
       BarsConstructor?: typeof BarsInclude
@@ -84,7 +85,7 @@ export abstract class ModalAbstract {
     const labelId: string = getElementId()
     const descriptionId: string = getElementId()
 
-    this.model = new ModelIncludeConstructor('open', this.emits, this.open)
+    this.model = new ModelIncludeConstructor('open', emits, this.open)
 
     this.window = new WindowConstructor(
       className,
@@ -92,7 +93,7 @@ export abstract class ModalAbstract {
       components,
       () => ({
         open: this.open.value,
-        ...this.getExtraWindow()
+        ...executeFunctionRef(extraWindow)
       }),
       undefined,
       emits,
@@ -105,7 +106,7 @@ export abstract class ModalAbstract {
       className,
       props,
       components,
-      () => this.getExtraBars(),
+      () => executeFunctionRef(extraBars),
       undefined,
       emits,
       labelId,
@@ -116,7 +117,7 @@ export abstract class ModalAbstract {
       className,
       props,
       components,
-      () => this.getExtraActions(),
+      () => executeFunctionRef(extraActions),
       undefined,
       emits
     )
@@ -126,35 +127,5 @@ export abstract class ModalAbstract {
         this.open.value = Boolean(this.props.open)
       }, { immediate: true })
     })
-  }
-
-  /**
-   * Retrieves additional properties for the window sub-component.
-   *
-   * Возвращает дополнительные свойства для подкомпонента окна.
-   * @returns object with additional window properties / объект с дополнительными свойствами окна
-   */
-  protected getExtraWindow(): ComponentIncludeExtra<WindowProps> {
-    return this.extraWindow?.()
-  }
-
-  /**
-   * Retrieves additional properties for the bars sub-component.
-   *
-   * Возвращает дополнительные свойства для подкомпонента панелей.
-   * @returns object with additional bars properties / объект с дополнительными свойствами панелей
-   */
-  protected getExtraBars(): ComponentIncludeExtra<BarsProps> {
-    return this.extraBars?.()
-  }
-
-  /**
-   * Retrieves additional properties for the actions sub-component.
-   *
-   * Возвращает дополнительные свойства для подкомпонента действий.
-   * @returns object with additional actions properties / объект с дополнительными свойствами действий
-   */
-  protected getExtraActions(): ComponentIncludeExtra<ActionsProps> {
-    return this.extraActions?.()
   }
 }

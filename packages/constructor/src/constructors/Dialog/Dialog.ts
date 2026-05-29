@@ -6,11 +6,10 @@ import { LabelInclude } from '../../classes/LabelInclude'
 import { TextInclude } from '../../classes/TextInclude'
 
 import type { ActionsInclude, ActionsProps } from '../Actions'
-import type { BarsInclude, BarsProps } from '../Bars'
-import type { ComponentIncludeExtra } from '../../types/componentInclude'
+import type { BarsInclude } from '../Bars'
 import { IconInclude, type IconPropsBasic, type IconValue } from '../Icon'
 import { ModalAbstract } from '../Modal'
-import { WindowClassesInclude, type WindowInclude, type WindowProps } from '../Window'
+import { WindowClassesInclude, type WindowInclude } from '../Window'
 
 import type { DialogComponents, DialogEmits, DialogSlots } from './types'
 import type { DialogProps } from './props'
@@ -48,9 +47,6 @@ export class Dialog extends ModalAbstract {
    * @param components object for working with components / объект для работы с компонентами
    * @param slots slots / слоты
    * @param emits the function called when an event is triggered / функция вызывается, когда срабатывает событие
-   * @param extraWindow additional parameters for WindowInclude / дополнительные параметры для WindowInclude
-   * @param extraBars additional parameters for BarsInclude / дополнительные параметры для BarsInclude
-   * @param extraActions additional parameters for ActionsInclude / дополнительные параметры для ActionsInclude
    * @param constructors object with classes / объект с классами
    * @param constructors.ActionsConstructor class for creating actions / класс для создания действий
    * @param constructors.BarsConstructor class for creating bars / класс для создания панелей
@@ -70,9 +66,6 @@ export class Dialog extends ModalAbstract {
     protected readonly components?: DesignComp<DialogComponents, DialogProps>,
     protected readonly slots?: DialogSlots,
     protected readonly emits?: ConstrEmit<DialogEmits>,
-    protected readonly extraWindow?: () => ComponentIncludeExtra<WindowProps>,
-    protected readonly extraBars?: () => ComponentIncludeExtra<BarsProps>,
-    protected readonly extraActions?: () => ComponentIncludeExtra<ActionsProps>,
     constructors: {
       ActionsConstructor?: typeof ActionsInclude
       BarsConstructor?: typeof BarsInclude
@@ -101,9 +94,15 @@ export class Dialog extends ModalAbstract {
       components,
       slots,
       emits,
-      extraWindow,
-      extraBars,
-      extraActions,
+      () => ({
+        image: props.image,
+
+        adaptive: 'modal',
+        imagePosition: props.imagePosition,
+        closeButton: props.closeButton
+      }),
+      undefined,
+      () => this.extraActions,
       constructors
     )
 
@@ -111,7 +110,7 @@ export class Dialog extends ModalAbstract {
       () => ({ icon: this.iconValue }),
       className,
       components,
-      refs.iconAttrs
+      () => props.iconAttrs
     )
     this.label = new LabelIncludeConstructor(
       props,
@@ -125,7 +124,7 @@ export class Dialog extends ModalAbstract {
     this.description = new DescriptionIncludeConstructor(props, className, slots)
 
     this.windowClasses = new WindowClassesIncludeConstructor(classDesign)
-    this.text = new TextIncludeConstructor(this.props)
+    this.text = new TextIncludeConstructor(props)
   }
 
   /** Getter value for resolving the active icon / Значение-геттер для определения активной иконки */
@@ -142,31 +141,12 @@ export class Dialog extends ModalAbstract {
   }
 
   /**
-   * Retrieves additional properties for the window sub-component.
-   *
-   * Возвращает дополнительные свойства для подкомпонента окна.
-   * @returns object with additional window properties / объект с дополнительными свойствами окна
-   */
-  protected override getExtraWindow(): ComponentIncludeExtra<WindowProps> {
-    return {
-      ...super.getExtraWindow(),
-
-      open: this.props.open,
-      image: this.props.image,
-
-      adaptive: 'modal',
-      imagePosition: this.props.imagePosition,
-      closeButton: this.props.closeButton
-    }
-  }
-
-  /**
    * Retrieves additional properties for the actions sub-component.
    *
    * Возвращает дополнительные свойства для подкомпонента действий.
    * @returns object with additional actions properties / объект с дополнительными свойствами действий
    */
-  protected override getExtraActions(): ComponentIncludeExtra<ActionsProps> {
+  protected get extraActions(): ActionsProps {
     const list = []
 
     if (this.props.buttonClose !== null) {
@@ -202,8 +182,6 @@ export class Dialog extends ModalAbstract {
     }
 
     return {
-      ...super.getExtraActions(),
-
       list,
       align: 'center'
     }

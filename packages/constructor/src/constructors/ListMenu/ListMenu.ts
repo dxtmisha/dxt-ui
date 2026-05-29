@@ -1,8 +1,8 @@
 import { type Ref, type ToRefs } from 'vue'
 import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
-import { WindowInclude } from '../Window'
-import { ListGroupOpen } from '../ListGroup/ListGroupOpen'
+import { ListGroupOpen } from '../ListGroup'
+import { WindowInclude, type WindowProps } from '../Window'
 
 import type { ListMenuComponents, ListMenuEmits, ListMenuSlots } from './types'
 import type { ListMenuProps } from './props'
@@ -55,11 +55,11 @@ export class ListMenu {
       this.components,
       () => ({
         adaptive: 'menu',
-        axis: this.props.axis,
-        onWindow: this.open.onOpen,
+        axis: props.axis,
         role: 'menu',
-        ariaHaspopup: 'menu'
-      }),
+        ariaHaspopup: 'menu',
+        onWindow: this.open.onOpen
+      } as WindowProps),
       undefined,
       this.emits
     )

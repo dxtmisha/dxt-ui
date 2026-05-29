@@ -3,13 +3,13 @@ import {
   type DesignComponents,
   executeFunctionRef,
   getBind,
-  type RefOrNormal,
   type RefOrNormalOrFunction,
   toBinds
 } from '@dxtmisha/functional'
 
 import { IconLiteInclude } from './IconLiteInclude'
 
+import type { ComponentIncludeExtra } from '../../types/componentInclude'
 import type { IconComponentInclude, IconPropsInclude } from './basicTypes'
 import type { IconPropsBasic } from './props'
 
@@ -40,7 +40,7 @@ export class IconInclude<
     protected readonly props: Readonly<Props> | (() => Readonly<Props>),
     protected readonly className: string,
     protected readonly components?: DesignComponents<IconComponentInclude, Props>,
-    protected readonly extra?: RefOrNormal<ConstrBind<IconPropsBasic>>,
+    protected readonly extra?: ComponentIncludeExtra<IconPropsBasic>,
     protected readonly turn?: RefOrNormalOrFunction<boolean>,
     protected readonly dir?: RefOrNormalOrFunction<boolean>,
     protected readonly start: RefOrNormalOrFunction<boolean | undefined> = false,

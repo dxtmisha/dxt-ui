@@ -1,5 +1,4 @@
 import {
-  type ConstrBind,
   type ConstrEmit,
   type DesignComponents
 } from '@dxtmisha/functional'
@@ -101,7 +100,7 @@ export class WindowInclude<
    * Объединяет входные атрибуты со внутренними привязками компонента.
    * @returns resolved bindings / разрешенные привязки
    */
-  protected override toBinds(): ConstrBind<PropsExtra> {
+  protected override toBinds() {
     const props = this.getProps()
     const binds = super.toBinds()
 

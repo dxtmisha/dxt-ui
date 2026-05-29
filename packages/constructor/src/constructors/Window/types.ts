@@ -1,8 +1,8 @@
 import type { ConstrClass } from '@dxtmisha/functional'
 
-import type { ScrollbarComponentInclude, ScrollbarEmitsInclude } from '../Scrollbar'
 import type { ButtonComponentInclude } from '../Button'
 import type { ImageComponentInclude, ImageEmitsInclude } from '../Image'
+import type { ScrollbarComponentInclude, ScrollbarEmitsInclude } from '../Scrollbar'
 
 import type { ModelEmitsOpen } from '../../types/modelTypes'
 import type { WindowControlItem, WindowEmitOptions } from './basicTypes'

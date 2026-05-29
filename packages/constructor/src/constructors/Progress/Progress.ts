@@ -175,7 +175,7 @@ export class Progress {
       [`${this.className}--hide`]: this.hide.value,
       [`${this.className}--visible`]: this.visible.value,
       [`${this.className}--value`]: this.isValue(),
-      [`${this.className}--clientOnly`]: !this.clientOnly.isRender
+      [`${this.className}--clientOnly`]: !this.clientOnly.isRender()
     }
   }
 
@@ -219,7 +219,7 @@ export class Progress {
    * Метод срабатывает при изменении свойства visible для изменения статуса вывода элемента.
    */
   protected readonly switch = (): void => {
-    if (!this.clientOnly.isRender) {
+    if (!this.clientOnly.isRender()) {
       return
     }
 

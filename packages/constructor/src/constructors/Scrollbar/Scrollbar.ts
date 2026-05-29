@@ -87,7 +87,7 @@ export class Scrollbar {
    */
   get classes(): ConstrClassObject {
     return {
-      [`${this.className}--disabled`]: this.clientOnly.isRender && Boolean(this.width.item.value)
+      [`${this.className}--disabled`]: this.clientOnly.isRender() && Boolean(this.width.item.value)
     }
   }
 }
