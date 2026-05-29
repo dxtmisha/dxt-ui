@@ -64,7 +64,24 @@
   },
   "~imagePosition": {
     "~top": {},
-    "~left": {},
+    "~left": {
+      "#body": {
+        "flex-flow": "row",
+        "#group": {
+          "flex-grow": "1",
+          "flex-shrink": "1"
+        }
+      },
+      "#image": {
+        "flex-basis": "{??imageSizeValue}",
+        "min-width": "{??imageSizeValue}",
+        "height": "auto"
+      }
+    },
+    "group|adaptive": {
+      "link|imagePosition-left": "{??imagePosition.left}",
+      "_type": "media-group"
+    },
     "_default": "top"
   },
   "~dense": {

@@ -1,17 +1,17 @@
-import { computed, readonly, type Ref, type ToRefs } from 'vue'
+import { type Ref, type ToRefs } from 'vue'
 import { type ConstrEmit, type DesignComp, getBind } from '@dxtmisha/functional'
 
 import { DescriptionInclude } from '../../classes/DescriptionInclude'
 import { LabelInclude } from '../../classes/LabelInclude'
 import { TextInclude } from '../../classes/TextInclude'
 
-import { type ActionsInclude, type ActionsProps } from '../Actions'
-import { type BarsInclude, type BarsProps } from '../Bars'
-import { IconInclude } from '../Icon'
+import type { ActionsInclude, ActionsProps } from '../Actions'
+import type { BarsInclude, BarsProps } from '../Bars'
+import type { ComponentIncludeExtra } from '../../types/componentInclude'
+import { IconInclude, type IconPropsBasic, type IconValue } from '../Icon'
 import { ModalAbstract } from '../Modal'
 import { WindowClassesInclude, type WindowInclude, type WindowProps } from '../Window'
 
-import type { ComponentIncludeExtra } from '../../types/componentInclude'
 import type { DialogComponents, DialogEmits, DialogSlots } from './types'
 import type { DialogProps } from './props'
 
@@ -108,7 +108,7 @@ export class Dialog extends ModalAbstract {
     )
 
     this.icon = new IconIncludeConstructor(
-      readonly<any>({ icon: this.iconValue }),
+      () => ({ icon: this.iconValue }),
       className,
       components,
       refs.iconAttrs
@@ -128,8 +128,8 @@ export class Dialog extends ModalAbstract {
     this.text = new TextIncludeConstructor(this.props)
   }
 
-  /** Computed value for resolving the active icon / Вычисляемое значение для определения активной иконки */
-  protected readonly iconValue = computed(() => {
+  /** Getter value for resolving the active icon / Значение-геттер для определения активной иконки */
+  protected get iconValue(): IconValue<IconPropsBasic> | undefined {
     if (this.props.success) {
       return this.props.iconSuccess
     }
@@ -139,7 +139,7 @@ export class Dialog extends ModalAbstract {
     }
 
     return this.props.icon
-  })
+  }
 
   /**
    * Retrieves additional properties for the window sub-component.
@@ -167,47 +167,45 @@ export class Dialog extends ModalAbstract {
    * @returns object with additional actions properties / объект с дополнительными свойствами действий
    */
   protected override getExtraActions(): ComponentIncludeExtra<ActionsProps> {
-    return computed(() => {
-      const list = []
+    const list = []
 
-      if (this.props.buttonClose !== null) {
-        list.push(
-          getBind(
-            this.props.buttonClose,
-            {
-              label: this.text.close,
-              value: 'close',
-              class: this.windowClasses.get().close,
-              onClick: () => this.emits?.('close')
-            },
-            'label',
-            true
-          )
+    if (this.props.buttonClose !== null) {
+      list.push(
+        getBind(
+          this.props.buttonClose,
+          {
+            label: this.text.close,
+            value: 'close',
+            class: this.windowClasses.get().close,
+            onClick: () => this.emits?.('close')
+          },
+          'label',
+          true
         )
-      }
+      )
+    }
 
-      if (this.props.buttonOk !== null) {
-        list.push(
-          getBind(
-            this.props.buttonOk,
-            {
-              label: this.text.ok,
-              value: 'ok',
-              class: this.props.clickOkAndClose ? this.windowClasses.get().close : undefined,
-              onClick: () => this.emits?.('ok')
-            },
-            'label',
-            true
-          )
+    if (this.props.buttonOk !== null) {
+      list.push(
+        getBind(
+          this.props.buttonOk,
+          {
+            label: this.text.ok,
+            value: 'ok',
+            class: this.props.clickOkAndClose ? this.windowClasses.get().close : undefined,
+            onClick: () => this.emits?.('ok')
+          },
+          'label',
+          true
         )
-      }
+      )
+    }
 
-      return {
-        ...super.getExtraActions(),
+    return {
+      ...super.getExtraActions(),
 
-        list,
-        align: 'center'
-      }
-    })
+      list,
+      align: 'center'
+    }
   }
 }

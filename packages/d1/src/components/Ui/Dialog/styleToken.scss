@@ -38,6 +38,33 @@
       }
     }
     
+    &--imagePosition {
+      &--adaptiveSm {
+        @media screen and (min-width: 640px) {
+        }
+      }
+      
+      &--adaptiveMd {
+        @media screen and (min-width: 768px) {
+        }
+      }
+      
+      &--adaptiveLg {
+        @media screen and (min-width: 1024px) {
+        }
+      }
+      
+      &--adaptiveXl {
+        @media screen and (min-width: 1280px) {
+        }
+      }
+      
+      &--adaptive2xl {
+        @media screen and (min-width: 1536px) {
+        }
+      }
+    }
+    
     &--width {
       &--sm {
         --d1-window-width: var(--d1-ref-spacing-96);

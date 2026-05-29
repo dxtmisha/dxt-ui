@@ -84,6 +84,126 @@
       }
     }
     
+    &--imagePosition {
+      &--left {
+        & .d1-window__body {
+          flex-flow: row;
+          
+          &__group {
+            flex-grow: 1;
+            flex-shrink: 1;
+          }
+        }
+        
+        & .d1-window__image {
+          flex-basis: var(--d1-window-imageSizeValue);
+          
+          min-width: var(--d1-window-imageSizeValue);
+          @include ui.height(#{auto});
+        }
+      }
+      
+      &--adaptiveSm {
+        @media screen and (min-width: 640px) {
+          & .d1-window__body {
+            flex-flow: row;
+            
+            &__group {
+              flex-grow: 1;
+              flex-shrink: 1;
+            }
+          }
+          
+          & .d1-window__image {
+            flex-basis: var(--d1-window-imageSizeValue);
+            
+            min-width: var(--d1-window-imageSizeValue);
+            @include ui.height(#{auto});
+          }
+        }
+      }
+      
+      &--adaptiveMd {
+        @media screen and (min-width: 768px) {
+          & .d1-window__body {
+            flex-flow: row;
+            
+            &__group {
+              flex-grow: 1;
+              flex-shrink: 1;
+            }
+          }
+          
+          & .d1-window__image {
+            flex-basis: var(--d1-window-imageSizeValue);
+            
+            min-width: var(--d1-window-imageSizeValue);
+            @include ui.height(#{auto});
+          }
+        }
+      }
+      
+      &--adaptiveLg {
+        @media screen and (min-width: 1024px) {
+          & .d1-window__body {
+            flex-flow: row;
+            
+            &__group {
+              flex-grow: 1;
+              flex-shrink: 1;
+            }
+          }
+          
+          & .d1-window__image {
+            flex-basis: var(--d1-window-imageSizeValue);
+            
+            min-width: var(--d1-window-imageSizeValue);
+            @include ui.height(#{auto});
+          }
+        }
+      }
+      
+      &--adaptiveXl {
+        @media screen and (min-width: 1280px) {
+          & .d1-window__body {
+            flex-flow: row;
+            
+            &__group {
+              flex-grow: 1;
+              flex-shrink: 1;
+            }
+          }
+          
+          & .d1-window__image {
+            flex-basis: var(--d1-window-imageSizeValue);
+            
+            min-width: var(--d1-window-imageSizeValue);
+            @include ui.height(#{auto});
+          }
+        }
+      }
+      
+      &--adaptive2xl {
+        @media screen and (min-width: 1536px) {
+          & .d1-window__body {
+            flex-flow: row;
+            
+            &__group {
+              flex-grow: 1;
+              flex-shrink: 1;
+            }
+          }
+          
+          & .d1-window__image {
+            flex-basis: var(--d1-window-imageSizeValue);
+            
+            min-width: var(--d1-window-imageSizeValue);
+            @include ui.height(#{auto});
+          }
+        }
+      }
+    }
+    
     &--dense {
       padding: 0 !important;
       

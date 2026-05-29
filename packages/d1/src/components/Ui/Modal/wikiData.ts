@@ -19,7 +19,7 @@ const propsNames: StorybookProps = [
   { name: 'disabled', type: 'boolean | undefined' },
   { name: 'image', type: 'string | ConstrBind<ImageProps> | undefined' },
   { name: 'imageAttrs', type: 'ConstrBind<ImageProps> | undefined' },
-  { name: 'imagePosition', type: 'string', option: ['top', 'left'] },
+  { name: 'imagePosition', type: 'string', option: ['top', 'left', 'adaptiveSm', 'adaptiveMd', 'adaptiveLg', 'adaptiveXl', 'adaptive2xl'] },
   { name: 'modelOpen', type: 'boolean | undefined' },
   { name: 'onUpdate:modelOpen', type: '((value: boolean) => void) | undefined' },
   { name: 'onUpdate:open', type: '((value: boolean) => void) | undefined' },

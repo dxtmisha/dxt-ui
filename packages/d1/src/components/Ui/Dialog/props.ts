@@ -9,7 +9,7 @@ import type { ActionsProps } from '../Actions'
 
 export const propsValues = {
   // :values [!] System label / Системная метка
-  imagePosition: ['top', 'left'],
+  imagePosition: ['top', 'left', 'adaptiveSm', 'adaptiveMd', 'adaptiveLg', 'adaptiveXl', 'adaptive2xl'],
   width: ['sm', 'md', 'lg', 'auto']
   // :values [!] System label / Системная метка
 }
@@ -18,7 +18,7 @@ type PropsToken = {
   // :type [!] System label / Системная метка
   success?: boolean
   error?: boolean
-  imagePosition?: 'top' | 'left'
+  imagePosition?: 'top' | 'left' | 'adaptiveSm' | 'adaptiveMd' | 'adaptiveLg' | 'adaptiveXl' | 'adaptive2xl'
   width?: 'sm' | 'md' | 'lg' | 'auto'
   // :type [!] System label / Системная метка
 }
@@ -43,10 +43,15 @@ export const defaults: object = {
   buttonClose: {
     outline: true
   },
+  iconSuccess: 'check_circle',
+  iconError: 'error',
+  iconAttrs: {
+    size: '4xl'
+  },
   ...{
     // :default [!] System label / Системная метка
     imagePosition: 'top',
-    width: 'md'
+    width: 'sm'
     // :default [!] System label / Системная метка
   }
 }

@@ -8,7 +8,7 @@ export const propsValues = {
   width: ['auto', 'max', 'sm', 'md', 'lg'],
   height: ['auto', 'max', 'sm', 'md', 'lg'],
   axis: ['x', 'y', 'on'],
-  imagePosition: ['top', 'left'],
+  imagePosition: ['top', 'left', 'adaptiveSm', 'adaptiveMd', 'adaptiveLg', 'adaptiveXl', 'adaptive2xl'],
   alignment: ['center', 'top', 'topRight', 'topLeft', 'topFull', 'right', 'rightFull', 'bottom', 'bottomRight', 'bottomLeft', 'bottomFull', 'left', 'leftFull'],
   origin: ['center', 'top', 'right', 'bottom', 'left', 'topToBottom', 'rightToLeft', 'bottomToTop', 'leftToRight'],
   adaptive: ['menu', 'menuWindow', 'modal', 'modalDynamic', 'actionSheetRight', 'actionSheetBottom', 'static', 'actionSheet', 'actionSheetToModal', 'autoStaticSm', 'autoStaticMd', 'autoStaticLg', 'autoStaticXl', 'autoStatic2xl'],
@@ -22,7 +22,7 @@ type PropsToken = {
   height?: string | 'auto' | 'max' | 'sm' | 'md' | 'lg' | 'custom'
   hide?: boolean
   axis?: 'x' | 'y' | 'on'
-  imagePosition?: 'top' | 'left'
+  imagePosition?: 'top' | 'left' | 'adaptiveSm' | 'adaptiveMd' | 'adaptiveLg' | 'adaptiveXl' | 'adaptive2xl'
   dense?: boolean
   alignment?: 'center' | 'top' | 'topRight' | 'topLeft' | 'topFull' | 'right' | 'rightFull' | 'bottom' | 'bottomRight' | 'bottomLeft' | 'bottomFull' | 'left' | 'leftFull'
   origin?: 'center' | 'top' | 'right' | 'bottom' | 'left' | 'topToBottom' | 'rightToLeft' | 'bottomToTop' | 'leftToRight'

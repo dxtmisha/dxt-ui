@@ -5,11 +5,11 @@ import { TouchEventInclude } from '../../classes/TouchEventInclude'
 
 import type { ActionsInclude, ActionsProps } from '../Actions'
 import type { BarsInclude, BarsProps } from '../Bars'
+import type { ComponentIncludeExtra } from '../../types/componentInclude'
 import { ModalAbstract } from '../Modal'
 import type { WindowInclude, WindowProps } from '../Window'
 
 import type { TouchEventTypeY } from '../../types/touchEventTypes'
-import type { ComponentIncludeExtra } from '../../types/componentInclude'
 import type { ActionSheetComponents, ActionSheetEmits, ActionSheetSlots } from './types'
 import type { ActionSheetProps } from './props'
 

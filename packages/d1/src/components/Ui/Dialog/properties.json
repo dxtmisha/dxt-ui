@@ -19,7 +19,7 @@
       "=?window-width": "{ref.spacing.160}"
     },
     "auto": {},
-    "_default": "md"
+    "_default": "sm"
   },
   "~success": {
     "#icon": {

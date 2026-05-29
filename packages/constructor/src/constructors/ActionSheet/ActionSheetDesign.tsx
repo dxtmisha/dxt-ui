@@ -1,5 +1,4 @@
 import { h, type VNode } from 'vue'
-import { toBinds } from '@dxtmisha/functional'
 
 import { ActionSheet } from './ActionSheet'
 import { ModalDesignAbstract } from '../Modal'
@@ -25,14 +24,14 @@ export class ActionSheetDesign<
   CLASSES extends ActionSheetClasses,
   P extends ActionSheetPropsBasic
 > extends ModalDesignAbstract<
-    COMP,
-    ActionSheetEmits,
-    EXPOSE,
-    ActionSheetSlots,
-    CLASSES,
-    P,
-    ActionSheet
-  > {
+  COMP,
+  ActionSheetEmits,
+  EXPOSE,
+  ActionSheetSlots,
+  CLASSES,
+  P,
+  ActionSheet
+> {
   /**
    * Creates an instance of the item class.
    *
@@ -85,13 +84,11 @@ export class ActionSheetDesign<
         default: this.renderDefault,
         footer: this.renderFooter
       },
-      toBinds(
-        {
-          'class': this.classes?.value.main,
-          'data-touch': 'touch'
-        },
-        this.getAttrs()
-      )
+      {
+        ...this.getAttrs(),
+        'class': this.classes?.value.main,
+        'data-touch': 'touch'
+      }
     )
   }
 

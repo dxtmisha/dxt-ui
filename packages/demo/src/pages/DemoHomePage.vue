@@ -17,6 +17,7 @@ import DemoLink from '../components/DemoLink.vue'
         <DemoLink label="Button" name="component-button"/>
         <DemoLink label="Checkbox" name="component-checkbox"/>
         <DemoLink label="ClientOnly" name="component-client-only"/>
+        <DemoLink label="Dialog" name="component-dialog"/>
         <DemoLink label="Icon" name="component-icon"/>
         <DemoLink label="Image" name="component-image"/>
         <DemoLink label="Input" name="component-input"/>

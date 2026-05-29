@@ -147,7 +147,7 @@ export class Button {
    */
   get classes(): ConstrClass {
     return {
-      [`${this.className}--icon`]: this.icon.isIcon,
+      [`${this.className}--icon`]: this.icon.isIcon(),
       [getClassTagAStatic(this.classDesign)]: true,
       ...this.skeleton.classes
     }

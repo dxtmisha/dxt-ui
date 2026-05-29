@@ -160,25 +160,6 @@
     }
   }
 
-  &--imagePosition {
-    &--left {
-      @include ui.subclass('body') {
-        flex-flow: row;
-
-        &__group {
-          flex-grow: 1;
-          flex-shrink: 1;
-        }
-      }
-
-      @include ui.subclass('image') {
-        flex-basis: ui.v('??imageSizeValue');
-        min-width: ui.v('??imageSizeValue');
-        height: auto;
-      }
-    }
-  }
-
   &--persistent {
     animation-duration: ui.v('d.sys.transitionDuration.fade.through');
     animation-name: ui.n('??persistent');

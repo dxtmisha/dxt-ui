@@ -12,6 +12,7 @@ import DemoBarsPage from './pages/components/DemoBarsPage.vue'
 import DemoButtonPage from './pages/components/DemoButtonPage.vue'
 import DemoCheckboxPage from './pages/components/DemoCheckboxPage.vue'
 import DemoClientOnlyPage from './pages/components/DemoClientOnlyPage.vue'
+import DemoDialogPage from './pages/components/DemoDialogPage.vue'
 import DemoIconPage from './pages/components/DemoIconPage.vue'
 import DemoImagePage from './pages/components/DemoImagePage.vue'
 import DemoInputPage from './pages/components/DemoInputPage.vue'
@@ -84,6 +85,11 @@ export const routes: RouteRecordRaw[] = [
     path: '/component-client-only',
     name: 'component-client-only',
     component: DemoClientOnlyPage
+  },
+  {
+    path: '/component-dialog',
+    name: 'component-dialog',
+    component: DemoDialogPage
   },
   {
     path: '/component-icon',

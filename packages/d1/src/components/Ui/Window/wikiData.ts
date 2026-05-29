@@ -31,7 +31,7 @@ const propsNames: StorybookProps = [
   { name: 'iconClose', type: 'IconValue<IconProps> | undefined' },
   { name: 'image', type: 'string | ConstrBind<ImageProps> | undefined' },
   { name: 'imageAttrs', type: 'ConstrBind<ImageProps> | undefined' },
-  { name: 'imagePosition', type: 'string', option: ['top', 'left'] },
+  { name: 'imagePosition', type: 'string', option: ['top', 'left', 'adaptiveSm', 'adaptiveMd', 'adaptiveLg', 'adaptiveXl', 'adaptive2xl'] },
   { name: 'imageSize', type: 'string', option: ['sm', 'md', 'lg', 'quarter', 'half'] },
   { name: 'indent', type: 'number | undefined' },
   { name: 'inDom', type: 'boolean | undefined' },

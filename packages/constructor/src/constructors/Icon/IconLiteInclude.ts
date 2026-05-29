@@ -3,9 +3,9 @@ import {
   type ConstrBind,
   type ConstrClass,
   type DesignComponents,
+  executeFunction,
   getBind,
   getRef,
-  isFilled,
   type RefOrNormal
 } from '@dxtmisha/functional'
 
@@ -13,40 +13,34 @@ import type { IconComponentInclude, IconLitePropsInclude } from './basicTypes'
 import type { IconPropsBasic } from './props'
 
 /**
- * Class for simplified integration of the icon-handling component
+ * Class for simplified integration of the basic icon-handling component (Lite version).
+ * It manages properties for the icon component, determines if an icon is specified, and handles the rendering of the icon virtual nodes.
  *
- * Класс для упрощённого внедрения компонента для работы с иконками
+ * Класс для упрощённого внедрения базового компонента для работы с иконками (Lite-версия).
+ * Управляет свойствами компонента иконки, определяет, указана ли иконка, и обрабатывает рендеринг виртуальных узлов иконки.
  */
 export class IconLiteInclude<Props extends IconLitePropsInclude = IconLitePropsInclude> {
   /**
-   * Constructor
-   * @param props input parameter/ входной параметр
-   * @param className class name/ название класса
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param extra additional parameter/ дополнительный параметр
+   * Constructor for initializing the IconLiteInclude helper.
+   *
+   * Конструктор для инициализации помощника IconLiteInclude.
+   * @param props input parameter / входной параметр
+   * @param className class name / название класса
+   * @param components object for working with components / объект для работы с компонентами
+   * @param extra additional parameter / дополнительный параметр
    */
   constructor(
-    protected readonly props: Readonly<Props>,
+    protected readonly props: Readonly<Props> | (() => Readonly<Props>),
     protected readonly className: string,
     protected readonly components?: DesignComponents<IconComponentInclude, Props>,
     protected readonly extra?: RefOrNormal<ConstrBind<IconPropsBasic>>
   ) {
   }
 
-  /**
-   * Checks whether an icon is specified for rendering the component/
-   * Проверяет, указана ли иконка для отображения компонента
-   */
-  get isIcon(): boolean {
-    return Boolean(this.props.icon)
-  }
-
-  /**
-   * List of properties for the icon component/ Список свойств для компонента иконки
-   */
+  /** List of properties for the icon component / Список свойств для компонента иконки */
   get iconBind(): ConstrBind<IconPropsBasic> {
     return getBind(
-      this.props.icon,
+      this.getProps().icon,
       {
         ...this.getExtra(),
         ...this.getClasses(),
@@ -57,14 +51,25 @@ export class IconLiteInclude<Props extends IconLitePropsInclude = IconLitePropsI
   }
 
   /**
-   * Render of the Icon component
+   * Checks whether an icon is specified for rendering the component.
    *
-   * Рендер компонента иконка
+   * Проверяет, указана ли иконка для отображения компонента.
+   * @returns check result / результат проверки
+   */
+  isIcon(): boolean {
+    return Boolean(this.getProps().icon)
+  }
+
+  /**
+   * Renders the icon component.
+   *
+   * Рендерит компонент иконки.
+   * @returns list of virtual nodes / список виртуальных узлов
    */
   readonly renderIcon = (): VNode[] => {
     if (
       this.components
-      && isFilled(this.props.icon)
+      && this.isIcon()
     ) {
       return this.components.render(
         'icon',
@@ -76,20 +81,32 @@ export class IconLiteInclude<Props extends IconLitePropsInclude = IconLitePropsI
   }
 
   /**
-   * Returns an additional property
+   * Returns the normalized properties.
    *
-   * Возвращает дополнительное свойство
+   * Возвращает нормализованные свойства.
+   * @returns resolved properties / разрешенные свойства
+   */
+  protected getProps(): Props {
+    return executeFunction(this.props)
+  }
+
+  /**
+   * Returns additional properties.
+   *
+   * Возвращает дополнительные свойства.
+   * @returns additional properties / дополнительные свойства
    */
   protected getExtra() {
     return getRef(this.extra)
   }
 
   /**
-   * Returns a list of classes
+   * Returns a list of classes.
    *
-   * Возвращает список классов
-   * @param classesUser list of additional classes/ список дополнительных классов
-   * @param name class name/ название класса
+   * Возвращает список классов.
+   * @param classesUser list of additional classes / список дополнительных классов
+   * @param name class name / название класса
+   * @returns object with classes / объект с классами
    */
   protected getClasses(
     classesUser?: ConstrClass,
@@ -112,10 +129,11 @@ export class IconLiteInclude<Props extends IconLitePropsInclude = IconLitePropsI
   }
 
   /**
-   * Returns the type used to determine when an event is triggered
+   * Returns the type used to determine when an event is triggered.
    *
-   * Возвращает тип для определения при срабатывании события
-   * @param type event type/ тип события
+   * Возвращает тип для определения при срабатывании события.
+   * @param type event type / тип события
+   * @returns event type object / объект типа события
    */
   protected getEventType(type: string = 'icon'): Record<string, string> {
     return {

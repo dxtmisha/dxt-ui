@@ -1,5 +1,5 @@
-import { computed, type VNode } from 'vue'
-import { type ConstrBind, type DesignComponents, getBind, isFilled, type RefOrNormal, toBinds } from '@dxtmisha/functional'
+import { type VNode } from 'vue'
+import { type ConstrBind, type DesignComponents, getBind, type RefOrNormal, toBinds } from '@dxtmisha/functional'
 
 import { IconInclude } from './IconInclude'
 
@@ -7,22 +7,26 @@ import type { IconComponentInclude, IconTrailingPropsInclude } from './basicType
 import type { IconPropsBasic } from './props'
 
 /**
- * Class for simplified integration of the icon-handling component
+ * Class for simplified integration of the icon-handling component with an additional trailing icon.
+ * It coordinates properties and rendering of both a primary icon and a secondary trailing icon.
  *
- * Класс для упрощённого внедрения компонента для работы с иконками
+ * Класс для упрощённого внедрения компонента для работы с иконками с дополнительной вторичной иконкой.
+ * Координирует свойства и рендеринг как основной, так и дополнительной вторичной иконки.
  */
 export class IconTrailingInclude<
   Props extends IconTrailingPropsInclude = IconTrailingPropsInclude
 > extends IconInclude<Props> {
   /**
-   * Constructor
-   * @param props input parameter/ входной параметр
-   * @param className class name/ название класса
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param extra additional parameter/ дополнительный параметр
+   * Constructor for initializing the IconTrailingInclude helper.
+   *
+   * Конструктор для инициализации помощника IconTrailingInclude.
+   * @param props input parameter / входной параметр
+   * @param className class name / название класса
+   * @param components object for working with components / объект для работы с компонентами
+   * @param extra additional parameter / дополнительный параметр
    */
   constructor(
-    protected readonly props: Readonly<Props>,
+    protected readonly props: Readonly<Props> | (() => Readonly<Props>),
     protected readonly className: string,
     protected readonly components?: DesignComponents<IconComponentInclude, Props>,
     protected readonly extra?: RefOrNormal<ConstrBind<IconPropsBasic>>
@@ -32,60 +36,68 @@ export class IconTrailingInclude<
       className,
       components,
       extra,
-      computed(() => Boolean(!props.iconTrailing && !props.iconTrailingTurnOnly && props.iconTurn)),
-      computed(() => Boolean(!props.iconTrailing && !props.iconTrailingDirOnly && props.iconDir)),
+      () => this.isTurn(),
+      () => this.isDir(),
       true
     )
   }
 
-  /**
-   * list of properties for the secondary icon component/ список свойств для вторичного компонента иконки
-   */
+  /** List of properties for the secondary icon component / Список свойств для вторичного компонента иконки */
   get trailingBind(): ConstrBind<IconPropsBasic> {
+    const props = this.getProps()
+
     return getBind(
-      this.props.iconTrailing,
+      props.iconTrailing,
       {
-        turn: this.props.iconTurn,
-        asPalette: this.props.iconPalette,
-        dir: this.props.iconDir,
+        turn: props.iconTurn,
+        asPalette: props.iconPalette,
+        dir: props.iconDir,
         end: true,
         high: true,
         ...toBinds(
           this.getExtra(),
-          this.props.iconAttrs,
-          this.getClasses(this.props.iconAttrs?.class, 'trailing')
-        ),
-        ...this.getEventType('icon-trailing')
+          props.iconAttrs,
+          {
+            ...this.getClasses(props.iconAttrs?.class, 'trailing'),
+            ...this.getEventType('icon-trailing')
+          }
+        )
       },
       'icon'
     )
   }
 
   /**
-   * Checks whether an icon is specified for rendering the component/
-   * Проверяет, указана ли иконка для отображения компонента
+   * Checks whether an icon is specified for rendering the component.
+   *
+   * Проверяет, указана ли иконка для отображения компонента.
+   * @returns check result / результат проверки
    */
   isIconTrailing(): boolean {
-    return Boolean(this.props.iconTrailing)
+    return Boolean(this.getProps().iconTrailing)
   }
 
   /**
-   * Checks if there is at least one icon/
-   * Проверяет, есть ли хотя бы одна иконка
+   * Checks if there is at least one icon.
+   *
+   * Проверяет, есть ли хотя бы одна иконка.
+   * @returns check result / результат проверки
    */
   hasAtLeastOneIcon(): boolean {
-    return Boolean(this.props.iconTrailing || this.props.icon)
+    const props = this.getProps()
+    return Boolean(props.iconTrailing || props.icon)
   }
 
   /**
-   * Render of the secondary icon component
+   * Renders the secondary icon component.
    *
-   * Рендер вторичного компонента иконки
+   * Рендерит вторичный компонент иконки.
+   * @returns list of virtual nodes / список виртуальных узлов
    */
   readonly renderIconTrailing = (): VNode[] => {
     if (
       this.components
-      && isFilled(this.props.iconTrailing)
+      && this.isIconTrailing()
     ) {
       return this.components.render(
         'icon',
@@ -99,14 +111,37 @@ export class IconTrailingInclude<
   }
 
   /**
-   * Method for rendering all icons — first the main ones, then the additional icons
+   * Renders all icons (first the main icon, then the additional trailing icon).
    *
-   * Метод для рендеринга всех иконок — сначала основных, затем дополнительных
+   * Метод для рендеринга всех иконок — сначала основной, затем дополнительной.
+   * @returns list of virtual nodes / список виртуальных узлов
    */
   readonly render = (): VNode[] => {
     return [
       ...this.renderIcon(),
       ...this.renderIconTrailing()
     ]
+  }
+
+  /**
+   * Checks whether the main icon should be flipped.
+   *
+   * Проверяет, надо ли перевернуть основную иконку.
+   * @returns check result / результат проверки
+   */
+  protected isTurn(): boolean {
+    const props = this.getProps()
+    return Boolean(!props.iconTrailing && !props.iconTrailingTurnOnly && props.iconTurn)
+  }
+
+  /**
+   * Checks whether the main icon should be mirrored.
+   *
+   * Проверяет, надо ли зеркально отображать основную иконку.
+   * @returns check result / результат проверки
+   */
+  protected isDir(): boolean {
+    const props = this.getProps()
+    return Boolean(!props.iconTrailing && !props.iconTrailingDirOnly && props.iconDir)
   }
 }

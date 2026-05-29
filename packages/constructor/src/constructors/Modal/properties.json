@@ -12,6 +12,10 @@
   "~imagePosition": {
     "~top": {},
     "~left": {},
+    "group|adaptive": {
+      "link|imagePosition-left": "{??imagePosition.left}",
+      "_type": "media-group"
+    },
     "_default": "top"
   }
 }
