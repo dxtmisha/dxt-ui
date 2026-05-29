@@ -44,15 +44,15 @@ export class Actions {
     protected readonly components?: DesignComp<ActionsComponents, ActionsProps>,
     protected readonly slots?: ActionsSlots,
     protected readonly emits?: ConstrEmit<ActionsEmits>,
-    constructors?: {
+    constructors: {
       AreaIncludeConstructor?: typeof AreaInclude
       EventConstructor?: typeof EventClickInclude
-    }
+    } = {}
   ) {
     const {
       AreaIncludeConstructor = AreaInclude,
       EventConstructor = EventClickInclude
-    } = constructors ?? {}
+    } = constructors
 
     this.area = new AreaIncludeConstructor(props)
     this.event = new EventConstructor(undefined, undefined, emits)

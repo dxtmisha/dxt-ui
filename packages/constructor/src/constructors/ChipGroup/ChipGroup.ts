@@ -45,17 +45,17 @@ export class ChipGroup {
     protected readonly components?: DesignComp<ChipGroupComponents, ChipGroupProps>,
     protected readonly slots?: ChipGroupSlots,
     protected readonly emits?: ConstrEmit<ChipGroupEmits>,
-    constructors?: {
+    constructors: {
       EventClickIncludeConstructor?: typeof EventClickInclude
       ListDataRefConstructor?: typeof ListDataRef
       ModelValueIncludeConstructor?: typeof ModelValueInclude
-    }
+    } = {}
   ) {
     const {
       EventClickIncludeConstructor = EventClickInclude,
       ListDataRefConstructor = ListDataRef,
       ModelValueIncludeConstructor = ModelValueInclude
-    } = constructors ?? {}
+    } = constructors
 
     this.event = new EventClickIncludeConstructor(undefined, undefined, this.emits)
     this.model = new ModelValueIncludeConstructor<ListSelectedList>(

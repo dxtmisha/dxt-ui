@@ -37,15 +37,15 @@ export class TextareaAutosize {
     protected readonly components?: DesignComp<TextareaAutosizeComponents, TextareaAutosizeProps>,
     protected readonly slots?: TextareaAutosizeSlots,
     protected readonly emits?: ConstrEmit<TextareaAutosizeEmits>,
-    constructors?: {
+    constructors: {
       TextareaAutosizeResizeConstructor?: typeof TextareaAutosizeResize
       TextareaAutosizeValueConstructor?: typeof TextareaAutosizeValue
-    }
+    } = {}
   ) {
     const {
       TextareaAutosizeResizeConstructor = TextareaAutosizeResize,
       TextareaAutosizeValueConstructor = TextareaAutosizeValue
-    } = constructors ?? {}
+    } = constructors
 
     this.value = new TextareaAutosizeValueConstructor(props, refs, emits)
     this.resize = new TextareaAutosizeResizeConstructor(props, element, this.value)

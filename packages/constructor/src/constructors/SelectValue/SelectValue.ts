@@ -49,17 +49,17 @@ export class SelectValue {
     protected readonly components?: DesignComp<SelectValueComponents, SelectValueProps>,
     protected readonly slots?: SelectValueSlots,
     protected readonly emits?: ConstrEmit<SelectValueEmits>,
-    constructors?: {
+    constructors: {
       EnabledConstructor?: typeof EnabledInclude
       EventConstructor?: typeof EventClickInclude
       WindowClassesConstructor?: typeof WindowClassesInclude
-    }
+    } = {}
   ) {
     const {
       EnabledConstructor = EnabledInclude,
       EventConstructor = EventClickInclude,
       WindowClassesConstructor = WindowClassesInclude
-    } = constructors ?? {}
+    } = constructors
 
     this.enabled = new EnabledConstructor(this.props)
     this.event = new EventConstructor(

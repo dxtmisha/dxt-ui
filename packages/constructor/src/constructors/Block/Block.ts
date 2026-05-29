@@ -51,17 +51,17 @@ export class Block {
     protected readonly components?: DesignComp<BlockComponents, BlockProps>,
     protected readonly slots?: BlockSlots,
     protected readonly emits?: ConstrEmit<BlockEmits>,
-    constructors?: {
+    constructors: {
       AreaIncludeConstructor?: typeof AreaInclude
       HeaderIncludeConstructor?: typeof HeaderInclude
       DescriptionIncludeConstructor?: typeof DescriptionInclude
-    }
+    } = {}
   ) {
     const {
       AreaIncludeConstructor = AreaInclude,
       HeaderIncludeConstructor = HeaderInclude,
       DescriptionIncludeConstructor = DescriptionInclude
-    } = constructors ?? {}
+    } = constructors
 
     this.header = new HeaderIncludeConstructor(
       props,

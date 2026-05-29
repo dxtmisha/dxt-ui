@@ -37,15 +37,15 @@ export class ListMenu {
     protected readonly components?: DesignComp<ListMenuComponents, ListMenuProps>,
     protected readonly slots?: ListMenuSlots,
     protected readonly emits?: ConstrEmit<ListMenuEmits>,
-    constructors?: {
+    constructors: {
       ListGroupOpenConstructor?: typeof ListGroupOpen
       WindowIncludeConstructor?: typeof WindowInclude
-    }
+    } = {}
   ) {
     const {
       ListGroupOpenConstructor = ListGroupOpen,
       WindowIncludeConstructor = WindowInclude
-    } = constructors ?? {}
+    } = constructors
 
     this.open = new ListGroupOpenConstructor(this.props)
 

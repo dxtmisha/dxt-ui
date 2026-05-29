@@ -83,7 +83,7 @@ export abstract class SelectAbstract {
     protected readonly components?: DesignComp<SelectComponents, SelectProps>,
     protected readonly slots?: SelectSlots,
     protected readonly emits?: ConstrEmit<SelectEmits>,
-    constructors?: {
+    constructors: {
       FieldAttributesIncludeConstructor?: typeof FieldAttributesInclude
       FieldChangeIncludeConstructor?: typeof FieldChangeInclude
       FieldCodeIncludeConstructor?: typeof FieldCodeInclude
@@ -92,7 +92,7 @@ export abstract class SelectAbstract {
       FieldValidationIncludeConstructor?: typeof FieldValidationInclude
       FieldValueIncludeConstructor?: typeof FieldValueInclude
       MenuIncludeConstructor?: typeof MenuInclude
-    }
+    } = {}
   ) {
     const {
       FieldAttributesIncludeConstructor = FieldAttributesInclude,
@@ -103,7 +103,7 @@ export abstract class SelectAbstract {
       FieldValidationIncludeConstructor = FieldValidationInclude,
       FieldValueIncludeConstructor = FieldValueInclude,
       MenuIncludeConstructor = MenuInclude
-    } = constructors ?? {}
+    } = constructors
 
     this.attributes = new FieldAttributesIncludeConstructor(this.props)
 

@@ -53,7 +53,7 @@ export class TabItem {
     protected readonly components?: DesignComp<TabItemComponents, TabItemProps>,
     protected readonly slots?: TabItemSlots,
     protected readonly emits?: ConstrEmit<TabItemEmits>,
-    constructors?: {
+    constructors: {
       BadgeIncludeConstructor?: typeof BadgeInclude
       EnabledIncludeConstructor?: typeof EnabledInclude
       EventClickIncludeConstructor?: typeof EventClickInclude
@@ -61,7 +61,7 @@ export class TabItem {
       LabelIncludeConstructor?: typeof LabelInclude
       RippleIncludeConstructor?: typeof RippleInclude
       SkeletonIncludeConstructor?: typeof SkeletonInclude
-    }
+    } = {}
   ) {
     const {
       BadgeIncludeConstructor = BadgeInclude,
@@ -71,7 +71,7 @@ export class TabItem {
       LabelIncludeConstructor = LabelInclude,
       RippleIncludeConstructor = RippleInclude,
       SkeletonIncludeConstructor = SkeletonInclude
-    } = constructors ?? {}
+    } = constructors
 
     this.skeleton = new SkeletonIncludeConstructor(this.props, this.classDesign, ['classTextVariant'])
     this.enabled = new EnabledIncludeConstructor(this.props)

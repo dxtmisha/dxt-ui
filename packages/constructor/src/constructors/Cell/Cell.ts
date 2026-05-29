@@ -82,7 +82,7 @@ export class Cell {
     protected readonly components?: DesignComp<CellComponents, CellProps>,
     protected readonly slots?: CellSlots,
     protected readonly emits?: ConstrEmit<CellEmits>,
-    constructors?: {
+    constructors: {
       CaptionConstructor?: typeof CaptionInclude
       DescriptionConstructor?: typeof DescriptionInclude
       EnabledConstructor?: typeof EnabledInclude
@@ -92,7 +92,7 @@ export class Cell {
       ProgressConstructor?: typeof ProgressInclude
       RippleConstructor?: typeof RippleInclude
       SkeletonConstructor?: typeof SkeletonInclude
-    }
+    } = {}
   ) {
     const {
       CaptionConstructor = CaptionInclude,
@@ -104,7 +104,7 @@ export class Cell {
       ProgressConstructor = ProgressInclude,
       RippleConstructor = RippleInclude,
       SkeletonConstructor = SkeletonInclude
-    } = constructors ?? {}
+    } = constructors
 
     const progress = new ProgressConstructor(
       className,

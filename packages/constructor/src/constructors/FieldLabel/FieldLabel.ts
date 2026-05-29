@@ -50,19 +50,19 @@ export class FieldLabel {
     protected readonly components?: DesignComp<FieldLabelComponents, FieldLabelProps>,
     protected readonly slots?: FieldLabelSlots,
     protected readonly emits?: ConstrEmit<FieldLabelEmits>,
-    constructors?: {
+    constructors: {
       FieldCounterConstructor?: typeof FieldCounterInclude
       LabelConstructor?: typeof LabelInclude
       ProgressConstructor?: typeof ProgressInclude
       SkeletonConstructor?: typeof SkeletonInclude
-    }
+    } = {}
   ) {
     const {
       FieldCounterConstructor = FieldCounterInclude,
       LabelConstructor = LabelInclude,
       ProgressConstructor = ProgressInclude,
       SkeletonConstructor = SkeletonInclude
-    } = constructors ?? {}
+    } = constructors
 
     const skeleton = new SkeletonConstructor(this.props, this.classDesign, ['classTextVariant'])
 

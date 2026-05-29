@@ -38,13 +38,13 @@ export class Container {
     protected readonly components?: DesignComp<ContainerComponents, ContainerProps>,
     protected readonly slots?: ContainerSlots,
     protected readonly emits?: ConstrEmit<ContainerEmits>,
-    constructors?: {
+    constructors: {
       AreaIncludeConstructor?: typeof AreaInclude
-    }
+    } = {}
   ) {
     const {
       AreaIncludeConstructor = AreaInclude
-    } = constructors ?? {}
+    } = constructors
 
     this.area = new AreaIncludeConstructor(props)
   }

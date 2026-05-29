@@ -50,17 +50,17 @@ export class FieldMessage {
     protected readonly components?: DesignComp<FieldMessageComponents, FieldMessageProps>,
     protected readonly slots?: FieldMessageSlots,
     protected readonly emits?: ConstrEmit<FieldMessageEmits>,
-    constructors?: {
+    constructors: {
       FieldCounterIncludeConstructor?: typeof FieldCounterInclude
       FieldMessageMessageConstructor?: typeof FieldMessageMessage
       SkeletonIncludeConstructor?: typeof SkeletonInclude
-    }
+    } = {}
   ) {
     const {
       FieldCounterIncludeConstructor = FieldCounterInclude,
       FieldMessageMessageConstructor = FieldMessageMessage,
       SkeletonIncludeConstructor = SkeletonInclude
-    } = constructors ?? {}
+    } = constructors
 
     this.fieldCounter = new FieldCounterIncludeConstructor(
       this.className,

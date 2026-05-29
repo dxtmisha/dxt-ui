@@ -62,17 +62,17 @@ export class MenuCountry {
     protected readonly components?: DesignComp<MenuCountryComponents, MenuCountryProps>,
     protected readonly slots?: MenuCountrySlots,
     protected readonly emits?: ConstrEmit<MenuCountryEmits>,
-    constructors?: {
+    constructors: {
       EventClickIncludeConstructor?: typeof EventClickInclude
       MenuIncludeConstructor?: typeof MenuInclude
       ModelIncludeConstructor?: typeof ModelInclude<ListSelectedList | undefined>
-    }
+    } = {}
   ) {
     const {
       EventClickIncludeConstructor = EventClickInclude,
       MenuIncludeConstructor = MenuInclude,
       ModelIncludeConstructor = ModelInclude
-    } = constructors ?? {}
+    } = constructors
 
     this.flagList = new GeoFlagRef(this.refs.language).getNational(this.refs.countryList)
 

@@ -80,7 +80,7 @@ export class Tooltip {
     protected readonly components?: DesignComp<TooltipComponents, TooltipProps>,
     protected readonly slots?: TooltipSlots,
     protected readonly emits?: ConstrEmit<TooltipEmits>,
-    constructors?: {
+    constructors: {
       ArrowIncludeConstructor?: typeof ArrowInclude
       DescriptionIncludeConstructor?: typeof DescriptionInclude
       LabelIncludeConstructor?: typeof LabelInclude
@@ -91,7 +91,7 @@ export class Tooltip {
       TooltipPositionConstructor?: typeof TooltipPosition
       TooltipStatusConstructor?: typeof TooltipStatus
       TooltipStyleConstructor?: typeof TooltipStyle
-    }
+    } = {}
   ) {
     const {
       ArrowIncludeConstructor = ArrowInclude,
@@ -104,7 +104,7 @@ export class Tooltip {
       TooltipPositionConstructor = TooltipPosition,
       TooltipStatusConstructor = TooltipStatus,
       TooltipStyleConstructor = TooltipStyle
-    } = constructors ?? {}
+    } = constructors
 
     this.classes = new TooltipClassesConstructor(this.className)
     this.style = new TooltipStyleConstructor(this.element, this.className)

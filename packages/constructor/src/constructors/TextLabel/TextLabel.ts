@@ -35,13 +35,13 @@ export class TextLabel {
     protected readonly components?: DesignComp<TextLabelComponents, TextLabelProps>,
     protected readonly slots?: TextLabelSlots,
     protected readonly emits?: ConstrEmit<TextLabelEmits>,
-    constructors?: {
+    constructors: {
       LabelConstructor?: typeof LabelInclude
-    }
+    } = {}
   ) {
     const {
       LabelConstructor = LabelInclude
-    } = constructors ?? {}
+    } = constructors
 
     this.label = new LabelConstructor(
       this.props,

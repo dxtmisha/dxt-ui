@@ -37,13 +37,13 @@ export class Ripple {
     protected readonly components?: DesignComp<RippleComponents, RippleProps>,
     protected readonly slots?: RippleSlots,
     protected readonly emits?: ConstrEmit<RippleEmits>,
-    constructors?: {
+    constructors: {
       RippleItemConstructor?: typeof RippleItem
-    }
+    } = {}
   ) {
     const {
       RippleItemConstructor = RippleItem
-    } = constructors ?? {}
+    } = constructors
 
     this.item = new RippleItemConstructor(props, element, className)
   }

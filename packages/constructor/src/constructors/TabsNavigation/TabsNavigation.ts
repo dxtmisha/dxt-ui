@@ -62,7 +62,7 @@ export class TabsNavigation {
     protected readonly components?: DesignComp<TabsNavigationComponents, TabsNavigationProps>,
     protected readonly slots?: TabsNavigationSlots,
     protected readonly emits?: ConstrEmit<TabsNavigationEmits>,
-    constructors?: {
+    constructors: {
       EventClickIncludeConstructor?: typeof EventClickInclude
       HorizontalScrollIncludeConstructor?: typeof HorizontalScrollInclude
       ListDataRefConstructor?: typeof ListDataRef
@@ -72,7 +72,7 @@ export class TabsNavigation {
       TabsNavigationFocusConstructor?: typeof TabsNavigationFocus
       TabsNavigationIndicatorConstructor?: typeof TabsNavigationIndicator
       TabsNavigationSelectedConstructor?: typeof TabsNavigationSelected
-    }
+    } = {}
   ) {
     const {
       EventClickIncludeConstructor = EventClickInclude,
@@ -84,7 +84,7 @@ export class TabsNavigation {
       TabsNavigationFocusConstructor = TabsNavigationFocus,
       TabsNavigationIndicatorConstructor = TabsNavigationIndicator,
       TabsNavigationSelectedConstructor = TabsNavigationSelected
-    } = constructors ?? {}
+    } = constructors
 
     this.scroll = new HorizontalScrollIncludeConstructor(
       this.props,

@@ -62,13 +62,13 @@ export class Arrow {
     protected readonly refs: ToRefs<ArrowProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly className: string,
-    constructors?: {
+    constructors: {
       ArrowElementConstructor?: typeof ArrowElement
       ArrowElementTargetConstructor?: typeof ArrowElementTarget
       ArrowEventConstructor?: typeof ArrowEvent
       ArrowParentConstructor?: typeof ArrowParent
       ArrowPositionConstructor?: typeof ArrowPosition
-    }
+    } = {}
   ) {
     const {
       ArrowElementConstructor = ArrowElement,
@@ -76,7 +76,7 @@ export class Arrow {
       ArrowEventConstructor = ArrowEvent,
       ArrowParentConstructor = ArrowParent,
       ArrowPositionConstructor = ArrowPosition
-    } = constructors ?? {}
+    } = constructors
 
     this.clientOnly = new ClientOnlyInclude(this.props)
 

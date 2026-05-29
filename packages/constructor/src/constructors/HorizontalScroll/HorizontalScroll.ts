@@ -39,13 +39,13 @@ export class HorizontalScroll {
     protected readonly components?: DesignComp<HorizontalScrollComponents, HorizontalScrollProps>,
     protected readonly slots?: HorizontalScrollSlots,
     protected readonly emits?: ConstrEmit<HorizontalScrollEmits>,
-    constructors?: {
+    constructors: {
       ScrollToXIncludeConstructor?: typeof ScrollToXInclude
-    }
+    } = {}
   ) {
     const {
       ScrollToXIncludeConstructor = ScrollToXInclude
-    } = constructors ?? {}
+    } = constructors
 
     this.scroll = new ScrollToXIncludeConstructor(element)
 

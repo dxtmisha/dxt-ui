@@ -80,7 +80,7 @@ export class Checkbox {
     protected readonly components?: DesignComp<CheckboxComponents, CheckboxProps>,
     protected readonly slots?: CheckboxSlots,
     protected readonly emits?: ConstrEmit<CheckboxEmits>,
-    constructors?: {
+    constructors: {
       CheckboxIconConstructor?: typeof CheckboxIcon
       DescriptionConstructor?: typeof DescriptionInclude
       EnabledConstructor?: typeof EnabledInclude
@@ -96,7 +96,7 @@ export class Checkbox {
       ProgressConstructor?: typeof ProgressInclude
       RippleConstructor?: typeof RippleInclude
       SkeletonConstructor?: typeof SkeletonInclude
-    }
+    } = {}
   ) {
     const {
       CheckboxIconConstructor = CheckboxIcon,
@@ -114,7 +114,7 @@ export class Checkbox {
       ProgressConstructor = ProgressInclude,
       RippleConstructor = RippleInclude,
       SkeletonConstructor = SkeletonInclude
-    } = constructors ?? {}
+    } = constructors
 
     this.skeleton = new SkeletonConstructor(this.props, this.classDesign, ['classText'])
     this.progress = new ProgressConstructor(

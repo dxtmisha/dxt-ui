@@ -148,7 +148,7 @@ export class Window {
     protected readonly components?: DesignComp<WindowComponents, WindowPropsBasic>,
     protected readonly slots?: WindowSlots,
     protected readonly emits?: ConstrEmit<WindowEmits>,
-    constructors?: {
+    constructors: {
       ImageConstructor?: typeof ImageInclude
       ModelConstructor?: typeof ModelInclude
       ScrollbarConstructor?: typeof ScrollbarInclude
@@ -174,7 +174,7 @@ export class Window {
       WindowStylesConstructor?: typeof WindowStyles
       WindowVerificationConstructor?: typeof WindowVerification
       ClientOnlyIncludeConstructor?: typeof ClientOnlyInclude
-    }
+    } = {}
   ) {
     const {
       ImageConstructor = ImageInclude,
@@ -202,7 +202,7 @@ export class Window {
       WindowStylesConstructor = WindowStyles,
       WindowVerificationConstructor = WindowVerification,
       ClientOnlyIncludeConstructor = ClientOnlyInclude
-    } = constructors ?? {}
+    } = constructors
 
     this.hook = new WindowHookConstructor(props)
     this.clientOnly = new ClientOnlyIncludeConstructor()

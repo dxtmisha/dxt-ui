@@ -84,7 +84,7 @@ export class List {
     protected readonly components?: DesignComp<ListComponents, ListProps>,
     protected readonly slots?: ListSlots,
     protected readonly emits?: ConstrEmit<ListEmits>,
-    constructors?: {
+    constructors: {
       EventClickIncludeConstructor?: typeof EventClickInclude
       ListControlConstructor?: typeof ListControl
       ListDataRefConstructor?: typeof ListDataRef
@@ -93,7 +93,7 @@ export class List {
       ListSearchConstructor?: typeof ListSearch
       WindowClassesIncludeConstructor?: typeof WindowClassesInclude
       TextIncludeConstructor?: typeof TextInclude
-    }
+    } = {}
   ) {
     const {
       EventClickIncludeConstructor = EventClickInclude,
@@ -104,7 +104,7 @@ export class List {
       ListSearchConstructor = ListSearch,
       WindowClassesIncludeConstructor = WindowClassesInclude,
       TextIncludeConstructor = TextInclude
-    } = constructors ?? {}
+    } = constructors
 
     this.focus = new ListFocusConstructor(this.props, this.element, this.id)
     this.search = new ListSearchConstructor(this.props)

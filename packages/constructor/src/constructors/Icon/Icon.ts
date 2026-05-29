@@ -55,15 +55,15 @@ export class Icon {
     protected readonly components?: DesignComp<IconComponents, IconProps>,
     protected readonly slots?: IconSlots,
     protected readonly emits?: ConstrEmit<IconEmits>,
-    constructors?: {
+    constructors: {
       EventClickIncludeConstructor?: typeof EventClickInclude
       SkeletonIncludeConstructor?: typeof SkeletonInclude
-    }
+    } = {}
   ) {
     const {
       EventClickIncludeConstructor = EventClickInclude,
       SkeletonIncludeConstructor = SkeletonInclude
-    } = constructors ?? {}
+    } = constructors
 
     this.event = new EventClickIncludeConstructor(
       props,

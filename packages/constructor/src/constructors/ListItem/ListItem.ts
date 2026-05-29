@@ -74,7 +74,7 @@ export class ListItem {
     protected readonly components?: DesignComp<ListItemComponents, ListItemProps>,
     protected readonly slots?: ListItemSlots,
     protected readonly emits?: ConstrEmit<ListItemEmits>,
-    constructors?: {
+    constructors: {
       BadgeIncludeConstructor?: typeof BadgeInclude
       CaptionIncludeConstructor?: typeof CaptionInclude
       DescriptionIncludeConstructor?: typeof DescriptionInclude
@@ -87,7 +87,7 @@ export class ListItem {
       RippleIncludeConstructor?: typeof RippleInclude
       SkeletonIncludeConstructor?: typeof SkeletonInclude
       SuffixIncludeConstructor?: typeof SuffixInclude
-    }
+    } = {}
   ) {
     const {
       BadgeIncludeConstructor = BadgeInclude,
@@ -102,7 +102,7 @@ export class ListItem {
       RippleIncludeConstructor = RippleInclude,
       SkeletonIncludeConstructor = SkeletonInclude,
       SuffixIncludeConstructor = SuffixInclude
-    } = constructors ?? {}
+    } = constructors
 
     const progress = new ProgressIncludeConstructor(
       className,

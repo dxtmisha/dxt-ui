@@ -51,17 +51,17 @@ export class Snackbar {
     protected readonly components?: DesignComp<SnackbarComponents, SnackbarProps>,
     protected readonly slots?: SnackbarSlots,
     protected readonly emits?: ConstrEmit<SnackbarEmits>,
-    constructors?: {
+    constructors: {
       DataConstructor?: typeof SnackbarData
       EventConstructor?: typeof SnackbarEvent
       TeleportIncludeConstructor?: typeof TeleportInclude
-    }
+    } = {}
   ) {
     const {
       DataConstructor = SnackbarData,
       EventConstructor = SnackbarEvent,
       TeleportIncludeConstructor = TeleportInclude
-    } = constructors ?? {}
+    } = constructors
 
     this.event = new EventConstructor(emits)
 

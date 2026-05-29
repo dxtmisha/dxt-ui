@@ -35,13 +35,13 @@ export class ListGroup {
     protected readonly components?: DesignComp<ListGroupComponents, ListGroupProps>,
     protected readonly slots?: ListGroupSlots,
     protected readonly emits?: ConstrEmit<ListGroupEmits>,
-    constructors?: {
+    constructors: {
       ListGroupOpenConstructor?: typeof ListGroupOpen
-    }
+    } = {}
   ) {
     const {
       ListGroupOpenConstructor = ListGroupOpen
-    } = constructors ?? {}
+    } = constructors
 
     this.open = new ListGroupOpenConstructor(this.props)
   }

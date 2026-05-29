@@ -56,17 +56,17 @@ export class Scrollbar {
     protected readonly components?: DesignComp<ScrollbarComponents, ScrollbarPropsBasic>,
     protected readonly slots?: ScrollbarSlots,
     protected readonly emits?: ConstrEmit<ScrollbarEmits>,
-    constructors?: {
+    constructors: {
       ScrollbarBorderConstructor?: typeof ScrollbarBorder
       ScrollbarWidthRefConstructor?: typeof ScrollbarWidthRef
       ClientOnlyIncludeConstructor?: typeof ClientOnlyInclude
-    }
+    } = {}
   ) {
     const {
       ScrollbarBorderConstructor = ScrollbarBorder,
       ScrollbarWidthRefConstructor = ScrollbarWidthRef,
       ClientOnlyIncludeConstructor = ClientOnlyInclude
-    } = constructors ?? {}
+    } = constructors
 
     this.clientOnly = new ClientOnlyIncludeConstructor(this.props)
     this.width = new ScrollbarWidthRefConstructor()

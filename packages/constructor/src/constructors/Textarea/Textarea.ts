@@ -56,7 +56,7 @@ export class Textarea {
     protected readonly components?: DesignComp<TextareaComponents, TextareaProps>,
     protected readonly slots?: TextareaSlots,
     protected readonly emits?: ConstrEmit<TextareaEmits>,
-    constructors?: {
+    constructors: {
       FieldAttributesIncludeConstructor?: typeof FieldAttributesInclude
       FieldChangeIncludeConstructor?: typeof FieldChangeInclude
       FieldCodeIncludeConstructor?: typeof FieldCodeInclude
@@ -65,7 +65,7 @@ export class Textarea {
       FieldIncludeConstructor?: typeof FieldInclude
       FieldValidationIncludeConstructor?: typeof FieldValidationInclude
       FieldValueIncludeConstructor?: typeof FieldValueInclude
-    }
+    } = {}
   ) {
     const {
       FieldAttributesIncludeConstructor = FieldAttributesInclude,
@@ -76,7 +76,7 @@ export class Textarea {
       FieldIncludeConstructor = FieldInclude,
       FieldValidationIncludeConstructor = FieldValidationInclude,
       FieldValueIncludeConstructor = FieldValueInclude
-    } = constructors ?? {}
+    } = constructors
 
     this.change = new FieldChangeIncludeConstructor(this.props)
     this.attributes = new FieldAttributesIncludeConstructor(this.props)

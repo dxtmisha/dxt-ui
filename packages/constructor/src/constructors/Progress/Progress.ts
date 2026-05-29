@@ -52,15 +52,15 @@ export class Progress {
     protected readonly props: ProgressProps,
     protected readonly refs: ToRefs<ProgressProps>,
     protected readonly className: string,
-    constructors?: {
+    constructors: {
       TextIncludeConstructor?: typeof TextInclude
       ClientOnlyIncludeConstructor?: typeof ClientOnlyInclude
-    }
+    } = {}
   ) {
     const {
       TextIncludeConstructor = TextInclude,
       ClientOnlyIncludeConstructor = ClientOnlyInclude
-    } = constructors ?? {}
+    } = constructors
 
     this.clientOnly = new ClientOnlyIncludeConstructor(this.props)
     this.text = new TextIncludeConstructor(this.props)

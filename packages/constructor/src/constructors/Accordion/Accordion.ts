@@ -67,17 +67,17 @@ export class Accordion {
     protected readonly components?: DesignComp<AccordionComponents, AccordionProps>,
     protected readonly slots?: AccordionSlots,
     protected readonly emits?: ConstrEmit<AccordionEmits>,
-    constructors?: {
+    constructors: {
       EventClickIncludeConstructor?: typeof EventClickInclude
       ModelIncludeConstructor?: typeof ModelInclude
       MotionTransformIncludeConstructor?: typeof MotionTransformInclude
-    }
+    } = {}
   ) {
     const {
       EventClickIncludeConstructor = EventClickInclude,
       ModelIncludeConstructor = ModelInclude,
       MotionTransformIncludeConstructor = MotionTransformInclude
-    } = constructors ?? {}
+    } = constructors
 
     this.motionTransform = new MotionTransformIncludeConstructor(
       this.className,

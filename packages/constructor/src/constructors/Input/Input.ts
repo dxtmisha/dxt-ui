@@ -91,7 +91,7 @@ export class Input {
     protected readonly components?: DesignComp<InputComponents, InputProps>,
     protected readonly slots?: InputSlots,
     protected readonly emits?: ConstrEmit<InputEmits>,
-    constructors?: {
+    constructors: {
       FieldArrowIncludeConstructor?: typeof FieldArrowInclude
       FieldAttributesIncludeConstructor?: typeof FieldAttributesInclude
       FieldChangeIncludeConstructor?: typeof FieldChangeInclude
@@ -109,7 +109,7 @@ export class Input {
       InputPasswordConstructor?: typeof InputPassword
       MaskIncludeConstructor?: typeof MaskInclude
       TextIncludeConstructor?: typeof TextInclude
-    }
+    } = {}
   ) {
     const {
       FieldArrowIncludeConstructor = FieldArrowInclude,
@@ -129,7 +129,7 @@ export class Input {
       InputPasswordConstructor = InputPassword,
       MaskIncludeConstructor = MaskInclude,
       TextIncludeConstructor = TextInclude
-    } = constructors ?? {}
+    } = constructors
 
     this.text = new TextIncludeConstructor(this.props)
     this.change = new FieldChangeIncludeConstructor(this.props)

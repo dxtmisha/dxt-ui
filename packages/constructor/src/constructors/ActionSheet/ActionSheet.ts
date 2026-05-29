@@ -54,16 +54,16 @@ export class ActionSheet extends ModalAbstract {
     protected readonly extraWindow?: () => ComponentIncludeExtra<WindowProps>,
     protected readonly extraBars?: () => ComponentIncludeExtra<BarsProps>,
     protected readonly extraActions?: () => ComponentIncludeExtra<ActionsProps>,
-    constructors?: {
+    constructors: {
       ActionsConstructor?: typeof ActionsInclude
       BarsConstructor?: typeof BarsInclude
       TouchEventIncludeConstructor?: typeof TouchEventInclude
       WindowConstructor?: typeof WindowInclude
-    }
+    } = {}
   ) {
     const {
       TouchEventIncludeConstructor = TouchEventInclude
-    } = constructors ?? {}
+    } = constructors
 
     super(
       props,

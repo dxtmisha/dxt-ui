@@ -37,15 +37,15 @@ export class ButtonGroup {
     protected readonly components?: DesignComp<ButtonGroupComponents, ButtonGroupProps>,
     protected readonly slots?: ButtonGroupSlots,
     protected readonly emits?: ConstrEmit<ButtonGroupEmits>,
-    constructors?: {
+    constructors: {
       AreaIncludeConstructor?: typeof AreaInclude
       EventConstructor?: typeof EventClickInclude
-    }
+    } = {}
   ) {
     const {
       AreaIncludeConstructor = AreaInclude,
       EventConstructor = EventClickInclude
-    } = constructors ?? {}
+    } = constructors
 
     this.area = new AreaIncludeConstructor(props)
     this.event = new EventConstructor(

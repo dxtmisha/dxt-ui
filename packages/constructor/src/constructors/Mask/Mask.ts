@@ -137,7 +137,7 @@ export class Mask {
     protected readonly components?: DesignComp<MaskComponents, MaskProps>,
     protected readonly slots?: MaskSlots,
     protected readonly emits?: ConstrEmit<MaskEmits>,
-    constructors?: {
+    constructors: {
       MaskBufferConstructor?: typeof MaskBuffer
       MaskCharacterConstructor?: typeof MaskCharacter
       MaskCharacterLengthConstructor?: typeof MaskCharacterLength
@@ -161,7 +161,7 @@ export class Mask {
       MaskValueBasicConstructor?: typeof MaskValueBasic
       MaskValueConstructor?: typeof MaskValue
       MaskViewConstructor?: typeof MaskView
-    }
+    } = {}
   ) {
     const {
       MaskBufferConstructor = MaskBuffer,
@@ -187,7 +187,7 @@ export class Mask {
       MaskValueBasicConstructor = MaskValueBasic,
       MaskValueConstructor = MaskValue,
       MaskViewConstructor = MaskView
-    } = constructors ?? {}
+    } = constructors
 
     this.type = new MaskTypeConstructor(this.props)
     this.buffer = new MaskBufferConstructor()

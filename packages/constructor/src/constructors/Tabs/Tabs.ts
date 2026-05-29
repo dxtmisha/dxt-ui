@@ -46,13 +46,13 @@ export class Tabs {
     protected readonly components?: DesignComp<TabsComponents, TabsProps>,
     protected readonly slots?: TabsSlots,
     protected readonly emits?: ConstrEmit<TabsEmits>,
-    constructors?: {
+    constructors: {
       EventClickIncludeConstructor?: typeof EventClickInclude
       ModelIncludeConstructor?: typeof ModelInclude
       MotionAxisIncludeConstructor?: typeof MotionAxisInclude
       TabsNavigationIncludeConstructor?: typeof TabsNavigationInclude
       TabsSelectedConstructor?: typeof TabsSelected
-    }
+    } = {}
   ) {
     const {
       EventClickIncludeConstructor = EventClickInclude,
@@ -60,7 +60,7 @@ export class Tabs {
       MotionAxisIncludeConstructor = MotionAxisInclude,
       TabsNavigationIncludeConstructor = TabsNavigationInclude,
       TabsSelectedConstructor = TabsSelected
-    } = constructors ?? {}
+    } = constructors
 
     this.selected = new TabsSelectedConstructor(this.props, this.refs)
     this.event = new EventClickIncludeConstructor(undefined, undefined, this.emits)

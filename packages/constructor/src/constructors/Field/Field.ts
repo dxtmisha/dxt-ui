@@ -95,7 +95,7 @@ export class Field {
     protected readonly components?: DesignComp<FieldComponents, FieldProps>,
     protected readonly slots?: FieldSlots,
     protected readonly emits?: ConstrEmit<FieldEmits>,
-    constructors?: {
+    constructors: {
       CaptionIncludeConstructor?: typeof CaptionInclude
       EnabledIncludeConstructor?: typeof EnabledInclude
       EventClickIncludeConstructor?: typeof EventClickInclude
@@ -109,7 +109,7 @@ export class Field {
       SkeletonIncludeConstructor?: typeof SkeletonInclude
       SuffixIncludeConstructor?: typeof SuffixInclude
       TextIncludeConstructor?: typeof TextInclude
-    }
+    } = {}
   ) {
     const {
       CaptionIncludeConstructor = CaptionInclude,
@@ -125,7 +125,7 @@ export class Field {
       SkeletonIncludeConstructor = SkeletonInclude,
       SuffixIncludeConstructor = SuffixInclude,
       TextIncludeConstructor = TextInclude
-    } = constructors ?? {}
+    } = constructors
 
     this.skeleton = new SkeletonIncludeConstructor(
       this.props,

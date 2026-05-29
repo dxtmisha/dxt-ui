@@ -62,7 +62,7 @@ export class MenuButton extends SelectAbstract {
     protected readonly components?: DesignComp<MenuButtonComponents, MenuButtonProps>,
     protected readonly slots?: MenuButtonSlots,
     protected readonly emits?: ConstrEmit<MenuButtonEmits>,
-    constructors?: {
+    constructors: {
       ButtonConstructor?: typeof ButtonInclude
       FieldAttributesIncludeConstructor?: typeof FieldAttributesInclude
       FieldChangeIncludeConstructor?: typeof FieldChangeInclude
@@ -72,7 +72,7 @@ export class MenuButton extends SelectAbstract {
       FieldValidationIncludeConstructor?: typeof FieldValidationInclude
       FieldValueIncludeConstructor?: typeof FieldValueInclude
       MenuIncludeConstructor?: typeof MenuInclude
-    }
+    } = {}
   ) {
     super(
       props,
@@ -88,7 +88,7 @@ export class MenuButton extends SelectAbstract {
 
     const {
       ButtonConstructor = ButtonInclude
-    } = constructors ?? {}
+    } = constructors
 
     this.button = new ButtonConstructor(
       this.className,

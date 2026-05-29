@@ -41,15 +41,15 @@ export class Badge {
     protected readonly components?: DesignComp<BadgeComponents, BadgeProps>,
     protected readonly slots?: BadgeSlots,
     protected readonly emits?: ConstrEmit<BadgeEmits>,
-    constructors?: {
+    constructors: {
       IconIncludeConstructor?: typeof IconInclude
       LabelNumberIncludeConstructor?: typeof LabelNumberInclude
-    }
+    } = {}
   ) {
     const {
       IconIncludeConstructor = IconInclude,
       LabelNumberIncludeConstructor = LabelNumberInclude
-    } = constructors ?? {}
+    } = constructors
 
     this.label = new LabelNumberIncludeConstructor(
       props,

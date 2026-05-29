@@ -73,7 +73,7 @@ export class Button {
     protected readonly components?: DesignComp<ButtonComponents, ButtonPropsBasic>,
     protected readonly slots?: ButtonSlots,
     protected readonly emits?: ConstrEmit<ButtonEmits>,
-    constructors?: {
+    constructors: {
       EnabledConstructor?: typeof EnabledInclude
       EventConstructor?: typeof EventClickInclude
       IconConstructor?: typeof IconTrailingInclude
@@ -81,7 +81,7 @@ export class Button {
       ProgressConstructor?: typeof ProgressInclude
       RippleConstructor?: typeof RippleInclude
       SkeletonConstructor?: typeof SkeletonInclude
-    }
+    } = {}
   ) {
     const {
       EnabledConstructor = EnabledInclude,
@@ -91,7 +91,7 @@ export class Button {
       ProgressConstructor = ProgressInclude,
       RippleConstructor = RippleInclude,
       SkeletonConstructor = SkeletonInclude
-    } = constructors ?? {}
+    } = constructors
 
     this.progress = new ProgressConstructor(
       className,

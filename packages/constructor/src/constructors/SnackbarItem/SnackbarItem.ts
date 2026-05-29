@@ -67,7 +67,7 @@ export class SnackbarItem {
     protected readonly components?: DesignComp<SnackbarItemComponents, SnackbarItemProps>,
     protected readonly slots?: SnackbarItemSlots,
     protected readonly emits?: ConstrEmit<SnackbarItemEmits>,
-    constructors?: {
+    constructors: {
       ActionsConstructor?: typeof ActionsInclude
       AreaConstructor?: typeof AreaInclude
       ButtonConstructor?: typeof ButtonInclude
@@ -76,7 +76,7 @@ export class SnackbarItem {
       IconConstructor?: typeof IconTrailingInclude
       LabelConstructor?: typeof LabelInclude
       TextConstructor?: typeof TextInclude
-    }
+    } = {}
   ) {
     const {
       ActionsConstructor = ActionsInclude,
@@ -87,7 +87,7 @@ export class SnackbarItem {
       IconConstructor = IconTrailingInclude,
       LabelConstructor = LabelInclude,
       TextConstructor = TextInclude
-    } = constructors ?? {}
+    } = constructors
 
     this.label = new LabelConstructor(props, className, undefined, slots)
     this.description = new DescriptionConstructor(props, className, slots)

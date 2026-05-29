@@ -42,15 +42,15 @@ export class InputPhoneDialCode {
     protected readonly components?: DesignComp<InputPhoneDialCodeComponents, InputPhoneDialCodeProps>,
     protected readonly slots?: InputPhoneDialCodeSlots,
     protected readonly emits?: ConstrEmit<InputPhoneDialCodeEmits>,
-    constructors?: {
+    constructors: {
       ButtonConstructor?: typeof ButtonInclude
       MenuCountryConstructor?: typeof MenuCountryInclude
-    }
+    } = {}
   ) {
     const {
       ButtonConstructor = ButtonInclude,
       MenuCountryConstructor = MenuCountryInclude
-    } = constructors ?? {}
+    } = constructors
 
     this.button = new ButtonConstructor(
       this.className,

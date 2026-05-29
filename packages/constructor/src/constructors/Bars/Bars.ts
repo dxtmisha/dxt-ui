@@ -79,7 +79,7 @@ export class Bars {
     protected readonly components?: DesignComp<BarsComponents, BarsProps>,
     protected readonly slots?: BarsSlots,
     protected readonly emits?: ConstrEmit<BarsEmits>,
-    constructors?: {
+    constructors: {
       BarsActionConstructor?: typeof BarsAction
       DescriptionConstructor?: typeof DescriptionInclude
       EventConstructor?: typeof EventClickInclude
@@ -89,7 +89,7 @@ export class Bars {
       SkeletonConstructor?: typeof SkeletonInclude
       TextConstructor?: typeof TextInclude
       WindowClassesConstructor?: typeof WindowClassesInclude
-    }
+    } = {}
   ) {
     const {
       BarsActionConstructor = BarsAction,
@@ -101,7 +101,7 @@ export class Bars {
       SkeletonConstructor = SkeletonInclude,
       TextConstructor = TextInclude,
       WindowClassesConstructor = WindowClassesInclude
-    } = constructors ?? {}
+    } = constructors
 
     this.skeleton = new SkeletonConstructor(this.props, this.classDesign, ['classTextVariant'])
     this.windowClasses = new WindowClassesConstructor(classDesign)

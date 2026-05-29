@@ -73,7 +73,7 @@ export class Dialog extends ModalAbstract {
     protected readonly extraWindow?: () => ComponentIncludeExtra<WindowProps>,
     protected readonly extraBars?: () => ComponentIncludeExtra<BarsProps>,
     protected readonly extraActions?: () => ComponentIncludeExtra<ActionsProps>,
-    constructors?: {
+    constructors: {
       ActionsConstructor?: typeof ActionsInclude
       BarsConstructor?: typeof BarsInclude
       DescriptionIncludeConstructor?: typeof DescriptionInclude
@@ -82,7 +82,7 @@ export class Dialog extends ModalAbstract {
       TextIncludeConstructor?: typeof TextInclude
       WindowClassesIncludeConstructor?: typeof WindowClassesInclude
       WindowConstructor?: typeof WindowInclude
-    }
+    } = {}
   ) {
     const {
       DescriptionIncludeConstructor = DescriptionInclude,
@@ -90,7 +90,7 @@ export class Dialog extends ModalAbstract {
       LabelIncludeConstructor = LabelInclude,
       TextIncludeConstructor = TextInclude,
       WindowClassesIncludeConstructor = WindowClassesInclude
-    } = constructors ?? {}
+    } = constructors
 
     super(
       props,

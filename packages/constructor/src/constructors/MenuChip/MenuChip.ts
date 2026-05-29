@@ -46,7 +46,7 @@ export class MenuChip extends SelectAbstract {
     protected readonly components?: DesignComp<MenuChipComponents, MenuChipProps>,
     protected readonly slots?: MenuChipSlots,
     protected readonly emits?: ConstrEmit<MenuChipEmits>,
-    constructors?: {
+    constructors: {
       ChipConstructor?: typeof ChipInclude
       FieldAttributesIncludeConstructor?: typeof FieldAttributesInclude
       FieldChangeIncludeConstructor?: typeof FieldChangeInclude
@@ -56,7 +56,7 @@ export class MenuChip extends SelectAbstract {
       FieldValidationIncludeConstructor?: typeof FieldValidationInclude
       FieldValueIncludeConstructor?: typeof FieldValueInclude
       MenuIncludeConstructor?: typeof MenuInclude
-    }
+    } = {}
   ) {
     super(
       props,
@@ -72,7 +72,7 @@ export class MenuChip extends SelectAbstract {
 
     const {
       ChipConstructor = ChipInclude
-    } = constructors ?? {}
+    } = constructors
 
     this.chip = new ChipConstructor(
       undefined,

@@ -74,7 +74,7 @@ export class Menu {
     protected readonly components?: DesignComp<MenuComponents, MenuProps>,
     protected readonly slots?: MenuSlots,
     protected readonly emits?: ConstrEmit<MenuEmits>,
-    constructors?: {
+    constructors: {
       BarsIncludeConstructor?: typeof BarsInclude
       EventClickIncludeConstructor?: typeof EventClickInclude
       ListDataRefConstructor?: typeof ListDataRef
@@ -83,7 +83,7 @@ export class Menu {
       MenuValueConstructor?: typeof MenuValue
       MenuWindowConstructor?: typeof MenuWindow
       WindowIncludeConstructor?: typeof WindowInclude
-    }
+    } = {}
   ) {
     const {
       BarsIncludeConstructor = BarsInclude,
@@ -94,7 +94,7 @@ export class Menu {
       MenuValueConstructor = MenuValue,
       MenuWindowConstructor = MenuWindow,
       WindowIncludeConstructor = WindowInclude
-    } = constructors ?? {}
+    } = constructors
 
     this.request = new MenuRequestConstructor(this.props)
     this.value = new MenuValueConstructor(this.props, this.refs, this.emits)

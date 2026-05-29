@@ -55,7 +55,7 @@ export class MotionAxis {
     protected readonly components?: DesignComp<MotionAxisComponents, MotionAxisProps>,
     protected readonly slots?: MotionAxisSlots,
     protected readonly emits?: ConstrEmit<MotionAxisEmits>,
-    constructors?: {
+    constructors: {
       ModelIncludeConstructor?: typeof ModelInclude
       MotionAxisElementConstructor?: typeof MotionAxisElement
       MotionAxisGoConstructor?: typeof MotionAxisGo
@@ -64,7 +64,7 @@ export class MotionAxis {
       MotionAxisSlidesConstructor?: typeof MotionAxisSlides
       MotionAxisStatusConstructor?: typeof MotionAxisStatus
       MotionAxisStylesConstructor?: typeof MotionAxisStyles
-    }
+    } = {}
   ) {
     const {
       ModelIncludeConstructor = ModelInclude,
@@ -75,7 +75,7 @@ export class MotionAxis {
       MotionAxisSlidesConstructor = MotionAxisSlides,
       MotionAxisStatusConstructor = MotionAxisStatus,
       MotionAxisStylesConstructor = MotionAxisStyles
-    } = constructors ?? {}
+    } = constructors
 
     this.selected = new MotionAxisSelectedConstructor(this.props)
 

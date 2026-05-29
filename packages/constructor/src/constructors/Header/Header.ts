@@ -61,19 +61,19 @@ export class Header {
     protected readonly components?: DesignComp<HeaderComponents, HeaderProps>,
     protected readonly slots?: HeaderSlots,
     protected readonly emits?: ConstrEmit<HeaderEmits>,
-    constructors?: {
+    constructors: {
       AreaIncludeConstructor?: typeof AreaInclude
       CaptionIncludeConstructor?: typeof CaptionInclude
       IconIncludeConstructor?: typeof IconInclude
       LabelIncludeConstructor?: typeof LabelInclude
-    }
+    } = {}
   ) {
     const {
       AreaIncludeConstructor = AreaInclude,
       CaptionIncludeConstructor = CaptionInclude,
       IconIncludeConstructor = IconInclude,
       LabelIncludeConstructor = LabelInclude
-    } = constructors ?? {}
+    } = constructors
 
     this.label = new LabelIncludeConstructor(
       props,

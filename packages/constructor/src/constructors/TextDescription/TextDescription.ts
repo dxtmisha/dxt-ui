@@ -35,13 +35,13 @@ export class TextDescription {
     protected readonly components?: DesignComp<TextDescriptionComponents, TextDescriptionProps>,
     protected readonly slots?: TextDescriptionSlots,
     protected readonly emits?: ConstrEmit<TextDescriptionEmits>,
-    constructors?: {
+    constructors: {
       DescriptionConstructor?: typeof DescriptionInclude
-    }
+    } = {}
   ) {
     const {
       DescriptionConstructor = DescriptionInclude
-    } = constructors ?? {}
+    } = constructors
 
     this.description = new DescriptionConstructor(
       this.props,

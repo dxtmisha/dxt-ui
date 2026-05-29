@@ -67,19 +67,19 @@ export abstract class ModalAbstract {
     protected readonly extraWindow?: () => ComponentIncludeExtra<WindowProps>,
     protected readonly extraBars?: () => ComponentIncludeExtra<BarsProps>,
     protected readonly extraActions?: () => ComponentIncludeExtra<ActionsProps>,
-    constructors?: {
+    constructors: {
       ActionsConstructor?: typeof ActionsInclude
       BarsConstructor?: typeof BarsInclude
       ModelIncludeConstructor?: typeof ModelInclude
       WindowConstructor?: typeof WindowInclude
-    }
+    } = {}
   ) {
     const {
       ActionsConstructor = ActionsInclude,
       BarsConstructor = BarsInclude,
       ModelIncludeConstructor = ModelInclude,
       WindowConstructor = WindowInclude
-    } = constructors ?? {}
+    } = constructors
 
     const labelId: string = getElementId()
     const descriptionId: string = getElementId()

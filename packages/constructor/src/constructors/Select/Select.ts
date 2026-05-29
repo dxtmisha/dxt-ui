@@ -65,7 +65,7 @@ export class Select extends SelectAbstract {
     components?: DesignComp<SelectComponents, SelectProps>,
     slots?: SelectSlots,
     emits?: ConstrEmit<SelectEmits>,
-    constructors?: {
+    constructors: {
       FieldAttributesIncludeConstructor?: typeof FieldAttributesInclude
       FieldChangeIncludeConstructor?: typeof FieldChangeInclude
       FieldCodeIncludeConstructor?: typeof FieldCodeInclude
@@ -76,7 +76,7 @@ export class Select extends SelectAbstract {
       FieldValueIncludeConstructor?: typeof FieldValueInclude
       MenuIncludeConstructor?: typeof MenuInclude
       SelectInputConstructor?: typeof SelectInput
-    }
+    } = {}
   ) {
     super(
       props,
@@ -93,7 +93,7 @@ export class Select extends SelectAbstract {
     const {
       FieldIncludeConstructor = FieldInclude,
       SelectInputConstructor = SelectInput
-    } = constructors ?? {}
+    } = constructors
 
     this.input = new SelectInputConstructor(
       this.props,

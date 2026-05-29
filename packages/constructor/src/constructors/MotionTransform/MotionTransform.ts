@@ -78,7 +78,7 @@ export class MotionTransform {
     protected readonly components?: DesignComp<MotionTransformComponents, MotionTransformProps>,
     protected readonly slots?: MotionTransformSlots,
     protected readonly emits?: ConstrEmit<MotionTransformEmits>,
-    constructors?: {
+    constructors: {
       ModelIncludeConstructor?: typeof ModelInclude
       MotionTransformElementConstructor?: typeof MotionTransformElement
       MotionTransformEventConstructor?: typeof MotionTransformEvent
@@ -88,7 +88,7 @@ export class MotionTransform {
       TabIndexIncludeConstructor?: typeof TabIndexInclude
       TeleportIncludeConstructor?: typeof TeleportInclude
       WindowEscConstructor?: typeof WindowEsc
-    }
+    } = {}
   ) {
     const {
       ModelIncludeConstructor = ModelInclude,
@@ -100,7 +100,7 @@ export class MotionTransform {
       TabIndexIncludeConstructor = TabIndexInclude,
       TeleportIncludeConstructor = TeleportInclude,
       WindowEscConstructor = WindowEsc
-    } = constructors ?? {}
+    } = constructors
 
     this.element = new MotionTransformElementConstructor(
       props,

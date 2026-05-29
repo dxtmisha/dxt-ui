@@ -61,7 +61,7 @@ export class Image {
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly className: string,
     protected readonly emits?: ConstrEmit<ImageEmits>,
-    constructors?: {
+    constructors: {
       ImageAdaptiveItemConstructor?: typeof ImageAdaptiveItem
       ImageBackgroundConstructor?: typeof ImageBackground
       ImageCoordinatorConstructor?: typeof ImageCoordinator
@@ -70,7 +70,7 @@ export class Image {
       ImagePositionConstructor?: typeof ImagePosition
       ImageTypeConstructor?: typeof ImageType
       ClientOnlyConstructor?: typeof ClientOnlyInclude
-    }
+    } = {}
   ) {
     const {
       ImageAdaptiveItemConstructor = ImageAdaptiveItem,
@@ -81,7 +81,7 @@ export class Image {
       ImagePositionConstructor = ImagePosition,
       ImageTypeConstructor = ImageType,
       ClientOnlyConstructor = ClientOnlyInclude
-    } = constructors ?? {}
+    } = constructors
 
     this.clientOnly = new ClientOnlyConstructor({ clientOnly: true })
 
