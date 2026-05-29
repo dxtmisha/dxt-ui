@@ -29,14 +29,14 @@ export class CellDesign<
   CLASSES extends CellClasses,
   P extends CellPropsBasic
 > extends DesignConstructorAbstract<
-  HTMLDivElement,
-  COMP,
-  CellEmits,
-  EXPOSE,
-  CellSlots,
-  CLASSES,
-  P
-> {
+    HTMLDivElement,
+    COMP,
+    CellEmits,
+    EXPOSE,
+    CellSlots,
+    CLASSES,
+    P
+  > {
   /** Cell controller instance / Экземпляр контроллера ячейки (Cell) */
   protected readonly item: Cell
 

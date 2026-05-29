@@ -30,9 +30,9 @@ export class FieldMessageInclude<
   Props extends FieldMessagePropsInclude = FieldMessagePropsInclude,
   PropsExtra extends FieldMessagePropsBasic = FieldMessagePropsBasic
 > extends ComponentIncludeAbstract<
-  Props,
-  PropsExtra
-> {
+    Props,
+    PropsExtra
+  > {
   /** Unique identifier for the helper message / Уникальный идентификатор для вспомогательного сообщения */
   readonly helperId: string = getElementId()
 

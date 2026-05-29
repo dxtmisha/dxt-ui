@@ -1,4 +1,4 @@
-import { computed, type Ref, type ToRefs } from 'vue'
+import { type Ref, type ToRefs } from 'vue'
 import {
   applyTemplate,
   type ConstrEmit,
@@ -52,6 +52,26 @@ export class FieldCounter {
   }
 
   /**
+   * Returns the number of input characters.
+   *
+   * Возвращает количество вводимых символов.
+   * @returns number of input characters / количество вводимых символов
+   */
+  get counter(): number {
+    return toNumber(this.props.counter ?? 0)
+  }
+
+  /**
+   * Returns the maximum available input number.
+   *
+   * Возвращает максимально доступное вводимое число.
+   * @returns maximum available input number / максимально доступное вводимое число
+   */
+  get max(): number {
+    return toNumber(this.props.maxlength ?? 0)
+  }
+
+  /**
    * Returns the text for the screen reader.
    *
    * Возвращает текст для скринридера.
@@ -83,10 +103,11 @@ export class FieldCounter {
    * Returns text for output.
    *
    * Возвращает текст для вывода.
+   * @returns text for output / текст для вывода
    */
-  readonly item = computed<string>(() => {
-    const counter = this.getCounter().toString()
-    const max = this.getMax().toString()
+  get item(): string {
+    const counter = this.counter.toString()
+    const max = this.max.toString()
 
     if (isFilled(this.props.template)) {
       return this.props.template
@@ -99,7 +120,7 @@ export class FieldCounter {
     }
 
     return counter
-  })
+  }
 
   /**
    * Checks if it is necessary to display the number of input characters.
@@ -118,25 +139,7 @@ export class FieldCounter {
    * @returns true if max limit is displayed / true, если выводится максимальный лимит
    */
   isMax(): boolean {
-    return this.getMax() > 0
-  }
-
-  /**
-   * Returns the number of input characters.
-   *
-   * Возвращает количество вводимых символов.
-   */
-  getCounter(): number {
-    return toNumber(this.props.counter ?? 0)
-  }
-
-  /**
-   * Returns the maximum available input number.
-   *
-   * Возвращает максимально доступное вводимое число.
-   */
-  getMax(): number {
-    return toNumber(this.props.maxlength ?? 0)
+    return this.max > 0
   }
 
   /**
@@ -149,7 +152,7 @@ export class FieldCounter {
       return toNumber(this.props.maxlengthOnce)
     }
 
-    return Math.ceil(this.getMax() * 0.1)
+    return Math.ceil(this.max * 0.1)
   }
 
   /**
@@ -158,6 +161,6 @@ export class FieldCounter {
    * Возвращает количество оставшихся символов.
    */
   getRemaining(): number {
-    return this.getMax() - this.getCounter()
+    return this.max - this.counter
   }
 }

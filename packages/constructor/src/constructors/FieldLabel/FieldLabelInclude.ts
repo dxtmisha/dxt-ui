@@ -29,11 +29,11 @@ export class FieldLabelInclude<
   Props extends FieldLabelPropsInclude = FieldLabelPropsInclude,
   PropsExtra extends FieldLabelPropsBasic = FieldLabelPropsBasic
 > extends ComponentIncludeAbstract<
-  Props,
-  PropsExtra,
-  Record<string, any>,
-  FieldLabelSlotsInclude
-> {
+    Props,
+    PropsExtra,
+    Record<string, any>,
+    FieldLabelSlotsInclude
+  > {
   /** Component name / Название компонента */
   protected readonly name = 'fieldLabel'
 

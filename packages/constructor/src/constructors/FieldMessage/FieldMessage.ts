@@ -5,8 +5,8 @@ import { FieldCounterInclude } from '../FieldCounter'
 import { FieldMessageMessage } from './FieldMessageMessage'
 import { SkeletonInclude } from '../Skeleton'
 
-import type { FieldMessageComponents, FieldMessageEmits, FieldMessageSlots } from './types'
 import type { FieldMessageSlot } from './basicTypes'
+import type { FieldMessageComponents, FieldMessageEmits, FieldMessageSlots } from './types'
 import type { FieldMessageProps } from './props'
 
 /**
@@ -62,18 +62,9 @@ export class FieldMessage {
       SkeletonIncludeConstructor = SkeletonInclude
     } = constructors
 
-    this.fieldCounter = new FieldCounterIncludeConstructor(
-      this.className,
-      this.props,
-      this.components
-    )
-
-    this.message = new FieldMessageMessageConstructor(this.props, this.slots)
-    this.skeleton = new SkeletonIncludeConstructor(
-      this.props as any,
-      this.classDesign,
-      ['classTextVariant']
-    )
+    this.fieldCounter = new FieldCounterIncludeConstructor(className, props, components)
+    this.message = new FieldMessageMessageConstructor(props, slots)
+    this.skeleton = new SkeletonIncludeConstructor(props, classDesign, ['classTextVariant'])
   }
 
   /**

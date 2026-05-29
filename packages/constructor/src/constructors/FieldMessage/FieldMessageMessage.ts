@@ -26,7 +26,7 @@ export class FieldMessageMessage {
    * Возвращает текст активного сообщения.
    * @returns message text / текст сообщения
    */
-  get item(): string {
+  get item(): string | undefined {
     if (this.props.validationMessage) {
       return this.props.validationMessage
     }
@@ -35,7 +35,7 @@ export class FieldMessageMessage {
       return this.props.helperMessage
     }
 
-    return ''
+    return undefined
   }
 
   /**
@@ -45,15 +45,10 @@ export class FieldMessageMessage {
    * @returns boolean value / логическое значение
    */
   is(): boolean {
-    return (
+    return Boolean(
       isFilled(this.item)
-      || Boolean(
-        this.slots
-        && (
-          'helper' in this.slots
-          || 'validation' in this.slots
-        )
-      )
+      || this.slots?.helper
+      || this.slots?.validation
     )
   }
 
@@ -64,9 +59,9 @@ export class FieldMessageMessage {
    * @returns boolean value / логическое значение
    */
   isValidation(): boolean {
-    return (
+    return Boolean(
       isFilled(this.props.validationMessage)
-      || Boolean(this.slots && 'validation' in this.slots)
+      || this.slots?.validation
     )
   }
 }

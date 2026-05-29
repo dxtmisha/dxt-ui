@@ -29,14 +29,14 @@ export class BlockDesign<
   CLASSES extends BlockClasses,
   P extends BlockPropsBasic
 > extends DesignConstructorAbstract<
-  HTMLDivElement,
-  COMP,
-  BlockEmits,
-  EXPOSE,
-  BlockSlots,
-  CLASSES,
-  P
-> {
+    HTMLDivElement,
+    COMP,
+    BlockEmits,
+    EXPOSE,
+    BlockSlots,
+    CLASSES,
+    P
+  > {
   /** Block controller instance / Экземпляр контроллера блока */
   protected readonly item: Block
 

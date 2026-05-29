@@ -2,6 +2,7 @@ import { type ComputedRef, inject } from 'vue'
 import type { ConstrClassObject } from '@dxtmisha/functional'
 
 import { Skeleton } from './Skeleton'
+
 import type { SkeletonClassesList, SkeletonPropsInclude } from './basicTypes'
 
 import { SKELETON_NAME_STATUS } from './const'
@@ -28,7 +29,7 @@ export class SkeletonInclude {
    */
   constructor(
     protected readonly props: SkeletonPropsInclude,
-    readonly classDesign: string,
+    protected readonly classDesign: string,
     protected readonly classesList?: (keyof SkeletonClassesList)[]
   ) {
     this.classesSkeleton = Skeleton.getClassesListByDesign(classDesign)

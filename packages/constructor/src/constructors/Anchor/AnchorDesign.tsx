@@ -30,14 +30,14 @@ export class AnchorDesign<
   CLASSES extends AnchorClasses,
   P extends AnchorPropsBasic
 > extends DesignConstructorAbstract<
-  HTMLDivElement,
-  COMP,
-  AnchorEmits,
-  EXPOSE,
-  AnchorSlots,
-  CLASSES,
-  P
-> {
+    HTMLDivElement,
+    COMP,
+    AnchorEmits,
+    EXPOSE,
+    AnchorSlots,
+    CLASSES,
+    P
+  > {
   protected readonly item: Anchor
 
   /**

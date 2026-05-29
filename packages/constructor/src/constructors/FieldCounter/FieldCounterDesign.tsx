@@ -6,6 +6,7 @@ import {
 } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
+
 import { FieldCounter } from './FieldCounter'
 
 import {
@@ -113,14 +114,12 @@ export class FieldCounterDesign<
   protected initRender(): VNode[] | undefined {
     if (this.item.is()) {
       return [
-        h(
-          'span', {
-            ...this.getAttrs(),
-            id: this.props.id,
-            class: this.classes?.value.main,
-            innerHTML: this.item.item.value
-          }
-        ),
+        h('span', {
+          ...this.getAttrs(),
+          id: this.props.id,
+          class: this.classes?.value.main,
+          innerHTML: this.item.item
+        }),
         ...this.renderAria()
       ]
     }

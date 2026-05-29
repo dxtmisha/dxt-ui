@@ -32,14 +32,14 @@ export class FieldMessageDesign<
   CLASSES extends FieldMessageClasses,
   P extends FieldMessagePropsBasic
 > extends DesignConstructorAbstract<
-  HTMLDivElement,
-  COMP,
-  FieldMessageEmits,
-  EXPOSE,
-  FieldMessageSlots,
-  CLASSES,
-  P
-> {
+    HTMLDivElement,
+    COMP,
+    FieldMessageEmits,
+    EXPOSE,
+    FieldMessageSlots,
+    CLASSES,
+    P
+  > {
   /** Main component instance / Основной экземпляр компонента */
   protected readonly item: FieldMessage
 

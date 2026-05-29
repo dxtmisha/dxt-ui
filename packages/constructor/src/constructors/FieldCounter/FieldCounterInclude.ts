@@ -5,10 +5,7 @@ import {
 
 import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
 
-import type { ComponentIncludeExposeItem } from '../../types/componentInclude'
-import type {
-  FieldCounterPropsInclude
-} from './basicTypes'
+import type { FieldCounterPropsInclude } from './basicTypes'
 import type { FieldCounterProps } from './props'
 
 /**
@@ -24,9 +21,6 @@ export class FieldCounterInclude extends ComponentIncludeAbstract<
   FieldCounterPropsInclude,
   FieldCounterProps
 > {
-  /** Expose configuration items / Конфигурация экспортируемых свойств */
-  protected readonly exposeItems: ComponentIncludeExposeItem<any>[] | undefined = undefined
-
   /** Component sub-name or code identifier / Дополнительное имя компонента или идентификатор кода */
   protected readonly name = 'fieldCounter'
   /** Property name containing raw attributes to pass / Имя свойства, содержащего сырые атрибуты для передачи */
@@ -40,6 +34,7 @@ export class FieldCounterInclude extends ComponentIncludeAbstract<
    */
   override get is(): boolean {
     const props = this.getProps()
+
     return Boolean(
       props.counterShow && (
         !isNull(props.counter)
@@ -56,6 +51,7 @@ export class FieldCounterInclude extends ComponentIncludeAbstract<
    */
   get bindsIntermediary(): FieldCounterPropsInclude {
     const props = this.getProps()
+
     return {
       counter: props.counter,
       counterShow: props.counterShow,
