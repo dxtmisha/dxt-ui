@@ -28,20 +28,19 @@ type Story = StoryObj<typeof meta>
 
 export const Image: Story = {
   args: {
-    value: "https://png.pngtree.com/thumb_back/fh260/background/20230611/pngtree-sunset-images-free-download-free-landscape-wallpapers-image_2913889.jpg",
+    value: 'https://png.pngtree.com/thumb_back/fh260/background/20230611/pngtree-sunset-images-free-download-free-landscape-wallpapers-image_2913889.jpg',
     tagImg: true,
     disabled: false,
     hide: false,
     turn: false,
-    alt: "",
-    size: "auto",
-    x: "",
-    y: "",
+    alt: '',
+    size: 'auto',
+    x: '',
+    y: '',
     lazy: true,
-    fetchPriority: "high"
+    fetchPriority: 'high'
   },
 
-  // :story-main [!] System label / Системная метка
   // :story-main [!] System label / Системная метка
   render: (args: any) => ({
     components: { D1Image },
@@ -52,6 +51,7 @@ export const Image: Story = {
       </div>
     `
   })
+  // :story-main [!] System label / Системная метка
 }
 
 // :story-items [!] System label / Системная метка

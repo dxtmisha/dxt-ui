@@ -11,6 +11,7 @@ const propsNames: StorybookProps = [
   { name: 'keyValue', type: 'string | undefined' },
   { name: 'list', type: 'ChipGroupData | undefined' },
   { name: 'modelSelected', type: 'ListSelectedList | undefined' },
+  { name: 'multiple', type: 'boolean | undefined' },
   { name: 'onUpdate:modelSelected', type: '((value: ListSelectedList) => void) | undefined' },
   { name: 'onUpdate:selected', type: '((value: ListSelectedList) => void) | undefined' },
   { name: 'readonly', type: 'boolean | undefined' },

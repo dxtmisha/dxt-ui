@@ -63,10 +63,10 @@ const propsNames: StorybookProps = [
   { name: 'maxlength', type: 'NumberOrString | undefined' },
   { name: 'min', type: 'NumberOrString | undefined' },
   { name: 'minlength', type: 'NumberOrString | undefined' },
-  { name: 'modelValue', type: 'NumberOrString | undefined' },
+  { name: 'modelValue', type: 'string | undefined' },
   { name: 'name', type: 'string | undefined' },
-  { name: 'onUpdate:modelValue', type: '((value: NumberOrString) => void) | undefined' },
-  { name: 'onUpdate:value', type: '((value: NumberOrString) => void) | undefined' },
+  { name: 'onUpdate:modelValue', type: '(((value: string) => void) & ((value: NumberOrString) => void)) | undefined' },
+  { name: 'onUpdate:value', type: '(((value: string) => void) & ((value: NumberOrString) => void)) | undefined' },
   { name: 'pattern', type: 'string | undefined' },
   { name: 'placeholder', type: 'string | undefined' },
   { name: 'prefix', type: 'string | number | undefined' },
@@ -84,7 +84,7 @@ const propsNames: StorybookProps = [
   { name: 'validationCode', type: 'FieldValidityCode | undefined' },
   { name: 'validationId', type: 'string | undefined' },
   { name: 'validationMessage', type: 'string | undefined' },
-  { name: 'value', type: 'NumberOrString | undefined' }
+  { name: 'value', type: 'string | undefined' }
   // :propsList [!] System label / Системная метка
 ]
 

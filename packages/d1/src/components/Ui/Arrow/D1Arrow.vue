@@ -26,7 +26,6 @@ const classesToken = computed<ConstrClasses>(() => ({
     // :classes-values [!] System label / Системная метка
     'd1-arrow': true,
     [`d1-arrow--position--${props.position}`]: inArray(propsValues.position, props.position),
-    'd1-arrow--inverse': props.inverse,
     [`d1-arrow--size--${props.size}`]: inArray(propsValues.size, props.size)
     // :classes-values [!] System label / Системная метка
   }

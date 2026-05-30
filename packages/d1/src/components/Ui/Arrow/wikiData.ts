@@ -7,7 +7,6 @@ const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
   { name: 'clientOnly', type: 'boolean | undefined' },
   { name: 'elementTarget', type: 'string | HTMLElement | undefined' },
-  { name: 'inverse', type: 'boolean | undefined' },
   { name: 'position', type: 'string', option: ['auto', 'top', 'bottom', 'left', 'right'] },
   { name: 'size', type: 'string', option: ['sm', 'md', 'lg'] }
   // :propsList [!] System label / Системная метка

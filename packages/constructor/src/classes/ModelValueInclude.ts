@@ -1,5 +1,5 @@
 import { ref, watch } from 'vue'
-import type { RefType } from '@dxtmisha/functional'
+import { type RefType, setValues } from '@dxtmisha/functional'
 
 import { EventClickInclude } from './EventClickInclude'
 import { ModelInclude } from './ModelInclude'
@@ -32,7 +32,8 @@ export class ModelValueInclude<Value = any> {
     protected readonly emits?: any,
     protected readonly event?: EventClickInclude,
     protected readonly inputValue?: RefType<any>,
-    protected readonly readonly?: RefType<boolean | undefined>
+    protected readonly readonly?: RefType<boolean | undefined>,
+    protected readonly multiple?: RefType<boolean | undefined>
   ) {
     if (this.inputValue) {
       this.value.value = this.inputValue?.value
@@ -74,7 +75,11 @@ export class ModelValueInclude<Value = any> {
       && 'value' in options
       && !this.readonly?.value
     ) {
-      this.value.value = options.value
+      this.value.value = setValues(
+        this.value.value,
+        options.value,
+        { multiple: this.multiple?.value }
+      ) as Value
     }
 
     this.event?.onClick(event, options)

@@ -63,6 +63,8 @@ const selectedIcon = ref('a')
         <D1ChipGroup
           v-model:selected="selectedIcon"
           :list="listBasic"
+          :readonly="false"
+          :chipAttrs="{ icon: 'check' }"
           iconWhenSelected
         />
         <DemoValue :value="selectedIcon" />
@@ -74,6 +76,7 @@ const selectedIcon = ref('a')
           :list="listCustomKeys"
           keyLabel="title"
           keyValue="code"
+          :readonly="false"
         />
         <DemoValue :value="selectedCustom" />
       </D1Group>
