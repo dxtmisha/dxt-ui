@@ -51,7 +51,7 @@ export class IconTrailingInclude<
       props.iconTrailing,
       {
         turn: props.iconTurn,
-        asPalette: props.iconPalette,
+        asPalette: props.iconTrailingPalette || props.iconPalette,
         dir: props.iconDir,
         end: true,
         high: true,

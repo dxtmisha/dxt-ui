@@ -149,7 +149,7 @@ export class Icon {
   /**
    * Checks if the additional icon is active/ Проверяет, активна ли дополнительная иконка
    */
-  isActive(): boolean {
+  readonly isActive = (): boolean => {
     return Boolean(this.props.active && this.props.iconActive)
   }
 
