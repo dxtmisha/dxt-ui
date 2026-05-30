@@ -130,7 +130,12 @@ export class ProgressDesign<
 
       return h(
         this.item.tag,
-        this.attrsMain,
+        {
+          ...this.getAttrs(),
+          class: this.classes?.value.main,
+          style: this.styles?.value,
+          ...this.item.binds
+        },
         children
       )
     }
@@ -185,39 +190,5 @@ export class ProgressDesign<
     }
 
     return []
-  }
-
-  /**
-   * Properties for the main element.
-   *
-   * Свойства для главного элемента.
-   * @returns {Record<string, any>} main element properties / свойства главного элемента
-   */
-  get attrsMain(): Record<string, any> {
-    const props: Record<string, any> = {
-      ...this.getAttrs(),
-      class: this.classes?.value.main,
-      style: this.styles?.value,
-      onAnimationend: this.item.onAnimation,
-      ...AriaStaticInclude.role(this.item.role),
-      ...AriaStaticInclude.label(this.item.label)
-    }
-
-    if (this.props.circular) {
-      props.viewBox = '0 0 48 48'
-    }
-
-    if (this.props.value) {
-      return {
-        ...props,
-        ...AriaStaticInclude.valueMinMax(
-          this.props.value,
-          0,
-          this.props.max
-        )
-      }
-    }
-
-    return props
   }
 }

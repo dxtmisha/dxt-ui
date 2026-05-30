@@ -15,6 +15,7 @@ import { ClientOnlyInclude } from '../../classes/ClientOnlyInclude'
 import { TextInclude } from '../../classes/TextInclude'
 
 import type { ProgressProps } from './props'
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude.ts'
 
 /**
  * Base class for working with the loader.
@@ -189,6 +190,37 @@ export class Progress {
     return {
       [`--${this.className}-sys-value`]: this.valueInPercent
     }
+  }
+
+  /**
+   * Properties for the main element.
+   *
+   * Свойства для главного элемента.
+   * @returns main element properties / свойства главного элемента
+   */
+  get binds() {
+    const props: Record<string, any> = {
+      onAnimationend: this.onAnimation,
+      ...AriaStaticInclude.role(this.role),
+      ...AriaStaticInclude.label(this.label)
+    }
+
+    if (this.props.circular) {
+      props.viewBox = '0 0 48 48'
+    }
+
+    if (this.props.value) {
+      return {
+        ...props,
+        ...AriaStaticInclude.valueMinMax(
+          this.props.value,
+          0,
+          this.props.max
+        )
+      }
+    }
+
+    return props
   }
 
   /**
