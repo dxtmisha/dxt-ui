@@ -108,18 +108,15 @@ export class Textarea {
     )
 
     this.field = new FieldIncludeConstructor(
+      this.className,
       this.props,
-      this.value,
       this.components,
-      this.event,
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      undefined,
       computed(() => ({
         maxlength: this.props.maxlength
-      }))
+      })),
+      undefined,
+      this.value,
+      this.event
     )
   }
 

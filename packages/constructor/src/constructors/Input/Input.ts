@@ -180,19 +180,19 @@ export class Input {
     )
 
     this.field = new FieldIncludeConstructor(
+      this.className,
       this.props,
-      this.value,
       this.components,
-      this.event,
-      this.arrow,
-      undefined,
-      () => this.password.toggle(),
-      undefined,
-      undefined,
       computed(() => ({
         iconTrailing: this.password.icon.value ?? this.props.iconTrailing,
         maxlength: this.props.maxlength ?? this.props.max
-      }))
+      })),
+      undefined,
+      this.value,
+      this.event,
+      this.arrow,
+      undefined,
+      () => this.password.toggle()
     )
     this.mask = new MaskIncludeConstructor(
       this.className,

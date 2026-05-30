@@ -163,6 +163,7 @@ export class FieldMessageInclude<
 
       disabled: props.disabled,
       forceShow: props.forceShowMessage,
+      hasHtmlCode: props.hasHtmlCode,
       helperMessage: props.helperMessage,
       validationMessage: this.validation,
 

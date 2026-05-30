@@ -103,20 +103,22 @@ export class Select extends SelectAbstract {
     )
 
     this.field = new FieldIncludeConstructor(
+      this.className,
       this.props,
-      this.value,
       this.components,
+      computed(() => ({
+        iconTrailing: this.iconTrailing.value,
+        maxlength: this.props.max,
+        cancel: this.props.cancel ?? (this.props.multiple ? 'auto' : 'none')
+      })),
+      undefined,
+      this.value,
       this.event,
       undefined,
       undefined,
       () => this.menu.getElement()?.toggle(),
       () => this.menu.getElement()?.next(),
-      () => this.menu.getElement()?.previous(),
-      computed(() => ({
-        iconTrailing: this.iconTrailing.value,
-        maxlength: this.props.max,
-        cancel: this.props.cancel ?? (this.props.multiple ? 'auto' : 'none')
-      }))
+      () => this.menu.getElement()?.previous()
     )
   }
 

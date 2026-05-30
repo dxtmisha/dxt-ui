@@ -1,45 +1,56 @@
 import { onMounted, onUnmounted, onUpdated, type Ref, watch } from 'vue'
-import { EventItem, isDomRuntime } from '@dxtmisha/functional'
+import { EventItem } from '@dxtmisha/functional'
 
 /**
- * Input field margin control class.
+ * Class for managing dynamic margins and padding of the input field based on accessory elements (prefix, suffix, space).
+ * It calculates values reactively and sets CSS custom variables on the field element.
  *
- * Класс управления отступами для элемента ввода.
+ * Класс управления динамическими отступами для элемента ввода на основе вспомогательных элементов (префикс, суффикс, разделители).
+ * Вычисляет значения реактивно и устанавливает пользовательские переменные CSS на элементе поля.
  */
 export class FieldSize {
+  /** Offset value from the left / Значение смещения слева */
   protected left: number = 0
+
+  /** Offset value from the right / Значение смещения справа */
   protected right: number = 0
+
+  /** Title offset position value / Значение позиции смещения заголовка */
   protected title: number = 0
 
+  /** Window resize listener event / Событие слушателя изменения размеров окна */
   protected event?: EventItem<Window, Event>
 
   /**
-   * Constructor
-   * @param element main element/ главный элемент
-   * @param className class name/ название класса
+   * Constructor for initializing FieldSize.
+   *
+   * Конструктор для инициализации FieldSize.
+   * @param element main HTML element / главный HTML-элемент
+   * @param className base CSS class name / базовое имя CSS-класса
    */
   constructor(
     protected readonly element: Ref<HTMLLabelElement | undefined>,
     protected readonly className: string
   ) {
-    watch(element, () => this.update, { immediate: true })
-
-    if (isDomRuntime()) {
+    onMounted(() => {
       this.event = new EventItem(window, 'resize', () => this.update())
-      onUnmounted(() => this.event?.stop())
-    }
-
-    onMounted(this.update)
-    onUpdated(this.update)
+      watch(element, () => this.update(), { immediate: true })
+    })
+    onUnmounted(() => this.event?.stop())
+    onUpdated(() => this.update())
   }
 
   /**
-   * Update margins.
+   * Updates field margins.
    *
-   * Обновление отступов.
-   * @param limit recursion limit/ лимит рекурсии
+   * Обновление отступов поля.
+   * @param limit recursion limit to prevent infinite loops / лимит рекурсии для предотвращения бесконечных циклов
    */
   readonly update = (limit: number = 128) => {
+    if (limit <= 0) {
+      return
+    }
+
     requestAnimationFrame(() => {
       const elementSpace = this.getElementSpace()
       const elementPrefix = this.getElementPrefix()
@@ -60,27 +71,29 @@ export class FieldSize {
   }
 
   /**
-   * Returns separator elements.
+   * Returns the space separator element.
    *
-   * Возвращает элементы-разделители.
+   * Возвращает элемент-разделитель (пробел).
+   * @returns space DOM element / элемент DOM разделителя
    */
   protected getElementSpace(): HTMLDivElement | undefined {
     return this.element.value?.querySelector(`.${this.className}__body__scoreboard__space`) ?? undefined
   }
 
   /**
-   * Returns element with prefix.
+   * Returns the prefix element.
    *
    * Возвращает элемент с префиксом.
+   * @returns prefix DOM element / элемент DOM префикса
    */
   protected getElementPrefix(): HTMLDivElement | undefined {
     return this.element.value?.querySelector(`.${this.className}__prefix`) ?? undefined
   }
 
   /**
-   * Update input field margins.
+   * Updates CSS custom properties for input field margins and triggers show animation state.
    *
-   * Обновление отступов для поля ввода.
+   * Обновляет пользовательские свойства CSS для отступов поля ввода и запускает анимацию показа.
    */
   protected make() {
     const element = this.element.value

@@ -13,13 +13,18 @@ import type { FieldCounterComponents, FieldCounterEmits, FieldCounterSlots } fro
 import type { FieldCounterProps } from './props'
 
 /**
- * FieldCounter
+ * FieldCounter class for managing character limit counters and screen reader announcements.
+ *
+ * Класс FieldCounter для управления счетчиками лимита символов и объявлениями для скринридеров.
  */
 export class FieldCounter {
+  /** Class for managing text-related properties / Класс для управления свойствами, связанными с текстом */
   readonly text: TextInclude
 
   /**
-   * Constructor
+   * Constructor for FieldCounter class.
+   *
+   * Конструктор для класса FieldCounter.
    * @param props input data/ входные данные
    * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
    * @param element input element/ элемент ввода
@@ -111,8 +116,8 @@ export class FieldCounter {
 
     if (isFilled(this.props.template)) {
       return this.props.template
-        .replace('[c]', counter)
-        .replace('[m]', max)
+        .replace(/\[c\]/g, counter)
+        .replace(/\[m\]/g, max)
     }
 
     if (this.isMax()) {
@@ -146,6 +151,7 @@ export class FieldCounter {
    * Returns the number of characters remaining at which the screen reader starts announcing.
    *
    * Возвращает количество оставшихся символов, при котором скринридер начинает произносить.
+   * @returns threshold character count / пороговое количество символов
    */
   getMaxlengthOnce(): number {
     if (this.props.maxlengthOnce !== undefined) {
@@ -159,6 +165,7 @@ export class FieldCounter {
    * Returns the number of remaining characters.
    *
    * Возвращает количество оставшихся символов.
+   * @returns remaining characters count / количество оставшихся символов
    */
   getRemaining(): number {
     return this.max - this.counter

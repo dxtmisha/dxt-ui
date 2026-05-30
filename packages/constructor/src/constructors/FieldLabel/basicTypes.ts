@@ -29,9 +29,11 @@ export interface FieldLabelSlotsInclude extends LabelAlternativeSlots {
 export type FieldLabelPropsInclude<
   FieldLabel extends FieldLabelPropsBasic = FieldLabelPropsBasic,
   FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic
-> = LabelProps & FieldCounterPropsInclude<FieldCounter> & {
-  /** Whether the field is required/ Является ли поле обязательным */
-  required?: boolean
-  /** Additional attributes for the FieldLabel component/ Дополнительные атрибуты для компонента метки поля */
-  fieldLabelAttrs?: ConstrBind<FieldLabel>
-}
+> = LabelProps
+  & FieldCounterPropsInclude<FieldCounter>
+  & {
+    /** Whether the field is required/ Является ли поле обязательным */
+    required?: boolean
+    /** Additional attributes for the FieldLabel component/ Дополнительные атрибуты для компонента метки поля */
+    fieldLabelAttrs?: ConstrBind<FieldLabel>
+  }

@@ -1,9 +1,8 @@
-import { computed, h, type VNode } from 'vue'
+import { h, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
-  DesignConstructorAbstract,
-  isString
+  DesignConstructorAbstract
 } from '@dxtmisha/functional'
 
 import { Field } from './Field'
@@ -20,7 +19,11 @@ import {
 } from './types'
 
 /**
- * FieldDesign
+ * FieldDesign class handles the rendering and style structure of the Field component.
+ * It ties together structural layout, design tokens, sub-components, and active state styles.
+ *
+ * Класс FieldDesign управляет рендерингом и структурой стилей компонента Field.
+ * Объединяет структурную разметку, токены дизайна, субкомпоненты и стили активного состояния.
  */
 export class FieldDesign<
   COMP extends FieldComponents,
@@ -36,14 +39,17 @@ export class FieldDesign<
     CLASSES,
     P
   > {
+  /** Instance of the Field logic controller / Экземпляр контроллера логики поля */
   protected readonly item: Field
 
   /**
-   * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor class for working with the item/ класс для работы с элементом
+   * Constructor for creating the Field design renderer.
+   *
+   * Конструктор для создания рендерера дизайна Field.
+   * @param name class name / название класса
+   * @param props properties / свойства
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor class for working with the item / класс для работы с элементом
    */
   constructor(
     name: string,
@@ -72,9 +78,10 @@ export class FieldDesign<
   }
 
   /**
-   * Initialization of all the necessary properties for work
+   * Initialization of all the necessary properties for work.
    *
    * Инициализация всех необходимых свойств для работы.
+   * @returns exposed properties object / объект экспонируемых свойств
    */
   protected initExpose(): EXPOSE {
     return {} as EXPOSE
@@ -84,10 +91,11 @@ export class FieldDesign<
    * Improvement of the obtained list of classes.
    *
    * Доработка полученного списка классов.
+   * @returns partial classes map / частичная карта классов
    */
   protected initClasses(): Partial<CLASSES> {
     return {
-      main: this.item.classes.value,
+      main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
         body: this.getSubClass('body'),
@@ -111,21 +119,23 @@ export class FieldDesign<
    * Refinement of the received list of styles.
    *
    * Доработка полученного списка стилей.
+   * @returns styles map / карта стилей
    */
   protected initStyles(): ConstrStyles {
     return {}
   }
 
   /**
-   * A method for rendering.
+   * A method for rendering the core Field element.
    *
-   * Метод для рендеринга.
+   * Метод для рендеринга основного элемента Field.
+   * @returns virtual node for rendering / виртуальный узел для рендеринга
    */
   protected initRender(): VNode {
     const children: any[] = []
 
-    if (this.item.isClassic.value) {
-      children.push(...this.item.fieldLabel.render())
+    if (this.item.fieldElement.isClassic()) {
+      children.push(...this.item.fieldLabel.render(this.slots))
     }
 
     children.push(
@@ -134,26 +144,27 @@ export class FieldDesign<
     )
 
     return h(
-      this.item.isClassic.value ? 'div' : 'label',
+      this.item.fieldElement.tag,
       {
         ...this.getAttrs(),
         ref: this.element,
         class: this.classes?.value.main,
         style: this.styles?.value,
-        for: this.item.isClassic.value ? undefined : this.item.id.value
+        for: this.item.fieldElement.forId
       },
       children
     )
   }
 
   /**
-   * Generates body.
+   * Generates body element as VNode array.
    *
-   * Генерирует тело.
+   * Генерирует тело элемента в виде массива VNode.
+   * @returns body virtual nodes / виртуальные узлы тела
    */
   readonly renderBody = (): VNode[] => {
     const children: any[] = [
-      this.initSlot('default', undefined, this.item.control.value),
+      this.initSlot('default', undefined, this.item.control),
       this.renderBodyLabel(),
       this.renderBodyScoreboard(),
       this.renderBodyBorder()
@@ -165,7 +176,7 @@ export class FieldDesign<
         {
           class: [
             this.classes?.value.body,
-            this.item.skeleton.classes.value
+            this.item.skeleton.classes
           ],
           ...this.item.event.binds
         },
@@ -175,9 +186,10 @@ export class FieldDesign<
   }
 
   /**
-   * Generates data for the title.
+   * Generates data and virtual node for the title label.
    *
-   * Генерирует данные для заголовка.
+   * Генерирует данные и виртуальный узел для метки заголовка.
+   * @returns title label virtual node / виртуальный узел метки заголовка
    */
   readonly renderBodyLabel = (): VNode => {
     const children: any[] = [
@@ -207,9 +219,10 @@ export class FieldDesign<
   }
 
   /**
-   * Generates data for additional controls.
+   * Generates data and virtual node for additional controls (scoreboard).
    *
-   * Генерирует данные для дополнительных управлений.
+   * Генерирует данные и виртуальный узел для дополнительных элементов управления (scoreboard).
+   * @returns scoreboard virtual node / виртуальный узел scoreboard
    */
   readonly renderBodyScoreboard = (): VNode => {
     const children: any[] = [
@@ -228,9 +241,10 @@ export class FieldDesign<
   }
 
   /**
-   * Generates data for the slot.
+   * Generates data for leading and trailing scoreboard slots.
    *
-   * Генерирует данные для слота.
+   * Генерирует данные для ведущего и ведомого слотов scoreboard.
+   * @returns slots virtual nodes / виртуальные узлы слотов
    */
   readonly renderBodyScoreboardSlot = (): VNode[] => {
     const slots: any[] = []
@@ -257,28 +271,29 @@ export class FieldDesign<
   }
 
   /**
-   * Generates all available icons.
+   * Generates all available icons (cancel, arrow actions) inside scoreboard.
    *
-   * Генерирует все доступные иконки.
+   * Генерирует все доступные иконки (отмена, действия стрелок) внутри scoreboard.
+   * @returns icons virtual nodes / виртуальные узлы иконок
    */
   readonly renderBodyScoreboardIcon = (): VNode[] => {
     const icons: any[] = [...this.item.icon.render()]
 
-    if (this.item.icons.isCancel.value) {
+    if (this.item.icons.isCancel()) {
       this.components.renderAdd(
         icons,
         'icon',
-        this.item.icons.cancelBind.value,
+        this.item.icons.cancelBind,
         undefined,
         'cancel'
       )
     }
 
-    if (this.item.icons.isArrow.value) {
+    if (this.item.icons.isArrow()) {
       this.components.renderAdd(
         icons,
         'icon',
-        this.item.icons.previousBind.value,
+        this.item.icons.previousBind,
         undefined,
         'previous'
       )
@@ -286,7 +301,7 @@ export class FieldDesign<
       this.components.renderAdd(
         icons,
         'icon',
-        this.item.icons.nextBind.value,
+        this.item.icons.nextBind,
         undefined,
         'next'
       )
@@ -296,9 +311,10 @@ export class FieldDesign<
   }
 
   /**
-   * Generates separators and additional descriptions.
+   * Generates separators, spacing, and additional captions inside scoreboard.
    *
-   * Генерирует разделители и дополнительные описания.
+   * Генерирует разделители, отступы и дополнительные подписи внутри scoreboard.
+   * @returns spacing virtual nodes / виртуальные узлы отступов
    */
   readonly renderBodyScoreboardSpace = (): VNode[] => {
     const children: any[] = []
@@ -309,9 +325,9 @@ export class FieldDesign<
           'span',
           {
             class: this.classes?.value.bodyScoreboardInput,
-            style: `min-width: ${this.lengthValue()};`
+            style: `min-width: ${this.item.space.minWidth};`
           },
-          this.focusValue()
+          this.item.space.value
         ),
         ...this.item.caption.render()
       )
@@ -327,60 +343,12 @@ export class FieldDesign<
   }
 
   /**
-   * Generates border.
+   * Generates the field border element.
    *
-   * Генерирует border.
+   * Генерирует элемент границы поля.
+   * @returns border virtual node / виртуальный узел границы
    */
   readonly renderBodyBorder = (): VNode => {
     return h('span', { class: this.classes?.value.bodyBorder })
   }
-
-  /**
-   * Value for focus.
-   *
-   * Значение для фокуса.
-   */
-  protected readonly focusValue = (): string => {
-    if (
-      !this.lengthElement.value
-      && isString(this.props.value)
-    ) {
-      return this.props.value
-    }
-
-    return ''
-  }
-
-  /**
-   * Length value.
-   *
-   * Значение длины.
-   */
-  protected readonly lengthValue = (): string | undefined => {
-    if (this.lengthElement.value) {
-      return `${this.lengthElement.value.offsetWidth}px`
-    }
-
-    return undefined
-  }
-
-  /**
-   * Element for counting characters.
-   *
-   * Элемент для подсчёта символов.
-   */
-  protected readonly lengthElement = computed<HTMLInputElement | undefined>(() => {
-    return this.element.value
-      ?.querySelector<HTMLInputElement>(`*[data-length]`) ?? undefined
-  })
-
-  /**
-   * Input element.
-   *
-   * Элемент ввода.
-   */
-  protected readonly inputElement = computed<HTMLInputElement | undefined>(() => {
-    return this.element.value
-      ?.querySelector<HTMLInputElement>(`input.${this.classes?.value.bodyInput}, .${this.classes?.value.bodyInput} input`) ?? undefined
-  })
 }

@@ -204,6 +204,26 @@ export const wikiInformation: StorybookArgsToList = {
       value: 'Value'
     }
   },
+  tooltipDescription: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.information,
+      description: {
+        en: 'Tooltip description text',
+        ru: 'Текст описания подсказки'
+      }
+    }
+  },
+  tooltipLabel: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.information,
+      description: {
+        en: 'Tooltip label text',
+        ru: 'Текст ярлыка подсказки'
+      }
+    }
+  },
   validationMessage: {
     type: StorybookControl.string,
     options: {

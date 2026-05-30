@@ -153,6 +153,16 @@ export const wikiOption: StorybookArgsToList = {
       label: 1234567
     }
   },
+  hasHtmlCode: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.option,
+      description: {
+        en: 'Whether the message can contain HTML code',
+        ru: 'Может ли сообщение содержать HTML‑код'
+      }
+    }
+  },
   grid: {
     type: StorybookControl.boolean,
     options: {

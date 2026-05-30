@@ -1,12 +1,8 @@
-import { type VNode } from 'vue'
 import {
-  type ConstrBind,
   type DesignComponents,
   executeFunctionRef,
   getElementId,
-  getRef,
   isFilled,
-  type RefOrNormal,
   type RefOrNormalOrFunction
 } from '@dxtmisha/functional'
 
@@ -17,7 +13,11 @@ import type {
   ComponentIncludeExtra,
   ComponentIncludeProps
 } from '../../types/componentInclude'
-import type { FieldLabelComponentInclude, FieldLabelPropsInclude, FieldLabelSlotsInclude } from './basicTypes'
+import type {
+  FieldLabelComponentInclude,
+  FieldLabelPropsInclude,
+  FieldLabelSlotsInclude
+} from './basicTypes'
 import type { FieldLabelPropsBasic } from './props'
 
 /**
@@ -56,7 +56,6 @@ export class FieldLabelInclude<
    * @param components object for working with components / объект для работы с компонентами
    * @param extra additional parameter or property name / дополнительный параметр или имя свойства
    * @param index index identifier / идентификатор индекса
-   * @param slots object for working with slots / объект для работы со слотами
    * @param forId element ID / идентификатор элемента
    * @param isCounter whether to display the counter / отображать ли счетчик
    */
@@ -66,13 +65,12 @@ export class FieldLabelInclude<
     components?: DesignComponents<FieldLabelComponentInclude, Props>,
     extra?: ComponentIncludeExtra<PropsExtra>,
     index?: string,
-    protected readonly slots?: FieldLabelSlotsInclude,
-    protected readonly forId?: RefOrNormal<string>,
+    protected readonly forId?: RefOrNormalOrFunction<string>,
     protected readonly isCounter?: RefOrNormalOrFunction<boolean | undefined>
   ) {
     super(className, props, components, extra, index)
 
-    this.fieldCounter = new FieldCounterInclude(this.className, this.props)
+    this.fieldCounter = new FieldCounterInclude(className, props)
   }
 
   /**
@@ -113,19 +111,6 @@ export class FieldLabelInclude<
   }
 
   /**
-   * Initializes and renders the included component.
-   *
-   * Инициализирует и рендерит включенный компонент.
-   */
-  protected override initRender(
-    slotsChildren?: FieldLabelSlotsInclude,
-    attrs?: ConstrBind<PropsExtra>,
-    isShow: () => boolean = () => this.is
-  ): VNode[] {
-    return super.initRender(slotsChildren ?? this.slots, attrs, isShow)
-  }
-
-  /**
    * Combines input attributes with internal component bindings.
    *
    * Объединяет входные атрибуты со внутренними привязками компонента.
@@ -135,7 +120,7 @@ export class FieldLabelInclude<
     const binds = {
       ...super.toBinds(),
 
-      for: getRef(this.forId),
+      for: executeFunctionRef(this.forId),
       label: props.label,
       required: props.required,
 

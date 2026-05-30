@@ -56,6 +56,7 @@ export class FieldCounterInclude extends ComponentIncludeAbstract<
       counter: props.counter,
       counterShow: props.counterShow,
       counterTemplate: props.counterTemplate,
+      counterId: props.counterId,
       maxlength: props.maxlength,
       fieldCounterAttrs: props.fieldCounterAttrs
     }

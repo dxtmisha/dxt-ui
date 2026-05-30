@@ -11,19 +11,18 @@ export type FieldMessagePropsBasic<
 > = FieldCounterPropsInclude<FieldCounter>
   & SkeletonPropsInclude
   & {
-    /** Status/ Статус */
     /** Whether to force show the message/ Принудительно ли показывать сообщение */
     forceShow?: boolean
+    /** Whether the message can contain HTML code/ Может ли сообщение содержать HTML-код */
+    hasHtmlCode?: boolean
     /** Whether the field is disabled/ Отключено ли поле */
     disabled?: boolean
 
-    /** Value/ Значения */
     /** Helper message text/ Текст вспомогательного сообщения */
     helperMessage?: string
     /** Validation message text/ Текст сообщения валидации */
     validationMessage?: string
 
-    /** Technical/ Технические свойства */
     /** Unique ID for the helper message/ Уникальный идентификатор вспомогательного сообщения */
     helperId?: string
     /** Unique ID for the validation message/ Уникальный идентификатор сообщения валидации */

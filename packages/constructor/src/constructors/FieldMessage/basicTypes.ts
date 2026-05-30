@@ -37,6 +37,8 @@ export interface FieldMessagePropsInclude<
 > extends FieldCounterPropsInclude<FieldCounter> {
   /** Whether to force show the message/ Принудительно ли показывать сообщение */
   forceShowMessage?: boolean
+  /** Whether the message can contain HTML code/ Может ли сообщение содержать HTML-код */
+  hasHtmlCode?: boolean
   /** Whether the field is disabled/ Отключено ли поле */
   disabled?: boolean
   /** Helper message text/ Текст вспомогательного сообщения */

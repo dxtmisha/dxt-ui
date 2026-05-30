@@ -1,170 +1,175 @@
-import { computed, type VNode } from 'vue'
 import {
-  type ConstrBind,
   type DesignComponents,
   eventStopPropagation,
-  type RefOrNormal,
-  toBind,
-  toBinds,
-  getRef,
   isEnter
 } from '@dxtmisha/functional'
 
-import type { EventClickValue } from '../../types/eventClickTypes'
+import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
 import type { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
 import type { FieldEventInclude } from '../../classes/Field/FieldEventInclude'
 import type { FieldArrowInclude } from '../../classes/Field/FieldArrowInclude'
 
-import type { FieldComponentInclude, FieldPropsInclude } from './basicTypes'
+import type { ComponentIncludeExtra, ComponentIncludeProps } from '../../types/componentInclude'
+import type { EventClickValue } from '../../types/eventClickTypes'
 import type { FieldArrowProps } from '../../types/fieldTypes'
-import type { FieldPropsBasic } from './props'
+import type { FieldComponentInclude, FieldPropsInclude } from './basicTypes'
 import type { FieldSlots } from './types'
+import type { FieldPropsBasic } from './props'
 
 /**
  * The class returns data for working with the Field framework.
+ * It maps properties, bindings, and click/keyboard event listeners to the component attributes.
  *
  * Класс возвращает данные для работы с каркасом поля.
+ * Связывает свойства, привязки и слушатели кликов/клавиатурных событий с атрибутами компонента.
  */
 export class FieldInclude<
   Props extends FieldPropsInclude & FieldArrowProps = FieldPropsInclude,
-  PropsExtra extends ConstrBind<FieldPropsBasic> = ConstrBind<FieldPropsBasic>
-> {
+  PropsExtra extends FieldPropsBasic = FieldPropsBasic
+> extends ComponentIncludeAbstract<
+    Props,
+    PropsExtra,
+    Record<string, any>,
+    FieldSlots
+  > {
+  /** Component name / Название компонента */
+  protected readonly name = 'field'
+
+  /** Property name containing raw attributes to pass / Имя свойства, содержащего сырые атрибуты для передачи */
+  protected readonly propsAttrsName = 'fieldAttrs'
+
   /**
-   * Constructor
-   * @param props input data/ входные данные
-   * @param value object for working with values/ объект для работы со значениями
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param event object for working with events/ объект для работы с событиями
-   * @param arrow object for working with arrows/ объект для работы со стрелками
-   * @param onIcon Collection icon click handler/ Обработчик клика по иконке коллекции
-   * @param onTrailing Trailing icon click handler/ Обработчик клика по иконке трейлинга
-   * @param onNext Next arrow click handler/ Обработчик клика по следующей стрелке
-   * @param onPrevious Previous arrow click handler/ Обработчик клика по предыдущей стрелке
-   * @param extra additional parameter or property name/ дополнительный параметр или имя свойства
-   * @param index index identifier/ идентификатор индекса
+   * Constructor for FieldInclude helper class.
+   *
+   * Конструктор для вспомогательного класса FieldInclude.
+   * @param className base class name / имя базового класса
+   * @param props input data / входные данные
+   * @param components object for working with components / объект для работы с компонентами
+   * @param extra additional parameter or property name / дополнительный параметр или имя свойства
+   * @param index index identifier / идентификатор индекса
+   * @param value object for working with values / объект для работы со значениями
+   * @param event object for working with events / объект для работы с событиями
+   * @param arrow object for working with arrows / объект для работы со стрелками
+   * @param onIcon Collection icon click handler / Обработчик клика по иконке коллекции
+   * @param onTrailing Trailing icon click handler / Обработчик клика по иконке трейлинга
+   * @param onNext Next arrow click handler / Обработчик клика по следующей стрелке
+   * @param onPrevious Previous arrow click handler / Обработчик клика по предыдущей стрелке
    */
   constructor(
-    protected readonly props: Readonly<Props>,
-    protected readonly value: FieldValueInclude,
-    protected readonly components?: DesignComponents<FieldComponentInclude, Props>,
+    className: string,
+    props: ComponentIncludeProps<Props>,
+    components?: DesignComponents<FieldComponentInclude, Props>,
+    extra?: ComponentIncludeExtra<PropsExtra>,
+    index?: string,
+    protected readonly value?: FieldValueInclude,
     protected readonly event?: FieldEventInclude,
     protected readonly arrow?: FieldArrowInclude,
     protected readonly onIcon?: () => void,
     protected readonly onTrailing?: () => void,
     protected readonly onNext?: () => void,
-    protected readonly onPrevious?: () => void,
-    protected readonly extra?: RefOrNormal<PropsExtra>,
-    protected readonly index?: string
+    protected readonly onPrevious?: () => void
   ) {
-  }
-
-  /** Returns properties for the field framework/ Возвращает свойства для каркаса поля */
-  readonly binds = computed<PropsExtra>(() => {
-    return toBinds<PropsExtra>(
-      {
-        // Status
-        focus: this.props.focus,
-        selected: this.props.selected,
-        readonly: this.props.readonly,
-        disabled: this.props.disabled,
-
-        loading: this.props.loading,
-        forceShowMessage: this.props.forceShowMessage,
-
-        // Value
-        label: this.props.label,
-        prefix: this.props.prefix,
-        suffix: this.props.suffix,
-        caption: this.props.caption,
-        helperMessage: this.props.helperMessage,
-
-        required: this.props.required,
-
-        detail: this.props.detail,
-
-        // Style
-        cancel: this.props.cancel,
-        counterShow: this.props.counterShow,
-
-        icon: this.props.icon,
-        iconTurn: this.props.iconTurn,
-        iconHide: this.props.iconHide,
-        iconDir: this.props.iconDir,
-        iconPalette: this.props.iconPalette,
-        iconTrailing: this.props.iconTrailing,
-        iconTrailingTurnOnly: this.props.iconTrailingTurnOnly,
-        iconTrailingDirOnly: this.props.iconTrailingDirOnly,
-        iconTrailingPalette: this.props.iconTrailingPalette,
-        iconAttrs: this.props.iconAttrs,
-
-        align: this.props.align,
-
-        arrowCarousel: this.arrow?.isCarousel() ?? this.props.arrow === 'carousel',
-        arrowStepper: this.arrow?.isStepper() ?? this.props.arrow === 'stepper',
-        arrowAlign: this.arrow?.align() ?? this.props.arrowAlign,
-
-        isSkeleton: this.props.isSkeleton,
-
-        fieldLabelAttrs: this.props.fieldLabelAttrs,
-        fieldMessageAttrs: this.props.fieldMessageAttrs,
-        fieldCounterAttrs: this.props.fieldCounterAttrs,
-
-        onClick: this.on,
-        onKeydown: this.onKeydown
-      },
-      getRef(this.extra),
-      this.props.fieldAttrs
+    super(
+      className,
+      props,
+      components,
+      extra,
+      index
     )
-  })
-
-  /**
-   * Returns properties for working with the value of the Field framework/
-   * Возвращает свойства для работы со значением каркаса поля
-   */
-  readonly valueBinds = computed<ConstrBind<PropsExtra>>(() => ({
-    ...this.binds.value,
-    isValue: this.value.is(),
-    value: this.value.item.value,
-    cancelShow: this.value.boolean,
-
-    counter: this.value.length,
-
-    disabledPrevious: this.arrow?.disabledPrevious,
-    disabledNext: this.arrow?.disabledNext
-  }))
-
-  /**
-   * Renders the Field framework.
-   *
-   * Отрисовывает каркас поля.
-   * @param slotsChildren
-   * @param attrs
-   */
-  readonly render = (
-    slotsChildren?: FieldSlots,
-    attrs?: Record<string, any>
-  ): VNode[] => {
-    if (this.components) {
-      return this.components.render(
-        'field',
-        toBind(
-          this.valueBinds.value,
-          attrs ?? {}
-        ),
-        slotsChildren as any as Record<string, any>,
-        this.index
-      )
-    }
-
-    return []
   }
 
   /**
-   * Method for listening to events.
+   * Combines input attributes with internal component bindings.
    *
-   * Метод для прослушивания событий.
-   * @param event event object/ объект события
-   * @param type type of the object that was clicked/ тип объекта, который был нажат
+   * Объединяет входные атрибуты со внутренними привязками компонента.
+   * @param attrs attributes to merge / атрибуты для объединения
+   * @returns merged binding attributes / объединенные атрибуты привязки
+   */
+  protected override getAttrs(attrs?: PropsExtra) {
+    return {
+      ...super.getAttrs(attrs),
+
+      isValue: this.value?.is(),
+      value: this.value?.item.value,
+      cancelShow: this.value?.boolean,
+
+      counter: this.value?.length,
+
+      disabledPrevious: this.arrow?.disabledPrevious,
+      disabledNext: this.arrow?.disabledNext
+    }
+  }
+
+  /**
+   * Translates internal component states into direct HTML/VNode bindings.
+   *
+   * Преобразует внутренние состояния компонента в прямые привязки HTML/VNode.
+   * @returns merged binding attributes / объединенные атрибуты привязки
+   */
+  protected override toBinds() {
+    const props = this.getProps()
+
+    return {
+      ...super.toBinds(),
+
+      // Status
+      focus: props.focus,
+      selected: props.selected,
+      readonly: props.readonly,
+      disabled: props.disabled,
+
+      loading: props.loading,
+      forceShowMessage: props.forceShowMessage,
+
+      // Value
+      label: props.label,
+      prefix: props.prefix,
+      suffix: props.suffix,
+      caption: props.caption,
+      helperMessage: props.helperMessage,
+
+      required: props.required,
+
+      detail: props.detail,
+
+      // Style
+      cancel: props.cancel,
+      counterShow: props.counterShow,
+
+      icon: props.icon,
+      iconTurn: props.iconTurn,
+      iconHide: props.iconHide,
+      iconDir: props.iconDir,
+      iconPalette: props.iconPalette,
+      iconTrailing: props.iconTrailing,
+      iconTrailingTurnOnly: props.iconTrailingTurnOnly,
+      iconTrailingDirOnly: props.iconTrailingDirOnly,
+      iconTrailingPalette: props.iconTrailingPalette,
+      iconAttrs: props.iconAttrs,
+
+      align: props.align,
+
+      arrowCarousel: this.arrow?.isCarousel() ?? props.arrow === 'carousel',
+      arrowStepper: this.arrow?.isStepper() ?? props.arrow === 'stepper',
+      arrowAlign: this.arrow?.align() ?? props.arrowAlign,
+
+      isSkeleton: props.isSkeleton,
+
+      fieldLabelAttrs: props.fieldLabelAttrs,
+      fieldMessageAttrs: props.fieldMessageAttrs,
+      fieldCounterAttrs: props.fieldCounterAttrs,
+
+      onClick: this.on,
+      onKeydown: this.onKeydown
+    }
+  }
+
+  /**
+   * Event listener handler for field-related user clicks and actions.
+   *
+   * Обработчик событий для кликов пользователей и действий с полем.
+   * @param event event object / объект события
+   * @param options clicked element configuration / конфигурация кликнутого элемента
    */
   protected readonly on = (
     event: MouseEvent,
@@ -204,11 +209,11 @@ export class FieldInclude<
   }
 
   /**
-   * Event trigger function when pressing the space bar or enter key.
+   * Keydown event trigger function when pressing the space bar or enter key.
    *
-   * Функция вызова события при нажатии на пробел или клавишу Enter.
-   * @param event event object/ объект события
-   * @param options data object/ объект с данными
+   * Функция вызова события клавиш при нажатии на пробел или клавишу Enter.
+   * @param event event object / объект события
+   * @param options clicked element configuration / конфигурация кликнутого элемента
    */
   protected readonly onKeydown = (
     event: KeyboardEvent,

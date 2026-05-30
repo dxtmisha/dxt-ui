@@ -1,5 +1,5 @@
-import { computed, type Ref, type ToRefs } from 'vue'
-import { type ConstrEmit, type DesignComp, getElementId } from '@dxtmisha/functional'
+import { type Ref, type ToRefs } from 'vue'
+import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { CaptionInclude } from '../../classes/CaptionInclude'
@@ -15,76 +15,94 @@ import { FieldMessageInclude } from '../FieldMessage'
 import { ProgressInclude } from '../Progress'
 import { SkeletonInclude } from '../Skeleton'
 
+import { FieldElement } from './FieldElement'
 import { FieldIcons } from './FieldIcons'
 import { FieldSize } from './FieldSize'
+import { FieldSpace } from './FieldSpace'
 
 import type { FieldComponents, FieldEmits, FieldSlots } from './types'
 import type { FieldProps } from './props'
 import type { FieldControl } from './basicTypes'
 
 /**
- * Field
+ * Class representing the core logic and dependencies of a Form Field.
+ * It manages layout states, labels, validation messages, and accessory elements.
+ *
+ * Класс, представляющий основную логику и зависимости поля формы.
+ * Управляет состояниями разметки, метками, валидационными сообщениями и вспомогательными элементами.
  */
 export class Field {
-  /** Text include/ Подключение текста */
+  /** Text include / Подключение текста */
   readonly text: TextInclude
 
-  /** Icon trailing include/ Подключение иконки в конце */
-  readonly icon: IconTrailingInclude
-
-  /** Caption include/ Подключение подписи */
-  readonly caption: CaptionInclude
-  /** Prefix include/ Подключение префикса */
-  readonly prefix: PrefixInclude
-  /** Suffix include/ Подключение суффикса */
-  readonly suffix: SuffixInclude
-
-  /** Field label include/ Подключение метки поля */
-  readonly fieldLabel: FieldLabelInclude
-  /** Field message include/ Подключение сообщения поля */
-  readonly fieldMessage: FieldMessageInclude
-
-  /** Progress include/ Подключение прогресса */
-  readonly progress: ProgressInclude
-  /** Enabled include/ Подключение активности */
-  readonly enabled: EnabledInclude
-  /** Event click include/ Подключение события клика */
-  readonly event: EventClickInclude
-  /** Skeleton include/ Подключение скелетона */
+  /** Skeleton include / Подключение скелетона */
   readonly skeleton: SkeletonInclude
 
-  /** Field icons/ Иконки поля */
+  /** Icon trailing include / Подключение иконки в конце */
+  readonly icon: IconTrailingInclude
+
+  /** Caption include / Подключение подписи */
+  readonly caption: CaptionInclude
+
+  /** Prefix include / Подключение префикса */
+  readonly prefix: PrefixInclude
+
+  /** Suffix include / Подключение суффикса */
+  readonly suffix: SuffixInclude
+
+  /** Progress include / Подключение прогресса */
+  readonly progress: ProgressInclude
+
+  /** Enabled include / Подключение активности */
+  readonly enabled: EnabledInclude
+
+  /** Event click include / Подключение события клика */
+  readonly event: EventClickInclude
+
+  /** Field icons / Иконки поля */
   readonly icons: FieldIcons
-  /** Field size/ Размер поля */
+
+  /** Field size / Размер поля */
   readonly size: FieldSize
 
-  /** Default element id/ Идентификатор элемента по умолчанию */
-  protected readonly elementIdDefault = getElementId()
+  /** Field element / Элемент поля */
+  readonly fieldElement: FieldElement
+
+  /** Field label include / Подключение метки поля */
+  readonly fieldLabel: FieldLabelInclude
+
+  /** Field message include / Подключение сообщения поля */
+  readonly fieldMessage: FieldMessageInclude
+
+  /** Field space / Пространство поля */
+  readonly space: FieldSpace
 
   /**
-   * Constructor
-   * @param props input data/ входные данные
-   * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
-   * @param element input element/ элемент ввода
-   * @param classDesign design name/ название дизайна
-   * @param className class name/ название класса
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param slots object for working with slots/ объект для работы со слотами
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param constructors object with classes/ объект с классами
-   * @param constructors.CaptionIncludeConstructor class for working with caption/ класс для работы с подписью
-   * @param constructors.EnabledIncludeConstructor class for working with enabled/ класс для работы с активностью
-   * @param constructors.EventClickIncludeConstructor class for working with event click/ класс для работы с событием клика
-   * @param constructors.FieldIconsConstructor class for working with field icons/ класс для работы с иконками поля
-   * @param constructors.FieldLabelIncludeConstructor class for working with field label/ класс для работы с меткой поля
-   * @param constructors.FieldMessageIncludeConstructor class for working with field message/ класс для работы с сообщением поля
-   * @param constructors.FieldSizeConstructor class for working with field size/ класс для работы с размером поля
-   * @param constructors.IconTrailingIncludeConstructor class for working with icon/ класс для работы с иконкой
-   * @param constructors.PrefixIncludeConstructor class for working with prefix/ класс для работы с префиксом
-   * @param constructors.ProgressIncludeConstructor class for working with progress/ класс для работы с прогрессом
-   * @param constructors.SkeletonIncludeConstructor class for working with skeleton/ класс для работы со скелетоном
-   * @param constructors.SuffixIncludeConstructor class for working with suffix/ класс для работы с суффиксом
-   * @param constructors.TextIncludeConstructor class for working with text/ класс для работы с текстом
+   * Constructor for initializing all field sub-modules and state management utilities.
+   *
+   * Конструктор для инициализации всех подмодулей поля и утилит управления состоянием.
+   * @param props input data / входные данные
+   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
+   * @param element input element / элемент ввода
+   * @param classDesign design name / название дизайна
+   * @param className class name / название класса
+   * @param components object for working with components / объект для работы с компонентами
+   * @param slots object for working with slots / объект для работы со слотами
+   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
+   * @param constructors object with classes / объект с классами
+   * @param constructors.CaptionIncludeConstructor class for working with caption / класс для работы с подписью
+   * @param constructors.EnabledIncludeConstructor class for working with enabled / класс для работы с активностью
+   * @param constructors.EventClickIncludeConstructor class for working with event click / класс для работы с событием клика
+   * @param constructors.FieldIconsConstructor class for working with field icons / класс для работы с иконками поля
+   * @param constructors.FieldLabelIncludeConstructor class for working with field label / класс для работы с меткой поля
+   * @param constructors.FieldMessageIncludeConstructor class for working with field message / класс для работы с сообщением поля
+   * @param constructors.FieldSizeConstructor class for working with field size / класс для работы с размером поля
+   * @param constructors.IconTrailingIncludeConstructor class for working with icon / класс для работы с иконкой
+   * @param constructors.PrefixIncludeConstructor class for working with prefix / класс для работы с префиксом
+   * @param constructors.ProgressIncludeConstructor class for working with progress / класс для работы с прогрессом
+   * @param constructors.SkeletonIncludeConstructor class for working with skeleton / класс для работы со скелетоном
+   * @param constructors.SuffixIncludeConstructor class for working with suffix / класс для работы с суффиксом
+   * @param constructors.TextIncludeConstructor class for working with text / класс для работы с текстом
    */
   constructor(
     protected readonly props: FieldProps,
@@ -127,43 +145,22 @@ export class Field {
       TextIncludeConstructor = TextInclude
     } = constructors
 
+    this.text = new TextIncludeConstructor(props)
     this.skeleton = new SkeletonIncludeConstructor(
-      this.props,
+      props,
       this.classDesign,
       ['classBackground']
     )
-    this.icon = new IconTrailingIncludeConstructor(this.props, this.className, this.components)
 
-    this.text = new TextIncludeConstructor(this.props)
-
-    this.caption = new CaptionIncludeConstructor(this.props, this.className, this.slots)
-    this.prefix = new PrefixIncludeConstructor(this.props, this.className, this.slots)
-    this.suffix = new SuffixIncludeConstructor(this.props, this.className, this.slots)
-
-    this.fieldLabel = new FieldLabelIncludeConstructor(
-      this.className,
-      this.props,
-      this.components,
-      this.skeleton.binds,
-      undefined,
-      this.slots,
-      this.id,
-      this.refs.counterTop
-    )
-    this.fieldMessage = new FieldMessageIncludeConstructor(
-      this.className,
-      this.props,
-      this.components,
-      this.skeleton.binds,
-      undefined,
-      undefined,
-      () => !this.props.counterTop
-    )
+    this.icon = new IconTrailingIncludeConstructor(props, className, components)
+    this.caption = new CaptionIncludeConstructor(props, className, slots)
+    this.prefix = new PrefixIncludeConstructor(props, className, slots)
+    this.suffix = new SuffixIncludeConstructor(props, className, slots)
 
     this.progress = new ProgressIncludeConstructor(
-      this.className,
-      this.props,
-      this.components,
+      className,
+      props,
+      components,
       {
         circular: true,
         position: 'static',
@@ -171,73 +168,41 @@ export class Field {
       }
     )
 
-    this.enabled = new EnabledIncludeConstructor(this.props, this.progress)
-    this.event = new EventClickIncludeConstructor(this.props, this.enabled, this.emits)
+    this.enabled = new EnabledIncludeConstructor(props, this.progress)
+    this.event = new EventClickIncludeConstructor(props, this.enabled, emits)
 
-    this.icons = new FieldIconsConstructor(this.props, this.className, this.text)
-    this.size = new FieldSizeConstructor(this.element, this.className)
-  }
+    this.icons = new FieldIconsConstructor(props, className, this.text)
+    this.size = new FieldSizeConstructor(element, className)
 
-  /** Checks if the field is classic/ Проверяет, является ли поле классическим */
-  readonly isClassic = computed<boolean>(
-    () => Boolean(
-      (this.props as any).classic
-      && !(this.props as any).basic
-      && !(this.props as any).boxed
-      && !(this.props as any).filled
-      && !(this.props as any).outlined
-      && !(this.props as any).tonal
-    )
-  )
-
-  /** Checks if an error needs to be displayed/ Проверяет, надо ли выводить ошибку */
-  readonly isValidation = computed<boolean>(() => Boolean(
-    this.props.validationMessage
-    && (
-      this.props.forceShowMessage
-      || (
-        !this.props.readonly
-        && !this.props.disabled
-      )
-    )
-  ))
-
-  /** Field identifier/ Идентификатор поля */
-  readonly id = computed<string>(() => String(this.props.id || this.elementIdDefault))
-
-  /** Values for the class/ Значения для класса */
-  readonly classes = computed(() => ({
-    [`${this.className}--cancel`]: this.icons.isCancel.value,
-    [`${this.className}--suffix`]: this.props.suffix,
-    [`${this.className}--validation`]: this.isValidation.value
-  }))
-
-  /**
-   * Returns data for the slot/ Возвращает данные для слота
-   */
-  readonly control = computed<FieldControl>(() => {
-    const className = `${this.className}__body__input ${this.skeleton.classesSkeleton.classText}`
-
-    return {
-      id: this.id.value,
+    this.fieldElement = new FieldElement(props, element)
+    this.fieldLabel = new FieldLabelIncludeConstructor(
       className,
-      classHidden: `${this.className}__body__hidden`,
-      classForFocus: `${this.className}__body__focus`,
-      binds: {
-        id: this.id.value,
-        class: className,
-        ...AriaStaticInclude.invalid(this.isValidation.value),
-        ...AriaStaticInclude.describedby(this.getDescribedby())
-      }
-    }
-  })
+      props,
+      components,
+      () => this.skeleton.binds,
+      undefined,
+      () => this.fieldElement.id,
+      () => props.counterTop
+    )
+    this.fieldMessage = new FieldMessageIncludeConstructor(
+      className,
+      props,
+      components,
+      () => this.skeleton.binds,
+      undefined,
+      undefined,
+      () => !props.counterTop
+    )
+    this.space = new FieldSpace(props, this.fieldElement)
+  }
 
   /**
    * Get ARIA describedby attribute.
    *
    * Получить атрибут ARIA describedby.
+   * @returns describedby string / строка describedby
    */
-  protected getDescribedby(): string {
+  get describedby(): string {
     const list: string[] = [
       this.prefix.describedby,
       this.suffix.describedby,
@@ -245,6 +210,43 @@ export class Field {
       this.fieldMessage.id
     ]
 
-    return list.join(' ').trim()
+    return list.filter(Boolean).join(' ')
+  }
+
+  /**
+   * Returns control data for standard slot binding.
+   *
+   * Возвращает данные управления для стандартной привязки слотов.
+   * @returns control bindings and classes / привязки и классы управления
+   */
+  get control(): FieldControl {
+    const className = `${this.className}__body__input ${this.skeleton.classesSkeleton.classText}`
+
+    return {
+      id: this.fieldElement.id,
+      className,
+      classHidden: `${this.className}__body__hidden`,
+      classForFocus: `${this.className}__body__focus`,
+      binds: {
+        id: this.fieldElement.id,
+        class: className,
+        ...AriaStaticInclude.invalid(this.fieldElement.isValidation()),
+        ...AriaStaticInclude.describedby(this.describedby)
+      }
+    }
+  }
+
+  /**
+   * Values for the CSS classes.
+   *
+   * Значения для CSS-классов.
+   * @returns object with CSS classes / объект с CSS-классами
+   */
+  get classes() {
+    return {
+      [`${this.className}--cancel`]: this.icons.isCancel(),
+      [`${this.className}--suffix`]: this.props.suffix,
+      [`${this.className}--validation`]: this.fieldElement.isValidation()
+    }
   }
 }

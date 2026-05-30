@@ -148,7 +148,7 @@ export class FieldMessageDesign<
    */
   readonly renderInfo = (): VNode[] => {
     if (this.item.isHelper()) {
-      const children: VNode[] = []
+      const children: any[] = []
       const props: Record<string, any> = {
         key: 'message',
         id: this.props.helperId,
@@ -160,8 +160,15 @@ export class FieldMessageDesign<
 
       this.initSlot('helper', children, this.item.slotHelperData)
 
-      if (children.length < 1) {
-        props.innerHTML = this.props.helperMessage
+      if (this.props.helperMessage) {
+        if (
+          this.props.hasHtmlCode
+          && children.length < 1
+        ) {
+          props.innerHTML = this.props.helperMessage
+        } else {
+          children.push(this.props.helperMessage)
+        }
       }
 
       return [h('div', props, children)]
@@ -178,9 +185,9 @@ export class FieldMessageDesign<
    */
   readonly renderError = (): VNode[] => {
     if (this.item.isValidation()) {
-      const children: VNode[] = []
+      const children: any[] = []
       const props: Record<string, any> = {
-        key: 'message',
+        key: 'error',
         id: this.props.validationId,
         class: this.classes?.value.error,
         ...AriaStaticInclude.role('alert')
@@ -188,8 +195,15 @@ export class FieldMessageDesign<
 
       this.initSlot('validation', children, this.item.slotValidationData)
 
-      if (children.length < 1) {
-        props.innerHTML = this.props.validationMessage
+      if (this.props.validationMessage) {
+        if (
+          this.props.hasHtmlCode
+          && children.length < 1
+        ) {
+          props.innerHTML = this.props.validationMessage
+        } else {
+          children.push(this.props.validationMessage)
+        }
       }
 
       return [h('div', props, children)]

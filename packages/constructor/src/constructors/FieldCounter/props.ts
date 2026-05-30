@@ -11,7 +11,6 @@ export type FieldCounterPropsToken = {
 export type FieldCounterPropsBasic = TextCharacterLimitPropsInclude
   & TextCharacterRemainingPropsInclude
   & {
-    /** Style/ Стили */
     /** Current counter value/ Текущее значение счетчика */
     counter?: string | number
     /** Maximum allowed length/ Максимально допустимая длина */

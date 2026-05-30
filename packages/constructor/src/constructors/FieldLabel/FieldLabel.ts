@@ -2,6 +2,7 @@ import { type Ref, type ToRefs } from 'vue'
 import { type ConstrClassObject, type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
 import { LabelInclude } from '../../classes/LabelInclude'
+
 import { FieldCounterInclude } from '../FieldCounter'
 import { ProgressInclude } from '../Progress'
 import { SkeletonInclude } from '../Skeleton'
@@ -64,7 +65,7 @@ export class FieldLabel {
       SkeletonConstructor = SkeletonInclude
     } = constructors
 
-    const skeleton = new SkeletonConstructor(this.props, this.classDesign, ['classTextVariant'])
+    this.skeleton = new SkeletonConstructor(this.props, this.classDesign, ['classTextVariant'])
 
     this.label = new LabelConstructor(
       this.props,
@@ -74,27 +75,25 @@ export class FieldLabel {
       undefined,
       undefined,
       true,
-      skeleton
+      this.skeleton
     )
 
     this.fieldCounter = new FieldCounterConstructor(
-      this.className,
-      this.props,
-      this.components
+      className,
+      props,
+      components
     )
 
     this.progress = new ProgressConstructor(
-      this.className,
-      this.props,
-      this.components,
+      className,
+      props,
+      components,
       {
         circular: true,
         position: 'static',
         dense: true
       }
     )
-
-    this.skeleton = skeleton
   }
 
   /**
