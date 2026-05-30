@@ -1,5 +1,5 @@
 import { onMounted, type Ref, watch } from 'vue'
-import { EventItem, executeFunction, getRef, isDomRuntime, type RefOrNormal } from '@dxtmisha/functional'
+import { EventItem, executeFunction, getRef, type RefOrNormal } from '@dxtmisha/functional'
 
 /**
  * Class for handling Escape key press to close windows.
@@ -105,10 +105,7 @@ export class WindowEsc {
    * Создать и инициализировать обработчик событий.
    */
   protected make(): void {
-    if (
-      !this.event
-      && isDomRuntime()
-    ) {
+    if (!this.event) {
       this.event = new EventItem<HTMLElement, any>(
         document.body,
         'keydown',

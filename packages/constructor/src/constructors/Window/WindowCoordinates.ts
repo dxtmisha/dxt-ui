@@ -219,10 +219,10 @@ export class WindowCoordinates {
 
     if (element) {
       const style = getComputedStyle(element)
-      const paddingTop = style.paddingTop.replace(/[^0-9]+/g, '')
-      const paddingBottom = style.paddingBottom.replace(/[^0-9]+/g, '')
+      const paddingTop = parseFloat(style.paddingTop)
+      const paddingBottom = parseFloat(style.paddingBottom)
 
-      padding = (parseInt(paddingTop) + parseInt(paddingBottom)) / 2
+      padding = (paddingTop + paddingBottom) / 2
     }
 
     return padding > 0 ? padding : 16

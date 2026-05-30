@@ -1,6 +1,7 @@
 import { ref } from 'vue'
 import { frame } from '@dxtmisha/functional'
 
+import { ClientOnlyInclude } from '../../classes/ClientOnlyInclude'
 import { TabIndexInclude } from '../../classes/TabIndexInclude'
 
 import { WindowStatus } from './WindowStatus'
@@ -25,30 +26,42 @@ import type { WindowProps } from './props'
  * Класс для управления статусом открытого окна.
  */
 export class WindowOpen {
+  /** Reactive state of window open status / Реактивное состояние статуса открытия окна */
   readonly item = ref<boolean>(false)
+
+  /** Reactive state indicating when opening transition has fully ended / Реактивное состояние, указывающее на полное завершение перехода открытия */
   readonly openEnd = ref<boolean>(false)
 
+  /** Reactive state indicating if the window has been opened at least once / Реактивное состояние, указывающее, открывалось ли окно хотя бы раз */
   protected readonly first = ref<boolean>(false)
+
+  /** Count of consecutive open/toggle click attempts / Количество последовательных попыток клика открытия/переключения */
   protected clicks: number = 0
+
+  /** Timer ID for interval check of element DOM presence / Идентификатор таймера для периодической проверки присутствия элемента в DOM */
   protected timer?: any
 
   /**
-   * Constructor
-   * @param props input data/ входные данные
-   * @param client object for working with mouse pointer coordinates/ объект для работы с координатами указателя мыши
-   * @param hook object for working with hooks/ объект для работы с хуками
-   * @param element an object of the class for working with elements/ объект класса для работы с элементами
-   * @param tabIndex class object for working with tab indices/ объект класса для работы с табуляцией
-   * @param status object for working with statuses/ объект для работы со статусами
-   * @param flash class object for working with fast window opening/ объект класса для работы с быстрым открытием окна
-   * @param coordinates object for working with coordinates/ объект для работы с координатами
-   * @param position object for working with the position of the element/ объект для работы с положением элемента
-   * @param origin the object for work is in the initial position upon opening/ объект для работы в начальной позиции при открытии
-   * @param emit the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param styles an object for working with the styles of an element/ объект для работы со стилями элемента
+   * Constructor.
+   *
+   * Конструктор.
+   * @param props input data / входные данные
+   * @param clientOnly class object to check if rendering on client side / объект класса для проверки рендеринга на стороне клиента
+   * @param client object for working with mouse pointer coordinates / объект для работы с координатами указателя мыши
+   * @param hook object for working with hooks / объект для работы с хуками
+   * @param element an object of the class for working with elements / объект класса для работы с элементами
+   * @param tabIndex class object for working with tab indices / объект класса для работы с табуляцией
+   * @param status object for working with statuses / объект для работы со статусами
+   * @param flash class object for working with fast window opening / объект класса для работы с быстрым открытием окна
+   * @param coordinates object for working with coordinates / объект для работы с координатами
+   * @param position object for working with the position of the element / объект для работы с положением элемента
+   * @param origin the object for work is in the initial position upon opening / объект для работы в начальной позиции при открытии
+   * @param emit the function is called when an event is triggered / функция вызывается, когда срабатывает событие
+   * @param styles an object for working with the styles of an element / объект для работы со стилями элемента
    */
   constructor(
     protected readonly props: WindowProps,
+    protected readonly clientOnly: ClientOnlyInclude,
     protected readonly client: WindowClient,
     protected readonly hook: WindowHook,
     protected readonly element: WindowElement,
@@ -105,9 +118,10 @@ export class WindowOpen {
   }
 
   /**
-   * Checks if the window is open.
+   * Checks if there are active click interactions in progress.
    *
-   * Проверяет, открыто ли окно.
+   * Проверяет, происходят ли сейчас активные клики.
+   * @returns true if clicks are in progress / true, если происходят клики
    */
   isClicks(): boolean {
     return this.clicks > 0
@@ -117,7 +131,8 @@ export class WindowOpen {
    * Changes the current state.
    *
    * Изменяет текущее состояние.
-   * @param open the value of the current state/ значение текущего состояния
+   * @param open the value of the current state / значение текущего состояния
+   * @returns promise that resolves when the state is toggled / промис, который разрешается при переключении состояния
    */
   readonly set = async (open?: boolean): Promise<void> => {
     if (this.item.value !== Boolean(open)) {
@@ -129,6 +144,7 @@ export class WindowOpen {
    * Opens the window.
    *
    * Открывает окно.
+   * @returns promise that resolves when the window is opened / промис, который разрешается при открытии окна
    */
   readonly open = async (): Promise<void> => this.set(true)
 
@@ -136,6 +152,7 @@ export class WindowOpen {
    * Closes the window.
    *
    * Закрывает окно.
+   * @returns promise that resolves when the window is closed / промис, который разрешается при закрытии окна
    */
   readonly close = async (): Promise<void> => this.set(false)
 
@@ -143,6 +160,7 @@ export class WindowOpen {
    * Switches the state, that is, opens or closes the window, depending on the value of item.
    *
    * Переключает состояние, то есть открывает или закрывает окно, в зависимости от значения item.
+   * @returns promise that resolves when toggle is complete / промис, который разрешается по завершении переключения
    */
   readonly toggle = async (): Promise<void> => {
     if (this.clicks > 1) {
@@ -222,6 +240,7 @@ export class WindowOpen {
    * Resets all data to initial values.
    *
    * Сбрасывает все данные к начальным значениям.
+   * @returns this instance / текущий экземпляр класса
    */
   reset(): this {
     this.coordinates.reset()
@@ -234,6 +253,7 @@ export class WindowOpen {
    * The method increases the number of clicks.
    *
    * Метод увеличивает количество кликов.
+   * @returns this instance / текущий экземпляр класса
    */
   pressed(): this {
     this.clicks++
@@ -245,6 +265,7 @@ export class WindowOpen {
    * The method resets the number of clicks.
    *
    * Метод сбрасывает количество кликов.
+   * @returns this instance / текущий экземпляр класса
    */
   resetClicks(): this {
     this.clicks = 0
@@ -255,11 +276,13 @@ export class WindowOpen {
    * The method updates the current position.
    *
    * Метод обновляет текущее положение.
+   * @returns promise that resolves when position watching is complete / промис, который разрешается по завершении обновления положения
    */
   async watchPosition(): Promise<void> {
     if (
       this.item.value
       && this.element.isMain()
+      && this.clientOnly.isRender()
     ) {
       this.position.update()
       this.position.updateBody()
@@ -278,7 +301,8 @@ export class WindowOpen {
    * Changes values and triggers events.
    *
    * Изменяет значения и вызывает события.
-   * @param open the value of the current state/ значение текущего состояния
+   * @param open the value of the current state / значение текущего состояния
+   * @returns this instance / текущий экземпляр класса
    */
   async setOpen(open: boolean): Promise<this> {
     this.item.value = open
@@ -294,6 +318,7 @@ export class WindowOpen {
    * Changing the location of the menu window.
    *
    * Изменение расположения окна меню.
+   * @returns this instance / текущий экземпляр класса
    */
   protected watchCoordinates(): this {
     frame(

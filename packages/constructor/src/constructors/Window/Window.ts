@@ -234,6 +234,7 @@ export class Window {
     )
     this.open = new WindowOpenConstructor(
       props,
+      this.clientOnly,
       this.client,
       this.hook,
       this.element,
@@ -249,6 +250,7 @@ export class Window {
 
     this.verification = new WindowVerificationConstructor(
       props,
+      this.clientOnly,
       this.persistent,
       this.classes,
       this.element,

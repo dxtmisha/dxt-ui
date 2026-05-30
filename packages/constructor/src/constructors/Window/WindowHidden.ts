@@ -147,7 +147,7 @@ export class WindowHidden {
     const blockedElements = this.findBlockedElements()
 
     if (
-      --windowOpenCounter > 0
+      --windowOpenCounter < 0
       || blockedElements.length === 0
     ) {
       windowOpenCounter = 0
