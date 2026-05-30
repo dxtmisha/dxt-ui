@@ -101,6 +101,8 @@ export class MaskEvent {
       writeClipboardData(
         (event.target as HTMLInputElement).value.slice(start, end)
       ).then()
+
+      this.makeChange(event)
     }
 
     if (this.isMetaKey(event)) {
