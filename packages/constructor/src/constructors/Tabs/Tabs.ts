@@ -77,14 +77,15 @@ export class Tabs {
     )
 
     this.motionAxis = new MotionAxisIncludeConstructor(
-      this.props,
       this.className,
+      this.props,
       this.components,
-      this.emits,
       undefined,
-      computed(() => String(this.selected.item.value))
+      undefined,
+      emits,
+      () => String(this.selected.item.value)
     )
 
-    new ModelIncludeConstructor('selected', this.emits, this.selected.item)
+    new ModelIncludeConstructor('selected', emits, this.selected.item)
   }
 }

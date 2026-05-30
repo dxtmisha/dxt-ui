@@ -20,7 +20,16 @@ import {
 } from './types'
 
 /**
- * MotionAxisDesign
+ * Design constructor class for the MotionAxis component.
+ * It manages class orchestration, styling, and structural VNode rendering.
+ *
+ * Конструктор дизайна для компонента MotionAxis.
+ * Управляет классами, стилями и структурным рендерингом VNode.
+ *
+ * @template COMP - Connected components map / Карта подключенных компонентов
+ * @template EXPOSE - Exposed API properties and methods / Экспортируемые свойства и методы API
+ * @template CLASSES - Generated CSS classes map / Карта сгенерированных CSS-классов
+ * @template P - Input properties interface / Интерфейс входных свойств
  */
 export class MotionAxisDesign<
   COMP extends MotionAxisComponents,
@@ -36,14 +45,15 @@ export class MotionAxisDesign<
     CLASSES,
     P
   > {
+  /** Controller instance managing core business logic / Экземпляр контроллера, управляющий основной бизнес-логикой */
   protected readonly item: MotionAxis
 
   /**
    * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor constructors item class/ класс элемента конструкторов
+   * @param name class name / название класса
+   * @param props properties / свойства
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor constructors item class / класс элемента конструкторов
    */
   constructor(
     name: string,
@@ -72,9 +82,10 @@ export class MotionAxisDesign<
   }
 
   /**
-   * Initialization of all the necessary properties for work
+   * Initialization of all the necessary properties for work.
    *
    * Инициализация всех необходимых свойств для работы.
+   * @returns exposed API map / экспортируемая карта API
    */
   protected initExpose(): EXPOSE {
     return {
@@ -95,10 +106,11 @@ export class MotionAxisDesign<
    * Improvement of the obtained list of classes.
    *
    * Доработка полученного списка классов.
+   * @returns calculated classes mapping / рассчитанное сопоставление классов
    */
   protected initClasses(): Partial<CLASSES> {
     return {
-      main: this.item.classes.value,
+      main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
         slide: this.getSubClass('slide')
@@ -111,15 +123,17 @@ export class MotionAxisDesign<
    * Refinement of the received list of styles.
    *
    * Доработка полученного списка стилей.
+   * @returns calculated inline styles / рассчитанные инлайн-стили
    */
   protected initStyles(): ConstrStyles {
     return {}
   }
 
   /**
-   * A method for rendering.
+   * A method for rendering the component container.
    *
-   * Метод для рендеринга.
+   * Метод для рендеринга контейнера компонента.
+   * @returns VNode node / узел VNode
    */
   protected initRender(): VNode {
     return h(
@@ -134,19 +148,16 @@ export class MotionAxisDesign<
   }
 
   /**
-   * Rendering the slide.
+   * Rendering active and transition slides.
    *
-   * Рендеринг слайда.
+   * Рендеринг активных и переходных слайдов.
+   * @returns array of slide VNodes / массив VNode слайдов
    */
   readonly renderSlides = (): VNode[] => {
     const children: VNode[] = []
 
-    this.item.slides.reset()
-
     if (this.slots) {
       forEach(this.slots, (slot, key) => {
-        this.item.slides.add(key)
-
         if (this.item.isInDom(key)) {
           const classStatus = this.item.elementItem.getClassStatus()
 

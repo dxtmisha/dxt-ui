@@ -1,12 +1,13 @@
-import { computed, ref, type VNode } from 'vue'
 import {
   type ConstrBind,
   type ConstrEmit,
   type DesignComponents,
-  getRef,
-  type RefOrNormal,
-  toBinds
+  executeFunctionRef,
+  type RefOrNormalOrFunction
 } from '@dxtmisha/functional'
+
+import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
+import type { ComponentIncludeExtra } from '../../types/componentInclude'
 
 import type {
   MotionAxisComponentInclude,
@@ -15,96 +16,100 @@ import type {
   MotionAxisPropsInclude,
   MotionAxisSelectedValue
 } from './basicTypes'
-import type { MotionAxisExpose, MotionAxisSlots } from './types'
+import type { MotionAxisSlots } from './types'
 import type { MotionAxisProps } from './props'
 
 /**
- * The class returns data for working with the MotionAxis component
+ * Inclusion class for programmatic rendering and integration of MotionAxis in components.
+ * It extends ComponentIncludeAbstract to manage transition states, renders, and bindings.
  *
- * Класс возвращает данные для работы с компонентом MotionAxis
+ * Класс-включение для программного рендеринга и интеграции MotionAxis в другие компоненты.
+ * Расширяет ComponentIncludeAbstract для управления состояниями анимации перехода, рендером и привязками.
+ *
+ * @template Props - Properties interface extending MotionAxisPropsInclude / Интерфейс свойств, расширяющий MotionAxisPropsInclude
+ * @template PropsExtra - Extra properties interface / Дополнительный интерфейс свойств
  */
 export class MotionAxisInclude<
   Props extends MotionAxisPropsInclude = MotionAxisPropsInclude,
-  PropsExtra extends ConstrBind<MotionAxisProps> = ConstrBind<MotionAxisProps>
-> {
+  PropsExtra extends MotionAxisProps = MotionAxisProps
+> extends ComponentIncludeAbstract<
+    Props,
+    PropsExtra,
+    Record<string, any>,
+    MotionAxisSlots
+  > {
+  /** Component sub-name / Дополнительное имя компонента */
+  protected readonly name = 'motionAxis'
+  /** Property name containing raw attributes / Имя свойства, содержащего сырые атрибуты */
+  protected readonly propsAttrsName = 'motionAxisAttrs'
+
   /**
-   * Constructor
-   * @param props input parameter/ входной параметр
-   * @param className class name/ название класса
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param extra additional parameter or property name/ дополнительный параметр или имя свойства
-   * @param selected selected element/ выбранный элемент
-   * @param index index identifier/ идентификатор индекса
+   * Constructor for programmatic inclusion of MotionAxis.
+   *
+   * Конструктор для программного включения MotionAxis.
+   * @param className class name / название класса
+   * @param props input parameter / входной параметр
+   * @param components object for working with components / объект для работы с компонентами
+   * @param extra additional parameter or property name / дополнительный параметр или имя свойства
+   * @param index index identifier / идентификатор индекса
+   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
+   * @param selected selected element / выбранный элемент
    */
   constructor(
-    protected readonly props: Readonly<Props>,
-    protected readonly className: string,
-    protected readonly components?: DesignComponents<MotionAxisComponentInclude, Props>,
+    className: string,
+    props: Readonly<Props>,
+    components?: DesignComponents<MotionAxisComponentInclude, Props>,
+    extra?: ComponentIncludeExtra<PropsExtra>,
+    index?: string,
     protected readonly emits?: ConstrEmit<MotionAxisEmitsInclude>,
-    protected readonly extra?: RefOrNormal<PropsExtra>,
-    protected readonly selected?: RefOrNormal<MotionAxisSelectedValue>,
-    protected readonly index?: string
+    protected readonly selected?: RefOrNormalOrFunction<MotionAxisSelectedValue>
   ) {
+    super(className, props, components, extra, index)
   }
 
-  /** Reference to motionAxis element expose/ Ссылка на expose элемента motionAxis */
-  readonly element = ref<ConstrBind<MotionAxisExpose> | undefined>()
-
-  /** Computed selected element/ Вычисляемый выбранный элемент */
-  readonly selectedItem = computed(() => {
+  /** Selected element / Выбранный элемент */
+  get selectedItem(): MotionAxisSelectedValue {
     if (this.selected) {
-      return getRef(this.selected)
+      return executeFunctionRef(this.selected)
     }
 
-    return this.props.selected
-  })
-
-  /** Computed bindings for the motionAxis/ Вычисляемые привязки для motionAxis */
-  readonly binds = computed<PropsExtra>(() => {
-    return toBinds<PropsExtra>(
-      getRef(this.extra),
-      {
-        class: `${this.className}__motionAxis`
-      },
-      this.props.motionAxisAttrs
-    )
-  })
-
-  /**
-   * Render the MotionAxis component with slots/
-   * Рендер компонента MotionAxis со слотами
-   * @param slotsChildren slots passed to the motionAxis/ слоты, передаваемые motionAxis
-   * @param attrs additional attributes/ дополнительные атрибуты
-   */
-  readonly render = (
-    slotsChildren?: MotionAxisSlots,
-    attrs?: Record<string, any>
-  ): VNode[] => {
-    if (this.components) {
-      return this.components.render(
-        'motionAxis',
-        {
-          ...toBinds(
-            attrs,
-            this.binds.value,
-            { selected: this.selectedItem.value }
-          ),
-          ref: this.element,
-          onMotionAxis: this.onMotionAxis
-        },
-        slotsChildren as unknown as Record<string, any>,
-        this.index
-      )
-    }
-
-    return []
+    return this.getProps().selected
   }
 
   /**
-   * Emits 'motionAxis' event upward/
-   * Поднимает событие 'motionAxis' наверх
-   * @param options event payload/ параметры события
+   * Combines input attributes with internal component bindings.
+   *
+   * Объединяет входные атрибуты со внутренними привязками компонента.
+   * @param attrs attributes to merge / атрибуты для объединения
+   * @returns merged binding attributes / объединенные атрибуты привязки
+   */
+  protected override getAttrs(
+    attrs?: ConstrBind<PropsExtra>
+  ) {
+    return {
+      ...super.getAttrs(attrs),
+      selected: this.selectedItem
+    }
+  }
+
+  /**
+   * Builds and resolves all HTML attributes and classes for binding.
+   *
+   * Создает и разрешает все HTML-атрибуты и классы для привязки.
+   * @returns resolved bindings / разрешенные привязки
+   */
+  protected override toBinds() {
+    return {
+      ...super.toBinds(),
+      onMotionAxis: this.onMotionAxis
+    }
+  }
+
+  /**
+   * Emits 'motionAxis' event upward.
+   *
+   * Поднимает событие 'motionAxis' наверх.
+   * @param options event payload / параметры события
    */
   protected readonly onMotionAxis = (options: MotionAxisEmitOptions) => {
     this.emits?.('motionAxis', options)

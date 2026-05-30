@@ -7,16 +7,22 @@ import type { MotionAxisSelectedValue } from './basicTypes'
 import type { MotionAxisProps } from './props'
 
 /**
- * Class for motion control.
+ * Class for controlling axis movement, slide navigation, and directions.
+ * It manages transitions in 3D axes (X, Y, Z) and directions (back, next, auto).
  *
- * Класс для управления движением.
+ * Класс для управления движением по осям, навигацией по слайдам и направлениями.
+ * Управляет переходами в трехмерных осях (X, Y, Z) и направлениях (back, next, auto).
  */
 export class MotionAxisGo {
+  /** Active transition axis / Активная ось перехода */
   readonly axis = ref<MotionAxisProps['axis']>()
+  /** Active transition direction / Активное направление перехода */
   readonly direction = ref<MotionAxisProps['direction']>()
 
   /**
-   * Constructor
+   * Constructor for initializing slide navigation controls.
+   *
+   * Конструктор для инициализации элементов управления навигацией по слайдам.
    * @param props input data / входные данные
    * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
    * @param element window element / элемент окна
@@ -38,7 +44,7 @@ export class MotionAxisGo {
   }
 
   /**
-   * Previous slide.
+   * Navigates to the previous slide in sequence.
    *
    * Перемещение слайда на один шаг назад.
    */
@@ -48,7 +54,7 @@ export class MotionAxisGo {
   }
 
   /**
-   * Next slide.
+   * Navigates to the next slide in sequence.
    *
    * Перемещение слайда на один шаг вперед.
    */
@@ -58,7 +64,7 @@ export class MotionAxisGo {
   }
 
   /**
-   * Moving the slide to the selected slide with automatic selection of animation direction.
+   * Navigates to a specific slide with automatic direction selection.
    *
    * Перемещение слайда на выбранный слайд с автоматическим выбором направления анимации.
    * @param selected selected item / выбранный элемент
@@ -87,7 +93,7 @@ export class MotionAxisGo {
   }
 
   /**
-   * Move to the upper slide.
+   * Navigates upwards (moves slide down or moves view up on Y-axis).
    *
    * Переместите на верхний слайд.
    * @param selected selected item / выбранный элемент
@@ -99,7 +105,7 @@ export class MotionAxisGo {
   }
 
   /**
-   * Move to the right slide.
+   * Navigates rightwards (moves slide left or moves view right on X-axis).
    *
    * Переместите на правый слайд.
    * @param selected selected item / выбранный элемент
@@ -111,7 +117,7 @@ export class MotionAxisGo {
   }
 
   /**
-   * Move to the lower slide.
+   * Navigates downwards (moves slide up or moves view down on Y-axis).
    *
    * Переместите на нижний слайд.
    * @param selected selected item / выбранный элемент
@@ -123,7 +129,7 @@ export class MotionAxisGo {
   }
 
   /**
-   * Move to the left slide.
+   * Navigates leftwards (moves slide right or moves view left on X-axis).
    *
    * Переместите на левый слайд.
    * @param selected selected item / выбранный элемент
@@ -135,7 +141,7 @@ export class MotionAxisGo {
   }
 
   /**
-   * Move to the back slide.
+   * Navigates backward/deeper in 3D depth (Z-axis, down/far).
    *
    * Переместите на задний слайд.
    * @param selected selected item / выбранный элемент
@@ -147,7 +153,7 @@ export class MotionAxisGo {
   }
 
   /**
-   * Move to the front slide.
+   * Navigates forward/closer in 3D depth (Z-axis, up/near).
    *
    * Переместите на передний слайд.
    * @param selected selected item / выбранный элемент
@@ -159,7 +165,7 @@ export class MotionAxisGo {
   }
 
   /**
-   * Changes the axis.
+   * Sets the active transition axis explicitly.
    *
    * Изменяет ось.
    * @param axis axis name / название оси
@@ -169,7 +175,7 @@ export class MotionAxisGo {
   }
 
   /**
-   * Changes the direction.
+   * Sets the active transition direction explicitly.
    *
    * Изменяет направление.
    * @param direction direction name / название направления
