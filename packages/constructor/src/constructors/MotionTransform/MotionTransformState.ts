@@ -1,4 +1,4 @@
-import { onMounted, ref, type ToRefs, watch } from 'vue'
+import { onMounted, onUnmounted, ref, type ToRefs, watch } from 'vue'
 
 import { TabIndexInclude } from '../../classes/TabIndexInclude'
 import { MotionTransformElement } from './MotionTransformElement'
@@ -18,6 +18,8 @@ export class MotionTransformState {
   readonly show = ref<boolean>(false)
   /** Teleportation state flag/ Флаг состояния телепортации */
   readonly teleport = ref<boolean>(false)
+
+  protected timer?: any
 
   /**
    * Constructor.
@@ -49,6 +51,8 @@ export class MotionTransformState {
         })
       }
     })
+
+    onUnmounted(() => clearTimeout(this.timer))
   }
 
   /**
@@ -92,6 +96,8 @@ export class MotionTransformState {
     animation = true
   ) {
     if (this.open.value !== open) {
+      clearTimeout(this.timer)
+
       if (open) {
         this.tabIndex.updateOldElement()
       }
@@ -115,7 +121,7 @@ export class MotionTransformState {
         this.calculations()
       }
 
-      setTimeout(() => this.reset(), 480)
+      this.timer = setTimeout(() => this.reset(), 480)
     }
   }
 
@@ -143,6 +149,7 @@ export class MotionTransformState {
 
       this.make()
       this.tabIndex.toggle(this.open.value)
+      this.size.reset()
     }
 
     return this

@@ -47,7 +47,10 @@ export class MotionTransformSize {
   update(): void {
     const rect = this.element.rect
 
-    if (rect) {
+    if (
+      rect
+      && rect.width
+    ) {
       const elementHead = this.element.elementHead
       const elementBody = this.element.elementBody
 

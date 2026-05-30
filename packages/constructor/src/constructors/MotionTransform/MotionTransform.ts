@@ -132,7 +132,7 @@ export class MotionTransform {
     )
     this.teleport = new TeleportIncludeConstructor()
 
-    new ModelIncludeConstructor('open', this.emits, this.state.open)
+    new ModelIncludeConstructor('open', emits, this.state.open)
   }
 
   /**

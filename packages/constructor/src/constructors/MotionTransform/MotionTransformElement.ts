@@ -139,7 +139,7 @@ export class MotionTransformElement {
    * @param target target element to inspect / целевой элемент для проверки
    */
   isIgnore(target: HTMLElement): boolean {
-    return !(this.props.ignore && target.closest(getElementId(this.props.ignore, '')))
+    return !(this.props.ignore && target.closest(getElementId(this.props.ignore, ' ')))
       && !(this.props.ignoreSelector && target.closest(this.props.ignoreSelector))
   }
 

@@ -22,6 +22,21 @@ import type {
  * ComponentInclude — это абстрактный базовый класс, разработанный для упрощения программного
  * включения, рендеринга и управления состоянием субкомпонентов внутри основного компонента.
  * Он инкапсулирует общую логику для привязок (binds), экспорта API-методов дочерних элементов и рендеринга.
+ *
+ * @note
+ * When extending this class:
+ * - Place properties and event listeners that are static or change RARELY during the component's
+ *   lifetime (such as style configurations, constant bindings, or callbacks) inside `toBinds()`.
+ * - Merge properties that change FREQUENTLY/CONSTANTLY during runtime (such as active state,
+ *   values, or open states) inside `getAttrs()` to ensure correct and optimal reactive updates.
+ *
+ * При наследовании этого класса:
+ * - Свойства и обработчики событий, которые являются статическими или изменяются РЕДКО в течение
+ *   жизненного цикла компонента (такие как конфигурации стилей, константные привязки или коллбэки),
+ *   должны определяться в `toBinds()`.
+ * - Свойства, которые изменяются ЧАСТО/ПОСТОЯННО во время работы (такие как активное состояние,
+ *   значения или статус открытия), должны объединяться в `getAttrs()` для обеспечения корректного
+ *   и оптимального обновления реактивности.
  */
 export abstract class ComponentIncludeAbstract<
   Props extends Record<string, any>,

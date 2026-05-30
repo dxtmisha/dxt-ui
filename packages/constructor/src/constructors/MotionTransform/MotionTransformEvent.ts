@@ -37,7 +37,8 @@ export class MotionTransformEvent {
 
       watch(
         this.state.open,
-        () => this.item?.toggle(this.state.open.value)
+        () => this.item?.toggle(this.state.open.value),
+        { immediate: true }
       )
     })
     onUnmounted(() => this.stop())
