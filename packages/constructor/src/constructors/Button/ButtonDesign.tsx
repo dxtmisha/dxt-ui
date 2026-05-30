@@ -127,18 +127,11 @@ export class ButtonDesign<
     return h(
       this.item.tag,
       {
-        ...this.getAttrs(),
-        'ref': this.element,
-        'type': this.props.type,
+        ...this.item.binds,
+        ref: this.element,
 
-        'class': this.classes?.value.main,
-        'style': this.styles?.value,
-
-        'data-value': this.props.value,
-
-        'disabled': this.item.enabled.isDisabledOrUndefined,
-        ...this.item.eventList,
-        ...this.item.aria
+        class: this.classes?.value.main,
+        style: this.styles?.value
       },
       [
         ...this.item.progress.render(),

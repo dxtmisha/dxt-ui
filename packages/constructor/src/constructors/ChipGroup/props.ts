@@ -26,6 +26,9 @@ export type ChipGroupPropsBasic<
   /** Whether to show an icon when a chip is selected/ Показывать ли иконку при выборе чипа */
   iconWhenSelected?: boolean
 
+  /** Whether multiple chips can be selected/ Разрешено ли выбирать несколько чипов */
+  multiple?: boolean
+
   /** Key for the label in the data object/ Ключ для заголовка в объекте данных */
   keyLabel?: string
   /** Key for the value in the data object/ Ключ для значения в объекте данных */

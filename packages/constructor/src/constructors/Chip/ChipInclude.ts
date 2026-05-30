@@ -1,9 +1,8 @@
-import { computed, type VNode } from 'vue'
-import { type ConstrBind, type DesignComponents, getBind, getRef, type RefOrNormal, toBinds } from '@dxtmisha/functional'
+import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
 
-import type { ChipComponentInclude, ChipPropsInclude } from './basicTypes'
-import type { ChipSlots } from './types'
+import type { ChipPropsInclude } from './basicTypes'
 import type { ChipPropsBasic } from './props'
+import type { ChipExpose, ChipSlots } from './types'
 
 /**
  * ChipInclude class provides functionality for conditionally rendering chip components
@@ -13,76 +12,30 @@ import type { ChipPropsBasic } from './props'
  * Класс ChipInclude предоставляет функциональность для условного рендеринга компонентов
  * чипа внутри других компонентов. Он управляет логикой определения необходимости
  * отображения чипа и настраивает соответствующие свойства.
- *
- * @template Props - Properties interface extending ChipPropsInclude
  */
-export class ChipInclude<Props extends ChipPropsInclude = ChipPropsInclude> {
-  /**
-   * Constructor
-   * @param props input parameter/ входной параметр
-   * @param className class name/ название класса
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param extra additional parameter/ дополнительный параметр
-   * @param index index identifier/ идентификатор индекса
-   */
-  constructor(
-    protected readonly props: Readonly<Props> | undefined,
-    protected readonly className: string,
-    protected readonly components?: DesignComponents<ChipComponentInclude, Props>,
-    protected readonly extra?: RefOrNormal<ConstrBind<ChipPropsBasic>>,
-    protected readonly index?: string
-  ) {
-  }
+export class ChipInclude extends ComponentIncludeAbstract<
+  ChipPropsInclude,
+  ChipPropsBasic,
+  ChipExpose,
+  ChipSlots
+> {
+  /** Name of the component for style prefixing and resolution / Имя компонента для префикса стилей и разрешения */
+  protected override readonly name = 'chip'
+
+  /** Key name for passing additional attributes / Имя ключа для передачи дополнительных атрибутов */
+  protected override readonly propsAttrsName = 'chipAttrs'
 
   /**
-   * Computed bindings for the chip/ Вычисляемые привязки для чипа
+   * Checks whether the chip should be displayed.
+   *
+   * Проверяет, нужно ли отображать чип.
+   * @returns check result / результат проверки
    */
-  readonly binds = computed(
-    () => toBinds(
-      this.props?.chipAttrs,
-      getBind(
-        getRef(this.props),
-        getRef(this.extra),
-        'label'
-      )
+  override get is(): boolean {
+    return (
+      'label' in this.binds.value
+      || 'icon' in this.binds.value
+      || 'iconTrailing' in this.binds.value
     )
-  )
-
-  /**
-   * Renders the chip component with provided properties and configuration.
-   * Returns an array of VNode elements representing the rendered chip, or an empty
-   * array if the component cannot be rendered.
-   *
-   * Отрисовывает компонент чипа с предоставленными свойствами и конфигурацией.
-   * Возвращает массив VNode элементов, представляющих отрисованный чип, или пустой
-   * массив, если компонент не может быть отрисован.
-   *
-   * @param props additional properties/ дополнительные свойства
-   * @param slots slots/ слоты
-   */
-  readonly render = (
-    props?: RefOrNormal<ConstrBind<ChipPropsBasic>>,
-    slots?: ChipSlots
-  ): VNode[] => {
-    if (
-      this.components
-      && (
-        ('label' in this.binds.value)
-        || ('icon' in this.binds.value)
-        || ('iconTrailing' in this.binds.value)
-      )
-    ) {
-      return this.components.render(
-        'chip',
-        {
-          ...this.binds.value,
-          ...getRef(props)
-        },
-        slots as any,
-        this.index ?? 'chip'
-      )
-    }
-
-    return []
   }
 }

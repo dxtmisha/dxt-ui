@@ -66,8 +66,8 @@ const selected = ref('space')
       <D1Group label="Events">
         <D1Radio
           label="Event Tracker"
-          @input="onEvent('input')"
-          @change="onEvent('change')"
+          @input="(event, value) => onEvent('input', event, value)"
+          @change="(event, value) => onEvent('change', event, value)"
         />
         <DemoValue :value="eventName"/>
       </D1Group>

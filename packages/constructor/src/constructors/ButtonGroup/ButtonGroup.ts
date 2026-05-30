@@ -64,7 +64,7 @@ export class ButtonGroup {
   isList(): boolean {
     return Boolean(
       this.props.list
-      || (this.slots && 'default' in this.slots)
+      || this.slots?.default
     )
   }
 }

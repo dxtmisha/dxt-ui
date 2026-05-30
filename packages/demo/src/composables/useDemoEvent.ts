@@ -14,10 +14,11 @@ export const useDemoEvent = () => {
    *
    * Обработчик вызова события.
    * @param event event name/ название события
+   * @param args optional event payloads/ необязательные значения события
    */
-  const onEvent = (event: string) => {
+  const onEvent = (event: string, ...args: any[]) => {
     eventName.value = event
-    console.log(`Event: ${event}`)
+    console.log(`Event: ${event}`, ...args)
   }
 
   return {

@@ -1,4 +1,4 @@
-import { computed, type Ref, type ToRefs } from 'vue'
+import { type Ref, type ToRefs } from 'vue'
 import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
 import { FieldElementInclude } from '../../classes/Field/FieldElementInclude'
@@ -75,16 +75,15 @@ export class MenuChip extends SelectAbstract {
     } = constructors
 
     this.chip = new ChipConstructor(
-      undefined,
       this.className,
+      this.props,
       this.components,
-      computed(() => ({
+      () => ({
         icon: this.props.icon,
         disabled: this.props.disabled,
         readonly: this.props.readonly,
-        iconTrailing: this.iconTrailing.value,
-        chipAttrs: this.props.chipAttrs
-      }))
+        iconTrailing: this.iconTrailing.value
+      })
     )
   }
 }

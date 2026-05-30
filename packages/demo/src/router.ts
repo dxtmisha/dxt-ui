@@ -10,7 +10,10 @@ import DemoActionsPage from './pages/components/DemoActionsPage.vue'
 import DemoBadgePage from './pages/components/DemoBadgePage.vue'
 import DemoBarsPage from './pages/components/DemoBarsPage.vue'
 import DemoButtonPage from './pages/components/DemoButtonPage.vue'
+import DemoButtonGroupPage from './pages/components/DemoButtonGroupPage.vue'
 import DemoCheckboxPage from './pages/components/DemoCheckboxPage.vue'
+import DemoChipPage from './pages/components/DemoChipPage.vue'
+import DemoChipGroupPage from './pages/components/DemoChipGroupPage.vue'
 import DemoClientOnlyPage from './pages/components/DemoClientOnlyPage.vue'
 import DemoDialogPage from './pages/components/DemoDialogPage.vue'
 import DemoIconPage from './pages/components/DemoIconPage.vue'
@@ -77,9 +80,24 @@ export const routes: RouteRecordRaw[] = [
     component: DemoButtonPage
   },
   {
+    path: '/component-button-group',
+    name: 'component-button-group',
+    component: DemoButtonGroupPage
+  },
+  {
     path: '/component-checkbox',
     name: 'component-checkbox',
     component: DemoCheckboxPage
+  },
+  {
+    path: '/component-chip',
+    name: 'component-chip',
+    component: DemoChipPage
+  },
+  {
+    path: '/component-chip-group',
+    name: 'component-chip-group',
+    component: DemoChipGroupPage
   },
   {
     path: '/component-client-only',

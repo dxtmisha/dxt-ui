@@ -140,20 +140,6 @@ export class Button {
   }
 
   /**
-   * Returns values for the class.
-   *
-   * Возвращает значения для класса.
-   * @returns classes values / значения классов
-   */
-  get classes(): ConstrClass {
-    return {
-      [`${this.className}--icon`]: this.icon.isIcon(),
-      [getClassTagAStatic(this.classDesign)]: true,
-      ...this.skeleton.classes
-    }
-  }
-
-  /**
    * Returns list of aria properties for the button component.
    *
    * Возвращает список aria свойств для компонента Button.
@@ -194,6 +180,35 @@ export class Button {
     }
 
     return events
+  }
+
+  /**
+   * Returns values for the class.
+   *
+   * Возвращает значения для класса.
+   * @returns classes values / значения классов
+   */
+  get classes(): ConstrClass {
+    return {
+      [`${this.className}--icon`]: this.icon.isIcon(),
+      [getClassTagAStatic(this.classDesign)]: true,
+      ...this.skeleton.classes
+    }
+  }
+
+  /**
+   * Returns attributes for the main element.
+   *
+   * Возвращает атрибуты для главного элемента.
+   */
+  get binds() {
+    return {
+      'type': this.props.type,
+      'data-value': this.props.value,
+      'disabled': this.enabled.isDisabledOrUndefined,
+      ...this.eventList,
+      ...this.aria
+    }
   }
 
   /**

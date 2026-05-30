@@ -134,10 +134,10 @@ const optionsVModel = ref([
         <D1Select
           label="Event Tracker"
           :option="options"
-          @input="onEvent('input')"
-          @input-lite="onEvent('inputLite')"
-          @change="onEvent('change')"
-          @change-lite="onEvent('changeLite')"
+          @input="(event, value) => onEvent('input', event, value)"
+          @input-lite="(value) => onEvent('inputLite', value)"
+          @change="(event, value) => onEvent('change', event, value)"
+          @change-lite="(value) => onEvent('changeLite', value)"
         />
         <DemoValue :value="eventName" />
       </D1Group>

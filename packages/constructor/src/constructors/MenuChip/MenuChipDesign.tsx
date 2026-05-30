@@ -146,11 +146,11 @@ export class MenuChipDesign<
   protected readonly renderControl = (props: MenuControlItem): VNode[] => {
     return this.item.chip.render(
       {
-        ...props.binds,
-        iconTurn: props.open.value
+        default: () => this.renderControlLabel(props.selectedNames?.value)
       },
       {
-        default: () => this.renderControlLabel(props.selectedNames?.value)
+        ...props.binds,
+        iconTurn: props.open.value
       }
     )
   }

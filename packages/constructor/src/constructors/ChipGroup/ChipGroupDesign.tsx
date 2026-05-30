@@ -132,7 +132,7 @@ export class ChipGroupDesign<
    *
    * Рендеринг списка.
    */
-  protected readonly renderList = (): VNode[] => {
+  readonly renderList = (): VNode[] => {
     return forEach(
       this.item.getList(),
       item => this.renderItem(item)
@@ -145,14 +145,14 @@ export class ChipGroupDesign<
    * Рендеринг элемента.
    * @param item selected element/ выбранный элемент
    */
-  protected readonly renderItem = (item: ChipGroupItem): VNode | undefined => {
+  readonly renderItem = (item: ChipGroupItem): VNode | undefined => {
     return this.components.renderOne(
       'chip',
       toBinds(
         {
           class: this.classes?.value.item,
           iconHide: this.props.iconWhenSelected && !item.selected,
-          onClick: this.item.model.onClick
+          onClick: this.item.onClick
         },
         this.props.chipAttrs,
         item

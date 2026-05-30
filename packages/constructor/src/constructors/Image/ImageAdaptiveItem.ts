@@ -96,7 +96,7 @@ export class ImageAdaptiveItem {
       && this.clientOnly.isRender()
       && (this.width || this.height)
     )
-      && this.data.isImage()
+    && this.data.isImage()
   }
 
   /**

@@ -105,10 +105,10 @@ const valuePhone = ref('+7 (900) 123-45-67')
       <D1Group label="Events">
         <D1Input
           label="Event Tracker"
-          @input="onEvent('input')"
-          @input-lite="onEvent('inputLite')"
-          @change="onEvent('change')"
-          @change-lite="onEvent('changeLite')"
+          @input="(event, value) => onEvent('input', event, value)"
+          @input-lite="(value) => onEvent('inputLite', value)"
+          @change="(event, value) => onEvent('change', event, value)"
+          @change-lite="(value) => onEvent('changeLite', value)"
         />
         <DemoValue :value="eventName"/>
       </D1Group>

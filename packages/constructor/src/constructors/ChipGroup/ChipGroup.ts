@@ -4,12 +4,14 @@ import {
   type DesignComp,
   ListDataRef,
   type ListList,
-  type ListSelectedList
+  type ListSelectedList,
+  setValues
 } from '@dxtmisha/functional'
 
 import { EventClickInclude } from '../../classes/EventClickInclude'
 import { ModelValueInclude } from '../../classes/ModelValueInclude'
 
+import type { EventClickValue } from '../../types/eventClickTypes'
 import type { ChipGroupComponents, ChipGroupEmits, ChipGroupSlots } from './types'
 import type { ChipGroupProps } from './props'
 
@@ -85,5 +87,40 @@ export class ChipGroup {
    */
   getList(): ListList {
     return this.data.fullData.value
+  }
+
+  /**
+   * Click event handler.
+   *
+   * Обработчик события клика.
+   * @param event event object/ объект события
+   * @param options event options/ опции события
+   */
+  readonly onClick = (
+    event: MouseEvent,
+    options?: EventClickValue
+  ): void => {
+    console.log(
+      setValues(
+        this.props.selected,
+        options?.value,
+        { multiple: true }
+      )
+    )
+    if (
+      !this.props.readonly
+      && this.props.multiple
+    ) {
+      this.event.onClick(event, {
+        ...options,
+        value: setValues(
+          this.props.selected,
+          options?.value,
+          { multiple: true }
+        )
+      } as EventClickValue)
+    } else {
+      this.event.onClick(event, options)
+    }
   }
 }
