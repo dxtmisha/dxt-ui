@@ -70,7 +70,7 @@ export const wikiDescriptionsListGroup: StorybookComponentsDescriptionItem = {
 <StorybookDescriptions componentName={'ListGroup'} type={'listGroup'}/>
     `,
     expose: `
-<StorybookDescriptions componentName={'Expose'} type={'open'}/>
+<StorybookDescriptions componentName={'Expose'} type={'getOpen'}/>
     `,
     slots: `
 <StorybookDescriptions componentName={'ListGroup'} type={'slots'}/>

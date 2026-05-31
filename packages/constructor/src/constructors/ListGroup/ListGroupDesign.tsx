@@ -79,7 +79,7 @@ export class ListGroupDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      open: this.item.open.is
+      getOpen: () => this.item.open.is()
     } as EXPOSE
   }
 
@@ -120,7 +120,7 @@ export class ListGroupDesign<
       {
         ...this.getAttrs(),
         'class': this.classes?.value.main,
-        'data-open': this.item.open.is.value ? 'open' : 'close',
+        'data-open': this.item.open.is() ? 'open' : 'close',
         'data-divider': this.props.divider ? 'divider' : undefined,
         ...AriaStaticInclude.role('group')
       },
@@ -138,7 +138,7 @@ export class ListGroupDesign<
       'motionTransform',
       {
         ...this.item.transformBinds(),
-        open: this.item.open.is.value
+        open: this.item.open.is()
       },
       {
         head: this.renderHead,
@@ -163,7 +163,7 @@ export class ListGroupDesign<
         'head',
         undefined,
         {
-          open: this.item.open.is.value,
+          open: this.item.open.is(),
           ...item.binds
         }
       )

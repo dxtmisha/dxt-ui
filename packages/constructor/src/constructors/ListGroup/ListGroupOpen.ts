@@ -1,4 +1,4 @@
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import type { MotionTransformEmitOptions } from '../MotionTransform'
 
 /**
@@ -36,9 +36,9 @@ export class ListGroupOpen<T extends { open?: boolean }> {
    *
    * Возвращает информацию о статусе открытия.
    */
-  readonly is = computed<boolean>(
-    () => this.open.value || Boolean(this.props.open)
-  )
+  readonly is = (): boolean => {
+    return this.open.value || Boolean(this.props.open)
+  }
 
   /**
    * Events for opening the element.

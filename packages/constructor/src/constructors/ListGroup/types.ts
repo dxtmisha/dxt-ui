@@ -1,4 +1,3 @@
-import type { ComputedRef } from 'vue'
 import type { ConstrClass } from '@dxtmisha/functional'
 
 import type { MotionTransformComponentInclude } from '../MotionTransform'
@@ -26,7 +25,7 @@ export type ListGroupEmits = {}
  */
 export interface ListGroupExpose {
   /** Whether the group is currently open/ Открыта ли группа в данный момент */
-  open: ComputedRef<boolean>
+  getOpen(): boolean
 }
 
 /**

@@ -16,8 +16,8 @@ import exposeIdEn from './expose.id.en.mdx'
 import exposeIdRu from './expose.id.ru.mdx'
 import exposeLabelIdEn from './expose.labelId.en.mdx'
 import exposeLabelIdRu from './expose.labelId.ru.mdx'
-import exposeOpenEn from './expose.open.en.mdx'
-import exposeOpenRu from './expose.open.ru.mdx'
+import exposeGetOpenEn from './expose.getOpen.en.mdx'
+import exposeGetOpenRu from './expose.getOpen.ru.mdx'
 import exposeSelectedEn from './expose.selected.en.mdx'
 import exposeSelectedRu from './expose.selected.ru.mdx'
 import exposeValidationMessageEn from './expose.validationMessage.en.mdx'
@@ -60,9 +60,9 @@ export const wikiMdxExpose: StorybookComponentsMdxItem = {
       en: exposeLabelIdEn,
       ru: exposeLabelIdRu
     },
-    open: {
-      en: exposeOpenEn,
-      ru: exposeOpenRu
+    getOpen: {
+      en: exposeGetOpenEn,
+      ru: exposeGetOpenRu
     },
     selected: {
       en: exposeSelectedEn,
