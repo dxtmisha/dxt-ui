@@ -31,6 +31,7 @@ const propsNames: StorybookProps = [
   { name: 'forceShowMessage', type: 'boolean | undefined' },
   { name: 'form', type: 'string | undefined' },
   { name: 'fraction', type: 'MaskFractionItem | undefined' },
+  { name: 'hasHtmlCode', type: 'boolean | undefined' },
   { name: 'helperId', type: 'string | undefined' },
   { name: 'helperMessage', type: 'string | undefined' },
   { name: 'href', type: 'string | undefined' },

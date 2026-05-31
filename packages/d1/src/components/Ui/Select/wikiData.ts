@@ -30,6 +30,7 @@ const propsNames: StorybookProps = [
   { name: 'focus', type: 'boolean | undefined' },
   { name: 'forceShowMessage', type: 'boolean | undefined' },
   { name: 'form', type: 'string | undefined' },
+  { name: 'hasHtmlCode', type: 'boolean | undefined' },
   { name: 'helperId', type: 'string | undefined' },
   { name: 'helperMessage', type: 'string | undefined' },
   { name: 'hideList', type: 'boolean | undefined' },

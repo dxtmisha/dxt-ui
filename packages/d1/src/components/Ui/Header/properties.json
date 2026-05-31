@@ -1,10 +1,14 @@
 {
   "main": "{d.header}",
+  "gap": "{sys.spacing.xs}",
   "#caption": {
     "color-opacity": "{sys.opacity.surface.medium}"
   },
   "~tag": {
     "~h1": {
+      "#icon": {
+        "font-size": "{sys.font.size.headlineSmall}"
+      },
       "#label": {
         "link|font": "{font.headlineMedium}",
         "media|md": {
@@ -13,6 +17,9 @@
       }
     },
     "~h2": {
+      "#icon": {
+        "font-size": "{sys.font.size.xl}"
+      },
       "#label": {
         "link|font": "{font.headlineSmall}",
         "media|md": {
@@ -21,6 +28,9 @@
       }
     },
     "~h3": {
+      "#icon": {
+        "font-size": "{sys.font.size.md}"
+      },
       "#label": {
         "link|font": "{font.titleMedium}",
         "media|md": {
@@ -29,6 +39,9 @@
       }
     },
     "~h4": {
+      "#icon": {
+        "font-size": "{sys.font.size.xs}"
+      },
       "#label": {
         "link|font": "{font.titleSmall}",
         "media|md": {
@@ -37,6 +50,9 @@
       }
     },
     "~h5": {
+      "#icon": {
+        "font-size": "{sys.font.size.xs}"
+      },
       "#label": {
         "link|font": "{font.labelMedium}",
         "media|md": {
@@ -45,6 +61,9 @@
       }
     },
     "~h6": {
+      "#icon": {
+        "font-size": "{sys.font.size.xs}"
+      },
       "#label": {
         "link|font": "{font.labelSmall}",
         "media|md": {

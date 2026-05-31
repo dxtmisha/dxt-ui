@@ -26,6 +26,7 @@ const propsNames: StorybookProps = [
   { name: 'focus', type: 'boolean | undefined' },
   { name: 'forceShowMessage', type: 'boolean | undefined' },
   { name: 'form', type: 'string | undefined' },
+  { name: 'hasHtmlCode', type: 'boolean | undefined' },
   { name: 'helperId', type: 'string | undefined' },
   { name: 'helperMessage', type: 'string | undefined' },
   { name: 'iconCheckbox', type: 'string | ConstrBind<ImagePropsBasic> | null | undefined' },

@@ -32,6 +32,7 @@ const propsNames: StorybookProps = [
   { name: 'filled', type: 'boolean | undefined' },
   { name: 'focus', type: 'boolean | undefined' },
   { name: 'forceShowMessage', type: 'boolean | undefined' },
+  { name: 'hasHtmlCode', type: 'boolean | undefined' },
   { name: 'helperId', type: 'string | undefined' },
   { name: 'helperMessage', type: 'string | undefined' },
   { name: 'href', type: 'string | undefined' },

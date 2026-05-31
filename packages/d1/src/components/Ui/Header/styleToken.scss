@@ -11,12 +11,18 @@
   // Стили из токенов
   // :style [!] System label / Системная метка
   & {
+    gap: var(--d1-sys-spacing-xs);
+    
     &__caption {
       @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)}); @include ui.color('init');
     }
     
     &--tag {
       &--h1 {
+        & .d1-header__icon {
+          @include ui.fontSize(#{var(--d1-sys-font-size-headlineSmall)});
+        }
+        
         & .d1-header__label {
           font-family: var(--d1-sys-font-family-basic), sans-serif;
           @include ui.fontSize(#{var(--d1-sys-font-size-headlineMedium)});
@@ -35,6 +41,10 @@
       }
       
       &--h2 {
+        & .d1-header__icon {
+          @include ui.fontSize(#{var(--d1-sys-font-size-xl)});
+        }
+        
         & .d1-header__label {
           font-family: var(--d1-sys-font-family-basic), sans-serif;
           @include ui.fontSize(#{var(--d1-sys-font-size-headlineSmall)});
@@ -53,6 +63,10 @@
       }
       
       &--h3 {
+        & .d1-header__icon {
+          @include ui.fontSize(#{var(--d1-sys-font-size-md)});
+        }
+        
         & .d1-header__label {
           font-family: var(--d1-sys-font-family-basic), sans-serif;
           @include ui.fontSize(#{var(--d1-sys-font-size-md)});
@@ -71,6 +85,10 @@
       }
       
       &--h4 {
+        & .d1-header__icon {
+          @include ui.fontSize(#{var(--d1-sys-font-size-xs)});
+        }
+        
         & .d1-header__label {
           font-family: var(--d1-sys-font-family-basic), sans-serif;
           @include ui.fontSize(#{var(--d1-sys-font-size-sm)});
@@ -89,6 +107,10 @@
       }
       
       &--h5 {
+        & .d1-header__icon {
+          @include ui.fontSize(#{var(--d1-sys-font-size-xs)});
+        }
+        
         & .d1-header__label {
           font-family: var(--d1-sys-font-family-basic), sans-serif;
           @include ui.fontSize(#{var(--d1-sys-font-size-xs)});
@@ -107,6 +129,10 @@
       }
       
       &--h6 {
+        & .d1-header__icon {
+          @include ui.fontSize(#{var(--d1-sys-font-size-xs)});
+        }
+        
         & .d1-header__label {
           font-family: var(--d1-sys-font-family-basic), sans-serif;
           @include ui.fontSize(#{var(--d1-sys-font-size-x)});

@@ -12,6 +12,7 @@ const propsNames: StorybookProps = [
   { name: 'disabled', type: 'boolean | undefined' },
   { name: 'fieldCounterAttrs', type: 'ConstrBind<FieldCounterProps> | undefined' },
   { name: 'forceShow', type: 'boolean | undefined' },
+  { name: 'hasHtmlCode', type: 'boolean | undefined' },
   { name: 'helperId', type: 'string | undefined' },
   { name: 'helperMessage', type: 'string | undefined' },
   { name: 'isSkeleton', type: 'boolean | undefined' },
