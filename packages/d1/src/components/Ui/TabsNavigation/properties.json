@@ -1,14 +1,11 @@
 {
   "main": "{d.tabsNavigation}",
+  "borderWidth": "{sys.spacing.outline}",
+  "borderColor": "{sys.palette.outline}",
+  "borderOpacity": "{sys.opacity.outline}",
   "gap": "{sys.spacing.x}",
   "paddingY": "{sys.spacing.x}",
   "focus-visible": {
     "outline": "{outline.md}"
-  },
-  "~divider": {
-    "border-bottom-style": "solid",
-    "border-bottom-width": "{sys.spacing.outline}",
-    "border-color": "{sys.palette.outline}",
-    "border-opacity": "{sys.opacity.outline}"
   }
 }

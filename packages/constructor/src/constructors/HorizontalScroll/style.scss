@@ -3,6 +3,8 @@
 @mixin mixinHorizontalScroll {
   @include ui.initByCustom('marginLeft', 0);
 
+  --sys-bleed: ui.v('??sys.bleed', 0);
+
   display: grid;
   grid-auto-flow: column;
   align-items: stretch;

@@ -1,15 +1,11 @@
-import { computed, ref, type VNode } from 'vue'
 import {
   type ConstrBind,
-  type DesignComponents,
-  getBind,
-  getRef,
-  type RefOrNormal,
-  toBinds
+  getBind
 } from '@dxtmisha/functional'
 
+import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
+
 import type {
-  TabsNavigationComponentInclude,
   TabsNavigationIdsList,
   TabsNavigationPropsInclude
 } from './basicTypes'
@@ -17,79 +13,64 @@ import type { TabsNavigationExpose, TabsNavigationSlots } from './types'
 import type { TabsNavigationProps } from './props'
 
 /**
- * The class returns data for working with the TabsNavigation component
+ * The class returns data for working with the TabsNavigation component.
+ * It extends ComponentIncludeAbstract to manage state, binding, and rendering logic for tab navigation.
  *
- * Класс возвращает данные для работы с компонентом TabsNavigation
+ * Класс возвращает данные для работы с компонентом TabsNavigation.
+ * Расширяет ComponentIncludeAbstract для управления состоянием, привязками и логикой рендеринга навигации вкладок.
+ *
+ * @template Props input parameters / входные параметры
+ * @template PropsExtra additional parameters / дополнительные параметры
  */
 export class TabsNavigationInclude<
   Props extends TabsNavigationPropsInclude = TabsNavigationPropsInclude,
   PropsExtra extends ConstrBind<TabsNavigationProps> = ConstrBind<TabsNavigationProps>
-> {
+> extends ComponentIncludeAbstract<
+    Props,
+    PropsExtra,
+    TabsNavigationExpose,
+    TabsNavigationSlots,
+    Record<string, any>
+  > {
+  /** Sub-component name / Название субкомпонента */
+  protected readonly name = 'tabsNavigation'
+  /** Name of the property containing component attributes / Название свойства, содержащего атрибуты компонента */
+  protected readonly propsAttrsName = 'tabsNavigationAttrs'
+
   /**
-   * Constructor
-   * @param props input parameter/ входной параметр
-   * @param className class name/ название класса
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param extra additional parameter or property name/ дополнительный параметр или имя свойства
-   * @param index index identifier/ идентификатор индекса
+   * Getter returning list of generated IDs.
+   *
+   * Геттер, возвращающий список сгенерированных идентификаторов.
+   * @returns map of item values to unique DOM IDs / карта значений элементов к уникальным DOM ID
    */
-  constructor(
-    protected readonly props: Readonly<Props>,
-    protected readonly className: string,
-    protected readonly components?: DesignComponents<TabsNavigationComponentInclude, Props>,
-    protected readonly extra?: RefOrNormal<PropsExtra>,
-    protected readonly index?: string
-  ) {
+  get ids(): TabsNavigationIdsList {
+    return this.element.value?.ids() ?? {}
   }
 
-  /** Reference to tabsNavigation element expose/ Ссылка на expose элемента tabsNavigation */
-  readonly element = ref<ConstrBind<TabsNavigationExpose> | undefined>()
-
-  /** Computed bindings for the tabsNavigation/ Вычисляемые привязки для tabsNavigation */
-  readonly binds = computed<PropsExtra>(() => {
-    return toBinds<PropsExtra>(
-      getRef(this.extra),
-      {
-        class: `${this.className}__tabsNavigation`,
-        itemAttrs: this.props.tabItemAttrs
-      },
-      getBind(this.props.tabs, 'list'),
-      this.props.tabsNavigationAttrs
-    )
-  })
-
   /**
-   * List of generated IDs.
+   * Resolves and returns dynamic properties for horizontal scroll.
    *
-   * Список сгенерированных идентификаторов.
+   * Разрешает и возвращает динамические свойства для горизонтальной прокрутки.
+   * @returns resolved properties or undefined / разрешенные свойства или undefined
    */
-  readonly ids = computed<TabsNavigationIdsList>(() => {
-    return this.element.value?.ids as any
-  })
+  protected override getExtra() {
+    return getBind(
+      this.getProps().tabs,
+      super.getExtra(),
+      'list'
+    )
+  }
 
   /**
-   * Render the TabsNavigation component with slots/
-   * Рендер компонента TabsNavigation со слотами
-   * @param slotsChildren slots passed to the tabsNavigation/ слоты, передаваемые tabsNavigation
-   * @param attrs additional attributes/ дополнительные атрибуты
+   * Builds and resolves all HTML attributes and classes for binding.
+   *
+   * Создает и разрешает все HTML-атрибуты и классы для привязки.
+   * @returns resolved bindings / разрешенные привязки
    */
-  readonly render = (
-    slotsChildren?: TabsNavigationSlots,
-    attrs?: Record<string, any>
-  ): VNode[] => {
-    if (this.components) {
-      return this.components.render(
-        'tabsNavigation',
-        toBinds(
-          attrs,
-          this.binds.value,
-          { ref: this.element }
-        ),
-        slotsChildren as unknown as Record<string, any>,
-        this.index
-      )
+  protected override toBinds() {
+    return {
+      ...super.toBinds(),
+      itemAttrs: this.getProps().tabItemAttrs
     }
-
-    return []
   }
 }

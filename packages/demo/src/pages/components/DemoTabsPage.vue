@@ -1,9 +1,14 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useDemoEvent } from '../../composables/useDemoEvent'
+
 import DemoLinkBlack from '../../components/DemoLinkBlack.vue'
 import DemoValue from '../../components/DemoValue.vue'
 
+const { eventName, onEvent } = useDemoEvent()
+
 const selected = ref('tab1')
+const selectedEvents = ref('tab1')
 
 const tabs = [
   { value: 'tab1', label: 'Home', icon: 'home' },
@@ -72,6 +77,20 @@ const listLarge = [
         </D1Tabs>
       </D1Group>
 
+      <D1Group label="Events">
+        <D1Tabs
+          v-model:selected="selectedEvents"
+          :tabs="tabs"
+          @click="onEvent('click')"
+          @clickLite="onEvent('clickLite')"
+          @motionAxis="onEvent('motionAxis')"
+        >
+          <template #tab1><span>Trigger events by switching tabs.</span></template>
+          <template #tab2><span>Inspect the event values below.</span></template>
+        </D1Tabs>
+        <DemoValue :value="eventName" />
+      </D1Group>
+
       <D1Group label="Horizontal Scroll (Many Tabs)">
         <D1Tabs :tabs="listLarge" selected="tab4">
           <template #tab1><span>Latest gadgets and devices.</span></template>
@@ -88,6 +107,4 @@ const listLarge = [
   </D1Page>
 </template>
 
-<style lang="scss">
-.demo-tabs-page {}
-</style>
+<style lang="scss"></style>

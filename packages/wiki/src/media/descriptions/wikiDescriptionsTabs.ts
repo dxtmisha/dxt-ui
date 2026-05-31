@@ -103,6 +103,14 @@ export const wikiDescriptionsTabs: StorybookComponentsDescriptionItem = {
 
 <StorybookDescriptions componentName={'Tabs'} type={'v-model'}/>
 <Canvas of={Component.TabsVModel}/>
+    `,
+    events: `
+<StorybookDescriptions componentName={'Event'} type={'click'}/>
+<StorybookDescriptions componentName={'MotionAxis'} type={'events'}/>
+    `,
+    expose: `
+<StorybookDescriptions componentName={'Expose'} type={'getValue'}/>
+<StorybookDescriptions componentName={'Expose'} type={'getDetail'}/>
     `
   },
   ai: {

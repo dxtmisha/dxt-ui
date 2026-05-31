@@ -10685,6 +10685,27 @@
           }
         }
       },
+      "tabsNavigation": {
+        "name": "d1-tabsNavigation",
+        "type": "component",
+        "value": {
+          "borderWidth": {
+            "name": "--d1-tabsNavigation-borderWidth",
+            "type": "var",
+            "value": "{sys.spacing.outline}"
+          },
+          "borderColor": {
+            "name": "--d1-tabsNavigation-borderColor",
+            "type": "var",
+            "value": "{sys.palette.outline}"
+          },
+          "borderOpacity": {
+            "name": "--d1-tabsNavigation-borderOpacity",
+            "type": "var",
+            "value": "{sys.opacity.outline}"
+          }
+        }
+      },
       "textarea": {
         "name": "d1-textarea",
         "type": "component",

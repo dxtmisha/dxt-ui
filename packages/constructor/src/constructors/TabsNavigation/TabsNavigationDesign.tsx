@@ -23,7 +23,16 @@ import {
 } from './types'
 
 /**
- * TabsNavigationDesign
+ * TabsNavigationDesign handles the visual layout, HTML rendering, and slot integration of TabsNavigation.
+ * It maps data models into DOM nodes using HorizontalScroll and TabItem components.
+ *
+ * TabsNavigationDesign управляет визуальной разметкой, HTML-рендерингом и интеграцией слотов TabsNavigation.
+ * Преобразует модели данных в DOM-узлы с использованием компонентов HorizontalScroll и TabItem.
+ *
+ * @template COMP type describing component configuration / тип, описывающий конфигурацию компонентов
+ * @template EXPOSE type describing exposed API structure / тип, описывающий структуру экспортируемого API
+ * @template CLASSES type describing CSS classes map / тип, описывающий карту CSS-классов
+ * @template P type describing properties interface / тип, описывающий интерфейс свойств
  */
 export class TabsNavigationDesign<
   COMP extends TabsNavigationComponents,
@@ -39,14 +48,17 @@ export class TabsNavigationDesign<
     CLASSES,
     P
   > {
+  /** TabsNavigation business logic instance / Экземпляр бизнес-логики TabsNavigation */
   protected readonly item: TabsNavigation
 
   /**
-   * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor constructors item class/ класс элемента конструкторов
+   * Constructor for initializing the design renderer.
+   *
+   * Конструктор для инициализации отрисовщика дизайна.
+   * @param name component tag class name / имя класса тега компонента
+   * @param props reactive input properties / реактивные входные свойства
+   * @param options additional construction configuration options / дополнительные параметры конфигурации сборки
+   * @param ItemConstructor reference constructor of the business logic / конструктор ссылки бизнес-логики
    */
   constructor(
     name: string,
@@ -75,9 +87,10 @@ export class TabsNavigationDesign<
   }
 
   /**
-   * Initialization of all the necessary properties for work
+   * Initializes exposed API methods to the parent template or context.
    *
-   * Инициализация всех необходимых свойств для работы.
+   * Инициализирует методы API, экспортируемые в родительский шаблон или контекст.
+   * @returns object containing exposed API maps / объект, содержащий карты экспортируемого API
    */
   protected initExpose(): EXPOSE {
     return {
@@ -86,9 +99,10 @@ export class TabsNavigationDesign<
   }
 
   /**
-   * Improvement of the obtained list of classes.
+   * Generates and returns dynamic CSS classes map for rendering.
    *
-   * Доработка полученного списка классов.
+   * Генерирует и возвращает карту динамических CSS-классов для рендеринга.
+   * @returns object containing CSS class mappings / объект, содержащий сопоставления CSS-классов
    */
   protected initClasses(): Partial<CLASSES> {
     return {
@@ -101,36 +115,38 @@ export class TabsNavigationDesign<
   }
 
   /**
-   * Refinement of the received list of styles.
+   * Generates and returns custom inline CSS styles map.
    *
-   * Доработка полученного списка стилей.
+   * Генерирует и возвращает карту пользовательских встроенных стилей CSS.
+   * @returns object containing inline CSS rules / объект, содержащий встроенные правила CSS
    */
   protected initStyles(): ConstrStyles {
     return {}
   }
 
   /**
-   * A method for rendering.
+   * Main entry point for rendering the whole tab navigation component hierarchy.
    *
-   * Метод для рендеринга.
+   * Главная точка входа для рендеринга всей иерархии компонентов навигации вкладок.
+   * @returns array of VNodes representing scrollable wrapper with list items / массив VNode, представляющих прокручиваемую обертку с элементами списка
    */
   protected initRender(): VNode[] {
     return this.item.scroll.render(
       { default: this.renderList },
       {
-        ...this.item.binds,
         class: this.classes?.value.main
       }
     )
   }
 
   /**
-   * Generates a list of elements.
+   * Helper method for rendering the list of tab items inside the scrollable container.
    *
-   * Генерирует список элементов.
-   * @param props data for the transferable property/ данные для передаваемого свойства
+   * Вспомогательный метод для рендеринга списка вкладок внутри прокручиваемого контейнера.
+   * @param props horizontal scroll control parameters / параметры контроля горизонтальной прокрутки
+   * @returns array of VNodes containing leading slot, list items, and trailing slot / массив VNode, содержащий ведущий слот, элементы списка и замыкающий слот
    */
-  protected readonly renderList = (
+  readonly renderList = (
     props: HorizontalScrollControlItem
   ): VNode[] => {
     const children: any[] = []
@@ -149,13 +165,14 @@ export class TabsNavigationDesign<
   }
 
   /**
-   * Generates an element.
+   * Helper method for rendering a single tab item with appropriate bindings and selection classes.
    *
-   * Генерирует элемент.
-   * @param props data for the transferable property/ данные для передаваемого свойства
-   * @param item selected element / выбранный элемент
+   * Вспомогательный метод для рендеринга отдельного элемента вкладки с соответствующими привязками и классами выбора.
+   * @param props horizontal scroll control parameters / параметры контроля горизонтальной прокрутки
+   * @param item single full tab list item state data / данные состояния одного элемента списка вкладок
+   * @returns VNode of single rendered tab item / VNode одного отрендеренного элемента вкладки
    */
-  protected readonly renderItem = (
+  readonly renderItem = (
     props: HorizontalScrollControlItem,
     item: ListDataFullItem<TabItemPropsBasic>
   ): VNode => {

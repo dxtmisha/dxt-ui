@@ -12,47 +12,60 @@ import { TabsNavigationFocus } from './TabsNavigationFocus'
 import { TabsNavigationIds } from './TabsNavigationIds'
 import { TabsNavigationIndicator } from './TabsNavigationIndicator'
 import { TabsNavigationControl } from './TabsNavigationControl'
+import { TabsNavigationSize } from './TabsNavigationSize'
 
 import type { EventClickValue } from '../../types/eventClickTypes'
 import type { TabsNavigationComponents, TabsNavigationEmits, TabsNavigationSlots } from './types'
 import type { TabsNavigationProps } from './props'
 
 /**
- * TabsNavigation
+ * TabsNavigation manages the core business logic of a tab navigation component.
+ * It coordinates selection, focus management, indicator movements, scrolling, and keyboard control.
+ *
+ * TabsNavigation управляет основной бизнес-логикой компонента навигации вкладок.
+ * Координирует выбор элементов, управление фокусом, движение индикатора, прокрутку и управление с клавиатуры.
  */
 export class TabsNavigation {
+  /** Scroll handling helper / Вспомогательный класс для работы с прокруткой */
   readonly scroll: HorizontalScrollInclude
 
+  /** Selected tab state helper / Класс для работы с выбранным состоянием вкладки */
   readonly selected: TabsNavigationSelected
+
+  /** Focus management helper / Класс для управления фокусом */
   readonly focus: TabsNavigationFocus
+
+  /** Reactive list data reference / Реактивная ссылка на данные списка */
   readonly data: ListDataRef
+
+  /** Tab DOM identifiers manager / Менеджер DOM-идентификаторов вкладок */
   readonly ids: TabsNavigationIds
 
+  /** Dynamic tab active indicator helper / Вспомогательный класс для управления активным индикатором вкладки */
   readonly indicator: TabsNavigationIndicator
+
+  /** Tab keyboard control helper / Вспомогательный класс для управления с клавиатуры */
   readonly control: TabsNavigationControl
 
+  /** Tab size observer helper / Вспомогательный класс для отслеживания размеров вкладок */
+  readonly size: TabsNavigationSize
+
+  /** Event click listener helper / Вспомогательный класс для обработки кликов */
   readonly event: EventClickInclude
 
   /**
-   * Constructor
-   * @param props input data/ входные данные
-   * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
-   * @param element input element/ элемент ввода
-   * @param classDesign design name/ название дизайна
-   * @param className class name/ название класса
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param slots object for working with slots/ объект для работы со слотами
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param constructors object with classes/ объект с классами
-   * @param constructors.ModelIncludeConstructor class for working with model/ класс для работы с моделью
-   * @param constructors.TabsNavigationFocusConstructor class for working with focus/ класс для работы с фокусом
-   * @param constructors.EventClickIncludeConstructor class for working with event click/ класс для работы с событием клика
-   * @param constructors.HorizontalScrollIncludeConstructor class for working with horizontal scroll/ класс для работы с горизонтальной прокруткой
-   * @param constructors.ListDataRefConstructor class for working with data list/ класс для работы со списком данных
-   * @param constructors.TabsNavigationControlConstructor class for working with control/ класс для работы с управлением
-   * @param constructors.TabsNavigationIdsConstructor class for working with ids/ класс для работы с идентификаторами
-   * @param constructors.TabsNavigationIndicatorConstructor class for working with indicator/ класс для работы с индикатором
-   * @param constructors.TabsNavigationSelectedConstructor class for working with selected/ класс для работы с выбранным
+   * Constructor for initializing all necessary components for tab navigation.
+   *
+   * Конструктор для инициализации всех необходимых компонентов навигации вкладок.
+   * @param props input configuration properties / входные конфигурационные свойства
+   * @param refs reactive references of properties / реактивные ссылки свойств
+   * @param element main HTML element / главный HTML-элемент
+   * @param classDesign design class token name / имя токена класса дизайна
+   * @param className base class name / базовое имя класса
+   * @param components registry of design components / реестр дизайн-компонентов
+   * @param slots slot functions wrapper / обертка функций слотов
+   * @param emits event emitter callback / функция обратного вызова для генерации событий
+   * @param constructors optional custom implementation class constructors / опциональные пользовательские конструкторы классов
    */
   constructor(
     protected readonly props: TabsNavigationProps,
@@ -73,6 +86,7 @@ export class TabsNavigation {
       TabsNavigationFocusConstructor?: typeof TabsNavigationFocus
       TabsNavigationIndicatorConstructor?: typeof TabsNavigationIndicator
       TabsNavigationSelectedConstructor?: typeof TabsNavigationSelected
+      TabsNavigationSizeConstructor?: typeof TabsNavigationSize
     } = {}
   ) {
     const {
@@ -84,7 +98,8 @@ export class TabsNavigation {
       TabsNavigationIdsConstructor = TabsNavigationIds,
       TabsNavigationFocusConstructor = TabsNavigationFocus,
       TabsNavigationIndicatorConstructor = TabsNavigationIndicator,
-      TabsNavigationSelectedConstructor = TabsNavigationSelected
+      TabsNavigationSelectedConstructor = TabsNavigationSelected,
+      TabsNavigationSizeConstructor = TabsNavigationSize
     } = constructors
 
     this.scroll = new HorizontalScrollIncludeConstructor(
@@ -127,15 +142,17 @@ export class TabsNavigation {
       this.focus,
       this.data
     )
+    this.size = new TabsNavigationSizeConstructor(this.scroll)
 
     this.event = new EventClickIncludeConstructor(undefined, undefined, emits)
     new ModelIncludeConstructor('selected', emits, this.selected.item)
   }
 
   /**
-   * Returns bindings for the element.
+   * Returns binding attributes for the container element.
    *
-   * Возвращает привязки для элемента.
+   * Возвращает атрибуты привязки для контейнера.
+   * @returns object containing role, tabIndex, and keyboard bindings / объект с ролью, tabIndex и привязками клавиатуры
    */
   get binds(): Record<string, any> {
     return {
@@ -146,11 +163,11 @@ export class TabsNavigation {
   }
 
   /**
-   * Handler for the click event.
+   * Handler for the click event on tab elements.
    *
-   * Обработчик события клика.
-   * @param event event object/ объект события
-   * @param options additional event options/ дополнительные опции события
+   * Обработчик события клика на элементы вкладок.
+   * @param event native MouseEvent object / объект нативного события MouseEvent
+   * @param options event click value details / детальная информация события клика
    */
   readonly onClick = (
     event: MouseEvent,

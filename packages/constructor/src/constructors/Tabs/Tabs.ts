@@ -1,10 +1,11 @@
-import { computed, type Ref, type ToRefs } from 'vue'
+import { type Ref, type ToRefs } from 'vue'
 import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
 import { EventClickInclude } from '../../classes/EventClickInclude'
 import { ModelInclude } from '../../classes/ModelInclude'
-import { MotionAxisInclude } from '../MotionAxis/MotionAxisInclude'
-import { TabsNavigationInclude } from '../TabsNavigation/TabsNavigationInclude'
+
+import { MotionAxisInclude } from '../MotionAxis'
+import { TabsNavigationInclude } from '../TabsNavigation'
 
 import { TabsSelected } from './TabsSelected'
 
@@ -62,18 +63,19 @@ export class Tabs {
       TabsSelectedConstructor = TabsSelected
     } = constructors
 
-    this.selected = new TabsSelectedConstructor(this.props, this.refs)
-    this.event = new EventClickIncludeConstructor(undefined, undefined, this.emits)
+    this.selected = new TabsSelectedConstructor(props, refs)
+    this.event = new EventClickIncludeConstructor(undefined, undefined, emits)
+    new ModelIncludeConstructor('selected', emits, this.selected.item)
 
     this.tabsNavigation = new TabsNavigationIncludeConstructor(
-      this.props,
       this.className,
+      this.props,
       this.components,
-      computed(() => ({
+      () => ({
         'selected': this.selected.item.value,
         'onClick': this.event.onClick,
         'onUpdate:selected': this.selected.set
-      }))
+      })
     )
 
     this.motionAxis = new MotionAxisIncludeConstructor(
@@ -85,7 +87,5 @@ export class Tabs {
       emits,
       () => String(this.selected.item.value)
     )
-
-    new ModelIncludeConstructor('selected', emits, this.selected.item)
   }
 }

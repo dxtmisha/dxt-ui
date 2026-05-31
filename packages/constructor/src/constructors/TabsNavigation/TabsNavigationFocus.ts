@@ -4,22 +4,20 @@ import { type NumberOrStringOrBoolean, toArray } from '@dxtmisha/functional'
 import { TabsNavigationSelected } from './TabsNavigationSelected'
 
 /**
- * Class for managing focus navigation.
+ * Class for managing focus navigation, programmatic focus movements, and tracking active tab focus states.
  *
- * Класс для управления навигацией фокуса.
+ * Класс для управления навигацией фокуса, программным перемещением фокуса и отслеживанием активных состояний фокуса вкладок.
  */
 export class TabsNavigationFocus {
-  /**
-   * Current focus value.
-   *
-   * Текущее значение фокуса.
-   */
+  /** Reactive ref holding the current focused index/value / Реактивная ссылка, содержащая текущий сфокусированный индекс/значение */
   readonly item = ref<NumberOrStringOrBoolean>()
 
   /**
-   * Constructor
-   * @param element main element/ главный элемент
-   * @param selected selected value object/ объект значения выделения
+   * Constructor for initializing focus management helper.
+   *
+   * Конструктор для инициализации помощника управления фокусом.
+   * @param element reactive reference of the main tab container / реактивная ссылка главного контейнера вкладок
+   * @param selected selected value manager instance / экземпляр менеджера выделенного значения
    */
   constructor(
     protected readonly element: Ref<HTMLElement | undefined>,
@@ -28,9 +26,10 @@ export class TabsNavigationFocus {
   }
 
   /**
-   * Returns the current focus value.
+   * Returns the current focused tab item index as string or undefined.
    *
-   * Возвращает текущее значение фокуса.
+   * Возвращает строковый индекс текущей сфокусированной вкладки или undefined.
+   * @returns index string or undefined / строковый индекс или undefined
    */
   get(): string | undefined {
     if (this.item.value) {
@@ -41,9 +40,10 @@ export class TabsNavigationFocus {
   }
 
   /**
-   * Applies the current focus value to the selection.
+   * Applies the current focused value as the selected tab state.
    *
-   * Применяет текущее значение фокуса к выделению.
+   * Применяет текущее сфокусированное значение к выделенному состоянию вкладки.
+   * @returns instance of this focus helper class / текущий экземпляр класса помощника фокуса
    */
   apply(): this {
     this.selected.set(this.item.value)
@@ -51,10 +51,11 @@ export class TabsNavigationFocus {
   }
 
   /**
-   * Sets the focus to the specified value.
+   * Programmatically sets focus to a specified tab index and focuses its DOM element.
    *
-   * Устанавливает фокус на указанное значение.
-   * @param focus focus value/ значение фокуса
+   * Программным образом устанавливает фокус на указанный индекс вкладки и фокусирует его DOM-элемент.
+   * @param focus index to set focus to / индекс для установки фокуса
+   * @returns instance of this focus helper class / текущий экземпляр класса помощника фокуса
    */
   set(focus?: string): this {
     this.item.value = focus
@@ -64,9 +65,10 @@ export class TabsNavigationFocus {
   }
 
   /**
-   * Sets the initial focus position based on the selected value.
+   * Sets the initial focus value based on the currently selected tab.
    *
-   * Устанавливает начальную позицию фокуса на основе выбранного значения.
+   * Устанавливает начальное значение фокуса на основе текущей выбранной вкладки.
+   * @returns instance of this focus helper class / текущий экземпляр класса помощника фокуса
    */
   position(): this {
     this.item.value = toArray(this.selected.actualItem.value)?.[0]
@@ -74,9 +76,10 @@ export class TabsNavigationFocus {
   }
 
   /**
-   * Resets the focus.
+   * Resets the active focus state value to undefined.
    *
-   * Сбрасывает фокус.
+   * Сбрасывает активное значение фокуса на значение undefined.
+   * @returns instance of this focus helper class / текущий экземпляр класса помощника фокуса
    */
   reset(): this {
     this.item.value = undefined
@@ -84,9 +87,10 @@ export class TabsNavigationFocus {
   }
 
   /**
-   * Returns the focused element.
+   * Resolves and returns the actual focused HTML element by querying data attribute.
    *
-   * Возвращает элемент в фокусе.
+   * Находит и возвращает сфокусированный HTML-элемент путем поиска по data-атрибуту.
+   * @returns focused HTMLElement or undefined / сфокусированный HTMLElement или undefined
    */
   protected getElement(): HTMLElement | undefined {
     if (this.item.value) {

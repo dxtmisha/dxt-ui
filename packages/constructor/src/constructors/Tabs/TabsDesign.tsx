@@ -77,7 +77,9 @@ export class TabsDesign<
    * Инициализация всех необходимых свойств для работы.
    */
   protected initExpose(): EXPOSE {
-    return {} as EXPOSE
+    return {
+      ...this.item.event.expose
+    } as EXPOSE
   }
 
   /**
@@ -127,7 +129,7 @@ export class TabsDesign<
       const slots: Record<string, () => VNode> = {}
 
       for (const key in this.slots) {
-        const id = this.item.tabsNavigation.ids.value?.[key]
+        const id = this.item.tabsNavigation.ids?.[key]
         slots[key] = () => h(
           'div',
           {

@@ -11,6 +11,10 @@
   // Стили из токенов
   // :style [!] System label / Системная метка
   & {
+    --d1-tabsNavigation-borderWidth: var(--d1-sys-spacing-outline);
+    --d1-tabsNavigation-borderColor: var(--d1-sys-palette-outline);
+    --d1-tabsNavigation-borderOpacity: var(--d1-sys-opacity-outline);
+    
     gap: var(--d1-sys-spacing-x);
     
     @include ui.paddingY(#{var(--d1-sys-spacing-x)});
@@ -21,13 +25,6 @@
       outline-width: var(--d1-ref-spacing-1);
       outline-style: solid;
       @include ui.outlineColor(#{var(--d1-sys-palette-primary)});
-    }
-    
-    &--divider {
-      @include ui.borderColor(#{var(--d1-sys-palette-outline)});
-      @include ui.borderOpacity(#{var(--d1-sys-opacity-outline)});
-      border-bottom-width: var(--d1-sys-spacing-outline);
-      border-bottom-style: solid;
     }
   }
   // :style [!] System label / Системная метка

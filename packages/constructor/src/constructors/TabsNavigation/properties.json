@@ -1,3 +1,12 @@
 {
+  "borderWidth": {
+    "_type": "var"
+  },
+  "borderColor": {
+    "_type": "var"
+  },
+  "borderOpacity": {
+    "_type": "var"
+  },
   "~divider": {}
 }

@@ -2,4 +2,18 @@
 
 @mixin mixinTabsNavigation {
   position: relative;
+
+  &--divider {
+    &::after {
+      content: ' ';
+      @include ui.absoluteBottom;
+
+      width: var(--sys-scroll-width, auto);
+      margin-right: calc(var(--sys-scroll-width, 0) * -1);
+
+      border-bottom-style: solid;
+      border-bottom-width: ui.v('??borderWidth');
+      @include ui.borderColor(ui.v('??borderColor'), ui.v('??borderOpacity'));
+    }
+  }
 }
