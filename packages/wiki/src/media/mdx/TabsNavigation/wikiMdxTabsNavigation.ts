@@ -4,6 +4,8 @@ import tabsNavigationEn from './tabsNavigation.en.mdx'
 import tabsNavigationRu from './tabsNavigation.ru.mdx'
 import vModelEn from './v-model.en.mdx'
 import vModelRu from './v-model.ru.mdx'
+import exposeIdsEn from './expose.ids.en.mdx'
+import exposeIdsRu from './expose.ids.ru.mdx'
 
 /**
  * MDX files for TabsNavigation component
@@ -20,6 +22,10 @@ export const wikiMdxTabsNavigation: StorybookComponentsMdxItem = {
     'v-model': {
       en: vModelEn,
       ru: vModelRu
+    },
+    'expose.ids': {
+      en: exposeIdsEn,
+      ru: exposeIdsRu
     }
   }
 }

@@ -1,10 +1,11 @@
-import { computed, toRef, type Ref, type ToRefs } from 'vue'
+import { type Ref, type ToRefs } from 'vue'
 import { type ConstrEmit, type DesignComp, ListDataRef, type ListSelectedList } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
-import { HorizontalScrollInclude } from '../HorizontalScroll'
 import { EventClickInclude } from '../../classes/EventClickInclude'
 import { ModelInclude } from '../../classes/ModelInclude'
+
+import { HorizontalScrollInclude } from '../HorizontalScroll'
 
 import { TabsNavigationSelected } from './TabsNavigationSelected'
 import { TabsNavigationFocus } from './TabsNavigationFocus'
@@ -87,38 +88,38 @@ export class TabsNavigation {
     } = constructors
 
     this.scroll = new HorizontalScrollIncludeConstructor(
-      this.className,
-      this.props,
-      this.components
+      className,
+      props,
+      components
     )
 
-    this.selected = new TabsNavigationSelectedConstructor(this.props, this.refs)
+    this.selected = new TabsNavigationSelectedConstructor(props, refs)
     this.focus = new TabsNavigationFocusConstructor(
-      this.element,
+      element,
       this.selected
     )
     this.data = new ListDataRefConstructor(
-      toRef(this.props, 'list'),
+      refs.list,
       this.focus.item,
       undefined,
       undefined,
       undefined,
       this.selected.actualItem,
-      this.refs.keyValue,
-      this.refs.keyLabel
+      refs.keyValue,
+      refs.keyLabel
     )
 
     this.ids = new TabsNavigationIdsConstructor(
-      this.props,
+      props,
       this.data
     )
 
     this.indicator = new TabsNavigationIndicatorConstructor(
-      this.props,
-      this.refs,
+      props,
+      refs,
       () => this.scroll.elementHtml,
-      this.classDesign,
-      this.className,
+      classDesign,
+      className,
       this.selected
     )
     this.control = new TabsNavigationControlConstructor(
@@ -127,17 +128,8 @@ export class TabsNavigation {
       this.data
     )
 
-    this.event = new EventClickIncludeConstructor(
-      undefined,
-      undefined,
-      this.emits
-    )
-
-    new ModelIncludeConstructor(
-      'selected',
-      this.emits,
-      this.selected.item
-    )
+    this.event = new EventClickIncludeConstructor(undefined, undefined, emits)
+    new ModelIncludeConstructor('selected', emits, this.selected.item)
   }
 
   /**
@@ -145,13 +137,13 @@ export class TabsNavigation {
    *
    * Возвращает привязки для элемента.
    */
-  readonly binds = computed(() => {
+  get binds(): Record<string, any> {
     return {
       tabindex: 0,
       ...this.control.binds,
       ...AriaStaticInclude.role('tablist')
     }
-  })
+  }
 
   /**
    * Handler for the click event.

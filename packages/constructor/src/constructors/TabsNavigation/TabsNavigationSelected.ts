@@ -1,4 +1,4 @@
-import { ref, watch, type ToRefs } from 'vue'
+import { ref, watch, type ToRefs, onMounted } from 'vue'
 import { getFirst, isSelected, type ListSelectedList } from '@dxtmisha/functional'
 
 import type { TabsNavigationProps } from './props'
@@ -26,10 +26,12 @@ export class TabsNavigationSelected {
     this.item.value = selected
     this.actualItem.value = selected
 
-    watch(
-      [refs.selected],
-      () => this.set(props.selected)
-    )
+    onMounted(() => {
+      watch(
+        [refs.selected],
+        () => this.set(props.selected)
+      )
+    })
   }
 
   /**

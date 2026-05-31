@@ -84,6 +84,9 @@ export const wikiDescriptionsTabsNavigation: StorybookComponentsDescriptionItem 
 <StorybookDescriptions componentName={'TabsNavigation'} type={'v-model'}/>
 <Canvas of={Component.TabsNavigationVModel}/>
     `,
+    expose: `
+<StorybookDescriptions componentName={'TabsNavigation'} type={'expose.ids'}/>
+    `,
     events: `
 <StorybookDescriptions componentName={'Event'} type={'click'}/>
     `,

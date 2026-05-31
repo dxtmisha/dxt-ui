@@ -1,7 +1,7 @@
 import { EventItem, isDomRuntime, ListDataRef } from '@dxtmisha/functional'
 
-import { TabsNavigationSelected } from './TabsNavigationSelected'
 import { TabsNavigationFocus } from './TabsNavigationFocus'
+import { TabsNavigationSelected } from './TabsNavigationSelected'
 
 /**
  * Class for managing tab navigation control.

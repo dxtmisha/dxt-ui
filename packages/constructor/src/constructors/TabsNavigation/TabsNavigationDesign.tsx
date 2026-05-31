@@ -81,7 +81,7 @@ export class TabsNavigationDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      ids: this.item.ids.ids
+      ids: () => this.item.ids.ids.value
     } as EXPOSE
   }
 
@@ -118,7 +118,7 @@ export class TabsNavigationDesign<
     return this.item.scroll.render(
       { default: this.renderList },
       {
-        ...this.item.binds.value,
+        ...this.item.binds,
         class: this.classes?.value.main
       }
     )
@@ -164,14 +164,12 @@ export class TabsNavigationDesign<
     return this.components.renderOne(
       'tabItem',
       toBinds(
-        {
-          tag: this.props.tag,
-          key: item.index
-        },
         this.props.itemAttrs,
         item,
         props.binds,
         {
+          tag: this.props.tag,
+          key: item.index,
           id: this.item.ids.getIdByValue(item.value),
           onClick: this.item.onClick,
           class: {

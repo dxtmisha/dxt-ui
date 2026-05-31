@@ -1,4 +1,3 @@
-import type { ComputedRef } from 'vue'
 import type { ConstrClass, ListSelectedList } from '@dxtmisha/functional'
 
 import type { HorizontalScrollComponentInclude } from '../HorizontalScroll'
@@ -32,8 +31,8 @@ export type TabsNavigationEmits
  * Тип, описывающий доступные свойства.
  */
 export interface TabsNavigationExpose {
-  /** Map of item values to their unique DOM identifiers/ Карта значений элементов и их уникальных DOM-идентификаторов */
-  ids: ComputedRef<TabsNavigationIdsList>
+  /** Map of item values to their unique DOM identifiers / Карта значений элементов и их уникальных DOM-идентификаторов */
+  ids(): TabsNavigationIdsList
 }
 
 /**
