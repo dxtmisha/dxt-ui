@@ -64,10 +64,10 @@ export class Block {
     } = constructors
 
     this.header = new HeaderIncludeConstructor(
-      props,
       className,
+      props,
       components,
-      this.slots,
+      undefined,
       undefined,
       this.labelId
     )

@@ -171,8 +171,13 @@ export class BlockDesign<
    * @returns array of VNodes / массив VNode
    */
   readonly renderHeader = (): VNode[] => {
-    if (this.item.header.is.value) {
-      return this.item.header.render()
+    if (
+      this.item.header.is
+      || this.slots?.label
+      || this.slots?.caption
+      || this.slots?.trailing
+    ) {
+      return this.item.header.render(this.slots)
     }
 
     return []

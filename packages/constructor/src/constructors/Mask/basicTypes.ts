@@ -1,7 +1,7 @@
 import type { ConstrBind, GeoDate } from '@dxtmisha/functional'
 import type { FieldPatternItemOrFunction, FieldValidationItem } from '../../types/fieldTypes'
 import type { MaskPropsBasic } from './props'
-import type { ModelProps } from '../../types/modelTypes.ts'
+import type { ModelProps } from '../../types/modelTypes'
 
 /** Mask type options/ Опции типа маски */
 export type MaskTypeItem = GeoDate

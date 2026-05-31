@@ -11,11 +11,11 @@ import {
   toNumber
 } from '@dxtmisha/functional'
 
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { ClientOnlyInclude } from '../../classes/ClientOnlyInclude'
 import { TextInclude } from '../../classes/TextInclude'
 
 import type { ProgressProps } from './props'
-import { AriaStaticInclude } from '../../classes/AriaStaticInclude.ts'
 
 /**
  * Base class for working with the loader.

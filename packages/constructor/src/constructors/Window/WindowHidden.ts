@@ -1,13 +1,14 @@
 import { onMounted, watch } from 'vue'
 import { isDomRuntime, isInput } from '@dxtmisha/functional'
+
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
+import { TeleportInclude } from '../../classes/TeleportInclude'
 
 import { WindowClassesData } from './WindowClassesData'
 import { WindowStatic } from './WindowStatic'
 
 import type { WindowOpen } from './WindowOpen'
 import type { WindowProps } from './props'
-import { TeleportInclude } from '../../classes/TeleportInclude.ts'
 
 let windowOpenCounter: number = 0
 

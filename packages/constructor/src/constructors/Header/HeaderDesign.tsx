@@ -19,7 +19,8 @@ import {
 } from './types'
 
 /**
- * HeaderDesign
+ * HeaderDesign component class for rendering the header component layout and slots. /
+ * Класс компонента HeaderDesign для рендеринга разметки и слотов компонента шапки.
  */
 export class HeaderDesign<
   COMP extends HeaderComponents,
@@ -35,14 +36,16 @@ export class HeaderDesign<
     CLASSES,
     P
   > {
+  /** Header controller instance / Экземпляр контроллера шапки */
   protected readonly item: Header
 
   /**
-   * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor constructors item class/ класс элемента конструкторов
+   * Constructor /
+   * Конструктор
+   * @param name class name / название класса
+   * @param props properties / свойства
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor constructors item class / класс элемента конструкторов
    */
   constructor(
     name: string,
@@ -71,18 +74,18 @@ export class HeaderDesign<
   }
 
   /**
-   * Initialization of all the necessary properties for work
-   *
+   * Initialization of all the necessary properties for work. /
    * Инициализация всех необходимых свойств для работы.
+   * @returns exposed API object / объект экспортируемого API
    */
   protected initExpose(): EXPOSE {
     return {} as EXPOSE
   }
 
   /**
-   * Improvement of the obtained list of classes.
-   *
+   * Improvement of the obtained list of classes. /
    * Доработка полученного списка классов.
+   * @returns partial classes object / частичный объект классов
    */
   protected initClasses(): Partial<CLASSES> {
     return {
@@ -99,18 +102,18 @@ export class HeaderDesign<
   }
 
   /**
-   * Refinement of the received list of styles.
-   *
+   * Refinement of the received list of styles. /
    * Доработка полученного списка стилей.
+   * @returns styles object / объект стилей
    */
   protected initStyles(): ConstrStyles {
     return {}
   }
 
   /**
-   * A method for rendering.
-   *
+   * A method for rendering. /
    * Метод для рендеринга.
+   * @returns rendered VNode / отрисованный VNode
    */
   protected initRender(): VNode {
     const children: any[] = [
@@ -124,15 +127,15 @@ export class HeaderDesign<
       ...this.getAttrs(),
       class: [
         this.classes?.value.main,
-        ...this.item.classList.value
+        ...this.item.classList
       ]
     }, children)
   }
 
   /**
-   * Trailing rendering.
-   *
+   * Trailing rendering. /
    * Рендеринг правого контента.
+   * @returns array of VNodes / массив VNode
    */
   protected readonly renderTrailing = (): VNode[] => {
     const children: any[] = []
