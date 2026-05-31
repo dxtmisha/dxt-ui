@@ -48,7 +48,7 @@ export class TextDescription {
       this.className,
       this.slots,
       undefined,
-      this.refs.tag as Ref<string>
+      this.refs.tag
     )
   }
 }

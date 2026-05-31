@@ -5,14 +5,14 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
-  { name: 'modelSelected', type: 'ListSelectedList | undefined' },
-  { name: 'motionAxisAttrs', type: 'ConstrBind<MotionAxisProps> | undefined' },
-  { name: 'onUpdate:modelSelected', type: '((value: ListSelectedList) => void) | undefined' },
-  { name: 'onUpdate:selected', type: '((value: ListSelectedList) => void) | undefined' },
+  { name: 'modelSelected', type: 'ListSelectedList' },
+  { name: 'motionAxisAttrs', type: 'ConstrBind<MotionAxisProps>' },
+  { name: 'onUpdate:modelSelected', type: '((value: ListSelectedList) => void)' },
+  { name: 'onUpdate:selected', type: '((value: ListSelectedList) => void)' },
   { name: 'selected', type: 'MotionAxisSelectedValue' },
-  { name: 'tabItemAttrs', type: 'ConstrBind<TabItemProps> | undefined' },
-  { name: 'tabs', type: 'ListRecord<TabItemProps> | ConstrBind<TabsNavigationProps> | undefined' },
-  { name: 'tabsNavigationAttrs', type: 'ConstrBind<TabsNavigationProps> | undefined' }
+  { name: 'tabItemAttrs', type: 'ConstrBind<TabItemProps>' },
+  { name: 'tabs', type: 'ListRecord<TabItemProps> | ConstrBind<TabsNavigationProps>' },
+  { name: 'tabsNavigationAttrs', type: 'ConstrBind<TabsNavigationProps>' }
   // :propsList [!] System label / Системная метка
 ]
 

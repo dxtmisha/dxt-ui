@@ -270,7 +270,7 @@ export class DesignComponent extends DesignCommand {
           const option = prop.option
           let item: string = ''
 
-          item += `{ name: '${prop.name}', type: '${prop.type}'`
+          item += `{ name: '${prop.name}', type: '${prop.type.replace('| undefined', '').trim()}'`
 
           if (
             option

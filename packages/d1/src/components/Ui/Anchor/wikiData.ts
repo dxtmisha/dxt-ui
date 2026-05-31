@@ -7,21 +7,21 @@ const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
   { name: 'behavior', type: 'string', option: ['auto', 'instant', 'smooth'] },
   { name: 'block', type: 'string', option: ['center', 'end', 'nearest', 'start'] },
-  { name: 'delayHide', type: 'number | undefined' },
-  { name: 'hide', type: 'boolean | undefined' },
-  { name: 'iconContentCopy', type: 'IconValue<IconProps> | undefined' },
-  { name: 'iconLink', type: 'IconValue<IconProps> | undefined' },
-  { name: 'iconTag', type: 'IconValue<IconProps> | undefined' },
+  { name: 'delayHide', type: 'number' },
+  { name: 'hide', type: 'boolean' },
+  { name: 'iconContentCopy', type: 'IconValue<IconProps>' },
+  { name: 'iconLink', type: 'IconValue<IconProps>' },
+  { name: 'iconTag', type: 'IconValue<IconProps>' },
   { name: 'inline', type: 'string', option: ['center', 'end', 'nearest', 'start'] },
-  { name: 'isCopy', type: 'boolean | undefined' },
-  { name: 'label', type: 'NumberOrString | undefined' },
-  { name: 'labelId', type: 'string | undefined' },
-  { name: 'name', type: 'string | undefined' },
-  { name: 'shift', type: 'NumberOrString | undefined' },
+  { name: 'isCopy', type: 'boolean' },
+  { name: 'label', type: 'NumberOrString' },
+  { name: 'labelId', type: 'string' },
+  { name: 'name', type: 'string' },
+  { name: 'shift', type: 'NumberOrString' },
   { name: 'textCopiedClipboard', type: 'TextValue' },
-  { name: 'tooltipAttrs', type: 'ConstrBind<TooltipProps> | undefined' },
-  { name: 'tooltipDescription', type: 'string | undefined' },
-  { name: 'tooltipLabel', type: 'string | undefined' }
+  { name: 'tooltipAttrs', type: 'ConstrBind<TooltipProps>' },
+  { name: 'tooltipDescription', type: 'string' },
+  { name: 'tooltipLabel', type: 'string' }
   // :propsList [!] System label / Системная метка
 ]
 

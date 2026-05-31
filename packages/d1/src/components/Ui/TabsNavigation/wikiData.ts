@@ -5,19 +5,19 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
-  { name: 'divider', type: 'boolean | undefined' },
+  { name: 'divider', type: 'boolean' },
   { name: 'horizontalScrollAlign', type: 'string', option: ['block', 'left'] },
-  { name: 'horizontalScrollAttrs', type: 'ConstrBind<HorizontalScrollPropsBasic> | undefined' },
-  { name: 'horizontalScrollBleed', type: 'boolean | undefined' },
-  { name: 'itemAttrs', type: 'ConstrBind<TabItemProps> | undefined' },
-  { name: 'keyLabel', type: 'string | undefined' },
-  { name: 'keyValue', type: 'string | undefined' },
-  { name: 'list', type: 'ListRecord<TabItemProps> | undefined' },
-  { name: 'modelSelected', type: 'ListSelectedList | undefined' },
-  { name: 'onUpdate:modelSelected', type: '((value: ListSelectedList) => void) | undefined' },
-  { name: 'onUpdate:selected', type: '((value: ListSelectedList) => void) | undefined' },
-  { name: 'selected', type: 'ListSelectedList | undefined' },
-  { name: 'tag', type: 'string | undefined' }
+  { name: 'horizontalScrollAttrs', type: 'ConstrBind<HorizontalScrollPropsBasic>' },
+  { name: 'horizontalScrollBleed', type: 'boolean' },
+  { name: 'itemAttrs', type: 'ConstrBind<TabItemProps>' },
+  { name: 'keyLabel', type: 'string' },
+  { name: 'keyValue', type: 'string' },
+  { name: 'list', type: 'ListRecord<TabItemProps>' },
+  { name: 'modelSelected', type: 'ListSelectedList' },
+  { name: 'onUpdate:modelSelected', type: '((value: ListSelectedList) => void)' },
+  { name: 'onUpdate:selected', type: '((value: ListSelectedList) => void)' },
+  { name: 'selected', type: 'ListSelectedList' },
+  { name: 'tag', type: 'string' }
   // :propsList [!] System label / Системная метка
 ]
 

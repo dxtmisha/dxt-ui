@@ -5,24 +5,24 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
-  { name: 'area', type: 'string | undefined' },
-  { name: 'caption', type: 'string | number | undefined' },
-  { name: 'captionDecorative', type: 'boolean | undefined' },
-  { name: 'description', type: 'string | number | undefined' },
-  { name: 'descriptionId', type: 'string | undefined' },
-  { name: 'headerAttrs', type: 'ConstrBind<HeaderPropsBasic> | undefined' },
-  { name: 'headline', type: 'string | undefined' },
-  { name: 'icon', type: 'IconValue<IconPropsBasic> | undefined' },
-  { name: 'iconAttrs', type: 'ConstrBind<IconPropsBasic> | undefined' },
-  { name: 'iconDir', type: 'boolean | undefined' },
-  { name: 'iconHide', type: 'boolean | undefined' },
-  { name: 'iconPalette', type: 'boolean | undefined' },
-  { name: 'iconTurn', type: 'boolean | undefined' },
-  { name: 'label', type: 'NumberOrString | undefined' },
-  { name: 'labelId', type: 'string | undefined' },
-  { name: 'selected', type: 'boolean | undefined' },
-  { name: 'tag', type: 'string | undefined' },
-  { name: 'tagHeader', type: 'string | undefined' }
+  { name: 'area', type: 'string' },
+  { name: 'caption', type: 'string | number' },
+  { name: 'captionDecorative', type: 'boolean' },
+  { name: 'description', type: 'string | number' },
+  { name: 'descriptionId', type: 'string' },
+  { name: 'headerAttrs', type: 'ConstrBind<HeaderPropsBasic>' },
+  { name: 'headline', type: 'string' },
+  { name: 'icon', type: 'IconValue<IconPropsBasic>' },
+  { name: 'iconAttrs', type: 'ConstrBind<IconPropsBasic>' },
+  { name: 'iconDir', type: 'boolean' },
+  { name: 'iconHide', type: 'boolean' },
+  { name: 'iconPalette', type: 'boolean' },
+  { name: 'iconTurn', type: 'boolean' },
+  { name: 'label', type: 'NumberOrString' },
+  { name: 'labelId', type: 'string' },
+  { name: 'selected', type: 'boolean' },
+  { name: 'tag', type: 'string' },
+  { name: 'tagHeader', type: 'string' }
   // :propsList [!] System label / Системная метка
 ]
 

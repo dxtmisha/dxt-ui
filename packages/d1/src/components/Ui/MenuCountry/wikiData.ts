@@ -5,16 +5,16 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
-  { name: 'countryList', type: 'string[] | undefined' },
-  { name: 'disabled', type: 'boolean | undefined' },
-  { name: 'isSelectedByValue', type: 'boolean | undefined' },
-  { name: 'language', type: 'string | undefined' },
-  { name: 'menuAttrs', type: 'ConstrBind<MenuProps> | undefined' },
-  { name: 'modelSelected', type: 'ListSelectedList | undefined' },
-  { name: 'onUpdate:modelSelected', type: '((value: ListSelectedList) => void) | undefined' },
-  { name: 'onUpdate:selected', type: '((value: ListSelectedList) => void) | undefined' },
-  { name: 'selected', type: 'ListSelectedList | undefined' },
-  { name: 'showPhoneCode', type: 'boolean | undefined' }
+  { name: 'countryList', type: 'string[]' },
+  { name: 'disabled', type: 'boolean' },
+  { name: 'isSelectedByValue', type: 'boolean' },
+  { name: 'language', type: 'string' },
+  { name: 'menuAttrs', type: 'ConstrBind<MenuProps>' },
+  { name: 'modelSelected', type: 'ListSelectedList' },
+  { name: 'onUpdate:modelSelected', type: '((value: ListSelectedList) => void)' },
+  { name: 'onUpdate:selected', type: '((value: ListSelectedList) => void)' },
+  { name: 'selected', type: 'ListSelectedList' },
+  { name: 'showPhoneCode', type: 'boolean' }
   // :propsList [!] System label / Системная метка
 ]
 

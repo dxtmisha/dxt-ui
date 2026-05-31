@@ -6,15 +6,15 @@ import { defaults } from './props'
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
   { name: 'align', type: 'string', option: ['none', 'center', 'left', 'right', 'block', 'auto'] },
-  { name: 'area', type: 'string | undefined' },
-  { name: 'buttonAttrs', type: 'ConstrBind<ButtonProps> | undefined' },
-  { name: 'buttonSecondaryAttrs', type: 'ConstrBind<ButtonProps> | undefined' },
+  { name: 'area', type: 'string' },
+  { name: 'buttonAttrs', type: 'ConstrBind<ButtonProps>' },
+  { name: 'buttonSecondaryAttrs', type: 'ConstrBind<ButtonProps>' },
   { name: 'flexible', type: 'string', option: ['adaptiveSm', 'adaptiveMd', 'adaptiveLg', 'adaptiveXl', 'adaptive2xl', 'containerSm', 'containerMd', 'containerLg', 'containerXl', 'container2xl'] },
-  { name: 'list', type: 'ConstrBind<ButtonProps>[] | undefined' },
-  { name: 'listSecondary', type: 'ConstrBind<ButtonProps>[] | undefined' },
+  { name: 'list', type: 'ConstrBind<ButtonProps>[]' },
+  { name: 'listSecondary', type: 'ConstrBind<ButtonProps>[]' },
   { name: 'padding', type: 'string', option: ['none', 'sm', 'md', 'lg', 'ySm', 'yMd', 'yLg'] },
-  { name: 'paddingByIndent', type: 'boolean | undefined' },
-  { name: 'wrap', type: 'boolean | undefined' }
+  { name: 'paddingByIndent', type: 'boolean' },
+  { name: 'wrap', type: 'boolean' }
   // :propsList [!] System label / Системная метка
 ]
 

@@ -46,12 +46,12 @@ export class Modal extends ModalAbstract {
     protected readonly components?: DesignComp<ModalComponents, ModalProps>,
     protected readonly slots?: ModalSlots,
     protected readonly emits?: ConstrEmit<ModalEmits>,
-    constructors: {
+    constructors?: {
       ActionsConstructor?: typeof ActionsInclude
       BarsConstructor?: typeof BarsInclude
       ModelIncludeConstructor?: typeof ModelInclude
       WindowConstructor?: typeof WindowInclude
-    } = {}
+    }
   ) {
     super(
       props,

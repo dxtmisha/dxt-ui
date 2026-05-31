@@ -5,18 +5,18 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
-  { name: 'counter', type: 'string | number | undefined' },
-  { name: 'counterId', type: 'string | undefined' },
-  { name: 'counterShow', type: 'boolean | undefined' },
-  { name: 'counterTemplate', type: 'string | undefined' },
-  { name: 'fieldCounterAttrs', type: 'ConstrBind<FieldCounterProps> | undefined' },
-  { name: 'for', type: 'string | undefined' },
-  { name: 'isSkeleton', type: 'boolean | undefined' },
-  { name: 'label', type: 'NumberOrString | undefined' },
-  { name: 'labelId', type: 'string | undefined' },
-  { name: 'loading', type: 'boolean | ConstrBind<ProgressPropsBasic> | undefined' },
-  { name: 'maxlength', type: 'string | number | undefined' },
-  { name: 'required', type: 'boolean | undefined' }
+  { name: 'counter', type: 'string | number' },
+  { name: 'counterId', type: 'string' },
+  { name: 'counterShow', type: 'boolean' },
+  { name: 'counterTemplate', type: 'string' },
+  { name: 'fieldCounterAttrs', type: 'ConstrBind<FieldCounterProps>' },
+  { name: 'for', type: 'string' },
+  { name: 'isSkeleton', type: 'boolean' },
+  { name: 'label', type: 'NumberOrString' },
+  { name: 'labelId', type: 'string' },
+  { name: 'loading', type: 'boolean | ConstrBind<ProgressPropsBasic>' },
+  { name: 'maxlength', type: 'string | number' },
+  { name: 'required', type: 'boolean' }
   // :propsList [!] System label / Системная метка
 ]
 

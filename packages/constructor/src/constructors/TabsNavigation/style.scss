@@ -7,6 +7,8 @@
     &::after {
       content: ' ';
       @include ui.absoluteBottom;
+      left: var(--sys-bleed, 0);
+      right: var(--sys-bleed, 0);
 
       width: var(--sys-scroll-width, auto);
       margin-right: calc(var(--sys-scroll-width, 0) * -1);

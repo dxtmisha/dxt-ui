@@ -5,21 +5,21 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
-  { name: 'autoClose', type: 'boolean | undefined' },
-  { name: 'cellAttrs', type: 'ConstrBind<CellProps> | undefined' },
-  { name: 'clickOpen', type: 'boolean | undefined' },
-  { name: 'description', type: 'string | number | undefined' },
-  { name: 'descriptionId', type: 'string | undefined' },
-  { name: 'divider', type: 'boolean | undefined' },
-  { name: 'icon', type: 'IconValue<IconProps> | undefined' },
-  { name: 'iconArrowDown', type: 'IconValue<IconProps> | undefined' },
-  { name: 'label', type: 'NumberOrString | undefined' },
-  { name: 'labelId', type: 'string | undefined' },
-  { name: 'modelOpen', type: 'boolean | undefined' },
-  { name: 'motionTransformAttrs', type: 'ConstrBind<MotionTransformProps> | undefined' },
-  { name: 'onUpdate:modelOpen', type: '((value: boolean) => void) | undefined' },
-  { name: 'onUpdate:open', type: '((value: boolean) => void) | undefined' },
-  { name: 'open', type: 'boolean | undefined' }
+  { name: 'autoClose', type: 'boolean' },
+  { name: 'cellAttrs', type: 'ConstrBind<CellProps>' },
+  { name: 'clickOpen', type: 'boolean' },
+  { name: 'description', type: 'string | number' },
+  { name: 'descriptionId', type: 'string' },
+  { name: 'divider', type: 'boolean' },
+  { name: 'icon', type: 'IconValue<IconProps>' },
+  { name: 'iconArrowDown', type: 'IconValue<IconProps>' },
+  { name: 'label', type: 'NumberOrString' },
+  { name: 'labelId', type: 'string' },
+  { name: 'modelOpen', type: 'boolean' },
+  { name: 'motionTransformAttrs', type: 'ConstrBind<MotionTransformProps>' },
+  { name: 'onUpdate:modelOpen', type: '((value: boolean) => void)' },
+  { name: 'onUpdate:open', type: '((value: boolean) => void)' },
+  { name: 'open', type: 'boolean' }
   // :propsList [!] System label / Системная метка
 ]
 

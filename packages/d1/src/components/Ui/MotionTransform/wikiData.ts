@@ -7,20 +7,20 @@ const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
   { name: 'adaptive', type: 'string', option: ['planeAlways', 'planeSm', 'planeMd', 'planeLg', 'planeXl', 'plane2xl'] },
   { name: 'animationHeadPosition', type: 'string', option: ['top', 'toBottom'] },
-  { name: 'animationShow', type: 'boolean | undefined' },
-  { name: 'ariaDescribedby', type: 'string | undefined' },
-  { name: 'ariaLabelledby', type: 'string | undefined' },
-  { name: 'autoClose', type: 'boolean | undefined' },
-  { name: 'clickOpen', type: 'boolean | undefined' },
-  { name: 'ignore', type: 'string | HTMLElement | undefined' },
-  { name: 'ignoreSelector', type: 'string | undefined' },
-  { name: 'inDom', type: 'boolean | undefined' },
-  { name: 'modelOpen', type: 'boolean | undefined' },
-  { name: 'onUpdate:modelOpen', type: '((value: boolean) => void) | undefined' },
-  { name: 'onUpdate:open', type: '((value: boolean) => void) | undefined' },
-  { name: 'open', type: 'boolean | undefined' },
-  { name: 'section', type: 'boolean | undefined' },
-  { name: 'tagBody', type: 'string | undefined' }
+  { name: 'animationShow', type: 'boolean' },
+  { name: 'ariaDescribedby', type: 'string' },
+  { name: 'ariaLabelledby', type: 'string' },
+  { name: 'autoClose', type: 'boolean' },
+  { name: 'clickOpen', type: 'boolean' },
+  { name: 'ignore', type: 'string | HTMLElement' },
+  { name: 'ignoreSelector', type: 'string' },
+  { name: 'inDom', type: 'boolean' },
+  { name: 'modelOpen', type: 'boolean' },
+  { name: 'onUpdate:modelOpen', type: '((value: boolean) => void)' },
+  { name: 'onUpdate:open', type: '((value: boolean) => void)' },
+  { name: 'open', type: 'boolean' },
+  { name: 'section', type: 'boolean' },
+  { name: 'tagBody', type: 'string' }
   // :propsList [!] System label / Системная метка
 ]
 

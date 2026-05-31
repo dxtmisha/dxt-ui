@@ -7,6 +7,7 @@ import {
 
 import type { ModalAbstract } from './ModalAbstract'
 import type { WindowControlItem } from '../Window'
+
 import {
   type ModalPropsBasic
 } from './props'

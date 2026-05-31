@@ -40,7 +40,7 @@ export class DescriptionInclude {
     protected readonly className: string,
     protected readonly slots?: DescriptionSlots,
     protected readonly skeleton?: SkeletonInclude,
-    protected readonly tag: RefOrNormal<string> = 'div'
+    protected readonly tag?: RefOrNormal<string | undefined>
   ) {
   }
 
@@ -94,7 +94,7 @@ export class DescriptionInclude {
     if (children.length > 0) {
       return [
         render(
-          getRef(this.tag),
+          getRef(this.tag) ?? 'div',
           toBinds(
             {
               id: this.id,

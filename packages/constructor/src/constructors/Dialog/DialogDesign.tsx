@@ -1,10 +1,7 @@
 import { h, type VNode } from 'vue'
-import {
-  toBinds
-} from '@dxtmisha/functional'
 
 import { Dialog } from './Dialog'
-import { ModalDesignAbstract } from '../Modal/ModalDesignAbstract'
+import { ModalDesignAbstract } from '../Modal'
 
 import type { WindowControlItem } from '../Window'
 import {
@@ -89,13 +86,10 @@ export class DialogDesign<
         default: this.renderContent,
         footer: this.renderFooter
       },
-      toBinds(
-        {
-          'class': this.classes?.value.main,
-          'data-touch': 'touch'
-        },
-        this.getAttrs()
-      )
+      {
+        ...this.getAttrs(),
+        class: this.classes?.value.main
+      }
     )
   }
 

@@ -56,7 +56,7 @@ export abstract class ModalAbstract {
    * @param constructors.BarsConstructor class for creating bars / класс для создания панелей
    * @param constructors.ActionsConstructor class for creating actions / класс для создания действий
    */
-  constructor(
+  protected constructor(
     protected readonly props: ModalProps,
     protected readonly refs: ToRefs<ModalProps>,
     protected readonly element: Ref<HTMLElement | undefined>,

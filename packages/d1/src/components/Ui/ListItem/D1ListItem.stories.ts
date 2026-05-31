@@ -27,6 +27,11 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const ListItem: Story = {
+  args: {
+    controlPosition: "start"
+  },
+
+  // :story-main [!] System label / Системная метка
   // :story-main [!] System label / Системная метка
   render: (args: any) => ({
     components: { D1ListItem },
@@ -37,7 +42,6 @@ export const ListItem: Story = {
     <D1ListItem v-bind="args"/>
     `
   })
-  // :story-main [!] System label / Системная метка
 }
 
 // :story-items [!] System label / Системная метка

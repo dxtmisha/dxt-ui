@@ -5,12 +5,12 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
-  { name: 'autoClose', type: 'boolean | undefined' },
+  { name: 'autoClose', type: 'boolean' },
   { name: 'axis', type: 'string', option: ['x', 'y'] },
-  { name: 'disabled', type: 'boolean | undefined' },
-  { name: 'divider', type: 'boolean | undefined' },
-  { name: 'open', type: 'boolean | undefined' },
-  { name: 'windowAttrs', type: 'ConstrBind<WindowProps> | undefined' }
+  { name: 'disabled', type: 'boolean' },
+  { name: 'divider', type: 'boolean' },
+  { name: 'open', type: 'boolean' },
+  { name: 'windowAttrs', type: 'ConstrBind<WindowProps>' }
   // :propsList [!] System label / Системная метка
 ]
 

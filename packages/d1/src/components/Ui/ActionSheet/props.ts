@@ -30,6 +30,9 @@ export type ActionSheetProps = ActionSheetPropsBasic<
  */
 export const defaults: object = {
   ...defaultsActionSheet,
+  windowAttrs: {
+    adaptive: 'actionSheet'
+  },
   ...{
     // :default [!] System label / Системная метка
     width: 'md'

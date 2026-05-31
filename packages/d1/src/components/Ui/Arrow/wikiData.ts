@@ -5,8 +5,8 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
-  { name: 'clientOnly', type: 'boolean | undefined' },
-  { name: 'elementTarget', type: 'string | HTMLElement | undefined' },
+  { name: 'clientOnly', type: 'boolean' },
+  { name: 'elementTarget', type: 'string | HTMLElement' },
   { name: 'position', type: 'string', option: ['auto', 'top', 'bottom', 'left', 'right'] },
   { name: 'size', type: 'string', option: ['sm', 'md', 'lg'] }
   // :propsList [!] System label / Системная метка

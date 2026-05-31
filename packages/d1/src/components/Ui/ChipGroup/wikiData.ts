@@ -5,17 +5,17 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
-  { name: 'chipAttrs', type: 'ConstrBind<ChipProps> | undefined' },
-  { name: 'iconWhenSelected', type: 'boolean | undefined' },
-  { name: 'keyLabel', type: 'string | undefined' },
-  { name: 'keyValue', type: 'string | undefined' },
-  { name: 'list', type: 'ChipGroupData | undefined' },
-  { name: 'modelSelected', type: 'ListSelectedList | undefined' },
-  { name: 'multiple', type: 'boolean | undefined' },
-  { name: 'onUpdate:modelSelected', type: '((value: ListSelectedList) => void) | undefined' },
-  { name: 'onUpdate:selected', type: '((value: ListSelectedList) => void) | undefined' },
-  { name: 'readonly', type: 'boolean | undefined' },
-  { name: 'selected', type: 'ListSelectedList | undefined' }
+  { name: 'chipAttrs', type: 'ConstrBind<ChipProps>' },
+  { name: 'iconWhenSelected', type: 'boolean' },
+  { name: 'keyLabel', type: 'string' },
+  { name: 'keyValue', type: 'string' },
+  { name: 'list', type: 'ChipGroupData' },
+  { name: 'modelSelected', type: 'ListSelectedList' },
+  { name: 'multiple', type: 'boolean' },
+  { name: 'onUpdate:modelSelected', type: '((value: ListSelectedList) => void)' },
+  { name: 'onUpdate:selected', type: '((value: ListSelectedList) => void)' },
+  { name: 'readonly', type: 'boolean' },
+  { name: 'selected', type: 'ListSelectedList' }
   // :propsList [!] System label / Системная метка
 ]
 

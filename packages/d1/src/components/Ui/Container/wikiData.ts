@@ -6,7 +6,7 @@ import { defaults } from './props'
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
   { name: 'align', type: 'string', option: ['left', 'center', 'right'] },
-  { name: 'area', type: 'string | undefined' }
+  { name: 'area', type: 'string' }
   // :propsList [!] System label / Системная метка
 ]
 

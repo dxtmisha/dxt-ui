@@ -106,18 +106,8 @@ export class Cell {
       SkeletonConstructor = SkeletonInclude
     } = constructors
 
-    const progress = new ProgressConstructor(
-      className,
-      props,
-      components,
-      { position: 'bottom' }
-    )
-
-    this.skeleton = new SkeletonConstructor(
-      props,
-      classDesign,
-      ['classTextVariant']
-    )
+    this.progress = new ProgressConstructor(className, props, components, { position: 'bottom' })
+    this.skeleton = new SkeletonConstructor(props, classDesign, ['classTextVariant'])
 
     this.label = new LabelConstructor(
       props,
@@ -131,17 +121,12 @@ export class Cell {
     )
     this.caption = new CaptionConstructor(props, className, slots)
     this.description = new DescriptionConstructor(props, className, slots, this.skeleton)
-    this.enabled = new EnabledConstructor(props, progress)
+    this.enabled = new EnabledConstructor(props, this.progress)
 
     this.icon = new IconConstructor(props, className, components)
-    this.progress = progress
     this.ripple = new RippleConstructor(className, components, this.enabled)
 
-    this.event = new EventConstructor(
-      props,
-      this.enabled,
-      emits
-    )
+    this.event = new EventConstructor(props, this.enabled, emits)
   }
 
   /**

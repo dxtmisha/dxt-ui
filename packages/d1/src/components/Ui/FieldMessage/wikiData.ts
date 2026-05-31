@@ -5,20 +5,20 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
-  { name: 'counter', type: 'string | number | undefined' },
-  { name: 'counterId', type: 'string | undefined' },
-  { name: 'counterShow', type: 'boolean | undefined' },
-  { name: 'counterTemplate', type: 'string | undefined' },
-  { name: 'disabled', type: 'boolean | undefined' },
-  { name: 'fieldCounterAttrs', type: 'ConstrBind<FieldCounterProps> | undefined' },
-  { name: 'forceShow', type: 'boolean | undefined' },
-  { name: 'hasHtmlCode', type: 'boolean | undefined' },
-  { name: 'helperId', type: 'string | undefined' },
-  { name: 'helperMessage', type: 'string | undefined' },
-  { name: 'isSkeleton', type: 'boolean | undefined' },
-  { name: 'maxlength', type: 'string | number | undefined' },
-  { name: 'validationId', type: 'string | undefined' },
-  { name: 'validationMessage', type: 'string | undefined' }
+  { name: 'counter', type: 'string | number' },
+  { name: 'counterId', type: 'string' },
+  { name: 'counterShow', type: 'boolean' },
+  { name: 'counterTemplate', type: 'string' },
+  { name: 'disabled', type: 'boolean' },
+  { name: 'fieldCounterAttrs', type: 'ConstrBind<FieldCounterProps>' },
+  { name: 'forceShow', type: 'boolean' },
+  { name: 'hasHtmlCode', type: 'boolean' },
+  { name: 'helperId', type: 'string' },
+  { name: 'helperMessage', type: 'string' },
+  { name: 'isSkeleton', type: 'boolean' },
+  { name: 'maxlength', type: 'string | number' },
+  { name: 'validationId', type: 'string' },
+  { name: 'validationMessage', type: 'string' }
   // :propsList [!] System label / Системная метка
 ]
 

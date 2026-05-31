@@ -5,8 +5,8 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
-  { name: 'divider', type: 'boolean | undefined' },
-  { name: 'open', type: 'boolean | undefined' }
+  { name: 'divider', type: 'boolean' },
+  { name: 'open', type: 'boolean' }
   // :propsList [!] System label / Системная метка
 ]
 

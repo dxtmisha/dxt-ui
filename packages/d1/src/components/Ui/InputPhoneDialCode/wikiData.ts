@@ -5,10 +5,10 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
-  { name: 'buttonAttrs', type: 'ConstrBind<ButtonProps> | undefined' },
-  { name: 'disabled', type: 'boolean | undefined' },
-  { name: 'menuCountryAttrs', type: 'ConstrBind<MenuCountryProps> | undefined' },
-  { name: 'value', type: 'string | undefined' }
+  { name: 'buttonAttrs', type: 'ConstrBind<ButtonProps>' },
+  { name: 'disabled', type: 'boolean' },
+  { name: 'menuCountryAttrs', type: 'ConstrBind<MenuCountryProps>' },
+  { name: 'value', type: 'string' }
   // :propsList [!] System label / Системная метка
 ]
 

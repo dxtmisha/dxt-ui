@@ -5,14 +5,14 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
-  { name: 'animationHeight', type: 'boolean | undefined' },
+  { name: 'animationHeight', type: 'boolean' },
   { name: 'axis', type: 'string', option: ['x', 'y', 'z'] },
   { name: 'direction', type: 'string', option: ['next', 'back', 'auto'] },
-  { name: 'inDom', type: 'boolean | undefined' },
-  { name: 'inDomSlide', type: 'string[] | undefined' },
+  { name: 'inDom', type: 'boolean' },
+  { name: 'inDomSlide', type: 'string[]' },
   { name: 'modelSelected', type: 'MotionAxisSelectedValue' },
-  { name: 'onUpdate:modelSelected', type: '((value: MotionAxisSelectedValue) => void) | undefined' },
-  { name: 'onUpdate:selected', type: '((value: MotionAxisSelectedValue) => void) | undefined' },
+  { name: 'onUpdate:modelSelected', type: '((value: MotionAxisSelectedValue) => void)' },
+  { name: 'onUpdate:selected', type: '((value: MotionAxisSelectedValue) => void)' },
   { name: 'selected', type: 'MotionAxisSelectedValue' }
   // :propsList [!] System label / Системная метка
 ]

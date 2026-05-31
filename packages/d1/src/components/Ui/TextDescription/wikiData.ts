@@ -5,10 +5,10 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
-  { name: 'description', type: 'string | number | undefined' },
-  { name: 'descriptionId', type: 'string | undefined' },
+  { name: 'description', type: 'string | number' },
+  { name: 'descriptionId', type: 'string' },
   { name: 'size', type: 'string', option: ['xs', 'sm', 'md'] },
-  { name: 'tag', type: 'string | undefined' }
+  { name: 'tag', type: 'string' }
   // :propsList [!] System label / Системная метка
 ]
 

@@ -5,18 +5,18 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
-  { name: 'area', type: 'string | undefined' },
-  { name: 'caption', type: 'string | number | undefined' },
-  { name: 'captionDecorative', type: 'boolean | undefined' },
-  { name: 'icon', type: 'IconValue<IconProps> | undefined' },
-  { name: 'iconAttrs', type: 'ConstrBind<IconProps> | undefined' },
-  { name: 'iconDir', type: 'boolean | undefined' },
-  { name: 'iconHide', type: 'boolean | undefined' },
-  { name: 'iconPalette', type: 'boolean | undefined' },
-  { name: 'iconTurn', type: 'boolean | undefined' },
-  { name: 'label', type: 'NumberOrString | undefined' },
-  { name: 'labelId', type: 'string | undefined' },
-  { name: 'selected', type: 'boolean | undefined' },
+  { name: 'area', type: 'string' },
+  { name: 'caption', type: 'string | number' },
+  { name: 'captionDecorative', type: 'boolean' },
+  { name: 'icon', type: 'IconValue<IconProps>' },
+  { name: 'iconAttrs', type: 'ConstrBind<IconProps>' },
+  { name: 'iconDir', type: 'boolean' },
+  { name: 'iconHide', type: 'boolean' },
+  { name: 'iconPalette', type: 'boolean' },
+  { name: 'iconTurn', type: 'boolean' },
+  { name: 'label', type: 'NumberOrString' },
+  { name: 'labelId', type: 'string' },
+  { name: 'selected', type: 'boolean' },
   { name: 'tag', type: 'string', option: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] }
   // :propsList [!] System label / Системная метка
 ]

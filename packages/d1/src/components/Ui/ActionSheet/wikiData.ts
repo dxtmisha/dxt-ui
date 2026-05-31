@@ -5,22 +5,22 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
-  { name: 'actionsAttrs', type: 'ConstrBind<ActionsProps> | undefined' },
-  { name: 'actionsHide', type: 'boolean | undefined' },
-  { name: 'actionsList', type: '(ConstrBind<ButtonProps>[] & Record<string, any> & { key?: string | undefined; class?: ConstrClass | undefined; style?: ConstrStyles | undefined; }) | undefined' },
-  { name: 'actionsSecondary', type: '(ConstrBind<ButtonProps>[] & Record<string, any> & { key?: string | undefined; class?: ConstrClass | undefined; style?: ConstrStyles | undefined; }) | undefined' },
-  { name: 'autoClose', type: 'boolean | undefined' },
-  { name: 'barsAttrs', type: 'ConstrBind<BarsProps> | undefined' },
-  { name: 'barsBackHide', type: 'boolean | undefined' },
-  { name: 'barsDescription', type: 'string | undefined' },
-  { name: 'barsHide', type: 'boolean | undefined' },
-  { name: 'barsLabel', type: 'string | number | undefined' },
-  { name: 'barsList', type: 'ConstrBind<ButtonProps>[] | undefined' },
-  { name: 'disabled', type: 'boolean | undefined' },
-  { name: 'open', type: 'boolean | undefined' },
-  { name: 'touchClose', type: 'boolean | undefined' },
+  { name: 'actionsAttrs', type: 'ConstrBind<ActionsProps>' },
+  { name: 'actionsHide', type: 'boolean' },
+  { name: 'actionsList', type: '(ConstrBind<ButtonProps>[] & Record<string, any> & { key?: string ; class?: ConstrClass | undefined; style?: ConstrStyles | undefined; }) | undefined' },
+  { name: 'actionsSecondary', type: '(ConstrBind<ButtonProps>[] & Record<string, any> & { key?: string ; class?: ConstrClass | undefined; style?: ConstrStyles | undefined; }) | undefined' },
+  { name: 'autoClose', type: 'boolean' },
+  { name: 'barsAttrs', type: 'ConstrBind<BarsProps>' },
+  { name: 'barsBackHide', type: 'boolean' },
+  { name: 'barsDescription', type: 'string' },
+  { name: 'barsHide', type: 'boolean' },
+  { name: 'barsLabel', type: 'string | number' },
+  { name: 'barsList', type: 'ConstrBind<ButtonProps>[]' },
+  { name: 'disabled', type: 'boolean' },
+  { name: 'open', type: 'boolean' },
+  { name: 'touchClose', type: 'boolean' },
   { name: 'width', type: 'string', option: ['sm', 'md', 'lg', 'auto'] },
-  { name: 'windowAttrs', type: 'ConstrBind<WindowProps> | undefined' }
+  { name: 'windowAttrs', type: 'ConstrBind<WindowProps>' }
   // :propsList [!] System label / Системная метка
 ]
 

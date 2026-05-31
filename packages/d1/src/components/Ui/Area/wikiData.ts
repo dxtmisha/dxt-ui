@@ -5,7 +5,7 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
-  { name: 'areaDefault', type: 'string | undefined' }
+  { name: 'areaDefault', type: 'string' }
   // :propsList [!] System label / Системная метка
 ]
 

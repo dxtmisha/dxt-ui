@@ -21,7 +21,9 @@ import {
 } from './types'
 
 /**
- * ListItemDesign
+ * ListItemDesign class responsible for rendering the ListItem component, mapping props to elements, classes, and sub-components.
+ *
+ * Класс ListItemDesign, отвечающий за рендеринг компонента ListItem, сопоставление свойств с элементами, классами и подкомпонентами.
  */
 export class ListItemDesign<
   COMP extends ListItemComponents,
@@ -37,13 +39,14 @@ export class ListItemDesign<
     CLASSES,
     P
   > {
+  /** Instance of the ListItem constructor / Экземпляр конструктора ListItem */
   protected readonly item: ListItem
 
   /**
    * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
+   * @param name class name / название класса
+   * @param props properties / свойства
+   * @param options list of additional parameters / список дополнительных параметров
    */
   constructor(
     name: string,
@@ -71,9 +74,10 @@ export class ListItemDesign<
   }
 
   /**
-   * Initialization of all the necessary properties for work
+   * Initialization of all the necessary properties for work.
    *
    * Инициализация всех необходимых свойств для работы.
+   * @returns expose object / объект экспонирования
    */
   protected initExpose(): EXPOSE {
     return {
@@ -85,10 +89,11 @@ export class ListItemDesign<
    * Improvement of the obtained list of classes.
    *
    * Доработка полученного списка классов.
+   * @returns list of classes / список классов
    */
   protected initClasses(): Partial<CLASSES> {
     return {
-      main: this.item.classes.value,
+      main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
         body: this.getSubClass('body'),
@@ -112,6 +117,7 @@ export class ListItemDesign<
    * Refinement of the received list of styles.
    *
    * Доработка полученного списка стилей.
+   * @returns list of styles / список стилей
    */
   protected initStyles(): ConstrStyles {
     return {}
@@ -121,6 +127,7 @@ export class ListItemDesign<
    * A method for rendering.
    *
    * Метод для рендеринга.
+   * @returns rendered VNode or undefined / отрендеренный VNode или undefined
    */
   protected initRender(): VNode | undefined {
     if (
@@ -144,14 +151,14 @@ export class ListItemDesign<
     )
 
     return h(
-      this.item.tag.value,
+      this.item.tag,
       {
         ...this.getAttrs(),
         ref: this.element,
         class: this.classes?.value.main,
         style: this.styles?.value,
-        ...this.item.binds.value,
-        ...this.item.aria.value
+        ...this.item.binds,
+        ...this.item.aria
       },
       children
     )
@@ -161,6 +168,7 @@ export class ListItemDesign<
    * Method for rendering the main part of the component.
    *
    * Метод для рендеринга основной части компонента.
+   * @returns array of virtual nodes / массив виртуальных узлов
    */
   readonly renderBody = (): VNode[] => {
     const children: any[] = [
@@ -185,6 +193,7 @@ export class ListItemDesign<
    *
    * Метод для рендеринга контекстной части компонента.
    * Включает в себя префикс, подпись, суффикс, значок и метку.
+   * @returns array of virtual nodes / массив виртуальных узлов
    */
   readonly renderContext = (): VNode[] => {
     return [
@@ -206,6 +215,7 @@ export class ListItemDesign<
    * Method for rendering the control part of the component.
    *
    * Метод для рендеринга управляющей части компонента.
+   * @returns array of virtual nodes / массив виртуальных узлов
    */
   readonly renderControl = (): VNode[] => {
     const children: VNode[] = []

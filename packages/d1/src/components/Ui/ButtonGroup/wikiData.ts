@@ -5,11 +5,11 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
-  { name: 'area', type: 'string | undefined' },
-  { name: 'buttonAttrs', type: 'ConstrBind<ButtonProps> | undefined' },
-  { name: 'list', type: 'ConstrBind<ButtonProps>[] | undefined' },
+  { name: 'area', type: 'string' },
+  { name: 'buttonAttrs', type: 'ConstrBind<ButtonProps>' },
+  { name: 'list', type: 'ConstrBind<ButtonProps>[]' },
   { name: 'orientation', type: 'string', option: ['horizontal', 'vertical'] },
-  { name: 'wrap', type: 'boolean | undefined' }
+  { name: 'wrap', type: 'boolean' }
   // :propsList [!] System label / Системная метка
 ]
 

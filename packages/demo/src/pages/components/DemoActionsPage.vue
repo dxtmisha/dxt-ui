@@ -1,21 +1,26 @@
 <script setup lang="ts">
+import { useDemoEvent } from '../../composables/useDemoEvent'
+
 import DemoLinkBlack from '../../components/DemoLinkBlack.vue'
+import DemoValue from '../../components/DemoValue.vue'
 import { D1Button, type ButtonProps } from '@dxtmisha/d1/D1Button'
 
+const { eventName, onEvent } = useDemoEvent()
+
 const list = [
-  { label: 'Cancel', text: true },
-  { label: 'Apply', primary: true }
+  { label: 'Cancel', text: true, value: 'cancel' },
+  { label: 'Apply', primary: true, value: 'apply' }
 ]
 
 const listSecondary: ButtonProps[] = [
-  { label: 'Delete', palette: 'red', text: true }
+  { label: 'Delete', palette: 'red', text: true, value: 'delete' }
 ]
 
 const manyItems = [
-  { label: 'Reset', text: true },
-  { label: 'Skip', outline: true },
-  { label: 'Back', outline: true },
-  { label: 'Submit', primary: true }
+  { label: 'Reset', text: true, value: 'reset' },
+  { label: 'Skip', outline: true, value: 'skip' },
+  { label: 'Back', outline: true, value: 'back' },
+  { label: 'Submit', primary: true, value: 'submit' }
 ]
 </script>
 
@@ -67,6 +72,16 @@ const manyItems = [
       <D1Group label="Wrap & Many Items">
         <D1Actions :list="manyItems" :wrap="false" />
         <D1Actions :list="manyItems" wrap />
+      </D1Group>
+
+      <D1Group label="Events">
+        <D1Actions
+          :list="list"
+          :listSecondary="listSecondary"
+          @click="(event, value) => onEvent('click', event, value)"
+          @click-lite="(value) => onEvent('clickLite', value)"
+        />
+        <DemoValue :value="eventName" />
       </D1Group>
     </D1Section>
   </D1Page>
