@@ -13,7 +13,10 @@ export class TabsNavigationSize {
   /** Event item instance wrapping the resize event / Экземпляр EventItem, оборачивающий событие изменения размера */
   protected event?: EventItem<HTMLElement, any>
 
+  /** Cached scroll width of the container / Кэшированная ширина прокрутки контейнера */
   protected width: number = 0
+
+  /** Timer ID for debouncing the scroll width updates / Идентификатор таймера для задержки обновлений ширины прокрутки */
   protected timer: any
 
   /**
@@ -60,6 +63,11 @@ export class TabsNavigationSize {
     }
   }
 
+  /**
+   * Updates the custom CSS property on the container element to the new scroll width.
+   *
+   * Обновляет пользовательское CSS-свойство на элементе контейнера до новой ширины прокрутки.
+   */
   protected readonly update = () => {
     const element = this.scroll.elementHtml
 

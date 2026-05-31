@@ -137,10 +137,13 @@ export class BarsDesign<
    */
   readonly renderBackButton = (): VNode[] => {
     if (
-      this.props.backHide
-      && (
-        !this.item.action.action.value
-        || this.props.backActionHide
+      (
+        this.props.backHide
+        && !this.item.action.action.value
+      )
+      || (
+        this.props.backActionHide
+        && this.item.action.action.value
       )
     ) {
       return []

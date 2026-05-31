@@ -52,7 +52,7 @@ export class TextLabel {
       undefined,
       undefined,
       undefined,
-      this.refs.tag as Ref<string>
+      this.refs.tag
     )
   }
 }

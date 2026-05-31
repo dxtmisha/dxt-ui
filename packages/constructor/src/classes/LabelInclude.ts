@@ -47,7 +47,7 @@ export class LabelInclude {
     protected readonly labelReplacing?: Ref<string | number | undefined>,
     protected readonly alternativeSlots?: boolean,
     protected readonly skeleton?: SkeletonInclude,
-    protected readonly tag: RefOrNormalOrFunction<string> = 'span'
+    protected readonly tag?: RefOrNormalOrFunction<string | undefined>
   ) {
   }
 
@@ -118,7 +118,7 @@ export class LabelInclude {
       if (children.length > 0) {
         elements.push(
           render(
-            executeFunctionRef(this.tag),
+            executeFunctionRef(this.tag) ?? 'span',
             toBinds(
               {
                 id: this.id,
