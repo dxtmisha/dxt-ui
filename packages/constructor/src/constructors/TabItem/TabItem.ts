@@ -1,48 +1,62 @@
-import { computed, type Ref, type ToRefs } from 'vue'
+import { type Ref, type ToRefs } from 'vue'
 import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
-import { BadgeInclude } from '../Badge/BadgeInclude'
-import { RippleInclude } from '../Ripple'
-import { SkeletonInclude } from '../Skeleton'
-import { IconTrailingInclude } from '../Icon'
-import { LabelInclude } from '../../classes/LabelInclude'
 import { EnabledInclude } from '../../classes/EnabledInclude'
 import { EventClickInclude } from '../../classes/EventClickInclude'
+import { LabelInclude } from '../../classes/LabelInclude'
+
+import { BadgeInclude } from '../Badge'
+import { IconTrailingInclude } from '../Icon'
+import { RippleInclude } from '../Ripple'
+import { SkeletonInclude } from '../Skeleton'
 
 import type { TabItemComponents, TabItemEmits, TabItemSlots } from './types'
 import type { TabItemProps } from './props'
 
 /**
- * TabItem
+ * Class representing the business logic and structure of the TabItem component.
+ * It orchestrates label, icon, badge, skeletal loading, click events, and ripple states.
+ *
+ * Класс, представляющий бизнес-логику и структуру компонента TabItem.
+ * Координирует метку, иконку, бейдж, скелетон при загрузке, события клика и состояние ripple.
  */
 export class TabItem {
+  /** Icon controller / Контроллер иконки */
   readonly icon: IconTrailingInclude
+  /** Label controller / Контроллер метки */
   readonly label: LabelInclude
+  /** Badge controller / Контроллер бейджа */
   readonly badge: BadgeInclude
+  /** Skeleton loading controller / Контроллер скелетона загрузки */
   readonly skeleton: SkeletonInclude
+  /** Accessibility and activity controller / Контроллер доступности и активности */
   readonly enabled: EnabledInclude
+  /** Ripple effect controller / Контроллер эффекта ряби (ripple) */
   readonly ripple: RippleInclude
+  /** Click event controller / Контроллер события клика */
   readonly event: EventClickInclude
 
   /**
-   * Constructor
-   * @param props input data/ входные данные
-   * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
-   * @param element input element/ элемент ввода
-   * @param classDesign design name/ название дизайна
-   * @param className class name/ название класса
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param slots object for working with slots/ объект для работы со слотами
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param constructors object with classes/ объект с классами
-   * @param constructors.BadgeIncludeConstructor class for working with badge/ класс для работы с бейджем
-   * @param constructors.EnabledIncludeConstructor class for working with enabled/ класс для работы с активностью
-   * @param constructors.EventClickIncludeConstructor class for working with event click/ класс для работы с событием клика
-   * @param constructors.IconTrailingIncludeConstructor class for working with icon/ класс для работы с иконкой
-   * @param constructors.LabelIncludeConstructor class for working with label/ класс для работы с меткой
-   * @param constructors.RippleIncludeConstructor class for working with ripple/ класс для работы с ripple
-   * @param constructors.SkeletonIncludeConstructor class for working with skeleton/ класс для работы со скелетоном
+   * Constructor for TabItem.
+   *
+   * Конструктор для TabItem.
+   * @param props input data / входные данные
+   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
+   * @param element input element / элемент ввода
+   * @param classDesign design name / название дизайна
+   * @param className class name / название класса
+   * @param components object for working with components / объект для работы с компонентами
+   * @param slots object for working with slots / объект для работы со слотами
+   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
+   * @param constructors object with classes / объект с классами
+   * @param constructors.BadgeIncludeConstructor class for working with badge / класс для работы с бейджем
+   * @param constructors.EnabledIncludeConstructor class for working with enabled / класс для работы с активностью
+   * @param constructors.EventClickIncludeConstructor class for working with event click / класс для работы с событием клика
+   * @param constructors.IconTrailingIncludeConstructor class for working with icon / класс для работы с иконкой
+   * @param constructors.LabelIncludeConstructor class for working with label / класс для работы с меткой
+   * @param constructors.RippleIncludeConstructor class for working with ripple / класс для работы с ripple
+   * @param constructors.SkeletonIncludeConstructor class for working with skeleton / класс для работы со скелетоном
    */
   constructor(
     protected readonly props: TabItemProps,
@@ -104,8 +118,8 @@ export class TabItem {
     )
   }
 
-  /** tag type/ тип тега */
-  readonly tag = computed<string>(() => {
+  /** Tag type / Тип тега */
+  get tag(): string {
     if (this.props.tag) {
       return this.props.tag
     }
@@ -115,10 +129,10 @@ export class TabItem {
     }
 
     return 'button'
-  })
+  }
 
-  /** values for attributes/ значения для атрибутов */
-  readonly binds = computed(() => {
+  /** Values for attributes / Значения для атрибутов */
+  get binds(): Record<string, any> {
     return {
       'href': this.props.href,
       'data-value': this.props.index ?? this.props.value,
@@ -129,5 +143,5 @@ export class TabItem {
       ...AriaStaticInclude.selected(Boolean(this.props.selected)),
       ...AriaStaticInclude.disabled(Boolean(this.props.disabled))
     }
-  })
+  }
 }

@@ -1,5 +1,5 @@
-import { nextTick, onMounted, type Ref, type ToRefs, watch } from 'vue'
-import type { ListSelectedList } from '@dxtmisha/functional'
+import { nextTick, onMounted, type ToRefs, watch } from 'vue'
+import { executeFunctionRef, type ListSelectedList, type RefOrNormalOrFunction } from '@dxtmisha/functional'
 
 import { TabsNavigationSelected } from './TabsNavigationSelected'
 
@@ -23,24 +23,24 @@ export class TabsNavigationIndicator {
   constructor(
     protected readonly props: TabsNavigationProps,
     protected readonly refs: ToRefs<TabsNavigationProps>,
-    protected readonly element: Ref<HTMLElement | undefined>,
+    protected readonly element: RefOrNormalOrFunction<HTMLElement | undefined>,
     protected readonly classDesign: string,
     protected readonly className: string,
     protected readonly selected: TabsNavigationSelected
   ) {
-    watch(
-      this.selected.item,
-      (newValue, oldValue) => this.go(newValue, oldValue)
-    )
-
     onMounted(() => {
-      requestAnimationFrame(
-        () => {
-          if (element.value) {
-            element.value.scrollLeft = this.getItem(this.selected.item.value)?.offsetLeft ?? 0
-          }
-        }
+      watch(
+        this.selected.item,
+        (newValue, oldValue) => this.go(newValue, oldValue)
       )
+
+      requestAnimationFrame(() => {
+        const element = this.getElement()
+
+        if (element) {
+          element.scrollLeft = this.getItem(this.selected.item.value)?.offsetLeft ?? 0
+        }
+      })
     })
   }
 
@@ -94,6 +94,10 @@ export class TabsNavigationIndicator {
     }, 384)
   }
 
+  protected getElement(): HTMLElement | undefined {
+    return executeFunctionRef(this.element)
+  }
+
   /**
    * Returns the class name of the item.
    *
@@ -110,6 +114,6 @@ export class TabsNavigationIndicator {
    * @param selected selection number/ номер выделения
    */
   protected getItem(selected?: ListSelectedList): HTMLElement | undefined {
-    return this.element.value?.querySelector<HTMLElement>(`[data-value="${selected ?? ''}"]`) || undefined
+    return this.getElement()?.querySelector<HTMLElement>(`[data-value="${selected ?? ''}"]`) || undefined
   }
 }

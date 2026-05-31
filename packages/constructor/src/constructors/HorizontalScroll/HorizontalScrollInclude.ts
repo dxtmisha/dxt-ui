@@ -1,8 +1,8 @@
-import { computed, ref, type VNode } from 'vue'
-import { type ConstrBind, type DesignComponents, getRef, type RefOrNormal, toBinds } from '@dxtmisha/functional'
+import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
 
-import type { HorizontalScrollComponentInclude, HorizontalScrollPropsInclude } from './basicTypes'
+import type { HorizontalScrollPropsInclude } from './basicTypes'
 import type { HorizontalScrollPropsBasic } from './props'
+import type { HorizontalScrollExpose, HorizontalScrollSlots } from './types'
 
 /**
  * HorizontalScrollInclude class provides functionality for conditionally rendering horizontal scroll components
@@ -12,95 +12,54 @@ import type { HorizontalScrollPropsBasic } from './props'
  * Класс HorizontalScrollInclude предоставляет функциональность для условного рендеринга компонентов
  * горизонтальной прокрутки внутри других компонентов. Он управляет логикой определения необходимости
  * отображения горизонтальной прокрутки и настраивает соответствующие свойства.
- *
- * @template Props - Properties interface extending HorizontalScrollPropsInclude
  */
-export class HorizontalScrollInclude<
-  Props extends HorizontalScrollPropsInclude = HorizontalScrollPropsInclude
+export class HorizontalScrollInclude extends ComponentIncludeAbstract<
+  HorizontalScrollPropsInclude,
+  HorizontalScrollPropsBasic,
+  HorizontalScrollExpose,
+  HorizontalScrollSlots
 > {
-  /**
-   * Element of the component.
-   *
-   * Элемент компонента.
-   */
-  readonly element = ref<any>()
+  /** List of methods to expose from the sub-component / Список методов для экспорта из субкомпонента */
+  protected readonly exposeItems = [
+    { name: 'toSelected' }
+  ]
 
-  /**
-   * Constructor
-   * @param props input parameter/ входной параметр
-   * @param className class name/ название класса
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param extra additional parameter/ дополнительный параметр
-   * @param index index identifier/ идентификатор индекса
-   */
-  constructor(
-    protected readonly props: Readonly<Props>,
-    protected readonly className: string,
-    protected readonly components?: DesignComponents<HorizontalScrollComponentInclude, Props>,
-    protected readonly extra?: RefOrNormal<ConstrBind<HorizontalScrollPropsBasic>>,
-    protected readonly index?: string
-  ) {
-  }
+  /** Component sub-name / Дополнительное имя компонента */
+  protected name = 'horizontalScroll'
+  /** Property name containing raw attributes / Имя свойства, содержащего сырые атрибуты */
+  protected propsAttrsName = 'horizontalScrollAttrs'
 
   /**
    * HTML element of the component.
    *
    * HTML элемент компонента.
    */
-  readonly elementHtml = computed<HTMLDivElement | undefined>(() => this.element.value?.elementHtml)
-
-  /**
-   * Computed bindings for the horizontal scroll/ Вычисляемые привязки для горизонтальной прокрутки
-   */
-  readonly binds = computed(
-    () => toBinds(
-      getRef(this.extra),
-      {
-        ref: this.element,
-        bleed: this.props.horizontalScrollBleed,
-        align: this.props.horizontalScrollAlign
-      },
-      this.props.horizontalScrollAttrs
-    )
-  )
+  get elementHtml(): HTMLDivElement | undefined {
+    return this.element.value?.elementHtml
+  }
 
   /**
    * Scrolls to the selected element.
    *
    * Прокручивает к выбранному элементу.
    */
-  readonly toSelected = () => {
+  readonly toSelected = (): void => {
     this.element.value?.toSelected?.()
   }
 
   /**
-   * Renders the horizontal scroll component with provided properties and configuration.
-   * Returns an array of VNode elements representing the rendered horizontal scroll, or an empty
-   * array if the component cannot be rendered.
+   * Builds and resolves all HTML attributes and classes for binding.
    *
-   * Обрисовывает компонент горизонтальной прокрутки с предоставленными свойствами и конфигурацией.
-   * Возвращает массив VNode элементов, представляющих отрисованную горизонтальную прокрутку, или пустой
-   * массив, если компонент не может быть отрисованы.
-   *
-   * @param children content for the default slot/ контент для слота по умолчанию
-   * @param props additional properties/ дополнительные свойства
+   * Создает и разрешает все HTML-атрибуты и классы для привязки.
+   * @returns resolved bindings / разрешенные привязки
    */
-  readonly render = (
-    children?: any,
-    props?: RefOrNormal<ConstrBind<HorizontalScrollPropsBasic>>
-  ): VNode[] => {
-    if (this.components) {
-      return this.components.render(
-        'horizontalScroll',
-        {
-          ...this.binds.value,
-          ...getRef(props)
-        },
-        children,
-        this.index ?? 'horizontalScroll'
-      )
-    }
+  protected override toBinds() {
+    const props = this.getProps()
 
-    return []
+    return {
+      ...super.toBinds(),
+      bleed: props.horizontalScrollBleed,
+      align: props.horizontalScrollAlign
+    }
   }
 }

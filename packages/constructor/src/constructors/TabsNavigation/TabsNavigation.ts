@@ -2,7 +2,7 @@ import { computed, toRef, type Ref, type ToRefs } from 'vue'
 import { type ConstrEmit, type DesignComp, ListDataRef, type ListSelectedList } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
-import { HorizontalScrollInclude } from '../HorizontalScroll/HorizontalScrollInclude'
+import { HorizontalScrollInclude } from '../HorizontalScroll'
 import { EventClickInclude } from '../../classes/EventClickInclude'
 import { ModelInclude } from '../../classes/ModelInclude'
 
@@ -87,8 +87,8 @@ export class TabsNavigation {
     } = constructors
 
     this.scroll = new HorizontalScrollIncludeConstructor(
-      this.props,
       this.className,
+      this.props,
       this.components
     )
 
@@ -116,7 +116,7 @@ export class TabsNavigation {
     this.indicator = new TabsNavigationIndicatorConstructor(
       this.props,
       this.refs,
-      this.scroll.elementHtml,
+      () => this.scroll.elementHtml,
       this.classDesign,
       this.className,
       this.selected

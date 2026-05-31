@@ -19,7 +19,11 @@ import {
 } from './types'
 
 /**
- * TabItemDesign
+ * TabItemDesign class constructor for managing classes, styles, and rendering the TabItem component.
+ * It acts as the bridge between component configuration and standard HTML/Vue virtual DOM nodes.
+ *
+ * Класс-конструктор дизайна TabItemDesign для управления классами, стилями и рендерингом компонента TabItem.
+ * Служит мостом между конфигурацией компонента и стандартными виртуальными DOM-нодами Vue.
  */
 export class TabItemDesign<
   COMP extends TabItemComponents,
@@ -35,14 +39,17 @@ export class TabItemDesign<
     CLASSES,
     P
   > {
+  /** Main component instance / Основной экземпляр компонента */
   protected readonly item: TabItem
 
   /**
-   * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor constructors item class/ класс элемента конструкторов
+   * Constructor for TabItemDesign.
+   *
+   * Конструктор для TabItemDesign.
+   * @param name class name / название класса
+   * @param props properties / свойства
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor class for working with the item / класс для работы с элементом
    */
   constructor(
     name: string,
@@ -71,9 +78,10 @@ export class TabItemDesign<
   }
 
   /**
-   * Initialization of all the necessary properties for work
+   * Initialization of all the necessary properties for work.
    *
    * Инициализация всех необходимых свойств для работы.
+   * @returns exposed properties / экспортируемые свойства
    */
   protected initExpose(): EXPOSE {
     return {
@@ -85,6 +93,7 @@ export class TabItemDesign<
    * Improvement of the obtained list of classes.
    *
    * Доработка полученного списка классов.
+   * @returns list of classes / список классов
    */
   protected initClasses(): Partial<CLASSES> {
     return {
@@ -103,6 +112,7 @@ export class TabItemDesign<
    * Refinement of the received list of styles.
    *
    * Доработка полученного списка стилей.
+   * @returns list of styles / список стилей
    */
   protected initStyles(): ConstrStyles {
     return {}
@@ -112,6 +122,7 @@ export class TabItemDesign<
    * A method for rendering.
    *
    * Метод для рендеринга.
+   * @returns rendered virtual node / отрендеренная виртуальная нода
    */
   protected initRender(): VNode {
     const children: any[] = [
@@ -122,11 +133,11 @@ export class TabItemDesign<
     ]
 
     return h(
-      this.item.tag.value,
+      this.item.tag,
       {
         ...this.getAttrs(),
         class: this.classes?.value.main,
-        ...this.item.binds.value
+        ...this.item.binds
       },
       children
     )

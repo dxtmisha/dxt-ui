@@ -19,7 +19,11 @@ import {
 } from './types'
 
 /**
- * HorizontalScrollDesign
+ * HorizontalScrollDesign class constructor for managing classes, styles, and rendering the HorizontalScroll component.
+ * It acts as the bridge between component configuration and standard HTML/Vue virtual DOM nodes.
+ *
+ * Класс-конструктор дизайна HorizontalScrollDesign для управления классами, стилями и рендерингом компонента HorizontalScroll.
+ * Служит мостом между конфигурацией компонента и стандартными виртуальными DOM-нодами Vue.
  */
 export class HorizontalScrollDesign<
   COMP extends HorizontalScrollComponents,
@@ -35,14 +39,17 @@ export class HorizontalScrollDesign<
     CLASSES,
     P
   > {
+  /** Main component instance / Основной экземпляр компонента */
   protected readonly item: HorizontalScroll
 
   /**
-   * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor constructors item class/ класс элемента конструкторов
+   * Constructor for HorizontalScrollDesign.
+   *
+   * Конструктор для HorizontalScrollDesign.
+   * @param name class name / название класса
+   * @param props properties / свойства
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor class for working with the item / класс для работы с элементом
    */
   constructor(
     name: string,
@@ -71,9 +78,10 @@ export class HorizontalScrollDesign<
   }
 
   /**
-   * Initialization of all the necessary properties for work
+   * Initialization of all the necessary properties for work.
    *
    * Инициализация всех необходимых свойств для работы.
+   * @returns exposed properties / экспортируемые свойства
    */
   protected initExpose(): EXPOSE {
     return {
@@ -85,6 +93,7 @@ export class HorizontalScrollDesign<
    * Improvement of the obtained list of classes.
    *
    * Доработка полученного списка классов.
+   * @returns list of classes / список классов
    */
   protected initClasses(): Partial<CLASSES> {
     return {
@@ -100,6 +109,7 @@ export class HorizontalScrollDesign<
    * Refinement of the received list of styles.
    *
    * Доработка полученного списка стилей.
+   * @returns list of styles / список стилей
    */
   protected initStyles(): ConstrStyles {
     return {}
@@ -109,18 +119,19 @@ export class HorizontalScrollDesign<
    * A method for rendering.
    *
    * Метод для рендеринга.
+   * @returns rendered virtual node / отрендеренная виртуальная нода
    */
   protected initRender(): VNode {
     const children: any[] = []
 
-    this.initSlot('default', children, this.item.slotData.value)
+    this.initSlot('default', children, this.item.slotData)
 
     return h(
       this.props.tag ?? 'div',
       {
         ...this.getAttrs(),
         class: this.classes?.value.main,
-        ...this.item.binds.value
+        ...this.item.binds
       },
       children
     )
