@@ -2,8 +2,6 @@ import { getBind } from '@dxtmisha/functional'
 
 import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
 
-import type { ComponentIncludeExposeItem } from '../../types/componentInclude'
-
 import type { BadgePropsInclude } from './basicTypes'
 import type { BadgeProps } from './props'
 import type { BadgeExpose, BadgeSlots } from './types'
@@ -23,8 +21,6 @@ export class BadgeInclude extends ComponentIncludeAbstract<
   BadgeExpose,
   BadgeSlots
 > {
-  protected readonly exposeItems: ComponentIncludeExposeItem<any>[] | undefined = undefined
-
   protected name = 'badge'
   protected propsAttrsName = 'badgeAttrs'
 
@@ -44,7 +40,7 @@ export class BadgeInclude extends ComponentIncludeAbstract<
    * Разрешает и возвращает свойства дизайна, привязанные именно к бейджу.
    * @returns resolved badge properties or undefined / разрешенные свойства бейджа или undefined
    */
-  protected override getExtra(): BadgeProps | undefined {
+  protected override getExtra() {
     const props = this.getProps()
     const extra = super.getExtra()
 
@@ -60,6 +56,6 @@ export class BadgeInclude extends ComponentIncludeAbstract<
       extra,
       'label',
       true
-    ) as BadgeProps
+    )
   }
 }
