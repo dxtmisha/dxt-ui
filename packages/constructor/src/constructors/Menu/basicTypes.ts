@@ -47,7 +47,7 @@ export interface MenuExposeInclude extends ListExpose {
   toggle(): Promise<void>
 
   /** Reference to the menu element/ Ссылка на элемент меню */
-  menuElement: Ref<ConstrBind<MenuExpose> | undefined>
+  getMenuElement(): Ref<ConstrBind<MenuExpose> | undefined>
 }
 
 export type MenuSlotInclude = {

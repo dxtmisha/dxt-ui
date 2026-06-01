@@ -79,7 +79,7 @@ export class MenuCountryInclude<
     toClose: async () => this.element.value?.toClose(),
     toggle: async () => this.element.value?.toggle(),
 
-    menuElement: this.element,
+    getMenuElement: () => this.element,
 
     isSelected: computed(() => this.element.value?.isSelected.value ?? false),
     selectedList: computed(() => this.element.value?.selectedList.value ?? []),

@@ -80,8 +80,8 @@ export class MenuCountry {
     this.model = new ModelIncludeConstructor('selected', this.emits)
 
     this.menu = new MenuIncludeConstructor(
-      this.props,
       this.className,
+      this.props,
       this.components,
       computed(() => ({
         'list': this.list.value,

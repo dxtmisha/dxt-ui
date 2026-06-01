@@ -2,6 +2,12 @@
 
 @mixin mixinSelectValue {
   @include ui.truncate;
+  z-index: 12;
+  pointer-events: none;
+
+  &__trailing {
+    pointer-events: auto;
+  }
 
   &--multiple {
     display: flex;

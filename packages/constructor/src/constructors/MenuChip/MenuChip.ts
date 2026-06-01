@@ -82,7 +82,7 @@ export class MenuChip extends SelectAbstract {
         icon: this.props.icon,
         disabled: this.props.disabled,
         readonly: this.props.readonly,
-        iconTrailing: this.iconTrailing.value
+        iconTrailing: this.iconTrailing
       })
     )
   }

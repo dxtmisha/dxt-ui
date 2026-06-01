@@ -1,17 +1,12 @@
-import { computed, ref, type VNode } from 'vue'
+import { computed } from 'vue'
 import {
-  type ConstrBind,
-  type DesignComponents,
-  getRef,
-  type ListNames,
-  type RawSlots,
-  type RefOrNormal,
-  toBind,
-  toBinds
+  type ListNames
 } from '@dxtmisha/functional'
 
-import type { MenuComponentInclude, MenuExposeInclude, MenuPropsInclude } from './basicTypes'
-import type { MenuExpose, MenuSlots } from './types'
+import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
+
+import type { MenuExposeInclude, MenuPropsInclude } from './basicTypes'
+import type { MenuSlots } from './types'
 import type { MenuProps } from './props'
 
 /**
@@ -25,104 +20,77 @@ import type { MenuProps } from './props'
  */
 export class MenuInclude<
   Props extends MenuPropsInclude = MenuPropsInclude,
-  PropsExtra extends ConstrBind<MenuProps> = ConstrBind<MenuProps>
-> {
-  /** Reference to menu element/ Ссылка на элемент меню */
-  protected readonly element = ref<ConstrBind<MenuExpose> | undefined>()
+  PropsExtra extends MenuProps = MenuProps
+> extends ComponentIncludeAbstract<
+    Props,
+    PropsExtra,
+    MenuExposeInclude,
+    MenuSlots,
+    any
+  > {
+  /** Sub-component name / Название субкомпонента */
+  protected override readonly name = 'menu'
+
+  /** Property name containing raw attributes to pass / Имя свойства, содержащего сырые атрибуты для передачи */
+  protected override readonly propsAttrsName = 'menuAttrs'
 
   /**
-   * Constructor
-   * @param props input parameter/ входной параметр
-   * @param className class name/ название класса
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param extra additional parameter or property name/ дополнительный параметр или имя свойства
-   * @param index index identifier/ идентификатор индекса
-   */
-  constructor(
-    protected readonly props: Readonly<Props>,
-    protected readonly className: string,
-    protected readonly components?: DesignComponents<MenuComponentInclude, Props>,
-    protected readonly extra?: RefOrNormal<PropsExtra>,
-    protected readonly index?: string
-  ) {
-  }
-
-  /**
-   * Checks whether menu should be displayed/
+   * Checks whether menu should be displayed /
    * Проверяет, нужно ли отображать меню
    */
-  readonly is = computed(() => Boolean(!this.props.disabled && this.components))
-
-  readonly isOpen = computed<boolean>(() => Boolean(this.element.value?.getOpen()))
-
-  /** Computed bindings for the menu/ Вычисляемые привязки для меню */
-  readonly binds = computed<PropsExtra>(() => {
-    const props = toBinds<PropsExtra>(
-      getRef(this.extra),
-      this.props.menuAttrs,
-      {
-        class: `${this.className}__menu`
-      }
-    )
-
-    return {
-      disabled: this.props.disabled,
-      ...props
-    }
-  })
-
-  /** Menu expose functionality/ Функциональность экспорта меню */
-  readonly expose: MenuExposeInclude = {
-    getOpen: () => Boolean(this.element.value?.getOpen()),
-    setOpen: async (open: boolean) => this.element.value?.setOpen(open),
-    toOpen: async () => this.element.value?.toOpen(),
-    toClose: async () => this.element.value?.toClose(),
-    toggle: async () => this.element.value?.toggle(),
-
-    menuElement: this.element,
-
-    isSelected: computed(() => this.element.value?.isSelected.value ?? false),
-    selectedList: computed(() => this.element.value?.selectedList.value ?? []),
-    selectedNames: computed(() => this.element.value?.selectedNames.value ?? {} as ListNames),
-    selectedValues: computed(() => this.element.value?.selectedValues.value ?? [])
+  override get is(): boolean {
+    const props = this.getProps()
+    return Boolean(!props.disabled && this.components)
   }
 
   /**
-   * Get the menu element
-   *
+   * Check if the menu is open /
+   * Проверяет, открыто ли меню
+   */
+  get isOpen(): boolean {
+    return Boolean(this.element.value?.getOpen())
+  }
+
+  /**
+   * Exposes the API methods and properties /
+   * Экспортирует API-методы и свойства
+   */
+  override get expose(): MenuExposeInclude {
+    return {
+      getOpen: () => Boolean(this.element.value?.getOpen()),
+      setOpen: async (open: boolean) => this.element.value?.setOpen(open),
+      toOpen: async () => this.element.value?.toOpen(),
+      toClose: async () => this.element.value?.toClose(),
+      toggle: async () => this.element.value?.toggle(),
+
+      getMenuElement: () => this.element as any,
+
+      isSelected: computed(() => this.element.value?.isSelected.value ?? false),
+      selectedList: computed(() => this.element.value?.selectedList.value ?? []),
+      selectedNames: computed(() => this.element.value?.selectedNames.value ?? {} as ListNames),
+      selectedValues: computed(() => this.element.value?.selectedValues.value ?? [])
+    }
+  }
+
+  /**
+   * Get the menu element /
    * Получить элемент меню
+   * @returns menu element or undefined / элемент меню или undefined
    */
   getElement() {
     return this.element.value
   }
 
   /**
-   * Render the Menu component
+   * Builds and resolves all HTML attributes and classes for binding.
    *
-   * Рендер компонента меню
-   * @param slotsChildren menu slots/ слоты меню
-   * @param attrs additional attributes/ дополнительные атрибуты
-   * @returns VNode array/ массив VNode
+   * Создает и разрешает все HTML-атрибуты и классы для привязки.
+   * @returns resolved bindings / разрешенные привязки
    */
-  readonly render = (
-    slotsChildren?: MenuSlots,
-    attrs?: Record<string, any>
-  ): VNode[] => {
-    if (this.components) {
-      return this.components.render(
-        'menu',
-        {
-          ref: this.element,
-          ...toBind(
-            attrs ?? {},
-            this.binds.value
-          )
-        },
-        slotsChildren as RawSlots,
-        this.index
-      )
+  protected override toBinds() {
+    return {
+      ...super.toBinds(),
+      disabled: this.getProps().disabled
     }
-
-    return []
   }
 }

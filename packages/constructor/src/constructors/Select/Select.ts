@@ -1,5 +1,5 @@
-import { computed, type Ref, type ToRefs } from 'vue'
-import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
+import type { Ref, ToRefs } from 'vue'
+import type { ConstrEmit, DesignComp } from '@dxtmisha/functional'
 
 import { FieldElementInclude } from '../../classes/Field/FieldElementInclude'
 import { FieldChangeInclude } from '../../classes/Field/FieldChangeInclude'
@@ -106,11 +106,11 @@ export class Select extends SelectAbstract {
       this.className,
       this.props,
       this.components,
-      computed(() => ({
-        iconTrailing: this.iconTrailing.value,
+      () => ({
+        iconTrailing: this.iconTrailing,
         maxlength: this.props.max,
         cancel: this.props.cancel ?? (this.props.multiple ? 'auto' : 'none')
-      })),
+      }),
       undefined,
       this.value,
       this.event,

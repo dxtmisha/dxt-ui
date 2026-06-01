@@ -1,4 +1,4 @@
-import { computed, type Ref, type ToRefs } from 'vue'
+import { type Ref, type ToRefs } from 'vue'
 import {
   type ConstrEmit,
   type DesignComp,
@@ -136,10 +136,10 @@ export abstract class SelectAbstract {
     )
 
     this.menu = new MenuIncludeConstructor(
-      this.props,
       this.className,
+      this.props,
       this.components,
-      computed(() => ({
+      () => ({
         windowAttrs: {
           hide: !isFilled(this.props.option) && !this.isSlot(),
           widthMatch: true
@@ -154,33 +154,33 @@ export abstract class SelectAbstract {
         showSearch: this.props.showSearch,
         filterMode: this.props.filterMode,
         hideList: this.props.hideList,
-        selectionStyle: this.selectionStyle.value,
+        selectionStyle: this.selectionStyle,
         isSelectedByValue: true,
         onClick: this.event.onSelect,
         onClickSlot: this.onClick,
         onUpdateValue: this.isArrow() ? this.event.onValue : undefined,
         ariaMultiselectable: this.props.multiple
-      }))
+      })
     )
   }
 
   /** Computes the trailing icon value / Вычисляет значение иконки трейлинга */
-  protected readonly iconTrailing = computed<IconValue | undefined>(() => {
+  protected get iconTrailing(): IconValue | undefined {
     if (!this.props.disabled && !this.isArrow()) {
       return this.props.iconTrailing ?? this.props.iconArrowDown
     }
 
     return undefined
-  })
+  }
 
   /** Selection style / Стиль выбора */
-  protected readonly selectionStyle = computed<ListItemPropsBasic['selectionStyle']>(() => {
+  protected get selectionStyle(): ListItemPropsBasic['selectionStyle'] {
     if (this.props.selectionStyle === 'auto') {
       return this.props.multiple ? 'checkbox' : 'radio'
     }
 
     return this.props.selectionStyle
-  })
+  }
 
   /**
    * Checks whether an arrow is configured for the select component.
