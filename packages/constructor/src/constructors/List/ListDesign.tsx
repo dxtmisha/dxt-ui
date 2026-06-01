@@ -99,7 +99,7 @@ export class ListDesign<
    */
   protected initClasses(): Partial<CLASSES> {
     return {
-      main: this.item.classes.value,
+      main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
         space: this.getSubClass('space'),
@@ -156,7 +156,7 @@ export class ListDesign<
    * Генерирует все элементы из списка.
    */
   readonly renderData = (): VNode[] => {
-    return this.renderDataByItem('item', this.item.list.value, true)
+    return this.renderDataByItem('item', this.item.list, true)
   }
 
   /**

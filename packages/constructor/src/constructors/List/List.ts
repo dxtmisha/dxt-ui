@@ -157,23 +157,25 @@ export class List {
    *
    * Вычисляемые данные списка
    * */
-  readonly list = computed<ListList>(() => {
+  get list(): ListList {
     if (this.props.lite) {
       return this.data.liteData.value
     }
 
     return this.data.fullData.value
-  })
+  }
 
   /**
    * Computed CSS classes for the cell component.
    *
    * Вычисляемые CSS классы для компонента ячейки.
    */
-  readonly classes = computed<ConstrClass>(() => ({
-    [`${this.className}--highlightActive`]: Boolean(this.props.filterMode) && this.data.isHighlight(),
-    [`${this.className}--searchActive`]: Boolean(this.props.filterMode) && this.search.is()
-  }))
+  get classes(): ConstrClass {
+    return {
+      [`${this.className}--highlightActive`]: Boolean(this.props.filterMode) && this.data.isHighlight(),
+      [`${this.className}--searchActive`]: Boolean(this.props.filterMode) && this.search.is()
+    }
+  }
 
   /**
    * Computed binding properties for list items/
