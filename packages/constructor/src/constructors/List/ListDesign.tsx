@@ -85,10 +85,10 @@ export class ListDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      isSelected: this.item.data.isSelected,
-      selectedList: this.item.data.selectedList,
-      selectedNames: this.item.data.selectedNames,
-      selectedValues: this.item.data.selectedValues
+      isSelected: () => this.item.data.isSelected.value,
+      getSelectedList: () => this.item.data.selectedList.value,
+      getSelectedNames: () => this.item.data.selectedNames.value,
+      getSelectedValues: () => this.item.data.selectedValues.value
     } as EXPOSE
   }
 

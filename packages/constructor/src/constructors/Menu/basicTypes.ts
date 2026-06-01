@@ -2,13 +2,13 @@ import type { Ref } from 'vue'
 import type { ConstrBind, NumberOrStringOrBoolean } from '@dxtmisha/functional'
 import type { WindowControlItem } from '../Window'
 
-import type { ListExpose } from '../List'
+import type { ListExpose, ListSlotsInclude } from '../List'
 import type { MenuExpose } from './types'
 import type { MenuPropsBasic } from './props'
 
 /** Basic control for the menu/ Базовое управление для меню */
 export type MenuControlBasic
-  = ListExpose
+  = ListSlotsInclude
     & {
       /** Current loading state/ Текущее состояние загрузки */
       loading: Ref<boolean>

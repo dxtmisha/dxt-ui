@@ -1,5 +1,3 @@
-import type { ComputedRef } from 'vue'
-
 import type { ConstrClass, ListList, ListNames } from '@dxtmisha/functional'
 import type { EventClickEmits } from '../../types/eventClickTypes'
 
@@ -38,13 +36,13 @@ export type ListEmits
  */
 export interface ListExpose {
   /** Whether at least one item is selected/ Выбран ли хотя бы один элемент */
-  isSelected: ComputedRef<boolean>
+  isSelected(): boolean
   /** List of selected elements/ Список выбранных элементов */
-  selectedList: ComputedRef<ListList>
+  getSelectedList(): ListList
   /** Names of selected elements/ Названия выбранных элементов */
-  selectedNames: ComputedRef<ListNames>
+  getSelectedNames(): ListNames
   /** Values of selected elements/ Значения выбранных элементов */
-  selectedValues: ComputedRef<any[]>
+  getSelectedValues(): any[]
 }
 
 /**

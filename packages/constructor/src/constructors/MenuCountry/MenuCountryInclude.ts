@@ -81,10 +81,10 @@ export class MenuCountryInclude<
 
     getMenuElement: () => this.element,
 
-    isSelected: computed(() => this.element.value?.isSelected.value ?? false),
-    selectedList: computed(() => this.element.value?.selectedList.value ?? []),
-    selectedNames: computed(() => this.element.value?.selectedNames.value ?? {} as ListNames),
-    selectedValues: computed(() => this.element.value?.selectedValues.value ?? [])
+    isSelected: () => this.element.value?.isSelected() ?? false,
+    getSelectedList: () => this.element.value?.getSelectedList() ?? [],
+    getSelectedNames: () => this.element.value?.getSelectedNames() ?? {} as ListNames,
+    getSelectedValues: () => this.element.value?.getSelectedValues() ?? []
   }
 
   /**

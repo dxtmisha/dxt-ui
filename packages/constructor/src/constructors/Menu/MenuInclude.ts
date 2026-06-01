@@ -1,4 +1,3 @@
-import { computed } from 'vue'
 import {
   type ListNames
 } from '@dxtmisha/functional'
@@ -65,10 +64,10 @@ export class MenuInclude<
 
       getMenuElement: () => this.element as any,
 
-      isSelected: computed(() => this.element.value?.isSelected.value ?? false),
-      selectedList: computed(() => this.element.value?.selectedList.value ?? []),
-      selectedNames: computed(() => this.element.value?.selectedNames.value ?? {} as ListNames),
-      selectedValues: computed(() => this.element.value?.selectedValues.value ?? [])
+      isSelected: () => this.element.value?.isSelected() ?? false,
+      getSelectedList: () => this.element.value?.getSelectedList() ?? [],
+      getSelectedNames: () => this.element.value?.getSelectedNames() ?? {} as ListNames,
+      getSelectedValues: () => this.element.value?.getSelectedValues() ?? []
     }
   }
 
