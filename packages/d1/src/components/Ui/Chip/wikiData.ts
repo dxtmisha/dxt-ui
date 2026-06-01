@@ -34,7 +34,7 @@ const propsNames: StorybookProps = [
   { name: 'readonly', type: 'boolean' },
   { name: 'roundedFull', type: 'boolean' },
   { name: 'selected', type: 'boolean' },
-  { name: 'size', type: 'string', option: ['sm', 'md', 'lg'] },
+  { name: 'size', type: 'string', option: ['xs', 'sm', 'md', 'lg'] },
   { name: 'tag', type: 'string', option: ['button', 'a', 'span'] },
   { name: 'textAlign', type: 'string', option: ['left', 'center', 'right'] },
   { name: 'to', type: 'string | RouteLocationAsRelativeGeneric | RouteLocationAsPathGeneric' },

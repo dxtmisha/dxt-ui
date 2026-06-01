@@ -29,7 +29,8 @@ type Story = StoryObj<typeof meta>
 
 export const Select: Story = {
   args: {
-    editValue: true
+    editValue: true,
+    multiple: true
   },
 
   // :story-main [!] System label / Системная метка

@@ -63,13 +63,14 @@ export class TooltipInclude extends ComponentIncludeAbstract<
   }
 
   protected toBinds() {
+    const extra = this.getExtra()
     const props = this.getProps()
 
     return {
       ...super.toBinds(),
 
-      label: props.tooltipLabel,
-      description: props.tooltipDescription
+      label: props.tooltipLabel ?? extra?.label,
+      description: props.tooltipDescription ?? extra?.description
     }
   }
 }

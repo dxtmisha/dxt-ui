@@ -1,7 +1,8 @@
-import { computed, onMounted, type Ref, type ToRefs } from 'vue'
+import { onMounted, type Ref, type ToRefs } from 'vue'
 import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
 import { LabelInclude } from '../../classes/LabelInclude'
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { TextInclude } from '../../classes/TextInclude'
 import { TooltipInclude } from '../Tooltip'
 
@@ -106,13 +107,38 @@ export class Anchor {
   }
 
   /** Is hide anchor/ Скрыть якорь */
-  readonly isHide = computed<boolean>(() => {
+  isHide(): boolean {
     return this.props.hide
       || (
         !this.label.is
         && !this.props.isCopy
       )
-  })
+  }
+
+  /**
+   * Returns attributes for the main element.
+   *
+   * Возвращает атрибуты для главного элемента.
+   */
+  get binds() {
+    const props: Record<string, any> = {
+      ref: this.element,
+      key: 'main',
+      name: this.props.name,
+      onClick: this.event.onClick,
+      tabindex: 0
+    }
+
+    if (!this.props.isCopy) {
+      return {
+        ...props,
+        href: this.href.get(),
+        ...AriaStaticInclude.current('page')
+      }
+    }
+
+    return props
+  }
 
   /**
    * Go if focus on anchor

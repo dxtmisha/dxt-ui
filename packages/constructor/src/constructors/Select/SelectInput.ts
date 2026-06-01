@@ -1,4 +1,3 @@
-import { computed } from 'vue'
 import { type ConstrBind, toBinds } from '@dxtmisha/functional'
 
 import { FieldAttributesInclude } from '../../classes/Field/FieldAttributesInclude'
@@ -30,29 +29,29 @@ export class SelectInput {
   }
 
   /** Indicates if it is in edit mode/ Указывает, находится ли в режиме редактирования */
-  readonly isEdit = computed<boolean>(
-    () => Boolean(this.props.editValue && !this.props.multiple)
-  )
+  isEdit(): boolean {
+    return Boolean(this.props.editValue && !this.props.multiple)
+  }
 
   /**
    * Returns data for the input field.
    *
    * Возвращает данные для поля input.
    */
-  readonly binds = computed<ConstrBind<Partial<HTMLInputElement>> | undefined>(() => {
+  get binds(): ConstrBind<Partial<HTMLInputElement>> | undefined {
     return toBinds(
       this.attributes.listForInput,
       {
         'name': this.props.name,
         'type': 'text',
         'required': this.props.required,
-        'readonly': !this.isEdit.value,
+        'readonly': !this.isEdit(),
         'placeholder': this.props.placeholder,
         'data-menu-control': '1',
-        'onInput': this.isEdit.value ? this.event.onInput : this.event.onSelect
+        'onInput': this.isEdit() ? this.event.onInput : this.event.onSelect
       }
     ) as ConstrBind<Partial<HTMLInputElement>>
-  })
+  }
 
   /**
    * Handles the keydown event to simulate a click on the input element.

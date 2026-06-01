@@ -23,7 +23,7 @@ export type SelectValueProps = SelectValuePropsBasic<IconProps, ChipProps> & Pro
 export const defaults: object = {
   ...defaultsSelectValue,
   chipAttrs: {
-    size: 'sm'
+    size: 'xs'
   },
   iconCancel: 'close_small',
   ...{

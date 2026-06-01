@@ -1,15 +1,8 @@
-import { computed, type VNode } from 'vue'
-import {
-  type ConstrBind,
-  type DesignComponents,
-  getRef,
-  type RefOrNormal,
-  toBind,
-  toBinds
-} from '@dxtmisha/functional'
+import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
 
-import type { SelectValueComponentInclude, SelectValuePropsInclude } from './basicTypes'
+import type { SelectValuePropsInclude } from './basicTypes'
 import type { SelectValueProps } from './props'
+import type { SelectValueExpose, SelectValueSlots } from './types'
 
 /**
  * SelectValueInclude class provides functionality for conditionally rendering selectValue components
@@ -20,73 +13,37 @@ import type { SelectValueProps } from './props'
  * selectValue внутри других компонентов. Он управляет логикой определения необходимости
  * отображения selectValue и настраивает соответствующие свойства.
  */
-export class SelectValueInclude<
-  Props extends SelectValuePropsInclude = SelectValuePropsInclude,
-  PropsExtra extends ConstrBind<SelectValueProps> = ConstrBind<SelectValueProps>
+export class SelectValueInclude extends ComponentIncludeAbstract<
+  SelectValuePropsInclude,
+  SelectValueProps,
+  SelectValueExpose,
+  SelectValueSlots
 > {
+  /** Sub-component name / Название субкомпонента */
+  protected override readonly name = 'selectValue'
+
+  /** Property name containing raw attributes to pass / Имя свойства, содержащего сырые атрибуты для передачи */
+  protected override readonly propsAttrsName = 'selectValueAttrs'
+
   /**
-   * Constructor
-   * @param props input parameter/ входной параметр
-   * @param className class name/ название класса
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param extra additional parameter or property name/ дополнительный параметр или имя свойства
-   * @param index index identifier/ идентификатор индекса
+   * Checks whether selectValue should be displayed /
+   * Проверяет, нужно ли отображать selectValue
    */
-  constructor(
-    protected readonly props: Readonly<Props>,
-    protected readonly className: string,
-    protected readonly components?: DesignComponents<SelectValueComponentInclude, Props>,
-    protected readonly extra?: RefOrNormal<PropsExtra>,
-    protected readonly index?: string
-  ) {
+  override get is(): boolean {
+    const props = this.getProps()
+    return Boolean(!props.disabled && this.components)
   }
 
   /**
-   * Checks whether selectValue should be displayed/
-   * Проверяет, нужно ли отображать selectValue
-   */
-  readonly is = computed(() => Boolean(!this.props.disabled && this.components))
-
-  /** Computed bindings for the selectValue/ Вычисляемые привязки для selectValue */
-  readonly binds = computed<PropsExtra>(() => {
-    const props = toBinds<PropsExtra>(
-      getRef(this.extra),
-      this.props.selectValueAttrs,
-      {
-        class: `${this.className}__select-value`
-      }
-    )
-
-    return {
-      ...props,
-      disabled: this.props.disabled
-    }
-  })
-
-  /**
-   * Render the SelectValue component
+   * Builds and resolves all HTML attributes and classes for binding.
    *
-   * Рендер компонента selectValue
-   * @param attrs additional attributes/ дополнительные атрибуты
-   * @returns VNode array/ массив VNode
+   * Создает и разрешает все HTML-атрибуты и классы для привязки.
+   * @returns resolved bindings / разрешенные привязки
    */
-  readonly render = (
-    attrs?: Record<string, any>
-  ): VNode[] => {
-    if (
-      this.components
-      && this.is.value
-    ) {
-      return this.components.render(
-        'selectValue',
-        toBind(
-          attrs ?? {},
-          this.binds.value
-        ),
-        this.index
-      )
+  protected override toBinds() {
+    return {
+      ...super.toBinds(),
+      disabled: this.getProps().disabled
     }
-
-    return []
   }
 }

@@ -446,6 +446,10 @@
     }
     
     &--size {
+      &--xs {
+        @include ui.height(#{var(--d1-ref-spacing-6)});
+      }
+      
       &--sm {
         @include ui.height(#{var(--d1-ref-spacing-8)});
       }

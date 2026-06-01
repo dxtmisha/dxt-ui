@@ -167,7 +167,7 @@ export class SelectDesign<
   ): VNode | VNode[] => {
     const children: any[] = []
 
-    if (!this.item.input.isEdit.value) {
+    if (!this.item.input.isEdit()) {
       children.push(this.renderMenuControlValue(input, props))
     }
 
@@ -189,7 +189,7 @@ export class SelectDesign<
     input: FieldControl,
     props: MenuControlItem
   ): VNode => {
-    const isEdit = this.item.input.isEdit.value
+    const isEdit = this.item.input.isEdit()
     const className = isEdit ? input.className : input.classForFocus
     const menuControl = {
     }
@@ -197,7 +197,7 @@ export class SelectDesign<
     return h(
       'input',
       toBinds(
-        this.item.input.binds.value,
+        this.item.input.binds,
         props.binds,
         {
           ref: this.element,

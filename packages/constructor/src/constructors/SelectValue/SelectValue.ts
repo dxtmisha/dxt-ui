@@ -1,4 +1,4 @@
-import { computed, type Ref, type ToRefs } from 'vue'
+import { type Ref, type ToRefs } from 'vue'
 import {
   type ConstrBind,
   type ConstrClassObject,
@@ -17,28 +17,36 @@ import type { SelectValueComponents, SelectValueEmits, SelectValueSlots } from '
 import type { SelectValueProps } from './props'
 
 /**
- * SelectValue
+ * SelectValue is a constructor class for managing select value displays,
+ * handling state such as placeholder states, canceling icons, and click actions.
+ *
+ * SelectValue — это класс-конструктор для управления отображением выбранных значений,
+ * обрабатывающий такие состояния, как плейсхолдеры, иконки отмены и действия по клику.
  */
 export class SelectValue {
+  /** Enabled state manager / Менеджер состояния активности */
   readonly enabled: EnabledInclude
+
+  /** Event click controller / Контроллер клика по событию */
   readonly event: EventClickInclude
 
+  /** Window classes manager / Менеджер классов окна */
   readonly window: WindowClassesInclude
 
   /**
-   * Constructor
-   * @param props input data/ входные данные
-   * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
-   * @param element input element/ элемент ввода
-   * @param classDesign design name/ название дизайна
-   * @param className class name/ название класса
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param slots object for working with slots/ объект для работы со слотами
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param constructors object with classes/ объект с классами
-   * @param constructors.EnabledConstructor class for creating the enabled state/ класс для создания состояния активности
-   * @param constructors.EventConstructor class for creating an event/ класс для создания события
-   * @param constructors.WindowClassesConstructor class for working with window classes/ класс для работы с классами окна
+   * Constructor / Конструктор
+   * @param props input data / входные данные
+   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
+   * @param element input element / элемент ввода
+   * @param classDesign design name / название дизайна
+   * @param className class name / название класса
+   * @param components object for working with components / объект для работы с компонентами
+   * @param slots object for working with slots / объект для работы со слотами
+   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
+   * @param constructors object with classes / объект с классами
+   * @param constructors.EnabledConstructor class for creating the enabled state / класс для создания состояния активности
+   * @param constructors.EventConstructor class for creating an event / класс для создания события
+   * @param constructors.WindowClassesConstructor class for working with window classes / класс для работы с классами окна
    */
   constructor(
     protected readonly props: SelectValueProps,
@@ -71,13 +79,8 @@ export class SelectValue {
     this.window = new WindowClassesConstructor(classDesign)
   }
 
-  /** Is placeholder/ Является ли плейсхолдером */
-  readonly isPlaceholder = computed<boolean>(
-    () => !isFilled(this.props.value) && Boolean(this.props.placeholder)
-  )
-
-  /** Icon for canceling selection/ Иконка для отмены выбора */
-  readonly iconTrailing = computed<ConstrBind<IconProps> | undefined>(() => {
+  /** Icon for canceling selection / Иконка для отмены выбора */
+  get iconTrailing(): ConstrBind<IconProps> | undefined {
     if (this.enabled.isEnabled) {
       return {
         icon: this.props.iconCancel,
@@ -90,20 +93,32 @@ export class SelectValue {
     }
 
     return undefined
-  })
+  }
 
-  /** Returns data for the main style class/ Возвращает данные для главного класса стиля */
-  readonly classes = computed<ConstrClassObject>(() => ({
-    [`${this.className}--placeholder`]: this.isPlaceholder.value,
-    [`${this.className}--multiple`]: Boolean(this.props.multiple)
-  }))
+  /** Returns data for the main style class / Возвращает данные для главного класса стиля */
+  get classes(): ConstrClassObject {
+    return {
+      [`${this.className}--placeholder`]: this.isPlaceholder(),
+      [`${this.className}--multiple`]: Boolean(this.props.multiple)
+    }
+  }
+
+  /**
+   * Checks whether the current value is a placeholder.
+   *
+   * Проверяет, является ли текущее значение плейсхолдером.
+   * @returns true if placeholder / true, если плейсхолдер
+   */
+  isPlaceholder(): boolean {
+    return !isFilled(this.props.value) && Boolean(this.props.placeholder)
+  }
 
   /**
    * Click event handler.
    *
    * Обработчик события клика.
-   * @param event event object/ объект события
-   * @param options additional event options/ дополнительные опции события
+   * @param event event object / объект события
+   * @param options additional event options / дополнительные опции события
    */
   readonly onClick = (
     event: MouseEvent,

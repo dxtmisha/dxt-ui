@@ -114,7 +114,7 @@ export class AnchorDesign<
    */
   protected initRender(): VNode[] | undefined {
     if (this.item.href.is()) {
-      if (this.item.isHide.value) {
+      if (this.item.isHide()) {
         return this.renderItemHide()
       }
 
@@ -161,7 +161,8 @@ export class AnchorDesign<
 
     return [
       h('a', {
-        ...this.getMainProps(),
+        ...this.getAttrs(),
+        ...this.item.binds,
         class: classes
       }, this.renderChildren())
     ]
@@ -212,31 +213,5 @@ export class AnchorDesign<
     }
 
     return children
-  }
-
-  /**
-   * Get main element properties.
-   *
-   * Получить свойства основного элемента.
-   */
-  protected getMainProps(): Record<string, any> {
-    const props: Record<string, any> = {
-      ...this.getAttrs(),
-      ref: this.element,
-      key: 'main',
-      name: this.props.name,
-      onClick: this.item.event.onClick,
-      tabindex: 0
-    }
-
-    if (!this.props.isCopy) {
-      return {
-        ...props,
-        href: this.item.href.get(),
-        ...AriaStaticInclude.current('page')
-      }
-    }
-
-    return props
   }
 }

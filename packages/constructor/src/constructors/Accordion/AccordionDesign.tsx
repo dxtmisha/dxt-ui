@@ -132,7 +132,7 @@ export class AccordionDesign<
    * Генерирует данные для заголовка.
    * @param open open status/ статус открытия
    */
-  protected readonly renderHead = (
+  readonly renderHead = (
     { isOpen, binds }: MotionTransformControlItem
   ): VNode | undefined => {
     const slots: Record<string, any> = {}
@@ -174,7 +174,7 @@ export class AccordionDesign<
    *
    * Генерирует данные для тела.
    */
-  protected readonly renderBody = (props: any): VNode => {
+  readonly renderBody = (props: any): VNode => {
     return h(
       'div',
       { class: this.classes?.value.body },

@@ -74,6 +74,9 @@
     "_category": "style"
   },
   "~size": {
+    "xs": {
+      "height": "{ref.spacing.6}"
+    },
     "sm": {
       "height": "{ref.spacing.8}"
     },
