@@ -20,8 +20,8 @@ import exposeGetOpenEn from './expose.getOpen.en.mdx'
 import exposeGetOpenRu from './expose.getOpen.ru.mdx'
 import exposeSelectedEn from './expose.selected.en.mdx'
 import exposeSelectedRu from './expose.selected.ru.mdx'
-import exposeValidationMessageEn from './expose.validationMessage.en.mdx'
-import exposeValidationMessageRu from './expose.validationMessage.ru.mdx'
+import exposeGetValidationMessageEn from './expose.getValidationMessage.en.mdx'
+import exposeGetValidationMessageRu from './expose.getValidationMessage.ru.mdx'
 import exposeValueEn from './expose.value.en.mdx'
 import exposeValueRu from './expose.value.ru.mdx'
 
@@ -68,9 +68,9 @@ export const wikiMdxExpose: StorybookComponentsMdxItem = {
       en: exposeSelectedEn,
       ru: exposeSelectedRu
     },
-    validationMessage: {
-      en: exposeValidationMessageEn,
-      ru: exposeValidationMessageRu
+    getValidationMessage: {
+      en: exposeGetValidationMessageEn,
+      ru: exposeGetValidationMessageRu
     },
     value: {
       en: exposeValueEn,

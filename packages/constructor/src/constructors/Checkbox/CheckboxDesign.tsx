@@ -79,9 +79,8 @@ export class CheckboxDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      value: this.item.value.item,
-      checkValidity: this.item.validation.checkValidity,
-      validationMessage: this.item.validation.message
+      ...this.item.value.expose(),
+      ...this.item.validation.expose()
     } as EXPOSE
   }
 

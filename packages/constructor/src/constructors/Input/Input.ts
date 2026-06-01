@@ -1,5 +1,5 @@
-import { computed, type Ref, type ToRefs } from 'vue'
-import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
+import type { Ref, ToRefs } from 'vue'
+import type { ConstrEmit, DesignComp } from '@dxtmisha/functional'
 
 import { FieldChangeInclude } from '../../classes/Field/FieldChangeInclude'
 import { FieldVisibilityInclude } from '../../classes/Field/FieldVisibilityInclude'
@@ -11,7 +11,6 @@ import { FieldElementInclude } from '../../classes/Field/FieldElementInclude'
 
 import { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
 import { FieldArrowInclude } from '../../classes/Field/FieldArrowInclude'
-import { InputPassword } from './InputPassword'
 import { FieldMatchInclude } from '../../classes/Field/FieldMatchInclude'
 
 import { FieldInputModeInclude } from '../../classes/Field/FieldInputModeInclude'
@@ -20,8 +19,10 @@ import { FieldValidationInclude } from '../../classes/Field/FieldValidationInclu
 import { FieldEventInclude } from '../../classes/Field/FieldEventInclude'
 import { TextInclude } from '../../classes/TextInclude'
 
-import { FieldInclude } from '../Field/FieldInclude'
-import { MaskInclude } from '../Mask/MaskInclude'
+import { FieldInclude } from '../Field'
+import { MaskInclude } from '../Mask'
+
+import { InputPassword } from './InputPassword'
 
 import type { FieldElementInput } from '../../types/fieldTypes'
 import type { InputComponents, InputEmits, InputSlots } from './types'
@@ -183,16 +184,16 @@ export class Input {
       this.className,
       this.props,
       this.components,
-      computed(() => ({
-        iconTrailing: this.password.icon.value ?? this.props.iconTrailing,
+      () => ({
+        iconTrailing: this.password.icon ?? this.props.iconTrailing,
         maxlength: this.props.maxlength ?? this.props.max
-      })),
+      }),
       undefined,
       this.value,
       this.event,
       this.arrow,
       undefined,
-      () => this.password.toggle()
+      this.password.toggle
     )
     this.mask = new MaskIncludeConstructor(
       this.className,
@@ -204,5 +205,16 @@ export class Input {
       '',
       this.type
     )
+  }
+
+  /** Input binding values and event handlers / Значения привязок ввода и обработчики событий */
+  get binds(): Record<string, any> {
+    return {
+      ...this.attributes.listForInput,
+      value: this.value.item.value,
+      onBlur: this.event.onBlur,
+      onInput: this.event.onInput,
+      onChange: this.event.onChange
+    }
   }
 }

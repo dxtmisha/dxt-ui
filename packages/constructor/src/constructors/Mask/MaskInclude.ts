@@ -1,4 +1,4 @@
-import { watch } from 'vue'
+import { computed, onMounted, watch } from 'vue'
 import {
   type DesignComponents,
   executeFunctionRef,
@@ -24,6 +24,8 @@ export class MaskInclude<
   Props extends MaskPropsInclude = MaskPropsInclude,
   PropsExtra extends MaskProps = MaskProps
 > extends ComponentIncludeAbstract<Props, PropsExtra> {
+  protected readonly hasInitElement: boolean = false
+
   protected readonly name = 'mask'
   protected readonly propsAttrsName = 'maskAttrs'
 
@@ -51,14 +53,16 @@ export class MaskInclude<
     super(className, props, components, extra, index)
 
     if (this.value) {
-      watch(
-        () => this.is,
-        () => {
-          if (!this.is) {
-            this.value?.setFull(true)
+      onMounted(() => {
+        watch(
+          this.active,
+          (active) => {
+            if (!active) {
+              this.value?.setFull(true)
+            }
           }
-        }
-      )
+        )
+      })
     }
   }
 
@@ -68,6 +72,10 @@ export class MaskInclude<
    * Проверяет, активна ли маска.
    */
   override get is(): boolean {
+    return this.active.value
+  }
+
+  readonly active = computed(() => {
     const props = this.getProps()
     const type = this.type?.get()
 
@@ -88,7 +96,7 @@ export class MaskInclude<
           ].indexOf(type) !== -1
         )
       )
-  }
+  })
 
   /**
    * Resolves and returns design properties specifically bound for the image.

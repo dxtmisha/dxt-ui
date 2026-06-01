@@ -126,6 +126,17 @@ export class FieldValidationInclude {
   }
 
   /**
+   * Returns validation properties for expose / Возвращает свойства валидации для экспонирования
+   * @returns validation expose object / объект экспонирования валидации
+   */
+  readonly expose = () => {
+    return {
+      checkValidity: this.checkValidity,
+      getValidationMessage: () => this.message
+    }
+  }
+
+  /**
    * Changes the validity data.
    *
    * Изменяет данные о валидности.

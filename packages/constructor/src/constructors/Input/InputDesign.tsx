@@ -1,5 +1,6 @@
 import { h, type VNode } from 'vue'
 import {
+  type ConstrBind,
   type ConstrOptions,
   type ConstrStyles,
   DesignConstructorAbstract,
@@ -79,9 +80,8 @@ export class InputDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      value: this.item.value.item,
-      checkValidity: this.item.validation.checkValidity,
-      validationMessage: this.item.validation.message
+      ...this.item.value.expose(),
+      ...this.item.validation.expose()
     } as EXPOSE
   }
 
@@ -130,10 +130,11 @@ export class InputDesign<
   /**
    * Rendering the input element.
    *
-   * Рендер элемент input.
-   * @param input data for the input element/ данные для элемента ввода
+   * Рендер элемента ввода.
+   * @param input data for the input element / данные для элемента ввода
+   * @returns array of VNodes / массив VNode
    */
-  protected readonly renderInput = (input: FieldControl): VNode[] => {
+  readonly renderInput = (input: FieldControl): VNode[] => {
     if (this.item.mask.is) {
       return this.renderMask(input)
     }
@@ -141,14 +142,10 @@ export class InputDesign<
     return [h(
       'input',
       toBinds(
-        this.item.attributes.listForInput,
+        this.item.binds,
         input.binds,
         {
-          ref: this.element,
-          value: this.item.value.item.value,
-          onBlur: this.item.event.onBlur,
-          onInput: this.item.event.onInput,
-          onChange: this.item.event.onChange
+          ref: this.element
         }
       )
     )]
@@ -158,14 +155,15 @@ export class InputDesign<
    * Rendering mask element.
    *
    * Рендеринг элемента маски.
-   * @param input data for the input element/ данные для элемента ввода
+   * @param input data for the input element / данные для элемента ввода
+   * @returns array of VNodes / массив VNode
    */
-  protected readonly renderMask = (input: FieldControl): VNode[] => {
-    return this.item.mask.render({
+  readonly renderMask = (input: FieldControl): VNode[] => {
+    return this.item.mask.render(undefined, {
       ref: this.element,
       class: input.className,
       align: this.props.align,
-      inputAttrs: toBinds(
+      inputAttrs: toBinds<ConstrBind<any>>(
         this.item.attributes.listForInput,
         input.binds
       ),

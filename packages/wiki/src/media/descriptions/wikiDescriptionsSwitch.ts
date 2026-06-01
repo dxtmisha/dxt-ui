@@ -115,7 +115,7 @@ export const wikiDescriptionsSwitch: StorybookComponentsDescriptionItem = {
     expose: `
 <StorybookDescriptions componentName={'Expose'} type={'value'}/>
 <StorybookDescriptions componentName={'Expose'} type={'checkValidity'}/>
-<StorybookDescriptions componentName={'Expose'} type={'validationMessage'}/>
+<StorybookDescriptions componentName={'Expose'} type={'getValidationMessage'}/>
     `,
     slots: `
 <Canvas of={Component.SwitchSlots}/>

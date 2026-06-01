@@ -181,7 +181,7 @@ export class FieldEventInclude {
     type: string & keyof FieldBasicEmits = 'input'
   ): this => {
     if (type === 'input') {
-      this.model.emit(this.value.itemByFull)
+      this.model.emit(this.value.itemByFull.value)
     }
 
     const data = {
@@ -216,7 +216,7 @@ export class FieldEventInclude {
    */
   protected getData(): FieldValidationItem {
     return {
-      value: this.value.itemByFull,
+      value: this.value.itemByFull.value,
       valueInput: this.value.item.value,
       detail: this.props.detail
     }

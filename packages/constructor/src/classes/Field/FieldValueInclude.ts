@@ -1,4 +1,4 @@
-import { onMounted, ref, type ToRefs, watch } from 'vue'
+import { computed, onMounted, ref, type ToRefs, watch } from 'vue'
 import {
   anyToString,
   getLength,
@@ -16,12 +16,17 @@ import type { FieldValueProps } from '../../types/fieldTypes'
 
 /**
  * Class for working with input values.
+ * It manages the reactive state of the input value, tracks whether the value is full,
+ * handles conversions to other types, and coordinates updates between Vue props and internal state.
  *
  * Класс для работы со значениями инпута.
+ * Управляет реактивным состоянием значения ввода, отслеживает полноту значения,
+ * обрабатывает преобразования в другие типы и координирует обновления между Vue props и внутренним состоянием.
  */
 export class FieldValueInclude<Value = any> {
   /** Current value / Текущее значение */
   readonly item = ref<Value>()
+
   /** Indicates if the value is complete / Указывает, полное ли значение */
   readonly isFull = ref<boolean>(true)
 
@@ -29,9 +34,9 @@ export class FieldValueInclude<Value = any> {
   protected readonly hasEdit = ref<boolean>(false)
 
   /**
-   * Constructor
+   * Constructor for FieldValueInclude.
    *
-   * Конструктор
+   * Конструктор для FieldValueInclude.
    * @param props input data / входные данные
    * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
    * @param element object for working with the input element / объект для работы с элементом ввода
@@ -54,14 +59,15 @@ export class FieldValueInclude<Value = any> {
   }
 
   /** Returns the current value if isFull is true / Возвращает текущее значение, если isFull истинно */
-  get itemByFull(): Value | undefined {
+  readonly itemByFull = computed<Value | undefined>(() => {
     return this.isFull.value ? this.item.value : undefined
-  }
+  })
 
   /**
    * Returns the current value, converted to a number.
    *
-   * Возвращает текущее значение, преобразованное в номер.
+   * Возвращает текущее значение, преобразованное в число.
+   * @returns numeric representation of the value / числовое представление значения
    */
   get number(): number {
     if (this.boolean) {
@@ -71,17 +77,32 @@ export class FieldValueInclude<Value = any> {
     return 0
   }
 
-  /** Returns the current value of type string / Возвращает текущее значение типа string */
+  /**
+   * Returns the current value of type string.
+   *
+   * Возвращает текущее значение типа string.
+   * @returns string representation of the value / строковое представление значения
+   */
   get string(): string {
     return anyToString(this.item.value)
   }
 
-  /** Returns the current value of type boolean / Возвращает текущее значение типа boolean */
+  /**
+   * Returns the current value of type boolean.
+   *
+   * Возвращает текущее значение типа boolean.
+   * @returns boolean representation of the value / булево представление значения
+   */
   get boolean(): boolean {
     return isFilled(this.item.value)
   }
 
-  /** Returns the length of the entered value / Возвращает длину введенного значения */
+  /**
+   * Returns the length of the entered value.
+   *
+   * Возвращает длину введенного значения.
+   * @returns length of the value / длина значения
+   */
   get length(): number {
     return getLength(this.item.value)
   }
@@ -129,6 +150,19 @@ export class FieldValueInclude<Value = any> {
   }
 
   /**
+   * Returns value properties for expose.
+   *
+   * Возвращает свойства значения для экспонирования.
+   * @returns value expose object / объект экспонирования значения
+   */
+  readonly expose = () => {
+    return {
+      value: this.item,
+      getValue: () => this.item.value
+    }
+  }
+
+  /**
    * Changes the value.
    *
    * Изменяет значение.
@@ -167,9 +201,6 @@ export class FieldValueInclude<Value = any> {
    * @param eventValue event object or values / объект события или значения
    * @returns current instance / текущий экземпляр
    */
-  setByEvent(event: Event): this
-  setByEvent(value: Record<string, any>): this
-  setByEvent(value: any): this
   setByEvent(eventValue: Event | Record<string, any> | any): this {
     switch (typeof eventValue) {
       case 'object':
@@ -205,7 +236,7 @@ export class FieldValueInclude<Value = any> {
    * Changes the values by the selected element.
    *
    * Изменяет значения по выбранному элементу.
-   * @param target selected elements / выбранные элементы
+   * @param target selected element / выбранный элемент
    * @returns current instance / текущий экземпляр
    */
   setByTarget(target: HTMLInputElement): this {
@@ -220,7 +251,7 @@ export class FieldValueInclude<Value = any> {
    * Changes the value by the checked property.
    *
    * Изменяет значение по свойству checked.
-   * @param event event value / значение события
+   * @param event event object / объект события
    * @returns current instance / текущий экземпляр
    */
   setByChecked(event: Event): this {
@@ -294,7 +325,7 @@ export class FieldValueInclude<Value = any> {
    * Is the selected type a checkbox.
    *
    * Является ли выбранный тип чекбокс.
-   * @param target selected elements / выбранные элементы
+   * @param target selected element / выбранный элемент
    * @returns true if target is checkbox / true, если элемент чекбокс
    */
   protected isCheckbox(target: HTMLInputElement): boolean {
@@ -324,7 +355,11 @@ export class FieldValueInclude<Value = any> {
     return this.props.value || this.props.modelValue || getRef(this.original)
   }
 
-  /** Changes the values to the original ones / Изменяет значения на оригинальные */
+  /**
+   * Changes the values to the original ones.
+   *
+   * Изменяет значения на оригинальные.
+   */
   protected readonly update = (): void => {
     if (
       this.isEdit(this.props.value)

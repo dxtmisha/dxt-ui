@@ -1,4 +1,3 @@
-import { computed } from 'vue'
 import { FieldVisibilityInclude } from '../../classes/Field/FieldVisibilityInclude'
 import { TextInclude } from '../../classes/TextInclude'
 
@@ -11,15 +10,17 @@ import type { InputProps } from './props'
  * Класс для получения данных для управления типом пароля.
  */
 export class InputPassword {
+  /** Visibility status / Статус видимости */
   protected visible: boolean = false
 
   /**
    * Constructor
-   * @param props input data/ входные данные
-   * @param visibility object for working with visualization/ объект для работы с визуализацией
-   * @param text object for working with text/ объект для работы с текстом
+   *
+   * Конструктор
+   * @param props input data / входные данные
+   * @param visibility object for working with visualization / объект для работы с визуализацией
+   * @param text object for working with text / объект для работы с текстом
    */
-
   constructor(
     protected readonly props: InputProps,
     protected readonly visibility: FieldVisibilityInclude,
@@ -27,12 +28,9 @@ export class InputPassword {
   ) {
   }
 
-  /** Checks if the type is a password/ Проверяет, является ли тип паролем. */
-  readonly is = computed<boolean>(() => this.props.type === 'password')
-
-  /** Returns the icon value/ Возвращает значение иконки */
-  readonly icon = computed<IconProps | undefined>(() => {
-    if (this.is.value) {
+  /** Returns the icon properties / Возвращает свойства иконки */
+  get icon(): IconProps | undefined {
+    if (this.is()) {
       return {
         active: this.visibility.item.value,
         icon: this.props.iconVisibilityOff,
@@ -43,15 +41,25 @@ export class InputPassword {
     }
 
     return undefined
-  })
+  }
 
   /**
-   * Toggle value.
+   * Checks if the type is a password.
    *
-   * Переключение значения.
+   * Проверяет, является ли тип паролем.
+   * @returns true if type is password / true, если тип — пароль
    */
-  toggle() {
-    if (this.is.value) {
+  is(): boolean {
+    return this.props.type === 'password'
+  }
+
+  /**
+   * Toggles the visibility of the password value.
+   *
+   * Переключает видимость значения пароля.
+   */
+  readonly toggle = (): void => {
+    if (this.is()) {
       this.visibility.toggle()
     }
   }

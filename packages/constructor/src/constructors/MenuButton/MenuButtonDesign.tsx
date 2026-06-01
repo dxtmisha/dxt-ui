@@ -92,9 +92,8 @@ export class MenuButtonDesign<
   protected initExpose(): EXPOSE {
     return {
       ...this.item.menu.expose,
-      value: this.item.value.item,
-      checkValidity: this.item.validation.checkValidity,
-      validationMessage: this.item.validation.message
+      ...this.item.value.expose(),
+      ...this.item.validation.expose()
     } as EXPOSE
   }
 

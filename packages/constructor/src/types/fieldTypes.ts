@@ -1,4 +1,4 @@
-import type { ShallowRef } from 'vue'
+import type { Ref } from 'vue'
 import type { ListRecord, NumberOrString, NumberOrStringOrBoolean } from '@dxtmisha/functional'
 import type { ListItemPropsBasic } from '../constructors/ListItem'
 import type { ModelEmits, ModelProps } from './modelTypes'
@@ -153,13 +153,14 @@ export type FieldBasicEmits<T = any>
  * Интерфейс, описывающий экспонируемые свойства для базовой функциональности поля
  */
 export type FieldBasicExpose<T = string> = {
-  /** Reactive reference to the current value/ Реактивная ссылка на текущее значение */
-  value: ShallowRef<T | undefined>
+  value: Ref<T>
+  /** Returns the current value/ Возвращает текущее значение */
+  getValue: () => T | undefined
 
   /** Checks validity of the field and returns status/ Проверяет валидность поля и возвращает статус */
   checkValidity: () => boolean
-  /** Reactive reference to the validation message/ Реактивная ссылка на сообщение валидации */
-  validationMessage: string
+  /** Returns validation message/ Возвращает сообщение валидации */
+  getValidationMessage: () => string
 }
 
 /**
