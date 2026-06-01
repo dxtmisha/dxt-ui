@@ -26,6 +26,16 @@ const openNoCloseButton = ref(false)
 const openVModel = ref(false)
 
 const openEvents = ref(false)
+const openEventsModelOpen = ref(false)
+
+const actionsList = [
+  { label: 'Action 1', value: 'action1' },
+  { label: 'Action 2', value: 'action2' }
+]
+
+const barsList = [
+  { label: 'Bar 1', value: 'bar1' }
+]
 
 const modalRef = ref<WindowExposeInclude | null>(null)
 
@@ -371,20 +381,30 @@ const statusValue = computed<string>(() => {
         <DemoFlex>
           <D1Modal
             v-model:open="openEvents"
-            @window="onEvent('window event')"
+            v-model:modelOpen="openEventsModelOpen"
+            :actionsList="actionsList"
+            :barsList="barsList"
+            :barsBackHide="false"
+            @window="onEvent('window', $event)"
+            @actions="onEvent('actions', $event)"
+            @actionsLite="onEvent('actionsLite', $event)"
+            @bars="onEvent('bars', $event)"
+            @barsLite="onEvent('barsLite', $event)"
+            @barsBack="onEvent('barsBack', $event)"
           >
             <template #control="{ binds }">
               <D1Button
-                label="Open Event Modal"
+                label="Open All Events Modal"
                 secondary
                 v-bind="binds"
               />
             </template>
             <template #title>
-              <h3 class="demo-modal-page__title">Event Logger</h3>
+              <h3 class="demo-modal-page__title">All Events Logger</h3>
             </template>
             <div class="demo-modal-page__content">
-              <p>This modal fires standard events during lifecycle transitions (e.g., open/close).</p>
+              <p>This modal fires all available events. Check the values below or the console for details.</p>
+              <p>Available events: <code>update:open</code>, <code>update:modelOpen</code>, <code>window</code>, <code>actions</code>, <code>actionsLite</code>, <code>bars</code>, <code>barsLite</code>, <code>barsBack</code>.</p>
             </div>
             <template #footer="{ classesWindow }">
               <div class="demo-modal-page__footer">
@@ -398,6 +418,10 @@ const statusValue = computed<string>(() => {
           </D1Modal>
         </DemoFlex>
         <DemoValue :value="eventName" />
+        <div class="demo-modal-page__values">
+          <DemoValue :value="openEvents" label="v-model:open" />
+          <DemoValue :value="openEventsModelOpen" label="v-model:modelOpen" />
+        </div>
       </D1Group>
 
       <D1Group label="Control via Expose Methods">

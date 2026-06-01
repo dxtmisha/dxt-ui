@@ -79,7 +79,9 @@ export class AnchorDesign<
    * Инициализация всех необходимых свойств для работы.
    */
   protected initExpose(): EXPOSE {
-    return {} as EXPOSE
+    return {
+      go: () => this.item.to.go()
+    } as EXPOSE
   }
 
   /**

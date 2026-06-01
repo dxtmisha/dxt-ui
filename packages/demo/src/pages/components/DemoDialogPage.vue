@@ -22,6 +22,16 @@ const openImageLeft = ref(false)
 
 const openVModel = ref(false)
 const openEvents = ref(false)
+const openEventsModelOpen = ref(false)
+
+const actionsList = [
+  { label: 'Action 1', value: 'action1' },
+  { label: 'Action 2', value: 'action2' }
+]
+
+const barsList = [
+  { label: 'Bar 1', value: 'bar1' }
+]
 </script>
 
 <template>
@@ -190,20 +200,32 @@ const openEvents = ref(false)
         <DemoFlex>
           <D1Dialog
             v-model:open="openEvents"
+            v-model:modelOpen="openEventsModelOpen"
             label="Events Demo"
-            description="Interact with the action buttons to log events in the value panel below."
-            buttonOk="Confirm"
-            buttonClose="Cancel"
-            @ok="onEvent('ok')"
-            @close="onEvent('close')"
-            @window="onEvent('window')"
+            description="Interact with the action buttons to log events in the value panel below. Available events: update:open, update:modelOpen, window, actions, actionsLite, bars, barsLite, barsBack, ok, close."
+            buttonOk="Confirm (ok)"
+            buttonClose="Cancel (close)"
+            :barsList="barsList"
+            :closeButton="true"
+            @ok="onEvent('ok', $event)"
+            @close="onEvent('close', $event)"
+            @window="onEvent('window', $event)"
+            @actions="onEvent('actions', $event)"
+            @actionsLite="onEvent('actionsLite', $event)"
+            @bars="onEvent('bars', $event)"
+            @barsLite="onEvent('barsLite', $event)"
+            @barsBack="onEvent('barsBack', $event)"
           >
             <template #control="{ binds }">
-              <D1Button label="Open Event Dialog" secondary v-bind="binds" />
+              <D1Button label="Open All Events Dialog" secondary v-bind="binds" />
             </template>
           </D1Dialog>
         </DemoFlex>
         <DemoValue :value="eventName" />
+        <div class="demo-dialog-page__values">
+          <DemoValue :value="openEvents" label="v-model:open" />
+          <DemoValue :value="openEventsModelOpen" label="v-model:modelOpen" />
+        </div>
       </D1Group>
     </D1Section>
   </D1Page>

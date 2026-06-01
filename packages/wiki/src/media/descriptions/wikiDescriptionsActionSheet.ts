@@ -119,9 +119,11 @@ export const wikiDescriptionsActionSheet: StorybookComponentsDescriptionItem = {
     events: `
 <StorybookDescriptions componentName={'Window'} type={'event.window'}/>
 <StorybookDescriptions componentName={'Event'} type={'bars'}/>
+<StorybookDescriptions componentName={'Event'} type={'actions'}/>
     `,
     expose: `
 <StorybookDescriptions componentName={'Window'} type={'expose'}/>
+<StorybookDescriptions componentName={'Window'} type={'getWindowElement'}/>
     `,
     slots: `
 <Canvas of={Component.ActionSheetAllSlots}/>

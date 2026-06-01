@@ -23,7 +23,7 @@ import type { HeaderProps } from './props'
  */
 export class HeaderInclude<
   Props extends HeaderPropsInclude = HeaderPropsInclude,
-  PropsExtra extends ConstrBind<HeaderProps> = ConstrBind<HeaderProps>
+  PropsExtra extends HeaderProps = HeaderProps
 > extends ComponentIncludeAbstract<
     Props,
     PropsExtra,

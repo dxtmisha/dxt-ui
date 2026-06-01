@@ -176,7 +176,10 @@ export const wikiDescriptionsArrow: StorybookComponentsDescriptionItem = {
     body: `
 <StorybookDescriptions componentName={'Arrow'} type={'arrow'}/>
 <Canvas of={Component.ArrowBasic}/>
-`
+`,
+    expose: `
+<StorybookDescriptions componentName={'Arrow'} type={'expose.update'}/>
+    `
   },
   ai: {
     render: `

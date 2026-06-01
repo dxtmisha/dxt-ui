@@ -12,6 +12,7 @@ import DemoLink from '../components/DemoLink.vue'
         <DemoLink label="Accordion" name="component-accordion"/>
         <DemoLink label="ActionSheet" name="component-action-sheet"/>
         <DemoLink label="Actions" name="component-actions"/>
+        <DemoLink label="Anchor" name="component-anchor"/>
         <DemoLink label="Badge" name="component-badge"/>
         <DemoLink label="Bars" name="component-bars"/>
         <DemoLink label="Button" name="component-button"/>
