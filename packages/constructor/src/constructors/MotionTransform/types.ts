@@ -33,14 +33,14 @@ export type MotionTransformEmits = ModelEmitsOpen & {
  * Тип, описывающий доступные свойства.
  */
 export interface MotionTransformExpose {
-  /** Returns state of window visibility/ Возвращает состояние видимости окна */
-  getOpen(): boolean
-
   /**
    * Returns computed state indicating if component is shown or being prepared for display/
    * Возвращает вычисляемое состояние, указывающее отображается ли компонент или готовится к отображению
    */
   isShow(): boolean
+
+  /** Returns state of window visibility/ Возвращает состояние видимости окна */
+  getOpen(): boolean
 
   /** Sets open state/ Устанавливает состояние открытия */
   setOpen(open: boolean): void

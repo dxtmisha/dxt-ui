@@ -1,5 +1,24 @@
 <script setup lang="ts">
+import { computed, ref } from 'vue'
+import type { IconExpose } from '@dxtmisha/constructor/Icon'
+import { useDemoEvent } from '../../composables/useDemoEvent'
 import DemoLinkBlack from '../../components/DemoLinkBlack.vue'
+import DemoValue from '../../components/DemoValue.vue'
+import DemoFlex from '../../components/DemoFlex.vue'
+
+const { eventName, onEvent } = useDemoEvent()
+const iconRef = ref<IconExpose | null>(null)
+const activeState = ref(false)
+
+const statusValue = computed<string>(() => {
+  if (iconRef.value) {
+    const active = iconRef.value.isActive()
+    const val = iconRef.value.getValue?.()
+    const detail = iconRef.value.getDetail?.()
+    return `isActive(): ${active}, getValue(): ${JSON.stringify(val)}, getDetail(): ${JSON.stringify(detail)}`
+  }
+  return 'Ref not initialized'
+})
 </script>
 
 <template>
@@ -50,6 +69,27 @@ import DemoLinkBlack from '../../components/DemoLinkBlack.vue'
           <D1Icon icon="refresh" animationType="type2" animationShow />
           <D1Icon icon="pending" dynamic />
         </div>
+      </D1Group>
+
+      <D1Group label="Events & Expose Methods">
+        <DemoFlex>
+          <D1Button label="Toggle Active State" @click="activeState = !activeState" />
+        </DemoFlex>
+        <div class="demo-icon-page" style="margin-top: 16px;">
+          <D1Icon
+            ref="iconRef"
+            icon="favorite"
+            iconActive="book_3"
+            :active="activeState"
+            :dynamic="true"
+            value="love"
+            :detail="{ custom: 'heart' }"
+            @click="onEvent('click')"
+            @load="onEvent('load')"
+          />
+        </div>
+        <DemoValue :value="statusValue"/>
+        <DemoValue :value="eventName"/>
       </D1Group>
     </D1Section>
   </D1Page>

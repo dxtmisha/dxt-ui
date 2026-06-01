@@ -19,7 +19,8 @@ const accordionRef = ref<AccordionExpose | null>(null)
 /** Reactive value for printing the component status / Реактивное значение для вывода статуса компонента */
 const statusValue = computed<string>(() => {
   if (accordionRef.value) {
-    return `isOpen: ${accordionRef.value.getOpen()}, isShow: ${accordionRef.value.isShow()}`
+    const hasMotionElement = !!accordionRef.value.getMotionTransformElement()
+    return `isOpen: ${accordionRef.value.getOpen()}, isShow: ${accordionRef.value.isShow()}, hasMotionElement: ${hasMotionElement}`
   }
   return 'Ref not initialized'
 })
@@ -108,7 +109,7 @@ const statusValue = computed<string>(() => {
           label="Programmatic Control"
           description="Controlled via component's exposed methods / Управляется через экспортированные методы"
         >
-          <span>This component is controlled using exposed methods: toOpen, toClose, and toggle. The computed status below updates reactively.</span>
+          <span>This component is controlled using exposed methods: toOpen, toClose, toggle, setOpen, getOpen, isShow, and getMotionTransformElement. The computed status below updates reactively.</span>
         </D1Accordion>
         <DemoValue :value="statusValue"/>
       </D1Group>

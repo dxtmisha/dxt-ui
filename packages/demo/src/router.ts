@@ -11,6 +11,7 @@ import DemoBadgePage from './pages/components/DemoBadgePage.vue'
 import DemoBarsPage from './pages/components/DemoBarsPage.vue'
 import DemoButtonPage from './pages/components/DemoButtonPage.vue'
 import DemoButtonGroupPage from './pages/components/DemoButtonGroupPage.vue'
+import DemoCellPage from './pages/components/DemoCellPage.vue'
 import DemoCheckboxPage from './pages/components/DemoCheckboxPage.vue'
 import DemoChipPage from './pages/components/DemoChipPage.vue'
 import DemoChipGroupPage from './pages/components/DemoChipGroupPage.vue'
@@ -84,6 +85,11 @@ export const routes: RouteRecordRaw[] = [
     path: '/component-button-group',
     name: 'component-button-group',
     component: DemoButtonGroupPage
+  },
+  {
+    path: '/component-cell',
+    name: 'component-cell',
+    component: DemoCellPage
   },
   {
     path: '/component-checkbox',

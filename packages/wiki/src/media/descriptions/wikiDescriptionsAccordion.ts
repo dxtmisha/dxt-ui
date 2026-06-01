@@ -145,8 +145,7 @@ export const wikiDescriptionsAccordion: StorybookComponentsDescriptionItem = {
 <StorybookDescriptions componentName={'MotionTransform'} type={'events'}/>
     `,
     expose: `
-<StorybookDescriptions componentName={'MotionTransform'} type={'expose.isShow'}/>
-<StorybookDescriptions componentName={'Window'} type={'expose'}/>
+<StorybookDescriptions componentName={'MotionTransform'} type={'expose'}/>
 <StorybookDescriptions componentName={'MotionTransform'} type={'expose.motionTransformElement'}/>
     `,
     slots: `

@@ -8,6 +8,8 @@ import eventWindowEn from './event.window.en.mdx'
 import eventWindowRu from './event.window.ru.mdx'
 import exposeEn from './expose.en.mdx'
 import exposeRu from './expose.ru.mdx'
+import getWindowElementEn from './getWindowElement.en.mdx'
+import getWindowElementRu from './getWindowElement.ru.mdx'
 import hooksEn from './hooks.en.mdx'
 import hooksRu from './hooks.ru.mdx'
 import slotsEn from './slots.en.mdx'
@@ -42,6 +44,10 @@ export const wikiMdxWindow: StorybookComponentsMdxItem = {
     'expose': {
       en: exposeEn,
       ru: exposeRu
+    },
+    'getWindowElement': {
+      en: getWindowElementEn,
+      ru: getWindowElementRu
     },
     'hooks': {
       en: hooksEn,

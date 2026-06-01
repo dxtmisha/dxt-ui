@@ -1,7 +1,22 @@
 <script setup lang="ts">
+import { computed, ref } from 'vue'
+import type { ImageExpose } from '@dxtmisha/constructor/Image'
 import DemoLinkBlack from '../../components/DemoLinkBlack.vue'
+import DemoValue from '../../components/DemoValue.vue'
 
 const demoPdf = 'https://ontheline.trincoll.edu/images/bookdown/sample-local-pdf.pdf'
+
+const imageRef = ref<ImageExpose | null>(null)
+
+const statusValue = computed<string>(() => {
+  if (imageRef.value) {
+    const type = imageRef.value.getType()
+    const data = imageRef.value.getData()
+    const src = typeof data === 'object' && data !== null ? data.src : data
+    return `getType(): "${type}", getData(): ${src ? `src: "${src}"` : 'undefined'}`
+  }
+  return 'Ref not initialized'
+})
 </script>
 
 <template>
@@ -50,6 +65,18 @@ const demoPdf = 'https://ontheline.trincoll.edu/images/bookdown/sample-local-pdf
           <D1GridItem :base="'2'" class="demo-image-page__item"><D1Image value="https://picsum.photos/400/400?random=13" tagImg lazy /></D1GridItem>
           <D1GridItem :base="'2'" class="demo-image-page__item"><D1Image value="https://picsum.photos/400/400?random=12" turn /></D1GridItem>
         </D1Grid>
+      </D1Group>
+
+      <D1Group label="Control via Expose Methods">
+        <D1Grid>
+          <D1GridItem :base="'2'" class="demo-image-page__item">
+            <D1Image
+              ref="imageRef"
+              value="https://picsum.photos/400/300?random=100"
+            />
+          </D1GridItem>
+        </D1Grid>
+        <DemoValue :value="statusValue"/>
       </D1Group>
     </D1Section>
   </D1Page>

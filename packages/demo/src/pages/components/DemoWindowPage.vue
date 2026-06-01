@@ -1,11 +1,20 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
+import type { WindowExpose } from '@dxtmisha/constructor/Window'
 
 import DemoLinkBlack from '../../components/DemoLinkBlack.vue'
 import DemoFlex from '../../components/DemoFlex.vue'
 import DemoValue from '../../components/DemoValue.vue'
 
 const openControlled = ref(false)
+const windowRef = ref<WindowExpose | null>(null)
+
+const statusValue = computed<string>(() => {
+  if (windowRef.value) {
+    return `getId(): "${windowRef.value.getId()}", getOpen(): ${windowRef.value.getOpen()}, hasControl: ${!!windowRef.value.getControl()}`
+  }
+  return 'Ref not initialized'
+})
 </script>
 
 <template>
@@ -297,6 +306,49 @@ const openControlled = ref(false)
           </template>
         </D1Window>
         <DemoValue :value="openControlled" />
+      </D1Group>
+
+      <D1Group label="Control via Expose Methods">
+        <DemoFlex>
+          <D1Button
+            label="Open (toOpen)"
+            @click="windowRef?.toOpen()"
+          />
+          <D1Button
+            label="Open (setOpen)"
+            @click="windowRef?.setOpen(true)"
+          />
+          <D1Button
+            label="Close (toClose)"
+            @click="windowRef?.toClose()"
+          />
+          <D1Button
+            label="Close (setOpen false)"
+            @click="windowRef?.setOpen(false)"
+          />
+          <D1Button
+            label="Toggle (toggle)"
+            @click="windowRef?.toggle()"
+          />
+        </DemoFlex>
+        <D1Window ref="windowRef" id="demo-expose-window">
+          <template #title>
+            <h3 class="demo-window-page__title">Expose Methods Window</h3>
+          </template>
+          <div class="demo-window-page__content">
+            <p>This window is controlled programmatically via exposed methods like `toOpen`, `toClose`, `toggle`, and `setOpen`.</p>
+          </div>
+          <template #footer="{ classesWindow }">
+            <div class="demo-window-page__footer">
+              <D1Button
+                label="Close"
+                primary
+                :class="classesWindow.close"
+              />
+            </div>
+          </template>
+        </D1Window>
+        <DemoValue :value="statusValue" />
       </D1Group>
     </D1Section>
   </D1Page>

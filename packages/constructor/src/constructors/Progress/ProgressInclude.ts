@@ -27,6 +27,9 @@ export class ProgressInclude extends ComponentIncludeAbstract<
   protected readonly name = 'progress'
   protected readonly propsAttrsName = undefined
 
+  /** Determines whether to initialize the element reference during binding / Определяет, нужно ли инициализировать ссылку на элемент при привязке */
+  protected readonly hasInitElement: boolean = false
+
   /**
    * Checks whether progress should be displayed /
    * Проверяет, нужно ли отображать индикатор прогресса

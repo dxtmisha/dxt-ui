@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
+import type { WindowExposeInclude } from '@dxtmisha/constructor/Window'
 import { useDemoEvent } from '../../composables/useDemoEvent'
 
 import DemoFlex from '../../components/DemoFlex.vue'
@@ -25,6 +26,19 @@ const openNoCloseButton = ref(false)
 const openVModel = ref(false)
 
 const openEvents = ref(false)
+
+const modalRef = ref<WindowExposeInclude | null>(null)
+
+const statusValue = computed<string>(() => {
+  if (modalRef.value) {
+    const id = modalRef.value.getId()
+    const open = modalRef.value.getOpen()
+    const hasControl = !!modalRef.value.getControl()
+    const hasWindowEl = !!modalRef.value.getWindowElement()
+    return `getId(): "${id}", getOpen(): ${open}, hasControl: ${hasControl}, hasWindowElement(): ${hasWindowEl}`
+  }
+  return 'Ref not initialized'
+})
 </script>
 
 <template>
@@ -383,6 +397,54 @@ const openEvents = ref(false)
             </template>
           </D1Modal>
         </DemoFlex>
+        <DemoValue :value="eventName" />
+      </D1Group>
+
+      <D1Group label="Control via Expose Methods">
+        <DemoFlex>
+          <D1Button
+            label="Open (toOpen)"
+            @click="modalRef?.toOpen()"
+          />
+          <D1Button
+            label="Open (setOpen)"
+            @click="modalRef?.setOpen(true)"
+          />
+          <D1Button
+            label="Close (toClose)"
+            @click="modalRef?.toClose()"
+          />
+          <D1Button
+            label="Close (setOpen false)"
+            @click="modalRef?.setOpen(false)"
+          />
+          <D1Button
+            label="Toggle (toggle)"
+            @click="modalRef?.toggle()"
+          />
+        </DemoFlex>
+        <D1Modal
+          ref="modalRef"
+          id="demo-expose-modal"
+          @window="onEvent('window')"
+        >
+          <template #title>
+            <h3 class="demo-modal-page__title">Expose Methods Modal</h3>
+          </template>
+          <div class="demo-modal-page__content">
+            <p>This modal dialog is controlled programmatically via exposed methods like `toOpen`, `toClose`, `toggle`, `setOpen`, and `getWindowElement`.</p>
+          </div>
+          <template #footer="{ classesWindow }">
+            <div class="demo-window-page__footer">
+              <D1Button
+                label="Close"
+                primary
+                :class="classesWindow.close"
+              />
+            </div>
+          </template>
+        </D1Modal>
+        <DemoValue :value="statusValue" />
         <DemoValue :value="eventName" />
       </D1Group>
     </D1Section>

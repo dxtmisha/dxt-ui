@@ -1,5 +1,10 @@
-- `control(props: MotionTransformControlItem): any` — Слот для размещения триггерного элемента, управляющего анимацией.
-- `default: any` — Слот для размещения контента, который будет анимирован.
+- `head(props: MotionTransformControlItem): any` — Слот шапки для элементов управления.
+- `body(props: MotionTransformControlItem): any` — Слот тела для содержимого.
 
 > **MotionTransformControlItem:**
-> - `onclick: (event) => void` — обработчик открытия/закрытия трансформируемого элемента.
+> - `isOpen: boolean` — Реактивное состояние открытия.
+> - `isShow: boolean` — Видим либо готовится к показу.
+> - `classes: MotionTransformClassList` — Вспомогательные CSS‑классы.
+> - `idControl: string` — Вспомогательная стилевая переменная / ID управления.
+> - `idBody: string` — Вспомогательная стилевая переменная / ID тела.
+> - `binds: AriaRoleControlPropsInclude` — Атрибуты привязки для элемента.

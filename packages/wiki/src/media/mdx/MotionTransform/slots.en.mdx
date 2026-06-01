@@ -1,5 +1,10 @@
-- `control(props: MotionTransformControlItem): any` — Slot for placing the trigger element that controls the animation.
-- `default: any` — Slot for placing the content that will be animated.
+- `head(props: MotionTransformControlItem): any` — Slot for the header/controls.
+- `body(props: MotionTransformControlItem): any` — Slot for the body/content.
 
 > **MotionTransformControlItem:**
-> - `onclick: (event) => void` — handler for opening/closing the transformed element.
+> - `isOpen: boolean` — Reactive open state.
+> - `isShow: boolean` — Visible or preparing to show.
+> - `classes: MotionTransformClassList` — Helper CSS classes.
+> - `idControl: string` — Helper style variable/ID for control.
+> - `idBody: string` — Helper style variable/ID for body.
+> - `binds: AriaRoleControlPropsInclude` — Binding attributes for the element.

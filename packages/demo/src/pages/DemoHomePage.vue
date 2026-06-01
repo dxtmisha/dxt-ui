@@ -16,6 +16,7 @@ import DemoLink from '../components/DemoLink.vue'
         <DemoLink label="Bars" name="component-bars"/>
         <DemoLink label="Button" name="component-button"/>
         <DemoLink label="ButtonGroup" name="component-button-group"/>
+        <DemoLink label="Cell" name="component-cell"/>
         <DemoLink label="Checkbox" name="component-checkbox"/>
         <DemoLink label="Chip" name="component-chip"/>
         <DemoLink label="ChipGroup" name="component-chip-group"/>

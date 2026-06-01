@@ -115,10 +115,13 @@ export const wikiDescriptionsIcon: StorybookComponentsDescriptionItem = {
 <Canvas of={Component.IconSkeleton}/>
     `,
     events: `
+<StorybookDescriptions componentName={'Event'} type={'click'}/>
 <StorybookDescriptions componentName={'Image'} type={'event.load'}/>
     `,
     expose: `
 <StorybookDescriptions componentName={'Icon'} type={'expose.isActive'}/>
+<StorybookDescriptions componentName={'Expose'} type={'getValue'}/>
+<StorybookDescriptions componentName={'Expose'} type={'getDetail'}/>
     `,
     slots: `
 <StorybookDescriptions componentName={'Slot'} type={'default'}/>

@@ -118,6 +118,7 @@ export const wikiDescriptionsModal: StorybookComponentsDescriptionItem = {
     `,
     expose: `
 <StorybookDescriptions componentName={'Window'} type={'expose'}/>
+<StorybookDescriptions componentName={'Window'} type={'getWindowElement'}/>
     `,
     slots: `
 <Canvas of={Component.ModalAllSlots}/>
