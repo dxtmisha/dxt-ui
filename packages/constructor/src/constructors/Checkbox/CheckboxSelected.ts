@@ -1,4 +1,4 @@
-import { ref, type ToRefs, watch } from 'vue'
+import { onMounted, ref, type ToRefs, watch } from 'vue'
 import { anyToString, type ConstrEmit } from '@dxtmisha/functional'
 
 import { ModelInclude } from '../../classes/ModelInclude'
@@ -33,19 +33,22 @@ export class CheckboxSelected {
     protected readonly value: FieldValueInclude,
     protected readonly emits?: ConstrEmit<CheckboxEmits>
   ) {
-    watch(
-      [refs.selected],
-      this.update,
-      { immediate: true }
-    )
-
     new ModelInclude<string | undefined>(
       'selected',
       this.emits,
       this.selected
     )
 
-    watch(this.value.item, this.updateByValue)
+    this.update()
+
+    onMounted(() => {
+      watch(
+        [refs.selected],
+        this.update,
+        { immediate: true }
+      )
+      watch(this.value.item, this.updateByValue)
+    })
   }
 
   /**

@@ -220,7 +220,7 @@ export class CheckboxDesign<
             [
               this.components.renderOne(
                 'image',
-                this.item.icon.item.value
+                this.item.icon.item
               )
             ]
           ),

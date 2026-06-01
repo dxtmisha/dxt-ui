@@ -28,15 +28,13 @@ export class MenuValue {
     if (this.props.isSelectedByValue) {
       new ModelInclude('selected', this.emits, this.value)
 
-      if (refs.selected) {
-        watch(
-          refs.selected,
-          (value) => {
-            this.value.value = value
-          },
-          { immediate: true }
-        )
-      }
+      watch(
+        [refs.selected],
+        () => {
+          this.value.value = this.props.selected
+        },
+        { immediate: true }
+      )
     }
   }
 

@@ -9,7 +9,7 @@ const { eventName, onEvent } = useDemoEvent()
 
 const valueText = ref('Hello World')
 const valuePassword = ref('123456')
-const valueNumber = ref(123)
+const valueNumber = ref('123')
 const valueEmail = ref('email@example.com')
 const valueDate = ref('2025-05-11')
 const valueTel = ref('+79001234567')

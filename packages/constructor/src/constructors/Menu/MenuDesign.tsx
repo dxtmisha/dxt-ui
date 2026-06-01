@@ -186,7 +186,7 @@ export class MenuDesign<
             'list',
             toBinds(
               {
-                ...this.item.binds.value,
+                ...this.item.binds,
                 class: this.classes?.value.list,
 
                 selected: this.item.value.selected.value,

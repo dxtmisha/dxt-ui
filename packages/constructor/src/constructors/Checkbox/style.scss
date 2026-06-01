@@ -50,7 +50,7 @@
     @include ui.subclass('label') {
       &:after {
         content: "*";
-        @include ui.color(ui.v('??required.comp.color'), ui.v('??required.comp.colorOpacity'));
+        @include ui.color(ui.v('??comp.required.color'), ui.v('??comp.required.colorOpacity'));
       }
     }
   }

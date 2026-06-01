@@ -115,7 +115,7 @@ export const wikiDescriptionsCheckbox: StorybookComponentsDescriptionItem = {
 <StorybookDescriptions componentName={'Event'} type={'change'}/>
     `,
     expose: `
-<StorybookDescriptions componentName={'Expose'} type={'value'}/>
+<StorybookDescriptions componentName={'Expose'} type={'getValue'}/>
 <StorybookDescriptions componentName={'Expose'} type={'checkValidity'}/>
 <StorybookDescriptions componentName={'Expose'} type={'getValidationMessage'}/>
     `,

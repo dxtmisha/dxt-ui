@@ -1,4 +1,3 @@
-import { computed } from 'vue'
 import { getBind } from '@dxtmisha/functional'
 
 import { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
@@ -28,9 +27,9 @@ export class CheckboxIcon {
    *
    * Возвращает данные для иконки.
    */
-  readonly item = computed(
-    () => getBind(this.getIcon(), 'value')
-  )
+  get item() {
+    return getBind(this.getIcon(), 'value')
+  }
 
   /**
    * Returns the name of the icon.

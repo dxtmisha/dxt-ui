@@ -1,4 +1,4 @@
-import { computed, type Ref, type ToRefs } from 'vue'
+import { type Ref, type ToRefs } from 'vue'
 import { type ConstrEmit, type DesignComp, ListDataRef } from '@dxtmisha/functional'
 
 import { EventClickInclude } from '../../classes/EventClickInclude'
@@ -15,7 +15,6 @@ import { MenuGo } from './MenuGo'
 import type { MenuComponents, MenuEmits, MenuSlots } from './types'
 import type { MenuProps } from './props'
 import type { MenuControlBasic } from './basicTypes'
-import type { ListPropsBasic } from '../List'
 import type { EventClickValue } from '../../types/eventClickTypes'
 
 /**
@@ -150,7 +149,7 @@ export class Menu {
    *
    * Получение данных для привязки к компоненту List.
    */
-  readonly binds = computed<ListPropsBasic>(() => {
+  get binds() {
     return {
       highlightLengthStart: this.props.highlightLengthStart,
       showSearch: this.props.showSearch,
@@ -170,7 +169,7 @@ export class Menu {
 
       control: !this.props.embedded
     }
-  })
+  }
 
   /**
    * Getting data for binding to controls.

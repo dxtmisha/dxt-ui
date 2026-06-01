@@ -34,7 +34,7 @@ const selectedEvents = ref('VN')
             <template #control="{ binds, selectedNames }">
               <D1Button
                 v-bind="binds"
-                :label="selectedNames[0] || 'Select Country'"
+                :label="selectedNames.value[0] || 'Select Country'"
                 icon="public"
                 primary
               />
