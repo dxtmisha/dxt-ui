@@ -135,12 +135,12 @@ export class TextareaDesign<
   protected readonly renderInput = (input: FieldControl): VNode[] => {
     const props = toBinds(
       input.binds,
-      this.item.binds.value,
-      this.item.bindsInput.value
+      this.item.bindsInput
     )
 
     if (this.components.is('textareaAutosize')) {
       return [this.components.renderOne('textareaAutosize', {
+        ...this.item.binds,
         inputAttrs: props
       }) as VNode]
     }

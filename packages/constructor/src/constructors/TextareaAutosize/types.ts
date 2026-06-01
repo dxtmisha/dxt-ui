@@ -1,4 +1,3 @@
-import type { Ref } from 'vue'
 import type { ConstrClass } from '@dxtmisha/functional'
 
 /**
@@ -26,8 +25,8 @@ export type TextareaAutosizeEmits = {
  * Тип, описывающий доступные свойства.
  */
 export interface TextareaAutosizeExpose {
-  /** Reactive reference to the current value/ Реактивная ссылка на текущее значение */
-  value: Ref<string>
+  /** Returns the current value/ Возвращает текущее значение */
+  getValue(): string
 }
 
 /**

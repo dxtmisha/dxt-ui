@@ -78,7 +78,7 @@ export class TextareaAutosizeDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      value: this.item.value.item
+      getValue: () => this.item.value.item.value
     } as EXPOSE
   }
 
@@ -124,7 +124,7 @@ export class TextareaAutosizeDesign<
    *
    * Рендерит элемент textarea.
    */
-  protected readonly renderTextarea = (): VNode => {
+  readonly renderTextarea = (): VNode => {
     const props = toBinds(
       this.getAttrs(),
       this.props.inputAttrs,
@@ -145,7 +145,7 @@ export class TextareaAutosizeDesign<
    *
    * Рендерит элемент-клон.
    */
-  protected readonly renderClone = (): VNode => {
+  readonly renderClone = (): VNode => {
     return h('div', {
       ref: this.item.resize.clone,
       class: this.classes?.value.clone

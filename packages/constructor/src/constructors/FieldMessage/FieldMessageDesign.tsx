@@ -98,7 +98,8 @@ export class FieldMessageDesign<
       ...{
         // :classes [!] System label / Системная метка
         info: this.getSubClass('info'),
-        error: this.getSubClass('error')
+        error: this.getSubClass('error'),
+        fieldCounter: this.getSubClass('fieldCounter')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

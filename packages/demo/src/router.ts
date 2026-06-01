@@ -34,6 +34,7 @@ import DemoScrollbarPage from './pages/components/DemoScrollbarPage.vue'
 import DemoSelectPage from './pages/components/DemoSelectPage.vue'
 import DemoSnackbarPage from './pages/components/DemoSnackbarPage.vue'
 import DemoSwitchPage from './pages/components/DemoSwitchPage.vue'
+import DemoTextareaPage from './pages/components/DemoTextareaPage.vue'
 import DemoTabsPage from './pages/components/DemoTabsPage.vue'
 import DemoTooltipPage from './pages/components/DemoTooltipPage.vue'
 import DemoWindowPage from './pages/components/DemoWindowPage.vue'
@@ -198,6 +199,11 @@ export const routes: RouteRecordRaw[] = [
     path: '/component-switch',
     name: 'component-switch',
     component: DemoSwitchPage
+  },
+  {
+    path: '/component-textarea',
+    name: 'component-textarea',
+    component: DemoTextareaPage
   },
   {
     path: '/component-tabs',

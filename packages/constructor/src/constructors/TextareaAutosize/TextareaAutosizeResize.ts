@@ -1,4 +1,4 @@
-import { nextTick, type Ref, ref, watch } from 'vue'
+import { nextTick, onMounted, type Ref, ref, watch } from 'vue'
 import { TextareaAutosizeValue } from './TextareaAutosizeValue'
 import type { TextareaAutosizeProps } from './props'
 
@@ -21,8 +21,12 @@ export class TextareaAutosizeResize {
     protected readonly element: Ref<HTMLTextAreaElement | undefined>,
     protected readonly value: TextareaAutosizeValue
   ) {
-    watch(this.value.item, this.on)
-    nextTick().then(() => requestAnimationFrame(this.on))
+    onMounted(async () => {
+      watch(this.value.item, this.on)
+
+      await nextTick()
+      requestAnimationFrame(this.on)
+    })
   }
 
   /**

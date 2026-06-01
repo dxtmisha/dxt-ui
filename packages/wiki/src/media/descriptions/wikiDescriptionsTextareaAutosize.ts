@@ -44,7 +44,7 @@ export const wikiDescriptionsTextareaAutosize: StorybookComponentsDescriptionIte
 <StorybookDescriptions componentName={'Event'} type={'input-standard'}/>
     `,
     expose: `
-<StorybookDescriptions componentName={'Expose'} type={'value'}/>
+<StorybookDescriptions componentName={'Expose'} type={'getValue'}/>
     `
   },
   ai: {

@@ -39,6 +39,7 @@ import DemoLink from '../components/DemoLink.vue'
         <DemoLink label="Select" name="component-select"/>
         <DemoLink label="Snackbar" name="component-snackbar"/>
         <DemoLink label="Switch" name="component-switch"/>
+        <DemoLink label="Textarea" name="component-textarea"/>
         <DemoLink label="Tabs" name="component-tabs"/>
         <DemoLink label="Tooltip" name="component-tooltip"/>
         <DemoLink label="Window" name="component-window"/>

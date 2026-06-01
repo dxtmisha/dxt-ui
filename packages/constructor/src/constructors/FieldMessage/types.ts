@@ -47,5 +47,6 @@ export type FieldMessageClasses = {
   // :classes [!] System label / Системная метка
   info: string
   error: string
+  fieldCounter: string
   // :classes [!] System label / Системная метка
 }

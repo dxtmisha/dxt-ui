@@ -1,3 +1,4 @@
-- `value: Ref<string>` — Final formatted mask value.
-- `valueBasic: Ref<string>` — Basic mask value without formatting (only entered characters).
-- `set(value: string): boolean` — Sets new value and reinitializes the mask. Returns `true` if changed.
+- `getValue(): string` — Returns the final formatted mask value.
+- `getValueBasic(): string` — Returns the basic mask value without formatting (only entered characters).
+- `setValue(value: string): boolean` — Sets a new value and reinitializes the mask. Returns `true` if changed.
+- `clear(): boolean` — Clears the current value.

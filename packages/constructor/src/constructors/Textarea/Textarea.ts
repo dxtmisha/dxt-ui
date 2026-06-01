@@ -1,4 +1,4 @@
-import { computed, type Ref, type ToRefs } from 'vue'
+import { type Ref, type ToRefs } from 'vue'
 import { type ConstrEmit, type DesignComp, toBinds } from '@dxtmisha/functional'
 
 import { FieldElementInclude } from '../../classes/Field/FieldElementInclude'
@@ -7,8 +7,9 @@ import { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
 import { FieldCodeInclude } from '../../classes/Field/FieldCodeInclude'
 import { FieldValidationInclude } from '../../classes/Field/FieldValidationInclude'
 import { FieldEventInclude } from '../../classes/Field/FieldEventInclude'
-import { FieldInclude } from '../Field/FieldInclude'
 import { FieldAttributesInclude } from '../../classes/Field/FieldAttributesInclude'
+
+import { FieldInclude } from '../Field'
 
 import type { TextareaComponents, TextareaEmits, TextareaSlots } from './types'
 import type { TextareaProps } from './props'
@@ -111,9 +112,9 @@ export class Textarea {
       this.className,
       this.props,
       this.components,
-      computed(() => ({
+      () => ({
         maxlength: this.props.maxlength
-      })),
+      }),
       undefined,
       this.value,
       this.event
@@ -125,27 +126,31 @@ export class Textarea {
    *
    * Возвращает привязки для элемента textarea.
    */
-  readonly binds = computed(() => ({
-    ref: this.element,
-    autosize: this.props.autosize,
-    value: this.value.item.value,
-    onBlur: this.event.onBlur,
-    onInput: this.event.onInput,
-    onChange: this.event.onChange
-  }))
+  get binds() {
+    return {
+      ref: this.element,
+      autosize: this.props.autosize,
+      value: this.value.item.value,
+      onBlur: this.event.onBlur,
+      onInput: this.event.onInput,
+      onChange: this.event.onChange
+    }
+  }
 
   /**
    * Returns properties for the input element.
    *
    * Возвращает свойства для элемента ввода.
    */
-  readonly bindsInput = computed(() => toBinds(
-    this.attributes.listForInput,
-    this.props.textareaAttrs,
-    {
-      cols: this.props.cols,
-      rows: this.props.rows,
-      fieldSizing: this.props.fieldSizing
-    }
-  ))
+  get bindsInput() {
+    return toBinds(
+      this.attributes.listForInput,
+      this.props.textareaAttrs,
+      {
+        cols: this.props.cols,
+        rows: this.props.rows,
+        fieldSizing: this.props.fieldSizing
+      }
+    )
+  }
 }

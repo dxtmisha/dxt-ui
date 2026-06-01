@@ -41,9 +41,10 @@ export type FieldControl = {
     AriaList
     & {
       /** Unique ID/ Уникальный идентификатор */
-      id: string
+      'id': string
       /** Class name/ Имя класса */
-      class: string
+      'class': string
+      'data-input': string
     }
 }
 

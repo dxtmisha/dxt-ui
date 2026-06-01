@@ -165,6 +165,20 @@ export class FieldInclude<
   }
 
   /**
+   * Resets focus back to the field's input element.
+   *
+   * Сбрасывает фокус обратно на элемент ввода поля.
+   */
+  protected resetFocus() {
+    const element: HTMLElement = this.element.value?.elementHtml
+
+    if (element) {
+      element.querySelector<HTMLInputElement>('[data-input]')
+        ?.focus()
+    }
+  }
+
+  /**
    * Event listener handler for field-related user clicks and actions.
    *
    * Обработчик событий для кликов пользователей и действий с полем.
@@ -190,6 +204,7 @@ export class FieldInclude<
           break
         case 'cancel':
           this.event?.onClear(event)
+          this.resetFocus()
           eventStopPropagation(event)
           break
         case 'next':

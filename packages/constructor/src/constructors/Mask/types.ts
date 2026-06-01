@@ -1,4 +1,3 @@
-import type { ComputedRef } from 'vue'
 import type { ConstrClass } from '@dxtmisha/functional'
 import type { FieldValidationItem } from '../../types/fieldTypes'
 
@@ -51,10 +50,10 @@ export type MaskEmits = {
  * Тип, описывающий доступные свойства.
  */
 export interface MaskExpose {
-  /** The raw, unformatted value/ Неотформатированное («базовое») значение */
-  valueBasic: ComputedRef<string>
-  /** The current formatted value/ Текущее отформатированное значение */
-  value: ComputedRef<string>
+  /** Returns the raw, unformatted value/ Возвращает неотформатированное («базовое») значение */
+  getValueBasic(): string
+  /** Returns the current formatted value/ Возвращает текущее отформатированное значение */
+  getValue(): string
 
   /** Sets a new value/ Устанавливает новое значение */
   setValue(value: string): boolean

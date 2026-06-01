@@ -16,6 +16,12 @@
     display: none;
   }
 
+  &__fieldCounter {
+    flex-grow: 1;
+    flex-shrink: 1;
+    text-align: right;
+  }
+
   &--validation {
     @include ui.subclass('info') {
       display: none;

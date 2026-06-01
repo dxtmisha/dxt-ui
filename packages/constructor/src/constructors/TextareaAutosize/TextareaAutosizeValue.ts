@@ -1,4 +1,4 @@
-import { ref, type ToRefs, watch } from 'vue'
+import { onMounted, ref, type ToRefs, watch } from 'vue'
 import { type ConstrEmit } from '@dxtmisha/functional'
 
 import type { TextareaAutosizeEmits } from './types'
@@ -23,11 +23,14 @@ export class TextareaAutosizeValue {
     protected readonly refs: ToRefs<TextareaAutosizeProps>,
     protected readonly emits?: ConstrEmit<TextareaAutosizeEmits>
   ) {
-    watch(
-      [refs.value],
-      () => this.set(props.value),
-      { immediate: true }
-    )
+    this.set(props.value)
+
+    onMounted(() => {
+      watch(
+        [refs.value],
+        () => this.set(props.value)
+      )
+    })
   }
 
   /**

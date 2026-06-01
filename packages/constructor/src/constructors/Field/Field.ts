@@ -220,16 +220,18 @@ export class Field {
    * @returns control bindings and classes / привязки и классы управления
    */
   get control(): FieldControl {
+    const id = this.fieldElement.id
     const className = `${this.className}__body__input ${this.skeleton.classesSkeleton.classText}`
 
     return {
-      id: this.fieldElement.id,
+      id,
       className,
       classHidden: `${this.className}__body__hidden`,
       classForFocus: `${this.className}__body__focus`,
       binds: {
-        id: this.fieldElement.id,
-        class: className,
+        'id': id,
+        'class': className,
+        'data-input': id,
         ...AriaStaticInclude.invalid(this.fieldElement.isValidation()),
         ...AriaStaticInclude.describedby(this.describedby)
       }

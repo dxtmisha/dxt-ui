@@ -78,8 +78,8 @@ export class MaskDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      valueBasic: this.item.basic,
-      value: this.item.value.item,
+      getValueBasic: () => this.item.basic.value,
+      getValue: () => this.item.value.item.value,
       setValue: this.item.set,
       clear: this.item.clear
     } as EXPOSE

@@ -4,6 +4,7 @@
   },
   "#info": {},
   "#error": {},
+  "#fieldCounter": {},
   "~validation": {
     "_prop": false
   }
