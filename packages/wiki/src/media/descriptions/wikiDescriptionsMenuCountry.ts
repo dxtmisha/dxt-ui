@@ -73,7 +73,9 @@ export const wikiDescriptionsMenuCountry: StorybookComponentsDescriptionItem = {
 <StorybookDescriptions componentName={'Menu'} type={'event.updateValue'}/>
     `,
     expose: `
+<StorybookDescriptions componentName={'Window'} type={'expose'}/>
 <StorybookDescriptions componentName={'Expose'} type={'selected'}/>
+<StorybookDescriptions componentName={'Expose'} type={'loading'}/>
 <StorybookDescriptions componentName={'Menu'} type={'expose.navigation'}/>
     `,
     slots: `

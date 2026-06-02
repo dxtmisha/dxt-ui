@@ -94,6 +94,15 @@ export abstract class ComponentIncludeAbstract<
   }
 
   /**
+   * Get the menu element /
+   * Получить элемент меню
+   * @returns menu element or undefined / элемент меню или undefined
+   */
+  getElement() {
+    return this.element.value
+  }
+
+  /**
    * Renders the included component as a VNode array.
    *
    * Рендерит включенный компонент в виде массива VNode.

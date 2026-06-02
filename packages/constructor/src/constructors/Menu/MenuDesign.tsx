@@ -82,7 +82,9 @@ export class MenuDesign<
   protected initExpose(): EXPOSE {
     return {
       ...this.item.window.expose,
-      ...this.item.getControlBinds()
+      loading: () => this.item.request.progress.value,
+      previous: this.item.go.previous,
+      next: this.item.go.next
     } as EXPOSE
   }
 

@@ -2,12 +2,12 @@ import type { ConstrClass, NumberOrStringOrBoolean } from '@dxtmisha/functional'
 
 import type { EventClickEmits } from '../../types/eventClickTypes'
 
-import type { ListComponentInclude, ListSlots } from '../List'
+import type { ListComponentInclude, ListExpose, ListSlots } from '../List'
 import type { BarsComponentInclude, BarsEmitsInclude } from '../Bars'
 import type { WindowComponentInclude, WindowEmitsInclude, WindowExposeInclude } from '../Window'
 import type { ModelEmitsSelected } from '../../types/modelTypes'
 
-import type { MenuControlBasic, MenuControlItem, MenuSlotInclude } from './basicTypes'
+import type { MenuControlItem, MenuSlotInclude } from './basicTypes'
 
 /**
  * Interface for describing which components need to be connected for work.
@@ -41,7 +41,12 @@ export type MenuEmits
  *
  * Тип, описывающий доступные свойства.
  */
-export interface MenuExpose extends WindowExposeInclude, MenuControlBasic {
+export interface MenuExpose extends WindowExposeInclude, ListExpose {
+  loading(): boolean
+  /** Switches to the previous item/ Переключает на предыдущий элемент */
+  previous(): NumberOrStringOrBoolean | undefined
+  /** Switches to the next item/ Переключает на следующий элемент */
+  next(): NumberOrStringOrBoolean | undefined
 }
 
 /**

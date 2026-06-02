@@ -171,8 +171,14 @@ export const wikiDescriptionsMenuButton: StorybookComponentsDescriptionItem = {
 <StorybookDescriptions componentName={'Event'} type={'change'}/>
     `,
     expose: `
+<StorybookDescriptions componentName={'Expose'} type={'value'}/>
+<StorybookDescriptions componentName={'Expose'} type={'checkValidity'}/>
+<StorybookDescriptions componentName={'Expose'} type={'getValidationMessage'}/>
+
+<StorybookDescriptions componentName={'Window'} type={'expose'}/>
 <StorybookDescriptions componentName={'Expose'} type={'selected'}/>
-<StorybookDescriptions componentName={'Expose'} type={'validation'}/>
+<StorybookDescriptions componentName={'Expose'} type={'loading'}/>
+<StorybookDescriptions componentName={'Menu'} type={'expose.navigation'}/>
     `,
     slots: `
 <StorybookDescriptions componentName={'Slot'} type={'default'} />

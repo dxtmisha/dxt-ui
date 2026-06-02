@@ -83,14 +83,14 @@ export class MenuCountry {
       this.className,
       this.props,
       this.components,
-      computed(() => ({
+      () => ({
         'list': this.list.value,
         'selected': this.props.selected,
         'isSelectedByValue': this.props.isSelectedByValue,
         'onClick': this.event.onClick,
         'onUpdate:selected': (value: ListSelectedList) => this.model.emit(value),
         'onUpdateValue': (value: NumberOrStringOrBoolean) => this.emits?.('updateValue', value)
-      }))
+      })
     )
   }
 

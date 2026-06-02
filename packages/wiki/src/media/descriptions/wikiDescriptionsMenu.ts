@@ -194,11 +194,14 @@ export const wikiDescriptionsMenu: StorybookComponentsDescriptionItem = {
     events: `
 <StorybookDescriptions componentName={'Event'} type={'click'}/>
 <StorybookDescriptions componentName={'Event'} type={'bars'}/>
+<StorybookDescriptions componentName={'Event'} type={'clickSlot'}/>
 <StorybookDescriptions componentName={'Menu'} type={'event.updateValue'}/>
 <StorybookDescriptions componentName={'Window'} type={'event.window'}/>
     `,
     expose: `
+<StorybookDescriptions componentName={'Window'} type={'expose'}/>
 <StorybookDescriptions componentName={'Expose'} type={'selected'}/>
+<StorybookDescriptions componentName={'Expose'} type={'loading'}/>
 <StorybookDescriptions componentName={'Menu'} type={'expose.navigation'}/>
     `,
     slots: `

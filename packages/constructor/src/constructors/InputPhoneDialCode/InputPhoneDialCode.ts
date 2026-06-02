@@ -17,7 +17,7 @@ export class InputPhoneDialCode {
   readonly button: ButtonInclude
 
   /** Country selection menu inclusion manager / Менеджер включения меню выбора страны */
-  readonly menu: MenuCountryInclude
+  readonly menu: MenuCountryInclude<any, any>
 
   /**
    * Constructor
@@ -59,8 +59,8 @@ export class InputPhoneDialCode {
     )
 
     this.menu = new MenuCountryConstructor(
-      this.props,
       this.className,
+      this.props,
       this.components,
       computed(() => ({
         selected: this.props.value,

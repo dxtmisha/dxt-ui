@@ -2,7 +2,7 @@ import type { Ref } from 'vue'
 import type { ConstrBind, NumberOrStringOrBoolean } from '@dxtmisha/functional'
 import type { WindowControlItem } from '../Window'
 
-import type { ListExpose, ListSlotsInclude } from '../List'
+import type { ListSlotsInclude } from '../List'
 import type { MenuExpose } from './types'
 import type { MenuPropsBasic } from './props'
 
@@ -31,21 +31,7 @@ export type MenuComponentInclude = {
 }
 
 /** Type for menu expose functionality/ Тип для функциональности экспорта меню */
-export interface MenuExposeInclude extends ListExpose {
-  /** Whether the menu is currently open/ Открыто ли меню в данный момент */
-  getOpen(): boolean
-
-  /** Sets the open state of the menu/ Устанавливает состояние открытия меню */
-  setOpen(open: boolean): Promise<void>
-
-  /** Opens the menu/ Открывает меню */
-  toOpen: MenuExpose['toOpen']
-  /** Closes the menu/ Закрывает меню */
-  toClose: MenuExpose['toClose']
-
-  /** Toggles the menu open state/ Переключает состояние открытия меню */
-  toggle(): Promise<void>
-
+export interface MenuExposeInclude extends MenuExpose {
   /** Reference to the menu element/ Ссылка на элемент меню */
   getMenuElement(): Ref<ConstrBind<MenuExpose> | undefined>
 }

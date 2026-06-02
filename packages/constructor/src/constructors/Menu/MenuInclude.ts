@@ -1,9 +1,6 @@
-import {
-  type ListNames
-} from '@dxtmisha/functional'
-
 import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
 
+import type { ComponentIncludeExposeItem } from '../../types/componentInclude'
 import type { MenuExposeInclude, MenuPropsInclude } from './basicTypes'
 import type { MenuSlots } from './types'
 import type { MenuProps } from './props'
@@ -27,6 +24,26 @@ export class MenuInclude<
     MenuSlots,
     any
   > {
+  protected readonly exposeItems: ComponentIncludeExposeItem[] | undefined = [
+    { name: 'getId' },
+    { name: 'getOpen', type: 'boolean' },
+    { name: 'getControl' },
+
+    { name: 'setOpen' },
+    { name: 'toOpen' },
+    { name: 'toClose' },
+    { name: 'toggle' },
+
+    { name: 'isSelected', type: 'boolean' },
+    { name: 'getSelectedList' },
+    { name: 'getSelectedNames' },
+    { name: 'getSelectedValues' },
+
+    { name: 'loading' },
+    { name: 'previous' },
+    { name: 'next' }
+  ]
+
   /** Sub-component name / Название субкомпонента */
   protected override readonly name = 'menu'
 
@@ -34,50 +51,14 @@ export class MenuInclude<
   protected override readonly propsAttrsName = 'menuAttrs'
 
   /**
-   * Checks whether menu should be displayed /
-   * Проверяет, нужно ли отображать меню
-   */
-  override get is(): boolean {
-    const props = this.getProps()
-    return Boolean(!props.disabled && this.components)
-  }
-
-  /**
-   * Check if the menu is open /
-   * Проверяет, открыто ли меню
-   */
-  get isOpen(): boolean {
-    return Boolean(this.element.value?.getOpen())
-  }
-
-  /**
    * Exposes the API methods and properties /
    * Экспортирует API-методы и свойства
    */
   override get expose(): MenuExposeInclude {
     return {
-      getOpen: () => Boolean(this.element.value?.getOpen()),
-      setOpen: async (open: boolean) => this.element.value?.setOpen(open),
-      toOpen: async () => this.element.value?.toOpen(),
-      toClose: async () => this.element.value?.toClose(),
-      toggle: async () => this.element.value?.toggle(),
-
-      getMenuElement: () => this.element as any,
-
-      isSelected: () => this.element.value?.isSelected() ?? false,
-      getSelectedList: () => this.element.value?.getSelectedList() ?? [],
-      getSelectedNames: () => this.element.value?.getSelectedNames() ?? {} as ListNames,
-      getSelectedValues: () => this.element.value?.getSelectedValues() ?? []
+      ...super.toExpose(),
+      getMenuElement: () => this.element as any
     }
-  }
-
-  /**
-   * Get the menu element /
-   * Получить элемент меню
-   * @returns menu element or undefined / элемент меню или undefined
-   */
-  getElement() {
-    return this.element.value
   }
 
   /**

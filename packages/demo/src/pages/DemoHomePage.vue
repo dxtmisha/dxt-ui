@@ -31,6 +31,7 @@ import DemoLink from '../components/DemoLink.vue'
         <DemoLink label="Modal" name="component-modal"/>
         <DemoLink label="Menu" name="component-menu"/>
         <DemoLink label="MenuButton" name="component-menu-button"/>
+        <DemoLink label="MenuChip" name="component-menu-chip"/>
         <DemoLink label="MenuCountry" name="component-menu-country"/>
         <DemoLink label="Motion Axis" name="component-motion-axis"/>
         <DemoLink label="Motion Transform" name="component-motion-transform"/>

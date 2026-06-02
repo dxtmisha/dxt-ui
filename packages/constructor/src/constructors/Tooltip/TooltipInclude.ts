@@ -25,16 +25,6 @@ export class TooltipInclude extends ComponentIncludeAbstract<
   protected readonly propsAttrsName = 'tooltipAttrs'
 
   /**
-   * Get the tooltip element.
-   *
-   * Получить элемент подсказки.
-   * @returns tooltip element or undefined / элемент подсказки или undefined
-   */
-  getElement(): TooltipExpose | undefined {
-    return this.element.value as TooltipExpose | undefined
-  }
-
-  /**
    * Open the tooltip.
    *
    * Открыть подсказку.

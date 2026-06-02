@@ -20,9 +20,9 @@ export type MenuCountryComponentInclude = {
  *
  * Тип для функциональности экспорта menu country.
  */
-export interface MenuCountryExposeInclude extends Omit<MenuExposeInclude, 'getMenuElement'> {
+export interface MenuCountryExposeInclude extends MenuExposeInclude {
   /** Reference to the menu country element / Ссылка на элемент menu country */
-  getMenuElement(): Ref<ConstrBind<MenuCountryExpose> | undefined>
+  getMenuCountryElement(): Ref<ConstrBind<MenuCountryExpose> | undefined>
 }
 
 /**

@@ -8,6 +8,7 @@ import {
 
 import { MenuChip } from './MenuChip'
 
+import type { MenuControlItem } from '../Menu'
 import {
   type MenuChipPropsBasic
 } from './props'
@@ -18,7 +19,6 @@ import {
   type MenuChipExpose,
   type MenuChipSlots
 } from './types'
-import type { MenuControlItem } from '../Menu/basicTypes'
 
 /**
  * MenuChipDesign
@@ -142,7 +142,7 @@ export class MenuChipDesign<
    * @param props control item properties / свойства элемента управления
    * @returns rendered button nodes / отрендеренные узлы кнопки
    */
-  protected readonly renderControl = (props: MenuControlItem): VNode[] => {
+  readonly renderControl = (props: MenuControlItem): VNode[] => {
     return this.item.chip.render(
       {
         default: () => this.renderControlLabel(props.selectedNames?.value)
@@ -161,7 +161,7 @@ export class MenuChipDesign<
    * @param selectedNames list of selected option labels / список меток выбранных опций
    * @returns array of rendered nodes / массив отрендеренных узлов
    */
-  protected readonly renderControlLabel = (selectedNames?: ListNames): VNode[] => {
+  readonly renderControlLabel = (selectedNames?: ListNames): VNode[] => {
     const children: any[] = []
     const hasValue = selectedNames
       && selectedNames.length > 0
@@ -205,7 +205,7 @@ export class MenuChipDesign<
    * Рендерит скрытый элемент ввода, используемый для передачи значения.
    * @returns hidden input node / узел скрытого ввода
    */
-  protected readonly renderInput = (): VNode => {
+  readonly renderInput = (): VNode => {
     return h(
       'input',
       {
@@ -223,7 +223,7 @@ export class MenuChipDesign<
    * @param props data for the transferable property / данные для передаваемого свойства
    * @returns list of children nodes representing the title / список дочерних узлов, представляющих заголовок
    */
-  protected readonly renderTitle = (props: MenuControlItem) => {
+  readonly renderTitle = (props: MenuControlItem) => {
     const children: any[] = []
 
     this.initSlot('title', children, props)

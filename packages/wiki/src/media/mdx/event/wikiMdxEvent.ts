@@ -8,6 +8,8 @@ import eventsBeforeinputEn from './events.beforeinput.en.mdx'
 import eventsBeforeinputRu from './events.beforeinput.ru.mdx'
 import eventsClickEn from './events.click.en.mdx'
 import eventsClickRu from './events.click.ru.mdx'
+import eventsClickSlotEn from './events.clickSlot.en.mdx'
+import eventsClickSlotRu from './events.clickSlot.ru.mdx'
 import eventsFocusEn from './events.focus.en.mdx'
 import eventsFocusRu from './events.focus.ru.mdx'
 import eventsInputEn from './events.input.en.mdx'
@@ -39,6 +41,10 @@ export const wikiMdxEvent: StorybookComponentsMdxItem = {
     'click': {
       en: eventsClickEn,
       ru: eventsClickRu
+    },
+    'clickSlot': {
+      en: eventsClickSlotEn,
+      ru: eventsClickSlotRu
     },
     'focus': {
       en: eventsFocusEn,

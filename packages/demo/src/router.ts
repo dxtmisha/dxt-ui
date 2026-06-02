@@ -26,6 +26,7 @@ import DemoMaskPage from './pages/components/DemoMaskPage.vue'
 import DemoModalPage from './pages/components/DemoModalPage.vue'
 import DemoMenuPage from './pages/components/DemoMenuPage.vue'
 import DemoMenuButtonPage from './pages/components/DemoMenuButtonPage.vue'
+import DemoMenuChipPage from './pages/components/DemoMenuChipPage.vue'
 import DemoMenuCountryPage from './pages/components/DemoMenuCountryPage.vue'
 import DemoMotionAxisPage from './pages/components/DemoMotionAxisPage.vue'
 import DemoMotionTransformPage from './pages/components/DemoMotionTransformPage.vue'
@@ -161,6 +162,11 @@ export const routes: RouteRecordRaw[] = [
     path: '/component-menu-button',
     name: 'component-menu-button',
     component: DemoMenuButtonPage
+  },
+  {
+    path: '/component-menu-chip',
+    name: 'component-menu-chip',
+    component: DemoMenuChipPage
   },
   {
     path: '/component-menu-country',
