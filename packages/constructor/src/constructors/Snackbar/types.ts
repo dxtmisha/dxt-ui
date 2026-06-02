@@ -1,4 +1,3 @@
-import type { ComputedRef } from 'vue'
 import type { ConstrClass } from '@dxtmisha/functional'
 
 import type { SnackbarItemComponentInclude } from '../SnackbarItem'
@@ -31,7 +30,7 @@ export type SnackbarEmits = {
  */
 export interface SnackbarExpose {
   /** Reactive state indicating if there are notifications/ Реактивное состояние, указывающее на наличие уведомлений */
-  isItem: ComputedRef<boolean>
+  isItem(): boolean
   /** Adds a new notification/ Добавляет новое уведомление */
   add(item: SnackbarValue): void
   /** Removes a notification by its value/ Удаляет уведомление по его значению */

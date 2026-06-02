@@ -1,4 +1,4 @@
-import { computed, type Ref, type ToRefs } from 'vue'
+import { type Ref, type ToRefs } from 'vue'
 import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
@@ -81,14 +81,14 @@ export class Snackbar {
    *
    * Свойства для привязки ARIA.
    */
-  readonly binds = computed(() => {
+  get binds() {
     return {
       onMouseenter: this.data.pause,
       onMouseleave: this.data.resume,
       ...AriaStaticInclude.role('region'),
       ...AriaStaticInclude.label(this.text.notifications)
     }
-  })
+  }
 
   /**
    * Event for hiding the message.

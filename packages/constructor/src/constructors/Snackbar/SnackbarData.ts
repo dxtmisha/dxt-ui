@@ -1,4 +1,4 @@
-import { computed, type Ref, shallowRef } from 'vue'
+import { type Ref, shallowRef } from 'vue'
 import { isElementVisible, ResumableTimer } from '@dxtmisha/functional-basic'
 
 import { SnackbarEvent } from './SnackbarEvent'
@@ -36,19 +36,21 @@ export class SnackbarData {
    *
    * Проверяет, есть ли активный элемент.
    */
-  readonly isItem = computed<boolean>(() => this.item.value.length > 0)
+  readonly isItem = (): boolean => {
+    return this.item.value.length > 0
+  }
 
   /**
    * Checks if the element is prioritized.
    *
    * Проверяет, есть ли элемент в приоритете.
    */
-  readonly isPriority = computed<boolean>(
-    () => this.isItem.value
+  isPriority(): boolean {
+    return this.isItem()
       && this.item.value.findIndex(
         item => item.highPriority === true
       ) !== -1
-  )
+  }
 
   /**
    * Returns a message element by its value.

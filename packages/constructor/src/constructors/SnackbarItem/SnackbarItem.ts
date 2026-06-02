@@ -1,4 +1,4 @@
-import { computed, type Ref, type ToRefs } from 'vue'
+import { type Ref, type ToRefs } from 'vue'
 import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
@@ -115,7 +115,7 @@ export class SnackbarItem {
   }
 
   /** ARIA bind for snackbar item/ ARIA привязка для элемента снекбара */
-  readonly ariaBind = computed(() => {
+  get ariaBind() {
     const aria = {
       ...AriaStaticInclude.atomic(true),
       ...AriaStaticInclude.role(this.props.role),
@@ -139,7 +139,7 @@ export class SnackbarItem {
     }
 
     return aria
-  })
+  }
 
   /**
    * Events on close button click.

@@ -118,7 +118,7 @@ export class SnackbarDesign<
    * Метод для рендеринга.
    */
   protected initRender(): VNode[] {
-    if (this.item.data.isItem.value) {
+    if (this.item.data.isItem()) {
       return this.item.teleport.render(
         h(
           'div',
@@ -126,7 +126,7 @@ export class SnackbarDesign<
             ...this.getAttrs(),
             ref: this.element,
             class: this.classes?.value.main,
-            ...this.item.binds.value
+            ...this.item.binds
           },
           [
             ...this.renderData(),
@@ -144,7 +144,7 @@ export class SnackbarDesign<
    *
    * Рендер списка элементов.
    */
-  protected readonly renderData = (): VNode[] => {
+  readonly renderData = (): VNode[] => {
     const children: any[] = []
 
     this.item.data.item.value.forEach(
@@ -171,7 +171,7 @@ export class SnackbarDesign<
    * Рендер элемента.
    * @param item add element / элемент добавления
    */
-  protected readonly renderItem = (item: SnackbarValue): VNode => {
+  readonly renderItem = (item: SnackbarValue): VNode => {
     const props = {
       ...item.data,
       value: item.value,
@@ -197,8 +197,8 @@ export class SnackbarDesign<
    *
    * Рендер разделителей по приоритету.
    */
-  protected readonly renderSpace = (): VNode[] => {
-    if (this.item.data.isPriority.value) {
+  readonly renderSpace = (): VNode[] => {
+    if (this.item.data.isPriority()) {
       return [
         h('div', { class: this.classes?.value.space })
       ]
