@@ -34,6 +34,7 @@ import D1HorizontalScroll from '../../src/components/Ui/HorizontalScroll/D1Horiz
 import D1Icon from '../../src/components/Ui/Icon/D1IconAiWiki.vue'
 import D1Image from '../../src/components/Ui/Image/D1ImageAiWiki.vue'
 import D1Input from '../../src/components/Ui/Input/D1InputAiWiki.vue'
+import D1InputPhone from '../../src/components/Ui/InputPhone/D1InputPhoneAiWiki.vue'
 import D1InputPhoneDialCode from '../../src/components/Ui/InputPhoneDialCode/D1InputPhoneDialCodeAiWiki.vue'
 import D1List from '../../src/components/Ui/List/D1ListAiWiki.vue'
 import D1ListGroup from '../../src/components/Ui/ListGroup/D1ListGroupAiWiki.vue'
@@ -104,6 +105,7 @@ export const aiList: any[] = [
   D1Icon,
   D1Image,
   D1Input,
+  D1InputPhone,
   D1InputPhoneDialCode,
   D1List,
   D1ListGroup,

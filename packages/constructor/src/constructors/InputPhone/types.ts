@@ -1,29 +1,33 @@
 import type { ConstrClass } from '@dxtmisha/functional'
 
+import type { FieldComponentInclude, FieldSlotsInclude } from '../Field'
+import type { InputPhoneDialCodeComponentInclude } from '../InputPhoneDialCode'
+import type { MaskComponentInclude } from '../Mask'
+
+import type { FieldBasicEmits, FieldBasicExpose } from '../../types/fieldTypes'
+
 /**
  * Interface for describing which components need to be connected for work.
  *
  * Интерфейс для описания, какие компоненты надо подключить для работы.
  */
-export type InputPhoneComponents = {
-  // componentName: object
-}
+export type InputPhoneComponents = FieldComponentInclude
+  & MaskComponentInclude
+  & InputPhoneDialCodeComponentInclude
 
 /**
  * Type describing available events.
  *
  * Тип, описывающий доступные события.
  */
-export type InputPhoneEmits = {
-  // load: [value: string]
-}
+export type InputPhoneEmits = FieldBasicEmits
 
 /**
  * Type describing available properties.
  *
  * Тип, описывающий доступные свойства.
  */
-export interface InputPhoneExpose {
+export interface InputPhoneExpose extends FieldBasicExpose {
 }
 
 /**
@@ -31,8 +35,7 @@ export interface InputPhoneExpose {
  *
  * Тип, описывающий доступные слоты.
  */
-export interface InputPhoneSlots {
-  // default? (props: any): any
+export interface InputPhoneSlots extends FieldSlotsInclude {
 }
 
 /**

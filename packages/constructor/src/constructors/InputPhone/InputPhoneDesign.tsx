@@ -1,12 +1,15 @@
-import { h, type VNode } from 'vue'
+import { type VNode } from 'vue'
 import {
+  type ConstrBind,
   type ConstrOptions,
   type ConstrStyles,
-  DesignConstructorAbstract
+  DesignConstructorAbstract,
+  toBinds
 } from '@dxtmisha/functional'
 
 import { InputPhone } from './InputPhone'
 
+import type { FieldControl } from '../Field'
 import {
   type InputPhonePropsBasic
 } from './props'
@@ -67,9 +70,6 @@ export class InputPhoneDesign<
       this.emits
     )
 
-    // TODO: Method for initializing base objects
-    // TODO: Метод для инициализации базовых объектов
-
     this.init()
   }
 
@@ -80,8 +80,8 @@ export class InputPhoneDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      // TODO: list of properties for export
-      // TODO: список свойств для экспорта
+      ...this.item.value.expose(),
+      ...this.item.validation.expose()
     } as EXPOSE
   }
 
@@ -106,10 +106,7 @@ export class InputPhoneDesign<
    * Доработка полученного списка стилей.
    */
   protected initStyles(): ConstrStyles {
-    return {
-      // TODO: list of user styles
-      // TODO: список пользовательских стилей
-    }
+    return {}
   }
 
   /**
@@ -117,13 +114,37 @@ export class InputPhoneDesign<
    *
    * Метод для рендеринга.
    */
-  protected initRender(): VNode {
-    // const children: any[] = []
+  protected initRender(): VNode[] {
+    return this.item.field.render(
+      {
+        default: this.renderMask
+      },
+      {
+        ...this.getAttrs(),
+        class: this.classes?.value.main,
+        validationMessage: this.item.validation.message
+      }
+    )
+  }
 
-    return h('div', {
-      // ...this.getAttrs(),
+  /**
+   * Rendering mask element.
+   *
+   * Рендеринг элемента маски.
+   * @param input data for the input element / данные для элемента ввода
+   * @returns array of VNodes / массив VNode
+   */
+  readonly renderMask = (input: FieldControl): VNode[] => {
+    return this.item.mask.render(undefined, {
       ref: this.element,
-      class: this.classes?.value.main
+      class: input.className,
+      align: this.props.align,
+      inputAttrs: toBinds<ConstrBind<any>>(
+        this.item.attributes.listForInput,
+        input.binds
+      ),
+      onBlur: this.item.event.onBlur,
+      onInput: this.item.event.onInput
     })
   }
 }

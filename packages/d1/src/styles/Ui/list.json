@@ -9477,6 +9477,17 @@
           }
         }
       },
+      "inputPhone": {
+        "name": "d1-inputPhone",
+        "type": "component",
+        "value": {
+          "main": {
+            "name": "--d1-inputPhone-main",
+            "type": "var",
+            "value": "{d.inputPhone}"
+          }
+        }
+      },
       "listGroup": {
         "name": "d1-listGroup",
         "type": "component",

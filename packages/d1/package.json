@@ -27,7 +27,7 @@
     "build": "vue-tsc -b && vite build",
     "build-recovery": "npm run build && npm run wiki-storm",
     "preview": "vite preview",
-    "ui": "dxt-ui",
+    "ui": "dxt-ui InputPhone",
     "wiki-storm": "dxt-wiki-storm",
     "types": "dxt-types",
     "screenshot": "dxt-screenshot",
@@ -339,6 +339,10 @@
     "./D1InputPhoneDialCode": {
       "types": "./dist/src/library/D1InputPhoneDialCode.d.ts",
       "default": "./dist/D1InputPhoneDialCode.js"
+    },
+    "./D1InputPhone": {
+      "types": "./dist/src/library/D1InputPhone.d.ts",
+      "default": "./dist/D1InputPhone.js"
     }
   },
   "buildOptions": {

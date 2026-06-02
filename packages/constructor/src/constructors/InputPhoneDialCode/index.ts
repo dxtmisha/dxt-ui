@@ -1,5 +1,6 @@
 export * from './InputPhoneDialCode'
 export * from './InputPhoneDialCodeDesign'
+export * from './InputPhoneDialCodeInclude'
 export * from './props'
 export * from './types'
 export * from './basicTypes'

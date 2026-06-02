@@ -327,6 +327,10 @@ export type FieldInputProps<Value = any>
       iconVisibilityOff?: string
     }
 
+export type FieldInputPhoneProps
+  = Omit<FieldBasicProps<string>, 'match' | 'pattern'>
+    & FieldPatternProps
+
 /**
  * Props for file input elements (type="file")/
  * Свойства для инпутов выбора файлов (type="file")

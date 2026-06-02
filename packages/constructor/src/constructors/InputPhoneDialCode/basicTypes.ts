@@ -1,6 +1,5 @@
 import type { ConstrBind } from '@dxtmisha/functional'
 
-import type { InputPhoneDialCodeExpose } from './types'
 import type { InputPhoneDialCodePropsBasic } from './props'
 
 /**
@@ -11,14 +10,6 @@ import type { InputPhoneDialCodePropsBasic } from './props'
 export type InputPhoneDialCodeComponentInclude = {
   /** InputPhoneDialCode component configuration / Конфигурация компонента InputPhoneDialCode */
   inputPhoneDialCode?: object
-}
-
-/**
- * Type for input phone dial code expose functionality.
- *
- * Тип для функциональности экспорта input phone dial code.
- */
-export interface InputPhoneDialCodeExposeInclude extends InputPhoneDialCodeExpose {
 }
 
 /**

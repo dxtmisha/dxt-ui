@@ -1,0 +1,20 @@
+@use "../../../styles/Ui/properties";
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/style.scss" as InputPhone;
+
+@include ui.initDesignBasic('d1.inputPhone') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include InputPhone.mixinInputPhone;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+    --d1-inputPhone-main: var(--d-inputPhone);
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}
