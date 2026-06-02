@@ -9,9 +9,11 @@ import type { EventClickValue } from '../types/eventClickTypes'
 /**
  * Class for managing the model value with a reactive reference and click handling.
  * It synchronizes the state using ModelInclude and listens for input value updates.
+ * Supports single and multiple selection modes and respects the readonly flag.
  *
  * Класс для управления значением модели с реактивной ссылкой и обработкой клика.
  * Синхронизирует состояние с помощью ModelInclude и отслеживает обновления входного значения.
+ * Поддерживает режимы одиночного и множественного выбора, а также учитывает флаг readonly.
  */
 export class ModelValueInclude<Value = any> {
   /** Reactive reference to the model value / Реактивная ссылка на значение модели */
@@ -21,11 +23,12 @@ export class ModelValueInclude<Value = any> {
    * Constructor.
    *
    * Конструктор.
-   * @param index unique identifier / уникальный идентификатор
-   * @param emits emit function / функция эмитов
+   * @param index unique identifier for the model emit / уникальный идентификатор для эмита модели
+   * @param emits emit function for triggering events / функция эмитов для вызова событий
    * @param event click event handling class / класс для обработки событий клика
    * @param inputValue reference to the input value / ссылка на входное значение
    * @param readonly reactive flag for readonly state / реактивный флаг состояния только для чтения
+   * @param multiple reactive flag enabling multiple selection / реактивный флаг множественного выбора
    */
   constructor(
     protected readonly index: string,
@@ -85,7 +88,21 @@ export class ModelValueInclude<Value = any> {
     this.event?.onClick(event, options)
   }
 
-  /** Updates the internal model value from the input value reference / Обновляет внутреннее значение модели из ссылки на входное значение */
+  /**
+   * Directly updates the model value with the given value.
+   *
+   * Напрямую обновляет значение модели переданным значением.
+   * @param value new model value / новое значение модели
+   */
+  readonly onUpdate = (value: Value) => {
+    this.value.value = value
+  }
+
+  /**
+   * Updates the internal model value from the input value reference.
+   *
+   * Обновляет внутреннее значение модели из ссылки на входное значение.
+   */
   protected readonly update = () => {
     this.value.value = this.inputValue?.value
   }

@@ -1,0 +1,83 @@
+import{i as e}from"./preload-helper-CqJKl217.js";import{i as t,t as n}from"./jsx-runtime-BpINW1Kv.js";import{f as r,s as i}from"./blocks-CQEzKDSL.js";import{t as a}from"./mdx-react-shim-CpDaEZL9.js";function o(e){let n={code:`code`,h1:`h1`,h2:`h2`,h3:`h3`,li:`li`,ol:`ol`,p:`p`,pre:`pre`,strong:`strong`,ul:`ul`,...t(),...e.components};return(0,c.jsxs)(c.Fragment,{children:[(0,c.jsx)(i,{title:`@dxtmisha/en/functional/# API Hooks`}),`
+`,(0,c.jsx)(n.h1,{id:`api-hooks`,children:`API Hooks`}),`
+`,(0,c.jsxs)(n.p,{children:[`A set of tools for efficient backend interaction, fully integrated with `,(0,c.jsx)(n.strong,{children:`Vue 3 (Composition API)`}),`.`]}),`
+`,(0,c.jsx)(n.h2,{id:`features`,children:`Features`}),`
+`,(0,c.jsxs)(n.p,{children:[`The main task of these tools is to automate routine operations: tracking loading states (`,(0,c.jsx)(n.code,{children:`loading`}),`), handling errors, and synchronizing data across different parts of the interface. All hooks support reactive parameters, allowing for the creation of dynamic requests that automatically update when input filters or paths change.`]}),`
+`,(0,c.jsx)(n.h2,{id:`available-tools`,children:`Available Tools`}),`
+`,(0,c.jsxs)(n.ul,{children:[`
+`,(0,c.jsxs)(n.li,{children:[(0,c.jsx)(n.code,{children:`useApiRef`}),` — Reactive data retrieval (GET) with automatic execution and storage in a `,(0,c.jsx)(n.code,{children:`ref`}),`.`]}),`
+`,(0,c.jsxs)(n.li,{children:[(0,c.jsx)(n.code,{children:`useApiAsyncRef`}),` — Asynchronous version of `,(0,c.jsx)(n.code,{children:`useApiRef`}),` for immediate initialization (SSR).`]}),`
+`,(0,c.jsxs)(n.li,{children:[(0,c.jsx)(n.code,{children:`useApiRequest`}),` — Base hook for manual execution of any HTTP requests (returns the `,(0,c.jsx)(n.code,{children:`send`}),` method).`]}),`
+`,(0,c.jsxs)(n.li,{children:[(0,c.jsx)(n.code,{children:`useApiPost / Put / Delete`}),` — Specialized wrappers for mutations (create, update, delete).`]}),`
+`,(0,c.jsxs)(n.li,{children:[(0,c.jsx)(n.code,{children:`useApiManagementRef`}),` — A comprehensive orchestrator combining GET requests, search, formatting, and mutations into a single cycle.`]}),`
+`,(0,c.jsxs)(n.li,{children:[(0,c.jsx)(n.code,{children:`useApiManagementAsyncRef`}),` — Asynchronous orchestrator for immediate initialization (SSR).`]}),`
+`]}),`
+`,(0,c.jsx)(n.h2,{id:`how-to-work-with-them`,children:`How to Work with Them`}),`
+`,(0,c.jsxs)(n.p,{children:[`For simple data display, using `,(0,c.jsx)(n.code,{children:`useApiRef`}),` is sufficient. You don't need to manually call a load function — the request is executed automatically as soon as you access the `,(0,c.jsx)(n.code,{children:`data`}),` property. If the API path is a reactive ref, the hook will track its changes and load new data by itself.`]}),`
+`,(0,c.jsx)(n.pre,{children:(0,c.jsx)(n.code,{className:`language-typescript`,children:`import { useApiRef } from '@dxtmisha/functional'
+
+// Data will load automatically when accessing 'data'
+const { data, loading } = useApiRef('api/profile')
+`})}),`
+`,(0,c.jsxs)(n.p,{children:[`If you need to perform an action on an event (e.g., saving a form), mutation hooks are used. They return a `,(0,c.jsx)(n.code,{children:`send`}),` method that can be called in an event handler, and a `,(0,c.jsx)(n.code,{children:`loading`}),` flag to disable buttons.`]}),`
+`,(0,c.jsx)(n.pre,{children:(0,c.jsx)(n.code,{className:`language-typescript`,children:`import { useApiPost } from '@dxtmisha/functional'
+
+const { send, loading } = useApiPost('api/save')
+
+const onSave = async () => {
+  await send({ data: { name: 'Dxt' } })
+}
+`})}),`
+`,(0,c.jsx)(n.h2,{id:`useapimanagementref`,children:`useApiManagementRef`}),`
+`,(0,c.jsxs)(n.p,{children:[`The most powerful approach is using `,(0,c.jsx)(n.code,{children:`useApiManagementRef`}),`. It acts as a full hub for managing data in complex interfaces (like tables). It links the GET request with mutations: as soon as you successfully execute `,(0,c.jsx)(n.code,{children:`sendDelete`}),` or `,(0,c.jsx)(n.code,{children:`sendPost`}),`, the orchestrator automatically calls `,(0,c.jsx)(n.code,{children:`reset()`}),` for the main list, and the data on the screen updates automatically.`]}),`
+`,(0,c.jsx)(n.h3,{id:`key-capabilities`,children:`Key Capabilities:`}),`
+`,(0,c.jsxs)(n.ul,{children:[`
+`,(0,c.jsxs)(n.li,{children:[(0,c.jsx)(n.strong,{children:`Automation`}),`: Full synchronization between data reading and modification.`]}),`
+`,(0,c.jsxs)(n.li,{children:[(0,c.jsx)(n.strong,{children:`Integration`}),`: Includes search (`,(0,c.jsx)(n.code,{children:`useSearchRef`}),`) and formatting (`,(0,c.jsx)(n.code,{children:`useFormattersRef`}),`) functionality.`]}),`
+`,(0,c.jsxs)(n.li,{children:[(0,c.jsx)(n.strong,{children:`Skeleton`}),`: Support for placeholders during loading to prevent layout shifts.`]}),`
+`,(0,c.jsxs)(n.li,{children:[(0,c.jsx)(n.strong,{children:`Flexibility`}),`: Configuration of individual paths and transformations for each request type (GET, POST, PUT, DELETE).`]}),`
+`]}),`
+`,(0,c.jsx)(n.pre,{children:(0,c.jsx)(n.code,{className:`language-typescript`,children:`import { ref } from 'vue'
+import { useApiManagementRef } from '@dxtmisha/functional'
+
+const search = ref('')
+const { 
+  list, 
+  sendPost, 
+  sendDelete 
+} = useApiManagementRef(
+  { path: 'api/items' },      // Listen to GET
+  undefined,                  // Formatters
+  { columns: ['name'], value: search }, // Live search
+  { path: 'api/items/add' },  // POST setup
+  undefined,
+  { path: 'api/items/delete' } // DELETE setup
+)
+
+// After calling sendDelete(), the main 'list' will update AUTOMATICALLY!
+`})}),`
+`,(0,c.jsx)(n.h2,{id:`error-handling`,children:`Error Handling`}),`
+`,(0,c.jsx)(n.p,{children:`The API hooks use a contract-based error management system. Instead of manually handling every response status in your components, you define a "base" of expected errors and let the system resolve them automatically.`}),`
+`,(0,c.jsx)(n.h3,{id:`workflow`,children:`Workflow:`}),`
+`,(0,c.jsxs)(n.ol,{children:[`
+`,(0,c.jsxs)(n.li,{children:[(0,c.jsxs)(n.strong,{children:[`Define a Contract (`,(0,c.jsx)(n.code,{children:`errorContract`}),`)`]}),`: You pass a list of potential error patterns (a contract) to the hook. This serves as a database of errors you want to handle specifically.`]}),`
+`,(0,c.jsxs)(n.li,{children:[(0,c.jsx)(n.strong,{children:`Automatic Matching`}),`: When a request fails (status ≥ 400), the system compares the response against your contract. It matches based on:`,`
+`,(0,c.jsxs)(n.ul,{children:[`
+`,(0,c.jsxs)(n.li,{children:[(0,c.jsx)(n.strong,{children:`HTTP Status`}),`: e.g., `,(0,c.jsx)(n.code,{children:`404`}),` or `,(0,c.jsx)(n.code,{children:`500`}),`.`]}),`
+`,(0,c.jsxs)(n.li,{children:[(0,c.jsx)(n.strong,{children:`Error Code`}),`: A specific string code extracted from the JSON response body (e.g., `,(0,c.jsx)(n.code,{children:`'USER_NOT_FOUND'`}),`).`]}),`
+`,(0,c.jsxs)(n.li,{children:[(0,c.jsx)(n.strong,{children:`URL Pattern`}),`: Specific endpoints or patterns (RegExp).`]}),`
+`,(0,c.jsxs)(n.li,{children:[(0,c.jsx)(n.strong,{children:`Custom Validation`}),`: A function that returns `,(0,c.jsx)(n.code,{children:`true`}),` if the response matches the error.`]}),`
+`]}),`
+`]}),`
+`,(0,c.jsxs)(n.li,{children:[(0,c.jsx)(n.strong,{children:`Data Resolution`}),`: If a match is found, the system populates the reactive `,(0,c.jsx)(n.code,{children:`errorItem`}),` property with structured data, including the localized message and the resolved error code.`]}),`
+`,(0,c.jsxs)(n.li,{children:[(0,c.jsx)(n.strong,{children:`UI Implementation`}),`: In your component, you simply use the `,(0,c.jsx)(n.code,{children:`errorItem`}),` to display messages or toggle UI states, confident that the matching logic is handled centrally.`]}),`
+`]}),`
+`,(0,c.jsx)(n.p,{children:`This system ensures that your components remain clean and focused on display logic, while error identification remains declarative and reusable.`}),`
+`,(0,c.jsx)(n.h2,{id:`server-side-rendering-ssr`,children:`Server-Side Rendering (SSR)`}),`
+`,(0,c.jsxs)(n.p,{children:[`All API hooks are designed with `,(0,c.jsx)(n.strong,{children:`Server-Side Rendering (SSR)`}),` support in mind. To ensure data is pre-fetched on the server before the page is sent to the client, you have two options:`]}),`
+`,(0,c.jsxs)(n.ol,{children:[`
+`,(0,c.jsxs)(n.li,{children:[(0,c.jsx)(n.strong,{children:`Async Versions`}),`: Use `,(0,c.jsx)(n.code,{children:`useApiAsyncRef`}),` or `,(0,c.jsx)(n.code,{children:`useApiManagementAsyncRef`}),`. These hooks automatically call `,(0,c.jsx)(n.code,{children:`initSsr()`}),` upon creation, ensuring the request is executed during server-side rendering.`]}),`
+`,(0,c.jsxs)(n.li,{children:[(0,c.jsxs)(n.strong,{children:[`Manual `,(0,c.jsx)(n.code,{children:`initSsr()`})]}),`: For standard hooks (like `,(0,c.jsx)(n.code,{children:`useApiRef`}),`), you must explicitly call the `,(0,c.jsx)(n.code,{children:`.initSsr()`}),` method inside the component's `,(0,c.jsx)(n.code,{children:`setup()`}),` block.`]}),`
+`]}),`
+`,(0,c.jsx)(n.p,{children:`This prevents "content flickering" (where users see empty states or skeletons followed by data loading on the client) and improves SEO by providing fully populated HTML from the server.`}),`
+`,(0,c.jsx)(n.p,{children:`This architecture allows you to describe data logic declaratively, focusing on request configuration rather than manual management of loading states and list updates.`})]})}function s(e={}){let{wrapper:n}={...t(),...e.components};return n?(0,c.jsx)(n,{...e,children:(0,c.jsx)(o,{...e})}):o(e)}var c;e((()=>{c=n(),a(),r()}))();export{s as default};

@@ -86,9 +86,7 @@ export class InputPhoneDialCodeDesign<
    * @returns object containing exposed properties / объект, содержащий экспортируемые свойства
    */
   protected initExpose(): EXPOSE {
-    return {
-      ...this.item.menu.expose
-    } as EXPOSE
+    return {} as EXPOSE
   }
 
   /**
@@ -138,8 +136,9 @@ export class InputPhoneDialCodeDesign<
    * @param props menu control item properties / свойства элемента управления меню
    * @returns array of virtual nodes / массив виртуальных узлов
    */
-  protected renderControl = (props: MenuControlItem): VNode[] => {
+  readonly renderControl = (props: MenuControlItem): VNode[] => {
     return this.item.button.render(
+      {},
       toBinds(
         props.binds,
         { class: this.classes?.value.button }

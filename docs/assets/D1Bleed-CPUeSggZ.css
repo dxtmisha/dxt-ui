@@ -1,0 +1,1 @@
+.d1-bleed{--d1-bleed-marginX:var(--d1-layout-marginX);margin-inline-start:calc(var(--d1-bleed-marginX) * -1);margin-inline-end:calc(var(--d1-bleed-marginX) * -1)}

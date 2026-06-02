@@ -1,0 +1,36 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+Trigger button component for selecting a country phone dial code via a country menu popup.
+
+InputPhoneDialCode is a compact trigger button that opens a **MenuCountry** popup, allowing users to select a country and its associated phone dial code. It automatically detects the user's current country via `Geo.getCountry()` as the default value and reactively binds the selection via `v-model:selected`.
+
+**Key Features:**
+
+- Automatic default country detection via `Geo.getCountry()`
+- Country selection via a `MenuCountry` popup with flag and phone code display
+- Configurable label: phone code (e.g. `+1`), country name, or no label
+- Trailing arrow icon reflects the open/close state of the menu
+- Inherits all Button and MenuCountry capabilities
+
+**Typical Use Cases:**
+
+- Phone number input field prefix for selecting the dial code
+- Country/region pickers in registration or checkout forms
+
+<Source
+    code={`
+<script setup>
+import { ref } from 'vue'
+
+const selected = ref(undefined)
+</script>
+
+<template>
+  <InputPhoneDialCode
+    v-model:selected="selected"
+    label-type="code"
+  />
+</template>
+  `}
+    language="html"
+/>

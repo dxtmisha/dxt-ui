@@ -1,7 +1,7 @@
 import type { ConstrClass } from '@dxtmisha/functional'
 
 import type { ButtonComponentInclude } from '../Button'
-import type { MenuCountryComponentInclude, MenuCountryEmits, MenuCountryExposeInclude } from '../MenuCountry'
+import type { MenuCountryComponentInclude, MenuCountryEmits } from '../MenuCountry'
 
 /**
  * Interface for describing which components need to be connected for work.
@@ -24,7 +24,7 @@ export type InputPhoneDialCodeEmits = MenuCountryEmits
  *
  * Тип, описывающий доступные свойства.
  */
-export interface InputPhoneDialCodeExpose extends MenuCountryExposeInclude {
+export interface InputPhoneDialCodeExpose {
 }
 
 /**

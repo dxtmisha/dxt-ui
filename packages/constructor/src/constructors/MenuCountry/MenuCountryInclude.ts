@@ -14,15 +14,12 @@ import type { MenuCountryProps } from './props'
  * выбора страны MenuCountry внутри других компонентов. Он управляет логикой определения необходимости
  * отображения MenuCountry и настраивает соответствующие свойства.
  */
-export class MenuCountryInclude<
-  Props extends MenuCountryPropsInclude = MenuCountryPropsInclude,
-  PropsExtra extends MenuCountryProps = MenuCountryProps
-> extends ComponentIncludeAbstract<
-    Props,
-    PropsExtra,
-    MenuCountryExposeInclude,
-    MenuCountrySlots
-  > {
+export class MenuCountryInclude extends ComponentIncludeAbstract<
+  MenuCountryPropsInclude,
+  MenuCountryProps,
+  MenuCountryExposeInclude,
+  MenuCountrySlots
+> {
   protected readonly exposeItems: ComponentIncludeExposeItem[] | undefined = [
     { name: 'getId' },
     { name: 'getOpen', type: 'boolean' },

@@ -295,6 +295,16 @@ export const wikiOption: StorybookArgsToList = {
       label: 1234567
     }
   },
+  labelType: {
+    type: StorybookControl.select,
+    options: {
+      category: StorybookCategory.option,
+      description: {
+        en: 'Controls what label is shown in the dial-code trigger: country name, country code, or no label',
+        ru: 'Определяет, какая метка отображается в триггере выбора кода: название страны, код страны или без метки'
+      }
+    }
+  },
   limit: {
     type: StorybookControl.select,
     options: {

@@ -1,0 +1,1 @@
+.d1-buttonGroup--orientation--horizontal{align-items:stretch;display:flex}.d1-buttonGroup--orientation--vertical{flex-flow:column;align-items:stretch;display:flex}.d1-buttonGroup{gap:var(--d1-sys-spacing-xs)}.d1-buttonGroup--wrap{flex-wrap:wrap}

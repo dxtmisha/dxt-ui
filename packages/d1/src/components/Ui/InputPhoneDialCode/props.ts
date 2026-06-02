@@ -2,6 +2,7 @@ import { type InputPhoneDialCodePropsBasic, defaultsInputPhoneDialCode } from '@
 
 import type { ButtonProps } from '../Button'
 import type { MenuCountryProps } from '../MenuCountry'
+import type { IconProps } from '../Icon'
 
 export const propsValues = {
   // :values [!] System label / Системная метка
@@ -17,6 +18,7 @@ type PropsToken = {
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
 export type InputPhoneDialCodeProps = InputPhoneDialCodePropsBasic<
+  IconProps,
   ButtonProps,
   MenuCountryProps
 > & PropsToken
@@ -26,6 +28,7 @@ export type InputPhoneDialCodeProps = InputPhoneDialCodePropsBasic<
  */
 export const defaults: object = {
   ...defaultsInputPhoneDialCode,
+  iconArrowDown: 'keyboard_arrow_down',
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

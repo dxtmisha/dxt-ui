@@ -45,6 +45,18 @@ const design = new InputPhoneDialCodeDesign(
     components: {
       button: D1Button,
       menuCountry: D1MenuCountry
+    },
+    compMod: {
+      button: {
+        text: true,
+        size: 'xs',
+        inverse: true,
+        iconAttrs: {
+          rect: true,
+          size: 'md',
+          rounded: 'sm'
+        }
+      }
     }
   }
 )

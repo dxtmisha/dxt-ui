@@ -82,6 +82,12 @@ export class MenuDesign<
   protected initExpose(): EXPOSE {
     return {
       ...this.item.window.expose,
+
+      isSelected: () => this.item.data.isSelected.value,
+      getSelectedList: () => this.item.data.selectedList.value,
+      getSelectedNames: () => this.item.data.selectedNames.value,
+      getSelectedValues: () => this.item.data.selectedValues.value,
+
       loading: () => this.item.request.progress.value,
       previous: this.item.go.previous,
       next: this.item.go.next
