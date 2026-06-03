@@ -53,7 +53,6 @@ const design = new InputPhoneDialCodeDesign(
         inverse: true,
         iconAttrs: {
           rect: true,
-          size: 'md',
           rounded: 'sm'
         }
       }

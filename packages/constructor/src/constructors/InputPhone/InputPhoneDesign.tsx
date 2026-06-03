@@ -118,7 +118,7 @@ export class InputPhoneDesign<
     return this.item.field.render(
       {
         default: this.renderMask,
-        leading: this.item.dialCode.render
+        leading: () => this.item.dialCode.render()
       },
       {
         ...this.getAttrs(),

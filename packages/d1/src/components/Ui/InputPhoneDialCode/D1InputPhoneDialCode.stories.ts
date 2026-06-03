@@ -39,27 +39,8 @@ export const InputPhoneDialCode: Story = {
 }
 
 // :story-items [!] System label / Системная метка
-export const InputPhoneDialCodeDefault: Story = {
-  name: 'По умолчанию',
-  render: () => ({
-    components: { D1InputPhoneDialCode },
-    setup() {
-      return {
-        selected: ref(undefined)
-      }
-    },
-    template: `
-        <div class="wiki-storybook-flex">
-          <D1InputPhoneDialCode
-            v-model:selected="selected"
-          />
-          <span>Selected: {{ selected?.[0] ?? '—' }}</span>
-        </div>
-    `
-  })
-}
-export const InputPhoneDialCodeLabelType: Story = {
-  name: 'Типы метки',
+export const InputPhoneDialCodeVModel: Story = {
+  name: 'Двусторонняя привязка (v-model)',
   render: () => ({
     components: { D1InputPhoneDialCode },
     setup() {
@@ -69,19 +50,17 @@ export const InputPhoneDialCodeLabelType: Story = {
     },
     template: `
         <div class="wiki-storybook-flex-column">
-          <D1InputPhoneDialCode v-model:selected="selected" label-type="code" />
-          <D1InputPhoneDialCode v-model:selected="selected" label-type="name" />
-          <D1InputPhoneDialCode v-model:selected="selected" label-type="none" />
+          <div class="wiki-storybook-flex">
+            <button class="wiki-storybook-button" @click="selected = [{ value: 'US' }]">Select US</button>
+            <button class="wiki-storybook-button" @click="selected = [{ value: 'DE' }]">Select DE</button>
+            <button class="wiki-storybook-button wiki-storybook-button-warning" @click="selected = undefined">Clear</button>
+          </div>
+          <D1InputPhoneDialCode
+            v-model:selected="selected"
+            label-type="code"
+          />
+          <div>Selected: {{ selected?.[0]?.value ?? '—' }}</div>
         </div>
-    `
-  })
-}
-export const InputPhoneDialCodeDisabled: Story = {
-  name: 'Отключённое состояние',
-  render: () => ({
-    components: { D1InputPhoneDialCode },
-    template: `
-        <D1InputPhoneDialCode disabled value="US" label-type="code" />
     `
   })
 }

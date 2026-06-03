@@ -24,6 +24,9 @@ export type InputPhonePropsBasic<
 > = InputPhoneDialCodePropsInclude<InputPhoneDialCode>
   & FieldPropsInclude<Icon, Field, FieldLabel, FieldMessage, FieldCounter, Progress>
   & FieldInputPhoneProps
+  & {
+    countryBlock?: boolean
+  }
 
 /**
  * Type describing incoming properties.

@@ -11,7 +11,9 @@ import { FieldEventInclude } from '../../classes/Field/FieldEventInclude'
 
 import { FieldInclude } from '../Field'
 import { InputPhoneDialCodeInclude } from '../InputPhoneDialCode'
-import { MaskInclude } from '../Mask'
+import { MaskInclude, type MaskProps } from '../Mask'
+
+import { InputPhoneData } from './InputPhoneData'
 
 import type { InputPhoneComponents, InputPhoneEmits, InputPhoneSlots } from './types'
 import type { InputPhoneProps } from './props'
@@ -33,6 +35,8 @@ export class InputPhone {
   readonly dialCode: InputPhoneDialCodeInclude
   readonly field: FieldInclude
   readonly mask: MaskInclude
+  /** Data manager for input phone / Менеджер данных для ввода телефона */
+  readonly data: InputPhoneData
 
   /**
    * Constructor
@@ -51,9 +55,10 @@ export class InputPhone {
    * @param constructors.FieldElementIncludeConstructor class for working with field element/ класс для работы с элементом поля
    * @param constructors.FieldEventIncludeConstructor class for working with field event/ класс для работы с событием поля
    * @param constructors.FieldIncludeConstructor class for working with field/ класс для работы с полем
-   * @param constructors.InputPhoneDialCodeIncludeConstructor class for working with input phone dial code/ класс для работы с кодом телефона
    * @param constructors.FieldValidationIncludeConstructor class for working with field validation/ класс для работы с валидацией поля
    * @param constructors.FieldValueIncludeConstructor class for working with field value/ класс для работы со значением поля
+   * @param constructors.InputPhoneDataConstructor class for working with data / класс для работы с данными
+   * @param constructors.InputPhoneDialCodeIncludeConstructor class for working with input phone dial code/ класс для работы с кодом телефона
    * @param constructors.MaskIncludeConstructor class for working with mask/ класс для работы с маской
    */
   constructor(
@@ -72,9 +77,10 @@ export class InputPhone {
       FieldElementIncludeConstructor?: typeof FieldElementInclude
       FieldEventIncludeConstructor?: typeof FieldEventInclude
       FieldIncludeConstructor?: typeof FieldInclude
-      InputPhoneDialCodeIncludeConstructor?: typeof InputPhoneDialCodeInclude
       FieldValidationIncludeConstructor?: typeof FieldValidationInclude
       FieldValueIncludeConstructor?: typeof FieldValueInclude
+      InputPhoneDataConstructor?: typeof InputPhoneData
+      InputPhoneDialCodeIncludeConstructor?: typeof InputPhoneDialCodeInclude
       MaskIncludeConstructor?: typeof MaskInclude
     } = {}
   ) {
@@ -85,9 +91,10 @@ export class InputPhone {
       FieldElementIncludeConstructor = FieldElementInclude,
       FieldEventIncludeConstructor = FieldEventInclude,
       FieldIncludeConstructor = FieldInclude,
-      InputPhoneDialCodeIncludeConstructor = InputPhoneDialCodeInclude,
       FieldValidationIncludeConstructor = FieldValidationInclude,
       FieldValueIncludeConstructor = FieldValueInclude,
+      InputPhoneDataConstructor = InputPhoneData,
+      InputPhoneDialCodeIncludeConstructor = InputPhoneDialCodeInclude,
       MaskIncludeConstructor = MaskInclude
     } = constructors
 
@@ -104,6 +111,7 @@ export class InputPhone {
       this.refs,
       this.elementItem
     )
+    this.data = new InputPhoneDataConstructor(props, this.value)
 
     this.code = new FieldCodeIncludeConstructor(this.props)
     this.validation = new FieldValidationIncludeConstructor(
@@ -124,7 +132,10 @@ export class InputPhone {
     this.dialCode = new InputPhoneDialCodeIncludeConstructor(
       this.className,
       this.props,
-      this.components
+      this.components,
+      () => ({
+        onClick: this.data.onCountry
+      })
     )
 
     this.field = new FieldIncludeConstructor(
@@ -138,7 +149,9 @@ export class InputPhone {
     )
     this.mask = new MaskIncludeConstructor(
       this.className,
-      this.props,
+      (): MaskProps => ({
+        mask: this.data.mask.value
+      }),
       this.components,
       undefined,
       undefined,

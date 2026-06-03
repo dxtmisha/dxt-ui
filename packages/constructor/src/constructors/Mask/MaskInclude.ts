@@ -3,7 +3,6 @@ import {
   type DesignComponents,
   executeFunctionRef,
   getBind,
-  type RefOrNormal,
   type RefOrNormalOrFunction
 } from '@dxtmisha/functional'
 
@@ -11,7 +10,7 @@ import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract
 import { FieldTypeInclude } from '../../classes/Field/FieldTypeInclude'
 import { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
 
-import type { ComponentIncludeProps } from '../../types/componentInclude'
+import type { ComponentIncludeExtra, ComponentIncludeProps } from '../../types/componentInclude'
 import type { MaskComponentInclude, MaskPropsInclude } from './basicTypes'
 import type { MaskProps } from './props'
 
@@ -44,7 +43,7 @@ export class MaskInclude<
     className: string,
     props: ComponentIncludeProps<Props>,
     components?: DesignComponents<MaskComponentInclude, Props>,
-    extra?: RefOrNormal<PropsExtra>,
+    extra?: ComponentIncludeExtra<PropsExtra>,
     index?: string,
     protected readonly value?: FieldValueInclude,
     protected readonly valueDefault: RefOrNormalOrFunction<any> = '',
