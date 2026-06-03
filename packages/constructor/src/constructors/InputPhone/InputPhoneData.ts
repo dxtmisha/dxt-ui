@@ -41,8 +41,18 @@ export class InputPhoneData {
     return (GeoPhone.get(country)?.phone ?? 1).toString()
   }
 
+  readonly onInput = (
+    event: InputEvent,
+    data: Record<string, any>
+  ) => {
+    this.event?.onInput(event, {
+      ...data,
+      value: this.toPhone(data?.value)
+    })
+  }
+
   readonly onCountry = (
-    _: InputEvent,
+    _: MouseEvent,
     data?: Record<string, any>
   ) => {
     this.country.value = data?.value
