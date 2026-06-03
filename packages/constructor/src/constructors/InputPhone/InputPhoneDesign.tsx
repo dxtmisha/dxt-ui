@@ -117,7 +117,8 @@ export class InputPhoneDesign<
   protected initRender(): VNode[] {
     return this.item.field.render(
       {
-        default: this.renderMask
+        default: this.renderMask,
+        leading: this.item.dialCode.render
       },
       {
         ...this.getAttrs(),
