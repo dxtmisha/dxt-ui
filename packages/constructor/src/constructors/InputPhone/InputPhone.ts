@@ -11,55 +11,75 @@ import { FieldEventInclude } from '../../classes/Field/FieldEventInclude'
 
 import { FieldInclude } from '../Field'
 import { InputPhoneDialCodeInclude } from '../InputPhoneDialCode'
-import { MaskInclude, type MaskProps } from '../Mask'
+import { MaskInclude } from '../Mask'
 
 import { InputPhoneData } from './InputPhoneData'
+import { InputPhoneMask } from './InputPhoneMask'
 
 import type { InputPhoneComponents, InputPhoneEmits, InputPhoneSlots } from './types'
 import type { InputPhoneProps } from './props'
 
 /**
- * InputPhone
+ * InputPhone constructor class.
+ * Manages the logic, state, and interaction of the phone input component.
+ *
+ * Класс конструктора InputPhone.
+ * Управляет логикой, состоянием и взаимодействием компонента ввода телефона.
  */
 export class InputPhone {
+  /** Field change include instance / Экземпляр включения изменения поля */
   readonly change: FieldChangeInclude
+  /** Field attributes include instance / Экземпляр включения атрибутов поля */
   readonly attributes: FieldAttributesInclude
 
+  /** Field element include instance / Экземпляр включения элемента поля */
   readonly elementItem: FieldElementInclude
+  /** Field value include instance / Экземпляр включения значения поля */
   readonly value: FieldValueInclude
 
+  /** Field code include instance / Экземпляр включения кода поля */
   readonly code: FieldCodeInclude
+  /** Field validation include instance / Экземпляр включения валидации поля */
   readonly validation: FieldValidationInclude
+  /** Field event include instance / Экземпляр включения события поля */
   readonly event: FieldEventInclude
 
+  /** Input phone dial code include instance / Экземпляр включения телефонного кода ввода телефона */
   readonly dialCode: InputPhoneDialCodeInclude
+  /** Field include instance / Экземпляр включения поля */
   readonly field: FieldInclude
+  /** Mask include instance / Экземпляр включения маски */
   readonly mask: MaskInclude
   /** Data manager for input phone / Менеджер данных для ввода телефона */
   readonly data: InputPhoneData
+  /** Mask manager for input phone / Менеджер маски для ввода телефона */
+  readonly phoneMask: InputPhoneMask
 
   /**
    * Constructor
-   * @param props input data/ входные данные
-   * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
-   * @param element input element/ элемент ввода
-   * @param classDesign design name/ название дизайна
-   * @param className class name/ название класса
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param slots object for working with slots/ объект для работы со слотами
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param constructors object with classes/ объект с классами
-   * @param constructors.FieldAttributesIncludeConstructor class for working with field attributes/ класс для работы с атрибутами поля
-   * @param constructors.FieldChangeIncludeConstructor class for working with field change/ класс для работы с изменением поля
-   * @param constructors.FieldCodeIncludeConstructor class for working with field code/ класс для работы с кодом поля
-   * @param constructors.FieldElementIncludeConstructor class for working with field element/ класс для работы с элементом поля
-   * @param constructors.FieldEventIncludeConstructor class for working with field event/ класс для работы с событием поля
-   * @param constructors.FieldIncludeConstructor class for working with field/ класс для работы с полем
-   * @param constructors.FieldValidationIncludeConstructor class for working with field validation/ класс для работы с валидацией поля
-   * @param constructors.FieldValueIncludeConstructor class for working with field value/ класс для работы со значением поля
+   *
+   * Конструктор
+   * @param props input data / входные данные
+   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
+   * @param element input element / элемент ввода
+   * @param classDesign design name / название дизайна
+   * @param className class name / название класса
+   * @param components object for working with components / объект для работы с компонентами
+   * @param slots object for working with slots / объект для работы со слотами
+   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
+   * @param constructors object with classes / объект с классами
+   * @param constructors.FieldAttributesIncludeConstructor class for working with field attributes / класс для работы с атрибутами поля
+   * @param constructors.FieldChangeIncludeConstructor class for working with field change / класс для работы с изменением поля
+   * @param constructors.FieldCodeIncludeConstructor class for working with field code / класс для работы с кодом поля
+   * @param constructors.FieldElementIncludeConstructor class for working with field element / класс для работы с элементом поля
+   * @param constructors.FieldEventIncludeConstructor class for working with field event / класс для работы с событием поля
+   * @param constructors.FieldIncludeConstructor class for working with field / класс для работы с полем
+   * @param constructors.FieldValidationIncludeConstructor class for working with field validation / класс для работы с валидацией поля
+   * @param constructors.FieldValueIncludeConstructor class for working with field value / класс для работы со значением поля
    * @param constructors.InputPhoneDataConstructor class for working with data / класс для работы с данными
-   * @param constructors.InputPhoneDialCodeIncludeConstructor class for working with input phone dial code/ класс для работы с кодом телефона
-   * @param constructors.MaskIncludeConstructor class for working with mask/ класс для работы с маской
+   * @param constructors.InputPhoneMaskConstructor class for working with mask / класс для работы с маской
+   * @param constructors.InputPhoneDialCodeIncludeConstructor class for working with input phone dial code / класс для работы с кодом телефона
+   * @param constructors.MaskIncludeConstructor class for working with mask / класс для работы с маской
    */
   constructor(
     protected readonly props: InputPhoneProps,
@@ -80,6 +100,7 @@ export class InputPhone {
       FieldValidationIncludeConstructor?: typeof FieldValidationInclude
       FieldValueIncludeConstructor?: typeof FieldValueInclude
       InputPhoneDataConstructor?: typeof InputPhoneData
+      InputPhoneMaskConstructor?: typeof InputPhoneMask
       InputPhoneDialCodeIncludeConstructor?: typeof InputPhoneDialCodeInclude
       MaskIncludeConstructor?: typeof MaskInclude
     } = {}
@@ -94,6 +115,7 @@ export class InputPhone {
       FieldValidationIncludeConstructor = FieldValidationInclude,
       FieldValueIncludeConstructor = FieldValueInclude,
       InputPhoneDataConstructor = InputPhoneData,
+      InputPhoneMaskConstructor = InputPhoneMask,
       InputPhoneDialCodeIncludeConstructor = InputPhoneDialCodeInclude,
       MaskIncludeConstructor = MaskInclude
     } = constructors
@@ -111,7 +133,6 @@ export class InputPhone {
       this.refs,
       this.elementItem
     )
-    this.data = new InputPhoneDataConstructor(props, this.value)
 
     this.code = new FieldCodeIncludeConstructor(this.props)
     this.validation = new FieldValidationIncludeConstructor(
@@ -129,14 +150,8 @@ export class InputPhone {
       this.emits
     )
 
-    this.dialCode = new InputPhoneDialCodeIncludeConstructor(
-      this.className,
-      this.props,
-      this.components,
-      () => ({
-        onClick: this.data.onCountry
-      })
-    )
+    this.data = new InputPhoneDataConstructor(props, this.value, this.event)
+    this.phoneMask = new InputPhoneMaskConstructor(props, this.data, this.value)
 
     this.field = new FieldIncludeConstructor(
       this.className,
@@ -149,13 +164,22 @@ export class InputPhone {
     )
     this.mask = new MaskIncludeConstructor(
       this.className,
-      (): MaskProps => ({
-        mask: this.data.mask.value
-      }),
+      () => this.phoneMask.maskProps,
       this.components,
       undefined,
       undefined,
-      this.value
+      this.value,
+      this.data.valueDefault
+    )
+    this.dialCode = new InputPhoneDialCodeIncludeConstructor(
+      this.className,
+      this.props,
+      this.components,
+      () => ({
+        value: this.data.country.value,
+        onClick: this.data.onCountry
+      })
     )
   }
 }
+

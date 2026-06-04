@@ -1,12 +1,13 @@
 import { type InputPhonePropsBasic, defaultsInputPhone } from '@dxtmisha/constructor/InputPhone'
 
-import type { IconProps } from '../Icon'
 import type { FieldProps } from '../Field'
 import type { FieldLabelProps } from '../FieldLabel'
 import type { FieldMessageProps } from '../FieldMessage'
 import type { FieldCounterProps } from '../FieldCounter'
-import type { ProgressProps } from '../Progress'
+import type { IconProps } from '../Icon'
 import type { InputPhoneDialCodeProps } from '../InputPhoneDialCode'
+import type { MaskProps } from '../Mask'
+import type { ProgressProps } from '../Progress'
 
 export const propsValues = {
   // :values [!] System label / Системная метка
@@ -23,6 +24,7 @@ type PropsToken = {
  */
 export type InputPhoneProps = InputPhonePropsBasic<
   InputPhoneDialCodeProps,
+  MaskProps,
   IconProps,
   FieldProps,
   FieldLabelProps,

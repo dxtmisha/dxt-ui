@@ -333,10 +333,17 @@ export class GeoFlag {
    * Возвращает список стран на основе предоставленных кодов.
    * Если коды не переданы, возвращает все доступные страны.
    * @param codes array of country codes / массив кодов стран
+   * @param sort whether to sort the list / сортировать ли список
    * @returns list of countries / список стран
    */
-  getList(codes?: string[]): GeoFlagItem[] {
-    return forEach(this.getCodes(codes), code => this.get(code)) as GeoFlagItem[]
+  getList(codes?: string[], sort: boolean = true): GeoFlagItem[] {
+    const list = forEach(this.getCodes(codes), code => this.get(code)) as GeoFlagItem[]
+
+    if (sort) {
+      return new GeoIntl().sort(list, (a: any, b: any) => [a.label, b.label])
+    }
+
+    return list
   }
 
   /**
@@ -344,10 +351,11 @@ export class GeoFlag {
    *
    * Возвращает список стран на их национальных языках.
    * @param codes array of country codes / массив кодов стран
+   * @param sort whether to sort the list / сортировать ли список
    * @returns list of countries with national names / список стран с национальными названиями
    */
-  getNational(codes?: string[]): GeoFlagNational[] {
-    return forEach(this.getList(codes), (item) => {
+  getNational(codes?: string[], sort: boolean = true): GeoFlagNational[] {
+    const list = forEach(this.getList(codes, false), (item) => {
       const geo = new GeoFlag(item.standard).get(item.standard)
 
       return {
@@ -357,6 +365,12 @@ export class GeoFlag {
         nationalCountry: geo?.country
       }
     }) as GeoFlagNational[]
+
+    if (sort) {
+      return new GeoIntl().sort(list, (a: any, b: any) => [a.label, b.label])
+    }
+
+    return list
   }
 
   /**

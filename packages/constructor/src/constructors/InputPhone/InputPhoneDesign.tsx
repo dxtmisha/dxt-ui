@@ -22,7 +22,9 @@ import {
 } from './types'
 
 /**
- * InputPhoneDesign
+ * Abstract class for managing the design-level rendering and styling of the InputPhone component.
+ *
+ * Абстрактный класс для управления рендерингом и стилизацией компонента InputPhone на уровне дизайна.
  */
 export class InputPhoneDesign<
   COMP extends InputPhoneComponents,
@@ -38,14 +40,17 @@ export class InputPhoneDesign<
     CLASSES,
     P
   > {
+  /** InputPhone logic instance / Экземпляр логики InputPhone */
   protected readonly item: InputPhone
 
   /**
    * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor constructors item class/ класс элемента конструкторов
+   *
+   * Конструктор
+   * @param name class name / название класса
+   * @param props properties / свойства
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor constructors item class / класс элемента конструкторов
    */
   constructor(
     name: string,
@@ -74,9 +79,10 @@ export class InputPhoneDesign<
   }
 
   /**
-   * Initialization of all the necessary properties for work
+   * Initializes exposed reactive properties.
    *
-   * Инициализация всех необходимых свойств для работы.
+   * Инициализирует экспонируемые реактивные свойства.
+   * @returns exposed properties / экспонируемые свойства
    */
   protected initExpose(): EXPOSE {
     return {
@@ -89,6 +95,7 @@ export class InputPhoneDesign<
    * Improvement of the obtained list of classes.
    *
    * Доработка полученного списка классов.
+   * @returns partial classes object / частичный объект классов
    */
   protected initClasses(): Partial<CLASSES> {
     return {
@@ -104,6 +111,7 @@ export class InputPhoneDesign<
    * Refinement of the received list of styles.
    *
    * Доработка полученного списка стилей.
+   * @returns styles object / объект стилей
    */
   protected initStyles(): ConstrStyles {
     return {}
@@ -113,6 +121,7 @@ export class InputPhoneDesign<
    * A method for rendering.
    *
    * Метод для рендеринга.
+   * @returns array of VNodes / массив VNode
    */
   protected initRender(): VNode[] {
     return this.item.field.render(
@@ -149,3 +158,4 @@ export class InputPhoneDesign<
     })
   }
 }
+

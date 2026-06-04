@@ -37,8 +37,8 @@ const ruFlag = new GeoFlag('ru-RU')
 - `getFlag(code?: string): string | undefined` — Возвращает только идентификатор иконки флага (например, `'f-ru'`).
 
 ### Списки
-- `getList(codes?: string[]): GeoFlagItem[]` — Возвращает массив данных о странах.
-- `getNational(codes?: string[]): GeoFlagNational[]` — Возвращает список стран с национальными названиями.
+- `getList(codes?: string[], sort: boolean = true): GeoFlagItem[]` — Возвращает массив данных о странах. По умолчанию сортирует по алфавиту.
+- `getNational(codes?: string[], sort: boolean = true): GeoFlagNational[]` — Возвращает список стран с национальными названиями. По умолчанию сортирует по алфавиту.
 
 ### Настройка
 - `setCode(code: string): this` — Изменяет базовую локаль для текущего экземпляра.
@@ -82,6 +82,7 @@ const national = geo.getNational(['JP'])
 - `icon`: string — Имя иконки флага (префикс `f-`).
 - `label`: string — Метка для отображения (по умолчанию совпадает с `country`).
 - `value`: string — Код страны (ISO alpha-2).
+- `phoneCode`: string — Телефонный код страны (например, `+1`, `+7`).
 
 ### `GeoFlagNational`
 Расширяет `GeoFlagItem` дополнительными полями:

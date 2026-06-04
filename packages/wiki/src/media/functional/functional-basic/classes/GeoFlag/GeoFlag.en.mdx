@@ -37,8 +37,8 @@ const usFlag = new GeoFlag('en-US')
 - `getFlag(code?: string): string | undefined` — Returns only the flag icon identifier (e.g., `'f-us'`).
 
 ### Lists
-- `getList(codes?: string[]): GeoFlagItem[]` — Returns an array of country data.
-- `getNational(codes?: string[]): GeoFlagNational[]` — Returns a list of countries with national names.
+- `getList(codes?: string[], sort: boolean = true): GeoFlagItem[]` — Returns an array of country data, sorted alphabetically by default.
+- `getNational(codes?: string[], sort: boolean = true): GeoFlagNational[]` — Returns a list of countries with national names, sorted alphabetically by default.
 
 ### Configuration
 - `setCode(code: string): this` — Changes the base locale for the current instance.
@@ -82,6 +82,7 @@ Basic flag information object.
 - `icon`: string — Flag icon name (prefix `f-`).
 - `label`: string — Display label (matches `country` by default).
 - `value`: string — Country code (ISO alpha-2).
+- `phoneCode`: string — Country phone code (e.g., `+1`, `+7`).
 
 ### `GeoFlagNational`
 Extends `GeoFlagItem` with additional fields:

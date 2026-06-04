@@ -1,5 +1,6 @@
 export * from './InputPhone'
 export * from './InputPhoneData'
+export * from './InputPhoneMask'
 export * from './InputPhoneDesign'
 export * from './props'
 export * from './types'
