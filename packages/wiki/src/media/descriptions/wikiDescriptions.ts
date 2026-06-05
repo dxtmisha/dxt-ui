@@ -33,6 +33,7 @@ import { wikiDescriptionsHorizontalScroll } from './wikiDescriptionsHorizontalSc
 import { wikiDescriptionsIcon } from './wikiDescriptionsIcon'
 import { wikiDescriptionsImage } from './wikiDescriptionsImage'
 import { wikiDescriptionsInput } from './wikiDescriptionsInput'
+import { wikiDescriptionsInputPhone } from './wikiDescriptionsInputPhone'
 import { wikiDescriptionsInputPhoneDialCode } from './wikiDescriptionsInputPhoneDialCode'
 import { wikiDescriptionsList } from './wikiDescriptionsList'
 import { wikiDescriptionsListGroup } from './wikiDescriptionsListGroup'
@@ -102,6 +103,7 @@ export const wikiDescriptions: StorybookComponentsDescription = [
   wikiDescriptionsHorizontalScroll,
   wikiDescriptionsIcon,
   wikiDescriptionsInput,
+  wikiDescriptionsInputPhone,
   wikiDescriptionsInputPhoneDialCode,
   wikiDescriptionsImage,
   wikiDescriptionsList,

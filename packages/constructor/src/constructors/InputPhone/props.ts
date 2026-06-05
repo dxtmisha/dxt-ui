@@ -33,9 +33,11 @@ export type InputPhonePropsBasic<
   FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic,
   Progress extends ProgressPropsBasic = ProgressPropsBasic
 > = InputPhoneDialCodePropsInclude<InputPhoneDialCode>
-  & FieldPropsInclude<Icon, Field, FieldLabel, FieldMessage, FieldCounter, Progress>
+  & Omit<FieldPropsInclude<Icon, Field, FieldLabel, FieldMessage, FieldCounter, Progress>, 'caption' | 'counterShow'>
   & FieldInputPhoneProps
   & {
+    /** Default country / Страна по умолчанию */
+    countryDefault?: string
     /** Flag to disable dynamic country detection by phone number / Флаг для отключения динамического определения страны по номеру телефона */
     countryBlock?: boolean
     /** Additional attributes for the mask / Дополнительные атрибуты для маски */
@@ -52,4 +54,3 @@ export const defaultsInputPhone = {
     // :default [!] System label / Системная метка
   }
 }
-

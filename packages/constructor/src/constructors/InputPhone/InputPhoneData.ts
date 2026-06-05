@@ -1,4 +1,4 @@
-import { computed, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { Geo, GeoPhone, type GeoPhoneMap } from '@dxtmisha/functional'
 
 import type { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
@@ -30,7 +30,15 @@ export class InputPhoneData {
     protected readonly value?: FieldValueInclude,
     protected readonly event?: FieldEventInclude
   ) {
-    watch(this.valueItem, () => this.updateCountry())
+    if (this.props.countryDefault) {
+      this.country.value = this.props.countryDefault
+    }
+
+    this.value?.set(this.toPhone(this.country.value))
+
+    onMounted(() => {
+      watch(this.valueItem, () => this.updateCountry())
+    })
   }
 
   /** Computed info of the current phone map / Вычисляемая информация о текущей карте телефона */
@@ -76,7 +84,7 @@ export class InputPhoneData {
    * Handler for country code change event.
    *
    * Обработчик события изменения кода страны.
-   * @param event input event / событие ввода
+   * @param _ input event / событие ввода
    * @param data event data / данные события
    */
   readonly onCountry = (
@@ -109,4 +117,3 @@ export class InputPhoneData {
     }
   }
 }
-

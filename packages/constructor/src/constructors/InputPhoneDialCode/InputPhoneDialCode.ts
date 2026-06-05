@@ -122,7 +122,7 @@ export class InputPhoneDialCode {
     const props = {
       disabled: this.props.disabled,
       icon: item?.icon,
-      iconTrailing: this.props.iconArrowDown,
+      iconTrailing: this.props.disabled ? undefined : this.props.iconArrowDown,
       iconTurn: this.menu.getElement()?.getOpen()
     }
 

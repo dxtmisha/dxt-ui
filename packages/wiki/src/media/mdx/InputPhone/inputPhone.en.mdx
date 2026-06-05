@@ -1,0 +1,39 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+Phone number input field component with country selection, validation, and masking support.
+
+InputPhone is a specialized input field designed for phone number entry. It integrates with a country flag/code selector and applies automatic mask formatting based on the selected or detected country. By default, the country can be dynamically identified from the entered dialing digits.
+
+**Key Features:**
+
+- Automatic phone number masking based on selected country
+- Interactive country selection menu with search, flags and dialing codes
+- Dynamic country detection from entered phone number digits
+- Configurable default country and option to disable auto-detection via `countryBlock`
+- Fully custom pattern formatting via mask attributes
+- Supports two-way data binding (`v-model`)
+- Integrated helper messages, status validation states, and label configurations
+
+**Typical Use Cases:**
+
+- Phone number fields in registration or checkout forms
+- Contact information sections in user profiles
+
+<Source
+    code={`
+<script setup>
+import { ref } from 'vue'
+
+const phone = ref('')
+</script>
+
+<template>
+  <InputPhone
+    v-model:value="phone"
+    label="Phone Number"
+    placeholder="Enter phone number"
+  />
+</template>
+  `}
+    language="html"
+/>

@@ -142,6 +142,17 @@ export const wikiAttributes: StorybookArgsToList = {
     },
     hide: true
   },
+  inputPhoneDialCodeAttrs: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.attributes,
+      description: {
+        en: 'Additional attributes for the InputPhoneDialCode component',
+        ru: 'Дополнительные атрибуты для компонента InputPhoneDialCode'
+      }
+    },
+    hide: true
+  },
   inputSearchAttrs: {
     type: StorybookControl.object,
     options: {

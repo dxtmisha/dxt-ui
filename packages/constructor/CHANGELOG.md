@@ -2,6 +2,35 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.68.0] - 2026-06-05
+
+### Added
+- **InputPhone**: Introduced `countryDefault` property to specify the default country code during initialization.
+
+### Changed / Improved
+- **InputPhone**: Refactored `InputPhoneData` to initialize country watching inside the `onMounted` lifecycle hook, preventing early synchronization side-effects.
+- **InputPhone**: Optimized `InputPhoneDesign` to render a standard `<input>` element instead of the interactive mask component when the field is in `disabled` or `readonly` state.
+- **InputPhone**: Forced `inputMode="tel"` in input attributes within the mask renderer.
+- **InputPhoneDialCode**: Hid the dropdown indicator arrow when the component is `disabled`.
+- **Actions**: Updated the component constructor to pass `disabled` status down to the nested `icon` component instantiations.
+- **Image**: Added support for `.flag-compressed` modifier class in stylesheet rule definitions.
+
+## [0.67.3] - 2026-06-02
+
+### Added
+- **InputPhoneDialCode**: Introduced `InputPhoneDialCode` component constructor for selecting and rendering country telephone dial codes.
+- **InputPhoneDialCode**: Created `InputPhoneDialCodeDesign` to handle layout, bindings, and dropdown menu of dial codes.
+- **ModelValueInclude**: Supported computed default values for selected country dial codes.
+
+## [0.67.2] - 2026-05-26
+
+### Added
+- **ComponentIncludeAbstract**: Added `is` getter to define baseline visibility for components.
+
+### Changed / Improved
+- **ComponentIncludeAbstract**: Refactored component render/init-render methods to check `this.is` for `isShow` condition by default.
+- **Visibility Setup**: Simplified subclasses inside `ActionsInclude`, `BarsInclude`, and `ImageInclude` by overriding the `is` getter and removing redundant custom render methods.
+
 ## [0.67.1] - 2026-05-25
 
 ### Changed / Improved

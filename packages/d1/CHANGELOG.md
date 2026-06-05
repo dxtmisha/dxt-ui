@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.68.0] - 2026-06-05
+
+### Added
+- **D1InputPhone**: Registered new design token attributes `countryBlock`, `countryDefault`, and `maskAttrs` in Storybook/wiki metadata properties mappings.
+- **D1InputPhone**: Introduced `InputPhoneVModel` (reactive binding) and `InputPhoneCountryBlock` (country lock options) preview configurations to component stories.
+- **D1InputPhone**: Added comprehensive documentation describing component events (`input`, `change`) and slot bindings (`label`, `prefix`, `suffix`, `caption`, `leading`, `trailing`) in the component MDX guide.
+
+## [0.67.3] - 2026-06-02
+
+### Added
+- **D1InputPhoneDialCode**: Integrated the styled `D1InputPhoneDialCode` component wrapping the dial-code constructor.
+- **D1InputPhoneDialCode**: Created interactive Storybook configurations, properties schemas, and bilingual MDX documentation.
+
+## [0.67.2] - 2026-05-26
+
+### Added
+- **D1ActionSheet**: Added comprehensive interactive stories and router navigation maps for demonstrating ActionSheet usage.
+
 ## [0.67.1] - 2026-05-25
 
 ### Changed / Improved

@@ -1,0 +1,27 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+## Country Blocking
+
+The `countryBlock` property hides the country dial code selector button and switches the input mask to the local phone format (without the country prefix).
+
+By default, the component displays the country selector and uses the full international mask format (including the country code prefix). Setting `countryBlock` to `true` hides the flag and dial code selector, and formats the input using only the national/local phone pattern for the selected country.
+
+<Source
+    code={`
+<script setup>
+import { ref } from 'vue'
+const phone = ref('')
+</script>
+
+<template>
+  <!-- Country block enabled (DE locked) -->
+  <InputPhone
+    v-model:value="phone"
+    country-default="DE"
+    :country-block="true"
+    label="Locked Country (DE)"
+  />
+</template>
+  `}
+    language="html"
+/>

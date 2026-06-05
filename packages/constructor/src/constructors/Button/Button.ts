@@ -106,7 +106,12 @@ export class Button {
     this.label = new LabelConstructor(props, className, undefined, slots)
     this.enabled = new EnabledConstructor(props, this.progress)
 
-    this.icon = new IconConstructor(props, className, components)
+    this.icon = new IconConstructor(
+      props,
+      className,
+      components,
+      () => ({ disabled: this.props.disabled })
+    )
     this.ripple = new RippleConstructor(className, components, this.enabled)
     this.skeleton = new SkeletonConstructor(
       props,

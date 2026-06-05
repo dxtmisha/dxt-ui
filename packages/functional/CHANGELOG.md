@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.13.2] - 2026-06-05
+
+### Changed / Improved
+- **Maintenance**: Version bumped to `1.13.2` to synchronize package updates across the workspace.
+
+## [1.13.1] - 2026-06-02
+
+### Changed / Improved
+- **Maintenance**: Version bumped to `1.13.1` to align with monorepo release updates.
+
+## [1.13.0] - 2026-05-29
+
+### Added
+- **refTypes**: Added `RefOrNormalOrFunction` union type representing references, normal values, or functions returning them.
+- **Functions**: Introduced `executeFunctionRef` utility function to safely execute functions or unwrap reference values in a single call.
+
 ## [1.12.3] - 2026-05-25
 
 ### Changed / Improved

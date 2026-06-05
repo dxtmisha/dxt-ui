@@ -78,12 +78,13 @@ export class InputPhoneMask {
 
       mask: {
         mask,
-        visible: mask.length < 2,
+        visiblePartly: true,
         groupSave: false,
         special: inputPhoneMaskSpecial,
         check: '.{7,}'
       },
 
+      maskVisible: mask.length < 2,
       maskAttrs: this.props.maskAttrs
     }
   }

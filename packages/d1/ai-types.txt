@@ -290,6 +290,14 @@ The following is the content of "exports" from package.json:
   "./D1MenuChip": {
     "types": "./dist/src/library/D1MenuChip.d.ts",
     "default": "./dist/D1MenuChip.js"
+  },
+  "./D1InputPhoneDialCode": {
+    "types": "./dist/src/library/D1InputPhoneDialCode.d.ts",
+    "default": "./dist/D1InputPhoneDialCode.js"
+  },
+  "./D1InputPhone": {
+    "types": "./dist/src/library/D1InputPhone.d.ts",
+    "default": "./dist/D1InputPhone.js"
   }
 }
 
@@ -298,9 +306,7 @@ export type { AccordionProps } from './props';
 export declare const D1Accordion: any;
 
 // File: src/components/Ui/Accordion/props.d.ts
-type PropsToken = { divider?: boolean; };
-/** Type describing incoming properties */
-export type AccordionProps = any & PropsToken;
+export type AccordionProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/ActionSheet/index.d.ts
@@ -308,9 +314,7 @@ export type { ActionSheetProps } from './props';
 export declare const D1ActionSheet: any;
 
 // File: src/components/Ui/ActionSheet/props.d.ts
-type PropsToken = { width?: 'sm' | 'md' | 'lg' | 'auto'; };
-/** Type describing incoming properties */
-export type ActionSheetProps = any & PropsToken;
+export type ActionSheetProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/Actions/index.d.ts
@@ -318,15 +322,7 @@ export type { ActionsProps } from './props';
 export declare const D1Actions: any;
 
 // File: src/components/Ui/Actions/props.d.ts
-type PropsToken = {
-    align?: 'none' | 'center' | 'left' | 'right' | 'block' | 'auto';
-    flexible?: 'adaptiveSm' | 'adaptiveMd' | 'adaptiveLg' | 'adaptiveXl' | 'adaptive2xl' | 'containerSm' | 'containerMd' | 'containerLg' | 'containerXl' | 'container2xl';
-    wrap?: boolean;
-    padding?: 'sm' | 'md' | 'lg' | 'ySm' | 'yMd' | 'yLg' | 'none';
-    paddingByIndent?: boolean;
-};
-/** Type describing incoming properties */
-export type ActionsProps = any & PropsToken;
+export type ActionsProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/Anchor/index.d.ts
@@ -334,9 +330,7 @@ export type { AnchorProps } from './props';
 export declare const D1Anchor: any;
 
 // File: src/components/Ui/Anchor/props.d.ts
-type PropsToken = {};
-/** Type describing incoming properties */
-export type AnchorProps = any & PropsToken;
+export type AnchorProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/Area/index.d.ts
@@ -344,9 +338,7 @@ export type { AreaProps } from './props';
 export declare const D1Area: any;
 
 // File: src/components/Ui/Area/props.d.ts
-type PropsToken = {};
-/** Type describing incoming properties */
-export type AreaProps = any & PropsToken;
+export type AreaProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/Arrow/index.d.ts
@@ -354,9 +346,7 @@ export type { ArrowProps } from './props';
 export declare const D1Arrow: any;
 
 // File: src/components/Ui/Arrow/props.d.ts
-type PropsToken = { position?: 'auto' | 'top' | 'bottom' | 'left' | 'right'; inverse?: boolean; size?: 'sm' | 'md' | 'lg'; };
-/** Type describing incoming properties */
-export type ArrowProps = any & PropsToken;
+export type ArrowProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/Badge/index.d.ts
@@ -364,14 +354,7 @@ export type { BadgeProps } from './props';
 export declare const D1Badge: any;
 
 // File: src/components/Ui/Badge/props.d.ts
-type PropsToken = {
-    selected?: boolean; hide?: boolean; dot?: boolean; overlap?: 'rectangular' | 'circular' | 'static';
-    vertical?: 'top' | 'center' | 'bottom'; horizontal?: 'right' | 'center' | 'left';
-    primary?: boolean; secondary?: boolean; outline?: boolean; size?: 'sm' | 'md' | 'lg' | 'none';
-    palette?: 'red' | 'orange' | 'amber' | 'yellow' | 'lime' | 'green' | 'emerald' | 'teal' | 'cyan' | 'sky' | 'blue' | 'indigo' | 'violet' | 'purple' | 'fuchsia' | 'pink' | 'rose' | 'slate' | 'gray' | 'zinc' | 'neutral' | 'stone' | 'black' | 'white';
-};
-/** Type describing incoming properties */
-export type BadgeProps = any & PropsToken;
+export type BadgeProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/Bars/index.d.ts
@@ -379,9 +362,7 @@ export type { BarsProps } from './props';
 export declare const D1Bars: any;
 
 // File: src/components/Ui/Bars/props.d.ts
-type PropsToken = { padding?: 'sm' | 'md' | 'lg' | 'ySm' | 'yMd' | 'yLg' | 'none'; paddingByIndent?: boolean; };
-/** Type describing incoming properties */
-export type BarsProps = any & PropsToken;
+export type BarsProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/Bleed/index.d.ts
@@ -389,9 +370,7 @@ export type { BleedProps } from './props';
 export declare const D1Bleed: any;
 
 // File: src/components/Ui/Bleed/props.d.ts
-type PropsToken = {};
-/** Type describing incoming properties */
-export type BleedProps = any & PropsToken;
+export type BleedProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/Block/index.d.ts
@@ -399,9 +378,7 @@ export type { BlockProps } from './props';
 export declare const D1Block: any;
 
 // File: src/components/Ui/Block/props.d.ts
-type PropsToken = {};
-/** Type describing incoming properties */
-export type BlockProps = any & PropsToken;
+export type BlockProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/Button/index.d.ts
@@ -409,17 +386,7 @@ export type { ButtonProps } from './props';
 export declare const D1Button: any;
 
 // File: src/components/Ui/Button/props.d.ts
-type PropsToken = {
-    focus?: boolean; disabled?: boolean; selected?: boolean; readonly?: boolean;
-    adaptive?: 'iconAlways' | 'block' | 'auto' | 'iconSm' | 'iconMd' | 'iconLg' | 'iconXl' | 'icon2xl' | 'fullSm' | 'fullMd' | 'fullLg' | 'fullXl' | 'full2xl';
-    container?: 'iconSm' | 'iconMd' | 'iconLg' | 'iconXl' | 'icon2xl' | 'fullSm' | 'fullMd' | 'fullLg' | 'fullXl' | 'full2xl';
-    inverse?: boolean; grid?: boolean; textAlign?: 'left' | 'center' | 'right';
-    primary?: boolean; secondary?: boolean; outline?: boolean; text?: boolean;
-    size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'; roundedFull?: boolean; hasLabelMinWidth?: boolean;
-    palette?: 'red' | 'orange' | 'amber' | 'yellow' | 'lime' | 'green' | 'emerald' | 'teal' | 'cyan' | 'sky' | 'blue' | 'indigo' | 'violet' | 'purple' | 'fuchsia' | 'pink' | 'rose' | 'slate' | 'gray' | 'zinc' | 'neutral' | 'stone' | 'black' | 'white';
-};
-/** Type describing incoming properties */
-export type ButtonProps = any & PropsToken;
+export type ButtonProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/ButtonGroup/index.d.ts
@@ -427,9 +394,7 @@ export type { ButtonGroupProps } from './props';
 export declare const D1ButtonGroup: any;
 
 // File: src/components/Ui/ButtonGroup/props.d.ts
-type PropsToken = { orientation?: 'horizontal' | 'vertical'; wrap?: boolean; };
-/** Type describing incoming properties */
-export type ButtonGroupProps = any & PropsToken;
+export type ButtonGroupProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/Cell/index.d.ts
@@ -437,13 +402,7 @@ export type { CellProps } from './props';
 export declare const D1Cell: any;
 
 // File: src/components/Ui/Cell/props.d.ts
-type PropsToken = {
-    focus?: boolean; selected?: boolean; readonly?: boolean; disabled?: boolean; dynamic?: boolean; dynamicHover?: boolean; divider?: boolean;
-    dividerLabel?: 'always' | 'none' | 'adaptiveSm' | 'adaptiveMd' | 'adaptiveLg' | 'adaptiveXl' | 'adaptive2xl' | 'containerSm' | 'containerMd' | 'containerLg' | 'containerXl' | 'container2xl';
-    iconTop?: boolean; padding?: 'sm' | 'md' | 'lg' | 'ySm' | 'yMd' | 'yLg' | 'none'; paddingByIndent?: boolean;
-};
-/** Type describing incoming properties */
-export type CellProps = any & PropsToken;
+export type CellProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/Checkbox/index.d.ts
@@ -451,14 +410,7 @@ export type { CheckboxProps } from './props';
 export declare const D1Checkbox: any;
 
 // File: src/components/Ui/Checkbox/props.d.ts
-type PropsToken = {
-    block?: boolean;
-    adaptive?: 'rightAlways' | 'rightSm' | 'rightMd' | 'rightLg' | 'rightXl' | 'right2xl';
-    container?: 'rightSm' | 'rightMd' | 'rightLg' | 'rightXl' | 'right2xl';
-    required?: boolean; itemCenter?: boolean; focus?: boolean; disabled?: boolean;
-};
-/** Type describing incoming properties */
-export type CheckboxProps = any & PropsToken;
+export type CheckboxProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/Chip/index.d.ts
@@ -466,16 +418,7 @@ export type { ChipProps } from './props';
 export declare const D1Chip: any;
 
 // File: src/components/Ui/Chip/props.d.ts
-type PropsToken = {
-    focus?: boolean; disabled?: boolean; selected?: boolean; readonly?: boolean;
-    adaptive?: 'iconAlways' | 'block' | 'auto' | 'iconSm' | 'iconMd' | 'iconLg' | 'iconXl' | 'icon2xl' | 'fullSm' | 'fullMd' | 'fullLg' | 'fullXl' | 'full2xl';
-    container?: 'iconSm' | 'iconMd' | 'iconLg' | 'iconXl' | 'icon2xl' | 'fullSm' | 'fullMd' | 'fullLg' | 'fullXl' | 'full2xl';
-    inverse?: boolean; grid?: boolean; textAlign?: 'left' | 'center' | 'right';
-    input?: boolean; assistive?: boolean; size?: 'sm' | 'md' | 'lg'; roundedFull?: boolean;
-    palette?: 'red' | 'orange' | 'amber' | 'yellow' | 'lime' | 'green' | 'emerald' | 'teal' | 'cyan' | 'sky' | 'blue' | 'indigo' | 'violet' | 'purple' | 'fuchsia' | 'pink' | 'rose' | 'slate' | 'gray' | 'zinc' | 'neutral' | 'stone' | 'black' | 'white';
-};
-/** Type describing incoming properties */
-export type ChipProps = any & PropsToken;
+export type ChipProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/ChipGroup/index.d.ts
@@ -483,9 +426,7 @@ export type { ChipGroupProps } from './props';
 export declare const D1ChipGroup: any;
 
 // File: src/components/Ui/ChipGroup/props.d.ts
-type PropsToken = {};
-/** Type describing incoming properties */
-export type ChipGroupProps = any & PropsToken;
+export type ChipGroupProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/ClientOnly/index.d.ts
@@ -493,9 +434,7 @@ export type { ClientOnlyProps } from './props';
 export declare const D1ClientOnly: any;
 
 // File: src/components/Ui/ClientOnly/props.d.ts
-type PropsToken = {};
-/** Type describing incoming properties */
-export type ClientOnlyProps = any & PropsToken;
+export type ClientOnlyProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/Container/index.d.ts
@@ -503,9 +442,7 @@ export type { ContainerProps } from './props';
 export declare const D1Container: any;
 
 // File: src/components/Ui/Container/props.d.ts
-type PropsToken = { align?: 'left' | 'center' | 'right'; };
-/** Type describing incoming properties */
-export type ContainerProps = any & PropsToken;
+export type ContainerProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/Dialog/index.d.ts
@@ -513,9 +450,7 @@ export type { DialogProps } from './props';
 export declare const D1Dialog: any;
 
 // File: src/components/Ui/Dialog/props.d.ts
-type PropsToken = { success?: boolean; error?: boolean; imagePosition?: 'top' | 'left'; width?: 'sm' | 'md' | 'lg' | 'auto'; };
-/** Type describing incoming properties */
-export type DialogProps = any & PropsToken;
+export type DialogProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/Divider/index.d.ts
@@ -523,9 +458,7 @@ export type { DividerProps } from './props';
 export declare const D1Divider: any;
 
 // File: src/components/Ui/Divider/props.d.ts
-type PropsToken = { size?: 'sm' | 'md' | 'lg'; margin?: 'sm' | 'md' | 'lg' | 'none'; };
-/** Type describing incoming properties */
-export type DividerProps = any & PropsToken;
+export type DividerProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/Dummy/index.d.ts
@@ -533,12 +466,7 @@ export type { DummyProps } from './props';
 export declare const D1Dummy: any;
 
 // File: src/components/Ui/Dummy/props.d.ts
-type PropsToken = {
-    size?: 'x' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl';
-    palette?: 'red' | 'orange' | 'amber' | 'yellow' | 'lime' | 'green' | 'emerald' | 'teal' | 'cyan' | 'sky' | 'blue' | 'indigo' | 'violet' | 'purple' | 'fuchsia' | 'pink' | 'rose' | 'slate' | 'gray' | 'zinc' | 'neutral' | 'stone' | 'black' | 'white';
-};
-/** Type describing incoming properties */
-export type DummyProps = any & PropsToken;
+export type DummyProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/Field/index.d.ts
@@ -546,15 +474,7 @@ export type { FieldProps } from './props';
 export declare const D1Field: any;
 
 // File: src/components/Ui/Field/props.d.ts
-type PropsToken = {
-    focus?: boolean; disabled?: boolean; selected?: boolean; readonly?: boolean; block?: boolean; isValue?: boolean;
-    basic?: boolean; boxed?: boolean; tonal?: boolean; filled?: boolean; outlined?: boolean; classic?: boolean;
-    arrowCarousel?: boolean; arrowStepper?: boolean; arrowAlign?: 'center' | 'right' | 'left';
-    cancel?: 'auto' | 'always' | 'none'; align?: 'center' | 'right' | 'left'; width?: string | 'custom';
-    size?: 'sm' | 'md' | 'lg' | 'display';
-};
-/** Type describing incoming properties */
-export type FieldProps = any & PropsToken;
+export type FieldProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/FieldCounter/index.d.ts
@@ -562,9 +482,7 @@ export type { FieldCounterProps } from './props';
 export declare const D1FieldCounter: any;
 
 // File: src/components/Ui/FieldCounter/props.d.ts
-type PropsToken = {};
-/** Type describing incoming properties */
-export type FieldCounterProps = any & PropsToken;
+export type FieldCounterProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/FieldLabel/index.d.ts
@@ -572,9 +490,7 @@ export type { FieldLabelProps } from './props';
 export declare const D1FieldLabel: any;
 
 // File: src/components/Ui/FieldLabel/props.d.ts
-type PropsToken = {};
-/** Type describing incoming properties */
-export type FieldLabelProps = any & PropsToken;
+export type FieldLabelProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/FieldMessage/index.d.ts
@@ -582,9 +498,7 @@ export type { FieldMessageProps } from './props';
 export declare const D1FieldMessage: any;
 
 // File: src/components/Ui/FieldMessage/props.d.ts
-type PropsToken = {};
-/** Type describing incoming properties */
-export type FieldMessageProps = any & PropsToken;
+export type FieldMessageProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/Grid/index.d.ts
@@ -592,9 +506,7 @@ export type { GridProps } from './props';
 export declare const D1Grid: any;
 
 // File: src/components/Ui/Grid/props.d.ts
-type PropsToken = {};
-/** Type describing incoming properties */
-export type GridProps = any & PropsToken;
+export type GridProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/GridItem/index.d.ts
@@ -602,16 +514,7 @@ export type { GridItemProps } from './props';
 export declare const D1GridItem: any;
 
 // File: src/components/Ui/GridItem/props.d.ts
-type PropsToken = {
-    base?: '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | '11' | '12';
-    sm?: '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | '11' | '12';
-    md?: '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | '11' | '12';
-    lg?: '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | '11' | '12';
-    xl?: '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | '11' | '12';
-    xl2?: '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | '11' | '12';
-};
-/** Type describing incoming properties */
-export type GridItemProps = any & PropsToken;
+export type GridItemProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/Group/index.d.ts
@@ -619,9 +522,7 @@ export type { GroupProps } from './props';
 export declare const D1Group: any;
 
 // File: src/components/Ui/Group/props.d.ts
-type PropsToken = {};
-/** Type describing incoming properties */
-export type GroupProps = any & PropsToken;
+export type GroupProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/Header/index.d.ts
@@ -629,9 +530,7 @@ export type { HeaderProps } from './props';
 export declare const D1Header: any;
 
 // File: src/components/Ui/Header/props.d.ts
-type PropsToken = { tag?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'; };
-/** Type describing incoming properties */
-export type HeaderProps = any & PropsToken;
+export type HeaderProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/HorizontalScroll/index.d.ts
@@ -639,9 +538,7 @@ export type { HorizontalScrollProps } from './props';
 export declare const D1HorizontalScroll: any;
 
 // File: src/components/Ui/HorizontalScroll/props.d.ts
-type PropsToken = { bleed?: boolean; align?: 'block' | 'center' | 'left' | 'right'; };
-/** Type describing incoming properties */
-export type HorizontalScrollProps = any & PropsToken;
+export type HorizontalScrollProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/Icon/index.d.ts
@@ -649,16 +546,7 @@ export type { IconProps } from './props';
 export declare const D1Icon: any;
 
 // File: src/components/Ui/Icon/props.d.ts
-type PropsToken = {
-    turn?: boolean; disabled?: boolean; hide?: boolean; asPalette?: boolean; dir?: boolean;
-    overlay?: boolean; dynamic?: boolean; start?: boolean; end?: boolean; high?: boolean;
-    animationType?: 'type1' | 'type2'; animationShow?: boolean; square?: boolean;
-    circle?: boolean; rect?: boolean;
-    size?: 'auto' | 'x' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | '6xl' | '7xl' | '8xl' | '9xl';
-    inverse?: boolean; rounded?: 'auto' | 'sm' | 'md' | 'lg' | 'xl' | 'full';
-};
-/** Type describing incoming properties */
-export type IconProps = any & PropsToken;
+export type IconProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/Image/index.d.ts
@@ -666,9 +554,7 @@ export type { ImageProps } from './props';
 export declare const D1Image: any;
 
 // File: src/components/Ui/Image/props.d.ts
-type PropsToken = { turn?: boolean; disabled?: boolean; hide?: boolean; adaptive?: boolean; size?: 'auto' | 'contain' | 'cover'; };
-/** Type describing incoming properties */
-export type ImageProps = any & PropsToken;
+export type ImageProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/Input/index.d.ts
@@ -676,9 +562,23 @@ export type { InputProps } from './props';
 export declare const D1Input: any;
 
 // File: src/components/Ui/Input/props.d.ts
-type PropsToken = {};
-/** Type describing incoming properties */
-export type InputProps = any & PropsToken;
+export type InputProps = any;
+export declare const defaults: object;
+
+// File: src/components/Ui/InputPhone/index.d.ts
+export type { InputPhoneProps } from './props';
+export declare const D1InputPhone: any;
+
+// File: src/components/Ui/InputPhone/props.d.ts
+export type InputPhoneProps = any;
+export declare const defaults: object;
+
+// File: src/components/Ui/InputPhoneDialCode/index.d.ts
+export type { InputPhoneDialCodeProps } from './props';
+export declare const D1InputPhoneDialCode: any;
+
+// File: src/components/Ui/InputPhoneDialCode/props.d.ts
+export type InputPhoneDialCodeProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/List/index.d.ts
@@ -686,9 +586,7 @@ export type { ListProps } from './props';
 export declare const D1List: any;
 
 // File: src/components/Ui/List/props.d.ts
-type PropsToken = { axis?: 'x' | 'y'; divider?: boolean; };
-/** Type describing incoming properties */
-export type ListProps = any & PropsToken;
+export type ListProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/ListGroup/index.d.ts
@@ -696,9 +594,7 @@ export type { ListGroupProps } from './props';
 export declare const D1ListGroup: any;
 
 // File: src/components/Ui/ListGroup/props.d.ts
-type PropsToken = { open?: boolean; divider?: boolean; };
-/** Type describing incoming properties */
-export type ListGroupProps = any & PropsToken;
+export type ListGroupProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/ListItem/index.d.ts
@@ -706,14 +602,7 @@ export type { ListItemProps } from './props';
 export declare const D1ListItem: any;
 
 // File: src/components/Ui/ListItem/props.d.ts
-type PropsToken = {
-    focus?: boolean; open?: boolean; selectedChild?: boolean; readonly?: boolean; disabled?: boolean; iconTop?: boolean;
-    iconAlign?: 'center' | 'edge'; controlPosition?: 'start' | 'end' | 'autoSm' | 'autoMd' | 'autoLg' | 'autoXl' | 'auto2xl';
-    fill?: string | 'custom'; divider?: boolean; size?: 'sm' | 'md' | 'lg'; dense?: boolean;
-    palette?: 'red' | 'orange' | 'amber' | 'yellow' | 'lime' | 'green' | 'emerald' | 'teal' | 'cyan' | 'sky' | 'blue' | 'indigo' | 'violet' | 'purple' | 'fuchsia' | 'pink' | 'rose' | 'slate' | 'gray' | 'zinc' | 'neutral' | 'stone' | 'black' | 'white';
-};
-/** Type describing incoming properties */
-export type ListItemProps = any & PropsToken;
+export type ListItemProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/ListMenu/index.d.ts
@@ -721,9 +610,7 @@ export type { ListMenuProps } from './props';
 export declare const D1ListMenu: any;
 
 // File: src/components/Ui/ListMenu/props.d.ts
-type PropsToken = { open?: boolean; axis?: 'x' | 'y'; divider?: boolean; };
-/** Type describing incoming properties */
-export type ListMenuProps = any & PropsToken;
+export type ListMenuProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/Mask/index.d.ts
@@ -731,9 +618,7 @@ export type { MaskProps } from './props';
 export declare const D1Mask: any;
 
 // File: src/components/Ui/Mask/props.d.ts
-type PropsToken = { visible?: boolean; visiblePartly?: boolean; align?: 'center' | 'left' | 'right'; dir?: 'ltr' | 'rtl'; };
-/** Type describing incoming properties */
-export type MaskProps = any & PropsToken;
+export type MaskProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/Menu/index.d.ts
@@ -741,9 +626,7 @@ export type { MenuProps } from './props';
 export declare const D1Menu: any;
 
 // File: src/components/Ui/Menu/props.d.ts
-type PropsToken = { hideList?: boolean; barsAdaptive?: 'showAlways' | 'showSm' | 'showMd' | 'showLg' | 'showXl' | 'show2xl'; };
-/** Type describing incoming properties */
-export type MenuProps = any & PropsToken;
+export type MenuProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/MenuButton/index.d.ts
@@ -751,9 +634,7 @@ export type { MenuButtonProps } from './props';
 export declare const D1MenuButton: any;
 
 // File: src/components/Ui/MenuButton/props.d.ts
-type PropsToken = {};
-/** Type describing incoming properties */
-export type MenuButtonProps = any & PropsToken;
+export type MenuButtonProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/MenuChip/index.d.ts
@@ -761,9 +642,7 @@ export type { MenuChipProps } from './props';
 export declare const D1MenuChip: any;
 
 // File: src/components/Ui/MenuChip/props.d.ts
-type PropsToken = {};
-/** Type describing incoming properties */
-export type MenuChipProps = any & PropsToken;
+export type MenuChipProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/MenuCountry/index.d.ts
@@ -771,9 +650,7 @@ export type { MenuCountryProps } from './props';
 export declare const D1MenuCountry: any;
 
 // File: src/components/Ui/MenuCountry/props.d.ts
-type PropsToken = {};
-/** Type describing incoming properties */
-export type MenuCountryProps = any & PropsToken;
+export type MenuCountryProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/Modal/index.d.ts
@@ -781,9 +658,7 @@ export type { ModalProps } from './props';
 export declare const D1Modal: any;
 
 // File: src/components/Ui/Modal/props.d.ts
-type PropsToken = { imagePosition?: 'top' | 'left'; width?: 'sm' | 'md' | 'lg' | 'xl' | 'auto'; };
-/** Type describing incoming properties */
-export type ModalProps = any & PropsToken;
+export type ModalProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/MotionAxis/index.d.ts
@@ -791,9 +666,7 @@ export type { MotionAxisProps } from './props';
 export declare const D1MotionAxis: any;
 
 // File: src/components/Ui/MotionAxis/props.d.ts
-type PropsToken = { axis?: 'x' | 'y' | 'z'; direction?: 'next' | 'back' | 'auto'; };
-/** Type describing incoming properties */
-export type MotionAxisProps = any & PropsToken;
+export type MotionAxisProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/MotionTransform/index.d.ts
@@ -801,9 +674,7 @@ export type { MotionTransformProps } from './props';
 export declare const D1MotionTransform: any;
 
 // File: src/components/Ui/MotionTransform/props.d.ts
-type PropsToken = { section?: boolean; animationHeadPosition?: 'top' | 'toBottom'; adaptive?: 'planeAlways' | 'planeSm' | 'planeMd' | 'planeLg' | 'planeXl' | 'plane2xl'; };
-/** Type describing incoming properties */
-export type MotionTransformProps = any & PropsToken;
+export type MotionTransformProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/Page/index.d.ts
@@ -811,9 +682,7 @@ export type { PageProps } from './props';
 export declare const D1Page: any;
 
 // File: src/components/Ui/Page/props.d.ts
-type PropsToken = {};
-/** Type describing incoming properties */
-export type PageProps = any & PropsToken;
+export type PageProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/PageArea/index.d.ts
@@ -821,9 +690,7 @@ export type { PageAreaProps } from './props';
 export declare const D1PageArea: any;
 
 // File: src/components/Ui/PageArea/props.d.ts
-type PropsToken = {};
-/** Type describing incoming properties */
-export type PageAreaProps = any & PropsToken;
+export type PageAreaProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/Progress/index.d.ts
@@ -831,13 +698,7 @@ export type { ProgressProps } from './props';
 export declare const D1Progress: any;
 
 // File: src/components/Ui/Progress/props.d.ts
-type PropsToken = {
-    point?: boolean; linear?: boolean; circular?: boolean; indeterminate?: 'type1' | 'type2' | 'type3';
-    position?: 'top' | 'bottom' | 'static'; dense?: boolean; inverse?: boolean; size?: 'sm' | 'md' | 'lg';
-    palette?: 'red' | 'orange' | 'amber' | 'yellow' | 'lime' | 'green' | 'emerald' | 'teal' | 'cyan' | 'sky' | 'blue' | 'indigo' | 'violet' | 'purple' | 'fuchsia' | 'pink' | 'rose' | 'slate' | 'gray' | 'zinc' | 'neutral' | 'stone' | 'black' | 'white';
-};
-/** Type describing incoming properties */
-export type ProgressProps = any & PropsToken;
+export type ProgressProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/Radio/index.d.ts
@@ -845,14 +706,7 @@ export type { RadioProps } from './props';
 export declare const D1Radio: any;
 
 // File: src/components/Ui/Radio/props.d.ts
-type PropsToken = {
-    block?: boolean;
-    adaptive?: 'rightAlways' | 'rightSm' | 'rightMd' | 'rightLg' | 'rightXl' | 'right2xl';
-    container?: 'rightSm' | 'rightMd' | 'rightLg' | 'rightXl' | 'right2xl';
-    required?: boolean; itemCenter?: boolean; focus?: boolean; disabled?: boolean;
-};
-/** Type describing incoming properties */
-export type RadioProps = any & PropsToken;
+export type RadioProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/Ripple/index.d.ts
@@ -860,9 +714,7 @@ export type { RippleProps } from './props';
 export declare const D1Ripple: any;
 
 // File: src/components/Ui/Ripple/props.d.ts
-type PropsToken = {};
-/** Type describing incoming properties */
-export type RippleProps = any & PropsToken;
+export type RippleProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/Scrollbar/index.d.ts
@@ -870,9 +722,7 @@ export type { ScrollbarProps } from './props';
 export declare const D1Scrollbar: any;
 
 // File: src/components/Ui/Scrollbar/props.d.ts
-type PropsToken = { visible?: boolean; divider?: boolean; dividerTop?: boolean; dividerBottom?: boolean; dividerHide?: boolean; inverse?: boolean; standard?: boolean; };
-/** Type describing incoming properties */
-export type ScrollbarProps = any & PropsToken;
+export type ScrollbarProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/Section/index.d.ts
@@ -880,9 +730,7 @@ export type { SectionProps } from './props';
 export declare const D1Section: any;
 
 // File: src/components/Ui/Section/props.d.ts
-type PropsToken = {};
-/** Type describing incoming properties */
-export type SectionProps = any & PropsToken;
+export type SectionProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/Select/index.d.ts
@@ -890,9 +738,7 @@ export type { SelectProps } from './props';
 export declare const D1Select: any;
 
 // File: src/components/Ui/Select/props.d.ts
-type PropsToken = {};
-/** Type describing incoming properties */
-export type SelectProps = any & PropsToken;
+export type SelectProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/SelectValue/index.d.ts
@@ -900,9 +746,7 @@ export type { SelectValueProps } from './props';
 export declare const D1SelectValue: any;
 
 // File: src/components/Ui/SelectValue/props.d.ts
-type PropsToken = {};
-/** Type describing incoming properties */
-export type SelectValueProps = any & PropsToken;
+export type SelectValueProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/Skeleton/index.d.ts
@@ -910,9 +754,7 @@ export type { SkeletonProps } from './props';
 export declare const D1Skeleton: any;
 
 // File: src/components/Ui/Skeleton/props.d.ts
-type PropsToken = { active?: boolean; };
-/** Type describing incoming properties */
-export type SkeletonProps = any & PropsToken;
+export type SkeletonProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/Snackbar/index.d.ts
@@ -920,13 +762,7 @@ export type { SnackbarProps } from './props';
 export declare const D1Snackbar: any;
 
 // File: src/components/Ui/Snackbar/props.d.ts
-type PropsToken = {
-    full?: boolean; all?: boolean; limit?: '1' | '2' | '4' | '6' | '8';
-    vertical?: 'top' | 'bottom'; horizontal?: 'right' | 'left' | 'block';
-    origin?: 'topToBottom' | 'bottomToTop' | 'rightToLeft' | 'leftToRight';
-};
-/** Type describing incoming properties */
-export type SnackbarProps = any & PropsToken;
+export type SnackbarProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/SnackbarItem/index.d.ts
@@ -934,12 +770,7 @@ export type { SnackbarItemProps } from './props';
 export declare const D1SnackbarItem: any;
 
 // File: src/components/Ui/SnackbarItem/props.d.ts
-type PropsToken = {
-    success?: boolean; error?: boolean;
-    palette?: 'red' | 'orange' | 'amber' | 'yellow' | 'lime' | 'green' | 'emerald' | 'teal' | 'cyan' | 'sky' | 'blue' | 'indigo' | 'violet' | 'purple' | 'fuchsia' | 'pink' | 'rose' | 'slate' | 'gray' | 'zinc' | 'neutral' | 'stone' | 'black' | 'white';
-};
-/** Type describing incoming properties */
-export type SnackbarItemProps = any & PropsToken;
+export type SnackbarItemProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/Switch/index.d.ts
@@ -947,14 +778,7 @@ export type { SwitchProps } from './props';
 export declare const D1Switch: any;
 
 // File: src/components/Ui/Switch/props.d.ts
-type PropsToken = {
-    block?: boolean;
-    adaptive?: 'rightAlways' | 'rightSm' | 'rightMd' | 'rightLg' | 'rightXl' | 'right2xl';
-    container?: 'rightSm' | 'rightMd' | 'rightLg' | 'rightXl' | 'right2xl';
-    required?: boolean; itemCenter?: boolean; focus?: boolean; disabled?: boolean;
-};
-/** Type describing incoming properties */
-export type SwitchProps = any & PropsToken;
+export type SwitchProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/TabItem/index.d.ts
@@ -962,13 +786,7 @@ export type { TabItemProps } from './props';
 export declare const D1TabItem: any;
 
 // File: src/components/Ui/TabItem/props.d.ts
-type PropsToken = {
-    focus?: boolean; open?: boolean; selected?: boolean; disabled?: boolean;
-    adaptive?: 'iconAlways' | 'auto' | 'iconSm' | 'iconMd' | 'iconLg' | 'iconXl' | 'icon2xl' | 'fullSm' | 'fullMd' | 'fullLg' | 'fullXl' | 'full2xl';
-    container?: 'iconSm' | 'iconMd' | 'iconLg' | 'iconXl' | 'icon2xl' | 'fullSm' | 'fullMd' | 'fullLg' | 'fullXl' | 'full2xl';
-};
-/** Type describing incoming properties */
-export type TabItemProps = any & PropsToken;
+export type TabItemProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/Tabs/index.d.ts
@@ -976,9 +794,7 @@ export type { TabsProps } from './props';
 export declare const D1Tabs: any;
 
 // File: src/components/Ui/Tabs/props.d.ts
-type PropsToken = {};
-/** Type describing incoming properties */
-export type TabsProps = any & PropsToken;
+export type TabsProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/TabsNavigation/index.d.ts
@@ -986,9 +802,7 @@ export type { TabsNavigationProps } from './props';
 export declare const D1TabsNavigation: any;
 
 // File: src/components/Ui/TabsNavigation/props.d.ts
-type PropsToken = { divider?: boolean; };
-/** Type describing incoming properties */
-export type TabsNavigationProps = any & PropsToken;
+export type TabsNavigationProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/TextDescription/index.d.ts
@@ -996,9 +810,7 @@ export type { TextDescriptionProps } from './props';
 export declare const D1TextDescription: any;
 
 // File: src/components/Ui/TextDescription/props.d.ts
-type PropsToken = { size?: 'xs' | 'sm' | 'md'; };
-/** Type describing incoming properties */
-export type TextDescriptionProps = any & PropsToken;
+export type TextDescriptionProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/TextLabel/index.d.ts
@@ -1006,9 +818,7 @@ export type { TextLabelProps } from './props';
 export declare const D1TextLabel: any;
 
 // File: src/components/Ui/TextLabel/props.d.ts
-type PropsToken = { size?: 'xs' | 'sm' | 'md' | 'lg'; };
-/** Type describing incoming properties */
-export type TextLabelProps = any & PropsToken;
+export type TextLabelProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/Textarea/index.d.ts
@@ -1016,9 +826,7 @@ export type { TextareaProps } from './props';
 export declare const D1Textarea: any;
 
 // File: src/components/Ui/Textarea/props.d.ts
-type PropsToken = {};
-/** Type describing incoming properties */
-export type TextareaProps = any & PropsToken;
+export type TextareaProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/TextareaAutosize/index.d.ts
@@ -1026,9 +834,7 @@ export type { TextareaAutosizeProps } from './props';
 export declare const D1TextareaAutosize: any;
 
 // File: src/components/Ui/TextareaAutosize/props.d.ts
-type PropsToken = { autosize?: boolean; height?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'; };
-/** Type describing incoming properties */
-export type TextareaAutosizeProps = any & PropsToken;
+export type TextareaAutosizeProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/Tooltip/index.d.ts
@@ -1036,9 +842,7 @@ export type { TooltipProps } from './props';
 export declare const D1Tooltip: any;
 
 // File: src/components/Ui/Tooltip/props.d.ts
-type PropsToken = { interactive?: boolean; embedded?: boolean; maxWidth?: 'sm' | 'md' | 'lg'; };
-/** Type describing incoming properties */
-export type TooltipProps = any & PropsToken;
+export type TooltipProps = any;
 export declare const defaults: object;
 
 // File: src/components/Ui/Window/index.d.ts
@@ -1046,152 +850,213 @@ export type { WindowProps } from './props';
 export declare const D1Window: any;
 
 // File: src/components/Ui/Window/props.d.ts
-type PropsToken = {
-    width?: string | 'auto' | 'max' | 'sm' | 'md' | 'lg' | 'custom';
-    height?: string | 'auto' | 'max' | 'sm' | 'md' | 'lg' | 'custom';
-    hide?: boolean; axis?: 'x' | 'y' | 'on'; imagePosition?: 'top' | 'left'; dense?: boolean;
-    alignment?: 'center' | 'top' | 'topRight' | 'topLeft' | 'topFull' | 'right' | 'rightFull' | 'bottom' | 'bottomRight' | 'bottomLeft' | 'bottomFull' | 'left' | 'leftFull';
-    origin?: 'center' | 'top' | 'right' | 'bottom' | 'left' | 'topToBottom' | 'rightToLeft' | 'bottomToTop' | 'leftToRight';
-    adaptive?: 'menu' | 'menuWindow' | 'modal' | 'modalDynamic' | 'actionSheetRight' | 'actionSheetBottom' | 'static' | 'actionSheet' | 'actionSheetToModal' | 'autoStaticSm' | 'autoStaticMd' | 'autoStaticLg' | 'autoStaticXl' | 'autoStatic2xl';
-    fullscreen?: boolean; overscroll?: boolean; closeButton?: boolean; closeMobileHide?: boolean;
-    widthMatch?: boolean; imageSize?: 'sm' | 'md' | 'lg' | 'quarter' | 'half';
-};
-/** Type describing incoming properties */
-export type WindowProps = any & PropsToken;
+export type WindowProps = any;
 export declare const defaults: object;
 
 // File: src/library/D1Accordion.d.ts
 export * from '../components/Ui/Accordion/index.js';
+
 // File: src/library/D1ActionSheet.d.ts
 export * from '../components/Ui/ActionSheet/index.js';
+
 // File: src/library/D1Actions.d.ts
 export * from '../components/Ui/Actions/index.js';
+
 // File: src/library/D1Anchor.d.ts
 export * from '../components/Ui/Anchor/index.js';
+
 // File: src/library/D1Area.d.ts
 export * from '../components/Ui/Area/index.js';
+
 // File: src/library/D1Arrow.d.ts
 export * from '../components/Ui/Arrow/index.js';
+
 // File: src/library/D1Badge.d.ts
 export * from '../components/Ui/Badge/index.js';
+
 // File: src/library/D1Bars.d.ts
 export * from '../components/Ui/Bars/index.js';
+
 // File: src/library/D1Bleed.d.ts
 export * from '../components/Ui/Bleed/index.js';
+
 // File: src/library/D1Block.d.ts
 export * from '../components/Ui/Block/index.js';
+
 // File: src/library/D1Button.d.ts
 export * from '../components/Ui/Button/index.js';
+
 // File: src/library/D1ButtonGroup.d.ts
 export * from '../components/Ui/ButtonGroup/index.js';
+
 // File: src/library/D1Cell.d.ts
 export * from '../components/Ui/Cell/index.js';
+
 // File: src/library/D1Checkbox.d.ts
 export * from '../components/Ui/Checkbox/index.js';
+
 // File: src/library/D1Chip.d.ts
 export * from '../components/Ui/Chip/index.js';
+
 // File: src/library/D1ChipGroup.d.ts
 export * from '../components/Ui/ChipGroup/index.js';
+
 // File: src/library/D1ClientOnly.d.ts
 export * from '../components/Ui/ClientOnly/index.js';
+
 // File: src/library/D1Container.d.ts
 export * from '../components/Ui/Container/index.js';
+
 // File: src/library/D1Dialog.d.ts
 export * from '../components/Ui/Dialog/index.js';
+
 // File: src/library/D1Divider.d.ts
 export * from '../components/Ui/Divider/index.js';
+
 // File: src/library/D1Dummy.d.ts
 export * from '../components/Ui/Dummy/index.js';
+
 // File: src/library/D1Field.d.ts
 export * from '../components/Ui/Field/index.js';
+
 // File: src/library/D1FieldCounter.d.ts
 export * from '../components/Ui/FieldCounter/index.js';
+
 // File: src/library/D1FieldLabel.d.ts
 export * from '../components/Ui/FieldLabel/index.js';
+
 // File: src/library/D1FieldMessage.d.ts
 export * from '../components/Ui/FieldMessage/index.js';
+
 // File: src/library/D1Grid.d.ts
 export * from '../components/Ui/Grid/index.js';
+
 // File: src/library/D1GridItem.d.ts
 export * from '../components/Ui/GridItem/index.js';
+
 // File: src/library/D1Group.d.ts
 export * from '../components/Ui/Group/index.js';
+
 // File: src/library/D1Header.d.ts
 export * from '../components/Ui/Header/index.js';
+
 // File: src/library/D1HorizontalScroll.d.ts
 export * from '../components/Ui/HorizontalScroll/index.js';
+
 // File: src/library/D1Icon.d.ts
 export * from '../components/Ui/Icon/index.js';
+
 // File: src/library/D1Image.d.ts
 export * from '../components/Ui/Image/index.js';
+
 // File: src/library/D1Input.d.ts
 export * from '../components/Ui/Input/index.js';
+
+// File: src/library/D1InputPhone.d.ts
+export * from '../components/Ui/InputPhone/index.js';
+
+// File: src/library/D1InputPhoneDialCode.d.ts
+export * from '../components/Ui/InputPhoneDialCode/index.js';
+
 // File: src/library/D1List.d.ts
 export * from '../components/Ui/List/index.js';
+
 // File: src/library/D1ListGroup.d.ts
 export * from '../components/Ui/ListGroup/index.js';
+
 // File: src/library/D1ListItem.d.ts
 export * from '../components/Ui/ListItem/index.js';
+
 // File: src/library/D1ListMenu.d.ts
 export * from '../components/Ui/ListMenu/index.js';
+
 // File: src/library/D1Mask.d.ts
 export * from '../components/Ui/Mask/index.js';
+
 // File: src/library/D1Menu.d.ts
 export * from '../components/Ui/Menu/index.js';
+
 // File: src/library/D1MenuButton.d.ts
 export * from '../components/Ui/MenuButton/index.js';
+
 // File: src/library/D1MenuChip.d.ts
 export * from '../components/Ui/MenuChip/index.js';
+
 // File: src/library/D1MenuCountry.d.ts
 export * from '../components/Ui/MenuCountry/index.js';
+
 // File: src/library/D1Modal.d.ts
 export * from '../components/Ui/Modal/index.js';
+
 // File: src/library/D1MotionAxis.d.ts
 export * from '../components/Ui/MotionAxis/index.js';
+
 // File: src/library/D1MotionTransform.d.ts
 export * from '../components/Ui/MotionTransform/index.js';
+
 // File: src/library/D1Page.d.ts
 export * from '../components/Ui/Page/index.js';
+
 // File: src/library/D1PageArea.d.ts
 export * from '../components/Ui/PageArea/index.js';
+
 // File: src/library/D1Progress.d.ts
 export * from '../components/Ui/Progress/index.js';
+
 // File: src/library/D1Radio.d.ts
 export * from '../components/Ui/Radio/index.js';
+
 // File: src/library/D1Ripple.d.ts
 export * from '../components/Ui/Ripple/index.js';
+
 // File: src/library/D1Scrollbar.d.ts
 export * from '../components/Ui/Scrollbar/index.js';
+
 // File: src/library/D1Section.d.ts
 export * from '../components/Ui/Section/index.js';
+
 // File: src/library/D1Select.d.ts
 export * from '../components/Ui/Select/index.js';
+
 // File: src/library/D1SelectValue.d.ts
 export * from '../components/Ui/SelectValue/index.js';
+
 // File: src/library/D1Skeleton.d.ts
 export * from '../components/Ui/Skeleton/index.js';
+
 // File: src/library/D1Snackbar.d.ts
 export * from '../components/Ui/Snackbar/index.js';
+
 // File: src/library/D1SnackbarItem.d.ts
 export * from '../components/Ui/SnackbarItem/index.js';
+
 // File: src/library/D1Switch.d.ts
 export * from '../components/Ui/Switch/index.js';
+
 // File: src/library/D1TabItem.d.ts
 export * from '../components/Ui/TabItem/index.js';
+
 // File: src/library/D1Tabs.d.ts
 export * from '../components/Ui/Tabs/index.js';
+
 // File: src/library/D1TabsNavigation.d.ts
 export * from '../components/Ui/TabsNavigation/index.js';
+
 // File: src/library/D1TextDescription.d.ts
 export * from '../components/Ui/TextDescription/index.js';
+
 // File: src/library/D1TextLabel.d.ts
 export * from '../components/Ui/TextLabel/index.js';
+
 // File: src/library/D1Textarea.d.ts
 export * from '../components/Ui/Textarea/index.js';
+
 // File: src/library/D1TextareaAutosize.d.ts
 export * from '../components/Ui/TextareaAutosize/index.js';
+
 // File: src/library/D1Tooltip.d.ts
 export * from '../components/Ui/Tooltip/index.js';
+
 // File: src/library/D1Window.d.ts
 export * from '../components/Ui/Window/index.js';
 
@@ -1206,5 +1071,7 @@ export declare const componentsList: any;
 export declare const d1MakeIcons: () => void;
 
 // File: src/library/plugin.d.ts
-/** Initializes the Vite plugin for the design system. */
+/**
+ * Initializes the Vite plugin for the design system.
+ */
 export declare function uiD1VitePlugin(options?: any): any;

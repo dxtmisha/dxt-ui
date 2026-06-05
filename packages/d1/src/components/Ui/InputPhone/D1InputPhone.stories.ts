@@ -4,6 +4,7 @@ import D1InputPhone from './D1InputPhone.vue'
 import { InputPhoneWikiStorybook } from './wiki'
 
 // :story-import [!] System label / Системная метка
+import { ref } from 'vue'
 // :story-import [!] System label / Системная метка
 
 const meta = {
@@ -31,4 +32,45 @@ export const InputPhone: Story = {
 }
 
 // :story-items [!] System label / Системная метка
+export const InputPhoneVModel: Story = {
+  name: 'Двусторонняя привязка (v-model)',
+  render: () => ({
+    components: { D1InputPhone },
+    setup() {
+      return {
+        phone: ref('')
+      }
+    },
+    template: `
+        <div class="wiki-storybook-flex-column">
+          <D1InputPhone
+            v-model:value="phone"
+            label="Phone Number"
+            placeholder="Enter phone number"
+          />
+          <div>Entered phone: {{ phone || '—' }}</div>
+        </div>
+    `
+  })
+}
+export const InputPhoneCountryBlock: Story = {
+  name: 'Блокировка страны',
+  render: () => ({
+    components: { D1InputPhone },
+    template: `
+        <div class="wiki-storybook-flex-column">
+          <D1InputPhone
+            country-default="DE"
+            :country-block="false"
+            label="Dynamic Country Detection (DE default)"
+          />
+          <D1InputPhone
+            country-default="DE"
+            :country-block="true"
+            label="Locked Country (DE)"
+          />
+        </div>
+    `
+  })
+}
 // :story-items [!] System label / Системная метка

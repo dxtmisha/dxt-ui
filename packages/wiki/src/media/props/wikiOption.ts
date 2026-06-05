@@ -85,6 +85,16 @@ export const wikiOption: StorybookArgsToList = {
       type: 'currency'
     }
   },
+  countryBlock: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.option,
+      description: {
+        en: 'Flag to disable dynamic country detection by phone number',
+        ru: 'Флаг для отключения динамического определения страны по номеру телефона'
+      }
+    }
+  },
   dir: {
     type: StorybookControl.boolean,
     options: {

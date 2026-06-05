@@ -62,7 +62,8 @@
 
     &--color,
     &--file,
-    &--image {
+    &--image,
+    &--flag-compressed {
       @include ui.disabled(ui.$designsClassName) {
         filter: grayscale(1) opacity(#{var(--sys-color-opacity, ui.v('??color.opacity', 1))});
       }

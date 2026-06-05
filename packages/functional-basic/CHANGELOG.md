@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.5] - 2026-06-05
+
+### Changed / Improved
+- **Maintenance**: Version bumped to `1.3.5` to synchronize package updates across the workspace.
+
+## [1.3.4] - 2026-06-05
+
+### Added
+- **GeoFlag**: Updated `GeoFlag.getList()` and `GeoFlag.getNational()` methods to accept an optional `sort` parameter (defaulting to `true`) for alphabetical sorting.
+
+## [1.3.3] - 2026-06-02
+
+### Changed / Improved
+- **Maintenance**: Version bumped to `1.3.3` to align with monorepo release updates.
+
+## [1.3.2] - 2026-05-27
+
+### Changed / Improved
+- **ApiHeaders**: Normalized HTTP header key merging to enforce lowercase keys (e.g. `content-type`), preventing duplicate casing mismatches.
+
 ## [1.3.1] - 2026-05-25
 
 ### Changed / Improved

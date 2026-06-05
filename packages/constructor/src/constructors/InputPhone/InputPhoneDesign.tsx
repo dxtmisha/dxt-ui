@@ -1,4 +1,4 @@
-import { type VNode } from 'vue'
+import { h, type VNode } from 'vue'
 import {
   type ConstrBind,
   type ConstrOptions,
@@ -127,7 +127,7 @@ export class InputPhoneDesign<
     return this.item.field.render(
       {
         default: this.renderMask,
-        leading: () => this.item.dialCode.render()
+        leading: this.renderDialCode
       },
       {
         ...this.getAttrs(),
@@ -145,17 +145,46 @@ export class InputPhoneDesign<
    * @returns array of VNodes / массив VNode
    */
   readonly renderMask = (input: FieldControl): VNode[] => {
+    if (
+      this.props.disabled
+      || this.props.readonly
+    ) {
+      return [h('input', {
+        value: this.item.value.item.value,
+        disabled: this.props.disabled,
+        readonly: this.props.readonly,
+        class: input.className
+      })]
+    }
+
     return this.item.mask.render(undefined, {
       ref: this.element,
       class: input.className,
       align: this.props.align,
       inputAttrs: toBinds<ConstrBind<any>>(
         this.item.attributes.listForInput,
-        input.binds
+        input.binds,
+        {
+          inputMode: 'tel'
+        },
+        this.props.inputAttrs
       ),
       onBlur: this.item.event.onBlur,
       onInput: this.item.event.onInput
     })
   }
-}
 
+  /**
+   * Rendering dial code element.
+   *
+   * Рендеринг элемента телефонного кода.
+   * @returns array of VNodes / массив VNode
+   */
+  readonly renderDialCode = (): VNode[] => {
+    if (this.props.countryBlock) {
+      return []
+    }
+
+    return this.item.dialCode.render()
+  }
+}

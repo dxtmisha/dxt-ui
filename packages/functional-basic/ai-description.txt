@@ -1,14 +1,9 @@
-Core Purpose
-A comprehensive, framework-agnostic utility library designed to simplify common frontend development tasks, including HTTP API communication (with caching and SSR hydration), state management (cookies, local/session storage), internationalization (Geo, Datetime, Translation), and DOM/Event management.
+Core Purpose: This library is a comprehensive, SSR-compatible utility suite for frontend applications, providing centralized management for HTTP requests (Fetch API), localized data formatting (Intl), state/storage management (cookies, local/session storage), and meta-tag manipulation. It acts as a foundational framework for handling API communication, multi-language support, and persistent application state across client and server environments.
 
-Usage Scenarios
-Study this library when you need:
-1. Robust API Integration: Standardized fetching, request cancellation (AbortController), automated error handling/retry logic, and response caching.
-2. SSR Data Synchronization: Managing data consistency between server and client via hydration scripts.
-3. Feature-Rich State Persistence: Handling cookies (with SameSite/Secure options) and browser storage (with TTL/caching capabilities).
-4. Complex DOM/UI Logic: Managing event listeners with lifecycle auto-cleanup, scrollbar width calculations, and global loading state management.
-5. Localization/I18n: Handling currency, date formatting, and translation file loading dynamically.
-6. Search Functionality: Implementing client-side search with regex matching and highlight formatting for list data.
+Usage Scenarios: You should study this library when:
+- Implementing or refactoring an API communication layer: The library provides robust handling of requests, response caching, error storage, and hydration across SSR/Client boundaries via classes like ApiInstance, ApiCache, and ApiResponse.
+- Managing internationalization (i18n): Use its localization utilities (Geo, GeoIntl, Translate, Datetime) for date/time formatting, currency handling, and phone number masking.
+- Handling complex state and storage: Its specialized storage wrappers (DataStorage, CookieStorage, ServerStorage) are indispensable for maintaining consistency between server-rendered HTML and client-side hydrations.
+- Implementing UI-dependent logic: It provides optimized event listeners (EventItem), loading state management (Loading, LoadingInstance), and reactive URL hash management (Hash, HashInstance).
 
-Integration Context
-This library acts as a foundational "glue" layer. It is built using native Web APIs (Fetch, BroadcastChannel, ResizeObserver, Intl) and is intended to be initialized globally. It provides abstract classes that can be extended or injected to fit various architectures (e.g., SSR frameworks like Nuxt or Next.js, or standard SPA setups). It centralizes configuration for API paths, translation endpoints, and geo-data, serving as a unified utility core for the application.
+Integration Context: The library is designed to be environment-agnostic but is particularly effective in SSR-heavy stacks (like Vue or React SSR). It manages the transition from server-rendered state to client-side interactivity using hydration helpers. It operates as a set of singleton or instance-based controllers that can be initialized at the application entry point to provide global, consistent interfaces for network requests, localization, and data persistence.

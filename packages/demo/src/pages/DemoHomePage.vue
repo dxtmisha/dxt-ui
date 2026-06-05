@@ -26,6 +26,7 @@ import DemoLink from '../components/DemoLink.vue'
         <DemoLink label="Icon" name="component-icon"/>
         <DemoLink label="Image" name="component-image"/>
         <DemoLink label="Input" name="component-input"/>
+        <DemoLink label="InputPhone" name="component-input-phone"/>
         <DemoLink label="List" name="component-list"/>
         <DemoLink label="Mask" name="component-mask"/>
         <DemoLink label="Modal" name="component-modal"/>
