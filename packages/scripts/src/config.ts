@@ -90,6 +90,8 @@ export const UI_FILE_AI_PROMPT_INSTRUCTION = 'ai-instruction.txt'
 export const UI_FILE_AI_PROMPT_PROMPT = 'ai-prompt.txt'
 /** AI prompt types file name / Название файла с типами промпта AI */
 export const UI_FILE_AI_PROMPT_TYPES = 'ai-types.txt'
+/** AI prompt developer file name / Название файла для разработчика AI */
+export const UI_FILE_AI_PROMPT_DEVELOPER = 'ai-developer.txt'
 
 /** File name for storing the list of flags/ Название файла для хранения списка флагов */
 export const UI_FILE_NAME_FLAGS = 'flags'

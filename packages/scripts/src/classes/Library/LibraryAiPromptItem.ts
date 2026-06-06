@@ -5,7 +5,8 @@ import {
   UI_FILE_AI_PROMPT_DESCRIPTION,
   UI_FILE_AI_PROMPT_INFO,
   UI_FILE_AI_PROMPT_TYPES,
-  UI_FILE_PACKAGE
+  UI_FILE_PACKAGE,
+  UI_FILE_AI_PROMPT_DEVELOPER
 } from '../../config'
 
 /**
@@ -53,6 +54,7 @@ export class LibraryAiPromptItem {
       || this.isInfo()
       || this.isTypes()
       || this.isScreenshot()
+      || this.isDeveloper()
   }
 
   /**
@@ -63,6 +65,16 @@ export class LibraryAiPromptItem {
    */
   isDescription(): boolean {
     return PropertiesFile.is(this.getPath(UI_FILE_AI_PROMPT_DESCRIPTION))
+  }
+
+  /**
+   * Checks if the developer prompt file exists.
+   *
+   * Проверяет, существует ли файл промпта разработчика.
+   * @returns true if developer prompt file exists / true, если файл промпта разработчика существует
+   */
+  isDeveloper(): boolean {
+    return PropertiesFile.is(this.getPath(UI_FILE_AI_PROMPT_DEVELOPER))
   }
 
   /**
@@ -108,7 +120,8 @@ export class LibraryAiPromptItem {
       this.getDescription(),
       this.getInfo(),
       this.getTypes(),
-      this.getScreenshot()
+      this.getScreenshot(),
+      this.getDeveloper()
     ].filter(item => item !== undefined) as string[]
 
     if (data.length > 0) {
@@ -195,6 +208,27 @@ ${data.join('\n\n')}
       return `
 ## Project context: Investigation required
 ${this.readFile(UI_FILE_AI_PROMPT_DESCRIPTION)}
+      `.trim()
+    }
+
+    return undefined
+  }
+
+  /**
+   * Formats and returns the developer prompt section.
+   *
+   * Форматирует и возвращает секцию промпта для разработчика.
+   * @returns formatted developer prompt or undefined / отформатированный промпт разработчика или undefined
+   * @protected
+   */
+  protected getDeveloper(): string | undefined {
+    if (this.isDeveloper()) {
+      console.log('-- Developer')
+
+      return `
+## Mandatory Study Before Development
+Before developing, modifying, or implementing any code for /${this.getPathString()}, you MUST first study the architectural rules and instructions located in the following file:
+'${this.getPathString()}/${UI_FILE_AI_PROMPT_DEVELOPER}'
       `.trim()
     }
 

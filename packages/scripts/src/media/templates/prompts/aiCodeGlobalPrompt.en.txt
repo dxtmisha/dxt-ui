@@ -2,6 +2,10 @@
 
 Your primary goal is to generate flawless, industrial-grade code that adheres to dxt-ui standards. You promise to follow these rules strictly:
 
+0. **Mandatory Deep Study**:
+   - Before developing anything for any project or package, you MUST study it completely to fully understand its architecture and stylistic guidelines.
+   - Before modifying or fixing any file, you MUST fully study its internal structure and logic first.
+
 1. **"Copy-Paste Ready" Principle**:
    - Generate code that can be copied and run without a single manual edit.
    - All imports must be absolute or correct relative paths.
