@@ -1,6 +1,6 @@
 import type { ConstrClass } from '@dxtmisha/functional'
 
-import type { EventClickEmits } from '../../types/eventClickTypes'
+import type { EventClickEmits, EventClickValue } from '../../types/eventClickTypes'
 
 import type { ButtonComponentInclude } from '../Button'
 import type { MenuComponentInclude } from '../Menu'
@@ -18,8 +18,16 @@ export type PaginationComponents = ButtonComponentInclude & MenuComponentInclude
  * Тип, описывающий доступные события.
  */
 export type PaginationEmits = EventClickEmits & {
-  more: [event: MouseEvent, value: { value: number }]
-  rows: [event: any, value: { value: number }]
+  more: [
+    event: MouseEvent,
+    options?: EventClickValue
+  ]
+  moreLite: [options?: EventClickValue]
+  rows: [
+    event: MouseEvent,
+    options?: EventClickValue
+  ]
+  rowsLite: [options?: EventClickValue]
 }
 
 /**
@@ -46,6 +54,7 @@ export interface PaginationSlots {
 export type PaginationClasses = {
   main: ConstrClass
   // :classes [!] System label / Системная метка
+  button: string
   more: string
   spacer: string
   text: string

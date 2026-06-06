@@ -6,15 +6,15 @@ import type { PaginationProps } from './props'
 import type { PaginationEmits } from './types'
 
 /**
- * Class for managing the rows per page limit logic of the pagination component.
+ * Class for managing the rows per page menu logic of the pagination component.
  *
  * Класс для управления логикой лимита строк на странице компонента пагинации.
  */
-export class PaginationLimit {
+export class PaginationMenuRows {
   /**
-   * Constructor for PaginationLimit.
+   * Constructor for PaginationMenuRows.
    *
-   * Конструктор для PaginationLimit.
+   * Конструктор для PaginationMenuRows.
    * @param props input properties / входные свойства
    * @param text text manager instance / экземпляр менеджера текстов
    * @param emits callback for event emitter / функция для генерации событий
@@ -23,7 +23,7 @@ export class PaginationLimit {
     protected readonly props: PaginationProps,
     protected readonly text?: TextInclude,
     protected readonly emits?: ConstrEmit<PaginationEmits>
-  ) {}
+  ) { }
 
   /**
    * Returns list of rows limit options formatted for menu selection (e.g. [{ value: 10, label: '10' }]).
@@ -48,18 +48,5 @@ export class PaginationLimit {
    */
   get labelRowsPerPage(): string | undefined {
     return this.text?.rowsPerPage
-  }
-
-  /**
-   * Event handler triggered when the rows per page count limit changes.
-   *
-   * Обработчик события, вызываемый при изменении лимита количества строк на странице.
-   * @param event event object / объект события
-   * @param options options object containing selected value / объект параметров, содержащий выбранное значение
-   */
-  readonly onRows = (event: MouseEvent, options: { value: number }): void => {
-    if (this.emits) {
-      this.emits('rows', event, options)
-    }
   }
 }

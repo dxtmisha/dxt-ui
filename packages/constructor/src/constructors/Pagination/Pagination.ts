@@ -3,8 +3,10 @@ import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
 import { EventClickInclude } from '../../classes/EventClickInclude'
 import { TextInclude } from '../../classes/TextInclude'
+
 import { PaginationButton } from './PaginationButton'
-import { PaginationLimit } from './PaginationLimit'
+import { PaginationEvent } from './PaginationEvent'
+import { PaginationMenuRows } from './PaginationMenuRows'
 import { PaginationPage } from './PaginationPage'
 
 import type { PaginationComponents, PaginationEmits, PaginationSlots } from './types'
@@ -16,20 +18,20 @@ import type { PaginationProps } from './props'
  * Класс-оркестратор Pagination, координирующий внутренние субмодули для управления страницами, выбором лимита строк и конфигурациями кнопок навигации.
  */
 export class Pagination {
-  /** Manager instance handling navigation, number buttons, and their event callbacks / Экземпляр менеджера, отвечающий за кнопки навигации, числовые кнопки и их обработчики событий */
-  readonly button: PaginationButton
-
-  /** Class for working with the click events / Класс для работы с событиями клика */
-  readonly event: EventClickInclude
-
-  /** Manager instance handling the rows limit per page selector and option lists / Экземпляр менеджера, отвечающий за лимит строк на странице и списки опций */
-  readonly limit: PaginationLimit
+  /** Instance for working with native click events / Экземпляр для работы со стандартными событиями клика */
+  readonly eventClick: EventClickInclude
+  /** Class for working with the events / Класс для работы с событиями */
+  readonly event: PaginationEvent
+  /** Text and translation registry manager instance / Экземпляр менеджера реестра текстов и переводов */
+  readonly text: TextInclude
 
   /** Manager instance handling calculations for page count, row count, value, ranges, and info / Экземпляр менеджера, отвечающий за расчеты количества страниц, строк, активной страницы, диапазонов и информации */
   readonly page: PaginationPage
 
-  /** Text and translation registry manager instance / Экземпляр менеджера реестра текстов и переводов */
-  readonly text: TextInclude
+  /** Manager instance handling navigation, number buttons, and their event callbacks / Экземпляр менеджера, отвечающий за кнопки навигации, числовые кнопки и их обработчики событий */
+  readonly button: PaginationButton
+  /** Manager instance handling the rows limit per page selector and option lists / Экземпляр менеджера, отвечающий за лимит строк на странице и списки опций */
+  readonly menuRows: PaginationMenuRows
 
   /**
    * Constructor for orchestrating the Pagination logic subsystems.
@@ -44,9 +46,10 @@ export class Pagination {
    * @param slots slot definition descriptors / дескрипторы определений слотов
    * @param emits Vue callback emitter function / функция генерации событий Vue
    * @param constructors override constructs object / объект переопределения конструкторов
-   * @param constructors.EventClickIncludeConstructor class for working with event click / класс для работы с событием клика
+   * @param constructors.EventClickIncludeConstructor class for working with event click / класс для работы со стандартным событием клика
    * @param constructors.PaginationButtonConstructor custom button calculations logic constructor / кастомный конструктор логики вычисления кнопок
-   * @param constructors.PaginationLimitConstructor custom rows per page limit selector constructor / кастомный конструктор логики выбора лимита строк
+   * @param constructors.PaginationEventConstructor custom event management constructor / кастомный конструктор логики событий
+   * @param constructors.PaginationMenuRowsConstructor custom rows per page limit selector constructor / кастомный конструктор логики выбора лимита строк
    * @param constructors.PaginationPageConstructor custom page calculations logic constructor / кастомный конструктор логики страниц
    * @param constructors.TextIncludeConstructor custom text management logic constructor / кастомный конструктор менеджера текстов
    */
@@ -62,7 +65,8 @@ export class Pagination {
     constructors: {
       EventClickIncludeConstructor?: typeof EventClickInclude
       PaginationButtonConstructor?: typeof PaginationButton
-      PaginationLimitConstructor?: typeof PaginationLimit
+      PaginationEventConstructor?: typeof PaginationEvent
+      PaginationMenuRowsConstructor?: typeof PaginationMenuRows
       PaginationPageConstructor?: typeof PaginationPage
       TextIncludeConstructor?: typeof TextInclude
     } = {}
@@ -70,16 +74,24 @@ export class Pagination {
     const {
       EventClickIncludeConstructor = EventClickInclude,
       PaginationButtonConstructor = PaginationButton,
-      PaginationLimitConstructor = PaginationLimit,
+      PaginationEventConstructor = PaginationEvent,
+      PaginationMenuRowsConstructor = PaginationMenuRows,
       PaginationPageConstructor = PaginationPage,
       TextIncludeConstructor = TextInclude
     } = constructors
 
+    this.eventClick = new EventClickIncludeConstructor(props, undefined, emits)
+    this.event = new PaginationEventConstructor(props, this.eventClick, emits)
     this.text = new TextIncludeConstructor(props)
-    this.event = new EventClickIncludeConstructor(props, undefined, emits)
 
-    this.limit = new PaginationLimitConstructor(props, this.text, emits)
     this.page = new PaginationPageConstructor(props, this.text, emits)
-    this.button = new PaginationButtonConstructor(props, this.page, this.text, emits, this.event)
+
+    this.button = new PaginationButtonConstructor(
+      props,
+      this.page,
+      this.event,
+      this.text
+    )
+    this.menuRows = new PaginationMenuRowsConstructor(props, this.text, emits)
   }
 }

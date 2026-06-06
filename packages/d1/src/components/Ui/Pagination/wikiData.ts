@@ -6,17 +6,18 @@ import { defaults } from './props'
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
   { name: 'buttonAttrs', type: 'ConstrBind<ButtonPropsBasic>' },
-  { name: 'count', type: 'number' },
+  { name: 'count', type: 'string | number' },
   { name: 'hideIfOne', type: 'boolean' },
-  { name: 'iconArrowDown', type: 'string' },
-  { name: 'iconChevronLeft', type: 'string' },
-  { name: 'iconChevronRight', type: 'string' },
-  { name: 'iconFirst', type: 'string' },
-  { name: 'iconLast', type: 'string' },
-  { name: 'length', type: 'number' },
+  { name: 'iconArrowDown', type: 'IconValue<IconPropsBasic>' },
+  { name: 'iconArrowFirst', type: 'IconValue<IconPropsBasic>' },
+  { name: 'iconArrowLast', type: 'IconValue<IconPropsBasic>' },
+  { name: 'iconArrowLeft', type: 'IconValue<IconPropsBasic>' },
+  { name: 'iconArrowRight', type: 'IconValue<IconPropsBasic>' },
   { name: 'menu', type: 'number[]' },
   { name: 'menuAttrs', type: 'ConstrBind<MenuPropsBasic>' },
-  { name: 'rows', type: 'number' },
+  { name: 'rows', type: 'string | number' },
+  { name: 'showArrows', type: 'boolean' },
+  { name: 'showFirstLast', type: 'boolean' },
   { name: 'showInfo', type: 'boolean' },
   { name: 'showMore', type: 'boolean' },
   { name: 'textFirst', type: 'TextValue' },
@@ -26,7 +27,8 @@ const propsNames: StorybookProps = [
   { name: 'textNext', type: 'TextValue' },
   { name: 'textPrevious', type: 'TextValue' },
   { name: 'textRowsPerPage', type: 'TextValue' },
-  { name: 'value', type: 'number' }
+  { name: 'value', type: 'string | number' },
+  { name: 'visible', type: 'number' }
   // :propsList [!] System label / Системная метка
 ]
 

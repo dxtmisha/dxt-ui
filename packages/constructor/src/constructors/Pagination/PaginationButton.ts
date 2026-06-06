@@ -1,15 +1,14 @@
 import { computed } from 'vue'
-import { type ConstrEmit, type ConstrBind, type ListListInputItem } from '@dxtmisha/functional'
+import { type ConstrBind, type ListListInputItem } from '@dxtmisha/functional'
 
-import { type EventClickInclude } from '../../classes/EventClickInclude'
 import { type TextInclude } from '../../classes/TextInclude'
-import { type PaginationPage } from './PaginationPage'
 
 import type { ButtonPropsBasic } from '../Button'
 
-import type { PaginationEmits } from './types'
+import { type PaginationEvent } from './PaginationEvent'
+import { type PaginationPage } from './PaginationPage'
+
 import type { PaginationProps } from './props'
-import type { EventClickValue } from '../../types/eventClickTypes.ts'
 
 /**
  * Class for managing the button configurations and action handlers of the pagination component.
@@ -23,16 +22,14 @@ export class PaginationButton {
    * Конструктор для PaginationButton.
    * @param props input properties / входные свойства
    * @param page page manager instance / экземпляр менеджера страниц
-   * @param text text manager instance / экземпляр менеджера текстов
-   * @param emits callback for event emitter / функция для генерации событий
    * @param event click event control instance / экземпляр управления событием клика
+   * @param text text manager instance / экземпляр менеджера текстов
    */
   constructor(
     protected readonly props: PaginationProps,
     protected readonly page: PaginationPage,
-    protected readonly text?: TextInclude,
-    protected readonly emits?: ConstrEmit<PaginationEmits>,
-    protected readonly event?: EventClickInclude
+    protected readonly event?: PaginationEvent,
+    protected readonly text?: TextInclude
   ) {
   }
 
@@ -60,9 +57,10 @@ export class PaginationButton {
       if (i <= this.page.pagesCount) {
         data.push({
           ...binds,
-          label: i.toString(),
-          value: i,
-          selected: value === i
+          'label': i.toString(),
+          'value': i,
+          'selected': value === i,
+          'data-event-type': 'page'
         })
       }
     }
@@ -81,10 +79,11 @@ export class PaginationButton {
 
     return {
       ...this.binds,
-      icon: this.props.iconArrowLeft,
-      value: value - 1,
-      disabled: value <= 1,
-      title: this.text?.previous
+      'icon': this.props.iconArrowLeft,
+      'value': value - 1,
+      'disabled': value <= 1,
+      'title': this.text?.previous,
+      'data-event-type': 'back'
     }
   }
 
@@ -99,10 +98,11 @@ export class PaginationButton {
 
     return {
       ...this.binds,
-      icon: this.props.iconArrowRight,
-      value: value + 1,
-      disabled: value >= this.page.pagesCount,
-      title: this.text?.next
+      'icon': this.props.iconArrowRight,
+      'value': value + 1,
+      'disabled': value >= this.page.pagesCount,
+      'title': this.text?.next,
+      'data-event-type': 'next'
     }
   }
 
@@ -115,10 +115,11 @@ export class PaginationButton {
   get first(): ConstrBind<ButtonPropsBasic> {
     return {
       ...this.binds,
-      icon: this.props.iconArrowFirst,
-      value: 1,
-      disabled: this.page.value <= 1,
-      title: this.text?.first
+      'icon': this.props.iconArrowFirst,
+      'value': 1,
+      'disabled': this.page.value <= 1,
+      'title': this.text?.first,
+      'data-event-type': 'first'
     }
   }
 
@@ -131,10 +132,11 @@ export class PaginationButton {
   get last(): ConstrBind<ButtonPropsBasic> {
     return {
       ...this.binds,
-      icon: this.props.iconArrowLast,
-      value: this.page.pagesCount,
-      disabled: this.page.value >= this.page.pagesCount,
-      title: this.text?.last
+      'icon': this.props.iconArrowLast,
+      'value': this.page.pagesCount,
+      'disabled': this.page.value >= this.page.pagesCount,
+      'title': this.text?.last,
+      'data-event-type': 'last'
     }
   }
 
@@ -142,15 +144,39 @@ export class PaginationButton {
    * Returns properties and visibility states (hide/show) for the "Show more" loader button.
    *
    * Возвращает свойства и состояние видимости (скрыть/показать) для кнопки подгрузки следующей страницы («Показать еще»).
-   * @returns button binding properties with hide state / свойства привязки кнопки с состоянием видимости
+   * @returns button binding properties / свойства привязки кнопки
    */
-  get more(): ConstrBind<ButtonPropsBasic> & { hide: boolean } {
+  get more(): ConstrBind<ButtonPropsBasic> {
     return {
       ...this.binds,
-      label: this.text?.more,
-      value: this.page.value + 1,
-      hide: !this.page.pagesCount || this.page.value >= this.page.pagesCount
+      'label': this.text?.more,
+      'value': this.page.value + 1,
+      'data-event-type': 'more'
     }
+  }
+
+  /**
+   * Returns properties for the rows per page menu button.
+   *
+   * Возвращает свойства для кнопки меню количества строк на странице.
+   * @returns button binding properties / свойства привязки кнопки
+   */
+  get menu(): ConstrBind<ButtonPropsBasic> {
+    return this.binds
+  }
+
+  /**
+   * Checks if the "Show more" button should be shown.
+   *
+   * Проверяет, должна ли быть показана кнопка «Показать еще».
+   * @returns true if the button should be shown / true, если кнопка должна быть показана
+   */
+  showMore(): boolean {
+    return Boolean(
+      this.props.showMore
+      && this.page.pagesCount
+      && this.page.value < this.page.pagesCount
+    )
   }
 
   /**
@@ -159,31 +185,11 @@ export class PaginationButton {
    * Возвращает базовые общие свойства, применяемые ко всем кнопкам навигации и управления (размер, скругление, минимальная ширина и т.д.).
    * @returns button binding properties / свойства привязки кнопки
    */
-  get binds(): ConstrBind<ButtonPropsBasic> {
+  protected get binds(): ConstrBind<ButtonPropsBasic> {
     return {
       hasLabelMinWidth: false,
-      onClick: this.onClick,
+      onClick: this.event?.onClick,
       ...this.props.buttonAttrs
-    }
-  }
-
-  readonly onClick = (
-    event: MouseEvent,
-    options?: EventClickValue
-  ) => {
-    this.event?.onClick(event, options)
-  }
-
-  /**
-   * Event handler triggered on clicking the "Show more" button loader.
-   *
-   * Обработчик событий клика по кнопке подгрузки следующей страницы («Показать еще»).
-   * @param event native click event / нативное событие клика
-   * @param options parameters including target value / параметры, содержащие целевое значение страницы
-   */
-  readonly onMore = (event: MouseEvent, options: { value?: number }): void => {
-    if (this.emits) {
-      this.emits('more', event, { value: Number(options?.value ?? 1) })
     }
   }
 }

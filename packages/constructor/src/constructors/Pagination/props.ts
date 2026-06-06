@@ -34,20 +34,20 @@ export type PaginationPropsBasic<
     /** Number of rows per page / Количество строк на странице */
     rows?: number | string
 
-    /** Option list for rows count select / Список вариантов количества строк */
-    menu?: number[]
     /** Number of visible page links / Количество отображаемых ссылок на страницы */
     visible?: number
+    /** Whether to hide pagination if only one page exists / Скрывать ли пагинацию, если страница всего одна */
+    hideIfOne?: boolean
+    /** Whether to show the next and back buttons / Показывать ли кнопки «Назад» и «Вперед» */
+    showArrows?: boolean
+    /** Whether to show the first and last page buttons / Показывать ли кнопки перехода к первой и последней страницам */
+    showFirstLast?: boolean
     /** Whether to show page range information / Показывать ли информацию о диапазоне страниц */
     showInfo?: boolean
     /** Whether to show "Show more" button / Показывать ли кнопку "Показать еще" */
     showMore?: boolean
-    /** Whether to hide pagination if only one page exists / Скрывать ли пагинацию, если страница всего одна */
-    hideIfOne?: boolean
-    /** Custom attributes for button components / Пользовательские атрибуты для кнопок */
-    buttonAttrs?: ConstrBind<ButtonPropsBasic>
-    /** Custom attributes for menu component / Пользовательские атрибуты для меню */
-    menuAttrs?: ConstrBind<MenuPropsBasic>
+    /** Whether to show the page navigation buttons / Показывать ли панель с кнопками страниц */
+    showPagination?: boolean
 
     /** Icon for down arrow / Иконка для стрелки вниз */
     iconArrowDown?: IconValue<Icon>
@@ -59,6 +59,13 @@ export type PaginationPropsBasic<
     iconArrowLeft?: IconValue<Icon>
     /** Icon for the right arrow / Иконка для стрелки вправо */
     iconArrowRight?: IconValue<Icon>
+
+    /** Custom attributes for button components / Пользовательские атрибуты для кнопок */
+    buttonAttrs?: ConstrBind<ButtonPropsBasic>
+    /** Custom attributes for menu component / Пользовательские атрибуты для меню */
+    menuAttrs?: ConstrBind<MenuPropsBasic>
+    /** Option list for rows count select / Список вариантов количества строк */
+    menu?: number[]
   }
 
 /**
@@ -74,13 +81,17 @@ export type PaginationProps = PaginationPropsBasic & PaginationPropsToken
  * Значение по умолчанию для свойства.
  */
 export const defaultsPagination = {
-  value: 1,
-  visible: 3,
   iconArrowDown: 'arrow_drop_down',
   iconArrowFirst: 'first_page',
   iconArrowLast: 'last_page',
   iconArrowLeft: 'chevron_left',
   iconArrowRight: 'chevron_right',
+  showArrows: true,
+  showFirstLast: true,
+  showPagination: true,
+  value: 1,
+  visible: 3,
+  hideIfOne: true,
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

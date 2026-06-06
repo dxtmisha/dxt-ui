@@ -127,6 +127,7 @@ export class ButtonDesign<
     return h(
       this.item.tag,
       {
+        ...this.getAttrs(),
         ...this.item.binds,
         ref: this.element,
 
