@@ -27,7 +27,7 @@
     "build": "vue-tsc -b && vite build",
     "build-recovery": "npm run build && npm run wiki-storm",
     "preview": "vite preview",
-    "ui": "dxt-ui",
+    "ui": "dxt-ui Pagination",
     "wiki-storm": "dxt-wiki-storm",
     "types": "dxt-types",
     "screenshot": "dxt-screenshot",
@@ -343,6 +343,10 @@
     "./D1InputPhone": {
       "types": "./dist/src/library/D1InputPhone.d.ts",
       "default": "./dist/D1InputPhone.js"
+    },
+    "./D1Pagination": {
+      "types": "./dist/src/library/D1Pagination.d.ts",
+      "default": "./dist/D1Pagination.js"
     }
   },
   "buildOptions": {

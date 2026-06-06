@@ -23,14 +23,19 @@ export class TextInclude {
     copiedClipboard: 'Copied to the clipboard',
     decrement: 'Decrease',
     entriesMatch: 'Entries do not match',
+    first: 'First',
     hide: 'Hide',
     increment: 'Increase',
+    info: '[item] of [count]',
+    last: 'Last',
     loading: 'Loading',
+    more: 'Show more',
     next: 'Next',
     notFound: 'Nothing found',
     notifications: 'Notifications',
     ok: 'OK',
     previous: 'Previous',
+    rowsPerPage: 'Rows per page',
     show: 'Show'
   })
 
@@ -96,6 +101,11 @@ export class TextInclude {
     return this.get('textEntriesMatch')
   }
 
+  /** First page text / Текст первой страницы */
+  get first() {
+    return this.get('textFirst')
+  }
+
   /** Hide text / Текст скрытия */
   get hide() {
     return this.get('textHide')
@@ -106,9 +116,24 @@ export class TextInclude {
     return this.get('textIncrement')
   }
 
+  /** Info text / Текст информации о диапазоне */
+  get info() {
+    return this.get('textInfo')
+  }
+
+  /** Last page text / Текст последней страницы */
+  get last() {
+    return this.get('textLast')
+  }
+
   /** Loading text / Текст загрузки */
   get loading() {
     return this.get('textLoading')
+  }
+
+  /** More text / Текст "показать еще" */
+  get more() {
+    return this.get('textMore')
   }
 
   /** Next text / Текст следующего */
@@ -134,6 +159,11 @@ export class TextInclude {
   /** Previous text / Текст предыдущего */
   get previous() {
     return this.get('textPrevious')
+  }
+
+  /** Rows per page text / Текст "строк на странице" */
+  get rowsPerPage() {
+    return this.get('textRowsPerPage')
   }
 
   /** Show text / Текст показа */

@@ -12651,6 +12651,11 @@
         name: 'd1-pageArea',
         type: 'component',
       ),
+      'pagination':(
+        index: 'pagination',
+        name: 'd1-pagination',
+        type: 'component',
+      ),
       'progress':(
         index: 'progress',
         name: 'd1-progress',
@@ -13257,6 +13262,11 @@
       'pageArea':(
         index: 'pageArea',
         name: 'd-pageArea',
+        type: 'component',
+      ),
+      'pagination':(
+        index: 'pagination',
+        name: 'd-pagination',
         type: 'component',
       ),
       'progress':(

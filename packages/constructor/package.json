@@ -344,6 +344,10 @@
     "./InputPhoneDialCode": {
       "types": "./dist/src/constructors/InputPhoneDialCode/index.d.ts",
       "default": "./dist/inputPhoneDialCode.js"
+    },
+    "./Pagination": {
+      "types": "./dist/src/constructors/Pagination/index.d.ts",
+      "default": "./dist/pagination.js"
     }
   },
   "buildOptions": {

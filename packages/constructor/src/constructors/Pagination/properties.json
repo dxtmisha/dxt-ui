@@ -1,0 +1,17 @@
+{
+  "gap": {
+    "_type": "var"
+  },
+  "height": {
+    "_type": "var"
+  },
+  "padding": {
+    "_type": "var"
+  },
+  "#more": {},
+  "#spacer": {},
+  "#text": {},
+  "#menu": {},
+  "#info": {},
+  "#navigation": {}
+}

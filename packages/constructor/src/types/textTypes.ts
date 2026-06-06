@@ -9,16 +9,22 @@ export type TextIndex = 'cancel'
   | 'copiedClipboard'
   | 'decrement'
   | 'entriesMatch'
+  | 'first'
   | 'hide'
   | 'increment'
+  | 'info'
+  | 'last'
   | 'loading'
+  | 'more'
   | 'next'
   | 'notFound'
   | 'notifications'
   | 'ok'
   | 'previous'
+  | 'rowsPerPage'
   | 'show'
   | string
+
 /** List of text values/ Список текстовых значений */
 export type TextList = Record<TextIndex, TextValue>
 
@@ -64,6 +70,12 @@ export type TextEntriesMatchPropsInclude = {
   textEntriesMatch?: TextValue
 }
 
+/** Interface for including first text/ Интерфейс для включения текста первой страницы */
+export type TextFirstPropsInclude = {
+  /** First text/ Текст первой страницы */
+  textFirst?: TextValue
+}
+
 /** Interface for including hide text/ Интерфейс для включения текста скрытия */
 export type TextHidePropsInclude = {
   /** Hide text/ Текст скрытия */
@@ -76,10 +88,28 @@ export type TextIncrementPropsInclude = {
   textIncrement?: TextValue
 }
 
+/** Interface for including info text/ Интерфейс для включения текста информации о диапазоне */
+export type TextInfoPropsInclude = {
+  /** Info text/ Текст информации о диапазоне */
+  textInfo?: TextValue
+}
+
+/** Interface for including last text/ Интерфейс для включения текста последней страницы */
+export type TextLastPropsInclude = {
+  /** Last text/ Текст последней страницы */
+  textLast?: TextValue
+}
+
 /** Interface for including loading text/ Интерфейс для включения текста загрузки */
 export type TextLoadingPropsInclude = {
   /** Loading text/ Текст загрузки */
   textLoading?: TextValue
+}
+
+/** Interface for including more text/ Интерфейс для включения текста "показать еще" */
+export type TextMorePropsInclude = {
+  /** More text/ Текст "показать еще" */
+  textMore?: TextValue
 }
 
 /** Interface for including next text/ Интерфейс для включения текста следующего */
@@ -112,6 +142,12 @@ export type TextPreviousPropsInclude = {
   textPrevious?: TextValue
 }
 
+/** Interface for including rows per page text/ Интерфейс для включения текста "строк на странице" */
+export type TextRowsPerPagePropsInclude = {
+  /** Rows per page text/ Текст "строк на странице" */
+  textRowsPerPage?: TextValue
+}
+
 /** Interface for including show text/ Интерфейс для включения текста показа */
 export type TextShowPropsInclude = {
   /** Show text/ Текст показа */
@@ -126,12 +162,17 @@ export type TextAllPropsInclude = TextCancelPropsInclude
   & TextCopiedClipboardPropsInclude
   & TextDecrementPropsInclude
   & TextEntriesMatchPropsInclude
+  & TextFirstPropsInclude
   & TextHidePropsInclude
   & TextIncrementPropsInclude
+  & TextInfoPropsInclude
+  & TextLastPropsInclude
   & TextLoadingPropsInclude
+  & TextMorePropsInclude
   & TextNextPropsInclude
   & TextNotFoundPropsInclude
   & TextNotificationsPropsInclude
   & TextOkPropsInclude
   & TextPreviousPropsInclude
+  & TextRowsPerPagePropsInclude
   & TextShowPropsInclude
