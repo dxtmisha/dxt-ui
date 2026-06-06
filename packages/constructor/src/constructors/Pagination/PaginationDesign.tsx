@@ -168,7 +168,7 @@ export class PaginationDesign<
       const node = this.renderButton({
         ...this.item.button.more,
         class: this.classes?.value.more
-      })
+      }, 'more')
 
       if (node) {
         return [node]
@@ -202,39 +202,77 @@ export class PaginationDesign<
    * Рендерит меню выбора количества строк на странице.
    * @returns list of nodes for menu section or undefined / список узлов для секции меню или undefined
    */
-  readonly renderMenu = (): VNode[] | undefined => {
+  readonly renderMenu = (): VNode[] => {
     if (
-      this.props.menu
-      && this.props.menu.length > 0
+      this.props.menuRows
+      && this.props.menuRows.length > 0
     ) {
+      const children: VNode[] = [
+        ...this.renderMenuLabel(),
+        ...this.renderMenuControl()
+      ]
+
       return [
-        h('div', { class: this.classes?.value.text }, this.item.menuRows.labelRowsPerPage),
-        h('div', { class: this.classes?.value.menu }, [
-          this.components.renderOne('menu', {
-            'list': this.item.menuRows.menuList.value,
-            'selected': this.props.rows,
-            ...this.props.menuAttrs,
-            'onUpdate:selected': (value: any) => this.item.event.onRows(undefined as any, {
-              type: 'rows',
-              value: Number(value),
-              detail: undefined
-            })
-          }, {
-            control: (menuProps: MenuControlItem) => {
-              return this.renderButton({
-                ...this.item.button.menu,
-                text: this.props.rows?.toString(),
-                iconTrailing: this.props.iconArrowDown,
-                iconTrailingTurnOnly: true,
-                iconTurn: menuProps.open.value,
-                ...menuProps.binds
-              })
-            }
-          })
-        ])
+        h('div', { class: this.classes?.value.menu }, children)
       ]
     }
-    return undefined
+
+    return []
+  }
+
+  /**
+   * Renders the menu label text for rows per page.
+   *
+   * Рендерит текстовую метку меню количества строк на странице.
+   * @returns array of virtual nodes / массив виртуальных узлов
+   */
+  readonly renderMenuLabel = (): VNode[] => {
+    if (this.props.showRowsPerPageLabel) {
+      return [
+        h(
+          'div',
+          { class: this.classes?.value.text },
+          this.item.menuRows.labelRowsPerPage
+        )
+      ]
+    }
+
+    return []
+  }
+
+  /**
+   * Renders the limit selector menu control.
+   *
+   * Рендерит элемент управления меню выбора лимита.
+   * @returns limit selector menu VNode or undefined / VNode меню выбора лимита или undefined
+   */
+  readonly renderMenuControl = (): VNode[] => {
+    const menu = this.components.renderOne(
+      'menu',
+      this.item.menuRows.binds,
+      { control: this.renderMenuButton }
+    )
+
+    if (menu) {
+      return [menu]
+    }
+
+    return []
+  }
+
+  /**
+   * Renders the menu button used as the control slot of the rows per page menu.
+   *
+   * Рендерит кнопку меню, используемую в слоте управления меню количества строк на странице.
+   * @param menuProps menu control slot properties / свойства слота управления меню
+   * @returns button virtual node or undefined / виртуальный узел кнопки или undefined
+   */
+  readonly renderMenuButton = (menuProps: MenuControlItem): VNode | undefined => {
+    return this.renderButton({
+      ...this.item.button.menu,
+      iconTurn: menuProps.open.value,
+      ...menuProps.binds
+    })
   }
 
   /**
@@ -360,13 +398,19 @@ export class PaginationDesign<
    * @param props button binding properties / свойства привязки кнопки
    * @returns button virtual node or undefined / виртуальный узел кнопки или undefined
    */
-  readonly renderButton = (props: ConstrBind<ButtonPropsBasic>): VNode | undefined => {
+  readonly renderButton = (
+    props: ConstrBind<ButtonPropsBasic>,
+    index?: string
+  ): VNode | undefined => {
     return this.components.renderOne(
       'button',
       toBinds(
         props,
         { class: this.classes?.value.button }
-      ))
+      ),
+      undefined,
+      index
+    )
   }
 
   /**

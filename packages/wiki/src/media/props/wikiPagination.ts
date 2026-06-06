@@ -33,6 +33,16 @@ export const wikiPagination: StorybookArgsToList = {
       value: true
     }
   },
+  'pagination.menuRows': {
+    type: StorybookControl.array,
+    options: {
+      category: StorybookCategory.option,
+      description: {
+        en: 'Option list for rows count select',
+        ru: 'Список вариантов количества строк'
+      }
+    }
+  },
   'pagination.rows': {
     type: StorybookControl.string,
     options: {
@@ -94,6 +104,17 @@ export const wikiPagination: StorybookArgsToList = {
       description: {
         en: 'Whether to show the page navigation buttons',
         ru: 'Показывать ли панель с кнопками страниц'
+      },
+      value: true
+    }
+  },
+  'pagination.showRowsPerPageLabel': {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.option,
+      description: {
+        en: 'Whether to show the text rows per page',
+        ru: 'Показывать ли текст количества строк на странице'
       },
       value: true
     }

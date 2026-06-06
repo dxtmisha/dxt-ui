@@ -1,9 +1,9 @@
 import { computed } from 'vue'
-import { type ConstrEmit, forEach, type ListList } from '@dxtmisha/functional'
+import { forEach, type ListList } from '@dxtmisha/functional'
 import { type TextInclude } from '../../classes/TextInclude'
+import { type PaginationEvent } from './PaginationEvent'
 
 import type { PaginationProps } from './props'
-import type { PaginationEmits } from './types'
 
 /**
  * Class for managing the rows per page menu logic of the pagination component.
@@ -16,13 +16,13 @@ export class PaginationMenuRows {
    *
    * Конструктор для PaginationMenuRows.
    * @param props input properties / входные свойства
+   * @param event click event control instance / экземпляр управления событием клика
    * @param text text manager instance / экземпляр менеджера текстов
-   * @param emits callback for event emitter / функция для генерации событий
    */
   constructor(
     protected readonly props: PaginationProps,
-    protected readonly text?: TextInclude,
-    protected readonly emits?: ConstrEmit<PaginationEmits>
+    protected readonly event?: PaginationEvent,
+    protected readonly text?: TextInclude
   ) { }
 
   /**
@@ -31,8 +31,8 @@ export class PaginationMenuRows {
    * Возвращает список вариантов лимита строк, отформатированный для меню выбора (например, [{ value: 10, label: '10' }]).
    */
   readonly menuList = computed<ListList | undefined>(() => {
-    if (this.props.menu) {
-      return forEach(this.props.menu, item => ({
+    if (this.props.menuRows) {
+      return forEach(this.props.menuRows, item => ({
         value: item,
         label: item.toString()
       })) as ListList
@@ -48,5 +48,14 @@ export class PaginationMenuRows {
    */
   get labelRowsPerPage(): string | undefined {
     return this.text?.rowsPerPage
+  }
+
+  get binds() {
+    return {
+      selected: this.props.rows,
+      list: this.menuList.value,
+      onClick: this.event?.onClick,
+      ...this.props.menuAttrs
+    }
   }
 }

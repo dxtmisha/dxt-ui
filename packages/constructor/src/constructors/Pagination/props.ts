@@ -1,4 +1,5 @@
 import type { ConstrBind } from '@dxtmisha/functional'
+
 import type { ButtonPropsBasic } from '../Button'
 import type { IconPropsBasic, IconValue } from '../Icon'
 import type { MenuPropsBasic } from '../Menu'
@@ -18,7 +19,9 @@ type PaginationPropsToken = {
 }
 
 export type PaginationPropsBasic<
-  Icon extends IconPropsBasic = IconPropsBasic
+  Icon extends IconPropsBasic = IconPropsBasic,
+  Button extends ButtonPropsBasic = ButtonPropsBasic,
+  Menu extends MenuPropsBasic = MenuPropsBasic
 > = TextFirstPropsInclude
   & TextLastPropsInclude
   & TextMorePropsInclude
@@ -33,21 +36,25 @@ export type PaginationPropsBasic<
     count?: number | string
     /** Number of rows per page / Количество строк на странице */
     rows?: number | string
+    /** Option list for rows count select / Список вариантов количества строк */
+    menuRows?: number[]
 
     /** Number of visible page links / Количество отображаемых ссылок на страницы */
     visible?: number
     /** Whether to hide pagination if only one page exists / Скрывать ли пагинацию, если страница всего одна */
     hideIfOne?: boolean
+    /** Whether to show the page navigation buttons / Показывать ли панель с кнопками страниц */
+    showPagination?: boolean
     /** Whether to show the next and back buttons / Показывать ли кнопки «Назад» и «Вперед» */
     showArrows?: boolean
     /** Whether to show the first and last page buttons / Показывать ли кнопки перехода к первой и последней страницам */
     showFirstLast?: boolean
-    /** Whether to show page range information / Показывать ли информацию о диапазоне страниц */
-    showInfo?: boolean
     /** Whether to show "Show more" button / Показывать ли кнопку "Показать еще" */
     showMore?: boolean
-    /** Whether to show the page navigation buttons / Показывать ли панель с кнопками страниц */
-    showPagination?: boolean
+    /** Whether to show page range information / Показывать ли информацию о диапазоне страниц */
+    showInfo?: boolean
+    /** Whether to show the text rows per page / Показывать ли текст количества строк на странице */
+    showRowsPerPageLabel?: boolean
 
     /** Icon for down arrow / Иконка для стрелки вниз */
     iconArrowDown?: IconValue<Icon>
@@ -61,11 +68,13 @@ export type PaginationPropsBasic<
     iconArrowRight?: IconValue<Icon>
 
     /** Custom attributes for button components / Пользовательские атрибуты для кнопок */
-    buttonAttrs?: ConstrBind<ButtonPropsBasic>
+    buttonAttrs?: ConstrBind<Button>
+    /** Custom attributes for more button component / Пользовательские атрибуты для кнопки "Показать еще" */
+    buttonMoreAttrs?: ConstrBind<Button>
+    /** Custom attributes for menu button component / Пользовательские атрибуты для кнопки меню */
+    buttonMenuAttrs?: ConstrBind<Button>
     /** Custom attributes for menu component / Пользовательские атрибуты для меню */
-    menuAttrs?: ConstrBind<MenuPropsBasic>
-    /** Option list for rows count select / Список вариантов количества строк */
-    menu?: number[]
+    menuAttrs?: ConstrBind<Menu>
   }
 
 /**
@@ -86,9 +95,10 @@ export const defaultsPagination = {
   iconArrowLast: 'last_page',
   iconArrowLeft: 'chevron_left',
   iconArrowRight: 'chevron_right',
+  showPagination: true,
   showArrows: true,
   showFirstLast: true,
-  showPagination: true,
+  showRowsPerPageLabel: true,
   value: 1,
   visible: 3,
   hideIfOne: true,

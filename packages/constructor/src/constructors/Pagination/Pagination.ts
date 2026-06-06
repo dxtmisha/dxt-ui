@@ -92,6 +92,10 @@ export class Pagination {
       this.event,
       this.text
     )
-    this.menuRows = new PaginationMenuRowsConstructor(props, this.text, emits)
+    this.menuRows = new PaginationMenuRowsConstructor(
+      props,
+      this.event,
+      this.text
+    )
   }
 }

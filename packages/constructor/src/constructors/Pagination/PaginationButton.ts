@@ -151,7 +151,8 @@ export class PaginationButton {
       ...this.binds,
       'label': this.text?.more,
       'value': this.page.value + 1,
-      'data-event-type': 'more'
+      'data-event-type': 'more',
+      ...this.props.buttonMoreAttrs
     }
   }
 
@@ -162,7 +163,13 @@ export class PaginationButton {
    * @returns button binding properties / свойства привязки кнопки
    */
   get menu(): ConstrBind<ButtonPropsBasic> {
-    return this.binds
+    return {
+      ...this.binds,
+      text: this.props.rows?.toString(),
+      iconTrailing: this.props.iconArrowDown,
+      onClick: undefined,
+      ...this.props.buttonMenuAttrs
+    }
   }
 
   /**
