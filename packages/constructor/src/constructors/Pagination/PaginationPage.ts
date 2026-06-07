@@ -1,4 +1,4 @@
-import { computed } from 'vue'
+import { computed, ref, type ToRefs, watch } from 'vue'
 import type { ConstrEmit } from '@dxtmisha/functional'
 
 import type { TextInclude } from '../../classes/TextInclude'
@@ -12,19 +12,38 @@ import type { PaginationProps } from './props'
  * Класс для управления страницами, диапазонами, кнопками навигации и кнопкой "Показать еще".
  */
 export class PaginationPage {
+  readonly valueItem = ref<number>(1)
+  readonly rowsItem = ref<number>(1)
+
   /**
    * Constructor for PaginationPage.
    *
    * Конструктор для PaginationPage.
    * @param props input properties / входные свойства
+   * @param refs raw properties wrapped as refs / исходные свойства в виде ссылок (refs)
    * @param text text manager instance / экземпляр менеджера текстов
    * @param emits callback for event emitter / функция для генерации событий
    */
   constructor(
     protected readonly props: PaginationProps,
+    protected readonly refs: ToRefs<PaginationProps>,
     protected readonly text?: TextInclude,
     protected readonly emits?: ConstrEmit<PaginationEmits>
-  ) { }
+  ) {
+    watch(
+      [
+        this.refs.value,
+        this.refs.modelValue,
+        this.refs.rows,
+        this.refs.modelRows
+      ],
+      () => {
+        this.valueItem.value = Number(this.props.modelValue ?? this.props.value ?? 1)
+        this.rowsItem.value = Number(this.props.modelRows ?? this.props.rows ?? 1)
+      },
+      { immediate: true }
+    )
+  }
 
   /**
    * Returns localized page range information string (e.g. '1-10 of 100').
@@ -74,7 +93,7 @@ export class PaginationPage {
    * Возвращает количество элементов, отображаемых на одной странице.
    */
   get rows(): number {
-    return Number(this.props.rows ?? 1)
+    return this.rowsItem.value
   }
 
   /**
@@ -83,7 +102,7 @@ export class PaginationPage {
    * Возвращает номер текущей активной страницы (начиная с 1).
    */
   get value(): number {
-    return Number(this.props.value ?? 1)
+    return this.valueItem.value
   }
 
   /**

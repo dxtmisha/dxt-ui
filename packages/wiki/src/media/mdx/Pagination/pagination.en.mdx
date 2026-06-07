@@ -1,0 +1,50 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+## Description
+
+Navigation control component designed to paginate large datasets, manage row counts per page, and handle incremental content loading.
+
+Pagination provides pagination numbers calculation, quick jumps to boundary pages (first/last), customized row count selects, and incremental content loaders ("Show more").
+
+**Key features:**
+- Automatic page count and layout calculations based on total count and rows
+- Next, previous, first, and last navigation buttons
+- Ellipsis separators between middle ranges and boundary pages
+- Dropdown select for rows per page limit customization (v-model:rows)
+- State synchronization for page selection (v-model:value)
+- Loader support via "Show more" button
+- Detailed pagination metadata range info string (e.g. "1-10 out of 100")
+
+**Common use cases:**
+- Dividing list items into digestible pages
+- Data grids and tables requiring server or client-side limit controls
+- Dynamic directories with incremental loading
+- Custom catalog navigation
+
+<Source
+    code={`
+<script setup>
+import { ref } from 'vue'
+
+const page = ref(1)
+const rows = ref(10)
+</script>
+
+<template>
+  <!-- Basic pagination -->
+  <Pagination :count="100" :rows="10" />
+
+  <!-- Fully controlled two-way binding -->
+  <Pagination
+    v-model:value="page"
+    v-model:rows="rows"
+    :count="100"
+    :menu-rows="[5, 10, 20, 50]"
+    show-info
+  />
+</template>
+  `}
+    language="html"
+/>
+
+> Pagination orchestrates reactive page ranges, row count dropdowns, and button layouts for structured data presentation.

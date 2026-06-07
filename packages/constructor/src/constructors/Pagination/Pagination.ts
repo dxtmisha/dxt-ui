@@ -2,6 +2,7 @@ import { type Ref, type ToRefs } from 'vue'
 import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
 import { EventClickInclude } from '../../classes/EventClickInclude'
+import { ModelInclude } from '../../classes/ModelInclude'
 import { TextInclude } from '../../classes/TextInclude'
 
 import { PaginationButton } from './PaginationButton'
@@ -18,15 +19,15 @@ import type { PaginationProps } from './props'
  * Класс-оркестратор Pagination, координирующий внутренние субмодули для управления страницами, выбором лимита строк и конфигурациями кнопок навигации.
  */
 export class Pagination {
+  /** Text and translation registry manager instance / Экземпляр менеджера реестра текстов и переводов */
+  readonly text: TextInclude
+  /** Manager instance handling calculations for page count, row count, value, ranges, and info / Экземпляр менеджера, отвечающий за расчеты количества страниц, строк, активной страницы, диапазонов и информации */
+  readonly page: PaginationPage
+
   /** Instance for working with native click events / Экземпляр для работы со стандартными событиями клика */
   readonly eventClick: EventClickInclude
   /** Class for working with the events / Класс для работы с событиями */
   readonly event: PaginationEvent
-  /** Text and translation registry manager instance / Экземпляр менеджера реестра текстов и переводов */
-  readonly text: TextInclude
-
-  /** Manager instance handling calculations for page count, row count, value, ranges, and info / Экземпляр менеджера, отвечающий за расчеты количества страниц, строк, активной страницы, диапазонов и информации */
-  readonly page: PaginationPage
 
   /** Manager instance handling navigation, number buttons, and their event callbacks / Экземпляр менеджера, отвечающий за кнопки навигации, числовые кнопки и их обработчики событий */
   readonly button: PaginationButton
@@ -47,6 +48,7 @@ export class Pagination {
    * @param emits Vue callback emitter function / функция генерации событий Vue
    * @param constructors override constructs object / объект переопределения конструкторов
    * @param constructors.EventClickIncludeConstructor class for working with event click / класс для работы со стандартным событием клика
+   * @param constructors.ModelIncludeConstructor class for working with model / класс для работы с моделью
    * @param constructors.PaginationButtonConstructor custom button calculations logic constructor / кастомный конструктор логики вычисления кнопок
    * @param constructors.PaginationEventConstructor custom event management constructor / кастомный конструктор логики событий
    * @param constructors.PaginationMenuRowsConstructor custom rows per page limit selector constructor / кастомный конструктор логики выбора лимита строк
@@ -64,6 +66,7 @@ export class Pagination {
     protected readonly emits?: ConstrEmit<PaginationEmits>,
     constructors: {
       EventClickIncludeConstructor?: typeof EventClickInclude
+      ModelIncludeConstructor?: typeof ModelInclude<number>
       PaginationButtonConstructor?: typeof PaginationButton
       PaginationEventConstructor?: typeof PaginationEvent
       PaginationMenuRowsConstructor?: typeof PaginationMenuRows
@@ -73,6 +76,7 @@ export class Pagination {
   ) {
     const {
       EventClickIncludeConstructor = EventClickInclude,
+      ModelIncludeConstructor = ModelInclude,
       PaginationButtonConstructor = PaginationButton,
       PaginationEventConstructor = PaginationEvent,
       PaginationMenuRowsConstructor = PaginationMenuRows,
@@ -80,11 +84,22 @@ export class Pagination {
       TextIncludeConstructor = TextInclude
     } = constructors
 
-    this.eventClick = new EventClickIncludeConstructor(props, undefined, emits)
-    this.event = new PaginationEventConstructor(props, this.eventClick, emits)
     this.text = new TextIncludeConstructor(props)
+    this.page = new PaginationPageConstructor(
+      props,
+      refs,
+      this.text,
+      emits
+    )
 
-    this.page = new PaginationPageConstructor(props, this.text, emits)
+    this.eventClick = new EventClickIncludeConstructor(props, undefined, emits)
+    this.event = new PaginationEventConstructor(
+      props,
+      this.eventClick,
+      emits,
+      new ModelIncludeConstructor('value', emits, this.page.valueItem),
+      new ModelIncludeConstructor('rows', emits, this.page.rowsItem)
+    )
 
     this.button = new PaginationButtonConstructor(
       props,

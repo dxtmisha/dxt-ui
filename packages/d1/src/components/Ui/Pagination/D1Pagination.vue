@@ -55,6 +55,10 @@ const design = new PaginationDesign(
         size: 'sm',
         inverse: true
       },
+      selected: {
+        secondary: true,
+        size: 'sm'
+      },
       more: {
         secondary: true,
         size: 'sm'

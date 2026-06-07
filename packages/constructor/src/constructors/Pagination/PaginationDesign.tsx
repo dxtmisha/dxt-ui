@@ -136,13 +136,20 @@ export class PaginationDesign<
       !this.props.hideIfOne
       || this.item.page.pagesCount > 1
     ) {
-      const children: any[] = [
+      const children: any[] = []
+
+      this.initSlot('leading', children)
+      children.push(
         ...this.renderMore(),
         ...this.renderInfo(),
-        ...this.renderMenu(),
+        ...this.renderMenu()
+      )
+      this.initSlot('info', children)
+      children.push(
         ...this.renderSpacer(),
         ...this.renderNavigation()
-      ]
+      )
+      this.initSlot('trailing', children)
 
       return h('div', {
         ...this.getAttrs(),
@@ -470,7 +477,7 @@ export class PaginationDesign<
    */
   readonly renderButton = (
     props: ConstrBind<ButtonPropsBasic>,
-    index?: string
+    index: string | undefined = props.selected ? 'selected' : undefined
   ): VNode | undefined => {
     return this.components.renderOne(
       'button',

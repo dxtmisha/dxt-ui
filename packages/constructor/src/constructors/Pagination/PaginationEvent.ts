@@ -1,6 +1,7 @@
 import { type ConstrEmit } from '@dxtmisha/functional'
 
 import { type EventClickInclude } from '../../classes/EventClickInclude'
+import { type ModelInclude } from '../../classes/ModelInclude'
 
 import type { EventClickValue } from '../../types/eventClickTypes'
 import type { PaginationEmits } from './types'
@@ -19,11 +20,15 @@ export class PaginationEvent {
    * @param props input properties / входные свойства
    * @param event click event control instance / экземпляр управления событием клика
    * @param emits callback for event emitter / функция для генерации событий
+   * @param modelValue model value synchronizer / синхронизатор значения модели
+   * @param modelRows model rows synchronizer / синхронизатор строк модели
    */
   constructor(
     protected readonly props: PaginationProps,
     protected readonly event: EventClickInclude,
-    protected readonly emits?: ConstrEmit<PaginationEmits>
+    protected readonly emits?: ConstrEmit<PaginationEmits>,
+    protected readonly modelValue?: ModelInclude<number>,
+    protected readonly modelRows?: ModelInclude<number>
   ) {
   }
 
@@ -44,6 +49,10 @@ export class PaginationEvent {
         break
       case 'rows':
         this.onRows(event, options)
+        this.modelRows?.emit(options?.value ?? 1)
+        break
+      default:
+        this.modelValue?.emit(options?.value ?? 1)
         break
     }
 

@@ -1,0 +1,77 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+### `more`
+
+Event triggers when clicking on the "Show more" button loader. Passes the original DOM event and the click options payload.
+
+**Parameters:**
+- `event: MouseEvent` — original DOM mouse event
+- `options: EventClickValue` — object with click data
+
+**EventClickValue structure:**
+- `type: string` — action/button type (`'more'`)
+- `value: any` — value representing the next page number (e.g. `value + 1`)
+- `detail: Record<string, any> | undefined` — additional button attributes
+
+<Source
+    code={`
+<script setup>
+const handleMore = (event, options) => {
+  console.log('DOM event:', event)
+  console.log('Action type:', options.type)
+  console.log('Next page value:', options.value)
+}
+</script>
+
+<template>
+  <Pagination @more="handleMore" :count="100" show-more />
+</template>
+  `}
+    language="html"
+/>
+
+### `moreLite`
+
+Lightweight version of the `more` event. Triggers when clicking on the "Show more" button, passing only the click options payload without the original DOM event.
+
+**Parameters:**
+- `options: EventClickValue` — object with click data
+
+---
+
+### `rows`
+
+Event triggers when a row limit option is selected from the rows-per-page drop-down menu. Passes the original DOM event and the click options payload.
+
+**Parameters:**
+- `event: MouseEvent` — original DOM mouse event
+- `options: EventClickValue` — object with click data
+
+**EventClickValue structure:**
+- `type: string` — action/button type (`'rows'`)
+- `value: any` — selected rows limit count (e.g., `10`, `25`, `50`)
+- `detail: Record<string, any> | undefined` — additional menu details
+
+<Source
+    code={`
+<script setup>
+const handleRows = (event, options) => {
+  console.log('DOM event:', event)
+  console.log('Action type:', options.type)
+  console.log('Selected rows limit:', options.value)
+}
+</script>
+
+<template>
+  <Pagination @rows="handleRows" :count="100" :menu-rows="[10, 20, 50]" />
+</template>
+  `}
+    language="html"
+/>
+
+### `rowsLite`
+
+Lightweight version of the `rows` event. Triggers when a row limit option is selected from the rows-per-page dropdown menu, passing only the click options payload without the original DOM event.
+
+**Parameters:**
+- `options: EventClickValue` — object with click data

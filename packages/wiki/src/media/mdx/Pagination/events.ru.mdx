@@ -1,0 +1,77 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+### `more`
+
+Событие срабатывает при клике на кнопку подгрузки страниц («Показать еще»). Передает оригинальное событие DOM и объект параметров клика.
+
+**Параметры:**
+- `event: MouseEvent` — оригинальное событие мыши DOM
+- `options: EventClickValue` — объект с данными о клике
+
+**Структура EventClickValue:**
+- `type: string` — тип действия/кнопки (`'more'`)
+- `value: any` — значение, представляющее номер следующей страницы (например, `value + 1`)
+- `detail: Record<string, any> | undefined` — дополнительные атрибуты кнопки
+
+<Source
+    code={`
+<script setup>
+const handleMore = (event, options) => {
+  console.log('Событие DOM:', event)
+  console.log('Тип действия:', options.type)
+  console.log('Значение следующей страницы:', options.value)
+}
+</script>
+
+<template>
+  <Pagination @more="handleMore" :count="100" show-more />
+</template>
+  `}
+    language="html"
+/>
+
+### `moreLite`
+
+Упрощенная версия события `more`. Срабатывает при клике на кнопку подгрузки страниц («Показать еще»), передавая только объект параметров клика без оригинального события DOM.
+
+**Параметры:**
+- `options: EventClickValue` — объект с данными о клике
+
+---
+
+### `rows`
+
+Событие срабатывает при выборе варианта лимита количества строк из выпадающего меню «Строк на странице». Передает оригинальное событие DOM и объект параметров клика.
+
+**Параметры:**
+- `event: MouseEvent` — оригинальное событие мыши DOM
+- `options: EventClickValue` — объект с данными о клике
+
+**Структура EventClickValue:**
+- `type: string` — тип действия/кнопки (`'rows'`)
+- `value: any` — выбранный лимит строк (например, `10`, `25`, `50`)
+- `detail: Record<string, any> | undefined` — дополнительные детали меню
+
+<Source
+    code={`
+<script setup>
+const handleRows = (event, options) => {
+  console.log('Событие DOM:', event)
+  console.log('Тип действия:', options.type)
+  console.log('Выбранный лимит строк:', options.value)
+}
+</script>
+
+<template>
+  <Pagination @rows="handleRows" :count="100" :menu-rows="[10, 20, 50]" />
+</template>
+  `}
+    language="html"
+/>
+
+### `rowsLite`
+
+Упрощенная версия события `rows`. Срабатывает при выборе варианта лимита строк в выпадающем меню, передавая только объект параметров клика без оригинального события DOM.
+
+**Параметры:**
+- `options: EventClickValue` — объект с данными о клике

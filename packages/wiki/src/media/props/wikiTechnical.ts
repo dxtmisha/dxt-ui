@@ -185,6 +185,17 @@ export const wikiTechnical: StorybookArgsToList = {
     },
     hide: true
   },
+  modelRows: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.technical,
+      description: {
+        en: 'Two-way binding for the rows per page limit (v-model:rows)',
+        ru: 'Двусторонняя привязка для количества строк на странице (v-model:rows)'
+      }
+    },
+    hide: true
+  },
   modelSelected: {
     type: StorybookControl.object,
     options: {

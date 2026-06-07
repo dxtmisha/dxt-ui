@@ -1,6 +1,7 @@
 import type { ConstrClass } from '@dxtmisha/functional'
 
 import type { EventClickEmits, EventClickValue } from '../../types/eventClickTypes'
+import type { ModelEmits } from '../../types/modelTypes'
 
 import type { ButtonComponentInclude } from '../Button'
 import type { MenuComponentInclude } from '../Menu'
@@ -17,18 +18,22 @@ export type PaginationComponents = ButtonComponentInclude & MenuComponentInclude
  *
  * Тип, описывающий доступные события.
  */
-export type PaginationEmits = EventClickEmits & {
-  more: [
-    event: MouseEvent,
-    options?: EventClickValue
-  ]
-  moreLite: [options?: EventClickValue]
-  rows: [
-    event: MouseEvent,
-    options?: EventClickValue
-  ]
-  rowsLite: [options?: EventClickValue]
-}
+export type PaginationEmits = EventClickEmits
+  & ModelEmits<number>
+  & {
+    'update:rows': [value: number]
+    'update:modelRows': [value: number]
+    'more': [
+      event: MouseEvent,
+      options?: EventClickValue
+    ]
+    'moreLite': [options?: EventClickValue]
+    'rows': [
+      event: MouseEvent,
+      options?: EventClickValue
+    ]
+    'rowsLite': [options?: EventClickValue]
+  }
 
 /**
  * Type describing available properties.
@@ -44,6 +49,12 @@ export interface PaginationExpose {
  * Тип, описывающий доступные слоты.
  */
 export interface PaginationSlots {
+  /** Slot at the very beginning of the component / Слот в самом начале компонента */
+  leading?(): any
+  /** Slot in the middle before the spacer / Слот в середине перед разделителем (spacer) */
+  info?(): any
+  /** Slot at the very end of the component / Слот в самом конце компонента */
+  trailing?(): any
 }
 
 /**
