@@ -105,6 +105,7 @@ export class PaginationDesign<
         button: this.getSubClass('button'),
         navigation: this.getSubClass('navigation'),
         more: this.getSubClass('more'),
+        morePrev: this.getSubClass('morePrev'),
         info: this.getSubClass('info'),
         menuRows: this.getSubClass('menuRows'),
         menuRowsLabel: this.getSubClass('menuRows__label'),
@@ -140,6 +141,7 @@ export class PaginationDesign<
 
       this.initSlot('leading', children)
       children.push(
+        ...this.renderMorePrev(),
         ...this.renderMore(),
         ...this.renderInfo(),
         ...this.renderMenu()
@@ -173,6 +175,27 @@ export class PaginationDesign<
         ...this.item.button.more,
         class: this.classes?.value.more
       }, 'more')
+
+      if (node) {
+        return [node]
+      }
+    }
+
+    return []
+  }
+
+  /**
+   * Renders the "Show previous" button if configured and visible.
+   *
+   * Рендерит кнопку «Показать предыдущие», если она настроена и видима.
+   * @returns rendered button element or undefined / рендерируемый элемент кнопки или undefined
+   */
+  readonly renderMorePrev = (): VNode[] => {
+    if (this.item.button.showMorePrev()) {
+      const node = this.renderButton({
+        ...this.item.button.morePrev,
+        class: this.classes?.value.morePrev
+      }, 'morePrev')
 
       if (node) {
         return [node]

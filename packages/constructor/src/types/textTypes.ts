@@ -16,6 +16,7 @@ export type TextIndex = 'cancel'
   | 'last'
   | 'loading'
   | 'more'
+  | 'morePrev'
   | 'next'
   | 'notFound'
   | 'notifications'
@@ -112,6 +113,12 @@ export type TextMorePropsInclude = {
   textMore?: TextValue
 }
 
+/** Interface for including more previous text/ Интерфейс для включения текста "показать предыдущие" */
+export type TextMorePrevPropsInclude = {
+  /** More previous text/ Текст "показать предыдущие" */
+  textMorePrev?: TextValue
+}
+
 /** Interface for including next text/ Интерфейс для включения текста следующего */
 export type TextNextPropsInclude = {
   /** Next text/ Текст следующего */
@@ -169,6 +176,7 @@ export type TextAllPropsInclude = TextCancelPropsInclude
   & TextLastPropsInclude
   & TextLoadingPropsInclude
   & TextMorePropsInclude
+  & TextMorePrevPropsInclude
   & TextNextPropsInclude
   & TextNotFoundPropsInclude
   & TextNotificationsPropsInclude

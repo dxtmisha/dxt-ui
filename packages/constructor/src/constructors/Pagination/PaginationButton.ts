@@ -224,6 +224,23 @@ export class PaginationButton {
   }
 
   /**
+   * Returns properties and visibility states (hide/show) for the "Show previous" loader button.
+   *
+   * Возвращает свойства и состояние видимости (скрыть/показать) для кнопки подгрузки предыдущей страницы («Показать предыдущие»).
+   * @returns button binding properties / свойства привязки кнопки
+   */
+  get morePrev(): ConstrBind<ButtonPropsBasic> {
+    return {
+      ...this.binds,
+      'key': `item__morePrev`,
+      'label': this.text?.morePrev,
+      'value': this.page.value - 1,
+      'data-event-type': 'morePrev',
+      ...this.props.buttonMorePrevAttrs
+    }
+  }
+
+  /**
    * Returns properties for the rows per page menu button.
    *
    * Возвращает свойства для кнопки меню количества строк на странице.
@@ -251,6 +268,20 @@ export class PaginationButton {
       this.props.showMore
       && this.page.pagesCount
       && this.page.value < this.page.pagesCount
+    )
+  }
+
+  /**
+   * Checks if the "Show previous" button should be shown.
+   *
+   * Проверяет, должна ли быть показана кнопка «Показать предыдущие».
+   * @returns true if the button should be shown / true, если кнопка должна быть показана
+   */
+  showMorePrev(): boolean {
+    return Boolean(
+      this.props.showMorePrev
+      && this.page.pagesCount
+      && this.page.value > 1
     )
   }
 

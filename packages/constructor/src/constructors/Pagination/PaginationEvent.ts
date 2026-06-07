@@ -47,6 +47,9 @@ export class PaginationEvent {
       case 'more':
         this.onMore(event, options)
         break
+      case 'morePrev':
+        this.onMorePrev(event, options)
+        break
       case 'rows':
         this.onRows(event, options)
         this.modelRows?.emit(options?.value ?? 1)
@@ -72,6 +75,21 @@ export class PaginationEvent {
   ): void => {
     this.emits?.('more', event, options)
     this.emits?.('moreLite', options)
+  }
+
+  /**
+   * Event handler triggered on clicking the "Show previous" button loader.
+   *
+   * Обработчик событий клика по кнопке подгрузки предыдущей страницы («Показать предыдущие»).
+   * @param event native click event / нативное событие клика
+   * @param options parameters including target value / параметры, содержащие целевое значение страницы
+   */
+  readonly onMorePrev = (
+    event: MouseEvent,
+    options?: EventClickValue
+  ): void => {
+    this.emits?.('morePrev', event, options)
+    this.emits?.('morePrevLite', options)
   }
 
   /**

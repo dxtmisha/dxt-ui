@@ -39,6 +39,45 @@ const handleMore = (event, options) => {
 
 ---
 
+### `morePrev`
+
+Событие срабатывает при клике на кнопку подгрузки предыдущих страниц («Показать предыдущие»). Передает оригинальное событие DOM и объект параметров клика.
+
+**Параметры:**
+- `event: MouseEvent` — оригинальное событие мыши DOM
+- `options: EventClickValue` — объект с данными о клике
+
+**Структура EventClickValue:**
+- `type: string` — тип действия/кнопки (`'morePrev'`)
+- `value: any` — значение, представляющее номер предыдущей страницы (например, `value - 1`)
+- `detail: Record<string, any> | undefined` — дополнительные атрибуты кнопки
+
+<Source
+    code={`
+<script setup>
+const handleMorePrev = (event, options) => {
+  console.log('Событие DOM:', event)
+  console.log('Тип действия:', options.type)
+  console.log('Значение предыдущей страницы:', options.value)
+}
+</script>
+
+<template>
+  <Pagination @morePrev="handleMorePrev" :count="100" show-more-prev />
+</template>
+  `}
+    language="html"
+/>
+
+### `morePrevLite`
+
+Упрощенная версия события `morePrev`. Срабатывает при клике на кнопку подгрузки предыдущих страниц («Показать предыдущие»), передавая только объект параметров клика без оригинального события DOM.
+
+**Параметры:**
+- `options: EventClickValue` — объект с данными о клике
+
+---
+
 ### `rows`
 
 Событие срабатывает при выборе варианта лимита количества строк из выпадающего меню «Строк на странице». Передает оригинальное событие DOM и объект параметров клика.

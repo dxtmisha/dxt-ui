@@ -20,6 +20,16 @@ export const wikiPagination: StorybookArgsToList = {
       }
     }
   },
+  'pagination.adaptiveMorePrev': {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Whether to enable adaptive mode for show previous button',
+        ru: 'Включить ли адаптивный режим для кнопки "Показать предыдущие"'
+      }
+    }
+  },
   'pagination.count': {
     type: StorybookControl.string,
     options: {
@@ -138,6 +148,16 @@ export const wikiPagination: StorybookArgsToList = {
         ru: 'Показывать ли кнопку "Показать еще"'
       },
       value: true
+    }
+  },
+  'pagination.showMorePrev': {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.option,
+      description: {
+        en: 'Whether to show "Show previous" button',
+        ru: 'Показывать ли кнопку "Показать предыдущие"'
+      }
     }
   },
   'pagination.showPagination': {

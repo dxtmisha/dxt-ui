@@ -9,5 +9,8 @@
   },
   "~adaptiveMore": {
     "_default": "lineLg"
+  },
+  "~adaptiveMorePrev": {
+    "_default": "lineLg"
   }
 }

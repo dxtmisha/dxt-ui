@@ -47,6 +47,29 @@ export const PaginationBasic: Story = {
     `
   })
 }
+export const PaginationShowMore: Story = {
+  name: 'Показать еще / Показать предыдущие',
+  render: () => ({
+    components: { D1Pagination },
+    template: `
+        <div class="wiki-storybook-flex-column">
+          <D1Pagination
+            :count="100"
+            :rows="10"
+            :value="5"
+            show-more-prev
+          />
+
+          <D1Pagination
+            :count="100"
+            :rows="10"
+            :value="5"
+            show-more
+          />
+        </div>
+    `
+  })
+}
 export const PaginationVModel: Story = {
   name: 'Двусторонняя привязка (v-model)',
   render: () => ({

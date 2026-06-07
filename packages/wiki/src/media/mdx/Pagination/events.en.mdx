@@ -39,6 +39,45 @@ Lightweight version of the `more` event. Triggers when clicking on the "Show mor
 
 ---
 
+### `morePrev`
+
+Event triggers when clicking on the "Show previous" button loader. Passes the original DOM event and the click options payload.
+
+**Parameters:**
+- `event: MouseEvent` — original DOM mouse event
+- `options: EventClickValue` — object with click data
+
+**EventClickValue structure:**
+- `type: string` — action/button type (`'morePrev'`)
+- `value: any` — value representing the previous page number (e.g. `value - 1`)
+- `detail: Record<string, any> | undefined` — additional button attributes
+
+<Source
+    code={`
+<script setup>
+const handleMorePrev = (event, options) => {
+  console.log('DOM event:', event)
+  console.log('Action type:', options.type)
+  console.log('Previous page value:', options.value)
+}
+</script>
+
+<template>
+  <Pagination @morePrev="handleMorePrev" :count="100" show-more-prev />
+</template>
+  `}
+    language="html"
+/>
+
+### `morePrevLite`
+
+Lightweight version of the `morePrev` event. Triggers when clicking on the "Show previous" button, passing only the click options payload without the original DOM event.
+
+**Parameters:**
+- `options: EventClickValue` — object with click data
+
+---
+
 ### `rows`
 
 Event triggers when a row limit option is selected from the rows-per-page drop-down menu. Passes the original DOM event and the click options payload.

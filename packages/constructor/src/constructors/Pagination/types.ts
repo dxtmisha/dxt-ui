@@ -28,6 +28,11 @@ export type PaginationEmits = EventClickEmits
       options?: EventClickValue
     ]
     'moreLite': [options?: EventClickValue]
+    'morePrev': [
+      event: MouseEvent,
+      options?: EventClickValue
+    ]
+    'morePrevLite': [options?: EventClickValue]
     'rows': [
       event: MouseEvent,
       options?: EventClickValue
@@ -68,6 +73,7 @@ export type PaginationClasses = {
   button: string
   navigation: string
   more: string
+  morePrev: string
   info: string
   menuRows: string
   menuRowsLabel: string

@@ -5,6 +5,7 @@ import type {
   TextFirstPropsInclude,
   TextLastPropsInclude,
   TextMorePropsInclude,
+  TextMorePrevPropsInclude,
   TextRowsPerPagePropsInclude,
   TextInfoPropsInclude,
   TextPreviousPropsInclude,
@@ -19,6 +20,7 @@ type PaginationPropsToken = {
   // :type [!] System label / Системная метка
   adaptive?: 'lineAlways'
   adaptiveMore?: 'lineAlways'
+  adaptiveMorePrev?: 'lineAlways'
   // :type [!] System label / Системная метка
 }
 
@@ -29,6 +31,7 @@ export type PaginationPropsBasic<
 > = TextFirstPropsInclude
   & TextLastPropsInclude
   & TextMorePropsInclude
+  & TextMorePrevPropsInclude
   & TextRowsPerPagePropsInclude
   & TextInfoPropsInclude
   & TextPreviousPropsInclude
@@ -63,6 +66,8 @@ export type PaginationPropsBasic<
     'showEnds'?: boolean
     /** Whether to show "Show more" button / Показывать ли кнопку "Показать еще" */
     'showMore'?: boolean
+    /** Whether to show "Show previous" button / Показывать ли кнопку "Показать предыдущие" */
+    'showMorePrev'?: boolean
     /** Whether to show page range information / Показывать ли информацию о диапазоне страниц */
     'showInfo'?: boolean
     /** Whether to show the text rows per page / Показывать ли текст количества строк на странице */
@@ -83,6 +88,8 @@ export type PaginationPropsBasic<
     'buttonAttrs'?: ConstrBind<Button>
     /** Custom attributes for more button component / Пользовательские атрибуты для кнопки "Показать еще" */
     'buttonMoreAttrs'?: ConstrBind<Button>
+    /** Custom attributes for more previous button component / Пользовательские атрибуты для кнопки "Показать предыдущие" */
+    'buttonMorePrevAttrs'?: ConstrBind<Button>
     /** Custom attributes for menu button component / Пользовательские атрибуты для кнопки меню */
     'buttonMenuAttrs'?: ConstrBind<Button>
     /** Custom attributes for menu component / Пользовательские атрибуты для меню */

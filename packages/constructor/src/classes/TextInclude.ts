@@ -30,6 +30,7 @@ export class TextInclude {
     last: 'Last',
     loading: 'Loading',
     more: 'Show more',
+    morePrev: 'Show previous',
     next: 'Next',
     notFound: 'Nothing found',
     notifications: 'Notifications',
@@ -134,6 +135,11 @@ export class TextInclude {
   /** More text / Текст "показать еще" */
   get more() {
     return this.get('textMore')
+  }
+
+  /** More previous text / Текст "показать предыдущие" */
+  get morePrev() {
+    return this.get('textMorePrev')
   }
 
   /** Next text / Текст следующего */

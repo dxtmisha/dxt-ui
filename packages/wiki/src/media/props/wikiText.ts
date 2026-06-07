@@ -178,6 +178,18 @@ export const wikiText: StorybookArgsToList = {
     },
     hide: true
   },
+  textMorePrev: {
+    type: StorybookControl.text,
+    options: {
+      category: StorybookCategory.text,
+      type: 'string | (() => string)',
+      description: {
+        en: 'Show previous button text',
+        ru: 'Текст кнопки "Показать предыдущие"'
+      }
+    },
+    hide: true
+  },
   textNext: {
     type: StorybookControl.text,
     options: {

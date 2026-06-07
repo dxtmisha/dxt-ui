@@ -29,7 +29,8 @@ const classesToken = computed<ConstrClasses>(() => ({
     // :classes-values [!] System label / Системная метка
     'd1-pagination': true,
     [`d1-pagination--adaptive--${props.adaptive}`]: inArray(propsValues.adaptive, props.adaptive),
-    [`d1-pagination--adaptiveMore--${props.adaptiveMore}`]: inArray(propsValues.adaptiveMore, props.adaptiveMore)
+    [`d1-pagination--adaptiveMore--${props.adaptiveMore}`]: inArray(propsValues.adaptiveMore, props.adaptiveMore),
+    [`d1-pagination--adaptiveMorePrev--${props.adaptiveMorePrev}`]: inArray(propsValues.adaptiveMorePrev, props.adaptiveMorePrev)
     // :classes-values [!] System label / Системная метка
   }
 }))
@@ -62,6 +63,11 @@ const design = new PaginationDesign(
       more: {
         secondary: true,
         size: 'sm'
+      },
+      morePrev: {
+        secondary: true,
+        size: 'sm',
+        inverse: true
       }
     }
   }

@@ -2,6 +2,7 @@
   "#button": {},
   "#navigation": {},
   "#more": {},
+  "#morePrev": {},
   "#info": {},
   "#menuRows": {
     "#label": {}
@@ -12,6 +13,9 @@
     "~lineAlways": {
       "flex-direction": "{??flexFlow}",
       "#more": {
+        "flex-basis": "100%"
+      },
+      "#morePrev": {
         "flex-basis": "100%"
       },
       "#spacer": {
@@ -31,6 +35,17 @@
     },
     "group|line": {
       "link|adaptiveMore-line": "{??adaptiveMore.lineAlways}",
+      "_type": "media-group"
+    }
+  },
+  "~adaptiveMorePrev": {
+    "~lineAlways": {
+      "#morePrev": {
+        "flex-basis": "auto"
+      }
+    },
+    "group|line": {
+      "link|adaptiveMorePrev-line": "{??adaptiveMorePrev.lineAlways}",
       "_type": "media-group"
     }
   }

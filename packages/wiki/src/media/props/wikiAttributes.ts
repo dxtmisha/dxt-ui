@@ -54,6 +54,17 @@ export const wikiAttributes: StorybookArgsToList = {
     },
     hide: true
   },
+  buttonMorePrevAttrs: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.attributes,
+      description: {
+        en: 'Additional attributes for the show previous button component',
+        ru: 'Дополнительные атрибуты для кнопки "Показать предыдущие"'
+      }
+    },
+    hide: true
+  },
   buttonSecondaryAttrs: {
     type: StorybookControl.object,
     options: {

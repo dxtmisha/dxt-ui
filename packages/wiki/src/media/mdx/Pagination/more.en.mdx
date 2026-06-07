@@ -1,0 +1,71 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+## Show More / Show Previous buttons
+
+Properties `showMore` and `showMorePrev` implement an accumulative loading pattern where content is progressively revealed by appending or prepending records to the existing list — as opposed to traditional pagination that replaces the visible page entirely. Each button serves a distinct UX purpose and is placed on a **separate Pagination instance**; they are not meant to coexist on the same component.
+
+**Properties:**
+
+- `showMore` — renders a loading trigger below the list that appends the next page of records on click
+- `showMorePrev` — renders a loading trigger above the list that prepends an earlier page of records on click
+
+**`showMore`** implements the classic feed-style progressive disclosure: the user starts at page 1 and incrementally loads additional records downward without losing previously fetched content. This pattern is well-suited for product catalogs, activity feeds, and any list where maintaining scroll context is more important than precise positional navigation.
+
+**`showMorePrev`** addresses a fundamentally different problem. When a user arrives at a list from a deep link (e.g., `?page=5`), a browser bookmark, or a page reload mid-session, the rendered list starts at a non-first offset. The earlier records — pages 1 through 4 in this case — are absent from the DOM but are still logically part of the dataset. `showMorePrev` gives users a non-destructive way to retrieve those missing records and prepend them to the top of the current view without navigating away or losing the page position they landed on.
+
+The canonical architecture for this pattern uses **two independent Pagination instances** sharing the same reactive `page` state: one positioned above the list with `showMorePrev` active, the other below with `showMore` active. Each emits its own event (`morePrev` / `more`) and independently drives the respective data fetch.
+
+<Source
+    code={`
+<script setup>
+import { ref } from 'vue'
+
+// Restored from URL: ?page=5 — records 1–4 are missing from the initial render
+const page = ref(Number(route.query.page) || 1)
+const items = ref(await fetchPage(page.value))
+
+async function handleMore(event, options) {
+  // Appends the next batch below the current list
+  const next = await fetchPage(options.value)
+  items.value.push(...next)
+}
+
+async function handleMorePrev(event, options) {
+  // Prepends an earlier batch above the current list
+  const prev = await fetchPage(options.value)
+  items.value.unshift(...prev)
+}
+</script>
+
+<template>
+  <!--
+    Top instance — visible only when the list does not start from page 1.
+    Allows the user to recover records that preceded the initial render offset.
+  -->
+  <Pagination
+    v-model:value="page"
+    :count="500"
+    :rows="20"
+    show-more-prev
+    @morePrev="handleMorePrev"
+  />
+
+  <ul>
+    <li v-for="item in items" :key="item.id">{{ item.title }}</li>
+  </ul>
+
+  <!--
+    Bottom instance — standard progressive loader.
+    Appends the next page of records on each interaction.
+  -->
+  <Pagination
+    v-model:value="page"
+    :count="500"
+    :rows="20"
+    show-more
+    @more="handleMore"
+  />
+</template>
+  `}
+    language="html"
+/>
