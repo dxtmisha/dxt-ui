@@ -50,6 +50,11 @@ const design = new MenuDesign(
       list: D1List,
       bars: D1Bars,
       window: D1Window
+    },
+    compMod: {
+      window: {
+        width: 'auto'
+      }
     }
   }
 )

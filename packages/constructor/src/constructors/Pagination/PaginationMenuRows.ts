@@ -1,7 +1,10 @@
 import { computed } from 'vue'
-import { forEach, type ListList } from '@dxtmisha/functional'
-import { type TextInclude } from '../../classes/TextInclude'
-import { type PaginationEvent } from './PaginationEvent'
+import { type ConstrBind, forEach, type ListList } from '@dxtmisha/functional'
+
+import type { TextInclude } from '../../classes/TextInclude'
+
+import type { MenuPropsBasic } from '../Menu'
+import type { PaginationEvent } from './PaginationEvent'
 
 import type { PaginationProps } from './props'
 
@@ -50,11 +53,20 @@ export class PaginationMenuRows {
     return this.text?.rowsPerPage
   }
 
-  get binds() {
+  /**
+   * Returns properties for the rows per page menu component.
+   *
+   * Возвращает свойства для компонента меню количества строк на странице.
+   * @returns menu binding properties / свойства привязки меню
+   */
+  get binds(): ConstrBind<MenuPropsBasic> {
     return {
       selected: this.props.rows,
       list: this.menuList.value,
       onClick: this.event?.onClick,
+      itemAttrs: {
+        'data-event-type': 'rows'
+      },
       ...this.props.menuAttrs
     }
   }

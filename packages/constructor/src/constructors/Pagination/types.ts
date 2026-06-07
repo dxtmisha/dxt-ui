@@ -55,11 +55,11 @@ export type PaginationClasses = {
   main: ConstrClass
   // :classes [!] System label / Системная метка
   button: string
-  more: string
-  spacer: string
-  text: string
-  menu: string
-  info: string
   navigation: string
+  more: string
+  info: string
+  menuRows: string
+  menuRowsLabel: string
+  spacer: string
   // :classes [!] System label / Системная метка
 }

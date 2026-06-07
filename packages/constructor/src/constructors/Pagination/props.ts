@@ -15,6 +15,8 @@ import type {
 
 type PaginationPropsToken = {
   // :type [!] System label / Системная метка
+  adaptive?: boolean
+  adaptiveMore?: boolean
   // :type [!] System label / Системная метка
 }
 

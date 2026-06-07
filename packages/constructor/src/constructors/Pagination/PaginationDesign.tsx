@@ -103,12 +103,12 @@ export class PaginationDesign<
       ...{
         // :classes [!] System label / Системная метка
         button: this.getSubClass('button'),
+        navigation: this.getSubClass('navigation'),
         more: this.getSubClass('more'),
-        spacer: this.getSubClass('spacer'),
-        text: this.getSubClass('text'),
-        menu: this.getSubClass('menu'),
         info: this.getSubClass('info'),
-        navigation: this.getSubClass('navigation')
+        menuRows: this.getSubClass('menuRows'),
+        menuRowsLabel: this.getSubClass('menuRows__label'),
+        spacer: this.getSubClass('spacer')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -138,14 +138,10 @@ export class PaginationDesign<
       const children: any[] = [
         ...this.renderMore(),
         ...this.renderInfo(),
+        ...this.renderMenu(),
         ...this.renderSpacer(),
         ...this.renderNavigation()
       ]
-
-      const menu = this.renderMenu()
-      if (menu) {
-        children.push(...menu)
-      }
 
       return h('div', {
         ...this.getAttrs(),
@@ -213,7 +209,7 @@ export class PaginationDesign<
       ]
 
       return [
-        h('div', { class: this.classes?.value.menu }, children)
+        h('div', { class: this.classes?.value.menuRows }, children)
       ]
     }
 
@@ -231,7 +227,7 @@ export class PaginationDesign<
       return [
         h(
           'div',
-          { class: this.classes?.value.text },
+          { class: this.classes?.value.menuRowsLabel },
           this.item.menuRows.labelRowsPerPage
         )
       ]
@@ -396,6 +392,7 @@ export class PaginationDesign<
    *
    * Рендерит компонент кнопки.
    * @param props button binding properties / свойства привязки кнопки
+   * @param index button key or identifier / ключ или идентификатор кнопки
    * @returns button virtual node or undefined / виртуальный узел кнопки или undefined
    */
   readonly renderButton = (

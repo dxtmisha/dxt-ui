@@ -1,3 +1,14 @@
 {
-  "main": "{d.pagination}"
+  "main": "{d.pagination}",
+  "gap": "{sys.spacing.xs}",
+  "#menuRows": {
+    "gap": "{sys.spacing.x}",
+    "margin-left": "{sys.spacing.sm}"
+  },
+  "~adaptive": {
+    "_default": "lineMd"
+  },
+  "~adaptiveMore": {
+    "_default": "lineLg"
+  }
 }

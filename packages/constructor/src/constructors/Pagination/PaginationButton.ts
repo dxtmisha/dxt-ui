@@ -165,7 +165,7 @@ export class PaginationButton {
   get menu(): ConstrBind<ButtonPropsBasic> {
     return {
       ...this.binds,
-      text: this.props.rows?.toString(),
+      label: this.props.rows?.toString(),
       iconTrailing: this.props.iconArrowDown,
       onClick: undefined,
       ...this.props.buttonMenuAttrs

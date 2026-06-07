@@ -37,6 +37,28 @@ export const wikiIconInclude: StorybookArgsToList = {
     },
     hide: true
   },
+  iconArrowFirst: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.icon,
+      description: {
+        en: 'Sets icon for the first arrow',
+        ru: 'Задает иконку стрелки первой страницы'
+      }
+    },
+    hide: true
+  },
+  iconArrowLast: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.icon,
+      description: {
+        en: 'Sets icon for the last arrow',
+        ru: 'Задает иконку стрелки последней страницы'
+      }
+    },
+    hide: true
+  },
   iconArrowLeft: {
     type: StorybookControl.string,
     options: {

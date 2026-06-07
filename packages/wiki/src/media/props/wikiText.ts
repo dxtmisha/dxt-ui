@@ -94,6 +94,18 @@ export const wikiText: StorybookArgsToList = {
     },
     hide: true
   },
+  textFirst: {
+    type: StorybookControl.text,
+    options: {
+      category: StorybookCategory.text,
+      type: 'string | (() => string)',
+      description: {
+        en: 'First page text',
+        ru: 'Текст первой страницы'
+      }
+    },
+    hide: true
+  },
   textHide: {
     type: StorybookControl.text,
     options: {
@@ -118,6 +130,30 @@ export const wikiText: StorybookArgsToList = {
     },
     hide: true
   },
+  textInfo: {
+    type: StorybookControl.text,
+    options: {
+      category: StorybookCategory.text,
+      type: 'string | (() => string)',
+      description: {
+        en: 'Info text (page range information string)',
+        ru: 'Текст информации о диапазоне страниц'
+      }
+    },
+    hide: true
+  },
+  textLast: {
+    type: StorybookControl.text,
+    options: {
+      category: StorybookCategory.text,
+      type: 'string | (() => string)',
+      description: {
+        en: 'Last page text',
+        ru: 'Текст последней страницы'
+      }
+    },
+    hide: true
+  },
   textLoading: {
     type: StorybookControl.text,
     options: {
@@ -126,6 +162,18 @@ export const wikiText: StorybookArgsToList = {
       description: {
         en: 'Loading text',
         ru: 'Текст загрузки'
+      }
+    },
+    hide: true
+  },
+  textMore: {
+    type: StorybookControl.text,
+    options: {
+      category: StorybookCategory.text,
+      type: 'string | (() => string)',
+      description: {
+        en: 'More button text',
+        ru: 'Текст кнопки "Показать еще"'
       }
     },
     hide: true
@@ -186,6 +234,18 @@ export const wikiText: StorybookArgsToList = {
       description: {
         en: 'Previous text',
         ru: 'Текст предыдущего'
+      }
+    },
+    hide: true
+  },
+  textRowsPerPage: {
+    type: StorybookControl.text,
+    options: {
+      category: StorybookCategory.text,
+      type: 'string | (() => string)',
+      description: {
+        en: 'Rows per page text',
+        ru: 'Текст количества строк на странице'
       }
     },
     hide: true

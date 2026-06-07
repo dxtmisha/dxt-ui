@@ -11,6 +11,145 @@
   // Стили из токенов
   // :style [!] System label / Системная метка
   & {
+    gap: var(--d1-sys-spacing-xs);
+    
+    &__menuRows {
+      gap: var(--d1-sys-spacing-x);
+      
+      @include ui.marginLeft(#{var(--d1-sys-spacing-sm)});
+    }
+    
+    &--adaptive {
+      &--lineAlways {
+        flex-direction: var(--d1-pagination-flexFlow);
+        
+        & .d1-pagination__more {
+          flex-basis: 100%;
+        }
+        
+        & .d1-pagination__spacer {
+          display: block;
+        }
+      }
+      
+      &--lineSm {
+        @media screen and (min-width: 640px) {
+          flex-direction: var(--d1-pagination-flexFlow);
+          
+          & .d1-pagination__more {
+            flex-basis: 100%;
+          }
+          
+          & .d1-pagination__spacer {
+            display: block;
+          }
+        }
+      }
+      
+      &--lineMd {
+        @media screen and (min-width: 768px) {
+          flex-direction: var(--d1-pagination-flexFlow);
+          
+          & .d1-pagination__more {
+            flex-basis: 100%;
+          }
+          
+          & .d1-pagination__spacer {
+            display: block;
+          }
+        }
+      }
+      
+      &--lineLg {
+        @media screen and (min-width: 1024px) {
+          flex-direction: var(--d1-pagination-flexFlow);
+          
+          & .d1-pagination__more {
+            flex-basis: 100%;
+          }
+          
+          & .d1-pagination__spacer {
+            display: block;
+          }
+        }
+      }
+      
+      &--lineXl {
+        @media screen and (min-width: 1280px) {
+          flex-direction: var(--d1-pagination-flexFlow);
+          
+          & .d1-pagination__more {
+            flex-basis: 100%;
+          }
+          
+          & .d1-pagination__spacer {
+            display: block;
+          }
+        }
+      }
+      
+      &--line2xl {
+        @media screen and (min-width: 1536px) {
+          flex-direction: var(--d1-pagination-flexFlow);
+          
+          & .d1-pagination__more {
+            flex-basis: 100%;
+          }
+          
+          & .d1-pagination__spacer {
+            display: block;
+          }
+        }
+      }
+    }
+    
+    &--adaptiveMore {
+      &--lineAlways {
+        & .d1-pagination__more {
+          flex-basis: auto;
+        }
+      }
+      
+      &--lineSm {
+        @media screen and (min-width: 640px) {
+          & .d1-pagination__more {
+            flex-basis: auto;
+          }
+        }
+      }
+      
+      &--lineMd {
+        @media screen and (min-width: 768px) {
+          & .d1-pagination__more {
+            flex-basis: auto;
+          }
+        }
+      }
+      
+      &--lineLg {
+        @media screen and (min-width: 1024px) {
+          & .d1-pagination__more {
+            flex-basis: auto;
+          }
+        }
+      }
+      
+      &--lineXl {
+        @media screen and (min-width: 1280px) {
+          & .d1-pagination__more {
+            flex-basis: auto;
+          }
+        }
+      }
+      
+      &--line2xl {
+        @media screen and (min-width: 1536px) {
+          & .d1-pagination__more {
+            flex-basis: auto;
+          }
+        }
+      }
+    }
   }
   // :style [!] System label / Системная метка
 

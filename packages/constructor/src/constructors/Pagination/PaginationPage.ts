@@ -1,7 +1,7 @@
 import { computed } from 'vue'
-import { type ConstrEmit } from '@dxtmisha/functional'
+import type { ConstrEmit } from '@dxtmisha/functional'
 
-import { type TextInclude } from '../../classes/TextInclude'
+import type { TextInclude } from '../../classes/TextInclude'
 
 import type { PaginationEmits } from './types'
 import type { PaginationProps } from './props'

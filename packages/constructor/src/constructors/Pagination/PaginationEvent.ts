@@ -2,9 +2,9 @@ import { type ConstrEmit } from '@dxtmisha/functional'
 
 import { type EventClickInclude } from '../../classes/EventClickInclude'
 
+import type { EventClickValue } from '../../types/eventClickTypes'
 import type { PaginationEmits } from './types'
 import type { PaginationProps } from './props'
-import type { EventClickValue } from '../../types/eventClickTypes'
 
 /**
  * Class for managing event handlers of the pagination component.

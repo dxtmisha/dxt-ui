@@ -5,7 +5,11 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
+  { name: 'adaptive', type: 'string', option: ['lineAlways', 'lineSm', 'lineMd', 'lineLg', 'lineXl', 'line2xl'] },
+  { name: 'adaptiveMore', type: 'string', option: ['lineAlways', 'lineSm', 'lineMd', 'lineLg', 'lineXl', 'line2xl'] },
   { name: 'buttonAttrs', type: 'ConstrBind<ButtonPropsBasic>' },
+  { name: 'buttonMenuAttrs', type: 'ConstrBind<ButtonPropsBasic>' },
+  { name: 'buttonMoreAttrs', type: 'ConstrBind<ButtonPropsBasic>' },
   { name: 'count', type: 'string | number' },
   { name: 'hideIfOne', type: 'boolean' },
   { name: 'iconArrowDown', type: 'IconValue<IconPropsBasic>' },
@@ -13,13 +17,15 @@ const propsNames: StorybookProps = [
   { name: 'iconArrowLast', type: 'IconValue<IconPropsBasic>' },
   { name: 'iconArrowLeft', type: 'IconValue<IconPropsBasic>' },
   { name: 'iconArrowRight', type: 'IconValue<IconPropsBasic>' },
-  { name: 'menu', type: 'number[]' },
   { name: 'menuAttrs', type: 'ConstrBind<MenuPropsBasic>' },
+  { name: 'menuRows', type: 'number[]' },
   { name: 'rows', type: 'string | number' },
   { name: 'showArrows', type: 'boolean' },
   { name: 'showFirstLast', type: 'boolean' },
   { name: 'showInfo', type: 'boolean' },
   { name: 'showMore', type: 'boolean' },
+  { name: 'showPagination', type: 'boolean' },
+  { name: 'showRowsPerPageLabel', type: 'boolean' },
   { name: 'textFirst', type: 'TextValue' },
   { name: 'textInfo', type: 'TextValue' },
   { name: 'textLast', type: 'TextValue' },

@@ -32,6 +32,28 @@ export const wikiAttributes: StorybookArgsToList = {
     },
     hide: true
   },
+  buttonMenuAttrs: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.attributes,
+      description: {
+        en: 'Additional attributes for the menu button component',
+        ru: 'Дополнительные атрибуты для кнопки меню'
+      }
+    },
+    hide: true
+  },
+  buttonMoreAttrs: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.attributes,
+      description: {
+        en: 'Additional attributes for the show more button component',
+        ru: 'Дополнительные атрибуты для кнопки "Показать еще"'
+      }
+    },
+    hide: true
+  },
   buttonSecondaryAttrs: {
     type: StorybookControl.object,
     options: {

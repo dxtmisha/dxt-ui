@@ -1,76 +1,27 @@
 @use "@dxtmisha/styles/properties" as ui;
 
 @mixin mixinPagination {
-  & {
-    @include ui.initByCustom('_gap', ui.v('??gap', 8px));
-    @include ui.initByCustom('_height', ui.v('??height', 56px));
-    @include ui.initByCustom('_padding', ui.v('??padding', 8px 8px));
+  @include ui.initByCustom('flexFlow', row);
 
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: ui.v('??_gap');
-    justify-content: space-evenly;
-    min-height: ui.v('??_height');
-    padding: ui.v('??_padding');
+  @include ui.flexStretchY;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
 
-    @include ui.subclass('spacer') {
-      display: none;
-    }
+  &__menuRows,
+  &__navigation{
+    @include ui.flexX;
+  }
 
-    @include ui.subclass('more') {
-      flex-basis: 100%;
-    }
+  &__navigation {
+    gap: inherit;
+  }
 
-    @include ui.subclass('text') {
-      font-family: var(--sys-font-family-basic), sans-serif;
-      font-size: var(--sys-font-size-sm);
-      line-height: var(--sys-line-height-sm);
-    }
+  &__info {
+    @include ui.flexX;
+  }
 
-    @include ui.subclass('menu') {
-      padding: 0 4px;
-    }
-
-    @include ui.subclass('info') {
-      flex-basis: 100%;
-      text-align: right;
-      white-space: nowrap;
-      font-family: var(--sys-font-family-basic), sans-serif;
-      font-size: var(--sys-font-size-sm);
-      line-height: var(--sys-line-height-sm);
-    }
-
-    @include ui.subclass('navigation') {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      gap: ui.v('??_gap');
-      margin-left: inherit;
-      justify-content: flex-end;
-    }
-
-    @include ui.mediaMinWidth('md') {
-      @include ui.subclass('spacer') {
-        display: block;
-        flex-grow: 1;
-        flex-shrink: 1;
-        flex-basis: 0%;
-      }
-
-      @include ui.subclass('info') {
-        padding: 0 16px;
-        flex-basis: auto;
-        flex-grow: 0;
-        flex-shrink: 0;
-      }
-    }
-
-    @include ui.mediaMinWidth('xl') {
-      @include ui.subclass('more') {
-        flex-basis: auto;
-      }
-    }
+  &__spacer {
+    display: none;
+    @include ui.flexDynamic;
   }
 }

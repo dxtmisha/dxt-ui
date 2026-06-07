@@ -1,18 +1,36 @@
 {
-  "gap": {
-    "_type": "var"
-  },
-  "height": {
-    "_type": "var"
-  },
-  "padding": {
-    "_type": "var"
-  },
   "#button": {},
+  "#navigation": {},
   "#more": {},
-  "#spacer": {},
-  "#text": {},
-  "#menu": {},
   "#info": {},
-  "#navigation": {}
+  "#menuRows": {
+    "#label": {}
+  },
+  "#spacer": {},
+  "~adaptive": {
+    "~lineAlways": {
+      "flex-direction": "{??flexFlow}",
+      "#more": {
+        "flex-basis": "100%"
+      },
+      "#spacer": {
+        "display": "block"
+      }
+    },
+    "group|line": {
+      "link|adaptive-line": "{??adaptive.lineAlways}",
+      "_type": "media-group"
+    }
+  },
+  "~adaptiveMore": {
+    "~lineAlways": {
+      "#more": {
+        "flex-basis": "auto"
+      }
+    },
+    "group|line": {
+      "link|adaptiveMore-line": "{??adaptiveMore.lineAlways}",
+      "_type": "media-group"
+    }
+  }
 }

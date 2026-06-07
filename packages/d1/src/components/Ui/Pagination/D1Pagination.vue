@@ -2,7 +2,8 @@
 import { computed } from 'vue'
 import {
   type ConstrClasses,
-  type ConstrStyles
+  type ConstrStyles,
+  inArray
 } from '@dxtmisha/functional'
 import {
   PaginationDesign,
@@ -13,7 +14,7 @@ import {
 import { D1Button } from '../Button'
 import { D1Menu } from '../Menu'
 
-import { defaults, type PaginationProps } from './props'
+import { defaults, type PaginationProps, propsValues } from './props'
 import './styleToken.scss'
 
 defineOptions({
@@ -26,7 +27,9 @@ const props = withDefaults(defineProps<PaginationProps>(), defaults)
 const classesToken = computed<ConstrClasses>(() => ({
   main: {
     // :classes-values [!] System label / Системная метка
-    'd1-pagination': true
+    'd1-pagination': true,
+    [`d1-pagination--adaptive--${props.adaptive}`]: inArray(propsValues.adaptive, props.adaptive),
+    [`d1-pagination--adaptiveMore--${props.adaptiveMore}`]: inArray(propsValues.adaptiveMore, props.adaptiveMore)
     // :classes-values [!] System label / Системная метка
   }
 }))

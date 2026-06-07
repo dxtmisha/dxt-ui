@@ -10,6 +10,16 @@ import {
  * Объект wikiPagination содержит описание всех свойств для компонента пагинации
  */
 export const wikiPagination: StorybookArgsToList = {
+  'pagination.adaptiveMore': {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Whether to enable adaptive mode for show more button',
+        ru: 'Включить ли адаптивный режим для кнопки "Показать еще"'
+      }
+    }
+  },
   'pagination.count': {
     type: StorybookControl.string,
     options: {
@@ -36,11 +46,12 @@ export const wikiPagination: StorybookArgsToList = {
   'pagination.menuRows': {
     type: StorybookControl.array,
     options: {
-      category: StorybookCategory.option,
+      category: StorybookCategory.value,
       description: {
         en: 'Option list for rows count select',
         ru: 'Список вариантов количества строк'
-      }
+      },
+      value: [10, 25, 50, 100]
     }
   },
   'pagination.rows': {
@@ -62,8 +73,7 @@ export const wikiPagination: StorybookArgsToList = {
       description: {
         en: 'Whether to show the next and back buttons',
         ru: 'Показывать ли кнопки «Назад» и «Вперед»'
-      },
-      value: true
+      }
     }
   },
   'pagination.showFirstLast': {
@@ -73,8 +83,7 @@ export const wikiPagination: StorybookArgsToList = {
       description: {
         en: 'Whether to show the first and last page buttons',
         ru: 'Показывать ли кнопки перехода к первой и последней страницам'
-      },
-      value: true
+      }
     }
   },
   'pagination.showInfo': {
@@ -84,7 +93,8 @@ export const wikiPagination: StorybookArgsToList = {
       description: {
         en: 'Whether to show page range information',
         ru: 'Показывать ли информацию о диапазоне страниц'
-      }
+      },
+      value: true
     }
   },
   'pagination.showMore': {
@@ -94,7 +104,8 @@ export const wikiPagination: StorybookArgsToList = {
       description: {
         en: 'Whether to show "Show more" button',
         ru: 'Показывать ли кнопку "Показать еще"'
-      }
+      },
+      value: true
     }
   },
   'pagination.showPagination': {
@@ -104,8 +115,7 @@ export const wikiPagination: StorybookArgsToList = {
       description: {
         en: 'Whether to show the page navigation buttons',
         ru: 'Показывать ли панель с кнопками страниц'
-      },
-      value: true
+      }
     }
   },
   'pagination.showRowsPerPageLabel': {
@@ -115,8 +125,7 @@ export const wikiPagination: StorybookArgsToList = {
       description: {
         en: 'Whether to show the text rows per page',
         ru: 'Показывать ли текст количества строк на странице'
-      },
-      value: true
+      }
     }
   },
   'pagination.value': {
