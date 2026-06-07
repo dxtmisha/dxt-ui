@@ -2,8 +2,7 @@
   "main": "{d.pagination}",
   "gap": "{sys.spacing.xs}",
   "#menuRows": {
-    "gap": "{sys.spacing.x}",
-    "margin-left": "{sys.spacing.sm}"
+    "gap": "{sys.spacing.x}"
   },
   "~adaptive": {
     "_default": "lineMd"

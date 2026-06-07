@@ -108,7 +108,8 @@ export class PaginationDesign<
         info: this.getSubClass('info'),
         menuRows: this.getSubClass('menuRows'),
         menuRowsLabel: this.getSubClass('menuRows__label'),
-        spacer: this.getSubClass('spacer')
+        spacer: this.getSubClass('spacer'),
+        ellipsis: this.getSubClass('ellipsis')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -285,7 +286,11 @@ export class PaginationDesign<
         [
           ...this.renderFirst(),
           ...this.renderBack(),
+          ...this.renderPaginationFirst(),
+          ...this.renderFirstEllipsis(),
           ...this.renderPagination(),
+          ...this.renderLastEllipsis(),
+          ...this.renderPaginationLast(),
           ...this.renderNext(),
           ...this.renderLast()
         ]
@@ -313,6 +318,74 @@ export class PaginationDesign<
     })
 
     return children
+  }
+
+  /**
+   * Renders the list of first page number button components.
+   *
+   * Рендерит список компонентов числовых кнопок первых страниц.
+   * @returns array of page button nodes / массив узлов кнопок страниц
+   */
+  readonly renderPaginationFirst = (): VNode[] => {
+    const children: VNode[] = []
+
+    this.item.button.paginationFirst.value.forEach((pageProps) => {
+      const node = this.renderButton(pageProps)
+
+      if (node) {
+        children.push(node)
+      }
+    })
+
+    return children
+  }
+
+  /**
+   * Renders the list of last page number button components.
+   *
+   * Рендерит список компонентов числовых кнопок последних страниц.
+   * @returns array of page button nodes / массив узлов кнопок страниц
+   */
+  readonly renderPaginationLast = (): VNode[] => {
+    const children: VNode[] = []
+
+    this.item.button.paginationLast.value.forEach((pageProps) => {
+      const node = this.renderButton(pageProps)
+
+      if (node) {
+        children.push(node)
+      }
+    })
+
+    return children
+  }
+
+  /**
+   * Renders the first ellipsis separator.
+   *
+   * Рендерит первое многоточие-разделитель.
+   * @returns array containing ellipsis button node or empty / массив, содержащий узел кнопки многоточия или пустой
+   */
+  readonly renderFirstEllipsis = (): VNode[] => {
+    if (this.item.button.showFirstEllipsis.value) {
+      return this.renderEllipsis()
+    }
+
+    return []
+  }
+
+  /**
+   * Renders the last ellipsis separator.
+   *
+   * Рендерит последнее многоточие-разделитель.
+   * @returns array containing ellipsis node or empty / массив, содержащий узел многоточия или пустой
+   */
+  readonly renderLastEllipsis = (): VNode[] => {
+    if (this.item.button.showLastEllipsis.value) {
+      return this.renderEllipsis()
+    }
+
+    return []
   }
 
   /**
@@ -408,6 +481,18 @@ export class PaginationDesign<
       undefined,
       index
     )
+  }
+
+  /**
+   * Renders the ellipsis separator element.
+   *
+   * Рендерит элемент многоточия-разделителя.
+   * @returns array containing ellipsis node or empty / массив, содержащий узел многоточия или пустой
+   */
+  readonly renderEllipsis = (): VNode[] => {
+    return [
+      h('span', { class: this.classes?.value.ellipsis }, this.props.ellipsis)
+    ]
   }
 
   /**

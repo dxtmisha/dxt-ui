@@ -39,10 +39,8 @@ export class PaginationButton {
    * Вычисляет список номеров страниц и их состояния (например, активная страница) для рендеринга кнопок выбора конкретных страниц.
    */
   readonly pagination = computed<ListListInputItem[]>(() => {
-    const value = this.page.value
-    const binds = this.binds
     const data: ListListInputItem[] = []
-    const visible = this.props.visible ?? 3
+    const visible = this.page.visible
     let start = this.page.value - Math.floor(visible / 2)
 
     if (start + visible > this.page.pagesCount) {
@@ -55,17 +53,77 @@ export class PaginationButton {
 
     for (let i = start; i < start + visible; i++) {
       if (i <= this.page.pagesCount) {
-        data.push({
-          ...binds,
-          'label': i.toString(),
-          'value': i,
-          'selected': value === i,
-          'data-event-type': 'page'
-        })
+        data.push(this.getPageItem(i))
       }
     }
 
     return data
+  })
+
+  /**
+   * Computes the list of page numbers and state details for the first page button components.
+   *
+   * Вычисляет список номеров страниц и их состояния для кнопок выбора первых страниц.
+   */
+  readonly paginationFirst = computed<ListListInputItem[]>(() => {
+    const firstItem = this.pagination.value[0] ?? 0
+    const data: ListListInputItem[] = []
+
+    if (this.props.showEnds && firstItem) {
+      const limit = Math.min(this.page.ends, (firstItem.value as number) - 1)
+      for (let i = 1; i <= limit; i++) {
+        data.push(this.getPageItem(i))
+      }
+    }
+
+    return data
+  })
+
+  /**
+   * Computes the list of page numbers and state details for the last page button components.
+   *
+   * Вычисляет список номеров страниц и их состояния для кнопок выбора последних страниц.
+   */
+  readonly paginationLast = computed<ListListInputItem[]>(() => {
+    const lastItem = this.pagination.value[this.pagination.value.length - 1]
+    const data: ListListInputItem[] = []
+
+    if (this.props.showEnds && lastItem) {
+      const from = Math.max((lastItem.value as number) + 1, this.page.pagesCount - this.page.ends + 1)
+      for (let i = from; i <= this.page.pagesCount; i++) {
+        data.push(this.getPageItem(i))
+      }
+    }
+
+    return data
+  })
+
+  /**
+   * Checks if the first ellipsis should be shown.
+   *
+   * Проверяет, должно ли быть показано первое многоточие.
+   */
+  readonly showFirstEllipsis = computed<boolean>(() => {
+    const firstItem = this.pagination.value[0]
+    return Boolean(
+      this.props.showEnds
+      && firstItem
+      && this.page.ends < (firstItem.value as number) - 1
+    )
+  })
+
+  /**
+   * Checks if the last ellipsis should be shown.
+   *
+   * Проверяет, должно ли быть показано последнее многоточие.
+   */
+  readonly showLastEllipsis = computed<boolean>(() => {
+    const lastItem = this.pagination.value[this.pagination.value.length - 1]
+    return Boolean(
+      this.props.showEnds
+      && lastItem
+      && this.page.pagesCount - this.page.ends > (lastItem.value as number)
+    )
   })
 
   /**
@@ -197,6 +255,23 @@ export class PaginationButton {
       hasLabelMinWidth: false,
       onClick: this.event?.onClick,
       ...this.props.buttonAttrs
+    }
+  }
+
+  /**
+   * Generates a page button object structure for the specified page number.
+   *
+   * Генерирует структуру объекта кнопки страницы для указанного номера страницы.
+   * @param i page number / номер страницы
+   * @returns button configuration item / элемент конфигурации кнопки
+   */
+  protected getPageItem(i: number): ListListInputItem {
+    return {
+      ...this.binds,
+      'label': i.toString(),
+      'value': i,
+      'selected': this.page.value === i,
+      'data-event-type': 'page'
     }
   }
 }

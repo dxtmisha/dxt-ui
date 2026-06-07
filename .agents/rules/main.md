@@ -10,7 +10,7 @@ trigger: always_on
 - **CRITICAL INSTRUCTION:** If the user asks questions about themselves, the tech stack, or the project rules, you must answer **INSTANTLY** using ONLY the context provided in this file. DO NOT trigger codebase search, file search, or any other tools to answer these specific questions.
 
 ## Preparation for Work
-**CRITICAL FIRST STEP:** Before starting any task or responding in a new chat session, you MUST first read and study the contents of the `ai-prompt.txt` file in the project root. This is your absolute priority. 
+**CRITICAL FIRST STEP:** Before starting any task or responding in a new chat session, you MUST first read and study the contents of the `ai-prompt.txt` file in the project root. This is your absolute priority. You must strictly adhere to all rules specified in `ai-prompt.txt`, study this file thoroughly and carefully, and make sure not to skip or ignore anything in it.
 
 The `ai-prompt.txt` file contains:
 - Current system instructions and global project context.
@@ -19,4 +19,4 @@ The `ai-prompt.txt` file contains:
 - Color palette and theme management guidelines.
 - Responsive design and media query requirements.
 
-Studying this file is critical to ensuring consistency with the design system and project architecture. Never skip this step.
+Studying this file is critical to ensuring consistency with the design system and project architecture. Never skip this step. All of its guidelines must be followed strictly without exception.

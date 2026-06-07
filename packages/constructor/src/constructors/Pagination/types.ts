@@ -61,5 +61,6 @@ export type PaginationClasses = {
   menuRows: string
   menuRowsLabel: string
   spacer: string
+  ellipsis: string
   // :classes [!] System label / Системная метка
 }

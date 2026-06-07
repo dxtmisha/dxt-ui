@@ -15,8 +15,6 @@
     
     &__menuRows {
       gap: var(--d1-sys-spacing-x);
-      
-      @include ui.marginLeft(#{var(--d1-sys-spacing-sm)});
     }
     
     &--adaptive {

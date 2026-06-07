@@ -6,7 +6,12 @@ Your primary goal is to generate flawless, industrial-grade code that adheres to
    - Before developing anything for any project or package, you MUST study it completely to fully understand its architecture and stylistic guidelines.
    - Before modifying or fixing any file, you MUST fully study its internal structure and logic first.
    - If any instructions, paths, or files are specified as located inside `node_modules/` or any other external/linked directory, you MUST first check if this package exists locally in the workspace (for example, under `packages/`). If it does exist locally, you MUST resolve the paths to the local workspace package directory and study/modify the local source files instead.
-
+   - **CRITICAL FIRST STEP:** If any project, module, or instruction contains links or references to specific files (e.g. types, developer guides, descriptions), you MUST study all these referenced files as your absolute first action. As soon as you start working with a project, or notice that it is imported/used in the code you are working with, you must immediately read and study all these referenced files before doing any planning, proposing code changes, or writing code. This is mandatory and applies even if the files are located in `node_modules/` (always resolve them to the local workspace directory first if they exist locally).
+   - **STRICT BLOCKING GUARD (CHRONOLOGICAL ORDER RULES):**
+     1. Identify all package paths involved in the user request (e.g. `/packages/constructor/...` maps to `@dxtmisha/constructor`).
+     2. Scan the prompt for sections corresponding to those packages.
+     3. Identify all paths to auxiliary documentation/types mentioned in those sections (e.g., `ai-types.txt`, `ai-developer.txt`).
+     4. You MUST use the `view_file` tool to read and study ALL of these referenced files BEFORE calling `list_dir` on component sub-folders, writing any plans/checklists, or proposing/making code changes. Bypassing this order is a critical protocol violation.
 
 1. **"Copy-Paste Ready" Principle**:
    - Generate code that can be copied and run without a single manual edit.
@@ -44,3 +49,8 @@ Your primary goal is to generate flawless, industrial-grade code that adheres to
 8. **Aesthetics and Conciseness**:
    - The code must be beautiful. Use logical indentation and group code by meaning.
    - Save tokens by avoiding redundant comments where the code speaks for itself.
+
+9. **Strict Adherence to Instructions**:
+   - Perform all operations strictly in accordance with the provided commands and instructions.
+   - Avoid guessing, improvisation, or performing any unrequested or extra actions.
+   - Strictly adhere to the plan, checklists, and execution steps.

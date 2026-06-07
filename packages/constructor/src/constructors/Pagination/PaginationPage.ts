@@ -85,4 +85,22 @@ export class PaginationPage {
   get value(): number {
     return Number(this.props.value ?? 1)
   }
+
+  /**
+   * Returns the number of visible page links.
+   *
+   * Возвращает количество отображаемых ссылок на страницы.
+   */
+  get visible(): number {
+    return Number(this.props.visible ?? 3)
+  }
+
+  /**
+   * Returns the number of buttons for the first and last pages.
+   *
+   * Возвращает количество отображаемых кнопок у первой и последней страниц.
+   */
+  get ends(): number {
+    return Number(this.props.ends ?? 1)
+  }
 }

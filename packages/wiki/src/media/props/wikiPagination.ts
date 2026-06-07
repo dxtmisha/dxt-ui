@@ -32,6 +32,27 @@ export const wikiPagination: StorybookArgsToList = {
       value: '100'
     }
   },
+  'pagination.ellipsis': {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.option,
+      description: {
+        en: 'Ellipsis text separator',
+        ru: 'Текст многоточия-разделителя'
+      }
+    }
+  },
+  'pagination.ends': {
+    type: StorybookControl.number,
+    options: {
+      category: StorybookCategory.option,
+      description: {
+        en: 'Number of buttons for the first and last pages',
+        ru: 'Количество отображаемых кнопок у первой и последней страниц'
+      },
+      value: 1
+    }
+  },
   'pagination.hideIfOne': {
     type: StorybookControl.boolean,
     options: {
@@ -74,6 +95,17 @@ export const wikiPagination: StorybookArgsToList = {
         en: 'Whether to show the next and back buttons',
         ru: 'Показывать ли кнопки «Назад» и «Вперед»'
       }
+    }
+  },
+  'pagination.showEnds': {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.option,
+      description: {
+        en: 'Whether to show the first and last page buttons as numbers and ellipsis',
+        ru: 'Показывать ли первую и последнюю страницы и многоточие между ними'
+      },
+      value: true
     }
   },
   'pagination.showFirstLast': {

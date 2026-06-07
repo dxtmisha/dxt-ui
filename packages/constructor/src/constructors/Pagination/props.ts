@@ -43,6 +43,11 @@ export type PaginationPropsBasic<
 
     /** Number of visible page links / Количество отображаемых ссылок на страницы */
     visible?: number
+    /** Number of buttons for the first and last pages / Количество отображаемых кнопок у первой и последней страниц */
+    ends?: number
+    /** Ellipsis text separator / Текст многоточия-разделителя */
+    ellipsis?: string
+
     /** Whether to hide pagination if only one page exists / Скрывать ли пагинацию, если страница всего одна */
     hideIfOne?: boolean
     /** Whether to show the page navigation buttons / Показывать ли панель с кнопками страниц */
@@ -51,6 +56,8 @@ export type PaginationPropsBasic<
     showArrows?: boolean
     /** Whether to show the first and last page buttons / Показывать ли кнопки перехода к первой и последней страницам */
     showFirstLast?: boolean
+    /** Whether to show the first and last page buttons as numbers and ellipsis / Показывать ли первую и последнюю страницы и многоточие между ними */
+    showEnds?: boolean
     /** Whether to show "Show more" button / Показывать ли кнопку "Показать еще" */
     showMore?: boolean
     /** Whether to show page range information / Показывать ли информацию о диапазоне страниц */
@@ -92,18 +99,17 @@ export type PaginationProps = PaginationPropsBasic & PaginationPropsToken
  * Значение по умолчанию для свойства.
  */
 export const defaultsPagination = {
-  iconArrowDown: 'arrow_drop_down',
-  iconArrowFirst: 'first_page',
-  iconArrowLast: 'last_page',
-  iconArrowLeft: 'chevron_left',
-  iconArrowRight: 'chevron_right',
+  value: 1,
+
+  visible: 3,
+  ends: 1,
+  ellipsis: '...',
+
+  hideIfOne: true,
   showPagination: true,
   showArrows: true,
   showFirstLast: true,
   showRowsPerPageLabel: true,
-  value: 1,
-  visible: 3,
-  hideIfOne: true,
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка
