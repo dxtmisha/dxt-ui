@@ -48,6 +48,17 @@ const design = new PaginationDesign(
     components: {
       button: D1Button,
       menu: D1Menu
+    },
+    compMod: {
+      button: {
+        text: true,
+        size: 'sm',
+        inverse: true
+      },
+      more: {
+        secondary: true,
+        size: 'sm'
+      }
     }
   }
 )
