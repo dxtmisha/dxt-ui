@@ -108,8 +108,8 @@ export class PaginationDesign<
         info: this.getSubClass('info'),
         menuRows: this.getSubClass('menuRows'),
         menuRowsLabel: this.getSubClass('menuRows__label'),
-        spacer: this.getSubClass('spacer'),
-        ellipsis: this.getSubClass('ellipsis')
+        ellipsis: this.getSubClass('ellipsis'),
+        spacer: this.getSubClass('spacer')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

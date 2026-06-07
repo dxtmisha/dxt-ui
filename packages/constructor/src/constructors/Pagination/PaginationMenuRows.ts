@@ -61,6 +61,7 @@ export class PaginationMenuRows {
    */
   get binds(): ConstrBind<MenuPropsBasic> {
     return {
+      key: 'menuRows',
       selected: this.props.rows,
       list: this.menuList.value,
       onClick: this.event?.onClick,

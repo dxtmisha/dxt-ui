@@ -76,6 +76,8 @@ export class PaginationButton {
       }
     }
 
+    console.log('paginationFirst', data)
+
     return data
   })
 
@@ -94,6 +96,8 @@ export class PaginationButton {
         data.push(this.getPageItem(i))
       }
     }
+
+    console.log('paginationLast', data)
 
     return data
   })
@@ -137,6 +141,7 @@ export class PaginationButton {
 
     return {
       ...this.binds,
+      'key': `item__back`,
       'icon': this.props.iconArrowLeft,
       'value': value - 1,
       'disabled': value <= 1,
@@ -156,6 +161,7 @@ export class PaginationButton {
 
     return {
       ...this.binds,
+      'key': `item__next`,
       'icon': this.props.iconArrowRight,
       'value': value + 1,
       'disabled': value >= this.page.pagesCount,
@@ -173,6 +179,7 @@ export class PaginationButton {
   get first(): ConstrBind<ButtonPropsBasic> {
     return {
       ...this.binds,
+      'key': `item__first`,
       'icon': this.props.iconArrowFirst,
       'value': 1,
       'disabled': this.page.value <= 1,
@@ -190,6 +197,7 @@ export class PaginationButton {
   get last(): ConstrBind<ButtonPropsBasic> {
     return {
       ...this.binds,
+      'key': `item__last`,
       'icon': this.props.iconArrowLast,
       'value': this.page.pagesCount,
       'disabled': this.page.value >= this.page.pagesCount,
@@ -207,6 +215,7 @@ export class PaginationButton {
   get more(): ConstrBind<ButtonPropsBasic> {
     return {
       ...this.binds,
+      'key': `item__more`,
       'label': this.text?.more,
       'value': this.page.value + 1,
       'data-event-type': 'more',
@@ -223,6 +232,7 @@ export class PaginationButton {
   get menu(): ConstrBind<ButtonPropsBasic> {
     return {
       ...this.binds,
+      key: 'menuControl',
       label: this.props.rows?.toString(),
       iconTrailing: this.props.iconArrowDown,
       onClick: undefined,
@@ -268,6 +278,7 @@ export class PaginationButton {
   protected getPageItem(i: number): ListListInputItem {
     return {
       ...this.binds,
+      'key': `item__${i}`,
       'label': i.toString(),
       'value': i,
       'selected': this.page.value === i,
