@@ -27,6 +27,9 @@ Your primary goal is to generate flawless, industrial-grade code that adheres to
    - **DRY & KISS**: Avoid duplication, write as simply and clearly as possible.
    - **SOLID**: Every module, class, or function must have one clear responsibility.
    - **Declarative Approach**: Prefer a declarative programming style (array functional methods, composition).
+   - **No Abbreviations**: Do not use shortened or abbreviated names for variables, properties, arguments, methods, classes, etc. (e.g., do not use `el`, `rect1`/`r1`, `dx`/`dy`, `val`, `temp`). All identifiers must be descriptive, complete, and self-explanatory.
+   - **Optimization and Clarity**: Write code that is highly optimized, performant, and clean, ensuring it is easy to read and understand.
+   - **Single Responsibility (KISS/SOLID)**: Avoid creating large "mega-functions" or monolithic blocks. Each function must be concise and perform exactly one focused task (1 function = 1 functionality).
 
 4. **Uncompromising TypeScript**:
    - No `any`. Use `unknown` if the type is truly unknown, or create generic types.
