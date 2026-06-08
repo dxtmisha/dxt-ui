@@ -1,0 +1,87 @@
+@use "@dxtmisha/styles" as color;
+@use "@dxtmisha/styles/properties" as ui;
+
+@mixin mixinDraggableWrapper {
+  --_cp__it-display: var(--cp__it-display, block);
+
+  & {
+    position: relative;
+  }
+
+  &__item {
+    cursor: default;
+    position: relative;
+
+    &::before {
+      z-index: var(--sys-index-xl);
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      @include color.backgroundColor(var(--sys-palette-primary), var(--sys-opacity-selected));
+      content: " ";
+      display: none;
+      transition-property: background-color;
+      transition-duration: var(--sys-transitionDuration-standard);
+      transition-timing-function: var(--sys-transitionFunction-standard);
+    }
+
+    &.cp-active {
+      user-select: none;
+      z-index: var(--sys-index-xl);
+      box-shadow: var(--sys-shadow-xl);
+      left: calc(var(--_cp-x) + var(--_cp-shift-x, 0px));
+      position: absolute;
+      height: var(--_cp-height);
+      margin: 0 !important;
+      opacity: var(--sys-opacity-surface-high);
+      transform: scale(1.08);
+      transition-property: box-shadow, opacity, transform;
+      transition-duration: var(--sys-transitionDuration-standard);
+      transition-timing-function: var(--sys-transitionFunction-standard);
+      top: calc(var(--_cp-y) + var(--_cp-shift-y, 0px));
+      width: var(--_cp-width);
+
+      &::before {
+        display: var(--_cp__it-display);
+      }
+    }
+
+    &.cp-selection {
+      z-index: calc(var(--sys-index-xl) - 1);
+      box-shadow: var(--sys-shadow-lg);
+      opacity: var(--sys-opacity-surface-medium);
+      transform: scale(1.08) rotate(var(--_cp-shift));
+      transform-origin: 60% 40%;
+      transition-property: none;
+    }
+
+    &.cp-selection-more {
+      opacity: 0;
+    }
+
+    &.cp-return {
+      box-shadow: none;
+      opacity: 1;
+      transform: none;
+      transition-property: box-shadow, left, transform, top;
+      transition-duration: var(--sys-transitionDuration-standard);
+      transition-timing-function: var(--sys-transitionFunction-standard);
+
+      &::before {
+        background-color: transparent;
+      }
+    }
+  }
+
+  &__square {
+    &:not(.cp-show) {
+      display: none;
+    }
+  }
+
+  &__body {
+    user-select: none;
+  }
+}

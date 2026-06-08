@@ -27,7 +27,7 @@
     "build": "vue-tsc -b && vite build",
     "build-recovery": "npm run build && npm run wiki-storm",
     "preview": "vite preview",
-    "ui": "dxt-ui Pagination",
+    "ui": "dxt-ui DraggableWrapper",
     "wiki-storm": "dxt-wiki-storm",
     "types": "dxt-types",
     "screenshot": "dxt-screenshot",
@@ -347,6 +347,10 @@
     "./D1Pagination": {
       "types": "./dist/src/library/D1Pagination.d.ts",
       "default": "./dist/D1Pagination.js"
+    },
+    "./D1DraggableWrapper": {
+      "types": "./dist/src/library/D1DraggableWrapper.d.ts",
+      "default": "./dist/D1DraggableWrapper.js"
     }
   },
   "buildOptions": {

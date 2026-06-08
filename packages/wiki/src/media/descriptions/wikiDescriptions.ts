@@ -20,6 +20,7 @@ import { wikiDescriptionsClientOnly } from './wikiDescriptionsClientOnly'
 import { wikiDescriptionsContainer } from './wikiDescriptionsContainer'
 import { wikiDescriptionsDialog } from './wikiDescriptionsDialog'
 import { wikiDescriptionsDivider } from './wikiDescriptionsDivider'
+import { wikiDescriptionsDraggableWrapper } from './wikiDescriptionsDraggableWrapper'
 import { wikiDescriptionsDummy } from './wikiDescriptionsDummy'
 import { wikiDescriptionsField } from './wikiDescriptionsField'
 import { wikiDescriptionsFieldCounter } from './wikiDescriptionsFieldCounter'
@@ -92,6 +93,7 @@ export const wikiDescriptions: StorybookComponentsDescription = [
   wikiDescriptionsContainer,
   wikiDescriptionsDialog,
   wikiDescriptionsDivider,
+  wikiDescriptionsDraggableWrapper,
   wikiDescriptionsDummy,
   wikiDescriptionsField,
   wikiDescriptionsFieldCounter,

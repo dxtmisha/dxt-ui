@@ -9037,6 +9037,17 @@
           }
         }
       },
+      "draggableWrapper": {
+        "name": "d1-draggableWrapper",
+        "type": "component",
+        "value": {
+          "main": {
+            "name": "--d1-draggableWrapper-main",
+            "type": "var",
+            "value": "{d.draggableWrapper}"
+          }
+        }
+      },
       "dummy": {
         "name": "d1-dummy",
         "type": "component",
