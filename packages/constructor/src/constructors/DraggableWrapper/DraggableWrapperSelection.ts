@@ -1,4 +1,6 @@
 import { type Ref } from 'vue'
+import { DraggableWrapperClassesData } from './DraggableWrapperClassesData'
+import { DraggableWrapperItem } from './DraggableWrapperItem'
 
 /**
  * Helper class for managing multiselection styles and states during drag /
@@ -14,9 +16,9 @@ export class DraggableWrapperSelection {
    */
   constructor(
     protected readonly id: string,
+    protected readonly classes: DraggableWrapperClassesData,
     protected readonly position: Ref<HTMLElement | undefined>,
-    protected readonly itemActive: Ref<HTMLElement | undefined>,
-    protected readonly itemSelection: Ref<HTMLElement[] | undefined>
+    protected readonly item: DraggableWrapperItem
   ) { }
 
   /**
@@ -25,7 +27,9 @@ export class DraggableWrapperSelection {
    * @returns array of dataset values / массив значений dataset
    */
   getSelection(): (string | undefined)[] {
-    const list = this.itemSelection.value || (this.itemActive.value ? [this.itemActive.value] : [])
+    const selection = this.item.getSelection()
+    const active = this.item.getActive()
+    const list = selection || (active ? [active] : [])
     return list.map(item => item?.dataset?.value)
   }
 
@@ -39,7 +43,7 @@ export class DraggableWrapperSelection {
       return []
     }
     const elements = this.position.value.querySelectorAll<HTMLElement>(
-      `.${this.id}.cp-active, .${this.id}.status-selected`
+      `.${this.id}.${this.classes.list.active}, .${this.id}.${this.classes.list.selected}`
     )
     return Array.from(elements)
   }
@@ -49,18 +53,18 @@ export class DraggableWrapperSelection {
    * Координирует визуальное смещение и углы поворота стека выбранных элементов
    */
   goSelection(): void {
-    const active = this.itemActive.value
+    const active = this.item.getActive()
     if (!active) {
       return
     }
 
-    if (active.classList.contains('status-selected')) {
+    if (active.classList.contains(this.classes.list.selected)) {
       let shift = 1
       const deg = 4
       const max = 4
 
       const selection = this.findSelection()
-      this.itemSelection.value = selection
+      this.item.setSelection(selection)
 
       selection.forEach((item) => {
         if (item !== active) {
@@ -69,12 +73,12 @@ export class DraggableWrapperSelection {
           item.style.setProperty('--_cp-width', `${rect.width}px`)
           item.style.setProperty('--_cp-height', `${rect.height}px`)
           item.style.setProperty('--_cp-shift', `-${max * deg - shift * deg}deg`)
-          item.classList.add('cp-active', 'cp-selection')
+          item.classList.add(this.classes.list.active, this.classes.list.selection)
 
           if (shift < max) {
             shift++
           } else {
-            item.classList.add('cp-selection-more')
+            item.classList.add(this.classes.list.selectionMore)
           }
         }
       })

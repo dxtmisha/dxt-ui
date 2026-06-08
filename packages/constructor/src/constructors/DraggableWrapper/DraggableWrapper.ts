@@ -2,7 +2,6 @@ import { computed, ref, type Ref, type ToRefs } from 'vue'
 import {
   type ConstrEmit,
   type DesignComp,
-  getElementId,
   isDomRuntime,
   getMouseClientX,
   getMouseClientY
@@ -15,23 +14,20 @@ import type { DraggableWrapperEventParameters } from './basicTypes'
 import { DraggableWrapperSquare } from './DraggableWrapperSquare'
 import { DraggableWrapperSelection } from './DraggableWrapperSelection'
 import { DraggableWrapperPosition } from './DraggableWrapperPosition'
+import { DraggableWrapperClassesData } from './DraggableWrapperClassesData'
+import { DraggableWrapperFocus } from './DraggableWrapperFocus'
+import { DraggableWrapperItem } from './DraggableWrapperItem'
 
 /**
  * Orchestrator class for managing draggable reordering logic /
  * Класс-оркестратор для управления логикой изменения порядка перетаскиванием
  */
 export class DraggableWrapper {
-  /** Unique identifier of the component instance / Уникальный идентификатор экземпляра компонента */
-  protected readonly id = `draggable-wrapper--${getElementId()}`
+  /** Classes helper instance / Экземпляр помощника по классам */
+  readonly classes: DraggableWrapperClassesData
 
-  /** Ref to the active dragged element / Ссылка на активный перетаскиваемый элемент */
-  readonly itemActive = ref<HTMLElement | undefined>(undefined)
-
-  /** Ref to list of selected elements stack / Ссылка на стек выбранных элементов */
-  readonly itemSelection = ref<HTMLElement[] | undefined>(undefined)
-
-  /** Computed list of drag elements / Вычисляемый список элементов перетаскивания */
-  readonly itemStart = computed(() => this.itemSelection.value || (this.itemActive.value ? [this.itemActive.value] : []))
+  /** Items helper instance / Экземпляр помощника по элементам */
+  readonly item = new DraggableWrapperItem()
 
   /** Ref to target hovered element during drag / Ссылка на целевой элемент наведения при перетаскивании */
   readonly itemGo = ref<HTMLElement | undefined>(undefined)
@@ -47,7 +43,7 @@ export class DraggableWrapper {
   }
 
   /** Focused element on click / Элемент в фокусе при клике */
-  protected focus: HTMLElement | undefined
+  protected readonly focusHelper = new DraggableWrapperFocus()
 
   /** Drag start delay timer / Таймер задержки начала перетаскивания */
   protected timeout: any
@@ -82,15 +78,15 @@ export class DraggableWrapper {
     protected readonly slots?: DraggableWrapperSlots,
     protected readonly emits?: ConstrEmit<DraggableWrapperEmits>
   ) {
-    this.squareHelper = new DraggableWrapperSquare(this.id, this.element, this.square)
-    this.selectionHelper = new DraggableWrapperSelection(this.id, this.element, this.itemActive, this.itemSelection)
+    this.classes = new DraggableWrapperClassesData(this.classDesign)
+    this.squareHelper = new DraggableWrapperSquare(this.getId(), this.classes, this.element, this.square)
+    this.selectionHelper = new DraggableWrapperSelection(this.getId(), this.classes, this.element, this.item)
     this.positionHelper = new DraggableWrapperPosition(
-      this.id,
+      this.getId(),
       this.element,
+      this.classes,
       this.square,
-      this.itemActive,
-      this.itemSelection,
-      this.itemStart,
+      this.item,
       this.itemGo,
       this.client,
       this.emitEvent,
@@ -105,7 +101,7 @@ export class DraggableWrapper {
    * @returns unique identifier / уникальный идентификатор
    */
   getId(): string {
-    return this.id
+    return this.classes.getId()
   }
 
   /**
@@ -155,12 +151,12 @@ export class DraggableWrapper {
    * Коллбек для генерации события
    */
   protected emitEvent = (): void => {
-    if (this.itemActive.value && this.itemGo.value) {
-      const valueActive = this.itemActive.value.dataset?.value
+    if (this.item.getActive() && this.itemGo.value) {
+      const valueActive = this.item.getActive()!.dataset?.value
       const valueTo = this.itemGo.value.dataset?.value
       const parameters: DraggableWrapperEventParameters = {
-        active: this.itemActive.value,
-        selection: this.itemSelection.value,
+        active: this.item.getActive()!,
+        selection: this.item.getSelection(),
         to: this.itemGo.value,
         value: [valueActive, valueTo],
         valueSelection: this.selectionHelper.getSelection(),
@@ -184,43 +180,45 @@ export class DraggableWrapper {
    * Привязанный слушатель события запуска
    * @param event drag event / событие перетаскивания
    */
-  protected onMousedown = (event: MouseEvent | TouchEvent): void => {
+  protected onMousedown = (
+    event: MouseEvent | TouchEvent
+  ): void => {
     if (this.props.disabled) {
       return
     }
 
-    const target = event.target as HTMLElement
-    const item = this.positionHelper.getClick(target)
+    const item = this.classes.findClick(event.target as HTMLElement)
 
-    if (item) {
-      this.focus = item
-
-      if (event.cancelable) {
-        event.preventDefault()
-      }
-      event.stopPropagation()
-
-      clearTimeout(this.timeout)
-      this.timeout = setTimeout(() => {
-        this.timeout = undefined
-
-        this.positionHelper.go(
-          item,
-          getMouseClientX(event as MouseEvent & TouchEvent),
-          getMouseClientY(event as MouseEvent & TouchEvent)
-        )
-
-        this.selectionHelper.goSelection()
-      }, 640)
-
-      if (isDomRuntime()) {
-        window.addEventListener('mousemove', this.onMousemove)
-        window.addEventListener('mouseup', this.onMouseup)
-        window.addEventListener('touchmove', this.onTouchmove)
-        window.addEventListener('touchend', this.onTouchup)
-        window.addEventListener('touchcancel', this.onTouchup)
-      }
+    if (!item) {
+      return
     }
+
+    event.stopPropagation()
+
+    if (event.cancelable) {
+      event.preventDefault()
+    }
+
+    this.focusHelper.set(item)
+
+    clearTimeout(this.timeout)
+    this.timeout = setTimeout(() => {
+      this.timeout = undefined
+
+      this.positionHelper.go(
+        item,
+        getMouseClientX(event as MouseEvent & TouchEvent),
+        getMouseClientY(event as MouseEvent & TouchEvent)
+      )
+
+      this.selectionHelper.goSelection()
+    }, 640)
+
+    window.addEventListener('mousemove', this.onMousemove)
+    window.addEventListener('mouseup', this.onMouseup)
+    window.addEventListener('touchmove', this.onTouchmove)
+    window.addEventListener('touchend', this.onTouchup)
+    window.addEventListener('touchcancel', this.onTouchup)
   }
 
   /**
@@ -243,7 +241,7 @@ export class DraggableWrapper {
       return
     }
 
-    if (this.itemActive.value) {
+    if (this.item.getActive()) {
       event.stopPropagation()
 
       const clientX = getMouseClientX(event as MouseEvent & TouchEvent)
@@ -268,8 +266,8 @@ export class DraggableWrapper {
       }
     } else {
       const target = event.target as HTMLElement
-      const item = this.positionHelper.getClick(target)
-      if (!item || item !== this.focus) {
+      const item = this.classes.findClick(target)
+      if (!item || item !== this.focusHelper.get()) {
         if (this.timeout) {
           clearTimeout(this.timeout)
           this.timeout = undefined

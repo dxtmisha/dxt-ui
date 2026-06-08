@@ -1,4 +1,7 @@
 export * from './DraggableWrapper'
+export * from './DraggableWrapperClassesData'
+export * from './DraggableWrapperFocus'
+export * from './DraggableWrapperItem'
 export * from './DraggableWrapperSquare'
 export * from './DraggableWrapperSelection'
 export * from './DraggableWrapperPosition'

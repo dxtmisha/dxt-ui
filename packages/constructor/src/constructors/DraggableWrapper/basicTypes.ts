@@ -35,3 +35,23 @@ export type DraggableWrapperControl = {
   /** CSS class for standard draggable items / Класс CSS для стандартных перемещаемых элементов */
   classPosition: string
 }
+
+/**
+ * Type describing lists of classes for DraggableWrapper /
+ * Тип, описывающий список классов для DraggableWrapper
+ */
+export type DraggableWrapperClassesList = {
+  click: string
+  drop: string
+  position: string
+  active: string
+  go: string
+  selection: string
+  selectionMore: string
+  return: string
+  show: string
+  dragged: string
+  selected: string
+  body: string
+}
+

@@ -1,4 +1,5 @@
 import { ref, type Ref } from 'vue'
+import { DraggableWrapperClassesData } from './DraggableWrapperClassesData'
 
 /**
  * Helper class for managing the placeholder spacer (square) element /
@@ -19,6 +20,7 @@ export class DraggableWrapperSquare {
    */
   constructor(
     protected readonly id: string,
+    protected readonly classes: DraggableWrapperClassesData,
     protected readonly position: Ref<HTMLElement | undefined>,
     protected readonly square: Ref<HTMLElement | undefined>
   ) { }
@@ -36,7 +38,7 @@ export class DraggableWrapperSquare {
     }
 
     let route: boolean | undefined
-    const items = this.position.value.querySelectorAll<HTMLElement>(`.${this.id}, .cp-show`)
+    const items = this.position.value.querySelectorAll<HTMLElement>(`.${this.id}, .${this.classes.list.show}`)
 
     items.forEach((el) => {
       if (route === undefined) {
@@ -66,7 +68,7 @@ export class DraggableWrapperSquare {
     if (item) {
       const style = reset ? this.old : getComputedStyle(item)
 
-      if (!squareEl.classList.contains('cp-show')) {
+      if (!squareEl.classList.contains(this.classes.list.show)) {
         this.old = {
           width: style.width || '',
           height: style.height || '',
@@ -93,11 +95,11 @@ export class DraggableWrapperSquare {
       squareEl.style.marginBottom = style.marginBottom || ''
       squareEl.style.marginLeft = style.marginLeft || ''
 
-      squareEl.classList.add('cp-show')
-      document.body.classList.add('d-control-position__body')
+      squareEl.classList.add(this.classes.list.show)
+      document.body.classList.add(this.classes.list.body)
     } else {
-      document.body.classList.remove('d-control-position__body')
-      squareEl.classList.remove('cp-show')
+      document.body.classList.remove(this.classes.list.body)
+      squareEl.classList.remove(this.classes.list.show)
 
       squareEl.style.width = ''
       squareEl.style.height = ''

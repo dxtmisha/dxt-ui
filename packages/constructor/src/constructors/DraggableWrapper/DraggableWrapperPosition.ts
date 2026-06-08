@@ -1,31 +1,18 @@
 import { type Ref, type ComputedRef } from 'vue'
+import { DraggableWrapperClassesData } from './DraggableWrapperClassesData'
+import { DraggableWrapperItem } from './DraggableWrapperItem'
 
 /**
  * Class coordinating dragging movement, positions, drop spots, and element reorder /
  * Класс, координирующий движение перетаскивания, позиции, места сброса и изменение порядка элементов
  */
 export class DraggableWrapperPosition {
-  /**
-   * Constructor
-   * @param id unique component identifier / уникальный идентификатор компонента
-   * @param position root element ref / ссылка на корневой элемент
-   * @param square spacer element ref / ссылка на элемент-заполнитель
-   * @param itemActive active draggable element ref / ссылка на активный перемещаемый элемент
-   * @param itemSelection selected elements ref / ссылка на список выбранных элементов
-   * @param itemStart list of elements involved in drag / список перемещаемых элементов
-   * @param itemGo target hover element during drag / целевой элемент наведения
-   * @param client coordinate values tracking / отслеживание координат
-   * @param emit callback to dispatch the drop event / коллбек для отправки события сброса
-   * @param goSquare callback to position the spacer square / коллбек для позиционирования заполнителя
-   * @param getSelection callback to retrieve active dataset values / коллбек получения выбранных значений
-   */
   constructor(
     protected readonly id: string,
-    protected readonly position: Ref<HTMLElement | undefined>,
+    protected readonly element: Ref<HTMLElement | undefined>,
+    protected readonly classes: DraggableWrapperClassesData,
     protected readonly square: Ref<HTMLElement | undefined>,
-    protected readonly itemActive: Ref<HTMLElement | undefined>,
-    protected readonly itemSelection: Ref<HTMLElement[] | undefined>,
-    protected readonly itemStart: ComputedRef<HTMLElement[]>,
+    protected readonly item: DraggableWrapperItem,
     protected readonly itemGo: Ref<HTMLElement | undefined>,
     protected readonly client: { x: number, y: number, drop: boolean },
     protected readonly emit: () => void,
@@ -40,7 +27,7 @@ export class DraggableWrapperPosition {
    * @returns true if cp-position class is present / true, если присутствует класс cp-position
    */
   isPosition(item: HTMLElement): boolean {
-    return item.classList.contains('cp-position')
+    return item.classList.contains(this.classes.list.position)
   }
 
   /**
@@ -50,17 +37,7 @@ export class DraggableWrapperPosition {
    * @returns true if cp-drop class is present / true, если присутствует класс cp-drop
    */
   isDrop(item: HTMLElement): boolean {
-    return item.classList.contains('cp-drop')
-  }
-
-  /**
-   * Finds the closest clickable trigger element /
-   * Находит ближайший кликабельный элемент-триггер
-   * @param target target click target / целевой элемент клика
-   * @returns trigger element or null / элемент триггера или null
-   */
-  getClick(target: HTMLElement): HTMLElement | null {
-    return target.closest<HTMLElement>(`.${this.id}.cp-click, .${this.id} .cp-click`)
+    return item.classList.contains(this.classes.list.drop)
   }
 
   /**
@@ -77,8 +54,8 @@ export class DraggableWrapperPosition {
         !item
         && el instanceof HTMLElement
         && el.classList.contains(this.id)
-        && !el.classList.contains('cp-active')
-        && el !== this.itemActive.value
+        && !el.classList.contains(this.classes.list.active)
+        && el !== this.item.getActive()
       ) {
         item = el
       }
@@ -94,10 +71,11 @@ export class DraggableWrapperPosition {
    * @param y client y coordinate / координата y клиента
    */
   toDo(x: number, y: number): void {
-    const el = this.position.value
-    if (el) {
-      el.style.setProperty('--_cp-x', `${x - this.client.x}px`)
-      el.style.setProperty('--_cp-y', `${y - this.client.y}px`)
+    const element = this.element.value
+
+    if (element) {
+      element.style.setProperty('--_cp-x', `${x - this.client.x}px`)
+      element.style.setProperty('--_cp-y', `${y - this.client.y}px`)
     }
   }
 
@@ -106,7 +84,7 @@ export class DraggableWrapperPosition {
    * Сбрасывает переменные координат CSS
    */
   protected resetStyles(): void {
-    const el = this.position.value
+    const el = this.element.value
     if (el) {
       el.style.removeProperty('--_cp-x')
       el.style.removeProperty('--_cp-y')
@@ -121,7 +99,7 @@ export class DraggableWrapperPosition {
     const squareEl = this.square.value
     if (squareEl && squareEl.parentElement) {
       const parent = squareEl.parentElement
-      this.itemStart.value.forEach((item) => {
+      this.item.start.forEach((item) => {
         parent.insertBefore(item, squareEl)
       })
     }
@@ -137,7 +115,7 @@ export class DraggableWrapperPosition {
       this.resetDrop()
     } else if (item !== this.itemGo.value) {
       this.goSquare()
-      item.classList.add('status-dragged')
+      item.classList.add(this.classes.list.dragged)
 
       this.itemGo.value = item
       this.client.drop = true
@@ -151,7 +129,7 @@ export class DraggableWrapperPosition {
   resetDrop(): void {
     const goItem = this.itemGo.value
     if (goItem && this.isDrop(goItem)) {
-      goItem.classList.remove('status-dragged')
+      goItem.classList.remove(this.classes.list.dragged)
       this.itemGo.value = undefined
       this.client.drop = false
     }
@@ -178,7 +156,7 @@ export class DraggableWrapperPosition {
    */
   toNone(go = false): void {
     const active = this.itemActive.value
-    if (active && (active.classList.contains('cp-return') || go)) {
+    if (active && (active.classList.contains(this.classes.list.return) || go)) {
       if (this.itemGo.value) {
         this.emit()
 
@@ -189,15 +167,21 @@ export class DraggableWrapperPosition {
 
       this.goSquare()
 
-      this.itemStart.value.forEach((item) => {
-        item.classList.remove('cp-active', 'cp-go', 'cp-selection', 'cp-selection-more', 'cp-return')
+      this.item.start.forEach((item) => {
+        item.classList.remove(
+          this.classes.list.active,
+          this.classes.list.go,
+          this.classes.list.selection,
+          this.classes.list.selectionMore,
+          this.classes.list.return
+        )
         item.style.removeProperty('--_cp-width')
         item.style.removeProperty('--_cp-height')
         item.style.removeProperty('--_cp-shift')
       })
 
-      this.itemActive.value = undefined
-      this.itemSelection.value = undefined
+      this.item.setActive(undefined)
+      this.item.setSelection(undefined)
       this.itemGo.value = undefined
 
       this.resetStyles()
@@ -210,7 +194,7 @@ export class DraggableWrapperPosition {
    */
   resetPosition(): void {
     if (this.itemGo.value && this.isPosition(this.itemGo.value)) {
-      this.goSquare(this.itemActive.value, true)
+      this.goSquare(this.item.getActive(), true)
       this.itemGo.value = undefined
     }
   }
@@ -220,9 +204,9 @@ export class DraggableWrapperPosition {
    * Анимирует переход возврата активного элемента обратно к заполнителю
    */
   protected returnActive(): void {
-    const active = this.itemActive.value
+    const active = this.item.getActive()
     const squareEl = this.square.value
-    const posEl = this.position.value
+    const posEl = this.element.value
 
     if (active && squareEl && posEl) {
       const rect = posEl.getBoundingClientRect()
@@ -230,40 +214,42 @@ export class DraggableWrapperPosition {
 
       this.client.x = 0
       this.client.y = 0
-      active.classList.add('cp-return')
+      active.classList.add(this.classes.list.return)
 
       this.toDo(rectSquare.left - rect.left, rectSquare.top - rect.top)
     }
   }
 
-  /**
-   * Starts drag session, sets initial mouse coordinates /
-   * Запускает сессию перетаскивания, устанавливает начальные координаты мыши
-   * @param item active draggable element / активный перемещаемый элемент
-   * @param clientX screen x coordinate / экранная координата x
-   * @param clientY screen y coordinate / экранная координата y
-   */
-  go(item: HTMLElement, clientX: number, clientY: number): void {
-    const posEl = this.position.value
-    if (!posEl) {
+  go(
+    item: HTMLElement,
+    clientX: number,
+    clientY: number
+  ): void {
+    const rect = item.getBoundingClientRect()
+    const rectPosition = this.element.value?.getBoundingClientRect()
+
+    if (
+      !rect
+      || !rectPosition
+    ) {
       return
     }
-
-    const rect = item.getBoundingClientRect()
-    const rectPosition = posEl.getBoundingClientRect()
 
     this.client.x = clientX - rect.left
     this.client.y = clientY - rect.top
     this.client.drop = false
 
-    this.itemActive.value = item
+    this.item.setActive(item)
 
-    this.toDo(clientX - rectPosition.left, clientY - rectPosition.top)
+    this.toDo(
+      clientX - rectPosition.left,
+      clientY - rectPosition.top
+    )
 
     this.goSquare(item)
     item.style.setProperty('--_cp-width', `${rect.width}px`)
     item.style.setProperty('--_cp-height', `${rect.height}px`)
-    item.classList.add('cp-active', 'cp-go')
+    item.classList.add(this.classes.list.active, this.classes.list.go)
   }
 
   /**
@@ -271,7 +257,7 @@ export class DraggableWrapperPosition {
    * Выходит из сессии перетаскивания и координирует окончательное размещение
    */
   stop(): void {
-    if (this.itemActive.value) {
+    if (this.item.getActive()) {
       if (!this.itemGo.value) {
         this.returnActive()
       } else if (this.client.drop) {

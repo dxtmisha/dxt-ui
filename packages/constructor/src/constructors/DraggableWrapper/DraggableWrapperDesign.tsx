@@ -6,6 +6,7 @@ import {
 } from '@dxtmisha/functional'
 
 import { DraggableWrapper } from './DraggableWrapper'
+import { DraggableWrapperClassesData } from './DraggableWrapperClassesData'
 
 import {
   type DraggableWrapperPropsBasic
@@ -113,6 +114,7 @@ export class DraggableWrapperDesign<
    * Метод для рендеринга.
    */
   protected initRender(): VNode {
+    const classesList = DraggableWrapperClassesData.getClassesList(this.getDesign())
     return h(
       this.props.tag || 'div',
       {
@@ -124,9 +126,9 @@ export class DraggableWrapperDesign<
       [
         this.slots?.default?.({
           className: `${this.getSubClass('item')} ${this.item.getId()}`,
-          classClick: 'cp-click',
-          classDrop: 'cp-drop',
-          classPosition: 'cp-position'
+          classClick: classesList.click,
+          classDrop: classesList.drop,
+          classPosition: classesList.position
         }),
         h('div', {
           ref: this.item.square,

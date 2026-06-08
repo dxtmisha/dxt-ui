@@ -6,7 +6,6 @@ import type { DraggableWrapperControl, DraggableWrapperEventParameters } from '.
  * Интерфейс для описания, какие компоненты надо подключить для работы.
  */
 export type DraggableWrapperComponents = {
-  // componentName: object
 }
 
 /**
