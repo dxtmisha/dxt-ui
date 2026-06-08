@@ -39,6 +39,7 @@ export * from './classes/SuffixInclude'
 export * from './classes/TabIndexInclude'
 export * from './classes/TeleportInclude'
 export * from './classes/TextInclude'
+export * from './classes/TextIncludeInstance'
 export * from './classes/TouchEventInclude'
 
 // Functions

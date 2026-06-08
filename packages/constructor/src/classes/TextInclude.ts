@@ -1,5 +1,7 @@
-import { shallowRef } from 'vue'
-import { executeFunction, toCamelCase } from '@dxtmisha/functional'
+import { type ShallowRef } from 'vue'
+import { executeFunction, ServerStorage, toCamelCase } from '@dxtmisha/functional'
+
+import { TextIncludeInstance } from './TextIncludeInstance'
 
 import type {
   TextAllPropsInclude,
@@ -14,35 +16,20 @@ import type {
  * Класс TextInclude для управления свойствами, связанными с текстом.
  */
 export class TextInclude {
-  /** Global list of texts for all components / Глобальный список текстов для всех компонентов */
-  static readonly list = shallowRef<TextList>({
-    cancel: 'Cancel',
-    characterLimit: 'Character limit exceeded',
-    characterRemaining: 'Remaining [left] characters',
-    close: 'Close',
-    copiedClipboard: 'Copied to the clipboard',
-    decrement: 'Decrease',
-    entriesMatch: 'Entries do not match',
-    first: 'First',
-    hide: 'Hide',
-    increment: 'Increase',
-    info: '[item] of [count]',
-    last: 'Last',
-    loading: 'Loading',
-    more: 'Show more',
-    morePrev: 'Show previous',
-    next: 'Next',
-    notFound: 'Nothing found',
-    notifications: 'Notifications',
-    ok: 'OK',
-    page: 'Page',
-    previous: 'Previous',
-    rowsPerPage: 'Rows per page',
-    show: 'Show'
-  })
+  /**
+   * Returns a request-isolated instance of TextIncludeInstance.
+   *
+   * Возвращает изолированный в рамках запроса экземпляр TextIncludeInstance.
+   * @returns TextIncludeInstance instance / экземпляр TextIncludeInstance
+   */
+  static getObject(): TextIncludeInstance {
+    return ServerStorage.get('__ui:text-include-instance__', () => new TextIncludeInstance())
+  }
 
-  /** Cached text getter functions / Кэшированные функции-геттеры для текстов */
-  readonly texts: Record<string, () => (string | undefined)> = {}
+  /** Global list of texts for all components / Глобальный список текстов для всех компонентов */
+  static get list(): ShallowRef<TextList> {
+    return this.getObject().list
+  }
 
   /**
    * Initialize global texts.
@@ -51,11 +38,11 @@ export class TextInclude {
    * @param texts List of texts / Список текстов
    */
   static initText(texts: TextList): void {
-    this.list.value = {
-      ...this.list.value,
-      ...texts
-    }
+    this.getObject().initText(texts)
   }
+
+  /** Cached text getter functions / Кэшированные функции-геттеры для текстов */
+  readonly texts: Record<string, () => (string | undefined)> = {}
 
   /**
    * Constructor for TextInclude class.
@@ -218,23 +205,6 @@ export class TextInclude {
       return executeFunction(value)
     }
 
-    return this.getGlobalText(index)
-  }
-
-  /**
-   * Get text from global list.
-   *
-   * Получение текста из глобального списка.
-   * @param index Text index / Индекс текста
-   * @returns global text string / глобальная строка текста
-   */
-  protected getGlobalText(
-    index: TextIndex
-  ): string | undefined {
-    if (TextInclude.list.value?.[index]) {
-      return executeFunction(TextInclude.list.value[index])
-    }
-
-    return undefined
+    return TextInclude.getObject().getGlobalText(index)
   }
 }
