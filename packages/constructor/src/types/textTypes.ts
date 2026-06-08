@@ -21,6 +21,7 @@ export type TextIndex = 'cancel'
   | 'notFound'
   | 'notifications'
   | 'ok'
+  | 'page'
   | 'previous'
   | 'rowsPerPage'
   | 'show'
@@ -143,6 +144,12 @@ export type TextOkPropsInclude = {
   textOk?: TextValue
 }
 
+/** Interface for including page text/ Интерфейс для включения текста страницы */
+export type TextPagePropsInclude = {
+  /** Page text/ Текст страницы */
+  textPage?: TextValue
+}
+
 /** Interface for including previous text/ Интерфейс для включения текста предыдущего */
 export type TextPreviousPropsInclude = {
   /** Previous text/ Текст предыдущего */
@@ -181,6 +188,7 @@ export type TextAllPropsInclude = TextCancelPropsInclude
   & TextNotFoundPropsInclude
   & TextNotificationsPropsInclude
   & TextOkPropsInclude
+  & TextPagePropsInclude
   & TextPreviousPropsInclude
   & TextRowsPerPagePropsInclude
   & TextShowPropsInclude

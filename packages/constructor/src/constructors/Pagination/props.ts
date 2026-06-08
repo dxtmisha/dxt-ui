@@ -1,5 +1,6 @@
 import type { ConstrBind } from '@dxtmisha/functional'
 
+import type { AreaPropsInclude } from '../../types/areaTypes'
 import type { ModelProps } from '../../types/modelTypes'
 import type {
   TextFirstPropsInclude,
@@ -36,6 +37,7 @@ export type PaginationPropsBasic<
   & TextInfoPropsInclude
   & TextPreviousPropsInclude
   & TextNextPropsInclude
+  & AreaPropsInclude
   & ModelProps<number | string>
   & {
     /** Current page / Текущая страница */

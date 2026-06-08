@@ -1,6 +1,7 @@
 import { computed } from 'vue'
 import { type ConstrBind, type ListListInputItem } from '@dxtmisha/functional'
 
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { type TextInclude } from '../../classes/TextInclude'
 
 import type { ButtonPropsBasic } from '../Button'
@@ -146,6 +147,7 @@ export class PaginationButton {
       'value': value - 1,
       'disabled': value <= 1,
       'title': this.text?.previous,
+      ...AriaStaticInclude.label(this.text?.previous),
       'data-event-type': 'back'
     }
   }
@@ -166,6 +168,7 @@ export class PaginationButton {
       'value': value + 1,
       'disabled': value >= this.page.pagesCount,
       'title': this.text?.next,
+      ...AriaStaticInclude.label(this.text?.next),
       'data-event-type': 'next'
     }
   }
@@ -184,6 +187,7 @@ export class PaginationButton {
       'value': 1,
       'disabled': this.page.value <= 1,
       'title': this.text?.first,
+      ...AriaStaticInclude.label(this.text?.first),
       'data-event-type': 'first'
     }
   }
@@ -202,6 +206,7 @@ export class PaginationButton {
       'value': this.page.pagesCount,
       'disabled': this.page.value >= this.page.pagesCount,
       'title': this.text?.last,
+      ...AriaStaticInclude.label(this.text?.last),
       'data-event-type': 'last'
     }
   }
@@ -218,6 +223,7 @@ export class PaginationButton {
       'key': `item__more`,
       'label': this.text?.more,
       'value': this.page.value + 1,
+      ...AriaStaticInclude.label(this.text?.more),
       'data-event-type': 'more',
       ...this.props.buttonMoreAttrs
     }
@@ -235,6 +241,7 @@ export class PaginationButton {
       'key': `item__morePrev`,
       'label': this.text?.morePrev,
       'value': this.page.value - 1,
+      ...AriaStaticInclude.label(this.text?.morePrev),
       'data-event-type': 'morePrev',
       ...this.props.buttonMorePrevAttrs
     }
@@ -252,6 +259,7 @@ export class PaginationButton {
       key: 'menuControl',
       label: this.props.rows?.toString(),
       iconTrailing: this.props.iconArrowDown,
+      ...AriaStaticInclude.label(this.text?.rowsPerPage),
       onClick: undefined,
       ...this.props.buttonMenuAttrs
     }
@@ -313,6 +321,7 @@ export class PaginationButton {
       'label': i.toString(),
       'value': i,
       'selected': this.page.value === i,
+      ...AriaStaticInclude.label(`${this.text?.page} ${i}`.trim()),
       'data-event-type': 'page'
     }
   }

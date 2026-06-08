@@ -1,6 +1,8 @@
 import { type Ref, type ToRefs } from 'vue'
 import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
+import { AreaInclude } from '../../classes/AreaInclude'
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { EventClickInclude } from '../../classes/EventClickInclude'
 import { ModelInclude } from '../../classes/ModelInclude'
 import { TextInclude } from '../../classes/TextInclude'
@@ -34,6 +36,9 @@ export class Pagination {
   /** Manager instance handling the rows limit per page selector and option lists / Экземпляр менеджера, отвечающий за лимит строк на странице и списки опций */
   readonly menuRows: PaginationMenuRows
 
+  /** Object for working with area value / Объект для работы со значением области */
+  readonly area: AreaInclude
+
   /**
    * Constructor for orchestrating the Pagination logic subsystems.
    *
@@ -47,6 +52,7 @@ export class Pagination {
    * @param slots slot definition descriptors / дескрипторы определений слотов
    * @param emits Vue callback emitter function / функция генерации событий Vue
    * @param constructors override constructs object / объект переопределения конструкторов
+   * @param constructors.AreaIncludeConstructor class for working with area value / класс для работы со значением области
    * @param constructors.EventClickIncludeConstructor class for working with event click / класс для работы со стандартным событием клика
    * @param constructors.ModelIncludeConstructor class for working with model / класс для работы с моделью
    * @param constructors.PaginationButtonConstructor custom button calculations logic constructor / кастомный конструктор логики вычисления кнопок
@@ -65,6 +71,7 @@ export class Pagination {
     protected readonly slots?: PaginationSlots,
     protected readonly emits?: ConstrEmit<PaginationEmits>,
     constructors: {
+      AreaIncludeConstructor?: typeof AreaInclude
       EventClickIncludeConstructor?: typeof EventClickInclude
       ModelIncludeConstructor?: typeof ModelInclude<number>
       PaginationButtonConstructor?: typeof PaginationButton
@@ -75,6 +82,7 @@ export class Pagination {
     } = {}
   ) {
     const {
+      AreaIncludeConstructor = AreaInclude,
       EventClickIncludeConstructor = EventClickInclude,
       ModelIncludeConstructor = ModelInclude,
       PaginationButtonConstructor = PaginationButton,
@@ -112,5 +120,17 @@ export class Pagination {
       this.event,
       this.text
     )
+    this.area = new AreaIncludeConstructor(props)
+  }
+
+  /**
+   * Returns binding attributes for the container element. /
+   * Возвращает атрибуты привязки для контейнера.
+   * @returns object containing role / объект с ролью
+   */
+  get binds(): Record<string, any> {
+    return {
+      ...AriaStaticInclude.role('navigation')
+    }
   }
 }

@@ -35,6 +35,7 @@ export class TextInclude {
     notFound: 'Nothing found',
     notifications: 'Notifications',
     ok: 'OK',
+    page: 'Page',
     previous: 'Previous',
     rowsPerPage: 'Rows per page',
     show: 'Show'
@@ -160,6 +161,11 @@ export class TextInclude {
   /** OK text / Текст подтверждения */
   get ok() {
     return this.get('textOk')
+  }
+
+  /** Page text / Текст страницы */
+  get page() {
+    return this.get('textPage')
   }
 
   /** Previous text / Текст предыдущего */
