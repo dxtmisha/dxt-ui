@@ -4,6 +4,7 @@ import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 import { AreaInclude } from '../../classes/AreaInclude'
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { EventClickInclude } from '../../classes/EventClickInclude'
+import { FocusDirectionInclude } from '../../classes/FocusDirectionInclude'
 import { ModelInclude } from '../../classes/ModelInclude'
 import { TextInclude } from '../../classes/TextInclude'
 
@@ -31,6 +32,9 @@ export class Pagination {
   /** Class for working with the events / Класс для работы с событиями */
   readonly event: PaginationEvent
 
+  /** Instance of FocusDirectionInclude for keyboard navigation / Экземпляр FocusDirectionInclude для клавиатурной навигации */
+  readonly focusDirection: FocusDirectionInclude
+
   /** Manager instance handling navigation, number buttons, and their event callbacks / Экземпляр менеджера, отвечающий за кнопки навигации, числовые кнопки и их обработчики событий */
   readonly button: PaginationButton
   /** Manager instance handling the rows limit per page selector and option lists / Экземпляр менеджера, отвечающий за лимит строк на странице и списки опций */
@@ -54,6 +58,7 @@ export class Pagination {
    * @param constructors override constructs object / объект переопределения конструкторов
    * @param constructors.AreaIncludeConstructor class for working with area value / класс для работы со значением области
    * @param constructors.EventClickIncludeConstructor class for working with event click / класс для работы со стандартным событием клика
+   * @param constructors.FocusDirectionIncludeConstructor class for keyboard navigation / класс для клавиатурной навигации
    * @param constructors.ModelIncludeConstructor class for working with model / класс для работы с моделью
    * @param constructors.PaginationButtonConstructor custom button calculations logic constructor / кастомный конструктор логики вычисления кнопок
    * @param constructors.PaginationEventConstructor custom event management constructor / кастомный конструктор логики событий
@@ -73,6 +78,7 @@ export class Pagination {
     constructors: {
       AreaIncludeConstructor?: typeof AreaInclude
       EventClickIncludeConstructor?: typeof EventClickInclude
+      FocusDirectionIncludeConstructor?: typeof FocusDirectionInclude
       ModelIncludeConstructor?: typeof ModelInclude<number>
       PaginationButtonConstructor?: typeof PaginationButton
       PaginationEventConstructor?: typeof PaginationEvent
@@ -84,6 +90,7 @@ export class Pagination {
     const {
       AreaIncludeConstructor = AreaInclude,
       EventClickIncludeConstructor = EventClickInclude,
+      FocusDirectionIncludeConstructor = FocusDirectionInclude,
       ModelIncludeConstructor = ModelInclude,
       PaginationButtonConstructor = PaginationButton,
       PaginationEventConstructor = PaginationEvent,
@@ -109,6 +116,13 @@ export class Pagination {
       new ModelIncludeConstructor('rows', emits, this.page.rowsItem)
     )
 
+    this.focusDirection = new FocusDirectionIncludeConstructor(
+      this.element,
+      `.${className}__button:not(:disabled)`,
+      `.${this.classDesign}-button--selected`,
+      `${this.classDesign}-button--focus`
+    )
+
     this.button = new PaginationButtonConstructor(
       props,
       this.page,
@@ -128,8 +142,9 @@ export class Pagination {
    * Возвращает атрибуты привязки для контейнера.
    * @returns object containing role / объект с ролью
    */
-  get binds(): Record<string, any> {
+  get binds() {
     return {
+      ...this.focusDirection.binds,
       ...AriaStaticInclude.role('navigation')
     }
   }

@@ -1,5 +1,5 @@
-import { onMounted, onUnmounted, watch, type Ref } from 'vue'
-import { EventItem } from '@dxtmisha/functional'
+import { onUnmounted, type Ref } from 'vue'
+import { EventItem, isEnter } from '@dxtmisha/functional'
 
 /**
  * Coordinate structure representing element center or coordinates difference.
@@ -21,12 +21,6 @@ export type FocusCoordinates = {
  * сохраняя фактический фокус браузера на родительском элементе.
  */
 export class FocusDirectionInclude {
-  /** Event item for focus event / Элемент события для события фокуса */
-  protected focusEvent?: EventItem<HTMLElement, FocusEvent>
-
-  /** Event item for blur event / Элемент события для события потери фокуса */
-  protected blurEvent?: EventItem<HTMLElement, FocusEvent>
-
   /** Event item for keydown event / Элемент события для события нажатия клавиши */
   protected keydownEvent?: EventItem<HTMLElement, KeyboardEvent>
 
@@ -48,22 +42,15 @@ export class FocusDirectionInclude {
     protected readonly activeSelector: string = '.sys-focusDirection__item--active',
     protected readonly activeClass: string = 'sys-focusDirection__item--active'
   ) {
-    onMounted(() => {
-      watch(
-        this.element,
-        (newElement) => {
-          this.stop()
-          if (newElement) {
-            this.start(newElement)
-          }
-        },
-        { immediate: true }
-      )
-    })
+    onUnmounted(() => this.stop())
+  }
 
-    onUnmounted(() => {
-      this.stop()
-    })
+  get binds() {
+    return {
+      tabindex: 0,
+      onFocus: this.onFocus,
+      onBlur: this.onBlur
+    }
   }
 
   /**
@@ -104,21 +91,30 @@ export class FocusDirectionInclude {
     return this
   }
 
+  /** Handler for focus event / Обработчик для события фокуса */
+  readonly onFocus = (): void => {
+    this.activateDefault()
+    this.start()
+  }
+
+  /** Handler for blur event / Обработчик для события потери фокуса */
+  readonly onBlur = (): void => {
+    this.stop()
+    this.clearActive()
+  }
+
   /**
    * Starts event listeners.
    *
    * Запускает слушатели событий.
-   * @param targetElement HTML element to listen on / HTML-элемент для прослушивания
    */
-  protected start(targetElement: HTMLElement): void {
-    this.focusEvent = new EventItem<HTMLElement, FocusEvent>(targetElement, 'focus', this.onFocus, { capture: true })
-      .start()
+  protected start(): void {
+    if (this.keydownEvent) {
+      this.keydownEvent.stop()
+    }
 
-    this.blurEvent = new EventItem<HTMLElement, FocusEvent>(targetElement, 'blur', this.onBlur, { capture: true })
-      .start()
-
-    this.keydownEvent = new EventItem<HTMLElement, KeyboardEvent>(targetElement, 'keydown', this.onKeydown)
-      .start()
+    this.keydownEvent = new EventItem<HTMLElement, KeyboardEvent>(this.element.value, 'keydown', this.onKeydown)
+    this.keydownEvent.start()
   }
 
   /**
@@ -127,9 +123,8 @@ export class FocusDirectionInclude {
    * Останавливает слушатели событий.
    */
   protected stop(): void {
-    this.focusEvent?.stop()
-    this.blurEvent?.stop()
     this.keydownEvent?.stop()
+    this.keydownEvent = undefined
   }
 
   /**
@@ -317,16 +312,6 @@ export class FocusDirectionInclude {
       })
   }
 
-  /** Handler for focus event / Обработчик для события фокуса */
-  protected readonly onFocus = (): void => {
-    this.activateDefault()
-  }
-
-  /** Handler for blur event / Обработчик для события потери фокуса */
-  protected readonly onBlur = (): void => {
-    this.clearActive()
-  }
-
   /**
    * Handler for keydown event.
    *
@@ -344,6 +329,13 @@ export class FocusDirectionInclude {
     ) {
       event.preventDefault()
       this.move(key)
+    } else if (isEnter(event)) {
+      const activeElement = this.getActiveElement()
+
+      if (activeElement) {
+        event.preventDefault()
+        activeElement?.click()
+      }
     }
   }
 }

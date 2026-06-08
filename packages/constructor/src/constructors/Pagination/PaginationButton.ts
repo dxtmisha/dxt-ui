@@ -303,6 +303,7 @@ export class PaginationButton {
     return {
       hasLabelMinWidth: false,
       onClick: this.event?.onClick,
+      tabindex: -1,
       ...this.props.buttonAttrs
     }
   }

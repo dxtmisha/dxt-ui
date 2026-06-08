@@ -8,6 +8,7 @@ const propsNames: StorybookProps = [
   { name: 'adaptive', type: 'string', option: ['lineAlways', 'lineSm', 'lineMd', 'lineLg', 'lineXl', 'line2xl'] },
   { name: 'adaptiveMore', type: 'string', option: ['lineAlways', 'lineSm', 'lineMd', 'lineLg', 'lineXl', 'line2xl'] },
   { name: 'adaptiveMorePrev', type: 'string', option: ['lineAlways', 'lineSm', 'lineMd', 'lineLg', 'lineXl', 'line2xl'] },
+  { name: 'area', type: 'string' },
   { name: 'buttonAttrs', type: 'ConstrBind<ButtonProps>' },
   { name: 'buttonMenuAttrs', type: 'ConstrBind<ButtonProps>' },
   { name: 'buttonMoreAttrs', type: 'ConstrBind<ButtonProps>' },

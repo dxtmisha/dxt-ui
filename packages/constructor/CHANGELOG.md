@@ -2,7 +2,28 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.70.0] - 2026-06-08
+
+### Added
+- **Pagination**: Introduced a new `Pagination` component constructor supporting:
+  - Navigation controls: First, last, previous (back), and next page button rendering.
+  - Page links rendering with configurable visible page count (`visible` prop), ends count (`ends` prop), and custom ellipsis text separator (`ellipsis` prop).
+  - Dynamic page range layout info display (`showInfo` prop) and customizable items-per-page select dropdown (`menuRows` and `showRowsPerPageLabel` props).
+  - "Show more" (`showMore`) button for loading next page records accumulatively, and "Show more previous" (`showMorePrev`) button for prepending previous page records.
+  - Slot support for `leading`, `info`, and `trailing` customizable content.
+  - Full model bindings for active page (`value`) and items-per-page (`rows` / `modelRows`).
+  - Accessibility: Dynamic ARIA attributes via `AriaStaticInclude`, including `role="navigation"` for the container and custom `aria-label` tags for all action buttons.
+  - Telemetry: Integrated `AreaInclude` layout/scoped telemetry properties (`area` prop).
+  - Translations: Added localized navigation strings and active page formatting under the new translation key `page` (`TextPagePropsInclude`).
+- **FocusDirectionInclude**: Added a new coordinate-based layout utility to calculate spatial distances and navigate focus between candidate sibling nodes using arrow keys.
+
+### Changed / Improved
+- **FocusDirectionInclude**: Refactored keyboard traversal logic, decomposing helper utilities for coordinates difference (`getCoordinatesDifference`), distance (`getDistance`), and container active class resets (`clearAllActiveClasses`). Enhanced bilingual (EN/RU) JSDoc.
+- **TextInclude / SSR**: Extracted the global text registry into a dedicated `TextIncludeInstance` class managed via `ServerStorage` (key `__ui:text-include-instance__`), ensuring isolated translation states across requests and preventing SSR cross-request contamination.
+- **Properties / Adaptivity**: Standardized adaptive prop types (`adaptive`, `adaptiveMore`) in the Pagination schema from `boolean` to the explicit literal string `'lineAlways'`.
+
 ## [0.68.0] - 2026-06-05
+
 
 ### Added
 - **InputPhone**: Introduced `countryDefault` property to specify the default country code during initialization.

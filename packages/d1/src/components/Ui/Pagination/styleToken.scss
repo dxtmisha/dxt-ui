@@ -17,6 +17,14 @@
       gap: var(--d1-sys-spacing-x);
     }
     
+    &:focus-visible {
+      @include ui.outlineOpacity(#{var(--d1-sys-opacity-outline)});
+      
+      outline-width: var(--d1-ref-spacing-1);
+      outline-style: solid;
+      @include ui.outlineColor(#{var(--d1-sys-palette-primary)});
+    }
+    
     &--adaptive {
       &--lineAlways {
         flex-direction: var(--d1-pagination-flexFlow);

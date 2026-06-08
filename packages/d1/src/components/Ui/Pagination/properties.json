@@ -4,6 +4,9 @@
   "#menuRows": {
     "gap": "{sys.spacing.x}"
   },
+  "focus-visible": {
+    "outline": "{outline.md}"
+  },
   "~adaptive": {
     "_default": "lineMd"
   },

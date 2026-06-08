@@ -2,7 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.70.0] - 2026-06-08
+
+### Added
+- **D1Pagination**: Introduced the `D1Pagination` UI component wrapping the core `Pagination` constructor:
+  - Supports navigation layouts, pagination buttons, custom slots (`leading`, `info`, `trailing`), and active page v-model bindings.
+  - Implemented spacing configurations, custom design tokens, and style class definitions under `properties.json` and `styleToken.scss`.
+  - Built responsive adaptivity via custom modifiers (`d1-pagination--adaptive--[size]` and `d1-pagination--adaptiveMore--[size]` mapping to standard system breakpoints).
+  - Added complete interactive stories (`D1Pagination.stories.ts`), MDX documentation (`D1Pagination.mdx`), wiki metadata configurations (`wikiData.ts`), and a combined accumulative page loading story.
+
+### Changed / Improved
+- **D1Menu**: Configured default `compMod` parameter in `D1Menu.vue` to set the nested `window` sub-component's width to `'auto'`.
+- **D1Pagination**: Updated component configuration in `D1Pagination.vue` to delegate styled component modifiers (`compMod`) to inner button (text mode, small size, inverse) and load-more (secondary style, small size) elements.
+
 ## [0.68.0] - 2026-06-05
+
 
 ### Added
 - **D1InputPhone**: Registered new design token attributes `countryBlock`, `countryDefault`, and `maskAttrs` in Storybook/wiki metadata properties mappings.
