@@ -1,24 +1,65 @@
-import { type Ref, type ComputedRef } from 'vue'
+import { type Ref } from 'vue'
 import { DraggableWrapperClassesData } from './DraggableWrapperClassesData'
 import { DraggableWrapperItem } from './DraggableWrapperItem'
+import { DraggableWrapperSquare } from './DraggableWrapperSquare'
+import { type DraggableWrapperClient } from './basicTypes'
 
 /**
  * Class coordinating dragging movement, positions, drop spots, and element reorder /
  * Класс, координирующий движение перетаскивания, позиции, места сброса и изменение порядка элементов
  */
 export class DraggableWrapperPosition {
+  /** Coordinate tracking values / Отслеживание координат */
+  protected readonly client: DraggableWrapperClient = {
+    x: 0,
+    y: 0,
+    drop: false
+  }
+
+  protected readonly customPropertyX: string
+  protected readonly customPropertyY: string
+
   constructor(
     protected readonly id: string,
+    protected readonly className: string,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly classes: DraggableWrapperClassesData,
-    protected readonly square: Ref<HTMLElement | undefined>,
     protected readonly item: DraggableWrapperItem,
     protected readonly itemGo: Ref<HTMLElement | undefined>,
-    protected readonly client: { x: number, y: number, drop: boolean },
     protected readonly emit: () => void,
-    protected readonly goSquare: (item?: HTMLElement, reset?: boolean) => void,
+    protected readonly square: DraggableWrapperSquare,
     protected readonly getSelection: () => (string | undefined)[]
-  ) { }
+  ) {
+    this.customPropertyX = `--${this.className}-sys-client-x`
+    this.customPropertyY = `--${this.className}-sys-client-y`
+  }
+
+  /**
+   * Returns the x coordinate of the client /
+   * Возвращает координату x клиента
+   * @returns x coordinate / координата x
+   */
+  getX(): number {
+    return this.client.x
+  }
+
+  /**
+   * Returns the y coordinate of the client /
+   * Возвращает координату y клиента
+   * @returns y coordinate / координата y
+   */
+  getY(): number {
+    return this.client.y
+  }
+
+  /**
+   * Checks if the element was dropped /
+   * Проверяет, был ли элемент сброшен
+   * @returns true if the element was dropped / true, если элемент был сброшен
+   */
+  hasDrop(): boolean {
+    return this.client.drop
+  }
 
   /**
    * Checks if element represents a position-spot /
@@ -49,15 +90,15 @@ export class DraggableWrapperPosition {
   findItem(points: Element[]): HTMLElement | undefined {
     let item: HTMLElement | undefined
 
-    points.forEach((el) => {
+    points.forEach((element) => {
       if (
         !item
-        && el instanceof HTMLElement
-        && el.classList.contains(this.id)
-        && !el.classList.contains(this.classes.list.active)
-        && el !== this.item.getActive()
+        && element instanceof HTMLElement
+        && element.classList.contains(this.id)
+        && !element.classList.contains(this.classes.list.active)
+        && element !== this.item.getActive()
       ) {
-        item = el
+        item = element
       }
     })
 
@@ -65,17 +106,17 @@ export class DraggableWrapperPosition {
   }
 
   /**
-   * Updates CSS coordinate variables on the container /
-   * Обновляет переменные координат CSS на контейнере
-   * @param x client x coordinate / координата x клиента
-   * @param y client y coordinate / координата y клиента
+   * Updates the coordinates of the shifted element /
+   * Обновляет координаты смещенного элемента
+   * @param x x coordinate / координата x
+   * @param y y coordinate / координата y
    */
-  toDo(x: number, y: number): void {
+  updateCoordinates(x: number, y: number): void {
     const element = this.element.value
 
     if (element) {
-      element.style.setProperty('--_cp-x', `${x - this.client.x}px`)
-      element.style.setProperty('--_cp-y', `${y - this.client.y}px`)
+      element.style.setProperty(this.customPropertyX, `${x - this.client.x}px`)
+      element.style.setProperty(this.customPropertyY, `${y - this.client.y}px`)
     }
   }
 
@@ -84,10 +125,10 @@ export class DraggableWrapperPosition {
    * Сбрасывает переменные координат CSS
    */
   protected resetStyles(): void {
-    const el = this.element.value
-    if (el) {
-      el.style.removeProperty('--_cp-x')
-      el.style.removeProperty('--_cp-y')
+    const element = this.element.value
+    if (element) {
+      element.style.removeProperty(this.customPropertyX)
+      element.style.removeProperty(this.customPropertyY)
     }
   }
 
@@ -96,7 +137,7 @@ export class DraggableWrapperPosition {
    * Изменяет порядок элементов перетаскивания в DOM, помещая их перед заполнителем
    */
   protected insert(): void {
-    const squareEl = this.square.value
+    const squareEl = this.square.getElement()
     if (squareEl && squareEl.parentElement) {
       const parent = squareEl.parentElement
       this.item.start.forEach((item) => {
@@ -110,11 +151,11 @@ export class DraggableWrapperPosition {
    * Координирует выбор зоны сброса и обновление заполнителя
    * @param item target drop element / целевой элемент сброса
    */
-  toDrop(item: HTMLElement): void {
+  updateDropTarget(item: HTMLElement): void {
     if (!this.isDrop(item)) {
       this.resetDrop()
     } else if (item !== this.itemGo.value) {
-      this.goSquare()
+      this.square.update()
       item.classList.add(this.classes.list.dragged)
 
       this.itemGo.value = item
@@ -140,11 +181,11 @@ export class DraggableWrapperPosition {
    * Позиционирует заполнитель на позиции целевого элемента
    * @param item target sibling item / целевой соседний элемент
    */
-  toPosition(item: HTMLElement): void {
+  updatePositionTarget(item: HTMLElement): void {
     if (!this.isPosition(item)) {
       this.resetPosition()
     } else {
-      this.goSquare(item)
+      this.square.update(item)
       this.itemGo.value = item
     }
   }
@@ -154,8 +195,8 @@ export class DraggableWrapperPosition {
    * Завершает сессию перетаскивания и очищает стили
    * @param go force emit reorder logic / принудительно запустить логику изменения порядка
    */
-  toNone(go = false): void {
-    const active = this.itemActive.value
+  reset(go = false): void {
+    const active = this.item.getActive()
     if (active && (active.classList.contains(this.classes.list.return) || go)) {
       if (this.itemGo.value) {
         this.emit()
@@ -165,7 +206,7 @@ export class DraggableWrapperPosition {
         }
       }
 
-      this.goSquare()
+      this.square.update()
 
       this.item.start.forEach((item) => {
         item.classList.remove(
@@ -194,7 +235,7 @@ export class DraggableWrapperPosition {
    */
   resetPosition(): void {
     if (this.itemGo.value && this.isPosition(this.itemGo.value)) {
-      this.goSquare(this.item.getActive(), true)
+      this.square.update(this.item.getActive(), true)
       this.itemGo.value = undefined
     }
   }
@@ -205,50 +246,58 @@ export class DraggableWrapperPosition {
    */
   protected returnActive(): void {
     const active = this.item.getActive()
-    const squareEl = this.square.value
-    const posEl = this.element.value
+    const squareElement = this.square.getElement()
+    const positionElement = this.element.value
 
-    if (active && squareEl && posEl) {
-      const rect = posEl.getBoundingClientRect()
-      const rectSquare = squareEl.getBoundingClientRect()
+    if (active && squareElement && positionElement) {
+      const rectangle = positionElement.getBoundingClientRect()
+      const rectangleSquare = squareElement.getBoundingClientRect()
 
       this.client.x = 0
       this.client.y = 0
       active.classList.add(this.classes.list.return)
 
-      this.toDo(rectSquare.left - rect.left, rectSquare.top - rect.top)
+      this.updateCoordinates(rectangleSquare.left - rectangle.left, rectangleSquare.top - rectangle.top)
     }
   }
 
-  go(
+  /**
+   * Starts dragging /
+   * Запускает перетаскивание
+   * @param item dragged element / перетаскиваемый элемент
+   * @param clientX x coordinate of the mouse / координата x мыши
+   * @param clientY y coordinate of the mouse / координата y мыши
+   */
+  start(
     item: HTMLElement,
     clientX: number,
     clientY: number
   ): void {
-    const rect = item.getBoundingClientRect()
-    const rectPosition = this.element.value?.getBoundingClientRect()
+    const rectangle = item.getBoundingClientRect()
+    const rectanglePosition = this.element.value?.getBoundingClientRect()
 
     if (
-      !rect
-      || !rectPosition
+      !rectangle
+      || !rectanglePosition
     ) {
       return
     }
 
-    this.client.x = clientX - rect.left
-    this.client.y = clientY - rect.top
+    this.client.x = clientX - rectangle.left
+    this.client.y = clientY - rectangle.top
     this.client.drop = false
 
     this.item.setActive(item)
 
-    this.toDo(
-      clientX - rectPosition.left,
-      clientY - rectPosition.top
+    this.updateCoordinates(
+      clientX - rectanglePosition.left,
+      clientY - rectanglePosition.top
     )
 
-    this.goSquare(item)
-    item.style.setProperty('--_cp-width', `${rect.width}px`)
-    item.style.setProperty('--_cp-height', `${rect.height}px`)
+    this.square.update(item)
+
+    item.style.setProperty('--_cp-width', `${rectangle.width}px`)
+    item.style.setProperty('--_cp-height', `${rectangle.height}px`)
     item.classList.add(this.classes.list.active, this.classes.list.go)
   }
 
@@ -262,7 +311,7 @@ export class DraggableWrapperPosition {
         this.returnActive()
       } else if (this.client.drop) {
         this.resetDrop()
-        this.toNone(true)
+        this.reset(true)
       } else {
         this.returnActive()
       }

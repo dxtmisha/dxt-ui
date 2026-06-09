@@ -1,4 +1,4 @@
-import { computed, ref, type Ref, type ToRefs } from 'vue'
+import { ref, type Ref, type ToRefs } from 'vue'
 import {
   type ConstrEmit,
   type DesignComp,
@@ -32,16 +32,6 @@ export class DraggableWrapper {
   /** Ref to target hovered element during drag / Ссылка на целевой элемент наведения при перетаскивании */
   readonly itemGo = ref<HTMLElement | undefined>(undefined)
 
-  /** Ref to placeholder spacer element / Ссылка на элемент-заполнитель */
-  readonly square = ref<HTMLElement | undefined>(undefined)
-
-  /** Coordinate tracking values / Отслеживание координат */
-  protected readonly client = {
-    x: 0,
-    y: 0,
-    drop: false
-  }
-
   /** Focused element on click / Элемент в фокусе при клике */
   protected readonly focusHelper = new DraggableWrapperFocus()
 
@@ -49,7 +39,7 @@ export class DraggableWrapper {
   protected timeout: any
 
   /** Square placement helper class / Вспомогательный класс для заполнителя */
-  protected readonly squareHelper: DraggableWrapperSquare
+  readonly square: DraggableWrapperSquare
 
   /** Multiselection helper class / Вспомогательный класс множественного выбора */
   protected readonly selectionHelper: DraggableWrapperSelection
@@ -78,19 +68,18 @@ export class DraggableWrapper {
     protected readonly slots?: DraggableWrapperSlots,
     protected readonly emits?: ConstrEmit<DraggableWrapperEmits>
   ) {
-    this.classes = new DraggableWrapperClassesData(this.classDesign)
-    this.squareHelper = new DraggableWrapperSquare(this.getId(), this.classes, this.element, this.square)
+    this.classes = new DraggableWrapperClassesData(this.element, this.classDesign)
+    this.square = new DraggableWrapperSquare(this.element, this.className, this.classes)
     this.selectionHelper = new DraggableWrapperSelection(this.getId(), this.classes, this.element, this.item)
     this.positionHelper = new DraggableWrapperPosition(
       this.getId(),
+      this.className,
       this.element,
       this.classes,
-      this.square,
       this.item,
       this.itemGo,
-      this.client,
       this.emitEvent,
-      (item, reset) => this.squareHelper.goSquare(item, reset),
+      this.square,
       () => this.selectionHelper.getSelection()
     )
   }
@@ -115,14 +104,14 @@ export class DraggableWrapper {
     values: T[],
     parameters: DraggableWrapperEventParameters
   ): T[] {
-    const { valueSelection, valueTo, route } = parameters
+    const { valueSelection, valueTo, before } = parameters
     const items = values.filter(item => item.value !== undefined && valueSelection.includes(String(item.value)))
     const newValues = values.filter(item => item.value === undefined || !valueSelection.includes(String(item.value)))
 
     if (valueTo !== undefined) {
       const idx = newValues.findIndex(item => String(item.value) === valueTo)
       if (idx !== -1) {
-        newValues.splice(idx + (route ? 0 : 1), 0, ...items)
+        newValues.splice(idx + (before ? 0 : 1), 0, ...items)
       } else {
         newValues.unshift(...items)
       }
@@ -160,13 +149,13 @@ export class DraggableWrapper {
         to: this.itemGo.value,
         value: [valueActive, valueTo],
         valueSelection: this.selectionHelper.getSelection(),
-        route: this.squareHelper.route.value,
+        before: this.square.isBefore(),
         valueActive,
         valueTo
       }
 
       setTimeout(() => {
-        if (this.client.drop) {
+        if (this.positionHelper.hasDrop()) {
           this.emits?.('drop', parameters)
         } else {
           this.emits?.('position', parameters)
@@ -205,13 +194,13 @@ export class DraggableWrapper {
     this.timeout = setTimeout(() => {
       this.timeout = undefined
 
-      this.positionHelper.go(
+      this.positionHelper.start(
         item,
         getMouseClientX(event as MouseEvent & TouchEvent),
         getMouseClientY(event as MouseEvent & TouchEvent)
       )
 
-      this.selectionHelper.goSelection()
+      this.selectionHelper.update()
     }, 640)
 
     window.addEventListener('mousemove', this.onMousemove)
@@ -254,15 +243,15 @@ export class DraggableWrapper {
         const find = this.positionHelper.findItem(points)
 
         if (find) {
-          this.positionHelper.toDrop(find)
-          this.positionHelper.toPosition(find)
+          this.positionHelper.updateDropTarget(find)
+          this.positionHelper.updatePositionTarget(find)
         } else if (points.indexOf(container) === -1) {
           this.positionHelper.resetPosition()
         } else {
           this.positionHelper.resetDrop()
         }
 
-        this.positionHelper.toDo(clientX - rect.left, clientY - rect.top)
+        this.positionHelper.updateCoordinates(clientX - rect.left, clientY - rect.top)
       }
     } else {
       const target = event.target as HTMLElement
@@ -286,7 +275,7 @@ export class DraggableWrapper {
    */
   protected onTransitionend = (event: TransitionEvent): void => {
     if (event.propertyName === 'transform') {
-      this.positionHelper.toNone()
+      this.positionHelper.reset()
     }
   }
 

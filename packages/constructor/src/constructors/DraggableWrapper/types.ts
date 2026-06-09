@@ -53,5 +53,6 @@ export interface DraggableWrapperSlots {
 export type DraggableWrapperClasses = {
   main: ConstrClass
   // :classes [!] System label / Системная метка
+  square: string
   // :classes [!] System label / Системная метка
 }

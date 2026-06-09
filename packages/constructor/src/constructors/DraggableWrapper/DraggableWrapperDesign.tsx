@@ -94,6 +94,7 @@ export class DraggableWrapperDesign<
       },
       ...{
         // :classes [!] System label / Системная метка
+        square: this.getSubClass('square')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -130,11 +131,15 @@ export class DraggableWrapperDesign<
           classDrop: classesList.drop,
           classPosition: classesList.position
         }),
-        h('div', {
-          ref: this.item.square,
-          class: this.getSubClass('square')
-        })
+        this.renderSquare()
       ]
     )
+  }
+
+  protected renderSquare(): VNode {
+    return h('div', {
+      ref: this.item.square.squareElement,
+      class: this.classes?.value.square
+    })
   }
 }

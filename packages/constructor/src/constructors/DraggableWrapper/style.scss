@@ -31,7 +31,7 @@
       user-select: none;
       z-index: var(--sys-index-xl);
       box-shadow: var(--sys-shadow-xl);
-      left: calc(var(--_cp-x) + var(--_cp-shift-x, 0px));
+      left: calc(#{ui.v('??sys-client-x')} + var(--_cp-shift-x, 0px));
       position: absolute;
       height: var(--_cp-height);
       margin: 0 !important;
@@ -40,7 +40,7 @@
       transition-property: box-shadow, opacity, transform;
       transition-duration: var(--sys-transitionDuration-standard);
       transition-timing-function: var(--sys-transitionFunction-standard);
-      top: calc(var(--_cp-y) + var(--_cp-shift-y, 0px));
+      top: calc(#{ui.v('??sys-client-y')} + var(--_cp-shift-y, 0px));
       width: var(--_cp-width);
 
       &::before {
@@ -76,6 +76,13 @@
   }
 
   &__square {
+    height: ui.v("??sys-square-height");
+    margin-top: ui.v("??sys-square-margin-top");
+    margin-right: ui.v("??sys-square-margin-right");
+    margin-bottom: ui.v("??sys-square-margin-bottom");
+    margin-left: ui.v("??sys-square-margin-left");
+    width: ui.v("??sys-square-width");
+
     &:not(.cp-show) {
       display: none;
     }

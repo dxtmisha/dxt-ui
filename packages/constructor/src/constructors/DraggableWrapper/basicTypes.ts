@@ -13,12 +13,22 @@ export interface DraggableWrapperEventParameters {
   value: (string | undefined)[]
   /** Array of values of selected elements / Массив значений выбранных элементов */
   valueSelection: (string | undefined)[]
-  /** DOM layout direction route / Маршрут направления структуры DOM */
-  route?: boolean
+  /** DOM layout direction / Направление структуры DOM */
+  before?: boolean
   /** Value of the active element / Значение активного элемента */
   valueActive?: string
   /** Value of the target element / Значение целевого элемента */
   valueTo?: string
+}
+
+/**
+ * Type describing the coordinates and status of the mouse /
+ * Тип, описывающий координаты и статус мыши
+ */
+export interface DraggableWrapperClient {
+  x: number
+  y: number
+  drop: boolean
 }
 
 /**
@@ -54,4 +64,3 @@ export type DraggableWrapperClassesList = {
   selected: string
   body: string
 }
-

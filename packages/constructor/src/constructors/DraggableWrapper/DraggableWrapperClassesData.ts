@@ -1,11 +1,13 @@
 import { getElementId } from '@dxtmisha/functional'
 import type { DraggableWrapperClassesList } from './basicTypes'
+import type { Ref } from 'vue'
 
 export class DraggableWrapperClassesData {
   protected readonly id = `draggable-wrapper--${getElementId()}`
   readonly list: DraggableWrapperClassesList
 
   constructor(
+    protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly classDesign: string
   ) {
     this.list = DraggableWrapperClassesData.getClassesList(classDesign)
@@ -21,6 +23,18 @@ export class DraggableWrapperClassesData {
 
   findClick(target: HTMLElement): HTMLElement | null {
     return target.closest<HTMLElement>(`.${this.id}.${this.list.click}, .${this.id} .${this.list.click}`)
+  }
+
+  findItems(): NodeListOf<HTMLElement> | undefined {
+    return this.element.value?.querySelectorAll<HTMLElement>(`.${this.id}`)
+  }
+
+  setBlockSelection(status = false): void {
+    if (status) {
+      document.body.classList.add(this.list.body)
+    } else {
+      document.body.classList.remove(this.list.body)
+    }
   }
 
   static getClassesList(classDesign: string): DraggableWrapperClassesList {

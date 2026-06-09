@@ -52,7 +52,7 @@ export class DraggableWrapperSelection {
    * Coordinates the selections stack visual offset and rotation angles /
    * Координирует визуальное смещение и углы поворота стека выбранных элементов
    */
-  goSelection(): void {
+  update(): void {
     const active = this.item.getActive()
     if (!active) {
       return

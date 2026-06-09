@@ -6,111 +6,147 @@ import { DraggableWrapperClassesData } from './DraggableWrapperClassesData'
  * Вспомогательный класс для управления элементом-заполнителем (square)
  */
 export class DraggableWrapperSquare {
-  /** Old style properties of the square / Старые свойства стилей заполнителя */
-  protected old: Record<string, string> = {}
+  protected readonly customPropertyWidth: string
+  protected readonly customPropertyHeight: string
+  protected readonly customPropertyMarginTop: string
+  protected readonly customPropertyMarginRight: string
+  protected readonly customPropertyMarginBottom: string
+  protected readonly customPropertyMarginLeft: string
 
-  /** Dynamic route indicating direction index in the DOM / Динамический маршрут направления индекса в DOM */
-  readonly route = ref<boolean | undefined>(undefined)
+  readonly squareElement = ref<HTMLElement>()
+  protected readonly before = ref<boolean>()
 
-  /**
-   * Constructor
-   * @param id unique component identifier / уникальный идентификатор компонента
-   * @param position root element ref / ссылка на корневой элемент
-   * @param square spacer element ref / ссылка на элемент-заполнитель
-   */
+  protected cached: Partial<CSSStyleDeclaration> = {}
+
   constructor(
-    protected readonly id: string,
-    protected readonly classes: DraggableWrapperClassesData,
-    protected readonly position: Ref<HTMLElement | undefined>,
-    protected readonly square: Ref<HTMLElement | undefined>
-  ) { }
-
-  /**
-   * Checks if the target item is positioned before or after the square /
-   * Проверяет, расположен ли целевой элемент до или после заполнителя
-   * @param square spacer element / элемент-заполнитель
-   * @param item target element / целевой элемент
-   * @returns true if route is index direction / true, если маршрут идет по направлению индекса
-   */
-  protected isRouteIndex(square: HTMLElement, item: HTMLElement): boolean | undefined {
-    if (!this.position.value) {
-      return undefined
-    }
-
-    let route: boolean | undefined
-    const items = this.position.value.querySelectorAll<HTMLElement>(`.${this.id}, .${this.classes.list.show}`)
-
-    items.forEach((el) => {
-      if (route === undefined) {
-        if (el === item) {
-          route = true
-        } else if (el === square) {
-          route = false
-        }
-      }
-    })
-
-    return route
+    protected readonly element: Ref<HTMLElement | undefined>,
+    protected readonly className: string,
+    protected readonly classes: DraggableWrapperClassesData
+  ) {
+    this.customPropertyWidth = `--${this.className}-sys-square-width`
+    this.customPropertyHeight = `--${this.className}-sys-square-height`
+    this.customPropertyMarginTop = `--${this.className}-sys-square-margin-top`
+    this.customPropertyMarginRight = `--${this.className}-sys-square-margin-right`
+    this.customPropertyMarginBottom = `--${this.className}-sys-square-margin-bottom`
+    this.customPropertyMarginLeft = `--${this.className}-sys-square-margin-left`
   }
 
-  /**
-   * Positions and dimensions the spacer element relative to target item /
-   * Позиционирует и задает размеры элемента-заполнителя относительно целевого элемента
-   * @param item target element / целевой элемент
-   * @param reset indicates if square style should be restored / указывает, следует ли восстановить стиль заполнителя
-   */
-  goSquare(item: HTMLElement | undefined = undefined, reset = false): void {
-    const squareEl = this.square.value
-    if (!squareEl) {
+  isShow(): boolean {
+    return Boolean(
+      this.squareElement.value?.classList.contains(this.classes.list.show)
+    )
+  }
+
+  isBefore(): boolean {
+    return this.before.value ?? false
+  }
+
+  getElement(): HTMLElement | undefined {
+    return this.squareElement.value
+  }
+
+  update(
+    item?: HTMLElement,
+    reset: boolean = false
+  ): void {
+    const squareElement = this.squareElement.value
+
+    if (!squareElement) {
       return
     }
 
-    if (item) {
-      const style = reset ? this.old : getComputedStyle(item)
+    if (!item) {
+      this.reset()
+      return
+    }
 
-      if (!squareEl.classList.contains(this.classes.list.show)) {
-        this.old = {
-          width: style.width || '',
-          height: style.height || '',
-          marginTop: style.marginTop || '',
-          marginRight: style.marginRight || '',
-          marginBottom: style.marginBottom || '',
-          marginLeft: style.marginLeft || ''
+    const style = reset
+      ? this.cached
+      : getComputedStyle(item)
+
+    if (!this.isShow()) {
+      this.updateCached(style)
+    }
+
+    this.before.value = this.getBefore(item)
+    this.updateStyles(style)
+
+    if (item.parentElement) {
+      const child = this.before.value ? item : item.nextElementSibling
+      item.parentElement.insertBefore(squareElement, child)
+    }
+
+    squareElement.classList.add(this.classes.list.show)
+    this.classes.setBlockSelection(true)
+  }
+
+  reset(): void {
+    const squareElement = this.squareElement.value
+
+    if (squareElement) {
+      this.classes.setBlockSelection(false)
+      squareElement.classList.remove(this.classes.list.show)
+
+      this.resetStyles()
+
+      if (this.element.value) {
+        this.element.value.insertBefore(squareElement, null)
+      }
+    }
+  }
+
+  protected getBefore(item: HTMLElement): boolean {
+    const items = this.classes.findItems()
+
+    if (items) {
+      for (const el of items) {
+        if (el === item) {
+          return true
+        }
+
+        if (el === this.squareElement.value) {
+          break
         }
       }
+    }
 
-      this.route.value = this.isRouteIndex(squareEl, item)
+    return false
+  }
 
-      if (item.parentElement) {
-        item.parentElement.insertBefore(
-          squareEl,
-          this.route.value ? item : item.nextElementSibling
-        )
-      }
+  protected updateStyles(style: Partial<CSSStyleDeclaration>): void {
+    const squareElement = this.squareElement.value
 
-      squareEl.style.width = style.width || ''
-      squareEl.style.height = style.height || ''
-      squareEl.style.marginTop = style.marginTop || ''
-      squareEl.style.marginRight = style.marginRight || ''
-      squareEl.style.marginBottom = style.marginBottom || ''
-      squareEl.style.marginLeft = style.marginLeft || ''
+    if (squareElement) {
+      squareElement.style.setProperty(this.customPropertyWidth, style.width || 'unset')
+      squareElement.style.setProperty(this.customPropertyHeight, style.height || 'unset')
+      squareElement.style.setProperty(this.customPropertyMarginTop, style.marginTop || 'unset')
+      squareElement.style.setProperty(this.customPropertyMarginRight, style.marginRight || 'unset')
+      squareElement.style.setProperty(this.customPropertyMarginBottom, style.marginBottom || 'unset')
+      squareElement.style.setProperty(this.customPropertyMarginLeft, style.marginLeft || 'unset')
+    }
+  }
 
-      squareEl.classList.add(this.classes.list.show)
-      document.body.classList.add(this.classes.list.body)
-    } else {
-      document.body.classList.remove(this.classes.list.body)
-      squareEl.classList.remove(this.classes.list.show)
+  protected resetStyles(): void {
+    const element = this.squareElement.value
 
-      squareEl.style.width = ''
-      squareEl.style.height = ''
-      squareEl.style.marginTop = ''
-      squareEl.style.marginRight = ''
-      squareEl.style.marginBottom = ''
-      squareEl.style.marginLeft = ''
+    if (element) {
+      element.style.removeProperty(this.customPropertyWidth)
+      element.style.removeProperty(this.customPropertyHeight)
+      element.style.removeProperty(this.customPropertyMarginTop)
+      element.style.removeProperty(this.customPropertyMarginRight)
+      element.style.removeProperty(this.customPropertyMarginBottom)
+      element.style.removeProperty(this.customPropertyMarginLeft)
+    }
+  }
 
-      if (this.position.value) {
-        this.position.value.insertBefore(squareEl, null)
-      }
+  protected updateCached(style: Partial<CSSStyleDeclaration>): void {
+    this.cached = {
+      width: style.width,
+      height: style.height,
+      marginTop: style.marginTop,
+      marginRight: style.marginRight,
+      marginBottom: style.marginBottom,
+      marginLeft: style.marginLeft
     }
   }
 }
