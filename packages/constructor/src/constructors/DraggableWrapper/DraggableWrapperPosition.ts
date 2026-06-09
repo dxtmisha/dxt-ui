@@ -32,91 +32,46 @@ export class DraggableWrapperPosition {
     }
   }
 
-  /**
-   * Checks if element represents a position-spot /
-   * Проверяет, является ли элемент местом для позиционирования
-   * @param item target element / целевой элемент
-   * @returns true if cp-position class is present / true, если присутствует класс cp-position
-   */
-  isPosition(item: HTMLElement): boolean {
-    return item.classList.contains(this.classes.list.position)
-  }
+  resetDrop(): void {
+    const goElement = this.item.getGo().get()
 
-  /**
-   * Checks if element represents a drop-spot /
-   * Проверяет, является ли элемент местом для сброса
-   * @param item target element / целевой элемент
-   * @returns true if cp-drop class is present / true, если присутствует класс cp-drop
-   */
-  isDrop(item: HTMLElement): boolean {
-    return item.classList.contains(this.classes.list.drop)
-  }
+    if (
+      goElement
+      && this.classes.isDrop(goElement)
+    ) {
+      goElement.classList.remove(this.classes.list.dragged)
 
-  /**
-   * Identifies the sibling element under pointer coords /
-   * Идентифицирует соседний элемент под координатами указателя
-   * @param points list of elements at point / список элементов в точке
-   * @returns sibling element or undefined / соседний элемент или undefined
-   */
-  findItem(points: Element[]): HTMLElement | undefined {
-    let item: HTMLElement | undefined
-
-    for (const element of points) {
-      if (
-        !item
-        && element instanceof HTMLElement
-        && element.classList.contains(this.id)
-        && !element.classList.contains(this.classes.list.active)
-        && element !== this.item.getActive().get()
-      ) {
-        item = element
-      }
-    }
-
-    return item
-  }
-
-  /**
-   * Reorders drag elements in DOM placing them before spacer square /
-   * Изменяет порядок элементов перетаскивания в DOM, помещая их перед заполнителем
-   */
-  protected insert(): void {
-    const squareEl = this.square.getElement()
-    if (squareEl && squareEl.parentElement) {
-      const parent = squareEl.parentElement
-      for (const item of this.item.get()) {
-        parent.insertBefore(item, squareEl)
-      }
+      this.item.getGo().reset()
+      this.client.setDrop(false)
     }
   }
 
-  /**
-   * Coordinates drop-zone selections and spacer square updates /
-   * Координирует выбор зоны сброса и обновление заполнителя
-   * @param item target drop element / целевой элемент сброса
-   */
   updateDropTarget(item: HTMLElement): void {
-    if (!this.isDrop(item)) {
+    if (!this.classes.isDrop(item)) {
       this.resetDrop()
-    } else if (item !== this.item.getGo().get()) {
-      this.square.prepare()
+      return
+    }
+
+    if (this.item.getGo().isByItem(item)) {
       item.classList.add(this.classes.list.dragged)
+      this.square.prepare()
 
       this.item.getGo().set(item)
       this.client.setDrop(true)
     }
   }
 
-  /**
-   * Resets drop selection states and classes /
-   * Сбрасывает состояния и классы выбора сброса
-   */
-  resetDrop(): void {
-    const goItem = this.item.getGo().get()
-    if (goItem && this.isDrop(goItem)) {
-      goItem.classList.remove(this.classes.list.dragged)
-      this.item.getGo().reset()
-      this.client.setDrop(false)
+  protected insert(): void {
+    const squareElement = this.square.getElement()
+    const parentElement = squareElement?.parentElement
+
+    if (
+      squareElement
+      && parentElement
+    ) {
+      for (const item of this.item.get()) {
+        parentElement.insertBefore(item, squareElement)
+      }
     }
   }
 
@@ -126,7 +81,7 @@ export class DraggableWrapperPosition {
    * @param item target sibling item / целевой соседний элемент
    */
   updatePositionTarget(item: HTMLElement): void {
-    if (!this.isPosition(item)) {
+    if (!this.classes.isPosition(item)) {
       this.resetPosition()
     } else {
       this.square.prepare(item)
@@ -175,7 +130,7 @@ export class DraggableWrapperPosition {
    * Сбрасывает заполнитель обратно на местоположение активного элемента
    */
   resetPosition(): void {
-    if (this.item.getGo().get() && this.isPosition(this.item.getGo().get()!)) {
+    if (this.item.getGo().get() && this.classes.isPosition(this.item.getGo().get()!)) {
       this.square.prepare(this.item.getActive().get(), true)
       this.item.getGo().reset()
     }

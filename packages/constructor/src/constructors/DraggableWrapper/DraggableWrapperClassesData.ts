@@ -2,6 +2,7 @@ import type { Ref } from 'vue'
 import { getElementId } from '@dxtmisha/functional'
 
 import type { DraggableWrapperClassesList } from './basicTypes'
+import type { ImageCoordinator } from '@dxtmisha/functional-basic'
 
 export class DraggableWrapperClassesData {
   readonly list: DraggableWrapperClassesList
@@ -14,6 +15,14 @@ export class DraggableWrapperClassesData {
     protected readonly className: string
   ) {
     this.list = DraggableWrapperClassesData.getClassesList(classDesign)
+  }
+
+  isPosition(item: HTMLElement): boolean {
+    return item.classList.contains(this.list.position)
+  }
+
+  isDrop(item: HTMLElement): boolean {
+    return item.classList.contains(this.list.drop)
   }
 
   getId(): string {
@@ -34,6 +43,24 @@ export class DraggableWrapperClassesData {
 
   findClick(target: HTMLElement): HTMLElement | undefined {
     return target.closest<HTMLElement>(`.${this.id}.${this.list.click}, .${this.id} .${this.list.click}`) || undefined
+  }
+
+  findItemByPoints(
+    client: ImageCoordinator
+  ): HTMLElement | undefined {
+    const pointsElement = document.elementsFromPoint(client.x, client.y)
+
+    for (const element of pointsElement) {
+      if (
+        element instanceof HTMLElement
+        && element.classList.contains(this.id)
+        && !element.classList.contains(this.list.active)
+      ) {
+        return element
+      }
+    }
+
+    return undefined
   }
 
   findItems(): NodeListOf<HTMLElement> | undefined {

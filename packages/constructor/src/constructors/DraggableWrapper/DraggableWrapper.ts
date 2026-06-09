@@ -254,7 +254,7 @@ export class DraggableWrapper {
       const container = this.element.value
       if (container) {
         const points = document.elementsFromPoint(client.x, client.y)
-        const find = this.position.findItem(points)
+        const find = this.classes.findItemByPoints(client)
 
         if (find) {
           this.position.updateDropTarget(find)

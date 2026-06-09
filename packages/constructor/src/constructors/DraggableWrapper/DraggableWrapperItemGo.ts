@@ -7,6 +7,10 @@ export class DraggableWrapperItemGo {
     return Boolean(this.item.value)
   }
 
+  isByItem(item: HTMLElement): boolean {
+    return item !== this.get()
+  }
+
   get(): HTMLElement | undefined {
     return this.item.value
   }
