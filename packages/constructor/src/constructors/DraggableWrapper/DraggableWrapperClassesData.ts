@@ -28,12 +28,22 @@ export class DraggableWrapperClassesData {
     return this.element.value
   }
 
+  getRect(): DOMRect | undefined {
+    return this.element.value?.getBoundingClientRect()
+  }
+
   findClick(target: HTMLElement): HTMLElement | undefined {
     return target.closest<HTMLElement>(`.${this.id}.${this.list.click}, .${this.id} .${this.list.click}`) || undefined
   }
 
   findItems(): NodeListOf<HTMLElement> | undefined {
     return this.element.value?.querySelectorAll<HTMLElement>(`.${this.id}`)
+  }
+
+  findSelection(): NodeListOf<HTMLElement> | undefined {
+    return this.element.value?.querySelectorAll<HTMLElement>(
+      `.${this.id}.${this.list.active}, .${this.id}.${this.list.selected}`
+    )
   }
 
   setBlockSelection(status = false): void {
@@ -45,21 +55,24 @@ export class DraggableWrapperClassesData {
   }
 
   static getClassesList(classDesign: string): DraggableWrapperClassesList {
+    const className = `${classDesign}-draggableWrapper`
+
     return {
-      body: `${classDesign}__blockSelection`,
+      body: `${className}__blockSelection`,
 
-      return: `${classDesign}__item--return`,
+      active: `${className}__item--active`,
+      selection: `${className}__item--selection`,
+      selectionMore: `${className}__item--selection-more`,
+      go: `${className}__item--go`,
 
-      click: `${classDesign}__click`,
-      drop: `${classDesign}__drop`,
-      position: `${classDesign}__position`,
-      active: `${classDesign}__item--active`,
-      go: `${classDesign}__item--go`,
-      selection: `${classDesign}__item--selection`,
-      selectionMore: `${classDesign}__item--selection-more`,
-      show: `${classDesign}__square--show`,
-      dragged: `${classDesign}__item--dragged`,
-      selected: `${classDesign}__item--selected`
+      return: `${className}__item--return`,
+
+      click: `${className}__click`,
+      drop: `${className}__drop`,
+      position: `${className}__position`,
+      show: `${className}__square--show`,
+      dragged: `${className}__item--dragged`,
+      selected: `${className}__item--selected`
     }
   }
 }

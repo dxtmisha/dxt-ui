@@ -1,6 +1,6 @@
 export * from './DraggableWrapper'
 export * from './DraggableWrapperClassesData'
-export * from './DraggableWrapperFocus'
+export * from './DraggableWrapperItemFocus'
 export * from './DraggableWrapperItem'
 export * from './DraggableWrapperClient'
 export * from './DraggableWrapperItemActive'

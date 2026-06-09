@@ -1,13 +1,15 @@
 import { DraggableWrapperItemActive } from './DraggableWrapperItemActive'
 import { DraggableWrapperItemSelection } from './DraggableWrapperItemSelection'
 import { DraggableWrapperItemGo } from './DraggableWrapperItemGo'
+import { forEach } from '@dxtmisha/functional'
 
 export class DraggableWrapperItem {
   constructor(
     protected readonly active: DraggableWrapperItemActive,
     protected readonly selection: DraggableWrapperItemSelection,
     protected readonly go: DraggableWrapperItemGo
-  ) {}
+  ) {
+  }
 
   getActive(): DraggableWrapperItemActive {
     return this.active
@@ -35,6 +37,10 @@ export class DraggableWrapperItem {
     }
 
     return []
+  }
+
+  getValues(): string[] {
+    return forEach(this.get(), item => item?.dataset?.value) as string[]
   }
 
   reset(): this {

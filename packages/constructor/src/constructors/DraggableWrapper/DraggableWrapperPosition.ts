@@ -99,7 +99,7 @@ export class DraggableWrapperPosition {
     if (!this.isDrop(item)) {
       this.resetDrop()
     } else if (item !== this.item.getGo().get()) {
-      this.square.update()
+      this.square.prepare()
       item.classList.add(this.classes.list.dragged)
 
       this.item.getGo().set(item)
@@ -129,7 +129,7 @@ export class DraggableWrapperPosition {
     if (!this.isPosition(item)) {
       this.resetPosition()
     } else {
-      this.square.update(item)
+      this.square.prepare(item)
       this.item.getGo().set(item)
     }
   }
@@ -150,7 +150,7 @@ export class DraggableWrapperPosition {
         }
       }
 
-      this.square.update()
+      this.square.prepare()
 
       for (const item of this.item.get()) {
         item.classList.remove(
@@ -176,37 +176,9 @@ export class DraggableWrapperPosition {
    */
   resetPosition(): void {
     if (this.item.getGo().get() && this.isPosition(this.item.getGo().get()!)) {
-      this.square.update(this.item.getActive().get(), true)
+      this.square.prepare(this.item.getActive().get(), true)
       this.item.getGo().reset()
     }
-  }
-
-  start(
-    item: HTMLElement,
-    clientX: number,
-    clientY: number
-  ): void {
-    const rectItem = item.getBoundingClientRect()
-    const rectPosition = this.classes.getElement()?.getBoundingClientRect()
-
-    if (
-      !rectItem
-      || !rectPosition
-    ) {
-      return
-    }
-
-    this.client.setX(clientX - rectItem.left)
-    this.client.setY(clientY - rectItem.top)
-    this.client.setDrop(false)
-
-    this.client.update(
-      clientX - rectPosition.left,
-      clientY - rectPosition.top
-    )
-
-    this.item.getActive().prepare(item)
-    this.square.update(item)
   }
 
   stop(): void {
@@ -244,8 +216,7 @@ export class DraggableWrapperPosition {
       const rectElement = element.getBoundingClientRect()
       const rectSquare = squareElement.getBoundingClientRect()
 
-      this.client.setX(0)
-      this.client.setY(0)
+      this.client.set(0, 0)
       activeElement.classList.add(this.classes.list.return)
 
       this.client.update(

@@ -9,8 +9,8 @@ export class DraggableWrapperSquare {
   readonly squareElement = ref<HTMLElement>()
 
   protected readonly before = ref<boolean>()
-
   protected cached: Partial<CSSStyleDeclaration> = {}
+
   protected readonly property: {
     width: string
     height: string
@@ -49,7 +49,7 @@ export class DraggableWrapperSquare {
     return this.squareElement.value
   }
 
-  update(
+  prepare(
     item?: HTMLElement,
     reset: boolean = false
   ): void {
