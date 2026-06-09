@@ -1,4 +1,3 @@
-import { type Ref } from 'vue'
 import { DraggableWrapperClassesData } from './DraggableWrapperClassesData'
 import { DraggableWrapperItem } from './DraggableWrapperItem'
 
@@ -7,19 +6,31 @@ import { DraggableWrapperItem } from './DraggableWrapperItem'
  * Вспомогательный класс для управления стилями и состояниями множественного выбора при перетаскивании
  */
 export class DraggableWrapperSelection {
+  protected readonly customProperty: {
+    width: string
+    height: string
+    rotate: string
+  }
+
   /**
    * Constructor
    * @param id unique component identifier / уникальный идентификатор компонента
-   * @param position root element ref / ссылка на корневой элемент
-   * @param itemActive active draggable element ref / ссылка на активный перемещаемый элемент
-   * @param itemSelection selected elements ref / ссылка на список выбранных элементов
+   * @param classes classes helper instance / экземпляр помощника по классам
+   * @param item item helper instance / экземпляр помощника по элементам
    */
   constructor(
     protected readonly id: string,
     protected readonly classes: DraggableWrapperClassesData,
-    protected readonly position: Ref<HTMLElement | undefined>,
     protected readonly item: DraggableWrapperItem
-  ) { }
+  ) {
+    const className = this.classes.getName()
+
+    this.customProperty = {
+      width: `--${className}-sys-item-width`,
+      height: `--${className}-sys-item-height`,
+      rotate: `--${className}-sys-item-rotate`
+    }
+  }
 
   /**
    * Gets list of dataset values for the selection /
@@ -27,8 +38,8 @@ export class DraggableWrapperSelection {
    * @returns array of dataset values / массив значений dataset
    */
   getSelection(): (string | undefined)[] {
-    const selection = this.item.getSelection()
-    const active = this.item.getActive()
+    const selection = this.item.getSelection().get()
+    const active = this.item.getActive().get()
     const list = selection || (active ? [active] : [])
     return list.map(item => item?.dataset?.value)
   }
@@ -39,12 +50,16 @@ export class DraggableWrapperSelection {
    * @returns array of html elements / массив html-элементов
    */
   protected findSelection(): HTMLElement[] {
-    if (!this.position.value) {
+    const element = this.classes.getElement()
+
+    if (!element) {
       return []
     }
-    const elements = this.position.value.querySelectorAll<HTMLElement>(
+
+    const elements = element.querySelectorAll<HTMLElement>(
       `.${this.id}.${this.classes.list.active}, .${this.id}.${this.classes.list.selected}`
     )
+
     return Array.from(elements)
   }
 
@@ -53,7 +68,7 @@ export class DraggableWrapperSelection {
    * Координирует визуальное смещение и углы поворота стека выбранных элементов
    */
   update(): void {
-    const active = this.item.getActive()
+    const active = this.item.getActive().get()
     if (!active) {
       return
     }
@@ -64,15 +79,13 @@ export class DraggableWrapperSelection {
       const max = 4
 
       const selection = this.findSelection()
-      this.item.setSelection(selection)
+      this.item.getSelection().set(selection)
 
-      selection.forEach((item) => {
+      for (const item of selection) {
         if (item !== active) {
           const rect = item.getBoundingClientRect()
 
-          item.style.setProperty('--_cp-width', `${rect.width}px`)
-          item.style.setProperty('--_cp-height', `${rect.height}px`)
-          item.style.setProperty('--_cp-shift', `-${max * deg - shift * deg}deg`)
+          this.updateItemStyles(item, rect, max * deg - shift * deg)
           item.classList.add(this.classes.list.active, this.classes.list.selection)
 
           if (shift < max) {
@@ -81,7 +94,13 @@ export class DraggableWrapperSelection {
             item.classList.add(this.classes.list.selectionMore)
           }
         }
-      })
+      }
     }
+  }
+
+  protected updateItemStyles(item: HTMLElement, rect: DOMRect, rotate: number): void {
+    item.style.setProperty(this.customProperty.width, `${rect.width}px`)
+    item.style.setProperty(this.customProperty.height, `${rect.height}px`)
+    item.style.setProperty(this.customProperty.rotate, `-${rotate}deg`)
   }
 }

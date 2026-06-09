@@ -1,15 +1,34 @@
-import { ref } from 'vue'
+import { DraggableWrapperItemActive } from './DraggableWrapperItemActive'
+import { DraggableWrapperItemSelection } from './DraggableWrapperItemSelection'
+import { DraggableWrapperItemGo } from './DraggableWrapperItemGo'
 
 export class DraggableWrapperItem {
-  protected readonly active = ref<HTMLElement>()
-  protected readonly selection = ref<HTMLElement[]>()
+  constructor(
+    protected readonly active: DraggableWrapperItemActive,
+    protected readonly selection: DraggableWrapperItemSelection,
+    protected readonly go: DraggableWrapperItemGo
+  ) {}
 
-  get start(): HTMLElement[] {
-    if (this.selection.value) {
-      return this.selection.value
+  getActive(): DraggableWrapperItemActive {
+    return this.active
+  }
+
+  getSelection(): DraggableWrapperItemSelection {
+    return this.selection
+  }
+
+  getGo(): DraggableWrapperItemGo {
+    return this.go
+  }
+
+  get(): HTMLElement[] {
+    const selection = this.selection.get()
+
+    if (selection) {
+      return selection
     }
 
-    const active = this.getActive()
+    const active = this.active.get()
 
     if (active) {
       return [active]
@@ -18,21 +37,11 @@ export class DraggableWrapperItem {
     return []
   }
 
-  getActive(): HTMLElement | undefined {
-    return this.active.value
-  }
+  reset(): this {
+    this.active.reset()
+    this.selection.reset()
+    this.go.reset()
 
-  getSelection(): HTMLElement[] | undefined {
-    return this.selection.value
-  }
-
-  setActive(value: HTMLElement | undefined): this {
-    this.active.value = value
-    return this
-  }
-
-  setSelection(value: HTMLElement[] | undefined): this {
-    this.selection.value = value
     return this
   }
 }

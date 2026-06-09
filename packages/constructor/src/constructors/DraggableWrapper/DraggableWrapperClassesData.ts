@@ -1,14 +1,17 @@
-import { getElementId } from '@dxtmisha/functional'
-import type { DraggableWrapperClassesList } from './basicTypes'
 import type { Ref } from 'vue'
+import { getElementId } from '@dxtmisha/functional'
+
+import type { DraggableWrapperClassesList } from './basicTypes'
 
 export class DraggableWrapperClassesData {
-  protected readonly id = `draggable-wrapper--${getElementId()}`
   readonly list: DraggableWrapperClassesList
+
+  protected readonly id = `draggable-wrapper--${getElementId()}`
 
   constructor(
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly classDesign: string
+    protected readonly classDesign: string,
+    protected readonly className: string
   ) {
     this.list = DraggableWrapperClassesData.getClassesList(classDesign)
   }
@@ -17,12 +20,16 @@ export class DraggableWrapperClassesData {
     return this.id
   }
 
-  getClassName(name: keyof DraggableWrapperClassesList): string {
-    return this.list[name]
+  getName(): string {
+    return this.className
   }
 
-  findClick(target: HTMLElement): HTMLElement | null {
-    return target.closest<HTMLElement>(`.${this.id}.${this.list.click}, .${this.id} .${this.list.click}`)
+  getElement(): HTMLElement | undefined {
+    return this.element.value
+  }
+
+  findClick(target: HTMLElement): HTMLElement | undefined {
+    return target.closest<HTMLElement>(`.${this.id}.${this.list.click}, .${this.id} .${this.list.click}`) || undefined
   }
 
   findItems(): NodeListOf<HTMLElement> | undefined {
@@ -39,6 +46,10 @@ export class DraggableWrapperClassesData {
 
   static getClassesList(classDesign: string): DraggableWrapperClassesList {
     return {
+      body: `${classDesign}__blockSelection`,
+
+      return: `${classDesign}__item--return`,
+
       click: `${classDesign}__click`,
       drop: `${classDesign}__drop`,
       position: `${classDesign}__position`,
@@ -46,11 +57,9 @@ export class DraggableWrapperClassesData {
       go: `${classDesign}__item--go`,
       selection: `${classDesign}__item--selection`,
       selectionMore: `${classDesign}__item--selection-more`,
-      return: `${classDesign}__item--return`,
       show: `${classDesign}__square--show`,
       dragged: `${classDesign}__item--dragged`,
-      selected: `${classDesign}__item--selected`,
-      body: `${classDesign}__body`
+      selected: `${classDesign}__item--selected`
     }
   }
 }

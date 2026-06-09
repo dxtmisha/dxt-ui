@@ -22,16 +22,6 @@ export interface DraggableWrapperEventParameters {
 }
 
 /**
- * Type describing the coordinates and status of the mouse /
- * Тип, описывающий координаты и статус мыши
- */
-export interface DraggableWrapperClient {
-  x: number
-  y: number
-  drop: boolean
-}
-
-/**
  * Type describing control class properties for child elements /
  * Тип, описывающий свойства управляющих классов для дочерних элементов
  */

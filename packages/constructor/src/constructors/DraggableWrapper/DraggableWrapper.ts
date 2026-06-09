@@ -1,4 +1,4 @@
-import { ref, type Ref, type ToRefs } from 'vue'
+import { type Ref, type ToRefs } from 'vue'
 import {
   type ConstrEmit,
   type DesignComp,
@@ -14,9 +14,13 @@ import type { DraggableWrapperEventParameters } from './basicTypes'
 import { DraggableWrapperSquare } from './DraggableWrapperSquare'
 import { DraggableWrapperSelection } from './DraggableWrapperSelection'
 import { DraggableWrapperPosition } from './DraggableWrapperPosition'
+import { DraggableWrapperClient } from './DraggableWrapperClient'
 import { DraggableWrapperClassesData } from './DraggableWrapperClassesData'
 import { DraggableWrapperFocus } from './DraggableWrapperFocus'
 import { DraggableWrapperItem } from './DraggableWrapperItem'
+import { DraggableWrapperItemActive } from './DraggableWrapperItemActive'
+import { DraggableWrapperItemSelection } from './DraggableWrapperItemSelection'
+import { DraggableWrapperItemGo } from './DraggableWrapperItemGo'
 
 /**
  * Orchestrator class for managing draggable reordering logic /
@@ -26,11 +30,17 @@ export class DraggableWrapper {
   /** Classes helper instance / Экземпляр помощника по классам */
   readonly classes: DraggableWrapperClassesData
 
-  /** Items helper instance / Экземпляр помощника по элементам */
-  readonly item = new DraggableWrapperItem()
+  /** Active element helper / Помощник для активного элемента */
+  readonly active: DraggableWrapperItemActive
 
-  /** Ref to target hovered element during drag / Ссылка на целевой элемент наведения при перетаскивании */
-  readonly itemGo = ref<HTMLElement | undefined>(undefined)
+  /** Selection helper / Помощник для выбора */
+  readonly selection: DraggableWrapperItemSelection
+
+  /** Go indicator helper / Помощник индикатора Go */
+  readonly go: DraggableWrapperItemGo
+
+  /** Items helper instance / Экземпляр помощника по элементам */
+  readonly item: DraggableWrapperItem
 
   /** Focused element on click / Элемент в фокусе при клике */
   protected readonly focusHelper = new DraggableWrapperFocus()
@@ -40,6 +50,9 @@ export class DraggableWrapper {
 
   /** Square placement helper class / Вспомогательный класс для заполнителя */
   readonly square: DraggableWrapperSquare
+
+  /** Coordinates helper class / Вспомогательный класс координат */
+  readonly client: DraggableWrapperClient
 
   /** Multiselection helper class / Вспомогательный класс множественного выбора */
   protected readonly selectionHelper: DraggableWrapperSelection
@@ -68,19 +81,22 @@ export class DraggableWrapper {
     protected readonly slots?: DraggableWrapperSlots,
     protected readonly emits?: ConstrEmit<DraggableWrapperEmits>
   ) {
-    this.classes = new DraggableWrapperClassesData(this.element, this.classDesign)
-    this.square = new DraggableWrapperSquare(this.element, this.className, this.classes)
-    this.selectionHelper = new DraggableWrapperSelection(this.getId(), this.classes, this.element, this.item)
+    this.classes = new DraggableWrapperClassesData(this.element, this.classDesign, this.className)
+    this.active = new DraggableWrapperItemActive(this.classes)
+    this.selection = new DraggableWrapperItemSelection()
+    this.go = new DraggableWrapperItemGo()
+    this.item = new DraggableWrapperItem(this.active, this.selection, this.go)
+    this.square = new DraggableWrapperSquare(this.classes)
+    this.client = new DraggableWrapperClient(this.classes)
+    this.selectionHelper = new DraggableWrapperSelection(this.getId(), this.classes, this.item)
     this.positionHelper = new DraggableWrapperPosition(
       this.getId(),
-      this.className,
-      this.element,
       this.classes,
       this.item,
-      this.itemGo,
       this.emitEvent,
       this.square,
-      () => this.selectionHelper.getSelection()
+      () => this.selectionHelper.getSelection(),
+      this.client
     )
   }
 
@@ -140,13 +156,16 @@ export class DraggableWrapper {
    * Коллбек для генерации события
    */
   protected emitEvent = (): void => {
-    if (this.item.getActive() && this.itemGo.value) {
-      const valueActive = this.item.getActive()!.dataset?.value
-      const valueTo = this.itemGo.value.dataset?.value
+    const active = this.item.getActive().get()
+    const itemGo = this.item.getGo().get()
+
+    if (active && itemGo) {
+      const valueActive = active.dataset?.value
+      const valueTo = itemGo.dataset?.value
       const parameters: DraggableWrapperEventParameters = {
-        active: this.item.getActive()!,
-        selection: this.item.getSelection(),
-        to: this.itemGo.value,
+        active,
+        selection: this.item.getSelection().get(),
+        to: itemGo,
         value: [valueActive, valueTo],
         valueSelection: this.selectionHelper.getSelection(),
         before: this.square.isBefore(),
@@ -155,7 +174,7 @@ export class DraggableWrapper {
       }
 
       setTimeout(() => {
-        if (this.positionHelper.hasDrop()) {
+        if (this.client.hasDrop()) {
           this.emits?.('drop', parameters)
         } else {
           this.emits?.('position', parameters)
@@ -230,7 +249,7 @@ export class DraggableWrapper {
       return
     }
 
-    if (this.item.getActive()) {
+    if (this.item.getActive().get()) {
       event.stopPropagation()
 
       const clientX = getMouseClientX(event as MouseEvent & TouchEvent)
@@ -251,7 +270,7 @@ export class DraggableWrapper {
           this.positionHelper.resetDrop()
         }
 
-        this.positionHelper.updateCoordinates(clientX - rect.left, clientY - rect.top)
+        this.positionHelper.client.update(clientX - rect.left, clientY - rect.top)
       }
     } else {
       const target = event.target as HTMLElement

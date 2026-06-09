@@ -1,4 +1,4 @@
-import { ref, type Ref } from 'vue'
+import { ref } from 'vue'
 import { DraggableWrapperClassesData } from './DraggableWrapperClassesData'
 
 /**
@@ -6,29 +6,33 @@ import { DraggableWrapperClassesData } from './DraggableWrapperClassesData'
  * Вспомогательный класс для управления элементом-заполнителем (square)
  */
 export class DraggableWrapperSquare {
-  protected readonly customPropertyWidth: string
-  protected readonly customPropertyHeight: string
-  protected readonly customPropertyMarginTop: string
-  protected readonly customPropertyMarginRight: string
-  protected readonly customPropertyMarginBottom: string
-  protected readonly customPropertyMarginLeft: string
-
   readonly squareElement = ref<HTMLElement>()
+
   protected readonly before = ref<boolean>()
 
   protected cached: Partial<CSSStyleDeclaration> = {}
+  protected readonly property: {
+    width: string
+    height: string
+    marginTop: string
+    marginRight: string
+    marginBottom: string
+    marginLeft: string
+  }
 
   constructor(
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly className: string,
     protected readonly classes: DraggableWrapperClassesData
   ) {
-    this.customPropertyWidth = `--${this.className}-sys-square-width`
-    this.customPropertyHeight = `--${this.className}-sys-square-height`
-    this.customPropertyMarginTop = `--${this.className}-sys-square-margin-top`
-    this.customPropertyMarginRight = `--${this.className}-sys-square-margin-right`
-    this.customPropertyMarginBottom = `--${this.className}-sys-square-margin-bottom`
-    this.customPropertyMarginLeft = `--${this.className}-sys-square-margin-left`
+    const className = this.classes.getName()
+
+    this.property = {
+      width: `--${className}-sys-square-width`,
+      height: `--${className}-sys-square-height`,
+      marginTop: `--${className}-sys-square-margin-top`,
+      marginRight: `--${className}-sys-square-margin-right`,
+      marginBottom: `--${className}-sys-square-margin-bottom`,
+      marginLeft: `--${className}-sys-square-margin-left`
+    }
   }
 
   isShow(): boolean {
@@ -72,7 +76,10 @@ export class DraggableWrapperSquare {
     this.updateStyles(style)
 
     if (item.parentElement) {
-      const child = this.before.value ? item : item.nextElementSibling
+      const child = this.before.value
+        ? item
+        : item.nextElementSibling
+
       item.parentElement.insertBefore(squareElement, child)
     }
 
@@ -89,8 +96,10 @@ export class DraggableWrapperSquare {
 
       this.resetStyles()
 
-      if (this.element.value) {
-        this.element.value.insertBefore(squareElement, null)
+      const element = this.classes.getElement()
+
+      if (element) {
+        element.insertBefore(squareElement, null)
       }
     }
   }
@@ -117,12 +126,12 @@ export class DraggableWrapperSquare {
     const squareElement = this.squareElement.value
 
     if (squareElement) {
-      squareElement.style.setProperty(this.customPropertyWidth, style.width || 'unset')
-      squareElement.style.setProperty(this.customPropertyHeight, style.height || 'unset')
-      squareElement.style.setProperty(this.customPropertyMarginTop, style.marginTop || 'unset')
-      squareElement.style.setProperty(this.customPropertyMarginRight, style.marginRight || 'unset')
-      squareElement.style.setProperty(this.customPropertyMarginBottom, style.marginBottom || 'unset')
-      squareElement.style.setProperty(this.customPropertyMarginLeft, style.marginLeft || 'unset')
+      squareElement.style.setProperty(this.property.width, style.width || 'unset')
+      squareElement.style.setProperty(this.property.height, style.height || 'unset')
+      squareElement.style.setProperty(this.property.marginTop, style.marginTop || 'unset')
+      squareElement.style.setProperty(this.property.marginRight, style.marginRight || 'unset')
+      squareElement.style.setProperty(this.property.marginBottom, style.marginBottom || 'unset')
+      squareElement.style.setProperty(this.property.marginLeft, style.marginLeft || 'unset')
     }
   }
 
@@ -130,12 +139,12 @@ export class DraggableWrapperSquare {
     const element = this.squareElement.value
 
     if (element) {
-      element.style.removeProperty(this.customPropertyWidth)
-      element.style.removeProperty(this.customPropertyHeight)
-      element.style.removeProperty(this.customPropertyMarginTop)
-      element.style.removeProperty(this.customPropertyMarginRight)
-      element.style.removeProperty(this.customPropertyMarginBottom)
-      element.style.removeProperty(this.customPropertyMarginLeft)
+      element.style.removeProperty(this.property.width)
+      element.style.removeProperty(this.property.height)
+      element.style.removeProperty(this.property.marginTop)
+      element.style.removeProperty(this.property.marginRight)
+      element.style.removeProperty(this.property.marginBottom)
+      element.style.removeProperty(this.property.marginLeft)
     }
   }
 
