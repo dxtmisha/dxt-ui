@@ -2,49 +2,38 @@
 @use "@dxtmisha/styles/properties" as ui;
 
 @mixin mixinDraggableWrapper {
-  --_cp__it-display: var(--cp__it-display, block);
-
-  & {
-    position: relative;
-  }
+  position: relative;
 
   &__item {
     cursor: default;
     position: relative;
 
     &::before {
-      z-index: var(--sys-index-xl);
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      @include color.backgroundColor(var(--sys-palette-primary), var(--sys-opacity-selected));
-      content: " ";
       display: none;
-      transition-property: background-color;
+      @include ui.absolute();
+      transition-property: background-color, box-shadow, opacity, transform;
       transition-duration: var(--sys-transitionDuration-standard);
       transition-timing-function: var(--sys-transitionFunction-standard);
     }
 
-    &.cp-active {
-      user-select: none;
-      z-index: var(--sys-index-xl);
-      box-shadow: var(--sys-shadow-xl);
-      left: calc(#{ui.v('??sys-client-x')} + var(--_cp-shift-x, 0px));
+    &--active {
       position: absolute;
-      height: ui.v("??sys-item-height");
+      top: calc(#{ui.v('??sys-client-y')} - #{ui.v('??sys-item-shift-y')});
+      left: calc(#{ui.v('??sys-client-x')} - #{ui.v('??sys-item-shift-x')});
+
+      user-select: none;
+
       margin: 0 !important;
-      opacity: var(--sys-opacity-surface-high);
-      transform: scale(1.08);
+
+      width: ui.v("??sys-item-width");
+      height: ui.v("??sys-item-height");
+
       transition-property: box-shadow, opacity, transform;
       transition-duration: var(--sys-transitionDuration-standard);
       transition-timing-function: var(--sys-transitionFunction-standard);
-      top: calc(#{ui.v('??sys-client-y')} + var(--_cp-shift-y, 0px));
-      width: ui.v("??sys-item-width");
 
       &::before {
-        display: var(--_cp__it-display);
+        display: block;
       }
     }
 

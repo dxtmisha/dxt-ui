@@ -10,16 +10,6 @@ import { DraggableWrapperSquare } from './DraggableWrapperSquare'
  * Класс, координирующий движение перетаскивания, позиции, места сброса и изменение порядка элементов.
  */
 export class DraggableWrapperPosition {
-  /** Custom properties names map / Карта имен пользовательских свойств */
-  protected readonly customProperty: {
-    /** CSS property for item width / Свойство CSS для ширины элемента */
-    width: string
-    /** CSS property for item height / Свойство CSS для высоты элемента */
-    height: string
-    /** CSS property for item rotation / Свойство CSS для поворота элемента */
-    rotate: string
-  }
-
   /**
    * Constructor.
    *
@@ -41,13 +31,35 @@ export class DraggableWrapperPosition {
     protected readonly getSelection: () => (string | undefined)[],
     protected readonly client: DraggableWrapperClient
   ) {
-    const className = this.classes.getName()
+  }
 
-    this.customProperty = {
-      width: `--${className}-sys-item-width`,
-      height: `--${className}-sys-item-height`,
-      rotate: `--${className}-sys-item-rotate`
+  /**
+   * Main coordinate update handler during mouse move.
+   *
+   * Основной обработчик обновления координат при движении мыши.
+   * @param client coordinate tracker / трекер координат
+   */
+  update(client: ImageCoordinator): void {
+    const points = this.classes.findElementsFromPoint(client)
+    const find = this.classes.findItemByPoints(client)
+
+    if (find) {
+      this.updateDropTarget(find)
+      this.updatePositionTarget(find)
+      return
     }
+
+    const container = this.classes.getElement()
+
+    if (
+      container
+      && points.indexOf(container) === -1
+    ) {
+      this.resetPosition()
+      return
+    }
+
+    this.resetDrop()
   }
 
   /**
@@ -86,30 +98,6 @@ export class DraggableWrapperPosition {
     }
 
     this.resetPosition()
-  }
-
-  /**
-   * Main coordinate update handler during mouse move.
-   *
-   * Основной обработчик обновления координат при движении мыши.
-   * @param client coordinate tracker / трекер координат
-   */
-  update(client: ImageCoordinator): void {
-    const container = this.classes.getElement()
-
-    if (container) {
-      const points = this.classes.findElementsFromPoint(client)
-      const find = this.classes.findItemByPoints(client)
-
-      if (find) {
-        this.updateDropTarget(find)
-        this.updatePositionTarget(find)
-      } else if (points.indexOf(container) === -1) {
-        this.resetPosition()
-      } else {
-        this.resetDrop()
-      }
-    }
   }
 
   /**
@@ -196,8 +184,6 @@ export class DraggableWrapperPosition {
           this.classes.list.selectionMore,
           this.classes.list.return
         )
-
-        this.resetItemStyles(item)
       }
 
       this.item.reset()
@@ -259,17 +245,5 @@ export class DraggableWrapperPosition {
         rectSquare.top - rectElement.top
       )
     }
-  }
-
-  /**
-   * Removes custom CSS property coordinates from the item.
-   *
-   * Удаляет координаты пользовательских свойств CSS с элемента.
-   * @param item HTML element to clean / HTML-элемент для очистки
-   */
-  protected resetItemStyles(item: HTMLElement): void {
-    item.style.removeProperty(this.customProperty.width)
-    item.style.removeProperty(this.customProperty.height)
-    item.style.removeProperty(this.customProperty.rotate)
   }
 }

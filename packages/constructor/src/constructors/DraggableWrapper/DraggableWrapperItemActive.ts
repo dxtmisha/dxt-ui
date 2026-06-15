@@ -1,4 +1,5 @@
 import { ref } from 'vue'
+import type { ImageCoordinator } from '@dxtmisha/functional-basic'
 import { DraggableWrapperClassesData } from './DraggableWrapperClassesData'
 
 /**
@@ -16,6 +17,12 @@ export class DraggableWrapperItemActive {
     width: string
     /** CSS property for item height / Свойство CSS для высоты элемента */
     height: string
+    /** CSS property for item rotation / Свойство CSS для поворота элемента */
+    rotate: string
+    /** CSS property for X offset shift / Свойство CSS для смещения по оси X */
+    shiftX: string
+    /** CSS property for Y offset shift / Свойство CSS для смещения по оси Y */
+    shiftY: string
   }
 
   /**
@@ -31,7 +38,10 @@ export class DraggableWrapperItemActive {
 
     this.property = {
       width: `--${className}-sys-item-width`,
-      height: `--${className}-sys-item-height`
+      height: `--${className}-sys-item-height`,
+      rotate: `--${className}-sys-item-rotate`,
+      shiftX: `--${className}-sys-item-shift-x`,
+      shiftY: `--${className}-sys-item-shift-y`
     }
   }
 
@@ -72,14 +82,29 @@ export class DraggableWrapperItemActive {
    *
    * Подготавливает стили и классы элемента для перетаскивания.
    * @param item HTML element to prepare / HTML-элемент для подготовки
+   * @param coordinator client coordinate parameters / параметры координат клиента
    * @returns this instance / текущий экземпляр класса
    */
-  prepare(item: HTMLElement): this {
+  prepare(
+    item: HTMLElement,
+    coordinator: ImageCoordinator
+  ): this {
+    this.reset()
+
     const rect = item.getBoundingClientRect()
+    const shiftX = coordinator.x - rect.left
+    const shiftY = coordinator.y - rect.top
 
     item.style.setProperty(this.property.width, `${rect.width}px`)
     item.style.setProperty(this.property.height, `${rect.height}px`)
-    item.classList.add(this.classes.list.active, this.classes.list.go)
+
+    item.style.setProperty(this.property.shiftX, `${shiftX}px`)
+    item.style.setProperty(this.property.shiftY, `${shiftY}px`)
+
+    item.classList.add(
+      this.classes.list.active,
+      this.classes.list.go
+    )
 
     return this.set(item)
   }
@@ -91,6 +116,27 @@ export class DraggableWrapperItemActive {
    * @returns this instance / текущий экземпляр класса
    */
   reset(): this {
-    return this.set(undefined)
+    return this
+      .resetItemStyles()
+      .set(undefined)
+  }
+
+  /**
+   * Removes custom CSS property coordinates and styles from the item.
+   *
+   * Удаляет координаты пользовательских свойств CSS и стилей с элемента.
+   */
+  resetItemStyles(): this {
+    const item = this.get()
+
+    if (item) {
+      item.style.removeProperty(this.property.width)
+      item.style.removeProperty(this.property.height)
+      item.style.removeProperty(this.property.rotate)
+      item.style.removeProperty(this.property.shiftX)
+      item.style.removeProperty(this.property.shiftY)
+    }
+
+    return this
   }
 }

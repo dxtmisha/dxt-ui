@@ -238,7 +238,7 @@ export class DraggableWrapper {
       const client = getMouseClient(event as MouseEvent & TouchEvent)
 
       this.client.prepare(item, client)
-      this.itemActive.prepare(item)
+      this.itemActive.prepare(item, client)
       this.square.prepare(item)
       this.selectionHelper.prepare()
     })
@@ -267,17 +267,20 @@ export class DraggableWrapper {
       if (!this.delay.stop()) {
         this.position.stop()
       }
+
       this.removeListeners()
       return
     }
 
-    if (this.item.getActive().get()) {
+    if (
+      this.item.getActive().is()
+    ) {
       event.stopPropagation()
 
       const client = getMouseClient(event as MouseEvent & TouchEvent)
 
       this.client.move(client)
-      this.position.update(client)
+      // this.position.update(client)
     } else {
       const target = event.target as HTMLElement
       const item = this.classes.findClick(target)
