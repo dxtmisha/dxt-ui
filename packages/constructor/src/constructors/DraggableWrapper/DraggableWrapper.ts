@@ -20,6 +20,7 @@ import { DraggableWrapperItem } from './DraggableWrapperItem'
 import { DraggableWrapperItemActive } from './DraggableWrapperItemActive'
 import { DraggableWrapperItemSelection } from './DraggableWrapperItemSelection'
 import { DraggableWrapperItemGo } from './DraggableWrapperItemGo'
+import { DraggableWrapperEvents } from './DraggableWrapperEvents'
 
 /**
  * Orchestrator class for managing draggable reordering logic /
@@ -45,6 +46,8 @@ export class DraggableWrapper {
 
   /** Coordinate position helper class / Вспомогательный класс позиционирования */
   protected readonly position: DraggableWrapperPosition
+
+  readonly events: DraggableWrapperEvents
 
   /**
    * Constructor
@@ -96,6 +99,8 @@ export class DraggableWrapper {
       () => this.item.getValues(),
       this.client
     )
+
+    this.events = new DraggableWrapperEvents(props)
   }
 
   /**
@@ -208,22 +213,27 @@ export class DraggableWrapper {
     this.itemFocus.set(item)
 
     clearTimeout(this.timeout)
-    this.timeout = setTimeout(() => {
-      this.timeout = undefined
-      const client = getMouseClient(event as MouseEvent & TouchEvent)
+    this.timeout = setTimeout(
+      () => {
+        this.timeout = undefined
+        const client = getMouseClient(event as MouseEvent & TouchEvent)
 
-      this.client.prepare(item, client)
-      this.itemActive.prepare(item)
-      this.square.prepare(item)
+        this.client.prepare(item, client)
+        this.itemActive.prepare(item)
+        this.square.prepare(item)
 
-      this.selectionHelper.prepare()
-    }, 640)
+        // this.selectionHelper.prepare()
+      },
+      this.events.delay
+    )
+
+    /*
 
     window.addEventListener('mousemove', this.onMousemove)
     window.addEventListener('mouseup', this.onMouseup)
     window.addEventListener('touchmove', this.onTouchmove)
     window.addEventListener('touchend', this.onTouchup)
-    window.addEventListener('touchcancel', this.onTouchup)
+    window.addEventListener('touchcancel', this.onTouchup) */
   }
 
   /**

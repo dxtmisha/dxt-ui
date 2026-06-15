@@ -76,15 +76,15 @@
   }
 
   &__square {
-    height: ui.v("??sys-square-height");
-    margin-top: ui.v("??sys-square-margin-top");
-    margin-right: ui.v("??sys-square-margin-right");
-    margin-bottom: ui.v("??sys-square-margin-bottom");
-    margin-left: ui.v("??sys-square-margin-left");
-    width: ui.v("??sys-square-width");
+    display: none;
 
-    &:not(.cp-show) {
-      display: none;
+    margin: ui.v("??sys-square-margin-top") ui.v("??sys-square-margin-right") ui.v("??sys-square-margin-bottom") ui.v("??sys-square-margin-left");
+
+    width: ui.v("??sys-square-width");
+    height: ui.v("??sys-square-height");
+
+    &--show {
+      display: block;
     }
   }
 

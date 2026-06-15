@@ -4,7 +4,7 @@ import { DraggableWrapperClassesData } from './DraggableWrapperClassesData'
 export class DraggableWrapperItemActive {
   protected readonly item = ref<HTMLElement>()
 
-  protected readonly customProperty: {
+  protected readonly property: {
     width: string
     height: string
   }
@@ -14,7 +14,7 @@ export class DraggableWrapperItemActive {
   ) {
     const className = this.classes.getName()
 
-    this.customProperty = {
+    this.property = {
       width: `--${className}-sys-item-width`,
       height: `--${className}-sys-item-height`
     }
@@ -36,8 +36,8 @@ export class DraggableWrapperItemActive {
   prepare(item: HTMLElement): this {
     const rect = item.getBoundingClientRect()
 
-    item.style.setProperty(this.customProperty.width, `${rect.width}px`)
-    item.style.setProperty(this.customProperty.height, `${rect.height}px`)
+    item.style.setProperty(this.property.width, `${rect.width}px`)
+    item.style.setProperty(this.property.height, `${rect.height}px`)
     item.classList.add(this.classes.list.active, this.classes.list.go)
 
     return this.set(item)

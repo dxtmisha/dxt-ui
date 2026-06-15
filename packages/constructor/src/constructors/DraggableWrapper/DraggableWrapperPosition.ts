@@ -32,20 +32,6 @@ export class DraggableWrapperPosition {
     }
   }
 
-  resetDrop(): void {
-    const goElement = this.item.getGo().get()
-
-    if (
-      goElement
-      && this.classes.isDrop(goElement)
-    ) {
-      goElement.classList.remove(this.classes.list.dragged)
-
-      this.item.getGo().reset()
-      this.client.setDrop(false)
-    }
-  }
-
   updateDropTarget(item: HTMLElement): void {
     if (!this.classes.isDrop(item)) {
       this.resetDrop()
@@ -61,6 +47,45 @@ export class DraggableWrapperPosition {
     }
   }
 
+  updatePositionTarget(item: HTMLElement): void {
+    if (this.classes.isPosition(item)) {
+      this.square.prepare(item)
+      this.item.getGo().set(item)
+
+      return
+    }
+
+    this.resetPosition()
+  }
+
+  resetDrop(): void {
+    const goElement = this.item.getGo().get()
+
+    if (
+      goElement
+      && this.classes.isDrop(goElement)
+    ) {
+      goElement.classList.remove(this.classes.list.dragged)
+
+      this.item.getGo().reset()
+      this.client.setDrop(false)
+    }
+  }
+
+  resetPosition(): void {
+    const goElement = this.item.getGo().get()
+
+    if (
+      goElement
+      && this.classes.isPosition(goElement)
+    ) {
+      const activeElement = this.item.getActive().get()
+
+      this.square.prepare(activeElement, true)
+      this.item.getGo().reset()
+    }
+  }
+
   protected insert(): void {
     const squareElement = this.square.getElement()
     const parentElement = squareElement?.parentElement
@@ -72,20 +97,6 @@ export class DraggableWrapperPosition {
       for (const item of this.item.get()) {
         parentElement.insertBefore(item, squareElement)
       }
-    }
-  }
-
-  /**
-   * Positions spacer square at target item position /
-   * Позиционирует заполнитель на позиции целевого элемента
-   * @param item target sibling item / целевой соседний элемент
-   */
-  updatePositionTarget(item: HTMLElement): void {
-    if (!this.classes.isPosition(item)) {
-      this.resetPosition()
-    } else {
-      this.square.prepare(item)
-      this.item.getGo().set(item)
     }
   }
 
@@ -122,17 +133,6 @@ export class DraggableWrapperPosition {
       this.item.reset()
 
       this.client.reset()
-    }
-  }
-
-  /**
-   * Resets spacer square back to active element's location /
-   * Сбрасывает заполнитель обратно на местоположение активного элемента
-   */
-  resetPosition(): void {
-    if (this.item.getGo().get() && this.classes.isPosition(this.item.getGo().get()!)) {
-      this.square.prepare(this.item.getActive().get(), true)
-      this.item.getGo().reset()
     }
   }
 

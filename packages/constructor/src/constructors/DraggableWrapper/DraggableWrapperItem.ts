@@ -1,7 +1,8 @@
-import { DraggableWrapperItemActive } from './DraggableWrapperItemActive'
-import { DraggableWrapperItemSelection } from './DraggableWrapperItemSelection'
-import { DraggableWrapperItemGo } from './DraggableWrapperItemGo'
 import { forEach } from '@dxtmisha/functional'
+
+import { DraggableWrapperItemActive } from './DraggableWrapperItemActive'
+import { DraggableWrapperItemGo } from './DraggableWrapperItemGo'
+import { DraggableWrapperItemSelection } from './DraggableWrapperItemSelection'
 
 export class DraggableWrapperItem {
   constructor(

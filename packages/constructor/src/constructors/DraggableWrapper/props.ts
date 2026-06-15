@@ -15,6 +15,8 @@ export type DraggableWrapperPropsBasic = {
    * HTML-тег элемента обертки
    */
   tag?: string
+
+  delay?: number | string
 }
 
 /**
