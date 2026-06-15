@@ -2,18 +2,25 @@ import { DraggableWrapperClassesData } from './DraggableWrapperClassesData'
 import { DraggableWrapperItem } from './DraggableWrapperItem'
 
 /**
- * Helper class for managing multiselection styles and states during drag /
- * Вспомогательный класс для управления стилями и состояниями множественного выбора при перетаскивании
+ * Helper class for managing multiselection styles and states during drag.
+ *
+ * Вспомогательный класс для управления стилями и состояниями множественного выбора при перетаскивании.
  */
 export class DraggableWrapperSelection {
+  /** Custom properties names map / Карта имен пользовательских свойств */
   protected readonly property: {
+    /** CSS property for item width / Свойство CSS для ширины элемента */
     width: string
+    /** CSS property for item height / Свойство CSS для высоты элемента */
     height: string
+    /** CSS property for item rotation / Свойство CSS для поворота элемента */
     rotate: string
   }
 
   /**
-   * Constructor
+   * Constructor.
+   *
+   * Конструктор.
    * @param id unique component identifier / уникальный идентификатор компонента
    * @param classes classes helper instance / экземпляр помощника по классам
    * @param item item helper instance / экземпляр помощника по элементам
@@ -32,6 +39,11 @@ export class DraggableWrapperSelection {
     }
   }
 
+  /**
+   * Prepares multiselection items styles and stacks.
+   *
+   * Подготавливает стили и стек выбранных элементов множественного выбора.
+   */
   prepare(): void {
     const active = this.item.getActive().get()
     const selection = this.classes.findSelection()
@@ -66,6 +78,14 @@ export class DraggableWrapperSelection {
     })
   }
 
+  /**
+   * Updates CSS property variables and classes for multiselection item.
+   *
+   * Обновляет переменные свойств CSS и классы для выбранного элемента множественного выбора.
+   * @param item HTML element to update / обновляемый HTML-элемент
+   * @param rect bounding rectangle / ограничивающий прямоугольник
+   * @param rotate rotation angle in degrees / угол поворота в градусах
+   */
   protected updateItemStyles(
     item: HTMLElement,
     rect: DOMRect,

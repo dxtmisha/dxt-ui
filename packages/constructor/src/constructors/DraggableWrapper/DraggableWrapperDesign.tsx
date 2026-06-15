@@ -20,7 +20,9 @@ import {
 } from './types'
 
 /**
- * DraggableWrapperDesign
+ * Design constructor class for DraggableWrapper.
+ *
+ * Класс конструктора дизайна для DraggableWrapper.
  */
 export class DraggableWrapperDesign<
   COMP extends DraggableWrapperComponents,
@@ -36,14 +38,17 @@ export class DraggableWrapperDesign<
     CLASSES,
     P
   > {
+  /** Orchestrator instance / Экземпляр оркестратора */
   protected readonly item: DraggableWrapper
 
   /**
-   * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor constructors item class/ класс элемента конструкторов
+   * Constructor.
+   *
+   * Конструктор.
+   * @param name class name / название класса
+   * @param props properties / свойства
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor constructors item class / класс элемента конструкторов
    */
   constructor(
     name: string,
@@ -72,9 +77,10 @@ export class DraggableWrapperDesign<
   }
 
   /**
-   * Initialization of all the necessary properties for work
+   * Initializes component exposed properties.
    *
-   * Инициализация всех необходимых свойств для работы.
+   * Инициализирует свойства, доступные извне компонента.
+   * @returns exposed properties / свойства, доступные извне
    */
   protected initExpose(): EXPOSE {
     return {
@@ -86,6 +92,7 @@ export class DraggableWrapperDesign<
    * Improvement of the obtained list of classes.
    *
    * Доработка полученного списка классов.
+   * @returns partial classes map / частичная карта классов
    */
   protected initClasses(): Partial<CLASSES> {
     return {
@@ -104,6 +111,7 @@ export class DraggableWrapperDesign<
    * Refinement of the received list of styles.
    *
    * Доработка полученного списка стилей.
+   * @returns style properties map / карта свойств стилей
    */
   protected initStyles(): ConstrStyles {
     return {}
@@ -113,6 +121,7 @@ export class DraggableWrapperDesign<
    * A method for rendering.
    *
    * Метод для рендеринга.
+   * @returns virtual node / виртуальный узел
    */
   protected initRender(): VNode {
     const classesList = DraggableWrapperClassesData.getClassesList(this.getDesign())
@@ -136,6 +145,12 @@ export class DraggableWrapperDesign<
     )
   }
 
+  /**
+   * Renders the square placeholder element.
+   *
+   * Рендерит элемент-заполнитель (square).
+   * @returns virtual node / виртуальный узел
+   */
   protected renderSquare(): VNode {
     return h('div', {
       ref: this.item.square.squareElement,

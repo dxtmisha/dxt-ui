@@ -1,7 +1,4 @@
-/**
- * Event parameters for the DraggableWrapper component /
- * Параметры события для компонента DraggableWrapper
- */
+/** Event parameters for the DraggableWrapper component / Параметры события для компонента DraggableWrapper */
 export interface DraggableWrapperEventParameters {
   /** Active draggable element / Активный перемещаемый элемент */
   active: HTMLElement
@@ -36,21 +33,30 @@ export type DraggableWrapperControl = {
   classPosition: string
 }
 
-/**
- * Type describing lists of classes for DraggableWrapper /
- * Тип, описывающий список классов для DraggableWrapper
- */
+/** Type describing lists of classes for DraggableWrapper / Тип, описывающий список классов для DraggableWrapper */
 export type DraggableWrapperClassesList = {
+  /** Class for trigger element / Класс для элемента-триггера */
   click: string
+  /** Class for drop target area / Класс для области сброса */
   drop: string
+  /** Class for element defining position / Класс для элемента, определяющего позицию */
   position: string
+  /** Class for active element being dragged / Класс для активного перетаскиваемого элемента */
   active: string
+  /** Class indicating drag target spot / Класс, указывающий на целевое место перетаскивания */
   go: string
+  /** Class for additional selected elements / Класс для дополнительных выбранных элементов */
   selection: string
+  /** Class for overflow selected elements / Класс для избыточных выбранных элементов */
   selectionMore: string
+  /** Class for element returning to position / Класс для возвращающегося в позицию элемента */
   return: string
+  /** Class for showing the spacer element / Класс для отображения элемента-заполнителя */
   show: string
+  /** Class for active target drop area / Класс для активной целевой области сброса */
   dragged: string
+  /** Class for selected elements / Класс для выбранных элементов */
   selected: string
+  /** Class for blocking text selection / Класс для блокировки выделения текста */
   body: string
 }

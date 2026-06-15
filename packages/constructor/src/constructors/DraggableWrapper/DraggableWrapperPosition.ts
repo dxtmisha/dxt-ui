@@ -1,19 +1,37 @@
+import type { ImageCoordinator } from '@dxtmisha/functional-basic'
 import { DraggableWrapperClassesData } from './DraggableWrapperClassesData'
 import { DraggableWrapperClient } from './DraggableWrapperClient'
 import { DraggableWrapperItem } from './DraggableWrapperItem'
 import { DraggableWrapperSquare } from './DraggableWrapperSquare'
 
 /**
- * Class coordinating dragging movement, positions, drop spots, and element reorder /
- * Класс, координирующий движение перетаскивания, позиции, места сброса и изменение порядка элементов
+ * Class coordinating dragging movement, positions, drop spots, and element reorder.
+ *
+ * Класс, координирующий движение перетаскивания, позиции, места сброса и изменение порядка элементов.
  */
 export class DraggableWrapperPosition {
+  /** Custom properties names map / Карта имен пользовательских свойств */
   protected readonly customProperty: {
+    /** CSS property for item width / Свойство CSS для ширины элемента */
     width: string
+    /** CSS property for item height / Свойство CSS для высоты элемента */
     height: string
+    /** CSS property for item rotation / Свойство CSS для поворота элемента */
     rotate: string
   }
 
+  /**
+   * Constructor.
+   *
+   * Конструктор.
+   * @param id unique component identifier / уникальный идентификатор компонента
+   * @param classes classes helper instance / экземпляр помощника по классам
+   * @param item item helper instance / экземпляр помощника по элементам
+   * @param emit callback function to trigger drop/position event / функция обратного вызова для запуска события сброса/позиционирования
+   * @param square square placeholder manager / менеджер элемента-заполнителя
+   * @param getSelection getter for selected element values / геттер для значений выбранных элементов
+   * @param client client coordinates manager / менеджер клиентских координат
+   */
   constructor(
     protected readonly id: string,
     protected readonly classes: DraggableWrapperClassesData,
@@ -32,6 +50,12 @@ export class DraggableWrapperPosition {
     }
   }
 
+  /**
+   * Updates drop target area under coordinates.
+   *
+   * Обновляет целевую область сброса под координатами.
+   * @param item HTML element acting as target / HTML-элемент в качестве цели
+   */
   updateDropTarget(item: HTMLElement): void {
     if (!this.classes.isDrop(item)) {
       this.resetDrop()
@@ -47,6 +71,12 @@ export class DraggableWrapperPosition {
     }
   }
 
+  /**
+   * Updates placeholder insertion position target.
+   *
+   * Обновляет позицию вставки элемента-заполнителя.
+   * @param item HTML element defining the position / HTML-элемент, определяющий позицию
+   */
   updatePositionTarget(item: HTMLElement): void {
     if (this.classes.isPosition(item)) {
       this.square.prepare(item)
@@ -58,6 +88,35 @@ export class DraggableWrapperPosition {
     this.resetPosition()
   }
 
+  /**
+   * Main coordinate update handler during mouse move.
+   *
+   * Основной обработчик обновления координат при движении мыши.
+   * @param client coordinate tracker / трекер координат
+   */
+  update(client: ImageCoordinator): void {
+    const container = this.classes.getElement()
+
+    if (container) {
+      const points = this.classes.findElementsFromPoint(client)
+      const find = this.classes.findItemByPoints(client)
+
+      if (find) {
+        this.updateDropTarget(find)
+        this.updatePositionTarget(find)
+      } else if (points.indexOf(container) === -1) {
+        this.resetPosition()
+      } else {
+        this.resetDrop()
+      }
+    }
+  }
+
+  /**
+   * Resets active target drop area status and styles.
+   *
+   * Сбрасывает статус и стили активной целевой области сброса.
+   */
   resetDrop(): void {
     const goElement = this.item.getGo().get()
 
@@ -72,6 +131,11 @@ export class DraggableWrapperPosition {
     }
   }
 
+  /**
+   * Resets placeholder position indicator status.
+   *
+   * Сбрасывает состояние индикатора позиции элемента-заполнителя.
+   */
   resetPosition(): void {
     const goElement = this.item.getGo().get()
 
@@ -86,6 +150,11 @@ export class DraggableWrapperPosition {
     }
   }
 
+  /**
+   * Inserts dragged items before placeholder spacer element in DOM.
+   *
+   * Вставляет перетаскиваемые элементы перед элементом-заполнителем в DOM.
+   */
   protected insert(): void {
     const squareElement = this.square.getElement()
     const parentElement = squareElement?.parentElement
@@ -101,8 +170,9 @@ export class DraggableWrapperPosition {
   }
 
   /**
-   * Finishes dragging session and cleans styles /
-   * Завершает сессию перетаскивания и очищает стили
+   * Finishes dragging session and cleans styles.
+   *
+   * Завершает сессию перетаскивания и очищает стили.
    * @param go force emit reorder logic / принудительно запустить логику изменения порядка
    */
   reset(go = false): void {
@@ -136,6 +206,11 @@ export class DraggableWrapperPosition {
     }
   }
 
+  /**
+   * Stops drag action and checks drop target or returns item.
+   *
+   * Останавливает перетаскивание, проверяя цель сброса или возвращая элемент.
+   */
   stop(): void {
     if (
       !this.item.getActive().is()
@@ -158,6 +233,11 @@ export class DraggableWrapperPosition {
     }
   }
 
+  /**
+   * Starts item return back transition.
+   *
+   * Запускает переход возврата элемента на место.
+   */
   protected returnActive(): void {
     const element = this.classes.getElement()
     const activeElement = this.item.getActive().get()
@@ -181,6 +261,12 @@ export class DraggableWrapperPosition {
     }
   }
 
+  /**
+   * Removes custom CSS property coordinates from the item.
+   *
+   * Удаляет координаты пользовательских свойств CSS с элемента.
+   * @param item HTML element to clean / HTML-элемент для очистки
+   */
   protected resetItemStyles(item: HTMLElement): void {
     item.style.removeProperty(this.customProperty.width)
     item.style.removeProperty(this.customProperty.height)

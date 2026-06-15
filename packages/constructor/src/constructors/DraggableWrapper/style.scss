@@ -83,6 +83,9 @@
     width: ui.v("??sys-square-width");
     height: ui.v("??sys-square-height");
 
+    opacity: 0 !important;
+    pointer-events: none !important;
+
     &--show {
       display: block;
     }
