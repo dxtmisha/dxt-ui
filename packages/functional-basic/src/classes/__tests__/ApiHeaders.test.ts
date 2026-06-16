@@ -9,7 +9,7 @@ describe('ApiHeaders', () => {
     const headers = apiHeaders.get()
     expect(headers).toEqual({
       'Authorization': 'Token',
-      'Content-Type': 'application/json;charset=UTF-8'
+      'content-type': 'application/json;charset=UTF-8'
     })
   })
 
@@ -20,7 +20,7 @@ describe('ApiHeaders', () => {
     const headers = apiHeaders.get()
     expect(headers).toEqual({
       'Authorization': 'DynamicToken',
-      'Content-Type': 'application/json;charset=UTF-8'
+      'content-type': 'application/json;charset=UTF-8'
     })
   })
 
@@ -31,9 +31,10 @@ describe('ApiHeaders', () => {
     const headers = apiHeaders.get({ 'X-Global': 'false', 'Custom': 'value' })
     expect(headers).toEqual({
       'Shared': 'yes',
-      'X-Global': 'false',
-      'Custom': 'value',
-      'Content-Type': 'application/json;charset=UTF-8'
+      'X-Global': 'true',
+      'x-global': 'false',
+      'custom': 'value',
+      'content-type': 'application/json;charset=UTF-8'
     })
   })
 
@@ -46,7 +47,7 @@ describe('ApiHeaders', () => {
     const apiHeaders = new ApiHeaders()
     const headers = apiHeaders.get({}, 'text/plain')
     expect(headers).toEqual({
-      'Content-Type': 'text/plain'
+      'content-type': 'text/plain'
     })
   })
 
@@ -56,7 +57,7 @@ describe('ApiHeaders', () => {
     expect(apiHeaders.get({}, null)).toEqual({})
     // undefined triggers default parameter 'application/json;charset=UTF-8'
     expect(apiHeaders.get({}, undefined)).toEqual({
-      'Content-Type': 'application/json;charset=UTF-8'
+      'content-type': 'application/json;charset=UTF-8'
     })
     // empty string
     expect(apiHeaders.get({}, '')).toEqual({})
@@ -72,17 +73,17 @@ describe('ApiHeaders', () => {
     const headers = apiHeaders.getByRequest(formData, { Add: 'test' })
     expect(headers).toEqual({
       Global: 'yes',
-      Add: 'test'
+      add: 'test'
     })
-    expect(headers?.['Content-Type']).toBeUndefined()
+    expect(headers?.['content-type']).toBeUndefined()
   })
 
   it('should include Content-Type for non-FormData objects', () => {
     const apiHeaders = new ApiHeaders()
     const headers = apiHeaders.getByRequest({ a: 1 }, { Add: 'test' })
     expect(headers).toEqual({
-      'Add': 'test',
-      'Content-Type': 'application/json;charset=UTF-8'
+      'add': 'test',
+      'content-type': 'application/json;charset=UTF-8'
     })
   })
 })

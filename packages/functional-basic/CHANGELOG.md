@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.6] - 2026-06-16
+
+### Added
+- **GeoInstance**: Integrated cookie storage persistence/hydration fallback: now attempts to retrieve the geo code from the `ui-geo-code` cookie (via `UI_GEO_COOKIE_KEY`) during initialization if DOM storage is unavailable.
+
+### Changed / Improved
+- **GeoInstance**: Refactored `findLocation()` to extract DOM-specific checks into `findLocationDom()`, improving architecture and separation of concerns.
+- **GeoInstance**: Updated `set()` to store the updated geo code in the cookie when `save = true`.
+- **ApiHeaders**: Fixed and updated unit tests in `ApiHeaders.test.ts` to align with the normalized lowercase HTTP header key merging behavior.
+
 ## [1.3.5] - 2026-06-05
 
 ### Changed / Improved

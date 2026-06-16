@@ -1,6 +1,7 @@
 import { isDomRuntime } from '../functions/isDomRuntime'
 import { isSelected } from '../functions/isSelected'
 
+import { Cookie } from './Cookie'
 import { DataStorage } from './DataStorage'
 
 import { geo } from '@dxtmisha/media'
@@ -9,6 +10,12 @@ import {
   type GeoItem,
   type GeoItemFull
 } from '../types/geoTypes'
+
+/**
+ * Cookie key for storing the geo code/
+ * Ключ куки для хранения кода гео
+ */
+export const UI_GEO_COOKIE_KEY = 'ui-geo-code'
 
 const STORAGE_NAME_CODE = '__ui:geo-code__'
 
@@ -286,6 +293,7 @@ export class GeoInstance {
 
     if (save) {
       this.storage.set(this.location)
+      this.getCookie().set(this.location)
     }
   }
 
@@ -300,21 +308,45 @@ export class GeoInstance {
   }
 
   /**
+   * Internal method to get the geo cookie instance.
+   *
+   * Внутренний метод для получения экземпляра гео-куки.
+   * @returns Cookie instance for geo code / экземпляр куки для гео-кода
+   */
+  private getCookie(): Cookie<string> {
+    return Cookie.getInstance<string>(UI_GEO_COOKIE_KEY)
+  }
+
+  /**
    * Internal method to determine the initial location.
    *
    * Внутренний метод для определения начального местоположения.
    * @returns initial location code / начальный код локации
    */
   private findLocation(): string {
+    return this.findLocationDom()
+      || this.getCookie().get()
+      || 'en-GB'
+  }
+
+  /**
+   * Internal method to determine the location from DOM-specific sources.
+   * Returns an empty string (falsy) when not in a DOM runtime.
+   *
+   * Внутренний метод для определения местоположения из DOM-источников.
+   * Возвращает пустую строку (falsy) вне DOM-окружения.
+   * @returns location code from DOM or empty string / код локации из DOM или пустая строка
+   */
+  private findLocationDom(): string | undefined {
     return (
       isDomRuntime() && (
         this.storage.get()
         || document.querySelector('html')?.lang
         || navigator.language
         || navigator.languages[0]
-        || 'en-GB'
+        || undefined
       )
-    ) || 'en-GB'
+    ) || undefined
   }
 
   /**
