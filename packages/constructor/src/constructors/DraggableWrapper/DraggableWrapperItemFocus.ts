@@ -25,4 +25,14 @@ export class DraggableWrapperItemFocus {
     this.item = item
     return this
   }
+
+  /**
+   * Resets the focused element /
+   * Сбрасывает сфокусированный элемент
+   * @returns this instance / текущий экземпляр класса
+   */
+  reset(): this {
+    this.item = undefined
+    return this
+  }
 }

@@ -3,6 +3,7 @@ import { DraggableWrapperClassesData } from './DraggableWrapperClassesData'
 import { DraggableWrapperClient } from './DraggableWrapperClient'
 import { DraggableWrapperItem } from './DraggableWrapperItem'
 import { DraggableWrapperSquare } from './DraggableWrapperSquare'
+import { DraggableWrapperEmit } from './DraggableWrapperEmit'
 
 /**
  * Class coordinating dragging movement, positions, drop spots, and element reorder.
@@ -14,19 +15,17 @@ export class DraggableWrapperPosition {
    * Constructor.
    *
    * Конструктор.
-   * @param id unique component identifier / уникальный идентификатор компонента
    * @param classes classes helper instance / экземпляр помощника по классам
    * @param item item helper instance / экземпляр помощника по элементам
-   * @param emit callback function to trigger drop/position event / функция обратного вызова для запуска события сброса/позиционирования
+   * @param emit event emit helper class / вспомогательный класс вызова событий
    * @param square square placeholder manager / менеджер элемента-заполнителя
    * @param getSelection getter for selected element values / геттер для значений выбранных элементов
    * @param client client coordinates manager / менеджер клиентских координат
    */
   constructor(
-    protected readonly id: string,
     protected readonly classes: DraggableWrapperClassesData,
     protected readonly item: DraggableWrapperItem,
-    protected readonly emit: () => void,
+    protected readonly emit: DraggableWrapperEmit,
     protected readonly square: DraggableWrapperSquare,
     protected readonly getSelection: () => (string | undefined)[],
     protected readonly client: DraggableWrapperClient
@@ -125,17 +124,10 @@ export class DraggableWrapperPosition {
    * Сбрасывает состояние индикатора позиции элемента-заполнителя.
    */
   resetPosition(): void {
-    const goElement = this.item.getGo().get()
+    const activeElement = this.item.getActive().get()
 
-    if (
-      goElement
-      && this.classes.isPosition(goElement)
-    ) {
-      const activeElement = this.item.getActive().get()
-
-      this.square.prepare(activeElement, true)
-      this.item.getGo().reset()
-    }
+    this.square.prepare(activeElement, true)
+    this.item.getGo().reset()
   }
 
   /**
@@ -167,7 +159,7 @@ export class DraggableWrapperPosition {
     const active = this.item.getActive().get()
     if (active && (active.classList.contains(this.classes.list.return) || go)) {
       if (this.item.getGo().get()) {
-        this.emit()
+        this.emit.on()
 
         if (!go && !this.client.hasDrop()) {
           this.insert()
@@ -237,13 +229,14 @@ export class DraggableWrapperPosition {
       const rectElement = element.getBoundingClientRect()
       const rectSquare = squareElement.getBoundingClientRect()
 
-      this.client.set(0, 0)
-      activeElement.classList.add(this.classes.list.return)
+      this.client
+        .set(0, 0)
+        .update(
+          rectSquare.left - rectElement.left,
+          rectSquare.top - rectElement.top
+        )
 
-      this.client.update(
-        rectSquare.left - rectElement.left,
-        rectSquare.top - rectElement.top
-      )
+      activeElement.classList.add(this.classes.list.return)
     }
   }
 }

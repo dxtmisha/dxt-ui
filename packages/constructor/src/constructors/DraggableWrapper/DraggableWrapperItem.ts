@@ -3,6 +3,7 @@ import { forEach } from '@dxtmisha/functional'
 import { DraggableWrapperItemActive } from './DraggableWrapperItemActive'
 import { DraggableWrapperItemGo } from './DraggableWrapperItemGo'
 import { DraggableWrapperItemSelection } from './DraggableWrapperItemSelection'
+import { DraggableWrapperItemFocus } from './DraggableWrapperItemFocus'
 
 /**
  * Orchestrator model for tracking active, selected, and drop target items.
@@ -14,15 +15,27 @@ export class DraggableWrapperItem {
    * Constructor.
    *
    * Конструктор.
+   * @param focus focused element helper / помощник по сфокусированному элементу
    * @param active active item helper / помощник по активному элементу
    * @param selection selected items helper / помощник по выбранным элементам
    * @param go drop position target helper / помощник по целевой позиции сброса
    */
   constructor(
+    protected readonly focus: DraggableWrapperItemFocus,
     protected readonly active: DraggableWrapperItemActive,
     protected readonly selection: DraggableWrapperItemSelection,
     protected readonly go: DraggableWrapperItemGo
   ) {
+  }
+
+  /**
+   * Returns the focused item helper.
+   *
+   * Возвращает помощник по сфокусированному элементу.
+   * @returns focused item helper / помощник по сфокусированному элементу
+   */
+  getFocus(): DraggableWrapperItemFocus {
+    return this.focus
   }
 
   /**
@@ -94,6 +107,7 @@ export class DraggableWrapperItem {
    * @returns this instance / текущий экземпляр класса
    */
   reset(): this {
+    this.focus.reset()
     this.active.reset()
     this.selection.reset()
     this.go.reset()

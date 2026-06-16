@@ -129,13 +129,13 @@ export class DraggableWrapperDesign<
       this.props.tag || 'div',
       {
         ...this.getAttrs(),
-        ...this.item.binds,
+        ...this.item.events.binds,
         ref: this.element,
         class: this.classes?.value.main
       },
       [
         this.slots?.default?.({
-          className: `${this.getSubClass('item')} ${this.item.getId()}`,
+          className: `${this.getSubClass('item')} ${this.item.classes.getId()}`,
           classClick: classesList.click,
           classDrop: classesList.drop,
           classPosition: classesList.position
@@ -154,7 +154,10 @@ export class DraggableWrapperDesign<
   protected renderSquare(): VNode {
     return h('div', {
       ref: this.item.square.squareElement,
-      class: this.classes?.value.square
+      class: [
+        this.classes?.value.square,
+        this.item.classes.getId()
+      ]
     })
   }
 }

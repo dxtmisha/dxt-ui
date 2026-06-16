@@ -12,8 +12,8 @@
       display: none;
       @include ui.absolute();
       transition-property: background-color, box-shadow, opacity, transform;
-      transition-duration: var(--sys-transitionDuration-standard);
-      transition-timing-function: var(--sys-transitionFunction-standard);
+      transition-duration: ui.v('d.sys.transitionDuration.standard');
+      transition-timing-function: ui.v('d.sys.transitionFunction.standard');
     }
 
     &--active {
@@ -21,7 +21,7 @@
       top: calc(#{ui.v('??sys-client-y')} - #{ui.v('??sys-item-shift-y')});
       left: calc(#{ui.v('??sys-client-x')} - #{ui.v('??sys-item-shift-x')});
 
-      user-select: none;
+      @include ui.textSelectNone;
 
       margin: 0 !important;
 
@@ -29,8 +29,8 @@
       height: ui.v("??sys-item-height");
 
       transition-property: box-shadow, opacity, transform;
-      transition-duration: var(--sys-transitionDuration-standard);
-      transition-timing-function: var(--sys-transitionFunction-standard);
+      transition-duration: ui.v('d.sys.transitionDuration.standard');
+      transition-timing-function: ui.v('d.sys.transitionFunction.standard');
 
       &::before {
         display: block;
@@ -50,16 +50,17 @@
       opacity: 0;
     }
 
-    &.cp-return {
-      box-shadow: none;
-      opacity: 1;
-      transform: none;
+    &--return {
+      top: #{ui.v('??sys-client-y')};
+      left: #{ui.v('??sys-client-x')};
+
       transition-property: box-shadow, left, transform, top;
-      transition-duration: var(--sys-transitionDuration-standard);
-      transition-timing-function: var(--sys-transitionFunction-standard);
+      transition-duration: ui.v('d.sys.transitionDuration.standard');
+      transition-timing-function: ui.v('d.sys.transitionFunction.standard');
 
       &::before {
-        background-color: transparent;
+        display: block;
+        opacity: 0;
       }
     }
   }
