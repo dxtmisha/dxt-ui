@@ -122,8 +122,9 @@ export class DraggableWrapperEvents {
    * Привязанный слушатель события завершения перехода.
    * @param event transition event / событие перехода
    */
-  protected readonly onTransitionend = (event: TransitionEvent): void => {
+  readonly onTransitionend = (event: TransitionEvent): void => {
     if (event.propertyName === 'transform') {
+      console.log('onTransitionend')
       this.position.reset()
     }
   }

@@ -17,18 +17,16 @@ export class DraggableWrapperPosition {
    * Конструктор.
    * @param classes classes helper instance / экземпляр помощника по классам
    * @param item item helper instance / экземпляр помощника по элементам
-   * @param emit event emit helper class / вспомогательный класс вызова событий
-   * @param square square placeholder manager / менеджер элемента-заполнителя
-   * @param getSelection getter for selected element values / геттер для значений выбранных элементов
    * @param client client coordinates manager / менеджер клиентских координат
+   * @param square square placeholder manager / менеджер элемента-заполнителя
+   * @param emit event emit helper class / вспомогательный класс вызова событий
    */
   constructor(
     protected readonly classes: DraggableWrapperClassesData,
     protected readonly item: DraggableWrapperItem,
-    protected readonly emit: DraggableWrapperEmit,
+    protected readonly client: DraggableWrapperClient,
     protected readonly square: DraggableWrapperSquare,
-    protected readonly getSelection: () => (string | undefined)[],
-    protected readonly client: DraggableWrapperClient
+    protected readonly emit: DraggableWrapperEmit
   ) {
   }
 
@@ -59,94 +57,6 @@ export class DraggableWrapperPosition {
     }
 
     this.resetDrop()
-  }
-
-  /**
-   * Updates drop target area under coordinates.
-   *
-   * Обновляет целевую область сброса под координатами.
-   * @param item HTML element acting as target / HTML-элемент в качестве цели
-   */
-  updateDropTarget(item: HTMLElement): void {
-    if (!this.classes.isDrop(item)) {
-      this.resetDrop()
-      return
-    }
-
-    if (this.item.getGo().isByItem(item)) {
-      item.classList.add(this.classes.list.dragged)
-      this.square.prepare()
-
-      this.item.getGo().set(item)
-      this.client.setDrop(true)
-    }
-  }
-
-  /**
-   * Updates placeholder insertion position target.
-   *
-   * Обновляет позицию вставки элемента-заполнителя.
-   * @param item HTML element defining the position / HTML-элемент, определяющий позицию
-   */
-  updatePositionTarget(item: HTMLElement): void {
-    if (this.classes.isPosition(item)) {
-      this.square.prepare(item)
-      this.item.getGo().set(item)
-
-      return
-    }
-
-    this.resetPosition()
-  }
-
-  /**
-   * Resets active target drop area status and styles.
-   *
-   * Сбрасывает статус и стили активной целевой области сброса.
-   */
-  resetDrop(): void {
-    const goElement = this.item.getGo().get()
-
-    if (
-      goElement
-      && this.classes.isDrop(goElement)
-    ) {
-      goElement.classList.remove(this.classes.list.dragged)
-
-      this.item.getGo().reset()
-      this.client.setDrop(false)
-    }
-  }
-
-  /**
-   * Resets placeholder position indicator status.
-   *
-   * Сбрасывает состояние индикатора позиции элемента-заполнителя.
-   */
-  resetPosition(): void {
-    const activeElement = this.item.getActive().get()
-
-    this.square.prepare(activeElement, true)
-    this.item.getGo().reset()
-  }
-
-  /**
-   * Inserts dragged items before placeholder spacer element in DOM.
-   *
-   * Вставляет перетаскиваемые элементы перед элементом-заполнителем в DOM.
-   */
-  protected insert(): void {
-    const squareElement = this.square.getElement()
-    const parentElement = squareElement?.parentElement
-
-    if (
-      squareElement
-      && parentElement
-    ) {
-      for (const item of this.item.get()) {
-        parentElement.insertBefore(item, squareElement)
-      }
-    }
   }
 
   /**
@@ -209,6 +119,94 @@ export class DraggableWrapperPosition {
     } else {
       this.returnActive()
     }
+  }
+
+  /**
+   * Inserts dragged items before placeholder spacer element in DOM.
+   *
+   * Вставляет перетаскиваемые элементы перед элементом-заполнителем в DOM.
+   */
+  protected insert(): void {
+    const squareElement = this.square.getElement()
+    const parentElement = squareElement?.parentElement
+
+    if (
+      squareElement
+      && parentElement
+    ) {
+      for (const item of this.item.get()) {
+        parentElement.insertBefore(item, squareElement)
+      }
+    }
+  }
+
+  /**
+   * Updates drop target area under coordinates.
+   *
+   * Обновляет целевую область сброса под координатами.
+   * @param item HTML element acting as target / HTML-элемент в качестве цели
+   */
+  protected updateDropTarget(item: HTMLElement): void {
+    if (!this.classes.isDrop(item)) {
+      this.resetDrop()
+      return
+    }
+
+    if (this.item.getGo().isByItem(item)) {
+      item.classList.add(this.classes.list.dragged)
+      this.square.prepare()
+
+      this.item.getGo().set(item)
+      this.client.setDrop(true)
+    }
+  }
+
+  /**
+   * Updates placeholder insertion position target.
+   *
+   * Обновляет позицию вставки элемента-заполнителя.
+   * @param item HTML element defining the position / HTML-элемент, определяющий позицию
+   */
+  protected updatePositionTarget(item: HTMLElement): void {
+    if (this.classes.isPosition(item)) {
+      this.square.prepare(item)
+      this.item.getGo().set(item)
+
+      return
+    }
+
+    this.resetPosition()
+  }
+
+  /**
+   * Resets active target drop area status and styles.
+   *
+   * Сбрасывает статус и стили активной целевой области сброса.
+   */
+  protected resetDrop(): void {
+    const goElement = this.item.getGo().get()
+
+    if (
+      goElement
+      && this.classes.isDrop(goElement)
+    ) {
+      goElement.classList.remove(this.classes.list.dragged)
+
+      this.item.getGo().reset()
+      this.client.setDrop(false)
+    }
+  }
+
+  /**
+   * Resets placeholder position indicator status.
+   *
+   * Сбрасывает состояние индикатора позиции элемента-заполнителя.
+   */
+  protected resetPosition(): void {
+    const activeElement = this.item.getActive().get()
+
+    this.square.prepare(activeElement, true)
+    this.item.getGo().reset()
   }
 
   /**

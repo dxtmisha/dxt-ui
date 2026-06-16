@@ -5,12 +5,13 @@
   position: relative;
 
   &__item {
-    cursor: default;
     position: relative;
+    cursor: default;
 
     &::before {
       display: none;
       @include ui.absolute();
+
       transition-property: background-color, box-shadow, opacity, transform;
       transition-duration: ui.v('d.sys.transitionDuration.standard');
       transition-timing-function: ui.v('d.sys.transitionFunction.standard');
@@ -82,6 +83,6 @@
   }
 
   &__blockSelection {
-    user-select: none;
+    @include ui.textSelectNone;
   }
 }

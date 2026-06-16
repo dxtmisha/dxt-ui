@@ -30,13 +30,9 @@ import { DraggableWrapperEmit } from './DraggableWrapperEmit'
 export class DraggableWrapper {
   /** Classes helper instance / Экземпляр помощника по классам */
   readonly classes: DraggableWrapperClassesData
+  /** Drag start delay helper class / Вспомогательный класс задержки начала перетаскивания */
+  readonly delay: DraggableWrapperDelay
 
-  /** Active element helper / Помощник по активному элементу */
-  readonly itemActive: DraggableWrapperItemActive
-  /** Selected items helper / Помощник по выбранным элементам */
-  readonly itemSelection: DraggableWrapperItemSelection
-  /** Target drag element helper / Помощник по целевому элементу перетаскивания */
-  readonly itemGo: DraggableWrapperItemGo
   /** Aggregated item helper / Агрегированный помощник по элементам */
   readonly item: DraggableWrapperItem
 
@@ -44,17 +40,14 @@ export class DraggableWrapper {
   readonly client: DraggableWrapperClient
   /** Spacer placeholder manager / Менеджер элемента-заполнителя */
   readonly square: DraggableWrapperSquare
+
   /** Event emit helper class / Вспомогательный класс вызова событий */
   readonly emit: DraggableWrapperEmit
 
-  /** Drag start delay helper class / Вспомогательный класс задержки начала перетаскивания */
-  readonly delay: DraggableWrapperDelay
-
   /** Multiselection helper class / Вспомогательный класс множественного выбора */
-  protected readonly selection: DraggableWrapperSelection
-
+  readonly selection: DraggableWrapperSelection
   /** Coordinate position helper class / Вспомогательный класс позиционирования */
-  protected readonly position: DraggableWrapperPosition
+  readonly position: DraggableWrapperPosition
 
   /** Event validator / Валидатор событий */
   readonly events: DraggableWrapperEvents
@@ -87,18 +80,13 @@ export class DraggableWrapper {
       this.classDesign,
       this.className
     )
-
     this.delay = new DraggableWrapperDelay(props)
 
-    const itemFocus = new DraggableWrapperItemFocus()
-    this.itemActive = new DraggableWrapperItemActive(this.classes)
-    this.itemSelection = new DraggableWrapperItemSelection()
-    this.itemGo = new DraggableWrapperItemGo()
     this.item = new DraggableWrapperItem(
-      itemFocus,
-      this.itemActive,
-      this.itemSelection,
-      this.itemGo
+      new DraggableWrapperItemFocus(),
+      new DraggableWrapperItemActive(this.classes),
+      new DraggableWrapperItemSelection(),
+      new DraggableWrapperItemGo()
     )
 
     this.client = new DraggableWrapperClient(this.classes)
@@ -118,10 +106,9 @@ export class DraggableWrapper {
     this.position = new DraggableWrapperPosition(
       this.classes,
       this.item,
-      this.emit,
+      this.client,
       this.square,
-      () => this.item.getValues(),
-      this.client
+      this.emit
     )
 
     this.events = new DraggableWrapperEvents(
