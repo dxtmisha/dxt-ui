@@ -123,8 +123,11 @@ export class DraggableWrapperEvents {
    * @param event transition event / событие перехода
    */
   readonly onTransitionend = (event: TransitionEvent): void => {
-    if (event.propertyName === 'transform') {
-      console.log('onTransitionend')
+    console.log('onTransitionend', event.propertyName)
+    if (
+      event.propertyName === 'transform'
+      || event.propertyName === 'left'
+    ) {
       this.position.reset()
     }
   }

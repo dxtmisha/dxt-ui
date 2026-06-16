@@ -4,8 +4,8 @@ import type { DraggableWrapperItem } from './DraggableWrapperItem'
 import type { DraggableWrapperClient } from './DraggableWrapperClient'
 import type { DraggableWrapperSquare } from './DraggableWrapperSquare'
 
-import type { DraggableWrapperEmits } from './types'
 import type { DraggableWrapperEventParameters } from './basicTypes'
+import type { DraggableWrapperEmits } from './types'
 
 /**
  * Class for handling drag-and-drop events emission.
@@ -36,30 +36,31 @@ export class DraggableWrapperEmit {
    * Вызывает события сброса и изменения положения.
    */
   on(): void {
-    const active = this.item.getActive().get()
-    const itemGo = this.item.getGo().get()
+    const activeElement = this.item.getActive().get()
+    const goElement = this.item.getGo().get()
 
-    if (active && itemGo) {
-      const valueActive = active.dataset?.value
-      const valueTo = itemGo.dataset?.value
+    if (
+      activeElement
+      && goElement
+    ) {
+      const valueActive = activeElement.dataset?.value
+      const valueGo = goElement.dataset?.value
+      const eventName = this.client.hasDrop() ? 'drop' : 'position'
+
       const parameters: DraggableWrapperEventParameters = {
-        active,
+        active: activeElement,
+        to: goElement,
         selection: this.item.getSelection().get(),
-        to: itemGo,
-        value: [valueActive, valueTo],
-        valueSelection: this.item.getValues(),
-        before: this.square.isBefore(),
+
+        value: [valueActive, valueGo],
         valueActive,
-        valueTo
+        valueTo: valueGo,
+        valueSelection: this.item.getValues(),
+
+        before: this.square.isBefore()
       }
 
-      setTimeout(() => {
-        if (this.client.hasDrop()) {
-          this.emits?.('drop', parameters)
-        } else {
-          this.emits?.('position', parameters)
-        }
-      }, 240)
+      setTimeout(() => this.emits?.(eventName as never, parameters), 240)
     }
   }
 }

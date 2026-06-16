@@ -51,7 +51,7 @@ export class DraggableWrapperSelection {
     if (
       !selection
       || !active
-      || !active.classList.contains(this.classes.list.selected)
+      || !this.classes.isSelected(active)
     ) {
       return
     }

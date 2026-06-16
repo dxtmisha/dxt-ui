@@ -55,6 +55,28 @@ export class DraggableWrapperClassesData {
   }
 
   /**
+   * Checks if an element is in return state.
+   *
+   * Проверяет, находится ли элемент в состоянии возврата.
+   * @param item HTML element to check / проверяемый HTML-элемент
+   * @returns check result / результат проверки
+   */
+  isReturn(item: HTMLElement): boolean {
+    return item.classList.contains(this.list.return)
+  }
+
+  /**
+   * Checks if an element is selected.
+   *
+   * Проверяет, выбран ли элемент.
+   * @param item HTML element to check / проверяемый HTML-элемент
+   * @returns check result / результат проверки
+   */
+  isSelected(item: HTMLElement): boolean {
+    return item.classList.contains(this.list.selected)
+  }
+
+  /**
    * Returns the unique component identifier.
    *
    * Возвращает уникальный идентификатор компонента.

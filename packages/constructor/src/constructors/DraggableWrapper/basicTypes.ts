@@ -2,20 +2,22 @@
 export interface DraggableWrapperEventParameters {
   /** Active draggable element / Активный перемещаемый элемент */
   active: HTMLElement
-  /** Selected elements stack / Стек выбранных элементов */
-  selection?: HTMLElement[]
   /** Target drop element / Целевой элемент сброса */
   to?: HTMLElement
+  /** Selected elements stack / Стек выбранных элементов */
+  selection?: HTMLElement[]
+
   /** Array of values: [activeValue, toValue] / Массив значений: [activeValue, toValue] */
   value: (string | undefined)[]
-  /** Array of values of selected elements / Массив значений выбранных элементов */
-  valueSelection: (string | undefined)[]
-  /** DOM layout direction / Направление структуры DOM */
-  before?: boolean
   /** Value of the active element / Значение активного элемента */
   valueActive?: string
   /** Value of the target element / Значение целевого элемента */
   valueTo?: string
+  /** Array of values of selected elements / Массив значений выбранных элементов */
+  valueSelection: (string | undefined)[]
+
+  /** DOM layout direction / Направление структуры DOM */
+  before?: boolean
 }
 
 /**

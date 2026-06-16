@@ -67,11 +67,21 @@ export class DraggableWrapperPosition {
    */
   reset(go = false): void {
     const active = this.item.getActive().get()
-    if (active && (active.classList.contains(this.classes.list.return) || go)) {
-      if (this.item.getGo().get()) {
+
+    if (
+      active
+      && (
+        this.classes.isReturn(active)
+        || go
+      )
+    ) {
+      if (this.item.getGo().is()) {
         this.emit.on()
 
-        if (!go && !this.client.hasDrop()) {
+        if (
+          !go
+          && !this.client.hasDrop()
+        ) {
           this.insert()
         }
       }
@@ -89,7 +99,6 @@ export class DraggableWrapperPosition {
       }
 
       this.item.reset()
-
       this.client.reset()
     }
   }
