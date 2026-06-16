@@ -1,5 +1,14 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
+import { ServerStorage, Cookie } from '@dxtmisha/functional-basic'
 import { GeoRef } from '../GeoRef'
+
+vi.mock('@dxtmisha/functional-basic', async (importOriginal) => {
+  const original = await importOriginal<typeof import('@dxtmisha/functional-basic')>()
+  return {
+    ...original,
+    isDomRuntime: vi.fn(() => false)
+  }
+})
 
 describe('GeoRef', () => {
   it('should return initial values', () => {
@@ -35,5 +44,13 @@ describe('GeoRef', () => {
 
     GeoRef.set('vi-VN')
     expect(country.value).toBe('VN')
+  })
+
+  it('should set default value via setValueDefault', () => {
+    Cookie.getInstance('ui-geo-code').remove()
+    ServerStorage.remove('__ui:geo-instance__')
+
+    GeoRef.setValueDefault('de-DE')
+    expect(GeoRef.getStandard().value).toBe('de-DE')
   })
 })

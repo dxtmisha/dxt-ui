@@ -87,4 +87,15 @@ export class GeoRef {
     Geo.set(code, true)
     this.get().value = Geo.getItem()
   }
+
+  /**
+   * Sets the default value for the country code.
+   *
+   * Устанавливает значение по умолчанию для кода страны.
+   * @param code default code value / значение кода по умолчанию
+   */
+  static setValueDefault(code?: string): void {
+    Geo.setValueDefault(code)
+    this.get().value = Geo.getItem()
+  }
 }

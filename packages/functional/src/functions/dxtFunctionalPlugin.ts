@@ -14,6 +14,7 @@ import {
 import { executeUseGlobalInit } from './executeUse'
 import { useMeta } from '../composables/ref/useMeta'
 import { RouterItemRef } from '../classes/ref/RouterItemRef'
+import { GeoRef } from '../classes/ref/GeoRef'
 
 import type { Router } from 'vue-router'
 
@@ -33,6 +34,12 @@ export interface FunctionalPluginOptions {
    * Конфигурация для сервиса переводов
    */
   translate?: TranslateConfig
+
+  /**
+   * Default geographical location or language code /
+   * Код географического местоположения или языка по умолчанию
+   */
+  location?: string
 
   /**
    * Suffix to be appended to all page titles /
@@ -105,17 +112,22 @@ export const dxtFunctionalPlugin: Plugin = {
       Translate.setConfig(options.translate)
     }
 
-    // 3. Configure Icons
+    // 3. Configure Geo
+    if (options.location) {
+      GeoRef.setValueDefault(options.location)
+    }
+
+    // 4. Configure Icons
     if (options.icons) {
       Icons.setConfig(options.icons)
     }
 
-    // 4. Configure Meta Suffix
+    // 5. Configure Meta Suffix
     if (options.metaSuffix) {
       useMeta().setSuffix(options.metaSuffix)
     }
 
-    // 5. Configure Router Reference
+    // 6. Configure Router Reference
     if (options.router) {
       RouterItemRef.set(options.router)
     } else {
@@ -134,7 +146,7 @@ export const dxtFunctionalPlugin: Plugin = {
       ErrorCenter.addHandlerList(options.errorHandlers)
     }
 
-    // 6. Initialize global singletons (ExecuteUseType.global)
+    // 7. Initialize global singletons (ExecuteUseType.global)
     executeUseGlobalInit()
   }
 }

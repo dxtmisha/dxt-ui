@@ -1,9 +1,23 @@
-Core Purpose: This library is a comprehensive, SSR-compatible utility suite for frontend applications, providing centralized management for HTTP requests (Fetch API), localized data formatting (Intl), state/storage management (cookies, local/session storage), and meta-tag manipulation. It acts as a foundational framework for handling API communication, multi-language support, and persistent application state across client and server environments.
+This library is a comprehensive, SSR-compatible utility collection for TypeScript/JavaScript web applications, providing a standardized interface for common web development tasks. It functions as a modular framework rather than a single-purpose library, offering unified management for data persistence, HTTP requests, UI state, and localization.
 
-Usage Scenarios: You should study this library when:
-- Implementing or refactoring an API communication layer: The library provides robust handling of requests, response caching, error storage, and hydration across SSR/Client boundaries via classes like ApiInstance, ApiCache, and ApiResponse.
-- Managing internationalization (i18n): Use its localization utilities (Geo, GeoIntl, Translate, Datetime) for date/time formatting, currency handling, and phone number masking.
-- Handling complex state and storage: Its specialized storage wrappers (DataStorage, CookieStorage, ServerStorage) are indispensable for maintaining consistency between server-rendered HTML and client-side hydrations.
-- Implementing UI-dependent logic: It provides optimized event listeners (EventItem), loading state management (Loading, LoadingInstance), and reactive URL hash management (Hash, HashInstance).
+Core components include:
+1. HTTP API Management: A centralized `ApiInstance` supporting request/response interception, auto-hydration for SSR, caching, and structured error handling via `ApiErrorStorage`.
+2. Storage & State: Wrappers for `localStorage`, `sessionStorage` (`DataStorage`), `cookies` (`CookieStorage`), and a global data registry.
+3. Localization: Extensive support for internationalization, including date/number/currency formatting (`GeoIntl`) and a translation system (`TranslateInstance`).
+4. DOM/Utility Tools: Event listeners (`EventItem`) with SSR safety, scrollbar width detection, responsive image/file processing, and type-safe utilities for arrays, objects, and strings.
+5. Meta Management: Structured handling of standard HTML, Open Graph, and Twitter meta tags.
 
-Integration Context: The library is designed to be environment-agnostic but is particularly effective in SSR-heavy stacks (like Vue or React SSR). It manages the transition from server-rendered state to client-side interactivity using hydration helpers. It operates as a set of singleton or instance-based controllers that can be initialized at the application entry point to provide global, consistent interfaces for network requests, localization, and data persistence.
+The library is indispensable for enterprise-scale applications requiring:
+- Seamless SSR hydration for API data and global states.
+- Standardized error reporting and centralized API/translation configuration.
+- Consistent formatting (dates, currency, units) across varied geographic locales.
+- Managed event lifecycle and DOM interaction in complex, dynamic interfaces.
+
+An AI coding assistant should study this library when tasked with:
+- Implementing or refactoring data fetching and API communication layers.
+- Standardizing internationalization (i18n) and data formatting logic.
+- Managing persistent client-side storage with built-in SSR support.
+- Orchestrating complex DOM events or managing high-frequency UI synchronization (e.g., scroll/resize).
+- Implementing SEO metadata management across SSR pages.
+
+The library integrates primarily with native Web APIs (Fetch, localStorage, etc.) and provides a consistent high-level abstraction layer, making it suitable for any framework-agnostic or framework-specific project (e.g., Vue or React) that requires robust state and IO management.

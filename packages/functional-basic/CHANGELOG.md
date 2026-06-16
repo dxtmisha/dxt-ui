@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.7] - 2026-06-16
+
+### Added
+- **Geo**: Added static `setValueDefault` method to configure the default country/language code.
+
+### Changed / Improved
+- **GeoInstance**: Updated `setValueDefault` to dynamically re-evaluate and update the active location, item, and language properties when a new default code is assigned.
+
 ## [1.3.6] - 2026-06-16
 
 ### Added

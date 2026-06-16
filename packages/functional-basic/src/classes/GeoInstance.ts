@@ -40,6 +40,12 @@ export class GeoInstance {
   private location: string
 
   /**
+   * Value by default for the country code/
+   * Значение по умолчанию для кода страны
+   */
+  private valueDefault?: string
+
+  /**
    * Detailed data about the current country/
    * Детальные данные о текущей стране
    */
@@ -308,6 +314,20 @@ export class GeoInstance {
   }
 
   /**
+   * Sets the default value for the country code.
+   *
+   * Устанавливает значение по умолчанию для кода страны.
+   * @param code default code value / значение кода по умолчанию
+   */
+  setValueDefault(code?: string) {
+    this.valueDefault = code
+
+    this.location = this.findLocation()
+    this.item = this.getByCode(this.location)
+    this.language = this.findLanguage(this.location)
+  }
+
+  /**
    * Internal method to get the geo cookie instance.
    *
    * Внутренний метод для получения экземпляра гео-куки.
@@ -326,6 +346,7 @@ export class GeoInstance {
   private findLocation(): string {
     return this.findLocationDom()
       || this.getCookie().get()
+      || this.valueDefault
       || 'en-GB'
   }
 

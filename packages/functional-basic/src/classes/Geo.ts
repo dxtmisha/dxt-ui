@@ -210,4 +210,14 @@ export class Geo {
   static setTimezone(timezone: number) {
     this.getObject().setTimezone(timezone)
   }
+
+  /**
+   * Sets the default value for the country code.
+   *
+   * Устанавливает значение по умолчанию для кода страны.
+   * @param code default code value / значение кода по умолчанию
+   */
+  static setValueDefault(code?: string) {
+    this.getObject().setValueDefault(code)
+  }
 }

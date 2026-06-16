@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.13.3] - 2026-06-16
+
+### Added
+- **GeoRef**: Added static reactive `setValueDefault` method to configure the default country/language code.
+- **dxtFunctionalPlugin**: Added `location?: string` plugin configuration parameter to set the default fallback location dynamically during Vue application initialization.
+
+### Changed / Improved
+- **Tests**: Configured test suites (`GeoRef.test.ts` and `dxtFunctionalPlugin.test.ts`) to cover fallback value detection and default settings.
+
 ## [1.13.2] - 2026-06-05
 
 ### Changed / Improved

@@ -12,6 +12,7 @@ import {
 import { dxtFunctionalPlugin } from '../dxtFunctionalPlugin'
 import { useMeta } from '../../composables/ref/useMeta'
 import { RouterItemRef } from '../../classes/ref/RouterItemRef'
+import { GeoRef } from '../../classes/ref/GeoRef'
 import * as executeUse from '../executeUse'
 
 // Mocking dependencies
@@ -31,6 +32,10 @@ vi.mock('../../composables/ref/useMeta', () => ({
 
 vi.mock('../../classes/ref/RouterItemRef', () => ({
   RouterItemRef: { set: vi.fn() }
+}))
+
+vi.mock('../../classes/ref/GeoRef', () => ({
+  GeoRef: { setValueDefault: vi.fn() }
 }))
 
 vi.mock('../executeUse', () => ({
@@ -105,6 +110,12 @@ describe('dxtFunctionalPlugin', () => {
     const options = { errorHandlers: [{ group: 'test', handlers: [] }] as any }
     dxtFunctionalPlugin?.install?.(appMock, options)
     expect(ErrorCenter.addHandlerList).toHaveBeenCalledWith(options.errorHandlers)
+  })
+
+  it('should call GeoRef.setValueDefault if location option is provided', () => {
+    const options = { location: 'de-DE' }
+    dxtFunctionalPlugin?.install?.(appMock, options)
+    expect(GeoRef.setValueDefault).toHaveBeenCalledWith('de-DE')
   })
 
   it('should call executeUseGlobalInit at the end', () => {
