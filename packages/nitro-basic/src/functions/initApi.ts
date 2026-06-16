@@ -1,4 +1,4 @@
-import { Api } from '@dxtmisha/functional-basic'
+import { Api, UrlItem } from '@dxtmisha/functional-basic'
 import { getRequestOrigin } from './getRequestOrigin'
 
 /**
@@ -11,4 +11,5 @@ import { getRequestOrigin } from './getRequestOrigin'
  */
 export function initApi(request: Request) {
   Api.setOrigin(getRequestOrigin(request))
+  UrlItem.getInstance().set(request.url)
 }

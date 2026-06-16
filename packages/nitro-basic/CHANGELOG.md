@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.6] - 2026-06-16
+
+### Added
+- **`getRequestHref`**: Introduced `getRequestHref` utility function to extract the full URL (href) from the request object during Nitro SSR.
+
+### Changed / Improved
+- **`initApi`**: Updated `initApi` to set the request URL in the request-isolated `UrlItem` singleton.
+
 ## [0.1.5] - 2026-05-22
 
 ### Added

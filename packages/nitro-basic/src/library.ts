@@ -2,6 +2,7 @@
 export * from './composables/useHeaders'
 
 // Functions
+export * from './functions/getRequestHref'
 export * from './functions/getRequestOrigin'
 export * from './functions/getRequestUrl'
 export * from './functions/initApi'
