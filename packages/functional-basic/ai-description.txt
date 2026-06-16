@@ -1,23 +1,14 @@
-This library is a comprehensive, SSR-compatible utility collection for TypeScript/JavaScript web applications, providing a standardized interface for common web development tasks. It functions as a modular framework rather than a single-purpose library, offering unified management for data persistence, HTTP requests, UI state, and localization.
+The library is a comprehensive, isomorphic utility suite for web applications, providing structured abstractions for network communication, state and storage management, and internationalization.
 
-Core components include:
-1. HTTP API Management: A centralized `ApiInstance` supporting request/response interception, auto-hydration for SSR, caching, and structured error handling via `ApiErrorStorage`.
-2. Storage & State: Wrappers for `localStorage`, `sessionStorage` (`DataStorage`), `cookies` (`CookieStorage`), and a global data registry.
-3. Localization: Extensive support for internationalization, including date/number/currency formatting (`GeoIntl`) and a translation system (`TranslateInstance`).
-4. DOM/Utility Tools: Event listeners (`EventItem`) with SSR safety, scrollbar width detection, responsive image/file processing, and type-safe utilities for arrays, objects, and strings.
-5. Meta Management: Structured handling of standard HTML, Open Graph, and Twitter meta tags.
+Core Purpose:
+It serves as a unified SDK for managing API interaction, client/server-side data storage, application state, and localization in a framework-agnostic manner.
 
-The library is indispensable for enterprise-scale applications requiring:
-- Seamless SSR hydration for API data and global states.
-- Standardized error reporting and centralized API/translation configuration.
-- Consistent formatting (dates, currency, units) across varied geographic locales.
-- Managed event lifecycle and DOM interaction in complex, dynamic interfaces.
+Usage Scenarios:
+- API Orchestration: Use the Api class and its associated helpers for centralized HTTP requests, response handling, error management, and request lifecycle hooks (preparation/end).
+- Data Persistence: Utilize wrappers for browser storage (LocalStorage/SessionStorage), Cookies, and URL state (Hash), including SSR-safe data synchronization.
+- Localization: Implement translation management (Translate) and internationalization (Geo, Datetime) for formatting dates, numbers, and currencies based on user locale.
+- DOM and Event Management: Use EventItem for lifecycle-aware event listeners (with built-in performance optimizations like resize and scroll-sync) and Loading/Icons modules for UI state management.
+- Meta Tag Management: Handle SEO and Open Graph/Twitter meta tags dynamically.
 
-An AI coding assistant should study this library when tasked with:
-- Implementing or refactoring data fetching and API communication layers.
-- Standardizing internationalization (i18n) and data formatting logic.
-- Managing persistent client-side storage with built-in SSR support.
-- Orchestrating complex DOM events or managing high-frequency UI synchronization (e.g., scroll/resize).
-- Implementing SEO metadata management across SSR pages.
-
-The library integrates primarily with native Web APIs (Fetch, localStorage, etc.) and provides a consistent high-level abstraction layer, making it suitable for any framework-agnostic or framework-specific project (e.g., Vue or React) that requires robust state and IO management.
+Integration Context:
+The library is designed for modular inclusion in web stacks. It is particularly valuable for applications requiring SSR (Server-Side Rendering) as it provides hydration helpers (ApiHydration, ServerStorage) and DOM-agnostic fallbacks. Its classes are often singleton-based, meaning it acts as a global or request-scoped controller for infrastructure tasks that would otherwise require manual implementation of boilerplate logic. An AI should study its API when implementing data-fetching services, global configuration providers, or cross-browser storage layers.

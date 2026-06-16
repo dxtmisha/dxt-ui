@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.8] - 2026-06-16
+
+### Added
+- **UrlItem**: Introduced a new isomorphic utility class for parsing, inspecting, and modifying URLs. It provides read-only getters for standard URL parts (`href`, `protocol`, `pathname`, `hash`, etc.), a single `set()` method to update the URL value, and a static `getInstance()` method to retrieve a request-isolated instance from `ServerStorage`.
+- **Tests**: Created a comprehensive test suite `UrlItem.test.ts` to verify parsing fallbacks in SSR/DOM environments, property values, and `getInstance` request-isolation behavior.
+
 ## [1.3.7] - 2026-06-16
 
 ### Added

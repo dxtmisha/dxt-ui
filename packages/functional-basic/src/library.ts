@@ -55,6 +55,7 @@ export * from './classes/StorageCallback'
 export * from './classes/Translate'
 export * from './classes/TranslateFile'
 export * from './classes/TranslateInstance'
+export * from './classes/UrlItem'
 
 // Functions
 export * from './functions/addTagHighlightMatch'
