@@ -60,7 +60,6 @@
   "files": [
     "dist",
     "ai-description.txt",
-    "ai-doc.ru.txt",
     "ai-doc.txt",
     "ai-types.txt",
     "CHANGELOG.md",

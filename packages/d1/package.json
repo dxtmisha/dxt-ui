@@ -27,7 +27,7 @@
     "build": "vue-tsc -b && vite build",
     "build-recovery": "npm run build && npm run wiki-storm",
     "preview": "vite preview",
-    "ui": "dxt-ui",
+    "ui": "dxt-ui SelectableArea",
     "wiki-storm": "dxt-wiki-storm",
     "types": "dxt-types",
     "screenshot": "dxt-screenshot",
@@ -39,7 +39,6 @@
     "dist/",
     "src/styles",
     "ai-description.txt",
-    "ai-doc.ru.txt",
     "ai-doc.txt",
     "ai-types.txt",
     "CHANGELOG.md",
@@ -351,6 +350,10 @@
     "./D1DraggableWrapper": {
       "types": "./dist/src/library/D1DraggableWrapper.d.ts",
       "default": "./dist/D1DraggableWrapper.js"
+    },
+    "./D1SelectableArea": {
+      "types": "./dist/src/library/D1SelectableArea.d.ts",
+      "default": "./dist/D1SelectableArea.js"
     }
   },
   "buildOptions": {

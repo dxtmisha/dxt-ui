@@ -36,7 +36,7 @@
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
     "test": "NODE_OPTIONS=\"--no-webstorage\" vitest",
-    "constructor": "dxt-constructor",
+    "constructor": "dxt-constructor SelectableArea",
     "library": "dxt-library",
     "types": "dxt-types",
     "prepublishOnly": "npm run library && npm run constructor && npm run build",
@@ -48,7 +48,6 @@
     "src/constructors/**/*.scss",
     "src/constructors/**/*.json",
     "ai-description.txt",
-    "ai-doc.ru.txt",
     "ai-doc.txt",
     "ai-types.txt",
     "CHANGELOG.md",
@@ -352,6 +351,10 @@
     "./DraggableWrapper": {
       "types": "./dist/src/constructors/DraggableWrapper/index.d.ts",
       "default": "./dist/draggableWrapper.js"
+    },
+    "./SelectableArea": {
+      "types": "./dist/src/constructors/SelectableArea/index.d.ts",
+      "default": "./dist/selectableArea.js"
     }
   },
   "buildOptions": {

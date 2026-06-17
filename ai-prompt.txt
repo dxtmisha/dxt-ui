@@ -41,6 +41,9 @@ Your primary goal is to generate flawless, industrial-grade code that adheres to
    - **DRY & KISS**: Avoid duplication, write as simply and clearly as possible.
    - **SOLID**: Every module, class, or function must have one clear responsibility.
    - **Declarative Approach**: Prefer a declarative programming style (array functional methods, composition).
+   - **No Abbreviations**: Do not use shortened or abbreviated names for variables, properties, arguments, methods, classes, etc. (e.g., do not use `el`, `rect1`/`r1`, `dx`/`dy`, `val`, `temp`). All identifiers must be descriptive, complete, and self-explanatory.
+   - **Optimization and Clarity**: Write code that is highly optimized, performant, and clean, ensuring it is easy to read and understand.
+   - **Single Responsibility (KISS/SOLID)**: Avoid creating large "mega-functions" or monolithic blocks. Each function must be concise and perform exactly one focused task (1 function = 1 functionality).
 
 4. **Uncompromising TypeScript**:
    - No `any`. Use `unknown` if the type is truly unknown, or create generic types.
@@ -68,6 +71,11 @@ Your primary goal is to generate flawless, industrial-grade code that adheres to
    - Perform all operations strictly in accordance with the provided commands and instructions.
    - Avoid guessing, improvisation, or performing any unrequested or extra actions.
    - Strictly adhere to the plan, checklists, and execution steps.
+
+10. **AI Project Memory (`ai-memory.txt`)**:
+    - Before starting to code or plan any changes, you MUST check if the `ai-memory.txt` file exists in the project root or the monorepo root.
+    - If `ai-memory.txt` exists, you MUST read and study it completely. This file serves as your long-term memory for the project. If it does NOT exist, you MUST create it.
+    - Whenever you receive feedback, corrections, or new instructions from the developer, you MUST update the `ai-memory.txt` file by adding this important information. This ensures that essential project knowledge, rules, and corrections are preserved for future work.
 
 ---
 
@@ -289,16 +297,24 @@ This file contains the complete type definitions for the project. It is mandator
 The project is located at: 'node_modules/@dxtmisha/functional'.
 
 ## Project context: Investigation required
-Core Purpose: This library is a comprehensive Vue 3 framework for reactive application architecture. It provides high-level abstractions for API orchestration (fetching, mutation, SSR, schema validation), state management (singletons, reactive storage, session/cookie handling), component design (base classes for rendering and lifecycle management), and localization/internationalization (geo-data, formatting, date management).
+This library is a collection of Vue 3-based utility classes and composables designed for building complex, reactive, and SSR-ready interfaces. It provides a standardized framework for API management, component state, geographic/localization data, and dynamic rendering.
 
-Usage Scenarios: Study this API when building complex, data-intensive Vue 3 applications requiring:
-1. Centralized, reactive API management (GET/POST/PUT/DELETE) with built-in SSR support, caching, and automatic response contract validation.
-2. Unified component architecture using base design classes for consistent styling, rendering, and lifecycle event management.
-3. Complex list handling, client-side searching, and advanced data formatting (Intl, currency, dates).
-4. Cross-tab communication or persistent reactive state storage (localStorage, sessionStorage, cookies).
-5. Global service configuration (meta tags, translation, icons, API settings) via Vue plugins.
+1. Core Purpose:
+An infrastructure-level toolkit for Vue 3 that abstracts asynchronous data fetching, state management, and UI rendering logic. It provides structured classes and composables to handle API lifecycle (GET/POST/PUT/DELETE), reactive data transformations, internationalization (Intl), and component orchestration.
 
-Integration Context: The library acts as a core infrastructure layer. It is built on top of Vue 3's Composition API and `vue-router`. It relies heavily on `@dxtmisha/functional-basic` for underlying logic. It should be treated as the primary service and utility layer that replaces manual store management (like Pinia) and repetitive API/lifecycle boilerplate by providing standardized patterns (e.g., `executeUse` for singletons) for shared state and service orchestration.
+2. Usage Scenarios:
+- API Orchestration: When building complex forms, data tables, or dashboards requiring integrated state, validation (via @effect/schema compatibility), and SSR support. Use `useApiManagementRef` for unified CRUD handling or `useApiRef` for individual requests.
+- Reactive Data Management: When you need synchronized data across browser tabs (`useBroadcastValueRef`) or persistence across reloads (`useStorageRef`, `useCookieRef`).
+- Localization & Formatting: When the application needs to dynamically handle geographic data, currency formatting, file sizes, or date manipulation via `GeoIntlRef` and `useGeoIntlRef`.
+- Component Design System: When building modular UI components that require consistent prop-to-style/class mapping (`DesignConstructorAbstract`, `DesignComponents`).
+- Lifecycle & DOM Utilities: When implementing lazy loading (`useLazyRef`) or global state management using `executeUse` for singletons.
+
+3. Integration Context:
+- Vue 3 Core: Heavily leverages `Ref`, `ComputedRef`, and `provide/inject`.
+- Data Fetching: Acts as a high-level wrapper over an underlying `functional-basic` library.
+- Routing: Integrates with `vue-router` via `RouterItemRef` and `useRouterList`.
+- SSR: Provides specific `Async` variants (e.g., `useApiAsyncRef`) for server-side pre-fetching.
+- Schema Validation: Designed to work with `@effect/schema` for robust API contract validation.
 
 ## Project information: Core overview
 This section contains essential information and the core overview of the project. Review this to understand the fundamental architecture and key features.
@@ -359,15 +375,24 @@ This file contains the complete type definitions for the project. It is mandator
 The project is located at: 'node_modules/@dxtmisha/functional-basic'.
 
 ## Project context: Investigation required
-Core Purpose: This library is a comprehensive, SSR-compatible utility suite for frontend applications, providing centralized management for HTTP requests (Fetch API), localized data formatting (Intl), state/storage management (cookies, local/session storage), and meta-tag manipulation. It acts as a foundational framework for handling API communication, multi-language support, and persistent application state across client and server environments.
+This library is a comprehensive, isomorphic utility toolkit for TypeScript applications, focusing on data management, HTTP communication, internationalization, and DOM manipulation. 
 
-Usage Scenarios: You should study this library when:
-- Implementing or refactoring an API communication layer: The library provides robust handling of requests, response caching, error storage, and hydration across SSR/Client boundaries via classes like ApiInstance, ApiCache, and ApiResponse.
-- Managing internationalization (i18n): Use its localization utilities (Geo, GeoIntl, Translate, Datetime) for date/time formatting, currency handling, and phone number masking.
-- Handling complex state and storage: Its specialized storage wrappers (DataStorage, CookieStorage, ServerStorage) are indispensable for maintaining consistency between server-rendered HTML and client-side hydrations.
-- Implementing UI-dependent logic: It provides optimized event listeners (EventItem), loading state management (Loading, LoadingInstance), and reactive URL hash management (Hash, HashInstance).
+1. Core Purpose:
+The library acts as a centralized foundation for common application tasks. It provides a robust HTTP client (Fetch wrapper with built-in retries, caching, and hydration support), state management (localized storage, cookie handling, URL hash synchronization), internationalization (translation management, date/time/currency formatting), and DOM utility functions (event listeners, scroll management, meta tag management).
 
-Integration Context: The library is designed to be environment-agnostic but is particularly effective in SSR-heavy stacks (like Vue or React SSR). It manages the transition from server-rendered state to client-side interactivity using hydration helpers. It operates as a set of singleton or instance-based controllers that can be initialized at the application entry point to provide global, consistent interfaces for network requests, localization, and data persistence.
+2. Usage Scenarios:
+- API Orchestration: Use the Api/ApiInstance classes for unified fetch requests, centralized error handling (ErrorCenter), and automatic response caching.
+- State Synchronization: Essential for SSR-compliant state management (ServerStorage) and syncing application state with URL hashes or Cookies.
+- Localization: Indispensable for applications requiring multi-language support (Translate), dynamic date/time formatting (GeoIntl, Datetime), and locale-aware number/currency formatting.
+- DOM & Event Management: Use EventItem for lifecycle-safe event listeners (with automatic cleanup) and scroll/resize optimizations; use Meta and its derivatives for SEO and social media metadata management.
+- Data Processing: Highly useful for search-as-you-type implementations (SearchList) and complex data transformations (Formatters).
+
+3. Integration Context:
+- SSR & Hydration: The library includes specialized handlers (ApiHydration, ServerStorage, getHydrationData) designed to bridge the gap between server-rendered state and client-side execution, preventing hydration mismatches.
+- Architecture: It follows a singleton-friendly patterns (e.g., Api.getItem(), Geo.getObject()) that facilitate global access to state and configurations across disparate modules without tight coupling.
+- Type Safety: Extensively typed (TypeScript), providing full autocompletion and structural validation for search, API, translation, and formatting configurations.
+
+An AI assistant should study this library when tasked with building enterprise-grade, localized web applications that require standardized API communication, cross-browser DOM event management, or robust SSR data state serialization.
 
 ## Project information: Core overview
 This section contains essential information and the core overview of the project. Review this to understand the fundamental architecture and key features.

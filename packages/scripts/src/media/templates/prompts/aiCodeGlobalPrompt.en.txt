@@ -57,3 +57,9 @@ Your primary goal is to generate flawless, industrial-grade code that adheres to
    - Perform all operations strictly in accordance with the provided commands and instructions.
    - Avoid guessing, improvisation, or performing any unrequested or extra actions.
    - Strictly adhere to the plan, checklists, and execution steps.
+
+10. **AI Project Memory (`ai-memory.txt`)**:
+    - Before starting to code or plan any changes, you MUST check if the `ai-memory.txt` file exists in the project root or the monorepo root.
+    - If `ai-memory.txt` exists, you MUST read and study it completely. This file serves as your long-term memory for the project. If it does NOT exist, you MUST create it.
+    - Whenever you receive feedback, corrections, or new instructions from the developer, you MUST update the `ai-memory.txt` file by adding this important information. This ensures that essential project knowledge, rules, and corrections are preserved for future work.
+
