@@ -7,6 +7,7 @@ import DemoLink from '../components/DemoLink.vue'
     <D1Section>
       <D1Group label="Test SSR">
         <DemoLink label="Api" name="test-api"/>
+        <DemoLink label="GeoRef" name="geo-ref"/>
       </D1Group>
       <D1Group label="Components">
         <DemoLink label="Accordion" name="component-accordion"/>

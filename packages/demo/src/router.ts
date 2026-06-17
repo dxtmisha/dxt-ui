@@ -3,6 +3,7 @@ import type { RouteRecordRaw } from 'vue-router'
 import DemoHomePage from './pages/DemoHomePage.vue'
 
 import DemoApiPage from './pages/DemoApiPage.vue'
+import DemoGeoRefPage from './pages/DemoGeoRefPage.vue'
 
 import DemoAccordionPage from './pages/components/DemoAccordionPage.vue'
 import DemoActionSheetPage from './pages/components/DemoActionSheetPage.vue'
@@ -53,6 +54,11 @@ export const routes: RouteRecordRaw[] = [
     path: '/test-api',
     name: 'test-api',
     component: DemoApiPage
+  },
+  {
+    path: '/geo-ref',
+    name: 'geo-ref',
+    component: DemoGeoRefPage
   },
   {
     path: '/component-accordion',

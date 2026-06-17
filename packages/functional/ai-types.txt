@@ -16,20 +16,27 @@ The following is the content of "exports" from package.json:
 
 // File: src/classes/design/DesignAbstract.d.ts
 export declare abstract class DesignAbstract<T extends Record<string, any>, C extends Record<string, any>> {
+    protected readonly props: T;
+    protected readonly callback?: ((event: C) => void) | undefined;
+    protected readonly event: C;
+    protected readonly changed: DesignChanged<T>;
     constructor(props: T, callback?: ((event: C) => void) | undefined, changed?: string[]);
     make(compelled?: boolean): this;
     makeCallback(compelled?: boolean): void;
+    protected abstract initEvent(): void;
 }
 
 // File: src/classes/design/DesignAsyncAbstract.d.ts
-import { DesignAbstract } from './DesignAbstract';
 export declare abstract class DesignAsyncAbstract<T extends Record<string, any>, C extends Record<string, any>> extends DesignAbstract<T, C> {
     make(compelled?: boolean): this;
     makeCallback(compelled?: boolean): Promise<void>;
+    protected abstract initEvent(): Promise<void>;
 }
 
 // File: src/classes/design/DesignChanged.d.ts
 export declare class DesignChanged<T extends Record<string, any>> {
+    protected readonly props: T;
+    protected readonly watch: string[];
     constructor(props: T, watch?: string[]);
     is(name: string | string[]): boolean;
     isChanged(): boolean;
@@ -37,16 +44,13 @@ export declare class DesignChanged<T extends Record<string, any>> {
 }
 
 // File: src/classes/design/DesignComp.d.ts
-import { DesignComponents } from './DesignComponents';
-import { ConstrComponent, ConstrItem } from '../../types/constructorTypes';
 export declare class DesignComp<COMP extends ConstrComponent, P extends ConstrItem> extends DesignComponents<COMP, P> {
 }
 
 // File: src/classes/design/DesignComponents.d.ts
-import { ComputedRef, VNode } from 'vue';
-import { RawChildren, RawSlots } from '../../types/refTypes';
-import { ConstrComponent, ConstrComponentMod, ConstrItem } from '../../types/constructorTypes';
 export declare class DesignComponents<COMP extends ConstrComponent, P extends ConstrItem> {
+    protected readonly components: COMP;
+    protected readonly modification?: ConstrComponentMod<P> | undefined;
     protected caching: Record<string, ComputedRef<any>>;
     constructor(components?: COMP, modification?: ConstrComponentMod<P> | undefined);
     is<K extends keyof COMP>(name: K): name is K;
@@ -58,9 +62,6 @@ export declare class DesignComponents<COMP extends ConstrComponent, P extends Co
 }
 
 // File: src/classes/design/DesignConstructorAbstract.d.ts
-import { ComputedRef, ToRefs, VNode, Ref } from 'vue';
-import { DesignComponents } from './DesignComponents';
-import { ConstrClass, ConstrClasses, ConstrClassObject, ConstrComponent, ConstrEmit, ConstrExpose, ConstrItem, ConstrOptions, ConstrStyles } from '../../types/constructorTypes';
 export declare abstract class DesignConstructorAbstract<E extends Element, COMP extends ConstrComponent, EMITS extends ConstrItem, EXPOSE extends ConstrItem, SLOTS extends ConstrItem, CLASSES extends ConstrClasses, P extends ConstrItem> {
     protected readonly props: Readonly<P>;
     protected readonly options?: ConstrOptions<COMP, EMITS, P> | undefined;
@@ -96,10 +97,18 @@ export declare abstract class DesignConstructorAbstract<E extends Element, COMP 
 }
 
 // File: src/classes/ref/DatetimeRef.d.ts
-import { ComputedRef, Ref } from 'vue';
-import { Datetime, GeoDate, GeoFirstDay, GeoHours, NumberOrStringOrDate } from '@dxtmisha/functional-basic';
-import { RefOrNormal } from '../../types/refTypes';
 export declare class DatetimeRef {
+    protected item: Ref<NumberOrStringOrDate>;
+    protected type: Ref<GeoDate>;
+    protected code: Ref<string>;
+    protected date: Ref<Date>;
+    protected datetime: Datetime;
+    protected year: Ref<number, number>;
+    protected month: Ref<number, number>;
+    protected day: Ref<number, number>;
+    protected hour: Ref<number, number>;
+    protected minute: Ref<number, number>;
+    protected second: Ref<number, number>;
     constructor(date: RefOrNormal<NumberOrStringOrDate>, type?: RefOrNormal<GeoDate>, code?: RefOrNormal<string>);
     getItem(): Ref<NumberOrStringOrDate>;
     getDate(): Ref<Date>;
@@ -123,17 +132,13 @@ export declare class EffectScopeGlobal {
 }
 
 // File: src/classes/ref/EventRef.d.ts
-import { RefOrNormal } from '../../types/refTypes';
-import { ElementOrString, ElementOrWindow, EventItem, EventListenerDetail, EventOptions } from '@dxtmisha/functional-basic';
 export declare class EventRef<E extends ElementOrWindow, O extends Event, D extends Record<string, any> = Record<string, any>> extends EventItem<E, O, D> {
     constructor(elementSelector?: RefOrNormal<ElementOrString<E> | undefined>, elementSelectorControl?: RefOrNormal<ElementOrString<HTMLElement>>, type?: string | string[], listener?: EventListenerDetail<O, D>, options?: EventOptions, detail?: D);
 }
 
 // File: src/classes/ref/GeoFlagRef.d.ts
-import { ComputedRef } from 'vue';
-import { GeoFlag, GeoFlagItem, GeoFlagNational } from '@dxtmisha/functional-basic';
-import { RefOrNormal } from '../../types/refTypes';
 export declare class GeoFlagRef {
+    protected flag: ComputedRef<GeoFlag>;
     constructor(code?: RefOrNormal<string | undefined>);
     getCode(): string;
     get(code?: RefOrNormal<string>): ComputedRef<GeoFlagItem | undefined>;
@@ -143,9 +148,6 @@ export declare class GeoFlagRef {
 }
 
 // File: src/classes/ref/GeoIntlRef.d.ts
-import { ComputedRef } from 'vue';
-import { GeoDate, ItemValue, NumberOrString, NumberOrStringOrDate } from '@dxtmisha/functional-basic';
-import { RefOrNormal } from '../../types/refTypes';
 export declare class GeoIntlRef {
     constructor(code?: RefOrNormal<string>);
     display(value?: RefOrNormal<string>, typeOptions?: Intl.DisplayNamesOptions['type'] | Intl.DisplayNamesOptions): ComputedRef<string>;
@@ -173,8 +175,6 @@ export declare class GeoIntlRef {
 }
 
 // File: src/classes/ref/GeoRef.d.ts
-import { ComputedRef, Ref } from 'vue';
-import { GeoItemFull } from '@dxtmisha/functional-basic';
 export declare class GeoRef {
     static get(): Ref<GeoItemFull>;
     static getCountry(): ComputedRef<string>;
@@ -182,13 +182,24 @@ export declare class GeoRef {
     static getStandard(): ComputedRef<string>;
     static getFirstDay(): ComputedRef<string>;
     static set(code: string): void;
+    static setValueDefault(code?: string | (() => string)): void;
 }
 
 // File: src/classes/ref/ListDataRef.d.ts
-import { RefOrNormal, RefType } from '../../types/refTypes';
-import { ListDataFull, ListDataItem, ListList, ListListInput, ListNames, ListSelectedItem, ListSelectedList } from '../../types/listTypes';
-import { ComputedRef } from 'vue';
 export declare class ListDataRef {
+    protected readonly list: RefOrNormal<ListListInput | undefined>;
+    protected readonly focus?: RefType<ListSelectedItem | undefined> | undefined;
+    protected readonly highlight?: RefType<string | undefined> | undefined;
+    protected readonly highlightLengthStart?: RefType<number | undefined> | undefined;
+    protected readonly filterMode?: RefType<boolean | undefined> | undefined;
+    protected readonly selected?: RefType<ListSelectedList | undefined> | undefined;
+    protected readonly keyValue?: RefType<string | undefined> | undefined;
+    protected readonly keyLabel?: RefType<string | undefined> | undefined;
+    protected readonly lite?: RefType<number | undefined> | undefined;
+    protected readonly min: RefOrNormal<number | string | undefined>;
+    protected readonly max: RefOrNormal<number | string | undefined>;
+    protected readonly parent?: string | undefined;
+    protected subList: Record<any, ListDataRef>;
     constructor(list: RefOrNormal<ListListInput | undefined>, focus?: RefType<ListSelectedItem | undefined> | undefined, highlight?: RefType<string | undefined> | undefined, highlightLengthStart?: RefType<number | undefined> | undefined, filterMode?: RefType<boolean | undefined> | undefined, selected?: RefType<ListSelectedList | undefined> | undefined, keyValue?: RefType<string | undefined> | undefined, keyLabel?: RefType<string | undefined> | undefined, lite?: RefType<number | undefined> | undefined, min?: RefOrNormal<number | string | undefined>, max?: RefOrNormal<number | string | undefined>, parent?: string | undefined);
     readonly data: ComputedRef<ListList>;
     readonly liteData: ComputedRef<ListList>;
@@ -233,8 +244,6 @@ export declare class ListDataRef {
 }
 
 // File: src/classes/ref/RouterItemRef.d.ts
-import { RouteLocationRaw, Router } from 'vue-router';
-import { ConstrHrefProps } from '../../types/constructorTypes';
 export declare class RouterItemRef {
     static get(): Router;
     static getLink(name: string, params?: any, query?: any): string | undefined;
@@ -246,7 +255,6 @@ export declare class RouterItemRef {
 }
 
 // File: src/classes/ref/ScrollbarWidthRef.d.ts
-import { Ref, ComputedRef } from 'vue';
 export declare class ScrollbarWidthRef {
     readonly item: Ref<boolean | undefined, boolean | undefined>;
     readonly width: Ref<number, number>;
@@ -255,45 +263,30 @@ export declare class ScrollbarWidthRef {
 }
 
 // File: src/composables/ref/useApiAsyncRef.d.ts
-import { ApiInstance, ApiData, ApiDataValidation, ApiErrorStorageList } from '@dxtmisha/functional-basic';
-import { UseApiRef } from './useApiRef';
-import { RefOrNormal, RefType } from '../../types/refTypes';
-import { ApiOptions } from '../../types/apiTypes';
 export declare function useApiAsyncRef<R, T = R>(path?: RefOrNormal<string | undefined>, options?: ApiOptions, reactivity?: boolean, conditions?: RefType<boolean>, transformation?: (data: T, isResponseContractValid?: ApiDataValidation) => ApiData<R>, validateResponseContract?: (data: T) => ApiDataValidation, errorContract?: ApiErrorStorageList, unmounted?: boolean, apiInstance?: ApiInstance): UseApiRef<R>;
 
 // File: src/composables/ref/useApiDelete.d.ts
-import { ApiData, ApiFetch } from '@dxtmisha/functional-basic';
-import { UseApiRequestSetup } from './useApiRequest';
-import { Ref } from 'vue';
-export interface UseApiDeleteSetup<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>> extends Omit<UseApiRequestSetup<T, Request, Return>, 'method'> {
-}
+export interface UseApiDeleteSetup<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>> extends Omit<UseApiRequestSetup<T, Request, Return>, 'method'> {}
 export declare function useApiDelete<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>>(setup: UseApiDeleteSetup<T, Request, Return>): {
     loading: Ref<boolean, boolean>;
     send(request?: Request | undefined): Promise<Return | undefined>;
 };
 
 // File: src/composables/ref/useApiGet.d.ts
-import { ApiData, ApiFetch } from '@dxtmisha/functional-basic';
-import { UseApiRequestSetup } from './useApiRequest';
-import { Ref } from 'vue';
-export interface UseApiGetSetup<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>> extends Omit<UseApiRequestSetup<T, Request, Return>, 'method'> {
-}
+export interface UseApiGetSetup<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>> extends Omit<UseApiRequestSetup<T, Request, Return>, 'method'> {}
 export declare function useApiGet<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>>(setup: UseApiGetSetup<T, Request, Return>): {
     loading: Ref<boolean, boolean>;
     send(request?: Request | undefined): Promise<Return | undefined>;
 };
 
 // File: src/composables/ref/useApiManagementAsyncRef.d.ts
-import { ApiInstance, ArrayToItem, FormattersListColumns, FormattersOptionsList, SearchColumns, ApiDataValidation, SearchFormatList, ApiData, ApiErrorItem, ApiFetch } from '@dxtmisha/functional-basic';
-import { ApiManagementGet, ApiManagementRequest, ApiManagementSearch, ApiManagementValue } from '../../types/apiTypes';
-import { ComputedRef, Ref } from 'vue';
 export declare function useApiManagementAsyncRef<Return extends ApiManagementValue, FormattersOptions extends FormattersOptionsList, Post extends Record<string, any>, Put extends Record<string, any>, Delete extends Record<string, any>, Type extends ApiManagementValue = Return, Item extends ArrayToItem<Return> = ArrayToItem<Return>, ItemFormatters extends FormattersListColumns<Item, FormattersOptions>[number] = FormattersListColumns<Item, FormattersOptions>[number], Columns extends SearchColumns<ItemFormatters> = []>(propsGet: ApiManagementGet<Return, Type>, formattersOptions?: FormattersOptions, searchOptions?: ApiManagementSearch<Item, Columns>, postRequest?: ApiManagementRequest<Post>, putRequest?: ApiManagementRequest<Put>, deleteRequest?: ApiManagementRequest<Delete>, action?: () => Promise<void> | void, apiInstance?: ApiInstance): {
     isValid: ComputedRef<boolean>;
     isResponseContractValid: ComputedRef<boolean>;
-    responseValidationResult: ComputedRef<ApiDataValidation | undefined>;
+    responseValidationResult: ComputedRef< ApiDataValidation | undefined>;
     list: ComputedRef<SearchFormatList<ItemFormatters, Columns>>;
-    readonly data: ComputedRef<ApiData<Return> | undefined>;
-    errorItem: ComputedRef<ApiErrorItem | undefined>;
+    readonly data: ComputedRef< ApiData<Return> | undefined>;
+    errorItem: ComputedRef< ApiErrorItem | undefined>;
     readonly length: ComputedRef<number>;
     lengthData: ComputedRef<number>;
     starting: ComputedRef<boolean>;
@@ -309,22 +302,19 @@ export declare function useApiManagementAsyncRef<Return extends ApiManagementVal
     initSsr: () => void;
     reset: () => Promise<void>;
     abort: () => void;
-    sendPost: (request?: ApiFetch["request"]) => Promise<ApiData<Post> | undefined>;
-    sendPut: (request?: ApiFetch["request"]) => Promise<ApiData<Put> | undefined>;
-    sendDelete: (request?: ApiFetch["request"]) => Promise<ApiData<Delete> | undefined>;
+    sendPost: (request?: ApiFetch["request"]) => Promise< ApiData<Post> | undefined>;
+    sendPut: (request?: ApiFetch["request"]) => Promise< ApiData<Put> | undefined>;
+    sendDelete: (request?: ApiFetch["request"]) => Promise< ApiData<Delete> | undefined>;
 };
 
 // File: src/composables/ref/useApiManagementRef.d.ts
-import { Ref, ComputedRef } from 'vue';
-import { FormattersOptionsList, ApiData, ApiInstance, ArrayToItem, SearchColumns, SearchFormatList, FormattersListColumns, ApiFetch, ApiDataValidation, ApiErrorItem } from '@dxtmisha/functional-basic';
-import { ApiManagementGet, ApiManagementRequest, ApiManagementSearch, ApiManagementValue } from '../../types/apiTypes';
 export declare function useApiManagementRef<Return extends ApiManagementValue, FormattersOptions extends FormattersOptionsList, Post extends Record<string, any>, Put extends Record<string, any>, Delete extends Record<string, any>, Type extends ApiManagementValue = Return, Item extends ArrayToItem<Return> = ArrayToItem<Return>, ItemFormatters extends FormattersListColumns<Item, FormattersOptions>[number] = FormattersListColumns<Item, FormattersOptions>[number], Columns extends SearchColumns<ItemFormatters> = []>(propsGet: ApiManagementGet<Return, Type>, formattersOptions?: FormattersOptions, searchOptions?: ApiManagementSearch<Item, Columns>, postRequest?: ApiManagementRequest<Post>, putRequest?: ApiManagementRequest<Put>, deleteRequest?: ApiManagementRequest<Delete>, action?: () => Promise<void> | void, apiInstance?: ApiInstance): {
     isValid: ComputedRef<boolean>;
     isResponseContractValid: ComputedRef<boolean>;
-    responseValidationResult: ComputedRef<ApiDataValidation | undefined>;
+    responseValidationResult: ComputedRef< ApiDataValidation | undefined>;
     list: ComputedRef<SearchFormatList<ItemFormatters, Columns>>;
     readonly data: ComputedRef<ApiData<Return> | undefined>;
-    errorItem: ComputedRef<ApiErrorItem | undefined>;
+    errorItem: ComputedRef< ApiErrorItem | undefined>;
     readonly length: ComputedRef<number>;
     lengthData: ComputedRef<number>;
     starting: ComputedRef<boolean>;
@@ -346,32 +336,20 @@ export declare function useApiManagementRef<Return extends ApiManagementValue, F
 };
 
 // File: src/composables/ref/useApiPost.d.ts
-import { ApiData, ApiFetch } from '@dxtmisha/functional-basic';
-import { UseApiRequestSetup } from './useApiRequest';
-import { Ref } from 'vue';
-export interface UseApiPostSetup<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>> extends Omit<UseApiRequestSetup<T, Request, Return>, 'method'> {
-}
+export interface UseApiPostSetup<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>> extends Omit<UseApiRequestSetup<T, Request, Return>, 'method'> {}
 export declare function useApiPost<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>>(setup: UseApiPostSetup<T, Request, Return>): {
     loading: Ref<boolean, boolean>;
     send(request?: Request | undefined): Promise<Return | undefined>;
 };
 
 // File: src/composables/ref/useApiPut.d.ts
-import { ApiData, ApiFetch } from '@dxtmisha/functional-basic';
-import { UseApiRequestSetup } from './useApiRequest';
-import { Ref } from 'vue';
-export interface UseApiPutSetup<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>> extends Omit<UseApiRequestSetup<T, Request, Return>, 'method'> {
-}
+export interface UseApiPutSetup<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>> extends Omit<UseApiRequestSetup<T, Request, Return>, 'method'> {}
 export declare function useApiPut<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>>(setup: UseApiPutSetup<T, Request, Return>): {
     loading: Ref<boolean, boolean>;
     send(request?: Request | undefined): Promise<Return | undefined>;
 };
 
 // File: src/composables/ref/useApiRef.d.ts
-import { ComputedRef, Ref } from 'vue';
-import { ApiInstance, ApiData, ApiDataValidation, ApiErrorStorageList, ApiErrorItem } from '@dxtmisha/functional-basic';
-import { ApiOptions } from '../../types/apiTypes';
-import { RefOrNormal, RefType } from '../../types/refTypes';
 export interface UseApiRef<R> {
     data: ComputedRef<ApiData<R> | undefined>;
     item: Ref<ApiData<R> | undefined>;
@@ -396,10 +374,6 @@ export declare function useApiRef<R, T = R>(path?: RefOrNormal<string | undefine
 export declare const setApiRefGlobalConditions: (conditions: RefType<any>) => void;
 
 // File: src/composables/ref/useApiRequest.d.ts
-import { ApiInstance, ApiMethodItem, ApiData, ApiFetch, ApiErrorStorageList, ApiDataValidation } from '@dxtmisha/functional-basic';
-import { ApiOptions } from '../../types/apiTypes';
-import { RefOrNormal } from '../../types/refTypes';
-import { Ref } from 'vue';
 export interface UseApiRequestSetup<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>> {
     path?: RefOrNormal<string | undefined>;
     method?: ApiMethodItem;
@@ -418,153 +392,54 @@ export declare function useApiRequest<T, Request extends ApiFetch['request'] = A
 };
 
 // File: src/composables/ref/useBroadcastValueRef.d.ts
-import { Ref } from 'vue';
 export declare function useBroadcastValueRef<T>(name: string, defaultValue?: T | string | (() => (T | string))): Ref<T | string | undefined>;
 
 // File: src/composables/ref/useCookieRef.d.ts
-import { Ref } from 'vue';
-import { CookieOptions } from '@dxtmisha/functional-basic';
 export declare function useCookieRef<T>(name: string, defaultValue?: T | string | (() => (T | string)), options?: CookieOptions): Ref<T | string | undefined>;
 
 // File: src/composables/ref/useFormattersRef.d.ts
-import { FormattersListProp, FormattersOptionsList, FormattersReturn } from '@dxtmisha/functional-basic';
-import { RefType } from '../../types/refTypes';
-import { ComputedRef } from 'vue';
 export declare function useFormattersRef<Options extends FormattersOptionsList = FormattersOptionsList, List extends FormattersListProp = FormattersListProp>(list: RefType<List | undefined>, options: Options): {
     listFormat: ComputedRef<FormattersReturn<List, Options>>;
     length: ComputedRef<number>;
 };
 
 // File: src/composables/ref/useGeoIntlRef.d.ts
-import { GeoIntlRef } from '../../classes/ref/GeoIntlRef';
 export declare function useGeoIntlRef(): GeoIntlRef;
 
 // File: src/composables/ref/useHashRef.d.ts
-import { ShallowRef } from 'vue';
 export declare function useHashRef<T>(name: string, defaultValue?: T | (() => T)): ShallowRef<T>;
 
 // File: src/composables/ref/useLazyItemByMarginRef.d.ts
-import { RefType } from '../../types/refTypes';
-export declare const useLazyItemByMarginRef: (element: RefType<HTMLElement | undefined>, rootMargin: string) => {
-    lazyItemStatus: any;
-    readonly lazyItem: any;
-};
+export type LazyItemByMargin = { rootMargin: string; item: any; };
+export declare const useLazyItemByMarginRef: (element: RefType<HTMLElement | undefined>, rootMargin: string) => { lazyItemStatus: any; readonly lazyItem: any; };
 
 // File: src/composables/ref/useLazyRef.d.ts
-import { Ref, ShallowRef } from 'vue';
-export declare const useLazyRef: (options?: IntersectionObserverInit) => {
-    intersectionObserver: IntersectionObserver | undefined;
-    getItem(element: HTMLElement): any;
-    addLazyItem(element: Ref<HTMLElement | undefined>): ShallowRef<boolean, boolean>;
-    removeLazyItem: (element?: HTMLElement) => void;
-    disconnectLazy: () => void | undefined;
-};
+export type LazyItem = { status: ShallowRef<boolean>; ratio: ShallowRef<number>; entry: ShallowRef<IntersectionObserverEntry | undefined>; stopWatch: () => void; };
+export type LazyList = Record<string, LazyItem>;
+export declare const useLazyRef: (options?: IntersectionObserverInit) => { intersectionObserver: IntersectionObserver | undefined; getItem(element: HTMLElement): LazyItem; addLazyItem(element: Ref<HTMLElement | undefined>): ShallowRef<boolean, boolean>; removeLazyItem: (element?: HTMLElement) => void; disconnectLazy: () => void | undefined; };
 
 // File: src/composables/ref/useLoadingRef.d.ts
-import { ShallowRef } from 'vue';
 export declare function useLoadingRef(): ShallowRef<boolean, boolean>;
 
 // File: src/composables/ref/useMeta.d.ts
-import { MetaRobots, MetaStatic } from '@dxtmisha/functional-basic';
-import { Ref } from 'vue';
-export declare const useMeta: () => Readonly<{
-    meta: typeof MetaStatic;
-    title: Ref<string, string>;
-    keyword: Ref<string, string>;
-    description: Ref<string, string>;
-    author: Ref<string, string>;
-    image: Ref<string, string>;
-    canonical: Ref<string, string>;
-    robots: Ref<MetaRobots, MetaRobots>;
-    siteName: Ref<string, string>;
-    getHtmlMeta: () => string;
-    sync: () => void;
-    update: () => void;
-    updateSsr: () => void;
-    setTitle: (value: string) => void;
-    setKeywords: (value: string) => void;
-    setDescription: (value: string) => void;
-    setAuthor: (value: string) => void;
-    setImage: (value: string) => void;
-    setCanonical: (value: string) => void;
-    setRobots: (value: MetaRobots) => void;
-    setSiteName: (value: string) => void;
-    setSuffix: (suffix: string) => typeof MetaStatic;
-}> & {
-    init(): Readonly<{
-        meta: typeof MetaStatic;
-        title: Ref<string, string>;
-        keyword: Ref<string, string>;
-        description: Ref<string, string>;
-        author: Ref<string, string>;
-        image: Ref<string, string>;
-        canonical: Ref<string, string>;
-        robots: Ref<MetaRobots, MetaRobots>;
-        siteName: Ref<string, string>;
-        getHtmlMeta: () => string;
-        sync: () => void;
-        update: () => void;
-        updateSsr: () => void;
-        setTitle: (value: string) => void;
-        setKeywords: (value: string) => void;
-        setDescription: (value: string) => void;
-        setAuthor: (value: string) => void;
-        setImage: (value: string) => void;
-        setCanonical: (value: string) => void;
-        setRobots: (value: MetaRobots) => void;
-        setSiteName: (value: string) => void;
-        setSuffix: (suffix: string) => typeof MetaStatic;
-    }>;
-    destroyExecute?(): void;
-}>;
+export declare const useMeta: () => Readonly<{ meta: typeof MetaStatic; title: Ref<string, string>; keyword: Ref<string, string>; description: Ref<string, string>; author: Ref<string, string>; image: Ref<string, string>; canonical: Ref<string, string>; robots: Ref<MetaRobots, MetaRobots>; siteName: Ref<string, string>; getHtmlMeta: () => string; sync: () => void; update: () => void; updateSsr: () => void; setTitle: (value: string) => void; setKeywords: (value: string) => void; setDescription: (value: string) => void; setAuthor: (value: string) => void; setImage: (value: string) => void; setCanonical: (value: string) => void; setRobots: (value: MetaRobots) => void; setSiteName: (value: string) => void; setSuffix: (suffix: string) => typeof MetaStatic; } & { init(): Readonly<any>; destroyExecute?(): void; }>;
 
 // File: src/composables/ref/useRouterList.d.ts
-import { Ref, ComputedRef } from 'vue';
-import { NumberOrString } from '@dxtmisha/functional-basic';
-import { ConstrBind } from '../../types/constructorTypes';
-import { ListDataBasic } from '../../types/listTypes';
-import { RefType } from '../../types/refTypes';
-export declare const useRouterList: <T extends ListDataBasic>(list: RefType<ConstrBind<T>[] | undefined>, selected?: Ref<string> | string, hasTo?: boolean) => {
-    item: ComputedRef<T | undefined>;
-    selected: Ref<string, string>;
-    label: ComputedRef<NumberOrString>;
-    list: ComputedRef<ConstrBind<T>[]>;
-    to: (name?: string) => void;
-    toMain(): void;
-};
+export declare const useRouterList: <T extends ListDataBasic>(list: RefType<ConstrBind<T>[] | undefined>, selected?: Ref<string> | string, hasTo?: boolean) => { item: ComputedRef<T | undefined>; selected: Ref<string, string>; label: ComputedRef<NumberOrString>; list: ComputedRef<ConstrBind<T>[]>; to: (name?: string) => void; toMain(): void; };
 
 // File: src/composables/ref/useSearchRef.d.ts
-import { Ref, ComputedRef } from 'vue';
-import { SearchColumns, SearchFormatList, SearchItem, SearchOptions } from '@dxtmisha/functional-basic';
-import { SearchListInput } from '../../types/searchTypes';
-export declare function useSearchRef<T extends SearchItem, K extends SearchColumns<T>>(list: SearchListInput<T>, columns: K, value?: Ref<string>, options?: SearchOptions): {
-    isSearch: ComputedRef<boolean>;
-    search: Ref<string, string>;
-    loading: Ref<boolean, boolean>;
-    listSearch: ComputedRef<SearchFormatList<T, K>>;
-    length: ComputedRef<number>;
-};
+export declare function useSearchRef<T extends SearchItem, K extends SearchColumns<T>>(list: SearchListInput<T>, columns: K, value?: Ref<string>, options?: SearchOptions): { isSearch: ComputedRef<boolean>; search: Ref<string, string>; loading: Ref<boolean, boolean>; listSearch: ComputedRef<SearchFormatList<T, K>>; length: ComputedRef<number>; };
 
 // File: src/composables/ref/useSearchValueRef.d.ts
-import { Ref } from 'vue';
-import { SearchList, SearchColumns, SearchItem } from '@dxtmisha/functional-basic';
-export declare function useSearchValueRef<T extends SearchItem, K extends SearchColumns<T>>(item: SearchList<T, K>, value?: Ref<string>): {
-    search: Ref<string, string>;
-    searchDelay: Ref<string, string>;
-    loading: Ref<boolean, boolean>;
-};
+export declare function useSearchValueRef<T extends SearchItem, K extends SearchColumns<T>>(item: SearchList<T, K>, value?: Ref<string>): { search: Ref<string, string>; searchDelay: Ref<string, string>; loading: Ref<boolean, boolean>; };
 
 // File: src/composables/ref/useSessionRef.d.ts
-import { Ref } from 'vue';
 export declare function useSessionRef<T>(name: string, defaultValue?: T | (() => T)): Ref<T | undefined>;
 
 // File: src/composables/ref/useStorageRef.d.ts
-import { Ref } from 'vue';
 export declare function useStorageRef<T>(name: string, defaultValue?: T | (() => T), cache?: number): Ref<T | undefined>;
 
 // File: src/composables/ref/useTranslateRef.d.ts
-import { ShallowRef } from 'vue';
-import { TranslateInstance, TranslateList } from '@dxtmisha/functional-basic';
 export declare function useTranslateRef<T extends (string | string[])[]>(names: T, translateInstance?: TranslateInstance): ShallowRef<TranslateList<T>>;
 export declare const t: <T extends string[]>(names: T) => ShallowRef<TranslateList<T>>;
 
@@ -575,219 +450,77 @@ export declare const uiMakeFlags: () => void;
 export * from '@dxtmisha/functional-basic';
 
 // File: src/functions/computedAsync.d.ts
-import { ComputedRef, DebuggerOptions } from 'vue';
 export declare function computedAsync<R>(getter: (() => Promise<R>) | (() => R) | R, initialState?: (() => R) | R, ignore?: R, debugOptions?: DebuggerOptions): ComputedRef<R | undefined>;
 
 // File: src/functions/computedByLanguage.d.ts
-import { ComputedGetter, ComputedRef, DebuggerOptions } from 'vue';
 export declare function computedByLanguage<T, R extends (T | undefined) = T | undefined>(getter: ComputedGetter<R>, getterNone?: R | (() => R), conditions?: () => boolean, debugOptions?: DebuggerOptions): ComputedRef<R>;
 
 // File: src/functions/computedEternity.d.ts
-import { Ref } from 'vue';
 export declare function computedEternity<T>(getter: () => Promise<T> | T, initialState?: (() => T) | T): Ref<T, T>;
 
 // File: src/functions/dxtFunctionalPlugin.d.ts
-import { Plugin } from 'vue';
-import { ApiConfig, ErrorCenterCauseList, ErrorCenterHandlerList, IconsConfig, TranslateConfig } from '@dxtmisha/functional-basic';
-import { Router } from 'vue-router';
-export interface FunctionalPluginOptions {
-    api?: ApiConfig;
-    translate?: TranslateConfig;
-    metaSuffix?: string;
-    icons?: IconsConfig;
-    router?: Router;
-    errorCauses?: ErrorCenterCauseList;
-    errorHandlers?: ErrorCenterHandlerList;
-}
+export interface FunctionalPluginOptions { api?: ApiConfig; translate?: TranslateConfig; location?: string | (() => string); metaSuffix?: string; icons?: IconsConfig; router?: Router; errorCauses?: ErrorCenterCauseList; errorHandlers?: ErrorCenterHandlerList; }
 export declare const dxtFunctionalPlugin: Plugin;
 
 // File: src/functions/executeUse.d.ts
-export declare enum ExecuteUseType {
-    global = "global",
-    provide = "provide",
-    local = "local"
-}
-export type ExecuteUseReturn<R> = Readonly<R & {
-    init(): Readonly<R>;
-    destroyExecute?(): void;
-}>;
+export declare enum ExecuteUseType { global = "global", provide = "provide", local = "local" }
+export type ExecuteUseReturn<R> = Readonly<R & { init(): Readonly<R>; destroyExecute?(): void; }>;
 export declare function executeUse<R, O extends any[], RI extends ExecuteUseReturn<R> = ExecuteUseReturn<R>>(callback: (...args: O) => R, type?: ExecuteUseType): ((...args: O) => RI) | (() => RI);
-export declare function executeUseGlobal<R>(callback: () => R): any;
-export declare function executeUseProvide<R, O extends any[]>(callback: (...args: O) => R): any;
-export declare function executeUseLocal<R, O extends any[]>(callback: (...args: O) => R): any;
+export declare function executeUseGlobal<R>(callback: () => R): (() => Readonly<any>) | (() => Readonly<any>);
+export declare function executeUseProvide<R, O extends any[]>(callback: (...args: O) => R): ((...args: O) => Readonly<any>) | (() => Readonly<any>);
+export declare function executeUseLocal<R, O extends any[]>(callback: (...args: O) => R): ((...args: O) => Readonly<any>) | (() => Readonly<any>);
 export declare function executeUseGlobalInit(): void;
 
 // File: src/functions/getInject.d.ts
 export declare function getInject<T>(name: string): T | undefined;
 
 // File: src/functions/getOptions.d.ts
-import { ApiFetch } from '@dxtmisha/functional-basic';
-import { ApiOptions } from '../types/apiTypes';
-import { RefOrNormal } from '../types/refTypes';
 export declare const getOptions: (options?: ApiOptions) => RefOrNormal<ApiFetch>;
 
 // File: src/functions/ref/executeFunctionRef.d.ts
-import { RefOrNormalOrFunction } from '../../types/refTypes';
 export declare function executeFunctionRef<T>(data: RefOrNormalOrFunction<T>): T;
 
 // File: src/functions/ref/getApiErrorRef.d.ts
-import { ComputedRef } from 'vue';
-import { ApiData, ApiErrorItem } from '@dxtmisha/functional-basic';
-import { RefType } from '../../types/refTypes';
 export declare function getApiErrorRef<R>(data: RefType<ApiData<R> | undefined>): ComputedRef<ApiErrorItem | undefined>;
 
 // File: src/functions/ref/getBindRef.d.ts
-import { ComputedRef } from 'vue';
-import { ItemList } from '@dxtmisha/functional-basic';
-import { RefOrNormal } from '../../types/refTypes';
 export declare function getBindRef<T, R extends ItemList>(value: RefOrNormal<T | R> | undefined, nameExtra?: RefOrNormal<ItemList> | string, name?: string): ComputedRef<R>;
 
 // File: src/functions/ref/getRef.d.ts
-import { RefOrNormal } from '../../types/refTypes';
 export declare function getRef<T>(item: RefOrNormal<T>): T;
 
 // File: src/functions/ref/render.d.ts
-import { VNode } from 'vue';
-import { ItemList } from '@dxtmisha/functional-basic';
-import { RawChildren, RawSlots } from '../../types/refTypes';
 export declare function render<T extends ItemList>(name: string | any, props?: T, children?: RawChildren | RawSlots, index?: string): VNode;
 
 // File: src/functions/ref/setRef.d.ts
-import { Ref } from 'vue';
 export declare function setRef<T>(item: Ref<T>, value: T): void;
 
 // File: src/functions/ref/toRefItem.d.ts
-import { Ref } from 'vue';
-import { RefOrNormal } from '../../types/refTypes';
 export declare function toRefItem<T>(item: RefOrNormal<T>): Ref<T>;
 
 // File: src/functions/render/getBind.d.ts
-import { ItemList } from '@dxtmisha/functional-basic';
-import { ConstrBind } from '../../types/constructorTypes';
 export declare function getBind<T, R extends ItemList>(value: T | R | undefined | null, nameExtra?: ItemList | string, name?: string, except?: boolean): ConstrBind<R>;
 
 // File: src/functions/render/getClassName.d.ts
-import { ItemList } from '@dxtmisha/functional-basic';
 export declare function getClassName<T extends ItemList>(props?: T): string | undefined;
 
 // File: src/functions/render/getIndexForRender.d.ts
-import { ItemList } from '@dxtmisha/functional-basic';
 export declare function getIndexForRender<T extends ItemList>(name: string | any, props?: T, index?: string): string | undefined;
 
 // File: src/functions/toBind.d.ts
-import { ItemList } from '@dxtmisha/functional-basic';
-import { ConstrBind } from '../types/constructorTypes';
 export declare function toBind<R extends ItemList = ItemList>(extra: ItemList, value: ItemList): ConstrBind<R>;
 
 // File: src/functions/toBinds.d.ts
-import { ItemList } from '@dxtmisha/functional-basic';
-import { ConstrBind } from '../types/constructorTypes';
 export declare function toBinds<R extends ItemList = ItemList>(...values: (ItemList | undefined)[]): ConstrBind<R>;
 
-// File: src/library.d.ts
-export * from './classes/design/DesignAbstract';
-export * from './classes/design/DesignAsyncAbstract';
-export * from './classes/design/DesignChanged';
-export * from './classes/design/DesignComp';
-export * from './classes/design/DesignComponents';
-export * from './classes/design/DesignConstructorAbstract';
-export * from './classes/ref/DatetimeRef';
-export * from './classes/ref/EffectScopeGlobal';
-export * from './classes/ref/EventRef';
-export * from './classes/ref/GeoFlagRef';
-export * from './classes/ref/GeoIntlRef';
-export * from './classes/ref/GeoRef';
-export * from './classes/ref/ListDataRef';
-export * from './classes/ref/RouterItemRef';
-export * from './classes/ref/ScrollbarWidthRef';
-export * from './composables/ref/useApiAsyncRef';
-export * from './composables/ref/useApiDelete';
-export * from './composables/ref/useApiGet';
-export * from './composables/ref/useApiManagementAsyncRef';
-export * from './composables/ref/useApiManagementRef';
-export * from './composables/ref/useApiPost';
-export * from './composables/ref/useApiPut';
-export * from './composables/ref/useApiRef';
-export * from './composables/ref/useApiRequest';
-export * from './composables/ref/useBroadcastValueRef';
-export * from './composables/ref/useCookieRef';
-export * from './composables/ref/useFormattersRef';
-export * from './composables/ref/useGeoIntlRef';
-export * from './composables/ref/useHashRef';
-export * from './composables/ref/useLazyItemByMarginRef';
-export * from './composables/ref/useLazyRef';
-export * from './composables/ref/useLoadingRef';
-export * from './composables/ref/useMeta';
-export * from './composables/ref/useRouterList';
-export * from './composables/ref/useSearchRef';
-export * from './composables/ref/useSearchValueRef';
-export * from './composables/ref/useSessionRef';
-export * from './composables/ref/useStorageRef';
-export * from './composables/ref/useTranslateRef';
-export * from './functions/basic';
-export * from './functions/computedAsync';
-export * from './functions/computedByLanguage';
-export * from './functions/computedEternity';
-export * from './functions/dxtFunctionalPlugin';
-export * from './functions/executeUse';
-export * from './functions/getInject';
-export * from './functions/getOptions';
-export * from './functions/ref/executeFunctionRef';
-export * from './functions/ref/getApiErrorRef';
-export * from './functions/ref/getBindRef';
-export * from './functions/ref/getRef';
-export * from './functions/ref/render';
-export * from './functions/ref/setRef';
-export * from './functions/ref/toRefItem';
-export * from './functions/render/getBind';
-export * from './functions/render/getClassName';
-export * from './functions/render/getIndexForRender';
-export * from './functions/toBind';
-export * from './functions/toBinds';
-export * from './types/apiTypes';
-export * from './types/constructorTypes';
-export * from './types/listTypes';
-export * from './types/refTypes';
-export * from './types/searchTypes';
-
 // File: src/types/apiTypes.d.ts
-import { ApiData, ApiDataValidation, ApiDefaultValue, ApiErrorStorageList, ApiFetch, ApiMethodItem, SearchColumns, SearchItem, SearchOptions } from '@dxtmisha/functional-basic';
-import { RefOrNormal, RefType } from './refTypes';
-import { Ref } from 'vue';
 export type ApiOptions = ApiMethodItem | RefOrNormal<ApiFetch>;
 export type ApiManagementValue = ApiDefaultValue | ApiDefaultValue[];
-export type ApiManagementGet<Return extends ApiManagementValue, Type extends ApiManagementValue = Return> = {
-    path?: RefOrNormal<string | undefined>;
-    options?: ApiOptions;
-    reactivity?: boolean;
-    conditions?: RefType<boolean>;
-    transformation?: (data: Type, isResponseContractValid?: ApiDataValidation) => ApiData<Return>;
-    validateResponseContract?: (data: Type) => ApiDataValidation;
-    errorContract?: ApiErrorStorageList;
-    typeData?: ((data: Return) => boolean) | any;
-    unmounted?: boolean;
-    skeleton?: () => Return;
-};
-export type ApiManagementSearch<T extends SearchItem, K extends SearchColumns<T>> = {
-    columns: K;
-    value?: Ref<string>;
-    options?: SearchOptions;
-};
-export type ApiManagementRequest<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>> = {
-    path?: RefOrNormal<string | undefined>;
-    action?: (data: Return | undefined) => Promise<void> | void;
-    transformation?: (data: T) => Return;
-    validateRequestContract?: (data: Request) => ApiDataValidation & Return;
-    validateResponseContract?: (data: T) => ApiDataValidation & Return;
-    errorContract?: ApiErrorStorageList;
-    toData?: boolean;
-    options?: ApiOptions;
-};
+export type ApiManagementGet<Return extends ApiManagementValue, Type extends ApiManagementValue = Return> = { path?: RefOrNormal<string | undefined>; options?: ApiOptions; reactivity?: boolean; conditions?: RefType<boolean>; transformation?: (data: Type, isResponseContractValid?: ApiDataValidation) => ApiData<Return>; validateResponseContract?: (data: Type) => ApiDataValidation; errorContract?: ApiErrorStorageList; typeData?: ((data: Return) => boolean) | any; unmounted?: boolean; skeleton?: () => Return; };
+export type ApiManagementSearch<T extends SearchItem, K extends SearchColumns<T>> = { columns: K; value?: Ref<string>; options?: SearchOptions; };
+export type ApiManagementRequest<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>> = { path?: RefOrNormal<string | undefined>; action?: (data: Return | undefined) => Promise<void> | void; transformation?: (data: T) => Return; validateRequestContract?: (data: Request) => ApiDataValidation & Return; validateResponseContract?: (data: T) => ApiDataValidation & Return; errorContract?: ApiErrorStorageList; toData?: boolean; options?: ApiOptions; };
 
 // File: src/types/constructorTypes.d.ts
-import { Ref, PropType, ComputedRef } from 'vue';
-import { Undefined } from '@dxtmisha/functional-basic';
-import { RefOrNormal, RefType } from './refTypes';
 export type ConstrItem = Record<string, any>;
 export type ConstrValue<T = any> = { value?: T; };
 export type ConstrComponent = Record<string, any>;
@@ -802,54 +535,22 @@ export type ConstrClassList = Record<string, ConstrClass>;
 export type ConstrClasses = { main: ConstrClass; } & ConstrClassList;
 export type ConstrStylesItem = string | null;
 export type ConstrStyles = Record<string, ConstrStylesItem> | ConstrStyles[];
-export type ConstrOptions<COMP extends ConstrComponent, EMITS extends ConstrItem, P extends ConstrItem> = {
-    components?: COMP;
-    compMod?: ConstrComponentMod<P>;
-    emits?: ConstrEmit<EMITS>;
-    classes?: RefType<ConstrClasses>;
-    styles?: RefType<ConstrStyles>;
-};
-export type ConstrSetup<E extends Element, CLASSES extends ConstrClasses, SETUP extends ConstrItem> = {
-    name: string;
-    element: Ref<E | undefined>;
-    classes: RefType<CLASSES>;
-    styles: RefType<ConstrStyles>;
-} & SETUP;
+export type ConstrOptions<COMP extends ConstrComponent, EMITS extends ConstrItem, P extends ConstrItem> = { components?: COMP; compMod?: ConstrComponentMod<P>; emits?: ConstrEmit<EMITS>; classes?: RefType<ConstrClasses>; styles?: RefType<ConstrStyles>; };
+export type ConstrSetup<E extends Element, CLASSES extends ConstrClasses, SETUP extends ConstrItem> = { name: string; element: Ref<E | undefined>; classes: RefType<CLASSES>; styles: RefType<ConstrStyles>; } & SETUP;
 export type ConstrRegistration = { flag?: boolean; translate?: Record<string, string>; };
-export type ConstrBind<T> = T & Record<string, any> & {
-    key?: string;
-    class?: ConstrClass;
-    style?: ConstrStyles;
-};
-export type ConstrPropItemOptions<T = any> = {
-    type?: PropType<T>;
-    required?: boolean;
-    default?: any;
-    validator?(value: any, props: any): boolean;
-};
+export type ConstrBind<T> = T & Record<string, any> & { key?: string; class?: ConstrClass; style?: ConstrStyles; };
+export type ConstrPropItemOptions<T = any> = { type?: PropType<T>; required?: boolean; default?: any; validator?(value: any, props: any): boolean; };
 export type ConstrPropItem<T = any> = ConstrPropItemOptions<T> | PropType<T>;
 export type ConstrProps<P = Record<string, any>> = { [K in keyof P]: ConstrPropItem<P[K]>; };
 export type ConstrHrefProps = { href?: string; };
 
 // File: src/types/listTypes.d.ts
-import { NumberOrString, NumberOrStringOrBoolean } from '@dxtmisha/functional-basic';
-import { ConstrBind } from './constructorTypes';
 export type ListType = 'item' | 'space' | 'line' | 'subtitle' | 'html' | 'menu' | 'menu-group' | 'group';
 export type ListDataBasic = { label?: NumberOrString; value?: any; search?: string; };
-export type ListDataItem<Item extends ListDataBasic = ListDataBasic> = ConstrBind<Item & {
-    parent?: string;
-    type: ListType;
-    index: string;
-    disabled?: boolean;
-}>;
+export type ListDataItem<Item extends ListDataBasic = ListDataBasic> = ConstrBind<Item & { parent?: string; type: ListType; index: string; disabled?: boolean; }>;
 export type ListList<Item extends ListDataBasic = ListDataBasic> = ListDataItem<Item>[];
 export type ListRecord<Item extends ListDataBasic = ListDataBasic> = ListList<Item> | Record<string, any>;
-export type ListDataFullItem<Item extends ListDataBasic = ListDataBasic> = ListDataItem<Item> & {
-    focus: boolean;
-    highlight?: string;
-    selected: boolean;
-    disabled?: boolean;
-};
+export type ListDataFullItem<Item extends ListDataBasic = ListDataBasic> = ListDataItem<Item> & { focus: boolean; highlight?: string; selected: boolean; disabled?: boolean; };
 export type ListDataFull<Item extends ListDataBasic = ListDataBasic> = ListDataFullItem<Item>[];
 export type ListListInputItem<Item extends ListDataBasic = ListDataBasic> = ConstrBind<Item>;
 export type ListListInput<Item extends ListDataBasic = ListDataBasic> = ListListInputItem<Item>[] | string[] | Record<string, ListListInputItem<Item>> | Record<string, string>;
@@ -859,7 +560,6 @@ export type ListName = string | number | undefined;
 export type ListNames = ListName[];
 
 // File: src/types/refTypes.d.ts
-import { ComputedRef, Ref, VNode, VNodeArrayChildren } from 'vue';
 export type RefType<T> = ComputedRef<T> | Ref<T>;
 export type RefUndefined<T> = RefType<T | undefined>;
 export type RefOrNormal<T> = RefType<T> | T;
@@ -868,7 +568,5 @@ export type RawChildren = string | number | boolean | VNode | VNodeArrayChildren
 export type RawSlots = { [name: string]: unknown; $stable?: boolean; };
 
 // File: src/types/searchTypes.d.ts
-import { RefOrNormal } from './refTypes';
-import { SearchItem, SearchListValue } from '@dxtmisha/functional-basic';
 export type SearchListValueRef<T extends SearchItem> = RefOrNormal<SearchListValue<T>>;
 export type SearchListInput<T extends SearchItem> = SearchListValueRef<T> | (() => SearchListValueRef<T>);

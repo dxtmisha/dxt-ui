@@ -1,11 +1,15 @@
 <script setup lang="ts">
 defineProps<{
+  label?: string
   value?: any
 }>()
 </script>
 
 <template>
-  <div class="demo-value d1-font--bodyMedium">Value: {{ value }}</div>
+  <div class="demo-value d1-font--bodyMedium">
+    {{ label ?? 'Value' }}:
+    <b>{{ value }}</b>
+  </div>
 </template>
 
 <style lang="scss">

@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.10] - 2026-06-17
+
+### Fixed
+- **GeoInstance**: Cleaned up internal debug console logs from `getItem` and `getCookie` methods.
+
+## [1.3.9] - 2026-06-17
+
+### Changed / Improved
+- **GeoInstance**: Extended `setValueDefault` to accept functional callbacks: `code?: string | (() => string)`. Dynamic resolution via `executeFunction` is performed when fallback to the default code occurs.
+- **Geo**: Updated static `setValueDefault` signature to accept a function parameter `string | (() => string)`.
+
 ## [1.3.8] - 2026-06-16
 
 ### Added

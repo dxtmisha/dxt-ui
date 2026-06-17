@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.13.5] - 2026-06-17
+
+### Changed / Improved
+- **GeoRef**: Refactored static getters (`getCountry`, `getLanguage`, `getStandard`, `getFirstDay`) to use request-isolated computed references via `ServerStorage.get`. This isolates their reactive state per request, resolving potential cross-request state pollution during SSR.
+
+## [1.13.4] - 2026-06-17
+
+### Added
+- **GeoRef**: Added static reactive `setValueDefault` method to configure the default country/language code.
+- **dxtFunctionalPlugin**: Extended `location` configuration option to accept `string | (() => string)` callbacks, registering the default fallback location dynamically during Vue application initialization.
+
 ## [1.13.3] - 2026-06-16
 
 ### Added

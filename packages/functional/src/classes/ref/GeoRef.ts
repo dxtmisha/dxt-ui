@@ -16,11 +16,6 @@ import {
  * Реактивный класс для работы с географическими данными.
  */
 export class GeoRef {
-  private static readonly country = computed<string>(() => this.get().value.country)
-  private static readonly language = computed<string>(() => this.get().value.language)
-  private static readonly standard = computed<string>(() => this.get().value.standard)
-  private static readonly firstDay = computed<string>(() => this.get().value.firstDay)
-
   /**
    * Information about the current country.
    *
@@ -41,7 +36,10 @@ export class GeoRef {
    * @returns reactive string with the current country code/ реактивная строка с кодом текущей страны
    */
   static getCountry(): ComputedRef<string> {
-    return this.country
+    return ServerStorage.get(
+      '__ui:geo-ref-country__',
+      () => computed<string>(() => this.get().value.country)
+    )
   }
 
   /**
@@ -51,7 +49,10 @@ export class GeoRef {
    * @returns reactive string with the current language code/ реактивная строка с кодом текущего языка
    */
   static getLanguage(): ComputedRef<string> {
-    return this.language
+    return ServerStorage.get(
+      '__ui:geo-ref-language__',
+      () => computed<string>(() => this.get().value.language)
+    )
   }
 
   /**
@@ -62,7 +63,10 @@ export class GeoRef {
    * реактивная строка с полным форматом стандарта локали
    */
   static getStandard(): ComputedRef<string> {
-    return this.standard
+    return ServerStorage.get(
+      '__ui:geo-ref-standard__',
+      () => computed<string>(() => this.get().value.standard)
+    )
   }
 
   /**
@@ -73,7 +77,10 @@ export class GeoRef {
    * реактивная строка, представляющая первый день недели
    */
   static getFirstDay(): ComputedRef<string> {
-    return this.firstDay
+    return ServerStorage.get(
+      '__ui:geo-ref-first-day__',
+      () => computed<string>(() => this.get().value.firstDay)
+    )
   }
 
   /**
@@ -94,7 +101,7 @@ export class GeoRef {
    * Устанавливает значение по умолчанию для кода страны.
    * @param code default code value / значение кода по умолчанию
    */
-  static setValueDefault(code?: string): void {
+  static setValueDefault(code?: string | (() => string)): void {
     Geo.setValueDefault(code)
     this.get().value = Geo.getItem()
   }

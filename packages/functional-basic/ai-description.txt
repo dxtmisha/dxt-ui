@@ -1,14 +1,18 @@
-The library is a comprehensive, isomorphic utility suite for web applications, providing structured abstractions for network communication, state and storage management, and internationalization.
+This library is a comprehensive, isomorphic utility toolkit for TypeScript applications, focusing on data management, HTTP communication, internationalization, and DOM manipulation. 
 
-Core Purpose:
-It serves as a unified SDK for managing API interaction, client/server-side data storage, application state, and localization in a framework-agnostic manner.
+1. Core Purpose:
+The library acts as a centralized foundation for common application tasks. It provides a robust HTTP client (Fetch wrapper with built-in retries, caching, and hydration support), state management (localized storage, cookie handling, URL hash synchronization), internationalization (translation management, date/time/currency formatting), and DOM utility functions (event listeners, scroll management, meta tag management).
 
-Usage Scenarios:
-- API Orchestration: Use the Api class and its associated helpers for centralized HTTP requests, response handling, error management, and request lifecycle hooks (preparation/end).
-- Data Persistence: Utilize wrappers for browser storage (LocalStorage/SessionStorage), Cookies, and URL state (Hash), including SSR-safe data synchronization.
-- Localization: Implement translation management (Translate) and internationalization (Geo, Datetime) for formatting dates, numbers, and currencies based on user locale.
-- DOM and Event Management: Use EventItem for lifecycle-aware event listeners (with built-in performance optimizations like resize and scroll-sync) and Loading/Icons modules for UI state management.
-- Meta Tag Management: Handle SEO and Open Graph/Twitter meta tags dynamically.
+2. Usage Scenarios:
+- API Orchestration: Use the Api/ApiInstance classes for unified fetch requests, centralized error handling (ErrorCenter), and automatic response caching.
+- State Synchronization: Essential for SSR-compliant state management (ServerStorage) and syncing application state with URL hashes or Cookies.
+- Localization: Indispensable for applications requiring multi-language support (Translate), dynamic date/time formatting (GeoIntl, Datetime), and locale-aware number/currency formatting.
+- DOM & Event Management: Use EventItem for lifecycle-safe event listeners (with automatic cleanup) and scroll/resize optimizations; use Meta and its derivatives for SEO and social media metadata management.
+- Data Processing: Highly useful for search-as-you-type implementations (SearchList) and complex data transformations (Formatters).
 
-Integration Context:
-The library is designed for modular inclusion in web stacks. It is particularly valuable for applications requiring SSR (Server-Side Rendering) as it provides hydration helpers (ApiHydration, ServerStorage) and DOM-agnostic fallbacks. Its classes are often singleton-based, meaning it acts as a global or request-scoped controller for infrastructure tasks that would otherwise require manual implementation of boilerplate logic. An AI should study its API when implementing data-fetching services, global configuration providers, or cross-browser storage layers.
+3. Integration Context:
+- SSR & Hydration: The library includes specialized handlers (ApiHydration, ServerStorage, getHydrationData) designed to bridge the gap between server-rendered state and client-side execution, preventing hydration mismatches.
+- Architecture: It follows a singleton-friendly patterns (e.g., Api.getItem(), Geo.getObject()) that facilitate global access to state and configurations across disparate modules without tight coupling.
+- Type Safety: Extensively typed (TypeScript), providing full autocompletion and structural validation for search, API, translation, and formatting configurations.
+
+An AI assistant should study this library when tasked with building enterprise-grade, localized web applications that require standardized API communication, cross-browser DOM event management, or robust SSR data state serialization.

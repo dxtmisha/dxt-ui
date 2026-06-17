@@ -1,3 +1,4 @@
+import { executeFunction } from '../functions/executeFunction'
 import { isDomRuntime } from '../functions/isDomRuntime'
 import { isSelected } from '../functions/isSelected'
 
@@ -43,7 +44,7 @@ export class GeoInstance {
    * Value by default for the country code/
    * Значение по умолчанию для кода страны
    */
-  private valueDefault?: string
+  private valueDefault?: string | (() => string)
 
   /**
    * Detailed data about the current country/
@@ -319,7 +320,7 @@ export class GeoInstance {
    * Устанавливает значение по умолчанию для кода страны.
    * @param code default code value / значение кода по умолчанию
    */
-  setValueDefault(code?: string) {
+  setValueDefault(code?: string | (() => string)) {
     this.valueDefault = code
 
     this.location = this.findLocation()
@@ -346,7 +347,7 @@ export class GeoInstance {
   private findLocation(): string {
     return this.findLocationDom()
       || this.getCookie().get()
-      || this.valueDefault
+      || executeFunction(this.valueDefault)
       || 'en-GB'
   }
 

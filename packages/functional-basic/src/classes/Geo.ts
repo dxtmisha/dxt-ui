@@ -217,7 +217,7 @@ export class Geo {
    * Устанавливает значение по умолчанию для кода страны.
    * @param code default code value / значение кода по умолчанию
    */
-  static setValueDefault(code?: string) {
+  static setValueDefault(code?: string | (() => string)) {
     this.getObject().setValueDefault(code)
   }
 }

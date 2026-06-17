@@ -39,7 +39,7 @@ export interface FunctionalPluginOptions {
    * Default geographical location or language code /
    * Код географического местоположения или языка по умолчанию
    */
-  location?: string
+  location?: string | (() => string)
 
   /**
    * Suffix to be appended to all page titles /
