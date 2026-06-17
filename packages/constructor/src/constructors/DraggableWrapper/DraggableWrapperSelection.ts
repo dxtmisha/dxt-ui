@@ -79,6 +79,29 @@ export class DraggableWrapperSelection {
   }
 
   /**
+   * Resets styles of all selected elements in the stack.
+   *
+   * Сбрасывает стили всех выбранных элементов в стеке.
+   */
+  stop(): void {
+    const selection = this.item.getSelection().get()
+
+    if (selection) {
+      selection.forEach((item) => {
+        item.style.removeProperty(this.property.width)
+        item.style.removeProperty(this.property.height)
+        item.style.removeProperty(this.property.rotate)
+
+        item.classList.remove(
+          this.classes.list.active,
+          this.classes.list.selection,
+          this.classes.list.selectionMore
+        )
+      })
+    }
+  }
+
+  /**
    * Updates CSS property variables and classes for multiselection item.
    *
    * Обновляет переменные свойств CSS и классы для выбранного элемента множественного выбора.

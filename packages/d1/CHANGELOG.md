@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.71.0] - 2026-06-17
+
+### Added
+- **D1DraggableWrapper**: Introduced the styled UI component wrapper (`D1DraggableWrapper`) for the core draggable list reordering constructor:
+  - Standardized slot bindings (`className`, `classClick`, `classPosition`) for draggable child items.
+  - Configured custom design tokens in `properties.json` for active and returning item outlines and opacity.
+  - Styled active/dragged states (`&__item--active`, `&__item--return`) in `styleToken.scss` using theme-specific variables and mixins (`ui.outlineOpacity`, `ui.outlineColor`).
+  - Added comprehensive interactive stories (`D1DraggableWrapper.stories.ts`), MDX documentation (`D1DraggableWrapper.mdx`), properties schemas, and wiki metadata configurations.
+  - Created `D1DraggableWrapperAiWiki.vue` containing interactive rendering previews of list reordering with grab handles.
+
 ## [0.70.0] - 2026-06-08
 
 ### Added

@@ -1,5 +1,6 @@
-import { DraggableWrapperClassesData } from './DraggableWrapperClassesData'
 import type { ImageCoordinator } from '@dxtmisha/functional-basic'
+
+import { DraggableWrapperClassesData } from './DraggableWrapperClassesData'
 
 /**
  * Class managing client interaction coordinates and dragging states.

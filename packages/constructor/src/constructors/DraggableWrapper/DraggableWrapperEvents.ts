@@ -123,7 +123,6 @@ export class DraggableWrapperEvents {
    * @param event transition event / событие перехода
    */
   readonly onTransitionend = (event: TransitionEvent): void => {
-    console.log('onTransitionend', event.propertyName)
     if (
       event.propertyName === 'transform'
       || event.propertyName === 'left'
@@ -176,6 +175,7 @@ export class DraggableWrapperEvents {
   protected stop(): void {
     if (!this.delay.stop()) {
       this.position.stop()
+      this.selection.stop()
     }
 
     this.removeListeners()
@@ -189,9 +189,9 @@ export class DraggableWrapperEvents {
   protected addListeners(): void {
     window.addEventListener('mousemove', this.handleMove)
     window.addEventListener('mouseup', this.handleMove)
-    window.addEventListener('touchmove', this.handleMove)
-    window.addEventListener('touchend', this.handleMove)
-    window.addEventListener('touchcancel', this.handleMove)
+    window.addEventListener('touchmove', this.handleMove, { passive: false })
+    window.addEventListener('touchend', this.handleMove, { passive: false })
+    window.addEventListener('touchcancel', this.handleMove, { passive: false })
   }
 
   /**

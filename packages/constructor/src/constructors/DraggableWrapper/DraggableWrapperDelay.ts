@@ -5,7 +5,7 @@ import type { DraggableWrapperProps } from './props'
  * Вспомогательный класс для управления таймером задержки начала перетаскивания
  */
 export class DraggableWrapperDelay {
-  protected timeout?: any
+  protected timeout?: ReturnType<typeof setTimeout>
 
   /**
    * Constructor

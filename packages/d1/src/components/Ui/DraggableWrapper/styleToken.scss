@@ -11,6 +11,21 @@
   // Стили из токенов
   // :style [!] System label / Системная метка
   & {
+    &__item {
+      &--active {
+        opacity: var(--d1-sys-opacity-surface-medium);
+        
+        @include ui.outlineOpacity(#{var(--d1-sys-opacity-outline)});
+        
+        outline-width: var(--d1-ref-spacing-1);
+        outline-style: solid;
+        @include ui.outlineColor(#{var(--d1-sys-palette-primary)});
+      }
+      
+      &--return {
+        outline-width: 0;
+      }
+    }
   }
   // :style [!] System label / Системная метка
 

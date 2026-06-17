@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.71.0] - 2026-06-17
+
+### Added
+- **DraggableWrapper**: Introduced a new component constructor (`DraggableWrapper`) to manage draggable list/grid reordering logic. Key capabilities include:
+  - Coordinate-based dragging and reordering calculations.
+  - Decomposition of dragging logic into specialized helper classes: `DraggableWrapperClassesData` (CSS classes/IDs), `DraggableWrapperClient` (dragging coordinates), `DraggableWrapperDelay` (drag timer), `DraggableWrapperEmit` (event triggers), `DraggableWrapperEvents` (window event listeners), `DraggableWrapperItem` (elements model), `DraggableWrapperItemActive` (active dragging elements), `DraggableWrapperItemFocus` (focus management), `DraggableWrapperItemGo` (drop destination spot), `DraggableWrapperItemSelection` (selection tracking), `DraggableWrapperPosition` (position updates), `DraggableWrapperSelection` (multi-item stack selection), and `DraggableWrapperSquare` (layout spacer placeholder).
+  - Support for multi-item (stack) selection and drag-and-drop.
+  - Drop event parameters (`DraggableWrapperEventParameters`) mapping active elements, drop targets, and selection details.
+  - Helper method `toNewPosition` to compute the newly reordered array of items after dropping.
+  - Bilingual (EN/RU) JSDoc/TSDoc API annotations.
+
+### Changed / Improved
+- **DraggableWrapper**: Reorganized and decomposed drag-and-drop algorithms to improve performance and code readability.
+- **DraggableWrapper**: Added a `stop()` method to `DraggableWrapperSelection` to reset CSS properties and state classes (`--selection`, `--selectionMore`) of all items in the stack upon drag completion.
+- **DraggableWrapper**: Configured window-level touch event listeners to be non-passive (`{ passive: false }`) to reliably allow preventing default browser touch action scrolling during drag operations.
+- **DraggableWrapper**: Optimized CSS/SCSS transitions, active/selection styles, set `z-index: -1` and `border-radius: inherit` on base pseudo-elements, and renamed selection class selectors (`--selection` and `--selectionMore`).
+
 ## [0.70.0] - 2026-06-08
 
 ### Added

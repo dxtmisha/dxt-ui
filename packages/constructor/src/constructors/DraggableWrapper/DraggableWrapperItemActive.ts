@@ -1,5 +1,6 @@
 import { ref } from 'vue'
 import type { ImageCoordinator } from '@dxtmisha/functional-basic'
+
 import { DraggableWrapperClassesData } from './DraggableWrapperClassesData'
 
 /**

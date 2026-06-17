@@ -135,12 +135,13 @@ export class DraggableWrapper {
     values: T[],
     parameters: DraggableWrapperEventParameters
   ): T[] {
-    const { valueSelection, valueTo, before } = parameters
+    const { valueTo, valueSelection, before } = parameters
     const items = values.filter(item => item.value !== undefined && valueSelection.includes(String(item.value)))
     const newValues = values.filter(item => item.value === undefined || !valueSelection.includes(String(item.value)))
 
     if (valueTo !== undefined) {
       const idx = newValues.findIndex(item => String(item.value) === valueTo)
+
       if (idx !== -1) {
         newValues.splice(idx + (before ? 0 : 1), 0, ...items)
       } else {

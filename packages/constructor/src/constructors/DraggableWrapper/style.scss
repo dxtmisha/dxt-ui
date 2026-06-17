@@ -11,8 +11,11 @@
     &::before {
       display: none;
       @include ui.absolute();
+      z-index: -1;
 
-      transition-property: background-color, box-shadow, opacity, transform;
+      border-radius: inherit;
+
+      transition-property: background-color, box-shadow, opacity, outline, transform;
       transition-duration: ui.v('d.sys.transitionDuration.standard');
       transition-timing-function: ui.v('d.sys.transitionFunction.standard');
     }
@@ -29,6 +32,7 @@
       width: ui.v("??sys-item-width");
       height: ui.v("??sys-item-height");
 
+      transform: scale(1.08);
       transition-property: box-shadow, opacity, transform;
       transition-duration: ui.v('d.sys.transitionDuration.standard');
       transition-timing-function: ui.v('d.sys.transitionFunction.standard');
@@ -38,16 +42,13 @@
       }
     }
 
-    &.cp-selection {
-      z-index: calc(var(--sys-index-xl) - 1);
-      box-shadow: var(--sys-shadow-lg);
-      opacity: var(--sys-opacity-surface-medium);
-      transform: scale(1.08) rotate(ui.v("??sys-item-rotate"));
+    &--selection {
+      transform: scale(1.08) rotate(ui.v('??sys-item-rotate'));
       transform-origin: 60% 40%;
       transition-property: none;
     }
 
-    &.cp-selection-more {
+    &--selectionMore {
       opacity: 0;
     }
 
@@ -55,7 +56,8 @@
       top: #{ui.v('??sys-client-y')};
       left: #{ui.v('??sys-client-x')};
 
-      transition-property: box-shadow, left, transform, top;
+      transform: unset;
+      transition-property: box-shadow, left, outline, transform, top;
       transition-duration: ui.v('d.sys.transitionDuration.standard');
       transition-timing-function: ui.v('d.sys.transitionFunction.standard');
 

@@ -1,9 +1,10 @@
 import type { ImageCoordinator } from '@dxtmisha/functional-basic'
+
 import { DraggableWrapperClassesData } from './DraggableWrapperClassesData'
 import { DraggableWrapperClient } from './DraggableWrapperClient'
+import { DraggableWrapperEmit } from './DraggableWrapperEmit'
 import { DraggableWrapperItem } from './DraggableWrapperItem'
 import { DraggableWrapperSquare } from './DraggableWrapperSquare'
-import { DraggableWrapperEmit } from './DraggableWrapperEmit'
 
 /**
  * Class coordinating dragging movement, positions, drop spots, and element reorder.

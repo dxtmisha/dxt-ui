@@ -1,7 +1,7 @@
 import type { ConstrEmit } from '@dxtmisha/functional'
 
-import type { DraggableWrapperItem } from './DraggableWrapperItem'
 import type { DraggableWrapperClient } from './DraggableWrapperClient'
+import type { DraggableWrapperItem } from './DraggableWrapperItem'
 import type { DraggableWrapperSquare } from './DraggableWrapperSquare'
 
 import type { DraggableWrapperEventParameters } from './basicTypes'

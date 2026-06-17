@@ -1,0 +1,19 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+## Custom Spacer Classes (classesSquare)
+
+The `classesSquare` property allows you to specify custom CSS classes to be applied directly to the placeholder spacer element (square) when it is rendered:
+
+- **Spacer Styling** - customize borders, background colors, or shadow effects for the active insertion gap
+- **Responsive Layout** - supply grid or spacing classes to perfectly align the spacer size with adjacent items
+- **Array/String Support** - accepts either a single string of space-separated class names or an array of strings
+
+By default, the placeholder element copies the base classes of the element currently hovered. Classes provided via `classesSquare` are appended to extend the class list.
+
+<Source
+    code={`
+<DraggableWrapper classesSquare="custom-spacer border-dashed" />
+<DraggableWrapper :classesSquare="['custom-spacer', 'bg-light']" />
+  `}
+    language="html"
+/>

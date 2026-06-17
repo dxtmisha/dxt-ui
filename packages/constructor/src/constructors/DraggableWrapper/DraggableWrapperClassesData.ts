@@ -1,8 +1,8 @@
 import type { Ref } from 'vue'
 import { getElementId } from '@dxtmisha/functional'
+import type { ImageCoordinator } from '@dxtmisha/functional-basic'
 
 import type { DraggableWrapperClassesList } from './basicTypes'
-import type { ImageCoordinator } from '@dxtmisha/functional-basic'
 
 /**
  * Class managing draggable component CSS classes, identifier, and DOM queries.
@@ -211,20 +211,20 @@ export class DraggableWrapperClassesData {
 
     return {
       body: `${className}__blockSelection`,
+      show: `${className}__square--show`,
 
       active: `${className}__item--active`,
       selection: `${className}__item--selection`,
       selectionMore: `${className}__item--selection-more`,
       go: `${className}__item--go`,
 
+      selected: `${className}__item--selected`,
+      dragged: `${className}__item--dragged`,
       return: `${className}__item--return`,
 
       click: `${className}__click`,
-      drop: `${className}__drop`,
       position: `${className}__position`,
-      show: `${className}__square--show`,
-      dragged: `${className}__item--dragged`,
-      selected: `${className}__item--selected`
+      drop: `${className}__drop`
     }
   }
 }

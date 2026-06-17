@@ -1,9 +1,9 @@
 import { forEach } from '@dxtmisha/functional'
 
 import { DraggableWrapperItemActive } from './DraggableWrapperItemActive'
+import { DraggableWrapperItemFocus } from './DraggableWrapperItemFocus'
 import { DraggableWrapperItemGo } from './DraggableWrapperItemGo'
 import { DraggableWrapperItemSelection } from './DraggableWrapperItemSelection'
-import { DraggableWrapperItemFocus } from './DraggableWrapperItemFocus'
 
 /**
  * Orchestrator model for tracking active, selected, and drop target items.

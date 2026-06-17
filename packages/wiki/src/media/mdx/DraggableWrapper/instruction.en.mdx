@@ -1,0 +1,33 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+## Usage Guide (Instruction)
+
+To implement drag-and-drop sorting, wrap your list container in `DraggableWrapper` and structure the markup inside its default slot.
+
+The destructured slot properties (`className`, `classClick`, `classPosition`, `classDrop`) must be applied to your HTML elements as follows:
+
+- **className** - binds draggable elements and drop zones to the wrapper logic and applies shift styles. **Mandatory** to apply to all draggable list elements and drop targets.
+- **classClick** - defines the drag handle/trigger area. Add this class to the handle element (e.g. icon) that initiates the drag action. If the entire item should be draggable, apply this class directly to the list item itself.
+- **classPosition** - marks sorting positions. Used by the logic to compute where to insert the placeholder spacer during drag. Must be applied to all sorting items.
+- **classDrop** - marks drop-sensitive target containers (e.g. a trash bin or external drop panel) that accept dropped elements.
+- **data-value** - a **mandatory** attribute with a unique string value that must be set on each draggable element and drop target. Used by the library to identify elements in `position` and `drop` events.
+
+
+<Source
+    code={`
+<DraggableWrapper
+  @position="onPositionChange"
+  @drop="onItemDropped"
+>
+  <template #default="{ className, classClick, classPosition, classDrop }">
+    <div class="list">
+      <div :class="['item', className, classPosition]" data-value="item-1">
+        <span :class="classClick">☰</span>
+        Item 1
+      </div>
+    </div>
+  </template>
+</DraggableWrapper>
+  `}
+    language="html"
+/>

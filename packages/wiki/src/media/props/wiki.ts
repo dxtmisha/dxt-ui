@@ -30,6 +30,7 @@ import { wikiCheckbox } from './wikiCheckbox'
 import { wikiChip } from './wikiChip'
 import { wikiChipGroup } from './wikiChipGroup'
 import { wikiDialog } from './wikiDialog'
+import { wikiDraggableWrapper } from './wikiDraggableWrapper'
 import { wikiField } from './wikiField'
 import { wikiGridItem } from './wikiGridItem'
 import { wikiIcon } from './wikiIcon'
@@ -90,6 +91,7 @@ export const wiki: StorybookArgsToList = {
   ...wikiChip,
   ...wikiChipGroup,
   ...wikiDialog,
+  ...wikiDraggableWrapper,
   ...wikiField,
   ...wikiGridItem,
   ...wikiIcon,

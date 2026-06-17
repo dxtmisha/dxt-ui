@@ -26,6 +26,7 @@ import { wikiMdxClientOnly } from './ClientOnly/wikiMdxClientOnly'
 import { wikiMdxContainer } from './Container/wikiMdxContainer'
 import { wikiMdxDialog } from './Dialog/wikiMdxDialog'
 import { wikiMdxDivider } from './Divider/wikiMdxDivider'
+import { wikiMdxDraggableWrapper } from './DraggableWrapper/wikiMdxDraggableWrapper'
 import { wikiMdxDummy } from './Dummy/wikiMdxDummy'
 import { wikiMdxField } from './Field/wikiMdxField'
 import { wikiMdxFieldCounter } from './FieldCounter/wikiMdxFieldCounter'
@@ -104,6 +105,7 @@ export const wikiMdx: StorybookComponentsMdx = [
   wikiMdxContainer,
   wikiMdxDialog,
   wikiMdxDivider,
+  wikiMdxDraggableWrapper,
   wikiMdxDummy,
   wikiMdxField,
   wikiMdxFieldCounter,

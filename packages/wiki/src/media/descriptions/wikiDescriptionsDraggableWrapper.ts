@@ -61,12 +61,27 @@ export const wikiDescriptionsDraggableWrapper: StorybookComponentsDescriptionIte
   documentation: {
     body: `
 <StorybookDescriptions componentName={'DraggableWrapper'} type={'draggableWrapper'}/>
+<StorybookDescriptions componentName={'DraggableWrapper'} type={'instruction'}/>
+
+<StorybookDescriptions componentName={'DraggableWrapper'} type={'classesSquare'}/>
     `,
     slots: `
 <StorybookDescriptions componentName={'Slot'} type={'default'}/>
     `
   },
   ai: {
+    render: `
+<div :class="classDemo.item">
+  <DraggableWrapper v-bind="args">
+    <template #default="{ className, classClick, classPosition }">
+      <div v-for="item in 5" :key="item" :class="[className, classPosition]" :data-value="item">
+        <span :class="classClick">☰</span>
+        Item {{ item }}
+      </div>
+    </template>
+  </DraggableWrapper>
+</div>
+    `,
     description: `
 A logic wrapper component providing drag-and-drop sorting and reordering capabilities for lists or grid elements. Calculates dynamic layouts, active selections, placeholder spacers, and manages custom transition classes and event dispatches.
     `
