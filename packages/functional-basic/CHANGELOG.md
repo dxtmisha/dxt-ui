@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.11] - 2026-06-18
+
+### Changed / Improved
+- **ErrorCenterHandler**: Integrated server-side error stack tracing (`console.trace`) when logging causes in non-browser (SSR) environments.
+
 ## [1.3.10] - 2026-06-17
 
 ### Fixed

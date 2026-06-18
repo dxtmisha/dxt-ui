@@ -1,3 +1,4 @@
+import { isDomRuntime } from '../functions/isDomRuntime'
 import type { ErrorCenterCauseItem, ErrorCenterGroup, ErrorCenterHandlerCallback, ErrorCenterHandlerItem, ErrorCenterHandlerList } from '../types/errorCenter'
 
 /**
@@ -118,7 +119,12 @@ export class ErrorCenterHandler {
   ): this {
     console.error(`Error Center: ${cause.code}`)
     console.error('Error Center/message: ', cause.message)
-    console.error('Error Center/details', cause.details)
+    console.error('Error Center/details: ', cause.details)
+
+    if (!isDomRuntime()) {
+      const trace = new Error().stack
+      console.error('Error Center/trace: ', trace)
+    }
 
     return this
   }

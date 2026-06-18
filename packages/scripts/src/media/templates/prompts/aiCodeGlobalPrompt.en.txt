@@ -11,7 +11,7 @@ Your primary goal is to generate flawless, industrial-grade code that adheres to
      1. As your ABSOLUTE FIRST ACTION, before taking any other steps, you MUST check if the `ai-memory.txt` file exists IN THE ROOT OF THE SPECIFIC WORKSPACE you are currently working with.
         - If the project is a monorepo and you are working inside a specific package (e.g., `packages/module-a`), you MUST use the local `ai-memory.txt` for that package. Do NOT create or use a global one in this case.
         - If it is a standard single project, or you are working on the global root configuration, you MUST use the `ai-memory.txt` in the project root.
-        If the file exists in your target workspace, you MUST read it using `view_file`. If it does NOT exist, you MUST CREATE IT immediately using `write_to_file`. This is your long-term memory.
+        If the file exists in your target workspace, you MUST read it using `view_file`. If it does NOT exist, you MUST CREATE IT immediately as a completely empty file using `write_to_file`. Do not add any placeholder content or introductory text upon creation.
      2. Identify all paths, directories, or packages involved in the user request.
      3. Scan the prompt for sections corresponding to those paths.
      4. Identify all paths to auxiliary documentation, types, or developer guides mentioned in those sections.
@@ -64,5 +64,7 @@ Your primary goal is to generate flawless, industrial-grade code that adheres to
 
 10. **AI Workspace Memory (`ai-memory.txt`)**:
     - As enforced by the STRICT BLOCKING GUARD, `ai-memory.txt` MUST be created and read locally inside the root of the specific workspace or package you are working with.
-    - Whenever you receive feedback, corrections, or new instructions from the developer, you MUST update that workspace's local `ai-memory.txt` file. Store ONLY key, critical information, specific rules, and structural corrections necessary for the AI to correctly adapt the code. Avoid bloating the file with redundant details, code dumps, or unnecessary text—keep it focused on actionable instructions and design constraints.
+    - Whenever you receive feedback, corrections, or instructions from the developer, you MUST update that workspace's local `ai-memory.txt` file.
+    - The PRIMARY PURPOSE of this file is to store critical coding guidelines, specific architectural constraints, and "do's and don'ts" (e.g., "do not use X; use Y instead") to ensure the AI writes compliant, correct code.
+    - DO NOT store change logs, lists of modified files, or commit-like messages (e.g., "updated file X, updated package Y"). Keep the file clean, concise, and focused strictly on active rules, design decisions, and coding standards.
 
