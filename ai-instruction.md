@@ -15,7 +15,7 @@
 #### Development Rules for AI:
 1.  **Purity & Atomicity**: Components must be minimal. All business logic must be extracted to **Composables**.
 2.  **Typing**: Strict TypeScript, no `any`. Mandatory usage of interfaces for Props and Emits.
-3.  **Documentation**: Use JSDoc/TSDoc formatted strictly according to the guidelines in [jdoc.txt](file:///Volumes/T7/Code/dxt-ui/ai-prompts/jdoc.txt). All comments must follow a mandatory bilingual standard (English and Russian):
+3.  **Documentation**: Use JSDoc/TSDoc formatted strictly according to the guidelines in [jdoc.md](file:///Volumes/T7/Code/dxt-ui/ai-prompts/jdoc.md). All comments must follow a mandatory bilingual standard (English and Russian):
     - **Classes/Functions/Methods**: Detailed multiline descriptions (English on top, Russian on bottom). Use `@param` and `@returns` with bilingual descriptions separated by ` / `.
     - **Interfaces, Types, Enums, and Properties**: Compact single line (or double line if long) with a forward slash separator: `/** English / Russian */`.
 4.  **Styles**: Use SCSS. Modifying the base library styles is strictly prohibited unless explicitly requested.
