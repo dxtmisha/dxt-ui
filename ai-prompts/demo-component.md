@@ -1,7 +1,7 @@
 To create a demo page for a specific component (e.g., Badge, Button, Checkbox) in the `demo` package, perform the following steps:
 
 ### 0. General Rules
-- **CRITICALLY IMPORTANT**: Always strictly follow the global rules and instructions described in the `ai-prompt.txt` file. This includes naming standards, Vue component implementation rules, and the use of SCSS mixins and tokens. **All rules and patterns listed in this document are strictly mandatory and must be followed without exception.**
+- **CRITICALLY IMPORTANT**: Always strictly follow the global rules and instructions described in the `ai-prompt.md` file. This includes naming standards, Vue component implementation rules, and the use of SCSS mixins and tokens. **All rules and patterns listed in this document are strictly mandatory and must be followed without exception.**
 - **Control Elements**: For page/state control and interactions, try to use only buttons.
 - **English-Only Content**: All textual content, labels, descriptions, and placeholder strings used inside demo pages must strictly be in English.
 - **Demo Isolation**: Each group (`D1Group`) represents an individual, self-contained demo. Do not create any global/general settings, controllers, or property toggle interfaces.

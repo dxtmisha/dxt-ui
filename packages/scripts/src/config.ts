@@ -81,17 +81,17 @@ export const UI_FILE_PACKAGE = 'package.json'
 export const UI_FILE_PROPERTY = 'properties.json'
 
 /** AI prompt description file name / Название файла с описанием промпта AI */
-export const UI_FILE_AI_PROMPT_DESCRIPTION = 'ai-description.txt'
+export const UI_FILE_AI_PROMPT_DESCRIPTION = 'ai-description.md'
 /** AI prompt info file name / Название файла с информацией промпта AI */
-export const UI_FILE_AI_PROMPT_INFO = 'ai-doc.txt'
+export const UI_FILE_AI_PROMPT_INFO = 'ai-doc.md'
 /** AI prompt instruction file name / Название файла с инструкцией промпта AI */
-export const UI_FILE_AI_PROMPT_INSTRUCTION = 'ai-instruction.txt'
+export const UI_FILE_AI_PROMPT_INSTRUCTION = 'ai-instruction.md'
 /** AI prompt result file name / Название файла с результатом промпта AI */
-export const UI_FILE_AI_PROMPT_PROMPT = 'ai-prompt.txt'
+export const UI_FILE_AI_PROMPT_PROMPT = 'ai-prompt.md'
 /** AI prompt types file name / Название файла с типами промпта AI */
-export const UI_FILE_AI_PROMPT_TYPES = 'ai-types.txt'
+export const UI_FILE_AI_PROMPT_TYPES = 'ai-types.md'
 /** AI prompt developer file name / Название файла для разработчика AI */
-export const UI_FILE_AI_PROMPT_DEVELOPER = 'ai-developer.txt'
+export const UI_FILE_AI_PROMPT_DEVELOPER = 'ai-developer.md'
 
 /** File name for storing the list of flags/ Название файла для хранения списка флагов */
 export const UI_FILE_NAME_FLAGS = 'flags'
@@ -117,9 +117,9 @@ export const UI_FILE_NAME_VITE_WORKERS = 'vite-workers.config.ts'
 export const UI_FILE_INDEX = 'index.ts'
 
 /** AI types file name / Название файла с типами AI */
-export const UI_FILE_AI_TYPES = 'ai-types.txt'
+export const UI_FILE_AI_TYPES = 'ai-types.md'
 /** AI description file name / Название файла с описанием AI */
-export const UI_FILE_AI_DESCRIPTION = 'ai-description.txt'
+export const UI_FILE_AI_DESCRIPTION = 'ai-description.md'
 /** Style SCSS file name / Название файла стилей SCSS */
 export const UI_FILE_STYLE_SCSS = 'style.scss'
 /** UI properties SCSS file name / Название файла свойств UI в SCSS */

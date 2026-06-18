@@ -39,9 +39,9 @@
   },
   "files": [
     "dist",
-    "ai-description.txt",
-    "ai-doc.txt",
-    "ai-types.txt",
+    "ai-description.md",
+    "ai-doc.md",
+    "ai-types.md",
     "CHANGELOG.md",
     "LICENSE",
     "package.json",

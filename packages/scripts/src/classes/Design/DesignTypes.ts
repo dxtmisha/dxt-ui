@@ -256,13 +256,14 @@ export class DesignTypes {
   protected async toAiDescription(content: string): Promise<string> {
     const generate = await this.toAi(
       content,
-      'Analyze the provided code and generate a highly technical, concise project overview for another AI coding assistant. '
-      + 'Your goal is to help the AI decide whether it needs to study this library to fulfill a user request. '
-      + 'The description must be objective, factual, and free of marketing fluff. '
+      'Analyze the provided code and generate a highly technical, structured, and concise project overview specifically designed for another AI coding assistant. '
+      + 'The description must enable the reading AI to immediately evaluate whether this library contains code, components, classes, or utilities useful for its current task, and when it is mandatory to read and analyze "ai-types.md". '
+      + 'The description must be objective, factual, precise, and free of marketing fluff. '
       + 'Include: '
-      + '1. Core Purpose: What is the primary function of this library? (e.g., UI component library, state management, utility for X). '
-      + '2. Usage Scenarios: In what specific cases and scenarios is this library indispensable? When should an AI study its API? '
-      + '3. Integration Context: How does it relate to other technologies in the stack (if evident)? '
+      + '1. Core Purpose: What is the primary technical function of this library? '
+      + '2. Key Expositions: What are the main classes, hooks, utilities, or components exposed by this project, and what specific tasks do they perform? '
+      + '3. Triggers for Studying ai-types.md: Under what specific conditions, keywords, or coding requirements is this library indispensable, making it mandatory for the AI to study its "ai-types.md" file? '
+      + '4. Integration Context: How does it connect with other technologies in the system stack? '
       + 'Ensure the structure is clean and enables immediate context retrieval. '
       + 'Return ONLY the resulting description text. No markdown, no labels like "Description:", no explanations. NOTHING but the pure content.'
     )

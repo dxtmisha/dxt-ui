@@ -227,7 +227,7 @@ ${this.readFile(UI_FILE_AI_PROMPT_DESCRIPTION)}
 
       return `
 ## Mandatory Study Before Development
-Before developing, modifying, or implementing any code for /${this.getPathString()}, you MUST first study the architectural rules and instructions located in the following file:
+As soon as you start working with this project (using any of its components/functionality, importing from it, or editing its code), you MUST read and study the architectural rules and instructions in this file as your absolute first action:
 '${this.getPathString()}/${UI_FILE_AI_PROMPT_DEVELOPER}'
       `.trim()
     }
@@ -269,7 +269,7 @@ ${this.readFile(UI_FILE_AI_PROMPT_INFO)}
 
       return `
 ## Project types: Essential for analysis
-This file contains the complete type definitions for the project. It is mandatory to study this file to perform an accurate analysis of the project structure and logic:
+This file contains the complete type definitions for the project. As soon as you start working with this project (using any of its components/functionality, importing from it, or editing its code), you MUST read and study this type definition file as your absolute first action to understand its API and structure:
 '${this.getPathString()}/${UI_FILE_AI_PROMPT_TYPES}'
       `.trim()
     }

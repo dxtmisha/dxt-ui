@@ -7,8 +7,8 @@ import {
 import { PropertiesFile } from '../Properties/PropertiesFile'
 import { LibraryAiPromptItem } from './LibraryAiPromptItem'
 
-import vuePromptText from '../../media/templates/prompts/aiCodeVuePrompt.en.txt?raw'
-import globalPromptText from '../../media/templates/prompts/aiCodeGlobalPrompt.en.txt?raw'
+import vuePromptText from '../../media/templates/prompts/aiCodeVuePrompt.en.md?raw'
+import globalPromptText from '../../media/templates/prompts/aiCodeGlobalPrompt.en.md?raw'
 
 const LIBRARY_AI_PROMPT_LIST_DIRS = [
   UI_MODULES

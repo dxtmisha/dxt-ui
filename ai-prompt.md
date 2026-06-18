@@ -22,10 +22,10 @@ Your primary goal is to generate flawless, industrial-grade code that adheres to
    - If any instructions, paths, or files are specified as located inside `node_modules/` or any other external/linked directory, you MUST first check if this package exists locally in the workspace (for example, under `packages/`). If it does exist locally, you MUST resolve the paths to the local workspace package directory and study/modify the local source files instead.
    - **CRITICAL FIRST STEP:** If any project, module, or instruction contains links or references to specific files (e.g. types, developer guides, descriptions), you MUST study all these referenced files as your absolute first action. As soon as you start working with a project, or notice that it is imported/used in the code you are working with, you must immediately read and study all these referenced files before doing any planning, proposing code changes, or writing code. This is mandatory and applies even if the files are located in `node_modules/` (always resolve them to the local workspace directory first if they exist locally).
     - **STRICT BLOCKING GUARD (CHRONOLOGICAL ORDER RULES):**
-      1. As your ABSOLUTE FIRST ACTION, before taking any other steps, you MUST check if the `ai-memory.txt` file exists in the specific package directory or the repository root depending on the files you are working on:
-         - If you are analyzing or modifying files that are located inside a package directory (e.g., any subdirectory under `packages/` like `packages/constructor/`, `packages/scripts/`, etc.), you MUST read/write the `ai-memory.txt` file ONLY within that specific package directory (e.g. `packages/constructor/ai-memory.txt` or `packages/scripts/ai-memory.txt`). You are strictly FORBIDDEN from using, reading, or writing the global `ai-memory.txt` in the repository root in this case.
-         - If and only if the files you are working with are root-level configurations or not part of any package under `packages/`, you may read/write the `ai-memory.txt` file in the repository root.
-         If the required local package-level `ai-memory.txt` (or root `ai-memory.txt` for root-level files) exists, you MUST read it using `view_file`. If it does NOT exist, you MUST CREATE IT immediately using `write_to_file` as an empty file with only a single newline (no placeholder text, comments, or intro text).
+      1. As your ABSOLUTE FIRST ACTION, before taking any other steps, you MUST check if the `ai-memory.md` file exists in the specific package directory or the repository root depending on the files you are working on:
+         - If you are analyzing or modifying files that are located inside a package directory (e.g., any subdirectory under `packages/` like `packages/constructor/`, `packages/scripts/`, etc.), you MUST read/write the `ai-memory.md` file ONLY within that specific package directory (e.g. `packages/constructor/ai-memory.md` or `packages/scripts/ai-memory.md`). You are strictly FORBIDDEN from using, reading, or writing the global `ai-memory.md` in the repository root in this case.
+         - If and only if the files you are working with are root-level configurations or not part of any package under `packages/`, you may read/write the `ai-memory.md` file in the repository root.
+         If the required local package-level `ai-memory.md` (or root `ai-memory.md` for root-level files) exists, you MUST read it using `view_file`. If it does NOT exist, you MUST CREATE IT immediately using `write_to_file` as an empty file with only a single newline (no placeholder text, comments, or intro text).
      2. Identify all paths, directories, or packages involved in the user request.
      3. Scan the prompt for sections corresponding to those paths.
      4. Identify all paths to auxiliary documentation, types, or developer guides mentioned in those sections.
@@ -76,10 +76,10 @@ Your primary goal is to generate flawless, industrial-grade code that adheres to
    - Avoid guessing, improvisation, or performing any unrequested or extra actions.
    - Strictly adhere to the plan, checklists, and execution steps.
 
-10. **AI Workspace Memory (`ai-memory.txt`)**:
-    - As enforced by the STRICT BLOCKING GUARD, `ai-memory.txt` MUST be created and read locally inside the root of the specific package you are working with (e.g., `packages/constructor/ai-memory.txt` for code in `packages/constructor`).
-    - Writing or reading `ai-memory.txt` in the repository root when working on code inside a package is a critical violation of these rules.
-    - Whenever you receive feedback, corrections, or instructions from the developer, you MUST update that specific package's local `ai-memory.txt` file.
+10. **AI Workspace Memory (`ai-memory.md`)**:
+    - As enforced by the STRICT BLOCKING GUARD, `ai-memory.md` MUST be created and read locally inside the root of the specific package you are working with (e.g., `packages/constructor/ai-memory.md` for code in `packages/constructor`).
+    - Writing or reading `ai-memory.md` in the repository root when working on code inside a package is a critical violation of these rules.
+    - Whenever you receive feedback, corrections, or instructions from the developer, you MUST update that specific package's local `ai-memory.md` file.
     - The PRIMARY PURPOSE of this file is to store critical coding guidelines, specific architectural constraints, and "do's and don'ts" (e.g., "do not use X; use Y instead") to ensure the AI writes compliant, correct code.
     - DO NOT store change logs, lists of modified files, or commit-like messages (e.g., "updated file X, updated package Y"). Keep the file clean, concise, and focused strictly on active rules, design decisions, and coding standards.
 
@@ -132,12 +132,12 @@ All components of the final design system inherit from this library. You can use
 WARNING: Do NOT import or use anything from this library directly in your code! Use only the ready-made global components of your design system (e.g., D1).
 
 ## Project types: Essential for analysis
-This file contains the complete type definitions for the project. It is mandatory to study this file to perform an accurate analysis of the project structure and logic:
-'node_modules/@dxtmisha/constructor/ai-types.txt'
+This file contains the complete type definitions for the project. As soon as you start working with this project (using any of its components/functionality, importing from it, or editing its code), you MUST read and study this type definition file as your absolute first action to understand its API and structure:
+'node_modules/@dxtmisha/constructor/ai-types.md'
 
 ## Mandatory Study Before Development
-Before developing, modifying, or implementing any code for /node_modules/@dxtmisha/constructor, you MUST first study the architectural rules and instructions located in the following file:
-'node_modules/@dxtmisha/constructor/ai-developer.txt'
+As soon as you start working with this project (using any of its components/functionality, importing from it, or editing its code), you MUST read and study the architectural rules and instructions in this file as your absolute first action:
+'node_modules/@dxtmisha/constructor/ai-developer.md'
 
 ---
 
@@ -199,8 +199,8 @@ All classes for working with text sizes are located in `node_modules/@dxtmisha/d
 3. Matching by properties: If there are no name matches, carefully study the CSS font properties in the mockup and find the most similar class in `d1-font.scss`.
 
 ## Project types: Essential for analysis
-This file contains the complete type definitions for the project. It is mandatory to study this file to perform an accurate analysis of the project structure and logic:
-'node_modules/@dxtmisha/d1/ai-types.txt'
+This file contains the complete type definitions for the project. As soon as you start working with this project (using any of its components/functionality, importing from it, or editing its code), you MUST read and study this type definition file as your absolute first action to understand its API and structure:
+'node_modules/@dxtmisha/d1/ai-types.md'
 
 ## Project screenshots: Visual reference
 The project includes the following screenshots that provide a visual reference for the project's design and functionality:
@@ -239,8 +239,8 @@ This library is designed to simplify the interaction between the UI part of a Fi
 Use this package when developing the visual part of a plugin to communicate with the Figma API via the `figma-code` layer.
 
 ## Project types: Essential for analysis
-This file contains the complete type definitions for the project. It is mandatory to study this file to perform an accurate analysis of the project structure and logic:
-'node_modules/@dxtmisha/figma/ai-types.txt'
+This file contains the complete type definitions for the project. As soon as you start working with this project (using any of its components/functionality, importing from it, or editing its code), you MUST read and study this type definition file as your absolute first action to understand its API and structure:
+'node_modules/@dxtmisha/figma/ai-types.md'
 
 ---
 
@@ -266,8 +266,8 @@ This library is intended for use on the main process side of a Figma plugin (Cod
 Use this package only in code that executes in the main process of the Figma plugin (main thread).
 
 ## Project types: Essential for analysis
-This file contains the complete type definitions for the project. It is mandatory to study this file to perform an accurate analysis of the project structure and logic:
-'node_modules/@dxtmisha/figma-code/ai-types.txt'
+This file contains the complete type definitions for the project. As soon as you start working with this project (using any of its components/functionality, importing from it, or editing its code), you MUST read and study this type definition file as your absolute first action to understand its API and structure:
+'node_modules/@dxtmisha/figma-code/ai-types.md'
 
 ---
 
@@ -293,8 +293,8 @@ This package provides Vue composables for convenient and reactive handling of Fi
 Use this package when developing Vue interfaces for Figma plugins to ensure seamless state synchronization between Figma and the UI.
 
 ## Project types: Essential for analysis
-This file contains the complete type definitions for the project. It is mandatory to study this file to perform an accurate analysis of the project structure and logic:
-'node_modules/@dxtmisha/figma-ref/ai-types.txt'
+This file contains the complete type definitions for the project. As soon as you start working with this project (using any of its components/functionality, importing from it, or editing its code), you MUST read and study this type definition file as your absolute first action to understand its API and structure:
+'node_modules/@dxtmisha/figma-ref/ai-types.md'
 
 ---
 
@@ -371,8 +371,8 @@ CHOOSING THE executeUse STRATEGY:
    - Key Features: Uses provide/inject. The first component in the tree that calls the hook becomes the "provider", others become consumers.
 
 ## Project types: Essential for analysis
-This file contains the complete type definitions for the project. It is mandatory to study this file to perform an accurate analysis of the project structure and logic:
-'node_modules/@dxtmisha/functional/ai-types.txt'
+This file contains the complete type definitions for the project. As soon as you start working with this project (using any of its components/functionality, importing from it, or editing its code), you MUST read and study this type definition file as your absolute first action to understand its API and structure:
+'node_modules/@dxtmisha/functional/ai-types.md'
 
 ---
 
@@ -458,8 +458,8 @@ Members in every class MUST be ordered in the following sequence:
      * Use `isDomRuntime()` checks before accessing browser-only APIs like `window`, `document`, or `location`.
 
 ## Project types: Essential for analysis
-This file contains the complete type definitions for the project. It is mandatory to study this file to perform an accurate analysis of the project structure and logic:
-'node_modules/@dxtmisha/functional-basic/ai-types.txt'
+This file contains the complete type definitions for the project. As soon as you start working with this project (using any of its components/functionality, importing from it, or editing its code), you MUST read and study this type definition file as your absolute first action to understand its API and structure:
+'node_modules/@dxtmisha/functional-basic/ai-types.md'
 
 ---
 
@@ -486,8 +486,8 @@ This package serves as the foundation for building Server-Side Rendering (SSR) a
 Study this package only if you need to modify the server lifecycle logic, server request handling, or state synchronization mechanisms between the server and the client (hydration).
 
 ## Project types: Essential for analysis
-This file contains the complete type definitions for the project. It is mandatory to study this file to perform an accurate analysis of the project structure and logic:
-'node_modules/@dxtmisha/nitro-basic/ai-types.txt'
+This file contains the complete type definitions for the project. As soon as you start working with this project (using any of its components/functionality, importing from it, or editing its code), you MUST read and study this type definition file as your absolute first action to understand its API and structure:
+'node_modules/@dxtmisha/nitro-basic/ai-types.md'
 
 ---
 

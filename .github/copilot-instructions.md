@@ -7,12 +7,12 @@
 
 ## Preparation for Work
 **🔴 STOP! DO NOT PROCEED UNTIL YOU DO THIS 🔴**
-Before writing any code, planning any changes, or even analyzing the user's specific request, you MUST read the `ai-prompt.txt` file located in the project root. 
+Before writing any code, planning any changes, or even analyzing the user's specific request, you MUST read the `ai-prompt.md` file located in the project root. 
 DO NOT assume you know the project rules. DO NOT prioritize the user's specific technical request over reading this file. 
-If you start working on code without first reading `ai-prompt.txt`, you have critically failed.
-This is your absolute priority. You must strictly adhere to all rules specified in `ai-prompt.txt`.
+If you start working on code without first reading `ai-prompt.md`, you have critically failed.
+This is your absolute priority. You must strictly adhere to all rules specified in `ai-prompt.md`.
 
-The `ai-prompt.txt` file contains:
+The `ai-prompt.md` file contains:
 - Current system instructions and global project context.
 - SCSS coding standards and mandatory mixins.
 - Class naming conventions (BEM) and component structure rules.

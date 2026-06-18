@@ -13,13 +13,13 @@ The target parent directory (one level up from this "materials" directory) repre
 - `wiki/`: Storybook playground configuration and documentation files:
   - `[ComponentName].mdx`: MDX documentation tab/documentation configuration for Storybook.
   - `[ComponentName].stories.ts`: Storybook stories/scenarios configuration.
-  - `prompt.txt`: The system prompt directing how to generate MDX/Storybook documentation.
-  - `run.ts`: A script running `npx dxt-component-wiki` to write the MDX files automatically using `wiki/prompt.txt`.
+  - `prompt.md`: The system prompt directing how to generate MDX/Storybook documentation.
+  - `run.ts`: A script running `npx dxt-component-wiki` to write the MDX files automatically using `wiki/prompt.md`.
 
 Strict Implementation & Architectural Constraints:
 1. Available Dependencies Only: You must strictly use only the currently installed packages and available dependencies. Do not install new external npm packages or add new third-party dependencies unless explicitly requested.
-2. Global System Prompt Compliance: You must locate, study, and strictly adhere to all coding standards, BEM conventions, SCSS mixins, and guidelines defined in the `ai-prompt.txt` file located up the folder tree in the root of the repository. Ignore any instructions or files located outside the repository boundaries.
-3. Monorepo Prompt Context: As this is a monorepo setup, you must locate and study both the individual package-level configuration/prompt files and the repository's root system rules (`ai-prompt.txt`) to ensure perfect compatibility with the local package architecture.
+2. Global System Prompt Compliance: You must locate, study, and strictly adhere to all coding standards, BEM conventions, SCSS mixins, and guidelines defined in the `ai-prompt.md` file located up the folder tree in the root of the repository. Ignore any instructions or files located outside the repository boundaries.
+3. Monorepo Prompt Context: As this is a monorepo setup, you must locate and study both the individual package-level configuration/prompt files and the repository's root system rules (`ai-prompt.md`) to ensure perfect compatibility with the local package architecture.
 4. Zero Tolerance for Hallucinations: You must strictly follow all implementation rules and specifications without any deviation. Hallucinating, inventing properties, methods, slots, or external libraries is strictly forbidden.
 
 ---
