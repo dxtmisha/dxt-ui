@@ -5,6 +5,11 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
+  { name: 'active', type: 'boolean' },
+  { name: 'classesSquare', type: 'string | string[]' },
+  { name: 'disabled', type: 'boolean' },
+  { name: 'selected', type: 'any[]' },
+  { name: 'tag', type: 'string' }
   // :propsList [!] System label / Системная метка
 ]
 

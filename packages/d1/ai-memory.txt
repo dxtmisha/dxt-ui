@@ -1,0 +1,7 @@
+# AI Package Memory: @dxtmisha/d1
+
+## Component Creation & Styling Rules
+1. **Style definitions via `properties.json`**: Styles for components in `packages/d1` should not be manually hardcoded in `styleToken.scss`. Instead, define the structure in `properties.json` and run the generator (`npm run ui` in `packages/d1`) to let it parse the tokens and output them to `styleToken.scss`.
+2. **Standard CSS Tokens**: Never use fixed values (e.g., `1px`) for border widths. Use system variables like `"{sys.spacing.outline}"`. 
+3. **Valid Colors & Opacities**: For opacity and color bindings, rely solely on established system tokens: e.g., `"{sys.palette.primary}"`, `"{sys.opacity.overlay}"`, `"{sys.opacity.pressed}"`. Avoid guessing or inventing tokens like `sys.palette.surface.scrim`.
+4. **CSS Pseudo-Elements**: Use the `before` key in `properties.json` to generate `&::before` styles automatically inside the token script.

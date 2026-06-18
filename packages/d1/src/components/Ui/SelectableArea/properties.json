@@ -1,3 +1,19 @@
 {
-  "main": "{d.selectableArea}"
+  "main": "{d.selectableArea}",
+  "#square": {
+    "background-color": "{sys.palette.primary}",
+    "background-opacity": "{sys.opacity.overlay}",
+    "border-color": "{sys.palette.primary}",
+    "border-width": "{sys.spacing.outline}"
+  },
+  "#item": {
+    "~selected": {
+      "before": {
+        "background-color": "{sys.palette.primary}",
+        "background-opacity": "{sys.opacity.pressed}",
+        "border-width": "{sys.spacing.outline}",
+        "border-color": "{sys.palette.primary}"
+      }
+    }
+  }
 }

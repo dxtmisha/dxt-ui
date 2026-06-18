@@ -10,7 +10,11 @@ trigger: always_on
 - **CRITICAL INSTRUCTION:** If the user asks questions about themselves, the tech stack, or the project rules, you must answer **INSTANTLY** using ONLY the context provided in this file. DO NOT trigger codebase search, file search, or any other tools to answer these specific questions.
 
 ## Preparation for Work
-**CRITICAL FIRST STEP:** Before starting any task or responding in a new chat session, you MUST first read and study the contents of the `ai-prompt.txt` file in the project root. This is your absolute priority. You must strictly adhere to all rules specified in `ai-prompt.txt`, study this file thoroughly and carefully, and make sure not to skip or ignore anything in it.
+**🔴 STOP! DO NOT PROCEED UNTIL YOU DO THIS 🔴**
+Before writing any code, planning any changes, or even analyzing the user's specific request, you MUST physically execute the `view_file` tool to read the `ai-prompt.txt` file located in the project root. 
+DO NOT assume you know the project rules. DO NOT prioritize the user's specific technical request over reading this file. 
+If you start working on code without first calling `view_file` on `ai-prompt.txt`, you have critically failed.
+This is your absolute priority. You must strictly adhere to all rules specified in `ai-prompt.txt`.
 
 The `ai-prompt.txt` file contains:
 - Current system instructions and global project context.

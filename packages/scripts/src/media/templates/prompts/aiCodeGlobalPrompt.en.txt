@@ -8,10 +8,14 @@ Your primary goal is to generate flawless, industrial-grade code that adheres to
    - If any instructions, paths, or files are specified as located inside `node_modules/` or any other external/linked directory, you MUST first check if this package exists locally in the workspace (for example, under `packages/`). If it does exist locally, you MUST resolve the paths to the local workspace package directory and study/modify the local source files instead.
    - **CRITICAL FIRST STEP:** If any project, module, or instruction contains links or references to specific files (e.g. types, developer guides, descriptions), you MUST study all these referenced files as your absolute first action. As soon as you start working with a project, or notice that it is imported/used in the code you are working with, you must immediately read and study all these referenced files before doing any planning, proposing code changes, or writing code. This is mandatory and applies even if the files are located in `node_modules/` (always resolve them to the local workspace directory first if they exist locally).
    - **STRICT BLOCKING GUARD (CHRONOLOGICAL ORDER RULES):**
-     1. Identify all package paths involved in the user request (e.g. `/packages/constructor/...` maps to `@dxtmisha/constructor`).
-     2. Scan the prompt for sections corresponding to those packages.
-     3. Identify all paths to auxiliary documentation/types mentioned in those sections (e.g., `ai-types.txt`, `ai-developer.txt`).
-     4. You MUST use the `view_file` tool to read and study ALL of these referenced files BEFORE calling `list_dir` on component sub-folders, writing any plans/checklists, or proposing/making code changes. Bypassing this order is a critical protocol violation.
+     1. As your ABSOLUTE FIRST ACTION, before taking any other steps, you MUST check if the `ai-memory.txt` file exists IN THE ROOT OF THE SPECIFIC WORKSPACE you are currently working with.
+        - If the project is a monorepo and you are working inside a specific package (e.g., `packages/module-a`), you MUST use the local `ai-memory.txt` for that package. Do NOT create or use a global one in this case.
+        - If it is a standard single project, or you are working on the global root configuration, you MUST use the `ai-memory.txt` in the project root.
+        If the file exists in your target workspace, you MUST read it using `view_file`. If it does NOT exist, you MUST CREATE IT immediately using `write_to_file`. This is your long-term memory.
+     2. Identify all paths, directories, or packages involved in the user request.
+     3. Scan the prompt for sections corresponding to those paths.
+     4. Identify all paths to auxiliary documentation, types, or developer guides mentioned in those sections.
+     5. You MUST use the `view_file` tool to read and study ALL of these referenced files BEFORE calling `list_dir` on sub-folders, writing any plans/checklists, or proposing/making code changes. Bypassing this order is a critical protocol violation.
 
 1. **"Copy-Paste Ready" Principle**:
    - Generate code that can be copied and run without a single manual edit.
@@ -58,8 +62,7 @@ Your primary goal is to generate flawless, industrial-grade code that adheres to
    - Avoid guessing, improvisation, or performing any unrequested or extra actions.
    - Strictly adhere to the plan, checklists, and execution steps.
 
-10. **AI Project Memory (`ai-memory.txt`)**:
-    - Before starting to code or plan any changes, you MUST check if the `ai-memory.txt` file exists in the project root or the monorepo root.
-    - If `ai-memory.txt` exists, you MUST read and study it completely. This file serves as your long-term memory for the project. If it does NOT exist, you MUST create it.
-    - Whenever you receive feedback, corrections, or new instructions from the developer, you MUST update the `ai-memory.txt` file by adding this important information. This ensures that essential project knowledge, rules, and corrections are preserved for future work.
+10. **AI Workspace Memory (`ai-memory.txt`)**:
+    - As enforced by the STRICT BLOCKING GUARD, `ai-memory.txt` MUST be created and read locally inside the root of the specific workspace or package you are working with.
+    - Whenever you receive feedback, corrections, or new instructions from the developer, you MUST update that workspace's local `ai-memory.txt` file. Store ONLY key, critical information, specific rules, and structural corrections necessary for the AI to correctly adapt the code. Avoid bloating the file with redundant details, code dumps, or unnecessary text—keep it focused on actionable instructions and design constraints.
 

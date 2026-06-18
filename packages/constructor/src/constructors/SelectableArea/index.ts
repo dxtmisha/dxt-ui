@@ -1,5 +1,11 @@
 export * from './SelectableArea'
+export * from './SelectableAreaClassesData'
+export * from './SelectableAreaItem'
+export * from './SelectableAreaSquare'
+export * from './SelectableAreaEmit'
+export * from './SelectableAreaEvents'
 export * from './SelectableAreaDesign'
 export * from './props'
 export * from './types'
 export * from './basicTypes'
+

@@ -1,5 +1,46 @@
 @use "@dxtmisha/styles/properties" as ui;
 
 @mixin mixinSelectableArea {
+  position: relative;
 
+  &__square {
+    z-index: 8;
+    border-style: solid;
+    height: ui.v('??sys-square-height');
+    left: ui.v('??sys-square-x');
+    opacity: 0;
+    position: absolute;
+    top: ui.v('??sys-square-y');
+    width: ui.v('??sys-square-width');
+    transition-property: opacity, visibility;
+    visibility: hidden;
+
+    &--show {
+      opacity: 1;
+      transition-property: none;
+      visibility: visible;
+    }
+  }
+
+  &__item {
+    position: relative;
+
+    &::before {
+      z-index: 8;
+      @include ui.absolute;
+      border-style: solid;
+      content: " ";
+      display: none;
+      pointer-events: none;
+    }
+
+    &--selected::before {
+      display: block;
+    }
+  }
+
+  &__blockSelection {
+    @include ui.textSelectNone;
+  }
 }
+

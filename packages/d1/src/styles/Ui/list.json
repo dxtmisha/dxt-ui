@@ -10317,6 +10317,17 @@
           }
         }
       },
+      "selectableArea": {
+        "name": "d1-selectableArea",
+        "type": "component",
+        "value": {
+          "main": {
+            "name": "--d1-selectableArea-main",
+            "type": "var",
+            "value": "{d.selectableArea}"
+          }
+        }
+      },
       "skeleton": {
         "name": "d1-skeleton",
         "type": "component",

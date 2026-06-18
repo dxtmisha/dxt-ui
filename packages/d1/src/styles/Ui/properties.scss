@@ -12696,6 +12696,11 @@
         name: 'd1-selectValue',
         type: 'component',
       ),
+      'selectableArea':(
+        index: 'selectableArea',
+        name: 'd1-selectableArea',
+        type: 'component',
+      ),
       'skeleton':(
         index: 'skeleton',
         name: 'd1-skeleton',
@@ -13312,6 +13317,11 @@
       'selectValue':(
         index: 'selectValue',
         name: 'd-selectValue',
+        type: 'component',
+      ),
+      'selectableArea':(
+        index: 'selectableArea',
+        name: 'd-selectableArea',
         type: 'component',
       ),
       'skeleton':(
