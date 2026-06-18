@@ -1,18 +1,18 @@
-This library is a comprehensive, isomorphic utility toolkit for TypeScript applications, focusing on data management, HTTP communication, internationalization, and DOM manipulation. 
+Core Purpose: This library provides a comprehensive, isomorphic toolkit for web applications, specifically focusing on SSR-ready API interaction, state-consistent storage (Cookies, Local/SessionStorage, ServerStorage), internationalization (i18n), and robust DOM event/UI management.
 
-1. Core Purpose:
-The library acts as a centralized foundation for common application tasks. It provides a robust HTTP client (Fetch wrapper with built-in retries, caching, and hydration support), state management (localized storage, cookie handling, URL hash synchronization), internationalization (translation management, date/time/currency formatting), and DOM utility functions (event listeners, scroll management, meta tag management).
+Key Expositions:
+- Api: Centralized HTTP client managing requests, hydration, caching (ApiCache), and centralized error handling (ApiErrorStorage).
+- Storage: Persistent utilities including DataStorage (local/session), CookieStorage, and ServerStorage (SSR-aware).
+- Geo & Locale: GeoInstance, GeoIntl, and GeoFlag provide location-aware formatting (currencies, dates, numbers, units, phone masks).
+- UI/Utility: Meta management (Meta, MetaOg, MetaTwitter), event handling (EventItem), icon management (Icons), and search utilities (SearchList).
+- Formatting: Formatters class for templated data manipulation (currency, date, pluralization, unit conversion).
 
-2. Usage Scenarios:
-- API Orchestration: Use the Api/ApiInstance classes for unified fetch requests, centralized error handling (ErrorCenter), and automatic response caching.
-- State Synchronization: Essential for SSR-compliant state management (ServerStorage) and syncing application state with URL hashes or Cookies.
-- Localization: Indispensable for applications requiring multi-language support (Translate), dynamic date/time formatting (GeoIntl, Datetime), and locale-aware number/currency formatting.
-- DOM & Event Management: Use EventItem for lifecycle-safe event listeners (with automatic cleanup) and scroll/resize optimizations; use Meta and its derivatives for SEO and social media metadata management.
-- Data Processing: Highly useful for search-as-you-type implementations (SearchList) and complex data transformations (Formatters).
+Triggers for Studying ai-types.md:
+- When implementing API integration (Api, ApiFetch, ApiMethod).
+- When configuring global error handling (ErrorCenter, ApiError).
+- When managing SSR state or hydration (ServerStorage, ApiHydration).
+- When handling localization (Geo, GeoIntl, Translate, Formatters).
+- When configuring complex data search logic (SearchList, SearchColumns).
+- When defining custom meta-tags or Twitter/Open Graph cards (Meta, MetaOg, MetaTwitter).
 
-3. Integration Context:
-- SSR & Hydration: The library includes specialized handlers (ApiHydration, ServerStorage, getHydrationData) designed to bridge the gap between server-rendered state and client-side execution, preventing hydration mismatches.
-- Architecture: It follows a singleton-friendly patterns (e.g., Api.getItem(), Geo.getObject()) that facilitate global access to state and configurations across disparate modules without tight coupling.
-- Type Safety: Extensively typed (TypeScript), providing full autocompletion and structural validation for search, API, translation, and formatting configurations.
-
-An AI assistant should study this library when tasked with building enterprise-grade, localized web applications that require standardized API communication, cross-browser DOM event management, or robust SSR data state serialization.
+Integration Context: This library acts as a foundational service layer. It is designed to be injected or used as a singleton across the application stack, bridging client-side DOM operations with server-side context in SSR frameworks. It manages the lifecycle of data, authentication headers, and global configuration, serving as an abstraction layer over native Browser/Node.js APIs like fetch, Cookies, and BroadcastChannel.

@@ -6,119 +6,104 @@ The following is the content of "exports" from package.json:
 {
   ".": {
     "import": "./dist/library.js",
-    "types": "./dist/library.d.ts"
+    "types": "./dist/src/library.d.ts"
   },
   "./plugin": {
     "import": "./dist/library-plugin.js",
-    "types": "./dist/library-plugin.d.ts"
-  },
-  "./ai-types": "./ai-types.txt",
-  "./style.css": "./dist/style.css",
-  "./types/*": "./dist/*",
-  "./types/**/*.d.ts": "./dist/**/*.d.ts"
+    "types": "./dist/src/library-plugin.d.ts"
+  }
 }
 
-// File: composables/useHeaders.d.ts
-/** Get request headers.
- * @param name Header name */
+// File: src/composables/useHeaders.d.ts
+/** @param name Header name */
 export declare function useHeaders(name: string): string | undefined;
 export declare function useHeaders(): Headers | undefined;
-// File: functions/getRequestOrigin.d.ts
-/** Get origin from request URL.
- * @param request HTTP request */
+
+// File: src/functions/getRequestHref.d.ts
+/** @param request HTTP request */
+export declare function getRequestHref(request: Request): string;
+
+// File: src/functions/getRequestOrigin.d.ts
+/** @param request HTTP request */
 export declare function getRequestOrigin(request: Request): string;
-// File: functions/getRequestUrl.d.ts
-/** Get pathname from request URL.
- * @param request HTTP request */
+
+// File: src/functions/getRequestUrl.d.ts
+/** @param request HTTP request */
 export declare function getRequestUrl(request: Request): string;
-// File: functions/initApi.d.ts
-/** Init API client; sets base origin for server-side requests.
- * @param request incoming server request */
+
+// File: src/functions/initApi.d.ts
+/** @param request Incoming server request */
 export declare function initApi(request: Request): void;
-// File: functions/initClientRouter.d.ts
-/** Wait for server-side router readiness before rendering.
- * @param router Vue Router instance */
-export declare function initClientRouter(router: Router | undefined): Promise<void>;
-// File: functions/initCookieStorage.d.ts
-/** Init cookie storage plugin.
- * @param app Vue app instance
- * @param request HTTP request */
-export declare function initCookieStorage<T>(app: App<T>, request: Request): void;
-// File: functions/initHeaders.d.ts
-/** Init API headers and provide to application.
- * @param app root component */
-export declare function initHeaders<T>(app: App<T>): void;
-// File: functions/initPluginApiCache.d.ts
-/** Initialize API cache.
- * @param storageKey Storage key prefix
- * @param cacheStepAgeClearOld Cache cleanup threshold */
+
+// File: src/functions/initClientRouter.d.ts
+/** @param router Vue Router instance */
+export declare function initClientRouter(router: any | undefined): Promise<void>;
+
+// File: src/functions/initCookieStorage.d.ts
+/** @param app Vue application instance @param request HTTP request */
+export declare function initCookieStorage<T>(app: any, request: Request): void;
+
+// File: src/functions/initHeaders.d.ts
+/** @param app Vue application root component */
+export declare function initHeaders<T>(app: any): void;
+
+// File: src/functions/initPluginApiCache.d.ts
+/** @param storageKey Storage key prefix @param cacheStepAgeClearOld Cache cleanup threshold */
 export declare function initPluginApiCache(storageKey?: string, cacheStepAgeClearOld?: number): void;
-// File: functions/initPluginBasic.d.ts
-/** Initialize basic functions for Nitro.
- * @param _ Nitro app instance
- * @param config Configuration */
-export declare function initPluginBasic<N extends NitroApp & Record<string, any> = NitroApp>(_: N, config?: NitroAppBasicConfig): void;
-// File: functions/initScriptsJson.d.ts
-/** Generate JSON scripts for hydration. */
+
+// File: src/functions/initPluginBasic.d.ts
+/** @param _ Nitro app instance @param config Configuration */
+export declare function initPluginBasic<N extends any = any>(_: N, config?: any): void;
+
+// File: src/functions/initScriptsJson.d.ts
+/** Generates JSON-scripts for hydration. */
 export declare function initScriptsJson(): string;
-// File: functions/initServerRouter.d.ts
-/** Initialize router for the application.
- * @param request HTTP request
- * @param router Vue router instance */
-export declare function initServerRouter(request: Request, router: Router | undefined): Promise<void>;
-// File: functions/initServerStorage.d.ts
-/** Init server storage plugin.
- * @param app Vue app instance */
-export declare function initServerStorage<T>(app: App<T>): void;
-// File: functions/initSsrApp.d.ts
-/** Render Vue app to string and extract context data.
- * @param app Vue app instance
- * @param context SSR context */
-export declare function initSsrApp<T>(app: App<T>, context?: SSRContext): Promise<{
+
+// File: src/functions/initServerRouter.d.ts
+/** @param request HTTP request @param router Vue router instance */
+export declare function initServerRouter(request: Request, router: any | undefined): Promise<void>;
+
+// File: src/functions/initServerStorage.d.ts
+/** @param app Vue application instance */
+export declare function initServerStorage<T>(app: any): void;
+
+// File: src/functions/initSsrApp.d.ts
+/** @param app Vue application instance @param context SSR context */
+export declare function initSsrApp<T>(app: any, context?: any): Promise<{
     appHtml: string;
     teleportsHtml: string;
-    context: SSRContext;
+    context: any;
 }>;
-// File: functions/uiBootstrapClient.d.ts
-/** Initialize global unique ID generator for elements during bootstrap. */
+
+// File: src/functions/uiBootstrapClient.d.ts
+/** Initializes global element ID generator using Vue `useId`. */
 export declare function uiBootstrapClient(): void;
-// File: functions/uiBootstrapServer.d.ts
-/** Initialize server environment, storage listeners, and isolation handlers. */
+
+// File: src/functions/uiBootstrapServer.d.ts
+/** Initializes server-side components and orchestration. */
 export declare function uiBootstrapServer(): void;
-// File: functions/uiCookieStorage.d.ts
-/** Initialize cookie storage. */
+
+// File: src/functions/uiCookieStorage.d.ts
 export declare function uiCookieStorage(): void;
-// File: functions/uiCreateApp.d.ts
-/** Create Vue SSR app and init core plugins.
- * @param appComponent root component
- * @param options configuration options */
-export declare function uiCreateApp<A = any>(appComponent: A, options?: NitroAppOptions): {
-    app: App<Element>;
-    router: Router | undefined;
-    options: NitroAppOptions;
+
+// File: src/functions/uiCreateApp.d.ts
+/** @param appComponent Root component @param options App config */
+export declare function uiCreateApp<A = any>(appComponent: A, options?: any): {
+    app: any;
+    router: any | undefined;
+    options: any;
 };
-// File: functions/uiCreateClientApp.d.ts
-/** Finalize and mount Vue app on client, waiting for router readiness.
- * @param app Vue app instance
- * @param rootContainer mount container
- * @param router Vue Router instance
- * @param options configuration options
- * @param action additional action before mounting */
-export declare function uiCreateClientApp<T>(app: App<T>, rootContainer?: string | T, router?: Router | undefined, options?: NitroAppOptions, action?: (app: App<T>) => Promise<void> | void): Promise<void>;
-// File: functions/uiCreateServerApp.d.ts
-/** Initialize server-side app, storage, routing, and SSR rendering.
- * @param app root component
- * @param request server request
- * @param router optional router
- * @param options configuration
- * @param action action before rendering
- * @param context SSR context
- * @param body HTML template
- * @returns rendered app data and metadata */
-export declare function uiCreateServerApp<T>(app: App<T>, request: Request, router?: Router | undefined, options?: NitroAppOptions, action?: (app: App<T>) => Promise<void> | void, context?: SSRContext, body?: string): Promise<{
+
+// File: src/functions/uiCreateClientApp.d.ts
+/** @param app Vue instance @param rootContainer Mount target @param router Router @param options App options @param action Pre-mount task */
+export declare function uiCreateClientApp<T>(app: any, rootContainer?: string | T, router?: any | undefined, options?: any, action?: (app: any) => Promise<void> | void): Promise<void>;
+
+// File: src/functions/uiCreateServerApp.d.ts
+/** @param app Root component @param request Server request @param router Router @param options App options @param action Pre-render task @param context SSR context @param body HTML template */
+export declare function uiCreateServerApp<T>(app: any, request: Request, router?: any | undefined, options?: any, action?: (app: any) => Promise<void> | void, context?: any, body?: string): Promise<{
     appHtml: string;
     teleportsHtml: string;
-    context: SSRContext;
+    context: any;
     headers: Headers | undefined;
     lang: string;
     title: string;
@@ -126,68 +111,34 @@ export declare function uiCreateServerApp<T>(app: App<T>, request: Request, rout
     scriptsJson: string;
     body: string;
 }>;
-// File: functions/uiCreateSsrRouter.d.ts
-/** Create router instance for SSR or client.
- * @param routes route list
- * @param options router options */
-export declare function uiCreateSsrRouter(routes: RouteRecordRaw[], options?: NitroAppRouterOptions): Router;
-// File: functions/uiId.d.ts
-/** Initialize global unique ID generator using Vue useId or incremental counter. */
+
+// File: src/functions/uiCreateSsrRouter.d.ts
+/** @param routes Route records @param options Router options */
+export declare function uiCreateSsrRouter(routes: any[], options?: any): any;
+
+// File: src/functions/uiId.d.ts
+/** Initializes element ID generator (Vue `useId` or incremental). */
 export declare function uiId(): void;
-// File: functions/uiServerStorage.d.ts
-/** Init server-side storage via Vue inject using NITRO_APP_STORAGE key. */
+
+// File: src/functions/uiServerStorage.d.ts
+/** Sets up global `ServerStorage` using inject key `NITRO_APP_STORAGE`. */
 export declare function uiServerStorage(): void;
-// File: library-plugin.d.ts
-export * from './functions/initPluginApiCache';
-export * from './functions/initPluginBasic';
-// File: library.d.ts
-export * from './composables/useHeaders';
-export * from './functions/getRequestOrigin';
-export * from './functions/getRequestUrl';
-export * from './functions/initApi';
-export * from './functions/initClientRouter';
-export * from './functions/initCookieStorage';
-export * from './functions/initHeaders';
-export * from './functions/initScriptsJson';
-export * from './functions/initServerRouter';
-export * from './functions/initServerStorage';
-export * from './functions/initSsrApp';
-export * from './functions/uiBootstrapClient';
-export * from './functions/uiBootstrapServer';
-export * from './functions/uiCookieStorage';
-export * from './functions/uiCreateApp';
-export * from './functions/uiCreateClientApp';
-export * from './functions/uiCreateServerApp';
-export * from './functions/uiCreateSsrRouter';
-export * from './functions/uiId';
-export * from './functions/uiServerStorage';
-export * from './types/nitroAppTypes';
-// File: types/nitroAppTypes.d.ts
-/** Configuration for basic Nitro initializations */
+
+// File: src/types/nitroAppTypes.d.ts
 export type NitroAppBasicConfig = {
-    /** Api cache configuration */
     api?: {
-        /** Storage key prefix */
         cacheStorageKey?: string;
-        /** Cache cleanup threshold */
         cacheStepAgeClearOld?: number;
     };
 };
-/** Interface for partial router options */
-export type NitroAppRouterOptions = Partial<RouterOptions>;
-/** Nitro app initialization options */
-export interface NitroAppOptions extends FunctionalPluginOptions {
-    /** Router configuration */
+export type NitroAppRouterOptions = Partial<any>;
+export interface NitroAppOptions {
     appRouter?: {
-        /** List of route records */
-        routes: RouteRecordRaw[];
-        /** Router options */
+        routes: any[];
         options?: NitroAppRouterOptions;
     };
+    teleportBody?: string;
 }
-/** Key for server-side storage in Vue context */
 export declare const NITRO_APP_STORAGE = "__ui_server_storage";
-/** Key for server-side cookie in Vue context */
 export declare const NITRO_APP_COOKIE = "__ui_server_cookie";
-/** Key for API headers in Vue context */
 export declare const NITRO_API_HEADERS = "__ui_server_headers";

@@ -60,3 +60,127 @@ Example:
 }
 ```
 
+=============================================================================
+DEVELOPER GUIDE: USING `@dxtmisha/styles` AS A LIBRARY
+=============================================================================
+
+This section contains instructions and code guidelines for AI models on how to import and use the design system variables, colors, typography, layout, and media query mixins provided by this library in stylesheets.
+
+---
+
+### 1. Importing Styles & Properties
+
+Styles can be imported modularly depending on performance and configuration needs.
+
+```scss
+// Import all variables, mixins, utilities, and helper styles
+@import '@dxtmisha/styles';
+
+// Import ONLY the core design system CSS properties and variables (lighter bundle)
+@import '@dxtmisha/styles/properties';
+```
+
+---
+
+### 2. Styling with Color Mixins
+
+Use semantic color utilities to assign text, background, and borders.
+
+```scss
+.button {
+  // Set background-color to primary theme color
+  @include backgroundColor(primary);
+
+  // Apply base style rule to use color contrast logic
+  @include backgroundAsColor;
+
+  // Add text color
+  @include color(white);
+}
+
+.alert {
+  // Sets color from semantic danger token
+  @include color(danger);
+
+  // Set transparency for background using the system opacity mixin
+  @include backgroundOpacity(0.1);
+}
+```
+
+#### Palette variables (Routing & Re-theming)
+```scss
+.card {
+  // Binds the background color dynamically to the semantic primary palette token.
+  // This color will automatically re-render when a parent container's palette changes.
+  @include paletteBackgroundColor('--d1-sys-palette-primary');
+}
+```
+
+---
+
+### 3. Flexbox Layouts
+
+Rather than writing verbose flex rules, use layout mixins to define containers.
+
+```scss
+.container {
+  @include flex;
+  @include flexDirection(column);
+  @include justifyContent(center);
+  @include alignItems(center);
+}
+```
+
+---
+
+### 4. Typography & Spacing
+
+Ensure text styles and container spacings align with design variables.
+
+```scss
+.title {
+  @include font(titleLarge); // Sets font-size, weight, line-height
+}
+
+.body {
+  @include font(bodyMedium);
+}
+
+.box {
+  @include padding(md); // Applies consistent system padding
+  @include margin(lg);  // Applies consistent system margin
+  @include radius;      // Applies standard border-radius token
+}
+```
+
+---
+
+### 5. Responsive Design Breakpoints
+
+Always leverage standard breakpoints (`sm`, `md`, `lg`, `xl`, `2xl`) instead of writing raw media query widths.
+
+```scss
+.responsive-box {
+  display: block;
+
+  @include mediaMinWidth('md') {
+    display: flex; // Converts to flex for tablets and wider screens
+  }
+
+  @include mediaMinWidth('lg') {
+    max-width: 960px; // Centers and limits width on desktops
+  }
+}
+```
+
+#### Container Queries
+Evaluate layouts based on the parent component's size.
+```scss
+.card-content {
+  display: grid;
+
+  @include containerMinWidth('sm') {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+```

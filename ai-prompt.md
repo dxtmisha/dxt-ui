@@ -21,11 +21,11 @@ Your primary goal is to generate flawless, industrial-grade code that adheres to
    - Before modifying or fixing any file, you MUST fully study its internal structure and logic first.
    - If any instructions, paths, or files are specified as located inside `node_modules/` or any other external/linked directory, you MUST first check if this package exists locally in the workspace (for example, under `packages/`). If it does exist locally, you MUST resolve the paths to the local workspace package directory and study/modify the local source files instead.
    - **CRITICAL FIRST STEP:** If any project, module, or instruction contains links or references to specific files (e.g. types, developer guides, descriptions), you MUST study all these referenced files as your absolute first action. As soon as you start working with a project, or notice that it is imported/used in the code you are working with, you must immediately read and study all these referenced files before doing any planning, proposing code changes, or writing code. This is mandatory and applies even if the files are located in `node_modules/` (always resolve them to the local workspace directory first if they exist locally).
-    - **STRICT BLOCKING GUARD (CHRONOLOGICAL ORDER RULES):**
-      1. As your ABSOLUTE FIRST ACTION, before taking any other steps, you MUST check if the `ai-memory.md` file exists in the specific package directory or the repository root depending on the files you are working on:
-         - If you are analyzing or modifying files that are located inside a package directory (e.g., any subdirectory under `packages/` like `packages/constructor/`, `packages/scripts/`, etc.), you MUST read/write the `ai-memory.md` file ONLY within that specific package directory (e.g. `packages/constructor/ai-memory.md` or `packages/scripts/ai-memory.md`). You are strictly FORBIDDEN from using, reading, or writing the global `ai-memory.md` in the repository root in this case.
-         - If and only if the files you are working with are root-level configurations or not part of any package under `packages/`, you may read/write the `ai-memory.md` file in the repository root.
-         If the required local package-level `ai-memory.md` (or root `ai-memory.md` for root-level files) exists, you MUST read it using `view_file`. If it does NOT exist, you MUST CREATE IT immediately using `write_to_file` as an empty file with only a single newline (no placeholder text, comments, or intro text).
+   - **STRICT BLOCKING GUARD (CHRONOLOGICAL ORDER RULES):**
+     1. As your ABSOLUTE FIRST ACTION, before taking any other steps, you MUST check if the `ai-memory.md` file exists in the specific package directory or the repository root depending on the files you are working on:
+        - If you are analyzing or modifying files that are located inside a package directory (e.g., any subdirectory under `packages/` like `packages/constructor/`, `packages/scripts/`, etc.), you MUST read/write the `ai-memory.md` file ONLY within that specific package directory (e.g. `packages/constructor/ai-memory.md` or `packages/scripts/ai-memory.md`). You are strictly FORBIDDEN from using, reading, or writing the global `ai-memory.md` in the repository root in this case.
+        - If and only if the files you are working with are root-level configurations or not part of any package under `packages/`, you may read/write the `ai-memory.md` file in the repository root.
+        If the required local package-level `ai-memory.md` (or root `ai-memory.md` for root-level files) exists, you MUST read it using `view_file`. If it does NOT exist, you MUST CREATE IT immediately using `write_to_file` as an empty file with only a single newline (no placeholder text, comments, or intro text).
      2. Identify all paths, directories, or packages involved in the user request.
      3. Scan the prompt for sections corresponding to those paths.
      4. Identify all paths to auxiliary documentation, types, or developer guides mentioned in those sections.
@@ -51,6 +51,7 @@ Your primary goal is to generate flawless, industrial-grade code that adheres to
 
 4. **Uncompromising TypeScript**:
    - No `any`. Use `unknown` if the type is truly unknown, or create generic types.
+   - Never use `@ts-ignore`. If a type check suppression is absolutely necessary due to external limitations, use `@ts-expect-error` with a descriptive comment explaining why.
    - Always define interfaces for input and output data.
    - Use `as const`, `readonly`, and enums/union types to increase reliability.
 
@@ -61,25 +62,28 @@ Your primary goal is to generate flawless, industrial-grade code that adheres to
 
 6. **Architectural Consistency**:
    - Respect the project structure. If it is standard in the project to move logic into `composables` or `utils`, follow that pattern.
+   - Reuse existing infrastructure: Always check if the required functionality (e.g., API requests, state management, utilities) already exists in the project's core packages (like `@dxtmisha/functional` or `@dxtmisha/functional-basic`) before implementing it from scratch.
    - Do not modify global styles or styles of base UI components unless explicitly requested.
 
 7. **Security and Performance**:
    - Write error-proof code (guard clauses, optional chaining `?.`, nullish coalescing `??`).
+   - Use explicit `try-catch` blocks for asynchronous operations. Never swallow errors silently; handle them appropriately or throw meaningful error messages.
    - Avoid redundant calculations in loops and heavy operations in reactive dependencies.
 
 8. **Aesthetics and Conciseness**:
    - The code must be beautiful. Use logical indentation and group code by meaning.
    - Save tokens by avoiding redundant comments where the code speaks for itself.
 
-9. **Strict Adherence to Instructions**:
+9. **Strict Adherence to Instructions & Optimization**:
    - Perform all operations strictly in accordance with the provided commands and instructions.
-   - Avoid guessing, improvisation, or performing any unrequested or extra actions.
-   - Strictly adhere to the plan, checklists, and execution steps.
+   - Avoid guessing or performing unrelated extra actions. However, you are encouraged to analyze the requirements, optimize the code, and propose or implement better technical solutions directly related to achieving the task's goals.
+   - Strictly adhere to the plan, checklists, and execution steps, while refining them for better quality and performance when needed.
 
 10. **AI Workspace Memory (`ai-memory.md`)**:
     - As enforced by the STRICT BLOCKING GUARD, `ai-memory.md` MUST be created and read locally inside the root of the specific package you are working with (e.g., `packages/constructor/ai-memory.md` for code in `packages/constructor`).
     - Writing or reading `ai-memory.md` in the repository root when working on code inside a package is a critical violation of these rules.
     - Whenever you receive feedback, corrections, or instructions from the developer, you MUST update that specific package's local `ai-memory.md` file.
+    - Active Application: You must actively APPLY the rules and constraints from `ai-memory.md` to all code you generate. Rules in this file override general assumptions and have the highest priority.
     - The PRIMARY PURPOSE of this file is to store critical coding guidelines, specific architectural constraints, and "do's and don'ts" (e.g., "do not use X; use Y instead") to ensure the AI writes compliant, correct code.
     - DO NOT store change logs, lists of modified files, or commit-like messages (e.g., "updated file X, updated package Y"). Keep the file clean, concise, and focused strictly on active rules, design decisions, and coding standards.
 
@@ -303,24 +307,24 @@ This file contains the complete type definitions for the project. As soon as you
 The project is located at: 'node_modules/@dxtmisha/functional'.
 
 ## Project context: Investigation required
-This library is a collection of Vue 3-based utility classes and composables designed for building complex, reactive, and SSR-ready interfaces. It provides a standardized framework for API management, component state, geographic/localization data, and dynamic rendering.
+Core Purpose: A high-level reactive framework for Vue 3 that abstracts complex state, API orchestration, and UI design patterns. It provides a standardized layer for API management (including SSR support), data formatting, list manipulation, and design component architecture.
 
-1. Core Purpose:
-An infrastructure-level toolkit for Vue 3 that abstracts asynchronous data fetching, state management, and UI rendering logic. It provides structured classes and composables to handle API lifecycle (GET/POST/PUT/DELETE), reactive data transformations, internationalization (Intl), and component orchestration.
+Key Expositions:
+1. API Management: `useApiRef` (standard reactive fetch), `useApiManagementRef` (orchestrates GET/POST/PUT/DELETE with search/formatting), and SSR-specific versions (`useApiAsyncRef`, `useApiManagementAsyncRef`).
+2. Design System Components: `DesignConstructorAbstract` and `DesignComponents` for building reactive, theme-aware components; `DesignChanged` for tracking property mutations.
+3. Geo/Intl Utilities: `GeoIntlRef` (localized formatting for numbers, dates, currency, size), `GeoRef` (locale/country state management), and `GeoFlagRef`.
+4. Reactive Ref Utilities: `ListDataRef` (complex list management, grouping, selection, navigation), `EventRef` (reactive event listeners), and various composables for `localStorage`/`sessionStorage`/`cookies`.
+5. Functional Helpers: `executeUse` (singleton management: global/provide/local), `computedAsync`/`computedEternity` (advanced reactivity wrappers).
 
-2. Usage Scenarios:
-- API Orchestration: When building complex forms, data tables, or dashboards requiring integrated state, validation (via @effect/schema compatibility), and SSR support. Use `useApiManagementRef` for unified CRUD handling or `useApiRef` for individual requests.
-- Reactive Data Management: When you need synchronized data across browser tabs (`useBroadcastValueRef`) or persistence across reloads (`useStorageRef`, `useCookieRef`).
-- Localization & Formatting: When the application needs to dynamically handle geographic data, currency formatting, file sizes, or date manipulation via `GeoIntlRef` and `useGeoIntlRef`.
-- Component Design System: When building modular UI components that require consistent prop-to-style/class mapping (`DesignConstructorAbstract`, `DesignComponents`).
-- Lifecycle & DOM Utilities: When implementing lazy loading (`useLazyRef`) or global state management using `executeUse` for singletons.
+Triggers for Studying ai-types.md:
+- When implementing or consuming API requests with `useApi...` hooks to understand data contracts and error handling.
+- When configuring `executeUse` strategies (global vs provide) for service injection.
+- When defining component properties or structures using `Constr...` types (e.g., `ConstrBind`, `ConstrOptions`).
+- When managing complex lists or search logic requiring `ListDataRef` or `Search...` types.
+- When creating custom design classes inheriting from `DesignConstructorAbstract`.
 
-3. Integration Context:
-- Vue 3 Core: Heavily leverages `Ref`, `ComputedRef`, and `provide/inject`.
-- Data Fetching: Acts as a high-level wrapper over an underlying `functional-basic` library.
-- Routing: Integrates with `vue-router` via `RouterItemRef` and `useRouterList`.
-- SSR: Provides specific `Async` variants (e.g., `useApiAsyncRef`) for server-side pre-fetching.
-- Schema Validation: Designed to work with `@effect/schema` for robust API contract validation.
+Integration Context: 
+This library serves as a middleware layer between raw API responses/browser APIs and Vue components. It is designed to work with `@dxtmisha/functional-basic` (the core utility provider) and relies on Vue's reactivity system. It is meant to be registered as a plugin (`dxtFunctionalPlugin`) to provide global configurations for API clients, translation services, and routing.
 
 ## Project information: Core overview
 This section contains essential information and the core overview of the project. Review this to understand the fundamental architecture and key features.
@@ -370,6 +374,187 @@ CHOOSING THE executeUse STRATEGY:
    - When to use: For state shared between a parent and a group of child components (e.g., tabs, complex forms with sub-components).
    - Key Features: Uses provide/inject. The first component in the tree that calls the hook becomes the "provider", others become consumers.
 
+=============================================================================
+DEVELOPER GUIDE: USING `@dxtmisha/functional` AS A LIBRARY
+=============================================================================
+
+This section contains instructions and code guidelines for AI models on how to import and use the Vue-specific reactive classes, composables, and utility functions provided by this library in Vue 3 / Nuxt applications.
+
+---
+
+### 1. Reactive Storage & State Composables
+
+These composables bind browser storages reactively to Vue `Ref` objects, keeping them in sync.
+
+#### `useStorageRef` (localStorage)
+Reactively binds a key from `localStorage`.
+```typescript
+import { useStorageRef } from '@dxtmisha/functional';
+
+// Bind to key with optional initial default value
+const theme = useStorageRef<'light' | 'dark'>('theme_key', 'light');
+
+// Setting the value triggers an immediate update to localStorage reactively
+theme.value = 'dark';
+```
+
+#### `useSessionRef` (sessionStorage) & `useCookieRef` (Cookies)
+```typescript
+import { useSessionRef, useCookieRef } from '@dxtmisha/functional';
+
+// sessionStorage
+const step = useSessionRef<number>('form_step', 1);
+
+// CookieStorage
+const token = useCookieRef<string>('auth_token', '', { secure: true });
+```
+
+#### `useBroadcastValueRef` (Cross-Tab Synchronization)
+Synchronizes a state value reactively across multiple browser tabs under the same origin.
+```typescript
+import { useBroadcastValueRef } from '@dxtmisha/functional';
+
+// Synchronizes the value of the ref across tabs using BroadcastChannel
+const syncState = useBroadcastValueRef<string>('active_channel', 'idle');
+```
+
+#### `useHashRef` (URL Hash)
+Reactively binds Vue state to the URL hash parameters.
+```typescript
+import { useHashRef } from '@dxtmisha/functional';
+
+const hashPage = useHashRef<string>('page', 'home');
+```
+
+---
+
+### 2. Reactive Geolocation & Internationalization (`GeoRef`, `GeoIntlRef`, `GeoFlagRef`, `useTranslateRef`)
+
+Provides reactive integrations for internationalization APIs.
+
+#### `GeoRef` & `GeoIntlRef`
+```typescript
+import { GeoRef, useGeoIntlRef } from '@dxtmisha/functional';
+
+// Reactive tracking of user location details
+const currentCountry = GeoRef.getCountry(); // ComputedRef<string>
+
+// Reactive i18n formatter hook
+const intl = useGeoIntlRef();
+const formattedPrice = intl.currency(150, 'EUR'); // ComputedRef<string>
+```
+
+#### `useTranslateRef`
+Reactively loads and gets translation tokens.
+```typescript
+import { useTranslateRef } from '@dxtmisha/functional';
+
+const translations = useTranslateRef(['global.save', 'global.cancel']);
+// returns: ShallowRef<Record<string, string>> containing loaded translations
+```
+
+---
+
+### 3. SEO & Layout Utilities
+
+#### `useMeta`
+Manages page metadata reactively. Calling setters will update document headers and tags reactively.
+```typescript
+import { useMeta } from '@dxtmisha/functional';
+
+const metaManager = useMeta();
+metaManager.setTitle('My Product Page');
+metaManager.setDescription('Product details and configurations.');
+```
+
+#### `ScrollbarWidthRef`
+Tracks the scrollbar width reactively to solve layout shift issues.
+```typescript
+import { ScrollbarWidthRef } from '@dxtmisha/functional';
+
+const scrollbar = new ScrollbarWidthRef();
+const width = scrollbar.width; // Ref<number>
+const hasScroll = scrollbar.is; // ComputedRef<boolean>
+```
+
+---
+
+### 4. Advanced Reactivity Helpers
+
+#### `computedAsync`
+Creates a computed property that resolves its value asynchronously. Useful for async tasks inside computed getters.
+```typescript
+import { computedAsync } from '@dxtmisha/functional';
+
+// Performs asynchronous data lookup and reactively returns the result
+const asyncData = computedAsync(async () => {
+  return await fetchSomeData(activeId.value);
+}, 'initial_loading_value');
+```
+
+#### `computedEternity`
+Computes an asynchronous value once and caches it indefinitely unless manually refreshed.
+```typescript
+import { computedEternity } from '@dxtmisha/functional';
+
+const cachedData = computedEternity(async () => {
+  return await fetchStaticData();
+}, 'loading_state');
+```
+
+---
+
+### 5. List & Search Orchestration
+
+#### `ListDataRef`
+A powerful reactive state orchestrator for managing lists, groups, items, pagination, highlight paths, and selections.
+```typescript
+import { ListDataRef } from '@dxtmisha/functional';
+
+const items = ref([
+  { value: 'id1', label: 'First Option' },
+  { value: 'id2', label: 'Second Option' },
+]);
+const selectedId = ref('id1');
+
+const listData = new ListDataRef(items, selectedId);
+const isSelected = listData.isSelected; // ComputedRef<boolean>
+const nextItem = listData.getSelectedNext(); // returns next select item
+```
+
+#### `useSearchRef`
+Combines a source list, target fields, search query, and options to reactively search a list with built-in delay and highlight support.
+```typescript
+import { useSearchRef } from '@dxtmisha/functional';
+
+const query = ref('second');
+const { listSearch, loading, length } = useSearchRef(items, ['label'], query);
+```
+
+---
+
+### 6. DOM & Lazy Rendering
+
+#### `EventRef`
+Reactive wrapper for DOM events. Starts and stops event binding cleanly inside Vue component lifecycles (runs setup and teardown hooks automatically).
+```typescript
+import { EventRef } from '@dxtmisha/functional';
+
+// Listens reactively; auto-starts on setup and auto-stops on unmounted
+const keyListener = new EventRef(window, window, 'keydown', (event) => {
+  console.log('Key pressed', event.key);
+});
+```
+
+#### `useLazyRef`
+Reactive manager utilizing `IntersectionObserver` to defer rendering of off-screen components.
+```typescript
+import { useLazyRef } from '@dxtmisha/functional';
+
+const lazyManager = useLazyRef();
+const isVisible = lazyManager.addLazyItem(elementRef); // ShallowRef<boolean>
+```
+
 ## Project types: Essential for analysis
 This file contains the complete type definitions for the project. As soon as you start working with this project (using any of its components/functionality, importing from it, or editing its code), you MUST read and study this type definition file as your absolute first action to understand its API and structure:
 'node_modules/@dxtmisha/functional/ai-types.md'
@@ -381,24 +566,24 @@ This file contains the complete type definitions for the project. As soon as you
 The project is located at: 'node_modules/@dxtmisha/functional-basic'.
 
 ## Project context: Investigation required
-This library is a comprehensive, isomorphic utility toolkit for TypeScript applications, focusing on data management, HTTP communication, internationalization, and DOM manipulation. 
+Core Purpose: This library provides a comprehensive, isomorphic toolkit for web applications, specifically focusing on SSR-ready API interaction, state-consistent storage (Cookies, Local/SessionStorage, ServerStorage), internationalization (i18n), and robust DOM event/UI management.
 
-1. Core Purpose:
-The library acts as a centralized foundation for common application tasks. It provides a robust HTTP client (Fetch wrapper with built-in retries, caching, and hydration support), state management (localized storage, cookie handling, URL hash synchronization), internationalization (translation management, date/time/currency formatting), and DOM utility functions (event listeners, scroll management, meta tag management).
+Key Expositions:
+- Api: Centralized HTTP client managing requests, hydration, caching (ApiCache), and centralized error handling (ApiErrorStorage).
+- Storage: Persistent utilities including DataStorage (local/session), CookieStorage, and ServerStorage (SSR-aware).
+- Geo & Locale: GeoInstance, GeoIntl, and GeoFlag provide location-aware formatting (currencies, dates, numbers, units, phone masks).
+- UI/Utility: Meta management (Meta, MetaOg, MetaTwitter), event handling (EventItem), icon management (Icons), and search utilities (SearchList).
+- Formatting: Formatters class for templated data manipulation (currency, date, pluralization, unit conversion).
 
-2. Usage Scenarios:
-- API Orchestration: Use the Api/ApiInstance classes for unified fetch requests, centralized error handling (ErrorCenter), and automatic response caching.
-- State Synchronization: Essential for SSR-compliant state management (ServerStorage) and syncing application state with URL hashes or Cookies.
-- Localization: Indispensable for applications requiring multi-language support (Translate), dynamic date/time formatting (GeoIntl, Datetime), and locale-aware number/currency formatting.
-- DOM & Event Management: Use EventItem for lifecycle-safe event listeners (with automatic cleanup) and scroll/resize optimizations; use Meta and its derivatives for SEO and social media metadata management.
-- Data Processing: Highly useful for search-as-you-type implementations (SearchList) and complex data transformations (Formatters).
+Triggers for Studying ai-types.md:
+- When implementing API integration (Api, ApiFetch, ApiMethod).
+- When configuring global error handling (ErrorCenter, ApiError).
+- When managing SSR state or hydration (ServerStorage, ApiHydration).
+- When handling localization (Geo, GeoIntl, Translate, Formatters).
+- When configuring complex data search logic (SearchList, SearchColumns).
+- When defining custom meta-tags or Twitter/Open Graph cards (Meta, MetaOg, MetaTwitter).
 
-3. Integration Context:
-- SSR & Hydration: The library includes specialized handlers (ApiHydration, ServerStorage, getHydrationData) designed to bridge the gap between server-rendered state and client-side execution, preventing hydration mismatches.
-- Architecture: It follows a singleton-friendly patterns (e.g., Api.getItem(), Geo.getObject()) that facilitate global access to state and configurations across disparate modules without tight coupling.
-- Type Safety: Extensively typed (TypeScript), providing full autocompletion and structural validation for search, API, translation, and formatting configurations.
-
-An AI assistant should study this library when tasked with building enterprise-grade, localized web applications that require standardized API communication, cross-browser DOM event management, or robust SSR data state serialization.
+Integration Context: This library acts as a foundational service layer. It is designed to be injected or used as a singleton across the application stack, bridging client-side DOM operations with server-side context in SSR frameworks. It manages the lifecycle of data, authentication headers, and global configuration, serving as an abstraction layer over native Browser/Node.js APIs like fetch, Cookies, and BroadcastChannel.
 
 ## Project information: Core overview
 This section contains essential information and the core overview of the project. Review this to understand the fundamental architecture and key features.
@@ -457,6 +642,293 @@ Members in every class MUST be ordered in the following sequence:
      * Use `ServerStorage.get('key', () => new Instance())` for request-isolated singletons.
      * Use `isDomRuntime()` checks before accessing browser-only APIs like `window`, `document`, or `location`.
 
+=============================================================================
+DEVELOPER GUIDE: USING `@dxtmisha/functional-basic` AS A LIBRARY
+=============================================================================
+
+This section contains instructions and code guidelines for AI models on how to import and use the framework-agnostic utilities, classes, and helper functions provided by this library in client packages or applications.
+
+---
+
+### 1. HTTP Client (`Api` and `ApiInstance`)
+
+The library provides both a static global class `Api` and an instantiable `ApiInstance` wrapper around the native `fetch` API. They support cancellation, caching, interceptors, error handling, and loading states.
+
+#### Configuration
+```typescript
+import { Api } from '@dxtmisha/functional-basic';
+
+// Set base origin and API path
+Api.setOrigin('https://api.example.com');
+Api.setUrl('/api/v1');
+
+// Setup global request defaults (e.g., query params sent with every request)
+Api.setRequestDefault({ client: 'web' });
+
+// Setup global headers (can pass a callback for dynamic values)
+Api.setHeaders(() => ({
+  Authorization: `Bearer ${localStorage.getItem('token') || ''}`,
+}));
+```
+
+#### Making Requests
+```typescript
+// Simple request: defaults to GET
+const users = await Api.request<User[]>('users');
+
+// Explicit methods
+const profile = await Api.get<User>({ path: 'profile' });
+const updated = await Api.post<User>({
+  path: 'profile',
+  request: { name: 'New Name' }, // Request payload
+});
+```
+
+#### Interceptors (Preparation and End Lifecycle Hooks)
+```typescript
+// Preparation hook: runs before fetch executes
+Api.setPreparation(async (apiFetch) => {
+  // Can mutate apiFetch settings or inject headers
+  if (apiFetch.auth) {
+    apiFetch.headers = { ...apiFetch.headers, 'X-Auth-Required': 'true' };
+  }
+});
+
+// End hook: runs after response is received
+Api.setEnd(async (response, apiFetch) => {
+  if (response.status === 401) {
+    // Perform token refresh or trigger sign-out
+    return { reset: true }; // Resets request/attempts or signals failure
+  }
+  return {};
+});
+```
+
+#### Local caching with `ApiCache`
+```typescript
+import { ApiCache } from '@dxtmisha/functional-basic';
+
+// Cache responses client-side
+await ApiCache.set('custom-cache-key', data, 60000); // age in ms
+const cached = await ApiCache.get<MyDataType>('custom-cache-key');
+```
+
+---
+
+### 2. State & Storage Management
+
+The library features SSR-safe classes to manipulate `localStorage`/`sessionStorage`, cookies, and server-side contexts.
+
+#### `DataStorage` (localStorage / sessionStorage)
+Safely wraps storage with optional namespace prefixes, fallback defaults, and expiration cache.
+```typescript
+import { DataStorage } from '@dxtmisha/functional-basic';
+
+// Set global namespace prefix to avoid storage collisions
+DataStorage.setPrefix('my_app_');
+
+// Instantiate a persistent storage item (sessionStorage if 2nd arg is true)
+const userStorage = new DataStorage<{ id: string }>('user_session', false);
+
+// Save value
+userStorage.set({ id: '123' });
+
+// Get value (with default value fallback and optional cache limit in ms)
+const user = userStorage.get({ id: 'guest' });
+
+// Remove item
+userStorage.remove();
+```
+
+#### `CookieStorage` & `Cookie`
+Standard cookie manager.
+```typescript
+import { CookieStorage, Cookie } from '@dxtmisha/functional-basic';
+
+// Global Cookie usage
+CookieStorage.set('theme', 'dark', { age: 31536000, secure: true, sameSite: 'lax' });
+const theme = CookieStorage.get<string>('theme', 'light');
+CookieStorage.remove('theme');
+
+// Instance-based Cookie manager
+const tokenCookie = new Cookie<string>('auth_token');
+tokenCookie.set('xyz123', { secure: true });
+const token = tokenCookie.get();
+```
+
+#### `ServerStorage` (SSR Request-Isolated Storage)
+Used to share and isolate singleton states safely across concurrent asynchronous server-side render requests.
+```typescript
+import { ServerStorage } from '@dxtmisha/functional-basic';
+
+// Fetch or create a request-isolated instance singleton
+const myServiceInstance = ServerStorage.get('myService', () => new MyService());
+```
+
+---
+
+### 3. Geolocation & Localization (`GeoIntl`, `Geo`, `GeoFlag`, `GeoPhone`)
+
+Standardizes localization using the native browser/Node `Intl` API.
+
+#### `Geo`
+Used to track and modify country, language, standard, and timezone information.
+```typescript
+import { Geo } from '@dxtmisha/functional-basic';
+
+// Get current geo details
+const currentCountry = Geo.getCountry(); // e.g., 'VN'
+const currentLang = Geo.getLanguage();   // e.g., 'vi'
+
+// Change locale configuration
+Geo.set('en-US');
+```
+
+#### `GeoIntl`
+Used for localized numbers, currencies, percentages, dates, relative times, and file sizes.
+```typescript
+import { GeoIntl } from '@dxtmisha/functional-basic';
+
+const intl = new GeoIntl('en-US');
+
+// Numbers
+intl.number(123456.78); // '123,456.78'
+
+// Currencies
+intl.currency(99.99, 'USD'); // '$99.99'
+
+// File Sizes
+intl.sizeFile(1024 * 1024 * 5); // '5.00 MB'
+
+// Dates & Time
+intl.date(new Date(), 'date'); // 'Jun 18, 2026'
+intl.date(new Date(), 'time'); // '10:48 PM'
+
+// Relative time formatting
+intl.relative(new Date(Date.now() - 3600000)); // '1 hour ago'
+
+// Pluralization rules
+// Words are passed as a string delimited by '|' (e.g. 'one|other' or 'one|few|many|other')
+intl.plural(3, 'apple|apples'); // '3 apples'
+```
+
+#### Country Flags (`GeoFlag`) and Phone Masks (`GeoPhone`)
+```typescript
+import { GeoFlag, GeoPhone } from '@dxtmisha/functional-basic';
+
+// Flags
+const flagHelper = new GeoFlag();
+const flagIcon = flagHelper.getFlag('VN'); // Vietnam flag emoji/svg code
+
+// Phones
+const phoneInfo = GeoPhone.getByPhone('+84900000000');
+console.log(phoneInfo.phone); // Cleaned phone string
+const mask = GeoPhone.toMask('84900000000'); // Returns formatted phone mask
+```
+
+---
+
+### 4. DOM and Safe Event Management (`EventItem`)
+
+`EventItem` provides memory-leak proof DOM event management by automating listener binding and unbinding.
+
+```typescript
+import { EventItem } from '@dxtmisha/functional-basic';
+
+// Initialize the event listener (attached to element selector or Window)
+const clickListener = new EventItem(
+  window,
+  'click',
+  (event) => {
+    console.log('Window clicked', event);
+  },
+  { passive: true }
+);
+
+// Start listening
+clickListener.start();
+
+// Stop listening (always call when cleaning up/destroying component contexts!)
+clickListener.stop();
+```
+
+#### Scrolling & Clipboard Helpers
+```typescript
+import { goScrollSmooth, writeClipboardData, getClipboardData } from '@dxtmisha/functional-basic';
+
+// Scroll element into view smoothly
+goScrollSmooth(document.getElementById('target'));
+
+// Copy text to clipboard
+await writeClipboardData('Text to copy');
+
+// Read from clipboard
+const text = await getClipboardData();
+```
+
+---
+
+### 5. Search & Formatting Utilities
+
+#### `SearchList`
+A highly-optimized client-side text searching class featuring search highlights.
+```typescript
+import { SearchList } from '@dxtmisha/functional-basic';
+
+const users = [
+  { name: 'John Doe', email: 'john@example.com' },
+  { name: 'Jane Smith', email: 'jane@example.com' },
+];
+
+// Instantiation: items, fields to search in, current search query, search options
+const searcher = new SearchList(users, ['name', 'email'], 'john');
+
+// Execute and retrieve filtered results with highlight match markup
+const results = searcher.to();
+// returns: Array of results with exact matching highlights in matching keys
+```
+
+#### `Formatters`
+Automates schema-based transformations of structured lists or objects.
+```typescript
+import { Formatters, FormattersType } from '@dxtmisha/functional-basic';
+
+const rawData = { price: 12000, date: '2026-06-18' };
+
+const formatter = new Formatters({
+  price: { type: FormattersType.currency, options: 'USD' },
+  date: { type: FormattersType.date, options: { month: 'long', year: 'numeric' } }
+}, rawData);
+
+const formatted = formatter.to();
+// { price: '$12,000.00', date: 'June 2026' }
+```
+
+---
+
+### 6. General Utility Functions
+
+Core lightweight utilities:
+- `isFilled(value)`: Checks if string, array, object, boolean or number has filled content. Returns `false` for `[]`, `{}`, `''`, `null`, `undefined`.
+- `isDomRuntime()`: Safe isomorphic environment check. Returns `true` if code is running in a browser runtime.
+- `copyObject(value)`: Performs a quick, deep object clone.
+- `anyToString(value)`: Converts any type to its clean string representation.
+- `sleep(ms)`: Promisified setTimeout wrapper for async delay.
+
+```typescript
+import { isFilled, isDomRuntime, copyObject, sleep } from '@dxtmisha/functional-basic';
+
+if (isDomRuntime()) {
+  console.log('Running in browser');
+}
+
+if (isFilled(myArray)) {
+  const cloned = copyObject(myArray);
+}
+
+await sleep(500);
+```
+
 ## Project types: Essential for analysis
 This file contains the complete type definitions for the project. As soon as you start working with this project (using any of its components/functionality, importing from it, or editing its code), you MUST read and study this type definition file as your absolute first action to understand its API and structure:
 'node_modules/@dxtmisha/functional-basic/ai-types.md'
@@ -468,11 +940,23 @@ This file contains the complete type definitions for the project. As soon as you
 The project is located at: 'node_modules/@dxtmisha/nitro-basic'.
 
 ## Project context: Investigation required
-Core purpose: Low-level SSR orchestration library for Vue.js applications targeting the Nitro (Nitropack) runtime. It provides specialized utilities for request context management, application bootstrapping, and state synchronization between server and client environments.
+Core Purpose: This library provides a specialized infrastructure layer for building and orchestrating Vue 3 applications within a Nitro (server-side) ecosystem. It facilitates SSR-to-client hydration, request lifecycle management, and application bootstrapping for complex Vue SSR architectures.
 
-Usage scenarios: This library is indispensable when implementing custom SSR entry points, managing server-side cookies or storage injection into a Vue context, or configuring API clients that require request-specific headers and absolute URL resolution during server-side execution. An AI should study this API to handle hydration readiness, generate unique IDs across environments (uiId), and extract metadata (HTML, teleports, scripts) for the final SSR response.
+Key Expositions:
+- App Bootstrapping: uiCreateApp, uiCreateServerApp, and uiCreateClientApp manage the lifecycle and initialization of Vue instances, handling routing, storage, and SSR rendering configurations.
+- Server Utilities: getRequestHref, getRequestOrigin, and getRequestUrl provide normalized access to request metadata; initApi and initHeaders inject request-specific state.
+- Plugin & Storage Management: initCookieStorage, initServerStorage, and initPluginApiCache integrate stateful storage into the Vue dependency injection container.
+- Router Orchestration: initServerRouter and uiCreateSsrRouter manage the Vue Router lifecycle, specifically handling server-side state resolution to prevent hydration mismatches.
+- UI/Bootstrap Helpers: uiBootstrapServer, uiBootstrapClient, and uiId manage element identity and global environmental setups for SSR environments.
 
-Integration context: The library acts as a bridge between Vue 3, Vue Router, and the Nitro server engine. It relies on standard Web Request/Headers APIs and utilizes Vue's injection system (via NITRO_APP_STORAGE, NITRO_APP_COOKIE keys) to provide server-originated data to the component tree. It is tightly coupled with the Nitro plugin system for API caching and basic environment initialization.
+Triggers for Studying ai-types.md:
+- Implementing custom SSR rendering pipelines.
+- Extending or overriding the default Nitro app integration logic.
+- Debugging hydration mismatches or state synchronization between client and server.
+- Configuring custom storage providers or API caching mechanisms within the Nitro context.
+- Extending NitroAppOptions or NitroAppBasicConfig definitions for specific architectural requirements.
+
+Integration Context: This library acts as the middleware and configuration backbone between a Nitro server environment and a Vue 3 frontend. It interfaces directly with Vue Router, NitroPack, and @dxtmisha/functional plugin systems, serving as the bridge for transporting state (cookies, headers, storage) from the server request to the rendered application.
 
 ## Project information: Core overview
 This section contains essential information and the core overview of the project. Review this to understand the fundamental architecture and key features.
@@ -484,6 +968,125 @@ This package serves as the foundation for building Server-Side Rendering (SSR) a
 3. DO NOT CONNECT: Avoid direct inclusion of this package in the user interface. It is responsible for the server's "skeleton" and its configuration, which should remain hidden from the application developer.
 
 Study this package only if you need to modify the server lifecycle logic, server request handling, or state synchronization mechanisms between the server and the client (hydration).
+
+=============================================================================
+DEVELOPER GUIDE: USING `@dxtmisha/nitro-basic` AS A LIBRARY
+=============================================================================
+
+This section contains instructions and code guidelines for AI models on how to import and use the server-side rendering (SSR), bootstrapping, and server request lifecycle APIs provided by this library in backend entry points or server-side plugins.
+
+---
+
+### 1. Application Initialization & Bootstrapping
+
+These functions set up Vue 3 application instances and manage their execution flow across client and server runtimes.
+
+#### `uiCreateApp`
+Sets up the base Vue application instance, Vue Router, and global options.
+```typescript
+import { uiCreateApp } from '@dxtmisha/nitro-basic';
+import AppRoot from 'node_modules/@dxtmisha/nitro-basic/App.vue';
+
+const { app, router, options } = uiCreateApp(AppRoot, {
+  appRouter: { routes: myRoutes },
+});
+```
+
+#### `uiCreateClientApp`
+Hydrates the Vue application on the client-side.
+```typescript
+import { uiCreateClientApp } from '@dxtmisha/nitro-basic';
+
+// Initialized inside browser entry point (e.g., main.ts / client.ts)
+await uiCreateClientApp(app, '#app', router, options, async (appInstance) => {
+  // Pre-mount operations (e.g., register client-only plugins)
+});
+```
+
+#### `uiCreateServerApp`
+Sets up the server render context, executes routing parameters, extracts headers, lang properties, meta configurations, and executes server pre-render actions.
+```typescript
+import { uiCreateServerApp } from '@dxtmisha/nitro-basic';
+
+// Executes inside server handler / Nitro request lifecycle
+const ssrResult = await uiCreateServerApp(
+  app,
+  nodeRequest, // Incoming Request
+  router,
+  options,
+  async (appInstance) => {
+    // Pre-render operations (e.g., seed stores, register plugins)
+  },
+  ssrContext,
+  htmlTemplateBody
+);
+
+console.log(ssrResult.appHtml);        // Rendered Vue HTML string
+console.log(ssrResult.scriptsJson);    // Hydration data script tags
+console.log(ssrResult.teleportsHtml);  // Teleport block targets
+```
+
+---
+
+### 2. Request Metadata & Headers
+
+Utilities to extract and evaluate incoming headers and request properties.
+
+#### `useHeaders`
+A server-side helper composable to reactively obtain headers of the active incoming request.
+```typescript
+import { useHeaders } from '@dxtmisha/nitro-basic';
+
+// Extract a specific header property
+const userAgent = useHeaders('user-agent');
+
+// Get the entire Headers object
+const allHeaders = useHeaders();
+```
+
+#### Request URL parsers
+```typescript
+import { getRequestHref, getRequestOrigin, getRequestUrl } from '@dxtmisha/nitro-basic';
+
+// Returns the full href from request metadata
+const href = getRequestHref(request);
+
+// Returns origin domain
+const origin = getRequestOrigin(request);
+```
+
+---
+
+### 3. Server Storage & Lifecycle Initializers
+
+These initializers seed isomorphic singletons and dependency injection containers with details resolved from the incoming server request.
+
+```typescript
+import { initApi, initCookieStorage, initServerStorage, initHeaders } from '@dxtmisha/nitro-basic';
+
+// Initialized inside server entry points before rendering
+initApi(request);            // Configures base fetch url and request details
+initCookieStorage(app, request); // Extracts cookies and seeds CookieStorage
+initServerStorage(app);       // Connects ServerStorage request-isolated singletons
+initHeaders(app);            // Attaches incoming request headers to context
+```
+
+---
+
+### 4. Identity & Bootstrap Helpers
+
+```typescript
+import { uiBootstrapClient, uiBootstrapServer, uiId } from '@dxtmisha/nitro-basic';
+
+// Bootstraps element ID generator and settings
+uiId();
+
+// Server-side initialization
+uiBootstrapServer();
+
+// Client-side initialization
+uiBootstrapClient();
+```
 
 ## Project types: Essential for analysis
 This file contains the complete type definitions for the project. As soon as you start working with this project (using any of its components/functionality, importing from it, or editing its code), you MUST read and study this type definition file as your absolute first action to understand its API and structure:
@@ -562,6 +1165,131 @@ Example:
 
   @include mediaMinWidth('md') {
     width: 50%; // Change width for screens from md and up
+  }
+}
+```
+
+=============================================================================
+DEVELOPER GUIDE: USING `@dxtmisha/styles` AS A LIBRARY
+=============================================================================
+
+This section contains instructions and code guidelines for AI models on how to import and use the design system variables, colors, typography, layout, and media query mixins provided by this library in stylesheets.
+
+---
+
+### 1. Importing Styles & Properties
+
+Styles can be imported modularly depending on performance and configuration needs.
+
+```scss
+// Import all variables, mixins, utilities, and helper styles
+@import '@dxtmisha/styles';
+
+// Import ONLY the core design system CSS properties and variables (lighter bundle)
+@import '@dxtmisha/styles/properties';
+```
+
+---
+
+### 2. Styling with Color Mixins
+
+Use semantic color utilities to assign text, background, and borders.
+
+```scss
+.button {
+  // Set background-color to primary theme color
+  @include backgroundColor(primary);
+
+  // Apply base style rule to use color contrast logic
+  @include backgroundAsColor;
+
+  // Add text color
+  @include color(white);
+}
+
+.alert {
+  // Sets color from semantic danger token
+  @include color(danger);
+
+  // Set transparency for background using the system opacity mixin
+  @include backgroundOpacity(0.1);
+}
+```
+
+#### Palette variables (Routing & Re-theming)
+```scss
+.card {
+  // Binds the background color dynamically to the semantic primary palette token.
+  // This color will automatically re-render when a parent container's palette changes.
+  @include paletteBackgroundColor('--d1-sys-palette-primary');
+}
+```
+
+---
+
+### 3. Flexbox Layouts
+
+Rather than writing verbose flex rules, use layout mixins to define containers.
+
+```scss
+.container {
+  @include flex;
+  @include flexDirection(column);
+  @include justifyContent(center);
+  @include alignItems(center);
+}
+```
+
+---
+
+### 4. Typography & Spacing
+
+Ensure text styles and container spacings align with design variables.
+
+```scss
+.title {
+  @include font(titleLarge); // Sets font-size, weight, line-height
+}
+
+.body {
+  @include font(bodyMedium);
+}
+
+.box {
+  @include padding(md); // Applies consistent system padding
+  @include margin(lg);  // Applies consistent system margin
+  @include radius;      // Applies standard border-radius token
+}
+```
+
+---
+
+### 5. Responsive Design Breakpoints
+
+Always leverage standard breakpoints (`sm`, `md`, `lg`, `xl`, `2xl`) instead of writing raw media query widths.
+
+```scss
+.responsive-box {
+  display: block;
+
+  @include mediaMinWidth('md') {
+    display: flex; // Converts to flex for tablets and wider screens
+  }
+
+  @include mediaMinWidth('lg') {
+    max-width: 960px; // Centers and limits width on desktops
+  }
+}
+```
+
+#### Container Queries
+Evaluate layouts based on the parent component's size.
+```scss
+.card-content {
+  display: grid;
+
+  @include containerMinWidth('sm') {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 ```

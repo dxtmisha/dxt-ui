@@ -16,10 +16,6 @@ The following is the content of "exports" from package.json:
 
 // File: src/classes/design/DesignAbstract.d.ts
 export declare abstract class DesignAbstract<T extends Record<string, any>, C extends Record<string, any>> {
-    protected readonly props: T;
-    protected readonly callback?: ((event: C) => void) | undefined;
-    protected readonly event: C;
-    protected readonly changed: DesignChanged<T>;
     constructor(props: T, callback?: ((event: C) => void) | undefined, changed?: string[]);
     make(compelled?: boolean): this;
     makeCallback(compelled?: boolean): void;
@@ -35,8 +31,6 @@ export declare abstract class DesignAsyncAbstract<T extends Record<string, any>,
 
 // File: src/classes/design/DesignChanged.d.ts
 export declare class DesignChanged<T extends Record<string, any>> {
-    protected readonly props: T;
-    protected readonly watch: string[];
     constructor(props: T, watch?: string[]);
     is(name: string | string[]): boolean;
     isChanged(): boolean;
@@ -49,9 +43,6 @@ export declare class DesignComp<COMP extends ConstrComponent, P extends ConstrIt
 
 // File: src/classes/design/DesignComponents.d.ts
 export declare class DesignComponents<COMP extends ConstrComponent, P extends ConstrItem> {
-    protected readonly components: COMP;
-    protected readonly modification?: ConstrComponentMod<P> | undefined;
-    protected caching: Record<string, ComputedRef<any>>;
     constructor(components?: COMP, modification?: ConstrComponentMod<P> | undefined);
     is<K extends keyof COMP>(name: K): name is K;
     get<K extends keyof COMP>(name: K): COMP[K];
@@ -63,20 +54,6 @@ export declare class DesignComponents<COMP extends ConstrComponent, P extends Co
 
 // File: src/classes/design/DesignConstructorAbstract.d.ts
 export declare abstract class DesignConstructorAbstract<E extends Element, COMP extends ConstrComponent, EMITS extends ConstrItem, EXPOSE extends ConstrItem, SLOTS extends ConstrItem, CLASSES extends ConstrClasses, P extends ConstrItem> {
-    protected readonly props: Readonly<P>;
-    protected readonly options?: ConstrOptions<COMP, EMITS, P> | undefined;
-    protected readonly name: string[];
-    protected readonly element: Ref<E | undefined, E | undefined>;
-    protected readonly refs: ToRefs<P>;
-    protected readonly components: DesignComponents<COMP, P>;
-    protected readonly emits?: ConstrEmit<EMITS>;
-    protected readonly classes?: ComputedRef<CLASSES>;
-    protected classesSub?: ComputedRef<Partial<CLASSES>>;
-    protected readonly styles?: ComputedRef<ConstrStyles>;
-    protected stylesSub?: ComputedRef<ConstrStyles>;
-    protected attrs?: ConstrItem;
-    protected slots?: SLOTS;
-    protected dataExpose?: EXPOSE;
     protected constructor(name: string, props: Readonly<P>, options?: ConstrOptions<COMP, EMITS, P> | undefined);
     protected init(): this;
     getName(): string;
@@ -91,24 +68,10 @@ export declare abstract class DesignConstructorAbstract<E extends Element, COMP 
     protected abstract initClasses(): Partial<CLASSES>;
     protected abstract initStyles(): ConstrStyles;
     protected abstract initRender(): VNode | (VNode | any)[] | undefined;
-    protected initSlot<K extends keyof SLOTS>(name: K, children?: any[], props?: ConstrItem): VNode | undefined;
-    protected toClass(classes?: ConstrClass): ConstrClassObject;
-    protected toClassName<T extends ConstrItem>(classes?: ConstrItem): T;
 }
 
 // File: src/classes/ref/DatetimeRef.d.ts
 export declare class DatetimeRef {
-    protected item: Ref<NumberOrStringOrDate>;
-    protected type: Ref<GeoDate>;
-    protected code: Ref<string>;
-    protected date: Ref<Date>;
-    protected datetime: Datetime;
-    protected year: Ref<number, number>;
-    protected month: Ref<number, number>;
-    protected day: Ref<number, number>;
-    protected hour: Ref<number, number>;
-    protected minute: Ref<number, number>;
-    protected second: Ref<number, number>;
     constructor(date: RefOrNormal<NumberOrStringOrDate>, type?: RefOrNormal<GeoDate>, code?: RefOrNormal<string>);
     getItem(): Ref<NumberOrStringOrDate>;
     getDate(): Ref<Date>;
@@ -138,7 +101,6 @@ export declare class EventRef<E extends ElementOrWindow, O extends Event, D exte
 
 // File: src/classes/ref/GeoFlagRef.d.ts
 export declare class GeoFlagRef {
-    protected flag: ComputedRef<GeoFlag>;
     constructor(code?: RefOrNormal<string | undefined>);
     getCode(): string;
     get(code?: RefOrNormal<string>): ComputedRef<GeoFlagItem | undefined>;
@@ -187,19 +149,6 @@ export declare class GeoRef {
 
 // File: src/classes/ref/ListDataRef.d.ts
 export declare class ListDataRef {
-    protected readonly list: RefOrNormal<ListListInput | undefined>;
-    protected readonly focus?: RefType<ListSelectedItem | undefined> | undefined;
-    protected readonly highlight?: RefType<string | undefined> | undefined;
-    protected readonly highlightLengthStart?: RefType<number | undefined> | undefined;
-    protected readonly filterMode?: RefType<boolean | undefined> | undefined;
-    protected readonly selected?: RefType<ListSelectedList | undefined> | undefined;
-    protected readonly keyValue?: RefType<string | undefined> | undefined;
-    protected readonly keyLabel?: RefType<string | undefined> | undefined;
-    protected readonly lite?: RefType<number | undefined> | undefined;
-    protected readonly min: RefOrNormal<number | string | undefined>;
-    protected readonly max: RefOrNormal<number | string | undefined>;
-    protected readonly parent?: string | undefined;
-    protected subList: Record<any, ListDataRef>;
     constructor(list: RefOrNormal<ListListInput | undefined>, focus?: RefType<ListSelectedItem | undefined> | undefined, highlight?: RefType<string | undefined> | undefined, highlightLengthStart?: RefType<number | undefined> | undefined, filterMode?: RefType<boolean | undefined> | undefined, selected?: RefType<ListSelectedList | undefined> | undefined, keyValue?: RefType<string | undefined> | undefined, keyLabel?: RefType<string | undefined> | undefined, lite?: RefType<number | undefined> | undefined, min?: RefOrNormal<number | string | undefined>, max?: RefOrNormal<number | string | undefined>, parent?: string | undefined);
     readonly data: ComputedRef<ListList>;
     readonly liteData: ComputedRef<ListList>;
@@ -415,23 +364,71 @@ export declare const useLazyItemByMarginRef: (element: RefType<HTMLElement | und
 
 // File: src/composables/ref/useLazyRef.d.ts
 export type LazyItem = { status: ShallowRef<boolean>; ratio: ShallowRef<number>; entry: ShallowRef<IntersectionObserverEntry | undefined>; stopWatch: () => void; };
-export type LazyList = Record<string, LazyItem>;
-export declare const useLazyRef: (options?: IntersectionObserverInit) => { intersectionObserver: IntersectionObserver | undefined; getItem(element: HTMLElement): LazyItem; addLazyItem(element: Ref<HTMLElement | undefined>): ShallowRef<boolean, boolean>; removeLazyItem: (element?: HTMLElement) => void; disconnectLazy: () => void | undefined; };
+export declare const useLazyRef: (options?: IntersectionObserverInit) => {
+    intersectionObserver: IntersectionObserver | undefined;
+    getItem(element: HTMLElement): LazyItem;
+    addLazyItem(element: Ref<HTMLElement | undefined>): ShallowRef<boolean, boolean>;
+    removeLazyItem: (element?: HTMLElement) => void;
+    disconnectLazy: () => void | undefined;
+};
 
 // File: src/composables/ref/useLoadingRef.d.ts
 export declare function useLoadingRef(): ShallowRef<boolean, boolean>;
 
 // File: src/composables/ref/useMeta.d.ts
-export declare const useMeta: () => Readonly<{ meta: typeof MetaStatic; title: Ref<string, string>; keyword: Ref<string, string>; description: Ref<string, string>; author: Ref<string, string>; image: Ref<string, string>; canonical: Ref<string, string>; robots: Ref<MetaRobots, MetaRobots>; siteName: Ref<string, string>; getHtmlMeta: () => string; sync: () => void; update: () => void; updateSsr: () => void; setTitle: (value: string) => void; setKeywords: (value: string) => void; setDescription: (value: string) => void; setAuthor: (value: string) => void; setImage: (value: string) => void; setCanonical: (value: string) => void; setRobots: (value: MetaRobots) => void; setSiteName: (value: string) => void; setSuffix: (suffix: string) => typeof MetaStatic; } & { init(): Readonly<any>; destroyExecute?(): void; }>;
+export declare const useMeta: () => Readonly<{
+    meta: typeof MetaStatic;
+    title: Ref<string, string>;
+    keyword: Ref<string, string>;
+    description: Ref<string, string>;
+    author: Ref<string, string>;
+    image: Ref<string, string>;
+    canonical: Ref<string, string>;
+    robots: Ref<MetaRobots, MetaRobots>;
+    siteName: Ref<string, string>;
+    getHtmlMeta: () => string;
+    sync: () => void;
+    update: () => void;
+    updateSsr: () => void;
+    setTitle: (value: string) => void;
+    setKeywords: (value: string) => void;
+    setDescription: (value: string) => void;
+    setAuthor: (value: string) => void;
+    setImage: (value: string) => void;
+    setCanonical: (value: string) => void;
+    setRobots: (value: MetaRobots) => void;
+    setSiteName: (value: string) => void;
+    setSuffix: (suffix: string) => typeof MetaStatic;
+} & {
+    init(): any;
+    destroyExecute?(): void;
+}>;
 
 // File: src/composables/ref/useRouterList.d.ts
-export declare const useRouterList: <T extends ListDataBasic>(list: RefType<ConstrBind<T>[] | undefined>, selected?: Ref<string> | string, hasTo?: boolean) => { item: ComputedRef<T | undefined>; selected: Ref<string, string>; label: ComputedRef<NumberOrString>; list: ComputedRef<ConstrBind<T>[]>; to: (name?: string) => void; toMain(): void; };
+export declare const useRouterList: <T extends ListDataBasic>(list: RefType<ConstrBind<T>[] | undefined>, selected?: Ref<string> | string, hasTo?: boolean) => {
+    item: ComputedRef<T | undefined>;
+    selected: Ref<string, string>;
+    label: ComputedRef<NumberOrString>;
+    list: ComputedRef<ConstrBind<T>[]>;
+    to: (name?: string) => void;
+    toMain(): void;
+};
 
 // File: src/composables/ref/useSearchRef.d.ts
-export declare function useSearchRef<T extends SearchItem, K extends SearchColumns<T>>(list: SearchListInput<T>, columns: K, value?: Ref<string>, options?: SearchOptions): { isSearch: ComputedRef<boolean>; search: Ref<string, string>; loading: Ref<boolean, boolean>; listSearch: ComputedRef<SearchFormatList<T, K>>; length: ComputedRef<number>; };
+export declare function useSearchRef<T extends SearchItem, K extends SearchColumns<T>>(list: SearchListInput<T>, columns: K, value?: Ref<string>, options?: SearchOptions): {
+    isSearch: ComputedRef<boolean>;
+    search: Ref<string, string>;
+    loading: Ref<boolean, boolean>;
+    listSearch: ComputedRef<SearchFormatList<T, K>>;
+    length: ComputedRef<number>;
+};
 
 // File: src/composables/ref/useSearchValueRef.d.ts
-export declare function useSearchValueRef<T extends SearchItem, K extends SearchColumns<T>>(item: SearchList<T, K>, value?: Ref<string>): { search: Ref<string, string>; searchDelay: Ref<string, string>; loading: Ref<boolean, boolean>; };
+export declare function useSearchValueRef<T extends SearchItem, K extends SearchColumns<T>>(item: SearchList<T, K>, value?: Ref<string>): {
+    search: Ref<string, string>;
+    searchDelay: Ref<string, string>;
+    loading: Ref<boolean, boolean>;
+};
 
 // File: src/composables/ref/useSessionRef.d.ts
 export declare function useSessionRef<T>(name: string, defaultValue?: T | (() => T)): Ref<T | undefined>;
@@ -459,16 +456,25 @@ export declare function computedByLanguage<T, R extends (T | undefined) = T | un
 export declare function computedEternity<T>(getter: () => Promise<T> | T, initialState?: (() => T) | T): Ref<T, T>;
 
 // File: src/functions/dxtFunctionalPlugin.d.ts
-export interface FunctionalPluginOptions { api?: ApiConfig; translate?: TranslateConfig; location?: string | (() => string); metaSuffix?: string; icons?: IconsConfig; router?: Router; errorCauses?: ErrorCenterCauseList; errorHandlers?: ErrorCenterHandlerList; }
+export interface FunctionalPluginOptions {
+    api?: ApiConfig;
+    translate?: TranslateConfig;
+    location?: string | (() => string);
+    metaSuffix?: string;
+    icons?: IconsConfig;
+    router?: Router;
+    errorCauses?: ErrorCenterCauseList;
+    errorHandlers?: ErrorCenterHandlerList;
+}
 export declare const dxtFunctionalPlugin: Plugin;
 
 // File: src/functions/executeUse.d.ts
 export declare enum ExecuteUseType { global = "global", provide = "provide", local = "local" }
 export type ExecuteUseReturn<R> = Readonly<R & { init(): Readonly<R>; destroyExecute?(): void; }>;
 export declare function executeUse<R, O extends any[], RI extends ExecuteUseReturn<R> = ExecuteUseReturn<R>>(callback: (...args: O) => R, type?: ExecuteUseType): ((...args: O) => RI) | (() => RI);
-export declare function executeUseGlobal<R>(callback: () => R): (() => Readonly<any>) | (() => Readonly<any>);
-export declare function executeUseProvide<R, O extends any[]>(callback: (...args: O) => R): ((...args: O) => Readonly<any>) | (() => Readonly<any>);
-export declare function executeUseLocal<R, O extends any[]>(callback: (...args: O) => R): ((...args: O) => Readonly<any>) | (() => Readonly<any>);
+export declare function executeUseGlobal<R>(callback: () => R): any;
+export declare function executeUseProvide<R, O extends any[]>(callback: (...args: O) => R): any;
+export declare function executeUseLocal<R, O extends any[]>(callback: (...args: O) => R): any;
 export declare function executeUseGlobalInit(): void;
 
 // File: src/functions/getInject.d.ts
@@ -513,12 +519,98 @@ export declare function toBind<R extends ItemList = ItemList>(extra: ItemList, v
 // File: src/functions/toBinds.d.ts
 export declare function toBinds<R extends ItemList = ItemList>(...values: (ItemList | undefined)[]): ConstrBind<R>;
 
+// File: src/library.d.ts
+export * from './classes/design/DesignAbstract';
+export * from './classes/design/DesignAsyncAbstract';
+export * from './classes/design/DesignChanged';
+export * from './classes/design/DesignComp';
+export * from './classes/design/DesignComponents';
+export * from './classes/design/DesignConstructorAbstract';
+export * from './classes/ref/DatetimeRef';
+export * from './classes/ref/EffectScopeGlobal';
+export * from './classes/ref/EventRef';
+export * from './classes/ref/GeoFlagRef';
+export * from './classes/ref/GeoIntlRef';
+export * from './classes/ref/GeoRef';
+export * from './classes/ref/ListDataRef';
+export * from './classes/ref/RouterItemRef';
+export * from './classes/ref/ScrollbarWidthRef';
+export * from './composables/ref/useApiAsyncRef';
+export * from './composables/ref/useApiDelete';
+export * from './composables/ref/useApiGet';
+export * from './composables/ref/useApiManagementAsyncRef';
+export * from './composables/ref/useApiManagementRef';
+export * from './composables/ref/useApiPost';
+export * from './composables/ref/useApiPut';
+export * from './composables/ref/useApiRef';
+export * from './composables/ref/useApiRequest';
+export * from './composables/ref/useBroadcastValueRef';
+export * from './composables/ref/useCookieRef';
+export * from './composables/ref/useFormattersRef';
+export * from './composables/ref/useGeoIntlRef';
+export * from './composables/ref/useHashRef';
+export * from './composables/ref/useLazyItemByMarginRef';
+export * from './composables/ref/useLazyRef';
+export * from './composables/ref/useLoadingRef';
+export * from './composables/ref/useMeta';
+export * from './composables/ref/useRouterList';
+export * from './composables/ref/useSearchRef';
+export * from './composables/ref/useSearchValueRef';
+export * from './composables/ref/useSessionRef';
+export * from './composables/ref/useStorageRef';
+export * from './composables/ref/useTranslateRef';
+export * from './functions/basic';
+export * from './functions/computedAsync';
+export * from './functions/computedByLanguage';
+export * from './functions/computedEternity';
+export * from './functions/dxtFunctionalPlugin';
+export * from './functions/executeUse';
+export * from './functions/getInject';
+export * from './functions/getOptions';
+export * from './functions/ref/executeFunctionRef';
+export * from './functions/ref/getApiErrorRef';
+export * from './functions/ref/getBindRef';
+export * from './functions/ref/getRef';
+export * from './functions/ref/render';
+export * from './functions/ref/setRef';
+export * from './functions/ref/toRefItem';
+export * from './functions/render/getBind';
+export * from './functions/render/getClassName';
+export * from './functions/render/getIndexForRender';
+export * from './functions/toBind';
+export * from './functions/toBinds';
+export * from './types/apiTypes';
+export * from './types/constructorTypes';
+export * from './types/listTypes';
+export * from './types/refTypes';
+export * from './types/searchTypes';
+
 // File: src/types/apiTypes.d.ts
 export type ApiOptions = ApiMethodItem | RefOrNormal<ApiFetch>;
 export type ApiManagementValue = ApiDefaultValue | ApiDefaultValue[];
-export type ApiManagementGet<Return extends ApiManagementValue, Type extends ApiManagementValue = Return> = { path?: RefOrNormal<string | undefined>; options?: ApiOptions; reactivity?: boolean; conditions?: RefType<boolean>; transformation?: (data: Type, isResponseContractValid?: ApiDataValidation) => ApiData<Return>; validateResponseContract?: (data: Type) => ApiDataValidation; errorContract?: ApiErrorStorageList; typeData?: ((data: Return) => boolean) | any; unmounted?: boolean; skeleton?: () => Return; };
+export type ApiManagementGet<Return extends ApiManagementValue, Type extends ApiManagementValue = Return> = {
+    path?: RefOrNormal<string | undefined>;
+    options?: ApiOptions;
+    reactivity?: boolean;
+    conditions?: RefType<boolean>;
+    transformation?: (data: Type, isResponseContractValid?: ApiDataValidation) => ApiData<Return>;
+    validateResponseContract?: (data: Type) => ApiDataValidation;
+    errorContract?: ApiErrorStorageList;
+    typeData?: ((data: Return) => boolean) | any;
+    unmounted?: boolean;
+    skeleton?: () => Return;
+};
 export type ApiManagementSearch<T extends SearchItem, K extends SearchColumns<T>> = { columns: K; value?: Ref<string>; options?: SearchOptions; };
-export type ApiManagementRequest<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>> = { path?: RefOrNormal<string | undefined>; action?: (data: Return | undefined) => Promise<void> | void; transformation?: (data: T) => Return; validateRequestContract?: (data: Request) => ApiDataValidation & Return; validateResponseContract?: (data: T) => ApiDataValidation & Return; errorContract?: ApiErrorStorageList; toData?: boolean; options?: ApiOptions; };
+export type ApiManagementRequest<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>> = {
+    path?: RefOrNormal<string | undefined>;
+    action?: (data: Return | undefined) => Promise<void> | void;
+    transformation?: (data: T) => Return;
+    validateRequestContract?: (data: Request) => ApiDataValidation & Return;
+    validateResponseContract?: (data: T) => ApiDataValidation & Return;
+    errorContract?: ApiErrorStorageList;
+    toData?: boolean;
+    options?: ApiOptions;
+};
 
 // File: src/types/constructorTypes.d.ts
 export type ConstrItem = Record<string, any>;
@@ -535,8 +627,19 @@ export type ConstrClassList = Record<string, ConstrClass>;
 export type ConstrClasses = { main: ConstrClass; } & ConstrClassList;
 export type ConstrStylesItem = string | null;
 export type ConstrStyles = Record<string, ConstrStylesItem> | ConstrStyles[];
-export type ConstrOptions<COMP extends ConstrComponent, EMITS extends ConstrItem, P extends ConstrItem> = { components?: COMP; compMod?: ConstrComponentMod<P>; emits?: ConstrEmit<EMITS>; classes?: RefType<ConstrClasses>; styles?: RefType<ConstrStyles>; };
-export type ConstrSetup<E extends Element, CLASSES extends ConstrClasses, SETUP extends ConstrItem> = { name: string; element: Ref<E | undefined>; classes: RefType<CLASSES>; styles: RefType<ConstrStyles>; } & SETUP;
+export type ConstrOptions<COMP extends ConstrComponent, EMITS extends ConstrItem, P extends ConstrItem> = {
+    components?: COMP;
+    compMod?: ConstrComponentMod<P>;
+    emits?: ConstrEmit<EMITS>;
+    classes?: RefType<ConstrClasses>;
+    styles?: RefType<ConstrStyles>;
+};
+export type ConstrSetup<E extends Element, CLASSES extends ConstrClasses, SETUP extends ConstrItem> = {
+    name: string;
+    element: Ref<E | undefined>;
+    classes: RefType<CLASSES>;
+    styles: RefType<ConstrStyles>;
+} & SETUP;
 export type ConstrRegistration = { flag?: boolean; translate?: Record<string, string>; };
 export type ConstrBind<T> = T & Record<string, any> & { key?: string; class?: ConstrClass; style?: ConstrStyles; };
 export type ConstrPropItemOptions<T = any> = { type?: PropType<T>; required?: boolean; default?: any; validator?(value: any, props: any): boolean; };

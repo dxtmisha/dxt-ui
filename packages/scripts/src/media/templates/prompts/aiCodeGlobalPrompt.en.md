@@ -7,11 +7,11 @@ Your primary goal is to generate flawless, industrial-grade code that adheres to
    - Before modifying or fixing any file, you MUST fully study its internal structure and logic first.
    - If any instructions, paths, or files are specified as located inside `node_modules/` or any other external/linked directory, you MUST first check if this package exists locally in the workspace (for example, under `packages/`). If it does exist locally, you MUST resolve the paths to the local workspace package directory and study/modify the local source files instead.
    - **CRITICAL FIRST STEP:** If any project, module, or instruction contains links or references to specific files (e.g. types, developer guides, descriptions), you MUST study all these referenced files as your absolute first action. As soon as you start working with a project, or notice that it is imported/used in the code you are working with, you must immediately read and study all these referenced files before doing any planning, proposing code changes, or writing code. This is mandatory and applies even if the files are located in `node_modules/` (always resolve them to the local workspace directory first if they exist locally).
-    - **STRICT BLOCKING GUARD (CHRONOLOGICAL ORDER RULES):**
-      1. As your ABSOLUTE FIRST ACTION, before taking any other steps, you MUST check if the `ai-memory.md` file exists in the specific package directory or the repository root depending on the files you are working on:
-         - If you are analyzing or modifying files that are located inside a package directory (e.g., any subdirectory under `packages/` like `packages/constructor/`, `packages/scripts/`, etc.), you MUST read/write the `ai-memory.md` file ONLY within that specific package directory (e.g. `packages/constructor/ai-memory.md` or `packages/scripts/ai-memory.md`). You are strictly FORBIDDEN from using, reading, or writing the global `ai-memory.md` in the repository root in this case.
-         - If and only if the files you are working with are root-level configurations or not part of any package under `packages/`, you may read/write the `ai-memory.md` file in the repository root.
-         If the required local package-level `ai-memory.md` (or root `ai-memory.md` for root-level files) exists, you MUST read it using `view_file`. If it does NOT exist, you MUST CREATE IT immediately using `write_to_file` as an empty file with only a single newline (no placeholder text, comments, or intro text).
+   - **STRICT BLOCKING GUARD (CHRONOLOGICAL ORDER RULES):**
+     1. As your ABSOLUTE FIRST ACTION, before taking any other steps, you MUST check if the `ai-memory.md` file exists in the specific package directory or the repository root depending on the files you are working on:
+        - If you are analyzing or modifying files that are located inside a package directory (e.g., any subdirectory under `packages/` like `packages/constructor/`, `packages/scripts/`, etc.), you MUST read/write the `ai-memory.md` file ONLY within that specific package directory (e.g. `packages/constructor/ai-memory.md` or `packages/scripts/ai-memory.md`). You are strictly FORBIDDEN from using, reading, or writing the global `ai-memory.md` in the repository root in this case.
+        - If and only if the files you are working with are root-level configurations or not part of any package under `packages/`, you may read/write the `ai-memory.md` file in the repository root.
+        If the required local package-level `ai-memory.md` (or root `ai-memory.md` for root-level files) exists, you MUST read it using `view_file`. If it does NOT exist, you MUST CREATE IT immediately using `write_to_file` as an empty file with only a single newline (no placeholder text, comments, or intro text).
      2. Identify all paths, directories, or packages involved in the user request.
      3. Scan the prompt for sections corresponding to those paths.
      4. Identify all paths to auxiliary documentation, types, or developer guides mentioned in those sections.
@@ -37,6 +37,7 @@ Your primary goal is to generate flawless, industrial-grade code that adheres to
 
 4. **Uncompromising TypeScript**:
    - No `any`. Use `unknown` if the type is truly unknown, or create generic types.
+   - Never use `@ts-ignore`. If a type check suppression is absolutely necessary due to external limitations, use `@ts-expect-error` with a descriptive comment explaining why.
    - Always define interfaces for input and output data.
    - Use `as const`, `readonly`, and enums/union types to increase reliability.
 
@@ -47,25 +48,28 @@ Your primary goal is to generate flawless, industrial-grade code that adheres to
 
 6. **Architectural Consistency**:
    - Respect the project structure. If it is standard in the project to move logic into `composables` or `utils`, follow that pattern.
+   - Reuse existing infrastructure: Always check if the required functionality (e.g., API requests, state management, utilities) already exists in the project's core packages (like `@dxtmisha/functional` or `@dxtmisha/functional-basic`) before implementing it from scratch.
    - Do not modify global styles or styles of base UI components unless explicitly requested.
 
 7. **Security and Performance**:
    - Write error-proof code (guard clauses, optional chaining `?.`, nullish coalescing `??`).
+   - Use explicit `try-catch` blocks for asynchronous operations. Never swallow errors silently; handle them appropriately or throw meaningful error messages.
    - Avoid redundant calculations in loops and heavy operations in reactive dependencies.
 
 8. **Aesthetics and Conciseness**:
    - The code must be beautiful. Use logical indentation and group code by meaning.
    - Save tokens by avoiding redundant comments where the code speaks for itself.
 
-9. **Strict Adherence to Instructions**:
+9. **Strict Adherence to Instructions & Optimization**:
    - Perform all operations strictly in accordance with the provided commands and instructions.
-   - Avoid guessing, improvisation, or performing any unrequested or extra actions.
-   - Strictly adhere to the plan, checklists, and execution steps.
+   - Avoid guessing or performing unrelated extra actions. However, you are encouraged to analyze the requirements, optimize the code, and propose or implement better technical solutions directly related to achieving the task's goals.
+   - Strictly adhere to the plan, checklists, and execution steps, while refining them for better quality and performance when needed.
 
 10. **AI Workspace Memory (`ai-memory.md`)**:
     - As enforced by the STRICT BLOCKING GUARD, `ai-memory.md` MUST be created and read locally inside the root of the specific package you are working with (e.g., `packages/constructor/ai-memory.md` for code in `packages/constructor`).
     - Writing or reading `ai-memory.md` in the repository root when working on code inside a package is a critical violation of these rules.
     - Whenever you receive feedback, corrections, or instructions from the developer, you MUST update that specific package's local `ai-memory.md` file.
+    - Active Application: You must actively APPLY the rules and constraints from `ai-memory.md` to all code you generate. Rules in this file override general assumptions and have the highest priority.
     - The PRIMARY PURPOSE of this file is to store critical coding guidelines, specific architectural constraints, and "do's and don'ts" (e.g., "do not use X; use Y instead") to ensure the AI writes compliant, correct code.
     - DO NOT store change logs, lists of modified files, or commit-like messages (e.g., "updated file X, updated package Y"). Keep the file clean, concise, and focused strictly on active rules, design decisions, and coding standards.
 

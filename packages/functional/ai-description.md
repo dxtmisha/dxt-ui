@@ -1,18 +1,18 @@
-This library is a collection of Vue 3-based utility classes and composables designed for building complex, reactive, and SSR-ready interfaces. It provides a standardized framework for API management, component state, geographic/localization data, and dynamic rendering.
+Core Purpose: A high-level reactive framework for Vue 3 that abstracts complex state, API orchestration, and UI design patterns. It provides a standardized layer for API management (including SSR support), data formatting, list manipulation, and design component architecture.
 
-1. Core Purpose:
-An infrastructure-level toolkit for Vue 3 that abstracts asynchronous data fetching, state management, and UI rendering logic. It provides structured classes and composables to handle API lifecycle (GET/POST/PUT/DELETE), reactive data transformations, internationalization (Intl), and component orchestration.
+Key Expositions:
+1. API Management: `useApiRef` (standard reactive fetch), `useApiManagementRef` (orchestrates GET/POST/PUT/DELETE with search/formatting), and SSR-specific versions (`useApiAsyncRef`, `useApiManagementAsyncRef`).
+2. Design System Components: `DesignConstructorAbstract` and `DesignComponents` for building reactive, theme-aware components; `DesignChanged` for tracking property mutations.
+3. Geo/Intl Utilities: `GeoIntlRef` (localized formatting for numbers, dates, currency, size), `GeoRef` (locale/country state management), and `GeoFlagRef`.
+4. Reactive Ref Utilities: `ListDataRef` (complex list management, grouping, selection, navigation), `EventRef` (reactive event listeners), and various composables for `localStorage`/`sessionStorage`/`cookies`.
+5. Functional Helpers: `executeUse` (singleton management: global/provide/local), `computedAsync`/`computedEternity` (advanced reactivity wrappers).
 
-2. Usage Scenarios:
-- API Orchestration: When building complex forms, data tables, or dashboards requiring integrated state, validation (via @effect/schema compatibility), and SSR support. Use `useApiManagementRef` for unified CRUD handling or `useApiRef` for individual requests.
-- Reactive Data Management: When you need synchronized data across browser tabs (`useBroadcastValueRef`) or persistence across reloads (`useStorageRef`, `useCookieRef`).
-- Localization & Formatting: When the application needs to dynamically handle geographic data, currency formatting, file sizes, or date manipulation via `GeoIntlRef` and `useGeoIntlRef`.
-- Component Design System: When building modular UI components that require consistent prop-to-style/class mapping (`DesignConstructorAbstract`, `DesignComponents`).
-- Lifecycle & DOM Utilities: When implementing lazy loading (`useLazyRef`) or global state management using `executeUse` for singletons.
+Triggers for Studying ai-types.md:
+- When implementing or consuming API requests with `useApi...` hooks to understand data contracts and error handling.
+- When configuring `executeUse` strategies (global vs provide) for service injection.
+- When defining component properties or structures using `Constr...` types (e.g., `ConstrBind`, `ConstrOptions`).
+- When managing complex lists or search logic requiring `ListDataRef` or `Search...` types.
+- When creating custom design classes inheriting from `DesignConstructorAbstract`.
 
-3. Integration Context:
-- Vue 3 Core: Heavily leverages `Ref`, `ComputedRef`, and `provide/inject`.
-- Data Fetching: Acts as a high-level wrapper over an underlying `functional-basic` library.
-- Routing: Integrates with `vue-router` via `RouterItemRef` and `useRouterList`.
-- SSR: Provides specific `Async` variants (e.g., `useApiAsyncRef`) for server-side pre-fetching.
-- Schema Validation: Designed to work with `@effect/schema` for robust API contract validation.
+Integration Context: 
+This library serves as a middleware layer between raw API responses/browser APIs and Vue components. It is designed to work with `@dxtmisha/functional-basic` (the core utility provider) and relies on Vue's reactivity system. It is meant to be registered as a plugin (`dxtFunctionalPlugin`) to provide global configurations for API clients, translation services, and routing.

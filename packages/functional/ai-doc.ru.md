@@ -43,3 +43,184 @@
 3. `executeUseProvide`:
    - Когда использовать: Для состояния, разделяемого между родителем и группой дочерних компонентов (например: табы, сложные формы с подкомпонентами).
    - Особенности: Использует provide/inject. Первый компонент в дереве, вызвавший хук, становится «провайдером», остальные — потребителями.
+
+=============================================================================
+РУКОВОДСТВО ДЛЯ РАЗРАБОТЧИКА: ИСПОЛЬЗОВАНИЕ `@dxtmisha/functional` В КАЧЕСТВЕ БИБЛИОТЕКИ
+=============================================================================
+
+Этот раздел содержит инструкции и примеры кода для AI-моделей о том, как импортировать и использовать Vue-специфичные реактивные классы, хуки (composables) и утилиты, предоставляемые этой библиотекой в приложениях Vue 3 / Nuxt.
+
+---
+
+### 1. Реактивная работа с хранилищами (Storage & State)
+
+Данные хуки связывают браузерные хранилища с реактивными объектами `Ref` во Vue, обеспечивая мгновенную двустороннюю синхронизацию.
+
+#### `useStorageRef` (localStorage)
+Реактивно связывает ключ в `localStorage`.
+```typescript
+import { useStorageRef } from '@dxtmisha/functional';
+
+// Связывание с ключом и указание значения по умолчанию
+const theme = useStorageRef<'light' | 'dark'>('theme_key', 'light');
+
+// Запись значения реактивно обновит localStorage
+theme.value = 'dark';
+```
+
+#### `useSessionRef` (sessionStorage) & `useCookieRef` (Cookies)
+```typescript
+import { useSessionRef, useCookieRef } from '@dxtmisha/functional';
+
+// sessionStorage
+const step = useSessionRef<number>('form_step', 1);
+
+// CookieStorage
+const token = useCookieRef<string>('auth_token', '', { secure: true });
+```
+
+#### `useBroadcastValueRef` (Синхронизация между вкладками)
+Позволяет реактивно синхронизировать состояние между разными вкладками браузера в рамках одного домена.
+```typescript
+import { useBroadcastValueRef } from '@dxtmisha/functional';
+
+// Синхронизирует ref с другими вкладками через BroadcastChannel API
+const syncState = useBroadcastValueRef<string>('active_channel', 'idle');
+```
+
+#### `useHashRef` (Связывание с URL Hash)
+Связывает состояние с хеш-параметрами в адресной строке.
+```typescript
+import { useHashRef } from '@dxtmisha/functional';
+
+const hashPage = useHashRef<string>('page', 'home');
+```
+
+---
+
+### 2. Реактивная локализация и геологика (`GeoRef`, `GeoIntlRef`, `GeoFlagRef`, `useTranslateRef`)
+
+Предоставляет реактивные обертки для инструментов интернационализации.
+
+#### `GeoRef` & `GeoIntlRef`
+```typescript
+import { GeoRef, useGeoIntlRef } from '@dxtmisha/functional';
+
+// Реактивное отслеживание гео-данных пользователя
+const currentCountry = GeoRef.getCountry(); // ComputedRef<string>
+
+// Реактивный хук локализации
+const intl = useGeoIntlRef();
+const formattedPrice = intl.currency(150, 'EUR'); // ComputedRef<string>
+```
+
+#### `useTranslateRef`
+Реактивная загрузка и получение переводных токенов.
+```typescript
+import { useTranslateRef } from '@dxtmisha/functional';
+
+const translations = useTranslateRef(['global.save', 'global.cancel']);
+// Возвращает: ShallowRef<Record<string, string>> с загруженными переводами
+```
+
+---
+
+### 3. SEO и мета-теги
+
+#### `useMeta`
+Управление мета-данными страницы. При вызове сеттеров теги в заголовке страницы обновляются реактивно.
+```typescript
+import { useMeta } from '@dxtmisha/functional';
+
+const metaManager = useMeta();
+metaManager.setTitle('Страница продукта');
+metaManager.setDescription('Детальное описание и характеристики.');
+```
+
+#### `ScrollbarWidthRef`
+Служит для реактивного отслеживания ширины скроллбара во избежание скачков верстки.
+```typescript
+import { ScrollbarWidthRef } from '@dxtmisha/functional';
+
+const scrollbar = new ScrollbarWidthRef();
+const width = scrollbar.width; // Ref<number>
+const hasScroll = scrollbar.is; // ComputedRef<boolean>
+```
+
+---
+
+### 4. Продвинутые помощники реактивности
+
+#### `computedAsync`
+Создает computed-свойство, вычисляемое асинхронно. Полезно для выполнения запросов или тяжелых асинхронных вычислений внутри геттера.
+```typescript
+import { computedAsync } from '@dxtmisha/functional';
+
+// Выполняет асинхронную операцию и возвращает реактивный результат
+const asyncData = computedAsync(async () => {
+  return await fetchSomeData(activeId.value);
+}, 'initial_loading_value');
+```
+
+#### `computedEternity`
+Асинхронно вычисляет значение один раз при инициализации и кэширует его навсегда, если не инициировано принудительное обновление.
+```typescript
+import { computedEternity } from '@dxtmisha/functional';
+
+const cachedData = computedEternity(async () => {
+  return await fetchStaticData();
+}, 'loading_state');
+```
+
+---
+
+### 5. Поиск и управление списками
+
+#### `ListDataRef`
+Оркестратор состояния для списков, управляющий выделением элементов, группами, сопоставлением ключей и клавиатурной навигацией.
+```typescript
+import { ListDataRef } from '@dxtmisha/functional';
+
+const items = ref([
+  { value: 'id1', label: 'Опция 1' },
+  { value: 'id2', label: 'Опция 2' },
+]);
+const selectedId = ref('id1');
+
+const listData = new ListDataRef(items, selectedId);
+const isSelected = listData.isSelected; // ComputedRef<boolean>
+const nextItem = listData.getSelectedNext(); // возвращает следующий выбранный элемент
+```
+
+#### `useSearchRef`
+Реактивно осуществляет текстовый поиск по массиву объектов с автоматической задержкой (debounce) и подсветкой совпадений.
+```typescript
+import { useSearchRef } from '@dxtmisha/functional';
+
+const query = ref('опция');
+const { listSearch, loading, length } = useSearchRef(items, ['label'], query);
+```
+
+---
+
+### 6. DOM и ленивый рендеринг (Lazy Loading)
+
+#### `EventRef`
+Реактивный обработчик событий DOM. Инициализирует и удаляет слушатели событий строго в соответствии с жизненным циклом Vue-компонента (монтирование/деструктуризация).
+```typescript
+import { EventRef } from '@dxtmisha/functional';
+
+// Событие автоматически привязывается при setup и удаляется при unmounted
+const keyListener = new EventRef(window, window, 'keydown', (event) => {
+  console.log('Нажата клавиша', event.key);
+});
+```
+
+#### `useLazyRef`
+Реактивный менеджер на базе IntersectionObserver для ленивого отображения элементов при прокрутке.
+```typescript
+import { useLazyRef } from '@dxtmisha/functional';
+
+const lazyManager = useLazyRef();
+const isVisible = lazyManager.addLazyItem(elementRef); // ShallowRef<boolean>
+```
