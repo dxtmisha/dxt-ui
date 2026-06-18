@@ -14,9 +14,9 @@ export type SelectableAreaEmits = {
 /** Type describing available properties / Тип, описывающий доступные свойства */
 export interface SelectableAreaExpose {
   /** Resets the selection / Сбрасывает выбор */
-  reset: (event?: boolean) => void
+  reset: () => void
   /** Selects items programmatically / Выбирает элементы программно */
-  setSelected: (value: string | string[], event?: boolean) => void
+  setSelected: (value: string | string[]) => void
 }
 
 /** Type describing available slots / Тип, описывающий доступные слоты */

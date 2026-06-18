@@ -27,14 +27,14 @@ export class SelectableAreaDesign<
   CLASSES extends SelectableAreaClasses,
   P extends SelectableAreaPropsBasic
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
-    COMP,
-    SelectableAreaEmits,
-    EXPOSE,
-    SelectableAreaSlots,
-    CLASSES,
-    P
-  > {
+  HTMLDivElement,
+  COMP,
+  SelectableAreaEmits,
+  EXPOSE,
+  SelectableAreaSlots,
+  CLASSES,
+  P
+> {
   protected readonly item: SelectableArea
 
   /**
@@ -77,9 +77,9 @@ export class SelectableAreaDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      reset: this.item.item.reset.bind(this.item.item),
-      setSelected: this.item.item.setSelected.bind(this.item.item)
-    } as unknown as EXPOSE
+      reset: this.item.item.reset,
+      setSelected: this.item.item.set
+    } as EXPOSE
   }
 
   /**
@@ -105,10 +105,7 @@ export class SelectableAreaDesign<
    * Доработка полученного списка стилей.
    */
   protected initStyles(): ConstrStyles {
-    return {
-      // TODO: list of user styles
-      // TODO: список пользовательских стилей
-    }
+    return {}
   }
 
   /**
@@ -117,31 +114,32 @@ export class SelectableAreaDesign<
    * Метод для рендеринга.
    */
   protected initRender(): VNode {
-    const defaultSlot = this.slots?.default?.({
-      className: this.item.classes.getId(),
-      classSelectionName: this.item.classes.list.selected,
-      classNameClick: this.item.classes.list.click,
-      selected: this.item.item.getSelectedValues(),
-      onClick: this.item.events.onClick.bind(this.item.events)
-    })
-
     const children: any[] = []
-    if (defaultSlot) {
-      children.push(defaultSlot)
-    }
 
-    children.push(
-      h('div', {
-        ref: this.item.square.getSquare(),
-        class: this.classes?.value.square
-      })
+    this.initSlot('default', children, this.item.slotData)
+    children.push(this.renderSquare())
+
+    return h(
+      this.item.tag,
+      {
+        ...this.getAttrs(),
+        ref: this.element,
+        class: this.classes?.value.main,
+        ...this.item.events.binds
+      },
+      children
     )
+  }
 
-    return h(this.props.tag || 'div', {
-      ...this.getAttrs(),
-      ...this.item.events.binds,
-      ref: this.element,
-      class: this.classes?.value.main
-    }, children)
+  /**
+   * Render square placeholder.
+   *
+   * Рендер элемента-квадрата.
+   */
+  protected readonly renderSquare = (): VNode => {
+    return h('div', {
+      ref: this.item.square.squareElement,
+      class: this.classes?.value.square
+    })
   }
 }

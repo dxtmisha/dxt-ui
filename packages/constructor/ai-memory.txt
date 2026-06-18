@@ -11,3 +11,4 @@
 6. **Dynamic Property Mapping**: Do not hardcode local CSS variables (such as `--_sa-*`). Dynamic position styles must be mapped using a `property` dictionary built from the component name (e.g., `--${className}-sys-square-x`) to fit the design token architecture.
 7. **CSS Variable Retrieval**: Retrieve layout variables in SCSS templates using the `ui.v('??sys-*')` wrapper, aligning with standard system variable routing.
 8. **Descriptive State Names**: Do not use vague or generic variable names like `old` or `save` for selection states. Use descriptive names like `selectedStart` (saved initial selected items when interaction begins) and `selectedCurrent` (currently accumulated selection elements).
+9. **Alphabetical Sorting**: In class constructors that accept a `constructors` parameter for dependency injection, all related lists (TSDoc parameters, constructor parameter types, destructuring, and property assignments) must be sorted alphabetically.

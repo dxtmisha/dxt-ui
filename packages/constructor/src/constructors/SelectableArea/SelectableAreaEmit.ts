@@ -1,7 +1,9 @@
+import { onMounted, watch } from 'vue'
 import { type ConstrEmit } from '@dxtmisha/functional'
 
 import type { SelectableAreaClassesData } from './SelectableAreaClassesData'
 import type { SelectableAreaItem } from './SelectableAreaItem'
+
 import type { SelectableAreaEmits } from './types'
 
 /**
@@ -23,6 +25,9 @@ export class SelectableAreaEmit {
     protected readonly item: SelectableAreaItem,
     protected readonly emits?: ConstrEmit<SelectableAreaEmits>
   ) {
+    onMounted(() => {
+      watch(this.item.item, this.on)
+    })
   }
 
   /**
@@ -30,15 +35,15 @@ export class SelectableAreaEmit {
    *
    * Вызывает событие выбора.
    */
-  on(): void {
+  readonly on = (): void => {
     requestAnimationFrame(() => {
+      const values = this.item.getNewArray()
+
       this.emits?.('selected', {
         items: this.classes.findItems(),
         itemsSelected: this.classes.findSelection(),
-        selected: [...this.item.getSelectedValues()],
-        focus: this.item.getSelectedValues().length > 0
-          ? this.item.getSelectedValues()[this.item.getSelectedValues().length - 1]
-          : undefined
+        selected: values,
+        focus: values.length > 0 ? values[values.length - 1] : undefined
       })
     })
   }

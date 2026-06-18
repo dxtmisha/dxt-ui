@@ -3,7 +3,6 @@ import type { ImageCoordinator } from '@dxtmisha/functional-basic'
 import type { SelectableAreaClassesData } from './SelectableAreaClassesData'
 import type { SelectableAreaItem } from './SelectableAreaItem'
 import type { SelectableAreaSquare } from './SelectableAreaSquare'
-import type { SelectableAreaEmit } from './SelectableAreaEmit'
 
 import type { SelectableAreaProps } from './props'
 
@@ -27,8 +26,7 @@ export class SelectableAreaEvents {
     protected readonly props: SelectableAreaProps,
     protected readonly classes: SelectableAreaClassesData,
     protected readonly item: SelectableAreaItem,
-    protected readonly square: SelectableAreaSquare,
-    protected readonly emit: SelectableAreaEmit
+    protected readonly square: SelectableAreaSquare
   ) {
   }
 
@@ -97,8 +95,6 @@ export class SelectableAreaEvents {
         } else {
           this.item.selectionByClick(value)
         }
-
-        this.emit.on()
       }
     }
   }
@@ -126,7 +122,7 @@ export class SelectableAreaEvents {
       }
 
       const selected = (event as MouseEvent).metaKey
-        ? [...this.item.getSelectedValues()]
+        ? [...this.item.get()]
         : []
 
       const client = this.getCoordinates(event)
@@ -164,8 +160,7 @@ export class SelectableAreaEvents {
       this.classes.setBlockSelection(false)
       this.removeListeners()
 
-      this.item.setSelectedValues(this.square.getSelectedCurrent())
-      this.emit.on()
+      this.item.set(this.square.getSelectedCurrent())
 
       return
     }
@@ -181,7 +176,7 @@ export class SelectableAreaEvents {
       x: client.x - rect.left,
       y: client.y - rect.top
     })
-    this.item.setSelectedValues(this.square.getSelectedCurrent())
+    this.item.set(this.square.getSelectedCurrent())
   }
 
   /**

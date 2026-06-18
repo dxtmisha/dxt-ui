@@ -1,8 +1,9 @@
-import { ref, watch, onMounted, type Ref } from 'vue'
+import { ref, watch, onMounted, type ToRefs } from 'vue'
+import { toArray } from '@dxtmisha/functional-basic'
 
 import type { SelectableAreaClassesData } from './SelectableAreaClassesData'
+
 import type { SelectableAreaProps } from './props'
-import type { SelectableAreaEmit } from './SelectableAreaEmit'
 
 /**
  * Class managing item selection logic (click, shift-click, cmd-click).
@@ -11,40 +12,42 @@ import type { SelectableAreaEmit } from './SelectableAreaEmit'
  */
 export class SelectableAreaItem {
   /** Reference to the currently selected values / Ссылка на текущие выбранные значения */
-  protected readonly propSelected: Ref<string[]>
+  readonly item = ref<string[]>([])
+
   /** Reference to the last selected item / Ссылка на последний выбранный элемент */
   protected lastSelection: HTMLElement | undefined
-
-  /** Event emit helper class / Вспомогательный класс вызова событий */
-  protected eventEmit?: SelectableAreaEmit
 
   /**
    * Constructor.
    *
    * Конструктор.
-   * @param classes classes manager / менеджер классов
    * @param props properties / свойства
+   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
+   * @param classes classes manager / менеджер классов
    */
   constructor(
-    protected readonly classes: SelectableAreaClassesData,
-    protected readonly props: SelectableAreaProps
+    protected readonly props: SelectableAreaProps,
+    protected readonly refs: ToRefs<SelectableAreaProps>,
+    protected readonly classes: SelectableAreaClassesData
   ) {
-    this.propSelected = ref<string[]>(
-      Array.isArray(props.selected)
-        ? [...props.selected]
-        : (props.selected ? [props.selected] : [])
-    )
+    this.updateItemByProps()
 
-    watch(() => props.selected, (data) => {
-      this.propSelected.value = Array.isArray(data)
-        ? [...data]
-        : (data ? [data] : [])
-      this.updateSelection()
-    }, { deep: true })
+    onMounted(() => {
+      watch(
+        [refs.selected],
+        () => {
+          this.updateItemByProps()
+          this.updateSelection()
+        },
+        { deep: true }
+      )
 
-    watch(this.propSelected, () => this.updateSelection(), { deep: true })
-
-    onMounted(() => this.updateSelection())
+      watch(
+        this.item,
+        () => this.updateSelection(),
+        { deep: true }
+      )
+    })
   }
 
   /**
@@ -52,8 +55,12 @@ export class SelectableAreaItem {
    *
    * Возвращает текущие выбранные значения.
    */
-  getSelectedValues(): string[] {
-    return this.propSelected.value
+  get(): string[] {
+    return this.item.value
+  }
+
+  getNewArray(): string[] {
+    return [...this.item.value]
   }
 
   /**
@@ -61,68 +68,17 @@ export class SelectableAreaItem {
    *
    * Обновляет выбранные значения.
    */
-  setSelectedValues(values: string[]): void {
-    this.propSelected.value = values
-  }
-
-  /**
-   * Sets event emit helper instance.
-   *
-   * Устанавливает экземпляр вспомогательного класса вызова событий.
-   * @param emit event emit helper / вспомогательный класс вызова событий
-   */
-  setEmit(emit: SelectableAreaEmit): void {
-    this.eventEmit = emit
-  }
-
-  /**
-   * Helper to update the CSS selection classes in the DOM.
-   *
-   * Вспомогательный метод для обновления классов выбора в DOM.
-   */
-  updateSelection(): void {
-    const values = this.propSelected.value
-    const items = this.classes.findItems()
-
-    items.forEach((item) => {
-      const value = item.dataset?.value
-      if (value !== undefined && values.includes(value)) {
-        item.classList.add(this.classes.list.selected)
-      } else {
-        item.classList.remove(this.classes.list.selected)
-      }
-    })
-  }
-
-  /**
-   * Sets the selected items programmatically.
-   *
-   * Программно устанавливает выбранные элементы.
-   * @param value values to select / значения для выбора
-   * @param event whether to trigger emit / нужно ли вызывать emit
-   */
-  setSelected(value: string | string[], event = true): void {
-    this.propSelected.value = Array.isArray(value) ? [...value] : [value]
-    this.updateSelection()
-
-    if (event) {
-      this.eventEmit?.on()
-    }
+  readonly set = (value: string | string[]): void => {
+    this.item.value = toArray(value)
   }
 
   /**
    * Resets the selection.
    *
    * Сбрасывает выбор.
-   * @param event whether to trigger emit / нужно ли вызывать emit
    */
-  reset(event = true): void {
-    this.propSelected.value = []
-    this.updateSelection()
-
-    if (event) {
-      this.eventEmit?.on()
-    }
+  readonly reset = (): void => {
+    this.item.value = []
   }
 
   /**
@@ -131,9 +87,10 @@ export class SelectableAreaItem {
    * Обычный выбор кликом (выбирает один элемент).
    * @param value item value / значение элемента
    */
-  selectionByClick(value: string): void {
+  selectionByClick(value: string): this {
     this.lastSelection = this.classes.findByValue(value)
-    this.propSelected.value = [value]
+    this.item.value = [value]
+    return this
   }
 
   /**
@@ -142,15 +99,18 @@ export class SelectableAreaItem {
    * Выбор с зажатым meta (переключает элемент в выборе).
    * @param value item value / значение элемента
    */
-  selectionByMeta(value: string): void {
-    const newValue = [...this.propSelected.value]
+  selectionByMeta(value: string): this {
+    const newValue = [...this.item.value]
     const index = newValue.indexOf(value)
+
     if (index === -1) {
       newValue.push(value)
     } else {
       newValue.splice(index, 1)
     }
-    this.propSelected.value = newValue
+
+    this.item.value = newValue
+    return this
   }
 
   /**
@@ -159,35 +119,86 @@ export class SelectableAreaItem {
    * Выбор с зажатым shift (выбирает диапазон элементов).
    * @param value item value / значение элемента
    */
-  selectionByShift(value: string): void {
-    if (this.lastSelection && this.lastSelection.dataset?.value !== String(value)) {
+  selectionByShift(value: string): this {
+    if (
+      this.lastSelection
+      && this.lastSelection.dataset?.value !== String(value)
+    ) {
+      const items = this.classes.findItems()
+      const newValue: string[] = []
+
       let start = false
       let end = false
-      const newSelection: string[] = []
 
-      const items = this.classes.findItems()
-      items.forEach((item) => {
-        if (!end) {
-          if (
-            item === this.lastSelection
-            || item.dataset?.value === String(value)
-          ) {
-            if (start) {
-              end = true
-            } else {
-              start = true
-            }
-          }
-
-          if (start && item.dataset?.value) {
-            newSelection.push(item.dataset.value)
+      for (const item of items) {
+        if (
+          item === this.lastSelection
+          || item.dataset?.value === String(value)
+        ) {
+          if (start) {
+            end = true
+          } else {
+            start = true
           }
         }
-      })
 
-      this.propSelected.value = newSelection
+        if (
+          start
+          && item.dataset?.value
+        ) {
+          newValue.push(item.dataset.value)
+        }
+
+        if (end) {
+          break
+        }
+      }
+
+      this.item.value = newValue
     } else {
       this.selectionByClick(value)
     }
+
+    return this
+  }
+
+  /**
+   * Updates selection values based on the component properties.
+   *
+   * Обновляет значения выбора на основе свойств компонента.
+   */
+  protected updateItemByProps(): this {
+    if (this.props.selected) {
+      this.item.value = toArray(this.props.selected)
+    } else {
+      this.item.value = []
+    }
+
+    return this
+  }
+
+  /**
+   * Helper to update the CSS selection classes in the DOM.
+   *
+   * Вспомогательный метод для обновления классов выбора в DOM.
+   */
+  protected updateSelection(): this {
+    const values = this.item.value
+    const items = this.classes.findItems()
+
+    items.forEach((item) => {
+      const value = item.dataset?.value
+
+      if (
+        value !== undefined
+        && values.includes(value)
+      ) {
+        item.classList.add(this.classes.list.selected)
+      } else {
+        item.classList.remove(this.classes.list.selected)
+      }
+    })
+
+    return this
   }
 }

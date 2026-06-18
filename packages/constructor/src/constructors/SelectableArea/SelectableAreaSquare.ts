@@ -2,9 +2,6 @@ import { ref, type Ref } from 'vue'
 import type { ImageCoordinator } from '@dxtmisha/functional-basic'
 
 import type { SelectableAreaClassesData } from './SelectableAreaClassesData'
-import type { SelectableAreaItem } from './SelectableAreaItem'
-
-import type { SelectableAreaProps } from './props'
 
 /**
  * Class managing square dragging selection logic.
@@ -13,7 +10,7 @@ import type { SelectableAreaProps } from './props'
  */
 export class SelectableAreaSquare {
   /** Square element reference / Ссылка на элемент-квадрат */
-  protected readonly square = ref<HTMLElement | undefined>()
+  readonly squareElement = ref<HTMLElement | undefined>()
 
   /** Saved initial selected values / Сохраненные начальные выбранные значения */
   protected selectedStart: string[] = []
@@ -40,13 +37,9 @@ export class SelectableAreaSquare {
    *
    * Конструктор.
    * @param classes classes manager / менеджер классов
-   * @param props properties / свойства
-   * @param item item manager / менеджер элементов
    */
   constructor(
-    protected readonly classes: SelectableAreaClassesData,
-    protected readonly props: SelectableAreaProps,
-    protected readonly item: SelectableAreaItem
+    protected readonly classes: SelectableAreaClassesData
   ) {
     const className = this.classes.getName()
 
@@ -64,7 +57,7 @@ export class SelectableAreaSquare {
    * Возвращает ссылку на элемент-квадрат.
    */
   getSquare(): Ref<HTMLElement | undefined> {
-    return this.square
+    return this.squareElement
   }
 
   /**
@@ -83,7 +76,7 @@ export class SelectableAreaSquare {
    * Выбирает элементы, которые пересекаются с квадратом.
    */
   selectionBySquare(): void {
-    const squareElement = this.square.value
+    const squareElement = this.squareElement.value
     if (!squareElement) return
 
     const squareRect = squareElement.getBoundingClientRect()
@@ -125,7 +118,7 @@ export class SelectableAreaSquare {
     const width = coordinator.x - this.client.x
     const height = coordinator.y - this.client.y
 
-    const squareElement = this.square.value
+    const squareElement = this.squareElement.value
     if (squareElement) {
       squareElement.style.setProperty(this.property.x, `${width < 0 ? coordinator.x : this.client.x}px`)
       squareElement.style.setProperty(this.property.y, `${height < 0 ? coordinator.y : this.client.y}px`)
@@ -142,7 +135,7 @@ export class SelectableAreaSquare {
    * @param selected start selection values / начальные выбранные значения
    */
   start(client: ImageCoordinator, selected: string[]): void {
-    const squareElement = this.square.value
+    const squareElement = this.squareElement.value
 
     this.client = client
     this.selectedStart = selected
@@ -171,7 +164,7 @@ export class SelectableAreaSquare {
    * Завершает взаимодействие выбора области и скрывает квадрат.
    */
   end(): void {
-    const squareElement = this.square.value
+    const squareElement = this.squareElement.value
 
     if (squareElement) {
       squareElement.classList.remove(this.classes.list.show)

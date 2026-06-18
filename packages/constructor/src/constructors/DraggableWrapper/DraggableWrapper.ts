@@ -64,6 +64,20 @@ export class DraggableWrapper {
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
+   * @param constructors object with classes / объект с классами
+   * @param constructors.DraggableWrapperClassesConstructor class for working with classes / класс для работы с классами
+   * @param constructors.DraggableWrapperClientConstructor class for working with coordinates / класс для работы с координатами
+   * @param constructors.DraggableWrapperDelayConstructor class for working with delay / класс для работы с задержкой
+   * @param constructors.DraggableWrapperEmitConstructor class for working with emits / класс для работы с событиями
+   * @param constructors.DraggableWrapperEventsConstructor class for working with events / класс для работы с событиями
+   * @param constructors.DraggableWrapperItemActiveConstructor class for working with active item / класс для работы с активным элементом
+   * @param constructors.DraggableWrapperItemConstructor class for working with items / класс для работы с элементами
+   * @param constructors.DraggableWrapperItemFocusConstructor class for working with focused item / класс для работы со сфокусированным элементом
+   * @param constructors.DraggableWrapperItemGoConstructor class for working with navigation / класс для работы с навигацией
+   * @param constructors.DraggableWrapperItemSelectionConstructor class for working with item selection / класс для работы с выделением элементов
+   * @param constructors.DraggableWrapperPositionConstructor class for working with positioning / класс для работы с позиционированием
+   * @param constructors.DraggableWrapperSelectionConstructor class for working with multi-selection / класс для работы со множественным выбором
+   * @param constructors.DraggableWrapperSquareConstructor class for working with selection square / класс для работы с квадратом выделения
    */
   constructor(
     protected readonly props: DraggableWrapperProps,
@@ -73,37 +87,68 @@ export class DraggableWrapper {
     protected readonly className: string,
     protected readonly components?: DesignComp<DraggableWrapperComponents, DraggableWrapperProps>,
     protected readonly slots?: DraggableWrapperSlots,
-    protected readonly emits?: ConstrEmit<DraggableWrapperEmits>
+    protected readonly emits?: ConstrEmit<DraggableWrapperEmits>,
+    constructors: {
+      DraggableWrapperClassesConstructor?: typeof DraggableWrapperClassesData
+      DraggableWrapperClientConstructor?: typeof DraggableWrapperClient
+      DraggableWrapperDelayConstructor?: typeof DraggableWrapperDelay
+      DraggableWrapperEmitConstructor?: typeof DraggableWrapperEmit
+      DraggableWrapperEventsConstructor?: typeof DraggableWrapperEvents
+      DraggableWrapperItemActiveConstructor?: typeof DraggableWrapperItemActive
+      DraggableWrapperItemConstructor?: typeof DraggableWrapperItem
+      DraggableWrapperItemFocusConstructor?: typeof DraggableWrapperItemFocus
+      DraggableWrapperItemGoConstructor?: typeof DraggableWrapperItemGo
+      DraggableWrapperItemSelectionConstructor?: typeof DraggableWrapperItemSelection
+      DraggableWrapperPositionConstructor?: typeof DraggableWrapperPosition
+      DraggableWrapperSelectionConstructor?: typeof DraggableWrapperSelection
+      DraggableWrapperSquareConstructor?: typeof DraggableWrapperSquare
+    } = {}
   ) {
-    this.classes = new DraggableWrapperClassesData(
+    const {
+      DraggableWrapperClassesConstructor = DraggableWrapperClassesData,
+      DraggableWrapperClientConstructor = DraggableWrapperClient,
+      DraggableWrapperDelayConstructor = DraggableWrapperDelay,
+      DraggableWrapperEmitConstructor = DraggableWrapperEmit,
+      DraggableWrapperEventsConstructor = DraggableWrapperEvents,
+      DraggableWrapperItemActiveConstructor = DraggableWrapperItemActive,
+      DraggableWrapperItemConstructor = DraggableWrapperItem,
+      DraggableWrapperItemFocusConstructor = DraggableWrapperItemFocus,
+      DraggableWrapperItemGoConstructor = DraggableWrapperItemGo,
+      DraggableWrapperItemSelectionConstructor = DraggableWrapperItemSelection,
+      DraggableWrapperPositionConstructor = DraggableWrapperPosition,
+      DraggableWrapperSelectionConstructor = DraggableWrapperSelection,
+      DraggableWrapperSquareConstructor = DraggableWrapperSquare
+    } = constructors
+
+    this.classes = new DraggableWrapperClassesConstructor(
       this.element,
       this.classDesign,
       this.className
     )
-    this.delay = new DraggableWrapperDelay(props)
+    this.delay = new DraggableWrapperDelayConstructor(props)
 
-    this.item = new DraggableWrapperItem(
-      new DraggableWrapperItemFocus(),
-      new DraggableWrapperItemActive(this.classes),
-      new DraggableWrapperItemSelection(),
-      new DraggableWrapperItemGo()
+    this.item = new DraggableWrapperItemConstructor(
+      new DraggableWrapperItemFocusConstructor(),
+      new DraggableWrapperItemActiveConstructor(this.classes),
+      new DraggableWrapperItemSelectionConstructor(),
+      new DraggableWrapperItemGoConstructor()
     )
 
-    this.client = new DraggableWrapperClient(this.classes)
-    this.square = new DraggableWrapperSquare(
+    this.client = new DraggableWrapperClientConstructor(this.classes)
+    this.square = new DraggableWrapperSquareConstructor(
       props,
       this.classes
     )
 
-    this.emit = new DraggableWrapperEmit(
+    this.emit = new DraggableWrapperEmitConstructor(
       this.item,
       this.client,
       this.square,
       this.emits
     )
 
-    this.selection = new DraggableWrapperSelection(this.classes.getId(), this.classes, this.item)
-    this.position = new DraggableWrapperPosition(
+    this.selection = new DraggableWrapperSelectionConstructor(this.classes.getId(), this.classes, this.item)
+    this.position = new DraggableWrapperPositionConstructor(
       this.classes,
       this.item,
       this.client,
@@ -111,7 +156,7 @@ export class DraggableWrapper {
       this.emit
     )
 
-    this.events = new DraggableWrapperEvents(
+    this.events = new DraggableWrapperEventsConstructor(
       props,
       this.delay,
       this.classes,
