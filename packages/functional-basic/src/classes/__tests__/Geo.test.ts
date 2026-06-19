@@ -78,7 +78,6 @@ describe('Geo', () => {
       expect(Geo.getStandard()).toBe('en-VN')
     })
 
-
     it('should return extracted country code from location', () => {
       Geo.set('en-VN')
       expect(Geo.getLocationCountry()).toBe('VN')

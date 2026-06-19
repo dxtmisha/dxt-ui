@@ -23,7 +23,6 @@ describe('GeoIntl', () => {
       expect(GeoIntl.getLocation('en-VN')).toBe('en-VN')
     })
 
-
     it('getInstance should return a GeoIntl instance', () => {
       const instance = GeoIntl.getInstance('en-US')
       expect(instance).toBeInstanceOf(GeoIntl)

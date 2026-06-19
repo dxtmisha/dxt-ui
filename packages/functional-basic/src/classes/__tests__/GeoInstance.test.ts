@@ -418,7 +418,6 @@ describe('GeoInstance', () => {
       expect(geo.getLocationLanguage()).toBe('ru')
     })
 
-
     it('getLanguage() extracts language part from the code', () => {
       const geo = new GeoInstance()
       geo.set('zh-CN')

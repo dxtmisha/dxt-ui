@@ -1,0 +1,49 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/styles/dir - Hướng văn bản LTR và RTL'/>
+
+# Hệ thống hướng văn bản
+
+Thư viện `@dxtmisha/styles` cung cấp một hệ thống tinh tế để hỗ trợ văn bản và bố cục đa hướng (LTR và RTL) sử dụng CSS Custom Properties (biến CSS). Thay vì sao chép các quy tắc CSS hoặc chỉ dựa vào các thuộc tính tĩnh, tiện ích này tự động quản lý căn lề, khoảng cách (margin, padding), vị trí (position) và các hiệu ứng dịch chuyển (transform) một cách linh hoạt ngay trong trình duyệt.
+
+Cách tiếp cận RTL truyền thống yêu cầu viết các thuộc tính ghi đè thủ công (ví dụ như hoán đổi margin-left và margin-right). Tiện ích này giải quyết vấn đề bằng cách ánh xạ các hướng vật lý sang các biến CSS để tự động cập nhật khi hướng văn bản thay đổi.
+
+## Cách hoạt động
+
+Hệ thống hướng văn bản được xây dựng trên việc hoán đổi biến động:
+
+1. **Ánh xạ biến gốc**: Mặc định (chế độ LTR), thư viện thiết lập các biến ở cấp độ `html` để xác định các giá trị như `--d-dir: 1` (hệ số nhân dịch chuyển), các từ khóa căn lề (`--d-dir-start: flex-start`) và cờ hoạt động (`--d-dir-left: 1`).
+2. **Tự động hoán đổi**: Đối với phần tử con, các khoảng cách vật lý được ánh xạ với các biến CSS động (ví dụ: `--d-dir-margin-left` nhận giá trị của `var(--sys-margin-left)`).
+3. **Hoán đổi khi RTL**: Khi chế độ RTL được kích hoạt (qua `html[dir="rtl"]` hoặc class `.dir-rtl`), hệ thống thay đổi cờ hướng (`--d-dir` thành `-1`, `--d-dir-start` thành `flex-end`) và hoán đổi các biến trên phần tử con (ví dụ: `--d-dir-margin-left` nhận giá trị của `var(--sys-margin-right)`).
+
+## Khởi tạo hệ thống (`initDir`)
+
+Để khởi chạy hệ thống hướng văn bản, mixin `initDir` cần được gọi ở cấp độ toàn cục (thường là trong tệp khởi tạo CSS/SCSS toàn cục):
+
+```scss
+@use '@dxtmisha/styles';
+
+@include styles.initDir;
+```
+
+Mixin này định nghĩa các biến LTR trên phần tử `html` theo mặc định, thiết lập các thuộc tính hướng hoạt động trên tất cả phần tử con (`*`, `*::before`, `*::after`), và cấu hình bộ lắng nghe tự động áp dụng mixin `dirToRtl` khi thuộc tính `[dir="rtl"]` hoặc class `.dir-rtl` được thêm vào tài liệu.
+
+## Các Function
+
+- `isDir(): String` — Trả về hệ số nhân hướng (`1` trong LTR, `-1` trong RTL).
+- `isDirLeft(): String` — Trả về `1` trong LTR, `0` trong RTL.
+- `isDirRight(): String` — Trả về `0` trong LTR, `1` trong RTL.
+- `dirLeft(): String` — Trả về `left` trong LTR, `right` trong RTL.
+- `dirRight(): String` — Trả về `right` trong LTR, `left` trong RTL.
+- `dirLeftAuto(): String` — Trả về `auto` trong LTR, `unset` trong RTL.
+- `dirRightAuto(): String` — Trả về `unset` trong LTR, `auto` trong RTL.
+- `dirFlexLeft(): String` — Trả về `flex-start` trong LTR, `flex-end` trong RTL.
+- `dirFlexRight(): String` — Trả về `flex-end` trong LTR, `flex-start` trong RTL.
+- `dirToLeft($left, $right): String` — Trả về giá trị chuyển tiếp từ thuộc tính bên trái LTR sang bên phải RTL.
+- `dirToRight($left, $right): String` — Trả về giá trị chuyển tiếp từ thuộc tính bên phải LTR sang bên trái RTL.
+- `dirOrder($value): String` — Tính toán giá trị order động dựa trên hướng hiển thị.
+
+## Các Mixin
+
+- `initDir()` — Khởi tạo các biến hướng văn bản cho chế độ LTR và RTL.
+- `dirToRtl()` — Áp dụng các quy tắc, giá trị biến và hoán đổi thuộc tính cho RTL.

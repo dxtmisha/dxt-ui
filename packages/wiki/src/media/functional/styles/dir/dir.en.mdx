@@ -1,0 +1,49 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/styles/dir - Text Direction LTR and RTL'/>
+
+# Text Direction System
+
+The `@dxtmisha/styles` library provides a sophisticated utility system to support bidirectional text and layout (LTR and RTL) using CSS Custom Properties (CSS variables). Rather than duplicating CSS rules or relying on static properties, this utility automatically manages alignment, offsets, margins, paddings, and transformations dynamically in the browser.
+
+Traditional layout mirroring requires writing duplicate styles or overriding values manually (e.g. margin-left and margin-right overrides). This utility solves the problem by mapping physical directions to CSS variables that are updated automatically when direction changes.
+
+## How it works
+
+The direction system is built on dynamic variable swapping:
+
+1. **Root Variable Mapping**: By default (LTR mode), the library sets variables on the `html` root, establishing values like `--d-dir: 1` (a multiplier for offsets), alignment keywords (`--d-dir-start: flex-start`), and active flags (`--d-dir-left: 1`).
+2. **Auto-Swapping properties**: Every element maps physical offsets and spaces to dynamic CSS properties (e.g. `--d-dir-margin-left` takes `var(--sys-margin-left)`).
+3. **RTL Swapping**: When RTL is triggered (via `html[dir="rtl"]` or the `.dir-rtl` class), the system switches flags (`--d-dir` becomes `-1`, `--d-dir-start` becomes `flex-end`), and swaps properties on all child elements (e.g. `--d-dir-margin-left` receives the value of `var(--sys-margin-right)`).
+
+## System Initialization (`initDir`)
+
+To boot the direction system, the `initDir` mixin must be called at the global level (typically within a global layout initialization file):
+
+```scss
+@use '@dxtmisha/styles';
+
+@include styles.initDir;
+```
+
+This mixin defines LTR variables on the `html` element by default, establishes active direction properties on all child elements (`*`, `*::before`, `*::after`), and configures the listener that automatically applies the `dirToRtl` mixin when the `[dir="rtl"]` attribute or `.dir-rtl` class is applied to the document.
+
+## Functions
+
+- `isDir(): String` — Returns the direction multiplier (`1` in LTR, `-1` in RTL).
+- `isDirLeft(): String` — Returns `1` in LTR, `0` in RTL.
+- `isDirRight(): String` — Returns `0` in LTR, `1` in RTL.
+- `dirLeft(): String` — Returns `left` in LTR, `right` in RTL.
+- `dirRight(): String` — Returns `right` in LTR, `left` in RTL.
+- `dirLeftAuto(): String` — Returns `auto` in LTR, `unset` in RTL.
+- `dirRightAuto(): String` — Returns `unset` in LTR, `auto` in RTL.
+- `dirFlexLeft(): String` — Returns `flex-start` in LTR, `flex-end` in RTL.
+- `dirFlexRight(): String` — Returns `flex-end` in LTR, `flex-start` in RTL.
+- `dirToLeft($left, $right): String` — Transitions value from LTR left variable to RTL right variable.
+- `dirToRight($left, $right): String` — Transitions value from LTR right variable to RTL left variable.
+- `dirOrder($value): String` — Calculates dynamic flex or grid order based on direction.
+
+## Mixins
+
+- `initDir()` — Initializes direction variables and maps them for LTR and RTL modes.
+- `dirToRtl()` — Enforces RTL rules, overrides variables, and swaps directional values.
