@@ -33,11 +33,12 @@ export const SelectableArea: Story = {
     template: `
       <D1SelectableArea v-bind="args">
       <template #default="{ className, classNameClick, onClick }">
-        <div class="wiki-storybook-group wiki-storybook-item--padding">
+        <div
+          class="wiki-storybook-group wiki-storybook-group--gapX3 wiki-storybook-item--paddingX2">
           <div
             v-for="item in 12"
             :key="item"
-            :class="['wiki-storybook-item wiki-storybook-item--squared--xs wiki-storybook-item--center wiki-storybook-dummy--color--blue', className, classNameClick]"
+            :class="['wiki-storybook-item wiki-storybook-item--squared--xs wiki-storybook-item--center', className, classNameClick]"
             :data-value="'item-' + item"
             style="overflow: visible;"
             @click="onClick"

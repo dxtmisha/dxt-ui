@@ -1,0 +1,32 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+### `selected`
+
+Event triggered when items inside the area are selected (via dragging lasso or clicking).
+
+**Parameters:**
+- `parameters: SelectableAreaEventParameters` — event payload object with selection details
+
+**SelectableAreaEventParameters structure:**
+- `items: HTMLElement[]` — all selectable elements inside the area
+- `itemsSelected: HTMLElement[]` — elements that are currently selected
+- `selected: string[]` — array of values of the currently selected elements (taken from `data-value` attributes)
+- `focus: string | undefined` — value of the last focused element
+
+<Source
+    code={`
+<script setup>
+const handleSelected = (parameters) => {
+  console.log('Selected values:', parameters.selected)
+  console.log('Selected DOM elements:', parameters.itemsSelected)
+}
+</script>
+
+<template>
+  <SelectableArea @selected="handleSelected">
+    <!-- content -->
+  </SelectableArea>
+</template>
+  `}
+    language="html"
+/>

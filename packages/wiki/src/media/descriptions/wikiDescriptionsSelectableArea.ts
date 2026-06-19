@@ -31,15 +31,18 @@ export const wikiDescriptionsSelectableArea: StorybookComponentsDescriptionItem 
       'пользовательский HTML-тег обертки'
     ]
   },
-  import: [],
+  import: [
+    'import { ref } from \'vue\''
+  ],
   render: `
     <DesignComponent v-bind="args">
       <template #default="{ className, classNameClick, onClick }">
-        <div class="wiki-storybook-group wiki-storybook-item--padding">
+        <div
+          class="wiki-storybook-group wiki-storybook-group--gapX3 wiki-storybook-item--paddingX2">
           <div
             v-for="item in 12"
             :key="item"
-            :class="['wiki-storybook-item wiki-storybook-item--squared--xs wiki-storybook-item--center wiki-storybook-dummy--color--blue', className, classNameClick]"
+            :class="['wiki-storybook-item wiki-storybook-item--squared--xs wiki-storybook-item--center', className, classNameClick]"
             :data-value="'item-' + item"
             style="overflow: visible;"
             @click="onClick"
@@ -50,13 +53,85 @@ export const wikiDescriptionsSelectableArea: StorybookComponentsDescriptionItem 
       </template>
     </DesignComponent>
   `,
-  stories: [],
+  stories: [
+    {
+      id: 'SelectableAreaBasic',
+      name: {
+        en: 'Basic',
+        ru: 'Базовый'
+      },
+      template: `
+        <DesignComponent>
+          <template #default="{ className, classNameClick, onClick }">
+            <div class="wiki-storybook-group wiki-storybook-group--gapX3 wiki-storybook-item--paddingX2">
+              <div
+                v-for="item in 6"
+                :key="item"
+                :class="['wiki-storybook-item wiki-storybook-item--squared--xs wiki-storybook-item--center', className, classNameClick]"
+                :data-value="'item-' + item"
+                @click="onClick"
+              >
+                Item {{ item }}
+              </div>
+            </div>
+          </template>
+        </DesignComponent>
+      `
+    },
+    {
+      id: 'SelectableAreaVModel',
+      name: {
+        en: 'v-model',
+        ru: 'v-model'
+      },
+      setup: `
+      return {
+        selected: ref(['item-2', 'item-3'])
+      }
+      `,
+      template: `
+        <div class="wiki-storybook-flex-column">
+          <div class="wiki-storybook-flex-align-center">
+            <span>Selected items: {{ selected }}</span>
+            <button class="wiki-storybook-button" @click="selected = []">Reset</button>
+            <button class="wiki-storybook-button" @click="selected = ['item-1', 'item-2', 'item-3']">Select 1-3</button>
+          </div>
+
+          <DesignComponent
+            v-model:selected="selected"
+          >
+            <template #default="{ className, classSelectionName, classNameClick, onClick }">
+              <div class="wiki-storybook-group wiki-storybook-group--gapX3 wiki-storybook-item--paddingX2">
+                <div
+                  v-for="item in 6"
+                  :key="item"
+                  :class="[
+                    'wiki-storybook-item wiki-storybook-item--squared--xs wiki-storybook-item--center',
+                    className,
+                    classNameClick,
+                    selected.includes('item-' + item) && classSelectionName
+                  ]"
+                  :data-value="'item-' + item"
+                  @click="onClick"
+                >
+                  Item {{ item }}
+                </div>
+              </div>
+            </template>
+          </DesignComponent>
+        </div>
+      `
+    }
+  ],
   documentation: {
     body: `
-<StorybookDescriptions componentName={'SelectableArea'} type={'selected'}/>
+<StorybookDescriptions componentName={'SelectableArea'} type={'selectableArea'}/>
+
+<StorybookDescriptions componentName={'SelectableArea'} type={'v-model'}/>
+<Canvas of={Component.SelectableAreaVModel}/>
     `,
     events: `
-<StorybookDescriptions componentName={'Event'} type={'selected'}/>
+<StorybookDescriptions componentName={'SelectableArea'} type={'event.selected'}/>
     `,
     expose: `
 <StorybookDescriptions componentName={'SelectableArea'} type={'expose'}/>

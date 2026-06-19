@@ -1,0 +1,33 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+## State management via v-model
+
+Two-way binding of active selection state via `v-model:selected`.
+
+**Parameters:**
+- `selected: string | string[]` — array or string of currently selected values
+
+<Source
+    code={`
+<script setup>
+import { ref } from 'vue'
+
+const selectedItems = ref(['item-1'])
+</script>
+
+<template>
+  <SelectableArea v-model:selected="selectedItems">
+    <template #default="{ className, classSelectionName, classNameClick, onClick }">
+      <div
+        :class="[className, selectedItems.includes('item-1') && classSelectionName]"
+        data-value="item-1"
+        @click="onClick"
+      >
+        Item 1
+      </div>
+    </template>
+  </SelectableArea>
+</template>
+  `}
+    language="html"
+/>

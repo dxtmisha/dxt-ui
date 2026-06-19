@@ -1,6 +1,7 @@
 import type { Ref, ToRefs } from 'vue'
 import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
+import { ModelInclude } from '../../classes/ModelInclude'
 import { SelectableAreaClassesData } from './SelectableAreaClassesData'
 import { SelectableAreaEmit } from './SelectableAreaEmit'
 import { SelectableAreaEvents } from './SelectableAreaEvents'
@@ -42,6 +43,7 @@ export class SelectableArea {
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
    * @param constructors object with classes / объект с классами
+   * @param constructors.ModelIncludeConstructor class for working with models / класс для работы с моделями
    * @param constructors.SelectableAreaClassesConstructor class for working with classes / класс для работы с классами
    * @param constructors.SelectableAreaEmitConstructor class for working with emits / класс для работы с событиями
    * @param constructors.SelectableAreaEventsConstructor class for working with events / класс для работы с событиями
@@ -58,6 +60,7 @@ export class SelectableArea {
     protected readonly slots?: SelectableAreaSlots,
     protected readonly emits?: ConstrEmit<SelectableAreaEmits>,
     constructors: {
+      ModelIncludeConstructor?: typeof ModelInclude<string | string[]>
       SelectableAreaClassesConstructor?: typeof SelectableAreaClassesData
       SelectableAreaEmitConstructor?: typeof SelectableAreaEmit
       SelectableAreaEventsConstructor?: typeof SelectableAreaEvents
@@ -66,6 +69,7 @@ export class SelectableArea {
     } = {}
   ) {
     const {
+      ModelIncludeConstructor = ModelInclude,
       SelectableAreaClassesConstructor = SelectableAreaClassesData,
       SelectableAreaEmitConstructor = SelectableAreaEmit,
       SelectableAreaEventsConstructor = SelectableAreaEvents,
@@ -85,6 +89,8 @@ export class SelectableArea {
       this.item,
       this.square
     )
+
+    new ModelIncludeConstructor('selected', this.emits, this.item.item)
   }
 
   /**

@@ -1,0 +1,32 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+### `selected`
+
+Событие, вызываемое при выборе элементов внутри области (путем перетаскивания лассо или клика).
+
+**Параметры:**
+- `parameters: SelectableAreaEventParameters` — объект с деталями выделения
+
+**Структура SelectableAreaEventParameters:**
+- `items: HTMLElement[]` — все выделяемые элементы в области
+- `itemsSelected: HTMLElement[]` — элементы, которые в данный момент выбраны
+- `selected: string[]` — массив значений выбранных элементов (берутся из атрибутов `data-value`)
+- `focus: string | undefined` — значение последнего сфокусированного элемента
+
+<Source
+    code={`
+<script setup>
+const handleSelected = (parameters) => {
+  console.log('Выбранные значения:', parameters.selected)
+  console.log('Выбранные DOM-элементы:', parameters.itemsSelected)
+}
+</script>
+
+<template>
+  <SelectableArea @selected="handleSelected">
+    <!-- контент -->
+  </SelectableArea>
+</template>
+  `}
+    language="html"
+/>

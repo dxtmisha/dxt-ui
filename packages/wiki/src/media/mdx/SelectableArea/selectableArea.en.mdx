@@ -1,0 +1,56 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+Component for selecting child elements within an area by drawing a selection rectangle (drag-to-select) or clicking.
+
+SelectableArea manages items selection by coordinates, automatically drawing a visual selection rectangle as the user drags their cursor across the container. The component calculates collision bounds of child elements matching the target selectors, marks them as selected, and triggers corresponding status events. It is useful for implementing advanced file manager selections, grid item selections, or drawing areas.
+
+**Key Features:**
+
+- Mouse drag selection (box selection / marquee selection)
+- Click selection support
+- Custom wrapper HTML tag (`tag` property)
+- Collision box calculations for nested elements
+- Reactive state bindings for `active` and `selected` properties
+- Fully accessible keyboard navigation and events support
+
+**Common Use Cases:**
+
+- Desktop-like file/folder selections in directories
+- Batch item selection in grid and list views
+- Selecting multiple graphic objects in editing canvases
+- Interactive dashboard components
+
+<Source
+    code={`
+<script setup>
+import { ref } from 'vue'
+
+const selectedItems = ref([])
+</script>
+
+<template>
+  <SelectableArea
+    v-model:selected="selectedItems"
+    :active="true"
+  >
+    <template #default="{ className, classSelectionName, classNameClick, onClick }">
+      <div class="grid">
+        <div
+          v-for="item in 10"
+          :key="item"
+          :class="[
+            className,
+            selectedItems.includes(String(item)) && classSelectionName
+          ]"
+          :data-value="String(item)"
+          @click="onClick"
+        >
+          Item {{ item }}
+        </div>
+      </div>
+    </template>
+  </SelectableArea>
+</template>
+  `}
+    language="html"
+/>

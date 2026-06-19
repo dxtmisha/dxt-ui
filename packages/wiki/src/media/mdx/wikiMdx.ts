@@ -63,6 +63,7 @@ import { wikiMdxRipple } from './Ripple/wikiMdxRipple'
 import { wikiMdxScrollbar } from './Scrollbar/wikiMdxScrollbar'
 import { wikiMdxSection } from './Section/wikiMdxSection'
 import { wikiMdxSelect } from './Select/wikiMdxSelect'
+import { wikiMdxSelectableArea } from './SelectableArea/wikiMdxSelectableArea'
 import { wikiMdxSelectValue } from './SelectValue/wikiMdxSelectValue'
 import { wikiMdxSkeleton } from './Skeleton/wikiMdxSkeleton'
 import { wikiMdxSnackbar } from './Snackbar/wikiMdxSnackbar'
@@ -142,6 +143,7 @@ export const wikiMdx: StorybookComponentsMdx = [
   wikiMdxScrollbar,
   wikiMdxSection,
   wikiMdxSelect,
+  wikiMdxSelectableArea,
   wikiMdxSelectValue,
   wikiMdxSkeleton,
   wikiMdxSnackbar,
