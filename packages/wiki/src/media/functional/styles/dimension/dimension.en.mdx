@@ -1,0 +1,36 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/styles/dimension - Sizes and proportions'/>
+
+# Dimension System
+
+The library provides mixins and functions for managing sizes, proportions, and aspect ratios using CSS variables.
+
+## Functions
+
+- `getWidthByRatio($value: String): String` — Returns the width from an aspect ratio string (e.g., '16/9' -> 16).
+- `getHeightByRatio($value: String): String` — Returns the height from an aspect ratio string.
+
+## Mixins
+
+### Basic Dimensions
+
+- `width($value: String | Number)` — Sets the `width` property and `--sys-width` variable.
+- `height($value: String | Number)` — Sets the `height` property and `--sys-height` variable.
+- `widthBasis($value: String | Number)` — Sets `width`, `flex-basis`, and restricts `max-width` to 100%.
+- `heightBasis($value: String | Number)` — Sets `height`, `flex-basis`, and restricts `max-height` to 100%.
+
+### Responsive Dimensions (Viewport)
+
+- `widthDevice($value: String | Number)` — Sets width in dynamic viewport units (`dvw`).
+- `heightDevice($value: String | Number)` — Sets height in dynamic viewport units (`dvh`).
+- `maxWidthDevice($value: String | Number)` — Sets `max-width` in dynamic viewport units (`dvw`).
+- `maxHeightDevice($value: String | Number)` — Sets `max-height` in dynamic viewport units (`dvh`).
+
+### Aspect Ratio and Shapes
+
+- `aspectRatio($value: String | Number)` — Sets the `aspect-ratio` property.
+- `aspectRatioWidth($value: String | Number)` — Alias for the `aspectRatio` mixin.
+- `aspectRatioHeight($value: String | Number)` — Alias for the `aspectRatio` mixin.
+- `squared($value: String | Number)` — Applies `widthBasis` and sets `aspect-ratio: 1/1` to create a perfect square.
+- `circle($value: String | Number)` — Applies the `squared` mixin and sets `border-radius: 100%` to create a circle.

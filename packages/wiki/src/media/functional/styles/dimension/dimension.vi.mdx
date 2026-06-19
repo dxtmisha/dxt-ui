@@ -1,0 +1,36 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/styles/dimension - Kích thước và tỷ lệ'/>
+
+# Hệ thống kích thước
+
+Thư viện cung cấp các mixin và function để quản lý kích thước, tỷ lệ và tỷ lệ khung hình sử dụng các biến CSS.
+
+## Các Function
+
+- `getWidthByRatio($value: String): String` — Trả về chiều rộng từ chuỗi tỷ lệ khung hình (ví dụ: '16/9' -> 16).
+- `getHeightByRatio($value: String): String` — Trả về chiều cao từ chuỗi tỷ lệ khung hình.
+
+## Các Mixin
+
+### Kích thước cơ bản
+
+- `width($value: String | Number)` — Thiết lập thuộc tính `width` và biến `--sys-width`.
+- `height($value: String | Number)` — Thiết lập thuộc tính `height` và biến `--sys-height`.
+- `widthBasis($value: String | Number)` — Thiết lập `width`, `flex-basis`, và giới hạn `max-width` thành 100%.
+- `heightBasis($value: String | Number)` — Thiết lập `height`, `flex-basis`, và giới hạn `max-height` thành 100%.
+
+### Kích thước đáp ứng (Viewport)
+
+- `widthDevice($value: String | Number)` — Thiết lập chiều rộng theo đơn vị viewport động (`dvw`).
+- `heightDevice($value: String | Number)` — Thiết lập chiều cao theo đơn vị viewport động (`dvh`).
+- `maxWidthDevice($value: String | Number)` — Thiết lập `max-width` theo đơn vị viewport động (`dvw`).
+- `maxHeightDevice($value: String | Number)` — Thiết lập `max-height` theo đơn vị viewport động (`dvh`).
+
+### Tỷ lệ khung hình và Hình dạng
+
+- `aspectRatio($value: String | Number)` — Thiết lập thuộc tính `aspect-ratio`.
+- `aspectRatioWidth($value: String | Number)` — Bí danh của mixin `aspectRatio`.
+- `aspectRatioHeight($value: String | Number)` — Bí danh của mixin `aspectRatio`.
+- `squared($value: String | Number)` — Áp dụng `widthBasis` và thiết lập `aspect-ratio: 1/1` để tạo hình vuông.
+- `circle($value: String | Number)` — Áp dụng mixin `squared` và thiết lập `border-radius: 100%` để tạo hình tròn.

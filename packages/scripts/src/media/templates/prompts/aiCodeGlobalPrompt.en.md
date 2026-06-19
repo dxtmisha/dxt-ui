@@ -69,6 +69,7 @@ Your primary goal is to generate flawless, industrial-grade code that adheres to
     - As enforced by the STRICT BLOCKING GUARD, `ai-memory.md` MUST be created and read locally inside the root of the specific package you are working with (e.g., `packages/constructor/ai-memory.md` for code in `packages/constructor`).
     - Writing or reading `ai-memory.md` in the repository root when working on code inside a package is a critical violation of these rules.
     - Whenever you receive feedback, corrections, or instructions from the developer, you MUST update that specific package's local `ai-memory.md` file.
+    - Explicit Memorization Requests: If the developer explicitly instructs you to "remember this", "keep this in mind", or makes a similar request regarding conventions or rules, you MUST immediately record this information in the relevant local `ai-memory.md` file.
     - Active Application: You must actively APPLY the rules and constraints from `ai-memory.md` to all code you generate. Rules in this file override general assumptions and have the highest priority.
     - The PRIMARY PURPOSE of this file is to store critical coding guidelines, specific architectural constraints, and "do's and don'ts" (e.g., "do not use X; use Y instead") to ensure the AI writes compliant, correct code.
     - DO NOT store change logs, lists of modified files, or commit-like messages (e.g., "updated file X, updated package Y"). Keep the file clean, concise, and focused strictly on active rules, design decisions, and coding standards.

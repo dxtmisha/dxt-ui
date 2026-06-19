@@ -83,6 +83,7 @@ Your primary goal is to generate flawless, industrial-grade code that adheres to
     - As enforced by the STRICT BLOCKING GUARD, `ai-memory.md` MUST be created and read locally inside the root of the specific package you are working with (e.g., `packages/constructor/ai-memory.md` for code in `packages/constructor`).
     - Writing or reading `ai-memory.md` in the repository root when working on code inside a package is a critical violation of these rules.
     - Whenever you receive feedback, corrections, or instructions from the developer, you MUST update that specific package's local `ai-memory.md` file.
+    - Explicit Memorization Requests: If the developer explicitly instructs you to "remember this", "keep this in mind", or makes a similar request regarding conventions or rules, you MUST immediately record this information in the relevant local `ai-memory.md` file.
     - Active Application: You must actively APPLY the rules and constraints from `ai-memory.md` to all code you generate. Rules in this file override general assumptions and have the highest priority.
     - The PRIMARY PURPOSE of this file is to store critical coding guidelines, specific architectural constraints, and "do's and don'ts" (e.g., "do not use X; use Y instead") to ensure the AI writes compliant, correct code.
     - DO NOT store change logs, lists of modified files, or commit-like messages (e.g., "updated file X, updated package Y"). Keep the file clean, concise, and focused strictly on active rules, design decisions, and coding standards.
@@ -1315,7 +1316,7 @@ The rules and instructions provided below have the highest priority. These direc
 #### Development Rules for AI:
 1.  **Purity & Atomicity**: Components must be minimal. All business logic must be extracted to **Composables**.
 2.  **Typing**: Strict TypeScript, no `any`. Mandatory usage of interfaces for Props and Emits.
-3.  **Documentation**: Use JSDoc/TSDoc formatted strictly according to the guidelines in [jdoc.txt](file:///Volumes/T7/Code/dxt-ui/ai-prompts/jdoc.txt). All comments must follow a mandatory bilingual standard (English and Russian):
+3.  **Documentation**: Use JSDoc/TSDoc formatted strictly according to the guidelines in [jdoc.md](file:///Volumes/T7/Code/dxt-ui/ai-prompts/jdoc.md). All comments must follow a mandatory bilingual standard (English and Russian):
     - **Classes/Functions/Methods**: Detailed multiline descriptions (English on top, Russian on bottom). Use `@param` and `@returns` with bilingual descriptions separated by ` / `.
     - **Interfaces, Types, Enums, and Properties**: Compact single line (or double line if long) with a forward slash separator: `/** English / Russian */`.
 4.  **Styles**: Use SCSS. Modifying the base library styles is strictly prohibited unless explicitly requested.
