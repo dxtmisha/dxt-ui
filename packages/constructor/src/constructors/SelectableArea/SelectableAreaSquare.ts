@@ -55,6 +55,7 @@ export class SelectableAreaSquare {
    * Returns the square element reference.
    *
    * Возвращает ссылку на элемент-квадрат.
+   * @returns square element reference / ссылка на элемент-квадрат
    */
   getSquare(): Ref<HTMLElement | undefined> {
     return this.squareElement

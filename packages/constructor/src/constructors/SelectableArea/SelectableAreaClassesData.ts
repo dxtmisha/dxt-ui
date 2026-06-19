@@ -32,6 +32,18 @@ export class SelectableAreaClassesData {
   }
 
   /**
+   * Checks if the target element is the main wrapper (not a selectable item).
+   *
+   * Проверяет, является ли целевой элемент основной оберткой (а не выбираемым элементом).
+   * @param target target element / целевой элемент
+   * @returns check result / результат проверки
+   */
+  isMain(target: HTMLElement): boolean {
+    return !this.findItem(target)
+      && target.closest(`.${this.className}`) === this.getElement()
+  }
+
+  /**
    * Returns the unique component identifier.
    *
    * Возвращает уникальный идентификатор компонента.

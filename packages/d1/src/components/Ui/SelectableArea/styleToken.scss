@@ -11,27 +11,29 @@
   // Стили из токенов
   // :style [!] System label / Системная метка
   & {
-    --d1-selectableArea-main: var(--d-selectableArea);
-    
-    &__square {
-      @include ui.backgroundColor(#{var(--d1-sys-palette-primary)});
-      @include ui.backgroundOpacity(#{var(--d1-sys-opacity-overlay)});
-      
-      border-width: var(--d1-sys-spacing-outline);
-      @include ui.borderColor(#{var(--d1-sys-palette-primary)});
-    }
-    
     &__item {
       &--selected {
         &::before {
           content: ' ';
-          @include ui.backgroundColor(#{var(--d1-sys-palette-primary)});
-          @include ui.backgroundOpacity(#{var(--d1-sys-opacity-pressed)});
+          margin: calc(var(--d1-sys-spacing-x) * -1);
+          
+          @include ui.backgroundOpacity(#{var(--d1-sys-opacity-pressed)}); @include ui.backgroundColor('init');
+          @include ui.paletteBackground(#{var(--d1-sys-palette-primary)});
           
           border-width: var(--d1-sys-spacing-outline);
-          @include ui.borderColor(#{var(--d1-sys-palette-primary)});
+          @include ui.borderOpacity(#{var(--d1-sys-opacity-outline)}); @include ui.borderColor('init');
+          @include ui.paletteBorder(#{var(--d1-sys-palette-primary)});
         }
       }
+    }
+    
+    &__square {
+      @include ui.backgroundOpacity(#{var(--d1-sys-opacity-overlay)}); @include ui.backgroundColor('init');
+      @include ui.paletteBackground(#{var(--d1-sys-palette-primary)});
+      
+      border-width: var(--d1-sys-spacing-outline);
+      @include ui.borderOpacity(#{var(--d1-sys-opacity-outlineMedium)}); @include ui.borderColor('init');
+      @include ui.paletteBorder(#{var(--d1-sys-palette-primary)});
     }
   }
   // :style [!] System label / Системная метка

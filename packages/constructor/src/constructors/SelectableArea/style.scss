@@ -4,21 +4,24 @@
   position: relative;
 
   &__square {
-    z-index: 8;
-    border-style: solid;
-    height: ui.v('??sys-square-height');
-    left: ui.v('??sys-square-x');
-    opacity: 0;
+    visibility: hidden;
     position: absolute;
     top: ui.v('??sys-square-y');
+    left: ui.v('??sys-square-x');
+    z-index: 8;
+
     width: ui.v('??sys-square-width');
+    height: ui.v('??sys-square-height');
+
+    opacity: 0;
     transition-property: opacity, visibility;
-    visibility: hidden;
+    transition-duration: ui.v('d.sys.transitionDuration.standard');
+    transition-timing-function: ui.v('d.sys.transitionFunction.standard');
 
     &--show {
+      visibility: visible;
       opacity: 1;
       transition-property: none;
-      visibility: visible;
     }
   }
 
@@ -26,12 +29,11 @@
     position: relative;
 
     &::before {
-      z-index: 8;
-      @include ui.absolute;
-      border-style: solid;
-      content: " ";
       display: none;
+      @include ui.absolute;
+      z-index: 8;
       pointer-events: none;
+      border-radius: inherit;
     }
 
     &--selected::before {

@@ -18,6 +18,17 @@ defineOptions({
     :component="D1SelectableArea"
   >
     <!-- :component-render [!] System label / Системная метка -->
+    <template #render="{ args, classDemo }">
+    <div :class="classDemo.item">
+  <D1SelectableArea :selected="['1', '2']" v-bind="args">
+    <template #default="{ className, classNameClick, onClick }">
+      <div v-for="item in 5" :key="item" :class="[className, classNameClick]" :data-value="item" @click="onClick">
+        Item {{ item }}
+      </div>
+    </template>
+  </D1SelectableArea>
+</div>
+    </template>
     <!-- :component-render [!] System label / Системная метка -->
   </DxtTestWiki>
 </template>

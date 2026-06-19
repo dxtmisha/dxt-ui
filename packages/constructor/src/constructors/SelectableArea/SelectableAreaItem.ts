@@ -54,11 +54,18 @@ export class SelectableAreaItem {
    * Returns current selected values.
    *
    * Возвращает текущие выбранные значения.
+   * @returns array of selected values / массив выбранных значений
    */
   get(): string[] {
     return this.item.value
   }
 
+  /**
+   * Returns a copy of the currently selected values.
+   *
+   * Возвращает копию текущих выбранных значений.
+   * @returns copy of selected values array / копия массива выбранных значений
+   */
   getNewArray(): string[] {
     return [...this.item.value]
   }
@@ -67,6 +74,7 @@ export class SelectableAreaItem {
    * Updates selected values.
    *
    * Обновляет выбранные значения.
+   * @param value new selected value or array of values / новое выбранное значение или массив значений
    */
   readonly set = (value: string | string[]): void => {
     this.item.value = toArray(value)

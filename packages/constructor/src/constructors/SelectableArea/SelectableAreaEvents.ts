@@ -9,7 +9,7 @@ import type { SelectableAreaProps } from './props'
 /**
  * Class managing selectable area event bindings.
  *
- * | * Класс, управляющий привязками событий области выделения.
+ * Класс, управляющий привязками событий области выделения.
  */
 export class SelectableAreaEvents {
   /**
@@ -20,7 +20,6 @@ export class SelectableAreaEvents {
    * @param classes classes manager / менеджер классов
    * @param item item manager / менеджер элементов
    * @param square square placeholder manager / менеджер элемента-заполнителя
-   * @param emit event emit helper / вспомогательный класс вызова событий
    */
   constructor(
     protected readonly props: SelectableAreaProps,
@@ -108,12 +107,20 @@ export class SelectableAreaEvents {
   readonly onMousedown = (
     event: MouseEvent | TouchEvent
   ): void => {
+    console.log(
+      this.props.active,
+      this.props.disabled,
+      (event as MouseEvent).ctrlKey,
+      (event as MouseEvent).shiftKey,
+      event.target,
+      this.classes.getElement()
+    )
     if (
       !this.props.active
       && !this.props.disabled
       && !(event as MouseEvent).ctrlKey
       && !(event as MouseEvent).shiftKey
-      && event.target === this.classes.getElement()
+      && this.classes.isMain(event.target as HTMLElement)
     ) {
       const rect = this.classes.getRect()
 
@@ -209,6 +216,8 @@ export class SelectableAreaEvents {
 
   /**
    * Binds window drag event listeners.
+   *
+   * Привязывает слушатели событий перетаскивания к окну.
    */
   protected addListeners(): void {
     window.addEventListener('mousemove', this.onMousemove)
@@ -220,6 +229,8 @@ export class SelectableAreaEvents {
 
   /**
    * Unbinds window drag event listeners.
+   *
+   * Отвязывает слушатели событий перетаскивания от окна.
    */
   protected removeListeners(): void {
     window.removeEventListener('mousemove', this.onMousemove)

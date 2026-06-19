@@ -19,7 +19,11 @@ import {
 } from './types'
 
 /**
- * SelectableAreaDesign
+ * Design class for SelectableArea component.
+ * Provides rendering, class management and basic component functionality.
+ *
+ * Класс дизайна для компонента SelectableArea.
+ * Обеспечивает рендеринг, управление классами и базовую функциональность компонента.
  */
 export class SelectableAreaDesign<
   COMP extends SelectableAreaComponents,
@@ -27,14 +31,15 @@ export class SelectableAreaDesign<
   CLASSES extends SelectableAreaClasses,
   P extends SelectableAreaPropsBasic
 > extends DesignConstructorAbstract<
-  HTMLDivElement,
-  COMP,
-  SelectableAreaEmits,
-  EXPOSE,
-  SelectableAreaSlots,
-  CLASSES,
-  P
-> {
+    HTMLDivElement,
+    COMP,
+    SelectableAreaEmits,
+    EXPOSE,
+    SelectableAreaSlots,
+    CLASSES,
+    P
+  > {
+  /** Orchestrator item / Элемент оркестратора */
   protected readonly item: SelectableArea
 
   /**
@@ -74,6 +79,7 @@ export class SelectableAreaDesign<
    * Initialization of all the necessary properties for work
    *
    * Инициализация всех необходимых свойств для работы.
+   * @returns exposed properties / экспортируемые свойства
    */
   protected initExpose(): EXPOSE {
     return {
@@ -86,6 +92,7 @@ export class SelectableAreaDesign<
    * Improvement of the obtained list of classes.
    *
    * Доработка полученного списка классов.
+   * @returns classes object / объект классов
    */
   protected initClasses(): Partial<CLASSES> {
     return {
@@ -103,6 +110,7 @@ export class SelectableAreaDesign<
    * Refinement of the received list of styles.
    *
    * Доработка полученного списка стилей.
+   * @returns styles object / объект стилей
    */
   protected initStyles(): ConstrStyles {
     return {}
@@ -112,6 +120,7 @@ export class SelectableAreaDesign<
    * A method for rendering.
    *
    * Метод для рендеринга.
+   * @returns rendered node / отрендеренный узел
    */
   protected initRender(): VNode {
     const children: any[] = []
@@ -135,6 +144,7 @@ export class SelectableAreaDesign<
    * Render square placeholder.
    *
    * Рендер элемента-квадрата.
+   * @returns square placeholder node / узел квадрата
    */
   protected readonly renderSquare = (): VNode => {
     return h('div', {

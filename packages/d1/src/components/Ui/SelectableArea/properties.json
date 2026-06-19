@@ -1,18 +1,21 @@
 {
   "main": "{d.selectableArea}",
   "#square": {
-    "background-color": "{sys.palette.primary}",
+    "palette-background": "{sys.palette.primary}",
     "background-opacity": "{sys.opacity.overlay}",
-    "border-color": "{sys.palette.primary}",
-    "border-width": "{sys.spacing.outline}"
+    "border-width": "{sys.spacing.outline}",
+    "palette-border": "{sys.palette.primary}",
+    "border-opacity": "{sys.opacity.outlineMedium}"
   },
   "#item": {
     "~selected": {
       "before": {
-        "background-color": "{sys.palette.primary}",
+        "margin": "calc({sys.spacing.x} * -1)",
+        "palette-background": "{sys.palette.primary}",
         "background-opacity": "{sys.opacity.pressed}",
         "border-width": "{sys.spacing.outline}",
-        "border-color": "{sys.palette.primary}"
+        "palette-border": "{sys.palette.primary}",
+        "border-opacity": "{sys.opacity.outline}"
       }
     }
   }

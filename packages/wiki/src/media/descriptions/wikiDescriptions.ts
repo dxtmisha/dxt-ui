@@ -57,6 +57,7 @@ import { wikiDescriptionsRipple } from './wikiDescriptionsRipple'
 import { wikiDescriptionsScrollbar } from './wikiDescriptionsScrollbar'
 import { wikiDescriptionsSection } from './wikiDescriptionsSection'
 import { wikiDescriptionsSelect } from './wikiDescriptionsSelect'
+import { wikiDescriptionsSelectableArea } from './wikiDescriptionsSelectableArea'
 import { wikiDescriptionsSelectValue } from './wikiDescriptionsSelectValue'
 import { wikiDescriptionsSkeleton } from './wikiDescriptionsSkeleton'
 import { wikiDescriptionsSnackbar } from './wikiDescriptionsSnackbar'
@@ -130,6 +131,7 @@ export const wikiDescriptions: StorybookComponentsDescription = [
   wikiDescriptionsScrollbar,
   wikiDescriptionsSection,
   wikiDescriptionsSelect,
+  wikiDescriptionsSelectableArea,
   wikiDescriptionsSelectValue,
   wikiDescriptionsSkeleton,
   wikiDescriptionsSnackbar,

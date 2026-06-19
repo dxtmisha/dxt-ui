@@ -27,6 +27,28 @@ type Story = StoryObj<typeof meta>
 
 export const SelectableArea: Story = {
   // :story-main [!] System label / Системная метка
+  render: (args: any) => ({
+    components: { D1SelectableArea },
+    setup: () => ({ args }),
+    template: `
+      <D1SelectableArea v-bind="args">
+      <template #default="{ className, classNameClick, onClick }">
+        <div class="wiki-storybook-group wiki-storybook-item--padding">
+          <div
+            v-for="item in 12"
+            :key="item"
+            :class="['wiki-storybook-item wiki-storybook-item--squared--xs wiki-storybook-item--center wiki-storybook-dummy--color--blue', className, classNameClick]"
+            :data-value="'item-' + item"
+            style="overflow: visible;"
+            @click="onClick"
+          >
+            Item {{ item }}
+          </div>
+        </div>
+      </template>
+    </D1SelectableArea>
+    `
+  })
   // :story-main [!] System label / Системная метка
 }
 

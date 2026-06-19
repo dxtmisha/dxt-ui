@@ -9,7 +9,7 @@ import type { SelectableAreaEmits } from './types'
 /**
  * Class for handling selectable area events emission.
  *
- * | * Класс для обработки отправки событий выделяемой области.
+ * Класс для обработки отправки событий выделяемой области.
  */
 export class SelectableAreaEmit {
   /**

@@ -24,6 +24,7 @@
       position: absolute;
       top: calc(#{ui.v('??sys-client-y')} - #{ui.v('??sys-item-shift-y')});
       left: calc(#{ui.v('??sys-client-x')} - #{ui.v('??sys-item-shift-x')});
+      z-index: 8;
 
       @include ui.textSelectNone;
 

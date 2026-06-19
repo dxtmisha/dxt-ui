@@ -14,7 +14,7 @@ import type { SelectableAreaProps } from './props'
 /**
  * Orchestrator class for managing selectable area logic.
  *
- * | * Класс-оркестратор для управления логикой выделяемой области.
+ * Класс-оркестратор для управления логикой выделяемой области.
  */
 export class SelectableArea {
   /** Classes helper instance / Экземпляр помощника по классам */
@@ -91,6 +91,7 @@ export class SelectableArea {
    * Returns tag name.
    *
    * Возвращает имя тега.
+   * @returns tag name / имя тега
    */
   get tag(): string {
     return this.props.tag || 'div'
@@ -100,10 +101,11 @@ export class SelectableArea {
    * Returns data for managing slot data.
    *
    * Возвращает данные для управления данными слотов.
+   * @returns slot data object / объект данных слота
    */
   get slotData(): SelectableAreaControl {
     return {
-      className: this.classes.getId(),
+      className: `${this.className}__item ${this.classes.getId()}`,
       classSelectionName: this.classes.list.selected,
       classNameClick: this.classes.list.click,
       selected: this.item.get(),
