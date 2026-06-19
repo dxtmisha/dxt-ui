@@ -143,6 +143,9 @@ export declare class GeoRef {
     static getLanguage(): ComputedRef<string>;
     static getStandard(): ComputedRef<string>;
     static getFirstDay(): ComputedRef<string>;
+    static getLocation(): ComputedRef<string>;
+    static getLocationCountry(): ComputedRef<string>;
+    static getLocationLanguage(): ComputedRef<string>;
     static set(code: string): void;
     static setValueDefault(code?: string | (() => string)): void;
 }

@@ -18,6 +18,7 @@ const {
 
   countryOptions,
   standardSelect,
+  location,
 
   formattedDate,
   formattedNumber,
@@ -47,7 +48,7 @@ setTitle('Geo')
             />
 
             <D1Input
-              :value="standard"
+              :value="location"
               label="Custom Locale Code"
               placeholder="e.g. fr-CA, de-DE, ja"
               @changeLite="onChange"

@@ -29,6 +29,8 @@ export const useDemoGeoRef = () => {
   /** Selection model bound to the country picker select component / Модель выбора, привязанная к компоненту выбора страны */
   const standardSelect = ref(standard.value)
 
+  const location = ref(GeoRef.getLocation().value)
+
   /** List of country options formatted for the selector dropdown / Список стран, отформатированный для выпадающего списка выбора */
   const countryOptions = computed(() => {
     const list = Geo.getList()
@@ -88,6 +90,11 @@ export const useDemoGeoRef = () => {
   onMounted(() => {
     watch(standard, (newVal) => {
       standardSelect.value = newVal
+      location.value = GeoRef.getLocation().value
+    })
+
+    watch(location, (newVal) => {
+      GeoRef.set(newVal)
     })
 
     watch(standardSelect, (newVal) => {
@@ -117,6 +124,7 @@ export const useDemoGeoRef = () => {
 
     countryOptions,
     standardSelect,
+    location,
 
     formattedDate,
     formattedNumber,

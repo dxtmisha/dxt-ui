@@ -84,6 +84,45 @@ export class GeoRef {
   }
 
   /**
+   * Current location string.
+   *
+   * Текущее местоположение.
+   * @returns reactive string with the current location/ реактивная строка с текущим местоположением
+   */
+  static getLocation(): ComputedRef<string> {
+    return ServerStorage.get(
+      '__ui:geo-ref-location__',
+      () => computed<string>(() => this.get().value.location)
+    )
+  }
+
+  /**
+   * Current country code from the location.
+   *
+   * Текущий код страны из местоположения.
+   * @returns reactive string with the current country code from location/ реактивная строка с кодом текущей страны из местоположения
+   */
+  static getLocationCountry(): ComputedRef<string> {
+    return ServerStorage.get(
+      '__ui:geo-ref-location-country__',
+      () => computed<string>(() => this.get().value.locationCountry)
+    )
+  }
+
+  /**
+   * Current language code from the location.
+   *
+   * Текущий код языка из местоположения.
+   * @returns reactive string with the current language code from location/ реактивная строка с кодом текущего языка из местоположения
+   */
+  static getLocationLanguage(): ComputedRef<string> {
+    return ServerStorage.get(
+      '__ui:geo-ref-location-language__',
+      () => computed<string>(() => this.get().value.locationLanguage)
+    )
+  }
+
+  /**
    * Changes the data by the full code.
    *
    * Изменяет данные по полному коду.

@@ -85,6 +85,26 @@ export class Geo {
   }
 
   /**
+   * Returns the country code extracted from the location string.
+   *
+   * Возвращает код страны, извлеченный из строки местоположения.
+   * @returns country code / код страны
+   */
+  static getLocationCountry(): string {
+    return this.getObject().getLocationCountry()
+  }
+
+  /**
+   * Returns the language code extracted from the location string.
+   *
+   * Возвращает код языка, извлеченный из строки местоположения.
+   * @returns language code / код языка
+   */
+  static getLocationLanguage(): string {
+    return this.getObject().getLocationLanguage()
+  }
+
+  /**
    * Returns fully processed geo data updated with the current language.
    *
    * Возвращает полностью обработанные гео-данные с учетом текущего языка.

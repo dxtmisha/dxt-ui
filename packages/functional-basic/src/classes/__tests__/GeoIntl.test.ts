@@ -18,10 +18,11 @@ describe('GeoIntl', () => {
       expect(GeoIntl.isItem('fr-FR')).toBe(true)
     })
 
-    it('static getLocation should return standard code with language priority', () => {
-      // en-VN should find en-US because language is prioritized
-      expect(GeoIntl.getLocation('en-VN')).toBe('en-US')
+    it('static getLocation should return standard code with country priority', () => {
+      // en-VN should find en-VN because country is prioritized
+      expect(GeoIntl.getLocation('en-VN')).toBe('en-VN')
     })
+
 
     it('getInstance should return a GeoIntl instance', () => {
       const instance = GeoIntl.getInstance('en-US')

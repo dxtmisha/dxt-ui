@@ -56,6 +56,13 @@ export interface GeoItemFull extends Omit<GeoItem, 'firstDay'> {
   standard: string
   /** First day of week (required)/ Первый день недели (обязательный) */
   firstDay: string
+
+  /** Current location string/ Строка текущего местоположения */
+  location: string
+  /** Current country code from location/ Текущий код страны из местоположения */
+  locationCountry: string
+  /** Current language code from location/ Текущий код языка из местоположения */
+  locationLanguage: string
 }
 
 /** Geographic flag item for country flag display/ Элемент географического флага для отображения флага страны */

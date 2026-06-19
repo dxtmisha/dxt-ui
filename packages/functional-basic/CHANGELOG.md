@@ -2,7 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.15] - 2026-06-19
+
+### Added
+- **GeoInstance**: Introduced `getLocationCountry(): string` and `getLocationLanguage(): string` methods to directly retrieve country and language codes from the current location string.
+- **Geo**: Added static `getLocationCountry()` and `getLocationLanguage()` wrappers.
+- **geoTypes**: Extended `GeoItemFull` interface to include `location`, `locationCountry`, and `locationLanguage` properties.
+
+### Changed / Improved
+- **GeoInstance**: Refactored `toFull` helper to populate `location`, `locationCountry`, and `locationLanguage` fields dynamically on the resolved `GeoItemFull`.
+- **GeoInstance**: Re-arranged matching logic order in `getByCode` to prioritize country matching (`getByCountry`) before language matching (`getByLanguage`).
+- **GeoInstance**: Updated `toStandard` method signature to accept an optional `language` override.
+
+### Fixed
+- **Tests**: Adjusted `Geo.test.ts` and `GeoIntl.test.ts` fallback expectations to align with the country-first matching behavior (e.g. `'en-VN'` resolving to `vi-VN` / country `'VN'`).
+- **Tests**: Fixed `UrlItem.test.ts` `getInstance` tests to follow the correct argumentless static `UrlItem.getInstance()` API signature.
+
 ## [1.3.11] - 2026-06-18
+
 
 ### Changed / Improved
 - **ErrorCenterHandler**: Integrated server-side error stack tracing (`console.trace`) when logging causes in non-browser (SSR) environments.

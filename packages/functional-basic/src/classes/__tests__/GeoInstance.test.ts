@@ -402,6 +402,23 @@ describe('GeoInstance', () => {
       expect(geo.getLocation()).toBe('en-VN')
     })
 
+    it('getLocationCountry() returns the country code extracted from getLocation()', () => {
+      const geo = new GeoInstance()
+      geo.set('en-VN')
+      expect(geo.getLocationCountry()).toBe('VN')
+      geo.set('ru-RU')
+      expect(geo.getLocationCountry()).toBe('RU')
+    })
+
+    it('getLocationLanguage() returns the language code extracted from getLocation()', () => {
+      const geo = new GeoInstance()
+      geo.set('en-VN')
+      expect(geo.getLocationLanguage()).toBe('en')
+      geo.set('ru-RU')
+      expect(geo.getLocationLanguage()).toBe('ru')
+    })
+
+
     it('getLanguage() extracts language part from the code', () => {
       const geo = new GeoInstance()
       geo.set('zh-CN')

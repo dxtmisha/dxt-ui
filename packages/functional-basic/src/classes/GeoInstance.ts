@@ -139,17 +139,33 @@ export class GeoInstance {
   }
 
   /**
+   * Getting the country code from the location.
+   *
+   * Получение кода страны из местоположения.
+   * @returns country code / код страны
+   */
+  getLocationCountry(): string {
+    return this.toCountry(this.getLocation())
+  }
+
+  /**
+   * Getting the language code from the location.
+   *
+   * Получение кода языка из местоположения.
+   * @returns language code / код языка
+   */
+  getLocationLanguage(): string {
+    return this.toLanguage(this.getLocation())
+  }
+
+  /**
    * Getting processed data including the current language.
    *
    * Получение обработанных данных, включая текущий язык.
    * @returns full geo item data / полные данные гео-объекта
    */
   getItem(): GeoItemFull {
-    return {
-      ...this.item,
-      language: this.language,
-      standard: `${this.language}-${this.item.country}`
-    }
+    return this.item
   }
 
   /**
@@ -177,16 +193,16 @@ export class GeoInstance {
         item = this.getByCodeFull(code)
       }
 
-      if (!item && /[a-z]{2}/.test(code)) {
-        item = this.getByLanguage(this.toLanguage(code))
-      }
-
       if (!item && /[A-Z]{2}/.test(code)) {
         item = this.getByCountry(this.toCountry(code))
       }
+
+      if (!item && /[a-z]{2}/.test(code)) {
+        item = this.getByLanguage(this.toLanguage(code))
+      }
     }
 
-    return this.toFull(item ?? this.getList()[0] as GeoItem)
+    return this.toFull(item ?? this.getList()[0] as GeoItem, code)
   }
 
   /**
@@ -281,7 +297,18 @@ export class GeoInstance {
    * @param item geo item data / данные гео-объекта
    * @returns standard code string / строка стандартного кода
    */
-  toStandard(item: GeoItem) {
+  toStandard(
+    item: GeoItem,
+    language?: string
+  ) {
+    if (language) {
+      const standardLanguage = this.getByLanguage(language)?.language
+
+      if (standardLanguage) {
+        return `${standardLanguage}-${item.country}`
+      }
+    }
+
     return `${item.language}-${item.country}`
   }
 
@@ -345,8 +372,8 @@ export class GeoInstance {
    * @returns initial location code / начальный код локации
    */
   private findLocation(): string {
-    return this.findLocationDom()
-      || this.getCookie().get()
+    return this.getCookie().get()
+      || this.findLocationDom()
       || executeFunction(this.valueDefault)
       || 'en-GB'
   }
@@ -413,13 +440,21 @@ export class GeoInstance {
    *
    * Внутренний метод для заполнения отсутствующих полей в гео-объекте.
    * @param item basic geo item / базовый гео-объект
+   * @param code country code, full form language-country or one of them / код страны, полный вид язык-страна или один из них
    * @returns full geo item data / полные данные гео-объекта
    */
-  private toFull(item: GeoItem): GeoItemFull {
+  private toFull(item: GeoItem, code?: string): GeoItemFull {
+    const locationLanguage = (code && this.toLanguage(code)) || item.language
+    const standard = this.toStandard(item, locationLanguage)
+
     return {
       ...item,
-      standard: this.toStandard(item),
-      firstDay: item?.firstDay || 'Mo'
+      standard,
+      firstDay: item?.firstDay || 'Mo',
+
+      location: code ?? standard,
+      locationCountry: (code && this.toCountry(code)) || item.country,
+      locationLanguage
     }
   }
 }

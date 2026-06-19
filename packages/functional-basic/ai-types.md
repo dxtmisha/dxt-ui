@@ -561,6 +561,8 @@ export declare class Geo {
     static getStandard(): string;
     static getFirstDay(): string;
     static getLocation(): string;
+    static getLocationCountry(): string;
+    static getLocationLanguage(): string;
     static getItem(): GeoItemFull;
     static getList(): GeoItem[];
     static getByCode(code?: string): GeoItemFull;
@@ -612,6 +614,8 @@ export declare class GeoInstance {
     getStandard(): string;
     getFirstDay(): string;
     getLocation(): string;
+    getLocationCountry(): string;
+    getLocationLanguage(): string;
     getItem(): GeoItemFull;
     getList(): GeoItem[];
     getByCode(code?: string): GeoItemFull;

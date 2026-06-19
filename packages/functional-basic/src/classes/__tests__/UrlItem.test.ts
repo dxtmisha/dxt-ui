@@ -29,7 +29,7 @@ describe('UrlItem', () => {
     it('should fallback to window.location.href in browser runtime', () => {
       vi.spyOn(isDomRuntimeModule, 'isDomRuntime').mockReturnValue(true)
       const originalWindow = globalThis.window
-      
+
       globalThis.window = {
         location: {
           href: 'https://browser.com/current-page',
@@ -66,7 +66,7 @@ describe('UrlItem', () => {
   describe('Getters', () => {
     it('should return correct standard components', () => {
       const url = new UrlItem('https://user:pass@example.com:8080/path?query=1#hash')
-      
+
       expect(url.username).toBe('user')
       expect(url.password).toBe('pass')
       expect(url.host).toBe('example.com:8080')
@@ -84,20 +84,23 @@ describe('UrlItem', () => {
   describe('getInstance', () => {
     it('should return a request-isolated UrlItem instance via ServerStorage', () => {
       const storageSpy = vi.spyOn(ServerStorage, 'get')
-      const instance = UrlItem.getInstance('https://example.com')
+      const instance = UrlItem.getInstance()
+      instance.set('https://example.com')
       expect(instance).toBeInstanceOf(UrlItem)
       expect(instance.href).toBe('https://example.com/')
       expect(storageSpy).toHaveBeenCalledWith('__ui:url-item__', expect.any(Function))
     })
 
     it('should update the URL if passed on subsequent calls', () => {
-      const firstInstance = UrlItem.getInstance('https://example.com/first')
+      const firstInstance = UrlItem.getInstance()
+      firstInstance.set('https://example.com/first')
       expect(firstInstance.pathname).toBe('/first')
-      
+
       // Mock ServerStorage to return the already created instance
       vi.spyOn(ServerStorage, 'get').mockReturnValue(firstInstance)
 
-      const secondInstance = UrlItem.getInstance('https://example.com/second')
+      const secondInstance = UrlItem.getInstance()
+      secondInstance.set('https://example.com/second')
       expect(secondInstance).toBe(firstInstance)
       expect(secondInstance.pathname).toBe('/second')
     })

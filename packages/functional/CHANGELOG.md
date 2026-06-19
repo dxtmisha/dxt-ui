@@ -2,7 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.13.7] - 2026-06-19
+
+### Added
+- **GeoRef**: Added static reactive `getLocation()`, `getLocationCountry()`, and `getLocationLanguage()` methods returning isolated `ComputedRef<string>` representations of location components.
+
+### Fixed
+- **Tests**: Adjusted test assertions in `GeoRef.test.ts` for `'en-VN'` to expect country `'VN'` and standard `'en-VN'` under the country-first matching priority.
+
 ## [1.13.5] - 2026-06-17
+
 
 ### Changed / Improved
 - **GeoRef**: Refactored static getters (`getCountry`, `getLanguage`, `getStandard`, `getFirstDay`) to use request-isolated computed references via `ServerStorage.get`. This isolates their reactive state per request, resolving potential cross-request state pollution during SSR.
