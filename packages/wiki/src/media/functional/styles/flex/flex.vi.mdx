@@ -1,0 +1,33 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/styles/flex - Bố cục Flexbox'/>
+
+# Hệ thống flexbox
+
+Thư viện cung cấp các mixin để quản lý hiển thị hiển thị Flexbox, căn lề, luồng (flow) và định vị các phần tử.
+
+## Các Mixin
+
+### Hiển thị và Luồng (Flow)
+
+- `flex()` — Thiết lập `display: flex`.
+- `flexInline()` — Thiết lập `display: inline-flex`.
+- `flexX()` — Thiết lập bố cục flex với căn lề giữa (`display: flex`, `align-items: center`).
+- `flexY()` — Thiết lập bố cục flex cột với căn lề giữa (`flex-flow: column`).
+- `flexStretchX()` — Thiết lập bố cục flex với căn lề kéo giãn (`align-items: stretch`).
+- `flexStretchY()` — Thiết lập bố cục flex cột với căn lề kéo giãn.
+
+### Căn lề và Khoảng cách (Alignment)
+
+- `justifyContent($value)` — Thiết lập thuộc tính `justify-content`.
+- `flexCenter()` — Căn giữa các phần tử flex theo chiều ngang và dọc.
+- `flexBetween()` — Dàn đều các phần tử flex (`justify-content: space-between`).
+- `flexInlineX()` — Thiết lập bố cục inline-flex với căn lề giữa.
+- `flexInlineY()` — Thiết lập bố cục inline-flex cột với căn lề giữa.
+- `flexInlineCenter()` — Căn giữa các phần tử inline-flex theo chiều ngang và dọc.
+- `flexInlineBetween()` — Dàn đều các phần tử inline-flex.
+
+### Kích thước và Định vị
+
+- `flexPosition($value)` — Áp dụng động các mixin căn lề được định nghĩa trước dựa trên giá trị tham số (`'x'`, `'y'`, `'center'`, `'between'`, `'inline-x'`, `'inline-y'`, `'inline-center'`, `'inline-between'`).
+- `flexDynamic()` — Thiết lập các quy tắc co giãn linh hoạt (`flex-basis: 1px`, `flex-grow: 1`, `flex-shrink: 1`).

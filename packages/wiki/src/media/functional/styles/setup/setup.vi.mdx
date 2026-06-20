@@ -1,0 +1,48 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/styles/# Chuẩn bị dự án'/>
+
+# Chuẩn bị dự án
+
+Thư viện `@dxtmisha/styles` cung cấp một mixin thiết lập tập trung (`initGlobal`) để cài đặt các cấu hình thiết lập lại cơ bản (resets), hệ thống hướng hiển thị, khoảng cách đoạn văn, biến đổi hình học và bảng màu.
+
+## Cơ chế Hoạt động
+
+Mixin `initGlobal` hoạt động như một điểm truy cập duy nhất để thiết lập toàn bộ hệ thống styles cho dự án. Nó tuần tự bao gồm và cấu hình các tiện ích cấp thấp cốt lõi sau:
+
+1. **Reset Box Sizing & Border**: Đối với tất cả phần tử (`*`, `*::after`, `*::before`), nó thiết lập `box-sizing: border-box`, reset độ rộng viền về `0`, đặt kiểu viền thành `solid` và đặt màu viền mặc định là trong suốt (`transparent`). Điều này giúp ngăn chặn các vấn đề thay đổi bố cục ngoài ý muốn và lỗi render đường viền.
+2. **Khởi tạo Hệ thống Hướng hiển thị (`initDir`)**: Tích hợp hỗ trợ LTR và RTL. Nó khởi tạo các biến CSS Custom Properties tự động thay đổi theo hướng văn bản trên thẻ `html` và toàn bộ các phần tử con, đảm bảo giao diện tự động lật đối xứng khi chuyển đổi ngôn ngữ.
+3. **Khoảng cách Đoạn văn (`initParagraphSpacing`)**: Cấu hình các ràng buộc khoảng cách lề cho các đoạn văn liên tiếp (các phần tử `p` liền kề) để duy trì tính nhất quán về mặt trình bày văn bản.
+4. **Bảng màu (`initPalette`)**: Thiết lập các biến CSS toàn cục cho màu sắc, chủ đề giao diện và các trạng thái.
+5. **Cấu hình Biến đổi (`initTransform`)**: Đăng ký các thuộc tính tùy chỉnh và giá trị cơ sở cho các phép biến đổi hình học 2D/3D (CSS transforms).
+6. **Reset Lề (Margin Reset)**: Thiết lập lề mặc định (margin) về 0 cho phần thân trang (body), tất cả các tiêu đề (`h1` đến `h6`) và đoạn văn (`p`).
+
+## Hướng dẫn Tích hợp
+
+### 1. Tạo File Styles Chính
+
+Tạo một tệp styles chính (ví dụ: `src/styles/main.scss`) để làm điểm truy cập cho tất cả styles của ứng dụng.
+
+### 2. Import Thư viện Styles
+
+Import thư viện `@dxtmisha/styles` ở đầu tệp styles của bạn:
+
+```scss
+@use '@dxtmisha/styles';
+```
+
+### 3. Thiết lập Styles Toàn cục
+
+Gọi mixin `initGlobal` ở cấp độ ngoài cùng trong tệp styles chính của bạn:
+
+```scss
+@include styles.initGlobal;
+```
+
+### 4. Import Tệp Styles vào Entry Point Ứng dụng
+
+Import tệp styles chính của bạn vào điểm chạy JavaScript hoặc TypeScript của ứng dụng (ví dụ: `src/main.ts` hoặc `src/entry-client.ts`):
+
+```typescript
+import './styles/main.scss'
+```

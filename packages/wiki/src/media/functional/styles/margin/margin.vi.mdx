@@ -1,0 +1,23 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/styles/margin - Khoảng cách lề'/>
+
+# Hệ thống lề (Margins)
+
+Thư viện cung cấp các mixin để quản lý khoảng cách lề bên ngoài (margins) của phần tử, hỗ trợ hướng hiển thị của ngôn ngữ.
+
+## Các Mixin
+
+### Lề cơ bản
+
+- `margin($value)` — Thiết lập thuộc tính `margin`.
+- `marginX($value)` — Thiết lập lề ngang (trái và phải).
+- `marginY($value)` — Thiết lập lề dọc (trên và dưới).
+- `marginTop($value)` — Thiết lập thuộc tính `margin-top`.
+- `marginBottom($value)` — Thiết lập thuộc tính `margin-bottom`.
+
+### Lề tương thích hướng hiển thị
+
+- `marginLeft($value)` — Thiết lập thuộc tính `margin-inline-start` tương thích hướng LTR và RTL.
+- `marginRight($value)` — Thiết lập thuộc tính `margin-inline-end` tương thích hướng LTR và RTL.
+- `__marginDir()` — Ánh xạ lề vật lý sang các biến hướng hệ thống (`margin-left: var(--d-dir-margin-left)` và `margin-right: var(--d-dir-margin-right)`).

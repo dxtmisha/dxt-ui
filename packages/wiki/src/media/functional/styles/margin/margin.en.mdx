@@ -1,0 +1,23 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/styles/margin - Margins'/>
+
+# Margins System
+
+The library provides mixins for managing element margins, direction-aware margins, and layout spacing.
+
+## Mixins
+
+### Basic Margins
+
+- `margin($value)` — Sets the `margin` property.
+- `marginX($value)` — Sets horizontal margins (left and right).
+- `marginY($value)` — Sets vertical margins (top and bottom).
+- `marginTop($value)` — Sets `margin-top`.
+- `marginBottom($value)` — Sets `margin-bottom`.
+
+### Direction-Aware Margins
+
+- `marginLeft($value)` — Sets `margin-inline-start` for LTR and RTL compatible horizontal spacing.
+- `marginRight($value)` — Sets `margin-inline-end` for LTR and RTL compatible horizontal spacing.
+- `__marginDir()` — Binds physical margins to system direction properties (`margin-left: var(--d-dir-margin-left)` and `margin-right: var(--d-dir-margin-right)`).

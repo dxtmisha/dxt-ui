@@ -1,0 +1,48 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/styles/# Project Setup'/>
+
+# Project Setup
+
+The `@dxtmisha/styles` library provides a centralized setup mixin (`initGlobal`) to establish the base resets, direction systems, typographic spacing, custom transforms, and color palettes.
+
+## How it Works
+
+The `initGlobal` mixin acts as the single entry point to set up the entire styling ecosystem for a project. It sequentially includes and configures the following key low-level utilities:
+
+1. **Box Sizing & Border Reset**: For all elements (`*`, `*::after`, `*::before`), it sets `box-sizing: border-box`, resets the border width to `0`, sets the border style to `solid`, and sets the default border color to `transparent`. This prevents layout shifts and border rendering issues.
+2. **Direction System Initialization (`initDir`)**: Integrates LTR and RTL support. It initializes direction-aware CSS custom properties on the `html` element and all descendants, enabling automatic layout mirroring and spacing adjustment based on the active language.
+3. **Paragraph Spacing (`initParagraphSpacing`)**: Configures margin spacing constraints for consecutive paragraphs (adjacent `p` elements) to maintain typographic consistency.
+4. **Color Palette (`initPalette`)**: Sets up the global CSS variables for colors, schemes, and states.
+5. **Transform Settings (`initTransform`)**: Registers custom properties and baseline values for 2D/3D CSS transforms.
+6. **Margin Reset**: Resets default margins to zero for the document `body`, all headers (`h1` through `h6`), and paragraphs (`p`).
+
+## Integration Guide
+
+### 1. Create Main Stylesheet
+
+Create a main stylesheet file (e.g., `src/styles/main.scss`) that will serve as the entry point for your application's styling.
+
+### 2. Import Styles Library
+
+Import the `@dxtmisha/styles` library at the top of your stylesheet:
+
+```scss
+@use '@dxtmisha/styles';
+```
+
+### 3. Setup Global Styles
+
+Call the `initGlobal` mixin at the root level of your main stylesheet file:
+
+```scss
+@include styles.initGlobal;
+```
+
+### 4. Import Stylesheet in Application Entry
+
+Import your main stylesheet in your application's JavaScript or TypeScript entry point (e.g., `src/main.ts` or `src/entry-client.ts`):
+
+```typescript
+import './styles/main.scss'
+```

@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/styles/transform - Transform and transitions'/>
+
+# Element Transformations
+
+The library provides mixins for element coordinate translation, scaling, rotations, and direction-aware CSS transformations.
+
+## Mixins
+
+### Transform Initialization
+
+- `initTransform()` — Initializes default system transform CSS variables (`--sys-transform-translateX`, `--sys-transform-translateY`, `--sys-transform-scale`, and `--sys-transform-rotate`).
+
+### Transformations and Translations
+
+- `translateX($value)` — Sets the horizontal translation CSS variable `--sys-transform-translateX` and applies translate.
+- `translateY($value)` — Sets the vertical translation CSS variable `--sys-transform-translateY` and applies translate.
+- `scale($value)` — Sets the `scale` CSS property directly.
+- `rotate($value)` — Sets the `rotate` CSS property directly.
+- `transformInit()` — Combines system variables to set the `transform` property, incorporating direction multiplier for horizontal translations.
+- `translateInit()` — Combines system variables to set the `translate` CSS property.

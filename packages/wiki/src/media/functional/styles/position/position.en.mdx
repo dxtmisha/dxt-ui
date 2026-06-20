@@ -1,0 +1,30 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/styles/position - Position'/>
+
+# Element Positioning
+
+The library provides mixins for element coordinate positioning, absolute layers, pseudo-elements, and direction-aware layout boundaries.
+
+## Mixins
+
+### Standard Position Coordinates
+
+- `inset($value)` — Sets the `inset` property.
+- `horizon($value)` — Sets horizontal alignment (sets both `left` and `right`).
+- `vertically($value)` — Sets vertical alignment (sets both `top` and `bottom`).
+- `top($value)` — Sets `top` property and includes `horizon`.
+- `bottom($value)` — Sets `bottom` property and includes `horizon`.
+
+### Direction-Aware Positioning
+
+- `left($value)` — Sets `inset-inline-start` for LTR and RTL compatible positioning.
+- `right($value)` — Sets `inset-inline-end` for LTR and RTL compatible positioning.
+- `__positionDir()` — Binds physical positions to system direction properties (`left: var(--d-dir-position-left)` and `right: var(--d-dir-position-right)`).
+
+### Absolute Layout Structures
+
+- `absolute($value)` — Sets absolute positioning with inset.
+- `absoluteTop($value)` — Sets absolute positioning aligned to the top.
+- `absoluteBottom($value)` — Sets absolute positioning aligned to the bottom.
+- `absoluteAfter($value)` — Configures parent relative container and absolute position styles on its `&::after` pseudo-element.

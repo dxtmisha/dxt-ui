@@ -1,0 +1,23 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/styles/selector - Bộ chọn trạng thái'/>
+
+# Bộ chọn trạng thái (Selectors)
+
+Thư viện `@dxtmisha/styles` cung cấp các mixin hỗ trợ để quản lý các trạng thái tương tác của phần tử (hover, active, focus, disabled, readonly), đồng thời tự động lọc các phần tử đang hoạt động (enabled) để ngăn chặn các hiệu ứng hover/active áp dụng cho phần tử bị vô hiệu hóa, chỉ đọc hoặc đang tải.
+
+## Mixins
+
+### Trạng thái Tương tác
+
+- `hover($parent: &)` — Áp dụng hiệu ứng hover `:hover` chỉ khi phần tử đang hoạt động.
+- `active($parent: &)` — Áp dụng hiệu ứng nhấn `:active` chỉ khi phần tử đang hoạt động.
+- `focus($parent: &)` — Áp dụng hiệu ứng tiêu điểm `:focus` chỉ khi phần tử đang hoạt động.
+
+### Bộ chọn Trạng thái Cơ bản
+
+- `selector($name, $parent: &)` — Áp dụng pseudo-class hoặc modifier class trạng thái tương ứng (ví dụ: đối với `focus` sẽ tự động thiết lập `:focus`, `:focus-within` và class `--focus`).
+- `enabled($parent: &)` — Giới hạn phạm vi kiểu dáng chỉ áp dụng cho các phần tử đang hoạt động (loại trừ `:disabled`, `--disabled`, `--readonly` và `--loading` bằng bộ lọc `:not`).
+- `enabledSelector($name, $parent: &)` — Kết hợp tiện ích kiểm tra hoạt động `enabled` với bộ chọn pseudo-class `selector`.
+- `disabled($parent: &)` — Định dạng kiểu dáng cho trạng thái bị vô hiệu hóa (áp dụng cho thuộc tính `:disabled` và các BEM modifier class `--disabled`).
+- `readonly($parent: &)` — Định dạng kiểu dáng cho trạng thái chỉ đọc (áp dụng cho BEM modifier class `--readonly`).

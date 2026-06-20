@@ -1,0 +1,26 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/styles/media - Bố cục đáp ứng'/>
+
+# Bố cục đáp ứng (Media Queries)
+
+Thư viện cung cấp function và các mixin cho việc thiết kế giao diện đáp ứng (responsive), các cấu hình chuyển động của hệ thống, và truy vấn container (container queries).
+
+## Các Function
+
+- `media($width): Number` — Trả về giá trị chiều rộng tương ứng với tên kích thước (ví dụ: `'sm'` -> `640px`) từ các biến thiết kế.
+
+## Các Mixin
+
+### Truy vấn Viewport (Màn hình)
+
+- `mediaMinWidth($width)` — Tạo truy vấn `@media screen` cho màn hình có chiều rộng tối thiểu bằng kích thước đã chọn.
+- `mediaMaxWidth($width)` — Tạo truy vấn `@media screen` cho màn hình có chiều rộng tối đa bằng kích thước đã chọn.
+- `mediaMinMaxWidth($min, $max)` — Tạo truy vấn màn hình trong khoảng kích thước từ tối thiểu đến tối đa đã chọn.
+- `mediaPrefersReducedMotion()` — Tạo truy vấn cho người dùng có cài đặt giảm thiểu hiệu ứng chuyển động.
+
+### Truy vấn Container (Khung chứa)
+
+- `containerMinWidth($width)` — Tạo truy vấn `@container` cho container có chiều rộng tối thiểu bằng kích thước đã chọn.
+- `containerMaxWidth($width)` — Tạo truy vấn `@container` cho container có chiều rộng tối đa bằng kích thước đã chọn.
+- `containerMinMaxWidth($min, $max)` — Tạo truy vấn container trong khoảng kích thước từ tối thiểu đến tối đa đã chọn.

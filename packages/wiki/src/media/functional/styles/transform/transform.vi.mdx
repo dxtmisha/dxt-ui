@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/styles/transform - Biến đổi hình học'/>
+
+# Biến đổi hình học (Transformations)
+
+Thư viện cung cấp các mixin để dịch chuyển tọa độ phần tử, thu phóng, xoay và thực hiện các phép biến đổi CSS tương thích với hướng hiển thị của ngôn ngữ.
+
+## Các Mixin
+
+### Khởi tạo biến đổi
+
+- `initTransform()` — Khởi tạo các biến CSS biến đổi hệ thống mặc định (`--sys-transform-translateX`, `--sys-transform-translateY`, `--sys-transform-scale` và `--sys-transform-rotate`).
+
+### Dịch chuyển, Thu phóng và Xoay
+
+- `translateX($value)` — Thiết lập biến dịch chuyển ngang `--sys-transform-translateX` và áp dụng dịch chuyển.
+- `translateY($value)` — Thiết lập biến dịch chuyển dọc `--sys-transform-translateY` và áp dụng dịch chuyển.
+- `scale($value)` — Thiết lập trực tiếp thuộc tính CSS `scale`.
+- `rotate($value)` — Thiết lập trực tiếp thuộc tính CSS `rotate`.
+- `transformInit()` — Kết hợp các biến hệ thống để thiết lập thuộc tính `transform`, tích hợp hệ số nhân hướng cho dịch chuyển ngang.
+- `translateInit()` — Kết hợp các biến hệ thống để thiết lập thuộc tính CSS `translate`.

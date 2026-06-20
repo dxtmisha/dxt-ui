@@ -1,0 +1,30 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/styles/position - Định vị'/>
+
+# Định vị phần tử
+
+Thư viện cung cấp các mixin để định vị tọa độ phần tử, tạo các lớp tuyệt đối, phần tử giả (pseudo-elements) và các giới hạn vị trí tương thích với hướng hiển thị của ngôn ngữ.
+
+## Các Mixin
+
+### Tọa độ vị trí tiêu chuẩn
+
+- `inset($value)` — Thiết lập thuộc tính `inset`.
+- `horizon($value)` — Thiết lập căn lề ngang (cả `left` và `right`).
+- `vertically($value)` — Thiết lập căn lề dọc (cả `top` và `bottom`).
+- `top($value)` — Thiết lập thuộc tính `top` và bao gồm căn lề ngang `horizon`.
+- `bottom($value)` — Thiết lập thuộc tính `bottom` và bao gồm căn lề ngang `horizon`.
+
+### Định vị tương thích hướng hiển thị
+
+- `left($value)` — Thiết lập `inset-inline-start` tương thích hướng LTR và RTL.
+- `right($value)` — Thiết lập `inset-inline-end` tương thích hướng LTR và RTL.
+- `__positionDir()` — Ánh xạ vị trí vật lý sang các biến hướng hệ thống (`left: var(--d-dir-position-left)` và `right: var(--d-dir-position-right)`).
+
+### Cấu trúc bố cục Tuyệt đối
+
+- `absolute($value)` — Định vị tuyệt đối với giá trị inset tương ứng.
+- `absoluteTop($value)` — Định vị tuyệt đối căn sát lề trên.
+- `absoluteBottom($value)` — Định vị tuyệt đối căn sát lề dưới.
+- `absoluteAfter($value)` — Định nghĩa thuộc tính relative cho phần tử cha và định vị tuyệt đối cho phần tử giả `&::after`.

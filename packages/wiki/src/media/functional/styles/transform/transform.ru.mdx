@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/styles/transform - Трансформации'/>
+
+# Трансформации элементов (Transformations)
+
+Библиотека предоставляет миксины для сдвигов по координатам, масштабирования, вращения и трансформаций с поддержкой направления раскладки.
+
+## Миксины
+
+### Инициализация трансформации
+
+- `initTransform()` — Инициализирует стандартные переменные трансформации (`--sys-transform-translateX`, `--sys-transform-translateY`, `--sys-transform-scale` и `--sys-transform-rotate`).
+
+### Сдвиг, масштаб и вращение
+
+- `translateX($value)` — Устанавливает переменную горизонтального сдвига `--sys-transform-translateX` и применяет смещение.
+- `translateY($value)` — Устанавливает переменную вертикального сдвига `--sys-transform-translateY` и применяет смещение.
+- `scale($value)` — Напрямую устанавливает CSS-свойство `scale`.
+- `rotate($value)` — Напрямую устанавливает CSS-свойство `rotate`.
+- `transformInit()` — Объединяет системные переменные для установки свойства `transform`, учитывая множитель направления для горизонтальных смещений.
+- `translateInit()` — Объединяет системные переменные для установки CSS-свойства `translate`.

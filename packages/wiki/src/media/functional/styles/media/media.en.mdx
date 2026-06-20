@@ -1,0 +1,26 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/styles/media - Responsive layout'/>
+
+# Responsive Layout
+
+The library provides a function and mixins for responsive screen layout, motion preferences, and container queries.
+
+## Functions
+
+- `media($width): Number` — Returns the viewport width for a given size name (e.g. `'sm'` -> `640px`) from the design variables.
+
+## Mixins
+
+### Viewport Queries
+
+- `mediaMinWidth($width)` — Generates a screen media query matching from the minimum width of the given size.
+- `mediaMaxWidth($width)` — Generates a screen media query matching up to the maximum width of the given size.
+- `mediaMinMaxWidth($min, $max)` — Generates a screen media query matching between minimum and maximum width sizes.
+- `mediaPrefersReducedMotion()` — Generates a media query matching users with reduced motion preferences.
+
+### Container Queries
+
+- `containerMinWidth($width)` — Generates a container query matching from the minimum width of the given size.
+- `containerMaxWidth($width)` — Generates a container query matching up to the maximum width of the given size.
+- `containerMinMaxWidth($min, $max)` — Generates a container query matching between minimum and maximum width container sizes.

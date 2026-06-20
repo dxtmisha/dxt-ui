@@ -1,0 +1,25 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/styles/rules - System Rules and Helper Functions'/>
+
+# System Rules
+
+The `@dxtmisha/styles` library provides low-level helper functions for type checking, nested map tree traversal, string manipulation, and selector extraction.
+
+## Functions
+
+### CSS Property & Selector Helpers
+
+- `isCustomVar($value): Boolean` — Checks if a value is formatted as a CSS Custom Property (e.g., starts with `var(` and ends with `)`).
+- `getFirstSelector($selector: &): String` — Extracts the name of the first simple selector from the current nesting context.
+
+### Map & Data Helpers
+
+- `getMapItem($map, $index, $default: null): Any` — Recursively traverses a nested map using a list of keys, or retrieves a value by a single key. Returns `$default` if not found.
+- `getMapByIndex($map, $index, $default: null): Any` — Directly retrieves a value from a map by its key, returning `$default` if the key does not exist.
+- `setMapItem($map, $index, $value): Map` — Merges or sets a key-value pair in a map and returns the updated map.
+
+### String Manipulation
+
+- `strToList($value, $separator: '.'): List` — Splits a string into a list of substrings using the specified separator.
+- `strReplace($value, $pattern, $replacement): String` — Replaces all occurrences of a search substring within a target string recursively.

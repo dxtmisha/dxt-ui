@@ -1,0 +1,31 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/styles/font - Typography'/>
+
+# Typography System
+
+The library provides mixins for managing text properties, sizing, alignments, line clamping, and spacing.
+
+## Mixins
+
+### Text Sizing and Height
+
+- `fontSize($value)` — Sets `--sys-font-size` CSS variable and the font size property.
+- `lineHeight($value)` — Sets `--sys-line-height` CSS variable and the line height property.
+
+### Text Alignment and Transformation
+
+- `textAlign($value)` — Sets direction-aware text alignment, mapping `'left'` and `'right'` values to LTR and RTL aligned properties.
+- `textCase($value)` — Sets text capitalization using `text-transform`.
+- `textSelectNone()` — Disables element text selection across browsers.
+
+### Text Overflow and Line Clamping
+
+- `textOverflow($value)` — Sets `text-overflow` or applies text truncation.
+- `truncate()` — Sets overflow to hidden, text overflow to ellipsis, and nowrap for single-line text truncation.
+- `clamp($clamp)` — Restricts multi-line block text to a specified number of lines.
+
+### Paragraph Spacing
+
+- `initParagraphSpacing()` — Establishes space formatting rule on consecutive paragraph (`p + p`) tags.
+- `paragraphSpacing($value)` — Configures `--sys-paragraph-spacing` spacing property.

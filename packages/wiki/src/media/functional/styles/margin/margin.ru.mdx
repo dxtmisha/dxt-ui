@@ -1,0 +1,23 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/styles/margin - Внешние отступы'/>
+
+# Внешние отступы (Margins)
+
+Библиотека предоставляет миксины для управления внешними отступами элементов с поддержкой направления текста и раскладок.
+
+## Миксины
+
+### Базовые отступы
+
+- `margin($value)` — Устанавливает свойство `margin`.
+- `marginX($value)` — Устанавливает горизонтальные внешние отступы (слева и справа).
+- `marginY($value)` — Устанавливает вертикальные внешние отступы (сверху и снизу).
+- `marginTop($value)` — Устанавливает свойство `margin-top`.
+- `marginBottom($value)` — Устанавливает свойство `margin-bottom`.
+
+### Отступы с поддержкой направления
+
+- `marginLeft($value)` — Устанавливает `margin-inline-start` для поддержки LTR и RTL.
+- `marginRight($value)` — Устанавливает `margin-inline-end` для поддержки LTR и RTL.
+- `__marginDir()` — Связывает физические отступы с системными переменными направления (`margin-left: var(--d-dir-margin-left)` и `margin-right: var(--d-dir-margin-right)`).

@@ -1,0 +1,25 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/styles/rules - Quy tắc hệ thống và Hàm trợ giúp'/>
+
+# Quy tắc hệ thống (Rules)
+
+Thư viện `@dxtmisha/styles` cung cấp các hàm hỗ trợ cấp thấp để kiểm tra kiểu dữ liệu, duyệt cấu trúc dữ liệu dạng cây (Sass map), xử lý chuỗi và trích xuất bộ chọn (selectors).
+
+## Hàm trợ giúp
+
+### Thuộc tính CSS & Selector
+
+- `isCustomVar($value): Boolean` — Kiểm tra xem một giá trị có được định dạng dưới dạng CSS Custom Property hay không (ví dụ: bắt đầu bằng `var(` và kết thúc bằng `)`).
+- `getFirstSelector($selector: &): String` — Trích xuất tên của bộ chọn (selector) đơn giản đầu tiên từ ngữ cảnh lồng nhau hiện tại.
+
+### Bản đồ & Dữ liệu (Sass Maps)
+
+- `getMapItem($map, $index, $default: null): Any` — Duyệt đệ quy qua một cấu trúc bản đồ lồng nhau bằng danh sách các khóa hoặc lấy giá trị bằng một khóa duy nhất. Trả về `$default` nếu không tìm thấy.
+- `getMapByIndex($map, $index, $default: null): Any` — Lấy trực tiếp giá trị từ bản đồ bằng khóa của nó, trả về `$default` nếu khóa không tồn tại.
+- `setMapItem($map, $index, $value): Map` — Hợp nhất hoặc thiết lập một cặp khóa-giá trị trong bản đồ và trả về bản đồ đã cập nhật.
+
+### Xử lý Chuỗi
+
+- `strToList($value, $separator: '.'): List` — Tách một chuỗi thành danh sách các chuỗi con bằng ký tự phân tách được chỉ định.
+- `strReplace($value, $pattern, $replacement): String` — Thay thế đệ quy tất cả các lần xuất hiện của một chuỗi tìm kiếm bằng chuỗi thay thế trong chuỗi đích.

@@ -1,0 +1,23 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/styles/padding - Внутренние отступы'/>
+
+# Внутренние отступы (Paddings)
+
+Библиотека предоставляет миксины для управления внутренними отступами элементов с поддержкой направления текста и раскладок.
+
+## Миксины
+
+### Базовые отступы
+
+- `padding($value)` — Устанавливает свойство `padding`.
+- `paddingX($value)` — Устанавливает горизонтальные внутренние отступы (слева и справа).
+- `paddingY($value)` — Устанавливает вертикальные внутренние отступы (сверху и снизу).
+- `paddingTop($value)` — Устанавливает свойство `padding-top`.
+- `paddingBottom($value)` — Устанавливает свойство `padding-bottom`.
+
+### Отступы с поддержкой направления
+
+- `paddingLeft($value)` — Устанавливает `padding-inline-start` для поддержки LTR и RTL.
+- `paddingRight($value)` — Устанавливает `padding-inline-end` для поддержки LTR и RTL.
+- `__paddingDir()` — Связывает физические отступы с системными переменными направления (`padding-left: var(--d-dir-padding-left)` и `padding-right: var(--d-dir-padding-right)`).

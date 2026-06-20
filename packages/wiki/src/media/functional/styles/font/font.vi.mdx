@@ -1,0 +1,31 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/styles/font - Kiểu chữ'/>
+
+# Hệ thống kiểu chữ
+
+Thư viện cung cấp các mixin để quản lý các thuộc tính văn bản, kích thước, căn lề, giới hạn dòng và khoảng cách dòng.
+
+## Các Mixin
+
+### Kích thước và Chiều cao Dòng
+
+- `fontSize($value)` — Thiết lập biến `--sys-font-size` và thuộc tính font-size.
+- `lineHeight($value)` — Thiết lập biến `--sys-line-height` và thuộc tính line-height.
+
+### Căn lề và Biến đổi Văn bản
+
+- `textAlign($value)` — Căn lề văn bản dựa trên hướng LTR và RTL (tự động ánh xạ từ các giá trị `'left'` và `'right'`).
+- `textCase($value)` — Chuyển đổi kiểu chữ (hoa, thường) sử dụng `text-transform`.
+- `textSelectNone()` — Vô hiệu hóa tính năng chọn văn bản trên phần tử trong trình duyệt.
+
+### Giới hạn Dòng và Cắt ngắn Văn bản
+
+- `textOverflow($value)` — Quản lý hiển thị văn bản tràn hoặc cắt ngắn văn bản.
+- `truncate()` — Cắt ngắn văn bản thành một dòng và hiển thị dấu ba chấm (`...`).
+- `clamp($clamp)` — Giới hạn khối văn bản hiển thị trong một số lượng dòng nhất định.
+
+### Khoảng cách Đoạn văn
+
+- `initParagraphSpacing()` — Thiết lập quy tắc khoảng cách đệm cho các thẻ đoạn văn liên tiếp (`p + p`).
+- `paragraphSpacing($value)` — Thiết lập thuộc tính khoảng cách biến `--sys-paragraph-spacing`.

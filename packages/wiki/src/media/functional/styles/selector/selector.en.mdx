@@ -1,0 +1,23 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/styles/selector - Selector Utilities'/>
+
+# Selectors
+
+The `@dxtmisha/styles` library provides helper mixins for managing state-based selectors (hover, active, focus, disabled, readonly) while automatically targeting active/enabled elements and preventing styles from applying to disabled, readonly, or loading states.
+
+## Mixins
+
+### Interactive States
+
+- `hover($parent: &)` — Applies `:hover` styles specifically to active/enabled elements.
+- `active($parent: &)` — Applies `:active` styles specifically to active/enabled elements.
+- `focus($parent: &)` — Applies `:focus` / `:focus-within` styles specifically to active/enabled elements.
+
+### Base State Selectors
+
+- `selector($name, $parent: &)` — Applies pseudo-class selectors (like `:focus`, `:focus-within`, or custom modifier classes depending on the state).
+- `enabled($parent: &)` — Restricts styles to enabled states by adding a `:not()` filter exclusion list (excluding `:disabled`, `--disabled`, `--readonly`, and `--loading`).
+- `enabledSelector($name, $parent: &)` — Combines the `enabled` utility with `selector` for target states.
+- `disabled($parent: &)` — Applies styles to disabled states (targets native `:disabled` attribute, and BEM modifier classes like `--disabled`).
+- `readonly($parent: &)` — Applies styles to readonly states (targets BEM modifier classes like `--readonly`).

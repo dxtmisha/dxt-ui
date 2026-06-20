@@ -1,0 +1,23 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/styles/padding - Padding'/>
+
+# Padding System
+
+The library provides mixins for managing element internal paddings, direction-aware paddings, and layout spacing.
+
+## Mixins
+
+### Basic Paddings
+
+- `padding($value)` — Sets the `padding` property.
+- `paddingX($value)` — Sets horizontal paddings (left and right).
+- `paddingY($value)` — Sets vertical paddings (top and bottom).
+- `paddingTop($value)` — Sets `padding-top`.
+- `paddingBottom($value)` — Sets `padding-bottom`.
+
+### Direction-Aware Paddings
+
+- `paddingLeft($value)` — Sets `padding-inline-start` for LTR and RTL compatible horizontal spacing.
+- `paddingRight($value)` — Sets `padding-inline-end` for LTR and RTL compatible horizontal spacing.
+- `__paddingDir()` — Binds physical paddings to system direction properties (`padding-left: var(--d-dir-padding-left)` and `padding-right: var(--d-dir-padding-right)`).

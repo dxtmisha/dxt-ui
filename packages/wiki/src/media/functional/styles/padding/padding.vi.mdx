@@ -1,0 +1,23 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/styles/padding - Khoảng cách đệm'/>
+
+# Hệ thống đệm (Paddings)
+
+Thư viện cung cấp các mixin để quản lý khoảng cách đệm bên trong (paddings) của phần tử, hỗ trợ hướng hiển thị của ngôn ngữ.
+
+## Các Mixin
+
+### Đệm cơ bản
+
+- `padding($value)` — Thiết lập thuộc tính `padding`.
+- `paddingX($value)` — Thiết lập đệm ngang (trái và phải).
+- `paddingY($value)` — Thiết lập đệm dọc (trên và dưới).
+- `paddingTop($value)` — Thiết lập thuộc tính `padding-top`.
+- `paddingBottom($value)` — Thiết lập thuộc tính `padding-bottom`.
+
+### Đệm tương thích hướng hiển thị
+
+- `paddingLeft($value)` — Thiết lập thuộc tính `padding-inline-start` tương thích hướng LTR và RTL.
+- `paddingRight($value)` — Thiết lập thuộc tính `padding-inline-end` tương thích hướng LTR và RTL.
+- `__paddingDir()` — Ánh xạ đệm vật lý sang các biến hướng hệ thống (`padding-left: var(--d-dir-padding-left)` và `padding-right: var(--d-dir-padding-right)`).

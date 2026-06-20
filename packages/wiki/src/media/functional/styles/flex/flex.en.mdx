@@ -1,0 +1,33 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/styles/flex - Flexbox layout'/>
+
+# Flexbox Layout
+
+The library provides mixins for managing Flexbox display, alignment, flow, and positioning.
+
+## Mixins
+
+### Display and Flow
+
+- `flex()` — Sets `display: flex`.
+- `flexInline()` — Sets `display: inline-flex`.
+- `flexX()` — Sets flex layout with center alignment (`display: flex`, `align-items: center`).
+- `flexY()` — Sets flex column layout with center alignment (`flex-flow: column`).
+- `flexStretchX()` — Sets flex layout with stretch alignment (`align-items: stretch`).
+- `flexStretchY()` — Sets flex column layout with stretch alignment.
+
+### Alignment and Spacing
+
+- `justifyContent($value)` — Sets `justify-content` alignment.
+- `flexCenter()` — Sets flex layout centered horizontally and vertically.
+- `flexBetween()` — Sets flex layout with space-between justification.
+- `flexInlineX()` — Sets inline-flex layout with center alignment.
+- `flexInlineY()` — Sets inline-flex column layout with center alignment.
+- `flexInlineCenter()` — Sets inline-flex layout centered horizontally and vertically.
+- `flexInlineBetween()` — Sets inline-flex layout with space-between justification.
+
+### Sizing and Positioning
+
+- `flexPosition($value)` — Applies pre-defined alignment styles dynamically based on the parameter value (`'x'`, `'y'`, `'center'`, `'between'`, `'inline-x'`, `'inline-y'`, `'inline-center'`, `'inline-between'`).
+- `flexDynamic()` — Sets flexible rules (`flex-basis: 1px`, `flex-grow: 1`, `flex-shrink: 1`).
