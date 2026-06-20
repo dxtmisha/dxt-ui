@@ -1,0 +1,75 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/PackageFile - Package.json Manager'/>
+
+# PackageFile Class
+
+The `PackageFile` class represents a **package configuration wrapper** designed for reading and analyzing `package.json` files within the workspace. It parses package metadata, scripts, versioning, and validation flags, enabling automatic build and publish flows across mono-repo workspaces.
+
+## Key Features
+
+- **Metadata Resolution** — Extracts standard details like name, version, and custom flags.
+- **Validation Checking** — Validates version consistency and checks for test/no-publish package status.
+- **Command Synthesis** — Resolves build and publishing commands based on the available scripts in `package.json`.
+- **Path Integration** — Interacts with `PropertiesFile` to load file contents synchronously.
+
+## Initialization
+
+Initialize by passing the path of the directory containing the `package.json` file.
+
+```typescript
+import { PackageFile } from '@dxtmisha/scripts'
+
+// Instantiate for a specific package directory
+const pkg = new PackageFile('packages/constructor')
+
+if (pkg.is()) {
+  console.log(pkg.getName()) // "@dxtmisha/constructor"
+}
+```
+
+## Methods
+
+### Verification
+
+- `is(): boolean` — Checks if the directory contains a valid `package.json` file.
+- `isVersionConsistency(version?: string): boolean` — Checks if the package version matches the specified target version.
+- `isTest(): boolean` — Checks if the package is flagged as a test package (`ui-test` is true).
+- `isNoPublish(): boolean` — Checks if the package should not be published (`ui-no-publish` or `private` is true).
+
+### Data & Paths
+
+- `get(): Record<string, any>` — Returns the parsed package JSON contents.
+- `getName(): string` — Returns the package name, or defaults to the joined directory path if not defined.
+- `getVersion(): string` — Returns the package version (defaults to `'0.0.0'`).
+- `getScripts(): Record<string, string>` — Returns the scripts defined in `package.json`.
+- `getDir(): string[]` — Returns the package directory path segments.
+- `getPath(): string[]` — Returns the absolute path segments pointing to the package's `package.json` file.
+
+### Command Resolution
+
+### `getCodeBuildOrRecovery`
+
+Resolves the script name to execute for building the package, prioritizing recovery scripts over standard build scripts.
+
+**Example:**
+```typescript
+const pkg = new PackageFile('packages/core')
+const buildCmd = pkg.getCodeBuildOrRecovery()
+// Returns: "build-recovery" (if exists) or "build" (if exists) or undefined
+```
+
+**Returns:** `string | undefined`
+
+### `getCodePublish`
+
+Synthesizes the terminal command required to publish the package to the npm registry.
+
+**Example:**
+```typescript
+const pkg = new PackageFile('packages/core')
+const publishCmd = pkg.getCodePublish()
+// Returns: "npm run publish-to-npm" (if script exists) or "npm publish --access public"
+```
+
+**Returns:** `string`

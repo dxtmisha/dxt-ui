@@ -1,0 +1,29 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/scripts/Classes/PropertiesToRoot - Преобразование контекста корневого селектора CSS'/>
+
+# Класс PropertiesToRoot
+
+Класс `PropertiesToRoot` преобразует токены дизайна, обозначающие поведение корневой области видимости CSS (с использованием идентификатора `PropertyType.root`), в селекторы с ссылкой на родителя. Он наследует класс `PropertiesToAbstract`.
+
+## Ключевые особенности
+
+- **Синтез корневых селекторов** — Добавляет родительский селектор `&` к именам токенов дизайна.
+- **Контекст области видимости** — Связывает переменные с основным контейнером компонентов.
+- **Кэширование результатов** — Сохраняет разрешенные корневые свойства в файл кэша `038-root`.
+
+## Инициализация
+
+```typescript
+import { PropertiesToRoot, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToRoot(items)
+transformer.to()
+```
+
+## Методы
+
+### Жизненный цикл и вспомогательные методы
+
+- `init(): void` — Переопределяет абстрактный шаг жизненного цикла для получения всех переменных типа `root` и форматирования их селекторов.
+- `getName(design: string, component: string, name: string): string` — Объединяет ссылки на макет дизайна и имя компонента, возвращая выражения селекторов в формате `[resolved-link] &`.

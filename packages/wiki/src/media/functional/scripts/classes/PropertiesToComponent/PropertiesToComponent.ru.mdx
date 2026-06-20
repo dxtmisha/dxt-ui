@@ -1,0 +1,29 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/scripts/Classes/PropertiesToComponent - Преобразование свойств компонентов'/>
+
+# Класс PropertiesToComponent
+
+Класс `PropertiesToComponent` преобразует токены дизайна, назначенные как пространства имен компонентов или тем, в стандартизированные имена свойств компонентов. Он наследует класс `PropertiesToAbstract`.
+
+## Ключевые особенности
+
+- **Разрешение области видимости пространств имен** — Определяет токены типа `PropertyType.component` или `PropertyType.theme` и форматирует их имена.
+- **Иерархическое именование** — Автоматически добавляет префиксы родительских пространств имен к именам компонентов во избежание коллизий имен.
+- **Кэширование результатов** — Сохраняет выходные данные свойств компонентов в файл кэша `028-component`.
+
+## Инициализация
+
+```typescript
+import { PropertiesToComponent, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToComponent(items)
+transformer.to()
+```
+
+## Методы
+
+### Жизненный цикл и вспомогательные методы
+
+- `init(): void` — Переопределяет абстрактный шаг жизненного цикла для обработки узлов переменных компонентов и тем.
+- `getName(name: string, item: PropertyItem, parents: PropertyItemsItem['parents']): string` — Разрешает уникальное имя компонента, объединяя пути предков, если только не включен флаг `fullName`.

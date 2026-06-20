@@ -1,0 +1,29 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/PropertiesToRoot - CSS Root Selector Scope Transformer'/>
+
+# PropertiesToRoot Class
+
+The `PropertiesToRoot` class transforms design tokens designating CSS root scope behaviors (using the `PropertyType.root` identifier) into parent-referenced selectors. It extends `PropertiesToAbstract`.
+
+## Key Features
+
+- **Root Selector Synthesis** — Appends the parent `&` selector reference to design token names.
+- **Scoping Context** — Associates variables with a components' main container wrapper.
+- **Cache Persistence** — Saves resolved root properties to the `038-root` cache file.
+
+## Initialization
+
+```typescript
+import { PropertiesToRoot, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToRoot(items)
+transformer.to()
+```
+
+## Methods
+
+### Lifecycle & Helpers
+
+- `init(): void` — Overrides the abstract lifecycle hook to retrieve all variables of type `root` and format their selectors.
+- `getName(design: string, component: string, name: string): string` — Combines design layout and component name references, returning selector expressions formatted like `[resolved-link] &`.

@@ -1,0 +1,31 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/# Commands/dxt-ui - UI Design System Orchestrator'/>
+
+# dxt-ui
+
+The `dxt-ui` command is the central orchestrator for building and initializing the Design System UI component library. It coordinates style generation, documentation building, component structures, package exports, and API typings.
+
+## Key Features
+
+- **Component Scaffolding and Updates**: Initializes new components or batch-updates existing component structures and SCSS assets.
+- **Package Export Management**: Automatically configures the library's `package.json` with correct export mappings for SASS styles, plugins, media assets, and TypeScript typings.
+- **Unified Building Pipeline**: Triggers styling compilations (`Styles`), documentation builds (`DesignWiki`), web type wrappers, and media listing generators in sequence.
+
+## How does it work?
+
+1. **Clear Cache**: The script resets the local property build caches.
+2. **Compile Core SASS & Wiki**: Resolves global SCSS variable mappings and compiles the core Markdown component documentation.
+3. **Initialize Components**:
+   - If a component `name` is supplied, it scaffolds that specific component structure (HTML, script setups, SCSS stylesheets).
+   - If no name is provided, it batch-updates all registered components.
+4. **Update package.json**: Sets up package exports mapping entries for CSS, SASS, Vue Plugins, and Type files.
+5. **Compile Library Artifacts**: Spawns tasks to output libraries for assets, plugins, web types, and component listings.
+
+## Usage
+
+Run the orchestrator via `npx`:
+```bash
+npx dxt-ui [component-name]
+```
+- `component-name` (Optional): The name of a specific component to initialize or update. If omitted, all components are updated.

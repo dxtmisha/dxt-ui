@@ -1,0 +1,32 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/PropertiesToSimilar - Relative Property Attribute Inheritor'/>
+
+# PropertiesToSimilar Class
+
+The `PropertiesToSimilar` class searches parent levels of the design token tree to locate similar properties (having matching names) and inherits their type and renaming rules. It extends `PropertiesToAbstract`.
+
+## Key Features
+
+- **Attribute Inheritance** — Allows leaf tokens to inherit renaming formats and property variables from matching sibling/ancestor paths.
+- **Exception Filtering** — Automatically blocks inheritance from nodes designated as `classType` or `subclass` namespaces.
+- **Upward Search** — Recursively scans parent ancestors in reverse order (bottom-up) to find suitable attributes.
+- **Cache Persistence** — Saves the updated tokens structure to the `010-similar` cache file.
+
+## Initialization
+
+```typescript
+import { PropertiesToSimilar, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToSimilar(items)
+transformer.to()
+```
+
+## Methods
+
+### Inheritance Operations
+
+- `init(): void` — Overrides the abstract lifecycle hook to loop through all properties and apply inherited values from ancestors.
+- `getParent(name: string, item: PropertyItem, parents: PropertyItemsParent[]): PropertyItem | undefined` — Evaluates matching parent structures to find a source token candidate for attribute inheritance.
+- `is(item: PropertyItem): boolean` — Validates whether a token item is a variable or property candidate suitable for inheritance.
+- `isException(item?: PropertyItem): boolean` — Returns true if the token type matches one of the blocked namespace exceptions.

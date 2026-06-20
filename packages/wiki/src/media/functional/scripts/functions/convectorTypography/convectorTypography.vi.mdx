@@ -1,0 +1,28 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Functions/convectorTypography - Định dạng giá trị типографика (Typography)'/>
+
+# `convectorTypography`
+
+Hàm này chuẩn hóa các token thiết kế kiểu chữ (typography) bằng cách chuyển đổi các giá trị chuỗi đơn giản thành các cấu hình phông chữ cơ bản tiêu chuẩn.
+
+**Tham số:**
+- `item: PropertyItemInput` — phần tử thuộc tính token thiết kế cần chuyển đổi.
+
+**Trả về:**
+`void` — hàm trực tiếp thay đổi thuộc tính `value` của đối tượng `item` được truyền vào.
+
+## Cách hoạt động
+
+Hàm kiểm tra xem `item.value` có phải là một chuỗi hay không. Nếu có, nó bao bọc chuỗi bên trong một đối tượng khóa-giá trị dưới thuộc tính chủ đề `basic`: `{ basic: item.value }` để đảm bảo tính nhất quán với các cấu trúc kiểu chữ thích ứng phức tạp.
+
+## Ví dụ
+
+```typescript
+import { convectorTypography } from '@dxtmisha/scripts'
+
+const item = { value: '16px/1.5 Inter' }
+convectorTypography(item)
+
+console.log(item.value) // { basic: "16px/1.5 Inter" }
+```

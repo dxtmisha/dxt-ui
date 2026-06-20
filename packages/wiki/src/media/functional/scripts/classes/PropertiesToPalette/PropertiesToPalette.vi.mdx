@@ -1,0 +1,37 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/PropertiesToPalette - Bộ biên dịch bảng màu và chủ đề'/>
+
+# Lớp PropertiesToPalette
+
+Lớp `PropertiesToPalette` xử lý các token thiết kế được gán cho danh mục `palette` và biên dịch chúng thành các biến màu và lớp cụ thể được ánh xạ theo chủ đề. Lớp này kế thừa từ `PropertiesToAbstract`.
+
+## Các tính năng chính
+
+- **Biên dịch chủ đề** — Ánh xạ màu sắc của bảng màu sang các biến thể chủ đề (chẳng hạn như chủ đề mặc định `basic`) và bố cục thiết kế tùy chỉnh.
+- **Thuộc tính CSS động** — Chuyển đổi các sắc thái thô thành các biến CSS (kiểu `PropertyType.var` và danh mục `PropertyCategory.color`).
+- **Tổng hợp chủ đề mặc định** — Tạo ra các giá trị ánh xạ biến chủ đề mặc định (`sys-palette`) bằng cách sử dụng cấu hình dự phòng.
+- **Lưu bộ đệm** — Lưu báo cáo biên dịch vào tập tin bộ nhớ đệm `002-palette`.
+
+## Khởi tạo
+
+```typescript
+import { PropertiesToPalette, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToPalette(items)
+transformer.to()
+```
+
+## Phương thức
+
+### Vòng đời & Thao tác biên dịch
+
+- `init(): void` — Ghi đè phương thức vòng đời trừu tượng để chạy các quy tắc biên dịch cho màu tiêu chuẩn và chủ đề tùy chỉnh.
+- `getParent(category: PropertyCategory.colors | PropertyCategory.class, parent: PropertyList): PropertyList` — Lấy hoặc xây dựng một vùng chứa mới dưới khóa `palette` một cách an toàn.
+- `getClass(items: PropertyList, name: string): PropertyList` — Truy xuất hoặc khởi tạo một đối tượng lớp trong danh sách thuộc tính cho một màu nhất định.
+- `getName(theme: string, name: string): string` — Kết hợp tên chủ đề và tên sắc thái màu (ví dụ: `basic-primary`).
+- `getValue(link: string, name: string): string` — Xây dựng chuỗi biểu diễn biến trong ngoặc nhọn.
+- `getValueDefault(item: PropertyItem, theme: string): string` — Giải quyết tên sắc thái màu mặc định được cấu hình cho bảng màu.
+- `read(root?: PropertyList, theme?: string, designParent?: string): void` — Duyệt qua các thuộc tính bảng màu, thêm các sắc thái chủ đề và chỉ báo mặc định vào các lớp.
+- `addItem(parent: PropertyList, link: string, theme: string, palette: PropertyList): void` — Điền các token màu và liên kết vào danh sách thuộc tính.
+- `addDefault(parent: PropertyList, theme: string, palette: PropertyItem): void` — Cấu hình chỉ báo dự phòng bảng màu chính `sys-palette`.

@@ -1,0 +1,28 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Functions/convectorFontFamilies - Format font family definitions'/>
+
+# `convectorFontFamilies`
+
+The function converts raw font family strings into standard CSS font lists by appending default system fallbacks.
+
+**Parameters:**
+- `item: PropertyItemInput` — the design token property item to transform.
+
+**Returns:**
+`void` — the function directly mutates the `value` property of the passed `item` object.
+
+## How it works
+
+The function checks if `item.value` is a string and does not contain brace interpolation characters `{` or `}`. If both conditions are met, it wraps the value in single quotes and appends `, sans-serif` to ensure a standard browser fallback.
+
+## Example
+
+```typescript
+import { convectorFontFamilies } from '@dxtmisha/scripts'
+
+const item = { value: 'Inter' }
+convectorFontFamilies(item)
+
+console.log(item.value) // "'Inter', sans-serif"
+```

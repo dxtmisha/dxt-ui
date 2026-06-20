@@ -1,0 +1,33 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/PropertiesToMedia - Bộ chuyển đổi truy vấn Media và Container'/>
+
+# Lớp PropertiesToMedia
+
+Lớp `PropertiesToMedia` xử lý các token thiết kế đại diện cho các truy vấn truyền thông (media queries) và truy vấn vùng chứa (container queries), chuyển đổi các bí danh (aliases) và các nhóm thô thành các ràng buộc CSS `@media` hoặc `@container` tiêu chuẩn. Lớp này kế thừa từ `PropertiesToAbstract`.
+
+## Các tính năng chính
+
+- **Mở rộng bí danh Media** — Tra cứu các từ viết tắt khung nhìn tùy chỉnh (ví dụ: `md`, `lg`) bằng cách sử dụng cấu hình thiết kế và mở rộng chúng thành các định nghĩa pixel.
+- **Tổng hợp kiểu truy vấn** — Xác định các phạm vi chiều rộng tối thiểu (min-width) và chiều rộng tối đa (max-width) dựa trên các thuộc tính có tên `media`, `mediaMax`, `container`, hoặc `containerMax`.
+- **Mở rộng nhóm Media** — Tạo các nhóm công cụ sửa đổi trạng thái cho mỗi điểm dừng (breakpoint) của media/container đang hoạt động được định nghĩa trong hệ thống thiết kế.
+- **Lưu bộ đệm** — Lưu đầu ra truy vấn media vào tập tin bộ nhớ đệm `040-media`.
+
+## Khởi tạo
+
+```typescript
+import { PropertiesToMedia, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToMedia(items)
+transformer.to()
+```
+
+## Phương thức
+
+### Thao tác chuyển đổi
+
+- `init(): void` — Ghi đè phương thức vòng đời trừu tượng để tìm và mở rộng các nút nhóm truy vấn media và chuyển đổi các tham số truy vấn riêng lẻ.
+- `getName(design: string, name: string, item: PropertyItem): string` — Chuyển đổi các tham số cấu hình media thành các tiêu chí truy vấn CSS tiêu chuẩn (ví dụ: `(min-width: 768px)`).
+- `getTypeByGroup(item: PropertyItem): PropertyType` — Giải quyết kiểu thuộc tính cơ sở từ một phần tử container hoặc nhóm media.
+- `toValueForMedia(design: string, values: string[]): string[]` — Thay thế các bí danh thích ứng bằng các số đo pixel được cấu hình của chúng.
+- `toValueGroup(design: string, name: string, item: PropertyItem, type: PropertyType): Record<string, PropertyItem> | undefined` — Tạo các bộ sửa đổi trạng thái riêng biệt cho mỗi breakpoint trong cấu trúc nhóm media.

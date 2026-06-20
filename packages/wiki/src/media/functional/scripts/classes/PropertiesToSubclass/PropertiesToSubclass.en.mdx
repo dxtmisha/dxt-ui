@@ -1,0 +1,30 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/PropertiesToSubclass - BEM Subclass Selector Transformer'/>
+
+# PropertiesToSubclass Class
+
+The `PropertiesToSubclass` class transforms design tokens designating subclasses (of type `PropertyType.subclass`) into nested BEM element class selectors (such as `&__subclass`). It extends `PropertiesToAbstract`.
+
+## Key Features
+
+- **BEM Selector Synthesis** — Converts subclass token nodes into SCSS parent-nested element selectors (`&__element`).
+- **Hierarchy Detection** — Checks parent levels to ensure BEM classes are nested correctly according to component structures.
+- **Cache Persistence** — Saves the subclass selector mapping to the `036-subclass` cache file.
+
+## Initialization
+
+```typescript
+import { PropertiesToSubclass, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToSubclass(items)
+transformer.to()
+```
+
+## Methods
+
+### Lifecycle & Helpers
+
+- `init(): void` — Overrides the abstract lifecycle hook to find all variables of type `subclass` and rewrite their selectors.
+- `isParentState(parents: PropertyItemsItem['parents']): boolean` — Determines if the immediate ancestor in the path matches a state/modifier layout wrapper.
+- `getName(name: string, item: PropertyItem, parents: PropertyItemsItem['parents']): string` — Resolves the sub-class selector, prepending BEM formatting (`&__` or `& .`) based on top-level configuration and ancestor paths.

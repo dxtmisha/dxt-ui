@@ -1,0 +1,30 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/# Commands/dxt-types - AI Type Definition Generator'/>
+
+# dxt-types
+
+The `dxt-types` command compiles, sanitizes, and compresses TypeScript declaration files (`.d.ts`) into AI-optimized type definitions. It filters out internal details and uses AI to generate developer instructions.
+
+## Key Features
+
+- **Declaration Processing**: Recursively collects `.d.ts` files from compile output folders (e.g., `dist/`).
+- **Encapsulation Filtering**: Automatically strips out private, protected, and non-exported members to keep only the public API surface.
+- **AI Optimization**: Uses an AI model to clean up comments and produce a highly compressed, token-efficient `ai-types.md` file.
+- **Developer Guide Generation**: Automatically prompts AI to draft a structured overview of library features and saves it to `ai-developer.md`.
+
+## How does it work?
+
+1. **Scan Declarations**: The script crawls the target build folder for declaration files (`.d.ts`), ignoring Vue component and wiki files.
+2. **Consolidate Code**: Combines all matching files into a single in-memory text payload.
+3. **AI Cleaning (API Surface)**: Sends the text to the AI to strip internal comments/imports, filter out private details, and compress the code.
+4. **Save Types**: Saves the cleaned type list to `ai-types.md` along with guidelines on package exports.
+5. **AI Guide Generation**: Asks the AI to generate a technical summary of the library and writes it to `ai-developer.md`.
+
+## Usage
+
+Run the type compiler via `npx`:
+```bash
+npx dxt-types [build_dir]
+```
+- `build_dir` (Optional): The directory to scan. Defaults to `dist`.

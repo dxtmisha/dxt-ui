@@ -1,0 +1,41 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Functions/convectorShadow - Chuyển đổi cấu trúc bóng sang giá trị bóng CSS'/>
+
+# `convectorShadow`
+
+Hàm này chuyển đổi các cấu hình bóng (shadow) thô hoặc các mảng cấu hình bóng thành các giá trị chuỗi `box-shadow` CSS.
+
+**Tham số:**
+- `item: PropertyItemInput` — phần tử thuộc tính token thiết kế cần chuyển đổi.
+
+**Trả về:**
+`void` — hàm trực tiếp thay đổi thuộc tính `value` của đối tượng `item` được truyền vào.
+
+## Cách hoạt động
+
+Hàm kiểm tra xem `item.value` có phải là một đối tượng hay không. Nếu có, nó duyệt qua các cấu hình bóng (chuyển đổi đối tượng đơn lẻ thành mảng nếu cần). Đối với mỗi cấu hình bóng:
+1. Ánh xạ kiểu `innerShadow` thành `inset`.
+2. Phân tích các kích thước độ dời (`x`, `y`, `blur`, `spread`), thêm hậu tố `px` cho các chuỗi thuần số.
+3. Nếu tham số màu chứa một ngoặc nhọn nội suy `{`, nó bao bọc màu trong định dạng `@ui.toCustomVarRgb(...)`.
+4. Kết hợp tất cả các phần đã phân tích bằng dấu cách và kết hợp nhiều khai báo bóng bằng dấu phẩy.
+
+## Ví dụ
+
+```typescript
+import { convectorShadow } from '@dxtmisha/scripts'
+
+const item = {
+  value: {
+    type: 'innerShadow',
+    color: '{sys.color.primary}',
+    x: '0',
+    y: '4',
+    blur: '10',
+    spread: '2'
+  }
+}
+convectorShadow(item)
+
+console.log(item.value) // "inset 0px 4px 10px 2px @ui.toCustomVarRgb({sys.color.primary})"
+```

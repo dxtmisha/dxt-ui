@@ -1,0 +1,33 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/PropertiesToDuplicate - Duplicate Token Detector'/>
+
+# PropertiesToDuplicate Class
+
+The `PropertiesToDuplicate` class scans the design token tree to locate identical structures or groups of values, flagging duplicate nodes to encourage reuse. It extends `PropertiesToAbstract`.
+
+## Key Features
+
+- **Identical Node Scanning** — Compares the serialized string value of token configurations containing 5 or more keys.
+- **Duplicate Grouping** — Groups duplicate objects and derives a common camelCase name representing their logical connection.
+- **Flagging Metadata** — Writes a `duplicate` reference onto the items, allowing other processors to suggest optimization.
+- **Cache Persistence** — Saves the duplicate reports to the `910-duplicate` cache file.
+
+## Initialization
+
+```typescript
+import { PropertiesToDuplicate, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToDuplicate(items)
+transformer.to()
+```
+
+## Methods
+
+### Detection Operations
+
+- `init(): void` — Overrides the abstract lifecycle hook to run the duplicate check and apply flags.
+- `getName(properties: PropertiesDuplicateItem['properties']): string` — Formats a camelCase group name using the unique path parts of the duplicated items.
+- `findDuplicate(list: PropertiesDuplicateList, valueDuplicate: string): PropertiesDuplicateList` — Traverses the list of candidate configurations to find matches for a target duplicate string.
+- `initList(): PropertiesDuplicateList` — Scans the entire token tree to build a flat map of complex configurations (having >= 5 keys) for comparison.
+- `initDuplicate(list: PropertiesDuplicateList): PropertiesDuplicate` — Groups matching entries into deduplicated groups.

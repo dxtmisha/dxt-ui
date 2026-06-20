@@ -1,0 +1,32 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/PropertiesToSub - Nested Interpolation Value Resolver'/>
+
+# PropertiesToSub Class
+
+The `PropertiesToSub` class resolves nested brace interpolation expressions (such as `calc({ref.width} * 2)`) within token values recursively. It extends `PropertiesToAbstract`.
+
+## Key Features
+
+- **Nested Value Resolution** — Recursively resolves sub-braces containing variable references within larger string values.
+- **Circular Check Safeguards** — Caps lookup operations at 24 iterations to prevent infinite lookups on circular definitions.
+- **Brace Stripping** — Automatically strips outer braces when the token has `fullValue` set to true.
+- **Cache Persistence** — Saves resolved sub-values to the `006-sub` cache file.
+
+## Initialization
+
+```typescript
+import { PropertiesToSub, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToSub(items)
+transformer.to()
+```
+
+## Methods
+
+### Resolving Operations
+
+- `init(): void` — Overrides the abstract lifecycle hook to find and resolve all properties with sub-values.
+- `is(value: PropertyItem['value']): boolean` — Returns true if the token value contains a nested sub-value brace pattern.
+- `getValue(design: string, component: string, value: string): string` — Iteratively resolves brace interpolation markers using the global properties items registry.
+- `read({ design, component, item }: PropertyItemsItem): void` — Resolves sub-values for a single property item and strips braces if `fullValue` is flagged.

@@ -1,0 +1,28 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/scripts/Classes/PropertiesToRemove - Удаление помеченных свойств'/>
+
+# Класс PropertiesToRemove
+
+Класс `PropertiesToRemove` удаляет узлы и свойства из дерева токенов дизайна, которые были явно помечены директивой `remove`. Он наследует класс `PropertiesToAbstract`.
+
+## Ключевые особенности
+
+- **Целевая очистка свойств** — Идентифицирует и удаляет свойства, помеченные флагом `PropertyKey.remove`.
+- **Предупреждения для разработчиков** — Выводит предупреждения с путями удаленных элементов в консоль для отслеживания операций.
+- **Кэширование результатов** — Сохраняет обновленную карту конфигурации в файл кэша `007-02-remove`.
+
+## Инициализация
+
+```typescript
+import { PropertiesToRemove, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToRemove(items)
+transformer.to()
+```
+
+## Методы
+
+### Шаги жизненного цикла
+
+- `init(): void` — Переопределяет абстрактный шаг жизненного цикла для сканирования дерева, удаления подходящих узлов свойств из их родительских объектов значений и вывода логов.

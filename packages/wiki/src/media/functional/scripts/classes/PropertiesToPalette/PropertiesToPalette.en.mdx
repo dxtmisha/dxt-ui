@@ -1,0 +1,37 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/PropertiesToPalette - Color Palette and Theme Compiler'/>
+
+# PropertiesToPalette Class
+
+The `PropertiesToPalette` class processes design tokens assigned to the `palette` category and compiles them into concrete color variables and classes mapped by theme. It extends `PropertiesToAbstract`.
+
+## Key Features
+
+- **Theme Compilation** — Maps palette colors to theme variations (such as the default `basic` theme) and custom design layouts.
+- **Dynamic CSS Properties** — Converts raw shades into CSS variables (of type `PropertyType.var` and category `PropertyCategory.color`).
+- **Default Theme Synthesis** — Generates default theme variable mapping values (`sys-palette`) using fallback configurations.
+- **Cache Persistence** — Saves compilation reports to the `002-palette` cache file.
+
+## Initialization
+
+```typescript
+import { PropertiesToPalette, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToPalette(items)
+transformer.to()
+```
+
+## Methods
+
+### Lifecycle & Compiling Operations
+
+- `init(): void` — Overrides the abstract lifecycle hook to run compilation rules for standard colors and custom themes.
+- `getParent(category: PropertyCategory.colors | PropertyCategory.class, parent: PropertyList): PropertyList` — Safely gets or constructs a new container under the `palette` key.
+- `getClass(items: PropertyList, name: string): PropertyList` — Retrieves or initializes a class object within the property list for a given color.
+- `getName(theme: string, name: string): string` — Combines theme name and shade color name (e.g. `basic-primary`).
+- `getValue(link: string, name: string): string` — Constructs the brace variable representation string.
+- `getValueDefault(item: PropertyItem, theme: string): string` — Resolves the default color shade name configured for the palette.
+- `read(root?: PropertyList, theme?: string, designParent?: string): void` — Iterates through palette properties, adding theme shades and default indicators to classes.
+- `addItem(parent: PropertyList, link: string, theme: string, palette: PropertyList): void` — Populates the property list with color tokens and links.
+- `addDefault(parent: PropertyList, theme: string, palette: PropertyItem): void` — Configures the main `sys-palette` fallback indicator.

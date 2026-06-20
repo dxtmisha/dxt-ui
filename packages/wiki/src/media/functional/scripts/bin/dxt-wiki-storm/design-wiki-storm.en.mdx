@@ -1,0 +1,29 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/# Commands/dxt-wiki-storm - WebStorm IDE Metadata Generator'/>
+
+# dxt-wiki-storm
+
+The `dxt-wiki-storm` command generates a `web-types.json` file inside the compilation folder. This file contains metadata detailing component tags, attributes, properties, and events for JetBrains IDEs (like WebStorm and IntelliJ IDEA) to enable rich autocompletion and documentation tooltips.
+
+## Key Features
+
+- **JetBrains Integration**: Feeds IDE Intellisense directly, allowing WebStorm to recognize custom Vue components and their configurations.
+- **Automated Metadata Extraction**: Loops through all active components in the library to inspect and parse properties, events, and slots.
+- **Standardized Schema**: Outputs data strictly adhering to the standard Web-Types schema format.
+
+## How does it work?
+
+1. **Verify Context**: The script reads the workspace `package.json` to extract the package name and version.
+2. **Collect Components**: Iterates through all registered design system components using a component helper.
+3. **Parse Component APIs**: Instantiates a helper scanner for each component to read and format its props, events, and options.
+4. **Generate JSON**: Combines the scanned info into a single `web-types.json` contribution object.
+5. **Save Asset**: Saves the file inside the build directory (by default, `dist/web-types.json`).
+
+## Usage
+
+Run the metadata compiler via `npx`:
+```bash
+npx dxt-wiki-storm [output_dir]
+```
+- `output_dir` (Optional): The directory to save the file to. Defaults to `dist`.

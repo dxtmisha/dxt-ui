@@ -1,0 +1,75 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/PackageFile - Quản lý package.json'/>
+
+# Lớp PackageFile
+
+Lớp `PackageFile` là một **lớp bọc cấu hình gói** được thiết kế để đọc và phân tích các tập tin `package.json` trong không gian làm việc. Lớp này phân tích siêu dữ liệu, kịch bản lệnh (scripts), phiên bản và các cờ xác minh của gói, hỗ trợ tự động hóa luồng xây dựng (build) và phát hành (publish) trong các không gian làm việc mono-repo.
+
+## Các tính năng chính
+
+- **Giải quyết siêu dữ liệu** — Trích xuất các chi tiết tiêu chuẩn như tên, phiên bản và các cờ tùy chỉnh.
+- **Kiểm tra xác minh** — Kiểm tra tính nhất quán của phiên bản và trạng thái gói kiểm thử hoặc gói không phát hành.
+- **Tổng hợp lệnh** — Xác định các lệnh xây dựng và phát hành dựa trên các kịch bản lệnh có sẵn trong `package.json`.
+- **Tích hợp đường dẫn** — Tương tác với `PropertiesFile` để tải nội dung tập tin một cách đồng bộ.
+
+## Khởi tạo
+
+Khởi tạo bằng cách truyền đường dẫn của thư mục chứa tập tin `package.json`.
+
+```typescript
+import { PackageFile } from '@dxtmisha/scripts'
+
+// Khởi tạo đối tượng cho một thư mục gói cụ thể
+const pkg = new PackageFile('packages/constructor')
+
+if (pkg.is()) {
+  console.log(pkg.getName()) // "@dxtmisha/constructor"
+}
+```
+
+## Phương thức
+
+### Xác minh
+
+- `is(): boolean` — Kiểm tra xem thư mục có chứa tập tin `package.json` hợp lệ hay không.
+- `isVersionConsistency(version?: string): boolean` — Kiểm tra xem phiên bản của gói có khớp với phiên bản đích đã chỉ định hay không.
+- `isTest(): boolean` — Kiểm tra xem gói có được đánh dấu là gói kiểm thử hay không (cờ `ui-test` là true).
+- `isNoPublish(): boolean` — Kiểm tra xem gói có bị cấm phát hành hay không (cờ `ui-no-publish` hoặc `private` là true).
+
+### Dữ liệu & Đường dẫn
+
+- `get(): Record<string, any>` — Trả về nội dung JSON đã được phân tích của gói.
+- `getName(): string` — Trả về tên gói, hoặc mặc định là đường dẫn thư mục được liên kết nếu không được xác định.
+- `getVersion(): string` — Trả về phiên bản của gói (mặc định là `'0.0.0'`).
+- `getScripts(): Record<string, string>` — Trả về các kịch bản lệnh được định nghĩa trong `package.json`.
+- `getDir(): string[]` — Trả về các phân đoạn đường dẫn thư mục của gói.
+- `getPath(): string[]` — Trả về các phân đoạn đường dẫn tuyệt đối trỏ đến tập tin `package.json` của gói.
+
+### Giải quyết lệnh
+
+### `getCodeBuildOrRecovery`
+
+Xác định tên kịch bản lệnh cần thực thi để xây dựng gói, ưu tiên kịch bản lệnh phục hồi (`build-recovery`) hơn kịch bản lệnh xây dựng tiêu chuẩn (`build`).
+
+**Ví dụ:**
+```typescript
+const pkg = new PackageFile('packages/core')
+const buildCmd = pkg.getCodeBuildOrRecovery()
+// Trả về: "build-recovery" (nếu có) hoặc "build" (nếu có) hoặc undefined
+```
+
+**Trả về:** `string | undefined`
+
+### `getCodePublish`
+
+Tổng hợp lệnh dòng lệnh cần thiết để phát hành gói lên kho đăng ký npm.
+
+**Ví dụ:**
+```typescript
+const pkg = new PackageFile('packages/core')
+const publishCmd = pkg.getCodePublish()
+// Trả về: "npm run publish-to-npm" (nếu kịch bản tồn tại) hoặc "npm publish --access public"
+```
+
+**Trả về:** `string`

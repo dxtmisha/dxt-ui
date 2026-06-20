@@ -1,0 +1,31 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/PropertiesToReplace - Bộ chuyển đổi thay thế chuỗi bằng Regex'/>
+
+# Lớp PropertiesToReplace
+
+Lớp `PropertiesToReplace` chuyển đổi các giá trị chuỗi của các token thiết kế bằng cách sử dụng biểu thức chính quy (regular expressions) được chỉ định bởi cấu hình `replace`. Lớp này kế thừa từ `PropertiesToAbstract`.
+
+## Các tính năng chính
+
+- **Chuyển đổi Regex** — Đánh giá các tiêu chí so khớp biểu thức chính quy và ghi đè giá trị token bằng kết quả đã xử lý.
+- **Tùy chọn cấu hình linh hoạt** — Hỗ trợ cả chuỗi mẫu viết tắt hoặc các đối tượng cấu hình `PropertyReplace` chi tiết (định nghĩa mẫu khớp, các cờ regex và chuỗi thay thế).
+- **Làm sạch an toàn** — Loại bỏ cờ chỉ thị tạm thời `replace` khỏi các thuộc tính token sau khi chuyển đổi thành công giá trị mục tiêu.
+- **Lưu bộ đệm** — Lưu các ánh xạ token đã cập nhật vào tập tin bộ nhớ đệm `001-replace`.
+
+## Khởi tạo
+
+```typescript
+import { PropertiesToReplace, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToReplace(items)
+transformer.to()
+```
+
+## Phương thức
+
+### Thao tác chuyển đổi & Tiện ích
+
+- `init(): void` — Ghi đè phương thức vòng đời trừu tượng để duyệt qua các thuộc tính, phát hiện các giá trị chuỗi có chỉ thị `replace` và thực hiện các chuyển đổi.
+- `getInfo(info: PropertiesReplaceValue): PropertyReplace` — Chuẩn hóa các chuỗi mẫu viết tắt hoặc cấu hình chi tiết đầu vào thành các đối tượng `PropertyReplace` có cấu trúc.
+- `getValue(info: PropertyReplace, value: string): string` — Thực thi việc thay thế bằng regex, trả về chuỗi đã thay thế.

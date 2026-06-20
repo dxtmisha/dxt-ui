@@ -1,0 +1,36 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/PropertiesToVar - Bộ chuyển đổi giá trị biến CSS'/>
+
+# Lớp PropertiesToVar
+
+Lớp `PropertiesToVar` chuyển đổi các token thiết kế đại diện cho các biến thành các thuộc tính tùy chỉnh CSS tiêu chuẩn (`--var-name: values`). Lớp này kế thừa từ `PropertiesToAbstract`.
+
+## Các tính năng chính
+
+- **Tổng hợp biến CSS** — Chuyển đổi tên token biến thành thuộc tính tùy chỉnh có tiền tố hai dấu gạch ngang (`--prefix-name`).
+- **Bao bọc biểu thức toán học** — Tự động bao bọc các biểu thức toán học tiêu chuẩn (`+`, `-`, `*`, `/`) bên trong các khối `calc(...)`.
+- **Mở rộng tham chiếu** — Giải quyết các tham chiếu ngoặc nhọn thành định dạng CSS `var(...)` lồng nhau, hỗ trợ các giá trị dự phòng mặc định.
+- **Giải quyết cờ độ mờ (opacity)** — Phát hiện một cách an toàn các biến màu chứa thuộc tính độ mờ, gắn thẻ chúng bằng siêu dữ liệu độ trong suốt.
+- **Lưu bộ đệm** — Lưu các định nghĩa biến đã giải quyết vào tập tin bộ nhớ đệm `020-var`.
+
+## Khởi tạo
+
+```typescript
+import { PropertiesToVar, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToVar(items)
+transformer.to()
+```
+
+## Phương thức
+
+### Thao tác giải quyết
+
+- `init(): void` — Ghi đè phương thức vòng đời trừu tượng để lấy các nút kiểu biến, tổng hợp tên biến, định dạng giá trị CSS của chúng và giải quyết độ trong suốt của màu sắc.
+- `getName(property: PropertyItemsItem): string` — Xây dựng các khóa đặt tên thuộc tính CSS tiêu chuẩn (ví dụ: `--sys-color-primary`) được giới hạn bởi không gian tên cha.
+- `toCalculator(value: string, full?: boolean): string` — Bao bọc các biểu thức toán học trong các câu lệnh `calc()` nếu chưa được định dạng.
+- `toLink(value: string): string` — Chuẩn hóa các khóa chỉ mục liên kết thành các phân đoạn tên biến tiêu chuẩn.
+- `toValue(value: string, defaultValue?: PropertyItem['_default']): string` — Giải quyết đệ quy các tham chiếu ngoặc nhọn lồng nhau thành các giá trị CSS `var(--name, fallback)` tiêu chuẩn.
+- `isNone(parents: PropertyItemsParent[]): boolean` — Trả về true nếu bất kỳ phần tử cha nào có kiểu `PropertyType.none`, đại diện cho thuộc tính ẩn.
+- `isColorWithOpacity(property: PropertyItemsItem): boolean` — Duyệt qua các tham chiếu màu một cách an toàn để xác minh xem thuộc tính độ trong suốt có đang hoạt động hay không.

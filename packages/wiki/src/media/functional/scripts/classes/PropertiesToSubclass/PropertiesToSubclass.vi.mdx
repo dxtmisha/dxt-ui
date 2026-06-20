@@ -1,0 +1,30 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/PropertiesToSubclass - Bộ chuyển đổi bộ chọn lớp con BEM'/>
+
+# Lớp PropertiesToSubclass
+
+Lớp `PropertiesToSubclass` chuyển đổi các token thiết kế biểu thị các lớp con (subclasses) (kiểu `PropertyType.subclass`) thành các bộ chọn lớp phần tử BEM lồng nhau (như `&__subclass`). Lớp này kế thừa từ `PropertiesToAbstract`.
+
+## Các tính năng chính
+
+- **Tổng hợp bộ chọn BEM** — Chuyển đổi các nút token lớp con thành các bộ chọn phần tử lồng trong cha SCSS (`&__element`).
+- **Phát hiện cấp bậc** — Kiểm tra các cấp cha để đảm bảo các lớp BEM được lồng chính xác theo cấu trúc thành phần.
+- **Lưu bộ đệm** — Lưu ánh xạ bộ chọn lớp con vào tập tin bộ nhớ đệm `036-subclass`.
+
+## Khởi tạo
+
+```typescript
+import { PropertiesToSubclass, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToSubclass(items)
+transformer.to()
+```
+
+## Phương thức
+
+### Vòng đời & Hỗ trợ
+
+- `init(): void` — Ghi đè phương thức vòng đời trừu tượng để tìm tất cả các biến thuộc kiểu `subclass` và viết lại bộ chọn của chúng.
+- `isParentState(parents: PropertyItemsItem['parents']): boolean` — Xác định xem tổ tiên trực tiếp trong đường dẫn có khớp với vỏ bọc bố cục trạng thái/bộ sửa đổi hay không.
+- `getName(name: string, item: PropertyItem, parents: PropertyItemsItem['parents']): string` — Giải quyết bộ chọn lớp con, thêm định dạng BEM (`&__` hoặc `& .`) dựa trên cấu hình cấp cao nhất và các đường dẫn cha.

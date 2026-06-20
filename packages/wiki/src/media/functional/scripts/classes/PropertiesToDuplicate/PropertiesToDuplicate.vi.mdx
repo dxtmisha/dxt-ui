@@ -1,0 +1,33 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/PropertiesToDuplicate - Bộ phát hiện Token trùng lặp'/>
+
+# Lớp PropertiesToDuplicate
+
+Lớp `PropertiesToDuplicate` quét cây cấu hình thiết kế để xác định vị trí các cấu trúc hoặc nhóm giá trị giống hệt nhau, đánh dấu các nút trùng lặp để khuyến khích tái sử dụng. Lớp này kế thừa từ `PropertiesToAbstract`.
+
+## Các tính năng chính
+
+- **Quét các nút giống nhau** — So sánh giá trị chuỗi đã tuần tự hóa của các cấu hình token chứa từ 5 khóa trở lên.
+- **Gom nhóm trùng lặp** — Gom nhóm các đối tượng giống nhau và tạo ra một tên camelCase chung đại diện cho mối liên kết logic của chúng.
+- **Đánh dấu siêu dữ liệu** — Ghi một tham chiếu `duplicate` vào các phần tử, cho phép các bộ xử lý khác đề xuất tối ưu hóa.
+- **Lưu bộ đệm** — Lưu báo cáo trùng lặp vào tập tin bộ nhớ đệm `910-duplicate`.
+
+## Khởi tạo
+
+```typescript
+import { PropertiesToDuplicate, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToDuplicate(items)
+transformer.to()
+```
+
+## Phương thức
+
+### Thao tác phát hiện
+
+- `init(): void` — Ghi đè phương thức vòng đời trừu tượng để chạy kiểm tra trùng lặp và áp dụng các cờ đánh dấu.
+- `getName(properties: PropertiesDuplicateItem['properties']): string` — Định dạng tên nhóm dạng camelCase bằng cách sử dụng các phần đường dẫn duy nhất của các phần tử trùng lặp.
+- `findDuplicate(list: PropertiesDuplicateList, valueDuplicate: string): PropertiesDuplicateList` — Duyệt qua danh sách các cấu hình ứng cử viên để tìm các kết quả khớp với chuỗi trùng lặp mục tiêu.
+- `initList(): PropertiesDuplicateList` — Quét toàn bộ cây token để xây dựng bản đồ phẳng các cấu hình phức tạp (có >= 5 khóa) để so sánh.
+- `initDuplicate(list: PropertiesDuplicateList): PropertiesDuplicate` — Gom nhóm các mục trùng khớp thành các nhóm đã được loại bỏ trùng lặp.

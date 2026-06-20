@@ -1,0 +1,41 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Functions/convectorShadow - Convert shadow structures to CSS shadow values'/>
+
+# `convectorShadow`
+
+The function transforms raw shadow configurations or shadow arrays into CSS box-shadow string values.
+
+**Parameters:**
+- `item: PropertyItemInput` — the design token property item to transform.
+
+**Returns:**
+`void` — the function directly mutates the `value` property of the passed `item` object.
+
+## How it works
+
+The function checks if `item.value` is an object. If so, it traverses the shadow config items (converting a single object into an array if needed). For each shadow config:
+1. It maps type `innerShadow` to `inset`.
+2. It parses offset dimensions (`x`, `y`, `blur`, `spread`), appending a `px` suffix to pure numeric strings.
+3. If the color parameter contains an interpolation brace `{`, it wraps the color in `@ui.toCustomVarRgb(...)` format.
+4. It joins all parsed parts with spaces and joins multiple shadow listings with commas.
+
+## Example
+
+```typescript
+import { convectorShadow } from '@dxtmisha/scripts'
+
+const item = {
+  value: {
+    type: 'innerShadow',
+    color: '{sys.color.primary}',
+    x: '0',
+    y: '4',
+    blur: '10',
+    spread: '2'
+  }
+}
+convectorShadow(item)
+
+console.log(item.value) // "inset 0px 4px 10px 2px @ui.toCustomVarRgb({sys.color.primary})"
+```

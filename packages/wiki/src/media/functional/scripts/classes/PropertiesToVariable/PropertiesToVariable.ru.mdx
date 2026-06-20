@@ -1,0 +1,38 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/scripts/Classes/PropertiesToVariable - Разрешение типов свойств токенов'/>
+
+# Класс PropertiesToVariable
+
+Класс `PropertiesToVariable` анализирует свойства в дереве токенов дизайна для динамического разрешения и назначения соответствующих им классификаций `PropertyType` на основе иерархии, имен и значений. Он наследует класс `PropertiesToAbstract`.
+
+## Ключевые особенности
+
+- **Динамический вывод типов** — Назначает токенам точные флаги типов свойств (например, `var`, `property`, `selector`, `subclass`, `none`), сопоставляя их со списками совместимости CSS.
+- **Иерархическая классификация** — Обходит родительские узлы для наследования классификаций и разрешает оболочки компонентов и дизайна верхнего уровня.
+- **Определение селекторов и псевдоэлементов** — Сопоставляет имена токенов со списками стандартных селекторов и псевдоэлементов CSS (таких как `:hover`, `::before`).
+- **Кэширование результатов** — Сохраняет разрешенные типы переменных в файл кэша `008-variable`.
+
+## Инициализация
+
+```typescript
+import { PropertiesToVariable, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToVariable(items)
+transformer.to()
+```
+
+## Методы
+
+### Операции разрешения типов
+
+- `init(): void` — Переопределяет абстрактный шаг жизненного цикла для итерации по всем свойствам и назначения разрешенных классификаций типов.
+- `getByCategory(item: PropertyItem): PropertyType | undefined` — Выводит тип на основе категорий, таких как `root` или `theme`.
+- `getByMain(design: string, component: string | undefined, name: string): PropertyType | undefined` — Проверяет, представляет ли токен основную оболочку дизайна или пространства имен компонентов.
+- `getByProperty(name: string): PropertyType | undefined` — Сопоставляет имя токена со стандартным списком свойств CSS.
+- `getBySelector(name: string): PropertyType | undefined` — Сопоставляет имя токена со стандартными псевдоклассами CSS.
+- `getBySubclass(item: PropertyItem): PropertyType | undefined` — Идентифицирует структуры подклассов на основе пустых конфигураций.
+- `getByVarParent(parent?: PropertyItem): PropertyType | undefined` — Наследует классификацию `var`, если родительский элемент имеет тип переменной.
+- `getByNone(item: PropertyItem): PropertyType | undefined` — Возвращает тип `none`, если токен имеет явную конфигурацию скрытого типа.
+- `getByVirtual(name: string): PropertyType | undefined` — Сопоставляет имя токена со стандартными псевдоэлементами CSS.
+- `findType(name: string, item: PropertyItem): PropertyType` — Центральный оркестратор, запускающий все дочерние сопоставители для определения окончательного типа свойства.

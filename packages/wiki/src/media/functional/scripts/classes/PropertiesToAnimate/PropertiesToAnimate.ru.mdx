@@ -1,0 +1,31 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/scripts/Classes/PropertiesToAnimate - Преобразование анимации'/>
+
+# Класс PropertiesToAnimate
+
+Класс `PropertiesToAnimate` представляет собой конкретный обработчик для трансформации конфигураций анимации. Он наследует класс `PropertiesToAbstract` и преобразует кадры (frames) и ключевые кадры анимации в стандартизированные, кэшируемые структуры.
+
+## Ключевые особенности
+
+- **Идентификация кадров** — Автоматически находит свойства типа `PropertyType.animate` и сопоставляет их ключевые кадры.
+- **Иерархическое именование** — Комбинирует сегменты родительских путей для генерации уникальных описательных имен дочерних элементов анимации.
+- **Кэширование результатов** — Сохраняет обработанные свойства в файл кэша `044-animate`.
+
+## Инициализация
+
+Создайте экземпляр `PropertiesToAnimate`, передав коллекцию `PropertiesItems`, а затем вызовите метод запуска:
+
+```typescript
+import { PropertiesToAnimate, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToAnimate(items)
+transformer.to() // Запускает init() и сохраняет кэш
+```
+
+## Методы
+
+### Жизненный цикл и вспомогательные методы
+
+- `init(): void` — Переопределяет абстрактный шаг жизненного цикла для разрешения групп анимационных кадров и переопределения свойств кадров.
+- `getName(name: string, item: PropertyItem, parents: PropertyItemsItem['parents']): string` — Генерирует уникальное имя через дефис на основе предков пути, если у элемента не установлен флаг `fullName`.

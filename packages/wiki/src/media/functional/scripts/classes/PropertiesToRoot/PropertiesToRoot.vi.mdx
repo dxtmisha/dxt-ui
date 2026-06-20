@@ -1,0 +1,29 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/PropertiesToRoot - Bộ chuyển đổi phạm vi bộ chọn CSS Root'/>
+
+# Lớp PropertiesToRoot
+
+Lớp `PropertiesToRoot` chuyển đổi các token thiết kế biểu thị hành vi phạm vi gốc CSS (sử dụng định danh `PropertyType.root`) thành bộ chọn tham chiếu cha. Lớp này kế thừa từ `PropertiesToAbstract`.
+
+## Các tính năng chính
+
+- **Tổng hợp bộ chọn gốc** — Thêm tham chiếu bộ chọn cha `&` vào tên token thiết kế.
+- **Bối cảnh phạm vi** — Liên kết các biến với vỏ bọc vùng chứa chính của thành phần.
+- **Lưu bộ đệm** — Lưu các thuộc tính gốc đã giải quyết vào tập tin bộ nhớ đệm `038-root`.
+
+## Khởi tạo
+
+```typescript
+import { PropertiesToRoot, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToRoot(items)
+transformer.to()
+```
+
+## Phương thức
+
+### Vòng đời & Hỗ trợ
+
+- `init(): void` — Ghi đè phương thức vòng đời trừu tượng để lấy tất cả các biến thuộc kiểu `root` và định dạng bộ chọn của chúng.
+- `getName(design: string, component: string, name: string): string` — Kết hợp các tham chiếu bố cục thiết kế và tên thành phần, trả về biểu thức bộ chọn có định dạng như `[resolved-link] &`.

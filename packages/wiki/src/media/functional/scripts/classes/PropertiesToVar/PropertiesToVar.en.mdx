@@ -1,0 +1,36 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/PropertiesToVar - CSS Variable Value Transformer'/>
+
+# PropertiesToVar Class
+
+The `PropertiesToVar` class converts design tokens representing variables into standard CSS custom properties (`--var-name: values`). It extends `PropertiesToAbstract`.
+
+## Key Features
+
+- **CSS Variable Synthesis** — Converts variable token names into double-dash prefixed custom properties (`--prefix-name`).
+- **Math Expression Wrapping** — Automatically wraps standard mathematical expressions (`+`, `-`, `*`, `/`) inside `calc(...)` blocks.
+- **Reference Expansion** — Resolves brace references into nested CSS `var(...)` formats, supporting default fallbacks.
+- **Opacity Flag Resolution** — Safely detects color variables containing opacity attributes, tagging them with transparency metadata.
+- **Cache Persistence** — Saves the resolved variable definitions to the `020-var` cache file.
+
+## Initialization
+
+```typescript
+import { PropertiesToVar, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToVar(items)
+transformer.to()
+```
+
+## Methods
+
+### Resolving Operations
+
+- `init(): void` — Overrides the abstract lifecycle hook to retrieve variable type nodes, synthesize variable names, format their CSS values, and resolve color transparency.
+- `getName(property: PropertyItemsItem): string` — Constructs standard CSS property naming keys (e.g. `--sys-color-primary`) scoped by ancestor namespaces.
+- `toCalculator(value: string, full?: boolean): string` — Wraps mathematical equations in `calc()` statements if not already formatted.
+- `toLink(value: string): string` — Normalizes link index keys to standard variable name segments.
+- `toValue(value: string, defaultValue?: PropertyItem['_default']): string` — Resolves nested brace references into standard CSS `var(--name, fallback)` values recursively.
+- `isNone(parents: PropertyItemsParent[]): boolean` — Returns true if any parent element is of type `PropertyType.none`, representing a hidden property.
+- `isColorWithOpacity(property: PropertyItemsItem): boolean` — Safely traverses color references to verify if transparency properties are active.

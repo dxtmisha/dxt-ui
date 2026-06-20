@@ -1,0 +1,29 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/PropertiesToState - State Modifier Selector Transformer'/>
+
+# PropertiesToState Class
+
+The `PropertiesToState` class processes design token states (of type `PropertyType.state`) and transforms their names into SCSS modifier selectors (like `&--state` or `&.parent--state`). It extends `PropertiesToAbstract`.
+
+## Key Features
+
+- **State Selector Synthesis** — Generates SCSS class modifier formats (`&--modifier`) representing component visual states.
+- **Nested State Resolution** — Evaluates parent hierarchy to nest sub-states cleanly within nested modifier scopes (e.g. `&.parent--modifier`).
+- **Cache Persistence** — Saves state selectors to the `032-state` cache file.
+
+## Initialization
+
+```typescript
+import { PropertiesToState, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToState(items)
+transformer.to()
+```
+
+## Methods
+
+### Lifecycle & Helpers
+
+- `init(): void` — Overrides the abstract lifecycle hook to find all variables of type `state` and rewrite their selectors.
+- `getName(name: string, item: PropertyItem, parents: PropertyItemsItem['parents']): string` — Formats modifier names, adding BEM modifier formatting (`&--` or `&.parent--`) based on top-level configuration and path ancestors.

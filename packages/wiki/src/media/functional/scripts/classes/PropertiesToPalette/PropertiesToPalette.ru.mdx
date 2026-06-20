@@ -1,0 +1,37 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/scripts/Classes/PropertiesToPalette - Компилятор цветовых палитр и тем'/>
+
+# Класс PropertiesToPalette
+
+Класс `PropertiesToPalette` обрабатывает токены дизайна, относящиеся к категории `palette`, и компилирует их в конкретные цветовые переменные и классы, сопоставленные с темами. Он наследует класс `PropertiesToAbstract`.
+
+## Ключевые особенности
+
+- **Компиляция тем** — Сопоставляет цвета палитры с вариациями тем (такими как тема по умолчанию `basic`) и пользовательскими макетами дизайна.
+- **Динамические свойства CSS** — Преобразует необработанные оттенки в переменные CSS (типа `PropertyType.var` и категории `PropertyCategory.color`).
+- **Синтез темы по умолчанию** — Генерирует сопоставления значений переменных темы по умолчанию (`sys-palette`), используя конфигурации резервных вариантов.
+- **Кэширование результатов** — Сохраняет результаты компиляции в файл кэша `002-palette`.
+
+## Инициализация
+
+```typescript
+import { PropertiesToPalette, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToPalette(items)
+transformer.to()
+```
+
+## Методы
+
+### Операции жизненного цикла и компиляции
+
+- `init(): void` — Переопределяет абстрактный шаг жизненного цикла для запуска правил компиляции стандартных цветов и пользовательских тем.
+- `getParent(category: PropertyCategory.colors | PropertyCategory.class, parent: PropertyList): PropertyList` — Безопасно извлекает или создает новый контейнер под ключом `palette`.
+- `getClass(items: PropertyList, name: string): PropertyList` — Извлекает или инициализирует объект класса в списке свойств для заданного цвета.
+- `getName(theme: string, name: string): string` — Объединяет имя темы и имя оттенка цвета (например, `basic-primary`).
+- `getValue(link: string, name: string): string` — Конструирует строку представления переменной в фигурных скобках.
+- `getValueDefault(item: PropertyItem, theme: string): string` — Разрешает имя оттенка цвета по умолчанию, настроенное для палитры.
+- `read(root?: PropertyList, theme?: string, designParent?: string): void` — Обходит свойства палитры, добавляя оттенки тем и индикаторы по умолчанию к классам.
+- `addItem(parent: PropertyList, link: string, theme: string, palette: PropertyList): void` — Заполняет список свойств токенами цветов и ссылками.
+- `addDefault(parent: PropertyList, theme: string, palette: PropertyItem): void` — Настраивает резервный индикатор основной палитры `sys-palette`.

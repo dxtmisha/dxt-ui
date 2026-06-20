@@ -1,0 +1,30 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/# Lệnh/dxt-types - Trình tạo Định nghĩa Kiểu cho AI'/>
+
+# dxt-types
+
+Lệnh `dxt-types` biên dịch, làm sạch và nén các tệp khai báo TypeScript (`.d.ts`) thành các định nghĩa kiểu được tối ưu hóa cho AI. Nó lọc bỏ các chi tiết triển khai nội bộ và sử dụng AI để tạo hướng dẫn cho nhà phát triển.
+
+## Các tính năng chính
+
+- **Xử lý Khai báo**: Thu thập đệ quy các tệp `.d.ts` từ các thư mục đầu ra của quá trình biên dịch (ví dụ: `dist/`).
+- **Lọc Đóng gói**: Tự động loại bỏ các thành viên private, protected và các thành viên không được xuất để chỉ giữ lại giao diện API công khai.
+- **Tối ưu hóa AI**: Sử dụng mô hình AI để làm sạch các bình luận và tạo ra một tệp `ai-types.md` nhỏ gọn, tiết kiệm mã thông báo (token).
+- **Tạo Hướng dẫn Phát triển**: Tự động nhắc AI dự thảo một bản tóm tắt có cấu trúc về các tính năng thư viện và lưu vào tệp `ai-developer.md`.
+
+## Nó hoạt động như thế nào?
+
+1. **Quét Khai báo**: Tập lệnh duyệt qua thư mục bản dựng đích để tìm các tệp khai báo `.d.ts`, bỏ qua các tệp thành phần Vue và tệp wiki.
+2. **Hợp nhất Mã**: Kết hợp tất cả các tệp phù hợp thành một văn bản duy nhất trong bộ nhớ.
+3. **Làm sạch bằng AI**: Gửi văn bản tới AI để loại bỏ các bình luận/nhập (imports) nội bộ, lọc bỏ các chi tiết private và nén mã nguồn.
+4. **Lưu trữ Kiểu**: Lưu danh sách kiểu đã được làm sạch vào tệp `ai-types.md` cùng với các hướng dẫn về xuất bản gói.
+5. **Tạo Tài liệu Hướng dẫn**: Yêu cầu AI tạo một bản tóm tắt kỹ thuật của thư viện và ghi vào tệp `ai-developer.md`.
+
+## Cách sử dụng
+
+Chạy trình biên dịch kiểu thông qua `npx`:
+```bash
+npx dxt-types [build_dir]
+```
+- `build_dir` (Tùy chọn): Thư mục để quét. Mặc định là `dist`.

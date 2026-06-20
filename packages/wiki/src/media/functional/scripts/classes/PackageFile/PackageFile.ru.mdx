@@ -1,0 +1,75 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/scripts/Classes/PackageFile - Управление package.json'/>
+
+# Класс PackageFile
+
+Класс `PackageFile` представляет собой **оболочку конфигурации пакета**, предназначенную для чтения и анализа файлов `package.json` в рабочей области. Он разбирает метаданные пакета, скрипты, версионирование и флаги валидации, обеспечивая автоматизацию процессов сборки и публикации в монорепозитории.
+
+## Ключевые особенности
+
+- **Разрешение метаданных** — Извлекает стандартные сведения, такие как имя, версия и пользовательские флаги.
+- **Проверка валидации** — Проверяет согласованность версий и статус тестового или непубликуемого пакета.
+- **Синтез команд** — Определяет команды сборки и публикации на основе доступных скриптов в `package.json`.
+- **Интеграция путей** — Взаимодействует с `PropertiesFile` для синхронной загрузки содержимого файлов.
+
+## Инициализация
+
+Инициализируется путем передачи пути к директории, содержащей файл `package.json`.
+
+```typescript
+import { PackageFile } from '@dxtmisha/scripts'
+
+// Создание экземпляра для конкретной директории пакета
+const pkg = new PackageFile('packages/constructor')
+
+if (pkg.is()) {
+  console.log(pkg.getName()) // "@dxtmisha/constructor"
+}
+```
+
+## Методы
+
+### Проверка
+
+- `is(): boolean` — Проверяет, содержит ли директория корректный файл `package.json`.
+- `isVersionConsistency(version?: string): boolean` — Проверяет, соответствует ли версия пакета указанной целевой версии.
+- `isTest(): boolean` — Проверяет, помечен ли пакет как тестовый (флаг `ui-test` равен true).
+- `isNoPublish(): boolean` — Проверяет, не должен ли пакет публиковаться (флаг `ui-no-publish` или `private` равен true).
+
+### Данные и пути
+
+- `get(): Record<string, any>` — Возвращает разобранное содержимое файла `package.json`.
+- `getName(): string` — Возвращает имя пакета или путь к директории по умолчанию, если имя не определено.
+- `getVersion(): string` — Возвращает версию пакета (по умолчанию `'0.0.0'`).
+- `getScripts(): Record<string, string>` — Возвращает скрипты, определенные в `package.json`.
+- `getDir(): string[]` — Возвращает сегменты пути к директории пакета.
+- `getPath(): string[]` — Возвращает сегменты пути к файлу `package.json` этого пакета.
+
+### Разрешение команд
+
+### `getCodeBuildOrRecovery`
+
+Разрешает имя скрипта для сборки пакета, отдавая приоритет скриптам восстановления (`build-recovery`) перед стандартной сборкой (`build`).
+
+**Пример:**
+```typescript
+const pkg = new PackageFile('packages/core')
+const buildCmd = pkg.getCodeBuildOrRecovery()
+// Возвращает: "build-recovery" (если есть) или "build" (если есть) или undefined
+```
+
+**Возвращает:** `string | undefined`
+
+### `getCodePublish`
+
+Синтезирует терминальную команду, необходимую для публикации пакета в реестре npm.
+
+**Пример:**
+```typescript
+const pkg = new PackageFile('packages/core')
+const publishCmd = pkg.getCodePublish()
+// Возвращает: "npm run publish-to-npm" (если скрипт существует) или "npm publish --access public"
+```
+
+**Возвращает:** `string`

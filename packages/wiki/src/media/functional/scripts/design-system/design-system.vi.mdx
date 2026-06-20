@@ -1,0 +1,66 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/# Hệ thống thiết kế (Design System)'/>
+
+# Làm việc với Hệ thống thiết kế
+
+Package `@dxtmisha/scripts` là một công cụ mạnh mẽ và là "bộ não" tự động hóa của toàn bộ hệ thống thiết kế **DXT UI**. Đây là một tập hợp các tiện ích và lệnh CLI, đảm nhận công việc lặp đi lặp lại của việc tạo mới, liên kết, kiểm thử và viết tài liệu cho các component.
+
+Mục tiêu chính của package này là cung cấp cho các nhà phát triển và bộ phận kinh doanh một quy trình phát triển UI kit thống nhất, tự động hóa, nơi yếu tố con người và các lỗi khi viết mã chuẩn (boilerplate) được giảm xuống mức 0.
+
+Giá trị đặc biệt của package này nằm ở vai trò là **cầu nối giữa logic nghiệp vụ trừu tượng và thiết kế hình ảnh**.
+
+## Phân tách giữa Logic và Thiết kế
+
+Kiến trúc của DXT UI được xây dựng dựa trên sự phân tách nghiêm ngặt:
+- **Logic trừu tượng (Constructor)** — các lớp độc lập quản lý thuộc tính ARIA, sự kiện, focus và trạng thái, nhưng không biết gì về màu sắc, kích thước hoặc CSS class.
+- **Thiết kế hình ảnh (Visual Design)** — sự triển khai cụ thể (tokens, khoảng cách, bảng màu).
+
+Package `scripts` đảm nhận nhiệm vụ tự động và "khâu" hai thế giới này lại với nhau một cách hoàn hảo.
+
+## Cách thức hoạt động:
+
+1. **`properties.json` là Nguồn chân lý duy nhất (Single Source of Truth):**
+   Nhà phát triển hoặc nhà thiết kế chỉ mô tả các thuộc tính hình ảnh của component (tokens, màu sắc, kích thước, trạng thái `:hover`/`:active`, modifiers) trong một file cấu hình duy nhất `properties.json`.
+   
+2. **Phân tích và Tạo mã (Scaffolding):**
+   Package `scripts` đọc file cấu hình này và tự động tạo ra toàn bộ cơ sở hạ tầng liên kết:
+   - `props.ts` — TypeScript interface mở rộng các thuộc tính cơ bản từ Constructor, thêm các kiểu dữ liệu chính xác cho thiết kế (ví dụ: `size: 'sm' | 'md'`) và giá trị mặc định.
+   - `styleToken.scss` — các mixin SCSS có sẵn và biến CSS (design tokens).
+   - `DesignComponent.vue` — Vue template nơi điều kỳ diệu xảy ra: script tạo ra các BEM class được tính toán dựa trên các thuộc tính và truyền chúng vào lớp `Design` trừu tượng từ Constructor (tiêm phụ thuộc - dependency injection).
+   
+3. **Điều phối Kiểu dữ liệu (`dxt-constructor`):**
+   Việc thêm một thuộc tính mới vào `properties.json` sẽ tự động cập nhật các interface toàn cục của dự án. IDE ngay lập tức bắt đầu gợi ý mã cho các thuộc tính mới khi sử dụng component (ví dụ: qua `web-types.json`).
+
+4. **Tạo tài liệu bằng AI (AI-Docs):**
+   Tích hợp với trí tuệ nhân tạo (Google Gemini / Anthropic Claude) cho phép package tự động tạo tài liệu tham khảo, mô tả prop và các ví dụ mã nguồn trực tiếp dựa trên `properties.json` và TypeScript.
+
+## Lợi ích mang lại cho kinh doanh và nhóm phát triển là gì?
+
+- **Tốc độ phát triển cao:** Trọng tâm chuyển từ việc viết mã boilerplate sang việc tạo ra sản phẩm thực tế. Việc tạo một component hoặc modifier mới chỉ mất vài giây.
+- **Đảm bảo tính nhất quán:** Loại bỏ các trường hợp quên export, lỗi đánh máy trong tên CSS class hoặc sai lệch giữa TypeScript và SCSS. Logic (ví dụ: khả năng truy cập ARIA) luôn hoạt động hoàn hảo vì nó được kế thừa từ Constructor, trong khi phần hình ảnh khớp 100% với các token.
+- **Dễ dàng bảo trì và mở rộng:** Để thay đổi logic tạo CSS class hoặc cấu trúc thư mục trong toàn bộ thư viện, bạn chỉ cần sửa đổi logic của package `scripts`, sau đó toàn bộ thư viện UI sẽ được biên dịch lại chỉ bằng một lệnh.
+- **Tích hợp với Thiết kế (Figma):** Các Figma API client tích hợp sẵn cho phép trích xuất cấu trúc frame, design token và styles trực tiếp từ bản thiết kế, tự động chuyển đổi chúng thành mã nguồn.
+
+## Các lệnh chính (CLI)
+
+- **`npm run ui [ComponentName]` / `dxt-ui`**
+  Bộ điều phối chính. Quét các file `properties.json`, tạo ra template, "khâu" chúng với các lớp Constructor, và cập nhật props cũng như styles. 
+- **`npm run constructor` / `dxt-constructor`**
+  Biên dịch lại các class và kiểu dữ liệu toàn cục của logic constructor, đảm bảo tất cả các kiểu thuộc tính luôn được cập nhật.
+- **`dxt-component-wiki` / `dxt-wiki-storm`**
+  Khởi chạy việc tạo tài liệu component bằng AI cho Storybook/MDX và định dạng dữ liệu cho tự động hoàn thành trong IDE (WebStorm).
+- **`npm run library` / `dxt-library`**
+  Quét cây thư mục và tự động tạo các file export `index.ts` trong tất cả các package của không gian làm việc.
+- **`dxt-screenshot`**
+  Môi trường kiểm thử hồi quy trực quan sử dụng Puppeteer.
+
+## Tích hợp sâu các styles và design tokens
+
+Mô-đun phân tích cú pháp design token (các lớp `Properties*`) là trái tim của bộ tạo mã. Script nhận diện nhiều loại thuộc tính từ JSON:
+- **`type-var` / `flag-var`**: Các thuộc tính được biên dịch trực tiếp thành các biến CSS (quản lý padding động, border-radius).
+- **`type-state`**: Các trạng thái component trực quan động.
+- **`flag-theme` / Bảng màu (Palettes)**: Quản lý màu sắc và hỗ trợ theme tối/sáng mà không cần nhân bản CSS.
+- **`flag-subclass` / `flag-replace`**: Quản lý CSS class thông minh bằng BEM, chỉ thêm các modifier class khi flag được kích hoạt.
+
+Hệ thống script tự động dịch tất cả các mối quan hệ này thành mã SCSS tối ưu và TypeScript nghiêm ngặt, tạo thành một cầu nối hoàn hảo giữa thiết kế trực quan và lõi logic của các component.

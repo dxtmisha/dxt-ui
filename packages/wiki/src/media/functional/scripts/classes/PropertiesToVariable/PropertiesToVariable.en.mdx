@@ -1,0 +1,38 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/PropertiesToVariable - Property Type Resolver'/>
+
+# PropertiesToVariable Class
+
+The `PropertiesToVariable` class analyzes properties in the design token tree to dynamically resolve and assign their matching `PropertyType` classifications based on hierarchy, names, and values. It extends `PropertiesToAbstract`.
+
+## Key Features
+
+- **Dynamic Type Inference** — Assigns exact property type flags (e.g. `var`, `property`, `selector`, `subclass`, `none`) to tokens by checking CSS compatibility lists.
+- **Hierarchical Classification** — Walks parent nodes to inherit classifications and resolves component and design top-level wrappers.
+- **Selectors and Pseudo-Elements Detection** — Compares token names against lists of standard CSS selectors and pseudo-elements (like `:hover`, `::before`).
+- **Cache Persistence** — Saves resolved variable types to the `008-variable` cache file.
+
+## Initialization
+
+```typescript
+import { PropertiesToVariable, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToVariable(items)
+transformer.to()
+```
+
+## Methods
+
+### Type Resolution Operations
+
+- `init(): void` — Overrides the abstract lifecycle hook to iterate through all properties and assign their resolved type classifications.
+- `getByCategory(item: PropertyItem): PropertyType | undefined` — Infers type based on categories like `root` or `theme`.
+- `getByMain(design: string, component: string | undefined, name: string): PropertyType | undefined` — Checks if the token represents the main design or component namespace wrapper.
+- `getByProperty(name: string): PropertyType | undefined` — Matches the token name against a standard list of CSS properties.
+- `getBySelector(name: string): PropertyType | undefined` — Matches the token name against standard CSS pseudo-classes.
+- `getBySubclass(item: PropertyItem): PropertyType | undefined` — Identifies subclass structures based on empty configurations.
+- `getByVarParent(parent?: PropertyItem): PropertyType | undefined` — Inherits `var` classification if the parent element has variable type.
+- `getByNone(item: PropertyItem): PropertyType | undefined` — Returns type `none` if the token has explicit hidden type config.
+- `getByVirtual(name: string): PropertyType | undefined` — Matches the token name against standard CSS pseudo-elements.
+- `findType(name: string, item: PropertyItem): PropertyType` — Central orchestrator that runs all sub-matchers to determine the exact property type fallback.

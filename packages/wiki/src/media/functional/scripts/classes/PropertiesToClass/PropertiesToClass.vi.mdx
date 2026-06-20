@@ -1,0 +1,29 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/PropertiesToClass - Bộ chuyển đổi bộ chọn CSS Class'/>
+
+# Lớp PropertiesToClass
+
+Lớp `PropertiesToClass` xử lý việc chuyển đổi các phần tử thiết kế (tokens) đại diện cho các lớp CSS thành các bộ chọn lớp (class selectors) SCSS tiêu chuẩn. Lớp này kế thừa từ `PropertiesToAbstract`.
+
+## Các tính năng chính
+
+- **Tổng hợp bộ chọn lớp** — Chuyển đổi tên cấu hình thô thuộc kiểu `PropertyType.classType` thành bộ chọn lớp SCSS với không gian tên của cha.
+- **Hỗ trợ cấu trúc BEM** — Giải quyết cấu trúc lớp cha-con bằng cách kiểm tra thuộc tính của cha.
+- **Lưu bộ đệm** — Lưu các cấu hình bộ chọn đã xử lý vào tập tin bộ nhớ đệm `030-class`.
+
+## Khởi tạo
+
+```typescript
+import { PropertiesToClass, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToClass(items)
+transformer.to()
+```
+
+## Phương thức
+
+### Vòng đời & Hỗ trợ
+
+- `init(): void` — Ghi đè phương thức vòng đời trừu tượng để tìm tất cả các biến thuộc kiểu `classType` và viết lại bộ chọn của chúng.
+- `getName(name: string, item: PropertyItem, parents: PropertyItemsItem['parents']): string` — Định dạng tên bộ chọn lớp, thêm tiền tố `& .` và giới hạn phạm vi theo phần tử cha cấp cao nhất nếu thuộc tính `fullName` là false.

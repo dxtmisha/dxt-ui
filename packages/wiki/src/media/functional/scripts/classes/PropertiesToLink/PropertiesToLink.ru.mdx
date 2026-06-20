@@ -1,0 +1,38 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/scripts/Classes/PropertiesToLink - Разрешение ссылок на значения токенов'/>
+
+# Класс PropertiesToLink
+
+Класс `PropertiesToLink` разрешает внутренние ссылки в фигурных скобках (например, `{design.component.property}`) в дереве токенов дизайна и заменяет их фактическими значениями. Он наследует класс `PropertiesToAbstract`.
+
+## Ключевые особенности
+
+- **Рекурсивное разрешение ссылок** — Разрешает вложенные ссылки различной глубины путем итеративного обхода дерева токенов.
+- **Защита от циклических ссылок** — Ограничивает глубину обхода и помечает обработанные ссылки во избежание бесконечных циклов.
+- **Проверка синтаксиса скобок** — Проверяет токены ссылок на соответствие шаблону регулярного выражения `^{...}$`.
+- **Кэширование результатов** — Сохраняет разрешенную структуру свойств в файл кэша `004-link`.
+
+## Инициализация
+
+```typescript
+import { PropertiesToLink, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToLink(items)
+transformer.to()
+```
+
+## Методы
+
+### Операции разрешения ссылок
+
+- `init(): void` — Переопределяет абстрактный шаг жизненного цикла для запуска до 32 проходов разрешения ссылок, пока не перестанут обнаруживаться изменения.
+- `read(design?: string, component?: string, properties?, parent?: string[]): boolean` — Рекурсивно сканирует свойства, обнаруживает ссылки, разрешает их исходные элементы и помещает их в очередь для вставки.
+- `isType(item: PropertyItem): boolean` — Проверяет, соответствует ли свойство типам, поддерживающим ссылки (например, `link`, `var`, `property`, `selector`, `virtual`, `scss`).
+- `isValue(value: PropertyItem['value']): value is string` — Проверяет, является ли значение корректной строкой ссылки в фигурных скобках.
+- `isIgnore(value: string): boolean` — Проверяет, помечена ли ссылка для игнорирования.
+- `isLink(value: string): boolean` — Проверяет, была ли ссылка уже разрешена.
+- `isData(value: PropertyItem['value']): value is PropertyList` — Определяет, указывает ли ссылка на сложный узел объекта.
+- `add(parent: string[], items: PropertyLinkItem[]): void` — Вставляет разрешенные значения обратно в ссылающиеся родительские узлы.
+- `addIgnore(value: string): void` — Добавляет значение в массив игнорирования.
+- `addLink(value: string): void` — Регистрирует ссылку как обработанную.

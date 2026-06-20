@@ -1,0 +1,29 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/# Lệnh/dxt-wiki-storm - Trình Tạo Siêu Dữ Liệu Cho WebStorm IDE'/>
+
+# dxt-wiki-storm
+
+Lệnh `dxt-wiki-storm` tạo tệp siêu dữ liệu `web-types.json` trong thư mục biên dịch. Tệp này chứa thông tin chi tiết về thẻ component, thuộc tính, sự kiện cho JetBrains IDEs (như WebStorm và IntelliJ IDEA) để kích hoạt tính năng tự động hoàn thành (IntelliSense) và chú giải công cụ.
+
+## Các tính năng chính
+
+- **Tích hợp JetBrains**: Cung cấp trực tiếp siêu dữ liệu cho trình soạn thảo, giúp WebStorm nhận dạng các thành phần Vue tùy chỉnh và cấu hình của chúng.
+- **Tự động Trích xuất Siêu dữ liệu**: Duyệt qua tất cả các thành phần hoạt động trong thư viện để kiểm tra và phân tích cú pháp các thuộc tính, sự kiện và khe cắm (slots).
+- **Lược đồ Chuẩn**: Xuất dữ liệu tuân thủ nghiêm ngặt định dạng lược đồ Web-Types tiêu chuẩn.
+
+## Nó hoạt động như thế nào?
+
+1. **Xác nhận Ngữ cảnh**: Tập lệnh đọc tệp `package.json` của không gian làm việc để trích xuất tên và phiên bản của gói.
+2. **Thu thập Thành phần**: Lặp qua tất cả các thành phần hệ thống thiết kế đã đăng ký thông qua một trình trợ giúp thành phần.
+3. **Phân tích API Thành phần**: Khởi tạo một trình quét cho mỗi thành phần để đọc và định dạng các thuộc tính (props), sự kiện (emits) và các tùy chọn của nó.
+4. **Tạo JSON**: Kết hợp thông tin đã quét vào một đối tượng đóng góp `web-types.json` duy nhất.
+5. **Lưu trữ**: Lưu tệp vào trong thư mục bản dựng (mặc định là `dist/web-types.json`).
+
+## Cách sử dụng
+
+Chạy trình biên dịch siêu dữ liệu thông qua `npx`:
+```bash
+npx dxt-wiki-storm [output_dir]
+```
+- `output_dir` (Tùy chọn): Thư mục để lưu tệp. Mặc định là `dist`.

@@ -1,0 +1,31 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/PropertiesToClone - Parameter Inheritance Transformer'/>
+
+# PropertiesToClone Class
+
+The `PropertiesToClone` class duplicates configuration parameters and configuration structures from parent elements down into matching descendant properties. It extends `PropertiesToAbstract`.
+
+## Key Features
+
+- **Cascading Configurations** — Clones settings marked with `settingClone` down the property tree.
+- **Deep Traversal** — Recursively scans and inherits attributes for similar properties in descendants.
+- **Type Ignoring** — Automatically ignores variable and property types when performing the cloning process to prevent overriding values.
+- **Cache Persistence** — Saves the state of processed properties to the `007-01-clone` cache file.
+
+## Initialization
+
+```typescript
+import { PropertiesToClone, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToClone(items)
+transformer.to()
+```
+
+## Methods
+
+### Cloning Operations
+
+- `init(): void` — Overrides the abstract lifecycle hook to traverse all properties and apply clones.
+- `findItem(parent: PropertyItem, name: string): PropertyItem[]` — Recursively searches descendant levels of a parent element for similar property records.
+- `update(original: PropertyItem, properties: PropertyItem[]): void` — Performs the attribute injection, merging properties from the original item without overwriting existing data.

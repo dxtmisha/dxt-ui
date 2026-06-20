@@ -1,0 +1,29 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/PropertiesToClass - CSS Class Selector Transformer'/>
+
+# PropertiesToClass Class
+
+The `PropertiesToClass` class handles the transformation of design token items representing CSS classes into standard SCSS class selectors. It extends `PropertiesToAbstract`.
+
+## Key Features
+
+- **Class Selector Synthesis** — Converts raw token names of type `PropertyType.classType` into SCSS class selectors with parent namespacing.
+- **BEM Selector Support** — Resolves parent-child class structures by checking parent properties.
+- **Cache Persistence** — Saves the processed selector configurations to the `030-class` cache file.
+
+## Initialization
+
+```typescript
+import { PropertiesToClass, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToClass(items)
+transformer.to()
+```
+
+## Methods
+
+### Lifecycle & Helpers
+
+- `init(): void` — Overrides the abstract lifecycle hook to find all variables of type `classType` and rewrite their selectors.
+- `getName(name: string, item: PropertyItem, parents: PropertyItemsItem['parents']): string` — Formats class selector names, prepending `& .` and scoping them by their top-level parent if `fullName` is false.

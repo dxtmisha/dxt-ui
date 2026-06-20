@@ -1,0 +1,28 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/PropertiesToProperty - Bộ chuyển đổi thuộc tính CSS tùy chỉnh'/>
+
+# Lớp PropertiesToProperty
+
+Lớp `PropertiesToProperty` định dạng các token thiết kế đại diện cho các thuộc tính CSS tiêu chuẩn (như background, padding, margin) thành các bộ chọn thuộc tính ở dạng kebab-case chuẩn hóa. Lớp này kế thừa từ `PropertiesToVar`.
+
+## Các tính năng chính
+
+- **Định dạng thuộc tính CSS** — Chuyển đổi tên thuộc tính thành các khóa biểu diễn bố cục ở định dạng kebab-case.
+- **Tính năng kế thừa** — Tận dụng tất cả logic tính toán biến, độ mờ (opacity) và giải quyết giá trị từ lớp cha `PropertiesToVar`.
+- **Lưu bộ đệm** — Lưu các thuộc tính vào tập tin bộ nhớ đệm `024-property`.
+
+## Khởi tạo
+
+```typescript
+import { PropertiesToProperty, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToProperty(items)
+transformer.to()
+```
+
+## Phương thức
+
+### Vòng đời & Hỗ trợ
+
+- `getName({ name, item }: PropertyItemsItem): string` — Ghi đè bộ trợ giúp giải quyết tên để trả về biểu diễn kebab-case của tên thuộc tính đã chuyển đổi.

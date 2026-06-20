@@ -1,0 +1,28 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Functions/convectorTypography - Format typography values'/>
+
+# `convectorTypography`
+
+The function normalizes typography design tokens by converting simple string values into standard basic font configurations.
+
+**Parameters:**
+- `item: PropertyItemInput` — the design token property item to transform.
+
+**Returns:**
+`void` — the function directly mutates the `value` property of the passed `item` object.
+
+## How it works
+
+The function checks if `item.value` is a string. If so, it wraps the string inside a key-value object under the `basic` theme property: `{ basic: item.value }` to ensure consistency with complex responsive typography layouts.
+
+## Example
+
+```typescript
+import { convectorTypography } from '@dxtmisha/scripts'
+
+const item = { value: '16px/1.5 Inter' }
+convectorTypography(item)
+
+console.log(item.value) // { basic: "16px/1.5 Inter" }
+```

@@ -1,0 +1,33 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/PropertiesToSort - Token Tree Sorter'/>
+
+# PropertiesToSort Class
+
+The `PropertiesToSort` class orders and sorts elements in the design token tree according to predefined rules, categories, variables, and names. It extends `PropertiesToAbstract`.
+
+## Key Features
+
+- **Rule-Based Sorting** — Sorts design properties using order rules defined in `sortList` based on variables and categories.
+- **Hierarchical Reordering** — Recursively sorts nested values and child branches inside container nodes.
+- **Index Synthesis** — Assigns a computed numeric priority score to each token for sorting.
+- **Cache Persistence** — Saves the sorted property tree to the `048-sort` cache file.
+
+## Initialization
+
+```typescript
+import { PropertiesToSort, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToSort(items)
+transformer.to()
+```
+
+## Methods
+
+### Sorting Operations
+
+- `init(): void` — Overrides the abstract lifecycle hook to start sorting the design token structure.
+- `read(properties?: PropertyItemsItem): PropertyList` — Recursively traverses properties and sorts their child arrays and property values.
+- `getCategoryName(item: PropertyItem): string` — Returns a formatted category name reference.
+- `getKeys(item: PropertyItem): Item<number>` — Returns a sort index token string and computes the sorting order number based on `sortList` rules.
+- `join(data: PropertiesSortList): PropertyList` — Performs the final array sorting by weight/order and maps the elements back into a sorted object list.

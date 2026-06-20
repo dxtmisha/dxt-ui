@@ -1,0 +1,33 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/scripts/Classes/PropertiesToDuplicate - Детектор дубликатов токенов'/>
+
+# Класс PropertiesToDuplicate
+
+Класс `PropertiesToDuplicate` сканирует дерево токенов дизайна для поиска идентичных структур или групп значений, помечая дублирующиеся узлы для стимулирования их повторного использования. Он наследует класс `PropertiesToAbstract`.
+
+## Ключевые особенности
+
+- **Поиск идентичных узлов** — Сравнивает сериализованные строковые значения конфигураций токенов, содержащих 5 или более ключей.
+- **Группировка дубликатов** — Группирует идентичные объекты и выводит общее имя в формате camelCase, отражающее их логическую связь.
+- **Пометка метаданными** — Записывает ссылку `duplicate` в элементы, что позволяет другим процессорам предлагать оптимизацию.
+- **Кэширование результатов** — Сохраняет отчеты о дубликатах в файл кэша `910-duplicate`.
+
+## Инициализация
+
+```typescript
+import { PropertiesToDuplicate, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToDuplicate(items)
+transformer.to()
+```
+
+## Методы
+
+### Операции обнаружения
+
+- `init(): void` — Переопределяет абстрактный шаг жизненного цикла для запуска проверки дубликатов и применения пометок.
+- `getName(properties: PropertiesDuplicateItem['properties']): string` — Форматирует групповое имя в camelCase, используя уникальные части путей продублированных элементов.
+- `findDuplicate(list: PropertiesDuplicateList, valueDuplicate: string): PropertiesDuplicateList` — Обходит список кандидатов-конфигураций для поиска совпадений с целевой строкой дубликата.
+- `initList(): PropertiesDuplicateList` — Сканирует все дерево токенов для построения плоской карты сложных конфигураций (содержащих >= 5 ключей) для сравнения.
+- `initDuplicate(list: PropertiesDuplicateList): PropertiesDuplicate` — Объединяет совпадающие записи в разгруппированные наборы.

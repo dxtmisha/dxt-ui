@@ -1,0 +1,27 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/# Lệnh/dxt-build-functional - Xây Dựng Xuất Bản Chức Năng'/>
+
+# dxt-build-functional
+
+Lệnh `dxt-build-functional` tự động tổng hợp và xuất bản lại (re-export) toàn bộ các tiện ích phản hồi, lớp và composables từ gói `@dxtmisha/functional` vào một tệp đầu vào hợp nhất `functional.ts`.
+
+## Các tính năng chính
+
+- **Tự động Tạo Đầu Vào**: Tự động thu thập và biên dịch danh sách xuất bản duy nhất cho tất cả các API chức năng phản hồi.
+- **Sắp xếp Nghiêm ngặt**: Sắp xếp các xuất bản lại theo thứ tự bảng chữ cái để duy trì tính nhất quán và ngăn ngừa xung đột mã (merge conflicts).
+- **Xuất bản lại An toàn Kiểu**: Tự động chuyển tiếp các kiểu TypeScript (`export type *`) từ gói chức năng cốt lõi.
+
+## Nó hoạt động như thế nào?
+
+1. **Tải Gói**: Tập lệnh nhập mô-đun cốt lõi `@dxtmisha/functional`.
+2. **Thu thập Khóa**: Nó đọc tất cả các khóa được xuất động từ đối tượng mô-đun.
+3. **Sắp xếp & Xây dựng**: Nó sắp xếp các khóa theo bảng chữ cái và xây dựng chuỗi tạo mã cho mỗi thành viên được xuất.
+4. **Ghi Kết Quả**: Tập lệnh nối các chuỗi lại và ghi tệp hoàn chỉnh vào đường dẫn thư viện đã cấu hình dưới tên `functional.ts`.
+
+## Cách sử dụng
+
+Chạy công cụ xây dựng thông qua `npx` hoặc các tập lệnh npm workspace:
+```bash
+npx dxt-build-functional
+```

@@ -1,0 +1,28 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/PropertiesToStyle - Bộ chuyển đổi nhóm kiểu tùy chỉnh'/>
+
+# Lớp PropertiesToStyle
+
+Lớp `PropertiesToStyle` xử lý các token thiết kế hỗ trợ các giá trị tùy chỉnh bổ sung, bao bọc chúng thành các nút cấu trúc kiểu dành riêng. Lớp này kế thừa từ `PropertiesToAbstract`.
+
+## Các tính năng chính
+
+- **Tổng hợp bộ chọn tùy chỉnh** — Tạo các ghi đè trạng thái tùy chỉnh dưới một khóa `custom` thống nhất bên trong các bản đồ giá trị thuộc tính.
+- **Chuyển đổi thuộc tính động** — Viết lại các thuộc tính có chỉ thị `style` để hoạt động như các trạng thái biến.
+- **Lưu bộ đệm** — Lưu các thuộc tính ghi đè tùy chỉnh đã xử lý vào tập tin bộ nhớ đệm `016-style`.
+
+## Khởi tạo
+
+```typescript
+import { PropertiesToStyle, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToStyle(items)
+transformer.to()
+```
+
+## Phương thức
+
+### Vòng đời
+
+- `init(): void` — Ghi đè phương thức vòng đời trừu tượng để duyệt qua các thuộc tính, kiểm tra các nhãn `style` và tiêm các bản ghi kiểu `custom`.

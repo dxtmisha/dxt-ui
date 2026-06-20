@@ -1,0 +1,31 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/# Lệnh/dxt-ui - Trình Điều Phối Thiết Kế Hệ Thống UI'/>
+
+# dxt-ui
+
+Lệnh `dxt-ui` là trình điều phối trung tâm để xây dựng và khởi tạo thư viện thành phần giao diện người dùng (UI Design System). Nó điều phối việc tạo kiểu dáng (styles), xây dựng tài liệu, cấu trúc thành phần, xuất bản gói và các tệp kiểu TypeScript (typings).
+
+## Các tính năng chính
+
+- **Khởi tạo và Cập nhật Thành phần**: Khởi tạo các thành phần mới hoặc cập nhật hàng loạt cấu trúc thành phần hiện có và tài nguyên SCSS.
+- **Quản lý Xuất bản Gói**: Tự động cấu hình tệp `package.json` của thư viện với các ánh xạ xuất bản chính xác cho các kiểu SASS, plugin, tài nguyên đa phương tiện và kiểu TypeScript.
+- **Quy trình Xây dựng Thống nhất**: Kích hoạt tuần tự các quá trình biên dịch kiểu dáng (`Styles`), xây dựng tài liệu (`DesignWiki`), trình bao bọc kiểu web và trình tạo danh sách đa phương tiện.
+
+## Nó hoạt động như thế nào?
+
+1. **Xóa Bộ Nhớ Đệm**: Tập lệnh đặt lại các bộ nhớ đệm xây dựng thuộc tính cục bộ.
+2. **Biên dịch SASS & Wiki**: Giải quyết các ánh xạ biến SCSS toàn cục và biên dịch tài liệu thành phần Markdown cốt lõi.
+3. **Khởi tạo Thành phần**:
+   - Nếu cung cấp tham số tên thành phần `name`, nó sẽ tạo khung cấu trúc thành phần đó (HTML, thiết lập kịch bản, bảng kiểu SCSS).
+   - Nếu bỏ trống tên thành phần, nó sẽ cập nhật hàng loạt tất cả các thành phần đã đăng ký.
+4. **Cập nhật package.json**: Thiết lập các mục nhập ánh xạ xuất bản gói cho các tệp CSS, SASS, Vue Plugins và các tệp Kiểu dữ liệu.
+5. **Biên dịch Tài nguyên Thư viện**: Chạy các tác vụ để xuất các thư viện cho tài sản đa phương tiện, plugin, kiểu web và danh sách thành phần.
+
+## Cách sử dụng
+
+Chạy trình điều phối thông qua `npx`:
+```bash
+npx dxt-ui [component-name]
+```
+- `component-name` (Tùy chọn): Tên của một thành phần cụ thể để khởi tạo hoặc cập nhật. Nếu bỏ qua, tất cả các thành phần sẽ được cập nhật.

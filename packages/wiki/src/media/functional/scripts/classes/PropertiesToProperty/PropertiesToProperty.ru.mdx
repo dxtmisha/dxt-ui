@@ -1,0 +1,28 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/scripts/Classes/PropertiesToProperty - Преобразование пользовательских свойств CSS'/>
+
+# Класс PropertiesToProperty
+
+Класс `PropertiesToProperty` форматирует токены дизайна, представляющие стандартные CSS-свойства (такие как background, padding, margin), в нормализованные селекторы свойств в формате kebab-case. Он наследует класс `PropertiesToVar`.
+
+## Ключевые особенности
+
+- **Форматирование CSS-свойств** — Преобразует имена свойств в ключи разметки в формате kebab-case.
+- **Унаследованный функционал** — Использует всю логику вычисления переменных, прозрачности и разрешения значений из родительского класса `PropertiesToVar`.
+- **Кэширование результатов** — Сохраняет свойства в файл кэша `024-property`.
+
+## Инициализация
+
+```typescript
+import { PropertiesToProperty, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToProperty(items)
+transformer.to()
+```
+
+## Методы
+
+### Вспомогательные методы
+
+- `getName({ name, item }: PropertyItemsItem): string` — Переопределяет метод разрешения имени для возврата нормализованного имени свойства в формате kebab-case.

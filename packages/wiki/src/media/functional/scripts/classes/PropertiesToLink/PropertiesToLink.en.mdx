@@ -1,0 +1,38 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/PropertiesToLink - Reference Value Link Resolver'/>
+
+# PropertiesToLink Class
+
+The `PropertiesToLink` class resolves internal brace references (such as `{design.component.property}`) in the design token tree and replaces them with their actual values. It extends `PropertiesToAbstract`.
+
+## Key Features
+
+- **Recursive Link Resolving** — Resolves multi-depth nested references by traversing the design token tree iteratively.
+- **Circular Reference Protection** — Caps depth traversal and flags processed references to avoid infinite loops.
+- **Brace Syntax Matching** — Validates link reference tokens matching the `^{...}$` pattern.
+- **Cache Persistence** — Saves the resolved properties structure to the `004-link` cache file.
+
+## Initialization
+
+```typescript
+import { PropertiesToLink, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToLink(items)
+transformer.to()
+```
+
+## Methods
+
+### Resolving Operations
+
+- `init(): void` — Overrides the abstract lifecycle hook to run a maximum of 32 passes resolving references until no more changes are found.
+- `read(design?: string, component?: string, properties?, parent?: string[]): boolean` — Recursively scans properties, discovers links, resolves their source items, and queues them for splice injection.
+- `isType(item: PropertyItem): boolean` — Checks if the property matches linkable types (e.g. `link`, `var`, `property`, `selector`, `virtual`, `scss`).
+- `isValue(value: PropertyItem['value']): value is string` — Checks if the value is a valid reference string matching the brace pattern.
+- `isIgnore(value: string): boolean` — Checks if the reference is flagged to be ignored.
+- `isLink(value: string): boolean` — Checks if the reference link has already been resolved.
+- `isData(value: PropertyItem['value']): value is PropertyList` — Determines if the reference points to a complex object node.
+- `add(parent: string[], items: PropertyLinkItem[]): void` — Splices resolved values back into their referencing parent nodes.
+- `addIgnore(value: string): void` — Appends a value to the ignore array.
+- `addLink(value: string): void` — Registers a link as processed.

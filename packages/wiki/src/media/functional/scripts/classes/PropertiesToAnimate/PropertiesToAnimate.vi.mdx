@@ -1,0 +1,31 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/PropertiesToAnimate - Bộ chuyển đổi thuộc tính hoạt ảnh'/>
+
+# Lớp PropertiesToAnimate
+
+Lớp `PropertiesToAnimate` là một bộ chuyển đổi cụ thể được thiết kế để xử lý các cấu hình hoạt ảnh. Lớp này kế thừa từ `PropertiesToAbstract` và ánh xạ các khung hình (frames) cũng như các khung hình chính (keyframes) thành các cấu trúc chuẩn hóa, có thể lưu vào bộ nhớ đệm.
+
+## Các tính năng chính
+
+- **Nhận diện khung hình** — Tự động phát hiện các thuộc tính thuộc kiểu `PropertyType.animate` và ánh xạ các khung hình chính bên dưới của chúng.
+- **Đặt tên theo cấp bậc** — Kết hợp các phân đoạn đường dẫn cha để tạo ra tên mô tả, duy nhất cho các phần tử hoạt ảnh con.
+- **Lưu bộ đệm** — Xuất các thuộc tính đã xử lý ra tập tin bộ nhớ đệm `044-animate`.
+
+## Khởi tạo
+
+Khởi tạo `PropertiesToAnimate` với một tập hợp `PropertiesItems`, sau đó gọi phương thức thực thi:
+
+```typescript
+import { PropertiesToAnimate, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToAnimate(items)
+transformer.to() // Chạy init() và ghi vào bộ nhớ đệm
+```
+
+## Phương thức
+
+### Vòng đời & Hỗ trợ
+
+- `init(): void` — Ghi đè phương thức vòng đời trừu tượng để giải quyết các nhóm khung hình chính hoạt ảnh và viết lại thuộc tính của khung hình.
+- `getName(name: string, item: PropertyItem, parents: PropertyItemsItem['parents']): string` — Tạo một tên duy nhất phân tách bằng dấu gạch ngang từ các tổ tiên đường dẫn nếu thuộc tính `fullName` không được đặt trên phần tử.

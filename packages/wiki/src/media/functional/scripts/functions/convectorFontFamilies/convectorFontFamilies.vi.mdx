@@ -1,0 +1,28 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Functions/convectorFontFamilies - Định dạng định nghĩa họ phông chữ'/>
+
+# `convectorFontFamilies`
+
+Hàm này chuyển đổi các chuỗi họ phông chữ thô thành danh sách phông chữ CSS tiêu chuẩn bằng cách thêm các phông chữ dự phòng hệ thống mặc định.
+
+**Tham số:**
+- `item: PropertyItemInput` — phần tử thuộc tính token thiết kế cần chuyển đổi.
+
+**Trả về:**
+`void` — hàm trực tiếp thay đổi thuộc tính `value` của đối tượng `item` được truyền vào.
+
+## Cách hoạt động
+
+Hàm kiểm tra xem `item.value` có phải là một chuỗi và không chứa các ký tự nội suy ngoặc nhọn `{` hoặc `}` hay không. Nếu cả hai điều kiện được đáp ứng, nó sẽ bao bọc giá trị trong dấu nháy đơn và thêm `, sans-serif` để đảm bảo dự phòng phông chữ trình duyệt tiêu chuẩn.
+
+## Ví dụ
+
+```typescript
+import { convectorFontFamilies } from '@dxtmisha/scripts'
+
+const item = { value: 'Inter' }
+convectorFontFamilies(item)
+
+console.log(item.value) // "'Inter', sans-serif"
+```

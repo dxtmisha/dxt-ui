@@ -1,0 +1,32 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/# Lệnh/dxt-screenshot - Chụp Ảnh Màn Hình Máy Chủ Phát Triển'/>
+
+# dxt-screenshot
+
+Lệnh `dxt-screenshot` tự động hóa việc chụp ảnh giao diện người dùng. Nó khởi chạy máy chủ phát triển (dev server) của dự án, mở một trình duyệt ẩn danh (headless browser), chụp ảnh màn hình trang ở độ phân giải cao, và trích xuất mã HTML cũng như CSS tĩnh của nó.
+
+## Các tính năng chính
+
+- **Tự động Quản lý Máy chủ**: Tự động khởi động máy chủ phát triển cục bộ (`npm run dev`) và tắt nó một cách sạch sẽ sau khi hoàn tất chụp ảnh.
+- **Chụp ảnh Trình duyệt Ẩn danh**: Sử dụng Puppeteer thông qua một lớp bọc `BrowserItem` tùy chỉnh để hiển thị các trang ở độ phân giải cao (chiều cao mặc định 12000px) và chụp ảnh chụp nhanh `.webp`.
+- **Trích xuất Tài nguyên**: Lưu cấu trúc trang thô của ảnh chụp nhanh vào tệp `screenshot-code.html` và mã CSS đã tính toán vào tệp `screenshot-styles.css` để phục vụ công tác kiểm tra giao diện.
+
+## Nó hoạt động như thế nào?
+
+1. **Khởi chạy Dev Server**: Tập lệnh chạy lệnh `npm run dev` dưới dạng một tiến trình con chạy ngầm.
+2. **Xác định URL**: Nó lắng nghe luồng đầu ra stdout để phát hiện địa chỉ máy chủ cục bộ (ví dụ: `http://localhost:5173`).
+3. **Chụp trang**: Khi URL được xác định, nó sẽ mở một phiên bản trình duyệt Puppeteer và điều hướng đến URL đó.
+4. **Xuất Kết quả**:
+   - Chụp ảnh toàn bộ trang và lưu tệp.
+   - Trích xuất phần thân DOM của trang và ghi vào tệp `[path]-code.html`.
+   - Trích xuất các bảng kiểu (stylesheets) của trang và ghi vào tệp `[path]-styles.css`.
+5. **Dọn dẹp**: Tắt tiến trình con của dev server một cách an toàn.
+
+## Cách sử dụng
+
+Chạy công cụ chụp ảnh màn hình thông qua `npx`:
+```bash
+npx dxt-screenshot
+```
+Các tệp kết quả chụp sẽ được lưu trong thư mục `./ai-screenshot/`.

@@ -1,0 +1,28 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/PropertiesToFull - Bộ giải quyết đầy đủ biến CSS'/>
+
+# Lớp PropertiesToFull
+
+Lớp `PropertiesToFull` giải quyết các tên token thiết kế và giá trị chuỗi thành các liên kết và biến CSS đầy đủ, duy nhất trên toàn cầu. Lớp này kế thừa từ `PropertiesToAbstract`.
+
+## Các tính năng chính
+
+- **Tổng hợp biến đầy đủ** — Chuyển đổi tên token tương đối thành khai báo thuộc tính tùy chỉnh CSS đầy đủ dựa trên không gian tên thiết kế và thành phần.
+- **Giải quyết liên kết giá trị** — Giải quyết các giá trị tham chiếu đơn giản thành các định dạng con trỏ biến toàn cục đầy đủ.
+- **Lưu bộ đệm** — Lưu các biến đã giải quyết vào tập tin bộ nhớ đệm `018-full`.
+
+## Khởi tạo
+
+```typescript
+import { PropertiesToFull, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToFull(items)
+transformer.to()
+```
+
+## Phương thức
+
+### Vòng đời
+
+- `init(): void` — Ghi đè phương thức vòng đời trừu tượng để duyệt qua tất cả các thuộc tính đang hoạt động, kiểm tra phạm vi thành phần và giải quyết tên/giá trị CSS đầy đủ.

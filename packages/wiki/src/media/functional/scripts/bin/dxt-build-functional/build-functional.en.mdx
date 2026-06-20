@@ -1,0 +1,27 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/# Commands/dxt-build-functional - Build Functional Exports'/>
+
+# dxt-build-functional
+
+The `dxt-build-functional` command automatically aggregates and re-exports all reactive utilities, classes, and composables from the `@dxtmisha/functional` package into a consolidated entry file `functional.ts`.
+
+## Key Features
+
+- **Automated Entry Creation**: Automatically collects and compiles a single export list of all reactive functional APIs.
+- **Strict Sorting**: Sorts re-exports alphabetically to maintain consistency and prevent merge conflicts.
+- **Type-safe Re-exports**: Automatically forwards TypeScript types (`export type *`) from the core functional package.
+
+## How does it work?
+
+1. **Load Package**: The script imports the core `@dxtmisha/functional` module.
+2. **Collect Keys**: It reads all exported keys dynamically from the module object.
+3. **Sort & Build**: It sorts the keys alphabetically and constructs code generation strings for each exported member.
+4. **Write Output**: The script joins the strings and writes the completed file to the configured library path as `functional.ts`.
+
+## Usage
+
+Run the build tool via `npx` or npm workspace scripts:
+```bash
+npx dxt-build-functional
+```

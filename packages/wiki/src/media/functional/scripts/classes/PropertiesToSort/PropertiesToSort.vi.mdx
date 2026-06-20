@@ -1,0 +1,33 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/PropertiesToSort - Bộ sắp xếp cây Token'/>
+
+# Lớp PropertiesToSort
+
+Lớp `PropertiesToSort` sắp xếp và thứ tự hóa các phần tử trong cây token thiết kế theo các quy tắc, danh mục, biến và tên được xác định trước. Lớp này kế thừa từ `PropertiesToAbstract`.
+
+## Các tính năng chính
+
+- **Sắp xếp theo quy tắc** — Sắp xếp các thuộc tính thiết kế bằng cách sử dụng các quy tắc sắp xếp được định nghĩa trong `sortList` dựa trên biến và danh mục.
+- **Sắp xếp lại theo cấp bậc** — Sắp xếp đệ quy các giá trị lồng nhau và các nhánh con bên trong các nút chứa.
+- **Tổng hợp chỉ mục** — Gán một điểm ưu tiên số được tính toán cho mỗi token để thực hiện sắp xếp.
+- **Lưu bộ đệm** — Lưu cây thuộc tính đã sắp xếp vào tập tin bộ nhớ đệm `048-sort`.
+
+## Khởi tạo
+
+```typescript
+import { PropertiesToSort, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToSort(items)
+transformer.to()
+```
+
+## Phương thức
+
+### Thao tác sắp xếp
+
+- `init(): void` — Ghi đè phương thức vòng đời trừu tượng để bắt đầu sắp xếp cấu trúc token thiết kế.
+- `read(properties?: PropertyItemsItem): PropertyList` — Duyệt đệ quy các thuộc tính và sắp xếp các mảng con và giá trị thuộc tính của chúng.
+- `getCategoryName(item: PropertyItem): string` — Trả về một chuỗi tham chiếu danh mục đã định dạng.
+- `getKeys(item: PropertyItem): Item<number>` — Trả về chuỗi khóa chỉ mục sắp xếp và tính toán thứ tự sắp xếp dựa trên các quy tắc của `sortList`.
+- `join(data: PropertiesSortList): PropertyList` — Thực hiện sắp xếp mảng cuối cùng theo trọng số/thứ tự và ánh xạ các phần tử trở lại danh sách đối tượng đã sắp xếp.

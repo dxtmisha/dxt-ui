@@ -1,0 +1,28 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/PropertiesToNone - Empty Token Pruner'/>
+
+# PropertiesToNone Class
+
+The `PropertiesToNone` class cleans up the design token tree by removing empty, unused configurations, thus optimizing memory and output size. It extends `PropertiesToAbstract`.
+
+## Key Features
+
+- **Redundant Node Pruning** — Identifies property and variable nodes that contain empty object values.
+- **Console Reporting** — Logs warning details of deleted empty paths to the terminal for developer audit.
+- **Cache Persistence** — Saves the cleaned property tree to the `900-none` cache file.
+
+## Initialization
+
+```typescript
+import { PropertiesToNone, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToNone(items)
+transformer.to()
+```
+
+## Methods
+
+### Lifecycle Hooks
+
+- `init(): void` — Overrides the abstract lifecycle hook to find and delete empty entries under variable and property branches.

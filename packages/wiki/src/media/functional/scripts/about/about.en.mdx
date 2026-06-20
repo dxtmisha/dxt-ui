@@ -1,0 +1,42 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/! About the Package'/>
+
+# Scripts Ecosystem
+
+The `@dxtmisha/scripts` package is a powerful suite of development scripts and CLI automation tools designed specifically for scaffolding, compiling, documenting, and testing components within the design system.
+
+It bridges components, styles, design tokens, and documentation to eliminate boilerplate and keep the repository clean and scalable.
+
+## Key Subsystems
+
+### 1. Component & Wiki Scaffolding
+- **`dxt-component`**: Automatically generates Vue component templates, props interfaces, style files, and barrel exports.
+- **`dxt-component-wiki`**: Generates component documentation and MDX wiki files using Gemini or Claude AI.
+- **`dxt-constructor`**: Scaffolds component constructor logic and configuration classes.
+
+### 2. Design System Compilation & Types
+- **`dxt-ui`**: The central orchestrator that coordinates style compilation, component lists, typings exports, and documentation updates.
+- **`dxt-types`**: Extracts and compresses TypeScript declarations (`.d.ts`) into clean, AI-optimized type guidelines (`ai-types.md` and `ai-developer.md`).
+- **`dxt-wiki-storm`**: Formats component prop definitions and API bindings into a standard `web-types.json` file for IntelliJ/WebStorm IDE autocompletion.
+
+### 3. Build & Publish Automation
+- **`dxt-build-functional`**: Dynamically compiles all re-exports of reactive functions from the core `@dxtmisha/functional` package.
+- **`dxt-build-packages`**: Scans the workspace and builds only updated or changed packages incrementally.
+- **`dxt-build-publish-packages`**: Automatically handles building and publishing updated workspace packages.
+
+### 4. Utilities and Testing
+- **`dxt-screenshot`**: Spawns the dev server, launches Puppeteer to screenshot components, and extracts raw page HTML/CSS for visual audit testing.
+- **`dxt-flags`**: Compiles country flag SVGs into optimized sprite maps and CSS styling classes.
+- **`dxt-library`**: Automates the maintenance of export entry points (barrel files) across libraries.
+- **`dxt-prompt`**: Packages all SCSS, BEM, and Vue coding guidelines into a single consolidated prompt file (`ai-prompt.md`) to guide AI assistant agents.
+
+## Why Use This Package?
+
+- **Zero Boilerplate**: Automatically structures component folders, CSS files, and imports.
+- **AI-Enhanced Workflows**: Uses generative AI to write complex documentation and optimize codebase understanding.
+- **Monorepo Automation**: Minimizes repetitive build and package synchronization overhead across npm workspaces.
+
+## Repository
+
+[https://github.com/dxtmisha/dxt-ui/tree/main/packages/scripts](https://github.com/dxtmisha/dxt-ui/tree/main/packages/scripts)

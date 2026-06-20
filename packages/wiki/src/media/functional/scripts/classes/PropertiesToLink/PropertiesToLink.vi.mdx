@@ -1,0 +1,38 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/PropertiesToLink - Bộ giải quyết liên kết tham chiếu giá trị'/>
+
+# Lớp PropertiesToLink
+
+Lớp `PropertiesToLink` giải quyết các tham chiếu nội bộ trong dấu ngoặc nhọn (như `{design.component.property}`) trong cây cấu hình thiết kế và thay thế chúng bằng giá trị thực tế. Lớp này kế thừa từ `PropertiesToAbstract`.
+
+## Các tính năng chính
+
+- **Giải quyết liên kết đệ quy** — Giải quyết các tham chiếu lồng nhau nhiều cấp bằng cách duyệt qua cây token thiết kế một cách lặp đi lặp lại.
+- **Bảo vệ chống tham chiếu chéo (vòng lặp)** — Giới hạn độ sâu duyệt và đánh dấu các tham chiếu đã xử lý để tránh vòng lặp vô hạn.
+- **Khớp cú pháp ngoặc nhọn** — Xác thực các token tham chiếu liên kết khớp với mẫu `^{...}$`.
+- **Lưu bộ đệm** — Lưu cấu trúc thuộc tính đã được giải quyết vào tập tin bộ nhớ đệm `004-link`.
+
+## Khởi tạo
+
+```typescript
+import { PropertiesToLink, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToLink(items)
+transformer.to()
+```
+
+## Phương thức
+
+### Thao tác giải quyết liên kết
+
+- `init(): void` — Ghi đè phương thức vòng đời trừu tượng để chạy tối đa 32 lượt giải quyết tham chiếu cho đến khi không tìm thấy thay đổi nào nữa.
+- `read(design?: string, component?: string, properties?, parent?: string[]): boolean` — Quét đệ quy các thuộc tính, phát hiện liên kết, giải quyết các mục nguồn và xếp hàng để tiêm giá trị (splice).
+- `isType(item: PropertyItem): boolean` — Kiểm tra xem thuộc tính có khớp với các kiểu có thể liên kết hay không (ví dụ: `link`, `var`, `property`, `selector`, `virtual`, `scss`).
+- `isValue(value: PropertyItem['value']): value is string` — Kiểm tra xem giá trị có phải là chuỗi tham chiếu hợp lệ khớp với mẫu ngoặc nhọn hay không.
+- `isIgnore(value: string): boolean` — Kiểm tra xem tham chiếu có bị đánh dấu bỏ qua hay không.
+- `isLink(value: string): boolean` — Kiểm tra xem liên kết tham chiếu đã được giải quyết chưa.
+- `isData(value: PropertyItem['value']): value is PropertyList` — Xác định xem tham chiếu có trỏ đến một nút đối tượng phức tạp hay không.
+- `add(parent: string[], items: PropertyLinkItem[]): void` — Ghép các giá trị đã giải quyết trở lại vào các nút cha tham chiếu của chúng.
+- `addIgnore(value: string): void` — Thêm một giá trị vào mảng bỏ qua.
+- `addLink(value: string): void` — Đăng ký một liên kết là đã xử lý.

@@ -1,0 +1,30 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/PropertiesToMulti - Multi-Value Property Transformer'/>
+
+# PropertiesToMulti Class
+
+The `PropertiesToMulti` class converts design tokens that contain multiple custom properties or states into standardized structures where values are grouped appropriately under their key names. It extends `PropertiesToAbstract`.
+
+## Key Features
+
+- **Multi-Value Conversion** — Finds properties with type `property` that hold complex nested values and restructures them.
+- **State Promotion** — Resolves underlying values (like variables or states) and maps them into state modifier structures.
+- **Cache Persistence** — Saves the transformed structures to the `012-multi` cache file.
+
+## Initialization
+
+```typescript
+import { PropertiesToMulti, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToMulti(items)
+transformer.to()
+```
+
+## Methods
+
+### Transform Operations
+
+- `init(): void` — Overrides the abstract lifecycle hook to retrieve multi-value properties and rewrite their children.
+- `getList(): PropertyItemsItem[]` — Filters all active items, returning only property variables that possess non-empty, complex value objects.
+- `read(name: string, properties: PropertyList, isVar: boolean): void` — Restructures child values, promoting their properties into state structures and adjusting the output property type based on `isVar`.

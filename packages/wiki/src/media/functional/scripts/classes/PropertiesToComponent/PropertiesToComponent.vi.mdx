@@ -1,0 +1,29 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/PropertiesToComponent - Bộ chuyển đổi thuộc tính Component'/>
+
+# Lớp PropertiesToComponent
+
+Lớp `PropertiesToComponent` chuyển đổi các thẻ cấu hình thiết kế (tokens) được chỉ định làm không gian tên của thành phần (component) hoặc chủ đề (theme) thành tên thuộc tính thành phần chuẩn hóa. Lớp này kế thừa từ `PropertiesToAbstract`.
+
+## Các tính năng chính
+
+- **Giải quyết phạm vi không gian tên** — Xác định các token kiểu `PropertyType.component` hoặc `PropertyType.theme` và định dạng tên của chúng.
+- **Đặt tên theo cấp bậc** — Tự động thêm tiền tố không gian tên cha vào tên thành phần để ngăn ngừa xung đột tên.
+- **Lưu bộ đệm** — Lưu đầu ra thuộc tính thành phần vào tập tin bộ nhớ đệm `028-component`.
+
+## Khởi tạo
+
+```typescript
+import { PropertiesToComponent, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToComponent(items)
+transformer.to()
+```
+
+## Phương thức
+
+### Vòng đời & Hỗ trợ
+
+- `init(): void` — Ghi đè phương thức vòng đời trừu tượng để xử lý các nút biến thành phần và chủ đề.
+- `getName(name: string, item: PropertyItem, parents: PropertyItemsItem['parents']): string` — Giải quyết tên duy nhất của một thành phần, kết hợp các đường dẫn cha trừ khi thuộc tính `fullName` được bật.

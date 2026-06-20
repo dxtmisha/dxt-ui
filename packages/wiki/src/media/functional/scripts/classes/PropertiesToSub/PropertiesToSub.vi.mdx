@@ -1,0 +1,32 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/PropertiesToSub - Bộ giải quyết giá trị nội suy lồng nhau'/>
+
+# Lớp PropertiesToSub
+
+Lớp `PropertiesToSub` giải quyết đệ quy các biểu thức nội suy lồng nhau trong dấu ngoặc nhọn (chẳng hạn như `calc({ref.width} * 2)`) bên trong các giá trị token. Lớp này kế thừa từ `PropertiesToAbstract`.
+
+## Các tính năng chính
+
+- **Giải quyết giá trị lồng nhau** — Giải quyết đệ quy các ngoặc nhọn con chứa các tham chiếu biến trong các giá trị chuỗi lớn hơn.
+- **Bảo vệ vòng lặp** — Giới hạn thao tác tra cứu ở mức 24 lần lặp để ngăn chặn tra cứu vô hạn trên các định nghĩa vòng.
+- **Bỏ ngoặc nhọn** — Tự động loại bỏ các ngoặc nhọn bên ngoài khi token có thuộc tính `fullValue` là true.
+- **Lưu bộ đệm** — Lưu các giá trị con đã giải quyết vào tập tin bộ nhớ đệm `006-sub`.
+
+## Khởi tạo
+
+```typescript
+import { PropertiesToSub, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToSub(items)
+transformer.to()
+```
+
+## Phương thức
+
+### Thao tác giải quyết
+
+- `init(): void` — Ghi đè phương thức vòng đời trừu tượng để tìm và giải quyết tất cả các thuộc tính có giá trị con.
+- `is(value: PropertyItem['value']): boolean` — Trả về true nếu giá trị token chứa một mẫu ngoặc nhọn con lồng nhau.
+- `getValue(design: string, component: string, value: string): string` — Giải quyết lặp đi lặp lại các chỉ báo nội suy ngoặc nhọn bằng cách sử dụng thanh đăng ký phần tử thuộc tính toàn cục.
+- `read({ design, component, item }: PropertyItemsItem): void` — Giải quyết các giá trị con cho một phần tử thuộc tính và loại bỏ các ngoặc nhọn nếu `fullValue` được cắm cờ.

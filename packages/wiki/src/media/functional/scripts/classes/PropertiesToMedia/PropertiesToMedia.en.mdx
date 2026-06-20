@@ -1,0 +1,33 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/PropertiesToMedia - Media Query and Container Transformer'/>
+
+# PropertiesToMedia Class
+
+The `PropertiesToMedia` class processes design tokens representing media queries and container queries, translating aliases and raw groups into standard CSS `@media` or `@container` constraints. It extends `PropertiesToAbstract`.
+
+## Key Features
+
+- **Media Alias Expansion** — Looks up custom viewport abbreviations (e.g. `md`, `lg`) using design configurations and expands them into pixel definitions.
+- **Query Type Synthesis** — Determines min-width and max-width ranges based on properties named `media`, `mediaMax`, `container`, or `containerMax`.
+- **Media Group Expansion** — Generates groups of state modifiers for each active media/container breakpoint defined in the design system.
+- **Cache Persistence** — Saves the media query output to the `040-media` cache file.
+
+## Initialization
+
+```typescript
+import { PropertiesToMedia, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToMedia(items)
+transformer.to()
+```
+
+## Methods
+
+### Transform Operations
+
+- `init(): void` — Overrides the abstract lifecycle hook to find and expand media query group nodes and translate individual query parameters.
+- `getName(design: string, name: string, item: PropertyItem): string` — Converts media configuration parameters into standard CSS query criteria (e.g., `(min-width: 768px)`).
+- `getTypeByGroup(item: PropertyItem): PropertyType` — Resolves the base property type from a container or media group item.
+- `toValueForMedia(design: string, values: string[]): string[]` — Replaces responsive aliases with their configured pixel measurements.
+- `toValueGroup(design: string, name: string, item: PropertyItem, type: PropertyType): Record<string, PropertyItem> | undefined` — Creates separate state modifiers for each breakpoint within a media group structure.

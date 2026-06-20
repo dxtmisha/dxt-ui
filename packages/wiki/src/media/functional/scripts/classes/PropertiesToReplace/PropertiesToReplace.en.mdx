@@ -1,0 +1,31 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/PropertiesToReplace - Regex String Replace Transformer'/>
+
+# PropertiesToReplace Class
+
+The `PropertiesToReplace` class transforms string values of design tokens using regular expressions specified by a `replace` configuration. It extends `PropertiesToAbstract`.
+
+## Key Features
+
+- **Regex Transformation** — Evaluates regex match criteria and overrides token values with processed output.
+- **Flexible Configuration Options** — Supports either shorthand pattern strings or detailed `PropertyReplace` configuration objects (defining pattern, flags, and replacement strings).
+- **Cleanup Safety** — Removes the temporary `replace` directive flag from token properties after successfully transforming the target value.
+- **Cache Persistence** — Saves the updated token mappings to the `001-replace` cache file.
+
+## Initialization
+
+```typescript
+import { PropertiesToReplace, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToReplace(items)
+transformer.to()
+```
+
+## Methods
+
+### Transform & Utility Operations
+
+- `init(): void` — Overrides the abstract lifecycle hook to loop through properties, detect string values with a `replace` directive, and perform transformations.
+- `getInfo(info: PropertiesReplaceValue): PropertyReplace` — Normalizes incoming shorthand string patterns or detailed configurations into structured `PropertyReplace` objects.
+- `getValue(info: PropertyReplace, value: string): string` — Executes the regex substitution, returning the replaced string.

@@ -1,0 +1,66 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/# Design System'/>
+
+# Working with the Design System
+
+The `@dxtmisha/scripts` package is a powerful tool and the automation "brain" of the entire **DXT UI** design system. It is a set of utilities and CLI commands that take over the routine work of creating, linking, testing, and documenting components.
+
+The main goal of this package is to provide developers and business stakeholders with a unified, automated process for UI kit development, where the human factor and mistakes in writing boilerplate code are reduced to zero. 
+
+The special value of the package lies in its role as a **bridge between abstract business logic and visual design**.
+
+## Separation of Logic and Design
+
+The architecture of DXT UI is built on strict separation:
+- **Abstract Logic (Constructor)** — isolated classes that manage ARIA attributes, events, focus, and states, but know nothing about colors, sizes, or CSS classes.
+- **Visual Design** — the concrete implementation (tokens, paddings, palettes).
+
+The `scripts` package takes on the task of automatically and flawlessly "stitching" these two worlds together.
+
+## How it works under the hood:
+
+1. **`properties.json` as the Single Source of Truth:**
+   The developer or designer describes only the visual properties of the component (tokens, colors, sizes, states like `:hover`/`:active`, modifiers) in a single configuration file `properties.json`.
+   
+2. **Parsing and Scaffolding:**
+   The `scripts` package reads this configuration file and automatically generates all the connecting infrastructure:
+   - `props.ts` — TypeScript interfaces that extend the base properties from the Constructor, adding precise types for the design (e.g., `size: 'sm' | 'md'`) and default values.
+   - `styleToken.scss` — ready-made SCSS mixins and CSS variables (design tokens).
+   - `DesignComponent.vue` — the Vue template where the magic happens: the script generates computed BEM classes based on the properties and passes them into the abstract `Design` class from the Constructor (dependency injection).
+   
+3. **Type Orchestration (`dxt-constructor`):**
+   Adding a new property to `properties.json` automatically updates the project's global interfaces. The IDE immediately starts providing autocomplete suggestions for new properties when using the component (e.g., via `web-types.json`).
+
+4. **AI-Assisted Documentation Generation (AI-Docs):**
+   Integration with artificial intelligence (Google Gemini / Anthropic Claude) allows the package to automatically generate reference materials, prop descriptions, and code examples directly based on `properties.json` and TypeScript types.
+
+## What does this mean for business and the development team?
+
+- **High development speed:** The focus shifts from writing boilerplate to creating the actual product. Creating a new component or modifier takes seconds.
+- **Guaranteed consistency:** Missing exports, typos in CSS class names, or discrepancies between TypeScript and SCSS are eliminated. The logic (e.g., ARIA accessibility) always works perfectly as it is inherited from the Constructor, while the visual part 100% matches the tokens.
+- **Ease of maintenance and scaling:** To change the logic for generating CSS classes or the folder structure across the entire library, you only need to modify the logic of the `scripts` package, after which the entire UI library is rebuilt with a single command.
+- **Design Integration (Figma):** Built-in Figma API clients allow extracting frame structures, design tokens, and styles directly from mockups, automatically converting them into code.
+
+## Main Commands (CLI)
+
+- **`npm run ui [ComponentName]` / `dxt-ui`**
+  The main orchestrator. Scans `properties.json` files, generates templates, "stitches" them with Constructor classes, and updates props and styles. 
+- **`npm run constructor` / `dxt-constructor`**
+  Rebuilds global classes and logic constructor types, guaranteeing that all property types are up to date.
+- **`dxt-component-wiki` / `dxt-wiki-storm`**
+  Launches AI-driven component documentation generation for Storybook/MDX and formats data for autocomplete in IDEs (WebStorm).
+- **`npm run library` / `dxt-library`**
+  Scans the directory tree and automatically generates `index.ts` export files across all workspace packages.
+- **`dxt-screenshot`**
+  A visual regression testing environment using Puppeteer.
+
+## Deep Integration of Styles and Design Tokens
+
+The design token parsing module (`Properties*` classes) is the heart of the code generator. The script recognizes numerous property types from JSON:
+- **`type-var` / `flag-var`**: Properties compiled directly into CSS variables (dynamic padding, border-radius management).
+- **`type-state`**: Dynamic visual component states.
+- **`flag-theme` / Palettes**: Color management and dark/light theme support without CSS duplication.
+- **`flag-subclass` / `flag-replace`**: Smart BEM CSS class management, appending modifier classes only when flags are active.
+
+The script automatically translates all these connections into optimized SCSS code and strict TypeScript, forming a flawless bridge between the visual design and the logical core of the components.

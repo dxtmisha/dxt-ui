@@ -1,0 +1,28 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/PropertiesToNone - Bộ dọn dẹp Token trống'/>
+
+# Lớp PropertiesToNone
+
+Lớp `PropertiesToNone` dọn dẹp cây cấu hình thiết kế bằng cách loại bỏ các cấu hình trống và không sử dụng, từ đó tối ưu hóa bộ nhớ và kích thước đầu ra. Lớp này kế thừa từ `PropertiesToAbstract`.
+
+## Các tính năng chính
+
+- **Cắt tỉa nút dư thừa** — Xác định các nút thuộc tính và biến chứa các giá trị đối tượng trống.
+- **Báo cáo bảng điều khiển** — Ghi nhật ký chi tiết cảnh báo về các đường dẫn trống đã bị xóa vào terminal để nhà phát triển kiểm tra.
+- **Lưu bộ đệm** — Lưu cây thuộc tính đã được làm sạch vào tập tin bộ nhớ đệm `900-none`.
+
+## Khởi tạo
+
+```typescript
+import { PropertiesToNone, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToNone(items)
+transformer.to()
+```
+
+## Phương thức
+
+### Vòng đời
+
+- `init(): void` — Ghi đè phương thức vòng đời trừu tượng để tìm và xóa các mục trống dưới các nhánh biến và thuộc tính.

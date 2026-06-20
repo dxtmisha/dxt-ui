@@ -1,0 +1,30 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/PropertiesToMulti - Bộ chuyển đổi thuộc tính đa giá trị'/>
+
+# Lớp PropertiesToMulti
+
+Lớp `PropertiesToMulti` chuyển đổi các token thiết kế chứa nhiều thuộc tính hoặc trạng thái tùy chỉnh thành các cấu trúc chuẩn hóa, nơi các giá trị được gom nhóm phù hợp dưới tên khóa của chúng. Lớp này kế thừa từ `PropertiesToAbstract`.
+
+## Các tính năng chính
+
+- **Chuyển đổi đa giá trị** — Tìm các thuộc tính kiểu `property` chứa các giá trị lồng nhau phức tạp và tái cấu trúc chúng.
+- **Thăng cấp trạng thái** — Giải quyết các giá trị cơ bản (như biến hoặc trạng thái) và ánh xạ chúng vào các cấu trúc bổ trợ trạng thái.
+- **Lưu bộ đệm** — Lưu các cấu trúc đã chuyển đổi vào tập tin bộ nhớ đệm `012-multi`.
+
+## Khởi tạo
+
+```typescript
+import { PropertiesToMulti, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToMulti(items)
+transformer.to()
+```
+
+## Phương thức
+
+### Thao tác chuyển đổi
+
+- `init(): void` — Ghi đè phương thức vòng đời trừu tượng để lấy ra các thuộc tính đa giá trị và viết lại các phần tử con của chúng.
+- `getList(): PropertyItemsItem[]` — Lọc tất cả các mục hoạt động, chỉ trả về các biến thuộc tính sở hữu các đối tượng giá trị phức tạp, không rỗng.
+- `read(name: string, properties: PropertyList, isVar: boolean): void` — Tái cấu trúc các giá trị con, thăng cấp các thuộc tính của chúng thành các cấu trúc trạng thái và điều chỉnh kiểu thuộc tính đầu ra dựa trên `isVar`.

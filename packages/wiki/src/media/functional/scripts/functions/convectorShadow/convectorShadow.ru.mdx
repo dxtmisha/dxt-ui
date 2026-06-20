@@ -1,0 +1,41 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/scripts/Functions/convectorShadow - Преобразование теней в CSS'/>
+
+# `convectorShadow`
+
+Функция преобразует необработанные конфигурации теней или массивы теней в строковые значения CSS `box-shadow`.
+
+**Параметры:**
+- `item: PropertyItemInput` — элемент свойства токена дизайна для преобразования.
+
+**Возвращает:**
+`void` — функция напрямую изменяет свойство `value` переданного объекта `item`.
+
+## Принцип работы
+
+Функция проверяет, является ли `item.value` объектом. Если да, она обходит элементы конфигурации теней (при необходимости преобразуя одиночный объект в массив). Для каждой тени:
+1. Сопоставляет тип `innerShadow` со значением `inset`.
+2. Разбирает смещения и размеры (`x`, `y`, `blur`, `spread`), добавляя суффикс `px` к чисто числовым строкам.
+3. Если параметр цвета содержит фигурные скобки интерполяции `{`, он оборачивает цвет в формат `@ui.toCustomVarRgb(...)`.
+4. Соединяет все разобранные параметры через пробел, а несколько описаний теней объединяет через запятую.
+
+## Пример
+
+```typescript
+import { convectorShadow } from '@dxtmisha/scripts'
+
+const item = {
+  value: {
+    type: 'innerShadow',
+    color: '{sys.color.primary}',
+    x: '0',
+    y: '4',
+    blur: '10',
+    spread: '2'
+  }
+}
+convectorShadow(item)
+
+console.log(item.value) // "inset 0px 4px 10px 2px @ui.toCustomVarRgb({sys.color.primary})"
+```

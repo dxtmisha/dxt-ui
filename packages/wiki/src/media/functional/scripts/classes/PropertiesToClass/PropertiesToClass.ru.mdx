@@ -1,0 +1,29 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/scripts/Classes/PropertiesToClass - Преобразование селекторов классов CSS'/>
+
+# Класс PropertiesToClass
+
+Класс `PropertiesToClass` управляет преобразованием элементов токенов дизайна, представляющих CSS-классы, в стандартные селекторы классов SCSS. Он наследует класс `PropertiesToAbstract`.
+
+## Ключевые особенности
+
+- **Синтез селекторов классов** — Преобразует необработанные имена токенов типа `PropertyType.classType` в селекторы классов SCSS с пространством имен родителя.
+- **Поддержка структуры BEM** — Разрешает вложенность родительских и дочерних классов путем проверки иерархии свойств.
+- **Кэширование результатов** — Сохраняет обработанные селекторы классов в файл кэша `030-class`.
+
+## Инициализация
+
+```typescript
+import { PropertiesToClass, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToClass(items)
+transformer.to()
+```
+
+## Методы
+
+### Жизненный цикл и вспомогательные методы
+
+- `init(): void` — Переопределяет абстрактный шаг жизненного цикла для поиска всех переменных типа `classType` и перезаписи их селекторов.
+- `getName(name: string, item: PropertyItem, parents: PropertyItemsItem['parents']): string` — Форматирует имена селекторов классов, добавляя префикс `& .` и ограничивая их областью видимости верхнего уровня родителя, если флаг `fullName` равен false.

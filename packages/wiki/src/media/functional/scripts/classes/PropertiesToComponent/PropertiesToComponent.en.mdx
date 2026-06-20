@@ -1,0 +1,29 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/PropertiesToComponent - Component Property Transformer'/>
+
+# PropertiesToComponent Class
+
+The `PropertiesToComponent` class converts design tokens designated as component or theme namespaces into normalized component property names. It extends `PropertiesToAbstract`.
+
+## Key Features
+
+- **Namespace Scope Resolution** — Identifies tokens of type `PropertyType.component` or `PropertyType.theme` and formats their names.
+- **Hierarchical Naming** — Automatically prefixes component names with ancestor namespaces to prevent collisions.
+- **Cache Persistence** — Saves the component property output to the `028-component` cache file.
+
+## Initialization
+
+```typescript
+import { PropertiesToComponent, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToComponent(items)
+transformer.to()
+```
+
+## Methods
+
+### Lifecycle & Helpers
+
+- `init(): void` — Overrides the abstract lifecycle hook to process component and theme variable nodes.
+- `getName(name: string, item: PropertyItem, parents: PropertyItemsItem['parents']): string` — Resolves the unique name of a component, combining ancestor paths unless `fullName` is enabled.

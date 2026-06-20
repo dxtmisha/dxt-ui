@@ -1,0 +1,33 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/PropertiesToDrag - Branch Relocation Transformer'/>
+
+# PropertiesToDrag Class
+
+The `PropertiesToDrag` class manages the translation and relocation of properties from one branch of the design token tree to another based on the `drag` directive. It extends `PropertiesToAbstract`.
+
+## Key Features
+
+- **Relocation Rules** — Relocates property elements according to paths defined in `drag` properties (using `.` or `..` relative path segments).
+- **Target Synthesizing** — Automatically creates target directories and structures using `dragSetting` definitions.
+- **Atomic Value Moving** — Merges values into the target elements while safely removing them from their source positions.
+- **Cache Persistence** — Saves the relocated property tree to the `007-03-drag` cache file.
+
+## Initialization
+
+```typescript
+import { PropertiesToDrag, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToDrag(items)
+transformer.to()
+```
+
+## Methods
+
+### Relocation Operations
+
+- `init(): void` — Overrides the abstract lifecycle hook to start reading and translating the property branches.
+- `getDragSetting(property: PropertyItemsItem): Record<string, PropertyItem> | undefined` — Evaluates `dragSetting` configuration to fetch the template properties representing target locations.
+- `read(properties?: PropertyItemsItem): void` — Recursively traverses the property tree to locate and process nodes targeted by `drag`.
+- `drag(parents: PropertyItemsParent[], item: PropertyItem, setting: Record<string, PropertyItem>): PropertyItem | undefined` — Performs path lookup (`.` for root, `..` for parent) to determine the exact destination node.
+- `toGo(item: PropertyItem, itemDrag: PropertyItem): boolean` — Copies properties and values from the source element to the destination element.

@@ -1,0 +1,28 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/# Lệnh/dxt-prompt - Trình tạo Lời nhắc AI Hợp nhất'/>
+
+# dxt-prompt
+
+Lệnh `dxt-prompt` tạo ra một tệp lời nhắc AI hợp nhất `ai-prompt.md` tại thư mục gốc của dự án. Tệp này đóng gói toàn bộ các hướng dẫn viết mã, quy tắc lớp BEM, tiêu chuẩn định dạng SCSS và hướng dẫn thành phần Vue nhằm cấu hình cho các trợ lý viết mã AI.
+
+## Các tính năng chính
+
+- **Hướng dẫn Tập trung**: Tích hợp toàn bộ các hướng dẫn chung và hướng dẫn riêng của từng thành phần vào trong một tệp duy nhất.
+- **Tự động Quét Thư mục**: Quét đệ quy các thư mục mô-đun được cấu hình để tìm kiếm các lời nhắc và định nghĩa cục bộ.
+- **Nhất quán Quy tắc**: Trộn các mẫu lời nhắc Markdown thô của Vue và cấu trúc viết mã chung để đảm bảo AI tuân theo các quy tắc kiến trúc nghiêm ngặt.
+
+## Nó hoạt động như thế nào?
+
+1. **Quét Thư mục**: Tập lệnh quét các thư mục được xác định trong cấu hình dự án (ví dụ các mô-đun `src/`).
+2. **Thu thập Lời nhắc**: Nó thu thập các mục lời nhắc và quy tắc hệ thống từ các tệp cục bộ.
+3. **Lắp ráp Ngữ cảnh**: Nó kết hợp các hướng dẫn toàn cục, các chỉ thị đặc thù cho Vue và bất kỳ lệnh ưu tiên cao nào thành một mẫu hệ thống có cấu trúc.
+4. **Tạo Kết quả**: Nó ghi kết quả biên dịch cuối cùng vào tệp `ai-prompt.md` ở thư mục gốc của dự án.
+
+## Cách sử dụng
+
+Chạy trình tạo lời nhắc thông qua `npx`:
+```bash
+npx dxt-prompt
+```
+Điều này sẽ tự động tạo mới hoặc cập nhật tệp `ai-prompt.md`.

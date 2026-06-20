@@ -1,0 +1,33 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/PropertiesToDrag - Bộ chuyển đổi chuyển dời nhánh thuộc tính'/>
+
+# Lớp PropertiesToDrag
+
+Lớp `PropertiesToDrag` quản lý việc dịch chuyển và di dời các thuộc tính từ một nhánh của cây cấu hình thiết kế sang một nhánh khác dựa trên chỉ thị `drag`. Lớp này kế thừa từ `PropertiesToAbstract`.
+
+## Các tính năng chính
+
+- **Quy tắc di dời** — Di dời phần tử thuộc tính theo các đường dẫn được định nghĩa trong thuộc tính `drag` (sử dụng các phân đoạn đường dẫn tương đối như `.` hoặc `..`).
+- **Tổng hợp đích đến** — Tự động tạo thư mục đích và cấu trúc bằng cách sử dụng các định nghĩa của `dragSetting`.
+- **Di chuyển giá trị nguyên tử** — Trộn các giá trị vào phần tử đích trong khi xóa chúng khỏi vị trí nguồn một cách an toàn.
+- **Lưu bộ đệm** — Lưu cây thuộc tính đã dịch chuyển vào tập tin bộ nhớ đệm `007-03-drag`.
+
+## Khởi tạo
+
+```typescript
+import { PropertiesToDrag, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToDrag(items)
+transformer.to()
+```
+
+## Phương thức
+
+### Thao tác di dời
+
+- `init(): void` — Ghi đè phương thức vòng đời trừu tượng để bắt đầu đọc và dịch chuyển các nhánh thuộc tính.
+- `getDragSetting(property: PropertyItemsItem): Record<string, PropertyItem> | undefined` — Đánh giá cấu hình `dragSetting` để tìm nạp các thuộc tính mẫu đại diện cho các vị trí đích.
+- `read(properties?: PropertyItemsItem): void` — Duyệt đệ quy cây thuộc tính để xác định vị trí và xử lý các nút được nhắm mục tiêu bởi `drag`.
+- `drag(parents: PropertyItemsParent[], item: PropertyItem, setting: Record<string, PropertyItem>): PropertyItem | undefined` — Thực hiện tìm kiếm đường dẫn (`.` cho gốc, `..` cho cha) để xác định nút đích chính xác.
+- `toGo(item: PropertyItem, itemDrag: PropertyItem): boolean` — Sao chép các thuộc tính và giá trị từ phần tử nguồn sang phần tử đích.

@@ -1,0 +1,32 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/PropertiesToSimilar - Bộ kế thừa thuộc tính Token tương tự'/>
+
+# Lớp PropertiesToSimilar
+
+Lớp `PropertiesToSimilar` tìm kiếm ở các cấp cha của cây cấu hình thiết kế để định vị các thuộc tính tương tự (có tên khớp nhau) và kế thừa kiểu cũng như các quy tắc đổi tên của chúng. Lớp này kế thừa từ `PropertiesToAbstract`.
+
+## Các tính năng chính
+
+- **Kế thừa thuộc tính** — Cho phép các token con kế thừa định dạng đổi tên và các biến thuộc tính từ các đường dẫn gốc/cha khớp nhau.
+- **Lọc ngoại lệ** — Tự động chặn kế thừa từ các nút được chỉ định làm không gian tên `classType` hoặc `subclass`.
+- **Tìm kiếm ngược lên** — Quét đệ quy các tổ tiên cha theo thứ tự ngược lại (từ dưới lên) để tìm các thuộc tính phù hợp.
+- **Lưu bộ đệm** — Lưu cấu trúc token đã cập nhật vào tập tin bộ nhớ đệm `010-similar`.
+
+## Khởi tạo
+
+```typescript
+import { PropertiesToSimilar, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToSimilar(items)
+transformer.to()
+```
+
+## Phương thức
+
+### Thao tác kế thừa
+
+- `init(): void` — Ghi đè phương thức vòng đời trừu tượng để duyệt qua tất cả các thuộc tính và áp dụng các giá trị kế thừa từ các phần tử cha.
+- `getParent(name: string, item: PropertyItem, parents: PropertyItemsParent[]): PropertyItem | undefined` — Đánh giá các cấu trúc cha khớp nhau để tìm một ứng cử viên thuộc tính nguồn cho việc kế thừa.
+- `is(item: PropertyItem): boolean` — Xác thực xem một phần tử token có phải là biến hoặc thuộc tính thích hợp để kế thừa hay không.
+- `isException(item?: PropertyItem): boolean` — Trả về true nếu kiểu token khớp với một trong những ngoại lệ không gian tên bị chặn.

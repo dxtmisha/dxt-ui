@@ -1,0 +1,28 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/scripts/Functions/convectorTypography - Форматирование значений типографики'/>
+
+# `convectorTypography`
+
+Функция нормализует токены дизайна типографики, преобразуя простые строковые значения в стандартные базовые конфигурации шрифтов.
+
+**Параметры:**
+- `item: PropertyItemInput` — элемент свойства токена дизайна для преобразования.
+
+**Возвращает:**
+`void` — функция напрямую изменяет свойство `value` переданного объекта `item`.
+
+## Принцип работы
+
+Функция проверяет, является ли `item.value` строкой. Если да, она оборачивает строку в объект с ключом `basic` для обеспечения совместимости со сложными адаптивными структурами типографики: `{ basic: item.value }`.
+
+## Пример
+
+```typescript
+import { convectorTypography } from '@dxtmisha/scripts'
+
+const item = { value: '16px/1.5 Inter' }
+convectorTypography(item)
+
+console.log(item.value) // { basic: "16px/1.5 Inter" }
+```

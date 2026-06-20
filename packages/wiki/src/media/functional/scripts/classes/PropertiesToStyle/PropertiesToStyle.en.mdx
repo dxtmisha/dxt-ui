@@ -1,0 +1,28 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/PropertiesToStyle - Custom Style Group Transformer'/>
+
+# PropertiesToStyle Class
+
+The `PropertiesToStyle` class processes design tokens that support additional custom values, wrapping them into dedicated style structure nodes. It extends `PropertiesToAbstract`.
+
+## Key Features
+
+- **Custom Selector Synthesizing** — Creates custom state overrides under a unified `custom` key inside property value maps.
+- **Dynamic Property Conversion** — Rewrites properties with the `style` directive to behave as variable states.
+- **Cache Persistence** — Saves the processed custom overrides to the `016-style` cache file.
+
+## Initialization
+
+```typescript
+import { PropertiesToStyle, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToStyle(items)
+transformer.to()
+```
+
+## Methods
+
+### Lifecycle Hooks
+
+- `init(): void` — Overrides the abstract lifecycle hook to loop through properties, check for `style` markers, and inject `custom` style records.

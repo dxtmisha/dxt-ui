@@ -1,0 +1,42 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/! Giới thiệu về gói'/>
+
+# Hệ sinh thái kịch bản (Scripts)
+
+Gói `@dxtmisha/scripts` là một bộ công cụ tự động hóa CLI và các tập lệnh phát triển mạnh mẽ được thiết kế đặc biệt để tạo khung (scaffolding), biên dịch, tài liệu hóa và kiểm tra trực quan các thành phần trong hệ thống thiết kế.
+
+Nó liên kết chặt chẽ giữa thành phần giao diện, các bảng kiểu (styles), các token thiết kế và tài liệu hệ thống nhằm loại bỏ các tác vụ lặp đi lặp lại và duy trì mã nguồn sạch sẽ, dễ mở rộng.
+
+## Các phân hệ chính
+
+### 1. Tạo Khung Component & Tài liệu
+- **`dxt-component`**: Tự động tạo các mẫu thành phần Vue, tệp giao diện thuộc tính (`props.ts`), tệp kiểu dáng và xuất bản nội bộ.
+- **`dxt-component-wiki`**: Tạo tài liệu và các tệp MDX wiki cho thành phần thông qua mô hình AI của Gemini hoặc Claude.
+- **`dxt-constructor`**: Tạo khung mã nguồn của các lớp dựng logic (constructors) và các cấu hình cho thành phần.
+
+### 2. Biên dịch & Quản lý Kiểu Thiết kế
+- **`dxt-ui`**: Trình điều phối trung tâm quản lý việc biên dịch kiểu dáng, danh sách thành phần, xuất bản kiểu dữ liệu và cập nhật tài liệu.
+- **`dxt-types`**: Trích xuất và nén các khai báo TypeScript (`.d.ts`) thành các hướng dẫn kiểu được tối ưu hóa cho AI (`ai-types.md` và `ai-developer.md`).
+- **`dxt-wiki-storm`**: Định dạng các thuộc tính và sự kiện của thành phần thành tệp `web-types.json` để phục vụ tính năng tự động hoàn thành trong các JetBrains IDE (WebStorm, IntelliJ IDEA).
+
+### 3. Tự động hóa Bản dựng & Xuất bản
+- **`dxt-build-functional`**: Biên dịch động các xuất bản lại (re-export) của các hàm phản hồi từ gói cốt lõi `@dxtmisha/functional`.
+- **`dxt-build-packages`**: Quét không gian làm việc và biên dịch tăng dần (incremental) chỉ với các gói có sự thay đổi.
+- **`dxt-build-publish-packages`**: Tự động hóa quá trình xây dựng và xuất bản các gói cập nhật trong không gian làm việc.
+
+### 4. Tiện ích và Kiểm tra Giao diện
+- **`dxt-screenshot`**: Khởi chạy dev server, sử dụng Puppeteer để chụp ảnh màn hình thành phần và xuất bản tệp HTML/CSS thô để phục vụ kiểm tra trực quan (visual audit).
+- **`dxt-flags`**: Biên dịch các tệp cờ quốc gia SVG thành bản đồ sprite và các lớp CSS tối ưu.
+- **`dxt-library`**: Tự động hóa việc duy trì các điểm xuất bản (barrel files) trong tất cả các thư viện của gói.
+- **`dxt-prompt`**: Đóng gói các tiêu chuẩn SCSS, BEM và Vue thành một tệp lời nhắc hệ thống hợp nhất (`ai-prompt.md`) dành cho các trợ lý AI.
+
+## Tại sao nên sử dụng gói này?
+
+- **Không còn Viết mã Rập khuôn**: Tự động hóa hoàn toàn cấu trúc thư mục thành phần, các tệp CSS và các nhập khẩu.
+- **Quy trình Tối ưu hóa bởi AI**: Sử dụng AI thế hệ mới để viết tài liệu chi tiết và giúp các trợ lý AI khác hiểu rõ hơn về API hệ thống.
+- **Tự động hóa Monorepo**: Giảm thiểu tối đa chi phí quản lý các bản dựng và đồng bộ hóa các gói trong npm workspaces.
+
+## Kho lưu trữ nguồn
+
+[https://github.com/dxtmisha/dxt-ui/tree/main/packages/scripts](https://github.com/dxtmisha/dxt-ui/tree/main/packages/scripts)

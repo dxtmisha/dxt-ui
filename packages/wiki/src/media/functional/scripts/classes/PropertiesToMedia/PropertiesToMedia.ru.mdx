@@ -1,0 +1,33 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/scripts/Classes/PropertiesToMedia - Преобразование медиа-запросов и контейнеров'/>
+
+# Класс PropertiesToMedia
+
+Класс `PropertiesToMedia` обрабатывает токены дизайна, представляющие медиа-запросы и контейнерные запросы, переводя алиасы и необработанные группы в стандартные ограничения CSS `@media` или `@container`. Он наследует класс `PropertiesToAbstract`.
+
+## Ключевые особенности
+
+- **Развертывание медиа-алиасов** — Ищет пользовательские сокращения областей просмотра (например, `md`, `lg`) с помощью конфигураций дизайна и развертывает их в пиксельные определения.
+- **Синтез типов запросов** — Определяет диапазоны min-width и max-width на основе свойств с именами `media`, `mediaMax`, `container` или `containerMax`.
+- **Расширение медиа-групп** — Создает группы модификаторов состояний для каждой активной точки останова (breakpoint) медиа/контейнера, определенной в дизайн-системе.
+- **Кэширование результатов** — Сохраняет результаты медиа-запросов в файл кэша `040-media`.
+
+## Инициализация
+
+```typescript
+import { PropertiesToMedia, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToMedia(items)
+transformer.to()
+```
+
+## Методы
+
+### Операции преобразования
+
+- `init(): void` — Переопределяет абстрактный шаг жизненного цикла для поиска и расширения узлов групп медиа-запросов и преобразования индивидуальных параметров запроса.
+- `getName(design: string, name: string, item: PropertyItem): string` — Преобразует параметры медиа-конфигурации в стандартные критерии CSS-запроса (например, `(min-width: 768px)`).
+- `getTypeByGroup(item: PropertyItem): PropertyType` — Разрешает базовый тип свойства на основе элемента группы контейнера или медиа.
+- `toValueForMedia(design: string, values: string[]): string[]` — Заменяет адаптивные алиасы на их настроенные значения в пикселях.
+- `toValueGroup(design: string, name: string, item: PropertyItem, type: PropertyType): Record<string, PropertyItem> | undefined` — Создает отдельные модификаторы состояния для каждого брейкпоинта в структуре медиа-группы.

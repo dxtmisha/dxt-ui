@@ -1,0 +1,29 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/scripts/Classes/PropertiesToState - Преобразование селекторов модификаторов состояний'/>
+
+# Класс PropertiesToState
+
+Класс `PropertiesToState` обрабатывает состояния токенов дизайна (типа `PropertyType.state`) и преобразует их имена в SCSS-селекторы модификаторов (такие как `&--state` или `&.parent--state`). Он наследует класс `PropertiesToAbstract`.
+
+## Ключевые особенности
+
+- **Синтез селекторов состояний** — Генерирует форматы модификаторов классов SCSS (`&--modifier`), представляющие визуальные состояния компонентов.
+- **Разрешение вложенных состояний** — Оценивает родительскую иерархию для чистого вложения подсостояний в области вложенных модификаторов (например, `&.parent--modifier`).
+- **Кэширование результатов** — Сохраняет селекторы состояний в файл кэша `032-state`.
+
+## Инициализация
+
+```typescript
+import { PropertiesToState, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToState(items)
+transformer.to()
+```
+
+## Методы
+
+### Жизненный цикл и вспомогательные методы
+
+- `init(): void` — Переопределяет абстрактный шаг жизненного цикла для поиска всех переменных типа `state` и перезаписи их селекторов.
+- `getName(name: string, item: PropertyItem, parents: PropertyItemsItem['parents']): string` — Форматирует имена модификаторов, добавляя BEM-модификатор (`&--` или `&.parent--`) на основе конфигурации верхнего уровня и предков пути.

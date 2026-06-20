@@ -1,0 +1,28 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/PropertiesToRemove - Bộ dọn dẹp thuộc tính được chỉ định xóa'/>
+
+# Lớp PropertiesToRemove
+
+Lớp `PropertiesToRemove` loại bỏ các nút và thuộc tính khỏi cây token thiết kế được đánh dấu rõ ràng bằng chỉ thị `remove`. Lớp này kế thừa từ `PropertiesToAbstract`.
+
+## Các tính năng chính
+
+- **Cắt tỉa thuộc tính mục tiêu** — Xác định và xóa các thuộc tính được cắm cờ `PropertyKey.remove`.
+- **Cảnh báo nhà phát triển** — Ghi nhật ký cảnh báo chứa các đường dẫn của phần tử bị xóa ra bảng điều khiển terminal để theo dõi.
+- **Lưu bộ đệm** — Lưu bản đồ cấu hình đã cập nhật vào tập tin bộ nhớ đệm `007-02-remove`.
+
+## Khởi tạo
+
+```typescript
+import { PropertiesToRemove, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToRemove(items)
+transformer.to()
+```
+
+## Phương thức
+
+### Vòng đời
+
+- `init(): void` — Ghi đè phương thức vòng đời trừu tượng để quét cây, xóa các nút thuộc tính phù hợp khỏi các đối tượng giá trị cha của chúng, và ghi nhật ký cảnh báo.

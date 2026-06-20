@@ -1,0 +1,28 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/PropertiesToProperty - Custom CSS Property Transformer'/>
+
+# PropertiesToProperty Class
+
+The `PropertiesToProperty` class formats design tokens representing standard CSS properties (such as background, padding, margin) into normalized kebab-case property selectors. It extends `PropertiesToVar`.
+
+## Key Features
+
+- **CSS Property Formatting** — Transforms property names into kebab-case layout representation keys.
+- **Inherited Functionality** — Leverages all variable calculation, opacity, and value resolution logic from its parent `PropertiesToVar` class.
+- **Cache Persistence** — Saves properties to the `024-property` cache file.
+
+## Initialization
+
+```typescript
+import { PropertiesToProperty, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToProperty(items)
+transformer.to()
+```
+
+## Methods
+
+### Lifecycle & Helpers
+
+- `getName({ name, item }: PropertyItemsItem): string` — Overrides the name resolution helper to return a kebab-case representation of the transformed property name.

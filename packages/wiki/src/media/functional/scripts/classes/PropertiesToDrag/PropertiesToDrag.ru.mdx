@@ -1,0 +1,33 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/scripts/Classes/PropertiesToDrag - Преобразование переноса свойств'/>
+
+# Класс PropertiesToDrag
+
+Класс `PropertiesToDrag` управляет переносом и перемещением свойств из одной ветки дерева токенов дизайна в другую на основе директивы `drag`. Он наследует класс `PropertiesToAbstract`.
+
+## Ключевые особенности
+
+- **Правила перемещения** — Переносит элементы свойств в соответствии с путями, определенными в директивах `drag` (используя относительные сегменты путей `.` или `..`).
+- **Синтез целей переноса** — Автоматически создает целевые директории и структуры, используя определения `dragSetting`.
+- **Атомарный перенос значений** — Объединяет значения с целевыми элементами, безопасно удаляя их из исходных позиций.
+- **Кэширование результатов** — Сохраняет перемещенное дерево свойств в файл кэша `007-03-drag`.
+
+## Инициализация
+
+```typescript
+import { PropertiesToDrag, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToDrag(items)
+transformer.to()
+```
+
+## Методы
+
+### Операции переноса
+
+- `init(): void` — Переопределяет абстрактный шаг жизненного цикла для запуска чтения и преобразования веток свойств.
+- `getDragSetting(property: PropertyItemsItem): Record<string, PropertyItem> | undefined` — Оценивает конфигурацию `dragSetting` для получения свойств шаблона, представляющих целевые местоположения.
+- `read(properties?: PropertyItemsItem): void` — Рекурсивно обходит дерево свойств для поиска и обработки узлов, предназначенных для переноса (`drag`).
+- `drag(parents: PropertyItemsParent[], item: PropertyItem, setting: Record<string, PropertyItem>): PropertyItem | undefined` — Выполняет поиск пути (`.` для корня, `..` для родителя) для определения точного целевого узла.
+- `toGo(item: PropertyItem, itemDrag: PropertyItem): boolean` — Копирует свойства и значения из исходного элемента в целевой элемент.

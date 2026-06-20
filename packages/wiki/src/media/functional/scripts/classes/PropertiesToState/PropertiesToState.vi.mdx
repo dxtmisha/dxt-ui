@@ -1,0 +1,29 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/PropertiesToState - Bộ chuyển đổi bộ chọn bổ trợ trạng thái'/>
+
+# Lớp PropertiesToState
+
+Lớp `PropertiesToState` xử lý các trạng thái token thiết kế (kiểu `PropertyType.state`) và chuyển đổi tên của chúng thành các bộ chọn bổ trợ (modifier selectors) SCSS (như `&--state` hoặc `&.parent--state`). Lớp này kế thừa từ `PropertiesToAbstract`.
+
+## Các tính năng chính
+
+- **Tổng hợp bộ chọn trạng thái** — Tạo ra các định dạng bộ sửa đổi lớp SCSS (`&--modifier`) đại diện cho các trạng thái trực quan của thành phần.
+- **Giải quyết trạng thái lồng nhau** — Đánh giá hệ phân cấp cha để lồng các trạng thái con một cách rõ ràng trong phạm vi các bộ sửa đổi lồng nhau (ví dụ: `&.parent--modifier`).
+- **Lưu bộ đệm** — Lưu các bộ chọn trạng thái vào tập tin bộ nhớ đệm `032-state`.
+
+## Khởi tạo
+
+```typescript
+import { PropertiesToState, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToState(items)
+transformer.to()
+```
+
+## Phương thức
+
+### Vòng đời & Hỗ trợ
+
+- `init(): void` — Ghi đè phương thức vòng đời trừu tượng để tìm tất cả các biến thuộc kiểu `state` và viết lại bộ chọn của chúng.
+- `getName(name: string, item: PropertyItem, parents: PropertyItemsItem['parents']): string` — Định dạng tên bộ sửa đổi, thêm định dạng bộ sửa đổi BEM (`&--` hoặc `&.parent--`) dựa trên cấu hình cấp cao nhất và các tổ tiên đường dẫn.

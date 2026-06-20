@@ -1,0 +1,28 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/PropertiesToRemove - Property Pruner Transformer'/>
+
+# PropertiesToRemove Class
+
+The `PropertiesToRemove` class removes nodes and properties from the design token tree that have been explicitly marked with a `remove` directive. It extends `PropertiesToAbstract`.
+
+## Key Features
+
+- **Targeted Property Pruning** — Identifies and deletes properties flagged with `PropertyKey.remove`.
+- **Developer Warnings** — Prints warning logs containing the paths of deleted elements to console output for tracking.
+- **Cache Persistence** — Saves the updated configuration map to the `007-02-remove` cache file.
+
+## Initialization
+
+```typescript
+import { PropertiesToRemove, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToRemove(items)
+transformer.to()
+```
+
+## Methods
+
+### Lifecycle Hooks
+
+- `init(): void` — Overrides the abstract lifecycle hook to scan the tree, remove matching property nodes from their parent value objects, and print logs.

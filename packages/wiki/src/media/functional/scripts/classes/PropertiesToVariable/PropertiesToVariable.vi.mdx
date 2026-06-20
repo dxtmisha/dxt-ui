@@ -1,0 +1,38 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/PropertiesToVariable - Bộ giải quyết kiểu thuộc tính'/>
+
+# Lớp PropertiesToVariable
+
+Lớp `PropertiesToVariable` phân tích các thuộc tính trong cây token thiết kế để tự động giải quyết và gán các phân loại `PropertyType` phù hợp dựa trên phân cấp, tên và giá trị. Lớp này kế thừa từ `PropertiesToAbstract`.
+
+## Các tính năng chính
+
+- **Suy luận kiểu dữ liệu động** — Gán các cờ kiểu thuộc tính chính xác (ví dụ: `var`, `property`, `selector`, `subclass`, `none`) cho các token bằng cách so khớp với danh sách tương thích CSS.
+- **Phân loại theo cấp bậc** — Duyệt các nút cha để kế thừa các phân loại và giải quyết các vỏ bọc cấp cao nhất của thành phần và thiết kế.
+- **Phát hiện bộ chọn và phần tử giả** — So sánh tên token với danh sách các bộ chọn và phần tử giả CSS tiêu chuẩn (như `:hover`, `::before`).
+- **Lưu bộ đệm** — Lưu các kiểu biến đã giải quyết vào tập tin bộ nhớ đệm `008-variable`.
+
+## Khởi tạo
+
+```typescript
+import { PropertiesToVariable, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToVariable(items)
+transformer.to()
+```
+
+## Phương thức
+
+### Thao tác giải quyết kiểu
+
+- `init(): void` — Ghi đè phương thức vòng đời trừu tượng để duyệt qua tất cả các thuộc tính và gán các phân loại kiểu dữ liệu của chúng.
+- `getByCategory(item: PropertyItem): PropertyType | undefined` — Suy luận kiểu dựa trên các danh mục như `root` hoặc `theme`.
+- `getByMain(design: string, component: string | undefined, name: string): PropertyType | undefined` — Kiểm tra xem token có đại diện cho vỏ bọc không gian tên thiết kế hoặc thành phần chính hay không.
+- `getByProperty(name: string): PropertyType | undefined` — So khớp tên token với danh sách thuộc tính CSS tiêu chuẩn.
+- `getBySelector(name: string): PropertyType | undefined` — So khớp tên token với các lớp giả CSS tiêu chuẩn.
+- `getBySubclass(item: PropertyItem): PropertyType | undefined` — Xác định cấu trúc lớp con dựa trên cấu hình trống.
+- `getByVarParent(parent?: PropertyItem): PropertyType | undefined` — Kế thừa phân loại `var` nếu phần tử cha có kiểu biến.
+- `getByNone(item: PropertyItem): PropertyType | undefined` — Trả về kiểu `none` nếu token có cấu hình kiểu ẩn rõ ràng.
+- `getByVirtual(name: string): PropertyType | undefined` — So khớp tên token với các phần tử giả CSS tiêu chuẩn.
+- `findType(name: string, item: PropertyItem): PropertyType` — Bộ điều phối trung tâm chạy tất cả các trình so khớp con để xác định giá trị dự phòng kiểu thuộc tính chính xác.

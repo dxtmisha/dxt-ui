@@ -1,0 +1,31 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/PropertiesToClone - Bộ chuyển đổi kế thừa tham số'/>
+
+# Lớp PropertiesToClone
+
+Lớp `PropertiesToClone` nhân bản các tham số cấu hình và cấu trúc cấu hình từ các phần tử cha xuống các thuộc tính con tương ứng. Lớp này kế thừa từ `PropertiesToAbstract`.
+
+## Các tính năng chính
+
+- **Cấu hình phân cấp (Cascading)** — Nhân bản các cài đặt được đánh dấu bằng `settingClone` xuống cây thuộc tính.
+- **Duyệt sâu** — Quét và kế thừa các thuộc tính một cách đệ quy cho các thuộc tính tương tự ở các phần tử con.
+- **Bỏ qua kiểu dữ liệu** — Tự động bỏ qua các kiểu biến và thuộc tính trong quá trình nhân bản để tránh ghi đè giá trị.
+- **Lưu bộ đệm** — Lưu trạng thái của các thuộc tính đã xử lý vào tập tin bộ nhớ đệm `007-01-clone`.
+
+## Khởi tạo
+
+```typescript
+import { PropertiesToClone, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToClone(items)
+transformer.to()
+```
+
+## Phương thức
+
+### Thao tác nhân bản
+
+- `init(): void` — Ghi đè phương thức vòng đời trừu tượng để duyệt qua tất cả các thuộc tính và áp dụng nhân bản.
+- `findItem(parent: PropertyItem, name: string): PropertyItem[]` — Tìm kiếm đệ quy các bản ghi thuộc tính tương tự ở các cấp con của phần tử cha.
+- `update(original: PropertyItem, properties: PropertyItem[]): void` — Thực hiện tiêm thuộc tính, trộn các thuộc tính từ phần tử gốc mà không ghi đè lên dữ liệu hiện có.

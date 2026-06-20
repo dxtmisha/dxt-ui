@@ -1,0 +1,30 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/scripts/Classes/PropertiesToSubclass - Преобразование селекторов подклассов BEM'/>
+
+# Класс PropertiesToSubclass
+
+Класс `PropertiesToSubclass` преобразует токены дизайна, обозначающие подклассы (типа `PropertyType.subclass`), во вложенные селекторы классов элементов BEM (такие как `&__subclass`). Он наследует класс `PropertiesToAbstract`.
+
+## Ключевые особенности
+
+- **Синтез селекторов BEM** — Преобразует узлы токенов подклассов во вложенные в родителя селекторы элементов SCSS (`&__element`).
+- **Определение иерархии** — Проверяет уровни предков, чтобы убедиться, что классы BEM вложены правильно в соответствии со структурами компонентов.
+- **Кэширование результатов** — Сохраняет сопоставление селекторов подклассов в файл кэша `036-subclass`.
+
+## Инициализация
+
+```typescript
+import { PropertiesToSubclass, PropertiesItems } from '@dxtmisha/scripts'
+
+const transformer = new PropertiesToSubclass(items)
+transformer.to()
+```
+
+## Методы
+
+### Жизненный цикл и вспомогательные методы
+
+- `init(): void` — Переопределяет абстрактный шаг жизненного цикла для поиска всех переменных типа `subclass` и перезаписи их селекторов.
+- `isParentState(parents: PropertyItemsItem['parents']): boolean` — Определяет, является ли непосредственный родительский элемент в пути контейнером состояния или модификатора.
+- `getName(name: string, item: PropertyItem, parents: PropertyItemsItem['parents']): string` — Разрешает селектор подкласса, добавляя форматирование BEM (`&__` или `& .`) на основе конфигурации верхнего уровня и путей предков.

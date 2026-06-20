@@ -1,0 +1,32 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/# Commands/dxt-screenshot - Dev Server Screenshot Capturer'/>
+
+# dxt-screenshot
+
+The `dxt-screenshot` command automates visual capturing of UI layout pages. It spawns the project's development server, launches a headless browser, takes a high-resolution screenshot of the page, and extracts its static HTML and CSS code.
+
+## Key Features
+
+- **Automated Server Lifecycle**: Automatically boots the local dev server (`npm run dev`) and terminates it cleanly after capturing.
+- **Headless Browser Screenshot**: Uses Puppeteer via a custom `BrowserItem` wrapper to render pages at high resolution (12000px height by default) and capture a `.webp` snapshot.
+- **Asset Extraction**: Saves the snapshot's raw page structure to `screenshot-code.html` and computed CSS to `screenshot-styles.css` for visual audits.
+
+## How does it work?
+
+1. **Spawn Dev Server**: The script runs `npm run dev` in a background subprocess.
+2. **URL Resolution**: It listens to stdout to detect the local host server address (e.g., `http://localhost:5173`).
+3. **Capture Page**: Once the URL is resolved, it opens a Puppeteer browser instance and navigates to the URL.
+4. **Export Artifacts**:
+   - Takes a full-page screenshot and saves it.
+   - Extracts page DOM body and writes it to `[path]-code.html`.
+   - Extracts page stylesheets and writes them to `[path]-styles.css`.
+5. **Teardown**: Terminated dev server subprocess gracefully.
+
+## Usage
+
+Run the screenshot capture tool via `npx`:
+```bash
+npx dxt-screenshot
+```
+The resulting capture files will be saved in the `./ai-screenshot/` folder.

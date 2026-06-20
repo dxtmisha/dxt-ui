@@ -1,0 +1,28 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/# Commands/dxt-prompt - Consolidated AI Prompt Generator'/>
+
+# dxt-prompt
+
+The `dxt-prompt` command generates a consolidated AI prompt file `ai-prompt.md` at the project root. This file packages all coding guidelines, BEM class rules, SCSS styling standards, and Vue component guidelines to configure AI assistant coding agents.
+
+## Key Features
+
+- **Centralized Guidelines**: Integrates all global and component-specific instructions into one file.
+- **Automated Directory Scanning**: Recursively scans configured module directories for local prompts and definitions.
+- **Rule Consistency**: Merges raw Markdown prompt templates for Vue and general coding structures to ensure the AI follows strict architecture rules.
+
+## How does it work?
+
+1. **Scan Directories**: The script scans directories defined in the project configuration (like `src/` modules).
+2. **Collect Prompts**: It collects prompt items and system rules from local files.
+3. **Assemble Context**: It merges global guidelines, Vue-specific instructions, and any high-priority commands into a structured system template.
+4. **Generate Output**: It writes the final compiled instructions to `ai-prompt.md` in the project root.
+
+## Usage
+
+Run the prompt generator via `npx`:
+```bash
+npx dxt-prompt
+```
+This will automatically generate or update the `ai-prompt.md` file.
