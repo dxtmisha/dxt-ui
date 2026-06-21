@@ -127,11 +127,13 @@ export const wikiDescriptionsSelectableArea: StorybookComponentsDescriptionItem 
     body: `
 <StorybookDescriptions componentName={'SelectableArea'} type={'selectableArea'}/>
 
+<StorybookDescriptions componentName={'SelectableArea'} type={'howToWork'}/>
+
 <StorybookDescriptions componentName={'SelectableArea'} type={'v-model'}/>
 <Canvas of={Component.SelectableAreaVModel}/>
     `,
     events: `
-<StorybookDescriptions componentName={'SelectableArea'} type={'event.selected'}/>
+<StorybookDescriptions componentName={'SelectableArea'} type={'events'}/>
     `,
     expose: `
 <StorybookDescriptions componentName={'SelectableArea'} type={'expose'}/>

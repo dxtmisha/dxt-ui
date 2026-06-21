@@ -1,0 +1,47 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+## Component Integration
+
+The `SelectableArea` is built upon a *renderless* architecture pattern. It encapsulates complex selection mechanics (coordinate calculation, lasso drawing, keyboard modifier handling) while completely delegating the visual rendering to your template via default slot properties.
+
+To ensure the selection engine operates correctly, you must bind the provided properties to your target DOM nodes.
+
+### Element Configuration
+
+Every interactive item within the area must implement the following bindings:
+
+- `className` — the core identifier. Bound to the `class` attribute. Required for registering the element within the component's internal coordinate system.
+- `classClick` — the interactive zone identifier. Bound to the `class` attribute. Indicates the specific area of the element that should respond to mouse events.
+- `data-value` — the element's unique key (string or number). Passed as a standard HTML attribute. This precise value is pushed to the `selected` array upon selection.
+- `onClick` — the internal event handler. Bound to the `@click` directive. Responsible for processing single-click selections, as well as multi-selection using Shift and Cmd/Ctrl modifiers.
+
+### State and Visual Management
+
+To achieve maximum rendering performance (particularly when lasso-selecting hundreds of DOM nodes), `SelectableArea` **autonomously** manipulates the DOM tree by directly toggling active state classes. This design bypasses expensive Vue virtual DOM patching cycles during rapid interactions.
+
+#### Custom Styling Logic (`classSelection`)
+The `classSelection` property provided by the slot is **not required** for standard functionality. It is exposed strictly for advanced use cases where your application's architecture requires overriding the default selection behavior. You can apply `classSelection` to leverage the component's design tokens for items whose active state is controlled by your own external business logic.
+
+<Source
+    code={`
+<template #default="{ className, classClick, classSelection, onClick }">
+  <div class="my-grid-container">
+    <div
+      v-for="item in items"
+      :key="item.id"
+      :class="[
+        className,
+        classClick,
+        /* Apply classSelection only when implementing external custom state logic */
+        isCustomActive(item) ? classSelection : ''
+      ]"
+      :data-value="item.id"
+      @click="onClick"
+    >
+      {{ item.name }}
+    </div>
+  </div>
+</template>
+  `}
+    language="html"
+/>
