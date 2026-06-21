@@ -1,0 +1,41 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/# Tài liệu AI (AI Docs)'/>
+
+# Hình thành Tài liệu AI
+
+Quá trình phát triển hiện đại ngày càng phụ thuộc vào các công cụ trí tuệ nhân tạo (GitHub Copilot, Cursor, các tác nhân LLM tùy chỉnh). Tuy nhiên, kiến trúc phức tạp, việc lồng ghép file sâu và các bình luận dư thừa thường làm AI nhầm lẫn hoặc làm tràn cửa sổ ngữ cảnh (context window) của chúng.
+
+Package `@dxtmisha/scripts` giải quyết vấn đề này bằng cách tự động tạo ra các hướng dẫn, kiểu dữ liệu (types) và siêu dữ liệu (metadata) được tối ưu hóa và nén đặc biệt để các mạng nơ-ron có thể dễ dàng hiểu được.
+
+## Tối ưu hóa Kiểu dữ liệu (DesignTypes)
+
+Lớp `DesignTypes` là một trình "đóng gói" kiểu dữ liệu thông minh, chuẩn bị các kiểu của dự án để đưa vào ngữ cảnh của AI.
+
+**Cách thức hoạt động:**
+1. **Quét bản dựng (Build Scanning):** Script phân tích thư mục `dist/`, tìm kiếm tất cả các file khai báo (`.d.ts`), loại trừ các file tiện ích (wiki, basic types).
+2. **Gộp file:** Các file được tìm thấy sẽ được kết hợp lại thành một mảng văn bản duy nhất.
+3. **Nén bằng AI (AI Edit):** Script gửi mã kết quả đến AI nội bộ (thông qua `useAi`) với một câu lệnh (prompt) nghiêm ngặt:
+   - Xóa tất cả các bình luận tiếng Nga (để tiết kiệm token và đảm bảo tính phổ quát).
+   - Rút gọn các bình luận tiếng Anh ở mức tối thiểu mà không làm mất ý nghĩa.
+   - Xóa tất cả các phương thức `private` và `protected`, chỉ giữ lại API công khai.
+   - Xóa các import và các enums lớn không mang lại giá trị thực tế.
+   - Giữ lại tất cả các thẻ JSDoc quan trọng (`@example`, `@remarks`).
+4. **Kết quả:** File `ai-types.md` được tạo ra, chứa một thư viện kiểu dữ liệu được nén cực nhỏ nhưng cực kỳ toàn diện. Các trợ lý AI có thể đọc file này trong tích tắc để hiểu kiến trúc package và viết mã nguồn hoàn hảo.
+
+## Tạo Mô tả (AI Description)
+
+Ngoài các kiểu dữ liệu, script còn phân tích mã và tự động tạo ra file `ai-description.md`. Đây là một bản tóm tắt dự án mang tính kỹ thuật cao nhằm:
+- Giải thích mục đích chính của thư viện cho một trợ lý AI khác.
+- Liệt kê các lớp (classes), hooks, và tiện ích cốt lõi.
+- Cung cấp các trình kích hoạt (triggers) nghiêm ngặt — chỉ rõ chính xác khi nào AI bắt buộc phải đọc file `ai-types.md` trước khi viết mã.
+
+## Tạo Hướng dẫn AI (AiDoc)
+
+Hệ thống bao gồm mô-đun `AiDoc` đệ quy duyệt qua các thư mục component và sử dụng AI để tạo hoặc cập nhật các hướng dẫn markdown cho nhà phát triển (ví dụ: `ai-developer.md`). 
+
+Lớp `AiDocType` phân tích mã nguồn của các thư mục cụ thể và định dạng các quy tắc hành vi: cách mở rộng constructor đúng cách, sử dụng các lớp `Include` nào, và các mô hình thiết kế (patterns) nào bị cấm.
+
+## Các lệnh chính
+- **`dxt-types`** — chạy quá trình tạo và nén các kiểu dữ liệu TypeScript (`ai-types.md`).
+- **`dxt-ai-doc`** — chạy quá trình tạo tài liệu AI trên toàn bộ các thư mục của dự án.

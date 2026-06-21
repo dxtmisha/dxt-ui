@@ -1,0 +1,41 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/# AI Documentation (AI Docs)'/>
+
+# Forming AI Documentation
+
+Modern development increasingly relies on artificial intelligence tools (GitHub Copilot, Cursor, custom LLM agents). However, complex architectures, deep file nesting, and redundant comments often confuse AI or overflow its context window.
+
+The `@dxtmisha/scripts` package solves this problem by automatically generating optimized instructions, types, and metadata specifically compressed and formatted for neural networks.
+
+## Type Optimization (DesignTypes)
+
+The `DesignTypes` class is an intelligent type "bundler" that prepares the project's types to be fed into the AI's context.
+
+**How it works:**
+1. **Build Scanning:** The script analyzes the `dist/` directory, finding all declaration files (`.d.ts`), excluding utility files (wiki, basic types).
+2. **Merging:** The found files are combined into a single text array.
+3. **AI Compression (AI Edit):** The script sends the resulting code to the internal AI (via `useAi`) with a strict prompt:
+   - Remove all Russian comments (to save tokens and ensure universality).
+   - Condense English comments to a minimum without losing meaning.
+   - Remove all `private` and `protected` methods, leaving only the public API.
+   - Remove imports and massive enums that provide no practical value.
+   - Preserve all crucial JSDoc tags (`@example`, `@remarks`).
+4. **Result:** An `ai-types.md` file is generated, containing an extremely compressed yet comprehensive type library. AI assistants can read this in a fraction of a second to understand the package architecture and write flawless code.
+
+## Generating Descriptions (AI Description)
+
+In addition to types, the script analyzes the code and automatically generates `ai-description.md`. This is a highly technical project summary that:
+- Explains the main purpose of the library to another AI assistant.
+- Lists the core classes, hooks, and utilities.
+- Provides strict triggers — indicating exactly when the AI is required to read `ai-types.md` before writing code.
+
+## Generating AI Instructions (AiDoc)
+
+The system includes an `AiDoc` module that recursively traverses component directories and uses AI to generate or update markdown instructions for developers (e.g., `ai-developer.md`). 
+
+The `AiDocType` class analyzes the source code of specific directories and formulates behavior rules: how to properly extend the constructor, which `Include` classes to use, and which patterns are forbidden.
+
+## Main Commands
+- **`dxt-types`** — runs the generation and compression of TypeScript types (`ai-types.md`).
+- **`dxt-ai-doc`** — runs the generation of AI documentation across project directories.

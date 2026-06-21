@@ -17,10 +17,10 @@ export interface SelectableAreaEventParameters {
 export type SelectableAreaControl = {
   /** Combined CSS class name for child items / Комбинированное имя класса CSS для дочерних элементов */
   className: string
-  /** Combined CSS class name for selected child items / Комбинированное имя класса CSS для выбранных дочерних элементов */
-  classSelectionName: string
+  /** Combined CSS class for selected child items / Комбинированный класс CSS для выбранных дочерних элементов */
+  classSelection: string
   /** CSS class for trigger element of click / Класс CSS для элемента триггера клика */
-  classNameClick: string
+  classClick: string
   /** Function to handle item click / Функция для обработки клика по элементу */
   onClick: (event: MouseEvent | TouchEvent) => void
   /** Is item selected / Выбран ли элемент */

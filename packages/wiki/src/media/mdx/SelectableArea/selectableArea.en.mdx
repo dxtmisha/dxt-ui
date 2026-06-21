@@ -25,24 +25,18 @@ SelectableArea manages items selection by coordinates, automatically drawing a v
 <script setup>
 import { ref } from 'vue'
 
-const selectedItems = ref([])
+const selected = ref(['1', '2'])
 </script>
 
 <template>
-  <SelectableArea
-    v-model:selected="selectedItems"
-    :active="true"
-  >
-    <template #default="{ className, classSelectionName, classNameClick, onClick }">
-      <div class="grid">
+  <SelectableArea v-model:selected="selected">
+    <template #default="{ className, classClick, onClick }">
+      <div style="display: flex; gap: 8px;">
         <div
-          v-for="item in 10"
+          v-for="item in 5"
           :key="item"
-          :class="[
-            className,
-            selectedItems.includes(String(item)) && classSelectionName
-          ]"
-          :data-value="String(item)"
+          :class="[className, classClick]"
+          :data-value="item"
           @click="onClick"
         >
           Item {{ item }}

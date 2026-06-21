@@ -1,0 +1,32 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/# Documentation Generation (Wiki & IDE)'/>
+
+# Forming Public Documentation and IDE Support
+
+Writing and maintaining documentation manually (Storybook, MDX, IDE tooltips) for a design system containing thousands of components and their states is a monumental task that often leads to a disconnect between code and docs.
+
+The `@dxtmisha/scripts` package automates this process entirely by generating materials directly from component metadata.
+
+## IDE Integration (DesignWikiStorm)
+
+To ensure the best developer experience when using the DXT UI library in editors like IntelliJ IDEA or WebStorm, the scripts package generates a `web-types.json` file.
+
+**What DesignWikiStorm does:**
+1. **Analysis:** The class scans the entire component library.
+2. **Metadata Extraction:** It extracts all available HTML tags, props, events (emits), slots, and CSS modifiers from the abstract logic and `properties.json` files.
+3. **Formatting:** The script formats this data into the standard Web-Types schema.
+4. **Result:** A developer importing DXT UI into their project instantly receives IntelliSense (code autocomplete, prop type hints, and hover documentation) directly in their editor, without needing to open a browser.
+
+## Interactive Documentation (DesignWiki)
+
+In addition to IDE support, the scripts automate the creation of user documentation for Storybook and internal Wikis.
+
+**Generation Features:**
+- The `DesignWiki` class, along with `ComponentCreator`, takes the component configuration and automatically generates `.stories.ts` (interactive examples) and `.mdx` (text instructions) files.
+- The documentation always reflects the actual state of the code because it is built from the exact same `properties.json` used to generate the components. Prop tables, available values, and design tokens are updated automatically.
+
+## Main Commands
+
+- **`dxt-wiki-storm`** — scans all components and builds the `web-types.json` file to support autocomplete in JetBrains IDEs.
+- **`dxt-component-wiki`** — triggers the generation of Storybook components and MDX files for the visual component catalog.

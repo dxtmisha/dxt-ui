@@ -1,0 +1,32 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/# Tạo Tài liệu (Wiki & IDE)'/>
+
+# Hình thành Tài liệu Công khai và Hỗ trợ IDE
+
+Việc viết và duy trì tài liệu theo cách thủ công (Storybook, MDX, gợi ý IDE) cho một hệ thống thiết kế chứa hàng nghìn component và trạng thái là một công việc khổng lồ thường dẫn đến sự sai lệch giữa mã nguồn và tài liệu.
+
+Package `@dxtmisha/scripts` tự động hóa hoàn toàn quy trình này bằng cách tạo ra các tài liệu trực tiếp từ siêu dữ liệu (metadata) của component.
+
+## Tích hợp IDE (DesignWikiStorm)
+
+Để đảm bảo trải nghiệm tốt nhất cho nhà phát triển khi sử dụng thư viện DXT UI trong các trình soạn thảo như IntelliJ IDEA hoặc WebStorm, package script sẽ tạo ra một file `web-types.json`.
+
+**DesignWikiStorm thực hiện việc gì:**
+1. **Phân tích:** Lớp này quét toàn bộ thư viện component.
+2. **Trích xuất Siêu dữ liệu:** Nó trích xuất tất cả các thẻ HTML, props, sự kiện (emits), slots và CSS modifiers từ logic trừu tượng và các file `properties.json`.
+3. **Định dạng:** Script định dạng dữ liệu này theo lược đồ chuẩn Web-Types.
+4. **Kết quả:** Khi import DXT UI vào dự án, nhà phát triển ngay lập tức nhận được IntelliSense (tự động hoàn thành mã, gợi ý kiểu prop và tài liệu khi di chuột) ngay trong trình soạn thảo của họ mà không cần mở trình duyệt.
+
+## Tài liệu Tương tác (DesignWiki)
+
+Ngoài việc hỗ trợ IDE, các script còn tự động hóa việc tạo tài liệu người dùng cho Storybook và các Wiki nội bộ.
+
+**Đặc điểm của việc tạo tài liệu:**
+- Lớp `DesignWiki`, cùng với `ComponentCreator`, lấy cấu hình của component và tự động tạo ra các file `.stories.ts` (ví dụ tương tác) và `.mdx` (hướng dẫn bằng văn bản).
+- Tài liệu luôn phản ánh trạng thái thực tế của mã nguồn vì nó được xây dựng từ chính file `properties.json` dùng để tạo các component. Bảng prop (prop tables), các giá trị khả dụng và design token được cập nhật hoàn toàn tự động.
+
+## Các lệnh chính
+
+- **`dxt-wiki-storm`** — quét tất cả các component và xây dựng file `web-types.json` để hỗ trợ tính năng tự động hoàn thành trong các IDE của JetBrains.
+- **`dxt-component-wiki`** — kích hoạt quá trình tạo các component Storybook và file MDX cho danh mục component trực quan.

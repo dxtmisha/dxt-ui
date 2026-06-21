@@ -21,8 +21,8 @@ defineOptions({
     <template #render="{ args, classDemo }">
     <div :class="classDemo.item">
   <D1SelectableArea :selected="['1', '2']" v-bind="args">
-    <template #default="{ className, classNameClick, onClick }">
-      <div v-for="item in 5" :key="item" :class="[className, classNameClick]" :data-value="item" @click="onClick">
+    <template #default="{ className, classClick, onClick }">
+      <div v-for="item in 5" :key="item" :class="[className, classClick]" :data-value="item" @click="onClick">
         Item {{ item }}
       </div>
     </template>

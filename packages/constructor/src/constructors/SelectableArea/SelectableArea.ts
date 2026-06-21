@@ -112,8 +112,8 @@ export class SelectableArea {
   get slotData(): SelectableAreaControl {
     return {
       className: `${this.className}__item ${this.classes.getId()}`,
-      classSelectionName: this.classes.list.selected,
-      classNameClick: this.classes.list.click,
+      classSelection: this.classes.list.selected,
+      classClick: this.classes.list.click,
       selected: this.item.get(),
       onClick: this.events.onClick
     }

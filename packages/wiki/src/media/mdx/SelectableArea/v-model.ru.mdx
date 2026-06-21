@@ -17,9 +17,9 @@ const selectedItems = ref(['item-1'])
 
 <template>
   <SelectableArea v-model:selected="selectedItems">
-    <template #default="{ className, classSelectionName, classNameClick, onClick }">
+    <template #default="{ className, classSelection, classClick, onClick }">
       <div
-        :class="[className, selectedItems.includes('item-1') && classSelectionName]"
+        :class="[className, selectedItems.includes('item-1') && classSelection]"
         data-value="item-1"
         @click="onClick"
       >

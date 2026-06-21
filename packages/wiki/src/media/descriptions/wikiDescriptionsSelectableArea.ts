@@ -36,13 +36,13 @@ export const wikiDescriptionsSelectableArea: StorybookComponentsDescriptionItem 
   ],
   render: `
     <DesignComponent v-bind="args">
-      <template #default="{ className, classNameClick, onClick }">
+      <template #default="{ className, classClick, onClick }">
         <div
           class="wiki-storybook-group wiki-storybook-group--gapX3 wiki-storybook-item--paddingX2">
           <div
             v-for="item in 12"
             :key="item"
-            :class="['wiki-storybook-item wiki-storybook-item--squared--xs wiki-storybook-item--center', className, classNameClick]"
+            :class="['wiki-storybook-item wiki-storybook-item--squared--xs wiki-storybook-item--center', className, classClick]"
             :data-value="'item-' + item"
             style="overflow: visible;"
             @click="onClick"
@@ -62,12 +62,12 @@ export const wikiDescriptionsSelectableArea: StorybookComponentsDescriptionItem 
       },
       template: `
         <DesignComponent>
-          <template #default="{ className, classNameClick, onClick }">
+          <template #default="{ className, classClick, onClick }">
             <div class="wiki-storybook-group wiki-storybook-group--gapX3 wiki-storybook-item--paddingX2">
               <div
                 v-for="item in 6"
                 :key="item"
-                :class="['wiki-storybook-item wiki-storybook-item--squared--xs wiki-storybook-item--center', className, classNameClick]"
+                :class="['wiki-storybook-item wiki-storybook-item--squared--xs wiki-storybook-item--center', className, classClick]"
                 :data-value="'item-' + item"
                 @click="onClick"
               >
@@ -100,7 +100,7 @@ export const wikiDescriptionsSelectableArea: StorybookComponentsDescriptionItem 
           <DesignComponent
             v-model:selected="selected"
           >
-            <template #default="{ className, classSelectionName, classNameClick, onClick }">
+            <template #default="{ className, classSelection, classClick, onClick }">
               <div class="wiki-storybook-group wiki-storybook-group--gapX3 wiki-storybook-item--paddingX2">
                 <div
                   v-for="item in 6"
@@ -108,8 +108,8 @@ export const wikiDescriptionsSelectableArea: StorybookComponentsDescriptionItem 
                   :class="[
                     'wiki-storybook-item wiki-storybook-item--squared--xs wiki-storybook-item--center',
                     className,
-                    classNameClick,
-                    selected.includes('item-' + item) && classSelectionName
+                    classClick,
+                    selected.includes('item-' + item) && classSelection
                   ]"
                   :data-value="'item-' + item"
                   @click="onClick"
@@ -144,8 +144,8 @@ export const wikiDescriptionsSelectableArea: StorybookComponentsDescriptionItem 
     render: `
 <div :class="classDemo.item">
   <SelectableArea :selected="['1', '2']" v-bind="args">
-    <template #default="{ className, classNameClick, onClick }">
-      <div v-for="item in 5" :key="item" :class="[className, classNameClick]" :data-value="item" @click="onClick">
+    <template #default="{ className, classClick, onClick }">
+      <div v-for="item in 5" :key="item" :class="[className, classClick]" :data-value="item" @click="onClick">
         Item {{ item }}
       </div>
     </template>

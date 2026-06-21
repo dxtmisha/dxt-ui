@@ -44,13 +44,13 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 ## Основные команды (CLI)
 
-- **`npm run ui [ComponentName]` / `dxt-ui`**
+- **`dxt-ui [ComponentName]`**
   Главный оркестратор. Сканирует файлы `properties.json`, генерирует шаблоны, "сшивает" их с классами Конструктора, обновляет пропсы и стили. 
-- **`npm run constructor` / `dxt-constructor`**
+- **`dxt-constructor`**
   Пересобирает глобальные классы и типы конструктора логики, гарантируя актуальность всех типов свойств.
-- **`dxt-component-wiki` / `dxt-wiki-storm`**
+- **`dxt-component-wiki`** / **`dxt-wiki-storm`**
   Запускает генерацию ИИ-справок по компонентам для Storybook/MDX и форматирует данные для автозаполнения в IDE (WebStorm).
-- **`npm run library` / `dxt-library`**
+- **`dxt-library`**
   Сканирует дерево директорий и автоматически собирает файлы экспорта `index.ts` во всех пакетах рабочего пространства.
 - **`dxt-screenshot`**
   Среда визуального регрессионного тестирования с использованием Puppeteer.
