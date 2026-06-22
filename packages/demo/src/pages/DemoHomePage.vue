@@ -41,6 +41,7 @@ import DemoLink from '../components/DemoLink.vue'
         <DemoLink label="Progress" name="component-progress"/>
         <DemoLink label="Radio" name="component-radio"/>
         <DemoLink label="Scrollbar" name="component-scrollbar"/>
+        <DemoLink label="SelectableArea" name="component-selectable-area"/>
         <DemoLink label="Select" name="component-select"/>
         <DemoLink label="Snackbar" name="component-snackbar"/>
         <DemoLink label="Switch" name="component-switch"/>

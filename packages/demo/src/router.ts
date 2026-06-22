@@ -36,6 +36,7 @@ import DemoPageAreaPage from './pages/components/DemoPageAreaPage.vue'
 import DemoProgressPage from './pages/components/DemoProgressPage.vue'
 import DemoRadioPage from './pages/components/DemoRadioPage.vue'
 import DemoScrollbarPage from './pages/components/DemoScrollbarPage.vue'
+import DemoSelectableAreaPage from './pages/components/DemoSelectableAreaPage.vue'
 import DemoSelectPage from './pages/components/DemoSelectPage.vue'
 import DemoSnackbarPage from './pages/components/DemoSnackbarPage.vue'
 import DemoSwitchPage from './pages/components/DemoSwitchPage.vue'
@@ -214,6 +215,11 @@ export const routes: RouteRecordRaw[] = [
     path: '/component-scrollbar',
     name: 'component-scrollbar',
     component: DemoScrollbarPage
+  },
+  {
+    path: '/component-selectable-area',
+    name: 'component-selectable-area',
+    component: DemoSelectableAreaPage
   },
   {
     path: '/component-select',
