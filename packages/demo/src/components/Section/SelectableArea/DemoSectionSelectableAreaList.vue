@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import DemoFlex from './DemoFlex.vue'
-import DemoBox from './DemoBox.vue'
+import DemoFlex from '../../DemoFlex.vue'
+import DemoBox from '../../DemoBox.vue'
 
 defineProps<{
   className?: string
@@ -24,5 +24,3 @@ defineProps<{
     </DemoBox>
   </DemoFlex>
 </template>
-
-<style lang="scss"></style>

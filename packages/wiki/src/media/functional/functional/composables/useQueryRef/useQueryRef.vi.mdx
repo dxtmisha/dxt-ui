@@ -1,0 +1,29 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional/Composables/useQueryRef - Quản lý Query parameters'/>
+
+# `useQueryRef`
+
+Một composable để làm việc với các tham số truy vấn URL (GET parameters). Nó cho phép tạo các biến phản ứng tự động đồng bộ hóa với một khóa cụ thể trong chuỗi truy vấn.
+
+**Tham số:**
+- `name: string` — Tên khóa trong query string.
+- `defaultValue?: T | (() => T)` — Giá trị mặc định nếu khóa không tồn tại trong query string.
+
+**Trả về (`Ref<T>`):**
+- Một tham chiếu phản ứng đến giá trị trong các tham số truy vấn.
+
+## Ví dụ
+
+```typescript
+import { useQueryRef } from '@dxtmisha/functional'
+
+// Tạo tham chiếu đến giá trị 'step' trong query parameters của URL
+const step = useQueryRef('step', '1')
+
+// Cập nhật giá trị (tự động cập nhật URL: ?step=2)
+step.value = '2'
+
+// Nếu người dùng thay đổi query parameter thủ công hoặc qua lịch sử trình duyệt,
+// step.value sẽ được cập nhật tự động.
+```

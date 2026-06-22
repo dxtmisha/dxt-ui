@@ -24,6 +24,7 @@ import DemoLink from '../components/DemoLink.vue'
         <DemoLink label="ChipGroup" name="component-chip-group"/>
         <DemoLink label="ClientOnly" name="component-client-only"/>
         <DemoLink label="Dialog" name="component-dialog"/>
+        <DemoLink label="DraggableWrapper" name="component-draggable-wrapper"/>
         <DemoLink label="Icon" name="component-icon"/>
         <DemoLink label="Image" name="component-image"/>
         <DemoLink label="Input" name="component-input"/>

@@ -114,4 +114,39 @@ export class DraggableWrapperItem {
 
     return this
   }
+
+  /**
+   * Helper method to calculate the reordered array after a drop.
+   *
+   * Вспомогательный метод для расчета переупорядоченного массива после сброса.
+   * @param values original array of items / исходный массив элементов
+   * @param valueTo value of the target element / значение целевого элемента
+   * @param valueSelection array of values of selected elements / массив значений выбранных элементов
+   * @param before DOM layout direction / направление структуры DOM
+   * @returns new reordered array / новый переупорядоченный массив
+   */
+  toNewPosition<T extends { value?: any }>(
+    values: T[],
+    valueTo?: string,
+    valueSelection?: (string | undefined)[],
+    before?: boolean
+  ): T[] {
+    const selection = valueSelection || []
+    const items = values.filter(item => item.value !== undefined && selection.includes(String(item.value)))
+    const newValues = values.filter(item => item.value === undefined || !selection.includes(String(item.value)))
+
+    if (valueTo !== undefined) {
+      const index = newValues.findIndex(item => String(item.value) === valueTo)
+
+      if (index !== -1) {
+        newValues.splice(index + (before ? 0 : 1), 0, ...items)
+      } else {
+        newValues.unshift(...items)
+      }
+    } else {
+      newValues.unshift(...items)
+    }
+
+    return newValues
+  }
 }

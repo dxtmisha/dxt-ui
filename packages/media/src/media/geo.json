@@ -211,6 +211,9 @@
   },
   {
     "country": "BY",
+    "countryAlternative": [
+      "BY_BY"
+    ],
     "language": "be",
     "firstDay": "Mo",
     "zone": "Europe/Minsk",

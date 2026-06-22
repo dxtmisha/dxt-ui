@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.0] - 2026-06-22
+
+### Added
+- **UrlInstanceAbstract**: Created base abstract class managing shared reactive state properties and methods (`data`, `watch`, `block`, `time`, `get()`, `set()`, `addWatch()`, `removeWatch()`, `reload()`, `initData()`, `makeWatch()`) for URL-based state instances.
+- **UrlItem**: Added `getParams()` to parse URL parameters into an object with type transformations, and `setParams(params)` to replace and filter empty, null, or undefined parameters.
+- **UrlItem**: Added comprehensive unit tests in `UrlItem.test.ts` for verifying parameter retrieval and mutation logic.
+
+### Changed
+- **HashInstance**: Refactored to extend `UrlInstanceAbstract`, inheriting all core state management properties and handlers.
+- **QueryInstance**: Refactored to extend `UrlInstanceAbstract` and delegate query parameter reading/writing to `UrlItem.getParams()` and `UrlItem.setParams()`, ensuring SSR compatibility.
+
+### Fixed
+- **QueryInstance**: Updated `QueryInstance.test.ts` to run under the `jsdom` test environment, fixing `window is not defined` execution errors, and enhanced mocking setup.
+
 ## [1.3.15] - 2026-06-19
 
 ### Added

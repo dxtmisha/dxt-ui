@@ -1,4 +1,7 @@
+import { forEach } from '../functions/forEach'
 import { isDomRuntime } from '../functions/isDomRuntime'
+import { isFilled } from '../functions/isFilled'
+import { transformation } from '../functions/transformation'
 import { ServerStorage } from './ServerStorage'
 
 /**
@@ -93,6 +96,44 @@ export class UrlItem {
   }
 
   /**
+   * Checks if the specified query parameter exists.
+   *
+   * Проверяет, существует ли указанный параметр запроса.
+   * @param name parameter name / имя параметра
+   * @returns check result / результат проверки
+   */
+  hasParam(name: string): boolean {
+    return this.url.searchParams.has(name)
+  }
+
+  /**
+   * Returns the value of a query parameter.
+   *
+   * Возвращает значение параметра запроса.
+   * @param name parameter name / имя параметра
+   * @returns parameter value or undefined if not found / значение параметра или undefined, если не найдено
+   */
+  getParam(name: string): string | undefined {
+    return this.url.searchParams.get(name) ?? undefined
+  }
+
+  /**
+   * Returns all query parameters as an object with transformed types.
+   *
+   * Возвращает все параметры запроса в виде объекта с преобразованными типами.
+   * @returns Record<string, any> object of parameters / объект параметров
+   */
+  getParams(): Record<string, any> {
+    const params: Record<string, any> = {}
+
+    this.url.searchParams.forEach((value, key) => {
+      params[key] = transformation(value)
+    })
+
+    return params
+  }
+
+  /**
    * Updates the URL value.
    *
    * Обновляет значение URL.
@@ -120,6 +161,51 @@ export class UrlItem {
       }
     }
 
+    return this
+  }
+
+  /**
+   * Sets the value of a query parameter.
+   *
+   * Устанавливает значение параметра запроса.
+   * @param name parameter name / имя параметра
+   * @param value parameter value / значение параметра
+   * @returns this UrlItem instance / текущий экземпляр UrlItem
+   */
+  setParam(name: string, value: string): this {
+    this.url.searchParams.set(name, value)
+    return this
+  }
+
+  /**
+   * Replaces all query parameters with the specified object.
+   *
+   * Заменяет все параметры запроса на указанный объект.
+   * @param params parameters to set / параметры для установки
+   * @returns this UrlItem instance / текущий экземпляр UrlItem
+   */
+  setParams(params: Record<string, any>): this {
+    const keys = Array.from(this.url.searchParams.keys())
+    keys.forEach(key => this.deleteParam(key))
+
+    forEach(params, (value, key) => {
+      if (isFilled(value)) {
+        this.setParam(key, String(value))
+      }
+    })
+
+    return this
+  }
+
+  /**
+   * Deletes a query parameter.
+   *
+   * Удаляет параметр запроса.
+   * @param name parameter name / имя параметра
+   * @returns this UrlItem instance / текущий экземпляр UrlItem
+   */
+  deleteParam(name: string): this {
+    this.url.searchParams.delete(name)
     return this
   }
 

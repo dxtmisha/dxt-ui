@@ -1,0 +1,29 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional/Composables/useQueryRef - Query Parameters Management'/>
+
+# `useQueryRef`
+
+A composable for working with the URL query parameters (GET parameters). It allows creating reactive variables that automatically synchronize with a specific key in the query string.
+
+**Parameters:**
+- `name: string` — Key name in the query.
+- `defaultValue?: T | (() => T)` — Default value if the key is missing from the query.
+
+**Returns (`Ref<T>`):**
+- A reactive reference to the value in the query parameters.
+
+## Example
+
+```typescript
+import { useQueryRef } from '@dxtmisha/functional'
+
+// Create a reference to 'step' value in the URL query parameters
+const step = useQueryRef('step', '1')
+
+// Update value (automatically updates URL: ?step=2)
+step.value = '2'
+
+// If the user changes the query parameter manually or via browser history,
+// step.value will be updated automatically.
+```

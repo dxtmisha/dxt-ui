@@ -219,129 +219,34 @@ export declare function useApiAsyncRef<R, T = R>(path?: RefOrNormal<string | und
 
 // File: src/composables/ref/useApiDelete.d.ts
 export interface UseApiDeleteSetup<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>> extends Omit<UseApiRequestSetup<T, Request, Return>, 'method'> {}
-export declare function useApiDelete<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>>(setup: UseApiDeleteSetup<T, Request, Return>): {
-    loading: Ref<boolean, boolean>;
-    send(request?: Request | undefined): Promise<Return | undefined>;
-};
+export declare function useApiDelete<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>>(setup: UseApiDeleteSetup<T, Request, Return>): { loading: Ref<boolean, boolean>; send(request?: Request | undefined): Promise<Return | undefined>; };
 
 // File: src/composables/ref/useApiGet.d.ts
 export interface UseApiGetSetup<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>> extends Omit<UseApiRequestSetup<T, Request, Return>, 'method'> {}
-export declare function useApiGet<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>>(setup: UseApiGetSetup<T, Request, Return>): {
-    loading: Ref<boolean, boolean>;
-    send(request?: Request | undefined): Promise<Return | undefined>;
-};
+export declare function useApiGet<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>>(setup: UseApiGetSetup<T, Request, Return>): { loading: Ref<boolean, boolean>; send(request?: Request | undefined): Promise<Return | undefined>; };
 
 // File: src/composables/ref/useApiManagementAsyncRef.d.ts
-export declare function useApiManagementAsyncRef<Return extends ApiManagementValue, FormattersOptions extends FormattersOptionsList, Post extends Record<string, any>, Put extends Record<string, any>, Delete extends Record<string, any>, Type extends ApiManagementValue = Return, Item extends ArrayToItem<Return> = ArrayToItem<Return>, ItemFormatters extends FormattersListColumns<Item, FormattersOptions>[number] = FormattersListColumns<Item, FormattersOptions>[number], Columns extends SearchColumns<ItemFormatters> = []>(propsGet: ApiManagementGet<Return, Type>, formattersOptions?: FormattersOptions, searchOptions?: ApiManagementSearch<Item, Columns>, postRequest?: ApiManagementRequest<Post>, putRequest?: ApiManagementRequest<Put>, deleteRequest?: ApiManagementRequest<Delete>, action?: () => Promise<void> | void, apiInstance?: ApiInstance): {
-    isValid: ComputedRef<boolean>;
-    isResponseContractValid: ComputedRef<boolean>;
-    responseValidationResult: ComputedRef< ApiDataValidation | undefined>;
-    list: ComputedRef<SearchFormatList<ItemFormatters, Columns>>;
-    readonly data: ComputedRef< ApiData<Return> | undefined>;
-    errorItem: ComputedRef< ApiErrorItem | undefined>;
-    readonly length: ComputedRef<number>;
-    lengthData: ComputedRef<number>;
-    starting: ComputedRef<boolean>;
-    reading: Ref<boolean, boolean>;
-    loading: Ref<boolean, boolean>;
-    loadingSearch: Ref<boolean, boolean> | undefined;
-    loadingPost: Ref<boolean, boolean> | undefined;
-    loadingPut: Ref<boolean, boolean> | undefined;
-    loadingDelete: Ref<boolean, boolean> | undefined;
-    isSearch: ComputedRef<boolean> | undefined;
-    search: Ref<string>;
-    init: () => void;
-    initSsr: () => void;
-    reset: () => Promise<void>;
-    abort: () => void;
-    sendPost: (request?: ApiFetch["request"]) => Promise< ApiData<Post> | undefined>;
-    sendPut: (request?: ApiFetch["request"]) => Promise< ApiData<Put> | undefined>;
-    sendDelete: (request?: ApiFetch["request"]) => Promise< ApiData<Delete> | undefined>;
-};
+export declare function useApiManagementAsyncRef<Return extends ApiManagementValue, FormattersOptions extends FormattersOptionsList, Post extends Record<string, any>, Put extends Record<string, any>, Delete extends Record<string, any>, Type extends ApiManagementValue = Return, Item extends ArrayToItem<Return> = ArrayToItem<Return>, ItemFormatters extends FormattersListColumns<Item, FormattersOptions>[number] = FormattersListColumns<Item, FormattersOptions>[number], Columns extends SearchColumns<ItemFormatters> = []>(propsGet: ApiManagementGet<Return, Type>, formattersOptions?: FormattersOptions, searchOptions?: ApiManagementSearch<Item, Columns>, postRequest?: ApiManagementRequest<Post>, putRequest?: ApiManagementRequest<Put>, deleteRequest?: ApiManagementRequest<Delete>, action?: () => Promise<void> | void, apiInstance?: ApiInstance): { isValid: ComputedRef<boolean>; isResponseContractValid: ComputedRef<boolean>; responseValidationResult: ComputedRef< ApiDataValidation | undefined>; list: ComputedRef<SearchFormatList<ItemFormatters, Columns>>; readonly data: ComputedRef< ApiData<Return> | undefined>; errorItem: ComputedRef< ApiErrorItem | undefined>; readonly length: ComputedRef<number>; lengthData: ComputedRef<number>; starting: ComputedRef<boolean>; reading: Ref<boolean, boolean>; loading: Ref<boolean, boolean>; loadingSearch: Ref<boolean, boolean> | undefined; loadingPost: Ref<boolean, boolean> | undefined; loadingPut: Ref<boolean, boolean> | undefined; loadingDelete: Ref<boolean, boolean> | undefined; isSearch: ComputedRef<boolean> | undefined; search: Ref<string>; init: () => void; initSsr: () => void; reset: () => Promise<void>; abort: () => void; sendPost: (request?: ApiFetch["request"]) => Promise< ApiData<Post> | undefined>; sendPut: (request?: ApiFetch["request"]) => Promise< ApiData<Put> | undefined>; sendDelete: (request?: ApiFetch["request"]) => Promise< ApiData<Delete> | undefined>; };
 
 // File: src/composables/ref/useApiManagementRef.d.ts
-export declare function useApiManagementRef<Return extends ApiManagementValue, FormattersOptions extends FormattersOptionsList, Post extends Record<string, any>, Put extends Record<string, any>, Delete extends Record<string, any>, Type extends ApiManagementValue = Return, Item extends ArrayToItem<Return> = ArrayToItem<Return>, ItemFormatters extends FormattersListColumns<Item, FormattersOptions>[number] = FormattersListColumns<Item, FormattersOptions>[number], Columns extends SearchColumns<ItemFormatters> = []>(propsGet: ApiManagementGet<Return, Type>, formattersOptions?: FormattersOptions, searchOptions?: ApiManagementSearch<Item, Columns>, postRequest?: ApiManagementRequest<Post>, putRequest?: ApiManagementRequest<Put>, deleteRequest?: ApiManagementRequest<Delete>, action?: () => Promise<void> | void, apiInstance?: ApiInstance): {
-    isValid: ComputedRef<boolean>;
-    isResponseContractValid: ComputedRef<boolean>;
-    responseValidationResult: ComputedRef< ApiDataValidation | undefined>;
-    list: ComputedRef<SearchFormatList<ItemFormatters, Columns>>;
-    readonly data: ComputedRef<ApiData<Return> | undefined>;
-    errorItem: ComputedRef< ApiErrorItem | undefined>;
-    readonly length: ComputedRef<number>;
-    lengthData: ComputedRef<number>;
-    starting: ComputedRef<boolean>;
-    reading: Ref<boolean, boolean>;
-    loading: Ref<boolean, boolean>;
-    loadingSearch: Ref<boolean, boolean> | undefined;
-    loadingPost: Ref<boolean, boolean> | undefined;
-    loadingPut: Ref<boolean, boolean> | undefined;
-    loadingDelete: Ref<boolean, boolean> | undefined;
-    isSearch: ComputedRef<boolean> | undefined;
-    search: Ref<string>;
-    init: () => void;
-    initSsr: () => void;
-    reset: () => Promise<void>;
-    abort: () => void;
-    sendPost: (request?: ApiFetch["request"]) => Promise<ApiData<Post> | undefined>;
-    sendPut: (request?: ApiFetch["request"]) => Promise<ApiData<Put> | undefined>;
-    sendDelete: (request?: ApiFetch["request"]) => Promise<ApiData<Delete> | undefined>;
-};
+export declare function useApiManagementRef<Return extends ApiManagementValue, FormattersOptions extends FormattersOptionsList, Post extends Record<string, any>, Put extends Record<string, any>, Delete extends Record<string, any>, Type extends ApiManagementValue = Return, Item extends ArrayToItem<Return> = ArrayToItem<Return>, ItemFormatters extends FormattersListColumns<Item, FormattersOptions>[number] = FormattersListColumns<Item, FormattersOptions>[number], Columns extends SearchColumns<ItemFormatters> = []>(propsGet: ApiManagementGet<Return, Type>, formattersOptions?: FormattersOptions, searchOptions?: ApiManagementSearch<Item, Columns>, postRequest?: ApiManagementRequest<Post>, putRequest?: ApiManagementRequest<Put>, deleteRequest?: ApiManagementRequest<Delete>, action?: () => Promise<void> | void, apiInstance?: ApiInstance): { isValid: ComputedRef<boolean>; isResponseContractValid: ComputedRef<boolean>; responseValidationResult: ComputedRef< ApiDataValidation | undefined>; list: ComputedRef<SearchFormatList<ItemFormatters, Columns>>; readonly data: ComputedRef<ApiData<Return> | undefined>; errorItem: ComputedRef< ApiErrorItem | undefined>; readonly length: ComputedRef<number>; lengthData: ComputedRef<number>; starting: ComputedRef<boolean>; reading: Ref<boolean, boolean>; loading: Ref<boolean, boolean>; loadingSearch: Ref<boolean, boolean> | undefined; loadingPost: Ref<boolean, boolean> | undefined; loadingPut: Ref<boolean, boolean> | undefined; loadingDelete: Ref<boolean, boolean> | undefined; isSearch: ComputedRef<boolean> | undefined; search: Ref<string>; init: () => void; initSsr: () => void; reset: () => Promise<void>; abort: () => void; sendPost: (request?: ApiFetch["request"]) => Promise<ApiData<Post> | undefined>; sendPut: (request?: ApiFetch["request"]) => Promise<ApiData<Put> | undefined>; sendDelete: (request?: ApiFetch["request"]) => Promise<ApiData<Delete> | undefined>; };
 
 // File: src/composables/ref/useApiPost.d.ts
 export interface UseApiPostSetup<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>> extends Omit<UseApiRequestSetup<T, Request, Return>, 'method'> {}
-export declare function useApiPost<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>>(setup: UseApiPostSetup<T, Request, Return>): {
-    loading: Ref<boolean, boolean>;
-    send(request?: Request | undefined): Promise<Return | undefined>;
-};
+export declare function useApiPost<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>>(setup: UseApiPostSetup<T, Request, Return>): { loading: Ref<boolean, boolean>; send(request?: Request | undefined): Promise<Return | undefined>; };
 
 // File: src/composables/ref/useApiPut.d.ts
 export interface UseApiPutSetup<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>> extends Omit<UseApiRequestSetup<T, Request, Return>, 'method'> {}
-export declare function useApiPut<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>>(setup: UseApiPutSetup<T, Request, Return>): {
-    loading: Ref<boolean, boolean>;
-    send(request?: Request | undefined): Promise<Return | undefined>;
-};
+export declare function useApiPut<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>>(setup: UseApiPutSetup<T, Request, Return>): { loading: Ref<boolean, boolean>; send(request?: Request | undefined): Promise<Return | undefined>; };
 
 // File: src/composables/ref/useApiRef.d.ts
-export interface UseApiRef<R> {
-    data: ComputedRef<ApiData<R> | undefined>;
-    item: Ref<ApiData<R> | undefined>;
-    errorItem: ComputedRef<ApiErrorItem | undefined>;
-    isResponseContractValid: ComputedRef<boolean>;
-    responseValidationResult: ComputedRef<ApiDataValidation | undefined>;
-    length: ComputedRef<number>;
-    starting: ComputedRef<boolean>;
-    loading: Ref<boolean>;
-    reading: Ref<boolean>;
-    isStarting(): boolean;
-    isLoading(): boolean;
-    isReading(): boolean;
-    getItem(): ApiData<R> | undefined;
-    init(): void;
-    initSsr(): void;
-    reset(): Promise<void>;
-    stop(): void;
-    abort(): void;
-}
+export interface UseApiRef<R> { data: ComputedRef<ApiData<R> | undefined>; item: Ref<ApiData<R> | undefined>; errorItem: ComputedRef<ApiErrorItem | undefined>; isResponseContractValid: ComputedRef<boolean>; responseValidationResult: ComputedRef<ApiDataValidation | undefined>; length: ComputedRef<number>; starting: ComputedRef<boolean>; loading: Ref<boolean>; reading: Ref<boolean>; isStarting(): boolean; isLoading(): boolean; isReading(): boolean; getItem(): ApiData<R> | undefined; init(): void; initSsr(): void; reset(): Promise<void>; stop(): void; abort(): void; }
 export declare function useApiRef<R, T = R>(path?: RefOrNormal<string | undefined>, options?: ApiOptions, reactivity?: boolean, conditions?: RefType<boolean>, transformation?: (data: T, isResponseContractValid?: ApiDataValidation) => ApiData<R>, validateResponseContract?: (data: T) => ApiDataValidation, errorContract?: ApiErrorStorageList, unmounted?: boolean, apiInstance?: ApiInstance): UseApiRef<R>;
 export declare const setApiRefGlobalConditions: (conditions: RefType<any>) => void;
 
 // File: src/composables/ref/useApiRequest.d.ts
-export interface UseApiRequestSetup<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>> {
-    path?: RefOrNormal<string | undefined>;
-    method?: ApiMethodItem;
-    action?: (data: Return | undefined) => Promise<void> | void;
-    transformation?: (data: T) => Return;
-    validateRequestContract?: (data: Request) => ApiDataValidation & Return;
-    validateResponseContract?: (data: T) => ApiDataValidation & Return;
-    errorContract?: ApiErrorStorageList;
-    toData?: boolean;
-    options?: ApiOptions;
-    apiInstance?: ApiInstance;
-}
-export declare function useApiRequest<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>>({ path, method, action, transformation, validateRequestContract, validateResponseContract, errorContract, toData, options, apiInstance }: UseApiRequestSetup<T, Request, Return>): {
-    loading: Ref<boolean, boolean>;
-    send(request?: Request): Promise<Return | undefined>;
-};
+export interface UseApiRequestSetup<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>> { path?: RefOrNormal<string | undefined>; method?: ApiMethodItem; action?: (data: Return | undefined) => Promise<void> | void; transformation?: (data: T) => Return; validateRequestContract?: (data: Request) => ApiDataValidation & Return; validateResponseContract?: (data: T) => ApiDataValidation & Return; errorContract?: ApiErrorStorageList; toData?: boolean; options?: ApiOptions; apiInstance?: ApiInstance; }
+export declare function useApiRequest<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>>({ path, method, action, transformation, validateRequestContract, validateResponseContract, errorContract, toData, options, apiInstance }: UseApiRequestSetup<T, Request, Return>): { loading: Ref<boolean, boolean>; send(request?: Request): Promise<Return | undefined>; };
 
 // File: src/composables/ref/useBroadcastValueRef.d.ts
 export declare function useBroadcastValueRef<T>(name: string, defaultValue?: T | string | (() => (T | string))): Ref<T | string | undefined>;
@@ -350,10 +255,7 @@ export declare function useBroadcastValueRef<T>(name: string, defaultValue?: T |
 export declare function useCookieRef<T>(name: string, defaultValue?: T | string | (() => (T | string)), options?: CookieOptions): Ref<T | string | undefined>;
 
 // File: src/composables/ref/useFormattersRef.d.ts
-export declare function useFormattersRef<Options extends FormattersOptionsList = FormattersOptionsList, List extends FormattersListProp = FormattersListProp>(list: RefType<List | undefined>, options: Options): {
-    listFormat: ComputedRef<FormattersReturn<List, Options>>;
-    length: ComputedRef<number>;
-};
+export declare function useFormattersRef<Options extends FormattersOptionsList = FormattersOptionsList, List extends FormattersListProp = FormattersListProp>(list: RefType<List | undefined>, options: Options): { listFormat: ComputedRef<FormattersReturn<List, Options>>; length: ComputedRef<number>; };
 
 // File: src/composables/ref/useGeoIntlRef.d.ts
 export declare function useGeoIntlRef(): GeoIntlRef;
@@ -367,71 +269,26 @@ export declare const useLazyItemByMarginRef: (element: RefType<HTMLElement | und
 
 // File: src/composables/ref/useLazyRef.d.ts
 export type LazyItem = { status: ShallowRef<boolean>; ratio: ShallowRef<number>; entry: ShallowRef<IntersectionObserverEntry | undefined>; stopWatch: () => void; };
-export declare const useLazyRef: (options?: IntersectionObserverInit) => {
-    intersectionObserver: IntersectionObserver | undefined;
-    getItem(element: HTMLElement): LazyItem;
-    addLazyItem(element: Ref<HTMLElement | undefined>): ShallowRef<boolean, boolean>;
-    removeLazyItem: (element?: HTMLElement) => void;
-    disconnectLazy: () => void | undefined;
-};
+export type LazyList = Record<string, LazyItem>;
+export declare const useLazyRef: (options?: IntersectionObserverInit) => { intersectionObserver: IntersectionObserver | undefined; getItem(element: HTMLElement): LazyItem; addLazyItem(element: Ref<HTMLElement | undefined>): ShallowRef<boolean, boolean>; removeLazyItem: (element?: HTMLElement) => void; disconnectLazy: () => void | undefined; };
 
 // File: src/composables/ref/useLoadingRef.d.ts
 export declare function useLoadingRef(): ShallowRef<boolean, boolean>;
 
 // File: src/composables/ref/useMeta.d.ts
-export declare const useMeta: () => Readonly<{
-    meta: typeof MetaStatic;
-    title: Ref<string, string>;
-    keyword: Ref<string, string>;
-    description: Ref<string, string>;
-    author: Ref<string, string>;
-    image: Ref<string, string>;
-    canonical: Ref<string, string>;
-    robots: Ref<MetaRobots, MetaRobots>;
-    siteName: Ref<string, string>;
-    getHtmlMeta: () => string;
-    sync: () => void;
-    update: () => void;
-    updateSsr: () => void;
-    setTitle: (value: string) => void;
-    setKeywords: (value: string) => void;
-    setDescription: (value: string) => void;
-    setAuthor: (value: string) => void;
-    setImage: (value: string) => void;
-    setCanonical: (value: string) => void;
-    setRobots: (value: MetaRobots) => void;
-    setSiteName: (value: string) => void;
-    setSuffix: (suffix: string) => typeof MetaStatic;
-} & {
-    init(): any;
-    destroyExecute?(): void;
-}>;
+export declare const useMeta: () => Readonly<{ meta: typeof MetaStatic; title: Ref<string, string>; keyword: Ref<string, string>; description: Ref<string, string>; author: Ref<string, string>; image: Ref<string, string>; canonical: Ref<string, string>; robots: Ref<MetaRobots, MetaRobots>; siteName: Ref<string, string>; getHtmlMeta: () => string; sync: () => void; update: () => void; updateSsr: () => void; setTitle: (value: string) => void; setKeywords: (value: string) => void; setDescription: (value: string) => void; setAuthor: (value: string) => void; setImage: (value: string) => void; setCanonical: (value: string) => void; setRobots: (value: MetaRobots) => void; setSiteName: (value: string) => void; setSuffix: (suffix: string) => typeof MetaStatic; } & { init(): any; destroyExecute?(): void; }>;
+
+// File: src/composables/ref/useQueryRef.d.ts
+export declare function useQueryRef<T>(name: string, defaultValue?: T | (() => T)): ShallowRef<T>;
 
 // File: src/composables/ref/useRouterList.d.ts
-export declare const useRouterList: <T extends ListDataBasic>(list: RefType<ConstrBind<T>[] | undefined>, selected?: Ref<string> | string, hasTo?: boolean) => {
-    item: ComputedRef<T | undefined>;
-    selected: Ref<string, string>;
-    label: ComputedRef<NumberOrString>;
-    list: ComputedRef<ConstrBind<T>[]>;
-    to: (name?: string) => void;
-    toMain(): void;
-};
+export declare const useRouterList: <T extends ListDataBasic>(list: RefType<ConstrBind<T>[] | undefined>, selected?: Ref<string> | string, hasTo?: boolean) => { item: ComputedRef<T | undefined>; selected: Ref<string, string>; label: ComputedRef<NumberOrString>; list: ComputedRef<ConstrBind<T>[]>; to: (name?: string) => void; toMain(): void; };
 
 // File: src/composables/ref/useSearchRef.d.ts
-export declare function useSearchRef<T extends SearchItem, K extends SearchColumns<T>>(list: SearchListInput<T>, columns: K, value?: Ref<string>, options?: SearchOptions): {
-    isSearch: ComputedRef<boolean>;
-    search: Ref<string, string>;
-    loading: Ref<boolean, boolean>;
-    listSearch: ComputedRef<SearchFormatList<T, K>>;
-    length: ComputedRef<number>;
-};
+export declare function useSearchRef<T extends SearchItem, K extends SearchColumns<T>>(list: SearchListInput<T>, columns: K, value?: Ref<string>, options?: SearchOptions): { isSearch: ComputedRef<boolean>; search: Ref<string, string>; loading: Ref<boolean, boolean>; listSearch: ComputedRef<SearchFormatList<T, K>>; length: ComputedRef<number>; };
 
 // File: src/composables/ref/useSearchValueRef.d.ts
-export declare function useSearchValueRef<T extends SearchItem, K extends SearchColumns<T>>(item: SearchList<T, K>, value?: Ref<string>): {
-    search: Ref<string, string>;
-    searchDelay: Ref<string, string>;
-    loading: Ref<boolean, boolean>;
-};
+export declare function useSearchValueRef<T extends SearchItem, K extends SearchColumns<T>>(item: SearchList<T, K>, value?: Ref<string>): { search: Ref<string, string>; searchDelay: Ref<string, string>; loading: Ref<boolean, boolean>; };
 
 // File: src/composables/ref/useSessionRef.d.ts
 export declare function useSessionRef<T>(name: string, defaultValue?: T | (() => T)): Ref<T | undefined>;
@@ -459,25 +316,16 @@ export declare function computedByLanguage<T, R extends (T | undefined) = T | un
 export declare function computedEternity<T>(getter: () => Promise<T> | T, initialState?: (() => T) | T): Ref<T, T>;
 
 // File: src/functions/dxtFunctionalPlugin.d.ts
-export interface FunctionalPluginOptions {
-    api?: ApiConfig;
-    translate?: TranslateConfig;
-    location?: string | (() => string);
-    metaSuffix?: string;
-    icons?: IconsConfig;
-    router?: Router;
-    errorCauses?: ErrorCenterCauseList;
-    errorHandlers?: ErrorCenterHandlerList;
-}
+export interface FunctionalPluginOptions { api?: ApiConfig; translate?: TranslateConfig; location?: string | (() => string); metaSuffix?: string; icons?: IconsConfig; router?: Router; errorCauses?: ErrorCenterCauseList; errorHandlers?: ErrorCenterHandlerList; }
 export declare const dxtFunctionalPlugin: Plugin;
 
 // File: src/functions/executeUse.d.ts
 export declare enum ExecuteUseType { global = "global", provide = "provide", local = "local" }
 export type ExecuteUseReturn<R> = Readonly<R & { init(): Readonly<R>; destroyExecute?(): void; }>;
 export declare function executeUse<R, O extends any[], RI extends ExecuteUseReturn<R> = ExecuteUseReturn<R>>(callback: (...args: O) => R, type?: ExecuteUseType): ((...args: O) => RI) | (() => RI);
-export declare function executeUseGlobal<R>(callback: () => R): any;
-export declare function executeUseProvide<R, O extends any[]>(callback: (...args: O) => R): any;
-export declare function executeUseLocal<R, O extends any[]>(callback: (...args: O) => R): any;
+export declare function executeUseGlobal<R>(callback: () => R): (() => Readonly<R & { init(): Readonly<R>; destroyExecute?(): void; }>) | (() => Readonly<R & { init(): Readonly<R>; destroyExecute?(): void; }>);
+export declare function executeUseProvide<R, O extends any[]>(callback: (...args: O) => R): ((...args: O) => Readonly<R & { init(): Readonly<R>; destroyExecute?(): void; }>) | (() => Readonly<R & { init(): Readonly<R>; destroyExecute?(): void; }>);
+export declare function executeUseLocal<R, O extends any[]>(callback: (...args: O) => R): ((...args: O) => Readonly<R & { init(): Readonly<R>; destroyExecute?(): void; }>) | (() => Readonly<R & { init(): Readonly<R>; destroyExecute?(): void; }>);
 export declare function executeUseGlobalInit(): void;
 
 // File: src/functions/getInject.d.ts
@@ -556,6 +404,7 @@ export * from './composables/ref/useLazyItemByMarginRef';
 export * from './composables/ref/useLazyRef';
 export * from './composables/ref/useLoadingRef';
 export * from './composables/ref/useMeta';
+export * from './composables/ref/useQueryRef';
 export * from './composables/ref/useRouterList';
 export * from './composables/ref/useSearchRef';
 export * from './composables/ref/useSearchValueRef';
@@ -591,29 +440,9 @@ export * from './types/searchTypes';
 // File: src/types/apiTypes.d.ts
 export type ApiOptions = ApiMethodItem | RefOrNormal<ApiFetch>;
 export type ApiManagementValue = ApiDefaultValue | ApiDefaultValue[];
-export type ApiManagementGet<Return extends ApiManagementValue, Type extends ApiManagementValue = Return> = {
-    path?: RefOrNormal<string | undefined>;
-    options?: ApiOptions;
-    reactivity?: boolean;
-    conditions?: RefType<boolean>;
-    transformation?: (data: Type, isResponseContractValid?: ApiDataValidation) => ApiData<Return>;
-    validateResponseContract?: (data: Type) => ApiDataValidation;
-    errorContract?: ApiErrorStorageList;
-    typeData?: ((data: Return) => boolean) | any;
-    unmounted?: boolean;
-    skeleton?: () => Return;
-};
+export type ApiManagementGet<Return extends ApiManagementValue, Type extends ApiManagementValue = Return> = { path?: RefOrNormal<string | undefined>; options?: ApiOptions; reactivity?: boolean; conditions?: RefType<boolean>; transformation?: (data: Type, isResponseContractValid?: ApiDataValidation) => ApiData<Return>; validateResponseContract?: (data: Type) => ApiDataValidation; errorContract?: ApiErrorStorageList; typeData?: ((data: Return) => boolean) | any; unmounted?: boolean; skeleton?: () => Return; };
 export type ApiManagementSearch<T extends SearchItem, K extends SearchColumns<T>> = { columns: K; value?: Ref<string>; options?: SearchOptions; };
-export type ApiManagementRequest<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>> = {
-    path?: RefOrNormal<string | undefined>;
-    action?: (data: Return | undefined) => Promise<void> | void;
-    transformation?: (data: T) => Return;
-    validateRequestContract?: (data: Request) => ApiDataValidation & Return;
-    validateResponseContract?: (data: T) => ApiDataValidation & Return;
-    errorContract?: ApiErrorStorageList;
-    toData?: boolean;
-    options?: ApiOptions;
-};
+export type ApiManagementRequest<T, Request extends ApiFetch['request'] = ApiFetch['request'], Return extends ApiData<T> = ApiData<T>> = { path?: RefOrNormal<string | undefined>; action?: (data: Return | undefined) => Promise<void> | void; transformation?: (data: T) => Return; validateRequestContract?: (data: Request) => ApiDataValidation & Return; validateResponseContract?: (data: T) => ApiDataValidation & Return; errorContract?: ApiErrorStorageList; toData?: boolean; options?: ApiOptions; };
 
 // File: src/types/constructorTypes.d.ts
 export type ConstrItem = Record<string, any>;
@@ -630,19 +459,8 @@ export type ConstrClassList = Record<string, ConstrClass>;
 export type ConstrClasses = { main: ConstrClass; } & ConstrClassList;
 export type ConstrStylesItem = string | null;
 export type ConstrStyles = Record<string, ConstrStylesItem> | ConstrStyles[];
-export type ConstrOptions<COMP extends ConstrComponent, EMITS extends ConstrItem, P extends ConstrItem> = {
-    components?: COMP;
-    compMod?: ConstrComponentMod<P>;
-    emits?: ConstrEmit<EMITS>;
-    classes?: RefType<ConstrClasses>;
-    styles?: RefType<ConstrStyles>;
-};
-export type ConstrSetup<E extends Element, CLASSES extends ConstrClasses, SETUP extends ConstrItem> = {
-    name: string;
-    element: Ref<E | undefined>;
-    classes: RefType<CLASSES>;
-    styles: RefType<ConstrStyles>;
-} & SETUP;
+export type ConstrOptions<COMP extends ConstrComponent, EMITS extends ConstrItem, P extends ConstrItem> = { components?: COMP; compMod?: ConstrComponentMod<P>; emits?: ConstrEmit<EMITS>; classes?: RefType<ConstrClasses>; styles?: RefType<ConstrStyles>; };
+export type ConstrSetup<E extends Element, CLASSES extends ConstrClasses, SETUP extends ConstrItem> = { name: string; element: Ref<E | undefined>; classes: RefType<CLASSES>; styles: RefType<ConstrStyles>; } & SETUP;
 export type ConstrRegistration = { flag?: boolean; translate?: Record<string, string>; };
 export type ConstrBind<T> = T & Record<string, any> & { key?: string; class?: ConstrClass; style?: ConstrStyles; };
 export type ConstrPropItemOptions<T = any> = { type?: PropType<T>; required?: boolean; default?: any; validator?(value: any, props: any): boolean; };

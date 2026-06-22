@@ -1,0 +1,60 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Classes/UrlItem - Quản lý URL'/>
+
+# Lớp UrlItem
+
+Lớp `UrlItem` là một **Lớp tiện ích isomorphic** để phân tích cú pháp, quản lý và cập nhật URL trong cả môi trường client-side (DOM) và server-side (SSR). Nó bao bọc đối tượng `URL` tiêu chuẩn, cung cấp các thuộc tính getter chỉ đọc sạch sẽ và các phương thức hỗ trợ để thao tác với tham số truy vấn (query parameter).
+
+## Các tính năng chính
+
+- **Hỗ trợ isomorphic** — tự động phân giải URL tương đối dựa trên ngữ cảnh runtime (window.location trong trình duyệt, localhost trong quá trình render phía máy chủ).
+- **Cách ly yêu cầu trong SSR** — cung cấp phương thức `getInstance()` được hỗ trợ bởi `ServerStorage` để giữ cho ngữ cảnh URL được cách ly trong mỗi luồng yêu cầu.
+- **Hỗ trợ tham số truy vấn** — cung cấp các phương thức sạch sẽ và có thể chuỗi hóa (chainable) để kiểm tra, truy xuất, thiết lập hoặc xóa các tham số truy vấn mà không cần định dạng chuỗi tìm kiếm thủ công.
+
+## Các phương thức
+
+### Các bộ truy cập (Accessors)
+
+- `get href(): string` — Trả về chuỗi URL đầy đủ.
+- `get protocol(): string` — Trả về giao thức bao gồm cả dấu hai chấm ở cuối.
+- `get username(): string` — Trả về tên người dùng (username).
+- `get password(): string` — Trả về mật khẩu.
+- `get host(): string` — Trả về host (tên miền và cổng).
+- `get hostname(): string` — Trả về tên miền (không bao gồm cổng).
+- `get port(): string` — Trả về cổng.
+- `get pathname(): string` — Trả về đường dẫn tài nguyên.
+- `get search(): string` — Trả về chuỗi truy vấn bao gồm cả dấu hỏi chấm ở đầu.
+- `get searchParams(): URLSearchParams` — Trả về đối tượng `URLSearchParams` tiêu chuẩn.
+- `get hash(): string` — Trả về chuỗi hash bao gồm cả dấu thăng ở đầu.
+- `get origin(): string` — Trả về nguồn gốc (origin) của URL (chỉ đọc).
+- `getParam(name: string): string | undefined` — Trả về giá trị của tham số truy vấn, hoặc `undefined` nếu không tìm thấy.
+- `getParams(): Record<string, any>` — Trả về tất cả các tham số truy vấn dưới dạng một đối tượng với các kiểu đã biến đổi.
+
+### Kiểm tra
+
+- `hasParam(name: string): boolean` — Kiểm tra xem tham số truy vấn được chỉ định có tồn tại hay không.
+
+### Hành động
+
+- `set(url?: string | URL): this` — Cập nhật giá trị URL.
+- `setParam(name: string, value: string): this` — Thiết lập giá trị của tham số truy vấn.
+- `setParams(params: Record<string, any>): this` — Thay thế tất cả các tham số truy vấn bằng đối tượng được chỉ định.
+- `deleteParam(name: string): this` — Xóa tham số truy vấn.
+
+### Phụ trợ
+
+- `static getInstance(): UrlItem` — Trả về instance cách ly theo yêu cầu của UrlItem.
+- `toString(): string` — Chuyển đổi instance Url thành biểu diễn chuỗi của nó.
+- `toJSON(): string` — Chuyển đổi instance Url thành biểu diễn chuỗi JSON.
+
+## Kiến trúc SSR
+
+Lớp `UrlItem` cung cấp khả năng quản lý instance cách ly theo yêu cầu thông qua `ServerStorage`.
+
+### Quản lý Instance
+
+Bằng cách gọi `UrlItem.getInstance()`, lớp này sẽ truy xuất hoặc khởi tạo một instance được lưu trữ trong `ServerStorage` dưới một khóa duy nhất (`__ui:url-item__`). Kiến trúc này giải quyết hai vấn đề lớn:
+
+1.  **An toàn luồng trong SSR**: Trong quá trình render phía máy chủ, nhiều yêu cầu máy chủ chạy đồng thời. `ServerStorage` đảm bảo rằng mỗi yêu cầu có ngữ cảnh `UrlItem` cách ly riêng, ngăn chặn việc rò rỉ tham số truy vấn giữa các phiên làm việc của người dùng.
+2.  **Sự đơn giản của Singleton trên Client**: Ở phía client, nó hoạt động như một singleton thực sự, cho phép các component đọc và cập nhật các tham số URL toàn cục.

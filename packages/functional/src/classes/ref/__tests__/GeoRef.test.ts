@@ -39,7 +39,7 @@ describe('GeoRef', () => {
 
     GeoRef.set('en-VN')
     expect(GeoRef.getCountry().value).toBe('VN')
-    expect(GeoRef.getLanguage().value).toBe('en')
+    expect(GeoRef.getLanguage().value).toBe('vi')
     expect(GeoRef.getStandard().value).toBe('en-VN')
     expect(GeoRef.getLocation().value).toBe('en-VN')
     expect(GeoRef.getLocationCountry().value).toBe('VN')

@@ -106,6 +106,38 @@ describe('UrlItem', () => {
     })
   })
 
+  describe('Parameter Methods', () => {
+    it('should correctly check, get, set, and delete query parameters', () => {
+      const url = new UrlItem('https://example.com/path?initial=1')
+
+      // hasParam
+      expect(url.hasParam('initial')).toBe(true)
+      expect(url.hasParam('not-found')).toBe(false)
+
+      // getParam
+      expect(url.getParam('initial')).toBe('1')
+      expect(url.getParam('not-found')).toBeUndefined()
+
+      // setParam
+      url.setParam('new', 'value')
+      expect(url.getParam('new')).toBe('value')
+      expect(url.href).toBe('https://example.com/path?initial=1&new=value')
+
+      // deleteParam
+      url.deleteParam('initial')
+      expect(url.hasParam('initial')).toBe(false)
+      expect(url.href).toBe('https://example.com/path?new=value')
+
+      // getParams
+      const params = url.getParams()
+      expect(params).toEqual({ new: 'value' })
+
+      // setParams
+      url.setParams({ a: 1, b: 'two', c: '', d: null, e: undefined })
+      expect(url.getParams()).toEqual({ a: 1, b: 'two' })
+    })
+  })
+
   describe('Serialization', () => {
     it('should support toString and toJSON', () => {
       const urlString = 'https://example.com/path'

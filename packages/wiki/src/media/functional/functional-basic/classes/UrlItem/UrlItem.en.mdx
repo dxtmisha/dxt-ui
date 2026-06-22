@@ -1,0 +1,60 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Classes/UrlItem - URL Management'/>
+
+# UrlItem Class
+
+The `UrlItem` class is an **Isomorphic Utility Class** for parsing, managing, and updating URLs in both client-side (DOM) and server-side (SSR) environments. It encapsulates the standard standard `URL` object, providing clean read-only property getters and helper methods for query parameter manipulation.
+
+## Key Features
+
+- **Isomorphic Support** — automatically resolves relative URLs based on the runtime context (window.location in the browser, localhost in server-side rendering).
+- **Request Isolation in SSR** — provides a `getInstance()` method backed by `ServerStorage` to keep URL contexts isolated within each request thread.
+- **Query Parameter Helpers** — provides clean, chainable methods to check, retrieve, set, or delete query parameters without manual search string formatting.
+
+## Methods
+
+### Accessors
+
+- `get href(): string` — Returns the full URL string.
+- `get protocol(): string` — Returns the protocol including the trailing colon.
+- `get username(): string` — Returns the username.
+- `get password(): string` — Returns the password.
+- `get host(): string` — Returns the host (hostname and port).
+- `get hostname(): string` — Returns the hostname (excluding port).
+- `get port(): string` — Returns the port.
+- `get pathname(): string` — Returns the path name.
+- `get search(): string` — Returns the query search string including the leading question mark.
+- `get searchParams(): URLSearchParams` — Returns the standard `URLSearchParams` object.
+- `get hash(): string` — Returns the hash string including the leading hash sign.
+- `get origin(): string` — Returns the origin of the URL (readonly).
+- `getParam(name: string): string | undefined` — Returns the value of a query parameter, or `undefined` if not found.
+- `getParams(): Record<string, any>` — Returns all query parameters as an object with transformed types.
+
+### Check
+
+- `hasParam(name: string): boolean` — Checks if the specified query parameter exists.
+
+### Action
+
+- `set(url?: string | URL): this` — Updates the URL value.
+- `setParam(name: string, value: string): this` — Sets the value of a query parameter.
+- `setParams(params: Record<string, any>): this` — Replaces all query parameters with the specified object.
+- `deleteParam(name: string): this` — Deletes a query parameter.
+
+### Auxiliary
+
+- `static getInstance(): UrlItem` — Returns a request-isolated instance of UrlItem.
+- `toString(): string` — Converts the Url instance to its string representation.
+- `toJSON(): string` — Converts the Url instance to JSON string representation.
+
+## SSR Architecture
+
+The `UrlItem` class provides request-isolated instance management via `ServerStorage`.
+
+### Instance Management
+
+By calling `UrlItem.getInstance()`, the class retrieves or initializes an instance stored in `ServerStorage` under a unique key (`__ui:url-item__`). This architecture solves two major problems:
+
+1.  **Thread Safety in SSR**: During server-side rendering, multiple server requests run concurrently. `ServerStorage` ensures that each request has its own isolated `UrlItem` configuration, preventing search query leakage between user sessions.
+2.  **Singleton Simplicity on Client**: On the client side, it behaves as a true singleton, allowing components to read and update URL parameters globally.

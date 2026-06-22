@@ -1,0 +1,83 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Classes/Query - Состояние URL Query'/>
+
+# Класс Query
+
+Статический класс-фасад для управления данными, которые хранятся в query-параметрах URL (GET-параметры). Он делегирует выполнение классу `QueryInstance`, обеспечивая централизованный доступ и изоляцию состояния (например, при SSR).
+
+Автоматически синхронизирует состояние приложения с URL — каждый вызов `set` обновляет строку запроса в браузере, а событие `popstate` обновляет внутреннее состояние.
+
+## Ключевые особенности
+
+- **Синхронизация с URL** — Данные хранятся в стандартных query-параметрах.
+- **Реактивность через watchers** — Метод `addWatch` позволяет подписаться на изменение конкретной переменной.
+- **Авто-инициализация** — При загрузке страницы данные автоматически считываются из URL.
+- **Умный тип** — Значения десериализуются из строки: числа, булевые значения и объекты восстанавливаются.
+- **SSR-изоляция** — Через `ServerStorage` обеспечивается уникальный экземпляр данных для каждого запроса на сервере, интегрировано с `UrlItem`.
+
+## Инициализация
+
+Класс является статическим и инициализируется автоматически при первом обращении.
+
+```javascript
+// URL: https://myapp.com/?page=2&filter=active
+
+import { Query } from '@dxtmisha/functional-basic'
+
+const page = Query.get('page')    // 2 (number)
+const filter = Query.get('filter') // 'active' (string)
+```
+
+## Методы
+
+### Экземпляр
+- `static getItem(): QueryInstance` — Возвращает текущий экземпляр `QueryInstance` (изолированный для текущего запроса).
+
+### Чтение и запись
+- `static get<T>(name: string, defaultValue?: T | (() => T)): T` — Возвращает значение переменной из query-параметров.
+- `static set<T>(name: string, callback: T | (() => T)): void` — Устанавливает значение переменной и обновляет URL query-параметры.
+
+### Наблюдение (Watchers)
+- `static addWatch<T>(name: string, callback: (value: T) => void): void` — Подписывается на изменение переменной.
+- `static removeWatch<T>(name: string, callback: (value: T) => void): void` — Отписывается от изменений.
+
+### Управление
+- `static reload(): void` — Принудительно синхронизирует состояние с текущим URL query-параметрами.
+
+## Примеры
+
+### Чтение и запись
+```javascript
+import { Query } from '@dxtmisha/functional-basic'
+
+// Чтение с дефолтным значением
+const page = Query.get<number>('page', 1)
+
+// Запись (URL изменится на ?page=3)
+Query.set('page', 3)
+
+// Запись через функцию
+Query.set('page', () => page + 1)
+```
+
+### Подписка на изменения
+```javascript
+Query.addWatch<string>('filter', (newFilter) => {
+  console.log('Фильтр изменен на:', newFilter)
+})
+
+// Отписка (callback должен быть ссылкой на ту же функцию)
+Query.removeWatch('filter', callback)
+```
+
+### Управление состоянием страницы
+```javascript
+// Инициализация фильтра с дефолтным значением
+const filter = Query.get('filter', 'all')
+const sort = Query.get('sort', 'date')
+
+// Изменение при действии пользователя
+Query.set('filter', 'active')
+// URL: ?filter=active&sort=date
+```

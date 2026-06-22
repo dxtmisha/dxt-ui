@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.14.0] - 2026-06-22
+
+### Added
+- **useQueryRef**: Introduced a new Vue 3 reactive composable to manage URL query/GET parameters reactively, mimicking `useHashRef` behavior.
+- **useQueryRef**: Added `useQueryRef.test.ts` unit test suite to validate parameter retrieval, reactive updates, and event callbacks.
+
+### Fixed
+- **GeoRef**: Updated `GeoRef.test.ts` assertions for the `'en-VN'` locale to expect country `'VN'` and language `'vi'` to align with the country-first localization resolution updates.
+
 ## [1.13.7] - 2026-06-19
 
 ### Added

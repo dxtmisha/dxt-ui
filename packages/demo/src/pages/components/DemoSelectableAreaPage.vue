@@ -5,7 +5,7 @@ import { useDemoEvent } from '../../composables/useDemoEvent'
 import DemoLinkBlack from '../../components/DemoLinkBlack.vue'
 import DemoValue from '../../components/DemoValue.vue'
 import DemoFlex from '../../components/DemoFlex.vue'
-import DemoSelectableAreaList from '../../components/DemoSelectableAreaList.vue'
+import DemoSectionSelectableAreaList from '../../components/Section/SelectableArea/DemoSectionSelectableAreaList.vue'
 
 const { eventName, onEvent } = useDemoEvent()
 
@@ -41,7 +41,7 @@ const setSelectedExpose = () => {
       <D1Group label="Basic Usage">
         <D1SelectableArea v-model:selected="selectedBasic">
           <template #default="{ className, classClick, onClick }">
-            <DemoSelectableAreaList
+            <DemoSectionSelectableAreaList
               :class-name="className"
               :class-click="classClick"
               :on-click="onClick"
@@ -54,7 +54,7 @@ const setSelectedExpose = () => {
       <D1Group label="Active (Continuous Selection)">
         <D1SelectableArea active v-model:selected="selectedActive">
           <template #default="{ className, classClick, onClick }">
-            <DemoSelectableAreaList
+            <DemoSectionSelectableAreaList
               :class-name="className"
               :class-click="classClick"
               :on-click="onClick"
@@ -75,7 +75,7 @@ const setSelectedExpose = () => {
           @selected="onSelected"
         >
           <template #default="{ className, classClick, onClick }">
-            <DemoSelectableAreaList
+            <DemoSectionSelectableAreaList
               :class-name="className"
               :class-click="classClick"
               :on-click="onClick"

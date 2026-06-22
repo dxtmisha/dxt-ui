@@ -1,0 +1,83 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Classes/Query - Quản lý trạng thái URL Query'/>
+
+# Lớp Query
+
+Một lớp facade tĩnh để quản lý dữ liệu được lưu trữ trong URL query parameters (GET parameters). Nó ủy quyền thực thi cho lớp `QueryInstance`, cung cấp khả năng truy cập tập trung và cách ly trạng thái (ví dụ: cho SSR).
+
+Nó tự động đồng bộ hóa trạng thái ứng dụng với URL — mỗi lần gọi `set` sẽ cập nhật chuỗi truy vấn (query string) trên trình duyệt, và sự kiện `popstate` sẽ làm mới trạng thái nội bộ.
+
+## Tính năng chính
+
+- **Đồng bộ với URL** — Dữ liệu được lưu ở định dạng query parameters tiêu chuẩn.
+- **Phản hồi qua Watcher** — Phương thức `addWatch` cho phép đăng ký theo dõi thay đổi của một biến cụ thể.
+- **Tự động khởi tạo** — Khi tải trang, dữ liệu được tự động đọc từ các tham số tìm kiếm URL.
+- **Phân tích kiểu thông minh** — Giá trị được giải mã từ chuỗi: số, boolean và đối tượng được khôi phục về kiểu gốc.
+- **Cách ly SSR** — `ServerStorage` đảm bảo mỗi yêu cầu trên máy chủ có một phiên bản dữ liệu riêng, tích hợp với `UrlItem`.
+
+## Khởi tạo
+
+Lớp này là tĩnh và khởi tạo tự động khi truy cập lần đầu.
+
+```javascript
+// URL: https://myapp.com/?page=2&filter=active
+
+import { Query } from '@dxtmisha/functional-basic'
+
+const page = Query.get('page')    // 2 (number)
+const filter = Query.get('filter') // 'active' (string)
+```
+
+## Phương thức
+
+### Phiên bản
+- `static getItem(): QueryInstance` — Trả về phiên bản `QueryInstance` hiện tại (được cách ly cho yêu cầu hiện tại).
+
+### Đọc và Ghi
+- `static get<T>(name: string, defaultValue?: T | (() => T)): T` — Trả về giá trị của biến query.
+- `static set<T>(name: string, callback: T | (() => T)): void` — Thiết lập giá trị của biến và cập nhật URL query parameters.
+
+### Theo dõi (Watchers)
+- `static addWatch<T>(name: string, callback: (value: T) => void): void` — Đăng ký theo dõi thay đổi của một biến query cụ thể.
+- `static removeWatch<T>(name: string, callback: (value: T) => void): void` — Hủy đăng ký theo dõi thay đổi của một biến.
+
+### Quản lý
+- `static reload(): void` — Ép buộc đồng bộ hóa trạng thái với URL query parameters hiện tại.
+
+## Ví dụ
+
+### Đọc và ghi
+```javascript
+import { Query } from '@dxtmisha/functional-basic'
+
+// Đọc với giá trị mặc định
+const page = Query.get<number>('page', 1)
+
+// Ghi (URL thay đổi thành ?page=3)
+Query.set('page', 3)
+
+// Ghi qua hàm
+Query.set('page', () => page + 1)
+```
+
+### Đăng ký theo dõi thay đổi
+```javascript
+Query.addWatch<string>('filter', (newFilter) => {
+  console.log('Bộ lọc đã thay đổi thành:', newFilter)
+})
+
+// Hủy đăng ký (callback phải là tham chiếu đến cùng một hàm)
+Query.removeWatch('filter', callback)
+```
+
+### Quản lý trạng thái trang
+```javascript
+// Khởi tạo bộ lọc với giá trị mặc định
+const filter = Query.get('filter', 'all')
+const sort = Query.get('sort', 'date')
+
+// Thay đổi khi người dùng thực hiện hành động
+Query.set('filter', 'active')
+// URL: ?filter=active&sort=date
+```

@@ -1,0 +1,83 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Classes/Query - URL Query State'/>
+
+# Query Class
+
+A static facade class for managing data stored in the URL query parameters (GET parameters). It delegates execution to the `QueryInstance` class, providing centralized access and state isolation (e.g., for SSR).
+
+It automatically synchronizes application state with the URL — every `set` call updates the browser's query string, while the `popstate` event refreshes the internal state.
+
+## Key Features
+
+- **URL Synchronization** — Data is stored in standard query parameters.
+- **Reactivity via Watchers** — The `addWatch` method allows subscribing to changes on a specific query variable.
+- **Auto-initialization** — When the page loads, data is automatically read from the URL search parameters.
+- **Smart Typing** — Values are deserialized from a string: numbers, booleans, and objects are restored to their original types.
+- **SSR Isolation** — `ServerStorage` ensures a unique data instance for each request on the server, integrated with `UrlItem`.
+
+## Initialization
+
+The class is static and initializes automatically upon the first access.
+
+```javascript
+// URL: https://myapp.com/?page=2&filter=active
+
+import { Query } from '@dxtmisha/functional-basic'
+
+const page = Query.get('page')    // 2 (number)
+const filter = Query.get('filter') // 'active' (string)
+```
+
+## Methods
+
+### Instance
+- `static getItem(): QueryInstance` — Returns the current `QueryInstance` (isolated for the current request).
+
+### Reading and Writing
+- `static get<T>(name: string, defaultValue?: T | (() => T)): T` — Returns the value of a query variable.
+- `static set<T>(name: string, callback: T | (() => T)): void` — Sets a variable's value and updates the URL query parameters.
+
+### Watchers
+- `static addWatch<T>(name: string, callback: (value: T) => void): void` — Subscribes to changes for a specific query variable.
+- `static removeWatch<T>(name: string, callback: (value: T) => void): void` — Unsubscribes from changes for a specific variable.
+
+### Management
+- `static reload(): void` — Forces synchronization of the state with the current URL query parameters.
+
+## Examples
+
+### Reading and Writing
+```javascript
+import { Query } from '@dxtmisha/functional-basic'
+
+// Reading with a default value
+const page = Query.get<number>('page', 1)
+
+// Writing (URL changes to ?page=3)
+Query.set('page', 3)
+
+// Writing via a function
+Query.set('page', () => page + 1)
+```
+
+### Subscribing to Changes
+```javascript
+Query.addWatch<string>('filter', (newFilter) => {
+  console.log('Filter changed to:', newFilter)
+})
+
+// Unsubscribe (callback must be a reference to the same function)
+Query.removeWatch('filter', callback)
+```
+
+### Managing Page State
+```javascript
+// Initialize filters with a default value
+const filter = Query.get('filter', 'all')
+const sort = Query.get('sort', 'date')
+
+// Change on user action
+Query.set('filter', 'active')
+// URL: ?filter=active&sort=date
+```

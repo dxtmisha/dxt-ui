@@ -19,6 +19,7 @@ import DemoChipPage from './pages/components/DemoChipPage.vue'
 import DemoChipGroupPage from './pages/components/DemoChipGroupPage.vue'
 import DemoClientOnlyPage from './pages/components/DemoClientOnlyPage.vue'
 import DemoDialogPage from './pages/components/DemoDialogPage.vue'
+import DemoDraggableWrapperPage from './pages/components/DemoDraggableWrapperPage.vue'
 import DemoIconPage from './pages/components/DemoIconPage.vue'
 import DemoImagePage from './pages/components/DemoImagePage.vue'
 import DemoInputPage from './pages/components/DemoInputPage.vue'
@@ -130,6 +131,11 @@ export const routes: RouteRecordRaw[] = [
     path: '/component-dialog',
     name: 'component-dialog',
     component: DemoDialogPage
+  },
+  {
+    path: '/component-draggable-wrapper',
+    name: 'component-draggable-wrapper',
+    component: DemoDraggableWrapperPage
   },
   {
     path: '/component-icon',
