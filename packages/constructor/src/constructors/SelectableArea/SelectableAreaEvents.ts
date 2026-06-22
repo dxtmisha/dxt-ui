@@ -107,14 +107,6 @@ export class SelectableAreaEvents {
   readonly onMousedown = (
     event: MouseEvent | TouchEvent
   ): void => {
-    console.log(
-      this.props.active,
-      this.props.disabled,
-      (event as MouseEvent).ctrlKey,
-      (event as MouseEvent).shiftKey,
-      event.target,
-      this.classes.getElement()
-    )
     if (
       !this.props.active
       && !this.props.disabled

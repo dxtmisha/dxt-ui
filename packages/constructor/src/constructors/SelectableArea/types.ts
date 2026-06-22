@@ -1,4 +1,5 @@
 import type { ConstrClass } from '@dxtmisha/functional'
+import type { ModelEmitsSelected } from '../../types/modelTypes'
 import type { SelectableAreaControl, SelectableAreaEventParameters } from './basicTypes'
 
 /** Interface for describing which components need to be connected for work / Интерфейс для описания, какие компоненты надо подключить для работы */
@@ -6,10 +7,11 @@ export type SelectableAreaComponents = {
 }
 
 /** Type describing available events / Тип, описывающий доступные события */
-export type SelectableAreaEmits = {
-  /** Event triggered when items are selected / Событие, вызываемое при выборе элементов */
-  selected: [parameters: SelectableAreaEventParameters]
-}
+export type SelectableAreaEmits = ModelEmitsSelected
+  & {
+    /** Event triggered when items are selected / Событие, вызываемое при выборе элементов */
+    selected: [parameters: SelectableAreaEventParameters]
+  }
 
 /** Type describing available properties / Тип, описывающий доступные свойства */
 export interface SelectableAreaExpose {

@@ -202,4 +202,3 @@ const selectedEvents = ref('slide1')
 
 <style lang="scss">
 </style>
-
