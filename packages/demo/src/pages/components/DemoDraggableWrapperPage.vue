@@ -6,6 +6,7 @@ import type { DraggableWrapperEventParameters } from '@dxtmisha/constructor/Drag
 import DemoLinkBlack from '../../components/DemoLinkBlack.vue'
 import DemoValue from '../../components/DemoValue.vue'
 import DemoSectionDraggableWrapperList from '../../components/Section/DraggableWrapper/DemoSectionDraggableWrapperList.vue'
+import DemoSectionDraggableWrapperDropZones from '../../components/Section/DraggableWrapper/DemoSectionDraggableWrapperDropZones.vue'
 
 const { eventName, onEvent } = useDemoEvent()
 
@@ -24,32 +25,6 @@ const onPositionBasic = (parameters: DraggableWrapperEventParameters) => {
 
   if (draggableBasicRef.value) {
     itemsBasic.value = draggableBasicRef.value.toNewPosition(itemsBasic.value, parameters)
-  }
-}
-
-// 2. Drop Zones State
-const zoneA = ref([
-  { value: 'drag-a', label: 'Drag A' },
-  { value: 'drag-b', label: 'Drag B' },
-  { value: 'drag-c', label: 'Drag C' }
-])
-const zoneB = ref<{ value: string, label: string }[]>([])
-
-const onDrop = (parameters: DraggableWrapperEventParameters) => {
-  onEvent('drop', parameters)
-  const targetZone = parameters.valueTo
-  const draggedValues = parameters.valueSelection
-
-  if (!targetZone || !draggedValues.length) return
-
-  if (targetZone === 'zone-a') {
-    const moved = zoneB.value.filter(item => draggedValues.includes(item.value))
-    zoneB.value = zoneB.value.filter(item => !draggedValues.includes(item.value))
-    zoneA.value.push(...moved)
-  } else if (targetZone === 'zone-b') {
-    const moved = zoneA.value.filter(item => draggedValues.includes(item.value))
-    zoneA.value = zoneA.value.filter(item => !draggedValues.includes(item.value))
-    zoneB.value.push(...moved)
   }
 }
 
@@ -95,37 +70,7 @@ const onPositionDelayed = (parameters: DraggableWrapperEventParameters) => {
       </D1Group>
 
       <D1Group label="Drop Zones">
-        <D1DraggableWrapper @drop="onDrop">
-          <template #default="{ className, classClick, classDrop, classPosition }">
-            <div class="demo-draggable-wrapper-page__drop-container">
-              <div
-                :class="['demo-draggable-wrapper-page__zone', className, classDrop]"
-                data-value="zone-a"
-              >
-                <div class="demo-draggable-wrapper-page__zone-label">Zone A</div>
-                <DemoSectionDraggableWrapperList
-                  :items="zoneA"
-                  :class-name="className"
-                  :class-click="classClick"
-                  :class-position="classPosition"
-                />
-              </div>
-
-              <div
-                :class="['demo-draggable-wrapper-page__zone', className, classDrop]"
-                data-value="zone-b"
-              >
-                <div class="demo-draggable-wrapper-page__zone-label">Zone B</div>
-                <DemoSectionDraggableWrapperList
-                  :items="zoneB"
-                  :class-name="className"
-                  :class-click="classClick"
-                  :class-position="classPosition"
-                />
-              </div>
-            </div>
-          </template>
-        </D1DraggableWrapper>
+        <DemoSectionDraggableWrapperDropZones />
       </D1Group>
 
       <D1Group label="Disabled State">
@@ -164,36 +109,3 @@ const onPositionDelayed = (parameters: DraggableWrapperEventParameters) => {
     </D1Section>
   </D1Page>
 </template>
-
-<style lang="scss">
-.demo-draggable-wrapper-page {
-  &__drop-container {
-    display: flex;
-    gap: 24px;
-    margin-top: 16px;
-    flex-wrap: wrap;
-  }
-
-  &__zone {
-    flex: 1;
-    min-width: 250px;
-    border: 2px dashed var(--d1-sys-palette-outline);
-    border-radius: 8px;
-    padding: 16px;
-    background-color: var(--d1-sys-palette-surfaceContainerLow);
-    transition: background-color 0.2s ease, border-color 0.2s ease;
-
-    &.d1-draggableWrapper__item--dragged {
-      background-color: var(--d1-sys-palette-primaryContainer);
-      border-color: var(--d1-sys-palette-primary);
-    }
-  }
-
-  &__zone-label {
-    display: block;
-    margin-bottom: 12px;
-    font-weight: bold;
-    color: var(--d1-sys-palette-onSurface);
-  }
-}
-</style>
