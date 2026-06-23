@@ -292,13 +292,36 @@ export class GeoFlag {
       const country = this.getCountry(data)
 
       return {
-        language: this.getLanguage(data),
+        language: this.getLanguageName(data),
+        languageCode: data.language,
         country,
+        countryCode: data.country,
         standard: data.standard,
         icon: GeoFlag.flags?.[data.country],
         label: country,
         value: data.country,
         phoneCode: data.phoneCode
+      }
+    }
+
+    return undefined
+  }
+
+  /**
+   * Returns information about the language and its flag.
+   *
+   * Возвращает информацию о языке и его флаге.
+   * @param code country code / код страны
+   * @returns language information / информация о языке
+   */
+  getLanguage(code: string = this.getCode()): GeoFlagItem | undefined {
+    const item = this.get(code)
+
+    if (item) {
+      return {
+        ...item,
+        label: item.language,
+        value: item.languageCode
       }
     }
 
@@ -347,6 +370,26 @@ export class GeoFlag {
   }
 
   /**
+   * Returns a list of languages based on the provided codes.
+   * If no codes are provided, returns all available languages.
+   *
+   * Возвращает список языков на основе предоставленных кодов.
+   * Если коды не переданы, возвращает все доступные языки.
+   * @param codes array of country codes / массив кодов стран
+   * @param sort whether to sort the list / сортировать ли список
+   * @returns list of languages / список языков
+   */
+  getListLanguage(codes?: string[], sort: boolean = true): GeoFlagItem[] {
+    const list = forEach(this.getCodes(codes), code => this.getLanguage(code)) as GeoFlagItem[]
+
+    if (sort) {
+      return new GeoIntl().sort(list, (a: any, b: any) => [a.label, b.label])
+    }
+
+    return list
+  }
+
+  /**
    * Returns a list of countries in their national languages.
    *
    * Возвращает список стран на их национальных языках.
@@ -361,6 +404,33 @@ export class GeoFlag {
       return {
         ...item,
         description: geo?.country,
+        nationalLanguage: geo?.language,
+        nationalCountry: geo?.country
+      }
+    }) as GeoFlagNational[]
+
+    if (sort) {
+      return new GeoIntl().sort(list, (a: any, b: any) => [a.label, b.label])
+    }
+
+    return list
+  }
+
+  /**
+   * Returns a list of languages in their national names.
+   *
+   * Возвращает список языков на их национальных названиях.
+   * @param codes array of country codes / массив кодов стран
+   * @param sort whether to sort the list / сортировать ли список
+   * @returns list of languages with national names / список языков с национальными названиями
+   */
+  getNationalLanguage(codes?: string[], sort: boolean = true): GeoFlagNational[] {
+    const list = forEach(this.getListLanguage(codes, false), (item) => {
+      const geo = new GeoFlag(item.standard).getLanguage(item.standard)
+
+      return {
+        ...item,
+        description: geo?.language,
         nationalLanguage: geo?.language,
         nationalCountry: geo?.country
       }
@@ -414,7 +484,7 @@ export class GeoFlag {
    * Получение названия языка.
    * @param data object with information of data/ объект с информацией данных
    */
-  protected getLanguage(data: GeoItemFull): string {
+  protected getLanguageName(data: GeoItemFull): string {
     return this.getLocation().languageName(data.language)
   }
 

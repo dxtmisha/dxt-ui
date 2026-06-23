@@ -74,7 +74,7 @@ export class MenuCountry {
       ModelIncludeConstructor = ModelInclude
     } = constructors
 
-    this.flagList = new GeoFlagRef(this.refs.language).getNational(this.refs.countryList)
+    this.flagList = this.initFlagList()
 
     this.event = new EventClickIncludeConstructor(undefined, undefined, this.emits)
     this.model = new ModelIncludeConstructor('selected', this.emits)
@@ -114,4 +114,15 @@ export class MenuCountry {
 
     return this.flagList.value
   })
+
+  /**
+   * Initializes the flag list.
+   *
+   * Инициализирует список флагов.
+   * @protected
+   * @returns reactive list of national flag items / реактивный список элементов национальных флагов
+   */
+  protected initFlagList(): ComputedRef<GeoFlagNational[]> {
+    return new GeoFlagRef(this.refs.language).getNational(this.refs.countryList)
+  }
 }

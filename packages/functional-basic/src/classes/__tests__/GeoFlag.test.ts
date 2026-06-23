@@ -14,6 +14,8 @@ describe('GeoFlag', () => {
 
     expect(item).toBeDefined()
     expect(item?.value).toBe('US')
+    expect(item?.countryCode).toBe('US')
+    expect(item?.languageCode).toBe('en')
     expect(item?.icon).toBe('f-us')
     expect(item?.standard).toContain('US')
   })
@@ -24,6 +26,8 @@ describe('GeoFlag', () => {
 
     expect(item).toBeDefined()
     expect(item?.value).toBe('RU')
+    expect(item?.countryCode).toBe('RU')
+    expect(item?.languageCode).toBe('ru')
     expect(item?.icon).toBe('f-ru')
   })
 
@@ -61,6 +65,16 @@ describe('GeoFlag', () => {
     expect(list[0]).toHaveProperty('value')
   })
 
+  it('should return a list of all languages when no codes provided', () => {
+    const flag = new GeoFlag('en-US')
+    const list = flag.getListLanguage()
+
+    expect(list.length).toBeGreaterThan(100)
+    expect(list[0]).toHaveProperty('icon')
+    expect(list[0]).toHaveProperty('country')
+    expect(list[0]).toHaveProperty('value')
+  })
+
   it('should return a filtered list by codes', () => {
     const flag = new GeoFlag('en-US')
     const list = flag.getList(['US', 'FR', 'DE'])
@@ -70,6 +84,17 @@ describe('GeoFlag', () => {
     expect(codes).toContain('US')
     expect(codes).toContain('FR')
     expect(codes).toContain('DE')
+  })
+
+  it('should return a filtered list of languages by codes', () => {
+    const flag = new GeoFlag('en-US')
+    const list = flag.getListLanguage(['US', 'FR', 'DE'])
+
+    expect(list).toHaveLength(3)
+    const codes = list.map(item => item.value)
+    expect(codes).toContain('en')
+    expect(codes).toContain('fr')
+    expect(codes).toContain('de')
   })
 
   it('should return national names for countries', () => {
@@ -90,12 +115,46 @@ describe('GeoFlag', () => {
     expect(national[1]?.nationalLanguage).toBe('Tiếng Việt')
   })
 
+  it('should return national names for languages', () => {
+    const flag = new GeoFlag('en-US')
+    const national = flag.getNationalLanguage(['RU', 'VN'])
+
+    expect(national).toHaveLength(2)
+
+    // RU check
+    expect(national[0]?.value).toBe('ru')
+    expect(national[0]?.label).toBe('Russian') // in en-US
+    expect(national[0]?.description).toBe('русский') // in ru-RU
+    expect(national[0]?.nationalLanguage).toBe('русский')
+    expect(national[0]?.nationalCountry).toBe('Россия')
+
+    // VN check
+    expect(national[1]?.value).toBe('vi')
+    expect(national[1]?.label).toBe('Vietnamese') // in en-US
+    expect(national[1]?.description).toBe('Tiếng Việt') // in vi-VN
+    expect(national[1]?.nationalLanguage).toBe('Tiếng Việt')
+    expect(national[1]?.nationalCountry).toBe('Việt Nam')
+  })
+
   it('should update code via setCode', () => {
     const flag = new GeoFlag('en-US')
     flag.setCode('ru-RU')
 
     const item = flag.get()
     expect(item?.value).toBe('RU')
+  })
+
+  it('should return the flag item with language as label and value', () => {
+    const flag = new GeoFlag('en-US')
+    const item = flag.getLanguage('ru-RU')
+
+    expect(item).toBeDefined()
+    expect(item?.value).toBe('ru')
+    expect(item?.languageCode).toBe('ru')
+    expect(item?.countryCode).toBe('RU')
+    expect(item?.label).toBe('Russian')
+    expect(item?.country).toBe('Russia')
+    expect(item?.icon).toBe('f-ru')
   })
 
   it('flags dictionary should have standard entries', () => {

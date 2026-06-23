@@ -43,7 +43,20 @@ describe('GeoFlagRef', () => {
     it('get returns flag information for a code', () => {
       const info = geoFlagRef.get('US').value
       expect(info).toBeDefined()
+      expect(info?.countryCode).toBe('US')
+      expect(info?.languageCode).toBe('en')
       expect(info?.icon).toBeDefined()
+    })
+
+    it('getLanguage returns language information for a code', () => {
+      const info = geoFlagRef.getLanguage('ru-RU').value
+      expect(info).toBeDefined()
+      expect(info?.value).toBe('ru')
+      expect(info?.languageCode).toBe('ru')
+      expect(info?.countryCode).toBe('RU')
+      expect(info?.label).toBe('русский')
+      expect(info?.country).toBe('Россия')
+      expect(info?.icon).toBe('f-ru')
     })
 
     it('getFlag returns the flag icon link', () => {
@@ -58,10 +71,24 @@ describe('GeoFlagRef', () => {
       expect(list[0]?.icon).toBeDefined()
     })
 
+    it('getListLanguage returns a list of language flag items', () => {
+      const list = geoFlagRef.getListLanguage(['RU', 'US']).value
+      expect(list.length).toBe(2)
+      expect(list[0]?.icon).toBeDefined()
+      expect(list[1]?.value).toBe('ru')
+    })
+
     it('getNational returns a list of countries in national language', () => {
       const list = geoFlagRef.getNational(['RU', 'US']).value
       expect(list.length).toBe(2)
       expect(list[0]?.label).toBeDefined()
+    })
+
+    it('getNationalLanguage returns a list of languages in national language', () => {
+      const list = geoFlagRef.getNationalLanguage(['RU', 'US']).value
+      expect(list.length).toBe(2)
+      expect(list[1]?.label).toBe('русский')
+      expect(list[1]?.description).toBe('русский')
     })
   })
 })

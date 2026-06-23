@@ -27,7 +27,7 @@
     "build": "vue-tsc -b && vite build",
     "build-recovery": "npm run build && npm run wiki-storm",
     "preview": "vite preview",
-    "ui": "dxt-ui SelectableArea",
+    "ui": "dxt-ui MenuLanguage",
     "wiki-storm": "dxt-wiki-storm",
     "types": "dxt-types",
     "screenshot": "dxt-screenshot",
@@ -354,6 +354,10 @@
     "./D1SelectableArea": {
       "types": "./dist/src/library/D1SelectableArea.d.ts",
       "default": "./dist/D1SelectableArea.js"
+    },
+    "./D1MenuLanguage": {
+      "types": "./dist/src/library/D1MenuLanguage.d.ts",
+      "default": "./dist/D1MenuLanguage.js"
     }
   },
   "buildOptions": {
