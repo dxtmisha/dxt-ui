@@ -10,7 +10,6 @@ import DemoSectionDraggableWrapperDropZones from '../../components/Section/Dragg
 
 const { eventName, onEvent } = useDemoEvent()
 
-// 1. Basic Sorting State
 const itemsBasic = ref([
   { value: 'item-1', label: 'Item 1' },
   { value: 'item-2', label: 'Item 2' },
@@ -25,25 +24,6 @@ const onPositionBasic = (parameters: DraggableWrapperEventParameters) => {
 
   if (draggableBasicRef.value) {
     itemsBasic.value = draggableBasicRef.value.toNewPosition(itemsBasic.value, parameters)
-  }
-}
-
-// 3. Disabled & Delay States
-const itemsDisabled = ref([
-  { value: 'disabled-1', label: 'Disabled 1' },
-  { value: 'disabled-2', label: 'Disabled 2' }
-])
-
-const itemsDelayed = ref([
-  { value: 'delayed-1', label: 'Delayed 1 (500ms)' },
-  { value: 'delayed-2', label: 'Delayed 2 (500ms)' }
-])
-const draggableDelayedRef = ref<any>(null)
-
-const onPositionDelayed = (parameters: DraggableWrapperEventParameters) => {
-  onEvent('position', parameters)
-  if (draggableDelayedRef.value) {
-    itemsDelayed.value = draggableDelayedRef.value.toNewPosition(itemsDelayed.value, parameters)
   }
 }
 </script>
@@ -67,44 +47,11 @@ const onPositionDelayed = (parameters: DraggableWrapperEventParameters) => {
           </template>
         </D1DraggableWrapper>
         <DemoValue :value="itemsBasic.map(i => i.label).join(', ')" label="Current Order" />
+        <DemoValue :value="eventName" label="Event" />
       </D1Group>
 
       <D1Group label="Drop Zones">
         <DemoSectionDraggableWrapperDropZones />
-      </D1Group>
-
-      <D1Group label="Disabled State">
-        <D1DraggableWrapper disabled>
-          <template #default="{ className, classClick, classPosition }">
-            <DemoSectionDraggableWrapperList
-              :items="itemsDisabled"
-              :class-name="className"
-              :class-click="classClick"
-              :class-position="classPosition"
-            />
-          </template>
-        </D1DraggableWrapper>
-      </D1Group>
-
-      <D1Group label="Delay (500ms)">
-        <D1DraggableWrapper
-          ref="draggableDelayedRef"
-          delay="500"
-          @position="onPositionDelayed"
-        >
-          <template #default="{ className, classClick, classPosition }">
-            <DemoSectionDraggableWrapperList
-              :items="itemsDelayed"
-              :class-name="className"
-              :class-click="classClick"
-              :class-position="classPosition"
-            />
-          </template>
-        </D1DraggableWrapper>
-      </D1Group>
-
-      <D1Group label="Events Logger">
-        <DemoValue :value="eventName" label="Last Event" />
       </D1Group>
     </D1Section>
   </D1Page>

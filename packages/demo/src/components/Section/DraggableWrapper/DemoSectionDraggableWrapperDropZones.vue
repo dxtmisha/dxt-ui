@@ -1,9 +1,13 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import type { DraggableWrapperEventParameters } from '@dxtmisha/constructor/DraggableWrapper'
-import type { DemoSectionDraggableWrapperDropZonesItem } from '../../../types/draggableWrapperDropZonesTypes'
 import { useDemoEvent } from '../../../composables/useDemoEvent'
+
+import DemoFlex from '../../DemoFlex.vue'
+import DemoValue from '../../DemoValue.vue'
 import DemoSectionDraggableWrapperList from './DemoSectionDraggableWrapperList.vue'
+
+import type { DemoSectionDraggableWrapperDropZonesItem } from '../../../types/draggableWrapperDropZonesTypes'
 
 /**
  * Component representing the drop zones section for the DraggableWrapper demo.
@@ -15,7 +19,7 @@ import DemoSectionDraggableWrapperList from './DemoSectionDraggableWrapperList.v
 
 defineProps<{}>()
 
-const { onEvent } = useDemoEvent()
+const { eventName, onEvent } = useDemoEvent()
 
 /** Items currently located in zone A / Элементы, находящиеся в данный момент в зоне А */
 const zoneA = ref<DemoSectionDraggableWrapperDropZonesItem[]>([
@@ -54,69 +58,56 @@ const onDrop = (parameters: DraggableWrapperEventParameters) => {
 </script>
 
 <template>
-  <div class="demo-section-draggable-wrapper-drop-zones">
-    <D1DraggableWrapper @drop="onDrop">
-      <template #default="{ className, classClick, classDrop }">
-        <div class="demo-section-draggable-wrapper-drop-zones__drop-container">
-          <div
-            :class="['demo-section-draggable-wrapper-drop-zones__zone', className, classDrop]"
-            data-value="zone-a"
-          >
-            <div class="demo-section-draggable-wrapper-drop-zones__zone-label">Zone A</div>
-            <DemoSectionDraggableWrapperList
-              :items="zoneA"
-              :class-name="className"
-              :class-click="classClick"
-            />
-          </div>
-
-          <div
-            :class="['demo-section-draggable-wrapper-drop-zones__zone', className, classDrop]"
-            data-value="zone-b"
-          >
-            <div class="demo-section-draggable-wrapper-drop-zones__zone-label">Zone B</div>
-            <DemoSectionDraggableWrapperList
-              :items="zoneB"
-              :class-name="className"
-              :class-click="classClick"
-            />
-          </div>
+  <D1DraggableWrapper @drop="onDrop">
+    <template #default="{ className, classClick, classDrop }">
+      <DemoFlex>
+        <div
+          :class="['demo-section-draggable-wrapper-drop-zones__zone', className, classDrop]"
+          data-value="zone-a"
+        >
+          <D1Header label="Zone A" tag="h5" />
+          <DemoSectionDraggableWrapperList
+            :items="zoneA"
+            :class-name="className"
+            :class-click="classClick"
+          />
         </div>
-      </template>
-    </D1DraggableWrapper>
-  </div>
+
+        <div
+          :class="['demo-section-draggable-wrapper-drop-zones__zone', className, classDrop]"
+          data-value="zone-b"
+        >
+          <D1Header label="Zone B" tag="h5" />
+          <DemoSectionDraggableWrapperList
+            :items="zoneB"
+            :class-name="className"
+            :class-click="classClick"
+          />
+        </div>
+      </DemoFlex>
+    </template>
+  </D1DraggableWrapper>
+  <DemoValue :value="eventName" label="Event" />
 </template>
 
 <style lang="scss">
-.demo-section-draggable-wrapper-drop-zones {
-  &__drop-container {
-    display: flex;
-    gap: 24px;
-    margin-top: 16px;
-    flex-wrap: wrap;
-  }
+@use '@dxtmisha/d1/ui-properties' as ui;
 
+.demo-section-draggable-wrapper-drop-zones {
   &__zone {
     flex: 1;
-    min-width: 250px;
-    border: 2px dashed;
-    border-color: var(--sys-palette-outline);
-    border-radius: 8px;
-    padding: 16px;
-    background-color: var(--sys-palette-surfaceContainerLow);
+
+    padding: ui.v('?layout.paddingY') ui.v('?layout.paddingX');
+
+    border-style: dashed;
+    border-width: 2px;
+    @include ui.borderColor(ui.v('?sys.palette.outline'), ui.v('?sys.opacity.outline'));
+    border-radius: ui.v('?sys.rounded.md');
     transition: background-color 0.2s ease, border-color 0.2s ease;
 
     &.d1-draggableWrapper__item--dragged {
-      background-color: var(--sys-palette-primaryContainer);
-      border-color: var(--sys-palette-primary);
+      @include ui.borderColor(ui.v('?sys.palette.primary'), ui.v('?sys.opacity.primary'));
     }
-  }
-
-  &__zone-label {
-    display: block;
-    margin-bottom: 12px;
-    font-weight: bold;
-    color: var(--sys-palette-onSurface);
   }
 }
 </style>

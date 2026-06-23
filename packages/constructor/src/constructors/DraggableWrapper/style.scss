@@ -4,13 +4,19 @@
 @mixin mixinDraggableWrapper {
   position: relative;
 
-  &__item {
+  &__position {
     position: relative;
+
+    &::before {
+      @include ui.absolute();
+    }
+  }
+
+  &__item {
     cursor: default;
 
     &::before {
       display: none;
-      @include ui.absolute();
       z-index: -1;
 
       border-radius: inherit;

@@ -47,17 +47,16 @@ export class DraggableWrapperPosition {
       return
     }
 
-    const container = this.classes.getElement()
-
-    if (
-      container
-      && points.indexOf(container) === -1
-    ) {
-      this.resetPosition()
-      return
-    }
+    const mainElement = this.classes.getElement()
 
     this.resetDrop()
+
+    if (
+      mainElement
+      && points.indexOf(mainElement) === -1
+    ) {
+      this.resetPosition()
+    }
   }
 
   /**
@@ -76,8 +75,6 @@ export class DraggableWrapperPosition {
         || go
       )
     ) {
-      console.log('this.item.getGo().is()', this.item.getGo().is())
-
       if (this.item.getGo().is()) {
         this.emit.on()
 
@@ -126,8 +123,9 @@ export class DraggableWrapperPosition {
     }
 
     if (this.client.hasDrop()) {
-      this.reset(true)
+      this.emit.on()
       this.resetDrop()
+      this.reset(true)
     } else {
       this.returnActive()
     }
@@ -159,14 +157,12 @@ export class DraggableWrapperPosition {
    * @param item HTML element acting as target / HTML-элемент в качестве цели
    */
   protected updateDropTarget(item: HTMLElement): void {
-    if (!this.classes.isDrop(item)) {
-      this.resetDrop()
-      return
-    }
+    this.resetDrop()
 
-    if (this.item.getGo().isByItem(item)) {
-      console.log('updateDropTarget')
-
+    if (
+      this.classes.isDrop(item)
+      && this.item.getGo().isByItem(item)
+    ) {
       item.classList.add(this.classes.list.dragged)
       this.square.prepare()
 
@@ -204,8 +200,6 @@ export class DraggableWrapperPosition {
       goElement
       && this.classes.isDrop(goElement)
     ) {
-      console.error('resetDrop')
-
       goElement.classList.remove(this.classes.list.dragged)
 
       this.item.getGo().reset()
@@ -222,8 +216,6 @@ export class DraggableWrapperPosition {
     const activeElement = this.item.getActive().get()
 
     this.square.prepare(activeElement, true)
-
-    console.log('resetPosition', this.client.hasDrop())
 
     if (!this.client.hasDrop()) {
       this.item.getGo().reset()
