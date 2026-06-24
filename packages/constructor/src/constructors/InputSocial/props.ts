@@ -1,5 +1,3 @@
-import type { NumberOrString } from '@dxtmisha/functional'
-
 import type { MaskPropsBasic, MaskPropsInclude } from '../Mask'
 import type { IconPropsBasic } from '../Icon'
 import type { FieldPropsBasic, FieldPropsInclude } from '../Field'
@@ -8,7 +6,9 @@ import type { FieldMessagePropsBasic } from '../FieldMessage'
 import type { FieldCounterPropsBasic } from '../FieldCounter'
 import type { ProgressPropsBasic } from '../Progress'
 
-import type { FieldInputProps } from '../../types/fieldTypes'
+import type { FieldInputSocialProps } from '../../types/fieldTypes'
+
+import type { InputSocialType, InputSocialTypeValue } from './basicTypes'
 
 export type InputSocialPropsToken = {
   // :type [!] System label / Системная метка
@@ -25,7 +25,13 @@ export type InputSocialPropsBasic<
   Progress extends ProgressPropsBasic = ProgressPropsBasic
 > = MaskPropsInclude<Mask>
   & FieldPropsInclude<Icon, Field, FieldLabel, FieldMessage, FieldCounter, Progress>
-  & FieldInputProps<NumberOrString>
+  & FieldInputSocialProps
+  & {
+    /**
+     * Type of social network/ Тип социальной сети
+     */
+    socialType?: InputSocialType | InputSocialTypeValue
+  }
 
 /**
  * Type describing incoming properties.

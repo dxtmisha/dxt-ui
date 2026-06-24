@@ -6,21 +6,21 @@ import type { ModelEmits, ModelProps } from './modelTypes'
 /** Supported field types/ Поддерживаемые типы полей */
 export type FieldType
   = 'text'
-    | 'search'
-    | 'number'
-    | 'number-format'
-    | 'currency'
-    | 'email'
-    | 'password'
-    | 'datetime'
-    | 'date'
-    | 'year-month'
-    | 'time'
-    | 'hour-minute'
-    | 'tel'
-    | 'url'
-    | 'checkbox'
-    | 'radio'
+  | 'search'
+  | 'number'
+  | 'number-format'
+  | 'currency'
+  | 'email'
+  | 'password'
+  | 'datetime'
+  | 'date'
+  | 'year-month'
+  | 'time'
+  | 'hour-minute'
+  | 'tel'
+  | 'url'
+  | 'checkbox'
+  | 'radio'
 
 /** Base input or textarea element/ Базовый элемент input или textarea */
 export type FieldElementDom = HTMLInputElement | HTMLTextAreaElement
@@ -86,38 +86,38 @@ export type FieldCheckMain = {
 /** Check item interface/ Элемент проверки */
 export type FieldCheckItem<Value = any>
   = FieldCheckMain
-    & {
-      /** Run validation for value/ Выполнить проверку значения */
-      check(value: Value): FieldValidationItem<Value>
-    }
+  & {
+    /** Run validation for value/ Выполнить проверку значения */
+    check(value: Value): FieldValidationItem<Value>
+  }
 /** Map of check items/ Карта элементов проверки */
 export type FieldCheckList = Record<string, FieldCheckItem>
 
 /** Single validation result/ Результат одной проверки */
 export type FieldValidationItem<Value = any>
   = FieldCheckMain
-    & {
-      /** Custom type marker/ Произвольный тип */
-      type?: string
-      /** Pass status/ Статус успешности */
-      status?: boolean
-      /** Required flag/ Флаг обязательности */
-      required?: boolean
-      /** Full value flag/ Флаг полноты значения */
-      isFull?: boolean
-      /** Message text/ Текст сообщения */
-      validationMessage?: string
-      /** Native validity state/ Нативное состояние валидности */
-      validity?: ValidityState
-      /** Custom validity message (overrides native)/ Кастомное сообщение валидности (перекрывает нативное) */
-      validityMessage?: string
-      /** Original value/ Исходное значение */
-      value: Value
-      /** Raw input value/ Введённое значение */
-      valueInput?: Value
-      /** Extra details/ Дополнительные данные */
-      detail?: Record<string, any>
-    }
+  & {
+    /** Custom type marker/ Произвольный тип */
+    type?: string
+    /** Pass status/ Статус успешности */
+    status?: boolean
+    /** Required flag/ Флаг обязательности */
+    required?: boolean
+    /** Full value flag/ Флаг полноты значения */
+    isFull?: boolean
+    /** Message text/ Текст сообщения */
+    validationMessage?: string
+    /** Native validity state/ Нативное состояние валидности */
+    validity?: ValidityState
+    /** Custom validity message (overrides native)/ Кастомное сообщение валидности (перекрывает нативное) */
+    validityMessage?: string
+    /** Original value/ Исходное значение */
+    value: Value
+    /** Raw input value/ Введённое значение */
+    valueInput?: Value
+    /** Extra details/ Дополнительные данные */
+    detail?: Record<string, any>
+  }
 
 /**
  * Emitted events for field components/
@@ -125,28 +125,28 @@ export type FieldValidationItem<Value = any>
  */
 export type FieldBasicEmits<T = any>
   = ModelEmits<T>
-    & {
-      /**
-       * Emitted on input events (every change while typing)/
-       * Эмит при вводе (каждое изменение): [event, value]
-       */
-      input: [event: InputEvent | Event, value: FieldValidationItem<T>]
-      /**
-       * Lightweight input emit without DOM event/
-       * Лёгкий эмит ввода без DOM-события: [value]
-       */
-      inputLite: [value: FieldValidationItem<T>]
-      /**
-       * Emitted when value is committed (blur/confirm)/
-       * Эмит при подтверждении значения (blur/confirm): [event, value]
-       */
-      change: [event: InputEvent | Event, value: FieldValidationItem<T>]
-      /**
-       * Lightweight change emit without DOM event/
-       * Лёгкий эмит подтверждения без события: [value]
-       */
-      changeLite: [value: FieldValidationItem<T>]
-    }
+  & {
+    /**
+     * Emitted on input events (every change while typing)/
+     * Эмит при вводе (каждое изменение): [event, value]
+     */
+    input: [event: InputEvent | Event, value: FieldValidationItem<T>]
+    /**
+* Lightweight input emit without DOM event/
+* Лёгкий эмит ввода без DOM-события: [value]
+*/
+    inputLite: [value: FieldValidationItem<T>]
+    /**
+* Emitted when value is committed (blur/confirm)/
+* Эмит при подтверждении значения (blur/confirm): [event, value]
+*/
+    change: [event: InputEvent | Event, value: FieldValidationItem<T>]
+    /**
+* Lightweight change emit without DOM event/
+* Лёгкий эмит подтверждения без события: [value]
+*/
+    changeLite: [value: FieldValidationItem<T>]
+  }
 
 /**
  * Interface describing exposed properties for basic field functionality/
@@ -191,21 +191,21 @@ export type FieldBasicProps<Value = any>
   = Omit<FieldValueProps<Value>, 'multiple' | 'maxlength'> & {
     /** Input type/ Тип инпута */
     type?: 'text'
-      | 'search'
-      | 'number'
-      | 'number-format'
-      | 'currency'
-      | 'email'
-      | 'password'
-      | 'datetime'
-      | 'date'
-      | 'year-month'
-      | 'time'
-      | 'hour-minute'
-      | 'tel'
-      | 'url'
-      | 'checkbox'
-      | 'radio'
+    | 'search'
+    | 'number'
+    | 'number-format'
+    | 'currency'
+    | 'email'
+    | 'password'
+    | 'datetime'
+    | 'date'
+    | 'year-month'
+    | 'time'
+    | 'hour-minute'
+    | 'tel'
+    | 'url'
+    | 'checkbox'
+    | 'radio'
 
     /** Input name attribute/ Атрибут name */
     name?: string
@@ -313,23 +313,29 @@ export type FieldUxProps = {
  */
 export type FieldInputProps<Value = any>
   = FieldBasicProps<Value>
-    & FieldStepProps
-    & FieldArrowProps
-    & FieldLengthProps
-    & FieldPatternProps
-    & FieldUxProps & {
-      /** Datalist id reference/ Ссылка на datalist */
-      list?: string
+  & FieldStepProps
+  & FieldArrowProps
+  & FieldLengthProps
+  & FieldPatternProps
+  & FieldUxProps & {
+    /** Datalist id reference/ Ссылка на datalist */
+    list?: string
 
-      /** Icon name for password visibility/ Имя иконки для видимости пароля */
-      iconVisibility?: string
-      /** Icon name for password hidden state/ Имя иконки для скрытого пароля */
-      iconVisibilityOff?: string
-    }
+    /** Icon name for password visibility/ Имя иконки для видимости пароля */
+    iconVisibility?: string
+    /** Icon name for password hidden state/ Имя иконки для скрытого пароля */
+    iconVisibilityOff?: string
+  }
 
 export type FieldInputPhoneProps
   = Omit<FieldBasicProps<string>, 'match' | 'pattern'>
-    & FieldPatternProps
+  & FieldPatternProps
+
+/**
+ * Props for social field elements (type="social")/
+ * Свойства для социальных инпутов (type="social")
+ */
+export type FieldInputSocialProps = Omit<FieldBasicProps<string>, 'match' | 'pattern'>
 
 /**
  * Props for file input elements (type="file")/
@@ -412,7 +418,7 @@ export type FieldSelectLiteProps<Value = any>
  */
 export type FieldAllProps<Value = any>
   = FieldInputProps<Value>
-    & FieldInputFileProps<Value>
-    & FieldInputCheckProps<Value>
-    & FieldTextareaProps<Value>
-    & FieldSelectProps<Value>
+  & FieldInputFileProps<Value>
+  & FieldInputCheckProps<Value>
+  & FieldTextareaProps<Value>
+  & FieldSelectProps<Value>

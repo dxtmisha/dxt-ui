@@ -126,10 +126,7 @@ export class InputSocial {
       this.className,
       this.props,
       this.components,
-      () => ({
-        iconTrailing: this.props.iconTrailing,
-        maxlength: this.props.maxlength ?? this.props.max
-      }),
+      undefined,
       undefined,
       this.value,
       this.event
@@ -138,7 +135,11 @@ export class InputSocial {
       this.className,
       this.props,
       this.components,
-      undefined,
+      () => {
+        return {
+
+        }
+      },
       undefined,
       this.value,
       ''
@@ -154,5 +155,9 @@ export class InputSocial {
       onInput: this.event.onInput,
       onChange: this.event.onChange
     }
+  }
+
+  get bindsMask() {
+    return {}
   }
 }
