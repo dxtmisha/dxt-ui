@@ -1,3 +1,5 @@
+import type { InputSocialTypeValue } from '@dxtmisha/media'
+
 import type { MaskPropsBasic, MaskPropsInclude } from '../Mask'
 import type { IconPropsBasic } from '../Icon'
 import type { FieldPropsBasic, FieldPropsInclude } from '../Field'
@@ -8,13 +10,13 @@ import type { ProgressPropsBasic } from '../Progress'
 
 import type { FieldInputSocialProps } from '../../types/fieldTypes'
 
-import type { InputSocialType, InputSocialTypeValue } from './basicTypes'
-
+/** Tokens for InputSocial properties / Токены для свойств InputSocial */
 export type InputSocialPropsToken = {
   // :type [!] System label / Системная метка
   // :type [!] System label / Системная метка
 }
 
+/** Basic properties of InputSocial / Базовые свойства InputSocial */
 export type InputSocialPropsBasic<
   Mask extends MaskPropsBasic = MaskPropsBasic,
   Icon extends IconPropsBasic = IconPropsBasic,
@@ -27,24 +29,16 @@ export type InputSocialPropsBasic<
   & FieldPropsInclude<Icon, Field, FieldLabel, FieldMessage, FieldCounter, Progress>
   & FieldInputSocialProps
   & {
-    /**
-     * Type of social network/ Тип социальной сети
-     */
-    socialType?: InputSocialType | InputSocialTypeValue
+    /** Type of social network / Тип социальной сети */
+    socialType?: InputSocialTypeValue
+    /** Dictionary of custom icons for each social network / Словарь кастомных иконок для каждой социальной сети */
+    socialIcons?: Record<InputSocialTypeValue, string>
   }
 
-/**
- * Type describing incoming properties.
- *
- * Тип, описывающий входящие свойства.
- */
+/** Incoming properties for InputSocial / Входящие свойства для InputSocial */
 export type InputSocialProps = InputSocialPropsBasic & InputSocialPropsToken
 
-/**
- * Default value for property.
- *
- * Значение по умолчанию для свойства.
- */
+/** Default values for InputSocial properties / Значения по умолчанию для свойств InputSocial */
 export const defaultsInputSocial = {
   type: 'text',
   autocomplete: 'off',

@@ -26,10 +26,11 @@ Your primary goal is to generate flawless, industrial-grade code that adheres to
         - If you are analyzing or modifying files that are located inside a package directory (e.g., any subdirectory under `packages/` like `packages/constructor/`, `packages/scripts/`, etc.), you MUST read/write the `ai-memory.md` file ONLY within that specific package directory (e.g. `packages/constructor/ai-memory.md` or `packages/scripts/ai-memory.md`). You are strictly FORBIDDEN from using, reading, or writing the global `ai-memory.md` in the repository root in this case.
         - If and only if the files you are working with are root-level configurations or not part of any package under `packages/`, you may read/write the `ai-memory.md` file in the repository root.
         If the required local package-level `ai-memory.md` (or root `ai-memory.md` for root-level files) exists, you MUST read it using `view_file`. If it does NOT exist, you MUST CREATE IT immediately using `write_to_file` as an empty file with only a single newline (no placeholder text, comments, or intro text).
-     2. Identify all paths, directories, or packages involved in the user request.
-     3. Scan the prompt for sections corresponding to those paths.
-     4. Identify all paths to auxiliary documentation, types, or developer guides mentioned in those sections.
-     5. You MUST use the `view_file` tool to read and study ALL of these referenced files BEFORE calling `list_dir` on sub-folders, writing any plans/checklists, or proposing/making code changes. Bypassing this order is a critical protocol violation.
+     2. As your ABSOLUTE SECOND ACTION, you MUST use the `view_file` tool to read the master `ai-prompt.md` file located in the project root. You MUST read the descriptions of ALL libraries mentioned in this file. If there is even a 1% chance that a library mentioned in `ai-prompt.md` contains functionality or utilities relevant to your task, you are OBLIGED to read and study all files associated with that library that are specified in the `ai-prompt.md` under its respective section. You are strictly forbidden from writing custom logic (helpers, styles, configs, classes) without first performing an exhaustive check of the workspace's existing infrastructure (like `functional`, `functional-basic`) via `grep_search` or `list_dir`.
+     3. Identify all paths, directories, or packages involved in the user request.
+     4. Scan the prompt for sections corresponding to those paths.
+     5. Identify all paths to auxiliary documentation, types, or developer guides mentioned in those sections.
+     6. You MUST use the `view_file` tool to read and study ALL of these referenced files BEFORE calling `list_dir` on sub-folders, writing any plans/checklists, or proposing/making code changes. Bypassing this order is a critical protocol violation.
 
 1. **"Copy-Paste Ready" Principle**:
    - Generate code that can be copied and run without a single manual edit.
@@ -308,24 +309,22 @@ This file contains the complete type definitions for the project. As soon as you
 The project is located at: 'node_modules/@dxtmisha/functional'.
 
 ## Project context: Investigation required
-Core Purpose: A high-level reactive framework for Vue 3 that abstracts complex state, API orchestration, and UI design patterns. It provides a standardized layer for API management (including SSR support), data formatting, list manipulation, and design component architecture.
+Core Purpose: Provides a structured, reactive framework for Vue 3 component design and API orchestration. It simplifies complex UI state management, internationalization, and asynchronous API interactions through specialized classes and composables.
 
 Key Expositions:
-1. API Management: `useApiRef` (standard reactive fetch), `useApiManagementRef` (orchestrates GET/POST/PUT/DELETE with search/formatting), and SSR-specific versions (`useApiAsyncRef`, `useApiManagementAsyncRef`).
-2. Design System Components: `DesignConstructorAbstract` and `DesignComponents` for building reactive, theme-aware components; `DesignChanged` for tracking property mutations.
-3. Geo/Intl Utilities: `GeoIntlRef` (localized formatting for numbers, dates, currency, size), `GeoRef` (locale/country state management), and `GeoFlagRef`.
-4. Reactive Ref Utilities: `ListDataRef` (complex list management, grouping, selection, navigation), `EventRef` (reactive event listeners), and various composables for `localStorage`/`sessionStorage`/`cookies`.
-5. Functional Helpers: `executeUse` (singleton management: global/provide/local), `computedAsync`/`computedEternity` (advanced reactivity wrappers).
+- Design Construction: DesignAbstract, DesignAsyncAbstract, and DesignComponents for building complex component structures with lifecycle hooks and automated change tracking.
+- API Orchestration: useApiRef, useApiManagementRef (and Async variants) for handling GET/POST/PUT/DELETE requests with built-in SSR support, validation (contract-based), reactivity, and skeleton states.
+- Reactive Utilities: ListDataRef (list management/selection/navigation), DatetimeRef (reactive date manipulation), and GeoRef/GeoIntlRef (geo-data and internationalization).
+- Global State: executeUse (Global/Provide/Local patterns) for managing singletons, useMeta (global SEO management), and various storage/browser-tab sync hooks (useCookieRef, useSessionRef, useBroadcastValueRef).
+- Render Utilities: Helper functions for VNode rendering, class/style binding (getBind, toBind), and reactive property unwrapping (getRef, executeFunctionRef).
 
 Triggers for Studying ai-types.md:
-- When implementing or consuming API requests with `useApi...` hooks to understand data contracts and error handling.
-- When configuring `executeUse` strategies (global vs provide) for service injection.
-- When defining component properties or structures using `Constr...` types (e.g., `ConstrBind`, `ConstrOptions`).
-- When managing complex lists or search logic requiring `ListDataRef` or `Search...` types.
-- When creating custom design classes inheriting from `DesignConstructorAbstract`.
+- When encountering errors or ambiguity regarding Type constraints for API request/response contracts (`ApiDataValidation`, `ApiErrorStorageList`).
+- When defining complex component Props or custom UI structures that require specific type inference for classes, styles, or slots.
+- When implementing data lists (`ListDataRef`) or search logic that depends on strict structural compliance defined by `ListTypes` or `SearchTypes`.
+- When integrating the `dxtFunctionalPlugin` or configuring custom API/Translate instances.
 
-Integration Context: 
-This library serves as a middleware layer between raw API responses/browser APIs and Vue components. It is designed to work with `@dxtmisha/functional-basic` (the core utility provider) and relies on Vue's reactivity system. It is meant to be registered as a plugin (`dxtFunctionalPlugin`) to provide global configurations for API clients, translation services, and routing.
+Integration Context: Built on top of Vue 3 and its reactivity system (Refs, Computed, EffectScope). It acts as a bridge between the `@dxtmisha/functional-basic` library and Vue, specifically handling the transformation of raw functional logic into Vue-compatible reactive objects, composables, and lifecycle-aware services.
 
 ## Project information: Core overview
 This section contains essential information and the core overview of the project. Review this to understand the fundamental architecture and key features.
@@ -567,24 +566,31 @@ This file contains the complete type definitions for the project. As soon as you
 The project is located at: 'node_modules/@dxtmisha/functional-basic'.
 
 ## Project context: Investigation required
-Core Purpose: This library provides a comprehensive, isomorphic toolkit for web applications, specifically focusing on SSR-ready API interaction, state-consistent storage (Cookies, Local/SessionStorage, ServerStorage), internationalization (i18n), and robust DOM event/UI management.
+The provided library is a comprehensive isomorphic toolkit for managing frontend and SSR-compatible application states, including API requests, internationalization, data persistence, and UI utilities.
+
+Core Purpose:
+Facilitates full-stack state management and utility-based data handling, providing standardized interfaces for HTTP requests (with caching and error handling), localization (Geo/Translation), storage (Cookie/Storage/Hash/Query), and DOM event synchronization.
 
 Key Expositions:
-- Api: Centralized HTTP client managing requests, hydration, caching (ApiCache), and centralized error handling (ApiErrorStorage).
-- Storage: Persistent utilities including DataStorage (local/session), CookieStorage, and ServerStorage (SSR-aware).
-- Geo & Locale: GeoInstance, GeoIntl, and GeoFlag provide location-aware formatting (currencies, dates, numbers, units, phone masks).
-- UI/Utility: Meta management (Meta, MetaOg, MetaTwitter), event handling (EventItem), icon management (Icons), and search utilities (SearchList).
-- Formatting: Formatters class for templated data manipulation (currency, date, pluralization, unit conversion).
+- Api: Singleton-based HTTP client (supports fetch, caching, hydration, and error normalization via ApiErrorStorage).
+- Geo & GeoIntl: Internationalization framework for locale-aware number, date, currency, and phone number formatting.
+- Meta, MetaOg, MetaTwitter: Declarative meta-tag management for SEO and social sharing.
+- DataStorage & CookieStorage: Persistent storage wrappers (LocalStorage/SessionStorage/Cookie) with SSR context isolation.
+- EventItem: Reactive DOM event wrapper supporting ResizeObserver and scroll synchronization.
+- Translate & TranslateFile: Asynchronous translation engine with support for dynamic loading and key replacement.
+- SearchList: Logic for client-side search indexing, matching, and highlighting within data lists.
+- Utils: A broad collection of pure functional utilities (e.g., `copyObject`, `toNumber`, `isFilled`, `sleep`, `frame`).
 
 Triggers for Studying ai-types.md:
-- When implementing API integration (Api, ApiFetch, ApiMethod).
-- When configuring global error handling (ErrorCenter, ApiError).
-- When managing SSR state or hydration (ServerStorage, ApiHydration).
-- When handling localization (Geo, GeoIntl, Translate, Formatters).
-- When configuring complex data search logic (SearchList, SearchColumns).
-- When defining custom meta-tags or Twitter/Open Graph cards (Meta, MetaOg, MetaTwitter).
+- When implementing or debugging API integration (Api, ApiInstance, ApiResponse).
+- When configuring global error handling (ErrorCenter).
+- When standardizing data localization or date/time formatting (Geo, GeoIntl, Datetime).
+- When managing complex SSR hydration patterns (ServerStorage, ApiHydration).
+- When integrating deep-search components (SearchList).
+- When developing custom UI components requiring lifecycle-safe event binding (EventItem).
 
-Integration Context: This library acts as a foundational service layer. It is designed to be injected or used as a singleton across the application stack, bridging client-side DOM operations with server-side context in SSR frameworks. It manages the lifecycle of data, authentication headers, and global configuration, serving as an abstraction layer over native Browser/Node.js APIs like fetch, Cookies, and BroadcastChannel.
+Integration Context:
+Operates as a foundational layer in the stack, compatible with both browser and Node.js (SSR) environments. It acts as a dependency for managing global application state, handling data-driven side effects, and normalizing communication with backend services. It is designed to be injected into frameworks (Vue/React) via lifecycle hooks or custom configuration providers.
 
 ## Project information: Core overview
 This section contains essential information and the core overview of the project. Review this to understand the fundamental architecture and key features.

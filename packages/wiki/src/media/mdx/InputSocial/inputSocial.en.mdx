@@ -1,0 +1,39 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+Social network input component with formatting and icon mapping.
+
+InputSocial is a specialized input field designed for social network profiles. It automatically configures itself (mask, prefix, suffix, and label) based on the provided `socialType` property. 
+
+**Main features:**
+
+- Automatic formatting and masking based on the selected social network type
+- Support for various social networks (e.g., Telegram, WhatsApp, Instagram, etc.)
+- Customizable social network icons via the `socialIcons` property
+- Integrated prefix and suffix handling specific to the social network profile
+- Support for two-way data binding (`v-model`)
+- Built-in integration with `Field` for consistent styling and validation states
+
+**Typical use cases:**
+
+- Social network links in user profiles
+- Contact information fields in registration forms
+
+<Source
+    code={`
+<script setup>
+import { ref } from 'vue'
+
+const value = ref('')
+</script>
+
+<template>
+  <InputSocial
+    v-model:value="value"
+    social-type="telegram"
+    label="Telegram"
+    placeholder="Username"
+  />
+</template>
+  `}
+    language="html"
+/>

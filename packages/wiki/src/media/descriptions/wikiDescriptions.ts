@@ -36,6 +36,7 @@ import { wikiDescriptionsImage } from './wikiDescriptionsImage'
 import { wikiDescriptionsInput } from './wikiDescriptionsInput'
 import { wikiDescriptionsInputPhone } from './wikiDescriptionsInputPhone'
 import { wikiDescriptionsInputPhoneDialCode } from './wikiDescriptionsInputPhoneDialCode'
+import { wikiDescriptionsInputSocial } from './wikiDescriptionsInputSocial'
 import { wikiDescriptionsList } from './wikiDescriptionsList'
 import { wikiDescriptionsListGroup } from './wikiDescriptionsListGroup'
 import { wikiDescriptionsListItem } from './wikiDescriptionsListItem'
@@ -110,6 +111,7 @@ export const wikiDescriptions: StorybookComponentsDescription = [
   wikiDescriptionsInput,
   wikiDescriptionsInputPhone,
   wikiDescriptionsInputPhoneDialCode,
+  wikiDescriptionsInputSocial,
   wikiDescriptionsImage,
   wikiDescriptionsList,
   wikiDescriptionsListGroup,

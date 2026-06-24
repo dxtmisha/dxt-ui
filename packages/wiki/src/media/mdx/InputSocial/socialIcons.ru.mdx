@@ -1,0 +1,26 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+## Кастомные иконки
+
+Свойство `socialIcons` позволяет передать словарь, сопоставляющий типы социальных сетей с конкретными именами иконок в вашем проекте.
+
+Это полезно, когда необходимо отображать иконку рядом с полем ввода, используя набор иконок вашей дизайн-системы.
+
+<Source
+    code={`
+<script setup>
+const customIcons = {
+  telegram: 'custom-telegram-icon',
+  vk: 'custom-vk-icon'
+}
+</script>
+
+<template>
+  <InputSocial
+    social-type="telegram"
+    :social-icons="customIcons"
+  />
+</template>
+  `}
+    language="html"
+/>

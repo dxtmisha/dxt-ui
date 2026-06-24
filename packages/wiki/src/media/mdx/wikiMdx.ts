@@ -42,6 +42,7 @@ import { wikiMdxImage } from './Image/wikiMdxImage'
 import { wikiMdxInput } from './Input/wikiMdxInput'
 import { wikiMdxInputPhone } from './InputPhone/wikiMdxInputPhone'
 import { wikiMdxInputPhoneDialCode } from './InputPhoneDialCode/wikiMdxInputPhoneDialCode'
+import { wikiMdxInputSocial } from './InputSocial/wikiMdxInputSocial'
 import { wikiMdxList } from './List/wikiMdxList'
 import { wikiMdxListGroup } from './ListGroup/wikiMdxListGroup'
 import { wikiMdxListItem } from './ListItem/wikiMdxListItem'
@@ -123,6 +124,7 @@ export const wikiMdx: StorybookComponentsMdx = [
   wikiMdxInput,
   wikiMdxInputPhone,
   wikiMdxInputPhoneDialCode,
+  wikiMdxInputSocial,
   wikiMdxList,
   wikiMdxListGroup,
   wikiMdxListItem,

@@ -23,15 +23,12 @@ import type { FieldPropsBasic } from './props'
  * Класс возвращает данные для работы с каркасом поля.
  * Связывает свойства, привязки и слушатели кликов/клавиатурных событий с атрибутами компонента.
  */
-export class FieldInclude<
-  Props extends FieldPropsInclude & FieldArrowProps = FieldPropsInclude,
-  PropsExtra extends FieldPropsBasic = FieldPropsBasic
-> extends ComponentIncludeAbstract<
-    Props,
-    PropsExtra,
-    Record<string, any>,
-    FieldSlots
-  > {
+export class FieldInclude extends ComponentIncludeAbstract<
+  FieldPropsInclude & FieldArrowProps,
+  FieldPropsBasic,
+  Record<string, any>,
+  FieldSlots
+> {
   /** Component name / Название компонента */
   protected readonly name = 'field'
 
@@ -57,9 +54,9 @@ export class FieldInclude<
    */
   constructor(
     className: string,
-    props: ComponentIncludeProps<Props>,
-    components?: DesignComponents<FieldComponentInclude, Props>,
-    extra?: ComponentIncludeExtra<PropsExtra>,
+    props: ComponentIncludeProps<FieldPropsInclude & FieldArrowProps>,
+    components?: DesignComponents<FieldComponentInclude, FieldPropsInclude & FieldArrowProps>,
+    extra?: ComponentIncludeExtra<FieldPropsBasic>,
     index?: string,
     protected readonly value?: FieldValueInclude,
     protected readonly event?: FieldEventInclude,
@@ -85,7 +82,7 @@ export class FieldInclude<
    * @param attrs attributes to merge / атрибуты для объединения
    * @returns merged binding attributes / объединенные атрибуты привязки
    */
-  protected override getAttrs(attrs?: PropsExtra) {
+  protected override getAttrs(attrs?: FieldPropsBasic) {
     return {
       ...super.getAttrs(attrs),
 

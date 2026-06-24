@@ -4,6 +4,7 @@ import {
   type DesignComponents,
   executeFunction,
   executeFunctionRef,
+  getObjectNoUndefined,
   type RawSlots,
   toBinds
 } from '@dxtmisha/functional'
@@ -78,7 +79,7 @@ export abstract class ComponentIncludeAbstract<
   }
 
   /** Computed binding object for the component / Вычисляемый объект привязки для компонента */
-  readonly binds = computed<PartialPropsExtra>(() => this.toBinds())
+  readonly binds = computed<PartialPropsExtra>(() => getObjectNoUndefined(this.toBinds()))
 
   /** Exposes the API methods and properties / Экспортирует API-методы и свойства */
   get expose(): ComponentExpose {
@@ -134,7 +135,7 @@ export abstract class ComponentIncludeAbstract<
    * @returns component properties / свойства компонента
    */
   protected getProps(): Props {
-    return executeFunction(this.props) ?? {} as Props
+    return getObjectNoUndefined(executeFunction(this.props) ?? {} as Props)
   }
 
   /**

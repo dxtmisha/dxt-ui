@@ -22,7 +22,11 @@ import {
 } from './types'
 
 /**
- * InputSocialDesign
+ * Design constructor class for the InputSocial component.
+ * It connects the Vue component template, styles, and classes to the InputSocial logic core.
+ *
+ * Класс конструктора дизайна для компонента InputSocial.
+ * Связывает шаблон компонента Vue, стили и классы с логическим ядром InputSocial.
  */
 export class InputSocialDesign<
   COMP extends InputSocialComponents,
@@ -30,22 +34,24 @@ export class InputSocialDesign<
   CLASSES extends InputSocialClasses,
   P extends InputSocialPropsBasic
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
-    COMP,
-    InputSocialEmits,
-    EXPOSE,
-    InputSocialSlots,
-    CLASSES,
-    P
-  > {
+  HTMLDivElement,
+  COMP,
+  InputSocialEmits,
+  EXPOSE,
+  InputSocialSlots,
+  CLASSES,
+  P
+> {
   protected readonly item: InputSocial
 
   /**
-   * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor class for working with the item/ класс для работы с элементом
+   * Constructor for InputSocialDesign.
+   *
+   * Конструктор для InputSocialDesign.
+   * @param name class name / название класса
+   * @param props component properties / свойства компонента
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor class for working with the logical item / класс для работы с логическим элементом
    */
   constructor(
     name: string,
@@ -74,9 +80,10 @@ export class InputSocialDesign<
   }
 
   /**
-   * Initialization of all the necessary properties for work
+   * Initializes all necessary properties for the component's exposed interface.
    *
-   * Инициализация всех необходимых свойств для работы.
+   * Инициализирует все необходимые свойства для экспонируемого интерфейса компонента.
+   * @returns exposed properties / экспонируемые свойства
    */
   protected initExpose(): EXPOSE {
     return {
@@ -86,9 +93,10 @@ export class InputSocialDesign<
   }
 
   /**
-   * Improvement of the obtained list of classes.
+   * Refines the obtained list of classes.
    *
-   * Доработка полученного списка классов.
+   * Дорабатывает полученный список классов.
+   * @returns partial map of CSS classes / частичная карта CSS классов
    */
   protected initClasses(): Partial<CLASSES> {
     return {
@@ -101,18 +109,20 @@ export class InputSocialDesign<
   }
 
   /**
-   * Refinement of the received list of styles.
+   * Refines the received list of styles.
    *
-   * Доработка полученного списка стилей.
+   * Дорабатывает полученный список стилей.
+   * @returns map of inline styles / карта инлайн-стилей
    */
   protected initStyles(): ConstrStyles {
     return {}
   }
 
   /**
-   * A method for rendering.
+   * Renders the main field component with its inner structure.
    *
-   * Метод для рендеринга.
+   * Рендерит основной компонент поля с его внутренней структурой.
+   * @returns array of rendered VNodes / массив отрендеренных VNode
    */
   protected initRender(): VNode[] {
     return this.item.field.render(
@@ -122,7 +132,11 @@ export class InputSocialDesign<
       {
         ...this.getAttrs(),
         class: this.classes?.value.main,
-        validationMessage: this.item.validation.message
+        validationMessage: this.item.validation.message,
+        icon: this.item.icon,
+        label: this.item.label,
+        prefix: this.item.prefix,
+        suffix: this.item.suffix
       }
     )
   }
@@ -152,9 +166,9 @@ export class InputSocialDesign<
   }
 
   /**
-   * Rendering mask element.
+   * Renders the mask element for the input.
    *
-   * Рендеринг элемента маски.
+   * Рендерит элемент маски для ввода.
    * @param input data for the input element / данные для элемента ввода
    * @returns array of VNodes / массив VNode
    */

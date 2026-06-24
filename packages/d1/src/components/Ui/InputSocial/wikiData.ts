@@ -58,6 +58,8 @@ const propsNames: StorybookProps = [
   { name: 'readonly', type: 'boolean' },
   { name: 'required', type: 'boolean' },
   { name: 'selected', type: 'boolean' },
+  { name: 'socialIcons', type: 'Record<InputSocialTypeValue, string>' },
+  { name: 'socialType', type: 'string', option: ['alipay', 'baidu', 'dingtalk', 'discord', 'douyin', 'dzen', 'facebook', 'github', 'gitlab', 'habr', 'instagram', 'line', 'linkedin', 'medium', 'messenger', 'ok', 'pinterest', 'qq', 'reddit', 'skype', 'snapchat', 'telegram', 'tiktok', 'tumblr', 'twitter', 'viber', 'vk', 'wechat', 'weibo', 'whatsapp', 'x', 'xiaohongshu', 'youtube', 'zalo', 'zhihu', 'alipay', 'baidu', 'dingtalk', 'discord', 'douyin', 'dzen', 'facebook', 'github', 'gitlab', 'habr', 'instagram', 'line', 'linkedin', 'medium', 'messenger', 'ok', 'pinterest', 'qq', 'reddit', 'skype', 'snapchat', 'telegram', 'tiktok', 'tumblr', 'twitter', 'viber', 'vk', 'wechat', 'weibo', 'whatsapp', 'x', 'xiaohongshu', 'youtube', 'zalo', 'zhihu'] },
   { name: 'suffix', type: 'string | number' },
   { name: 'suffixId', type: 'string' },
   { name: 'tabindex', type: 'number' },

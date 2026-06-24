@@ -1,0 +1,26 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+## Custom Icons
+
+The `socialIcons` property allows you to provide a dictionary mapping social network types to specific icon names in your project.
+
+This is useful when you want to display an icon next to the input field, relying on your specific design system's icon set.
+
+<Source
+    code={`
+<script setup>
+const customIcons = {
+  telegram: 'custom-telegram-icon',
+  vk: 'custom-vk-icon'
+}
+</script>
+
+<template>
+  <InputSocial
+    social-type="telegram"
+    :social-icons="customIcons"
+  />
+</template>
+  `}
+    language="html"
+/>
