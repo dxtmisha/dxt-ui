@@ -69,10 +69,18 @@ describe('GeoFlag', () => {
     const flag = new GeoFlag('en-US')
     const list = flag.getListLanguage()
 
-    expect(list.length).toBeGreaterThan(100)
+    expect(list.length).toBeGreaterThan(50)
     expect(list[0]).toHaveProperty('icon')
     expect(list[0]).toHaveProperty('country')
     expect(list[0]).toHaveProperty('value')
+  })
+
+  it('should remove duplicate languages', () => {
+    const flag = new GeoFlag('en-US')
+    const list = flag.getListLanguage(['US', 'GB'])
+
+    expect(list).toHaveLength(1)
+    expect(list[0]?.value).toBe('en')
   })
 
   it('should return a filtered list by codes', () => {

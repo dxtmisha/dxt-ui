@@ -1,0 +1,42 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+Specialized menu for selecting languages with automatic flag and name loading.
+
+MenuLanguage is an extension of the Menu component, designed specifically for language selection. It leverages the GeoFlagRef utility to automatically populate the menu with a list of languages, including native language names and country flags where relevant. It supports all the standard Menu functionalities like Window-based popups, custom controls, and sophisticated focus management.
+
+**Key Features:**
+
+- Automatic generation of language list via GeoFlagRef utility
+- Filtering of available languages via the countryList property
+- Support for native language names
+- All standard features of the base Menu component (positioning, keyboard navigation, submenus, etc.)
+
+**Typical Use Cases:**
+
+- Language selection dropdowns
+- Localization settings in user profiles or settings page
+- Multilingual interface switches
+
+<Source
+    code={`
+<script setup>
+import { ref } from 'vue'
+
+const selectedValue = ref('en')
+</script>
+
+<template>
+  <MenuLanguage
+    v-model:selected="selectedValue"
+    is-selected-by-value
+  >
+    <template #control="{ binds }">
+      <button class="wiki-storybook-button" v-bind="binds">
+        Select Language
+      </button>
+    </template>
+  </MenuLanguage>
+</template>
+  `}
+    language="html"
+/>

@@ -10,6 +10,8 @@ import {
   type MenuLanguageSlots
 } from '@dxtmisha/constructor/MenuLanguage'
 
+import { D1Menu } from '../Menu'
+
 import { defaults, type MenuLanguageProps } from './props'
 import './styleToken.scss'
 
@@ -38,7 +40,20 @@ const design = new MenuLanguageDesign(
   {
     emits,
     classes: classesToken,
-    styles: stylesToken
+    styles: stylesToken,
+    components: {
+      menu: D1Menu
+    },
+    compMod: {
+      menu: {
+        itemAttrs: {
+          iconAttrs: {
+            rect: true,
+            size: 'xl'
+          }
+        }
+      }
+    }
   }
 )
 

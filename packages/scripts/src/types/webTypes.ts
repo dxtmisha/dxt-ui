@@ -17,6 +17,7 @@ export type WebTypesInfo = {
 export type WebTypesProperty = {
   name: string
   type?: string
+  description?: string
 }
 export type WebTypesProperties = WebTypesProperty[]
 
@@ -51,7 +52,8 @@ export type WebTypesAttributes = WebTypesAttributeItem[]
 export type WebTypesEventItem
   = WebTypesInfo
     & {
-      arguments: WebTypesProperties
+      arguments?: WebTypesProperties
+      type?: string
     }
 export type WebTypesEvents = WebTypesEventItem[]
 
@@ -86,20 +88,47 @@ export type WebTypesTagItem
 export type WebTypesTags = WebTypesTagItem[]
 
 /**
+ * Prop definition for a Vue component.
+ *
+ * Определение свойства для Vue-компонента.
+ */
+export type WebTypesPropItem = WebTypesInfo & {
+  default?: string
+  type?: string
+}
+
+/**
+ * Vue component definition for Web-Types.
+ *
+ * Определение Vue-компонента для Web-Types.
+ */
+export type WebTypesVueComponentItem = WebTypesInfo & {
+  source?: {
+    module?: string
+    symbol?: string
+  }
+  props?: WebTypesPropItem[]
+  slots?: WebTypesSlots
+  js?: {
+    events?: WebTypesEventItem[]
+  }
+}
+
+/**
  * Root object for Web Types JSON.
  *
  * Корневой объект для JSON Web Types.
  */
 export type WebTypesVueJson = {
-  $schema: 'https://json.schemastore.org/web-types'
+  $schema: string
   framework: 'vue'
   name: string
   version: string
+  'js-types-syntax'?: 'typescript'
   contributions: {
     html: {
-      'types-syntax': 'typescript'
       'description-markup': 'markdown'
-      'tags': WebTypesTags
+      'vue-components': WebTypesVueComponentItem[]
     }
   }
 }

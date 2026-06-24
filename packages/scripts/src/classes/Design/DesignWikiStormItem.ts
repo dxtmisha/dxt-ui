@@ -6,7 +6,7 @@ import { PropertiesConfig } from '../Properties/PropertiesConfig'
 import { PropertiesFile } from '../Properties/PropertiesFile'
 
 import type { LibraryData } from '../../types/libraryTypes'
-import type { WebTypesAttributeItem, WebTypesAttributes, WebTypesEvents, WebTypesSlots, WebTypesTagItem } from '../../types/webTypes'
+import type { WebTypesVueComponentItem, WebTypesPropItem, WebTypesSlots, WebTypesEventItem, WebTypesProperty } from '../../types/webTypes'
 import { forEach } from '@dxtmisha/functional-basic'
 
 /**
@@ -46,73 +46,73 @@ export class DesignWikiStormItem {
    *
    * Возвращает определение тега для web-types.
    */
-  async get(): Promise<WebTypesTagItem | undefined> {
+  async get(): Promise<WebTypesVueComponentItem | undefined> {
     if (this.wiki) {
       const name = `${toCamelCaseFirst(PropertiesConfig.getDesignName())}${this.wiki.getName()}`
 
-      const tag: WebTypesTagItem = {
+      const component: WebTypesVueComponentItem = {
         name,
         description: this.wiki.getDescription(),
         source: {
           module: `${this.project}/${name}`,
           symbol: name
         },
-        attributes: this.getAttributes()
+        props: this.getProps()
       }
 
       const slots = await this.getSlots()
 
       if (slots) {
-        tag.slots = slots
+        component.slots = slots
       }
 
       const events = await this.getEvents()
 
-      if (events) {
-        tag.events = events
+      if (events && events.length > 0) {
+        component.js = {
+          events
+        }
       }
 
-      return tag
+      return component
     }
 
     return undefined
   }
 
   /**
-   * Returns the attribute definition.
+   * Returns the prop definition.
    *
-   * Возвращает определение атрибута.
+   * Возвращает определение свойства.
    * @param item prop item / элемент свойства
    */
-  getAttribute(item: WikiStorybookProp): WebTypesAttributeItem {
+  getProp(item: WikiStorybookProp): WebTypesPropItem {
     const type = this.prepareType(item.getType())
+    const cleaned = type ? this.cleanType(type) : undefined
     return {
       name: item.getName(),
       description: item.getDescription(),
-      // default: item.getDefaultValue(),
-      value: {
-        kind: 'expression',
-        type
-      }
+      default: item.getDefaultValue() ?? undefined,
+      type: cleaned
     }
   }
 
   /**
-   * Returns a list of attributes.
+   * Returns a list of props.
    *
-   * Возвращает список атрибутов.
+   * Возвращает список свойств.
    */
-  getAttributes(): WebTypesAttributes {
-    const attributes: WebTypesAttributes = []
+  getProps(): WebTypesPropItem[] {
+    const props: WebTypesPropItem[] = []
 
     if (this.wiki) {
       this.wiki.getWikiObject()
         .forEach(
-          props => attributes.push(this.getAttribute(props))
+          item => props.push(this.getProp(item))
         )
     }
 
-    return attributes
+    return props
   }
 
   /**
@@ -127,11 +127,19 @@ export class DesignWikiStormItem {
       const slots: WebTypesSlots = []
 
       data.slots.forEach(
-        props => slots.push({
-          'name': props.name,
-          'description': props.description,
-          'vue-properties': props.properties ?? []
-        })
+        slot => {
+          const vueProperties: WebTypesProperty[] = (slot.properties ?? []).map(p => ({
+            name: p.name,
+            type: p.type ? this.cleanType(p.type) : undefined,
+            description: p.description
+          }))
+
+          slots.push({
+            'name': slot.name,
+            'description': slot.description,
+            'vue-properties': vueProperties
+          })
+        }
       )
 
       return slots
@@ -145,18 +153,28 @@ export class DesignWikiStormItem {
    *
    * Возвращает список событий.
    */
-  async getEvents(): Promise<WebTypesEvents | undefined> {
+  async getEvents(): Promise<WebTypesEventItem[] | undefined> {
     const data = await this.getData()
 
     if (data && data.events) {
-      const events: WebTypesEvents = []
+      const events: WebTypesEventItem[] = []
 
       data.events.forEach(
-        event => events.push({
-          name: event.name,
-          description: event.description,
-          arguments: event.properties ?? []
-        })
+        event => {
+          let typeString = '() => void'
+          if (event.properties && event.properties.length > 0) {
+            const args = event.properties
+              .map(p => `${p.name}: ${p.type ? this.cleanType(p.type) : 'any'}`)
+              .join(', ')
+            typeString = `(${args}) => void`
+          }
+
+          events.push({
+            name: event.name,
+            description: event.description,
+            type: typeString
+          })
+        }
       )
 
       return events
@@ -260,6 +278,18 @@ export class DesignWikiStormItem {
     }
 
     return type
+  }
+
+  /**
+   * Cleans a type string by removing redundant parentheses, e.g., (CellClassesSub) | undefined -> CellClassesSub | undefined
+   *
+   * Очищает строку типа, удаляя лишние скобки, например: (CellClassesSub) | undefined -> CellClassesSub | undefined
+   */
+  protected cleanType(type: string): string {
+    return type
+      .replace(/^\(([^()]+)\)$/, '$1')
+      .replace(/^\(([^()]+)\)\s*\|\s*undefined$/, '$1 | undefined')
+      .trim()
   }
 
   /**

@@ -1,17 +1,24 @@
 import { Source } from '@storybook/addon-docs/blocks';
 
-## Usage Guide (Instruction)
+## Component Integration
 
-To implement drag-and-drop sorting, wrap your list container in `DraggableWrapper` and structure the markup inside its default slot.
+The `DraggableWrapper` is built upon a *renderless* architecture pattern. It encapsulates complex drag-and-drop and sorting mechanics (coordinate calculations, movement calculations, displacement styles) while completely delegating the visual rendering to your template via default slot properties.
 
-The destructured slot properties (`className`, `classClick`, `classPosition`, `classDrop`) must be applied to your HTML elements as follows:
+To ensure the sorting engine operates correctly, you must bind the provided properties to your target DOM nodes.
 
-- **className** - binds draggable elements and drop zones to the wrapper logic and applies shift styles. **Mandatory** to apply to all draggable list elements and drop targets.
-- **classClick** - defines the drag handle/trigger area. Add this class to the handle element (e.g. icon) that initiates the drag action. If the entire item should be draggable, apply this class directly to the list item itself.
-- **classPosition** - marks sorting positions. Used by the logic to compute where to insert the placeholder spacer during drag. Must be applied to all sorting items.
-- **classDrop** - marks drop-sensitive target containers (e.g. a trash bin or external drop panel) that accept dropped elements.
-- **data-value** - a **mandatory** attribute with a unique string value that must be set on each draggable element and drop target. Used by the library to identify elements in `position` and `drop` events.
+### Element Configuration
 
+The elements inside the list or drop zones must implement the following bindings:
+
+- `className` — the core identifier. Bound to the `class` attribute. Required for connecting the draggable elements and drop zones to the wrapper logic and applying shift styles.
+- `classClick` — the interactive zone identifier (drag handle). Bound to the `class` attribute. Indicates the specific area of the element (e.g., handle icon) that initiates the drag action. If the entire item is draggable, it must be bound to the item itself.
+- `classPosition` — the sorting position identifier. Bound to the `class` attribute. Used by the component to calculate the insertion points of elements. Required for all sortable elements in the list.
+- `classDrop` — the drop zone identifier. Bound to the `class` attribute. Indicates additional drop targets (such as a trash bin or external panel) that accept elements.
+- `data-value` — the element's unique key (string). Passed as a standard HTML attribute. Required for identifying elements in `position` and `drop` events.
+
+### State and Visual Management
+
+To achieve smooth drag-and-drop animation and sorting performance, `DraggableWrapper` **autonomously** manipulates the DOM tree by directly applying transform styles and shifting elements. This design ensures instant feedback during rapid drag movements.
 
 <Source
     code={`

@@ -46,6 +46,7 @@ import D1Menu from '../../src/components/Ui/Menu/D1MenuAiWiki.vue'
 import D1MenuButton from '../../src/components/Ui/MenuButton/D1MenuButtonAiWiki.vue'
 import D1MenuChip from '../../src/components/Ui/MenuChip/D1MenuChipAiWiki.vue'
 import D1MenuCountry from '../../src/components/Ui/MenuCountry/D1MenuCountryAiWiki.vue'
+import D1MenuLanguage from '../../src/components/Ui/MenuLanguage/D1MenuLanguageAiWiki.vue'
 import D1Modal from '../../src/components/Ui/Modal/D1ModalAiWiki.vue'
 import D1MotionAxis from '../../src/components/Ui/MotionAxis/D1MotionAxisAiWiki.vue'
 import D1MotionTransform from '../../src/components/Ui/MotionTransform/D1MotionTransformAiWiki.vue'
@@ -120,6 +121,7 @@ export const aiList: any[] = [
   D1MenuButton,
   D1MenuChip,
   D1MenuCountry,
+  D1MenuLanguage,
   D1Modal,
   D1MotionAxis,
   D1MotionTransform,

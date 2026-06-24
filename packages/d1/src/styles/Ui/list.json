@@ -9764,6 +9764,17 @@
           }
         }
       },
+      "menuLanguage": {
+        "name": "d1-menuLanguage",
+        "type": "component",
+        "value": {
+          "main": {
+            "name": "--d1-menuLanguage-main",
+            "type": "var",
+            "value": "{d.menuLanguage}"
+          }
+        }
+      },
       "modal": {
         "name": "d1-modal",
         "type": "component",

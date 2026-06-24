@@ -1,5 +1,5 @@
 import type { MenuPropsBasic } from '../Menu'
-import type { MenuCountryPropsBasic } from '../MenuCountry'
+import { defaultsMenuCountry, type MenuCountryPropsBasic } from '../MenuCountry'
 
 type MenuLanguagePropsToken = {
   // :type [!] System label / Системная метка
@@ -23,7 +23,7 @@ export type MenuLanguageProps = MenuLanguagePropsBasic & MenuLanguagePropsToken
  * Значение по умолчанию для свойства.
  */
 export const defaultsMenuLanguage = {
-  isSelectedByValue: true,
+  ...defaultsMenuCountry,
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка
