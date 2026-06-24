@@ -39,6 +39,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 - `setEnd(callback): void` — Регистрирует хук, запускаемый после каждого включенного ответа.
 - `setTimeout(timeout: number): void` — Изменяет глобальный таймаут запроса.
 - `setOrigin(origin: string): void` — Изменяет источник (протокол и домен) для базового URL.
+- `setWrapper(wrapper): void` — Устанавливает функцию-обертку для запросов.
 - `setConfig(config?: ApiConfig): void` — Применяет полный объект конфигурации.
 
 ### Вспомогательные
@@ -64,6 +65,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 - `preparation: (apiFetch: ApiFetch) => Promise<void>` — входной хук.
 - `end: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>` — выходной хук.
 - `timeout: number` — глобальный таймаут в миллисекундах.
+- `wrapper: <R>(callback: () => Promise<R>, apiFetch: ApiFetch) => Promise<R>` — функция-обертка для выполнения запросов.
 
 ## Прокси-архитектура
 

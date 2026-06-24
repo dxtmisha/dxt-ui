@@ -76,6 +76,9 @@ export type ApiConfig = {
 
   /** Enable development logging/ Включить логирование разработки */
   devMode?: boolean
+
+  /** Wrapper function for requests / Функция-обертка для запросов */
+  wrapper?: <R>(callback: () => Promise<R>, apiFetch: ApiFetch) => Promise<R>
 }
 
 /**
@@ -208,6 +211,9 @@ export type ApiFetch = {
 
   /** Limit of end reset/ Лимит сброса end */
   endResetLimit?: number
+
+  /** Wrapper function for requests / Функция-обертка для запросов */
+  wrapper?: <R>(callback: () => Promise<R>, apiFetch: ApiFetch) => Promise<R>
 }
 
 /**

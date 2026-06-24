@@ -39,6 +39,7 @@ Các phương thức để thực hiện các yêu cầu mạng vật lý.
 - `setEnd(callback): void` — Đăng ký một hook để chạy sau mỗi phản hồi được bật.
 - `setTimeout(timeout: number): void` — Thay đổi timeout yêu cầu toàn cục.
 - `setOrigin(origin: string): void` — Thay đổi nguồn (giao thức và tên miền) cho URL base.
+- `setWrapper(wrapper): void` — Thiết lập hàm wrapper cho các yêu cầu.
 - `setConfig(config?: ApiConfig): void` — Áp dụng một đối tượng cấu hình đầy đủ.
 
 ### Phụ trợ
@@ -64,6 +65,7 @@ Các phương thức để thực hiện các yêu cầu mạng vật lý.
 - `preparation: (apiFetch: ApiFetch) => Promise<void>` — hook đầu vào (entry hook).
 - `end: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>` — hook đầu ra (exit hook).
 - `timeout: number` — timeout toàn cục tính bằng mili giây.
+- `wrapper: <R>(callback: () => Promise<R>, apiFetch: ApiFetch) => Promise<R>` — hàm wrapper để thực thi các yêu cầu.
 
 ## Kiến trúc Proxy
 

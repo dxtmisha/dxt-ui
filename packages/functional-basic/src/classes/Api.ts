@@ -212,6 +212,17 @@ export class Api {
   }
 
   /**
+   * Sets the wrapper function for requests.
+   *
+   * Устанавливает функцию-обертку для запросов.
+   * @param wrapper wrapper function / функция-обертка
+   * @returns void / ничего не возвращает
+   */
+  static setWrapper(wrapper: <R>(callback: () => Promise<R>, apiFetch: ApiFetch) => Promise<R>): void {
+    this.getItem().setWrapper(wrapper)
+  }
+
+  /**
    * Sets multiple API configuration options at once.
    *
    * Устанавливает несколько опций конфигурации API одновременно.
@@ -253,6 +264,10 @@ export class Api {
 
       if (config.origin) {
         this.setOrigin(config.origin)
+      }
+
+      if (config.wrapper) {
+        this.setWrapper(config.wrapper)
       }
     }
   }

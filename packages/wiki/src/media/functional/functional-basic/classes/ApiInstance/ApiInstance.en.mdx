@@ -38,6 +38,7 @@ The `ApiInstance` can be configured during initialization with custom dependency
 - `loadingClass?: LoadingInstance` — instance of the loading indicator manager (defaults to `Loading.getItem()`).
 - `errorCenterClass?: ErrorCenterInstance` — instance of the error center for triggering events (defaults to `ErrorCenter.getItem()`).
 - `hydrationClass?: typeof ApiHydration` — class for SSR hydration management.
+- `wrapper?: <R>(callback: () => Promise<R>, apiFetch: ApiFetch) => Promise<R>` — wrapper function for request execution.
 
 ## Methods
 
@@ -76,6 +77,7 @@ Methods to configure the API (support chaining, returning the `ApiInstance` obje
 - `setPreparation(callback: (apiFetch: ApiFetch) => Promise<void>): this` — Connects a custom hook function actively running just _before_ execution trigger occurs.
 - `setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): this` — Sets the hook triggered exactly _after_ network response returns.
 - `setOrigin(origin: string): this` — Sets the origin (protocol and domain) for the base URL.
+- `setWrapper(wrapper: <R>(callback: () => Promise<R>, apiFetch: ApiFetch) => Promise<R>): this` — Sets the wrapper function for requests.
 
 ### Auxiliary
 
@@ -111,6 +113,7 @@ Methods to configure the API (support chaining, returning the `ApiInstance` obje
 - `retry?: number` — number of retries on failure.
 - `retryDelay?: number` — base delay between retries in milliseconds. Default: `64`ms. Jitter is used to prevent thundering herd problems.
 - `endResetLimit?: number` — limit for recursive retries via `setEnd` with `reset: true`. Default: `8`.
+- `wrapper?: <R>(callback: () => Promise<R>, apiFetch: ApiFetch) => Promise<R>` — local wrapper function for executing this specific request.
 
 ## Response Data Structure
 
@@ -226,6 +229,32 @@ api.setEnd(async (response, apiFetch) => {
 You can selectively disable global hooks in the `ApiFetch` object:
 - `globalPreparation: false` — skip the `setPreparation` hook execution.
 - `globalEnd: false` — skip the `setEnd` hook execution.
+
+## Request Wrapper
+
+The request wrapper (`wrapper`) allows you to intercept and wrap the execution of a physical network request with a custom function. This is particularly useful for integrating with Application Performance Monitoring (APM) tools like Sentry or OpenTelemetry to profile and trace request execution times.
+
+The wrapper can be configured globally for the entire instance (via `options.wrapper` or the `setWrapper` method) or locally for a single request inside the `ApiFetch` object.
+
+### Example usage with Sentry:
+
+```javascript
+import * as Sentry from '@sentry/vue'
+
+// Configure globally for all requests
+api.setWrapper(async (callback, apiFetch) => {
+  const name = `${apiFetch.method || 'GET'} ${apiFetch.path || ''}`
+  return Sentry.startSpan({ name, op: 'http.client' }, callback)
+})
+
+// Configure for a specific request (overrides the global wrapper)
+const data = await api.get({
+  path: 'critical-action',
+  wrapper: async (callback) => {
+    return Sentry.startSpan({ name: 'CRITICAL_ACTION' }, callback)
+  }
+})
+```
 
 ## Hydration
 

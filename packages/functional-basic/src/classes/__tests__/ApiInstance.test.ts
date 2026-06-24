@@ -427,4 +427,35 @@ describe('ApiInstance', () => {
     expect(fetchMock.mock.calls[0][0]).toContain('globalToken=abc')
     expect(fetchMock.mock.calls[0][0]).toContain('param=1')
   })
+
+  it('should support wrapping request with wrapper option in individual request', async () => {
+    const wrapper = vi.fn().mockImplementation(async (callback) => {
+      const response = await callback()
+      return { ...response, wrapped: true }
+    })
+
+    const result = await api.request<any>({
+      path: 'wrapper-test',
+      wrapper
+    })
+
+    expect(wrapper).toHaveBeenCalled()
+    expect(result).toEqual(expect.objectContaining({ wrapped: true }))
+  })
+
+  it('should support wrapping request with instance-level wrapper', async () => {
+    const instanceWrapper = vi.fn().mockImplementation(async (callback) => {
+      const response = await callback()
+      return { ...response, instanceWrapped: true }
+    })
+
+    api.setWrapper(instanceWrapper)
+
+    const result = await api.request<any>({
+      path: 'instance-wrapper-test'
+    })
+
+    expect(instanceWrapper).toHaveBeenCalled()
+    expect(result).toEqual(expect.objectContaining({ instanceWrapped: true }))
+  })
 })

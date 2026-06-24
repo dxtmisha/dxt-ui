@@ -50,6 +50,8 @@ export type ApiInstanceOptions = {
   errorCenterClass?: ErrorCenterInstance
   /** Class for working with hydration / Класс для работы с гидратацией */
   hydrationClass?: typeof ApiHydration
+  /** Wrapper function for requests / Функция-обертка для запросов */
+  wrapper?: <R>(callback: () => Promise<R>, apiFetch: ApiFetch) => Promise<R>
 }
 
 /**
@@ -87,6 +89,9 @@ export class ApiInstance {
 
   protected origin?: string
 
+  /** Wrapper function for requests / Функция-обертка для запросов */
+  protected wrapper?: <R>(callback: () => Promise<R>, apiFetch: ApiFetch) => Promise<R>
+
   /**
    * Constructor
    * @param url base path to the script / базовый путь к скрипту
@@ -104,7 +109,8 @@ export class ApiInstance {
       preparationClass = ApiPreparation,
       loadingClass = Loading.getItem(),
       errorCenterClass = ErrorCenter.getItem(),
-      hydrationClass = ApiHydration
+      hydrationClass = ApiHydration,
+      wrapper
     } = options
 
     this.headers = new headersClass()
@@ -115,6 +121,7 @@ export class ApiInstance {
     this.loading = loadingClass
     this.errorCenter = errorCenterClass
     this.hydration = new hydrationClass()
+    this.wrapper = wrapper
 
     this.hydration.initResponse(this.response)
   }
@@ -337,6 +344,17 @@ export class ApiInstance {
   }
 
   /**
+   * Sets the wrapper function for requests.
+   *
+   * Устанавливает функцию-обертку для запросов.
+   * @param wrapper wrapper function / функция-обертка
+   */
+  setWrapper(wrapper: <R>(callback: () => Promise<R>, apiFetch: ApiFetch) => Promise<R>): this {
+    this.wrapper = wrapper
+    return this
+  }
+
+  /**
    * Executes a request with the given path or configuration.
    *
    * Выполняет запрос с указанным путем или конфигурацией.
@@ -344,13 +362,17 @@ export class ApiInstance {
    * @returns Promise with response data / Promise с данными ответа
    */
   async request<T>(pathRequest: string | ApiFetch): Promise<T> {
-    if (isString(pathRequest)) {
-      return await this.fetch<T>({
-        path: pathRequest
-      })
+    const apiFetch = isString(pathRequest) ? { path: pathRequest } : pathRequest
+    const wrapper = apiFetch.wrapper ?? this.wrapper
+
+    if (wrapper) {
+      return await wrapper<T>(
+        () => this.fetch<T>(apiFetch),
+        apiFetch
+      )
     }
 
-    return await this.fetch<T>(pathRequest)
+    return await this.fetch<T>(apiFetch)
   }
 
   /**

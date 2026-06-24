@@ -57,6 +57,12 @@ Api.setRequestDefault({
   app_version: '1.0.0'
 })
 
+// Set the wrapper function for requests
+Api.setWrapper(async (callback, apiFetch) => {
+  // Execute custom logic around the request
+  return await callback()
+})
+
 // Check if the server is running on localhost
 if (Api.isLocalhost()) {
   console.log('Running locally')
@@ -73,7 +79,8 @@ Api.setConfig({
   origin: 'https://api.example.com',
   headers: { 'Authorization': 'Bearer ...' },
   timeout: 5000,
-  devMode: true
+  devMode: true,
+  wrapper: async (callback) => await callback()
 })
 ```
 
@@ -168,6 +175,32 @@ Api.setEnd(async (response, apiFetch) => {
   }
   
   return {} // Continue with standard processing
+})
+```
+
+## Request Wrapper
+
+The request wrapper (`wrapper`) allows you to intercept and wrap the execution of a physical network request with a custom function. This is particularly useful for integrating with Application Performance Monitoring (APM) tools like Sentry or OpenTelemetry to profile and trace request execution times.
+
+The wrapper can be configured globally for the entire instance (via `Api.setWrapper` or in the `Api.setConfig` method) or locally for a single request inside the `ApiFetch` object.
+
+### Example usage with Sentry:
+
+```javascript
+import * as Sentry from '@sentry/vue'
+
+// Configure globally for all requests
+Api.setWrapper(async (callback, apiFetch) => {
+  const name = `${apiFetch.method || 'GET'} ${apiFetch.path || ''}`
+  return Sentry.startSpan({ name, op: 'http.client' }, callback)
+})
+
+// Configure for a specific request (overrides the global wrapper)
+const data = await Api.get({
+  path: 'critical-action',
+  wrapper: async (callback) => {
+    return Sentry.startSpan({ name: 'CRITICAL_ACTION' }, callback)
+  }
 })
 ```
 

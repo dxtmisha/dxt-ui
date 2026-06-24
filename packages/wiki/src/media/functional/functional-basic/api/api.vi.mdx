@@ -57,6 +57,12 @@ Api.setRequestDefault({
   app_version: '1.0.0'
 })
 
+// Thiết lập hàm wrapper cho các yêu cầu
+Api.setWrapper(async (callback, apiFetch) => {
+  // Thực thi logic tùy chỉnh xung quanh yêu cầu
+  return await callback()
+})
+
 // Kiểm tra xem máy chủ có đang chạy trên localhost không
 if (Api.isLocalhost()) {
   console.log('Đang chạy trên máy cục bộ')
@@ -73,7 +79,8 @@ Api.setConfig({
   origin: 'https://api.example.com',
   headers: { 'Authorization': 'Bearer ...' },
   timeout: 5000,
-  devMode: true
+  devMode: true,
+  wrapper: async (callback) => await callback()
 })
 ```
 
@@ -168,6 +175,32 @@ Api.setEnd(async (response, apiFetch) => {
   }
   
   return {} // Tiếp tục xử lý tiêu chuẩn
+})
+```
+
+## Hàm bọc yêu cầu (Request Wrapper)
+
+Hàm bọc yêu cầu (`wrapper`) cho phép bạn chặn và bọc quá trình thực thi của một yêu cầu mạng vật lý bằng một hàm tùy chỉnh. Điều này đặc biệt hữu ích khi tích hợp với các công cụ Giám sát hiệu suất ứng dụng (APM) như Sentry hoặc OpenTelemetry để cấu hình và theo dõi thời gian thực thi yêu cầu (tracing).
+
+Hàm bọc có thể được cấu hình toàn cục cho toàn bộ instance (thông qua `Api.setWrapper` hoặc trong phương thức `Api.setConfig`) hoặc cục bộ cho một yêu cầu duy nhất bên trong đối tượng `ApiFetch`.
+
+### Ví dụ sử dụng với Sentry:
+
+```javascript
+import * as Sentry from '@sentry/vue'
+
+// Cấu hình toàn cục cho tất cả các yêu cầu
+Api.setWrapper(async (callback, apiFetch) => {
+  const name = `${apiFetch.method || 'GET'} ${apiFetch.path || ''}`
+  return Sentry.startSpan({ name, op: 'http.client' }, callback)
+})
+
+// Cấu hình cho một yêu cầu cụ thể (ghi đè hàm bọc toàn cục)
+const data = await Api.get({
+  path: 'critical-action',
+  wrapper: async (callback) => {
+    return Sentry.startSpan({ name: 'CRITICAL_ACTION' }, callback)
+  }
 })
 ```
 

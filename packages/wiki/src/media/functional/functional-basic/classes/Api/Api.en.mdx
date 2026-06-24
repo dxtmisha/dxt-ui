@@ -39,6 +39,7 @@ Methods for performing physical network requests.
 - `setEnd(callback): void` — Registers a hook to run after every enabled response.
 - `setTimeout(timeout: number): void` — Changes the global request timeout.
 - `setOrigin(origin: string): void` — Changes the origin (protocol and domain) for the base URL.
+- `setWrapper(wrapper): void` — Sets the wrapper function for requests.
 - `setConfig(config?: ApiConfig): void` — Applies a complete configuration object.
 
 ### Auxiliary
@@ -64,6 +65,7 @@ Methods for performing physical network requests.
 - `preparation: (apiFetch: ApiFetch) => Promise<void>` — entry hook.
 - `end: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>` — exit hook.
 - `timeout: number` — global timeout in milliseconds.
+- `wrapper: <R>(callback: () => Promise<R>, apiFetch: ApiFetch) => Promise<R>` — wrapper function for request execution.
 
 ## Proxy Architecture
 

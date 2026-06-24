@@ -57,6 +57,12 @@ Api.setRequestDefault({
   app_version: '1.0.0'
 })
 
+// Установка функции-обертки для запросов
+Api.setWrapper(async (callback, apiFetch) => {
+  // Выполнить кастомную логику вокруг запроса
+  return await callback()
+})
+
 // Проверка, работает ли сервер на localhost
 if (Api.isLocalhost()) {
   console.log('Работаем локально')
@@ -73,7 +79,8 @@ Api.setConfig({
   origin: 'https://api.example.com',
   headers: { 'Authorization': 'Bearer ...' },
   timeout: 5000,
-  devMode: true
+  devMode: true,
+  wrapper: async (callback) => await callback()
 })
 ```
 
@@ -168,6 +175,32 @@ Api.setEnd(async (response, apiFetch) => {
   }
   
   return {} // Продолжить стандартную обработку
+})
+```
+
+## Обертка запроса (Request Wrapper)
+
+Обертка запросов (`wrapper`) позволяет перехватить и обернуть выполнение физического сетевого запроса в кастомную функцию. Это полезно для интеграции с внешними инструментами мониторинга производительности (APM), такими как Sentry или OpenTelemetry, для трейсинга и измерения времени выполнения запросов.
+
+Обертку можно установить как глобально для всего инстанса (через `Api.setWrapper` или в методе `Api.setConfig`), так и локально для конкретного запроса в объекте `ApiFetch`.
+
+### Пример использования с Sentry:
+
+```javascript
+import * as Sentry from '@sentry/vue'
+
+// Глобальная настройка для всех запросов
+Api.setWrapper(async (callback, apiFetch) => {
+  const name = `${apiFetch.method || 'GET'} ${apiFetch.path || ''}`
+  return Sentry.startSpan({ name, op: 'http.client' }, callback)
+})
+
+// Настройка для конкретного запроса (переопределяет глобальную обертку)
+const data = await Api.get({
+  path: 'critical-action',
+  wrapper: async (callback) => {
+    return Sentry.startSpan({ name: 'CRITICAL_ACTION' }, callback)
+  }
 })
 ```
 

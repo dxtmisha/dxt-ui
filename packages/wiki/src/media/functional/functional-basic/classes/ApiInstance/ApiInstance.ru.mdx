@@ -38,6 +38,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 - `loadingClass?: LoadingInstance` — экземпляр менеджера индикации загрузки (по умолчанию: `Loading.getItem()`).
 - `errorCenterClass?: ErrorCenterInstance` — экземпляр центра ошибок для вызова событий (по умолчанию: `ErrorCenter.getItem()`).
 - `hydrationClass?: typeof ApiHydration` — класс для управления гидратацией SSR.
+- `wrapper?: <R>(callback: () => Promise<R>, apiFetch: ApiFetch) => Promise<R>` — функция-обертка для выполнения запросов.
 
 ## Методы
 
@@ -76,6 +77,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 - `setPreparation(callback: (apiFetch: ApiFetch) => Promise<void>): this` — Устанавливает хук, выполняемый перед каждым сетевым запросом.
 - `setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): this` — Устанавливает хук, выполняемый после получения ответа.
 - `setOrigin(origin: string): this` — Устанавливает источник (протокол и домен) для формирования базового URL.
+- `setWrapper(wrapper: <R>(callback: () => Promise<R>, apiFetch: ApiFetch) => Promise<R>): this` — Устанавливает функцию-обертку для запросов.
 
 ### Вспомогательные
 
@@ -111,6 +113,7 @@ import {Meta} from '@storybook/addon-docs/blocks'
 - `retry?: number` — количество повторов при сбое.
 - `retryDelay?: number` — базовая задержка между повторами в миллисекундах. По умолчанию: `64`мс. Используется алгоритм с джиттером для предотвращения лавинообразных запросов.
 - `endResetLimit?: number` — лимит рекурсивных повторов через `setEnd` с `reset: true`. По умолчанию: `8`.
+- `wrapper?: <R>(callback: () => Promise<R>, apiFetch: ApiFetch) => Promise<R>` — локальная функция-обертка для выполнения данного запроса.
 
 ## Структура данных ответа
 
@@ -226,6 +229,32 @@ api.setEnd(async (response, apiFetch) => {
 Вы можете выборочно отключить выполнение глобальных хуков в объекте `ApiFetch`:
 - `globalPreparation: false` — пропустить выполнение хука `setPreparation`.
 - `globalEnd: false` — пропустить выполнение хука `setEnd`.
+
+## Обертка запроса (Request Wrapper)
+
+Обертка запросов (`wrapper`) позволяет перехватить и обернуть выполнение физического сетевого запроса в кастомную функцию. Это полезно для интеграции с внешними инструментами мониторинга производительности (APM), такими как Sentry или OpenTelemetry, для трейсинга и измерения времени выполнения запросов.
+
+Обертку можно установить как глобально для всего инстанса (через `options.wrapper` или метод `setWrapper`), так и локально для конкретного запроса в объекте `ApiFetch`.
+
+### Пример использования с Sentry:
+
+```javascript
+import * as Sentry from '@sentry/vue'
+
+// Глобальная настройка для всех запросов
+api.setWrapper(async (callback, apiFetch) => {
+  const name = `${apiFetch.method || 'GET'} ${apiFetch.path || ''}`
+  return Sentry.startSpan({ name, op: 'http.client' }, callback)
+})
+
+// Настройка для конкретного запроса (переопределяет глобальную обертку)
+const data = await api.get({
+  path: 'critical-action',
+  wrapper: async (callback) => {
+    return Sentry.startSpan({ name: 'CRITICAL_ACTION' }, callback)
+  }
+})
+```
 
 ## Гидратация
 

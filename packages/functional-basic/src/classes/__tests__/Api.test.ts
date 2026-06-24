@@ -77,6 +77,9 @@ describe('Api', () => {
     const setOriginSpy = vi.spyOn(item, 'setOrigin')
     const setRequestDefaultSpy = vi.spyOn(item, 'setRequestDefault')
     const setDevModeSpy = vi.spyOn(Api.getResponse(), 'setDevMode')
+    const setWrapperSpy = vi.spyOn(item, 'setWrapper')
+
+    const wrapper = async (callback: any) => callback()
 
     Api.setConfig({
       timeout: 100,
@@ -84,7 +87,8 @@ describe('Api', () => {
       headers: { Authorization: 'Bearer test' },
       origin: 'https://example.com',
       requestDefault: { def: 1 },
-      devMode: true
+      devMode: true,
+      wrapper
     })
 
     expect(setTimeoutSpy).toHaveBeenCalledWith(100)
@@ -93,6 +97,16 @@ describe('Api', () => {
     expect(setOriginSpy).toHaveBeenCalledWith('https://example.com')
     expect(setRequestDefaultSpy).toHaveBeenCalledWith({ def: 1 })
     expect(setDevModeSpy).toHaveBeenCalledWith(true)
+    expect(setWrapperSpy).toHaveBeenCalledWith(wrapper)
+  })
+
+  it('should proxy setWrapper method to instance', () => {
+    const item = Api.getItem()
+    const setWrapperSpy = vi.spyOn(item, 'setWrapper')
+    const wrapper = async (callback: any) => callback()
+
+    Api.setWrapper(wrapper)
+    expect(setWrapperSpy).toHaveBeenCalledWith(wrapper)
   })
 
   it('should have proxy HTTP methods', async () => {

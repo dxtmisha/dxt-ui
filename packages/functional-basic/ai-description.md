@@ -1,25 +1,22 @@
-The provided library is a comprehensive isomorphic toolkit for managing frontend and SSR-compatible application states, including API requests, internationalization, data persistence, and UI utilities.
+### 1. Core Purpose
+This library provides a comprehensive, isomorphic (SSR/Client) utility framework for web applications. It centralizes cross-cutting concerns, including HTTP request management with middleware/hooks, reactive URL state synchronization (Query/Hash), global configuration, internationalization, metadata management, and data caching.
 
-Core Purpose:
-Facilitates full-stack state management and utility-based data handling, providing standardized interfaces for HTTP requests (with caching and error handling), localization (Geo/Translation), storage (Cookie/Storage/Hash/Query), and DOM event synchronization.
+### 2. Key Expositions
+*   **Networking**: `Api`, `ApiInstance`, and `ApiCache` manage HTTP requests, caching layers, error handling (`ApiError`), and SSR hydration.
+*   **State & Sync**: `QueryInstance` and `HashInstance` provide reactive, syncable interfaces for URL-based states. `DataStorage` handles `localStorage`/`sessionStorage` with SSR isolation.
+*   **Localization (Geo/Intl)**: `Geo`, `GeoInstance`, and `GeoIntl` manage locale, timezone, and phone mask logic. `Translate` and `TranslateInstance` provide file-based and API-backed localization.
+*   **UI Helpers**: `EventItem` (DOM event wrapper with memory leak protection), `Loading` (global load state), `Icons` (asset management), and `Formatters` (data display utilities).
+*   **Meta Management**: `Meta` and its manager classes control document `<head>` elements, including Open Graph and Twitter Cards.
+*   **Core Utilities**: A suite of functions in `src/functions/` for type-safe data transformation, deep object cloning, DOM manipulation, and URL encoding.
 
-Key Expositions:
-- Api: Singleton-based HTTP client (supports fetch, caching, hydration, and error normalization via ApiErrorStorage).
-- Geo & GeoIntl: Internationalization framework for locale-aware number, date, currency, and phone number formatting.
-- Meta, MetaOg, MetaTwitter: Declarative meta-tag management for SEO and social sharing.
-- DataStorage & CookieStorage: Persistent storage wrappers (LocalStorage/SessionStorage/Cookie) with SSR context isolation.
-- EventItem: Reactive DOM event wrapper supporting ResizeObserver and scroll synchronization.
-- Translate & TranslateFile: Asynchronous translation engine with support for dynamic loading and key replacement.
-- SearchList: Logic for client-side search indexing, matching, and highlighting within data lists.
-- Utils: A broad collection of pure functional utilities (e.g., `copyObject`, `toNumber`, `isFilled`, `sleep`, `frame`).
+### 3. Triggers for Studying ai-types.md
+The `ai-types.md` file is **mandatory** if the AI is tasked with:
+*   Extending or implementing new `ApiFetch` or `ApiConfig` interfaces.
+*   Integrating custom error handling via `ErrorCenter` or `ApiErrorStorageItem`.
+*   Extending geographical data schemas (`GeoItem`, `GeoPhoneValue`).
+*   Implementing new meta-tag configurations or Open Graph properties.
+*   Implementing search functionality using `SearchList` and associated types.
+*   **Crucial**: Whenever the task involves modifying request/response schemas or adding global middleware via `ApiInstance` options, as the types define strict constraints on request lifecycle hooks (`ApiPreparation`, `ApiPreparationEnd`).
 
-Triggers for Studying ai-types.md:
-- When implementing or debugging API integration (Api, ApiInstance, ApiResponse).
-- When configuring global error handling (ErrorCenter).
-- When standardizing data localization or date/time formatting (Geo, GeoIntl, Datetime).
-- When managing complex SSR hydration patterns (ServerStorage, ApiHydration).
-- When integrating deep-search components (SearchList).
-- When developing custom UI components requiring lifecycle-safe event binding (EventItem).
-
-Integration Context:
-Operates as a foundational layer in the stack, compatible with both browser and Node.js (SSR) environments. It acts as a dependency for managing global application state, handling data-driven side effects, and normalizing communication with backend services. It is designed to be injected into frameworks (Vue/React) via lifecycle hooks or custom configuration providers.
+### 4. Integration Context
+The library acts as a foundational "System Toolkit." It is designed to be injected into frontend frameworks (Vue/React) via lifecycle-aware wrappers (e.g., triggering `createElement` only on mount). It bridge the gap between server (SSR) and client states through `ServerStorage` and `ApiHydration`, ensuring that state generated on the server is correctly transferred to the client without hydration mismatches.

@@ -37,6 +37,7 @@ export declare class Api {
     static setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): void;
     static setTimeout(timeout: number): void;
     static setOrigin(origin: string): void;
+    static setWrapper(wrapper: <R>(callback: () => Promise<R>, apiFetch: ApiFetch) => Promise<R>): void;
     static setConfig(config?: ApiConfig): void;
     static request<T>(pathRequest: string | ApiFetch): Promise<T>;
     static get<T>(request: ApiFetch): Promise<T>;
@@ -45,6 +46,7 @@ export declare class Api {
     static patch<T>(request: ApiFetch): Promise<T>;
     static delete<T>(request: ApiFetch): Promise<T>;
 }
+
 // File: src/classes/ApiCache.d.ts
 import { ApiCacheItem, ApiCacheList, ApiFetch } from '../types/apiTypes';
 /**
@@ -59,6 +61,7 @@ export declare class ApiCache {
     static setByFetch<T>(fetch: ApiFetch, value: T): Promise<void>;
     static remove(key: string): Promise<void>;
 }
+
 // File: src/classes/ApiDataReturn.d.ts
 import { ApiStatus } from './ApiStatus';
 import { ApiErrorItem } from './ApiErrorItem';
@@ -73,10 +76,11 @@ export declare class ApiDataReturn<T = any> {
     getAndStatus(status: ApiStatus): ApiData<T>;
     getData(): ApiData<T> | undefined;
 }
+
 // File: src/classes/ApiDefault.d.ts
 import { ApiDefaultValue, ApiFetch } from '../types/apiTypes';
 /**
- * Class for working with default API request data.
+ * Class for managing default API request data.
  */
 export declare class ApiDefault {
     is(): boolean;
@@ -84,22 +88,24 @@ export declare class ApiDefault {
     request(request: ApiFetch['request']): ApiFetch['request'];
     set(request: ApiDefaultValue): this;
 }
+
 // File: src/classes/ApiError.d.ts
 import { ApiErrorItem } from './ApiErrorItem';
 import { ApiErrorStorage } from './ApiErrorStorage';
-import { ApiMethodItem } from '../types/apiTypes';
+import { ApiErrorStorageItem, ApiMethodItem } from '../types/apiTypes';
 /**
  * Utility for managing API error storage and creating error items.
  */
 export declare class ApiError {
     static getStorage(): ApiErrorStorage;
-    static add(item: any | any[], url?: string | RegExp, method?: ApiMethodItem): void;
+    static add(item: Partial<ApiErrorStorageItem> | Partial<ApiErrorStorageItem>[], url?: string | RegExp, method?: ApiMethodItem): void;
     static getItem(method: ApiMethodItem, response: Response): Promise<ApiErrorItem>;
 }
+
 // File: src/classes/ApiErrorItem.d.ts
 import { ApiErrorStorageItem, ApiMethodItem } from '../types/apiTypes';
 /**
- * Class for managing and extracting data from an API error response.
+ * Class for managing and extracting data from API error responses.
  */
 export declare class ApiErrorItem {
     constructor(method: ApiMethodItem, response: Response, error: ApiErrorStorageItem);
@@ -110,15 +116,17 @@ export declare class ApiErrorItem {
     getMessage(): string | undefined;
     getStatus(): number;
 }
+
 // File: src/classes/ApiErrorStorage.d.ts
 import { ApiErrorStorageList, ApiErrorStorageItem, ApiMethodItem } from '../types/apiTypes';
 /**
- * Manager for handling and identifying API error states.
+ * Manager for handling API error states.
  */
 export declare class ApiErrorStorage {
     find(method: ApiMethodItem, response: Response): Promise<ApiErrorStorageItem>;
-    add(item: any | any[], url?: string | RegExp, method?: ApiMethodItem): this;
+    add(item: Partial<ApiErrorStorageItem> | Partial<ApiErrorStorageItem>[], url?: string | RegExp, method?: ApiMethodItem): this;
 }
+
 // File: src/classes/ApiHeaders.d.ts
 import { ApiFetch, ApiHeadersValue } from '../types/apiTypes';
 /**
@@ -129,17 +137,19 @@ export declare class ApiHeaders {
     getByRequest(request: ApiFetch['request'], value?: Record<string, string> | null, type?: string): Record<string, string> | undefined;
     set(headers: ApiHeadersValue): this;
 }
+
 // File: src/classes/ApiHydration.d.ts
 import { ApiResponse } from './ApiResponse';
 import { ApiFetch, ApiHydrationList } from '../types/apiTypes';
 /**
- * Class for collecting API data for hydration on the client side during SSR.
+ * Class for collecting API data for SSR client-side hydration.
  */
 export declare class ApiHydration {
     initResponse(response: ApiResponse): void;
     toClient<T>(apiFetch: ApiFetch, response: T): void;
     toString(): string;
 }
+
 // File: src/classes/ApiInstance.d.ts
 import { LoadingInstance } from './LoadingInstance';
 import { ErrorCenterInstance } from './ErrorCenterInstance';
@@ -159,6 +169,7 @@ export type ApiInstanceOptions = {
     loadingClass?: LoadingInstance;
     errorCenterClass?: ErrorCenterInstance;
     hydrationClass?: typeof ApiHydration;
+    wrapper?: <R>(callback: () => Promise<R>, apiFetch: ApiFetch) => Promise<R>;
 };
 /**
  * Core class for managing HTTP requests using the Fetch API.
@@ -181,6 +192,7 @@ export declare class ApiInstance {
     setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): this;
     setTimeout(timeout: number): this;
     setOrigin(origin: string): this;
+    setWrapper(wrapper: <R>(callback: () => Promise<R>, apiFetch: ApiFetch) => Promise<R>): this;
     request<T>(pathRequest: string | ApiFetch): Promise<T>;
     get<T>(request: ApiFetch): Promise<T>;
     post<T>(request: ApiFetch): Promise<T>;
@@ -188,6 +200,7 @@ export declare class ApiInstance {
     patch<T>(request: ApiFetch): Promise<T>;
     delete<T>(request: ApiFetch): Promise<T>;
 }
+
 // File: src/classes/ApiPreparation.d.ts
 import { ApiFetch, ApiPreparationEnd } from '../types/apiTypes';
 /**
@@ -199,6 +212,7 @@ export declare class ApiPreparation {
     set(callback: (apiFetch: ApiFetch) => Promise<void>): this;
     setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): this;
 }
+
 // File: src/classes/ApiResponse.d.ts
 import { ApiDefault } from './ApiDefault';
 import { ApiFetch, ApiMethod, ApiResponseItem } from '../types/apiTypes';
@@ -214,6 +228,7 @@ export declare class ApiResponse {
     emulator<T>(apiFetch: ApiFetch): Promise<T | undefined>;
     emulatorAsync<T>(apiFetch: ApiFetch): T | undefined;
 }
+
 // File: src/classes/ApiStatus.d.ts
 import { ApiStatusItem, ApiStatusType } from '../types/apiTypes';
 /**
@@ -236,6 +251,7 @@ export declare class ApiStatus {
     setLastCode(code?: string): this;
     setLastMessage(message?: string): this;
 }
+
 // File: src/classes/BroadcastMessage.d.ts
 import { ErrorCenterInstance } from './ErrorCenterInstance';
 /**
@@ -249,19 +265,21 @@ export declare class BroadcastMessage<Message = any> {
     setCallbackError(callbackError: (event: MessageEvent<Message>) => void): this;
     destroy(): this;
 }
+
 // File: src/classes/Cache.d.ts
 /**
  * Simple in-memory cache class.
- * @deprecated
+ * @deprecated Use alternative caching mechanisms.
  */
 export declare class Cache {
     get<T>(name: string, callback: () => T, comparison?: any[]): T;
     getAsync<T>(name: string, callback: () => T, comparison?: any[]): Promise<T>;
 }
+
 // File: src/classes/CacheItem.d.ts
 /**
  * Class for managing a single cached value.
- * @deprecated
+ * @deprecated Use alternative caching mechanisms.
  */
 export declare class CacheItem<T> {
     constructor(callback: () => T);
@@ -269,16 +287,18 @@ export declare class CacheItem<T> {
     getCacheOld(): T | undefined;
     getCacheAsync(comparison: any[]): Promise<T>;
 }
+
 // File: src/classes/CacheStatic.d.ts
 import { Cache } from './Cache';
 /**
  * Static cache class.
- * @deprecated
+ * @deprecated Use alternative caching mechanisms.
  */
 export declare class CacheStatic {
     static get<T>(name: string, callback: () => T, comparison?: any[]): T;
     static getAsync<T>(name: string, callback: () => T, comparison?: any[]): Promise<T>;
 }
+
 // File: src/classes/Cookie.d.ts
 import { CookieOptions } from './CookieStorage';
 /**
@@ -291,6 +311,7 @@ export declare class Cookie<T> {
     set(value?: T | string | (() => (T | string)), options?: CookieOptions): void;
     remove(): void;
 }
+
 // File: src/classes/CookieBlock.d.ts
 import { CookieBlockInstance } from './CookieBlockInstance';
 /**
@@ -301,6 +322,7 @@ export declare class CookieBlock {
     static get(): boolean;
     static set(value: boolean): void;
 }
+
 // File: src/classes/CookieBlockInstance.d.ts
 /**
  * Class for changing cookie access status.
@@ -309,6 +331,7 @@ export declare class CookieBlockInstance {
     get(): boolean;
     set(value: boolean): void;
 }
+
 // File: src/classes/CookieStorage.d.ts
 export type CookieSameSite = 'strict' | 'lax';
 export type CookieOptions = {
@@ -332,6 +355,7 @@ export declare class CookieStorage {
     static remove(name: string): void;
     static update(): void;
 }
+
 // File: src/classes/DataStorage.d.ts
 import { ErrorCenterInstance } from './ErrorCenterInstance';
 /**
@@ -345,12 +369,13 @@ export declare class DataStorage<T> {
     remove(): this;
     update(): this;
 }
+
 // File: src/classes/Datetime.d.ts
 import { GeoIntl } from './GeoIntl';
 import { NumberOrStringOrDate } from '../types/basicTypes';
 import { GeoDate, GeoFirstDay, GeoHours, GeoTimeZoneStyle } from '../types/geoTypes';
 /**
- * A class for working with dates.
+ * Class for working with dates.
  */
 export declare class Datetime {
     constructor(date?: NumberOrStringOrDate, type?: GeoDate, code?: string);
@@ -425,6 +450,7 @@ export declare class Datetime {
     cloneDayNext(): Datetime;
     cloneDayPrevious(): Datetime;
 }
+
 // File: src/classes/ErrorCenter.d.ts
 import { ErrorCenterInstance } from './ErrorCenterInstance';
 import { ErrorCenterCauseItem, ErrorCenterCauseList, ErrorCenterGroup, ErrorCenterHandlerCallback, ErrorCenterHandlerList } from '../types/errorCenter';
@@ -441,19 +467,21 @@ export declare class ErrorCenter {
     static addHandlerList(handlers: ErrorCenterHandlerList): void;
     static on(cause: ErrorCenterCauseItem): void;
 }
+
 // File: src/classes/ErrorCenterHandler.d.ts
-import { ErrorCenterCauseItem, ErrorCenterGroup, ErrorCenterHandlerCallback, ErrorCenterHandlerList } from '../types/errorCenter';
+import { ErrorCenterCauseItem, ErrorCenterGroup, ErrorCenterHandlerCallback, ErrorCenterHandlerItem, ErrorCenterHandlerList } from '../types/errorCenter';
 /**
  * Class for managing and triggering error handlers.
  */
 export declare class ErrorCenterHandler {
     constructor(handlers?: ErrorCenterHandlerList);
     has(group: ErrorCenterGroup): boolean;
-    get(group: ErrorCenterGroup): any | undefined;
+    get(group: ErrorCenterGroup): ErrorCenterHandlerItem | undefined;
     add(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): this;
     addList(handlers: ErrorCenterHandlerList): this;
     on(cause: ErrorCenterCauseItem): this;
 }
+
 // File: src/classes/ErrorCenterInstance.d.ts
 import { ErrorCenterHandler } from './ErrorCenterHandler';
 import { ErrorCenterCauseItem, ErrorCenterCauseList, ErrorCenterGroup, ErrorCenterHandlerCallback, ErrorCenterHandlerList } from '../types/errorCenter';
@@ -470,10 +498,11 @@ export declare class ErrorCenterInstance {
     addHandlerList(handlers: ErrorCenterHandlerList): this;
     on(cause: ErrorCenterCauseItem): this;
 }
+
 // File: src/classes/EventItem.d.ts
 import { ElementOrString, ElementOrWindow, EventListenerDetail, EventOptions } from '../types/basicTypes';
 /**
- * Advanced wrapper for managing event listeners.
+ * Advanced wrapper for managing event listeners on DOM elements.
  */
 export declare class EventItem<E extends ElementOrWindow, O extends Event, D extends Record<string, any> = Record<string, any>> {
     constructor(elementSelector?: ElementOrString<E>, type?: string | string[], listener?: EventListenerDetail<O, D> | undefined, options?: EventOptions, detail?: D | undefined);
@@ -491,21 +520,25 @@ export declare class EventItem<E extends ElementOrWindow, O extends Event, D ext
     toggle(activity: boolean): this;
     reset(): this;
 }
+
 // File: src/classes/Formatters.d.ts
-import { FormattersType, FormattersOptionsList, FormattersListProp, FormattersItemProp, FormattersReturn } from '../types/formattersTypes';
+import { FormattersType, FormattersOptionsList, FormattersOptionsCurrency, FormattersOptionsDate, FormattersOptionsName, FormattersOptionsNumber, FormattersOptionsPlural, FormattersOptionsUnit, FormattersReturn, FormattersListProp, FormattersItemProp } from '../types/formattersTypes';
 /**
  * Class for formatting a list of data.
  */
 export declare class Formatters<Options extends FormattersOptionsList = FormattersOptionsList, List extends FormattersListProp = FormattersListProp, Item extends FormattersItemProp<List> = FormattersItemProp<List>> {
     constructor(options: Options, list?: List | undefined);
     is(): boolean;
-    isArray(): this is this & { list: any[] };
+    isArray(): this is this & {
+        list: any[];
+    };
     length(): number;
     getList(): any[];
     getOptions(): Options;
     setList(list?: List): this;
     to(): FormattersReturn<List, Options>;
 }
+
 // File: src/classes/Geo.d.ts
 import { GeoInstance } from './GeoInstance';
 import { GeoItem, GeoItemFull } from '../types/geoTypes';
@@ -536,7 +569,9 @@ export declare class Geo {
     static setTimezone(timezone: number): void;
     static setValueDefault(code?: string | (() => string)): void;
 }
+
 // File: src/classes/GeoFlag.d.ts
+import { GeoIntl } from './GeoIntl';
 import { GeoFlagItem, GeoFlagNational } from '../types/geoTypes';
 export declare const GEO_FLAG_ICON_NAME = "f";
 /**
@@ -546,12 +581,16 @@ export declare class GeoFlag {
     static flags: Record<string, string>;
     constructor(code?: string);
     get(code?: string): GeoFlagItem | undefined;
+    getLanguage(code?: string): GeoFlagItem | undefined;
     getCode(): string;
     getFlag(code?: string): string | undefined;
     getList(codes?: string[], sort?: boolean): GeoFlagItem[];
+    getListLanguage(codes?: string[], sort?: boolean): GeoFlagItem[];
     getNational(codes?: string[], sort?: boolean): GeoFlagNational[];
+    getNationalLanguage(codes?: string[], sort?: boolean): GeoFlagNational[];
     setCode(code: string): this;
 }
+
 // File: src/classes/GeoInstance.d.ts
 import { GeoItem, GeoItemFull } from '../types/geoTypes';
 export declare const UI_GEO_COOKIE_KEY = "ui-geo-code";
@@ -582,12 +621,13 @@ export declare class GeoInstance {
     setTimezone(timezone: number): void;
     setValueDefault(code?: string | (() => string)): void;
 }
+
 // File: src/classes/GeoIntl.d.ts
 import { ErrorCenterInstance } from './ErrorCenterInstance';
 import { NumberOrStringOrDate, NumberOrString, ItemValue } from '../types/basicTypes';
 import { GeoDate } from '../types/geoTypes';
 /**
- * API for internationalization.
+ * Geo internationalization utility class.
  */
 export declare class GeoIntl {
     static isItem(code?: string): boolean;
@@ -620,10 +660,11 @@ export declare class GeoIntl {
     time(value: NumberOrStringOrDate): string;
     sort<T>(data: T[], compareFn?: (a: T, b: T) => [string, string]): T[];
 }
+
 // File: src/classes/GeoPhone.d.ts
 import { GeoPhoneValue, GeoPhoneMap, GeoPhoneMapInfo } from '../types/geoTypes';
 /**
- * A class for storing and processing phone number masks.
+ * Class for storing and processing phone number masks.
  */
 export declare class GeoPhone {
     static get(code: string): GeoPhoneValue | undefined;
@@ -634,19 +675,21 @@ export declare class GeoPhone {
     static toMask(phone: string, masks?: string[]): string | undefined;
     static removeZero(phone: string): string;
 }
+
 // File: src/classes/Global.d.ts
 /**
- * Static utility for global application data.
+ * Static class for global data storage.
  */
 export declare class Global {
     static getItem(): Record<string, any>;
     static get<R = any>(name: string): R;
     static add(data: Record<string, any>): void;
 }
+
 // File: src/classes/Hash.d.ts
 import { HashInstance } from './HashInstance';
 /**
- * Static class for URL hash data.
+ * Static class for working with URL hash data.
  */
 export declare class Hash {
     static getItem(): HashInstance;
@@ -656,13 +699,14 @@ export declare class Hash {
     static removeWatch<T>(name: string, callback: (value: T) => void): void;
     static reload(): void;
 }
+
 // File: src/classes/HashInstance.d.ts
 import { UrlInstanceAbstract } from './UrlInstanceAbstract';
 /**
- * Class for URL hash data.
+ * Class for working with URL hash data.
  */
-export declare class HashInstance extends UrlInstanceAbstract {
-}
+export declare class HashInstance extends UrlInstanceAbstract {}
+
 // File: src/classes/Icons.d.ts
 export type IconsItem = string | Promise<string | any> | (() => Promise<string | any>);
 export type IconsConfig = {
@@ -685,11 +729,12 @@ export declare class Icons {
     static setUrl(url: string): void;
     static setConfig(config: IconsConfig): void;
 }
+
 // File: src/classes/Loading.d.ts
 import { LoadingInstance } from './LoadingInstance';
 import { ElementOrString, EventListenerDetail } from '../types/basicTypes';
 /**
- * Class for working with global loading.
+ * Class for global loading management.
  */
 export declare class Loading {
     static is(): boolean;
@@ -700,13 +745,20 @@ export declare class Loading {
     static registrationEvent(listener: EventListenerDetail<CustomEvent, any>, element?: ElementOrString<HTMLElement>): void;
     static unregistrationEvent(listener: EventListenerDetail<CustomEvent, any>, element?: ElementOrString<HTMLElement>): void;
 }
+
 // File: src/classes/LoadingInstance.d.ts
+import { EventItem } from './EventItem';
 import { ElementOrString, EventListenerDetail } from '../types/basicTypes';
 export type LoadingDetail = {
     loading: boolean;
 };
+export type LoadingRegistrationItem = {
+    item: EventItem<Window, CustomEvent, LoadingDetail>;
+    listener: EventListenerDetail<CustomEvent, LoadingDetail>;
+    element?: ElementOrString<HTMLElement>;
+};
 /**
- * Class for working with global loading.
+ * Class for global loading management instance.
  */
 export declare class LoadingInstance {
     constructor(eventName?: string);
@@ -717,13 +769,14 @@ export declare class LoadingInstance {
     registrationEvent(listener: EventListenerDetail<CustomEvent, LoadingDetail>, element?: ElementOrString<HTMLElement>): void;
     unregistrationEvent(listener: EventListenerDetail<CustomEvent, LoadingDetail>, element?: ElementOrString<HTMLElement>): void;
 }
+
 // File: src/classes/Meta.d.ts
 import { MetaManager } from './MetaManager';
 import { MetaOg } from './MetaOg';
 import { MetaTwitter } from './MetaTwitter';
 import { MetaRobots, MetaTag } from '../types/metaTypes';
 /**
- * Unified class for managing all types of meta tags.
+ * Class for managing meta tags (HTML, OG, Twitter).
  */
 export declare class Meta extends MetaManager<MetaTag[]> {
     constructor();
@@ -751,21 +804,29 @@ export declare class Meta extends MetaManager<MetaTag[]> {
     html(): string;
     htmlTitle(): string;
 }
+
 // File: src/classes/MetaManager.d.ts
-export declare class MetaManager<T extends readonly string[], Key extends any = any> {
+type MetaList<T extends readonly string[]> = {
+    [K in T[number]]?: string;
+};
+/**
+ * Base class for meta tag management.
+ */
+export declare class MetaManager<T extends readonly string[], Key extends keyof MetaList<T> = keyof MetaList<T>> {
     constructor(listMeta: T, isProperty?: boolean);
     getListMeta(): T;
     get(name: Key): string;
-    getItems(): any;
+    getItems(): MetaList<T>;
     html(): string;
     set(name: Key, content: string): this;
-    setByList(metaList: any): this;
+    setByList(metaList: MetaList<T>): this;
 }
+
 // File: src/classes/MetaOg.d.ts
 import { MetaManager } from './MetaManager';
 import { MetaOpenGraphTag, MetaOpenGraphType } from '../types/metaTypes';
 /**
- * Class for Open Graph meta tags.
+ * Class for managing Open Graph meta tags.
  */
 export declare class MetaOg extends MetaManager<MetaOpenGraphTag[]> {
     constructor();
@@ -784,13 +845,14 @@ export declare class MetaOg extends MetaManager<MetaOpenGraphTag[]> {
     setLocale(locale: string): this;
     setSiteName(siteName: string): this;
 }
+
 // File: src/classes/MetaStatic.d.ts
 import { Meta } from './Meta';
 import { MetaOg } from './MetaOg';
 import { MetaTwitter } from './MetaTwitter';
 import { MetaRobots } from '../types/metaTypes';
 /**
- * Static class for managing meta tags.
+ * Static interface for meta tag management.
  */
 export declare class MetaStatic {
     static getItem(): Meta;
@@ -818,11 +880,12 @@ export declare class MetaStatic {
     static html(): string;
     static htmlTitle(): string;
 }
+
 // File: src/classes/MetaTwitter.d.ts
 import { MetaManager } from './MetaManager';
 import { MetaTwitterCard, MetaTwitterTag } from '../types/metaTypes';
 /**
- * Class for Twitter Card meta tags.
+ * Class for managing Twitter Card meta tags.
  */
 export declare class MetaTwitter extends MetaManager<MetaTwitterTag[]> {
     constructor();
@@ -841,10 +904,11 @@ export declare class MetaTwitter extends MetaManager<MetaTwitterTag[]> {
     setDescription(description: string): this;
     setImage(image: string): this;
 }
+
 // File: src/classes/Query.d.ts
 import { QueryInstance } from './QueryInstance';
 /**
- * Static class for URL query parameters.
+ * Static class for working with URL query parameters.
  */
 export declare class Query {
     static getItem(): QueryInstance;
@@ -854,17 +918,18 @@ export declare class Query {
     static removeWatch<T>(name: string, callback: (value: T) => void): void;
     static reload(): void;
 }
+
 // File: src/classes/QueryInstance.d.ts
 import { UrlInstanceAbstract } from './UrlInstanceAbstract';
 /**
- * Class for URL query parameters.
+ * Class for working with URL query parameters.
  */
-export declare class QueryInstance extends UrlInstanceAbstract {
-}
+export declare class QueryInstance extends UrlInstanceAbstract {}
+
 // File: src/classes/ResumableTimer.d.ts
 import { FunctionVoid } from '../types/basicTypes';
 /**
- * Class for creating a timer that can be paused and resumed.
+ * Timer that can be paused and resumed.
  */
 export declare class ResumableTimer {
     constructor(callback: FunctionVoid, delay?: number, blockStart?: boolean);
@@ -873,10 +938,11 @@ export declare class ResumableTimer {
     reset(): this;
     clear(): this;
 }
+
 // File: src/classes/ScrollbarWidth.d.ts
 import { DataStorage } from './DataStorage';
 /**
- * Class for getting the scroll width.
+ * Class for measuring scrollbar width.
  */
 export declare class ScrollbarWidth {
     static is(): Promise<boolean>;
@@ -884,6 +950,7 @@ export declare class ScrollbarWidth {
     static getStorage(): DataStorage<number>;
     static getCalculate(): boolean;
 }
+
 // File: src/classes/SearchList.d.ts
 import { SearchListData } from './SearchListData';
 import { SearchListItem } from './SearchListItem';
@@ -891,7 +958,7 @@ import { SearchListMatcher } from './SearchListMatcher';
 import { SearchListOptions } from './SearchListOptions';
 import { SearchColumns, SearchFormatList, SearchItem, SearchListValue, SearchOptions } from '../types/searchTypes';
 /**
- * Main class for managing a searchable list.
+ * Main manager for searchable lists.
  */
 export declare class SearchList<T extends SearchItem, K extends SearchColumns<T>> {
     constructor(list: SearchListValue<T>, columns?: K, value?: string, options?: SearchOptions);
@@ -907,17 +974,23 @@ export declare class SearchList<T extends SearchItem, K extends SearchColumns<T>
     setOptions(options: SearchOptions): this;
     to(): SearchFormatList<T, K>;
 }
+
 // File: src/classes/SearchListData.d.ts
 import { SearchListItem } from './SearchListItem';
 import { SearchListOptions } from './SearchListOptions';
 import { SearchCacheItem, SearchColumns, SearchFormatItem, SearchFormatList, SearchItem, SearchListValue } from '../types/searchTypes';
 /**
- * Class for managing search data list and its cache.
+ * Manager for search data and caching.
  */
 export declare class SearchListData<T extends SearchItem, K extends SearchColumns<T>> {
     constructor(list: SearchListValue<T>, columns: K | undefined, item: SearchListItem, options: SearchListOptions);
-    is(): this is this & { list: T[]; columns: string[] };
-    isList(): this is this & { list: T[] };
+    is(): this is this & {
+        list: T[];
+        columns: string[];
+    };
+    isList(): this is this & {
+        list: T[];
+    };
     getList(): SearchListValue<T>;
     getColumns(): K | undefined;
     setList(list: SearchListValue<T>): this;
@@ -926,24 +999,28 @@ export declare class SearchListData<T extends SearchItem, K extends SearchColumn
     forEach(callback: (item: SearchCacheItem<T>['item'], value: SearchCacheItem<T>['value']) => SearchFormatItem<T, K> | undefined): SearchFormatList<T, K>;
     toFormatItem(item: T, selection: boolean): SearchFormatItem<T, K>;
 }
+
 // File: src/classes/SearchListItem.d.ts
 import { SearchListOptions } from './SearchListOptions';
 /**
- * Class representing a single search item's state.
+ * State for a single search item.
  */
 export declare class SearchListItem {
     constructor(value: string | undefined, options: SearchListOptions);
-    is(): this is this & { value: string };
+    is(): this is this & {
+        value: string;
+    };
     isSearch(): boolean;
     get(): string;
     set(value?: string): this;
 }
+
 // File: src/classes/SearchListMatcher.d.ts
 import { SearchListItem } from './SearchListItem';
 import { SearchListOptions } from './SearchListOptions';
 import { SearchCacheItem } from '../types/searchTypes';
 /**
- * Class for matching search values against the list.
+ * Logic for matching search items.
  */
 export declare class SearchListMatcher {
     constructor(item: SearchListItem, options: SearchListOptions);
@@ -952,10 +1029,11 @@ export declare class SearchListMatcher {
     get(): RegExp | undefined;
     update(): void;
 }
+
 // File: src/classes/SearchListOptions.d.ts
 import { SearchOptions } from '../types/searchTypes';
 /**
- * Class for managing search list options.
+ * Class for managing search options.
  */
 export declare class SearchListOptions {
     constructor(options?: SearchOptions | undefined);
@@ -967,9 +1045,10 @@ export declare class SearchListOptions {
     getClassName(): string;
     setOptions(options: SearchOptions): this;
 }
+
 // File: src/classes/ServerStorage.d.ts
 /**
- * Class for managing data storage during server-side rendering.
+ * SSR-safe storage management.
  */
 export declare class ServerStorage {
     static init(listener: () => Record<string, any> | undefined): typeof ServerStorage;
@@ -981,9 +1060,10 @@ export declare class ServerStorage {
     static remove(key: string): void;
     static toString(): string;
 }
+
 // File: src/classes/StorageCallback.d.ts
 /**
- * A class for working with callback lists for storage.
+ * Helper for managing storage callbacks.
  */
 export declare class StorageCallback<T = any, Callback = (value: T) => void | Promise<void>> {
     static getInstance<T>(name: string, group?: string): StorageCallback<T, (value: T) => void | Promise<void>>;
@@ -996,11 +1076,12 @@ export declare class StorageCallback<T = any, Callback = (value: T) => void | Pr
     preparation(): this;
     run(value: T): Promise<this>;
 }
+
 // File: src/classes/Translate.d.ts
 import { TranslateInstance } from './TranslateInstance';
 import { TranslateCode, TranslateConfig, TranslateDataFile, TranslateList } from '../types/translateTypes';
 /**
- * Class for getting the translated text.
+ * Static interface for translations.
  */
 export declare class Translate {
     static get(name: string, replacement?: string[] | Record<string, string | number>): Promise<string>;
@@ -1018,10 +1099,11 @@ export declare class Translate {
     static setReadApi(value: boolean): void;
     static setConfig(config: TranslateConfig): void;
 }
+
 // File: src/classes/TranslateFile.d.ts
 import { TranslateDataFile, TranslateDataFileList } from '../types/translateTypes';
 /**
- * Class for working with translation files.
+ * Class for managing translation files.
  */
 export declare class TranslateFile {
     constructor(data?: TranslateDataFile, language?: string | (() => string), location?: string | (() => string));
@@ -1031,11 +1113,12 @@ export declare class TranslateFile {
     getList(): Promise<TranslateDataFileList | undefined>;
     add(data: TranslateDataFile): void;
 }
+
 // File: src/classes/TranslateInstance.d.ts
 import { TranslateFile } from './TranslateFile';
 import { TranslateCode, TranslateDataFile, TranslateList } from '../types/translateTypes';
 /**
- * Class for getting the translated text.
+ * Manager for translation instances.
  */
 export declare class TranslateInstance {
     constructor(url?: string, propsName?: string, files?: TranslateFile);
@@ -1052,9 +1135,10 @@ export declare class TranslateInstance {
     setPropsName(name: string): this;
     setReadApi(value: boolean): this;
 }
+
 // File: src/classes/UrlInstanceAbstract.d.ts
 /**
- * Base abstract class for working with URL-based states.
+ * Abstract class for URL-based state management.
  */
 export declare abstract class UrlInstanceAbstract {
     get<T>(name: string, defaultValue?: T | (() => T)): T;
@@ -1063,9 +1147,10 @@ export declare abstract class UrlInstanceAbstract {
     removeWatch<T>(name: string, callback: (value: T) => void): this;
     reload(): this;
 }
+
 // File: src/classes/UrlItem.d.ts
 /**
- * Isomorphic utility for URLs.
+ * Utility for URL manipulation.
  */
 export declare class UrlItem {
     static getInstance(): UrlItem;
@@ -1092,6 +1177,7 @@ export declare class UrlItem {
     toString(): string;
     toJSON(): string;
 }
+
 // File: src/functions/addTagHighlightMatch.d.ts
 export declare function addTagHighlightMatch(value: string, search?: string | RegExp, className?: string, shouldEscape?: boolean): string;
 // File: src/functions/anyToString.d.ts
@@ -1349,6 +1435,7 @@ export declare function uint8ArrayToBase64(bytes: Uint8Array): string;
 export declare function uniqueArray<T>(value: T[]): T[];
 // File: src/functions/writeClipboardData.d.ts
 export declare function writeClipboardData(text: string): Promise<void>;
+
 // File: src/library.d.ts
 export * from './classes/Api';
 export * from './classes/ApiCache';
@@ -1531,10 +1618,13 @@ export * from './types/geoTypes';
 export * from './types/metaTypes';
 export * from './types/searchTypes';
 export * from './types/translateTypes';
+
 // File: src/media/errorCauseList.d.ts
 import { ErrorCenterCauseList } from '../types/errorCenter';
 export declare const errorCauseList: ErrorCenterCauseList;
+
 // File: src/types/apiTypes.d.ts
+import { ApiErrorItem } from '../classes/ApiErrorItem';
 export declare enum ApiMethodItem {
     delete = "DELETE",
     get = "GET",
@@ -1557,6 +1647,7 @@ export type ApiConfig = {
     end?: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>;
     timeout?: number;
     devMode?: boolean;
+    wrapper?: <R>(callback: () => Promise<R>, apiFetch: ApiFetch) => Promise<R>;
 };
 export type ApiData<T = any> = T extends any[] ? T : ApiDataItem<T>;
 export type ApiDataValidation = {
@@ -1603,6 +1694,7 @@ export type ApiFetch = {
     enableClientCache?: boolean;
     cacheId?: number | string;
     endResetLimit?: number;
+    wrapper?: <R>(callback: () => Promise<R>, apiFetch: ApiFetch) => Promise<R>;
 };
 export type ApiHydrationItem = {
     path: string;
@@ -1644,6 +1736,7 @@ export type ApiStatusItem = {
     lastMessage?: string;
 };
 export type ApiStatusType = 'success' | 'error' | 'warning' | 'info';
+
 // File: src/types/basicTypes.d.ts
 export type Undefined = undefined | null;
 export type EmptyValue = Undefined | 0 | false | '' | 'undefined' | 'null' | '0' | 'false' | '[]';
@@ -1686,6 +1779,7 @@ export type ImageCoordinator = {
     x: number;
     y: number;
 };
+
 // File: src/types/errorCenter.d.ts
 export type ErrorCenterGroup = string | undefined;
 export type ErrorCenterCauseItem<D = any> = {
@@ -1703,6 +1797,7 @@ export type ErrorCenterHandlerItem = {
     handlers: ErrorCenterHandlerCallback[];
 };
 export type ErrorCenterHandlerList = ErrorCenterHandlerItem[];
+
 // File: src/types/formattersTypes.d.ts
 import { ArrayToItem } from './basicTypes';
 import { GeoDate } from './geoTypes';
@@ -1762,6 +1857,7 @@ export type FormattersListColumns<T extends FormattersListItem, O extends Format
 export type FormattersListProp = FormattersList<FormattersListItem> | FormattersListItem;
 export type FormattersItemProp<List extends FormattersListProp> = ArrayToItem<List>;
 export type FormattersReturn<List extends FormattersListProp, Options extends FormattersOptionsList = FormattersOptionsList, Item extends FormattersItemProp<List> = FormattersItemProp<List>> = List extends any[] ? FormattersListColumns<Item, Options> : (FormattersListColumnItem<Item, Options> | undefined);
+
 // File: src/types/geoTypes.d.ts
 export type GeoDate = 'full' | 'datetime' | 'date' | 'year-month' | 'year' | 'month' | 'day' | 'day-month' | 'time' | 'hour-minute' | 'hour' | 'minute' | 'second';
 export type GeoFirstDay = 1 | 6 | 0;
@@ -1788,7 +1884,9 @@ export interface GeoItemFull extends Omit<GeoItem, 'firstDay'> {
 }
 export interface GeoFlagItem {
     language: string;
+    languageCode: string;
     country: string;
+    countryCode: string;
     standard: string;
     icon?: string;
     label: string;
@@ -1818,6 +1916,7 @@ export interface GeoPhoneMapInfo {
     item?: GeoPhoneMap;
     phone?: string;
 }
+
 // File: src/types/metaTypes.d.ts
 export declare enum MetaTag {
     title = "title",
@@ -2004,6 +2103,7 @@ export declare enum MetaTwitterCard {
     audio = "audio",
     poll = "poll"
 }
+
 // File: src/types/searchTypes.d.ts
 export type SearchItem = Record<string, any>;
 export type SearchColumnPath<K, P> = K extends string ? P extends string ? `${K}.${P}` : never : never;
@@ -2036,6 +2136,7 @@ export type HighlightMatchItem = {
     text: string;
     isMatch: boolean;
 };
+
 // File: src/types/translateTypes.d.ts
 export type TranslateConfig = {
     url?: string;
