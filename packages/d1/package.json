@@ -27,7 +27,7 @@
     "build": "vue-tsc -b && vite build",
     "build-recovery": "npm run build && npm run wiki-storm",
     "preview": "vite preview",
-    "ui": "dxt-ui",
+    "ui": "dxt-ui InputSocial",
     "wiki-storm": "dxt-wiki-storm",
     "types": "dxt-types",
     "screenshot": "dxt-screenshot",
@@ -358,6 +358,10 @@
     "./D1MenuLanguage": {
       "types": "./dist/src/library/D1MenuLanguage.d.ts",
       "default": "./dist/D1MenuLanguage.js"
+    },
+    "./D1InputSocial": {
+      "types": "./dist/src/library/D1InputSocial.d.ts",
+      "default": "./dist/D1InputSocial.js"
     }
   },
   "buildOptions": {

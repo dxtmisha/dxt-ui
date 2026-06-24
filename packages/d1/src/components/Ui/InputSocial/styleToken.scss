@@ -1,0 +1,20 @@
+@use "../../../styles/Ui/properties";
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/style.scss" as InputSocial;
+
+@include ui.initDesignBasic('d1.inputSocial') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include InputSocial.mixinInputSocial;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+    --d1-inputSocial-main: var(--d-inputSocial);
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

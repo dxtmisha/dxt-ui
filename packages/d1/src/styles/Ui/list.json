@@ -9488,6 +9488,17 @@
           }
         }
       },
+      "inputSocial": {
+        "name": "d1-inputSocial",
+        "type": "component",
+        "value": {
+          "main": {
+            "name": "--d1-inputSocial-main",
+            "type": "var",
+            "value": "{d.inputSocial}"
+          }
+        }
+      },
       "listGroup": {
         "name": "d1-listGroup",
         "type": "component",

@@ -36,7 +36,7 @@
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
     "test": "NODE_OPTIONS=\"--no-webstorage\" vitest",
-    "constructor": "dxt-constructor",
+    "constructor": "dxt-constructor InputSocial",
     "library": "dxt-library",
     "types": "dxt-types",
     "prepublishOnly": "npm run library && npm run constructor && npm run build",
@@ -359,6 +359,10 @@
     "./MenuLanguage": {
       "types": "./dist/src/constructors/MenuLanguage/index.d.ts",
       "default": "./dist/menuLanguage.js"
+    },
+    "./InputSocial": {
+      "types": "./dist/src/constructors/InputSocial/index.d.ts",
+      "default": "./dist/inputSocial.js"
     }
   },
   "buildOptions": {

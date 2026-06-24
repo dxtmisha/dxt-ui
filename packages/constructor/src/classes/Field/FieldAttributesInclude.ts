@@ -169,16 +169,22 @@ export class FieldAttributesInclude {
           case 'pattern':
             if (this.pattern) {
               value = this.pattern.item
+            } else {
+              value = this.props.pattern
             }
             break
           case 'inputMode':
             if (this.inputMode) {
               value = this.inputMode.item
+            } else {
+              value = this.props.inputMode
             }
             break
           case 'autocomplete':
             if (this.inputMode) {
               value = this.inputMode.autocomplete
+            } else {
+              value = this.props.autocomplete
             }
             break
           default:
