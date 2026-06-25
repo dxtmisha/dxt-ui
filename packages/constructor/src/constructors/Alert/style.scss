@@ -1,0 +1,47 @@
+@use "@dxtmisha/styles/properties" as ui;
+
+@mixin mixinAlert {
+  display: flex;
+  align-items: flex-start;
+
+  transition: opacity #{ui.v('d.sys.transitionDuration.fade.exit')} linear;
+
+  &__context {
+    @include ui.flexY;
+    @include ui.flexDynamic;
+    align-items: stretch;
+    order: 8;
+  }
+
+  &__trailing {
+    order: 12;
+  }
+
+  &__buttons {
+    @include ui.flexX;
+    gap: inherit;
+  }
+
+  &__buttonClose {
+    order: 16;
+  }
+
+  &__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: ui.v('??linkGap', 0);
+  }
+
+  &--itemCenter {
+    align-items: center;
+
+    & > * {
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
+    }
+  }
+
+  &--hide {
+    opacity: 0;
+  }
+}

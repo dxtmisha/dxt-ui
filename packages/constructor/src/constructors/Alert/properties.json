@@ -1,0 +1,21 @@
+{
+  "linkGap": {
+    "_type": "var"
+  },
+  "#icon": {},
+  "#trailing": {},
+  "#context": {},
+  "#label": {},
+  "#description": {},
+  "#body": {},
+  "#button": {},
+  "#buttons": {},
+  "#buttonClose": {},
+  "#links": {
+    "#item": {}
+  },
+  "#actions": {},
+  "~itemCenter": {
+    "_default": true
+  }
+}

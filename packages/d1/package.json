@@ -27,7 +27,7 @@
     "build": "vue-tsc -b && vite build",
     "build-recovery": "npm run build && npm run wiki-storm",
     "preview": "vite preview",
-    "ui": "dxt-ui AlertLink",
+    "ui": "dxt-ui Alert",
     "wiki-storm": "dxt-wiki-storm",
     "types": "dxt-types",
     "screenshot": "dxt-screenshot",
@@ -366,6 +366,10 @@
     "./D1AlertLink": {
       "types": "./dist/src/library/D1AlertLink.d.ts",
       "default": "./dist/D1AlertLink.js"
+    },
+    "./D1Alert": {
+      "types": "./dist/src/library/D1Alert.d.ts",
+      "default": "./dist/D1Alert.js"
     }
   },
   "buildOptions": {
