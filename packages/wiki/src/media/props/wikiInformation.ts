@@ -162,6 +162,17 @@ export const wikiInformation: StorybookArgsToList = {
     },
     hide: true
   },
+  links: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.value,
+      description: {
+        en: 'List of link configurations for rendering within the component',
+        ru: 'Список настроек ссылок для рендеринга внутри компонента'
+      }
+    },
+    hide: true
+  },
   placeholder: {
     type: StorybookControl.string,
     options: {

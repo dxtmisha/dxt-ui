@@ -4,6 +4,7 @@ import { wikiDescriptionsAccordion } from './wikiDescriptionsAccordion'
 import { wikiDescriptionsArea } from './wikiDescriptionsArea'
 import { wikiDescriptionsActions } from './wikiDescriptionsActions'
 import { wikiDescriptionsActionSheet } from './wikiDescriptionsActionSheet'
+import { wikiDescriptionsAlertLink } from './wikiDescriptionsAlertLink'
 import { wikiDescriptionsAnchor } from './wikiDescriptionsAnchor'
 import { wikiDescriptionsArrow } from './wikiDescriptionsArrow'
 import { wikiDescriptionsBadge } from './wikiDescriptionsBadge'
@@ -80,6 +81,7 @@ export const wikiDescriptions: StorybookComponentsDescription = [
   wikiDescriptionsArea,
   wikiDescriptionsActions,
   wikiDescriptionsActionSheet,
+  wikiDescriptionsAlertLink,
   wikiDescriptionsAnchor,
   wikiDescriptionsArrow,
   wikiDescriptionsBadge,

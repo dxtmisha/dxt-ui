@@ -208,6 +208,17 @@ export const wikiAttributes: StorybookArgsToList = {
     },
     hide: true
   },
+  linksAttrs: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.attributes,
+      description: {
+        en: 'Additional attributes for the AlertLinks container component',
+        ru: 'Дополнительные атрибуты для компонента контейнера AlertLinks'
+      }
+    },
+    hide: true
+  },
   menuAttrs: {
     type: StorybookControl.object,
     options: {

@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.3] - 2026-06-25
+
+### Changed
+- **GeoInstance**: Refactored the `findLanguage` helper to safely resolve custom language overrides from the location code (e.g. `'en-VN'`) by looking up and validating the existence of matching languages via `getByLanguage`, falling back to the country's default language if not found.
+- **GeoInstance**: Updated both the `constructor` and `set()` methods to consistently resolve active language state via the updated `findLanguage` helper.
+
 ## [1.4.2] - 2026-06-25
 
 ### Added

@@ -36,7 +36,7 @@
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
     "test": "NODE_OPTIONS=\"--no-webstorage\" vitest",
-    "constructor": "dxt-constructor",
+    "constructor": "dxt-constructor AlertLink",
     "library": "dxt-library",
     "types": "dxt-types",
     "prepublishOnly": "npm run library && npm run constructor && npm run build",
@@ -363,6 +363,10 @@
     "./InputSocial": {
       "types": "./dist/src/constructors/InputSocial/index.d.ts",
       "default": "./dist/inputSocial.js"
+    },
+    "./AlertLink": {
+      "types": "./dist/src/constructors/AlertLink/index.d.ts",
+      "default": "./dist/alertLink.js"
     }
   },
   "buildOptions": {

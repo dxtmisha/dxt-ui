@@ -4,6 +4,7 @@
 import D1Accordion from '../../src/components/Ui/Accordion/D1AccordionAiWiki.vue'
 import D1ActionSheet from '../../src/components/Ui/ActionSheet/D1ActionSheetAiWiki.vue'
 import D1Actions from '../../src/components/Ui/Actions/D1ActionsAiWiki.vue'
+import D1AlertLink from '../../src/components/Ui/AlertLink/D1AlertLinkAiWiki.vue'
 import D1Anchor from '../../src/components/Ui/Anchor/D1AnchorAiWiki.vue'
 import D1Area from '../../src/components/Ui/Area/D1AreaAiWiki.vue'
 import D1Arrow from '../../src/components/Ui/Arrow/D1ArrowAiWiki.vue'
@@ -80,6 +81,7 @@ export const aiList: any[] = [
   D1Accordion,
   D1ActionSheet,
   D1Actions,
+  D1AlertLink,
   D1Anchor,
   D1Area,
   D1Arrow,

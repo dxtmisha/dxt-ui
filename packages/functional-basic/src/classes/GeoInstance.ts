@@ -406,8 +406,16 @@ export class GeoInstance {
    * @returns language code / код языка
    */
   private findLanguage(code?: string): string {
-    if (code && /[a-z]{2}/.test(code)) {
-      return this.toLanguage(code)
+    if (code) {
+      const language = this.toLanguage(code)
+
+      if (language) {
+        const item = this.getByLanguage(language)
+
+        if (item) {
+          return item.language
+        }
+      }
     }
 
     return this.item.language

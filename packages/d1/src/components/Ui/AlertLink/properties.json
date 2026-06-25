@@ -1,0 +1,15 @@
+{
+  "main": "{d.alertLink}",
+  "link|font": "{font.bodyMedium}",
+  "#label": {
+    "palette-color": "{sys.palette.primary}",
+    "color-opacity": "{sys.opacity.surface.high}"
+  },
+  "hover": {
+    "#label": {
+      "text-decoration": "underline",
+      "text-decoration-style": "dashed",
+      "color-opacity": "{sys.opacity.surface.high} + {sys.opacity.hover}"
+    }
+  }
+}

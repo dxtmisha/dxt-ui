@@ -14,5 +14,9 @@
 9. **Alphabetical Sorting**: In class constructors that accept a `constructors` parameter for dependency injection, all related lists (TSDoc parameters, constructor parameter types, destructuring, and property assignments) must be sorted alphabetically.
 10. **Component Inheritance**: Child components (like `MenuLanguage` or `Chip`) must directly inherit their core logic classes (`class Child extends Parent`), design constructors (`class ChildDesign extends ParentDesign`), properties (`ChildPropsBasic` extending/aliasing `ParentPropsBasic`), and type definitions (`ChildComponents`, `ChildEmits`, `ChildSlots`, `ChildExpose` inheriting/mapping from their parent equivalents) rather than duplicating them. They must also define their own `<Name>Include` classes and `<Name>PropsInclude`/`<Name>ComponentInclude` types following the parent's structure.
 11. **Comprehensive Infrastructure Check**: Before writing any custom logic, loop, or helper function (for data formatting, object/array manipulation, media matching, coordinates, or layout), you MUST search and review all relevant workspace packages (e.g., `functional`, `functional-basic`, `media`, `styles`) to see if a matching helper or asset already exists. You must look beyond simple keyword grep searches by listing directory files or inspecting package exports, to prevent duplicate code.
+12. **Nested List/Component Inclusion**: When rendering sub-components or nested lists within parent components, encapsulate this logic inside classes extending `ComponentIncludeAbstract` instead of using procedural hook-based list helpers (like `useAlertLink.ts`).
+13. **Include basicTypes Placement**: Declare types such as `<Name>EmitsInclude` and `<Name>PropsInclude` inside the local `basicTypes.ts` file of the constructor directory, rather than putting them directly in the `[Name]Include.ts` file.
+
+
 
 

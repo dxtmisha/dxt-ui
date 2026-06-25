@@ -1,0 +1,12 @@
+@use "@dxtmisha/styles/properties" as ui;
+
+@mixin mixinAlertLink {
+  cursor: pointer;
+
+  &--divider + &--divider {
+    &:before {
+      content: "•";
+      @include ui.marginRight(ui.v('??alert.linkGap', 0));
+    }
+  }
+}

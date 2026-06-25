@@ -20,6 +20,7 @@ import { wikiIconInclude } from './wikiIconInclude'
 import { wikiMaskInclude } from './wikiMaskInclude'
 
 import { wikiActions } from './wikiActions'
+import { wikiAlertLink } from './wikiAlertLink'
 import { wikiAnchor } from './wikiAnchor'
 import { wikiArrow } from './wikiArrow'
 import { wikiBadge } from './wikiBadge'
@@ -83,6 +84,7 @@ export const wiki: StorybookArgsToList = {
   ...wikiMaskInclude,
 
   ...wikiActions,
+  ...wikiAlertLink,
   ...wikiAnchor,
   ...wikiArrow,
   ...wikiBadge,
