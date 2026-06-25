@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.14.2] - 2026-06-25
+
+### Added
+- **dxtFunctionalPlugin**: Added `iconsSocial` configuration option (type `InputSocialIcons`) to allow registering custom social network icons globally via `MediaSocial.addIcons` during Vue plugin initialization.
+
 ## [1.14.0] - 2026-06-22
 
 ### Added

@@ -1,5 +1,5 @@
 import { inputSocialList } from '../media/socialList'
-import type { InputSocialItem, InputSocialList, InputSocialType, InputSocialTypeValue } from '../types/socialTypes'
+import type { InputSocialIcons, InputSocialItem, InputSocialList, InputSocialType, InputSocialTypeValue } from '../types/socialTypes'
 
 /**
  * Class for working with social network configurations.
@@ -9,6 +9,9 @@ import type { InputSocialItem, InputSocialList, InputSocialType, InputSocialType
  * Предоставляет вспомогательные методы для получения списка, поиска элементов и форматирования/парсинга ссылок на профили.
  */
 export class MediaSocial {
+  /** Custom icons registry / Реестр кастомных иконок */
+  static readonly icons = {} as InputSocialIcons
+
   /**
    * Returns a social network configuration by its code.
    *
@@ -17,7 +20,20 @@ export class MediaSocial {
    * @returns social network configuration or undefined / конфигурация социальной сети или undefined
    */
   static get(code: InputSocialType | InputSocialTypeValue): InputSocialItem | undefined {
-    return inputSocialList.find(item => item.code === code)
+    const item = inputSocialList.find(item => item.code === code)
+
+    if (item) {
+      if (code in this.icons) {
+        return {
+          ...item,
+          icon: this.icons[code]
+        }
+      }
+
+      return { ...item }
+    }
+
+    return undefined
   }
 
   /**
@@ -87,6 +103,27 @@ export class MediaSocial {
    */
   static getList(): InputSocialList {
     return inputSocialList
+  }
+
+  /**
+   * Adds a custom icon for the specified social network.
+   *
+   * Добавляет кастомную иконку для указанной социальной сети.
+   * @param code social network code / код социальной сети
+   * @param icon icon name or path / имя или путь к иконке
+   */
+  static addIcon(code: InputSocialTypeValue, icon: string): void {
+    this.icons[code] = icon
+  }
+
+  /**
+   * Adds custom icons for multiple social networks.
+   *
+   * Добавляет кастомные иконки для нескольких социальных сетей.
+   * @param icons dictionary of social network codes and their icons / словарь кодов социальных сетей и их иконок
+   */
+  static addIcons(icons: InputSocialIcons): void {
+    Object.assign(this.icons, icons)
   }
 
   /**

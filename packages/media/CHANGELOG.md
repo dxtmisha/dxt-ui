@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.6.1] - 2026-06-25
+
+### Added
+- **Social Types**: Added `InputSocialIcons` type definition (`Partial<Record<InputSocialType, string>>`) making all social icons optional.
+- **MediaSocial**: Introduced custom icons registry (`icons` property) with helper methods (`addIcon` and `addIcons`) using `InputSocialIcons` to register custom icons for social network items.
+- **Unit Tests**: Added a comprehensive test suite (`MediaSocial.test.ts`) covering all methods of the `MediaSocial` class.
+
+### Changed
+- **MediaSocial**: Refactored `get()` to return a shallow copy of the configuration item with the mapped custom icon, preventing side effects and mutations of the static global `socialList`.
+
 ## [0.6.0] - 2026-06-25
 
 ### Added

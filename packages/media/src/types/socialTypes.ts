@@ -92,7 +92,12 @@ export type InputSocialItem<Mask = any> = {
   suffix?: string
   /** Input mask configuration / Настройка маски ввода */
   mask?: Mask
+  /** Custom icon name or path / Имя или путь к кастомной иконке */
+  icon?: string
 }
 
 /** List of social network configurations / Список конфигураций социальных сетей */
 export type InputSocialList = InputSocialItem[]
+
+/** List of custom icons for social networks / Список кастомных иконок для социальных сетей */
+export type InputSocialIcons = Partial<Record<InputSocialType, string>>

@@ -1,4 +1,5 @@
 import { type App, type Plugin } from 'vue'
+import { MediaSocial, type InputSocialIcons } from '@dxtmisha/media'
 import {
   Api,
   type ApiConfig,
@@ -52,6 +53,12 @@ export interface FunctionalPluginOptions {
    * Конфигурация для сервиса управления иконками
    */
   icons?: IconsConfig
+
+  /**
+   * Configuration for the social networks icons management service /
+   * Конфигурация для сервиса управления иконками социальных сетей
+   */
+  iconsSocial?: InputSocialIcons
 
   /**
    * Vue Router instance for global navigation state management /
@@ -122,6 +129,11 @@ export const dxtFunctionalPlugin: Plugin = {
       Icons.setConfig(options.icons)
     }
 
+    // 4.1 Configure Socials Icons
+    if (options.iconsSocial) {
+      MediaSocial.addIcons(options.iconsSocial)
+    }
+
     // 5. Configure Meta Suffix
     if (options.metaSuffix) {
       useMeta().setSuffix(options.metaSuffix)
@@ -138,6 +150,7 @@ export const dxtFunctionalPlugin: Plugin = {
       }
     }
 
+    // 7. Error Center
     if (options.errorCauses) {
       ErrorCenter.addList(options.errorCauses)
     }
@@ -146,7 +159,7 @@ export const dxtFunctionalPlugin: Plugin = {
       ErrorCenter.addHandlerList(options.errorHandlers)
     }
 
-    // 7. Initialize global singletons (ExecuteUseType.global)
+    // 8. Initialize global singletons (ExecuteUseType.global)
     executeUseGlobalInit()
   }
 }

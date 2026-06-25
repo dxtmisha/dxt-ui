@@ -1,4 +1,4 @@
-import type { Ref, ToRefs } from 'vue'
+import { computed, type Ref, type ToRefs } from 'vue'
 import { MediaSocial, type InputSocialItem } from '@dxtmisha/media'
 import type { ConstrEmit, DesignComp, NumberOrString } from '@dxtmisha/functional'
 
@@ -167,9 +167,9 @@ export class InputSocial {
    *
    * Возвращает текущую конфигурацию социальной сети на основе выбранного socialType.
    */
-  get data(): InputSocialItem | undefined {
+  readonly data = computed<InputSocialItem | undefined>(() => {
     return (this.props.socialType && MediaSocial.get(this.props.socialType)) || undefined
-  }
+  })
 
   /**
    * Returns the label of the social network to display in the input.
@@ -177,7 +177,7 @@ export class InputSocial {
    * Возвращает метку социальной сети для отображения в поле ввода.
    */
   get label(): NumberOrString | undefined {
-    return this.data?.name
+    return this.data.value?.name
   }
 
   /**
@@ -186,7 +186,7 @@ export class InputSocial {
    * Возвращает префикс URL для профиля текущей социальной сети.
    */
   get prefix(): NumberOrString | undefined {
-    return this.data?.prefix
+    return this.data.value?.prefix
   }
 
   /**
@@ -195,7 +195,7 @@ export class InputSocial {
    * Возвращает суффикс URL для профиля текущей социальной сети.
    */
   get suffix(): NumberOrString | undefined {
-    return this.data?.suffix
+    return this.data.value?.suffix
   }
 
   /**
@@ -211,7 +211,7 @@ export class InputSocial {
       return this.props.socialIcons[this.props.socialType]
     }
 
-    return undefined
+    return this.data.value?.icon
   }
 
   /** InputSocial binding values and event handlers / Значения привязок ввода и обработчики событий */
@@ -233,7 +233,7 @@ export class InputSocial {
   get bindsMask(): MaskPropsInclude {
     return {
       ...this.props,
-      mask: this.data?.mask,
+      mask: this.data.value?.mask,
       maskVisible: false
     }
   }

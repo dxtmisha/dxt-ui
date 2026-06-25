@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.74.1] - 2026-06-25
+
+### Changed
+- **InputSocial**: Refactored the `data` getter property to a reactive `computed` reference (`data`), updating subsequent property getters (`label`, `prefix`, `suffix`, `bindsMask`, and `icon`) to safely access its value via `.value`.
+- **Package Scripts**: Simplified the `constructor` run script from `dxt-constructor InputSocial` to `dxt-constructor`.
+
 ## [0.74.0] - 2026-06-25
 
 ### Added
