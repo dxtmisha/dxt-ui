@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.74.0] - 2026-06-25
+
+### Added
+- **InputSocial**: Introduced the `InputSocial` constructor component to manage user social media links and username formats with predefined input masks. Key capabilities include:
+  - Component structure, layouts, dynamic styles, and custom property configurations.
+  - Integration of 35 social media platforms (e.g. GitHub, Discord, Telegram, LinkedIn, Facebook, Zalo, WeChat, X/Twitter, etc.) with corresponding profile prefixes and validation rules.
+  - Standardized property definitions (`props.ts`), events mapping, and slots binding.
+  - Bilingual JSDoc/TSDoc API annotations.
+
+## [0.73.0] - 2026-06-24
+
+### Added
+- **MenuLanguage**: Introduced the `MenuLanguage` constructor component for building select components dedicated to system language selection, coordinating languages list rendering, country flag resolution, and locale updates.
+
+## [0.72.0] - 2026-06-18
+
+### Added
+- **SelectableArea**: Introduced the core component constructor (`SelectableArea`) to manage drag-to-select and click selection behaviors. Key capabilities include:
+  - Overlay square bounding box coordinates calculation during drag gestures.
+  - Spatial selection calculation (intersection of elements with the selection square).
+  - Support for Shift-based selection ranges and standard platform-specific modifier key toggles (Ctrl, Cmd).
+  - Decomposition of behaviors into sub-manager classes: `SelectableAreaClassesData` (DOM classes & IDs), `SelectableAreaEvents` (mouse/touch event handlers), `SelectableAreaItem` (item state management), `SelectableAreaSquare` (selection overlay metrics), and `SelectableAreaEmit` (events triggers).
+  - Standardized properties (`tag`, `disabled`, `active`, `selected`) and action slots (`reset`, `setSelected`).
+  - Fully structured BEM layout templates and SCSS rules.
+
 ## [0.71.0] - 2026-06-17
 
 ### Added

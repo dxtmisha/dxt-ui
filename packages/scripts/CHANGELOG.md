@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.10.3] - 2026-06-25
+
+### Added
+- **Web-Types Generation**: Modernized component Web-Types generation to support modern IDE contributions structure:
+  - Switched output generation schema from legacy HTML `'tags'` to the new `'vue-components'` syntax standard.
+  - Implemented typescript types (`WebTypesPropItem`, `WebTypesVueComponentItem`) to map components, slots, properties, symbols, events, descriptions, and JS interfaces.
+
+## [0.10.2] - 2026-06-18
+
+### Changed
+- **AI Documentation Support**: Migrated template files from `.txt` to `.md` extensions (prompts, rules, and helper templates) to align with standard markdown format.
+- **Developer Instructions**: Expanded default prompts with stricter code rules (banned `@ts-ignore`, mandated active usage of `ai-memory.md`).
+
+## [0.10.1] - 2026-06-17
+
+### Added
+- **AI Guidelines**: Integrated package-scoped memory rules to instruct the AI assistant to read or create the package-level `ai-memory.md` files for persistent guidelines.
+
 ## [0.10.0] - 2026-05-20
 
 ### Added

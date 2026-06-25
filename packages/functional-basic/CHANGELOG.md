@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.2] - 2026-06-25
+
+### Added
+- **Api**: Added request wrapper support via a custom `wrapper` callback configuration option in both `ApiConfig` and `ApiFetch`, enabling developer interception or custom wrapping of the fetch request lifecycle.
+- **Tests**: Added comprehensive unit tests for request wrapping options on both instance-level and individual request-level.
+
+## [1.4.1] - 2026-06-23
+
+### Added
+- **GeoFlag**: Added language-specific metadata lookup and filtering methods:
+  - `getLanguage(code)`: Looks up language details and its flag icon.
+  - `getListLanguage(codes)`: Retrieves a list of unique languages without country duplicates.
+  - `getNationalLanguage(codes)`: Retrieves localized (national) language names.
+- **geoTypes**: Extended `GeoFlagItem` type definition with `languageCode` and `countryCode` properties.
+
 ## [1.4.0] - 2026-06-22
 
 ### Added

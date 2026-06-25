@@ -34,14 +34,14 @@ export class InputSocialDesign<
   CLASSES extends InputSocialClasses,
   P extends InputSocialPropsBasic
 > extends DesignConstructorAbstract<
-  HTMLDivElement,
-  COMP,
-  InputSocialEmits,
-  EXPOSE,
-  InputSocialSlots,
-  CLASSES,
-  P
-> {
+    HTMLDivElement,
+    COMP,
+    InputSocialEmits,
+    EXPOSE,
+    InputSocialSlots,
+    CLASSES,
+    P
+  > {
   protected readonly item: InputSocial
 
   /**

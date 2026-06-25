@@ -59,7 +59,7 @@ export const InputSocialVModel: Story = {
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex">
             <span>Current value: {{ value }}</span>
-            <button class="wiki-storybook-button" @click="value = 'dxtmisha'">Set text</button>
+            <button class="wiki-storybook-button" @click="value = 'my_name'">Set text</button>
             <button class="wiki-storybook-button wiki-storybook-button-warning" @click="value = ''">Clear</button>
           </div>
           <D1InputSocial

@@ -6,6 +6,7 @@ import { defaults } from './props'
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
   { name: 'align', type: 'string', option: ['center', 'right', 'left'] },
+  { name: 'autocomplete', type: 'string' },
   { name: 'autofocus', type: 'boolean' },
   { name: 'cancel', type: 'string', option: ['auto', 'always', 'none'] },
   { name: 'caption', type: 'string | number' },

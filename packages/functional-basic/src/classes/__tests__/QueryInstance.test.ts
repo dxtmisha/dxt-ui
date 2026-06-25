@@ -6,7 +6,6 @@ import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
 import { QueryInstance } from '../QueryInstance'
 import * as isDomRuntimeModule from '../../functions/isDomRuntime'
 
-
 const mockLocation = {
   search: '',
   pathname: '/path',
@@ -30,7 +29,6 @@ vi.stubGlobal('location', mockLocation)
 vi.stubGlobal('history', mockHistory)
 vi.stubGlobal('addEventListener', vi.fn())
 vi.stubGlobal('requestAnimationFrame', (cb: () => void) => cb())
-
 
 describe('QueryInstance', () => {
   let queryInstance: QueryInstance

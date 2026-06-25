@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.74.0] - 2026-06-25
+
+### Added
+- **D1InputSocial**: Introduced the `D1InputSocial` UI component wrapping the `InputSocial` constructor:
+  - Supports input mask styling, customizable prefix/suffix profile URL renders, and social network selection dropdown.
+  - Implemented design tokens in `properties.json` and styles under `styleToken.scss` with theme-specific variable support.
+  - Added comprehensive stories, bilingual MDX documentation, and interactive rendering previews.
+- **D1MenuLanguage**: Introduced the `D1MenuLanguage` UI component wrapping the `MenuLanguage` constructor:
+  - Integrates language options, list item flags, and system translation updates.
+  - Configured custom storybook stories, properties schemas, and wiki metadata.
+
+## [0.72.0] - 2026-06-18
+
+### Added
+- **D1SelectableArea**: Introduced the `D1SelectableArea` UI component wrapping the core `SelectableArea` constructor:
+  - Standardized slot bindings and overlay square animations.
+  - Implemented spacing configurations, custom design tokens, and theme-specific styles under `properties.json` and `styleToken.scss`.
+  - Created interactive Storybook stories (`D1SelectableArea.stories.ts`), bilingual MDX documentation, and wiki metadata configs.
+  - Added a rendering preview component (`D1SelectableAreaAiWiki.vue`) for demonstrating drag selection and click selections.
+
 ## [0.71.0] - 2026-06-17
 
 ### Added
