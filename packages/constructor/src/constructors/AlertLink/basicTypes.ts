@@ -3,6 +3,11 @@ import type { ConstrBind } from '@dxtmisha/functional'
 import type { EventClickValue } from '../../types/eventClickTypes'
 import type { AlertLinkPropsBasic } from './props'
 
+/** Type describing components for nested alert links / Тип, описывающий компоненты для вложенных ссылок оповещения */
+export type AlertLinkComponentInclude = {
+  alertLink?: object
+}
+
 /** Type describing emitted events for nested alert links / Тип, описывающий генерируемые события для вложенных ссылок оповещения */
 export type AlertLinkEmitsInclude = {
   /** Event triggered on clicking an alert link / Событие, вызываемое при клике на ссылку оповещения */

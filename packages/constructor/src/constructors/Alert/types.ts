@@ -2,7 +2,7 @@ import { type ConstrClass } from '@dxtmisha/functional'
 
 import type { IconComponentInclude } from '../Icon'
 import type { ButtonComponentInclude } from '../Button'
-import type { AlertLinkEmitsInclude } from '../AlertLink'
+import type { AlertLinkComponentInclude, AlertLinkEmitsInclude } from '../AlertLink'
 import type { ActionsComponentInclude, ActionsEmitsInclude } from '../Actions'
 import type { EventClickEmits } from '../../types/eventClickTypes'
 import type { LabelSlots } from '../../types/labelTypes'
@@ -13,20 +13,20 @@ import type { DescriptionSlots } from '../../types/descriptionTypes'
  *
  * Интерфейс для описания, какие компоненты надо подключить для работы.
  */
-export type AlertComponents = IconComponentInclude &
-  ButtonComponentInclude &
-  ActionsComponentInclude & {
-    alertLink?: object
-  }
+export type AlertComponents = IconComponentInclude
+  & ButtonComponentInclude
+  & ActionsComponentInclude
+  & AlertLinkComponentInclude
 
 /**
  * Type describing available events.
  *
  * Тип, описывающий доступные события.
  */
-export type AlertEmits = AlertLinkEmitsInclude &
-  ActionsEmitsInclude &
-  EventClickEmits & {
+export type AlertEmits = AlertLinkEmitsInclude
+  & ActionsEmitsInclude
+  & EventClickEmits
+  & {
     close: []
   }
 
@@ -44,8 +44,8 @@ export interface AlertExpose {
  * Тип, описывающий доступные слоты.
  */
 export interface AlertSlots extends LabelSlots, DescriptionSlots {
-  trailing? (props: any): any
-  body? (props: any): any
+  trailing?(props: any): any
+  body?(props: any): any
 }
 
 /**

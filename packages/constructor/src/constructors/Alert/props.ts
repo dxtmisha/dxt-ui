@@ -17,11 +17,12 @@ export type AlertPropsBasic<
   AlertLink extends AlertLinkPropsBasic = AlertLinkPropsBasic,
   Actions extends ActionsPropsBasic = ActionsPropsBasic,
   Button extends ButtonPropsBasic = ButtonPropsBasic
-> = LabelProps &
-  DescriptionProps &
-  IconTrailingPropsInclude<Icon> &
-  AlertLinkPropsInclude<AlertLink> &
-  ActionsPropsInclude<Actions> & {
+> = LabelProps
+  & DescriptionProps
+  & IconTrailingPropsInclude<Icon>
+  & AlertLinkPropsInclude<AlertLink>
+  & ActionsPropsInclude<Actions>
+  & {
     // Value
     /** Close button value / Значение для кнопки */
     button?: string | number | ConstrBind<Button>
@@ -48,7 +49,6 @@ export type AlertProps = AlertPropsBasic & AlertPropsToken
  * Значение по умолчанию для свойства.
  */
 export const defaultsAlert = {
-  // TODO: Location for a user-defined default value / Место для пользовательского значения по умолчанию
   ...{
     // :default [!] System label / Системная метка
     itemCenter: true

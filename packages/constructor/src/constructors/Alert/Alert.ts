@@ -1,13 +1,13 @@
 import { ref, type Ref, type ToRefs } from 'vue'
 import { type ConstrClass, type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
-import { ActionsInclude } from '../Actions/ActionsInclude'
-import { ButtonInclude } from '../Button/ButtonInclude'
+import { ActionsInclude } from '../Actions'
+import { AlertLinkInclude } from '../AlertLink'
+import { ButtonInclude } from '../Button'
 import { DescriptionInclude } from '../../classes/DescriptionInclude'
 import { EventClickInclude } from '../../classes/EventClickInclude'
-import { IconTrailingInclude } from '../Icon/IconTrailingInclude'
+import { IconTrailingInclude } from '../Icon'
 import { LabelInclude } from '../../classes/LabelInclude'
-import { AlertLinkInclude } from '../AlertLink/AlertLinkInclude'
 
 import type { AlertComponents, AlertEmits, AlertSlots } from './types'
 import type { AlertProps } from './props'
@@ -18,35 +18,32 @@ import type { AlertProps } from './props'
  * Класс Alert для управления бизнес-логикой компонента Alert.
  */
 export class Alert {
-  /** Actions manager / Менеджер действий */
-  readonly actions: ActionsInclude
-
-  /** Button manager / Менеджер кнопки */
-  readonly button: ButtonInclude
-
-  /** Close button manager / Менеджер кнопки закрытия */
-  readonly buttonClose: ButtonInclude
-
+  /** Icon manager / Менеджер иконок */
+  readonly icon: IconTrailingInclude
+  /** Label manager / Менеджер метки */
+  readonly label: LabelInclude
   /** Description manager / Менеджер описания */
   readonly description: DescriptionInclude
 
-  /** Animation end status / Статус окончания анимации */
-  readonly destroy = ref<boolean>(false)
+  /** Button manager / Менеджер кнопки */
+  readonly button: ButtonInclude
+  /** Close button manager / Менеджер кнопки закрытия */
+  readonly buttonClose: ButtonInclude
+
+  /** Actions manager / Менеджер действий */
+  readonly actions: ActionsInclude
 
   /** Click event manager / Менеджер событий клика */
   readonly event: EventClickInclude
 
-  /** Visibility state / Состояние видимости */
-  readonly hide = ref<boolean>(false)
-
-  /** Icon manager / Менеджер иконок */
-  readonly icon: IconTrailingInclude
-
-  /** Label manager / Менеджер метки */
-  readonly label: LabelInclude
-
   /** Link manager / Менеджер ссылок */
   readonly link: AlertLinkInclude
+
+  /** Animation end status / Статус окончания анимации */
+  readonly destroy = ref<boolean>(false)
+
+  /** Visibility state / Состояние видимости */
+  readonly hide = ref<boolean>(false)
 
   /**
    * Constructor
@@ -96,6 +93,27 @@ export class Alert {
       LabelIncludeConstructor = LabelInclude
     } = constructors
 
+    this.icon = new IconTrailingIncludeConstructor(props, className, components)
+    this.label = new LabelIncludeConstructor(props, className, undefined, slots)
+    this.description = new DescriptionIncludeConstructor(props, className, slots)
+
+    this.button = new ButtonIncludeConstructor(
+      className,
+      () => props.button,
+      components
+    )
+    this.buttonClose = new ButtonIncludeConstructor(
+      className,
+      () => ({
+        icon: props.iconClose
+      }),
+      components,
+      {
+        onClick: this.onClose
+      },
+      'buttonClose'
+    )
+
     this.actions = new ActionsIncludeConstructor(
       className,
       props,
@@ -105,56 +123,14 @@ export class Alert {
       emits
     )
 
-    this.button = new ButtonIncludeConstructor(
-      className,
-      () => props.button,
-      components
-    )
-
-    this.buttonClose = new ButtonIncludeConstructor(
-      className,
-      () => ({
-        icon: props.iconClose,
-        label: undefined
-      }),
-      components,
-      {
-        onClick: this.onClose
-      },
-      'buttonClose'
-    )
-
-    this.description = new DescriptionIncludeConstructor(
-      props,
-      className,
-      slots
-    )
-
-    this.event = new EventClickIncludeConstructor(
-      undefined,
-      undefined,
-      emits
-    )
-
-    this.icon = new IconTrailingIncludeConstructor(
-      props,
-      className,
-      components
-    )
-
-    this.label = new LabelIncludeConstructor(
-      props,
-      className,
-      undefined,
-      slots
-    )
-
     this.link = new AlertLinkIncludeConstructor(
       className,
       props,
       components,
       emits
     )
+
+    this.event = new EventClickIncludeConstructor(undefined, undefined, emits)
   }
 
   /**
