@@ -7,19 +7,21 @@ import {
 
 import { Avatar } from './Avatar'
 
-import {
-  type AvatarPropsBasic
-} from './props'
-import {
-  type AvatarClasses,
-  type AvatarComponents,
-  type AvatarEmits,
-  type AvatarExpose,
-  type AvatarSlots
+import type { AvatarPropsBasic } from './props'
+import type {
+  AvatarClasses,
+  AvatarComponents,
+  AvatarEmits,
+  AvatarExpose,
+  AvatarSlots
 } from './types'
 
 /**
- * AvatarDesign
+ * Design constructor class representing the visual assembly of the Avatar component.
+ * It manages class lists, style lists, exposure options, and h-rendering.
+ *
+ * Класс конструктора дизайна, представляющий визуальную сборку компонента аватара.
+ * Управляет списками классов, стилей, экспортом свойств и рендерингом виртуальных узлов.
  */
 export class AvatarDesign<
   COMP extends AvatarComponents,
@@ -35,14 +37,17 @@ export class AvatarDesign<
     CLASSES,
     P
   > {
+  /** Avatar logical instance / Логический экземпляр аватара */
   protected readonly item: Avatar
 
   /**
-   * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor constructors item class/ класс элемента конструкторов
+   * Constructor for AvatarDesign.
+   *
+   * Конструктор для AvatarDesign.
+   * @param name class name / название класса
+   * @param props properties / свойства
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor constructors item class / класс элемента конструкторов
    */
   constructor(
     name: string,
@@ -67,34 +72,31 @@ export class AvatarDesign<
       this.emits
     )
 
-    // TODO: Method for initializing base objects
-    // TODO: Метод для инициализации базовых объектов
-
     this.init()
   }
 
   /**
-   * Initialization of all the necessary properties for work
+   * Initialization of all the necessary properties for work.
    *
    * Инициализация всех необходимых свойств для работы.
+   * @returns object of exported properties / объект экспортируемых свойств
    */
   protected initExpose(): EXPOSE {
-    return {
-      // TODO: list of properties for export
-      // TODO: список свойств для экспорта
-    } as EXPOSE
+    return {} as EXPOSE
   }
 
   /**
    * Improvement of the obtained list of classes.
    *
    * Доработка полученного списка классов.
+   * @returns list of classes / список классов
    */
   protected initClasses(): Partial<CLASSES> {
     return {
-      main: {},
+      main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
+        label: this.getSubClass('label')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -104,26 +106,27 @@ export class AvatarDesign<
    * Refinement of the received list of styles.
    *
    * Доработка полученного списка стилей.
+   * @returns list of styles / список стилей
    */
   protected initStyles(): ConstrStyles {
-    return {
-      // TODO: list of user styles
-      // TODO: список пользовательских стилей
-    }
+    return {}
   }
 
   /**
    * A method for rendering.
    *
    * Метод для рендеринга.
+   * @returns rendered virtual node / отрендеренная виртуальная нода
    */
   protected initRender(): VNode {
-    // const children: any[] = []
-
     return h('div', {
-      // ...this.getAttrs(),
+      ...this.getAttrs(),
       ref: this.element,
       class: this.classes?.value.main
-    })
+    }, [
+      ...this.item.label.render(),
+      ...this.item.image.render(),
+      ...this.item.badge.render()
+    ])
   }
 }

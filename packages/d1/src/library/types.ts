@@ -9,6 +9,7 @@ import _D1AlertLink from '../components/Ui/AlertLink/D1AlertLink.vue'
 import _D1Anchor from '../components/Ui/Anchor/D1Anchor.vue'
 import _D1Area from '../components/Ui/Area/D1Area.vue'
 import _D1Arrow from '../components/Ui/Arrow/D1Arrow.vue'
+import _D1Avatar from '../components/Ui/Avatar/D1Avatar.vue'
 import _D1Badge from '../components/Ui/Badge/D1Badge.vue'
 import _D1Bars from '../components/Ui/Bars/D1Bars.vue'
 import _D1Bleed from '../components/Ui/Bleed/D1Bleed.vue'
@@ -88,6 +89,7 @@ declare module '@vue/runtime-core' {
     D1Anchor: typeof _D1Anchor
     D1Area: typeof _D1Area
     D1Arrow: typeof _D1Arrow
+    D1Avatar: typeof _D1Avatar
     D1Badge: typeof _D1Badge
     D1Bars: typeof _D1Bars
     D1Bleed: typeof _D1Bleed

@@ -1,2 +1,10 @@
 {
+  "width": {
+    "_type": "var"
+  },
+  "#label": {},
+  "focus": {},
+  "hover": {},
+  "readonly": {},
+  "disabled": {}
 }

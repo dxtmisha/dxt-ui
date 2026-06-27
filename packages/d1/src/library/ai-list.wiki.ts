@@ -9,6 +9,7 @@ import D1AlertLink from '../../src/components/Ui/AlertLink/D1AlertLinkAiWiki.vue
 import D1Anchor from '../../src/components/Ui/Anchor/D1AnchorAiWiki.vue'
 import D1Area from '../../src/components/Ui/Area/D1AreaAiWiki.vue'
 import D1Arrow from '../../src/components/Ui/Arrow/D1ArrowAiWiki.vue'
+import D1Avatar from '../../src/components/Ui/Avatar/D1AvatarAiWiki.vue'
 import D1Badge from '../../src/components/Ui/Badge/D1BadgeAiWiki.vue'
 import D1Bars from '../../src/components/Ui/Bars/D1BarsAiWiki.vue'
 import D1Bleed from '../../src/components/Ui/Bleed/D1BleedAiWiki.vue'
@@ -87,6 +88,7 @@ export const aiList: any[] = [
   D1Anchor,
   D1Area,
   D1Arrow,
+  D1Avatar,
   D1Badge,
   D1Bars,
   D1Bleed,

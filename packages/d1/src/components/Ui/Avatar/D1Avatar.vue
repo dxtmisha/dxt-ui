@@ -25,7 +25,10 @@ const props = withDefaults(defineProps<AvatarProps>(), defaults)
 const classesToken = computed<ConstrClasses>(() => ({
   main: {
     // :classes-values [!] System label / Системная метка
-    'd1-avatar': true
+    'd1-avatar': true,
+    'd1-avatar--focus': props.focus,
+    'd1-avatar--disabled': props.disabled,
+    'd1-avatar--readonly': props.readonly
     // :classes-values [!] System label / Системная метка
   }
 }))

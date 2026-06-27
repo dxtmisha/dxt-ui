@@ -1,22 +1,22 @@
 import type { ConstrClass } from '@dxtmisha/functional'
+import type { LabelSlots } from '../../types/labelTypes'
+
+import type { ImageComponentInclude, ImageEmitsInclude } from '../Image'
+import type { BadgeComponentInclude } from '../Badge'
 
 /**
  * Interface for describing which components need to be connected for work.
  *
  * Интерфейс для описания, какие компоненты надо подключить для работы.
  */
-export type AvatarComponents = {
-  // componentName: object
-}
+export type AvatarComponents = ImageComponentInclude & BadgeComponentInclude
 
 /**
  * Type describing available events.
  *
  * Тип, описывающий доступные события.
  */
-export type AvatarEmits = {
-  // load: [value: string]
-}
+export type AvatarEmits = ImageEmitsInclude
 
 /**
  * Type describing available properties.
@@ -31,8 +31,7 @@ export interface AvatarExpose {
  *
  * Тип, описывающий доступные слоты.
  */
-export interface AvatarSlots {
-  // default? (props: any): any
+export interface AvatarSlots extends LabelSlots {
 }
 
 /**
@@ -41,7 +40,9 @@ export interface AvatarSlots {
  * Тип, описывающий подклассы.
  */
 export type AvatarClasses = {
+  /** Class for the main element / Класс для главного элемента */
   main: ConstrClass
   // :classes [!] System label / Системная метка
+  label: string
   // :classes [!] System label / Системная метка
 }
