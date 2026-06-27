@@ -1,0 +1,41 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+### `link`
+
+Event fires when clicking on an alert link, passing the original DOM event and link data.
+
+**Parameters:**
+- `event: MouseEvent` — original DOM mouse event
+- `value: EventClickValue` — object with link click data
+
+**EventClickValue structure:**
+- `type: string` — click location identifier, set through `data-event-type` attribute on the element
+- `value: any` — link value
+- `detail: Record<string, any> | undefined` — additional event data
+
+<Source
+    code={`
+<script setup>
+const handleLink = (event, value) => {
+  console.log('DOM event:', event)
+  console.log('Value:', value.value)
+}
+</script>
+
+<template>
+  <Alert
+    label="Alert Title"
+    :links="[{ label: 'Go to page', href: '#page' }]"
+    @link="handleLink"
+  />
+</template>
+  `}
+    language="html"
+/>
+
+### `linkLite`
+
+Event fires when clicking on an alert link, passing only data without the original DOM event (lightweight version).
+
+**Parameters:**
+- `value: EventClickValue` — object with link click data

@@ -7539,6 +7539,28 @@
           }
         }
       },
+      "alert": {
+        "name": "d1-alert",
+        "type": "component",
+        "value": {
+          "linkGap": {
+            "name": "--d1-alert-linkGap",
+            "type": "var",
+            "value": "{sys.spacing.xs}"
+          }
+        }
+      },
+      "alertLink": {
+        "name": "d1-alertLink",
+        "type": "component",
+        "value": {
+          "linkGap": {
+            "name": "--d1-alertLink-linkGap",
+            "type": "var",
+            "value": "{sys.spacing.x}"
+          }
+        }
+      },
       "area": {
         "name": "d1-area",
         "type": "component",

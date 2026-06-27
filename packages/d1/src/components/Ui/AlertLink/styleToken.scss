@@ -11,6 +11,8 @@
   // Стили из токенов
   // :style [!] System label / Системная метка
   & {
+    --d1-alertLink-linkGap: var(--d1-sys-spacing-x);
+    
     font-family: var(--d1-sys-font-family-basic), sans-serif;
     @include ui.fontSize(#{var(--d1-sys-font-size-sm)});
     font-weight: var(--d1-sys-font-weight-regular);

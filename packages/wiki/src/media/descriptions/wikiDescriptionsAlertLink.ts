@@ -38,6 +38,7 @@ export const wikiDescriptionsAlertLink: StorybookComponentsDescriptionItem = {
 A highly specialized link component designed to be rendered within alert/notification boxes. It formats text links properly to blend with the alert's color palette, typography, and layout.
 Features include optional divider lines to separate adjacent links, integration with click events, and compatibility with custom label styling.
 Used as an sub-component inside Alert or standalone for navigation within context-sensitive status notices.
-`
+`,
+    hide: true
   }
 }

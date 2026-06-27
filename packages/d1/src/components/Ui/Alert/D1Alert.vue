@@ -2,7 +2,6 @@
 import { computed } from 'vue'
 import {
   inArray,
-  isFilled,
   type ConstrClasses,
   type ConstrStyles
 } from '@dxtmisha/functional'
@@ -11,6 +10,11 @@ import {
   type AlertEmits,
   type AlertSlots
 } from '@dxtmisha/constructor/Alert'
+
+import { D1Icon } from '../Icon'
+import { D1Button } from '../Button'
+import { D1Actions } from '../Actions'
+import { D1AlertLink } from '../AlertLink'
 
 import { defaults, type AlertProps, propsValues } from './props'
 import './styleToken.scss'
@@ -25,7 +29,11 @@ const props = withDefaults(defineProps<AlertProps>(), defaults)
 const classesToken = computed<ConstrClasses>(() => ({
   main: {
     // :classes-values [!] System label / Системная метка
-    'd1-alert': true
+    'd1-alert': true,
+    'd1-alert--itemCenter': props.itemCenter,
+    'd1-alert--primary': props.primary,
+    'd1-alert--secondary': props.secondary && !props.primary,
+    [`d1-palette d1-palette--${props.palette}`]: inArray(propsValues.palette, props.palette)
     // :classes-values [!] System label / Системная метка
   }
 }))
@@ -40,7 +48,25 @@ const design = new AlertDesign(
   {
     emits,
     classes: classesToken,
-    styles: stylesToken
+    styles: stylesToken,
+    components: {
+      icon: D1Icon,
+      button: D1Button,
+      actions: D1Actions,
+      alertLink: D1AlertLink
+    },
+    compMod: {
+      actions: {
+        padding: 'none',
+        paddingByIndent: false
+      },
+      buttonClose: {
+        secondary: true,
+        roundedFull: true,
+        size: 'xs',
+        inverse: true
+      }
+    }
   }
 )
 

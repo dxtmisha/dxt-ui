@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.76.0] - 2026-06-27
+
+### Added
+- **Alert**: Introduced the `Alert` constructor component to manage notification messages, banners, and feedback alerts:
+  - Supports structural configuration including title/label (`LabelInclude`), descriptions (`DescriptionInclude`), customized trailing icons (`IconTrailingInclude`), and external links (`AlertLinkInclude`).
+  - Added localized text interpolation for alert content (`TextInclude`) and close button states.
+  - Decomposed behaviors into specialized sub-manager classes: `AlertHide` (toggling visible, destroyed, and CSS transition class state) and `AlertEvent` (onClose trigger, transition completion detection, and close event emitter).
+  - Outlined default properties (`role="alert"`, `itemCenter=true`), dynamic theme/palette bindings, and CSS/SCSS layout/styling definitions (`style.scss`, `properties.json`).
+- **AlertLink**: Introduced the `AlertLink` constructor component for hyperlinking actions within notification flows:
+  - Supports divider styling rules, flex layout, action events, and custom slot rendering.
+  - Implemented bilingual JSDoc/TSDoc API annotations.
+
+### Changed
+- **MenuCountry / MenuLanguage**: Renamed `countryList` property to `list` (and updated flag listing queries to reference `this.refs.list`).
+
 ## [0.74.1] - 2026-06-25
 
 ### Changed

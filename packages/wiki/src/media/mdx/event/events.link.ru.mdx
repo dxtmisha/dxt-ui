@@ -1,0 +1,41 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+### `link`
+
+Событие срабатывает при клике на ссылку оповещения, передавая оригинальное DOM событие и данные ссылки.
+
+**Параметры:**
+- `event: MouseEvent` — оригинальное DOM событие мыши
+- `value: EventClickValue` — объект с данными клика по ссылке
+
+**Структура EventClickValue:**
+- `type: string` — идентификатор места нажатия, задается через атрибут `data-event-type` у элемента
+- `value: any` — значение ссылки
+- `detail: Record<string, any> | undefined` — дополнительные данные события
+
+<Source
+    code={`
+<script setup>
+const handleLink = (event, value) => {
+  console.log('DOM событие:', event)
+  console.log('Значение:', value.value)
+}
+</script>
+
+<template>
+  <Alert
+    label="Alert Title"
+    :links="[{ label: 'Перейти на страницу', href: '#page' }]"
+    @link="handleLink"
+  />
+</template>
+  `}
+    language="html"
+/>
+
+### `linkLite`
+
+Событие срабатывает при клике на ссылку оповещения, передавая только данные без оригинального DOM события (облегченная версия).
+
+**Параметры:**
+- `value: EventClickValue` — объект с данными клика по ссылке

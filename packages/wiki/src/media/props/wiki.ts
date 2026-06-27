@@ -20,6 +20,7 @@ import { wikiIconInclude } from './wikiIconInclude'
 import { wikiMaskInclude } from './wikiMaskInclude'
 
 import { wikiActions } from './wikiActions'
+import { wikiAlert } from './wikiAlert'
 import { wikiAlertLink } from './wikiAlertLink'
 import { wikiAnchor } from './wikiAnchor'
 import { wikiArrow } from './wikiArrow'
@@ -43,6 +44,7 @@ import { wikiListItem } from './wikiListItem'
 import { wikiMask } from './wikiMask'
 import { wikiMenu } from './wikiMenu'
 import { wikiMenuCountry } from './wikiMenuCountry'
+import { wikiMenuLanguage } from './wikiMenuLanguage'
 import { wikiMenuButton } from './wikiMenuButton'
 import { wikiMenuChip } from './wikiMenuChip'
 import { wikiMotionAxis } from './wikiMotionAxis'
@@ -84,6 +86,7 @@ export const wiki: StorybookArgsToList = {
   ...wikiMaskInclude,
 
   ...wikiActions,
+  ...wikiAlert,
   ...wikiAlertLink,
   ...wikiAnchor,
   ...wikiArrow,
@@ -107,6 +110,7 @@ export const wiki: StorybookArgsToList = {
   ...wikiMask,
   ...wikiMenu,
   ...wikiMenuCountry,
+  ...wikiMenuLanguage,
   ...wikiMenuButton,
   ...wikiMenuChip,
   ...wikiMotionAxis,

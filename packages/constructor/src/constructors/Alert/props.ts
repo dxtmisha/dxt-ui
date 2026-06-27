@@ -1,10 +1,14 @@
 import type { ConstrBind } from '@dxtmisha/functional'
-import type { LabelProps } from '../../types/labelTypes'
-import type { DescriptionProps } from '../../types/descriptionTypes'
-import type { IconPropsBasic, IconTrailingPropsInclude } from '../Icon'
-import type { AlertLinkPropsBasic, AlertLinkPropsInclude } from '../AlertLink'
+
 import type { ActionsPropsBasic, ActionsPropsInclude } from '../Actions'
+import type { AlertLinkPropsBasic, AlertLinkPropsInclude } from '../AlertLink'
 import type { ButtonPropsBasic } from '../Button'
+import type { IconPropsBasic, IconTrailingPropsInclude } from '../Icon'
+
+import type { AriaLivePropsInclude, AriaRolePropsInclude } from '../../types/ariaTypes'
+import type { DescriptionProps } from '../../types/descriptionTypes'
+import type { LabelProps } from '../../types/labelTypes'
+import type { TextClosePropsInclude } from '../../types/textTypes'
 
 type AlertPropsToken = {
   // :type [!] System label / Системная метка
@@ -22,6 +26,9 @@ export type AlertPropsBasic<
   & IconTrailingPropsInclude<Icon>
   & AlertLinkPropsInclude<AlertLink>
   & ActionsPropsInclude<Actions>
+  & AriaRolePropsInclude
+  & AriaLivePropsInclude
+  & TextClosePropsInclude
   & {
     // Value
     /** Close button value / Значение для кнопки */
@@ -49,6 +56,7 @@ export type AlertProps = AlertPropsBasic & AlertPropsToken
  * Значение по умолчанию для свойства.
  */
 export const defaultsAlert = {
+  role: 'alert',
   ...{
     // :default [!] System label / Системная метка
     itemCenter: true

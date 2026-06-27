@@ -12,6 +12,8 @@ export type AlertLinkComponentInclude = {
 export type AlertLinkEmitsInclude = {
   /** Event triggered on clicking an alert link / Событие, вызываемое при клике на ссылку оповещения */
   link: [event: MouseEvent, value: EventClickValue]
+  /** Event triggered on clicking an alert link (without mouse event) / Событие, вызываемое при клике на ссылку оповещения (без события мыши) */
+  linkLite: [value: EventClickValue]
 }
 
 /** Type describing properties for nested alert links / Тип, описывающий свойства для вложенных ссылок оповещения */

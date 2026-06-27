@@ -159,6 +159,7 @@ Wrapper component for selecting multiple child elements. Supports lasso selectio
 Elements must be rendered inside the default slot, include the class from \`slotProps.className\`, bind \`@click="slotProps.onClick"\`, and define a \`data-value\` attribute.
 Selection state can be tracked via \`selected\` prop and \`@selected\` event.
 Use \`active\` prop for continuous selection without modifier keys.
-    `
+    `,
+    hide: true
   }
 }

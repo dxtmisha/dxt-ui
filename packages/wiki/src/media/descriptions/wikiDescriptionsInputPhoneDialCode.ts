@@ -83,6 +83,7 @@ The InputPhoneDialCode component is a compact trigger button that opens a MenuCo
 It automatically detects the user's current country via Geo.getCountry() as the default value and reactively binds the selection via v-model:selected.
 The trigger button can display the selected country's flag icon alongside an optional label — either the phone code (e.g. "+1") or the country name — controlled by the labelType prop ('code' | 'name' | 'none').
 The trailing arrow icon reflects the open/close state of the menu. Typically used as a prefix element inside a phone number input field.
-    `
+    `,
+    hide: true
   }
 }

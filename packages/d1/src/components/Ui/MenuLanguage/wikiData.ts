@@ -5,10 +5,10 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
-  { name: 'countryList', type: 'string[]' },
   { name: 'disabled', type: 'boolean' },
   { name: 'isSelectedByValue', type: 'boolean' },
   { name: 'language', type: 'string' },
+  { name: 'list', type: 'string[]' },
   { name: 'menuAttrs', type: 'ConstrBind<MenuPropsBasic>' },
   { name: 'modelSelected', type: 'ListSelectedList' },
   { name: 'onUpdate:modelSelected', type: '((value: ListSelectedList) => void)' },

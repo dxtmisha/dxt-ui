@@ -21,6 +21,6 @@ export class MenuLanguage extends MenuCountry {
    * @returns reactive list of national flag items / реактивный список элементов национальных флагов
    */
   protected override initFlagList(): ComputedRef<GeoFlagNational[]> {
-    return new GeoFlagRef(this.refs.language).getNationalLanguage(this.refs.countryList)
+    return new GeoFlagRef(this.refs.language).getNationalLanguage(this.refs.list)
   }
 }

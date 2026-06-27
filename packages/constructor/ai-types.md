@@ -1992,7 +1992,7 @@ import { ModelPropsSelected } from '../../types/modelTypes';
 type MenuCountryPropsToken = {};
 export type MenuCountryPropsBasic<Menu extends MenuPropsBasic = MenuPropsBasic> = MenuPropsInclude<Menu> & ModelPropsSelected<ListSelectedList> & {
     selected?: ListSelectedList;
-    countryList?: string[];
+    list?: string[];
     showPhoneCode?: boolean;
     isSelectedByValue?: boolean;
     language?: string;

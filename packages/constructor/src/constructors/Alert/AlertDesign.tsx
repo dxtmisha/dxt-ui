@@ -5,6 +5,7 @@ import {
   DesignConstructorAbstract
 } from '@dxtmisha/functional'
 
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { Alert } from './Alert'
 
 import {
@@ -91,7 +92,7 @@ export class AlertDesign<
    */
   protected initClasses(): Partial<CLASSES> {
     return {
-      main: this.item.classes,
+      main: this.item.hide.classes,
       ...{
         // :classes [!] System label / Системная метка
         icon: this.getSubClass('icon'),
@@ -128,7 +129,7 @@ export class AlertDesign<
    * @returns virtual node / виртуальная нода
    */
   protected initRender(): VNode | undefined {
-    if (this.item.destroy.value) {
+    if (this.item.hide.destroy.value) {
       return undefined
     }
 
@@ -143,7 +144,8 @@ export class AlertDesign<
       ...this.getAttrs(),
       ref: this.element,
       class: this.classes?.value.main,
-      onTransitionend: this.item.onTransition
+      onTransitionend: this.item.alertEvent.onTransition,
+      ...this.item.ariaBind
     }, children)
   }
 
@@ -153,7 +155,7 @@ export class AlertDesign<
    * Рендер зоны описания.
    * @returns virtual context node / виртуальная нода контекста
    */
-  protected readonly renderContext = (): VNode => {
+  readonly renderContext = (): VNode => {
     return h(
       'div',
       {
@@ -175,11 +177,12 @@ export class AlertDesign<
    * Рендер правой стороны для кнопки.
    * @returns list of virtual nodes / список виртуальных узлов
    */
-  protected readonly renderTrailing = (): VNode[] => {
+  readonly renderTrailing = (): VNode[] => {
     const children: any[] = [
-      ...this.item.button.render({
-        class: this.classes?.value.button
-      })
+      ...this.item.button.render(
+        undefined,
+        { class: this.classes?.value.button }
+      )
     ]
 
     if (
@@ -204,7 +207,7 @@ export class AlertDesign<
    * Рендер тела, содержимый в слоте body.
    * @returns list of virtual nodes / список виртуальных узлов
    */
-  protected readonly renderBody = (): VNode[] => {
+  readonly renderBody = (): VNode[] => {
     if (
       this.slots
       && 'body' in this.slots
@@ -225,11 +228,12 @@ export class AlertDesign<
    * Рендер кнопки закрытия.
    * @returns list of virtual nodes / список виртуальных узлов
    */
-  protected readonly renderButtonClose = (): VNode[] => {
+  readonly renderButtonClose = (): VNode[] => {
     if (this.props.closeButton) {
       return this.item.buttonClose.render(undefined, {
         class: this.classes?.value.buttonClose,
-        onClick: this.item.onClose
+        onClick: this.item.alertEvent.onClose,
+        ...AriaStaticInclude.label(this.item.text.close)
       })
     }
 

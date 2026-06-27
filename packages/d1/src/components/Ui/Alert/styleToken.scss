@@ -10,6 +10,55 @@
   // Styles from tokens
   // Стили из токенов
   // :style [!] System label / Системная метка
+  & {
+    --d1-alert-linkGap: var(--d1-sys-spacing-xs);
+    
+    gap: var(--d1-sys-spacing-lg);
+    
+    @include ui.paddingX(#{var(--d1-layout-paddingX)});
+    @include ui.paddingY(#{var(--d1-layout-paddingY)});
+    
+    border-radius: var(--d1-sys-rounded-md);
+    
+    &__context {
+      gap: var(--d1-sys-spacing-x);
+    }
+    
+    &__label {
+      font-family: var(--d1-sys-font-family-basic), sans-serif;
+      @include ui.fontSize(#{var(--d1-sys-font-size-md)});
+      font-weight: var(--d1-sys-font-weight-medium);
+      @include ui.lineHeight(#{var(--d1-sys-lineHeight-md)});
+      letter-spacing: var(--d1-sys-letterSpacing-sm);
+    }
+    
+    &--itemCenter {
+      & .d1-alert__icon {
+        margin-top: 0;
+      }
+    }
+    
+    &--primary {
+      @include ui.color(#{var(--d1-sys-palette-onPrimary)});
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-primary-high)});
+      
+      @include ui.backgroundOpacity(#{var(--d1-sys-opacity-primary-high)}); @include ui.backgroundColor('init');
+      @include ui.paletteBackground(#{var(--d1-sys-palette-primary)});
+      
+      box-shadow: var(--d1-sys-shadow-sm);
+      backdrop-filter: var(--d1-sys-blur-sm);
+    }
+    
+    &--secondary {
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-high)}); @include ui.color('init');
+      @include ui.paletteColor(#{var(--d1-sys-palette-primary)});
+      
+      @include ui.backgroundOpacity(#{var(--d1-sys-opacity-overlay)}); @include ui.backgroundColor('init');
+      @include ui.paletteBackground(#{var(--d1-sys-palette-primary)});
+      
+      backdrop-filter: var(--d1-sys-blur-sm);
+    }
+  }
   // :style [!] System label / Системная метка
 
   // Here are the user styles

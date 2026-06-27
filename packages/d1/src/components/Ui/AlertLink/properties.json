@@ -1,5 +1,6 @@
 {
   "main": "{d.alertLink}",
+  "linkGap": "{sys.spacing.x}",
   "link|font": "{font.bodyMedium}",
   "#label": {
     "palette-color": "{sys.palette.primary}",

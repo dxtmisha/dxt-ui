@@ -12421,6 +12421,11 @@
         name: 'd1-actions',
         type: 'component',
       ),
+      'alert':(
+        index: 'alert',
+        name: 'd1-alert',
+        type: 'component',
+      ),
       'alertLink':(
         index: 'alertLink',
         name: 'd1-alertLink',
@@ -13057,6 +13062,11 @@
       'actions':(
         index: 'actions',
         name: 'd-actions',
+        type: 'component',
+      ),
+      'alert':(
+        index: 'alert',
+        name: 'd-alert',
         type: 'component',
       ),
       'alertLink':(

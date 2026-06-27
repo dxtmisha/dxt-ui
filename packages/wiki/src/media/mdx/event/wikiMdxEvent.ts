@@ -18,6 +18,8 @@ import eventsInputStandardEn from './events.inputStandard.en.mdx'
 import eventsInputStandardRu from './events.inputStandard.ru.mdx'
 import eventsKeyboardEn from './events.keyboard.en.mdx'
 import eventsKeyboardRu from './events.keyboard.ru.mdx'
+import eventsLinkEn from './events.link.en.mdx'
+import eventsLinkRu from './events.link.ru.mdx'
 import eventsPasteEn from './events.paste.en.mdx'
 import eventsPasteRu from './events.paste.ru.mdx'
 import eventsResetEn from './events.reset.en.mdx'
@@ -61,6 +63,10 @@ export const wikiMdxEvent: StorybookComponentsMdxItem = {
     'keyboard': {
       en: eventsKeyboardEn,
       ru: eventsKeyboardRu
+    },
+    'link': {
+      en: eventsLinkEn,
+      ru: eventsLinkRu
     },
     'paste': {
       en: eventsPasteEn,

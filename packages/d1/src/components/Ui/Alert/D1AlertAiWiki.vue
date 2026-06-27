@@ -18,6 +18,11 @@ defineOptions({
     :component="D1Alert"
   >
     <!-- :component-render [!] System label / Системная метка -->
+    <template #render="{ args, classDemo }">
+    <div :class="classDemo.item">
+  <D1Alert label="Alert component" description="Alert component for AI code generator demo" icon="info" v-bind="args"/>
+</div>
+    </template>
     <!-- :component-render [!] System label / Системная метка -->
   </DxtTestWiki>
 </template>

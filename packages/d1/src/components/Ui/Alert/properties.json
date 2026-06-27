@@ -1,3 +1,42 @@
 {
-  "main": "{d.alert}"
+  "main": "{d.alert}",
+  "linkGap": "{sys.spacing.xs}",
+  "gap": "{sys.spacing.lg}",
+  "paddingX": "{layout.paddingX}",
+  "paddingY": "{layout.paddingY}",
+  "border-radius": "{sys.rounded.md}",
+  "#icon": {},
+  "#trailing": {},
+  "#context": {
+    "gap": "{sys.spacing.x}"
+  },
+  "#label": {
+    "link|font": "{font.titleMedium}"
+  },
+  "#actions": {},
+  "~primary": {
+    "color": "{sys.palette.onPrimary}",
+    "color-opacity": "{sys.opacity.primary.high}",
+    "palette-background": "{sys.palette.primary}",
+    "background-opacity": "{sys.opacity.primary.high}",
+    "box-shadow": "{sys.shadow.sm}",
+    "backdrop-filter": "{sys.blur.sm}",
+    "_category": "style"
+  },
+  "~secondary": {
+    "palette-color": "{sys.palette.primary}",
+    "color-opacity": "{sys.opacity.surface.high}",
+    "palette-background": "{sys.palette.primary}",
+    "background-opacity": "{sys.opacity.overlay}",
+    "backdrop-filter": "{sys.blur.sm}",
+    "_category": "style",
+    "_default": true
+  },
+  "~itemCenter": {
+    "#icon": {
+      "margin-top": "0"
+    },
+    "_default": false
+  },
+  "@@palette": "{palette}"
 }

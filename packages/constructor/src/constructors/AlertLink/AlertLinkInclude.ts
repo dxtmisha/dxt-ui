@@ -23,11 +23,11 @@ export class AlertLinkInclude<
   Props extends AlertLinkPropsInclude = AlertLinkPropsInclude,
   PropsExtra extends AlertLinkPropsBasic = AlertLinkPropsBasic
 > extends ComponentIncludeAbstract<
-  Props,
-  PropsExtra,
-  AlertLinkExpose,
-  AlertLinkSlots
-> {
+    Props,
+    PropsExtra,
+    AlertLinkExpose,
+    AlertLinkSlots
+  > {
   /** Sub-component name / Название субкомпонента */
   protected readonly name = 'alertLink'
   /** Name of the property containing component attributes / Название свойства, содержащего атрибуты компонента */
@@ -68,6 +68,7 @@ export class AlertLinkInclude<
    */
   readonly onLink = (event: MouseEvent, value: EventClickValue) => {
     this.emits?.('link', event, value)
+    this.emits?.('linkLite', value)
   }
 
   /**
@@ -75,7 +76,7 @@ export class AlertLinkInclude<
    *
    * Рендерит список компонентов AlertLink внутри контейнера-обертки.
    * @param _slotsChildren slots children / слоты дочерних элементов (не используется)
-   * @param _attrs attributes / атрибуты (не используется)
+   * @param attrs attributes / атрибуты (не используется)
    * @param isShow function returning visibility state / функция, возвращающая видимость компонента
    * @returns rendered virtual node list / отрендеренный список виртуальных нод
    */
@@ -104,7 +105,10 @@ export class AlertLinkInclude<
             toBinds(
               this.getPropsAttrs(),
               link,
-              { class: `${this.className}__links__item` }
+              {
+                class: `${this.className}__links__item`,
+                onClick: this.onLink
+              }
             ),
             undefined,
             indexSlot

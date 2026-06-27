@@ -22,7 +22,7 @@ export type MenuCountryPropsBasic<
      * Filter countries by code (ISO 3166-1 alpha-2)/
      * Фильтр стран по кодам (ISO 3166-1 alpha-2)
      */
-    countryList?: string[]
+    list?: string[]
 
     // Style
     /** Whether to show the phone code/ Показывать ли код телефона */

@@ -123,6 +123,6 @@ export class MenuCountry {
    * @returns reactive list of national flag items / реактивный список элементов национальных флагов
    */
   protected initFlagList(): ComputedRef<GeoFlagNational[]> {
-    return new GeoFlagRef(this.refs.language).getNational(this.refs.countryList)
+    return new GeoFlagRef(this.refs.language).getNational(this.refs.list)
   }
 }

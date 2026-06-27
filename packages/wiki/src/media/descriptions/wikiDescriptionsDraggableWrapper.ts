@@ -24,9 +24,7 @@ export const wikiDescriptionsDraggableWrapper: StorybookComponentsDescriptionIte
       'поддержка отключения поведения drag-and-drop'
     ]
   },
-  import: [
-    // 'import { ref } from \'vue\''
-  ],
+  import: [],
   render: `
     <DesignComponent v-bind="args">
       <template #default="{ className, classClick, classDrop, classPosition }">
@@ -84,6 +82,7 @@ export const wikiDescriptionsDraggableWrapper: StorybookComponentsDescriptionIte
     `,
     description: `
 A logic wrapper component providing drag-and-drop sorting and reordering capabilities for lists or grid elements. Calculates dynamic layouts, active selections, placeholder spacers, and manages custom transition classes and event dispatches.
-    `
+    `,
+    hide: true
   }
 }

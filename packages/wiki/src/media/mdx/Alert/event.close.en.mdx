@@ -1,0 +1,24 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+### `close`
+
+Event fires when clicking on the close button to dismiss the alert banner.
+
+<Source
+    code={`
+<script setup>
+const handleClose = () => {
+  console.log('Alert dismissed')
+}
+</script>
+
+<template>
+  <Alert
+    label="Alert Title"
+    close-button
+    @close="handleClose"
+  />
+</template>
+  `}
+    language="html"
+/>

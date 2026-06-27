@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.76.0] - 2026-06-27
+
+### Added
+- **Alert / AlertLink**: Registered documentation resources, properties control maps, and descriptions for the new `Alert` and `AlertLink` components:
+  - Created MDX documentation pages for `Alert` (`alert.en.mdx` / `alert.ru.mdx`) and `AlertLink` (`alertLink.en.mdx` / `alertLink.ru.mdx`).
+  - Added event/action description MDX files (`event.close.en.mdx` / `event.close.ru.mdx` and `events.link.en.mdx` / `events.link.ru.mdx`).
+  - Implemented bilingual story/wiki descriptions (`wikiDescriptionsAlert.ts` and `wikiDescriptionsAlertLink.ts`).
+  - Created Storybook properties controls mappings (`wikiAlert.ts` and `wikiAlertLink.ts`).
+  - Registered exports and routes under global wiki configs (`wikiDescriptions.ts`, `wikiMdx.ts`, `wiki.ts`, `wikiMdxEvent.ts`, `wikiAttributes.ts`, and `wikiInformation.ts`).
+- **MenuLanguage**: Created control mapping configuration (`wikiMenuLanguage.ts`) for the language selection component.
+
+### Changed
+- **MenuCountry / MenuLanguage**: Renamed `countryList` property control to `list` (mapping to the updated component constructors) in properties definitions and story templates.
+
 ## [0.74.0] - 2026-06-25
 
 ### Added

@@ -4,6 +4,7 @@
 import _D1Accordion from '../components/Ui/Accordion/D1Accordion.vue'
 import _D1ActionSheet from '../components/Ui/ActionSheet/D1ActionSheet.vue'
 import _D1Actions from '../components/Ui/Actions/D1Actions.vue'
+import _D1Alert from '../components/Ui/Alert/D1Alert.vue'
 import _D1AlertLink from '../components/Ui/AlertLink/D1AlertLink.vue'
 import _D1Anchor from '../components/Ui/Anchor/D1Anchor.vue'
 import _D1Area from '../components/Ui/Area/D1Area.vue'
@@ -82,6 +83,7 @@ declare module '@vue/runtime-core' {
     D1Accordion: typeof _D1Accordion
     D1ActionSheet: typeof _D1ActionSheet
     D1Actions: typeof _D1Actions
+    D1Alert: typeof _D1Alert
     D1AlertLink: typeof _D1AlertLink
     D1Anchor: typeof _D1Anchor
     D1Area: typeof _D1Area

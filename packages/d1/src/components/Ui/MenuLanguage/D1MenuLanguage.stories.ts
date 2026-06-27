@@ -56,7 +56,7 @@ export const MenuLanguageFilter: Story = {
     template: `
         <D1MenuLanguage
           v-model:selected="selectedValue"
-          :country-list="list"
+          :list="list"
           is-selected-by-value
         >
           <template #control="{binds, selectedNames}">

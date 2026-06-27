@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.76.0] - 2026-06-27
+
+### Added
+- **D1Alert**: Introduced the styled UI component wrapping the `Alert` constructor:
+  - Supports structural configurations (title/label, descriptions, custom trailing icons, alert actions, and alert link integration) with slots and properties bindings.
+  - Custom design tokens configured under `properties.json` and styles under `styleToken.scss` with theme-specific variable support.
+  - Implemented interactive rendering previews (`D1AlertAiWiki.vue`), Storybook stories (`D1Alert.stories.ts`), and bilingual MDX documentation.
+- **D1AlertLink**: Introduced the styled UI component wrapping the `AlertLink` constructor:
+  - Added support for action event emitters, custom slot templates, and divider layout rules.
+  - Custom design tokens configured under `properties.json` and styles under `styleToken.scss` with theme-specific variable support.
+  - Implemented interactive rendering previews (`D1AlertLinkAiWiki.vue`), Storybook stories (`D1AlertLink.stories.ts`), and bilingual MDX documentation.
+
+### Changed
+- **D1MenuCountry / D1MenuLanguage**: Renamed `countryList` property to `list` across component story configurations and wiki metadata mappings.
+
 ## [0.74.0] - 2026-06-25
 
 ### Added

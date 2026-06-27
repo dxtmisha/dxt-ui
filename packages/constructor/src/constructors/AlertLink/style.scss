@@ -3,6 +3,8 @@
 @mixin mixinAlertLink {
   cursor: pointer;
 
+  text-decoration: none;
+
   &--divider + &--divider {
     &:before {
       content: "•";
