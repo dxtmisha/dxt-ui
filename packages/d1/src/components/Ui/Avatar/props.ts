@@ -2,6 +2,7 @@ import { type AvatarPropsBasic, defaultsAvatar } from '@dxtmisha/constructor/Ava
 
 export const propsValues = {
   // :values [!] System label / Системная метка
+  size: ['xs', 'sm', 'md', 'lg', 'xl', '2xl']
   // :values [!] System label / Системная метка
 }
 
@@ -10,6 +11,7 @@ type PropsToken = {
   focus?: boolean
   disabled?: boolean
   readonly?: boolean
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'
   // :type [!] System label / Системная метка
 }
 
@@ -25,6 +27,7 @@ export const defaults: object = {
   ...defaultsAvatar,
   ...{
     // :default [!] System label / Системная метка
+    size: 'md'
     // :default [!] System label / Системная метка
   }
 }

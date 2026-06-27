@@ -1,3 +1,50 @@
 {
-  "main": "{d.avatar}"
+  "main": "{d.avatar}",
+  "=?image-publicMaskSize": "58%",
+  "color": "{sys.palette.onSurface}",
+  "color-opacity": "{sys.opacity.surface.medium}",
+  "background-color": "{sys.palette.onSurface}",
+  "background-opacity": "{sys.opacity.hover}",
+  "border-radius": "{sys.rounded.full}",
+  "focus": {
+    "box-shadow": "{sys.shadow.md}"
+  },
+  "hover": {
+    "after": {
+      "border-style": "solid",
+      "border-width": "{sys.spacing.outline}",
+      "border-color": "{sys.palette.outline}",
+      "border-opacity": "{sys.opacity.outline}"
+    }
+  },
+  "disabled": {
+    "opacity": "{sys.opacity.surface.disabled}"
+  },
+  "~size": {
+    "xs": {
+      "width": "{ref.spacing.6}",
+      "font": "{font.labelSmall}"
+    },
+    "sm": {
+      "width": "{ref.spacing.8}",
+      "font": "{font.labelMedium}"
+    },
+    "md": {
+      "width": "{ref.spacing.10}",
+      "font": "{font.labelLarge}"
+    },
+    "lg": {
+      "width": "{ref.spacing.12}",
+      "font": "{font.titleSmall}"
+    },
+    "xl": {
+      "width": "{ref.spacing.14}",
+      "font": "{font.titleMedium}"
+    },
+    "2xl": {
+      "width": "{ref.spacing.16}",
+      "font": "{font.titleLarge}"
+    },
+    "_default": "md"
+  }
 }

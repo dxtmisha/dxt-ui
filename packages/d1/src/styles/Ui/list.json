@@ -7632,6 +7632,89 @@
           }
         }
       },
+      "avatar": {
+        "name": "d1-avatar",
+        "type": "component",
+        "value": {
+          "imagePublicMaskSize": {
+            "name": "--d1-image-publicMaskSize",
+            "type": "var",
+            "value": "58%"
+          },
+          "size": {
+            "name": "&--size",
+            "type": "state",
+            "value": {
+              "xs": {
+                "name": "&--xs",
+                "type": "state",
+                "value": {
+                  "width": {
+                    "name": "--d1-avatar-width",
+                    "type": "var",
+                    "value": "{ref.spacing.6}"
+                  }
+                }
+              },
+              "sm": {
+                "name": "&--sm",
+                "type": "state",
+                "value": {
+                  "width": {
+                    "name": "--d1-avatar-width",
+                    "type": "var",
+                    "value": "{ref.spacing.8}"
+                  }
+                }
+              },
+              "md": {
+                "name": "&--md",
+                "type": "state",
+                "value": {
+                  "width": {
+                    "name": "--d1-avatar-width",
+                    "type": "var",
+                    "value": "{ref.spacing.10}"
+                  }
+                }
+              },
+              "lg": {
+                "name": "&--lg",
+                "type": "state",
+                "value": {
+                  "width": {
+                    "name": "--d1-avatar-width",
+                    "type": "var",
+                    "value": "{ref.spacing.12}"
+                  }
+                }
+              },
+              "xl": {
+                "name": "&--xl",
+                "type": "state",
+                "value": {
+                  "width": {
+                    "name": "--d1-avatar-width",
+                    "type": "var",
+                    "value": "{ref.spacing.14}"
+                  }
+                }
+              },
+              "2xl": {
+                "name": "&--2xl",
+                "type": "state",
+                "value": {
+                  "width": {
+                    "name": "--d1-avatar-width",
+                    "type": "var",
+                    "value": "{ref.spacing.16}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
       "badge": {
         "name": "d1-badge",
         "type": "component",

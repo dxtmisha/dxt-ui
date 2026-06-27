@@ -11,6 +11,95 @@
   // Стили из токенов
   // :style [!] System label / Системная метка
   & {
+    --d1-image-publicMaskSize: 58%;
+    
+    @include ui.color(#{var(--d1-sys-palette-onSurface)});
+    @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)});
+    
+    @include ui.backgroundColor(#{var(--d1-sys-palette-onSurface)});
+    @include ui.backgroundOpacity(#{var(--d1-sys-opacity-hover)});
+    
+    border-radius: var(--d1-sys-rounded-full);
+    
+    @include ui.focus {
+      box-shadow: var(--d1-sys-shadow-md);
+    }
+    
+    @include ui.hover {
+      &::after {
+        content: ' ';
+        border-width: var(--d1-sys-spacing-outline);
+        border-style: solid;
+        @include ui.borderColor(#{var(--d1-sys-palette-outline)});
+        @include ui.borderOpacity(#{var(--d1-sys-opacity-outline)});
+      }
+    }
+    
+    @include ui.disabled {
+      opacity: var(--d1-sys-opacity-surface-disabled);
+    }
+    
+    &--size {
+      &--xs {
+        --d1-avatar-width: var(--d1-ref-spacing-6);
+        
+        font-family: var(--d1-sys-font-family-basic), sans-serif;
+        @include ui.fontSize(#{var(--d1-sys-font-size-x)});
+        font-weight: var(--d1-sys-font-weight-medium);
+        @include ui.lineHeight(#{var(--d1-sys-lineHeight-xs)});
+        letter-spacing: var(--d1-sys-letterSpacing-xl);
+      }
+      
+      &--sm {
+        --d1-avatar-width: var(--d1-ref-spacing-8);
+        
+        font-family: var(--d1-sys-font-family-basic), sans-serif;
+        @include ui.fontSize(#{var(--d1-sys-font-size-xs)});
+        font-weight: var(--d1-sys-font-weight-medium);
+        @include ui.lineHeight(#{var(--d1-sys-lineHeight-xs)});
+        letter-spacing: var(--d1-sys-letterSpacing-xl);
+      }
+      
+      &--md {
+        --d1-avatar-width: var(--d1-ref-spacing-10);
+        
+        font-family: var(--d1-sys-font-family-basic), sans-serif;
+        @include ui.fontSize(#{var(--d1-sys-font-size-sm)});
+        font-weight: var(--d1-sys-font-weight-medium);
+        @include ui.lineHeight(#{var(--d1-sys-lineHeight-sm)});
+        letter-spacing: var(--d1-sys-letterSpacing-xs);
+      }
+      
+      &--lg {
+        --d1-avatar-width: var(--d1-ref-spacing-12);
+        
+        font-family: var(--d1-sys-font-family-basic), sans-serif;
+        @include ui.fontSize(#{var(--d1-sys-font-size-sm)});
+        font-weight: var(--d1-sys-font-weight-medium);
+        @include ui.lineHeight(#{var(--d1-sys-lineHeight-sm)});
+        letter-spacing: var(--d1-sys-letterSpacing-xs);
+      }
+      
+      &--xl {
+        --d1-avatar-width: var(--d1-ref-spacing-14);
+        
+        font-family: var(--d1-sys-font-family-basic), sans-serif;
+        @include ui.fontSize(#{var(--d1-sys-font-size-md)});
+        font-weight: var(--d1-sys-font-weight-medium);
+        @include ui.lineHeight(#{var(--d1-sys-lineHeight-md)});
+        letter-spacing: var(--d1-sys-letterSpacing-sm);
+      }
+      
+      &--2xl {
+        --d1-avatar-width: var(--d1-ref-spacing-16);
+        
+        font-family: var(--d1-sys-font-family-basic), sans-serif;
+        @include ui.fontSize(#{var(--d1-sys-font-size-lg)});
+        font-weight: var(--d1-sys-font-weight-regular);
+        @include ui.lineHeight(#{var(--d1-sys-lineHeight-lg)});
+        letter-spacing: var(--d1-sys-letterSpacing-none);
+      }
+    }
   }
   // :style [!] System label / Системная метка
 
