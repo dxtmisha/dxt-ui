@@ -63,4 +63,26 @@ describe('ErrorCenterHandler', () => {
 
     expect(undefinedCallback).toHaveBeenCalledWith(cause)
   })
+
+  it('should trigger registered global callbacks on every error', () => {
+    const callback1 = vi.fn()
+    const callback2 = vi.fn()
+    const groupCallback = vi.fn()
+
+    handler.addCallback(callback1)
+    handler.addCallback(callback2)
+    handler.add('group1', groupCallback)
+
+    const cause1: ErrorCenterCauseItem = { code: 'ERR001', group: 'group1', message: 'Group 1 error' }
+    const cause2: ErrorCenterCauseItem = { code: 'ERR002', group: 'group2', message: 'Group 2 error' }
+
+    handler.on(cause1)
+    expect(callback1).toHaveBeenCalledWith(cause1)
+    expect(callback2).toHaveBeenCalledWith(cause1)
+    expect(groupCallback).toHaveBeenCalledWith(cause1)
+
+    handler.on(cause2)
+    expect(callback1).toHaveBeenCalledWith(cause2)
+    expect(callback2).toHaveBeenCalledWith(cause2)
+  })
 })

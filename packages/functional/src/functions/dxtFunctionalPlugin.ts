@@ -5,6 +5,7 @@ import {
   type ApiConfig,
   ErrorCenter,
   type ErrorCenterCauseList,
+  type ErrorCenterHandlerCallback,
   type ErrorCenterHandlerList,
   Icons,
   type IconsConfig,
@@ -77,6 +78,12 @@ export interface FunctionalPluginOptions {
    * Список обработчиков ошибок для центра ошибок
    */
   errorHandlers?: ErrorCenterHandlerList
+
+  /**
+   * Global error callback functions for error center /
+   * Список глобальных функций обратного вызова для центра ошибок
+   */
+  errorCallbacks?: ErrorCenterHandlerCallback[]
 }
 
 /**
@@ -157,6 +164,10 @@ export const dxtFunctionalPlugin: Plugin = {
 
     if (options.errorHandlers) {
       ErrorCenter.addHandlerList(options.errorHandlers)
+    }
+
+    if (options.errorCallbacks) {
+      options.errorCallbacks.forEach(callback => ErrorCenter.addCallback(callback))
     }
 
     // 8. Initialize global singletons (ExecuteUseType.global)

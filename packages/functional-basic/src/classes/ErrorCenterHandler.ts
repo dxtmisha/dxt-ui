@@ -10,6 +10,9 @@ export class ErrorCenterHandler {
   /** Registered handlers list / Список зарегистрированных обработчиков */
   protected handlers: ErrorCenterHandlerList = []
 
+  /** Callbacks executed on every error / Обратные вызовы, выполняемые при каждой ошибке */
+  protected callbacks: ErrorCenterHandlerCallback[] = []
+
   /**
    * Constructor
    * @param handlers initial handlers list / начальный список обработчиков
@@ -89,6 +92,20 @@ export class ErrorCenterHandler {
   }
 
   /**
+   * Adds a callback to be executed on any error.
+   *
+   * Добавляет обратный вызов, который будет выполняться при любой ошибке.
+   * @param callback callback function / функция обратного вызова
+   * @returns this instance / текущий экземпляр
+   */
+  addCallback(
+    callback: ErrorCenterHandlerCallback
+  ): this {
+    this.callbacks.push(callback)
+    return this
+  }
+
+  /**
    * Triggers handlers for a group and logs to console.
    *
    * Вызывает обработчики для группы и выводит ошибку в консоль.
@@ -101,6 +118,8 @@ export class ErrorCenterHandler {
     if (item) {
       item.handlers.forEach(handler => handler(cause))
     }
+
+    this.callbacks.forEach(callback => callback(cause))
 
     this.toConsole(cause)
 

@@ -110,6 +110,20 @@ export class ErrorCenterInstance {
   }
 
   /**
+   * Adds a callback to be executed on any error.
+   *
+   * Добавляет обратный вызов, который будет выполняться при любой ошибке.
+   * @param callback callback function / функция обратного вызова
+   * @returns this instance / текущий экземпляр
+   */
+  addCallback(
+    callback: ErrorCenterHandlerCallback
+  ): this {
+    this.handler.addCallback(callback)
+    return this
+  }
+
+  /**
    * Triggers error handling for a group.
    *
    * Вызывает обработку ошибки для группы.

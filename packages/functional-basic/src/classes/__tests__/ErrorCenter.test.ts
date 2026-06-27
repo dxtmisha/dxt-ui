@@ -61,4 +61,14 @@ describe('ErrorCenter', () => {
     // @ts-expect-error: Accessing protected member
     expect(ErrorCenter.getItem().handler.has('G2')).toBe(true)
   })
+
+  it('should register a global callback that runs on every error via static addCallback', () => {
+    const callback = vi.fn()
+    ErrorCenter.addCallback(callback)
+
+    const cause: ErrorCenterCauseItem = { code: 'ERR', group: 'G1', message: 'Static global test' }
+    ErrorCenter.on(cause)
+
+    expect(callback).toHaveBeenCalledWith(cause)
+  })
 })

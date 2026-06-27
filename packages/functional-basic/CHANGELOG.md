@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.4] - 2026-06-27
+
+### Added
+- **ErrorCenterHandler**: Introduced `callbacks` list and `addCallback(callback)` method to register callback functions that are executed on every triggered error.
+- **ErrorCenterInstance**: Added `addCallback(callback)` instance method to register global error callbacks.
+- **ErrorCenter**: Added static `addCallback(callback)` helper to simplify the registration of global error callbacks.
+- **Tests**: Added comprehensive unit tests in `ErrorCenterHandler.test.ts`, `ErrorCenterInstance.test.ts`, and `ErrorCenter.test.ts` to verify the execution of global callbacks.
+
 ## [1.4.3] - 2026-06-25
 
 ### Changed

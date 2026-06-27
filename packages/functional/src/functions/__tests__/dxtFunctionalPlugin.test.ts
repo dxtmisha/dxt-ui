@@ -20,7 +20,7 @@ vi.mock('@dxtmisha/functional-basic', () => ({
   Api: { setConfig: vi.fn() },
   Translate: { setConfig: vi.fn() },
   Icons: { setConfig: vi.fn() },
-  ErrorCenter: { addList: vi.fn(), addHandlerList: vi.fn() },
+  ErrorCenter: { addList: vi.fn(), addHandlerList: vi.fn(), addCallback: vi.fn() },
   initGetElementId: vi.fn()
 }))
 
@@ -110,6 +110,15 @@ describe('dxtFunctionalPlugin', () => {
     const options = { errorHandlers: [{ group: 'test', handlers: [] }] as any }
     dxtFunctionalPlugin?.install?.(appMock, options)
     expect(ErrorCenter.addHandlerList).toHaveBeenCalledWith(options.errorHandlers)
+  })
+
+  it('should call ErrorCenter.addCallback for each callback in errorCallbacks option', () => {
+    const callback1 = vi.fn()
+    const callback2 = vi.fn()
+    const options = { errorCallbacks: [callback1, callback2] }
+    dxtFunctionalPlugin?.install?.(appMock, options)
+    expect(ErrorCenter.addCallback).toHaveBeenCalledWith(callback1)
+    expect(ErrorCenter.addCallback).toHaveBeenCalledWith(callback2)
   })
 
   it('should call GeoRef.setValueDefault if location option is provided', () => {

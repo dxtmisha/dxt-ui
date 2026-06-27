@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.14.3] - 2026-06-27
+
+### Added
+- **dxtFunctionalPlugin**: Added `errorCallbacks` configuration option (type `ErrorCenterHandlerCallback[]`) to allow registering global error callbacks via `ErrorCenter.addCallback` during Vue plugin initialization.
+- **dxtFunctionalPlugin**: Added unit tests verifying correct registration of global callbacks during plugin installation.
+
 ## [1.14.2] - 2026-06-25
 
 ### Added

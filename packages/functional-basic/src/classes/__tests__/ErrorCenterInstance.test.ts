@@ -123,4 +123,14 @@ describe('ErrorCenterInstance', () => {
 
     expect(globalCallback).toHaveBeenCalledWith(cause)
   })
+
+  it('should register a global callback that runs on every error via addCallback', () => {
+    const callback = vi.fn()
+    instance.addCallback(callback)
+
+    const cause: ErrorCenterCauseItem = { code: 'ERR', group: 'G1', message: 'Instance global test' }
+    instance.on(cause)
+
+    expect(callback).toHaveBeenCalledWith(cause)
+  })
 })

@@ -1,22 +1,21 @@
-### 1. Core Purpose
-This library provides a comprehensive, isomorphic (SSR/Client) utility framework for web applications. It centralizes cross-cutting concerns, including HTTP request management with middleware/hooks, reactive URL state synchronization (Query/Hash), global configuration, internationalization, metadata management, and data caching.
+### Core Purpose
+This library is an isomorphic, highly modular utility suite for TypeScript/JavaScript applications. Its primary functions include managing HTTP requests (via `fetch` with integrated caching, retry logic, and error handling), state management for URLs (Query/Hash), UI-side utilities (internationalization, date/time formatting, cookie/storage management), and search/filtering logic for data lists.
 
-### 2. Key Expositions
-*   **Networking**: `Api`, `ApiInstance`, and `ApiCache` manage HTTP requests, caching layers, error handling (`ApiError`), and SSR hydration.
-*   **State & Sync**: `QueryInstance` and `HashInstance` provide reactive, syncable interfaces for URL-based states. `DataStorage` handles `localStorage`/`sessionStorage` with SSR isolation.
-*   **Localization (Geo/Intl)**: `Geo`, `GeoInstance`, and `GeoIntl` manage locale, timezone, and phone mask logic. `Translate` and `TranslateInstance` provide file-based and API-backed localization.
-*   **UI Helpers**: `EventItem` (DOM event wrapper with memory leak protection), `Loading` (global load state), `Icons` (asset management), and `Formatters` (data display utilities).
-*   **Meta Management**: `Meta` and its manager classes control document `<head>` elements, including Open Graph and Twitter Cards.
-*   **Core Utilities**: A suite of functions in `src/functions/` for type-safe data transformation, deep object cloning, DOM manipulation, and URL encoding.
+### Key Expositions
+*   **API Management**: `Api`, `ApiInstance`, and `ApiCache` manage HTTP requests, caching, hydration (for SSR), and global configuration. `ApiErrorStorage` and `ApiErrorItem` provide a centralized mechanism for identifying and processing API errors.
+*   **Data & State Management**: `DataStorage` (LocalStorage/SessionStorage), `CookieStorage`, and `ServerStorage` handle persistent state. `QueryInstance` and `HashInstance` provide reactive synchronization for URL parameters.
+*   **Localization & Internationalization**: `Geo`, `GeoIntl`, `Translate`, and `Datetime` provide full internationalization support, including locale-specific date formatting, phone masking, and multi-language translation management.
+*   **DOM/UI Utilities**: `EventItem` provides a robust, lifecycle-managed wrapper for DOM events with specialized support for `ResizeObserver` and scroll synchronization. `LoadingInstance` provides a standardized loading state bus.
+*   **Meta Tag Management**: `Meta`, `MetaOg`, and `MetaTwitter` offer a unified API for managing standard HTML meta tags, Open Graph, and Twitter Cards.
+*   **Search Engine**: `SearchList` and associated classes provide high-performance, regex-based client-side searching with highlighting capabilities.
 
-### 3. Triggers for Studying ai-types.md
-The `ai-types.md` file is **mandatory** if the AI is tasked with:
-*   Extending or implementing new `ApiFetch` or `ApiConfig` interfaces.
-*   Integrating custom error handling via `ErrorCenter` or `ApiErrorStorageItem`.
-*   Extending geographical data schemas (`GeoItem`, `GeoPhoneValue`).
-*   Implementing new meta-tag configurations or Open Graph properties.
-*   Implementing search functionality using `SearchList` and associated types.
-*   **Crucial**: Whenever the task involves modifying request/response schemas or adding global middleware via `ApiInstance` options, as the types define strict constraints on request lifecycle hooks (`ApiPreparation`, `ApiPreparationEnd`).
+### Triggers for Studying ai-types.md
+It is mandatory to analyze `ai-types.md` if:
+*   You are implementing or extending any API request logic (`Api`, `ApiFetch`).
+*   You are defining global configurations or custom types for error handling (`ApiErrorStorageItem`).
+*   You are working with `Geo`, `Translate`, or `Search` components that require specific configuration structures.
+*   You are implementing data hydration or SSR-related logic.
+*   You need to understand the interface signatures for complex utility types (`ApiData`, `GeoItem`, `SearchOptions`).
 
-### 4. Integration Context
-The library acts as a foundational "System Toolkit." It is designed to be injected into frontend frameworks (Vue/React) via lifecycle-aware wrappers (e.g., triggering `createElement` only on mount). It bridge the gap between server (SSR) and client states through `ServerStorage` and `ApiHydration`, ensuring that state generated on the server is correctly transferred to the client without hydration mismatches.
+### Integration Context
+This library operates as a core infrastructure layer. It interacts with the browser's `Fetch API` and `DOM` primitives, and leverages `Intl` for localization. It is designed for environment-agnostic use (isomorphic), meaning it includes `ServerStorage` and hydration logic to bridge the state gap between server-side rendering (SSR) environments and client-side execution.
