@@ -1,0 +1,23 @@
+@use "@dxtmisha/styles/properties" as ui;
+
+@mixin mixinBreadcrumbItem {
+  @include ui.flexX;
+
+  >* {
+    order: 4;
+  }
+
+  &--back {
+    @include ui.subclass('iconArrow') {
+      order: 2;
+    }
+
+    @include ui.subclass('icon') {
+      order: 6;
+    }
+  }
+
+  @include ui.enabled {
+    cursor: pointer;
+  }
+}

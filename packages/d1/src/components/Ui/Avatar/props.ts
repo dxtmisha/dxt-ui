@@ -1,5 +1,8 @@
 import { type AvatarPropsBasic, defaultsAvatar } from '@dxtmisha/constructor/Avatar'
 
+import type { ImageProps } from '../Image'
+import type { BadgeProps } from '../Badge'
+
 export const propsValues = {
   // :values [!] System label / Системная метка
   size: ['xs', 'sm', 'md', 'lg', 'xl'],
@@ -21,7 +24,7 @@ type PropsToken = {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export type AvatarProps = AvatarPropsBasic & PropsToken
+export type AvatarProps = AvatarPropsBasic<ImageProps, BadgeProps> & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства

@@ -1,6 +1,4 @@
-import { type MenuLanguagePropsBasic, defaultsMenuLanguage } from '@dxtmisha/constructor/MenuLanguage'
-
-import type { MenuProps } from '../Menu'
+import { type BreadcrumbsPropsBasic, defaultsBreadcrumbs } from '@dxtmisha/constructor/Breadcrumbs'
 
 export const propsValues = {
   // :values [!] System label / Системная метка
@@ -15,13 +13,13 @@ type PropsToken = {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export type MenuLanguageProps = MenuLanguagePropsBasic<MenuProps> & PropsToken
+export type BreadcrumbsProps = BreadcrumbsPropsBasic & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства
  */
 export const defaults: object = {
-  ...defaultsMenuLanguage,
+  ...defaultsBreadcrumbs,
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

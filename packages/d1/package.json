@@ -27,7 +27,7 @@
     "build": "vue-tsc -b && vite build",
     "build-recovery": "npm run build && npm run wiki-storm",
     "preview": "vite preview",
-    "ui": "dxt-ui Avatar",
+    "ui": "dxt-ui Breadcrumbs",
     "wiki-storm": "dxt-wiki-storm",
     "types": "dxt-types",
     "screenshot": "dxt-screenshot",
@@ -374,6 +374,14 @@
     "./D1Avatar": {
       "types": "./dist/src/library/D1Avatar.d.ts",
       "default": "./dist/D1Avatar.js"
+    },
+    "./D1BreadcrumbItem": {
+      "types": "./dist/src/library/D1BreadcrumbItem.d.ts",
+      "default": "./dist/D1BreadcrumbItem.js"
+    },
+    "./D1Breadcrumbs": {
+      "types": "./dist/src/library/D1Breadcrumbs.d.ts",
+      "default": "./dist/D1Breadcrumbs.js"
     }
   },
   "buildOptions": {

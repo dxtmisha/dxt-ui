@@ -1,0 +1,50 @@
+@use "../../../styles/Ui/properties";
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/style.scss" as BreadcrumbItem;
+
+@include ui.initDesignBasic('d1.breadcrumbItem') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include BreadcrumbItem.mixinBreadcrumbItem;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+    gap: var(--d1-sys-spacing-x);
+    
+    @include ui.paddingY(#{var(--d1-sys-spacing-xs)});
+    
+    font-family: var(--d1-sys-font-family-basic), sans-serif;
+    @include ui.fontSize(#{var(--d1-sys-font-size-sm)});
+    font-weight: var(--d1-sys-font-weight-medium);
+    @include ui.lineHeight(#{var(--d1-sys-lineHeight-sm)});
+    letter-spacing: var(--d1-sys-letterSpacing-xs);
+    
+    &__iconArrow {
+      --d1-icon-factor: 1.2;
+      
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)}); @include ui.color('init');
+    }
+    
+    @include ui.hover {
+      @include ui.color(#{var(--d1-sys-palette-primary)});
+    }
+    
+    &--disabled {
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-disabled)}); @include ui.color('init');
+      
+      & .d1-breadcrumbItem__iconArrow {
+        @include ui.colorOpacity(#{unset}); @include ui.color('init');
+      }
+    }
+    
+    &--readonly {
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)}); @include ui.color('init');
+    }
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

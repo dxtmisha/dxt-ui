@@ -14,6 +14,7 @@ import D1Badge from '../../src/components/Ui/Badge/D1BadgeAiWiki.vue'
 import D1Bars from '../../src/components/Ui/Bars/D1BarsAiWiki.vue'
 import D1Bleed from '../../src/components/Ui/Bleed/D1BleedAiWiki.vue'
 import D1Block from '../../src/components/Ui/Block/D1BlockAiWiki.vue'
+import D1BreadcrumbItem from '../../src/components/Ui/BreadcrumbItem/D1BreadcrumbItemAiWiki.vue'
 import D1Button from '../../src/components/Ui/Button/D1ButtonAiWiki.vue'
 import D1ButtonGroup from '../../src/components/Ui/ButtonGroup/D1ButtonGroupAiWiki.vue'
 import D1Cell from '../../src/components/Ui/Cell/D1CellAiWiki.vue'
@@ -93,6 +94,7 @@ export const aiList: any[] = [
   D1Bars,
   D1Bleed,
   D1Block,
+  D1BreadcrumbItem,
   D1Button,
   D1ButtonGroup,
   D1Cell,

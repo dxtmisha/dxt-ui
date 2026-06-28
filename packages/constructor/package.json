@@ -36,7 +36,7 @@
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
     "test": "NODE_OPTIONS=\"--no-webstorage\" vitest",
-    "constructor": "dxt-constructor Avatar",
+    "constructor": "dxt-constructor Breadcrumbs",
     "library": "dxt-library",
     "types": "dxt-types",
     "prepublishOnly": "npm run library && npm run constructor && npm run build",
@@ -375,6 +375,14 @@
     "./Avatar": {
       "types": "./dist/src/constructors/Avatar/index.d.ts",
       "default": "./dist/avatar.js"
+    },
+    "./BreadcrumbItem": {
+      "types": "./dist/src/constructors/BreadcrumbItem/index.d.ts",
+      "default": "./dist/breadcrumbItem.js"
+    },
+    "./Breadcrumbs": {
+      "types": "./dist/src/constructors/Breadcrumbs/index.d.ts",
+      "default": "./dist/breadcrumbs.js"
     }
   },
   "buildOptions": {

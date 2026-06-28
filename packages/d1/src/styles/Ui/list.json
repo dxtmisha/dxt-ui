@@ -7770,6 +7770,23 @@
           }
         }
       },
+      "breadcrumbItem": {
+        "name": "d1-breadcrumbItem",
+        "type": "component",
+        "value": {
+          "iconArrow": {
+            "name": "&__iconArrow",
+            "type": "subclass",
+            "value": {
+              "iconFactor": {
+                "name": "--d1-icon-factor",
+                "type": "var",
+                "value": "1.2"
+              }
+            }
+          }
+        }
+      },
       "button": {
         "name": "d1-button",
         "type": "component",
