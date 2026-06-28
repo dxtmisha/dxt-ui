@@ -1,3 +1,4 @@
 {
-  "main": "{d.breadcrumbs}"
+  "main": "{d.breadcrumbs}",
+  "gap": "{sys.spacing.x}"
 }

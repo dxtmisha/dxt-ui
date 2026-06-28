@@ -1,33 +1,58 @@
 import type { Ref, ToRefs } from 'vue'
-import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
+import {
+  type ConstrEmit,
+  type DesignComp
+} from '@dxtmisha/functional'
 
+import { EventClickInclude } from '../../classes/EventClickInclude'
 import type { BreadcrumbsComponents, BreadcrumbsEmits, BreadcrumbsSlots } from './types'
 import type { BreadcrumbsProps } from './props'
 
 /**
- * Breadcrumbs
+ * Class representing the business logic and orchestrator of the Breadcrumbs component.
+ *
+ * Класс, представляющий бизнес-логику и оркестратор компонента Breadcrumbs.
  */
 export class Breadcrumbs {
+  /** Click event manager / Менеджер событий клика */
+  readonly event: EventClickInclude
+
   /**
-   * Constructor
-   * @param props input data/ входные данные
-   * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
-   * @param element input element/ элемент ввода
-   * @param classDesign design name/ название дизайна
-   * @param className class name/ название класса
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param slots object for working with slots/ объект для работы со слотами
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
+   * Constructor for Breadcrumbs.
+   *
+   * Конструктор для Breadcrumbs.
+   * @param classDesign design name / название дизайна
+   * @param className class name / название класса
+   * @param components object for working with components / объект для работы с компонентами
+   * @param element input element / элемент ввода
+   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
+   * @param props input data / входные данные
+   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
+   * @param slots object for working with slots / объект для работы со слотами
+   * @param constructors object with classes / объект с классами
+   * @param constructors.EventClickIncludeConstructor class for working with click event / класс для работы с событием клика
    */
   constructor(
-    protected readonly props: BreadcrumbsProps,
-    protected readonly refs: ToRefs<BreadcrumbsProps>,
-    protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly classDesign: string,
     protected readonly className: string,
-    protected readonly components?: DesignComp<BreadcrumbsComponents, BreadcrumbsProps>,
-    protected readonly slots?: BreadcrumbsSlots,
-    protected readonly emits?: ConstrEmit<BreadcrumbsEmits>
+    protected readonly components: DesignComp<BreadcrumbsComponents, BreadcrumbsProps> | undefined,
+    protected readonly element: Ref<HTMLElement | undefined>,
+    protected readonly emits: ConstrEmit<BreadcrumbsEmits> | undefined,
+    protected readonly props: BreadcrumbsProps,
+    protected readonly refs: ToRefs<BreadcrumbsProps>,
+    protected readonly slots: BreadcrumbsSlots | undefined,
+    constructors: {
+      EventClickIncludeConstructor?: typeof EventClickInclude
+    } = {}
   ) {
+    const {
+      EventClickIncludeConstructor = EventClickInclude
+    } = constructors
+
+    this.event = new EventClickIncludeConstructor(
+      undefined,
+      undefined,
+      emits
+    )
   }
 }

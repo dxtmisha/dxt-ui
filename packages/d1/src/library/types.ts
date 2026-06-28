@@ -15,6 +15,7 @@ import _D1Bars from '../components/Ui/Bars/D1Bars.vue'
 import _D1Bleed from '../components/Ui/Bleed/D1Bleed.vue'
 import _D1Block from '../components/Ui/Block/D1Block.vue'
 import _D1BreadcrumbItem from '../components/Ui/BreadcrumbItem/D1BreadcrumbItem.vue'
+import _D1Breadcrumbs from '../components/Ui/Breadcrumbs/D1Breadcrumbs.vue'
 import _D1Button from '../components/Ui/Button/D1Button.vue'
 import _D1ButtonGroup from '../components/Ui/ButtonGroup/D1ButtonGroup.vue'
 import _D1Cell from '../components/Ui/Cell/D1Cell.vue'
@@ -96,6 +97,7 @@ declare module '@vue/runtime-core' {
     D1Bleed: typeof _D1Bleed
     D1Block: typeof _D1Block
     D1BreadcrumbItem: typeof _D1BreadcrumbItem
+    D1Breadcrumbs: typeof _D1Breadcrumbs
     D1Button: typeof _D1Button
     D1ButtonGroup: typeof _D1ButtonGroup
     D1Cell: typeof _D1Cell

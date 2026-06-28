@@ -1,7 +1,6 @@
 {
   "main": "{d.breadcrumbItem}",
   "gap": "{sys.spacing.x}",
-  "paddingY": "{sys.spacing.xs}",
   "font": "{font.labelLarge}",
   "#iconArrow": {
     "=?icon-factor": "1.2",

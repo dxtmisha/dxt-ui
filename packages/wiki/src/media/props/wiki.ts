@@ -26,6 +26,8 @@ import { wikiAnchor } from './wikiAnchor'
 import { wikiArrow } from './wikiArrow'
 import { wikiBadge } from './wikiBadge'
 import { wikiBars } from './wikiBars'
+import { wikiBreadcrumbItem } from './wikiBreadcrumbItem'
+import { wikiBreadcrumbs } from './wikiBreadcrumbs'
 import { wikiButton } from './wikiButton'
 import { wikiButtonGroup } from './wikiButtonGroup'
 import { wikiCheckbox } from './wikiCheckbox'
@@ -92,6 +94,8 @@ export const wiki: StorybookArgsToList = {
   ...wikiArrow,
   ...wikiBadge,
   ...wikiBars,
+  ...wikiBreadcrumbItem,
+  ...wikiBreadcrumbs,
   ...wikiButton,
   ...wikiButtonGroup,
   ...wikiCheckbox,

@@ -1,4 +1,5 @@
 import type { ConstrClass } from '@dxtmisha/functional'
+import type { EventClickEmits } from '../../types/eventClickTypes'
 
 /**
  * Interface for describing which components need to be connected for work.
@@ -6,7 +7,8 @@ import type { ConstrClass } from '@dxtmisha/functional'
  * Интерфейс для описания, какие компоненты надо подключить для работы.
  */
 export type BreadcrumbsComponents = {
-  // componentName: object
+  /** Breadcrumb item component / Компонент элемента хлебных крошек */
+  breadcrumbItem: object
 }
 
 /**
@@ -14,9 +16,7 @@ export type BreadcrumbsComponents = {
  *
  * Тип, описывающий доступные события.
  */
-export type BreadcrumbsEmits = {
-  // load: [value: string]
-}
+export type BreadcrumbsEmits = EventClickEmits
 
 /**
  * Type describing available properties.
@@ -32,7 +32,6 @@ export interface BreadcrumbsExpose {
  * Тип, описывающий доступные слоты.
  */
 export interface BreadcrumbsSlots {
-  // default? (props: any): any
 }
 
 /**
@@ -41,7 +40,9 @@ export interface BreadcrumbsSlots {
  * Тип, описывающий подклассы.
  */
 export type BreadcrumbsClasses = {
+  /** Main class / Главный класс */
   main: ConstrClass
   // :classes [!] System label / Системная метка
+  item: string
   // :classes [!] System label / Системная метка
 }

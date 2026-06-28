@@ -18,6 +18,14 @@ defineOptions({
     :component="D1Breadcrumbs"
   >
     <!-- :component-render [!] System label / Системная метка -->
+    <template #render="{ args, classDemo }">
+    <div :class="classDemo.item">
+  <D1Breadcrumbs :list="[
+    { label: 'Home', to: '#', icon: 'home' },
+    { label: 'Settings', to: '#settings' }
+  ]" v-bind="args" />
+</div>
+    </template>
     <!-- :component-render [!] System label / Системная метка -->
   </DxtTestWiki>
 </template>

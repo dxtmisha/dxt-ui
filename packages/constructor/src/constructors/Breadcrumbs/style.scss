@@ -1,5 +1,6 @@
 @use "@dxtmisha/styles/properties" as ui;
 
 @mixin mixinBreadcrumbs {
-
+  @include ui.flexX;
+  flex-wrap: wrap;
 }

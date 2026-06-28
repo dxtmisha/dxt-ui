@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import {
-  inArray,
-  isFilled,
   type ConstrClasses,
   type ConstrStyles
 } from '@dxtmisha/functional'
@@ -12,7 +10,9 @@ import {
   type BreadcrumbsSlots
 } from '@dxtmisha/constructor/Breadcrumbs'
 
-import { defaults, type BreadcrumbsProps, propsValues } from './props'
+import { D1BreadcrumbItem } from '../BreadcrumbItem'
+
+import { defaults, type BreadcrumbsProps } from './props'
 import './styleToken.scss'
 
 defineOptions({
@@ -40,7 +40,10 @@ const design = new BreadcrumbsDesign(
   {
     emits,
     classes: classesToken,
-    styles: stylesToken
+    styles: stylesToken,
+    components: {
+      breadcrumbItem: D1BreadcrumbItem
+    }
   }
 )
 

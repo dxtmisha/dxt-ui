@@ -2,13 +2,14 @@ import { h, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
-  DesignConstructorAbstract
+  DesignConstructorAbstract,
+  toBinds
 } from '@dxtmisha/functional'
 
 import { Breadcrumbs } from './Breadcrumbs'
 
 import {
-  type BreadcrumbsPropsBasic
+  type BreadcrumbsProps
 } from './props'
 import {
   type BreadcrumbsClasses,
@@ -19,30 +20,33 @@ import {
 } from './types'
 
 /**
- * BreadcrumbsDesign
+ * BreadcrumbsDesign class constructor for managing classes, styles, and rendering the Breadcrumbs component.
+ *
+ * Класс-конструктор дизайна BreadcrumbsDesign для управления классами, стилями и рендерингом компонента Breadcrumbs.
  */
 export class BreadcrumbsDesign<
   COMP extends BreadcrumbsComponents,
   EXPOSE extends BreadcrumbsExpose,
   CLASSES extends BreadcrumbsClasses,
-  P extends BreadcrumbsPropsBasic
+  P extends BreadcrumbsProps
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
-    COMP,
-    BreadcrumbsEmits,
-    EXPOSE,
-    BreadcrumbsSlots,
-    CLASSES,
-    P
-  > {
+  HTMLDivElement,
+  COMP,
+  BreadcrumbsEmits,
+  EXPOSE,
+  BreadcrumbsSlots,
+  CLASSES,
+  P
+> {
+  /** Main component instance / Основной экземпляр компонента */
   protected readonly item: Breadcrumbs
 
   /**
    * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor constructors item class/ класс элемента конструкторов
+   * @param name class name / название класса
+   * @param props properties / свойства
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor constructors item class / класс элемента конструкторов
    */
   constructor(
     name: string,
@@ -57,44 +61,41 @@ export class BreadcrumbsDesign<
     )
 
     this.item = new ItemConstructor(
-      this.props,
-      this.refs,
-      this.element,
       this.getDesign(),
       this.getName(),
       this.components,
-      this.slots,
-      this.emits
+      this.element,
+      this.emits,
+      this.props,
+      this.refs,
+      this.slots
     )
-
-    // TODO: Method for initializing base objects
-    // TODO: Метод для инициализации базовых объектов
 
     this.init()
   }
 
   /**
-   * Initialization of all the necessary properties for work
+   * Initialization of all the necessary properties for work.
    *
    * Инициализация всех необходимых свойств для работы.
+   * @returns exposed properties / экспортируемые свойства
    */
   protected initExpose(): EXPOSE {
-    return {
-      // TODO: list of properties for export
-      // TODO: список свойств для экспорта
-    } as EXPOSE
+    return {} as EXPOSE
   }
 
   /**
    * Improvement of the obtained list of classes.
    *
    * Доработка полученного списка классов.
+   * @returns list of classes / список классов
    */
   protected initClasses(): Partial<CLASSES> {
     return {
       main: {},
       ...{
         // :classes [!] System label / Системная метка
+        item: this.getSubClass('item')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -104,26 +105,53 @@ export class BreadcrumbsDesign<
    * Refinement of the received list of styles.
    *
    * Доработка полученного списка стилей.
+   * @returns list of styles / список стилей
    */
   protected initStyles(): ConstrStyles {
-    return {
-      // TODO: list of user styles
-      // TODO: список пользовательских стилей
-    }
+    return {}
   }
 
   /**
    * A method for rendering.
    *
    * Метод для рендеринга.
+   * @returns rendered virtual node / отрендеренная виртуальная нода
    */
   protected initRender(): VNode {
-    // const children: any[] = []
-
     return h('div', {
-      // ...this.getAttrs(),
+      ...this.getAttrs(),
       ref: this.element,
       class: this.classes?.value.main
+    }, this.renderChildren())
+  }
+
+  /**
+   * Renders the breadcrumb items.
+   *
+   * Рендерит элементы хлебных крошек.
+   * @returns list of child virtual nodes / список дочерних виртуальных узлов
+   */
+  readonly renderChildren = (): VNode[] => {
+    const children: VNode[] = []
+    const length = (this.props.list?.length ?? 1) - 1
+
+    this.props.list?.forEach((item, key) => {
+      this.components.renderAdd(
+        children,
+        'breadcrumbItem',
+        toBinds(
+          item,
+          {
+            readonly: key === length,
+            class: this.classes?.value.item,
+            onClick: this.item.event.onClick
+          }
+        ),
+        undefined,
+        item?.value || item?.label || key
+      )
     })
+
+    return children
   }
 }

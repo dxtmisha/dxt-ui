@@ -1,10 +1,27 @@
+import type { ConstrBind } from '@dxtmisha/functional'
+
+import type { BreadcrumbItemProps } from '../BreadcrumbItem'
+
+/**
+ * Type describing token properties of the Breadcrumbs component.
+ *
+ * Тип, описывающий свойства токенов компонента Breadcrumbs.
+ */
 type BreadcrumbsPropsToken = {
   // :type [!] System label / Системная метка
   // :type [!] System label / Системная метка
 }
 
-export type BreadcrumbsPropsBasic = {
-  // TODO: Location for a custom property / Место для пользовательского свойства
+/**
+ * Type describing basic properties of the Breadcrumbs component.
+ *
+ * Тип, описывающий базовые свойства компонента Breadcrumbs.
+ */
+export type BreadcrumbsPropsBasic<
+  BreadcrumbItem extends BreadcrumbItemProps = BreadcrumbItemProps
+> = {
+  /** List of breadcrumb items / Список элементов хлебных крошек */
+  list?: ConstrBind<BreadcrumbItem>[]
 }
 
 /**
@@ -20,7 +37,6 @@ export type BreadcrumbsProps = BreadcrumbsPropsBasic & BreadcrumbsPropsToken
  * Значение по умолчанию для свойства.
  */
 export const defaultsBreadcrumbs = {
-  // TODO: Location for a user-defined default value / Место для пользовательского значения по умолчанию
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

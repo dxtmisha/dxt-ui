@@ -27,6 +27,17 @@ type Story = StoryObj<typeof meta>
 
 export const Breadcrumbs: Story = {
   // :story-main [!] System label / Системная метка
+  render: (args: any) => ({
+    components: { D1Breadcrumbs },
+    setup: () => ({ args }),
+    template: `
+      <D1Breadcrumbs v-bind="args" :list="[
+      { label: 'Home', to: '#', icon: 'home' },
+      { label: 'Catalog', to: '#catalog' },
+      { label: 'Shoes' }
+    ]" />
+    `
+  })
   // :story-main [!] System label / Системная метка
 }
 

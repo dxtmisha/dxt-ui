@@ -13,6 +13,8 @@ import { wikiDescriptionsBadge } from './wikiDescriptionsBadge'
 import { wikiDescriptionsBleed } from './wikiDescriptionsBleed'
 import { wikiDescriptionsBars } from './wikiDescriptionsBars'
 import { wikiDescriptionsBlock } from './wikiDescriptionsBlock'
+import { wikiDescriptionsBreadcrumbItem } from './wikiDescriptionsBreadcrumbItem'
+import { wikiDescriptionsBreadcrumbs } from './wikiDescriptionsBreadcrumbs'
 import { wikiDescriptionsButton } from './wikiDescriptionsButton'
 import { wikiDescriptionsButtonGroup } from './wikiDescriptionsButtonGroup'
 import { wikiDescriptionsCell } from './wikiDescriptionsCell'
@@ -92,6 +94,8 @@ export const wikiDescriptions: StorybookComponentsDescription = [
   wikiDescriptionsBleed,
   wikiDescriptionsBars,
   wikiDescriptionsBlock,
+  wikiDescriptionsBreadcrumbItem,
+  wikiDescriptionsBreadcrumbs,
   wikiDescriptionsButton,
   wikiDescriptionsButtonGroup,
   wikiDescriptionsCell,

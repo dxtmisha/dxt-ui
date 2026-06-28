@@ -5,6 +5,7 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
+  { name: 'list', type: 'ConstrBind<BreadcrumbItemProps>[]' }
   // :propsList [!] System label / Системная метка
 ]
 
