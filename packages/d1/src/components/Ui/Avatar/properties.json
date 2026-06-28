@@ -6,8 +6,8 @@
   "background-color": "{sys.palette.onSurface}",
   "background-opacity": "{sys.opacity.hover}",
   "border-radius": "{sys.rounded.full}",
-  "focus": {
-    "box-shadow": "{sys.shadow.md}"
+  "focus-visible": {
+    "outline": "{outline.md}"
   },
   "hover": {
     "after": {
