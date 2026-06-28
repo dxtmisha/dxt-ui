@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.77.0] - 2026-06-28
+
+### Added
+- **D1Avatar**:
+  - Regenerated component properties and types to support the new `reduction` and `tabindex` properties.
+  - Enabled support for `EventClickInclude` (interactive click handling and link navigation attributes / tag resolving).
+  - Regenerated story configuration `D1Avatar.stories.ts`, design tokens `styleToken.scss` and generated Vue files `D1Avatar.vue`, `D1AvatarAiWiki.vue`.
+
 ## [0.76.0] - 2026-06-27
 
 ### Added

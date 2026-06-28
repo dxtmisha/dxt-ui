@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.77.0] - 2026-06-28
+
+### Added
+- **Avatar**:
+  - Registered descriptions and MDX documentation files for the `Avatar` component:
+    - Added `wikiDescriptionsAvatar.ts` with component capabilities, story templates, and slot lists, including a merged `AvatarBasic` story and `AvatarReduction`, `AvatarSkeleton` stories.
+    - Created `avatar.en.mdx` / `avatar.ru.mdx` files.
+    - Added property `reduction` documentation in English/Russian (`reduction.en.mdx` / `reduction.ru.mdx`).
+    - Registered MDX configuration mappings inside `wikiMdxAvatar.ts`.
+    - Integrated configurations into the global array configs `wikiDescriptions.ts` and `wikiMdx.ts`.
+- **Options / Styles**:
+  - Added Storybook controls for the `reduction` property inside `wikiOption.ts`.
+  - Added Storybook controls for the `primary` style property inside `wikiStyle.ts`.
+
 ## [0.76.0] - 2026-06-27
 
 ### Added

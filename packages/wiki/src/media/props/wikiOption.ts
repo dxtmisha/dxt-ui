@@ -363,6 +363,16 @@ export const wikiOption: StorybookArgsToList = {
     },
     isDemo: true
   },
+  reduction: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.option,
+      description: {
+        en: 'Whether to shorten the label to initials',
+        ru: 'Нужно ли сокращать метку до инициалов'
+      }
+    }
+  },
   showPhoneCode: {
     type: StorybookControl.boolean,
     options: {

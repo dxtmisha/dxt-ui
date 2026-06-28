@@ -82,7 +82,9 @@ export class AvatarDesign<
    * @returns object of exported properties / объект экспортируемых свойств
    */
   protected initExpose(): EXPOSE {
-    return {} as EXPOSE
+    return {
+      ...this.item.event.expose
+    } as unknown as EXPOSE
   }
 
   /**
@@ -119,10 +121,11 @@ export class AvatarDesign<
    * @returns rendered virtual node / отрендеренная виртуальная нода
    */
   protected initRender(): VNode {
-    return h('div', {
+    return h(this.item.tag, {
       ...this.getAttrs(),
       ref: this.element,
-      class: this.classes?.value.main
+      class: this.classes?.value.main,
+      ...this.item.binds
     }, [
       ...this.item.label.render(),
       ...this.item.image.render(),

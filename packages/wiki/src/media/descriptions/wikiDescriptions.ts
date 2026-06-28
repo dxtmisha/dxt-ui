@@ -8,6 +8,7 @@ import { wikiDescriptionsAlert } from './wikiDescriptionsAlert'
 import { wikiDescriptionsAlertLink } from './wikiDescriptionsAlertLink'
 import { wikiDescriptionsAnchor } from './wikiDescriptionsAnchor'
 import { wikiDescriptionsArrow } from './wikiDescriptionsArrow'
+import { wikiDescriptionsAvatar } from './wikiDescriptionsAvatar'
 import { wikiDescriptionsBadge } from './wikiDescriptionsBadge'
 import { wikiDescriptionsBleed } from './wikiDescriptionsBleed'
 import { wikiDescriptionsBars } from './wikiDescriptionsBars'
@@ -86,6 +87,7 @@ export const wikiDescriptions: StorybookComponentsDescription = [
   wikiDescriptionsAlertLink,
   wikiDescriptionsAnchor,
   wikiDescriptionsArrow,
+  wikiDescriptionsAvatar,
   wikiDescriptionsBadge,
   wikiDescriptionsBleed,
   wikiDescriptionsBars,

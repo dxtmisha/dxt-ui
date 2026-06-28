@@ -3,9 +3,12 @@
   "=?image-publicMaskSize": "58%",
   "color": "{sys.palette.onSurface}",
   "color-opacity": "{sys.opacity.surface.medium}",
-  "background-color": "{sys.palette.onSurface}",
-  "background-opacity": "{sys.opacity.hover}",
+  "palette-background": "{sys.palette.onSurface}",
+  "background-opacity": "{sys.opacity.overlay}",
   "border-radius": "{sys.rounded.full}",
+  "focus": {
+    "outline": "{outline.md}"
+  },
   "focus-visible": {
     "outline": "{outline.md}"
   },
@@ -18,33 +21,38 @@
     }
   },
   "disabled": {
-    "opacity": "{sys.opacity.surface.disabled}"
+    "color-opacity": "{sys.opacity.surface.disabled}",
+    "background-opacity": "0"
+  },
+  "~primary": {
+    "color": "{sys.palette.onPrimary}",
+    "color-opacity": "{sys.opacity.primary.high}",
+    "palette-background": "{sys.palette.primary}",
+    "background-opacity": "{sys.opacity.primary.high}",
+    "backdrop-filter": "{sys.blur.md}"
   },
   "~size": {
     "xs": {
-      "width": "{ref.spacing.6}",
-      "font": "{font.labelSmall}"
-    },
-    "sm": {
       "width": "{ref.spacing.8}",
       "font": "{font.labelMedium}"
     },
-    "md": {
+    "sm": {
       "width": "{ref.spacing.10}",
       "font": "{font.labelLarge}"
     },
-    "lg": {
+    "md": {
       "width": "{ref.spacing.12}",
-      "font": "{font.titleSmall}"
-    },
-    "xl": {
-      "width": "{ref.spacing.14}",
       "font": "{font.titleMedium}"
     },
-    "2xl": {
+    "lg": {
+      "width": "{ref.spacing.14}",
+      "font": "{font.titleLarge}"
+    },
+    "xl": {
       "width": "{ref.spacing.16}",
       "font": "{font.titleLarge}"
     },
     "_default": "md"
-  }
+  },
+  "@@palette": "{palette}"
 }

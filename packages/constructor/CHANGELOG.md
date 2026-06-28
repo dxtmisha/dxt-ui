@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.77.0] - 2026-06-28
+
+### Added
+- **Avatar**:
+  - Integrated `EnabledInclude` and `EventClickInclude` controllers to support interactive states (clicks, keyboard focus, and event emitters).
+  - Added the `reduction` property (boolean) to `AvatarPropsBasic` to dynamically shorten user names to initials (e.g., "John Doe" to "JD") with bilingual initials extraction logic.
+  - Added the `tabindex` property and custom bindings inside `get binds()`, updating the root tag to dynamically resolve to `'a'` (when link props like `href` or `to` are active) or `'div'`.
+  - Integrated ARIA attributes via `AriaStaticInclude` dynamically mapping role as `button` (when active/enabled) or `img`.
+
 ## [0.76.0] - 2026-06-27
 
 ### Added

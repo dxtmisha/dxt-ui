@@ -1,4 +1,6 @@
 import type { LabelProps } from '../../types/labelTypes'
+import type { AriaLabelPropsInclude } from '../../types/ariaTypes'
+import type { EventClickProps } from '../../types/eventClickTypes'
 
 import type { ImagePropsBasic, ImagePropsInclude } from '../Image'
 import type { BadgePropsBasic, BadgePropsInclude } from '../Badge'
@@ -29,6 +31,15 @@ export type AvatarPropsBasic<
   & ImagePropsInclude<Image>
   & BadgePropsInclude<Badge>
   & SkeletonPropsInclude
+  & AriaLabelPropsInclude
+  & EventClickProps
+  & {
+    /** Whether to shorten the text / Нужно ли сокращать текст */
+    reduction?: boolean
+
+    /** Tabindex property / Свойство tabindex */
+    tabindex?: string | number
+  }
 
 /**
  * Type describing incoming properties.
@@ -43,6 +54,8 @@ export type AvatarProps = AvatarPropsBasic & AvatarPropsToken
  * Значение по умолчанию для свойства.
  */
 export const defaultsAvatar = {
+  reduction: true,
+  tabindex: '0',
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

@@ -2,7 +2,6 @@
 import { computed } from 'vue'
 import {
   inArray,
-  isFilled,
   type ConstrClasses,
   type ConstrStyles
 } from '@dxtmisha/functional'
@@ -11,6 +10,9 @@ import {
   type AvatarEmits,
   type AvatarSlots
 } from '@dxtmisha/constructor/Avatar'
+
+import { D1Image } from '../Image'
+import { D1Badge } from '../Badge'
 
 import { defaults, type AvatarProps, propsValues } from './props'
 import './styleToken.scss'
@@ -29,7 +31,9 @@ const classesToken = computed<ConstrClasses>(() => ({
     'd1-avatar--focus': props.focus,
     'd1-avatar--disabled': props.disabled,
     'd1-avatar--readonly': props.readonly,
-    [`d1-avatar--size--${props.size}`]: inArray(propsValues.size, props.size)
+    'd1-avatar--primary': props.primary,
+    [`d1-avatar--size--${props.size}`]: inArray(propsValues.size, props.size),
+    [`d1-palette d1-palette--${props.palette}`]: inArray(propsValues.palette, props.palette)
     // :classes-values [!] System label / Системная метка
   }
 }))
@@ -44,7 +48,11 @@ const design = new AvatarDesign(
   {
     emits,
     classes: classesToken,
-    styles: stylesToken
+    styles: stylesToken,
+    components: {
+      image: D1Image,
+      badge: D1Badge
+    }
   }
 )
 

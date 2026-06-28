@@ -14,6 +14,7 @@ import { wikiMdxAlert } from './Alert/wikiMdxAlert'
 import { wikiMdxAlertLink } from './AlertLink/wikiMdxAlertLink'
 import { wikiMdxAnchor } from './Anchor/wikiMdxAnchor'
 import { wikiMdxArrow } from './Arrow/wikiMdxArrow'
+import { wikiMdxAvatar } from './Avatar/wikiMdxAvatar'
 import { wikiMdxBadge } from './Badge/wikiMdxBadge'
 import { wikiMdxBleed } from './Bleed/wikiMdxBleed'
 import { wikiMdxBars } from './Bars/wikiMdxBars'
@@ -98,6 +99,7 @@ export const wikiMdx: StorybookComponentsMdx = [
   wikiMdxAlertLink,
   wikiMdxAnchor,
   wikiMdxArrow,
+  wikiMdxAvatar,
   wikiMdxBadge,
   wikiMdxBleed,
   wikiMdxBars,

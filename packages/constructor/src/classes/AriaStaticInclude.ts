@@ -135,7 +135,7 @@ export class AriaStaticInclude {
    * Получить ARIA label.
    * @param label ARIA label/ ARIA метка
    */
-  static label(label?: string): AriaList {
+  static label(label?: string | number): AriaList {
     return this.isDataToData('aria-label', label)
   }
 

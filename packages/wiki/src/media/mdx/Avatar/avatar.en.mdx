@@ -1,0 +1,55 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+## Description
+
+The Avatar component is a versatile UI element used to visually represent users, entities, or brands. It supports multiple presentation fallbacks, status badges, loading skeletons, and interactive states.
+
+When an image URL (`src`) is provided, Avatar attempts to load and render the image. If the image fails to load or isn't specified, the component dynamically falls back to text initials generated from the name `label` prop.
+
+**Key features:**
+
+- Fallback initials automatically generated from name labels (e.g., "John Doe" -> "JD")
+- Optional text shortening control (`reduction`) to enforce initials display
+- Image rendering support with error fallbacks
+- Built-in loading state with skeleton animation integration
+- Connected status badge support (e.g. status indicator dot)
+- Fully accessible keyboard navigation and ARIA attributes (e.g., dynamic roles)
+- Fully interactive link navigation supporting standard anchor tags, custom routing (`to` prop), and custom payloads.
+
+**Common use cases:**
+
+- User profile pictures in header menus
+- Chat participant list indicators
+- Team member list profiles
+- Contact lists and cards
+- Interactive user buttons triggering user menus
+
+<Source
+    code={`
+<script setup>
+const userImage = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80";
+</script>
+
+<template>
+  <div class="avatar-examples">
+    <!-- Initials fallback avatar -->
+    <Avatar label="John Doe" />
+
+    <!-- Initials with custom reduction disabled (shows full name or fallback) -->
+    <Avatar label="Иван Иванов" :reduction="false" />
+
+    <!-- Profile image avatar -->
+    <Avatar :src="userImage" label="User Profile" />
+
+    <!-- Avatar with active online status indicator -->
+    <Avatar label="Sarah Connor" :badge="{ overlap: 'circular', dot: true }" />
+
+    <!-- Interactive avatar link -->
+    <Avatar label="Link Profile" href="/profile" />
+  </div>
+</template>
+  `}
+    language="html"
+/>
+
+> Avatar is designed to act as a robust entry point for user identity display, gracefully degrading from profile pictures to initials while maintaining full ARIA accessibility.

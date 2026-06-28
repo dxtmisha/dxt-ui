@@ -331,6 +331,17 @@ export const wikiStyle: StorybookArgsToList = {
     },
     isDemo: true
   },
+  primary: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Applies primary style variant to the component',
+        ru: 'Применяет основной вариант стиля к компоненту'
+      }
+    },
+    isDemo: true
+  },
   rounded: {
     type: StorybookControl.select,
     options: {

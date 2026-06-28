@@ -1,5 +1,6 @@
 import type { ConstrClass } from '@dxtmisha/functional'
 import type { LabelSlots } from '../../types/labelTypes'
+import type { EventClickEmits, EventClickExpose } from '../../types/eventClickTypes'
 
 import type { ImageComponentInclude, ImageEmitsInclude } from '../Image'
 import type { BadgeComponentInclude } from '../Badge'
@@ -16,14 +17,14 @@ export type AvatarComponents = ImageComponentInclude & BadgeComponentInclude
  *
  * Тип, описывающий доступные события.
  */
-export type AvatarEmits = ImageEmitsInclude
+export type AvatarEmits = ImageEmitsInclude & EventClickEmits
 
 /**
  * Type describing available properties.
  *
  * Тип, описывающий доступные свойства.
  */
-export interface AvatarExpose {
+export interface AvatarExpose extends EventClickExpose {
 }
 
 /**

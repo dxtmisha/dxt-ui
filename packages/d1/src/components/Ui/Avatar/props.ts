@@ -2,7 +2,8 @@ import { type AvatarPropsBasic, defaultsAvatar } from '@dxtmisha/constructor/Ava
 
 export const propsValues = {
   // :values [!] System label / Системная метка
-  size: ['xs', 'sm', 'md', 'lg', 'xl', '2xl']
+  size: ['xs', 'sm', 'md', 'lg', 'xl'],
+  palette: ['red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose', 'slate', 'gray', 'zinc', 'neutral', 'stone', 'black', 'white']
   // :values [!] System label / Системная метка
 }
 
@@ -11,7 +12,9 @@ type PropsToken = {
   focus?: boolean
   disabled?: boolean
   readonly?: boolean
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'
+  primary?: boolean
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+  palette?: 'red' | 'orange' | 'amber' | 'yellow' | 'lime' | 'green' | 'emerald' | 'teal' | 'cyan' | 'sky' | 'blue' | 'indigo' | 'violet' | 'purple' | 'fuchsia' | 'pink' | 'rose' | 'slate' | 'gray' | 'zinc' | 'neutral' | 'stone' | 'black' | 'white'
   // :type [!] System label / Системная метка
 }
 

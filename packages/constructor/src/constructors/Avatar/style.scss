@@ -5,9 +5,7 @@
   position: relative;
 
   @include ui.width(ui.v('??width'));
-  @include ui.aspectRatio(#{1/1}) {
-    @include ui.height(ui.v('??width'));
-  }
+  @include ui.aspectRatio(#{1/1});
 
   @include ui.absoluteAfter {
     z-index: 4;
@@ -20,6 +18,8 @@
     justify-content: center;
     @include ui.absolute;
     z-index: 12;
+
+    text-align: center;
   }
 
   &__badge {

@@ -16,13 +16,17 @@
     @include ui.color(#{var(--d1-sys-palette-onSurface)});
     @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)});
     
-    @include ui.backgroundColor(#{var(--d1-sys-palette-onSurface)});
-    @include ui.backgroundOpacity(#{var(--d1-sys-opacity-hover)});
+    @include ui.backgroundOpacity(#{var(--d1-sys-opacity-overlay)}); @include ui.backgroundColor('init');
+    @include ui.paletteBackground(#{var(--d1-sys-palette-onSurface)});
     
     border-radius: var(--d1-sys-rounded-full);
     
     @include ui.focus {
-      box-shadow: var(--d1-sys-shadow-md);
+      @include ui.outlineOpacity(#{var(--d1-sys-opacity-outline)});
+      
+      outline-width: var(--d1-ref-spacing-1);
+      outline-style: solid;
+      @include ui.outlineColor(#{var(--d1-sys-palette-primary)});
     }
     
     @include ui.hover {
@@ -36,21 +40,31 @@
     }
     
     @include ui.disabled {
-      opacity: var(--d1-sys-opacity-surface-disabled);
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-disabled)}); @include ui.color('init');
+      
+      @include ui.backgroundOpacity(#{0}); @include ui.backgroundColor('init');
+    }
+    
+    &:focus-visible {
+      @include ui.outlineOpacity(#{var(--d1-sys-opacity-outline)});
+      
+      outline-width: var(--d1-ref-spacing-1);
+      outline-style: solid;
+      @include ui.outlineColor(#{var(--d1-sys-palette-primary)});
+    }
+    
+    &--primary {
+      @include ui.color(#{var(--d1-sys-palette-onPrimary)});
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-primary-high)});
+      
+      @include ui.backgroundOpacity(#{var(--d1-sys-opacity-primary-high)}); @include ui.backgroundColor('init');
+      @include ui.paletteBackground(#{var(--d1-sys-palette-primary)});
+      
+      backdrop-filter: var(--d1-sys-blur-md);
     }
     
     &--size {
       &--xs {
-        --d1-avatar-width: var(--d1-ref-spacing-6);
-        
-        font-family: var(--d1-sys-font-family-basic), sans-serif;
-        @include ui.fontSize(#{var(--d1-sys-font-size-x)});
-        font-weight: var(--d1-sys-font-weight-medium);
-        @include ui.lineHeight(#{var(--d1-sys-lineHeight-xs)});
-        letter-spacing: var(--d1-sys-letterSpacing-xl);
-      }
-      
-      &--sm {
         --d1-avatar-width: var(--d1-ref-spacing-8);
         
         font-family: var(--d1-sys-font-family-basic), sans-serif;
@@ -60,7 +74,7 @@
         letter-spacing: var(--d1-sys-letterSpacing-xl);
       }
       
-      &--md {
+      &--sm {
         --d1-avatar-width: var(--d1-ref-spacing-10);
         
         font-family: var(--d1-sys-font-family-basic), sans-serif;
@@ -70,18 +84,8 @@
         letter-spacing: var(--d1-sys-letterSpacing-xs);
       }
       
-      &--lg {
+      &--md {
         --d1-avatar-width: var(--d1-ref-spacing-12);
-        
-        font-family: var(--d1-sys-font-family-basic), sans-serif;
-        @include ui.fontSize(#{var(--d1-sys-font-size-sm)});
-        font-weight: var(--d1-sys-font-weight-medium);
-        @include ui.lineHeight(#{var(--d1-sys-lineHeight-sm)});
-        letter-spacing: var(--d1-sys-letterSpacing-xs);
-      }
-      
-      &--xl {
-        --d1-avatar-width: var(--d1-ref-spacing-14);
         
         font-family: var(--d1-sys-font-family-basic), sans-serif;
         @include ui.fontSize(#{var(--d1-sys-font-size-md)});
@@ -90,7 +94,17 @@
         letter-spacing: var(--d1-sys-letterSpacing-sm);
       }
       
-      &--2xl {
+      &--lg {
+        --d1-avatar-width: var(--d1-ref-spacing-14);
+        
+        font-family: var(--d1-sys-font-family-basic), sans-serif;
+        @include ui.fontSize(#{var(--d1-sys-font-size-lg)});
+        font-weight: var(--d1-sys-font-weight-regular);
+        @include ui.lineHeight(#{var(--d1-sys-lineHeight-lg)});
+        letter-spacing: var(--d1-sys-letterSpacing-none);
+      }
+      
+      &--xl {
         --d1-avatar-width: var(--d1-ref-spacing-16);
         
         font-family: var(--d1-sys-font-family-basic), sans-serif;

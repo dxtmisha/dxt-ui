@@ -1,0 +1,23 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+## Text shortening
+
+The `reduction` property determines whether the text label should be shortened to its initials.
+
+**Possible values:**
+
+- `true` — automatically shortens the text to initials (default)
+- `false` — displays the full text label without shortening
+
+When set to `true`, the component processes the name label (up to two words) and extracts the first letters to represent the user (e.g., "John Doe" becomes "JD"). This is useful for keeping the avatar display clean and compact.
+
+<Source
+    code={`
+<!-- Initials fallback (JD) -->
+<Avatar label="John Doe" :reduction="true" />
+
+<!-- Display full name (John Doe) -->
+<Avatar label="John Doe" :reduction="false" />
+  `}
+    language="html"
+/>

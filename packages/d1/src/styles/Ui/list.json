@@ -7652,7 +7652,7 @@
                   "width": {
                     "name": "--d1-avatar-width",
                     "type": "var",
-                    "value": "{ref.spacing.6}"
+                    "value": "{ref.spacing.8}"
                   }
                 }
               },
@@ -7663,7 +7663,7 @@
                   "width": {
                     "name": "--d1-avatar-width",
                     "type": "var",
-                    "value": "{ref.spacing.8}"
+                    "value": "{ref.spacing.10}"
                   }
                 }
               },
@@ -7674,7 +7674,7 @@
                   "width": {
                     "name": "--d1-avatar-width",
                     "type": "var",
-                    "value": "{ref.spacing.10}"
+                    "value": "{ref.spacing.12}"
                   }
                 }
               },
@@ -7685,23 +7685,12 @@
                   "width": {
                     "name": "--d1-avatar-width",
                     "type": "var",
-                    "value": "{ref.spacing.12}"
+                    "value": "{ref.spacing.14}"
                   }
                 }
               },
               "xl": {
                 "name": "&--xl",
-                "type": "state",
-                "value": {
-                  "width": {
-                    "name": "--d1-avatar-width",
-                    "type": "var",
-                    "value": "{ref.spacing.14}"
-                  }
-                }
-              },
-              "2xl": {
-                "name": "&--2xl",
                 "type": "state",
                 "value": {
                   "width": {
