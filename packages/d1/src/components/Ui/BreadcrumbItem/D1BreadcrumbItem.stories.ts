@@ -4,6 +4,7 @@ import D1BreadcrumbItem from './D1BreadcrumbItem.vue'
 import { BreadcrumbItemWikiStorybook } from './wiki'
 
 // :story-import [!] System label / Системная метка
+import D1Skeleton from '../Skeleton/D1Skeleton.vue'
 // :story-import [!] System label / Системная метка
 
 const meta = {
@@ -31,4 +32,15 @@ export const BreadcrumbItem: Story = {
 }
 
 // :story-items [!] System label / Системная метка
+export const BreadcrumbItemSkeleton: Story = {
+  name: 'Скелетон',
+  render: () => ({
+    components: { D1BreadcrumbItem, D1Skeleton },
+    template: `
+        <D1Skeleton :active="true">
+          <D1BreadcrumbItem isSkeleton label="Breadcrumb item" />
+        </D1Skeleton>
+    `
+  })
+}
 // :story-items [!] System label / Системная метка

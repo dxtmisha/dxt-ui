@@ -1,0 +1,59 @@
+@use "../../../styles/Ui/properties";
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/style.scss" as BulletItem;
+
+@include ui.initDesignBasic('d1.bulletItem') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include BulletItem.mixinBulletItem;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+    @include ui.paddingLeft(#{var(--d1-sys-spacing-xl)});
+    
+    &::before {
+      content: ' ';
+      content: '•';
+      
+      @include ui.color(#{var(--d1-sys-palette-primary)});
+    }
+    
+    &--size {
+      &--sm {
+        --d1-bulletItem-padding: var(--d1-sys-spacing-xs);
+        
+        font-family: var(--d1-sys-font-family-basic), sans-serif;
+        @include ui.fontSize(#{var(--d1-sys-font-size-xs)});
+        font-weight: var(--d1-sys-font-weight-regular);
+        @include ui.lineHeight(#{var(--d1-sys-lineHeight-xs)});
+        letter-spacing: var(--d1-sys-letterSpacing-lg);
+      }
+      
+      &--md {
+        --d1-bulletItem-padding: var(--d1-sys-spacing-xs);
+        
+        font-family: var(--d1-sys-font-family-basic), sans-serif;
+        @include ui.fontSize(#{var(--d1-sys-font-size-sm)});
+        font-weight: var(--d1-sys-font-weight-regular);
+        @include ui.lineHeight(#{var(--d1-sys-lineHeight-sm)});
+        letter-spacing: var(--d1-sys-letterSpacing-md);
+      }
+      
+      &--lg {
+        --d1-bulletItem-padding: var(--d1-sys-spacing-sm);
+        
+        font-family: var(--d1-sys-font-family-basic), sans-serif;
+        @include ui.fontSize(#{var(--d1-sys-font-size-md)});
+        font-weight: var(--d1-sys-font-weight-regular);
+        @include ui.lineHeight(#{var(--d1-sys-lineHeight-md)});
+        letter-spacing: var(--d1-sys-letterSpacing-xl);
+      }
+    }
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

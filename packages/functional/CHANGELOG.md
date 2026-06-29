@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.14.5] - 2026-06-29
+
+### Changed
+- **GeoFlagRef**: Refactored constructor to default to `GeoRef.getLocation().value` dynamically and reactively, avoiding hard dependencies on the static `Geo.getLocation()` during SSR.
+- **GeoIntlRef**: Updated fallback locale resolution to use `GeoRef.getLocation().value` instead of `GeoRef.getLanguage().value` when location is empty.
+
 ## [1.14.3] - 2026-06-27
 
 ### Added
@@ -12,6 +18,12 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 - **dxtFunctionalPlugin**: Added `iconsSocial` configuration option (type `InputSocialIcons`) to allow registering custom social network icons globally via `MediaSocial.addIcons` during Vue plugin initialization.
+
+## [1.14.1] - 2026-06-23
+
+### Added
+- **GeoFlagRef**: Added a new reactive wrapper class for `GeoFlag` from `@dxtmisha/functional-basic`, providing methods like `get()`, `getFlag()`, `getList()`, and `getNational()` to retrieve flags and names reactively.
+- **GeoFlagRef**: Added `GeoFlagRef.test.ts` for unit testing the reactive flag behaviors.
 
 ## [1.14.0] - 2026-06-22
 

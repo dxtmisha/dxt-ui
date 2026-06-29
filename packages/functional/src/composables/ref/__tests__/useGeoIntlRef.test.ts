@@ -9,7 +9,8 @@ import { GeoIntlRef } from '../../../classes/ref/GeoIntlRef'
 // Mock GeoRef and functional-basic to prevent environment issues
 vi.mock('../../../classes/ref/GeoRef', () => ({
   GeoRef: {
-    getLanguage: () => ({ value: 'en-US' })
+    getLanguage: () => ({ value: 'en-US' }),
+    getLocation: () => ({ value: 'en-US' })
   }
 }))
 

@@ -34,7 +34,7 @@ export class GeoIntlRef {
    */
   constructor(code?: RefOrNormal<string>) {
     this.location = toRefItem(code)
-    this.intl = computed(() => new GeoIntl(this.location.value ?? GeoRef.getLanguage().value))
+    this.intl = computed(() => new GeoIntl(this.location.value ?? GeoRef.getLocation().value))
   }
 
   /**

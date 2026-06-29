@@ -13,8 +13,6 @@
   & {
     gap: var(--d1-sys-spacing-x);
     
-    @include ui.paddingY(#{var(--d1-sys-spacing-xs)});
-    
     font-family: var(--d1-sys-font-family-basic), sans-serif;
     @include ui.fontSize(#{var(--d1-sys-font-size-sm)});
     font-weight: var(--d1-sys-font-weight-medium);

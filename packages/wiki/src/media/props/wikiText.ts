@@ -10,6 +10,18 @@ import {
  * Объект wikiText содержит описание всех текстовых свойств
  */
 export const wikiText: StorybookArgsToList = {
+  textBreadcrumb: {
+    type: StorybookControl.text,
+    options: {
+      category: StorybookCategory.text,
+      type: 'string | (() => string)',
+      description: {
+        en: 'Breadcrumb text',
+        ru: 'Текст хлебных крошек'
+      }
+    },
+    hide: true
+  },
   textCancel: {
     type: StorybookControl.text,
     options: {

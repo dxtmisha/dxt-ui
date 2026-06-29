@@ -9,6 +9,7 @@ export const propsValues = {
 
 type PropsToken = {
   // :type [!] System label / Системная метка
+  disabled?: boolean
   readonly?: boolean
   back?: boolean
   // :type [!] System label / Системная метка

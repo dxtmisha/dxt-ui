@@ -1,0 +1,22 @@
+{
+  "main": "{d.bulletItem}",
+  "padding-left": "{sys.spacing.xl}",
+  "before": {
+    "color": "{sys.palette.primary}"
+  },
+  "~size": {
+    "~sm": {
+      "font": "{font.bodySmall}",
+      "padding": "{sys.spacing.xs}"
+    },
+    "~md": {
+      "font": "{font.bodyMedium}",
+      "padding": "{sys.spacing.xs}"
+    },
+    "~lg": {
+      "font": "{font.bodyLarge}",
+      "padding": "{sys.spacing.sm}"
+    },
+    "_default": "md"
+  }
+}

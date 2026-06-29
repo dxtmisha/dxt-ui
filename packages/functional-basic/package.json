@@ -79,7 +79,7 @@
   "engines": {
     "node": ">=20.0.0"
   },
-  "peerDependencies": {
+  "dependencies": {
     "@dxtmisha/media": "*"
   },
   "sideEffects": false,

@@ -1,0 +1,20 @@
+@use "../../../styles/Ui/properties";
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/style.scss" as Bullet;
+
+@include ui.initDesignBasic('d1.bullet') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include Bullet.mixinBullet;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+    --d1-bullet-main: var(--d-bullet);
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

@@ -7787,6 +7787,62 @@
           }
         }
       },
+      "bullet": {
+        "name": "d1-bullet",
+        "type": "component",
+        "value": {
+          "main": {
+            "name": "--d1-bullet-main",
+            "type": "var",
+            "value": "{d.bullet}"
+          }
+        }
+      },
+      "bulletItem": {
+        "name": "d1-bulletItem",
+        "type": "component",
+        "value": {
+          "size": {
+            "name": "&--size",
+            "type": "state",
+            "value": {
+              "sm": {
+                "name": "&--sm",
+                "type": "state",
+                "value": {
+                  "padding": {
+                    "name": "--d1-bulletItem-padding",
+                    "type": "var",
+                    "value": "{sys.spacing.xs}"
+                  }
+                }
+              },
+              "md": {
+                "name": "&--md",
+                "type": "state",
+                "value": {
+                  "padding": {
+                    "name": "--d1-bulletItem-padding",
+                    "type": "var",
+                    "value": "{sys.spacing.xs}"
+                  }
+                }
+              },
+              "lg": {
+                "name": "&--lg",
+                "type": "state",
+                "value": {
+                  "padding": {
+                    "name": "--d1-bulletItem-padding",
+                    "type": "var",
+                    "value": "{sys.spacing.sm}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
       "button": {
         "name": "d1-button",
         "type": "component",

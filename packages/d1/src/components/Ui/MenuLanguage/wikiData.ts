@@ -9,7 +9,7 @@ const propsNames: StorybookProps = [
   { name: 'isSelectedByValue', type: 'boolean' },
   { name: 'language', type: 'string' },
   { name: 'list', type: 'string[]' },
-  { name: 'menuAttrs', type: 'ConstrBind<MenuPropsBasic>' },
+  { name: 'menuAttrs', type: 'ConstrBind<MenuProps>' },
   { name: 'modelSelected', type: 'ListSelectedList' },
   { name: 'onUpdate:modelSelected', type: '((value: ListSelectedList) => void)' },
   { name: 'onUpdate:selected', type: '((value: ListSelectedList) => void)' },

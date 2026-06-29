@@ -1,0 +1,16 @@
+@use "@dxtmisha/styles/properties" as ui;
+
+@mixin mixinBulletItem {
+  position: relative;
+
+  @include ui.paddingY(ui.v('??padding', 0));
+
+  &:before {
+    content: "•";
+    position: absolute;
+    top: ui.v('??padding', 0);
+    left: 0;
+
+    margin: auto;
+  }
+}

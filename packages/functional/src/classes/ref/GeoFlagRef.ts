@@ -3,12 +3,12 @@ import {
   type ComputedRef
 } from 'vue'
 import {
-  Geo,
   GeoFlag,
   type GeoFlagItem,
   type GeoFlagNational
 } from '@dxtmisha/functional-basic'
 
+import { GeoRef } from './GeoRef'
 import { getRef } from '../../functions/ref/getRef'
 
 import type { RefOrNormal } from '../../types/refTypes'
@@ -29,9 +29,9 @@ export class GeoFlagRef {
    * @param code country and language code / код страны и языка
    */
   constructor(
-    code: RefOrNormal<string | undefined> = Geo.getLocation()
+    code?: RefOrNormal<string | undefined>
   ) {
-    this.flag = computed(() => new GeoFlag(getRef(code)))
+    this.flag = computed(() => new GeoFlag(getRef(code) ?? GeoRef.getLocation().value))
   }
 
   /**

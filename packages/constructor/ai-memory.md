@@ -16,6 +16,7 @@
 11. **Comprehensive Infrastructure Check**: Before writing any custom logic, loop, or helper function (for data formatting, object/array manipulation, media matching, coordinates, or layout), you MUST search and review all relevant workspace packages (e.g., `functional`, `functional-basic`, `media`, `styles`) to see if a matching helper or asset already exists. You must look beyond simple keyword grep searches by listing directory files or inspecting package exports, to prevent duplicate code.
 12. **Nested List/Component Inclusion**: When rendering sub-components or nested lists within parent components, encapsulate this logic inside classes extending `ComponentIncludeAbstract` instead of using procedural hook-based list helpers (like `useAlertLink.ts`).
 13. **Include basicTypes Placement**: Declare types such as `<Name>EmitsInclude` and `<Name>PropsInclude` inside the local `basicTypes.ts` file of the constructor directory, rather than putting them directly in the `[Name]Include.ts` file.
+14. **Sub-component List Inclusion**: When rendering subcomponents as lists (e.g. `BulletItem` lists), never use procedural hooks or helper functions like `useBulletItem.ts`. Instead, always create an inclusion class extending `ComponentIncludeAbstract` (e.g. `BulletItemInclude.ts`).
 
 
 

@@ -6,15 +6,15 @@ import { defaults } from './props'
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
   { name: 'ariaLabel', type: 'string' },
-  { name: 'badge', type: 'string | number | ConstrBind<BadgePropsBasic>' },
-  { name: 'badgeAttrs', type: 'ConstrBind<BadgePropsBasic>' },
+  { name: 'badge', type: 'string | number | ConstrBind<BadgeProps>' },
+  { name: 'badgeAttrs', type: 'ConstrBind<BadgeProps>' },
   { name: 'badgeDot', type: 'boolean' },
   { name: 'detail', type: 'Record<string, any>' },
   { name: 'disabled', type: 'boolean' },
   { name: 'focus', type: 'boolean' },
   { name: 'href', type: 'string' },
-  { name: 'image', type: 'string | ConstrBind<ImagePropsBasic>' },
-  { name: 'imageAttrs', type: 'ConstrBind<ImagePropsBasic>' },
+  { name: 'image', type: 'string | ConstrBind<ImageProps>' },
+  { name: 'imageAttrs', type: 'ConstrBind<ImageProps>' },
   { name: 'isSkeleton', type: 'boolean' },
   { name: 'label', type: 'NumberOrString' },
   { name: 'labelId', type: 'string' },
@@ -23,6 +23,7 @@ const propsNames: StorybookProps = [
   { name: 'readonly', type: 'boolean' },
   { name: 'reduction', type: 'boolean' },
   { name: 'size', type: 'string', option: ['xs', 'sm', 'md', 'lg', 'xl'] },
+  { name: 'tabindex', type: 'string | number' },
   { name: 'to', type: 'string | RouteLocationAsRelativeGeneric | RouteLocationAsPathGeneric' },
   { name: 'value', type: 'EventClickValue[\'value\']' }
   // :propsList [!] System label / Системная метка

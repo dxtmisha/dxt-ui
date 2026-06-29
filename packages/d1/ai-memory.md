@@ -5,3 +5,5 @@
 2. **Standard CSS Tokens**: Never use fixed values (e.g., `1px`) for border widths. Use system variables like `"{sys.spacing.outline}"`. 
 3. **Valid Colors & Opacities**: For opacity and color bindings, rely solely on established system tokens: e.g., `"{sys.palette.primary}"`, `"{sys.opacity.overlay}"`, `"{sys.opacity.pressed}"`. Avoid guessing or inventing tokens like `sys.palette.surface.scrim`.
 4. **CSS Pseudo-Elements**: Use the `before` key in `properties.json` to generate `&::before` styles automatically inside the token script.
+5. **Token Mappings in `properties.json`**: Never copy old `{st.`-prefixed theme tokens (such as `{st.global.distance...}`) directly into `properties.json`. Always translate them to the current design system tokens: `{sys.spacing.*}` for spacing, `{font.body*}` for fonts, and `{sys.palette.*}` for colors. Also ensure that all dynamic modifiers in `properties.json` are prefixed with `~` (e.g., `"~size"`).
+

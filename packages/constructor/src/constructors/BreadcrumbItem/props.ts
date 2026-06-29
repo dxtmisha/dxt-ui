@@ -7,6 +7,7 @@ import type { LabelProps } from '../../types/labelTypes'
 
 type BreadcrumbItemPropsToken = {
   // :type [!] System label / Системная метка
+  disabled?: boolean
   readonly?: boolean
   back?: boolean
   // :type [!] System label / Системная метка

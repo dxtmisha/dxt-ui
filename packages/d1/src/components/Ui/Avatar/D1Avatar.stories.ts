@@ -4,6 +4,7 @@ import D1Avatar from './D1Avatar.vue'
 import { AvatarWikiStorybook } from './wiki'
 
 // :story-import [!] System label / Системная метка
+import D1Skeleton from '../Skeleton/D1Skeleton.vue'
 // :story-import [!] System label / Системная метка
 
 const meta = {
@@ -53,6 +54,19 @@ export const AvatarReduction: Story = {
           <D1Avatar label="Иван Иванович" :reduction="true"/>
           <D1Avatar label="Иван Иванович" :reduction="false"/>
         </div>
+    `
+  })
+}
+export const AvatarSkeleton: Story = {
+  name: 'Загрузка скелетона',
+  render: () => ({
+    components: { D1Avatar, D1Skeleton },
+    template: `
+        <D1Skeleton :active="true">
+          <div class="wiki-storybook-flex">
+            <D1Avatar :isSkeleton="true" label="JD"/>
+          </div>
+        </D1Skeleton>
     `
   })
 }

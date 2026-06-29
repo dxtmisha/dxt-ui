@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/constructor",
   "private": false,
-  "version": "0.77.0",
+  "version": "0.79.0",
   "type": "module",
   "description": "Vue component constructors for DXT UI design system - ready-to-use constructors with TypeScript support and SCSS styling",
   "keywords": [
@@ -36,7 +36,7 @@
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
     "test": "NODE_OPTIONS=\"--no-webstorage\" vitest",
-    "constructor": "dxt-constructor Breadcrumbs",
+    "constructor": "dxt-constructor Bullet",
     "library": "dxt-library",
     "types": "dxt-types",
     "prepublishOnly": "npm run library && npm run constructor && npm run build",
@@ -383,6 +383,14 @@
     "./Breadcrumbs": {
       "types": "./dist/src/constructors/Breadcrumbs/index.d.ts",
       "default": "./dist/breadcrumbs.js"
+    },
+    "./BulletItem": {
+      "types": "./dist/src/constructors/BulletItem/index.d.ts",
+      "default": "./dist/bulletItem.js"
+    },
+    "./Bullet": {
+      "types": "./dist/src/constructors/Bullet/index.d.ts",
+      "default": "./dist/bullet.js"
     }
   },
   "buildOptions": {
