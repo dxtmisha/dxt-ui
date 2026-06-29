@@ -1,4 +1,5 @@
 import type { IconLitePropsInclude, IconPropsBasic } from '../Icon'
+import type { SkeletonPropsInclude } from '../Skeleton'
 
 import type { EnabledProps } from '../../types/enabledTypes'
 import type { EventClickProps } from '../../types/eventClickTypes'
@@ -17,6 +18,7 @@ export type BreadcrumbItemPropsBasic<
   & IconLitePropsInclude<Icon>
   & EnabledProps
   & EventClickProps
+  & SkeletonPropsInclude
   & {
     /** Left arrow icon / Иконка стрелки влево */
     iconArrowLeft?: string

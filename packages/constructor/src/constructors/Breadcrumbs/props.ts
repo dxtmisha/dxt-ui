@@ -1,6 +1,9 @@
 import type { ConstrBind } from '@dxtmisha/functional'
 
 import type { BreadcrumbItemProps } from '../BreadcrumbItem'
+import type { SkeletonPropsInclude } from '../Skeleton'
+
+import type { TextBreadcrumbPropsInclude } from '../../types/textTypes'
 
 /**
  * Type describing token properties of the Breadcrumbs component.
@@ -19,10 +22,12 @@ type BreadcrumbsPropsToken = {
  */
 export type BreadcrumbsPropsBasic<
   BreadcrumbItem extends BreadcrumbItemProps = BreadcrumbItemProps
-> = {
-  /** List of breadcrumb items / Список элементов хлебных крошек */
-  list?: ConstrBind<BreadcrumbItem>[]
-}
+> = TextBreadcrumbPropsInclude
+  & SkeletonPropsInclude
+  & {
+    /** List of breadcrumb items / Список элементов хлебных крошек */
+    list?: ConstrBind<BreadcrumbItem>[]
+  }
 
 /**
  * Type describing incoming properties.

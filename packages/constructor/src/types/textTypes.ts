@@ -30,6 +30,12 @@ export type TextIndex = 'cancel'
 /** List of text values/ Список текстовых значений */
 export type TextList = Record<TextIndex, TextValue>
 
+/** Interface for including breadcrumb text/ Интерфейс для включения текста хлебных крошек */
+export type TextBreadcrumbPropsInclude = {
+  /** Breadcrumb navigation text/ Текст навигации хлебных крошек */
+  textBreadcrumb?: TextValue
+}
+
 /** Interface for including cancel text/ Интерфейс для включения текста отмены */
 export type TextCancelPropsInclude = {
   /** Cancel text/ Текст отмены */
@@ -169,7 +175,8 @@ export type TextShowPropsInclude = {
 }
 
 /** Type for including all text properties/ Тип для включения всех текстовых свойств */
-export type TextAllPropsInclude = TextCancelPropsInclude
+export type TextAllPropsInclude = TextBreadcrumbPropsInclude
+  & TextCancelPropsInclude
   & TextCharacterLimitPropsInclude
   & TextCharacterRemainingPropsInclude
   & TextClosePropsInclude

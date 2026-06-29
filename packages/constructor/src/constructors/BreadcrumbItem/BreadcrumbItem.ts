@@ -5,6 +5,7 @@ import { EnabledInclude } from '../../classes/EnabledInclude'
 import { EventClickInclude } from '../../classes/EventClickInclude'
 import { IconLiteInclude } from '../Icon'
 import { LabelInclude } from '../../classes/LabelInclude'
+import { SkeletonInclude } from '../Skeleton'
 
 import type { BreadcrumbItemComponents, BreadcrumbItemEmits, BreadcrumbItemSlots } from './types'
 import type { BreadcrumbItemProps } from './props'
@@ -25,6 +26,8 @@ export class BreadcrumbItem {
   readonly enabled: EnabledInclude
   /** Click event controller / Контроллер события клика */
   readonly event: EventClickInclude
+  /** Skeleton controller / Контроллер скелета */
+  readonly skeleton: SkeletonInclude
 
   /**
    * Constructor for BreadcrumbItem.
@@ -43,6 +46,7 @@ export class BreadcrumbItem {
    * @param constructors.EventClickIncludeConstructor class for working with event click / класс для работы с событием клика
    * @param constructors.IconLiteIncludeConstructor class for working with icon / класс для работы с иконкой
    * @param constructors.LabelIncludeConstructor class for working with label / класс для работы с меткой
+   * @param constructors.SkeletonIncludeConstructor class for working with skeleton / класс для работы со скелетоном
    */
   constructor(
     protected readonly props: BreadcrumbItemProps,
@@ -58,13 +62,15 @@ export class BreadcrumbItem {
       EventClickIncludeConstructor?: typeof EventClickInclude
       IconLiteIncludeConstructor?: typeof IconLiteInclude
       LabelIncludeConstructor?: typeof LabelInclude
+      SkeletonIncludeConstructor?: typeof SkeletonInclude
     } = {}
   ) {
     const {
       EnabledIncludeConstructor = EnabledInclude,
       EventClickIncludeConstructor = EventClickInclude,
       IconLiteIncludeConstructor = IconLiteInclude,
-      LabelIncludeConstructor = LabelInclude
+      LabelIncludeConstructor = LabelInclude,
+      SkeletonIncludeConstructor = SkeletonInclude
     } = constructors
 
     this.enabled = new EnabledIncludeConstructor(props)
@@ -75,11 +81,21 @@ export class BreadcrumbItem {
       components
     )
 
+    this.skeleton = new SkeletonIncludeConstructor(
+      props,
+      classDesign,
+      ['classTextVariant']
+    )
+
     this.label = new LabelIncludeConstructor(
       props,
       className,
       undefined,
-      slots
+      slots,
+      undefined,
+      undefined,
+      undefined,
+      this.skeleton
     )
 
     this.event = new EventClickIncludeConstructor(

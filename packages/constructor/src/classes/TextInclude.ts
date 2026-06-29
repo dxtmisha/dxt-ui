@@ -55,6 +55,11 @@ export class TextInclude {
   ) {
   }
 
+  /** Breadcrumb navigation text / Текст навигации хлебных крошек */
+  get breadcrumb() {
+    return this.get('textBreadcrumb')
+  }
+
   /** Cancel text / Текст отмены */
   get cancel() {
     return this.get('textCancel')

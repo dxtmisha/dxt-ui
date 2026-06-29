@@ -118,7 +118,8 @@ export class BreadcrumbsDesign<
    * @returns rendered virtual node / отрендеренная виртуальная нода
    */
   protected initRender(): VNode {
-    return h('div', {
+    return h('nav', {
+      ...this.item.binds,
       ...this.getAttrs(),
       ref: this.element,
       class: this.classes?.value.main
@@ -143,6 +144,7 @@ export class BreadcrumbsDesign<
           item,
           {
             readonly: key === length,
+            isSkeleton: this.props.isSkeleton,
             class: this.classes?.value.item,
             onClick: this.item.event.onClick
           }

@@ -10,6 +10,7 @@ import type { TextIndex, TextList } from '../types/textTypes'
 export class TextIncludeInstance {
   /** Global list of texts for all components / Глобальный список текстов для всех компонентов */
   readonly list = shallowRef<TextList>({
+    breadcrumb: 'Breadcrumb',
     cancel: 'Cancel',
     characterLimit: 'Character limit exceeded',
     characterRemaining: 'Remaining [left] characters',

@@ -4,7 +4,10 @@ import {
   type DesignComp
 } from '@dxtmisha/functional'
 
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { EventClickInclude } from '../../classes/EventClickInclude'
+import { TextInclude } from '../../classes/TextInclude'
+
 import type { BreadcrumbsComponents, BreadcrumbsEmits, BreadcrumbsSlots } from './types'
 import type { BreadcrumbsProps } from './props'
 
@@ -16,6 +19,8 @@ import type { BreadcrumbsProps } from './props'
 export class Breadcrumbs {
   /** Click event manager / Менеджер событий клика */
   readonly event: EventClickInclude
+  /** Text controller / Контроллер текста */
+  readonly text: TextInclude
 
   /**
    * Constructor for Breadcrumbs.
@@ -31,6 +36,7 @@ export class Breadcrumbs {
    * @param slots object for working with slots / объект для работы со слотами
    * @param constructors object with classes / объект с классами
    * @param constructors.EventClickIncludeConstructor class for working with click event / класс для работы с событием клика
+   * @param constructors.TextIncludeConstructor class for working with text / класс для работы с текстом
    */
   constructor(
     protected readonly classDesign: string,
@@ -43,10 +49,12 @@ export class Breadcrumbs {
     protected readonly slots: BreadcrumbsSlots | undefined,
     constructors: {
       EventClickIncludeConstructor?: typeof EventClickInclude
+      TextIncludeConstructor?: typeof TextInclude
     } = {}
   ) {
     const {
-      EventClickIncludeConstructor = EventClickInclude
+      EventClickIncludeConstructor = EventClickInclude,
+      TextIncludeConstructor = TextInclude
     } = constructors
 
     this.event = new EventClickIncludeConstructor(
@@ -54,5 +62,18 @@ export class Breadcrumbs {
       undefined,
       emits
     )
+
+    this.text = new TextIncludeConstructor(props)
+  }
+
+  /**
+   * Returns binding attributes for the container element. /
+   * Возвращает атрибуты привязки для контейнера.
+   * @returns object containing role and label / объект с ролью и меткой
+   */
+  get binds(): Record<string, any> {
+    return {
+      ...AriaStaticInclude.label(this.text.breadcrumb)
+    }
   }
 }
