@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.10.4] - 2026-06-29
+
+### Added
+- **JSDoc**: Added comprehensive bilingual (EN/RU) JSDoc comments to the `AiDoc` class, its constructor, and all internal methods.
+
+### Changed
+- **AiDoc**: Initialized `ServerStorage.setErrorStatus(true)` in the constructor to force standard error status config on ServerStorage during AI documentation generation.
+
 ## [0.10.3] - 2026-06-25
 
 ### Added
