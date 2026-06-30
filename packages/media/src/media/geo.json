@@ -1,5 +1,21 @@
 [
   {
+    "country": "US",
+    "countryAlternative": [
+      "EN"
+    ],
+    "language": "en",
+    "languageAlternative": [
+      "us"
+    ],
+    "firstDay": "Su",
+    "zone": "America/New_York",
+    "phoneCode": "1",
+    "phoneMask": [
+      "+1-***-***-****"
+    ]
+  },
+  {
     "country": "AD",
     "language": "ca",
     "firstDay": "Mo",
@@ -2080,22 +2096,6 @@
     "language": "en",
     "firstDay": null,
     "phoneMask": "+256-***-***-***"
-  },
-  {
-    "country": "US",
-    "countryAlternative": [
-      "EN"
-    ],
-    "language": "en",
-    "languageAlternative": [
-      "us"
-    ],
-    "firstDay": "Su",
-    "zone": "America/New_York",
-    "phoneCode": "1",
-    "phoneMask": [
-      "+1-***-***-****"
-    ]
   },
   {
     "country": "UY",
