@@ -57,6 +57,7 @@ import _D1MenuCountry from '../components/Ui/MenuCountry/D1MenuCountry.vue'
 import _D1MenuLanguage from '../components/Ui/MenuLanguage/D1MenuLanguage.vue'
 import _D1Modal from '../components/Ui/Modal/D1Modal.vue'
 import _D1MotionAxis from '../components/Ui/MotionAxis/D1MotionAxis.vue'
+import _D1MotionSticky from '../components/Ui/MotionSticky/D1MotionSticky.vue'
 import _D1MotionTransform from '../components/Ui/MotionTransform/D1MotionTransform.vue'
 import _D1Page from '../components/Ui/Page/D1Page.vue'
 import _D1PageArea from '../components/Ui/PageArea/D1PageArea.vue'
@@ -141,6 +142,7 @@ declare module '@vue/runtime-core' {
     D1MenuLanguage: typeof _D1MenuLanguage
     D1Modal: typeof _D1Modal
     D1MotionAxis: typeof _D1MotionAxis
+    D1MotionSticky: typeof _D1MotionSticky
     D1MotionTransform: typeof _D1MotionTransform
     D1Page: typeof _D1Page
     D1PageArea: typeof _D1PageArea

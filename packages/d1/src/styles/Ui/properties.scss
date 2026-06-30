@@ -12686,6 +12686,11 @@
         name: 'd1-motionAxis',
         type: 'component',
       ),
+      'motionSticky':(
+        index: 'motionSticky',
+        name: 'd1-motionSticky',
+        type: 'component',
+      ),
       'motionTransform':(
         index: 'motionTransform',
         name: 'd1-motionTransform',
@@ -13352,6 +13357,11 @@
       'motionAxis':(
         index: 'motionAxis',
         name: 'd-motionAxis',
+        type: 'component',
+      ),
+      'motionSticky':(
+        index: 'motionSticky',
+        name: 'd-motionSticky',
         type: 'component',
       ),
       'motionTransform':(

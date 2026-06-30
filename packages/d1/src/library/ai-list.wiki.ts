@@ -57,6 +57,7 @@ import D1MenuCountry from '../../src/components/Ui/MenuCountry/D1MenuCountryAiWi
 import D1MenuLanguage from '../../src/components/Ui/MenuLanguage/D1MenuLanguageAiWiki.vue'
 import D1Modal from '../../src/components/Ui/Modal/D1ModalAiWiki.vue'
 import D1MotionAxis from '../../src/components/Ui/MotionAxis/D1MotionAxisAiWiki.vue'
+import D1MotionSticky from '../../src/components/Ui/MotionSticky/D1MotionStickyAiWiki.vue'
 import D1MotionTransform from '../../src/components/Ui/MotionTransform/D1MotionTransformAiWiki.vue'
 import D1Page from '../../src/components/Ui/Page/D1PageAiWiki.vue'
 import D1PageArea from '../../src/components/Ui/PageArea/D1PageAreaAiWiki.vue'
@@ -140,6 +141,7 @@ export const aiList: any[] = [
   D1MenuLanguage,
   D1Modal,
   D1MotionAxis,
+  D1MotionSticky,
   D1MotionTransform,
   D1Page,
   D1PageArea,

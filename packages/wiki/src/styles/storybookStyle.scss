@@ -196,6 +196,14 @@
       overflow: visible;
     }
 
+    &--overflowAuto {
+      overflow: auto;
+    }
+
+    &--borderNone {
+      border: none;
+    }
+
     &--rtl {
       @include ui.dirToRtl;
     }

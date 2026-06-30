@@ -50,6 +50,7 @@ import { wikiMenuLanguage } from './wikiMenuLanguage'
 import { wikiMenuButton } from './wikiMenuButton'
 import { wikiMenuChip } from './wikiMenuChip'
 import { wikiMotionAxis } from './wikiMotionAxis'
+import { wikiMotionSticky } from './wikiMotionSticky'
 import { wikiMotionTransform } from './wikiMotionTransform'
 import { wikiPagination } from './wikiPagination'
 import { wikiProgress } from './wikiProgress'
@@ -118,6 +119,7 @@ export const wiki: StorybookArgsToList = {
   ...wikiMenuButton,
   ...wikiMenuChip,
   ...wikiMotionAxis,
+  ...wikiMotionSticky,
   ...wikiMotionTransform,
   ...wikiPagination,
   ...wikiProgress,

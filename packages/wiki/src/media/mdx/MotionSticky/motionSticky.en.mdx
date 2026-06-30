@@ -1,0 +1,31 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+A component for managing sticky element positioning that automatically applies CSS classes and emits status events.
+
+MotionSticky computes sticky positions based on scroll offset calculations. It applies an active class and dataset attributes to the element when it becomes sticky, enabling complex styling or animations based on sticky state.
+
+**Key features:**
+
+- Automatic sticky state detection based on scroll position
+- Dynamic CSS class and dataset application (`data-sticky="sticky"`)
+- Bound to specific scroll container or window scroll
+- Events for tracking sticky status changes
+
+**Common use cases:**
+
+- Sticky headers and navigation bars
+- Floating sidebars and summary panels
+- Collapsing/expanding toolbar items on scroll
+
+<Source
+    code={`
+<template>
+  <MotionSticky class-activity="is-sticky">
+    <div class="header-content">
+      My Sticky Header
+    </div>
+  </MotionSticky>
+</template>
+  `}
+    language="html"
+/>

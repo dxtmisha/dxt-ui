@@ -1,0 +1,25 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+### `sticky`
+
+Event triggered when the sticky element status changes (becomes sticky or returns to normal flow).
+
+**Parameters:**
+- `status: boolean` — new sticky status (`true` if sticky, `false` if not)
+
+<Source
+    code={`
+<script setup>
+const handleSticky = (status) => {
+  console.log('Sticky state changed to:', status)
+}
+</script>
+
+<template>
+  <MotionSticky @sticky="handleSticky">
+    <div>Sticky content</div>
+  </MotionSticky>
+</template>
+  `}
+    language="html"
+/>

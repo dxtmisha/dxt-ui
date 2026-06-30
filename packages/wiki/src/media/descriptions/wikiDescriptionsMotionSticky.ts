@@ -1,36 +1,33 @@
-import type { Meta, StoryObj } from '@storybook/vue3-vite'
+import type { StorybookComponentsDescriptionItem } from '../../types/storybookTypes'
 
-import D1MotionSticky from './D1MotionSticky.vue'
-import { MotionStickyWikiStorybook } from './wiki'
-
-// :story-import [!] System label / Системная метка
-// :story-import [!] System label / Системная метка
-
-const meta = {
-  title: 'Ui/MotionSticky',
-  component: D1MotionSticky,
-  parameters: {
-    design: 'd1',
-    docs: {
-      description: {
-        component: MotionStickyWikiStorybook.getDescription()
-      }
-    }
+/**
+ * Descriptions for MotionSticky component properties
+ *
+ * Описания свойств компонента MotionSticky
+ */
+export const wikiDescriptionsMotionSticky: StorybookComponentsDescriptionItem = {
+  name: 'MotionSticky',
+  description: {
+    en: 'A component for sticky element positioning that automatically applies CSS classes and emits status events.',
+    ru: 'Компонент для липкого позиционирования элементов, который автоматически применяет CSS-классы и генерирует события состояния.'
   },
-  argTypes: MotionStickyWikiStorybook.getWiki(),
-  args: MotionStickyWikiStorybook.getValues()
-} satisfies Meta<typeof D1MotionSticky>
-
-export default meta
-
-type Story = StoryObj<typeof meta>
-
-export const MotionSticky: Story = {
-  // :story-main [!] System label / Системная метка
-  render: (args: any) => ({
-    components: { D1MotionSticky },
-    setup: () => ({ args }),
-    template: `
+  possibilities: {
+    en: [
+      'sticky positioning calculations based on element and scroll offsets',
+      'active CSS class toggling when element becomes sticky',
+      'custom scroll container binding via selector or HTMLElement reference',
+      'dynamic sticky status change events',
+      'flexible HTML tag configuration'
+    ],
+    ru: [
+      'расчеты липкого позиционирования на основе смещений элемента и прокрутки',
+      'переключение активного CSS-класса при переходе элемента в липкое состояние',
+      'привязка к кастомному контейнеру прокрутки через селектор или HTMLElement',
+      'динамические события изменения липкого статуса',
+      'настройка HTML-тега элемента'
+    ]
+  },
+  render: `
       <div id="design-sticky-demo" class="wiki-storybook-flex-column wiki-storybook-item wiki-storybook-item--rectangle wiki-storybook-item--borderNone wiki-storybook-item--overflowAuto">
         <p>
           In today's digital landscape, creating high-quality user interfaces has 
@@ -41,13 +38,13 @@ export const MotionSticky: Story = {
           sophisticated and engaging interfaces.
         </p>
         
-        <D1MotionSticky
+        <DesignComponent
           class="wiki-storybook-item wiki-storybook-item--auto wiki-storybook-item--overflowVisible wiki-storybook-item--padding wiki-storybook-dummy--color--green"
           v-bind="args"
           style="top: 0;"
         >
           Sticky Header
-        </D1MotionSticky>
+        </DesignComponent>
         <p>
           Scrollbars play a particularly important role in content navigation
           and information architecture. They allow users to easily navigate through
@@ -118,10 +115,46 @@ export const MotionSticky: Story = {
           and provide appropriate feedback for user interactions.
         </p>
       </div>
+    `,
+  import: [],
+  stories: [],
+  documentation: {
+    body: `
+<StorybookDescriptions componentName={'MotionSticky'} type={'motionSticky'}/>
+    `,
+    events: `
+<StorybookDescriptions componentName={'MotionSticky'} type={'event.sticky'}/>
+    `,
+    slots: `
+<StorybookDescriptions componentName={'Slot'} type={'default'}/>
     `
-  })
-  // :story-main [!] System label / Системная метка
+  },
+  ai: {
+    render: `
+      <div :class="classDemo.item">
+        <p>
+          In today's digital landscape, creating high-quality user interfaces has
+          become a critical aspect of web application development.
+        </p>
+        <MotionSticky
+          v-bind="args"
+          style="position: sticky; top: 0; padding: 16px;"
+        >
+          Sticky Header
+        </MotionSticky>
+        <p>
+          Scrollbars play a particularly important role in content navigation
+          and information architecture. They allow users to easily navigate through
+          large volumes of information.
+        </p>
+      </div>
+    `,
+    description: `
+      Low-level layout utility that manages element sticky state transitions.
+      Automatically calculates scroll offsets to detect when the target element
+      attaches to or detaches from its boundaries. Emits a "sticky" event and
+      applies a custom activity class when the state shifts, making it perfect
+      for sticky headers, side navigation bars, or contextual summary blocks.
+    `
+  }
 }
-
-// :story-items [!] System label / Системная метка
-// :story-items [!] System label / Системная метка

@@ -208,6 +208,17 @@ export const wikiAttributes: StorybookArgsToList = {
     },
     hide: true
   },
+  itemAttrs: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.attributes,
+      description: {
+        en: 'Additional attributes for the items',
+        ru: 'Дополнительные атрибуты для элементов'
+      }
+    },
+    hide: true
+  },
   linksAttrs: {
     type: StorybookControl.object,
     options: {

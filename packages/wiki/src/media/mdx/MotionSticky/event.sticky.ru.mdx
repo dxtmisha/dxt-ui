@@ -1,0 +1,25 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+### `sticky`
+
+Событие, возникающее при изменении статуса прикрепления липкого элемента (когда элемент становится липким или возвращается в обычный поток).
+
+**Параметры:**
+- `status: boolean` — новый статус прикрепления (`true`, если элемент прилип, иначе `false`)
+
+<Source
+    code={`
+<script setup>
+const handleSticky = (status) => {
+  console.log('Статус прикрепления изменился на:', status)
+}
+</script>
+
+<template>
+  <MotionSticky @sticky="handleSticky">
+    <div>Липкий контент</div>
+  </MotionSticky>
+</template>
+  `}
+    language="html"
+/>
