@@ -30,14 +30,14 @@ export class BreadcrumbsDesign<
   CLASSES extends BreadcrumbsClasses,
   P extends BreadcrumbsProps
 > extends DesignConstructorAbstract<
-  HTMLDivElement,
-  COMP,
-  BreadcrumbsEmits,
-  EXPOSE,
-  BreadcrumbsSlots,
-  CLASSES,
-  P
-> {
+    HTMLDivElement,
+    COMP,
+    BreadcrumbsEmits,
+    EXPOSE,
+    BreadcrumbsSlots,
+    CLASSES,
+    P
+  > {
   /** Main component instance / Основной экземпляр компонента */
   protected readonly item: Breadcrumbs
 

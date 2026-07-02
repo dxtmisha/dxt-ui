@@ -36,7 +36,7 @@ export class BreadcrumbItemDesign<
   BreadcrumbItemSlots,
   CLASSES,
   P
-> {
+  > {
   /** Main component instance / Основной экземпляр компонента */
   protected readonly item: BreadcrumbItem
 

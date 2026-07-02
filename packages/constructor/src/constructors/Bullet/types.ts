@@ -14,9 +14,7 @@ export type BulletComponents = BulletItemComponentInclude
  *
  * Тип, описывающий доступные события.
  */
-export type BulletEmits = {
-  // none
-}
+export type BulletEmits = {}
 
 /**
  * Type describing available properties.

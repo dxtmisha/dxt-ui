@@ -29,14 +29,14 @@ export class BulletItemDesign<
   CLASSES extends BulletItemClasses,
   P extends BulletItemPropsBasic
 > extends DesignConstructorAbstract<
-  HTMLDivElement,
-  COMP,
-  BulletItemEmits,
-  EXPOSE,
-  BulletItemSlots,
-  CLASSES,
-  P
-> {
+    HTMLDivElement,
+    COMP,
+    BulletItemEmits,
+    EXPOSE,
+    BulletItemSlots,
+    CLASSES,
+    P
+  > {
   /** Instance of the BulletItem constructor / Экземпляр конструктора BulletItem */
   protected readonly item: BulletItem
 

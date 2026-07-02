@@ -7787,17 +7787,6 @@
           }
         }
       },
-      "bullet": {
-        "name": "d1-bullet",
-        "type": "component",
-        "value": {
-          "main": {
-            "name": "--d1-bullet-main",
-            "type": "var",
-            "value": "{d.bullet}"
-          }
-        }
-      },
       "bulletItem": {
         "name": "d1-bulletItem",
         "type": "component",

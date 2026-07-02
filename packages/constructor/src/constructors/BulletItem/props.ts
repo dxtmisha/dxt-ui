@@ -5,8 +5,7 @@ type BulletItemPropsToken = {
   // :type [!] System label / Системная метка
 }
 
-export type BulletItemPropsBasic = DescriptionProps & {
-}
+export type BulletItemPropsBasic = DescriptionProps
 
 /**
  * Type describing incoming properties.

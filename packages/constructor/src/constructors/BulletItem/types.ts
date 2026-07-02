@@ -6,18 +6,14 @@ import type { DescriptionSlots } from '../../types/descriptionTypes'
  *
  * Интерфейс для описания, какие компоненты надо подключить для работы.
  */
-export type BulletItemComponents = {
-  // componentName: object
-}
+export type BulletItemComponents = {}
 
 /**
  * Type describing available events.
  *
  * Тип, описывающий доступные события.
  */
-export type BulletItemEmits = {
-  // load: [value: string]
-}
+export type BulletItemEmits = {}
 
 /**
  * Type describing available properties.
@@ -33,7 +29,6 @@ export interface BulletItemExpose {
  * Тип, описывающий доступные слоты.
  */
 export interface BulletItemSlots extends DescriptionSlots {
-  // default? (props: any): any
 }
 
 /**

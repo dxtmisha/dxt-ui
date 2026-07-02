@@ -1,4 +1,3 @@
 {
-  "main": "{d.bullet}",
-  "#item": {}
+  "main": "{d.bullet}"
 }

@@ -1,6 +1,5 @@
-import { h, type VNode } from 'vue'
+import { type VNode } from 'vue'
 import {
-  type DesignComponents,
   type RawSlots,
   toBinds
 } from '@dxtmisha/functional'
@@ -18,33 +17,16 @@ import type { BulletItemPropsBasic } from './props'
  * Класс BulletItemInclude предоставляет функциональность для рендеринга элементов списка
  * внутри других компонентов. Управляет логикой рендеринга списка.
  */
-export class BulletItemInclude<
-  Props extends BulletItemPropsInclude = BulletItemPropsInclude,
-  PropsExtra extends BulletItemPropsBasic = BulletItemPropsBasic
-> extends ComponentIncludeAbstract<
-    Props,
-    PropsExtra,
-    BulletItemExpose,
-    BulletItemSlots
-  > {
+export class BulletItemInclude extends ComponentIncludeAbstract<
+  BulletItemPropsInclude,
+  BulletItemPropsBasic,
+  BulletItemExpose,
+  BulletItemSlots
+> {
   /** Sub-component name / Название субкомпонента */
   protected readonly name = 'bulletItem'
   /** Name of the property containing component attributes / Название свойства, содержащего атрибуты компонента */
   protected readonly propsAttrsName = 'itemAttrs'
-
-  /**
-   * Constructor
-   * @param className class name / название класса
-   * @param props input parameter / входной параметр
-   * @param components object for working with components / объект для работы с компонентами
-   */
-  constructor(
-    className: string,
-    props: Readonly<Props>,
-    components?: DesignComponents<any, Props>
-  ) {
-    super(className, props, components)
-  }
 
   /**
    * Checks whether items should be displayed.
@@ -54,6 +36,46 @@ export class BulletItemInclude<
    */
   override get is(): boolean {
     return Boolean(this.getProps().list)
+  }
+
+  /**
+   * Returns the component name.
+   *
+   * Возвращает имя компонента.
+   * @returns component name / имя компонента
+   */
+  getName(): string {
+    return this.className
+  }
+
+  /**
+   * Returns the item class name.
+   *
+   * Возвращает имя класса элемента.
+   * @returns item class name / имя класса элемента
+   */
+  getItemClass(): string {
+    return `${this.getName()}Item`
+  }
+
+  /**
+   * Returns the bullet item class name.
+   *
+   * Возвращает имя класса элемента списка.
+   * @returns bullet item class name / имя класса элемента списка
+   */
+  getBulletItemClass(): string {
+    return `${this.getName()}__bullet__item`
+  }
+
+  /**
+   * Returns the combined class names for the bullet item.
+   *
+   * Возвращает объединенные имена классов для элемента списка.
+   * @returns combined class names / объединенные имена классов
+   */
+  getClasses(): string {
+    return `${this.getItemClass()} ${this.getBulletItemClass()}`
   }
 
   /**
@@ -82,10 +104,10 @@ export class BulletItemInclude<
             listElement,
             this.name,
             toBinds(
-              this.getPropsAttrs(),
+              this.getAttrs(attrs),
               {
                 description,
-                class: `${this.className}__bullet__item`
+                class: this.getBulletItemClass()
               }
             ),
             slotsChildren as RawSlots,
@@ -93,14 +115,7 @@ export class BulletItemInclude<
           )
         })
 
-      return [h(
-        'ul',
-        toBinds(
-          attrs,
-          { class: `${this.className}__bullet` }
-        ),
-        listElement
-      )]
+      return listElement
     }
 
     return []

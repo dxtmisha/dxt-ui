@@ -114,29 +114,22 @@ export class BulletDesign<
       ...this.item.list.render()
     ]
 
+    if (this.props.html) {
+      children.push(
+        this.props.html
+          .replace(/<li>/ig, `<li class="${this.item.list.getClasses()}">`)
+      )
+    }
+
     if (
       this.slots
       && 'default' in this.slots
     ) {
-      const slotElements: any[] = []
-      this.initSlot('default', slotElements)
-
-      children.push(h(
-        'ul',
-        { class: `${this.getName()}__bullet` },
-        slotElements
-      ))
-    } else if (this.props.html) {
-      const classesItem = `${this.getName()}Item ${this.getName()}__bullet__item`
-      children.push(h('ul', {
-        class: `${this.getName()}__bullet`,
-        innerHTML: this.props.html.replace(/<li>/ig, `<li class="${classesItem}">`)
-      }))
+      this.initSlot('default', children)
     }
 
-    return h('div', {
+    return h('ul', {
       ...this.getAttrs(),
-      ref: this.element,
       class: this.classes?.value.main
     }, children)
   }

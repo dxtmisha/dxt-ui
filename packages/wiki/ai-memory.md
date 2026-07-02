@@ -32,3 +32,7 @@ Must be placed in a single `## Methods` section.
 ## Rules for AI render (`ai.render`)
 - Render templates under the `ai` section must have minimal inline styles on the custom child elements.
 - The outer wrapper of the `ai.render` block must use `:class="classDemo.item"` to dynamically inherit the demo frame styling, and avoid depending on custom Storybook classes (e.g., `wiki-storybook-*`) which are not loaded in the AI environment.
+
+## Rules for D1 vs Constructor separation in wiki documentation
+- **No D1 References or Props**: Documentation files (MDX and descriptions) in the `packages/wiki` package must only document baseline constructor-level properties, attributes, and features. They must not mention D1-prefixed component variants, D1 package classes, or D1-specific options (such as size configurations `sm`, `md`, `lg` that are only defined at the D1 package level).
+

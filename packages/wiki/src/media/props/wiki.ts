@@ -28,6 +28,7 @@ import { wikiBadge } from './wikiBadge'
 import { wikiBars } from './wikiBars'
 import { wikiBreadcrumbItem } from './wikiBreadcrumbItem'
 import { wikiBreadcrumbs } from './wikiBreadcrumbs'
+import { wikiBullet } from './wikiBullet'
 import { wikiButton } from './wikiButton'
 import { wikiButtonGroup } from './wikiButtonGroup'
 import { wikiCheckbox } from './wikiCheckbox'
@@ -97,6 +98,7 @@ export const wiki: StorybookArgsToList = {
   ...wikiBars,
   ...wikiBreadcrumbItem,
   ...wikiBreadcrumbs,
+  ...wikiBullet,
   ...wikiButton,
   ...wikiButtonGroup,
   ...wikiCheckbox,
