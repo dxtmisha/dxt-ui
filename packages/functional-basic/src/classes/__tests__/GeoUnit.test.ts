@@ -63,4 +63,20 @@ describe('GeoUnit', () => {
     expect(formatted).toContain('328.084')
     expect(formatted).toContain('ft')
   })
+
+  it('should format via the general format() method', () => {
+    Geo.set('en-US')
+    const geoUnit = new GeoUnit()
+
+    const formattedGram = geoUnit.format(1000, 'gram')
+    expect(formattedGram).toContain('35.274')
+    expect(formattedGram).toContain('oz')
+
+    const formattedTemp = geoUnit.format(0, 'celsius')
+    expect(formattedTemp).toContain('32')
+    expect(formattedTemp).toContain('F')
+
+    // fallback for unknown unit
+    expect(geoUnit.format(100, 'unknown-unit')).toBe('100')
+  })
 })

@@ -38,6 +38,7 @@ import { wikiDialog } from './wikiDialog'
 import { wikiDraggableWrapper } from './wikiDraggableWrapper'
 import { wikiField } from './wikiField'
 import { wikiFormattedNumber } from './wikiFormattedNumber'
+import { wikiFormattedUnit } from './wikiFormattedUnit'
 import { wikiGridItem } from './wikiGridItem'
 import { wikiIcon } from './wikiIcon'
 import { wikiImage } from './wikiImage'
@@ -109,6 +110,7 @@ export const wiki: StorybookArgsToList = {
   ...wikiDraggableWrapper,
   ...wikiField,
   ...wikiFormattedNumber,
+  ...wikiFormattedUnit,
   ...wikiGridItem,
   ...wikiIcon,
   ...wikiImage,

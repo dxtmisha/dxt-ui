@@ -9373,6 +9373,17 @@
           }
         }
       },
+      "formattedUnit": {
+        "name": "d1-formattedUnit",
+        "type": "component",
+        "value": {
+          "main": {
+            "name": "--d1-formattedUnit-main",
+            "type": "var",
+            "value": "{d.formattedUnit}"
+          }
+        }
+      },
       "grid": {
         "name": "d1-grid",
         "type": "component",

@@ -12576,6 +12576,11 @@
         name: 'd1-formattedNumber',
         type: 'component',
       ),
+      'formattedUnit':(
+        index: 'formattedUnit',
+        name: 'd1-formattedUnit',
+        type: 'component',
+      ),
       'grid':(
         index: 'grid',
         name: 'd1-grid',
@@ -13252,6 +13257,11 @@
       'formattedNumber':(
         index: 'formattedNumber',
         name: 'd-formattedNumber',
+        type: 'component',
+      ),
+      'formattedUnit':(
+        index: 'formattedUnit',
+        name: 'd-formattedUnit',
         type: 'component',
       ),
       'grid':(

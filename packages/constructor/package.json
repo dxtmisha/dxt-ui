@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/constructor",
   "private": false,
-  "version": "0.83.0",
+  "version": "0.84.0",
   "type": "module",
   "description": "Vue component constructors for DXT UI design system - ready-to-use constructors with TypeScript support and SCSS styling",
   "keywords": [
@@ -36,7 +36,7 @@
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
     "test": "NODE_OPTIONS=\"--no-webstorage\" vitest",
-    "constructor": "dxt-constructor FormattedNumber",
+    "constructor": "dxt-constructor FormattedUnit",
     "library": "dxt-library",
     "types": "dxt-types",
     "prepublishOnly": "npm run library && npm run constructor && npm run build",
@@ -399,6 +399,10 @@
     "./FormattedNumber": {
       "types": "./dist/src/constructors/FormattedNumber/index.d.ts",
       "default": "./dist/formattedNumber.js"
+    },
+    "./FormattedUnit": {
+      "types": "./dist/src/constructors/FormattedUnit/index.d.ts",
+      "default": "./dist/formattedUnit.js"
     }
   },
   "buildOptions": {

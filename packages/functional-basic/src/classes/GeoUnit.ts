@@ -235,6 +235,52 @@ export class GeoUnit {
   }
 
   /**
+   * Formats the value for the specified unit, converting and formatting it according to the locale.
+   *
+   * Форматирует значение для указанной единицы измерения, преобразуя и форматируя его в соответствии с локалью.
+   * @param value numeric value to format / числовое значение для форматирования
+   * @param unit unit of measurement / единица измерения
+   * @param options formatting options / параметры форматирования
+   * @returns formatted unit string or original value / отформатированная строка или исходное значение
+   */
+  format(
+    value: NumberOrString,
+    unit: string,
+    options?: Intl.NumberFormatOptions
+  ): string {
+    switch (unit) {
+      case 'millimeter':
+        return this.millimeter(value, options)
+      case 'centimeter':
+        return this.centimeter(value, options)
+      case 'meter':
+        return this.meter(value, options)
+      case 'kilometer':
+        return this.kilometer(value, options)
+      case 'square-meter':
+        return this.squareMeter(value, options)
+      case 'hectare':
+        return this.hectare(value, options)
+      case 'gram':
+        return this.gram(value, options)
+      case 'kilogram':
+        return this.kilogram(value, options)
+      case 'tonne':
+        return this.tonne(value, options)
+      case 'milliliter':
+        return this.milliliter(value, options)
+      case 'liter':
+        return this.liter(value, options)
+      case 'celsius':
+        return this.celsius(value, options)
+      case 'kilometer-per-hour':
+        return this.kilometerPerHour(value, options)
+    }
+
+    return value.toString()
+  }
+
+  /**
    * Checks if the conversion is from Celsius to Fahrenheit.
    *
    * Проверяет, является ли конвертация переходом из градусов Цельсия в градусы Фаренгейта.

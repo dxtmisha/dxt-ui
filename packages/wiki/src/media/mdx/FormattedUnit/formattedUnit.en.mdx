@@ -1,0 +1,39 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+## Description
+
+Inline formatted text component for displaying and automatically converting units of measurement according to localized standard settings (e.g. converting Celsius to Fahrenheit, grams to ounces, meters to feet).
+
+FormattedUnit provides a simple, clean interface for presenting measurement data cleanly in any part of the UI. It supports automatic conversion of units based on the country's default customary unit settings, localized formatting via GeoUnit, and the ability to selectively disable formatting.
+
+**Key features:**
+
+- Automatic unit translation and conversion math based on locale customary settings.
+- Support for standard units (e.g. millimeter, centimeter, meter, kilometer, square-meter, hectare, gram, kilogram, tonne, milliliter, liter, celsius, kilometer-per-hour).
+- Formatting bypass: when `format` is `false`, outputs the raw value converted to a string.
+- Localized language overriding via the `language` prop.
+- Lightweight inline rendering (renders as a `span` tag).
+
+**Common use cases:**
+
+- Displaying weather and temperature values automatically adjusted to Celsius or Fahrenheit.
+- Showing weights and heights in either metric or customary units depending on user locale.
+- Formatting driving or speed values (km/h vs mph) cleanly and reactively.
+
+<Source
+    code={`
+<template>
+  <div class="formatted-unit-examples">
+    <!-- Automatically converts Celsius to Fahrenheit for en-US -->
+    <FormattedUnit :value="0" unit="celsius" language="en-US"/> <!-- "32°F" -->
+
+    <!-- Automatically formats grams locally -->
+    <FormattedUnit :value="1000" unit="gram" language="ru-RU"/> <!-- "1 000 г" -->
+    <FormattedUnit :value="1000" unit="gram" language="en-US"/> <!-- "35.274 oz" -->
+  </div>
+</template>
+  `}
+    language="html"
+/>
+
+> FormattedUnit is designed as a lightweight, inline utility component for presenting localized and converted measurement units cleanly in any part of the UI.

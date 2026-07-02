@@ -240,4 +240,21 @@ export class GeoUnitRef {
   ): ComputedRef<string> {
     return computed(() => this.unitInstance.value.kilometerPerHour(getRef(value), options))
   }
+
+  /**
+   * Formats the value for the specified unit reactively, converting and formatting it according to the locale.
+   *
+   * Форматирует значение для указанной единицы измерения реактивно, преобразуя и форматируя его в соответствии с локалью.
+   * @param value numeric value to format / числовое значение для форматирования
+   * @param unit unit of measurement / единица измерения
+   * @param options formatting options / параметры форматирования
+   * @returns computed formatted unit string / вычисляемая отформатированная строка единицы измерения
+   */
+  format(
+    value: RefOrNormal<NumberOrString>,
+    unit: RefOrNormal<string>,
+    options?: Intl.NumberFormatOptions
+  ): ComputedRef<string> {
+    return computed(() => this.unitInstance.value.format(getRef(value), getRef(unit), options))
+  }
 }

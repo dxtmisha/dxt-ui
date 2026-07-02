@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/d1",
   "private": false,
-  "version": "0.83.0",
+  "version": "0.84.0",
   "type": "module",
   "description": "DXT-UI component library",
   "keywords": [
@@ -27,7 +27,7 @@
     "build": "vue-tsc -b && vite build",
     "build-recovery": "npm run build && npm run wiki-storm",
     "preview": "vite preview",
-    "ui": "dxt-ui FormattedNumber",
+    "ui": "dxt-ui FormattedUnit",
     "wiki-storm": "dxt-wiki-storm",
     "types": "dxt-types",
     "screenshot": "dxt-screenshot",
@@ -398,6 +398,10 @@
     "./D1FormattedNumber": {
       "types": "./dist/src/library/D1FormattedNumber.d.ts",
       "default": "./dist/D1FormattedNumber.js"
+    },
+    "./D1FormattedUnit": {
+      "types": "./dist/src/library/D1FormattedUnit.d.ts",
+      "default": "./dist/D1FormattedUnit.js"
     }
   },
   "buildOptions": {

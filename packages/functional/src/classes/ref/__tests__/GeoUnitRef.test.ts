@@ -55,4 +55,34 @@ describe('GeoUnitRef', () => {
     expect(formattedGram.value).toContain('70.548')
     expect(formattedGram.value).toContain('oz')
   })
+
+  it('should support reactive general format() method', async () => {
+    const codeRef = ref('ru-RU')
+    const unitRef = ref('gram')
+    const valRef = ref(1000)
+
+    const geoUnitRef = new GeoUnitRef(codeRef)
+    const formatted = geoUnitRef.format(valRef, unitRef)
+
+    // Initial: ru-RU, gram, 1000 -> 1000 g
+    expect(formatted.value).toContain('1 000')
+    expect(formatted.value).toContain('г')
+
+    // Change unit reactively
+    unitRef.value = 'celsius'
+    valRef.value = 0
+    await nextTick()
+
+    // Now: ru-RU, celsius, 0 -> 0 °C
+    expect(formatted.value).toContain('0')
+    expect(formatted.value).toContain('C')
+
+    // Change locale reactively to US
+    codeRef.value = 'en-US'
+    await nextTick()
+
+    // Now: en-US, celsius, 0 -> 32°F
+    expect(formatted.value).toContain('32')
+    expect(formatted.value).toContain('F')
+  })
 })
