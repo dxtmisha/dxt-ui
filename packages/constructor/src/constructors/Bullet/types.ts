@@ -41,5 +41,6 @@ export interface BulletSlots {
 export type BulletClasses = {
   main: ConstrClass
   // :classes [!] System label / Системная метка
+  item: string
   // :classes [!] System label / Системная метка
 }

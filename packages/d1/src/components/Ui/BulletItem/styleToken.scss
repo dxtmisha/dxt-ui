@@ -11,19 +11,18 @@
   // Стили из токенов
   // :style [!] System label / Системная метка
   & {
-    @include ui.paddingLeft(#{var(--d1-sys-spacing-xl)});
+    @include ui.paddingLeft(#{var(--d1-sys-spacing-md)});
     
     &::before {
       content: ' ';
       content: '•';
       
-      @include ui.color(#{var(--d1-sys-palette-primary)});
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-high)}); @include ui.color('init');
+      @include ui.paletteColor(#{var(--d1-sys-palette-onSurface)});
     }
     
     &--size {
       &--sm {
-        --d1-bulletItem-padding: var(--d1-sys-spacing-xs);
-        
         font-family: var(--d1-sys-font-family-basic), sans-serif;
         @include ui.fontSize(#{var(--d1-sys-font-size-xs)});
         font-weight: var(--d1-sys-font-weight-regular);
@@ -32,8 +31,6 @@
       }
       
       &--md {
-        --d1-bulletItem-padding: var(--d1-sys-spacing-xs);
-        
         font-family: var(--d1-sys-font-family-basic), sans-serif;
         @include ui.fontSize(#{var(--d1-sys-font-size-sm)});
         font-weight: var(--d1-sys-font-weight-regular);
@@ -42,8 +39,6 @@
       }
       
       &--lg {
-        --d1-bulletItem-padding: var(--d1-sys-spacing-sm);
-        
         font-family: var(--d1-sys-font-family-basic), sans-serif;
         @include ui.fontSize(#{var(--d1-sys-font-size-md)});
         font-weight: var(--d1-sys-font-weight-regular);

@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.82.0] - 2026-07-02
+
+### Added
+- **D1BulletItem**:
+  - Added support for the `palette` property control (dynamic colors: red, orange, blue, green, etc.).
+  - Registered the `palette` prop inside `properties.json`, `props.ts`, `styleToken.scss`, and `wikiData.ts`.
+
+### Changed
+- **D1Bullet**:
+  - Added `gap` token (`{sys.spacing.x}`) to `properties.json` and styled it under `styleToken.scss`.
+  - Integrated `D1BulletItem` component registration in `D1Bullet.vue` design constructor config.
+  - Updated stories and MDX documentation (added HTML rendering demos / stories).
+- **D1BulletItem**:
+  - Refactored padding properties in `properties.json` (swapped `sys.spacing.xl` to `sys.spacing.md`, removed custom padding sizes under `~size`).
+  - Added story configurations (multi-item rendering) and MDX slot details.
+- **D1Menu / D1Select**:
+  - Formatted and aligned option array structures in stories.
+  - Cleaned up obsolete design token classes for `bulletItem` in `list.json`.
+
+## [0.79.0] - 2026-06-29
+
+### Added
+- **D1BreadcrumbItem**: Introduced `D1BreadcrumbItem` styled component wrapping `BreadcrumbItem` constructor.
+- **D1Breadcrumbs**: Introduced `D1Breadcrumbs` styled component wrapping `Breadcrumbs` constructor.
+- **D1Bullet**: Introduced `D1Bullet` styled component wrapping `Bullet` constructor.
+- **D1BulletItem**: Introduced `D1BulletItem` styled component wrapping `BulletItem` constructor.
+
 ## [0.77.0] - 2026-06-28
 
 ### Added

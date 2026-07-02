@@ -25,7 +25,8 @@ const classesToken = computed<ConstrClasses>(() => ({
   main: {
     // :classes-values [!] System label / Системная метка
     'd1-bulletItem': true,
-    [`d1-bulletItem--size--${props.size}`]: inArray(propsValues.size, props.size)
+    [`d1-bulletItem--size--${props.size}`]: inArray(propsValues.size, props.size),
+    [`d1-palette d1-palette--${props.palette}`]: inArray(propsValues.palette, props.palette)
     // :classes-values [!] System label / Системная метка
   }
 }))

@@ -1,3 +1,4 @@
 {
-  "main": "{d.bullet}"
+  "main": "{d.bullet}",
+  "gap": "{sys.spacing.x}"
 }

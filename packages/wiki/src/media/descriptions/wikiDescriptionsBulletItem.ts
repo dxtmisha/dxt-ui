@@ -23,7 +23,7 @@ export const wikiDescriptionsBulletItem: StorybookComponentsDescriptionItem = {
   },
   import: [],
   render: `
-    <ul>
+    <ul style="list-style: none">
       <DesignComponent v-bind="args"/>
       <DesignComponent v-bind="args"/>
       <DesignComponent v-bind="args"/>

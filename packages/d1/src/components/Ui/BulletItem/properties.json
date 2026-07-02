@@ -1,22 +1,22 @@
 {
   "main": "{d.bulletItem}",
-  "padding-left": "{sys.spacing.xl}",
+  "padding-left": "{sys.spacing.md}",
   "before": {
-    "color": "{sys.palette.primary}"
+    "content": "'•'",
+    "palette-color": "{sys.palette.onSurface}",
+    "color-opacity": "{sys.opacity.surface.high}"
   },
   "~size": {
     "~sm": {
-      "font": "{font.bodySmall}",
-      "padding": "{sys.spacing.xs}"
+      "font": "{font.bodySmall}"
     },
     "~md": {
-      "font": "{font.bodyMedium}",
-      "padding": "{sys.spacing.xs}"
+      "font": "{font.bodyMedium}"
     },
     "~lg": {
-      "font": "{font.bodyLarge}",
-      "padding": "{sys.spacing.sm}"
+      "font": "{font.bodyLarge}"
     },
     "_default": "md"
-  }
+  },
+  "@@palette": "{palette}"
 }

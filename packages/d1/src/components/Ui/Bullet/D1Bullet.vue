@@ -10,6 +10,8 @@ import {
   type BulletSlots
 } from '@dxtmisha/constructor/Bullet'
 
+import { D1BulletItem } from '../BulletItem'
+
 import { defaults, type BulletProps } from './props'
 import './styleToken.scss'
 
@@ -38,7 +40,10 @@ const design = new BulletDesign(
   {
     emits,
     classes: classesToken,
-    styles: stylesToken
+    styles: stylesToken,
+    components: {
+      bulletItem: D1BulletItem
+    }
   }
 )
 

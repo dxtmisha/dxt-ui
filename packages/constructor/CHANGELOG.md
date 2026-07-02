@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.82.0] - 2026-07-02
+
+### Changed
+- **Bullet**:
+  - Added the `getHtml()` helper method to process raw HTML lists by injecting styling classes.
+  - Refactored `initRender` in `BulletDesign` to render via `innerHTML` when the `html` prop is provided.
+  - Added the `item` subclass inside `BulletClasses` system labels.
+  - Added `@include ui.flexStretchY;` mixin alignment to `mixinBullet` styling.
+
+## [0.79.0] - 2026-06-29
+
+### Added
+- **BreadcrumbItem**: Introduced the `BreadcrumbItem` constructor component, properties definition (`BreadcrumbItemPropsBasic`), events mapping, slots binding, and bilingual JSDoc annotations.
+- **Breadcrumbs**: Introduced the `Breadcrumbs` constructor component, properties definition (`BreadcrumbsPropsBasic`), events, and slots. Added skeleton loading support and integrated text translations.
+- **Bullet / BulletItem**: Introduced the new `Bullet` and `BulletItem` constructor components for rendering structured bullet lists. Decomposed list inclusion into `BulletItemInclude` and `BulletItemPropsInclude` classes/types.
+- **MotionSticky**: Refactored calculations and scroll events, standardized orchestrator overrides, and added bilingual JSDoc comments.
+- **Scripts / Tooling**: Added ServerStorage error status configuration inside `AiDoc` constructor.
+
 ## [0.77.0] - 2026-06-28
 
 ### Added

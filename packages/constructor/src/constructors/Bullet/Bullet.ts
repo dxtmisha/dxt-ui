@@ -51,4 +51,19 @@ export class Bullet {
       components
     )
   }
+
+  /**
+   * Returns the processed HTML string with styling applied to list items.
+   *
+   * Возвращает обработанную HTML-строку со стилизацией элементов списка.
+   * @returns processed HTML or undefined / обработанный HTML или undefined
+   */
+  getHtml(): string | undefined {
+    if (this.props.html) {
+      return this.props.html
+        .replace(/<li>/ig, `<li class="${this.list.getClasses()}">`)
+    }
+
+    return undefined
+  }
 }

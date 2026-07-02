@@ -27,14 +27,14 @@ export class BulletDesign<
   CLASSES extends BulletClasses,
   P extends BulletPropsBasic
 > extends DesignConstructorAbstract<
-  HTMLDivElement,
-  COMP,
-  BulletEmits,
-  EXPOSE,
-  BulletSlots,
-  CLASSES,
-  P
-> {
+    HTMLDivElement,
+    COMP,
+    BulletEmits,
+    EXPOSE,
+    BulletSlots,
+    CLASSES,
+    P
+  > {
   /** Instance of the Bullet constructor / Экземпляр конструктора Bullet */
   protected readonly item: Bullet
 
@@ -90,6 +90,7 @@ export class BulletDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
+        item: this.getSubClass('item')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -110,16 +111,15 @@ export class BulletDesign<
    * Метод для рендеринга.
    */
   protected initRender(): VNode {
+    const html = this.item.getHtml()
+    const tag = 'ul'
+    const props = {
+      ...this.getAttrs(),
+      class: this.classes?.value.main
+    }
     const children: any[] = [
       ...this.item.list.render()
     ]
-
-    if (this.props.html) {
-      children.push(
-        this.props.html
-          .replace(/<li>/ig, `<li class="${this.item.list.getClasses()}">`)
-      )
-    }
 
     if (
       this.slots
@@ -128,9 +128,10 @@ export class BulletDesign<
       this.initSlot('default', children)
     }
 
-    return h('ul', {
-      ...this.getAttrs(),
-      class: this.classes?.value.main
-    }, children)
+    if (html) {
+      return h(tag, { ...props, innerHTML: html })
+    }
+
+    return h(tag, props, children)
   }
 }

@@ -27,6 +27,17 @@ type Story = StoryObj<typeof meta>
 
 export const BulletItem: Story = {
   // :story-main [!] System label / Системная метка
+  render: (args: any) => ({
+    components: { D1BulletItem },
+    setup: () => ({ args }),
+    template: `
+      <ul style="list-style: none">
+      <D1BulletItem v-bind="args"/>
+      <D1BulletItem v-bind="args"/>
+      <D1BulletItem v-bind="args"/>
+    </ul>
+    `
+  })
   // :story-main [!] System label / Системная метка
 }
 

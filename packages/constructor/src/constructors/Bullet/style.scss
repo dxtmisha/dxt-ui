@@ -1,6 +1,7 @@
 @use "@dxtmisha/styles/properties" as ui;
 
 @mixin mixinBullet {
+  @include ui.flexStretchY;
   margin: 0;
   padding: 0;
 

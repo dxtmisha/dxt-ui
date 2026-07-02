@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.82.0] - 2026-07-02
+
+### Changed
+- **BulletItem**: Updated `wikiDescriptionsBulletItem.ts` to add `style="list-style: none"` to the demo render wrapper of the Storybook component.
+
+## [0.79.0] - 2026-06-29
+
+### Added
+- **Breadcrumbs / BreadcrumbItem / Bullet / BulletItem / MotionSticky**: Added descriptions and bilingual MDX documentation.
+
 ## [0.77.0] - 2026-06-28
 
 ### Added
