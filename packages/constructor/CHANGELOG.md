@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.83.0] - 2026-07-02
+
+### Added
+- **FormattedNumber**:
+  - Introduced the `FormattedNumber` constructor component, properties definition (`FormattedNumberPropsBasic`), slots, and layout renderer (`FormattedNumberDesign`).
+  - Merged logic from `Currency` and `Number` constructors into this unified formatting utility.
+  - Implemented unit of measurement formatting using `GeoIntl.unit(value, unit)` via the `unit` property.
+  - Implemented localized language selection via the `language` property.
+  - Implemented formatting bypass via the `format` property (returning raw string if false).
+  - Designed clean class property accessor `get item(): string` to return the formatted text.
+  - Provided comprehensive bilingual (EN/RU) JSDoc/TSDoc API annotations.
+
 ## [0.82.0] - 2026-07-02
 
 ### Changed

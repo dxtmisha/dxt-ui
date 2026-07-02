@@ -34,6 +34,7 @@ import D1Field from '../../src/components/Ui/Field/D1FieldAiWiki.vue'
 import D1FieldCounter from '../../src/components/Ui/FieldCounter/D1FieldCounterAiWiki.vue'
 import D1FieldLabel from '../../src/components/Ui/FieldLabel/D1FieldLabelAiWiki.vue'
 import D1FieldMessage from '../../src/components/Ui/FieldMessage/D1FieldMessageAiWiki.vue'
+import D1FormattedNumber from '../../src/components/Ui/FormattedNumber/D1FormattedNumberAiWiki.vue'
 import D1Grid from '../../src/components/Ui/Grid/D1GridAiWiki.vue'
 import D1GridItem from '../../src/components/Ui/GridItem/D1GridItemAiWiki.vue'
 import D1Group from '../../src/components/Ui/Group/D1GroupAiWiki.vue'
@@ -118,6 +119,7 @@ export const aiList: any[] = [
   D1FieldCounter,
   D1FieldLabel,
   D1FieldMessage,
+  D1FormattedNumber,
   D1Grid,
   D1GridItem,
   D1Group,

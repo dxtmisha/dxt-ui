@@ -33,6 +33,7 @@ import { wikiDescriptionsField } from './wikiDescriptionsField'
 import { wikiDescriptionsFieldCounter } from './wikiDescriptionsFieldCounter'
 import { wikiDescriptionsFieldLabel } from './wikiDescriptionsFieldLabel'
 import { wikiDescriptionsFieldMessage } from './wikiDescriptionsFieldMessage'
+import { wikiDescriptionsFormattedNumber } from './wikiDescriptionsFormattedNumber'
 import { wikiDescriptionsGrid } from './wikiDescriptionsGrid'
 import { wikiDescriptionsGridItem } from './wikiDescriptionsGridItem'
 import { wikiDescriptionsGroup } from './wikiDescriptionsGroup'
@@ -117,6 +118,7 @@ export const wikiDescriptions: StorybookComponentsDescription = [
   wikiDescriptionsFieldCounter,
   wikiDescriptionsFieldLabel,
   wikiDescriptionsFieldMessage,
+  wikiDescriptionsFormattedNumber,
   wikiDescriptionsGrid,
   wikiDescriptionsGridItem,
   wikiDescriptionsGroup,

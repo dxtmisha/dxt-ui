@@ -168,6 +168,17 @@ export const wikiValue: StorybookArgsToList = {
     },
     hide: true
   },
+  unit: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.value,
+      type: 'string',
+      description: {
+        en: 'Unit of measurement for formatting',
+        ru: 'Единица измерения для форматирования'
+      }
+    }
+  },
   value: {
     type: StorybookControl.string,
     options: {

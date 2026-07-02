@@ -1,0 +1,49 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+## Description
+
+Inline formatted text component for displaying numbers, currencies, and units of measurement, automatically formatted according to localized standards.
+
+FormattedNumber provides a simple, clean interface for presenting numeric data without redundant layout wrapper tags. It supports custom locale configuration, currency formatting with standard codes, unit formatting, and the ability to selectively disable formatting.
+
+**Key features:**
+
+- Standard localized number formatting (decimals, separators).
+- Currency formatting with standard codes (e.g. USD, EUR, RUB).
+- Unit of measurement formatting support (e.g. kilogram, liter, percent).
+- Formatting bypass: when `format` is `false`, outputs the raw value converted to a string.
+- Localized language overriding via the `language` prop.
+- Lightweight inline rendering (renders as a `span` tag).
+
+**Common use cases:**
+
+- Displaying prices and financial values in product lists.
+- Displaying numeric values with units (weights, lengths, percentages).
+- Showing localized numeric statistics in dashboards or reports.
+- Displaying raw numbers where standard formatting is undesirable.
+
+<Source
+    code={`
+<template>
+  <div class="formatted-number-examples">
+    <!-- Basic localized number -->
+    <FormattedNumber :value="1234567.89"/>
+
+    <!-- Currency display -->
+    <FormattedNumber :value="99.9" currency="USD"/>
+
+    <!-- Unit display -->
+    <FormattedNumber :value="1500" unit="kilogram"/>
+
+    <!-- Non-formatted display -->
+    <FormattedNumber :value="4500" :format="false"/>
+
+    <!-- Overridden locale -->
+    <FormattedNumber :value="1234.56" language="ru-RU"/>
+  </div>
+</template>
+  `}
+    language="html"
+/>
+
+> FormattedNumber is designed as a lightweight, inline utility component for presenting localized numbers, currencies, and units cleanly in any part of the UI.

@@ -12571,6 +12571,11 @@
         name: 'd1-fieldMessage',
         type: 'component',
       ),
+      'formattedNumber':(
+        index: 'formattedNumber',
+        name: 'd1-formattedNumber',
+        type: 'component',
+      ),
       'grid':(
         index: 'grid',
         name: 'd1-grid',
@@ -13242,6 +13247,11 @@
       'fieldMessage':(
         index: 'fieldMessage',
         name: 'd-fieldMessage',
+        type: 'component',
+      ),
+      'formattedNumber':(
+        index: 'formattedNumber',
+        name: 'd-formattedNumber',
         type: 'component',
       ),
       'grid':(

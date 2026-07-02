@@ -39,6 +39,7 @@ import { wikiMdxField } from './Field/wikiMdxField'
 import { wikiMdxFieldCounter } from './FieldCounter/wikiMdxFieldCounter'
 import { wikiMdxFieldLabel } from './FieldLabel/wikiMdxFieldLabel'
 import { wikiMdxFieldMessage } from './FieldMessage/wikiMdxFieldMessage'
+import { wikiMdxFormattedNumber } from './FormattedNumber/wikiMdxFormattedNumber'
 import { wikiMdxGrid } from './Grid/wikiMdxGrid'
 import { wikiMdxGridItem } from './GridItem/wikiMdxGridItem'
 import { wikiMdxGroup } from './Group/wikiMdxGroup'
@@ -129,6 +130,7 @@ export const wikiMdx: StorybookComponentsMdx = [
   wikiMdxFieldCounter,
   wikiMdxFieldLabel,
   wikiMdxFieldMessage,
+  wikiMdxFormattedNumber,
   wikiMdxGrid,
   wikiMdxGridItem,
   wikiMdxGroup,

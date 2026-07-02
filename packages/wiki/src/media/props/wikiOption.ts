@@ -149,6 +149,16 @@ export const wikiOption: StorybookArgsToList = {
       }
     }
   },
+  format: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.option,
+      description: {
+        en: 'Whether to format the value',
+        ru: 'Требуется ли форматировать значение'
+      }
+    }
+  },
   formatting: {
     type: StorybookControl.boolean,
     options: {

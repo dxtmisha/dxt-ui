@@ -34,6 +34,7 @@ import _D1Field from '../components/Ui/Field/D1Field.vue'
 import _D1FieldCounter from '../components/Ui/FieldCounter/D1FieldCounter.vue'
 import _D1FieldLabel from '../components/Ui/FieldLabel/D1FieldLabel.vue'
 import _D1FieldMessage from '../components/Ui/FieldMessage/D1FieldMessage.vue'
+import _D1FormattedNumber from '../components/Ui/FormattedNumber/D1FormattedNumber.vue'
 import _D1Grid from '../components/Ui/Grid/D1Grid.vue'
 import _D1GridItem from '../components/Ui/GridItem/D1GridItem.vue'
 import _D1Group from '../components/Ui/Group/D1Group.vue'
@@ -119,6 +120,7 @@ declare module '@vue/runtime-core' {
     D1FieldCounter: typeof _D1FieldCounter
     D1FieldLabel: typeof _D1FieldLabel
     D1FieldMessage: typeof _D1FieldMessage
+    D1FormattedNumber: typeof _D1FormattedNumber
     D1Grid: typeof _D1Grid
     D1GridItem: typeof _D1GridItem
     D1Group: typeof _D1Group

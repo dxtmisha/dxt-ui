@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.83.0] - 2026-07-02
+
+### Added
+- **FormattedNumber**:
+  - Registered descriptions and MDX documentation files for the new `FormattedNumber` component.
+  - Added `wikiDescriptionsFormattedNumber.ts` with possibilities, story templates, and metadata.
+  - Created `formattedNumber.en.mdx` / `formattedNumber.ru.mdx` files.
+  - Registered MDX configuration mappings inside `wikiMdxFormattedNumber.ts`.
+  - Integrated config layouts under global wiki registry config lists `wikiDescriptions.ts` and `wikiMdx.ts`.
+  - Added global properties `format` in `wikiOption.ts` and `unit` in `wikiValue.ts`.
+  - Created component-specific properties list configuration `wikiFormattedNumber.ts` defining `formattedNumber.value`, and registered it in `wiki.ts`.
+
 ## [0.82.0] - 2026-07-02
 
 ### Changed

@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.83.0] - 2026-07-02
+
+### Added
+- **D1FormattedNumber**:
+  - Introduced the `D1FormattedNumber` styled UI component wrapping the `FormattedNumber` constructor.
+  - Configured custom design tokens under `properties.json` and styles under `styleToken.scss`.
+  - Added support for value, currency, unit, language, and format props.
+  - Implemented interactive rendering previews (`D1FormattedNumberAiWiki.vue`), Storybook stories (`D1FormattedNumber.stories.ts`), and bilingual MDX documentation.
+  - Registered exports and routes under global library configs.
+
 ## [0.82.0] - 2026-07-02
 
 ### Added

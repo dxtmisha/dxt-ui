@@ -9362,6 +9362,17 @@
           }
         }
       },
+      "formattedNumber": {
+        "name": "d1-formattedNumber",
+        "type": "component",
+        "value": {
+          "main": {
+            "name": "--d1-formattedNumber-main",
+            "type": "var",
+            "value": "{d.formattedNumber}"
+          }
+        }
+      },
       "grid": {
         "name": "d1-grid",
         "type": "component",
