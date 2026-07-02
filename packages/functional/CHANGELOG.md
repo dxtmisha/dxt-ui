@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.15.0] - 2026-07-02
+
+### Added
+- **GeoUnitRef**: Introduced a new reactive class wrapper `GeoUnitRef` that wraps the isomorphic `GeoUnit` class to support Vue 3 `Ref` values as input parameters, returning `ComputedRef<string>` values for all unit formatting methods.
+- **useGeoUnitRef**: Added a new composable function `useGeoUnitRef()` to return a `GeoUnitRef` instance.
+- **Tests**: Created comprehensive unit tests in `GeoUnitRef.test.ts` and `useGeoUnitRef.test.ts` to verify Vue reactivity integration.
+
 ## [1.14.5] - 2026-06-29
 
 ### Changed

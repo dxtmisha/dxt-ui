@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.7.0] - 2026-07-02
+
+### Added
+- **Units Configuration**: Added `unit` configuration options inside `geo.json` for countries using non-metric/customary units (US, Myanmar, Liberia, United Kingdom).
+
+### Changed
+- **Standardized Unit Keys**: Renamed and mapped all unit override keys and values in `geo.json` to follow standard Unicode CLDR / JS `Intl` identifiers (e.g. `square-meter`, `kilometer-per-hour`).
+
 ## [0.6.1] - 2026-06-25
 
 ### Added

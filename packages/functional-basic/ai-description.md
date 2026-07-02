@@ -1,21 +1,21 @@
-### Core Purpose
-This library is an isomorphic, highly modular utility suite for TypeScript/JavaScript applications. Its primary functions include managing HTTP requests (via `fetch` with integrated caching, retry logic, and error handling), state management for URLs (Query/Hash), UI-side utilities (internationalization, date/time formatting, cookie/storage management), and search/filtering logic for data lists.
+Core Purpose: This library is a comprehensive isomorphic toolkit for web application development, providing high-level abstractions for API communication (fetch/caching/hydration), internationalization (translations/formatting), localized date/time manipulation, persistent data storage (Cookie/LocalStorage), reactive URL state management (Hash/Query), and DOM event handling.
 
-### Key Expositions
-*   **API Management**: `Api`, `ApiInstance`, and `ApiCache` manage HTTP requests, caching, hydration (for SSR), and global configuration. `ApiErrorStorage` and `ApiErrorItem` provide a centralized mechanism for identifying and processing API errors.
-*   **Data & State Management**: `DataStorage` (LocalStorage/SessionStorage), `CookieStorage`, and `ServerStorage` handle persistent state. `QueryInstance` and `HashInstance` provide reactive synchronization for URL parameters.
-*   **Localization & Internationalization**: `Geo`, `GeoIntl`, `Translate`, and `Datetime` provide full internationalization support, including locale-specific date formatting, phone masking, and multi-language translation management.
-*   **DOM/UI Utilities**: `EventItem` provides a robust, lifecycle-managed wrapper for DOM events with specialized support for `ResizeObserver` and scroll synchronization. `LoadingInstance` provides a standardized loading state bus.
-*   **Meta Tag Management**: `Meta`, `MetaOg`, and `MetaTwitter` offer a unified API for managing standard HTML meta tags, Open Graph, and Twitter Cards.
-*   **Search Engine**: `SearchList` and associated classes provide high-performance, regex-based client-side searching with highlighting capabilities.
+Key Expositions:
+1. Api & ApiInstance: Orchestrates HTTP requests with support for middleware (preparation/end), automatic hydration for SSR, request caching, and centralized error handling.
+2. Geo, GeoIntl, GeoFlag, GeoPhone, GeoUnit: A suite for locale-sensitive data handling including currency, date, numeric, and unit conversions (metric/imperial based on region).
+3. Meta, MetaOg, MetaTwitter: Declarative management of HTML head tags, Open Graph, and Twitter Cards.
+4. DataStorage, CookieStorage, ServerStorage: Unified persistent storage interfaces with built-in SSR data isolation and hydration support.
+5. SearchList: A specialized state machine for filtering, matching, and highlighting item collections based on column definitions and regex search.
+6. EventItem: A robust wrapper for DOM listeners that includes auto-cleanup, lifecycle control, and specialized optimizations (e.g., resize/scroll-sync).
+7. Translation System: Asynchronous/Synchronous multi-locale translation manager with fallback logic and file-based loading.
 
-### Triggers for Studying ai-types.md
-It is mandatory to analyze `ai-types.md` if:
-*   You are implementing or extending any API request logic (`Api`, `ApiFetch`).
-*   You are defining global configurations or custom types for error handling (`ApiErrorStorageItem`).
-*   You are working with `Geo`, `Translate`, or `Search` components that require specific configuration structures.
-*   You are implementing data hydration or SSR-related logic.
-*   You need to understand the interface signatures for complex utility types (`ApiData`, `GeoItem`, `SearchOptions`).
+Triggers for Studying ai-types.md:
+It is mandatory to analyze ai-types.md when:
+- You need to extend or define custom configurations for the API layer (ApiConfig, ApiFetch).
+- You are implementing custom Error/Exception handling logic using the ErrorCenter structures.
+- You are adding new locale definitions, phone mask structures, or unit conversion mappings.
+- You need to debug hydration mismatches between SSR and client-side data state.
+- You are extending search logic or defining new search list result types.
 
-### Integration Context
-This library operates as a core infrastructure layer. It interacts with the browser's `Fetch API` and `DOM` primitives, and leverages `Intl` for localization. It is designed for environment-agnostic use (isomorphic), meaning it includes `ServerStorage` and hydration logic to bridge the state gap between server-side rendering (SSR) environments and client-side execution.
+Integration Context: 
+This library serves as the foundation layer for application state and external communication. It is designed to be used in conjunction with modern reactive frameworks (Vue/React) by leveraging the provided hydration hooks to synchronize state between the server environment and the browser client. It relies on the global DOM environment where available, but degrades to neutral behaviors or errors in non-browser environments to ensure compatibility with SSR processes.

@@ -13,7 +13,22 @@
     "phoneCode": "1",
     "phoneMask": [
       "+1-***-***-****"
-    ]
+    ],
+    "unit": {
+      "millimeter": "inch",
+      "centimeter": "inch",
+      "meter": "foot",
+      "kilometer": "mile",
+      "square-meter": "square-foot",
+      "hectare": "acre",
+      "gram": "ounce",
+      "kilogram": "pound",
+      "tonne": "ton",
+      "milliliter": "fluid-ounce",
+      "liter": "gallon",
+      "celsius": "fahrenheit",
+      "kilometer-per-hour": "mile-per-hour"
+    }
   },
   {
     "country": "AD",
@@ -215,7 +230,11 @@
     "phoneCode": "44",
     "phoneMask": [
       "+44-**-****-****"
-    ]
+    ],
+    "unit": {
+      "kilometer": "mile",
+      "kilometer-per-hour": "mile-per-hour"
+    }
   },
   {
     "country": "GE",
@@ -447,7 +466,22 @@
       "+95-***-***",
       "+95-*-***-***",
       "+95-**-***-***"
-    ]
+    ],
+    "unit": {
+      "millimeter": "inch",
+      "centimeter": "inch",
+      "meter": "foot",
+      "kilometer": "mile",
+      "square-meter": "square-foot",
+      "hectare": "acre",
+      "gram": "ounce",
+      "kilogram": "pound",
+      "tonne": "ton",
+      "milliliter": "fluid-ounce",
+      "liter": "gallon",
+      "celsius": "fahrenheit",
+      "kilometer-per-hour": "mile-per-hour"
+    }
   },
   {
     "country": "MN",
@@ -1528,7 +1562,22 @@
     "zone": "Africa/Monrovia",
     "language": "en",
     "firstDay": null,
-    "phoneMask": "+231-**-***-***"
+    "phoneMask": "+231-**-***-***",
+    "unit": {
+      "millimeter": "inch",
+      "centimeter": "inch",
+      "meter": "foot",
+      "kilometer": "mile",
+      "square-meter": "square-foot",
+      "hectare": "acre",
+      "gram": "ounce",
+      "kilogram": "pound",
+      "tonne": "ton",
+      "milliliter": "fluid-ounce",
+      "liter": "gallon",
+      "celsius": "fahrenheit",
+      "kilometer-per-hour": "mile-per-hour"
+    }
   },
   {
     "country": "LS",

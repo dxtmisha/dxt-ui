@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.5.0] - 2026-07-02
+
+### Added
+- **GeoUnit**: Introduced a new isomorphic class `GeoUnit` for localized unit formatting and automatic conversions (e.g. converting and formatting Celsius to Fahrenheit, grams to ounces, meters to feet) for customary unit systems (US, Myanmar, Liberia, UK).
+- **Tests**: Created a comprehensive test suite `GeoUnit.test.ts` to verify unit translation and formatting across multiple locales.
+
+### Changed
+- **geoTypes**: Standardized `GeoItem['unit']` property types in `geoTypes.ts` to use exact Unicode CLDR unit names.
+
 ## [1.4.4] - 2026-06-27
 
 ### Added
