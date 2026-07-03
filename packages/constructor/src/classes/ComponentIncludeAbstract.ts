@@ -87,17 +87,19 @@ export abstract class ComponentIncludeAbstract<
   }
 
   /**
-   * Checks whether the component should be displayed /
-   * Проверяет, нужно ли отображать компонент
+   * Checks whether the component should be displayed.
+   *
+   * Проверяет, нужно ли отображать компонент.
    */
   get is(): boolean {
     return true
   }
 
   /**
-   * Get the menu element /
-   * Получить элемент меню
-   * @returns menu element or undefined / элемент меню или undefined
+   * Returns the referenced element or sub-component instance.
+   *
+   * Возвращает связанный элемент или экземпляр субкомпонента.
+   * @returns element or sub-component instance / элемент или экземпляр субкомпонента
    */
   getElement() {
     return this.element.value
@@ -110,13 +112,15 @@ export abstract class ComponentIncludeAbstract<
    * @param slotsChildren sub-component slots / слоты субкомпонента
    * @param attrs additional override attributes / дополнительные переопределяющие атрибуты
    * @param isShow function returns true if the component should be rendered / функция возвращает true, если компонент должен быть отрисован
+   * @param index unique rendering key / уникальный ключ рендеринга
    * @returns array of VNodes / массив VNode
    */
   readonly render = (
     slotsChildren?: ComponentSlots,
     attrs?: PartialPropsExtra,
-    isShow: () => boolean = () => this.is
-  ): VNode[] => this.initRender(slotsChildren, attrs, isShow)
+    isShow: () => boolean = () => this.is,
+    index?: string
+  ): VNode[] => this.initRender(slotsChildren, attrs, isShow, index)
 
   /**
    * Generates the CSS class name according to BEM structure.
@@ -250,12 +254,14 @@ export abstract class ComponentIncludeAbstract<
    * @param slotsChildren sub-component slots / слоты субкомпонента
    * @param attrs additional override attributes / дополнительные переопределяющие атрибуты
    * @param isShow function returns true if the component should be rendered / функция возвращает true, если компонент должен быть отрисован
+   * @param index unique rendering key / уникальный ключ рендеринга
    * @returns array of VNodes / массив VNode
    */
   protected initRender(
     slotsChildren?: ComponentSlots,
     attrs?: PartialPropsExtra,
-    isShow: () => boolean = () => this.is
+    isShow: () => boolean = () => this.is,
+    index?: string
   ): VNode[] {
     if (
       this.components
@@ -265,7 +271,7 @@ export abstract class ComponentIncludeAbstract<
         this.name,
         this.getAttrs(attrs),
         slotsChildren as RawSlots,
-        this.index
+        index ?? this.index
       )
     }
 

@@ -102,6 +102,44 @@ export class InputCodeItemInclude extends ComponentIncludeAbstract<
   }
 
   /**
+   * Resets the collected items array.
+   *
+   * Сбрасывает массив собранных элементов.
+   */
+  readonly reset = () => {
+    this.items.value = []
+  }
+
+  /**
+   * Resets the values of all code items.
+   *
+   * Сбрасывает значения всех элементов кода.
+   */
+  readonly resetValue = () => {
+    this.update('')
+    this.onInput()
+  }
+
+  /**
+   * Input event handler. Collects full code value and calls update event.
+   *
+   * Обработчик события ввода. Собирает полное значение кода и вызывает событие обновления.
+   */
+  readonly onInput = () => {
+    let value = ''
+
+    for (const item of this.items.value) {
+      if (!isFilled(item.value, true)) {
+        break
+      }
+
+      value += item.value
+    }
+
+    this.onUpdate?.(value)
+  }
+
+  /**
    * Backspace event handler. Moves focus backwards when item is empty.
    *
    * Обработчик события Backspace. Перемещает фокус назад, когда элемент пуст.
@@ -153,44 +191,6 @@ export class InputCodeItemInclude extends ComponentIncludeAbstract<
   }
 
   /**
-   * Input event handler. Collects full code value and calls update event.
-   *
-   * Обработчик события ввода. Собирает полное значение кода и вызывает событие обновления.
-   */
-  readonly onInput = () => {
-    let value = ''
-
-    for (const item of this.items.value) {
-      if (!isFilled(item.value, true)) {
-        break
-      }
-
-      value += item.value
-    }
-
-    this.onUpdate?.(value)
-  }
-
-  /**
-   * Resets the collected items array.
-   *
-   * Сбрасывает массив собранных элементов.
-   */
-  readonly reset = () => {
-    this.items.value = []
-  }
-
-  /**
-   * Resets the values of all code items.
-   *
-   * Сбрасывает значения всех элементов кода.
-   */
-  readonly resetValue = () => {
-    this.update('')
-    this.onInput()
-  }
-
-  /**
    * Renders a single InputCodeItem component.
    *
    * Рендерит один компонент InputCodeItem.
@@ -200,41 +200,52 @@ export class InputCodeItemInclude extends ComponentIncludeAbstract<
    * @param error error status / статус ошибки
    * @returns rendered virtual node list / отрендеренный список виртуальных нод
    */
-  readonly renderInputCodeItem = (
+  readonly renderItem = (
     index: InputCodeItemPropsBasic['index'],
     move: boolean,
     success?: boolean,
     error?: boolean
   ): VNode[] => {
-    if (this.components) {
-      return [
-        this.components.renderOne(
-          this.name,
-          {
-            ...this.getProps().itemAttrs,
-            ref: (item: any) => {
-              if (item) {
-                this.items.value.push(item)
-              }
-            },
-            move,
-            disabled: this.getProps().disabled,
-            index,
-            match: this.getProps().match,
-            placeholder: this.getProps().placeholder,
-            success,
-            error,
-            class: `${this.className}__item`,
-            onInput: this.onInput,
-            onPaste: this.onPaste,
-            onBackspace: this.onBackspace
-          },
-          undefined,
-          `item-${String(index)}`
-        ) as VNode
-      ]
-    }
+    return this.render(
+      undefined,
+      {
+        move,
+        index,
+        success,
+        error
+      },
+      undefined,
+      `item-${String(index)}`
+    )
+  }
 
-    return []
+  /**
+   * Combines input attributes with internal component bindings.
+   *
+   * Объединяет входные атрибуты со внутренними привязками компонента.
+   * @returns resolved bindings / разрешенные привязки
+   */
+  protected override toBinds() {
+    const props = this.getProps()
+    const binds = super.toBinds()
+
+    return {
+      ...binds,
+
+      ref: (item: any) => {
+        if (item) {
+          this.items.value.push(item)
+        }
+      },
+
+      disabled: props.disabled,
+      match: props.match,
+      inputmode: props.inputmode,
+      placeholder: props.placeholder,
+
+      onInput: this.onInput,
+      onPaste: this.onPaste,
+      onBackspace: this.onBackspace
+    }
   }
 }
