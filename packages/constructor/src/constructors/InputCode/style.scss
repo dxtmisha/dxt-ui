@@ -1,5 +1,7 @@
 @use "@dxtmisha/styles/properties" as ui;
 
 @mixin mixinInputCode {
-
+  &__context {
+    display: flex;
+  }
 }

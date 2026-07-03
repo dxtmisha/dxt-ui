@@ -2,13 +2,14 @@ import { h, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
-  DesignConstructorAbstract
+  DesignConstructorAbstract,
+  isFilled
 } from '@dxtmisha/functional'
 
 import { InputCode } from './InputCode'
 
 import {
-  type InputCodePropsBasic
+  type InputCodeProps
 } from './props'
 import {
   type InputCodeClasses,
@@ -19,13 +20,15 @@ import {
 } from './types'
 
 /**
- * InputCodeDesign
+ * Design constructor class for InputCode component.
+ *
+ * Класс конструктора дизайна для компонента InputCode.
  */
 export class InputCodeDesign<
   COMP extends InputCodeComponents,
   EXPOSE extends InputCodeExpose,
   CLASSES extends InputCodeClasses,
-  P extends InputCodePropsBasic
+  P extends InputCodeProps
 > extends DesignConstructorAbstract<
     HTMLDivElement,
     COMP,
@@ -39,10 +42,10 @@ export class InputCodeDesign<
 
   /**
    * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor constructors item class/ класс элемента конструкторов
+   * @param name class name / название класса
+   * @param props properties / свойства
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor constructors item class / класс элемента конструкторов
    */
   constructor(
     name: string,
@@ -67,21 +70,20 @@ export class InputCodeDesign<
       this.emits
     )
 
-    // TODO: Method for initializing base objects
-    // TODO: Метод для инициализации базовых объектов
-
     this.init()
   }
 
   /**
-   * Initialization of all the necessary properties for work
+   * Initialization of all the necessary properties for work.
    *
    * Инициализация всех необходимых свойств для работы.
    */
   protected initExpose(): EXPOSE {
     return {
-      // TODO: list of properties for export
-      // TODO: список свойств для экспорта
+      value: this.item.value,
+      set: (value: string | number) => this.item.inputCodeItem.update(String(value)),
+      reset: () => this.item.inputCodeItem.resetValue(),
+      focus: () => this.item.inputCodeItem.focus()
     } as EXPOSE
   }
 
@@ -95,6 +97,7 @@ export class InputCodeDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
+        context: this.getSubClass('context')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -106,10 +109,7 @@ export class InputCodeDesign<
    * Доработка полученного списка стилей.
    */
   protected initStyles(): ConstrStyles {
-    return {
-      // TODO: list of user styles
-      // TODO: список пользовательских стилей
-    }
+    return {}
   }
 
   /**
@@ -118,12 +118,55 @@ export class InputCodeDesign<
    * Метод для рендеринга.
    */
   protected initRender(): VNode {
-    // const children: any[] = []
+    const children: any[] = [
+      ...this.item.fieldLabel.render(),
+      this.renderContext(),
+      ...this.item.fieldMessage.render()
+    ]
 
-    return h('div', {
-      // ...this.getAttrs(),
-      ref: this.element,
-      class: this.classes?.value.main
-    })
+    return h(
+      'div',
+      {
+        ...this.getAttrs(),
+        ref: this.element,
+        class: this.classes?.value.main
+      },
+      children
+    )
+  }
+
+  /**
+   * Rendering the context part of input fields.
+   *
+   * Рендеринг контекстной части полей ввода.
+   */
+  protected readonly renderContext = (): VNode => {
+    return h(
+      'div',
+      { class: this.classes?.value.context },
+      this.renderItems()
+    )
+  }
+
+  /**
+   * Rendering the individual code input items.
+   *
+   * Рендеринг отдельных элементов ввода кода.
+   */
+  protected readonly renderItems = (): VNode[] => {
+    const children: any[] = []
+
+    this.item.inputCodeItem.reset()
+
+    for (let i = 0; i < (this.props.length ?? 1); i++) {
+      children.push(...this.item.inputCodeItem.renderItem(
+        i,
+        true,
+        undefined,
+        isFilled(this.props.validation || this.item.fieldMessage.validation)
+      ))
+    }
+
+    return children
   }
 }

@@ -33,14 +33,14 @@ export class InputCodeItemDesign<
   CLASSES extends InputCodeItemClasses,
   P extends InputCodeItemPropsBasic
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
-    COMP,
-    InputCodeItemEmits,
-    EXPOSE,
-    InputCodeItemSlots,
-    CLASSES,
-    P
-  > {
+  HTMLDivElement,
+  COMP,
+  InputCodeItemEmits,
+  EXPOSE,
+  InputCodeItemSlots,
+  CLASSES,
+  P
+> {
   /** Instance of the InputCodeItem logic class / Экземпляр класса логики InputCodeItem */
   protected readonly item: InputCodeItem
 
@@ -88,7 +88,7 @@ export class InputCodeItemDesign<
   protected initExpose(): EXPOSE {
     return {
       index: this.props.index,
-      value: this.item.value.value,
+      getValue: () => this.item.value.get(),
       set: this.item.value.set,
       reset: this.item.value.reset,
       focusInput: this.item.focus

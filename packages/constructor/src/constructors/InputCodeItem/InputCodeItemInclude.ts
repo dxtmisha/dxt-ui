@@ -80,7 +80,7 @@ export class InputCodeItemInclude extends ComponentIncludeAbstract<
   readonly focus = () => {
     if (this.items.value.length > 0) {
       for (const item of this.items.value) {
-        if (!isFilled(item.value, true)) {
+        if (!isFilled(item.getValue(), true)) {
           item.focusInput()
           return
         }
@@ -129,11 +129,11 @@ export class InputCodeItemInclude extends ComponentIncludeAbstract<
     let value = ''
 
     for (const item of this.items.value) {
-      if (!isFilled(item.value, true)) {
+      if (!isFilled(item.getValue(), true)) {
         break
       }
 
-      value += item.value
+      value += item.getValue()
     }
 
     this.onUpdate?.(value)
@@ -149,11 +149,11 @@ export class InputCodeItemInclude extends ComponentIncludeAbstract<
 
     this.items.value.forEach((item, index) => {
       if (
-        !isFilled(item.value, true)
+        !isFilled(item.getValue(), true)
         || none
       ) {
         none = true
-        item.set(this.items.value[index + 1]?.value || '')
+        item.set(this.items.value[index + 1]?.getValue() || '')
       }
     })
   }

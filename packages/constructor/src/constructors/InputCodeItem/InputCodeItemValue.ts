@@ -18,7 +18,7 @@ export class InputCodeItemValue {
    */
   constructor(
     protected readonly element: Ref<HTMLElement | undefined>
-  ) {}
+  ) { }
 
   /**
    * Checks if the data is filled.
@@ -28,6 +28,16 @@ export class InputCodeItemValue {
    */
   is(): boolean {
     return isFilled(this.value.value, true)
+  }
+
+  /**
+   * Get the current value.
+   *
+   * Получить текущее значение.
+   * @returns current value / текущее значение
+   */
+  get(): string {
+    return this.value.value
   }
 
   /**

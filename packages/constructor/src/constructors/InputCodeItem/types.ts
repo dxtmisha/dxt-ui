@@ -1,4 +1,3 @@
-import type { Ref } from 'vue'
 import type { ConstrClass } from '@dxtmisha/functional'
 import type { InputCodeItemPropsBasic } from './props'
 
@@ -34,7 +33,7 @@ export interface InputCodeItemExpose {
   /** Item index / Индекс элемента */
   index: InputCodeItemPropsBasic['index']
   /** Reactive reference to the value / Реактивная ссылка на значение */
-  value: Ref<string>
+  getValue(): string
   /** Set the item's value / Установить значение элемента */
   set(value: string): void
   /** Reset the item's value / Сбросить значение элемента */
