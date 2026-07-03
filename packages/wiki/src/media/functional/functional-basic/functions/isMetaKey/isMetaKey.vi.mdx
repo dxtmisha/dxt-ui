@@ -1,0 +1,30 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/isMetaKey - Kiểm tra nhấn phím bổ trợ/phím meta'/>
+
+# `isMetaKey`
+
+Kiểm tra xem sự kiện bàn phím có chứa các phím bổ trợ/phím meta đang hoạt động (Command, Alt/Option, Control) hay không. Hàm này hữu ích để lọc các sự kiện bàn phím khi bạn muốn bỏ qua các tổ hợp phím bổ trợ (ví dụ: CMD+C, CTRL+V, ALT+TAB).
+
+**Tham số:**
+- `event: KeyboardEvent` — đối tượng sự kiện bàn phím.
+
+**Trả về:**
+`boolean` — `true` nếu bất kỳ phím nào trong số `metaKey`, `altKey` hoặc `ctrlKey` được nhấn, ngược lại là `false`.
+
+**Các thuộc tính sự kiện được hỗ trợ:**
+Hàm kiểm tra các thuộc tính sự kiện sau:
+- `metaKey`
+- `altKey`
+- `ctrlKey`
+
+```typescript
+import { isMetaKey } from '@dxtmisha/functional-basic'
+
+const onKeyDown = (event: KeyboardEvent) => {
+  if (isMetaKey(event)) {
+    // Bỏ qua tổ hợp phím bổ trợ
+    return
+  }
+}
+```

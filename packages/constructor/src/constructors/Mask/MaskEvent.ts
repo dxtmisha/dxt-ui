@@ -1,4 +1,4 @@
-import { eventStopPropagation, getClipboardData, writeClipboardData } from '@dxtmisha/functional'
+import { eventStopPropagation, getClipboardData, isMetaKey, writeClipboardData } from '@dxtmisha/functional'
 
 import { MaskBuffer } from './MaskBuffer'
 import { MaskFocus } from './MaskFocus'
@@ -105,7 +105,7 @@ export class MaskEvent {
       this.makeChange(event)
     }
 
-    if (this.isMetaKey(event)) {
+    if (isMetaKey(event)) {
       return undefined
     }
 
@@ -142,7 +142,7 @@ export class MaskEvent {
       .set('keyup', event)
       .go()
 
-    if (this.isMetaKey(event)) {
+    if (isMetaKey(event)) {
       return undefined
     }
 
@@ -263,16 +263,6 @@ export class MaskEvent {
   readonly onClick = (event: MouseEvent): void => {
     this.makeToEnd(event)
     this.makeToStart(event)
-  }
-
-  /**
-   * Was a meta button pressed.
-   *
-   * Была ли нажата мета-кнопка.
-   * @param event invoked event/ вызываемое событие
-   */
-  protected isMetaKey(event: KeyboardEvent): boolean {
-    return event.metaKey || event.altKey || event.ctrlKey
   }
 
   /**

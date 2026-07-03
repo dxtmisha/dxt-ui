@@ -1,0 +1,69 @@
+@use "@dxtmisha/styles/properties" as ui;
+
+@mixin mixinInputCodeItem {
+  display: flex;
+  flex-basis: 1px;
+  flex-grow: 1;
+  flex-shrink: 1;
+  position: relative;
+
+  transition-timing-function: linear;
+  transition-duration: ui.v('d.sys.transitionDuration.standard');
+
+  &__input {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-basis: 100%;
+    position: relative;
+    z-index: 4;
+
+    margin: 0;
+    padding: 0;
+
+    width: 100%;
+    height: inherit;
+
+    text-align: center;
+    background-color: transparent;
+    border: none;
+    border-radius: inherit;
+
+    &::-webkit-clear-button,
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button,
+    &::-webkit-search-cancel-button {
+      -webkit-appearance: none;
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  &__sub {
+    @include ui.flexCenter;
+    display: none;
+    @include ui.absolute;
+
+    &:before {
+      content: "•";
+    }
+  }
+
+  &--hide {
+    @include ui.subclass('input') {
+      color: transparent !important;
+      caret-color: rgba(var(--sys-color), var(--sys-color-opacity, var(--sys-color-opacity-custom, 1)));
+
+      &:not(:placeholder-shown) + {
+        @include ui.subclass('sub') {
+          display: flex;
+        }
+      }
+      &:after {
+        content: "@";
+      }
+    }
+  }
+}

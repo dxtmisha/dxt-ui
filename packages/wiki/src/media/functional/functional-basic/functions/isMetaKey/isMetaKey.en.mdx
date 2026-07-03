@@ -1,0 +1,30 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/isMetaKey - Check for meta/modifier key press'/>
+
+# `isMetaKey`
+
+Checks if a key event contains active modifier/meta keys (Command, Alt/Option, Control). This function is useful for filtering keyboard events when you want to ignore modifier key combinations (e.g., CMD+C, CTRL+V, ALT+TAB).
+
+**Parameters:**
+- `event: KeyboardEvent` — the keyboard event object.
+
+**Returns:**
+`boolean` — `true` if any of `metaKey`, `altKey`, or `ctrlKey` is pressed, otherwise `false`.
+
+**Supported event properties:**
+The function checks the following event properties:
+- `metaKey`
+- `altKey`
+- `ctrlKey`
+
+```typescript
+import { isMetaKey } from '@dxtmisha/functional-basic'
+
+const onKeyDown = (event: KeyboardEvent) => {
+  if (isMetaKey(event)) {
+    // Ignore modifier combinations
+    return
+  }
+}
+```

@@ -27,7 +27,7 @@
     "build": "vue-tsc -b && vite build",
     "build-recovery": "npm run build && npm run wiki-storm",
     "preview": "vite preview",
-    "ui": "dxt-ui",
+    "ui": "dxt-ui InputCode",
     "wiki-storm": "dxt-wiki-storm",
     "types": "dxt-types",
     "screenshot": "dxt-screenshot",
@@ -402,6 +402,14 @@
     "./D1FormattedUnit": {
       "types": "./dist/src/library/D1FormattedUnit.d.ts",
       "default": "./dist/D1FormattedUnit.js"
+    },
+    "./D1InputCodeItem": {
+      "types": "./dist/src/library/D1InputCodeItem.d.ts",
+      "default": "./dist/D1InputCodeItem.js"
+    },
+    "./D1InputCode": {
+      "types": "./dist/src/library/D1InputCode.d.ts",
+      "default": "./dist/D1InputCode.js"
     }
   },
   "buildOptions": {

@@ -1,0 +1,30 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/isMetaKey - Проверка нажатия клавиш-модификаторов'/>
+
+# `isMetaKey`
+
+Проверяет, содержит ли событие клавиатуры активные клавиши-модификаторы (Command/Meta, Alt/Option, Control). Полезно для фильтрации ввода, когда нужно игнорировать комбинации клавиш (например, CMD+C, CTRL+V, ALT+TAB).
+
+**Параметры:**
+- `event: KeyboardEvent` — объект события клавиатуры.
+
+**Возвращает:**
+`boolean` — `true`, если нажата любая из клавиш `metaKey`, `altKey` или `ctrlKey`, иначе `false`.
+
+**Поддерживаемые свойства события:**
+Функция проверяет следующие свойства:
+- `metaKey`
+- `altKey`
+- `ctrlKey`
+
+```typescript
+import { isMetaKey } from '@dxtmisha/functional-basic'
+
+const onKeyDown = (event: KeyboardEvent) => {
+  if (isMetaKey(event)) {
+    // Игнорировать комбинации клавиш-модификаторов
+    return
+  }
+}
+```
