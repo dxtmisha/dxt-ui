@@ -29,8 +29,8 @@ Your primary goal is to generate flawless, industrial-grade code that adheres to
      2. As your ABSOLUTE SECOND ACTION, you MUST use the `view_file` tool to read the master `ai-prompt.md` file located in the project root. You MUST read the descriptions of ALL libraries mentioned in this file. If there is even a 1% chance that a library mentioned in `ai-prompt.md` contains functionality or utilities relevant to your task, you are OBLIGED to read and study all files associated with that library that are specified in the `ai-prompt.md` under its respective section. You are strictly forbidden from writing custom logic (helpers, styles, configs, classes) without first performing an exhaustive check of the workspace's existing infrastructure (like `functional`, `functional-basic`) via `grep_search` or `list_dir`.
      3. Identify all paths, directories, or packages involved in the user request.
      4. Scan the prompt for sections corresponding to those paths.
-     5. Identify all paths to auxiliary documentation, types, or developer guides mentioned in those sections.
-     6. You MUST use the `view_file` tool to read and study ALL of these referenced files BEFORE calling `list_dir` on sub-folders, writing any plans/checklists, or proposing/making code changes. Bypassing this order is a critical protocol violation.
+     5. Identify all paths to auxiliary documentation, types, or developer guides (such as `ai-types.md` or `ai-developer.md`) mentioned in those sections.
+     6. You MUST use the `view_file` tool to read and study ALL of these referenced files (specifically, if type files like `ai-types.md` or developer guides like `ai-developer.md` are specified for the packages you are working on, you MUST read them completely) BEFORE calling `list_dir` on sub-folders, writing any plans/checklists, or proposing/making code changes. Bypassing this order is a critical protocol violation.
 
 1. **"Copy-Paste Ready" Principle**:
    - Generate code that can be copied and run without a single manual edit.
@@ -88,6 +88,7 @@ Your primary goal is to generate flawless, industrial-grade code that adheres to
     - Active Application: You must actively APPLY the rules and constraints from `ai-memory.md` to all code you generate. Rules in this file override general assumptions and have the highest priority.
     - The PRIMARY PURPOSE of this file is to store critical coding guidelines, specific architectural constraints, and "do's and don'ts" (e.g., "do not use X; use Y instead") to ensure the AI writes compliant, correct code.
     - DO NOT store change logs, lists of modified files, or commit-like messages (e.g., "updated file X, updated package Y"). Keep the file clean, concise, and focused strictly on active rules, design decisions, and coding standards.
+    - DO NOT specify absolute file paths (e.g., file:///... or machine-specific directories like /Users/...) in the memory file. All references to files inside the project must use relative paths (e.g., src/types/textTypes.ts) so that the file works seamlessly for other developers on different operating systems and computers.
 
 ---
 
@@ -118,16 +119,30 @@ The rules for the implementation of Vue components are listed below. These instr
 The project is located at: 'node_modules/@dxtmisha/constructor'.
 
 ## Project context: Investigation required
-Core Purpose: This library is a comprehensive UI component framework and functional utility suite for Vue 3. It utilizes a modular, class-based architecture to manage component state, ARIA accessibility, form validation, and reactive bindings, effectively abstracting complex UI logic into reusable constructors and mixin-like classes.
+You MUST read and carefully analyze the description of this project below. If there is even a 1% chance that the functionality, components, styles, or helpers from this project could be useful for your task, you MUST immediately start analyzing this project, studying its types, and checking its structure in full to prevent custom code duplication:
+Core Purpose: This library provides a set of highly modular, class-based UI component constructors and utility logic, primarily designed for Vue 3. It abstracts component lifecycle, accessibility (ARIA), state management (v-model, loading, validation), and BEM-compliant styling into reusable helper classes to ensure consistency across a design system.
 
-Usage Scenarios: AI should study this library when tasked with building or extending UI components within this specific design system. It is indispensable for:
-1. Implementing complex form fields with validation (Field, Input, Checkbox, Select).
-2. Managing accessibility attributes programmatically using the AriaStaticInclude or specific inclusion classes.
-3. Building interactive UI containers like Modals, Dialogs, Menus, and Tabs that require standardized behaviors (auto-close, teleportation, motion transforms).
-4. Customizing component logic, such as adding advanced event handling (Touch/Click) or custom skeleton loading states.
-5. Leveraging the provided Vite plugin for component-level style and import modularization.
+Key Expositions:
+- Component Constructors: Exposes logic for building complex components like Fields, Inputs, Menus, Modals, Lists, and Buttons. Each includes `Props` (interface definitions), `Types` (emit/slot/expose signatures), and `Include` classes.
+- State & UI Controllers: 
+    - `ComponentIncludeAbstract`: Base for sub-component state and render orchestration.
+    - `Field...Include` (e.g., `FieldValidationInclude`, `FieldValueInclude`): Granular classes for handling form-field logic, native pattern validation, and reactivity.
+    - `AriaStaticInclude`: Utility for generating static ARIA attribute sets.
+    - `EventClickInclude`: Handles button/click logic including router navigation and keydown events.
+    - `ModelInclude/ModelValueInclude`: Manages two-way data binding synchronization.
+    - `FocusDirectionInclude`: Implements directional keyboard navigation within container elements.
+- Vite Plugin Classes: Provides `Plugin` and related helpers for automating component imports and style modifications during the build process.
 
-Integration Context: The library follows a strict constructor-based pattern where components are built by composing smaller functional classes (e.g., AreaInclude, CaptionInclude, EventClickInclude). It heavily depends on functional primitives for reactivity and typing. CSS is managed through BEM-structured class names generated by the component constructors, often paired with CSS variables or mixins processed by the included Vite plugin. It is designed to integrate into a Vue-based stack, providing specialized types for Props and Emits for strict type safety.
+Triggers for Studying ai-types.md:
+- Mandatory study of `ai-types.md` is required when:
+    - You are implementing new components or extending existing ones to ensure adherence to the library’s specific architectural patterns.
+    - You need to understand the library's internal naming conventions for props, slots, and expose methods.
+    - You are modifying or creating complex `Field`-based components, as these rely on specific validation and state contracts.
+    - You are configuring custom plugins or build-time code transformations.
+    - You encounter errors regarding type-safe attribute bindings (`ConstrBind`).
+
+Integration Context: 
+This library serves as a foundational engine for a design system. It integrates with Vue 3 for reactivity and rendering, leverages `@dxtmisha/functional` for base utilities (bindings, constraints, and helpers), and provides a Vite-compatible plugin architecture for efficient component and style injection. It is meant to be consumed by high-level UI components to delegate complex low-level interactivity and accessibility logic.
 
 ## Project information: Core overview
 This section contains essential information and the core overview of the project. Review this to understand the fundamental architecture and key features.
@@ -138,7 +153,7 @@ All components of the final design system inherit from this library. You can use
 WARNING: Do NOT import or use anything from this library directly in your code! Use only the ready-made global components of your design system (e.g., D1).
 
 ## Project types: Essential for analysis
-This file contains the complete type definitions for the project. As soon as you start working with this project (using any of its components/functionality, importing from it, or editing its code), you MUST read and study this type definition file as your absolute first action to understand its API and structure:
+This file contains the complete type definitions, available utilities, and component structures for the project. As soon as you start working with this project (using any of its components/functionality, importing from it, or editing its code), you MUST read, analyze, and study this type definition file COMPLETELY and IN FULL (NOT partially), as your absolute first action using the view_file tool. This is mandatory to fully understand its API, locate all existing utilities/helpers (полезности), and prevent writing duplicate code:
 'node_modules/@dxtmisha/constructor/ai-types.md'
 
 ## Mandatory Study Before Development
@@ -152,11 +167,29 @@ As soon as you start working with this project (using any of its components/func
 The project is located at: 'node_modules/@dxtmisha/d1'.
 
 ## Project context: Investigation required
-Core Purpose: A Vue 3 UI component library built on top of a core design system framework (@dxtmisha/constructor). It provides a comprehensive set of pre-styled, reactive components ranging from basic primitives (Buttons, Icons) to complex interactive structures (Dialogs, Modals, Forms, Navigation, Tabs).
+You MUST read and carefully analyze the description of this project below. If there is even a 1% chance that the functionality, components, styles, or helpers from this project could be useful for your task, you MUST immediately start analyzing this project, studying its types, and checking its structure in full to prevent custom code duplication:
+Core Purpose:
+This library provides a comprehensive suite of Vue 3 components (prefixed with D1) built upon the @dxtmisha/constructor design system. It handles UI rendering, property definition types, and build-time integration via a dedicated Vite plugin.
 
-Usage Scenarios: Indispensable when building or extending interfaces within an ecosystem that utilizes the @dxtmisha/constructor architecture. An AI should study this library when tasked with implementing, modifying, or debugging UI layouts, form fields, or state-driven overlays (modals/drawers) that rely on D1 component props, slots, or event emitters.
+Key Expositions:
+- UI Components: A wide array of functional components including D1Button, D1Input, D1Modal, D1Checkbox, D1Tabs, D1Grid, D1Alert, D1Icon, D1List, etc.
+- Component Type Definitions: Each component exposes its unique Props interface (e.g., AccordionProps, ActionSheetProps), constructed by merging base interface definitions from the core constructor with specific local tokens.
+- Vite Plugin (uiD1VitePlugin): An integration utility to configure build-time processes for the component library.
+- Media Utilities: d1MakeIcons for managing icon assets.
+- Registration Registry: componentsList and regex patterns (componentsReg, styleVarsReg) for discovery and processing of library assets.
 
-Integration Context: This library is designed to be used with Vite (via the provided uiD1VitePlugin). It acts as a high-level wrapper or implementation layer; individual components import their core logic and types from @dxtmisha/constructor, then define their own specific props and configurations. The structure is highly modular, with each component exported via a D1-prefixed naming convention. The library also includes internal dependency injection (e.g., InputPhone, Select) and specialized motion/layout components (MotionTransform, Grid, Window).
+Triggers for Studying ai-types.md:
+- Mandatory analysis is required when:
+  - Implementing, extending, or wrapping any D1-prefixed component to ensure strict adherence to internal props composition (merging Base + Token types).
+  - Configuring the build pipeline or using the uiD1VitePlugin, as custom options and plugin behavior are defined therein.
+  - Encountering type-safety errors related to component slot structures (SlotsType) or event emitters (ShortEmitsToObject).
+  - Attempting to customize theme/style variables via the registered regex patterns.
+
+Integration Context:
+- Stack: Built on Vue 3, using Vue's DefineSetupFnComponent for type-safe setup functions.
+- Core Foundation: Relies on the @dxtmisha/constructor architecture for baseline functional logic.
+- Build Tooling: Uses Vite for module resolution and plugin-based system initialization.
+- Type System: Leverages TypeScript with specific generics (SlotsType, ShortEmitsToObject) for rigid component-API contract enforcement.
 
 ## Project information: Core overview
 This section contains essential information and the core overview of the project. Review this to understand the fundamental architecture and key features.
@@ -205,16 +238,17 @@ All classes for working with text sizes are located in `node_modules/@dxtmisha/d
 3. Matching by properties: If there are no name matches, carefully study the CSS font properties in the mockup and find the most similar class in `d1-font.scss`.
 
 ## Project types: Essential for analysis
-This file contains the complete type definitions for the project. As soon as you start working with this project (using any of its components/functionality, importing from it, or editing its code), you MUST read and study this type definition file as your absolute first action to understand its API and structure:
+This file contains the complete type definitions, available utilities, and component structures for the project. As soon as you start working with this project (using any of its components/functionality, importing from it, or editing its code), you MUST read, analyze, and study this type definition file COMPLETELY and IN FULL (NOT partially), as your absolute first action using the view_file tool. This is mandatory to fully understand its API, locate all existing utilities/helpers (полезности), and prevent writing duplicate code:
 'node_modules/@dxtmisha/d1/ai-types.md'
 
 ## Project screenshots: Visual reference
 The project includes the following screenshots that provide a visual reference for the project's design and functionality:
-- 'node_modules/@dxtmisha/d1/ai-screenshot/screenshot-5_1.webp'
-- 'node_modules/@dxtmisha/d1/ai-screenshot/screenshot-5_2.webp'
-- 'node_modules/@dxtmisha/d1/ai-screenshot/screenshot-5_3.webp'
-- 'node_modules/@dxtmisha/d1/ai-screenshot/screenshot-5_4.webp'
-- 'node_modules/@dxtmisha/d1/ai-screenshot/screenshot-5_5.webp'
+- 'node_modules/@dxtmisha/d1/ai-screenshot/screenshot-6_1.webp'
+- 'node_modules/@dxtmisha/d1/ai-screenshot/screenshot-6_2.webp'
+- 'node_modules/@dxtmisha/d1/ai-screenshot/screenshot-6_3.webp'
+- 'node_modules/@dxtmisha/d1/ai-screenshot/screenshot-6_4.webp'
+- 'node_modules/@dxtmisha/d1/ai-screenshot/screenshot-6_5.webp'
+- 'node_modules/@dxtmisha/d1/ai-screenshot/screenshot-6_6.webp'
 - 'node_modules/@dxtmisha/d1/ai-screenshot/screenshot-code.html'
 - 'node_modules/@dxtmisha/d1/ai-screenshot/screenshot-styles.css'
 
@@ -225,6 +259,7 @@ The project includes the following screenshots that provide a visual reference f
 The project is located at: 'node_modules/@dxtmisha/figma'.
 
 ## Project context: Investigation required
+You MUST read and carefully analyze the description of this project below. If there is even a 1% chance that the functionality, components, styles, or helpers from this project could be useful for your task, you MUST immediately start analyzing this project, studying its types, and checking its structure in full to prevent custom code duplication:
 This library provides a structured bidirectional messaging bridge between a Figma plugin's logic sandbox and its UI layer. It implements a subscription-based event bus via FigmaPostAbstract and FigmaUiMessenger, utilizing a verification code system through FigmaPostCode to validate and filter messages sent over the window.postMessage boundary.
 
 An AI should study this library when implementing Figma plugin features that require fetching document structure, frame hierarchies, selection states, or node styles. It is essential for managing Figma-specific storage persistence (ClientStorage and global storage) and for serializing Figma node data into JSON or CSS maps for UI rendering.
@@ -245,7 +280,7 @@ This library is designed to simplify the interaction between the UI part of a Fi
 Use this package when developing the visual part of a plugin to communicate with the Figma API via the `figma-code` layer.
 
 ## Project types: Essential for analysis
-This file contains the complete type definitions for the project. As soon as you start working with this project (using any of its components/functionality, importing from it, or editing its code), you MUST read and study this type definition file as your absolute first action to understand its API and structure:
+This file contains the complete type definitions, available utilities, and component structures for the project. As soon as you start working with this project (using any of its components/functionality, importing from it, or editing its code), you MUST read, analyze, and study this type definition file COMPLETELY and IN FULL (NOT partially), as your absolute first action using the view_file tool. This is mandatory to fully understand its API, locate all existing utilities/helpers (полезности), and prevent writing duplicate code:
 'node_modules/@dxtmisha/figma/ai-types.md'
 
 ---
@@ -255,6 +290,7 @@ This file contains the complete type definitions for the project. As soon as you
 The project is located at: 'node_modules/@dxtmisha/figma-code'.
 
 ## Project context: Investigation required
+You MUST read and carefully analyze the description of this project below. If there is even a 1% chance that the functionality, components, styles, or helpers from this project could be useful for your task, you MUST immediately start analyzing this project, studying its types, and checking its structure in full to prevent custom code duplication:
 This library is a structured TypeScript abstraction layer for Figma Plugin backend development, specifically designed to automate node manipulation, data persistence, and bidirectional messaging. Its core purpose is to provide high-level wrappers around the native Figma API for node traversal (FigmaItem), frame-specific metadata extraction (FigmaFrame), and persistent state management using both figma.clientStorage and node-level PluginData with built-in caching and aging logic. AI coding assistants should study this library when implementing features for automated CSS/style extraction, programmatic selection management, screenshot generation, or text content processing for translation and key-value mapping. The integration context bridges the Figma backend to the UI via FigmaPluginMessenger and includes specialized modules for AI-driven text analysis, relying on a shared type system for Figma nodes and message payloads.
 
 ## Project information: Core overview
@@ -272,7 +308,7 @@ This library is intended for use on the main process side of a Figma plugin (Cod
 Use this package only in code that executes in the main process of the Figma plugin (main thread).
 
 ## Project types: Essential for analysis
-This file contains the complete type definitions for the project. As soon as you start working with this project (using any of its components/functionality, importing from it, or editing its code), you MUST read and study this type definition file as your absolute first action to understand its API and structure:
+This file contains the complete type definitions, available utilities, and component structures for the project. As soon as you start working with this project (using any of its components/functionality, importing from it, or editing its code), you MUST read, analyze, and study this type definition file COMPLETELY and IN FULL (NOT partially), as your absolute first action using the view_file tool. This is mandatory to fully understand its API, locate all existing utilities/helpers (полезности), and prevent writing duplicate code:
 'node_modules/@dxtmisha/figma-code/ai-types.md'
 
 ---
@@ -282,6 +318,7 @@ This file contains the complete type definitions for the project. As soon as you
 The project is located at: 'node_modules/@dxtmisha/figma-ref'.
 
 ## Project context: Investigation required
+You MUST read and carefully analyze the description of this project below. If there is even a 1% chance that the functionality, components, styles, or helpers from this project could be useful for your task, you MUST immediately start analyzing this project, studying its types, and checking its structure in full to prevent custom code duplication:
 This library provides a collection of Vue.js composables for Figma plugin development, abstracting the Figma Plugin API into reactive primitives. Its core purpose is to synchronize the Figma engine's state—including document storage, client-side persistence, node selection, and frame hierarchy—with a Vue-based UI layer. Usage is indispensable when building Figma plugins that require reactive tracking of canvas selection, persistent configuration via Figma's internal storage APIs, or bidirectional communication regarding frame styles and attributes. It integrates directly with the Vue 3 Composition API and relies on @dxtmisha/figma for specialized data structures. The library handles asynchronous operations through internal loading states and exposes ComputedRef and ShallowRef types for seamless integration into Vue components. Key modules facilitate the management of top-level frames, specific selection sets, and message-based style updates between the plugin UI and the Figma main thread.
 
 ## Project information: Core overview
@@ -299,7 +336,7 @@ This package provides Vue composables for convenient and reactive handling of Fi
 Use this package when developing Vue interfaces for Figma plugins to ensure seamless state synchronization between Figma and the UI.
 
 ## Project types: Essential for analysis
-This file contains the complete type definitions for the project. As soon as you start working with this project (using any of its components/functionality, importing from it, or editing its code), you MUST read and study this type definition file as your absolute first action to understand its API and structure:
+This file contains the complete type definitions, available utilities, and component structures for the project. As soon as you start working with this project (using any of its components/functionality, importing from it, or editing its code), you MUST read, analyze, and study this type definition file COMPLETELY and IN FULL (NOT partially), as your absolute first action using the view_file tool. This is mandatory to fully understand its API, locate all existing utilities/helpers (полезности), and prevent writing duplicate code:
 'node_modules/@dxtmisha/figma-ref/ai-types.md'
 
 ---
@@ -309,22 +346,32 @@ This file contains the complete type definitions for the project. As soon as you
 The project is located at: 'node_modules/@dxtmisha/functional'.
 
 ## Project context: Investigation required
-Core Purpose: Provides a structured, reactive framework for Vue 3 component design and API orchestration. It simplifies complex UI state management, internationalization, and asynchronous API interactions through specialized classes and composables.
+You MUST read and carefully analyze the description of this project below. If there is even a 1% chance that the functionality, components, styles, or helpers from this project could be useful for your task, you MUST immediately start analyzing this project, studying its types, and checking its structure in full to prevent custom code duplication:
+### Core Purpose
+A high-level utility library designed for Vue 3 providing architectural abstractions for component design, reactive state management, sophisticated API orchestration with SSR support, and localized geographic/unit formatting.
 
-Key Expositions:
-- Design Construction: DesignAbstract, DesignAsyncAbstract, and DesignComponents for building complex component structures with lifecycle hooks and automated change tracking.
-- API Orchestration: useApiRef, useApiManagementRef (and Async variants) for handling GET/POST/PUT/DELETE requests with built-in SSR support, validation (contract-based), reactivity, and skeleton states.
-- Reactive Utilities: ListDataRef (list management/selection/navigation), DatetimeRef (reactive date manipulation), and GeoRef/GeoIntlRef (geo-data and internationalization).
-- Global State: executeUse (Global/Provide/Local patterns) for managing singletons, useMeta (global SEO management), and various storage/browser-tab sync hooks (useCookieRef, useSessionRef, useBroadcastValueRef).
-- Render Utilities: Helper functions for VNode rendering, class/style binding (getBind, toBind), and reactive property unwrapping (getRef, executeFunctionRef).
+### Key Expositions
+*   **Design Architecture:** `DesignConstructorAbstract`, `DesignComponents`, and `DesignAbstract` provide a structured class-based inheritance model for building complex, reactive functional components with automatic lifecycle handling, style/class management, and slotted rendering.
+*   **API Orchestration:**
+    *   `useApiRef`: Centralized reactive API request handler with built-in SSR, caching, transformation, validation (supporting `@effect/schema`), and error handling.
+    *   `useApiManagementRef` / `useApiManagementAsyncRef`: High-level orchestration for CRUD operations (GET/POST/PUT/DELETE) with client-side searching, list formatting, and atomic mutation state management.
+    *   Standard wrappers: `useApiGet`, `useApiPost`, `useApiPut`, `useApiDelete` for cleaner endpoint interaction.
+*   **Reactive Utilities:** 
+    *   `executeUse`: A factory for creating managed singletons (`global`, `provide`, `local`) to ensure unified state across component trees.
+    *   `useTranslateRef`, `useStorageRef`, `useCookieRef`, `useSessionRef`: Reactive bridges to local persistence and internationalization.
+    *   `computedAsync`, `computedEternity`: Advanced reactive primitives for asynchronous data flow and on-demand caching.
+*   **Data Formatting:** `GeoIntlRef`, `GeoUnitRef`, and `useFormattersRef` provide reactive, localized formatting for numbers, currencies, units (metric/imperial conversion), and dates.
+*   **List & Search Logic:** `ListDataRef` and `useSearchRef` manage complex hierarchical or flat data structures with optimized search and filtering capabilities.
 
-Triggers for Studying ai-types.md:
-- When encountering errors or ambiguity regarding Type constraints for API request/response contracts (`ApiDataValidation`, `ApiErrorStorageList`).
-- When defining complex component Props or custom UI structures that require specific type inference for classes, styles, or slots.
-- When implementing data lists (`ListDataRef`) or search logic that depends on strict structural compliance defined by `ListTypes` or `SearchTypes`.
-- When integrating the `dxtFunctionalPlugin` or configuring custom API/Translate instances.
+### Triggers for Studying ai-types.md
+Mandatory to review `ai-types.md` when:
+1.  **System Integration:** You are implementing new API endpoints, configuring `dxtFunctionalPlugin`, or setting up global state providers (`executeUseProvide`).
+2.  **Schema Validation:** You are utilizing `validateResponseContract` or `validateRequestContract` and require the expected structure for `ApiDataValidation` or error storage interfaces.
+3.  **Component Construction:** You are extending `DesignConstructorAbstract` or implementing custom component modifications.
+4.  **Type Mapping:** You encounter complex generic constraints in the `useApiManagementRef` signature or `Constr` prefixed utility types (e.g., `ConstrBind`, `ConstrOptions`, `ConstrEmit`).
 
-Integration Context: Built on top of Vue 3 and its reactivity system (Refs, Computed, EffectScope). It acts as a bridge between the `@dxtmisha/functional-basic` library and Vue, specifically handling the transformation of raw functional logic into Vue-compatible reactive objects, composables, and lifecycle-aware services.
+### Integration Context
+The library acts as a foundational service layer in the system stack. It integrates directly with Vue 3's composition API, Vue Router for navigation, and `@dxtmisha/functional-basic` for core network and utility logic. It is intended to be used as a singleton-pattern service provider within an application's plugin system via `dxtFunctionalPlugin` to facilitate consistent SSR state hydration and global dependency injection.
 
 ## Project information: Core overview
 This section contains essential information and the core overview of the project. Review this to understand the fundamental architecture and key features.
@@ -556,7 +603,7 @@ const isVisible = lazyManager.addLazyItem(elementRef); // ShallowRef<boolean>
 ```
 
 ## Project types: Essential for analysis
-This file contains the complete type definitions for the project. As soon as you start working with this project (using any of its components/functionality, importing from it, or editing its code), you MUST read and study this type definition file as your absolute first action to understand its API and structure:
+This file contains the complete type definitions, available utilities, and component structures for the project. As soon as you start working with this project (using any of its components/functionality, importing from it, or editing its code), you MUST read, analyze, and study this type definition file COMPLETELY and IN FULL (NOT partially), as your absolute first action using the view_file tool. This is mandatory to fully understand its API, locate all existing utilities/helpers (полезности), and prevent writing duplicate code:
 'node_modules/@dxtmisha/functional/ai-types.md'
 
 ---
@@ -566,31 +613,28 @@ This file contains the complete type definitions for the project. As soon as you
 The project is located at: 'node_modules/@dxtmisha/functional-basic'.
 
 ## Project context: Investigation required
-The provided library is a comprehensive isomorphic toolkit for managing frontend and SSR-compatible application states, including API requests, internationalization, data persistence, and UI utilities.
-
-Core Purpose:
-Facilitates full-stack state management and utility-based data handling, providing standardized interfaces for HTTP requests (with caching and error handling), localization (Geo/Translation), storage (Cookie/Storage/Hash/Query), and DOM event synchronization.
+You MUST read and carefully analyze the description of this project below. If there is even a 1% chance that the functionality, components, styles, or helpers from this project could be useful for your task, you MUST immediately start analyzing this project, studying its types, and checking its structure in full to prevent custom code duplication:
+Core Purpose: This library is a comprehensive isomorphic toolkit for web application development, providing high-level abstractions for API communication (fetch/caching/hydration), internationalization (translations/formatting), localized date/time manipulation, persistent data storage (Cookie/LocalStorage), reactive URL state management (Hash/Query), and DOM event handling.
 
 Key Expositions:
-- Api: Singleton-based HTTP client (supports fetch, caching, hydration, and error normalization via ApiErrorStorage).
-- Geo & GeoIntl: Internationalization framework for locale-aware number, date, currency, and phone number formatting.
-- Meta, MetaOg, MetaTwitter: Declarative meta-tag management for SEO and social sharing.
-- DataStorage & CookieStorage: Persistent storage wrappers (LocalStorage/SessionStorage/Cookie) with SSR context isolation.
-- EventItem: Reactive DOM event wrapper supporting ResizeObserver and scroll synchronization.
-- Translate & TranslateFile: Asynchronous translation engine with support for dynamic loading and key replacement.
-- SearchList: Logic for client-side search indexing, matching, and highlighting within data lists.
-- Utils: A broad collection of pure functional utilities (e.g., `copyObject`, `toNumber`, `isFilled`, `sleep`, `frame`).
+1. Api & ApiInstance: Orchestrates HTTP requests with support for middleware (preparation/end), automatic hydration for SSR, request caching, and centralized error handling.
+2. Geo, GeoIntl, GeoFlag, GeoPhone, GeoUnit: A suite for locale-sensitive data handling including currency, date, numeric, and unit conversions (metric/imperial based on region).
+3. Meta, MetaOg, MetaTwitter: Declarative management of HTML head tags, Open Graph, and Twitter Cards.
+4. DataStorage, CookieStorage, ServerStorage: Unified persistent storage interfaces with built-in SSR data isolation and hydration support.
+5. SearchList: A specialized state machine for filtering, matching, and highlighting item collections based on column definitions and regex search.
+6. EventItem: A robust wrapper for DOM listeners that includes auto-cleanup, lifecycle control, and specialized optimizations (e.g., resize/scroll-sync).
+7. Translation System: Asynchronous/Synchronous multi-locale translation manager with fallback logic and file-based loading.
 
 Triggers for Studying ai-types.md:
-- When implementing or debugging API integration (Api, ApiInstance, ApiResponse).
-- When configuring global error handling (ErrorCenter).
-- When standardizing data localization or date/time formatting (Geo, GeoIntl, Datetime).
-- When managing complex SSR hydration patterns (ServerStorage, ApiHydration).
-- When integrating deep-search components (SearchList).
-- When developing custom UI components requiring lifecycle-safe event binding (EventItem).
+It is mandatory to analyze ai-types.md when:
+- You need to extend or define custom configurations for the API layer (ApiConfig, ApiFetch).
+- You are implementing custom Error/Exception handling logic using the ErrorCenter structures.
+- You are adding new locale definitions, phone mask structures, or unit conversion mappings.
+- You need to debug hydration mismatches between SSR and client-side data state.
+- You are extending search logic or defining new search list result types.
 
-Integration Context:
-Operates as a foundational layer in the stack, compatible with both browser and Node.js (SSR) environments. It acts as a dependency for managing global application state, handling data-driven side effects, and normalizing communication with backend services. It is designed to be injected into frameworks (Vue/React) via lifecycle hooks or custom configuration providers.
+Integration Context: 
+This library serves as the foundation layer for application state and external communication. It is designed to be used in conjunction with modern reactive frameworks (Vue/React) by leveraging the provided hydration hooks to synchronize state between the server environment and the browser client. It relies on the global DOM environment where available, but degrades to neutral behaviors or errors in non-browser environments to ensure compatibility with SSR processes.
 
 ## Project information: Core overview
 This section contains essential information and the core overview of the project. Review this to understand the fundamental architecture and key features.
@@ -937,7 +981,7 @@ await sleep(500);
 ```
 
 ## Project types: Essential for analysis
-This file contains the complete type definitions for the project. As soon as you start working with this project (using any of its components/functionality, importing from it, or editing its code), you MUST read and study this type definition file as your absolute first action to understand its API and structure:
+This file contains the complete type definitions, available utilities, and component structures for the project. As soon as you start working with this project (using any of its components/functionality, importing from it, or editing its code), you MUST read, analyze, and study this type definition file COMPLETELY and IN FULL (NOT partially), as your absolute first action using the view_file tool. This is mandatory to fully understand its API, locate all existing utilities/helpers (полезности), and prevent writing duplicate code:
 'node_modules/@dxtmisha/functional-basic/ai-types.md'
 
 ---
@@ -947,6 +991,7 @@ This file contains the complete type definitions for the project. As soon as you
 The project is located at: 'node_modules/@dxtmisha/nitro-basic'.
 
 ## Project context: Investigation required
+You MUST read and carefully analyze the description of this project below. If there is even a 1% chance that the functionality, components, styles, or helpers from this project could be useful for your task, you MUST immediately start analyzing this project, studying its types, and checking its structure in full to prevent custom code duplication:
 Core Purpose: This library provides a specialized infrastructure layer for building and orchestrating Vue 3 applications within a Nitro (server-side) ecosystem. It facilitates SSR-to-client hydration, request lifecycle management, and application bootstrapping for complex Vue SSR architectures.
 
 Key Expositions:
@@ -1096,7 +1141,7 @@ uiBootstrapClient();
 ```
 
 ## Project types: Essential for analysis
-This file contains the complete type definitions for the project. As soon as you start working with this project (using any of its components/functionality, importing from it, or editing its code), you MUST read and study this type definition file as your absolute first action to understand its API and structure:
+This file contains the complete type definitions, available utilities, and component structures for the project. As soon as you start working with this project (using any of its components/functionality, importing from it, or editing its code), you MUST read, analyze, and study this type definition file COMPLETELY and IN FULL (NOT partially), as your absolute first action using the view_file tool. This is mandatory to fully understand its API, locate all existing utilities/helpers (полезности), and prevent writing duplicate code:
 'node_modules/@dxtmisha/nitro-basic/ai-types.md'
 
 ---
@@ -1106,6 +1151,7 @@ This file contains the complete type definitions for the project. As soon as you
 The project is located at: 'node_modules/@dxtmisha/styles'.
 
 ## Project context: Investigation required
+You MUST read and carefully analyze the description of this project below. If there is even a 1% chance that the functionality, components, styles, or helpers from this project could be useful for your task, you MUST immediately start analyzing this project, studying its types, and checking its structure in full to prevent custom code duplication:
 A foundational SCSS framework and dynamic style generation engine designed for building scalable, multi-theme design systems. Its primary function is to provide a comprehensive set of low-level SCSS mixins, functions, and a sophisticated configuration-driven property generation system. The core architecture centers around dynamic CSS variable management, specifically for color spaces where RGB channels and opacity are decoupled (using --sys-* and --sys-palette-* prefixes) to allow for real-time reactive theme modifications and complex transparency effects.
 
 An AI should study this library when: 1. Investigating the generation of global CSS variable tokens for colors, dimensions, and typography. 2. Developing or modifying UI components that require RTL (Right-to-Left) support through the library's directional abstractions (dir.scss). 3. Implementing complex layout patterns using semantic mixins for Flexbox orchestration, adaptive spacing, and relative positioning. 4. Understanding the 'Properties' engine (src/styles/properties) which programmatically transforms SCSS maps into a suite of atomic utility classes and root-level variable definitions. 5. Managing design system palettes and shade scales where automated accessibility and consistency are required.
@@ -1322,7 +1368,7 @@ The rules and instructions provided below have the highest priority. These direc
 #### Development Rules for AI:
 1.  **Purity & Atomicity**: Components must be minimal. All business logic must be extracted to **Composables**.
 2.  **Typing**: Strict TypeScript, no `any`. Mandatory usage of interfaces for Props and Emits.
-3.  **Documentation**: Use JSDoc/TSDoc formatted strictly according to the guidelines in [jdoc.md](file:///Volumes/T7/Code/dxt-ui/ai-prompts/jdoc.md). All comments must follow a mandatory bilingual standard (English and Russian):
+3.  **Documentation**: Use JSDoc/TSDoc formatted strictly according to the guidelines in [jdoc.md](ai-prompts/jdoc.md). All comments must follow a mandatory bilingual standard (English and Russian):
     - **Classes/Functions/Methods**: Detailed multiline descriptions (English on top, Russian on bottom). Use `@param` and `@returns` with bilingual descriptions separated by ` / `.
     - **Interfaces, Types, Enums, and Properties**: Compact single line (or double line if long) with a forward slash separator: `/** English / Russian */`.
 4.  **Styles**: Use SCSS. Modifying the base library styles is strictly prohibited unless explicitly requested.

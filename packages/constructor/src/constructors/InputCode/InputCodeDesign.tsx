@@ -2,8 +2,7 @@ import { h, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
-  DesignConstructorAbstract,
-  isFilled
+  DesignConstructorAbstract
 } from '@dxtmisha/functional'
 
 import { InputCode } from './InputCode'
@@ -80,7 +79,7 @@ export class InputCodeDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      value: this.item.value,
+      getValue: () => this.item.value.value,
       set: (value: string | number) => this.item.inputCodeItem.update(String(value)),
       reset: () => this.item.inputCodeItem.resetValue(),
       focus: () => this.item.inputCodeItem.focus()
@@ -129,7 +128,8 @@ export class InputCodeDesign<
       {
         ...this.getAttrs(),
         ref: this.element,
-        class: this.classes?.value.main
+        class: this.classes?.value.main,
+        ...this.item.aria
       },
       children
     )
@@ -158,13 +158,15 @@ export class InputCodeDesign<
 
     this.item.inputCodeItem.reset()
 
-    for (let i = 0; i < (this.props.length ?? 1); i++) {
-      children.push(...this.item.inputCodeItem.renderItem(
-        i,
-        true,
-        undefined,
-        isFilled(this.props.validation || this.item.fieldMessage.validation)
-      ))
+    for (let i = 0; i < (this.props.length ?? 4); i++) {
+      children.push(
+        ...this.item.inputCodeItem.renderItem(
+          i,
+          true,
+          undefined,
+          this.item.isValidation()
+        )
+      )
     }
 
     return children

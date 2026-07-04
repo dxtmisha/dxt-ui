@@ -1,4 +1,5 @@
 import type { ModelProps } from '../../types/modelTypes'
+
 import type { FieldLabelPropsBasic, FieldLabelPropsInclude } from '../FieldLabel'
 import type { FieldMessagePropsBasic, FieldMessagePropsInclude } from '../FieldMessage'
 import type { InputCodeItemPropsBasic, InputCodeItemPropsInclude } from '../InputCodeItem'
@@ -13,17 +14,15 @@ export type InputCodePropsBasic<
   InputCodeItem extends InputCodeItemPropsBasic = InputCodeItemPropsBasic,
   FieldLabel extends FieldLabelPropsBasic = FieldLabelPropsBasic,
   FieldMessage extends FieldMessagePropsBasic = FieldMessagePropsBasic
-> =
-  InputCodeItemPropsInclude<InputCodeItem> &
-  FieldLabelPropsInclude<FieldLabel> &
-  FieldMessagePropsInclude<FieldMessage> &
-  ModelProps<string> &
-  {
-    // Status
+> = InputCodeItemPropsInclude<InputCodeItem>
+  & FieldLabelPropsInclude<FieldLabel>
+  & FieldMessagePropsInclude<FieldMessage>
+  & ModelProps
+  & {
     loading?: boolean
 
-    // Value
     value?: string
+
     length?: number
   }
 
@@ -40,6 +39,7 @@ export type InputCodeProps = InputCodePropsToken & InputCodePropsBasic
  * Значение по умолчанию для свойства.
  */
 export const defaultsInputCode = {
+  length: 4,
   match: /[0-9]/,
   ...{
     // :default [!] System label / Системная метка

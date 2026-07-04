@@ -17,6 +17,20 @@
 12. **Nested List/Component Inclusion**: When rendering sub-components or nested lists within parent components, encapsulate this logic inside classes extending `ComponentIncludeAbstract` instead of using procedural hook-based list helpers (like `useAlertLink.ts`).
 13. **Include basicTypes Placement**: Declare types such as `<Name>EmitsInclude` and `<Name>PropsInclude` inside the local `basicTypes.ts` file of the constructor directory, rather than putting them directly in the `[Name]Include.ts` file.
 14. **Sub-component List Inclusion**: When rendering subcomponents as lists (e.g. `BulletItem` lists), never use procedural hooks or helper functions like `useBulletItem.ts`. Instead, always create an inclusion class extending `ComponentIncludeAbstract` (e.g. `BulletItemInclude.ts`).
+15. **Localization String Interpolation**: Translated text strings containing dynamic numbers/indexes must use bracketed placeholders (e.g. `[index]`) rather than simple string concatenation. Perform dynamic replacement of these placeholders in the rendering class (e.g., using `.replace('[index]', (Number(index) + 1).toString())`) to support flexible word order in various target languages.
+16. **ARIA Attribute Encapsulation**: ARIA attribute aggregates must be placed within a dedicated `aria` getter (e.g., `get aria(): AriaList`) inside the component's logical constructor class (such as `InputCode.ts` or `InputCodeItem.ts`) rather than being generated inline in the template/binds (such as `InputCodeDesign.tsx` or `inputBinds`).
+
+## Text and Translation Handling (TextInclude)
+17. **Use TextInclude**: Direct usage of translations or translation hooks (like `useTranslateRef` / `useTranslate`) inside logical component classes or design components is strictly forbidden. All component text values must be resolved via the `TextInclude` class instance.
+18. **Registering Text Properties**:
+    - Add the text property (e.g., `textExample?: TextValue`) inside an interface (e.g., `TextExamplePropsInclude`) inside [textTypes.ts](src/types/textTypes.ts) and merge it into `TextAllPropsInclude` and `TextIndex` union in alphabetical order.
+    - Register default English translations inside the `list` of [TextIncludeInstance.ts](src/classes/TextIncludeInstance.ts) in alphabetical order.
+    - Implement a corresponding getter (e.g., `get example() { return this.get('textExample') }`) inside [TextInclude.ts](src/classes/TextInclude.ts) in alphabetical order.
+19. **Component Text Integration**:
+    - In the component's `props.ts`, extend the props interface with the respective text props include (e.g., `TextExamplePropsInclude`).
+    - Instantiate the `TextInclude` class in the component constructor supporting Dependency Injection (e.g. `this.text = new TextIncludeConstructor(props)`).
+
+
 
 
 

@@ -1,10 +1,10 @@
-import type { Ref } from 'vue'
 import type { ConstrClass } from '@dxtmisha/functional'
+
 import type { ModelEmits } from '../../types/modelTypes'
 
-import type { FieldLabelComponentInclude } from '../FieldLabel/basicTypes'
-import type { FieldMessageComponentInclude } from '../FieldMessage/basicTypes'
-import type { InputCodeItemComponentInclude } from '../InputCodeItem/basicTypes'
+import type { FieldLabelComponentInclude } from '../FieldLabel'
+import type { FieldMessageComponentInclude } from '../FieldMessage'
+import type { InputCodeItemComponentInclude } from '../InputCodeItem'
 
 /**
  * Interface for describing which components need to be connected for work.
@@ -13,8 +13,8 @@ import type { InputCodeItemComponentInclude } from '../InputCodeItem/basicTypes'
  */
 export type InputCodeComponents
   = InputCodeItemComponentInclude
-  & FieldLabelComponentInclude
-  & FieldMessageComponentInclude
+    & FieldLabelComponentInclude
+    & FieldMessageComponentInclude
 
 /**
  * Type describing available events.
@@ -22,10 +22,10 @@ export type InputCodeComponents
  * Тип, описывающий доступные события.
  */
 export type InputCodeEmits
-  = ModelEmits<string>
-  & {
-    input: [value: string]
-  }
+  = ModelEmits
+    & {
+      input: [value: string]
+    }
 
 /**
  * Type describing available properties.
@@ -33,9 +33,30 @@ export type InputCodeEmits
  * Тип, описывающий доступные свойства.
  */
 export interface InputCodeExpose {
-  value: Ref<string>
+  /**
+   * Returns the current value.
+   *
+   * Возвращает текущее значение.
+   */
+  getValue(): string
+  /**
+   * Set new value.
+   *
+   * Установить новое значение.
+   * @param value new value / новое значение
+   */
   set(value: string | number): void
+  /**
+   * Reset value.
+   *
+   * Сбросить значение.
+   */
   reset(): void
+  /**
+   * Set focus.
+   *
+   * Установить фокус.
+   */
   focus(): void
 }
 
@@ -53,8 +74,10 @@ export interface InputCodeSlots {
  * Тип, описывающий подклассы.
  */
 export type InputCodeClasses = {
+  /** Main class name / Основное имя класса */
   main: ConstrClass
   // :classes [!] System label / Системная метка
+  /** Class name of the context wrapper / Имя класса обертки контекста */
   context: string
   // :classes [!] System label / Системная метка
 }

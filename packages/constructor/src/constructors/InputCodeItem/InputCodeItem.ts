@@ -1,10 +1,13 @@
 import { type Ref, type ToRefs } from 'vue'
 import { type ConstrBind, type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
+import { TextInclude } from '../../classes/TextInclude'
 import { InputCodeItemEvent } from './InputCodeItemEvent'
 import { InputCodeItemGo } from './InputCodeItemGo'
 import { InputCodeItemValue } from './InputCodeItemValue'
 
+import type { AriaList } from '../../types/ariaTypes'
 import type { InputCodeItemComponents, InputCodeItemEmits, InputCodeItemSlots } from './types'
 import type { InputCodeItemProps } from './props'
 
@@ -20,6 +23,8 @@ export class InputCodeItem {
   readonly go: InputCodeItemGo
   /** Object for event handling / Объект для обработки событий */
   readonly event: InputCodeItemEvent
+  /** Object for text localization / Объект для локализации текста */
+  readonly text: TextInclude
 
   /**
    * Constructor
@@ -37,6 +42,7 @@ export class InputCodeItem {
    * @param constructors.InputCodeItemEventConstructor class for working with input code item event / класс для работы с событием элемента ввода кода
    * @param constructors.InputCodeItemGoConstructor class for working with input code item go / класс для работы с переходом элемента ввода кода
    * @param constructors.InputCodeItemValueConstructor class for working with input code item value / класс для работы со значением элемента ввода кода
+   * @param constructors.TextIncludeConstructor class for working with text / класс для работы с текстом
    */
   constructor(
     protected readonly props: InputCodeItemProps,
@@ -51,12 +57,14 @@ export class InputCodeItem {
       InputCodeItemEventConstructor?: typeof InputCodeItemEvent
       InputCodeItemGoConstructor?: typeof InputCodeItemGo
       InputCodeItemValueConstructor?: typeof InputCodeItemValue
+      TextIncludeConstructor?: typeof TextInclude
     } = {}
   ) {
     const {
       InputCodeItemEventConstructor = InputCodeItemEvent,
       InputCodeItemGoConstructor = InputCodeItemGo,
-      InputCodeItemValueConstructor = InputCodeItemValue
+      InputCodeItemValueConstructor = InputCodeItemValue,
+      TextIncludeConstructor = TextInclude
     } = constructors
 
     this.value = new InputCodeItemValueConstructor(element)
@@ -67,12 +75,32 @@ export class InputCodeItem {
       this.go,
       emits
     )
+    this.text = new TextIncludeConstructor(props)
+  }
+
+  /**
+   * Get ARIA attributes.
+   *
+   * Получить ARIA атрибуты.
+   * @returns ARIA attributes / ARIA атрибуты
+   */
+  get aria(): AriaList {
+    return {
+      ...AriaStaticInclude.disabled(this.props.disabled),
+      ...AriaStaticInclude.invalid(this.props.error),
+      ...AriaStaticInclude.label(
+        this.props.index !== undefined
+          ? this.text.symbol?.replace('[index]', (Number(this.props.index) + 1).toString())
+          : undefined
+      )
+    }
   }
 
   /**
    * Data for the input element.
    *
    * Данные для элемента ввода.
+   * @returns bindings for input element / привязки для элемента ввода
    */
   get inputBinds(): ConstrBind<Partial<HTMLInputElement>> {
     return {
@@ -83,11 +111,14 @@ export class InputCodeItem {
       placeholder: this.props.placeholder,
       [this.go.getKey()]: this.props.index,
       disabled: this.props.disabled,
+
       onFocus: this.event.onFocus,
       onClick: this.event.onClick,
       onKeydown: this.event.onKeydown,
       onInput: this.event.onInput,
-      onPaste: this.event.onPaste
+      onPaste: this.event.onPaste,
+
+      ...this.aria
     }
   }
 

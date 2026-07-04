@@ -175,6 +175,11 @@ export class TextInclude {
     return this.get('textShow')
   }
 
+  /** Symbol text / Текст символа */
+  get symbol() {
+    return this.get('textSymbol')
+  }
+
   /**
    * Get the text by its name.
    *

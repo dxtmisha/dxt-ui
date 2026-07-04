@@ -1,4 +1,5 @@
 import type { NumberOrString } from '@dxtmisha/functional'
+import type { TextSymbolPropsInclude } from '../../types/textTypes'
 
 type InputCodeItemPropsToken = {
   // :type [!] System label / Системная метка
@@ -13,7 +14,7 @@ type InputCodeItemPropsToken = {
   // :type [!] System label / Системная метка
 }
 
-export type InputCodeItemPropsBasic = {
+export type InputCodeItemPropsBasic = TextSymbolPropsInclude & {
   /** Focus movement enabled / Разрешено ли перемещение фокуса */
   move?: boolean
 

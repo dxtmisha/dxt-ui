@@ -33,7 +33,8 @@ export class TextIncludeInstance {
     page: 'Page',
     previous: 'Previous',
     rowsPerPage: 'Rows per page',
-    show: 'Show'
+    show: 'Show',
+    symbol: 'Symbol [index]'
   })
 
   /**

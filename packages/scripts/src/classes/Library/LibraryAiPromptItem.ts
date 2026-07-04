@@ -207,6 +207,7 @@ ${data.join('\n\n')}
 
       return `
 ## Project context: Investigation required
+You MUST read and carefully analyze the description of this project below. If there is even a 1% chance that the functionality, components, styles, or helpers from this project could be useful for your task, you MUST immediately start analyzing this project, studying its types, and checking its structure in full to prevent custom code duplication:
 ${this.readFile(UI_FILE_AI_PROMPT_DESCRIPTION)}
       `.trim()
     }
@@ -269,7 +270,7 @@ ${this.readFile(UI_FILE_AI_PROMPT_INFO)}
 
       return `
 ## Project types: Essential for analysis
-This file contains the complete type definitions for the project. As soon as you start working with this project (using any of its components/functionality, importing from it, or editing its code), you MUST read and study this type definition file as your absolute first action to understand its API and structure:
+This file contains the complete type definitions, available utilities, and component structures for the project. As soon as you start working with this project (using any of its components/functionality, importing from it, or editing its code), you MUST read, analyze, and study this type definition file COMPLETELY and IN FULL (NOT partially), as your absolute first action using the view_file tool. This is mandatory to fully understand its API, locate all existing utilities/helpers (полезности), and prevent writing duplicate code:
 '${this.getPathString()}/${UI_FILE_AI_PROMPT_TYPES}'
       `.trim()
     }

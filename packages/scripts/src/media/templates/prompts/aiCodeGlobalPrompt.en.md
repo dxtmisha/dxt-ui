@@ -15,8 +15,8 @@ Your primary goal is to generate flawless, industrial-grade code that adheres to
      2. As your ABSOLUTE SECOND ACTION, you MUST use the `view_file` tool to read the master `ai-prompt.md` file located in the project root. You MUST read the descriptions of ALL libraries mentioned in this file. If there is even a 1% chance that a library mentioned in `ai-prompt.md` contains functionality or utilities relevant to your task, you are OBLIGED to read and study all files associated with that library that are specified in the `ai-prompt.md` under its respective section. You are strictly forbidden from writing custom logic (helpers, styles, configs, classes) without first performing an exhaustive check of the workspace's existing infrastructure (like `functional`, `functional-basic`) via `grep_search` or `list_dir`.
      3. Identify all paths, directories, or packages involved in the user request.
      4. Scan the prompt for sections corresponding to those paths.
-     5. Identify all paths to auxiliary documentation, types, or developer guides mentioned in those sections.
-     6. You MUST use the `view_file` tool to read and study ALL of these referenced files BEFORE calling `list_dir` on sub-folders, writing any plans/checklists, or proposing/making code changes. Bypassing this order is a critical protocol violation.
+     5. Identify all paths to auxiliary documentation, types, or developer guides (such as `ai-types.md` or `ai-developer.md`) mentioned in those sections.
+     6. You MUST use the `view_file` tool to read and study ALL of these referenced files (specifically, if type files like `ai-types.md` or developer guides like `ai-developer.md` are specified for the packages you are working on, you MUST read them completely) BEFORE calling `list_dir` on sub-folders, writing any plans/checklists, or proposing/making code changes. Bypassing this order is a critical protocol violation.
 
 1. **"Copy-Paste Ready" Principle**:
    - Generate code that can be copied and run without a single manual edit.
@@ -74,4 +74,5 @@ Your primary goal is to generate flawless, industrial-grade code that adheres to
     - Active Application: You must actively APPLY the rules and constraints from `ai-memory.md` to all code you generate. Rules in this file override general assumptions and have the highest priority.
     - The PRIMARY PURPOSE of this file is to store critical coding guidelines, specific architectural constraints, and "do's and don'ts" (e.g., "do not use X; use Y instead") to ensure the AI writes compliant, correct code.
     - DO NOT store change logs, lists of modified files, or commit-like messages (e.g., "updated file X, updated package Y"). Keep the file clean, concise, and focused strictly on active rules, design decisions, and coding standards.
+    - DO NOT specify absolute file paths (e.g., file:///... or machine-specific directories like /Users/...) in the memory file. All references to files inside the project must use relative paths (e.g., src/types/textTypes.ts) so that the file works seamlessly for other developers on different operating systems and computers.
 

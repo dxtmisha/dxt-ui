@@ -25,6 +25,7 @@ export type TextIndex = 'cancel'
   | 'previous'
   | 'rowsPerPage'
   | 'show'
+  | 'symbol'
   | string
 
 /** List of text values/ Список текстовых значений */
@@ -174,6 +175,12 @@ export type TextShowPropsInclude = {
   textShow?: TextValue
 }
 
+/** Interface for including symbol text/ Интерфейс для включения текста символа */
+export type TextSymbolPropsInclude = {
+  /** Symbol text/ Текст символа */
+  textSymbol?: TextValue
+}
+
 /** Type for including all text properties/ Тип для включения всех текстовых свойств */
 export type TextAllPropsInclude = TextBreadcrumbPropsInclude
   & TextCancelPropsInclude
@@ -199,3 +206,4 @@ export type TextAllPropsInclude = TextBreadcrumbPropsInclude
   & TextPreviousPropsInclude
   & TextRowsPerPagePropsInclude
   & TextShowPropsInclude
+  & TextSymbolPropsInclude

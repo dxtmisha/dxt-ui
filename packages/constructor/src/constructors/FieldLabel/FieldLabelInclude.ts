@@ -25,15 +25,12 @@ import type { FieldLabelPropsBasic } from './props'
  *
  * Класс возвращает данные для работы с компонентом FieldLabel.
  */
-export class FieldLabelInclude<
-  Props extends FieldLabelPropsInclude = FieldLabelPropsInclude,
-  PropsExtra extends FieldLabelPropsBasic = FieldLabelPropsBasic
-> extends ComponentIncludeAbstract<
-    Props,
-    PropsExtra,
-    Record<string, any>,
-    FieldLabelSlotsInclude
-  > {
+export class FieldLabelInclude extends ComponentIncludeAbstract<
+  FieldLabelPropsInclude,
+  FieldLabelPropsBasic,
+  Record<string, any>,
+  FieldLabelSlotsInclude
+> {
   /** Component name / Название компонента */
   protected readonly name = 'fieldLabel'
 
@@ -61,9 +58,9 @@ export class FieldLabelInclude<
    */
   constructor(
     className: string,
-    props: ComponentIncludeProps<Props>,
-    components?: DesignComponents<FieldLabelComponentInclude, Props>,
-    extra?: ComponentIncludeExtra<PropsExtra>,
+    props: ComponentIncludeProps<FieldLabelPropsInclude>,
+    components?: DesignComponents<FieldLabelComponentInclude, FieldLabelPropsInclude>,
+    extra?: ComponentIncludeExtra<FieldLabelPropsBasic>,
     index?: string,
     protected readonly forId?: RefOrNormalOrFunction<string>,
     protected readonly isCounter?: RefOrNormalOrFunction<boolean | undefined>
