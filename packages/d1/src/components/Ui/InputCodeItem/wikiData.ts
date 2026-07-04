@@ -9,11 +9,13 @@ const propsNames: StorybookProps = [
   { name: 'error', type: 'boolean' },
   { name: 'hide', type: 'boolean' },
   { name: 'index', type: 'NumberOrString' },
-  { name: 'inputmode', type: 'string', option: ['none', 'text', 'decimal', 'numeric', 'tel', 'search', 'email', 'url'] },
+  { name: 'inputMode', type: 'string', option: ['none', 'text', 'decimal', 'numeric', 'tel', 'search', 'email', 'url'] },
   { name: 'match', type: 'RegExp' },
   { name: 'move', type: 'boolean' },
   { name: 'placeholder', type: 'string' },
-  { name: 'success', type: 'boolean' }
+  { name: 'size', type: 'string', option: ['sm', 'md', 'lg', 'display'] },
+  { name: 'success', type: 'boolean' },
+  { name: 'textSymbol', type: 'TextValue' }
   // :propsList [!] System label / Системная метка
 ]
 

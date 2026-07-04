@@ -1,3 +1,6 @@
 {
-  "main": "{d.inputCode}"
+  "main": "{d.inputCode}",
+  "#context": {
+    "gap": "{sys.spacing.xs}"
+  }
 }

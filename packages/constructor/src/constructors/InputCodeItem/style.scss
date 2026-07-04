@@ -7,23 +7,37 @@
   flex-shrink: 1;
   position: relative;
 
+  @include ui.paddingX(ui.v('??paddingX'));
+
+  outline: transparent solid 0;
+  min-height: ui.v('??height');
+
+  transition-property: color, opacity, border-color, border-width, background-color, outline;
   transition-timing-function: linear;
   transition-duration: ui.v('d.sys.transitionDuration.standard');
 
+  &::after {
+    transition-property: border;
+    transition-timing-function: inherit;
+    transition-duration: inherit;
+  }
+
   &__input {
+    @include ui.absolute;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-basis: 100%;
-    position: relative;
     z-index: 4;
 
     margin: 0;
-    padding: 0;
+    padding: inherit;
 
     width: 100%;
-    height: inherit;
 
+    font: inherit;
+    line-height: inherit;
+    letter-spacing: inherit;
     text-align: center;
     background-color: transparent;
     border: none;
@@ -61,6 +75,7 @@
           display: flex;
         }
       }
+
       &:after {
         content: "@";
       }

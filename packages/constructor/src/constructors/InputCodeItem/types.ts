@@ -36,6 +36,8 @@ export interface InputCodeItemExpose {
   getValue(): string
   /** Set the item's value / Установить значение элемента */
   set(value: string): void
+  /** Set tabindex / Установить tabindex */
+  setTabindex(value: number | string | undefined): void
   /** Reset the item's value / Сбросить значение элемента */
   reset(): void
   /** Focus the input element / Сфокусировать элемент ввода */
@@ -47,7 +49,7 @@ export interface InputCodeItemExpose {
  *
  * Тип, описывающий доступные слоты.
  */
-export interface InputCodeItemSlots {}
+export interface InputCodeItemSlots { }
 
 /**
  * Type describing subclasses.
@@ -58,9 +60,7 @@ export type InputCodeItemClasses = {
   /** Main class / Главный класс */
   main: ConstrClass
   // :classes [!] System label / Системная метка
-  /** Class for input element / Класс для элемента ввода */
   input: string
-  /** Class for auxiliary element / Класс для вспомогательного элемента */
   sub: string
   // :classes [!] System label / Системная метка
 }

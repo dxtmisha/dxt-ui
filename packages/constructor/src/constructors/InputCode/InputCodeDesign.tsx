@@ -19,9 +19,13 @@ import {
 } from './types'
 
 /**
- * Design constructor class for InputCode component.
+ * Design constructor class for the InputCode component.
+ * It instantiates the logical InputCode manager, initializes exposes (getValue, set, reset, focus),
+ * and handles rendering of label, items, and validation messages in the DOM.
  *
  * Класс конструктора дизайна для компонента InputCode.
+ * Создает экземпляр логического менеджера InputCode, инициализирует доступные методы (getValue, set, reset, focus)
+ * и управляет рендерингом метки, элементов ввода и сообщений валидации в DOM.
  */
 export class InputCodeDesign<
   COMP extends InputCodeComponents,
@@ -37,14 +41,15 @@ export class InputCodeDesign<
     CLASSES,
     P
   > {
+  /** InputCode manager instance / Экземпляр менеджера InputCode */
   protected readonly item: InputCode
 
   /**
    * Constructor
-   * @param name class name / название класса
-   * @param props properties / свойства
-   * @param options list of additional parameters / список дополнительных параметров
-   * @param ItemConstructor constructors item class / класс элемента конструкторов
+   * @param name base CSS class name / базовое имя CSS-класса
+   * @param props component properties / свойства компонента
+   * @param options optional setup properties / дополнительные параметры настройки
+   * @param ItemConstructor class constructor for the logical manager / конструктор класса логического менеджера
    */
   constructor(
     name: string,
@@ -73,9 +78,10 @@ export class InputCodeDesign<
   }
 
   /**
-   * Initialization of all the necessary properties for work.
+   * Initializes exposed methods and properties of the component.
    *
-   * Инициализация всех необходимых свойств для работы.
+   * Инициализирует методы и свойства компонента, доступные извне.
+   * @returns object with exposed methods / объект с открытыми методами
    */
   protected initExpose(): EXPOSE {
     return {
@@ -87,9 +93,10 @@ export class InputCodeDesign<
   }
 
   /**
-   * Improvement of the obtained list of classes.
+   * Resolves and modifies CSS classes for the component.
    *
-   * Доработка полученного списка классов.
+   * Получает и дорабатывает список классов для компонента.
+   * @returns partial map of class names / частичная карта имен классов
    */
   protected initClasses(): Partial<CLASSES> {
     return {
@@ -103,18 +110,20 @@ export class InputCodeDesign<
   }
 
   /**
-   * Refinement of the received list of styles.
+   * Resolves and modifies inline styles for the component.
    *
-   * Доработка полученного списка стилей.
+   * Получает и дорабатывает список стилей для компонента.
+   * @returns map of inline styles / карта встроенных стилей
    */
   protected initStyles(): ConstrStyles {
     return {}
   }
 
   /**
-   * A method for rendering.
+   * Renders the root virtual DOM node of the component.
    *
-   * Метод для рендеринга.
+   * Выполняет рендеринг корневого узла виртуального DOM компонента.
+   * @returns rendered virtual node / отрендеренный виртуальный узел
    */
   protected initRender(): VNode {
     const children: any[] = [
@@ -136,9 +145,10 @@ export class InputCodeDesign<
   }
 
   /**
-   * Rendering the context part of input fields.
+   * Renders the container of the input code fields.
    *
-   * Рендеринг контекстной части полей ввода.
+   * Выполняет рендеринг контейнера полей ввода кода.
+   * @returns rendered virtual node / отрендеренный виртуальный узел
    */
   protected readonly renderContext = (): VNode => {
     return h(
@@ -149,9 +159,10 @@ export class InputCodeDesign<
   }
 
   /**
-   * Rendering the individual code input items.
+   * Renders the list of individual code input item nodes.
    *
-   * Рендеринг отдельных элементов ввода кода.
+   * Выполняет рендеринг списка отдельных узлов ввода кода.
+   * @returns array of rendered virtual nodes / массив отрендеренных виртуальных узлов
    */
   protected readonly renderItems = (): VNode[] => {
     const children: any[] = []
@@ -163,7 +174,7 @@ export class InputCodeDesign<
         ...this.item.inputCodeItem.renderItem(
           i,
           true,
-          undefined,
+          this.props.success,
           this.item.isValidation()
         )
       )

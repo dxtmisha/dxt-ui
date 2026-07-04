@@ -2,6 +2,7 @@ import { type InputCodeItemPropsBasic, defaultsInputCodeItem } from '@dxtmisha/c
 
 export const propsValues = {
   // :values [!] System label / Системная метка
+  size: ['sm', 'md', 'lg', 'display']
   // :values [!] System label / Системная метка
 }
 
@@ -11,6 +12,7 @@ type PropsToken = {
   success?: boolean
   error?: boolean
   hide?: boolean
+  size?: 'sm' | 'md' | 'lg' | 'display'
   // :type [!] System label / Системная метка
 }
 
@@ -26,6 +28,7 @@ export const defaults: object = {
   ...defaultsInputCodeItem,
   ...{
     // :default [!] System label / Системная метка
+    size: 'md'
     // :default [!] System label / Системная метка
   }
 }

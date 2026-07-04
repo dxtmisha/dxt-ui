@@ -9610,6 +9610,67 @@
           }
         }
       },
+      "inputCodeItem": {
+        "name": "d1-inputCodeItem",
+        "type": "component",
+        "value": {
+          "padding": {
+            "name": "--d1-inputCodeItem-padding",
+            "type": "var",
+            "value": "{sys.spacing.sm}"
+          },
+          "size": {
+            "name": "&--size",
+            "type": "state",
+            "value": {
+              "sm": {
+                "name": "&--sm",
+                "type": "state",
+                "value": {
+                  "height": {
+                    "name": "--d1-inputCodeItem-height",
+                    "type": "var",
+                    "value": "{ref.spacing.8}"
+                  }
+                }
+              },
+              "md": {
+                "name": "&--md",
+                "type": "state",
+                "value": {
+                  "height": {
+                    "name": "--d1-inputCodeItem-height",
+                    "type": "var",
+                    "value": "{ref.spacing.12}"
+                  }
+                }
+              },
+              "lg": {
+                "name": "&--lg",
+                "type": "state",
+                "value": {
+                  "height": {
+                    "name": "--d1-inputCodeItem-height",
+                    "type": "var",
+                    "value": "{ref.spacing.16}"
+                  }
+                }
+              },
+              "display": {
+                "name": "&--display",
+                "type": "state",
+                "value": {
+                  "height": {
+                    "name": "--d1-inputCodeItem-height",
+                    "type": "var",
+                    "value": "{ref.spacing.18}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
       "inputPhone": {
         "name": "d1-inputPhone",
         "type": "component",

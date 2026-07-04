@@ -2,7 +2,8 @@
 import { computed } from 'vue'
 import {
   type ConstrClasses,
-  type ConstrStyles
+  type ConstrStyles,
+  inArray
 } from '@dxtmisha/functional'
 import {
   InputCodeItemDesign,
@@ -10,7 +11,7 @@ import {
   type InputCodeItemSlots
 } from '@dxtmisha/constructor/InputCodeItem'
 
-import { defaults, type InputCodeItemProps } from './props'
+import { defaults, type InputCodeItemProps, propsValues } from './props'
 import './styleToken.scss'
 
 defineOptions({
@@ -27,7 +28,8 @@ const classesToken = computed<ConstrClasses>(() => ({
     'd1-inputCodeItem--disabled': props.disabled,
     'd1-inputCodeItem--success': props.success,
     'd1-inputCodeItem--error': props.error,
-    'd1-inputCodeItem--hide': props.hide
+    'd1-inputCodeItem--hide': props.hide,
+    [`d1-inputCodeItem--size--${props.size}`]: inArray(propsValues.size, props.size)
     // :classes-values [!] System label / Системная метка
   }
 }))

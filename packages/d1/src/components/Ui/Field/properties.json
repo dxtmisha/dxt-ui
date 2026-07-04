@@ -2,7 +2,6 @@
   "main": "{d.field}",
   "padding": "{??height} * {?sys.spacing.adaptive.md}",
   "space": "{sys.spacing.x}",
-  "link|font": "{font.bodyLarge}",
   "color": "{sys.palette.onSurface}",
   "border-width": "{sys.spacing.outline}",
   "border-color": "{sys.palette.outline}",
@@ -160,16 +159,20 @@
   },
   "~size": {
     "~sm": {
-      "height": "{ref.spacing.8}"
+      "height": "{ref.spacing.8}",
+      "link|font": "{font.bodyMedium}"
     },
     "~md": {
-      "height": "{ref.spacing.12}"
+      "height": "{ref.spacing.12}",
+      "link|font": "{font.bodyLarge}"
     },
     "~lg": {
-      "height": "{ref.spacing.16}"
+      "height": "{ref.spacing.16}",
+      "link|font": "{font.headlineSmall}"
     },
     "~display": {
       "height": "{ref.spacing.18}",
+      "link|font": "{font.headlineLarge}",
       "#body": {
         "#input": {
           "link|font": "{font.headlineSmall}"

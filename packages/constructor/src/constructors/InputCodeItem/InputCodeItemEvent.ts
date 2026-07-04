@@ -60,9 +60,20 @@ export class InputCodeItemEvent {
       return
     }
 
-    if (event.key === 'Backspace') {
-      this.backspace()
-      return
+    switch (event.key) {
+      case 'Tab':
+        return
+      case 'Backspace':
+        this.backspace()
+        return
+      case 'ArrowLeft':
+        this.go.focusToPrevious()
+        event.preventDefault()
+        return
+      case 'ArrowRight':
+        this.go.focusToNext()
+        event.preventDefault()
+        return
     }
 
     eventStopPropagation(event)

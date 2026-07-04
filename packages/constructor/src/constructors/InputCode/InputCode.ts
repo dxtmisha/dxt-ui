@@ -13,9 +13,15 @@ import type { InputCodeComponents, InputCodeEmits } from './types'
 import type { InputCodeProps } from './props'
 
 /**
- * Class for managing code input.
+ * Class for managing code input components.
+ * It coordinates the child component managers (field label, field message, code input items),
+ * manages the reactive value binding, updates the code item highlights, and generates appropriate
+ * ARIA roles and labels for accessibility.
  *
- * Класс для управления вводом кода.
+ * Класс для управления компонентами ввода кода.
+ * Координирует управляющие подкомпонентов (метка поля, сообщение поля, элементы ввода кода),
+ * управляет привязкой реактивного значения, обновляет подсветку элементов кода и генерирует соответствующие
+ * роли и метки ARIA для доступности.
  */
 export class InputCode {
   /** Field label manager / Управляющий меткой поля */
@@ -33,19 +39,19 @@ export class InputCode {
 
   /**
    * Constructor
-   * @param props input property / входное свойство
-   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
-   * @param element input element / элемент ввода
-   * @param classDesign design name / название дизайна
-   * @param className list of available classes / список доступных классов
-   * @param components object for working with components / объект для работы с компонентами
-   * @param slots object for working with slots / объект для работы со слотами
-   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
-   * @param constructors object with classes / объект с классами
-   * @param constructors.FieldLabelIncludeConstructor class for working with field label / класс для работы с меткой поля
-   * @param constructors.FieldMessageIncludeConstructor class for working with field message / класс для работы с сообщением поля
-   * @param constructors.InputCodeItemIncludeConstructor class for working with input code item / класс для работы с элементом ввода кода
-   * @param constructors.ModelIncludeConstructor class for working with model / класс для работы с моделью
+   * @param props input properties / входные свойства
+   * @param refs input properties as reactive references / входные свойства в виде реактивных ссылок
+   * @param element main HTML element ref / ссылка на основной HTML-элемент
+   * @param classDesign design class name / название класса дизайна
+   * @param className basic CSS class name / базовое имя CSS-класса
+   * @param components sub-components configuration object / объект конфигурации подкомпонентов
+   * @param slots slots configuration object / объект конфигурации слотов
+   * @param emits event emitter function / функция для вызова событий
+   * @param constructors override constructors map / объект переопределения конструкторов
+   * @param constructors.FieldLabelIncludeConstructor custom field label constructor / пользовательский конструктор метки поля
+   * @param constructors.FieldMessageIncludeConstructor custom field message constructor / пользовательский конструктор сообщения поля
+   * @param constructors.InputCodeItemIncludeConstructor custom input code item constructor / пользовательский конструктор элемента ввода кода
+   * @param constructors.ModelIncludeConstructor custom model constructor / пользовательский конструктор модели
    */
   constructor(
     protected readonly props: InputCodeProps,
@@ -90,16 +96,17 @@ export class InputCode {
     onMounted(() => {
       watch(
         [this.refs.value],
-        () => this.inputCodeItem.update(this.props.value ?? '')
+        () => this.inputCodeItem.update(this.props.value ?? ''),
+        { immediate: true }
       )
     })
   }
 
   /**
-   * Get ARIA attributes.
+   * Returns accessibility ARIA attributes for the component.
    *
-   * Получить ARIA атрибуты.
-   * @returns ARIA attributes / ARIA атрибуты
+   * Возвращает атрибуты доступности ARIA для компонента.
+   * @returns object containing ARIA attributes / объект, содержащий ARIA-атрибуты
    */
   get aria(): AriaList {
     return {
@@ -110,19 +117,20 @@ export class InputCode {
   }
 
   /**
-   * Checks if there is a validation message or if validation status is active.
+   * Checks if there is an active validation message or state.
    *
-   * Проверяет, есть ли сообщение о валидации или активен ли статус валидации.
-   * @returns boolean value indicating if validation is active / логическое значение, указывающее, активна ли валидация
+   * Проверяет, есть ли активное сообщение или состояние валидации.
+   * @returns true if validation is active / true, если валидация активна
    */
   isValidation(): boolean {
     return isFilled(this.props.validation || this.fieldMessage.validation)
   }
 
   /**
-   * Event for value change.
+   * Callback event handler triggered when input value changes.
    *
-   * Событие для изменения значения.
+   * Обработчик события, вызываемый при изменении вводимого значения.
+   * @param value new input value / новое значение ввода
    */
   protected readonly onInput = (value: string) => {
     if (

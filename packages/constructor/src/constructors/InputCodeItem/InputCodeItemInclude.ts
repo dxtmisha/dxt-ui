@@ -98,7 +98,31 @@ export class InputCodeItemInclude extends ComponentIncludeAbstract<
    */
   readonly update = (value: string) => {
     const values = this.getValue(value)
+
     this.items.value.forEach((item, index) => item.set(values?.[index] ?? ''))
+
+    this.updateTabindex()
+  }
+
+  /**
+   * Updates the tabindex of the items.
+   *
+   * Обновляет tabindex элементов.
+   */
+  readonly updateTabindex = () => {
+    let hasEmpty = false
+
+    this.items.value.forEach((item) => {
+      if (hasEmpty) {
+        item.setTabindex(-1)
+      } else {
+        item.setTabindex(undefined)
+      }
+
+      if (!isFilled(item.getValue(), true)) {
+        hasEmpty = true
+      }
+    })
   }
 
   /**
@@ -136,6 +160,7 @@ export class InputCodeItemInclude extends ComponentIncludeAbstract<
       value += item.getValue()
     }
 
+    this.updateTabindex()
     this.onUpdate?.(value)
   }
 
@@ -239,8 +264,9 @@ export class InputCodeItemInclude extends ComponentIncludeAbstract<
       },
 
       disabled: props.disabled,
+      name: props.name,
       match: props.match,
-      inputmode: props.inputmode,
+      inputMode: props.inputMode,
       placeholder: props.placeholder,
 
       onInput: this.onInput,

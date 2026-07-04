@@ -10,6 +10,10 @@ import {
   type InputCodeSlots
 } from '@dxtmisha/constructor/InputCode'
 
+import { D1FieldLabel } from '../FieldLabel'
+import { D1FieldMessage } from '../FieldMessage'
+import { D1InputCodeItem } from '../InputCodeItem'
+
 import { defaults, type InputCodeProps } from './props'
 import './styleToken.scss'
 
@@ -23,7 +27,8 @@ const props = withDefaults(defineProps<InputCodeProps>(), defaults)
 const classesToken = computed<ConstrClasses>(() => ({
   main: {
     // :classes-values [!] System label / Системная метка
-    'd1-inputCode': true
+    'd1-inputCode': true,
+    'd1-inputCode--validation': props.validation
     // :classes-values [!] System label / Системная метка
   }
 }))
@@ -38,7 +43,12 @@ const design = new InputCodeDesign(
   {
     emits,
     classes: classesToken,
-    styles: stylesToken
+    styles: stylesToken,
+    components: {
+      inputCodeItem: D1InputCodeItem,
+      fieldLabel: D1FieldLabel,
+      fieldMessage: D1FieldMessage
+    }
   }
 )
 

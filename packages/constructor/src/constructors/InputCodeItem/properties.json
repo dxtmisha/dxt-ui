@@ -1,4 +1,10 @@
 {
+  "padding": {
+    "_type": "var"
+  },
+  "height": {
+    "_type": "var"
+  },
   "#input": {},
   "#sub": {},
   "disabled": {},

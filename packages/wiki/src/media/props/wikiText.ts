@@ -285,5 +285,17 @@ export const wikiText: StorybookArgsToList = {
       }
     },
     hide: true
+  },
+  textSymbol: {
+    type: StorybookControl.text,
+    options: {
+      category: StorybookCategory.text,
+      type: 'string | (() => string)',
+      description: {
+        en: 'Symbol text',
+        ru: 'Текст символа'
+      }
+    },
+    hide: true
   }
 }

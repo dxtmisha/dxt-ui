@@ -91,6 +91,20 @@ export class InputCodeItemGo {
   }
 
   /**
+   * Focus to the previous element.
+   *
+   * Сфокусироваться на предыдущем элементе.
+   */
+  focusToPrevious() {
+    if (
+      this.isMove()
+      && this.element.value
+    ) {
+      this.toFocus(this.element.value.previousElementSibling)
+    }
+  }
+
+  /**
    * Focus to the next unfilled element.
    *
    * Сфокусироваться на следующем незаполненном элементе.
@@ -120,6 +134,20 @@ export class InputCodeItemGo {
 
         element = element.nextElementSibling
       }
+    }
+  }
+
+  /**
+   * Focus to the next element.
+   *
+   * Сфокусироваться на следующем элементе.
+   */
+  focusToNext() {
+    if (
+      this.isMove()
+      && this.element.value
+    ) {
+      this.toFocus(this.element.value.nextElementSibling)
     }
   }
 

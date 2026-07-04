@@ -24,6 +24,7 @@ export type InputCodeComponents
 export type InputCodeEmits
   = ModelEmits
     & {
+      /** Event triggered on value change / Событие, вызываемое при изменении значения */
       input: [value: string]
     }
 
@@ -77,7 +78,6 @@ export type InputCodeClasses = {
   /** Main class name / Основное имя класса */
   main: ConstrClass
   // :classes [!] System label / Системная метка
-  /** Class name of the context wrapper / Имя класса обертки контекста */
   context: string
   // :classes [!] System label / Системная метка
 }

@@ -159,6 +159,16 @@ export const wikiStatus: StorybookArgsToList = {
     },
     isDemo: true
   },
+  validation: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.status,
+      description: {
+        en: 'Validation status of the component',
+        ru: 'Статус валидации компонента'
+      }
+    }
+  },
   visible: {
     type: StorybookControl.boolean,
     options: {

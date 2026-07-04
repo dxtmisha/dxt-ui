@@ -3,13 +3,9 @@ import type { TextSymbolPropsInclude } from '../../types/textTypes'
 
 type InputCodeItemPropsToken = {
   // :type [!] System label / Системная метка
-  /** Disabled state / Состояние отключения */
   disabled?: boolean
-  /** Success status / Статус успеха */
   success?: boolean
-  /** Error status / Статус ошибки */
   error?: boolean
-  /** Hidden state / Состояние скрытия */
   hide?: boolean
   // :type [!] System label / Системная метка
 }
@@ -18,15 +14,19 @@ export type InputCodeItemPropsBasic = TextSymbolPropsInclude & {
   /** Focus movement enabled / Разрешено ли перемещение фокуса */
   move?: boolean
 
+  /** Input name / Название поля ввода */
+  name?: string
   /** Item index / Индекс элемента */
   index?: NumberOrString
 
   /** RegExp for input verification / Регулярное выражение для проверки ввода */
   match?: RegExp
   /** Mode of virtual keyboard / Режим виртуальной клавиатуры */
-  inputmode?: 'none' | 'text' | 'decimal' | 'numeric' | 'tel' | 'search' | 'email' | 'url' | string
+  inputMode?: 'none' | 'text' | 'decimal' | 'numeric' | 'tel' | 'search' | 'email' | 'url' | string
   /** Placeholder text / Текст-заполнитель */
   placeholder?: string
+  /** Tab index for keyboard navigation / Индекс табуляции для навигации с клавиатуры */
+  tabindex?: number | string
 }
 
 /**
@@ -43,8 +43,9 @@ export type InputCodeItemProps = InputCodeItemPropsBasic & InputCodeItemPropsTok
  */
 export const defaultsInputCodeItem = {
   move: true,
+  name: 'item-code',
   match: /[0-9]/,
-  inputmode: 'numeric',
+  inputMode: 'numeric',
   placeholder: ' ',
   ...{
     // :default [!] System label / Системная метка

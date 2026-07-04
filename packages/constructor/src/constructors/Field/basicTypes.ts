@@ -11,61 +11,54 @@ import type { FieldPropsBasic } from './props'
 import type { FieldSlots } from './types'
 
 /**
- * Control data passed to slots and subcomponents/
+ * Control data passed to slots and subcomponents /
  * Данные управления, передаваемые в слоты и под-компоненты
  */
 export type FieldControl = {
-  /**
-   * Unique element identifier for binding label and input/
-   * Уникальный идентификатор элемента для связывания label и input
-   */
+  /** Unique element identifier for binding label and input / Уникальный идентификатор элемента для связывания label и input */
   id: string
-  /**
-   * CSS classes for the visible input area/
-   * CSS-классы для видимой зоны ввода
-   */
+  /** CSS classes for the visible input area / CSS-классы для видимой зоны ввода */
   className: string
-  /**
-   * CSS classes for the hidden native input element/
-   * CSS-классы для скрытого нативного элемента ввода
-   */
+  /** CSS classes for the hidden native input element / CSS-классы для скрытого нативного элемента ввода */
   classHidden: string
-  /**
-   * CSS classes applied when the field is focused/
-   * CSS-классы, применяемые при фокусировке на поле
-   */
+  /** CSS classes applied when the field is focused / CSS-классы, применяемые при фокусировке на поле */
   classForFocus: string
 
-  /** Properties bound to the input element/ Свойства, привязанные к элементу ввода */
+  /** Properties bound to the input element / Свойства, привязанные к элементу ввода */
   binds:
     AriaList
     & {
-      /** Unique ID/ Уникальный идентификатор */
+      /** Unique ID / Уникальный идентификатор */
       'id': string
-      /** Class name/ Имя класса */
+      /** Class name / Имя класса */
       'class': string
+      /** Disabled state / Состояние отключения */
+      'disabled'?: boolean
+      /** Read-only state / Состояние «только для чтения» */
+      'readonly'?: boolean
+      /** Input identification attribute / Идентификационный атрибут ввода */
       'data-input': string
     }
 }
 
 /**
- * Interface for describing which components need to be connected for Field work/
+ * Interface for describing which components need to be connected for Field work /
  * Интерфейс для описания, какие компоненты надо подключить для работы Field
  */
 export type FieldComponentInclude = {
-  /** Field component configuration/ Конфигурация компонента поля */
+  /** Field component configuration / Конфигурация компонента поля */
   field?: object
 }
 
 /**
- * Type describing available slots for Field/
+ * Type describing available slots for Field /
  * Тип, описывающий доступные слоты для Field
  */
 export interface FieldSlotsInclude extends Omit<FieldSlots, 'default'> {
 }
 
 /**
- * Properties that can be passed to FieldInclude/
+ * Properties that can be passed to FieldInclude /
  * Свойства, которые можно передать в FieldInclude
  */
 export type FieldPropsInclude<
@@ -78,7 +71,7 @@ export type FieldPropsInclude<
 > = Omit<
   FieldPropsBasic<Icon, FieldLabel, FieldMessage, FieldCounter, Progress>,
   // Status
-  'disabledPrevious'
+  | 'disabledPrevious'
   | 'disabledNext'
 
   // Value
@@ -98,22 +91,20 @@ export type FieldPropsInclude<
   | 'iconClose'
 >
 & {
-  /** Status/ Статус */
-  /** Whether the field is focused/ Сфокусировано ли поле */
+  /** Whether the field is focused / Сфокусировано ли поле */
   focus?: boolean
-  /** Whether the field is selected/ Выбрано ли поле */
+  /** Whether the field is selected / Выбрано ли поле */
   selected?: boolean
-  /** Whether the field is read-only/ Находится ли поле в режиме «только для чтения» */
+  /** Whether the field is read-only / Находится ли поле в режиме «только для чтения» */
   readonly?: boolean
-  /** Whether the field is disabled/ Отключено ли поле */
+  /** Whether the field is disabled / Отключено ли поле */
   disabled?: boolean
 
-  /** Style/ Стили */
-  /** Alignment of content in the field/ Выравнивание контента в поле */
+  /** Alignment of content in the field / Выравнивание контента в поле */
   align?: 'center' | 'right' | 'left'
 
-  /** Cancellation behavior/ Поведение отмены */
+  /** Cancellation behavior / Поведение отмены */
   cancel?: 'auto' | 'always' | 'none'
-  /** Additional attributes for the Field component/ Дополнительные атрибуты для компонента поля */
+  /** Additional attributes for the Field component / Дополнительные атрибуты для компонента поля */
   fieldAttrs?: ConstrBind<Field>
 }

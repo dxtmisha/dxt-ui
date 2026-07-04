@@ -1,6 +1,7 @@
 export * from './InputCodeItem'
 export * from './InputCodeItemDesign'
 export * from './InputCodeItemInclude'
+export * from './InputCodeItemTabIndex'
 export * from './props'
 export * from './types'
 export * from './basicTypes'

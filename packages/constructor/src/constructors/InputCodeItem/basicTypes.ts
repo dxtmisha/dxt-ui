@@ -22,15 +22,16 @@ export type InputCodeItemComponentInclude = {
 export type InputCodeItemPropsInclude<
   InputCodeItem extends InputCodeItemPropsBasic = InputCodeItemPropsBasic
 > = {
-  // Status
   /** Whether the component is disabled / Отключен ли компонент */
   disabled?: boolean
 
-  // Style
+  /** Input name / Название поля ввода */
+  name?: string
+
   /** Regex pattern for input validation / Регулярное выражение для проверки ввода */
   match?: InputCodeItemPropsBasic['match']
   /** Input mode pattern / Режим ввода */
-  inputmode?: InputCodeItemPropsBasic['inputmode']
+  inputMode?: InputCodeItemPropsBasic['inputMode']
   /** Input placeholder / Плейсхолдер ввода */
   placeholder?: string
   /** Additional attributes for InputCodeItem component / Дополнительные атрибуты для компонента InputCodeItem */

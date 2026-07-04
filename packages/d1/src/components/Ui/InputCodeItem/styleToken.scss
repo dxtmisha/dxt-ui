@@ -11,6 +11,148 @@
   // Стили из токенов
   // :style [!] System label / Системная метка
   & {
+    --d1-inputCodeItem-padding: var(--d1-sys-spacing-sm);
+    
+    @include ui.backgroundColor(#{var(--d1-sys-palette-surface)});
+    @include ui.backgroundOpacity(#{var(--d1-sys-opacity-primary-high)});
+    @include ui.gradient(#{var(--d1-sys-palette-primary)});
+    @include ui.gradientOpacity(#{0});
+    
+    border-radius: calc(var(--d1-inputCodeItem-height) * var(--d1-sys-rounded-adaptive-md));
+    
+    backdrop-filter: var(--d1-sys-blur-md);
+    
+    &::after {
+      content: ' ';
+      position: absolute;
+      @include ui.inset(#{0});
+      
+      border-radius: inherit;
+      border-width: var(--d1-sys-spacing-outline);
+      @include ui.borderColor(#{var(--d1-sys-palette-outline)});
+      @include ui.borderOpacity(#{var(--d1-sys-opacity-outline)});
+    }
+    
+    @include ui.hover {
+      @include ui.gradientOpacity(#{var(--d1-sys-opacity-hover)}); @include ui.gradient('init');
+    }
+    
+    @include ui.disabled {
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-disabled)}); @include ui.color('init');
+      
+      @include ui.backgroundColor(#{var(--d1-sys-palette-surface)});
+      
+      &::after {
+        content: ' ';
+        @include ui.borderColor(#{var(--d1-sys-palette-outline)});
+        @include ui.borderOpacity(#{calc(var(--d1-sys-opacity-outline) * var(--d1-sys-opacity-surface-disabled))});
+      }
+    }
+    
+    &:focus-within {
+      @include ui.gradientOpacity(#{var(--d1-sys-opacity-focus)}); @include ui.gradient('init');
+      @include ui.outlineOpacity(#{var(--d1-sys-opacity-outline)});
+      
+      outline-width: var(--d1-ref-spacing-1);
+      @include ui.outlineColor(#{var(--d1-sys-palette-primary)});
+      
+      &::after {
+        content: ' ';
+        border-width: var(--d1-ref-spacing-2px);
+        @include ui.borderColor(#{var(--d1-sys-palette-primary)});
+        @include ui.borderOpacity(#{var(--d1-sys-opacity-primary-high)});
+      }
+    }
+    
+    &--success {
+      @include ui.gradient(#{var(--d1-sys-palette-success)});
+      
+      &::after {
+        content: ' ';
+        @include ui.borderColor(#{var(--d1-sys-palette-success)});
+        @include ui.borderOpacity(#{var(--d1-sys-opacity-surface-high)});
+      }
+      
+      &:focus-within {
+        @include ui.outlineColor(#{var(--d1-sys-palette-success)});
+        
+        &::after {
+          content: ' ';
+          @include ui.borderColor(#{var(--d1-sys-palette-success)});
+        }
+      }
+    }
+    
+    &--error {
+      @include ui.gradient(#{var(--d1-sys-palette-error)});
+      
+      &::after {
+        content: ' ';
+        @include ui.borderColor(#{var(--d1-sys-palette-error)});
+        @include ui.borderOpacity(#{var(--d1-sys-opacity-surface-high)});
+      }
+      
+      &:focus-within {
+        @include ui.outlineColor(#{var(--d1-sys-palette-error)});
+        
+        &::after {
+          content: ' ';
+          @include ui.borderColor(#{var(--d1-sys-palette-error)});
+        }
+      }
+    }
+    
+    &--size {
+      &--sm {
+        --d1-inputCodeItem-height: var(--d1-ref-spacing-8);
+        
+        font-family: var(--d1-sys-font-family-basic), sans-serif;
+        @include ui.fontSize(#{var(--d1-sys-font-size-sm)});
+        font-weight: var(--d1-sys-font-weight-regular);
+        @include ui.lineHeight(#{var(--d1-sys-lineHeight-sm)});
+        letter-spacing: var(--d1-sys-letterSpacing-md);
+      }
+      
+      &--md {
+        --d1-inputCodeItem-height: var(--d1-ref-spacing-12);
+        
+        font-family: var(--d1-sys-font-family-basic), sans-serif;
+        @include ui.fontSize(#{var(--d1-sys-font-size-md)});
+        font-weight: var(--d1-sys-font-weight-regular);
+        @include ui.lineHeight(#{var(--d1-sys-lineHeight-md)});
+        letter-spacing: var(--d1-sys-letterSpacing-xl);
+      }
+      
+      &--lg {
+        --d1-inputCodeItem-height: var(--d1-ref-spacing-16);
+        
+        font-family: var(--d1-sys-font-family-basic), sans-serif;
+        @include ui.fontSize(#{var(--d1-sys-font-size-headlineSmall)});
+        font-weight: var(--d1-sys-font-weight-regular);
+        @include ui.lineHeight(#{var(--d1-sys-lineHeight-headlineSmall)});
+        letter-spacing: var(--d1-sys-letterSpacing-none);
+      }
+      
+      &--display {
+        --d1-inputCodeItem-height: var(--d1-ref-spacing-18);
+        
+        font-family: var(--d1-sys-font-family-basic), sans-serif;
+        @include ui.fontSize(#{var(--d1-sys-font-size-headlineLarge)});
+        font-weight: var(--d1-sys-font-weight-regular);
+        @include ui.lineHeight(#{var(--d1-sys-lineHeight-headlineLarge)});
+        letter-spacing: var(--d1-sys-letterSpacing-none);
+        
+        & .d1-inputCodeItem__body {
+          &__input {
+            font-family: var(--d1-sys-font-family-basic), sans-serif;
+            @include ui.fontSize(#{var(--d1-sys-font-size-headlineSmall)});
+            font-weight: var(--d1-sys-font-weight-regular);
+            @include ui.lineHeight(#{var(--d1-sys-lineHeight-headlineSmall)});
+            letter-spacing: var(--d1-sys-letterSpacing-none);
+          }
+        }
+      }
+    }
   }
   // :style [!] System label / Системная метка
 

@@ -231,6 +231,8 @@ export class Field {
       binds: {
         'id': id,
         'class': className,
+        'disabled': this.props.disabled,
+        'readonly': this.props.readonly,
         'data-input': id,
         ...AriaStaticInclude.invalid(this.fieldElement.isValidation()),
         ...AriaStaticInclude.describedby(this.describedby)

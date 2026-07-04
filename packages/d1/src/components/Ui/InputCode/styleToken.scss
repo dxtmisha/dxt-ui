@@ -10,6 +10,11 @@
   // Styles from tokens
   // Стили из токенов
   // :style [!] System label / Системная метка
+  & {
+    &__context {
+      gap: var(--d1-sys-spacing-xs);
+    }
+  }
   // :style [!] System label / Системная метка
 
   // Here are the user styles

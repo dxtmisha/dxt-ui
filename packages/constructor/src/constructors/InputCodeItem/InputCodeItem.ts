@@ -6,6 +6,7 @@ import { TextInclude } from '../../classes/TextInclude'
 import { InputCodeItemEvent } from './InputCodeItemEvent'
 import { InputCodeItemGo } from './InputCodeItemGo'
 import { InputCodeItemValue } from './InputCodeItemValue'
+import { InputCodeItemTabIndex } from './InputCodeItemTabIndex'
 
 import type { AriaList } from '../../types/ariaTypes'
 import type { InputCodeItemComponents, InputCodeItemEmits, InputCodeItemSlots } from './types'
@@ -21,6 +22,8 @@ export class InputCodeItem {
   readonly value: InputCodeItemValue
   /** Object for navigation and focus movement / Объект для навигации и перемещения фокуса */
   readonly go: InputCodeItemGo
+  /** Object for managing tabindex / Объект для управления tabindex */
+  readonly tabindex: InputCodeItemTabIndex
   /** Object for event handling / Объект для обработки событий */
   readonly event: InputCodeItemEvent
   /** Object for text localization / Объект для локализации текста */
@@ -57,6 +60,7 @@ export class InputCodeItem {
       InputCodeItemEventConstructor?: typeof InputCodeItemEvent
       InputCodeItemGoConstructor?: typeof InputCodeItemGo
       InputCodeItemValueConstructor?: typeof InputCodeItemValue
+      InputCodeItemTabIndexConstructor?: typeof InputCodeItemTabIndex
       TextIncludeConstructor?: typeof TextInclude
     } = {}
   ) {
@@ -64,11 +68,13 @@ export class InputCodeItem {
       InputCodeItemEventConstructor = InputCodeItemEvent,
       InputCodeItemGoConstructor = InputCodeItemGo,
       InputCodeItemValueConstructor = InputCodeItemValue,
+      InputCodeItemTabIndexConstructor = InputCodeItemTabIndex,
       TextIncludeConstructor = TextInclude
     } = constructors
 
     this.value = new InputCodeItemValueConstructor(element)
     this.go = new InputCodeItemGoConstructor(props, element)
+    this.tabindex = new InputCodeItemTabIndexConstructor(props)
     this.event = new InputCodeItemEventConstructor(
       props,
       this.value,
@@ -106,11 +112,13 @@ export class InputCodeItem {
     return {
       key: 'input',
       class: `${this.className}__input`,
-      inputmode: this.props.inputmode,
+      name: this.getName(),
+      inputMode: this.props.inputMode,
       maxLength: 1,
-      placeholder: this.props.placeholder,
+      placeholder: this.props.disabled ? undefined : this.props.placeholder,
       [this.go.getKey()]: this.props.index,
       disabled: this.props.disabled,
+      tabindex: this.tabindex.get(),
 
       onFocus: this.event.onFocus,
       onClick: this.event.onClick,
@@ -129,5 +137,23 @@ export class InputCodeItem {
    */
   readonly focus = () => {
     this.element.value?.querySelector('input')?.focus()
+  }
+
+  /**
+   * Returns the name of the input element.
+   *
+   * Возвращает имя элемента ввода.
+   * @returns name string or undefined / имя или undefined
+   */
+  getName(): string | undefined {
+    if (this.props.name) {
+      if (this.props.index !== undefined) {
+        return `${this.props.name}__${this.props.index}`
+      }
+
+      return this.props.name
+    }
+
+    return undefined
   }
 }

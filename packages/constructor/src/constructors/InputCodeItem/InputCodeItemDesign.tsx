@@ -8,7 +8,7 @@ import {
 import { InputCodeItem } from './InputCodeItem'
 
 import {
-  type InputCodeItemPropsBasic
+  type InputCodeItemProps
 } from './props'
 import {
   type InputCodeItemClasses,
@@ -31,7 +31,7 @@ export class InputCodeItemDesign<
   COMP extends InputCodeItemComponents,
   EXPOSE extends InputCodeItemExpose,
   CLASSES extends InputCodeItemClasses,
-  P extends InputCodeItemPropsBasic
+  P extends InputCodeItemProps
 > extends DesignConstructorAbstract<
   HTMLDivElement,
   COMP,
@@ -90,6 +90,7 @@ export class InputCodeItemDesign<
       index: this.props.index,
       getValue: () => this.item.value.get(),
       set: this.item.value.set,
+      setTabindex: this.item.tabindex.set,
       reset: this.item.value.reset,
       focusInput: this.item.focus
     } as EXPOSE
@@ -131,8 +132,8 @@ export class InputCodeItemDesign<
    */
   protected initRender(): VNode {
     const children: any[] = [
-      this.renderInput(),
-      h('span', { class: this.classes?.value.sub })
+      ...this.renderInput(),
+      ...this.renderSub()
     ]
 
     return h('div', {
@@ -148,7 +149,21 @@ export class InputCodeItemDesign<
    * Рендер элемента ввода.
    * @returns virtual node / виртуальная нода
    */
-  protected readonly renderInput = (): VNode => {
-    return h('input', this.item.inputBinds)
+  readonly renderInput = (): VNode[] => {
+    return [h('input', this.item.inputBinds)]
+  }
+
+  /**
+   * Render of the hidden block (mask/placeholder) element.
+   *
+   * Рендер скрытого блока (маски/плейсхолдера).
+   * @returns virtual node or undefined / виртуальная нода или undefined
+   */
+  readonly renderSub = (): VNode[] => {
+    if (this.props.hide) {
+      return [h('span', { class: this.classes?.value.sub })]
+    }
+
+    return []
   }
 }
