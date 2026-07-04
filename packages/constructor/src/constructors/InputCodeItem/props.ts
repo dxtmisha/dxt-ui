@@ -1,5 +1,6 @@
 import type { NumberOrString } from '@dxtmisha/functional'
 import type { TextSymbolPropsInclude } from '../../types/textTypes'
+import type { SkeletonPropsInclude } from '../Skeleton'
 
 type InputCodeItemPropsToken = {
   // :type [!] System label / Системная метка
@@ -10,24 +11,26 @@ type InputCodeItemPropsToken = {
   // :type [!] System label / Системная метка
 }
 
-export type InputCodeItemPropsBasic = TextSymbolPropsInclude & {
-  /** Focus movement enabled / Разрешено ли перемещение фокуса */
-  move?: boolean
+export type InputCodeItemPropsBasic = TextSymbolPropsInclude
+  & SkeletonPropsInclude
+  & {
+    /** Focus movement enabled / Разрешено ли перемещение фокуса */
+    move?: boolean
 
-  /** Input name / Название поля ввода */
-  name?: string
-  /** Item index / Индекс элемента */
-  index?: NumberOrString
+    /** Input name / Название поля ввода */
+    name?: string
+    /** Item index / Индекс элемента */
+    index?: NumberOrString
 
-  /** RegExp for input verification / Регулярное выражение для проверки ввода */
-  match?: RegExp
-  /** Mode of virtual keyboard / Режим виртуальной клавиатуры */
-  inputMode?: 'none' | 'text' | 'decimal' | 'numeric' | 'tel' | 'search' | 'email' | 'url' | string
-  /** Placeholder text / Текст-заполнитель */
-  placeholder?: string
-  /** Tab index for keyboard navigation / Индекс табуляции для навигации с клавиатуры */
-  tabindex?: number | string
-}
+    /** RegExp for input verification / Регулярное выражение для проверки ввода */
+    match?: RegExp
+    /** Mode of virtual keyboard / Режим виртуальной клавиатуры */
+    inputMode?: 'none' | 'text' | 'decimal' | 'numeric' | 'tel' | 'search' | 'email' | 'url' | string
+    /** Placeholder text / Текст-заполнитель */
+    placeholder?: string
+    /** Tab index for keyboard navigation / Индекс табуляции для навигации с клавиатуры */
+    tabindex?: number | string
+  }
 
 /**
  * Type describing incoming properties.

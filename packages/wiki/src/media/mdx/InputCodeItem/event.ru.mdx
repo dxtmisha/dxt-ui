@@ -1,0 +1,66 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+### `focus`
+
+Событие срабатывает, когда ячейка ввода получает фокус.
+
+**Параметры:**
+- `index: number | string` — индекс ячейки, получившей фокус
+
+### `input`
+
+Событие срабатывает при вводе или изменении символа в ячейке.
+
+**Параметры:**
+- `index: number | string` — индекс измененной ячейки
+- `value: string` — новое введенное значение символа
+
+### `paste`
+
+Событие срабатывает при вставке текста (paste) в ячейку.
+
+**Параметры:**
+- `index: number | string` — индекс ячейки
+- `value: string` — вставленное текстовое значение
+
+### `backspace`
+
+Событие срабатывает при нажатии клавиши Backspace внутри ячейки.
+
+**Параметры:**
+- `index: number | string` — индекс ячейки
+
+<Source
+    code={`
+<script setup>
+const handleFocus = (index) => {
+  console.log('Фокус на ячейке с индексом:', index)
+}
+
+const handleInput = (index, value) => {
+  console.log('Индекс ячейки:', index, 'Введено:', value)
+}
+
+const handlePaste = (index, value) => {
+  console.log('Индекс ячейки:', index, 'Вставлено:', value)
+}
+
+const handleBackspace = (index) => {
+  console.log('Нажата Backspace на ячейке:', index)
+}
+</script>
+
+<template>
+  <div class="wiki-storybook-flex">
+    <InputCodeItem
+      :index="0"
+      @focus="handleFocus"
+      @input="handleInput"
+      @paste="handlePaste"
+      @backspace="handleBackspace"
+    />
+  </div>
+</template>
+  `}
+    language="html"
+/>

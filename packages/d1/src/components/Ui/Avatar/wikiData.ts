@@ -31,11 +31,15 @@ const propsNames: StorybookProps = [
 
 const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
+  { name: 'default', description: `Default slot content/ Содержимое слота по умолчанию`, properties: [{ name: 'props', type: '(any) | undefined' }] }
   // :slotsList [!] System label / Системная метка
 ]
 
 const eventsNames: StorybookSlots = [
   // :eventsList [!] System label / Системная метка
+  { name: 'click', description: `Full click event with MouseEvent/ Полное событие клика с MouseEvent`, properties: [{ name: 'event', type: 'MouseEvent' }, { name: 'value', type: 'EventClickValue' }] },
+  { name: 'clickLite', description: `Lightweight click event/ Упрощённое событие клика`, properties: [{ name: 'value', type: 'EventClickValue' }] },
+  { name: 'load', description: `Event triggered when the image is loaded/ Событие, срабатывающее при загрузке изображения`, properties: [{ name: 'image', type: 'ImageEventData' }] }
   // :eventsList [!] System label / Системная метка
 ]
 

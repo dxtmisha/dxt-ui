@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/functional",
   "private": false,
-  "version": "1.15.0",
+  "version": "1.15.1",
   "type": "module",
   "description": "A comprehensive library of utilities, base classes, and Vue 3 composables for reactive web development. Extends @dxtmisha/functional-basic with Composition API.",
   "keywords": [
@@ -56,15 +56,15 @@
   ],
   "main": "dist/library.js",
   "module": "dist/library.js",
-  "types": "dist/src/library.d.ts",
+  "types": "dist/library.d.ts",
   "exports": {
     ".": {
       "import": "./dist/library.js",
-      "types": "./dist/src/library.d.ts"
+      "types": "./dist/library.d.ts"
     },
     "./flags": {
       "import": "./dist/flags.js",
-      "types": "./dist/src/flags.d.ts"
+      "types": "./dist/flags.d.ts"
     }
   },
   "engines": {

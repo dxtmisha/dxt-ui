@@ -24,6 +24,11 @@ const slotsNames: StorybookSlots = [
 
 const eventsNames: StorybookSlots = [
   // :eventsList [!] System label / Системная метка
+  { name: 'click', description: `Full click event with MouseEvent/ Полное событие клика с MouseEvent`, properties: [{ name: 'event', type: 'MouseEvent' }, { name: 'value', type: 'EventClickValue' }] },
+  { name: 'clickLite', description: `Lightweight click event/ Упрощённое событие клика`, properties: [{ name: 'value', type: 'EventClickValue' }] },
+  { name: 'update:modelSelected', description: `Update model value event/ Событие обновления значения модели`, properties: [{ name: 'value', type: 'string' }] },
+  { name: 'update:selected', description: `Update value event/ Событие обновления значения`, properties: [{ name: 'value', type: 'string' }] },
+  { name: 'updateValue', description: `Event for updating the value/ Событие обновления значения`, properties: [{ name: 'value?', type: 'NumberOrStringOrBoolean | undefined' }] }
   // :eventsList [!] System label / Системная метка
 ]
 

@@ -14,11 +14,14 @@ const propsNames: StorybookProps = [
 
 const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
+  { name: 'default', description: `Default slot containing the draggable children / Дефолтный слот, содержащий перетаскиваемые дочерние элементы`, properties: [{ name: 'props', type: '(DraggableWrapperControl) | undefined' }] }
   // :slotsList [!] System label / Системная метка
 ]
 
 const eventsNames: StorybookSlots = [
   // :eventsList [!] System label / Системная метка
+  { name: 'drop', description: `Event triggered when dragging completes on a target drop element / Событие, вызываемое при завершении перетаскивания на целевой элемент сброса`, properties: [{ name: 'parameters', type: 'DraggableWrapperEventParameters' }] },
+  { name: 'position', description: `Event triggered when dragging completes on a sorting position / Событие, вызываемое при завершении перетаскивания на позицию сортировки`, properties: [{ name: 'parameters', type: 'DraggableWrapperEventParameters' }] }
   // :eventsList [!] System label / Системная метка
 ]
 

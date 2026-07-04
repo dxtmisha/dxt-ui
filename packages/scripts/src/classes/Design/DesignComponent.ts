@@ -793,7 +793,7 @@ export class DesignComponent extends DesignCommand {
     this.updatePackage(
       `exports|${name}`,
       {
-        types: `./dist/src/library/${this.getFullName()}.d.ts`,
+        types: `./dist/library/${this.getFullName()}.d.ts`,
         default: `./dist/${this.getFullName()}.js`
       }
     )

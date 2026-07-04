@@ -54,11 +54,26 @@ const propsNames: StorybookProps = [
 
 const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
+  { name: 'info', description: `Slot in the middle before the spacer / Слот в середине перед разделителем (spacer)`, properties: [{ name: 'props', type: '(() => any) | undefined' }] },
+  { name: 'leading', description: `Slot at the very beginning of the component / Слот в самом начале компонента`, properties: [{ name: 'props', type: '(() => any) | undefined' }] },
+  { name: 'trailing', description: `Slot at the very end of the component / Слот в самом конце компонента`, properties: [{ name: 'props', type: '(() => any) | undefined' }] }
   // :slotsList [!] System label / Системная метка
 ]
 
 const eventsNames: StorybookSlots = [
   // :eventsList [!] System label / Системная метка
+  { name: 'click', description: `Full click event with MouseEvent/ Полное событие клика с MouseEvent`, properties: [{ name: 'event', type: 'MouseEvent' }, { name: 'value', type: 'EventClickValue' }] },
+  { name: 'clickLite', description: `Lightweight click event/ Упрощённое событие клика`, properties: [{ name: 'value', type: 'EventClickValue' }] },
+  { name: 'more', properties: [{ name: 'event', type: 'MouseEvent' }, { name: 'options?', type: 'EventClickValue | undefined' }] },
+  { name: 'moreLite', properties: [{ name: 'options?', type: 'EventClickValue | undefined' }] },
+  { name: 'morePrev', properties: [{ name: 'event', type: 'MouseEvent' }, { name: 'options?', type: 'EventClickValue | undefined' }] },
+  { name: 'morePrevLite', properties: [{ name: 'options?', type: 'EventClickValue | undefined' }] },
+  { name: 'rows', properties: [{ name: 'event', type: 'MouseEvent' }, { name: 'options?', type: 'EventClickValue | undefined' }] },
+  { name: 'rowsLite', properties: [{ name: 'options?', type: 'EventClickValue | undefined' }] },
+  { name: 'update:modelRows', properties: [{ name: 'value', type: 'number' }] },
+  { name: 'update:modelValue', description: `Update model value event/ Событие обновления значения модели`, properties: [{ name: 'value', type: 'number' }] },
+  { name: 'update:rows', properties: [{ name: 'value', type: 'number' }] },
+  { name: 'update:value', description: `Update value event/ Событие обновления значения`, properties: [{ name: 'value', type: 'number' }] }
   // :eventsList [!] System label / Системная метка
 ]
 

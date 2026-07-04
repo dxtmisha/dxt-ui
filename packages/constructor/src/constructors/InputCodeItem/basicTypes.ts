@@ -1,5 +1,6 @@
 import type { ConstrBind } from '@dxtmisha/functional'
 import type { InputCodeItemPropsBasic } from './props'
+import type { SkeletonPropsInclude } from '../Skeleton'
 
 /** Type for the InputCodeItem element / Тип для элемента InputCodeItem */
 export type InputCodeItemElement = HTMLElement | Element | null | undefined
@@ -21,7 +22,7 @@ export type InputCodeItemComponentInclude = {
  */
 export type InputCodeItemPropsInclude<
   InputCodeItem extends InputCodeItemPropsBasic = InputCodeItemPropsBasic
-> = {
+> = SkeletonPropsInclude & {
   /** Whether the component is disabled / Отключен ли компонент */
   disabled?: boolean
 

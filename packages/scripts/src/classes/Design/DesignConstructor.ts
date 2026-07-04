@@ -195,7 +195,7 @@ export class DesignConstructor extends DesignCommand {
     this.updatePackage(
       `exports|${name}`,
       {
-        types: `./dist/src/constructors/${command}/index.d.ts`,
+        types: `./dist/constructors/${command}/index.d.ts`,
         default: `./dist/${this.getNameMin()}.js`
       }
     )

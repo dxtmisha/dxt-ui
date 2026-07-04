@@ -264,6 +264,7 @@ export class InputCodeItemInclude extends ComponentIncludeAbstract<
       },
 
       disabled: props.disabled,
+      isSkeleton: props.isSkeleton,
       name: props.name,
       match: props.match,
       inputMode: props.inputMode,

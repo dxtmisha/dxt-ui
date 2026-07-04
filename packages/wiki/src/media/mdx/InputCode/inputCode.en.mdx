@@ -1,0 +1,45 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+A verification code input component designed for entering OTP (One-Time Password) codes, SMS verification codes, or PINs.
+
+InputCode coordinates a sequence of individual input cells (InputCodeItem), automatically managing active focus transition (focusing the next cell as digits are typed, or focusing the previous cell when backspacing). It supports success and validation states, loading state styling, customized verification regex (match), and variable code length (defaults to 4).
+
+**Key Features:**
+
+- Coordinated cell-by-cell code input with automatic focus movement
+- Customizable code length (`length` property)
+- Custom validation support (`validation` and `success` states)
+- Loading state handling
+- Input regex restriction (e.g., numeric only via `match`)
+- Integration with standard Field components for label and message management
+
+**Typical Usage Scenarios:**
+
+- SMS authentication and phone number verification
+- Two-factor authentication (2FA) verification forms
+- PIN or passcode entry dialogs
+
+<Source
+    code={`
+<script setup>
+import { ref } from 'vue'
+
+const code = ref('')
+
+const handleInput = (value) => {
+  console.log('Current code:', value)
+}
+</script>
+
+<template>
+  <InputCode
+    v-model="code"
+    :length="6"
+    label="Verification Code"
+    helperMessage="We sent a 6-digit code to your phone"
+    @input="handleInput"
+  />
+</template>
+  `}
+    language="html"
+/>

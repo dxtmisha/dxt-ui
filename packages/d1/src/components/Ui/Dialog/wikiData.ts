@@ -67,6 +67,8 @@ const eventsNames: StorybookSlots = [
   { name: 'barsLite', description: `Simple click event for bars/ Простое событие клика для панелей`, properties: [{ name: 'value', type: 'EventClickValue' }] },
   { name: 'close', description: `Event for clicking the close button/ Событие клика на кнопку закрытия` },
   { name: 'ok', description: `Event for clicking the OK button/ Событие клика на кнопку подтверждения` },
+  { name: 'update:modelOpen', description: `Update model open event/ Событие обновления открытия модели`, properties: [{ name: 'value', type: 'boolean' }] },
+  { name: 'update:open', description: `Update open event/ Событие обновления открытия`, properties: [{ name: 'value', type: 'boolean' }] },
   { name: 'window', description: `Window event triggered on state change/ Событие окна при изменении состояния`, properties: [{ name: 'options', type: 'WindowEmitOptions' }] }
   // :eventsList [!] System label / Системная метка
 ]

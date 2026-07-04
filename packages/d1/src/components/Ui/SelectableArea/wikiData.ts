@@ -17,11 +17,15 @@ const propsNames: StorybookProps = [
 
 const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
+  { name: 'default', description: `Default slot containing the selectable children / Дефолтный слот, содержащий выделяемые дочерние элементы`, properties: [{ name: 'props', type: '(SelectableAreaControl) | undefined' }] }
   // :slotsList [!] System label / Системная метка
 ]
 
 const eventsNames: StorybookSlots = [
   // :eventsList [!] System label / Системная метка
+  { name: 'selected', description: `Event triggered when items are selected / Событие, вызываемое при выборе элементов`, properties: [{ name: 'parameters', type: 'SelectableAreaEventParameters' }] },
+  { name: 'update:modelSelected', description: `Update model value event/ Событие обновления значения модели`, properties: [{ name: 'value', type: 'string' }] },
+  { name: 'update:selected', description: `Update value event/ Событие обновления значения`, properties: [{ name: 'value', type: 'string' }] }
   // :eventsList [!] System label / Системная метка
 ]
 

@@ -1,0 +1,26 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+### `input`
+
+Событие срабатывает при изменении значения вводимого кода (при ручном вводе, вставке или программном изменении).
+
+**Параметры:**
+- `value: string` — новое значение кода подтверждения
+
+<Source
+    code={`
+<script setup>
+const handleInput = (value) => {
+  console.log('Код подтверждения изменен:', value)
+}
+</script>
+
+<template>
+  <InputCode
+    label="Введите код"
+    @input="handleInput"
+  />
+</template>
+  `}
+    language="html"
+/>

@@ -1,0 +1,18 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+An individual input field cell representing a single character or digit within the larger verification code input sequence.
+
+InputCodeItem is typically managed and rendered by its parent container, `InputCode`. It supports focus control, keystroke intercepting (like handling arrow keys or backspace navigation), character formatting constraints (using regular expressions via `match`), and optional hidden masking (`hide` property, e.g. for secure PIN passcodes).
+
+**Key Features:**
+
+- Represents a single digit/character entry field
+- Custom character checking via RegExp (`match` property)
+- Keyboard navigation hooks (focus control, backspace tracking, paste handling)
+- Secure/hidden mode support via the `hide` property
+- Access control with the `disabled` state
+
+**Typical Usage Scenarios:**
+
+- Inner cell elements rendering inside passcode input fields
+- Individual letter/digit slots in OTP verification patterns

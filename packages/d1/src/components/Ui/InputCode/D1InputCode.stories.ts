@@ -4,6 +4,7 @@ import D1InputCode from './D1InputCode.vue'
 import { InputCodeWikiStorybook } from './wiki'
 
 // :story-import [!] System label / Системная метка
+import { ref } from 'vue'
 // :story-import [!] System label / Системная метка
 
 const meta = {
@@ -31,4 +32,27 @@ export const InputCode: Story = {
 }
 
 // :story-items [!] System label / Системная метка
+export const InputCodeVModel: Story = {
+  name: 'Двусторонняя привязка (v-model)',
+  render: () => ({
+    components: { D1InputCode },
+    setup() {
+      const codeValue = ref('1234')
+      return { codeValue }
+    },
+    template: `
+        <div class="wiki-storybook-flex-column">
+          <div class="wiki-storybook-flex">
+            <span>Current value: {{ codeValue }}</span>
+            <button class="wiki-storybook-button" @click="codeValue = '4321'">Set '4321'</button>
+            <button class="wiki-storybook-button wiki-storybook-button-warning" @click="codeValue = ''">Clear</button>
+          </div>
+          <D1InputCode
+            v-model="codeValue"
+            label="Code input"
+          />
+        </div>
+    `
+  })
+}
 // :story-items [!] System label / Системная метка

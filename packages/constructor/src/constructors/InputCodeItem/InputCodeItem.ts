@@ -5,8 +5,9 @@ import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { TextInclude } from '../../classes/TextInclude'
 import { InputCodeItemEvent } from './InputCodeItemEvent'
 import { InputCodeItemGo } from './InputCodeItemGo'
-import { InputCodeItemValue } from './InputCodeItemValue'
 import { InputCodeItemTabIndex } from './InputCodeItemTabIndex'
+import { InputCodeItemValue } from './InputCodeItemValue'
+import { SkeletonInclude } from '../Skeleton'
 
 import type { AriaList } from '../../types/ariaTypes'
 import type { InputCodeItemComponents, InputCodeItemEmits, InputCodeItemSlots } from './types'
@@ -15,19 +16,21 @@ import type { InputCodeItemProps } from './props'
 /**
  * Class for handling code input.
  *
- * Класс для работы с вводом кода.
+ *  / Класс для работы с вводом кода.
  */
 export class InputCodeItem {
-  /** Object for handling value / Объект для работы со значением */
-  readonly value: InputCodeItemValue
-  /** Object for navigation and focus movement / Объект для навигации и перемещения фокуса */
-  readonly go: InputCodeItemGo
-  /** Object for managing tabindex / Объект для управления tabindex */
-  readonly tabindex: InputCodeItemTabIndex
   /** Object for event handling / Объект для обработки событий */
   readonly event: InputCodeItemEvent
+  /** Object for navigation and focus movement / Объект для навигации и перемещения фокуса */
+  readonly go: InputCodeItemGo
+  /** Skeleton control instance / Экземпляр управления скелетоном */
+  readonly skeleton: SkeletonInclude
+  /** Object for managing tabindex / Объект для управления tabindex */
+  readonly tabindex: InputCodeItemTabIndex
   /** Object for text localization / Объект для локализации текста */
   readonly text: TextInclude
+  /** Object for handling value / Объект для работы со значением */
+  readonly value: InputCodeItemValue
 
   /**
    * Constructor
@@ -44,7 +47,9 @@ export class InputCodeItem {
    * @param constructors object with classes / объект с классами
    * @param constructors.InputCodeItemEventConstructor class for working with input code item event / класс для работы с событием элемента ввода кода
    * @param constructors.InputCodeItemGoConstructor class for working with input code item go / класс для работы с переходом элемента ввода кода
+   * @param constructors.InputCodeItemTabIndexConstructor class for working with input code item tabindex / класс для работы с tabindex элемента ввода кода
    * @param constructors.InputCodeItemValueConstructor class for working with input code item value / класс для работы со значением элемента ввода кода
+   * @param constructors.SkeletonIncludeConstructor class for working with skeleton / класс для работы со скелетоном
    * @param constructors.TextIncludeConstructor class for working with text / класс для работы с текстом
    */
   constructor(
@@ -59,16 +64,18 @@ export class InputCodeItem {
     constructors: {
       InputCodeItemEventConstructor?: typeof InputCodeItemEvent
       InputCodeItemGoConstructor?: typeof InputCodeItemGo
-      InputCodeItemValueConstructor?: typeof InputCodeItemValue
       InputCodeItemTabIndexConstructor?: typeof InputCodeItemTabIndex
+      InputCodeItemValueConstructor?: typeof InputCodeItemValue
+      SkeletonIncludeConstructor?: typeof SkeletonInclude
       TextIncludeConstructor?: typeof TextInclude
     } = {}
   ) {
     const {
       InputCodeItemEventConstructor = InputCodeItemEvent,
       InputCodeItemGoConstructor = InputCodeItemGo,
-      InputCodeItemValueConstructor = InputCodeItemValue,
       InputCodeItemTabIndexConstructor = InputCodeItemTabIndex,
+      InputCodeItemValueConstructor = InputCodeItemValue,
+      SkeletonIncludeConstructor = SkeletonInclude,
       TextIncludeConstructor = TextInclude
     } = constructors
 
@@ -80,6 +87,11 @@ export class InputCodeItem {
       this.value,
       this.go,
       emits
+    )
+    this.skeleton = new SkeletonIncludeConstructor(
+      props,
+      classDesign,
+      ['classBackground']
     )
     this.text = new TextIncludeConstructor(props)
   }
@@ -127,6 +139,18 @@ export class InputCodeItem {
       onPaste: this.event.onPaste,
 
       ...this.aria
+    }
+  }
+
+  /**
+   * Returns values for the class.
+   *
+   * Возвращает значения для класса.
+   * @returns classes values / значения классов
+   */
+  get classes() {
+    return {
+      ...this.skeleton.classes
     }
   }
 

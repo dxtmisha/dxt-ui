@@ -104,7 +104,7 @@ export class InputCodeItemDesign<
    */
   protected initClasses(): Partial<CLASSES> {
     return {
-      main: {},
+      main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
         input: this.getSubClass('input'),

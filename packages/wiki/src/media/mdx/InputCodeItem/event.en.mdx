@@ -1,0 +1,66 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+### `focus`
+
+Emitted when the input cell receives focus.
+
+**Parameters:**
+- `index: number | string` — the index of the focused cell
+
+### `input`
+
+Emitted when a character is entered or modified in the cell.
+
+**Parameters:**
+- `index: number | string` — the index of the cell
+- `value: string` — the newly entered character
+
+### `paste`
+
+Emitted when a paste event occurs on the input cell.
+
+**Parameters:**
+- `index: number | string` — the index of the cell
+- `value: string` — the pasted text value
+
+### `backspace`
+
+Emitted when the backspace key is pressed in the cell.
+
+**Parameters:**
+- `index: number | string` — the index of the cell
+
+<Source
+    code={`
+<script setup>
+const handleFocus = (index) => {
+  console.log('Focused cell index:', index)
+}
+
+const handleInput = (index, value) => {
+  console.log('Cell index:', index, 'Value entered:', value)
+}
+
+const handlePaste = (index, value) => {
+  console.log('Cell index:', index, 'Pasted text:', value)
+}
+
+const handleBackspace = (index) => {
+  console.log('Backspace pressed at cell:', index)
+}
+</script>
+
+<template>
+  <div class="wiki-storybook-flex">
+    <InputCodeItem
+      :index="0"
+      @focus="handleFocus"
+      @input="handleInput"
+      @paste="handlePaste"
+      @backspace="handleBackspace"
+    />
+  </div>
+</template>
+  `}
+    language="html"
+/>

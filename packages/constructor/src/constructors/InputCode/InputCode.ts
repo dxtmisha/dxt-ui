@@ -95,8 +95,13 @@ export class InputCode {
 
     onMounted(() => {
       watch(
-        [this.refs.value],
-        () => this.inputCodeItem.update(this.props.value ?? ''),
+        [
+          this.refs.value,
+          this.refs.modelValue
+        ],
+        () => {
+          this.inputCodeItem.update(this.props.value ?? this.props.modelValue ?? '')
+        },
         { immediate: true }
       )
     })

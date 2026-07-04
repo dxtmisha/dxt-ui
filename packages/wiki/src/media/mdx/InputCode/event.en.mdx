@@ -1,0 +1,26 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+### `input`
+
+Emitted when the full code value changes (either by user typing, pasting, or programmatically).
+
+**Parameters:**
+- `value: string` — the updated code value
+
+<Source
+    code={`
+<script setup>
+const handleInput = (value) => {
+  console.log('Verification code updated:', value)
+}
+</script>
+
+<template>
+  <InputCode
+    label="Enter code"
+    @input="handleInput"
+  />
+</template>
+  `}
+    language="html"
+/>

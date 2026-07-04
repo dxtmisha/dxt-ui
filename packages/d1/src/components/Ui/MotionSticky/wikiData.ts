@@ -13,11 +13,13 @@ const propsNames: StorybookProps = [
 
 const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
+  { name: 'default', description: `Slot for default content / Слот для основного содержимого`, properties: [{ name: 'props', type: '(any) | undefined' }] }
   // :slotsList [!] System label / Системная метка
 ]
 
 const eventsNames: StorybookSlots = [
   // :eventsList [!] System label / Системная метка
+  { name: 'sticky', description: `Event triggered when sticky status changes / Событие при изменении статуса прикрепления`, properties: [{ name: 'status', type: 'boolean' }] }
   // :eventsList [!] System label / Системная метка
 ]
 

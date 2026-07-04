@@ -8,6 +8,8 @@ import exposeDescriptionIdEn from './expose.descriptionId.en.mdx'
 import exposeDescriptionIdRu from './expose.descriptionId.ru.mdx'
 import exposeDetailEn from './expose.detail.en.mdx'
 import exposeDetailRu from './expose.detail.ru.mdx'
+import exposeFocusEn from './expose.focus.en.mdx'
+import exposeFocusRu from './expose.focus.ru.mdx'
 import exposeGetDetailEn from './expose.getDetail.en.mdx'
 import exposeGetDetailRu from './expose.getDetail.ru.mdx'
 import exposeGetValueEn from './expose.getValue.en.mdx'
@@ -20,8 +22,12 @@ import exposeLoadingEn from './expose.loading.en.mdx'
 import exposeLoadingRu from './expose.loading.ru.mdx'
 import exposeGetOpenEn from './expose.getOpen.en.mdx'
 import exposeGetOpenRu from './expose.getOpen.ru.mdx'
+import exposeResetEn from './expose.reset.en.mdx'
+import exposeResetRu from './expose.reset.ru.mdx'
 import exposeSelectedEn from './expose.selected.en.mdx'
 import exposeSelectedRu from './expose.selected.ru.mdx'
+import exposeSetEn from './expose.set.en.mdx'
+import exposeSetRu from './expose.set.ru.mdx'
 import exposeGetValidationMessageEn from './expose.getValidationMessage.en.mdx'
 import exposeGetValidationMessageRu from './expose.getValidationMessage.ru.mdx'
 import exposeValueEn from './expose.value.en.mdx'
@@ -45,6 +51,10 @@ export const wikiMdxExpose: StorybookComponentsMdxItem = {
     detail: {
       en: exposeDetailEn,
       ru: exposeDetailRu
+    },
+    focus: {
+      en: exposeFocusEn,
+      ru: exposeFocusRu
     },
     getDetail: {
       en: exposeGetDetailEn,
@@ -70,9 +80,17 @@ export const wikiMdxExpose: StorybookComponentsMdxItem = {
       en: exposeGetOpenEn,
       ru: exposeGetOpenRu
     },
+    reset: {
+      en: exposeResetEn,
+      ru: exposeResetRu
+    },
     selected: {
       en: exposeSelectedEn,
       ru: exposeSelectedRu
+    },
+    set: {
+      en: exposeSetEn,
+      ru: exposeSetRu
     },
     getValidationMessage: {
       en: exposeGetValidationMessageEn,

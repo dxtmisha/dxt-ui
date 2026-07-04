@@ -31,4 +31,19 @@ export const InputCodeItem: Story = {
 }
 
 // :story-items [!] System label / Системная метка
+export const InputCodeItemBasic: Story = {
+  name: 'Базовый',
+  render: () => ({
+    components: { D1InputCodeItem },
+    template: `
+        <div class="wiki-storybook-flex">
+          <D1InputCodeItem value="0" />
+          <D1InputCodeItem hide value="1" />
+          <D1InputCodeItem success value="2" />
+          <D1InputCodeItem error value="3" />
+          <D1InputCodeItem disabled value="4" />
+        </div>
+    `
+  })
+}
 // :story-items [!] System label / Системная метка
