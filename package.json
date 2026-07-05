@@ -92,7 +92,6 @@
     "@anthropic-ai/sdk": "^0.110.0",
     "@dxtmisha/d1": "workspace:*",
     "@dxtmisha/demo": "workspace:*",
-    "@dxtmisha/demo-test": "workspace:*",
     "@dxtmisha/figma-style": "workspace:*",
     "@dxtmisha/figma-translate": "workspace:*",
     "@dxtmisha/storybook": "workspace:*",

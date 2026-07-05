@@ -15,16 +15,6 @@ function getAbsolutePath(value: string): any {
 
 const config: StorybookConfig = {
   stories: [
-    '../../zip/src/**/*.mdx',
-    '../../zip/src/**/*.stories.@(js|jsx|mjs|ts|tsx)',
-    '../../figma-style/src/**/*.mdx',
-    '../../figma-style/src/**/*.stories.@(js|jsx|mjs|ts|tsx)',
-    '../../demo-test/src/**/*.mdx',
-    '../../demo-test/src/**/*.stories.@(js|jsx|mjs|ts|tsx)',
-    '../../nitro-basic/src/**/*.mdx',
-    '../../nitro-basic/src/**/*.stories.@(js|jsx|mjs|ts|tsx)',
-    '../../figma-translate/src/**/*.mdx',
-    '../../figma-translate/src/**/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../../d1/src/**/*.mdx',
     '../../d1/src/**/*.stories.@(js|jsx|mjs|ts|tsx)',
 

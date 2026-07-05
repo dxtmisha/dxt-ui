@@ -70,12 +70,11 @@
   "engines": {
     "node": ">=20.0.0"
   },
-  "peerDependencies": {
+  "dependencies": {
     "@dxtmisha/media": "*",
     "@dxtmisha/functional-basic": "*",
     "vue": "*"
   },
-  "dependencies": {},
   "sideEffects": false,
   "ui-priority": 200
 }

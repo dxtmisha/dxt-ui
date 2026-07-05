@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/figma-code",
   "private": false,
-  "version": "0.1.1",
+  "version": "0.1.2",
   "type": "module",
   "description": "Structured TypeScript abstraction layer for Figma Plugin development, focused on node manipulation, state management, and messaging.",
   "keywords": [
@@ -45,18 +45,18 @@
   ],
   "main": "dist/library.js",
   "module": "dist/library.js",
-  "types": "dist/src/library.d.ts",
+  "types": "dist/library.d.ts",
   "exports": {
     ".": {
       "import": "./dist/library.js",
-      "types": "./dist/src/library.d.ts"
+      "types": "./dist/library.d.ts"
     }
   },
-  "peerDependencies": {
+  "dependencies": {
+    "@dxtmisha/figma": "*",
     "@dxtmisha/functional-basic": "*",
     "@figma/plugin-typings": "*"
   },
-  "dependencies": {},
   "devDependencies": {},
   "sideEffects": false
 }

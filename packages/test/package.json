@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/test",
   "private": false,
-  "version": "0.1.5",
+  "version": "0.1.6",
   "type": "module",
   "author": "dxtmisha@gmail.com",
   "license": "MIT",
@@ -31,10 +31,10 @@
   ],
   "main": "dist/library.js",
   "module": "dist/library.js",
-  "types": "dist/src/library.d.ts",
+  "types": "dist/library.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/src/library.d.ts",
+      "types": "./dist/library.d.ts",
       "import": "./dist/library.js"
     },
     "./style.css": "./dist/style.css"

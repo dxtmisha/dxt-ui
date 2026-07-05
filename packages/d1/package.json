@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/d1",
   "private": false,
-  "version": "0.84.0",
+  "version": "0.84.1",
   "type": "module",
   "description": "DXT-UI component library",
   "keywords": [
@@ -421,8 +421,7 @@
   "engines": {
     "node": ">=20.0.0"
   },
-  "peerDependencies": {
-    "@dxtmisha/configuration": "*",
+  "dependencies": {
     "@dxtmisha/constructor": "*",
     "@dxtmisha/functional": "*",
     "@dxtmisha/functional-basic": "*",
@@ -430,7 +429,6 @@
     "@dxtmisha/styles": "*",
     "vue": "*"
   },
-  "dependencies": {},
   "sideEffects": false,
   "web-types": "./dist/web-types.json"
 }

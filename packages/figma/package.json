@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/figma",
   "private": false,
-  "version": "0.1.2",
+  "version": "0.1.3",
   "type": "module",
   "description": "Core communication middleware for Figma plugins, providing a structured bidirectional messaging bridge between the plugin logic and UI layer.",
   "keywords": [
@@ -46,18 +46,17 @@
   ],
   "main": "dist/library.js",
   "module": "dist/library.js",
-  "types": "dist/src/library.d.ts",
+  "types": "dist/library.d.ts",
   "exports": {
     ".": {
       "import": "./dist/library.js",
-      "types": "./dist/src/library.d.ts"
+      "types": "./dist/library.d.ts"
     }
   },
-  "peerDependencies": {
+  "dependencies": {
     "@dxtmisha/functional-basic": "*",
     "@figma/plugin-typings": "*"
   },
-  "dependencies": {},
   "devDependencies": {},
   "sideEffects": false
 }

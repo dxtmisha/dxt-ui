@@ -122,6 +122,10 @@ export class PackageFile {
   getCodeBuildOrRecovery(): string | undefined {
     const scripts = this.getScripts()
 
+    if ('prepublishOnly' in scripts) {
+      return 'prepublishOnly'
+    }
+
     if ('build-recovery' in scripts) {
       return 'build-recovery'
     }

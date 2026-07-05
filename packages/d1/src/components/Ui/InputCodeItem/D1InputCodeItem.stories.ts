@@ -4,6 +4,7 @@ import D1InputCodeItem from './D1InputCodeItem.vue'
 import { InputCodeItemWikiStorybook } from './wiki'
 
 // :story-import [!] System label / Системная метка
+import D1Skeleton from '../Skeleton/D1Skeleton.vue'
 // :story-import [!] System label / Системная метка
 
 const meta = {
@@ -43,6 +44,21 @@ export const InputCodeItemBasic: Story = {
           <D1InputCodeItem error value="3" />
           <D1InputCodeItem disabled value="4" />
         </div>
+    `
+  })
+}
+export const InputCodeItemSkeleton: Story = {
+  name: 'Скелетон',
+  render: () => ({
+    components: { D1InputCodeItem, D1Skeleton },
+    template: `
+        <D1Skeleton :active="true" style="max-width:320px">
+          <div class="wiki-storybook-flex">
+            <D1InputCodeItem isSkeleton value="0" />
+            <D1InputCodeItem isSkeleton value="1" />
+            <D1InputCodeItem isSkeleton value="2" />
+          </div>
+        </D1Skeleton>
     `
   })
 }

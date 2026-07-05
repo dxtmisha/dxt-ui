@@ -4,6 +4,7 @@ import D1InputCode from './D1InputCode.vue'
 import { InputCodeWikiStorybook } from './wiki'
 
 // :story-import [!] System label / Системная метка
+import D1Skeleton from '../Skeleton/D1Skeleton.vue'
 import { ref } from 'vue'
 // :story-import [!] System label / Системная метка
 
@@ -52,6 +53,21 @@ export const InputCodeVModel: Story = {
             label="Code input"
           />
         </div>
+    `
+  })
+}
+export const InputCodeSkeleton: Story = {
+  name: 'Скелетон',
+  render: () => ({
+    components: { D1InputCode, D1Skeleton },
+    template: `
+        <D1Skeleton :active="true" style="max-width:320px">
+          <D1InputCode
+            isSkeleton
+            label="Loading field"
+            helperMessage="This field is loading..."
+          />
+        </D1Skeleton>
     `
   })
 }

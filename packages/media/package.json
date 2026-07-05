@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/media",
   "private": false,
-  "version": "0.7.0",
+  "version": "0.7.1",
   "type": "module",
   "description": "Media resources library for DXT UI containing country flags and geographical data",
   "keywords": [
@@ -41,20 +41,20 @@
   },
   "main": "dist/library.js",
   "module": "dist/library.js",
-  "types": "./dist/src/library.d.ts",
+  "types": "./dist/library.d.ts",
   "exports": {
     ".": {
       "import": "./dist/library.js",
-      "types": "./dist/src/library.d.ts"
+      "types": "./dist/library.d.ts"
     },
     "./flags": {
       "import": "./dist/flags.js",
-      "types": "./dist/src/flags.d.ts"
+      "types": "./dist/flags.d.ts"
     },
     "./flags.webp": "./dist/flags.webp",
     "./style.css": "./dist/style.css",
     "./types/*": "./dist/*",
-    "./types/**/*.d.ts": "./dist/src/**/*.d.ts"
+    "./types/**/*.d.ts": "./dist/**/*.d.ts"
   },
   "dependencies": {},
   "engines": {
