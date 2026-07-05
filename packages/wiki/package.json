@@ -72,5 +72,5 @@
     "react": "*",
     "vue": "*"
   },
-  "ui-priority": 400
+  "ui-priority": 410
 }
