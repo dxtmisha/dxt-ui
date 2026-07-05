@@ -228,7 +228,7 @@ export class DesignTypes {
   protected async toAiEdit(content: string): Promise<string> {
     const generate = await this.toAi(
       content,
-      'Remove all Russian comments from this code. '
+      'Remove all Russian comments from this code, but if a JSDoc or comment does not have an English version, translate it to English. '
       + 'Shorten English comments for AI; keep context but be brief. Do not delete obvious comments. '
       + 'Always keep All JSDoc "@example", "@remarks", "@note", and any other notes or warnings. '
       + 'Remove all imports. '
