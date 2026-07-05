@@ -1,0 +1,91 @@
+import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{d as n,m as r,n as i,o as a,s as o,t as s,u as c}from"./wiki-DgltPJFG.js";import{i as l,n as u,r as d,t as f}from"./D1Page-B3JhgBf8.js";var p,m,h,g,_=t((()=>{s(),l(),p=[{name:`area`,type:`string`},{name:`caption`,type:`string | number`},{name:`captionDecorative`,type:`boolean`},{name:`description`,type:`string | number`},{name:`descriptionId`,type:`string`},{name:`headerAttrs`,type:`ConstrBind<HeaderProps>`},{name:`headline`,type:`string`},{name:`icon`,type:`IconValue<IconProps>`},{name:`iconAttrs`,type:`ConstrBind<IconProps>`},{name:`iconDir`,type:`boolean`},{name:`iconHide`,type:`boolean`},{name:`iconPalette`,type:`boolean`},{name:`iconTurn`,type:`boolean`},{name:`label`,type:`NumberOrString`},{name:`labelId`,type:`string`},{name:`selected`,type:`boolean`},{name:`tag`,type:`string`},{name:`tagHeader`,type:`string`}],m=[{name:`caption`,description:`Caption slot/ Слот заголовка`,properties:[{name:`props`,type:`(any) | undefined`}]},{name:`default`,description:`Default slot/ Слот по умолчанию`,properties:[{name:`props`,type:`(any) | undefined`}]},{name:`description`,description:`Description slot/ Слот описания`,properties:[{name:`props`,type:`(any) | undefined`}]},{name:`headline`,description:`Slot for headline/ Слот для заголовка`,properties:[{name:`props`,type:`(any) | undefined`}]},{name:`label`,description:`Label slot content/ Содержимое слота метки`,properties:[{name:`props`,type:`(any) | undefined`}]},{name:`trailing`,description:`Slot for trailing content/ Слот для правого контента`,properties:[{name:`props`,type:`(any) | undefined`}]}],h=[],g={component:`Page`,props:p,slots:m,events:h,defaults:d,wikiDesign:i}})),v,y=t((()=>{n(),o(),_(),v=new c(g.component,g.props,g.defaults,g.wikiDesign,a,r)})),b=e({Page:()=>S,PageBasic:()=>C,PageSlots:()=>w,__namedExportsOrder:()=>T,default:()=>x}),x,S,C,w,T,E=t((()=>{u(),y(),x={title:`Ui/Page`,component:f,parameters:{design:`d1`,docs:{description:{component:v.getDescription()}}},argTypes:v.getWiki(),args:v.getValues()},S={render:e=>({components:{D1Page:f},setup:()=>({args:e}),template:`
+      <D1Page v-bind="args">
+        <p>
+          The Page component is designed to wrap the unique content of a document.
+          It defaults to using the <code>&lt;main&gt;</code> HTML tag, ensuring that the primary content is correctly identified by assistive technologies and search engines.
+        </p>
+        <p>
+          It provides a comprehensive set of features for page-level content presentation, including headlines, labels, descriptions, and icons.
+          The default tag for the headline is set to <code>&lt;h1&gt;</code>, establishing the top-level heading for the page.
+        </p>
+        <p>
+          Use Page to encapsulate the core content of your view, separating it from repeated elements like navigation bars or footers.
+        </p>
+      </D1Page>
+    `})},C={name:`Базовые`,render:()=>({components:{D1Page:f},template:`
+        <D1Page
+          headline="User Dashboard"
+          label="Overview"
+          description="View your account analytics and recent activity."
+        >
+          <p>Welcome to your dashboard. Here you can find a summary of your performance and manage your account settings.</p>
+        </D1Page>
+    `})},w={name:`Использование слотов`,render:()=>({components:{D1Page:f},template:`
+        <D1Page>
+          <template #default>Default slot</template>
+          <template #headline>Headline slot</template>
+          <template #label>Label slot</template>
+          <template #description>Description slot</template>
+          <template #caption>Caption slot</template>
+          <template #trailing>Trailing slot</template>
+        </D1Page>
+    `})},S.parameters={...S.parameters,docs:{...S.parameters?.docs,source:{originalSource:`{
+  // :story-main [!] System label / Системная метка
+  render: (args: any) => ({
+    components: {
+      D1Page
+    },
+    setup: () => ({
+      args
+    }),
+    template: \`
+      <D1Page v-bind="args">
+        <p>
+          The Page component is designed to wrap the unique content of a document.
+          It defaults to using the <code>&lt;main&gt;</code> HTML tag, ensuring that the primary content is correctly identified by assistive technologies and search engines.
+        </p>
+        <p>
+          It provides a comprehensive set of features for page-level content presentation, including headlines, labels, descriptions, and icons.
+          The default tag for the headline is set to <code>&lt;h1&gt;</code>, establishing the top-level heading for the page.
+        </p>
+        <p>
+          Use Page to encapsulate the core content of your view, separating it from repeated elements like navigation bars or footers.
+        </p>
+      </D1Page>
+    \`
+  })
+  // :story-main [!] System label / Системная метка
+}`,...S.parameters?.docs?.source}}},C.parameters={...C.parameters,docs:{...C.parameters?.docs,source:{originalSource:`{
+  name: 'Базовые',
+  render: () => ({
+    components: {
+      D1Page
+    },
+    template: \`
+        <D1Page
+          headline="User Dashboard"
+          label="Overview"
+          description="View your account analytics and recent activity."
+        >
+          <p>Welcome to your dashboard. Here you can find a summary of your performance and manage your account settings.</p>
+        </D1Page>
+    \`
+  })
+}`,...C.parameters?.docs?.source}}},w.parameters={...w.parameters,docs:{...w.parameters?.docs,source:{originalSource:`{
+  name: 'Использование слотов',
+  render: () => ({
+    components: {
+      D1Page
+    },
+    template: \`
+        <D1Page>
+          <template #default>Default slot</template>
+          <template #headline>Headline slot</template>
+          <template #label>Label slot</template>
+          <template #description>Description slot</template>
+          <template #caption>Caption slot</template>
+          <template #trailing>Trailing slot</template>
+        </D1Page>
+    \`
+  })
+}`,...w.parameters?.docs?.source}}},T=[`Page`,`PageBasic`,`PageSlots`]}));E();export{S as Page,C as PageBasic,w as PageSlots,T as __namedExportsOrder,x as default,y as i,E as n,v as r,b as t};

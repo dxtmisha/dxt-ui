@@ -1,0 +1,7 @@
+import{i as e}from"./preload-helper-Cv19cBWa.js";import{a as t,t as n}from"./jsx-runtime-D1H6-shM.js";import{f as r,s as i}from"./blocks-BWgdf4pj.js";import{t as a}from"./mdx-react-shim-B1U8VZv0.js";function o(e){let n={code:`code`,h1:`h1`,p:`p`,pre:`pre`,...t(),...e.components};return(0,c.jsxs)(c.Fragment,{children:[(0,c.jsx)(i,{title:`@dxtmisha/vi/nitro-basic/Functions/uiServerStorage - Khởi tạo ServerStorage`}),`
+`,(0,c.jsx)(n.h1,{id:`uiserverstorage`,children:(0,c.jsx)(n.code,{children:`uiServerStorage`})}),`
+`,(0,c.jsxs)(n.p,{children:[`Cấu hình đối tượng `,(0,c.jsx)(n.code,{children:`ServerStorage`}),` toàn cục bằng cách cung cấp một cơ chế để lấy dữ liệu từ ngữ cảnh ứng dụng Vue (được cung cấp thông qua khóa `,(0,c.jsx)(n.code,{children:`NITRO_APP_STORAGE`}),`). Điều này cho phép các thành phần lưu và lấy trạng thái trong quá trình render phía server.`]}),`
+`,(0,c.jsx)(n.pre,{children:(0,c.jsx)(n.code,{className:`language-typescript`,children:`import { uiServerStorage } from '@dxtmisha/nitro-basic'
+
+uiServerStorage()
+`})})]})}function s(e={}){let{wrapper:n}={...t(),...e.components};return n?(0,c.jsx)(n,{...e,children:(0,c.jsx)(o,{...e})}):o(e)}var c;e((()=>{c=n(),a(),r()}))();export{s as default};

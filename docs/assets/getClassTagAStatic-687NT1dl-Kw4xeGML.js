@@ -1,0 +1,1 @@
+import{i as e}from"./preload-helper-Cv19cBWa.js";var t,n=e((()=>{t=e=>`${e}-a--static`}));export{n,t};

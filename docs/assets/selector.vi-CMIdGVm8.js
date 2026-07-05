@@ -1,0 +1,18 @@
+import{i as e}from"./preload-helper-Cv19cBWa.js";import{a as t,t as n}from"./jsx-runtime-D1H6-shM.js";import{f as r,s as i}from"./blocks-BWgdf4pj.js";import{t as a}from"./mdx-react-shim-B1U8VZv0.js";function o(e){let n={code:`code`,h1:`h1`,h2:`h2`,h3:`h3`,li:`li`,p:`p`,ul:`ul`,...t(),...e.components};return(0,c.jsxs)(c.Fragment,{children:[(0,c.jsx)(i,{title:`@dxtmisha/vi/styles/selector - Bộ chọn trạng thái`}),`
+`,(0,c.jsx)(n.h1,{id:`bộ-chọn-trạng-thái-selectors`,children:`Bộ chọn trạng thái (Selectors)`}),`
+`,(0,c.jsxs)(n.p,{children:[`Thư viện `,(0,c.jsx)(n.code,{children:`@dxtmisha/styles`}),` cung cấp các mixin hỗ trợ để quản lý các trạng thái tương tác của phần tử (hover, active, focus, disabled, readonly), đồng thời tự động lọc các phần tử đang hoạt động (enabled) để ngăn chặn các hiệu ứng hover/active áp dụng cho phần tử bị vô hiệu hóa, chỉ đọc hoặc đang tải.`]}),`
+`,(0,c.jsx)(n.h2,{id:`mixins`,children:`Mixins`}),`
+`,(0,c.jsx)(n.h3,{id:`trạng-thái-tương-tác`,children:`Trạng thái Tương tác`}),`
+`,(0,c.jsxs)(n.ul,{children:[`
+`,(0,c.jsxs)(n.li,{children:[(0,c.jsx)(n.code,{children:`hover($parent: &)`}),` — Áp dụng hiệu ứng hover `,(0,c.jsx)(n.code,{children:`:hover`}),` chỉ khi phần tử đang hoạt động.`]}),`
+`,(0,c.jsxs)(n.li,{children:[(0,c.jsx)(n.code,{children:`active($parent: &)`}),` — Áp dụng hiệu ứng nhấn `,(0,c.jsx)(n.code,{children:`:active`}),` chỉ khi phần tử đang hoạt động.`]}),`
+`,(0,c.jsxs)(n.li,{children:[(0,c.jsx)(n.code,{children:`focus($parent: &)`}),` — Áp dụng hiệu ứng tiêu điểm `,(0,c.jsx)(n.code,{children:`:focus`}),` chỉ khi phần tử đang hoạt động.`]}),`
+`]}),`
+`,(0,c.jsx)(n.h3,{id:`bộ-chọn-trạng-thái-cơ-bản`,children:`Bộ chọn Trạng thái Cơ bản`}),`
+`,(0,c.jsxs)(n.ul,{children:[`
+`,(0,c.jsxs)(n.li,{children:[(0,c.jsx)(n.code,{children:`selector($name, $parent: &)`}),` — Áp dụng pseudo-class hoặc modifier class trạng thái tương ứng (ví dụ: đối với `,(0,c.jsx)(n.code,{children:`focus`}),` sẽ tự động thiết lập `,(0,c.jsx)(n.code,{children:`:focus`}),`, `,(0,c.jsx)(n.code,{children:`:focus-within`}),` và class `,(0,c.jsx)(n.code,{children:`--focus`}),`).`]}),`
+`,(0,c.jsxs)(n.li,{children:[(0,c.jsx)(n.code,{children:`enabled($parent: &)`}),` — Giới hạn phạm vi kiểu dáng chỉ áp dụng cho các phần tử đang hoạt động (loại trừ `,(0,c.jsx)(n.code,{children:`:disabled`}),`, `,(0,c.jsx)(n.code,{children:`--disabled`}),`, `,(0,c.jsx)(n.code,{children:`--readonly`}),` và `,(0,c.jsx)(n.code,{children:`--loading`}),` bằng bộ lọc `,(0,c.jsx)(n.code,{children:`:not`}),`).`]}),`
+`,(0,c.jsxs)(n.li,{children:[(0,c.jsx)(n.code,{children:`enabledSelector($name, $parent: &)`}),` — Kết hợp tiện ích kiểm tra hoạt động `,(0,c.jsx)(n.code,{children:`enabled`}),` với bộ chọn pseudo-class `,(0,c.jsx)(n.code,{children:`selector`}),`.`]}),`
+`,(0,c.jsxs)(n.li,{children:[(0,c.jsx)(n.code,{children:`disabled($parent: &)`}),` — Định dạng kiểu dáng cho trạng thái bị vô hiệu hóa (áp dụng cho thuộc tính `,(0,c.jsx)(n.code,{children:`:disabled`}),` và các BEM modifier class `,(0,c.jsx)(n.code,{children:`--disabled`}),`).`]}),`
+`,(0,c.jsxs)(n.li,{children:[(0,c.jsx)(n.code,{children:`readonly($parent: &)`}),` — Định dạng kiểu dáng cho trạng thái chỉ đọc (áp dụng cho BEM modifier class `,(0,c.jsx)(n.code,{children:`--readonly`}),`).`]}),`
+`]})]})}function s(e={}){let{wrapper:n}={...t(),...e.components};return n?(0,c.jsx)(n,{...e,children:(0,c.jsx)(o,{...e})}):o(e)}var c;e((()=>{c=n(),a(),r()}))();export{s as default};

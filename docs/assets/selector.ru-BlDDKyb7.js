@@ -1,0 +1,18 @@
+import{i as e}from"./preload-helper-Cv19cBWa.js";import{a as t,t as n}from"./jsx-runtime-D1H6-shM.js";import{f as r,s as i}from"./blocks-BWgdf4pj.js";import{t as a}from"./mdx-react-shim-B1U8VZv0.js";function o(e){let n={code:`code`,h1:`h1`,h2:`h2`,h3:`h3`,li:`li`,p:`p`,ul:`ul`,...t(),...e.components};return(0,c.jsxs)(c.Fragment,{children:[(0,c.jsx)(i,{title:`@dxtmisha/ru/styles/selector - Селекторы состояний`}),`
+`,(0,c.jsx)(n.h1,{id:`селекторы-состояний`,children:`Селекторы состояний`}),`
+`,(0,c.jsxs)(n.p,{children:[`Библиотека `,(0,c.jsx)(n.code,{children:`@dxtmisha/styles`}),` предоставляет вспомогательные миксины для управления интерактивными состояниями элементов (наведение, фокус, нажатие, отключенное состояние, режим чтения) с автоматической фильтрацией активных (enabled) элементов. Это предотвращает срабатывание стилей наведения и активации для отключенных, загружающихся или заблокированных элементов.`]}),`
+`,(0,c.jsx)(n.h2,{id:`миксины`,children:`Миксины`}),`
+`,(0,c.jsx)(n.h3,{id:`интерактивные-состояния`,children:`Интерактивные состояния`}),`
+`,(0,c.jsxs)(n.ul,{children:[`
+`,(0,c.jsxs)(n.li,{children:[(0,c.jsx)(n.code,{children:`hover($parent: &)`}),` — Применяет стили наведения `,(0,c.jsx)(n.code,{children:`:hover`}),` только для активных элементов.`]}),`
+`,(0,c.jsxs)(n.li,{children:[(0,c.jsx)(n.code,{children:`active($parent: &)`}),` — Применяет стили нажатия `,(0,c.jsx)(n.code,{children:`:active`}),` только для активных элементов.`]}),`
+`,(0,c.jsxs)(n.li,{children:[(0,c.jsx)(n.code,{children:`focus($parent: &)`}),` — Применяет стили фокуса `,(0,c.jsx)(n.code,{children:`:focus`}),` только для активных элементов.`]}),`
+`]}),`
+`,(0,c.jsx)(n.h3,{id:`базовые-селекторы-состояний`,children:`Базовые селекторы состояний`}),`
+`,(0,c.jsxs)(n.ul,{children:[`
+`,(0,c.jsxs)(n.li,{children:[(0,c.jsx)(n.code,{children:`selector($name, $parent: &)`}),` — Применяет псевдокласс или модификатор состояния (например, для `,(0,c.jsx)(n.code,{children:`focus`}),` автоматически задает `,(0,c.jsx)(n.code,{children:`:focus`}),`, `,(0,c.jsx)(n.code,{children:`:focus-within`}),` и класс `,(0,c.jsx)(n.code,{children:`--focus`}),`).`]}),`
+`,(0,c.jsxs)(n.li,{children:[(0,c.jsx)(n.code,{children:`enabled($parent: &)`}),` — Ограничивает область действия стилей только активными элементами (исключает `,(0,c.jsx)(n.code,{children:`:disabled`}),`, `,(0,c.jsx)(n.code,{children:`--disabled`}),`, `,(0,c.jsx)(n.code,{children:`--readonly`}),` и `,(0,c.jsx)(n.code,{children:`--loading`}),` с помощью `,(0,c.jsx)(n.code,{children:`:not`}),`).`]}),`
+`,(0,c.jsxs)(n.li,{children:[(0,c.jsx)(n.code,{children:`enabledSelector($name, $parent: &)`}),` — Объединяет проверку активности `,(0,c.jsx)(n.code,{children:`enabled`}),` и выбор псевдокласса `,(0,c.jsx)(n.code,{children:`selector`}),`.`]}),`
+`,(0,c.jsxs)(n.li,{children:[(0,c.jsx)(n.code,{children:`disabled($parent: &)`}),` — Задает стили для заблокированного состояния (целится в `,(0,c.jsx)(n.code,{children:`:disabled`}),`, а также BEM-классы `,(0,c.jsx)(n.code,{children:`--disabled`}),`).`]}),`
+`,(0,c.jsxs)(n.li,{children:[(0,c.jsx)(n.code,{children:`readonly($parent: &)`}),` — Задает стили для режима "только чтение" (целится в BEM-классы `,(0,c.jsx)(n.code,{children:`--readonly`}),`).`]}),`
+`]})]})}function s(e={}){let{wrapper:n}={...t(),...e.components};return n?(0,c.jsx)(n,{...e,children:(0,c.jsx)(o,{...e})}):o(e)}var c;e((()=>{c=n(),a(),r()}))();export{s as default};

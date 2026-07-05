@@ -1,0 +1,7 @@
+import{i as e}from"./preload-helper-Cv19cBWa.js";import{a as t,t as n}from"./jsx-runtime-D1H6-shM.js";import{f as r,s as i}from"./blocks-BWgdf4pj.js";import{t as a}from"./mdx-react-shim-B1U8VZv0.js";function o(e){let n={code:`code`,h1:`h1`,p:`p`,pre:`pre`,...t(),...e.components};return(0,c.jsxs)(c.Fragment,{children:[(0,c.jsx)(i,{title:`@dxtmisha/en/nitro-basic/Functions/uiCookieStorage - CookieStorage Initialization`}),`
+`,(0,c.jsx)(n.h1,{id:`uicookiestorage`,children:(0,c.jsx)(n.code,{children:`uiCookieStorage`})}),`
+`,(0,c.jsxs)(n.p,{children:[`Configures the global `,(0,c.jsx)(n.code,{children:`CookieStorage`}),` object by linking it to the Nitro application context. It sets up listeners to retrieve cookies from the current request and write them to the response headers (`,(0,c.jsx)(n.code,{children:`Set-Cookie`}),`) using the `,(0,c.jsx)(n.code,{children:`useHeaders`}),` composable.`]}),`
+`,(0,c.jsx)(n.pre,{children:(0,c.jsx)(n.code,{className:`language-typescript`,children:`import { uiCookieStorage } from '@dxtmisha/nitro-basic'
+
+uiCookieStorage()
+`})})]})}function s(e={}){let{wrapper:n}={...t(),...e.components};return n?(0,c.jsx)(n,{...e,children:(0,c.jsx)(o,{...e})}):o(e)}var c;e((()=>{c=n(),a(),r()}))();export{s as default};
