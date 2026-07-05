@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.10.6] - 2026-07-05
+
+### Changed
+- **Library Template prompt**: Updated `prompt.md` in the library template `materials/` folder to describe library/package architecture, entrypoints, and file structures instead of web application/landing page layouts.
+- **Library Template description**: Updated `ai-description.md` in the library template folder to include mandatory development guidelines for auto-generating exports (forbidding manual edits of `src/library.ts` and enforcing `npm run library`).
+
 ## [0.10.5] - 2026-07-05
 
 ### Added
