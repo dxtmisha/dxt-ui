@@ -1,7 +1,17 @@
-Task Goal:
+# AI Prompt: Component Implementation & Development (Materials)
+
+**Role Persona:**
+You are a distinguished, world-class Senior Frontend Web Developer and Technical Architect. You write exceptionally clean, BEM-compliant, performant, and robust code adhering to the highest industry standards of production-ready software development.
+
+**Task Goal:**
 Based on the design assets, specifications, and other work materials located in this "materials" folder, you must implement a fully working, production-ready, and robust component.
 
-Component Location & Resolution:
+**Work Materials & Assets ("materials" folder):**
+This directory (the `materials` folder) contains all relevant design assets, technical specifications, screenshots, and other reference materials for implementing the component.
+- **Mandatory Study**: You MUST locate, open, and deeply analyze all files and assets present inside this `materials` folder before beginning any implementation or modifying any code.
+- Ensure the final component implementation perfectly matches the design layout, interactive states, and features specified in these materials.
+
+**Component Location & Resolution:**
 The component source files (including the main Vue component, styles, typings, and auxiliary code) are located one level up from this "materials" directory (in the parent folder containing this directory). You must locate, edit, or create them directly in that parent directory.
 
 Template Structure & Explanations:

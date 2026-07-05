@@ -13,52 +13,68 @@ Use the following template and style.
 ### Documentation Structure:
 
 1.  **Description**:
+    - Start directly with text (NO markdown heading `## Description` or similar).
     - Paragraph with description: purpose of the component, main use cases, benefits.
 
 2.  **Key Features**:
-    - Heading `## Key Features`
+    - Bold text title: `**Key features:**` (in [wikiLanguage]) on a separate line (NOT a markdown heading `##`).
     - Bulleted list.
-    - Format: `- **Feature Name** — description.`
+    - Format: `- Description of the feature.` (simple sentences starting with capital letters).
 
 3.  **Typical Use Cases**:
-    - Heading `## Typical Use Cases`
+    - Bold text title: `**Typical use cases:**` or `**Typical Usage Scenarios:**` (in [wikiLanguage]) on a separate line (NOT a markdown heading `##`).
     - Bulleted list.
-    - Format: `- Use case.`
+    - Format: `- Use case description.`
 
 4.  **Basic Usage**:
-    - Code example using the component.
-        ```html
-        <script setup>
-        // Script code
-        </script>
+    - Code example showing basic usage of the component.
+    - Code examples MUST be wrapped using the Storybook `<Source />` component instead of standard markdown backticks. Add `import { Source } from '@storybook/addon-docs/blocks';` at the top of the MDX file if not already present.
+      Format:
+      ```md
+      <Source
+          code={`
+      <script setup>
+      // Script code
+      </script>
 
-        <template>
-          <Component />
-        </template>
-        ```
+      <template>
+        <Component />
+      </template>
+        `}
+          language="html"
+      />
+      ```
 
 5.  **Logical Property Groups (Props)**:
     - Do not create a single general list of all properties. Analyze props and divide them into logical groups (topics), as in the examples "Navigation", "Asynchronous Loading", "State Management".
     - For each group create a separate section:
-        - Heading `## Functionality Name` (e.g., "AJAX Loading" or "Navigation").
+        - Heading `## Functionality Name` (in [wikiLanguage], e.g., "AJAX Loading" or "Navigation").
         - Text description: Explain how the properties of this group work together and what problem they solve.
         - List of group properties: `- propName — description`.
-        - Code example: Show the use of specifically these properties together.
+        - Code example: Show the use of specifically these properties together. Wrap the code example using the Storybook `<Source />` component:
+          ```md
+          <Source
+              code={`
+          // code here
+            `}
+              language="html"
+          />
+          ```
     - Skip obvious properties (standard attributes) if they do not affect specific logic.
 
 6.  **Data Types** (Optional, if there are additional important types not described in the Function section):
-    - Heading `## Data Types`
+    - Heading `## Data Types` (in [wikiLanguage], e.g., "Data Types" or "Типы данных")
 
 7.  **Events**:
-    - Heading `## Events`
+    - Heading `## Events` (in [wikiLanguage], e.g., "Events" or "События")
     - For each event:
         - Header `### `eventName`` (the name must be wrapped in backticks).
         - A brief paragraph describing when the event triggers.
         - **Parameters:**
-            - Header: `**Parameters:**`
+            - Header: `**Parameters:**` (in [wikiLanguage], e.g., "Parameters:" or "Параметры:")
             - List: `- `paramName: paramType` — parameter description.`
         - **Structure of Custom Types (if applicable):**
-            - Header: `**TypeName structure:**` (or `**TypeName structure:** same as for `otherEventName` event` if identical).
+            - Header: `**TypeName structure:**` (in [wikiLanguage], e.g., "EventClickValue structure:" or "Структура EventClickValue:") (or `**TypeName structure:** same as for `otherEventName` event` if identical).
             - List: `- `fieldName: fieldType` — field description.`
         - **Code Example (if the event is complex):**
             - Code examples MUST be wrapped using the Storybook `<Source />` component instead of standard markdown backticks. Remember to add `import { Source } from '@storybook/addon-docs/blocks';` at the top of the MDX file if not already present:
@@ -74,25 +90,27 @@ Use the following template and style.
               ```
 
 8.  **Expose (Component Methods & Properties)**:
-    - Heading `## Expose`
+    - Heading `## Expose` (in [wikiLanguage], e.g., "Expose" or "Expose")
     - Under the heading, present the list of public methods, reactive references (Refs), and computed variables exposed by the component, in the clean, signature-based bullet format:
         - For methods: `- `methodName(paramName: paramType): returnType` — Description.`
         - For reactive states (Refs/Computed): `- `propertyName: PropertyType` — Description.`
         - Standard types include `boolean`, `void`, `Ref<any>`, `ComputedRef<any>`, etc.
 
 9.  **Slots**:
-    - Heading `## Slots`
+    - Heading `## Slots` (in [wikiLanguage], e.g., "Slots" or "Слоты")
     - Under the heading, present the list of slots in the clean, signature-based bullet format:
         - For slots without parameters: `- `slotName: Type` — Description.`
         - For slots with parameters: `- `slotName(paramName: paramType): Type` — Description.`
         - Standard return type is usually `VNode` or `any`.
 
-### Storybook Layout Helpers (storybookStyle.scss):
+
+### Storybook Layout Helpers:
 When writing Storybook stories (`*.stories.ts`) and examples in the MDX documentation, you MUST use the predefined showcase helper classes. These styles are imported globally and start with the `.wiki-storybook-` prefix. Do not write custom inline styles or new CSS classes for showcase layout, positioning, placeholders, or containers; use the following helper classes:
 
 - **Containers & Layouts**:
   - `.wiki-storybook-container` — enables container queries (`container-type: inline-size`).
   - `.wiki-storybook-group` — a 12-column CSS Grid layout (`grid-template-columns: repeat(12, 1fr)`) with an `8px` gap, perfect for presenting multiple items or variations.
+    - Modifiers: `&--gapX2` (gap `16px`), `&--gapX3` (gap `24px`), `&--gapX4` (gap `32px`).
   - `.wiki-storybook-flex` — basic flexbox wrapper (`display: flex; flex-wrap: wrap`) with an `8px` gap.
   - `.wiki-storybook-flex-align-center` — same as flex wrapper, but aligns items vertically (`align-items: center`).
   - `.wiki-storybook-flex-center` — centers items horizontally and vertically with an `8px` gap.
@@ -104,6 +122,7 @@ When writing Storybook stories (`*.stories.ts`) and examples in the MDX document
   Used to display components inside a unified visual frame (aspect-ratio `1/1` by default, border, rounded corners, hidden overflow):
   - `.wiki-storybook-item__label` — a small floaty label at the top-left corner (`font-size: 12px`, semi-transparent blurred background) for labeling specific variations. Use `.wiki-storybook-item__label--static` to make it flow statically inside the block without absolute positioning.
   - `&--padding` — adds standard `16px` padding inside the item box.
+  - `&--paddingX2` — adds double standard `32px` padding.
   - `&--rectangle` — sets a `16:9` aspect ratio and spans all 12 columns in a grid.
   - `&--widescreen` — sets a `32:9` aspect ratio and spans all 12 columns in a grid.
   - `&--compact` — sets a `64:9` aspect ratio and spans all 12 columns in a grid.
@@ -112,6 +131,8 @@ When writing Storybook stories (`*.stories.ts`) and examples in the MDX document
   - `&--center` — flex-centers internal elements.
   - `&--widthAuto` — sets width to `auto`.
   - `&--overflowVisible` — overrides `overflow: hidden` to `overflow: visible` (useful for dropdowns or modals).
+  - `&--overflowAuto` — sets overflow to `auto`.
+  - `&--borderNone` — hides default border.
   - `&--rtl` — sets Right-to-Left (RTL) text and flex layout direction.
 
 - **Mock Components & Placeholders**:
@@ -134,9 +155,10 @@ When writing Storybook stories (`*.stories.ts`) and examples in the MDX document
 3.2. Try to keep original descriptions unchanged.
 4. Use the correct terminology (Props, Events, Slots, Expose).
 4.1. All headings must be in [wikiLanguage].
-4.2. In Storybook stories and MDX code examples, you MUST use the predefined layout helper classes from `storybookStyle.scss` (described above) instead of inline styles or custom CSS blocks.
+4.2. In Storybook stories and MDX code examples, you MUST use the predefined layout helper classes (described above) instead of inline styles or custom CSS blocks.
 4.3. Do not modify the original component code under any circumstances unless explicitly requested.
 4.4. Strictly follow all rules in this prompt. There is zero tolerance for hallucinations: do not invent, assume, or add any non-existent properties, methods, events, slots, or external package dependencies.
+4.5. Do not use horizontal lines (rules like `---` or `***`) and do not use markdown tables anywhere in the documentation. Structure all information using headings, paragraphs, lists, and code blocks.
 5. Do not add unnecessary introductions or conclusions, only MDX.
 6. Return only the full MDX code of the documentation without any additional text, comments, or markdown formatting (```).
 7. The result must be exclusively text (response), do not attach any files.

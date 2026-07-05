@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.10.5] - 2026-07-05
+
+### Added
+- **PackageFile utility**: Support for `'prepublishOnly'` script fallback in the `getCodeBuildOrRecovery()` utility method.
+- **AI Prompt Templates**: Updated global code generation guidelines (`aiCodeGlobalPrompt.en.md`, `aiCodeGlobalPrompt.ru.md`) and component prompt templates to enforce comprehensive type analysis, ban absolute file paths in `ai-memory.md` configurations, and standardize documentation formatting structures.
+
+### Changed
+- **Package Types Output**: Simplified package types export configurations in `DesignComponent`, `DesignConstructor`, `DesignUi`, and library package templates by mapping type output paths directly to the root `dist` folder rather than nested `dist/src` sub-directories.
+- **AI Prompt Generation**: Overhauled automated prompt and type definition instructions to strongly direct AI assistants to perform thorough pre-analyses on type structures before modifying the codebase.
+
 ## [0.10.4] - 2026-06-29
 
 ### Added
