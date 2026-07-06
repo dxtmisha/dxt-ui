@@ -72,6 +72,7 @@ export class HorizontalScroll {
 
   /** Exposed properties and methods / Открытые свойства и методы */
   readonly expose = {
+    getElement: () => this.element.value,
     toSelected: () => this.toSelected()
   }
 

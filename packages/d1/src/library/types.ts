@@ -71,6 +71,7 @@ import _D1Radio from '../components/Ui/Radio/D1Radio.vue'
 import _D1Ripple from '../components/Ui/Ripple/D1Ripple.vue'
 import _D1Scrollbar from '../components/Ui/Scrollbar/D1Scrollbar.vue'
 import _D1Section from '../components/Ui/Section/D1Section.vue'
+import _D1SegmentControl from '../components/Ui/SegmentControl/D1SegmentControl.vue'
 import _D1Select from '../components/Ui/Select/D1Select.vue'
 import _D1SelectValue from '../components/Ui/SelectValue/D1SelectValue.vue'
 import _D1SelectableArea from '../components/Ui/SelectableArea/D1SelectableArea.vue'
@@ -160,6 +161,7 @@ declare module '@vue/runtime-core' {
     D1Ripple: typeof _D1Ripple
     D1Scrollbar: typeof _D1Scrollbar
     D1Section: typeof _D1Section
+    D1SegmentControl: typeof _D1SegmentControl
     D1Select: typeof _D1Select
     D1SelectValue: typeof _D1SelectValue
     D1SelectableArea: typeof _D1SelectableArea

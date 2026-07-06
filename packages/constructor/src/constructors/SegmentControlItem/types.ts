@@ -5,14 +5,16 @@ import type { ConstrClass } from '@dxtmisha/functional'
  *
  * Интерфейс для описания, какие компоненты надо подключить для работы.
  */
-export type HorizontalScrollComponents = {}
+export type SegmentControlItemComponents = {
+  // componentName: object
+}
 
 /**
  * Type describing available events.
  *
  * Тип, описывающий доступные события.
  */
-export type HorizontalScrollEmits = {
+export type SegmentControlItemEmits = {
   // load: [value: string]
 }
 
@@ -21,11 +23,7 @@ export type HorizontalScrollEmits = {
  *
  * Тип, описывающий доступные свойства.
  */
-export interface HorizontalScrollExpose {
-  /** Returns the main HTML element / Возвращает главный HTML-элемент */
-  getElement(): HTMLDivElement | undefined
-  /** Scrolls the area to the currently selected element/ Прокручивает область до текущего выбранного элемента */
-  toSelected(): void
+export interface SegmentControlItemExpose {
 }
 
 /**
@@ -33,9 +31,8 @@ export interface HorizontalScrollExpose {
  *
  * Тип, описывающий доступные слоты.
  */
-export interface HorizontalScrollSlots {
-  /** Slot for default horizontal scroll content/ Слот для основного содержимого горизонтальной прокрутки */
-  default?(props: any): any
+export interface SegmentControlItemSlots {
+  // default? (props: any): any
 }
 
 /**
@@ -43,7 +40,7 @@ export interface HorizontalScrollSlots {
  *
  * Тип, описывающий подклассы.
  */
-export type HorizontalScrollClasses = {
+export type SegmentControlItemClasses = {
   main: ConstrClass
   // :classes [!] System label / Системная метка
   // :classes [!] System label / Системная метка

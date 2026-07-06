@@ -1,7 +1,7 @@
 import { type ConstrOptions } from '@dxtmisha/functional'
 
-import { TabsNavigationDesign } from '../TabsNavigation/TabsNavigationDesign'
 import { SegmentControl } from './SegmentControl'
+import { TabsNavigationDesign } from '../TabsNavigation'
 
 import {
   type SegmentControlPropsBasic
@@ -43,24 +43,8 @@ export class SegmentControlDesign<
     super(
       name,
       props,
-      options as any,
-      ItemConstructor as any
+      options,
+      ItemConstructor
     )
-  }
-
-  /**
-   * Improvement of the obtained list of classes.
-   *
-   * Доработка полученного списка классов.
-   */
-  protected initClasses(): Partial<CLASSES> {
-    return {
-      main: {},
-      ...{
-        // :classes [!] System label / Системная метка
-        item: this.getSubClass('item')
-        // :classes [!] System label / Системная метка
-      }
-    } as Partial<CLASSES>
   }
 }

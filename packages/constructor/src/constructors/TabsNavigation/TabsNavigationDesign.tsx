@@ -109,6 +109,7 @@ export class TabsNavigationDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
+        item: this.getSubClass('item')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -134,6 +135,7 @@ export class TabsNavigationDesign<
     return this.item.scroll.render(
       { default: this.renderList },
       {
+        ...this.item.binds,
         class: this.classes?.value.main
       }
     )
@@ -190,6 +192,7 @@ export class TabsNavigationDesign<
           id: this.item.ids.getIdByValue(item.value),
           onClick: this.item.onClick,
           class: {
+            [`${this.classes?.value.item}`]: true,
             [props.classItemSelected]: isSelected
           }
         }

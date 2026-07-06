@@ -1,7 +1,8 @@
-import { type Ref, ref } from 'vue'
-import { type NumberOrStringOrBoolean, toArray } from '@dxtmisha/functional'
+import { ref } from 'vue'
+import { type NumberOrStringOrBoolean, toArray, goScrollTo } from '@dxtmisha/functional'
 
 import { TabsNavigationSelected } from './TabsNavigationSelected'
+import { HorizontalScrollInclude } from '../HorizontalScroll'
 
 /**
  * Class for managing focus navigation, programmatic focus movements, and tracking active tab focus states.
@@ -16,11 +17,11 @@ export class TabsNavigationFocus {
    * Constructor for initializing focus management helper.
    *
    * Конструктор для инициализации помощника управления фокусом.
-   * @param element reactive reference of the main tab container / реактивная ссылка главного контейнера вкладок
+   * @param scroll scroll handling helper / вспомогательный класс для работы с прокруткой
    * @param selected selected value manager instance / экземпляр менеджера выделенного значения
    */
   constructor(
-    protected readonly element: Ref<HTMLElement | undefined>,
+    protected readonly scroll: HorizontalScrollInclude,
     protected readonly selected: TabsNavigationSelected
   ) {
   }
@@ -59,7 +60,7 @@ export class TabsNavigationFocus {
    */
   set(focus?: string): this {
     this.item.value = focus
-    this.getElement()?.focus()
+    this.toScroll()
 
     return this
   }
@@ -94,10 +95,30 @@ export class TabsNavigationFocus {
    */
   protected getElement(): HTMLElement | undefined {
     if (this.item.value) {
-      return this.element.value
+      return this.scroll.elementHtml
         ?.querySelector<HTMLElement>(`[data-value="${this.item.value}"]`) || undefined
     }
 
     return undefined
+  }
+
+  /**
+   * Focuses and scrolls to the currently focused tab item.
+   *
+   * Фокусирует и прокручивает к текущему сфокусированному элементу вкладки.
+   * @returns instance of this focus helper class / текущий экземпляр класса помощника фокуса
+   */
+  toScroll(): this {
+    const itemElement = this.getElement()
+    const mainElement = this.scroll.elementHtml
+
+    if (
+      itemElement
+      && mainElement
+    ) {
+      goScrollTo(mainElement, itemElement)
+    }
+
+    return this
   }
 }

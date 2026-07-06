@@ -110,7 +110,7 @@ export class TabsNavigation {
 
     this.selected = new TabsNavigationSelectedConstructor(props, refs)
     this.focus = new TabsNavigationFocusConstructor(
-      element,
+      this.scroll,
       this.selected
     )
     this.data = new ListDataRefConstructor(

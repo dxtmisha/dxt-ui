@@ -56,5 +56,6 @@ export interface TabsNavigationSlots {
 export type TabsNavigationClasses = {
   main: ConstrClass
   // :classes [!] System label / Системная метка
+  item: string
   // :classes [!] System label / Системная метка
 }

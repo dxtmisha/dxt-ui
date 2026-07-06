@@ -5,12 +5,12 @@ import {
 } from '../../types/storybookTypes'
 
 /**
- * The wikiTabsNavigation object contains descriptions of all properties for the TabsNavigation component
+ * The wikiSegmentControl object contains descriptions of all properties for the SegmentControl component
  *
- * Объект wikiTabsNavigation содержит описание всех свойств для компонента TabsNavigation
+ * Объект wikiSegmentControl содержит описание всех свойств для компонента SegmentControl
  */
-export const wikiTabsNavigation: StorybookArgsToList = {
-  'tabsNavigation.list': {
+export const wikiSegmentControl: StorybookArgsToList = {
+  'segmentControl.list': {
     type: StorybookControl.object,
     options: {
       category: StorybookCategory.value,
@@ -21,14 +21,11 @@ export const wikiTabsNavigation: StorybookArgsToList = {
       value: [
         { label: 'Home', value: 'home' },
         { label: 'Profile', value: 'profile' },
-        { label: 'Messages', value: 'messages' },
-        { label: 'Settings', value: 'settings' },
-        { label: 'Dashboard', value: 'dashboard' },
-        { label: 'Notifications', value: 'notifications' }
+        { label: 'Messages', value: 'messages' }
       ]
     }
   },
-  'tabsNavigation.selected': {
+  'segmentControl.selected': {
     type: StorybookControl.text,
     options: {
       category: StorybookCategory.status,

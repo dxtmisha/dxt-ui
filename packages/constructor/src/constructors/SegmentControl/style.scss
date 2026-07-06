@@ -3,8 +3,4 @@
 
 @mixin mixinSegmentControl {
   @include tabsNavigation.mixinTabsNavigation;
-
-  & [data-space] {
-    display: none;
-  }
 }

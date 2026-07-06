@@ -35,7 +35,7 @@ export class HorizontalScrollInclude extends ComponentIncludeAbstract<
    * HTML элемент компонента.
    */
   get elementHtml(): HTMLDivElement | undefined {
-    return this.element.value?.elementHtml
+    return this.element.value?.getElement()
   }
 
   /**
