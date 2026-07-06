@@ -53,6 +53,11 @@ Members in every class MUST be ordered in the following sequence:
      * Use `ServerStorage.get('key', () => new Instance())` for request-isolated singletons.
      * Use `isDomRuntime()` checks before accessing browser-only APIs like `window`, `document`, or `location`.
 
+3. TYPES, INTERFACES, AND ENUMS
+   - Location: All types, interfaces, and enums must be located in the `src/types` directory if it exists in the project. If the `src/types` directory does not exist, they must be defined in the same file where they are used.
+   - Export: All types, interfaces, and enums must be explicitly exported.
+   - API Types/Schemas: All types and interfaces for working with APIs must be defined/generated using the `@effect/schema` library if it is present in the project's dependencies (if the project is a monorepo, also check root dependencies).
+
 =============================================================================
 DEVELOPER GUIDE: USING `@dxtmisha/functional-basic` AS A LIBRARY
 =============================================================================
