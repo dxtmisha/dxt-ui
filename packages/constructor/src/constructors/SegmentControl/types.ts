@@ -1,29 +1,31 @@
 import type { ConstrClass } from '@dxtmisha/functional'
+import type {
+  TabsNavigationComponents,
+  TabsNavigationEmits,
+  TabsNavigationExpose,
+  TabsNavigationSlots
+} from '../TabsNavigation'
 
 /**
  * Interface for describing which components need to be connected for work.
  *
  * Интерфейс для описания, какие компоненты надо подключить для работы.
  */
-export type SegmentControlComponents = {
-  // componentName: object
-}
+export type SegmentControlComponents = TabsNavigationComponents
 
 /**
  * Type describing available events.
  *
  * Тип, описывающий доступные события.
  */
-export type SegmentControlEmits = {
-  // load: [value: string]
-}
+export type SegmentControlEmits = TabsNavigationEmits
 
 /**
  * Type describing available properties.
  *
  * Тип, описывающий доступные свойства.
  */
-export interface SegmentControlExpose {
+export interface SegmentControlExpose extends TabsNavigationExpose {
 }
 
 /**
@@ -31,8 +33,7 @@ export interface SegmentControlExpose {
  *
  * Тип, описывающий доступные слоты.
  */
-export interface SegmentControlSlots {
-  // default? (props: any): any
+export interface SegmentControlSlots extends TabsNavigationSlots {
 }
 
 /**
@@ -43,5 +44,6 @@ export interface SegmentControlSlots {
 export type SegmentControlClasses = {
   main: ConstrClass
   // :classes [!] System label / Системная метка
+  item: string
   // :classes [!] System label / Системная метка
 }

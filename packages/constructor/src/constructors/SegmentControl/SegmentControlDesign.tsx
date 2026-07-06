@@ -1,10 +1,6 @@
-import { h, type VNode } from 'vue'
-import {
-  type ConstrOptions,
-  type ConstrStyles,
-  DesignConstructorAbstract
-} from '@dxtmisha/functional'
+import { type ConstrOptions } from '@dxtmisha/functional'
 
+import { TabsNavigationDesign } from '../TabsNavigation/TabsNavigationDesign'
 import { SegmentControl } from './SegmentControl'
 
 import {
@@ -14,8 +10,7 @@ import {
   type SegmentControlClasses,
   type SegmentControlComponents,
   type SegmentControlEmits,
-  type SegmentControlExpose,
-  type SegmentControlSlots
+  type SegmentControlExpose
 } from './types'
 
 /**
@@ -26,17 +21,12 @@ export class SegmentControlDesign<
   EXPOSE extends SegmentControlExpose,
   CLASSES extends SegmentControlClasses,
   P extends SegmentControlPropsBasic
-> extends DesignConstructorAbstract<
-    HTMLDivElement,
+> extends TabsNavigationDesign<
     COMP,
-    SegmentControlEmits,
     EXPOSE,
-    SegmentControlSlots,
     CLASSES,
     P
   > {
-  protected readonly item: SegmentControl
-
   /**
    * Constructor
    * @param name class name/ название класса
@@ -53,36 +43,9 @@ export class SegmentControlDesign<
     super(
       name,
       props,
-      options
+      options as any,
+      ItemConstructor as any
     )
-
-    this.item = new ItemConstructor(
-      this.props,
-      this.refs,
-      this.element,
-      this.getDesign(),
-      this.getName(),
-      this.components,
-      this.slots,
-      this.emits
-    )
-
-    // TODO: Method for initializing base objects
-    // TODO: Метод для инициализации базовых объектов
-
-    this.init()
-  }
-
-  /**
-   * Initialization of all the necessary properties for work
-   *
-   * Инициализация всех необходимых свойств для работы.
-   */
-  protected initExpose(): EXPOSE {
-    return {
-      // TODO: list of properties for export
-      // TODO: список свойств для экспорта
-    } as EXPOSE
   }
 
   /**
@@ -95,35 +58,9 @@ export class SegmentControlDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
+        item: this.getSubClass('item')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
-  }
-
-  /**
-   * Refinement of the received list of styles.
-   *
-   * Доработка полученного списка стилей.
-   */
-  protected initStyles(): ConstrStyles {
-    return {
-      // TODO: list of user styles
-      // TODO: список пользовательских стилей
-    }
-  }
-
-  /**
-   * A method for rendering.
-   *
-   * Метод для рендеринга.
-   */
-  protected initRender(): VNode {
-    // const children: any[] = []
-
-    return h('div', {
-      // ...this.getAttrs(),
-      ref: this.element,
-      class: this.classes?.value.main
-    })
   }
 }

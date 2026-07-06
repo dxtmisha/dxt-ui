@@ -1,13 +1,14 @@
 import type { Ref, ToRefs } from 'vue'
 import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
+import { TabsNavigation } from '../TabsNavigation/TabsNavigation'
 import type { SegmentControlComponents, SegmentControlEmits, SegmentControlSlots } from './types'
 import type { SegmentControlProps } from './props'
 
 /**
  * SegmentControl
  */
-export class SegmentControl {
+export class SegmentControl extends TabsNavigation {
   /**
    * Constructor
    * @param props input data/ входные данные
@@ -29,5 +30,6 @@ export class SegmentControl {
     protected readonly slots?: SegmentControlSlots,
     protected readonly emits?: ConstrEmit<SegmentControlEmits>
   ) {
+    super(props, refs, element, classDesign, className, components, slots, emits)
   }
 }

@@ -1,11 +1,13 @@
+import { defaultsTabsNavigation, type TabsNavigationPropsBasic } from '../TabsNavigation'
+
 type SegmentControlPropsToken = {
   // :type [!] System label / Системная метка
+  scrollable?: boolean
+  divider?: boolean
   // :type [!] System label / Системная метка
 }
 
-export type SegmentControlPropsBasic = {
-  // TODO: Location for a custom property / Место для пользовательского свойства
-}
+export type SegmentControlPropsBasic = TabsNavigationPropsBasic
 
 /**
  * Type describing incoming properties.
@@ -20,7 +22,7 @@ export type SegmentControlProps = SegmentControlPropsBasic & SegmentControlProps
  * Значение по умолчанию для свойства.
  */
 export const defaultsSegmentControl = {
-  // TODO: Location for a user-defined default value / Место для пользовательского значения по умолчанию
+  ...defaultsTabsNavigation,
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка
