@@ -2,11 +2,20 @@ import { type SegmentControlItemPropsBasic, defaultsSegmentControlItem } from '@
 
 export const propsValues = {
   // :values [!] System label / Системная метка
+  adaptive: ['iconAlways', 'auto', 'iconSm', 'iconMd', 'iconLg', 'iconXl', 'icon2xl', 'fullSm', 'fullMd', 'fullLg', 'fullXl', 'full2xl'],
+  container: ['iconSm', 'iconMd', 'iconLg', 'iconXl', 'icon2xl', 'fullSm', 'fullMd', 'fullLg', 'fullXl', 'full2xl']
   // :values [!] System label / Системная метка
 }
 
 type PropsToken = {
   // :type [!] System label / Системная метка
+  focus?: boolean
+  open?: boolean
+  selected?: boolean
+  readonly?: boolean
+  disabled?: boolean
+  adaptive?: 'iconAlways' | 'auto' | 'iconSm' | 'iconMd' | 'iconLg' | 'iconXl' | 'icon2xl' | 'fullSm' | 'fullMd' | 'fullLg' | 'fullXl' | 'full2xl'
+  container?: 'iconSm' | 'iconMd' | 'iconLg' | 'iconXl' | 'icon2xl' | 'fullSm' | 'fullMd' | 'fullLg' | 'fullXl' | 'full2xl'
   // :type [!] System label / Системная метка
 }
 

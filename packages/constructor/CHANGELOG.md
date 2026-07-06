@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.88.0] - 2026-07-06
+
+### Added
+- **SegmentControlItem**:
+  - Introduced the `SegmentControlItem` constructor component, properties definition (`SegmentControlItemPropsBasic`), events mapping, slots binding, and bilingual JSDoc annotations.
+  - Configured `SegmentControlItem` to directly inherit its properties configuration (`SegmentControlItemPropsBasic`), logic class (`SegmentControlItem`), types, and rendering design (`SegmentControlItemDesign`) from `TabItem`.
+  - Created properties definition using linked tokens `"link|tabItem": "{d.tabItem}"` in `properties.json`.
+  - Refactored `style.scss` to use `@use "../TabItem/style" as tabItem` and `@include tabItem.mixinTabItem`.
+
+### Changed
+- **TabsNavigation**:
+  - Refactored `TabsNavigationFocus.ts` to accept `HorizontalScrollInclude` directly, replacing raw ref element usage.
+- **HorizontalScroll**:
+  - Exposed the `getElement` method in `HorizontalScrollExpose` and `HorizontalScroll.ts` returning the underlying HTML element.
+
 ## [0.83.0] - 2026-07-02
 
 ### Added

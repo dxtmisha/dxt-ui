@@ -27,6 +27,8 @@ export class SegmentControlDesign<
     CLASSES,
     P
   > {
+  protected readonly itemComponent: string = 'segmentControlItem'
+
   /**
    * Constructor
    * @param name class name/ название класса

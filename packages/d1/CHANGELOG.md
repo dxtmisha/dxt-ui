@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.88.0] - 2026-07-06
+
+### Added
+- **D1SegmentControlItem**:
+  - Introduced the `D1SegmentControlItem` styled UI component wrapping the `SegmentControlItem` constructor.
+  - Implemented the layout SFC `D1SegmentControlItem.vue`, mapping class tokens, styles, and emits.
+  - Added Storybook configuration `D1SegmentControlItem.stories.ts`.
+- **D1SegmentControl**:
+  - Migrated dynamic design tokens mapping under `properties.json` translating them to system-compliant tokens (e.g. `{sys.spacing.x}`, `{sys.palette.onSurface}`, `{sys.opacity.overlay}`, `{sys.rounded.md}`).
+  - Ran `npm run ui` to regenerate variables, style tokens, and type-safe properties.
+
 ## [0.83.0] - 2026-07-02
 
 ### Added

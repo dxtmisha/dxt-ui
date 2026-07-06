@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/d1",
   "private": false,
-  "version": "0.84.1",
+  "version": "0.88.0",
   "type": "module",
   "description": "DXT-UI component library",
   "keywords": [
@@ -27,7 +27,7 @@
     "build": "vue-tsc -b && vite build",
     "build-recovery": "npm run build && npm run wiki-storm",
     "preview": "vite preview",
-    "ui": "dxt-ui SegmentControlItem",
+    "ui": "dxt-ui SegmentControl",
     "wiki-storm": "dxt-wiki-storm",
     "types": "dxt-types",
     "screenshot": "dxt-screenshot",

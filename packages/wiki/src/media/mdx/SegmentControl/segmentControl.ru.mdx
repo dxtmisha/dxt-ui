@@ -1,0 +1,44 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+Компонент для создания горизонтальной навигации с сегментами.
+
+SegmentControl управляет списком сегментов, их выбором и прокруткой. Поддерживает различные стили отображения, управление с клавиатуры и адаптивность.
+
+**Основные возможности:**
+
+- Горизонтальная прокрутка сегментов
+- Управление выбранным сегментом через `v-model:selected`
+- Поддержка различных типов данных (массив объектов или объект)
+- Настройка внешнего вида (теги, атрибуты, разделители)
+- Поддержка клавиатурной навигации (стрелки, Enter, Пробел)
+- Анимация индикатора активного сегмента
+
+**Типичные сценарии использования:**
+
+- Навигация между разделами страницы
+- Переключение видов отображения данных
+- Фильтрация контента по категориям
+
+<Source
+    code={`
+<script setup>
+import { ref } from 'vue'
+
+const selectedSegment = ref('home')
+const segments = [
+  { label: 'Главная', value: 'home', icon: 'home' },
+  { label: 'Профиль', value: 'profile', icon: 'person' },
+  { label: 'Настройки', value: 'settings', icon: 'settings' }
+]
+</script>
+
+<template>
+  <SegmentControl
+    v-model:selected="selectedSegment"
+    :list="segments"
+    horizontal-scroll-align="center"
+  />
+</template>
+  `}
+    language="html"
+/>

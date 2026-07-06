@@ -1,33 +1,11 @@
-import type { Ref, ToRefs } from 'vue'
-import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
-
-import type { SegmentControlItemComponents, SegmentControlItemEmits, SegmentControlItemSlots } from './types'
-import type { SegmentControlItemProps } from './props'
+import { TabItem } from '../TabItem'
 
 /**
- * SegmentControlItem
+ * Class representing the business logic and structure of the SegmentControlItem component.
+ * It orchestrates label, icon, badge, skeletal loading, click events, and ripple states.
+ *
+ * Класс, представляющий бизнес-логику и структуру компонента SegmentControlItem.
+ * Координирует метку, иконку, бейдж, скелетон при загрузке, события клика и состояние ripple.
  */
-export class SegmentControlItem {
-  /**
-   * Constructor
-   * @param props input data/ входные данные
-   * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
-   * @param element input element/ элемент ввода
-   * @param classDesign design name/ название дизайна
-   * @param className class name/ название класса
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param slots object for working with slots/ объект для работы со слотами
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   */
-  constructor(
-    protected readonly props: SegmentControlItemProps,
-    protected readonly refs: ToRefs<SegmentControlItemProps>,
-    protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
-    protected readonly components?: DesignComp<SegmentControlItemComponents, SegmentControlItemProps>,
-    protected readonly slots?: SegmentControlItemSlots,
-    protected readonly emits?: ConstrEmit<SegmentControlItemEmits>
-  ) {
-  }
+export class SegmentControlItem extends TabItem {
 }

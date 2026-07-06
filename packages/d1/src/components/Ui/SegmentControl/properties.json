@@ -1,43 +1,9 @@
 {
   "main": "{d.segmentControl}",
   "gap": "{sys.spacing.x}",
+  "paddingX": "{sys.spacing.x}",
+  "height": "{ref.spacing.12}",
   "background-color": "{sys.palette.onSurface}",
   "background-opacity": "{sys.opacity.overlay}",
-  "#item": {
-    "scroll-margin-left": "{sys.spacing.size.6xl}",
-    "before": {
-      "top": "0",
-      "bottom": "0",
-      "background-color": "{sys.palette.surface}"
-    }
-  },
-  "~size": {
-    "sm": {
-      "padding": {
-        "value": "{sys.spacing.x}",
-        "_type": "property"
-      },
-      "border-radius": "{sys.rounded.md}",
-      "#item": {
-        "before": {
-          "border-radius": "{sys.rounded.sm}",
-          "box-shadow": "{sys.shadow.xs}"
-        }
-      }
-    },
-    "md": {
-      "padding": {
-        "value": "{sys.spacing.xs}",
-        "_type": "property"
-      },
-      "border-radius": "{sys.rounded.xl}",
-      "#item": {
-        "before": {
-          "border-radius": "{sys.rounded.md}",
-          "box-shadow": "{sys.shadow.sm}"
-        }
-      }
-    },
-    "_default": "md"
-  }
+  "border-radius": "var(--sys-height) * {sys.rounded.adaptive.md}"
 }

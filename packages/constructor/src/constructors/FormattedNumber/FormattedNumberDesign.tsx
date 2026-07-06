@@ -29,14 +29,14 @@ export class FormattedNumberDesign<
   CLASSES extends FormattedNumberClasses,
   P extends FormattedNumberPropsBasic
 > extends DesignConstructorAbstract<
-  HTMLSpanElement,
-  COMP,
-  FormattedNumberEmits,
-  EXPOSE,
-  FormattedNumberSlots,
-  CLASSES,
-  P
-> {
+    HTMLSpanElement,
+    COMP,
+    FormattedNumberEmits,
+    EXPOSE,
+    FormattedNumberSlots,
+    CLASSES,
+    P
+  > {
   /** FormattedNumber instance / Экземпляр FormattedNumber */
   protected readonly item: FormattedNumber
 

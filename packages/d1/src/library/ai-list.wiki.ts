@@ -72,6 +72,7 @@ import D1Ripple from '../../src/components/Ui/Ripple/D1RippleAiWiki.vue'
 import D1Scrollbar from '../../src/components/Ui/Scrollbar/D1ScrollbarAiWiki.vue'
 import D1Section from '../../src/components/Ui/Section/D1SectionAiWiki.vue'
 import D1SegmentControl from '../../src/components/Ui/SegmentControl/D1SegmentControlAiWiki.vue'
+import D1SegmentControlItem from '../../src/components/Ui/SegmentControlItem/D1SegmentControlItemAiWiki.vue'
 import D1Select from '../../src/components/Ui/Select/D1SelectAiWiki.vue'
 import D1SelectValue from '../../src/components/Ui/SelectValue/D1SelectValueAiWiki.vue'
 import D1SelectableArea from '../../src/components/Ui/SelectableArea/D1SelectableAreaAiWiki.vue'
@@ -161,6 +162,7 @@ export const aiList: any[] = [
   D1Scrollbar,
   D1Section,
   D1SegmentControl,
+  D1SegmentControlItem,
   D1Select,
   D1SelectValue,
   D1SelectableArea,

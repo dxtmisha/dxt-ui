@@ -1,0 +1,55 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+A versatile component for creating segment controls, tab controls, and navigation links with icon and badge support.
+
+SegmentControlItem combines the functionality of a button, link, and list item. It supports various states (active, disabled), can display icons to the left and right of the text, and integrates with the Badge component to show notifications or counters. The component automatically manages ARIA attributes to ensure accessibility.
+
+**Key Features:**
+
+- Displaying a label and icons (icon, iconTrailing)
+- Built-in badge support for counters
+- Managing selection state (selected) and activity
+- Navigation support via href (link) or to (router-link)
+- Customizable root tag (button, a, div, li)
+- Ripple effect on click
+- Skeleton support for loading state
+
+**Typical Use Cases:**
+
+- Segment controls in navigation bars
+- Selection lists (select options)
+- Links with icons and counters
+
+<Source
+    code={`
+<script setup>
+import { ref } from 'vue'
+
+const activeSegment = ref('home')
+</script>
+
+<template>
+  <div class="segments">
+    <SegmentControlItem
+      label="Home"
+      icon="home"
+      :selected="activeSegment === 'home'"
+      @click="activeSegment = 'home'"
+    />
+    <SegmentControlItem
+      label="Messages"
+      icon="mail"
+      badge="5"
+      :selected="activeSegment === 'messages'"
+      @click="activeSegment = 'messages'"
+    />
+    <SegmentControlItem
+      label="Settings"
+      icon="settings"
+      disabled
+    />
+  </div>
+</template>
+  `}
+    language="html"
+/>

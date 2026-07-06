@@ -51,6 +51,8 @@ export class TabsNavigationDesign<
   /** TabsNavigation business logic instance / Экземпляр бизнес-логики TabsNavigation */
   protected readonly item: TabsNavigation
 
+  protected readonly itemComponent: string = 'tabItem'
+
   /**
    * Constructor for initializing the design renderer.
    *
@@ -181,7 +183,7 @@ export class TabsNavigationDesign<
     const isSelected = this.item.selected.isSelected(item.index)
 
     return this.components.renderOne(
-      'tabItem',
+      this.itemComponent as never,
       toBinds(
         this.props.itemAttrs,
         item,

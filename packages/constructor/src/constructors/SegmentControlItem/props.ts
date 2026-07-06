@@ -1,11 +1,25 @@
+import type { IconPropsBasic } from '../Icon'
+import type { BadgePropsBasic } from '../Badge'
+import {
+  type TabItemPropsBasic
+} from '../TabItem'
+
 type SegmentControlItemPropsToken = {
   // :type [!] System label / Системная метка
+  focus?: boolean
+  open?: boolean
+  selected?: boolean
+  readonly?: boolean
+  disabled?: boolean
+  adaptive?: 'iconAlways' | 'auto'
+  container?: boolean
   // :type [!] System label / Системная метка
 }
 
-export type SegmentControlItemPropsBasic = {
-  // TODO: Location for a custom property / Место для пользовательского свойства
-}
+export type SegmentControlItemPropsBasic<
+  Icon extends IconPropsBasic = IconPropsBasic,
+  Badge extends BadgePropsBasic = BadgePropsBasic
+> = TabItemPropsBasic<Icon, Badge>
 
 /**
  * Type describing incoming properties.
@@ -20,7 +34,6 @@ export type SegmentControlItemProps = SegmentControlItemPropsBasic & SegmentCont
  * Значение по умолчанию для свойства.
  */
 export const defaultsSegmentControlItem = {
-  // TODO: Location for a user-defined default value / Место для пользовательского значения по умолчанию
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

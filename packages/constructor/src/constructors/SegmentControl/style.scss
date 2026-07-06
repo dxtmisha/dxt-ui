@@ -3,4 +3,6 @@
 
 @mixin mixinSegmentControl {
   @include tabsNavigation.mixinTabsNavigation;
+
+  @include ui.flexX;
 }

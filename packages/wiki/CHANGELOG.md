@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.88.0] - 2026-07-06
+
+### Added
+- **SegmentControlItem**:
+  - Registered descriptions and MDX documentation files for `SegmentControlItem`.
+  - Added `wikiDescriptionsSegmentControlItem.ts` with possibilities, story templates, and metadata.
+  - Created `segmentControlItem.en.mdx` / `segmentControlItem.ru.mdx` documentation files.
+  - Registered MDX configuration mappings inside `wikiMdxSegmentControlItem.ts`.
+  - Integrated under global wiki registry config lists `wikiDescriptions.ts` and `wikiMdx.ts`.
+- **SegmentControl**:
+  - Registered descriptions and MDX documentation files for `SegmentControl`.
+  - Added `wikiDescriptionsSegmentControl.ts` with possibilities, story templates, and metadata.
+  - Created `segmentControl.en.mdx` / `segmentControl.ru.mdx` documentation files.
+  - Configured `SegmentControl` to reuse `v-model` and `expose.ids` documentation directly from `TabsNavigation` by specifying `componentName: 'TabsNavigation'` inside documentation blocks.
+  - Registered MDX configuration mappings inside `wikiMdxSegmentControl.ts`.
+  - Integrated under global wiki registry config lists `wikiDescriptions.ts` and `wikiMdx.ts`.
+  - Created component-specific properties list configuration `wikiSegmentControl.ts` and registered it in `wiki.ts`.
+
 ## [0.83.0] - 2026-07-02
 
 ### Added

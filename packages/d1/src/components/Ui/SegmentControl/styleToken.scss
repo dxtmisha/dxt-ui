@@ -13,52 +13,14 @@
   & {
     gap: var(--d1-sys-spacing-x);
     
+    @include ui.paddingX(#{var(--d1-sys-spacing-x)});
+    
+    @include ui.height(#{var(--d1-ref-spacing-12)});
+    
     @include ui.backgroundColor(#{var(--d1-sys-palette-onSurface)});
     @include ui.backgroundOpacity(#{var(--d1-sys-opacity-overlay)});
     
-    &__item {
-      scroll-margin-left: var(--d1-sys-spacing-size-6xl);
-      
-      &::before {
-        content: ' ';
-        top: 0;
-        bottom: 0;
-        
-        @include ui.backgroundColor(#{var(--d1-sys-palette-surface)});
-      }
-    }
-    
-    &--size {
-      &--sm {
-        padding: var(--d1-sys-spacing-x);
-        
-        border-radius: var(--d1-sys-rounded-md);
-        
-        & .d1-segmentControl__item {
-          &::before {
-            content: ' ';
-            border-radius: var(--d1-sys-rounded-sm);
-            
-            box-shadow: var(--d1-sys-shadow-xs);
-          }
-        }
-      }
-      
-      &--md {
-        padding: var(--d1-sys-spacing-xs);
-        
-        border-radius: var(--d1-sys-rounded-xl);
-        
-        & .d1-segmentControl__item {
-          &::before {
-            content: ' ';
-            border-radius: var(--d1-sys-rounded-md);
-            
-            box-shadow: var(--d1-sys-shadow-sm);
-          }
-        }
-      }
-    }
+    border-radius: calc(var(--sys-height) * var(--d1-sys-rounded-adaptive-md));
   }
   // :style [!] System label / Системная метка
 
