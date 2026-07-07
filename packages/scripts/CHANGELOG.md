@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.10.7] - 2026-07-06
+
+### Changed
+- **DesignTypes**: Updated the AI prompt in `DesignTypes.toAiEdit` to translate Russian JSDocs/comments to English instead of just removing them, if an English version is missing.
+
 ## [0.10.6] - 2026-07-05
 
 ### Changed
