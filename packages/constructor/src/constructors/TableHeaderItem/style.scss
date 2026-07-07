@@ -1,0 +1,49 @@
+@use "@dxtmisha/styles/properties" as ui;
+
+@mixin mixinTableHeaderItem {
+  position: relative;
+  flex-basis: 1px;
+  flex-grow: 1;
+  flex-shrink: 1;
+
+  &__body {
+    display: flex;
+    width: auto;
+  }
+
+  &__label,
+  &__description {
+    display: block;
+  }
+
+  &__labelHeader {
+    display: none;
+  }
+
+  &--header {
+    &:not(:first-child) {
+      &:after {
+        content: "";
+        position: absolute;
+        @include ui.left;
+      }
+    }
+  }
+
+  &--labelClamp {
+    @include ui.subclass('label') {
+      @include ui.clamp(2);
+    }
+  }
+
+  &--stickyLeft {
+    position: sticky;
+    @include ui.left(0);
+    z-index: 8;
+
+    &:after,
+    &:before {
+      z-index: 12;
+    }
+  }
+}

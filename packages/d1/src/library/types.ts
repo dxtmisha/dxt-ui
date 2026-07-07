@@ -71,6 +71,7 @@ import _D1Radio from '../components/Ui/Radio/D1Radio.vue'
 import _D1Ripple from '../components/Ui/Ripple/D1Ripple.vue'
 import _D1Scrollbar from '../components/Ui/Scrollbar/D1Scrollbar.vue'
 import _D1Section from '../components/Ui/Section/D1Section.vue'
+import _D1SegmentControl from '../components/Ui/SegmentControl/D1SegmentControl.vue'
 import _D1Select from '../components/Ui/Select/D1Select.vue'
 import _D1SelectValue from '../components/Ui/SelectValue/D1SelectValue.vue'
 import _D1SelectableArea from '../components/Ui/SelectableArea/D1SelectableArea.vue'
@@ -79,6 +80,7 @@ import _D1Snackbar from '../components/Ui/Snackbar/D1Snackbar.vue'
 import _D1SnackbarItem from '../components/Ui/SnackbarItem/D1SnackbarItem.vue'
 import _D1Switch from '../components/Ui/Switch/D1Switch.vue'
 import _D1TabItem from '../components/Ui/TabItem/D1TabItem.vue'
+import _D1TableItem from '../components/Ui/TableItem/D1TableItem.vue'
 import _D1Tabs from '../components/Ui/Tabs/D1Tabs.vue'
 import _D1TabsNavigation from '../components/Ui/TabsNavigation/D1TabsNavigation.vue'
 import _D1TextDescription from '../components/Ui/TextDescription/D1TextDescription.vue'
@@ -160,6 +162,7 @@ declare module '@vue/runtime-core' {
     D1Ripple: typeof _D1Ripple
     D1Scrollbar: typeof _D1Scrollbar
     D1Section: typeof _D1Section
+    D1SegmentControl: typeof _D1SegmentControl
     D1Select: typeof _D1Select
     D1SelectValue: typeof _D1SelectValue
     D1SelectableArea: typeof _D1SelectableArea
@@ -168,6 +171,7 @@ declare module '@vue/runtime-core' {
     D1SnackbarItem: typeof _D1SnackbarItem
     D1Switch: typeof _D1Switch
     D1TabItem: typeof _D1TabItem
+    D1TableItem: typeof _D1TableItem
     D1Tabs: typeof _D1Tabs
     D1TabsNavigation: typeof _D1TabsNavigation
     D1TextDescription: typeof _D1TextDescription
