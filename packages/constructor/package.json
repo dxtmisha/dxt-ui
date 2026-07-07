@@ -343,6 +343,14 @@
       "types": "./dist/constructors/Section/index.d.ts",
       "default": "./dist/section.js"
     },
+    "./SegmentControl": {
+      "types": "./dist/constructors/SegmentControl/index.d.ts",
+      "default": "./dist/segmentControl.js"
+    },
+    "./SegmentControlItem": {
+      "types": "./dist/constructors/SegmentControlItem/index.d.ts",
+      "default": "./dist/segmentControlItem.js"
+    },
     "./Select": {
       "types": "./dist/constructors/Select/index.d.ts",
       "default": "./dist/select.js"
@@ -374,6 +382,14 @@
     "./TabItem": {
       "types": "./dist/constructors/TabItem/index.d.ts",
       "default": "./dist/tabItem.js"
+    },
+    "./TableHeaderItem": {
+      "types": "./dist/constructors/TableHeaderItem/index.d.ts",
+      "default": "./dist/tableHeaderItem.js"
+    },
+    "./TableItem": {
+      "types": "./dist/constructors/TableItem/index.d.ts",
+      "default": "./dist/tableItem.js"
     },
     "./Tabs": {
       "types": "./dist/constructors/Tabs/index.d.ts",
@@ -411,19 +427,7 @@
       "types": "./dist/library/plugin.d.ts",
       "default": "./dist/plugin.js"
     },
-    "./style.scss": "./src/library/style.scss",
-    "./SegmentControl": {
-      "types": "./dist/constructors/SegmentControl/index.d.ts",
-      "default": "./dist/segmentControl.js"
-    },
-    "./TableItem": {
-      "types": "./dist/constructors/TableItem/index.d.ts",
-      "default": "./dist/tableItem.js"
-    },
-    "./TableHeaderItem": {
-      "types": "./dist/constructors/TableHeaderItem/index.d.ts",
-      "default": "./dist/tableHeaderItem.js"
-    }
+    "./style.scss": "./src/library/style.scss"
   },
   "buildOptions": {
     "name": "@dxtmisha/constructor",

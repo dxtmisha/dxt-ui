@@ -27,7 +27,7 @@
     "build": "vue-tsc -b && vite build",
     "build-recovery": "npm run build && npm run wiki-storm",
     "preview": "vite preview",
-    "ui": "dxt-ui TableHeaderItem",
+    "ui": "dxt-ui",
     "wiki-storm": "dxt-wiki-storm",
     "types": "dxt-types",
     "screenshot": "dxt-screenshot",
@@ -422,6 +422,10 @@
     "./D1TableHeaderItem": {
       "types": "./dist/library/D1TableHeaderItem.d.ts",
       "default": "./dist/D1TableHeaderItem.js"
+    },
+    "./D1SegmentControlItem": {
+      "types": "./dist/library/D1SegmentControlItem.d.ts",
+      "default": "./dist/D1SegmentControlItem.js"
     }
   },
   "buildOptions": {

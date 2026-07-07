@@ -25,7 +25,15 @@ const props = withDefaults(defineProps<TableItemProps>(), defaults)
 const classesToken = computed<ConstrClasses>(() => ({
   main: {
     // :classes-values [!] System label / Системная метка
-    'd1-tableItem': true
+    'd1-tableItem': true,
+    'd1-tableItem--disabled': props.disabled,
+    'd1-tableItem--selected': props.selected,
+    'd1-tableItem--header': props.header,
+    [`d1-tableItem--vertical--${props.vertical}`]: inArray(propsValues.vertical, props.vertical),
+    'd1-tableItem--right': props.right,
+    [`d1-tableItem--basis--${props.basis}`]: inArray(propsValues.basis, props.basis),
+    'd1-tableItem--labelClamp': props.labelClamp,
+    'd1-tableItem--stickyLeft': props.stickyLeft
     // :classes-values [!] System label / Системная метка
   }
 }))

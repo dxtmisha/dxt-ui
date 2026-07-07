@@ -375,231 +375,117 @@ The library acts as a foundational service layer in the system stack. It integra
 
 ## Project information: Core overview
 This section contains essential information and the core overview of the project. Review this to understand the fundamental architecture and key features.
-This is the main functional library for the Vue environment (@dxtmisha/functional). It contains Vue-specific utilities, composables, and reactive classes.
+# @dxtmisha/functional Reference
 
-USAGE RULES:
-1. When developing in Vue, always use this library for functionality, logic, and composables instead of `@dxtmisha/functional-basic` whenever possible.
-2. It wraps basic non-reactive logic into Vue's reactivity system. If the required function or composable exists here, it has absolute priority.
-3. Import utilities from `@dxtmisha/functional` for reactive UI behavior, composables, and state management.
-
-WORKING WITH API AND STATE (useApi / executeUse):
-A set of composables is provided for network requests: `useApiGet`, `useApiPost`, `useApiPut`, `useApiDelete`, `useApiRequest`, `useApiRef`, `useApiAsyncRef`, `useApiManagementRef`, `useApiManagementAsyncRef`.
-Strictly follow these rules for their application:
-
-1. DO NOT call these composables directly in the Vue components (SFC).
-2. Move all API configurations and `useApi*` calls into SEPARATE FILES (services/stores).
-3. Wrap the API configurations inside the `executeUse` factory (specifically: `executeUseGlobal`, `executeUseProvide`, or `executeUseLocal` from `src/functions/executeUse.ts`). This guarantees the creation of managed singletons (single access point) and prevents duplicated requests and reactive states.
-4. Perform any additional request processing (e.g., data mapping, preparing structures for skeletons before loading a form) in the same file, inside the `executeUse` callback, and return a fully prepared set of data and methods.
-   *Example of correct usage:*
-   ```ts
-   import { executeUseGlobal } from '@dxtmisha/functional';
-   import { useApiManagementRef } from '@dxtmisha/functional';
-
-   export const useUserManagement = executeUseGlobal(() => {
-     return useApiManagementRef(
-       { path: '/api/users' },                 // GET setup
-       { date: (v) => new Date(v).toLocaleString() }, // Formatters
-       { columns: ['name', 'email'] },         // Search
-       { path: '/api/users' },                 // POST
-       { path: (o) => `/api/users/${o.id}` },  // PUT
-       { path: (o) => `/api/users/${o.id}` }   // DELETE
-     );
-     // Logic for skeletons, additional formatting, etc., should be added here,
-     // and then return the extended object.
-   });
-   ```
-5. Within the Vue component itself, simply import and call your custom singleton composable: `const { list, loading, sendPost } = useUserManagement();`
-
-CHOOSING THE executeUse STRATEGY:
-1. `executeUseLocal` (PREFERRED):
-   - When to use: For most API requests and services.
-   - Key Features: Works "lazily" (lazy initialization) — initializes only when first called. The instance persists until the end of the session. This prevents overloading the application start with unnecessary requests.
-2. `executeUseGlobal`:
-   - When to use: When data or a service must be loaded/initialized IMMEDIATELY at application start (e.g., critical settings, SDKs).
-   - Key Features: Creates a single instance for the entire application. All global singletons are forcibly initialized via `executeUseGlobalInit()`.
-3. `executeUseProvide`:
-   - When to use: For state shared between a parent and a group of child components (e.g., tabs, complex forms with sub-components).
-   - Key Features: Uses provide/inject. The first component in the tree that calls the hook becomes the "provider", others become consumers.
-
-=============================================================================
-DEVELOPER GUIDE: USING `@dxtmisha/functional` AS A LIBRARY
-=============================================================================
-
-This section contains instructions and code guidelines for AI models on how to import and use the Vue-specific reactive classes, composables, and utility functions provided by this library in Vue 3 / Nuxt applications.
+Vue 3 reactive utilities, composables, and classes built on `@dxtmisha/functional-basic`. Refer to [ai-types.md](file:///Volumes/T7/Code/dxt-ui/packages/functional/ai-types.md) for full signatures, types, and exported methods.
 
 ---
 
-### 1. Reactive Storage & State Composables
+## Usage Rules & Strategies
 
-These composables bind browser storages reactively to Vue `Ref` objects, keeping them in sync.
+1. **Priority**: Always prioritize `@dxtmisha/functional` over `@dxtmisha/functional-basic` in Vue environments.
+2. **API & State (`useApi*` / `executeUse*`)**:
+   - **Never** call `useApiGet`, `useApiPost`, `useApiPut`, `useApiDelete`, `useApiRequest`, `useApiRef`, `useApiAsyncRef`, `useApiManagementRef`, `useApiManagementAsyncRef` directly inside components (SFC).
+   - Move all API configurations into separate files (services/stores).
+   - Wrap setups in `executeUse` factories (`executeUseLocal`, `executeUseGlobal`, `executeUseProvide`) to ensure singletons, prevent duplicate requests, and process data (mappings, skeletons) in the callback.
+   - Components only import/call the singleton hook.
 
-#### `useStorageRef` (localStorage)
-Reactively binds a key from `localStorage`.
 ```typescript
-import { useStorageRef } from '@dxtmisha/functional';
+import { executeUseGlobal, useApiManagementRef } from '@dxtmisha/functional';
 
-// Bind to key with optional initial default value
-const theme = useStorageRef<'light' | 'dark'>('theme_key', 'light');
-
-// Setting the value triggers an immediate update to localStorage reactively
-theme.value = 'dark';
-```
-
-#### `useSessionRef` (sessionStorage) & `useCookieRef` (Cookies)
-```typescript
-import { useSessionRef, useCookieRef } from '@dxtmisha/functional';
-
-// sessionStorage
-const step = useSessionRef<number>('form_step', 1);
-
-// CookieStorage
-const token = useCookieRef<string>('auth_token', '', { secure: true });
-```
-
-#### `useBroadcastValueRef` (Cross-Tab Synchronization)
-Synchronizes a state value reactively across multiple browser tabs under the same origin.
-```typescript
-import { useBroadcastValueRef } from '@dxtmisha/functional';
-
-// Synchronizes the value of the ref across tabs using BroadcastChannel
-const syncState = useBroadcastValueRef<string>('active_channel', 'idle');
-```
-
-#### `useHashRef` (URL Hash)
-Reactively binds Vue state to the URL hash parameters.
-```typescript
-import { useHashRef } from '@dxtmisha/functional';
-
-const hashPage = useHashRef<string>('page', 'home');
-```
-
----
-
-### 2. Reactive Geolocation & Internationalization (`GeoRef`, `GeoIntlRef`, `GeoFlagRef`, `useTranslateRef`)
-
-Provides reactive integrations for internationalization APIs.
-
-#### `GeoRef` & `GeoIntlRef`
-```typescript
-import { GeoRef, useGeoIntlRef } from '@dxtmisha/functional';
-
-// Reactive tracking of user location details
-const currentCountry = GeoRef.getCountry(); // ComputedRef<string>
-
-// Reactive i18n formatter hook
-const intl = useGeoIntlRef();
-const formattedPrice = intl.currency(150, 'EUR'); // ComputedRef<string>
-```
-
-#### `useTranslateRef`
-Reactively loads and gets translation tokens.
-```typescript
-import { useTranslateRef } from '@dxtmisha/functional';
-
-const translations = useTranslateRef(['global.save', 'global.cancel']);
-// returns: ShallowRef<Record<string, string>> containing loaded translations
-```
-
----
-
-### 3. SEO & Layout Utilities
-
-#### `useMeta`
-Manages page metadata reactively. Calling setters will update document headers and tags reactively.
-```typescript
-import { useMeta } from '@dxtmisha/functional';
-
-const metaManager = useMeta();
-metaManager.setTitle('My Product Page');
-metaManager.setDescription('Product details and configurations.');
-```
-
-#### `ScrollbarWidthRef`
-Tracks the scrollbar width reactively to solve layout shift issues.
-```typescript
-import { ScrollbarWidthRef } from '@dxtmisha/functional';
-
-const scrollbar = new ScrollbarWidthRef();
-const width = scrollbar.width; // Ref<number>
-const hasScroll = scrollbar.is; // ComputedRef<boolean>
-```
-
----
-
-### 4. Advanced Reactivity Helpers
-
-#### `computedAsync`
-Creates a computed property that resolves its value asynchronously. Useful for async tasks inside computed getters.
-```typescript
-import { computedAsync } from '@dxtmisha/functional';
-
-// Performs asynchronous data lookup and reactively returns the result
-const asyncData = computedAsync(async () => {
-  return await fetchSomeData(activeId.value);
-}, 'initial_loading_value');
-```
-
-#### `computedEternity`
-Computes an asynchronous value once and caches it indefinitely unless manually refreshed.
-```typescript
-import { computedEternity } from '@dxtmisha/functional';
-
-const cachedData = computedEternity(async () => {
-  return await fetchStaticData();
-}, 'loading_state');
-```
-
----
-
-### 5. List & Search Orchestration
-
-#### `ListDataRef`
-A powerful reactive state orchestrator for managing lists, groups, items, pagination, highlight paths, and selections.
-```typescript
-import { ListDataRef } from '@dxtmisha/functional';
-
-const items = ref([
-  { value: 'id1', label: 'First Option' },
-  { value: 'id2', label: 'Second Option' },
-]);
-const selectedId = ref('id1');
-
-const listData = new ListDataRef(items, selectedId);
-const isSelected = listData.isSelected; // ComputedRef<boolean>
-const nextItem = listData.getSelectedNext(); // returns next select item
-```
-
-#### `useSearchRef`
-Combines a source list, target fields, search query, and options to reactively search a list with built-in delay and highlight support.
-```typescript
-import { useSearchRef } from '@dxtmisha/functional';
-
-const query = ref('second');
-const { listSearch, loading, length } = useSearchRef(items, ['label'], query);
-```
-
----
-
-### 6. DOM & Lazy Rendering
-
-#### `EventRef`
-Reactive wrapper for DOM events. Starts and stops event binding cleanly inside Vue component lifecycles (runs setup and teardown hooks automatically).
-```typescript
-import { EventRef } from '@dxtmisha/functional';
-
-// Listens reactively; auto-starts on setup and auto-stops on unmounted
-const keyListener = new EventRef(window, window, 'keydown', (event) => {
-  console.log('Key pressed', event.key);
+export const useUserManagement = executeUseGlobal(() => {
+  return useApiManagementRef(
+    { path: '/api/users' },                       // GET
+    { date: (v) => new Date(v).toLocaleString() }, // Formatters
+    { columns: ['name', 'email'] },               // Search
+    { path: '/api/users' },                       // POST
+    { path: (o) => `/api/users/${o.id}` },        // PUT
+    { path: (o) => `/api/users/${o.id}` }         // DELETE
+  );
 });
 ```
 
-#### `useLazyRef`
-Reactive manager utilizing `IntersectionObserver` to defer rendering of off-screen components.
-```typescript
-import { useLazyRef } from '@dxtmisha/functional';
+### `executeUse` Strategies:
+- `executeUseLocal` (Preferred): Lazy-loaded when first called. Persists until session end.
+- `executeUseGlobal`: Eagerly loaded at application startup (useful for critical configs, SDKs). Must be initialized via `executeUseGlobalInit()`.
+- `executeUseProvide`: Scoped via `provide/inject` to a component tree branch (useful for form/tab hierarchies).
 
+---
+
+## Key API Examples
+
+### 1. Storage & State (Reactive)
+Reactively syncs Vue refs with browser storages or cross-tab broadcast channels.
+
+```typescript
+import { useStorageRef, useSessionRef, useCookieRef, useBroadcastValueRef, useHashRef } from '@dxtmisha/functional';
+
+const theme = useStorageRef<'light' | 'dark'>('theme_key', 'light');
+const step = useSessionRef<number>('form_step', 1);
+const token = useCookieRef<string>('auth_token', '', { secure: true });
+const syncState = useBroadcastValueRef<string>('active_channel', 'idle');
+const hashPage = useHashRef<string>('page', 'home');
+```
+
+### 2. Geolocation & Internationalization
+Static helpers and reactive wrappers for localization and translation.
+
+```typescript
+import { GeoRef, useGeoIntlRef, useTranslateRef } from '@dxtmisha/functional';
+
+const currentCountry = GeoRef.getCountry();
+const intl = useGeoIntlRef();
+const formattedPrice = intl.currency(150, 'EUR');
+const translations = useTranslateRef(['global.save', 'global.cancel']); // Or alias `t(...)`
+```
+
+### 3. SEO & Layout Utilities
+Metadata manager and reactive scrollbar tracker to solve layout shifts.
+
+```typescript
+import { useMeta, ScrollbarWidthRef } from '@dxtmisha/functional';
+
+const meta = useMeta();
+meta.setTitle('Product Page');
+
+const scrollbar = new ScrollbarWidthRef();
+const w = scrollbar.width;
+const hasScroll = scrollbar.is;
+```
+
+### 4. Advanced Reactivity Helpers
+Helpers for resolving async data reactively or caching computations.
+
+```typescript
+import { computedAsync, computedEternity } from '@dxtmisha/functional';
+
+const asyncData = computedAsync(async () => await fetchSomeData(activeId.value), 'loading...');
+const cachedData = computedEternity(async () => await fetchStaticData(), 'loading...');
+```
+
+### 5. List & Search Orchestration
+Orchestrates list state (selection, pagination, highlights) and performs debounced list searches.
+
+```typescript
+import { ListDataRef, useSearchRef } from '@dxtmisha/functional';
+
+const listData = new ListDataRef(items, selectedId);
+const isSelected = listData.isSelected;
+const nextItem = listData.getSelectedNext();
+
+const query = ref('search_term');
+const { listSearch, loading, length } = useSearchRef(items, ['label'], query);
+```
+
+### 6. DOM & Lazy Rendering
+Lifecycle-aware event listeners and IntersectionObserver wrappers.
+
+```typescript
+import { EventRef, useLazyRef } from '@dxtmisha/functional';
+
+const keyListener = new EventRef(window, window, 'keydown', (e) => console.log(e.key));
 const lazyManager = useLazyRef();
-const isVisible = lazyManager.addLazyItem(elementRef); // ShallowRef<boolean>
+const isVisible = lazyManager.addLazyItem(elementRef);
 ```
 
 ## Project types: Essential for analysis
@@ -614,374 +500,167 @@ The project is located at: 'node_modules/@dxtmisha/functional-basic'.
 
 ## Project context: Investigation required
 You MUST read and carefully analyze the description of this project below. If there is even a 1% chance that the functionality, components, styles, or helpers from this project could be useful for your task, you MUST immediately start analyzing this project, studying its types, and checking its structure in full to prevent custom code duplication:
-Core Purpose: This library is a comprehensive isomorphic toolkit for web application development, providing high-level abstractions for API communication (fetch/caching/hydration), internationalization (translations/formatting), localized date/time manipulation, persistent data storage (Cookie/LocalStorage), reactive URL state management (Hash/Query), and DOM event handling.
+### Core Purpose
+The library provides an isomorphic utility framework for managing high-level application concerns in JavaScript/TypeScript environments (SSR and DOM). It includes robust abstractions for API communication (REST/Fetch), structured state management, DOM-safe event handling, internationalization, and reactive data storage.
 
-Key Expositions:
-1. Api & ApiInstance: Orchestrates HTTP requests with support for middleware (preparation/end), automatic hydration for SSR, request caching, and centralized error handling.
-2. Geo, GeoIntl, GeoFlag, GeoPhone, GeoUnit: A suite for locale-sensitive data handling including currency, date, numeric, and unit conversions (metric/imperial based on region).
-3. Meta, MetaOg, MetaTwitter: Declarative management of HTML head tags, Open Graph, and Twitter Cards.
-4. DataStorage, CookieStorage, ServerStorage: Unified persistent storage interfaces with built-in SSR data isolation and hydration support.
-5. SearchList: A specialized state machine for filtering, matching, and highlighting item collections based on column definitions and regex search.
-6. EventItem: A robust wrapper for DOM listeners that includes auto-cleanup, lifecycle control, and specialized optimizations (e.g., resize/scroll-sync).
-7. Translation System: Asynchronous/Synchronous multi-locale translation manager with fallback logic and file-based loading.
+### Key Expositions
+*   **API & Networking**: `Api` (singleton interface), `ApiInstance` (core requester), `ApiCache` (request memoization), `ApiError` (centralized error handling), `ApiHydration` (SSR data serialization), and `ApiHeaders`.
+*   **State & Storage**: `DataStorage` (persistent storage with prefixes/expiration), `ServerStorage` (SSR-safe context isolation), `CookieStorage` (isomorphic cookie management), `Query`/`Hash` (URL-state management), and `Global` (app-wide data).
+*   **UI & Events**: `EventItem` (DOM-safe, optimized event management with `ResizeObserver` and `scroll-sync`), `LoadingInstance` (global loading state), and `ScrollbarWidth` (layout utility).
+*   **Localization & Formatting**: `Geo` (locale/timezone management), `GeoIntl` (Intl API wrapper), `GeoUnit` (metric/imperial conversion), `Translate` (i18n), and `Formatters` (currency, number, date, and pluralization utility).
+*   **Utilities & Data**: `Formatters`, `SearchList` (search matching/caching), `ResumableTimer`, and a suite of functional utilities for object cloning, string/date manipulation, and DOM operations.
 
-Triggers for Studying ai-types.md:
-It is mandatory to analyze ai-types.md when:
-- You need to extend or define custom configurations for the API layer (ApiConfig, ApiFetch).
-- You are implementing custom Error/Exception handling logic using the ErrorCenter structures.
-- You are adding new locale definitions, phone mask structures, or unit conversion mappings.
-- You need to debug hydration mismatches between SSR and client-side data state.
-- You are extending search logic or defining new search list result types.
+### Triggers for Studying ai-types.md
+Review `ai-types.md` whenever the following requirements arise:
+1.  **API Integration**: You need to implement new request methods, custom error handling for specific HTTP status codes, or configure global API middleware (`wrapper`/`preparation`).
+2.  **I18n/Formatting**: You are dealing with complex localization rules, unit conversions (Geo/Units), or pluralization requirements.
+3.  **SSR Consistency**: You are implementing features that must function identically on both the server and client (Hydration, `ServerStorage`, or `Datetime` formatting).
+4.  **Complex State**: You need to map or query data structures in memory using `SearchList` or utilize `BroadcastChannel` for cross-context messaging.
 
-Integration Context: 
-This library serves as the foundation layer for application state and external communication. It is designed to be used in conjunction with modern reactive frameworks (Vue/React) by leveraging the provided hydration hooks to synchronize state between the server environment and the browser client. It relies on the global DOM environment where available, but degrades to neutral behaviors or errors in non-browser environments to ensure compatibility with SSR processes.
+### Integration Context
+The library acts as a foundational service layer between the application logic and the runtime environment. It is designed to be framework-agnostic but is particularly optimized for SSR-heavy environments (like Vue/React) where hydration of state (via `ServerStorage`) and safe access to global browser objects (via `isDomRuntime`) are critical. It wraps native `fetch`, `localStorage`, `sessionStorage`, `BroadcastChannel`, and `Intl` APIs into structured, type-safe, and singleton-accessible services.
 
 ## Project information: Core overview
 This section contains essential information and the core overview of the project. Review this to understand the fundamental architecture and key features.
-This is the basic functional library (@dxtmisha/functional-basic). It contains framework-agnostic algorithms, utilities, and classes.
+# @dxtmisha/functional-basic Reference
 
-ATTENTION FOR VUE ENVIRONMENT:
-If you are developing in Vue, ALWAYS look for the required functionality (composables, reactive wrappers) inside the `@dxtmisha/functional` library FIRST.
-And ONLY if there is no reactive or Vue-specific analog there, you may use the functionality directly from this library (@dxtmisha/functional-basic).
-
-=============================================================================
-CLASS STRUCTURE & CODING STANDARDS (RULES FOR AI)
-=============================================================================
-
-To maintain consistency and high industrial quality across the dxt-ui codebase, all TypeScript classes inside `@dxtmisha/functional-basic` must strictly adhere to the following rules regarding structure, member ordering, and styles.
-
-1. ORDER OF MEMBERS WITHIN A CLASS
-Members in every class MUST be ordered in the following sequence:
-
-   A. Class Properties / Member Variables:
-      - Placed at the very top of the class body.
-      - Ordered by visibility: Public first, then Protected, and Private last.
-      - Within each visibility level, group by logical connection or alphabetically.
-      - Initialize default values directly on declaration when possible.
-
-   B. Constructor:
-      - Placed immediately after all property declarations.
-      - Parameter properties (e.g., `protected url: string`) are allowed to simplify declaration.
-
-   C. Public Methods:
-      - Placed after the constructor.
-      - Grouped logically:
-        1. Getters, checkers, and status-check methods (e.g., `is*`, `get*`).
-        2. Setters and configuration methods (e.g., `set*`).
-        3. Core executors and action methods (e.g., `request()`, `fetch()`, `show()`).
-
-   D. Protected Methods:
-      - Placed after all public methods.
-      - Contain internal utility and helper logic accessible to subclasses.
-
-   E. Private Methods:
-      - Placed at the very end of the class.
-      - Strict encapsulation of internal logic.
-
-2. CODING & STYLE CONVENTIONS
-   - Naming:
-     * Classes: PascalCase (e.g., `LoadingInstance`).
-     * Methods & Properties: camelCase (e.g., `registrationEvent`, `registrationList`).
-     * Constants inside files: UPPER_SNAKE_CASE (e.g., `LOADING_EVENT_NAME`).
-   - TypeScript Safety:
-     * Never use `any`. Use generic parameters or `unknown` if the type is dynamic/undefined.
-     * Explicitly declare return types for ALL public, protected, and private methods (including `void`).
-     * Use interfaces/types to define structural contracts for complex inputs and outputs.
-   - SSR Isolation (Server-Side Rendering):
-     * The library must be fully isomorphic and safe for SSR.
-     * Avoid storing request-specific state in global/static class properties directly.
-     * Use `ServerStorage.get('key', () => new Instance())` for request-isolated singletons.
-     * Use `isDomRuntime()` checks before accessing browser-only APIs like `window`, `document`, or `location`.
-
-3. TYPES, INTERFACES, AND ENUMS
-   - Location: All types, interfaces, and enums must be located in the `src/types` directory if it exists in the project. If the `src/types` directory does not exist, they must be defined in the same file where they are used.
-   - Export: All types, interfaces, and enums must be explicitly exported.
-   - API Types/Schemas: All types and interfaces for working with APIs must be defined/generated using the `@effect/schema` library if it is present in the project's dependencies (if the project is a monorepo, also check root dependencies).
-
-=============================================================================
-DEVELOPER GUIDE: USING `@dxtmisha/functional-basic` AS A LIBRARY
-=============================================================================
-
-This section contains instructions and code guidelines for AI models on how to import and use the framework-agnostic utilities, classes, and helper functions provided by this library in client packages or applications.
+Framework-agnostic utility library. **Vue developers MUST search `@dxtmisha/functional` first**; use this ONLY if no reactive/Vue-specific analog exists.
 
 ---
 
-### 1. HTTP Client (`Api` and `ApiInstance`)
+## Coding Standards & Class Structure
 
-The library provides both a static global class `Api` and an instantiable `ApiInstance` wrapper around the native `fetch` API. They support cancellation, caching, interceptors, error handling, and loading states.
+### 1. Class Member Order
+1. **Properties/Variables**: Top of class, ordered by visibility (`public` -> `protected` -> `private`). Initialize inline if possible.
+2. **Constructor**: Follows properties. Parameter properties (e.g. `protected url: string`) allowed.
+3. **Public Methods**:
+   1. Getters, checkers, status methods (`is*`, `get*`).
+   2. Setters & configuration (`set*`).
+   3. Core executors & actions (`request()`, `fetch()`, `show()`).
+4. **Protected Methods**: Internal helpers for subclasses.
+5. **Private Methods**: Internal helper logic at the very bottom.
 
-#### Configuration
+### 2. Style & Type Conventions
+- **Naming**: Classes = `PascalCase`, Methods/Properties = `camelCase`, Constants = `UPPER_SNAKE_CASE`.
+- **TypeScript**: No `any` (use `unknown`/generics). Explicit return types on ALL methods (including `void`). Export all types/interfaces. Suffix type files with `Types` (e.g., `*Types.ts`). Use `@effect/schema` for API schemas if present.
+- **SSR Safety**: Isomorphic code. Do not store request-specific state in static/global variables. Use `isDomRuntime()` before accessing `window`/`document`/`location`. Use `ServerStorage.get(key, () => new Instance())` for request-isolated singletons.
+
+---
+
+## API Reference & Examples
+
+### 1. HTTP Client (`Api`, `ApiInstance`, `ApiCache`)
 ```typescript
-import { Api } from '@dxtmisha/functional-basic';
+import { Api, ApiCache } from '@dxtmisha/functional-basic';
 
-// Set base origin and API path
+// Config
 Api.setOrigin('https://api.example.com');
 Api.setUrl('/api/v1');
-
-// Setup global request defaults (e.g., query params sent with every request)
 Api.setRequestDefault({ client: 'web' });
+Api.setHeaders(() => ({ Authorization: `Bearer ${localStorage.getItem('token') || ''}` }));
 
-// Setup global headers (can pass a callback for dynamic values)
-Api.setHeaders(() => ({
-  Authorization: `Bearer ${localStorage.getItem('token') || ''}`,
-}));
-```
+// Interceptors
+Api.setPreparation(async (fetchOpts) => { if (fetchOpts.auth) fetchOpts.headers['X-Auth'] = '1'; });
+Api.setEnd(async (res, fetchOpts) => res.status === 401 ? { reset: true } : {});
 
-#### Making Requests
-```typescript
-// Simple request: defaults to GET
-const users = await Api.request<User[]>('users');
-
-// Explicit methods
+// Requests
+const users = await Api.request<User[]>('users'); // default GET
 const profile = await Api.get<User>({ path: 'profile' });
-const updated = await Api.post<User>({
-  path: 'profile',
-  request: { name: 'New Name' }, // Request payload
-});
+const updated = await Api.post<User>({ path: 'profile', request: { name: 'New' } });
+
+// Cache
+await ApiCache.set('key', { data: 1 }, 60000); // ms age
+const cached = await ApiCache.get<{ data: number }>('key');
 ```
-
-#### Interceptors (Preparation and End Lifecycle Hooks)
-```typescript
-// Preparation hook: runs before fetch executes
-Api.setPreparation(async (apiFetch) => {
-  // Can mutate apiFetch settings or inject headers
-  if (apiFetch.auth) {
-    apiFetch.headers = { ...apiFetch.headers, 'X-Auth-Required': 'true' };
-  }
-});
-
-// End hook: runs after response is received
-Api.setEnd(async (response, apiFetch) => {
-  if (response.status === 401) {
-    // Perform token refresh or trigger sign-out
-    return { reset: true }; // Resets request/attempts or signals failure
-  }
-  return {};
-});
-```
-
-#### Local caching with `ApiCache`
-```typescript
-import { ApiCache } from '@dxtmisha/functional-basic';
-
-// Cache responses client-side
-await ApiCache.set('custom-cache-key', data, 60000); // age in ms
-const cached = await ApiCache.get<MyDataType>('custom-cache-key');
-```
-
----
 
 ### 2. State & Storage Management
-
-The library features SSR-safe classes to manipulate `localStorage`/`sessionStorage`, cookies, and server-side contexts.
-
-#### `DataStorage` (localStorage / sessionStorage)
-Safely wraps storage with optional namespace prefixes, fallback defaults, and expiration cache.
 ```typescript
-import { DataStorage } from '@dxtmisha/functional-basic';
+import { DataStorage, CookieStorage, Cookie, ServerStorage } from '@dxtmisha/functional-basic';
 
-// Set global namespace prefix to avoid storage collisions
+// DataStorage (localStorage/sessionStorage)
 DataStorage.setPrefix('my_app_');
-
-// Instantiate a persistent storage item (sessionStorage if 2nd arg is true)
-const userStorage = new DataStorage<{ id: string }>('user_session', false);
-
-// Save value
+const userStorage = new DataStorage<{ id: string }>('user_session', false); // true for sessionStorage
 userStorage.set({ id: '123' });
-
-// Get value (with default value fallback and optional cache limit in ms)
-const user = userStorage.get({ id: 'guest' });
-
-// Remove item
+const user = userStorage.get({ id: 'guest' }); // fallback default
 userStorage.remove();
-```
 
-#### `CookieStorage` & `Cookie`
-Standard cookie manager.
-```typescript
-import { CookieStorage, Cookie } from '@dxtmisha/functional-basic';
-
-// Global Cookie usage
+// Cookies
 CookieStorage.set('theme', 'dark', { age: 31536000, secure: true, sameSite: 'lax' });
 const theme = CookieStorage.get<string>('theme', 'light');
 CookieStorage.remove('theme');
 
-// Instance-based Cookie manager
 const tokenCookie = new Cookie<string>('auth_token');
 tokenCookie.set('xyz123', { secure: true });
 const token = tokenCookie.get();
+
+// SSR Request-Isolated Storage
+const myService = ServerStorage.get('myService', () => new MyService());
 ```
 
-#### `ServerStorage` (SSR Request-Isolated Storage)
-Used to share and isolate singleton states safely across concurrent asynchronous server-side render requests.
+### 3. Geolocation & Localization
 ```typescript
-import { ServerStorage } from '@dxtmisha/functional-basic';
+import { Geo, GeoIntl, GeoFlag, GeoPhone } from '@dxtmisha/functional-basic';
 
-// Fetch or create a request-isolated instance singleton
-const myServiceInstance = ServerStorage.get('myService', () => new MyService());
-```
-
----
-
-### 3. Geolocation & Localization (`GeoIntl`, `Geo`, `GeoFlag`, `GeoPhone`)
-
-Standardizes localization using the native browser/Node `Intl` API.
-
-#### `Geo`
-Used to track and modify country, language, standard, and timezone information.
-```typescript
-import { Geo } from '@dxtmisha/functional-basic';
-
-// Get current geo details
-const currentCountry = Geo.getCountry(); // e.g., 'VN'
-const currentLang = Geo.getLanguage();   // e.g., 'vi'
-
-// Change locale configuration
+// Geo state
+const country = Geo.getCountry(); // e.g., 'VN'
+const lang = Geo.getLanguage();   // e.g., 'vi'
 Geo.set('en-US');
-```
 
-#### `GeoIntl`
-Used for localized numbers, currencies, percentages, dates, relative times, and file sizes.
-```typescript
-import { GeoIntl } from '@dxtmisha/functional-basic';
-
+// Formatters (Intl)
 const intl = new GeoIntl('en-US');
-
-// Numbers
-intl.number(123456.78); // '123,456.78'
-
-// Currencies
-intl.currency(99.99, 'USD'); // '$99.99'
-
-// File Sizes
-intl.sizeFile(1024 * 1024 * 5); // '5.00 MB'
-
-// Dates & Time
-intl.date(new Date(), 'date'); // 'Jun 18, 2026'
-intl.date(new Date(), 'time'); // '10:48 PM'
-
-// Relative time formatting
+intl.number(123456.78);          // '123,456.78'
+intl.currency(99.99, 'USD');      // '$99.99'
+intl.sizeFile(1024 * 1024 * 5);  // '5.00 MB'
+intl.date(new Date(), 'date');    // 'Jun 18, 2026'
+intl.date(new Date(), 'time');    // '10:48 PM'
 intl.relative(new Date(Date.now() - 3600000)); // '1 hour ago'
+intl.plural(3, 'apple|apples');   // '3 apples' ('one|other' or 'one|few|many|other')
 
-// Pluralization rules
-// Words are passed as a string delimited by '|' (e.g. 'one|other' or 'one|few|many|other')
-intl.plural(3, 'apple|apples'); // '3 apples'
+// Flags & Phones
+const flag = new GeoFlag().getFlag('VN');
+const phoneInfo = GeoPhone.getByPhone('+84900000000'); // .phone = cleaned string
+const mask = GeoPhone.toMask('84900000000');
 ```
 
-#### Country Flags (`GeoFlag`) and Phone Masks (`GeoPhone`)
+### 4. DOM, Safe Events & Helpers
 ```typescript
-import { GeoFlag, GeoPhone } from '@dxtmisha/functional-basic';
+import { EventItem, goScrollSmooth, writeClipboardData, getClipboardData } from '@dxtmisha/functional-basic';
 
-// Flags
-const flagHelper = new GeoFlag();
-const flagIcon = flagHelper.getFlag('VN'); // Vietnam flag emoji/svg code
-
-// Phones
-const phoneInfo = GeoPhone.getByPhone('+84900000000');
-console.log(phoneInfo.phone); // Cleaned phone string
-const mask = GeoPhone.toMask('84900000000'); // Returns formatted phone mask
-```
-
----
-
-### 4. DOM and Safe Event Management (`EventItem`)
-
-`EventItem` provides memory-leak proof DOM event management by automating listener binding and unbinding.
-
-```typescript
-import { EventItem } from '@dxtmisha/functional-basic';
-
-// Initialize the event listener (attached to element selector or Window)
-const clickListener = new EventItem(
-  window,
-  'click',
-  (event) => {
-    console.log('Window clicked', event);
-  },
-  { passive: true }
-);
-
-// Start listening
+// Leak-proof Event management
+const clickListener = new EventItem(window, 'click', (e) => console.log(e), { passive: true });
 clickListener.start();
+clickListener.stop(); // Call on destroy/cleanup!
 
-// Stop listening (always call when cleaning up/destroying component contexts!)
-clickListener.stop();
-```
-
-#### Scrolling & Clipboard Helpers
-```typescript
-import { goScrollSmooth, writeClipboardData, getClipboardData } from '@dxtmisha/functional-basic';
-
-// Scroll element into view smoothly
+// DOM / Clipboard
 goScrollSmooth(document.getElementById('target'));
-
-// Copy text to clipboard
-await writeClipboardData('Text to copy');
-
-// Read from clipboard
+await writeClipboardData('text');
 const text = await getClipboardData();
 ```
 
----
-
 ### 5. Search & Formatting Utilities
-
-#### `SearchList`
-A highly-optimized client-side text searching class featuring search highlights.
 ```typescript
-import { SearchList } from '@dxtmisha/functional-basic';
+import { SearchList, Formatters, FormattersType } from '@dxtmisha/functional-basic';
 
-const users = [
-  { name: 'John Doe', email: 'john@example.com' },
-  { name: 'Jane Smith', email: 'jane@example.com' },
-];
+// Search List with highlights
+const searcher = new SearchList([{ name: 'John Doe' }], ['name'], 'john');
+const results = searcher.to(); // returns matching items with highlighted markup in matching keys
 
-// Instantiation: items, fields to search in, current search query, search options
-const searcher = new SearchList(users, ['name', 'email'], 'john');
-
-// Execute and retrieve filtered results with highlight match markup
-const results = searcher.to();
-// returns: Array of results with exact matching highlights in matching keys
-```
-
-#### `Formatters`
-Automates schema-based transformations of structured lists or objects.
-```typescript
-import { Formatters, FormattersType } from '@dxtmisha/functional-basic';
-
-const rawData = { price: 12000, date: '2026-06-18' };
-
+// Object Formatter
 const formatter = new Formatters({
   price: { type: FormattersType.currency, options: 'USD' },
   date: { type: FormattersType.date, options: { month: 'long', year: 'numeric' } }
-}, rawData);
-
-const formatted = formatter.to();
-// { price: '$12,000.00', date: 'June 2026' }
+}, { price: 12000, date: '2026-06-18' });
+const formatted = formatter.to(); // { price: '$12,000.00', date: 'June 2026' }
 ```
 
----
-
-### 6. General Utility Functions
-
-Core lightweight utilities:
-- `isFilled(value)`: Checks if string, array, object, boolean or number has filled content. Returns `false` for `[]`, `{}`, `''`, `null`, `undefined`.
-- `isDomRuntime()`: Safe isomorphic environment check. Returns `true` if code is running in a browser runtime.
-- `copyObject(value)`: Performs a quick, deep object clone.
-- `anyToString(value)`: Converts any type to its clean string representation.
-- `sleep(ms)`: Promisified setTimeout wrapper for async delay.
-
+### 6. General Helpers
 ```typescript
-import { isFilled, isDomRuntime, copyObject, sleep } from '@dxtmisha/functional-basic';
+import { isFilled, isDomRuntime, copyObject, anyToString, sleep } from '@dxtmisha/functional-basic';
 
-if (isDomRuntime()) {
-  console.log('Running in browser');
-}
-
-if (isFilled(myArray)) {
-  const cloned = copyObject(myArray);
-}
-
+isFilled([]); // false (works for strings, arrays, objects, numbers, booleans)
+isDomRuntime(); // true if in browser
+const cloned = copyObject({ a: 1 });
+const str = anyToString(123);
 await sleep(500);
 ```
 
@@ -1017,132 +696,65 @@ Integration Context: This library acts as the middleware and configuration backb
 
 ## Project information: Core overview
 This section contains essential information and the core overview of the project. Review this to understand the fundamental architecture and key features.
-INFRASTRUCTURE LIBRARY (SSR/NITRO):
-This package serves as the foundation for building Server-Side Rendering (SSR) applications using Nitro and Vue 3. It handles low-level operations for headers, storage, cookies, and server-side routing.
+# @dxtmisha/nitro-basic Reference
 
-1. PURPOSE: The library is used exclusively for initializing and configuring the application's server infrastructure. it includes server bootstrap mechanisms (`uiBootstrapServer`), SSR application creation (`uiCreateSsrApp`), and Nitro plugins.
-2. USAGE RESTRICTION: Functions and mixins from this package ARE NOT intended for use within regular Vue components or application business logic. All tools required for daily development should be imported from the corresponding high-level packages (e.g., `@dxtmisha/functional` or `@dxtmisha/d1`).
-3. DO NOT CONNECT: Avoid direct inclusion of this package in the user interface. It is responsible for the server's "skeleton" and its configuration, which should remain hidden from the application developer.
-
-Study this package only if you need to modify the server lifecycle logic, server request handling, or state synchronization mechanisms between the server and the client (hydration).
-
-=============================================================================
-DEVELOPER GUIDE: USING `@dxtmisha/nitro-basic` AS A LIBRARY
-=============================================================================
-
-This section contains instructions and code guidelines for AI models on how to import and use the server-side rendering (SSR), bootstrapping, and server request lifecycle APIs provided by this library in backend entry points or server-side plugins.
+Foundation for Nitro & Vue 3 Server-Side Rendering (SSR). Refer to [ai-types.md](file:///Volumes/T7/Code/dxt-ui/packages/nitro-basic/ai-types.md) for full signatures, types, and exported methods.
 
 ---
 
-### 1. Application Initialization & Bootstrapping
+## Architectural Rules
 
-These functions set up Vue 3 application instances and manage their execution flow across client and server runtimes.
+1. **Purpose**: Used *only* in server bootstrap and Nitro configuration (`uiBootstrapServer`, `uiCreateServerApp`, Nitro plugins).
+2. **Restriction**: **Never** import or use these functions/mixins within standard Vue components (SFC) or regular business logic. Use high-level wrappers from `@dxtmisha/functional` instead.
+3. **Scope**: Do not connect directly to the UI; this package is responsible for the hidden server skeleton.
 
-#### `uiCreateApp`
-Sets up the base Vue application instance, Vue Router, and global options.
+---
+
+## Core Initialization Flow
+
+### 1. App Bootstrapping (Server & Client Entry Points)
+
 ```typescript
-import { uiCreateApp } from '@dxtmisha/nitro-basic';
+import { uiCreateApp, uiCreateClientApp, uiCreateServerApp } from '@dxtmisha/nitro-basic';
 import AppRoot from 'node_modules/@dxtmisha/nitro-basic/App.vue';
 
-const { app, router, options } = uiCreateApp(AppRoot, {
-  appRouter: { routes: myRoutes },
-});
+// 1. Base App Setup (common)
+const { app, router, options } = uiCreateApp(AppRoot, { appRouter: { routes } });
+
+// 2. Client Entry (client.ts)
+await uiCreateClientApp(app, '#app', router, options, async (appInstance) => { /* pre-mount setup */ });
+
+// 3. Server Entry / Nitro Request handler
+const ssr = await uiCreateServerApp(app, request, router, options, async (appInstance) => { /* pre-render setup */ }, context, htmlTemplate);
+// ssr.appHtml, ssr.scriptsJson, ssr.teleportsHtml
 ```
 
-#### `uiCreateClientApp`
-Hydrates the Vue application on the client-side.
+### 2. Request Context & Server Lifecycle Initializers
+
 ```typescript
-import { uiCreateClientApp } from '@dxtmisha/nitro-basic';
+import { useHeaders, getRequestHref, getRequestOrigin, initApi, initCookieStorage, initServerStorage, initHeaders } from '@dxtmisha/nitro-basic';
 
-// Initialized inside browser entry point (e.g., main.ts / client.ts)
-await uiCreateClientApp(app, '#app', router, options, async (appInstance) => {
-  // Pre-mount operations (e.g., register client-only plugins)
-});
-```
+// Initialized inside server entry points before rendering:
+initApi(request);
+initCookieStorage(app, request);
+initServerStorage(app);
+initHeaders(app);
 
-#### `uiCreateServerApp`
-Sets up the server render context, executes routing parameters, extracts headers, lang properties, meta configurations, and executes server pre-render actions.
-```typescript
-import { uiCreateServerApp } from '@dxtmisha/nitro-basic';
-
-// Executes inside server handler / Nitro request lifecycle
-const ssrResult = await uiCreateServerApp(
-  app,
-  nodeRequest, // Incoming Request
-  router,
-  options,
-  async (appInstance) => {
-    // Pre-render operations (e.g., seed stores, register plugins)
-  },
-  ssrContext,
-  htmlTemplateBody
-);
-
-console.log(ssrResult.appHtml);        // Rendered Vue HTML string
-console.log(ssrResult.scriptsJson);    // Hydration data script tags
-console.log(ssrResult.teleportsHtml);  // Teleport block targets
-```
-
----
-
-### 2. Request Metadata & Headers
-
-Utilities to extract and evaluate incoming headers and request properties.
-
-#### `useHeaders`
-A server-side helper composable to reactively obtain headers of the active incoming request.
-```typescript
-import { useHeaders } from '@dxtmisha/nitro-basic';
-
-// Extract a specific header property
+// Accessing metadata on the server:
 const userAgent = useHeaders('user-agent');
-
-// Get the entire Headers object
 const allHeaders = useHeaders();
-```
-
-#### Request URL parsers
-```typescript
-import { getRequestHref, getRequestOrigin, getRequestUrl } from '@dxtmisha/nitro-basic';
-
-// Returns the full href from request metadata
 const href = getRequestHref(request);
-
-// Returns origin domain
 const origin = getRequestOrigin(request);
 ```
 
----
-
-### 3. Server Storage & Lifecycle Initializers
-
-These initializers seed isomorphic singletons and dependency injection containers with details resolved from the incoming server request.
-
-```typescript
-import { initApi, initCookieStorage, initServerStorage, initHeaders } from '@dxtmisha/nitro-basic';
-
-// Initialized inside server entry points before rendering
-initApi(request);            // Configures base fetch url and request details
-initCookieStorage(app, request); // Extracts cookies and seeds CookieStorage
-initServerStorage(app);       // Connects ServerStorage request-isolated singletons
-initHeaders(app);            // Attaches incoming request headers to context
-```
-
----
-
-### 4. Identity & Bootstrap Helpers
+### 3. Bootstrap & Identity Helpers
 
 ```typescript
 import { uiBootstrapClient, uiBootstrapServer, uiId } from '@dxtmisha/nitro-basic';
 
-// Bootstraps element ID generator and settings
-uiId();
-
-// Server-side initialization
-uiBootstrapServer();
-
-// Client-side initialization
-uiBootstrapClient();
+uiId(); // Setup element ID generator
+uiBootstrapServer(); // Server initialization
+uiBootstrapClient(); // Client initialization
 ```
 
 ## Project types: Essential for analysis
@@ -1165,190 +777,82 @@ The library is architected as a modular SCSS-first system, utilizing @use and @f
 
 ## Project information: Core overview
 This section contains essential information and the core overview of the project. Review this to understand the fundamental architecture and key features.
-You are an expert in system styling using the `@dxtmisha/styles` library. Write clean, reusable SCSS code following these rules:
+# @dxtmisha/styles Reference
 
-Only mixins from the following files are available for use:
-- `node_modules/@dxtmisha/styles/src/styles/variables.scss`
-- `node_modules/@dxtmisha/styles/src/styles/color.scss`
-- `node_modules/@dxtmisha/styles/src/styles/content.scss`
-- `node_modules/@dxtmisha/styles/src/styles/dimension.scss`
-- `node_modules/@dxtmisha/styles/src/styles/flex.scss`
-- `node_modules/@dxtmisha/styles/src/styles/font.scss`
-- `node_modules/@dxtmisha/styles/src/styles/margin.scss`
-- `node_modules/@dxtmisha/styles/src/styles/media.scss`
-- `node_modules/@dxtmisha/styles/src/styles/padding.scss`
-- `node_modules/@dxtmisha/styles/src/styles/position.scss`
-- `node_modules/@dxtmisha/styles/src/styles/scrollbar.scss`
-- `node_modules/@dxtmisha/styles/src/styles/transform.scss`
+System-wide SCSS styling guidelines and mixin structure.
 
-GENERAL USAGE RULES:
-1. Use ready-made mixins: If a ready-made mixin is already available in the library for a task, use it.
-2. Code simplicity: If a CSS property consists of a single specific value (e.g., `display: block` or `position: absolute`), use the standard CSS property. Do not use mixins where they do not provide a systemic advantage.
-3. Grouping properties: To maintain clean and readable code, always group CSS properties and mixins by meaning (e.g., positioning, box model, text styles, colors, etc.).
+---
 
-CLASS NAMING AND STRUCTURE:
-1. The name of the main (root) CSS class must always strictly match the name of the component itself.
-2. Use a BEM-like approach based on the component name for naming internal elements and modifiers.
+## Architectural Rules & Conventions
 
-WORKING WITH COLORS AND PALETTES:
-All mixins for working with colors, opacity, and palettes are defined in `node_modules/@dxtmisha/styles/src/styles/color.scss`.
+1. **Hierarchy**: Use ready-made system mixins instead of custom styling properties whenever a system token/mixin is available.
+2. **Standard CSS**: Use raw standard CSS (e.g. `display: block`, `position: absolute`) for single-value properties that do not provide a systemic advantage.
+3. **BEM Naming**: Root class name must match component name. Internal elements and modifiers use BEM style (e.g., `.component__element--modifier`).
+4. **No Raw Media Queries**: Hardcoded widths in `@media` queries are strictly forbidden. Always use system media mixins.
 
-1. Opacity Management: In a number of system components, an approach is used where RGB channels and opacity are stored in different tokens. In such cases, you must use mixins for correct opacity changes:
-   - `@include backgroundOpacity(0.5)` — changes only the background opacity.
-   - `@include colorOpacity(0.8)` — changes only the text opacity.
-   This allows modifying the alpha channel of a system color without overriding its base.
+---
 
-2. Regular Mixins vs Palette:
-   - Regular mixins (`backgroundColor`, `color`): Accept a specific color (HEX, RGB) or the result of the `getColor` function. They set the color "as is"—it remains static even when changing global palette classes on parent elements.
-   - Palette Mixins (`paletteBackgroundColor`, `paletteColor`, etc.): Designed for working with semantic system variables (e.g., `'--d1-sys-palette-primary'`).
-     Using these mixins guarantees automatic support for CSS variable "routing":
-     * Dynamic Binding: A cascading link with `basic` level variables (e.g., `basic600`) is created.
-     * Automatic Repainting: When adding a palette class to a parent (e.g., `.d1-palette--yellow`), the component instantly changes color while maintaining the mathematically calculated contrast between background and text without manual style overrides.
+## Core Usage Examples
 
-MEDIA QUERIES AND ADAPTIVITY:
-For implementing adaptive layout, it is strictly FORBIDDEN to write direct `@media` queries using hardcoded values (e.g., `768px`).
-
-1. Use Mixins: Always use mixins from `node_modules/@dxtmisha/styles/src/styles/media.scss`. They automatically retrieve breakpoint values from the system configuration.
-2. Main Mixins:
-   - `@include mediaMinWidth($width)` — for a mobile-first approach. Applies styles from the specified width and up.
-   - `@include mediaMaxWidth($width)` — applies styles up to the specified width (breakpoint width minus 1px).
-   - `@include mediaMinMaxWidth($min, $max)` — applies styles within a strictly defined width range.
-3. Available Breakpoints: The set of available keys (e.g., `sm`, `md`, `lg`) depends on the configuration of the specific design system and may vary across different projects.
-4. Container Queries: The library also supports `@container` queries through `containerMinWidth`, `containerMaxWidth`, and `containerMinMaxWidth` mixins, following the same breakpoint logic.
-
-Example:
+### 1. Imports
 ```scss
-.my-element {
-  width: 100%;
+// Import all variables, mixins, utilities, and helpers
+@import '@dxtmisha/styles';
 
-  @include mediaMinWidth('md') {
-    width: 50%; // Change width for screens from md and up
+// Import ONLY design system properties and variables
+@import '@dxtmisha/styles/properties';
+```
+
+### 2. Colors & Palettes (color.scss)
+- **Opacity**: Use `backgroundOpacity` / `colorOpacity` to modify alpha channels of system tokens separately.
+- **Palette vs static**: Static mixins (`backgroundColor`, `color`) use fixed values. Palette mixins (`paletteBackgroundColor`, `paletteColor`) dynamically bind to semantic variables (e.g., `'--d1-sys-palette-primary'`), reacting to parent palette changes (e.g., `.d1-palette--yellow`).
+
+```scss
+.element {
+  @include backgroundColor(primary);
+  @include color(white);
+  @include backgroundOpacity(0.5); // changes only background opacity
+  
+  &--dynamic {
+    @include paletteBackgroundColor('--d1-sys-palette-primary');
   }
 }
 ```
 
-=============================================================================
-DEVELOPER GUIDE: USING `@dxtmisha/styles` AS A LIBRARY
-=============================================================================
-
-This section contains instructions and code guidelines for AI models on how to import and use the design system variables, colors, typography, layout, and media query mixins provided by this library in stylesheets.
-
----
-
-### 1. Importing Styles & Properties
-
-Styles can be imported modularly depending on performance and configuration needs.
-
-```scss
-// Import all variables, mixins, utilities, and helper styles
-@import '@dxtmisha/styles';
-
-// Import ONLY the core design system CSS properties and variables (lighter bundle)
-@import '@dxtmisha/styles/properties';
-```
-
----
-
-### 2. Styling with Color Mixins
-
-Use semantic color utilities to assign text, background, and borders.
-
-```scss
-.button {
-  // Set background-color to primary theme color
-  @include backgroundColor(primary);
-
-  // Apply base style rule to use color contrast logic
-  @include backgroundAsColor;
-
-  // Add text color
-  @include color(white);
-}
-
-.alert {
-  // Sets color from semantic danger token
-  @include color(danger);
-
-  // Set transparency for background using the system opacity mixin
-  @include backgroundOpacity(0.1);
-}
-```
-
-#### Palette variables (Routing & Re-theming)
-```scss
-.card {
-  // Binds the background color dynamically to the semantic primary palette token.
-  // This color will automatically re-render when a parent container's palette changes.
-  @include paletteBackgroundColor('--d1-sys-palette-primary');
-}
-```
-
----
-
-### 3. Flexbox Layouts
-
-Rather than writing verbose flex rules, use layout mixins to define containers.
-
+### 3. Layouts & Spacing (flex.scss, padding.scss, margin.scss)
 ```scss
 .container {
   @include flex;
   @include flexDirection(column);
   @include justifyContent(center);
   @include alignItems(center);
+  
+  @include padding(md);
+  @include margin(lg);
+  @include radius; // border-radius token
 }
 ```
 
----
-
-### 4. Typography & Spacing
-
-Ensure text styles and container spacings align with design variables.
-
+### 4. Typography (font.scss)
 ```scss
-.title {
-  @include font(titleLarge); // Sets font-size, weight, line-height
-}
-
-.body {
-  @include font(bodyMedium);
-}
-
-.box {
-  @include padding(md); // Applies consistent system padding
-  @include margin(lg);  // Applies consistent system margin
-  @include radius;      // Applies standard border-radius token
-}
+.title { @include font(titleLarge); }
+.text { @include font(bodyMedium); }
 ```
 
----
-
-### 5. Responsive Design Breakpoints
-
-Always leverage standard breakpoints (`sm`, `md`, `lg`, `xl`, `2xl`) instead of writing raw media query widths.
+### 5. Media & Container Queries (media.scss)
+Breakpoints: `sm`, `md`, `lg`, `xl`, `2xl`.
+- Media: `mediaMinWidth($width)`, `mediaMaxWidth($width)`, `mediaMinMaxWidth($min, $max)`.
+- Container: `containerMinWidth($width)`, `containerMaxWidth($width)`, `containerMinMaxWidth($min, $max)`.
 
 ```scss
 .responsive-box {
-  display: block;
-
-  @include mediaMinWidth('md') {
-    display: flex; // Converts to flex for tablets and wider screens
-  }
-
-  @include mediaMinWidth('lg') {
-    max-width: 960px; // Centers and limits width on desktops
-  }
+  width: 100%;
+  @include mediaMinWidth('md') { width: 50%; }
 }
-```
 
-#### Container Queries
-Evaluate layouts based on the parent component's size.
-```scss
-.card-content {
+.container-box {
   display: grid;
-
-  @include containerMinWidth('sm') {
-    grid-template-columns: repeat(2, 1fr);
-  }
+  @include containerMinWidth('sm') { grid-template-columns: 1fr 1fr; }
 }
 ```
 
