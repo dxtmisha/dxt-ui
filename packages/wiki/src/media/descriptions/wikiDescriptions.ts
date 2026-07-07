@@ -77,6 +77,8 @@ import { wikiDescriptionsSkeleton } from './wikiDescriptionsSkeleton'
 import { wikiDescriptionsSnackbar } from './wikiDescriptionsSnackbar'
 import { wikiDescriptionsSnackbarItem } from './wikiDescriptionsSnackbarItem'
 import { wikiDescriptionsSwitch } from './wikiDescriptionsSwitch'
+import { wikiDescriptionsSegmentControl } from './wikiDescriptionsSegmentControl'
+import { wikiDescriptionsSegmentControlItem } from './wikiDescriptionsSegmentControlItem'
 import { wikiDescriptionsTabItem } from './wikiDescriptionsTabItem'
 import { wikiDescriptionsTabs } from './wikiDescriptionsTabs'
 import { wikiDescriptionsTabsNavigation } from './wikiDescriptionsTabsNavigation'
@@ -165,6 +167,8 @@ export const wikiDescriptions: StorybookComponentsDescription = [
   wikiDescriptionsSnackbar,
   wikiDescriptionsSnackbarItem,
   wikiDescriptionsSwitch,
+  wikiDescriptionsSegmentControl,
+  wikiDescriptionsSegmentControlItem,
   wikiDescriptionsTabItem,
   wikiDescriptionsTabs,
   wikiDescriptionsTabsNavigation,

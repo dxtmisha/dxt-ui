@@ -1,3 +1,9 @@
 {
-  "main": "{d.segmentControl}"
+  "main": "{d.segmentControl}",
+  "gap": "{sys.spacing.x}",
+  "paddingX": "{sys.spacing.x}",
+  "height": "{ref.spacing.12}",
+  "background-color": "{sys.palette.onSurface}",
+  "background-opacity": "{sys.opacity.overlay}",
+  "border-radius": "var(--sys-height) * {sys.rounded.adaptive.md}"
 }

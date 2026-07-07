@@ -1,17 +1,20 @@
 import type { ConstrClass } from '@dxtmisha/functional'
 import type {
-  TabsNavigationComponents,
   TabsNavigationEmits,
   TabsNavigationExpose,
   TabsNavigationSlots
 } from '../TabsNavigation'
+import type { HorizontalScrollComponentInclude } from '../HorizontalScroll'
+import type { SegmentControlItemComponentInclude } from '../SegmentControlItem'
 
 /**
  * Interface for describing which components need to be connected for work.
  *
  * Интерфейс для описания, какие компоненты надо подключить для работы.
  */
-export type SegmentControlComponents = TabsNavigationComponents
+export type SegmentControlComponents
+  = HorizontalScrollComponentInclude
+    & SegmentControlItemComponentInclude
 
 /**
  * Type describing available events.

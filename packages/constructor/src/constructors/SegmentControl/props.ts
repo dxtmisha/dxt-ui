@@ -1,13 +1,15 @@
 import { defaultsTabsNavigation, type TabsNavigationPropsBasic } from '../TabsNavigation'
+import type { TabItemPropsBasic } from '../TabItem'
 
 type SegmentControlPropsToken = {
   // :type [!] System label / Системная метка
-  scrollable?: boolean
   divider?: boolean
   // :type [!] System label / Системная метка
 }
 
-export type SegmentControlPropsBasic = TabsNavigationPropsBasic
+export type SegmentControlPropsBasic<
+  TabItem extends TabItemPropsBasic = TabItemPropsBasic
+> = TabsNavigationPropsBasic<TabItem>
 
 /**
  * Type describing incoming properties.
@@ -23,6 +25,7 @@ export type SegmentControlProps = SegmentControlPropsBasic & SegmentControlProps
  */
 export const defaultsSegmentControl = {
   ...defaultsTabsNavigation,
+  horizontalScrollAlign: true,
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

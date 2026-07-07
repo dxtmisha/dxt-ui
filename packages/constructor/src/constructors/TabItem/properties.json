@@ -17,6 +17,7 @@
   "~focus": {},
   "~open": {},
   "~selected": {},
+  "~readonly": {},
   "~disabled": {},
   "~adaptive": {
     "~iconAlways": {

@@ -55,6 +55,7 @@ Members in every class MUST be ordered in the following sequence:
 
 3. TYPES, INTERFACES, AND ENUMS
    - Location: All types, interfaces, and enums must be located in the `src/types` directory if it exists in the project. If the `src/types` directory does not exist, they must be defined in the same file where they are used.
+   - Naming: All files containing types must have the suffix `Types` in their name (e.g., `*Types.ts` or `*Types.d.ts`).
    - Export: All types, interfaces, and enums must be explicitly exported.
    - API Types/Schemas: All types and interfaces for working with APIs must be defined/generated using the `@effect/schema` library if it is present in the project's dependencies (if the project is a monorepo, also check root dependencies).
 

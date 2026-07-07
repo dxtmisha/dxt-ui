@@ -33,14 +33,14 @@ export class InputCodeItemDesign<
   CLASSES extends InputCodeItemClasses,
   P extends InputCodeItemProps
 > extends DesignConstructorAbstract<
-  HTMLDivElement,
-  COMP,
-  InputCodeItemEmits,
-  EXPOSE,
-  InputCodeItemSlots,
-  CLASSES,
-  P
-> {
+    HTMLDivElement,
+    COMP,
+    InputCodeItemEmits,
+    EXPOSE,
+    InputCodeItemSlots,
+    CLASSES,
+    P
+  > {
   /** Instance of the InputCodeItem logic class / Экземпляр класса логики InputCodeItem */
   protected readonly item: InputCodeItem
 

@@ -10533,6 +10533,38 @@
           }
         }
       },
+      "segmentControlItem": {
+        "name": "d1-segmentControlItem",
+        "type": "component",
+        "value": {
+          "paddingX": {
+            "name": "--d1-segmentControlItem-paddingX",
+            "type": "var",
+            "value": "{layout.paddingX}"
+          },
+          "paddingY": {
+            "name": "--d1-segmentControlItem-paddingY",
+            "type": "var",
+            "value": "{sys.spacing.xs}"
+          },
+          "indicator": {
+            "name": "indicator",
+            "type": "var",
+            "value": {
+              "height": {
+                "name": "--d1-segmentControlItem-indicator-height",
+                "type": "var",
+                "value": "{sys.spacing.x}"
+              }
+            }
+          },
+          "transitionFunction": {
+            "name": "--d1-segmentControlItem-transitionFunction",
+            "type": "var",
+            "value": "{d.sys.transitionFunction.standard}"
+          }
+        }
+      },
       "select": {
         "name": "d1-select",
         "type": "component",
@@ -12132,6 +12164,17 @@
                 "value": "{??disabled}"
               }
             }
+          }
+        }
+      },
+      "segmentControlItem": {
+        "name": "d-segmentControlItem",
+        "type": "component",
+        "value": {
+          "transitionFunction": {
+            "name": "--d-segmentControlItem-transitionFunction",
+            "type": "var",
+            "value": "{d.sys.transitionFunction.standard}"
           }
         }
       },

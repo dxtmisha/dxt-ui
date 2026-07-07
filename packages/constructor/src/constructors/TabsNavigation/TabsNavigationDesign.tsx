@@ -51,6 +51,8 @@ export class TabsNavigationDesign<
   /** TabsNavigation business logic instance / Экземпляр бизнес-логики TabsNavigation */
   protected readonly item: TabsNavigation
 
+  protected readonly itemComponent: string = 'tabItem'
+
   /**
    * Constructor for initializing the design renderer.
    *
@@ -109,6 +111,7 @@ export class TabsNavigationDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
+        item: this.getSubClass('item')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -134,6 +137,7 @@ export class TabsNavigationDesign<
     return this.item.scroll.render(
       { default: this.renderList },
       {
+        ...this.item.binds,
         class: this.classes?.value.main
       }
     )
@@ -179,7 +183,7 @@ export class TabsNavigationDesign<
     const isSelected = this.item.selected.isSelected(item.index)
 
     return this.components.renderOne(
-      'tabItem',
+      this.itemComponent as never,
       toBinds(
         this.props.itemAttrs,
         item,
@@ -190,6 +194,7 @@ export class TabsNavigationDesign<
           id: this.item.ids.getIdByValue(item.value),
           onClick: this.item.onClick,
           class: {
+            [`${this.classes?.value.item}`]: true,
             [props.classItemSelected]: isSelected
           }
         }

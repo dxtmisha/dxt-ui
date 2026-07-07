@@ -5,16 +5,35 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
+  { name: 'divider', type: 'boolean' },
+  { name: 'horizontalScrollAlign', type: 'string', option: ['block', 'left'] },
+  { name: 'horizontalScrollAttrs', type: 'ConstrBind<HorizontalScrollPropsBasic>' },
+  { name: 'horizontalScrollBleed', type: 'boolean' },
+  { name: 'itemAttrs', type: 'ConstrBind<TabItemPropsBasic>' },
+  { name: 'keyLabel', type: 'string' },
+  { name: 'keyValue', type: 'string' },
+  { name: 'list', type: 'ListRecord<TabItemPropsBasic>' },
+  { name: 'modelSelected', type: 'ListSelectedList' },
+  { name: 'onUpdate:modelSelected', type: '((value: ListSelectedList) => void)' },
+  { name: 'onUpdate:selected', type: '((value: ListSelectedList) => void)' },
+  { name: 'selected', type: 'ListSelectedList' },
+  { name: 'tag', type: 'string' }
   // :propsList [!] System label / Системная метка
 ]
 
 const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
+  { name: 'leading', description: `Slot for content before the tabs/ Слот для содержимого перед вкладками`, properties: [{ name: 'props', type: '(any) | undefined' }] },
+  { name: 'trailing', description: `Slot for content after the tabs/ Слот для содержимого после вкладок`, properties: [{ name: 'props', type: '(any) | undefined' }] }
   // :slotsList [!] System label / Системная метка
 ]
 
 const eventsNames: StorybookSlots = [
   // :eventsList [!] System label / Системная метка
+  { name: 'click', description: `Full click event with MouseEvent/ Полное событие клика с MouseEvent`, properties: [{ name: 'event', type: 'MouseEvent' }, { name: 'value', type: 'EventClickValue' }] },
+  { name: 'clickLite', description: `Lightweight click event/ Упрощённое событие клика`, properties: [{ name: 'value', type: 'EventClickValue' }] },
+  { name: 'update:modelSelected', description: `Update model value event/ Событие обновления значения модели`, properties: [{ name: 'value', type: 'ListSelectedList' }] },
+  { name: 'update:selected', description: `Update value event/ Событие обновления значения`, properties: [{ name: 'value', type: 'ListSelectedList' }] }
   // :eventsList [!] System label / Системная метка
 ]
 

@@ -10,17 +10,6 @@ import {
  * Объект wikiTabsNavigation содержит описание всех свойств для компонента TabsNavigation
  */
 export const wikiTabsNavigation: StorybookArgsToList = {
-  'tabsNavigation.itemAttrs': {
-    type: StorybookControl.object,
-    options: {
-      category: StorybookCategory.attributes,
-      description: {
-        en: 'Attributes for each tab item',
-        ru: 'Атрибуты для каждого элемента вкладки'
-      }
-    },
-    hide: true
-  },
   'tabsNavigation.list': {
     type: StorybookControl.object,
     options: {

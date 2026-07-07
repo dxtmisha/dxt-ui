@@ -22,6 +22,8 @@ export type HorizontalScrollEmits = {
  * Тип, описывающий доступные свойства.
  */
 export interface HorizontalScrollExpose {
+  /** Returns the main HTML element / Возвращает главный HTML-элемент */
+  getElement(): HTMLDivElement | undefined
   /** Scrolls the area to the currently selected element/ Прокручивает область до текущего выбранного элемента */
   toSelected(): void
 }

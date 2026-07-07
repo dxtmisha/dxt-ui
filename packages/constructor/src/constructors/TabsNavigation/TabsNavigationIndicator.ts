@@ -66,7 +66,7 @@ export class TabsNavigationIndicator {
       newItem
       && oldItem
     ) {
-      const itemClassName = `${this.classDesign}-${this.getItemClassName()}`
+      const itemClassName = this.getItemClassName()
       const rectNew = newItem.getBoundingClientRect()
       const rectOld = oldItem.getBoundingClientRect()
       const left = rectOld.left - rectNew.left
@@ -113,7 +113,7 @@ export class TabsNavigationIndicator {
    * @returns tab item class name suffix / суффикс имени класса вкладки
    */
   protected getItemClassName(): string {
-    return 'tabItem'
+    return `${this.className}Item`
   }
 
   /**

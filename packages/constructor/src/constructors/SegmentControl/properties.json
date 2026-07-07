@@ -1,11 +1,3 @@
 {
-  "gap": {
-    "_type": "var"
-  },
-  "padding": {
-    "_type": "var"
-  },
-  "#item": {},
-  "~scrollable": {},
-  "~divider": {}
+  "link|button": "{d.TabsNavigation}"
 }

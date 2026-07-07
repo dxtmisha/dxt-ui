@@ -8,5 +8,6 @@
   "borderOpacity": {
     "_type": "var"
   },
+  "#item": {},
   "~divider": {}
 }

@@ -12,6 +12,7 @@ type TabItemPropsToken = {
   focus?: boolean
   open?: boolean
   selected?: boolean
+  readonly?: boolean
   disabled?: boolean
   adaptive?: 'iconAlways' | 'auto'
   container?: boolean

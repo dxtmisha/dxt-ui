@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import {
-  inArray,
-  isFilled,
   type ConstrClasses,
   type ConstrStyles
 } from '@dxtmisha/functional'
@@ -12,7 +10,10 @@ import {
   type SegmentControlSlots
 } from '@dxtmisha/constructor/SegmentControl'
 
-import { defaults, type SegmentControlProps, propsValues } from './props'
+import { D1HorizontalScroll } from '../HorizontalScroll'
+import { D1SegmentControlItem } from '../SegmentControlItem'
+
+import { defaults, type SegmentControlProps } from './props'
 import './styleToken.scss'
 
 defineOptions({
@@ -25,7 +26,8 @@ const props = withDefaults(defineProps<SegmentControlProps>(), defaults)
 const classesToken = computed<ConstrClasses>(() => ({
   main: {
     // :classes-values [!] System label / Системная метка
-    'd1-segmentControl': true
+    'd1-segmentControl': true,
+    'd1-segmentControl--divider': props.divider
     // :classes-values [!] System label / Системная метка
   }
 }))
@@ -40,7 +42,11 @@ const design = new SegmentControlDesign(
   {
     emits,
     classes: classesToken,
-    styles: stylesToken
+    styles: stylesToken,
+    components: {
+      horizontalScroll: D1HorizontalScroll,
+      segmentControlItem: D1SegmentControlItem
+    }
   }
 )
 

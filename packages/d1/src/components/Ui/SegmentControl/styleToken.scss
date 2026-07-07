@@ -10,6 +10,18 @@
   // Styles from tokens
   // Стили из токенов
   // :style [!] System label / Системная метка
+  & {
+    gap: var(--d1-sys-spacing-x);
+    
+    @include ui.paddingX(#{var(--d1-sys-spacing-x)});
+    
+    @include ui.height(#{var(--d1-ref-spacing-12)});
+    
+    @include ui.backgroundColor(#{var(--d1-sys-palette-onSurface)});
+    @include ui.backgroundOpacity(#{var(--d1-sys-opacity-overlay)});
+    
+    border-radius: calc(var(--sys-height) * var(--d1-sys-rounded-adaptive-md));
+  }
   // :style [!] System label / Системная метка
 
   // Here are the user styles

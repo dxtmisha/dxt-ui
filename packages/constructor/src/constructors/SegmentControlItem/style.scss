@@ -1,0 +1,22 @@
+@use "@dxtmisha/styles/properties" as ui;
+@use "../TabItem/style" as tabItem;
+
+@mixin mixinSegmentControlItem {
+  @include tabItem.mixinTabItem;
+
+  &::before {
+    top: 0;
+    left: calc(#{ui.v('??sys.left')});
+
+    width: 100%;
+    height: auto;
+
+    border-radius: inherit;
+  }
+
+  &--selected {
+    &::before {
+      left: 0;
+    }
+  }
+}

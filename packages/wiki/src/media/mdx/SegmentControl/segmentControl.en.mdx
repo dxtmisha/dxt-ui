@@ -1,0 +1,44 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+Component for creating horizontal navigation with segments.
+
+SegmentControl manages a list of segment items, their selection, and scrolling. It supports various display styles, keyboard control, and responsiveness.
+
+**Key Features:**
+
+- Horizontal scrolling of segments
+- Management of the selected segment via `v-model:selected`
+- Support for various data types (array of objects or object)
+- Customization of appearance (tags, attributes, dividers)
+- Keyboard navigation support (arrows, Enter, Space)
+- Animation of the active segment indicator
+
+**Typical Usage Scenarios:**
+
+- Navigation between page sections
+- Switching data display views
+- Content filtering by categories
+
+<Source
+    code={`
+<script setup>
+import { ref } from 'vue'
+
+const selectedSegment = ref('home')
+const segments = [
+  { label: 'Home', value: 'home', icon: 'home' },
+  { label: 'Profile', value: 'profile', icon: 'person' },
+  { label: 'Settings', value: 'settings', icon: 'settings' }
+]
+</script>
+
+<template>
+  <SegmentControl
+    v-model:selected="selectedSegment"
+    :list="segments"
+    horizontal-scroll-align="center"
+  />
+</template>
+  `}
+    language="html"
+/>

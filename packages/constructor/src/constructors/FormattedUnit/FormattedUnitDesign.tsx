@@ -29,14 +29,14 @@ export class FormattedUnitDesign<
   CLASSES extends FormattedUnitClasses,
   P extends FormattedUnitPropsBasic
 > extends DesignConstructorAbstract<
-  HTMLSpanElement,
-  COMP,
-  FormattedUnitEmits,
-  EXPOSE,
-  FormattedUnitSlots,
-  CLASSES,
-  P
-> {
+    HTMLSpanElement,
+    COMP,
+    FormattedUnitEmits,
+    EXPOSE,
+    FormattedUnitSlots,
+    CLASSES,
+    P
+  > {
   /** FormattedUnit instance / Экземпляр FormattedUnit */
   protected readonly item: FormattedUnit
 

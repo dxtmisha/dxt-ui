@@ -1,4 +1,4 @@
-import { EventItem, isDomRuntime, ListDataRef } from '@dxtmisha/functional'
+import { EventItem, eventStopPropagation, isDomRuntime, ListDataRef } from '@dxtmisha/functional'
 
 import { TabsNavigationFocus } from './TabsNavigationFocus'
 import { TabsNavigationSelected } from './TabsNavigationSelected'
@@ -162,13 +162,13 @@ export class TabsNavigationControl {
         case 'ArrowLeft':
         case 'Left':
         case 37:
-          event.preventDefault()
+          eventStopPropagation(event)
           this.prev()
           break
         case 'ArrowRight':
         case 'Right':
         case 39:
-          event.preventDefault()
+          eventStopPropagation(event)
           this.next()
           break
         case 'Enter':
