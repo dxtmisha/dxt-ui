@@ -1,6 +1,6 @@
 export * from './TableItem'
 export * from './TableItemDesign'
+export * from './TableItemInclude'
 export * from './props'
 export * from './types'
 export * from './basicTypes'
-export * from './TableItemInclude'

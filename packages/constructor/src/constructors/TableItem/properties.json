@@ -1,72 +1,9 @@
 {
-  "#body": {},
   "#label": {},
-  "#labelHeader": {},
   "#description": {},
-  "#tooltip": {},
   "selected": {},
   "disabled": {},
-  "~header": {},
-  "~vertical": {
-    "always": {
-      "#body": {
-        "flex-direction": "column"
-      },
-      "#labelHeader": {
-        "display": "block"
-      }
-    },
-    "none": {},
-    "_default": "none"
-  },
-  "~right": {
-    "text-align": "right",
-    "#body": {
-      "justify-content": "flex-end"
-    }
-  },
-  "~basis": {
-    "1": {
-      "flex-basis": "1px"
-    },
-    "2": {
-      "flex-basis": "2px"
-    },
-    "3": {
-      "flex-basis": "3px"
-    },
-    "4": {
-      "flex-basis": "4px"
-    },
-    "5": {
-      "flex-basis": "5px"
-    },
-    "6": {
-      "flex-basis": "6px"
-    },
-    "7": {
-      "flex-basis": "7px"
-    },
-    "8": {
-      "flex-basis": "8px"
-    },
-    "9": {
-      "flex-basis": "9px"
-    },
-    "10": {
-      "flex-basis": "10px"
-    },
-    "11": {
-      "flex-basis": "11px"
-    },
-    "12": {
-      "flex-basis": "12px"
-    },
-    "auto": {
-      "flex-basis": "auto"
-    },
-    "_default": "1"
-  },
+  "~right": {},
   "~labelClamp": {},
   "~stickyLeft": {}
 }

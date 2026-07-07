@@ -1,48 +1,48 @@
-import type { ConstrBind } from '@dxtmisha/functional'
 import type { LabelProps } from '../../types/labelTypes'
 import type { DescriptionProps } from '../../types/descriptionTypes'
-import type { TooltipProps, TooltipPropsInclude } from '../Tooltip'
-import type { IconPropsBasic } from '../Icon'
 import type { SkeletonPropsInclude } from '../Skeleton'
 
+/**
+ * Type describing token properties for TableItem component. /
+ * Тип, описывающий токен-свойства для компонента TableItem.
+ */
 type TableItemPropsToken = {
   // :type [!] System label / Системная метка
+  /** Whether the item is disabled / Отключен ли элемент */
   disabled?: boolean
+  /** Whether the item is selected / Выбран ли элемент */
   selected?: boolean
-  header?: boolean
-  vertical?: 'always' | 'none'
+  /** Align text to the right / Выравнивание текста по правому краю */
   right?: boolean
-  basis?: '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | '11' | '12' | 'auto'
+  /** Limit label to single line with ellipsis / Ограничить метку одной строкой с троеточием */
   labelClamp?: boolean
+  /** Sticky positioning on the left side / Липкое позиционирование с левой стороны */
   stickyLeft?: boolean
   // :type [!] System label / Системная метка
 }
 
-export type TableItemPropsBasic<
-  Icon extends IconPropsBasic = IconPropsBasic,
-  Tooltip extends TooltipProps = TooltipProps
-> = LabelProps
+/**
+ * Basic properties of the TableItem component. /
+ * Базовые свойства компонента TableItem.
+ */
+export type TableItemPropsBasic = LabelProps
   & DescriptionProps
-  & TooltipPropsInclude<Tooltip>
   & SkeletonPropsInclude
   & {
-    // Value
-    /** Custom label for table header / Пользовательский заголовок для шапки таблицы */
-    headerLabel?: string
-    /** Trailing characters for header label / Завершающие символы для заголовка шапки */
-    headerLabelEnd?: string
     /** Value of the table cell / Значение ячейки таблицы */
     value?: string
+
+    /** Tag name of the table cell / Имя тега ячейки таблицы */
+    tag?: string
+    /** Number of columns the cell should span / Количество объединяемых колонок для ячейки */
+    colspan?: string | number
+    /** Number of rows the cell should span / Количество объединяемых строк для ячейки */
+    rowspan?: string | number
+
+    /** Unique rendering key / Уникальный ключ рендеринга */
+    key?: string
     /** Column/field index name / Имя индекса колонки/поля */
     index?: string
-
-    // Style
-    /** HTML tag / HTML-тег */
-    tag?: string
-    /** Tooltip control icon / Иконка управления подсказкой */
-    iconTooltip?: string | ConstrBind<Icon>
-    /** Whether to show header label in vertical layout / Показывать ли заголовок шапки при вертикальном расположении */
-    verticalHeader?: boolean
   }
 
 /**
@@ -58,13 +58,10 @@ export type TableItemProps = TableItemPropsBasic & TableItemPropsToken
  * Значение по умолчанию для свойства.
  */
 export const defaultsTableItem = {
-  tag: 'div',
-  headerLabelEnd: ':',
-  verticalHeader: true,
+  tag: 'td',
   ...{
     // :default [!] System label / Системная метка
-    vertical: 'none',
-    basis: '1'
     // :default [!] System label / Системная метка
   }
 }
+

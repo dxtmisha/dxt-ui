@@ -17,9 +17,6 @@ export type TableItemComponentInclude = {
 export type TableItemPropsInclude<
   TableItemProps extends TableItemPropsBasic = TableItemPropsBasic
 > = {
-  /** Orientation of the table cell / Ориентация ячейки таблицы */
-  vertical?: string
-
   /** Additional attributes for TableItem component / Дополнительные атрибуты для компонента TableItem */
   tableItemAttrs?: ConstrBind<TableItemProps>
 

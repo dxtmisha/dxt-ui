@@ -7,7 +7,6 @@ import {
 
 import { TableItem } from './TableItem'
 
-import type { TooltipControl } from '../Tooltip'
 import type { TableItemProps } from './props'
 import type {
   TableItemClasses,
@@ -93,11 +92,8 @@ export class TableItemDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        body: this.getSubClass('body'),
         label: this.getSubClass('label'),
-        labelHeader: this.getSubClass('labelHeader'),
-        description: this.getSubClass('description'),
-        tooltip: this.getSubClass('tooltip')
+        description: this.getSubClass('description')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -120,18 +116,12 @@ export class TableItemDesign<
    * @returns virtual node (VNode) / виртуальный узел (VNode)
    */
   protected initRender(): VNode {
-    const children: any[] = [
-      ...this.renderBody(),
-      ...this.item.description.render()
-    ]
-
-    this.initSlot('context', children)
+    const children: any[] = this.renderContext()
 
     return h(
-      this.props.tag ?? 'div',
+      this.item.tag,
       {
         ...this.getAttrs(),
-        ref: this.element,
         class: this.classes?.value.main,
         ...this.item.binds
       },
@@ -140,98 +130,20 @@ export class TableItemDesign<
   }
 
   /**
-   * Renders the basic part of the table cell.
+   * Renders the children context of the table item.
    *
-   * Рендер базовой части ячейки таблицы.
-   * @returns array of virtual nodes (VNode) / массив виртуальных узлов (VNode)
-   */
-  readonly renderBody = (): VNode[] => {
-    const children: any[] = this.renderContext()
-
-    if (children.length > 0) {
-      return [
-        h(
-          'div',
-          { class: this.classes?.value.body },
-          children
-        )
-      ]
-    }
-
-    return []
-  }
-
-  /**
-   * Renders the table cell context containing header and label, and optional tooltip.
-   *
-   * Рендер контекста ячейки таблицы, содержащего заголовок, метку и необязательную подсказку.
-   * @returns array of virtual nodes (VNode) / массив виртуальных узлов (VNode)
+   * Рендерит контекст содержимого ячейки таблицы.
+   * @returns array of virtual nodes / массив виртуальных узлов
    */
   readonly renderContext = (): VNode[] => {
     const children: any[] = [
-      ...this.renderHeader(),
-      ...this.item.label.render()
+      ...this.item.label.render(),
+      ...this.item.description.render()
     ]
 
-    if (this.item.isTooltip) {
-      children.push(
-        ...this.item.tooltip.render({
-          control: (props: TooltipControl): VNode => this.renderTooltipControl(props),
-          body: this.slots?.tooltip
-        })
-      )
-    }
+    this.initSlot('context', children)
 
     return children
   }
-
-  /**
-   * Renders the header label.
-   *
-   * Рендер заголовка.
-   * @returns array of virtual nodes (VNode) / массив виртуальных узлов (VNode)
-   */
-  readonly renderHeader = (): VNode[] => {
-    if (
-      this.props.headerLabel
-      && this.props.verticalHeader
-      && Boolean(this.props.vertical)
-      && this.props.vertical !== 'none'
-    ) {
-      return [
-        h(
-          'span',
-          { class: this.classes?.value.labelHeader },
-          `${this.props.headerLabel}${this.props.headerLabelEnd}`
-        )
-      ]
-    }
-
-    return []
-  }
-
-  /**
-   * Renders the tooltip control element.
-   *
-   * Рендер элемента управления подсказкой.
-   * @param control tooltip control options / параметры управления подсказкой
-   * @returns virtual node (VNode) / виртуальный узел (VNode)
-   */
-  readonly renderTooltipControl = (
-    control: TooltipControl
-  ): VNode => {
-    return this.components.renderOne(
-      'icon',
-      {
-        ...this.item.tooltipControlBind.value,
-        ...control.binds,
-        class: {
-          ...this.toClass(this.item.tooltipControlBind.value?.class),
-          ...this.toClass(control.binds?.class)
-        }
-      },
-      undefined,
-      'iconControl'
-    ) as VNode
-  }
 }
+

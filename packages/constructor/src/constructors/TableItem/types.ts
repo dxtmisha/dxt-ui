@@ -1,24 +1,20 @@
 import type { ConstrClass } from '@dxtmisha/functional'
 import type { LabelSlots } from '../../types/labelTypes'
 import type { DescriptionSlots } from '../../types/descriptionTypes'
-import type { IconComponentInclude } from '../Icon'
-import type { TooltipComponentInclude } from '../Tooltip'
 
 /**
  * Interface for describing which components need to be connected for work.
  *
  * Интерфейс для описания, какие компоненты надо подключить для работы.
  */
-export type TableItemComponents = IconComponentInclude & TooltipComponentInclude
+export type TableItemComponents = {}
 
 /**
  * Type describing available events.
  *
  * Тип, описывающий доступные события.
  */
-export type TableItemEmits = {
-  // none
-}
+export type TableItemEmits = {}
 
 /**
  * Type describing available properties.
@@ -34,8 +30,6 @@ export interface TableItemExpose {
  * Тип, описывающий доступные slots.
  */
 export interface TableItemSlots extends LabelSlots, DescriptionSlots {
-  /** Slot for displaying custom tooltip body / Слот для отображения пользовательского содержимого подсказки */
-  tooltip?(): any
   /** Slot for custom cell context / Слот для пользовательского контекста ячейки */
   context?(): any
 }
@@ -46,12 +40,12 @@ export interface TableItemSlots extends LabelSlots, DescriptionSlots {
  * Тип, описывающий подклассы.
  */
 export type TableItemClasses = {
+  /** Main class name of the table item / Основное имя класса ячейки таблицы */
   main: ConstrClass
   // :classes [!] System label / Системная метка
-  body: string
+  /** Label element class name / Имя класса элемента метки */
   label: string
-  labelHeader: string
+  /** Description element class name / Имя класса элемента описания */
   description: string
-  tooltip: string
   // :classes [!] System label / Системная метка
 }

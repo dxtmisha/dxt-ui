@@ -1,10 +1,12 @@
 import { type VNode } from 'vue'
 import {
+  type DesignComponents,
   isObjectNotArray,
   toBinds
 } from '@dxtmisha/functional'
 
 import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
+import type { ComponentIncludeExtra, ComponentIncludeProps } from '../../types/componentInclude'
 
 import type { TableItemPropsInclude } from './basicTypes'
 import type { TableItemExpose, TableItemSlots } from './types'
@@ -36,104 +38,184 @@ export class TableItemInclude extends ComponentIncludeAbstract<
   protected readonly propsAttrsName = 'tableItemAttrs'
 
   /**
-   * Helper method to extract the design system prefix (e.g. 'd1', 'c2') from the parent className.
+   * Constructor for TableItemInclude.
    *
-   * Вспомогательный метод для извлечения префикса дизайн-системы (например, 'd1', 'c2') из родительского имени класса.
-   * @returns design system prefix / префикс дизайн-системы
+   * Конструктор для TableItemInclude.
+   * @param classDesign design system prefix / префикс дизайн-системы
+   * @param className base class name / базовое имя класса
+   * @param props input properties / входные свойства
+   * @param components design components registry / реестр дизайн-компонентов
+   * @param extra additional properties or attributes / дополнительные свойства или атрибуты
+   * @param slots parent slots / родительские слоты
+   * @param index unique index key for rendering / уникальный ключ индекса для рендеринга
    */
-  getDesignPrefix(): string {
-    return this.className.split('-')?.[0] || 'd1'
+  constructor(
+    protected readonly classDesign: string,
+    className: string,
+    props: ComponentIncludeProps<TableItemPropsInclude>,
+    components?: DesignComponents<any, TableItemPropsInclude>,
+    extra?: ComponentIncludeExtra<TableItemPropsBasic>,
+    protected readonly slots?: Record<string, any>,
+    index?: string
+  ) {
+    super(className, props, components, extra, index)
   }
 
   /**
-   * Renders the TableItem component for a specific column cell.
+   * Renders the table item using a slot.
    *
-   * Рендерит компонент TableItem для ячейки определенной колонки.
+   * Рендерит ячейку таблицы с использованием слота.
    * @param key unique rendering key / уникальный ключ рендеринга
-   * @param index column/field index name / имя индекса колонки/поля
+   * @param index column index / индекс колонки
    * @param row row data object / объект данных строки
-   * @param header whether it is a header cell / является ли ячейка заголовком шапки
-   * @param headerLabel custom label for the header / пользовательский заголовок для шапки
-   * @param slots parent slots containing cell-level slots / родительские слоты, содержащие слоты уровня ячеек
+   * @param value cell value / значение ячейки
    * @returns rendered virtual node or undefined / отрендеренная виртуальная нода или undefined
    */
-  readonly renderItem = (
+  renderSlot(
     key: string,
     index: string,
     row: any,
-    header?: boolean,
-    headerLabel?: string,
-    slots?: Record<string, any>
-  ): VNode | undefined => {
-    if (!this.components) {
-      return undefined
-    }
-
-    const value: any = row?.[index]
-    let slotsName: string = header ? `header-${index}` : String(index)
+    value: any
+  ): VNode | undefined {
+    const slotsName = this.getSlotsName(index)
 
     if (
-      slots
-      && !header
-      && !(slotsName in slots)
-      && 'default' in slots
+      this.slots
+      && slotsName in this.slots
     ) {
-      slotsName = 'default'
-    }
-
-    const itemProps = this.getProps()
-    const prefix = this.getDesignPrefix()
-
-    if (
-      slots
-      && slotsName in slots
-    ) {
-      return this.components.renderOne(
+      return this.components?.renderOne(
         this.name,
-        toBinds(
-          {
-            headerLabel,
-            vertical: itemProps.vertical,
-            'data-key': key,
-            'data-index': index
-          },
-          itemProps.tableItemAttrs,
-          itemProps.tableItemColumnAttrs?.[index]
-        ),
+        this.getBinds(key, index),
         {
-          context: () => slots[slotsName]?.({
+          context: () => this.slots?.[slotsName]?.({
             item: row,
-            index,
             value,
-            slotsName,
-            classes: {
-              label: `${prefix}-tableItem__label`,
-              description: `${prefix}-tableItem__description`
-            }
+            classes: this.getItemClasses(),
+            key,
+            index,
+            slotsName
           })
         },
         key
       )
     }
 
+    return undefined
+  }
+
+  /**
+   * Renders the table item with default logic.
+   *
+   * Рендерит ячейку таблицы со стандартной логикой.
+   * @param key unique rendering key / уникальный ключ рендеринга
+   * @param index column index / индекс колонки
+   * @param value cell value / значение ячейки
+   * @returns rendered virtual node or undefined / отрендеренная виртуальная нода или undefined
+   */
+  renderDefault(
+    key: string,
+    index: string,
+    value: any
+  ): VNode | undefined {
     const cellAttrs = isObjectNotArray(value) ? value : { label: value }
 
-    return this.components.renderOne(
+    return this.components?.renderOne(
       this.name,
       toBinds(
-        {
-          headerLabel,
-          vertical: itemProps.vertical,
-          header,
-          'data-key': key,
-          'data-index': index
-        },
-        itemProps.tableItemAttrs,
-        itemProps.tableItemColumnAttrs?.[index],
+        this.getBinds(key, index),
         cellAttrs
       ),
       undefined,
       key
+    )
+  }
+
+  /**
+   * Renders the table item by dynamically choosing slot or default renderer.
+   *
+   * Рендерит ячейку таблицы, динамически выбирая рендерер слота или стандартный.
+   * @param key unique rendering key / уникальный ключ рендеринга
+   * @param index column index / индекс колонки
+   * @param row row data object / объект данных строки
+   * @returns rendered virtual node or undefined / отрендеренная виртуальная нода или undefined
+   */
+  readonly renderItem = (
+    key: string,
+    index: string,
+    row: any
+  ): VNode | undefined => {
+    if (this.components) {
+      const value: any = row?.[index]
+
+      return this.renderSlot(key, index, row, value)
+        || this.renderDefault(key, index, value)
+    }
+
+    return undefined
+  }
+
+  /**
+   * Returns the class name for the table item component.
+   *
+   * Возвращает имя класса для компонента ячейки таблицы.
+   * @returns class name / имя класса
+   */
+  protected getItemClassName(): string {
+    return `${this.className}-tableItem`
+  }
+
+  /**
+   * Returns class names for the table item elements.
+   *
+   * Возвращает имена классов для элементов ячейки таблицы.
+   * @returns object with class names / объект с именами классов
+   */
+  protected getItemClasses(): Record<string, string> {
+    const className = this.getItemClassName()
+
+    return {
+      label: `${className}__label`,
+      description: `${className}__description`
+    }
+  }
+
+  /**
+   * Returns the slots name based on the column index.
+   *
+   * Возвращает имя слота на основе индекса колонки.
+   * @param index column index / индекс колонки
+   * @returns slots name / имя слота
+   */
+  protected getSlotsName(index: string): string {
+    if (
+      this.slots
+      && !(index in this.slots)
+      && 'default' in this.slots
+    ) {
+      return 'default'
+    }
+
+    return index
+  }
+
+  /**
+   * Returns binding properties for the table item.
+   *
+   * Возвращает свойства привязки для ячейки таблицы.
+   * @param key unique rendering key / уникальный ключ рендеринга
+   * @param index column index / индекс колонки
+   * @returns component bindings / привязки компонента
+   */
+  protected getBinds(key: string, index: string): Record<string, any> {
+    const props = this.getProps()
+
+    return toBinds(
+      props.tableItemAttrs,
+      props.tableItemColumnAttrs?.[index],
+      {
+        key,
+        index
+      }
     )
   }
 }

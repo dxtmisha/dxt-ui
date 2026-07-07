@@ -1,16 +1,11 @@
-import { computed, type Ref, type ToRefs } from 'vue'
-import {
-  type ConstrBind,
-  type ConstrEmit,
-  type DesignComp
-} from '@dxtmisha/functional'
+import { type Ref, type ToRefs } from 'vue'
+import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
 import { DescriptionInclude } from '../../classes/DescriptionInclude'
 import { LabelInclude } from '../../classes/LabelInclude'
-import { SkeletonInclude } from '../Skeleton'
-import { TooltipInclude } from '../Tooltip'
 
-import type { IconPropsBasic } from '../Icon'
+import { SkeletonInclude } from '../Skeleton'
+
 import type { TableItemComponents, TableItemEmits, TableItemSlots } from './types'
 import type { TableItemProps } from './props'
 
@@ -28,8 +23,6 @@ export class TableItem {
   readonly label: LabelInclude
   /** Skeleton loader manager instance / Экземпляр менеджера скелетонов */
   readonly skeleton: SkeletonInclude
-  /** Tooltip component manager instance / Экземпляр менеджера всплывающей подсказки */
-  readonly tooltip: TooltipInclude
 
   /**
    * Constructor
@@ -45,7 +38,6 @@ export class TableItem {
    * @param constructors.DescriptionConstructor class for creating a description / класс для создания описания
    * @param constructors.LabelConstructor class for creating a label / класс для создания метки
    * @param constructors.SkeletonConstructor class for creating a skeleton / класс для создания скелета
-   * @param constructors.TooltipIncludeConstructor class for creating a tooltip / класс для создания подсказки
    */
   constructor(
     protected readonly props: TableItemProps,
@@ -60,14 +52,12 @@ export class TableItem {
       DescriptionConstructor?: typeof DescriptionInclude
       LabelConstructor?: typeof LabelInclude
       SkeletonConstructor?: typeof SkeletonInclude
-      TooltipIncludeConstructor?: typeof TooltipInclude
     } = {}
   ) {
     const {
       DescriptionConstructor = DescriptionInclude,
       LabelConstructor = LabelInclude,
-      SkeletonConstructor = SkeletonInclude,
-      TooltipIncludeConstructor = TooltipInclude
+      SkeletonConstructor = SkeletonInclude
     } = constructors
 
     this.skeleton = new SkeletonConstructor(props, classDesign, ['classTextVariant'])
@@ -82,34 +72,16 @@ export class TableItem {
       undefined,
       this.skeleton
     )
-    this.tooltip = new TooltipIncludeConstructor(
-      this.className,
-      this.props,
-      this.components
-    )
   }
 
   /**
-   * Checks whether the tooltip is active.
+   * Returns the HTML tag for the table cell.
    *
-   * Проверяет, активна ли подсказка.
+   * Возвращает HTML-тег для ячейки таблицы.
    */
-  get isTooltip(): boolean {
-    return Boolean((this.props.tooltipLabel || this.props.tooltipDescription || this.slots?.tooltip) && this.components?.is('tooltip'))
+  get tag(): string {
+    return this.props.tag ?? 'td'
   }
-
-  /**
-   * Returns data for the tooltip control button.
-   *
-   * Возвращает данные для кнопки управления подсказкой.
-   */
-  readonly tooltipControlBind = computed<ConstrBind<IconPropsBasic>>(() => {
-    return {
-      'class': `${this.className}__tooltip`,
-      'icon': this.props.iconTooltip || 'help-circle',
-      'data-event-type': 'tooltip'
-    }
-  })
 
   /**
    * Computed HTML attributes and bindings for the main element.
@@ -118,6 +90,11 @@ export class TableItem {
    */
   get binds() {
     return {
+      'colspan': this.props.colspan,
+      'rowspan': this.props.rowspan,
+      'data-value': this.props.value,
+      'data-key': this.props.key,
+      'data-index': this.props.index,
       'data-divider': this.props.disabled ? undefined : 'active'
     }
   }
