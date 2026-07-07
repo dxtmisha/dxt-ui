@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.6.2] - 2026-07-06
+
+### Changed
+- **Documentation**: Updated AI documentation and developer guides (`ai-doc.md`, `ai-doc.ru.md`) with explicit rules for structuring, exporting, and managing types, interfaces, enums, and API schemas (specifically mandating the use of `@effect/schema` when available in project dependencies).
+
+## [1.6.1] - 2026-07-04
+
+### Changed
+- **Build System**: Corrected the `types` and `exports` mapping paths in `package.json` from `dist/src/library.d.ts` to `dist/library.d.ts`.
+
+## [1.6.0] - 2026-07-03
+
+### Added
+- **isMetaKey**: Introduced `isMetaKey` utility function to detect active modifier key presses (`metaKey`, `altKey`, `ctrlKey`) in KeyboardEvent objects.
+- **Tests**: Created a comprehensive test suite `isMetaKey.test.ts` to verify modifier key detection.
+
 ## [1.5.0] - 2026-07-02
 
 ### Added

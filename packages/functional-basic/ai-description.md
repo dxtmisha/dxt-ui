@@ -1,21 +1,19 @@
-Core Purpose: This library is a comprehensive isomorphic toolkit for web application development, providing high-level abstractions for API communication (fetch/caching/hydration), internationalization (translations/formatting), localized date/time manipulation, persistent data storage (Cookie/LocalStorage), reactive URL state management (Hash/Query), and DOM event handling.
+### Core Purpose
+The library provides an isomorphic utility framework for managing high-level application concerns in JavaScript/TypeScript environments (SSR and DOM). It includes robust abstractions for API communication (REST/Fetch), structured state management, DOM-safe event handling, internationalization, and reactive data storage.
 
-Key Expositions:
-1. Api & ApiInstance: Orchestrates HTTP requests with support for middleware (preparation/end), automatic hydration for SSR, request caching, and centralized error handling.
-2. Geo, GeoIntl, GeoFlag, GeoPhone, GeoUnit: A suite for locale-sensitive data handling including currency, date, numeric, and unit conversions (metric/imperial based on region).
-3. Meta, MetaOg, MetaTwitter: Declarative management of HTML head tags, Open Graph, and Twitter Cards.
-4. DataStorage, CookieStorage, ServerStorage: Unified persistent storage interfaces with built-in SSR data isolation and hydration support.
-5. SearchList: A specialized state machine for filtering, matching, and highlighting item collections based on column definitions and regex search.
-6. EventItem: A robust wrapper for DOM listeners that includes auto-cleanup, lifecycle control, and specialized optimizations (e.g., resize/scroll-sync).
-7. Translation System: Asynchronous/Synchronous multi-locale translation manager with fallback logic and file-based loading.
+### Key Expositions
+*   **API & Networking**: `Api` (singleton interface), `ApiInstance` (core requester), `ApiCache` (request memoization), `ApiError` (centralized error handling), `ApiHydration` (SSR data serialization), and `ApiHeaders`.
+*   **State & Storage**: `DataStorage` (persistent storage with prefixes/expiration), `ServerStorage` (SSR-safe context isolation), `CookieStorage` (isomorphic cookie management), `Query`/`Hash` (URL-state management), and `Global` (app-wide data).
+*   **UI & Events**: `EventItem` (DOM-safe, optimized event management with `ResizeObserver` and `scroll-sync`), `LoadingInstance` (global loading state), and `ScrollbarWidth` (layout utility).
+*   **Localization & Formatting**: `Geo` (locale/timezone management), `GeoIntl` (Intl API wrapper), `GeoUnit` (metric/imperial conversion), `Translate` (i18n), and `Formatters` (currency, number, date, and pluralization utility).
+*   **Utilities & Data**: `Formatters`, `SearchList` (search matching/caching), `ResumableTimer`, and a suite of functional utilities for object cloning, string/date manipulation, and DOM operations.
 
-Triggers for Studying ai-types.md:
-It is mandatory to analyze ai-types.md when:
-- You need to extend or define custom configurations for the API layer (ApiConfig, ApiFetch).
-- You are implementing custom Error/Exception handling logic using the ErrorCenter structures.
-- You are adding new locale definitions, phone mask structures, or unit conversion mappings.
-- You need to debug hydration mismatches between SSR and client-side data state.
-- You are extending search logic or defining new search list result types.
+### Triggers for Studying ai-types.md
+Review `ai-types.md` whenever the following requirements arise:
+1.  **API Integration**: You need to implement new request methods, custom error handling for specific HTTP status codes, or configure global API middleware (`wrapper`/`preparation`).
+2.  **I18n/Formatting**: You are dealing with complex localization rules, unit conversions (Geo/Units), or pluralization requirements.
+3.  **SSR Consistency**: You are implementing features that must function identically on both the server and client (Hydration, `ServerStorage`, or `Datetime` formatting).
+4.  **Complex State**: You need to map or query data structures in memory using `SearchList` or utilize `BroadcastChannel` for cross-context messaging.
 
-Integration Context: 
-This library serves as the foundation layer for application state and external communication. It is designed to be used in conjunction with modern reactive frameworks (Vue/React) by leveraging the provided hydration hooks to synchronize state between the server environment and the browser client. It relies on the global DOM environment where available, but degrades to neutral behaviors or errors in non-browser environments to ensure compatibility with SSR processes.
+### Integration Context
+The library acts as a foundational service layer between the application logic and the runtime environment. It is designed to be framework-agnostic but is particularly optimized for SSR-heavy environments (like Vue/React) where hydration of state (via `ServerStorage`) and safe access to global browser objects (via `isDomRuntime`) are critical. It wraps native `fetch`, `localStorage`, `sessionStorage`, `BroadcastChannel`, and `Intl` APIs into structured, type-safe, and singleton-accessible services.
