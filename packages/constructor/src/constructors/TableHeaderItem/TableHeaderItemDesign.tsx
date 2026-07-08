@@ -28,14 +28,14 @@ export class TableHeaderItemDesign<
   CLASSES extends TableHeaderItemClasses,
   P extends TableHeaderItemProps
 > extends DesignConstructorAbstract<
-  HTMLDivElement,
-  COMP,
-  TableHeaderItemEmits,
-  EXPOSE,
-  TableHeaderItemSlots,
-  CLASSES,
-  P
-> {
+    HTMLDivElement,
+    COMP,
+    TableHeaderItemEmits,
+    EXPOSE,
+    TableHeaderItemSlots,
+    CLASSES,
+    P
+  > {
   /** TableHeaderItem controller instance / Экземпляр контроллера ячейки шапки таблицы (TableHeaderItem) */
   protected readonly item: TableHeaderItem
 

@@ -1,0 +1,44 @@
+@use "@dxtmisha/styles/properties" as ui;
+
+@mixin mixinTableRecord {
+  display: flex;
+  justify-content: stretch;
+  position: relative;
+
+  min-width: ui.v('?table-fixWidth', 0);
+
+  &:after,
+  &:before {
+    z-index: 12;
+  }
+
+  &--itemCenter {
+    align-items: center;
+  }
+
+  &--dense {
+    > :first-child {
+      @include ui.paddingLeft('0 !important');
+    }
+
+    > :last-child {
+      @include ui.paddingRight('0 !important');
+    }
+  }
+
+  &--divider + &--divider {
+    &:after {
+      content: ' ';
+      @include ui.absoluteTop;
+
+      height: ui.v('??dividerHeight');
+      @include ui.backgroundColor(ui.v('??dividerBackground'), ui.v('??dividerOpacity'))
+    }
+  }
+
+  &--stickyTop {
+    position: sticky;
+    top: var(--sys-header-height, 0);
+    z-index: 16;
+  }
+}

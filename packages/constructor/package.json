@@ -36,7 +36,7 @@
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
     "test": "NODE_OPTIONS=\"--no-webstorage\" vitest",
-    "constructor": "dxt-constructor",
+    "constructor": "dxt-constructor TableRecord",
     "library": "dxt-library",
     "types": "dxt-types",
     "prepublishOnly": "npm run library && npm run constructor && npm run build",
@@ -427,7 +427,11 @@
       "types": "./dist/library/plugin.d.ts",
       "default": "./dist/plugin.js"
     },
-    "./style.scss": "./src/library/style.scss"
+    "./style.scss": "./src/library/style.scss",
+    "./TableRecord": {
+      "types": "./dist/constructors/TableRecord/index.d.ts",
+      "default": "./dist/tableRecord.js"
+    }
   },
   "buildOptions": {
     "name": "@dxtmisha/constructor",

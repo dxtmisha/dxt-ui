@@ -33,7 +33,7 @@ export class TableItemInclude extends ComponentIncludeAbstract<
   TableItemSlots
 > {
   /** Component sub-name / Дополнительное имя компонента */
-  protected readonly name = 'tableItem'
+  protected readonly name: string = 'tableItem'
   /** Property name for attributes / Имя свойства для атрибутов */
   protected readonly propsAttrsName = 'tableItemAttrs'
 

@@ -1,4 +1,5 @@
-import type { ConstrBind } from '@dxtmisha/functional'
+import type { TableItemPropsInclude } from '../TableItem'
+
 import type { TableHeaderItemPropsBasic } from './props'
 
 /**
@@ -16,13 +17,4 @@ export type TableHeaderItemComponentInclude = {
  */
 export type TableHeaderItemPropsInclude<
   TableHeaderItemProps extends TableHeaderItemPropsBasic = TableHeaderItemPropsBasic
-> = {
-  /** Orientation of the table header cell / Ориентация ячейки шапки таблицы */
-  vertical?: string
-
-  /** Additional attributes for TableHeaderItem component / Дополнительные атрибуты для компонента TableHeaderItem */
-  tableHeaderItemAttrs?: ConstrBind<TableHeaderItemProps>
-
-  /** Additional attributes for TableHeaderItem column components / Дополнительные атрибуты для компонентов колонок TableHeaderItem */
-  tableHeaderItemColumnAttrs?: Record<string, ConstrBind<TableHeaderItemProps>>
-}
+> = TableItemPropsInclude<TableHeaderItemProps>
