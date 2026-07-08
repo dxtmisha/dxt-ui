@@ -1,33 +1,4 @@
 {
-  "dividerHeight": {
-    "_type": "var"
-  },
-  "dividerBackground": {
-    "_type": "var"
-  },
-  "dividerOpacity": {
-    "_type": "var"
-  },
-  "~selected": {},
-  "~header": {},
-  "~itemCenter": {
-    "_default": true
-  },
-  "~vertical": {
-    "always": {
-      "flex-direction": "column",
-      "align-items": "stretch",
-      "~header": {
-        "display": "none"
-      }
-    },
-    "none": {},
-    "_default": "none"
-  },
-  "~dynamic": {},
-  "~divider": {
-    "_default": true
-  },
-  "~dense": {},
-  "~stickyTop": {}
+  "selected": {},
+  "disabled": {}
 }

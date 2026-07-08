@@ -8,15 +8,12 @@ import type { SkeletonPropsInclude } from '../Skeleton'
  */
 type TableItemPropsToken = {
   // :type [!] System label / Системная метка
-  /** Whether the item is disabled / Отключен ли элемент */
   disabled?: boolean
-  /** Whether the item is selected / Выбран ли элемент */
   selected?: boolean
-  /** Align text to the right / Выравнивание текста по правому краю */
-  right?: boolean
-  /** Limit label to single line with ellipsis / Ограничить метку одной строкой с троеточием */
+  align?: 'left' | 'center' | 'right'
+  alignVertical?: 'top' | 'center' | 'bottom'
   labelClamp?: boolean
-  /** Sticky positioning on the left side / Липкое позиционирование с левой стороны */
+  stickyTop?: boolean
   stickyLeft?: boolean
   // :type [!] System label / Системная метка
 }
@@ -61,6 +58,8 @@ export const defaultsTableItem = {
   tag: 'td',
   ...{
     // :default [!] System label / Системная метка
+    align: 'left',
+    alignVertical: 'center'
     // :default [!] System label / Системная метка
   }
 }

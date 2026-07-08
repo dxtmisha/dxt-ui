@@ -3,7 +3,19 @@
   "#description": {},
   "selected": {},
   "disabled": {},
-  "~right": {},
+  "~align": {
+    "~left": {},
+    "~center": {},
+    "~right": {},
+    "_default": "left"
+  },
+  "~alignVertical": {
+    "~top": {},
+    "~center": {},
+    "~bottom": {},
+    "_default": "center"
+  },
   "~labelClamp": {},
+  "~stickyTop": {},
   "~stickyLeft": {}
 }

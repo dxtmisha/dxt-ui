@@ -1,6 +1,9 @@
 import type { ConstrClass } from '@dxtmisha/functional'
-import type { TableHeaderItemComponentInclude, TableHeaderItemSlots } from '../TableHeaderItem'
+
+import type { TableHeaderItemComponentInclude } from '../TableHeaderItem'
 import type { TableItemComponentInclude } from '../TableItem'
+
+import type { TableRecordItemSlots } from './basicTypes'
 
 /**
  * Interface for describing which components need to be connected for work. /
@@ -18,15 +21,13 @@ export type TableRecordEmits = {}
  * Type describing available properties. /
  * Тип, описывающий доступные свойства.
  */
-export interface TableRecordExpose {}
+export interface TableRecordExpose { }
 
 /**
  * Type describing available slots. /
  * Тип, описывающий доступные слоты.
  */
-export interface TableRecordSlots extends TableHeaderItemSlots {
-  [key: string]: any
-}
+export type TableRecordSlots = TableRecordItemSlots
 
 /**
  * Type describing subclasses. /

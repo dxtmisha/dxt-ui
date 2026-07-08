@@ -25,7 +25,9 @@ const props = withDefaults(defineProps<TableRecordProps>(), defaults)
 const classesToken = computed<ConstrClasses>(() => ({
   main: {
     // :classes-values [!] System label / Системная метка
-    'd1-tableRecord': true
+    'd1-tableRecord': true,
+    'd1-tableRecord--disabled': props.disabled,
+    'd1-tableRecord--selected': props.selected
     // :classes-values [!] System label / Системная метка
   }
 }))

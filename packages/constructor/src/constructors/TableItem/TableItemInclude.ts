@@ -85,7 +85,10 @@ export class TableItemInclude extends ComponentIncludeAbstract<
     ) {
       return this.components?.renderOne(
         this.name,
-        this.getBinds(key, index),
+        toBinds(
+          this.getBinds(key, index),
+          this.getCellAttrs(value)
+        ),
         {
           context: () => this.slots?.[slotsName]?.({
             item: row,
@@ -117,13 +120,11 @@ export class TableItemInclude extends ComponentIncludeAbstract<
     index: string,
     value: any
   ): VNode | undefined {
-    const cellAttrs = isObjectNotArray(value) ? value : { label: value }
-
     return this.components?.renderOne(
       this.name,
       toBinds(
         this.getBinds(key, index),
-        cellAttrs
+        this.getCellAttrs(value) ?? { label: value }
       ),
       undefined,
       key
@@ -196,6 +197,16 @@ export class TableItemInclude extends ComponentIncludeAbstract<
     }
 
     return index
+  }
+
+  /**
+   * Resolves the cell attributes from the given value. /
+   * Разрешает атрибуты ячейки из переданного значения.
+   * @param value cell value / значение ячейки
+   * @returns object containing cell attributes or undefined / объект, содержащий атрибуты ячейки, или undefined
+   */
+  protected getCellAttrs(value: any): Record<string, any> | undefined {
+    return isObjectNotArray(value) ? value : undefined
   }
 
   /**

@@ -83,6 +83,7 @@ import _D1Switch from '../components/Ui/Switch/D1Switch.vue'
 import _D1TabItem from '../components/Ui/TabItem/D1TabItem.vue'
 import _D1TableHeaderItem from '../components/Ui/TableHeaderItem/D1TableHeaderItem.vue'
 import _D1TableItem from '../components/Ui/TableItem/D1TableItem.vue'
+import _D1TableRecord from '../components/Ui/TableRecord/D1TableRecord.vue'
 import _D1Tabs from '../components/Ui/Tabs/D1Tabs.vue'
 import _D1TabsNavigation from '../components/Ui/TabsNavigation/D1TabsNavigation.vue'
 import _D1TextDescription from '../components/Ui/TextDescription/D1TextDescription.vue'
@@ -176,6 +177,7 @@ declare module '@vue/runtime-core' {
     D1TabItem: typeof _D1TabItem
     D1TableHeaderItem: typeof _D1TableHeaderItem
     D1TableItem: typeof _D1TableItem
+    D1TableRecord: typeof _D1TableRecord
     D1Tabs: typeof _D1Tabs
     D1TabsNavigation: typeof _D1TabsNavigation
     D1TextDescription: typeof _D1TextDescription

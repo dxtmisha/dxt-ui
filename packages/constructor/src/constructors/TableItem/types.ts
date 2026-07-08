@@ -43,9 +43,7 @@ export type TableItemClasses = {
   /** Main class name of the table item / Основное имя класса ячейки таблицы */
   main: ConstrClass
   // :classes [!] System label / Системная метка
-  /** Label element class name / Имя класса элемента метки */
   label: string
-  /** Description element class name / Имя класса элемента описания */
   description: string
   // :classes [!] System label / Системная метка
 }

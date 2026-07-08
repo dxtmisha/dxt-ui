@@ -1,8 +1,28 @@
 @use "@dxtmisha/styles/properties" as ui;
 
 @mixin mixinTableItem {
-  &--right {
-    @include ui.textAlign('right');
+  &--align {
+    &--left {
+      @include ui.textAlign('left');
+    }
+    &--center {
+      @include ui.textAlign('center');
+    }
+    &--right {
+      @include ui.textAlign('right');
+    }
+  }
+
+  &--alignVertical {
+    &--top {
+      vertical-align: top;
+    }
+    &--center {
+      vertical-align: middle;
+    }
+    &--bottom {
+      vertical-align: bottom;
+    }
   }
 
   &--labelClamp {
@@ -11,9 +31,15 @@
     }
   }
 
+  &--stickyTop {
+    position: sticky;
+    @include ui.left(ui.v('??stickyLeft.top', 0));
+    z-index: 12;
+  }
+
   &--stickyLeft {
     position: sticky;
     @include ui.left(ui.v('??stickyLeft.left', 0));
-    z-index: 8;
+    z-index: 16;
   }
 }

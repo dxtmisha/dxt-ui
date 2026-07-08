@@ -4,25 +4,23 @@ import type { TableItemPropsBasic, TableItemPropsInclude } from '../TableItem'
 
 type TableRecordPropsToken = {
   // :type [!] System label / Системная метка
+  disabled?: boolean
   selected?: boolean
-  header?: boolean
-  itemCenter?: boolean
-  vertical?: 'always' | 'none'
-  dynamic?: boolean
-  divider?: boolean
-  dense?: boolean
-  stickyTop?: boolean
   // :type [!] System label / Системная метка
 }
 
 export type TableRecordPropsBasic<
   TableItem extends TableItemPropsBasic = TableItemPropsBasic
-> = TableItemPropsInclude<TableItem> &
-  SkeletonPropsInclude & {
+> = TableItemPropsInclude<TableItem>
+  & SkeletonPropsInclude
+  & {
+    /** Row data / Данные строки */
+    item?: Record<string, string | number | ConstrBind<TableItem> | any>
     /** Column indexes / Индексы колонок */
     columns?: string[]
-    /** Row data / Данные строки */
-    item?: Record<string, string | number | ConstrBind<any> | any>
+
+    isHeader?: boolean
+
     /** Unique rendering key / Уникальный ключ рендеринга */
     index?: string
   }
@@ -42,9 +40,6 @@ export type TableRecordProps = TableRecordPropsBasic & TableRecordPropsToken
 export const defaultsTableRecord = {
   ...{
     // :default [!] System label / Системная метка
-    itemCenter: true,
-    vertical: 'none',
-    divider: true
     // :default [!] System label / Системная метка
   }
 }

@@ -1,11 +1,10 @@
-import { computed, inject, type Ref, type ToRefs, type VNode } from 'vue'
+import { type Ref, type ToRefs, type VNode } from 'vue'
 import {
   type ConstrEmit,
   type DesignComp,
   isString
 } from '@dxtmisha/functional'
 
-import { SkeletonInclude } from '../Skeleton'
 import { TableHeaderItemInclude } from '../TableHeaderItem'
 import { TableItemInclude } from '../TableItem'
 
@@ -20,10 +19,6 @@ import type { TableRecordProps } from './props'
  * Координирует рендеринг ячеек таблицы и элементов шапки в пределах строки.
  */
 export class TableRecord {
-  /** Skeleton loader manager instance / Экземпляр менеджера скелетонов */
-  readonly skeleton: SkeletonInclude
-  /** Shared table headers / Общие заголовки таблицы */
-  readonly tableHeader?: Ref<Record<string, string> | undefined>
   /** Table header items include instance / Экземпляр включения ячеек шапки таблицы */
   readonly tableHeaderItem: TableHeaderItemInclude
   /** Table items include instance / Экземпляр включения ячеек таблицы */
@@ -40,7 +35,6 @@ export class TableRecord {
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits callback function triggered on events / функция обратного вызова, запускаемая при событиях
    * @param constructors optional class constructor overrides / необязательные переопределения конструкторов классов
-   * @param constructors.SkeletonConstructor class for creating a skeleton / класс для создания скелета
    * @param constructors.TableHeaderItemIncludeConstructor class for creating a table header item include / класс для создания включения ячейки шапки таблицы
    * @param constructors.TableItemIncludeConstructor class for creating a table item include / класс для создания включения ячейки таблицы
    */
@@ -54,19 +48,14 @@ export class TableRecord {
     protected readonly slots?: TableRecordSlots,
     protected readonly emits?: ConstrEmit<TableRecordEmits>,
     constructors: {
-      SkeletonConstructor?: typeof SkeletonInclude
       TableHeaderItemIncludeConstructor?: typeof TableHeaderItemInclude
       TableItemIncludeConstructor?: typeof TableItemInclude
     } = {}
   ) {
     const {
-      SkeletonConstructor = SkeletonInclude,
       TableHeaderItemIncludeConstructor = TableHeaderItemInclude,
       TableItemIncludeConstructor = TableItemInclude
     } = constructors
-
-    this.skeleton = new SkeletonConstructor(props, classDesign)
-    this.tableHeader = inject('tableHeader')
 
     this.tableHeaderItem = new TableHeaderItemIncludeConstructor(
       classDesign,
@@ -92,7 +81,7 @@ export class TableRecord {
    *
    * Возвращает ключ идентификатора элемента.
    */
-  readonly key = computed<string>(() => {
+  get key(): string {
     if (this.props.item) {
       if (isString(this.props.item?.index)) {
         return this.props.item.index
@@ -108,7 +97,7 @@ export class TableRecord {
     }
 
     return ''
-  })
+  }
 
   /**
    * Renders the column cell depending on whether it is a header row or data row.
@@ -118,11 +107,10 @@ export class TableRecord {
    * @returns rendered virtual node or undefined / отрендеренная виртуальная нода или undefined
    */
   renderColumn(index: string): VNode | undefined {
-    const key = `${this.key.value}__${index}`
+    const key = `${this.key}__${index}`
 
-    if (this.props.header) {
-      const label = this.tableHeader?.value?.[index]
-      return this.tableHeaderItem.renderDefault(key, index, label)
+    if (this.props.isHeader) {
+      return this.tableHeaderItem.renderItem(key, index, this.props.item)
     }
 
     return this.tableItem.renderItem(key, index, this.props.item)

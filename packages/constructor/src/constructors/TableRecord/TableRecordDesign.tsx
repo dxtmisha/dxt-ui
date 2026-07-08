@@ -115,19 +115,16 @@ export class TableRecordDesign<
 
     this.props.columns?.forEach((index) => {
       const column = this.item.renderColumn(index)
+
       if (column) {
         children.push(column)
       }
     })
 
-    return h('div', {
+    return h('tr', {
       ...this.getAttrs(),
-      ref: this.element,
-      'class': [
-        this.classes?.value.main,
-        this.item.skeleton.classesSkeleton.classBackgroundAfter
-      ],
-      'data-key': this.item.key.value
+      'class': this.classes?.value.main,
+      'data-key': this.item.key
     }, children)
   }
 }

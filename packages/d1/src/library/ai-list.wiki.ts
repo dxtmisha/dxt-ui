@@ -83,6 +83,7 @@ import D1Switch from '../../src/components/Ui/Switch/D1SwitchAiWiki.vue'
 import D1TabItem from '../../src/components/Ui/TabItem/D1TabItemAiWiki.vue'
 import D1TableHeaderItem from '../../src/components/Ui/TableHeaderItem/D1TableHeaderItemAiWiki.vue'
 import D1TableItem from '../../src/components/Ui/TableItem/D1TableItemAiWiki.vue'
+import D1TableRecord from '../../src/components/Ui/TableRecord/D1TableRecordAiWiki.vue'
 import D1Tabs from '../../src/components/Ui/Tabs/D1TabsAiWiki.vue'
 import D1TabsNavigation from '../../src/components/Ui/TabsNavigation/D1TabsNavigationAiWiki.vue'
 import D1TextDescription from '../../src/components/Ui/TextDescription/D1TextDescriptionAiWiki.vue'
@@ -175,6 +176,7 @@ export const aiList: any[] = [
   D1TabItem,
   D1TableHeaderItem,
   D1TableItem,
+  D1TableRecord,
   D1Tabs,
   D1TabsNavigation,
   D1TextDescription,
