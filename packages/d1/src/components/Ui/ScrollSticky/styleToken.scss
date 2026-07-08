@@ -1,11 +1,11 @@
 @use "../../../styles/Ui/properties";
 @use "@dxtmisha/styles/properties" as ui;
-@use "@dxtmisha/constructor/style.scss" as TableHeaderItem;
+@use "@dxtmisha/constructor/style.scss" as ScrollSticky;
 
-@include ui.initDesignBasic('d1.tableHeaderItem') {
+@include ui.initDesignBasic('d1.scrollSticky') {
   // Basic styles for a component
   // Базовый стили для компонента
-  @include TableHeaderItem.mixinTableHeaderItem;
+  @include ScrollSticky.mixinScrollSticky;
 
   // Styles from tokens
   // Стили из токенов

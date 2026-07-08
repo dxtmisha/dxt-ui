@@ -42,12 +42,12 @@ export interface TableHeaderItemSlots extends TableItemSlots {
  * Тип, описывающий подклассы.
  */
 export type TableHeaderItemClasses = {
+  /** Main element class name / Основное имя класса элемента */
   main: ConstrClass
   // :classes [!] System label / Системная метка
-  body: string
   label: string
-  labelHeader: string
   description: string
+  body: string
   tooltip: string
   // :classes [!] System label / Системная метка
 }

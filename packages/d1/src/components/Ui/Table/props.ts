@@ -1,38 +1,28 @@
-import { type TableHeaderItemPropsBasic, defaultsTableHeaderItem } from '@dxtmisha/constructor/TableHeaderItem'
+import { type TablePropsBasic, defaultsTable } from '@dxtmisha/constructor/Table'
 
 export const propsValues = {
   // :values [!] System label / Системная метка
-  align: ['left', 'center', 'right'],
-  alignVertical: ['top', 'center', 'bottom']
   // :values [!] System label / Системная метка
 }
 
 type PropsToken = {
   // :type [!] System label / Системная метка
-  disabled?: boolean
-  selected?: boolean
-  align?: 'left' | 'center' | 'right'
-  alignVertical?: 'top' | 'center' | 'bottom'
-  labelClamp?: boolean
-  stickyTop?: boolean
-  stickyLeft?: boolean
+  headerTop?: boolean
   // :type [!] System label / Системная метка
 }
 
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export type TableHeaderItemProps = TableHeaderItemPropsBasic & PropsToken
+export type TableProps = TablePropsBasic & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства
  */
 export const defaults: object = {
-  ...defaultsTableHeaderItem,
+  ...defaultsTable,
   ...{
     // :default [!] System label / Системная метка
-    align: 'left',
-    alignVertical: 'center'
     // :default [!] System label / Системная метка
   }
 }

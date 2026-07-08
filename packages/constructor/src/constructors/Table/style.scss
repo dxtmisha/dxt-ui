@@ -1,0 +1,53 @@
+@use "@dxtmisha/styles/properties" as ui;
+
+@mixin mixinTable {
+  position: relative;
+
+  &__header {
+    overflow: hidden;
+  }
+
+  &__items {
+    overflow-y: hidden;
+    overflow-x: auto;
+    // overscroll-behavior: none
+
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      appearance: none;
+      width: 0;
+      height: 0;
+    }
+  }
+
+  &__horizontalScroll {
+    position: sticky;
+    bottom: 0;
+    z-index: 24;
+
+    overflow-x: auto;
+    overflow-y: hidden;
+    width: 100%;
+    height: ui.v('??scrollHeight', 20px);
+
+    @media (pointer: coarse) {
+      display: none;
+    }
+
+    &:after {
+      content: " ";
+      display: block;
+      height: 2px;
+      width: ui.v('??fixWidth');
+    }
+  }
+
+  &--headerTop {
+    &__header {
+      position: sticky;
+      top: var(--sys-header-height, 0);
+      z-index: 16;
+    }
+  }
+}

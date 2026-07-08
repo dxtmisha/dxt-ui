@@ -93,10 +93,9 @@ export class TableHeaderItemDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        body: this.getSubClass('body'),
         label: this.getSubClass('label'),
-        labelHeader: this.getSubClass('labelHeader'),
         description: this.getSubClass('description'),
+        body: this.getSubClass('body'),
         tooltip: this.getSubClass('tooltip')
         // :classes [!] System label / Системная метка
       }

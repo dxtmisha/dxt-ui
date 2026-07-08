@@ -69,7 +69,7 @@ export class TableRecordInclude extends ComponentIncludeAbstract<
    * @param key unique rendering key / уникальный ключ рендеринга
    * @param columns column list / список колонок
    * @param item row data object / объект данных строки
-   * @param header whether it is a header / является ли шапкой
+   * @param isHeader whether it is a header / является ли шапкой
    * @param attrs additional properties/attributes for this row / дополнительные свойства/атрибуты для этой строки
    * @returns rendered virtual node or undefined / отрендеренная виртуальная нода или undefined
    */
@@ -77,7 +77,7 @@ export class TableRecordInclude extends ComponentIncludeAbstract<
     key: string,
     columns: string[],
     item: any,
-    header?: boolean,
+    isHeader?: boolean,
     attrs?: ConstrBind<TableRecordPropsBasic>
   ): VNode | undefined => {
     if (this.components) {
@@ -94,11 +94,12 @@ export class TableRecordInclude extends ComponentIncludeAbstract<
           props.tableRowAttrs?.[key],
           attrs,
           {
-            key,
-            columns,
             item,
+            columns,
             selected: isSelected(key, props.selected),
-            header,
+            disabled: item?.disabled,
+            isHeader,
+            isSkeleton: props.isSkeleton,
             index: key
           }
         ),

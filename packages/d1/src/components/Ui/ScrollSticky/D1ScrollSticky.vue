@@ -5,27 +5,25 @@ import {
   type ConstrStyles
 } from '@dxtmisha/functional'
 import {
-  TableRecordDesign,
-  type TableRecordEmits,
-  type TableRecordSlots
-} from '@dxtmisha/constructor/TableRecord'
+  ScrollStickyDesign,
+  type ScrollStickyEmits,
+  type ScrollStickySlots
+} from '@dxtmisha/constructor/ScrollSticky'
 
-import { defaults, type TableRecordProps } from './props'
+import { defaults, type ScrollStickyProps } from './props'
 import './styleToken.scss'
 
 defineOptions({
-  name: 'D1TableRecord'
+  name: 'D1ScrollSticky'
 })
 
-const emits = defineEmits<TableRecordEmits>()
-const props = withDefaults(defineProps<TableRecordProps>(), defaults)
+const emits = defineEmits<ScrollStickyEmits>()
+const props = withDefaults(defineProps<ScrollStickyProps>(), defaults)
 
 const classesToken = computed<ConstrClasses>(() => ({
   main: {
     // :classes-values [!] System label / Системная метка
-    'd1-tableRecord': true,
-    'd1-tableRecord--disabled': props.disabled,
-    'd1-tableRecord--selected': props.selected
+    'd1-scrollSticky': true
     // :classes-values [!] System label / Системная метка
   }
 }))
@@ -34,8 +32,8 @@ const stylesToken = computed<ConstrStyles>(() => ({
   // :styles-values [!] System label / Системная метка
 }))
 
-const design = new TableRecordDesign(
-  'd1.tableRecord',
+const design = new ScrollStickyDesign(
+  'd1.scrollSticky',
   props,
   {
     emits,
@@ -46,7 +44,7 @@ const design = new TableRecordDesign(
 
 const render = design.render()
 
-defineSlots<TableRecordSlots>()
+defineSlots<ScrollStickySlots>()
 defineExpose(design.expose())
 </script>
 

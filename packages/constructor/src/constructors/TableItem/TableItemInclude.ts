@@ -225,7 +225,10 @@ export class TableItemInclude extends ComponentIncludeAbstract<
       props.tableItemColumnAttrs?.[index],
       {
         key,
-        index
+        index,
+        selected: props.selected,
+        disabled: props.disabled,
+        isSkeleton: props.isSkeleton
       }
     )
   }

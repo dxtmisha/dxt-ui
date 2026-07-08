@@ -1,11 +1,11 @@
 @use "../../../styles/Ui/properties";
 @use "@dxtmisha/styles/properties" as ui;
-@use "@dxtmisha/constructor/style.scss" as TableHeaderItem;
+@use "@dxtmisha/constructor/style.scss" as Table;
 
-@include ui.initDesignBasic('d1.tableHeaderItem') {
+@include ui.initDesignBasic('d1.table') {
   // Basic styles for a component
   // Базовый стили для компонента
-  @include TableHeaderItem.mixinTableHeaderItem;
+  @include Table.mixinTable;
 
   // Styles from tokens
   // Стили из токенов

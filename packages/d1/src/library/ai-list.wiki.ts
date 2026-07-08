@@ -69,6 +69,7 @@ import D1Pagination from '../../src/components/Ui/Pagination/D1PaginationAiWiki.
 import D1Progress from '../../src/components/Ui/Progress/D1ProgressAiWiki.vue'
 import D1Radio from '../../src/components/Ui/Radio/D1RadioAiWiki.vue'
 import D1Ripple from '../../src/components/Ui/Ripple/D1RippleAiWiki.vue'
+import D1ScrollSticky from '../../src/components/Ui/ScrollSticky/D1ScrollStickyAiWiki.vue'
 import D1Scrollbar from '../../src/components/Ui/Scrollbar/D1ScrollbarAiWiki.vue'
 import D1Section from '../../src/components/Ui/Section/D1SectionAiWiki.vue'
 import D1SegmentControl from '../../src/components/Ui/SegmentControl/D1SegmentControlAiWiki.vue'
@@ -81,6 +82,7 @@ import D1Snackbar from '../../src/components/Ui/Snackbar/D1SnackbarAiWiki.vue'
 import D1SnackbarItem from '../../src/components/Ui/SnackbarItem/D1SnackbarItemAiWiki.vue'
 import D1Switch from '../../src/components/Ui/Switch/D1SwitchAiWiki.vue'
 import D1TabItem from '../../src/components/Ui/TabItem/D1TabItemAiWiki.vue'
+import D1Table from '../../src/components/Ui/Table/D1TableAiWiki.vue'
 import D1TableHeaderItem from '../../src/components/Ui/TableHeaderItem/D1TableHeaderItemAiWiki.vue'
 import D1TableItem from '../../src/components/Ui/TableItem/D1TableItemAiWiki.vue'
 import D1TableRecord from '../../src/components/Ui/TableRecord/D1TableRecordAiWiki.vue'
@@ -162,6 +164,7 @@ export const aiList: any[] = [
   D1Progress,
   D1Radio,
   D1Ripple,
+  D1ScrollSticky,
   D1Scrollbar,
   D1Section,
   D1SegmentControl,
@@ -174,6 +177,7 @@ export const aiList: any[] = [
   D1SnackbarItem,
   D1Switch,
   D1TabItem,
+  D1Table,
   D1TableHeaderItem,
   D1TableItem,
   D1TableRecord,

@@ -1,6 +1,6 @@
-import type { ConstrBind } from '@dxtmisha/functional'
-import type { SkeletonPropsInclude } from '../Skeleton'
 import type { TableItemPropsBasic, TableItemPropsInclude } from '../TableItem'
+
+import type { TableRecordValue } from './basicTypes'
 
 type TableRecordPropsToken = {
   // :type [!] System label / Системная метка
@@ -12,13 +12,13 @@ type TableRecordPropsToken = {
 export type TableRecordPropsBasic<
   TableItem extends TableItemPropsBasic = TableItemPropsBasic
 > = TableItemPropsInclude<TableItem>
-  & SkeletonPropsInclude
   & {
     /** Row data / Данные строки */
-    item?: Record<string, string | number | ConstrBind<TableItem> | any>
+    item?: Record<string, TableRecordValue<TableItem> | any>
     /** Column indexes / Индексы колонок */
     columns?: string[]
 
+    /** Whether the row represents a table header / Является ли строка заголовком таблицы */
     isHeader?: boolean
 
     /** Unique rendering key / Уникальный ключ рендеринга */

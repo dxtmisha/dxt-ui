@@ -1,0 +1,6 @@
+export * from './ScrollSticky'
+export * from './ScrollStickyDesign'
+export * from './props'
+export * from './types'
+export * from './basicTypes'
+export * from './ScrollStickyInclude'

@@ -8,11 +8,10 @@ type TableHeaderItemPropsToken = {
   // :type [!] System label / Системная метка
   disabled?: boolean
   selected?: boolean
-  header?: boolean
-  vertical?: 'always' | 'none'
-  right?: boolean
-  basis?: '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | '11' | '12' | 'auto'
+  align?: 'left' | 'center' | 'right'
+  alignVertical?: 'top' | 'center' | 'bottom'
   labelClamp?: boolean
+  stickyTop?: boolean
   stickyLeft?: boolean
   // :type [!] System label / Системная метка
 }
@@ -43,8 +42,8 @@ export const defaultsTableHeaderItem = {
   tag: 'th',
   ...{
     // :default [!] System label / Системная метка
-    vertical: 'none',
-    basis: '1'
+    align: 'left',
+    alignVertical: 'center'
     // :default [!] System label / Системная метка
   }
 }

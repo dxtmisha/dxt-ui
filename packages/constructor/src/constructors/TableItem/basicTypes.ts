@@ -1,4 +1,5 @@
 import type { ConstrBind } from '@dxtmisha/functional'
+import type { SkeletonPropsInclude } from '../Skeleton'
 import type { TableItemPropsBasic } from './props'
 
 /**
@@ -15,11 +16,17 @@ export type TableItemComponentInclude = {
  * Тип, описывающий свойства для вложенных ячеек таблицы.
  */
 export type TableItemPropsInclude<
-  TableItemProps extends TableItemPropsBasic = TableItemPropsBasic
-> = {
-  /** Additional attributes for TableItem component / Дополнительные атрибуты для компонента TableItem */
-  tableItemAttrs?: ConstrBind<TableItemProps>
+  TableItem extends TableItemPropsBasic = TableItemPropsBasic
+> = SkeletonPropsInclude
+  & {
+    /** Selected state of the item / Выбранное состояние элемента */
+    selected?: boolean
+    /** Disabled state of the item / Отключенное состояние элемента */
+    disabled?: boolean
 
-  /** Additional attributes for TableItem column components / Дополнительные атрибуты для компонентов колонок TableItem */
-  tableItemColumnAttrs?: Record<string, ConstrBind<TableItemProps>>
-}
+    /** Additional attributes for TableItem component / Дополнительные атрибуты для компонента TableItem */
+    tableItemAttrs?: ConstrBind<TableItem>
+
+    /** Additional attributes for TableItem column components / Дополнительные атрибуты для компонентов колонок TableItem */
+    tableItemColumnAttrs?: Record<string, ConstrBind<TableItem>>
+  }

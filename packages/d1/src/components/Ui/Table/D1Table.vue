@@ -5,27 +5,28 @@ import {
   type ConstrStyles
 } from '@dxtmisha/functional'
 import {
-  TableRecordDesign,
-  type TableRecordEmits,
-  type TableRecordSlots
-} from '@dxtmisha/constructor/TableRecord'
+  TableDesign,
+  type TableEmits,
+  type TableSlots
+} from '@dxtmisha/constructor/Table'
 
-import { defaults, type TableRecordProps } from './props'
+import { D1ScrollSticky } from '../ScrollSticky'
+
+import { defaults, type TableProps } from './props'
 import './styleToken.scss'
 
 defineOptions({
-  name: 'D1TableRecord'
+  name: 'D1Table'
 })
 
-const emits = defineEmits<TableRecordEmits>()
-const props = withDefaults(defineProps<TableRecordProps>(), defaults)
+const emits = defineEmits<TableEmits>()
+const props = withDefaults(defineProps<TableProps>(), defaults)
 
 const classesToken = computed<ConstrClasses>(() => ({
   main: {
     // :classes-values [!] System label / Системная метка
-    'd1-tableRecord': true,
-    'd1-tableRecord--disabled': props.disabled,
-    'd1-tableRecord--selected': props.selected
+    'd1-table': true,
+    'd1-table--headerTop': props.headerTop
     // :classes-values [!] System label / Системная метка
   }
 }))
@@ -34,19 +35,22 @@ const stylesToken = computed<ConstrStyles>(() => ({
   // :styles-values [!] System label / Системная метка
 }))
 
-const design = new TableRecordDesign(
-  'd1.tableRecord',
+const design = new TableDesign(
+  'd1.table',
   props,
   {
     emits,
     classes: classesToken,
-    styles: stylesToken
+    styles: stylesToken,
+    components: {
+      scrollSticky: D1ScrollSticky
+    }
   }
 )
 
 const render = design.render()
 
-defineSlots<TableRecordSlots>()
+defineSlots<TableSlots>()
 defineExpose(design.expose())
 </script>
 

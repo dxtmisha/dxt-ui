@@ -69,6 +69,7 @@ import _D1Pagination from '../components/Ui/Pagination/D1Pagination.vue'
 import _D1Progress from '../components/Ui/Progress/D1Progress.vue'
 import _D1Radio from '../components/Ui/Radio/D1Radio.vue'
 import _D1Ripple from '../components/Ui/Ripple/D1Ripple.vue'
+import _D1ScrollSticky from '../components/Ui/ScrollSticky/D1ScrollSticky.vue'
 import _D1Scrollbar from '../components/Ui/Scrollbar/D1Scrollbar.vue'
 import _D1Section from '../components/Ui/Section/D1Section.vue'
 import _D1SegmentControl from '../components/Ui/SegmentControl/D1SegmentControl.vue'
@@ -81,6 +82,7 @@ import _D1Snackbar from '../components/Ui/Snackbar/D1Snackbar.vue'
 import _D1SnackbarItem from '../components/Ui/SnackbarItem/D1SnackbarItem.vue'
 import _D1Switch from '../components/Ui/Switch/D1Switch.vue'
 import _D1TabItem from '../components/Ui/TabItem/D1TabItem.vue'
+import _D1Table from '../components/Ui/Table/D1Table.vue'
 import _D1TableHeaderItem from '../components/Ui/TableHeaderItem/D1TableHeaderItem.vue'
 import _D1TableItem from '../components/Ui/TableItem/D1TableItem.vue'
 import _D1TableRecord from '../components/Ui/TableRecord/D1TableRecord.vue'
@@ -163,6 +165,7 @@ declare module '@vue/runtime-core' {
     D1Progress: typeof _D1Progress
     D1Radio: typeof _D1Radio
     D1Ripple: typeof _D1Ripple
+    D1ScrollSticky: typeof _D1ScrollSticky
     D1Scrollbar: typeof _D1Scrollbar
     D1Section: typeof _D1Section
     D1SegmentControl: typeof _D1SegmentControl
@@ -175,6 +178,7 @@ declare module '@vue/runtime-core' {
     D1SnackbarItem: typeof _D1SnackbarItem
     D1Switch: typeof _D1Switch
     D1TabItem: typeof _D1TabItem
+    D1Table: typeof _D1Table
     D1TableHeaderItem: typeof _D1TableHeaderItem
     D1TableItem: typeof _D1TableItem
     D1TableRecord: typeof _D1TableRecord

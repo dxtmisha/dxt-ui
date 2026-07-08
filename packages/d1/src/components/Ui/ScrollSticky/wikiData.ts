@@ -5,15 +5,9 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
-  { name: 'columns', type: 'string[]' },
-  { name: 'disabled', type: 'boolean' },
-  { name: 'index', type: 'string' },
-  { name: 'isHeader', type: 'boolean' },
-  { name: 'isSkeleton', type: 'boolean' },
-  { name: 'item', type: 'Record<string, any>' },
-  { name: 'selected', type: 'boolean' },
-  { name: 'tableItemAttrs', type: 'ConstrBind<TableItemPropsBasic>' },
-  { name: 'tableItemColumnAttrs', type: 'Record<string, ConstrBind<TableItemPropsBasic>>' }
+  { name: 'fixWidth', type: 'string' },
+  { name: 'header', type: 'string | HTMLElement' },
+  { name: 'target', type: 'string | HTMLElement' }
   // :propsList [!] System label / Системная метка
 ]
 
@@ -27,8 +21,8 @@ const eventsNames: StorybookSlots = [
   // :eventsList [!] System label / Системная метка
 ]
 
-export const TableRecordWikiData: WikiDataItem = {
-  component: 'TableRecord',
+export const ScrollStickyWikiData: WikiDataItem = {
+  component: 'ScrollSticky',
   props: propsNames,
   slots: slotsNames,
   events: eventsNames,

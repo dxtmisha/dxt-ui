@@ -27,7 +27,7 @@
     "build": "vue-tsc -b && vite build",
     "build-recovery": "npm run build && npm run wiki-storm",
     "preview": "vite preview",
-    "ui": "dxt-ui TableRecord",
+    "ui": "dxt-ui",
     "wiki-storm": "dxt-wiki-storm",
     "types": "dxt-types",
     "screenshot": "dxt-screenshot",
@@ -430,6 +430,14 @@
     "./D1TableRecord": {
       "types": "./dist/library/D1TableRecord.d.ts",
       "default": "./dist/D1TableRecord.js"
+    },
+    "./D1Table": {
+      "types": "./dist/library/D1Table.d.ts",
+      "default": "./dist/D1Table.js"
+    },
+    "./D1ScrollSticky": {
+      "types": "./dist/library/D1ScrollSticky.d.ts",
+      "default": "./dist/D1ScrollSticky.js"
     }
   },
   "buildOptions": {

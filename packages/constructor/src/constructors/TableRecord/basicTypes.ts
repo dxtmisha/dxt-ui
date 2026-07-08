@@ -3,6 +3,14 @@ import type { TableItemPropsBasic, TableItemPropsInclude } from '../TableItem'
 import type { TableRecordPropsBasic } from './props'
 
 /**
+ * Type describing the cell value in a table record row. /
+ * Тип, описывающий значение ячейки в строке записи таблицы.
+ */
+export type TableRecordValue<
+  TableItem extends TableItemPropsBasic = TableItemPropsBasic
+> = string | number | ConstrBind<TableItem>
+
+/**
  * Type describing the parameters/properties of a table item slot in a table record. /
  * Тип, описывающий параметры/свойства слота элемента таблицы в записи таблицы.
  */
@@ -63,15 +71,15 @@ export type TableRecordComponentInclude = {
  * Тип, описывающий свойства для вложенных записей таблицы.
  */
 export type TableRecordPropsInclude<
-  TableItemProps extends TableItemPropsBasic = TableItemPropsBasic,
-  TableRecordProps extends TableRecordPropsBasic<TableItemProps> = TableRecordPropsBasic<TableItemProps>
-> = TableItemPropsInclude<TableItemProps> & {
-  /** Additional attributes for TableRecord component / Дополнительные атрибуты для компонента TableRecord */
-  tableRecordAttrs?: ConstrBind<TableRecordProps>
-
-  /** Additional attributes for TableRecord row components / Дополнительные атрибуты для компонентов строк TableRecord */
-  tableRowAttrs?: Record<string, ConstrBind<TableRecordProps>>
-
+  TableItem extends TableItemPropsBasic = TableItemPropsBasic,
+  TableRecord extends TableRecordPropsBasic<TableItem> = TableRecordPropsBasic<TableItem>
+> = TableItemPropsInclude<TableItem> & {
   /** Selected item identifier or list / Идентификатор выбранного элемента или список */
   selected?: string | string[]
+
+  /** Additional attributes for TableRecord component / Дополнительные атрибуты для компонента TableRecord */
+  tableRecordAttrs?: ConstrBind<TableRecord>
+
+  /** Additional attributes for TableRecord row components / Дополнительные атрибуты для компонентов строк TableRecord */
+  tableRowAttrs?: Record<string, ConstrBind<TableRecord>>
 }

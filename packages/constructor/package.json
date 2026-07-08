@@ -36,7 +36,7 @@
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
     "test": "NODE_OPTIONS=\"--no-webstorage\" vitest",
-    "constructor": "dxt-constructor TableRecord",
+    "constructor": "dxt-constructor",
     "library": "dxt-library",
     "types": "dxt-types",
     "prepublishOnly": "npm run library && npm run constructor && npm run build",
@@ -431,6 +431,14 @@
     "./TableRecord": {
       "types": "./dist/constructors/TableRecord/index.d.ts",
       "default": "./dist/tableRecord.js"
+    },
+    "./Table": {
+      "types": "./dist/constructors/Table/index.d.ts",
+      "default": "./dist/table.js"
+    },
+    "./ScrollSticky": {
+      "types": "./dist/constructors/ScrollSticky/index.d.ts",
+      "default": "./dist/scrollSticky.js"
     }
   },
   "buildOptions": {
