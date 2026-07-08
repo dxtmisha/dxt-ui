@@ -93,7 +93,7 @@ export class TableHeaderItemInclude extends ComponentIncludeAbstract<
         toBinds(
           {
             headerLabel,
-            vertical: itemProps.vertical,
+            'vertical': itemProps.vertical,
             'data-key': key,
             'data-index': index
           },
@@ -123,7 +123,7 @@ export class TableHeaderItemInclude extends ComponentIncludeAbstract<
       toBinds(
         {
           headerLabel,
-          vertical: itemProps.vertical,
+          'vertical': itemProps.vertical,
           header,
           'data-key': key,
           'data-index': index

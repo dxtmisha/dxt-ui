@@ -146,4 +146,3 @@ export class TableItemDesign<
     return children
   }
 }
-

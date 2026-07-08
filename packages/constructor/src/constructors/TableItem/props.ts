@@ -64,4 +64,3 @@ export const defaultsTableItem = {
     // :default [!] System label / Системная метка
   }
 }
-
