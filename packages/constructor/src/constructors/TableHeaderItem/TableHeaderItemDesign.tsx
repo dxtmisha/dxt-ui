@@ -2,7 +2,7 @@ import { h, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
-  DesignConstructorAbstract
+  DesignConstructorAbstract, toBinds
 } from '@dxtmisha/functional'
 
 import { TableHeaderItem } from './TableHeaderItem'
@@ -28,14 +28,14 @@ export class TableHeaderItemDesign<
   CLASSES extends TableHeaderItemClasses,
   P extends TableHeaderItemProps
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
-    COMP,
-    TableHeaderItemEmits,
-    EXPOSE,
-    TableHeaderItemSlots,
-    CLASSES,
-    P
-  > {
+  HTMLDivElement,
+  COMP,
+  TableHeaderItemEmits,
+  EXPOSE,
+  TableHeaderItemSlots,
+  CLASSES,
+  P
+> {
   /** TableHeaderItem controller instance / Экземпляр контроллера ячейки шапки таблицы (TableHeaderItem) */
   protected readonly item: TableHeaderItem
 
@@ -128,10 +128,9 @@ export class TableHeaderItemDesign<
     this.initSlot('context', children)
 
     return h(
-      this.props.tag ?? 'div',
+      this.item.tag,
       {
         ...this.getAttrs(),
-        ref: this.element,
         class: this.classes?.value.main,
         ...this.item.binds
       },
@@ -146,7 +145,10 @@ export class TableHeaderItemDesign<
    * @returns array of virtual nodes (VNode) / массив виртуальных узлов (VNode)
    */
   readonly renderBody = (): VNode[] => {
-    const children: any[] = this.renderContext()
+    const children: any[] = [
+      ...this.item.label.render(),
+      ...this.renderTooltip()
+    ]
 
     if (children.length > 0) {
       return [
@@ -162,49 +164,17 @@ export class TableHeaderItemDesign<
   }
 
   /**
-   * Renders the table cell context containing header and label, and optional tooltip.
+   * Renders the tooltip.
    *
-   * Рендер контекста ячейки таблицы, содержащего заголовок, метку и необязательную подсказку.
+   * Рендер подсказки.
    * @returns array of virtual nodes (VNode) / массив виртуальных узлов (VNode)
    */
-  readonly renderContext = (): VNode[] => {
-    const children: any[] = [
-      ...this.renderHeader(),
-      ...this.item.label.render()
-    ]
-
+  readonly renderTooltip = (): VNode[] => {
     if (this.item.isTooltip) {
-      children.push(
-        ...this.item.tooltip.render({
-          control: (props: TooltipControl): VNode => this.renderTooltipControl(props),
-          body: this.slots?.tooltip
-        })
-      )
-    }
-
-    return children
-  }
-
-  /**
-   * Renders the header label.
-   *
-   * Рендер заголовка.
-   * @returns array of virtual nodes (VNode) / массив виртуальных узлов (VNode)
-   */
-  readonly renderHeader = (): VNode[] => {
-    if (
-      this.props.headerLabel
-      && this.props.verticalHeader
-      && Boolean(this.props.vertical)
-      && this.props.vertical !== 'none'
-    ) {
-      return [
-        h(
-          'span',
-          { class: this.classes?.value.labelHeader },
-          `${this.props.headerLabel}${this.props.headerLabelEnd}`
-        )
-      ]
+      return this.item.tooltip.render({
+        control: (props: TooltipControl): VNode | undefined => this.renderTooltipControl(props),
+        body: this.slots?.tooltip
+      })
     }
 
     return []
@@ -219,19 +189,15 @@ export class TableHeaderItemDesign<
    */
   readonly renderTooltipControl = (
     control: TooltipControl
-  ): VNode => {
+  ): VNode | undefined => {
     return this.components.renderOne(
       'icon',
-      {
-        ...this.item.tooltipControlBind.value,
-        ...control.binds,
-        class: {
-          ...this.toClass(this.item.tooltipControlBind.value?.class),
-          ...this.toClass(control.binds?.class)
-        }
-      },
+      toBinds(
+        this.item.tooltipControlBind.value,
+        control.binds
+      ),
       undefined,
       'iconControl'
-    ) as VNode
+    )
   }
 }

@@ -1,7 +1,7 @@
 import type { ConstrClass } from '@dxtmisha/functional'
-import type { LabelSlots } from '../../types/labelTypes'
-import type { DescriptionSlots } from '../../types/descriptionTypes'
+
 import type { IconComponentInclude } from '../Icon'
+import type { TableItemSlots } from '../TableItem'
 import type { TooltipComponentInclude } from '../Tooltip'
 
 /**
@@ -16,9 +16,7 @@ export type TableHeaderItemComponents = IconComponentInclude & TooltipComponentI
  *
  * Тип, описывающий доступные события.
  */
-export type TableHeaderItemEmits = {
-  // none
-}
+export type TableHeaderItemEmits = {}
 
 /**
  * Type describing available properties.
@@ -33,11 +31,9 @@ export interface TableHeaderItemExpose {
  *
  * Тип, описывающий доступные slots.
  */
-export interface TableHeaderItemSlots extends LabelSlots, DescriptionSlots {
+export interface TableHeaderItemSlots extends TableItemSlots {
   /** Slot for displaying custom tooltip body / Слот для отображения пользовательского содержимого подсказки */
   tooltip?(): any
-  /** Slot for custom cell context / Слот для пользовательского контекста ячейки */
-  context?(): any
 }
 
 /**

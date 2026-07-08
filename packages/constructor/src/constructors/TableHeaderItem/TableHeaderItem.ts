@@ -8,6 +8,7 @@ import {
 import { DescriptionInclude } from '../../classes/DescriptionInclude'
 import { LabelInclude } from '../../classes/LabelInclude'
 import { SkeletonInclude } from '../Skeleton'
+import { TableItem } from '../TableItem'
 import { TooltipInclude } from '../Tooltip'
 
 import type { IconPropsBasic } from '../Icon'
@@ -21,13 +22,7 @@ import type { TableHeaderItemProps } from './props'
  * Класс, представляющий конструктор ячейки шапки таблицы (TableHeaderItem).
  * Обеспечивает координацию работы таких компонентов, как метка, описание, всплывающая подсказка и скелетон.
  */
-export class TableHeaderItem {
-  /** Description text manager instance / Экземпляр менеджера текста описания */
-  readonly description: DescriptionInclude
-  /** Label text manager instance / Экземпляр менеджера текста метки */
-  readonly label: LabelInclude
-  /** Skeleton loader manager instance / Экземпляр менеджера скелетонов */
-  readonly skeleton: SkeletonInclude
+export class TableHeaderItem extends TableItem {
   /** Tooltip component manager instance / Экземпляр менеджера всплывающей подсказки */
   readonly tooltip: TooltipInclude
 
@@ -63,25 +58,22 @@ export class TableHeaderItem {
       TooltipIncludeConstructor?: typeof TooltipInclude
     } = {}
   ) {
+    super(
+      props,
+      refs,
+      element,
+      classDesign,
+      className,
+      components,
+      slots,
+      emits,
+      constructors
+    )
+
     const {
-      DescriptionConstructor = DescriptionInclude,
-      LabelConstructor = LabelInclude,
-      SkeletonConstructor = SkeletonInclude,
       TooltipIncludeConstructor = TooltipInclude
     } = constructors
 
-    this.skeleton = new SkeletonConstructor(props, classDesign, ['classTextVariant'])
-    this.description = new DescriptionConstructor(props, className, slots, this.skeleton)
-    this.label = new LabelConstructor(
-      props,
-      className,
-      undefined,
-      slots,
-      undefined,
-      undefined,
-      undefined,
-      this.skeleton
-    )
     this.tooltip = new TooltipIncludeConstructor(
       this.className,
       this.props,
@@ -95,7 +87,10 @@ export class TableHeaderItem {
    * Проверяет, активна ли подсказка.
    */
   get isTooltip(): boolean {
-    return Boolean((this.props.tooltipLabel || this.props.tooltipDescription || this.slots?.tooltip) && this.components?.is('tooltip'))
+    return Boolean(
+      this.components?.is('tooltip')
+      && (this.props.tooltipLabel || this.props.tooltipDescription || this.slots?.tooltip)
+    )
   }
 
   /**
@@ -110,15 +105,4 @@ export class TableHeaderItem {
       'data-event-type': 'tooltip'
     }
   })
-
-  /**
-   * Computed HTML attributes and bindings for the main element.
-   *
-   * Вычисляемые HTML-атрибуты и привязки для главного элемента.
-   */
-  get binds() {
-    return {
-      'data-divider': this.props.disabled ? undefined : 'active'
-    }
-  }
 }
