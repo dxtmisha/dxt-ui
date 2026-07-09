@@ -2,6 +2,16 @@
 
 @mixin mixinScrollSticky {
   position: relative;
+  overflow-y: hidden;
+  overflow-x: auto;
+
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    appearance: none;
+    width: 0;
+    height: 0;
+  }
 
   &__scroll {
     position: sticky;

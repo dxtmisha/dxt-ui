@@ -31,7 +31,9 @@ export const ScrollSticky: Story = {
     components: { D1ScrollSticky },
     setup: () => ({ args }),
     template: `
-      <D1ScrollSticky v-bind="args">
+      <D1ScrollSticky class="wiki-storybook-item wiki-storybook-item--rectangle wiki-storybook-item--overflowAuto wiki-storybook-item--padding" v-bind="args">
+      <div style="height: 320px;"/>
+      <div style="width: 2048px;">
         <h3>ScrollSticky Component Demo</h3>
         <p>This is a visualization demonstration of the scroll synchronization helper. The width of this area is set to 150% to trigger horizontal scrolling. The text below is long enough to exceed 1000px in height, allowing you to scroll down and observe the sticky horizontal scrollbar sync in real-time at the bottom of the viewport.</p>
 
@@ -54,7 +56,29 @@ export const ScrollSticky: Story = {
         <p>When integrating ScrollSticky into your design system, it is recommended to apply it to dense data views like tables and grid layouts. Ensure the outer container has a defined height boundary or is allowed to scale naturally within the page layout. Since the scrollbar sticks to the viewport bottom, it should not overlap critical action buttons or sticky footers. Design tokens should be utilized to customize the scrollbar height, tracks, and thumb colors to match the brand identity.</p>
 
         <p>Furthermore, developers should ensure that accessibility is not compromised. Although the visual scrollbar is custom, keyboard navigation (using arrow keys or Page Up/Down) on the target container must remain functional. By utilizing native scroll behaviors under the hood, ScrollSticky maintains full support for standard keyboard accessibility patterns.</p>
-      </D1ScrollSticky>
+
+        <h4>Advanced Scroll Management and User Navigation</h4>
+        <p>In addition to basic scrolling synchronization, advanced implementations of ScrollSticky can benefit from additional layout features. For instance, when working with very wide scrollable tables containing dozens of columns, users often lose their place as they scroll vertically. Adding a sticky header inside the table that moves synchronously with both vertical scrolling and horizontal scrolling helps maintain table headers directly above the corresponding column data.</p>
+
+        <p>This multi-axial synchronization represents the pinnacle of modern web layout engineering. The ScrollSticky component is designed to work in tandem with other sticky elements, such as fixed navigation bars and header groups, by respecting viewport offsets and container margins. This ensures that even when multiple scrollable boundaries intersect, the scrollbar remains visible and interactive.</p>
+
+        <h4>Performance Optimizations under Heavy Load</h4>
+        <p>Web applications containing large datasets, nested grids, or high-density charts can suffer from rendering lag during scrolling interactions. When a user scrolls, the browser triggers paint events that can quickly bottleneck the CPU if DOM updates are not handled efficiently. ScrollSticky minimizes this impact by avoiding synchronous layout calculations (layout thrashing) in its event listeners.</p>
+
+        <p>Instead of reading layout dimensions on every frame, ScrollSticky utilizes a batched execution approach. It schedules DOM reads and writes via microtasks and debounces window resize events. Additionally, it targets hardware-accelerated CSS properties whenever possible, allowing the browser's compositor thread to handle the visual transition of the scrollbar thumb smoothly, maintaining a solid 60 frames per second interaction rate.</p>
+
+        <h4>Accessibility and Keyboard Controls (Continued)</h4>
+        <p>An often-overlooked aspect of custom scrollbar helpers is their behavior with keyboard focus. When a user navigates a website using the Tab key, they expect interactive components to receive focus in a logical order. A custom scrollbar must either be kept out of the focus flow (using a negative tab index) or support keyboard-driven horizontal panning when focused.</p>
+
+        <p>ScrollSticky defaults to a seamless integration where the visual scrollbar itself is purely presentational to assistive technologies, while the underlying scrollable container remains fully keyboard-navigable. This ensures screen readers and keyboard-only users can still access all the horizontal content through native keyboard scrolling controls, without getting stuck on presentational UI artifacts.</p>
+
+        <h4>Design System Theming and Customization</h4>
+        <p>A unified design system requires every component to reflect the brand's aesthetic. ScrollSticky provides a highly customizable visual layout, allowing developers to style the scrollbar container, scroll track, and scroll thumb. Utilizing CSS custom properties (design tokens), you can control parameters like border radius, track background, hover state colors, and scrollbar height.</p>
+
+        <p>These style overrides can be applied globally across the entire project or scoped to specific layouts (e.g. a dark-themed data dashboard). By linking these tokens to the design system's palette variables, ScrollSticky automatically adapts to theme changes (such as toggling between light and dark modes) without requiring manual class updates or layout re-renders.</p>
+      </div>
+      <div style="height: 320px;"/>
+    </D1ScrollSticky>
     `
   })
   // :story-main [!] System label / Системная метка
