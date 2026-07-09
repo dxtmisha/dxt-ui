@@ -115,6 +115,7 @@ export class ScrollStickyDesign<
       ref: this.element,
       class: this.classes?.value.main
     }, [
+      this.initSlot('default'),
       this.renderScroll()
     ])
   }
