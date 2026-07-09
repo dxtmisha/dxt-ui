@@ -19,7 +19,9 @@ import {
 } from './types'
 
 /**
- * ScrollStickyDesign
+ * ScrollStickyDesign class implements the design layout and rendering logic for ScrollSticky.
+ *
+ * Класс ScrollStickyDesign реализует макет дизайна и логику рендеринга для ScrollSticky.
  */
 export class ScrollStickyDesign<
   COMP extends ScrollStickyComponents,
@@ -35,6 +37,7 @@ export class ScrollStickyDesign<
     CLASSES,
     P
   > {
+  /** Logical ScrollSticky instance / Экземпляр логики ScrollSticky */
   protected readonly item: ScrollSticky
 
   /**
@@ -74,6 +77,7 @@ export class ScrollStickyDesign<
    * Initialization of all the necessary properties for work
    *
    * Инициализация всех необходимых свойств для работы.
+   * @returns exposed properties / открытые свойства
    */
   protected initExpose(): EXPOSE {
     return {} as EXPOSE
@@ -83,12 +87,14 @@ export class ScrollStickyDesign<
    * Improvement of the obtained list of classes.
    *
    * Доработка полученного списка классов.
+   * @returns custom classes object / объект пользовательских классов
    */
   protected initClasses(): Partial<CLASSES> {
     return {
       main: {},
       ...{
         // :classes [!] System label / Системная метка
+        context: this.getSubClass('context'),
         scroll: this.getSubClass('scroll')
         // :classes [!] System label / Системная метка
       }
@@ -99,6 +105,7 @@ export class ScrollStickyDesign<
    * Refinement of the received list of styles.
    *
    * Доработка полученного списка стилей.
+   * @returns custom styles object / объект пользовательских стилей
    */
   protected initStyles(): ConstrStyles {
     return {}
@@ -108,16 +115,34 @@ export class ScrollStickyDesign<
    * A method for rendering.
    *
    * Метод для рендеринга.
+   * @returns virtual node / виртуальный узел
    */
   protected initRender(): VNode {
     return h('div', {
       ...this.getAttrs(),
-      ref: this.element,
       class: this.classes?.value.main
     }, [
-      this.initSlot('default'),
+      this.renderContext(),
       this.renderScroll()
     ])
+  }
+
+  /**
+   * Renders the context element. /
+   * Рендерит элемент контекста.
+   * @returns virtual node / виртуальный узел
+   */
+  protected renderContext(): VNode {
+    return h(
+      'div',
+      {
+        ref: this.element,
+        class: this.classes?.value.context
+      },
+      this.initSlot('default', undefined, {
+        onResize: this.item.onResize
+      })
+    )
   }
 
   /**

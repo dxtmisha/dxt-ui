@@ -1,7 +1,5 @@
 import { Source } from '@storybook/addon-docs/blocks';
 
-## Description
-
 ScrollSticky is a layout helper component that provides a sticky, synchronized horizontal scrollbar for scrollable content containers.
 It is typically used to render a custom scrollbar that remains visible at the bottom of the viewport even when the main content container is taller than the screen, improving readability and navigation on desktop platforms.
 
@@ -24,13 +22,11 @@ The component supports two-way synchronization: scrolling the sticky scrollbar s
 <Source
     code={`
 <template>
-  <div class="table-container">
-    <ScrollSticky>
-      <table class="data-table">
-        <!-- Scrollable table content -->
-      </table>
-    </ScrollSticky>
-  </div>
+  <ScrollSticky v-slot="{ onResize }">
+    <table class="data-table">
+      <!-- Scrollable table content -->
+    </table>
+  </ScrollSticky>
 </template>
   `}
     language="html"

@@ -1,8 +1,16 @@
+/**
+ * Shape of tokens for ScrollSticky component. /
+ * Структура токенов для компонента ScrollSticky.
+ */
 type ScrollStickyPropsToken = {
   // :type [!] System label / Системная метка
   // :type [!] System label / Системная метка
 }
 
+/**
+ * Basic props for ScrollSticky component. /
+ * Базовые свойства для компонента ScrollSticky.
+ */
 export type ScrollStickyPropsBasic = {}
 
 /**

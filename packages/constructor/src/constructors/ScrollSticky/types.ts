@@ -28,7 +28,14 @@ export interface ScrollStickyExpose {
  * Тип, описывающий доступные слоты.
  */
 export interface ScrollStickySlots {
-  default? (props: any): any
+  /** Slot for default ScrollSticky content / Слот для основного содержимого ScrollSticky */
+  default? (props: {
+    /**
+     * Recalculates the scroll width. /
+     * Пересчитывает ширину прокрутки.
+     */
+    onResize(): void
+  }): any
 }
 
 /**
@@ -37,8 +44,10 @@ export interface ScrollStickySlots {
  * Тип, описывающий подклассы.
  */
 export type ScrollStickyClasses = {
+  /** Main class name / Название основного класса */
   main: ConstrClass
   // :classes [!] System label / Системная метка
+  context: string
   scroll: string
   // :classes [!] System label / Системная метка
 }
