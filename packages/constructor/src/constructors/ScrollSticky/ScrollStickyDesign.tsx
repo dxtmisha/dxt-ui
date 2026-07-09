@@ -67,9 +67,6 @@ export class ScrollStickyDesign<
       this.emits
     )
 
-    // TODO: Method for initializing base objects
-    // TODO: Метод для инициализации базовых объектов
-
     this.init()
   }
 
@@ -79,10 +76,7 @@ export class ScrollStickyDesign<
    * Инициализация всех необходимых свойств для работы.
    */
   protected initExpose(): EXPOSE {
-    return {
-      // TODO: list of properties for export
-      // TODO: список свойств для экспорта
-    } as EXPOSE
+    return {} as EXPOSE
   }
 
   /**
@@ -95,7 +89,7 @@ export class ScrollStickyDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        item: this.getSubClass('item')
+        scroll: this.getSubClass('scroll')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -107,10 +101,7 @@ export class ScrollStickyDesign<
    * Доработка полученного списка стилей.
    */
   protected initStyles(): ConstrStyles {
-    return {
-      // TODO: list of user styles
-      // TODO: список пользовательских стилей
-    }
+    return {}
   }
 
   /**
@@ -124,9 +115,20 @@ export class ScrollStickyDesign<
       ref: this.element,
       class: this.classes?.value.main
     }, [
-      h('div', {
-        class: this.classes?.value.item
-      })
+      this.renderScroll()
     ])
+  }
+
+  /**
+   * Renders the scroll element.
+   *
+   * Рендерит элемент прокрутки.
+   * @returns virtual node / виртуальный узел
+   */
+  protected renderScroll(): VNode {
+    return h('div', {
+      ref: this.item.scrollElement,
+      class: this.classes?.value.scroll
+    })
   }
 }

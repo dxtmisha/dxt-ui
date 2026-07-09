@@ -7,8 +7,6 @@ const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
   { name: 'columns', type: 'string[]' },
   { name: 'disabled', type: 'boolean' },
-  { name: 'fixWidth', type: 'string' },
-  { name: 'hasHorizontalScroll', type: 'boolean' },
   { name: 'header', type: 'string[] | Record<string, TableRecordValue<TableItemPropsBasic>>' },
   { name: 'headerTop', type: 'boolean' },
   { name: 'isSkeleton', type: 'boolean' },

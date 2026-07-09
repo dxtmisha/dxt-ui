@@ -39,6 +39,6 @@ export interface ScrollStickySlots {
 export type ScrollStickyClasses = {
   main: ConstrClass
   // :classes [!] System label / Системная метка
-  item: string
+  scroll: string
   // :classes [!] System label / Системная метка
 }

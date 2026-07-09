@@ -117,12 +117,6 @@ export class TableDesign<
       this.renderItems()
     ]
 
-    if (this.props.hasHorizontalScroll) {
-      children.push(
-        ...this.item.scroll.render()
-      )
-    }
-
     return h('div', {
       ...this.getAttrs(),
       ref: this.element,
@@ -141,7 +135,6 @@ export class TableDesign<
       return h(
         'div',
         {
-          ref: this.item.elementHeader,
           class: this.classes?.value.header
         },
         this.item.tableRecord.renderRecord(
@@ -192,7 +185,6 @@ export class TableDesign<
       return h(
         'div',
         {
-          ref: this.item.elementItems,
           class: this.classes?.value.items
         },
         children

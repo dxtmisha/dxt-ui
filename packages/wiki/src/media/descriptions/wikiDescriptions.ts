@@ -69,6 +69,7 @@ import { wikiDescriptionsProgress } from './wikiDescriptionsProgress'
 import { wikiDescriptionsRadio } from './wikiDescriptionsRadio'
 import { wikiDescriptionsRipple } from './wikiDescriptionsRipple'
 import { wikiDescriptionsScrollbar } from './wikiDescriptionsScrollbar'
+import { wikiDescriptionsScrollSticky } from './wikiDescriptionsScrollSticky'
 import { wikiDescriptionsSection } from './wikiDescriptionsSection'
 import { wikiDescriptionsSelect } from './wikiDescriptionsSelect'
 import { wikiDescriptionsSelectableArea } from './wikiDescriptionsSelectableArea'
@@ -159,6 +160,7 @@ export const wikiDescriptions: StorybookComponentsDescription = [
   wikiDescriptionsRadio,
   wikiDescriptionsRipple,
   wikiDescriptionsScrollbar,
+  wikiDescriptionsScrollSticky,
   wikiDescriptionsSection,
   wikiDescriptionsSelect,
   wikiDescriptionsSelectableArea,

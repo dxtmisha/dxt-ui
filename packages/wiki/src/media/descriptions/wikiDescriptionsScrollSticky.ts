@@ -1,37 +1,32 @@
-import type { Meta, StoryObj } from '@storybook/vue3-vite'
+import type { StorybookComponentsDescriptionItem } from '../../types/storybookTypes'
 
-import D1ScrollSticky from './D1ScrollSticky.vue'
-import { ScrollStickyWikiStorybook } from './wiki'
-
-// :story-import [!] System label / Системная метка
-// :story-import [!] System label / Системная метка
-
-const meta = {
-  title: 'Ui/ScrollSticky',
-  component: D1ScrollSticky,
-  parameters: {
-    design: 'd1',
-    docs: {
-      description: {
-        component: ScrollStickyWikiStorybook.getDescription()
-      }
-    }
+/**
+ * Descriptions for ScrollSticky component properties
+ *
+ * Описания свойств компонента ScrollSticky
+ */
+export const wikiDescriptionsScrollSticky: StorybookComponentsDescriptionItem = {
+  name: 'ScrollSticky',
+  description: {
+    en: 'Helper component for horizontal scroll synchronization with sticky positioning',
+    ru: 'Вспомогательный компонент для синхронизации горизонтальной прокрутки с липким позиционированием'
   },
-  argTypes: ScrollStickyWikiStorybook.getWiki(),
-  args: ScrollStickyWikiStorybook.getValues()
-} satisfies Meta<typeof D1ScrollSticky>
-
-export default meta
-
-type Story = StoryObj<typeof meta>
-
-export const ScrollSticky: Story = {
-  // :story-main [!] System label / Системная метка
-  render: (args: any) => ({
-    components: { D1ScrollSticky },
-    setup: () => ({ args }),
-    template: `
-      <D1ScrollSticky v-bind="args">
+  possibilities: {
+    en: [
+      'sticky horizontal scrollbar positioned at the bottom',
+      'two-way scroll synchronization with a target container',
+      'resize observation for element and window changes',
+      'hide standard native scrollbar'
+    ],
+    ru: [
+      'липкий горизонтальный скроллбар, расположенный внизу',
+      'двусторонняя синхронизация прокрутки с целевым контейнером',
+      'отслеживание изменений размеров элементов и окна',
+      'скрытие стандартного системного скроллбара'
+    ]
+  },
+  render: `
+      <DesignComponent v-bind="args">
         <h3>ScrollSticky Component Demo</h3>
         <p>This is a visualization demonstration of the scroll synchronization helper. The width of this area is set to 150% to trigger horizontal scrolling. The text below is long enough to exceed 1000px in height, allowing you to scroll down and observe the sticky horizontal scrollbar sync in real-time at the bottom of the viewport.</p>
 
@@ -54,11 +49,20 @@ export const ScrollSticky: Story = {
         <p>When integrating ScrollSticky into your design system, it is recommended to apply it to dense data views like tables and grid layouts. Ensure the outer container has a defined height boundary or is allowed to scale naturally within the page layout. Since the scrollbar sticks to the viewport bottom, it should not overlap critical action buttons or sticky footers. Design tokens should be utilized to customize the scrollbar height, tracks, and thumb colors to match the brand identity.</p>
 
         <p>Furthermore, developers should ensure that accessibility is not compromised. Although the visual scrollbar is custom, keyboard navigation (using arrow keys or Page Up/Down) on the target container must remain functional. By utilizing native scroll behaviors under the hood, ScrollSticky maintains full support for standard keyboard accessibility patterns.</p>
-      </D1ScrollSticky>
+      </DesignComponent>
+    `,
+  import: [],
+  stories: [],
+  documentation: {
+    body: `
+<StorybookDescriptions componentName={'ScrollSticky'} type={'scrollsticky'}/>
     `
-  })
-  // :story-main [!] System label / Системная метка
+  },
+  ai: {
+    description: `
+Sticky layout helper providing a synchronized horizontal scrollbar at the bottom of the viewport or container. Synchronizes the scroll position with a target scrollable container (e.g. table, wide grid) in two directions.
+Includes automatic resize observation using ResizeObserver to ensure robust positioning and synchronization during window and container layout shifts.
+    `,
+    hide: true
+  }
 }
-
-// :story-items [!] System label / Системная метка
-// :story-items [!] System label / Системная метка

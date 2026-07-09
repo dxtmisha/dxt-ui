@@ -1,6 +1,3 @@
 {
-  "fix-width": {
-    "_type": "var"
-  },
-  "#item": {}
+  "#scroll": {}
 }

@@ -1,22 +1,22 @@
 @use "@dxtmisha/styles/properties" as ui;
 
 @mixin mixinScrollSticky {
-  position: sticky;
-  bottom: 0;
-  z-index: 24;
+  position: relative;
 
-  overflow-x: auto;
-  overflow-y: hidden;
-  width: 100%;
-  height: ui.v('??scrollHeight', 20px);
+  &__scroll {
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 16;
 
-  @media (pointer: coarse) {
-    display: none;
-  }
+    overflow-x: auto;
+    overflow-y: hidden;
 
-  &__item {
-    display: block;
-    height: 2px;
-    width: ui.v('??fixWidth');
+    height: ui.v('??scrollHeight', 24px);
+
+    @media (pointer: coarse) {
+      display: none;
+    }
   }
 }

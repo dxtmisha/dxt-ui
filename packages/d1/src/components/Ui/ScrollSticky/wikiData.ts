@@ -5,14 +5,12 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
-  { name: 'fixWidth', type: 'string' },
-  { name: 'header', type: 'string | HTMLElement' },
-  { name: 'target', type: 'string | HTMLElement' }
   // :propsList [!] System label / Системная метка
 ]
 
 const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
+  { name: 'default', properties: [{ name: 'props', type: '(any) | undefined' }] }
   // :slotsList [!] System label / Системная метка
 ]
 

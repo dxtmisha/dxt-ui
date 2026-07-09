@@ -23,12 +23,6 @@ export type TablePropsBasic<
 
     /** Field name for key identification / Имя поля для идентификации ключа */
     keyValue?: string
-
-    /** Whether to enable horizontal scroll / Включить ли горизонтальную прокрутку */
-    hasHorizontalScroll?: boolean
-
-    /** Fixed width configuration for scrollbar / Конфигурация фиксированной ширины для полосы прокрутки */
-    fixWidth?: string
   }
 
 /**
@@ -42,7 +36,6 @@ export type TableProps = TablePropsBasic & TablePropsToken
  * Значение по умолчанию для свойства.
  */
 export const defaultsTable = {
-  fixWidth: undefined,
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

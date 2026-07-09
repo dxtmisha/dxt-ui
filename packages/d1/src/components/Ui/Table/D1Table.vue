@@ -10,8 +10,6 @@ import {
   type TableSlots
 } from '@dxtmisha/constructor/Table'
 
-import { D1ScrollSticky } from '../ScrollSticky'
-
 import { defaults, type TableProps } from './props'
 import './styleToken.scss'
 
@@ -42,9 +40,7 @@ const design = new TableDesign(
     emits,
     classes: classesToken,
     styles: stylesToken,
-    components: {
-      scrollSticky: D1ScrollSticky
-    }
+    components: {}
   }
 )
 

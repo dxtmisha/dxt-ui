@@ -1,11 +1,10 @@
-import { type Ref, type ToRefs, computed, ref } from 'vue'
+import { type Ref, type ToRefs, computed } from 'vue'
 import {
   type ConstrEmit,
   type DesignComp,
   forEach
 } from '@dxtmisha/functional'
 
-import { ScrollStickyInclude } from '../ScrollSticky'
 import { TableRecordInclude } from '../TableRecord'
 
 import type { TableComponents, TableEmits, TableSlots } from './types'
@@ -21,13 +20,6 @@ import type { TableProps } from './props'
 export class Table {
   /** Table record include manager instance / Экземпляр включения записей таблицы */
   readonly tableRecord: TableRecordInclude
-  /** Scroll synchronization manager instance / Экземпляр менеджера синхронизации прокрутки */
-  readonly scroll: ScrollStickyInclude
-
-  /** Table header scroll container element / Элемент контейнера прокрутки шапки таблицы */
-  readonly elementHeader = ref<HTMLDivElement>()
-  /** Table items scroll container element / Элемент контейнера прокрутки элементов таблицы */
-  readonly elementItems = ref<HTMLDivElement>()
 
   /**
    * Constructor
@@ -40,7 +32,6 @@ export class Table {
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits callback function triggered on events / функция обратного вызова, запускаемая при событиях
    * @param constructors optional class constructor overrides / необязательные переопределения конструкторов классов
-   * @param constructors.ScrollStickyIncludeConstructor class for creating scroll sync / класс для создания синхронизации прокрутки
    * @param constructors.TableRecordIncludeConstructor class for creating a table record include / класс для создания включения записи таблицы
    */
   constructor(
@@ -53,25 +44,13 @@ export class Table {
     protected readonly slots?: TableSlots,
     protected readonly emits?: ConstrEmit<TableEmits>,
     constructors: {
-      ScrollStickyIncludeConstructor?: typeof ScrollStickyInclude
       TableRecordIncludeConstructor?: typeof TableRecordInclude
     } = {}
   ) {
     const {
-      ScrollStickyIncludeConstructor = ScrollStickyInclude,
       TableRecordIncludeConstructor = TableRecordInclude
     } = constructors
 
-    this.scroll = new ScrollStickyIncludeConstructor(
-      className,
-      props,
-      components,
-      {
-        scrollStickyTarget: this.elementItems,
-        scrollStickyHeader: this.elementHeader,
-        scrollStickyFixWidth: props.fixWidth
-      }
-    )
     this.tableRecord = new TableRecordIncludeConstructor(
       classDesign,
       className,

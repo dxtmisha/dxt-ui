@@ -1,8 +1,11 @@
-import { type Ref, type ToRefs, onUnmounted, watch, watchEffect } from 'vue'
+import { type Ref, type ToRefs, onUnmounted, watch, ref, onMounted } from 'vue'
 import { type ConstrEmit, type DesignComp, EventRef } from '@dxtmisha/functional'
-import { getElement } from '@dxtmisha/functional-basic'
 
-import type { ScrollStickyComponents, ScrollStickyEmits, ScrollStickySlots } from './types'
+import type {
+  ScrollStickyComponents,
+  ScrollStickyEmits,
+  ScrollStickySlots
+} from './types'
 import type { ScrollStickyProps } from './props'
 
 /**
@@ -10,7 +13,9 @@ import type { ScrollStickyProps } from './props'
  * Класс ScrollSticky координирует липкую синхронизацию горизонтальной прокрутки.
  */
 export class ScrollSticky {
-  protected eventTarget?: EventRef<HTMLDivElement, Event>
+  readonly scrollElement = ref<HTMLDivElement>()
+
+  protected eventMain?: EventRef<HTMLDivElement, Event>
   protected eventScroll?: EventRef<HTMLDivElement, Event>
 
   /**
@@ -27,131 +32,115 @@ export class ScrollSticky {
   constructor(
     protected readonly props: ScrollStickyProps,
     protected readonly refs: ToRefs<ScrollStickyProps>,
-    protected readonly element: Ref<HTMLElement | undefined>,
+    protected readonly element: Ref<HTMLDivElement | undefined>,
     protected readonly classDesign: string,
     protected readonly className: string,
     protected readonly components?: DesignComp<ScrollStickyComponents, ScrollStickyProps>,
     protected readonly slots?: ScrollStickySlots,
     protected readonly emits?: ConstrEmit<ScrollStickyEmits>
   ) {
-    watchEffect(() => {
-      if (this.props.target) {
-        this.getEventTarget().start()
-        this.getEventScroll().start()
-      } else {
-        this.stop()
-      }
+    onMounted(() => {
+      watch(
+        [
+          this.element,
+          this.scrollElement
+        ],
+        () => {
+          this.on()
+          this.onMain()
+        },
+        { immediate: true }
+      )
     })
 
-    watch(
-      this.element,
-      () => this.getEventScroll().toggle(Boolean(this.element.value))
-    )
-
-    onUnmounted(() => {
-      this.stop()
-    })
+    onUnmounted(() => this.stop())
   }
 
-  /**
-   * Stops the scroll synchronization events. /
-   * Останавливает синхронизацию событий прокрутки.
-   */
-  stop(): void {
-    if (this.eventTarget) {
-      this.getEventTarget().stop()
-    }
-
-    if (this.eventScroll) {
-      this.getEventScroll().stop()
-    }
+  protected getEventTypes(): string[] {
+    return [
+      'scroll-sync',
+      'resize'
+    ]
   }
 
-  /**
-   * Returns the resolved target scrollable element. /
-   * Возвращает разрешенный целевой прокручиваемый элемент.
-   */
-  protected getTargetElement(): HTMLDivElement | undefined {
-    return getElement(this.props.target) as HTMLDivElement | undefined
-  }
-
-  /**
-   * Returns the resolved header scrollable element. /
-   * Возвращает разрешенный прокручиваемый элемент шапки.
-   */
-  protected getHeaderElement(): HTMLDivElement | undefined {
-    return getElement(this.props.header) as HTMLDivElement | undefined
-  }
-
-  /**
-   * Returns an object for working with target element scroll sync events. /
-   * Возвращает объект для работы с событиями синхронизации прокрутки целевого элемента.
-   */
-  protected getEventTarget(): EventRef<HTMLDivElement, Event> {
-    if (!this.eventTarget) {
-      this.eventTarget = new EventRef(
-        this.refs.target as any,
+  protected getEvent(): EventRef<HTMLDivElement, Event> {
+    if (!this.eventMain) {
+      this.eventMain = new EventRef(
+        this.element,
         undefined,
-        ['scroll-sync'],
-        this.onTargetScroll
+        this.getEventTypes(),
+        this.onMain
       )
     }
 
-    return this.eventTarget
+    return this.eventMain
   }
 
-  /**
-   * Returns an object for working with custom scrollbar scroll sync events. /
-   * Возвращает объект для работы с событиями синхронизации кастомной полосы прокрутки.
-   */
   protected getEventScroll(): EventRef<HTMLDivElement, Event> {
     if (!this.eventScroll) {
       this.eventScroll = new EventRef(
-        this.element as any,
+        this.scrollElement,
         undefined,
-        ['scroll-sync'],
-        this.onCustomScroll
+        this.getEventTypes(),
+        this.onScroll
       )
     }
 
     return this.eventScroll
   }
 
-  /**
-   * Listener for target element scroll. /
-   * Метод прослушивания прокрутки целевого элемента.
-   */
-  protected readonly onTargetScroll = () => {
-    const target = this.getTargetElement()
-    const header = this.getHeaderElement()
-    const scroll = this.element.value
+  protected checkScroll(
+    callback?: (
+      element: HTMLDivElement,
+      scrollElement: HTMLDivElement
+    ) => void
+  ): boolean {
+    const element = this.element.value
+    const scrollElement = this.scrollElement.value
 
-    if (target) {
-      if (header) {
-        header.scrollLeft = target.scrollLeft
-      }
-      if (scroll) {
-        scroll.scrollLeft = target.scrollLeft
-      }
+    if (
+      element
+      && scrollElement
+    ) {
+      callback?.(element, scrollElement)
+      return true
+    }
+
+    return false
+  }
+
+  protected start(): void {
+    this.getEvent().start()
+    this.getEventScroll().start()
+  }
+
+  protected stop(): void {
+    if (this.eventMain) {
+      this.eventMain.stop()
+    }
+
+    if (this.eventScroll) {
+      this.eventScroll.stop()
     }
   }
 
-  /**
-   * Listener for custom scrollbar scroll. /
-   * Метод прослушивания прокрутки кастомной полосы прокрутки.
-   */
-  protected readonly onCustomScroll = () => {
-    const target = this.getTargetElement()
-    const header = this.getHeaderElement()
-    const scroll = this.element.value
+  protected readonly onMain = () => {
+    this.checkScroll((element, scrollElement) => {
+      scrollElement.scrollLeft = element.scrollLeft
+    })
+  }
 
-    if (scroll) {
-      if (header) {
-        header.scrollLeft = scroll.scrollLeft
-      }
-      if (target) {
-        target.scrollLeft = scroll.scrollLeft
-      }
+  protected readonly onScroll = () => {
+    this.checkScroll((element, scrollElement) => {
+      element.scrollLeft = scrollElement.scrollLeft
+    })
+  }
+
+  protected on = () => {
+    if (this.checkScroll()) {
+      this.start()
+    } else {
+      this.stop()
     }
   }
 }
