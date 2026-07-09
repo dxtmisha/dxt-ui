@@ -5,18 +5,14 @@ import type { ConstrClass } from '@dxtmisha/functional'
  *
  * Интерфейс для описания, какие компоненты надо подключить для работы.
  */
-export type ScrollStickyComponents = {
-  // componentName: object
-}
+export type ScrollStickyComponents = {}
 
 /**
  * Type describing available events.
  *
  * Тип, описывающий доступные события.
  */
-export type ScrollStickyEmits = {
-  // load: [value: string]
-}
+export type ScrollStickyEmits = {}
 
 /**
  * Type describing available properties.
@@ -32,7 +28,7 @@ export interface ScrollStickyExpose {
  * Тип, описывающий доступные слоты.
  */
 export interface ScrollStickySlots {
-  // default? (props: any): any
+  default? (props: any): any
 }
 
 /**
