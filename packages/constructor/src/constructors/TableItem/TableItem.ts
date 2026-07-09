@@ -93,7 +93,7 @@ export class TableItem {
       'colspan': this.props.colspan,
       'rowspan': this.props.rowspan,
       'data-value': this.props.value,
-      'data-key': this.props.key,
+      'data-key': this.props.keyItem,
       'data-index': this.props.index,
       'data-divider': this.props.disabled ? undefined : 'active'
     }

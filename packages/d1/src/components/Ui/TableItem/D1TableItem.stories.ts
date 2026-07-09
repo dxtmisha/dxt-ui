@@ -27,6 +27,21 @@ type Story = StoryObj<typeof meta>
 
 export const TableItem: Story = {
   // :story-main [!] System label / Системная метка
+  render: (args: any) => ({
+    components: { D1TableItem },
+    setup: () => ({ args }),
+    template: `
+      <table>
+      <tbody>
+        <tr>
+          <D1TableItem v-bind="args"/>
+          <D1TableItem v-bind="args"/>
+          <D1TableItem v-bind="args"/>
+        </tr>
+      </tbody>
+    </table>
+    `
+  })
   // :story-main [!] System label / Системная метка
 }
 

@@ -1,0 +1,39 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+The table header cell component representing a `<th>` tag. Extends all capabilities of `TableItem` and introduces built-in support for displaying tooltips to provide additional info or guidance directly from the header cell.
+
+**Key Features:**
+
+- Extends `TableItem` properties and features (alignments, tag customization, sticky settings)
+- Standard HTML tag support (`tag` prop, defaults to `th`)
+- Built-in tooltip support triggered by an icon (`iconTooltip` or custom `help-circle` default)
+- Slot for placing rich HTML or custom component content inside the tooltip (`tooltip` slot)
+- Tooltip customization via `tooltipLabel` and `tooltipDescription`
+
+<Source
+    code={`
+<script setup>
+</script>
+
+<template>
+  <table>
+    <thead>
+      <tr>
+        <!-- Simple header cell -->
+        <TableHeaderItem value="Header 1" />
+
+        <!-- Header with built-in tooltip -->
+        <TableHeaderItem
+          label="Header with Tooltip"
+          tooltipLabel="Help Label"
+          tooltipDescription="This explains the meaning of this column."
+        />
+      </tr>
+    </thead>
+  </table>
+</template>
+  `}
+    language="html"
+/>
+
+> TableHeaderItem is perfect for headers that require explanatory text, helping users understand data columns without cluttering the main table view.

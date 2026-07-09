@@ -36,6 +36,19 @@ export const wikiStyle: StorybookArgsToList = {
     },
     isDemo: true
   },
+  alignVertical: {
+    type: StorybookControl.select,
+    options: {
+      category: StorybookCategory.style,
+      type: 'string',
+      options: [],
+      description: {
+        en: 'Vertical alignment depending on component semantics',
+        ru: 'Вертикальное выравнивание в зависимости от семантики компонента'
+      }
+    },
+    isDemo: true
+  },
   asPalette: {
     type: StorybookControl.boolean,
     options: {

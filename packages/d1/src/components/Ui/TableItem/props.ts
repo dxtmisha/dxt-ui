@@ -9,8 +9,8 @@ export const propsValues = {
 
 type PropsToken = {
   // :type [!] System label / Системная метка
-  disabled?: boolean
   selected?: boolean
+  disabled?: boolean
   align?: 'left' | 'center' | 'right'
   alignVertical?: 'top' | 'center' | 'bottom'
   labelClamp?: boolean

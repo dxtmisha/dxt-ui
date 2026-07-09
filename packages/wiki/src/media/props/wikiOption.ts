@@ -70,6 +70,17 @@ export const wikiOption: StorybookArgsToList = {
       }
     }
   },
+  colspan: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.option,
+      type: 'string',
+      description: {
+        en: 'Number of columns the cell should span',
+        ru: 'Количество объединяемых колонок для ячейки'
+      }
+    }
+  },
   currencyHide: {
     type: StorybookControl.boolean,
     options: {
@@ -299,6 +310,16 @@ export const wikiOption: StorybookArgsToList = {
     },
     hide: true
   },
+  labelClamp: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.option,
+      description: {
+        en: 'Limits the number of lines for the label text',
+        ru: 'Ограничивает количество строк для текста метки'
+      }
+    }
+  },
   labelMax: {
     type: StorybookControl.number,
     options: {
@@ -383,6 +404,17 @@ export const wikiOption: StorybookArgsToList = {
       }
     }
   },
+  rowspan: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.option,
+      type: 'string',
+      description: {
+        en: 'Number of rows the cell should span',
+        ru: 'Количество объединяемых строк для ячейки'
+      }
+    }
+  },
   showPhoneCode: {
     type: StorybookControl.boolean,
     options: {
@@ -400,6 +432,26 @@ export const wikiOption: StorybookArgsToList = {
       description: {
         en: 'Whether to show the search field',
         ru: 'Показывать ли поле поиска'
+      }
+    }
+  },
+  stickyLeft: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.option,
+      description: {
+        en: 'Enables sticky positioning for the cell from the left',
+        ru: 'Включает липкое позиционирование для ячейки слева'
+      }
+    }
+  },
+  stickyTop: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.option,
+      description: {
+        en: 'Enables sticky positioning for the cell from the top',
+        ru: 'Включает липкое позиционирование для ячейки сверху'
       }
     }
   },

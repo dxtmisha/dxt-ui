@@ -1,3 +1,21 @@
 {
-  "main": "{d.tableItem}"
+  "main": "{d.tableItem}",
+  "paddingX": "{sys.spacing.xs}",
+  "paddingY": "{sys.spacing.x}",
+  "link|font": "{font.bodyMedium}",
+  "#description": {
+    "link|caption": "{??caption}",
+    "color-opacity": "{sys.opacity.surface.medium}"
+  },
+  "~selected": {
+    "palette-background": "{sys.palette.primaryVariant}",
+    "background-opacity": "{sys.opacity.overlay}"
+  },
+  "~disabled": {
+    "color-opacity": "{sys.opacity.surface.disabled}",
+    "#description": {
+      "link|caption": "{??caption}",
+      "color-opacity": "{sys.opacity.surface.disabled}"
+    }
+  }
 }

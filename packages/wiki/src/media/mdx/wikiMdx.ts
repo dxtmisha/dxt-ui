@@ -87,6 +87,9 @@ import { wikiMdxSwitch } from './Switch/wikiMdxSwitch'
 import { wikiMdxSegmentControl } from './SegmentControl/wikiMdxSegmentControl'
 import { wikiMdxSegmentControlItem } from './SegmentControlItem/wikiMdxSegmentControlItem'
 import { wikiMdxTabItem } from './TabItem/wikiMdxTabItem'
+import { wikiMdxTableHeaderItem } from './TableHeaderItem/wikiMdxTableHeaderItem'
+import { wikiMdxTableItem } from './TableItem/wikiMdxTableItem'
+import { wikiMdxTableRecord } from './TableRecord/wikiMdxTableRecord'
 import { wikiMdxTabs } from './Tabs/wikiMdxTabs'
 import { wikiMdxTabsNavigation } from './TabsNavigation/wikiMdxTabsNavigation'
 import { wikiMdxTextarea } from './Textarea/wikiMdxTextarea'
@@ -184,6 +187,9 @@ export const wikiMdx: StorybookComponentsMdx = [
   wikiMdxSegmentControl,
   wikiMdxSegmentControlItem,
   wikiMdxTabItem,
+  wikiMdxTableHeaderItem,
+  wikiMdxTableItem,
+  wikiMdxTableRecord,
   wikiMdxTabs,
   wikiMdxTabsNavigation,
   wikiMdxTextarea,

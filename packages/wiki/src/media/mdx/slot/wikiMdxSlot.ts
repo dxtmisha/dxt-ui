@@ -25,6 +25,8 @@ import slotSecondaryEn from './secondary.en.mdx'
 import slotSecondaryRu from './secondary.ru.mdx'
 import slotSuffixEn from './suffix.en.mdx'
 import slotSuffixRu from './suffix.ru.mdx'
+import slotTooltipEn from './tooltip.en.mdx'
+import slotTooltipRu from './tooltip.ru.mdx'
 import slotTrailingEn from './trailing.en.mdx'
 import slotTrailingRu from './trailing.ru.mdx'
 export const wikiMdxSlot: StorybookComponentsMdxItem = {
@@ -81,6 +83,10 @@ export const wikiMdxSlot: StorybookComponentsMdxItem = {
     suffix: {
       en: slotSuffixEn,
       ru: slotSuffixRu
+    },
+    tooltip: {
+      en: slotTooltipEn,
+      ru: slotTooltipRu
     },
     trailing: {
       en: slotTrailingEn,

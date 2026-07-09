@@ -1,0 +1,40 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+The baseline table cell component representing a `<td>` or other custom tags. Used inside rows to display text, labels, and descriptions, and supports structural layout attributes like colspan and rowspan.
+
+**Key Features:**
+
+- Standard and custom HTML tag support (`tag` prop, defaults to `td`)
+- Cell alignment options (`align` and `alignVertical`)
+- Text clamping for cells with long labels (`labelClamp`)
+- Dynamic skeleton states (`isSkeleton`) for loading phases
+- Sticky columns and headers support (`stickyLeft`, `stickyTop`)
+- Selectable and interactive states (`selected`, `disabled`)
+
+<Source
+    code={`
+<script setup>
+</script>
+
+<template>
+  <table>
+    <tr>
+      <!-- Simple cell with value -->
+      <TableItem value="Cell Value" />
+
+      <!-- Centered cell with custom span and label clamping -->
+      <TableItem
+        label="Clamped Label Value"
+        description="Optional cell description"
+        align="center"
+        colspan="2"
+        labelClamp
+      />
+    </tr>
+  </table>
+</template>
+  `}
+    language="html"
+/>
+
+> TableItem provides baseline layout and presentation options for cell contents, ensuring consistent text truncation, alignments, and skeleton logic.

@@ -138,6 +138,18 @@ export const wikiTechnical: StorybookArgsToList = {
     },
     hide: true
   },
+  keyItem: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.technical,
+      type: 'string',
+      description: {
+        en: 'Unique key identifier for the list item or table row',
+        ru: 'Уникальный ключ-идентификатор для элемента списка или строки таблицы'
+      }
+    },
+    hide: true
+  },
   labelId: {
     type: StorybookControl.string,
     options: {

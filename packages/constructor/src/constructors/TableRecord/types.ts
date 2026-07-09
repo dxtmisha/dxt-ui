@@ -21,7 +21,8 @@ export type TableRecordEmits = {}
  * Type describing available properties. /
  * Тип, описывающий доступные свойства.
  */
-export interface TableRecordExpose { }
+export interface TableRecordExpose {
+}
 
 /**
  * Type describing available slots. /

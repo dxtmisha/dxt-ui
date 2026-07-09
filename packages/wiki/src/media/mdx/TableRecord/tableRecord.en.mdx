@@ -1,0 +1,38 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+The table row component representing a `<tr>` tag. It coordinates the rendering of a set of column cells (`TableHeaderItem` if `isHeader` is true, or `TableItem` otherwise) based on a data record (`item` prop) and a list of column indexes (`columns` prop).
+
+**Key Features:**
+
+- Standard table row container (`tr` tag)
+- Dynamic cell generation based on `columns` keys and `item` values
+- Automatic selection between header cells (`TableHeaderItem`) and data cells (`TableItem`) via the `isHeader` flag
+- Selectable and disabled states applied row-wide (`selected`, `disabled`)
+- Dynamic custom slots named after column indexes to custom render specific cell contents
+
+<Source
+    code={`
+<script setup>
+</script>
+
+<template>
+  <table>
+    <!-- Header Row -->
+    <TableRecord
+      :isHeader="true"
+      :columns="['name', 'role']"
+      :item="{ name: 'Name', role: 'Role' }"
+    />
+
+    <!-- Data Row -->
+    <TableRecord
+      :columns="['name', 'role']"
+      :item="{ name: 'Alice', role: 'Developer' }"
+    />
+  </table>
+</template>
+  `}
+    language="html"
+/>
+
+> TableRecord simplifies table generation by automating cell rendering from key-value data structures, with full support for custom slot overrides per column.
