@@ -135,7 +135,7 @@ export class BreadcrumbItemDesign<
   readonly renderIconArrow = (): VNode[] => {
     if (
       this.components
-      && this.item.enabled.isEnabled
+      && !this.item.enabled.isReadonly
     ) {
       return this.components.render(
         'icon',

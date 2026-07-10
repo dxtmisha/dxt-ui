@@ -5,6 +5,7 @@
   position: relative;
 
   @include ui.width(ui.v('??width'));
+  min-width: ui.v('??width');
   @include ui.aspectRatio(#{1/1});
 
   @include ui.absoluteAfter {

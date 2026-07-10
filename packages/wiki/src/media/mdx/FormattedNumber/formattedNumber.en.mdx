@@ -11,7 +11,7 @@ FormattedNumber provides a simple, clean interface for presenting numeric data w
 - Standard localized number formatting (decimals, separators).
 - Currency formatting with standard codes (e.g. USD, EUR, RUB).
 - Unit of measurement formatting support (e.g. kilogram, liter, percent).
-- Formatting bypass: when `format` is `false`, outputs the raw value converted to a string.
+- Formatting bypass: when `formatting` is `false`, outputs the raw value converted to a string.
 - Localized language overriding via the `language` prop.
 - Lightweight inline rendering (renders as a `span` tag).
 
@@ -36,7 +36,7 @@ FormattedNumber provides a simple, clean interface for presenting numeric data w
     <FormattedNumber :value="1500" unit="kilogram"/>
 
     <!-- Non-formatted display -->
-    <FormattedNumber :value="4500" :format="false"/>
+    <FormattedNumber :value="4500" :formatting="false"/>
 
     <!-- Overridden locale -->
     <FormattedNumber :value="1234.56" language="ru-RU"/>

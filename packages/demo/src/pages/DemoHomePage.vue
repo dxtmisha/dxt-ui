@@ -15,8 +15,11 @@ import DemoLink from '../components/DemoLink.vue'
         <DemoLink label="Alert" name="component-alert"/>
         <DemoLink label="Actions" name="component-actions"/>
         <DemoLink label="Anchor" name="component-anchor"/>
+        <DemoLink label="Avatar" name="component-avatar"/>
         <DemoLink label="Badge" name="component-badge"/>
         <DemoLink label="Bars" name="component-bars"/>
+        <DemoLink label="Breadcrumbs" name="component-breadcrumbs"/>
+        <DemoLink label="Bullet" name="component-bullet"/>
         <DemoLink label="Button" name="component-button"/>
         <DemoLink label="ButtonGroup" name="component-button-group"/>
         <DemoLink label="Cell" name="component-cell"/>
@@ -26,10 +29,14 @@ import DemoLink from '../components/DemoLink.vue'
         <DemoLink label="ClientOnly" name="component-client-only"/>
         <DemoLink label="Dialog" name="component-dialog"/>
         <DemoLink label="DraggableWrapper" name="component-draggable-wrapper"/>
+        <DemoLink label="Formatted" name="component-formatted"/>
+        <DemoLink label="HorizontalScroll" name="component-horizontal-scroll"/>
         <DemoLink label="Icon" name="component-icon"/>
         <DemoLink label="Image" name="component-image"/>
         <DemoLink label="Input" name="component-input"/>
+        <DemoLink label="InputCode" name="component-input-code"/>
         <DemoLink label="InputPhone" name="component-input-phone"/>
+        <DemoLink label="InputSocial" name="component-input-social"/>
         <DemoLink label="List" name="component-list"/>
         <DemoLink label="Mask" name="component-mask"/>
         <DemoLink label="Modal" name="component-modal"/>
@@ -37,7 +44,9 @@ import DemoLink from '../components/DemoLink.vue'
         <DemoLink label="MenuButton" name="component-menu-button"/>
         <DemoLink label="MenuChip" name="component-menu-chip"/>
         <DemoLink label="MenuCountry" name="component-menu-country"/>
+        <DemoLink label="MenuLanguage" name="component-menu-language"/>
         <DemoLink label="Motion Axis" name="component-motion-axis"/>
+        <DemoLink label="MotionSticky" name="component-motion-sticky"/>
         <DemoLink label="Motion Transform" name="component-motion-transform"/>
         <DemoLink label="Page Area" name="component-page-area"/>
         <DemoLink label="Progress" name="component-progress"/>

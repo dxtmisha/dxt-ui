@@ -12,7 +12,7 @@ export type FormattedUnitPropsBasic = {
   unit?: string
 
   /** Whether to format the value / Требуется ли форматировать значение */
-  format?: boolean
+  formatting?: boolean
 
   /** Language for formatting / Язык для форматирования */
   language?: string
@@ -31,7 +31,7 @@ export type FormattedUnitProps = FormattedUnitPropsBasic & FormattedUnitPropsTok
  * Значение по умолчанию для свойства.
  */
 export const defaultsFormattedUnit = {
-  format: true,
+  formatting: true,
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

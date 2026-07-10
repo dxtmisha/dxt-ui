@@ -3,7 +3,10 @@
 @mixin mixinBreadcrumbItem {
   @include ui.flexX;
 
-  >* {
+  text-decoration: none;
+  color: inherit;
+
+  > * {
     order: 4;
   }
 

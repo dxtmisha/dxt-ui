@@ -29,7 +29,8 @@ export const wikiMotionAxis: StorybookArgsToList = {
         en: 'Enables height animation',
         ru: 'Включает анимацию высоты'
       }
-    }
+    },
+    hide: true
   },
   'motionAxis.direction': {
     type: StorybookControl.select,

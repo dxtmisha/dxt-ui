@@ -46,7 +46,7 @@ export class FormattedNumber {
 
     if (
       isFilled(value)
-      && this.props.format
+      && this.props.formatting
     ) {
       const intl = new GeoIntl(this.props.language)
 

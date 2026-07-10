@@ -47,7 +47,7 @@ export class FormattedUnit {
 
     if (
       isFilled(value)
-      && this.props.format
+      && this.props.formatting
       && unitKey
     ) {
       return new GeoUnit(this.props.language).format(value, unitKey)

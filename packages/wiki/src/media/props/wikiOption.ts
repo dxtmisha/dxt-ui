@@ -168,7 +168,8 @@ export const wikiOption: StorybookArgsToList = {
         en: 'Whether to format the value',
         ru: 'Требуется ли форматировать значение'
       }
-    }
+    },
+    hide: true
   },
   formatting: {
     type: StorybookControl.boolean,

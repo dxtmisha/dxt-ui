@@ -112,9 +112,11 @@ export class BreadcrumbItem {
    * @returns element attributes / атрибуты элемента
    */
   get binds(): Record<string, any> {
-    return {
-      ...this.event.binds
+    if (this.enabled.isEnabled) {
+      return this.event.binds
     }
+
+    return {}
   }
 
   /**

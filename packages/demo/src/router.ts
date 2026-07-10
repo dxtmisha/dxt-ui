@@ -10,8 +10,11 @@ import DemoActionSheetPage from './pages/components/DemoActionSheetPage.vue'
 import DemoAlertPage from './pages/components/DemoAlertPage.vue'
 import DemoActionsPage from './pages/components/DemoActionsPage.vue'
 import DemoAnchorPage from './pages/components/DemoAnchorPage.vue'
+import DemoAvatarPage from './pages/components/DemoAvatarPage.vue'
 import DemoBadgePage from './pages/components/DemoBadgePage.vue'
 import DemoBarsPage from './pages/components/DemoBarsPage.vue'
+import DemoBreadcrumbsPage from './pages/components/DemoBreadcrumbsPage.vue'
+import DemoBulletPage from './pages/components/DemoBulletPage.vue'
 import DemoButtonPage from './pages/components/DemoButtonPage.vue'
 import DemoButtonGroupPage from './pages/components/DemoButtonGroupPage.vue'
 import DemoCellPage from './pages/components/DemoCellPage.vue'
@@ -21,10 +24,14 @@ import DemoChipGroupPage from './pages/components/DemoChipGroupPage.vue'
 import DemoClientOnlyPage from './pages/components/DemoClientOnlyPage.vue'
 import DemoDialogPage from './pages/components/DemoDialogPage.vue'
 import DemoDraggableWrapperPage from './pages/components/DemoDraggableWrapperPage.vue'
+import DemoFormattedPage from './pages/components/DemoFormattedPage.vue'
+import DemoHorizontalScrollPage from './pages/components/DemoHorizontalScrollPage.vue'
 import DemoIconPage from './pages/components/DemoIconPage.vue'
 import DemoImagePage from './pages/components/DemoImagePage.vue'
 import DemoInputPage from './pages/components/DemoInputPage.vue'
+import DemoInputCodePage from './pages/components/DemoInputCodePage.vue'
 import DemoInputPhonePage from './pages/components/DemoInputPhonePage.vue'
+import DemoInputSocialPage from './pages/components/DemoInputSocialPage.vue'
 import DemoListPage from './pages/components/DemoListPage.vue'
 import DemoMaskPage from './pages/components/DemoMaskPage.vue'
 import DemoModalPage from './pages/components/DemoModalPage.vue'
@@ -32,7 +39,9 @@ import DemoMenuPage from './pages/components/DemoMenuPage.vue'
 import DemoMenuButtonPage from './pages/components/DemoMenuButtonPage.vue'
 import DemoMenuChipPage from './pages/components/DemoMenuChipPage.vue'
 import DemoMenuCountryPage from './pages/components/DemoMenuCountryPage.vue'
+import DemoMenuLanguagePage from './pages/components/DemoMenuLanguagePage.vue'
 import DemoMotionAxisPage from './pages/components/DemoMotionAxisPage.vue'
+import DemoMotionStickyPage from './pages/components/DemoMotionStickyPage.vue'
 import DemoMotionTransformPage from './pages/components/DemoMotionTransformPage.vue'
 import DemoPageAreaPage from './pages/components/DemoPageAreaPage.vue'
 import DemoProgressPage from './pages/components/DemoProgressPage.vue'
@@ -89,6 +98,11 @@ export const routes: RouteRecordRaw[] = [
     component: DemoAnchorPage
   },
   {
+    path: '/component-avatar',
+    name: 'component-avatar',
+    component: DemoAvatarPage
+  },
+  {
     path: '/component-badge',
     name: 'component-badge',
     component: DemoBadgePage
@@ -97,6 +111,16 @@ export const routes: RouteRecordRaw[] = [
     path: '/component-bars',
     name: 'component-bars',
     component: DemoBarsPage
+  },
+  {
+    path: '/component-breadcrumbs',
+    name: 'component-breadcrumbs',
+    component: DemoBreadcrumbsPage
+  },
+  {
+    path: '/component-bullet',
+    name: 'component-bullet',
+    component: DemoBulletPage
   },
   {
     path: '/component-button',
@@ -144,6 +168,16 @@ export const routes: RouteRecordRaw[] = [
     component: DemoDraggableWrapperPage
   },
   {
+    path: '/component-formatted',
+    name: 'component-formatted',
+    component: DemoFormattedPage
+  },
+  {
+    path: '/component-horizontal-scroll',
+    name: 'component-horizontal-scroll',
+    component: DemoHorizontalScrollPage
+  },
+  {
     path: '/component-icon',
     name: 'component-icon',
     component: DemoIconPage
@@ -159,9 +193,19 @@ export const routes: RouteRecordRaw[] = [
     component: DemoInputPage
   },
   {
+    path: '/component-input-code',
+    name: 'component-input-code',
+    component: DemoInputCodePage
+  },
+  {
     path: '/component-input-phone',
     name: 'component-input-phone',
     component: DemoInputPhonePage
+  },
+  {
+    path: '/component-input-social',
+    name: 'component-input-social',
+    component: DemoInputSocialPage
   },
   {
     path: '/component-list',
@@ -199,9 +243,19 @@ export const routes: RouteRecordRaw[] = [
     component: DemoMenuCountryPage
   },
   {
+    path: '/component-menu-language',
+    name: 'component-menu-language',
+    component: DemoMenuLanguagePage
+  },
+  {
     path: '/component-motion-axis',
     name: 'component-motion-axis',
     component: DemoMotionAxisPage
+  },
+  {
+    path: '/component-motion-sticky',
+    name: 'component-motion-sticky',
+    component: DemoMotionStickyPage
   },
   {
     path: '/component-motion-transform',

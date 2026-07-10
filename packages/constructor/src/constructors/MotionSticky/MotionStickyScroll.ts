@@ -55,12 +55,6 @@ export class MotionStickyScroll {
       positionStyle
       && positionElement
     ) {
-      console.log(
-        positionStyle.top,
-        positionStyle.bottom,
-        positionElement.top,
-        positionElement.bottom
-      )
       this.stickyElement.setStatus(
         positionStyle.top === Math.round(positionElement.top)
         || positionStyle.top === Math.floor(positionElement.top)

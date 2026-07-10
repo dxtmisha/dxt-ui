@@ -5,7 +5,7 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
-  { name: 'format', type: 'boolean' },
+  { name: 'formatting', type: 'boolean' },
   { name: 'language', type: 'string' },
   { name: 'unit', type: 'string' },
   { name: 'value', type: 'NumberOrString' }

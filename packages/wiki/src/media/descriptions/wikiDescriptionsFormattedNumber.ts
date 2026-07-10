@@ -40,7 +40,7 @@ export const wikiDescriptionsFormattedNumber: StorybookComponentsDescriptionItem
           <DesignComponent :value="1234567.89"/>
           <DesignComponent :value="1234567.89" currency="USD"/>
           <DesignComponent :value="1234567.89" unit="kilogram"/>
-          <DesignComponent :value="1234567.89" :format="false"/>
+          <DesignComponent :value="1234567.89" :formatting="false"/>
         </div>
       `
     }

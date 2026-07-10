@@ -40,7 +40,7 @@ export const FormattedNumberBasic: Story = {
           <D1FormattedNumber :value="1234567.89"/>
           <D1FormattedNumber :value="1234567.89" currency="USD"/>
           <D1FormattedNumber :value="1234567.89" unit="kilogram"/>
-          <D1FormattedNumber :value="1234567.89" :format="false"/>
+          <D1FormattedNumber :value="1234567.89" :formatting="false"/>
         </div>
     `
   })
