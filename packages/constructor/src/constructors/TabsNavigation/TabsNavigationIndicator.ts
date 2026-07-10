@@ -113,7 +113,7 @@ export class TabsNavigationIndicator {
    * @returns tab item class name suffix / суффикс имени класса вкладки
    */
   protected getItemClassName(): string {
-    return `${this.className}Item`
+    return `${this.classDesign}-item`
   }
 
   /**

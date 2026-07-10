@@ -45,8 +45,11 @@ import DemoMotionStickyPage from './pages/components/DemoMotionStickyPage.vue'
 import DemoMotionTransformPage from './pages/components/DemoMotionTransformPage.vue'
 import DemoPageAreaPage from './pages/components/DemoPageAreaPage.vue'
 import DemoProgressPage from './pages/components/DemoProgressPage.vue'
+import DemoProgressBarPage from './pages/components/DemoProgressBarPage.vue'
 import DemoRadioPage from './pages/components/DemoRadioPage.vue'
 import DemoScrollbarPage from './pages/components/DemoScrollbarPage.vue'
+import DemoScrollStickyPage from './pages/components/DemoScrollStickyPage.vue'
+import DemoSegmentControlPage from './pages/components/DemoSegmentControlPage.vue'
 import DemoSelectableAreaPage from './pages/components/DemoSelectableAreaPage.vue'
 import DemoSelectPage from './pages/components/DemoSelectPage.vue'
 import DemoSnackbarPage from './pages/components/DemoSnackbarPage.vue'
@@ -273,6 +276,11 @@ export const routes: RouteRecordRaw[] = [
     component: DemoProgressPage
   },
   {
+    path: '/component-progress-bar',
+    name: 'component-progress-bar',
+    component: DemoProgressBarPage
+  },
+  {
     path: '/component-radio',
     name: 'component-radio',
     component: DemoRadioPage
@@ -281,6 +289,16 @@ export const routes: RouteRecordRaw[] = [
     path: '/component-scrollbar',
     name: 'component-scrollbar',
     component: DemoScrollbarPage
+  },
+  {
+    path: '/component-scroll-sticky',
+    name: 'component-scroll-sticky',
+    component: DemoScrollStickyPage
+  },
+  {
+    path: '/component-segment-control',
+    name: 'component-segment-control',
+    component: DemoSegmentControlPage
   },
   {
     path: '/component-selectable-area',

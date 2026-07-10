@@ -14,7 +14,6 @@ import {
 import D1Icon from '../Icon/D1Icon.vue'
 import D1Badge from '../Badge/D1Badge.vue'
 import D1Progress from '../Progress/D1Progress.vue'
-import D1Ripple from '../Ripple/D1Ripple.vue'
 
 import { defaults, type SegmentControlItemProps, propsValues } from './props'
 import './styleToken.scss'
@@ -55,8 +54,7 @@ const design = new SegmentControlItemDesign(
     components: {
       icon: D1Icon,
       badge: D1Badge,
-      progress: D1Progress,
-      ripple: D1Ripple
+      progress: D1Progress
     }
   }
 )

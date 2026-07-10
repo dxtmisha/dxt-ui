@@ -21,7 +21,7 @@
     position: absolute;
     top: ui.v('??indicator.top', auto);
     bottom: 0;
-    left: calc(#{ui.v('??paddingX', 0px)} + #{ui.v('??sys.left')});
+    left: calc(#{ui.v('??paddingX', 0px)} + #{ui.v('?item.sys.left')});
     pointer-events: none;
     opacity: 0;
 

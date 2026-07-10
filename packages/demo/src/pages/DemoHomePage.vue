@@ -50,8 +50,11 @@ import DemoLink from '../components/DemoLink.vue'
         <DemoLink label="Motion Transform" name="component-motion-transform"/>
         <DemoLink label="Page Area" name="component-page-area"/>
         <DemoLink label="Progress" name="component-progress"/>
+        <DemoLink label="ProgressBar" name="component-progress-bar"/>
         <DemoLink label="Radio" name="component-radio"/>
         <DemoLink label="Scrollbar" name="component-scrollbar"/>
+        <DemoLink label="ScrollSticky" name="component-scroll-sticky"/>
+        <DemoLink label="SegmentControl" name="component-segment-control"/>
         <DemoLink label="SelectableArea" name="component-selectable-area"/>
         <DemoLink label="Select" name="component-select"/>
         <DemoLink label="Snackbar" name="component-snackbar"/>

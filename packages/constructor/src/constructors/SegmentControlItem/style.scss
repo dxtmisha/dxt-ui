@@ -6,7 +6,7 @@
 
   &::before {
     top: 0;
-    left: calc(#{ui.v('??sys.left')});
+    left: calc(#{ui.v('?item.sys.left')});
 
     width: 100%;
     height: auto;
