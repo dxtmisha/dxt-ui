@@ -27,14 +27,6 @@ export const wikiDescriptionsProgressBar: StorybookComponentsDescriptionItem = {
       'режимы наложения overlay без отступов между сегментами'
     ]
   },
-  render: `
-      <div class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--center">
-        <DesignComponent v-bind="args"/>
-      </div>
-    `,
-  import: [
-    'import { ref } from \'vue\''
-  ],
   stories: [
     {
       id: 'ProgressBarBasic',
@@ -43,19 +35,23 @@ export const wikiDescriptionsProgressBar: StorybookComponentsDescriptionItem = {
         ru: 'Базовый'
       },
       template: `
-        <div class="wiki-storybook-group">
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Basic</div>
-            <DesignComponent :value="50" />
-          </div>
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--center">
-            <div class="wiki-storybook-item__label">Overlay</div>
-            <DesignComponent overlay :value="[
-              { value: 25, palette: 'primary' },
-              { value: 35, palette: 'success' },
-              { value: 20, palette: 'error' }
-            ]" />
-          </div>
+        <div class="wiki-storybook-flex-column">
+          <DesignComponent :value="50" />
+          <DesignComponent :value="[
+            { value: 25, color: '#ff4d4f' },
+            { value: 35, color: '#52c41a' },
+            { value: 20, color: '#1890ff' }
+          ]" />
+          <DesignComponent overlay :value="[
+            { value: 15, palette: 'warning' },
+            { value: 45, palette: 'success' },
+            { value: 30, palette: 'secondary' }
+          ]" />
+          <DesignComponent showLabel :value="[
+            { value: 30, label: '30%', palette: 'primary' },
+            { value: 40, label: '40%', palette: 'success' },
+            { value: 30, label: '30%', palette: 'error' }
+          ]" />
         </div>
       `
     }
