@@ -43,14 +43,14 @@ export const wikiDescriptionsProgressBar: StorybookComponentsDescriptionItem = {
             { value: 20, color: '#1890ff' }
           ]" />
           <DesignComponent overlay :value="[
-            { value: 15, palette: 'warning' },
-            { value: 45, palette: 'success' },
-            { value: 30, palette: 'secondary' }
+            { value: 15, color: '#faad14' },
+            { value: 45, color: '#52c41a' },
+            { value: 30, color: '#13c2c2' }
           ]" />
           <DesignComponent showLabel :value="[
-            { value: 30, label: '30%', palette: 'primary' },
-            { value: 40, label: '40%', palette: 'success' },
-            { value: 30, label: '30%', palette: 'error' }
+            { value: 30, label: '30%', color: '#2f54eb' },
+            { value: 40, label: '40%', color: '#722ed1' },
+            { value: 30, label: '30%', color: '#eb2f96' }
           ]" />
         </div>
       `
