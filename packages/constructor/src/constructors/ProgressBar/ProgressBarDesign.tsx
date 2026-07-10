@@ -139,12 +139,22 @@ export class ProgressBarDesign<
     ) {
       children.push(h(
         'div',
-        { class: this.classes?.value.itemLabel },
+        {
+          class: {
+            [this.classes?.value.itemLabel ?? '']: true,
+            [this.item.skeleton.classesSkeleton.classText]: this.props.isSkeleton
+          }
+        },
         item.label
       ))
     }
 
-    children.push(h('div', { class: this.classes?.value.itemProgress }))
+    children.push(h('div', {
+      class: {
+        [this.classes?.value.itemProgress ?? '']: true,
+        [this.item.skeleton.classesSkeleton.classBackground]: this.props.isSkeleton
+      }
+    }))
 
     return h(
       'div',
@@ -154,7 +164,8 @@ export class ProgressBarDesign<
           ...item.classes
         },
         'style': item.style,
-        'data-index': item.index
+        'data-index': item.index,
+        ...item.aria
       },
       children
     )

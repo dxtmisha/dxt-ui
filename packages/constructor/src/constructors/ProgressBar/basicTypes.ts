@@ -1,5 +1,7 @@
 import type { ConstrClassObject, ConstrStyles } from '@dxtmisha/functional'
 
+import type { AriaList } from '../../types/ariaTypes'
+
 /** Interface describing a progress bar item / Интерфейс, описывающий элемент прогресс-бара */
 export type ProgressBarItem = {
   /** Item index / Индекс элемента */
@@ -27,6 +29,8 @@ export type ProgressBarInfoItem
       classes: ConstrClassObject
       /** CSS style properties / Свойства CSS-стилей */
       style: ConstrStyles
+      /** ARIA attributes / ARIA атрибуты */
+      aria: AriaList
     }
 
 /** List of processed progress bar items / Список обработанных элементов прогресс-бара */

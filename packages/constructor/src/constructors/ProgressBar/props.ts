@@ -1,3 +1,4 @@
+import type { SkeletonPropsInclude } from '../Skeleton'
 import type { ProgressBarItem, ProgressBarList } from './basicTypes'
 
 type ProgressBarPropsToken = {
@@ -6,7 +7,7 @@ type ProgressBarPropsToken = {
   // :type [!] System label / Системная метка
 }
 
-export type ProgressBarPropsBasic = {
+export type ProgressBarPropsBasic = SkeletonPropsInclude & {
   /** Focus item index / Фокусируемый индекс элемента */
   focus?: string
 

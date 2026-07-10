@@ -36,3 +36,5 @@ Must be placed in a single `## Methods` section.
 ## Rules for D1 vs Constructor separation in wiki documentation
 - **No D1 References or Props**: Documentation files (MDX and descriptions) in the `packages/wiki` package must only document baseline constructor-level properties, attributes, and features. They must not mention D1-prefixed component variants, D1 package classes, or D1-specific options (such as size configurations `sm`, `md`, `lg` that are only defined at the D1 package level).
 
+## Rules for MDX Headers in Component Descriptions
+- **No Headers in Main Description Files**: The main component description MDX files (mapped under component name keys in MDX mapping files, e.g. `switch`, `radio`, `progressBar`) must start directly with the text description. They must NOT contain a `## Description` or `## Описание` header.

@@ -1,25 +1,50 @@
 import { Source } from '@storybook/addon-docs/blocks';
 
-## ProgressBar and Related Parameters
+The `ProgressBar` component is designed to display operation progress, data loading, or proportional values in a clean horizontal layout. It supports single-value representation as well as complex multi-segmented tracks.
 
-The `ProgressBar` component displays a linear progress bar with one or more segments. It supports percentage calculation, custom colors, focus states, and layout options.
+The component handles percentage calculations automatically based on the current and maximum values, supports custom color palettes, and offers options for displaying descriptive segment labels and keyboard focus states.
 
-**Properties:**
+**Key features:**
 
-- `value` — current progress value (number) or list of progress bar segments (array of items with `value`, `label`, `color`, etc.)
-- `max` — maximum value of progress (defaults to `100` or the sum of segment values)
-- `showLabel` — displays detail labels inside individual segments
+- Single value progress bar for straightforward status indication
+- Multi-segment progress bar for displaying proportions or multiple stacked datasets
+- Automatic percentage calculation based on configurable maximum value limit (`max`)
+- Built-in label rendering within individual segments (`showLabel`)
+- Visual appearance control via custom color values or palette tokens
+- Keyboard navigation and focus tracking states for accessibility
+
+**Common use cases:**
+
+- Displaying document upload or download progress
+- Showing storage space usage split by file categories (e.g., system, media, documents)
+- Visualizing task completion rate in workflows or project managers
+- Representing poll or voting results across different options
+- Displaying battery level, budget utilization, or steps in a checkout wizard
 
 <Source
     code={`
-<!-- Single value progress -->
-<ProgressBar :value="45" />
+<script setup>
+import { ref } from 'vue'
 
-<!-- Multi-segment progress with custom labels -->
-<ProgressBar :value="[
-  { value: 20, label: 'Part A', color: '#ff0000' },
-  { value: 50, label: 'Part B', palette: 'primary' }
-]" showLabel />
+const storageUsage = ref([
+  { value: 20, label: 'Photos', color: '#ff4d4f' },
+  { value: 50, label: 'Documents', palette: 'primary' },
+  { value: 15, label: 'System', color: '#8c8c8c' }
+])
+</script>
+
+<template>
+  <div class="progress-bar-examples">
+    <!-- Single value progress bar -->
+    <ProgressBar :value="45" />
+
+    <!-- Multi-segment progress bar with segment labels -->
+    <ProgressBar :value="storageUsage" showLabel />
+  </div>
+</template>
   `}
     language="html"
 />
+
+> ProgressBar is a versatile data visualization component that presents single or multi-segment progress tracks with flexible customization options, automatic percentage math, and accessible interactive behaviors.
+

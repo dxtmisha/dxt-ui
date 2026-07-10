@@ -1,7 +1,7 @@
 {
   "main": "{d.progressBar}",
   "gap": "{sys.spacing.x}",
-  "height": "{ref.spacing.2}",
+  "height": "{ref.spacing.3}",
   "font": "{font.bodySmall}",
   "color": "{sys.palette.onSurface}",
   "color-opacity": "{sys.opacity.surface.medium}",

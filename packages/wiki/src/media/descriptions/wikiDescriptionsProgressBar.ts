@@ -17,14 +17,16 @@ export const wikiDescriptionsProgressBar: StorybookComponentsDescriptionItem = {
       'automatic calculations of segment percentages based on max limit',
       'active segment focus highlight options',
       'label displays within individual progress tracks',
-      'overlay styling modes without segment gaps'
+      'overlay styling modes without segment gaps',
+      'skeleton loading support'
     ],
     ru: [
       'линейное многосегментное отслеживание прогресса',
       'автоматический расчет процентов сегментов на основе лимита max',
       'варианты активной фокусировки и подсветки сегмента',
       'отображение меток внутри индивидуальных полос прогресса',
-      'режимы наложения overlay без отступов между сегментами'
+      'режимы наложения overlay без отступов между сегментами',
+      'поддержка загрузочного скелетона'
     ]
   },
   stories: [
@@ -54,24 +56,42 @@ export const wikiDescriptionsProgressBar: StorybookComponentsDescriptionItem = {
           ]" />
         </div>
       `
+    },
+    {
+      id: 'ProgressBarSkeleton',
+      name: {
+        en: 'Skeleton',
+        ru: 'Скелетон'
+      },
+      components: ['Skeleton'],
+      template: `
+        <DesignSkeleton :active="true">
+          <div class="wiki-storybook-flex-column">
+            <DesignComponent isSkeleton :value="50" />
+            <DesignComponent isSkeleton showLabel :value="[
+              { value: 30, label: '30%' },
+              { value: 40, label: '40%' },
+              { value: 30, label: '30%' }
+            ]" />
+          </div>
+        </DesignSkeleton>
+      `
     }
   ],
   documentation: {
     body: `
 <StorybookDescriptions componentName={'ProgressBar'} type={'progressBar'}/>
 <Canvas of={Component.ProgressBarBasic}/>
+
+<StorybookDescriptions componentName={'Style'} type={'isSkeleton'}/>
+<Canvas of={Component.ProgressBarSkeleton}/>
     `
   },
   ai: {
-    render: `
-<div :class="classDemo.item" style="width: 240px; height: 40px; display: flex; align-items: center;">
-  <ProgressBar v-bind="args"/>
-</div>
-    `,
     description: `
-Linear progress bar component that displays progress as one or more segmented sections. Supports custom segment values, labels, active segment focus highlighting, and continuous gapless overlay modes.
+Linear progress bar component that displays progress as one or more segmented sections. Supports custom segment values, labels, active segment focus highlighting, built-in skeleton loading (isSkeleton), and continuous gapless overlay modes.
 Features a flexible value parser that accepts either a single number or an array of segment objects (with label, value, color, or palette defined). Includes automated percentage scaling against a configurable maximum limit.
-Controlled via the value, max, focus, showLabel, and overlay props. Use for multi-step progress indicators, color-coded status breakdowns, or basic horizontal percentage tracks.
+Controlled via the value, max, focus, showLabel, overlay, and isSkeleton props. Use for multi-step progress indicators, color-coded status breakdowns, or basic horizontal percentage tracks.
     `
   }
 }

@@ -10274,7 +10274,7 @@
           "height": {
             "name": "--d1-progressBar-height",
             "type": "var",
-            "value": "{ref.spacing.2}"
+            "value": "{ref.spacing.3}"
           },
           "borderRadius": {
             "name": "--d1-progressBar-borderRadius",

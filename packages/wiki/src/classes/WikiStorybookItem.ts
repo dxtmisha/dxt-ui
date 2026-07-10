@@ -307,7 +307,7 @@ export class WikiStorybookItem {
    */
   private toBoolean(): StorybookArgsItem {
     return {
-      control: StorybookControl.boolean,
+      control: { type: StorybookControl.boolean },
       table: {
         ...this.getCategory(),
         ...this.getDefaultValue(),
@@ -355,7 +355,7 @@ export class WikiStorybookItem {
    */
   private toObject(): StorybookArgsItem {
     return {
-      control: StorybookControl.object,
+      control: { type: StorybookControl.object },
       table: {
         ...this.getCategory(),
         ...this.getType()
@@ -372,7 +372,7 @@ export class WikiStorybookItem {
    */
   private toSelect(): StorybookArgsItem {
     return {
-      control: StorybookControl.select,
+      control: { type: StorybookControl.select },
       options: this.item.options.options,
       table: {
         ...this.getCategory(),
@@ -391,7 +391,7 @@ export class WikiStorybookItem {
    */
   private toString(): StorybookArgsItem {
     return {
-      control: StorybookControl.text,
+      control: { type: StorybookControl.text },
       table: {
         ...this.getCategory(),
         ...this.getDefaultValue(),

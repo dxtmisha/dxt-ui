@@ -4,6 +4,7 @@ import D1ProgressBar from './D1ProgressBar.vue'
 import { ProgressBarWikiStorybook } from './wiki'
 
 // :story-import [!] System label / Системная метка
+import D1Skeleton from '../Skeleton/D1Skeleton.vue'
 // :story-import [!] System label / Системная метка
 
 const meta = {
@@ -54,6 +55,24 @@ export const ProgressBarBasic: Story = {
             { value: 30, label: '30%', color: '#eb2f96' }
           ]" />
         </div>
+    `
+  })
+}
+export const ProgressBarSkeleton: Story = {
+  name: 'Скелетон',
+  render: () => ({
+    components: { D1ProgressBar, D1Skeleton },
+    template: `
+        <D1Skeleton :active="true">
+          <div class="wiki-storybook-flex-column">
+            <D1ProgressBar isSkeleton :value="50" />
+            <D1ProgressBar isSkeleton showLabel :value="[
+              { value: 30, label: '30%' },
+              { value: 40, label: '40%' },
+              { value: 30, label: '30%' }
+            ]" />
+          </div>
+        </D1Skeleton>
     `
   })
 }

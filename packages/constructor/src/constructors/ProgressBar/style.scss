@@ -39,7 +39,7 @@
   }
 
   &--overlay {
-    gap: unset;
+    gap: unset !important;
 
     @include ui.subclass('item') {
       &__progress {

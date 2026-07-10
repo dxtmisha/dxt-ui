@@ -9,6 +9,9 @@ import {
   toNumber
 } from '@dxtmisha/functional'
 
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
+import { SkeletonInclude } from '../Skeleton'
+
 import type { ProgressBarComponents, ProgressBarEmits, ProgressBarSlots } from './types'
 import type { ProgressBarProps } from './props'
 import type { ProgressBarItem, ProgressBarInfoItem, ProgressBarInfoList, ProgressBarList } from './basicTypes'
@@ -19,6 +22,11 @@ import type { ProgressBarItem, ProgressBarInfoItem, ProgressBarInfoList, Progres
  * Класс для работы с компонентом прогрессивный бар.
  */
 export class ProgressBar {
+  /**
+   * An object for working with the Skeleton / Объект для работы с Skeleton
+   */
+  readonly skeleton: SkeletonInclude
+
   /**
    * Constructor
    *
@@ -31,6 +39,8 @@ export class ProgressBar {
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
+   * @param constructors object with classes / объект с классами
+   * @param constructors.SkeletonIncludeConstructor class for working with Skeleton / класс для работы с Skeleton
    */
   constructor(
     protected readonly props: ProgressBarProps,
@@ -40,8 +50,35 @@ export class ProgressBar {
     protected readonly className: string,
     protected readonly components?: DesignComp<ProgressBarComponents, ProgressBarProps>,
     protected readonly slots?: ProgressBarSlots,
-    protected readonly emits?: ConstrEmit<ProgressBarEmits>
+    protected readonly emits?: ConstrEmit<ProgressBarEmits>,
+    constructors: {
+      SkeletonIncludeConstructor?: typeof SkeletonInclude
+    } = {}
   ) {
+    const {
+      SkeletonIncludeConstructor = SkeletonInclude
+    } = constructors
+
+    this.skeleton = new SkeletonIncludeConstructor(
+      props,
+      classDesign,
+      ['classBackgroundVariant']
+    )
+  }
+
+  /**
+   * Returns the current value.
+   *
+   * Возвращает текущее значение.
+   */
+  get value(): number {
+    let total = 0
+
+    this.standard.forEach((item) => {
+      total += toNumber(item.value ?? 0)
+    })
+
+    return total
   }
 
   /**
@@ -150,6 +187,15 @@ export class ProgressBar {
       style: {
         [`--${this.className}-sys-percent`]: `${percent}%`,
         [`--${this.className}-sys-color`]: color
+      },
+      aria: {
+        ...AriaStaticInclude.role('progressbar'),
+        ...AriaStaticInclude.valueMinMax(
+          toNumber(item.value),
+          0,
+          max
+        ),
+        ...AriaStaticInclude.label(item.label || `${Math.round(percent)}%`)
       }
     }
   }
@@ -170,6 +216,9 @@ export class ProgressBar {
       },
       style: {
         [`--${this.className}-sys-percent`]: `${remainder}%`
+      },
+      aria: {
+        ...AriaStaticInclude.hidden()
       }
     }
   }
