@@ -4,6 +4,7 @@ import D1TableItem from './D1TableItem.vue'
 import { TableItemWikiStorybook } from './wiki'
 
 // :story-import [!] System label / Системная метка
+import D1Skeleton from '../Skeleton/D1Skeleton.vue'
 // :story-import [!] System label / Системная метка
 
 const meta = {
@@ -46,4 +47,29 @@ export const TableItem: Story = {
 }
 
 // :story-items [!] System label / Системная метка
+export const TableItemSkeleton: Story = {
+  name: 'Загрузка скелетона',
+  render: () => ({
+    components: { D1TableItem, D1Skeleton },
+    template: `
+        <D1Skeleton :active="true">
+          <table>
+            <tbody>
+              <tr>
+                <D1TableItem
+                  :isSkeleton="true"
+                  value="Value"
+                />
+                <D1TableItem
+                  :isSkeleton="true"
+                  label="Label"
+                  description="Description"
+                />
+              </tr>
+            </tbody>
+          </table>
+        </D1Skeleton>
+    `
+  })
+}
 // :story-items [!] System label / Системная метка

@@ -282,6 +282,19 @@ export const wikiIconInclude: StorybookArgsToList = {
     },
     hide: true
   },
+  iconTooltip: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.icon,
+      type: ['string', 'File'],
+      description: {
+        en: 'Sets icon for the tooltip',
+        ru: 'Задает иконку подсказки'
+      },
+      value: 'help'
+    },
+    hide: true
+  },
   iconTop: {
     type: StorybookControl.boolean,
     options: {

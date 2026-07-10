@@ -14,7 +14,7 @@ const propsNames: StorybookProps = [
   { name: 'iconTooltip', type: 'string | ConstrBind<IconPropsBasic>' },
   { name: 'index', type: 'string' },
   { name: 'isSkeleton', type: 'boolean' },
-  { name: 'key', type: 'string' },
+  { name: 'keyItem', type: 'string' },
   { name: 'label', type: 'NumberOrString' },
   { name: 'labelClamp', type: 'boolean' },
   { name: 'labelId', type: 'string' },

@@ -41,10 +41,41 @@ export const wikiDescriptionsTableItem: StorybookComponentsDescriptionItem = {
       </tbody>
     </table>
   `,
-  stories: [],
+  stories: [
+    {
+      id: 'TableItemSkeleton',
+      name: {
+        en: 'Skeleton loading',
+        ru: 'Загрузка скелетона'
+      },
+      components: ['Skeleton'],
+      template: `
+        <DesignSkeleton :active="true">
+          <table>
+            <tbody>
+              <tr>
+                <DesignComponent
+                  :isSkeleton="true"
+                  value="Value"
+                />
+                <DesignComponent
+                  :isSkeleton="true"
+                  label="Label"
+                  description="Description"
+                />
+              </tr>
+            </tbody>
+          </table>
+        </DesignSkeleton>
+      `
+    }
+  ],
   documentation: {
     body: `
 <StorybookDescriptions componentName={'TableItem'} type={'tableItem'}/>
+
+<StorybookDescriptions componentName={'Style'} type={'isSkeleton'}/>
+<Canvas of={Component.TableItemSkeleton}/>
     `,
     slots: `
 <StorybookDescriptions componentName={'Slot'} type={'default'}/>
