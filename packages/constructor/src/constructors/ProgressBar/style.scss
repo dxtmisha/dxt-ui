@@ -1,0 +1,67 @@
+@use "@dxtmisha/styles/properties" as ui;
+
+@mixin mixinProgressBar {
+  display: flex;
+  align-items: flex-end;
+
+  border-radius: ui.v('??borderRadius');
+
+  &__item {
+    flex-basis: ui.v('??sys-percent');
+    flex-shrink: 1;
+
+    max-width: ui.v('??sys-percent');
+
+    &__label {
+      max-width: 100%;
+
+      @include ui.truncate;
+    }
+
+    &__progress {
+      overflow: hidden;
+      height: ui.v('??height');
+
+      border-radius: ui.v('??borderRadius');
+    }
+
+    &--color {
+      @include ui.subclass('item__progress') {
+        @include ui.absoluteAfter {
+          background-color: ui.v('??sys.color');
+        }
+      }
+    }
+  }
+
+  &--overlay {
+    @include ui.subclass('item') {
+      &__progress {
+        border-radius: unset;
+      }
+
+      &:first-child {
+        @include ui.subclass('item__progress') {
+          border-top-left-radius: ui.v('??borderRadius');
+          border-bottom-left-radius: ui.v('??borderRadius');
+        }
+      }
+
+      &:last-child {
+        @include ui.subclass('item__progress') {
+          border-top-right-radius: ui.v('??borderRadius');
+          border-bottom-right-radius: ui.v('??borderRadius');
+        }
+      }
+
+      @include ui.state('space') {
+        @include ui.subclass('item__progress') {
+          @include ui.backgroundColor(
+                  ui.v('??backgroundColor'),
+                  ui.v('??backgroundOpacity')
+          );
+        }
+      }
+    }
+  }
+}

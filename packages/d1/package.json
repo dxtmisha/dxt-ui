@@ -27,7 +27,7 @@
     "build": "vue-tsc -b && vite build",
     "build-recovery": "npm run build && npm run wiki-storm",
     "preview": "vite preview",
-    "ui": "dxt-ui TableItem",
+    "ui": "dxt-ui ProgressBar",
     "wiki-storm": "dxt-wiki-storm",
     "types": "dxt-types",
     "screenshot": "dxt-screenshot",
@@ -438,6 +438,10 @@
     "./D1ScrollSticky": {
       "types": "./dist/library/D1ScrollSticky.d.ts",
       "default": "./dist/D1ScrollSticky.js"
+    },
+    "./D1ProgressBar": {
+      "types": "./dist/library/D1ProgressBar.d.ts",
+      "default": "./dist/D1ProgressBar.js"
     }
   },
   "buildOptions": {

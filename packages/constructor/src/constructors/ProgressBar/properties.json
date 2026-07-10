@@ -1,0 +1,19 @@
+{
+  "height": {
+    "_type": "var"
+  },
+  "background-color": {
+    "_type": "var"
+  },
+  "background-opacity": {
+    "_type": "var"
+  },
+  "border-radius": {
+    "_type": "var"
+  },
+  "#item": {
+    "#label": {},
+    "#progress": {}
+  },
+  "~overlay": {}
+}

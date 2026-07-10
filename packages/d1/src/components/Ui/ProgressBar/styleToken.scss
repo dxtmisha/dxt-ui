@@ -1,0 +1,17 @@
+@use "../../../styles/Ui/properties";
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/style.scss" as ProgressBar;
+
+@include ui.initDesignBasic('d1.progressBar') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include ProgressBar.mixinProgressBar;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}
