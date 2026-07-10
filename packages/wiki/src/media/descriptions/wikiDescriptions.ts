@@ -66,6 +66,7 @@ import { wikiDescriptionsPage } from './wikiDescriptionsPage'
 import { wikiDescriptionsPageArea } from './wikiDescriptionsPageArea'
 import { wikiDescriptionsPagination } from './wikiDescriptionsPagination'
 import { wikiDescriptionsProgress } from './wikiDescriptionsProgress'
+import { wikiDescriptionsProgressBar } from './wikiDescriptionsProgressBar'
 import { wikiDescriptionsRadio } from './wikiDescriptionsRadio'
 import { wikiDescriptionsRipple } from './wikiDescriptionsRipple'
 import { wikiDescriptionsScrollbar } from './wikiDescriptionsScrollbar'
@@ -160,6 +161,7 @@ export const wikiDescriptions: StorybookComponentsDescription = [
   wikiDescriptionsPageArea,
   wikiDescriptionsPagination,
   wikiDescriptionsProgress,
+  wikiDescriptionsProgressBar,
   wikiDescriptionsRadio,
   wikiDescriptionsRipple,
   wikiDescriptionsScrollbar,

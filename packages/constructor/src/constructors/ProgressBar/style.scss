@@ -35,6 +35,8 @@
   }
 
   &--overlay {
+    gap: unset;
+
     @include ui.subclass('item') {
       &__progress {
         border-radius: unset;

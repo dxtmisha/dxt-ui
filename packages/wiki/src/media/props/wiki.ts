@@ -59,6 +59,7 @@ import { wikiMotionSticky } from './wikiMotionSticky'
 import { wikiMotionTransform } from './wikiMotionTransform'
 import { wikiPagination } from './wikiPagination'
 import { wikiProgress } from './wikiProgress'
+import { wikiProgressBar } from './wikiProgressBar'
 import { wikiRadio } from './wikiRadio'
 import { wikiPropsTextarea } from './wikiPropsTextarea'
 import { wikiScrollbar } from './wikiScrollbar'
@@ -134,6 +135,7 @@ export const wiki: StorybookArgsToList = {
   ...wikiMotionTransform,
   ...wikiPagination,
   ...wikiProgress,
+  ...wikiProgressBar,
   ...wikiRadio,
   ...wikiPropsTextarea,
   ...wikiScrollbar,

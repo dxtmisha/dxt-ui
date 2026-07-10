@@ -10267,6 +10267,32 @@
           }
         }
       },
+      "progressBar": {
+        "name": "d1-progressBar",
+        "type": "component",
+        "value": {
+          "height": {
+            "name": "--d1-progressBar-height",
+            "type": "var",
+            "value": "{ref.spacing.4px}"
+          },
+          "backgroundColor": {
+            "name": "--d1-progressBar-backgroundColor",
+            "type": "var",
+            "value": "{sys.palette.onSurface}"
+          },
+          "backgroundOpacity": {
+            "name": "--d1-progressBar-backgroundOpacity",
+            "type": "var",
+            "value": "{sys.opacity.overlay}"
+          },
+          "borderRadius": {
+            "name": "--d1-progressBar-borderRadius",
+            "type": "var",
+            "value": "{sys.rounded.xs}"
+          }
+        }
+      },
       "radio": {
         "name": "d1-radio",
         "type": "component",

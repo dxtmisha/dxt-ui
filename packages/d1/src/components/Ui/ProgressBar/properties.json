@@ -1,3 +1,33 @@
 {
-  "main": "{d.progressBar}"
+  "main": "{d.progressBar}",
+  "gap": "{sys.spacing.xs}",
+  "height": "{ref.spacing.4px}",
+  "font": "{font.bodySmall}",
+  "color": "{sys.palette.onSurface}",
+  "color-opacity": "{sys.opacity.surface.medium}",
+  "background-color": "{sys.palette.onSurface}",
+  "background-opacity": "{sys.opacity.overlay}",
+  "border-radius": "{sys.rounded.xs}",
+  "#item": {
+    "#label": {
+      "padding-bottom": "{sys.spacing.x}"
+    },
+    "#progress": {
+      "background-color": "{sys.palette.onSurface}",
+      "background-opacity": "{sys.opacity.outline}"
+    },
+    "~focus": {
+      "#progress": {
+        "box-shadow": "0 0 0 3px rgba({sys.palette.primary}, {sys.opacity.focus})"
+      }
+    },
+    "~palette": {
+      "#progress": {
+        "palette-background": "{sys.palette.primary}"
+      }
+    }
+  },
+  "~overlay": {
+    "gap": "unset"
+  }
 }

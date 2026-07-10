@@ -1,0 +1,25 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+## ProgressBar and Related Parameters
+
+The `ProgressBar` component displays a linear progress bar with one or more segments. It supports percentage calculation, custom colors, focus states, and layout options.
+
+**Properties:**
+
+- `value` — current progress value (number) or list of progress bar segments (array of items with `value`, `label`, `color`, etc.)
+- `max` — maximum value of progress (defaults to `100` or the sum of segment values)
+- `showLabel` — displays detail labels inside individual segments
+
+<Source
+    code={`
+<!-- Single value progress -->
+<ProgressBar :value="45" />
+
+<!-- Multi-segment progress with custom labels -->
+<ProgressBar :value="[
+  { value: 20, label: 'Part A', color: '#ff0000' },
+  { value: 50, label: 'Part B', palette: 'primary' }
+]" showLabel />
+  `}
+    language="html"
+/>

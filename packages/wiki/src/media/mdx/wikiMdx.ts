@@ -72,6 +72,7 @@ import { wikiMdxPage } from './Page/wikiMdxPage'
 import { wikiMdxPageArea } from './PageArea/wikiMdxPageArea'
 import { wikiMdxPagination } from './Pagination/wikiMdxPagination'
 import { wikiMdxProgress } from './Progress/wikiMdxProgress'
+import { wikiMdxProgressBar } from './ProgressBar/wikiMdxProgressBar'
 import { wikiMdxRadio } from './Radio/wikiMdxRadio'
 import { wikiMdxRipple } from './Ripple/wikiMdxRipple'
 import { wikiMdxScrollbar } from './Scrollbar/wikiMdxScrollbar'
@@ -172,6 +173,7 @@ export const wikiMdx: StorybookComponentsMdx = [
   wikiMdxPageArea,
   wikiMdxPagination,
   wikiMdxProgress,
+  wikiMdxProgressBar,
   wikiMdxRadio,
   wikiMdxRipple,
   wikiMdxScrollbar,
