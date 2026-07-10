@@ -10,7 +10,7 @@ const propsNames: StorybookProps = [
 
 const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
-  { name: 'default', properties: [{ name: 'props', type: '(any) | undefined' }] }
+  { name: 'default', description: `Slot for default ScrollSticky content / Слот для основного содержимого ScrollSticky`, properties: [{ name: 'props', type: '((props: { onResize(): void; }) => any) | undefined' }] }
   // :slotsList [!] System label / Системная метка
 ]
 

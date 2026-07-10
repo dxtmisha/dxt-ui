@@ -7,16 +7,16 @@ const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
   { name: 'columns', type: 'string[]' },
   { name: 'disabled', type: 'boolean' },
-  { name: 'header', type: 'string[] | Record<string, TableRecordValue<TableItemPropsBasic>>' },
+  { name: 'header', type: 'string[] | Record<string, TableRecordValue<TableItemProps>>' },
   { name: 'headerTop', type: 'boolean' },
   { name: 'isSkeleton', type: 'boolean' },
   { name: 'keyValue', type: 'string' },
   { name: 'list', type: 'any[]' },
   { name: 'selected', type: '(false & string[]) | (true & string[])' },
-  { name: 'tableItemAttrs', type: 'ConstrBind<TableItemPropsBasic>' },
-  { name: 'tableItemColumnAttrs', type: 'Record<string, ConstrBind<TableItemPropsBasic>>' },
-  { name: 'tableRecordAttrs', type: 'ConstrBind<TableRecordPropsBasic<TableItemPropsBasic>>' },
-  { name: 'tableRowAttrs', type: 'Record<string, ConstrBind<TableRecordPropsBasic<TableItemPropsBasic>>>' }
+  { name: 'tableItemAttrs', type: 'ConstrBind<TableItemProps>' },
+  { name: 'tableItemColumnAttrs', type: 'Record<string, ConstrBind<TableItemProps>>' },
+  { name: 'tableRecordAttrs', type: 'ConstrBind<TableRecordProps>' },
+  { name: 'tableRowAttrs', type: 'Record<string, ConstrBind<TableRecordProps>>' }
   // :propsList [!] System label / Системная метка
 ]
 

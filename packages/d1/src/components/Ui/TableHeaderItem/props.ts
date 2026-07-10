@@ -1,5 +1,8 @@
 import { type TableHeaderItemPropsBasic, defaultsTableHeaderItem } from '@dxtmisha/constructor/TableHeaderItem'
 
+import type { IconProps } from '../Icon'
+import type { TooltipProps } from '../Tooltip'
+
 export const propsValues = {
   // :values [!] System label / Системная метка
   align: ['left', 'center', 'right'],
@@ -22,7 +25,7 @@ type PropsToken = {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export type TableHeaderItemProps = TableHeaderItemPropsBasic & PropsToken
+export type TableHeaderItemProps = TableHeaderItemPropsBasic<IconProps, TooltipProps> & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства

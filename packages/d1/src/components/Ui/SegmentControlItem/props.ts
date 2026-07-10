@@ -1,5 +1,8 @@
 import { type SegmentControlItemPropsBasic, defaultsSegmentControlItem } from '@dxtmisha/constructor/SegmentControlItem'
 
+import type { BadgeProps } from '../Badge'
+import type { IconProps } from '../Icon'
+
 export const propsValues = {
   // :values [!] System label / Системная метка
   adaptive: ['iconAlways', 'auto', 'iconSm', 'iconMd', 'iconLg', 'iconXl', 'icon2xl', 'fullSm', 'fullMd', 'fullLg', 'fullXl', 'full2xl'],
@@ -22,7 +25,7 @@ type PropsToken = {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export type SegmentControlItemProps = SegmentControlItemPropsBasic & PropsToken
+export type SegmentControlItemProps = SegmentControlItemPropsBasic<IconProps, BadgeProps> & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства

@@ -6,15 +6,15 @@ import { defaults } from './props'
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
   { name: 'disabled', type: 'boolean' },
-  { name: 'fieldLabelAttrs', type: 'ConstrBind<FieldLabelPropsBasic>' },
-  { name: 'fieldMessageAttrs', type: 'ConstrBind<FieldMessagePropsBasic>' },
+  { name: 'fieldLabelAttrs', type: 'ConstrBind<FieldLabelProps>' },
+  { name: 'fieldMessageAttrs', type: 'ConstrBind<FieldMessageProps>' },
   { name: 'forceShowMessage', type: 'boolean' },
   { name: 'hasHtmlCode', type: 'boolean' },
   { name: 'helperId', type: 'string' },
   { name: 'helperMessage', type: 'string' },
   { name: 'inputMode', type: 'string' },
   { name: 'isSkeleton', type: 'boolean' },
-  { name: 'itemAttrs', type: 'ConstrBind<InputCodeItemPropsBasic>' },
+  { name: 'itemAttrs', type: 'ConstrBind<InputCodeItemProps>' },
   { name: 'label', type: 'NumberOrString' },
   { name: 'labelId', type: 'string' },
   { name: 'length', type: 'number' },

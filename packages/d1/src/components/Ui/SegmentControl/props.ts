@@ -1,4 +1,5 @@
 import { type SegmentControlPropsBasic, defaultsSegmentControl } from '@dxtmisha/constructor/SegmentControl'
+import type { SegmentControlItemProps } from '../SegmentControlItem'
 
 export const propsValues = {
   // :values [!] System label / Системная метка
@@ -14,7 +15,7 @@ type PropsToken = {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export type SegmentControlProps = SegmentControlPropsBasic & PropsToken
+export type SegmentControlProps = SegmentControlPropsBasic<SegmentControlItemProps> & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства

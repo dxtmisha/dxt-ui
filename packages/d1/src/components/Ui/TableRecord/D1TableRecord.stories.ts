@@ -27,6 +27,17 @@ type Story = StoryObj<typeof meta>
 
 export const TableRecord: Story = {
   // :story-main [!] System label / Системная метка
+  render: (args: any) => ({
+    components: { D1TableRecord },
+    setup: () => ({ args }),
+    template: `
+      <table>
+      <D1TableRecord v-bind="args" />
+      <D1TableRecord v-bind="args" />
+      <D1TableRecord v-bind="args" />
+    </table>
+    `
+  })
   // :story-main [!] System label / Системная метка
 }
 

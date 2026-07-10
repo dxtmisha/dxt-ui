@@ -10,6 +10,9 @@ import {
   type TableRecordSlots
 } from '@dxtmisha/constructor/TableRecord'
 
+import { D1TableItem } from '../TableItem'
+import { D1TableHeaderItem } from '../TableHeaderItem'
+
 import { defaults, type TableRecordProps } from './props'
 import './styleToken.scss'
 
@@ -40,7 +43,11 @@ const design = new TableRecordDesign(
   {
     emits,
     classes: classesToken,
-    styles: stylesToken
+    styles: stylesToken,
+    components: {
+      tableHeaderItem: D1TableHeaderItem,
+      tableItem: D1TableItem
+    }
   }
 )
 

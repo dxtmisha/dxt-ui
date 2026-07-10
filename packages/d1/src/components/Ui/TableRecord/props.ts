@@ -1,4 +1,5 @@
 import { type TableRecordPropsBasic, defaultsTableRecord } from '@dxtmisha/constructor/TableRecord'
+import type { TableItemProps } from '../TableItem'
 
 export const propsValues = {
   // :values [!] System label / Системная метка
@@ -15,7 +16,7 @@ type PropsToken = {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export type TableRecordProps = TableRecordPropsBasic & PropsToken
+export type TableRecordProps = TableRecordPropsBasic<TableItemProps> & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства

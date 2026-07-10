@@ -11,6 +11,9 @@ import {
   type TableHeaderItemSlots
 } from '@dxtmisha/constructor/TableHeaderItem'
 
+import { D1Icon } from '../Icon'
+import { D1Tooltip } from '../Tooltip'
+
 import { defaults, type TableHeaderItemProps, propsValues } from './props'
 import './styleToken.scss'
 
@@ -46,7 +49,11 @@ const design = new TableHeaderItemDesign(
   {
     emits,
     classes: classesToken,
-    styles: stylesToken
+    styles: stylesToken,
+    components: {
+      icon: D1Icon,
+      tooltip: D1Tooltip
+    }
   }
 )
 

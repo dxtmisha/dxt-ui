@@ -10,6 +10,8 @@ import {
   type TableSlots
 } from '@dxtmisha/constructor/Table'
 
+import { D1TableRecord } from '../TableRecord'
+
 import { defaults, type TableProps } from './props'
 import './styleToken.scss'
 
@@ -40,7 +42,9 @@ const design = new TableDesign(
     emits,
     classes: classesToken,
     styles: stylesToken,
-    components: {}
+    components: {
+      tableRecord: D1TableRecord
+    }
   }
 )
 

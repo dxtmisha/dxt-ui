@@ -18,6 +18,13 @@ defineOptions({
     :component="D1TableRecord"
   >
     <!-- :component-render [!] System label / Системная метка -->
+    <template #render="{ args, classDemo }">
+    <div :class="classDemo.item">
+  <table style="border-collapse: collapse; width: 100%;">
+    <D1TableRecord v-bind="args" />
+  </table>
+</div>
+    </template>
     <!-- :component-render [!] System label / Системная метка -->
   </DxtTestWiki>
 </template>

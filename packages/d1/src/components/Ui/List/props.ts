@@ -1,6 +1,7 @@
 import { type ListPropsBasic, defaultsList } from '@dxtmisha/constructor/List'
 
 import type { IconProps } from '../Icon'
+import type { InputProps } from '../Input'
 import type { ListItemProps } from '../ListItem'
 
 export const propsValues = {
@@ -19,7 +20,11 @@ type PropsToken = {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export type ListProps = ListPropsBasic<IconProps, ListItemProps> & PropsToken
+export type ListProps = ListPropsBasic<
+  IconProps,
+  ListItemProps,
+  InputProps
+> & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства

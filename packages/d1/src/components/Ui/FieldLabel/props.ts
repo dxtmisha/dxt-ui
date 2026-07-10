@@ -1,5 +1,6 @@
 import { type FieldLabelPropsBasic, defaultsFieldLabel } from '@dxtmisha/constructor/FieldLabel'
 import type { FieldCounterProps } from '../FieldCounter'
+import type { ProgressProps } from '../Progress'
 
 export const propsValues = {
   // :values [!] System label / Системная метка
@@ -14,7 +15,7 @@ type PropsToken = {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export type FieldLabelProps = FieldLabelPropsBasic<FieldCounterProps> & PropsToken
+export type FieldLabelProps = FieldLabelPropsBasic<FieldCounterProps, ProgressProps> & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства

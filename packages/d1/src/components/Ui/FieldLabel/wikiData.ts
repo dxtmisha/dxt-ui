@@ -14,7 +14,7 @@ const propsNames: StorybookProps = [
   { name: 'isSkeleton', type: 'boolean' },
   { name: 'label', type: 'NumberOrString' },
   { name: 'labelId', type: 'string' },
-  { name: 'loading', type: 'boolean | ConstrBind<ProgressPropsBasic>' },
+  { name: 'loading', type: 'boolean | ConstrBind<ProgressProps>' },
   { name: 'maxlength', type: 'string | number' },
   { name: 'required', type: 'boolean' }
   // :propsList [!] System label / Системная метка

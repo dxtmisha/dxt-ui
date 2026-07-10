@@ -1,4 +1,7 @@
 import { type InputCodePropsBasic, defaultsInputCode } from '@dxtmisha/constructor/InputCode'
+import type { InputCodeItemProps } from '../InputCodeItem'
+import type { FieldLabelProps } from '../FieldLabel'
+import type { FieldMessageProps } from '../FieldMessage'
 
 export const propsValues = {
   // :values [!] System label / Системная метка
@@ -14,7 +17,11 @@ type PropsToken = {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export type InputCodeProps = InputCodePropsBasic & PropsToken
+export type InputCodeProps = InputCodePropsBasic<
+  InputCodeItemProps,
+  FieldLabelProps,
+  FieldMessageProps
+> & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства

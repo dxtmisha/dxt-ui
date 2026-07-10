@@ -5,6 +5,13 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
+  { name: 'color', type: 'string' },
+  { name: 'focus', type: 'string' },
+  { name: 'max', type: 'string | number' },
+  { name: 'overlay', type: 'boolean' },
+  { name: 'palette', type: 'string' },
+  { name: 'showLabel', type: 'boolean' },
+  { name: 'value', type: 'string | number | ProgressBarItem | ProgressBarList' }
   // :propsList [!] System label / Системная метка
 ]
 

@@ -1,8 +1,10 @@
 import { type ListItemPropsBasic, defaultsListItem } from '@dxtmisha/constructor/ListItem'
 
-import type { IconProps } from '../Icon'
 import type { BadgeProps } from '../Badge'
+import type { CheckboxProps } from '../Checkbox'
+import type { IconProps } from '../Icon'
 import type { ProgressProps } from '../Progress'
+import type { RadioProps } from '../Radio'
 
 export const propsValues = {
   // :values [!] System label / Системная метка
@@ -38,7 +40,9 @@ type PropsToken = {
 export type ListItemProps = ListItemPropsBasic<
   IconProps,
   BadgeProps,
-  ProgressProps
+  ProgressProps,
+  CheckboxProps,
+  RadioProps
 > & PropsToken
 
 /**

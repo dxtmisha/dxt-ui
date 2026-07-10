@@ -17,7 +17,7 @@ const propsNames: StorybookProps = [
   { name: 'iconArrowDown', type: 'IconValue<IconProps>' },
   { name: 'iconArrowRight', type: 'IconValue<IconProps>' },
   { name: 'iconSearch', type: 'IconValue<IconProps>' },
-  { name: 'inputSearchAttrs', type: 'ConstrBind<InputPropsBasic>' },
+  { name: 'inputSearchAttrs', type: 'ConstrBind<InputProps>' },
   { name: 'itemAttrs', type: 'ConstrBind<ListItemProps>' },
   { name: 'itemGroupAttrs', type: 'ConstrBind<ListItemProps>' },
   { name: 'itemManagementAttrs', type: 'ConstrBind<ListItemProps>' },
