@@ -23,6 +23,10 @@
       height: ui.v('??height');
 
       border-radius: ui.v('??borderRadius');
+
+      transition-timing-function: linear;
+      transition-duration: ui.v('d.sys.transitionDuration.sm');
+      transition-property: color, background-color, border-color, opacity, transform;
     }
 
     &--color {

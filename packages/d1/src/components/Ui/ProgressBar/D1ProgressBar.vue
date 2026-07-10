@@ -2,7 +2,8 @@
 import { computed } from 'vue'
 import {
   type ConstrClasses,
-  type ConstrStyles
+  type ConstrStyles,
+  inArray
 } from '@dxtmisha/functional'
 import {
   ProgressBarDesign,
@@ -10,7 +11,7 @@ import {
   type ProgressBarSlots
 } from '@dxtmisha/constructor/ProgressBar'
 
-import { defaults, type ProgressBarProps } from './props'
+import { defaults, type ProgressBarProps, propsValues } from './props'
 import './styleToken.scss'
 
 defineOptions({
@@ -24,7 +25,8 @@ const classesToken = computed<ConstrClasses>(() => ({
   main: {
     // :classes-values [!] System label / Системная метка
     'd1-progressBar': true,
-    'd1-progressBar--overlay': props.overlay
+    'd1-progressBar--overlay': props.overlay,
+    [`d1-palette d1-palette--${props.palette}`]: inArray(propsValues.palette, props.palette)
     // :classes-values [!] System label / Системная метка
   }
 }))

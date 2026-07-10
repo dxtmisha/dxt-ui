@@ -37,7 +37,6 @@ export type ProgressBarProps = ProgressBarPropsBasic & ProgressBarPropsToken
  * Значение по умолчанию для свойства.
  */
 export const defaultsProgressBar = {
-  // TODO: Location for a user-defined default value / Место для пользовательского значения по умолчанию
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

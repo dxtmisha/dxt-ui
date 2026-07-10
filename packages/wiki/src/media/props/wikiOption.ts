@@ -415,6 +415,17 @@ export const wikiOption: StorybookArgsToList = {
       }
     }
   },
+  showLabel: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.option,
+      description: {
+        en: 'Whether to show the label',
+        ru: 'Показывать ли метку'
+      }
+    },
+    isDemo: true
+  },
   showPhoneCode: {
     type: StorybookControl.boolean,
     options: {

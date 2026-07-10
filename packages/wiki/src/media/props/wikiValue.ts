@@ -35,6 +35,18 @@ export const wikiValue: StorybookArgsToList = {
     },
     isDemo: true
   },
+  color: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.style,
+      type: 'string',
+      description: {
+        en: 'Custom color for the component',
+        ru: 'Пользовательский цвет для компонента'
+      }
+    },
+    isDemo: true
+  },
   currency: {
     type: StorybookControl.string,
     options: {

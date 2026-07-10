@@ -115,6 +115,16 @@ export class ProgressBar {
   })
 
   /**
+   * Returns the class name of the progress item.
+   *
+   * Возвращает название класса элемента прогресса.
+   * @returns class name / название класса
+   */
+  protected getItemClassName(): string {
+    return `${this.className}__item`
+  }
+
+  /**
    * Returns data for the progress bar item.
    *
    * Возвращает данные для элемента прогресс-бара.
@@ -126,14 +136,15 @@ export class ProgressBar {
     const palette = item.color ? undefined : (item.palette ?? this.props.palette)
     const color = item.color || (!palette && this.props.color) || null
     const percent = 100 / max * toNumber(item.value)
+    const classNameItem = this.getItemClassName()
 
     return {
       ...item,
       percent,
       classes: {
-        [`${this.className}__item--focus`]: Boolean(this.props.focus) && this.props.focus === item.index,
-        [`${this.className}__item--palette`]: Boolean(palette),
-        [`${this.className}__item--color`]: Boolean(color),
+        [`${classNameItem}--focus`]: Boolean(this.props.focus) && this.props.focus === item.index,
+        [`${classNameItem}--palette`]: Boolean(palette),
+        [`${classNameItem}--color`]: Boolean(color),
         [`${this.classDesign}-palette--${palette}`]: Boolean(palette)
       },
       style: {
@@ -155,7 +166,7 @@ export class ProgressBar {
       value: 0,
       percent: remainder,
       classes: {
-        [`${this.className}--space`]: true
+        [`${this.getItemClassName()}--space`]: true
       },
       style: {
         [`--${this.className}-sys-percent`]: `${remainder}%`

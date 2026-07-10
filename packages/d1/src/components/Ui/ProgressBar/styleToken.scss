@@ -11,12 +11,10 @@
   // Стили из токенов
   // :style [!] System label / Системная метка
   & {
-    --d1-progressBar-height: var(--d1-ref-spacing-4px);
-    --d1-progressBar-backgroundColor: var(--d1-sys-palette-onSurface);
-    --d1-progressBar-backgroundOpacity: var(--d1-sys-opacity-overlay);
-    --d1-progressBar-borderRadius: var(--d1-sys-rounded-xs);
+    --d1-progressBar-height: var(--d1-ref-spacing-2);
+    --d1-progressBar-borderRadius: var(--d1-sys-rounded-full);
     
-    gap: var(--d1-sys-spacing-xs);
+    gap: var(--d1-sys-spacing-x);
     
     font-family: var(--d1-sys-font-family-basic), sans-serif;
     @include ui.fontSize(#{var(--d1-sys-font-size-xs)});
@@ -33,25 +31,31 @@
       }
       
       &__progress {
-        @include ui.backgroundColor(#{var(--d1-sys-palette-onSurface)});
-        @include ui.backgroundOpacity(#{var(--d1-sys-opacity-outline)});
+        @include ui.backgroundOpacity(#{var(--d1-sys-opacity-scrim)}); @include ui.backgroundColor('init');
+        @include ui.paletteBackground(#{var(--d1-sys-palette-onSurface)});
+        
+        backdrop-filter: var(--d1-sys-blur-sm);
       }
       
       &--focus {
         & .d1-progressBar__item__progress {
-          box-shadow: 0 0 0 3px rgba(var(--d1-sys-palette-primary), var(--d1-sys-opacity-focus));
+          @include ui.backgroundOpacity(#{var(--d1-sys-opacity-primary-high)}); @include ui.backgroundColor('init');
+          @include ui.paletteBackground(#{var(--d1-sys-palette-primaryVariant)});
         }
       }
       
       &--palette {
         & .d1-progressBar__item__progress {
+          @include ui.backgroundOpacity(#{var(--d1-sys-opacity-primary-high)}); @include ui.backgroundColor('init');
           @include ui.paletteBackground(#{var(--d1-sys-palette-primary)});
         }
       }
-    }
-    
-    &--overlay {
-      gap: unset;
+      
+      &--space {
+        & .d1-progressBar__item__progress {
+          @include ui.backgroundOpacity(#{var(--d1-sys-opacity-disabled)}); @include ui.backgroundColor('init');
+        }
+      }
     }
   }
   // :style [!] System label / Системная метка

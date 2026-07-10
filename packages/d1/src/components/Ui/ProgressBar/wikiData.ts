@@ -9,7 +9,7 @@ const propsNames: StorybookProps = [
   { name: 'focus', type: 'string' },
   { name: 'max', type: 'string | number' },
   { name: 'overlay', type: 'boolean' },
-  { name: 'palette', type: 'string' },
+  { name: 'palette', type: 'string', option: ['red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose', 'slate', 'gray', 'zinc', 'neutral', 'stone', 'black', 'white'] },
   { name: 'showLabel', type: 'boolean' },
   { name: 'value', type: 'string | number | ProgressBarItem | ProgressBarList' }
   // :propsList [!] System label / Системная метка
