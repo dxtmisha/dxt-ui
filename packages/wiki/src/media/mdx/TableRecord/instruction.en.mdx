@@ -1,0 +1,43 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+## Component Integration
+
+The component provides a flexible integration layer for tabular data structures, orchestrating cell rendering based on a defined list of columns and a row data object.
+
+### Columns and Item Configuration
+
+Data mapping and structural definition are managed via two primary properties:
+
+- `columns` — an array of strings defining the sequence and keys of the active columns (e.g., `['id', 'name', 'role']`).
+- `item` — the current row data object containing the values to display, where keys correspond to identifiers in `columns`.
+
+For each column key in the `columns` array, the component automatically extracts the corresponding value from the `item` object (resolved as `item[index]`) to render the cell.
+
+### Handling Redundant Data
+
+The `item` object can contain any redundant or auxiliary fields (such as database IDs, nested relations, or raw API metadata). The component filters the input and renders exclusively the properties explicitly defined in the `columns` array.
+
+This eliminates the need to reshape, sanitize, or filter the source data object prior to passing it to the component.
+
+<Source
+    code={`
+<template>
+  <table>
+    <tbody>
+      <!-- Only 'name' and 'role' columns will be rendered -->
+      <TableRecord
+        :columns="['name', 'role']"
+        :item="{
+          id: 12,
+          name: 'Alice',
+          role: 'Developer',
+          email: 'alice@example.com',
+          status: 'active'
+        }"
+      />
+    </tbody>
+  </table>
+</template>
+  `}
+    language="html"
+/>

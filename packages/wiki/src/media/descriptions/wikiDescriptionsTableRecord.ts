@@ -33,10 +33,58 @@ export const wikiDescriptionsTableRecord: StorybookComponentsDescriptionItem = {
       <DesignComponent v-bind="args" />
     </table>
   `,
-  stories: [],
+  stories: [
+    {
+      id: 'TableRecordIsHeader',
+      name: {
+        en: 'Header row',
+        ru: 'Строка заголовка'
+      },
+      template: `
+        <table style="border-collapse: collapse; width: 100%;">
+          <thead>
+            <DesignComponent
+              :isHeader="true"
+              :columns="['id', 'name', 'role', 'status']"
+              :item="{ id: 'ID', name: 'Имя', role: 'Должность', status: 'Статус' }"
+            />
+          </thead>
+        </table>
+      `
+    },
+    {
+      id: 'TableRecordSkeleton',
+      name: {
+        en: 'Skeleton loading',
+        ru: 'Загрузка скелетона'
+      },
+      components: ['Skeleton'],
+      template: `
+        <DesignSkeleton :active="true">
+          <table style="border-collapse: collapse; width: 100%;">
+            <tbody>
+              <DesignComponent
+                :isSkeleton="true"
+                :columns="['id', 'name', 'role', 'status']"
+                :item="{ id: '1', name: 'Misha', role: 'developer', status: 'active' }"
+              />
+            </tbody>
+          </table>
+        </DesignSkeleton>
+      `
+    }
+  ],
   documentation: {
     body: `
 <StorybookDescriptions componentName={'TableRecord'} type={'tableRecord'}/>
+
+<StorybookDescriptions componentName={'TableRecord'} type={'instruction'}/>
+
+<StorybookDescriptions componentName={'TableRecord'} type={'isHeader'}/>
+<Canvas of={Component.TableRecordIsHeader}/>
+
+<StorybookDescriptions componentName={'Style'} type={'isSkeleton'}/>
+<Canvas of={Component.TableRecordSkeleton}/>
     `,
     slots: `
 <StorybookDescriptions componentName={'TableRecord'} type={'slots'}/>

@@ -43,6 +43,7 @@ export const wikiDescriptionsBulletItem: StorybookComponentsDescriptionItem = {
 A bullet list item component representing a single row/point.
 Supports custom description content (via description prop or slot).
 Must be wrapped inside a Bullet component or <ul> element.
-`
+`,
+    hide: true
   }
 }

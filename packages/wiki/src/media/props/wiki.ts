@@ -72,6 +72,7 @@ import { wikiSwitch } from './wikiSwitch'
 import { wikiTabs } from './wikiTabs'
 import { wikiSegmentControl } from './wikiSegmentControl'
 import { wikiTabsNavigation } from './wikiTabsNavigation'
+import { wikiTableRecord } from './wikiTableRecord'
 import { wikiTooltip } from './wikiTooltip'
 import { wikiWindow } from './wikiWindow'
 
@@ -148,6 +149,7 @@ export const wiki: StorybookArgsToList = {
   ...wikiTabs,
   ...wikiSegmentControl,
   ...wikiTabsNavigation,
+  ...wikiTableRecord,
   ...wikiTooltip,
   ...wikiWindow
 }

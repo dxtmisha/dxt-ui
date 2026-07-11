@@ -47,6 +47,17 @@ export const wikiValue: StorybookArgsToList = {
     },
     isDemo: true
   },
+  columns: {
+    type: StorybookControl.array,
+    options: {
+      category: StorybookCategory.value,
+      type: 'string[]',
+      description: {
+        en: 'Column index names',
+        ru: 'Имена индексов колонок'
+      }
+    }
+  },
   currency: {
     type: StorybookControl.string,
     options: {

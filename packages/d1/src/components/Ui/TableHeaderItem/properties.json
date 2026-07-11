@@ -1,3 +1,14 @@
 {
-  "main": "{d.tableHeaderItem}"
+  "main": "{d.tableHeaderItem}",
+  "link|tableItem": "{?tableItem}",
+  "link|font": "{font.labelLarge}",
+  "#body": {
+    "gap": "{sys.spacing.xs}"
+  },
+  "#description": {
+    "link|caption": "{font.labelMedium}"
+  },
+  "#tooltip": {
+    "color-opacity": "{sys.opacity.surface.medium}"
+  }
 }

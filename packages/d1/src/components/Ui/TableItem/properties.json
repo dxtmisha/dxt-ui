@@ -4,7 +4,7 @@
   "paddingY": "{sys.spacing.x}",
   "link|font": "{font.bodyMedium}",
   "#description": {
-    "link|caption": "{??caption}",
+    "link|caption": "{??bodySmall}",
     "color-opacity": "{sys.opacity.surface.medium}"
   },
   "~selected": {
@@ -14,7 +14,6 @@
   "~disabled": {
     "color-opacity": "{sys.opacity.surface.disabled}",
     "#description": {
-      "link|caption": "{??caption}",
       "color-opacity": "{sys.opacity.surface.disabled}"
     }
   }

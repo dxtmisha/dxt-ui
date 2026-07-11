@@ -1,0 +1,20 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+## Table Header State
+
+The `isHeader` property toggles the table row into the header display mode:
+
+- Header cells (`TableHeaderItem` / `<th>`) are rendered instead of standard data cells (`TableItem` / `<td>`).
+- Header-specific styles are automatically applied (font weight, alignment, background).
+- Built-in tooltip support is activated for the cells if configured.
+
+<Source
+    code={`
+<TableRecord
+  :isHeader="true"
+  :columns="['name', 'role']"
+  :item="{ name: 'Name', role: 'Role' }"
+/>
+  `}
+    language="html"
+/>

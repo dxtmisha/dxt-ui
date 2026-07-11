@@ -191,6 +191,7 @@ export const wikiDescriptionsArrow: StorybookComponentsDescriptionItem = {
 Functional directional indicator (pointer) designed to connect floating containers like tooltips, popovers, or menus with their target elements. Automatically calculates positioning and orientation to create a seamless speech-bubble or callout effect.
 Features smart auto-positioning logic, support for inverse directions, and automated style inheritance. It inherits background and border properties from its parent container (Window or custom wrapper) to ensure visual consistency without manual configuration.
 Ideal for enhanced spatial context in complex UIs. Use within floating components to clearly indicate the source of a message or action. Controlled via position and elementTarget props, with an exposed update method for manual synchronization.
-    `
+    `,
+    hide: true
   }
 }

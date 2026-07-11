@@ -28,8 +28,8 @@ const classesToken = computed<ConstrClasses>(() => ({
   main: {
     // :classes-values [!] System label / Системная метка
     'd1-tableHeaderItem': true,
-    'd1-tableHeaderItem--disabled': props.disabled,
     'd1-tableHeaderItem--selected': props.selected,
+    'd1-tableHeaderItem--disabled': props.disabled,
     [`d1-tableHeaderItem--align--${props.align}`]: inArray(propsValues.align, props.align),
     [`d1-tableHeaderItem--alignVertical--${props.alignVertical}`]: inArray(propsValues.alignVertical, props.alignVertical),
     'd1-tableHeaderItem--labelClamp': props.labelClamp,

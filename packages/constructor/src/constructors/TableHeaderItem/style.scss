@@ -3,4 +3,26 @@
 
 @mixin mixinTableHeaderItem {
   @include tableItem.mixinTableItem;
+
+  &__body {
+    @include ui.flexX;
+  }
+
+  &--align {
+    &--left {
+      @include ui.subclass('body') {
+        justify-content: flex-start;
+      }
+    }
+    &--center {
+      @include ui.subclass('body') {
+        justify-content: center;
+      }
+    }
+    &--right {
+      @include ui.subclass('body') {
+        justify-content: flex-end;
+      }
+    }
+  }
 }

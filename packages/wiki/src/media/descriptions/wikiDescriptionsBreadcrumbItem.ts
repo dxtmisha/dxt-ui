@@ -64,6 +64,7 @@ export const wikiDescriptionsBreadcrumbItem: StorybookComponentsDescriptionItem 
   ai: {
     description: `
 Individual navigation step component inside breadcrumbs hierarchy. Represents a single link or static item, providing support for text labels, icons, router navigation, and click emissions.
-    `
+    `,
+    hide: true
   }
 }

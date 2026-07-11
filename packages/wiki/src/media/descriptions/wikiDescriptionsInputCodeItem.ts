@@ -79,6 +79,7 @@ export const wikiDescriptionsInputCodeItem: StorybookComponentsDescriptionItem =
     description: `
 An individual code input cell managed by InputCode.
 Handles single key entries, RegExp check via match prop, hidden values via hide, and emits focus/input/paste/backspace.
-    `
+    `,
+    hide: true
   }
 }

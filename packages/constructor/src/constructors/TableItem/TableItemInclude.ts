@@ -222,13 +222,15 @@ export class TableItemInclude extends ComponentIncludeAbstract<
 
     return toBinds(
       props.tableItemAttrs,
-      props.tableItemColumnAttrs?.[index],
       {
-        keyItem: key,
-        index,
         selected: props.selected,
         disabled: props.disabled,
         isSkeleton: props.isSkeleton
+      },
+      props.tableItemColumnAttrs?.[index],
+      {
+        keyItem: key,
+        index
       }
     )
   }

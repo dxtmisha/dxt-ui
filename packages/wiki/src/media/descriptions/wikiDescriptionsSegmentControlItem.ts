@@ -74,6 +74,7 @@ export const wikiDescriptionsSegmentControlItem: StorybookComponentsDescriptionI
 Foundational interactive building block for segment control structures. Encapsulates a label, optional icons, and status indicators (badges) into a single semantic unit with integrated state management.
 Features built-in support for selected, disabled, and loading (skeleton) states, along with automated navigation logic for href and router-link. Includes a Material-style ripple effect for high-polish click feedback and flexible tag rendering to support various HTML roles (button, a, li).
 Controlled via label, icon, and badge props, with v-model or selected prop integration. Use within SegmentControl components to create cohesive, accessible navigation interfaces with consistent visual affordance and spatial organization.
-    `
+    `,
+    hide: true
   }
 }

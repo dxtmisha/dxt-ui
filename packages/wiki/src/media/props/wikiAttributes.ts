@@ -307,6 +307,28 @@ export const wikiAttributes: StorybookArgsToList = {
     },
     hide: true
   },
+  tableItemAttrs: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.attributes,
+      description: {
+        en: 'Additional attributes for the TableItem component',
+        ru: 'Дополнительные атрибуты для компонента TableItem'
+      }
+    },
+    hide: true
+  },
+  tableItemColumnAttrs: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.attributes,
+      description: {
+        en: 'Additional attributes for TableItem column components',
+        ru: 'Дополнительные атрибуты для компонентов колонок TableItem'
+      }
+    },
+    hide: true
+  },
   tabsNavigationAttrs: {
     type: StorybookControl.object,
     options: {

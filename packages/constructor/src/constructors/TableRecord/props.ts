@@ -1,4 +1,5 @@
 import type { TableItemPropsBasic, TableItemPropsInclude } from '../TableItem'
+import type { TableHeaderItemPropsBasic } from '../TableHeaderItem'
 
 import type { TableRecordValue } from './basicTypes'
 
@@ -10,11 +11,12 @@ type TableRecordPropsToken = {
 }
 
 export type TableRecordPropsBasic<
-  TableItem extends TableItemPropsBasic = TableItemPropsBasic
+  TableItem extends TableItemPropsBasic = TableItemPropsBasic,
+  TableHeaderItem extends TableHeaderItemPropsBasic = TableHeaderItemPropsBasic
 > = TableItemPropsInclude<TableItem>
   & {
     /** Row data / Данные строки */
-    item?: Record<string, TableRecordValue<TableItem> | any>
+    item?: Record<string, TableRecordValue<TableItem | TableHeaderItem> | any>
     /** Column indexes / Индексы колонок */
     columns?: string[]
 
