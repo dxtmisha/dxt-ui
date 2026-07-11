@@ -1,5 +1,7 @@
 import type { TableItemPropsBasic } from '../TableItem'
-import type { TableRecordPropsBasic, TableRecordPropsInclude, TableRecordValue } from '../TableRecord'
+import type { TableRecordPropsBasic, TableRecordPropsInclude } from '../TableRecord'
+import type { TableHeaderItemPropsBasic } from '../TableHeaderItem'
+import type { TableHeader, TableHeaders, TableList } from './basicTypes'
 
 type TablePropsToken = {
   // :type [!] System label / Системная метка
@@ -9,17 +11,18 @@ type TablePropsToken = {
 
 export type TablePropsBasic<
   TableItem extends TableItemPropsBasic = TableItemPropsBasic,
-  TableRecord extends TableRecordPropsBasic<TableItem> = TableRecordPropsBasic<TableItem>
+  TableHeaderItem extends TableHeaderItemPropsBasic = TableHeaderItemPropsBasic,
+  TableRecord extends TableRecordPropsBasic<TableItem, TableHeaderItem> = TableRecordPropsBasic<TableItem, TableHeaderItem>
 > = TableRecordPropsInclude<TableItem, TableRecord>
   & {
     /** Column index names / Имена индексов колонок */
     columns?: string[]
 
     /** Table header data / Данные шапки таблицы */
-    header?: Record<string, TableRecordValue<TableItem>> | string[]
+    header?: TableHeader<TableHeaderItem> | TableHeaders<TableHeaderItem>
 
     /** List of row records / Список записей строк */
-    list?: (Partial<Record<string, TableRecordValue<TableItem>>> | Record<string, any> | any)[]
+    list?: TableList<TableItem>
 
     /** Field name for key identification / Имя поля для идентификации ключа */
     keyValue?: string

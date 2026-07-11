@@ -1,4 +1,5 @@
 export * from './Table'
 export * from './TableDesign'
+export * from './basicTypes'
 export * from './props'
 export * from './types'

@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.7.0] - 2026-07-11
+
+### Added
+- **getLast**: Introduced a new `getLast` utility function to safely retrieve the last element from arrays or objects, with full bilingual JSDocs.
+- **Tests**: Created a comprehensive unit test suite (`getLast.test.ts`) to validate last-element extraction across multiple data types.
+
 ## [1.6.2] - 2026-07-06
 
 ### Changed

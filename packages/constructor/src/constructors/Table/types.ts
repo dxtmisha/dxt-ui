@@ -19,7 +19,10 @@ export type TableExpose = {}
  * Type describing available slots. /
  * Тип, описывающий доступные слоты.
  */
-export type TableSlots = TableRecordItemSlots
+export type TableSlots<
+  Item = any,
+  Value = any
+> = TableRecordItemSlots<Item, Value>
   & {
     /**
      * Slot for custom table body content /

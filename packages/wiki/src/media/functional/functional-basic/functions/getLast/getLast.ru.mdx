@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/getLast - Получение последнего элемента'/>
+
+# `getLast`
+
+Возвращает последний элемент массива или объекта. Если значение является примитивом, возвращает само значение.
+
+**Параметры:**
+- `value: T | T[] | Record<string, T>` — входное значение.
+
+**Возвращает:**
+`T | undefined` — последний элемент массива или объекта, или само значение.
+
+```typescript
+import { getLast } from '@dxtmisha/functional-basic'
+
+console.log(getLast([1, 2, 3])) // 3
+console.log(getLast({ a: 1, b: 2 })) // 2
+console.log(getLast('string')) // 'string'
+```

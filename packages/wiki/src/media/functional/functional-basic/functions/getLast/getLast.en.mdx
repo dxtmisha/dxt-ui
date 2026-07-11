@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/getLast - Get the last element'/>
+
+# `getLast`
+
+Returns the last element of an array or object. If the value is a primitive, returns the value itself.
+
+**Parameters:**
+- `value: T | T[] | Record<string, T>` — input value.
+
+**Returns:**
+`T | undefined` — the last element of the array or object, or the value itself.
+
+```typescript
+import { getLast } from '@dxtmisha/functional-basic'
+
+console.log(getLast([1, 2, 3])) // 3
+console.log(getLast({ a: 1, b: 2 })) // 2
+console.log(getLast('string')) // 'string'
+```

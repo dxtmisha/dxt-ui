@@ -139,7 +139,7 @@ export class TableDesign<
         },
         this.item.tableRecord.renderRecord(
           'header',
-          this.item.columns.value,
+          this.item.columns,
           this.item.headerData.value,
           true,
           {
@@ -164,14 +164,14 @@ export class TableDesign<
     const slot = this.initSlot(
       'body',
       undefined,
-      { columns: this.item.columns.value }
+      { columns: this.item.columns }
     )
 
     this.props.list?.forEach((item, key) => {
       children.push(
         this.item.tableRecord.renderRecord(
           this.item.getKeyItem(item, key),
-          this.item.columns.value,
+          this.item.columns,
           item
         )
       )

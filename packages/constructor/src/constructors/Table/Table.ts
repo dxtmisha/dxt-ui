@@ -2,7 +2,10 @@ import { type Ref, type ToRefs, computed } from 'vue'
 import {
   type ConstrEmit,
   type DesignComp,
-  forEach
+  forEach,
+  getLast,
+  isArray,
+  isFilled
 } from '@dxtmisha/functional'
 
 import { TableRecordInclude } from '../TableRecord'
@@ -65,27 +68,24 @@ export class Table {
    * Returns a list of available columns. /
    * Возвращает список доступных колонок.
    */
-  readonly columns = computed<string[]>(() => {
+  get columns(): string[] {
     if (this.props.columns) {
       return this.props.columns
     }
 
-    if (this.props.header) {
-      return Object.keys(this.props.header)
+    if (isFilled(this.props.header)) {
+      if (isArray(this.props.header)) {
+        const last = getLast(this.props.header)
+
+        if (last) {
+          return Object.keys(last)
+        }
+      } else {
+        return Object.keys(this.props.header)
+      }
     }
 
     return []
-  })
-
-  /**
-   * Returns the key identifier data of the record. /
-   * Возвращает данные идентификатора ключа записи.
-   * @param item record data / данные записи
-   * @param key index in the array / номер в массиве
-   * @returns unique key string / строка уникального ключа
-   */
-  readonly getKeyItem = (item: TableProps['tableItemAttrs'], key: number): string => {
-    return (this.props.keyValue && item?.[this.props.keyValue]) ?? item?.index ?? item?.value ?? key.toString()
   }
 
   /**
@@ -105,4 +105,21 @@ export class Table {
 
     return undefined
   })
+
+  /**
+   * Returns the key identifier data of the record. /
+   * Возвращает данные идентификатора ключа записи.
+   * @param item record data / данные записи
+   * @param key index in the array / номер в массиве
+   * @returns unique key string / строка уникального ключа
+   */
+  readonly getKeyItem = (
+    item: TableProps['tableItemAttrs'],
+    key: number
+  ): string => {
+    return (this.props.keyValue && item?.[this.props.keyValue])
+      ?? item?.index
+      ?? item?.value
+      ?? key.toString()
+  }
 }

@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/getLast - Lấy phần tử cuối cùng'/>
+
+# `getLast`
+
+Trả về phần tử cuối cùng của một mảng hoặc một đối tượng. Nếu giá trị là kiểu nguyên thủy, trả về chính giá trị đó.
+
+**Tham số:**
+- `value: T | T[] | Record<string, T>` — giá trị đầu vào.
+
+**Trả về:**
+`T | undefined` — phần tử cuối cùng của mảng hoặc đối tượng, hoặc chính giá trị đó.
+
+```typescript
+import { getLast } from '@dxtmisha/functional-basic'
+
+console.log(getLast([1, 2, 3])) // 3
+console.log(getLast({ a: 1, b: 2 })) // 2
+console.log(getLast('string')) // 'string'
+```
