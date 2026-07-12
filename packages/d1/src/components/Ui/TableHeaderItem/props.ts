@@ -34,10 +34,13 @@ export type TableHeaderItemProps = TableHeaderItemPropsBasic<IconProps, TooltipP
  */
 export const defaults: object = {
   ...defaultsTableHeaderItem,
+  iconTooltip: 'help',
   ...{
     // :default [!] System label / Системная метка
     align: 'left',
-    alignVertical: 'center'
+    alignVertical: 'center',
+    dividerX: true,
+    dividerY: true
     // :default [!] System label / Системная метка
   }
 }

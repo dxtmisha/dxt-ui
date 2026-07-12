@@ -132,6 +132,7 @@ export class DesignReplace {
       const value = data
         .join(`${end}${inString}`)
         .replace(/\[space]/g, inString)
+        .replace(/\$/g, '$$$$')
 
       if (value.trim() !== '') {
         this.sample = this.sample

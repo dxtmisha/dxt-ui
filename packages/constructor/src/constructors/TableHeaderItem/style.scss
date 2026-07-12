@@ -26,8 +26,8 @@
     }
   }
 
-  &--dividerY:last-child {
-    border-bottom-style: ui.v('??borderStyle');
+  &--dividerY {
+    border-bottom-style: ui.v('??borderStyle', solid);
     border-bottom-width: ui.v('??borderWidth');
     @include ui.borderColor(ui.v('??borderColor'), ui.v('??borderOpacity'));
   }

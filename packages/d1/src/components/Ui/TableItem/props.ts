@@ -34,7 +34,9 @@ export const defaults: object = {
   ...{
     // :default [!] System label / Системная метка
     align: 'left',
-    alignVertical: 'center'
+    alignVertical: 'center',
+    dividerX: true,
+    dividerY: true
     // :default [!] System label / Системная метка
   }
 }

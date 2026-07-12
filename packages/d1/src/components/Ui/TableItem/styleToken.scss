@@ -11,6 +11,11 @@
   // Стили из токенов
   // :style [!] System label / Системная метка
   & {
+    --d1-tableItem-borderStyleX: dashed;
+    --d1-tableItem-borderWidth: var(--d1-sys-spacing-outline);
+    --d1-tableItem-borderColor: var(--d1-sys-palette-outline);
+    --d1-tableItem-borderOpacity: var(--d1-sys-opacity-outline);
+    
     @include ui.paddingX(#{var(--d1-sys-spacing-xs)});
     @include ui.paddingY(#{var(--d1-sys-spacing-x)});
     

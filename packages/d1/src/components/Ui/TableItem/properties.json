@@ -1,5 +1,9 @@
 {
   "main": "{d.tableItem}",
+  "border-styleX": "dashed",
+  "border-width": "{sys.spacing.outline}",
+  "border-color": "{sys.palette.outline}",
+  "border-opacity": "{sys.opacity.outline}",
   "paddingX": "{sys.spacing.xs}",
   "paddingY": "{sys.spacing.x}",
   "link|font": "{font.bodyMedium}",
@@ -16,5 +20,11 @@
     "#description": {
       "color-opacity": "{sys.opacity.surface.disabled}"
     }
+  },
+  "~dividerX": {
+    "_default": true
+  },
+  "~dividerY": {
+    "_default": true
   }
 }

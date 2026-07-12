@@ -3,7 +3,9 @@
 @mixin mixinTable {
   &__table {
     position: relative;
-    min-width: 100%;
+    min-width: ui.v('??fixWidth', 100%);
+
+    border-collapse: collapse;
   }
 
   &__header {

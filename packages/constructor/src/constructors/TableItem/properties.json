@@ -1,5 +1,8 @@
 {
-  "border-style": {
+  "border-styleX": {
+    "_type": "var"
+  },
+  "border-styleY": {
     "_type": "var"
   },
   "border-width": {

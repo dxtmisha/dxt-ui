@@ -28,14 +28,14 @@
   }
 
   &--dividerX:not(:first-child) {
-    border-left-style: ui.v('??borderStyle');
+    border-left-style: ui.v('??borderStyleX', solid);
     border-left-width: ui.v('??borderWidth');
     @include ui.borderColor(ui.v('??borderColor'), ui.v('??borderOpacity'));
   }
 
-  &--dividerY:not(:first-child) {
-    border-top-style: ui.v('??borderStyle');
-    border-top-width: ui.v('??borderWidth');
+  &--dividerY {
+    border-top-style: ui.v('??borderStyleY', solid);
+    border-top-width: ui.v('?item.borderNone', ui.v('??borderWidth', 0));
     @include ui.borderColor(ui.v('??borderColor'), ui.v('??borderOpacity'));
   }
 

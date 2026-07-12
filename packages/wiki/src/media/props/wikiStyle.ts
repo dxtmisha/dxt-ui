@@ -149,6 +149,26 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
+  dividerX: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Enables visual divider along the X-axis (vertical divider)',
+        ru: 'Включает визуальный разделитель по оси X (вертикальный разделитель)'
+      }
+    }
+  },
+  dividerY: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Enables visual divider along the Y-axis (horizontal divider)',
+        ru: 'Включает визуальный разделитель по оси Y (горизонтальный разделитель)'
+      }
+    }
+  },
   dot: {
     type: StorybookControl.boolean,
     options: {

@@ -1,5 +1,7 @@
 @use "@dxtmisha/styles/properties" as ui;
 
 @mixin mixinTableRecord {
-  min-width: ui.v('?table-fixWidth', 0);
+  &:first-child {
+    --#{ui.n('?item.borderNone')}: 0;
+  }
 }
