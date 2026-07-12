@@ -32,6 +32,8 @@ const classesToken = computed<ConstrClasses>(() => ({
     'd1-tableHeaderItem--disabled': props.disabled,
     [`d1-tableHeaderItem--align--${props.align}`]: inArray(propsValues.align, props.align),
     [`d1-tableHeaderItem--alignVertical--${props.alignVertical}`]: inArray(propsValues.alignVertical, props.alignVertical),
+    'd1-tableHeaderItem--dividerX': props.dividerX,
+    'd1-tableHeaderItem--dividerY': props.dividerY,
     'd1-tableHeaderItem--labelClamp': props.labelClamp,
     'd1-tableHeaderItem--stickyTop': props.stickyTop,
     'd1-tableHeaderItem--stickyLeft': props.stickyLeft

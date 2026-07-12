@@ -12,6 +12,8 @@ import type { ComponentIncludeExtra, ComponentIncludeProps } from '../../types/c
 import type { TableRecordPropsInclude } from './basicTypes'
 import type { TableRecordExpose, TableRecordSlots } from './types'
 import type { TableRecordPropsBasic } from './props'
+import type { TableItemPropsBasic } from '../TableItem'
+import type { TableHeaderItemPropsBasic } from '../TableHeaderItem'
 
 /**
  * TableRecordInclude class provides functionality for rendering table record items
@@ -63,6 +65,28 @@ export class TableRecordInclude extends ComponentIncludeAbstract<
   }
 
   /**
+   * Returns the unique key identifier for the table record item.
+   *
+   * Возвращает уникальный строковый ключ-идентификатор для элемента записи таблицы.
+   * @param key fallback index in the array / резервный индекс в массиве
+   * @param item record item properties / свойства элемента записи
+   * @returns unique key string / уникальная строка ключа
+   */
+  getKey(
+    key: number | string,
+    item: TableItemPropsBasic | TableHeaderItemPropsBasic
+  ): string {
+    const props = this.getProps()
+
+    return String(
+      (props.keyValue && (item as never)?.[props.keyValue])
+      || item?.index
+      || item?.value
+      || key
+    )
+  }
+
+  /**
    * Renders the table record.
    *
    * Рендерит запись таблицы.
@@ -91,15 +115,17 @@ export class TableRecordInclude extends ComponentIncludeAbstract<
             tableItemColumnAttrs: props.tableItemColumnAttrs
           },
           props.tableRecordAttrs,
+          {
+            selected: isSelected(key, props.selected),
+            disabled: item?.disabled,
+            isSkeleton: props.isSkeleton
+          },
           props.tableRowAttrs?.[key],
           attrs,
           {
             item,
             columns,
-            selected: isSelected(key, props.selected),
-            disabled: item?.disabled,
             isHeader,
-            isSkeleton: props.isSkeleton,
             index: key
           }
         ),

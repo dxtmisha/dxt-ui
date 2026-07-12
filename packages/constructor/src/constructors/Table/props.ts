@@ -23,9 +23,6 @@ export type TablePropsBasic<
 
     /** List of row records / Список записей строк */
     list?: TableList<TableItem>
-
-    /** Field name for key identification / Имя поля для идентификации ключа */
-    keyValue?: string
   }
 
 /**

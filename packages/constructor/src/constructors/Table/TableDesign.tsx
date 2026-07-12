@@ -2,7 +2,8 @@ import { h, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
-  DesignConstructorAbstract
+  DesignConstructorAbstract,
+  toArray
 } from '@dxtmisha/functional'
 
 import { Table } from './Table'
@@ -89,6 +90,7 @@ export class TableDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
+        table: this.getSubClass('table'),
         header: this.getSubClass('header'),
         items: this.getSubClass('items')
         // :classes [!] System label / Системная метка
@@ -113,14 +115,13 @@ export class TableDesign<
    */
   protected initRender(): VNode {
     const children: any[] = [
-      this.renderHeader(),
-      this.renderItems()
+      ...this.renderHeader(),
+      ...this.renderItems()
     ]
 
-    return h('div', {
+    return h('table', {
       ...this.getAttrs(),
-      ref: this.element,
-      class: this.classes?.value.main
+      class: this.classes?.value.table
     }, children)
   }
 
@@ -130,27 +131,37 @@ export class TableDesign<
    * Рендерит заголовок таблицы.
    * @returns rendered header virtual node or undefined / виртуальный узел заголовка или undefined
    */
-  readonly renderHeader = (): VNode | undefined => {
+  readonly renderHeader = (): VNode[] => {
+    const children: any[] = []
+
     if (this.props.header) {
-      return h(
-        'div',
-        {
-          class: this.classes?.value.header
-        },
-        this.item.tableRecord.renderRecord(
-          'header',
-          this.item.columns,
-          this.item.headerData.value,
-          true,
-          {
-            isHeader: true,
-            stickyTop: this.props.headerTop
-          }
-        )
-      )
+      toArray(this.props.header)
+        .forEach((item, key) => {
+          children.push(
+            this.item.tableRecord.renderRecord(
+              this.item.tableRecord.getKey(`header-${key}`, item),
+              this.item.columns,
+              item,
+              true,
+              {
+                stickyTop: this.props.headerTop
+              }
+            )
+          )
+        })
     }
 
-    return undefined
+    if (children.length > 0) {
+      return [
+        h(
+          'thead',
+          { class: this.classes?.value.header },
+          children
+        )
+      ]
+    }
+
+    return children
   }
 
   /**
@@ -159,38 +170,64 @@ export class TableDesign<
    * Рендерит элементы таблицы.
    * @returns rendered items virtual node or undefined / виртуальный узел элементов или undefined
    */
-  readonly renderItems = (): VNode | undefined => {
+  readonly renderItems = (): VNode[] => {
+    const children: any[] = [
+      ...this.renderList(),
+      ...this.renderBody()
+    ]
+
+    if (children.length > 0) {
+      return [
+        h(
+          'tbody',
+          { class: this.classes?.value.items },
+          children
+        )
+      ]
+    }
+
+    return children
+  }
+
+  /**
+   * Renders the list of table rows/items.
+   *
+   * Рендерит список строк/элементов таблицы.
+   * @returns array of rendered item virtual nodes / массив отрендеренных виртуальных узлов элементов
+   */
+  readonly renderList = (): any[] => {
     const children: any[] = []
-    const slot = this.initSlot(
-      'body',
-      undefined,
-      { columns: this.item.columns }
-    )
 
     this.props.list?.forEach((item, key) => {
       children.push(
         this.item.tableRecord.renderRecord(
-          this.item.getKeyItem(item, key),
+          this.item.tableRecord.getKey(`item-${key}`, item),
           this.item.columns,
           item
         )
       )
     })
 
+    return children
+  }
+
+  /**
+   * Renders the custom body content slot.
+   *
+   * Рендерит слот пользовательского содержимого тела таблицы.
+   * @returns rendered slot virtual node or undefined / виртуальный узел слота или undefined
+   */
+  readonly renderBody = (): VNode[] => {
+    const slot = this.initSlot(
+      'body',
+      undefined,
+      { columns: this.item.columns }
+    )
+
     if (slot) {
-      children.push(slot)
+      return [slot]
     }
 
-    if (children.length > 0) {
-      return h(
-        'div',
-        {
-          class: this.classes?.value.items
-        },
-        children
-      )
-    }
-
-    return undefined
+    return []
   }
 }

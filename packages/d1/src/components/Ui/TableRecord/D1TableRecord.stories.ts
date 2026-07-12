@@ -33,13 +33,12 @@ export const TableRecord: Story = {
     selected: false,
 
     tableItemColumnAttrs: {
-      "name": {
-        "disabled": true
+      name: {
+        disabled: true
       }
     }
   },
 
-  // :story-main [!] System label / Системная метка
   // :story-main [!] System label / Системная метка
   render: (args: any) => ({
     components: { D1TableRecord },
@@ -52,6 +51,7 @@ export const TableRecord: Story = {
     </table>
     `
   })
+  // :story-main [!] System label / Системная метка
 }
 
 // :story-items [!] System label / Системная метка

@@ -1,4 +1,16 @@
 {
+  "border-style": {
+    "_type": "var"
+  },
+  "border-width": {
+    "_type": "var"
+  },
+  "border-color": {
+    "_type": "var"
+  },
+  "border-opacity": {
+    "_type": "var"
+  },
   "#label": {},
   "#description": {},
   "selected": {},
@@ -15,6 +27,8 @@
     "~bottom": {},
     "_default": "center"
   },
+  "~dividerX": {},
+  "~dividerY": {},
   "~labelClamp": {},
   "~stickyTop": {},
   "~stickyLeft": {}

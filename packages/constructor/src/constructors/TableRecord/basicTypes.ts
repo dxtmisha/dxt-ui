@@ -77,6 +77,9 @@ export type TableRecordPropsInclude<
   /** Selected item identifier or list / Идентификатор выбранного элемента или список */
   selected?: string | string[]
 
+  /** Field name for key identification / Имя поля для идентификации ключа */
+  keyValue?: string
+
   /** Additional attributes for TableRecord component / Дополнительные атрибуты для компонента TableRecord */
   tableRecordAttrs?: ConstrBind<TableRecord>
 

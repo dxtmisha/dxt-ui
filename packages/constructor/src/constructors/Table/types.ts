@@ -42,6 +42,7 @@ export type TableClasses = {
   /** Main element class name / Основное имя класса элемента */
   main: ConstrClass
   // :classes [!] System label / Системная метка
+  table: string
   header: string
   items: string
   // :classes [!] System label / Системная метка

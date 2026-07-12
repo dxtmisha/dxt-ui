@@ -1,4 +1,4 @@
-import { type Ref, type ToRefs, computed } from 'vue'
+import { type Ref, type ToRefs } from 'vue'
 import {
   type ConstrEmit,
   type DesignComp,
@@ -92,7 +92,7 @@ export class Table {
    * Returns a normalized record of the table header. /
    * Возвращает нормализованную запись заголовков таблицы.
    */
-  readonly headerData = computed<Record<string, any> | undefined>(() => {
+  get headerData(): Record<string, any> | undefined {
     if (this.props.header) {
       const data: Record<string, any> = {}
 
@@ -104,22 +104,5 @@ export class Table {
     }
 
     return undefined
-  })
-
-  /**
-   * Returns the key identifier data of the record. /
-   * Возвращает данные идентификатора ключа записи.
-   * @param item record data / данные записи
-   * @param key index in the array / номер в массиве
-   * @returns unique key string / строка уникального ключа
-   */
-  readonly getKeyItem = (
-    item: TableProps['tableItemAttrs'],
-    key: number
-  ): string => {
-    return (this.props.keyValue && item?.[this.props.keyValue])
-      ?? item?.index
-      ?? item?.value
-      ?? key.toString()
   }
 }

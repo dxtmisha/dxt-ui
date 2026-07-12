@@ -11,6 +11,8 @@ const propsNames: StorybookProps = [
   { name: 'description', type: 'string | number' },
   { name: 'descriptionId', type: 'string' },
   { name: 'disabled', type: 'boolean' },
+  { name: 'dividerX', type: 'boolean' },
+  { name: 'dividerY', type: 'boolean' },
   { name: 'index', type: 'string' },
   { name: 'isSkeleton', type: 'boolean' },
   { name: 'keyItem', type: 'string' },

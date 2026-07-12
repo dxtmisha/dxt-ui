@@ -25,4 +25,10 @@
       }
     }
   }
+
+  &--dividerY:last-child {
+    border-bottom-style: ui.v('??borderStyle');
+    border-bottom-width: ui.v('??borderWidth');
+    @include ui.borderColor(ui.v('??borderColor'), ui.v('??borderOpacity'));
+  }
 }

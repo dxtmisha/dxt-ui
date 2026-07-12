@@ -1,6 +1,8 @@
 @use "@dxtmisha/styles/properties" as ui;
 
 @mixin mixinTableItem {
+  border: none;
+
   &--align {
     &--left {
       @include ui.textAlign('left');
@@ -23,6 +25,18 @@
     &--bottom {
       vertical-align: bottom;
     }
+  }
+
+  &--dividerX:not(:first-child) {
+    border-left-style: ui.v('??borderStyle');
+    border-left-width: ui.v('??borderWidth');
+    @include ui.borderColor(ui.v('??borderColor'), ui.v('??borderOpacity'));
+  }
+
+  &--dividerY:not(:first-child) {
+    border-top-style: ui.v('??borderStyle');
+    border-top-width: ui.v('??borderWidth');
+    @include ui.borderColor(ui.v('??borderColor'), ui.v('??borderOpacity'));
   }
 
   &--labelClamp {
