@@ -112,7 +112,7 @@ export class TableRecordInclude extends ComponentIncludeAbstract<
         this.name,
         toBinds(
           {
-            stickyTop: props.stickyTop?.indexOf(index),
+            stickyTop: (props.stickyTop?.indexOf(index) ?? -1) !== -1,
             stickyLeft: props.stickyLeft,
             tableItemAttrs: props.tableItemAttrs,
             tableItemColumnAttrs: props.tableItemColumnAttrs

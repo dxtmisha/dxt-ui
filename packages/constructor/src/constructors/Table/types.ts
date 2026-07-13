@@ -1,7 +1,8 @@
 import type { ConstrClass } from '@dxtmisha/functional'
+import type { ScrollStickyComponentInclude } from '../ScrollSticky'
 import type { TableRecordComponentInclude, TableRecordItemSlots } from '../TableRecord'
 
-export type TableComponents = TableRecordComponentInclude
+export type TableComponents = TableRecordComponentInclude & ScrollStickyComponentInclude
 
 /**
  * Type describing available events. /

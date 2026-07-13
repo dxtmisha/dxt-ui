@@ -7,9 +7,11 @@
     &--left {
       @include ui.textAlign('left');
     }
+
     &--center {
       @include ui.textAlign('center');
     }
+
     &--right {
       @include ui.textAlign('right');
     }
@@ -19,9 +21,11 @@
     &--top {
       vertical-align: top;
     }
+
     &--center {
       vertical-align: middle;
     }
+
     &--bottom {
       vertical-align: bottom;
     }

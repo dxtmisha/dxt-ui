@@ -114,15 +114,53 @@ export class TableDesign<
    * @returns virtual node (VNode) / виртуальный узел (VNode)
    */
   protected initRender(): VNode {
-    const children: any[] = [
-      ...this.renderHeader(),
-      ...this.renderItems()
-    ]
+    return this.renderScrollSticky() || this.renderMain()
+  }
 
-    return h('table', {
+  /**
+   * Renders the main element wrapper. /
+   * Рендерит обертку основного элемента.
+   * @returns rendered main virtual node / виртуальный узел основного элемента
+   */
+  readonly renderMain = (): VNode => {
+    return h('div', {
       ...this.getAttrs(),
-      class: this.classes?.value.table
-    }, children)
+      class: this.classes?.value.main
+    }, this.renderTable())
+  }
+
+  /**
+   * Renders the sticky scroll component if available. /
+   * Рендерит компонент липкой прокрутки, если он доступен.
+   * @returns rendered scroll sticky virtual node or undefined / виртуальный узел липкой прокрутки или undefined
+   */
+  readonly renderScrollSticky = (): VNode | undefined => {
+    if (
+      this.components
+    ) {
+      return this.components.renderOne('scrollSticky', {
+        ...this.getAttrs(),
+        class: this.classes?.value.main
+      }, { default: () => this.renderTable() })
+    }
+
+    return undefined
+  }
+
+  /**
+   * Renders the table element. /
+   * Рендерит элемент таблицы.
+   * @returns rendered table virtual node / виртуальный узел таблицы
+   */
+  readonly renderTable = (): VNode => {
+    return h(
+      'table',
+      { class: this.classes?.value.table },
+      [
+        ...this.renderHeader(),
+        ...this.renderItems()
+      ]
+    )
   }
 
   /**
@@ -143,7 +181,7 @@ export class TableDesign<
               this.item.columns,
               item,
               true,
-              { stickyTop: this.props.headerTop }
+              { stickyTop: false }
             )
           )
         })

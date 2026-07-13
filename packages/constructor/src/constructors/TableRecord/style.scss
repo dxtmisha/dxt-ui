@@ -4,4 +4,8 @@
   &:first-child {
     --#{ui.n('?item.borderNone')}: 0;
   }
+
+  &--none {
+    display: none;
+  }
 }

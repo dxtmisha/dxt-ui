@@ -27,6 +27,7 @@
   }
 
   &--dividerY {
+    border-top: none;
     border-bottom-style: ui.v('??borderStyle', solid);
     border-bottom-width: ui.v('??borderWidth');
     @include ui.borderColor(ui.v('??borderColor'), ui.v('??borderOpacity'));

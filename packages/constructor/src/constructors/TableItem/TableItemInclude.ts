@@ -148,10 +148,8 @@ export class TableItemInclude extends ComponentIncludeAbstract<
     if (this.components) {
       const value: any = row?.[index]
 
-      if (value !== '*none') {
-        return this.renderSlot(key, index, row, value)
-          || this.renderDefault(key, index, value)
-      }
+      return this.renderSlot(key, index, row, value)
+        || this.renderDefault(key, index, value)
     }
 
     return undefined
@@ -208,6 +206,12 @@ export class TableItemInclude extends ComponentIncludeAbstract<
    * @returns object containing cell attributes or undefined / объект, содержащий атрибуты ячейки, или undefined
    */
   protected getCellAttrs(value: any): Record<string, any> | undefined {
+    if (value === '*none') {
+      return {
+        class: `${this.className}--none`
+      }
+    }
+
     return isObjectNotArray(value) ? value : undefined
   }
 
@@ -234,7 +238,7 @@ export class TableItemInclude extends ComponentIncludeAbstract<
         keyItem: key,
         index,
         stickyTop: props.stickyTop,
-        stickyLeft: props?.stickyLeft?.indexOf?.(index)
+        stickyLeft: (props?.stickyLeft?.indexOf?.(index) ?? -1) === -1
       }
     )
   }
