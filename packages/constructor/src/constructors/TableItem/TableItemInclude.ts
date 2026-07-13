@@ -148,8 +148,10 @@ export class TableItemInclude extends ComponentIncludeAbstract<
     if (this.components) {
       const value: any = row?.[index]
 
-      return this.renderSlot(key, index, row, value)
-        || this.renderDefault(key, index, value)
+      if (value !== '*none') {
+        return this.renderSlot(key, index, row, value)
+          || this.renderDefault(key, index, value)
+      }
     }
 
     return undefined
@@ -230,7 +232,9 @@ export class TableItemInclude extends ComponentIncludeAbstract<
       props.tableItemColumnAttrs?.[index],
       {
         keyItem: key,
-        index
+        index,
+        stickyTop: props.stickyTop,
+        stickyLeft: props?.stickyLeft?.indexOf?.(index)
       }
     )
   }

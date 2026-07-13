@@ -24,6 +24,11 @@ export type TableItemPropsInclude<
     /** Disabled state of the item / Отключенное состояние элемента */
     disabled?: boolean
 
+    /** Sticky top state / Закрепленное сверху состояние */
+    stickyTop?: boolean
+    /** List of columns sticky to the left / Список колонок, закрепленных слева */
+    stickyLeft?: string[]
+
     /** Additional attributes for TableItem component / Дополнительные атрибуты для компонента TableItem */
     tableItemAttrs?: ConstrBind<TableItem>
 

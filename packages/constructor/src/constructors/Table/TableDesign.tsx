@@ -143,9 +143,7 @@ export class TableDesign<
               this.item.columns,
               item,
               true,
-              {
-                stickyTop: this.props.headerTop
-              }
+              { stickyTop: this.props.headerTop }
             )
           )
         })

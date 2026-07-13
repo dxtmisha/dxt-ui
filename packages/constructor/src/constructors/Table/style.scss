@@ -8,29 +8,11 @@
     border-collapse: collapse;
   }
 
-  &__header {
-    overflow: hidden;
-  }
-
-  &__items {
-    overflow-y: hidden;
-    overflow-x: auto;
-    // overscroll-behavior: none
-
-    scrollbar-width: none;
-
-    &::-webkit-scrollbar {
-      appearance: none;
-      width: 0;
-      height: 0;
-    }
-  }
-
   &--headerTop {
-    &__header {
+    @include ui.subclass('header') {
       position: sticky;
-      top: var(--sys-header-height, 0);
-      z-index: 16;
+      top: ui.v('?sys.global.sticky.top', ui.v('?sys.sticky.top', 0));
+      z-index: 12;
     }
   }
 }

@@ -106,31 +106,34 @@ export class TableRecordInclude extends ComponentIncludeAbstract<
   ): VNode | undefined => {
     if (this.components) {
       const props = this.getProps()
+      const index = this.getKey(key, item)
 
       return this.components.renderOne(
         this.name,
         toBinds(
           {
+            stickyTop: props.stickyTop?.indexOf(index),
+            stickyLeft: props.stickyLeft,
             tableItemAttrs: props.tableItemAttrs,
             tableItemColumnAttrs: props.tableItemColumnAttrs
           },
           props.tableRecordAttrs,
           {
-            selected: isSelected(key, props.selected),
+            selected: isSelected(index, props.selected),
             disabled: item?.disabled,
             isSkeleton: props.isSkeleton
           },
-          props.tableRowAttrs?.[key],
+          props.tableRowAttrs?.[index],
           attrs,
           {
             item,
             columns,
             isHeader,
-            index: key
+            index
           }
         ),
         this.slots,
-        key
+        index
       )
     }
 

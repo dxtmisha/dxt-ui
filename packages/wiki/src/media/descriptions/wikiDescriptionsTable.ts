@@ -56,7 +56,7 @@ export const wikiDescriptionsTable: StorybookComponentsDescriptionItem = {
                 salary: { style: { display: 'none' } }
               },
               {
-                id: { style: { display: 'none' } },
+                id: '*none',
                 name: 'Name',
                 status: 'Status',
                 role: 'Role',

@@ -47,13 +47,13 @@
 
   &--stickyTop {
     position: sticky;
-    @include ui.left(ui.v('??stickyLeft.top', 0));
+    top: ui.v('?sys.sticky.top', 0);
     z-index: 12;
   }
 
   &--stickyLeft {
     position: sticky;
-    @include ui.left(ui.v('??stickyLeft.left', 0));
+    @include ui.left(ui.v('??sys.sticky.left', 0));
     z-index: 16;
   }
 }

@@ -73,9 +73,12 @@ export type TableRecordComponentInclude = {
 export type TableRecordPropsInclude<
   TableItem extends TableItemPropsBasic = TableItemPropsBasic,
   TableRecord extends TableRecordPropsBasic<TableItem> = TableRecordPropsBasic<TableItem>
-> = TableItemPropsInclude<TableItem> & {
+> = Omit<TableItemPropsInclude<TableItem>, 'selected' | 'stickyTop'> & {
   /** Selected item identifier or list / Идентификатор выбранного элемента или список */
   selected?: string | string[]
+
+  /** List of keys/columns sticky to the top / Список ключей/колонок, закрепленных сверху */
+  stickyTop?: string[]
 
   /** Field name for key identification / Имя поля для идентификации ключа */
   keyValue?: string

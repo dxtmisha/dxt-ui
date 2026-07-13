@@ -2,7 +2,6 @@ import { type Ref, type ToRefs } from 'vue'
 import {
   type ConstrEmit,
   type DesignComp,
-  forEach,
   getLast,
   isArray,
   isFilled
@@ -86,23 +85,5 @@ export class Table {
     }
 
     return []
-  }
-
-  /**
-   * Returns a normalized record of the table header. /
-   * Возвращает нормализованную запись заголовков таблицы.
-   */
-  get headerData(): Record<string, any> | undefined {
-    if (this.props.header) {
-      const data: Record<string, any> = {}
-
-      forEach(this.props.header, (item, index) => {
-        data[index] = item
-      })
-
-      return data
-    }
-
-    return undefined
   }
 }
