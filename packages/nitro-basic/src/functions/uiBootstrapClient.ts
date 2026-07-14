@@ -1,4 +1,4 @@
-import { uiId } from './uiId'
+import { uiIdClient } from './uiIdClient'
 
 /**
  * Initializes the global unique identifier generator for elements.
@@ -8,5 +8,5 @@ import { uiId } from './uiId'
  * Использует Vue `useId` для предоставления уникальных идентификаторов во время начальной загрузки.
  */
 export function uiBootstrapClient(): void {
-  uiId()
+  uiIdClient()
 }

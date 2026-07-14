@@ -1,7 +1,9 @@
 import { CookieStorage } from '@dxtmisha/functional-basic'
 import { getInject } from '@dxtmisha/functional'
 
+import { getContextValue } from './getContextValue'
 import { useHeaders } from '../composables/useHeaders'
+
 import { NITRO_APP_COOKIE } from '../types/nitroAppTypes'
 
 /**
@@ -17,7 +19,9 @@ export function uiCookieStorage(): void {
    * @returns Cookie value or empty string if undefined / Значение cookie или пустая строка, если undefined
    */
   const getListenerRaw = (): string => {
-    return getInject<string>(NITRO_APP_COOKIE) ?? ''
+    return getInject<string>(NITRO_APP_COOKIE)
+      ?? getContextValue<string>('cookie')
+      ?? ''
   }
 
   /**

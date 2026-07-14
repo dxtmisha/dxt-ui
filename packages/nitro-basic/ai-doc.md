@@ -52,9 +52,10 @@ const origin = getRequestOrigin(request);
 ### 3. Bootstrap & Identity Helpers
 
 ```typescript
-import { uiBootstrapClient, uiBootstrapServer, uiId } from '@dxtmisha/nitro-basic';
+import { uiBootstrapClient, uiBootstrapServer, uiIdClient, uiIdServer } from '@dxtmisha/nitro-basic';
 
-uiId(); // Setup element ID generator
+uiIdClient(); // Setup client-side element ID generator
+uiIdServer(); // Setup server-side element ID generator
 uiBootstrapServer(); // Server initialization
 uiBootstrapClient(); // Client initialization
 ```

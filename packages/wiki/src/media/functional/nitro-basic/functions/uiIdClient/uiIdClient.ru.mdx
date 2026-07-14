@@ -1,0 +1,13 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/nitro-basic/Functions/uiIdClient - Клиентский генератор ID'/>
+
+# `uiIdClient`
+
+Инициализирует глобальную функцию генерации уникальных идентификаторов для элементов на стороне клиента. Использует инкрементный счетчик, начиная с `10000` с префиксом `ui-`.
+
+```typescript
+import { uiIdClient } from '@dxtmisha/nitro-basic'
+
+uiIdClient()
+```

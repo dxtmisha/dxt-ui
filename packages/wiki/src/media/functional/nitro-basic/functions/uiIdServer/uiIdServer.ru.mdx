@@ -1,0 +1,13 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/nitro-basic/Functions/uiIdServer - Серверный генератор ID'/>
+
+# `uiIdServer`
+
+Инициализирует глобальную функцию генерации уникальных идентификаторов для элементов на стороне сервера. Она использует значения контекста запроса для генерации уникальных идентификаторов во время SSR.
+
+```typescript
+import { uiIdServer } from '@dxtmisha/nitro-basic'
+
+uiIdServer()
+```

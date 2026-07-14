@@ -16,6 +16,8 @@ import { initSsrApp } from './initSsrApp'
 
 import type { NitroAppOptions } from '../types/nitroAppTypes'
 
+import { appContext } from './initContext'
+
 /**
  * Initializes the server-side application, including storage, routing, and SSR rendering.
  *
@@ -38,53 +40,61 @@ export async function uiCreateServerApp<T>(
   context: SSRContext = {},
   body?: string
 ) {
-  initHeaders(app)
-  initServerStorage(app)
-  initCookieStorage(app, request)
-
-  app.runWithContext(() => {
-    initApi(request)
-    app.use(dxtFunctionalPlugin, options)
-  })
-
-  await initServerRouter(request, router)
-
-  if (action) {
-    await action(app)
+  const contextData = {
+    id: { code: 10_000 },
+    ...initHeaders(app),
+    ...initServerStorage(app),
+    ...initCookieStorage(app, request)
   }
 
-  const rendered = await initSsrApp(app, context)
+  return await appContext.call(
+    contextData,
+    async () => {
+      app.runWithContext(() => {
+        initApi(request)
+        app.use(dxtFunctionalPlugin, options)
+      })
 
-  return app.runWithContext(() => {
-    const headers = useHeaders()
-    const lang = Geo.getStandard()
-    const title = MetaStatic.htmlTitle()
-    const meta = MetaStatic.html()
-    const scriptsJson = initScriptsJson()
+      await initServerRouter(request, router)
 
-    let newBody: string
+      if (action) {
+        await action(app)
+      }
 
-    if (body) {
-      newBody = body
-        .replace('<!--ssr-lang-->', lang)
-        .replace('<!--ssr-title-->', title)
-        .replace('<!--ssr-meta-->', meta)
-        .replace('<!--ssr-scriptsJson-->', scriptsJson)
-        .replace('<!--ssr-outlet-->', rendered.appHtml)
-        .replace('<!--ssr-teleports-->', rendered.teleportsHtml)
-    } else {
-      newBody = rendered.appHtml
+      const rendered = await initSsrApp(app, context)
+
+      return app.runWithContext(() => {
+        const headers = useHeaders()
+        const lang = Geo.getStandard()
+        const title = MetaStatic.htmlTitle()
+        const meta = MetaStatic.html()
+        const scriptsJson = initScriptsJson()
+
+        let newBody: string
+
+        if (body) {
+          newBody = body
+            .replace('<!--ssr-lang-->', lang)
+            .replace('<!--ssr-title-->', title)
+            .replace('<!--ssr-meta-->', meta)
+            .replace('<!--ssr-scriptsJson-->', scriptsJson)
+            .replace('<!--ssr-outlet-->', rendered.appHtml)
+            .replace('<!--ssr-teleports-->', rendered.teleportsHtml)
+        } else {
+          newBody = rendered.appHtml
+        }
+
+        return {
+          headers,
+          lang,
+          title,
+          meta,
+          scriptsJson,
+          body: newBody,
+
+          ...rendered
+        }
+      })
     }
-
-    return {
-      headers,
-      lang,
-      title,
-      meta,
-      scriptsJson,
-      body: newBody,
-
-      ...rendered
-    }
-  })
+  )
 }

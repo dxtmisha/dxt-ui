@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/nitro-basic/Functions/getContextValue - Get Context Value'/>
+
+# `getContextValue`
+
+A utility function that retrieves a specific value from the active Server-Side Rendering (SSR) application context by its key name.
+
+**Parameters:**
+- `key: string` — The key of the value to retrieve (e.g., `'headers'`, `'storage'`, or `'cookie'`).
+
+**Returns:**
+`any | undefined` — The retrieved context value, or `undefined` if the context is not active or the key does not exist.
+
+```typescript
+import { getContextValue } from '@dxtmisha/nitro-basic'
+
+// Get cookie or headers from the active request context during SSR:
+const cookies = getContextValue<string>('cookie')
+const headers = getContextValue<Headers>('headers')
+```

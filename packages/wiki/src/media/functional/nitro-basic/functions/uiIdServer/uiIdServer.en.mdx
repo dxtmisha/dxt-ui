@@ -1,0 +1,13 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/nitro-basic/Functions/uiIdServer - Server-Side ID Generator'/>
+
+# `uiIdServer`
+
+Initializes the global unique identifier generation function for elements on the server side. It uses request context values (retrieved via context helper) to generate safe IDs during SSR.
+
+```typescript
+import { uiIdServer } from '@dxtmisha/nitro-basic'
+
+uiIdServer()
+```

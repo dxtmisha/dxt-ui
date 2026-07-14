@@ -2,11 +2,13 @@
 export * from './composables/useHeaders'
 
 // Functions
+export * from './functions/getContextValue'
 export * from './functions/getRequestHref'
 export * from './functions/getRequestOrigin'
 export * from './functions/getRequestUrl'
 export * from './functions/initApi'
 export * from './functions/initClientRouter'
+export * from './functions/initContext'
 export * from './functions/initCookieStorage'
 export * from './functions/initHeaders'
 export * from './functions/initScriptsJson'
@@ -20,7 +22,8 @@ export * from './functions/uiCreateApp'
 export * from './functions/uiCreateClientApp'
 export * from './functions/uiCreateServerApp'
 export * from './functions/uiCreateSsrRouter'
-export * from './functions/uiId'
+export * from './functions/uiIdClient'
+export * from './functions/uiIdServer'
 export * from './functions/uiServerStorage'
 
 // Types

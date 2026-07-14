@@ -1,4 +1,6 @@
 import { getInject } from '@dxtmisha/functional'
+
+import { getContextValue } from '../functions/getContextValue'
 import { NITRO_API_HEADERS } from '../types/nitroAppTypes'
 
 /**
@@ -11,6 +13,7 @@ export function useHeaders(name: string): string | undefined
 export function useHeaders(): Headers | undefined
 export function useHeaders(name?: string): Headers | string | undefined {
   const headers = getInject<Headers>(NITRO_API_HEADERS)
+    ?? getContextValue('headers')
 
   if (name && headers) {
     return headers.get(name) ?? undefined

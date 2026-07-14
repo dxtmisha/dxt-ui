@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/nitro-basic/Functions/getContextValue - Lấy giá trị ngữ cảnh'/>
+
+# `getContextValue`
+
+Một hàm tiện ích giúp truy xuất một giá trị cụ thể từ ngữ cảnh ứng dụng Server-Side Rendering (SSR) đang hoạt động dựa trên tên khóa của nó.
+
+**Tham số:**
+- `key: string` — Khóa của giá trị cần truy xuất (ví dụ: `'headers'`, `'storage'`, hoặc `'cookie'`).
+
+**Trả về:**
+`any | undefined` — Giá trị ngữ cảnh được truy xuất, hoặc `undefined` nếu ngữ cảnh không hoạt động hoặc khóa không tồn tại.
+
+```typescript
+import { getContextValue } from '@dxtmisha/nitro-basic'
+
+// Lấy cookie hoặc headers từ ngữ cảnh yêu cầu đang hoạt động trong quá trình SSR:
+const cookies = getContextValue<string>('cookie')
+const headers = getContextValue<Headers>('headers')
+```

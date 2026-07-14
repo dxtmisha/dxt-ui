@@ -1,6 +1,8 @@
 import { ServerStorage } from '@dxtmisha/functional-basic'
 import { getInject } from '@dxtmisha/functional'
 
+import { getContextValue } from './getContextValue'
+
 import { NITRO_APP_STORAGE } from '../types/nitroAppTypes'
 
 /**
@@ -19,6 +21,8 @@ import { NITRO_APP_STORAGE } from '../types/nitroAppTypes'
 export function uiServerStorage() {
   ServerStorage.init(() => {
     const item = getInject<{ storage: Record<string, any> }>(NITRO_APP_STORAGE)
+      ?? getContextValue('storage')
+
     return item?.storage
   })
 }

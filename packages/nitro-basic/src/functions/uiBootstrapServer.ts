@@ -1,6 +1,6 @@
 import { uiCookieStorage } from './uiCookieStorage'
 import { uiServerStorage } from './uiServerStorage'
-import { uiId } from './uiId'
+import { uiIdServer } from './uiIdServer'
 
 /**
  * Global creation and initialization of components for the server environment.
@@ -14,5 +14,5 @@ import { uiId } from './uiId'
 export function uiBootstrapServer(): void {
   uiCookieStorage()
   uiServerStorage()
-  uiId()
+  uiIdServer()
 }

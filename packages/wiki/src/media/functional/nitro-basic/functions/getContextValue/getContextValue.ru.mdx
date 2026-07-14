@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/nitro-basic/Functions/getContextValue - Получение значения контекста'/>
+
+# `getContextValue`
+
+Утилитарная функция, которая извлекает определенное значение из активного контекста серверного рендеринга (SSR) приложения по его ключу.
+
+**Параметры:**
+- `key: string` — Ключ значения, которое необходимо извлечь (например, `'headers'`, `'storage'` или `'cookie'`).
+
+**Возвращает:**
+`any | undefined` — Извлеченное значение из контекста, или `undefined`, если контекст не активен или ключ не существует.
+
+```typescript
+import { getContextValue } from '@dxtmisha/nitro-basic'
+
+// Получение куки или заголовков из активного контекста запроса во время SSR:
+const cookies = getContextValue<string>('cookie')
+const headers = getContextValue<Headers>('headers')
+```

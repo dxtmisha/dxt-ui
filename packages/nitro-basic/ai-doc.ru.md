@@ -52,9 +52,10 @@ const origin = getRequestOrigin(request);
 ### 3. Утилиты бутстрапа и идентификации
 
 ```typescript
-import { uiBootstrapClient, uiBootstrapServer, uiId } from '@dxtmisha/nitro-basic';
+import { uiBootstrapClient, uiBootstrapServer, uiIdClient, uiIdServer } from '@dxtmisha/nitro-basic';
 
-uiId(); // Инициализация генератора ID элементов
+uiIdClient(); // Инициализация генератора ID на стороне клиента
+uiIdServer(); // Инициализация генератора ID на стороне сервера
 uiBootstrapServer(); // Инициализация на стороне сервера
 uiBootstrapClient(); // Инициализация на стороне клиента
 ```

@@ -5,7 +5,7 @@ Key Expositions:
 - Server Utilities: getRequestHref, getRequestOrigin, and getRequestUrl provide normalized access to request metadata; initApi and initHeaders inject request-specific state.
 - Plugin & Storage Management: initCookieStorage, initServerStorage, and initPluginApiCache integrate stateful storage into the Vue dependency injection container.
 - Router Orchestration: initServerRouter and uiCreateSsrRouter manage the Vue Router lifecycle, specifically handling server-side state resolution to prevent hydration mismatches.
-- UI/Bootstrap Helpers: uiBootstrapServer, uiBootstrapClient, and uiId manage element identity and global environmental setups for SSR environments.
+- UI/Bootstrap Helpers: uiBootstrapServer, uiBootstrapClient, uiIdClient, and uiIdServer manage element identity and global environmental setups for SSR environments.
 
 Triggers for Studying ai-types.md:
 - Implementing custom SSR rendering pipelines.

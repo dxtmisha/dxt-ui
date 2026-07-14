@@ -116,9 +116,11 @@ export declare function uiCreateServerApp<T>(app: any, request: Request, router?
 /** @param routes Route records @param options Router options */
 export declare function uiCreateSsrRouter(routes: any[], options?: any): any;
 
-// File: src/functions/uiId.d.ts
-/** Initializes element ID generator (Vue `useId` or incremental). */
-export declare function uiId(): void;
+// File: src/functions/uiIdClient.d.ts
+export declare function uiIdClient(): void;
+
+// File: src/functions/uiIdServer.d.ts
+export declare function uiIdServer(): void;
 
 // File: src/functions/uiServerStorage.d.ts
 /** Sets up global `ServerStorage` using inject key `NITRO_APP_STORAGE`. */

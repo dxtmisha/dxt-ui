@@ -11,9 +11,12 @@ import { NITRO_APP_COOKIE } from '../types/nitroAppTypes'
 export function initCookieStorage<T>(
   app: App<T>,
   request: Request
-) {
-  app.provide(
-    NITRO_APP_COOKIE,
-    request.headers.get('Cookie') || ''
-  )
+): { cookie: string } {
+  const cookie = request.headers.get('Cookie') || ''
+
+  app.provide(NITRO_APP_COOKIE, cookie)
+
+  return {
+    cookie
+  }
 }
