@@ -89,7 +89,7 @@ export class ServerStorage {
     }
 
     if (defaultValue) {
-      return this.set<T>(key, defaultValue, hydration)
+      return this.set<T>(key, defaultValue, hydration, storage)
     }
 
     return undefined as T
@@ -102,14 +102,16 @@ export class ServerStorage {
    * @param key unique storage key / уникальный ключ хранилища
    * @param value function that returns the value to save / функция, возвращающая значение для сохранения
    * @param hydration whether the value should be included in hydration / должно ли значение быть включено в гидратацию
+   * @param storageList optional storage list / необязательный список хранилища
    * @returns saved value / сохраненное значение
    */
   static set<T = any>(
     key: string,
     value: () => T,
-    hydration: boolean = false
+    hydration: boolean = false,
+    storageList?: ServerStorageList
   ): T {
-    const storage = this.getStorage(undefined, `set:${key}`)
+    const storage = storageList || this.getStorage(undefined, `set:${key}`)
     const newValue = value()
 
     storage[key] = {

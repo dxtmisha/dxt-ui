@@ -35,7 +35,9 @@ vi.mock('@dxtmisha/functional-basic', async (importOriginal) => {
     Meta: vi.fn().mockImplementation(function (this: any) {
       return mockMeta
     }),
-    MetaStatic: mockMeta,
+    MetaStatic: {
+      getItem: vi.fn(() => mockMeta)
+    },
     MetaRobots: {
       all: 'all',
       none: 'none',

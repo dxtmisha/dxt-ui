@@ -7,6 +7,7 @@ import { random } from '../functions/random'
 import { sleep } from '../functions/sleep'
 
 import { Geo } from './Geo'
+import type { GeoInstance } from './GeoInstance'
 import { Loading } from './Loading'
 import { type LoadingInstance } from './LoadingInstance'
 import { ErrorCenter } from './ErrorCenter'
@@ -60,6 +61,9 @@ export type ApiInstanceOptions = {
  * Основной класс для управления HTTP-запросами через Fetch API.
  */
 export class ApiInstance {
+  /** Geo class instance / Экземпляр класса Geo */
+  protected geo: GeoInstance
+
   /** Headers / Заголовки */
   protected headers: ApiHeaders
 
@@ -113,6 +117,7 @@ export class ApiInstance {
       wrapper
     } = options
 
+    this.geo = Geo.getObject()
     this.headers = new headersClass()
     this.requestDefault = new requestDefaultClass()
     this.status = new statusClass()
@@ -195,9 +200,9 @@ export class ApiInstance {
    */
   getUrl(path: string, api: boolean = true): string {
     return `${api ? this.getOrigin() : ''}${path}`
-      .replace('{locale}', Geo.getLocation())
-      .replace('{country}', Geo.getCountry())
-      .replace('{language}', Geo.getLanguage())
+      .replace('{locale}', this.geo.getLocation())
+      .replace('{country}', this.geo.getCountry())
+      .replace('{language}', this.geo.getLanguage())
   }
 
   /**

@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.15.3] - 2026-07-14
+
+### Changed
+- **executeUse**: Refactored singleton lifecycle and cache management to use `ServerStorage` with key `__executeUse::${id}__` via a `storageKey` constant, replacing local closure variables and supporting clean instance removal.
+- **useMeta**: Updated metadata initialization to reference `MetaStatic.getItem()` rather than using the class object itself.
+
+### Fixed
+- **Tests**: Fixed the mock setup in `useMeta.test.ts` to include the `getItem` method on the mocked `MetaStatic` class.
+
 ## [1.15.0] - 2026-07-02
 
 ### Added

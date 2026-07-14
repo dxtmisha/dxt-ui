@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.7.1] - 2026-07-14
+
+### Changed
+- **ApiInstance**: Refactored URL generation to use a protected `geo` (`GeoInstance`) field initialized via `Geo.getObject()`, calling instance-level methods instead of static `Geo` class methods.
+- **ServerStorage**: Added an optional `storageList` parameter to `set()` and forwarded the resolved storage block from `get()` to prevent resolving the storage context multiple times.
+
 ## [1.7.0] - 2026-07-11
 
 ### Added
