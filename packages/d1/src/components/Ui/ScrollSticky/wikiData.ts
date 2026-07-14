@@ -10,9 +10,9 @@ const propsNames: StorybookProps = [
 
 const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
-  { name: 'context', description: `Slot for context element replacement / Слот для замены элемента контекста`, properties: [{ name: 'props', type: 'ScrollStickyBindItem | undefined' }] },
+  { name: 'context', description: `Slot for context element replacement / Слот для замены элемента контекста`, properties: [{ name: 'props', type: '(ScrollStickyBindItem) | undefined' }] },
   { name: 'default', description: `Slot for default ScrollSticky content / Слот для основного содержимого ScrollSticky`, properties: [{ name: 'props', type: '((props: { onResize(): void; }) => any) | undefined' }] },
-  { name: 'scroll', description: `Slot for scroll element replacement / Слот для замены элемента прокрутки`, properties: [{ name: 'props', type: 'ScrollStickyBindItem | undefined' }] }
+  { name: 'scroll', description: `Slot for scroll element replacement / Слот для замены элемента прокрутки`, properties: [{ name: 'props', type: '(ScrollStickyBindItem) | undefined' }] }
   // :slotsList [!] System label / Системная метка
 ]
 
