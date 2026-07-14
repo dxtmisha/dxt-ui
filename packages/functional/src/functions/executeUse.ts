@@ -131,9 +131,6 @@ export function executeUse<
   /** The unique identifier of the component/ Уникальный идентификатор компонента */
   const id: string = getId()
 
-  /** The key for caching in ServerStorage/ Ключ для кеширования в ServerStorage */
-  const storageKey = `__executeUse::${id}__`
-
   /**
    * Performs the base initialization of the object and wraps it in a management shell.
    *
@@ -175,7 +172,7 @@ export function executeUse<
     return Object.freeze({
       ...newItem,
       destroyExecute(): void {
-        ServerStorage.remove(storageKey)
+        ServerStorage.remove(id)
       }
     })
   }
@@ -197,7 +194,7 @@ export function executeUse<
       }
     }
 
-    return ServerStorage.get<RI>(storageKey, () => {
+    return ServerStorage.get<RI>(id, () => {
       return EffectScopeGlobal.run<RI>(() => initItem(args)) as RI
     })
   }
