@@ -20,15 +20,12 @@ import type { ActionsExpose, ActionsSlots } from './types'
  * действий внутри других компонентов. Он управляет логикой определения необходимости
  * отображения действий и настраивает соответствующие свойства.
  */
-export class ActionsInclude<
-  Props extends ActionsPropsInclude = ActionsPropsInclude,
-  PropsExtra extends ActionsProps = ActionsProps
-> extends ComponentIncludeAbstract<
-    Props,
-    PropsExtra,
-    ActionsExpose,
-    ActionsSlots
-  > {
+export class ActionsInclude extends ComponentIncludeAbstract<
+  ActionsPropsInclude,
+  ActionsProps,
+  ActionsExpose,
+  ActionsSlots
+> {
   /** Component name / Имя компонента */
   protected name = 'actions'
   /** Property name for attributes / Имя свойства для атрибутов */
@@ -47,9 +44,9 @@ export class ActionsInclude<
    */
   constructor(
     className: string,
-    props: Readonly<Props>,
-    components?: DesignComponents<ActionsComponentInclude, Props>,
-    extra?: ComponentIncludeExtra<PropsExtra>,
+    props: Readonly<ActionsPropsInclude>,
+    components?: DesignComponents<ActionsComponentInclude, ActionsPropsInclude>,
+    extra?: ComponentIncludeExtra<ActionsProps>,
     index?: string,
     protected readonly emits?: ConstrEmit<ActionsEmitsInclude>
   ) {

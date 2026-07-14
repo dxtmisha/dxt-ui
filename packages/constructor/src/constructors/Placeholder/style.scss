@@ -1,0 +1,12 @@
+@use "@dxtmisha/styles/properties" as ui;
+
+@mixin mixinPlaceholder {
+  @include ui.flexY;
+  justify-content: center;
+
+  text-align: center;
+
+  &__image {
+    position: relative;
+  }
+}

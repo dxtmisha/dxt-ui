@@ -1,0 +1,59 @@
+@use "../../../styles/Ui/properties";
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/style.scss" as Placeholder;
+
+@include ui.initDesignBasic('d1.placeholder') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include Placeholder.mixinPlaceholder;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+    gap: var(--d1-sys-spacing-xs);
+    
+    @include ui.paddingY(#{var(--d1-sys-spacing-size-6xl)});
+    
+    &__image {
+      --d1-image-font-size: var(--d1-sys-spacing-size-4xl);
+      
+      margin-bottom: var(--d1-sys-spacing-lg);
+    }
+    
+    &__label {
+      font-family: var(--d1-sys-font-family-basic), sans-serif;
+      @include ui.fontSize(#{var(--d1-sys-font-size-lg)});
+      font-weight: var(--d1-sys-font-weight-regular);
+      @include ui.lineHeight(#{var(--d1-sys-lineHeight-lg)});
+      letter-spacing: var(--d1-sys-letterSpacing-none);
+    }
+    
+    &--size {
+      &--sm {
+        & .d1-placeholder__image {
+          @include ui.width(#{var(--d1-ref-spacing-28)});
+          @include ui.height(#{var(--d1-ref-spacing-28)});
+        }
+      }
+      
+      &--md {
+        & .d1-placeholder__image {
+          @include ui.width(#{var(--d1-ref-spacing-40)});
+          @include ui.height(#{var(--d1-ref-spacing-40)});
+        }
+      }
+      
+      &--lg {
+        & .d1-placeholder__image {
+          @include ui.width(#{var(--d1-ref-spacing-60)});
+          @include ui.height(#{var(--d1-ref-spacing-60)});
+        }
+      }
+    }
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

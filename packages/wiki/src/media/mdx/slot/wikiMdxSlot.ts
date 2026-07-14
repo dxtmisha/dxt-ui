@@ -3,6 +3,8 @@ import slotBodyEn from './body.en.mdx'
 import slotBodyRu from './body.ru.mdx'
 import slotCaptionEn from './caption.en.mdx'
 import slotCaptionRu from './caption.ru.mdx'
+import slotContextEn from './context.en.mdx'
+import slotContextRu from './context.ru.mdx'
 import slotControlEn from './control.en.mdx'
 import slotControlRu from './control.ru.mdx'
 import slotDefaultEn from './default.en.mdx'
@@ -39,6 +41,10 @@ export const wikiMdxSlot: StorybookComponentsMdxItem = {
     caption: {
       en: slotCaptionEn,
       ru: slotCaptionRu
+    },
+    context: {
+      en: slotContextEn,
+      ru: slotContextRu
     },
     control: {
       en: slotControlEn,

@@ -10191,6 +10191,23 @@
           }
         }
       },
+      "placeholder": {
+        "name": "d1-placeholder",
+        "type": "component",
+        "value": {
+          "image": {
+            "name": "&__image",
+            "type": "subclass",
+            "value": {
+              "imageFontSize": {
+                "name": "--d1-image-font-size",
+                "type": "var",
+                "value": "{sys.spacing.size.4xl}"
+              }
+            }
+          }
+        }
+      },
       "progress": {
         "name": "d1-progress",
         "type": "component",

@@ -1,0 +1,36 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+The `Placeholder` component is designed to present warnings, empty states, error screens, or illustrative notifications in a standardized, clean layout. It supports combining an illustration (image or icon), a title (label), a description, and an actions panel (buttons).
+
+The component is highly customizable, accepting raw strings or structured property objects for each sub-element, and allows completely overriding the inner structure using slots for custom layout requirements.
+
+**Key features:**
+
+- Integrated sub-elements rendering (illustration, title, description, and action buttons)
+- Supports raw image URLs, custom attributes, or icon configurations
+- Flexible slots for replacing standard sub-element rendering
+- Bundled ARIA labeling and description bindings for high accessibility standards
+- Direct access to internal logical states and element references
+
+**Common use cases:**
+
+- Empty state screens (e.g., "No Messages", "Cart is Empty")
+- Error pages (e.g., "404 Not Found", "No Internet Connection")
+- Success/Welcome panels (e.g., "Verification Successful")
+- Interactive instructions before starting an operation
+
+<Source
+    code={`
+<template>
+  <Placeholder
+    image="https://example.com/illustration.png"
+    label="No Connection"
+    description="Please check your Wi-Fi or mobile network and try again."
+    :actions-list="[{ label: 'Retry', palette: 'primary' }]"
+  />
+</template>
+  `}
+    language="html"
+/>
+
+> Placeholder is a versatile interface component that presents warning layouts, illustrative feedback, or interactive instructions with high accessibility standard compliance.

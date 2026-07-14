@@ -27,7 +27,7 @@
     "build": "vue-tsc -b && vite build",
     "build-recovery": "npm run build && npm run wiki-storm",
     "preview": "vite preview",
-    "ui": "dxt-ui",
+    "ui": "dxt-ui Placeholder",
     "wiki-storm": "dxt-wiki-storm",
     "types": "dxt-types",
     "screenshot": "dxt-screenshot",
@@ -442,6 +442,10 @@
     "./D1ProgressBar": {
       "types": "./dist/library/D1ProgressBar.d.ts",
       "default": "./dist/D1ProgressBar.js"
+    },
+    "./D1Placeholder": {
+      "types": "./dist/library/D1Placeholder.d.ts",
+      "default": "./dist/D1Placeholder.js"
     }
   },
   "buildOptions": {

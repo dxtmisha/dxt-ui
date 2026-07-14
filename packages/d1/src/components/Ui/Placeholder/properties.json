@@ -1,0 +1,33 @@
+{
+  "main": "{d.placeholder}",
+  "gap": "{sys.spacing.xs}",
+  "paddingY": "{sys.spacing.size.6xl}",
+  "#image": {
+    "=?image-font-size": "{sys.spacing.size.4xl}",
+    "margin-bottom": "{sys.spacing.lg}"
+  },
+  "#label": {
+    "font": "{font.titleLarge}"
+  },
+  "~size": {
+    "sm": {
+      "#image": {
+        "width": "{ref.spacing.28}",
+        "height": "{ref.spacing.28}"
+      }
+    },
+    "md": {
+      "#image": {
+        "width": "{ref.spacing.40}",
+        "height": "{ref.spacing.40}"
+      }
+    },
+    "lg": {
+      "#image": {
+        "width": "{ref.spacing.60}",
+        "height": "{ref.spacing.60}"
+      }
+    },
+    "_default": "md"
+  }
+}

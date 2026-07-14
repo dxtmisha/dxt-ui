@@ -65,6 +65,7 @@ import { wikiDescriptionsMotionTransform } from './wikiDescriptionsMotionTransfo
 import { wikiDescriptionsPage } from './wikiDescriptionsPage'
 import { wikiDescriptionsPageArea } from './wikiDescriptionsPageArea'
 import { wikiDescriptionsPagination } from './wikiDescriptionsPagination'
+import { wikiDescriptionsPlaceholder } from './wikiDescriptionsPlaceholder'
 import { wikiDescriptionsProgress } from './wikiDescriptionsProgress'
 import { wikiDescriptionsProgressBar } from './wikiDescriptionsProgressBar'
 import { wikiDescriptionsRadio } from './wikiDescriptionsRadio'
@@ -161,6 +162,7 @@ export const wikiDescriptions: StorybookComponentsDescription = [
   wikiDescriptionsPage,
   wikiDescriptionsPageArea,
   wikiDescriptionsPagination,
+  wikiDescriptionsPlaceholder,
   wikiDescriptionsProgress,
   wikiDescriptionsProgressBar,
   wikiDescriptionsRadio,
