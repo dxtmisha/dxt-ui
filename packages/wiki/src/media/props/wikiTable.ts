@@ -35,6 +35,16 @@ export const wikiTable: StorybookArgsToList = {
     },
     hide: true
   },
+  'table.headerTop': {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Sticky positioning of the table header at the top',
+        ru: 'Липкое позиционирование шапки таблицы сверху'
+      }
+    }
+  },
   'table.list': {
     type: StorybookControl.array,
     options: {

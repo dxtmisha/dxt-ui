@@ -1,0 +1,12 @@
+- `default(props: { onResize(): void }): any` — Main slot for placing the primary content that should trigger scroll synchronization.
+- `scroll(props: ScrollStickyBindItem): any` — Slot for custom scrollbar element replacement.
+- `context(props: ScrollStickyBindItem): any` — Slot for custom target container element wrapper.
+
+> **ScrollStickyBindItem:**
+> - `ref: Ref<HTMLDivElement | undefined>` — reactive reference to the custom element.
+> - `class: string | undefined` — class name for styling the element.
+> - `binds: ScrollStickyBind` — binding properties (ref & class) for the element.
+
+> **ScrollStickyBind:**
+> - `ref: Ref<HTMLDivElement | undefined>` — reactive reference to the custom element.
+> - `class: string | undefined` — class name for styling the element.

@@ -12,6 +12,8 @@ const propsNames: StorybookProps = [
   { name: 'isSkeleton', type: 'boolean' },
   { name: 'item', type: 'Record<string, any>' },
   { name: 'selected', type: 'boolean' },
+  { name: 'stickyLeft', type: 'string[]' },
+  { name: 'stickyTop', type: 'boolean' },
   { name: 'tableItemAttrs', type: 'ConstrBind<TableItemProps>' },
   { name: 'tableItemColumnAttrs', type: 'Record<string, ConstrBind<TableItemProps>>' }
   // :propsList [!] System label / Системная метка

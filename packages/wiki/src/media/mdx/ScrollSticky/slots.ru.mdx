@@ -1,0 +1,12 @@
+- `default(props: { onResize(): void }): any` — Основной слот для размещения главного содержимого, которое должно синхронизировать прокрутку.
+- `scroll(props: ScrollStickyBindItem): any` — Слот для кастомной замены элемента скроллбара прокрутки.
+- `context(props: ScrollStickyBindItem): any` — Слот для кастомной замены обертки контейнера целевого элемента.
+
+> **ScrollStickyBindItem:**
+> - `ref: Ref<HTMLDivElement | undefined>` — реактивная ссылка на кастомный элемент.
+> - `class: string | undefined` — название класса для стилизации элемента.
+> - `binds: ScrollStickyBind` — свойства привязки (ref & class) для элемента.
+
+> **ScrollStickyBind:**
+> - `ref: Ref<HTMLDivElement | undefined>` — реактивная ссылка на кастомный элемент.
+> - `class: string | undefined` — название класса для стилизации элемента.

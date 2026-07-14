@@ -62,6 +62,9 @@ export const wikiDescriptionsScrollSticky: StorybookComponentsDescriptionItem = 
   documentation: {
     body: `
 <StorybookDescriptions componentName={'ScrollSticky'} type={'scrollsticky'}/>
+    `,
+    slots: `
+<StorybookDescriptions componentName={'ScrollSticky'} type={'slots'}/>
     `
   },
   ai: {

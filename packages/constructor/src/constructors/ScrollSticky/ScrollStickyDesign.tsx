@@ -17,6 +17,10 @@ import {
   type ScrollStickyExpose,
   type ScrollStickySlots
 } from './types'
+import {
+  type ScrollStickyBind,
+  type ScrollStickyBindItem
+} from './basicTypes'
 
 /**
  * ScrollStickyDesign class implements the design layout and rendering logic for ScrollSticky.
@@ -133,12 +137,17 @@ export class ScrollStickyDesign<
    * @returns virtual node / виртуальный узел
    */
   protected renderContext(): VNode {
+    if (this.slots?.context) {
+      const context = this.initSlot('context', undefined, this.getContextSlotProps())
+
+      if (context) {
+        return context
+      }
+    }
+
     return h(
       'div',
-      {
-        ref: this.element,
-        class: this.classes?.value.context
-      },
+      this.getContextBinds(),
       this.initSlot('default', undefined, {
         onResize: this.item.onResize
       })
@@ -152,9 +161,66 @@ export class ScrollStickyDesign<
    * @returns virtual node / виртуальный узел
    */
   protected renderScroll(): VNode {
-    return h('div', {
+    if (this.slots?.scroll) {
+      const scroll = this.initSlot('scroll', undefined, this.getScrollSlotProps())
+
+      if (scroll) {
+        return scroll
+      }
+    }
+
+    return h('div', this.getScrollBinds())
+  }
+
+  /**
+   * Returns properties to pass to the context slot. /
+   * Возвращает свойства для передачи в слот контекста.
+   * @returns context slot properties / свойства слота контекста
+   */
+  protected getContextSlotProps(): ScrollStickyBindItem {
+    const context = this.getContextBinds()
+
+    return {
+      ...context,
+      binds: context
+    }
+  }
+
+  /**
+   * Returns context element binding properties. /
+   * Возвращает свойства привязки элемента контекста.
+   * @returns context properties object / объект свойств контекста
+   */
+  protected getContextBinds(): ScrollStickyBind {
+    return {
+      ref: this.element,
+      class: this.classes?.value.context
+    }
+  }
+
+  /**
+   * Returns properties to pass to the scroll slot. /
+   * Возвращает свойства для передачи в слот прокрутки.
+   * @returns scroll slot properties / свойства слота прокрутки
+   */
+  protected getScrollSlotProps(): ScrollStickyBindItem {
+    const scroll = this.getScrollBinds()
+
+    return {
+      ...scroll,
+      binds: scroll
+    }
+  }
+
+  /**
+   * Returns scroll element binding properties. /
+   * Возвращает свойства привязки элемента прокрутки.
+   * @returns scroll properties object / объект свойств прокрутки
+   */
+  protected getScrollBinds(): ScrollStickyBind {
+    return {
       ref: this.item.scrollElement,
       class: this.classes?.value.scroll
-    })
+    }
   }
 }

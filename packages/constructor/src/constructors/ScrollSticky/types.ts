@@ -1,5 +1,7 @@
 import type { ConstrClass } from '@dxtmisha/functional'
 
+import type { ScrollStickyBindItem } from './basicTypes'
+
 /**
  * Interface for describing which components need to be connected for work.
  *
@@ -29,13 +31,23 @@ export interface ScrollStickyExpose {
  */
 export interface ScrollStickySlots {
   /** Slot for default ScrollSticky content / Слот для основного содержимого ScrollSticky */
-  default? (props: {
+  default?(props: {
     /**
      * Recalculates the scroll width. /
      * Пересчитывает ширину прокрутки.
      */
     onResize(): void
   }): any
+
+  /**
+   * Slot for context element replacement / Слот для замены элемента контекста
+   */
+  context?(props: ScrollStickyBindItem): any
+
+  /**
+   * Slot for scroll element replacement / Слот для замены элемента прокрутки
+   */
+  scroll?(props: ScrollStickyBindItem): any
 }
 
 /**
