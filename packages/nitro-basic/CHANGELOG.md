@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.13] - 2026-07-15
+
+### Added
+- **`client` Entry Point**: Added a dedicated client-side entry point (`src/library-client.ts`) exporting client-focused utilities (`uiBootstrapClient`, `uiCreateApp`, `uiCreateClientApp`) and types (`nitroAppTypes`).
+- **Exports**: Exposed the `./client` path in `package.json` pointing to the client-specific build.
+
+### Changed / Improved
+- **Vite Configuration**: Updated `vite.config.ts` to include `src/library-client.ts` as a library build entry point.
+
 ## [0.1.12] - 2026-07-14
 
 ### Changed / Improved

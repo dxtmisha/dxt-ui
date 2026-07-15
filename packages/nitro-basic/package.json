@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/nitro-basic",
   "private": false,
-  "version": "0.1.12",
+  "version": "0.1.13",
   "type": "module",
   "description": "A foundational utility library for building robust Server-Side Rendering (SSR) applications with Vue 3 and Nitro.",
   "keywords": [
@@ -54,6 +54,10 @@
     ".": {
       "import": "./dist/library.js",
       "types": "./dist/library.d.ts"
+    },
+    "./client": {
+      "import": "./dist/library-client.js",
+      "types": "./dist/library-client.d.ts"
     },
     "./plugin": {
       "import": "./dist/library-plugin.js",

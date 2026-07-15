@@ -18,6 +18,7 @@ export default mergeConfig(
     build: {
       lib: {
         entry: [
+          'src/library-client.ts',
           'src/library-plugin.ts'
         ]
       }
