@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.89.0] - 2026-07-16
+
+### Added
+- **TableItem & TableHeaderItem**: Introduced the new `TableItem` and `TableHeaderItem` constructors and properties definitions.
+- **TableRecord**: Introduced the new `TableRecord` constructor component for rendering structured table rows and cells.
+- **ScrollSticky**: Introduced the generic `ScrollSticky` component constructor supporting horizontal and vertical sticky scroll synchronization, scrollbar width tracking, and custom slot rendering.
+- **ProgressBar**: Ported the `ProgressBar` constructor logic, property configurations, standard getters, and computed item mappings.
+- **Placeholder**: Ported the `Placeholder` constructor and styling, integrating `AriaStaticInclude` for dynamic ARIA label references.
+
+### Changed
+- **TableHeaderItem**: Refactored `TableHeaderItem` to directly inherit its properties and types from `TableItem`.
+- **Table**:
+  - Integrated `ScrollStickyInclude` for horizontal sticky scrolling, replacing the previous custom sticky scrollbar implementation.
+  - Refactored `headerData` from a computed property to a getter.
+  - Extracted `renderList` and `renderBody` methods in `TableDesign`.
+  - Refactored `initRender` in `TableDesign` into separate helper methods (`renderScrollSticky`, `renderMain`, `renderTable`).
+  - Supported sticky columns/headers and resolved property overrides in `TableItemInclude` and `TableRecordInclude`.
+  - Handled hidden cells (using `*none`) via CSS hiding (`none` class) instead of exclusion to preserve grid alignment.
+- **ProgressBar**:
+  - Extracted selection logic into the `getItemClassName()` method.
+  - Added skeleton loading support (`isSkeleton` mode) and applied skeleton styles to labels and tracks.
+  - Enhanced accessibility by moving ARIA bounds (`aria-valuenow`, `aria-valuemin`, `aria-valuemax`) and labels from the main container to individual data segments, and hid spacer segments with `aria-hidden="true"`.
+- **SegmentControl / TabItem**:
+  - Fixed layout coordinates logic in styling definitions.
+  - Corrected subcomponent class naming in `TabsNavigationIndicator`.
+- **Modal**:
+  - Added styling overrides to remove top/bottom padding for consecutive window body slots inside the modal (`[data-window-body]:not(:first-child)` and `not(:last-child)`).
+
 ## [0.88.0] - 2026-07-06
 
 ### Added

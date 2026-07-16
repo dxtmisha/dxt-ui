@@ -17,4 +17,16 @@
     align-items: center;
     justify-content: flex-end;
   }
+
+  [data-window-body]:not(:first-child) {
+    @include ui.subclass('body') {
+      padding-top: 0;
+    }
+  }
+
+  [data-window-body]:not(:last-child) {
+    @include ui.subclass('body') {
+      padding-bottom: 0;
+    }
+  }
 }
