@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.84.3] - 2026-07-16
+
+### Changed
+- **Dialog**:
+  - Added styling overrides to remove top/bottom padding for consecutive window body slots (`[data-window-body]:not(:first-child)` and `not(:last-child)`) inside the dialog information section.
+
 ## [0.89.0] - 2026-07-16
 
 ### Added

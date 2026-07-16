@@ -15,4 +15,16 @@
   &__footer {
     justify-content: center;
   }
+
+  [data-window-body]:not(:first-child) {
+    @include ui.subclass('information') {
+      padding-top: 0;
+    }
+  }
+
+  [data-window-body]:not(:last-child) {
+    @include ui.subclass('information') {
+      padding-bottom: 0;
+    }
+  }
 }
