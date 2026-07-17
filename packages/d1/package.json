@@ -27,7 +27,7 @@
     "build": "vue-tsc -b && vite build",
     "build-recovery": "npm run build && npm run wiki-storm",
     "preview": "vite preview",
-    "ui": "dxt-ui Placeholder",
+    "ui": "dxt-ui SkeletonItem",
     "wiki-storm": "dxt-wiki-storm",
     "types": "dxt-types",
     "screenshot": "dxt-screenshot",
@@ -446,6 +446,10 @@
     "./D1Placeholder": {
       "types": "./dist/library/D1Placeholder.d.ts",
       "default": "./dist/D1Placeholder.js"
+    },
+    "./D1SkeletonItem": {
+      "types": "./dist/library/D1SkeletonItem.d.ts",
+      "default": "./dist/D1SkeletonItem.js"
     }
   },
   "buildOptions": {

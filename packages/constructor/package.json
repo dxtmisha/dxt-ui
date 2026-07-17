@@ -36,7 +36,7 @@
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
     "test": "NODE_OPTIONS=\"--no-webstorage\" vitest",
-    "constructor": "dxt-constructor Placeholder",
+    "constructor": "dxt-constructor SkeletonItem",
     "library": "dxt-library",
     "types": "dxt-types",
     "prepublishOnly": "npm run library && npm run constructor && npm run build",
@@ -447,6 +447,10 @@
     "./Placeholder": {
       "types": "./dist/constructors/Placeholder/index.d.ts",
       "default": "./dist/placeholder.js"
+    },
+    "./SkeletonItem": {
+      "types": "./dist/constructors/SkeletonItem/index.d.ts",
+      "default": "./dist/skeletonItem.js"
     }
   },
   "buildOptions": {

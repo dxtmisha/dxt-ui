@@ -1,0 +1,17 @@
+{
+  "text": {
+    "_type": "state"
+  },
+  "background": {
+    "_type": "state"
+  },
+  "backgroundVariant": {
+    "_type": "state"
+  },
+  "border": {
+    "_type": "state"
+  },
+  "borderVariant": {
+    "_type": "state"
+  }
+}
