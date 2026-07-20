@@ -80,6 +80,7 @@ import _D1Select from '../components/Ui/Select/D1Select.vue'
 import _D1SelectValue from '../components/Ui/SelectValue/D1SelectValue.vue'
 import _D1SelectableArea from '../components/Ui/SelectableArea/D1SelectableArea.vue'
 import _D1Skeleton from '../components/Ui/Skeleton/D1Skeleton.vue'
+import _D1SkeletonItem from '../components/Ui/SkeletonItem/D1SkeletonItem.vue'
 import _D1Snackbar from '../components/Ui/Snackbar/D1Snackbar.vue'
 import _D1SnackbarItem from '../components/Ui/SnackbarItem/D1SnackbarItem.vue'
 import _D1Switch from '../components/Ui/Switch/D1Switch.vue'
@@ -178,6 +179,7 @@ declare module '@vue/runtime-core' {
     D1SelectValue: typeof _D1SelectValue
     D1SelectableArea: typeof _D1SelectableArea
     D1Skeleton: typeof _D1Skeleton
+    D1SkeletonItem: typeof _D1SkeletonItem
     D1Snackbar: typeof _D1Snackbar
     D1SnackbarItem: typeof _D1SnackbarItem
     D1Switch: typeof _D1Switch

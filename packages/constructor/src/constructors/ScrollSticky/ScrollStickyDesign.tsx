@@ -160,7 +160,11 @@ export class ScrollStickyDesign<
    * Рендерит элемент прокрутки.
    * @returns virtual node / виртуальный узел
    */
-  protected renderScroll(): VNode {
+  protected renderScroll(): VNode | undefined {
+    if (this.props.visible === false) {
+      return undefined
+    }
+
     if (this.slots?.scroll) {
       const scroll = this.initSlot('scroll', undefined, this.getScrollSlotProps())
 
@@ -179,10 +183,13 @@ export class ScrollStickyDesign<
    */
   protected getContextSlotProps(): ScrollStickyBindItem {
     const context = this.getContextBinds()
+    const scroll = this.getScrollBinds()
 
     return {
       ...context,
-      binds: context
+      binds: context,
+      bindsScroll: scroll,
+      bindsContext: context
     }
   }
 
@@ -194,7 +201,8 @@ export class ScrollStickyDesign<
   protected getContextBinds(): ScrollStickyBind {
     return {
       ref: this.element,
-      class: this.classes?.value.context
+      class: this.classes?.value.context,
+      onScroll: this.item.onMain
     }
   }
 
@@ -204,11 +212,14 @@ export class ScrollStickyDesign<
    * @returns scroll slot properties / свойства слота прокрутки
    */
   protected getScrollSlotProps(): ScrollStickyBindItem {
+    const context = this.getContextBinds()
     const scroll = this.getScrollBinds()
 
     return {
       ...scroll,
-      binds: scroll
+      binds: scroll,
+      bindsScroll: scroll,
+      bindsContext: context
     }
   }
 
@@ -220,7 +231,8 @@ export class ScrollStickyDesign<
   protected getScrollBinds(): ScrollStickyBind {
     return {
       ref: this.item.scrollElement,
-      class: this.classes?.value.scroll
+      class: this.classes?.value.scroll,
+      onScroll: this.item.onScroll
     }
   }
 }

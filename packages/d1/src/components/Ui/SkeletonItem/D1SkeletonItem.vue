@@ -25,7 +25,12 @@ const props = withDefaults(defineProps<SkeletonItemProps>(), defaults)
 const classesToken = computed<ConstrClasses>(() => ({
   main: {
     // :classes-values [!] System label / Системная метка
-    'd1-skeletonItem': true
+    'd1-skeletonItem': true,
+    'd1-skeletonItem--text': props.text,
+    'd1-skeletonItem--background': props.background,
+    'd1-skeletonItem--backgroundVariant': props.backgroundVariant,
+    'd1-skeletonItem--border': props.border,
+    'd1-skeletonItem--borderVariant': props.borderVariant
     // :classes-values [!] System label / Системная метка
   }
 }))

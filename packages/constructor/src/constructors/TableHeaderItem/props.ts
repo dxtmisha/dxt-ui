@@ -10,6 +10,8 @@ type TableHeaderItemPropsToken = {
   selected?: boolean
   align?: 'left' | 'center' | 'right'
   alignVertical?: 'top' | 'center' | 'bottom'
+  dividerX?: boolean
+  dividerY?: boolean
   labelClamp?: boolean
   stickyTop?: boolean
   stickyLeft?: boolean

@@ -11,7 +11,10 @@ type ScrollStickyPropsToken = {
  * Basic props for ScrollSticky component. /
  * Базовые свойства для компонента ScrollSticky.
  */
-export type ScrollStickyPropsBasic = {}
+export type ScrollStickyPropsBasic = {
+  /** Whether the scrollbar is visible / Виден ли скроллбар */
+  visible?: boolean
+}
 
 /**
  * Type describing incoming properties.
@@ -26,6 +29,7 @@ export type ScrollStickyProps = ScrollStickyPropsBasic & ScrollStickyPropsToken
  * Значение по умолчанию для свойства.
  */
 export const defaultsScrollSticky = {
+  visible: true,
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

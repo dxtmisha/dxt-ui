@@ -12803,6 +12803,11 @@
         name: 'd1-skeleton',
         type: 'component',
       ),
+      'skeletonItem':(
+        index: 'skeletonItem',
+        name: 'd1-skeletonItem',
+        type: 'component',
+      ),
       'snackbar':(
         index: 'snackbar',
         name: 'd1-snackbar',
@@ -13539,6 +13544,11 @@
       'skeleton':(
         index: 'skeleton',
         name: 'd-skeleton',
+        type: 'component',
+      ),
+      'skeletonItem':(
+        index: 'skeletonItem',
+        name: 'd-skeletonItem',
         type: 'component',
       ),
       'snackbar':(

@@ -9,6 +9,8 @@ export type ScrollStickyBind = {
   ref: Ref<HTMLElement | undefined>
   /** Class name / Название класса */
   class: string | undefined
+  /** Scroll event listener / Слушатель события прокрутки */
+  onScroll?: (event: Event) => void
 }
 
 /**
@@ -18,6 +20,10 @@ export type ScrollStickyBind = {
 export type ScrollStickyBindItem = ScrollStickyBind & {
   /** Binding properties / Свойства привязки */
   binds: ScrollStickyBind
+  /** Scroll binding properties / Свойства привязки прокрутки */
+  bindsScroll: ScrollStickyBind
+  /** Context binding properties / Свойства привязки контекста */
+  bindsContext: ScrollStickyBind
 }
 
 /**

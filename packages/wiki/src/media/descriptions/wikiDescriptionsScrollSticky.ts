@@ -16,13 +16,15 @@ export const wikiDescriptionsScrollSticky: StorybookComponentsDescriptionItem = 
       'sticky horizontal scrollbar positioned at the bottom',
       'two-way scroll synchronization with a target container',
       'resize observation for element and window changes',
-      'hide standard native scrollbar'
+      'hide standard native scrollbar',
+      'visibility control for scrolling behavior'
     ],
     ru: [
       'липкий горизонтальный скроллбар, расположенный внизу',
       'двусторонняя синхронизация прокрутки с целевым контейнером',
       'отслеживание изменений размеров элементов и окна',
-      'скрытие стандартного системного скроллбара'
+      'скрытие стандартного системного скроллбара',
+      'управление видимостью для поведения прокрутки'
     ]
   },
   render: `

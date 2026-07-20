@@ -217,7 +217,7 @@ export class ScrollSticky {
    *
    * Синхронизирует горизонтальное положение полосы прокрутки с положением прокрутки основного элемента.
    */
-  protected readonly onMain = () => {
+  readonly onMain = () => {
     this.checkScroll((element, scrollElement) => {
       scrollElement.scrollLeft = element.scrollLeft
     })
@@ -228,7 +228,7 @@ export class ScrollSticky {
    *
    * Синхронизирует положение прокрутки основного элемента с горизонтальным положением полосы прокрутки.
    */
-  protected readonly onScroll = () => {
+  readonly onScroll = () => {
     this.checkScroll((element, scrollElement) => {
       element.scrollLeft = scrollElement.scrollLeft
     })
