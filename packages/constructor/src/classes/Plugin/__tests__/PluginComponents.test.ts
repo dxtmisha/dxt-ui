@@ -5,7 +5,7 @@ import { PluginData } from '../PluginData'
 
 describe('PluginComponents', () => {
   const componentsList = [
-    { name: 'MyButton', reg: 'my-button' }
+    { name: 'MyButton', reg: /my-button/ }
   ]
   const componentsReg = /my-button/g
   const styleVarsReg = /--my-sys-[a-z-]+/g

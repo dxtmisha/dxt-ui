@@ -61,7 +61,7 @@ describe('WindowHidden', () => {
   })
 
   it('should set inert and aria-hidden on siblings when window is opened and openEnd is true', async () => {
-    const windowHidden = new WindowHidden(
+    new WindowHidden(
       mockProps as WindowProps,
       mockClasses,
       mockStatic,
@@ -78,7 +78,7 @@ describe('WindowHidden', () => {
   })
 
   it('should remove inert and aria-hidden on siblings when window is closed and openEnd is false', async () => {
-    const windowHidden = new WindowHidden(
+    new WindowHidden(
       mockProps as WindowProps,
       mockClasses,
       mockStatic,
@@ -103,7 +103,7 @@ describe('WindowHidden', () => {
 
   it('should do nothing when opening if props.inert is false', async () => {
     mockProps.inert = false
-    const windowHidden = new WindowHidden(
+    new WindowHidden(
       mockProps as WindowProps,
       mockClasses,
       mockStatic,

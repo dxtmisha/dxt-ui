@@ -191,7 +191,10 @@ export class TableDesign<
       return [
         h(
           'thead',
-          { class: this.classes?.value.header },
+          {
+            ref: this.item.headerElement,
+            class: this.classes?.value.header
+          },
           children
         )
       ]

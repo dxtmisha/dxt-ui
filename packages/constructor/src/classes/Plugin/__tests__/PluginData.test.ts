@@ -3,8 +3,8 @@ import { PluginData } from '../PluginData'
 
 describe('PluginData', () => {
   const componentsList = [
-    { name: 'MyButton', reg: 'my-button' },
-    { name: 'MyInput', reg: 'my-input' }
+    { name: 'MyButton', reg: /my-button/ },
+    { name: 'MyInput', reg: /my-input/ }
   ]
   const componentsReg = /my-button|my-input/g
   const styleVarsReg = /--my-sys-[a-z-]+/g

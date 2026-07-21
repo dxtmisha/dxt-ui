@@ -59,13 +59,13 @@ describe('SnackbarData', () => {
     const data = new SnackbarData(props, elementRef, 'd1-snackbar', mockEvent)
 
     // Case 1: Custom value and custom delay
-    data.add({ text: 'Message 1', value: 'my-id', delay: 2000 })
+    data.add({ data: { label: 'Message 1' }, value: 'my-id', delay: 2000 })
     expect(data.item.value.length).toBe(1)
     expect(data.item.value[0].value).toBe('my-id')
     expect(data.item.value[0].delay).toBe(2000)
 
     // Case 2: Default value and default delay
-    data.add({ text: 'Message 2' })
+    data.add({ data: { label: 'Message 2' } })
     expect(data.item.value.length).toBe(2)
     expect(data.item.value[1].value).toContain('snackbar-item-')
     expect(data.item.value[1].delay).toBe(5000)

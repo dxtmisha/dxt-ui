@@ -1,8 +1,6 @@
 // @vitest-environment jsdom
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { WindowCoordinates } from '../WindowCoordinates'
-import type { WindowClassesData } from '../WindowClassesData'
-import type { WindowElement } from '../WindowElement'
 
 describe('WindowCoordinates', () => {
   let mockClasses: any

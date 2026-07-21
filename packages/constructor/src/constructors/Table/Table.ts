@@ -1,4 +1,4 @@
-import { type Ref, type ToRefs } from 'vue'
+import { type Ref, type ToRefs, ref } from 'vue'
 import {
   type ConstrEmit,
   type DesignComp,
@@ -7,6 +7,7 @@ import {
   isFilled
 } from '@dxtmisha/functional'
 
+import { StickyInclude } from '../../classes/StickyInclude'
 import { TableRecordInclude } from '../TableRecord'
 
 import type { TableComponents, TableEmits, TableSlots } from './types'
@@ -23,6 +24,9 @@ export class Table {
   /** Table record include manager instance / Экземпляр включения записей таблицы */
   readonly tableRecord: TableRecordInclude
 
+  /** Table header elements reference / Ссылка на элементы шапки таблицы */
+  readonly headerElement = ref<HTMLElement>()
+
   /**
    * Constructor
    * @param props input properties / входные свойства
@@ -35,6 +39,7 @@ export class Table {
    * @param emits callback function triggered on events / функция обратного вызова, запускаемая при событиях
    * @param constructors optional class constructor overrides / необязательные переопределения конструкторов классов
    * @param constructors.TableRecordIncludeConstructor class for creating a table record include / класс для создания включения записи таблицы
+   * @param constructors.StickyIncludeConstructor class for creating a sticky include / класс для создания включения липкого элемента
    */
   constructor(
     protected readonly props: TableProps,
@@ -47,10 +52,12 @@ export class Table {
     protected readonly emits?: ConstrEmit<TableEmits>,
     constructors: {
       TableRecordIncludeConstructor?: typeof TableRecordInclude
+      StickyIncludeConstructor?: typeof StickyInclude
     } = {}
   ) {
     const {
-      TableRecordIncludeConstructor = TableRecordInclude
+      TableRecordIncludeConstructor = TableRecordInclude,
+      StickyIncludeConstructor = StickyInclude
     } = constructors
 
     this.tableRecord = new TableRecordIncludeConstructor(
@@ -60,6 +67,13 @@ export class Table {
       components,
       undefined,
       slots
+    )
+
+    new StickyIncludeConstructor(
+      () => ({ stickyEnable: this.props.headerTop }),
+      className,
+      this.headerElement,
+      element
     )
   }
 

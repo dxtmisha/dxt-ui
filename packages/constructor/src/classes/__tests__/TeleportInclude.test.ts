@@ -7,7 +7,7 @@ vi.mock('vue', async () => {
   const actual = await vi.importActual('vue') as any
   return {
     ...actual,
-    inject: vi.fn().mockImplementation((key, defaultValue) => defaultValue)
+    inject: vi.fn().mockImplementation((_key, defaultValue) => defaultValue)
   }
 })
 

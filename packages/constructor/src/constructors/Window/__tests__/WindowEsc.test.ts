@@ -23,7 +23,7 @@ describe('WindowEsc', () => {
   })
 
   it('should start listening when open state changes to true and active is true', async () => {
-    const windowEsc = new WindowEsc(openRef, undefined, true)
+    new WindowEsc(openRef, undefined, true)
 
     // Watch triggers on value change
     openRef.value = true
@@ -39,7 +39,7 @@ describe('WindowEsc', () => {
 
   it('should call custom callback when Escape is pressed if callback is provided', async () => {
     const customCallback = vi.fn()
-    const windowEsc = new WindowEsc(openRef, customCallback, true)
+    new WindowEsc(openRef, customCallback, true)
 
     openRef.value = true
     await nextTick()
@@ -54,7 +54,7 @@ describe('WindowEsc', () => {
 
   it('should stop listening when open state changes to false', async () => {
     const customCallback = vi.fn()
-    const windowEsc = new WindowEsc(openRef, customCallback, true)
+    new WindowEsc(openRef, customCallback, true)
 
     // Open first
     openRef.value = true
@@ -73,7 +73,7 @@ describe('WindowEsc', () => {
 
   it('should not listen or toggle state if active option resolves to false', async () => {
     const customCallback = vi.fn()
-    const windowEsc = new WindowEsc(openRef, customCallback, () => false)
+    new WindowEsc(openRef, customCallback, () => false)
 
     openRef.value = true
     await nextTick()

@@ -3,7 +3,7 @@ import { Plugin } from '../Plugin'
 
 describe('Plugin', () => {
   const componentsList = [
-    { name: 'MyButton', reg: 'my-button' }
+    { name: 'MyButton', reg: /my-button/ }
   ]
   const componentsReg = /my-button/g
   const styleVarsReg = /--(sys-color-[a-z-]+)/g
@@ -29,12 +29,12 @@ describe('Plugin', () => {
 
     if (config.transform && typeof config.transform === 'function') {
       const code = 'const x = 1;'
-      const result = config.transform(code, '/project/src/main.ts') as any
+      const result = config.transform.call({} as any, code, '/project/src/main.ts') as any
 
       expect(result).toBeDefined()
       expect(result.code).toBe('import \'pkg-a/style.css\';const x = 1;')
 
-      const secondResult = config.transform(code, '/project/src/other.ts') as any
+      const secondResult = config.transform.call({} as any, code, '/project/src/other.ts') as any
       expect(secondResult.code).toBe('const x = 1;')
     }
   })

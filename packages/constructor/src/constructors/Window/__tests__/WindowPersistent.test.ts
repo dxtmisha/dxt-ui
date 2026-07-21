@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { ref, nextTick } from 'vue'
+import { nextTick } from 'vue'
 import { WindowPersistent } from '../WindowPersistent'
 import type { WindowProps } from '../props'
 

@@ -1,6 +1,5 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi } from 'vitest'
-import { ref } from 'vue'
 import { DescriptionInclude } from '../DescriptionInclude'
 
 describe('DescriptionInclude', () => {

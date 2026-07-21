@@ -3,7 +3,6 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { ref, toRefs, nextTick } from 'vue'
 import type { ToRefs } from 'vue'
 import { WindowStatic } from '../WindowStatic'
-import type { WindowElement } from '../WindowElement'
 import type { WindowProps } from '../props'
 
 vi.mock('vue', async () => {

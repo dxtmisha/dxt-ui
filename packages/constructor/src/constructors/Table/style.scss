@@ -11,7 +11,7 @@
   &--headerTop {
     @include ui.subclass('header') {
       position: sticky;
-      top: ui.v('?sys.global.sticky.top', ui.v('?sys.sticky.top', 0));
+      top: ui.v('??sys-sticky-top', ui.v('?sys.global.sticky.top', ui.v('?sys.sticky.top', 0)));
       z-index: 12;
     }
   }

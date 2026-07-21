@@ -1,6 +1,5 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { ref } from 'vue'
 import { WindowInclude } from '../WindowInclude'
 import type { WindowPropsInclude } from '../basicTypes'
 
@@ -59,13 +58,13 @@ describe('WindowInclude', () => {
     expect(bindings.ariaDescribedby).toBe('desc-id')
 
     // Call execution wrappers for preparation/opening/closing
-    bindings.preparation()
+    bindings.preparation?.()
     expect(mockExtra.preparation).toHaveBeenCalled()
 
-    const openingResult = bindings.opening()
+    const openingResult = bindings.opening?.()
     expect(openingResult).toBe(true)
 
-    const closingResult = bindings.closing()
+    const closingResult = bindings.closing?.()
     expect(closingResult).toBe(true)
   })
 

@@ -2,11 +2,12 @@
 import { describe, it, expect, vi } from 'vitest'
 import { ref } from 'vue'
 import { ComponentIncludeAbstract } from '../ComponentIncludeAbstract'
+import type { ComponentIncludeExposeItem } from '../../types/componentInclude'
 
 class TestComponentInclude extends ComponentIncludeAbstract<any, any, any, any> {
   protected readonly name = 'test-sub'
   protected readonly propsAttrsName = 'subAttrs'
-  protected readonly exposeItems = [
+  protected readonly exposeItems: ComponentIncludeExposeItem[] = [
     { name: 'focus', method: 'focus', type: 'boolean', defaultValue: false },
     { name: 'getValue', method: 'value', type: 'string', defaultValue: 'default' }
   ]

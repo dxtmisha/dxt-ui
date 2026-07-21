@@ -1,11 +1,11 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { TooltipInclude } from '../TooltipInclude'
-import type { TooltipProps } from '../props'
+import type { TooltipPropsInclude } from '../basicTypes'
 
 describe('TooltipInclude', () => {
   let mockTooltipElement: { toggle: any }
-  let mockProps: Partial<TooltipProps>
+  let mockProps: Partial<TooltipPropsInclude>
   let mockExtra: any
   let tooltipInclude: TooltipInclude
 
@@ -24,7 +24,7 @@ describe('TooltipInclude', () => {
 
     tooltipInclude = new TooltipInclude(
       'd1-button',
-      () => mockProps as TooltipProps,
+      () => mockProps as TooltipPropsInclude,
       undefined, // design components
       () => mockExtra // extra properties
     )

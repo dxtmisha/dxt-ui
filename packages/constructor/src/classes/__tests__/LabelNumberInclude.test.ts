@@ -11,7 +11,7 @@ describe('LabelNumberInclude', () => {
     const nodes = include.render()
     expect(nodes.length).toBe(1)
 
-    const highlightNode = nodes[0].children[0]
+    const highlightNode = (nodes[0].children as unknown as { props: { innerHTML: string } }[])[0]
     expect(highlightNode.props.innerHTML).toBe('50')
   })
 
@@ -22,7 +22,7 @@ describe('LabelNumberInclude', () => {
     const nodes = include.render()
     expect(nodes.length).toBe(1)
 
-    const highlightNode = nodes[0].children[0]
+    const highlightNode = (nodes[0].children as unknown as { props: { innerHTML: string } }[])[0]
     expect(highlightNode.props.innerHTML).toBe('100+')
   })
 

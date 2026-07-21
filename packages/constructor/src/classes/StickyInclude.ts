@@ -7,7 +7,8 @@ import {
 import {
   getRef,
   EventItem,
-  getElementOrWindow
+  getElementOrWindow,
+  executeFunction
 } from '@dxtmisha/functional'
 
 import { type StickyPropsInclude } from '../types/stickyTypes'
@@ -42,23 +43,55 @@ export class StickyInclude {
    * @param parent parent element reference / ссылка на родительский элемент
    */
   constructor(
-    protected readonly props: StickyPropsInclude,
+    protected readonly props: StickyPropsInclude | (() => StickyPropsInclude),
     protected readonly className: string,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly parent: Ref<HTMLElement | undefined>
   ) {
     onMounted(() => {
       watch(
-        [this.element, this.parent],
+        [
+          this.element,
+          this.parent,
+          () => this.isEnabled()
+        ],
         () => this.reset()
       )
 
       this.start()
     })
 
-    onUnmounted(() => {
-      this.stop()
-    })
+    onUnmounted(() => this.stop())
+  }
+
+  /**
+   * Returns the configuration properties.
+   *
+   * Возвращает свойства конфигурации.
+   * @returns properties / свойства
+   */
+  protected getProps(): StickyPropsInclude {
+    return executeFunction(this.props)
+  }
+
+  /**
+   * Checks if sticky positioning is enabled.
+   *
+   * Проверяет, включено ли липкое позиционирование.
+   * @returns true if sticky is enabled / true, если липкое позиционирование включено
+   */
+  protected isEnabled(): boolean {
+    return getRef(this.getProps().stickyEnable) ?? true
+  }
+
+  /**
+   * Returns the name of the custom CSS property for the sticky top offset.
+   *
+   * Возвращает имя пользовательского CSS-свойства для верхнего отступа липкого элемента.
+   * @returns custom CSS property name / имя пользовательского CSS-свойства
+   */
+  protected getCustomProperty(): string {
+    return `--${this.className}-sys-sticky-top`
   }
 
   /**
@@ -94,6 +127,10 @@ export class StickyInclude {
    * Начинает отслеживание положения и прослушивание событий.
    */
   protected start(): void {
+    if (!this.isEnabled()) {
+      return
+    }
+
     const element = this.element.value
     const parent = this.parent.value
 
@@ -130,6 +167,8 @@ export class StickyInclude {
       this.eventResizeElement.stop()
       this.eventResizeElement = undefined
     }
+
+    this.element.value?.style.removeProperty(this.getCustomProperty())
   }
 
   /**
@@ -148,7 +187,7 @@ export class StickyInclude {
    * Инициализирует контейнер прокрутки.
    */
   protected initScrollContainer(): this {
-    this.scrollContainer = getElementOrWindow(this.props.stickyScrollContainer)
+    this.scrollContainer = getElementOrWindow(this.getProps().stickyScrollContainer)
       ?? this.getScrollContainer()
 
     return this
@@ -230,7 +269,7 @@ export class StickyInclude {
 
     const parentRect = parent.getBoundingClientRect()
     const elementHeight = element.offsetHeight
-    const topOffset = getRef(this.props.stickyTop) ?? 0
+    const topOffset = getRef(this.getProps().stickyTop) ?? 0
     let boundaryTop = 0
 
     if (
@@ -245,6 +284,6 @@ export class StickyInclude {
     const maximumTop = parentRect.height - elementHeight
     const clampedTop = Math.max(0, Math.min(calculatedTop, maximumTop))
 
-    element.style.setProperty(`--${this.className}-sys-sticky-top`, `${clampedTop}px`)
+    element.style.setProperty(this.getCustomProperty(), `${clampedTop}px`)
   }
 }

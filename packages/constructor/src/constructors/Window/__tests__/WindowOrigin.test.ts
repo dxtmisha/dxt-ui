@@ -1,9 +1,6 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { WindowOrigin } from '../WindowOrigin'
-import type { WindowClient } from '../WindowClient'
-import type { WindowElement } from '../WindowElement'
-import type { WindowPosition } from '../WindowPosition'
 
 describe('WindowOrigin', () => {
   let mockClient: any

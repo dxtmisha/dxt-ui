@@ -47,7 +47,6 @@ describe('EventClickInclude', () => {
   })
 
   it('should perform router push and prevent default on click if to prop is provided', () => {
-    const include = new EventClickInclude({ to: '/profile' })
     const event = { preventDefault: vi.fn() } as any
     const emits = vi.fn()
     const includeWithEmits = new EventClickInclude({ to: '/profile' }, undefined, emits)

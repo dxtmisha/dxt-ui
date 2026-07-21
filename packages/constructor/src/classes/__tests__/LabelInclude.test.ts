@@ -31,7 +31,7 @@ describe('LabelInclude', () => {
     const nodes = include.render()
     expect(nodes.length).toBe(1)
     expect(nodes[0].type).toBe('span')
-    expect(nodes[0].props.class).toContain('prefix__label')
+    expect(nodes[0].props?.class).toContain('prefix__label')
     expect(nodes[0].children).toContain('Test Label')
   })
 
@@ -41,7 +41,7 @@ describe('LabelInclude', () => {
     const nodes = include.render()
     expect(nodes.length).toBe(1)
 
-    const highlightNode = nodes[0].children[0]
+    const highlightNode = (nodes[0].children as unknown as { type: string, props: { innerHTML: string } }[])[0]
     expect(highlightNode.type).toBe('span')
     expect(highlightNode.props.innerHTML).toBe('<strong>replacing</strong>')
   })

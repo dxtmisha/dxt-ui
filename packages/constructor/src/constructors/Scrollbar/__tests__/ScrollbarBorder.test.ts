@@ -9,7 +9,7 @@ vi.mock('vue', async () => {
     ...actual,
     onMounted: (fn: () => void) => fn(),
     onUnmounted: (fn: () => void) => fn(),
-    watch: (src: any, cb: any) => {
+    watch: (_src: any, cb: any) => {
       cb()
     }
   }

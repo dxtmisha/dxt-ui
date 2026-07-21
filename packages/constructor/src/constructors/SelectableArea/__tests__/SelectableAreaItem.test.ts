@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi } from 'vitest'
-import { ref, toRefs, reactive, nextTick } from 'vue'
+import { toRefs, reactive, nextTick } from 'vue'
 import { SelectableAreaItem } from '../SelectableAreaItem'
 
 vi.mock('vue', async () => {

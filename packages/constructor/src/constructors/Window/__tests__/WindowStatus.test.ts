@@ -2,7 +2,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { WindowStatus } from '../WindowStatus'
 import { WindowStatusItem } from '../basicTypes'
-import type { WindowElement } from '../WindowElement'
 
 describe('WindowStatus', () => {
   let mockElement: any
