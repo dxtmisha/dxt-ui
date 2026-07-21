@@ -24,7 +24,7 @@ describe('DraggableWrapperClassesData', () => {
     const classes = new DraggableWrapperClassesData(ref(mockWrapper), 'dxt', 'draggable')
 
     const mockItem = document.createElement('div')
-    
+
     expect(classes.isPosition(mockItem)).toBe(false)
     mockItem.classList.add(classes.list.position)
     expect(classes.isPosition(mockItem)).toBe(true)

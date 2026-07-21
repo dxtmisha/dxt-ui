@@ -32,7 +32,7 @@ describe('Plugin', () => {
       const result = config.transform(code, '/project/src/main.ts') as any
 
       expect(result).toBeDefined()
-      expect(result.code).toBe("import 'pkg-a/style.css';const x = 1;")
+      expect(result.code).toBe('import \'pkg-a/style.css\';const x = 1;')
 
       const secondResult = config.transform(code, '/project/src/other.ts') as any
       expect(secondResult.code).toBe('const x = 1;')

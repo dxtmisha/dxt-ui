@@ -83,7 +83,7 @@ describe('WindowStatic', () => {
     })
 
     const { windowStatic } = createWindowStatic({ staticMode: true }, mockElement)
-    
+
     // Dispatch resize event
     const resizeEvent = new Event('resize')
     window.dispatchEvent(resizeEvent)

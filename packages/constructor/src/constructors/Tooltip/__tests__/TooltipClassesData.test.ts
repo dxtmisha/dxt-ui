@@ -55,7 +55,7 @@ describe('TooltipClassesData', () => {
   it('should find control by target using closest ancestor search', () => {
     const controlElement = document.createElement('div')
     controlElement.className = `${baseClassName}__control ${classesData.getId()}`
-    
+
     const nestedChild = document.createElement('span')
     controlElement.appendChild(nestedChild)
     document.body.appendChild(controlElement)

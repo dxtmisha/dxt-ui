@@ -29,12 +29,12 @@ describe('DraggableWrapperItemActive', () => {
   it('should prepare elements styles and classes for dragging', () => {
     const active = new DraggableWrapperItemActive(mockClasses)
     const element = document.createElement('div')
-    
+
     element.getBoundingClientRect = () => ({
       left: 10,
       top: 20,
       width: 100,
-      height: 200,
+      height: 200
     } as DOMRect)
 
     active.prepare(element, { x: 15, y: 35 })
@@ -52,7 +52,7 @@ describe('DraggableWrapperItemActive', () => {
     const active = new DraggableWrapperItemActive(mockClasses)
     const element = document.createElement('div')
     element.style.setProperty('--my-component-sys-item-width', '10px')
-    
+
     active.set(element)
     active.resetItemStyles()
     expect(element.style.getPropertyValue('--my-component-sys-item-width')).toBe('')

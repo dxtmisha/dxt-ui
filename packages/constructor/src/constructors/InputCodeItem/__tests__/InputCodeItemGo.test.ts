@@ -20,12 +20,12 @@ describe('InputCodeItemGo', () => {
 
   it('should focus to previous, next and select inputs', () => {
     const parent = document.createElement('div')
-    
+
     const el1 = document.createElement('div')
     const input1 = document.createElement('input')
     input1.setAttribute('data-code', '')
     el1.appendChild(input1)
-    
+
     const el2 = document.createElement('div')
     const input2 = document.createElement('input')
     input2.setAttribute('data-code', '')

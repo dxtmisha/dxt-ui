@@ -17,7 +17,7 @@ describe('CaptionInclude', () => {
   it('should return correct binds when not decorative', () => {
     const include = new CaptionInclude({ caption: 'Hello' }, 'my-class')
     expect(include.binds).toEqual({
-      class: {
+      'class': {
         'my-class__caption': true
       },
       'data-event-type': 'caption',
@@ -29,7 +29,7 @@ describe('CaptionInclude', () => {
   it('should return correct binds when decorative', () => {
     const include = new CaptionInclude({ caption: 'Hello', captionDecorative: true }, 'my-class')
     expect(include.binds).toEqual({
-      class: {
+      'class': {
         'my-class__caption': true
       },
       'data-event-type': 'caption',
@@ -55,11 +55,11 @@ describe('CaptionInclude', () => {
     expect(nodes.length).toBe(1)
     expect(nodes[0].type).toBe('div')
     expect(nodes[0].props).toEqual({
-      class: 'my-class__caption',
+      'class': 'my-class__caption',
       'data-event-type': 'caption',
       'aria-live': 'polite',
       'aria-atomic': 'true',
-      key: 'div.caption'
+      'key': 'div.caption'
     })
     expect(nodes[0].children).toContain('Hello')
   })

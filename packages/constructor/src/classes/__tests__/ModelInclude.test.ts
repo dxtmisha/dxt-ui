@@ -41,7 +41,7 @@ describe('ModelInclude', () => {
     const model = new ModelInclude('user-name', undefined, syncValue)
 
     expect(model.getBinds()).toEqual({
-      modelUserName: 'some-value',
+      'modelUserName': 'some-value',
       'onUpdate:userName': model.update,
       'onUpdate:modelUserName': model.update
     })

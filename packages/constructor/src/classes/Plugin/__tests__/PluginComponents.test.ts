@@ -17,8 +17,8 @@ describe('PluginComponents', () => {
     const pluginComponents = new PluginComponents(pc, pd)
     pluginComponents.make()
 
-    expect(pc.get()).toContain("import { MyButton } from'pkg-a/MyButton';")
-    expect(pc.get()).toContain("<script setup>import { MyButton } from'pkg-a/MyButton';\nconst a = 1;\n</script>")
+    expect(pc.get()).toContain('import { MyButton } from\'pkg-a/MyButton\';')
+    expect(pc.get()).toContain('<script setup>import { MyButton } from\'pkg-a/MyButton\';\nconst a = 1;\n</script>')
   })
 
   it('should not inject anything if code is not a Vue component', () => {

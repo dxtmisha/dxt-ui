@@ -78,13 +78,13 @@ describe('AriaStaticInclude', () => {
 
   it('should return control roles combined', () => {
     expect(AriaStaticInclude.control('test-id', 'test-controls', 'menu', true)).toEqual({
-      id: 'test-id',
+      'id': 'test-id',
       'aria-controls': 'test-controls',
       'aria-haspopup': 'menu',
       'aria-expanded': 'true'
     })
     expect(AriaStaticInclude.control(undefined, undefined, undefined, undefined)).toEqual({
-      id: undefined,
+      'id': undefined,
       'aria-expanded': 'false'
     })
   })

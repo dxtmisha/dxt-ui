@@ -110,7 +110,7 @@ describe('WindowCoordinates', () => {
 
   it('should compute correct location position within limits', () => {
     const coordinates = new WindowCoordinates(mockClasses, mockElement)
-    
+
     // Test normal position
     // top control center = rect.top (100) + rect.height / 2 (25) = 125
     // body height = 200 => half = 100

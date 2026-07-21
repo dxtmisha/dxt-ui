@@ -24,7 +24,7 @@ function createCheckboxSelected(
     ...initialProps
   })
   const references = toRefs(reactiveProperties.value as any) as unknown as ToRefs<CheckboxProps>
-  
+
   const mockValue = {
     item: mockValueItem,
     set: vi.fn((val: any) => {

@@ -6,7 +6,6 @@ import {
 } from 'vue'
 import {
   getRef,
-  isDomRuntime,
   EventItem,
   getElementOrWindow
 } from '@dxtmisha/functional'
@@ -38,22 +37,23 @@ export class StickyInclude {
    *
    * Конструктор
    * @param props input properties / входящие свойства
+   * @param className class name / название класса
    * @param element target element reference / ссылка на целевой элемент
    * @param parent parent element reference / ссылка на родительский элемент
    */
   constructor(
     protected readonly props: StickyPropsInclude,
+    protected readonly className: string,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly parent: Ref<HTMLElement | undefined>
   ) {
     onMounted(() => {
       watch(
         [this.element, this.parent],
-        () => {
-          this.reset()
-        },
-        { immediate: true }
+        () => this.reset()
       )
+
+      this.start()
     })
 
     onUnmounted(() => {
@@ -62,13 +62,30 @@ export class StickyInclude {
   }
 
   /**
-   * Resets active listeners and starts tracking.
+   * Finds the closest scrollable ancestor of the element, or window if none found.
    *
-   * Сбрасывает активные слушатели и начинает отслеживание.
+   * Находит ближайшего прокручиваемого предка элемента или window, если таковой не найден.
+   * @returns scrollable ancestor or window / прокручиваемый предок или window
    */
-  reset(): void {
-    this.stop()
-    this.start()
+  protected getScrollContainer(): HTMLElement | Window {
+    let parentElement = this.parent.value?.parentElement
+
+    while (parentElement) {
+      const style = window.getComputedStyle(parentElement)
+
+      if (
+        style.overflowY === 'auto'
+        || style.overflowY === 'scroll'
+        || style.overflow === 'auto'
+        || style.overflow === 'scroll'
+      ) {
+        return parentElement
+      }
+
+      parentElement = parentElement.parentElement
+    }
+
+    return window
   }
 
   /**
@@ -77,45 +94,20 @@ export class StickyInclude {
    * Начинает отслеживание положения и прослушивание событий.
    */
   protected start(): void {
-    if (!isDomRuntime()) {
-      return
-    }
-
     const element = this.element.value
     const parent = this.parent.value
 
     if (
-      !element
-      || !parent
+      element
+      && parent
     ) {
-      return
+      this.initScrollContainer()
+        .initEventScroll()
+        .initEventResizeParent()
+        .initEventResizeElement()
+
+      this.updatePosition()
     }
-
-    this.scrollContainer = getElementOrWindow(this.props.scrollContainer)
-      ?? this.getScrollContainer(parent)
-
-    this.eventScroll = new EventItem(
-      this.scrollContainer,
-      'scroll-sync',
-      this.updatePosition
-    )
-    this.eventScroll.start()
-
-    this.eventResizeParent = new EventItem(
-      parent,
-      'resize',
-      this.updatePosition
-    )
-    this.eventResizeParent.start()
-
-    this.eventResizeElement = new EventItem(
-      element,
-      'resize',
-      this.updatePosition
-    )
-    this.eventResizeElement.start()
-
-    this.updatePosition()
   }
 
   /**
@@ -141,6 +133,86 @@ export class StickyInclude {
   }
 
   /**
+   * Resets active listeners and starts tracking.
+   *
+   * Сбрасывает активные слушатели и начинает отслеживание.
+   */
+  protected reset(): void {
+    this.stop()
+    this.start()
+  }
+
+  /**
+   * Initializes the scroll container.
+   *
+   * Инициализирует контейнер прокрутки.
+   */
+  protected initScrollContainer(): this {
+    this.scrollContainer = getElementOrWindow(this.props.stickyScrollContainer)
+      ?? this.getScrollContainer()
+
+    return this
+  }
+
+  /**
+   * Initializes and starts scroll event listener.
+   *
+   * Инициализирует и запускает слушатель событий прокрутки.
+   */
+  protected initEventScroll(): this {
+    if (this.scrollContainer) {
+      this.eventScroll = new EventItem(
+        this.scrollContainer,
+        'scroll-sync',
+        this.updatePosition
+      )
+        .start()
+    }
+
+    return this
+  }
+
+  /**
+   * Initializes and starts parent resizing event listener.
+   *
+   * Инициализирует и запускает слушатель событий изменения размера родителя.
+   */
+  protected initEventResizeParent(): this {
+    const parent = this.parent.value
+
+    if (parent) {
+      this.eventResizeParent = new EventItem(
+        parent,
+        'resize',
+        this.updatePosition
+      )
+        .start()
+    }
+
+    return this
+  }
+
+  /**
+   * Initializes and starts element resizing event listener.
+   *
+   * Инициализирует и запускает слушатель событий изменения размера элемента.
+   */
+  protected initEventResizeElement(): this {
+    const element = this.element.value
+
+    if (element) {
+      this.eventResizeElement = new EventItem(
+        element,
+        'resize',
+        this.updatePosition
+      )
+        .start()
+    }
+
+    return this
+  }
+
+  /**
    * Computes position and updates element style positioning.
    *
    * Вычисляет положение и обновляет стили позиционирования элемента.
@@ -149,56 +221,30 @@ export class StickyInclude {
     const element = this.element.value
     const parent = this.parent.value
 
-    if (!element || !parent) {
+    if (
+      !element
+      || !parent
+    ) {
       return
     }
 
     const parentRect = parent.getBoundingClientRect()
     const elementHeight = element.offsetHeight
-    const topOffset = getRef(this.props.top) ?? 0
-
+    const topOffset = getRef(this.props.stickyTop) ?? 0
     let boundaryTop = 0
-    if (this.scrollContainer && this.scrollContainer !== window) {
+
+    if (
+      this.scrollContainer
+      && this.scrollContainer !== window
+    ) {
       const containerRect = (this.scrollContainer as HTMLElement).getBoundingClientRect()
       boundaryTop = containerRect.top
     }
 
-    let calculatedTop = (boundaryTop + topOffset) - parentRect.top
+    const calculatedTop = (boundaryTop + topOffset) - parentRect.top
     const maximumTop = parentRect.height - elementHeight
-    calculatedTop = Math.max(0, Math.min(calculatedTop, maximumTop))
+    const clampedTop = Math.max(0, Math.min(calculatedTop, maximumTop))
 
-    const mode = getRef(this.props.mode) ?? 'transform'
-
-    if (mode === 'transform') {
-      element.style.transform = `translateY(${calculatedTop}px)`
-    } else if (mode === 'top') {
-      element.style.top = `${calculatedTop}px`
-    }
-
-    element.style.setProperty('--dxt-sticky-top', `${calculatedTop}px`)
-  }
-
-  /**
-   * Finds the closest scrollable ancestor of the element, or window if none found.
-   *
-   * Находит ближайшего прокручиваемого предка элемента или window, если таковой не найден.
-   * @param element target element / целевой элемент
-   * @returns scrollable ancestor or window / прокручиваемый предок или window
-   */
-  protected getScrollContainer(element: HTMLElement): HTMLElement | Window {
-    let parentElement = element.parentElement
-    while (parentElement) {
-      const style = window.getComputedStyle(parentElement)
-      if (
-        style.overflowY === 'auto'
-        || style.overflowY === 'scroll'
-        || style.overflow === 'auto'
-        || style.overflow === 'scroll'
-      ) {
-        return parentElement
-      }
-      parentElement = parentElement.parentElement
-    }
-    return window
+    element.style.setProperty(`--${this.className}-sys-sticky-top`, `${clampedTop}px`)
   }
 }

@@ -107,10 +107,10 @@ describe('WindowClassesData', () => {
   it('should find body element in the DOM', () => {
     const mainElement = document.createElement('div')
     mainElement.className = `${baseClassName} ${classesData.getId()}`
-    
+
     const bodyElement = document.createElement('div')
     bodyElement.className = `${baseClassName}__body`
-    
+
     mainElement.appendChild(bodyElement)
     document.body.appendChild(mainElement)
 
@@ -120,10 +120,10 @@ describe('WindowClassesData', () => {
   it('should find body context element in the DOM', () => {
     const mainElement = document.createElement('div')
     mainElement.className = `${baseClassName} ${classesData.getId()}`
-    
+
     const contextElement = document.createElement('div')
     contextElement.className = `${baseClassName}__body__context`
-    
+
     mainElement.appendChild(contextElement)
     document.body.appendChild(mainElement)
 

@@ -80,7 +80,7 @@ describe('FieldInclude', () => {
 
     const mockTarget = document.createElement('div')
     mockTarget.setAttribute('data-element', 'scoreboard')
-    
+
     const event1 = new MouseEvent('click')
     Object.defineProperty(event1, 'target', { value: mockTarget })
     ;(fieldInclude as any).on(event1, { type: 'icon' })

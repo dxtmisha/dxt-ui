@@ -82,7 +82,7 @@ describe('TooltipOpen', () => {
     // Immediately sets open and show to true and updates position
     expect(mockStatus.open.value).toBe(true)
     expect(mockStatus.show.value).toBe(true)
-    
+
     await nextTick()
     expect(mockPosition.update).toHaveBeenCalled()
     expect(mockStatus.preparation.value).toBe(true)
@@ -124,7 +124,7 @@ describe('TooltipOpen', () => {
     const { tooltipOpen } = createTooltipOpen({ delayHide: 2000 }, mockStyle, mockStatus, mockPosition, mockEmits)
 
     await tooltipOpen.toggle(true)
-    
+
     // Open delay 64ms
     vi.advanceTimersByTime(64)
 

@@ -26,10 +26,10 @@ describe('SuffixInclude', () => {
     expect(nodes.length).toBe(1)
     expect(nodes[0].type).toBe('div')
     expect(nodes[0].props).toEqual({
-      id: 'suf-id',
-      class: 'my-class__suffix',
+      'id': 'suf-id',
+      'class': 'my-class__suffix',
       'data-event-type': 'suffix',
-      key: 'div.suffix.suf-id'
+      'key': 'div.suffix.suf-id'
     })
     expect(nodes[0].children).toContain('Suf')
   })

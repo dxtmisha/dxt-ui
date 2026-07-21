@@ -16,7 +16,7 @@ describe('PluginStyle', () => {
     pluginStyle.make()
 
     const result = pc.get()
-    expect(result).toContain("@use 'pkg-a/ui-properties' as ui;")
+    expect(result).toContain('@use \'pkg-a/ui-properties\' as ui;')
     expect(result).toContain('@include ui.backgroundColor(#{var(DesignA-sys-color-primary)});')
     expect(result).toContain('@include ui.color(#{var(DesignA-sys-color-secondary)});')
   })
@@ -28,6 +28,6 @@ describe('PluginStyle', () => {
     const pluginStyle = new PluginStyle(pc, pd, 'ui')
     pluginStyle.make()
 
-    expect(pc.get()).not.toContain("@use 'pkg-a/ui-properties'")
+    expect(pc.get()).not.toContain('@use \'pkg-a/ui-properties\'')
   })
 })

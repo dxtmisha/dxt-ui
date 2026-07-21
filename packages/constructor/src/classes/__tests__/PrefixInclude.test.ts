@@ -26,10 +26,10 @@ describe('PrefixInclude', () => {
     expect(nodes.length).toBe(1)
     expect(nodes[0].type).toBe('div')
     expect(nodes[0].props).toEqual({
-      id: 'pref-id',
-      class: 'my-class__prefix',
+      'id': 'pref-id',
+      'class': 'my-class__prefix',
       'data-event-type': 'prefix',
-      key: 'div.prefix.pref-id'
+      'key': 'div.prefix.pref-id'
     })
     expect(nodes[0].children).toContain('Pre')
   })

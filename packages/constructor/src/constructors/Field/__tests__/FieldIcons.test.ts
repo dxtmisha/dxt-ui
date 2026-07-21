@@ -16,11 +16,11 @@ describe('FieldIcons', () => {
     const fieldIcons = new FieldIcons(props, 'base-class', mockText)
 
     expect(fieldIcons.cancelBind).toEqual({
-      class: 'base-class__cancel',
-      icon: 'close-icon',
-      dynamic: true,
+      'class': 'base-class__cancel',
+      'icon': 'close-icon',
+      'dynamic': true,
       'data-event-type': 'cancel',
-      ariaLabel: 'Cancel Action'
+      'ariaLabel': 'Cancel Action'
     })
   })
 
