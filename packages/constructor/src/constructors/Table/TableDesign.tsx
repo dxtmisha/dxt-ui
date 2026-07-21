@@ -155,7 +155,10 @@ export class TableDesign<
   readonly renderTable = (): VNode => {
     return h(
       'table',
-      { class: this.classes?.value.table },
+      {
+        ref: this.element,
+        class: this.classes?.value.table
+      },
       [
         ...this.renderHeader(),
         ...this.renderItems()

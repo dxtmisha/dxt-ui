@@ -323,9 +323,17 @@
       "types": "./dist/constructors/Pagination/index.d.ts",
       "default": "./dist/pagination.js"
     },
+    "./Placeholder": {
+      "types": "./dist/constructors/Placeholder/index.d.ts",
+      "default": "./dist/placeholder.js"
+    },
     "./Progress": {
       "types": "./dist/constructors/Progress/index.d.ts",
       "default": "./dist/progress.js"
+    },
+    "./ProgressBar": {
+      "types": "./dist/constructors/ProgressBar/index.d.ts",
+      "default": "./dist/progressBar.js"
     },
     "./Radio": {
       "types": "./dist/constructors/Radio/index.d.ts",
@@ -334,6 +342,10 @@
     "./Ripple": {
       "types": "./dist/constructors/Ripple/index.d.ts",
       "default": "./dist/ripple.js"
+    },
+    "./ScrollSticky": {
+      "types": "./dist/constructors/ScrollSticky/index.d.ts",
+      "default": "./dist/scrollSticky.js"
     },
     "./Scrollbar": {
       "types": "./dist/constructors/Scrollbar/index.d.ts",
@@ -367,6 +379,10 @@
       "types": "./dist/constructors/Skeleton/index.d.ts",
       "default": "./dist/skeleton.js"
     },
+    "./SkeletonItem": {
+      "types": "./dist/constructors/SkeletonItem/index.d.ts",
+      "default": "./dist/skeletonItem.js"
+    },
     "./Snackbar": {
       "types": "./dist/constructors/Snackbar/index.d.ts",
       "default": "./dist/snackbar.js"
@@ -383,6 +399,10 @@
       "types": "./dist/constructors/TabItem/index.d.ts",
       "default": "./dist/tabItem.js"
     },
+    "./Table": {
+      "types": "./dist/constructors/Table/index.d.ts",
+      "default": "./dist/table.js"
+    },
     "./TableHeaderItem": {
       "types": "./dist/constructors/TableHeaderItem/index.d.ts",
       "default": "./dist/tableHeaderItem.js"
@@ -390,6 +410,10 @@
     "./TableItem": {
       "types": "./dist/constructors/TableItem/index.d.ts",
       "default": "./dist/tableItem.js"
+    },
+    "./TableRecord": {
+      "types": "./dist/constructors/TableRecord/index.d.ts",
+      "default": "./dist/tableRecord.js"
     },
     "./Tabs": {
       "types": "./dist/constructors/Tabs/index.d.ts",
@@ -427,31 +451,7 @@
       "types": "./dist/library/plugin.d.ts",
       "default": "./dist/plugin.js"
     },
-    "./style.scss": "./src/library/style.scss",
-    "./TableRecord": {
-      "types": "./dist/constructors/TableRecord/index.d.ts",
-      "default": "./dist/tableRecord.js"
-    },
-    "./Table": {
-      "types": "./dist/constructors/Table/index.d.ts",
-      "default": "./dist/table.js"
-    },
-    "./ScrollSticky": {
-      "types": "./dist/constructors/ScrollSticky/index.d.ts",
-      "default": "./dist/scrollSticky.js"
-    },
-    "./ProgressBar": {
-      "types": "./dist/constructors/ProgressBar/index.d.ts",
-      "default": "./dist/progressBar.js"
-    },
-    "./Placeholder": {
-      "types": "./dist/constructors/Placeholder/index.d.ts",
-      "default": "./dist/placeholder.js"
-    },
-    "./SkeletonItem": {
-      "types": "./dist/constructors/SkeletonItem/index.d.ts",
-      "default": "./dist/skeletonItem.js"
-    }
+    "./style.scss": "./src/library/style.scss"
   },
   "buildOptions": {
     "name": "@dxtmisha/constructor",

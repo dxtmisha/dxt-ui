@@ -21,11 +21,11 @@ import { type StickyPropsInclude } from '../types/stickyTypes'
  * Отслеживает действия прокрутки и изменения размера для вычисления и обновления визуального смещения.
  */
 export class StickyInclude {
-  /** Scroll container target / Целевой контейнер прокрутки */
-  protected scrollContainer?: HTMLElement | Window
+  /** Scroll container targets / Целевые контейнеры прокрутки */
+  protected scrollContainer: (HTMLElement | Window)[] = []
 
-  /** Event listener for scroll container / Слушатель событий для контейнера прокрутки */
-  protected eventScroll?: EventItem<HTMLElement | Window, Event>
+  /** Event listeners for scroll containers / Слушатели событий для контейнеров прокрутки */
+  protected eventScroll: EventItem<HTMLElement | Window, Event>[] = []
 
   /** Event listener for parent resizing / Слушатель событий для изменения размера родителя */
   protected eventResizeParent?: EventItem<HTMLElement, Event>
@@ -91,7 +91,27 @@ export class StickyInclude {
    * @returns custom CSS property name / имя пользовательского CSS-свойства
    */
   protected getCustomProperty(): string {
-    return `--${this.className}-sys-sticky-top`
+    return `--${this.className}-sys-sticky-fix`
+  }
+
+  /**
+   * Returns the name of the custom CSS property for the sticky height.
+   *
+   * Возвращает имя пользовательского CSS-свойства для высоты липкого элемента.
+   * @returns custom CSS property name / имя пользовательского CSS-свойства
+   */
+  protected getCustomPropertyHeight(): string {
+    return `--${this.className}-sys-sticky-height`
+  }
+
+  /**
+   * Returns the dataset property name for the sticky state.
+   *
+   * Возвращает имя свойства dataset для состояния липкости.
+   * @returns dataset property name / имя свойства dataset
+   */
+  protected getDatasetProperty(): string {
+    return 'sticky'
   }
 
   /**
@@ -100,7 +120,8 @@ export class StickyInclude {
    * Находит ближайшего прокручиваемого предка элемента или window, если таковой не найден.
    * @returns scrollable ancestor or window / прокручиваемый предок или window
    */
-  protected getScrollContainer(): HTMLElement | Window {
+  protected getScrollContainer(): (HTMLElement | Window)[] {
+    const containers: (HTMLElement | Window)[] = []
     let parentElement = this.parent.value?.parentElement
 
     while (parentElement) {
@@ -112,13 +133,15 @@ export class StickyInclude {
         || style.overflow === 'auto'
         || style.overflow === 'scroll'
       ) {
-        return parentElement
+        containers.push(parentElement)
       }
 
       parentElement = parentElement.parentElement
     }
 
-    return window
+    containers.push(window)
+
+    return containers
   }
 
   /**
@@ -153,10 +176,8 @@ export class StickyInclude {
    * Останавливает отслеживание положения и удаляет все слушатели событий.
    */
   protected stop(): void {
-    if (this.eventScroll) {
-      this.eventScroll.stop()
-      this.eventScroll = undefined
-    }
+    this.eventScroll.forEach(event => event.stop())
+    this.eventScroll = []
 
     if (this.eventResizeParent) {
       this.eventResizeParent.stop()
@@ -168,7 +189,13 @@ export class StickyInclude {
       this.eventResizeElement = undefined
     }
 
-    this.element.value?.style.removeProperty(this.getCustomProperty())
+    const element = this.element.value
+
+    if (element) {
+      element.style.removeProperty(this.getCustomProperty())
+      element.style.removeProperty(this.getCustomPropertyHeight())
+      delete element.dataset[this.getDatasetProperty()]
+    }
   }
 
   /**
@@ -187,8 +214,13 @@ export class StickyInclude {
    * Инициализирует контейнер прокрутки.
    */
   protected initScrollContainer(): this {
-    this.scrollContainer = getElementOrWindow(this.getProps().stickyScrollContainer)
-      ?? this.getScrollContainer()
+    const customContainer = getElementOrWindow(this.getProps().stickyScrollContainer)
+
+    if (customContainer) {
+      this.scrollContainer = [customContainer]
+    } else {
+      this.scrollContainer = this.getScrollContainer()
+    }
 
     return this
   }
@@ -199,14 +231,16 @@ export class StickyInclude {
    * Инициализирует и запускает слушатель событий прокрутки.
    */
   protected initEventScroll(): this {
-    if (this.scrollContainer) {
-      this.eventScroll = new EventItem(
-        this.scrollContainer,
-        'scroll-sync',
+    this.scrollContainer.forEach((container) => {
+      const event = new EventItem(
+        container,
+        'scroll',
         this.updatePosition
       )
-        .start()
-    }
+
+      event.start()
+      this.eventScroll.push(event)
+    })
 
     return this
   }
@@ -252,11 +286,12 @@ export class StickyInclude {
   }
 
   /**
-   * Computes position and updates element style positioning.
+   * Calculates the top position offset bounded by parent dimensions.
    *
-   * Вычисляет положение и обновляет стили позиционирования элемента.
+   * Вычисляет верхнее смещение положения, ограниченное размерами родителя.
+   * @returns calculated top offset in pixels or undefined / вычисленный верхний отступ в пикселях или undefined
    */
-  readonly updatePosition = (): void => {
+  protected getClampedTop(): number | undefined {
     const element = this.element.value
     const parent = this.parent.value
 
@@ -264,7 +299,7 @@ export class StickyInclude {
       !element
       || !parent
     ) {
-      return
+      return undefined
     }
 
     const parentRect = parent.getBoundingClientRect()
@@ -272,18 +307,43 @@ export class StickyInclude {
     const topOffset = getRef(this.getProps().stickyTop) ?? 0
     let boundaryTop = 0
 
+    const firstContainer = this.scrollContainer[0]
+
     if (
-      this.scrollContainer
-      && this.scrollContainer !== window
+      firstContainer
+      && firstContainer !== window
     ) {
-      const containerRect = (this.scrollContainer as HTMLElement).getBoundingClientRect()
+      const containerRect = (firstContainer as HTMLElement).getBoundingClientRect()
       boundaryTop = containerRect.top
     }
 
     const calculatedTop = (boundaryTop + topOffset) - parentRect.top
     const maximumTop = parentRect.height - elementHeight
-    const clampedTop = Math.max(0, Math.min(calculatedTop, maximumTop))
 
-    element.style.setProperty(this.getCustomProperty(), `${clampedTop}px`)
+    return Math.max(0, Math.min(calculatedTop, maximumTop))
+  }
+
+  /**
+   * Computes position and updates element style positioning.
+   *
+   * Вычисляет положение и обновляет стили позиционирования элемента.
+   */
+  readonly updatePosition = (): void => {
+    const element = this.element.value
+    const clampedTop = this.getClampedTop()
+
+    if (
+      element
+      && clampedTop !== undefined
+    ) {
+      element.style.setProperty(this.getCustomProperty(), `${clampedTop}px`)
+      element.style.setProperty(this.getCustomPropertyHeight(), `${element.offsetHeight}px`)
+
+      if (clampedTop > 0) {
+        element.dataset[this.getDatasetProperty()] = 'active'
+      } else {
+        delete element.dataset[this.getDatasetProperty()]
+      }
+    }
   }
 }

@@ -53,7 +53,11 @@ describe('StickyInclude', () => {
     // Top is at 100px relative to viewport, boundaryTop + topOffset = 0.
     // calculatedTop = 0 - 100 = -100, clamped to [0, 450] -> 0
     expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-top')).toBe('0px')
-    ;(sticky as unknown as { reset(): void }).reset()
+    expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-height')).toBe('50px')
+    expect(stickyElement.dataset.sticky).toBeUndefined()
+    ;(sticky as unknown as { stop(): void }).stop()
+    expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-height')).toBe('')
+    expect(stickyElement.dataset.sticky).toBeUndefined()
   })
 
   it('should adjust position when scrolled past the viewport top', () => {
@@ -79,6 +83,7 @@ describe('StickyInclude', () => {
 
     // calculatedTop = 0 - (-100) = 100px, clamped to [0, 450] -> 100px
     expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-top')).toBe('100px')
+    expect(stickyElement.dataset.sticky).toBe('active')
     ;(sticky as unknown as { reset(): void }).reset()
   })
 
@@ -215,5 +220,39 @@ describe('StickyInclude', () => {
     // calculatedTop = (0 + 10) - (-100) = 110px
     expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-top')).toBe('110px')
     ;(sticky as unknown as { reset(): void }).reset()
+  })
+
+  it('should find all scrollable ancestors and window, and listen to scroll events on all of them', () => {
+    const outerScrollableElement = document.createElement('div')
+    outerScrollableElement.style.overflowY = 'scroll'
+    document.body.appendChild(outerScrollableElement)
+
+    const innerScrollableElement = document.createElement('div')
+    innerScrollableElement.style.overflowY = 'auto'
+    outerScrollableElement.appendChild(innerScrollableElement)
+
+    const testParent = document.createElement('div')
+    innerScrollableElement.appendChild(testParent)
+
+    const testSticky = document.createElement('div')
+    testParent.appendChild(testSticky)
+
+    const parentReference = ref(testParent)
+    const elementReference = ref(testSticky)
+
+    const sticky = new StickyInclude(reactive({ stickyEnable: true }), 'dxt-sticky', elementReference, parentReference)
+
+    // Access protected fields for verification
+    const scrollContainers = (sticky as unknown as { scrollContainer: (HTMLElement | Window)[] }).scrollContainer
+    const eventScrolls = (sticky as unknown as { eventScroll: unknown[] }).eventScroll
+
+    expect(scrollContainers).toContain(innerScrollableElement)
+    expect(scrollContainers).toContain(outerScrollableElement)
+    expect(scrollContainers).toContain(window)
+    expect(scrollContainers.length).toBe(3)
+    expect(eventScrolls.length).toBe(3)
+
+    ;(sticky as unknown as { reset(): void }).reset()
+    document.body.removeChild(outerScrollableElement)
   })
 })

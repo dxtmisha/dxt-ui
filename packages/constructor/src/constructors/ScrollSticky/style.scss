@@ -4,8 +4,8 @@
   position: relative;
 
   &__context {
-    overflow-y: hidden;
     overflow-x: auto;
+    overflow-y: clip;
 
     width: 100%;
 

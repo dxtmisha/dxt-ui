@@ -9,8 +9,6 @@ export type ScrollStickyBind = {
   ref: Ref<HTMLElement | undefined>
   /** Class name / Название класса */
   class: string | undefined
-  /** Scroll event listener / Слушатель события прокрутки */
-  onScroll?: (event: Event) => void
 }
 
 /**

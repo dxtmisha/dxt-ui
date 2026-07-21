@@ -201,8 +201,7 @@ export class ScrollStickyDesign<
   protected getContextBinds(): ScrollStickyBind {
     return {
       ref: this.element,
-      class: this.classes?.value.context,
-      onScroll: this.item.onMain
+      class: this.classes?.value.context
     }
   }
 
@@ -231,8 +230,7 @@ export class ScrollStickyDesign<
   protected getScrollBinds(): ScrollStickyBind {
     return {
       ref: this.item.scrollElement,
-      class: this.classes?.value.scroll,
-      onScroll: this.item.onScroll
+      class: this.classes?.value.scroll
     }
   }
 }

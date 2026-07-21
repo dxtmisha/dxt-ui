@@ -218,6 +218,7 @@ export class ScrollSticky {
    * Синхронизирует горизонтальное положение полосы прокрутки с положением прокрутки основного элемента.
    */
   readonly onMain = () => {
+    this.onResize()
     this.checkScroll((element, scrollElement) => {
       scrollElement.scrollLeft = element.scrollLeft
     })

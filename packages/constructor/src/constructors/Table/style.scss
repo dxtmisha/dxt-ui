@@ -10,9 +10,16 @@
 
   &--headerTop {
     @include ui.subclass('header') {
-      position: sticky;
-      top: ui.v('??sys-sticky-top', ui.v('?sys.global.sticky.top', ui.v('?sys.sticky.top', 0)));
+      @include ui.initByCustom('_sys.sticky.top', #{ui.v('?sys.global.sticky.top', ui.v('?sys.sticky.top', 0px))});
+      // top: #{calc(ui.v('??sys-sticky-fix') + ui.v('??_sys.sticky.top'))};
       z-index: 12;
+
+      position: relative;
+      //transform: translateY(#{calc(ui.v('??sys-sticky-fix') + ui.v('??_sys.sticky.top'))});
+      will-change: transform;
+
+      // transform: translateY(ui.v('??sys-sticky-top'));
+      // will-change: transform;
     }
   }
 }
