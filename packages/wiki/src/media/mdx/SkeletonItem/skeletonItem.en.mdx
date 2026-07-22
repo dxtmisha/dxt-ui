@@ -1,0 +1,33 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+Individual skeleton item element used to create custom loading placeholders, text lines, containers, or borders within a Skeleton component.
+
+**Key Features:**
+
+- Customizable placeholder styles (text, textVariant, background, backgroundVariant, border, borderVariant)
+- Random text generator with configurable length or length range `[min, max]`
+- Static label support or default slot override
+- Flexible HTML tag configuration (`tag` prop)
+
+<Source
+    code={`
+<script setup>
+</script>
+
+<template>
+  <Skeleton :active="isLoading">
+    <!-- Single text line skeleton -->
+    <SkeletonItem text />
+
+    <!-- Text line with random length range between 4 and 10 words -->
+    <SkeletonItem text :length="[4, 10]" />
+
+    <!-- Container skeleton with background token -->
+    <SkeletonItem background style="width: 100px; height: 100px;" />
+  </Skeleton>
+</template>
+  `}
+    language="html"
+/>
+
+> SkeletonItem provides building blocks for creating custom loading placeholders when composite components cannot cover unique card or widget layouts.

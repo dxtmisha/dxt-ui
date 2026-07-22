@@ -89,7 +89,7 @@ export class SkeletonItemDesign<
    */
   protected initClasses(): Partial<CLASSES> {
     return {
-      main: this.item.classes.value,
+      main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
         // :classes [!] System label / Системная метка
@@ -116,26 +116,27 @@ export class SkeletonItemDesign<
   protected initRender(): VNode {
     const children: any[] = []
 
-    const isObject = typeof this.props.tag === 'object'
-    const tag: any = this.props.tag ?? 'div'
     const props = {
       ...this.getAttrs(),
-      ...this.props.props,
-      ref: this.element,
+      ...this.item.binds,
       class: this.classes?.value.main
     }
 
     this.initSlot('default', children)
 
     if (
-      isObject
+      this.item.isObject()
       || this.slots?.default
     ) {
-      return h(tag, props, isObject ? () => children : children)
+      return h(
+        this.item.tag,
+        props,
+        this.item.isObject() ? () => children : children
+      )
     } else {
-      return h(tag, {
+      return h(this.item.tag, {
         ...props,
-        innerHTML: this.item.label.value
+        innerHTML: this.item.label
       })
     }
   }

@@ -6,6 +6,7 @@
 type SkeletonItemPropsToken = {
   // :type [!] System label / Системная метка
   text?: boolean
+  textVariant?: boolean
   background?: boolean
   backgroundVariant?: boolean
   border?: boolean

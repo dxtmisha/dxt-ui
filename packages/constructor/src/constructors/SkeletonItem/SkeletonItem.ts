@@ -1,4 +1,4 @@
-import { computed, type Ref, type ToRefs } from 'vue'
+import { type Ref, type ToRefs } from 'vue'
 import {
   type ConstrClass,
   type ConstrEmit,
@@ -48,26 +48,61 @@ export class SkeletonItem {
   }
 
   /**
+   * Returns the tag name or component.
+   *
+   * Возвращает название тега или компонент.
+   */
+  get tag(): any {
+    return this.props.tag ?? 'div'
+  }
+
+  /**
    * Returns the text.
    *
    * Возвращает текст.
    */
-  readonly label = computed<string | number>(() => this.props.label || this.initLabel())
+  get label(): string | number {
+    return this.props.label || this.initLabel()
+  }
 
   /**
    * Returns a list of active classes.
    *
    * Возвращает список активных классов.
    */
-  readonly classes = computed<ConstrClass>(() => {
+  get classes(): ConstrClass {
     return {
       [this.classesSkeleton.classText]: Boolean(this.props.text),
+      [this.classesSkeleton.classTextVariant]: Boolean(this.props.textVariant),
       [this.classesSkeleton.classBackground]: Boolean(this.props.background),
       [this.classesSkeleton.classBackgroundVariant]: Boolean(this.props.backgroundVariant),
       [this.classesSkeleton.classBorder]: Boolean(this.props.border),
       [this.classesSkeleton.classBorderVariant]: Boolean(this.props.borderVariant)
     }
-  })
+  }
+
+  /**
+   * Values for attributes.
+   *
+   * Возвращает значения для атрибутов.
+   * @returns attributes object / объект атрибутов
+   */
+  get binds(): Record<string, any> {
+    return {
+      ...this.props.props,
+      ref: this.element
+    }
+  }
+
+  /**
+   * Checks if the tag is an object.
+   *
+   * Проверяет, является ли тег объектом.
+   * @returns true if tag is an object / true, если тег является объектом
+   */
+  isObject(): boolean {
+    return typeof this.props.tag === 'object'
+  }
 
   /**
    * Generates text for output.
@@ -87,8 +122,8 @@ export class SkeletonItem {
 
     if (isNumber(length)) {
       return getRandomText(
-        toNumber(length as number),
-        toNumber(length as number)
+        toNumber(length),
+        toNumber(length)
       )
     }
 

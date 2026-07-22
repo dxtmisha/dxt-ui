@@ -6,7 +6,6 @@ import type { ConstrClass } from '@dxtmisha/functional'
  * Интерфейс для описания, какие компоненты надо подключить для работы.
  */
 export type SkeletonItemComponents = {
-  // componentName: object
 }
 
 /**
@@ -15,7 +14,6 @@ export type SkeletonItemComponents = {
  * Тип, описывающий доступные события.
  */
 export type SkeletonItemEmits = {
-  // load: [value: string]
 }
 
 /**
@@ -32,7 +30,7 @@ export interface SkeletonItemExpose {
  * Тип, описывающий доступные слоты.
  */
 export interface SkeletonItemSlots {
-  default? (props: any): any
+  default?(props: any): any
 }
 
 /**

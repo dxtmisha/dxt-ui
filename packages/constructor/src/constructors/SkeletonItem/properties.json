@@ -2,6 +2,9 @@
   "text": {
     "_type": "state"
   },
+  "textVariant": {
+    "_type": "state"
+  },
   "background": {
     "_type": "state"
   },

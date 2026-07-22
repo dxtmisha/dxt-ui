@@ -1,0 +1,33 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+Отдельный элемент скелетона, используемый для создания пользовательских заглушек загрузки, текстовых строк, контейнеров или рамок внутри компонента Skeleton.
+
+**Основные возможности:**
+
+- Настраиваемые стили заглушек (text, textVariant, background, backgroundVariant, border, borderVariant)
+- Генератор случайного текста с настраиваемой длиной или диапазоном длин `[min, max]`
+- Поддержка статического текста через `label` или переопределение через слот по умолчанию
+- Гибкая настройка HTML-тега (`tag`)
+
+<Source
+    code={`
+<script setup>
+</script>
+
+<template>
+  <Skeleton :active="isLoading">
+    <!-- Текстовая строка скелетона -->
+    <SkeletonItem text />
+
+    <!-- Текстовая строка со случайной длиной от 4 до 10 слов -->
+    <SkeletonItem text :length="[4, 10]" />
+
+    <!-- Контейнер скелетона с фоновым токеном -->
+    <SkeletonItem background style="width: 100px; height: 100px;" />
+  </Skeleton>
+</template>
+  `}
+    language="html"
+/>
+
+> SkeletonItem предоставляет базовые строительные блоки для создания уникальных заглушек загрузки во время ожидания данных.
