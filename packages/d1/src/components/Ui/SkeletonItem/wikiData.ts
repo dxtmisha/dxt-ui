@@ -13,7 +13,8 @@ const propsNames: StorybookProps = [
   { name: 'length', type: 'string | number | [number, number]' },
   { name: 'props', type: 'Record<string, any>' },
   { name: 'tag', type: 'string | any' },
-  { name: 'text', type: 'boolean' }
+  { name: 'text', type: 'boolean' },
+  { name: 'textVariant', type: 'boolean' }
   // :propsList [!] System label / Системная метка
 ]
 

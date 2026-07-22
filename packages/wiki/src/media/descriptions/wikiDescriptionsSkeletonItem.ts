@@ -25,16 +25,34 @@ export const wikiDescriptionsSkeletonItem: StorybookComponentsDescriptionItem = 
       'гибкое свойство tag для структурного рендеринга'
     ]
   },
-  import: [],
   render: `
-    <div class="wiki-storybook-group">
-      <DesignComponent v-bind="args" text style="width: 200px;"/>
-    </div>
+    <DesignSkeleton :active="true">
+      <div class="wiki-storybook-group">
+        <DesignComponent v-bind="args" text style="width: 200px;"/>
+      </div>
+    </DesignSkeleton>
   `,
-  stories: [],
+  stories: [
+    {
+      id: 'SkeletonItemSkeleton',
+      name: {
+        en: 'Skeleton',
+        ru: 'Скелетон'
+      },
+      components: ['Skeleton'],
+      template: `
+        <DesignSkeleton :active="true">
+          <div class="wiki-storybook-group">
+            <DesignComponent text style="width: 200px;"/>
+          </div>
+        </DesignSkeleton>
+      `
+    }
+  ],
   documentation: {
     body: `
 <StorybookDescriptions componentName={'SkeletonItem'} type={'skeletonItem'}/>
+<Canvas of={Component.SkeletonItemSkeleton}/>
     `,
     slots: `
 <StorybookDescriptions componentName={'Slot'} type={'default'}/>
@@ -42,8 +60,10 @@ export const wikiDescriptionsSkeletonItem: StorybookComponentsDescriptionItem = 
   },
   ai: {
     render: `
-<div :class="classDemo.item" style="min-height: 48px;">
-  <SkeletonItem v-bind="args" text style="width: 200px;" />
+<div :class="classDemo.item">
+  <Skeleton :active="true">
+    <SkeletonItem v-bind="args" text/>
+  </Skeleton>
 </div>
     `,
     description: `
