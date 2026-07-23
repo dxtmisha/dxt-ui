@@ -32,7 +32,6 @@ export const Table: Story = {
   },
 
   // :story-main [!] System label / Системная метка
-  // :story-main [!] System label / Системная метка
   render: (args: any) => ({
     components: { D1Table },
     setup: () => ({ args }),
@@ -42,6 +41,7 @@ export const Table: Story = {
     </div>
     `
   })
+  // :story-main [!] System label / Системная метка
 }
 
 // :story-items [!] System label / Системная метка

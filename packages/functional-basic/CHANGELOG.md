@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.8.0] - 2026-07-23
+
+### Added
+- **getRandomItem**: Introduced a new `getRandomItem` utility function to safely retrieve a random element from arrays, objects, or primitive values, returning `undefined` when empty or missing, with full bilingual JSDocs.
+- **Tests**: Created a comprehensive unit test suite (`getRandomItem.test.ts`) to validate random item retrieval across multiple data types.
+
 ## [1.7.1] - 2026-07-14
 
 ### Changed

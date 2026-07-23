@@ -55,6 +55,7 @@ import DemoSelectPage from './pages/components/DemoSelectPage.vue'
 import DemoSnackbarPage from './pages/components/DemoSnackbarPage.vue'
 import DemoSwitchPage from './pages/components/DemoSwitchPage.vue'
 import DemoTextareaPage from './pages/components/DemoTextareaPage.vue'
+import DemoTablePage from './pages/components/DemoTablePage.vue'
 import DemoTabsPage from './pages/components/DemoTabsPage.vue'
 import DemoTooltipPage from './pages/components/DemoTooltipPage.vue'
 import DemoWindowPage from './pages/components/DemoWindowPage.vue'
@@ -339,5 +340,10 @@ export const routes: RouteRecordRaw[] = [
     path: '/component-window',
     name: 'component-window',
     component: DemoWindowPage
+  },
+  {
+    path: '/component-table',
+    name: 'component-table',
+    component: DemoTablePage
   }
 ]

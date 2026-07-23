@@ -1,4 +1,4 @@
-import { uiCreateApp } from '@dxtmisha/nitro-basic'
+import { uiCreateApp } from '@dxtmisha/nitro-basic/client'
 
 import App from './App.vue'
 import { routes } from './router'

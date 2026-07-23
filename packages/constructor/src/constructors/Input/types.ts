@@ -1,4 +1,4 @@
-import type { ConstrClass } from '@dxtmisha/functional'
+import type { ConstrClass, NumberOrString } from '@dxtmisha/functional'
 import type { MaskComponentInclude } from '../Mask'
 import type { FieldComponentInclude, FieldSlotsInclude } from '../Field'
 
@@ -18,7 +18,7 @@ export type InputComponents
  *
  * Тип, описывающий доступные события.
  */
-export type InputEmits = FieldBasicEmits
+export type InputEmits = FieldBasicEmits<NumberOrString>
 
 /**
  * Type describing available properties.

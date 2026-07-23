@@ -1,0 +1,23 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/getRandomItem - Lấy một phần tử ngẫu nhiên'/>
+
+# `getRandomItem`
+
+Trả về một phần tử ngẫu nhiên từ một mảng hoặc một đối tượng. Nếu mảng hoặc đối tượng rỗng hoặc không có giá trị, trả về `undefined`. Đối với các giá trị nguyên thủy, trả về chính giá trị đó.
+
+**Tham số:**
+- `value?: T | T[] | Record<string, T>` — (Tùy chọn) mảng, đối tượng hoặc giá trị đầu vào.
+
+**Trả về:**
+`T | undefined` — phần tử ngẫu nhiên từ mảng hoặc đối tượng, hoặc `undefined` nếu rỗng.
+
+```typescript
+import { getRandomItem } from '@dxtmisha/functional-basic'
+
+console.log(getRandomItem([1, 2, 3, 4, 5])) // Ví dụ: 3
+console.log(getRandomItem({ a: 10, b: 20 })) // Ví dụ: 20
+console.log(getRandomItem([])) // undefined
+console.log(getRandomItem({})) // undefined
+console.log(getRandomItem('text')) // 'text'
+```

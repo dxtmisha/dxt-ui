@@ -1,0 +1,23 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/getRandomItem - Получение случайного элемента'/>
+
+# `getRandomItem`
+
+Возвращает случайный элемент из массива или объекта. Если массив или объект пуст или значение отсутствует, возвращает `undefined`. Для примитивных значений возвращает само значение.
+
+**Параметры:**
+- `value?: T | T[] | Record<string, T>` — (Необязательно) входной массив, объект или значение.
+
+**Возвращает:**
+`T | undefined` — случайный элемент из массива или объекта, или `undefined`, если данных нет.
+
+```typescript
+import { getRandomItem } from '@dxtmisha/functional-basic'
+
+console.log(getRandomItem([1, 2, 3, 4, 5])) // Например: 3
+console.log(getRandomItem({ a: 10, b: 20 })) // Например: 20
+console.log(getRandomItem([])) // undefined
+console.log(getRandomItem({})) // undefined
+console.log(getRandomItem('text')) // 'text'
+```

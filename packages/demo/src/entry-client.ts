@@ -1,4 +1,4 @@
-import { uiBootstrapClient, uiCreateClientApp } from '@dxtmisha/nitro-basic'
+import { uiBootstrapClient, uiCreateClientApp } from '@dxtmisha/nitro-basic/client'
 import { createApp } from './main'
 
 const { app, router, options } = createApp()
@@ -10,3 +10,4 @@ uiCreateClientApp(
   router,
   options
 )
+  .then()

@@ -1,0 +1,23 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/getRandomItem - Get a random element'/>
+
+# `getRandomItem`
+
+Returns a random element from an array or object. If the array or object is empty or missing, returns `undefined`. For primitive values, returns the value itself.
+
+**Parameters:**
+- `value?: T | T[] | Record<string, T>` — (Optional) input array, object, or value.
+
+**Returns:**
+`T | undefined` — a random element from the array or object, or `undefined` if empty.
+
+```typescript
+import { getRandomItem } from '@dxtmisha/functional-basic'
+
+console.log(getRandomItem([1, 2, 3, 4, 5])) // E.g., 3
+console.log(getRandomItem({ a: 10, b: 20 })) // E.g., 20
+console.log(getRandomItem([])) // undefined
+console.log(getRandomItem({})) // undefined
+console.log(getRandomItem('text')) // 'text'
+```

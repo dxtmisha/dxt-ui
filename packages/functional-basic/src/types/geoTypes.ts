@@ -4,18 +4,18 @@
  */
 export type GeoDate
   = 'full'
-  | 'datetime'
-  | 'date'
-  | 'year-month'
-  | 'year'
-  | 'month'
-  | 'day'
-  | 'day-month'
-  | 'time'
-  | 'hour-minute'
-  | 'hour'
-  | 'minute'
-  | 'second'
+    | 'datetime'
+    | 'date'
+    | 'year-month'
+    | 'year'
+    | 'month'
+    | 'day'
+    | 'day-month'
+    | 'time'
+    | 'hour-minute'
+    | 'hour'
+    | 'minute'
+    | 'second'
 
 /** First day of week code (0 = Sunday, 1 = Monday, 6 = Saturday) / Код первого дня недели (0 = воскресенье, 1 = понедельник, 6 = суббота) */
 export type GeoFirstDay = 1 | 6 | 0
