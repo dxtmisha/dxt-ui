@@ -23,6 +23,9 @@ export type TablePropsBasic<
 
     /** List of row records / Список записей строк */
     list?: TableList<TableItem>
+
+    /** Enable bottom sticky scrollbar / Включить прилипающий нижний скроллбар */
+    scrollBottomSticky?: boolean
   }
 
 /**
@@ -36,6 +39,7 @@ export type TableProps = TablePropsBasic & TablePropsToken
  * Значение по умолчанию для свойства.
  */
 export const defaultsTable = {
+  scrollBottomSticky: true,
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

@@ -41,6 +41,13 @@
         @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-disabled)}); @include ui.color('init');
       }
     }
+    
+    &--stickyLeft {
+      @include ui.backgroundColor(#{var(--d1-sys-palette-surface)});
+      @include ui.backgroundOpacity(#{var(--d1-sys-opacity-primary-high)});
+      
+      backdrop-filter: var(--d1-sys-blur-md);
+    }
   }
   // :style [!] System label / Системная метка
 

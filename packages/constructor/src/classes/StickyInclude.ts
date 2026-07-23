@@ -33,6 +33,9 @@ export class StickyInclude {
   /** Event listener for element resizing / Слушатель событий для изменения размера элемента */
   protected eventResizeElement?: EventItem<HTMLElement, Event>
 
+  /** Timeout for scroll end detection / Таймаут для обнаружения окончания прокрутки */
+  protected scrollTimeout?: any
+
   /**
    * Constructor
    *
@@ -65,16 +68,6 @@ export class StickyInclude {
   }
 
   /**
-   * Returns the configuration properties.
-   *
-   * Возвращает свойства конфигурации.
-   * @returns properties / свойства
-   */
-  protected getProps(): StickyPropsInclude {
-    return executeFunction(this.props)
-  }
-
-  /**
    * Checks if sticky positioning is enabled.
    *
    * Проверяет, включено ли липкое позиционирование.
@@ -82,6 +75,16 @@ export class StickyInclude {
    */
   protected isEnabled(): boolean {
     return getRef(this.getProps().stickyEnable) ?? true
+  }
+
+  /**
+   * Returns the configuration properties.
+   *
+   * Возвращает свойства конфигурации.
+   * @returns properties / свойства
+   */
+  protected getProps(): StickyPropsInclude {
+    return executeFunction(this.props)
   }
 
   /**
@@ -115,6 +118,35 @@ export class StickyInclude {
   }
 
   /**
+   * Returns the dataset property name for the active scroll state.
+   *
+   * Возвращает имя свойства dataset для активного состояния прокрутки.
+   * @returns dataset property name / имя свойства dataset
+   */
+  protected getDatasetScrollProperty(): string {
+    return 'stickyScroll'
+  }
+
+  /**
+   * Returns the current scroll top position of the primary scroll container.
+   *
+   * Возвращает текущее положение прокрутки сверху основного контейнера прокрутки.
+   * @returns scroll top position / положение прокрутки сверху
+   */
+  protected getScrollTop(): number {
+    const container = this.scrollContainer[0]
+    if (!container) {
+      return 0
+    }
+
+    if (container === window) {
+      return window.scrollY || document.documentElement.scrollTop
+    }
+
+    return (container as HTMLElement).scrollTop
+  }
+
+  /**
    * Finds the closest scrollable ancestor of the element, or window if none found.
    *
    * Находит ближайшего прокручиваемого предка элемента или window, если таковой не найден.
@@ -142,6 +174,44 @@ export class StickyInclude {
     containers.push(window)
 
     return containers
+  }
+
+  /**
+   * Calculates the top position offset bounded by parent dimensions.
+   *
+   * Вычисляет верхнее смещение положения, ограниченное размерами родителя.
+   * @returns calculated top offset in pixels or undefined / вычисленный верхний отступ в пикселях или undefined
+   */
+  protected getClampedTop(): number | undefined {
+    const element = this.element.value
+    const parent = this.parent.value
+
+    if (
+      !element
+      || !parent
+    ) {
+      return undefined
+    }
+
+    const parentRect = parent.getBoundingClientRect()
+    const elementHeight = element.offsetHeight
+    const topOffset = getRef(this.getProps().stickyTop) ?? 0
+    let boundaryTop = 0
+
+    const firstContainer = this.scrollContainer[0]
+
+    if (
+      firstContainer
+      && firstContainer !== window
+    ) {
+      const containerRect = (firstContainer as HTMLElement).getBoundingClientRect()
+      boundaryTop = containerRect.top
+    }
+
+    const calculatedTop = (boundaryTop + topOffset) - parentRect.top
+    const maximumTop = parentRect.height - elementHeight
+
+    return Math.max(0, Math.min(calculatedTop, maximumTop))
   }
 
   /**
@@ -189,12 +259,18 @@ export class StickyInclude {
       this.eventResizeElement = undefined
     }
 
+    if (this.scrollTimeout) {
+      clearTimeout(this.scrollTimeout)
+      this.scrollTimeout = undefined
+    }
+
     const element = this.element.value
 
     if (element) {
       element.style.removeProperty(this.getCustomProperty())
       element.style.removeProperty(this.getCustomPropertyHeight())
       delete element.dataset[this.getDatasetProperty()]
+      this.removeDatasetScroll()
     }
   }
 
@@ -235,7 +311,7 @@ export class StickyInclude {
       const event = new EventItem(
         container,
         'scroll',
-        this.updatePosition
+        this.onScroll
       )
 
       event.start()
@@ -286,41 +362,16 @@ export class StickyInclude {
   }
 
   /**
-   * Calculates the top position offset bounded by parent dimensions.
+   * Removes the active scroll dataset attribute from the element.
    *
-   * Вычисляет верхнее смещение положения, ограниченное размерами родителя.
-   * @returns calculated top offset in pixels or undefined / вычисленный верхний отступ в пикселях или undefined
+   * Удаляет активный атрибут dataset для прокрутки с элемента.
    */
-  protected getClampedTop(): number | undefined {
+  protected removeDatasetScroll(): void {
     const element = this.element.value
-    const parent = this.parent.value
 
-    if (
-      !element
-      || !parent
-    ) {
-      return undefined
+    if (element) {
+      delete element.dataset[this.getDatasetScrollProperty()]
     }
-
-    const parentRect = parent.getBoundingClientRect()
-    const elementHeight = element.offsetHeight
-    const topOffset = getRef(this.getProps().stickyTop) ?? 0
-    let boundaryTop = 0
-
-    const firstContainer = this.scrollContainer[0]
-
-    if (
-      firstContainer
-      && firstContainer !== window
-    ) {
-      const containerRect = (firstContainer as HTMLElement).getBoundingClientRect()
-      boundaryTop = containerRect.top
-    }
-
-    const calculatedTop = (boundaryTop + topOffset) - parentRect.top
-    const maximumTop = parentRect.height - elementHeight
-
-    return Math.max(0, Math.min(calculatedTop, maximumTop))
   }
 
   /**
@@ -344,6 +395,37 @@ export class StickyInclude {
       } else {
         delete element.dataset[this.getDatasetProperty()]
       }
+    }
+  }
+
+  /**
+   * Event handler for scrolling.
+   * Updates position and manages the active scroll dataset attribute.
+   *
+   * Обработчик события прокрутки.
+   * Обновляет положение и управляет активным атрибутом dataset для прокрутки.
+   */
+  readonly onScroll = (): void => {
+    this.updatePosition()
+
+    const element = this.element.value
+
+    if (element) {
+      const scrollTop = this.getScrollTop()
+
+      if (scrollTop > element.offsetHeight) {
+        element.dataset[this.getDatasetScrollProperty()] = 'active'
+      } else {
+        this.removeDatasetScroll()
+      }
+
+      if (this.scrollTimeout) {
+        clearTimeout(this.scrollTimeout)
+      }
+
+      this.scrollTimeout = setTimeout(() => {
+        this.removeDatasetScroll()
+      }, 256)
     }
   }
 }

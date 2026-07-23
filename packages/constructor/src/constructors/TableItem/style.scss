@@ -31,9 +31,9 @@
     }
   }
 
-  &--dividerX:not(:first-child) {
-    border-left-style: ui.v('??borderStyleX', solid);
-    border-left-width: ui.v('??borderWidth');
+  &--dividerX:not(:last-child) {
+    border-right-style: ui.v('??borderStyleX', solid);
+    border-right-width: ui.v('??borderWidth');
     @include ui.borderColor(ui.v('??borderColor'), ui.v('??borderOpacity'));
   }
 

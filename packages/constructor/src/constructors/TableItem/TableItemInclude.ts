@@ -238,7 +238,7 @@ export class TableItemInclude extends ComponentIncludeAbstract<
         keyItem: key,
         index,
         stickyTop: props.stickyTop,
-        stickyLeft: (props?.stickyLeft?.indexOf?.(index) ?? -1) === -1
+        stickyLeft: (props?.stickyLeft?.indexOf?.(index) ?? -1) !== -1
       }
     )
   }

@@ -137,6 +137,7 @@ export class TableDesign<
   readonly renderScrollSticky = (): VNode | undefined => {
     if (
       this.components
+      && this.props.scrollBottomSticky
     ) {
       return this.components.renderOne('scrollSticky', {
         ...this.getAttrs(),

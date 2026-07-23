@@ -1,3 +1,8 @@
 {
-  "main": "{d.table}"
+  "main": "{d.table}",
+  "#header": {
+    "background-color": "{sys.palette.surface}",
+    "background-opacity": "{sys.opacity.primary.high}",
+    "backdrop-filter": "{sys.blur.md}"
+  }
 }

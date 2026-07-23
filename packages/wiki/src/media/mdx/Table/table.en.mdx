@@ -1,0 +1,39 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+Table component orchestrating grid-like column indexes and list row records for tabular data visualization.
+
+The `Table` component handles rendering structured datasets. It integrates column configurations (`columns`), header setups (`header`), dataset rows (`list`), sticky header positioning (`headerTop`), sticky left columns (`stickyLeft`), and cell formatting to deliver high-performance interactive tables.
+
+**Key Features:**
+
+- Structured representation of datasets in tabular form
+- Column-based data extraction via the `columns` array
+- Multi-row hierarchical header support via the `header` prop
+- Sticky headers (`headerTop`) and sticky left columns (`stickyLeft`) for large datasets
+- Column-level cell alignment, row selection, and attribute binding (`tableItemColumnAttrs`)
+- Custom slot support per column index for custom cell rendering
+
+<Source
+    code={`
+<script setup>
+const columns = ['id', 'name', 'role', 'status']
+const header = { id: 'ID', name: 'Name', role: 'Role', status: 'Status' }
+const list = [
+  { id: '1', name: 'Alice', role: 'Developer', status: 'Active' },
+  { id: '2', name: 'Bob', role: 'Designer', status: 'Pending' }
+]
+</script>
+
+<template>
+  <Table
+    :columns="columns"
+    :header="header"
+    :list="list"
+    :headerTop="true"
+  />
+</template>
+  `}
+    language="html"
+/>
+
+> Table provides complete layout orchestration for tabular datasets with full keyboard, sticky positioning, and custom slot capabilities.

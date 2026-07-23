@@ -11,6 +11,12 @@
   // Стили из токенов
   // :style [!] System label / Системная метка
   & {
+    &__header {
+      @include ui.backgroundColor(#{var(--d1-sys-palette-surface)});
+      @include ui.backgroundOpacity(#{var(--d1-sys-opacity-primary-high)});
+      
+      backdrop-filter: var(--d1-sys-blur-md);
+    }
   }
   // :style [!] System label / Системная метка
 

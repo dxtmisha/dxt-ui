@@ -1,0 +1,39 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+### Слоты
+
+Компонент `Table` поддерживает динамические слоты для каждой колонки для кастомного рендеринга ячеек и слот `body` для полной переопределенности содержимого тела таблицы.
+
+#### Доступные слоты
+
+- `[columnKey]`: Динамический слот, имя которого соответствует ключу колонки из массива `columns`. Служит для кастомизации ячеек этой колонки. Передает пропсы слота: `{ item, value, index, classes }`.
+- `body`: Заменяет стандартный рендеринг списка строк на пользовательскую разметку тела таблицы. Передает пропсы слота: `{ columns }`.
+
+<Source
+    code={`
+<template>
+  <!-- Пример динамического слота колонки -->
+  <Table
+    :columns="['id', 'name', 'status']"
+    :header="{ id: 'ID', name: 'Имя', status: 'Статус' }"
+    :list="list"
+  >
+    <template #status="{ item, value }">
+      <Badge :palette="value === 'Active' ? 'success' : 'warning'">
+        {{ value }}
+      </Badge>
+    </template>
+  </Table>
+
+  <!-- Пример кастомного слота body -->
+  <Table :columns="['name', 'role']">
+    <template #body="{ columns }">
+      <tr>
+        <td colspan="2">Кастомный контент тела таблицы для {{ columns.length }} колонок</td>
+      </tr>
+    </template>
+  </Table>
+</template>
+  `}
+    language="html"
+/>

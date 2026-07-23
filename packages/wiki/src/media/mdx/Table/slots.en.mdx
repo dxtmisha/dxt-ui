@@ -1,0 +1,39 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+### Slots
+
+The `Table` component supports dynamic column slots for custom cell rendering and a `body` slot for custom table body layout.
+
+#### Available Slots
+
+- `[columnKey]`: Dynamic slot corresponding to a column index in the `columns` array. Customizes cell content for that column. Receives slot props: `{ item, value, index, classes }`.
+- `body`: Replaces default row list rendering with custom table body markup. Receives slot props: `{ columns }`.
+
+<Source
+    code={`
+<template>
+  <!-- Dynamic column slot example -->
+  <Table
+    :columns="['id', 'name', 'status']"
+    :header="{ id: 'ID', name: 'Name', status: 'Status' }"
+    :list="list"
+  >
+    <template #status="{ item, value }">
+      <Badge :palette="value === 'Active' ? 'success' : 'warning'">
+        {{ value }}
+      </Badge>
+    </template>
+  </Table>
+
+  <!-- Custom body slot example -->
+  <Table :columns="['name', 'role']">
+    <template #body="{ columns }">
+      <tr>
+        <td colspan="2">Custom body content across {{ columns.length }} columns</td>
+      </tr>
+    </template>
+  </Table>
+</template>
+  `}
+    language="html"
+/>

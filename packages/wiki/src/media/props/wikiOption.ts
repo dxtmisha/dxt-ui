@@ -416,6 +416,16 @@ export const wikiOption: StorybookArgsToList = {
       }
     }
   },
+  scrollBottomSticky: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.option,
+      description: {
+        en: 'Enables sticky positioning for the bottom scrollbar',
+        ru: 'Включает прилипающий нижний скроллбар'
+      }
+    }
+  },
   showLabel: {
     type: StorybookControl.boolean,
     options: {

@@ -70,7 +70,7 @@ export class Table {
     )
 
     new StickyIncludeConstructor(
-      () => ({ stickyEnable: this.props.headerTop }),
+      () => ({ stickyEnable: this.props.headerTop && this.props.scrollBottomSticky }),
       className,
       this.headerElement,
       element

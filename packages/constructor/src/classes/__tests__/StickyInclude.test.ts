@@ -52,7 +52,7 @@ describe('StickyInclude', () => {
 
     // Top is at 100px relative to viewport, boundaryTop + topOffset = 0.
     // calculatedTop = 0 - 100 = -100, clamped to [0, 450] -> 0
-    expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-top')).toBe('0px')
+    expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-fix')).toBe('0px')
     expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-height')).toBe('50px')
     expect(stickyElement.dataset.sticky).toBeUndefined()
     ;(sticky as unknown as { stop(): void }).stop()
@@ -82,7 +82,7 @@ describe('StickyInclude', () => {
     const sticky = new StickyInclude(reactive({ stickyEnable: undefined }), 'dxt-sticky', elementReference, parentReference)
 
     // calculatedTop = 0 - (-100) = 100px, clamped to [0, 450] -> 100px
-    expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-top')).toBe('100px')
+    expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-fix')).toBe('100px')
     expect(stickyElement.dataset.sticky).toBe('active')
     ;(sticky as unknown as { reset(): void }).reset()
   })
@@ -108,7 +108,7 @@ describe('StickyInclude', () => {
     const sticky = new StickyInclude(reactive({ stickyTop: 20, stickyEnable: undefined }), 'dxt-sticky', elementReference, parentReference)
 
     // calculatedTop = (0 + 20) - (-100) = 120px
-    expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-top')).toBe('120px')
+    expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-fix')).toBe('120px')
     ;(sticky as unknown as { reset(): void }).reset()
   })
 
@@ -134,7 +134,7 @@ describe('StickyInclude', () => {
     const sticky = new StickyInclude(reactive({ stickyEnable: undefined }), 'dxt-sticky', elementReference, parentReference)
 
     // calculatedTop = 0 - (-600) = 600px, clamped to parent height - element height (500 - 50 = 450px)
-    expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-top')).toBe('450px')
+    expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-fix')).toBe('450px')
     ;(sticky as unknown as { reset(): void }).reset()
   })
 
@@ -158,7 +158,7 @@ describe('StickyInclude', () => {
 
     const sticky = new StickyInclude(reactive({ stickyEnable: false }), 'dxt-sticky', elementReference, parentReference)
 
-    expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-top')).toBe('')
+    expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-fix')).toBe('')
     ;(sticky as unknown as { reset(): void }).reset()
   })
 
@@ -183,15 +183,15 @@ describe('StickyInclude', () => {
     const isEnabled = ref(false)
     const sticky = new StickyInclude(reactive({ stickyEnable: isEnabled }), 'dxt-sticky', elementReference, parentReference)
 
-    expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-top')).toBe('')
+    expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-fix')).toBe('')
 
     isEnabled.value = true
-    await new Promise((resolve) => setTimeout(resolve, 0)) // let watch trigger
-    expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-top')).toBe('100px')
+    await new Promise(resolve => setTimeout(resolve, 0)) // let watch trigger
+    expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-fix')).toBe('100px')
 
     isEnabled.value = false
-    await new Promise((resolve) => setTimeout(resolve, 0)) // let watch trigger
-    expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-top')).toBe('')
+    await new Promise(resolve => setTimeout(resolve, 0)) // let watch trigger
+    expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-fix')).toBe('')
 
     ;(sticky as unknown as { reset(): void }).reset()
   })
@@ -218,7 +218,7 @@ describe('StickyInclude', () => {
     const sticky = new StickyInclude(propsFunction, 'dxt-sticky', elementReference, parentReference)
 
     // calculatedTop = (0 + 10) - (-100) = 110px
-    expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-top')).toBe('110px')
+    expect(stickyElement.style.getPropertyValue('--dxt-sticky-sys-sticky-fix')).toBe('110px')
     ;(sticky as unknown as { reset(): void }).reset()
   })
 
@@ -254,5 +254,45 @@ describe('StickyInclude', () => {
 
     ;(sticky as unknown as { reset(): void }).reset()
     document.body.removeChild(outerScrollableElement)
+  })
+
+  it('should set stickyScroll dataset property to active during scroll only when scrollTop is greater than element height, and remove it after timeout', async () => {
+    const parentReference = ref(parentElement)
+    const elementReference = ref(stickyElement)
+
+    vi.spyOn(parentElement, 'getBoundingClientRect').mockReturnValue({
+      top: -100,
+      bottom: 400,
+      height: 500,
+      width: 100,
+      left: 0,
+      right: 100,
+      x: 0,
+      y: -100,
+      toJSON: () => {}
+    })
+
+    vi.spyOn(stickyElement, 'offsetHeight', 'get').mockReturnValue(50)
+
+    const sticky = new StickyInclude(reactive({ stickyEnable: true }), 'dxt-sticky', elementReference, parentReference)
+
+    const getScrollTopSpy = vi.spyOn(sticky as any, 'getScrollTop')
+
+    // Case 1: scrollTop <= element.offsetHeight
+    getScrollTopSpy.mockReturnValue(30)
+    sticky.onScroll()
+    expect(stickyElement.dataset.stickyScroll).toBeUndefined()
+
+    // Case 2: scrollTop > element.offsetHeight
+    getScrollTopSpy.mockReturnValue(100)
+    sticky.onScroll()
+    expect(stickyElement.dataset.stickyScroll).toBe('active')
+
+    // Wait for the timeout to clear the attribute
+    await new Promise(resolve => setTimeout(resolve, 200))
+
+    expect(stickyElement.dataset.stickyScroll).toBeUndefined()
+
+    ;(sticky as unknown as { stop(): void }).stop()
   })
 })
