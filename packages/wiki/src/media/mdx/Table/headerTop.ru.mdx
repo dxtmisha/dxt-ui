@@ -1,0 +1,34 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+## Зафиксированная шапка таблицы
+
+Свойство `headerTop` включает прилипающее позиционирование заголовка таблицы (`thead`) при вертикальной прокрутке.
+
+**Особенности работы:**
+
+- При `headerTop="true"` заголовок таблицы закрепляется сверху прокручиваемой области с помощью CSS-позиционирования `position: sticky`.
+- Совместно со свойством `scrollBottomSticky` (включенным по умолчанию) активируется внутренний контроллер `StickyInclude`, который автоматически рассчитывает верхний отступ (`--[className]-sys-sticky-fix`) и синхронизирует положение шапки при скроллинге.
+- Во время активной прокрутки элементы получают дата-атрибуты `data-sticky="active"` и `data-sticky-scroll="active"`, вызывая плавное скрытие (`opacity: 0`), чтобы исключить скачки и визуальные наложения при изменении высоты полосы прокрутки.
+
+<Source
+    code={`
+<script setup>
+const columns = ['id', 'name', 'role', 'status']
+const header = { id: 'ID', name: 'Имя', role: 'Должность', status: 'Статус' }
+const list = [
+  { id: '1', name: 'Алиса', role: 'Разработчик', status: 'Активен' },
+  { id: '2', name: 'Боб', role: 'Дизайнер', status: 'В ожидании' }
+]
+</script>
+
+<template>
+  <Table
+    :columns="columns"
+    :header="header"
+    :list="list"
+    :headerTop="true"
+  />
+</template>
+  `}
+    language="html"
+/>

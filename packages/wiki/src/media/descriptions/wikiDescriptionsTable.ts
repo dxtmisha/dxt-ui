@@ -17,6 +17,7 @@ export const wikiDescriptionsTable: StorybookComponentsDescriptionItem = {
       'supports headers rendering via header property',
       'row-level selections and key extraction configuration',
       'sticky headers configuration with headerTop flag',
+      'sticky bottom horizontal scrollbar via scrollBottomSticky',
       'custom slot support for advanced table body styling'
     ],
     ru: [
@@ -24,6 +25,7 @@ export const wikiDescriptionsTable: StorybookComponentsDescriptionItem = {
       'поддержка рендеринга шапки через свойство header',
       'выбор на уровне строк и настройка извлечения ключей',
       'настройка липкой шапки с помощью флага headerTop',
+      'прилипающий нижний горизонтальный скроллбар через scrollBottomSticky',
       'поддержка кастомных слотов для расширенного оформления тела таблицы'
     ]
   },
@@ -150,10 +152,12 @@ export const wikiDescriptionsTable: StorybookComponentsDescriptionItem = {
     body: `
 <StorybookDescriptions componentName={'Table'} type={'table'}/>
 <Canvas of={Component.TableBasic}/>
+<StorybookDescriptions componentName={'Table'} type={'headerTop'}/>
+<StorybookDescriptions componentName={'Table'} type={'scrollBottomSticky'}/>
     `,
     slots: `
-<StorybookDescriptions componentName={'Table'} type={'slots'}/>
 <Canvas of={Component.TableSlots}/>
+<StorybookDescriptions componentName={'Table'} type={'slots'}/>
     `
   },
   ai: {

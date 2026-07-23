@@ -1,0 +1,34 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+## Sticky Table Header
+
+The `headerTop` property enables sticky positioning of the table header (`thead`) during vertical scrolling.
+
+**Features & Behavior:**
+
+- When `headerTop="true"`, the table header is fixed at the top of the scrollable container using CSS `position: sticky`.
+- Together with the `scrollBottomSticky` property (enabled by default), the internal `StickyInclude` controller calculates top offset CSS variables (`--[className]-sys-sticky-fix`) to synchronize header positioning.
+- During active scrolling, dataset attributes `data-sticky="active"` and `data-sticky-scroll="active"` apply smooth opacity transitions (`opacity: 0`) to prevent visual glitches or overlapping.
+
+<Source
+    code={`
+<script setup>
+const columns = ['id', 'name', 'role', 'status']
+const header = { id: 'ID', name: 'Name', role: 'Role', status: 'Status' }
+const list = [
+  { id: '1', name: 'Alice', role: 'Developer', status: 'Active' },
+  { id: '2', name: 'Bob', role: 'Designer', status: 'Pending' }
+]
+</script>
+
+<template>
+  <Table
+    :columns="columns"
+    :header="header"
+    :list="list"
+    :headerTop="true"
+  />
+</template>
+  `}
+    language="html"
+/>

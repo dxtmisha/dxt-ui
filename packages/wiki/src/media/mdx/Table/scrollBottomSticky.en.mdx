@@ -1,0 +1,34 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+## Sticky Bottom Scrollbar
+
+The `scrollBottomSticky` property controls the bottom sticky horizontal scrollbar attached to the visible viewport.
+
+**Features & Behavior:**
+
+- Enabled by default (`scrollBottomSticky: true`).
+- Provides a sticky horizontal scrollbar at the bottom of the screen, allowing users to scroll wide tables horizontally without needing to scroll down to the table bottom.
+- When combined with `headerTop={true}`, it activates the `StickyInclude` JS controller (`stickyEnable: headerTop && scrollBottomSticky`) to calculate dynamic offsets during scroll events.
+- When disabled (`:scrollBottomSticky="false"`), `StickyInclude` is deactivated, and `headerTop` switches to native CSS sticky positioning (`position: sticky`) without JS offset calculations or fade-out opacity effects.
+
+<Source
+    code={`
+<script setup>
+const columns = ['id', 'name', 'role', 'email', 'phone', 'city', 'country']
+const header = { id: 'ID', name: 'Name', role: 'Role', email: 'Email', phone: 'Phone', city: 'City', country: 'Country' }
+const list = [
+  { id: '1', name: 'Alice', role: 'Developer', email: 'alice@example.com', phone: '+1 555-0101', city: 'New York', country: 'USA' }
+]
+</script>
+
+<template>
+  <Table
+    :columns="columns"
+    :header="header"
+    :list="list"
+    :scrollBottomSticky="true"
+  />
+</template>
+  `}
+    language="html"
+/>
