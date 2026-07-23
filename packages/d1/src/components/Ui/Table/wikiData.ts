@@ -12,7 +12,6 @@ const propsNames: StorybookProps = [
   { name: 'isSkeleton', type: 'boolean' },
   { name: 'keyValue', type: 'string' },
   { name: 'list', type: 'TableList<TableItemProps>' },
-  { name: 'scrollBottomSticky', type: 'boolean' },
   { name: 'selected', type: 'string | string[]' },
   { name: 'stickyLeft', type: 'string[]' },
   { name: 'stickyTop', type: 'string[]' },

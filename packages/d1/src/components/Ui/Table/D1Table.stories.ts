@@ -114,4 +114,39 @@ export const TableBasic: Story = {
     `
   })
 }
+export const TableSlots: Story = {
+  name: 'Использование слотов',
+  render: () => ({
+    components: { D1Table },
+    template: `
+        <D1Table
+          :columns="['id', 'name', 'status']"
+          :header="[
+            { id: 'ID', name: 'Name', status: 'Status' }
+          ]"
+          :list="[
+            { id: '1', name: 'Alice', status: 'Active' },
+            { id: '2', name: 'Bob', status: 'Pending' }
+          ]"
+        >
+          <template #header-name="{ value }">
+            Slot, header: {{ value }}
+          </template>
+          <template #name="{ value }">
+            Slot: {{ value }}
+          </template>
+          <template #status="{ value }">
+            Slot: {{ value }}
+          </template>
+          <template #body="{ columns }">
+            <tr>
+              <td :colspan="columns.length">
+                Slot body for {{ columns.length }} columns
+              </td>
+            </tr>
+          </template>
+        </D1Table>
+    `
+  })
+}
 // :story-items [!] System label / Системная метка

@@ -17,4 +17,15 @@ import { TableItemInclude } from '../TableItem'
 export class TableHeaderItemInclude extends TableItemInclude {
   /** Component sub-name / Дополнительное имя компонента */
   protected readonly name = 'tableHeaderItem'
+
+  /**
+   * Returns the slots name based on the column index for header items.
+   *
+   * Возвращает имя слота на основе индекса колонки для элементов шапки.
+   * @param index column index / индекс колонки
+   * @returns slots name / имя слота
+   */
+  protected override getSlotsName(index: string): string {
+    return `header-${super.getSlotsName(index)}`
+  }
 }

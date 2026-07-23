@@ -1,39 +1,10 @@
-import { Source } from '@storybook/addon-docs/blocks';
+- `[column: string](props: TableRecordItemSlotProps): any` — Динамический слот для кастомного рендеринга ячеек столбца с указанным именем (применяется как для ячеек данных, так и для ячеек заголовка шапки).
+- `body(props: { columns: string[] }): any` — Слот для пользовательского содержимого тела таблицы.
 
-### Слоты
-
-Компонент `Table` поддерживает динамические слоты для каждой колонки для кастомного рендеринга ячеек и слот `body` для полной переопределенности содержимого тела таблицы.
-
-#### Доступные слоты
-
-- `[columnKey]`: Динамический слот, имя которого соответствует ключу колонки из массива `columns`. Служит для кастомизации ячеек этой колонки. Передает пропсы слота: `{ item, value, index, classes }`.
-- `body`: Заменяет стандартный рендеринг списка строк на пользовательскую разметку тела таблицы. Передает пропсы слота: `{ columns }`.
-
-<Source
-    code={`
-<template>
-  <!-- Пример динамического слота колонки -->
-  <Table
-    :columns="['id', 'name', 'status']"
-    :header="{ id: 'ID', name: 'Имя', status: 'Статус' }"
-    :list="list"
-  >
-    <template #status="{ item, value }">
-      <Badge :palette="value === 'Active' ? 'success' : 'warning'">
-        {{ value }}
-      </Badge>
-    </template>
-  </Table>
-
-  <!-- Пример кастомного слота body -->
-  <Table :columns="['name', 'role']">
-    <template #body="{ columns }">
-      <tr>
-        <td colspan="2">Кастомный контент тела таблицы для {{ columns.length }} колонок</td>
-      </tr>
-    </template>
-  </Table>
-</template>
-  `}
-    language="html"
-/>
+> **TableRecordItemSlotProps:**
+> - `item: any` — Объект данных строки для обычных ячеек или объект конфигурации заголовка для ячеек шапки.
+> - `value: any` — Значение ячейки (или значение/объект заголовка).
+> - `classes: { label: string, description: string }` — Вспомогательные имена классов элементов ячейки.
+> - `key: string` — Уникальный ключ рендеринга.
+> - `index: string` — Индекс колонки.
+> - `slotsName: string` — Имя слота.

@@ -108,6 +108,42 @@ export const wikiDescriptionsTable: StorybookComponentsDescriptionItem = {
           />
         </div>
       `
+    },
+    {
+      id: 'TableSlots',
+      name: {
+        en: 'Slots usage',
+        ru: 'Использование слотов'
+      },
+      template: `
+        <DesignComponent
+          :columns="['id', 'name', 'status']"
+          :header="[
+            { id: 'ID', name: 'Name', status: 'Status' }
+          ]"
+          :list="[
+            { id: '1', name: 'Alice', status: 'Active' },
+            { id: '2', name: 'Bob', status: 'Pending' }
+          ]"
+        >
+          <template #header-name="{ value }">
+            Slot, header: {{ value }}
+          </template>
+          <template #name="{ value }">
+            Slot: {{ value }}
+          </template>
+          <template #status="{ value }">
+            Slot: {{ value }}
+          </template>
+          <template #body="{ columns }">
+            <tr>
+              <td :colspan="columns.length">
+                Slot body for {{ columns.length }} columns
+              </td>
+            </tr>
+          </template>
+        </DesignComponent>
+      `
     }
   ],
   documentation: {
@@ -117,6 +153,7 @@ export const wikiDescriptionsTable: StorybookComponentsDescriptionItem = {
     `,
     slots: `
 <StorybookDescriptions componentName={'Table'} type={'slots'}/>
+<Canvas of={Component.TableSlots}/>
     `
   },
   ai: {
