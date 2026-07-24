@@ -1,0 +1,24 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/toNumberPositive - Chuyển đổi sang số dương hữu hạn'/>
+
+# `toNumberPositive`
+
+Chuyển đổi giá trị đầu vào thành một số dương hữu hạn (`> 0`). Nếu giá trị không phải là một số dương hợp lệ, hàm sẽ trả về giá trị mặc định được chỉ định (mặc định là `0`).
+
+**Tham số:**
+- `value?: number | string | null` — Giá trị đầu vào cần chuyển đổi.
+- `defaultValue: number = 0` — Giá trị mặc định nếu chuyển đổi thất bại hoặc số không phải là số dương.
+
+**Trả về:**
+`number` — Một số dương (`> 0`) hoặc giá trị mặc định.
+
+```typescript
+import { toNumberPositive } from '@dxtmisha/functional-basic'
+
+console.log(toNumberPositive(15)) // 15
+console.log(toNumberPositive('10')) // 10
+console.log(toNumberPositive(-5)) // 0
+console.log(toNumberPositive('invalid', 1)) // 1
+console.log(toNumberPositive(undefined, 1)) // 1
+```

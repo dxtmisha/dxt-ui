@@ -1,0 +1,24 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/toNumberPositive - Преобразование в конечное положительное число'/>
+
+# `toNumberPositive`
+
+Преобразует входное значение в конечное положительное число (`> 0`). Если значение не является валидным положительным числом, возвращает значение по умолчанию (по умолчанию `0`).
+
+**Параметры:**
+- `value?: number | string | null` — Входное значение для преобразования.
+- `defaultValue: number = 0` — Значение по умолчанию, если преобразование невозможно или число не является положительным.
+
+**Возвращает:**
+`number` — Положительное число (`> 0`) или значение по умолчанию.
+
+```typescript
+import { toNumberPositive } from '@dxtmisha/functional-basic'
+
+console.log(toNumberPositive(15)) // 15
+console.log(toNumberPositive('10')) // 10
+console.log(toNumberPositive(-5)) // 0
+console.log(toNumberPositive('invalid', 1)) // 1
+console.log(toNumberPositive(undefined, 1)) // 1
+```

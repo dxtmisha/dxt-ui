@@ -1,0 +1,24 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/toNumberPositive - Converting to a positive finite number'/>
+
+# `toNumberPositive`
+
+Converts the input value to a positive finite number (`> 0`). If the value is not a valid positive number, it returns the specified default value (defaults to `0`).
+
+**Parameters:**
+- `value?: number | string | null` — The input value to convert.
+- `defaultValue: number = 0` — Default fallback value if conversion fails or the number is not positive.
+
+**Returns:**
+`number` — A positive number (`> 0`) or the default value.
+
+```typescript
+import { toNumberPositive } from '@dxtmisha/functional-basic'
+
+console.log(toNumberPositive(15)) // 15
+console.log(toNumberPositive('10')) // 10
+console.log(toNumberPositive(-5)) // 0
+console.log(toNumberPositive('invalid', 1)) // 1
+console.log(toNumberPositive(undefined, 1)) // 1
+```

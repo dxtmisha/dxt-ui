@@ -14,6 +14,8 @@ const propsNames: StorybookProps = [
   { name: 'keyValue', type: 'string' },
   { name: 'lazy', type: 'boolean' },
   { name: 'list', type: 'TableList<TableItemProps>' },
+  { name: 'page', type: 'string | number' },
+  { name: 'rows', type: 'string | number' },
   { name: 'scrollBottomSticky', type: 'boolean' },
   { name: 'selected', type: 'string | string[]' },
   { name: 'stickyLeft', type: 'string[]' },

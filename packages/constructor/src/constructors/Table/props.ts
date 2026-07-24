@@ -1,3 +1,4 @@
+import type { SearchOptions } from '@dxtmisha/functional'
 import type { TableItemPropsBasic } from '../TableItem'
 import type { TableRecordPropsBasic, TableRecordPropsInclude } from '../TableRecord'
 import type { TableHeaderItemPropsBasic } from '../TableHeaderItem'
@@ -24,11 +25,23 @@ export type TablePropsBasic<
     /** List of row records / Список записей строк */
     list?: TableList<TableItem>
 
+    /** Current page / Текущая страница */
+    page?: number | string
+
+    /** Number of records to display per page / Количество отображаемых записей на странице */
+    rows?: number | string
+
     /** Enable bottom sticky scrollbar / Включить прилипающий нижний скроллбар */
     scrollBottomSticky?: boolean
 
-    pagination?: boolean
-    paginationRows?: boolean
+    /** Search string query / Строка поиска */
+    search?: string
+
+    /** Columns to search in / Колонки, по которым ведется поиск */
+    searchColumns?: string[]
+
+    /** Additional search options / Дополнительные настройки поиска */
+    searchOptions?: SearchOptions
   }
 
 /**
@@ -43,6 +56,7 @@ export type TableProps = TablePropsBasic & TablePropsToken
  */
 export const defaultsTable = {
   lazy: true,
+  page: 1,
   scrollBottomSticky: true,
   ...{
     // :default [!] System label / Системная метка

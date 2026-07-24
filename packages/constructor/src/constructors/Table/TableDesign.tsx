@@ -182,7 +182,7 @@ export class TableDesign<
           children.push(
             this.item.tableRecord.renderRecord(
               this.item.tableRecord.getKey(`header-${key}`, item),
-              this.item.columns,
+              this.item.columns.list,
               item,
               true,
               { stickyTop: false }
@@ -241,11 +241,11 @@ export class TableDesign<
   readonly renderList = (): any[] => {
     const children: any[] = []
 
-    this.props.list?.forEach((item, key) => {
+    this.item.pagination.list.forEach((item, key) => {
       children.push(
         this.item.tableRecord.renderRecord(
           this.item.tableRecord.getKey(`item-${key}`, item),
-          this.item.columns,
+          this.item.columns.list,
           item
         )
       )
@@ -264,7 +264,7 @@ export class TableDesign<
     const slot = this.initSlot(
       'body',
       undefined,
-      { columns: this.item.columns }
+      { columns: this.item.columns.list }
     )
 
     if (slot) {
