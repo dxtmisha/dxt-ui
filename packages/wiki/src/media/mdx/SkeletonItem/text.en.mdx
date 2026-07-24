@@ -1,0 +1,17 @@
+## Text Content (label, length)
+
+Controls text rendering and placeholder generation within the element. Default: `length = 3`.
+
+> When default slot content is provided, `label` and `length` properties are ignored.
+
+**Properties:**
+- `label` — static text or numeric content rendered instead of generated text
+- `length` — expected text length (number) or length range (`[min, max]`)
+
+### Behavior
+
+- Properties operate by priority: default slot overrides `label` and `length`
+- Provided `label` property renders directly and bypasses `length` generation
+- Passing a number to `length` (e.g., `:length="5"`) generates an exact word count
+- Passing an array to `length` (e.g., `:length="[4, 10]"`) selects word count randomly within limits
+- Using a length range simulates natural text line variations across loading list elements

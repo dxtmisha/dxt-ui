@@ -22,8 +22,8 @@ type SkeletonItemPropsToken = {
 export type SkeletonItemPropsBasic = {
   /** Tag name for the skeleton element / Имя тега для элемента скелета */
   tag?: string | any
-  /** Properties for the HTML element / Свойства для HTML-элемента */
-  props?: Record<string, any>
+  /** Attributes for the HTML element / Атрибуты для HTML-элемента */
+  itemAttrs?: Record<string, any>
   /** Static text content to render instead of random text / Статическое текстовое содержимое для рендеринга вместо случайного текста */
   label?: string | number
   /** Expected length or range of lengths for the random text / Ожидаемая длина или диапазон длин для случайного текста */

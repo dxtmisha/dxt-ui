@@ -89,7 +89,7 @@ export class SkeletonItem {
    */
   get binds(): Record<string, any> {
     return {
-      ...this.props.props,
+      ...this.props.itemAttrs,
       ref: this.element
     }
   }
