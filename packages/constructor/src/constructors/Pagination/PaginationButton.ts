@@ -77,8 +77,6 @@ export class PaginationButton {
       }
     }
 
-    console.log('paginationFirst', data)
-
     return data
   })
 
@@ -97,8 +95,6 @@ export class PaginationButton {
         data.push(this.getPageItem(i))
       }
     }
-
-    console.log('paginationLast', data)
 
     return data
   })

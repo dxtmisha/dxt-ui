@@ -5,6 +5,17 @@
     --#{ui.n('?item.borderNone')}: 0;
   }
 
+  &--lazy {
+    content-visibility: auto;
+    contain-intrinsic-height: ui.v('??sys.minHeight', 32px);
+
+    &--hidden {
+      display: block;
+      width: 100%;
+      min-height: ui.v('??sys.minHeight', 32px);
+    }
+  }
+
   &--none {
     display: none;
   }

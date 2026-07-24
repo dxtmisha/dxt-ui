@@ -44,7 +44,7 @@ const basicList = generateRecords(8)
         type="number"
         step="8"
         label="Custom Record Count"
-        @input-lite="onInput"
+        @change-lite="onInput"
       />
 
       <D1Table

@@ -4,7 +4,7 @@ import type { RefType } from '../../types/refTypes'
 
 export type LazyItemByMargin = {
   rootMargin: string
-  item: any
+  item: ReturnType<typeof useLazyRef>
 }
 
 /**
@@ -12,7 +12,7 @@ export type LazyItemByMargin = {
  *
  * Возвращает список ленивых элементов по отступу для контекста текущего запроса.
  */
-const getItems = () => {
+const getItems = (): LazyItemByMargin[] => {
   return ServerStorage.get<LazyItemByMargin[]>(
     '__ui:lazy-item-by-margin-ref__',
     () => []
@@ -25,7 +25,7 @@ const getItems = () => {
  * Получение ленивого элемента по отступу.
  * @param rootMargin root margin for IntersectionObserver/ отступ для IntersectionObserver
  */
-const getItemByMargin = (rootMargin: string) => {
+const getItemByMargin = (rootMargin: string): ReturnType<typeof useLazyRef> => {
   const items = getItems()
   const item = items.find(item => item.rootMargin === rootMargin)
 
@@ -48,7 +48,7 @@ const getItemByMargin = (rootMargin: string) => {
  */
 export const useLazyItemByMarginRef = (
   element: RefType<HTMLElement | undefined>,
-  rootMargin: string
+  rootMargin: string = '128px 0px'
 ) => {
   const observer = getItemByMargin(rootMargin)
   const status = observer.addLazyItem(element)

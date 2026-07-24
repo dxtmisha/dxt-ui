@@ -71,7 +71,7 @@ export class MotionStickyScroll {
    */
   protected make(): void {
     const element = this.stickyElement.eventElement
-    console.log('element', element)
+
     if (element) {
       this.event = new EventItem(element, 'scroll', this.onScroll)
       this.event.start()

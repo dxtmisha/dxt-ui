@@ -6,11 +6,13 @@ import { defaults } from './props'
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
   { name: 'columns', type: 'string[]' },
+  { name: 'defaultHeight', type: 'string | number' },
   { name: 'disabled', type: 'boolean' },
   { name: 'header', type: 'TableHeader<TableRecordProps> | TableHeaders<TableRecordProps>' },
   { name: 'headerTop', type: 'boolean' },
   { name: 'isSkeleton', type: 'boolean' },
   { name: 'keyValue', type: 'string' },
+  { name: 'lazy', type: 'boolean' },
   { name: 'list', type: 'TableList<TableItemProps>' },
   { name: 'scrollBottomSticky', type: 'boolean' },
   { name: 'selected', type: 'string | string[]' },

@@ -121,7 +121,9 @@ export class TableRecordInclude extends ComponentIncludeAbstract<
           {
             selected: isSelected(index, props.selected),
             disabled: item?.disabled,
-            isSkeleton: props.isSkeleton
+            isSkeleton: props.isSkeleton,
+            lazy: props.lazy,
+            defaultHeight: props.defaultHeight
           },
           props.tableRowAttrs?.[index],
           attrs,

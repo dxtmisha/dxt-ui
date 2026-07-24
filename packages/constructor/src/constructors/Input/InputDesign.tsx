@@ -168,7 +168,8 @@ export class InputDesign<
         input.binds
       ),
       onBlur: this.item.event.onBlur,
-      onInput: this.item.event.onInput
+      onInput: this.item.event.onInput,
+      onChange: this.item.event.onChange
     })
   }
 }

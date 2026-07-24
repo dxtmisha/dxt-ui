@@ -83,6 +83,12 @@ export type TableRecordPropsInclude<
   /** Field name for key identification / Имя поля для идентификации ключа */
   keyValue?: string
 
+  /** Enable lazy loading for records / Включить ленивую загрузку для записей */
+  lazy?: boolean
+
+  /** Default height for records / Высота по умолчанию для записей */
+  defaultHeight?: string | number
+
   /** Additional attributes for TableRecord component / Дополнительные атрибуты для компонента TableRecord */
   tableRecordAttrs?: ConstrBind<TableRecord>
 

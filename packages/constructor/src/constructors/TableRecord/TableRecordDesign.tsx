@@ -87,7 +87,9 @@ export class TableRecordDesign<
    */
   protected initClasses(): Partial<CLASSES> {
     return {
-      main: {},
+      main: {
+        ...this.item.lazy.classes
+      },
       ...{
         // :classes [!] System label / Системная метка
         // :classes [!] System label / Системная метка
@@ -101,7 +103,9 @@ export class TableRecordDesign<
    * Доработка полученного списка стилей.
    */
   protected initStyles(): ConstrStyles {
-    return {}
+    return {
+      ...this.item.lazy.styles
+    }
   }
 
   /**
@@ -113,17 +117,28 @@ export class TableRecordDesign<
   protected initRender(): VNode {
     const children: any[] = []
 
-    this.props.columns?.forEach((index) => {
-      const column = this.item.renderColumn(index)
+    if (this.props.columns) {
+      const isShow = this.item.lazy.is()
+      const isLazy = this.item.lazy.isLazy()
 
-      if (column) {
-        children.push(column)
+      for (const index of this.props.columns) {
+        const column = this.item.renderColumn(index)
+
+        if (column) {
+          children.push(column)
+        }
+
+        if (isLazy && !isShow) {
+          break
+        }
       }
-    })
+    }
 
     return h('tr', {
       ...this.getAttrs(),
+      'ref': this.element,
       'class': this.classes?.value.main,
+      'style': this.styles?.value,
       'data-key': this.item.key
     }, children)
   }

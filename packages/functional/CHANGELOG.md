@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.15.4] - 2026-07-24
+
+### Changed
+- **useLazyItemByMarginRef**: Added explicit return type annotations (`ReturnType<typeof useLazyRef>`) for `getItemByMargin` and `LazyItemByMargin[]` for `getItems`.
+- **useLazyRef**: Updated `getItem(element?: HTMLElement)` method signature to accept optional element references.
+
 ## [1.15.3] - 2026-07-14
 
 ### Changed

@@ -121,6 +121,7 @@ export const useDemoTableRecords = (initialCount: number = 20) => {
      * @param item input item with validation and value data / элемент ввода с данными валидации и значения
      */
     onInput: (item: FieldValidationItem) => {
+      console.log('onInput')
       count.value = Number(item.value)
     }
   }

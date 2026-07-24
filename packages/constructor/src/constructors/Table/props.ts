@@ -26,6 +26,9 @@ export type TablePropsBasic<
 
     /** Enable bottom sticky scrollbar / Включить прилипающий нижний скроллбар */
     scrollBottomSticky?: boolean
+
+    pagination?: boolean
+    paginationRows?: boolean
   }
 
 /**
@@ -39,6 +42,7 @@ export type TableProps = TablePropsBasic & TablePropsToken
  * Значение по умолчанию для свойства.
  */
 export const defaultsTable = {
+  lazy: true,
   scrollBottomSticky: true,
   ...{
     // :default [!] System label / Системная метка

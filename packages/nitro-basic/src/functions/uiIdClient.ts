@@ -1,6 +1,6 @@
 import { initGetElementId } from '@dxtmisha/functional-basic'
 
-let code = 10000
+let code = 10_000
 
 /**
  * Initializes the global unique identifier generator for elements on the client side.

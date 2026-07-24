@@ -25,6 +25,12 @@ export type TableRecordPropsBasic<
 
     /** Unique rendering key / Уникальный ключ рендеринга */
     index?: string
+
+    /** Lazy loading of row elements / Ленивая загрузка элементов строки */
+    lazy?: boolean
+
+    /** Default height of the row element / Высота элемента строки по умолчанию */
+    defaultHeight?: string | number
   }
 
 /**
@@ -40,6 +46,7 @@ export type TableRecordProps = TableRecordPropsBasic & TableRecordPropsToken
  * Значение по умолчанию для свойства.
  */
 export const defaultsTableRecord = {
+  lazy: true,
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

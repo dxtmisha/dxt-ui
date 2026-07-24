@@ -25,6 +25,7 @@ export type TableRecordProps = TableRecordPropsBasic<TableItemProps, TableHeader
  */
 export const defaults: object = {
   ...defaultsTableRecord,
+  defaultHeight: 28,
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

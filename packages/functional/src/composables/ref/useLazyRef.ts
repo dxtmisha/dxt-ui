@@ -68,7 +68,11 @@ export const useLazyRef = (
      * Получение отслеживаемого элемента.
      * @param element tracked element/ отслеживаемый элемент
      */
-    getItem(element: HTMLElement) {
+    getItem(element?: HTMLElement) {
+      if (!element) {
+        return undefined
+      }
+
       const id = getElementId(element)
 
       return list[id]

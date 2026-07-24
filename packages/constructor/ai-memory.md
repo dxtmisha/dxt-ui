@@ -29,9 +29,5 @@
 19. **Component Text Integration**:
     - In the component's `props.ts`, extend the props interface with the respective text props include (e.g., `TextExamplePropsInclude`).
     - Instantiate the `TextInclude` class in the component constructor supporting Dependency Injection (e.g. `this.text = new TextIncludeConstructor(props)`).
-
-
-
-
-
-
+20. **Alphabetical Exports in index.ts**: All export statements in `index.ts` files inside component constructor directories must be sorted in strict alphabetical order (e.g., `export * from './basicTypes'`, `export * from './props'`, etc.).
+21. **BEM Class Names in Logic Classes**: All dynamic CSS class objects returned by getters/methods in logical constructor classes MUST format class modifiers using the `this.className` prefix with BEM double-dash syntax (e.g. `[`${this.className}--lazy`]: isLazy`, `[`${this.className}--lazy--visible`]: isLazy && isVisible`, `[`${this.className}--lazy--hidden`]: isLazy && !isVisible`), rather than raw un-prefixed keys.
