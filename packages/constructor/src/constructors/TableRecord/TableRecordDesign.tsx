@@ -118,18 +118,11 @@ export class TableRecordDesign<
     const children: any[] = []
 
     if (this.props.columns) {
-      const isShow = this.item.lazy.is()
-      const isLazy = this.item.lazy.isLazy()
-
       for (const index of this.props.columns) {
         const column = this.item.renderColumn(index)
 
         if (column) {
           children.push(column)
-        }
-
-        if (isLazy && !isShow) {
-          break
         }
       }
     }

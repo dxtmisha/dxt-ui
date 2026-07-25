@@ -74,7 +74,11 @@ export class StickyInclude {
    * @returns true if sticky is enabled / true, если липкое позиционирование включено
    */
   protected isEnabled(): boolean {
-    return getRef(this.getProps().stickyEnable) ?? true
+    const props = this.getProps()
+
+    return Boolean(
+      props.stickyScrollBottom && (props.stickyEnable ?? true)
+    )
   }
 
   /**
@@ -425,7 +429,7 @@ export class StickyInclude {
 
       this.scrollTimeout = setTimeout(() => {
         this.removeDatasetScroll()
-      }, 256)
+      }, 64)
     }
   }
 }

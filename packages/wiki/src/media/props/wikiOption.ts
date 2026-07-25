@@ -347,6 +347,16 @@ export const wikiOption: StorybookArgsToList = {
       }
     }
   },
+  lazy: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.option,
+      description: {
+        en: 'Enables lazy rendering or loading mode',
+        ru: 'Включает режим ленивого рендеринга или загрузки'
+      }
+    }
+  },
   limit: {
     type: StorybookControl.select,
     options: {
@@ -416,13 +426,25 @@ export const wikiOption: StorybookArgsToList = {
       }
     }
   },
-  scrollBottomSticky: {
-    type: StorybookControl.boolean,
+  searchColumns: {
+    type: StorybookControl.array,
     options: {
       category: StorybookCategory.option,
+      type: 'string[]',
       description: {
-        en: 'Enables sticky positioning for the bottom scrollbar',
-        ru: 'Включает прилипающий нижний скроллбар'
+        en: 'Columns or fields to perform search in',
+        ru: 'Колонки или поля для выполнения поиска'
+      }
+    }
+  },
+  searchOptions: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.option,
+      type: 'SearchOptions',
+      description: {
+        en: 'Search configuration options',
+        ru: 'Параметры конфигурации поиска'
       }
     }
   },
@@ -457,6 +479,16 @@ export const wikiOption: StorybookArgsToList = {
       }
     }
   },
+  stickyEnable: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.option,
+      description: {
+        en: 'Enables active tracking for sticky positioning',
+        ru: 'Включает активное отслеживание липкого позиционирования'
+      }
+    }
+  },
   stickyLeft: {
     type: StorybookControl.boolean,
     options: {
@@ -464,6 +496,27 @@ export const wikiOption: StorybookArgsToList = {
       description: {
         en: 'Enables sticky positioning for the cell from the left',
         ru: 'Включает липкое позиционирование для ячейки слева'
+      }
+    }
+  },
+  stickyScrollBottom: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.option,
+      description: {
+        en: 'Enables sticky positioning for the bottom scrollbar',
+        ru: 'Включает прилипающий нижний скроллбар'
+      }
+    }
+  },
+  stickyScrollContainer: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.option,
+      type: 'string',
+      description: {
+        en: 'Custom scroll container selector or element for sticky tracking',
+        ru: 'Пользовательский селектор или элемент контейнера прокрутки для отслеживания липкости'
       }
     }
   },

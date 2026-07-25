@@ -7,8 +7,8 @@ import {Meta} from '@storybook/addon-docs/blocks'
 A composable for implementing search and filtering logic on a list of data with reactivity support and match highlighting.
 
 **Parameters:**
-- `list: SearchListInput<T>` — source data list (Array, Ref, or a function returning an array).
-- `columns: K` — list of columns (object keys) to search in.
+- `list: SearchListInput<T>` — source data list (Array, Ref, or a function returning an array/Ref).
+- `columns?: SearchColumnsInput<T, K>` — list of columns (object keys) to search in (Array, Ref, or a function returning an array/Ref).
 - `value?: Ref<string>` — external reactive search string ref. Created internally if not provided.
 - `options?: SearchOptions` — search settings:
     - `limit?: number` — minimum character limit to activate search. Default: `2`.

@@ -1,9 +1,17 @@
 import { type RefOrNormal } from '@dxtmisha/functional'
 
 /**
+ * Properties for stickyScrollBottom / Свойства для stickyScrollBottom
+ */
+export type StickyScrollBottomPropsInclude = {
+  /** Enable bottom sticky scrollbar / Включить прилипающий нижний скроллбар */
+  stickyScrollBottom?: boolean
+}
+
+/**
  * Properties for StickyInclude class / Свойства для класса StickyInclude
  */
-export type StickyPropsInclude = {
+export type StickyPropsInclude = StickyScrollBottomPropsInclude & {
   /** Top offset from the visible top boundary of the parent (in pixels) / Верхний отступ от видимой верхней границы родителя (в пикселях) */
   stickyTop?: number | RefOrNormal<number>
 

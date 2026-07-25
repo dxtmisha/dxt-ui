@@ -1,0 +1,31 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/domContentLoaded - Thực thi callback khi DOMContentLoaded'/>
+
+# `domContentLoaded`
+
+Thực thi một hàm callback khi sự kiện `DOMContentLoaded` được kích hoạt.
+
+Nếu DOM đã được tải xong (`document.readyState` là `'interactive'` hoặc `'complete'`) hoặc khi thực thi trong môi trường không có DOM (như SSR), hàm callback sẽ được thực thi ngay lập tức.
+
+**Tham số:**
+- `callback: () => T | Promise<T>` — Hàm callback được thực thi khi DOM được tải xong.
+
+**Trả về:**
+`Promise<T>` — Một promise giải quyết với kết quả trả về của hàm callback.
+
+```typescript
+import { domContentLoaded } from '@dxtmisha/functional-basic'
+
+// 1. Sử dụng cơ bản với hàm đồng bộ
+domContentLoaded(() => {
+  console.log('DOM đã sẵn sàng!')
+  document.getElementById('app')?.classList.add('ready')
+})
+
+// 2. Chờ kết quả của hàm bất đồng bộ
+const data = await domContentLoaded(async () => {
+  const element = document.querySelector('#content')
+  return element?.textContent
+})
+```

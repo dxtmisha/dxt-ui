@@ -4,11 +4,12 @@ import {
   type DesignComp
 } from '@dxtmisha/functional'
 
+import { PaginationInclude } from '../../classes/PaginationInclude'
+import { SearchInclude } from '../../classes/SearchInclude'
 import { StickyInclude } from '../../classes/StickyInclude'
+
 import { TableColumns } from './TableColumns'
-import { TablePagination } from './TablePagination'
 import { TableRecordInclude } from '../TableRecord'
-import { TableSearch } from './TableSearch'
 
 import type { TableComponents, TableEmits, TableSlots } from './types'
 import type { TableProps } from './props'
@@ -23,12 +24,10 @@ import type { TableProps } from './props'
 export class Table {
   /** Table columns manager instance / Экземпляр менеджера колонок таблицы */
   readonly columns: TableColumns
-
-  /** Table pagination manager instance / Экземпляр менеджера пагинации таблицы */
-  readonly pagination: TablePagination
-
-  /** Table search manager instance / Экземпляр менеджера поиска таблицы */
-  readonly search: TableSearch
+  /** Search include manager instance / Экземпляр включения поиска */
+  readonly search: SearchInclude
+  /** Pagination include manager instance / Экземпляр включения пагинации */
+  readonly pagination: PaginationInclude
 
   /** Table record include manager instance / Экземпляр включения записей таблицы */
   readonly tableRecord: TableRecordInclude
@@ -44,14 +43,14 @@ export class Table {
    * @param classDesign design system prefix / префикс дизайн-системы
    * @param className base CSS class name / базовое имя CSS-класса
    * @param components object for working with components / объект для работы с компонентами
-   * @param slots object for working with slots / объект для работы со слотами
+   * @param slots object for working with slots / object for working with slots
    * @param emits callback function triggered on events / функция обратного вызова, запускаемая при событиях
    * @param constructors optional class constructor overrides / необязательные переопределения конструкторов классов
+   * @param constructors.PaginationIncludeConstructor class for creating a pagination include / класс для создания включения пагинации
+   * @param constructors.SearchIncludeConstructor class for creating a search include / класс для создания включения поиска
    * @param constructors.StickyIncludeConstructor class for creating a sticky include / класс для создания включения липкого элемента
    * @param constructors.TableColumnsConstructor class for creating table columns / класс для создания колонок таблицы
-   * @param constructors.TablePaginationConstructor class for creating table pagination / класс для создания пагинации таблицы
    * @param constructors.TableRecordIncludeConstructor class for creating a table record include / класс для создания включения записи таблицы
-   * @param constructors.TableSearchConstructor class for creating table search / класс для создания поиска таблицы
    */
   constructor(
     protected readonly props: TableProps,
@@ -63,33 +62,24 @@ export class Table {
     protected readonly slots?: TableSlots,
     protected readonly emits?: ConstrEmit<TableEmits>,
     constructors: {
+      PaginationIncludeConstructor?: typeof PaginationInclude
+      SearchIncludeConstructor?: typeof SearchInclude
       StickyIncludeConstructor?: typeof StickyInclude
       TableColumnsConstructor?: typeof TableColumns
-      TablePaginationConstructor?: typeof TablePagination
       TableRecordIncludeConstructor?: typeof TableRecordInclude
-      TableSearchConstructor?: typeof TableSearch
     } = {}
   ) {
     const {
+      PaginationIncludeConstructor = PaginationInclude,
+      SearchIncludeConstructor = SearchInclude,
       StickyIncludeConstructor = StickyInclude,
       TableColumnsConstructor = TableColumns,
-      TablePaginationConstructor = TablePagination,
-      TableRecordIncludeConstructor = TableRecordInclude,
-      TableSearchConstructor = TableSearch
+      TableRecordIncludeConstructor = TableRecordInclude
     } = constructors
 
     this.columns = new TableColumnsConstructor(props)
-
-    this.search = new TableSearchConstructor(
-      props,
-      refs,
-      this.columns
-    )
-
-    this.pagination = new TablePaginationConstructor(
-      props,
-      this.search
-    )
+    this.search = new SearchIncludeConstructor(props, () => this.columns.list)
+    this.pagination = new PaginationIncludeConstructor(props, () => this.search.list)
 
     this.tableRecord = new TableRecordIncludeConstructor(
       classDesign,
@@ -101,7 +91,10 @@ export class Table {
     )
 
     new StickyIncludeConstructor(
-      () => ({ stickyEnable: false }),
+      () => ({
+        stickyScrollBottom: this.props.stickyScrollBottom,
+        stickyEnable: this.props.headerTop
+      }),
       className,
       this.headerElement,
       element

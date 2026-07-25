@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.15.5] - 2026-07-25
+
+### Added
+- **useSearchRef**: Supported reactive `Ref` and getter callbacks for the `columns` parameter via `SearchColumnsInput` (`SearchColumnsRef<T, K>`), dynamically updating search results when target columns change.
+- **searchTypes**: Introduced `SearchColumnsRef` and `SearchColumnsInput` type definitions to support reactive column definitions.
+
+### Changed
+- **package.json**: Updated package `description` and expanded `keywords` list to comprehensively cover composables, `executeUse` singletons, and reactive utilities. Fixed `homepage` and `repository.directory` paths.
+- **README.md**: Updated documentation and Quick Start code examples to showcase `executeUseGlobal` state singletons and reactive composables while preserving original document layout and style.
+
 ## [1.15.4] - 2026-07-24
 
 ### Changed

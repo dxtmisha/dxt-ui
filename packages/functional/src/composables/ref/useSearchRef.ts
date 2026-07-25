@@ -10,7 +10,7 @@ import {
 import { getRef } from '../../functions/ref/getRef'
 
 import { useSearchValueRef } from './useSearchValueRef'
-import type { SearchListInput } from '../../types/searchTypes'
+import type { SearchColumnsInput, SearchListInput } from '../../types/searchTypes'
 
 /**
  * Composable for handling search logic with reactive data.
@@ -26,14 +26,21 @@ export function useSearchRef<
   K extends SearchColumns<T>
 >(
   list: SearchListInput<T>,
-  columns: K,
+  columns?: SearchColumnsInput<T, K>,
   value?: Ref<string>,
   options?: SearchOptions
 ) {
+  /**
+   * Get columns to search in
+   *
+   * Получить колонки для поиска
+   */
+  const getColumns = (): K | undefined => getRef(executeFunction(columns))
+
   /** Search list instance / Экземпляр поиска */
   const item = new SearchList<T, K>(
     undefined,
-    columns,
+    getColumns(),
     undefined,
     options
   )
@@ -65,6 +72,7 @@ export function useSearchRef<
    */
   const isSearch = computed<boolean>(
     () => item
+      .setColumns(getColumns())
       .setValue(searchDelay.value)
       .getItem()
       .isSearch()
@@ -77,6 +85,7 @@ export function useSearchRef<
   const listSearch = computed<SearchFormatList<T, K>>(() => {
     return item
       .setList(getList())
+      .setColumns(getColumns())
       .setValue(searchDelay.value)
       .to()
   })

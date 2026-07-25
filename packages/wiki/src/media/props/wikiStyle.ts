@@ -116,6 +116,17 @@ export const wikiStyle: StorybookArgsToList = {
     },
     isDemo: true
   },
+  defaultHeight: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.style,
+      type: ['string', 'number'],
+      description: {
+        en: 'Default height of the component',
+        ru: 'Высота компонента по умолчанию'
+      }
+    }
+  },
   dense: {
     type: StorybookControl.boolean,
     options: {

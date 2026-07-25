@@ -1,7 +1,11 @@
-import type { SearchOptions } from '@dxtmisha/functional'
+import type { PaginationPropsInclude } from '../../types/paginationTypes'
+import type { SearchPropsInclude } from '../../types/searchTypes'
+import type { StickyScrollBottomPropsInclude } from '../../types/stickyTypes'
+
 import type { TableItemPropsBasic } from '../TableItem'
 import type { TableRecordPropsBasic, TableRecordPropsInclude } from '../TableRecord'
 import type { TableHeaderItemPropsBasic } from '../TableHeaderItem'
+
 import type { TableHeader, TableHeaders, TableList } from './basicTypes'
 
 type TablePropsToken = {
@@ -15,6 +19,9 @@ export type TablePropsBasic<
   TableHeaderItem extends TableHeaderItemPropsBasic = TableHeaderItemPropsBasic,
   TableRecord extends TableRecordPropsBasic<TableItem, TableHeaderItem> = TableRecordPropsBasic<TableItem, TableHeaderItem>
 > = TableRecordPropsInclude<TableItem, TableRecord>
+  & SearchPropsInclude<TableItem>
+  & PaginationPropsInclude<TableItem>
+  & StickyScrollBottomPropsInclude
   & {
     /** Column index names / Имена индексов колонок */
     columns?: string[]
@@ -30,18 +37,6 @@ export type TablePropsBasic<
 
     /** Number of records to display per page / Количество отображаемых записей на странице */
     rows?: number | string
-
-    /** Enable bottom sticky scrollbar / Включить прилипающий нижний скроллбар */
-    scrollBottomSticky?: boolean
-
-    /** Search string query / Строка поиска */
-    search?: string
-
-    /** Columns to search in / Колонки, по которым ведется поиск */
-    searchColumns?: string[]
-
-    /** Additional search options / Дополнительные настройки поиска */
-    searchOptions?: SearchOptions
   }
 
 /**
@@ -57,7 +52,7 @@ export type TableProps = TablePropsBasic & TablePropsToken
 export const defaultsTable = {
   lazy: true,
   page: 1,
-  scrollBottomSticky: true,
+  stickyScrollBottom: true,
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

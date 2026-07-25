@@ -27,14 +27,14 @@ export class TableDesign<
   CLASSES extends TableClasses,
   P extends TableProps
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
-    COMP,
-    TableEmits,
-    EXPOSE,
-    TableSlots,
-    CLASSES,
-    P
-  > {
+  HTMLDivElement,
+  COMP,
+  TableEmits,
+  EXPOSE,
+  TableSlots,
+  CLASSES,
+  P
+> {
   /** Table controller instance / Экземпляр контроллера таблицы (Table) */
   protected readonly item: Table
 
@@ -137,7 +137,7 @@ export class TableDesign<
   readonly renderScrollSticky = (): VNode | undefined => {
     if (
       this.components
-      && this.props.scrollBottomSticky
+      && this.props.stickyScrollBottom
     ) {
       return this.components.renderOne('scrollSticky', {
         ...this.getAttrs(),

@@ -9,9 +9,9 @@ const propsNames: StorybookProps = [
   { name: 'backgroundVariant', type: 'boolean' },
   { name: 'border', type: 'boolean' },
   { name: 'borderVariant', type: 'boolean' },
+  { name: 'itemAttrs', type: 'Record<string, any>' },
   { name: 'label', type: 'string | number' },
   { name: 'length', type: 'string | number | [number, number]' },
-  { name: 'props', type: 'Record<string, any>' },
   { name: 'tag', type: 'string | any' },
   { name: 'text', type: 'boolean' },
   { name: 'textVariant', type: 'boolean' }

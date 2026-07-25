@@ -10,9 +10,7 @@
     contain-intrinsic-height: ui.v('??sys.minHeight', 32px);
 
     &--hidden {
-      display: block;
-      width: 100%;
-      min-height: ui.v('??sys.minHeight', 32px);
+      visibility: hidden;
     }
   }
 

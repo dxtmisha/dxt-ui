@@ -19,11 +19,12 @@
       transform: translateY(#{calc(ui.v('??sys-sticky-fix') + ui.v('??_sys.sticky.top'))});
       will-change: transform;
 
-      transition-property: opacity;
+      transition-property: opacity, visibility;
       transition-duration: ui.v('d.sys.transitionDuration.fade.exit');
       transition-timing-function: linear;
 
       &[data-sticky][data-sticky-scroll] {
+        visibility: hidden;
         opacity: 0;
       }
     }

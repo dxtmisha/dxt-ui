@@ -26,11 +26,6 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const Table: Story = {
-  args: {
-    headerTop: true,
-    scrollBottomSticky: false
-  },
-
   // :story-main [!] System label / Системная метка
   render: (args: any) => ({
     components: { D1Table },

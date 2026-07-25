@@ -1,0 +1,31 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/domContentLoaded - Execute callback on DOMContentLoaded'/>
+
+# `domContentLoaded`
+
+Executes a callback function when the `DOMContentLoaded` event is fired.
+
+If the DOM is already loaded (`document.readyState` is `'interactive'` or `'complete'`) or if executing in a non-DOM environment (such as SSR), the callback function is executed immediately.
+
+**Parameters:**
+- `callback: () => T | Promise<T>` — The callback function to execute when the DOM is loaded.
+
+**Returns:**
+`Promise<T>` — A promise that resolves with the return value of the callback function.
+
+```typescript
+import { domContentLoaded } from '@dxtmisha/functional-basic'
+
+// 1. Basic usage with a synchronous callback
+domContentLoaded(() => {
+  console.log('DOM is ready!')
+  document.getElementById('app')?.classList.add('ready')
+})
+
+// 2. Awaiting the result of an async callback
+const data = await domContentLoaded(async () => {
+  const element = document.querySelector('#content')
+  return element?.textContent
+})
+```

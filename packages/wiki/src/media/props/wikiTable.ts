@@ -1,8 +1,12 @@
 import {
+  type StorybookArgsToItem,
   type StorybookArgsToList,
   StorybookCategory,
   StorybookControl
 } from '../../types/storybookTypes'
+
+import { wikiList } from './wikiList'
+import { wikiPagination } from './wikiPagination'
 
 /**
  * The wikiTable object contains properties for the Table component
@@ -63,16 +67,6 @@ export const wikiTable: StorybookArgsToList = {
       }
     }
   },
-  'table.scrollBottomSticky': {
-    type: StorybookControl.boolean,
-    options: {
-      category: StorybookCategory.style,
-      description: {
-        en: 'Enable bottom sticky scrollbar',
-        ru: 'Включить прилипающий нижний скроллбар'
-      }
-    }
-  },
   'table.list': {
     type: StorybookControl.array,
     options: {
@@ -97,5 +91,7 @@ export const wikiTable: StorybookArgsToList = {
       ]
     },
     hide: true
-  }
+  },
+  'table.rows': wikiPagination['pagination.rows'],
+  'table.selected': wikiList['list.selected'] as StorybookArgsToItem
 }

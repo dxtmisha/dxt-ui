@@ -2,14 +2,14 @@ import { Source } from '@storybook/addon-docs/blocks';
 
 ## Прилипающий нижний скроллбар
 
-Свойство `scrollBottomSticky` управляет отображением горизонтального скроллбара, прилипающего к нижней части видимой области экрана.
+Свойство `stickyScrollBottom` управляет отображением горизонтального скроллбара, прилипающего к нижней части видимой области экрана.
 
 **Особенности работы:**
 
-- По умолчанию включено (`scrollBottomSticky: true`).
+- По умолчанию включено (`stickyScrollBottom: true`).
 - Создает удобный прилипающий скроллбар внизу экрана, позволяя прокручивать широкие таблицы без необходимости докручивать страницу до самого низа таблицы.
-- В комбинации с `headerTop={true}` активирует JS-контроллер `StickyInclude` (`stickyEnable: headerTop && scrollBottomSticky`), выполняющий динамический расчет позиционирования при скроллинге.
-- При отключении (`:scrollBottomSticky="false"`) контроллер `StickyInclude` деактивируется, и заголовок `headerTop` использует стандартное CSS-позиционирование (`position: sticky`) без динамических вычислений смещений и эффектов прозрачности.
+- В комбинации с `headerTop={true}` активирует JS-контроллер `StickyInclude` (`stickyEnable: headerTop && stickyScrollBottom`), выполняющий динамический расчет позиционирования при скроллинге.
+- При отключении (`:stickyScrollBottom="false"`) контроллер `StickyInclude` деактивируется, и заголовок `headerTop` использует стандартное CSS-позиционирование (`position: sticky`) без динамических вычислений смещений и эффектов прозрачности.
 
 <Source
     code={`
@@ -26,7 +26,7 @@ const list = [
     :columns="columns"
     :header="header"
     :list="list"
-    :scrollBottomSticky="true"
+    :stickyScrollBottom="true"
   />
 </template>
   `}

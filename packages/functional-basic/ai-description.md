@@ -1,25 +1,30 @@
 ### 1. Core Purpose
-This library is a comprehensive, isomorphic utility suite for TypeScript/JavaScript applications. Its primary technical function is to provide structured management for HTTP requests (via an advanced `Api` wrapper), stateful data storage (`ServerStorage`, `CookieStorage`, `DataStorage`), localization (`Geo`, `Translate`, `Datetime`), metadata management (`Meta`), and reactive event handling, primarily intended to simplify full-stack state synchronization in SSR/SPA architectures.
+This is a comprehensive, isomorphic utility library designed for modular web application development. It provides foundational infrastructure for HTTP requests, cross-environment state management (SSR-friendly), internationalization (i18n), localization, and reactive DOM manipulation.
 
 ### 2. Key Expositions
-*   **Request Management:** `ApiInstance` (singleton orchestration of `fetch` with retries, timeouts, and interceptors), `ApiErrorStorage` (centralized API error handling), and `ApiHydration` (SSR-to-client state dehydration).
-*   **Storage & State:** `DataStorage` (localStorage/sessionStorage abstraction with SSR isolation), `CookieStorage` (SSR-aware cookie management), and `ServerStorage` (in-memory persistent state across server cycles).
-*   **Localization/Formatting:** `Geo` (geo-context management), `GeoIntl` (Intl API wrapper for locale-aware formatting), `GeoUnit` (unit conversion), and `Formatters` (tabular data formatting).
-*   **Meta & SEO:** `Meta` (unified tag manager for HTML, Open Graph, and Twitter Cards), `MetaStatic` (singleton access).
-*   **DOM/Event Utilities:** `EventItem` (advanced lifecycle-managed event listeners with `ResizeObserver` and `scroll-sync` optimization), `Loading` (global load state tracking), and `BroadcastMessage` (cross-tab messaging).
-*   **Utility Suite:** Extensive functional library (`toNumber`, `copyObject`, `executePromise`, `random`, `isFilled`, etc.) located in the `functions/` directory.
+*   **Networking (`Api*` classes):** A robust `Api` singleton and `ApiInstance` class for `fetch`-based HTTP communication with support for caching (`ApiCache`), custom interceptors (`ApiPreparation`, `ApiEnd`), and global error handling (`ApiError`, `ApiErrorStorage`).
+*   **State & Storage:**
+    *   `ServerStorage`: SSR-safe state container for client-side hydration.
+    *   `DataStorage`: Wrapper for `localStorage`/`sessionStorage` with prefixing and expiration.
+    *   `CookieStorage`/`CookieBlock`: Typed cookie management with SSR listeners.
+*   **Internationalization (`Geo*`, `Translate*`):**
+    *   `GeoInstance` / `GeoIntl`: Advanced locale-sensitive formatting for dates, currencies, units, and names using `Intl`.
+    *   `TranslateInstance`: Handles translation fetching and runtime replacement.
+    *   `GeoUnit`: Automates conversion between metric and non-metric (e.g., US) units.
+*   **DOM & Utilities:**
+    *   `EventItem`: Advanced event listener wrapper with DOM-safety checks and performance optimizations (`resize`, `scroll-sync`).
+    *   `LoadingInstance`: Global loading state tracking with event dispatching.
+    *   `Meta`, `MetaOg`, `MetaTwitter`: Unified management for SEO meta tags and Open Graph/Twitter Card properties.
+    *   `SearchList`: Utilities for filtering, highlighting, and caching search lists.
+*   **Functional Helpers:** A massive collection of utility functions (e.g., `copyObject`, `toNumber`, `toKebabCase`, `executePromise`, `domContentLoaded`) located in `functions/`.
 
 ### 3. Triggers for Studying ai-types.md
-Studying `ai-types.md` is **mandatory** if the AI is assigned to:
-*   Implementing or extending API request configurations (`ApiFetch`, `ApiConfig`).
-*   Defining or modifying error handling strategies (`ApiErrorStorageItem`).
-*   Integrating localization data structures (`GeoItem`, `GeoFlagItem`).
-*   Configuring formatting logic for currency, dates, or pluralization (`FormattersOptionsList`).
-*   Configuring SEO metadata structures (`MetaTag`, `MetaOpenGraphTag`, `MetaTwitterTag`).
-*   Resolving type-safety requirements for search/filtering components (`SearchOptions`, `SearchColumns`).
+**Mandatory reading of `ai-types.md` is required when:**
+*   You are implementing custom integration for SSR (e.g., configuring `ServerStorage` or `ApiHydration`).
+*   You need to define custom error handling logic in `ErrorCenter` or `ApiErrorStorage`.
+*   You are configuring `SearchList` or `Formatters` and need to map data structures.
+*   You need to understand the interface constraints for `GeoItem`, `ApiFetch`, or `TranslateConfig` to avoid runtime type errors.
+*   You are defining global configuration, as types define the exact shape of the injection/singleton objects.
 
 ### 4. Integration Context
-This project serves as a foundational "Core" library within a larger application stack. It acts as an abstraction layer between native browser/Node.js APIs (e.g., `fetch`, `window`, `localStorage`) and high-level application business logic. It is designed to be injected into frameworks (Vue, React, or custom frameworks) to handle:
-1.  **Hydration:** Bridging data between SSR and Client via `ServerStorage` and `ApiHydration`.
-2.  **Global Event Bus:** Synchronizing state changes via `Loading` and `BroadcastMessage`.
-3.  **Cross-Environment Standardization:** Ensuring locale, time, and formatting behave identically on the server and client.
+This library acts as the "Standard Library" layer of the system stack. It resides above native browser/Node.js APIs and below feature-specific domain code. It is designed to be injected into an application framework (e.g., Vue, React, or custom frameworks) to provide a consistent interface for side effects, data formatting, and environment-agnostic state handling. Components should access these via singletons (e.g., `Api.getItem()`, `Geo.get()`) to ensure consistent state across the client and server.

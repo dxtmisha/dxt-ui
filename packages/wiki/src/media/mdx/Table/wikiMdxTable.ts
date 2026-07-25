@@ -2,8 +2,8 @@ import type { StorybookComponentsMdxItem } from '../../../types/storybookTypes'
 
 import headerTopEn from './headerTop.en.mdx'
 import headerTopRu from './headerTop.ru.mdx'
-import scrollBottomStickyEn from './scrollBottomSticky.en.mdx'
-import scrollBottomStickyRu from './scrollBottomSticky.ru.mdx'
+import stickyScrollBottomEn from './stickyScrollBottom.en.mdx'
+import stickyScrollBottomRu from './stickyScrollBottom.ru.mdx'
 import slotsEn from './slots.en.mdx'
 import slotsRu from './slots.ru.mdx'
 import tableEn from './table.en.mdx'
@@ -21,9 +21,9 @@ export const wikiMdxTable: StorybookComponentsMdxItem = {
       en: headerTopEn,
       ru: headerTopRu
     },
-    scrollBottomSticky: {
-      en: scrollBottomStickyEn,
-      ru: scrollBottomStickyRu
+    stickyScrollBottom: {
+      en: stickyScrollBottomEn,
+      ru: stickyScrollBottomRu
     },
     slots: {
       en: slotsEn,

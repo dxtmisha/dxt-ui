@@ -7,7 +7,7 @@ The `headerTop` property enables sticky positioning of the table header (`thead`
 **Features & Behavior:**
 
 - When `headerTop="true"`, the table header is fixed at the top of the scrollable container using CSS `position: sticky`.
-- Together with the `scrollBottomSticky` property (enabled by default), the internal `StickyInclude` controller calculates top offset CSS variables (`--[className]-sys-sticky-fix`) to synchronize header positioning.
+- Together with the `stickyScrollBottom` property (enabled by default), the internal `StickyInclude` controller calculates top offset CSS variables (`--[className]-sys-sticky-fix`) to synchronize header positioning.
 - During active scrolling, dataset attributes `data-sticky="active"` and `data-sticky-scroll="active"` apply smooth opacity transitions (`opacity: 0`) to prevent visual glitches or overlapping.
 
 <Source

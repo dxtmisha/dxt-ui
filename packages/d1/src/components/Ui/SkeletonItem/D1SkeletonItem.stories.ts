@@ -49,8 +49,13 @@ export const SkeletonItemSkeleton: Story = {
     components: { D1SkeletonItem, D1Skeleton },
     template: `
         <D1Skeleton :active="true">
-          <div class="wiki-storybook-group">
-            <D1SkeletonItem text style="width: 200px;"/>
+          <div class="wiki-storybook-flex-column">
+            <D1SkeletonItem label="Lorem ipsum dolor sit amet..." text/>
+            <D1SkeletonItem label="Lorem ipsum dolor sit amet..." textVariant/>
+            <D1SkeletonItem label="Lorem ipsum dolor sit amet..." background/>
+            <D1SkeletonItem label="Lorem ipsum dolor sit amet..." backgroundVariant/>
+            <D1SkeletonItem label="Lorem ipsum dolor sit amet..." border/>
+            <D1SkeletonItem label="Lorem ipsum dolor sit amet..." borderVariant/>
           </div>
         </D1Skeleton>
     `

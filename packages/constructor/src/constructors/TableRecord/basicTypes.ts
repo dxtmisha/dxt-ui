@@ -73,7 +73,7 @@ export type TableRecordComponentInclude = {
 export type TableRecordPropsInclude<
   TableItem extends TableItemPropsBasic = TableItemPropsBasic,
   TableRecord extends TableRecordPropsBasic<TableItem> = TableRecordPropsBasic<TableItem>
-> = Omit<TableItemPropsInclude<TableItem>, 'selected' | 'stickyTop'> & {
+> = Omit<TableItemPropsInclude<TableItem>, 'disabled' | 'selected' | 'stickyTop'> & {
   /** Selected item identifier or list / Идентификатор выбранного элемента или список */
   selected?: string | string[]
 

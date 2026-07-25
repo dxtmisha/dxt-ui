@@ -168,6 +168,28 @@ export const wikiValue: StorybookArgsToList = {
       value: true
     }
   },
+  page: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.value,
+      type: ['number', 'string'],
+      description: {
+        en: 'Current page number for pagination',
+        ru: 'Номер текущей страницы для пагинации'
+      }
+    }
+  },
+  search: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.value,
+      type: 'string',
+      description: {
+        en: 'Search query string',
+        ru: 'Строка поискового запроса'
+      }
+    }
+  },
   tabs: {
     type: StorybookControl.object,
     options: {

@@ -1,0 +1,31 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/domContentLoaded - Выполнение callback при DOMContentLoaded'/>
+
+# `domContentLoaded`
+
+Выполняет функцию обратного вызова при наступлении события `DOMContentLoaded`.
+
+Если DOM уже загружен (`document.readyState` равен `'interactive'` или `'complete'`) или код выполняется вне браузера (например, при SSR), функция обратного вызова выполняется немедленно.
+
+**Параметры:**
+- `callback: () => T | Promise<T>` — Функция обратного вызова для выполнения при загрузке DOM.
+
+**Возвращает:**
+`Promise<T>` — Промис, разрешающийся результатом выполнения функции обратного вызова.
+
+```typescript
+import { domContentLoaded } from '@dxtmisha/functional-basic'
+
+// 1. Базовое использование с синхронной функцией
+domContentLoaded(() => {
+  console.log('DOM готов!')
+  document.getElementById('app')?.classList.add('ready')
+})
+
+// 2. Ожидание результата асинхронной функции
+const data = await domContentLoaded(async () => {
+  const element = document.querySelector('#content')
+  return element?.textContent
+})
+```

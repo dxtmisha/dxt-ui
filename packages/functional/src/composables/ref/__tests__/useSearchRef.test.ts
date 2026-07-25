@@ -86,6 +86,20 @@ describe('useSearchRef', () => {
     expect(listSearch.value[3]?.name).toBe('Date')
   })
 
+  it('should react to columns ref or callback changes', async () => {
+    const columnsRef = ref(['Category'] as any)
+    const { search, listSearch } = useSearchRef(listItems, columnsRef)
+
+    search.value = 'Apple'
+    await tick()
+    expect(listSearch.value).toHaveLength(0)
+
+    columnsRef.value = ['name']
+    await tick()
+    expect(listSearch.value).toHaveLength(1)
+    expect(listSearch.value[0]?.name).toBe('Apple')
+  })
+
   it('should handle findExactMatch option (phrase vs. multiple words)', async () => {
     // Default is fuzzy (contains all words)
     const { search: searchFuzzy, listSearch: listFuzzy } = useSearchRef(listItems, columns)

@@ -7,8 +7,8 @@ import {Meta} from '@storybook/addon-docs/blocks'
 Một composable để triển khai logic tìm kiếm và lọc trên danh sách dữ liệu với hỗ trợ tính phản ứng (reactivity) và làm nổi bật kết quả khớp.
 
 **Tham số:**
-- `list: SearchListInput<T>` — danh sách dữ liệu nguồn (Mảng, Ref hoặc một hàm trả về mảng).
-- `columns: K` — danh sách các cột (key của đối tượng) để tìm kiếm.
+- `list: SearchListInput<T>` — danh sách dữ liệu nguồn (Mảng, Ref hoặc một hàm trả về mảng/Ref).
+- `columns?: SearchColumnsInput<T, K>` — danh sách các cột (key của đối tượng) để tìm kiếm (Mảng, Ref hoặc một hàm trả về mảng/Ref).
 - `value?: Ref<string>` — ref chuỗi tìm kiếm phản ứng từ bên ngoài. Sẽ được tạo nội bộ nếu không được cung cấp.
 - `options?: SearchOptions` — cài đặt tìm kiếm:
     - `limit?: number` — giới hạn ký tự tối thiểu để kích hoạt tìm kiếm. Mặc định: `2`.

@@ -1,25 +1,16 @@
-### Core Purpose
-A high-level utility library designed for Vue 3 providing architectural abstractions for component design, reactive state management, sophisticated API orchestration with SSR support, and localized geographic/unit formatting.
+Core Purpose: A comprehensive toolkit for Vue 3 providing reactive abstractions for API orchestration, geographic/locale-aware data formatting, and modular component construction. It centralizes state management for network requests, internationalization (Intl), and standardized UI element composition.
 
-### Key Expositions
-*   **Design Architecture:** `DesignConstructorAbstract`, `DesignComponents`, and `DesignAbstract` provide a structured class-based inheritance model for building complex, reactive functional components with automatic lifecycle handling, style/class management, and slotted rendering.
-*   **API Orchestration:**
-    *   `useApiRef`: Centralized reactive API request handler with built-in SSR, caching, transformation, validation (supporting `@effect/schema`), and error handling.
-    *   `useApiManagementRef` / `useApiManagementAsyncRef`: High-level orchestration for CRUD operations (GET/POST/PUT/DELETE) with client-side searching, list formatting, and atomic mutation state management.
-    *   Standard wrappers: `useApiGet`, `useApiPost`, `useApiPut`, `useApiDelete` for cleaner endpoint interaction.
-*   **Reactive Utilities:** 
-    *   `executeUse`: A factory for creating managed singletons (`global`, `provide`, `local`) to ensure unified state across component trees.
-    *   `useTranslateRef`, `useStorageRef`, `useCookieRef`, `useSessionRef`: Reactive bridges to local persistence and internationalization.
-    *   `computedAsync`, `computedEternity`: Advanced reactive primitives for asynchronous data flow and on-demand caching.
-*   **Data Formatting:** `GeoIntlRef`, `GeoUnitRef`, and `useFormattersRef` provide reactive, localized formatting for numbers, currencies, units (metric/imperial conversion), and dates.
-*   **List & Search Logic:** `ListDataRef` and `useSearchRef` manage complex hierarchical or flat data structures with optimized search and filtering capabilities.
+Key Expositions:
+- API Orchestration: `useApiRef`, `useApiManagementRef` (and their SSR-optimized `Async` variants) for full CRUD lifecycle management, including response validation via `@effect/schema`, automated error handling, and reactive list formatting.
+- Reactive Data Classes: `ListDataRef` (complex list state management), `DatetimeRef` (reactive date processing), `GeoIntlRef`/`GeoUnitRef` (localized number, currency, unit, and date formatting), and `GeoFlagRef` (country/language flag management).
+- Constructor Architecture: `DesignConstructorAbstract` and `DesignComponents` for building typed, reactive functional components with standardized class/style/slot handling.
+- Global State/Lifecycle: `executeUse` factory (Global/Provide/Local singletons), `EffectScopeGlobal`, `useMeta` (SSR-friendly meta tags), and `useLazyRef` (IntersectionObserver tracking).
+- Utility Functions: `computedAsync`, `computedEternity`, `toBind`/`toBinds` (style/class merging), and reactive wrappers like `useCookieRef`, `useStorageRef`, and `useTranslateRef`.
 
-### Triggers for Studying ai-types.md
-Mandatory to review `ai-types.md` when:
-1.  **System Integration:** You are implementing new API endpoints, configuring `dxtFunctionalPlugin`, or setting up global state providers (`executeUseProvide`).
-2.  **Schema Validation:** You are utilizing `validateResponseContract` or `validateRequestContract` and require the expected structure for `ApiDataValidation` or error storage interfaces.
-3.  **Component Construction:** You are extending `DesignConstructorAbstract` or implementing custom component modifications.
-4.  **Type Mapping:** You encounter complex generic constraints in the `useApiManagementRef` signature or `Constr` prefixed utility types (e.g., `ConstrBind`, `ConstrOptions`, `ConstrEmit`).
+Triggers for Studying ai-types.md:
+- Mandatory when implementing or extending any component class derived from `DesignConstructorAbstract`.
+- Mandatory when customizing data contracts (API, list item types, search columns, or component props).
+- Mandatory when the AI encounters `Constr*`, `ApiManagement*`, or `RefType` interface definitions, as these contain the strict structural requirements for system-wide architecture and component interaction.
 
-### Integration Context
-The library acts as a foundational service layer in the system stack. It integrates directly with Vue 3's composition API, Vue Router for navigation, and `@dxtmisha/functional-basic` for core network and utility logic. It is intended to be used as a singleton-pattern service provider within an application's plugin system via `dxtFunctionalPlugin` to facilitate consistent SSR state hydration and global dependency injection.
+Integration Context: 
+This library serves as a middleware layer between raw Vue 3 primitives and business logic. It relies on `@dxtmisha/functional-basic` for core engine utilities and expects integration with `vue-router` for navigation management. It is designed to be configured globally via `dxtFunctionalPlugin` and is compatible with SSR (Server-Side Rendering) patterns provided by frameworks like Nuxt or custom Vite setups.
