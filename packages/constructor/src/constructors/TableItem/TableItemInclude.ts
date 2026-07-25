@@ -86,7 +86,7 @@ export class TableItemInclude extends ComponentIncludeAbstract<
       return this.components?.renderOne(
         this.name,
         toBinds(
-          this.getBinds(key, index),
+          this.getBinds(index),
           this.getCellAttrs(value)
         ),
         {
@@ -123,7 +123,7 @@ export class TableItemInclude extends ComponentIncludeAbstract<
     return this.components?.renderOne(
       this.name,
       toBinds(
-        this.getBinds(key, index),
+        this.getBinds(index),
         this.getCellAttrs(value) ?? { label: value }
       ),
       undefined,
@@ -219,11 +219,10 @@ export class TableItemInclude extends ComponentIncludeAbstract<
    * Returns binding properties for the table item.
    *
    * Возвращает свойства привязки для ячейки таблицы.
-   * @param key unique rendering key / уникальный ключ рендеринга
    * @param index column index / индекс колонки
    * @returns component bindings / привязки компонента
    */
-  protected getBinds(key: string, index: string): Record<string, any> {
+  protected getBinds(index: string): Record<string, any> {
     const props = this.getProps()
 
     return toBinds(
@@ -235,7 +234,6 @@ export class TableItemInclude extends ComponentIncludeAbstract<
       },
       props.tableItemColumnAttrs?.[index],
       {
-        keyItem: key,
         index,
         stickyTop: props.stickyTop,
         stickyLeft: (props?.stickyLeft?.indexOf?.(index) ?? -1) !== -1

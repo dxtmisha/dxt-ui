@@ -24,12 +24,14 @@ export class CaptionInclude {
    * @param className class name / название класса
    * @param slots object for working with slots / объект для работы со слотами
    * @param skeleton optional skeleton for loading state / необязательный скелетон для состояния загрузки
+   * @param tag HTML tag for wrapping element / HTML-тег для оборачивающего элемента
    */
   constructor(
     protected readonly props: Readonly<CaptionProps>,
     protected readonly className: string,
     protected readonly slots?: CaptionSlots,
-    protected readonly skeleton?: SkeletonInclude
+    protected readonly skeleton?: SkeletonInclude,
+    protected readonly tag: string = 'div'
   ) {
   }
 
@@ -92,7 +94,7 @@ export class CaptionInclude {
     if (children.length > 0) {
       return [
         render(
-          'div',
+          this.tag,
           this.binds,
           children,
           'caption'

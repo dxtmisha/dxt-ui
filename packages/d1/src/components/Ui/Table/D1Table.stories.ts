@@ -26,6 +26,10 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const Table: Story = {
+  args: {
+    caption: 'test'
+  },
+
   // :story-main [!] System label / Системная метка
   render: (args: any) => ({
     components: { D1Table },
@@ -99,15 +103,7 @@ export const TableBasic: Story = {
               { id: '21', name: 'Uriel Septim', status: 'Pending', role: 'Tester', email: 'uriel.septim@example.com', age: 48, country: 'Japan', city: 'Tokyo', salary: '$7,800' },
               { id: '22', name: 'Victoria Beckham', status: 'Active', role: 'DevOps Engineer', email: 'victoria.beckham@example.com', age: 35, country: 'Australia', city: 'Sydney', salary: '$11,000' },
               { id: '23', name: 'Will Smith', status: 'Inactive', role: 'Architect', email: 'will.smith@example.com', age: 43, country: 'Canada', city: 'Toronto', salary: '$14,500' },
-              { id: '24', name: 'Xena Warrior', status: 'Active', role: 'Support Specialist', email: 'xena.warrior@example.com', age: 30, country: 'Singapore', city: 'Singapore', salary: '$6,500' },
-              { id: '25', name: 'Yvonne Strahovski', status: 'Pending', role: 'Developer', email: 'yvonne.strahovski@example.com', age: 31, country: 'USA', city: 'New York', salary: '$9,600' },
-              { id: '26', name: 'Zack Morris', status: 'Active', role: 'Designer', email: 'zack.morris@example.com', age: 28, country: 'UK', city: 'London', salary: '$8,400' },
-              { id: '27', name: 'Alexander Hamilton', status: 'Inactive', role: 'Manager', email: 'alexander.hamilton@example.com', age: 40, country: 'France', city: 'Paris', salary: '$12,500' },
-              { id: '28', name: 'Beatrice Potter', status: 'Active', role: 'Analyst', email: 'beatrice.potter@example.com', age: 33, country: 'Germany', city: 'Berlin', salary: '$9,200' },
-              { id: '29', name: 'Christopher Nolan', status: 'Pending', role: 'Tester', email: 'christopher.nolan@example.com', age: 46, country: 'Japan', city: 'Tokyo', salary: '$7,600' },
-              { id: '30', name: 'Deborah Morgan', status: 'Active', role: 'DevOps Engineer', email: 'deborah.morgan@example.com', age: 34, country: 'Australia', city: 'Sydney', salary: '$10,800' },
-              { id: '31', name: 'Ethan Hunt', status: 'Inactive', role: 'Architect', email: 'ethan.hunt@example.com', age: 39, country: 'Canada', city: 'Toronto', salary: '$13,800' },
-              { id: '32', name: 'Grace Hopper', status: 'Active', role: 'Support Specialist', email: 'grace.hopper@example.com', age: 44, country: 'Singapore', city: 'Singapore', salary: '$6,800' }
+              { id: '24', name: 'Xena Warrior', status: 'Active', role: 'Support Specialist', email: 'xena.warrior@example.com', age: 30, country: 'Singapore', city: 'Singapore', salary: '$6,500' }
             ]"
           />
         </div>
@@ -120,30 +116,58 @@ export const TableSlots: Story = {
     components: { D1Table },
     template: `
         <D1Table
+          caption="Table Caption"
           :columns="['id', 'name', 'status']"
           :header="[
             { id: 'ID', name: 'Name', status: 'Status' }
+          ]"
+          :foot="[
+            { id: 'Total', name: '2 users', status: 'Active' }
           ]"
           :list="[
             { id: '1', name: 'Alice', status: 'Active' },
             { id: '2', name: 'Bob', status: 'Pending' }
           ]"
         >
-          <template #header-name="{ value }">
-            Slot, header: {{ value }}
+          <template #caption>
+            Caption Slot: Users List
           </template>
-          <template #name="{ value }">
-            Slot: {{ value }}
-          </template>
-          <template #status="{ value }">
-            Slot: {{ value }}
-          </template>
-          <template #body="{ columns }">
+          <template #body>
             <tr>
-              <td :colspan="columns.length">
-                Slot body for {{ columns.length }} columns
+              <td colspan="3" style="padding: 8px;">
+                Body Slot (custom table body content)
               </td>
             </tr>
+          </template>
+          <template #header="{ columns }">
+            <tr>
+              <th :colspan="columns.length">
+                Header Slot (custom header row)
+              </th>
+            </tr>
+          </template>
+          <template #header-name="{ value }">
+            Header Cell Slot: {{ value }}
+          </template>
+          <template #name="{ value }">
+            Cell Slot: {{ value }}
+          </template>
+          <template #items="{ columns }">
+            <tr>
+              <td :colspan="columns.length">
+                Items Slot (inside tbody)
+              </td>
+            </tr>
+          </template>
+          <template #foot="{ columns }">
+            <tr>
+              <td :colspan="columns.length" style="padding: 8px;">
+                Foot Slot (custom footer row)
+              </td>
+            </tr>
+          </template>
+          <template #foot-name="{ value }">
+            Foot Cell Slot: {{ value }}
           </template>
         </D1Table>
     `

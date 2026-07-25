@@ -5,6 +5,7 @@ import {
   StorybookControl
 } from '../../types/storybookTypes'
 
+import { wikiInformation } from './wikiInformation'
 import { wikiList } from './wikiList'
 import { wikiPagination } from './wikiPagination'
 
@@ -14,6 +15,17 @@ import { wikiPagination } from './wikiPagination'
  * Объект wikiTable содержит свойства для компонента Table
  */
 export const wikiTable: StorybookArgsToList = {
+  'table.caption': wikiInformation.caption,
+  'table.captionBottom': {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Display table caption at the bottom of the table',
+        ru: 'Отображать подпись таблицы внизу таблицы'
+      }
+    }
+  },
   'table.columns': {
     type: StorybookControl.array,
     options: {

@@ -27,7 +27,8 @@ const classesToken = computed<ConstrClasses>(() => ({
   main: {
     // :classes-values [!] System label / Системная метка
     'd1-table': true,
-    'd1-table--headerTop': props.headerTop
+    'd1-table--headerTop': props.headerTop,
+    'd1-table--captionBottom': props.captionBottom
     // :classes-values [!] System label / Системная метка
   }
 }))

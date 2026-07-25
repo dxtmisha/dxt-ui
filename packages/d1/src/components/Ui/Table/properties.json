@@ -4,5 +4,11 @@
     "background-color": "{sys.palette.surface}",
     "background-opacity": "{sys.opacity.primary.high}",
     "backdrop-filter": "{sys.blur.md}"
+  },
+  "#caption": {
+    "paddingX": "{layout.paddingX}",
+    "paddingY": "{layout.paddingY}",
+    "link|font": "{font.bodyMedium}",
+    "color-opacity": "{sys.opacity.surface.medium}"
   }
 }

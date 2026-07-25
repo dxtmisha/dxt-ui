@@ -1,3 +1,4 @@
+import type { CaptionProps } from '../../types/captionTypes'
 import type { PaginationPropsInclude } from '../../types/paginationTypes'
 import type { SearchPropsInclude } from '../../types/searchTypes'
 import type { StickyScrollBottomPropsInclude } from '../../types/stickyTypes'
@@ -11,6 +12,7 @@ import type { TableHeader, TableHeaders, TableList } from './basicTypes'
 type TablePropsToken = {
   // :type [!] System label / Системная метка
   headerTop?: boolean
+  captionBottom?: boolean
   // :type [!] System label / Системная метка
 }
 
@@ -18,16 +20,23 @@ export type TablePropsBasic<
   TableItem extends TableItemPropsBasic = TableItemPropsBasic,
   TableHeaderItem extends TableHeaderItemPropsBasic = TableHeaderItemPropsBasic,
   TableRecord extends TableRecordPropsBasic<TableItem, TableHeaderItem> = TableRecordPropsBasic<TableItem, TableHeaderItem>
-> = TableRecordPropsInclude<TableItem, TableRecord>
+> = CaptionProps
   & SearchPropsInclude<TableItem>
   & PaginationPropsInclude<TableItem>
   & StickyScrollBottomPropsInclude
+  & TableRecordPropsInclude<TableItem, TableRecord>
   & {
     /** Column index names / Имена индексов колонок */
     columns?: string[]
 
+    /** Widths of columns via colgroup / Ширина колонок через colgroup */
+    columnsWidth?: Record<string, string | number>
+
     /** Table header data / Данные шапки таблицы */
     header?: TableHeader<TableHeaderItem> | TableHeaders<TableHeaderItem>
+
+    /** Table footer data / Данные подвала таблицы */
+    foot?: TableHeader<TableHeaderItem> | TableHeaders<TableHeaderItem>
 
     /** List of row records / Список записей строк */
     list?: TableList<TableItem>

@@ -1,4 +1,7 @@
 import type { ConstrClass } from '@dxtmisha/functional'
+
+import type { CaptionSlots } from '../../types/captionTypes'
+
 import type { ScrollStickyComponentInclude } from '../ScrollSticky'
 import type { TableRecordComponentInclude, TableRecordItemSlots } from '../TableRecord'
 
@@ -23,16 +26,41 @@ export type TableExpose = {}
 export type TableSlots<
   Item = any,
   Value = any
-> = TableRecordItemSlots<Item, Value>
+> = CaptionSlots
+  & TableRecordItemSlots<Item, Value>
   & {
+    /**
+     * Slot for custom table header content /
+     * Слот для пользовательского содержимого шапки таблицы
+     */
+    header?(props: {
+      /** Column index names / Имена индексов колонок */
+      columns: string[]
+    }): any
+
+    /**
+     * Slot for custom table footer content /
+     * Слот для пользовательского содержимого подвала таблицы
+     */
+    foot?(props: {
+      /** Column index names / Имена индексов колонок */
+      columns: string[]
+    }): any
+
+    /**
+     * Slot for custom table items content /
+     * Слот для пользовательского содержимого элементов таблицы
+     */
+    items?(props: {
+      /** Column index names / Имена индексов колонок */
+      columns: string[]
+    }): any
+
     /**
      * Slot for custom table body content /
      * Слот для пользовательского содержимого тела таблицы
      */
-    body?(props: {
-      /** Column index names / Имена индексов колонок */
-      columns: string[]
-    }): any
+    body?(props: any): any
   }
 
 /**
@@ -44,7 +72,11 @@ export type TableClasses = {
   main: ConstrClass
   // :classes [!] System label / Системная метка
   table: string
+  colgroup: string
+  col: string
   header: string
+  foot: string
   items: string
+  caption: string
   // :classes [!] System label / Системная метка
 }

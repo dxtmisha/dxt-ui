@@ -102,7 +102,7 @@ export class TableRecord {
    *
    * Возвращает ключ идентификатора элемента.
    */
-  get key(): string {
+  get key(): string | undefined {
     if (this.props.item) {
       if (isString(this.props.item?.index)) {
         return this.props.item.index
@@ -117,7 +117,7 @@ export class TableRecord {
       return this.props.index
     }
 
-    return ''
+    return undefined
   }
 
   /**

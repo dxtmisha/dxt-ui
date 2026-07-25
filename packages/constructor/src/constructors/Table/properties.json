@@ -1,6 +1,11 @@
 {
   "#table": {},
+  "#colgroup": {},
+  "#col": {},
   "#header": {},
+  "#foot": {},
   "#items": {},
-  "~headerTop": {}
+  "#caption": {},
+  "~headerTop": {},
+  "~captionBottom": {}
 }

@@ -4,6 +4,7 @@ import {
   type DesignComp
 } from '@dxtmisha/functional'
 
+import { CaptionInclude } from '../../classes/CaptionInclude'
 import { PaginationInclude } from '../../classes/PaginationInclude'
 import { SearchInclude } from '../../classes/SearchInclude'
 import { StickyInclude } from '../../classes/StickyInclude'
@@ -22,6 +23,8 @@ import type { TableProps } from './props'
  * Координирует индексы колонок таблицы, рендеринг строк шапки/элементов и синхронизацию прокрутки.
  */
 export class Table {
+  /** Caption include manager instance / Экземпляр включения подписи */
+  readonly caption: CaptionInclude
   /** Table columns manager instance / Экземпляр менеджера колонок таблицы */
   readonly columns: TableColumns
   /** Search include manager instance / Экземпляр включения поиска */
@@ -46,6 +49,7 @@ export class Table {
    * @param slots object for working with slots / object for working with slots
    * @param emits callback function triggered on events / функция обратного вызова, запускаемая при событиях
    * @param constructors optional class constructor overrides / необязательные переопределения конструкторов классов
+   * @param constructors.CaptionIncludeConstructor class for working with caption / класс для работы с подписью
    * @param constructors.PaginationIncludeConstructor class for creating a pagination include / класс для создания включения пагинации
    * @param constructors.SearchIncludeConstructor class for creating a search include / класс для создания включения поиска
    * @param constructors.StickyIncludeConstructor class for creating a sticky include / класс для создания включения липкого элемента
@@ -62,6 +66,7 @@ export class Table {
     protected readonly slots?: TableSlots,
     protected readonly emits?: ConstrEmit<TableEmits>,
     constructors: {
+      CaptionIncludeConstructor?: typeof CaptionInclude
       PaginationIncludeConstructor?: typeof PaginationInclude
       SearchIncludeConstructor?: typeof SearchInclude
       StickyIncludeConstructor?: typeof StickyInclude
@@ -70,6 +75,7 @@ export class Table {
     } = {}
   ) {
     const {
+      CaptionIncludeConstructor = CaptionInclude,
       PaginationIncludeConstructor = PaginationInclude,
       SearchIncludeConstructor = SearchInclude,
       StickyIncludeConstructor = StickyInclude,
@@ -77,6 +83,7 @@ export class Table {
       TableRecordIncludeConstructor = TableRecordInclude
     } = constructors
 
+    this.caption = new CaptionIncludeConstructor(props, className, slots, undefined, 'caption')
     this.columns = new TableColumnsConstructor(props)
     this.search = new SearchIncludeConstructor(props, () => this.columns.list)
     this.pagination = new PaginationIncludeConstructor(props, () => this.search.list)

@@ -29,4 +29,10 @@
       }
     }
   }
+
+  &--captionBottom {
+    @include ui.subclass('caption') {
+      caption-side: bottom;
+    }
+  }
 }

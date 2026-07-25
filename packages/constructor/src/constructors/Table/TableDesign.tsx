@@ -7,6 +7,7 @@ import {
 } from '@dxtmisha/functional'
 
 import { Table } from './Table'
+import type { TableHeader, TableHeaders } from './basicTypes'
 import type { TableProps } from './props'
 import type {
   TableClasses,
@@ -91,8 +92,12 @@ export class TableDesign<
       ...{
         // :classes [!] System label / Системная метка
         table: this.getSubClass('table'),
+        colgroup: this.getSubClass('colgroup'),
+        col: this.getSubClass('col'),
         header: this.getSubClass('header'),
-        items: this.getSubClass('items')
+        foot: this.getSubClass('foot'),
+        items: this.getSubClass('items'),
+        caption: this.getSubClass('caption')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -161,10 +166,35 @@ export class TableDesign<
         class: this.classes?.value.table
       },
       [
+        ...this.item.caption.render(),
+        ...this.renderColgroup(),
+        ...this.renderBody(),
         ...this.renderHeader(),
-        ...this.renderItems()
+        ...this.renderItems(),
+        ...this.renderFoot()
       ]
     )
+  }
+
+  /**
+   * Renders the colgroup element with col definitions for column widths. /
+   * Рендерит элемент colgroup с определениями col для ширины колонок.
+   * @returns rendered colgroup virtual nodes array / массив виртуальных узлов colgroup
+   */
+  readonly renderColgroup = (): VNode[] => {
+    const cols = this.item.columns.cols
+
+    if (cols.length === 0) {
+      return []
+    }
+
+    return [
+      h(
+        'colgroup',
+        { class: this.classes?.value.colgroup },
+        cols.map(attr => h('col', { ...attr, class: this.classes?.value.col }))
+      )
+    ]
   }
 
   /**
@@ -174,22 +204,13 @@ export class TableDesign<
    * @returns rendered header virtual node or undefined / виртуальный узел заголовка или undefined
    */
   readonly renderHeader = (): VNode[] => {
-    const children: any[] = []
+    const children = this.renderRecords('header', this.props.header, true)
 
-    if (this.props.header) {
-      toArray(this.props.header)
-        .forEach((item, key) => {
-          children.push(
-            this.item.tableRecord.renderRecord(
-              this.item.tableRecord.getKey(`header-${key}`, item),
-              this.item.columns.list,
-              item,
-              true,
-              { stickyTop: false }
-            )
-          )
-        })
-    }
+    this.initSlot(
+      'header',
+      children,
+      { columns: this.item.columns.list }
+    )
 
     if (children.length > 0) {
       return [
@@ -204,7 +225,35 @@ export class TableDesign<
       ]
     }
 
-    return children
+    return []
+  }
+
+  /**
+   * Renders the table footer.
+   *
+   * Рендерит подвал таблицы.
+   * @returns rendered foot virtual node or empty array / виртуальный узел подвала или пустой массив
+   */
+  readonly renderFoot = (): VNode[] => {
+    const children = this.renderRecords('foot', this.props.foot, true)
+
+    this.initSlot(
+      'foot',
+      children,
+      { columns: this.item.columns.list }
+    )
+
+    if (children.length > 0) {
+      return [
+        h(
+          'tfoot',
+          { class: this.classes?.value.foot },
+          children
+        )
+      ]
+    }
+
+    return []
   }
 
   /**
@@ -214,10 +263,13 @@ export class TableDesign<
    * @returns rendered items virtual node or undefined / виртуальный узел элементов или undefined
    */
   readonly renderItems = (): VNode[] => {
-    const children: any[] = [
-      ...this.renderList(),
-      ...this.renderBody()
-    ]
+    const children: any[] = this.renderList()
+
+    this.initSlot(
+      'items',
+      children,
+      { columns: this.item.columns.list }
+    )
 
     if (children.length > 0) {
       return [
@@ -229,7 +281,7 @@ export class TableDesign<
       ]
     }
 
-    return children
+    return []
   }
 
   /**
@@ -261,16 +313,42 @@ export class TableDesign<
    * @returns rendered slot virtual node or undefined / виртуальный узел слота или undefined
    */
   readonly renderBody = (): VNode[] => {
-    const slot = this.initSlot(
-      'body',
-      undefined,
-      { columns: this.item.columns.list }
-    )
+    const children: any[] = []
 
-    if (slot) {
-      return [slot]
+    this.initSlot('body', children)
+
+    return children
+  }
+
+  /**
+   * Helper for rendering header or footer records. /
+   * Вспомогательный метод для рендеринга записей шапки или подвала.
+   * @param index prefix index name / префиксное имя индекса
+   * @param data record header/foot items / элементы записей шапки/подвала
+   * @param isHeader header flag / флаг шапки
+   * @returns list of rendered VNodes / список отрендеренных VNode
+   */
+  readonly renderRecords = (
+    index: string,
+    data?: TableHeader | TableHeaders,
+    isHeader: boolean = true
+  ): VNode[] => {
+    const children: any[] = []
+
+    if (data) {
+      toArray(data).forEach((item, key) => {
+        children.push(
+          this.item.tableRecord.renderRecord(
+            this.item.tableRecord.getKey(`${index}-${key}`, item),
+            this.item.columns.list,
+            item,
+            isHeader,
+            { stickyTop: false }
+          )
+        )
+      })
     }
 
-    return []
+    return children
   }
 }

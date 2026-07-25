@@ -1,5 +1,7 @@
-- `[column: string](props: TableRecordItemSlotProps): any` — Dynamic slot for custom cell rendering of the specified column name (applies to both data cells and header cells).
-- `body(props: { columns: string[] }): any` — Slot for custom table body content.
+- `[column: string](props: TableRecordItemSlotProps): any` — Dynamic slot for custom cell rendering of the specified column name (applies to data cells, header cells, and footer cells).
+- `header(props: { columns: string[] }): any` — Slot for custom table header content (`<thead>`).
+- `items(props: { columns: string[] }): any` — Slot for custom table items content (`<tbody>`).
+- `foot(props: { columns: string[] }): any` — Slot for custom table footer content (`<tfoot>`).
 
 > **TableRecordItemSlotProps:**
 > - `item: any` — Row data object for data cells, or header configuration object for header cells.

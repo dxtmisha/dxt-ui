@@ -78,4 +78,11 @@ describe('CaptionInclude', () => {
     const nodes = include.render()
     expect(nodes).toEqual([])
   })
+
+  it('should render custom tag when tag parameter is provided', () => {
+    const include = new CaptionInclude({ caption: 'Hello' }, 'my-class', undefined, undefined, 'caption')
+    const nodes = include.render()
+    expect(nodes.length).toBe(1)
+    expect(nodes[0].type).toBe('caption')
+  })
 })

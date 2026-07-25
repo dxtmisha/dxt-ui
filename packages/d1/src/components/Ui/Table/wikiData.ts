@@ -5,8 +5,12 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
+  { name: 'caption', type: 'string | number' },
+  { name: 'captionBottom', type: 'boolean' },
+  { name: 'captionDecorative', type: 'boolean' },
   { name: 'columns', type: 'string[]' },
   { name: 'defaultHeight', type: 'string | number' },
+  { name: 'foot', type: 'TableHeader<TableRecordProps> | TableHeaders<TableRecordProps>' },
   { name: 'header', type: 'TableHeader<TableRecordProps> | TableHeaders<TableRecordProps>' },
   { name: 'headerTop', type: 'boolean' },
   { name: 'isSkeleton', type: 'boolean' },
@@ -32,7 +36,14 @@ const propsNames: StorybookProps = [
 const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
   { name: 'body', description: `Slot for custom table body content /
-Слот для пользовательского содержимого тела таблицы`, properties: [{ name: 'props', type: '({ columns: string[]; }) | undefined' }] }
+Слот для пользовательского содержимого тела таблицы`, properties: [{ name: 'props', type: '({ columns: string[]; }) | undefined' }] },
+  { name: 'caption', description: `Caption slot/ Слот заголовка`, properties: [{ name: 'props', type: '(any) | undefined' }] },
+  { name: 'foot', description: `Slot for custom table footer content /
+Слот для пользовательского содержимого подвала таблицы`, properties: [{ name: 'props', type: '({ columns: string[]; }) | undefined' }] },
+  { name: 'header', description: `Slot for custom table header content /
+Слот для пользовательского содержимого шапки таблицы`, properties: [{ name: 'props', type: '({ columns: string[]; }) | undefined' }] },
+  { name: 'items', description: `Slot for custom table items content /
+Слот для пользовательского содержимого элементов таблицы`, properties: [{ name: 'props', type: '({ columns: string[]; }) | undefined' }] }
   // :slotsList [!] System label / Системная метка
 ]
 
