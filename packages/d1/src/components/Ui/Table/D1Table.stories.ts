@@ -53,7 +53,7 @@ export const TableBasic: Story = {
           <D1Table
             :columns="['id', 'name', 'status', 'role', 'email', 'age', 'country', 'city', 'salary']"
             :headerTop="true"
-            :stickyLeft="['name', 'role']"
+            :stickyLeft="['name']"
             :header="[
               {
                 id: { label: 'ID', rowspan: 2, description: 'Index', tooltipLabel: 'Identifier', tooltipDescription: 'Unique number of the record.' },

@@ -1,0 +1,34 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/sortList - Мультиколоночная сортировка массива'/>
+
+# `sortList`
+
+Утилита для сортировки массива объектов или элементов по одному или нескольким путям свойств колонок, направлениям (`'asc'` или `'desc'`) или пользовательской функции сравнения. Выполняет локализованное сравнение строк с помощью `Intl.Collator` с параметрами числовой сортировки и нечувствительности к регистру, а также помещает значения `null` и `undefined` в конец отсортированного списка.
+
+**Параметры:**
+- `list: T[]` — Входной массив элементов для сортировки.
+- `sortColumns: SortColumnItem[]` — Массив спецификаций сортировки колонок `{ column: string, dir: SortDir }`.
+- `customSort?: SortFunction<T>` — Необязательная пользовательская функция сравнения.
+
+**Возвращает:**
+`T[]` — Новый отсортированный массив элементов (или исходный массив, если `sortColumns` пуст или длина списка меньше 2).
+
+```typescript
+import { sortList } from '@dxtmisha/functional-basic'
+
+const users = [
+  { id: 3, category: 'A', name: 'Чарли', age: 30 },
+  { id: 1, category: 'B', name: 'Алиса', age: 25 },
+  { id: 4, category: 'A', name: 'Алиса', age: 20 },
+  { id: 2, category: 'B', name: 'Боб', age: 35 }
+]
+
+// Сортировка по категории по возрастанию, затем по возрасту по убыванию
+const sorted = sortList(users, [
+  { column: 'category', dir: 'asc' },
+  { column: 'age', dir: 'desc' }
+])
+
+console.log(sorted.map(user => user.id)) // [3, 4, 2, 1]
+```

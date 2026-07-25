@@ -94,6 +94,10 @@ export class WikiStorybookItem {
         return 5200
       case StorybookCategory.mask:
         return 5200
+      case StorybookCategory.search:
+        return 5200
+      case StorybookCategory.sort:
+        return 5200
       case StorybookCategory.form:
         return 6000
       case StorybookCategory.arrow:

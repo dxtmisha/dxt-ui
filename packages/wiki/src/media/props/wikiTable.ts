@@ -48,6 +48,27 @@ export const wikiTable: StorybookArgsToList = {
     },
     hide: true
   },
+  'table.columnsWidth': {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.style,
+      type: 'Record<string, string | number>',
+      description: {
+        en: 'Widths of columns via colgroup',
+        ru: 'Ширина колонок через colgroup'
+      }
+    }
+  },
+  'table.foot': {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.value,
+      description: {
+        en: 'Table footer data',
+        ru: 'Данные подвала таблицы'
+      }
+    }
+  },
   'table.header': {
     type: StorybookControl.object,
     options: {

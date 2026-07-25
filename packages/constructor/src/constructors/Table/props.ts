@@ -1,6 +1,7 @@
 import type { CaptionProps } from '../../types/captionTypes'
 import type { PaginationPropsInclude } from '../../types/paginationTypes'
 import type { SearchPropsInclude } from '../../types/searchTypes'
+import type { SortPropsInclude } from '../../types/sortTypes'
 import type { StickyScrollBottomPropsInclude } from '../../types/stickyTypes'
 
 import type { TableItemPropsBasic } from '../TableItem'
@@ -22,6 +23,7 @@ export type TablePropsBasic<
   TableRecord extends TableRecordPropsBasic<TableItem, TableHeaderItem> = TableRecordPropsBasic<TableItem, TableHeaderItem>
 > = CaptionProps
   & SearchPropsInclude<TableItem>
+  & SortPropsInclude<TableItem>
   & PaginationPropsInclude<TableItem>
   & StickyScrollBottomPropsInclude
   & TableRecordPropsInclude<TableItem, TableRecord>

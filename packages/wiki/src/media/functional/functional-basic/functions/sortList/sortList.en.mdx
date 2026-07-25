@@ -1,0 +1,34 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/sortList - Multi-column array sorting'/>
+
+# `sortList`
+
+A utility that sorts an array of objects or items by one or more column property paths, directions (`'asc'` or `'desc'`), or a custom comparison function. It performs locale-aware string comparisons using `Intl.Collator` with numeric and case-insensitive sensitivity options, and places `null` or `undefined` values at the end of sorted lists.
+
+**Parameters:**
+- `list: T[]` — Input array of items to sort.
+- `sortColumns: SortColumnItem[]` — Array of column sorting specifications `{ column: string, dir: SortDir }`.
+- `customSort?: SortFunction<T>` — Optional custom comparison function.
+
+**Returns:**
+`T[]` — A new sorted array of items (or the original array if `sortColumns` is empty or list length is less than 2).
+
+```typescript
+import { sortList } from '@dxtmisha/functional-basic'
+
+const users = [
+  { id: 3, category: 'A', name: 'Charlie', age: 30 },
+  { id: 1, category: 'B', name: 'Alice', age: 25 },
+  { id: 4, category: 'A', name: 'Alice', age: 20 },
+  { id: 2, category: 'B', name: 'Bob', age: 35 }
+]
+
+// Sort by category ascending, then age descending
+const sorted = sortList(users, [
+  { column: 'category', dir: 'asc' },
+  { column: 'age', dir: 'desc' }
+])
+
+console.log(sorted.map(user => user.id)) // [3, 4, 2, 1]
+```

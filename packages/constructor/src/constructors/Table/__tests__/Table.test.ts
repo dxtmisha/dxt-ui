@@ -80,3 +80,25 @@ describe('Table colgroup', () => {
     expect(table.columns.list).toEqual(['id', 'name'])
   })
 })
+
+describe('Table sort', () => {
+  it('should sort list using sort and sortDir props', () => {
+    const list = [
+      { id: 3, name: 'Charlie' },
+      { id: 1, name: 'Alice' },
+      { id: 2, name: 'Bob' }
+    ]
+    const props: TableProps = {
+      list,
+      sort: 'name',
+      sortDir: 'asc'
+    }
+    const refs = {} as any
+    const element = ref<HTMLElement>()
+
+    const table = new Table(props, refs, element, 'd1', 'd1-table')
+    expect(table.sort.isSort()).toBe(true)
+    expect(table.sort.getList().map(item => item.name)).toEqual(['Alice', 'Bob', 'Charlie'])
+    expect(table.pagination.list.map(item => item.name)).toEqual(['Alice', 'Bob', 'Charlie'])
+  })
+})

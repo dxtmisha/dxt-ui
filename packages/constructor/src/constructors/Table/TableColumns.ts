@@ -1,13 +1,8 @@
 import type { ConstrStyles } from '@dxtmisha/functional'
 import { getLast, isArray, isFilled } from '@dxtmisha/functional'
 
+import type { TableColumnCol } from './basicTypes'
 import type { TableProps } from './props'
-
-export type TableColumnCol = {
-  'key': string
-  'style'?: ConstrStyles
-  'data-col': string
-}
 
 /**
  * Class representing table columns logic.

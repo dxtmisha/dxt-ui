@@ -1,6 +1,18 @@
+import type { ConstrStyles } from '@dxtmisha/functional'
+
 import type { TableHeaderItemPropsBasic } from '../TableHeaderItem'
 import type { TableItemPropsBasic } from '../TableItem'
 import type { TableRecordValue } from '../TableRecord'
+
+/**
+ * Type describing col element attributes for colgroup. /
+ * Тип, описывающий атрибуты элемента col для colgroup.
+ */
+export type TableColumnCol = {
+  'key': string
+  'style'?: ConstrStyles
+  'data-col': string
+}
 
 /**
  * Type describing table header data. /

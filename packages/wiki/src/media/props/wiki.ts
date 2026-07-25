@@ -6,6 +6,8 @@ import { wikiForm } from './wikiForm'
 import { wikiStatus } from './wikiStatus'
 import { wikiInformation } from './wikiInformation'
 import { wikiValue } from './wikiValue'
+import { wikiSearch } from './wikiSearch'
+import { wikiSort } from './wikiSort'
 import { wikiStyle } from './wikiStyle'
 import { wikiOption } from './wikiOption'
 import { wikiTechnical } from './wikiTechnical'
@@ -85,6 +87,8 @@ export const wiki: StorybookArgsToList = {
   ...wikiStatus,
   ...wikiInformation,
   ...wikiValue,
+  ...wikiSearch,
+  ...wikiSort,
   ...wikiStyle,
   ...wikiOption,
   ...wikiTechnical,

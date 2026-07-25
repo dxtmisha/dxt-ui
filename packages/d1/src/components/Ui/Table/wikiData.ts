@@ -9,6 +9,7 @@ const propsNames: StorybookProps = [
   { name: 'captionBottom', type: 'boolean' },
   { name: 'captionDecorative', type: 'boolean' },
   { name: 'columns', type: 'string[]' },
+  { name: 'columnsWidth', type: 'Record<string, string | number>' },
   { name: 'defaultHeight', type: 'string | number' },
   { name: 'foot', type: 'TableHeader<TableRecordProps> | TableHeaders<TableRecordProps>' },
   { name: 'header', type: 'TableHeader<TableRecordProps> | TableHeaders<TableRecordProps>' },
@@ -23,6 +24,9 @@ const propsNames: StorybookProps = [
   { name: 'searchColumns', type: 'string[]' },
   { name: 'searchOptions', type: 'SearchOptions' },
   { name: 'selected', type: 'string | string[]' },
+  { name: 'sort', type: 'SortColumn' },
+  { name: 'sortDir', type: 'string', option: ['asc', 'desc'] },
+  { name: 'sortFunction', type: 'SortFunction<TableItemProps>' },
   { name: 'stickyLeft', type: 'string[]' },
   { name: 'stickyScrollBottom', type: 'boolean' },
   { name: 'stickyTop', type: 'string[]' },
@@ -36,7 +40,7 @@ const propsNames: StorybookProps = [
 const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
   { name: 'body', description: `Slot for custom table body content /
-Слот для пользовательского содержимого тела таблицы`, properties: [{ name: 'props', type: '({ columns: string[]; }) | undefined' }] },
+Слот для пользовательского содержимого тела таблицы`, properties: [{ name: 'props', type: '(any) | undefined' }] },
   { name: 'caption', description: `Caption slot/ Слот заголовка`, properties: [{ name: 'props', type: '(any) | undefined' }] },
   { name: 'foot', description: `Slot for custom table footer content /
 Слот для пользовательского содержимого подвала таблицы`, properties: [{ name: 'props', type: '({ columns: string[]; }) | undefined' }] },
