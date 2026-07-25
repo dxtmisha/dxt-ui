@@ -426,28 +426,6 @@ export const wikiOption: StorybookArgsToList = {
       }
     }
   },
-  searchColumns: {
-    type: StorybookControl.array,
-    options: {
-      category: StorybookCategory.option,
-      type: 'string[]',
-      description: {
-        en: 'Columns or fields to perform search in',
-        ru: 'Колонки или поля для выполнения поиска'
-      }
-    }
-  },
-  searchOptions: {
-    type: StorybookControl.object,
-    options: {
-      category: StorybookCategory.option,
-      type: 'SearchOptions',
-      description: {
-        en: 'Search configuration options',
-        ru: 'Параметры конфигурации поиска'
-      }
-    }
-  },
   showLabel: {
     type: StorybookControl.boolean,
     options: {
