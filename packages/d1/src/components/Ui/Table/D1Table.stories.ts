@@ -248,6 +248,7 @@ export const TableSearch: Story = {
               { id: '11', name: 'Kevin Hart', role: 'Tester', age: 27, salary: 7200 },
               { id: '12', name: 'Liam Neeson', role: 'Director', age: 52, salary: 15000 }
             ]"
+            key-value="id"
           >
             <template #nameSearch="{ value }">
               <span v-html="value"/>
