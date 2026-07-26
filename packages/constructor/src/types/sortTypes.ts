@@ -1,3 +1,4 @@
+import type { Ref } from 'vue'
 import type { SortDir, SortFunction } from '@dxtmisha/functional'
 
 /**
@@ -5,6 +6,20 @@ import type { SortDir, SortFunction } from '@dxtmisha/functional'
  * Целевая колонка (колонки) или ключ (ключи) свойств для сортировки.
  */
 export type SortColumn = string | string[] | Record<string, SortDir>
+
+/**
+ * Type representing sort column parameter, reactive ref, or getter callback function for SortInclude.
+ *
+ * Тип, описывающий параметр колонки сортировки, реактивный реф или функцию обратного вызова для SortInclude.
+ */
+export type SortIncludeSort = SortColumn | Ref<SortColumn | undefined> | (() => SortColumn | undefined)
+
+/**
+ * Type representing sort direction parameter, reactive ref, or getter callback function for SortInclude.
+ *
+ * Тип, описывающий параметр направления сортировки, реактивный реф или функцию обратного вызова для SortInclude.
+ */
+export type SortIncludeSortDir = SortDir | Ref<SortDir | undefined> | (() => SortDir | undefined)
 
 /**
  * Type representing sort properties for components and SortInclude.

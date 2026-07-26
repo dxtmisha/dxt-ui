@@ -316,6 +316,22 @@
     }
   }
 
+  &-input {
+    width: 100%;
+    max-width: 320px;
+    @include ui.padding(8px);
+
+    background-color: transparent;
+
+    border: 1px solid oklch(92.8% 0.006 264.531);
+    border-radius: 8px;
+    outline: none;
+
+    &:focus {
+      border-color: oklch(54.6% 0.201 262.051);
+    }
+  }
+
   &-dummy {
     height: 32px;
     background-color: rgba(82, 82, 82, 0.32);

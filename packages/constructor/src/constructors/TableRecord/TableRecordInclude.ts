@@ -112,21 +112,18 @@ export class TableRecordInclude extends ComponentIncludeAbstract<
         this.name,
         toBinds(
           {
+            selected: isSelected(index, props.selected),
+            disabled: item?.disabled,
             stickyTop: (props.stickyTop?.indexOf(index) ?? -1) !== -1,
             stickyLeft: props.stickyLeft,
             tableItemAttrs: props.tableItemAttrs,
-            tableItemColumnAttrs: props.tableItemColumnAttrs
-          },
-          props.tableRecordAttrs,
-          {
-            selected: isSelected(index, props.selected),
-            disabled: item?.disabled,
+            tableItemColumnAttrs: props.tableItemColumnAttrs,
             isSkeleton: props.isSkeleton,
             lazy: props.lazy,
             defaultHeight: props.defaultHeight
           },
+          this.getAttrs(attrs),
           props.tableRowAttrs?.[index],
-          attrs,
           {
             item,
             columns,

@@ -1,6 +1,6 @@
 import type { ConstrClass } from '@dxtmisha/functional'
 
-import type { TableHeaderItemComponentInclude } from '../TableHeaderItem'
+import type { TableHeaderItemComponentInclude, TableHeaderItemEmits } from '../TableHeaderItem'
 import type { TableItemComponentInclude } from '../TableItem'
 
 import type { TableRecordItemSlots } from './basicTypes'
@@ -15,7 +15,7 @@ export type TableRecordComponents = TableHeaderItemComponentInclude & TableItemC
  * Type describing available events. /
  * Тип, описывающий доступные события.
  */
-export type TableRecordEmits = {}
+export type TableRecordEmits = TableHeaderItemEmits
 
 /**
  * Type describing available properties. /

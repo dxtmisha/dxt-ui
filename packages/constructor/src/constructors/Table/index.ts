@@ -1,5 +1,6 @@
 export * from './Table'
 export * from './TableColumns'
+export * from './TableSort'
 export * from './TableDesign'
 export * from './basicTypes'
 export * from './props'

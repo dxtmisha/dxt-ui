@@ -37,6 +37,7 @@ export class LabelInclude {
    * @param alternativeSlots flag to use alternative slot name / флаг использования альтернативного имени слота
    * @param skeleton optional loading skeleton include / необязательный скелетон загрузки
    * @param tag HTML tag for wrapping element / HTML-тег для оборачивающего элемента
+   * @param ignoreLabelIfSlot flag to ignore props.label if slot is provided / флаг игнорирования props.label, если передан слот
    */
   constructor(
     protected readonly props: RefOrNormalOrFunction<LabelProps>,
@@ -47,7 +48,8 @@ export class LabelInclude {
     protected readonly labelReplacing?: Ref<string | number | undefined>,
     protected readonly alternativeSlots?: boolean,
     protected readonly skeleton?: SkeletonInclude,
-    protected readonly tag?: RefOrNormalOrFunction<string | undefined>
+    protected readonly tag?: RefOrNormalOrFunction<string | undefined>,
+    protected readonly ignoreLabelIfSlot?: boolean
   ) {
   }
 
@@ -58,6 +60,10 @@ export class LabelInclude {
    * @returns checking result / результат проверки
    */
   get is(): boolean {
+    if (this.hasSlot()) {
+      return true
+    }
+
     if (
       this.getProps().label
       || this.labelReplacing?.value
@@ -65,6 +71,16 @@ export class LabelInclude {
       return true
     }
 
+    return false
+  }
+
+  /**
+   * Checks if the target slot is present.
+   *
+   * Проверяет наличие целевого слота.
+   * @returns checking result / результат проверки
+   */
+  protected hasSlot(): boolean {
     if (this.slots) {
       if (this.alternativeSlots) {
         return 'label' in this.slots
@@ -173,6 +189,13 @@ export class LabelInclude {
    * @returns array containing the text / массив, содержащий текст
    */
   protected initLabel(): any[] {
+    if (
+      this.ignoreLabelIfSlot
+      && this.hasSlot()
+    ) {
+      return []
+    }
+
     const label = this.getProps().label
 
     if (

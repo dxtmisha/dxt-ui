@@ -27,14 +27,14 @@ export class TableRecordDesign<
   CLASSES extends TableRecordClasses,
   P extends TableRecordProps
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
-    COMP,
-    TableRecordEmits,
-    EXPOSE,
-    TableRecordSlots,
-    CLASSES,
-    P
-  > {
+  HTMLDivElement,
+  COMP,
+  TableRecordEmits,
+  EXPOSE,
+  TableRecordSlots,
+  CLASSES,
+  P
+> {
   /** TableRecord controller instance / Экземпляр контроллера записи таблицы (TableRecord) */
   protected readonly item: TableRecord
 

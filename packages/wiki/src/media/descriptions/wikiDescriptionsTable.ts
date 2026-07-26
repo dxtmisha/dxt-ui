@@ -20,6 +20,7 @@ export const wikiDescriptionsTable: StorybookComponentsDescriptionItem = {
       'row-level selections and key extraction configuration',
       'sticky headers configuration with headerTop flag',
       'sticky bottom horizontal scrollbar via stickyScrollBottom',
+      'built-in local search and filtering via search and searchColumns properties',
       'custom slot support for header, body, items, foot, caption, and column cells'
     ],
     ru: [
@@ -30,10 +31,13 @@ export const wikiDescriptionsTable: StorybookComponentsDescriptionItem = {
       'выбор на уровне строк и настройка извлечения ключей',
       'настройка липкой шапки с помощью флага headerTop',
       'прилипающий нижний горизонтальный скроллбар через stickyScrollBottom',
+      'встроенный локальный поиск и фильтрация с помощью свойств search и searchColumns',
       'поддержка кастомных слотов для шапки (header), тела (body), элементов (items), подвала (foot), подписи (caption) и ячеек колонок'
     ]
   },
-  import: [],
+  import: [
+    'import { ref } from \'vue\''
+  ],
   render: `
     <div class="wiki-storybook-item wiki-storybook-item--rectangle wiki-storybook-item--overflowAuto wiki-storybook-item--padding" style="max-height: 360px;">
       <DesignComponent v-bind="args" />
@@ -170,6 +174,92 @@ export const wikiDescriptionsTable: StorybookComponentsDescriptionItem = {
           </template>
         </DesignComponent>
       `
+    },
+    {
+      id: 'TableSort',
+      name: {
+        en: 'Sorting',
+        ru: 'Сортировка'
+      },
+      template: `
+        <div class="wiki-storybook-item wiki-storybook-item--rectangle wiki-storybook-item--overflowAuto wiki-storybook-item--padding" style="max-height: 360px;">
+          <DesignComponent
+            :columns="['id', 'name', 'role', 'age', 'salary']"
+            :header="[
+              {
+                id: 'ID',
+                name: { label: 'Name', showSort: true },
+                role: { label: 'Role', showSort: true },
+                age: { label: 'Age', showSort: true },
+                salary: { label: 'Salary', showSort: true }
+              }
+            ]"
+            sort="age"
+            sortDir="desc"
+            :list="[
+              { id: '1', name: 'Alice Smith', role: 'Developer', age: 28, salary: 9500 },
+              { id: '2', name: 'Bob Johnson', role: 'Designer', age: 34, salary: 8500 },
+              { id: '3', name: 'Charlie Brown', role: 'Manager', age: 42, salary: 12000 },
+              { id: '4', name: 'Diana Prince', role: 'Analyst', age: 30, salary: 9000 },
+              { id: '5', name: 'Edward Norton', role: 'Tester', age: 26, salary: 7000 }
+            ]"
+          />
+        </div>
+      `
+    },
+    {
+      id: 'TableSearch',
+      name: {
+        en: 'Search',
+        ru: 'Поиск'
+      },
+      setup: `
+        return {
+          searchValue: ref('an')
+        }
+      `,
+      template: `
+        <div class="wiki-storybook-flex-column">
+          <div class="wiki-storybook-flex-align-center">
+            <input class="wiki-storybook-input" type="text" v-model="searchValue" placeholder="Search name or role..."/>
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--rectangle wiki-storybook-item--overflowAuto wiki-storybook-item--padding">
+            <DesignComponent
+            :search="searchValue"
+            :searchColumns="['name', 'role']"
+            :columns="['id', 'name', 'nameSearch', 'role', 'age', 'salary']"
+            :header="[
+              {
+                id: 'ID',
+                name: 'Name',
+                nameSearch: 'Name (Search slot)',
+                role: 'Role',
+                age: 'Age',
+                salary: 'Salary'
+              }
+            ]"
+            :list="[
+              { id: '1', name: 'Alice Smith', role: 'Developer', age: 28, salary: 9500 },
+              { id: '2', name: 'Bob Johnson', role: 'Designer', age: 34, salary: 8500 },
+              { id: '3', name: 'Charlie Brown', role: 'Manager', age: 42, salary: 12000 },
+              { id: '4', name: 'Diana Prince', role: 'Analyst', age: 30, salary: 9000 },
+              { id: '5', name: 'Edward Norton', role: 'Tester', age: 26, salary: 7000 },
+              { id: '6', name: 'Fiona Gallagher', role: 'Product Manager', age: 35, salary: 11000 },
+              { id: '7', name: 'George Miller', role: 'Developer', age: 29, salary: 9200 },
+              { id: '8', name: 'Hannah Abbott', role: 'Designer', age: 31, salary: 8800 },
+              { id: '9', name: 'Ian Wright', role: 'DevOps', age: 38, salary: 10500 },
+              { id: '10', name: 'Julia Roberts', role: 'HR Manager', age: 45, salary: 9500 },
+              { id: '11', name: 'Kevin Hart', role: 'Tester', age: 27, salary: 7200 },
+              { id: '12', name: 'Liam Neeson', role: 'Director', age: 52, salary: 15000 }
+            ]"
+          >
+            <template #nameSearch="{ value }">
+              <span v-html="value"/>
+            </template>
+          </DesignComponent>
+          </div>
+        </div>
+      `
     }
   ],
   documentation: {
@@ -178,12 +268,19 @@ export const wikiDescriptionsTable: StorybookComponentsDescriptionItem = {
 <Canvas of={Component.TableBasic}/>
 <StorybookDescriptions componentName={'Table'} type={'headerTop'}/>
 <StorybookDescriptions componentName={'Table'} type={'stickyScrollBottom'}/>
+<StorybookDescriptions componentName={'Table'} type={'sort'}/>
+<Canvas of={Component.TableSort}/>
+<StorybookDescriptions componentName={'Table'} type={'search'}/>
+<Canvas of={Component.TableSearch}/>
     `,
     slots: `
 <Canvas of={Component.TableSlots}/>
 <StorybookDescriptions componentName={'Slot'} type={'caption'}/>
 <StorybookDescriptions componentName={'Slot'} type={'body'}/>
 <StorybookDescriptions componentName={'Table'} type={'slots'}/>
+    `,
+    events: `
+<StorybookDescriptions componentName={'Event'} type={'sort'}/>
     `
   },
   ai: {

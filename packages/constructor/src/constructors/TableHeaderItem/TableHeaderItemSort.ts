@@ -1,5 +1,8 @@
+import { inject, type Ref } from 'vue'
+
 import type { ConstrEmit, SortColumnItem, SortDir } from '@dxtmisha/functional'
 
+import type { SortColumn } from '../../types/sortTypes'
 import type { TableHeaderItemEmits } from './types'
 import type { TableHeaderItemProps } from './props'
 
@@ -11,6 +14,12 @@ import type { TableHeaderItemProps } from './props'
  * Управляет именем индекса колонки сортировки, состоянием направления сортировки и эмиссией переключений.
  */
 export class TableHeaderItemSort {
+  /** Reactive reference to currently selected sort column key / Реактивная ссылка на ключевой индекс текущей колонки сортировки */
+  readonly sortColumn?: Ref<SortColumn | undefined>
+
+  /** Reactive reference to current sort direction / Реактивная ссылка на текущее направление сортировки */
+  readonly sortDir?: Ref<SortDir | undefined>
+
   /**
    * Constructor
    * @param props input properties / входные свойства
@@ -19,7 +28,10 @@ export class TableHeaderItemSort {
   constructor(
     protected readonly props: TableHeaderItemProps,
     protected readonly emits?: ConstrEmit<TableHeaderItemEmits>
-  ) { }
+  ) {
+    this.sortColumn = inject('sortColumn', undefined)
+    this.sortDir = inject('sortDir', undefined)
+  }
 
   /**
    * Returns column index name for sorting.
@@ -38,7 +50,7 @@ export class TableHeaderItemSort {
    * @returns sorting direction / направление сортировки
    */
   get dir(): SortDir | undefined {
-    return this.props.sortDir
+    return this.sortDir?.value ?? this.props.sortDir
   }
 
   /**
@@ -55,13 +67,24 @@ export class TableHeaderItemSort {
   }
 
   /**
+   * Returns active sort column key from injected ref or props.
+   *
+   * Возвращает активный ключ колонки сортировки из инжектированного рефа или props.
+   * @returns active sort column key / активный ключ колонки сортировки
+   */
+  getSortColumn(): string | undefined {
+    const column = this.sortColumn?.value ?? this.props.sortColumn
+    return column !== undefined ? String(column) : undefined
+  }
+
+  /**
    * Checks whether the current column is sorted.
    *
    * Проверяет, отсортирована ли текущая колонка.
    * @returns sorting active status / статус активности сортировки
    */
   isSorted(): boolean {
-    return String(this.props.sortColumn) === this.column && Boolean(this.props.sortDir)
+    return this.getSortColumn() === this.column && Boolean(this.dir)
   }
 
   /**
@@ -109,14 +132,14 @@ export class TableHeaderItemSort {
    * @returns next sorting direction / следующее направление сортировки
    */
   protected getNextDir(): SortDir | undefined {
-    if (!this.isSorted()) {
-      return 'asc'
-    }
-
     if (this.dir === 'asc') {
       return 'desc'
     }
 
-    return undefined
+    if (this.dir === 'desc') {
+      return undefined
+    }
+
+    return 'asc'
   }
 }

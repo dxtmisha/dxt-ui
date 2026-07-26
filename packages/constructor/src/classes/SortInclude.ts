@@ -1,4 +1,4 @@
-import { computed } from 'vue'
+import { computed, isRef, type Ref } from 'vue'
 import {
   executeFunction,
   isObjectNotArray,
@@ -8,7 +8,11 @@ import {
   type SortDir
 } from '@dxtmisha/functional'
 
-import type { SortPropsInclude } from '../types/sortTypes'
+import type {
+  SortIncludeSort,
+  SortIncludeSortDir,
+  SortPropsInclude
+} from '../types/sortTypes'
 
 /**
  * Class representing sorting logic across components.
@@ -24,10 +28,14 @@ export class SortInclude<T = any> {
    * Конструктор для SortInclude.
    * @param props input sort properties / входные свойства сортировки
    * @param targetList target list array or callback function returning list / целевой массив списка или функция обратного вызова, возвращающая список
+   * @param sort fallback target column(s), reactive ref, or callback function returning column(s) / резервная целевая колонка (колонки), реактивный реф или функция обратного вызова
+   * @param sortDir fallback sorting direction, reactive ref, or callback function returning direction / резервное направление сортировки, реактивный реф или функция обратного вызова
    */
   constructor(
     protected readonly props: SortPropsInclude<T>,
-    protected readonly targetList?: any[] | (() => any[] | undefined)
+    protected readonly targetList?: any[] | (() => any[] | undefined),
+    protected readonly sort?: SortIncludeSort,
+    protected readonly sortDir?: SortIncludeSortDir
   ) { }
 
   /**
@@ -36,7 +44,7 @@ export class SortInclude<T = any> {
    * Реактивное свойство для списка нормализованных спецификаций сортировки колонок.
    */
   readonly columns = computed<SortColumnItem[]>(() => {
-    const sort = this.props.sort
+    const sort = this.getValue(this.sort) ?? this.props.sort
 
     if (!sort) {
       return []
@@ -132,7 +140,7 @@ export class SortInclude<T = any> {
   protected getColumnItem(col: string): SortColumnItem {
     let column = col
     let dir: SortDir = 'asc'
-    const sortDir = this.props.sortDir
+    const sortDir = this.getValue(this.sortDir) ?? this.props.sortDir
 
     if (col.startsWith('-')) {
       column = col.slice(1)
@@ -145,5 +153,16 @@ export class SortInclude<T = any> {
     }
 
     return { column, dir }
+  }
+
+  /**
+   * Resolves a value, reactive ref, or getter function into its unwrapped value.
+   *
+   * Разрешает значение, реактивный реф или функцию-геттер в развернутое значение.
+   * @param value raw value, reactive ref, or getter function / значение, реактивный реф или функция-геттер
+   * @returns unwrapped value / развернутое значение
+   */
+  protected getValue<V>(value: V | Ref<V> | (() => V)): V {
+    return executeFunction(isRef(value) ? value.value : value)
   }
 }

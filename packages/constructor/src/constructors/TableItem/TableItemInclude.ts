@@ -113,12 +113,14 @@ export class TableItemInclude extends ComponentIncludeAbstract<
    * @param key unique rendering key / уникальный ключ рендеринга
    * @param index column index / индекс колонки
    * @param value cell value / значение ячейки
+   * @param children child elements or slots / дочерние элементы или слоты
    * @returns rendered virtual node or undefined / отрендеренная виртуальная нода или undefined
    */
   renderDefault(
     key: string,
     index: string,
-    value: any
+    value: any,
+    children?: any
   ): VNode | undefined {
     return this.components?.renderOne(
       this.name,
@@ -126,7 +128,7 @@ export class TableItemInclude extends ComponentIncludeAbstract<
         this.getBinds(index),
         this.getCellAttrs(value) ?? { label: value }
       ),
-      undefined,
+      children,
       key
     )
   }
@@ -138,18 +140,20 @@ export class TableItemInclude extends ComponentIncludeAbstract<
    * @param key unique rendering key / уникальный ключ рендеринга
    * @param index column index / индекс колонки
    * @param row row data object / объект данных строки
+   * @param children child elements or slots / дочерние элементы или слоты
    * @returns rendered virtual node or undefined / отрендеренная виртуальная нода или undefined
    */
   readonly renderItem = (
     key: string,
     index: string,
-    row: any
+    row: any,
+    children?: any
   ): VNode | undefined => {
     if (this.components) {
       const value: any = row?.[index]
 
       return this.renderSlot(key, index, row, value)
-        || this.renderDefault(key, index, value)
+        || this.renderDefault(key, index, value, children)
     }
 
     return undefined
@@ -226,12 +230,12 @@ export class TableItemInclude extends ComponentIncludeAbstract<
     const props = this.getProps()
 
     return toBinds(
-      props.tableItemAttrs,
       {
         selected: props.selected,
         disabled: props.disabled,
         isSkeleton: props.isSkeleton
       },
+      this.getAttrs(),
       props.tableItemColumnAttrs?.[index],
       {
         index,

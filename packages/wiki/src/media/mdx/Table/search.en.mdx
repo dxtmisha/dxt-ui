@@ -1,0 +1,54 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+## Search and Filtering
+
+The Table component has a built-in search functionality that allows you to easily filter your dataset locally.
+
+### Using Automatic Local Search
+
+To use the built-in search, simply bind a reactive string variable to the `search` property. As the user types into your search input, the Table will automatically filter the `list` rows. 
+
+By default, the table will search across all values. If you want to restrict the search to specific object keys in your data, you can pass an array of property names to the `searchColumns` property.
+
+<Source
+    code={`
+<script setup lang="ts">
+import { ref } from 'vue'
+
+const searchQuery = ref('')
+const columns = ['name', 'role']
+const header = [
+  {
+    name: 'Name',
+    role: 'Role'
+  }
+]
+const list = [
+  { name: 'Alice Smith', role: 'Developer' },
+  { name: 'Bob Johnson', role: 'Designer' },
+  { name: 'Charlie Brown', role: 'Manager' }
+]
+</script>
+
+<template>
+  <div>
+    <!-- Your search input -->
+    <input v-model="searchQuery" placeholder="Search..." />
+
+    <!-- The table automatically filters based on searchQuery -->
+    <Table
+      :columns="columns"
+      :header="header"
+      :list="list"
+      :search="searchQuery"
+      :searchColumns="['name', 'role']"
+    />
+  </div>
+</template>
+  `}
+    language="html"
+/>
+
+### Advanced Configuration
+
+You can pass a configuration object to the `searchOptions` property for more advanced scenarios (e.g. strict matching, case-sensitivity) via the `@dxtmisha/functional` search engine.

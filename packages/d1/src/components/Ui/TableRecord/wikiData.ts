@@ -28,6 +28,7 @@ const slotsNames: StorybookSlots = [
 
 const eventsNames: StorybookSlots = [
   // :eventsList [!] System label / Системная метка
+  { name: 'sort', description: `Event triggered when sort button is clicked / Событие, вызываемое при клике по кнопке сортировки`, properties: [{ name: 'item', type: 'SortColumnItem' }] }
   // :eventsList [!] System label / Системная метка
 ]
 

@@ -11,12 +11,12 @@ import { TableItemInclude } from '../TableItem'
  * - Merge properties that change FREQUENTLY/CONSTANTLY during runtime (such as active state,
  *   values, or open states) inside `getAttrs()` to ensure correct and optimal reactive updates.
  *
- *  Класс TableHeaderItemInclude предоставляет функциональность для рендеринга элементов ячеек шапки таблицы
+ * Класс TableHeaderItemInclude предоставляет функциональность для рендеринга элементов ячеек шапки таблицы
  * внутри других компонентов. Управляет конфигурацией на уровне ячеек и разрешением слотов.
  */
 export class TableHeaderItemInclude extends TableItemInclude {
   /** Component sub-name / Дополнительное имя компонента */
-  protected readonly name = 'tableHeaderItem'
+  protected override readonly name = 'tableHeaderItem'
 
   /**
    * Returns the slots name based on the column index for header items.

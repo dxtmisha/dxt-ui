@@ -15,6 +15,7 @@ export const wikiDescriptionsTableHeaderItem: StorybookComponentsDescriptionItem
     en: [
       'support for standard th and custom tag configurations',
       'horizontal and vertical header alignment options',
+      'interactive 3-state column sorting support',
       'integrated tooltip component for extra documentation',
       'customizable tooltip icon and slots',
       'responsive sticky headers and columns support',
@@ -23,6 +24,7 @@ export const wikiDescriptionsTableHeaderItem: StorybookComponentsDescriptionItem
     ru: [
       'поддержка стандартного th и настраиваемых тегов',
       'варианты горизонтального и вертикального выравнивания заголовка',
+      'интерактивная 3-состоятельная сортировка колонок',
       'интегрированная всплывающая подсказка для дополнительной документации',
       'настраиваемая иконка подсказки и слоты',
       'поддержка адаптивных липких заголовков и столбцов',
@@ -82,13 +84,16 @@ export const wikiDescriptionsTableHeaderItem: StorybookComponentsDescriptionItem
 <StorybookDescriptions componentName={'Slot'} type={'description'}/>
 <StorybookDescriptions componentName={'Slot'} type={'tooltip'}/>
 <StorybookDescriptions componentName={'TableItem'} type={'slots'}/>
+    `,
+    events: `
+<StorybookDescriptions componentName={'Event'} type={'sort'}/>
     `
   },
   ai: {
     description: `
-Extends the TableItem cell logic to represent a table header (th). Integrates a built-in Tooltip component triggered by an icon to show helper text or descriptions.
+Extends the TableItem cell logic to represent a table header (th). Integrates a built-in Tooltip component triggered by an icon and interactive 3-state column sorting (asc -> desc -> disabled) emitting sort events.
 Provides design-system standard skeleton loaders, label/description layout, and sticky position utilities. Uses help-circle as default info icon if tooltipLabel or tooltipDescription is defined.
-Controlled via value, tag, colspan, rowspan, and tooltip-specific properties. Use inside table thead structures to specify column headers that require contextual documentation.
+Controlled via value, tag, colspan, rowspan, sortColumn, sortDir, and tooltip-specific properties. Use inside table thead structures to specify column headers that require contextual documentation or sorting.
 `,
     hide: true
   }

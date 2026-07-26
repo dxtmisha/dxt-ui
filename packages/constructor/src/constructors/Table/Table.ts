@@ -7,10 +7,10 @@ import {
 import { CaptionInclude } from '../../classes/CaptionInclude'
 import { PaginationInclude } from '../../classes/PaginationInclude'
 import { SearchInclude } from '../../classes/SearchInclude'
-import { SortInclude } from '../../classes/SortInclude'
 import { StickyInclude } from '../../classes/StickyInclude'
 
 import { TableColumns } from './TableColumns'
+import { TableSort } from './TableSort'
 import { TableRecordInclude } from '../TableRecord'
 
 import type { TableComponents, TableEmits, TableSlots } from './types'
@@ -32,8 +32,8 @@ export class Table {
   readonly pagination: PaginationInclude
   /** Search include manager instance / Экземпляр включения поиска */
   readonly search: SearchInclude
-  /** Sort include manager instance / Экземпляр включения сортировки */
-  readonly sort: SortInclude
+  /** Table sort manager instance / Экземпляр менеджера сортировки таблицы */
+  readonly sort: TableSort
 
   /** Table record include manager instance / Экземпляр включения записей таблицы */
   readonly tableRecord: TableRecordInclude
@@ -55,7 +55,7 @@ export class Table {
    * @param constructors.CaptionIncludeConstructor class for working with caption / класс для работы с подписью
    * @param constructors.PaginationIncludeConstructor class for creating a pagination include / класс для создания включения пагинации
    * @param constructors.SearchIncludeConstructor class for creating a search include / класс для создания включения поиска
-   * @param constructors.SortIncludeConstructor class for creating a sort include / класс для создания включения сортировки
+   * @param constructors.TableSortConstructor class for creating table sort manager / класс для создания менеджера сортировки таблицы
    * @param constructors.StickyIncludeConstructor class for creating a sticky include / класс для создания включения липкого элемента
    * @param constructors.TableColumnsConstructor class for creating table columns / класс для создания колонок таблицы
    * @param constructors.TableRecordIncludeConstructor class for creating a table record include / класс для создания включения записи таблицы
@@ -73,7 +73,7 @@ export class Table {
       CaptionIncludeConstructor?: typeof CaptionInclude
       PaginationIncludeConstructor?: typeof PaginationInclude
       SearchIncludeConstructor?: typeof SearchInclude
-      SortIncludeConstructor?: typeof SortInclude
+      TableSortConstructor?: typeof TableSort
       StickyIncludeConstructor?: typeof StickyInclude
       TableColumnsConstructor?: typeof TableColumns
       TableRecordIncludeConstructor?: typeof TableRecordInclude
@@ -83,7 +83,7 @@ export class Table {
       CaptionIncludeConstructor = CaptionInclude,
       PaginationIncludeConstructor = PaginationInclude,
       SearchIncludeConstructor = SearchInclude,
-      SortIncludeConstructor = SortInclude,
+      TableSortConstructor = TableSort,
       StickyIncludeConstructor = StickyInclude,
       TableColumnsConstructor = TableColumns,
       TableRecordIncludeConstructor = TableRecordInclude
@@ -93,7 +93,7 @@ export class Table {
     this.columns = new TableColumnsConstructor(props)
 
     this.search = new SearchIncludeConstructor(props, () => this.columns.list)
-    this.sort = new SortIncludeConstructor(props, () => this.search.list)
+    this.sort = new TableSortConstructor(props, () => this.search.list, emits)
     this.pagination = new PaginationIncludeConstructor(props, () => this.sort.getList())
 
     this.tableRecord = new TableRecordIncludeConstructor(
@@ -101,7 +101,7 @@ export class Table {
       className,
       props,
       components,
-      undefined,
+      () => ({ onSort: this.sort.onSort }),
       slots
     )
 

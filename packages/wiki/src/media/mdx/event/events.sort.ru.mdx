@@ -1,0 +1,28 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+### `sort`
+
+Событие вызывается при клике по кнопке управления сортировкой в ячейке шапки таблицы или записи таблицы, возвращая целевой ключ колонки и обновленное направление сортировки.
+
+**Параметры:**
+- `item: SortColumnItem` — объект, содержащий целевой ключ колонки и направление сортировки
+
+**Структура объекта SortColumnItem:**
+- `column?: string` — идентификатор ключа колонки (или `undefined` при сбросе/отключении сортировки)
+- `dir?: SortDir` — направление сортировки (`'asc'`, `'desc'` или `undefined`)
+
+<Source
+    code={`
+<script setup>
+const handleSort = (item) => {
+  console.log('Целевая колонка:', item.column)
+  console.log('Направление сортировки:', item.dir)
+}
+</script>
+
+<template>
+  <TableHeaderItem index="title" @sort="handleSort" />
+</template>
+  `}
+    language="html"
+/>

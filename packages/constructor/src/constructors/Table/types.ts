@@ -3,7 +3,7 @@ import type { ConstrClass } from '@dxtmisha/functional'
 import type { CaptionSlots } from '../../types/captionTypes'
 
 import type { ScrollStickyComponentInclude } from '../ScrollSticky'
-import type { TableRecordComponentInclude, TableRecordItemSlots } from '../TableRecord'
+import type { TableRecordComponentInclude, TableRecordEmits, TableRecordItemSlots } from '../TableRecord'
 
 export type TableComponents = TableRecordComponentInclude & ScrollStickyComponentInclude
 
@@ -11,7 +11,7 @@ export type TableComponents = TableRecordComponentInclude & ScrollStickyComponen
  * Type describing available events. /
  * Тип, описывающий доступные события.
  */
-export type TableEmits = {}
+export type TableEmits = TableRecordEmits
 
 /**
  * Type describing available properties. /

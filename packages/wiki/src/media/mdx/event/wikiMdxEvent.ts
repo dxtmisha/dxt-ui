@@ -24,6 +24,8 @@ import eventsPasteEn from './events.paste.en.mdx'
 import eventsPasteRu from './events.paste.ru.mdx'
 import eventsResetEn from './events.reset.en.mdx'
 import eventsResetRu from './events.reset.ru.mdx'
+import eventsSortEn from './events.sort.en.mdx'
+import eventsSortRu from './events.sort.ru.mdx'
 
 export const wikiMdxEvent: StorybookComponentsMdxItem = {
   name: 'Event',
@@ -75,6 +77,10 @@ export const wikiMdxEvent: StorybookComponentsMdxItem = {
     'reset': {
       en: eventsResetEn,
       ru: eventsResetRu
+    },
+    'sort': {
+      en: eventsSortEn,
+      ru: eventsSortRu
     }
   }
 }

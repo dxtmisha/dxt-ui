@@ -2,7 +2,8 @@ import { type Ref, type ToRefs, type VNode } from 'vue'
 import {
   type ConstrEmit,
   type DesignComp,
-  isString
+  isString,
+  type SortColumnItem
 } from '@dxtmisha/functional'
 
 import { ClientOnlyInclude } from '../../classes/ClientOnlyInclude'
@@ -75,7 +76,7 @@ export class TableRecord {
       className,
       props,
       components,
-      undefined,
+      { onSort: (item: SortColumnItem) => this.emits?.('sort', item) },
       slots
     )
 

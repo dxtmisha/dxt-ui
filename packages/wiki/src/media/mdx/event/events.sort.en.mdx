@@ -1,0 +1,28 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+### `sort`
+
+Event fires when clicking the sorting control button in a table header cell or table record, returning the target column key and updated sorting direction.
+
+**Parameters:**
+- `item: SortColumnItem` — object containing target column key and sorting direction
+
+**SortColumnItem structure:**
+- `column?: string` — column key identifier (or `undefined` when sorting is reset/disabled)
+- `dir?: SortDir` — sorting direction (`'asc'`, `'desc'`, or `undefined`)
+
+<Source
+    code={`
+<script setup>
+const handleSort = (item) => {
+  console.log('Target column:', item.column)
+  console.log('Sort direction:', item.dir)
+}
+</script>
+
+<template>
+  <TableHeaderItem index="title" @sort="handleSort" />
+</template>
+  `}
+    language="html"
+/>

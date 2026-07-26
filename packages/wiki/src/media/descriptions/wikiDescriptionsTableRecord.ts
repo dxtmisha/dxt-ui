@@ -88,6 +88,9 @@ export const wikiDescriptionsTableRecord: StorybookComponentsDescriptionItem = {
     `,
     slots: `
 <StorybookDescriptions componentName={'TableRecord'} type={'slots'}/>
+    `,
+    events: `
+<StorybookDescriptions componentName={'Event'} type={'sort'}/>
     `
   },
   ai: {

@@ -1,0 +1,88 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+## Sorting Data
+
+The Table component provides built-in support for sorting your data. You can either let the table handle the sorting automatically (local sorting) or control the sorting state manually, which is useful when fetching data from a server (server-side sorting).
+
+### Enabling Sorting on Columns
+
+To make a column sortable, add `showSort: true` to its definition in the `header` prop. This will render an interactive sort button in the column header. Clicking the button cycles between 3 states:
+1. Ascending (`'asc'`)
+2. Descending (`'desc'`)
+3. Reset (unsorted)
+
+### Automatic Local Sorting
+
+By default, the Table component handles sorting automatically. If you provide a static array of data to the `list` property and configure `showSort` in the header, the table will reorder the items on the fly without any extra code.
+
+<Source
+    code={`
+<script setup lang="ts">
+const columns = ['name', 'age']
+const header = [
+  {
+    name: { label: 'Name', showSort: true },
+    age: { label: 'Age', showSort: true }
+  }
+]
+const list = [
+  { name: 'Alice Smith', age: 28 },
+  { name: 'Bob Johnson', age: 34 }
+]
+</script>
+
+<template>
+  <Table
+    :columns="columns"
+    :header="header"
+    :list="list"
+  />
+</template>
+  `}
+    language="html"
+/>
+
+### Controlled (Server-Side) Sorting
+
+When working with APIs, you typically need to sort data on the backend. To do this, you can control the sorting state by listening to the `@sort` event and passing the current sorting state back via the `:sort` and `:sortDir` properties. 
+
+When you use the `@sort` event, it overrides the automatic local sorting and delegates the responsibility to your event handler.
+
+<Source
+    code={`
+<script setup lang="ts">
+import { ref } from 'vue'
+
+const currentSort = ref<string | undefined>()
+const currentDir = ref<'asc' | 'desc' | undefined>()
+
+const handleSort = (item: { column: string | undefined, dir: 'asc' | 'desc' | undefined }) => {
+  currentSort.value = item.column
+  currentDir.value = item.dir
+  
+  // Example: fetch data from API using new sorting parameters
+  // fetchUsers({ sort: item.column, dir: item.dir })
+}
+</script>
+
+<template>
+  <Table
+    :columns="columns"
+    :header="header"
+    :list="list"
+    :sort="currentSort"
+    :sortDir="currentDir"
+    @sort="handleSort"
+  />
+</template>
+  `}
+    language="html"
+/>
+
+### Advanced Sorting Options
+
+The `:sort` property also supports complex sorting configurations:
+- **Array:** Sort by multiple columns sequentially (e.g. `['category', 'name']`). Prefix a column with `-` for descending order (e.g. `['-category']`).
+- **Object Map:** Detailed multi-column configuration (e.g. `{ category: 'asc', age: 'desc' }`).
+
+If you need a completely custom sorting algorithm for automatic local sorting, you can provide a custom comparison function via the `:sortFunction` property.

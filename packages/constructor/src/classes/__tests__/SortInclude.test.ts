@@ -1,5 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { ref } from 'vue'
+import type { SortDir } from '@dxtmisha/functional'
+import type { SortColumn } from '../../types/sortTypes'
 import { SortInclude } from '../SortInclude'
 
 describe('SortInclude', () => {
@@ -107,5 +109,61 @@ describe('SortInclude', () => {
 
     const sortInclude = new SortInclude(props.value)
     expect(sortInclude.getList().map(item => item.id)).toEqual([1, 2, 3, 4])
+  })
+
+  it('should use fallback sort and sortDir parameters when props.sort is missing', () => {
+    const props = ref({
+      list: sampleList
+    })
+
+    const sortInclude = new SortInclude(props.value, undefined, 'age', 'desc')
+    expect(sortInclude.isSort()).toBe(true)
+    expect(sortInclude.column).toBe('age')
+    expect(sortInclude.dir).toBe('desc')
+    expect(sortInclude.getList().map(item => item.age)).toEqual([35, 30, 25, 20])
+  })
+
+  it('should prioritize constructor sort parameter over props.sort', () => {
+    const props = ref({
+      list: sampleList,
+      sort: 'name',
+      sortDir: 'asc' as const
+    })
+
+    const sortInclude = new SortInclude(props.value, undefined, 'age', 'desc')
+    expect(sortInclude.column).toBe('age')
+    expect(sortInclude.dir).toBe('desc')
+    expect(sortInclude.getList().map(item => item.age)).toEqual([35, 30, 25, 20])
+  })
+
+  it('should support callback functions for sort and sortDir constructor parameters', () => {
+    const props = ref({
+      list: sampleList
+    })
+
+    const sortInclude = new SortInclude(props.value, undefined, () => 'category', () => 'desc')
+    expect(sortInclude.column).toBe('category')
+    expect(sortInclude.dir).toBe('desc')
+    expect(sortInclude.getList().map(item => item.category)).toEqual(['B', 'B', 'A', 'A'])
+  })
+
+  it('should support reactive Ref parameters for sort and sortDir', () => {
+    const props = ref({
+      list: sampleList
+    })
+    const sortRef = ref<SortColumn | undefined>('age')
+    const sortDirRef = ref<SortDir | undefined>('desc')
+
+    const sortInclude = new SortInclude(props.value, undefined, sortRef, sortDirRef)
+    expect(sortInclude.column).toBe('age')
+    expect(sortInclude.dir).toBe('desc')
+    expect(sortInclude.getList().map(item => item.age)).toEqual([35, 30, 25, 20])
+
+    // Mutate reactive refs
+    sortRef.value = 'name'
+    sortDirRef.value = 'asc'
+    expect(sortInclude.column).toBe('name')
+    expect(sortInclude.dir).toBe('asc')
+    expect(sortInclude.getList().map(item => item.name)).toEqual(['Alice', 'Alice', 'Bob', 'Charlie'])
   })
 })
