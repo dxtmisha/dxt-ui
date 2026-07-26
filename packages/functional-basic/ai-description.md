@@ -1,24 +1,24 @@
-The project is a comprehensive, isomorphic utility library designed for web application development, focusing on API interaction, state management, and internationalization.
+### Core Purpose
+This is a comprehensive, isomorphic utility library designed for modular web application development. It provides robust abstractions for HTTP API interaction (with caching and hydration), state management (URL query/hash), internationalization (i18n), localization (dates, units, phones), DOM events, and application-wide services like error handling, loading states, and icon management. It is designed to work across both client-side (DOM) and server-side (SSR) environments.
 
-Core Purpose:
-The library provides a structured framework for managing HTTP requests (Fetch API), client/server data hydration, localization (date, currency, unit formatting), URL state synchronization (Query/Hash), and global error handling. It is designed to be environment-agnostic, supporting both client-side (DOM) and server-side (SSR) execution.
+### Key Expositions
+*   **API Management**: `ApiInstance` (singleton interface for `fetch`), `ApiCache` (caching), `ApiErrorStorage` (centralized error handling), `ApiHydration` (SSR data serialization).
+*   **Geographic & Localization**: `GeoInstance` (locale management), `GeoIntl` (formatting for dates, numbers, currency), `GeoUnit` (unit conversion), `GeoPhone` (masking).
+*   **State & Storage**: `QueryInstance` and `HashInstance` (URL state sync), `DataStorage` (localStorage/sessionStorage), `CookieStorage` (isomorphic cookie management).
+*   **Events & UI**: `EventItem` (advanced DOM event handler with lifecycle and cleanup), `LoadingInstance` (global loading state), `ScrollbarWidth` (layout utility).
+*   **Utilities**: `Formatters` (list/column-based data formatting), `SearchList` (advanced client-side search), `Meta` (SEO/OG/Twitter metadata management), `Translate` (i18n text retrieval).
+*   **Functional Helpers**: A collection of pure functions (e.g., `copyObject`, `executePromise`, `toNumber`, `toKebabCase`, `intersectKey`) covering data manipulation and type guards.
 
-Key Expositions:
-- Api: Centralized HTTP request handler (ApiInstance) supporting caching, automated hydration, retries, and error transformation.
-- Geo: Geographic data management for locales, time zones, and phone masks, utilizing Intl for localized formatting.
-- Meta: Unified manager for HTML, Open Graph, and Twitter Card meta-tag injection.
-- State Managers: Includes Query and Hash classes for URL state management, and DataStorage (Local/Session) for persistence.
-- Formatters: A highly configurable engine for formatting complex data lists (currency, units, pluralization).
-- Event Handling: EventItem acts as an advanced wrapper for DOM events with built-in lifecycle control and optimization (e.g., ResizeObserver, requestAnimationFrame for scroll).
-- Utilities: A collection of functional helpers (`toNumber`, `copyObject`, `executePromise`, `isFilled`) for robust data processing.
+### Triggers for Studying ai-types.md
+It is mandatory to study `ai-types.md` if:
+*   You need to interface with the API system and require specific `ApiFetch` configuration options (like custom `wrapper` or `queryReturn`).
+*   You are defining custom error handling schemas via `ApiErrorStorageItem`.
+*   You need to manipulate or extend the global API or Translation configuration (`ApiConfig`, `TranslateConfig`).
+*   You are creating complex formatted lists using `Formatters` and need to map custom property types or transformation functions.
+*   You need to understand the structural requirements for geographic data (`GeoItem`, `GeoPhoneMap`) or Search utility data types.
 
-Triggers for Studying ai-types.md:
-Reading "ai-types.md" is mandatory when:
-- Implementing custom API response processors (`queryReturn` in `ApiFetch`).
-- Defining complex search or sort logic for `SearchList`.
-- Configuring `Translate` files or `FormattersOptions`.
-- Debugging Type collisions in `GeoTypes` or `ApiTypes` when integrating with existing network layer schemas.
-- Configuring custom `ApiErrorStorageItem` patterns for application-level error handling.
-
-Integration Context:
-This library functions as a middleware/utility layer within a web stack. It sits above the native Fetch API and global browser/node objects, providing a standardized interface that is particularly useful for frameworks requiring robust SSR data management and consistent formatting across globalized user sessions.
+### Integration Context
+The library acts as a foundational "Core/Utils" layer. It is framework-agnostic but requires manual synchronization for SSR hydration. It connects to the system via:
+*   **Global Singletons**: Access points like `Api.getItem()` or `Geo.getObject()` provide instant access to initialized instances.
+*   **Environment Adapters**: Hooks/listeners are used to bridge the library to specific runtimes (e.g., DOM-based event listeners or SSR request context listeners).
+*   **Typed Interfaces**: Heavy reliance on TypeScript generics ensures that data flow (API responses, search results, formatters) remains type-safe throughout the system stack.

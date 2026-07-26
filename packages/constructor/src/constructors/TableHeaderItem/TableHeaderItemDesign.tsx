@@ -96,6 +96,7 @@ export class TableHeaderItemDesign<
         label: this.getSubClass('label'),
         description: this.getSubClass('description'),
         body: this.getSubClass('body'),
+        sort: this.getSubClass('sort'),
         tooltip: this.getSubClass('tooltip')
         // :classes [!] System label / Системная метка
       }
@@ -146,6 +147,7 @@ export class TableHeaderItemDesign<
   readonly renderBody = (): VNode[] => {
     const children: any[] = [
       ...this.item.label.render(),
+      ...this.renderSort(),
       ...this.renderTooltip()
     ]
 
@@ -157,6 +159,20 @@ export class TableHeaderItemDesign<
           children
         )
       ]
+    }
+
+    return []
+  }
+
+  /**
+   * Renders the sorting element.
+   *
+   * Рендер элемента сортировки.
+   * @returns array of virtual nodes (VNode) / массив виртуальных узлов (VNode)
+   */
+  readonly renderSort = (): VNode[] => {
+    if (this.props.showSort) {
+      return this.item.chip.render()
     }
 
     return []
@@ -192,7 +208,7 @@ export class TableHeaderItemDesign<
     return this.components.renderOne(
       'icon',
       toBinds(
-        this.item.tooltipControlBind.value,
+        this.item.tooltipControlBind,
         control.binds
       ),
       undefined,

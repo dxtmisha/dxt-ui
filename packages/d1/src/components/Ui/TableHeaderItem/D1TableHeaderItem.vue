@@ -11,6 +11,7 @@ import {
   type TableHeaderItemSlots
 } from '@dxtmisha/constructor/TableHeaderItem'
 
+import { D1Chip } from '../Chip'
 import { D1Icon } from '../Icon'
 import { D1Tooltip } from '../Tooltip'
 
@@ -53,8 +54,15 @@ const design = new TableHeaderItemDesign(
     classes: classesToken,
     styles: stylesToken,
     components: {
+      chip: D1Chip,
       icon: D1Icon,
       tooltip: D1Tooltip
+    },
+    compMod: {
+      chip: {
+        inverse: true,
+        size: 'xs'
+      }
     }
   }
 )

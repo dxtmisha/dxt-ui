@@ -13,7 +13,7 @@ const propsNames: StorybookProps = [
   { name: 'disabled', type: 'boolean' },
   { name: 'dividerX', type: 'boolean' },
   { name: 'dividerY', type: 'boolean' },
-  { name: 'index', type: 'string' },
+  { name: 'index', type: 'string | number' },
   { name: 'isSkeleton', type: 'boolean' },
   { name: 'keyItem', type: 'string' },
   { name: 'label', type: 'NumberOrString' },

@@ -10,6 +10,28 @@ import {
  * Объект wikiSort содержит описание всех свойств для сортировки
  */
 export const wikiSort: StorybookArgsToList = {
+  showSort: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.sort,
+      type: 'boolean',
+      description: {
+        en: 'Controls visibility of sorting element',
+        ru: 'Управляет видимостью элемента сортировки'
+      }
+    }
+  },
+  sortColumn: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.sort,
+      type: 'string',
+      description: {
+        en: 'Current sorted column index name',
+        ru: 'Имя индекса текущей отсортированной колонки'
+      }
+    }
+  },
   sort: {
     type: StorybookControl.string,
     options: {

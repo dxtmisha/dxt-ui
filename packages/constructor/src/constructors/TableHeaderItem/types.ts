@@ -1,5 +1,6 @@
-import type { ConstrClass } from '@dxtmisha/functional'
+import type { ConstrClass, SortColumnItem } from '@dxtmisha/functional'
 
+import type { ChipComponentInclude } from '../Chip'
 import type { IconComponentInclude } from '../Icon'
 import type { TableItemSlots } from '../TableItem'
 import type { TooltipComponentInclude } from '../Tooltip'
@@ -9,14 +10,19 @@ import type { TooltipComponentInclude } from '../Tooltip'
  *
  * Интерфейс для описания, какие компоненты надо подключить для работы.
  */
-export type TableHeaderItemComponents = IconComponentInclude & TooltipComponentInclude
+export type TableHeaderItemComponents = ChipComponentInclude
+  & IconComponentInclude
+  & TooltipComponentInclude
 
 /**
  * Type describing available events.
  *
  * Тип, описывающий доступные события.
  */
-export type TableHeaderItemEmits = {}
+export type TableHeaderItemEmits = {
+  /** Event triggered when sort button is clicked / Событие, вызываемое при клике по кнопке сортировки */
+  sort: [item: SortColumnItem]
+}
 
 /**
  * Type describing available properties.
@@ -48,6 +54,7 @@ export type TableHeaderItemClasses = {
   label: string
   description: string
   body: string
+  sort: string
   tooltip: string
   // :classes [!] System label / Системная метка
 }

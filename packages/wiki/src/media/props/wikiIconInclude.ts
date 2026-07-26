@@ -81,6 +81,17 @@ export const wikiIconInclude: StorybookArgsToList = {
     },
     hide: true
   },
+  iconArrowUp: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.icon,
+      description: {
+        en: 'Sets icon for up arrow',
+        ru: 'Задает иконку стрелки вверх'
+      }
+    },
+    hide: true
+  },
   iconAttrs: {
     type: StorybookControl.object,
     options: {
@@ -259,6 +270,17 @@ export const wikiIconInclude: StorybookArgsToList = {
         ru: 'Управляет видимостью иконок в отображаемых элементах'
       }
     }
+  },
+  iconSort: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.icon,
+      description: {
+        en: 'Sets icon for sorting',
+        ru: 'Задает иконку для сортировки'
+      }
+    },
+    hide: true
   },
   iconSuccess: {
     type: StorybookControl.string,

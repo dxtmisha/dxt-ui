@@ -1,5 +1,6 @@
 import { type TableHeaderItemPropsBasic, defaultsTableHeaderItem } from '@dxtmisha/constructor/TableHeaderItem'
 
+import type { ChipProps } from '../Chip'
 import type { IconProps } from '../Icon'
 import type { TooltipProps } from '../Tooltip'
 
@@ -27,7 +28,7 @@ type PropsToken = {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export type TableHeaderItemProps = TableHeaderItemPropsBasic<IconProps, TooltipProps> & PropsToken
+export type TableHeaderItemProps = TableHeaderItemPropsBasic<ChipProps, IconProps, TooltipProps> & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства
@@ -35,6 +36,9 @@ export type TableHeaderItemProps = TableHeaderItemPropsBasic<IconProps, TooltipP
 export const defaults: object = {
   ...defaultsTableHeaderItem,
   iconTooltip: 'help',
+  iconSort: 'swap_vert',
+  iconArrowUp: 'arrow_upward',
+  iconArrowDown: 'arrow_downward',
   ...{
     // :default [!] System label / Системная метка
     align: 'left',

@@ -41,7 +41,7 @@ export type TableItemPropsBasic = LabelProps
     /** Unique rendering key / Уникальный ключ рендеринга */
     keyItem?: string
     /** Column/field index name / Имя индекса колонки/поля */
-    index?: string
+    index?: string | number
   }
 
 /**

@@ -7,14 +7,18 @@ const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
   { name: 'align', type: 'string', option: ['left', 'center', 'right'] },
   { name: 'alignVertical', type: 'string', option: ['center', 'top', 'bottom'] },
+  { name: 'chipAttrs', type: 'ConstrBind<ChipProps>' },
   { name: 'colspan', type: 'string | number' },
   { name: 'description', type: 'string | number' },
   { name: 'descriptionId', type: 'string' },
   { name: 'disabled', type: 'boolean' },
   { name: 'dividerX', type: 'boolean' },
   { name: 'dividerY', type: 'boolean' },
+  { name: 'iconArrowDown', type: 'string | ConstrBind<IconProps>' },
+  { name: 'iconArrowUp', type: 'string | ConstrBind<IconProps>' },
+  { name: 'iconSort', type: 'string | ConstrBind<IconProps>' },
   { name: 'iconTooltip', type: 'string | ConstrBind<IconProps>' },
-  { name: 'index', type: 'string' },
+  { name: 'index', type: 'string | number' },
   { name: 'isSkeleton', type: 'boolean' },
   { name: 'keyItem', type: 'string' },
   { name: 'label', type: 'NumberOrString' },
@@ -22,6 +26,9 @@ const propsNames: StorybookProps = [
   { name: 'labelId', type: 'string' },
   { name: 'rowspan', type: 'string | number' },
   { name: 'selected', type: 'boolean' },
+  { name: 'showSort', type: 'boolean' },
+  { name: 'sortColumn', type: 'string | number' },
+  { name: 'sortDir', type: 'string', option: ['asc', 'desc'] },
   { name: 'stickyLeft', type: 'boolean' },
   { name: 'stickyTop', type: 'boolean' },
   { name: 'tag', type: 'string' },
@@ -43,6 +50,7 @@ const slotsNames: StorybookSlots = [
 
 const eventsNames: StorybookSlots = [
   // :eventsList [!] System label / Системная метка
+  { name: 'sort', description: `Event triggered when sort button is clicked / Событие, вызываемое при клике по кнопке сортировки`, properties: [{ name: 'item', type: 'SortColumnItem' }] }
   // :eventsList [!] System label / Системная метка
 ]
 

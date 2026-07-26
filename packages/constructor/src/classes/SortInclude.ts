@@ -3,14 +3,12 @@ import {
   executeFunction,
   isObjectNotArray,
   sortList,
-  toArray
+  toArray,
+  type SortColumnItem,
+  type SortDir
 } from '@dxtmisha/functional'
 
-import type {
-  SortColumnItem,
-  SortDir,
-  SortPropsInclude
-} from '../types/sortTypes'
+import type { SortPropsInclude } from '../types/sortTypes'
 
 /**
  * Class representing sorting logic across components.

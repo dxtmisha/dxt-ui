@@ -27,6 +27,12 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const TableHeaderItem: Story = {
+  args: {
+    showSort: true,
+    sortColumn: '123',
+    index: 123
+  },
+
   // :story-main [!] System label / Системная метка
   render: (args: any) => ({
     components: { D1TableHeaderItem },

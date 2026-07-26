@@ -1,5 +1,6 @@
 {
   "link|tableItem": "{d.tableItem}",
   "#body": {},
+  "#sort": {},
   "#tooltip": {}
 }

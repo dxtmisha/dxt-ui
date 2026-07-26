@@ -34,6 +34,10 @@ export function sortList<T = any>(
 
   return [...list].sort((itemFirst: T, itemSecond: T) => {
     for (const { column, dir } of sortColumns) {
+      if (!column) {
+        continue
+      }
+
       if (customSort) {
         const res = customSort(
           itemFirst,

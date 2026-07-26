@@ -10,9 +10,9 @@ export type SortDir = 'asc' | 'desc'
  */
 export type SortColumnItem = {
   /** Column or property key for sorting / Колонка или ключ свойства для сортировки */
-  column: string
+  column?: string
   /** Sorting direction ('asc' or 'desc') / Направление сортировки ('asc' или 'desc') */
-  dir: SortDir
+  dir?: SortDir
 }
 
 /**
