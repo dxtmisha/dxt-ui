@@ -14,6 +14,7 @@ type TablePropsToken = {
   // :type [!] System label / Системная метка
   headerTop?: boolean
   captionBottom?: boolean
+  bleed?: boolean
   // :type [!] System label / Системная метка
 }
 
@@ -66,6 +67,7 @@ export const defaultsTable = {
   stickyScrollBottom: true,
   ...{
     // :default [!] System label / Системная метка
+    bleed: true
     // :default [!] System label / Системная метка
   }
 }

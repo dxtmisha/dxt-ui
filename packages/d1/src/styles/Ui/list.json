@@ -10988,6 +10988,17 @@
           }
         }
       },
+      "table": {
+        "name": "d1-table",
+        "type": "component",
+        "value": {
+          "marginBleedX": {
+            "name": "--d1-table-marginBleedX",
+            "type": "var",
+            "value": "{?layout.marginX}"
+          }
+        }
+      },
       "tableHeaderItem": {
         "name": "d1-tableHeaderItem",
         "type": "component",

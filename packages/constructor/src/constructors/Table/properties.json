@@ -1,4 +1,7 @@
 {
+  "marginBleedX": {
+    "_type": "var"
+  },
   "#table": {},
   "#colgroup": {},
   "#col": {},
@@ -7,5 +10,6 @@
   "#items": {},
   "#caption": {},
   "~headerTop": {},
-  "~captionBottom": {}
+  "~captionBottom": {},
+  "~bleed": {}
 }

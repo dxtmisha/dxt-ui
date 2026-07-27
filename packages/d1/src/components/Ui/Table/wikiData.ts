@@ -5,6 +5,7 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
+  { name: 'bleed', type: 'boolean' },
   { name: 'caption', type: 'string | number' },
   { name: 'captionBottom', type: 'boolean' },
   { name: 'captionDecorative', type: 'boolean' },

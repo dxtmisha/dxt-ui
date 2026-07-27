@@ -11,6 +11,7 @@ type PropsToken = {
   // :type [!] System label / Системная метка
   headerTop?: boolean
   captionBottom?: boolean
+  bleed?: boolean
   // :type [!] System label / Системная метка
 }
 
@@ -26,6 +27,7 @@ export const defaults: object = {
   ...defaultsTable,
   ...{
     // :default [!] System label / Системная метка
+    bleed: true
     // :default [!] System label / Системная метка
   }
 }

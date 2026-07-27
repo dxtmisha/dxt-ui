@@ -11,6 +11,8 @@
   // Стили из токенов
   // :style [!] System label / Системная метка
   & {
+    --d1-table-marginBleedX: var(--d1-layout-marginX);
+    
     &__header {
       @include ui.backgroundColor(#{var(--d1-sys-palette-surface)});
       @include ui.backgroundOpacity(#{var(--d1-sys-opacity-primary-high)});

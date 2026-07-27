@@ -38,11 +38,6 @@ export const wikiDescriptionsTable: StorybookComponentsDescriptionItem = {
   import: [
     'import { ref } from \'vue\''
   ],
-  render: `
-    <div class="wiki-storybook-item wiki-storybook-item--rectangle wiki-storybook-item--overflowAuto wiki-storybook-item--padding" style="max-height: 360px;">
-      <DesignComponent v-bind="args" />
-    </div>
-  `,
   stories: [
     {
       id: 'TableBasic',
@@ -182,29 +177,27 @@ export const wikiDescriptionsTable: StorybookComponentsDescriptionItem = {
         ru: 'Сортировка'
       },
       template: `
-        <div class="wiki-storybook-item wiki-storybook-item--rectangle wiki-storybook-item--overflowAuto wiki-storybook-item--padding" style="max-height: 360px;">
-          <DesignComponent
-            :columns="['id', 'name', 'role', 'age', 'salary']"
-            :header="[
-              {
-                id: 'ID',
-                name: { label: 'Name', showSort: true },
-                role: { label: 'Role', showSort: true },
-                age: { label: 'Age', showSort: true },
-                salary: { label: 'Salary', showSort: true }
-              }
-            ]"
-            sort="age"
-            sortDir="desc"
-            :list="[
-              { id: '1', name: 'Alice Smith', role: 'Developer', age: 28, salary: 9500 },
-              { id: '2', name: 'Bob Johnson', role: 'Designer', age: 34, salary: 8500 },
-              { id: '3', name: 'Charlie Brown', role: 'Manager', age: 42, salary: 12000 },
-              { id: '4', name: 'Diana Prince', role: 'Analyst', age: 30, salary: 9000 },
-              { id: '5', name: 'Edward Norton', role: 'Tester', age: 26, salary: 7000 }
-            ]"
-          />
-        </div>
+        <DesignComponent
+          :columns="['id', 'name', 'role', 'age', 'salary']"
+          :header="[
+            {
+              id: 'ID',
+              name: { label: 'Name', showSort: true },
+              role: { label: 'Role', showSort: true },
+              age: { label: 'Age', showSort: true },
+              salary: { label: 'Salary', showSort: true }
+            }
+          ]"
+          sort="age"
+          sortDir="desc"
+          :list="[
+            { id: '1', name: 'Alice Smith', role: 'Developer', age: 28, salary: 9500 },
+            { id: '2', name: 'Bob Johnson', role: 'Designer', age: 34, salary: 8500 },
+            { id: '3', name: 'Charlie Brown', role: 'Manager', age: 42, salary: 12000 },
+            { id: '4', name: 'Diana Prince', role: 'Analyst', age: 30, salary: 9000 },
+            { id: '5', name: 'Edward Norton', role: 'Tester', age: 26, salary: 7000 }
+          ]"
+        />
       `
     },
     {
@@ -223,8 +216,7 @@ export const wikiDescriptionsTable: StorybookComponentsDescriptionItem = {
           <div class="wiki-storybook-flex-align-center">
             <input class="wiki-storybook-input" type="text" v-model="searchValue" placeholder="Search name or role..."/>
           </div>
-          <div class="wiki-storybook-item wiki-storybook-item--rectangle wiki-storybook-item--overflowAuto wiki-storybook-item--padding">
-            <DesignComponent
+          <DesignComponent
             :search="searchValue"
             :searchColumns="['name', 'role']"
             :columns="['id', 'name', 'nameSearch', 'role', 'age', 'salary']"
@@ -258,7 +250,6 @@ export const wikiDescriptionsTable: StorybookComponentsDescriptionItem = {
               <span v-html="value"/>
             </template>
           </DesignComponent>
-          </div>
         </div>
       `
     }

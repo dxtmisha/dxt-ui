@@ -30,6 +30,13 @@
     }
   }
 
+  &--bleed {
+    @include ui.marginX(calc(#{ui.v('??marginBleedX')} * -1));
+    @include ui.subclass('table') {
+      @include ui.paddingX(ui.v('??marginBleedX'));
+    }
+  }
+
   &--captionBottom {
     @include ui.subclass('caption') {
       caption-side: bottom;

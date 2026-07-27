@@ -28,14 +28,14 @@ export class TableDesign<
   CLASSES extends TableClasses,
   P extends TableProps
 > extends DesignConstructorAbstract<
-  HTMLDivElement,
-  COMP,
-  TableEmits,
-  EXPOSE,
-  TableSlots,
-  CLASSES,
-  P
-> {
+    HTMLDivElement,
+    COMP,
+    TableEmits,
+    EXPOSE,
+    TableSlots,
+    CLASSES,
+    P
+  > {
   /** Table controller instance / Экземпляр контроллера таблицы (Table) */
   protected readonly item: Table
 

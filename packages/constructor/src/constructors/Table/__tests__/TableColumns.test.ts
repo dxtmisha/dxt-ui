@@ -50,15 +50,15 @@ describe('TableColumns', () => {
     expect(tableColumns.getColStyle('status')).toBeUndefined()
 
     expect(tableColumns.getCol('id')).toEqual({
-      key: 'col-id',
+      'key': 'col-id',
       'data-col': 'id',
-      style: { width: '80px' }
+      'style': { width: '80px' }
     })
 
     expect(tableColumns.cols).toEqual([
-      { key: 'col-id', 'data-col': 'id', style: { width: '80px' } },
-      { key: 'col-name', 'data-col': 'name', style: { width: '200px' } },
-      { key: 'col-status', 'data-col': 'status', style: undefined }
+      { 'key': 'col-id', 'data-col': 'id', 'style': { width: '80px' } },
+      { 'key': 'col-name', 'data-col': 'name', 'style': { width: '200px' } },
+      { 'key': 'col-status', 'data-col': 'status', 'style': undefined }
     ])
   })
 })

@@ -1,5 +1,6 @@
 {
   "main": "{d.table}",
+  "marginBleedX": "{?layout.marginX}",
   "#header": {
     "background-color": "{sys.palette.surface}",
     "background-opacity": "{sys.opacity.primary.high}",

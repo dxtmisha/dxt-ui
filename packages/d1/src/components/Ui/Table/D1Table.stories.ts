@@ -179,29 +179,27 @@ export const TableSort: Story = {
   render: () => ({
     components: { D1Table },
     template: `
-        <div class="wiki-storybook-item wiki-storybook-item--rectangle wiki-storybook-item--overflowAuto wiki-storybook-item--padding" style="max-height: 360px;">
-          <D1Table
-            :columns="['id', 'name', 'role', 'age', 'salary']"
-            :header="[
-              {
-                id: 'ID',
-                name: { label: 'Name', showSort: true },
-                role: { label: 'Role', showSort: true },
-                age: { label: 'Age', showSort: true },
-                salary: { label: 'Salary', showSort: true }
-              }
-            ]"
-            sort="age"
-            sortDir="desc"
-            :list="[
-              { id: '1', name: 'Alice Smith', role: 'Developer', age: 28, salary: 9500 },
-              { id: '2', name: 'Bob Johnson', role: 'Designer', age: 34, salary: 8500 },
-              { id: '3', name: 'Charlie Brown', role: 'Manager', age: 42, salary: 12000 },
-              { id: '4', name: 'Diana Prince', role: 'Analyst', age: 30, salary: 9000 },
-              { id: '5', name: 'Edward Norton', role: 'Tester', age: 26, salary: 7000 }
-            ]"
-          />
-        </div>
+        <D1Table
+          :columns="['id', 'name', 'role', 'age', 'salary']"
+          :header="[
+            {
+              id: 'ID',
+              name: { label: 'Name', showSort: true },
+              role: { label: 'Role', showSort: true },
+              age: { label: 'Age', showSort: true },
+              salary: { label: 'Salary', showSort: true }
+            }
+          ]"
+          sort="age"
+          sortDir="desc"
+          :list="[
+            { id: '1', name: 'Alice Smith', role: 'Developer', age: 28, salary: 9500 },
+            { id: '2', name: 'Bob Johnson', role: 'Designer', age: 34, salary: 8500 },
+            { id: '3', name: 'Charlie Brown', role: 'Manager', age: 42, salary: 12000 },
+            { id: '4', name: 'Diana Prince', role: 'Analyst', age: 30, salary: 9000 },
+            { id: '5', name: 'Edward Norton', role: 'Tester', age: 26, salary: 7000 }
+          ]"
+        />
     `
   })
 }
@@ -219,8 +217,7 @@ export const TableSearch: Story = {
           <div class="wiki-storybook-flex-align-center">
             <input class="wiki-storybook-input" type="text" v-model="searchValue" placeholder="Search name or role..."/>
           </div>
-          <div class="wiki-storybook-item wiki-storybook-item--rectangle wiki-storybook-item--overflowAuto wiki-storybook-item--padding">
-            <D1Table
+          <D1Table
             :search="searchValue"
             :searchColumns="['name', 'role']"
             :columns="['id', 'name', 'nameSearch', 'role', 'age', 'salary']"
@@ -254,7 +251,6 @@ export const TableSearch: Story = {
               <span v-html="value"/>
             </template>
           </D1Table>
-          </div>
         </div>
     `
   })
