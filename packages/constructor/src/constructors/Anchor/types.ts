@@ -1,5 +1,5 @@
 import type { ConstrClass } from '@dxtmisha/functional'
-import type { TooltipComponentInclude } from '../Tooltip'
+import type { TooltipComponentInclude, TooltipSlotsInclude } from '../Tooltip'
 import type { LabelSlots } from '../../types/labelTypes'
 import type { IconComponentInclude } from '../Icon'
 
@@ -33,7 +33,7 @@ export interface AnchorExpose {
  *
  * Тип, описывающий доступные слоты.
  */
-export interface AnchorSlots extends LabelSlots {
+export interface AnchorSlots extends LabelSlots, TooltipSlotsInclude {
 }
 
 /**

@@ -40,6 +40,15 @@ export type TooltipComponentInclude = {
 }
 
 /**
+ * Slots used to include and configure the Tooltip component. /
+ * Слоты для подключения и настройки компонента Tooltip.
+ */
+export type TooltipSlotsInclude = {
+  /** Slot for the tooltip body content / Слот для основного содержимого тултипа */
+  tooltip?(): any
+}
+
+/**
  * Props used to include and configure the Tooltip component. /
  * Свойства для подключения и настройки компонента Tooltip.
  */

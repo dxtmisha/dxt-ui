@@ -67,17 +67,6 @@ export class TableHeaderItemSort {
   }
 
   /**
-   * Returns active sort column key from injected ref or props.
-   *
-   * Возвращает активный ключ колонки сортировки из инжектированного рефа или props.
-   * @returns active sort column key / активный ключ колонки сортировки
-   */
-  getSortColumn(): string | undefined {
-    const column = this.sortColumn?.value ?? this.props.sortColumn
-    return column !== undefined ? String(column) : undefined
-  }
-
-  /**
    * Checks whether the current column is sorted.
    *
    * Проверяет, отсортирована ли текущая колонка.
@@ -85,6 +74,16 @@ export class TableHeaderItemSort {
    */
   isSorted(): boolean {
     return this.getSortColumn() === this.column && Boolean(this.dir)
+  }
+
+  /**
+   * Returns active sort column key from injected ref or props.
+   *
+   * Возвращает активный ключ колонки сортировки из инжектированного рефа или props.
+   * @returns active sort column key / активный ключ колонки сортировки
+   */
+  getSortColumn(): string {
+    return String(this.sortColumn?.value ?? this.props.sortColumn ?? '')
   }
 
   /**

@@ -1,6 +1,7 @@
 import { type Ref, type ToRefs } from 'vue'
 import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { DescriptionInclude } from '../../classes/DescriptionInclude'
 import { LabelInclude } from '../../classes/LabelInclude'
 
@@ -92,8 +93,9 @@ export class TableItem {
     return {
       'colspan': this.props.colspan,
       'rowspan': this.props.rowspan,
-      'data-value': this.props.value,
-      'data-index': this.props.index
+      'data-index': this.props.index,
+      ...AriaStaticInclude.selected(this.props.selected),
+      ...AriaStaticInclude.disabled(this.props.disabled)
     }
   }
 }

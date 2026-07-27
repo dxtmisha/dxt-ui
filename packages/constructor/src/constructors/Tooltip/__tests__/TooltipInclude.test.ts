@@ -26,6 +26,7 @@ describe('TooltipInclude', () => {
       'd1-button',
       () => mockProps as TooltipPropsInclude,
       undefined, // design components
+      undefined, // slots
       () => mockExtra // extra properties
     )
 

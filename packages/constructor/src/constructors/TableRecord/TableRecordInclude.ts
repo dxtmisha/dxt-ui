@@ -112,10 +112,6 @@ export class TableRecordInclude extends ComponentIncludeAbstract<
         this.name,
         toBinds(
           {
-            selected: isSelected(index, props.selected),
-            disabled: item?.disabled,
-            stickyTop: (props.stickyTop?.indexOf(index) ?? -1) !== -1,
-            stickyLeft: props.stickyLeft,
             tableItemAttrs: props.tableItemAttrs,
             tableItemColumnAttrs: props.tableItemColumnAttrs,
             isSkeleton: props.isSkeleton,
@@ -125,9 +121,13 @@ export class TableRecordInclude extends ComponentIncludeAbstract<
           this.getAttrs(attrs),
           props.tableRowAttrs?.[index],
           {
+            selected: isSelected(index, props.selected),
+            disabled: item?.disabled,
             item,
             columns,
             isHeader,
+            stickyTop: (props.stickyTop?.indexOf(index) ?? -1) !== -1,
+            stickyLeft: props.stickyLeft,
             index
           }
         ),

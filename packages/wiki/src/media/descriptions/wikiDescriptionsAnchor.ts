@@ -37,6 +37,7 @@ export const wikiDescriptionsAnchor: StorybookComponentsDescriptionItem = {
 `,
     slots: `
 <StorybookDescriptions componentName={'Slot'} type={'default'}/>
+<StorybookDescriptions componentName={'Slot'} type={'tooltip'}/>
 `
   },
   ai: {

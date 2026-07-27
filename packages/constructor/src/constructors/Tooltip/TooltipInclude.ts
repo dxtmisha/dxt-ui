@@ -1,6 +1,10 @@
-import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
+import type { VNode } from 'vue'
 
-import type { TooltipPropsInclude } from './basicTypes'
+import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
+import type { ComponentIncludeExtra, ComponentIncludeProps } from '../../types/componentInclude'
+import type { DesignComponents } from '@dxtmisha/functional'
+
+import type { TooltipPropsInclude, TooltipSlotsInclude } from './basicTypes'
 import type { TooltipExpose, TooltipSlots } from './types'
 import type { TooltipProps } from './props'
 
@@ -23,6 +27,49 @@ export class TooltipInclude extends ComponentIncludeAbstract<
   protected readonly name = 'tooltip'
   /** Property name for attributes / Имя свойства для атрибутов */
   protected readonly propsAttrsName = 'tooltipAttrs'
+
+  /**
+   * Constructor for initializing TooltipInclude properties.
+   *
+   * Конструктор для инициализации свойств TooltipInclude.
+   * @param className base class name / название базового класса
+   * @param props input properties / входные свойства
+   * @param components design components registry / реестр дизайн-компонентов
+   * @param slots tooltip slots / слоты тултипа
+   * @param extra additional properties or attributes / дополнительные свойства или атрибуты
+   * @param index unique index key for rendering / уникальный ключ индекса для рендеринга
+   */
+  constructor(
+    className: string,
+    props: ComponentIncludeProps<TooltipPropsInclude>,
+    components?: DesignComponents<any, TooltipPropsInclude>,
+    protected readonly slots?: TooltipSlotsInclude,
+    extra?: ComponentIncludeExtra<any>,
+    index?: string
+  ) {
+    super(className, props, components, extra, index)
+  }
+
+  /**
+   * Checks whether the component should be displayed.
+   *
+   * Проверяет, нужно ли отображать компонент.
+   */
+  override get is(): boolean {
+    const props = this.getProps()
+    const extra = this.getExtra()
+
+    return Boolean(
+      this.components?.is('tooltip')
+      && (
+        props.tooltipLabel
+        || props.tooltipDescription
+        || extra?.label
+        || extra?.description
+        || this.slots?.tooltip
+      )
+    )
+  }
 
   /**
    * Open the tooltip.
@@ -63,4 +110,29 @@ export class TooltipInclude extends ComponentIncludeAbstract<
       description: props.tooltipDescription ?? extra?.description
     }
   }
+
+  /**
+   * Renders the included component as a VNode array.
+   *
+   * Рендерит включенный компонент в виде массива VNode.
+   * @param slotsChildren sub-component slots / слоты субкомпонента
+   * @param attrs additional override attributes / дополнительные переопределяющие атрибуты
+   * @param isShow function returns true if the component should be rendered / функция возвращает true, если компонент должен быть отрисован
+   * @param index unique rendering key / уникальный ключ рендеринга
+   * @returns array of VNodes / массив VNode
+   */
+  override readonly render = (
+    slotsChildren?: TooltipSlots,
+    attrs?: any,
+    isShow: () => boolean = () => this.is,
+    index?: string
+  ): VNode[] => this.initRender(
+    {
+      ...slotsChildren,
+      body: slotsChildren?.body ?? this.slots?.tooltip
+    },
+    attrs,
+    isShow,
+    index
+  )
 }

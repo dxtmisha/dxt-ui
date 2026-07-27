@@ -27,6 +27,9 @@ export type TableHeaderItemPropsBasic<
   & ChipPropsInclude<Chip>
   & TooltipPropsInclude<Tooltip>
   & {
+    /** Header scope / Область видимости заголовка */
+    scope?: 'row' | 'col' | 'rowgroup' | 'colgroup'
+
     /** Whether to show sorting/ Показывать ли сортировку */
     showSort?: boolean
 
@@ -63,6 +66,7 @@ export type TableHeaderItemProps = TableHeaderItemPropsBasic & TableHeaderItemPr
  */
 export const defaultsTableHeaderItem = {
   tag: 'th',
+  scope: 'col',
   ...{
     // :default [!] System label / Системная метка
     align: 'left',

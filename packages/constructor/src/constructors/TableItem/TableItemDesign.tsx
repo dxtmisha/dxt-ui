@@ -116,8 +116,6 @@ export class TableItemDesign<
    * @returns virtual node (VNode) / виртуальный узел (VNode)
    */
   protected initRender(): VNode {
-    const children: any[] = this.renderContext()
-
     return h(
       this.item.tag,
       {
@@ -125,7 +123,7 @@ export class TableItemDesign<
         class: this.classes?.value.main,
         ...this.item.binds
       },
-      children
+      this.renderContext()
     )
   }
 

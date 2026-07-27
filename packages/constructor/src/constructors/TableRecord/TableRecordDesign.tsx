@@ -129,10 +129,10 @@ export class TableRecordDesign<
 
     return h('tr', {
       ...this.getAttrs(),
-      'ref': this.element,
-      'class': this.classes?.value.main,
-      'style': this.styles?.value,
-      'data-key': this.item.key
+      ref: this.element,
+      class: this.classes?.value.main,
+      style: this.styles?.value,
+      ...this.item.binds
     }, children)
   }
 }

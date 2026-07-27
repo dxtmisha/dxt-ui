@@ -5,6 +5,7 @@ import {
   type DesignComp
 } from '@dxtmisha/functional'
 
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { DescriptionInclude } from '../../classes/DescriptionInclude'
 import { LabelInclude } from '../../classes/LabelInclude'
 import { ChipInclude } from '../Chip'
@@ -85,9 +86,9 @@ export class TableHeaderItem extends TableItem {
       element,
       classDesign,
       className,
-      components as any,
-      slots as any,
-      emits as any,
+      components,
+      slots,
+      emits,
       {
         DescriptionConstructor: DescriptionIncludeConstructor,
         LabelConstructor: LabelIncludeConstructor,
@@ -104,19 +105,20 @@ export class TableHeaderItem extends TableItem {
       this.sort.chipExtra
     )
 
-    this.tooltip = new TooltipIncludeConstructor(className, props, components)
+    this.tooltip = new TooltipIncludeConstructor(className, props, components, this.slots)
   }
 
   /**
-   * Checks whether the tooltip is active.
+   * Computed HTML attributes and bindings for the main element.
    *
-   * Проверяет, активна ли подсказка.
+   * Вычисляемые HTML-атрибуты и привязки для главного элемента.
    */
-  get isTooltip(): boolean {
-    return Boolean(
-      this.components?.is('tooltip')
-      && (this.props.tooltipLabel || this.props.tooltipDescription || this.slots?.tooltip)
-    )
+  override get binds() {
+    return {
+      ...super.binds,
+      scope: this.props.scope,
+      ...AriaStaticInclude.sort(this.ariaSort)
+    }
   }
 
   /**
@@ -130,5 +132,21 @@ export class TableHeaderItem extends TableItem {
       'icon': this.props.iconTooltip || 'help-circle',
       'data-event-type': 'tooltip'
     }
+  }
+
+  /**
+   * Returns the sorting direction for ARIA.
+   *
+   * Возвращает направление сортировки для ARIA.
+   */
+  get ariaSort(): string | undefined {
+    switch (this.props.sortDir) {
+      case 'asc':
+        return 'ascending'
+      case 'desc':
+        return 'descending'
+    }
+
+    return undefined
   }
 }

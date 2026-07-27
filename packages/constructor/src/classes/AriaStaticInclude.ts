@@ -275,6 +275,16 @@ export class AriaStaticInclude {
   }
 
   /**
+   * Get ARIA sort attribute.
+   *
+   * Получить атрибут ARIA sort.
+   * @param sortDir sorting direction / направление сортировки
+   */
+  static sort(sortDir?: AriaList['aria-sort'] | string): AriaList {
+    return this.isDataToData('aria-sort', sortDir)
+  }
+
+  /**
    * Returns ARIA value now, min and max.
    *
    * Возвращает ARIA value now, min и max.

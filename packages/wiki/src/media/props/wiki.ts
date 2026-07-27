@@ -77,6 +77,7 @@ import { wikiSegmentControl } from './wikiSegmentControl'
 import { wikiTabsNavigation } from './wikiTabsNavigation'
 import { wikiTable } from './wikiTable'
 import { wikiTableRecord } from './wikiTableRecord'
+import { wikiTableHeaderItem } from './wikiTableHeaderItem'
 import { wikiTooltip } from './wikiTooltip'
 import { wikiWindow } from './wikiWindow'
 
@@ -158,6 +159,7 @@ export const wiki: StorybookArgsToList = {
   ...wikiTabsNavigation,
   ...wikiTable,
   ...wikiTableRecord,
+  ...wikiTableHeaderItem,
   ...wikiTooltip,
   ...wikiWindow
 }

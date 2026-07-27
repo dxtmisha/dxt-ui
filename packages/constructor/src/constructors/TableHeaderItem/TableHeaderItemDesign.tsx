@@ -185,14 +185,9 @@ export class TableHeaderItemDesign<
    * @returns array of virtual nodes (VNode) / массив виртуальных узлов (VNode)
    */
   readonly renderTooltip = (): VNode[] => {
-    if (this.item.isTooltip) {
-      return this.item.tooltip.render({
-        control: (props: TooltipControl): VNode | undefined => this.renderTooltipControl(props),
-        body: this.slots?.tooltip
-      })
-    }
-
-    return []
+    return this.item.tooltip.render({
+      control: (props: TooltipControl): VNode | undefined => this.renderTooltipControl(props)
+    })
   }
 
   /**

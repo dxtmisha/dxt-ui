@@ -3,9 +3,11 @@ import {
   type ConstrEmit,
   type DesignComp,
   isString,
+  isObjectNotArray,
   type SortColumnItem
 } from '@dxtmisha/functional'
 
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { ClientOnlyInclude } from '../../classes/ClientOnlyInclude'
 import { TableHeaderItemInclude } from '../TableHeaderItem'
 import { TableItemInclude } from '../TableItem'
@@ -122,6 +124,19 @@ export class TableRecord {
   }
 
   /**
+   * Computed HTML attributes and bindings for the main element.
+   *
+   * Вычисляемые HTML-атрибуты и привязки для главного элемента.
+   */
+  get binds() {
+    return {
+      'data-key': this.key,
+      ...AriaStaticInclude.selected(this.props.selected),
+      ...AriaStaticInclude.disabled(this.props.disabled)
+    }
+  }
+
+  /**
    * Renders the column cell depending on whether it is a header row or data row.
    *
    * Рендерит ячейку колонки в зависимости от того, является ли строка шапкой или данными.
@@ -131,10 +146,29 @@ export class TableRecord {
   renderColumn(index: string): VNode | undefined {
     const key = `${this.key}__${index}`
 
-    if (this.props.isHeader) {
-      return this.tableHeaderItem.renderItem(key, index, this.props.item)
+    if (this.isHeaderColumn(index)) {
+      return this.tableHeaderItem.renderItem(key, index, this.props.item, {
+        scope: this.props.isHeader ? 'col' : 'row'
+      })
     }
 
     return this.tableItem.renderItem(key, index, this.props.item)
+  }
+
+  /**
+   * Checks whether the column is a header cell.
+   *
+   * Проверяет, является ли колонка ячейкой-заголовком.
+   * @param index column index / индекс колонки
+   * @returns true if header / true, если заголовок
+   */
+  protected isHeaderColumn(index: string): boolean {
+    if (this.props.isHeader) {
+      return true
+    }
+
+    const item = this.props.item?.[index]
+
+    return isObjectNotArray(item) && Boolean(item?.isHeader)
   }
 }

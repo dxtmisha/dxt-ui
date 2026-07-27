@@ -81,6 +81,7 @@ export class Anchor {
       this.className,
       this.props,
       this.components,
+      slots,
       () => ({
         description: this.text.copiedClipboard,
         interactive: false
