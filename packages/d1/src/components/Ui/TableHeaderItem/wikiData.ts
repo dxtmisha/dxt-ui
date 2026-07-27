@@ -25,6 +25,7 @@ const propsNames: StorybookProps = [
   { name: 'labelClamp', type: 'boolean' },
   { name: 'labelId', type: 'string' },
   { name: 'rowspan', type: 'string | number' },
+  { name: 'scope', type: 'string', option: ['row', 'col', 'rowgroup', 'colgroup'] },
   { name: 'selected', type: 'boolean' },
   { name: 'showSort', type: 'boolean' },
   { name: 'sortColumn', type: 'string | number' },

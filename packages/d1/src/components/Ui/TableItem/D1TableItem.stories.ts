@@ -58,6 +58,8 @@ export const TableItemSkeleton: Story = {
               <tr>
                 <D1TableItem
                   :isSkeleton="true"
+                  label="Label"
+                  description="Description"
                   value="Value"
                 />
                 <D1TableItem

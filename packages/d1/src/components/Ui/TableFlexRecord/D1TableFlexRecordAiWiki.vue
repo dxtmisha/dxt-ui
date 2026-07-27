@@ -18,6 +18,13 @@ defineOptions({
     :component="D1TableFlexRecord"
   >
     <!-- :component-render [!] System label / Системная метка -->
+    <template #render="{ args, classDemo }">
+    <div :class="classDemo.item">
+  <div class="wiki-storybook-flex" style="flex-direction: column;">
+    <D1TableFlexRecord v-bind="args" />
+  </div>
+</div>
+    </template>
     <!-- :component-render [!] System label / Системная метка -->
   </DxtTestWiki>
 </template>

@@ -5,6 +5,19 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
+  { name: 'columns', type: 'string[]' },
+  { name: 'defaultHeight', type: 'string | number' },
+  { name: 'disabled', type: 'boolean' },
+  { name: 'index', type: 'string' },
+  { name: 'isHeader', type: 'boolean' },
+  { name: 'isSkeleton', type: 'boolean' },
+  { name: 'item', type: 'Record<string, any>' },
+  { name: 'lazy', type: 'boolean' },
+  { name: 'selected', type: 'boolean' },
+  { name: 'stickyLeft', type: 'string[]' },
+  { name: 'stickyTop', type: 'boolean' },
+  { name: 'tableItemAttrs', type: 'ConstrBind<TableFlexItemProps>' },
+  { name: 'tableItemColumnAttrs', type: 'Record<string, ConstrBind<TableFlexItemProps>>' }
   // :propsList [!] System label / Системная метка
 ]
 
@@ -15,6 +28,7 @@ const slotsNames: StorybookSlots = [
 
 const eventsNames: StorybookSlots = [
   // :eventsList [!] System label / Системная метка
+  { name: 'sort', description: `Event triggered when sort button is clicked / Событие, вызываемое при клике по кнопке сортировки`, properties: [{ name: 'item', type: 'SortColumnItem' }] }
   // :eventsList [!] System label / Системная метка
 ]
 
