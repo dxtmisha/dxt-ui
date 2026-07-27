@@ -6,10 +6,11 @@
   flex-basis: 1px;
   flex-grow: 1;
   flex-shrink: 1;
+  min-width: 0;
 
   @for $i from 2 through 12 {
     &[data-colspan="#{$i}"] {
-      flex-basis: #{$i}px;
+      flex-grow: #{$i};
     }
   }
 }

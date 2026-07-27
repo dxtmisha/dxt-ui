@@ -38,7 +38,6 @@ export const wikiTable: StorybookArgsToList = {
       value: [
         'id',
         'name',
-        'email',
         'role',
         'department',
         'status',

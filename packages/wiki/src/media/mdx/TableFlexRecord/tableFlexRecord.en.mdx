@@ -17,20 +17,18 @@ The flexbox-based table row component coordinating flex cell rendering from data
 </script>
 
 <template>
-  <div class="wiki-storybook-flex" style="flex-direction: column;">
-    <!-- Header row -->
-    <TableFlexRecord
-      :isHeader="true"
-      :columns="['id', 'name', 'role', 'status']"
-      :item="{ id: 'ID', name: 'Name', role: 'Role', status: 'Status' }"
-    />
+  <!-- Header row -->
+  <TableFlexRecord
+    :isHeader="true"
+    :columns="['id', 'name', 'role', 'status']"
+    :item="{ id: 'ID', name: 'Name', role: 'Role', status: 'Status' }"
+  />
 
-    <!-- Data row -->
-    <TableFlexRecord
-      :columns="['id', 'name', 'role', 'status']"
-      :item="{ id: '1', name: 'Misha', role: 'Developer', status: 'Active' }"
-    />
-  </div>
+  <!-- Data row -->
+  <TableFlexRecord
+    :columns="['id', 'name', 'role', 'status']"
+    :item="{ id: '1', name: 'Misha', role: 'Developer', status: 'Active' }"
+  />
 </template>
   `}
     language="html"

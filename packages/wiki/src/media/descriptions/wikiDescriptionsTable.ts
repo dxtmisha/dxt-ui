@@ -258,6 +258,7 @@ export const wikiDescriptionsTable: StorybookComponentsDescriptionItem = {
     body: `
 <StorybookDescriptions componentName={'Table'} type={'table'}/>
 <Canvas of={Component.TableBasic}/>
+<StorybookDescriptions componentName={'TableFlex'} type={'differences'}/>
 <StorybookDescriptions componentName={'Table'} type={'headerTop'}/>
 <StorybookDescriptions componentName={'Table'} type={'stickyScrollBottom'}/>
 <StorybookDescriptions componentName={'Table'} type={'sort'}/>

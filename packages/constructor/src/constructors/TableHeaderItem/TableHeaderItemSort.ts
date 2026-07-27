@@ -21,7 +21,9 @@ export class TableHeaderItemSort {
   readonly sortDir?: Ref<SortDir | undefined>
 
   /**
-   * Constructor
+   * Constructor for TableHeaderItemSort.
+   *
+   * Конструктор для TableHeaderItemSort.
    * @param props input properties / входные свойства
    * @param emits callback function triggered on events / функция обратного вызова, запускаемая при событиях
    */
@@ -47,7 +49,7 @@ export class TableHeaderItemSort {
    * Returns current sorting direction.
    *
    * Возвращает текущее направление сортировки.
-   * @returns sorting direction / направление сортировки
+   * @returns sorting direction or undefined / направление сортировки или undefined
    */
   get dir(): SortDir | undefined {
     return this.sortDir?.value ?? this.props.sortDir
@@ -90,6 +92,7 @@ export class TableHeaderItemSort {
    * Returns extra properties for chip component inclusion.
    *
    * Возвращает дополнительные свойства для включения компонента чипа.
+   * @returns extra chip properties object / объект дополнительных свойств чипа
    */
   readonly chipExtra = () => {
     if (this.isSorted()) {
@@ -128,15 +131,17 @@ export class TableHeaderItemSort {
    * Returns next sorting direction in 3-state cycle (asc -> desc -> undefined -> asc).
    *
    * Возвращает следующее направление сортировки в 3-состоятельном цикле (asc -> desc -> undefined -> asc).
-   * @returns next sorting direction / следующее направление сортировки
+   * @returns next sorting direction or undefined / следующее направление сортировки или undefined
    */
   protected getNextDir(): SortDir | undefined {
-    if (this.dir === 'asc') {
-      return 'desc'
-    }
+    if (this.isSorted()) {
+      if (this.dir === 'asc') {
+        return 'desc'
+      }
 
-    if (this.dir === 'desc') {
-      return undefined
+      if (this.dir === 'desc') {
+        return undefined
+      }
     }
 
     return 'asc'

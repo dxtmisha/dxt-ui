@@ -40,7 +40,9 @@ export class TableHeaderItemDesign<
   protected readonly item: TableHeaderItem
 
   /**
-   * Constructor
+   * Constructor for TableHeaderItemDesign.
+   *
+   * Конструктор для TableHeaderItemDesign.
    * @param name class name / имя класса
    * @param props properties / свойства
    * @param options additional design options / дополнительные параметры дизайна
@@ -195,7 +197,7 @@ export class TableHeaderItemDesign<
    *
    * Рендер элемента управления подсказкой.
    * @param control tooltip control options / параметры управления подсказкой
-   * @returns virtual node (VNode) / виртуальный узел (VNode)
+   * @returns virtual node (VNode) or undefined / виртуальный узел (VNode) или undefined
    */
   readonly renderTooltipControl = (
     control: TooltipControl

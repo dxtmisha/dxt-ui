@@ -1,0 +1,52 @@
+import {Canvas, Meta} from '@storybook/addon-docs/blocks'
+import {
+    StorybookDescriptions,
+    StorybookMain
+} from '@dxtmisha/wiki/storybook'
+
+import * as TableFlex from './D1TableFlex.stories'
+import {TableFlexWikiStorybook} from './wiki'
+
+[//]: # (:documentation-import [!] System label / Системная метка)
+[//]: # (:documentation-import [!] System label / Системная метка)
+
+<Meta of={TableFlex}/>
+<StorybookMain
+    name={TableFlexWikiStorybook.getName()}
+    description={TableFlexWikiStorybook.getDescription()}
+    story={TableFlex.TableFlex}
+/>
+
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+<StorybookDescriptions componentName={'TableFlex'} type={'tableFlex'}/>
+<Canvas of={TableFlex.TableFlexBasic}/>
+<StorybookDescriptions componentName={'TableFlex'} type={'differences'}/>
+<StorybookDescriptions componentName={'Table'} type={'headerTop'}/>
+<StorybookDescriptions componentName={'Table'} type={'stickyScrollBottom'}/>
+<StorybookDescriptions componentName={'Table'} type={'sort'}/>
+<Canvas of={TableFlex.TableFlexSort}/>
+<StorybookDescriptions componentName={'Table'} type={'search'}/>
+<Canvas of={TableFlex.TableFlexSearch}/>
+    
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+[//]: # (:documentation-events [!] System label / Системная метка)
+## Events
+
+<StorybookDescriptions componentName={'Event'} type={'sort'}/>
+    
+[//]: # (:documentation-events [!] System label / Системная метка)
+
+[//]: # (:documentation-expose [!] System label / Системная метка)
+[//]: # (:documentation-expose [!] System label / Системная метка)
+
+[//]: # (:documentation-slots [!] System label / Системная метка)
+## Slots
+
+<Canvas of={TableFlex.TableFlexSlots}/>
+<StorybookDescriptions componentName={'Slot'} type={'caption'}/>
+<StorybookDescriptions componentName={'Slot'} type={'body'}/>
+<StorybookDescriptions componentName={'Table'} type={'slots'}/>
+    
+[//]: # (:documentation-slots [!] System label / Системная метка)

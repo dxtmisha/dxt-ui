@@ -6,9 +6,9 @@ import type { TableItemPropsBasic } from '../TableItem'
 import type { TooltipProps, TooltipPropsInclude } from '../Tooltip'
 
 /**
- * Type describing token properties.
+ * Type describing token properties for TableHeaderItem component.
  *
- * Тип, описывающий токен-свойства.
+ * Тип, описывающий токен-свойства для компонента TableHeaderItem.
  */
 type TableHeaderItemPropsToken = {
   // :type [!] System label / Системная метка

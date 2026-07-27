@@ -1,0 +1,6 @@
+@use "@dxtmisha/styles/properties" as ui;
+@use "../Table/style" as table;
+
+@mixin mixinTableFlex {
+  @include table.mixinTable;
+}

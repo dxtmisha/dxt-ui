@@ -10999,6 +10999,17 @@
           }
         }
       },
+      "tableFlex": {
+        "name": "d1-tableFlex",
+        "type": "component",
+        "value": {
+          "marginBleedX": {
+            "name": "--d1-tableFlex-marginBleedX",
+            "type": "var",
+            "value": "{?layout.marginX}"
+          }
+        }
+      },
       "tableFlexHeaderItem": {
         "name": "d1-tableFlexHeaderItem",
         "type": "component",
@@ -11048,6 +11059,17 @@
             "name": "--d1-tableFlexItem-borderOpacity",
             "type": "var",
             "value": "{sys.opacity.outline}"
+          }
+        }
+      },
+      "tableFlexRecord": {
+        "name": "d1-tableFlexRecord",
+        "type": "component",
+        "value": {
+          "minHeight": {
+            "name": "--d1-tableFlexRecord-minHeight",
+            "type": "var",
+            "value": "29px"
           }
         }
       },

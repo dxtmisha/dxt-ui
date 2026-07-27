@@ -115,4 +115,69 @@ export class Table {
       element
     )
   }
+
+  /**
+   * Returns the HTML tag for the table.
+   *
+   * Возвращает HTML-тег для таблицы.
+   */
+  get tag(): string {
+    return 'table'
+  }
+
+  /**
+   * Returns the HTML tag for the table colgroup.
+   *
+   * Возвращает HTML-тег для colgroup таблицы.
+   */
+  get tagColgroup(): string | undefined {
+    return 'colgroup'
+  }
+
+  /**
+   * Returns the HTML tag for the table col.
+   *
+   * Возвращает HTML-тег для col таблицы.
+   */
+  get tagCol(): string {
+    return 'col'
+  }
+
+  /**
+   * Returns the HTML tag for the table header.
+   *
+   * Возвращает HTML-тег для шапки таблицы.
+   */
+  get tagHeader(): string {
+    return 'thead'
+  }
+
+  /**
+   * Returns the HTML tag for the table foot.
+   *
+   * Возвращает HTML-тег для подвала таблицы.
+   */
+  get tagFoot(): string {
+    return 'tfoot'
+  }
+
+  /**
+   * Returns the HTML tag for the table items.
+   *
+   * Возвращает HTML-тег для элементов таблицы.
+   * @returns HTML tag name / имя HTML-тега
+   */
+  get tagItems(): string {
+    return 'tbody'
+  }
+
+  /**
+   * Computed HTML attributes and bindings for the table element.
+   *
+   * Вычисляемые HTML-атрибуты и привязки для элемента таблицы.
+   * @returns HTML attributes and bindings object / объект HTML-атрибутов и привязок
+   */
+  get binds(): Record<string, any> {
+    return {}
+  }
 }

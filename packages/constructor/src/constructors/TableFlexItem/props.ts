@@ -1,8 +1,9 @@
 import type { TableItemPropsBasic } from '../TableItem'
 
 /**
- * Type describing token properties. /
- * Тип, описывающий токен-свойства.
+ * Type describing token properties for TableFlexItem component.
+ *
+ * Тип, описывающий токен-свойства для компонента TableFlexItem.
  */
 type TableFlexItemPropsToken = {
   // :type [!] System label / Системная метка
@@ -19,7 +20,8 @@ type TableFlexItemPropsToken = {
 }
 
 /**
- * Basic type describing flex table item properties. /
+ * Basic type describing flex table item properties.
+ *
  * Базовый тип, описывающий свойства ячейки флекс-таблицы.
  */
 export type TableFlexItemPropsBasic = TableItemPropsBasic

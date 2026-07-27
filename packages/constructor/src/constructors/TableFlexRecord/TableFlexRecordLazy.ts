@@ -8,28 +8,30 @@ import {
 
 import { ClientOnlyInclude } from '../../classes/ClientOnlyInclude'
 
-import type { TableRecordProps } from './props'
+import type { TableFlexRecordProps } from './props'
 
 /**
- * Class representing the lazy loading handler for a table record (TableRecordLazy).
- * Manages visibility detection, deferred rendering, and default dimensions for table record rows.
+ * Class representing the lazy loading handler for a flex table record (TableFlexRecordLazy).
+ * Manages visibility detection, deferred rendering, and default dimensions for flex table record rows.
  *
- * Класс, представляющий обработчик ленивой загрузки для записи таблицы (TableRecordLazy).
- * Управляет определением видимости, отложенным рендерингом и размерами по умолчанию для строк записи таблицы.
+ * Класс, представляющий обработчик ленивой загрузки для записи флекс-таблицы (TableFlexRecordLazy).
+ * Управляет определением видимости, отложенным рендерингом и размерами по умолчанию для строк записи флекс-таблицы.
  */
-export class TableRecordLazy {
+export class TableFlexRecordLazy {
   /** Lazy item tracking instance / Экземпляр отслеживания ленивого элемента */
   readonly lazyItem: ReturnType<typeof useLazyItemByMarginRef>
 
   /**
-   * Constructor
+   * Constructor for TableFlexRecordLazy.
+   *
+   * Конструктор для TableFlexRecordLazy.
    * @param props input properties / входные свойства
    * @param element target HTML element reference / ссылка на целевой HTML-элемент
    * @param className base CSS class name / базовое имя CSS-класса
    * @param clientOnly client-only rendering handler instance / экземпляр обработчика рендеринга только на клиенте
    */
   constructor(
-    protected readonly props: TableRecordProps,
+    protected readonly props: TableFlexRecordProps,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly className: string,
     protected readonly clientOnly: ClientOnlyInclude

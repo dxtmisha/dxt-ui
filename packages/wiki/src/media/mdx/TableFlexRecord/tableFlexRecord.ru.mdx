@@ -17,20 +17,18 @@ import { Source } from '@storybook/addon-docs/blocks';
 </script>
 
 <template>
-  <div class="wiki-storybook-flex" style="flex-direction: column;">
-    <!-- Строка заголовка -->
-    <TableFlexRecord
-      :isHeader="true"
-      :columns="['id', 'name', 'role', 'status']"
-      :item="{ id: 'ID', name: 'Имя', role: 'Должность', status: 'Статус' }"
-    />
+  <!-- Строка заголовка -->
+  <TableFlexRecord
+    :isHeader="true"
+    :columns="['id', 'name', 'role', 'status']"
+    :item="{ id: 'ID', name: 'Имя', role: 'Должность', status: 'Статус' }"
+  />
 
-    <!-- Строка данных -->
-    <TableFlexRecord
-      :columns="['id', 'name', 'role', 'status']"
-      :item="{ id: '1', name: 'Misha', role: 'Разработчик', status: 'Активен' }"
-    />
-  </div>
+  <!-- Строка данных -->
+  <TableFlexRecord
+    :columns="['id', 'name', 'role', 'status']"
+    :item="{ id: '1', name: 'Misha', role: 'Разработчик', status: 'Активен' }"
+  />
 </template>
   `}
     language="html"

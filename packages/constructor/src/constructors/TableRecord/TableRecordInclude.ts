@@ -37,6 +37,7 @@ export class TableRecordInclude extends ComponentIncludeAbstract<
 > {
   /** Component sub-name / Дополнительное имя компонента */
   protected readonly name: string = 'tableRecord'
+
   /** Property name for attributes / Имя свойства для атрибутов */
   protected readonly propsAttrsName = 'tableRecordAttrs'
 

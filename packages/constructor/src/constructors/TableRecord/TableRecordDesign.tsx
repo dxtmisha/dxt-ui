@@ -27,19 +27,21 @@ export class TableRecordDesign<
   CLASSES extends TableRecordClasses,
   P extends TableRecordProps
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
-    COMP,
-    TableRecordEmits,
-    EXPOSE,
-    TableRecordSlots,
-    CLASSES,
-    P
-  > {
+  HTMLDivElement,
+  COMP,
+  TableRecordEmits,
+  EXPOSE,
+  TableRecordSlots,
+  CLASSES,
+  P
+> {
   /** TableRecord controller instance / Экземпляр контроллера записи таблицы (TableRecord) */
   protected readonly item: TableRecord
 
   /**
-   * Constructor
+   * Constructor for TableRecordDesign.
+   *
+   * Конструктор для TableRecordDesign.
    * @param name class name / имя класса
    * @param props properties / свойства
    * @param options additional design options / дополнительные параметры дизайна
@@ -75,6 +77,7 @@ export class TableRecordDesign<
    * Initialization of all the necessary properties for work.
    *
    * Инициализация всех необходимых свойств для работы.
+   * @returns exposed object / экспортируемый объект
    */
   protected initExpose(): EXPOSE {
     return {} as EXPOSE
@@ -84,12 +87,11 @@ export class TableRecordDesign<
    * Improvement of the obtained list of classes.
    *
    * Доработка полученного списка классов.
+   * @returns object with classes / объект с классами
    */
   protected initClasses(): Partial<CLASSES> {
     return {
-      main: {
-        ...this.item.lazy.classes
-      },
+      main: {},
       ...{
         // :classes [!] System label / Системная метка
         // :classes [!] System label / Системная метка
@@ -101,11 +103,10 @@ export class TableRecordDesign<
    * Refinement of the received list of styles.
    *
    * Доработка полученного списка стилей.
+   * @returns styles object / объект стилей
    */
   protected initStyles(): ConstrStyles {
-    return {
-      ...this.item.lazy.styles
-    }
+    return {}
   }
 
   /**
@@ -115,6 +116,22 @@ export class TableRecordDesign<
    * @returns virtual node (VNode) / виртуальный узел (VNode)
    */
   protected initRender(): VNode {
+    return h('tr', {
+      ...this.getAttrs(),
+      ref: this.element,
+      class: this.classes?.value.main,
+      style: this.styles?.value,
+      ...this.item.binds
+    }, this.renderChildren())
+  }
+
+  /**
+   * Rendering children elements.
+   *
+   * Рендеринг дочерних элементов.
+   * @returns array of rendered virtual nodes / массив отрендеренных виртуальных узлов
+   */
+  readonly renderChildren = (): any[] => {
     const children: any[] = []
 
     if (this.props.columns) {
@@ -127,12 +144,6 @@ export class TableRecordDesign<
       }
     }
 
-    return h('tr', {
-      ...this.getAttrs(),
-      ref: this.element,
-      class: this.classes?.value.main,
-      style: this.styles?.value,
-      ...this.item.binds
-    }, children)
+    return children
   }
 }

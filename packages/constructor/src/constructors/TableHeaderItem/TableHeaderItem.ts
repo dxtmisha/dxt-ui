@@ -36,7 +36,9 @@ export class TableHeaderItem extends TableItem {
   readonly tooltip: TooltipInclude
 
   /**
-   * Constructor
+   * Constructor for TableHeaderItem.
+   *
+   * Конструктор для TableHeaderItem.
    * @param props input parameters / входные параметры
    * @param refs input parameters in the form of reactive elements / входные параметры в виде реактивных элементов
    * @param element element / элемент
@@ -112,6 +114,7 @@ export class TableHeaderItem extends TableItem {
    * Computed HTML attributes and bindings for the main element.
    *
    * Вычисляемые HTML-атрибуты и привязки для главного элемента.
+   * @returns HTML attributes and bindings object / объект HTML-атрибутов и привязок
    */
   override get binds(): Record<string, any> {
     return {
@@ -125,6 +128,7 @@ export class TableHeaderItem extends TableItem {
    * Returns data for the tooltip control button.
    *
    * Возвращает данные для кнопки управления подсказкой.
+   * @returns tooltip control button binding object / объект привязки кнопки управления подсказкой
    */
   get tooltipControlBind(): ConstrBind<IconPropsBasic> {
     return {
@@ -138,6 +142,7 @@ export class TableHeaderItem extends TableItem {
    * Returns the sorting direction for ARIA.
    *
    * Возвращает направление сортировки для ARIA.
+   * @returns sorting direction for ARIA or undefined / направление сортировки для ARIA или undefined
    */
   get ariaSort(): string | undefined {
     switch (this.props.sortDir) {

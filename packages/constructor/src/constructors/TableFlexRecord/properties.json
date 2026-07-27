@@ -1,3 +1,6 @@
 {
-  "link|tableRecord": "{d.tableRecord}"
+  "link|tableRecord": "{d.tableRecord}",
+  "minHeight": {
+    "_type": "var"
+  }
 }

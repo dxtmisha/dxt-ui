@@ -463,6 +463,10 @@
     "./TableFlexRecord": {
       "types": "./dist/constructors/TableFlexRecord/index.d.ts",
       "default": "./dist/tableFlexRecord.js"
+    },
+    "./TableFlex": {
+      "types": "./dist/constructors/TableFlex/index.d.ts",
+      "default": "./dist/tableFlex.js"
     }
   },
   "buildOptions": {

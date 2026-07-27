@@ -1,3 +1,4 @@
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { TableItem } from '../TableItem'
 
 /**
@@ -12,6 +13,7 @@ export class TableFlexItem extends TableItem {
    * Returns the HTML tag for the table cell.
    *
    * Возвращает HTML-тег для ячейки таблицы.
+   * @returns HTML tag name / имя HTML-тега
    */
   override get tag(): string {
     return this.props.tag ?? 'div'
@@ -21,13 +23,15 @@ export class TableFlexItem extends TableItem {
    * Computed HTML attributes and bindings for the main element.
    *
    * Вычисляемые HTML-атрибуты и привязки для главного элемента.
+   * @returns HTML attributes and bindings object / объект HTML-атрибутов и привязок
    */
   override get binds(): Record<string, any> {
     return {
+      ...super.binds,
+      ...AriaStaticInclude.role('cell'),
       'data-colspan': this.props.colspan,
       'data-rowspan': this.props.rowspan,
-      'data-index': this.props.index,
-      ...this.aria
+      'data-index': this.props.index
     }
   }
 }

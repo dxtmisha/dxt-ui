@@ -19,23 +19,21 @@ The flexbox-based table header cell component representing a flexbox layout head
 </script>
 
 <template>
-  <div class="wiki-storybook-flex">
-    <!-- Simple header cell with value -->
-    <TableFlexHeaderItem value="Header Title" />
+  <!-- Simple header cell with value -->
+  <TableFlexHeaderItem value="Header Title" />
 
-    <!-- Interactive header cell with sorting and tooltip -->
-    <TableFlexHeaderItem
-      label="Sortable Header"
-      description="Click to sort"
-      showSort
-      sortDir="asc"
-      tooltipLabel="Help Information"
-      tooltipDescription="Detailed description for this column"
-      align="center"
-      colspan="2"
-      labelClamp
-    />
-  </div>
+  <!-- Interactive header cell with sorting and tooltip -->
+  <TableFlexHeaderItem
+    label="Sortable Header"
+    description="Click to sort"
+    showSort
+    sortDir="asc"
+    tooltipLabel="Help Information"
+    tooltipDescription="Detailed description for this column"
+    align="center"
+    colspan="2"
+    labelClamp
+  />
 </template>
   `}
     language="html"

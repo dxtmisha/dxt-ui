@@ -35,13 +35,16 @@ export type TableItemPropsBasic = LabelProps
 
     /** Tag name of the table cell / Имя тега ячейки таблицы */
     tag?: string
+
     /** Number of columns the cell should span / Количество объединяемых колонок для ячейки */
     colspan?: string | number
+
     /** Number of rows the cell should span / Количество объединяемых строк для ячейки */
     rowspan?: string | number
 
     /** Unique rendering key / Уникальный ключ рендеринга */
     keyItem?: string
+
     /** Column/field index name / Имя индекса колонки/поля */
     index?: string | number
   }

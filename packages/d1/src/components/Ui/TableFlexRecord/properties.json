@@ -1,4 +1,5 @@
 {
   "main": "{d.tableFlexRecord}",
-  "link|tableRecord": "{?tableRecord}"
+  "link|tableRecord": "{?tableRecord}",
+  "minHeight": "29px"
 }

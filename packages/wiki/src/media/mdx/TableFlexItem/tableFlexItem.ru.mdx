@@ -17,19 +17,17 @@ import { Source } from '@storybook/addon-docs/blocks';
 </script>
 
 <template>
-  <div style="display: flex; width: 100%;">
-    <!-- Простая ячейка со значением -->
-    <TableFlexItem value="Значение ячейки" />
+  <!-- Простая ячейка со значением -->
+  <TableFlexItem value="Значение ячейки" />
 
-    <!-- Центрированная ячейка с объединением колонок и ограничением строк -->
-    <TableFlexItem
-      label="Длинное название ячейки"
-      description="Необязательное описание ячейки"
-      align="center"
-      colspan="2"
-      labelClamp
-    />
-  </div>
+  <!-- Центрированная ячейка с объединением колонок и ограничением строк -->
+  <TableFlexItem
+    label="Длинное название ячейки"
+    description="Необязательное описание ячейки"
+    align="center"
+    colspan="2"
+    labelClamp
+  />
 </template>
   `}
     language="html"

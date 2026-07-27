@@ -32,7 +32,7 @@ export const TableFlexRecord: Story = {
     components: { D1TableFlexRecord },
     setup: () => ({ args }),
     template: `
-      <div class="wiki-storybook-flex" style="flex-direction: column;">
+      <div class="wiki-storybook-flex-column">
       <D1TableFlexRecord v-bind="args" />
       <D1TableFlexRecord v-bind="args" />
       <D1TableFlexRecord v-bind="args" />
@@ -48,7 +48,7 @@ export const TableFlexRecordIsHeader: Story = {
   render: () => ({
     components: { D1TableFlexRecord },
     template: `
-        <div class="wiki-storybook-flex" style="flex-direction: column;">
+        <div class="wiki-storybook-flex-column">
           <D1TableFlexRecord
             :isHeader="true"
             :columns="['id', 'name', 'role', 'status']"
@@ -64,7 +64,7 @@ export const TableFlexRecordSkeleton: Story = {
     components: { D1TableFlexRecord, D1Skeleton },
     template: `
         <D1Skeleton :active="true">
-          <div class="wiki-storybook-flex" style="flex-direction: column;">
+          <div class="wiki-storybook-flex-column">
             <D1TableFlexRecord
               :isSkeleton="true"
               :columns="['id', 'name', 'role', 'status']"

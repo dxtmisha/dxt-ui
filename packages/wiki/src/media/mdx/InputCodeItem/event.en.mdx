@@ -51,15 +51,13 @@ const handleBackspace = (index) => {
 </script>
 
 <template>
-  <div class="wiki-storybook-flex">
-    <InputCodeItem
-      :index="0"
-      @focus="handleFocus"
-      @input="handleInput"
-      @paste="handlePaste"
-      @backspace="handleBackspace"
-    />
-  </div>
+  <InputCodeItem
+    :index="0"
+    @focus="handleFocus"
+    @input="handleInput"
+    @paste="handlePaste"
+    @backspace="handleBackspace"
+  />
 </template>
   `}
     language="html"

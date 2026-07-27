@@ -61,6 +61,7 @@ import DemoLink from '../components/DemoLink.vue'
         <DemoLink label="Switch" name="component-switch"/>
         <DemoLink label="Textarea" name="component-textarea"/>
         <DemoLink label="Table" name="component-table"/>
+        <DemoLink label="TableFlex" name="component-table-flex"/>
         <DemoLink label="Tabs" name="component-tabs"/>
         <DemoLink label="Tooltip" name="component-tooltip"/>
         <DemoLink label="Window" name="component-window"/>

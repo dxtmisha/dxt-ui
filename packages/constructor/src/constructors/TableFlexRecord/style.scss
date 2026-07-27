@@ -4,4 +4,14 @@
 @mixin mixinTableFlexRecord {
   @include tableRecord.mixinTableRecord;
   display: flex;
+
+  &--lazy {
+    content-visibility: auto;
+    contain-intrinsic-height: ui.v('??minHeight', 32px);
+
+    &--hidden {
+      visibility: hidden;
+      min-height: ui.v('??minHeight', 32px);
+    }
+  }
 }

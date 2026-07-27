@@ -27,7 +27,7 @@ export const wikiDescriptionsTableFlexRecord: StorybookComponentsDescriptionItem
   },
   import: [],
   render: `
-    <div class="wiki-storybook-flex" style="flex-direction: column;">
+    <div class="wiki-storybook-flex-column">
       <DesignComponent v-bind="args" />
       <DesignComponent v-bind="args" />
       <DesignComponent v-bind="args" />
@@ -41,7 +41,7 @@ export const wikiDescriptionsTableFlexRecord: StorybookComponentsDescriptionItem
         ru: 'Строка заголовка'
       },
       template: `
-        <div class="wiki-storybook-flex" style="flex-direction: column;">
+        <div class="wiki-storybook-flex-column">
           <DesignComponent
             :isHeader="true"
             :columns="['id', 'name', 'role', 'status']"
@@ -59,7 +59,7 @@ export const wikiDescriptionsTableFlexRecord: StorybookComponentsDescriptionItem
       components: ['Skeleton'],
       template: `
         <DesignSkeleton :active="true">
-          <div class="wiki-storybook-flex" style="flex-direction: column;">
+          <div class="wiki-storybook-flex-column">
             <DesignComponent
               :isSkeleton="true"
               :columns="['id', 'name', 'role', 'status']"
@@ -92,7 +92,7 @@ export const wikiDescriptionsTableFlexRecord: StorybookComponentsDescriptionItem
   ai: {
     render: `
 <div :class="classDemo.item">
-  <div class="wiki-storybook-flex" style="flex-direction: column;">
+  <div class="wiki-storybook-flex-column">
     <TableFlexRecord v-bind="args" />
   </div>
 </div>

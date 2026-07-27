@@ -4,9 +4,9 @@ import type { TableHeaderItemPropsBasic } from '../TableHeaderItem'
 import type { TableRecordValue } from './basicTypes'
 
 /**
- * Type describing token properties.
+ * Type describing token properties for TableRecord component.
  *
- * Тип, описывающий токен-свойства.
+ * Тип, описывающий токен-свойства для компонента TableRecord.
  */
 type TableRecordPropsToken = {
   // :type [!] System label / Системная метка
@@ -35,12 +35,6 @@ export type TableRecordPropsBasic<
 
     /** Unique rendering key / Уникальный ключ рендеринга */
     index?: string
-
-    /** Lazy loading of row elements / Ленивая загрузка элементов строки */
-    lazy?: boolean
-
-    /** Default height of the row element / Высота элемента строки по умолчанию */
-    defaultHeight?: string | number
   }
 
 /**
@@ -56,7 +50,6 @@ export type TableRecordProps = TableRecordPropsBasic & TableRecordPropsToken
  * Значение по умолчанию для свойства.
  */
 export const defaultsTableRecord = {
-  lazy: true,
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

@@ -17,19 +17,17 @@ The flexbox-based table cell component representing a flexbox layout item cell. 
 </script>
 
 <template>
-  <div style="display: flex; width: 100%;">
-    <!-- Simple cell with value -->
-    <TableFlexItem value="Cell Value" />
+  <!-- Simple cell with value -->
+  <TableFlexItem value="Cell Value" />
 
-    <!-- Centered cell with custom span and label clamping -->
-    <TableFlexItem
-      label="Clamped Label Value"
-      description="Optional cell description"
-      align="center"
-      colspan="2"
-      labelClamp
-    />
-  </div>
+  <!-- Centered cell with custom span and label clamping -->
+  <TableFlexItem
+    label="Clamped Label Value"
+    description="Optional cell description"
+    align="center"
+    colspan="2"
+    labelClamp
+  />
 </template>
   `}
     language="html"

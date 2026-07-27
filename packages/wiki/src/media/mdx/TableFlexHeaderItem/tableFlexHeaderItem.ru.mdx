@@ -19,23 +19,21 @@ import { Source } from '@storybook/addon-docs/blocks';
 </script>
 
 <template>
-  <div class="wiki-storybook-flex">
-    <!-- Простая ячейка заголовка со значением -->
-    <TableFlexHeaderItem value="Заголовок столбца" />
+  <!-- Простая ячейка заголовка со значением -->
+  <TableFlexHeaderItem value="Заголовок столбца" />
 
-    <!-- Интерактивная ячейка заголовка с сортировкой и подсказкой -->
-    <TableFlexHeaderItem
-      label="Сортируемый заголовок"
-      description="Нажмите для сортировки"
-      showSort
-      sortDir="asc"
-      tooltipLabel="Справка"
-      tooltipDescription="Подробное описание для этого столбца"
-      align="center"
-      colspan="2"
-      labelClamp
-    />
-  </div>
+  <!-- Интерактивная ячейка заголовка с сортировкой и подсказкой -->
+  <TableFlexHeaderItem
+    label="Сортируемый заголовок"
+    description="Нажмите для сортировки"
+    showSort
+    sortDir="asc"
+    tooltipLabel="Справка"
+    tooltipDescription="Подробное описание для этого столбца"
+    align="center"
+    colspan="2"
+    labelClamp
+  />
 </template>
   `}
     language="html"

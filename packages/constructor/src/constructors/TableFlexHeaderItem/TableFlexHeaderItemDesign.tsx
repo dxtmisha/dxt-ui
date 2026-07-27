@@ -28,7 +28,9 @@ export class TableFlexHeaderItemDesign<
     P
   > {
   /**
-   * Constructor
+   * Constructor for TableFlexHeaderItemDesign.
+   *
+   * Конструктор для TableFlexHeaderItemDesign.
    * @param name class name / имя класса
    * @param props properties / свойства
    * @param options additional design options / дополнительные параметры дизайна
@@ -52,6 +54,7 @@ export class TableFlexHeaderItemDesign<
    * Improvement of the obtained list of classes.
    *
    * Доработка полученного списка классов.
+   * @returns object with classes / объект с классами
    */
   protected initClasses(): Partial<CLASSES> {
     return {

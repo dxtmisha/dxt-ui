@@ -1,18 +1,14 @@
-import {
-  type ConstrOptions
-} from '@dxtmisha/functional'
+import { type ConstrOptions } from '@dxtmisha/functional'
 
 import { TableFlexItem } from './TableFlexItem'
 import { TableItemDesign } from '../TableItem'
 
-import {
-  type TableFlexItemPropsBasic
-} from './props'
-import {
-  type TableFlexItemClasses,
-  type TableFlexItemComponents,
-  type TableFlexItemEmits,
-  type TableFlexItemExpose
+import type { TableFlexItemPropsBasic } from './props'
+import type {
+  TableFlexItemClasses,
+  TableFlexItemComponents,
+  TableFlexItemEmits,
+  TableFlexItemExpose
 } from './types'
 
 /**
@@ -32,7 +28,9 @@ export class TableFlexItemDesign<
     P
   > {
   /**
-   * Constructor
+   * Constructor for TableFlexItemDesign.
+   *
+   * Конструктор для TableFlexItemDesign.
    * @param name class name / имя класса
    * @param props properties / свойства
    * @param options additional design options / дополнительные параметры дизайна
@@ -56,6 +54,7 @@ export class TableFlexItemDesign<
    * Improvement of the obtained list of classes.
    *
    * Доработка полученного списка классов.
+   * @returns object with classes / объект с классами
    */
   protected initClasses(): Partial<CLASSES> {
     return {

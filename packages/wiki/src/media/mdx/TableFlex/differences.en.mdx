@@ -1,0 +1,46 @@
+## Differences between Table and TableFlex
+
+Both components share a unified interface for working with structured datasets (`columns`, `header`, `list`, `sort`, `search`), but are built on fundamentally different technologies:
+
+### Table
+
+**Table** is a traditional data table component based on native HTML markup (`<table>`, `<thead>`, `<tbody>`, `<tr>`, `<th>`, `<td>`).
+
+**Features & Pros:**
+- **Automatic Column Width Sizing**: The browser automatically aligns column widths across all rows based on content length without extra configuration.
+- **Native Accessibility (A11y)**: Complete out-of-the-box table semantics for screen readers.
+- **Native `rowspan` Support**: Multi-row vertical cell spanning works natively out of the box.
+
+**Limitations:**
+- **Limited Responsiveness**: Traditional `<table>` grids are hard to adapt to mobile devices (e.g., transforming rows into mobile card layouts).
+- **Heavy Reflow during Virtualization**: Dynamic DOM row mutations inside `<table>` impose browser layout reflow overhead.
+
+**Typical Scenarios:**
+- Classic data grids and analytical reports
+- Tables requiring dynamic text-based column auto-sizing
+- Tables with vertical cell spanning (`rowspan`)
+- Desktop interfaces without mobile card transformation requirements
+
+### TableFlex
+
+**TableFlex** is a responsive flexbox table component based on block elements (`<div>`) with Flexbox layout (`display: flex`).
+
+**Features & Pros:**
+- **High Responsiveness & Mobile Adaptability**: Cells and rows easily transform across responsive breakpoints and mobile screens (including card transformations).
+- **Virtual Scroll & Lazy Loading Support**: High-performance rendering and virtualization of huge datasets via `TableFlexRecordLazy` (`lazy`).
+- **Full Control over Column Proportions**: Precise column sizing control via `flex-grow`, `flex-basis`, and `min-width: 0`.
+- **Seamless Sticky Column Positioning (`stickyLeft`)**: Smooth sticky left column behavior without table context constraints.
+
+**Limitations:**
+- **Independent Row Sizing**: Each row is an independent flex container. Ensuring column alignment across rows requires `min-width: 0` or explicit `flex-grow` proportions.
+- **No Native `rowspan`**: Vertical cell spanning across rows is not natively supported due to isolated flex containers.
+
+**Typical Scenarios:**
+- Data lists and tables requiring mobile responsiveness
+- High-volume data tables requiring row virtualization and lazy loading
+- Tables requiring exact column flex proportion control
+
+### Component Selection
+
+- **Use Table** when you need a traditional data report with automatic content-based column sizing and native `rowspan` support.
+- **Use TableFlex** when you need mobile responsiveness, virtual scrolling, or lazy loading for large datasets.

@@ -163,10 +163,11 @@ export class TableDesign<
    */
   readonly renderTable = (): VNode => {
     return h(
-      'table',
+      this.item.tag,
       {
         ref: this.element,
-        class: this.classes?.value.table
+        class: this.classes?.value.table,
+        ...this.item.binds
       },
       [
         ...this.item.caption.render(),
@@ -186,6 +187,12 @@ export class TableDesign<
    * @returns rendered colgroup virtual nodes array / массив виртуальных узлов colgroup
    */
   readonly renderColgroup = (): VNode[] => {
+    const tag = this.item.tagColgroup
+
+    if (!tag) {
+      return []
+    }
+
     const cols = this.item.columns.cols
 
     if (cols.length === 0) {
@@ -194,9 +201,9 @@ export class TableDesign<
 
     return [
       h(
-        'colgroup',
+        tag,
         { class: this.classes?.value.colgroup },
-        cols.map(attr => h('col', { ...attr, class: this.classes?.value.col }))
+        cols.map(attr => h(this.item.tagCol, { ...attr, class: this.classes?.value.col }))
       )
     ]
   }
@@ -219,7 +226,7 @@ export class TableDesign<
     if (children.length > 0) {
       return [
         h(
-          'thead',
+          this.item.tagHeader,
           {
             ref: this.item.headerElement,
             class: this.classes?.value.header
@@ -250,7 +257,7 @@ export class TableDesign<
     if (children.length > 0) {
       return [
         h(
-          'tfoot',
+          this.item.tagFoot,
           { class: this.classes?.value.foot },
           children
         )
@@ -278,7 +285,7 @@ export class TableDesign<
     if (children.length > 0) {
       return [
         h(
-          'tbody',
+          this.item.tagItems,
           { class: this.classes?.value.items },
           children
         )

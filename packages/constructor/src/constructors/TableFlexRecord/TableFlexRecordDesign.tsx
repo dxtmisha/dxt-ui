@@ -1,15 +1,21 @@
 import { h, type VNode } from 'vue'
-import { type ConstrOptions } from '@dxtmisha/functional'
+import {
+  type ConstrOptions,
+  type ConstrStyles,
+  DesignConstructorAbstract
+} from '@dxtmisha/functional'
 
 import { TableFlexRecord } from './TableFlexRecord'
-import { TableRecordDesign } from '../TableRecord'
 
-import type { TableFlexRecordPropsBasic } from './props'
-import type {
-  TableFlexRecordClasses,
-  TableFlexRecordComponents,
-  TableFlexRecordEmits,
-  TableFlexRecordExpose
+import {
+  type TableFlexRecordPropsBasic
+} from './props'
+import {
+  type TableFlexRecordClasses,
+  type TableFlexRecordComponents,
+  type TableFlexRecordEmits,
+  type TableFlexRecordExpose,
+  type TableFlexRecordSlots
 } from './types'
 
 /**
@@ -22,14 +28,22 @@ export class TableFlexRecordDesign<
   EXPOSE extends TableFlexRecordExpose,
   CLASSES extends TableFlexRecordClasses,
   P extends TableFlexRecordPropsBasic
-> extends TableRecordDesign<
+> extends DesignConstructorAbstract<
+    HTMLDivElement,
     COMP,
+    TableFlexRecordEmits,
     EXPOSE,
+    TableFlexRecordSlots,
     CLASSES,
     P
   > {
+  /** TableFlexRecord controller instance / Экземпляр контроллера записи флекс-таблицы (TableFlexRecord) */
+  protected readonly item: TableFlexRecord
+
   /**
-   * Constructor
+   * Constructor for TableFlexRecordDesign.
+   *
+   * Конструктор для TableFlexRecordDesign.
    * @param name class name / имя класса
    * @param props properties / свойства
    * @param options additional design options / дополнительные параметры дизайна
@@ -44,9 +58,57 @@ export class TableFlexRecordDesign<
     super(
       name,
       props,
-      options,
-      ItemConstructor
+      options
     )
+
+    this.item = new ItemConstructor(
+      this.props,
+      this.refs,
+      this.element,
+      this.getDesign(),
+      this.getName(),
+      this.components,
+      this.slots,
+      this.emits
+    )
+
+    this.init()
+  }
+
+  /**
+   * Initialization of all the necessary properties for work.
+   *
+   * Инициализация всех необходимых свойств для работы.
+   * @returns exposed object / экспортируемый объект
+   */
+  protected initExpose(): EXPOSE {
+    return {} as EXPOSE
+  }
+
+  /**
+   * Improvement of the obtained list of classes.
+   *
+   * Доработка полученного списка классов.
+   * @returns object with classes / объект с классами
+   */
+  protected initClasses(): Partial<CLASSES> {
+    return {
+      main: this.item.lazy.classes,
+      ...{
+        // :classes [!] System label / Системная метка
+        // :classes [!] System label / Системная метка
+      }
+    } as Partial<CLASSES>
+  }
+
+  /**
+   * Refinement of the received list of styles.
+   *
+   * Доработка полученного списка стилей.
+   * @returns styles object / объект стилей
+   */
+  protected initStyles(): ConstrStyles {
+    return this.item.lazy.styles
   }
 
   /**
@@ -55,7 +117,29 @@ export class TableFlexRecordDesign<
    * Основная функция рендеринга для компонента записи флекс-таблицы.
    * @returns virtual node (VNode) / виртуальный узел (VNode)
    */
-  protected override initRender(): VNode {
+  protected initRender(): VNode {
+    const children: any[] = []
+
+    if (this.item.lazy.is()) {
+      children.push(this.renderChildren())
+    }
+
+    return h('div', {
+      ...this.getAttrs(),
+      ref: this.element,
+      class: this.classes?.value.main,
+      style: this.styles?.value,
+      ...this.item.binds
+    }, children)
+  }
+
+  /**
+   * Rendering children elements.
+   *
+   * Рендеринг дочерних элементов.
+   * @returns array of rendered virtual nodes / массив отрендеренных виртуальных узлов
+   */
+  readonly renderChildren = (): any[] => {
     const children: any[] = []
 
     if (this.props.columns) {
@@ -68,12 +152,6 @@ export class TableFlexRecordDesign<
       }
     }
 
-    return h('div', {
-      ...this.getAttrs(),
-      ref: this.element,
-      class: this.classes?.value.main,
-      style: this.styles?.value,
-      ...this.item.binds
-    }, children)
+    return children
   }
 }

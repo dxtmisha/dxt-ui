@@ -3,6 +3,11 @@ import type { IconPropsBasic } from '../Icon'
 import type { TooltipProps } from '../Tooltip'
 import type { TableHeaderItemPropsBasic } from '../TableHeaderItem'
 
+/**
+ * Type describing token properties for TableFlexHeaderItem component.
+ *
+ * Тип, описывающий токен-свойства для компонента TableFlexHeaderItem.
+ */
 type TableFlexHeaderItemPropsToken = {
   // :type [!] System label / Системная метка
   disabled?: boolean
@@ -18,7 +23,8 @@ type TableFlexHeaderItemPropsToken = {
 }
 
 /**
- * Basic type describing flex table header item properties. /
+ * Basic type describing flex table header item properties.
+ *
  * Базовый тип, описывающий свойства ячейки шапки флекс-таблицы.
  */
 export type TableFlexHeaderItemPropsBasic<

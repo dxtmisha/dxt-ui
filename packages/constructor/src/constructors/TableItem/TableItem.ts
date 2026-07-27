@@ -27,7 +27,9 @@ export class TableItem {
   readonly skeleton: SkeletonInclude
 
   /**
-   * Constructor
+   * Constructor for TableItem.
+   *
+   * Конструктор для TableItem.
    * @param props input properties / входные свойства
    * @param refs input properties in the form of reactive references / входные свойства в виде реактивных ссылок
    * @param element target HTML element / целевой HTML-элемент
@@ -80,6 +82,7 @@ export class TableItem {
    * Returns the HTML tag for the table cell.
    *
    * Возвращает HTML-тег для ячейки таблицы.
+   * @returns HTML tag name / имя HTML-тега
    */
   get tag(): string {
     return this.props.tag ?? 'td'
@@ -89,6 +92,7 @@ export class TableItem {
    * Computed HTML attributes and bindings for the main element.
    *
    * Вычисляемые HTML-атрибуты и привязки для главного элемента.
+   * @returns HTML attributes and bindings object / объект HTML-атрибутов и привязок
    */
   get binds(): Record<string, any> {
     return {
@@ -103,6 +107,7 @@ export class TableItem {
    * Computed ARIA attributes for the table cell.
    *
    * Вычисляемые ARIA-атрибуты для ячейки таблицы.
+   * @returns ARIA attributes object / объект ARIA-атрибутов
    */
   get aria(): AriaList {
     return {

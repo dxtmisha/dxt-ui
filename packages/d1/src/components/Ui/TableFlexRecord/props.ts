@@ -25,7 +25,6 @@ export type TableFlexRecordProps = TableFlexRecordPropsBasic<TableFlexItemProps,
  */
 export const defaults: object = {
   ...defaultsTableFlexRecord,
-  defaultHeight: 28,
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

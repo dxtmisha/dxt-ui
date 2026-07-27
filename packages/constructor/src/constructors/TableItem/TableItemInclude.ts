@@ -34,6 +34,7 @@ export class TableItemInclude extends ComponentIncludeAbstract<
 > {
   /** Component sub-name / Дополнительное имя компонента */
   protected readonly name: string = 'tableItem'
+
   /** Property name for attributes / Имя свойства для атрибутов */
   protected readonly propsAttrsName = 'tableItemAttrs'
 
@@ -69,6 +70,7 @@ export class TableItemInclude extends ComponentIncludeAbstract<
    * @param index column index / индекс колонки
    * @param row row data object / объект данных строки
    * @param value cell value / значение ячейки
+   * @param attrs additional cell properties/attributes / дополнительные свойства/атрибуты ячейки
    * @returns rendered virtual node or undefined / отрендеренная виртуальная нода или undefined
    */
   renderSlot(
@@ -115,6 +117,7 @@ export class TableItemInclude extends ComponentIncludeAbstract<
    * @param key unique rendering key / уникальный ключ рендеринга
    * @param index column index / индекс колонки
    * @param value cell value / значение ячейки
+   * @param attrs additional cell properties/attributes / дополнительные свойства/атрибуты ячейки
    * @returns rendered virtual node or undefined / отрендеренная виртуальная нода или undefined
    */
   renderDefault(
@@ -142,6 +145,7 @@ export class TableItemInclude extends ComponentIncludeAbstract<
    * @param key unique rendering key / уникальный ключ рендеринга
    * @param index column index / индекс колонки
    * @param row row data object / объект данных строки
+   * @param attrs additional cell properties/attributes / дополнительные свойства/атрибуты ячейки
    * @returns rendered virtual node or undefined / отрендеренная виртуальная нода или undefined
    */
   readonly renderItem = (

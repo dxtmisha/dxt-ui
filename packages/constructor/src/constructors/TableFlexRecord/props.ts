@@ -2,6 +2,10 @@ import type { TableFlexHeaderItemPropsBasic } from '../TableFlexHeaderItem'
 import type { TableFlexItemPropsBasic } from '../TableFlexItem'
 import type { TableRecordPropsBasic } from '../TableRecord'
 
+/**
+ * Type describing token properties for TableFlexRecord component. /
+ * Тип, описывающий токен-свойства для компонента TableFlexRecord.
+ */
 type TableFlexRecordPropsToken = {
   // :type [!] System label / Системная метка
   disabled?: boolean
@@ -16,7 +20,13 @@ type TableFlexRecordPropsToken = {
 export type TableFlexRecordPropsBasic<
   TableItem extends TableFlexItemPropsBasic = TableFlexItemPropsBasic,
   TableHeaderItem extends TableFlexHeaderItemPropsBasic = TableFlexHeaderItemPropsBasic
-> = TableRecordPropsBasic<TableItem, TableHeaderItem>
+> = TableRecordPropsBasic<TableItem, TableHeaderItem> & {
+  /** Lazy loading of row elements / Ленивая загрузка элементов строки */
+  lazy?: boolean
+
+  /** Default height of the row element / Высота элемента строки по умолчанию */
+  defaultHeight?: string | number
+}
 
 /**
  * Type describing incoming properties.
@@ -31,7 +41,6 @@ export type TableFlexRecordProps = TableFlexRecordPropsBasic & TableFlexRecordPr
  * Значение по умолчанию для свойства.
  */
 export const defaultsTableFlexRecord = {
-  tag: 'div',
   lazy: true,
   ...{
     // :default [!] System label / Системная метка

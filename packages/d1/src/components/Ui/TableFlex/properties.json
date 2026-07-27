@@ -1,0 +1,4 @@
+{
+  "main": "{d.tableFlex}",
+  "link|table": "{?table}"
+}

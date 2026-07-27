@@ -5,15 +5,6 @@
     --#{ui.n('?item.borderNone')}: 0;
   }
 
-  &--lazy {
-    content-visibility: auto;
-    contain-intrinsic-height: ui.v('??sys.minHeight', 32px);
-
-    &--hidden {
-      visibility: hidden;
-    }
-  }
-
   &--none {
     display: none;
   }

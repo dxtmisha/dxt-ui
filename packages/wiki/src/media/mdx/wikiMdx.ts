@@ -91,6 +91,7 @@ import { wikiMdxSegmentControl } from './SegmentControl/wikiMdxSegmentControl'
 import { wikiMdxSegmentControlItem } from './SegmentControlItem/wikiMdxSegmentControlItem'
 import { wikiMdxTabItem } from './TabItem/wikiMdxTabItem'
 import { wikiMdxTable } from './Table/wikiMdxTable'
+import { wikiMdxTableFlex } from './TableFlex/wikiMdxTableFlex'
 import { wikiMdxTableHeaderItem } from './TableHeaderItem/wikiMdxTableHeaderItem'
 import { wikiMdxTableFlexHeaderItem } from './TableFlexHeaderItem/wikiMdxTableFlexHeaderItem'
 import { wikiMdxTableItem } from './TableItem/wikiMdxTableItem'
@@ -198,6 +199,7 @@ export const wikiMdx: StorybookComponentsMdx = [
   wikiMdxSegmentControlItem,
   wikiMdxTabItem,
   wikiMdxTable,
+  wikiMdxTableFlex,
   wikiMdxTableHeaderItem,
   wikiMdxTableFlexHeaderItem,
   wikiMdxTableItem,

@@ -39,7 +39,9 @@ export class TableItemDesign<
   protected readonly item: TableItem
 
   /**
-   * Constructor
+   * Constructor for TableItemDesign.
+   *
+   * Конструктор для TableItemDesign.
    * @param name class name / имя класса
    * @param props properties / свойства
    * @param options additional design options / дополнительные параметры дизайна
