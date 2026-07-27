@@ -35,7 +35,7 @@ export interface TableHeaderItemExpose {
 /**
  * Type describing available slots.
  *
- * Тип, описывающий доступные slots.
+ * Тип, описывающий доступные слоты.
  */
 export interface TableHeaderItemSlots extends TableItemSlots {
   /** Slot for displaying custom tooltip body / Слот для отображения пользовательского содержимого подсказки */

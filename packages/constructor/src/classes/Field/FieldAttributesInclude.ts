@@ -149,7 +149,7 @@ export class FieldAttributesInclude {
    * Returns data for the specified attributes.
    *
    * Возвращает данные для указанных атрибутов.
-   * @param attributes list of attributes/ список атрибутов
+   * @param attributes list of attributes / список атрибутов
    */
   protected getData(attributes: (keyof typeof this.props)[]): Record<string, any> {
     const data: Record<string, any> = {}

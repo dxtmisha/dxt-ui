@@ -1,0 +1,20 @@
+@use "@dxtmisha/styles/properties" as ui;
+@use "../TableItem/style" as tableItem;
+
+@mixin mixinTableFlexItemBase {
+  position: relative;
+  flex-basis: 1px;
+  flex-grow: 1;
+  flex-shrink: 1;
+
+  @for $i from 2 through 12 {
+    &[data-colspan="#{$i}"] {
+      flex-basis: #{$i}px;
+    }
+  }
+}
+
+@mixin mixinTableFlexItem {
+  @include tableItem.mixinTableItem;
+  @include mixinTableFlexItemBase;
+}

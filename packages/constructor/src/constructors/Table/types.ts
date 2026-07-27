@@ -5,22 +5,30 @@ import type { CaptionSlots } from '../../types/captionTypes'
 import type { ScrollStickyComponentInclude } from '../ScrollSticky'
 import type { TableRecordComponentInclude, TableRecordEmits, TableRecordItemSlots } from '../TableRecord'
 
+/**
+ * Interface for describing which components need to be connected for work.
+ *
+ * Интерфейс для описания, какие компоненты надо подключить для работы.
+ */
 export type TableComponents = TableRecordComponentInclude & ScrollStickyComponentInclude
 
 /**
- * Type describing available events. /
+ * Type describing available events.
+ *
  * Тип, описывающий доступные события.
  */
 export type TableEmits = TableRecordEmits
 
 /**
- * Type describing available properties. /
+ * Type describing available properties.
+ *
  * Тип, описывающий доступные свойства.
  */
 export type TableExpose = {}
 
 /**
- * Type describing available slots. /
+ * Type describing available slots.
+ *
  * Тип, описывающий доступные слоты.
  */
 export type TableSlots<
@@ -64,7 +72,8 @@ export type TableSlots<
   }
 
 /**
- * Type describing subclasses. /
+ * Type describing subclasses.
+ *
  * Тип, описывающий подклассы.
  */
 export type TableClasses = {

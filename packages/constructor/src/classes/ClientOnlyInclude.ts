@@ -23,8 +23,10 @@ export class ClientOnlyInclude {
   }
 
   /**
-   * Is the component ready for rendering / Готов ли компонент к рендерингу
-   * @returns {boolean}
+   * Checks whether the component is ready for rendering.
+   *
+   * Проверяет, готов ли компонент к рендерингу.
+   * @returns true if component is ready for rendering / true, если компонент готов к рендерингу
    */
   isRender(): boolean {
     return (this.props && !this.props.clientOnly) || this.isMounted.value

@@ -18,12 +18,12 @@ export class LabelHighlightInclude extends LabelInclude {
    * Constructor for the LabelHighlightInclude class.
    *
    * Конструктор для класса LabelHighlightInclude.
-   * @param props input property/ входное свойство
-   * @param className class name/ название класса
-   * @param classesExtra additional classes/ дополнительные классы
-   * @param slots object for working with slots/ объект для работы со слотами
-   * @param elementsExtra additional elements/ дополнительные элементы
-   * @param skeleton optional skeleton for loading state/ необязательный скелетон для состояния загрузки
+   * @param props input property / входное свойство
+   * @param className class name / название класса
+   * @param classesExtra additional classes / дополнительные классы
+   * @param slots object for working with slots / объект для работы со слотами
+   * @param elementsExtra additional elements / дополнительные элементы
+   * @param skeleton optional skeleton for loading state / необязательный скелетон для состояния загрузки
    */
   constructor(
     protected readonly props: Readonly<LabelHighlightProps>,

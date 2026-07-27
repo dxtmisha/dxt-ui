@@ -10999,6 +10999,58 @@
           }
         }
       },
+      "tableFlexHeaderItem": {
+        "name": "d1-tableFlexHeaderItem",
+        "type": "component",
+        "value": {
+          "borderStyleX": {
+            "name": "--d1-tableFlexHeaderItem-borderStyleX",
+            "type": "var",
+            "value": "dashed"
+          },
+          "borderWidth": {
+            "name": "--d1-tableFlexHeaderItem-borderWidth",
+            "type": "var",
+            "value": "{sys.spacing.outline}"
+          },
+          "borderColor": {
+            "name": "--d1-tableFlexHeaderItem-borderColor",
+            "type": "var",
+            "value": "{sys.palette.outline}"
+          },
+          "borderOpacity": {
+            "name": "--d1-tableFlexHeaderItem-borderOpacity",
+            "type": "var",
+            "value": "{sys.opacity.outline}"
+          }
+        }
+      },
+      "tableFlexItem": {
+        "name": "d1-tableFlexItem",
+        "type": "component",
+        "value": {
+          "borderStyleX": {
+            "name": "--d1-tableFlexItem-borderStyleX",
+            "type": "var",
+            "value": "dashed"
+          },
+          "borderWidth": {
+            "name": "--d1-tableFlexItem-borderWidth",
+            "type": "var",
+            "value": "{sys.spacing.outline}"
+          },
+          "borderColor": {
+            "name": "--d1-tableFlexItem-borderColor",
+            "type": "var",
+            "value": "{sys.palette.outline}"
+          },
+          "borderOpacity": {
+            "name": "--d1-tableFlexItem-borderOpacity",
+            "type": "var",
+            "value": "{sys.opacity.outline}"
+          }
+        }
+      },
       "tableHeaderItem": {
         "name": "d1-tableHeaderItem",
         "type": "component",

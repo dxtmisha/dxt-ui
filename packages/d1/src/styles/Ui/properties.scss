@@ -81,6 +81,8 @@
   '--d1-switch-comp-backgroundColor': ('--d1-palette-basic950', '--d1-palette-basic600', '--d1-palette-basic950', '--d1-palette-basic600', '--d1-palette-basic950'),
   '--d1-switch-comp-checked-backgroundColor': ('--d1-palette-basic600', '--d1-palette-basic950', '--d1-palette-basic950'),
   '--d1-switch-comp-required-color': ('--d1-palette-basic600'),
+  '--d1-tableFlexHeaderItem-borderColor': ('--d1-palette-basic800'),
+  '--d1-tableFlexItem-borderColor': ('--d1-palette-basic800'),
   '--d1-tableHeaderItem-borderColor': ('--d1-palette-basic800'),
   '--d1-tableItem-borderColor': ('--d1-palette-basic800'),
   '--d1-tabsNavigation-borderColor': ('--d1-palette-basic800'),
@@ -12833,6 +12835,21 @@
         name: 'd1-table',
         type: 'component',
       ),
+      'tableFlexHeaderItem':(
+        index: 'tableFlexHeaderItem',
+        name: 'd1-tableFlexHeaderItem',
+        type: 'component',
+      ),
+      'tableFlexItem':(
+        index: 'tableFlexItem',
+        name: 'd1-tableFlexItem',
+        type: 'component',
+      ),
+      'tableFlexRecord':(
+        index: 'tableFlexRecord',
+        name: 'd1-tableFlexRecord',
+        type: 'component',
+      ),
       'tableHeaderItem':(
         index: 'tableHeaderItem',
         name: 'd1-tableHeaderItem',
@@ -13574,6 +13591,21 @@
       'table':(
         index: 'table',
         name: 'd-table',
+        type: 'component',
+      ),
+      'tableFlexHeaderItem':(
+        index: 'tableFlexHeaderItem',
+        name: 'd-tableFlexHeaderItem',
+        type: 'component',
+      ),
+      'tableFlexItem':(
+        index: 'tableFlexItem',
+        name: 'd-tableFlexItem',
+        type: 'component',
+      ),
+      'tableFlexRecord':(
+        index: 'tableFlexRecord',
+        name: 'd-tableFlexRecord',
         type: 'component',
       ),
       'tableHeaderItem':(

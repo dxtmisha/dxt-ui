@@ -27,20 +27,7 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const Table: Story = {
-  args: {
-    caption: 'test'
-  },
-
   // :story-main [!] System label / Системная метка
-  render: (args: any) => ({
-    components: { D1Table },
-    setup: () => ({ args }),
-    template: `
-      <div class="wiki-storybook-item wiki-storybook-item--rectangle wiki-storybook-item--overflowAuto wiki-storybook-item--padding" style="max-height: 360px;">
-      <D1Table v-bind="args" />
-    </div>
-    `
-  })
   // :story-main [!] System label / Системная метка
 }
 

@@ -5,9 +5,11 @@ import type { AriaList } from '../types/ariaTypes'
 import type { EnabledProps } from '../types/enabledTypes'
 
 /**
- * Use to control the activity of the item.
+ * Utility class for controlling the interactive activity state of a component.
+ * Manages enabled, disabled, and readonly statuses while taking progress states into account.
  *
- * Использование для управления активности элемента.
+ * Утилитарный класс для управления состоянием интерактивной активности компонента.
+ * Управляет статусами активности, отключения и "только для чтения" с учетом состояний индикатора прогресса.
  */
 export class EnabledInclude {
   /**
@@ -41,7 +43,9 @@ export class EnabledInclude {
   }
 
   /**
-   * checks if the read-only status is enabled / проверяет, включён ли статус "только для чтения"
+   * Checks if the read-only status is enabled.
+   *
+   * Проверяет, включён ли статус "только для чтения".
    * @returns readonly state / состояние только для чтения
    */
   get isReadonly(): boolean {
@@ -49,7 +53,9 @@ export class EnabledInclude {
   }
 
   /**
-   * checks if the element is disabled / проверяет, отключён ли элемент
+   * Checks if the element is disabled.
+   *
+   * Проверяет, отключён ли элемент.
    * @returns disabled state / состояние отключения
    */
   get isDisabled(): boolean {
@@ -57,8 +63,9 @@ export class EnabledInclude {
   }
 
   /**
-   * checks if the element is disabled or the value is empty /
-   * проверяет, отключён ли элемент или пустое ли значение
+   * Checks if the element is disabled or returns undefined if enabled.
+   *
+   * Проверяет, отключён ли элемент, или возвращает undefined, если активен.
    * @returns disabled state or undefined / состояние отключения или undefined
    */
   get isDisabledOrUndefined(): boolean | undefined {
@@ -66,8 +73,9 @@ export class EnabledInclude {
   }
 
   /**
-   * list of aria properties for the enabled state /
-   * список aria свойств для состояния активности
+   * List of ARIA properties for the enabled state.
+   *
+   * Список ARIA-свойств для состояния активности.
    * @returns aria properties list / список свойств aria
    */
   get aria(): AriaList {

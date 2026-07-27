@@ -1,0 +1,7 @@
+@use "@dxtmisha/styles/properties" as ui;
+@use "../TableRecord/style" as tableRecord;
+
+@mixin mixinTableFlexRecord {
+  @include tableRecord.mixinTableRecord;
+  display: flex;
+}

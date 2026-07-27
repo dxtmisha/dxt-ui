@@ -3,7 +3,8 @@ import type { SkeletonPropsInclude } from '../Skeleton'
 import type { TableItemPropsBasic } from './props'
 
 /**
- * Type describing components for nested table items. /
+ * Type describing components for nested table items.
+ *
  * Тип, описывающий компоненты для вложенных ячеек таблицы.
  */
 export type TableItemComponentInclude = {
@@ -12,7 +13,8 @@ export type TableItemComponentInclude = {
 }
 
 /**
- * Type describing properties for nested table items. /
+ * Type describing properties for nested table items.
+ *
  * Тип, описывающий свойства для вложенных ячеек таблицы.
  */
 export type TableItemPropsInclude<

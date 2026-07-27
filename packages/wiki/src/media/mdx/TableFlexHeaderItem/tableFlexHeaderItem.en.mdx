@@ -1,0 +1,44 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+The flexbox-based table header cell component representing a flexbox layout header item cell. Used inside flexbox header row structures to display text, labels, descriptions, column sorting controls, and tooltips, and supports flex-basis spanning (`colspan` up to 12).
+
+**Key Features:**
+
+- Flexbox layout header cell structure with `colspan` flex-basis support (up to 12)
+- Header alignment options (`align` and `alignVertical`)
+- Interactive 3-state column sorting support (`sortColumn`, `sortDir`)
+- Integrated tooltip component (`tooltipLabel`, `tooltipDescription`)
+- Text clamping for cells with long labels (`labelClamp`)
+- Dynamic skeleton states (`isSkeleton`) for loading phases
+- Sticky columns and headers support (`stickyLeft`, `stickyTop`)
+- Selectable and interactive states (`selected`, `disabled`)
+
+<Source
+    code={`
+<script setup>
+</script>
+
+<template>
+  <div class="wiki-storybook-flex">
+    <!-- Simple header cell with value -->
+    <TableFlexHeaderItem value="Header Title" />
+
+    <!-- Interactive header cell with sorting and tooltip -->
+    <TableFlexHeaderItem
+      label="Sortable Header"
+      description="Click to sort"
+      showSort
+      sortDir="asc"
+      tooltipLabel="Help Information"
+      tooltipDescription="Detailed description for this column"
+      align="center"
+      colspan="2"
+      labelClamp
+    />
+  </div>
+</template>
+  `}
+    language="html"
+/>
+
+> TableFlexHeaderItem provides flexbox-based layout and presentation options for table header cell contents, ensuring consistent text truncation, alignments, tooltips, and sorting logic within flexible tables.

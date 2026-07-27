@@ -113,7 +113,7 @@ export class TableHeaderItem extends TableItem {
    *
    * Вычисляемые HTML-атрибуты и привязки для главного элемента.
    */
-  override get binds() {
+  override get binds(): Record<string, any> {
     return {
       ...super.binds,
       scope: this.props.scope,

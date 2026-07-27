@@ -19,7 +19,8 @@ export class TableColumns {
   constructor(protected readonly props: TableProps) { }
 
   /**
-   * Returns a list of available column names. /
+   * Returns a list of available column names.
+   *
    * Возвращает список доступных имен колонок.
    */
   get list(): string[] {
@@ -43,7 +44,8 @@ export class TableColumns {
   }
 
   /**
-   * Returns column attributes for col elements in colgroup. /
+   * Returns column attributes for col elements in colgroup.
+   *
    * Возвращает атрибуты для элементов col в colgroup.
    */
   get cols(): TableColumnCol[] {
@@ -51,7 +53,8 @@ export class TableColumns {
   }
 
   /**
-   * Returns column attributes for a single col element. /
+   * Returns column attributes for a single col element.
+   *
    * Возвращает атрибуты для одного элемента col.
    * @param column column name / имя колонки
    */
@@ -64,7 +67,8 @@ export class TableColumns {
   }
 
   /**
-   * Returns style object for a col element based on column width property. /
+   * Returns style object for a col element based on column width property.
+   *
    * Возвращает объект стилей для элемента col на основе свойства ширины колонки.
    * @param column column name / имя колонки
    */

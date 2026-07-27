@@ -13,7 +13,7 @@ export class AriaStaticInclude {
    * Get role by props.
    *
    * Получить роль по пропсам.
-   * @param role ARIA role type/ Тип ARIA роли
+   * @param role ARIA role type / Тип ARIA роли
    */
   static role(role?: RoleType): AriaList {
     return {
@@ -25,7 +25,7 @@ export class AriaStaticInclude {
    * Get ARIA atomic attribute.
    *
    * Получить атрибут ARIA atomic.
-   * @param isAtomic is atomic/ является атомарным
+   * @param isAtomic is atomic / является атомарным
    */
   static atomic(isAtomic?: boolean): AriaList {
     return {
@@ -37,7 +37,7 @@ export class AriaStaticInclude {
    * Get ARIA checked attribute.
    *
    * Получить атрибут ARIA checked.
-   * @param isChecked is checked/ является отмеченным
+   * @param isChecked is checked / является отмеченным
    */
   static checked(isChecked?: boolean): AriaList {
     return {
@@ -49,7 +49,7 @@ export class AriaStaticInclude {
    * Get ARIA controls attribute.
    *
    * Получить атрибут ARIA controls.
-   * @param controls ARIA controls attribute/ Атрибут ARIA controls
+   * @param controls ARIA controls attribute / Атрибут ARIA controls
    */
   static controls(controls?: string): AriaList {
     return this.isDataToData('aria-controls', controls)
@@ -59,7 +59,7 @@ export class AriaStaticInclude {
    * Get ARIA current attribute.
    *
    * Получить атрибут ARIA current.
-   * @param value ARIA current attribute/ Атрибут ARIA current
+   * @param value ARIA current attribute / Атрибут ARIA current
    */
   static current(value?: AriaList['aria-current']): AriaList {
     const current = isString(value)
@@ -73,7 +73,7 @@ export class AriaStaticInclude {
    * Get ARIA busy attribute.
    *
    * Получить атрибут ARIA busy.
-   * @param isBusy is busy/ является занятым
+   * @param isBusy is busy / является занятым
    */
   static busy(isBusy?: boolean): AriaList {
     return {
@@ -85,7 +85,7 @@ export class AriaStaticInclude {
    * Get ARIA describedby attribute.
    *
    * Получить атрибут ARIA describedby.
-   * @param id Element ID/ Идентификатор элемента
+   * @param id Element ID / Идентификатор элемента
    */
   static describedby(id?: string): AriaList {
     return this.isDataToData('aria-describedby', id)
@@ -95,7 +95,7 @@ export class AriaStaticInclude {
    * Get ARIA disabled attribute.
    *
    * Получить атрибут ARIA disabled.
-   * @param isDisabled is disabled/ является отключенным
+   * @param isDisabled is disabled / является отключенным
    */
   static disabled(isDisabled: boolean = true): AriaList {
     if (isDisabled) {
@@ -111,7 +111,7 @@ export class AriaStaticInclude {
    * Get ARIA expanded attribute.
    *
    * Получить атрибут ARIA expanded.
-   * @param isExpanded is expanded/ является расширенным
+   * @param isExpanded is expanded / является расширенным
    */
   static expanded(isExpanded?: boolean): AriaList {
     return {
@@ -123,7 +123,7 @@ export class AriaStaticInclude {
    * Get ARIA haspopup attribute.
    *
    * Получить атрибут ARIA haspopup.
-   * @param haspopup ARIA haspopup attribute/ Атрибут ARIA haspopup
+   * @param haspopup ARIA haspopup attribute / Атрибут ARIA haspopup
    */
   static haspopup(haspopup?: AriaList['aria-haspopup']): AriaList {
     return this.isDataToData('aria-haspopup', haspopup)
@@ -133,7 +133,7 @@ export class AriaStaticInclude {
    * Get ARIA label.
    *
    * Получить ARIA label.
-   * @param label ARIA label/ ARIA метка
+   * @param label ARIA label / ARIA метка
    */
   static label(label?: string | number): AriaList {
     return this.isDataToData('aria-label', label)
@@ -143,7 +143,7 @@ export class AriaStaticInclude {
    * Get ARIA labelledby attribute.
    *
    * Получить атрибут ARIA labelledby.
-   * @param id Element ID/ Идентификатор элемента
+   * @param id Element ID / Идентификатор элемента
    */
   static labelledby(id?: string): AriaList {
     return this.isDataToData('aria-labelledby', id)
@@ -153,7 +153,7 @@ export class AriaStaticInclude {
    * Get ARIA invalid attribute.
    *
    * Получить атрибут ARIA invalid.
-   * @param isInvalid is invalid/ является недействительным
+   * @param isInvalid is invalid / является недействительным
    */
   static invalid(isInvalid: boolean = true): AriaList {
     if (isInvalid) {
@@ -169,10 +169,10 @@ export class AriaStaticInclude {
    * Get control role.
    *
    * Получить роль управления.
-   * @param id Element ID/ Идентификатор элемента
-   * @param controls ARIA controls attribute/ Атрибут ARIA controls
-   * @param haspopup ARIA haspopup attribute/ Атрибут ARIA haspopup
-   * @param expanded ARIA expanded state/ Состояние ARIA expanded
+   * @param id Element ID / Идентификатор элемента
+   * @param controls ARIA controls attribute / Атрибут ARIA controls
+   * @param haspopup ARIA haspopup attribute / Атрибут ARIA haspopup
+   * @param expanded ARIA expanded state / Состояние ARIA expanded
    */
   static control(
     id?: string,
@@ -192,7 +192,7 @@ export class AriaStaticInclude {
    * Get ARIA hidden attribute.
    *
    * Получить атрибут ARIA hidden.
-   * @param isHidden is hidden/ является скрытым
+   * @param isHidden is hidden / является скрытым
    */
   static hidden(
     isHidden: boolean = true
@@ -206,7 +206,7 @@ export class AriaStaticInclude {
    * Get ARIA live attribute.
    *
    * Получить атрибут ARIA live.
-   * @param live ARIA live attribute/ Атрибут ARIA live
+   * @param live ARIA live attribute / Атрибут ARIA live
    */
   static live(
     live?: AriaList['aria-live']
@@ -218,7 +218,7 @@ export class AriaStaticInclude {
    * Get ARIA modal attribute.
    *
    * Получить атрибут ARIA modal.
-   * @param isModal is modal/ является модальным
+   * @param isModal is modal / является модальным
    */
   static ariaModal(
     isModal: boolean = true
@@ -230,9 +230,9 @@ export class AriaStaticInclude {
    * Get modal role.
    *
    * Получить модальную роль.
-   * @param isModal is modal/ является модальным
-   * @param ariaLabelledby ARIA labelledby attribute/ Атрибут ARIA labelledby
-   * @param ariaDescribedby ARIA describedby attribute/ Атрибут ARIA describedby
+   * @param isModal is modal / является модальным
+   * @param ariaLabelledby ARIA labelledby attribute / Атрибут ARIA labelledby
+   * @param ariaDescribedby ARIA describedby attribute / Атрибут ARIA describedby
    */
   static modal(
     isModal: boolean = true,
@@ -250,7 +250,7 @@ export class AriaStaticInclude {
    * Get ARIA multiselectable attribute.
    *
    * Получить атрибут ARIA multiselectable.
-   * @param isMultiselectable is multiselectable/ является множественным выбором
+   * @param isMultiselectable is multiselectable / является множественным выбором
    */
   static multiselectable(isMultiselectable?: boolean): AriaList {
     return {
@@ -262,7 +262,7 @@ export class AriaStaticInclude {
    * Get ARIA selected attribute.
    *
    * Получить атрибут ARIA selected.
-   * @param isSelected is selected/ является выбранным
+   * @param isSelected is selected / является выбранным
    */
   static selected(isSelected?: boolean): AriaList {
     if (isSelected !== undefined) {
@@ -288,9 +288,9 @@ export class AriaStaticInclude {
    * Returns ARIA value now, min and max.
    *
    * Возвращает ARIA value now, min и max.
-   * @param value Current value/ Текущее значение
-   * @param min Minimum value/ Минимальное значение
-   * @param max Maximum value/ Максимальное значение
+   * @param value Current value / Текущее значение
+   * @param min Minimum value / Минимальное значение
+   * @param max Maximum value / Максимальное значение
    */
   static valueMinMax(
     value?: string | number,
@@ -308,7 +308,7 @@ export class AriaStaticInclude {
    * Returns 'true' or 'false' based on the boolean value.
    *
    * Возвращает 'true' или 'false' в зависимости от булевого значения.
-   * @param value boolean value/ булевое значение
+   * @param value boolean value / булевое значение
    */
   static isTrueOrFalse(value?: boolean): AriaTrueOrFalse | undefined {
     return value ? 'true' : 'false'
@@ -318,8 +318,8 @@ export class AriaStaticInclude {
    * Returns data as ARIA attribute.
    *
    * Возвращает данные в виде ARIA атрибута.
-   * @param name attribute name/ имя атрибута
-   * @param value attribute value/ значение атрибута
+   * @param name attribute name / имя атрибута
+   * @param value attribute value / значение атрибута
    */
   protected static isDataToData<V>(
     name: string,

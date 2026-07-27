@@ -7,6 +7,7 @@ import { LabelInclude } from '../../classes/LabelInclude'
 
 import { SkeletonInclude } from '../Skeleton'
 
+import type { AriaList } from '../../types/ariaTypes'
 import type { TableItemComponents, TableItemEmits, TableItemSlots } from './types'
 import type { TableItemProps } from './props'
 
@@ -89,12 +90,23 @@ export class TableItem {
    *
    * Вычисляемые HTML-атрибуты и привязки для главного элемента.
    */
-  get binds() {
+  get binds(): Record<string, any> {
     return {
       'colspan': this.props.colspan,
       'rowspan': this.props.rowspan,
       'data-index': this.props.index,
-      ...AriaStaticInclude.selected(this.props.selected),
+      ...this.aria
+    }
+  }
+
+  /**
+   * Computed ARIA attributes for the table cell.
+   *
+   * Вычисляемые ARIA-атрибуты для ячейки таблицы.
+   */
+  get aria(): AriaList {
+    return {
+      ...AriaStaticInclude.selected(this.props.selected || undefined),
       ...AriaStaticInclude.disabled(this.props.disabled)
     }
   }

@@ -1,0 +1,47 @@
+import {Canvas, Meta} from '@storybook/addon-docs/blocks'
+import {
+    StorybookDescriptions,
+    StorybookMain
+} from '@dxtmisha/wiki/storybook'
+
+import * as TableFlexHeaderItem from './D1TableFlexHeaderItem.stories'
+import {TableFlexHeaderItemWikiStorybook} from './wiki'
+
+[//]: # (:documentation-import [!] System label / Системная метка)
+[//]: # (:documentation-import [!] System label / Системная метка)
+
+<Meta of={TableFlexHeaderItem}/>
+<StorybookMain
+    name={TableFlexHeaderItemWikiStorybook.getName()}
+    description={TableFlexHeaderItemWikiStorybook.getDescription()}
+    story={TableFlexHeaderItem.TableFlexHeaderItem}
+/>
+
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+<StorybookDescriptions componentName={'TableFlexHeaderItem'} type={'tableFlexHeaderItem'}/>
+
+<StorybookDescriptions componentName={'Style'} type={'isSkeleton'}/>
+<Canvas of={TableFlexHeaderItem.TableFlexHeaderItemSkeleton}/>
+    
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+[//]: # (:documentation-events [!] System label / Системная метка)
+## Events
+
+<StorybookDescriptions componentName={'Event'} type={'sort'}/>
+    
+[//]: # (:documentation-events [!] System label / Системная метка)
+
+[//]: # (:documentation-expose [!] System label / Системная метка)
+[//]: # (:documentation-expose [!] System label / Системная метка)
+
+[//]: # (:documentation-slots [!] System label / Системная метка)
+## Slots
+
+<StorybookDescriptions componentName={'Slot'} type={'default'}/>
+<StorybookDescriptions componentName={'Slot'} type={'description'}/>
+<StorybookDescriptions componentName={'Slot'} type={'tooltip'}/>
+<StorybookDescriptions componentName={'TableItem'} type={'slots'}/>
+    
+[//]: # (:documentation-slots [!] System label / Системная метка)

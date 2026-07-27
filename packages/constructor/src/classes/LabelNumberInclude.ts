@@ -18,12 +18,12 @@ export class LabelNumberInclude extends LabelInclude {
    * Constructor for working with text that has maximum values.
    *
    * Конструктор для работы с текстом, у которого есть максимальные значения.
-   * @param props input property/ входное свойство
-   * @param className class name/ название класса
-   * @param classesExtra additional classes/ дополнительные классы
-   * @param slots object for working with slots/ объект для работы со слотами
-   * @param elementsExtra additional elements/ дополнительные элементы
-   * @param skeleton optional skeleton for loading state/ необязательный скелетон для состояния загрузки
+   * @param props input property / входное свойство
+   * @param className class name / название класса
+   * @param classesExtra additional classes / дополнительные классы
+   * @param slots object for working with slots / объект для работы со слотами
+   * @param elementsExtra additional elements / дополнительные элементы
+   * @param skeleton optional skeleton for loading state / необязательный скелетон для состояния загрузки
    */
   constructor(
     protected readonly props: Readonly<LabelNumberProps>,

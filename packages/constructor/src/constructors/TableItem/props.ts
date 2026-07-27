@@ -3,7 +3,8 @@ import type { DescriptionProps } from '../../types/descriptionTypes'
 import type { SkeletonPropsInclude } from '../Skeleton'
 
 /**
- * Type describing token properties for TableItem component. /
+ * Type describing token properties for TableItem component.
+ *
  * Тип, описывающий токен-свойства для компонента TableItem.
  */
 type TableItemPropsToken = {
@@ -21,7 +22,8 @@ type TableItemPropsToken = {
 }
 
 /**
- * Basic properties of the TableItem component. /
+ * Basic properties of the TableItem component.
+ *
  * Базовые свойства компонента TableItem.
  */
 export type TableItemPropsBasic = LabelProps

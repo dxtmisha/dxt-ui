@@ -1,0 +1,39 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+The flexbox-based table row component coordinating flex cell rendering from dataset items and column indexes. Used inside flexbox table container structures to construct flexible table rows.
+
+**Key Features:**
+
+- Flexbox layout row rendering for dynamic list datasets
+- Automatic cell rendering mapping `columns` to `item` properties
+- Support for flex header rows (`isHeader`)
+- Custom cell slot overrides per column index
+- Dynamic skeleton states (`isSkeleton`)
+- Row-wide selection and disabled states (`selected`, `disabled`)
+
+<Source
+    code={`
+<script setup>
+</script>
+
+<template>
+  <div class="wiki-storybook-flex" style="flex-direction: column;">
+    <!-- Header row -->
+    <TableFlexRecord
+      :isHeader="true"
+      :columns="['id', 'name', 'role', 'status']"
+      :item="{ id: 'ID', name: 'Name', role: 'Role', status: 'Status' }"
+    />
+
+    <!-- Data row -->
+    <TableFlexRecord
+      :columns="['id', 'name', 'role', 'status']"
+      :item="{ id: '1', name: 'Misha', role: 'Developer', status: 'Active' }"
+    />
+  </div>
+</template>
+  `}
+    language="html"
+/>
+
+> TableFlexRecord provides flexbox-based layout and orchestration for table row items, automatically rendering cells based on dataset structures.

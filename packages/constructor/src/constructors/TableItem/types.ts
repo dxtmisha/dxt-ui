@@ -27,7 +27,7 @@ export interface TableItemExpose {
 /**
  * Type describing available slots.
  *
- * Тип, описывающий доступные slots.
+ * Тип, описывающий доступные слоты.
  */
 export interface TableItemSlots extends LabelSlots, DescriptionSlots {
   /** Slot for custom cell context / Слот для пользовательского контекста ячейки */

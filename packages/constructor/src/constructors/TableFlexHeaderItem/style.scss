@@ -1,0 +1,8 @@
+@use "@dxtmisha/styles/properties" as ui;
+@use "../TableHeaderItem/style" as tableHeaderItem;
+@use "../TableFlexItem/style" as tableFlexItem;
+
+@mixin mixinTableFlexHeaderItem {
+  @include tableHeaderItem.mixinTableHeaderItem;
+  @include tableFlexItem.mixinTableFlexItemBase;
+}

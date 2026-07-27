@@ -6,32 +6,37 @@ import type { TableItemComponentInclude } from '../TableItem'
 import type { TableRecordItemSlots } from './basicTypes'
 
 /**
- * Interface for describing which components need to be connected for work. /
+ * Interface for describing which components need to be connected for work.
+ *
  * Интерфейс для описания, какие компоненты надо подключить для работы.
  */
 export type TableRecordComponents = TableHeaderItemComponentInclude & TableItemComponentInclude
 
 /**
- * Type describing available events. /
+ * Type describing available events.
+ *
  * Тип, описывающий доступные события.
  */
 export type TableRecordEmits = TableHeaderItemEmits
 
 /**
- * Type describing available properties. /
+ * Type describing available properties.
+ *
  * Тип, описывающий доступные свойства.
  */
 export interface TableRecordExpose {
 }
 
 /**
- * Type describing available slots. /
+ * Type describing available slots.
+ *
  * Тип, описывающий доступные слоты.
  */
 export type TableRecordSlots = TableRecordItemSlots
 
 /**
- * Type describing subclasses. /
+ * Type describing subclasses.
+ *
  * Тип, описывающий подклассы.
  */
 export type TableRecordClasses = {

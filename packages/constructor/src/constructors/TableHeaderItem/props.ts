@@ -5,6 +5,11 @@ import type { IconPropsBasic } from '../Icon'
 import type { TableItemPropsBasic } from '../TableItem'
 import type { TooltipProps, TooltipPropsInclude } from '../Tooltip'
 
+/**
+ * Type describing token properties.
+ *
+ * Тип, описывающий токен-свойства.
+ */
 type TableHeaderItemPropsToken = {
   // :type [!] System label / Системная метка
   disabled?: boolean
@@ -19,6 +24,11 @@ type TableHeaderItemPropsToken = {
   // :type [!] System label / Системная метка
 }
 
+/**
+ * Basic type describing table header item properties.
+ *
+ * Базовый тип, описывающий свойства ячейки шапки таблицы.
+ */
 export type TableHeaderItemPropsBasic<
   Chip extends ChipPropsBasic = ChipPropsBasic,
   Icon extends IconPropsBasic = IconPropsBasic,
@@ -30,7 +40,7 @@ export type TableHeaderItemPropsBasic<
     /** Header scope / Область видимости заголовка */
     scope?: 'row' | 'col' | 'rowgroup' | 'colgroup'
 
-    /** Whether to show sorting/ Показывать ли сортировку */
+    /** Whether to show sorting / Показывать ли сортировку */
     showSort?: boolean
 
     /** Current sorted column index name / Имя индекса текущей отсортированной колонки */

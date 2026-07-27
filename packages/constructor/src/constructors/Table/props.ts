@@ -10,6 +10,11 @@ import type { TableHeaderItemPropsBasic } from '../TableHeaderItem'
 
 import type { TableHeader, TableHeaders, TableList } from './basicTypes'
 
+/**
+ * Type describing token properties.
+ *
+ * Тип, описывающий токен-свойства.
+ */
 type TablePropsToken = {
   // :type [!] System label / Системная метка
   headerTop?: boolean
@@ -18,6 +23,11 @@ type TablePropsToken = {
   // :type [!] System label / Системная метка
 }
 
+/**
+ * Basic type describing table properties.
+ *
+ * Базовый тип, описывающий свойства таблицы.
+ */
 export type TablePropsBasic<
   TableItem extends TableItemPropsBasic = TableItemPropsBasic,
   TableHeaderItem extends TableHeaderItemPropsBasic = TableHeaderItemPropsBasic,
@@ -52,13 +62,15 @@ export type TablePropsBasic<
   }
 
 /**
- * Type describing incoming properties. /
+ * Type describing incoming properties.
+ *
  * Тип, описывающий входящие свойства.
  */
 export type TableProps = TablePropsBasic & TablePropsToken
 
 /**
- * Default value for property. /
+ * Default value for property.
+ *
  * Значение по умолчанию для свойства.
  */
 export const defaultsTable = {
@@ -67,7 +79,6 @@ export const defaultsTable = {
   stickyScrollBottom: true,
   ...{
     // :default [!] System label / Системная метка
-    bleed: true
     // :default [!] System label / Системная метка
   }
 }

@@ -7,18 +7,18 @@ import { EventItem, getRef, isDomRuntime, isElementVisible, isFunction, isTab } 
  * Класс для управления фокусом и табиндексом элементов
  */
 export class TabIndexInclude<E extends HTMLElement = HTMLElement> {
-  /** Previously focused element/ Ранее сфокусированный элемент */
+  /** Previously focused element / Ранее сфокусированный элемент */
   protected oldElement?: HTMLElement | Element | null
 
-  /** Event item for focus events/ Элемент события для событий фокуса */
+  /** Event item for focus events / Элемент события для событий фокуса */
   protected event?: EventItem<HTMLElement, any>
 
   /**
    * Constructor
-   * @param element - Reference to the element/ Ссылка на элемент
-   * @param active - Return focus to the previous element/ Возвращать фокус на предыдущий элемент
-   * @param activeOpen - Is active when opening/ Активен при открытии
-   * @param activeClose - Is active when closing/ Активен при закрытии
+   * @param element - Reference to the element / Ссылка на элемент
+   * @param active - Return focus to the previous element / Возвращать фокус на предыдущий элемент
+   * @param activeOpen - Is active when opening / Активен при открытии
+   * @param activeClose - Is active when closing / Активен при закрытии
    */
   constructor(
     protected readonly element: Ref<E | undefined> | (() => E | undefined),
@@ -84,7 +84,7 @@ export class TabIndexInclude<E extends HTMLElement = HTMLElement> {
    * Toggle focus based on status.
    *
    * Переключает фокус в зависимости от статуса.
-   * @param status Focus status/ Статус фокуса
+   * @param status Focus status / Статус фокуса
    */
   toggle(status: boolean): this {
     if (status) {
@@ -124,7 +124,7 @@ export class TabIndexInclude<E extends HTMLElement = HTMLElement> {
    * Check if the Shift key is pressed.
    *
    * Проверяет, нажата ли клавиша Shift.
-   * @param event Keyboard event/ Событие клавиатуры
+   * @param event Keyboard event / Событие клавиатуры
    */
   protected isShift(event: KeyboardEvent): boolean {
     return event.shiftKey
@@ -225,7 +225,7 @@ export class TabIndexInclude<E extends HTMLElement = HTMLElement> {
    * Event listener for keyboard events.
    *
    * Слушатель событий для событий клавиатуры.
-   * @param event Keyboard event/ Событие клавиатуры
+   * @param event Keyboard event / Событие клавиатуры
    */
   protected listenEvent = (event: KeyboardEvent): void => {
     if (!isTab(event)) {

@@ -1,0 +1,56 @@
+@use "../../../styles/Ui/properties";
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/style.scss" as TableFlexItem;
+
+@include ui.initDesignBasic('d1.tableFlexItem') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include TableFlexItem.mixinTableFlexItem;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+    --d1-tableFlexItem-borderStyleX: dashed;
+    --d1-tableFlexItem-borderWidth: var(--d1-sys-spacing-outline);
+    --d1-tableFlexItem-borderColor: var(--d1-sys-palette-outline);
+    --d1-tableFlexItem-borderOpacity: var(--d1-sys-opacity-outline);
+    
+    @include ui.paddingX(#{var(--d1-sys-spacing-xs)});
+    @include ui.paddingY(#{var(--d1-sys-spacing-x)});
+    
+    font-family: var(--d1-sys-font-family-basic), sans-serif;
+    @include ui.fontSize(#{var(--d1-sys-font-size-sm)});
+    font-weight: var(--d1-sys-font-weight-regular);
+    @include ui.lineHeight(#{var(--d1-sys-lineHeight-sm)});
+    letter-spacing: var(--d1-sys-letterSpacing-md);
+    
+    &__description {
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)}); @include ui.color('init');
+    }
+    
+    &--selected {
+      @include ui.backgroundOpacity(#{var(--d1-sys-opacity-overlay)}); @include ui.backgroundColor('init');
+      @include ui.paletteBackground(#{var(--d1-sys-palette-primaryVariant)});
+    }
+    
+    &--disabled {
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-disabled)}); @include ui.color('init');
+      
+      & .d1-tableFlexItem__description {
+        @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-disabled)}); @include ui.color('init');
+      }
+    }
+    
+    &--stickyLeft {
+      @include ui.backgroundColor(#{var(--d1-sys-palette-surface)});
+      @include ui.backgroundOpacity(#{var(--d1-sys-opacity-primary-high)});
+      
+      backdrop-filter: var(--d1-sys-blur-md);
+    }
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

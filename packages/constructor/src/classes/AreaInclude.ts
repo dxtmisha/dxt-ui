@@ -3,9 +3,11 @@ import { setAreaValue } from '../functions/setAreaValue'
 import type { AreaPropsInclude } from '../types/areaTypes'
 
 /**
- * Class for managing the area value.
+ * Class for managing the component layout area value.
+ * Watches area props and applies CSS area variables to layout containers.
  *
- * Класс для управления значением области.
+ * Класс для управления значением области макета компонента.
+ * Отслеживает свойства области и применяет CSS-переменные области к контейнерам макета.
  */
 export class AreaInclude {
   /**

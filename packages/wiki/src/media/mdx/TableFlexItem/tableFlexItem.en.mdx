@@ -1,0 +1,38 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+The flexbox-based table cell component representing a flexbox layout item cell. Used inside flexbox row structures to display text, labels, and descriptions, and supports flex-basis spanning (`colspan` up to 12).
+
+**Key Features:**
+
+- Flexbox layout cell structure with `colspan` flex-basis support (up to 12)
+- Cell alignment options (`align` and `alignVertical`)
+- Text clamping for cells with long labels (`labelClamp`)
+- Dynamic skeleton states (`isSkeleton`) for loading phases
+- Sticky columns and headers support (`stickyLeft`, `stickyTop`)
+- Selectable and interactive states (`selected`, `disabled`)
+
+<Source
+    code={`
+<script setup>
+</script>
+
+<template>
+  <div style="display: flex; width: 100%;">
+    <!-- Simple cell with value -->
+    <TableFlexItem value="Cell Value" />
+
+    <!-- Centered cell with custom span and label clamping -->
+    <TableFlexItem
+      label="Clamped Label Value"
+      description="Optional cell description"
+      align="center"
+      colspan="2"
+      labelClamp
+    />
+  </div>
+</template>
+  `}
+    language="html"
+/>
+
+> TableFlexItem provides flexbox-based layout and presentation options for cell contents, ensuring consistent text truncation, alignments, and skeleton logic within flexible tables.

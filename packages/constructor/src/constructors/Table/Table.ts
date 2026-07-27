@@ -49,7 +49,7 @@ export class Table {
    * @param classDesign design system prefix / префикс дизайн-системы
    * @param className base CSS class name / базовое имя CSS-класса
    * @param components object for working with components / объект для работы с компонентами
-   * @param slots object for working with slots / object for working with slots
+   * @param slots object for working with slots / объект для работы со слотами
    * @param emits callback function triggered on events / функция обратного вызова, запускаемая при событиях
    * @param constructors optional class constructor overrides / необязательные переопределения конструкторов классов
    * @param constructors.CaptionIncludeConstructor class for working with caption / класс для работы с подписью

@@ -205,7 +205,8 @@ export class TableItemInclude extends ComponentIncludeAbstract<
   }
 
   /**
-   * Resolves the cell attributes from the given value. /
+   * Resolves the cell attributes from the given value.
+   *
    * Разрешает атрибуты ячейки из переданного значения.
    * @param value cell value / значение ячейки
    * @returns object containing cell attributes or undefined / объект, содержащий атрибуты ячейки, или undefined

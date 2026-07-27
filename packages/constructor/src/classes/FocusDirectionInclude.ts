@@ -45,6 +45,12 @@ export class FocusDirectionInclude {
     onUnmounted(() => this.stop())
   }
 
+  /**
+   * Returns binding properties for the parent focus container element.
+   *
+   * Возвращает свойства привязки для родительского элемента контейнера фокуса.
+   * @returns binding properties object / объект свойств привязки
+   */
   get binds() {
     return {
       tabindex: 0,

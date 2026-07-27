@@ -27,7 +27,6 @@ export const defaults: object = {
   ...defaultsTable,
   ...{
     // :default [!] System label / Системная метка
-    bleed: true
     // :default [!] System label / Системная метка
   }
 }

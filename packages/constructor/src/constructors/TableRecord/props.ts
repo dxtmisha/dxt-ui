@@ -3,6 +3,11 @@ import type { TableHeaderItemPropsBasic } from '../TableHeaderItem'
 
 import type { TableRecordValue } from './basicTypes'
 
+/**
+ * Type describing token properties.
+ *
+ * Тип, описывающий токен-свойства.
+ */
 type TableRecordPropsToken = {
   // :type [!] System label / Системная метка
   disabled?: boolean
@@ -10,6 +15,11 @@ type TableRecordPropsToken = {
   // :type [!] System label / Системная метка
 }
 
+/**
+ * Basic type describing table record properties.
+ *
+ * Базовый тип, описывающий свойства записи таблицы.
+ */
 export type TableRecordPropsBasic<
   TableItem extends TableItemPropsBasic = TableItemPropsBasic,
   TableHeaderItem extends TableHeaderItemPropsBasic = TableHeaderItemPropsBasic

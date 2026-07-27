@@ -86,6 +86,9 @@ import _D1SnackbarItem from '../components/Ui/SnackbarItem/D1SnackbarItem.vue'
 import _D1Switch from '../components/Ui/Switch/D1Switch.vue'
 import _D1TabItem from '../components/Ui/TabItem/D1TabItem.vue'
 import _D1Table from '../components/Ui/Table/D1Table.vue'
+import _D1TableFlexHeaderItem from '../components/Ui/TableFlexHeaderItem/D1TableFlexHeaderItem.vue'
+import _D1TableFlexItem from '../components/Ui/TableFlexItem/D1TableFlexItem.vue'
+import _D1TableFlexRecord from '../components/Ui/TableFlexRecord/D1TableFlexRecord.vue'
 import _D1TableHeaderItem from '../components/Ui/TableHeaderItem/D1TableHeaderItem.vue'
 import _D1TableItem from '../components/Ui/TableItem/D1TableItem.vue'
 import _D1TableRecord from '../components/Ui/TableRecord/D1TableRecord.vue'
@@ -185,6 +188,9 @@ declare module '@vue/runtime-core' {
     D1Switch: typeof _D1Switch
     D1TabItem: typeof _D1TabItem
     D1Table: typeof _D1Table
+    D1TableFlexHeaderItem: typeof _D1TableFlexHeaderItem
+    D1TableFlexItem: typeof _D1TableFlexItem
+    D1TableFlexRecord: typeof _D1TableFlexRecord
     D1TableHeaderItem: typeof _D1TableHeaderItem
     D1TableItem: typeof _D1TableItem
     D1TableRecord: typeof _D1TableRecord

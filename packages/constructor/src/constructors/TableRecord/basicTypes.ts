@@ -3,7 +3,8 @@ import type { TableItemPropsBasic, TableItemPropsInclude } from '../TableItem'
 import type { TableRecordPropsBasic } from './props'
 
 /**
- * Type describing the cell value in a table record row. /
+ * Type describing the cell value in a table record row.
+ *
  * Тип, описывающий значение ячейки в строке записи таблицы.
  */
 export type TableRecordValue<
@@ -11,7 +12,8 @@ export type TableRecordValue<
 > = string | number | ConstrBind<TableItem>
 
 /**
- * Type describing the parameters/properties of a table item slot in a table record. /
+ * Type describing the parameters/properties of a table item slot in a table record.
+ *
  * Тип, описывающий параметры/свойства слота элемента таблицы в записи таблицы.
  */
 export type TableRecordItemSlotProps<
@@ -38,7 +40,8 @@ export type TableRecordItemSlotProps<
 }
 
 /**
- * Type describing the function of a table item slot in a table record. /
+ * Type describing the function of a table item slot in a table record.
+ *
  * Тип, описывающий функцию слота элемента таблицы в записи таблицы.
  */
 export type TableRecordItemSlot<
@@ -47,7 +50,8 @@ export type TableRecordItemSlot<
 > = (props: TableRecordItemSlotProps<Item, Value>) => any
 
 /**
- * Type describing the collection of table item slots in a table record. /
+ * Type describing the collection of table item slots in a table record.
+ *
  * Тип, описывающий коллекцию слотов элементов таблицы в записи таблицы.
  */
 export type TableRecordItemSlots<
@@ -58,7 +62,8 @@ export type TableRecordItemSlots<
 }
 
 /**
- * Type describing components for nested table records. /
+ * Type describing components for nested table records.
+ *
  * Тип, описывающий компоненты для вложенных записей таблицы.
  */
 export type TableRecordComponentInclude = {
@@ -67,7 +72,8 @@ export type TableRecordComponentInclude = {
 }
 
 /**
- * Type describing properties for nested table records. /
+ * Type describing properties for nested table records.
+ *
  * Тип, описывающий свойства для вложенных записей таблицы.
  */
 export type TableRecordPropsInclude<

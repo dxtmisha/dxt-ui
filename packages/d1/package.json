@@ -27,7 +27,7 @@
     "build": "vue-tsc -b && vite build",
     "build-recovery": "npm run build && npm run wiki-storm",
     "preview": "vite preview",
-    "ui": "dxt-ui Table",
+    "ui": "dxt-ui TableFlexRecord",
     "wiki-storm": "dxt-wiki-storm",
     "types": "dxt-types",
     "screenshot": "dxt-screenshot",
@@ -450,6 +450,18 @@
     "./D1SkeletonItem": {
       "types": "./dist/library/D1SkeletonItem.d.ts",
       "default": "./dist/D1SkeletonItem.js"
+    },
+    "./D1TableFlexItem": {
+      "types": "./dist/library/D1TableFlexItem.d.ts",
+      "default": "./dist/D1TableFlexItem.js"
+    },
+    "./D1TableFlexHeaderItem": {
+      "types": "./dist/library/D1TableFlexHeaderItem.d.ts",
+      "default": "./dist/D1TableFlexHeaderItem.js"
+    },
+    "./D1TableFlexRecord": {
+      "types": "./dist/library/D1TableFlexRecord.d.ts",
+      "default": "./dist/D1TableFlexRecord.js"
     }
   },
   "buildOptions": {

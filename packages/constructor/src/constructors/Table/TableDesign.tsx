@@ -123,7 +123,8 @@ export class TableDesign<
   }
 
   /**
-   * Renders the main element wrapper. /
+   * Renders the main element wrapper.
+   *
    * Рендерит обертку основного элемента.
    * @returns rendered main virtual node / виртуальный узел основного элемента
    */
@@ -135,7 +136,8 @@ export class TableDesign<
   }
 
   /**
-   * Renders the sticky scroll component if available. /
+   * Renders the sticky scroll component if available.
+   *
    * Рендерит компонент липкой прокрутки, если он доступен.
    * @returns rendered scroll sticky virtual node or undefined / виртуальный узел липкой прокрутки или undefined
    */
@@ -154,7 +156,8 @@ export class TableDesign<
   }
 
   /**
-   * Renders the table element. /
+   * Renders the table element.
+   *
    * Рендерит элемент таблицы.
    * @returns rendered table virtual node / виртуальный узел таблицы
    */
@@ -177,7 +180,8 @@ export class TableDesign<
   }
 
   /**
-   * Renders the colgroup element with col definitions for column widths. /
+   * Renders the colgroup element with col definitions for column widths.
+   *
    * Рендерит элемент colgroup с определениями col для ширины колонок.
    * @returns rendered colgroup virtual nodes array / массив виртуальных узлов colgroup
    */
@@ -321,7 +325,8 @@ export class TableDesign<
   }
 
   /**
-   * Helper for rendering header or footer records. /
+   * Helper for rendering header or footer records.
+   *
    * Вспомогательный метод для рендеринга записей шапки или подвала.
    * @param index prefix index name / префиксное имя индекса
    * @param data record header/foot items / элементы записей шапки/подвала

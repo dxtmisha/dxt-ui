@@ -16,9 +16,9 @@ import {
 export class ModelInclude<Value = string> {
   /**
    * Constructor
-   * @param index The index key for the model property/ Ключ индекса для свойства модели
-   * @param emits Function to emit events/ Функция для испускания событий
-   * @param syncValue Reactive value to synchronize/ Реактивное значение для синхронизации
+   * @param index The index key for the model property / Ключ индекса для свойства модели
+   * @param emits Function to emit events / Функция для испускания событий
+   * @param syncValue Reactive value to synchronize / Реактивное значение для синхронизации
    */
   constructor(
     protected readonly index: string,
@@ -40,7 +40,7 @@ export class ModelInclude<Value = string> {
    *
    * Проверка типа, является ли syncValue изменяемым Ref.
    * Возвращает true, если syncValue является ссылкой и не readonly.
-   * @returns Type predicate indicating syncValue is a mutable Ref/ Предикат типа, указывающий что syncValue - изменяемый Ref
+   * @returns Type predicate indicating syncValue is a mutable Ref / Предикат типа, указывающий что syncValue - изменяемый Ref
    */
   isValue(): this is { syncValue: Ref<Value> } {
     return isRef(this.syncValue)
@@ -53,7 +53,7 @@ export class ModelInclude<Value = string> {
    *
    * Генерирует объект привязок для интеграции v-model.
    * Создает свойства для двусторонней привязки данных с обработчиками модели и обновления.
-   * @returns Object with model value and update handlers/ Объект со значением модели и обработчиками обновления
+   * @returns Object with model value and update handlers / Объект со значением модели и обработчиками обновления
    */
   getBinds() {
     if (this.isValue()) {
@@ -75,7 +75,7 @@ export class ModelInclude<Value = string> {
    *
    * Обновляет синхронизированное значение.
    * Устанавливает значение реактивной ссылки, если это изменяемый Ref.
-   * @param value The new value to set/ Новое значение для установки
+   * @param value The new value to set / Новое значение для установки
    */
   readonly update = (value: Value): void => {
     if (this.isValue()) {
@@ -89,7 +89,7 @@ export class ModelInclude<Value = string> {
    *
    * Испускает событие для обновления значения модели.
    * Запускает соответствующее событие обновления с новым значением.
-   * @param value The new value to set/ Новое значение для установки
+   * @param value The new value to set / Новое значение для установки
    */
   emit(value: Value): void {
     if (isFunction(this.emits)) {

@@ -86,8 +86,11 @@ import { wikiDescriptionsSegmentControlItem } from './wikiDescriptionsSegmentCon
 import { wikiDescriptionsTabItem } from './wikiDescriptionsTabItem'
 import { wikiDescriptionsTable } from './wikiDescriptionsTable'
 import { wikiDescriptionsTableHeaderItem } from './wikiDescriptionsTableHeaderItem'
+import { wikiDescriptionsTableFlexHeaderItem } from './wikiDescriptionsTableFlexHeaderItem'
 import { wikiDescriptionsTableItem } from './wikiDescriptionsTableItem'
+import { wikiDescriptionsTableFlexItem } from './wikiDescriptionsTableFlexItem'
 import { wikiDescriptionsTableRecord } from './wikiDescriptionsTableRecord'
+import { wikiDescriptionsTableFlexRecord } from './wikiDescriptionsTableFlexRecord'
 import { wikiDescriptionsTabs } from './wikiDescriptionsTabs'
 import { wikiDescriptionsTabsNavigation } from './wikiDescriptionsTabsNavigation'
 import { wikiDescriptionsTextarea } from './wikiDescriptionsTextarea'
@@ -184,8 +187,11 @@ export const wikiDescriptions: StorybookComponentsDescription = [
   wikiDescriptionsTabItem,
   wikiDescriptionsTable,
   wikiDescriptionsTableHeaderItem,
+  wikiDescriptionsTableFlexHeaderItem,
   wikiDescriptionsTableItem,
+  wikiDescriptionsTableFlexItem,
   wikiDescriptionsTableRecord,
+  wikiDescriptionsTableFlexRecord,
   wikiDescriptionsTabs,
   wikiDescriptionsTabsNavigation,
   wikiDescriptionsTextarea,

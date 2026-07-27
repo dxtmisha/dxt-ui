@@ -56,6 +56,8 @@ export const wikiDescriptionsTableItem: StorybookComponentsDescriptionItem = {
               <tr>
                 <DesignComponent
                   :isSkeleton="true"
+                  label="Label"
+                  description="Description"
                   value="Value"
                 />
                 <DesignComponent

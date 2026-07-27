@@ -86,6 +86,9 @@ import D1SnackbarItem from '../../src/components/Ui/SnackbarItem/D1SnackbarItemA
 import D1Switch from '../../src/components/Ui/Switch/D1SwitchAiWiki.vue'
 import D1TabItem from '../../src/components/Ui/TabItem/D1TabItemAiWiki.vue'
 import D1Table from '../../src/components/Ui/Table/D1TableAiWiki.vue'
+import D1TableFlexHeaderItem from '../../src/components/Ui/TableFlexHeaderItem/D1TableFlexHeaderItemAiWiki.vue'
+import D1TableFlexItem from '../../src/components/Ui/TableFlexItem/D1TableFlexItemAiWiki.vue'
+import D1TableFlexRecord from '../../src/components/Ui/TableFlexRecord/D1TableFlexRecordAiWiki.vue'
 import D1TableHeaderItem from '../../src/components/Ui/TableHeaderItem/D1TableHeaderItemAiWiki.vue'
 import D1TableItem from '../../src/components/Ui/TableItem/D1TableItemAiWiki.vue'
 import D1TableRecord from '../../src/components/Ui/TableRecord/D1TableRecordAiWiki.vue'
@@ -184,6 +187,9 @@ export const aiList: any[] = [
   D1Switch,
   D1TabItem,
   D1Table,
+  D1TableFlexHeaderItem,
+  D1TableFlexItem,
+  D1TableFlexRecord,
   D1TableHeaderItem,
   D1TableItem,
   D1TableRecord,
