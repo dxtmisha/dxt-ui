@@ -1,0 +1,93 @@
+import { type StorybookProps, type StorybookSlots, type WikiDataItem } from '@dxtmisha/wiki'
+
+import { wikiD1 } from '../../../wiki/wiki'
+import { defaults } from './props'
+
+const propsNames: StorybookProps = [
+  // :propsList [!] System label / Системная метка
+  { name: 'badge', type: 'string | number | ConstrBind<BadgeProps>' },
+  { name: 'badgeAttrs', type: 'ConstrBind<BadgeProps>' },
+  { name: 'badgeDot', type: 'boolean' },
+  { name: 'caption', type: 'string | number' },
+  { name: 'captionDecorative', type: 'boolean' },
+  { name: 'checkboxAttrs', type: 'ConstrBind<CheckboxProps>' },
+  { name: 'controlPosition', type: 'string', option: ['start', 'end', 'autoSm', 'autoMd', 'autoLg', 'autoXl', 'auto2xl'] },
+  { name: 'description', type: 'string | number' },
+  { name: 'descriptionId', type: 'string' },
+  { name: 'detail', type: 'Record<string, any>' },
+  { name: 'disabled', type: 'boolean' },
+  { name: 'divider', type: 'boolean' },
+  { name: 'fill', type: 'string', option: ['custom'] },
+  { name: 'filterMode', type: 'boolean' },
+  { name: 'focus', type: 'boolean' },
+  { name: 'highlight', type: 'string' },
+  { name: 'highlightLengthStart', type: 'number' },
+  { name: 'href', type: 'string' },
+  { name: 'icon', type: 'IconValue<IconProps>' },
+  { name: 'iconAlign', type: 'string', option: ['center', 'edge'] },
+  { name: 'iconAttrs', type: 'ConstrBind<IconProps>' },
+  { name: 'iconCheckbox', type: 'IconValue<IconProps>' },
+  { name: 'iconDir', type: 'boolean' },
+  { name: 'iconHide', type: 'boolean' },
+  { name: 'iconPalette', type: 'boolean' },
+  { name: 'iconTop', type: 'boolean' },
+  { name: 'iconTrailing', type: 'IconValue<IconProps>' },
+  { name: 'iconTrailingDirOnly', type: 'boolean' },
+  { name: 'iconTrailingPalette', type: 'boolean' },
+  { name: 'iconTrailingTurnOnly', type: 'boolean' },
+  { name: 'iconTurn', type: 'boolean' },
+  { name: 'index', type: 'any' },
+  { name: 'isSkeleton', type: 'boolean' },
+  { name: 'label', type: 'NumberOrString' },
+  { name: 'labelId', type: 'string' },
+  { name: 'listId', type: 'number' },
+  { name: 'loading', type: 'boolean | ConstrBind<ProgressProps>' },
+  { name: 'open', type: 'boolean' },
+  { name: 'parent', type: 'string' },
+  { name: 'prefix', type: 'string | number' },
+  { name: 'prefixId', type: 'string' },
+  { name: 'radioAttrs', type: 'ConstrBind<RadioProps>' },
+  { name: 'readonly', type: 'boolean' },
+  { name: 'role', type: 'string' },
+  { name: 'search', type: 'string' },
+  { name: 'selected', type: 'boolean' },
+  { name: 'selectedChild', type: 'boolean' },
+  { name: 'selectionStyle', type: 'string', option: ['checkbox', 'none', 'radio', 'checkmark'] },
+  { name: 'suffix', type: 'string | number' },
+  { name: 'suffixId', type: 'string' },
+  { name: 'tabindex', type: 'string | number' },
+  { name: 'tag', type: 'string', option: ['button', 'a', 'span', 'li', 'div'] },
+  { name: 'to', type: 'string | RouteLocationAsRelativeGeneric | RouteLocationAsPathGeneric' },
+  { name: 'type', type: 'string' },
+  { name: 'value', type: 'any' }
+  // :propsList [!] System label / Системная метка
+]
+
+const slotsNames: StorybookSlots = [
+  // :slotsList [!] System label / Системная метка
+  { name: 'body', description: `Slot for the list item body/ Слот для содержимого элемента списка`, properties: [{ name: 'props', type: '(any) | undefined' }] },
+  { name: 'caption', description: `Caption slot/ Слот заголовка`, properties: [{ name: 'props', type: '(any) | undefined' }] },
+  { name: 'default', description: `Default slot content/ Содержимое слота по умолчанию`, properties: [{ name: 'props', type: '(any) | undefined' }] },
+  { name: 'description', description: `Description slot/ Слот описания`, properties: [{ name: 'props', type: '(any) | undefined' }] },
+  { name: 'leading', description: `Slot for the leading element/ Слот для ведущего элемента`, properties: [{ name: 'props', type: '(any) | undefined' }] },
+  { name: 'prefix', description: `Prefix slot/ Слот префикса`, properties: [{ name: 'props', type: '(any) | undefined' }] },
+  { name: 'suffix', description: `Suffix slot/ Слот суффикса`, properties: [{ name: 'props', type: '(any) | undefined' }] },
+  { name: 'trailing', description: `Slot for the trailing element/ Слот для замыкающего элемента`, properties: [{ name: 'props', type: '(any) | undefined' }] }
+  // :slotsList [!] System label / Системная метка
+]
+
+const eventsNames: StorybookSlots = [
+  // :eventsList [!] System label / Системная метка
+  { name: 'click', description: `Full click event with MouseEvent/ Полное событие клика с MouseEvent`, properties: [{ name: 'event', type: 'MouseEvent' }, { name: 'value', type: 'EventClickValue' }] },
+  { name: 'clickLite', description: `Lightweight click event/ Упрощённое событие клика`, properties: [{ name: 'value', type: 'EventClickValue' }] }
+  // :eventsList [!] System label / Системная метка
+]
+
+export const NavigationItemWikiData: WikiDataItem = {
+  component: 'NavigationItem',
+  props: propsNames,
+  slots: slotsNames,
+  events: eventsNames,
+  defaults,
+  wikiDesign: wikiD1
+}

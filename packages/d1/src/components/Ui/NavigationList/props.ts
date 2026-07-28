@@ -1,0 +1,47 @@
+import { type NavigationListPropsBasic, defaultsNavigationList } from '@dxtmisha/constructor/NavigationList'
+
+import type { IconProps } from '../Icon'
+import type { InputProps } from '../Input'
+import type { NavigationItemProps } from '../NavigationItem'
+
+export const propsValues = {
+  // :values [!] System label / Системная метка
+  axis: ['x', 'y']
+  // :values [!] System label / Системная метка
+}
+
+type PropsToken = {
+  // :type [!] System label / Системная метка
+  axis?: 'x' | 'y'
+  divider?: boolean
+  // :type [!] System label / Системная метка
+}
+
+/**
+ * Type describing incoming properties/ Тип, описывающий входящие свойства
+ */
+export type NavigationListProps = NavigationListPropsBasic<
+  IconProps,
+  NavigationItemProps,
+  InputProps
+> & PropsToken
+
+/**
+ * Default value for property/ Значение по умолчанию для свойства
+ */
+export const defaults: object = {
+  ...defaultsNavigationList,
+  iconArrowDown: 'keyboard_arrow_down',
+  iconArrowRight: 'keyboard_arrow_right',
+  iconSearch: 'search',
+  inputSearchAttrs: {
+    fieldAttrs: {
+      size: 'sm'
+    }
+  },
+  ...{
+    // :default [!] System label / Системная метка
+    axis: 'y'
+    // :default [!] System label / Системная метка
+  }
+}

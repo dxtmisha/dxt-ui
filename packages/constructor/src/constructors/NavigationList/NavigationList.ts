@@ -1,19 +1,19 @@
 import type { Ref, ToRefs } from 'vue'
 import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
-import { ListItem } from '../ListItem'
+import { List } from '../List'
 
-import type { NavigationItemComponents, NavigationItemEmits, NavigationItemSlots } from './types'
-import type { NavigationItemPropsBasic } from './props'
+import type { NavigationListComponents, NavigationListEmits, NavigationListSlots } from './types'
+import type { NavigationListPropsBasic } from './props'
 
 /**
- * NavigationItem class constructor managing its child elements, attributes, classes, and accessibility.
- * Inherits all functionality from ListItem.
+ * NavigationList class constructor managing its child elements, attributes, classes, and accessibility.
+ * Inherits all functionality from List.
  *
- * Класс-конструктор NavigationItem, управляющий его дочерними элементами, атрибутами, классами и доступностью.
- * Наследует всю функциональность ListItem.
+ * Класс-конструктор NavigationList, управляющий его дочерними элементами, атрибутами, классами и доступностью.
+ * Наследует всю функциональность List.
  */
-export class NavigationItem extends ListItem {
+export class NavigationList extends List {
   /**
    * Constructor
    * @param props input data / входные данные
@@ -27,14 +27,14 @@ export class NavigationItem extends ListItem {
    * @param constructors object with classes / объект с классами
    */
   constructor(
-    protected override readonly props: NavigationItemPropsBasic,
-    protected override readonly refs: ToRefs<NavigationItemPropsBasic>,
+    protected override readonly props: NavigationListPropsBasic,
+    protected override readonly refs: ToRefs<NavigationListPropsBasic>,
     protected override readonly element: Ref<HTMLElement | undefined>,
     protected override readonly classDesign: string,
     protected override readonly className: string,
-    protected override readonly components?: DesignComp<NavigationItemComponents, NavigationItemPropsBasic>,
-    protected override readonly slots?: NavigationItemSlots,
-    protected override readonly emits?: ConstrEmit<NavigationItemEmits>,
+    protected override readonly components?: DesignComp<NavigationListComponents, NavigationListPropsBasic>,
+    protected override readonly slots?: NavigationListSlots,
+    protected override readonly emits?: ConstrEmit<NavigationListEmits>,
     constructors: Record<string, any> = {}
   ) {
     super(
@@ -50,3 +50,4 @@ export class NavigationItem extends ListItem {
     )
   }
 }
+

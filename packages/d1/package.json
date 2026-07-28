@@ -51,7 +51,7 @@
     "build": "vue-tsc -b && vite build",
     "build-recovery": "npm run build && npm run wiki-storm",
     "preview": "vite preview",
-    "ui": "dxt-ui",
+    "ui": "dxt-ui NavigationList",
     "wiki-storm": "dxt-wiki-storm",
     "types": "dxt-types",
     "screenshot": "dxt-screenshot",
@@ -490,6 +490,14 @@
     "./D1TableFlex": {
       "types": "./dist/library/D1TableFlex.d.ts",
       "default": "./dist/D1TableFlex.js"
+    },
+    "./D1NavigationItem": {
+      "types": "./dist/library/D1NavigationItem.d.ts",
+      "default": "./dist/D1NavigationItem.js"
+    },
+    "./D1NavigationList": {
+      "types": "./dist/library/D1NavigationList.d.ts",
+      "default": "./dist/D1NavigationList.js"
     }
   },
   "buildOptions": {

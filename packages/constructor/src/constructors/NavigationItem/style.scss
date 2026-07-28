@@ -1,5 +1,7 @@
 @use "@dxtmisha/styles/properties" as ui;
+@use "../ListItem/style" as listItem;
 
 @mixin mixinNavigationItem {
-
+  @include listItem.mixinListItem;
 }
+

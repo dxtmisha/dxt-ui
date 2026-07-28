@@ -12720,6 +12720,16 @@
         name: 'd1-motionTransform',
         type: 'component',
       ),
+      'navigationItem':(
+        index: 'navigationItem',
+        name: 'd1-navigationItem',
+        type: 'component',
+      ),
+      'navigationList':(
+        index: 'navigationList',
+        name: 'd1-navigationList',
+        type: 'component',
+      ),
       'page':(
         index: 'page',
         name: 'd1-page',
@@ -13481,6 +13491,16 @@
       'motionTransform':(
         index: 'motionTransform',
         name: 'd-motionTransform',
+        type: 'component',
+      ),
+      'navigationItem':(
+        index: 'navigationItem',
+        name: 'd-navigationItem',
+        type: 'component',
+      ),
+      'navigationList':(
+        index: 'navigationList',
+        name: 'd-navigationList',
         type: 'component',
       ),
       'page':(

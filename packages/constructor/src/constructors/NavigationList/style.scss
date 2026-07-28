@@ -1,0 +1,7 @@
+@use "@dxtmisha/styles/properties" as ui;
+@use "../List/style" as list;
+
+@mixin mixinNavigationList {
+  @include list.mixinList;
+}
+

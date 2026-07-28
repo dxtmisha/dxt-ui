@@ -1,0 +1,33 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+Specialized list item component designed for application navigation menus, sidebars, and top navigation bars.
+
+NavigationItem extends the core ListItem component, tailored specifically for navigation structures. It inherits all features of ListItem (labels, descriptions, leading/trailing icons, badges, selected states, and ripple click effects) while providing optimized navigation-specific styling.
+
+**Key Features:**
+
+- Inherited layout capabilities and slots from ListItem (prefix, suffix, label, description, caption)
+- Optimized visual styling for navigation menus and sidebars
+- Icon support with flexible positioning
+- Badge integration for status indicators and notification counts
+- Interactive states (focus, selected, disabled, readonly)
+- Visual ripple click feedback
+- Support for navigation links (Vue Router / href) and button/div tags
+
+**Typical Use Cases:**
+
+- Sidebar menu items
+- Header navigation links
+- Navigation drawer items and action lists
+
+<Source
+    code={`
+<template>
+  <NavigationList>
+    <NavigationItem icon="home" selected>Home</NavigationItem>
+    <NavigationItem icon="settings" description="System configuration">Settings</NavigationItem>
+  </NavigationList>
+</template>
+  `}
+    language="html"
+/>

@@ -1,5 +1,6 @@
 export * from './basicTypes'
-export * from './NavigationItem'
-export * from './NavigationItemDesign'
+export * from './NavigationList'
+export * from './NavigationListDesign'
 export * from './props'
 export * from './types'
+

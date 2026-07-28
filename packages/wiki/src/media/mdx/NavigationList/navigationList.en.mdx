@@ -1,0 +1,37 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+Specialized navigation list component for building sidebars, dropdown menus, and application top bars.
+
+NavigationList extends the core List component, optimized for app navigation. It renders NavigationItem elements and provides hierarchical data support, full keyboard navigation, real-time search with text highlighting, vertical/horizontal axis orientation, and performance-optimized lite rendering mode.
+
+**Key Features:**
+
+- Core list orchestration inherited from List
+- Renders specialized NavigationItem elements
+- Full keyboard navigation with arrow keys and shortcuts
+- Real-time search filtering and match highlighting
+- Hierarchical tree structure with group headers and sub-menus
+- Axis orientation support (vertical and horizontal)
+- Automatic section divider rendering
+- Performance-optimized lite mode for large dataset lists
+
+**Typical Use Cases:**
+
+- Primary sidebar application navigation
+- Navigation dropdown menus and section drawers
+- Fast-access menu panels and view switchers
+
+<Source
+    code={`
+<template>
+  <NavigationList
+    :list="[
+      { label: 'Dashboard', value: 'dashboard', icon: 'dashboard' },
+      { label: 'Analytics', value: 'analytics', icon: 'insights' },
+      { label: 'Settings', value: 'settings', icon: 'settings' }
+    ]"
+  />
+</template>
+  `}
+    language="html"
+/>

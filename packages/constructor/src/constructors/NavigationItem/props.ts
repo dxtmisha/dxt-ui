@@ -1,9 +1,10 @@
+import { type ListItemPropsBasic } from '../ListItem'
+
 import type { IconPropsBasic } from '../Icon'
 import type { BadgePropsBasic } from '../Badge'
 import type { ProgressPropsBasic } from '../Progress'
 import type { CheckboxPropsBasic } from '../Checkbox'
 import type { RadioPropsBasic } from '../Radio'
-import { defaultsListItem, type ListItemPropsBasic } from '../ListItem'
 
 type NavigationItemPropsToken = {
   // :type [!] System label / Системная метка
@@ -41,7 +42,9 @@ export type NavigationItemProps = NavigationItemPropsBasic & NavigationItemProps
  * Значение по умолчанию для свойства.
  */
 export const defaultsNavigationItem = {
-  ...defaultsListItem,
+  tabindex: '-1',
+  role: 'option',
+  selectionStyle: 'none',
   ...{
     // :default [!] System label / Системная метка
     iconAlign: 'center',
