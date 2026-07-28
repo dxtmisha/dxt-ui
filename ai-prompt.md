@@ -14,82 +14,25 @@ It is critically important to strictly follow all the prompts and instructions l
 The global rules for code implementation are listed below. These instructions are mandatory for ensuring high-quality, professional-grade development across the entire project.
 ### Global Development Principles (AI Code Promise)
 
-Your primary goal is to generate flawless, industrial-grade code that adheres to dxt-ui standards. You promise to follow these rules strictly:
+Strictly follow these rules for flawless dxt-ui code:
 
-0. **Mandatory Deep Study**:
-   - Before developing anything for any project or package, you MUST study it completely to fully understand its architecture and stylistic guidelines.
-   - Before modifying or fixing any file, you MUST fully study its internal structure and logic first.
-   - Superficial study of files (e.g., scanning only filenames, function signatures, or performing quick keyword grep searches without reading the actual file contents via `view_file`) is strictly forbidden. You MUST read and study the files completely and thoroughly to understand their full implementations and logic.
-   - If any instructions, paths, or files are specified as located inside `node_modules/` or any other external/linked directory, you MUST first check if this package exists locally in the workspace (for example, under `packages/`). If it does exist locally, you MUST resolve the paths to the local workspace package directory and study/modify the local source files instead.
-   - **CRITICAL FIRST STEP:** If any project, module, or instruction contains links or references to specific files (e.g. types, developer guides, descriptions), you MUST study all these referenced files as your absolute first action. As soon as you start working with a project, or notice that it is imported/used in the code you are working with, you must immediately read and study all these referenced files before doing any planning, proposing code changes, or writing code. This is mandatory and applies even if the files are located in `node_modules/` (always resolve them to the local workspace directory first if they exist locally).
-   - **STRICT BLOCKING GUARD (CHRONOLOGICAL ORDER RULES):**
-     1. As your ABSOLUTE FIRST ACTION, before taking any other steps, you MUST check if the `ai-memory.md` file exists in the specific package directory or the repository root depending on the files you are working on:
-        - If you are analyzing or modifying files that are located inside a package directory (e.g., any subdirectory under `packages/` like `packages/constructor/`, `packages/scripts/`, etc.), you MUST read/write the `ai-memory.md` file ONLY within that specific package directory (e.g. `packages/constructor/ai-memory.md` or `packages/scripts/ai-memory.md`). You are strictly FORBIDDEN from using, reading, or writing the global `ai-memory.md` in the repository root in this case.
-        - If and only if the files you are working with are root-level configurations or not part of any package under `packages/`, you may read/write the `ai-memory.md` file in the repository root.
-        If the required local package-level `ai-memory.md` (or root `ai-memory.md` for root-level files) exists, you MUST read it using `view_file`. If it does NOT exist, you MUST CREATE IT immediately using `write_to_file` as an empty file with only a single newline (no placeholder text, comments, or intro text).
-     2. As your ABSOLUTE SECOND ACTION, you MUST use the `view_file` tool to read the master `ai-prompt.md` file located in the project root. You MUST read the descriptions of ALL libraries mentioned in this file. If there is even a 1% chance that a library mentioned in `ai-prompt.md` contains functionality or utilities relevant to your task, you are OBLIGED to read and study all files associated with that library that are specified in the `ai-prompt.md` under its respective section. You are strictly forbidden from writing custom logic (helpers, styles, configs, classes) without first performing an exhaustive check of the workspace's existing infrastructure via `grep_search` or `list_dir`.
-     3. Identify all paths, directories, or packages involved in the user request.
-     4. Scan the prompt for sections corresponding to those paths.
-     5. Identify all paths to auxiliary documentation, types, or developer guides (such as `ai-types.md` or `ai-developer.md`) mentioned in those sections.
-     6. You MUST use the `view_file` tool to read and study ALL of these referenced files (specifically, if type files like `ai-types.md` or developer guides like `ai-developer.md` are specified for the packages/projects you are working on, as well as the types/documentation files of any package dependencies listed in the package's package.json, you MUST read them completely) BEFORE calling `list_dir` on sub-folders, writing any plans/checklists, or proposing/making code changes. Bypassing this order is a critical protocol violation.
+0. **Mandatory Deep Study (CHRONOLOGICAL GUARD)**:
+   - **Step 1**: Read/create local `ai-memory.md` strictly in the current package root (e.g., `packages/constructor/`). Using repository root `ai-memory.md` for package files is FORBIDDEN.
+   - **Step 2**: Read root `ai-prompt.md` and study descriptions of all mentioned libraries.
+   - **Step 3**: Read all linked `ai-types.md` and `ai-developer.md` BEFORE proposing plans, calling `list_dir`, or writing code. If a package is in `node_modules/` but exists locally (e.g., `packages/`), resolve and study the local source instead.
+   - Fully read files via `view_file` before modifying. Superficial scans (grep only) are strictly forbidden. Always check existing infrastructure before writing custom logic.
 
-1. **"Copy-Paste Ready" Principle**:
-   - Generate code that can be copied and run without a single manual edit.
-   - All imports must be absolute or correct relative paths.
-   - No `// ... rest of the code`, no `// imports here`. Only the complete, working file.
-
-2. **Zero Tolerance for Hallucinations**:
-   - Use only the libraries and versions specified in the project's `package.json`.
-   - Do not invent API methods that do not exist in the current versions of dependencies.
-   - If information is insufficient, it is better to ask or point out the limitation than to hallucinate.
-
-3. **Clean Code Standards**:
-   - **DRY & KISS**: Avoid duplication, write as simply and clearly as possible.
-   - **SOLID**: Every module, class, or function must have one clear responsibility.
-   - **Declarative Approach**: Prefer a declarative programming style (array functional methods, composition).
-   - **No Abbreviations**: Do not use shortened or abbreviated names for variables, properties, arguments, methods, classes, etc. (e.g., do not use `el`, `rect1`/`r1`, `dx`/`dy`, `val`, `temp`). All identifiers must be descriptive, complete, and self-explanatory.
-   - **Optimization and Clarity**: Write code that is highly optimized, performant, and clean, ensuring it is easy to read and understand.
-   - **Single Responsibility (KISS/SOLID)**: Avoid creating large "mega-functions" or monolithic blocks. Each function must be concise and perform exactly one focused task (1 function = 1 functionality).
-
-4. **Uncompromising TypeScript**:
-   - No `any`. Use `unknown` if the type is truly unknown, or create generic types.
-   - Never use `@ts-ignore`. If a type check suppression is absolutely necessary due to external limitations, use `@ts-expect-error` with a descriptive comment explaining why.
-   - Always define interfaces for input and output data.
-   - Use `as const`, `readonly`, and enums/union types to increase reliability.
-
-5. **Professional Documentation (TSDoc)**:
-   - Accompany all exported entities with TSDoc comments in the [wikiLanguage] language.
-   - Describe the purpose, parameters, return values, and potential exceptions.
-   - Usage examples in comments are encouraged for complex functions.
-
-6. **Architectural Consistency**:
-   - Respect the project structure. If it is standard in the project to move logic into `composables` or `utils`, follow that pattern.
-   - Reuse existing infrastructure: Always check if the required functionality (e.g., API requests, state management, utilities) already exists in the project's core packages/modules or standard libraries before implementing it from scratch. To do this, you MUST read their respective type definitions or documentation files (such as `ai-types.md` or similar index files) to inspect their complete API surfaces and list of exported helpers.
-   - Do not modify global styles or styles of base UI components unless explicitly requested.
-
-7. **Security and Performance**:
-   - Write error-proof code (guard clauses, optional chaining `?.`, nullish coalescing `??`).
-   - Use explicit `try-catch` blocks for asynchronous operations. Never swallow errors silently; handle them appropriately or throw meaningful error messages.
-   - Avoid redundant calculations in loops and heavy operations in reactive dependencies.
-
-8. **Aesthetics and Conciseness**:
-   - Code must be beautiful. Use logical indentation and group code by meaning.
-   - Save tokens by avoiding redundant comments where the code speaks for itself.
-
-9. **Strict Adherence to Instructions & Optimization**:
-   - Perform all operations strictly in accordance with the provided commands and instructions.
-   - Avoid guessing or performing unrelated extra actions. However, you are encouraged to analyze the requirements, optimize the code, and propose or implement better technical solutions directly related to achieving the task's goals.
-   - Strictly adhere to the plan, checklists, and execution steps, while refining them for better quality and performance when needed.
-
-10. **AI Workspace Memory (`ai-memory.md`)**:
-    - As enforced by the STRICT BLOCKING GUARD, `ai-memory.md` MUST be created and read locally inside the root of the specific package you are working with (e.g., `packages/constructor/ai-memory.md` for code in `packages/constructor`).
-    - Writing or reading `ai-memory.md` in the repository root when working on code inside a package is a critical violation of these rules.
-    - Whenever you receive feedback, corrections, or instructions from the developer, you MUST update that specific package's local `ai-memory.md` file.
-    - Explicit Memorization Requests: If the developer explicitly instructs you to "remember this", "keep this in mind", or makes a similar request regarding conventions or rules, you MUST immediately record this information in the relevant local `ai-memory.md` file.
-    - Active Application: You must actively APPLY the rules and constraints from `ai-memory.md` to all code you generate. Rules in this file override general assumptions and have the highest priority.
-    - The PRIMARY PURPOSE of this file is to store critical coding guidelines, specific architectural constraints, and "do's and don'ts" (e.g., "do not use X; use Y instead") to ensure the AI writes compliant, correct code.
-    - DO NOT store change logs, lists of modified files, or commit-like messages (e.g., "updated file X, updated package Y"). Keep the file clean, concise, and focused strictly on active rules, design decisions, and coding standards.
-    - DO NOT specify absolute file paths (e.g., file:///... or machine-specific directories like /Users/...) in the memory file. All references to files inside the project must use relative paths (e.g., src/types/textTypes.ts) so that the file works seamlessly for other developers on different operating systems and computers.
+1. **"Copy-Paste Ready"**: Generate complete, runnable files with correct imports. No placeholders (e.g., `// rest of code`).
+2. **Zero Hallucinations**: Strictly use `package.json` dependencies. No invented APIs. Ask if unsure.
+3. **Clean Code (DRY/KISS/SOLID)**: Declarative style. Single responsibility (1 task = 1 function). No abbreviations (`el`, `val`, etc. are forbidden). Optimized and legible.
+4. **Uncompromising TS**: No `any` (use `unknown` or generics). Interfaces for all I/O. `as const`, `readonly`, enums. Use `@ts-expect-error` with comments, never `@ts-ignore`.
+5. **Professional Documentation (TSDoc)**: Document all exported entities (purpose, params, returns) in [wikiLanguage]. Include examples for complex logic.
+6. **Architectural Consistency**: Respect project structure. Reuse existing infrastructure (always check `ai-types.md` first). Do not modify global/base UI styles unless explicitly requested.
+7. **Security & Performance**: Error-proof code (`?.`, `??`, guard clauses). Use explicit `try-catch` for async. Never swallow errors. Avoid heavy ops in loops/reactivity.
+8. **Aesthetics & Conciseness**: Group logically. Save tokens by avoiding redundant comments if code is self-explanatory.
+9. **Strict Adherence & Optimization**: Follow instructions precisely without guessing. Propose relevant technical optimizations while strictly adhering to plans.
+10. **AI Workspace Memory (`ai-memory.md`)**: Actively APPLY its rules (highest priority). Update it on developer feedback. Do NOT store change logs or absolute paths (use relative). Keep it focused strictly on architectural constraints.
+11. **Mandatory Full-File Self-Audit**: When creating new entities, you MUST audit the ENTIRE file (not just modified parts) to ensure no logic duplication (DRY) and full compliance with project rules. *Exception: minor bug fixes to existing code do not require a full audit.*
 
 ---
 
@@ -348,145 +291,79 @@ The project is located at: 'node_modules/@dxtmisha/functional'.
 
 ## Project context: Investigation required
 You MUST read and carefully analyze the description of this project below. If there is even a 1% chance that the functionality, components, styles, or helpers from this project could be useful for your task, you MUST immediately start analyzing this project, studying its types, and checking its structure in full to prevent custom code duplication:
-### Core Purpose
-A high-level utility library designed for Vue 3 providing architectural abstractions for component design, reactive state management, sophisticated API orchestration with SSR support, and localized geographic/unit formatting.
+1. CORE PURPOSE
+This library (@dxtmisha/functional) provides Vue 3 reactive abstractions, abstract base classes for component architecture, and advanced composables. It elevates low-level functional utilities from @dxtmisha/functional-basic into Vue 3 reactivity system (refs, computed, lifecycle, reactive singletons) to handle REST API orchestration, localization, meta management, routing, client-side storage, lazy loading, list/search data structures, and standard component state construction.
 
-### Key Expositions
-*   **Design Architecture:** `DesignConstructorAbstract`, `DesignComponents`, and `DesignAbstract` provide a structured class-based inheritance model for building complex, reactive functional components with automatic lifecycle handling, style/class management, and slotted rendering.
-*   **API Orchestration:**
-    *   `useApiRef`: Centralized reactive API request handler with built-in SSR, caching, transformation, validation (supporting `@effect/schema`), and error handling.
-    *   `useApiManagementRef` / `useApiManagementAsyncRef`: High-level orchestration for CRUD operations (GET/POST/PUT/DELETE) with client-side searching, list formatting, and atomic mutation state management.
-    *   Standard wrappers: `useApiGet`, `useApiPost`, `useApiPut`, `useApiDelete` for cleaner endpoint interaction.
-*   **Reactive Utilities:** 
-    *   `executeUse`: A factory for creating managed singletons (`global`, `provide`, `local`) to ensure unified state across component trees.
-    *   `useTranslateRef`, `useStorageRef`, `useCookieRef`, `useSessionRef`: Reactive bridges to local persistence and internationalization.
-    *   `computedAsync`, `computedEternity`: Advanced reactive primitives for asynchronous data flow and on-demand caching.
-*   **Data Formatting:** `GeoIntlRef`, `GeoUnitRef`, and `useFormattersRef` provide reactive, localized formatting for numbers, currencies, units (metric/imperial conversion), and dates.
-*   **List & Search Logic:** `ListDataRef` and `useSearchRef` manage complex hierarchical or flat data structures with optimized search and filtering capabilities.
+2. KEY EXPOSITIONS
+Abstract Component Base Classes: DesignAbstract, DesignAsyncAbstract, DesignChanged, DesignComponents, DesignComp, DesignConstructorAbstract. These manage component state lifecycle, dynamic class and style processing, event hooks, slot rendering, component modifications, and property mutation tracking.
 
-### Triggers for Studying ai-types.md
-Mandatory to review `ai-types.md` when:
-1.  **System Integration:** You are implementing new API endpoints, configuring `dxtFunctionalPlugin`, or setting up global state providers (`executeUseProvide`).
-2.  **Schema Validation:** You are utilizing `validateResponseContract` or `validateRequestContract` and require the expected structure for `ApiDataValidation` or error storage interfaces.
-3.  **Component Construction:** You are extending `DesignConstructorAbstract` or implementing custom component modifications.
-4.  **Type Mapping:** You encounter complex generic constraints in the `useApiManagementRef` signature or `Constr` prefixed utility types (e.g., `ConstrBind`, `ConstrOptions`, `ConstrEmit`).
+Reactive API Composables: useApiRef, useApiAsyncRef, useApiManagementRef, useApiManagementAsyncRef, useApiGet, useApiPost, useApiPut, useApiDelete, useApiRequest. These handle REST operations with SSR prefetching, response contract validation, mutation handling, error contract mapping, client-side pagination/filtering, and automatic state reactivity.
 
-### Integration Context
-The library acts as a foundational service layer in the system stack. It integrates directly with Vue 3's composition API, Vue Router for navigation, and `@dxtmisha/functional-basic` for core network and utility logic. It is intended to be used as a singleton-pattern service provider within an application's plugin system via `dxtFunctionalPlugin` to facilitate consistent SSR state hydration and global dependency injection.
+Singleton State & Execution Control: executeUse, executeUseGlobal, executeUseProvide, executeUseLocal, executeUseGlobalInit. These encapsulate factory initialization into global, component-tree inject/provide, or closure-local singletons.
+
+Localization & Formatting Classes and Composables: DatetimeRef, GeoFlagRef, GeoIntlRef, GeoRef, GeoUnitRef, useGeoIntlRef, useGeoUnitRef, useFormattersRef, useTranslateRef, t. These offer reactive locale-aware date/time formatting, unit conversion, flag retrieval, and multi-key translation refs.
+
+Data Structures & UI Management: ListDataRef, useRouterList, useSearchRef, useSearchValueRef, useLazyRef, useLazyItemByMarginRef, ScrollbarWidthRef, EventRef, EffectScopeGlobal. These provide reactive list data mapping, search query debounce and highlighting, lazy-loading via IntersectionObserver, scrollbar width tracking, and global effect scopes.
+
+State Persistence & Browser Composables: useBroadcastValueRef, useCookieRef, useHashRef, useQueryRef, useSessionRef, useStorageRef, useMeta. These control cross-tab communication, cookies, URL query/hash reactive synchronization, session/local storage, and reactive HTML document metadata.
+
+Utility Functions & Plugin: computedAsync, computedByLanguage, computedEternity, getBind, getBindRef, render, toBind, toBinds, dxtFunctionalPlugin.
+
+3. TRIGGERS FOR STUDYING AI-TYPES.MD
+Reading ai-types.md is mandatory under any of the following conditions, keywords, or implementation tasks:
+- Extending or sub-classing DesignConstructorAbstract, DesignAbstract, DesignAsyncAbstract, or DesignComponents.
+- Configuring API integrations requiring complex typing, specifically ApiManagementGet, ApiManagementSearch, ApiManagementRequest, or ApiOptions.
+- Utilizing component metadata and binding types, such as ConstrBind, ConstrClasses, ConstrStyles, ConstrOptions, ConstrSetup, ConstrComponentMod, or ConstrProps.
+- Constructing managed singletons using executeUse, executeUseGlobal, executeUseProvide, or executeUseLocal.
+- Typing complex list inputs, search items, and reactive parameters using ListList, ListDataItem, ListDataFull, RefOrNormal, RefType, or RefOrNormalOrFunction.
+- Implementing contract validation functions (validateResponseContract, validateRequestContract) or error contracts (ApiErrorStorageList) with schema validation libraries.
+
+4. INTEGRATION CONTEXT
+Initializes as a Vue 3 plugin via dxtFunctionalPlugin. Connects directly with Vue 3 reactivity and rendering APIs (ref, computed, VNode, provide/inject). Wraps base functional logic from @dxtmisha/functional-basic, integrates with vue-router via RouterItemRef, links to @dxtmisha/media for social icons, and supports runtime schema validation (such as @effect/schema) inside API payload contracts.
 
 ## Project information: Core overview
 This section contains essential information and the core overview of the project. Review this to understand the fundamental architecture and key features.
 # @dxtmisha/functional Reference
-
-Vue 3 reactive utilities, composables, and classes built on `@dxtmisha/functional-basic`. Refer to [ai-types.md](file:///Volumes/T7/Code/dxt-ui/packages/functional/ai-types.md) for full signatures, types, and exported methods.
-
----
+Vue 3 reactive utilities built on `@dxtmisha/functional-basic`. See `ai-types.md` for full signatures.
 
 ## Usage Rules & Strategies
-
-1. **Priority**: Always prioritize `@dxtmisha/functional` over `@dxtmisha/functional-basic` in Vue environments.
-2. **API & State (`useApi*` / `executeUse*`)**:
-   - **Never** call `useApiGet`, `useApiPost`, `useApiPut`, `useApiDelete`, `useApiRequest`, `useApiRef`, `useApiAsyncRef`, `useApiManagementRef`, `useApiManagementAsyncRef` directly inside components (SFC).
-   - Move all API configurations into separate files (services/stores).
-   - Wrap setups in `executeUse` factories (`executeUseLocal`, `executeUseGlobal`, `executeUseProvide`) to ensure singletons, prevent duplicate requests, and process data (mappings, skeletons) in the callback.
-   - Components only import/call the singleton hook.
+- **Priority**: Always use this package over `@dxtmisha/functional-basic` in Vue.
+- **API/State Singletons**: **NEVER** call `useApi*` / `executeUse*` hooks directly in Vue components. Wrap them in `executeUseGlobal` (startup), `executeUseLocal` (lazy, session scope), or `executeUseProvide` (scoped tree) inside external service files. Components only import and call the resulting hook.
 
 ```typescript
-import { executeUseGlobal, useApiManagementRef } from '@dxtmisha/functional';
+import { executeUseLocal, useApiManagementRef, useStorageRef, useSessionRef, useCookieRef, useBroadcastValueRef, useHashRef, GeoRef, useGeoIntlRef, useTranslateRef, useMeta, ScrollbarWidthRef, computedAsync, computedEternity, ListDataRef, useSearchRef, EventRef, useLazyRef } from '@dxtmisha/functional';
 
-export const useUserManagement = executeUseGlobal(() => {
-  return useApiManagementRef(
-    { path: '/api/users' },                       // GET
-    { date: (v) => new Date(v).toLocaleString() }, // Formatters
-    { columns: ['name', 'email'] },               // Search
-    { path: '/api/users' },                       // POST
-    { path: (o) => `/api/users/${o.id}` },        // PUT
-    { path: (o) => `/api/users/${o.id}` }         // DELETE
-  );
-});
-```
+// 1. API Management
+export const useUsers = executeUseLocal(() => useApiManagementRef(
+  { path: '/api/users' }, { date: (v) => new Date(v).toLocaleString() }, { columns: ['name'] },
+  { path: '/api/users' }, { path: (o) => `/api/users/${o.id}` }, { path: (o) => `/api/users/${o.id}` }
+));
 
-### `executeUse` Strategies:
-- `executeUseLocal` (Preferred): Lazy-loaded when first called. Persists until session end.
-- `executeUseGlobal`: Eagerly loaded at application startup (useful for critical configs, SDKs). Must be initialized via `executeUseGlobalInit()`.
-- `executeUseProvide`: Scoped via `provide/inject` to a component tree branch (useful for form/tab hierarchies).
+// 2. Storage & State
+const theme = useStorageRef<'light' | 'dark'>('theme', 'light');
+const step = useSessionRef<number>('step', 1);
+const token = useCookieRef<string>('auth', '', { secure: true });
+const sync = useBroadcastValueRef<string>('ch', 'idle');
+const page = useHashRef<string>('page', 'home');
 
----
+// 3. Geo & Formatting
+const country = GeoRef.getCountry(); const intl = useGeoIntlRef(); intl.currency(150, 'EUR');
+const t = useTranslateRef(['global.save']);
 
-## Key API Examples
+// 4. SEO & Layout
+useMeta().setTitle('Page'); const scrollW = new ScrollbarWidthRef().width;
 
-### 1. Storage & State (Reactive)
-Reactively syncs Vue refs with browser storages or cross-tab broadcast channels.
+// 5. Reactivity Helpers
+const asyncData = computedAsync(async () => fetch(), 'loading...');
+const cached = computedEternity(async () => fetch(), 'loading...');
 
-```typescript
-import { useStorageRef, useSessionRef, useCookieRef, useBroadcastValueRef, useHashRef } from '@dxtmisha/functional';
+// 6. Lists & Search
+const list = new ListDataRef(items, selectedId); list.isSelected;
+const { listSearch } = useSearchRef(items, ['label'], ref('query'));
 
-const theme = useStorageRef<'light' | 'dark'>('theme_key', 'light');
-const step = useSessionRef<number>('form_step', 1);
-const token = useCookieRef<string>('auth_token', '', { secure: true });
-const syncState = useBroadcastValueRef<string>('active_channel', 'idle');
-const hashPage = useHashRef<string>('page', 'home');
-```
-
-### 2. Geolocation & Internationalization
-Static helpers and reactive wrappers for localization and translation.
-
-```typescript
-import { GeoRef, useGeoIntlRef, useTranslateRef } from '@dxtmisha/functional';
-
-const currentCountry = GeoRef.getCountry();
-const intl = useGeoIntlRef();
-const formattedPrice = intl.currency(150, 'EUR');
-const translations = useTranslateRef(['global.save', 'global.cancel']); // Or alias `t(...)`
-```
-
-### 3. SEO & Layout Utilities
-Metadata manager and reactive scrollbar tracker to solve layout shifts.
-
-```typescript
-import { useMeta, ScrollbarWidthRef } from '@dxtmisha/functional';
-
-const meta = useMeta();
-meta.setTitle('Product Page');
-
-const scrollbar = new ScrollbarWidthRef();
-const w = scrollbar.width;
-const hasScroll = scrollbar.is;
-```
-
-### 4. Advanced Reactivity Helpers
-Helpers for resolving async data reactively or caching computations.
-
-```typescript
-import { computedAsync, computedEternity } from '@dxtmisha/functional';
-
-const asyncData = computedAsync(async () => await fetchSomeData(activeId.value), 'loading...');
-const cachedData = computedEternity(async () => await fetchStaticData(), 'loading...');
-```
-
-### 5. List & Search Orchestration
-Orchestrates list state (selection, pagination, highlights) and performs debounced list searches.
-
-```typescript
-import { ListDataRef, useSearchRef } from '@dxtmisha/functional';
-
-const listData = new ListDataRef(items, selectedId);
-const isSelected = listData.isSelected;
-const nextItem = listData.getSelectedNext();
-
-const query = ref('search_term');
-const { listSearch, loading, length } = useSearchRef(items, ['label'], query);
-```
-
-### 6. DOM & Lazy Rendering
-Lifecycle-aware event listeners and IntersectionObserver wrappers.
-
-```typescript
-import { EventRef, useLazyRef } from '@dxtmisha/functional';
-
-const keyListener = new EventRef(window, window, 'keydown', (e) => console.log(e.key));
-const lazyManager = useLazyRef();
-const isVisible = lazyManager.addLazyItem(elementRef);
+// 7. DOM Events & Lazy
+const listener = new EventRef(window, window, 'keydown', (e) => console.log(e.key));
+const lazy = useLazyRef(); lazy.addLazyItem(elementRef);
 ```
 
 ## Project types: Essential for analysis
@@ -501,25 +378,13 @@ The project is located at: 'node_modules/@dxtmisha/functional-basic'.
 
 ## Project context: Investigation required
 You MUST read and carefully analyze the description of this project below. If there is even a 1% chance that the functionality, components, styles, or helpers from this project could be useful for your task, you MUST immediately start analyzing this project, studying its types, and checking its structure in full to prevent custom code duplication:
-### Core Purpose
-The library provides an isomorphic utility framework for managing high-level application concerns in JavaScript/TypeScript environments (SSR and DOM). It includes robust abstractions for API communication (REST/Fetch), structured state management, DOM-safe event handling, internationalization, and reactive data storage.
+An isomorphic TypeScript utility framework designed to provide core runtime services for web applications across browser and Server-Side Rendering (SSR) environments. Its primary functions include wrapping the Fetch API with request/response caching and hydration, state management isolated by request context, comprehensive internationalization (i18n, unit conversions, phone masking, date/number formatting), SEO meta tag synchronization, reactive URL hash and query parameter tracking, managed DOM event lifecycle handling, in-memory list search with string highlighting, and centralized error handling.
 
-### Key Expositions
-*   **API & Networking**: `Api` (singleton interface), `ApiInstance` (core requester), `ApiCache` (request memoization), `ApiError` (centralized error handling), `ApiHydration` (SSR data serialization), and `ApiHeaders`.
-*   **State & Storage**: `DataStorage` (persistent storage with prefixes/expiration), `ServerStorage` (SSR-safe context isolation), `CookieStorage` (isomorphic cookie management), `Query`/`Hash` (URL-state management), and `Global` (app-wide data).
-*   **UI & Events**: `EventItem` (DOM-safe, optimized event management with `ResizeObserver` and `scroll-sync`), `LoadingInstance` (global loading state), and `ScrollbarWidth` (layout utility).
-*   **Localization & Formatting**: `Geo` (locale/timezone management), `GeoIntl` (Intl API wrapper), `GeoUnit` (metric/imperial conversion), `Translate` (i18n), and `Formatters` (currency, number, date, and pluralization utility).
-*   **Utilities & Data**: `Formatters`, `SearchList` (search matching/caching), `ResumableTimer`, and a suite of functional utilities for object cloning, string/date manipulation, and DOM operations.
+Api and ApiInstance manage Fetch-based HTTP communication featuring retries, custom headers, preparation hooks, and mock response emulation. ApiCache handles client and server data caching. ServerStorage and DataStorage provide isomorphic request-isolated state retention and browser storage abstraction with SSR hydration support. CookieStorage and Cookie manage client/server cookies consistently. Geo, GeoIntl, GeoPhone, GeoUnit, and Datetime form a localization engine handling Intl formatting, country phone masking, unit conversions, and date calculations. Translate and TranslateInstance manage synchronous and asynchronous translation batching. Query, QueryInstance, Hash, and HashInstance offer reactive, watchable interfaces for URL query strings and hash parameters. EventItem wraps DOM event listeners with ResizeObserver and requestAnimationFrame scroll optimizations. SearchList provides in-memory text search, regex generation, and matching string highlights. Meta, MetaOg, and MetaTwitter manage standard HTML, Open Graph, and Twitter Card metadata tags in the DOM or as HTML strings. ErrorCenter provides centralized error tracking and routing.
 
-### Triggers for Studying ai-types.md
-Review `ai-types.md` whenever the following requirements arise:
-1.  **API Integration**: You need to implement new request methods, custom error handling for specific HTTP status codes, or configure global API middleware (`wrapper`/`preparation`).
-2.  **I18n/Formatting**: You are dealing with complex localization rules, unit conversions (Geo/Units), or pluralization requirements.
-3.  **SSR Consistency**: You are implementing features that must function identically on both the server and client (Hydration, `ServerStorage`, or `Datetime` formatting).
-4.  **Complex State**: You need to map or query data structures in memory using `SearchList` or utilize `BroadcastChannel` for cross-context messaging.
+Studying ai-types.md is mandatory when implementing or typing API configurations (ApiFetch, ApiConfig, ApiHydrationItem), setting up application error handling (ErrorCenterCauseItem, ErrorCenterHandlerList), configuring complex list transformations (FormattersOptionsList, FormattersType), managing geographic and phone mask parameters (GeoItem, GeoDate, GeoPhoneValue), defining search parameters (SearchOptions, SearchColumns), configuring SEO meta types (MetaOpenGraphTag, MetaTwitterCard), or working with core generic utility types (ArrayToItem, NormalOrPromise, ObjectOrArray, NumberOrString).
 
-### Integration Context
-The library acts as a foundational service layer between the application logic and the runtime environment. It is designed to be framework-agnostic but is particularly optimized for SSR-heavy environments (like Vue/React) where hydration of state (via `ServerStorage`) and safe access to global browser objects (via `isDomRuntime`) are critical. It wraps native `fetch`, `localStorage`, `sessionStorage`, `BroadcastChannel`, and `Intl` APIs into structured, type-safe, and singleton-accessible services.
+The library operates as a foundational layer directly above native browser and Node.js runtime APIs (Fetch API, Intl API, DOM Window/Element interfaces, ResizeObserver, BroadcastChannel, Web Storage). It integrates with frontend SSR frameworks (such as Vue, React, Nuxt, or Next.js) by decoupling server-side request state via ServerStorage and generating safe client hydration scripts (getElementSafeScript) to prevent client-server hydration mismatches.
 
 ## Project information: Core overview
 This section contains essential information and the core overview of the project. Review this to understand the fundamental architecture and key features.
@@ -527,142 +392,63 @@ This section contains essential information and the core overview of the project
 
 Framework-agnostic utility library. **Vue developers MUST search `@dxtmisha/functional` first**; use this ONLY if no reactive/Vue-specific analog exists.
 
----
+## 1. Coding Standards & Conventions
+- **Class Structure**: Properties/Variables (`public`->`protected`->`private`) -> Constructor -> Public Methods (Getters -> Setters -> Core actions) -> Protected Methods -> Private Methods.
+- **Style/Types**: `PascalCase` classes, `camelCase` methods/props, `UPPER_SNAKE_CASE` constants. No `any` (use `unknown`/generics). Explicit return types for ALL methods. Export all interfaces. Type files: `*Types.ts`. Use `@effect/schema` for schemas.
+- **SSR Safety**: Isomorphic code. Do NOT store request state in globals. Use `isDomRuntime()` before `window`/`document`. Use `ServerStorage.get('key', () => new Class())` for request-isolated singletons.
 
-## Coding Standards & Class Structure
+## 2. API Reference & Examples
 
-### 1. Class Member Order
-1. **Properties/Variables**: Top of class, ordered by visibility (`public` -> `protected` -> `private`). Initialize inline if possible.
-2. **Constructor**: Follows properties. Parameter properties (e.g. `protected url: string`) allowed.
-3. **Public Methods**:
-   1. Getters, checkers, status methods (`is*`, `get*`).
-   2. Setters & configuration (`set*`).
-   3. Core executors & actions (`request()`, `fetch()`, `show()`).
-4. **Protected Methods**: Internal helpers for subclasses.
-5. **Private Methods**: Internal helper logic at the very bottom.
-
-### 2. Style & Type Conventions
-- **Naming**: Classes = `PascalCase`, Methods/Properties = `camelCase`, Constants = `UPPER_SNAKE_CASE`.
-- **TypeScript**: No `any` (use `unknown`/generics). Explicit return types on ALL methods (including `void`). Export all types/interfaces. Suffix type files with `Types` (e.g., `*Types.ts`). Use `@effect/schema` for API schemas if present.
-- **SSR Safety**: Isomorphic code. Do not store request-specific state in static/global variables. Use `isDomRuntime()` before accessing `window`/`document`/`location`. Use `ServerStorage.get(key, () => new Instance())` for request-isolated singletons.
-
----
-
-## API Reference & Examples
-
-### 1. HTTP Client (`Api`, `ApiInstance`, `ApiCache`)
+### HTTP Client & Caching
 ```typescript
 import { Api, ApiCache } from '@dxtmisha/functional-basic';
-
-// Config
-Api.setOrigin('https://api.example.com');
-Api.setUrl('/api/v1');
-Api.setRequestDefault({ client: 'web' });
+Api.setOrigin('https://api.example.com'); Api.setUrl('/api/v1'); Api.setRequestDefault({ client: 'web' });
 Api.setHeaders(() => ({ Authorization: `Bearer ${localStorage.getItem('token') || ''}` }));
-
-// Interceptors
-Api.setPreparation(async (fetchOpts) => { if (fetchOpts.auth) fetchOpts.headers['X-Auth'] = '1'; });
-Api.setEnd(async (res, fetchOpts) => res.status === 401 ? { reset: true } : {});
-
-// Requests
-const users = await Api.request<User[]>('users'); // default GET
-const profile = await Api.get<User>({ path: 'profile' });
+Api.setPreparation(async (opts) => { if (opts.auth) opts.headers['X-Auth'] = '1'; });
+Api.setEnd(async (res) => res.status === 401 ? { reset: true } : {});
+const users = await Api.request<User[]>('users'); // GET
 const updated = await Api.post<User>({ path: 'profile', request: { name: 'New' } });
-
-// Cache
-await ApiCache.set('key', { data: 1 }, 60000); // ms age
-const cached = await ApiCache.get<{ data: number }>('key');
+await ApiCache.set('k', { a: 1 }, 60000); const cache = await ApiCache.get<{a: number}>('k');
 ```
 
-### 2. State & Storage Management
+### Storage & State
 ```typescript
 import { DataStorage, CookieStorage, Cookie, ServerStorage } from '@dxtmisha/functional-basic';
-
-// DataStorage (localStorage/sessionStorage)
-DataStorage.setPrefix('my_app_');
-const userStorage = new DataStorage<{ id: string }>('user_session', false); // true for sessionStorage
-userStorage.set({ id: '123' });
-const user = userStorage.get({ id: 'guest' }); // fallback default
-userStorage.remove();
-
-// Cookies
-CookieStorage.set('theme', 'dark', { age: 31536000, secure: true, sameSite: 'lax' });
-const theme = CookieStorage.get<string>('theme', 'light');
-CookieStorage.remove('theme');
-
-const tokenCookie = new Cookie<string>('auth_token');
-tokenCookie.set('xyz123', { secure: true });
-const token = tokenCookie.get();
-
-// SSR Request-Isolated Storage
-const myService = ServerStorage.get('myService', () => new MyService());
+DataStorage.setPrefix('app_');
+const ls = new DataStorage<{ id: string }>('user', false); ls.set({ id: '1' }); ls.get({ id: '0' }); ls.remove();
+CookieStorage.set('t', 'dark', { age: 31536000, secure: true }); CookieStorage.get<string>('t', 'light');
+const c = new Cookie<string>('auth'); c.set('xyz', { secure: true }); c.get();
+const srv = ServerStorage.get('svc', () => new Svc()); // SSR isolated
 ```
 
-### 3. Geolocation & Localization
+### Geolocation, Formatting & Localization
 ```typescript
 import { Geo, GeoIntl, GeoFlag, GeoPhone } from '@dxtmisha/functional-basic';
-
-// Geo state
-const country = Geo.getCountry(); // e.g., 'VN'
-const lang = Geo.getLanguage();   // e.g., 'vi'
-Geo.set('en-US');
-
-// Formatters (Intl)
+const country = Geo.getCountry(); const lang = Geo.getLanguage(); Geo.set('en-US');
 const intl = new GeoIntl('en-US');
-intl.number(123456.78);          // '123,456.78'
-intl.currency(99.99, 'USD');      // '$99.99'
-intl.sizeFile(1024 * 1024 * 5);  // '5.00 MB'
-intl.date(new Date(), 'date');    // 'Jun 18, 2026'
-intl.date(new Date(), 'time');    // '10:48 PM'
-intl.relative(new Date(Date.now() - 3600000)); // '1 hour ago'
-intl.plural(3, 'apple|apples');   // '3 apples' ('one|other' or 'one|few|many|other')
-
-// Flags & Phones
+intl.number(1234.5); intl.currency(99, 'USD'); intl.sizeFile(1024*1024); intl.date(new Date(), 'date');
+intl.relative(new Date(Date.now() - 3600000)); intl.plural(3, 'apple|apples');
 const flag = new GeoFlag().getFlag('VN');
-const phoneInfo = GeoPhone.getByPhone('+84900000000'); // .phone = cleaned string
-const mask = GeoPhone.toMask('84900000000');
+const phone = GeoPhone.getByPhone('+84900000000'); const mask = GeoPhone.toMask('84900000000');
 ```
 
-### 4. DOM, Safe Events & Helpers
+### DOM, Events & Helpers
 ```typescript
-import { EventItem, goScrollSmooth, writeClipboardData, getClipboardData } from '@dxtmisha/functional-basic';
+import { EventItem, goScrollSmooth, writeClipboardData, getClipboardData, SearchList, Formatters, FormattersType, isFilled, isDomRuntime, copyObject, anyToString, sleep } from '@dxtmisha/functional-basic';
 
-// Leak-proof Event management
-const clickListener = new EventItem(window, 'click', (e) => console.log(e), { passive: true });
-clickListener.start();
-clickListener.stop(); // Call on destroy/cleanup!
+// Safe Events (leak-proof)
+const listener = new EventItem(window, 'click', console.log, { passive: true }); listener.start(); listener.stop();
 
 // DOM / Clipboard
-goScrollSmooth(document.getElementById('target'));
-await writeClipboardData('text');
-const text = await getClipboardData();
-```
+goScrollSmooth(document.getElementById('t')); await writeClipboardData('txt'); await getClipboardData();
 
-### 5. Search & Formatting Utilities
-```typescript
-import { SearchList, Formatters, FormattersType } from '@dxtmisha/functional-basic';
+// Search & Formatters
+const res = new SearchList([{ n: 'John' }], ['n'], 'jo').to(); // Highlights matches
+const fmt = new Formatters({ p: { type: FormattersType.currency, options: 'USD' } }, { p: 12 }).to();
 
-// Search List with highlights
-const searcher = new SearchList([{ name: 'John Doe' }], ['name'], 'john');
-const results = searcher.to(); // returns matching items with highlighted markup in matching keys
-
-// Object Formatter
-const formatter = new Formatters({
-  price: { type: FormattersType.currency, options: 'USD' },
-  date: { type: FormattersType.date, options: { month: 'long', year: 'numeric' } }
-}, { price: 12000, date: '2026-06-18' });
-const formatted = formatter.to(); // { price: '$12,000.00', date: 'June 2026' }
-```
-
-### 6. General Helpers
-```typescript
-import { isFilled, isDomRuntime, copyObject, anyToString, sleep } from '@dxtmisha/functional-basic';
-
-isFilled([]); // false (works for strings, arrays, objects, numbers, booleans)
-isDomRuntime(); // true if in browser
-const cloned = copyObject({ a: 1 });
-const str = anyToString(123);
-await sleep(500);
+// General
+isFilled([]); // false (strings, arrays, objects, numbers, booleans)
+isDomRuntime(); const cloned = copyObject({ a: 1 }); const str = anyToString(123); await sleep(500);
 ```
 
 ## Project types: Essential for analysis

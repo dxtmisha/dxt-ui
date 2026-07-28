@@ -1,141 +1,62 @@
 # Справочник @dxtmisha/functional-basic
 
-Базовая библиотека утилит без привязки к фреймворку. **Vue-разработчики ОБЯЗАНЫ сначала искать функционал в `@dxtmisha/functional`**; использовать эту библиотеку только при отсутствии реактивного аналога.
+Базовая библиотека утилит без привязки к фреймворку. **Vue-разработчики ОБЯЗАНЫ сначала искать функционал в `@dxtmisha/functional`**; использовать это только при отсутствии реактивного аналога.
 
----
+## 1. Стандарты кода и соглашения
+- **Структура класса**: Свойства (`public`->`protected`->`private`) -> Конструктор -> Публичные методы (Геттеры -> Сеттеры -> Экшены) -> Защищенные -> Приватные.
+- **Стили/Типы**: Классы = `PascalCase`, методы/свойства = `camelCase`, константы = `UPPER_SNAKE_CASE`. Никаких `any` (`unknown`/generics). Явный возвращаемый тип для ВСЕХ методов. Экспорт всех интерфейсов. Файлы типов: `*Types.ts`. Схемы через `@effect/schema`.
+- **Безопасность SSR**: Изоморфный код. Не хранить состояние в глобальных переменных. Вызывать `isDomRuntime()` перед `window`/`document`. Использовать `ServerStorage.get('key', () => new Class())` для изолированных синглтонов.
 
-## Стандарты кода и структура классов
+## 2. Справочник API и примеры
 
-### 1. Порядок членов класса
-1. **Свойства/Переменные**: В самом верху, сортировка по видимости (`public` -> `protected` -> `private`). Инициализировать при объявлении по возможности.
-2. **Конструктор**: Сразу после свойств. Разрешено объявление свойств через параметры (например, `protected url: string`).
-3. **Публичные методы**:
-   1. Геттеры, проверки состояния и статуса (`is*`, `get*`).
-   2. Сеттеры и конфигурация (`set*`).
-   3. Выполнение и экшены (`request()`, `fetch()`, `show()`).
-4. **Защищенные методы**: Внутренние хелперы для наследников.
-5. **Приватные методы**: Закрытая логика в самом низу класса.
-
-### 2. Стилистические соглашения
-- **Именование**: Классы = `PascalCase`, Методы/Свойства = `camelCase`, Константы = `UPPER_SNAKE_CASE`.
-- **TypeScript**: Запрещен `any` (использовать `unknown`/дженерики). Обязательно указывать возвращаемый тип для ВСЕХ методов (включая `void`). Экспортировать все типы/интерфейсы. Файлы типов называть с суффиксом `Types` (например, `*Types.ts`). Использовать `@effect/schema` для API-схем при наличии библиотеки.
-- **Безопасность SSR**: Изоморфный код. Не хранить состояние запроса в статических/глобальных свойствах. Использовать `isDomRuntime()` перед вызовом `window`/`document`/`location`. Использовать `ServerStorage.get(key, () => new Instance())` для изолированных синглтонов запроса.
-
----
-
-## Справочник API и примеры
-
-### 1. HTTP-клиент (`Api`, `ApiInstance`, `ApiCache`)
+### HTTP-клиент и Кэш
 ```typescript
 import { Api, ApiCache } from '@dxtmisha/functional-basic';
-
-// Настройка
-Api.setOrigin('https://api.example.com');
-Api.setUrl('/api/v1');
-Api.setRequestDefault({ client: 'web' });
+Api.setOrigin('https://api.example.com'); Api.setUrl('/api/v1'); Api.setRequestDefault({ client: 'web' });
 Api.setHeaders(() => ({ Authorization: `Bearer ${localStorage.getItem('token') || ''}` }));
-
-// Перехватчики
-Api.setPreparation(async (fetchOpts) => { if (fetchOpts.auth) fetchOpts.headers['X-Auth'] = '1'; });
-Api.setEnd(async (res, fetchOpts) => res.status === 401 ? { reset: true } : {});
-
-// Запросы
-const users = await Api.request<User[]>('users'); // по умолчанию GET
-const profile = await Api.get<User>({ path: 'profile' });
+Api.setPreparation(async (opts) => { if (opts.auth) opts.headers['X-Auth'] = '1'; });
+Api.setEnd(async (res) => res.status === 401 ? { reset: true } : {});
+const users = await Api.request<User[]>('users'); // GET
 const updated = await Api.post<User>({ path: 'profile', request: { name: 'New' } });
-
-// Кэш
-await ApiCache.set('key', { data: 1 }, 60000); // время жизни в мс
-const cached = await ApiCache.get<{ data: number }>('key');
+await ApiCache.set('k', { a: 1 }, 60000); const cache = await ApiCache.get<{a: number}>('k');
 ```
 
-### 2. Управление состоянием и хранилищем
+### Управление хранилищем (Storage)
 ```typescript
 import { DataStorage, CookieStorage, Cookie, ServerStorage } from '@dxtmisha/functional-basic';
-
-// DataStorage (localStorage/sessionStorage)
-DataStorage.setPrefix('my_app_');
-const userStorage = new DataStorage<{ id: string }>('user_session', false); // true для sessionStorage
-userStorage.set({ id: '123' });
-const user = userStorage.get({ id: 'guest' }); // значение по умолчанию
-userStorage.remove();
-
-// Cookies
-CookieStorage.set('theme', 'dark', { age: 31536000, secure: true, sameSite: 'lax' });
-const theme = CookieStorage.get<string>('theme', 'light');
-CookieStorage.remove('theme');
-
-const tokenCookie = new Cookie<string>('auth_token');
-tokenCookie.set('xyz123', { secure: true });
-const token = tokenCookie.get();
-
-// Изолированное хранилище запросов для SSR
-const myService = ServerStorage.get('myService', () => new MyService());
+DataStorage.setPrefix('app_');
+const ls = new DataStorage<{ id: string }>('user', false); ls.set({ id: '1' }); ls.get({ id: '0' }); ls.remove();
+CookieStorage.set('t', 'dark', { age: 31536000, secure: true }); CookieStorage.get<string>('t', 'light');
+const c = new Cookie<string>('auth'); c.set('xyz', { secure: true }); c.get();
+const srv = ServerStorage.get('svc', () => new Svc()); // SSR изолированный синглтон
 ```
 
-### 3. Геологика и локализация
+### Геологика, Форматирование и Локализация
 ```typescript
 import { Geo, GeoIntl, GeoFlag, GeoPhone } from '@dxtmisha/functional-basic';
-
-// Состояние Geo
-const country = Geo.getCountry(); // например, 'VN'
-const lang = Geo.getLanguage();   // например, 'vi'
-Geo.set('en-US');
-
-// Форматирование (Intl)
+const country = Geo.getCountry(); const lang = Geo.getLanguage(); Geo.set('ru-RU');
 const intl = new GeoIntl('ru-RU');
-intl.number(123456.78);          // '123 456,78'
-intl.currency(99.99, 'USD');      // '99,99 $'
-intl.sizeFile(1024 * 1024 * 5);  // '5,00 МБ'
-intl.date(new Date(), 'date');    // '18 июн. 2026 г.'
-intl.date(new Date(), 'time');    // '22:48'
-intl.relative(new Date(Date.now() - 3600000)); // '1 час назад'
-intl.plural(5, 'яблоко|яблока|яблок');   // '5 яблок' (формат: 'один|несколько|много' или 'один|другие')
-
-// Флаги и телефоны
+intl.number(1234.5); intl.currency(99, 'USD'); intl.sizeFile(1024*1024); intl.date(new Date(), 'date');
+intl.relative(new Date(Date.now() - 3600000)); intl.plural(5, 'яблоко|яблока|яблок');
 const flag = new GeoFlag().getFlag('RU');
-const phoneInfo = GeoPhone.getByPhone('+79991234567'); // .phone = очищенная строка
-const mask = GeoPhone.toMask('79991234567');
+const phone = GeoPhone.getByPhone('+79991234567'); const mask = GeoPhone.toMask('79991234567');
 ```
 
-### 4. DOM, события и хелперы
+### DOM, События, Поиск и Хелперы
 ```typescript
-import { EventItem, goScrollSmooth, writeClipboardData, getClipboardData } from '@dxtmisha/functional-basic';
+import { EventItem, goScrollSmooth, writeClipboardData, getClipboardData, SearchList, Formatters, FormattersType, isFilled, isDomRuntime, copyObject, anyToString, sleep } from '@dxtmisha/functional-basic';
 
-// Безопасное управление событиями (без утечек)
-const clickListener = new EventItem(window, 'click', (e) => console.log(e), { passive: true });
-clickListener.start();
-clickListener.stop(); // Обязательно вызывать при уничтожении/очистке!
+// Безопасные события (без утечек)
+const listener = new EventItem(window, 'click', console.log, { passive: true }); listener.start(); listener.stop();
 
 // DOM / Буфер обмена
-goScrollSmooth(document.getElementById('target'));
-await writeClipboardData('текст');
-const text = await getClipboardData();
-```
+goScrollSmooth(document.getElementById('t')); await writeClipboardData('txt'); await getClipboardData();
 
-### 5. Поиск и форматирование данных
-```typescript
-import { SearchList, Formatters, FormattersType } from '@dxtmisha/functional-basic';
+// Поиск и Форматирование
+const res = new SearchList([{ n: 'Иван' }], ['n'], 'ив').to(); // Подсветка совпадений
+const fmt = new Formatters({ p: { type: FormattersType.currency, options: 'USD' } }, { p: 12 }).to();
 
-// Поиск по списку с подсветкой
-const searcher = new SearchList([{ name: 'Иван Иванов' }], ['name'], 'иван');
-const results = searcher.to(); // возвращает отфильтрованные элементы с html-подсветкой совпадений
-
-// Шаблонный форматировщик объектов
-const formatter = new Formatters({
-  price: { type: FormattersType.currency, options: 'USD' },
-  date: { type: FormattersType.date, options: { month: 'long', year: 'numeric' } }
-}, { price: 12000, date: '2026-06-18' });
-const formatted = formatter.to(); // { price: '$12,000.00', date: 'June 2026' }
-```
-
-### 6. Общие хелперы
-```typescript
-import { isFilled, isDomRuntime, copyObject, anyToString, sleep } from '@dxtmisha/functional-basic';
-
-isFilled([]); // false (поддерживает строки, массивы, объекты, числа, булевы значения)
-isDomRuntime(); // true, если код выполняется в браузере
-const cloned = copyObject({ a: 1 });
-const str = anyToString(123);
-await sleep(500);
+// Общие хелперы
+isFilled([]); // false (для строк, массивов, объектов, чисел, boolean)
+isDomRuntime(); const cloned = copyObject({ a: 1 }); const str = anyToString(123); await sleep(500);
 ```

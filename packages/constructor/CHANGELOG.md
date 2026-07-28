@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.100.0] - 2026-07-28
+
+### Added
+- **TableFlex & Flex Table Sub-Components**:
+  - Introduced `TableFlex` component constructor for flexible CSS flexbox table layouts.
+  - Added `TableFlexItem`, `TableFlexHeaderItem`, and `TableFlexRecord` sub-components for flex table header cells, data cells, and row records.
+- **Table Component Overhaul**:
+  - Integrated `SearchInclude` (client-side list search via `useSearchRef`), `PaginationInclude` (pagination controls), and `SortInclude` (3-state column sorting: `asc` -> `desc` -> reset `undefined`).
+  - Added `bleed` prop and `marginBleedX` layout properties.
+  - Added multi-row table header support, header cell merging (`colspan`, `rowspan`), tooltips, and sticky header positioning (`headerTop`, `scrollBottomSticky`).
+  - Added lazy loading (`TableRecordLazy`) with `ClientOnlyInclude` integration for SSR optimization and deferred viewport rendering in `TableRecord`.
+- **Sticky Positioning Utility (`StickyInclude`)**:
+  - Implemented `StickyInclude` class to manage sticky positioning of elements relative to visible viewport boundaries, supporting multi-container scroll tracking and dynamic activation.
+- **SkeletonItem**:
+  - Ported `SkeletonItem` constructor supporting `textVariant` property and skeleton loading wrappers.
+- **Placeholder**:
+  - Ported `Placeholder` constructor with `AriaStaticInclude` for dynamic ARIA label references.
+- **Unit Tests**:
+  - Added unit test suites for `StickyInclude`, `SortInclude`, `SearchInclude`, `PaginationInclude`, `TextareaAutosize`, `Tooltip`, `Window`, and constructor helper classes.
+
 ## [0.84.3] - 2026-07-16
 
 ### Changed

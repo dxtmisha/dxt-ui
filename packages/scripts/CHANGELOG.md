@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.10.8] - 2026-07-28
+
+### Added / Updated
+- **AI Prompt Templates**: Overhauled global AI prompt templates (`aiCodeGlobalPrompt.en.md`, `aiCodeGlobalPrompt.ru.md`) with streamlined rules, mandatory deep study workflows (`view_file`), prohibition of superficial code scans, and full-file self-audit requirements.
+- **DesignReplace**: Escaped dollar sign (`$`) characters in replacement value strings in `DesignReplace` to prevent regex capture group interpolation issues during template processing.
+- **DesignTypes**: Added JavaScript File Validator and improved TypeScript schema generation and translation logic.
+
 ## [0.10.7] - 2026-07-06
 
 ### Changed

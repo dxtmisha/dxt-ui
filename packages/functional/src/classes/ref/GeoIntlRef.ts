@@ -22,6 +22,13 @@ import type { RefOrNormal } from '../../types/refTypes'
  * Reactive class for managing the formatting of numbers and dates.
  *
  * Реактивный класс для управления форматированием чисел и дат.
+ *
+ * @remarks
+ * Avoid using this reactive class if reactive updates are not required.
+ * For non-reactive formatting, use the standard `GeoIntl` class from `@dxtmisha/functional-basic`.
+ *
+ * Старайтесь избегать этого класса, если не требуется реактивная переменная.
+ * Для нереактивного форматирования используйте обычный `GeoIntl` из `@dxtmisha/functional-basic`.
  */
 export class GeoIntlRef {
   private location: Ref<string | undefined>

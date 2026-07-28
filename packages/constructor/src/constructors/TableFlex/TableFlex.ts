@@ -20,6 +20,16 @@ export class TableFlex extends Table {
   }
 
   /**
+   * Returns the HTML tag for the table caption.
+   *
+   * Возвращает HTML-тег для подписи таблицы.
+   * @returns HTML tag name / имя HTML-тега
+   */
+  override get tagCaption(): string {
+    return 'div'
+  }
+
+  /**
    * Returns the HTML tag for the table colgroup.
    *
    * Возвращает HTML-тег для colgroup таблицы.

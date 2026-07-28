@@ -5,10 +5,12 @@ All notable changes to this project will be documented in this file.
 ## [1.8.0] - 2026-07-25
 
 ### Added
+- **domContentLoaded**: Introduced `domContentLoaded` DOM helper function to safely execute callbacks once the DOM is loaded, with comprehensive unit tests (`domContentLoaded.test.ts`).
+- **toNumberPositive**: Introduced `toNumberPositive` utility function to convert inputs to positive finite numbers (`> 0`) or return a default fallback (`0`), with unit tests (`toNumberPositive.test.ts`).
 - **sortList**: Introduced `sortList` standalone utility function for multi-column array sorting by property paths, directions (`'asc'`, `'desc'`), or custom comparison functions using locale-aware `Intl.Collator`.
-- **sortTypes**: Added `SortDir`, `SortColumnItem`, and `SortFunction` type definitions.
+- **sortTypes**: Added `SortDir`, `SortColumnItem`, and `SortFunction` type definitions, extending `SortColumnItem` to allow optional `dir` and `column` properties for 3-state sorting cycles (`asc` -> `desc` -> `undefined`).
 - **getRandomItem**: Introduced a new `getRandomItem` utility function to safely retrieve a random element from arrays, objects, or primitive values, returning `undefined` when empty or missing, with full bilingual JSDocs.
-- **Tests**: Added unit test suites for `sortList` (`sortList.test.ts`) and `getRandomItem` (`getRandomItem.test.ts`).
+- **Tests**: Added unit test suites for `sortList` (`sortList.test.ts`), `getRandomItem` (`getRandomItem.test.ts`), `domContentLoaded` (`domContentLoaded.test.ts`), and `toNumberPositive` (`toNumberPositive.test.ts`).
 
 ## [1.7.1] - 2026-07-14
 

@@ -89,7 +89,7 @@ export class Table {
       TableRecordIncludeConstructor = TableRecordInclude
     } = constructors
 
-    this.caption = new CaptionIncludeConstructor(props, className, slots, undefined, 'caption')
+    this.caption = new CaptionIncludeConstructor(props, className, slots, undefined, this.tagCaption)
     this.columns = new TableColumnsConstructor(props)
 
     this.search = new SearchIncludeConstructor(props, () => this.columns.list)
@@ -123,6 +123,15 @@ export class Table {
    */
   get tag(): string {
     return 'table'
+  }
+
+  /**
+   * Returns the HTML tag for the table caption.
+   *
+   * Возвращает HTML-тег для подписи таблицы.
+   */
+  get tagCaption(): string {
+    return 'caption'
   }
 
   /**

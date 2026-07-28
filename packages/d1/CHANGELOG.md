@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.100.0] - 2026-07-28
+
+### Added
+- **D1TableFlex & Flex Table Components**:
+  - Introduced `D1TableFlex` UI component wrapping the `TableFlex` constructor.
+  - Added `D1TableFlexItem`, `D1TableFlexHeaderItem`, and `D1TableFlexRecord` components with full token definitions, props, styles, and Storybook stories.
+- **D1Table Enhancements**:
+  - Added `bleed` prop support and `marginBleedX` style tokens for edge-to-edge table layouts.
+  - Integrated sticky header props (`headerTop`, `scrollBottomSticky`), multi-row header merging, 3-state sorting events, and interactive search stories.
+- **D1SkeletonItem**:
+  - Introduced `D1SkeletonItem` UI component supporting `textVariant` prop and skeleton wrappers.
+- **D1Placeholder**:
+  - Introduced `D1Placeholder` UI component wrapping the `Placeholder` constructor.
+- **D1ScrollSticky**:
+  - Introduced `D1ScrollSticky` UI component wrapping the `ScrollSticky` constructor.
+
 ## [0.88.0] - 2026-07-06
 
 ### Added

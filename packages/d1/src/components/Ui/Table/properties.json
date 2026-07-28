@@ -10,6 +10,7 @@
     "paddingX": "{layout.paddingX}",
     "paddingY": "{layout.paddingY}",
     "link|font": "{font.bodyMedium}",
+    "text-align": "center",
     "color-opacity": "{sys.opacity.surface.medium}"
   }
 }

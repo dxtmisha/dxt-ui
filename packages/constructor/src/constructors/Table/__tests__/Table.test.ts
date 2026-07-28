@@ -15,6 +15,7 @@ describe('Table caption', () => {
 
     const table = new Table(props, refs, element, 'd1', 'd1-table')
 
+    expect(table.tagCaption).toBe('caption')
     expect(table.caption.is).toBe(true)
     const rendered = table.caption.render()
     expect(rendered).toHaveLength(1)

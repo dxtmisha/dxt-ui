@@ -45,9 +45,12 @@ export class DesignTypes {
     console.log('DesignTypes: making AI types...')
 
     const files = this.getListByFilter()
-    const fullContent = this.toOneFile(files)
+    const jsFiles = this.getListByFilterJs()
 
-    const aiContent = await this.toAiEdit(fullContent)
+    const fullContent = this.toOneFile(files)
+    const fullJsContent = this.toOneFile(jsFiles)
+
+    const aiContent = await this.toAiEdit(fullContent, fullJsContent)
     this.save(aiContent)
 
     const aiDescription = await this.toAiDescription(fullContent)
@@ -73,6 +76,16 @@ export class DesignTypes {
         || file.endsWith('/types.d.ts')
         || file.endsWith('/props.d.ts')
       )
+  }
+
+  /**
+   * Checks if the file is a valid JavaScript or TypeScript file.
+   *
+   * Проверяет, является ли файл валидным JavaScript или TypeScript файлом.
+   * @param file file name / имя файла
+   */
+  protected isFileJs(file: string): boolean {
+    return file.endsWith('.js')
   }
 
   /**
@@ -108,15 +121,16 @@ export class DesignTypes {
   }
 
   /**
-   * Gets a list of files filtered by criteria.
+   * Gets a list of files filtered by a provided checker function.
    *
-   * Получает список файлов, отфильтрованный по критериям.
+   * Получает список файлов, отфильтрованный переданной функцией проверки.
+   * @param checkFile function to check if the file matches criteria / функция проверки соответствия файла критериям
    */
-  protected getListByFilter(): DesignTypesList {
+  protected getListBy(checkFile: (file: string) => boolean): DesignTypesList {
     return forEach(
       this.getList(),
       (file) => {
-        if (this.isFile(file)) {
+        if (checkFile(file)) {
           const content = this.readFile(file)
 
           if (this.isContent(content)) {
@@ -130,6 +144,24 @@ export class DesignTypes {
         return undefined
       }
     ) as DesignTypesList
+  }
+
+  /**
+   * Gets a list of files filtered by criteria.
+   *
+   * Получает список файлов, отфильтрованный по критериям.
+   */
+  protected getListByFilter(): DesignTypesList {
+    return this.getListBy(file => this.isFile(file))
+  }
+
+  /**
+   * Gets a list of JS files filtered by criteria.
+   *
+   * Получает список JS файлов, отфильтрованный по критериям.
+   */
+  protected getListByFilterJs(): DesignTypesList {
+    return this.getListBy(file => this.isFileJs(file))
   }
 
   /**
@@ -201,13 +233,22 @@ export class DesignTypes {
    * Отправляет контент и промпт ИИ для обработки.
    * @param content content for processing / контент для обработки
    * @param prompt instructions for the AI / инструкции для ИИ
+   * @param code code to optimize / код для оптимизации
    */
-  protected async toAi(content: string, prompt: string): Promise<string | undefined> {
+  protected async toAi(
+    content: string,
+    prompt: string,
+    code?: string
+  ): Promise<string | undefined> {
     const ai = useAi()
 
     if (ai) {
       ai.addPrompt(prompt)
       ai.addPrompt(`File Content: ${content}`)
+
+      if (code) {
+        ai.addPrompt(`File JS Code: ${code}`)
+      }
 
       const generate = await ai.generate('go!')
 
@@ -224,14 +265,18 @@ export class DesignTypes {
    *
    * Отправляет контент ИИ для оптимизации.
    * @param content content to optimize / контент для оптимизации
+   * @param code code to optimize / код для оптимизации
    */
-  protected async toAiEdit(content: string): Promise<string> {
+  protected async toAiEdit(content: string, code: string): Promise<string> {
     const generate = await this.toAi(
       content,
-      'Remove all Russian comments from this code, but if a JSDoc or comment does not have an English version, translate it to English. '
-      + 'Shorten English comments for AI; keep context but be brief. Do not delete obvious comments. '
-      + 'Always keep All JSDoc "@example", "@remarks", "@note", and any other notes or warnings. '
-      + 'Remove all imports. '
+      'TRANSLATE all non-English comments (including JSDocs and inline comments) to English. '
+      + 'Optimize the provided type definitions, improve and supplement them if necessary. '
+      + 'Carefully study the provided JS code to understand its logic and what the code does. '
+      + 'Remove redundant or self-explanatory JSDoc comments for any entity (types, properties, variables, functions, methods, etc.) if their meaning is obvious from their name or signature and does not require documentation. '
+      + 'Keep or add clear English JSDoc comments for entities that are complex, non-obvious, or require explanation. '
+      + 'CRITICAL: Always keep all JSDoc "@example", "@remarks", "@note", and any other notes or warnings. Their contents must NOT be modified, altered, or rewritten—keep them exactly as written, only translating them to English if they are not in English. '
+      + 'CRITICAL: Remove all imports. Remove all local internal re-exports (e.g., `export * from "./..."`), but strictly KEEP any exports from external libraries or packages. '
       + 'Remove all non-public content: delete all private and protected class methods and properties, and any non-exported elements. The final output must contain only the members and entities that are accessible from outside. '
       + 'Remove any code segments or data that do not provide useful information for an AI assistant. '
       + 'You may remove abstract classes or other structures that provide no practical value for code generation, but do so with extreme caution. Maintain a strict balance: if there is even a 5% chance the item might be relevant for understanding the API or generating code, keep it. Think carefully before every deletion. '
@@ -239,9 +284,12 @@ export class DesignTypes {
       + 'Your goal is to create a compact, context-rich file that enables any AI coding assistant to generate high-quality code for a developer. '
       + 'Ensure that no public API surface, essential data types, or required logic is lost. '
       + 'Do not delete any "type" definitions; they are strictly required. '
-      + 'Do not delete file paths (labels starting with "// File:"). '
+      + 'Remove all regular comments and inline comments (lines starting with "//" or "/* ... */"). '
+      + 'Do not include empty lines; keep the output compact and tight without blank lines. '
+      + 'CRITICAL: Do NOT return the provided JS code in your response. '
       + 'All instructions are mandatory and must be executed perfectly. '
-      + 'Return ONLY the resulting code. No markdown code blocks, no tags, no explanations, and no additional comments from the AI. NOTHING but the pure code.'
+      + 'Return ONLY the resulting optimized type definitions code. No markdown code blocks, no tags, no explanations, and no additional comments from the AI. NOTHING but the pure code.',
+      code
     )
 
     return generate ?? content

@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.100.0] - 2026-07-28
+
+### Added
+- **SortInclude & sortList**:
+  - Added multilingual MDX documentation (`sortList.en.mdx`, `sortList.ru.mdx`, `sortList.vi.mdx`).
+  - Created property documentation modules `wikiSort.ts` and `wikiSearch.ts`.
+  - Added search and sort categories to `StorybookCategory` in `WikiStorybookItem.ts`.
+- **Table**:
+  - Added documentation and story templates for caption support (title, placement, alignment) and custom slots (`caption`, `column`, `cell`, `header`, `record`).
+  - Added documentation and MDX pages for `headerTop` and `stickyScrollBottom` sticky table features (`stickyScrollBottom.en.mdx` / `stickyScrollBottom.ru.mdx`, `headerTop.en.mdx` / `headerTop.ru.mdx`).
+  - Added property documentation for `foot` and `columnsWidth` in `wikiTable.ts`.
+- **SkeletonItem**:
+  - Added `text.en.mdx` and `text.ru.mdx` documentation pages for label and length mechanics.
+  - Added property documentation in `wikiSkeletonItem.ts`.
+- **Functional Utilities**:
+  - Added multilingual MDX documentation for `domContentLoaded` (`domContentLoaded.en.mdx`, `domContentLoaded.ru.mdx`, `domContentLoaded.vi.mdx`).
+  - Added multilingual MDX documentation for `toNumberPositive` (`toNumberPositive.en.mdx`, `toNumberPositive.ru.mdx`, `toNumberPositive.vi.mdx`).
+  - Added multilingual MDX documentation for `getRandomItem` (`getRandomItem.en.mdx`, `getRandomItem.ru.mdx`, `getRandomItem.vi.mdx`).
+
+### Changed
+- **SkeletonItem**: Renamed `props` property control to `itemAttrs` in `wikiDescriptionsSkeletonItem.ts` to align with library standards.
+
 ## [0.88.0] - 2026-07-06
 
 ### Added

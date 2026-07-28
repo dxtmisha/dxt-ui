@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 - **searchTypes**: Introduced `SearchColumnsRef` and `SearchColumnsInput` type definitions to support reactive column definitions.
 
 ### Changed
+- **GeoIntlRef & useGeoIntlRef**: Added JSDoc `@remarks` guidelines recommending the use of standard non-reactive `GeoIntl` from `@dxtmisha/functional-basic` when reactivity is not required.
 - **package.json**: Updated package `description` and expanded `keywords` list to comprehensively cover composables, `executeUse` singletons, and reactive utilities. Fixed `homepage` and `repository.directory` paths.
 - **README.md**: Updated documentation and Quick Start code examples to showcase `executeUseGlobal` state singletons and reactive composables while preserving original document layout and style.
 

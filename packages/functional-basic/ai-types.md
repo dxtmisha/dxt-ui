@@ -10,1094 +10,6 @@ The following is the content of "exports" from package.json:
   }
 }
 
-// File: classes/Api.d.ts
-export declare class Api {
-    static isLocalhost(): boolean;
-    static getItem(): ApiInstance;
-    static getStatus(): ApiStatus;
-    static getResponse(): ApiResponse;
-    static getHydration(): ApiHydration;
-    static getHydrationScript(): string;
-    static getOrigin(): string;
-    static getUrl(path: string, api?: boolean): string;
-    static getBody(request?: ApiFetch['request'], method?: ApiMethodItem): string | FormData | undefined;
-    static getBodyForGet(request: ApiFetch['request'], path?: string, method?: ApiMethodItem): string;
-    static setHeaders(headers: ApiHeadersValue): void;
-    static setRequestDefault(request: ApiDefaultValue): void;
-    static setUrl(url: string): void;
-    static setPreparation(callback: (apiFetch: ApiFetch) => Promise<void>): void;
-    static setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): void;
-    static setTimeout(timeout: number): void;
-    static setOrigin(origin: string): void;
-    static setWrapper(wrapper: <R>(callback: () => Promise<R>, apiFetch: ApiFetch) => Promise<R>): void;
-    static setConfig(config?: ApiConfig): void;
-    static request<T>(pathRequest: string | ApiFetch): Promise<T>;
-    static get<T>(request: ApiFetch): Promise<T>;
-    static post<T>(request: ApiFetch): Promise<T>;
-    static put<T>(request: ApiFetch): Promise<T>;
-    static patch<T>(request: ApiFetch): Promise<T>;
-    static delete<T>(request: ApiFetch): Promise<T>;
-}
-// File: classes/ApiCache.d.ts
-export declare class ApiCache {
-    static init(getListener: (key: string) => Promise<ApiCacheItem | undefined>, setListener: (key: string, value: ApiCacheItem) => Promise<boolean>, removeListener: (key: string) => Promise<boolean>, cacheStepAgeClearOld?: number): void;
-    static reset(): void;
-    static get<T>(key: string): Promise<T | undefined>;
-    static getByFetch<T>(fetch: ApiFetch): Promise<T | undefined>;
-    static set<T>(key: string, value: T, age?: number): Promise<void>;
-    static setByFetch<T>(fetch: ApiFetch, value: T): Promise<void>;
-    static remove(key: string): Promise<void>;
-}
-// File: classes/ApiDataReturn.d.ts
-export declare class ApiDataReturn<T = any> {
-    constructor(apiFetch: ApiFetch, query: Response, end: ApiPreparationEnd, error?: ApiErrorItem | undefined);
-    init(): Promise<this>;
-    get(): ApiData<T>;
-    getAndStatus(status: ApiStatus): ApiData<T>;
-    getData(): ApiData<T> | undefined;
-}
-// File: classes/ApiDefault.d.ts
-export declare class ApiDefault {
-    is(): boolean;
-    get(): Record<string, any> | undefined;
-    request(request: ApiFetch['request']): ApiFetch['request'];
-    set(request: ApiDefaultValue): this;
-}
-// File: classes/ApiError.d.ts
-export declare class ApiError {
-    static getStorage(): ApiErrorStorage;
-    static add(item: Partial<ApiErrorStorageItem> | Partial<ApiErrorStorageItem>[], url?: string | RegExp, method?: ApiMethodItem): void;
-    static getItem(method: ApiMethodItem, response: Response): Promise<ApiErrorItem>;
-}
-// File: classes/ApiErrorItem.d.ts
-export declare class ApiErrorItem {
-    constructor(method: ApiMethodItem, response: Response, error: ApiErrorStorageItem);
-    getMethod(): ApiMethodItem;
-    getResponse(): Response;
-    getError(): ApiErrorStorageItem;
-    getCode(): string | undefined;
-    getMessage(): string | undefined;
-    getStatus(): number;
-}
-// File: classes/ApiErrorStorage.d.ts
-export declare class ApiErrorStorage {
-    find(method: ApiMethodItem, response: Response): Promise<ApiErrorStorageItem>;
-    add(item: Partial<ApiErrorStorageItem> | Partial<ApiErrorStorageItem>[], url?: string | RegExp, method?: ApiMethodItem): this;
-}
-// File: classes/ApiHeaders.d.ts
-export declare class ApiHeaders {
-    get(value?: Record<string, string> | null, type?: string | undefined | null): Record<string, string> | undefined;
-    getByRequest(request: ApiFetch['request'], value?: Record<string, string> | null, type?: string): Record<string, string> | undefined;
-    set(headers: ApiHeadersValue): this;
-}
-// File: classes/ApiHydration.d.ts
-export declare class ApiHydration {
-    initResponse(response: ApiResponse): void;
-    toClient<T>(apiFetch: ApiFetch, response: T): void;
-    toString(): string;
-}
-// File: classes/ApiInstance.d.ts
-export type ApiInstanceOptions = {
-    headersClass?: typeof ApiHeaders;
-    requestDefaultClass?: typeof ApiDefault;
-    statusClass?: typeof ApiStatus;
-    responseClass?: typeof ApiResponse;
-    preparationClass?: typeof ApiPreparation;
-    loadingClass?: LoadingInstance;
-    errorCenterClass?: ErrorCenterInstance;
-    hydrationClass?: typeof ApiHydration;
-    wrapper?: <R>(callback: () => Promise<R>, apiFetch: ApiFetch) => Promise<R>;
-};
-export declare class ApiInstance {
-    constructor(url?: string, options?: ApiInstanceOptions);
-    isLocalhost(): boolean;
-    getStatus(): ApiStatus;
-    getResponse(): ApiResponse;
-    getHydration(): ApiHydration;
-    getOrigin(): string;
-    getUrl(path: string, api?: boolean): string;
-    getBody(request?: ApiFetch['request'], method?: ApiMethod): string | FormData | undefined;
-    getBodyForGet(request: ApiFetch['request'], path?: string, method?: ApiMethod): string;
-    getHydrationScript(): string;
-    setHeaders(headers: ApiHeadersValue): this;
-    setRequestDefault(request: ApiDefaultValue): this;
-    setUrl(url: string): this;
-    setPreparation(callback: (apiFetch: ApiFetch) => Promise<void>): this;
-    setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): this;
-    setTimeout(timeout: number): this;
-    setOrigin(origin: string): this;
-    setWrapper(wrapper: <R>(callback: () => Promise<R>, apiFetch: ApiFetch) => Promise<R>): this;
-    request<T>(pathRequest: string | ApiFetch): Promise<T>;
-    get<T>(request: ApiFetch): Promise<T>;
-    post<T>(request: ApiFetch): Promise<T>;
-    put<T>(request: ApiFetch): Promise<T>;
-    patch<T>(request: ApiFetch): Promise<T>;
-    delete<T>(request: ApiFetch): Promise<T>;
-}
-// File: classes/ApiPreparation.d.ts
-export declare class ApiPreparation {
-    make(active: boolean, apiFetch: ApiFetch): Promise<void>;
-    makeEnd(active: boolean, query: Response, apiFetch: ApiFetch): Promise<ApiPreparationEnd>;
-    set(callback: (apiFetch: ApiFetch) => Promise<void>): this;
-    setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): this;
-}
-// File: classes/ApiResponse.d.ts
-export declare class ApiResponse {
-    constructor(requestDefault: ApiDefault);
-    get(path: string | undefined, method: ApiMethod, request?: ApiFetch['request'], devMode?: boolean): ApiResponseItem | undefined;
-    getList(): (ApiResponseItem & Record<string, any>)[];
-    add(response: ApiResponseItem | ApiResponseItem[]): this;
-    setDevMode(devMode: boolean): this;
-    emulator<T>(apiFetch: ApiFetch): Promise<T | undefined>;
-    emulatorAsync<T>(apiFetch: ApiFetch): T | undefined;
-}
-// File: classes/ApiStatus.d.ts
-export declare class ApiStatus {
-    get(): ApiStatusItem | undefined;
-    getStatus(): number | undefined;
-    getStatusText(): string | undefined;
-    getStatusType(): ApiStatusType | undefined;
-    getCode(): string | undefined;
-    getError(): string | undefined;
-    getResponse<T>(): T | undefined;
-    getMessage(): string;
-    set(data: ApiStatusItem): this;
-    setStatus(status?: number, statusText?: string): this;
-    setError(error?: string): this;
-    setLastResponse(response?: any): this;
-    setLastStatus(status?: ApiStatusType): this;
-    setLastCode(code?: string): this;
-    setLastMessage(message?: string): this;
-}
-// File: classes/BroadcastMessage.d.ts
-export declare class BroadcastMessage<Message = any> {
-    constructor(name: string, callback?: ((event: MessageEvent<Message>) => void) | undefined, callbackError?: ((event: MessageEvent<Message>) => void) | undefined, errorCenter?: ErrorCenterInstance);
-    getChannel(): BroadcastChannel | undefined;
-    post(message: Message): this;
-    setCallback(callback: (event: MessageEvent<Message>) => void): this;
-    setCallbackError(callbackError: (event: MessageEvent<Message>) => void): this;
-    destroy(): this;
-}
-// File: classes/Cache.d.ts
-export declare class Cache {
-    get<T>(name: string, callback: () => T, comparison?: any[]): T;
-    getAsync<T>(name: string, callback: () => T, comparison?: any[]): Promise<T>;
-}
-// File: classes/CacheItem.d.ts
-export declare class CacheItem<T> {
-    constructor(callback: () => T);
-    getCache(comparison: any[]): T;
-    getCacheOld(): T | undefined;
-    getCacheAsync(comparison: any[]): Promise<T>;
-}
-// File: classes/CacheStatic.d.ts
-export declare class CacheStatic {
-    static get<T>(name: string, callback: () => T, comparison?: any[]): T;
-    static getAsync<T>(name: string, callback: () => T, comparison?: any[]): Promise<T>;
-}
-// File: classes/Cookie.d.ts
-export declare class Cookie<T> {
-    static getInstance<T>(name: string): Cookie<T>;
-    constructor(name: string);
-    get(defaultValue?: T | string | (() => (T | string)), options?: CookieOptions): string | T | undefined;
-    set(value?: T | string | (() => (T | string)), options?: CookieOptions): void;
-    remove(): void;
-}
-// File: classes/CookieBlock.d.ts
-export declare class CookieBlock {
-    static getItem(): CookieBlockInstance;
-    static get(): boolean;
-    static set(value: boolean): void;
-}
-// File: classes/CookieBlockInstance.d.ts
-export declare class CookieBlockInstance {
-    get(): boolean;
-    set(value: boolean): void;
-}
-// File: classes/CookieStorage.d.ts
-export type CookieSameSite = 'strict' | 'lax';
-export type CookieOptions = {
-    age?: number;
-    sameSite?: CookieSameSite;
-    path?: string;
-    domain?: string;
-    secure?: boolean;
-    httpOnly?: boolean;
-    partitioned?: boolean;
-    arguments?: string[] | Record<string, string | number | boolean>;
-};
-export declare class CookieStorage {
-    static init(getListener?: (key: string) => any | undefined, getListenerRaw?: () => string, setListener?: (key: string, value: any, cookie: string, options?: CookieOptions) => void): void;
-    static reset(): void;
-    static get<T>(name: string, defaultValue?: T | (() => T)): T | undefined;
-    static set<T>(name: string, value: T | (() => T), options?: CookieOptions): T;
-    static remove(name: string): void;
-    static update(): void;
-}
-// File: classes/DataStorage.d.ts
-export declare class DataStorage<T> {
-    static setPrefix(newPrefix: string): void;
-    constructor(name: string, isSession?: boolean, errorCenter?: ErrorCenterInstance);
-    get(defaultValue?: T | (() => T), cache?: number): T | undefined;
-    set(value?: T | (() => T)): T | undefined;
-    remove(): this;
-    update(): this;
-}
-// File: classes/Datetime.d.ts
-export declare class Datetime {
-    constructor(date?: NumberOrStringOrDate, type?: GeoDate, code?: string);
-    getIntl(): GeoIntl;
-    getDate(): Date;
-    getType(): GeoDate;
-    getHoursType(): GeoHours;
-    getHour24(): boolean;
-    getTimeZoneOffset(): number;
-    getTimeZone(style?: GeoTimeZoneStyle): string;
-    getFirstDayCode(): GeoFirstDay;
-    getYear(): number;
-    getMonth(): number;
-    getDay(): number;
-    getHour(): number;
-    getMinute(): number;
-    getSecond(): number;
-    getMaxDay(): number;
-    locale(type?: GeoDate, styleOptions?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions): string;
-    localeYear(style?: Intl.DateTimeFormatOptions['year']): string;
-    localeMonth(style?: Intl.DateTimeFormatOptions['month']): string;
-    localeDay(style?: Intl.DateTimeFormatOptions['day']): string;
-    localeHour(style?: Intl.DateTimeFormatOptions['hour']): string;
-    localeMinute(style?: Intl.DateTimeFormatOptions['minute']): string;
-    localeSecond(style?: Intl.DateTimeFormatOptions['second']): string;
-    standard(timeZone?: boolean): string;
-    setDate(value: NumberOrStringOrDate): this;
-    setType(value: GeoDate): this;
-    setHour24(value: boolean): this;
-    setCode(code: string): this;
-    setWatch(watch: (date: Date, type: GeoDate, hour24: boolean) => void): this;
-    setYear(value: number): this;
-    setMonth(value: number): this;
-    setDay(value: number): this;
-    setHour(value: number): this;
-    setMinute(value: number): this;
-    setSecond(value: number): this;
-    moveByYear(value: number): this;
-    moveByMonth(value: number): this;
-    moveByDay(value: number): this;
-    moveByHour(value: number): this;
-    moveByMinute(value: number): this;
-    moveBySecond(value: number): this;
-    moveMonthFirst(): this;
-    moveMonthLast(): this;
-    moveMonthNext(): this;
-    moveMonthPrevious(): this;
-    moveWeekdayFirst(): this;
-    moveWeekdayLast(): this;
-    moveWeekdayFirstByMonth(): this;
-    moveWeekdayLastByMonth(): this;
-    moveWeekdayNext(): this;
-    moveWeekdayPrevious(): this;
-    moveDayFirst(): this;
-    moveDayLast(): this;
-    moveDayNext(): this;
-    moveDayPrevious(): this;
-    clone(): Date;
-    cloneClass(): Datetime;
-    cloneMonthFirst(): Datetime;
-    cloneMonthLast(): Datetime;
-    cloneMonthNext(): Datetime;
-    cloneMonthPrevious(): Datetime;
-    cloneWeekdayFirst(): Datetime;
-    cloneWeekdayLast(): Datetime;
-    cloneWeekdayFirstByMonth(): Datetime;
-    cloneWeekdayLastByMonth(): Datetime;
-    cloneWeekdayNext(): Datetime;
-    cloneWeekdayPrevious(): Datetime;
-    cloneDayFirst(): Datetime;
-    cloneDayLast(): Datetime;
-    cloneDayNext(): Datetime;
-    cloneDayPrevious(): Datetime;
-}
-// File: classes/ErrorCenter.d.ts
-export declare class ErrorCenter {
-    static getItem(): ErrorCenterInstance;
-    static has(code: string, group?: string): boolean;
-    static get(code: string, group?: string): ErrorCenterCauseItem | undefined;
-    static add(cause: ErrorCenterCauseItem): void;
-    static addList(causes: ErrorCenterCauseList): void;
-    static addHandler(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): void;
-    static addHandlerList(handlers: ErrorCenterHandlerList): void;
-    static addCallback(callback: ErrorCenterHandlerCallback): void;
-    static on(cause: ErrorCenterCauseItem): void;
-}
-// File: classes/ErrorCenterHandler.d.ts
-export declare class ErrorCenterHandler {
-    constructor(handlers?: ErrorCenterHandlerList);
-    has(group: ErrorCenterGroup): boolean;
-    get(group: ErrorCenterGroup): ErrorCenterHandlerItem | undefined;
-    add(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): this;
-    addList(handlers: ErrorCenterHandlerList): this;
-    addCallback(callback: ErrorCenterHandlerCallback): this;
-    on(cause: ErrorCenterCauseItem): this;
-}
-// File: classes/ErrorCenterInstance.d.ts
-export declare class ErrorCenterInstance {
-    constructor(causes?: ErrorCenterCauseList, handler?: ErrorCenterHandler);
-    has(code: string, group?: string): boolean;
-    get(code: string, group?: string): ErrorCenterCauseItem | undefined;
-    add(cause: ErrorCenterCauseItem): this;
-    addList(causes: ErrorCenterCauseList): this;
-    addHandler(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): this;
-    addHandlerList(handlers: ErrorCenterHandlerList): this;
-    addCallback(callback: ErrorCenterHandlerCallback): this;
-    on(cause: ErrorCenterCauseItem): this;
-}
-// File: classes/EventItem.d.ts
-export declare class EventItem<E extends ElementOrWindow, O extends Event, D extends Record<string, any> = Record<string, any>> {
-    constructor(elementSelector?: ElementOrString<E>, type?: string | string[], listener?: EventListenerDetail<O, D> | undefined, options?: EventOptions, detail?: D | undefined);
-    isActive(): boolean;
-    getElement(): E | undefined;
-    setElement(elementSelector?: ElementOrString<E>): this;
-    setElementControl<EC extends HTMLElement>(elementSelector?: ElementOrString<EC>): this;
-    setType(type: string | string[]): this;
-    setListener(listener: EventListenerDetail<O, D>): this;
-    setOptions(options?: EventOptions): this;
-    setDetail(detail?: D): this;
-    dispatch(detail?: D | undefined): this;
-    start(): this;
-    stop(): this;
-    toggle(activity: boolean): this;
-    reset(): this;
-}
-// File: classes/Formatters.d.ts
-export declare class Formatters<Options extends FormattersOptionsList = FormattersOptionsList, List extends FormattersListProp = FormattersListProp, Item extends FormattersItemProp<List> = FormattersItemProp<List>> {
-    constructor(options: Options, list?: List | undefined);
-    is(): boolean;
-    isArray(): this is this & { list: FormattersList<Item>; };
-    length(): number;
-    getList(): FormattersList<Item>;
-    getOptions(): Options;
-    setList(list?: List): this;
-    to(): FormattersReturn<List, Options>;
-}
-// File: classes/Geo.d.ts
-export declare class Geo {
-    static getObject(): GeoInstance;
-    static get(): GeoItemFull;
-    static getCountry(): string;
-    static getLanguage(): string;
-    static getStandard(): string;
-    static getFirstDay(): string;
-    static getLocation(): string;
-    static getLocationCountry(): string;
-    static getLocationLanguage(): string;
-    static getItem(): GeoItemFull;
-    static getList(): GeoItem[];
-    static getByCode(code?: string): GeoItemFull;
-    static getByCodeFull(code: string): GeoItem | undefined;
-    static getByCountry(country: string): GeoItem | undefined;
-    static getByLanguage(language: string): GeoItem | undefined;
-    static getTimezone(): number;
-    static getTimezoneFormat(): string;
-    static find(code: string): GeoItemFull;
-    static toStandard(item: GeoItem): string;
-    static set(code: string, save?: boolean): void;
-    static setTimezone(timezone: number): void;
-    static setValueDefault(code?: string | (() => string)): void;
-}
-// File: classes/GeoFlag.d.ts
-export declare const GEO_FLAG_ICON_NAME = "f";
-export declare class GeoFlag {
-    static flags: Record<string, string>;
-    constructor(code?: string);
-    get(code?: string): GeoFlagItem | undefined;
-    getLanguage(code?: string): GeoFlagItem | undefined;
-    getCode(): string;
-    getFlag(code?: string): string | undefined;
-    getList(codes?: string[], sort?: boolean): GeoFlagItem[];
-    getListLanguage(codes?: string[], sort?: boolean): GeoFlagItem[];
-    getNational(codes?: string[], sort?: boolean): GeoFlagNational[];
-    getNationalLanguage(codes?: string[], sort?: boolean): GeoFlagNational[];
-    setCode(code: string): this;
-}
-// File: classes/GeoInstance.d.ts
-export declare const UI_GEO_COOKIE_KEY = "ui-geo-code";
-export declare class GeoInstance {
-    constructor();
-    get(): GeoItemFull;
-    getCountry(): string;
-    getLanguage(): string;
-    getStandard(): string;
-    getFirstDay(): string;
-    getLocation(): string;
-    getLocationCountry(): string;
-    getLocationLanguage(): string;
-    getItem(): GeoItemFull;
-    getList(): GeoItem[];
-    getByCode(code?: string): GeoItemFull;
-    getByCodeFull(code: string): GeoItem | undefined;
-    getByCountry(country: string): GeoItem | undefined;
-    getByLanguage(language: string): GeoItem | undefined;
-    getTimezone(): number;
-    getTimezoneFormat(): string;
-    find(code: string): GeoItemFull;
-    toStandard(item: GeoItem, language?: string): string;
-    set(code: string, save?: boolean): void;
-    setTimezone(timezone: number): void;
-    setValueDefault(code?: string | (() => string)): void;
-}
-// File: classes/GeoIntl.d.ts
-export declare class GeoIntl {
-    static isItem(code?: string): boolean;
-    static getLocation(code?: string): string;
-    static getInstance(code?: string): GeoIntl;
-    constructor(code?: string, errorCenter?: ErrorCenterInstance);
-    getLocation(): string;
-    getFirstDay(): string;
-    display(value?: string, typeOptions?: Intl.DisplayNamesOptions['type'] | Intl.DisplayNamesOptions): string;
-    languageName(value?: string, style?: Intl.RelativeTimeFormatStyle): string;
-    countryName(value?: string, style?: Intl.RelativeTimeFormatStyle): string;
-    fullName(last: string, first: string, surname?: string, short?: boolean): string;
-    number(value: NumberOrString, options?: Intl.NumberFormatOptions): string;
-    decimal(): string;
-    currency(value: NumberOrString, currencyOptions?: string | Intl.NumberFormatOptions, numberOnly?: boolean): string;
-    currencySymbol(currency: string, currencyDisplay?: keyof Intl.NumberFormatOptionsCurrencyDisplayRegistry): string;
-    unit(value: NumberOrString, unitOptions?: string | Intl.NumberFormatOptions): string;
-    sizeFile(value: NumberOrString, unitOptions?: 'byte' | 'kilobyte' | 'megabyte' | 'gigabyte' | 'terabyte' | 'petabyte' | Intl.NumberFormatOptions): string;
-    percent(value: NumberOrString, options?: Intl.NumberFormatOptions): string;
-    percentBy100(value: NumberOrString, options?: Intl.NumberFormatOptions): string;
-    plural(value: NumberOrString, words: string, options?: Intl.PluralRulesOptions, optionsNumber?: Intl.NumberFormatOptions): string;
-    date(value: NumberOrStringOrDate, type?: GeoDate, styleOptions?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions, hour24?: boolean): string;
-    relative(value: NumberOrStringOrDate, styleOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions, todayValue?: Date): string;
-    relativeLimit(value: NumberOrStringOrDate, limit: number, todayValue?: Date, relativeOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions, dateOptions?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions, type?: GeoDate, hour24?: boolean): string;
-    relativeByValue(value: NumberOrString, unit: Intl.RelativeTimeFormatUnit, styleOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions): string;
-    month(value?: NumberOrStringOrDate, style?: Intl.DateTimeFormatOptions['month']): string;
-    months(style?: Intl.DateTimeFormatOptions['month']): ItemValue<number | undefined>[];
-    weekday(value?: NumberOrStringOrDate, style?: Intl.DateTimeFormatOptions['weekday']): string;
-    weekdays(style?: Intl.DateTimeFormatOptions['weekday']): ItemValue<number | undefined>[];
-    time(value: NumberOrStringOrDate): string;
-    sort<T>(data: T[], compareFn?: (a: T, b: T) => [string, string]): T[];
-}
-// File: classes/GeoPhone.d.ts
-export declare class GeoPhone {
-    static get(code: string): GeoPhoneValue | undefined;
-    static getByPhone(phone: string): GeoPhoneMapInfo;
-    static getByCode(code: string): GeoPhoneMap | undefined;
-    static getList(): GeoPhoneValue[];
-    static getMap(): Record<string, GeoPhoneMap>;
-    static toMask(phone: string, masks?: string[]): string | undefined;
-    static removeZero(phone: string): string;
-}
-// File: classes/GeoUnit.d.ts
-export declare class GeoUnit {
-    static getInstance(code?: string): GeoUnit;
-    constructor(code?: string);
-    getLocation(): string;
-    millimeter(value: NumberOrString, options?: Intl.NumberFormatOptions): string;
-    centimeter(value: NumberOrString, options?: Intl.NumberFormatOptions): string;
-    meter(value: NumberOrString, options?: Intl.NumberFormatOptions): string;
-    kilometer(value: NumberOrString, options?: Intl.NumberFormatOptions): string;
-    squareMeter(value: NumberOrString, options?: Intl.NumberFormatOptions): string;
-    hectare(value: NumberOrString, options?: Intl.NumberFormatOptions): string;
-    gram(value: NumberOrString, options?: Intl.NumberFormatOptions): string;
-    kilogram(value: NumberOrString, options?: Intl.NumberFormatOptions): string;
-    tonne(value: NumberOrString, options?: Intl.NumberFormatOptions): string;
-    milliliter(value: NumberOrString, options?: Intl.NumberFormatOptions): string;
-    liter(value: NumberOrString, options?: Intl.NumberFormatOptions): string;
-    celsius(value: NumberOrString, options?: Intl.NumberFormatOptions): string;
-    kilometerPerHour(value: NumberOrString, options?: Intl.NumberFormatOptions): string;
-    format(value: NumberOrString, unit: string, options?: Intl.NumberFormatOptions): string;
-}
-// File: classes/Global.d.ts
-export declare class Global {
-    static getItem(): Record<string, any>;
-    static get<R = any>(name: string): R;
-    static add(data: Record<string, any>): void;
-}
-// File: classes/Hash.d.ts
-export declare class Hash {
-    static getItem(): HashInstance;
-    static get<T>(name: string, defaultValue?: T | (() => T)): T;
-    static set<T>(name: string, callback: T | (() => T)): void;
-    static addWatch<T>(name: string, callback: (value: T) => void): void;
-    static removeWatch<T>(name: string, callback: (value: T) => void): void;
-    static reload(): void;
-}
-// File: classes/HashInstance.d.ts
-export declare class HashInstance extends UrlInstanceAbstract {
-}
-// File: classes/Icons.d.ts
-export type IconsItem = string | Promise<string | any> | (() => Promise<string | any>);
-export type IconsConfig = {
-    url?: string;
-    list?: Record<string, IconsItem>;
-};
-export declare class Icons {
-    static is(index: string): boolean;
-    static get(index: string, url?: string, wait?: number): Promise<string>;
-    static getAsync(index: string, url?: string): string;
-    static getNameList(): string[];
-    static getUrlGlobal(): string;
-    static add(index: string, file: IconsItem): void;
-    static addLoad(index: string): void;
-    static addGlobal(index: string, file: string): void;
-    static addByList(list: Record<string, IconsItem>): void;
-    static setUrl(url: string): void;
-    static setConfig(config: IconsConfig): void;
-}
-// File: classes/Loading.d.ts
-export declare class Loading {
-    static is(): boolean;
-    static get(): number;
-    static getItem(): LoadingInstance;
-    static show(): void;
-    static hide(): void;
-    static registrationEvent(listener: EventListenerDetail<CustomEvent, LoadingDetail>, element?: ElementOrString<HTMLElement>): void;
-    static unregistrationEvent(listener: EventListenerDetail<CustomEvent, LoadingDetail>, element?: ElementOrString<HTMLElement>): void;
-}
-// File: classes/LoadingInstance.d.ts
-export type LoadingDetail = {
-    loading: boolean;
-};
-export type LoadingRegistrationItem = {
-    item: EventItem<Window, CustomEvent, LoadingDetail>;
-    listener: EventListenerDetail<CustomEvent, LoadingDetail>;
-    element?: ElementOrString<HTMLElement>;
-};
-export declare class LoadingInstance {
-    constructor(eventName?: string);
-    is(): boolean;
-    get(): number;
-    show(): void;
-    hide(): void;
-    registrationEvent(listener: EventListenerDetail<CustomEvent, LoadingDetail>, element?: ElementOrString<HTMLElement>): void;
-    unregistrationEvent(listener: EventListenerDetail<CustomEvent, LoadingDetail>, element?: ElementOrString<HTMLElement>): void;
-}
-// File: classes/Meta.d.ts
-export declare class Meta extends MetaManager<MetaTag[]> {
-    constructor();
-    getOg(): MetaOg;
-    getTwitter(): MetaTwitter;
-    getTitle(): string;
-    getKeywords(): string;
-    getDescription(): string;
-    getImage(): string;
-    getCanonical(): string;
-    getRobots(): MetaRobots;
-    getAuthor(): string;
-    getSiteName(): string;
-    getLocale(): string;
-    setTitle(title: string): this;
-    setKeywords(keywords: string | string[]): this;
-    setDescription(description: string): this;
-    setImage(image: string): this;
-    setCanonical(canonical: string): this;
-    setRobots(robots: MetaRobots): this;
-    setAuthor(author: string): this;
-    setSiteName(siteName: string): this;
-    setLocale(locale: string): this;
-    setSuffix(suffix?: string): void;
-    html(): string;
-    htmlTitle(): string;
-}
-// File: classes/MetaManager.d.ts
-export declare class MetaManager<T extends readonly string[], Key extends keyof MetaList<T> = keyof MetaList<T>> {
-    constructor(listMeta: T, isProperty?: boolean);
-    getListMeta(): T;
-    get(name: Key): string;
-    getItems(): MetaList<T>;
-    html(): string;
-    set(name: Key, content: string): this;
-    setByList(metaList: MetaList<T>): this;
-}
-// File: classes/MetaOg.d.ts
-export declare class MetaOg extends MetaManager<MetaOpenGraphTag[]> {
-    constructor();
-    getTitle(): string;
-    getType(): MetaOpenGraphType;
-    getUrl(): string;
-    getImage(): string;
-    getDescription(): string;
-    getLocale(): string;
-    getSiteName(): string;
-    setTitle(title: string): this;
-    setType(type: MetaOpenGraphType): this;
-    setUrl(url: string): this;
-    setImage(url: string): this;
-    setDescription(description: string): this;
-    setLocale(locale: string): this;
-    setSiteName(siteName: string): this;
-}
-// File: classes/MetaStatic.d.ts
-export declare class MetaStatic {
-    static getItem(): Meta;
-    static getOg(): MetaOg;
-    static getTwitter(): MetaTwitter;
-    static getTitle(): string;
-    static getKeywords(): string;
-    static getDescription(): string;
-    static getImage(): string;
-    static getCanonical(): string;
-    static getRobots(): MetaRobots;
-    static getAuthor(): string;
-    static getSiteName(): string;
-    static getLocale(): string;
-    static setTitle(title: string): typeof MetaStatic;
-    static setKeywords(keywords: string | string[]): typeof MetaStatic;
-    static setDescription(description: string): typeof MetaStatic;
-    static setImage(image: string): typeof MetaStatic;
-    static setCanonical(canonical: string): typeof MetaStatic;
-    static setRobots(robots: MetaRobots): typeof MetaStatic;
-    static setAuthor(author: string): typeof MetaStatic;
-    static setSiteName(siteName: string): typeof MetaStatic;
-    static setLocale(locale: string): typeof MetaStatic;
-    static setSuffix(suffix?: string): typeof MetaStatic;
-    static html(): string;
-    static htmlTitle(): string;
-}
-// File: classes/MetaTwitter.d.ts
-export declare class MetaTwitter extends MetaManager<MetaTwitterTag[]> {
-    constructor();
-    getCard(): MetaTwitterCard;
-    getSite(): string;
-    getCreator(): string;
-    getUrl(): string;
-    getTitle(): string;
-    getDescription(): string;
-    getImage(): string;
-    setCard(card: MetaTwitterCard): this;
-    setSite(site: string): this;
-    setCreator(creator: string): this;
-    setUrl(url: string): this;
-    setTitle(title: string): this;
-    setDescription(description: string): this;
-    setImage(image: string): this;
-}
-// File: classes/Query.d.ts
-export declare class Query {
-    static getItem(): QueryInstance;
-    static get<T>(name: string, defaultValue?: T | (() => T)): T;
-    static set<T>(name: string, callback: T | (() => T)): void;
-    static addWatch<T>(name: string, callback: (value: T) => void): void;
-    static removeWatch<T>(name: string, callback: (value: T) => void): void;
-    static reload(): void;
-}
-// File: classes/QueryInstance.d.ts
-export declare class QueryInstance extends UrlInstanceAbstract {
-}
-// File: classes/ResumableTimer.d.ts
-export declare class ResumableTimer {
-    constructor(callback: FunctionVoid, delay?: number, blockStart?: boolean);
-    resume(): this;
-    pause(): this;
-    reset(): this;
-    clear(): this;
-}
-// File: classes/ScrollbarWidth.d.ts
-export declare class ScrollbarWidth {
-    static is(): Promise<boolean>;
-    static get(): Promise<number>;
-    static getStorage(): DataStorage<number>;
-    static getCalculate(): boolean;
-}
-// File: classes/SearchList.d.ts
-export declare class SearchList<T extends SearchItem, K extends SearchColumns<T>> {
-    constructor(list: SearchListValue<T>, columns?: K, value?: string, options?: SearchOptions);
-    getData(): SearchListData<T, K>;
-    getList(): SearchListValue<T>;
-    getColumns(): K | undefined;
-    getItem(): SearchListItem;
-    getValue(): string | undefined;
-    getOptions(): SearchListOptions;
-    setList(list: SearchListValue<T>): this;
-    setColumns(columns?: K): this;
-    setValue(value?: string): this;
-    setOptions(options: SearchOptions): this;
-    to(): SearchFormatList<T, K>;
-}
-// File: classes/SearchListData.d.ts
-export declare class SearchListData<T extends SearchItem, K extends SearchColumns<T>> {
-    constructor(list: SearchListValue<T>, columns: K | undefined, item: SearchListItem, options: SearchListOptions);
-    is(): this is this & { list: T[]; columns: string[]; };
-    isList(): this is this & { list: T[]; };
-    getList(): SearchListValue<T>;
-    getColumns(): K | undefined;
-    setList(list: SearchListValue<T>): this;
-    setColumns(columns?: SearchColumns<T>): this;
-    findCacheItem(item: T): SearchCacheItem<T> | undefined;
-    forEach(callback: (item: SearchCacheItem<T>['item'], value: SearchCacheItem<T>['value']) => SearchFormatItem<T, K> | undefined): SearchFormatList<T, K>;
-    toFormatItem(item: T, selection: boolean): SearchFormatItem<T, K>;
-}
-// File: classes/SearchListItem.d.ts
-export declare class SearchListItem {
-    constructor(value: string | undefined, options: SearchListOptions);
-    is(): this is this & { value: string; };
-    isSearch(): boolean;
-    get(): string;
-    set(value?: string): this;
-}
-// File: classes/SearchListMatcher.d.ts
-export declare class SearchListMatcher {
-    constructor(item: SearchListItem, options: SearchListOptions);
-    is(): boolean;
-    isSelection(value: SearchCacheItem<any>['value']): boolean;
-    get(): RegExp | undefined;
-    update(): void;
-}
-// File: classes/SearchListOptions.d.ts
-export declare class SearchListOptions {
-    constructor(options?: SearchOptions | undefined);
-    getOptions(): SearchOptions;
-    getLimit(): number;
-    getReturnEverything(): boolean;
-    getDelay(): number;
-    getFindExactMatch(): boolean;
-    getClassName(): string;
-    setOptions(options: SearchOptions): this;
-}
-// File: classes/ServerStorage.d.ts
-export declare class ServerStorage {
-    static init(listener: () => Record<string, any> | undefined): typeof ServerStorage;
-    static reset(): void;
-    static has(key: string): boolean;
-    static get<T = any>(key: string, defaultValue?: () => T, hydration?: boolean): T;
-    static set<T = any>(key: string, value: () => T, hydration?: boolean, storageList?: any): T;
-    static setErrorStatus(hide: boolean): void;
-    static remove(key: string): void;
-    static toString(): string;
-}
-// File: classes/StorageCallback.d.ts
-export declare class StorageCallback<T = any, Callback = (value: T) => void | Promise<void>> {
-    static getInstance<T>(name: string, group?: string): StorageCallback<T, (value: T) => void | Promise<void>>;
-    constructor(name: string, group?: string);
-    isLoading(): boolean;
-    getName(): string;
-    getLoading(): boolean;
-    addCallback(callback: Callback, isOnce?: boolean): this;
-    removeCallback(callback: Callback): this;
-    preparation(): this;
-    run(value: T): Promise<this>;
-}
-// File: classes/Translate.d.ts
-export declare class Translate {
-    static get(name: string, replacement?: string[] | Record<string, string | number>): Promise<string>;
-    static getItem(): TranslateInstance;
-    static getSync(name: string, first?: boolean, replacement?: string[] | Record<string, string | number>): string;
-    static getList<T extends TranslateCode[]>(names: T): Promise<TranslateList<T>>;
-    static getListSync<T extends TranslateCode[]>(names: T, first?: boolean): TranslateList<T>;
-    static add(names: string | string[]): Promise<void>;
-    static addSync(data: Record<string, string>): void;
-    static addNormalOrSync(data: Record<string, string>): Promise<void>;
-    static addSyncByLocation(data: Record<string, Record<string, string>>): void;
-    static addSyncByFile(data: TranslateDataFile): void;
-    static setUrl(url: string): void;
-    static setPropsName(name: string): void;
-    static setReadApi(value: boolean): void;
-    static setConfig(config: TranslateConfig): void;
-}
-// File: classes/TranslateFile.d.ts
-export declare class TranslateFile {
-    constructor(data?: TranslateDataFile, language?: string | (() => string), location?: string | (() => string));
-    isFile(): boolean;
-    getLocation(): string;
-    getLanguage(): string;
-    getList(): Promise<TranslateDataFileList | undefined>;
-    add(data: TranslateDataFile): void;
-}
-// File: classes/TranslateInstance.d.ts
-export declare class TranslateInstance {
-    constructor(url?: string, propsName?: string, files?: TranslateFile);
-    get(name: string, replacement?: string[] | Record<string, string | number>): Promise<string>;
-    getSync(name: string, first?: boolean, replacement?: string[] | Record<string, string | number>): string;
-    getList<T extends TranslateCode[]>(names: T): Promise<TranslateList<T>>;
-    getListSync<T extends TranslateCode[]>(names: T, first?: boolean): TranslateList<T>;
-    add(names: string | string[]): Promise<void>;
-    addSync(data: Record<string, string>): void;
-    addNormalOrSync(data: Record<string, string>): Promise<void>;
-    addSyncByLocation(data: Record<string, Record<string, string>>): void;
-    addSyncByFile(data: TranslateDataFile): void;
-    setUrl(url: string): this;
-    setPropsName(name: string): this;
-    setReadApi(value: boolean): this;
-}
-// File: classes/UrlInstanceAbstract.d.ts
-export declare abstract class UrlInstanceAbstract {
-    get<T>(name: string, defaultValue?: T | (() => T)): T;
-    set<T>(name: string, callback: T | (() => T)): this;
-    addWatch<T>(name: string, callback: (value: T) => void): this;
-    removeWatch<T>(name: string, callback: (value: T) => void): this;
-    reload(): this;
-}
-// File: classes/UrlItem.d.ts
-export declare class UrlItem {
-    static getInstance(): UrlItem;
-    constructor(url?: string | URL);
-    get href(): string;
-    get protocol(): string;
-    get username(): string;
-    get password(): string;
-    get host(): string;
-    get hostname(): string;
-    get port(): string;
-    get pathname(): string;
-    get search(): string;
-    get searchParams(): URLSearchParams;
-    get hash(): string;
-    get origin(): string;
-    hasParam(name: string): boolean;
-    getParam(name: string): string | undefined;
-    getParams(): Record<string, any>;
-    set(url?: string | URL): this;
-    setParam(name: string, value: string): this;
-    setParams(params: Record<string, any>): this;
-    deleteParam(name: string): this;
-    toString(): string;
-    toJSON(): string;
-}
-// File: functions/addTagHighlightMatch.d.ts
-export declare function addTagHighlightMatch(value: string, search?: string | RegExp, className?: string, shouldEscape?: boolean): string;
-// File: functions/anyToString.d.ts
-export declare function anyToString<V>(value: V, isArrayString?: boolean, trim?: boolean): string;
-// File: functions/applyTemplate.d.ts
-export declare const applyTemplate: (text: string, replacement?: Record<string, string | number | boolean> | string[]) => string;
-// File: functions/arrFill.d.ts
-export declare function arrFill<T>(value: T, count: number): T[];
-// File: functions/blobToBase64.d.ts
-export declare function blobToBase64(blob: Blob, clean?: boolean): Promise<string | undefined>;
-// File: functions/capitalize.d.ts
-export declare function capitalize(value: string, isLocale?: boolean): string;
-// File: functions/copyObject.d.ts
-export declare function copyObject<T>(value: T): T;
-// File: functions/copyObjectLite.d.ts
-export declare function copyObjectLite<T, R = T>(value: T, source?: any): R;
-// File: functions/createElement.d.ts
-export declare function createElement<T extends HTMLElement>(parentElement?: HTMLElement, tagName?: string, options?: Partial<T> | Record<keyof T, T[keyof T]> | ((element: T) => void), referenceElement?: HTMLElement): T | undefined;
-// File: functions/domContentLoaded.d.ts
-export declare function domContentLoaded<T = void>(callback: () => T | Promise<T>): Promise<T>;
-// File: functions/domQuerySelector.d.ts
-export declare function domQuerySelector<E extends Element = Element>(selectors: string): E | undefined;
-// File: functions/domQuerySelectorAll.d.ts
-export declare function domQuerySelectorAll<E extends Element = Element>(selectors: string): NodeListOf<E> | undefined;
-// File: functions/encodeAttribute.d.ts
-export declare function encodeAttribute(text: string): string;
-// File: functions/encodeLiteAttribute.d.ts
-export declare function encodeLiteAttribute(text: string): string;
-// File: functions/ensureMaxSize.d.ts
-export declare function ensureMaxSize(file: Uint8Array, compress?: number, type?: string): Promise<string>;
-// File: functions/escapeExp.d.ts
-export declare function escapeExp(value: string): string;
-// File: functions/eventStopPropagation.d.ts
-export declare function eventStopPropagation(event: Event): void;
-// File: functions/executeFunction.d.ts
-export declare function executeFunction<T>(callback: T | FunctionArgs<any, T>, ...args: any[]): T;
-// File: functions/executePromise.d.ts
-export declare function executePromise<T>(callback: ((...args: any[]) => Promise<T>) | ((...args: any[]) => T) | T, ...args: any[]): Promise<T>;
-// File: functions/forEach.d.ts
-export declare function forEach<T, R>(data: any, callback: (item: T, key: any, dataMain: any) => R, saveUndefined?: boolean): R[];
-// File: functions/frame.d.ts
-export declare function frame(callback: () => void, next?: () => boolean, end?: () => void): void;
-// File: functions/getArrayHighlightMatch.d.ts
-export declare function getArrayHighlightMatch(value: string, search?: string | RegExp): HighlightMatchItem[];
-// File: functions/getAttributes.d.ts
-export declare function getAttributes<E extends ElementOrWindow>(element?: ElementOrString<E>): Record<string, string | undefined>;
-// File: functions/getClipboardData.d.ts
-export declare function getClipboardData(event?: ClipboardEvent): Promise<string>;
-// File: functions/getColumn.d.ts
-export declare function getColumn<T, K extends keyof T>(array: ObjectOrArray<T>, column: K): (T[K] | undefined)[];
-// File: functions/getCurrentDate.d.ts
-export declare function getCurrentDate(format?: GeoDate): string;
-// File: functions/getCurrentTime.d.ts
-export declare function getCurrentTime(): number;
-// File: functions/getElement.d.ts
-export declare function getElement<E extends ElementOrWindow, R extends Exclude<E, Window>>(element?: ElementOrString<E>): R | undefined;
-// File: functions/getElementId.d.ts
-export declare function getElementId<E extends ElementOrWindow>(element?: ElementOrString<E>, selector?: string): string;
-export declare function initGetElementId(newListener: () => string | number): void;
-// File: functions/getElementImage.d.ts
-export declare function getElementImage(image: HTMLImageElement | string): HTMLImageElement | undefined;
-// File: functions/getElementItem.d.ts
-export declare function getElementItem<T extends ElementOrWindow, K extends keyof T, D>(element: ElementOrString<T>, index: K | string, defaultValue?: D): T[K] | D | undefined;
-// File: functions/getElementOrWindow.d.ts
-export declare function getElementOrWindow<E extends ElementOrWindow>(element?: ElementOrString<E>): E | undefined;
-// File: functions/getElementSafeScript.d.ts
-export declare function getElementSafeScript(id: string, data: any): string;
-// File: functions/getExactSearchExp.d.ts
-export declare function getExactSearchExp(search: string): RegExp;
-// File: functions/getExp.d.ts
-export declare function getExp(value: string, flags?: string, pattern?: string): RegExp;
-// File: functions/getFirst.d.ts
-export declare function getFirst<T>(value: T | T[] | Record<string, T>): T | undefined;
-// File: functions/getHydrationData.d.ts
-export declare function getHydrationData<T>(id: string, defaultValue: T, remove?: boolean): T;
-// File: functions/getItemByPath.d.ts
-export declare function getItemByPath<T extends Record<string, any>, R = string>(item: T, path: string): R | undefined;
-// File: functions/getKey.d.ts
-export declare function getKey(event: KeyboardEvent): string | number | undefined;
-// File: functions/getLast.d.ts
-export declare function getLast<T>(value: T | T[] | Record<string, T>): T | undefined;
-// File: functions/getLength.d.ts
-export declare function getLength(value: any): number;
-// File: functions/getLengthOfAllArray.d.ts
-export declare function getLengthOfAllArray(value: ObjectOrArray<string>): number[];
-// File: functions/getMaxLengthAllArray.d.ts
-export declare function getMaxLengthAllArray(data: ObjectOrArray<string>): number;
-// File: functions/getMinLengthAllArray.d.ts
-export declare function getMinLengthAllArray(data: ObjectOrArray<string>): number;
-// File: functions/getMouseClient.d.ts
-export declare function getMouseClient(event: MouseEvent & TouchEvent): ImageCoordinator;
-// File: functions/getMouseClientX.d.ts
-export declare function getMouseClientX(event: MouseEvent & TouchEvent): number;
-// File: functions/getMouseClientY.d.ts
-export declare function getMouseClientY(event: MouseEvent & TouchEvent): number;
-// File: functions/getObjectByKeys.d.ts
-export declare function getObjectByKeys<T extends Record<string, any>, K extends keyof T>(data: T, keys: K[]): Pick<T, K>;
-// File: functions/getObjectNoUndefined.d.ts
-export declare function getObjectNoUndefined<T extends Record<string | number, any>>(data: T, exception?: any): T;
-// File: functions/getObjectOrNone.d.ts
-export declare function getObjectOrNone<T>(value: T): T & Record<string, any>;
-// File: functions/getOnlyText.d.ts
-export declare function getOnlyText(text: any): string;
-// File: functions/getRandomItem.d.ts
-export declare function getRandomItem<T>(value?: T | T[] | Record<string, T>): T | undefined;
-// File: functions/getRandomText.d.ts
-export declare function getRandomText(min: number, max: number, symbol?: string, lengthMin?: number, lengthMax?: number): string;
-// File: functions/getRequestString.d.ts
-export declare function getRequestString(request: Record<string, any> | any[], sign?: string, separator?: string, subKey?: string): string;
-// File: functions/getSearchExp.d.ts
-export declare function getSearchExp(search: string, limit?: number): RegExp;
-// File: functions/getSeparatingSearchExp.d.ts
-export declare function getSeparatingSearchExp(search: string | RegExp, limit?: number): RegExp;
-// File: functions/getStepPercent.d.ts
-export declare function getStepPercent(min: number | undefined, max: number): number;
-// File: functions/getStepValue.d.ts
-export declare function getStepValue(min: number | undefined, max: number): number;
-// File: functions/goScroll.d.ts
-export declare function goScroll(selector: string, elementTo: HTMLElement | undefined, elementCenter?: HTMLElement): void;
-// File: functions/goScrollSmooth.d.ts
-export declare function goScrollSmooth<E extends HTMLElement>(element: E, options?: ScrollIntoViewOptions, shift?: number): void;
-// File: functions/goScrollTo.d.ts
-export declare function goScrollTo(element?: HTMLElement, elementTo?: HTMLElement, behavior?: ScrollBehavior): void;
-// File: functions/handleShare.d.ts
-export declare function handleShare(data: ShareData): Promise<boolean>;
-// File: functions/inArray.d.ts
-export declare function inArray<T>(array: T[], value: T): boolean;
-// File: functions/initScrollbarOffset.d.ts
-export declare function initScrollbarOffset(): Promise<void>;
-// File: functions/intersectKey.d.ts
-export declare function intersectKey<T, KT extends keyof T, C, KC extends keyof C>(data?: T, comparison?: C): Record<KT & KC, T[KT]>;
-// File: functions/isApiSuccess.d.ts
-export declare const isApiSuccess: <T>(data: ApiData<T>) => boolean;
-// File: functions/isArray.d.ts
-export declare function isArray<T, R>(value: T): value is Extract<T, R[]>;
-// File: functions/isDifferent.d.ts
-export declare function isDifferent<T>(value: ObjectItem<T>, old: ObjectItem<T>): boolean;
-// File: functions/isDomData.d.ts
-export declare function isDomData(): boolean;
-// File: functions/isDomRuntime.d.ts
-export declare function isDomRuntime(): boolean;
-// File: functions/isElementVisible.d.ts
-export declare function isElementVisible<E extends ElementOrWindow>(elementSelectors?: ElementOrString<E>): boolean;
-// File: functions/isEnter.d.ts
-export declare const isEnter: (event: KeyboardEvent, isInputElement?: boolean) => boolean;
-// File: functions/isFilled.d.ts
-export declare function isFilled<T>(value: T, zeroTrue?: boolean): value is Exclude<T, EmptyValue>;
-// File: functions/isFloat.d.ts
-export declare function isFloat(value: any): boolean;
-// File: functions/isFunction.d.ts
-export declare function isFunction<T>(callback: T): callback is Extract<T, FunctionArgs<any, any>>;
-// File: functions/isInDom.d.ts
-export declare function isInDom<E extends ElementOrWindow>(element?: ElementOrString<E>): boolean;
-// File: functions/isInput.d.ts
-export declare const isInput: (element: HTMLElement | EventTarget | null) => boolean;
-// File: functions/isIntegerBetween.d.ts
-export declare function isIntegerBetween(value: number, between: number): boolean;
-// File: functions/isMetaKey.d.ts
-export declare const isMetaKey: (event: KeyboardEvent) => boolean;
-// File: functions/isNull.d.ts
-export declare function isNull<T>(value: T): value is Extract<T, Undefined>;
-// File: functions/isNumber.d.ts
-export declare function isNumber(value: any): boolean;
-// File: functions/isObject.d.ts
-export declare function isObject<T>(value: T): value is Extract<T, Record<any, any>>;
-// File: functions/isObjectNotArray.d.ts
-export declare function isObjectNotArray<T>(value: T): value is Exclude<Extract<T, Record<any, any>>, any[] | undefined | null>;
-// File: functions/isOnLine.d.ts
-export declare function isOnLine(): boolean;
-// File: functions/isSelected.d.ts
-export declare function isSelected<T, S>(value: T, selected: T | T[] | S): boolean;
-// File: functions/isSelectedByList.d.ts
-export declare function isSelectedByList<T>(values: T | T[], selected: T | T[]): boolean;
-// File: functions/isShare.d.ts
-export declare function isShare(): boolean;
-// File: functions/isString.d.ts
-export declare function isString<T>(value: T): value is Extract<T, string>;
-// File: functions/isTab.d.ts
-export declare const isTab: (event: KeyboardEvent) => boolean;
-// File: functions/isWindow.d.ts
-export declare function isWindow<E>(element: E): element is Extract<E, Window>;
-// File: functions/random.d.ts
-export declare function random(min: number, max: number): number;
-// File: functions/removeCommonPrefix.d.ts
-export declare function removeCommonPrefix(mainStr: string, prefix: string): string;
-// File: functions/replaceComponentName.d.ts
-export declare const replaceComponentName: (text: string | undefined, name: string, componentName: string) => string | undefined;
-// File: functions/replaceRecursive.d.ts
-export declare function replaceRecursive<I>(array: ObjectItem<I>, replacement?: ObjectOrArray<I>, isMerge?: boolean): ObjectItem<I>;
-// File: functions/replaceTemplate.d.ts
-export declare function replaceTemplate(value: string, replaces: Record<string, string | FunctionReturn<string>>): string;
-// File: functions/resizeImageByMax.d.ts
-export declare function resizeImageByMax(image: HTMLImageElement | string, maxSize: number, type?: 'auto' | 'width' | 'height', typeData?: string): string | undefined;
-// File: functions/secondToTime.d.ts
-export declare function secondToTime(second: number | string | undefined, hasHour?: boolean): string;
-// File: functions/setElementItem.d.ts
-export declare function setElementItem<E extends ElementOrWindow, K extends keyof E, V extends E[K] = E[K]>(element: ElementOrString<E>, index: K, value: V | Record<string, V>): E | undefined;
-// File: functions/setValues.d.ts
-export declare function setValues<T>(selected: T | T[] | undefined, value: any, { multiple, maxlength, alwaysChange, notEmpty }: {
-    multiple?: boolean | undefined;
-    maxlength?: number | undefined;
-    alwaysChange?: boolean | undefined;
-    notEmpty?: boolean | undefined;
-}): T | T[] | undefined;
-// File: functions/sleep.d.ts
-export declare function sleep(ms: number): Promise<void>;
-// File: functions/sortList.d.ts
-export declare function sortList<T = any>(list: T[], sortColumns: SortColumnItem[], customSort?: SortFunction<T>): T[];
-// File: functions/splice.d.ts
-export declare function splice<I>(array: ObjectItem<I>, replacement?: ObjectItem<I> | I, indexStart?: string): ObjectItem<I>;
-// File: functions/strFill.d.ts
-export declare function strFill(value: string, count: number): string;
-// File: functions/strSplit.d.ts
-export declare function strSplit(value: number | string, separator: string, limit?: number): string[];
-// File: functions/toArray.d.ts
-export declare function toArray<T>(value: T): T extends any[] ? T : [T];
-// File: functions/toCamelCase.d.ts
-export declare function toCamelCase(value: string): string;
-// File: functions/toCamelCaseFirst.d.ts
-export declare function toCamelCaseFirst(value: string): string;
-// File: functions/toDate.d.ts
-export declare function toDate<T extends Date | number | string>(value?: T): (T & Date) | Date;
-// File: functions/toKebabCase.d.ts
-export declare function toKebabCase(value: string): string;
-// File: functions/toNumber.d.ts
-export declare function toNumber(value?: NumberOrString): number;
-// File: functions/toNumberByMax.d.ts
-export declare function toNumberByMax(value: string | number, max?: string | number, formatting?: boolean, language?: string): string | number;
-// File: functions/toNumberPositive.d.ts
-export declare function toNumberPositive(value?: number | string | null, defaultValue?: number): number;
-// File: functions/toPercent.d.ts
-export declare function toPercent(maxValue: number, value: number): number;
-// File: functions/toPercentBy100.d.ts
-export declare function toPercentBy100(maxValue: number, value: number): number;
-// File: functions/toString.d.ts
-export declare function toString<T>(value: T): string;
-// File: functions/transformation.d.ts
-export declare function transformation(value: any, isFunction?: boolean): any;
-// File: functions/uint8ArrayToBase64.d.ts
-export declare function uint8ArrayToBase64(bytes: Uint8Array): string;
-// File: functions/uniqueArray.d.ts
-export declare function uniqueArray<T>(value: T[]): T[];
-// File: functions/writeClipboardData.d.ts
-export declare function writeClipboardData(text: string): Promise<void>;
-// File: types/apiTypes.d.ts
 export declare enum ApiMethodItem {
     delete = "DELETE",
     get = "GET",
@@ -1209,49 +121,309 @@ export type ApiStatusItem = {
     lastMessage?: string;
 };
 export type ApiStatusType = 'success' | 'error' | 'warning' | 'info';
-// File: types/basicTypes.d.ts
-export type Undefined = undefined | null;
-export type EmptyValue = Undefined | 0 | false | '' | 'undefined' | 'null' | '0' | 'false' | '[]';
-export type NumberOrString = number | string;
-export type NumberOrStringOrBoolean = number | string | boolean;
-export type NumberOrStringOrDate = NumberOrString | Date;
-export type NormalOrArray<T = NumberOrString> = T | T[];
-export type NormalOrPromise<T> = T | Promise<T>;
-export type ObjectItem<T = any> = Record<string, T>;
-export type ObjectOrArray<T = any> = T[] | ObjectItem<T>;
-export type ArrayToItem<T> = T extends any[] ? T[number] : T;
-export type FunctionReturn<R = any> = () => R;
-export type FunctionVoid = () => void;
-export type FunctionArgs<T, R> = (...args: T[]) => R;
-export type FunctionAnyType<T = any, R = any> = (...args: T[]) => R;
-export type ItemList<T = any> = Record<string, T>;
-export type Item<V> = {
-    index: string;
-    value: V;
+export type ApiInstanceOptions = {
+    headersClass?: typeof ApiHeaders;
+    requestDefaultClass?: typeof ApiDefault;
+    statusClass?: typeof ApiStatus;
+    responseClass?: typeof ApiResponse;
+    preparationClass?: typeof ApiPreparation;
+    loadingClass?: LoadingInstance;
+    errorCenterClass?: ErrorCenterInstance;
+    hydrationClass?: typeof ApiHydration;
+    wrapper?: <R>(callback: () => Promise<R>, apiFetch: ApiFetch) => Promise<R>;
 };
-export type ItemValue<V> = {
-    label: string;
-    value: V;
+export declare class Api {
+    static isLocalhost(): boolean;
+    static getItem(): ApiInstance;
+    static getStatus(): ApiStatus;
+    static getResponse(): ApiResponse;
+    static getHydration(): ApiHydration;
+    static getHydrationScript(): string;
+    static getOrigin(): string;
+    static getUrl(path: string, api?: boolean): string;
+    static getBody(request?: ApiFetch['request'], method?: ApiMethodItem): string | FormData | undefined;
+    static getBodyForGet(request: ApiFetch['request'], path?: string, method?: ApiMethodItem): string;
+    static setHeaders(headers: ApiHeadersValue): void;
+    static setRequestDefault(request: ApiDefaultValue): void;
+    static setUrl(url: string): void;
+    static setPreparation(callback: (apiFetch: ApiFetch) => Promise<void>): void;
+    static setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): void;
+    static setTimeout(timeout: number): void;
+    static setOrigin(origin: string): void;
+    static setWrapper(wrapper: <R>(callback: () => Promise<R>, apiFetch: ApiFetch) => Promise<R>): void;
+    static setConfig(config?: ApiConfig): void;
+    static request<T>(pathRequest: string | ApiFetch): Promise<T>;
+    static get<T>(request: ApiFetch): Promise<T>;
+    static post<T>(request: ApiFetch): Promise<T>;
+    static put<T>(request: ApiFetch): Promise<T>;
+    static patch<T>(request: ApiFetch): Promise<T>;
+    static delete<T>(request: ApiFetch): Promise<T>;
+}
+export declare class ApiCache {
+    static init(getListener: (key: string) => Promise<ApiCacheItem | undefined>, setListener: (key: string, value: ApiCacheItem) => Promise<boolean>, removeListener: (key: string) => Promise<boolean>, cacheStepAgeClearOld?: number): void;
+    static reset(): void;
+    static get<T>(key: string): Promise<T | undefined>;
+    static getByFetch<T>(fetch: ApiFetch): Promise<T | undefined>;
+    static set<T>(key: string, value: T, age?: number): Promise<void>;
+    static setByFetch<T>(fetch: ApiFetch, value: T): Promise<void>;
+    static remove(key: string): Promise<void>;
+}
+export declare class ApiDataReturn<T = any> {
+    constructor(apiFetch: ApiFetch, query: Response, end: ApiPreparationEnd, error?: ApiErrorItem | undefined);
+    init(): Promise<this>;
+    get(): ApiData<T>;
+    getAndStatus(status: ApiStatus): ApiData<T>;
+    getData(): ApiData<T> | undefined;
+}
+export declare class ApiDefault {
+    is(): boolean;
+    get(): Record<string, any> | undefined;
+    request(request: ApiFetch['request']): ApiFetch['request'];
+    set(request: ApiDefaultValue): this;
+}
+export declare class ApiError {
+    static getStorage(): ApiErrorStorage;
+    static add(item: Partial<ApiErrorStorageItem> | Partial<ApiErrorStorageItem>[], url?: string | RegExp, method?: ApiMethodItem): void;
+    static getItem(method: ApiMethodItem, response: Response): Promise<ApiErrorItem>;
+}
+export declare class ApiErrorItem {
+    constructor(method: ApiMethodItem, response: Response, error: ApiErrorStorageItem);
+    getMethod(): ApiMethodItem;
+    getResponse(): Response;
+    getError(): ApiErrorStorageItem;
+    getCode(): string | undefined;
+    getMessage(): string | undefined;
+    getStatus(): number;
+}
+export declare class ApiErrorStorage {
+    find(method: ApiMethodItem, response: Response): Promise<ApiErrorStorageItem>;
+    add(item: Partial<ApiErrorStorageItem> | Partial<ApiErrorStorageItem>[], url?: string | RegExp, method?: ApiMethodItem): this;
+}
+export declare class ApiHeaders {
+    get(value?: Record<string, string> | null, type?: string | undefined | null): Record<string, string> | undefined;
+    getByRequest(request: ApiFetch['request'], value?: Record<string, string> | null, type?: string): Record<string, string> | undefined;
+    set(headers: ApiHeadersValue): this;
+}
+export declare class ApiHydration {
+    initResponse(response: ApiResponse): void;
+    toClient<T>(apiFetch: ApiFetch, response: T): void;
+    toString(): string;
+}
+export declare class ApiInstance {
+    constructor(url?: string, options?: ApiInstanceOptions);
+    isLocalhost(): boolean;
+    getStatus(): ApiStatus;
+    getResponse(): ApiResponse;
+    getHydration(): ApiHydration;
+    getOrigin(): string;
+    getUrl(path: string, api?: boolean): string;
+    getBody(request?: ApiFetch['request'], method?: ApiMethod): string | FormData | undefined;
+    getBodyForGet(request: ApiFetch['request'], path?: string, method?: ApiMethod): string;
+    getHydrationScript(): string;
+    setHeaders(headers: ApiHeadersValue): this;
+    setRequestDefault(request: ApiDefaultValue): this;
+    setUrl(url: string): this;
+    setPreparation(callback: (apiFetch: ApiFetch) => Promise<void>): this;
+    setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): this;
+    setTimeout(timeout: number): this;
+    setOrigin(origin: string): this;
+    setWrapper(wrapper: <R>(callback: () => Promise<R>, apiFetch: ApiFetch) => Promise<R>): this;
+    request<T>(pathRequest: string | ApiFetch): Promise<T>;
+    get<T>(request: ApiFetch): Promise<T>;
+    post<T>(request: ApiFetch): Promise<T>;
+    put<T>(request: ApiFetch): Promise<T>;
+    patch<T>(request: ApiFetch): Promise<T>;
+    delete<T>(request: ApiFetch): Promise<T>;
+}
+export declare class ApiPreparation {
+    make(active: boolean, apiFetch: ApiFetch): Promise<void>;
+    makeEnd(active: boolean, query: Response, apiFetch: ApiFetch): Promise<ApiPreparationEnd>;
+    set(callback: (apiFetch: ApiFetch) => Promise<void>): this;
+    setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): this;
+}
+export declare class ApiResponse {
+    constructor(requestDefault: ApiDefault);
+    get(path: string | undefined, method: ApiMethod, request?: ApiFetch['request'], devMode?: boolean): ApiResponseItem | undefined;
+    getList(): (ApiResponseItem & Record<string, any>)[];
+    add(response: ApiResponseItem | ApiResponseItem[]): this;
+    setDevMode(devMode: boolean): this;
+    emulator<T>(apiFetch: ApiFetch): Promise<T | undefined>;
+    emulatorAsync<T>(apiFetch: ApiFetch): T | undefined;
+}
+export declare class ApiStatus {
+    get(): ApiStatusItem | undefined;
+    getStatus(): number | undefined;
+    getStatusText(): string | undefined;
+    getStatusType(): ApiStatusType | undefined;
+    getCode(): string | undefined;
+    getError(): string | undefined;
+    getResponse<T>(): T | undefined;
+    getMessage(): string;
+    set(data: ApiStatusItem): this;
+    setStatus(status?: number, statusText?: string): this;
+    setError(error?: string): this;
+    setLastResponse(response?: any): this;
+    setLastStatus(status?: ApiStatusType): this;
+    setLastCode(code?: string): this;
+    setLastMessage(message?: string): this;
+}
+export declare class BroadcastMessage<Message = any> {
+    constructor(name: string, callback?: ((event: MessageEvent<Message>) => void) | undefined, callbackError?: ((event: MessageEvent<Message>) => void) | undefined, errorCenter?: ErrorCenterInstance);
+    getChannel(): BroadcastChannel | undefined;
+    post(message: Message): this;
+    setCallback(callback: (event: MessageEvent<Message>) => void): this;
+    setCallbackError(callbackError: (event: MessageEvent<Message>) => void): this;
+    destroy(): this;
+}
+/**
+ * Simple in-memory cache class that stores computed values by key.
+ * @deprecated This class is obsolete and should not be used
+ */
+export declare class Cache {
+    get<T>(name: string, callback: () => T, comparison?: any[]): T;
+    getAsync<T>(name: string, callback: () => T, comparison?: any[]): Promise<T>;
+}
+/**
+ * Class for managing a single cached value with dependency tracking.
+ * @deprecated This class is obsolete and should not be used
+ */
+export declare class CacheItem<T> {
+    constructor(callback: () => T);
+    getCache(comparison: any[]): T;
+    getCacheOld(): T | undefined;
+    getCacheAsync(comparison: any[]): Promise<T>;
+}
+/**
+ * Static cache class that uses ServerStorage for persistent caching across the application.
+ * @deprecated This class is obsolete and should not be used
+ */
+export declare class CacheStatic {
+    static get<T>(name: string, callback: () => T, comparison?: any[]): T;
+    static getAsync<T>(name: string, callback: () => T, comparison?: any[]): Promise<T>;
+}
+export type CookieSameSite = 'strict' | 'lax';
+export type CookieOptions = {
+    age?: number;
+    sameSite?: CookieSameSite;
+    path?: string;
+    domain?: string;
+    secure?: boolean;
+    httpOnly?: boolean;
+    partitioned?: boolean;
+    arguments?: string[] | Record<string, string | number | boolean>;
 };
-export type ItemName<V> = {
-    name: string | number;
-    value: V;
-};
-export type ElementOrWindow = HTMLElement | Window;
-export type ElementOrString<E extends ElementOrWindow> = E | string;
-export type EventOptions = AddEventListenerOptions | boolean | undefined;
-export type EventListenerDetail<O extends Event, D extends Record<string, any>> = (event: O, detail?: D) => void;
-export type EventActivityItem<E extends ElementOrWindow> = {
-    element: E | undefined;
-    type: string;
-    listener?: (event: any | Event) => void;
-    observer?: ResizeObserver;
-};
-export type ImageCoordinator = {
-    x: number;
-    y: number;
-};
-// File: types/errorCenter.d.ts
+export declare class Cookie<T> {
+    static getInstance<T>(name: string): Cookie<T>;
+    constructor(name: string);
+    get(defaultValue?: T | string | (() => (T | string)), options?: CookieOptions): string | T | undefined;
+    set(value?: T | string | (() => (T | string)), options?: CookieOptions): void;
+    remove(): void;
+}
+export declare class CookieBlock {
+    static getItem(): CookieBlockInstance;
+    static get(): boolean;
+    static set(value: boolean): void;
+}
+export declare class CookieBlockInstance {
+    get(): boolean;
+    set(value: boolean): void;
+}
+export declare class CookieStorage {
+    static init(getListener?: (key: string) => any | undefined, getListenerRaw?: () => string, setListener?: (key: string, value: any, cookie: string, options?: CookieOptions) => void): void;
+    static reset(): void;
+    static get<T>(name: string, defaultValue?: T | (() => T)): T | undefined;
+    static set<T>(name: string, value: T | (() => T), options?: CookieOptions): T;
+    static remove(name: string): void;
+    static update(): void;
+}
+export declare class DataStorage<T> {
+    static setPrefix(newPrefix: string): void;
+    constructor(name: string, isSession?: boolean, errorCenter?: ErrorCenterInstance);
+    get(defaultValue?: T | (() => T), cache?: number): T | undefined;
+    set(value?: T | (() => T)): T | undefined;
+    remove(): this;
+    update(): this;
+}
+/**
+ * A class for working with dates.
+ * @remarks
+ * Creating a `Datetime` instance without a specific date (using the current time)
+ * for rendering in SSR may lead to hydration mismatches because the time or time zone
+ * on the server may differ from the time on the client.
+ */
+export declare class Datetime {
+    constructor(date?: NumberOrStringOrDate, type?: GeoDate, code?: string);
+    getIntl(): GeoIntl;
+    getDate(): Date;
+    getType(): GeoDate;
+    getHoursType(): GeoHours;
+    getHour24(): boolean;
+    getTimeZoneOffset(): number;
+    getTimeZone(style?: GeoTimeZoneStyle): string;
+    getFirstDayCode(): GeoFirstDay;
+    getYear(): number;
+    getMonth(): number;
+    getDay(): number;
+    getHour(): number;
+    getMinute(): number;
+    getSecond(): number;
+    getMaxDay(): number;
+    locale(type?: GeoDate, styleOptions?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions): string;
+    localeYear(style?: Intl.DateTimeFormatOptions['year']): string;
+    localeMonth(style?: Intl.DateTimeFormatOptions['month']): string;
+    localeDay(style?: Intl.DateTimeFormatOptions['day']): string;
+    localeHour(style?: Intl.DateTimeFormatOptions['hour']): string;
+    localeMinute(style?: Intl.DateTimeFormatOptions['minute']): string;
+    localeSecond(style?: Intl.DateTimeFormatOptions['second']): string;
+    standard(timeZone?: boolean): string;
+    setDate(value: NumberOrStringOrDate): this;
+    setType(value: GeoDate): this;
+    setHour24(value: boolean): this;
+    setCode(code: string): this;
+    setWatch(watch: (date: Date, type: GeoDate, hour24: boolean) => void): this;
+    setYear(value: number): this;
+    setMonth(value: number): this;
+    setDay(value: number): this;
+    setHour(value: number): this;
+    setMinute(value: number): this;
+    setSecond(value: number): this;
+    moveByYear(value: number): this;
+    moveByMonth(value: number): this;
+    moveByDay(value: number): this;
+    moveByHour(value: number): this;
+    moveByMinute(value: number): this;
+    moveBySecond(value: number): this;
+    moveMonthFirst(): this;
+    moveMonthLast(): this;
+    moveMonthNext(): this;
+    moveMonthPrevious(): this;
+    moveWeekdayFirst(): this;
+    moveWeekdayLast(): this;
+    moveWeekdayFirstByMonth(): this;
+    moveWeekdayLastByMonth(): this;
+    moveWeekdayNext(): this;
+    moveWeekdayPrevious(): this;
+    moveDayFirst(): this;
+    moveDayLast(): this;
+    moveDayNext(): this;
+    moveDayPrevious(): this;
+    clone(): Date;
+    cloneClass(): Datetime;
+    cloneMonthFirst(): Datetime;
+    cloneMonthLast(): Datetime;
+    cloneMonthNext(): Datetime;
+    cloneMonthPrevious(): Datetime;
+    cloneWeekdayFirst(): Datetime;
+    cloneWeekdayLast(): Datetime;
+    cloneWeekdayFirstByMonth(): Datetime;
+    cloneWeekdayLastByMonth(): Datetime;
+    cloneWeekdayNext(): Datetime;
+    cloneWeekdayPrevious(): Datetime;
+    cloneDayFirst(): Datetime;
+    cloneDayLast(): Datetime;
+    cloneDayNext(): Datetime;
+    cloneDayPrevious(): Datetime;
+}
 export type ErrorCenterGroup = string | undefined;
 export type ErrorCenterCauseItem<D = any> = {
     group?: ErrorCenterGroup;
@@ -1268,7 +440,61 @@ export type ErrorCenterHandlerItem = {
     handlers: ErrorCenterHandlerCallback[];
 };
 export type ErrorCenterHandlerList = ErrorCenterHandlerItem[];
-// File: types/formattersTypes.d.ts
+export declare class ErrorCenter {
+    static getItem(): ErrorCenterInstance;
+    static has(code: string, group?: string): boolean;
+    static get(code: string, group?: string): ErrorCenterCauseItem | undefined;
+    static add(cause: ErrorCenterCauseItem): void;
+    static addList(causes: ErrorCenterCauseList): void;
+    static addHandler(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): void;
+    static addHandlerList(handlers: ErrorCenterHandlerList): void;
+    static addCallback(callback: ErrorCenterHandlerCallback): void;
+    static on(cause: ErrorCenterCauseItem): void;
+}
+export declare class ErrorCenterHandler {
+    constructor(handlers?: ErrorCenterHandlerList);
+    has(group: ErrorCenterGroup): boolean;
+    get(group: ErrorCenterGroup): ErrorCenterHandlerItem | undefined;
+    add(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): this;
+    addList(handlers: ErrorCenterHandlerList): this;
+    addCallback(callback: ErrorCenterHandlerCallback): this;
+    on(cause: ErrorCenterCauseItem): this;
+}
+export declare class ErrorCenterInstance {
+    constructor(causes?: ErrorCenterCauseList, handler?: ErrorCenterHandler);
+    has(code: string, group?: string): boolean;
+    get(code: string, group?: string): ErrorCenterCauseItem | undefined;
+    add(cause: ErrorCenterCauseItem): this;
+    addList(causes: ErrorCenterCauseList): this;
+    addHandler(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): this;
+    addHandlerList(handlers: ErrorCenterHandlerList): this;
+    addCallback(callback: ErrorCenterHandlerCallback): this;
+    on(cause: ErrorCenterCauseItem): this;
+}
+/**
+ * Advanced wrapper for managing event listeners on DOM elements or the `window` object.
+ * @example
+ * ```typescript
+ * const clickEvent = new EventItem('.btn', 'click', (e) => console.log('Clicked!'));
+ * clickEvent.start();
+ * ```
+ */
+export declare class EventItem<E extends ElementOrWindow, O extends Event, D extends Record<string, any> = Record<string, any>> {
+    constructor(elementSelector?: ElementOrString<E>, type?: string | string[], listener?: EventListenerDetail<O, D> | undefined, options?: EventOptions, detail?: D | undefined);
+    isActive(): boolean;
+    getElement(): E | undefined;
+    setElement(elementSelector?: ElementOrString<E>): this;
+    setElementControl<EC extends HTMLElement>(elementSelector?: ElementOrString<EC>): this;
+    setType(type: string | string[]): this;
+    setListener(listener: EventListenerDetail<O, D>): this;
+    setOptions(options?: EventOptions): this;
+    setDetail(detail?: D): this;
+    dispatch(detail?: D | undefined): this;
+    start(): this;
+    stop(): this;
+    toggle(activity: boolean): this;
+    reset(): this;
+}
 export declare enum FormattersType {
     currency = "currency",
     date = "date",
@@ -1325,7 +551,666 @@ export type FormattersListColumns<T extends FormattersListItem, O extends Format
 export type FormattersListProp = FormattersList<FormattersListItem> | FormattersListItem;
 export type FormattersItemProp<List extends FormattersListProp> = ArrayToItem<List>;
 export type FormattersReturn<List extends FormattersListProp, Options extends FormattersOptionsList = FormattersOptionsList, Item extends FormattersItemProp<List> = FormattersItemProp<List>> = List extends any[] ? FormattersListColumns<Item, Options> : (FormattersListColumnItem<Item, Options> | undefined);
-// File: types/geoTypes.d.ts
+export declare class Formatters<Options extends FormattersOptionsList = FormattersOptionsList, List extends FormattersListProp = FormattersListProp, Item extends FormattersItemProp<List> = FormattersItemProp<List>> {
+    constructor(options: Options, list?: List | undefined);
+    is(): boolean;
+    isArray(): this is this & {
+        list: FormattersList<Item>;
+    };
+    length(): number;
+    getList(): FormattersList<Item>;
+    getOptions(): Options;
+    setList(list?: List): this;
+    to(): FormattersReturn<List, Options>;
+}
+export declare class Geo {
+    static getObject(): GeoInstance;
+    static get(): GeoItemFull;
+    static getCountry(): string;
+    static getLanguage(): string;
+    static getStandard(): string;
+    static getFirstDay(): string;
+    static getLocation(): string;
+    static getLocationCountry(): string;
+    static getLocationLanguage(): string;
+    static getItem(): GeoItemFull;
+    static getList(): GeoItem[];
+    static getByCode(code?: string): GeoItemFull;
+    static getByCodeFull(code: string): GeoItem | undefined;
+    static getByCountry(country: string): GeoItem | undefined;
+    static getByLanguage(language: string): GeoItem | undefined;
+    static getTimezone(): number;
+    static getTimezoneFormat(): string;
+    static find(code: string): GeoItemFull;
+    static toStandard(item: GeoItem): string;
+    static set(code: string, save?: boolean): void;
+    static setTimezone(timezone: number): void;
+    static setValueDefault(code?: string | (() => string)): void;
+}
+export declare const GEO_FLAG_ICON_NAME = "f";
+export declare class GeoFlag {
+    static flags: Record<string, string>;
+    constructor(code?: string);
+    get(code?: string): GeoFlagItem | undefined;
+    getLanguage(code?: string): GeoFlagItem | undefined;
+    getCode(): string;
+    getFlag(code?: string): string | undefined;
+    getList(codes?: string[], sort?: boolean): GeoFlagItem[];
+    getListLanguage(codes?: string[], sort?: boolean): GeoFlagItem[];
+    getNational(codes?: string[], sort?: boolean): GeoFlagNational[];
+    getNationalLanguage(codes?: string[], sort?: boolean): GeoFlagNational[];
+    setCode(code: string): this;
+}
+export declare const UI_GEO_COOKIE_KEY = "ui-geo-code";
+export declare class GeoInstance {
+    constructor();
+    get(): GeoItemFull;
+    getCountry(): string;
+    getLanguage(): string;
+    getStandard(): string;
+    getFirstDay(): string;
+    getLocation(): string;
+    getLocationCountry(): string;
+    getLocationLanguage(): string;
+    getItem(): GeoItemFull;
+    getList(): GeoItem[];
+    getByCode(code?: string): GeoItemFull;
+    getByCodeFull(code: string): GeoItem | undefined;
+    getByCountry(country: string): GeoItem | undefined;
+    getByLanguage(language: string): GeoItem | undefined;
+    getTimezone(): number;
+    getTimezoneFormat(): string;
+    find(code: string): GeoItemFull;
+    toStandard(item: GeoItem, language?: string): string;
+    set(code: string, save?: boolean): void;
+    setTimezone(timezone: number): void;
+    setValueDefault(code?: string | (() => string)): void;
+}
+export declare class GeoIntl {
+    static isItem(code?: string): boolean;
+    static getLocation(code?: string): string;
+    static getInstance(code?: string): GeoIntl;
+    constructor(code?: string, errorCenter?: ErrorCenterInstance);
+    getLocation(): string;
+    getFirstDay(): string;
+    display(value?: string, typeOptions?: Intl.DisplayNamesOptions['type'] | Intl.DisplayNamesOptions): string;
+    languageName(value?: string, style?: Intl.RelativeTimeFormatStyle): string;
+    countryName(value?: string, style?: Intl.RelativeTimeFormatStyle): string;
+    fullName(last: string, first: string, surname?: string, short?: boolean): string;
+    number(value: NumberOrString, options?: Intl.NumberFormatOptions): string;
+    decimal(): string;
+    currency(value: NumberOrString, currencyOptions?: string | Intl.NumberFormatOptions, numberOnly?: boolean): string;
+    currencySymbol(currency: string, currencyDisplay?: keyof Intl.NumberFormatOptionsCurrencyDisplayRegistry): string;
+    unit(value: NumberOrString, unitOptions?: string | Intl.NumberFormatOptions): string;
+    sizeFile(value: NumberOrString, unitOptions?: 'byte' | 'kilobyte' | 'megabyte' | 'gigabyte' | 'terabyte' | 'petabyte' | Intl.NumberFormatOptions): string;
+    percent(value: NumberOrString, options?: Intl.NumberFormatOptions): string;
+    percentBy100(value: NumberOrString, options?: Intl.NumberFormatOptions): string;
+    plural(value: NumberOrString, words: string, options?: Intl.PluralRulesOptions, optionsNumber?: Intl.NumberFormatOptions): string;
+    date(value: NumberOrStringOrDate, type?: GeoDate, styleOptions?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions, hour24?: boolean): string;
+    relative(value: NumberOrStringOrDate, styleOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions, todayValue?: Date): string;
+    relativeLimit(value: NumberOrStringOrDate, limit: number, todayValue?: Date, relativeOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions, dateOptions?: Intl.DateTimeFormatOptions['month'] | Intl.DateTimeFormatOptions, type?: GeoDate, hour24?: boolean): string;
+    relativeByValue(value: NumberOrString, unit: Intl.RelativeTimeFormatUnit, styleOptions?: Intl.RelativeTimeFormatStyle | Intl.RelativeTimeFormatOptions): string;
+    month(value?: NumberOrStringOrDate, style?: Intl.DateTimeFormatOptions['month']): string;
+    months(style?: Intl.DateTimeFormatOptions['month']): ItemValue<number | undefined>[];
+    weekday(value?: NumberOrStringOrDate, style?: Intl.DateTimeFormatOptions['weekday']): string;
+    weekdays(style?: Intl.DateTimeFormatOptions['weekday']): ItemValue<number | undefined>[];
+    time(value: NumberOrStringOrDate): string;
+    sort<T>(data: T[], compareFn?: (a: T, b: T) => [string, string]): T[];
+}
+export declare class GeoPhone {
+    static get(code: string): GeoPhoneValue | undefined;
+    static getByPhone(phone: string): GeoPhoneMapInfo;
+    static getByCode(code: string): GeoPhoneMap | undefined;
+    static getList(): GeoPhoneValue[];
+    static getMap(): Record<string, GeoPhoneMap>;
+    static toMask(phone: string, masks?: string[]): string | undefined;
+    static removeZero(phone: string): string;
+}
+export declare class GeoUnit {
+    static getInstance(code?: string): GeoUnit;
+    constructor(code?: string);
+    getLocation(): string;
+    millimeter(value: NumberOrString, options?: Intl.NumberFormatOptions): string;
+    centimeter(value: NumberOrString, options?: Intl.NumberFormatOptions): string;
+    meter(value: NumberOrString, options?: Intl.NumberFormatOptions): string;
+    kilometer(value: NumberOrString, options?: Intl.NumberFormatOptions): string;
+    squareMeter(value: NumberOrString, options?: Intl.NumberFormatOptions): string;
+    hectare(value: NumberOrString, options?: Intl.NumberFormatOptions): string;
+    gram(value: NumberOrString, options?: Intl.NumberFormatOptions): string;
+    kilogram(value: NumberOrString, options?: Intl.NumberFormatOptions): string;
+    tonne(value: NumberOrString, options?: Intl.NumberFormatOptions): string;
+    milliliter(value: NumberOrString, options?: Intl.NumberFormatOptions): string;
+    liter(value: NumberOrString, options?: Intl.NumberFormatOptions): string;
+    celsius(value: NumberOrString, options?: Intl.NumberFormatOptions): string;
+    kilometerPerHour(value: NumberOrString, options?: Intl.NumberFormatOptions): string;
+    format(value: NumberOrString, unit: string, options?: Intl.NumberFormatOptions): string;
+}
+export declare class Global {
+    static getItem(): Record<string, any>;
+    static get<R = any>(name: string): R;
+    static add(data: Record<string, any>): void;
+}
+export declare class Hash {
+    static getItem(): HashInstance;
+    static get<T>(name: string, defaultValue?: T | (() => T)): T;
+    static set<T>(name: string, callback: T | (() => T)): void;
+    static addWatch<T>(name: string, callback: (value: T) => void): void;
+    static removeWatch<T>(name: string, callback: (value: T) => void): void;
+    static reload(): void;
+}
+export declare class HashInstance extends UrlInstanceAbstract {}
+export type IconsItem = string | Promise<string | any> | (() => Promise<string | any>);
+export type IconsConfig = {
+    url?: string;
+    list?: Record<string, IconsItem>;
+};
+export declare class Icons {
+    static is(index: string): boolean;
+    static get(index: string, url?: string, wait?: number): Promise<string>;
+    static getAsync(index: string, url?: string): string;
+    static getNameList(): string[];
+    static getUrlGlobal(): string;
+    static add(index: string, file: IconsItem): void;
+    static addLoad(index: string): void;
+    static addGlobal(index: string, file: string): void;
+    static addByList(list: Record<string, IconsItem>): void;
+    static setUrl(url: string): void;
+    static setConfig(config: IconsConfig): void;
+}
+export declare class Loading {
+    static is(): boolean;
+    static get(): number;
+    static getItem(): LoadingInstance;
+    static show(): void;
+    static hide(): void;
+    static registrationEvent(listener: EventListenerDetail<CustomEvent, LoadingDetail>, element?: ElementOrString<HTMLElement>): void;
+    static unregistrationEvent(listener: EventListenerDetail<CustomEvent, LoadingDetail>, element?: ElementOrString<HTMLElement>): void;
+}
+export type LoadingDetail = {
+    loading: boolean;
+};
+export type LoadingRegistrationItem = {
+    item: EventItem<Window, CustomEvent, LoadingDetail>;
+    listener: EventListenerDetail<CustomEvent, LoadingDetail>;
+    element?: ElementOrString<HTMLElement>;
+};
+export declare class LoadingInstance {
+    constructor(eventName?: string);
+    is(): boolean;
+    get(): number;
+    show(): void;
+    hide(): void;
+    registrationEvent(listener: EventListenerDetail<CustomEvent, LoadingDetail>, element?: ElementOrString<HTMLElement>): void;
+    unregistrationEvent(listener: EventListenerDetail<CustomEvent, LoadingDetail>, element?: ElementOrString<HTMLElement>): void;
+}
+export declare class Meta extends MetaManager<MetaTag[]> {
+    constructor();
+    getOg(): MetaOg;
+    getTwitter(): MetaTwitter;
+    getTitle(): string;
+    getKeywords(): string;
+    getDescription(): string;
+    getImage(): string;
+    getCanonical(): string;
+    getRobots(): MetaRobots;
+    getAuthor(): string;
+    getSiteName(): string;
+    getLocale(): string;
+    setTitle(title: string): this;
+    setKeywords(keywords: string | string[]): this;
+    setDescription(description: string): this;
+    setImage(image: string): this;
+    setCanonical(canonical: string): this;
+    setRobots(robots: MetaRobots): this;
+    setAuthor(author: string): this;
+    setSiteName(siteName: string): this;
+    setLocale(locale: string): this;
+    setSuffix(suffix?: string): void;
+    html(): string;
+    htmlTitle(): string;
+}
+type MetaList<T extends readonly string[]> = {
+    [K in T[number]]?: string;
+};
+export declare class MetaManager<T extends readonly string[], Key extends keyof MetaList<T> = keyof MetaList<T>> {
+    constructor(listMeta: T, isProperty?: boolean);
+    getListMeta(): T;
+    get(name: Key): string;
+    getItems(): MetaList<T>;
+    html(): string;
+    set(name: Key, content: string): this;
+    setByList(metaList: MetaList<T>): this;
+}
+export declare class MetaOg extends MetaManager<MetaOpenGraphTag[]> {
+    constructor();
+    getTitle(): string;
+    getType(): MetaOpenGraphType;
+    getUrl(): string;
+    getImage(): string;
+    getDescription(): string;
+    getLocale(): string;
+    getSiteName(): string;
+    setTitle(title: string): this;
+    setType(type: MetaOpenGraphType): this;
+    setUrl(url: string): this;
+    setImage(url: string): this;
+    setDescription(description: string): this;
+    setLocale(locale: string): this;
+    setSiteName(siteName: string): this;
+}
+export declare class MetaStatic {
+    static getItem(): Meta;
+    static getOg(): MetaOg;
+    static getTwitter(): MetaTwitter;
+    static getTitle(): string;
+    static getKeywords(): string;
+    static getDescription(): string;
+    static getImage(): string;
+    static getCanonical(): string;
+    static getRobots(): MetaRobots;
+    static getAuthor(): string;
+    static getSiteName(): string;
+    static getLocale(): string;
+    static setTitle(title: string): typeof MetaStatic;
+    static setKeywords(keywords: string | string[]): typeof MetaStatic;
+    static setDescription(description: string): typeof MetaStatic;
+    static setImage(image: string): typeof MetaStatic;
+    static setCanonical(canonical: string): typeof MetaStatic;
+    static setRobots(robots: MetaRobots): typeof MetaStatic;
+    static setAuthor(author: string): typeof MetaStatic;
+    static setSiteName(siteName: string): typeof MetaStatic;
+    static setLocale(locale: string): typeof MetaStatic;
+    static setSuffix(suffix?: string): typeof MetaStatic;
+    static html(): string;
+    static htmlTitle(): string;
+}
+export declare class MetaTwitter extends MetaManager<MetaTwitterTag[]> {
+    constructor();
+    getCard(): MetaTwitterCard;
+    getSite(): string;
+    getCreator(): string;
+    getUrl(): string;
+    getTitle(): string;
+    getDescription(): string;
+    getImage(): string;
+    setCard(card: MetaTwitterCard): this;
+    setSite(site: string): this;
+    setCreator(creator: string): this;
+    setUrl(url: string): this;
+    setTitle(title: string): this;
+    setDescription(description: string): this;
+    setImage(image: string): this;
+}
+export declare class Query {
+    static getItem(): QueryInstance;
+    static get<T>(name: string, defaultValue?: T | (() => T)): T;
+    static set<T>(name: string, callback: T | (() => T)): void;
+    static addWatch<T>(name: string, callback: (value: T) => void): void;
+    static removeWatch<T>(name: string, callback: (value: T) => void): void;
+    static reload(): void;
+}
+export declare class QueryInstance extends UrlInstanceAbstract {}
+export declare class ResumableTimer {
+    constructor(callback: FunctionVoid, delay?: number, blockStart?: boolean);
+    resume(): this;
+    pause(): this;
+    reset(): this;
+    clear(): this;
+}
+export declare class ScrollbarWidth {
+    static is(): Promise<boolean>;
+    static get(): Promise<number>;
+    static getStorage(): DataStorage<number>;
+    static getCalculate(): boolean;
+}
+export declare class SearchList<T extends SearchItem, K extends SearchColumns<T>> {
+    constructor(list: SearchListValue<T>, columns?: K, value?: string, options?: SearchOptions);
+    getData(): SearchListData<T, K>;
+    getList(): SearchListValue<T>;
+    getColumns(): K | undefined;
+    getItem(): SearchListItem;
+    getValue(): string | undefined;
+    getOptions(): SearchListOptions;
+    setList(list: SearchListValue<T>): this;
+    setColumns(columns?: K): this;
+    setValue(value?: string): this;
+    setOptions(options: SearchOptions): this;
+    to(): SearchFormatList<T, K>;
+}
+export declare class SearchListData<T extends SearchItem, K extends SearchColumns<T>> {
+    constructor(list: SearchListValue<T>, columns: K | undefined, item: SearchListItem, options: SearchListOptions);
+    is(): this is this & {
+        list: T[];
+        columns: string[];
+    };
+    isList(): this is this & {
+        list: T[];
+    };
+    getList(): SearchListValue<T>;
+    getColumns(): K | undefined;
+    setList(list: SearchListValue<T>): this;
+    setColumns(columns?: SearchColumns<T>): this;
+    findCacheItem(item: T): SearchCacheItem<T> | undefined;
+    forEach(callback: (item: SearchCacheItem<T>['item'], value: SearchCacheItem<T>['value']) => SearchFormatItem<T, K> | undefined): SearchFormatList<T, K>;
+    toFormatItem(item: T, selection: boolean): SearchFormatItem<T, K>;
+}
+export declare class SearchListItem {
+    constructor(value: string | undefined, options: SearchListOptions);
+    is(): this is this & {
+        value: string;
+    };
+    isSearch(): boolean;
+    get(): string;
+    set(value?: string): this;
+}
+export declare class SearchListMatcher {
+    constructor(item: SearchListItem, options: SearchListOptions);
+    is(): boolean;
+    isSelection(value: SearchCacheItem<any>['value']): boolean;
+    get(): RegExp | undefined;
+    update(): void;
+}
+export declare class SearchListOptions {
+    constructor(options?: SearchOptions | undefined);
+    getOptions(): SearchOptions;
+    getLimit(): number;
+    getReturnEverything(): boolean;
+    getDelay(): number;
+    getFindExactMatch(): boolean;
+    getClassName(): string;
+    setOptions(options: SearchOptions): this;
+}
+export declare class ServerStorage {
+    static init(listener: () => Record<string, any> | undefined): typeof ServerStorage;
+    static reset(): void;
+    static has(key: string): boolean;
+    static get<T = any>(key: string, defaultValue?: () => T, hydration?: boolean): T;
+    static set<T = any>(key: string, value: () => T, hydration?: boolean, storageList?: Record<string, any>): T;
+    static setErrorStatus(hide: boolean): void;
+    static remove(key: string): void;
+    static toString(): string;
+}
+export declare class StorageCallback<T = any, Callback = (value: T) => void | Promise<void>> {
+    static getInstance<T>(name: string, group?: string): StorageCallback<T, (value: T) => void | Promise<void>>;
+    constructor(name: string, group?: string);
+    isLoading(): boolean;
+    getName(): string;
+    getLoading(): boolean;
+    addCallback(callback: Callback, isOnce?: boolean): this;
+    removeCallback(callback: Callback): this;
+    preparation(): this;
+    run(value: T): Promise<this>;
+}
+export declare class Translate {
+    static get(name: string, replacement?: string[] | Record<string, string | number>): Promise<string>;
+    static getItem(): TranslateInstance;
+    static getSync(name: string, first?: boolean, replacement?: string[] | Record<string, string | number>): string;
+    static getList<T extends TranslateCode[]>(names: T): Promise<TranslateList<T>>;
+    static getListSync<T extends TranslateCode[]>(names: T, first?: boolean): TranslateList<T>;
+    static add(names: string | string[]): Promise<void>;
+    static addSync(data: Record<string, string>): void;
+    static addNormalOrSync(data: Record<string, string>): Promise<void>;
+    static addSyncByLocation(data: Record<string, Record<string, string>>): void;
+    static addSyncByFile(data: TranslateDataFile): void;
+    static setUrl(url: string): void;
+    static setPropsName(name: string): void;
+    static setReadApi(value: boolean): void;
+    static setConfig(config: TranslateConfig): void;
+}
+export declare class TranslateFile {
+    constructor(data?: TranslateDataFile, language?: string | (() => string), location?: string | (() => string));
+    isFile(): boolean;
+    getLocation(): string;
+    getLanguage(): string;
+    getList(): Promise<TranslateDataFileList | undefined>;
+    add(data: TranslateDataFile): void;
+}
+export declare class TranslateInstance {
+    constructor(url?: string, propsName?: string, files?: TranslateFile);
+    get(name: string, replacement?: string[] | Record<string, string | number>): Promise<string>;
+    getSync(name: string, first?: boolean, replacement?: string[] | Record<string, string | number>): string;
+    getList<T extends TranslateCode[]>(names: T): Promise<TranslateList<T>>;
+    getListSync<T extends TranslateCode[]>(names: T, first?: boolean): TranslateList<T>;
+    add(names: string | string[]): Promise<void>;
+    addSync(data: Record<string, string>): void;
+    addNormalOrSync(data: Record<string, string>): Promise<void>;
+    addSyncByLocation(data: Record<string, Record<string, string>>): void;
+    addSyncByFile(data: TranslateDataFile): void;
+    setUrl(url: string): this;
+    setPropsName(propsName: string): this;
+    setReadApi(value: boolean): this;
+}
+export declare abstract class UrlInstanceAbstract {
+    get<T>(name: string, defaultValue?: T | (() => T)): T;
+    set<T>(name: string, callback: T | (() => T)): this;
+    addWatch<T>(name: string, callback: (value: T) => void): this;
+    removeWatch<T>(name: string, callback: (value: T) => void): this;
+    reload(): this;
+}
+export declare class UrlItem {
+    static getInstance(): UrlItem;
+    constructor(url?: string | URL);
+    get href(): string;
+    get protocol(): string;
+    get username(): string;
+    get password(): string;
+    get host(): string;
+    get hostname(): string;
+    get port(): string;
+    get pathname(): string;
+    get search(): string;
+    get searchParams(): URLSearchParams;
+    get hash(): string;
+    get origin(): string;
+    hasParam(name: string): boolean;
+    getParam(name: string): string | undefined;
+    getParams(): Record<string, any>;
+    set(url?: string | URL): this;
+    setParam(name: string, value: string): this;
+    setParams(params: Record<string, any>): this;
+    deleteParam(name: string): this;
+    toString(): string;
+    toJSON(): string;
+}
+export declare function addTagHighlightMatch(value: string, search?: string | RegExp, className?: string, shouldEscape?: boolean): string;
+export declare function anyToString<V>(value: V, isArrayString?: boolean, trim?: boolean): string;
+export declare const applyTemplate: (text: string, replacement?: Record<string, string | number | boolean> | string[]) => string;
+export declare function arrFill<T>(value: T, count: number): T[];
+export declare function blobToBase64(blob: Blob, clean?: boolean): Promise<string | undefined>;
+export declare function capitalize(value: string, isLocale?: boolean): string;
+export declare function copyObject<T>(value: T): T;
+export declare function copyObjectLite<T, R = T>(value: T, source?: any): R;
+/**
+ * @remarks
+ * When running on the server, the function always returns `undefined`.
+ * If you use it within a component's rendering logic, it may lead to hydration mismatches.
+ * It is recommended to call this function only inside lifecycle hooks that run exclusively on the client (e.g., `onMounted` in Vue or `useEffect` in React).
+ */
+export declare function createElement<T extends HTMLElement>(parentElement?: HTMLElement, tagName?: string, options?: Partial<T> | Record<keyof T, T[keyof T]> | ((element: T) => void), referenceElement?: HTMLElement): T | undefined;
+export declare function domContentLoaded<T = void>(callback: () => T | Promise<T>): Promise<T>;
+export declare function domQuerySelector<E extends Element = Element>(selectors: string): E | undefined;
+export declare function domQuerySelectorAll<E extends Element = Element>(selectors: string): NodeListOf<E> | undefined;
+export declare function encodeAttribute(text: string): string;
+export declare function encodeLiteAttribute(text: string): string;
+export declare function ensureMaxSize(file: Uint8Array, compress?: number, type?: string): Promise<string>;
+export declare function escapeExp(value: string): string;
+export declare function eventStopPropagation(event: Event): void;
+export declare function executeFunction<T>(callback: T | FunctionArgs<any, T>, ...args: any[]): T;
+export declare function executePromise<T>(callback: ((...args: any[]) => Promise<T>) | ((...args: any[]) => T) | T, ...args: any[]): Promise<T>;
+export declare function forEach<T, R, D extends T[] | Record<string, T> | Map<string, T> | Set<T> = T[] | Record<string, T> | Map<string, T> | Set<T>, K = D extends T[] ? number : string>(data: D & (T[] | Record<string, T> | Map<string, T> | Set<T>), callback: (item: T, key: K, dataMain: typeof data) => R, saveUndefined?: boolean): R[];
+export declare function frame(callback: () => void, next?: () => boolean, end?: () => void): void;
+export declare function getArrayHighlightMatch(value: string, search?: string | RegExp): HighlightMatchItem[];
+export declare function getAttributes<E extends ElementOrWindow>(element?: ElementOrString<E>): Record<string, string | undefined>;
+export declare function getClipboardData(event?: ClipboardEvent): Promise<string>;
+export declare function getColumn<T, K extends keyof T>(array: ObjectOrArray<T>, column: K): (T[K] | undefined)[];
+/**
+ * @remarks
+ * Using this function for rendering in SSR may lead to hydration mismatches
+ * because the time or time zone on the server may differ from the time on the client.
+ * It is recommended to use this function inside client-side hooks only (e.g., `onMounted` in Vue or `useEffect` in React).
+ */
+export declare function getCurrentDate(format?: GeoDate): string;
+/**
+ * @remarks
+ * **Warning (SSR):** Using this function for rendering in SSR will almost certainly lead to hydration mismatches
+ * because the timestamp on the server will differ from the timestamp on the client.
+ */
+export declare function getCurrentTime(): number;
+export declare function getElement<E extends ElementOrWindow, R extends Exclude<E, Window>>(element?: ElementOrString<E>): R | undefined;
+/**
+ * @example
+ * ```typescript
+ * import { useId } from 'vue'
+ * import { initGetElementId } from '@dxtmisha/functional-basic'
+ *
+ * initGetElementId(() => useId())
+ * ```
+ */
+export declare function getElementId<E extends ElementOrWindow>(element?: ElementOrString<E>, selector?: string): string;
+export declare function initGetElementId(newListener: () => string | number): void;
+export declare function getElementImage(image: HTMLImageElement | string): HTMLImageElement | undefined;
+export declare function getElementItem<T extends ElementOrWindow, K extends keyof T, D>(element: ElementOrString<T>, index: K | string, defaultValue?: D): T[K] | D | undefined;
+export declare function getElementOrWindow<E extends ElementOrWindow>(element?: ElementOrString<E>): E | undefined;
+export declare function getElementSafeScript(id: string, data: any): string;
+export declare function getExactSearchExp(search: string): RegExp;
+export declare function getExp(value: string, flags?: string, pattern?: string): RegExp;
+export declare function getFirst<T>(value: T | T[] | Record<string, T>): T | undefined;
+export declare function getHydrationData<T>(id: string, defaultValue: T, remove?: boolean): T;
+export declare function getItemByPath<T extends Record<string, any>, R = string>(item: T, path: string): R | undefined;
+export declare function getKey(event: KeyboardEvent): string | number | undefined;
+export declare function getLast<T>(value: T | T[] | Record<string, T>): T | undefined;
+export declare function getLength(value: any): number;
+export declare function getLengthOfAllArray(value: ObjectOrArray<string>): number[];
+export declare function getMaxLengthAllArray(data: ObjectOrArray<string>): number;
+export declare function getMinLengthAllArray(data: ObjectOrArray<string>): number;
+export declare function getMouseClient(event: MouseEvent & TouchEvent): ImageCoordinator;
+export declare function getMouseClientX(event: MouseEvent & TouchEvent): number;
+export declare function getMouseClientY(event: MouseEvent & TouchEvent): number;
+export declare function getObjectByKeys<T extends Record<string, any>, K extends keyof T>(data: T, keys: K[]): Pick<T, K>;
+export declare function getObjectNoUndefined<T extends Record<string | number, any>>(data: T, exception?: any): T;
+export declare function getObjectOrNone<T>(value: T): T & Record<string, any>;
+export declare function getOnlyText(text: any): string;
+export declare function getRandomItem<T>(value?: T | T[] | Record<string, T>): T | undefined;
+export declare function getRandomText(min: number, max: number, symbol?: string, lengthMin?: number, lengthMax?: number): string;
+export declare function getRequestString(request: Record<string, any> | any[], sign?: string, separator?: string, subKey?: string): string;
+export declare function getSearchExp(search: string, limit?: number): RegExp;
+export declare function getSeparatingSearchExp(search: string | RegExp, limit?: number): RegExp;
+export declare function getStepPercent(min: number | undefined, max: number): number;
+export declare function getStepValue(min: number | undefined, max: number): number;
+export declare function goScroll(selector: string, elementTo: HTMLElement | undefined, elementCenter?: HTMLElement): void;
+export declare function goScrollSmooth<E extends HTMLElement>(element: E, options?: ScrollIntoViewOptions, shift?: number): void;
+export declare function goScrollTo(element?: HTMLElement, elementTo?: HTMLElement, behavior?: ScrollBehavior): void;
+export declare function handleShare(data: ShareData): Promise<boolean>;
+export declare function inArray<T>(array: T[], value: T): boolean;
+export declare function initScrollbarOffset(): Promise<void>;
+export declare function intersectKey<T, KT extends keyof T, C, KC extends keyof C>(data?: T, comparison?: C): Record<KT & KC, T[KT]>;
+export declare const isApiSuccess: <T>(data: ApiData<T>) => boolean;
+export declare function isArray<T, R>(value: T): value is Extract<T, R[]>;
+export declare function isDifferent<T>(value: ObjectItem<T>, old: ObjectItem<T>): boolean;
+export declare function isDomData(): boolean;
+export declare function isDomRuntime(): boolean;
+export declare function isElementVisible<E extends ElementOrWindow>(elementSelectors?: ElementOrString<E>): boolean;
+export declare const isEnter: (event: KeyboardEvent, isInputElement?: boolean) => boolean;
+export declare function isFilled<T>(value: T, zeroTrue?: boolean): value is Exclude<T, EmptyValue>;
+export declare function isFloat(value: any): boolean;
+export declare function isFunction<T>(callback: T): callback is Extract<T, FunctionArgs<any, any>>;
+export declare function isInDom<E extends ElementOrWindow>(element?: ElementOrString<E>): boolean;
+export declare const isInput: (element: HTMLElement | EventTarget | null) => boolean;
+export declare function isIntegerBetween(value: number, between: number): boolean;
+export declare const isMetaKey: (event: KeyboardEvent) => boolean;
+export declare function isNull<T>(value: T): value is Extract<T, Undefined>;
+export declare function isNumber(value: any): boolean;
+export declare function isObject<T>(value: T): value is Extract<T, Record<any, any>>;
+export declare function isObjectNotArray<T>(value: T): value is Exclude<Extract<T, Record<any, any>>, any[] | undefined | null>;
+export declare function isOnLine(): boolean;
+export declare function isSelected<T, S>(value: T, selected: T | T[] | S): boolean;
+export declare function isSelectedByList<T>(values: T | T[], selected: T | T[]): boolean;
+export declare function isShare(): boolean;
+export declare function isString<T>(value: T): value is Extract<T, string>;
+export declare const isTab: (event: KeyboardEvent) => boolean;
+export declare function isWindow<E>(element: E): element is Extract<E, Window>;
+export declare function random(min: number, max: number): number;
+export declare function removeCommonPrefix(mainStr: string, prefix: string): string;
+export declare const replaceComponentName: (text: string | undefined, name: string, componentName: string) => string | undefined;
+export declare function replaceRecursive<I>(array: ObjectItem<I>, replacement?: ObjectOrArray<I>, isMerge?: boolean): ObjectItem<I>;
+export declare function replaceTemplate(value: string, replaces: Record<string, string | FunctionReturn<string>>): string;
+export declare function resizeImageByMax(image: HTMLImageElement | string, maxSize: number, type?: 'auto' | 'width' | 'height', typeData?: string): string | undefined;
+export declare function secondToTime(second: number | string | undefined, hasHour?: boolean): string;
+export declare function setElementItem<E extends ElementOrWindow, K extends keyof E, V extends E[K] = E[K]>(element: ElementOrString<E>, index: K, value: V | Record<string, V>): E | undefined;
+export declare function setValues<T>(selected: T | T[] | undefined, value: any, options: {
+    multiple?: boolean;
+    maxlength?: number;
+    alwaysChange?: boolean;
+    notEmpty?: boolean;
+}): T | T[] | undefined;
+export declare function sleep(ms: number): Promise<void>;
+export declare function sortList<T = any>(list: T[], sortColumns: SortColumnItem[], customSort?: SortFunction<T>): T[];
+export declare function splice<I>(array: ObjectItem<I>, replacement?: ObjectItem<I> | I, indexStart?: string): ObjectItem<I>;
+export declare function strFill(value: string, count: number): string;
+export declare function strSplit(value: number | string, separator: string, limit?: number): string[];
+export declare function toArray<T>(value: T): T extends any[] ? T : [T];
+export declare function toCamelCase(value: string): string;
+export declare function toCamelCaseFirst(value: string): string;
+export declare function toDate<T extends Date | number | string>(value?: T): (T & Date) | Date;
+export declare function toKebabCase(value: string): string;
+/**
+ * @example
+ * toNumber("1 234,56") // 1234.56
+ * toNumber("1,234.56") // 1234.56
+ * toNumber("1,234")    // 1.234
+ */
+export declare function toNumber(value?: NumberOrString): number;
+export declare function toNumberByMax(value: string | number, max?: string | number, formatting?: boolean, language?: string): string | number;
+export declare function toNumberPositive(value?: number | string | null, defaultValue?: number): number;
+export declare function toPercent(maxValue: number, value: number): number;
+export declare function toPercentBy100(maxValue: number, value: number): number;
+export declare function toString<T>(value: T): string;
+export declare function transformation(value: any, isFunction?: boolean): any;
+export declare function uint8ArrayToBase64(bytes: Uint8Array): string;
+export declare function uniqueArray<T>(value: T[]): T[];
+export declare function writeClipboardData(text: string): Promise<void>;
+export declare const errorCauseList: ErrorCenterCauseList;
+export type Undefined = undefined | null;
+export type EmptyValue = Undefined | 0 | false | '' | 'undefined' | 'null' | '0' | 'false' | '[]';
+export type NumberOrString = number | string;
+export type NumberOrStringOrBoolean = number | string | boolean;
+export type NumberOrStringOrDate = NumberOrString | Date;
+export type NormalOrArray<T = NumberOrString> = T | T[];
+export type NormalOrPromise<T> = T | Promise<T>;
+export type ObjectItem<T = any> = Record<string, T>;
+export type ObjectOrArray<T = any> = T[] | ObjectItem<T>;
+export type ArrayToItem<T> = T extends any[] ? T[number] : T;
+export type FunctionReturn<R = any> = () => R;
+export type FunctionVoid = () => void;
+export type FunctionArgs<T, R> = (...args: T[]) => R;
+export type FunctionAnyType<T = any, R = any> = (...args: T[]) => R;
+export type ItemList<T = any> = Record<string, T>;
+export type Item<V> = {
+    index: string;
+    value: V;
+};
+export type ItemValue<V> = {
+    label: string;
+    value: V;
+};
+export type ItemName<V> = {
+    name: string | number;
+    value: V;
+};
+export type ElementOrWindow = HTMLElement | Window;
+export type ElementOrString<E extends ElementOrWindow> = E | string;
+export type EventOptions = AddEventListenerOptions | boolean | undefined;
+export type EventListenerDetail<O extends Event, D extends Record<string, any>> = (event: O, detail?: D) => void;
+export type EventActivityItem<E extends ElementOrWindow> = {
+    element: E | undefined;
+    type: string;
+    listener?: (event: any | Event) => void;
+    observer?: ResizeObserver;
+};
+export type ImageCoordinator = {
+    x: number;
+    y: number;
+};
 export type GeoDate = 'full' | 'datetime' | 'date' | 'year-month' | 'year' | 'month' | 'day' | 'day-month' | 'time' | 'hour-minute' | 'hour' | 'minute' | 'second';
 export type GeoFirstDay = 1 | 6 | 0;
 export type GeoHours = '12' | '24';
@@ -1398,7 +1283,6 @@ export interface GeoPhoneMapInfo {
     item?: GeoPhoneMap;
     phone?: string;
 }
-// File: types/metaTypes.d.ts
 export declare enum MetaTag {
     title = "title",
     description = "description",
@@ -1584,7 +1468,6 @@ export declare enum MetaTwitterCard {
     audio = "audio",
     poll = "poll"
 }
-// File: types/searchTypes.d.ts
 export type SearchItem = Record<string, any>;
 export type SearchColumnPath<K, P> = K extends string ? P extends string ? `${K}.${P}` : never : never;
 export type SearchColumn<T extends SearchItem> = {
@@ -1616,14 +1499,12 @@ export type HighlightMatchItem = {
     text: string;
     isMatch: boolean;
 };
-// File: types/sortTypes.d.ts
 export type SortDir = 'asc' | 'desc';
 export type SortColumnItem = {
     column?: string;
     dir?: SortDir;
 };
 export type SortFunction<T = any> = (a: T, b: T, column?: string, dir?: SortDir) => number;
-// File: types/translateTypes.d.ts
 export type TranslateConfig = {
     url?: string;
     propsName?: string;
@@ -1639,5 +1520,3 @@ export type TranslateDataFileItem = () => Promise<TranslateDataFileList>;
 export type TranslateDataFile = Record<string, TranslateDataFileItem>;
 export declare const TRANSLATE_GLOBAL_PREFIX = "global";
 export declare const TRANSLATE_TIME_OUT = 160;
-// File: media/errorCauseList.d.ts
-export declare const errorCauseList: ErrorCenterCauseList;
