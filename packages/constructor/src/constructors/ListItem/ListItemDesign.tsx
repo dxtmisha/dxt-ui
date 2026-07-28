@@ -47,11 +47,13 @@ export class ListItemDesign<
    * @param name class name / название класса
    * @param props properties / свойства
    * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor item constructor class / класс конструктора элемента
    */
   constructor(
     name: string,
     props: Readonly<P>,
-    options?: ConstrOptions<COMP, ListItemEmits, P>
+    options?: ConstrOptions<COMP, ListItemEmits, P>,
+    ItemConstructor: typeof ListItem = ListItem
   ) {
     super(
       name,
@@ -59,7 +61,7 @@ export class ListItemDesign<
       options
     )
 
-    this.item = new ListItem(
+    this.item = new ItemConstructor(
       this.props,
       this.refs,
       this.element,

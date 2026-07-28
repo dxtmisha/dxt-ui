@@ -483,6 +483,10 @@
     "./TableFlex": {
       "types": "./dist/constructors/TableFlex/index.d.ts",
       "default": "./dist/tableFlex.js"
+    },
+    "./NavigationItem": {
+      "types": "./dist/constructors/NavigationItem/index.d.ts",
+      "default": "./dist/navigationItem.js"
     }
   },
   "buildOptions": {
