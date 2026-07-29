@@ -97,7 +97,8 @@ export class NavigationRailItemDesign<
       ...{
         // :classes [!] System label / Системная метка
         label: this.getSubClass('label'),
-        icon: this.getSubClass('icon'),
+        context: this.getSubClass('context'),
+        contextLine: this.getSubClass('contextLine'),
         badge: this.getSubClass('badge')
         // :classes [!] System label / Системная метка
       }
@@ -126,9 +127,7 @@ export class NavigationRailItemDesign<
     this.initSlot('leading', children)
 
     children.push(
-      ...this.item.label.render(),
-      ...this.item.badge.render(),
-      ...this.item.icon.renderIcon(),
+      ...this.renderContext(),
       ...this.item.progress.render(),
       ...this.item.ripple.render()
     )
@@ -147,5 +146,40 @@ export class NavigationRailItemDesign<
       },
       children
     )
+  }
+
+  /**
+   * Generates icon and badge container.
+   *
+   * Генерирует контейнер для иконки и значка.
+   */
+  readonly renderContext = (): VNode[] => {
+    if (this.item.badge.is) {
+      if (this.item.icon.isIcon()) {
+        return [
+          h('div', {
+            class: this.classes?.value.context
+          }, [
+            ...this.item.icon.renderIcon(),
+            ...this.item.badge.render()
+          ]),
+          ...this.item.label.render()
+        ]
+      }
+
+      return [
+        h('div', {
+          class: this.classes?.value.contextLine
+        }, [
+          ...this.item.label.render(),
+          ...this.item.badge.render()
+        ])
+      ]
+    }
+
+    return [
+      ...this.item.icon.renderIcon(),
+      ...this.item.label.render()
+    ]
   }
 }

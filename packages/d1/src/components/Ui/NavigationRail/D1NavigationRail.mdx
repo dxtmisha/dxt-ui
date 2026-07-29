@@ -1,0 +1,48 @@
+import {Canvas, Meta} from '@storybook/addon-docs/blocks'
+import {
+    StorybookDescriptions,
+    StorybookMain
+} from '@dxtmisha/wiki/storybook'
+
+import * as NavigationRail from './D1NavigationRail.stories'
+import {NavigationRailWikiStorybook} from './wiki'
+
+[//]: # (:documentation-import [!] System label / Системная метка)
+[//]: # (:documentation-import [!] System label / Системная метка)
+
+<Meta of={NavigationRail}/>
+<StorybookMain
+    name={NavigationRailWikiStorybook.getName()}
+    description={NavigationRailWikiStorybook.getDescription()}
+    story={NavigationRail.NavigationRail}
+/>
+
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+<StorybookDescriptions componentName={'NavigationRail'} type={'navigationRail'}/>
+
+<Canvas of={NavigationRail.NavigationRailBasic}/>
+    
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+[//]: # (:documentation-events [!] System label / Системная метка)
+## Events
+
+<StorybookDescriptions componentName={'Event'} type={'click'}/>
+<StorybookDescriptions componentName={'List'} type={'event.close'}/>
+    
+[//]: # (:documentation-events [!] System label / Системная метка)
+
+[//]: # (:documentation-expose [!] System label / Системная метка)
+## Expose
+
+<StorybookDescriptions componentName={'Expose'} type={'selected'}/>
+    
+[//]: # (:documentation-expose [!] System label / Системная метка)
+
+[//]: # (:documentation-slots [!] System label / Системная метка)
+## Slots
+
+<StorybookDescriptions componentName={'List'} type={'slot.html'}/>
+    
+[//]: # (:documentation-slots [!] System label / Системная метка)

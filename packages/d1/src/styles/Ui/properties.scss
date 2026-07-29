@@ -12732,6 +12732,11 @@
         name: 'd1-navigationList',
         type: 'component',
       ),
+      'navigationRail':(
+        index: 'navigationRail',
+        name: 'd1-navigationRail',
+        type: 'component',
+      ),
       'navigationRailItem':(
         index: 'navigationRailItem',
         name: 'd1-navigationRailItem',
@@ -13508,6 +13513,11 @@
       'navigationList':(
         index: 'navigationList',
         name: 'd-navigationList',
+        type: 'component',
+      ),
+      'navigationRail':(
+        index: 'navigationRail',
+        name: 'd-navigationRail',
         type: 'component',
       ),
       'navigationRailItem':(

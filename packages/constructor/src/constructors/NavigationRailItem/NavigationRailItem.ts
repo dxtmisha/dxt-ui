@@ -123,9 +123,9 @@ export class NavigationRailItem {
       className,
       props,
       components,
-      {
-        overlap: 'rectangular'
-      }
+      () => ({
+        overlap: this.icon.isIcon() ? 'circular' : 'static'
+      })
     )
 
     this.ripple = new RippleIncludeConstructor(className, components, this.enabled)

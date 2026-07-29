@@ -52,6 +52,7 @@ import { wikiList } from './wikiList'
 import { wikiListItem } from './wikiListItem'
 import { wikiNavigationItem } from './wikiNavigationItem'
 import { wikiNavigationList } from './wikiNavigationList'
+import { wikiNavigationRail } from './wikiNavigationRail'
 import { wikiNavigationRailItem } from './wikiNavigationRailItem'
 import { wikiMask } from './wikiMask'
 import { wikiMenu } from './wikiMenu'
@@ -140,6 +141,7 @@ export const wiki: StorybookArgsToList = {
   ...wikiListItem,
   ...wikiNavigationItem,
   ...wikiNavigationList,
+  ...wikiNavigationRail,
   ...wikiNavigationRailItem,
   ...wikiMask,
   ...wikiMenu,

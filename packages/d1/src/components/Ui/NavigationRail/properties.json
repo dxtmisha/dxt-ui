@@ -1,0 +1,23 @@
+{
+  "main": "{d.navigationRail}",
+  "#space": {
+    "height": "{sys.spacing.lg}"
+  },
+  "#line": {
+    "margin-x": "{sys.spacing.x}",
+    "margin-y": "{sys.spacing.sm}",
+    "height": "{sys.spacing.outline}",
+    "background-color": "{sys.palette.outline}",
+    "background-opacity": "{sys.opacity.outline}"
+  },
+  "#none": {
+    "padding-x": "{?layout.paddingX}",
+    "padding-y": "{?layout.paddingY}",
+    "text-align": "center",
+    "color": "{sys.palette.onSurface}",
+    "color-opacity": "{sys.opacity.surface.disabled}"
+  },
+  "focus-visible": {
+    "outline": "{outline.md}"
+  }
+}

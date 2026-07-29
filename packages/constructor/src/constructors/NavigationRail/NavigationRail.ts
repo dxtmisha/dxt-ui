@@ -3,8 +3,7 @@ import {
   type ToRefs,
   computed,
   onMounted,
-  nextTick,
-  watch
+  nextTick
 } from 'vue'
 import {
   type ConstrBind,
@@ -17,43 +16,28 @@ import {
   type ConstrClass
 } from '@dxtmisha/functional'
 
-import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { EventClickInclude } from '../../classes/EventClickInclude'
-import { TextInclude } from '../../classes/TextInclude'
 
-import { WindowClassesInclude } from '../Window'
+import { ListControl, ListFocus, ListGo } from '../List'
 
-import { ListSearch } from './ListSearch'
-import { ListFocus } from './ListFocus'
-import { ListGo } from './ListGo'
-import { ListControl } from './ListControl'
+import type { NavigationRailComponents, NavigationRailEmits, NavigationRailSlots } from './types'
+import type { NavigationRailProps } from './props'
 
-import type { IconValue } from '../Icon'
-import type { ListGroupSlotsPropsInclude } from '../ListGroup'
-import type { ListComponents, ListEmits, ListSlots } from './types'
-import type { ListProps } from './props'
-
-/** Maximum number of lists/ Максимальное количество списков */
-let listIdMax = 1
+/** Maximum number of navigation rails/ Максимальное количество панелей навигации */
+let navigationRailIdMax = 1
 
 /**
- * List
+ * NavigationRail
  */
-export class List {
-  readonly focus: ListFocus
-  readonly search: ListSearch
-  readonly text: TextInclude
-
+export class NavigationRail {
+  readonly control: ListControl
   readonly data: ListDataRef
   readonly event: EventClickInclude
-
+  readonly focus: ListFocus
   readonly go: ListGo
-  readonly control: ListControl
-
-  readonly windowClasses: WindowClassesInclude
 
   /** Unique list identifier/ Уникальный идентификатор списка */
-  protected readonly id: number = ++listIdMax
+  protected readonly id: number = ++navigationRailIdMax
 
   /**
    * Constructor
@@ -71,28 +55,22 @@ export class List {
    * @param constructors.ListDataRefConstructor class for working with data list/ класс для работы со списком данных
    * @param constructors.ListFocusConstructor class for working with focus/ класс для работы с фокусом
    * @param constructors.ListGoConstructor class for working with navigation/ класс для работы с навигацией
-   * @param constructors.ListSearchConstructor class for working with search/ класс для работы с поиском
-   * @param constructors.TextIncludeConstructor class for working with text/ класс для работы с текстом
-   * @param constructors.WindowClassesIncludeConstructor class for working with window classes/ класс для работы с классами окна
    */
   constructor(
-    protected readonly props: ListProps,
-    protected readonly refs: ToRefs<ListProps>,
+    protected readonly props: NavigationRailProps,
+    protected readonly refs: ToRefs<NavigationRailProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly classDesign: string,
     protected readonly className: string,
-    protected readonly components?: DesignComp<ListComponents, ListProps>,
-    protected readonly slots?: ListSlots,
-    protected readonly emits?: ConstrEmit<ListEmits>,
+    protected readonly components?: DesignComp<NavigationRailComponents, NavigationRailProps>,
+    protected readonly slots?: NavigationRailSlots,
+    protected readonly emits?: ConstrEmit<NavigationRailEmits>,
     constructors: {
       EventClickIncludeConstructor?: typeof EventClickInclude
       ListControlConstructor?: typeof ListControl
       ListDataRefConstructor?: typeof ListDataRef
       ListFocusConstructor?: typeof ListFocus
       ListGoConstructor?: typeof ListGo
-      ListSearchConstructor?: typeof ListSearch
-      WindowClassesIncludeConstructor?: typeof WindowClassesInclude
-      TextIncludeConstructor?: typeof TextInclude
     } = {}
   ) {
     const {
@@ -100,28 +78,20 @@ export class List {
       ListControlConstructor = ListControl,
       ListDataRefConstructor = ListDataRef,
       ListFocusConstructor = ListFocus,
-      ListGoConstructor = ListGo,
-      ListSearchConstructor = ListSearch,
-      WindowClassesIncludeConstructor = WindowClassesInclude,
-      TextIncludeConstructor = TextInclude
+      ListGoConstructor = ListGo
     } = constructors
 
-    this.focus = new ListFocusConstructor(this.props, this.element, this.id)
-    this.search = new ListSearchConstructor(this.props)
-    this.text = new TextIncludeConstructor(this.props)
+    this.focus = new ListFocusConstructor(this.props as any, this.element, this.id)
 
     this.data = new ListDataRefConstructor(
       this.refs.list,
       this.focus.focus,
-      this.search.highlight,
-      this.refs.highlightLengthStart,
-      this.refs.filterMode,
+      undefined,
+      undefined,
+      undefined,
       this.refs.selected,
       this.refs.keyValue,
-      this.refs.keyLabel,
-      this.refs.liteThreshold,
-      undefined,
-      this.refs.max
+      this.refs.keyLabel
     )
 
     this.go = new ListGoConstructor(
@@ -135,19 +105,15 @@ export class List {
       this.props,
       this.element,
       this.data,
-      this.go,
-      this.search
+      this.go
     )
 
     this.event = new EventClickIncludeConstructor(undefined, undefined, emits)
-    this.windowClasses = new WindowClassesIncludeConstructor(classDesign)
 
     if (this.props.control) {
       onMounted(async () => {
         await nextTick()
         this.go.preparationBySelected()
-
-        watch(this.search.item, () => this.go.toHighlight())
       })
     }
   }
@@ -158,23 +124,16 @@ export class List {
    * Вычисляемые данные списка
    * */
   get list(): ListList {
-    if (this.props.lite) {
-      return this.data.liteData.value
-    }
-
     return this.data.fullData.value
   }
 
   /**
-   * Computed CSS classes for the cell component.
+   * Computed CSS classes for the component.
    *
-   * Вычисляемые CSS классы для компонента ячейки.
+   * Вычисляемые CSS классы для компонента.
    */
   get classes(): ConstrClass {
-    return {
-      [`${this.className}--highlightActive`]: Boolean(this.props.filterMode) && this.data.isHighlight(),
-      [`${this.className}--searchActive`]: Boolean(this.props.filterMode) && this.search.is()
-    }
+    return {}
   }
 
   /**
@@ -185,7 +144,6 @@ export class List {
     return {
       tag: this.props.tag,
       divider: this.props.divider,
-      selectionStyle: this.props.selectionStyle,
       onClick: this.event.onClick,
       ...(this.props.itemAttrs ?? {}),
       listId: this.id
@@ -205,7 +163,6 @@ export class List {
 
     return data.isSelected.value
       || data.isFocus()
-      || data.isHighlight()
   }
 
   /**
@@ -224,26 +181,6 @@ export class List {
         'key': item.value,
         'role': this.props.roleItem,
         'data-item': true
-      }
-    )
-  }
-
-  /**
-   * Gets binding properties for a group item in the list
-   *
-   * Получает привязочные свойства для группового элемента в списке
-   * @param item List item data/ данные элемента списка
-   */
-  getItemGroup(
-    item: ConstrBind<ListDataItem>
-  ) {
-    return toBinds(
-      this.itemBinds.value,
-      this.props.itemGroupAttrs,
-      item,
-      {
-        key: item.value,
-        class: `${this.className}__group`
       }
     )
   }
@@ -269,29 +206,6 @@ export class List {
   }
 
   /**
-   * Gets binding properties for a group management item with down arrow
-   *
-   * Получает привязочные свойства для элемента управления группой со стрелкой вниз
-   * @param item List item data/ данные элемента списка
-   * @param props additional properties/ дополнительные свойства
-   */
-  getItemManagementFormGroup(
-    item: ConstrBind<ListDataItem>,
-    props: ListGroupSlotsPropsInclude
-  ): ConstrBind<ListDataItem> {
-    return this.getItemManagement(
-      {
-        ...item,
-        ...props,
-        filterMode: false,
-        ...AriaStaticInclude.haspopup('listbox')
-      },
-      props.open,
-      this.props.iconArrowDown
-    )
-  }
-
-  /**
    * Gets binding properties for a menu management item with right arrow
    *
    * Получает привязочные свойства для элемента управления меню со стрелкой вправо
@@ -307,8 +221,7 @@ export class List {
         ...item,
         filterMode: false
       },
-      open,
-      this.props.iconArrowRight
+      open
     )
   }
 
@@ -330,28 +243,20 @@ export class List {
    * Внутренний метод для создания привязочных свойств элемента управления
    * @param item List item data/ данные элемента списка
    * @param open Whether the item is open/ открыт ли элемент
-   * @param icon Icon to display/ иконка для отображения
    */
   protected getItemManagement(
     item: ConstrBind<ListDataItem>,
-    open: boolean,
-    icon?: IconValue
+    open: boolean
   ): ConstrBind<ListDataItem> {
     return toBinds(
       this.itemBinds.value,
       this.props.itemManagementAttrs,
       item,
       {
-        'class': [
-          `${this.className}__management`,
-          this.windowClasses.get().static
-        ],
+        'class': `${this.className}__management`,
         'focus': item?.index === this.focus.focus.value,
         'selectedChild': this.isOpenGroup(item),
         open,
-        'iconTurn': open,
-        'iconTrailing': icon,
-        'iconTrailingTurnOnly': true,
         'data-status': open ? 'open' : 'close',
         'selectionStyle': 'none'
       }

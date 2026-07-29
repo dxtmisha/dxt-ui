@@ -11,6 +11,9 @@
   "border-opacity": "{sys.opacity.outline}",
   "border-radius": "{sys.rounded.lg}",
   "outline": "none",
+  "#contextLine": {
+    "gap": "{sys.spacing.x}"
+  },
   "focus": {
     "gradient-opacity": "{sys.opacity.focus}"
   },

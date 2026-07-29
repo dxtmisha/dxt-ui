@@ -51,7 +51,7 @@
     "build": "vue-tsc -b && vite build",
     "build-recovery": "npm run build && npm run wiki-storm",
     "preview": "vite preview",
-    "ui": "dxt-ui NavigationRailItem",
+    "ui": "dxt-ui NavigationRail",
     "wiki-storm": "dxt-wiki-storm",
     "types": "dxt-types",
     "screenshot": "dxt-screenshot",
@@ -502,6 +502,10 @@
     "./D1NavigationRailItem": {
       "types": "./dist/library/D1NavigationRailItem.d.ts",
       "default": "./dist/D1NavigationRailItem.js"
+    },
+    "./D1NavigationRail": {
+      "types": "./dist/library/D1NavigationRail.d.ts",
+      "default": "./dist/D1NavigationRail.js"
     }
   },
   "buildOptions": {

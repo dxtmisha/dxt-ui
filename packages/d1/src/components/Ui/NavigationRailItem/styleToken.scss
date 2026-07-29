@@ -31,6 +31,10 @@
     transition-duration: var(--d-sys-transitionDuration-fade-enter);
     transition-property: background-color, background-image, border, box-shadow;
     
+    &__contextLine {
+      gap: var(--d1-sys-spacing-x);
+    }
+    
     @include ui.hover {
       @include ui.gradientOpacity(#{var(--d1-sys-opacity-hover)}); @include ui.gradient('init');
     }

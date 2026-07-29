@@ -11,39 +11,38 @@ import {
 } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
-import { List } from './List'
+import { NavigationRail } from './NavigationRail'
 
 import {
-  type ListPropsBasic
+  type NavigationRailPropsBasic
 } from './props'
 import {
-  type ListClasses,
-  type ListComponents,
-  type ListEmits,
-  type ListExpose,
-  type ListSlots
+  type NavigationRailClasses,
+  type NavigationRailComponents,
+  type NavigationRailEmits,
+  type NavigationRailExpose,
+  type NavigationRailSlots
 } from './types'
 import type { WindowControlItem } from '../Window'
-import type { ListGroupSlotsPropsInclude } from '../ListGroup'
 
 /**
- * ListDesign
+ * NavigationRailDesign
  */
-export class ListDesign<
-  COMP extends ListComponents,
-  EXPOSE extends ListExpose,
-  CLASSES extends ListClasses,
-  P extends ListPropsBasic
+export class NavigationRailDesign<
+  COMP extends NavigationRailComponents,
+  EXPOSE extends NavigationRailExpose,
+  CLASSES extends NavigationRailClasses,
+  P extends NavigationRailPropsBasic
 > extends DesignConstructorAbstract<
     HTMLDivElement,
     COMP,
-    ListEmits,
+    NavigationRailEmits,
     EXPOSE,
-    ListSlots,
+    NavigationRailSlots,
     CLASSES,
     P
   > {
-  protected readonly item: List
+  protected readonly item: NavigationRail
 
   /**
    * Constructor
@@ -55,8 +54,8 @@ export class ListDesign<
   constructor(
     name: string,
     props: Readonly<P>,
-    options?: ConstrOptions<COMP, ListEmits, P>,
-    ItemConstructor: typeof List = List
+    options?: ConstrOptions<COMP, NavigationRailEmits, P>,
+    ItemConstructor: typeof NavigationRail = NavigationRail
   ) {
     super(
       name,
@@ -104,13 +103,9 @@ export class ListDesign<
         // :classes [!] System label / Системная метка
         space: this.getSubClass('space'),
         line: this.getSubClass('line'),
-        subtitle: this.getSubClass('subtitle'),
         html: this.getSubClass('html'),
         management: this.getSubClass('management'),
-        group: this.getSubClass('group'),
-        menu: this.getSubClass('menu'),
-        filterInput: this.getSubClass('filterInput'),
-        none: this.getSubClass('none')
+        menu: this.getSubClass('menu')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -142,10 +137,7 @@ export class ListDesign<
         onFocus: this.item.control.onFocus,
         onBlur: this.item.control.onBlur
       },
-      [
-        ...this.renderFilterInput(),
-        ...this.renderData()
-      ]
+      this.renderData()
     )
   }
 
@@ -155,7 +147,7 @@ export class ListDesign<
    * Генерирует все элементы из списка.
    */
   readonly renderData = (): VNode[] => {
-    return this.renderDataByItem('item', this.item.list, true)
+    return this.renderDataByItem('item', this.item.list)
   }
 
   /**
@@ -164,28 +156,16 @@ export class ListDesign<
    * Генерирует элемент.
    * @param type type of list/ тип списка
    * @param item selected element/ выбранный элемент
+   * @param inMenu is item inside menu/ находится ли элемент в меню
    */
   readonly renderItem = (
     type: ListType,
-    item: ListDataItem
+    item: ListDataItem,
+    inMenu: boolean = false
   ): VNode => {
     return this.components.renderOne(
-      'listItem',
+      inMenu ? 'navigationItem' : 'navigationRailItem',
       this.getItemAttrs(type, item)
-    ) as VNode
-  }
-
-  /**
-   * Generates a group element.
-   *
-   * Генерирует групповой элемент.
-   * @param item selected element/ выбранный элемент
-   * @param props data for working with the group/ данные для работы с группой
-   */
-  readonly renderItemGroup = (item: ListDataItem, props: ListGroupSlotsPropsInclude): VNode => {
-    return this.components.renderOne(
-      'listItem',
-      this.item.getItemManagementFormGroup(item, props)
     ) as VNode
   }
 
@@ -195,81 +175,23 @@ export class ListDesign<
    * Генерирует элемент меню.
    * @param item selected element/ выбранный элемент
    * @param props data for working with the menu/ данные для работы с меню
+   * @param inMenu is item inside menu/ находится ли элемент в меню
    */
   readonly renderItemMenu = (
     item: ListDataItem,
-    props: WindowControlItem
+    props: WindowControlItem,
+    inMenu: boolean = false
   ): VNode => {
     return this.components.renderOne(
-      'listItem',
+      inMenu ? 'navigationItem' : 'navigationRailItem',
       toBinds(
+        {
+          iconTrailing: inMenu ? this.props.iconArrowRight : undefined
+        },
         this.item.getItemManagementFormMenu(item, Boolean(props.open.value)),
         props.binds
       )
     ) as VNode
-  }
-
-  /**
-   * Render filter input.
-   *
-   * Рендер фильтра ввода.
-   */
-  protected readonly renderFilterInput = (): VNode[] => {
-    if (this.props.showSearch) {
-      return [
-        h(
-          'div',
-          {
-            class: [
-              this.classes?.value.filterInput,
-              this.item.windowClasses.get().static
-            ]
-          },
-          this.components.renderOne(
-            'input',
-            toBinds(
-              {
-                ref: this.item.control.inputElement,
-                icon: this.props.iconSearch,
-                onInputLite: this.item.control.onInput,
-                inputAttrs: {
-                  'data-menu-control': '1'
-                }
-              },
-              this.props.inputSearchAttrs
-            )
-          )
-        )
-      ]
-    }
-
-    return []
-  }
-
-  /**
-   * Generates an element indicating that nothing was found.
-   *
-   * Генерирует элемент, указывающий на то, что ничего не найдено.
-   */
-  readonly renderNone = (): VNode[] => {
-    if (this.props.filterMode) {
-      return [
-        h(
-          'div',
-          {
-            class: this.classes?.value.none,
-            ...AriaStaticInclude.live('polite'),
-            ...AriaStaticInclude.atomic(true)
-          },
-          h(
-            'span',
-            this.item.text.notFound
-          )
-        )
-      ]
-    }
-
-    return []
   }
 
   /**
@@ -281,10 +203,7 @@ export class ListDesign<
   readonly renderSpace = (item: ListDataItem): VNode => {
     return h('div', {
       key: item.value,
-      class: [
-        this.classes?.value.space,
-        this.item.windowClasses.get().static
-      ],
+      class: this.classes?.value.space,
       ...AriaStaticInclude.role('separator')
     })
   }
@@ -298,29 +217,9 @@ export class ListDesign<
   readonly renderLine = (item: ListDataItem): VNode => {
     return h('div', {
       key: item.value,
-      class: [
-        this.classes?.value.line,
-        this.item.windowClasses.get().static
-      ],
+      class: this.classes?.value.line,
       ...AriaStaticInclude.role('separator')
     })
-  }
-
-  /**
-   * Generates a subtitle.
-   *
-   * Генерирует подзаголовок.
-   * @param item selected element/ выбранный элемент
-   */
-  readonly renderSubtitle = (item: ListDataItem): VNode => {
-    return h('div', {
-      key: item.value,
-      class: [
-        this.classes?.value.subtitle,
-        this.item.windowClasses.get().static
-      ],
-      ...AriaStaticInclude.role('separator')
-    }, item.label)
   }
 
   /**
@@ -332,10 +231,7 @@ export class ListDesign<
   readonly renderHtml = (item: ListDataItem): VNode => {
     const props = {
       key: item.label && isObject(item.value) ? item.label : item.value,
-      class: [
-        this.classes?.value.html,
-        this.item.windowClasses.get().static
-      ]
+      class: this.classes?.value.html
     }
 
     if (
@@ -352,44 +248,25 @@ export class ListDesign<
   }
 
   /**
-   * Generates a group of lists.
-   *
-   * Генерирует группу списков.
-   * @param item selected element/ выбранный элемент
-   */
-  readonly renderGroup = (item: ListDataItem): VNode => {
-    return this.components.renderOne(
-      'listGroup',
-      {
-        open: this.item.isOpenGroup(item),
-        divider: this.props.divider,
-        disabled: item.disabled
-      },
-      {
-        head: (props: ListGroupSlotsPropsInclude) => this.renderItemGroup(item, props),
-        list: () => this.renderDataByItem('group', this.item.getList(item))
-      }
-    ) as VNode
-  }
-
-  /**
    * Generates a menu of lists.
    *
    * Генерирует меню списков.
    * @param item selected element/ выбранный элемент
-   * @param first is the first element/ является ли первым элементом
+   * @param inMenu is menu inside another menu/ находится ли меню в другом меню
    */
-  readonly renderMenu = (item: ListDataItem, first: boolean): VNode => {
+  readonly renderMenu = (
+    item: ListDataItem,
+    inMenu: boolean = false
+  ): VNode => {
     return this.components.renderOne(
       'listMenu',
       {
         divider: this.props.divider,
-        axis: first ? (this.props.axis === 'x' ? 'y' : 'x') : 'x',
         disabled: item.disabled
       },
       {
-        head: (props: WindowControlItem) => this.renderItemMenu(item, props),
-        list: () => this.renderDataByItem('menu', this.item.getList(item))
+        head: (props: WindowControlItem) => this.renderItemMenu(item, props, inMenu),
+        list: () => this.renderDataByItem('menu', this.item.getList(item), true)
       }
     ) as VNode
   }
@@ -400,12 +277,12 @@ export class ListDesign<
    * Генерирует все элементы из списка.
    * @param type type of list/ тип списка
    * @param data selected element/ выбранный элемент
-   * @param first is the first element/ является ли первым элементом
+   * @param inMenu is list inside menu/ находится ли список в меню
    */
   protected renderDataByItem(
     type: ListType,
     data: ListList,
-    first: boolean = false
+    inMenu: boolean = false
   ): VNode[] {
     const children: VNode[] = []
 
@@ -417,48 +294,20 @@ export class ListDesign<
         case 'line':
           children.push(this.renderLine(item))
           break
-        case 'subtitle':
-          children.push(this.renderSubtitle(item))
-          break
         case 'html':
           children.push(this.renderHtml(item))
           break
-        case 'group':
-          if (this.isHighlight(item)) {
-            children.push(this.renderGroup(item))
-          }
-          break
         case 'menu':
-          if (this.isHighlight(item)) {
-            children.push(this.renderMenu(item, first))
-          }
+          children.push(this.renderMenu(item, inMenu))
           break
         default:
-          children.push(this.renderItem(type, item))
+          children.push(this.renderItem(type, item, inMenu))
           break
       }
     })
 
-    if (type === 'item') {
-      children.push(...this.renderNone())
-    }
-
     children.push(h('div'))
     return children
-  }
-
-  /**
-   * Determines if highlighting is required.
-   *
-   * Определяет, требуется ли выделение.
-   * @param item selected element/ выбранный элемент
-   */
-  protected isHighlight(item: ListDataItem): boolean {
-    if (!this.props.filterMode) {
-      return true
-    }
-
-    return this.item.data.getSubList(item).isHighlightActive()
   }
 
   /**
@@ -473,8 +322,6 @@ export class ListDesign<
     item: ListDataItem
   ) {
     switch (type) {
-      case 'group':
-        return this.item.getItemGroup(item)
       case 'menu':
         return this.item.getItemMenu(item)
       default:

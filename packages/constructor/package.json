@@ -52,7 +52,7 @@
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
     "test": "NODE_OPTIONS=\"--no-webstorage\" vitest",
-    "constructor": "dxt-constructor",
+    "constructor": "dxt-constructor NavigationRailItem",
     "library": "dxt-library",
     "types": "dxt-types",
     "prepublishOnly": "npm run library && npm run constructor && npm run build",
@@ -495,6 +495,10 @@
     "./NavigationRailItem": {
       "types": "./dist/constructors/NavigationRailItem/index.d.ts",
       "default": "./dist/navigationRailItem.js"
+    },
+    "./NavigationRail": {
+      "types": "./dist/constructors/NavigationRail/index.d.ts",
+      "default": "./dist/navigationRail.js"
     }
   },
   "buildOptions": {

@@ -32,6 +32,7 @@ const propsNames: StorybookProps = [
   { name: 'role', type: 'string' },
   { name: 'selected', type: 'boolean' },
   { name: 'selectedChild', type: 'boolean' },
+  { name: 'selectionStyle', type: 'string', option: ['checkbox', 'none', 'radio', 'checkmark'] },
   { name: 'tabindex', type: 'string | number' },
   { name: 'tag', type: 'string', option: ['button', 'a', 'span', 'li', 'div'] },
   { name: 'to', type: 'string | RouteLocationAsRelativeGeneric | RouteLocationAsPathGeneric' },

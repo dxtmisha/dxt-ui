@@ -27,8 +27,11 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const NavigationRailItem: Story = {
-  // :story-main [!] System label / Системная метка
-  // :story-main [!] System label / Системная метка
+  args: {
+    badge: "",
+    icon: "",
+    badgeDot: true
+  }
 }
 
 // :story-items [!] System label / Системная метка

@@ -21,9 +21,9 @@ describe('ListControl', () => {
     const control = new ListControl(
       { control: true },
       ref(undefined),
-      searchMock,
       dataMock,
-      goMock
+      goMock,
+      searchMock
     )
 
     expect(control.isActive.value).toBe(true)

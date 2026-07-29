@@ -27,16 +27,16 @@ export class ListControl {
    * Создает экземпляр ListControl для управления навигацией с клавиатуры и событиями.
    * @param props input data / входные данные
    * @param element reference to the element / ссылка на элемент
-   * @param search search functionality controller / контроллер функциональности поиска
    * @param data list data manager / менеджер данных списка
    * @param go navigation controller / контроллер навигации
+   * @param search search functionality controller / контроллер функциональности поиска
    */
   constructor(
     protected readonly props: ListProps,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly search: ListSearch,
     protected readonly data: ListDataRef,
-    protected readonly go: ListGo
+    protected readonly go: ListGo,
+    protected readonly search?: ListSearch
   ) {
     onMounted(() => {
       watch(
@@ -93,7 +93,7 @@ export class ListControl {
    * @param data field validation data / данные валидации поля
    */
   readonly onInput = (data: FieldValidationItem) => {
-    this.search.set(data.value)
+    this.search?.set(data.value)
   }
 
   /**
@@ -215,9 +215,9 @@ export class ListControl {
     const element = this.getActiveElement()
 
     if (element) {
-      requestAnimationFrame(() => this.search.set(element.value))
+      requestAnimationFrame(() => this.search?.set(element.value))
     } else if (isAdd) {
-      this.search.add(event.key)
+      this.search?.add(event.key)
     }
   }
 

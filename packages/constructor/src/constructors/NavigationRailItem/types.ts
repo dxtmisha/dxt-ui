@@ -56,7 +56,8 @@ export type NavigationRailItemClasses = {
   main: ConstrClass
   // :classes [!] System label / Системная метка
   label: string
-  icon: string
+  context: string
+  contextLine: string
   badge: string
   // :classes [!] System label / Системная метка
 }

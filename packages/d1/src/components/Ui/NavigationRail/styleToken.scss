@@ -1,0 +1,50 @@
+@use "../../../styles/Ui/properties";
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/style.scss" as NavigationRail;
+
+@include ui.initDesignBasic('d1.navigationRail') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include NavigationRail.mixinNavigationRail;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+    &__space {
+      @include ui.height(#{var(--d1-sys-spacing-lg)});
+    }
+    
+    &__line {
+      @include ui.marginX(#{var(--d1-sys-spacing-x)});
+      @include ui.marginY(#{var(--d1-sys-spacing-sm)});
+      
+      @include ui.height(#{var(--d1-sys-spacing-outline)});
+      
+      @include ui.backgroundColor(#{var(--d1-sys-palette-outline)});
+      @include ui.backgroundOpacity(#{var(--d1-sys-opacity-outline)});
+    }
+    
+    &__none {
+      @include ui.paddingX(#{var(--d1-layout-paddingX)});
+      @include ui.paddingY(#{var(--d1-layout-paddingY)});
+      
+      @include ui.textAlign(#{center});
+      
+      @include ui.color(#{var(--d1-sys-palette-onSurface)});
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-disabled)});
+    }
+    
+    &:focus-visible {
+      @include ui.outlineOpacity(#{var(--d1-sys-opacity-outline)});
+      
+      outline-width: var(--d1-ref-spacing-1);
+      outline-style: solid;
+      @include ui.outlineColor(#{var(--d1-sys-palette-primary)});
+    }
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

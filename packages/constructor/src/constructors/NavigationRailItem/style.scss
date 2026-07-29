@@ -3,6 +3,7 @@
 @mixin mixinNavigationRailItem {
   box-sizing: border-box;
   @include ui.flexY;
+  justify-content: center;
   position: relative;
 
   padding: 0;
@@ -14,18 +15,20 @@
   @include ui.paddingX(ui.v('??paddingX', 0));
   @include ui.paddingY(ui.v('??paddingY', 0));
 
-  @include ui.subclass('label') {
-    order: 16;
-  }
-
-  @include ui.subclass('badge') {
-    order: 40;
+  &__badge {
     @include ui.marginLeft(auto);
   }
 
-  &__icon {
+  &__context {
+    position: relative;
+    @include ui.flexY;
     z-index: 4;
-    order: 8;
+  }
+
+  &__contextLine {
+    position: relative;
+    @include ui.flexX;
+    z-index: 4;
   }
 
   &__ripple {
@@ -39,6 +42,7 @@
   }
 
   @at-root {
+
     &+&[data-divider="active"],
     #{ui.c('?listGroup')}+&[data-divider="active"],
     [data-divider="active"]+&[data-divider="active"] {

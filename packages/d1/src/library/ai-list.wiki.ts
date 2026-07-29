@@ -65,6 +65,7 @@ import D1MotionSticky from '../../src/components/Ui/MotionSticky/D1MotionStickyA
 import D1MotionTransform from '../../src/components/Ui/MotionTransform/D1MotionTransformAiWiki.vue'
 import D1NavigationItem from '../../src/components/Ui/NavigationItem/D1NavigationItemAiWiki.vue'
 import D1NavigationList from '../../src/components/Ui/NavigationList/D1NavigationListAiWiki.vue'
+import D1NavigationRail from '../../src/components/Ui/NavigationRail/D1NavigationRailAiWiki.vue'
 import D1NavigationRailItem from '../../src/components/Ui/NavigationRailItem/D1NavigationRailItemAiWiki.vue'
 import D1Page from '../../src/components/Ui/Page/D1PageAiWiki.vue'
 import D1PageArea from '../../src/components/Ui/PageArea/D1PageAreaAiWiki.vue'
@@ -170,6 +171,7 @@ export const aiList: any[] = [
   D1MotionTransform,
   D1NavigationItem,
   D1NavigationList,
+  D1NavigationRail,
   D1NavigationRailItem,
   D1Page,
   D1PageArea,

@@ -56,6 +56,11 @@ const design = new NavigationRailItemDesign(
       badge: D1Badge,
       progress: D1Progress,
       ripple: D1Ripple
+    },
+    compMod: {
+      badge: {
+        size: 'sm'
+      }
     }
   }
 )

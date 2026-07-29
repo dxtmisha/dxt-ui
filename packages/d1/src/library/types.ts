@@ -65,6 +65,7 @@ import _D1MotionSticky from '../components/Ui/MotionSticky/D1MotionSticky.vue'
 import _D1MotionTransform from '../components/Ui/MotionTransform/D1MotionTransform.vue'
 import _D1NavigationItem from '../components/Ui/NavigationItem/D1NavigationItem.vue'
 import _D1NavigationList from '../components/Ui/NavigationList/D1NavigationList.vue'
+import _D1NavigationRail from '../components/Ui/NavigationRail/D1NavigationRail.vue'
 import _D1NavigationRailItem from '../components/Ui/NavigationRailItem/D1NavigationRailItem.vue'
 import _D1Page from '../components/Ui/Page/D1Page.vue'
 import _D1PageArea from '../components/Ui/PageArea/D1PageArea.vue'
@@ -171,6 +172,7 @@ declare module '@vue/runtime-core' {
     D1MotionTransform: typeof _D1MotionTransform
     D1NavigationItem: typeof _D1NavigationItem
     D1NavigationList: typeof _D1NavigationList
+    D1NavigationRail: typeof _D1NavigationRail
     D1NavigationRailItem: typeof _D1NavigationRailItem
     D1Page: typeof _D1Page
     D1PageArea: typeof _D1PageArea

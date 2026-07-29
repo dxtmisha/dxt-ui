@@ -42,6 +42,9 @@ export type NavigationRailItemPropsBasic<
     /** Whether to show a divider/ Показывать ли разделитель */
     divider?: boolean
 
+    /** Selection style/ Стиль выбора */
+    selectionStyle?: 'radio' | 'checkbox' | 'checkmark' | 'none'
+
     /** Tab index for keyboard navigation/ Индекс табуляции для навигации с клавиатуры */
     tabindex?: number | string
 

@@ -1,12 +1,6 @@
 @use "@dxtmisha/styles/properties" as ui;
 
 @mixin mixinList {
-  &__menuGroup {
-    @include ui.subclass('menu') {
-      display: none;
-    }
-  }
-
   &>*[data-item]~&__none {
     span {
       display: none;
