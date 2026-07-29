@@ -52,7 +52,7 @@
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
     "test": "NODE_OPTIONS=\"--no-webstorage\" vitest",
-    "constructor": "dxt-constructor NavigationRailItem",
+    "constructor": "dxt-constructor Headroom",
     "library": "dxt-library",
     "types": "dxt-types",
     "prepublishOnly": "npm run library && npm run constructor && npm run build",
@@ -499,6 +499,10 @@
     "./NavigationRail": {
       "types": "./dist/constructors/NavigationRail/index.d.ts",
       "default": "./dist/navigationRail.js"
+    },
+    "./Headroom": {
+      "types": "./dist/constructors/Headroom/index.d.ts",
+      "default": "./dist/headroom.js"
     }
   },
   "buildOptions": {

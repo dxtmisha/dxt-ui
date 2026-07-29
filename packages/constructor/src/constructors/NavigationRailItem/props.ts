@@ -19,6 +19,10 @@ export type NavigationRailItemPropsToken = {
   // :type [!] System label / Системная метка
 }
 
+/**
+ * Basic props interface for NavigationRailItem component /
+ * Базовый интерфейс свойств для компонента NavigationRailItem
+ */
 export type NavigationRailItemPropsBasic<
   Icon extends IconPropsBasic = IconPropsBasic,
   Badge extends BadgePropsBasic = BadgePropsBasic,
@@ -32,27 +36,27 @@ export type NavigationRailItemPropsBasic<
   & EventClickProps
   & AriaRolePropsInclude
   & {
-    /** Item index/ Индекс элемента */
+    /** Item index / Индекс элемента */
     index?: any
-    /** URL address for links/ URL-адрес для ссылок */
+    /** URL address for links / URL-адрес для ссылок */
     href?: string
 
-    /** HTML tag for the list item/ HTML-тег для элемента списка */
+    /** HTML tag for the list item / HTML-тег для элемента списка */
     tag?: 'button' | 'a' | 'span' | 'li' | 'div' | string
-    /** Whether to show a divider/ Показывать ли разделитель */
+    /** Whether to show a divider / Показывать ли разделитель */
     divider?: boolean
 
-    /** Selection style/ Стиль выбора */
+    /** Selection style / Стиль выбора */
     selectionStyle?: 'radio' | 'checkbox' | 'checkmark' | 'none'
 
-    /** Tab index for keyboard navigation/ Индекс табуляции для навигации с клавиатуры */
+    /** Tab index for keyboard navigation / Индекс табуляции для навигации с клавиатуры */
     tabindex?: number | string
 
-    /** Item type/ Тип элемента */
+    /** Item type / Тип элемента */
     type?: string
-    /** Parent identifier/ Идентификатор родителя */
+    /** Parent identifier / Идентификатор родителя */
     parent?: string
-    /** List identifier/ Идентификатор списка */
+    /** List identifier / Идентификатор списка */
     listId?: number
   }
 

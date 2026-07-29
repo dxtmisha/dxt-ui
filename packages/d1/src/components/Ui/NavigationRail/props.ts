@@ -1,4 +1,5 @@
 import { type NavigationRailPropsBasic, defaultsNavigationRail } from '@dxtmisha/constructor/NavigationRail'
+import type { IconProps } from '../Icon'
 import type { NavigationItemProps } from '../NavigationItem'
 import type { NavigationRailItemProps } from '../NavigationRailItem'
 
@@ -17,6 +18,7 @@ type PropsToken = {
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
 export type NavigationRailProps = NavigationRailPropsBasic<
+  IconProps,
   NavigationItemProps,
   NavigationRailItemProps
 > & PropsToken

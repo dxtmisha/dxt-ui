@@ -14,6 +14,7 @@ import {
 import { D1Window } from '../Window'
 import { D1Bars } from '../Bars'
 import { D1Actions } from '../Actions'
+import { D1Image } from '../Image'
 
 import { defaults, type ModalProps, propsValues } from './props'
 import './styleToken.scss'
@@ -49,7 +50,8 @@ const design = new ModalDesign(
     components: {
       window: D1Window,
       bars: D1Bars,
-      actions: D1Actions
+      actions: D1Actions,
+      image: D1Image
     }
   }
 )

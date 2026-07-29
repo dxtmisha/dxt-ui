@@ -11,6 +11,10 @@ type NavigationListPropsToken = {
   // :type [!] System label / Системная метка
 }
 
+/**
+ * Basic props interface for NavigationList component /
+ * Базовый интерфейс свойств для компонента NavigationList
+ */
 export type NavigationListPropsBasic<
   Icon extends IconPropsBasic = IconPropsBasic,
   NavigationItem extends NavigationItemPropsBasic = NavigationItemPropsBasic,

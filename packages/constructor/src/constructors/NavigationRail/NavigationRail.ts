@@ -23,38 +23,49 @@ import { ListControl, ListFocus, ListGo } from '../List'
 import type { NavigationRailComponents, NavigationRailEmits, NavigationRailSlots } from './types'
 import type { NavigationRailProps } from './props'
 
-/** Maximum number of navigation rails/ Максимальное количество панелей навигации */
+/** Maximum number of navigation rails / Максимальное количество панелей навигации */
 let navigationRailIdMax = 1
 
 /**
- * NavigationRail
+ * NavigationRail class constructor managing side navigation rail states, item rendering bindings, focus, and selection data.
+ *
+ * Класс-конструктор NavigationRail, управляющий состояниями боковой панели навигации, привязками рендеринга элементов, фокусом и данными выбора.
  */
 export class NavigationRail {
+  /** List control manager / Менеджер управления списком */
   readonly control: ListControl
+
+  /** List data reactive manager / Реактивный менеджер данных списка */
   readonly data: ListDataRef
+
+  /** Click event handler instance / Экземпляр обработчика событий клика */
   readonly event: EventClickInclude
+
+  /** List focus manager / Менеджер фокуса списка */
   readonly focus: ListFocus
+
+  /** List navigation manager / Менеджер навигации по списку */
   readonly go: ListGo
 
-  /** Unique list identifier/ Уникальный идентификатор списка */
+  /** Unique list identifier / Уникальный идентификатор списка */
   protected readonly id: number = ++navigationRailIdMax
 
   /**
    * Constructor
-   * @param props input data/ входные данные
-   * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
-   * @param element input element/ элемент ввода
-   * @param classDesign design name/ название дизайна
-   * @param className class name/ название класса
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param slots object for working with slots/ объект для работы со слотами
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param constructors object with classes/ объект с классами
-   * @param constructors.EventClickIncludeConstructor class for working with click event/ класс для работы с событием клика
-   * @param constructors.ListControlConstructor class for working with control/ класс для работы с управлением
-   * @param constructors.ListDataRefConstructor class for working with data list/ класс для работы со списком данных
-   * @param constructors.ListFocusConstructor class for working with focus/ класс для работы с фокусом
-   * @param constructors.ListGoConstructor class for working with navigation/ класс для работы с навигацией
+   * @param props input data / входные данные
+   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
+   * @param element input element / элемент ввода
+   * @param classDesign design name / название дизайна
+   * @param className class name / название класса
+   * @param components object for working with components / объект для работы с компонентами
+   * @param slots object for working with slots / объект для работы со слотами
+   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
+   * @param constructors object with classes / объект с классами
+   * @param constructors.EventClickIncludeConstructor class for working with click event / класс для работы с событием клика
+   * @param constructors.ListControlConstructor class for working with control / класс для работы с управлением
+   * @param constructors.ListDataRefConstructor class for working with data list / класс для работы со списком данных
+   * @param constructors.ListFocusConstructor class for working with focus / класс для работы с фокусом
+   * @param constructors.ListGoConstructor class for working with navigation / класс для работы с навигацией
    */
   constructor(
     protected readonly props: NavigationRailProps,
@@ -119,10 +130,10 @@ export class NavigationRail {
   }
 
   /**
-   * Computed list data
+   * Computed list data.
    *
-   * Вычисляемые данные списка
-   * */
+   * Вычисляемые данные списка.
+   */
   get list(): ListList {
     return this.data.fullData.value
   }
@@ -137,9 +148,10 @@ export class NavigationRail {
   }
 
   /**
-   * Computed binding properties for list items/
-   * Вычисляемые привязочные свойства для элементов списка
-   * */
+   * Computed binding properties for list items.
+   *
+   * Вычисляемые привязочные свойства для элементов списка.
+   */
   protected readonly itemBinds = computed(() => {
     return {
       tag: this.props.tag,
@@ -154,7 +166,8 @@ export class NavigationRail {
    * Returns information about the opening status of a group item.
    *
    * Возвращает информацию о статусе открытия группового элемента.
-   * @param item List item data/ данные элемента списка
+   * @param item list item data / данные элемента списка
+   * @returns boolean flag indicating group open state / флаг открытого состояния группы
    */
   isOpenGroup(
     item: ConstrBind<ListDataItem>
@@ -166,10 +179,11 @@ export class NavigationRail {
   }
 
   /**
-   * Gets binding properties for a list item
+   * Gets binding properties for a list item.
    *
-   * Получает привязочные свойства для элемента списка
-   * @param item List item data/ данные элемента списка
+   * Получает привязочные свойства для элемента списка.
+   * @param item list item data / данные элемента списка
+   * @returns binding properties object / объект свойств привязки
    */
   getItem(
     item: ConstrBind<ListDataItem>
@@ -186,10 +200,11 @@ export class NavigationRail {
   }
 
   /**
-   * Gets binding properties for a menu item in the list
+   * Gets binding properties for a menu item in the list.
    *
-   * Получает привязочные свойства для элемента меню в списке
-   * @param item List item data/ данные элемента списка
+   * Получает привязочные свойства для элемента меню в списке.
+   * @param item list item data / данные элемента списка
+   * @returns binding properties object / объект свойств привязки
    */
   getItemMenu(
     item: ConstrBind<ListDataItem>
@@ -206,11 +221,12 @@ export class NavigationRail {
   }
 
   /**
-   * Gets binding properties for a menu management item with right arrow
+   * Gets binding properties for a menu management item with right arrow.
    *
-   * Получает привязочные свойства для элемента управления меню со стрелкой вправо
-   * @param item List item data/ данные элемента списка
-   * @param open Whether the menu is open/ открыто ли меню
+   * Получает привязочные свойства для элемента управления меню со стрелкой вправо.
+   * @param item list item data / данные элемента списка
+   * @param open whether the menu is open / открыто ли меню
+   * @returns binding properties object for management item / объект свойств привязки элемента управления
    */
   getItemManagementFormMenu(
     item: ConstrBind<ListDataItem>,
@@ -229,7 +245,8 @@ export class NavigationRail {
    * Returns a sublist for a group item.
    *
    * Возвращает подсписок для группового элемента.
-   * @param item List item data/ данные элемента списка
+   * @param item list item data / данные элемента списка
+   * @returns sublist items / элементы подсписка
    */
   getList(
     item: ConstrBind<ListDataItem>
@@ -238,11 +255,12 @@ export class NavigationRail {
   }
 
   /**
-   * Internal method to create management item binding properties
+   * Internal method to create management item binding properties.
    *
-   * Внутренний метод для создания привязочных свойств элемента управления
-   * @param item List item data/ данные элемента списка
-   * @param open Whether the item is open/ открыт ли элемент
+   * Внутренний метод для создания привязочных свойств элемента управления.
+   * @param item list item data / данные элемента списка
+   * @param open whether the item is open / открыт ли элемент
+   * @returns binding properties for management item / привязочные свойства элемента управления
    */
   protected getItemManagement(
     item: ConstrBind<ListDataItem>,

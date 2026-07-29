@@ -10,7 +10,11 @@ import {
 } from './types'
 
 /**
- * NavigationItemDesign
+ * Design constructor class for NavigationItem component, rendering navigation list item elements and applying visual styles.
+ * Inherits all layout and rendering functionality from ListItemDesign.
+ *
+ * Дизайн-класс конструктора для компонента NavigationItem, выполняющий рендеринг элементов списка навигации и применение визуальных стилей.
+ * Наследует всю функциональность макета и рендеринга от ListItemDesign.
  */
 export class NavigationItemDesign<
   COMP extends NavigationItemComponents,
