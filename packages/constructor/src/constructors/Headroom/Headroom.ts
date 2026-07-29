@@ -76,6 +76,49 @@ export class Headroom {
   }
 
   /**
+   * Returns dynamic BEM CSS classes.
+   *
+   * Возвращает динамические CSS классы BEM.
+   * @returns object with BEM class mappings / объект с сопоставлением классов BEM
+   */
+  get classes(): Record<string, boolean | undefined> {
+    return {
+      [`${this.className}--status-sticky`]: this.isSticky.value,
+      [`${this.className}--scroll-${this.props.scroll}`]: Boolean(this.props.scroll),
+      [`${this.className}--option-transform`]: this.transformThreshold > 0
+    }
+  }
+
+  /**
+   * Returns public expose interface for component.
+   *
+   * Возвращает публичный интерфейс экспорта для компонента.
+   * @returns component expose state / состояние экспорта компонента
+   */
+  get expose(): HeadroomExpose {
+    return {
+      isSticky: () => this.isSticky.value,
+      update: this.update
+    }
+  }
+
+  /**
+   * Recalculates scroll metrics and updates headroom states and element styles.
+   *
+   * Пересчитывает метрики прокрутки, обновляет состояния headroom и стили элемента.
+   * @returns this instance / текущий экземпляр
+   */
+  readonly update = (): this => {
+    this.value.value = this.getScroll()
+
+    this.onScroll()
+      .updateTransform()
+      .updateDisappears()
+
+    return this
+  }
+
+  /**
    * Returns target element or window for scroll listening.
    *
    * Возвращает целевой элемент или окно для прослушивания прокрутки.
@@ -202,22 +245,6 @@ export class Headroom {
   }
 
   /**
-   * Recalculates scroll metrics and updates headroom states and element styles.
-   *
-   * Пересчитывает метрики прокрутки, обновляет состояния headroom и стили элемента.
-   * @returns this instance / текущий экземпляр
-   */
-  readonly update = (): this => {
-    this.value.value = this.getScroll()
-
-    this.onScroll()
-    this.updateTransform()
-    this.updateDisappears()
-
-    return this
-  }
-
-  /**
    * Toggles scroll listening and performs initial state calculation.
    *
    * Переключает прослушивание прокрутки и выполняет первоначальный расчет состояния.
@@ -270,32 +297,5 @@ export class Headroom {
     this.eventScroll = undefined
 
     return this
-  }
-
-  /**
-   * Returns dynamic BEM CSS classes.
-   *
-   * Возвращает динамические CSS классы BEM.
-   * @returns object with BEM class mappings / объект с сопоставлением классов BEM
-   */
-  get classes(): Record<string, boolean | undefined> {
-    return {
-      [`${this.className}--status-sticky`]: this.isSticky.value,
-      [`${this.className}--scroll-${this.props.scroll}`]: Boolean(this.props.scroll),
-      [`${this.className}--option-transform`]: this.transformThreshold > 0
-    }
-  }
-
-  /**
-   * Returns public expose interface for component.
-   *
-   * Возвращает публичный интерфейс экспорта для компонента.
-   * @returns component expose state / состояние экспорта компонента
-   */
-  get expose(): HeadroomExpose {
-    return {
-      isSticky: () => this.isSticky.value,
-      update: this.update
-    }
   }
 }
