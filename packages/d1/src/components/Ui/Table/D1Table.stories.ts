@@ -196,8 +196,8 @@ export const TableSearch: Story = {
     components: { D1Table },
     setup() {
       return {
-          searchValue: ref('an')
-        }
+        searchValue: ref('an')
+      }
     },
     template: `
         <div class="wiki-storybook-flex-column">

@@ -51,12 +51,12 @@ export const MenuNavigation: Story = {
       return {
         selectedValue: ref('color2'),
         colors: ref([
-          {label: '[1]Red', value: 'color1', icon: 'palette'},
-          {label: '[2]Green', value: 'color2', icon: 'palette'},
-          {label: '[3]Blue', value: 'color3', icon: 'palette'},
-          {label: '[4]Yellow', value: 'color4', icon: 'palette'},
-          {label: '[5]Purple', value: 'color5', icon: 'palette'},
-          {label: '[6]Orange', value: 'color6', icon: 'palette'}
+          { label: '[1]Red', value: 'color1', icon: 'palette' },
+          { label: '[2]Green', value: 'color2', icon: 'palette' },
+          { label: '[3]Blue', value: 'color3', icon: 'palette' },
+          { label: '[4]Yellow', value: 'color4', icon: 'palette' },
+          { label: '[5]Purple', value: 'color5', icon: 'palette' },
+          { label: '[6]Orange', value: 'color6', icon: 'palette' }
         ]),
         step: ref(1)
       }
@@ -117,13 +117,13 @@ export const MenuAjax: Story = {
     components: { D1Menu },
     setup() {
       const loadMenuData = () => new Promise(resolve => setTimeout(() => resolve([
-          {label: 'Dashboard', value: 'dashboard', icon: 'dashboard'},
-          {label: 'Users', value: 'users', icon: 'people'},
-          {label: 'Settings', value: 'settings', icon: 'settings'},
-          {label: 'Reports', value: 'reports', icon: 'assessment'}
-        ]), 512))
+        { label: 'Dashboard', value: 'dashboard', icon: 'dashboard' },
+        { label: 'Users', value: 'users', icon: 'people' },
+        { label: 'Settings', value: 'settings', icon: 'settings' },
+        { label: 'Reports', value: 'reports', icon: 'assessment' }
+      ]), 512))
 
-        return { loadMenuData }
+      return { loadMenuData }
     },
     template: `
         <D1Menu :ajax="loadMenuData" selected="settings">
@@ -144,11 +144,11 @@ export const MenuVModel: Story = {
       return {
         selectedValue: ref('settings'),
         menuItems: ref([
-          {label: 'Dashboard', value: 'dashboard', icon: 'dashboard'},
-          {label: 'Users', value: 'users', icon: 'people'},
-          {label: 'Settings', value: 'settings', icon: 'settings'},
-          {label: 'Reports', value: 'reports', icon: 'assessment'},
-          {label: 'Help', value: 'help', icon: 'help'}
+          { label: 'Dashboard', value: 'dashboard', icon: 'dashboard' },
+          { label: 'Users', value: 'users', icon: 'people' },
+          { label: 'Settings', value: 'settings', icon: 'settings' },
+          { label: 'Reports', value: 'reports', icon: 'assessment' },
+          { label: 'Help', value: 'help', icon: 'help' }
         ])
       }
     },

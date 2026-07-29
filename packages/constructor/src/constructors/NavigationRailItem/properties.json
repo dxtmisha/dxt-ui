@@ -1,0 +1,29 @@
+{
+  "paddingX": {
+    "_type": "var"
+  },
+  "paddingY": {
+    "_type": "var"
+  },
+  "border-width": {
+    "_type": "var"
+  },
+  "border-color": {
+    "_type": "var"
+  },
+  "transition-property": "background-color, background-image, border, box-shadow",
+  "transition-duration": "{d.sys.transitionDuration.fade.enter}",
+  "transition-function": "{d.sys.transitionFunction.standard}",
+  "#label": {},
+  "#icon": {},
+  "#badge": {},
+  "~focus": {},
+  "~open": {},
+  "~selected": {
+    "_prop": false
+  },
+  "~selectedChild": {},
+  "~readonly": {},
+  "~disabled": {},
+  "~divider": {}
+}

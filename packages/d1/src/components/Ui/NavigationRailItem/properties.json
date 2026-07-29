@@ -1,0 +1,52 @@
+{
+  "main": "{d.navigationRailItem}",
+  "gap": "{sys.spacing.x}",
+  "margin": "{sys.spacing.x}",
+  "paddingX": "{sys.spacing.x}",
+  "paddingY": "{sys.spacing.x}",
+  "palette-gradient": "{sys.palette.primary}",
+  "gradient-opacity": "0",
+  "border-width": "{sys.spacing.outline}",
+  "border-color": "{sys.palette.outline}",
+  "border-opacity": "{sys.opacity.outline}",
+  "border-radius": "{sys.rounded.lg}",
+  "outline": "none",
+  "focus": {
+    "gradient-opacity": "{sys.opacity.focus}"
+  },
+  "hover": {
+    "gradient-opacity": "{sys.opacity.hover}"
+  },
+  "active": {
+    "gradient-opacity": "{sys.opacity.pressed}"
+  },
+  "selected": {
+    "color": "{sys.palette.onPrimary}",
+    "color-opacity": "{sys.opacity.primary.high}",
+    "palette-background": "{sys.palette.primaryVariant}",
+    "background-opacity": "{sys.opacity.primary.high}",
+    "gradient": "var(--sys-color)",
+    "backdrop-filter": "{sys.blur.md}"
+  },
+  "selectedChild": {
+    "palette-background": "{sys.palette.primaryVariant}",
+    "background-opacity": "{sys.opacity.pressed}"
+  },
+  "open": {
+    "palette-background": "{sys.palette.primary}",
+    "background-opacity": "{sys.opacity.pressed}"
+  },
+  "disabled": {
+    "color": "{sys.palette.onSurface}",
+    "color-opacity": "{sys.opacity.surface.disabled}"
+  },
+  "&:has(.??__loading) > *:not(.??__loading)": {
+    "opacity": "{sys.opacity.surface.medium}"
+  },
+  "~divider": {
+    "margin": "0",
+    "paddingX": "{sys.spacing.sm}",
+    "border-radius": "0"
+  },
+  "@@palette": "{palette}"
+}

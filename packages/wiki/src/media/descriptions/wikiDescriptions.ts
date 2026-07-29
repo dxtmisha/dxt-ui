@@ -64,6 +64,7 @@ import { wikiDescriptionsMotionSticky } from './wikiDescriptionsMotionSticky'
 import { wikiDescriptionsMotionTransform } from './wikiDescriptionsMotionTransform'
 import { wikiDescriptionsNavigationItem } from './wikiDescriptionsNavigationItem'
 import { wikiDescriptionsNavigationList } from './wikiDescriptionsNavigationList'
+import { wikiDescriptionsNavigationRailItem } from './wikiDescriptionsNavigationRailItem'
 import { wikiDescriptionsPage } from './wikiDescriptionsPage'
 import { wikiDescriptionsPageArea } from './wikiDescriptionsPageArea'
 import { wikiDescriptionsPagination } from './wikiDescriptionsPagination'
@@ -168,6 +169,7 @@ export const wikiDescriptions: StorybookComponentsDescription = [
   wikiDescriptionsMotionTransform,
   wikiDescriptionsNavigationItem,
   wikiDescriptionsNavigationList,
+  wikiDescriptionsNavigationRailItem,
   wikiDescriptionsPage,
   wikiDescriptionsPageArea,
   wikiDescriptionsPagination,

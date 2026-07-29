@@ -81,6 +81,5 @@ export type ListItemClasses = {
   trailing: string
   control: string
   badge: string
-  input: string
   // :classes [!] System label / Системная метка
 }

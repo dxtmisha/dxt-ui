@@ -50,6 +50,9 @@ import { wikiInputCodeItem } from './wikiInputCodeItem'
 import { wikiInputSocial } from './wikiInputSocial'
 import { wikiList } from './wikiList'
 import { wikiListItem } from './wikiListItem'
+import { wikiNavigationItem } from './wikiNavigationItem'
+import { wikiNavigationList } from './wikiNavigationList'
+import { wikiNavigationRailItem } from './wikiNavigationRailItem'
 import { wikiMask } from './wikiMask'
 import { wikiMenu } from './wikiMenu'
 import { wikiMenuCountry } from './wikiMenuCountry'
@@ -135,6 +138,9 @@ export const wiki: StorybookArgsToList = {
   ...wikiInputSocial,
   ...wikiList,
   ...wikiListItem,
+  ...wikiNavigationItem,
+  ...wikiNavigationList,
+  ...wikiNavigationRailItem,
   ...wikiMask,
   ...wikiMenu,
   ...wikiMenuCountry,

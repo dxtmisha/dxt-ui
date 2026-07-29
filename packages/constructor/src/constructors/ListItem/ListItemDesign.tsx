@@ -108,8 +108,7 @@ export class ListItemDesign<
         icon: this.getSubClass('icon'),
         trailing: this.getSubClass('trailing'),
         control: this.getSubClass('control'),
-        badge: this.getSubClass('badge'),
-        input: this.getSubClass('input')
+        badge: this.getSubClass('badge')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

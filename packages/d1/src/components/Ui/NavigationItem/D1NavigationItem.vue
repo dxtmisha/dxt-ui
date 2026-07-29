@@ -42,7 +42,10 @@ const classesToken = computed<ConstrClasses>(() => ({
     [`d1-navigationItem--iconAlign--${props.iconAlign}`]: inArray(propsValues.iconAlign, props.iconAlign),
     [`d1-navigationItem--controlPosition--${props.controlPosition}`]: inArray(propsValues.controlPosition, props.controlPosition),
     'd1-navigationItem--fill--custom': isFilled(props.fill) && !inArray(propsValues.fill, props.fill),
-    'd1-navigationItem--divider': props.divider
+    'd1-navigationItem--divider': props.divider,
+    [`d1-navigationItem--size--${props.size}`]: inArray(propsValues.size, props.size),
+    'd1-navigationItem--dense': props.dense,
+    [`d1-palette d1-palette--${props.palette}`]: inArray(propsValues.palette, props.palette)
     // :classes-values [!] System label / Системная метка
   }
 }))

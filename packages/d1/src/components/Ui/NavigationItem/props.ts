@@ -10,7 +10,9 @@ export const propsValues = {
   // :values [!] System label / Системная метка
   iconAlign: ['center', 'edge'],
   controlPosition: ['start', 'end', 'autoSm', 'autoMd', 'autoLg', 'autoXl', 'auto2xl'],
-  fill: []
+  fill: [],
+  size: ['sm', 'md', 'lg'],
+  palette: ['red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose', 'slate', 'gray', 'zinc', 'neutral', 'stone', 'black', 'white']
   // :values [!] System label / Системная метка
 }
 
@@ -26,6 +28,9 @@ type PropsToken = {
   controlPosition?: 'start' | 'end' | 'autoSm' | 'autoMd' | 'autoLg' | 'autoXl' | 'auto2xl'
   fill?: string | 'custom'
   divider?: boolean
+  size?: 'sm' | 'md' | 'lg'
+  dense?: boolean
+  palette?: 'red' | 'orange' | 'amber' | 'yellow' | 'lime' | 'green' | 'emerald' | 'teal' | 'cyan' | 'sky' | 'blue' | 'indigo' | 'violet' | 'purple' | 'fuchsia' | 'pink' | 'rose' | 'slate' | 'gray' | 'zinc' | 'neutral' | 'stone' | 'black' | 'white'
   // :type [!] System label / Системная метка
 }
 
@@ -47,8 +52,9 @@ export const defaults: object = {
   ...defaultsNavigationItem,
   ...{
     // :default [!] System label / Системная метка
-    iconAlign: 'center',
-    controlPosition: 'end'
+    iconAlign: 'edge',
+    controlPosition: 'end',
+    size: 'md'
     // :default [!] System label / Системная метка
   }
 }

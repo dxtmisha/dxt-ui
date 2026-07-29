@@ -10184,6 +10184,31 @@
         "name": "d1-navigationItem",
         "type": "component",
         "value": {
+          "paddingX": {
+            "name": "--d1-navigationItem-paddingX",
+            "type": "var",
+            "value": "{layout.paddingX}"
+          },
+          "paddingY": {
+            "name": "--d1-navigationItem-paddingY",
+            "type": "var",
+            "value": "{sys.spacing.xs}"
+          },
+          "shift": {
+            "name": "--d1-navigationItem-shift",
+            "type": "var",
+            "value": "{sys.spacing.x} * -1"
+          },
+          "borderWidth": {
+            "name": "--d1-navigationItem-borderWidth",
+            "type": "var",
+            "value": "{sys.spacing.outline}"
+          },
+          "borderColor": {
+            "name": "--d1-navigationItem-borderColor",
+            "type": "var",
+            "value": "{sys.palette.outline}"
+          },
           "transitionFunction": {
             "name": "--d1-navigationItem-transitionFunction",
             "type": "var",
@@ -10203,6 +10228,120 @@
                     "value": "{d1.navigationItem.sys.fill}"
                   }
                 }
+              }
+            }
+          },
+          "divider": {
+            "name": "&--divider",
+            "type": "state",
+            "value": {
+              "paddingX": {
+                "name": "--d1-navigationItem-paddingX",
+                "type": "var",
+                "value": "{sys.spacing.sm}"
+              }
+            }
+          },
+          "size": {
+            "name": "&--size",
+            "type": "state",
+            "value": {
+              "sm": {
+                "name": "&--sm",
+                "type": "state",
+                "value": {
+                  "height": {
+                    "name": "--d1-navigationItem-height",
+                    "type": "var",
+                    "value": "{ref.spacing.10}"
+                  }
+                }
+              },
+              "md": {
+                "name": "&--md",
+                "type": "state",
+                "value": {
+                  "height": {
+                    "name": "--d1-navigationItem-height",
+                    "type": "var",
+                    "value": "{ref.spacing.12}"
+                  }
+                }
+              },
+              "lg": {
+                "name": "&--lg",
+                "type": "state",
+                "value": {
+                  "height": {
+                    "name": "--d1-navigationItem-height",
+                    "type": "var",
+                    "value": "{ref.spacing.14}"
+                  }
+                }
+              }
+            }
+          },
+          "dense": {
+            "name": "&--dense",
+            "type": "state",
+            "value": {
+              "paddingX": {
+                "name": "--d1-navigationItem-paddingX",
+                "type": "var",
+                "value": "{sys.spacing.sm}"
+              }
+            }
+          },
+          "mediaMd": {
+            "name": "(min-width: 768px)",
+            "type": "media",
+            "value": {
+              "paddingY": {
+                "name": "--d1-navigationItem-paddingY",
+                "type": "var",
+                "value": "{sys.spacing.x}"
+              }
+            }
+          }
+        }
+      },
+      "navigationRailItem": {
+        "name": "d1-navigationRailItem",
+        "type": "component",
+        "value": {
+          "paddingX": {
+            "name": "--d1-navigationRailItem-paddingX",
+            "type": "var",
+            "value": "{sys.spacing.x}"
+          },
+          "paddingY": {
+            "name": "--d1-navigationRailItem-paddingY",
+            "type": "var",
+            "value": "{sys.spacing.x}"
+          },
+          "borderWidth": {
+            "name": "--d1-navigationRailItem-borderWidth",
+            "type": "var",
+            "value": "{sys.spacing.outline}"
+          },
+          "borderColor": {
+            "name": "--d1-navigationRailItem-borderColor",
+            "type": "var",
+            "value": "{sys.palette.outline}"
+          },
+          "transitionFunction": {
+            "name": "--d1-navigationRailItem-transitionFunction",
+            "type": "var",
+            "value": "{d.sys.transitionFunction.standard}"
+          },
+          "divider": {
+            "name": "&--divider",
+            "type": "state",
+            "value": {
+              "paddingX": {
+                "name": "--d1-navigationRailItem-paddingX",
+                "type": "var",
+                "value": "{sys.spacing.sm}"
               }
             }
           }
@@ -12351,6 +12490,17 @@
                 }
               }
             }
+          }
+        }
+      },
+      "navigationRailItem": {
+        "name": "d-navigationRailItem",
+        "type": "component",
+        "value": {
+          "transitionFunction": {
+            "name": "--d-navigationRailItem-transitionFunction",
+            "type": "var",
+            "value": "{d.sys.transitionFunction.standard}"
           }
         }
       },

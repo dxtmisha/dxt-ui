@@ -1,4 +1,4 @@
-import { ListDesign } from '../List/ListDesign'
+import { ListDesign } from '../List'
 
 import {
   type NavigationListPropsBasic
@@ -18,10 +18,9 @@ export class NavigationListDesign<
   CLASSES extends NavigationListClasses,
   P extends NavigationListPropsBasic
 > extends ListDesign<
-  COMP,
-  EXPOSE,
-  CLASSES,
-  P
-> {
+    COMP,
+    EXPOSE,
+    CLASSES,
+    P
+  > {
 }
-

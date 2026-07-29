@@ -1,3 +1,8 @@
 {
-  "main": "{d.navigationList}"
+  "main": "{d.navigationList}",
+  "link|list": "{?list}",
+  "#subtitle": {
+    "link|font": "{font.labelLarge}",
+    "color-opacity": "{sys.opacity.surface.high}"
+  }
 }

@@ -70,6 +70,7 @@ import { wikiMdxMotionSticky } from './MotionSticky/wikiMdxMotionSticky'
 import { wikiMdxMotionTransform } from './MotionTransform/wikiMdxMotionTransform'
 import { wikiMdxNavigationItem } from './NavigationItem/wikiMdxNavigationItem'
 import { wikiMdxNavigationList } from './NavigationList/wikiMdxNavigationList'
+import { wikiMdxNavigationRailItem } from './NavigationRailItem/wikiMdxNavigationRailItem'
 import { wikiMdxPage } from './Page/wikiMdxPage'
 import { wikiMdxPageArea } from './PageArea/wikiMdxPageArea'
 import { wikiMdxPagination } from './Pagination/wikiMdxPagination'
@@ -180,6 +181,7 @@ export const wikiMdx: StorybookComponentsMdx = [
   wikiMdxMotionTransform,
   wikiMdxNavigationItem,
   wikiMdxNavigationList,
+  wikiMdxNavigationRailItem,
   wikiMdxPage,
   wikiMdxPageArea,
   wikiMdxPagination,

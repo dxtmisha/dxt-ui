@@ -57,4 +57,3 @@ export type NavigationListClasses = {
   none: string
   // :classes [!] System label / Системная метка
 }
-

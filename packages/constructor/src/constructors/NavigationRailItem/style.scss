@@ -1,0 +1,50 @@
+@use "@dxtmisha/styles/properties" as ui;
+
+@mixin mixinNavigationRailItem {
+  box-sizing: border-box;
+  @include ui.flexY;
+  position: relative;
+
+  padding: 0;
+
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+
+  @include ui.paddingX(ui.v('??paddingX', 0));
+  @include ui.paddingY(ui.v('??paddingY', 0));
+
+  @include ui.subclass('label') {
+    order: 16;
+  }
+
+  @include ui.subclass('badge') {
+    order: 40;
+    @include ui.marginLeft(auto);
+  }
+
+  &__icon {
+    z-index: 4;
+    order: 8;
+  }
+
+  &__ripple {
+    order: 32;
+  }
+
+  &--readonly,
+  &--disabled,
+  &--loading {
+    cursor: default;
+  }
+
+  @at-root {
+    &+&[data-divider="active"],
+    #{ui.c('?listGroup')}+&[data-divider="active"],
+    [data-divider="active"]+&[data-divider="active"] {
+      border-top-style: solid;
+      border-top-width: ui.v('??borderWidth');
+      @include ui.borderColor(ui.v('??borderColor'));
+    }
+  }
+}

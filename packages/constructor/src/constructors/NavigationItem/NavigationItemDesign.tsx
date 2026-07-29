@@ -1,4 +1,4 @@
-import { ListItemDesign } from '../ListItem/ListItemDesign'
+import { ListItemDesign } from '../ListItem'
 
 import {
   type NavigationItemPropsBasic
@@ -18,9 +18,9 @@ export class NavigationItemDesign<
   CLASSES extends NavigationItemClasses,
   P extends NavigationItemPropsBasic
 > extends ListItemDesign<
-  COMP,
-  EXPOSE,
-  CLASSES,
-  P
-> {
+    COMP,
+    EXPOSE,
+    CLASSES,
+    P
+  > {
 }

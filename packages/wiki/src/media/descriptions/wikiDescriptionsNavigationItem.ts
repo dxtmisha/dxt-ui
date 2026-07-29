@@ -19,6 +19,7 @@ export const wikiDescriptionsNavigationItem: StorybookComponentsDescriptionItem 
       'icon support with flexible positioning',
       'badge integration for status and notification counters',
       'interactive states: focus, selected, disabled, readonly',
+      'progress and skeleton loading states',
       'ripple effect for visual click feedback',
       'flexible element tags: button, link, div',
       'built-in accessibility support'
@@ -30,6 +31,7 @@ export const wikiDescriptionsNavigationItem: StorybookComponentsDescriptionItem 
       'поддержка иконок с гибким позиционированием',
       'интеграция значков для статусов и счетчиков уведомлений',
       'интерактивные состояния: фокус, выбранный, отключенный, только чтение',
+      'состояния загрузки с прогрессом и скелетоном',
       'эффект пульсации для визуальной обратной связи при клике',
       'гибкие варианты тегов: кнопка, ссылка, div',
       'встроенная поддержка доступности'
@@ -50,6 +52,33 @@ export const wikiDescriptionsNavigationItem: StorybookComponentsDescriptionItem 
           </div>
         </div>
       `
+    },
+    {
+      id: 'NavigationItemSkeleton',
+      name: {
+        en: 'Skeleton loading',
+        ru: 'Загрузка скелетона'
+      },
+      components: ['Skeleton'],
+      template: `
+        <DesignSkeleton :active="true">
+          <DesignComponent
+            :isSkeleton="true"
+            caption="Caption"
+            description="Short desc."
+          >Item A</DesignComponent>
+          <DesignComponent
+            :isSkeleton="true"
+            caption="Caption"
+            description="A bit longer description for the navigation item component."
+          >Navigation Item Label Example</DesignComponent>
+          <DesignComponent
+            :isSkeleton="true"
+            caption="Caption"
+            description="This is a much longer description to demonstrate how the skeleton adapts to different content lengths in the navigation item."
+          >Very Long Navigation Item Label Example for Skeleton</DesignComponent>
+        </DesignSkeleton>
+      `
     }
   ],
   documentation: {
@@ -58,6 +87,9 @@ export const wikiDescriptionsNavigationItem: StorybookComponentsDescriptionItem 
 
 <StorybookDescriptions componentName={'Value'} type={'highlight'}/>
 <Canvas of={Component.NavigationItemHighlight}/>
+
+<StorybookDescriptions componentName={'Style'} type={'isSkeleton'}/>
+<Canvas of={Component.NavigationItemSkeleton}/>
     `,
     events: `
 <StorybookDescriptions componentName={'Event'} type={'click'}/>
@@ -69,13 +101,16 @@ export const wikiDescriptionsNavigationItem: StorybookComponentsDescriptionItem 
     slots: `
 <StorybookDescriptions componentName={'Slot'} type={'default'}/>
 <StorybookDescriptions componentName={'Slot'} type={'prefix'}/>
+<StorybookDescriptions componentName={'Slot'} type={'caption'}/>
 <StorybookDescriptions componentName={'Slot'} type={'suffix'}/>
+<StorybookDescriptions componentName={'Slot'} type={'description'}/>
+<StorybookDescriptions componentName={'ListItem'} type={'slots'}/>
     `
   },
   ai: {
     description: `
 Specialized navigation item component inheriting from ListItem, designed specifically for application sidebars, navigation drawers, and header menus.
-Inherits all layout features including prefix/suffix slots, icons, badges, selected states, and ripple click effects.
+Inherits all layout features including prefix/suffix slots, icons, badges, selected states, loading skeleton states, and ripple click effects.
 Used in combination with NavigationList to construct structured navigation trees.
     `
   }

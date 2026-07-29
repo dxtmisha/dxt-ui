@@ -66,6 +66,8 @@
   '--d1-image-color': ('--d1-palette-basic950'),
   '--d1-listGroup-borderColor': ('--d1-palette-basic800'),
   '--d1-listItem-borderColor': ('--d1-palette-basic800'),
+  '--d1-navigationItem-borderColor': ('--d1-palette-basic800'),
+  '--d1-navigationRailItem-borderColor': ('--d1-palette-basic800'),
   '--d1-progress-backgroundColor': ('--d1-palette-basic600'),
   '--d1-radio-comp-color': ('--d1-palette-basic600'),
   '--d1-radio-comp-backgroundColor': ('--d1-palette-basic600', '--d1-palette-basic950', '--d1-palette-basic950'),
@@ -12730,6 +12732,11 @@
         name: 'd1-navigationList',
         type: 'component',
       ),
+      'navigationRailItem':(
+        index: 'navigationRailItem',
+        name: 'd1-navigationRailItem',
+        type: 'component',
+      ),
       'page':(
         index: 'page',
         name: 'd1-page',
@@ -13501,6 +13508,11 @@
       'navigationList':(
         index: 'navigationList',
         name: 'd-navigationList',
+        type: 'component',
+      ),
+      'navigationRailItem':(
+        index: 'navigationRailItem',
+        name: 'd-navigationRailItem',
         type: 'component',
       ),
       'page':(

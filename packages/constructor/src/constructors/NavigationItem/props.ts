@@ -42,6 +42,7 @@ export type NavigationItemProps = NavigationItemPropsBasic & NavigationItemProps
  * Значение по умолчанию для свойства.
  */
 export const defaultsNavigationItem = {
+  tag: 'a',
   tabindex: '-1',
   role: 'option',
   selectionStyle: 'none',

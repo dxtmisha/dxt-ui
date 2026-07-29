@@ -31,4 +31,25 @@ export const NavigationList: Story = {
 }
 
 // :story-items [!] System label / Системная метка
+export const NavigationListHighlight: Story = {
+  name: 'Выделение',
+  render: () => ({
+    components: { D1NavigationList },
+    template: `
+        <div class="wiki-storybook-group">
+          <div class="wiki-storybook-item wiki-storybook-item--padding wiki-storybook-item--squared--md">
+            <D1NavigationList
+              :list="[
+                {label: 'User Management', value: 'users', icon: 'people'},
+                {label: 'Role Permissions', value: 'roles', icon: 'security'},
+                {label: 'System Logs', value: 'logs', icon: 'receipt_long'}
+              ]"
+              highlight="manag"
+              :highlightLengthStart="4"
+            />
+          </div>
+        </div>
+    `
+  })
+}
 // :story-items [!] System label / Системная метка

@@ -1,4 +1,4 @@
-import type { ListPropsBasic } from '../List'
+import { defaultsList, type ListPropsBasic } from '../List'
 
 import type { IconPropsBasic } from '../Icon'
 import type { NavigationItemPropsBasic } from '../NavigationItem'
@@ -30,11 +30,8 @@ export type NavigationListProps = NavigationListPropsBasic & NavigationListProps
  * Значение по умолчанию для свойства.
  */
 export const defaultsNavigationList = {
-  keyLabel: 'label',
-  keyValue: 'value',
-  tag: 'div',
-  role: 'listbox',
-  tabindex: 0,
+  ...defaultsList,
+  tag: 'a',
   ...{
     // :default [!] System label / Системная метка
     axis: 'y'

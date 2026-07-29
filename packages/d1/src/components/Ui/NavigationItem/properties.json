@@ -1,3 +1,16 @@
 {
-  "main": "{d.navigationItem}"
+  "main": "{d.navigationItem}",
+  "link|listItem": "{?listItem}",
+  "~size": {
+    "sm": {
+      "height": "{ref.spacing.10}"
+    },
+    "md": {
+      "height": "{ref.spacing.12}"
+    },
+    "lg": {
+      "height": "{ref.spacing.14}"
+    },
+    "_default": "md"
+  }
 }
