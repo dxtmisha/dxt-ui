@@ -62,6 +62,7 @@ import { wikiMenuLanguage } from './wikiMenuLanguage'
 import { wikiMenuButton } from './wikiMenuButton'
 import { wikiMenuChip } from './wikiMenuChip'
 import { wikiMotionAxis } from './wikiMotionAxis'
+import { wikiMotionFlip } from './wikiMotionFlip'
 import { wikiMotionSticky } from './wikiMotionSticky'
 import { wikiMotionTransform } from './wikiMotionTransform'
 import { wikiPagination } from './wikiPagination'
@@ -152,6 +153,7 @@ export const wiki: StorybookArgsToList = {
   ...wikiMenuButton,
   ...wikiMenuChip,
   ...wikiMotionAxis,
+  ...wikiMotionFlip,
   ...wikiMotionSticky,
   ...wikiMotionTransform,
   ...wikiPagination,

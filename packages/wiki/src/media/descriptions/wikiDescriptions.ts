@@ -61,6 +61,7 @@ import { wikiDescriptionsMenuCountry } from './wikiDescriptionsMenuCountry'
 import { wikiDescriptionsMenuLanguage } from './wikiDescriptionsMenuLanguage'
 import { wikiDescriptionsModal } from './wikiDescriptionsModal'
 import { wikiDescriptionsMotionAxis } from './wikiDescriptionsMotionAxis'
+import { wikiDescriptionsMotionFlip } from './wikiDescriptionsMotionFlip'
 import { wikiDescriptionsMotionSticky } from './wikiDescriptionsMotionSticky'
 import { wikiDescriptionsMotionTransform } from './wikiDescriptionsMotionTransform'
 import { wikiDescriptionsNavigationItem } from './wikiDescriptionsNavigationItem'
@@ -168,6 +169,7 @@ export const wikiDescriptions: StorybookComponentsDescription = [
   wikiDescriptionsMenuLanguage,
   wikiDescriptionsModal,
   wikiDescriptionsMotionAxis,
+  wikiDescriptionsMotionFlip,
   wikiDescriptionsMotionSticky,
   wikiDescriptionsMotionTransform,
   wikiDescriptionsNavigationItem,

@@ -1,0 +1,16 @@
+## Methods
+
+### Action
+
+- `update(callback: MotionFlipCallback): Promise<void>` — Performs DOM mutation callback and animates child layout changes using FLIP animation.
+
+## FLIP Animation Updates
+
+The `update` method orchestrates FLIP layout animations during DOM modifications.
+
+1. Records original bounding rectangles for all child elements before DOM modification.
+2. Executes the asynchronous `callback` function to update state and DOM elements.
+3. Measures new child positions and applies calculated offset CSS variables.
+4. Triggers smooth CSS transform transition to animate elements to their target positions.
+
+> Important: Always wrap DOM-modifying state changes inside the `update` callback so that initial and final element coordinates can be accurately measured.

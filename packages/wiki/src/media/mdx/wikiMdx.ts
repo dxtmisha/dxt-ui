@@ -67,6 +67,7 @@ import { wikiMdxMenuCountry } from './MenuCountry/wikiMdxMenuCountry'
 import { wikiMdxMenuLanguage } from './MenuLanguage/wikiMdxMenuLanguage'
 import { wikiMdxModal } from './Modal/wikiMdxModal'
 import { wikiMdxMotionAxis } from './MotionAxis/wikiMdxMotionAxis'
+import { wikiMdxMotionFlip } from './MotionFlip/wikiMdxMotionFlip'
 import { wikiMdxMotionSticky } from './MotionSticky/wikiMdxMotionSticky'
 import { wikiMdxMotionTransform } from './MotionTransform/wikiMdxMotionTransform'
 import { wikiMdxNavigationItem } from './NavigationItem/wikiMdxNavigationItem'
@@ -180,6 +181,7 @@ export const wikiMdx: StorybookComponentsMdx = [
   wikiMdxMenuLanguage,
   wikiMdxModal,
   wikiMdxMotionAxis,
+  wikiMdxMotionFlip,
   wikiMdxMotionSticky,
   wikiMdxMotionTransform,
   wikiMdxNavigationItem,
