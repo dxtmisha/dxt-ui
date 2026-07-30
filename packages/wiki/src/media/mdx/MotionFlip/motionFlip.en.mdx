@@ -1,0 +1,49 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+Component for performing FLIP (First, Last, Invert, Play) animations on child elements.
+
+MotionFlip automatically animates positional and dimensional changes of child elements when the layout changes (e.g. reordering, inserting, or removing list items).
+
+**Key Features:**
+
+- Smooth FLIP layout transitions during DOM updates
+- Asynchronous callback orchestration via update method
+- Automatic transition cleanup upon animation end
+- Ability to disable layout animation via disabled property
+
+**Typical Use Cases:**
+
+- Reorderable list and grid layouts
+- Dynamic filter and sorting interfaces
+- Drag-and-drop item transitions
+- Adding/removing gallery or card elements
+
+<Source
+    code={`
+<script setup>
+import { ref } from 'vue'
+
+const flipRef = ref()
+const items = ref([1, 2, 3, 4, 5])
+
+const shuffle = async () => {
+  if (flipRef.value) {
+    await flipRef.value.update(() => {
+      items.value = [...items.value].sort(() => Math.random() - 0.5)
+    })
+  }
+}
+</script>
+
+<template>
+  <button @click="shuffle">Shuffle Items</button>
+
+  <MotionFlip ref="flipRef" class="list">
+    <div v-for="item in items" :key="item" class="item">
+      Item {{ item }}
+    </div>
+  </MotionFlip>
+</template>
+  `}
+    language="html"
+/>

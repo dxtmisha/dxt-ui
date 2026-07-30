@@ -1,0 +1,49 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+Компонент для выполнения FLIP-анимаций (First, Last, Invert, Play) перестроения дочерних элементов.
+
+MotionFlip автоматически анимирует изменение позиций и размеров дочерних элементов при изменениях макета (например, при сортировке, добавлении или удалении элементов списка).
+
+**Основные возможности:**
+
+- Плавные FLIP-анимации перестроения при обновлениях DOM
+- Асинхронное выполнение обновлений через метод update
+- Автоматическая очистка стилей после завершения анимации
+- Возможность отключения анимации перестроения с помощью свойства disabled
+
+**Типичные сценарии использования:**
+
+- Списки и сетки с изменяемым порядком элементов
+- Интерфейсы динамической фильтрации и сортировки
+- Анимации при перетаскивании элементов (drag-and-drop)
+- Добавление и удаление элементов галерей или карточек
+
+<Source
+    code={`
+<script setup>
+import { ref } from 'vue'
+
+const flipRef = ref()
+const items = ref([1, 2, 3, 4, 5])
+
+const shuffle = async () => {
+  if (flipRef.value) {
+    await flipRef.value.update(() => {
+      items.value = [...items.value].sort(() => Math.random() - 0.5)
+    })
+  }
+}
+</script>
+
+<template>
+  <button @click="shuffle">Перемешать элементы</button>
+
+  <MotionFlip ref="flipRef" class="list">
+    <div v-for="item in items" :key="item" class="item">
+      Элемент {{ item }}
+    </div>
+  </MotionFlip>
+</template>
+  `}
+    language="html"
+/>

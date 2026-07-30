@@ -1,0 +1,21 @@
+## CSS Classes and Modifiers
+
+### Container Status Classes
+
+- `*--freeze`, `status-freeze` — Applied to the main container during position measurement before animation starts.
+- `*--go`, `status-go` — Applied during the active transition phase to trigger smooth movement.
+
+### Child Item Classes
+
+- `*__item` — Class assigned to each animated child element during the FLIP transition.
+
+### CSS Custom Properties
+
+During transition calculation, MotionFlip dynamically injects the following CSS variables on animated child elements:
+
+- `--mc-top` — Vertical pixel offset between initial and target positions.
+- `--mc-left` — Horizontal pixel offset between initial and target positions.
+- `--mc-width` — Target width of the element.
+- `--mc-width-to` — Initial width of the element.
+- `--mc-height` — Target height of the element.
+- `--mc-height-to` — Initial height of the element.
