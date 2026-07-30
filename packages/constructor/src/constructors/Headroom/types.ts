@@ -1,4 +1,5 @@
 import type { ConstrClass } from '@dxtmisha/functional'
+import type { HeadroomEmitsInclude, HeadroomExposeInclude } from '../../types/headroomTypes'
 
 /**
  * Interface for describing which components need to be connected for work.
@@ -14,22 +15,14 @@ export type HeadroomComponents = {
  *
  * Тип, описывающий доступные события.
  */
-export type HeadroomEmits = {
-  scroll: [value: number, isSticky: boolean]
-  sticky: [isSticky: boolean]
-}
+export type HeadroomEmits = HeadroomEmitsInclude
 
 /**
  * Type describing available properties.
  *
  * Тип, описывающий доступные свойства.
  */
-export interface HeadroomExpose {
-  /** Returns sticky state / Возвращает состояние прилипания */
-  isSticky(): boolean
-  /** Updates headroom state / Обновляет состояние headroom */
-  update(): void
-}
+export type HeadroomExpose = HeadroomExposeInclude
 
 /**
  * Type describing available slots.

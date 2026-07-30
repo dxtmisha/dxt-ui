@@ -31,14 +31,14 @@ export class HeadroomDesign<
   CLASSES extends HeadroomClasses,
   P extends HeadroomPropsBasic
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
-    COMP,
-    HeadroomEmits,
-    EXPOSE,
-    HeadroomSlots,
-    CLASSES,
-    P
-  > {
+  HTMLDivElement,
+  COMP,
+  HeadroomEmits,
+  EXPOSE,
+  HeadroomSlots,
+  CLASSES,
+  P
+> {
   /** Instance of Headroom logic class / Экземпляр класса логики Headroom */
   protected readonly item: Headroom
 
@@ -82,7 +82,9 @@ export class HeadroomDesign<
    * @returns object with exposed properties / объект с экспортируемыми свойствами
    */
   protected initExpose(): EXPOSE {
-    return this.item.expose as EXPOSE
+    return {
+      ...this.item.headroom.expose
+    } as EXPOSE
   }
 
   /**
@@ -93,9 +95,7 @@ export class HeadroomDesign<
    */
   protected initClasses(): Partial<CLASSES> {
     return {
-      main: {
-        ...this.item.classes
-      },
+      main: {},
       ...{
         // :classes [!] System label / Системная метка
         // :classes [!] System label / Системная метка
@@ -121,7 +121,7 @@ export class HeadroomDesign<
    */
   protected initRender(): VNode {
     return h(
-      'div',
+      this.item.tag,
       {
         ...this.getAttrs(),
         ref: this.element,

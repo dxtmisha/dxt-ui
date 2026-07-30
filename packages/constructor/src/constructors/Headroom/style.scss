@@ -1,9 +1,4 @@
-@use "@dxtmisha/styles/properties" as ui;
-
 @mixin mixinHeadroom {
   position: sticky;
-
-  &--scroll-disappears {
-    top: ui.v("??sys-top");
-  }
+  top: 0;
 }

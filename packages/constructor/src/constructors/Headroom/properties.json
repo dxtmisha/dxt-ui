@@ -1,12 +1,1 @@
-{
-  "~scroll": {
-    "~top": {},
-    "~disappears": {},
-    "~elevation": {},
-    "~border": {},
-    "_default": "top"
-  },
-  "transform": {
-    "_type": "number"
-  }
-}
+{}

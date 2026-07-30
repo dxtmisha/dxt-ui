@@ -1,4 +1,4 @@
-import type { ElementOrWindow } from '@dxtmisha/functional-basic'
+import type { HeadroomPropsInclude } from '../../types/headroomTypes'
 
 /**
  * Type describing token properties.
@@ -7,8 +7,6 @@ import type { ElementOrWindow } from '@dxtmisha/functional-basic'
  */
 type HeadroomPropsToken = {
   // :type [!] System label / Системная метка
-  /** Scroll behavior mode / Режим поведения прокрутки */
-  scroll?: 'top' | 'disappears' | 'elevation' | 'border'
   // :type [!] System label / Системная метка
 }
 
@@ -17,11 +15,9 @@ type HeadroomPropsToken = {
  *
  * Тип, описывающий базовые свойства.
  */
-export type HeadroomPropsBasic = {
-  /** Target scrolling element or window / Элемент или окно для прокрутки */
-  element?: ElementOrWindow
-  /** Transform threshold in pixels for transformation calculations / Порог трансформации в пикселях */
-  transform?: number
+export type HeadroomPropsBasic = HeadroomPropsInclude & {
+  /** HTML tag for the element / HTML-тег для элемента */
+  tag?: string
 }
 
 /**
@@ -37,10 +33,10 @@ export type HeadroomProps = HeadroomPropsBasic & HeadroomPropsToken
  * Значение по умолчанию для свойства.
  */
 export const defaultsHeadroom = {
+  tag: 'div',
   transform: 0,
   ...{
     // :default [!] System label / Системная метка
-    scroll: 'top'
     // :default [!] System label / Системная метка
   }
 }
