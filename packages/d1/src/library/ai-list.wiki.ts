@@ -40,6 +40,7 @@ import D1Grid from '../../src/components/Ui/Grid/D1GridAiWiki.vue'
 import D1GridItem from '../../src/components/Ui/GridItem/D1GridItemAiWiki.vue'
 import D1Group from '../../src/components/Ui/Group/D1GroupAiWiki.vue'
 import D1Header from '../../src/components/Ui/Header/D1HeaderAiWiki.vue'
+import D1Headroom from '../../src/components/Ui/Headroom/D1HeadroomAiWiki.vue'
 import D1HorizontalScroll from '../../src/components/Ui/HorizontalScroll/D1HorizontalScrollAiWiki.vue'
 import D1Icon from '../../src/components/Ui/Icon/D1IconAiWiki.vue'
 import D1Image from '../../src/components/Ui/Image/D1ImageAiWiki.vue'
@@ -61,6 +62,7 @@ import D1MenuCountry from '../../src/components/Ui/MenuCountry/D1MenuCountryAiWi
 import D1MenuLanguage from '../../src/components/Ui/MenuLanguage/D1MenuLanguageAiWiki.vue'
 import D1Modal from '../../src/components/Ui/Modal/D1ModalAiWiki.vue'
 import D1MotionAxis from '../../src/components/Ui/MotionAxis/D1MotionAxisAiWiki.vue'
+import D1MotionFlip from '../../src/components/Ui/MotionFlip/D1MotionFlipAiWiki.vue'
 import D1MotionSticky from '../../src/components/Ui/MotionSticky/D1MotionStickyAiWiki.vue'
 import D1MotionTransform from '../../src/components/Ui/MotionTransform/D1MotionTransformAiWiki.vue'
 import D1NavigationItem from '../../src/components/Ui/NavigationItem/D1NavigationItemAiWiki.vue'
@@ -148,6 +150,7 @@ export const aiList: any[] = [
   D1GridItem,
   D1Group,
   D1Header,
+  D1Headroom,
   D1HorizontalScroll,
   D1Icon,
   D1Image,
@@ -169,6 +172,7 @@ export const aiList: any[] = [
   D1MenuLanguage,
   D1Modal,
   D1MotionAxis,
+  D1MotionFlip,
   D1MotionSticky,
   D1MotionTransform,
   D1NavigationItem,

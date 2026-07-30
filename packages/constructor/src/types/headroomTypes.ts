@@ -8,11 +8,11 @@ import type { ElementOrWindow } from '@dxtmisha/functional-basic'
  */
 export type HeadroomPropsInclude = {
   /** Target scrolling element or window / Элемент или окно для прокрутки */
-  element?: ElementOrWindow
+  scrollElement?: ElementOrWindow | string
   /** Hide element on scroll down and reveal on scroll up / Скрывать элемент при прокрутке вниз и показывать при прокрутке вверх */
   disappears?: boolean
   /** Transform threshold in pixels for transformation calculations / Порог трансформации в пикселях */
-  transform?: number
+  transformThreshold?: number
 }
 
 /**

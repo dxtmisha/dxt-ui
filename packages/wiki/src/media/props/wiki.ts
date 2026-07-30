@@ -42,6 +42,7 @@ import { wikiField } from './wikiField'
 import { wikiFormattedNumber } from './wikiFormattedNumber'
 import { wikiFormattedUnit } from './wikiFormattedUnit'
 import { wikiGridItem } from './wikiGridItem'
+import { wikiHeadroom } from './wikiHeadroom'
 import { wikiIcon } from './wikiIcon'
 import { wikiImage } from './wikiImage'
 import { wikiInput } from './wikiInput'
@@ -131,6 +132,7 @@ export const wiki: StorybookArgsToList = {
   ...wikiFormattedNumber,
   ...wikiFormattedUnit,
   ...wikiGridItem,
+  ...wikiHeadroom,
   ...wikiIcon,
   ...wikiImage,
   ...wikiInput,

@@ -1,5 +1,5 @@
-import { computed, ref, watch, onMounted, onUnmounted, type Ref, type ToRefs } from 'vue'
-import { EventItem, type ConstrEmit } from '@dxtmisha/functional'
+import { computed, ref, watch, onMounted, onUnmounted, type Ref, type ToRefs, nextTick } from 'vue'
+import { EventItem, getElementOrWindow, type ConstrEmit } from '@dxtmisha/functional'
 import type { ElementOrWindow } from '@dxtmisha/functional-basic'
 
 import type { HeadroomEmitsInclude, HeadroomExposeInclude, HeadroomPropsInclude } from '../types/headroomTypes'
@@ -51,7 +51,9 @@ export class HeadroomInclude {
     protected readonly className: string = 'headroom',
     protected readonly emits?: ConstrEmit<HeadroomEmitsInclude>
   ) {
-    onMounted(() => {
+    onMounted(async () => {
+      await nextTick()
+
       watch(
         this.isSticky,
         value => this.emits?.('headroomSticky', value)
@@ -60,8 +62,8 @@ export class HeadroomInclude {
       watch(
         [
           this.refs.disappears,
-          this.refs.transform,
-          this.refs.element
+          this.refs.transformThreshold,
+          this.refs.scrollElement
         ],
         () => this.toggle(),
         { immediate: true }
@@ -93,8 +95,7 @@ export class HeadroomInclude {
   readonly update = (): void => {
     this.value.value = this.getScroll()
 
-    this.onScroll()
-      .updateData()
+    this.updateData()
       .updateTransform()
       .updateDisappears()
   }
@@ -106,7 +107,7 @@ export class HeadroomInclude {
    * @returns scroll target element or window / элемент или окно для прокрутки
    */
   protected get eventElement(): ElementOrWindow {
-    return this.props.element ?? window
+    return getElementOrWindow(this.props.scrollElement) ?? window
   }
 
   /**
@@ -116,7 +117,7 @@ export class HeadroomInclude {
    * @returns transform threshold in pixels / значение порога трансформации в пикселях
    */
   protected get transformThreshold(): number {
-    return this.props.transform ?? 0
+    return this.props.transformThreshold ?? 0
   }
 
   /**
@@ -168,7 +169,9 @@ export class HeadroomInclude {
    * Вызывает генерацию события прокрутки.
    * @returns this instance / текущий экземпляр
    */
-  protected onScroll(): this {
+  protected readonly onScroll = (): this => {
+    this.update()
+
     this.emits?.(
       'headroomScroll',
       this.value.value,
@@ -214,10 +217,7 @@ export class HeadroomInclude {
     const mainElement = this.element.value
     const transformThreshold = this.transformThreshold
 
-    if (
-      mainElement
-      && transformThreshold > 0
-    ) {
+    if (mainElement) {
       mainElement.style.setProperty(`--${this.className}-sys-scroll`, `${this.transformValue.value}px`)
       mainElement.style.setProperty(`--${this.className}-sys-percent`, `${this.transformPercent.value}`)
       mainElement.style.setProperty(`--${this.className}-sys-transform`, `${transformThreshold}px`)
@@ -274,7 +274,6 @@ export class HeadroomInclude {
    */
   protected start(): this {
     const targetElement = this.eventElement
-
     if (this.eventScroll) {
       this.eventScroll.stop()
     }
@@ -282,7 +281,7 @@ export class HeadroomInclude {
     this.eventScroll = new EventItem(
       targetElement,
       'scroll',
-      this.update
+      this.onScroll
     )
       .start()
 

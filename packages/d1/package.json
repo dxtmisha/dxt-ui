@@ -51,7 +51,7 @@
     "build": "vue-tsc -b && vite build",
     "build-recovery": "npm run build && npm run wiki-storm",
     "preview": "vite preview",
-    "ui": "dxt-ui MotionFlip",
+    "ui": "dxt-ui Headroom",
     "wiki-storm": "dxt-wiki-storm",
     "types": "dxt-types",
     "screenshot": "dxt-screenshot",
@@ -518,6 +518,10 @@
     "./D1MotionFlip": {
       "types": "./dist/library/D1MotionFlip.d.ts",
       "default": "./dist/D1MotionFlip.js"
+    },
+    "./D1Headroom": {
+      "types": "./dist/library/D1Headroom.d.ts",
+      "default": "./dist/D1Headroom.js"
     }
   },
   "buildOptions": {

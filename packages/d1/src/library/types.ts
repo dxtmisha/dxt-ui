@@ -40,6 +40,7 @@ import _D1Grid from '../components/Ui/Grid/D1Grid.vue'
 import _D1GridItem from '../components/Ui/GridItem/D1GridItem.vue'
 import _D1Group from '../components/Ui/Group/D1Group.vue'
 import _D1Header from '../components/Ui/Header/D1Header.vue'
+import _D1Headroom from '../components/Ui/Headroom/D1Headroom.vue'
 import _D1HorizontalScroll from '../components/Ui/HorizontalScroll/D1HorizontalScroll.vue'
 import _D1Icon from '../components/Ui/Icon/D1Icon.vue'
 import _D1Image from '../components/Ui/Image/D1Image.vue'
@@ -61,6 +62,7 @@ import _D1MenuCountry from '../components/Ui/MenuCountry/D1MenuCountry.vue'
 import _D1MenuLanguage from '../components/Ui/MenuLanguage/D1MenuLanguage.vue'
 import _D1Modal from '../components/Ui/Modal/D1Modal.vue'
 import _D1MotionAxis from '../components/Ui/MotionAxis/D1MotionAxis.vue'
+import _D1MotionFlip from '../components/Ui/MotionFlip/D1MotionFlip.vue'
 import _D1MotionSticky from '../components/Ui/MotionSticky/D1MotionSticky.vue'
 import _D1MotionTransform from '../components/Ui/MotionTransform/D1MotionTransform.vue'
 import _D1NavigationItem from '../components/Ui/NavigationItem/D1NavigationItem.vue'
@@ -149,6 +151,7 @@ declare module '@vue/runtime-core' {
     D1GridItem: typeof _D1GridItem
     D1Group: typeof _D1Group
     D1Header: typeof _D1Header
+    D1Headroom: typeof _D1Headroom
     D1HorizontalScroll: typeof _D1HorizontalScroll
     D1Icon: typeof _D1Icon
     D1Image: typeof _D1Image
@@ -170,6 +173,7 @@ declare module '@vue/runtime-core' {
     D1MenuLanguage: typeof _D1MenuLanguage
     D1Modal: typeof _D1Modal
     D1MotionAxis: typeof _D1MotionAxis
+    D1MotionFlip: typeof _D1MotionFlip
     D1MotionSticky: typeof _D1MotionSticky
     D1MotionTransform: typeof _D1MotionTransform
     D1NavigationItem: typeof _D1NavigationItem

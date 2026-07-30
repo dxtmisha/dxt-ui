@@ -117,6 +117,17 @@ export const wikiOption: StorybookArgsToList = {
       }
     }
   },
+  disappears: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.option,
+
+      description: {
+        en: 'Hides the element on scroll down and reveals it on scroll up',
+        ru: 'Скрывает элемент при прокрутке вниз и показывает при прокрутке вверх'
+      }
+    }
+  },
   dynamic: {
     type: StorybookControl.boolean,
     options: {
@@ -426,6 +437,16 @@ export const wikiOption: StorybookArgsToList = {
       }
     }
   },
+  scrollElement: {
+    type: StorybookControl.text,
+    options: {
+      category: StorybookCategory.option,
+      description: {
+        en: 'Target scrolling element, selector string or window for scroll event tracking',
+        ru: 'Целевой элемент прокрутки, селектор (строка) или окно для отслеживания событий прокрутки'
+      }
+    }
+  },
   showLabel: {
     type: StorybookControl.boolean,
     options: {
@@ -552,6 +573,17 @@ export const wikiOption: StorybookArgsToList = {
       description: {
         en: 'Custom display template used by the component',
         ru: 'Пользовательский шаблон отображения, используемый компонентом'
+      }
+    }
+  },
+  transformThreshold: {
+    type: StorybookControl.number,
+    options: {
+      category: StorybookCategory.option,
+      type: 'number',
+      description: {
+        en: 'Transform threshold in pixels for transformation calculations',
+        ru: 'Порог трансформации в пикселях для вычислений трансформации'
       }
     }
   },

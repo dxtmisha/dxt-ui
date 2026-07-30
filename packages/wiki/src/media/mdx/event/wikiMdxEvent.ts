@@ -12,6 +12,10 @@ import eventsClickSlotEn from './events.clickSlot.en.mdx'
 import eventsClickSlotRu from './events.clickSlot.ru.mdx'
 import eventsFocusEn from './events.focus.en.mdx'
 import eventsFocusRu from './events.focus.ru.mdx'
+import eventsHeadroomScrollEn from './events.headroomScroll.en.mdx'
+import eventsHeadroomScrollRu from './events.headroomScroll.ru.mdx'
+import eventsHeadroomStickyEn from './events.headroomSticky.en.mdx'
+import eventsHeadroomStickyRu from './events.headroomSticky.ru.mdx'
 import eventsInputEn from './events.input.en.mdx'
 import eventsInputRu from './events.input.ru.mdx'
 import eventsInputStandardEn from './events.inputStandard.en.mdx'
@@ -53,6 +57,14 @@ export const wikiMdxEvent: StorybookComponentsMdxItem = {
     'focus': {
       en: eventsFocusEn,
       ru: eventsFocusRu
+    },
+    'headroomScroll': {
+      en: eventsHeadroomScrollEn,
+      ru: eventsHeadroomScrollRu
+    },
+    'headroomSticky': {
+      en: eventsHeadroomStickyEn,
+      ru: eventsHeadroomStickyRu
     },
     'input': {
       en: eventsInputEn,

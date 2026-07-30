@@ -39,6 +39,7 @@ import { wikiDescriptionsGrid } from './wikiDescriptionsGrid'
 import { wikiDescriptionsGridItem } from './wikiDescriptionsGridItem'
 import { wikiDescriptionsGroup } from './wikiDescriptionsGroup'
 import { wikiDescriptionsHeader } from './wikiDescriptionsHeader'
+import { wikiDescriptionsHeadroom } from './wikiDescriptionsHeadroom'
 import { wikiDescriptionsHorizontalScroll } from './wikiDescriptionsHorizontalScroll'
 import { wikiDescriptionsIcon } from './wikiDescriptionsIcon'
 import { wikiDescriptionsImage } from './wikiDescriptionsImage'
@@ -145,6 +146,7 @@ export const wikiDescriptions: StorybookComponentsDescription = [
   wikiDescriptionsGridItem,
   wikiDescriptionsGroup,
   wikiDescriptionsHeader,
+  wikiDescriptionsHeadroom,
   wikiDescriptionsHorizontalScroll,
   wikiDescriptionsIcon,
   wikiDescriptionsImage,

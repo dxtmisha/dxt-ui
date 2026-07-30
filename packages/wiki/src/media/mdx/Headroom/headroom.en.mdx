@@ -1,0 +1,26 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+A component for managing sticky header position, scroll metrics calculations, transform threshold percentages, and disappears scroll mode updates.
+
+Headroom tracks scrolling activity on the target element or window and dynamically updates sticky state, transformation styles, and disappears offset positioning.
+
+**Key features:**
+
+- Automatic scroll tracking and sticky state evaluation
+- Disappears mode that hides the element on scroll down and reveals it on scroll up
+- Dynamic transform custom CSS properties (`--headroom-sys-scroll`, `--headroom-sys-percent`, `--headroom-sys-transform`)
+- Customizable container element or target window
+- Configurable HTML tag for rendering
+
+<Source
+    code={`
+<template>
+  <Headroom disappears :transformThreshold="100">
+    <header class="header">
+      Headroom Header Content
+    </header>
+  </Headroom>
+</template>
+  `}
+    language="html"
+/>

@@ -12607,6 +12607,11 @@
         name: 'd1-header',
         type: 'component',
       ),
+      'headroom':(
+        index: 'headroom',
+        name: 'd1-headroom',
+        type: 'component',
+      ),
       'horizontalScroll':(
         index: 'horizontalScroll',
         name: 'd1-horizontalScroll',
@@ -12710,6 +12715,11 @@
       'motionAxis':(
         index: 'motionAxis',
         name: 'd1-motionAxis',
+        type: 'component',
+      ),
+      'motionFlip':(
+        index: 'motionFlip',
+        name: 'd1-motionFlip',
         type: 'component',
       ),
       'motionSticky':(
@@ -13400,6 +13410,11 @@
         name: 'd-header',
         type: 'component',
       ),
+      'headroom':(
+        index: 'headroom',
+        name: 'd-headroom',
+        type: 'component',
+      ),
       'horizontalScroll':(
         index: 'horizontalScroll',
         name: 'd-horizontalScroll',
@@ -13503,6 +13518,11 @@
       'motionAxis':(
         index: 'motionAxis',
         name: 'd-motionAxis',
+        type: 'component',
+      ),
+      'motionFlip':(
+        index: 'motionFlip',
+        name: 'd-motionFlip',
         type: 'component',
       ),
       'motionSticky':(
