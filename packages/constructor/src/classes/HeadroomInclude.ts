@@ -2,7 +2,7 @@ import { computed, ref, watch, onMounted, onUnmounted, type Ref, type ToRefs, ne
 import { EventItem, getElementOrWindow, type ConstrEmit } from '@dxtmisha/functional'
 import type { ElementOrWindow } from '@dxtmisha/functional-basic'
 
-import type { HeadroomEmitsInclude, HeadroomExposeInclude, HeadroomPropsInclude } from '../types/headroomTypes'
+import type { HeadroomEmitsInclude, HeadroomEventItem, HeadroomExposeInclude, HeadroomPropsInclude } from '../types/headroomTypes'
 
 /**
  * Headroom logic class managing sticky header position and scroll status calculations.
@@ -17,6 +17,9 @@ export class HeadroomInclude {
   /** Current scroll position in pixels / Текущая позиция прокрутки в пикселях */
   readonly value = ref<number>(0)
 
+  /** Disappears top offset in pixels / Верхнее смещение скрытия в пикселях */
+  readonly disappearsValue = ref<number>(0)
+
   /** Reactive state indicating whether scroll position is greater than zero / Реактивное состояние, указывающее, превышает ли прокрутка ноль */
   readonly isSticky = computed<boolean>(() => this.value.value > 0)
 
@@ -30,8 +33,13 @@ export class HeadroomInclude {
       : 0
   ))
 
-  /** Saved previous scroll position for disappears offset calculations / Сохраненное предыдущее значение прокрутки */
-  protected previousScrollPosition?: number
+  /** Saved previous scroll position in pixels / Сохраненное предыдущее значение прокрутки в пикселях */
+  protected readonly valuePrevious = ref<number>(0)
+
+  /** Difference between previous and current scroll positions in pixels / Разница между предыдущей и текущей позицией прокрутки в пикселях */
+  protected readonly valueDifference = computed<number>(() => (
+    this.valuePrevious.value - this.value.value
+  ))
 
   /** Scroll event listener instance / Экземпляр слушателя событий прокрутки */
   protected eventScroll?: EventItem<ElementOrWindow, Event>
@@ -56,7 +64,7 @@ export class HeadroomInclude {
 
       watch(
         this.isSticky,
-        value => this.emits?.('headroomSticky', value)
+        () => this.emits?.('headroomSticky', this.eventItem)
       )
 
       watch(
@@ -82,6 +90,7 @@ export class HeadroomInclude {
   get expose(): HeadroomExposeInclude {
     return {
       isSticky: this.isSticky,
+      getValues: () => this.eventItem,
       update: this.update
     }
   }
@@ -93,9 +102,8 @@ export class HeadroomInclude {
    * @returns void
    */
   readonly update = (): void => {
-    this.value.value = this.getScroll()
-
-    this.updateData()
+    this.updateValue()
+      .updateData()
       .updateTransform()
       .updateDisappears()
   }
@@ -111,6 +119,24 @@ export class HeadroomInclude {
   }
 
   /**
+   * Returns current headroom event data.
+   *
+   * Возвращает текущие данные события headroom.
+   * @returns object with headroom event metrics / объект с данными события headroom
+   */
+  protected get eventItem(): HeadroomEventItem {
+    return {
+      value: this.value.value,
+      disappearsValue: this.disappearsValue.value,
+      isSticky: this.isSticky.value,
+      transformThreshold: this.transformThreshold,
+      transformValue: this.transformValue.value,
+      transformPercent: this.transformPercent.value,
+      valueDifference: this.valueDifference.value
+    }
+  }
+
+  /**
    * Returns transform threshold value in pixels.
    *
    * Возвращает пороговое значение трансформации в пикселях.
@@ -121,29 +147,23 @@ export class HeadroomInclude {
   }
 
   /**
-   * Returns current scroll position of event target element or window.
-   *
-   * Возвращает текущую позицию прокрутки целевого элемента или окна.
-   * @returns current scroll position in pixels / текущее значение прокрутки в пикселях
-   */
-  protected getScroll(): number {
-    const targetElement = this.eventElement
-    return 'scrollY' in targetElement ? targetElement.scrollY : targetElement.scrollTop
-  }
-
-  /**
    * Calculates top offset for disappears scroll mode.
    *
    * Вычисляет верхнее смещение для режима прокрутки disappears.
-   * @param mainElement target HTML element / целевой HTML элемент
    * @returns calculated move offset in pixels / вычисленное значение смещения в пикселях
    */
-  protected getDisappearsOffset(mainElement: HTMLElement): number {
+  protected getDisappearsOffset(): number {
+    const mainElement = this.element.value
+
+    if (!mainElement) {
+      return 0
+    }
+
+    const { height, top } = this.getElementRect()
     const currentScroll = this.value.value
     const transformThreshold = this.transformThreshold
-    const boundingClientRect = mainElement.getBoundingClientRect()
-    const elementHeightOffset = (boundingClientRect.height + 64) * -1
-    const moveOffset = boundingClientRect.top + (this.previousScrollPosition ?? currentScroll) - currentScroll
+    const elementHeightOffset = (height + 64) * -1
+    const moveOffset = top + this.valueDifference.value
 
     if (
       moveOffset > 0
@@ -164,6 +184,61 @@ export class HeadroomInclude {
   }
 
   /**
+   * Returns top position relative to scroll element and height of element.
+   *
+   * Возвращает верхнюю позицию относительно элемента прокрутки и высоту элемента.
+   * @returns object containing element height and top position / объект, содержащий высоту и верхнюю позицию элемента
+   */
+  protected getElementRect(): { height: number, top: number } {
+    const mainElement = this.element.value
+
+    if (mainElement) {
+      const boundingClientRect = mainElement.getBoundingClientRect()
+
+      return {
+        height: boundingClientRect.height,
+        top: boundingClientRect.top - this.getScrollElementTop()
+      }
+    }
+
+    return {
+      height: 0,
+      top: 0
+    }
+  }
+
+  /**
+   * Returns top position of scroll element.
+   *
+   * Возвращает верхнюю позицию элемента прокрутки.
+   * @returns top position of scroll element in pixels / верхняя позиция элемента прокрутки в пикселях
+   */
+  protected getScrollElementTop(): number {
+    const scrollElement = this.eventElement
+
+    if (
+      scrollElement
+      && scrollElement !== window
+      && 'getBoundingClientRect' in scrollElement
+    ) {
+      return scrollElement.getBoundingClientRect().top
+    }
+
+    return 0
+  }
+
+  /**
+   * Returns current scroll position of event target element or window.
+   *
+   * Возвращает текущую позицию прокрутки целевого элемента или окна.
+   * @returns current scroll position in pixels / текущее значение прокрутки в пикселях
+   */
+  protected getScroll(): number {
+    const targetElement = this.eventElement
+    return 'scrollY' in targetElement ? targetElement.scrollY : targetElement.scrollTop
+  }
+
+  /**
    * Triggers scroll event emit.
    *
    * Вызывает генерацию события прокрутки.
@@ -174,94 +249,8 @@ export class HeadroomInclude {
 
     this.emits?.(
       'headroomScroll',
-      this.value.value,
-      this.isSticky.value
+      this.eventItem
     )
-
-    return this
-  }
-
-  /**
-   * Updates data-* attributes on target HTML element.
-   *
-   * Обновляет data-* атрибуты на целевом HTML элементе.
-   * @returns this instance / текущий экземпляр
-   */
-  protected updateData(): this {
-    const mainElement = this.element.value
-
-    if (mainElement) {
-      if (this.isSticky.value) {
-        mainElement.dataset.status = 'sticky'
-      } else {
-        delete mainElement.dataset.status
-      }
-
-      if (this.transformThreshold > 0) {
-        mainElement.dataset.transform = 'true'
-      } else {
-        delete mainElement.dataset.transform
-      }
-    }
-
-    return this
-  }
-
-  /**
-   * Updates element transform CSS custom properties.
-   *
-   * Обновляет пользовательские свойства CSS трансформации элемента.
-   * @returns this instance / текущий экземпляр
-   */
-  protected updateTransform(): this {
-    const mainElement = this.element.value
-    const transformThreshold = this.transformThreshold
-
-    if (mainElement) {
-      mainElement.style.setProperty(`--${this.className}-sys-scroll`, `${this.transformValue.value}px`)
-      mainElement.style.setProperty(`--${this.className}-sys-percent`, `${this.transformPercent.value}`)
-      mainElement.style.setProperty(`--${this.className}-sys-transform`, `${transformThreshold}px`)
-    }
-
-    return this
-  }
-
-  /**
-   * Updates top offset and element CSS variables for disappears scroll mode.
-   *
-   * Обновляет верхнее смещение и пользовательские CSS свойства элемента для режима прокрутки disappears.
-   * @returns this instance / текущий экземпляр
-   */
-  protected updateDisappears(): this {
-    const mainElement = this.element.value
-
-    if (
-      mainElement
-      && this.props.disappears
-    ) {
-      this.previousScrollPosition = this.value.value
-      mainElement.style.top = `${this.getDisappearsOffset(mainElement)}px`
-    }
-
-    return this
-  }
-
-  /**
-   * Toggles scroll listening and performs initial state calculation.
-   *
-   * Переключает прослушивание прокрутки и выполняет первоначальный расчет состояния.
-   * @returns this instance / текущий экземпляр
-   */
-  protected toggle(): this {
-    if (
-      this.props.disappears
-      || this.transformThreshold > 0
-    ) {
-      this.update()
-      this.start()
-    } else {
-      this.stop()
-    }
 
     return this
   }
@@ -297,6 +286,121 @@ export class HeadroomInclude {
   protected stop(): this {
     this.eventScroll?.stop()
     this.eventScroll = undefined
+
+    return this
+  }
+
+  /**
+   * Toggles scroll listening and performs initial state calculation.
+   *
+   * Переключает прослушивание прокрутки и выполняет первоначальный расчет состояния.
+   * @returns this instance / текущий экземпляр
+   */
+  protected toggle(): this {
+    if (
+      this.props.disappears
+      || this.transformThreshold > 0
+    ) {
+      this.updateValue()
+        .update()
+
+      this.start()
+    } else {
+      this.stop()
+    }
+
+    return this
+  }
+
+  /**
+   * Updates data-* attributes on target HTML element.
+   *
+   * Обновляет data-* атрибуты на целевом HTML элементе.
+   * @returns this instance / текущий экземпляр
+   */
+  protected updateData(): this {
+    const mainElement = this.element.value
+
+    if (mainElement) {
+      if (this.isSticky.value) {
+        mainElement.dataset.headroom = 'sticky'
+      } else {
+        mainElement.dataset.headroom = 'none'
+      }
+
+      if (this.valueDifference.value < 0) {
+        mainElement.dataset.headroomDirection = 'down'
+      } else if (this.valueDifference.value > 0) {
+        mainElement.dataset.headroomDirection = 'up'
+      } else {
+        mainElement.dataset.headroomDirection = 'none'
+      }
+
+      if (this.transformThreshold > 0) {
+        mainElement.dataset.headroomTransform = String(this.transformThreshold)
+      } else {
+        delete mainElement.dataset.headroomTransform
+      }
+    }
+
+    return this
+  }
+
+  /**
+   * Updates top offset and element CSS variables for disappears scroll mode.
+   *
+   * Обновляет верхнее смещение и пользовательские CSS свойства элемента для режима прокрутки disappears.
+   * @returns this instance / текущий экземпляр
+   */
+  protected updateDisappears(): this {
+    const mainElement = this.element.value
+
+    if (
+      mainElement
+      && this.props.disappears
+    ) {
+      this.disappearsValue.value = this.getDisappearsOffset()
+
+      mainElement.style.setProperty(
+        `--${this.className}-sys-top`,
+        `${this.disappearsValue.value}px`
+      )
+    } else {
+      this.disappearsValue.value = 0
+    }
+
+    return this
+  }
+
+  /**
+   * Updates element transform CSS custom properties.
+   *
+   * Обновляет пользовательские свойства CSS трансформации элемента.
+   * @returns this instance / текущий экземпляр
+   */
+  protected updateTransform(): this {
+    const mainElement = this.element.value
+
+    if (mainElement) {
+      mainElement.style.setProperty(`--${this.className}-sys-threshold`, `${this.transformThreshold}px`)
+      mainElement.style.setProperty(`--${this.className}-sys-value`, `${this.transformValue.value}px`)
+      mainElement.style.setProperty(`--${this.className}-sys-percent`, `${this.transformPercent.value}`)
+      mainElement.style.setProperty(`--${this.className}-sys-difference`, `${this.valueDifference.value}px`)
+    }
+
+    return this
+  }
+
+  /**
+   * Updates previous and current scroll position values.
+   *
+   * Обновляет значения предыдущей и текущей позиции прокрутки.
+   * @returns this instance / текущий экземпляр
+   */
+  protected updateValue(): this {
+    this.valuePrevious.value = this.value.value
+    this.value.value = this.getScroll()
+    this.getElementRect()
 
     return this
   }

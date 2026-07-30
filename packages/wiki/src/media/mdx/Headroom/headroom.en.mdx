@@ -1,26 +1,45 @@
 import { Source } from '@storybook/addon-docs/blocks';
 
-A component for managing sticky header position, scroll metrics calculations, transform threshold percentages, and disappears scroll mode updates.
+## Description
 
-Headroom tracks scrolling activity on the target element or window and dynamically updates sticky state, transformation styles, and disappears offset positioning.
+A component for managing sticky header positioning, scroll metrics calculations, transformation threshold percentages, and disappears scroll mode updates.
+
+Headroom tracks scrolling activity on a target element or window and dynamically updates its sticky state, dataset attributes, transformation properties, and disappearing offset positioning.
 
 **Key features:**
 
 - Automatic scroll tracking and sticky state evaluation
 - Disappears mode that hides the element on scroll down and reveals it on scroll up
-- Dynamic transform custom CSS properties (`--headroom-sys-scroll`, `--headroom-sys-percent`, `--headroom-sys-transform`)
+- Dynamic transform custom CSS properties and dataset attributes for styling
 - Customizable container element or target window
 - Configurable HTML tag for rendering
+
+**Common use cases:**
+
+- Sticky site navigation bars and headers
+- Auto-hiding headers on mobile and desktop views
+- Scroll-linked header animations and visual transformations
+- Sticky toolbar containers with dynamic offset calculations
 
 <Source
     code={`
 <template>
-  <Headroom disappears :transformThreshold="100">
+  <!-- Basic Headroom header -->
+  <Headroom>
     <header class="header">
       Headroom Header Content
+    </header>
+  </Headroom>
+
+  <!-- Headroom with disappears scroll mode -->
+  <Headroom disappears :transformThreshold="100">
+    <header class="header">
+      Auto-hiding Header Content
     </header>
   </Headroom>
 </template>
   `}
     language="html"
 />
+
+> Headroom is a component for managing sticky headers with auto-hiding behavior, scroll calculations, and CSS transformation metrics.

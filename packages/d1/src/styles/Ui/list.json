@@ -9395,17 +9395,6 @@
           }
         }
       },
-      "headroom": {
-        "name": "d1-headroom",
-        "type": "component",
-        "value": {
-          "main": {
-            "name": "--d1-headroom-main",
-            "type": "var",
-            "value": "{d.headroom}"
-          }
-        }
-      },
       "horizontalScroll": {
         "name": "d1-horizontalScroll",
         "type": "component",

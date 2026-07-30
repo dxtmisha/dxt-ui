@@ -7,6 +7,7 @@ import type { HeadroomPropsInclude } from '../../types/headroomTypes'
  */
 type HeadroomPropsToken = {
   // :type [!] System label / Системная метка
+  disappears?: boolean
   // :type [!] System label / Системная метка
 }
 

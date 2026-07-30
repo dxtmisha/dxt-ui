@@ -1,0 +1,18 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+### `headroomScroll`
+
+Event triggered when scroll position changes on target element or window.
+
+### `headroomSticky`
+
+Event triggered when sticky state changes (when scroll position crosses zero).
+
+**Parameters (`event: HeadroomEventItem`):**
+- `value: number` — current scroll position in pixels
+- `disappearsValue: number` — top offset value in pixels for disappears scroll mode
+- `isSticky: boolean` — boolean indicating whether scroll position is greater than zero
+- `transformThreshold: number` — transform threshold value in pixels
+- `transformValue: number` — transformation offset in pixels capped at threshold
+- `transformPercent: number` — transformation percentage ratio from 0 to 1
+- `valueDifference: number` — difference between previous and current scroll positions in pixels

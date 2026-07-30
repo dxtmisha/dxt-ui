@@ -16,13 +16,28 @@ export type HeadroomPropsInclude = {
 }
 
 /**
+ * Event payload interface for Headroom events.
+ *
+ * Интерфейс данных события Headroom.
+ */
+export type HeadroomEventItem = {
+  value: number
+  disappearsValue: number
+  isSticky: boolean
+  transformThreshold: number
+  transformValue: number
+  transformPercent: number
+  valueDifference: number
+}
+
+/**
  * Type describing headroom events.
  *
  * Тип, описывающий события headroom.
  */
 export type HeadroomEmitsInclude = {
-  headroomScroll: [value: number, isSticky: boolean]
-  headroomSticky: [isSticky: boolean]
+  headroomScroll: [event: HeadroomEventItem]
+  headroomSticky: [event: HeadroomEventItem]
 }
 
 /**
@@ -32,5 +47,6 @@ export type HeadroomEmitsInclude = {
  */
 export type HeadroomExposeInclude = {
   isSticky: ComputedRef<boolean>
+  getValues: () => HeadroomEventItem
   update: () => void
 }

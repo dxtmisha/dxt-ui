@@ -35,7 +35,7 @@ export const wikiDescriptionsHeadroom: StorybookComponentsDescriptionItem = {
       >
         <DesignComponent
           scrollElement="#wiki-descriptions-headroom"
-          class="wiki-storybook-dummy wiki-storybook-dummy--color--green"
+          class="wiki-storybook-item--center wiki-storybook-item--padding wiki-storybook-dummy wiki-storybook-dummy--color--green"
           style="height: 48px;"
           v-bind="args"
         >
@@ -66,10 +66,10 @@ export const wikiDescriptionsHeadroom: StorybookComponentsDescriptionItem = {
   documentation: {
     body: `
 <StorybookDescriptions componentName={'Headroom'} type={'headroom'}/>
+<StorybookDescriptions componentName={'Headroom'} type={'style'}/>
     `,
     events: `
-<StorybookDescriptions componentName={'Headroom'} type={'event.headroomScroll'}/>
-<StorybookDescriptions componentName={'Headroom'} type={'event.headroomSticky'}/>
+<StorybookDescriptions componentName={'Event'} type={'headroom'}/>
     `,
     expose: `
 <StorybookDescriptions componentName={'Headroom'} type={'expose'}/>

@@ -28,10 +28,9 @@ type Story = StoryObj<typeof meta>
 export const Headroom: Story = {
   args: {
     disappears: true,
-    transformThreshold: 16
+    transformThreshold: 128
   },
 
-  // :story-main [!] System label / Системная метка
   // :story-main [!] System label / Системная метка
   render: (args: any) => ({
     components: { D1Headroom },
@@ -42,8 +41,8 @@ export const Headroom: Story = {
         class="wiki-storybook-item wiki-storybook-item--rectangle wiki-storybook-item--overflowAuto"
       >
         <D1Headroom
-          :scrollElement="'#wiki-descriptions-headroom'"
-          class="wiki-storybook-dummy wiki-storybook-dummy--color--green"
+          scrollElement="#wiki-descriptions-headroom"
+          class="wiki-storybook-item--center wiki-storybook-item--padding wiki-storybook-dummy wiki-storybook-dummy--color--green"
           style="height: 48px;"
           v-bind="args"
         >
@@ -71,6 +70,7 @@ export const Headroom: Story = {
       </div>
     `
   })
+  // :story-main [!] System label / Системная метка
 }
 
 // :story-items [!] System label / Системная метка

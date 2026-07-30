@@ -20,8 +20,8 @@ const slotsNames: StorybookSlots = [
 
 const eventsNames: StorybookSlots = [
   // :eventsList [!] System label / Системная метка
-  { name: 'headroomScroll', properties: [{ name: 'value', type: 'number' }, { name: 'isSticky', type: 'boolean' }] },
-  { name: 'headroomSticky', properties: [{ name: 'isSticky', type: 'boolean' }] }
+  { name: 'headroomScroll', properties: [{ name: 'event', type: 'HeadroomEventItem' }] },
+  { name: 'headroomSticky', properties: [{ name: 'event', type: 'HeadroomEventItem' }] }
   // :eventsList [!] System label / Системная метка
 ]
 

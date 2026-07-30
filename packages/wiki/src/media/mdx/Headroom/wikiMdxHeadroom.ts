@@ -4,6 +4,8 @@ import exposeEn from './expose.en.mdx'
 import exposeRu from './expose.ru.mdx'
 import headroomEn from './headroom.en.mdx'
 import headroomRu from './headroom.ru.mdx'
+import styleEn from './style.en.mdx'
+import styleRu from './style.ru.mdx'
 
 /**
  * MDX files for Headroom component
@@ -20,6 +22,10 @@ export const wikiMdxHeadroom: StorybookComponentsMdxItem = {
     headroom: {
       en: headroomEn,
       ru: headroomRu
+    },
+    style: {
+      en: styleEn,
+      ru: styleRu
     }
   }
 }

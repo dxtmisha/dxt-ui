@@ -1,4 +1,10 @@
+@use "@dxtmisha/styles/properties" as ui;
+
 @mixin mixinHeadroom {
   position: sticky;
   top: 0;
+
+  &--disappears {
+    top: ui.v('??sys-top');
+  }
 }

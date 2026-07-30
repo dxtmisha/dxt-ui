@@ -31,14 +31,14 @@ export class HeadroomDesign<
   CLASSES extends HeadroomClasses,
   P extends HeadroomPropsBasic
 > extends DesignConstructorAbstract<
-  HTMLDivElement,
-  COMP,
-  HeadroomEmits,
-  EXPOSE,
-  HeadroomSlots,
-  CLASSES,
-  P
-> {
+    HTMLDivElement,
+    COMP,
+    HeadroomEmits,
+    EXPOSE,
+    HeadroomSlots,
+    CLASSES,
+    P
+  > {
   /** Instance of Headroom logic class / Экземпляр класса логики Headroom */
   protected readonly item: Headroom
 
