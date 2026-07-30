@@ -51,7 +51,7 @@
     "build": "vue-tsc -b && vite build",
     "build-recovery": "npm run build && npm run wiki-storm",
     "preview": "vite preview",
-    "ui": "dxt-ui NavigationRail",
+    "ui": "dxt-ui MotionFlip",
     "wiki-storm": "dxt-wiki-storm",
     "types": "dxt-types",
     "screenshot": "dxt-screenshot",
@@ -506,6 +506,18 @@
     "./D1NavigationRail": {
       "types": "./dist/library/D1NavigationRail.d.ts",
       "default": "./dist/D1NavigationRail.js"
+    },
+    "./D1Slider": {
+      "types": "./dist/library/D1Slider.d.ts",
+      "default": "./dist/D1Slider.js"
+    },
+    "./D1SliderField": {
+      "types": "./dist/library/D1SliderField.d.ts",
+      "default": "./dist/D1SliderField.js"
+    },
+    "./D1MotionFlip": {
+      "types": "./dist/library/D1MotionFlip.d.ts",
+      "default": "./dist/D1MotionFlip.js"
     }
   },
   "buildOptions": {

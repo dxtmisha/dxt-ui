@@ -85,6 +85,8 @@ import D1SelectValue from '../../src/components/Ui/SelectValue/D1SelectValueAiWi
 import D1SelectableArea from '../../src/components/Ui/SelectableArea/D1SelectableAreaAiWiki.vue'
 import D1Skeleton from '../../src/components/Ui/Skeleton/D1SkeletonAiWiki.vue'
 import D1SkeletonItem from '../../src/components/Ui/SkeletonItem/D1SkeletonItemAiWiki.vue'
+import D1Slider from '../../src/components/Ui/Slider/D1SliderAiWiki.vue'
+import D1SliderField from '../../src/components/Ui/SliderField/D1SliderFieldAiWiki.vue'
 import D1Snackbar from '../../src/components/Ui/Snackbar/D1SnackbarAiWiki.vue'
 import D1SnackbarItem from '../../src/components/Ui/SnackbarItem/D1SnackbarItemAiWiki.vue'
 import D1Switch from '../../src/components/Ui/Switch/D1SwitchAiWiki.vue'
@@ -191,6 +193,8 @@ export const aiList: any[] = [
   D1SelectableArea,
   D1Skeleton,
   D1SkeletonItem,
+  D1Slider,
+  D1SliderField,
   D1Snackbar,
   D1SnackbarItem,
   D1Switch,

@@ -52,7 +52,7 @@
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
     "test": "NODE_OPTIONS=\"--no-webstorage\" vitest",
-    "constructor": "dxt-constructor Headroom",
+    "constructor": "dxt-constructor MotionFlip",
     "library": "dxt-library",
     "types": "dxt-types",
     "prepublishOnly": "npm run library && npm run constructor && npm run build",
@@ -503,6 +503,18 @@
     "./Headroom": {
       "types": "./dist/constructors/Headroom/index.d.ts",
       "default": "./dist/headroom.js"
+    },
+    "./Slider": {
+      "types": "./dist/constructors/Slider/index.d.ts",
+      "default": "./dist/slider.js"
+    },
+    "./SliderField": {
+      "types": "./dist/constructors/SliderField/index.d.ts",
+      "default": "./dist/sliderField.js"
+    },
+    "./MotionFlip": {
+      "types": "./dist/constructors/MotionFlip/index.d.ts",
+      "default": "./dist/motionFlip.js"
     }
   },
   "buildOptions": {
