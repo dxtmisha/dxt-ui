@@ -6,6 +6,7 @@
 - **Структура класса**: Свойства (`public`->`protected`->`private`) -> Конструктор -> Публичные методы (Геттеры -> Сеттеры -> Экшены) -> Защищенные -> Приватные.
 - **Стили/Типы**: Классы = `PascalCase`, методы/свойства = `camelCase`, константы = `UPPER_SNAKE_CASE`. Никаких `any` (`unknown`/generics). Явный возвращаемый тип для ВСЕХ методов. Экспорт всех интерфейсов. Файлы типов: `*Types.ts`. Схемы через `@effect/schema`.
 - **Безопасность SSR**: Изоморфный код. Не хранить состояние в глобальных переменных. Вызывать `isDomRuntime()` перед `window`/`document`. Использовать `ServerStorage.get('key', () => new Class())` для изолированных синглтонов.
+- **Использование утилит и примитивных функций**: ОБЯЗАТЕЛЬНО используйте примитивные функции-хелперы из этой библиотеки (например, `isFunction`, `executeFunction`, `isFilled`, `isObject`, `isString`, `isArray` и т.д.) вместо написания кастомных инлайн-проверок условий или типов.
 
 ## 2. Справочник API и примеры
 
@@ -44,7 +45,7 @@ const phone = GeoPhone.getByPhone('+79991234567'); const mask = GeoPhone.toMask(
 
 ### DOM, События, Поиск и Хелперы
 ```typescript
-import { EventItem, goScrollSmooth, writeClipboardData, getClipboardData, SearchList, Formatters, FormattersType, isFilled, isDomRuntime, copyObject, anyToString, sleep } from '@dxtmisha/functional-basic';
+import { EventItem, goScrollSmooth, writeClipboardData, getClipboardData, SearchList, Formatters, FormattersType, isFilled, isFunction, executeFunction, isDomRuntime, copyObject, anyToString, sleep } from '@dxtmisha/functional-basic';
 
 // Безопасные события (без утечек)
 const listener = new EventItem(window, 'click', console.log, { passive: true }); listener.start(); listener.stop();
@@ -58,5 +59,7 @@ const fmt = new Formatters({ p: { type: FormattersType.currency, options: 'USD' 
 
 // Общие хелперы
 isFilled([]); // false (для строк, массивов, объектов, чисел, boolean)
+executeFunction(callbackOrValue, arg1); // Выполняет callback, если это функция, или возвращает значение
+isFunction(val); // Проверка на функцию (Type-guard)
 isDomRuntime(); const cloned = copyObject({ a: 1 }); const str = anyToString(123); await sleep(500);
 ```

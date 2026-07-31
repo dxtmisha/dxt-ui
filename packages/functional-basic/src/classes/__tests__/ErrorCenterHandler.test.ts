@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { ErrorCenterHandler } from '../ErrorCenterHandler'
-import type { ErrorCenterCauseItem, ErrorCenterHandlerList } from '../../types/errorCenter'
+import type { ErrorCenterCauseItem, ErrorCenterHandlerList } from '../../types/errorCenterTypes'
 
 describe('ErrorCenterHandler', () => {
   let handler: ErrorCenterHandler
@@ -9,6 +9,7 @@ describe('ErrorCenterHandler', () => {
   beforeEach(() => {
     handler = new ErrorCenterHandler()
     consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+    consoleErrorSpy.mockClear()
   })
 
   it('should add a handler and check if it exists', () => {
@@ -85,4 +86,26 @@ describe('ErrorCenterHandler', () => {
     expect(callback1).toHaveBeenCalledWith(cause2)
     expect(callback2).toHaveBeenCalledWith(cause2)
   })
+
+  it('should not log to console when isConsole is false', () => {
+    handler.setIsConsole(false)
+    const cause: ErrorCenterCauseItem = { code: 'ERR_SILENT', message: 'Silent error' }
+    handler.on(cause)
+
+    expect(consoleErrorSpy).not.toHaveBeenCalled()
+  })
+
+  it('should filter console logging using a function for isConsole', () => {
+    handler.setIsConsole(cause => cause.code !== 'IGNORE_ME')
+
+    const cause1: ErrorCenterCauseItem = { code: 'IGNORE_ME', message: 'Ignore' }
+    const cause2: ErrorCenterCauseItem = { code: 'LOG_ME', message: 'Log' }
+
+    handler.on(cause1)
+    expect(consoleErrorSpy).not.toHaveBeenCalled()
+
+    handler.on(cause2)
+    expect(consoleErrorSpy).toHaveBeenCalledWith('Error Center: LOG_ME')
+  })
 })
+

@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.8.1] - 2026-07-31
+
+### Added
+- **ErrorCenter / ErrorCenterHandler**: Introduced `isConsole` property and `setIsConsole` method across `ErrorCenterHandler`, `ErrorCenterInstance`, and `ErrorCenter` to allow toggling or filtering console error logging via boolean or callback function `(cause: ErrorCenterCauseItem) => boolean`.
+- **errorCenterTypes**: Exported `ErrorCenterHandlerIsConsole` and `ErrorCenterHandlerIsConsoleCallback` type definitions.
+
+### Changed
+- **errorCenterTypes**: Renamed `src/types/errorCenter.ts` to `src/types/errorCenterTypes.ts` to adhere to the project `*Types.ts` file naming standard.
+- **ErrorCenterHandler**: Refactored `toConsole` method to utilize `executeFunction` utility for evaluating `isConsole` and streamlined return control flow.
+- **Documentation**: Updated `ai-doc.md` and `ai-doc.ru.md` with guidelines enforcing the use of primitive helper functions (`isFunction`, `executeFunction`, `isFilled`, etc.).
+
 ## [1.8.0] - 2026-07-25
 
 ### Added

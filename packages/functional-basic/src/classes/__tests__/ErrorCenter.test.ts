@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { ErrorCenter } from '../ErrorCenter'
-import type { ErrorCenterCauseItem, ErrorCenterHandlerList } from '../../types/errorCenter'
+import type { ErrorCenterCauseItem, ErrorCenterHandlerList } from '../../types/errorCenterTypes'
 
 describe('ErrorCenter', () => {
   beforeEach(() => {

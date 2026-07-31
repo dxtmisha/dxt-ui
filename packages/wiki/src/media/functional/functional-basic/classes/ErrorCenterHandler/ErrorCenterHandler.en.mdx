@@ -11,30 +11,34 @@ import {Meta} from '@storybook/addon-docs/blocks'
 - **Handler Registration** — convenient addition of callback functions to specific groups.
 - **Global Handler** — support for the `undefined` group, which catches any error without a specific handler.
 - **Sequential Execution** — triggers all registered functions in the order they were added.
-- **Integrated Logging** — automatically outputs error details to the console.
+- **Configurable Logging** — outputs error details to the console with support for custom filtering callbacks or complete suppression.
 
 ## Initialization
 
-To create an instance, use the constructor `ErrorCenterHandler(handlers)`.
+To create an instance, use the constructor `ErrorCenterHandler(handlers, isConsole)`.
 
 **Parameters:**
 - `handlers?: ErrorCenterHandlerList` — initial list of handlers.
+- `isConsole?: ErrorCenterHandlerIsConsole` — flag or filter function for console output (defaults to `true`).
 
 ```typescript
 import { ErrorCenterHandler } from '@dxtmisha/functional-basic'
 
-const handlers = new ErrorCenterHandler([
-  {
-    group: 'api',
-    handlers: [(cause) => console.log('API Error:', cause.code)]
-  }
-]);
+const handlers = new ErrorCenterHandler(
+  [
+    {
+      group: 'api',
+      handlers: [(cause) => console.log('API Error:', cause.code)]
+    }
+  ],
+  false // Disable console logging
+);
 ```
 
 ## Methods
 
 ### Action
-- `on(cause: ErrorCenterCauseItem): this` — Triggers the chain of handlers. Always outputs an error to the console via `console.error`.
+- `on(cause: ErrorCenterCauseItem): this` — Triggers the chain of handlers and logs to the console if enabled.
 
 ### Verification
 - `has(group: ErrorCenterGroup): boolean` — Checks if there are handlers for a group.
@@ -43,6 +47,7 @@ const handlers = new ErrorCenterHandler([
 ### Configuration
 - `add(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): this` — Adds a single function to a group.
 - `addList(handlers: ErrorCenterHandlerList): this` — Batch registration of handlers.
+- `setIsConsole(isConsole: ErrorCenterHandlerIsConsole): this` — Sets the console output flag or filter function.
 
 ## Types
 
@@ -52,6 +57,12 @@ Group name (`string`) or `undefined` for global interception.
 #### `ErrorCenterHandlerCallback`
 Callback function: `(cause: ErrorCenterCauseItem) => void`.
 
+#### `ErrorCenterHandlerIsConsole`
+Console logging configuration option: `boolean | ((cause: ErrorCenterCauseItem) => boolean)`.
+
+#### `ErrorCenterHandlerIsConsoleCallback`
+Callback function to check whether to log an error to console: `(cause: ErrorCenterCauseItem) => boolean`.
+
 #### `ErrorCenterHandlerItem`
 Link between a group and an array of its functions.
 - `group?: ErrorCenterGroup` — target group.
@@ -59,9 +70,12 @@ Link between a group and an array of its functions.
 
 ## Examples
 
-### Isolated Manager for a Module
+### Isolated Manager with Console Filtering
 ```typescript
 const uploadHandlers = new ErrorCenterHandler();
+
+// Filter console logging: only log errors with group 'upload'
+uploadHandlers.setIsConsole((cause) => cause.group === 'upload');
 
 uploadHandlers.add('upload', (cause) => {
   if (cause.code === 'retry') {

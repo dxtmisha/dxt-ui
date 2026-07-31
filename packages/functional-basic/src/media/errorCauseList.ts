@@ -1,4 +1,4 @@
-import type { ErrorCenterCauseList } from '../types/errorCenter'
+import type { ErrorCenterCauseList } from '../types/errorCenterTypes'
 
 export const errorCauseList: ErrorCenterCauseList = [
   // ApiCache background cleaning error / Ошибка фоновой очистки ApiCache

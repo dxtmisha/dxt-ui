@@ -22,6 +22,7 @@ Lớp này hoạt động như một vỏ bọc tĩnh (Static Bridge), chuyển 
 - `addList(causes: ErrorCenterCauseList): void` — Thêm một danh sách lỗi (đăng ký hàng loạt).
 - `addHandler(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): void` — Đăng ký phản ứng cho một nhóm lỗi.
 - `addHandlerList(handlers: ErrorCenterHandlerList): void` — Đăng ký hàng loạt nhiều trình xử lý.
+- `setIsConsole(isConsole: ErrorCenterHandlerIsConsole): void` — Thiết lập cờ hoặc hàm lọc xuất console.
 
 ### Bổ trợ
 - `getItem(): ErrorCenterInstance` — Trả về thực thể nội bộ của lớp.

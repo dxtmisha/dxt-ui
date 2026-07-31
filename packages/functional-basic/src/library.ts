@@ -185,7 +185,7 @@ export * from './functions/writeClipboardData'
 // Types
 export * from './types/apiTypes'
 export * from './types/basicTypes'
-export * from './types/errorCenter'
+export * from './types/errorCenterTypes'
 export * from './types/formattersTypes'
 export * from './types/geoTypes'
 export * from './types/metaTypes'

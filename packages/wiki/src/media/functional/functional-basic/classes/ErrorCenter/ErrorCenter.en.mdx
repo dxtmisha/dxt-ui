@@ -22,6 +22,7 @@ The class acts as a static bridge (Static Bridge), directing all requests to a s
 - `addList(causes: ErrorCenterCauseList): void` — Adds a list of errors (batch registration).
 - `addHandler(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): void` — Registers a reaction to a group of errors.
 - `addHandlerList(handlers: ErrorCenterHandlerList): void` — Batch registration of several handlers.
+- `setIsConsole(isConsole: ErrorCenterHandlerIsConsole): void` — Sets the console output flag or filter function.
 
 ### Auxiliary
 - `getItem(): ErrorCenterInstance` — Returns the internal instance of the class.

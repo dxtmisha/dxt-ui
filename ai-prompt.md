@@ -396,6 +396,7 @@ Framework-agnostic utility library. **Vue developers MUST search `@dxtmisha/func
 - **Class Structure**: Properties/Variables (`public`->`protected`->`private`) -> Constructor -> Public Methods (Getters -> Setters -> Core actions) -> Protected Methods -> Private Methods.
 - **Style/Types**: `PascalCase` classes, `camelCase` methods/props, `UPPER_SNAKE_CASE` constants. No `any` (use `unknown`/generics). Explicit return types for ALL methods. Export all interfaces. Type files: `*Types.ts`. Use `@effect/schema` for schemas.
 - **SSR Safety**: Isomorphic code. Do NOT store request state in globals. Use `isDomRuntime()` before `window`/`document`. Use `ServerStorage.get('key', () => new Class())` for request-isolated singletons.
+- **Utility & Primitive Functions**: ALWAYS use primitive helper functions from this package (e.g. `isFunction`, `executeFunction`, `isFilled`, `isObject`, `isString`, `isArray`, etc.) instead of writing custom inline checks or conditions.
 
 ## 2. API Reference & Examples
 
@@ -434,7 +435,7 @@ const phone = GeoPhone.getByPhone('+84900000000'); const mask = GeoPhone.toMask(
 
 ### DOM, Events & Helpers
 ```typescript
-import { EventItem, goScrollSmooth, writeClipboardData, getClipboardData, SearchList, Formatters, FormattersType, isFilled, isDomRuntime, copyObject, anyToString, sleep } from '@dxtmisha/functional-basic';
+import { EventItem, goScrollSmooth, writeClipboardData, getClipboardData, SearchList, Formatters, FormattersType, isFilled, isFunction, executeFunction, isDomRuntime, copyObject, anyToString, sleep } from '@dxtmisha/functional-basic';
 
 // Safe Events (leak-proof)
 const listener = new EventItem(window, 'click', console.log, { passive: true }); listener.start(); listener.stop();
@@ -448,6 +449,8 @@ const fmt = new Formatters({ p: { type: FormattersType.currency, options: 'USD' 
 
 // General
 isFilled([]); // false (strings, arrays, objects, numbers, booleans)
+executeFunction(callbackOrValue, arg1); // Executes callback if function, or returns value as is
+isFunction(val); // Type-guard for functions
 isDomRuntime(); const cloned = copyObject({ a: 1 }); const str = anyToString(123); await sleep(500);
 ```
 

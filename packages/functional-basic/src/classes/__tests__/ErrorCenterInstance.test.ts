@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { ErrorCenterHandler } from '../ErrorCenterHandler'
 import { ErrorCenterInstance } from '../ErrorCenterInstance'
-import type { ErrorCenterCauseItem } from '../../types/errorCenter'
+import type { ErrorCenterCauseItem } from '../../types/errorCenterTypes'
 
 describe('ErrorCenterInstance', () => {
   let instance: ErrorCenterInstance

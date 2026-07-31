@@ -11,30 +11,34 @@ import {Meta} from '@storybook/addon-docs/blocks'
 - **Đăng ký trình xử lý** — thêm thuận tiện các hàm callback vào các nhóm cụ thể.
 - **Trình xử lý toàn cục** — hỗ trợ nhóm `undefined`, nhóm này bắt bất kỳ lỗi nào không có trình xử lý cụ thể.
 - **Thực thi tuần tự** — kích hoạt tất cả các hàm đã đăng ký theo thứ tự chúng được thêm vào.
-- **Ghi log tích hợp** — tự động xuất chi tiết lỗi ra console.
+- **Ghi log có thể cấu hình** — xuất chi tiết lỗi ra console với hỗ trợ hàm lọc tùy chỉnh hoặc tắt hoàn toàn.
 
 ## Khởi tạo
 
-Để tạo một thực thể, sử dụng constructor `ErrorCenterHandler(handlers)`.
+Để tạo một thực thể, sử dụng constructor `ErrorCenterHandler(handlers, isConsole)`.
 
 **Tham số:**
 - `handlers?: ErrorCenterHandlerList` — danh sách trình xử lý ban đầu.
+- `isConsole?: ErrorCenterHandlerIsConsole` — cờ hoặc hàm lọc cho console (mặc định là `true`).
 
 ```typescript
 import { ErrorCenterHandler } from '@dxtmisha/functional-basic'
 
-const handlers = new ErrorCenterHandler([
-  {
-    group: 'api',
-    handlers: [(cause) => console.log('Lỗi API:', cause.code)]
-  }
-]);
+const handlers = new ErrorCenterHandler(
+  [
+    {
+      group: 'api',
+      handlers: [(cause) => console.log('Lỗi API:', cause.code)]
+    }
+  ],
+  false // Tắt ghi log ra console
+);
 ```
 
 ## Các phương thức
 
 ### Hành động
-- `on(cause: ErrorCenterCauseItem): this` — Kích hoạt chuỗi trình xử lý. Luôn xuất lỗi ra console qua `console.error`.
+- `on(cause: ErrorCenterCauseItem): this` — Kích hoạt chuỗi trình xử lý và ghi log ra console nếu được bật.
 
 ### Xác minh
 - `has(group: ErrorCenterGroup): boolean` — Kiểm tra xem có trình xử lý cho một nhóm không.
@@ -43,6 +47,7 @@ const handlers = new ErrorCenterHandler([
 ### Cấu hình
 - `add(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): this` — Thêm một hàm vào một nhóm.
 - `addList(handlers: ErrorCenterHandlerList): this` — Đăng ký hàng loạt các trình xử lý.
+- `setIsConsole(isConsole: ErrorCenterHandlerIsConsole): this` — Thiết lập cờ hoặc hàm lọc xuất console.
 
 ## Các kiểu dữ liệu
 
@@ -52,6 +57,12 @@ Tên nhóm (`string`) hoặc `undefined` để chặn toàn cục.
 #### `ErrorCenterHandlerCallback`
 Hàm callback: `(cause: ErrorCenterCauseItem) => void`.
 
+#### `ErrorCenterHandlerIsConsole`
+Tùy chọn cấu hình ghi log console: `boolean | ((cause: ErrorCenterCauseItem) => boolean)`.
+
+#### `ErrorCenterHandlerIsConsoleCallback`
+Hàm callback để kiểm tra xem có ghi log lỗi ra console hay không: `(cause: ErrorCenterCauseItem) => boolean`.
+
 #### `ErrorCenterHandlerItem`
 Liên kết giữa một nhóm và một mảng các hàm của nó.
 - `group?: ErrorCenterGroup` — nhóm mục tiêu.
@@ -59,9 +70,12 @@ Liên kết giữa một nhóm và một mảng các hàm của nó.
 
 ## Ví dụ
 
-### Trình quản lý cô lập cho một mô-đun
+### Trình quản lý cô lập với bộ lọc console
 ```typescript
 const uploadHandlers = new ErrorCenterHandler();
+
+// Lọc xuất console: chỉ ghi log lỗi có nhóm 'upload'
+uploadHandlers.setIsConsole((cause) => cause.group === 'upload');
 
 uploadHandlers.add('upload', (cause) => {
   if (cause.code === 'retry') {

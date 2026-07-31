@@ -1,6 +1,6 @@
 import { ErrorCenterHandler } from './ErrorCenterHandler'
 
-import type { ErrorCenterCauseItem, ErrorCenterCauseList, ErrorCenterGroup, ErrorCenterHandlerCallback, ErrorCenterHandlerList } from '../types/errorCenter'
+import type { ErrorCenterCauseItem, ErrorCenterCauseList, ErrorCenterGroup, ErrorCenterHandlerCallback, ErrorCenterHandlerIsConsole, ErrorCenterHandlerList } from '../types/errorCenterTypes'
 
 /**
  * Class for managing error storage and handling within an instance.
@@ -120,6 +120,20 @@ export class ErrorCenterInstance {
     callback: ErrorCenterHandlerCallback
   ): this {
     this.handler.addCallback(callback)
+    return this
+  }
+
+  /**
+   * Sets console output flag or filter function for the handler.
+   *
+   * Устанавливает флаг или функцию фильтрации вывода в консоль для обработчика.
+   * @param isConsole console output flag or filter function / флаг или функция вывода в консоль
+   * @returns this instance / текущий экземпляр
+   */
+  setIsConsole(
+    isConsole: ErrorCenterHandlerIsConsole
+  ): this {
+    this.handler.setIsConsole(isConsole)
     return this
   }
 

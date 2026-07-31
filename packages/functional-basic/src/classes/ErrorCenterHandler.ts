@@ -1,5 +1,6 @@
+import { executeFunction } from '../functions/executeFunction'
 import { isDomRuntime } from '../functions/isDomRuntime'
-import type { ErrorCenterCauseItem, ErrorCenterGroup, ErrorCenterHandlerCallback, ErrorCenterHandlerItem, ErrorCenterHandlerList } from '../types/errorCenter'
+import type { ErrorCenterCauseItem, ErrorCenterGroup, ErrorCenterHandlerCallback, ErrorCenterHandlerIsConsole, ErrorCenterHandlerItem, ErrorCenterHandlerList } from '../types/errorCenterTypes'
 
 /**
  * Class for managing and triggering error handlers.
@@ -13,13 +14,19 @@ export class ErrorCenterHandler {
   /** Callbacks executed on every error / Обратные вызовы, выполняемые при каждой ошибке */
   protected callbacks: ErrorCenterHandlerCallback[] = []
 
+  /** Console output flag or filter function / Флаг или функция фильтрации вывода в консоль */
+  protected isConsole: ErrorCenterHandlerIsConsole = true
+
   /**
    * Constructor
    * @param handlers initial handlers list / начальный список обработчиков
+   * @param isConsole console output flag or filter function / флаг или функция вывода в консоль
    */
   constructor(
-    handlers?: ErrorCenterHandlerList
+    handlers?: ErrorCenterHandlerList,
+    isConsole: ErrorCenterHandlerIsConsole = true
   ) {
+    this.isConsole = isConsole
     if (handlers) {
       this.addList(handlers)
     }
@@ -106,6 +113,20 @@ export class ErrorCenterHandler {
   }
 
   /**
+   * Sets console output flag or filter function.
+   *
+   * Устанавливает флаг или функцию фильтрации вывода в консоль.
+   * @param isConsole console output flag or filter function / флаг или функция вывода в консоль
+   * @returns this instance / текущий экземпляр
+   */
+  setIsConsole(
+    isConsole: ErrorCenterHandlerIsConsole
+  ): this {
+    this.isConsole = isConsole
+    return this
+  }
+
+  /**
    * Triggers handlers for a group and logs to console.
    *
    * Вызывает обработчики для группы и выводит ошибку в консоль.
@@ -136,15 +157,18 @@ export class ErrorCenterHandler {
   protected toConsole(
     cause: ErrorCenterCauseItem
   ): this {
-    console.error(`Error Center: ${cause.code}`)
-    console.error('Error Center/message: ', cause.message)
-    console.error('Error Center/details: ', cause.details)
+    if (executeFunction(this.isConsole, cause)) {
+      console.error(`Error Center: ${cause.code}`)
+      console.error('Error Center/message: ', cause.message)
+      console.error('Error Center/details: ', cause.details)
 
-    if (!isDomRuntime()) {
-      const trace = new Error().stack
-      console.error('Error Center/trace: ', trace)
+      if (!isDomRuntime()) {
+        const trace = new Error().stack
+        console.error('Error Center/trace: ', trace)
+      }
     }
 
     return this
   }
 }
+

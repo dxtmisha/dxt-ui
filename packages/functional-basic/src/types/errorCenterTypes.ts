@@ -42,3 +42,14 @@ export type ErrorCenterHandlerItem = {
  * List of error handlers / Список обработчиков ошибок
  */
 export type ErrorCenterHandlerList = ErrorCenterHandlerItem[]
+
+/**
+ * Callback function to check whether to log error to console / Функция обратного вызова для проверки вывода ошибки в консоль
+ */
+export type ErrorCenterHandlerIsConsoleCallback = (cause: ErrorCenterCauseItem) => boolean
+
+/**
+ * Type for console logging configuration / Тип для конфигурации вывода в консоль
+ */
+export type ErrorCenterHandlerIsConsole = boolean | ErrorCenterHandlerIsConsoleCallback
+

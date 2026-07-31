@@ -1,7 +1,7 @@
 import { ErrorCenterInstance } from './ErrorCenterInstance'
 import { errorCauseList } from '../media/errorCauseList'
 
-import type { ErrorCenterCauseItem, ErrorCenterCauseList, ErrorCenterGroup, ErrorCenterHandlerCallback, ErrorCenterHandlerList } from '../types/errorCenter'
+import type { ErrorCenterCauseItem, ErrorCenterCauseList, ErrorCenterGroup, ErrorCenterHandlerCallback, ErrorCenterHandlerIsConsole, ErrorCenterHandlerList } from '../types/errorCenterTypes'
 
 /**
  * Class for managing error storage and handling.
@@ -109,6 +109,18 @@ export class ErrorCenter {
   }
 
   /**
+   * Sets console output flag or filter function.
+   *
+   * Устанавливает флаг или функцию фильтрации вывода в консоль.
+   * @param isConsole console output flag or filter function / флаг или функция вывода в консоль
+   */
+  static setIsConsole(
+    isConsole: ErrorCenterHandlerIsConsole
+  ): void {
+    this.getItem().setIsConsole(isConsole)
+  }
+
+  /**
    * Triggers error handling for a group.
    *
    * Вызывает обработку ошибки для группы.
@@ -118,3 +130,4 @@ export class ErrorCenter {
     this.getItem().on(cause)
   }
 }
+

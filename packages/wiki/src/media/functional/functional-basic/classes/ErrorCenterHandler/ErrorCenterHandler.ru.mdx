@@ -11,30 +11,34 @@ import {Meta} from '@storybook/addon-docs/blocks'
 - **Регистрация обработчиков** — удобное добавление функций обратного вызова к конкретным группам.
 - **Глобальный обработчик** — поддержка группы `undefined`, которая перехватывает любую ошибку без специфического обработчика.
 - **Последовательное выполнение** — запускает все зарегистрированные функции в порядке их добавления.
-- **Интегрированное логирование** — автоматически выводит детали ошибки в консоль.
+- **Настраиваемое логирование** — вывод деталей ошибки в консоль с поддержкой фильтрации через функцию или полного отключения.
 
 ## Инициализация
 
-Для создания экземпляра используйте конструктор `ErrorCenterHandler(handlers)`.
+Для создания экземпляра используйте конструктор `ErrorCenterHandler(handlers, isConsole)`.
 
 **Параметры:**
 - `handlers?: ErrorCenterHandlerList` — начальный список обработчиков.
+- `isConsole?: ErrorCenterHandlerIsConsole` — флаг или функция фильтрации вывода в консоль (по умолчанию `true`).
 
 ```typescript
 import { ErrorCenterHandler } from '@dxtmisha/functional-basic'
 
-const handlers = new ErrorCenterHandler([
-  {
-    group: 'api',
-    handlers: [(cause) => console.log('API Error:', cause.code)]
-  }
-]);
+const handlers = new ErrorCenterHandler(
+  [
+    {
+      group: 'api',
+      handlers: [(cause) => console.log('API Error:', cause.code)]
+    }
+  ],
+  false // Отключить вывод в консоль
+);
 ```
 
 ## Методы
 
 ### Действие
-- `on(cause: ErrorCenterCauseItem): this` — Запускает цепочку обработчиков. Всегда выводит ошибку в консоль через `console.error`.
+- `on(cause: ErrorCenterCauseItem): this` — Запускает цепочку обработчиков и выводит ошибку в консоль, если включено.
 
 ### Проверка
 - `has(group: ErrorCenterGroup): boolean` — Проверяет, есть ли обработчики для группы.
@@ -43,6 +47,7 @@ const handlers = new ErrorCenterHandler([
 ### Конфигурация
 - `add(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): this` — Добавляет одну функцию в группу.
 - `addList(handlers: ErrorCenterHandlerList): this` — Пакетная регистрация обработчиков.
+- `setIsConsole(isConsole: ErrorCenterHandlerIsConsole): this` — Устанавливает флаг или функцию фильтрации вывода в консоль.
 
 ## Типы
 
@@ -52,6 +57,12 @@ const handlers = new ErrorCenterHandler([
 #### `ErrorCenterHandlerCallback`
 Функция обратного вызова: `(cause: ErrorCenterCauseItem) => void`.
 
+#### `ErrorCenterHandlerIsConsole`
+Тип конфигурации вывода в консоль: `boolean | ((cause: ErrorCenterCauseItem) => boolean)`.
+
+#### `ErrorCenterHandlerIsConsoleCallback`
+Функция проверки вывода ошибки в консоль: `(cause: ErrorCenterCauseItem) => boolean`.
+
 #### `ErrorCenterHandlerItem`
 Связка группы и массива её функций.
 - `group?: ErrorCenterGroup` — целевая группа.
@@ -59,9 +70,12 @@ const handlers = new ErrorCenterHandler([
 
 ## Примеры
 
-### Изолированный менеджер для модуля
+### Изолированный менеджер с фильтрацией консоли
 ```typescript
 const uploadHandlers = new ErrorCenterHandler();
+
+// Фильтрация вывода в консоль: выводить только ошибки группы 'upload'
+uploadHandlers.setIsConsole((cause) => cause.group === 'upload');
 
 uploadHandlers.add('upload', (cause) => {
   if (cause.code === 'retry') {
