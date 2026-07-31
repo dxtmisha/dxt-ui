@@ -14,16 +14,18 @@ import type { NitroAppRouterOptions } from '../types/nitroAppTypes'
  * Создаёт экземпляр маршрутизатора для SSR или клиентской среды.
  * @param routes list of routes for the router/ список маршрутов для маршрутизатора
  * @param options router options/ опции маршрутизатора
+ * @param base base path for the router/ базовый путь для маршрутизатора
  */
 export function uiCreateSsrRouter(
   routes: RouteRecordRaw[],
-  options: NitroAppRouterOptions = {}
+  options: NitroAppRouterOptions = {},
+  base?: string
 ) {
   return createRouter({
     ...options,
     history: isDomRuntime()
-      ? createWebHistory()
-      : createMemoryHistory(),
+      ? createWebHistory(base)
+      : createMemoryHistory(base),
     routes
   })
 }

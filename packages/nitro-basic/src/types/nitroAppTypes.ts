@@ -32,6 +32,8 @@ export interface NitroAppOptions extends FunctionalPluginOptions {
     routes: RouteRecordRaw[]
     /** Router creation options / Опции создания маршрутизатора */
     options?: NitroAppRouterOptions
+    /** Base path for the router / Базовый путь для маршрутизатора */
+    base?: string
   }
   /** Body selector for teleporting / Селектор тела для телепортации */
   teleportBody?: string

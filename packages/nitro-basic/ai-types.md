@@ -6,141 +6,53 @@ The following is the content of "exports" from package.json:
 {
   ".": {
     "import": "./dist/library.js",
-    "types": "./dist/src/library.d.ts"
+    "types": "./dist/library.d.ts"
+  },
+  "./client": {
+    "import": "./dist/library-client.js",
+    "types": "./dist/library-client.d.ts"
   },
   "./plugin": {
     "import": "./dist/library-plugin.js",
-    "types": "./dist/src/library-plugin.d.ts"
+    "types": "./dist/library-plugin.d.ts"
   }
 }
 
-// File: src/composables/useHeaders.d.ts
-/** @param name Header name */
-export declare function useHeaders(name: string): string | undefined;
-export declare function useHeaders(): Headers | undefined;
-
-// File: src/functions/getRequestHref.d.ts
-/** @param request HTTP request */
-export declare function getRequestHref(request: Request): string;
-
-// File: src/functions/getRequestOrigin.d.ts
-/** @param request HTTP request */
-export declare function getRequestOrigin(request: Request): string;
-
-// File: src/functions/getRequestUrl.d.ts
-/** @param request HTTP request */
-export declare function getRequestUrl(request: Request): string;
-
-// File: src/functions/initApi.d.ts
-/** @param request Incoming server request */
-export declare function initApi(request: Request): void;
-
-// File: src/functions/initClientRouter.d.ts
-/** @param router Vue Router instance */
-export declare function initClientRouter(router: any | undefined): Promise<void>;
-
-// File: src/functions/initCookieStorage.d.ts
-/** @param app Vue application instance @param request HTTP request */
-export declare function initCookieStorage<T>(app: any, request: Request): void;
-
-// File: src/functions/initHeaders.d.ts
-/** @param app Vue application root component */
-export declare function initHeaders<T>(app: any): void;
-
-// File: src/functions/initPluginApiCache.d.ts
-/** @param storageKey Storage key prefix @param cacheStepAgeClearOld Cache cleanup threshold */
-export declare function initPluginApiCache(storageKey?: string, cacheStepAgeClearOld?: number): void;
-
-// File: src/functions/initPluginBasic.d.ts
-/** @param _ Nitro app instance @param config Configuration */
-export declare function initPluginBasic<N extends any = any>(_: N, config?: any): void;
-
-// File: src/functions/initScriptsJson.d.ts
-/** Generates JSON-scripts for hydration. */
-export declare function initScriptsJson(): string;
-
-// File: src/functions/initServerRouter.d.ts
-/** @param request HTTP request @param router Vue router instance */
-export declare function initServerRouter(request: Request, router: any | undefined): Promise<void>;
-
-// File: src/functions/initServerStorage.d.ts
-/** @param app Vue application instance */
-export declare function initServerStorage<T>(app: any): void;
-
-// File: src/functions/initSsrApp.d.ts
-/** @param app Vue application instance @param context SSR context */
-export declare function initSsrApp<T>(app: any, context?: any): Promise<{
-    appHtml: string;
-    teleportsHtml: string;
-    context: any;
-}>;
-
-// File: src/functions/uiBootstrapClient.d.ts
-/** Initializes global element ID generator using Vue `useId`. */
-export declare function uiBootstrapClient(): void;
-
-// File: src/functions/uiBootstrapServer.d.ts
-/** Initializes server-side components and orchestration. */
-export declare function uiBootstrapServer(): void;
-
-// File: src/functions/uiCookieStorage.d.ts
-export declare function uiCookieStorage(): void;
-
-// File: src/functions/uiCreateApp.d.ts
-/** @param appComponent Root component @param options App config */
-export declare function uiCreateApp<A = any>(appComponent: A, options?: any): {
-    app: any;
-    router: any | undefined;
-    options: any;
-};
-
-// File: src/functions/uiCreateClientApp.d.ts
-/** @param app Vue instance @param rootContainer Mount target @param router Router @param options App options @param action Pre-mount task */
-export declare function uiCreateClientApp<T>(app: any, rootContainer?: string | T, router?: any | undefined, options?: any, action?: (app: any) => Promise<void> | void): Promise<void>;
-
-// File: src/functions/uiCreateServerApp.d.ts
-/** @param app Root component @param request Server request @param router Router @param options App options @param action Pre-render task @param context SSR context @param body HTML template */
-export declare function uiCreateServerApp<T>(app: any, request: Request, router?: any | undefined, options?: any, action?: (app: any) => Promise<void> | void, context?: any, body?: string): Promise<{
-    appHtml: string;
-    teleportsHtml: string;
-    context: any;
-    headers: Headers | undefined;
-    lang: string;
-    title: string;
-    meta: string;
-    scriptsJson: string;
-    body: string;
-}>;
-
-// File: src/functions/uiCreateSsrRouter.d.ts
-/** @param routes Route records @param options Router options */
-export declare function uiCreateSsrRouter(routes: any[], options?: any): any;
-
-// File: src/functions/uiIdClient.d.ts
-export declare function uiIdClient(): void;
-
-// File: src/functions/uiIdServer.d.ts
-export declare function uiIdServer(): void;
-
-// File: src/functions/uiServerStorage.d.ts
-/** Sets up global `ServerStorage` using inject key `NITRO_APP_STORAGE`. */
-export declare function uiServerStorage(): void;
-
-// File: src/types/nitroAppTypes.d.ts
-export type NitroAppBasicConfig = {
-    api?: {
-        cacheStorageKey?: string;
-        cacheStepAgeClearOld?: number;
-    };
-};
-export type NitroAppRouterOptions = Partial<any>;
-export interface NitroAppOptions {
-    appRouter?: {
-        routes: any[];
-        options?: NitroAppRouterOptions;
-    };
-    teleportBody?: string;
-}
+export type NitroAppBasicConfig = { api?: { cacheStorageKey?: string; cacheStepAgeClearOld?: number; }; };
+export type NitroAppRouterOptions = Partial<RouterOptions>;
+export interface NitroAppOptions extends FunctionalPluginOptions { appRouter?: { routes: RouteRecordRaw[]; options?: NitroAppRouterOptions; base?: string; }; teleportBody?: string; }
 export declare const NITRO_APP_STORAGE = "__ui_server_storage";
 export declare const NITRO_APP_COOKIE = "__ui_server_cookie";
 export declare const NITRO_API_HEADERS = "__ui_server_headers";
+export declare function useHeaders(name: string): string | undefined;
+export declare function useHeaders(): Headers | undefined;
+export declare function getContextValue<T = any>(key: string): T | undefined;
+export declare function getRequestHref(request: Request): string;
+export declare function getRequestOrigin(request: Request): string;
+export declare function getRequestUrl(request: Request): string;
+/** Initializes the API client for the current request and sets its base origin. */
+export declare function initApi(request: Request): void;
+export declare function initClientRouter(router: Router | undefined): Promise<void>;
+export declare const appContext: UseContext<any>;
+export declare function initCookieStorage<T>(app: App<T>, request: Request): { cookie: string; };
+export declare function initHeaders<T>(app: App<T>): { headers: Headers; };
+export declare function initPluginApiCache(storageKey?: string, cacheStepAgeClearOld?: number): void;
+export declare function initPluginBasic<N extends NitroApp & Record<string, any> = NitroApp>(_: N, config?: NitroAppBasicConfig): void;
+/** Generates JSON scripts required for hydration. */
+export declare function initScriptsJson(): string;
+export declare function initServerRouter(request: Request, router: Router | undefined): Promise<void>;
+export declare function initServerStorage<T>(app: App<T>): { storage: Record<string, any>; };
+export declare function initSsrApp<T>(app: App<T>, context?: SSRContext): Promise<{ appHtml: string; teleportsHtml: string; context: SSRContext; }>;
+export declare function uiBootstrapClient(): void;
+/** Initializes component creation and orchestration for the server environment. */
+export declare function uiBootstrapServer(): void;
+export declare function uiCookieStorage(): void;
+export declare function uiCreateApp<A = any>(appComponent: A, options?: NitroAppOptions): { app: App<Element>; router: _RouterClassic | undefined; options: NitroAppOptions; };
+/** Finalizes client-side initialization and mounts the Vue application after router readiness. */
+export declare function uiCreateClientApp<T>(app: App<T>, rootContainer?: string | T, router?: Router | undefined, options?: NitroAppOptions, action?: (app: App<T>) => Promise<void> | void): Promise<void>;
+/** Initializes the server-side application, including storage setup, routing, and SSR rendering. */
+export declare function uiCreateServerApp<T>(app: App<T>, request: Request, router?: Router | undefined, options?: NitroAppOptions, action?: (app: App<T>) => Promise<void> | void, context?: SSRContext, body?: string): Promise<{ appHtml: string; teleportsHtml: string; context: SSRContext; headers: Headers | undefined; lang: string; title: string; meta: string; scriptsJson: string; body: string; }>;
+export declare function uiCreateSsrRouter(routes: RouteRecordRaw[], options?: NitroAppRouterOptions, base?: string): _RouterClassic;
+export declare function uiIdClient(): void;
+export declare function uiIdServer(): void;
+export declare function uiServerStorage(): void;

@@ -24,7 +24,8 @@ export function uiCreateApp<A = any>(
   } else if (options.appRouter) {
     router = uiCreateSsrRouter(
       options.appRouter.routes,
-      options.appRouter.options
+      options.appRouter.options,
+      options.appRouter.base
     )
 
     app.use(router)

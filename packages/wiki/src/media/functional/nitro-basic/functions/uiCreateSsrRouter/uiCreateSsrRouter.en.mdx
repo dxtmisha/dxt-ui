@@ -9,9 +9,10 @@ Creates a Vue router instance with a history type suitable for the current runti
 **Parameters:**
 - `routes: RouteRecordRaw[]` — A list of routes.
 - `options: NitroAppRouterOptions` — Additional router options.
+- `base?: string` — Base path for the router.
 
 ```typescript
 import { uiCreateSsrRouter } from '@dxtmisha/nitro-basic'
 
-const router = uiCreateSsrRouter(routes)
+const router = uiCreateSsrRouter(routes, {}, '/base-path/')
 ```

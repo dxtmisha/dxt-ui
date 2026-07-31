@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.14] - 2026-07-31
+
+### Added
+- **`appRouter.base` Option**: Added optional `base?: string` property to `NitroAppOptions.appRouter` interface to support base path configuration for routing.
+
+### Changed / Improved
+- **`uiCreateSsrRouter`**: Updated `uiCreateSsrRouter` to accept an optional `base` parameter and forward it to `createWebHistory(base)` and `createMemoryHistory(base)`.
+- **`uiCreateApp`**: Updated `uiCreateApp` initialization logic to pass `options.appRouter.base` to `uiCreateSsrRouter`.
+
 ## [0.1.13] - 2026-07-15
 
 ### Added

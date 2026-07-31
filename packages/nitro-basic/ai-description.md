@@ -1,17 +1,19 @@
-Core Purpose: This library provides a specialized infrastructure layer for building and orchestrating Vue 3 applications within a Nitro (server-side) ecosystem. It facilitates SSR-to-client hydration, request lifecycle management, and application bootstrapping for complex Vue SSR architectures.
+CORE PURPOSE
+Provides server-side rendering (SSR) lifecycle orchestration, hydration handling, request-scoped context management, and environment bootstrapping utilities for Vue 3 applications executing within Nitropack (Nitro) server runtimes.
 
-Key Expositions:
-- App Bootstrapping: uiCreateApp, uiCreateServerApp, and uiCreateClientApp manage the lifecycle and initialization of Vue instances, handling routing, storage, and SSR rendering configurations.
-- Server Utilities: getRequestHref, getRequestOrigin, and getRequestUrl provide normalized access to request metadata; initApi and initHeaders inject request-specific state.
-- Plugin & Storage Management: initCookieStorage, initServerStorage, and initPluginApiCache integrate stateful storage into the Vue dependency injection container.
-- Router Orchestration: initServerRouter and uiCreateSsrRouter manage the Vue Router lifecycle, specifically handling server-side state resolution to prevent hydration mismatches.
-- UI/Bootstrap Helpers: uiBootstrapServer, uiBootstrapClient, uiIdClient, and uiIdServer manage element identity and global environmental setups for SSR environments.
+KEY EXPOSITIONS
+- SSR App & Lifecycle Factories: `uiCreateApp`, `uiCreateServerApp`, `uiCreateClientApp`, `initSsrApp`. Manages Vue 3 instance instantiation, SSR HTML and teleport string rendering, context extraction, and client-side mounting.
+- SSR Routing Handlers: `uiCreateSsrRouter`, `initServerRouter`, `initClientRouter`. Instantiates Vue Router for server/client contexts and handles asynchronous route and component resolution before HTML rendering or DOM mounting.
+- Context & Request Utilities: `useHeaders`, `getContextValue`, `getRequestHref`, `getRequestOrigin`, `getRequestUrl`, `initContext` (`appContext`). Provides request metadata extraction and access to `unctx`-backed application execution context.
+- Storage, Cookie & Cache Injections: `initCookieStorage`, `initServerStorage`, `uiServerStorage`, `uiCookieStorage`, `initPluginApiCache`, `initPluginBasic`. Handles server-side state persistence, cookie access, and API cache configuration using designated dependency injection keys.
+- Deterministic ID & Hydration Utilities: `uiBootstrapServer`, `uiBootstrapClient`, `uiIdServer`, `uiIdClient`. Manages deterministic unique element ID generation across server and client boundaries to prevent hydration mismatches.
 
-Triggers for Studying ai-types.md:
-- Implementing custom SSR rendering pipelines.
-- Extending or overriding the default Nitro app integration logic.
-- Debugging hydration mismatches or state synchronization between client and server.
-- Configuring custom storage providers or API caching mechanisms within the Nitro context.
-- Extending NitroAppOptions or NitroAppBasicConfig definitions for specific architectural requirements.
+TRIGGERS FOR STUDYING AI-TYPES.MD
+Consulting `ai-types.md` is mandatory under the following conditions:
+1. Configuring or extending Vue application bootstrap parameters using `NitroAppOptions`, `NitroAppRouterOptions`, or `NitroAppBasicConfig`.
+2. Directly accessing or injecting global context tokens (`NITRO_APP_STORAGE`, `NITRO_APP_COOKIE`, `NITRO_API_HEADERS`).
+3. Implementing custom Nitropack runtime plugins, server middleware, or SSR context pipeline modifications.
+4. Resolving state persistence issues, custom API cache strategies, or hydration mismatch bugs occurring during SSR.
 
-Integration Context: This library acts as the middleware and configuration backbone between a Nitro server environment and a Vue 3 frontend. It interfaces directly with Vue Router, NitroPack, and @dxtmisha/functional plugin systems, serving as the bridge for transporting state (cookies, headers, storage) from the server request to the rendered application.
+INTEGRATION CONTEXT
+Functions as an integration layer connecting Nitropack (Nitro) backends with a Vue 3 frontend architecture (`vue`, `vue-router`, `vue/server-renderer`). Uses `unctx` for request-isolated context management and integrates with `@dxtmisha/functional` for functional plugin setups.

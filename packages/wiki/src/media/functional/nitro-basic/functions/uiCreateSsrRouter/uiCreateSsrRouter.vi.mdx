@@ -9,9 +9,10 @@ Tạo một thực thể Vue router với loại lịch sử phù hợp cho môi
 **Tham số:**
 - `routes: RouteRecordRaw[]` — Danh sách các tuyến đường.
 - `options: NitroAppRouterOptions` — Các tùy chọn router bổ sung.
+- `base?: string` — Đường dẫn cơ sở cho router.
 
 ```typescript
 import { uiCreateSsrRouter } from '@dxtmisha/nitro-basic'
 
-const router = uiCreateSsrRouter(routes)
+const router = uiCreateSsrRouter(routes, {}, '/base-path/')
 ```
