@@ -5,12 +5,6 @@ import { toNumber } from './toNumber'
 
 import type { SortColumnItem, SortFunction } from '../types/sortTypes'
 
-/** Collator instance for locale-sensitive string comparison / Экземпляр collator для локализованного сравнения строк */
-const collator = new Intl.Collator(undefined, {
-  numeric: true,
-  sensitivity: 'base'
-})
-
 /**
  * Sorts an array of items by one or more column paths, directions, or a custom comparison function.
  *
@@ -31,6 +25,10 @@ export function sortList<T = any>(
   ) {
     return list
   }
+
+  const collator = typeof Intl?.Collator !== 'undefined'
+    ? new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' })
+    : undefined
 
   return [...list].sort((itemFirst: T, itemSecond: T) => {
     for (const { column, dir } of sortColumns) {
@@ -84,10 +82,12 @@ export function sortList<T = any>(
         return (Number(valueFirst) - Number(valueSecond)) * factor
       }
 
-      const compareResult = collator.compare(
-        String(valueFirst),
-        String(valueSecond)
-      )
+      const strFirst = String(valueFirst)
+      const strSecond = String(valueSecond)
+
+      const compareResult = collator
+        ? collator.compare(strFirst, strSecond)
+        : strFirst.localeCompare(strSecond)
 
       return compareResult * factor
     }

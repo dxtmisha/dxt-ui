@@ -13,6 +13,9 @@ All notable changes to this project will be documented in this file.
 - **ErrorCenterHandler**: Refactored `toConsole` method to utilize `executeFunction` utility for evaluating `isConsole` and streamlined return control flow.
 - **Documentation**: Updated `ai-doc.md` and `ai-doc.ru.md` with guidelines enforcing the use of primitive helper functions (`isFunction`, `executeFunction`, `isFilled`, etc.).
 
+### Fixed
+- **sortList**: Fixed `ReferenceError: 'Intl' is not defined` in environments without `Intl` support (like the Figma plugin sandbox) by lazily instantiating `Intl.Collator` inside the function scope instead of the module's global scope, and implementing a safe fallback to `String.prototype.localeCompare`.
+
 ## [1.8.0] - 2026-07-25
 
 ### Added
