@@ -49,18 +49,19 @@ export class MotionFlipItem {
    * Updates CSS position and size variables for the item element based on original rectangle.
    *
    * Обновляет переменные CSS положения и размера для элемента на основе исходного прямоугольника.
+   * @param currentRectangle pre-calculated current rectangle / предварительно вычисленный текущий прямоугольник
    * @returns current instance / текущий экземпляр
    */
-  update(): this {
+  update(currentRectangle?: DOMRect): this {
     if (this.original) {
-      const currentRectangle = this.element.getBoundingClientRect()
+      const rect = currentRectangle ?? this.getRectangle()
 
       this
-        .setStyle('top', this.original.top - currentRectangle.top)
-        .setStyle('left', this.original.left - currentRectangle.left)
-        .setStyle('width', currentRectangle.width)
+        .setStyle('top', this.original.top - rect.top)
+        .setStyle('left', this.original.left - rect.left)
+        .setStyle('width', rect.width)
         .setStyle('width-to', this.original.width)
-        .setStyle('height', currentRectangle.height)
+        .setStyle('height', rect.height)
         .setStyle('height-to', this.original.height)
         .addClass()
     }
@@ -162,5 +163,15 @@ export class MotionFlipItem {
       .removeStyle('height-to')
 
     return this
+  }
+
+  /**
+   * Returns current bounding client rectangle of the item element.
+   *
+   * Возвращает текущий прямоугольник размеров элемента.
+   * @returns DOMRect rectangle / прямоугольник DOMRect
+   */
+  getRectangle(): DOMRect {
+    return this.element.getBoundingClientRect()
   }
 }

@@ -16,7 +16,9 @@ import type {
 } from './types'
 
 /**
- * SliderDesign
+ * Class representing the design constructor for the Slider component.
+ *
+ * Класс, представляющий конструктор дизайна компонента Slider.
  */
 export class SliderDesign<
   COMP extends SliderComponents,
@@ -69,29 +71,40 @@ export class SliderDesign<
   }
 
   /**
-   * Initialization of exposed properties.
+   * Initialization of exposed properties for export.
    */
   protected initExpose(): EXPOSE {
-    return {} as EXPOSE
+    return {
+      valueMin: this.item.valueMin,
+      valueMax: this.item.valueMax,
+      currentValue: this.item.currentValue,
+      focusThumb: this.item.focusThumb,
+      set: (value: number | number[], type?: 'min' | 'max') => this.item.set(value, type),
+      updateValueByThumb: (inputValue: number, eventType?: 'on-input' | 'on-change') =>
+        this.item.updateValueByThumb(inputValue, eventType)
+    } as EXPOSE
   }
 
   /**
-   * Class list preparation.
+   * Class list preparation for BEM architecture.
    */
   protected initClasses(): Partial<CLASSES> {
     return {
       main: {
         [`${this.getName()}--vertical`]: Boolean(this.props.vertical),
         [`${this.getName()}--disabled`]: Boolean(this.props.disabled),
-        [`${this.getName()}--multiple`]: Boolean(this.props.multiple)
+        [`${this.getName()}--drop`]: this.props.appearance === 'drop'
       },
-      thumb: this.getSubClass('thumb'),
-      label: this.getSubClass('label'),
       rail: this.getSubClass('rail'),
       track: this.getSubClass('track'),
+      select: this.getSubClass('select'),
+      thumb: this.getSubClass('thumb'),
+      thumbMin: this.getSubClass('thumbMin'),
+      thumbMax: this.getSubClass('thumbMax'),
+      labelMin: this.getSubClass('labelMin'),
+      labelMax: this.getSubClass('labelMax'),
       marks: this.getSubClass('marks'),
-      mark: this.getSubClass('mark'),
-      select: this.getSubClass('select')
+      mark: this.getSubClass('mark')
     } as Partial<CLASSES>
   }
 
@@ -99,32 +112,32 @@ export class SliderDesign<
    * Style list preparation.
    */
   protected initStyles(): ConstrStyles {
-    return {
-      '--_sl__min-x': `${this.item.percentMin.value}%`,
-      '--_sl__max-x': `${this.item.percentMax.value}%`
-    }
+    return {}
   }
 
   /**
-   * Render function.
+   * Main rendering method.
    */
   protected initRender(): VNode {
     const children: VNode[] = []
 
     if (this.props.multiple) {
-      children.push(this.renderThumb('min'))
+      children.push(this.renderThumbMin())
     }
-    children.push(this.renderThumb('max'))
-    children.push(h('div', { class: this.classes?.value.rail }))
-    children.push(h('div', { class: this.classes?.value.track }))
 
-    if (this.item.propMarks.value) {
+    children.push(this.renderThumbMax())
+    children.push(h('div', { class: [this.classes?.value.rail, `${this.getName()}__rail`] }))
+    children.push(h('div', { class: [this.classes?.value.track, `${this.getName()}__track`] }))
+
+    if (this.item.parsedMarks.value) {
       children.push(this.renderMarks())
     }
 
     children.push(
       h('div', {
-        class: this.classes?.value.select
+        class: [this.classes?.value.select, `${this.getName()}__select`],
+        onMousedown: this.item.onMousedown,
+        onTouchstart: this.item.onMousedown
       })
     )
 
@@ -134,60 +147,117 @@ export class SliderDesign<
       'div',
       {
         ref: this.element,
-        class: this.classes?.value.main,
-        style: this.styles?.value,
-        onMousedown: (event: MouseEvent) => this.item.onMousedown(event),
-        onTouchstart: (event: TouchEvent) => this.item.onMousedown(event)
+        class: this.classes?.value.main
       },
       children
     )
   }
 
   /**
-   * Render thumb button (min or max).
-   * @param type thumb type
+   * Render min thumb control button.
    */
-  readonly renderThumb = (type: 'min' | 'max'): VNode => {
-    const value = type === 'min' ? this.item.valueMin.value : this.item.valueMax.value
+  readonly renderThumbMin = (): VNode => {
+    const isRipple =
+      Boolean(this.props.ripple) && this.props.appearance !== 'drop' && !this.props.disabled
+
+    const thumbChildren: VNode[] = [
+      h('span', {
+        ref: this.item.elementMinLabel,
+        class: [
+          this.classes?.value.labelMin,
+          `${this.getName()}__label`,
+          `${this.getName()}__label--min`
+        ]
+      })
+    ]
+
+    if (isRipple) {
+      const rippleComponent = this.components.renderOne('ripple', {}) as VNode | undefined
+      if (rippleComponent) {
+        thumbChildren.push(rippleComponent)
+      }
+    }
 
     return h(
       'button',
       {
-        key: type,
-        class: [
-          this.classes?.value.thumb,
-          `${this.classes?.value.thumb}--${type}`
-        ],
+        ref: this.item.elementMin,
         type: 'button',
-        onKeydown: (event: KeyboardEvent) => this.item.onKeydown(event)
+        class: [
+          this.classes?.value.thumbMin,
+          `${this.getName()}__thumb`,
+          `${this.getName()}__thumb--min`
+        ],
+        disabled: this.props.disabled,
+        onKeydown: this.item.onKeydown,
+        onMousedown: this.item.onMousedown,
+        onTouchstart: this.item.onMousedown
       },
-      [
-        h(
-          'span',
-          { class: this.classes?.value.label },
-          String(value)
-        )
-      ]
+      thumbChildren
     )
   }
 
   /**
-   * Render marks scale container.
+   * Render max thumb control button.
+   */
+  readonly renderThumbMax = (): VNode => {
+    const isRipple =
+      Boolean(this.props.ripple) && this.props.appearance !== 'drop' && !this.props.disabled
+
+    const thumbChildren: VNode[] = [
+      h('span', {
+        ref: this.item.elementMaxLabel,
+        class: [
+          this.classes?.value.labelMax,
+          `${this.getName()}__label`,
+          `${this.getName()}__label--max`
+        ]
+      })
+    ]
+
+    if (isRipple) {
+      const rippleComponent = this.components.renderOne('ripple', {}) as VNode | undefined
+      if (rippleComponent) {
+        thumbChildren.push(rippleComponent)
+      }
+    }
+
+    return h(
+      'button',
+      {
+        ref: this.item.elementMax,
+        type: 'button',
+        class: [
+          this.classes?.value.thumbMax,
+          `${this.getName()}__thumb`,
+          `${this.getName()}__thumb--max`
+        ],
+        disabled: this.props.disabled,
+        onKeydown: this.item.onKeydown,
+        onMousedown: this.item.onMousedown,
+        onTouchstart: this.item.onMousedown
+      },
+      thumbChildren
+    )
+  }
+
+  /**
+   * Render list of marks along the slider track.
    */
   readonly renderMarks = (): VNode => {
-    const markNodes = (this.item.propMarks.value ?? []).map((item) =>
-      h('span', {
-        key: item.mark,
-        class: this.classes?.value.mark,
-        style: item.style,
-        'data-text': item.text,
-        'data-value': item.mark
+    const markNodes = (this.item.parsedMarks.value ?? []).map((markItem) => {
+      return h('span', {
+        key: markItem.mark,
+        class: [this.classes?.value.mark, `${this.getName()}__mark`],
+        'data-text': markItem.text,
+        'data-value': markItem.value,
+        style: markItem.style
       })
-    )
+    })
 
     return h(
       'div',
-      { class: this.classes?.value.marks },
+      { class: [this.classes?.value.marks, `${this.getName()}__marks`] },
       markNodes
     )
   }

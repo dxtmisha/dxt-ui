@@ -54,7 +54,8 @@ export class MotionFlipItems {
    * Обновляет положения и размеры для всех дочерних элементов.
    */
   update(): void {
-    this.items.forEach(item => item.update())
+    const rectangles = this.items.map(item => item.getRectangle())
+    this.items.forEach((item, index) => item.update(rectangles[index]))
   }
 
   /**

@@ -1,51 +1,31 @@
-/**
- * Type for slider value (single number or min/max array).
- */
-export type SliderValue = number | [number, number]
+import type { ListList } from '@dxtmisha/functional'
 
 /**
- * Interface describing an individual mark on the slider scale.
+ * Interface describing a slider mark item.
+ *
+ * Интерфейс, описывающий отметку слайдера.
  */
-export type SliderMarkItem = {
+export interface SliderMarkItem {
   mark: number
-  value: number
-  text?: string
+  text: string
+  value: any
   style?: Record<string, string>
 }
 
 /**
- * Payload passed to slider events.
+ * Type for slider marks prop value.
+ *
+ * Тип для свойства отметок слайдера.
+ */
+export type SliderMarksValue = ListList | SliderMarkItem[] | Record<number, string>
+
+/**
+ * Type describing the event payload emitted by Slider.
+ *
+ * Тип, описывающий полезную нагрузку события, испускаемого слайдером.
  */
 export type SliderEventPayload = {
-  value: SliderValue
-  mark?: SliderValue
-  item?: SliderMarkItem | [SliderMarkItem, SliderMarkItem]
-}
-
-/**
- * Emits signature for slider component inclusion.
- */
-export type SliderEmitsInclude = {
-  'on-input': [payload: SliderEventPayload]
-  'on-change': [payload: SliderEventPayload]
-  'update:value': [value: SliderValue]
-  'update:modelValue': [value: SliderValue]
-}
-
-/**
- * Base properties for slider component inclusion.
- */
-export type SliderPropsInclude = {
-  value?: SliderValue
-  modelValue?: SliderValue
-  min?: number
-  max?: number
-  step?: number
-  multiple?: boolean
-  vertical?: boolean
-  disabled?: boolean
-  readonly?: boolean
-  marks?: unknown
-  magnet?: boolean
-  minimumDistance?: number
+  value: number | number[]
+  mark: number | number[]
+  item: SliderMarkItem | SliderMarkItem[]
 }
