@@ -1,56 +1,59 @@
-// MotionFlip styles
+@use "@dxtmisha/styles/properties" as ui;
 
-.d1-motionFlip {
+@mixin mixinMotionFlip {
   position: relative;
 
-  &--freeze > *:not(.d1-motionFlip__item),
-  &.status-freeze > *:not(.d1-motionFlip__item) {
-    opacity: 0;
-  }
-
-  &--go > *:not(.d1-motionFlip__item),
-  &.status-go > *:not(.d1-motionFlip__item) {
-    opacity: 1;
-    transition-duration: var(--d1-transition-large-expanding, 0.3s);
-    transition-property: opacity;
-    transition-timing-function: cubic-bezier(0.8, 0, 0.4, 1);
-  }
-
-  &__item {
+  @include ui.subclass('item') {
     position: relative;
   }
 
-  &--freeze &__item,
-  &.status-freeze &__item {
-    height: var(--mc-height);
-    min-height: var(--mc-height);
-    max-height: var(--mc-height);
+  &--freeze {
+    & > *:not(#{ui.c('??__item')}) {
+      opacity: 0;
+    }
 
-    width: var(--mc-width);
-    min-width: var(--mc-width);
-    max-width: var(--mc-width);
+    @include ui.subclass('item') {
+      z-index: 4;
 
-    z-index: 4;
+      width: ui.v('??sys.width');
+      min-width: ui.v('??sys.width');
+      max-width: ui.v('??sys.width');
 
-    > * {
-      height: var(--mc-height-to);
-      width: var(--mc-width-to);
+      height: ui.v('??sys.height');
+      min-height: ui.v('??sys.height');
+      max-height: ui.v('??sys.height');
 
-      position: absolute;
-      transform: translate(var(--mc-left, 0), var(--mc-top, 0));
+      > * {
+        position: absolute;
+
+        width: ui.v('??sys.width-to');
+        height: ui.v('??sys.height-to');
+
+        transform: translate(ui.v('??sys.left', 0), ui.v('??sys.top', 0));
+      }
     }
   }
 
-  &--go &__item,
-  &.status-go &__item {
-    > * {
-      height: var(--mc-height);
-      width: var(--mc-width);
+  &--go {
+    & > *:not(#{ui.c('??__item')}) {
+      opacity: 1;
 
-      transform: translate(0, 0);
-      transition-duration: var(--d1-transition-large-expanding, 0.3s);
-      transition-property: height, transform, width;
-      transition-timing-function: cubic-bezier(0.8, 0, 0.4, 1);
+      transition-property: opacity;
+      transition-duration: ui.v('d.sys.transitionDuration.largeExpanding');
+      transition-timing-function: ui.v('d.sys.transitionFunction.emphasized');
+    }
+
+    @include ui.subclass('item') {
+      > * {
+        width: ui.v('??sys.width');
+        height: ui.v('??sys.height');
+
+        transform: translate(0, 0);
+
+        transition-property: height, transform, width;
+        transition-duration: ui.v('d.sys.transitionDuration.largeExpanding');
+        transition-timing-function: ui.v('d.sys.transitionFunction.emphasized');
+      }
     }
   }
 }

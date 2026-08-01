@@ -7,7 +7,6 @@ import type { MotionFlipCallback } from './basicTypes'
  * Интерфейс для описания, какие компоненты надо подключить для работы.
  */
 export type MotionFlipComponents = {
-  // componentName: object
 }
 
 /**
@@ -16,15 +15,21 @@ export type MotionFlipComponents = {
  * Тип, описывающий доступные события.
  */
 export type MotionFlipEmits = {
-  // load: [value: string]
 }
 
 /**
- * Type describing available properties.
+ * Interface describing exposed methods for MotionFlip.
  *
- * Тип, описывающий доступные свойства.
+ * Интерфейс, описывающий публичные методы для MotionFlip.
  */
 export interface MotionFlipExpose {
+  /**
+   * FLIP update animation handler.
+   *
+   * Обработчик обновления FLIP анимации.
+   * @param callback function performing DOM updates / функция, выполняющая обновления DOM
+   * @returns promise resolving when update sequence completes / промис, завершающийся при завершении обновления
+   */
   update: (callback: MotionFlipCallback) => Promise<void>
 }
 
@@ -34,7 +39,8 @@ export interface MotionFlipExpose {
  * Тип, описывающий доступные слоты.
  */
 export interface MotionFlipSlots {
-  default? (props: any): any
+  /** Default slot for content elements / Слот по умолчанию для элементов контента */
+  default?(props: any): any
 }
 
 /**
@@ -43,6 +49,7 @@ export interface MotionFlipSlots {
  * Тип, описывающий подклассы.
  */
 export type MotionFlipClasses = {
+  /** Main container class / Основной класс контейнера */
   main: ConstrClass
   // :classes [!] System label / Системная метка
   item: string

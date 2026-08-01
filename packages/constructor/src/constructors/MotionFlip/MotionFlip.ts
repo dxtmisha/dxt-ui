@@ -1,31 +1,35 @@
-import { type Ref, ref, type ToRefs } from 'vue'
+import type { Ref, ToRefs } from 'vue'
 import {
   type ConstrEmit,
   type DesignComp
 } from '@dxtmisha/functional'
 
+import { MotionFlipElement } from './MotionFlipElement'
+import { MotionFlipItems } from './MotionFlipItems'
+
 import type { MotionFlipCallback } from './basicTypes'
-import type { MotionFlipProps } from './props'
 import type {
   MotionFlipComponents,
   MotionFlipEmits,
   MotionFlipSlots
 } from './types'
-
-type ElementSizeRect = {
-  top: number
-  left: number
-  width: number
-  height: number
-}
+import type { MotionFlipProps } from './props'
 
 /**
- * MotionFlip
+ * Class for managing FLIP layout animations.
+ * Performs smooth position and dimensions transitions during layout changes.
+ *
+ * Класс для управления FLIP анимациями макета.
+ * Выполняет плавные переходы положения и размеров при изменениях макета.
  */
 export class MotionFlip {
-  readonly isFreeze = ref(false)
-  readonly isGo = ref(false)
+  /** Element manager / Менеджер элемента */
+  readonly elementManager: MotionFlipElement
 
+  /** Item list controller / Контроллер списка элементов */
+  readonly items: MotionFlipItems
+
+  /** Flag indicating active transition cleanup / Флаг активности завершения перехода */
   protected isTransitioning = false
 
   /**
@@ -48,84 +52,60 @@ export class MotionFlip {
     protected readonly components?: DesignComp<MotionFlipComponents, MotionFlipProps>,
     protected readonly slots?: MotionFlipSlots,
     protected readonly emits?: ConstrEmit<MotionFlipEmits>
-  ) {}
+  ) {
+    this.elementManager = new MotionFlipElement(this.element, this.className)
+    this.items = new MotionFlipItems(this.elementManager)
+  }
+
+  /**
+   * Checks if element is available and animation is enabled.
+   *
+   * Проверяет, доступен ли элемент и включена ли анимация.
+   * @returns true if animation is enabled and element exists / true, если анимация включена и элемент существует
+   */
+  readonly isEnable = (): boolean => !this.props.disabled && this.elementManager.isEnable()
 
   /**
    * FLIP update animation handler.
-   * @param callback function performing DOM updates
+   *
+   * Обработчик обновления FLIP анимации.
+   * @param callback function performing DOM updates / функция, выполняющая обновления DOM
+   * @returns promise resolving when update sequence completes / промис, завершающийся при завершении обновления
    */
   readonly update = async (callback: MotionFlipCallback): Promise<void> => {
-    if (this.props.disabled || !this.element.value) {
+    if (!this.isEnable()) {
       await callback()
       return
     }
 
-    const children = Array.from(this.element.value.children) as HTMLElement[]
-    const originalSizes = new Map<HTMLElement, ElementSizeRect>()
-
-    children.forEach((childElement) => {
-      const rectangle = childElement.getBoundingClientRect()
-      originalSizes.set(childElement, {
-        top: rectangle.top,
-        left: rectangle.left,
-        width: rectangle.width,
-        height: rectangle.height
-      })
-    })
-
+    this.items.init()
     await callback()
 
     requestAnimationFrame(() => {
-      if (!this.element.value) return
+      this.items.update()
+      this.elementManager.addClassFreeze()
 
-      const updatedChildren = Array.from(this.element.value.children) as HTMLElement[]
-
-      updatedChildren.forEach((childElement) => {
-        const original = originalSizes.get(childElement)
-        if (original) {
-          const currentRectangle = childElement.getBoundingClientRect()
-
-          childElement.style.setProperty('--mc-top', `${original.top - currentRectangle.top}px`)
-          childElement.style.setProperty('--mc-left', `${original.left - currentRectangle.left}px`)
-          childElement.style.setProperty('--mc-width', `${currentRectangle.width}px`)
-          childElement.style.setProperty('--mc-width-to', `${original.width}px`)
-          childElement.style.setProperty('--mc-height', `${currentRectangle.height}px`)
-          childElement.style.setProperty('--mc-height-to', `${original.height}px`)
-
-          childElement.classList.add(`${this.className}__item`)
-        }
-      })
-
-      this.isFreeze.value = true
-
-      requestAnimationFrame(() => {
-        this.isGo.value = true
-      })
+      requestAnimationFrame(() => this.elementManager.addClassGo())
     })
   }
 
   /**
    * Handle transition end event to clear animation state.
-   * @param event transition event
+   *
+   * Обрабатывает событие окончания перехода для сброса состояния анимации.
+   * @param event transition event / событие перехода
    */
   readonly onTransition = (event: TransitionEvent): void => {
-    const targetElement = event.target as HTMLElement | null
-    const parentElement = targetElement?.parentElement
-
     if (
-      event.propertyName === 'transform' &&
-      parentElement?.classList.contains(`${this.className}__item`)
+      this.items.resetItem(event)
+      && !this.isTransitioning
     ) {
-      parentElement.classList.remove(`${this.className}__item`)
+      this.isTransitioning = true
 
-      if (!this.isTransitioning) {
-        this.isTransitioning = true
-        requestAnimationFrame(() => {
-          this.isFreeze.value = false
-          this.isGo.value = false
-          this.isTransitioning = false
-        })
-      }
+      requestAnimationFrame(() => {
+        this.elementManager.resetStatus()
+        this.isTransitioning = false
+      })
     }
   }
 }

@@ -1,11 +1,22 @@
-import type { MotionFlipPropsInclude } from './basicTypes'
-
+/**
+ * Type describing style tokens.
+ *
+ * Тип, описывающий токены стиля.
+ */
 type MotionFlipPropsToken = {
   // :type [!] System label / Системная метка
   // :type [!] System label / Системная метка
 }
 
-export type MotionFlipPropsBasic = MotionFlipPropsInclude
+/**
+ * Interface representing incoming properties of the basic component.
+ *
+ * Интерфейс, представляющий входящие свойства базового компонента.
+ */
+export type MotionFlipPropsBasic = {
+  /** Disables the FLIP animation / Отключает анимацию FLIP */
+  disabled?: boolean
+}
 
 /**
  * Type describing incoming properties.

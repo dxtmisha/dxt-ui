@@ -17,7 +17,9 @@ import type {
 } from './types'
 
 /**
- * MotionFlipDesign
+ * MotionFlipDesign class for managing FLIP animation logic and component state in Vue templates.
+ *
+ * Класс MotionFlipDesign для управления логикой FLIP анимации и состоянием компонента в шаблонах Vue.
  */
 export class MotionFlipDesign<
   COMP extends MotionFlipComponents,
@@ -26,14 +28,15 @@ export class MotionFlipDesign<
   P extends MotionFlipPropsBasic,
   SLOTS extends MotionFlipSlots = MotionFlipSlots
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
-    COMP,
-    MotionFlipEmits,
-    EXPOSE,
-    SLOTS,
-    CLASSES,
-    P
-  > {
+  HTMLDivElement,
+  COMP,
+  MotionFlipEmits,
+  EXPOSE,
+  SLOTS,
+  CLASSES,
+  P
+> {
+  /** FLIP animation instance controller / Контроллер экземпляра FLIP анимации */
   protected readonly item: MotionFlip
 
   /**
@@ -71,6 +74,9 @@ export class MotionFlipDesign<
 
   /**
    * Exposed method properties.
+   *
+   * Публичные методы компонента.
+   * @returns object containing exposed methods / объект, содержащий публичные методы
    */
   protected initExpose(): EXPOSE {
     return {
@@ -80,21 +86,25 @@ export class MotionFlipDesign<
 
   /**
    * Class list preparation.
+   *
+   * Подготовка списка классов.
+   * @returns object containing component classes / объект, содержащий классы компонента
    */
   protected initClasses(): Partial<CLASSES> {
-    return ({
-      main: {
-        [`${this.getName()}--freeze`]: this.item.isFreeze.value,
-        [`${this.getName()}--go`]: this.item.isGo.value,
-        [`status-freeze`]: this.item.isFreeze.value,
-        [`status-go`]: this.item.isGo.value
-      },
-      item: this.getSubClass('item')
-    } as unknown) as Partial<CLASSES>
+    return {
+      main: {},
+      ...{
+        // :classes [!] System label / Системная метка
+        // :classes [!] System label / Системная метка
+      }
+    } as Partial<CLASSES>
   }
 
   /**
    * Style list preparation.
+   *
+   * Подготовка списка стилей.
+   * @returns object containing component inline styles / объект, содержащий встроенные стили компонента
    */
   protected initStyles(): ConstrStyles {
     return {}
@@ -102,20 +112,19 @@ export class MotionFlipDesign<
 
   /**
    * Render function.
+   *
+   * Функция рендеринга.
+   * @returns VNode element / VNode элемент
    */
   protected initRender(): VNode {
-    const children: VNode[] = []
-
-    this.initSlot('default' as keyof SLOTS, children as any)
-
     return h(
       'div',
       {
         ref: this.element,
         class: this.classes?.value.main,
-        onTransitionend: (event: TransitionEvent) => this.item.onTransition(event)
+        onTransitionend: this.item.onTransition
       },
-      children
+      this.initSlot('default')
     )
   }
 }

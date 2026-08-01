@@ -52,7 +52,7 @@
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
     "test": "NODE_OPTIONS=\"--no-webstorage\" vitest",
-    "constructor": "dxt-constructor Headroom",
+    "constructor": "dxt-constructor MotionFlip",
     "library": "dxt-library",
     "types": "dxt-types",
     "prepublishOnly": "npm run library && npm run constructor && npm run build",
@@ -235,6 +235,10 @@
       "types": "./dist/constructors/Header/index.d.ts",
       "default": "./dist/header.js"
     },
+    "./Headroom": {
+      "types": "./dist/constructors/Headroom/index.d.ts",
+      "default": "./dist/headroom.js"
+    },
     "./HorizontalScroll": {
       "types": "./dist/constructors/HorizontalScroll/index.d.ts",
       "default": "./dist/horizontalScroll.js"
@@ -319,6 +323,10 @@
       "types": "./dist/constructors/MotionAxis/index.d.ts",
       "default": "./dist/motionAxis.js"
     },
+    "./MotionFlip": {
+      "types": "./dist/constructors/MotionFlip/index.d.ts",
+      "default": "./dist/motionFlip.js"
+    },
     "./MotionSticky": {
       "types": "./dist/constructors/MotionSticky/index.d.ts",
       "default": "./dist/motionSticky.js"
@@ -326,6 +334,22 @@
     "./MotionTransform": {
       "types": "./dist/constructors/MotionTransform/index.d.ts",
       "default": "./dist/motionTransform.js"
+    },
+    "./NavigationItem": {
+      "types": "./dist/constructors/NavigationItem/index.d.ts",
+      "default": "./dist/navigationItem.js"
+    },
+    "./NavigationList": {
+      "types": "./dist/constructors/NavigationList/index.d.ts",
+      "default": "./dist/navigationList.js"
+    },
+    "./NavigationRail": {
+      "types": "./dist/constructors/NavigationRail/index.d.ts",
+      "default": "./dist/navigationRail.js"
+    },
+    "./NavigationRailItem": {
+      "types": "./dist/constructors/NavigationRailItem/index.d.ts",
+      "default": "./dist/navigationRailItem.js"
     },
     "./Page": {
       "types": "./dist/constructors/Page/index.d.ts",
@@ -399,6 +423,14 @@
       "types": "./dist/constructors/SkeletonItem/index.d.ts",
       "default": "./dist/skeletonItem.js"
     },
+    "./Slider": {
+      "types": "./dist/constructors/Slider/index.d.ts",
+      "default": "./dist/slider.js"
+    },
+    "./SliderField": {
+      "types": "./dist/constructors/SliderField/index.d.ts",
+      "default": "./dist/sliderField.js"
+    },
     "./Snackbar": {
       "types": "./dist/constructors/Snackbar/index.d.ts",
       "default": "./dist/snackbar.js"
@@ -418,6 +450,22 @@
     "./Table": {
       "types": "./dist/constructors/Table/index.d.ts",
       "default": "./dist/table.js"
+    },
+    "./TableFlex": {
+      "types": "./dist/constructors/TableFlex/index.d.ts",
+      "default": "./dist/tableFlex.js"
+    },
+    "./TableFlexHeaderItem": {
+      "types": "./dist/constructors/TableFlexHeaderItem/index.d.ts",
+      "default": "./dist/tableFlexHeaderItem.js"
+    },
+    "./TableFlexItem": {
+      "types": "./dist/constructors/TableFlexItem/index.d.ts",
+      "default": "./dist/tableFlexItem.js"
+    },
+    "./TableFlexRecord": {
+      "types": "./dist/constructors/TableFlexRecord/index.d.ts",
+      "default": "./dist/tableFlexRecord.js"
     },
     "./TableHeaderItem": {
       "types": "./dist/constructors/TableHeaderItem/index.d.ts",
@@ -467,55 +515,7 @@
       "types": "./dist/library/plugin.d.ts",
       "default": "./dist/plugin.js"
     },
-    "./style.scss": "./src/library/style.scss",
-    "./TableFlexItem": {
-      "types": "./dist/constructors/TableFlexItem/index.d.ts",
-      "default": "./dist/tableFlexItem.js"
-    },
-    "./TableFlexHeaderItem": {
-      "types": "./dist/constructors/TableFlexHeaderItem/index.d.ts",
-      "default": "./dist/tableFlexHeaderItem.js"
-    },
-    "./TableFlexRecord": {
-      "types": "./dist/constructors/TableFlexRecord/index.d.ts",
-      "default": "./dist/tableFlexRecord.js"
-    },
-    "./TableFlex": {
-      "types": "./dist/constructors/TableFlex/index.d.ts",
-      "default": "./dist/tableFlex.js"
-    },
-    "./NavigationItem": {
-      "types": "./dist/constructors/NavigationItem/index.d.ts",
-      "default": "./dist/navigationItem.js"
-    },
-    "./NavigationList": {
-      "types": "./dist/constructors/NavigationList/index.d.ts",
-      "default": "./dist/navigationList.js"
-    },
-    "./NavigationRailItem": {
-      "types": "./dist/constructors/NavigationRailItem/index.d.ts",
-      "default": "./dist/navigationRailItem.js"
-    },
-    "./NavigationRail": {
-      "types": "./dist/constructors/NavigationRail/index.d.ts",
-      "default": "./dist/navigationRail.js"
-    },
-    "./Headroom": {
-      "types": "./dist/constructors/Headroom/index.d.ts",
-      "default": "./dist/headroom.js"
-    },
-    "./Slider": {
-      "types": "./dist/constructors/Slider/index.d.ts",
-      "default": "./dist/slider.js"
-    },
-    "./SliderField": {
-      "types": "./dist/constructors/SliderField/index.d.ts",
-      "default": "./dist/sliderField.js"
-    },
-    "./MotionFlip": {
-      "types": "./dist/constructors/MotionFlip/index.d.ts",
-      "default": "./dist/motionFlip.js"
-    }
+    "./style.scss": "./src/library/style.scss"
   },
   "buildOptions": {
     "name": "@dxtmisha/constructor",
