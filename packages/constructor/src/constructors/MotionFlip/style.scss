@@ -7,7 +7,7 @@
     position: relative;
   }
 
-  &--freeze > *:not(&__item) {
+  &--freeze>*:not(&__item) {
     opacity: 0;
   }
 
@@ -23,35 +23,35 @@
       min-height: ui.v('??sys.height');
       max-height: ui.v('??sys.height');
 
-      > * {
+      >* {
         position: absolute;
 
         width: ui.v('??sys.width-to');
         height: ui.v('??sys.height-to');
 
-        transform: translate(ui.v('??sys.left', 0), ui.v('??sys.top', 0));
+        transform: translate(ui.v('??sys.left', 0px), ui.v('??sys.top', 0px));
       }
     }
   }
 
-  &--go > *:not(&__item) {
+  &--go>*:not(&__item) {
     opacity: 1;
 
     transition-property: opacity;
-    transition-duration: ui.v('d.sys.transitionDuration.largeExpanding');
+    transition-duration: ui.v('d.sys.transitionDuration.container.open');
     transition-timing-function: ui.v('d.sys.transitionFunction.emphasized');
   }
 
   &--go {
     @include ui.subclass('item') {
-      > * {
+      >* {
         width: ui.v('??sys.width');
         height: ui.v('??sys.height');
 
-        transform: translate(0, 0);
+        transform: translate(0px, 0px);
 
         transition-property: height, transform, width;
-        transition-duration: ui.v('d.sys.transitionDuration.largeExpanding');
+        transition-duration: ui.v('d.sys.transitionDuration.container.open');
         transition-timing-function: ui.v('d.sys.transitionFunction.emphasized');
       }
     }

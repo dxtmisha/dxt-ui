@@ -1,0 +1,40 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+## How to Work with Component
+
+To ensure correct FLIP animation functionality when using **MotionFlip**, follow these instructions:
+
+### 1. Element Structure Requirements
+
+Every direct child element of `<MotionFlip>` must contain an inner nested element (`>*`).
+
+- **Outer Container (Wrapper):** preserves layout positioning and grid dimensions.
+- **Inner Element:** smoothly animates via FLIP technique during reordering, insertion, or removal.
+
+<Source
+    code={`
+<MotionFlip ref="flipRef">
+  <!-- Outer wrapper (positioning container) -->
+  <div v-for="item in items" :key="item" class="item-wrapper">
+    <!-- Inner element (animated content) -->
+    <div class="item">
+      {{ item }}
+    </div>
+  </div>
+</MotionFlip>
+`}
+    language="html"
+/>
+
+### 2. State Mutation and Animation Triggering
+
+By default, the component operates in manual mode. Wrap any array state changes or DOM mutations inside the callback of the `update()` method:
+
+<Source
+    code={`
+await flipRef.value.update(() => {
+  // Perform array mutations (reorder, insert, remove)
+})
+`}
+    language="javascript"
+/>

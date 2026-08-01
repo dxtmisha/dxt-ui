@@ -6,6 +6,8 @@ import modeEn from './mode.en.mdx'
 import modeRu from './mode.ru.mdx'
 import motionFlipEn from './motionFlip.en.mdx'
 import motionFlipRu from './motionFlip.ru.mdx'
+import workEn from './work.en.mdx'
+import workRu from './work.ru.mdx'
 
 /**
  * MDX files for MotionFlip component
@@ -26,6 +28,10 @@ export const wikiMdxMotionFlip: StorybookComponentsMdxItem = {
     motionFlip: {
       en: motionFlipEn,
       ru: motionFlipRu
+    },
+    work: {
+      en: workEn,
+      ru: workRu
     }
   }
 }

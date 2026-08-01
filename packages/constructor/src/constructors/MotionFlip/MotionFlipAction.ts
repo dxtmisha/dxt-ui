@@ -12,6 +12,9 @@ export class MotionFlipAction {
   /** Animation frame ID / ID кадра анимации */
   protected frameId?: number
 
+  /** Timeout timer ID for fallback animation cleanup / ID таймера ожидания для запасного завершения анимации */
+  protected timerId?: ReturnType<typeof setTimeout>
+
   /** Flag indicating active transition cleanup / Флаг активности завершения перехода */
   protected isTransitioning = false
 
@@ -34,6 +37,25 @@ export class MotionFlipAction {
    * @returns true if animation is enabled and element exists / true, если анимация включена и элемент существует
    */
   readonly isEnable = (): boolean => !this.props.disabled && this.elementManager.isEnable()
+
+  /**
+   * Resets animation state and clears timers.
+   *
+   * Сбрасывает состояние анимации и очищает таймеры.
+   */
+  readonly reset = (): void => {
+    if (!this.isTransitioning) {
+      this.isTransitioning = true
+
+      requestAnimationFrame(() => {
+        this.stop()
+
+        if (this.props.auto) {
+          this.items.init()
+        }
+      })
+    }
+  }
 
   /**
    * FLIP update animation handler.
@@ -69,6 +91,8 @@ export class MotionFlipAction {
       this.frameId = requestAnimationFrame(() => {
         this.elementManager.addClassGo()
         this.frameId = undefined
+
+        this.timerId = setTimeout(() => this.reset(), 1024)
       })
     })
   }
@@ -80,19 +104,8 @@ export class MotionFlipAction {
    * @param event transition event / событие перехода
    */
   readonly onTransition = (event: TransitionEvent): void => {
-    if (
-      this.items.resetItem(event)
-      && !this.isTransitioning
-    ) {
-      this.isTransitioning = true
-
-      requestAnimationFrame(() => {
-        this.stop()
-
-        if (this.props.auto) {
-          this.items.init()
-        }
-      })
+    if (this.items.resetItem(event)) {
+      this.reset()
     }
   }
 
@@ -105,6 +118,11 @@ export class MotionFlipAction {
     if (this.frameId !== undefined) {
       cancelAnimationFrame(this.frameId)
       this.frameId = undefined
+    }
+
+    if (this.timerId !== undefined) {
+      clearTimeout(this.timerId)
+      this.timerId = undefined
     }
 
     this.isTransitioning = false

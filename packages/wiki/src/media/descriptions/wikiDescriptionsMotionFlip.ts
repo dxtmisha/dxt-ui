@@ -32,10 +32,11 @@ export const wikiDescriptionsMotionFlip: StorybookComponentsDescriptionItem = {
       <div
         v-for="item in 5"
         :key="item"
+        class="wiki-storybook-item--squared--xs"
         style="cursor: pointer;"
         @click="$event.target.parentNode.appendChild($event.target)"
       >
-        <div class="wiki-storybook-item wiki-storybook-item--squared--xs wiki-storybook-item--padding" style="pointer-events: none;">
+        <div class="wiki-storybook-item wiki-storybook-item--padding" style="pointer-events: none;">
           <span class="wiki-storybook-item__label">Item {{ item }}</span>
         </div>
       </div>
@@ -93,8 +94,8 @@ export const wikiDescriptionsMotionFlip: StorybookComponentsDescriptionItem = {
           </div>
 
           <DesignComponent ref="flipRef" class="wiki-storybook-group">
-            <div v-for="item in items" :key="item">
-              <div class="wiki-storybook-item wiki-storybook-item--squared--xs wiki-storybook-item--padding">
+            <div v-for="item in items" :key="item" class="wiki-storybook-item--squared--xs">
+              <div class="wiki-storybook-item wiki-storybook-item--padding">
                 <span class="wiki-storybook-item__label">Item {{ item }}</span>
               </div>
             </div>
@@ -107,6 +108,8 @@ export const wikiDescriptionsMotionFlip: StorybookComponentsDescriptionItem = {
     body: `
 <StorybookDescriptions componentName={'MotionFlip'} type={'motionFlip'}/>
 <Canvas of={Component.MotionFlipBasic}/>
+
+<StorybookDescriptions componentName={'MotionFlip'} type={'work'}/>
 
 <StorybookDescriptions componentName={'MotionFlip'} type={'mode'}/>
     `,
