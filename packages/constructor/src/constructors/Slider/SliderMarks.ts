@@ -17,7 +17,7 @@ export class SliderMarks {
   constructor(
     protected readonly props: SliderPropsBasic,
     protected readonly className: string,
-    readonly data: SliderMarksData
+    protected readonly data: SliderMarksData
   ) { }
 
   /**
@@ -159,17 +159,6 @@ export class SliderMarks {
   }
 
   /**
-   * Converts percentage back into a mark/value using step or magnet snapping.
-   *
-   * Переводит процент обратно в значение с учетом шага или притягивания к метке.
-   * @param percent percentage value / значение в процентах
-   * @returns calculated value or mark / вычисленное значение или метка
-   */
-  toMark(percent: number): number {
-    return this.getNearest(this.data.toValue(percent))
-  }
-
-  /**
    * Validates target value against min/max limits and minimum distance constraints.
    *
    * Проверяет целевое значение на соответствие ограничениям min/max и минимального расстояния.
@@ -198,5 +187,16 @@ export class SliderMarks {
     }
 
     return Math.max(minLimit, Math.min(maxLimit, targetValue))
+  }
+
+  /**
+   * Converts percentage back into a mark/value using step or magnet snapping.
+   *
+   * Переводит процент обратно в значение с учетом шага или притягивания к метке.
+   * @param percent percentage value / значение в процентах
+   * @returns calculated value or mark / вычисленное значение или метка
+   */
+  toMark(percent: number): number {
+    return this.getNearest(this.data.toValue(percent))
   }
 }

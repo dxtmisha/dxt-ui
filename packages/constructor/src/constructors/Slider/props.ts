@@ -4,9 +4,11 @@ import type { SliderValueType } from './basicTypes'
 
 type SliderPropsToken = {
   // :type [!] System label / Системная метка
-  appearance?: 'basic' | 'drop'
-  vertical?: boolean
+  mark?: boolean
   disabled?: boolean
+  vertical?: boolean
+  basic?: boolean
+  drop?: boolean
   // :type [!] System label / Системная метка
 }
 
@@ -74,7 +76,7 @@ export const defaultsSlider = {
   step: 1,
   ...{
     // :default [!] System label / Системная метка
-    appearance: 'basic'
+    basic: true
     // :default [!] System label / Системная метка
   }
 }

@@ -1,12 +1,4 @@
 {
-  "~appearance": {
-    "~basic": {},
-    "~drop": {},
-    "_default": "basic"
-  },
-  "~vertical": {},
-  "~disabled": {},
-  "~mark": {},
   "#thumb": {},
   "#thumbMin": {},
   "#thumbMax": {},
@@ -15,5 +7,15 @@
   "#marks": {},
   "#mark": {},
   "#label": {},
-  "#select": {}
+  "#select": {},
+  "~disabled": {},
+  "~vertical": {},
+  "~mark": {},
+  "~basic": {
+    "_category": "style",
+    "_default": true
+  },
+  "~drop": {
+    "_category": "style"
+  }
 }

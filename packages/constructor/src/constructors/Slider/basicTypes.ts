@@ -1,5 +1,4 @@
 import type { ConstrBind, NumberOrStringOrBoolean } from '@dxtmisha/functional'
-import type { ModelEmits } from '../../types/modelTypes'
 import type { SliderPropsBasic } from './props'
 
 /** Slider value type (single number or min-max pair) / Тип значения слайдера (одно число или пара мин-макс) */
@@ -45,12 +44,4 @@ export type SliderPropsInclude<
 > = {
   /** Value or slider configuration / Значение или конфигурация слайдера */
   slider?: SliderValueType | ConstrBind<Slider>
-}
-
-/** Interface for describing slider emits / Интерфейс для описания событий слайдера */
-export type SliderEmitsInclude = ModelEmits<SliderValueType> & {
-  /** Emitted on slider value input / Срабатывает при вводе значения слайдера */
-  input?: [value: SliderValueType, detail: SliderEventDetail]
-  /** Emitted on slider value commit / Срабатывает при подтверждении значения слайдера */
-  change?: [value: SliderValueType, detail: SliderEventDetail]
 }

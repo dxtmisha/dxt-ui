@@ -1,3 +1,4 @@
+import type { Ref } from 'vue'
 import type { SliderPropsBasic } from './props'
 
 /**
@@ -9,10 +10,22 @@ export class SliderElement {
   /**
    * Constructor
    * @param props input properties / входящие свойства
+   * @param element container element reference / ссылка на элемент контейнера
    */
   constructor(
-    protected readonly props: SliderPropsBasic
+    protected readonly props: SliderPropsBasic,
+    protected readonly element?: Ref<HTMLElement | undefined>
   ) { }
+
+  /**
+   * Returns BoundingClientRect for slider root container.
+   *
+   * Возвращает BoundingClientRect для корневого контейнера слайдера.
+   * @returns DOMRect or undefined / DOMRect или undefined
+   */
+  get rectangle(): DOMRect | undefined {
+    return this.element?.value?.getBoundingClientRect()
+  }
 
   /**
    * Calculates position percentage from coordinate along container element.

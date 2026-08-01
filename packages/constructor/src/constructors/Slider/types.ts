@@ -1,5 +1,7 @@
 import type { ConstrClass } from '@dxtmisha/functional'
-import type { SliderEmitsInclude, SliderMarkItem, SliderValueType } from './basicTypes'
+
+import type { ModelEmits } from '../../types/modelTypes'
+import type { SliderEventDetail, SliderMarkItem, SliderValueType } from './basicTypes'
 
 /**
  * Interface for describing which components need to be connected for work.
@@ -15,7 +17,14 @@ export type SliderComponents = {
  *
  * Тип, описывающий доступные события.
  */
-export type SliderEmits = SliderEmitsInclude
+export type SliderEmits
+  = ModelEmits<SliderValueType>
+    & {
+      /** Emitted on slider value input / Срабатывает при вводе значения слайдера */
+      input?: [value: SliderValueType, detail: SliderEventDetail]
+      /** Emitted on slider value commit / Срабатывает при подтверждении значения слайдера */
+      change?: [value: SliderValueType, detail: SliderEventDetail]
+    }
 
 /**
  * Type describing available properties.
@@ -55,7 +64,6 @@ export interface SliderSlots {
 export type SliderClasses = {
   main: ConstrClass
   // :classes [!] System label / Системная метка
-  mark: string
   thumb: string
   thumbMin: string
   thumbMax: string

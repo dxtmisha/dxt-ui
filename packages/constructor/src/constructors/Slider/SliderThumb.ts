@@ -1,33 +1,35 @@
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
 import type { SliderMarkItem } from './basicTypes'
 import type { SliderMarks } from './SliderMarks'
+import type { SliderValue } from './SliderValue'
 
 /**
- * Class representing a slider thumb handle and its associated label element.
+ * Abstract class representing a slider thumb handle and its associated label element.
  * Manages element references, BoundingClientRect calculation, focus control, and label text retrieval.
  *
- * Класс, представляющий ползунок слайдера и связанный с ним элемент метки.
+ * Абстрактный класс, представляющий ползунок слайдера и связанный с ним элемент метки.
  * Управляет ссылками на элементы, вычислением BoundingClientRect, фокусом и получением текста метки.
  */
-export class SliderThumb {
+export abstract class SliderThumb {
   /** Target element reference for thumb handle button / Ссылка на целевой элемент кнопки ползунка */
   readonly element = ref<HTMLElement | undefined>(undefined)
 
   /** Target element reference for thumb label / Ссылка на целевой элемент метки ползунка */
   readonly elementLabel = ref<HTMLElement | undefined>(undefined)
 
+  /** Computed normalized mark item for this thumb value / Вычисляемый нормализованный элемент метки для значения этого ползунка */
+  readonly item = computed<SliderMarkItem>(() => this.marks.getItem(this.mark))
+
   /**
    * Constructor
-   * @param type thumb handle type ('min' or 'max') / тип ползунка ('min' или 'max')
    * @param marks slider marks manager / менеджер меток слайдера
-   * @param getValueCallback function returning current numeric value for this thumb / функция, возвращающая текущее значение ползунка
+   * @param value slider value manager / менеджер значения слайдера
    */
   constructor(
-    readonly type: 'min' | 'max',
     protected readonly marks: SliderMarks,
-    protected readonly getValueCallback: () => number
-  ) {}
+    protected readonly value: SliderValue
+  ) { }
 
   /**
    * Returns current numeric mark/value for this thumb.
@@ -35,19 +37,7 @@ export class SliderThumb {
    * Возвращает текущее числовое значение метки для этого ползунка.
    * @returns numeric value / числовое значение
    */
-  get mark(): number {
-    return this.getValueCallback()
-  }
-
-  /**
-   * Returns normalized mark item for this thumb value.
-   *
-   * Возвращает нормализованный элемент метки для значения этого ползунка.
-   * @returns mark item / элемент метки
-   */
-  get item(): SliderMarkItem {
-    return this.marks.getItem(this.mark)
-  }
+  abstract get mark(): number
 
   /**
    * Returns text string for thumb label.
@@ -55,8 +45,8 @@ export class SliderThumb {
    * Возвращает текстовую строку для метки ползунка.
    * @returns label text / текст метки
    */
-  get labelText(): string {
-    return this.item.text
+  get label(): string {
+    return this.item.value.text
   }
 
   /**
@@ -65,8 +55,18 @@ export class SliderThumb {
    * Возвращает BoundingClientRect для элемента кнопки ползунка.
    * @returns DOMRect or undefined / DOMRect или undefined
    */
-  getRectangle(): DOMRect | undefined {
-    return this.element.value?.getBoundingClientRect()
+  get rectangle(): DOMRect | undefined {
+    return this.getElement()?.getBoundingClientRect()
+  }
+
+  /**
+   * Returns thumb handle button element instance.
+   *
+   * Возвращает экземпляр элемента кнопки ползунка.
+   * @returns DOM element or undefined / DOM-элемент или undefined
+   */
+  getElement(): HTMLElement | undefined {
+    return this.element.value
   }
 
   /**
@@ -75,6 +75,6 @@ export class SliderThumb {
    * Устанавливает фокус на элемент кнопки ползунка.
    */
   focus(): void {
-    this.element.value?.focus()
+    this.getElement()?.focus()
   }
 }

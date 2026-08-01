@@ -27,14 +27,14 @@ export class SliderDesign<
   CLASSES extends SliderClasses,
   P extends SliderPropsBasic
 > extends DesignConstructorAbstract<
-  HTMLDivElement,
-  COMP,
-  SliderEmits,
-  EXPOSE,
-  SliderSlots,
-  CLASSES,
-  P
-> {
+    HTMLDivElement,
+    COMP,
+    SliderEmits,
+    EXPOSE,
+    SliderSlots,
+    CLASSES,
+    P
+  > {
   protected readonly item: Slider
 
   /**
@@ -78,7 +78,7 @@ export class SliderDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      getValue: () => this.item.value.value,
+      getValue: () => this.item.model.getValue(),
       setValue: val => this.item.setValue(val),
       increase: () => this.item.increase(),
       decrease: () => this.item.decrease()
@@ -98,7 +98,6 @@ export class SliderDesign<
       },
       ...{
         // :classes [!] System label / Системная метка
-        mark: this.getSubClass('mark'),
         thumb: this.getSubClass('thumb'),
         thumbMin: this.getSubClass('thumbMin'),
         thumbMax: this.getSubClass('thumbMax'),
@@ -135,28 +134,28 @@ export class SliderDesign<
       return undefined
     }
 
-    const minItem = this.item.min.item
+    const minItem = this.item.minElement.item.value
     const minLabelContent = this.slots?.minLabel
-      ? this.slots.minLabel({ value: this.item.markMin, item: minItem })
-      : this.item.min.labelText
+      ? this.slots.minLabel({ value: this.item.value.min, item: minItem })
+      : this.item.minElement.label
 
     const rippleVNode = this.components?.render('ripple', {
-      visible: this.item.isRipple
+      visible: this.item.isRipple()
     })
 
     return h(
       'button',
       {
-        'ref': this.item.min.element,
+        'ref': this.item.minElement.element,
         'class': [this.getSubClass('thumb'), this.getSubClass('thumbMin')],
         'type': 'button',
-        'tabindex': this.props.disabled ? -1 : 0,
+        'tabindex': this.item.enabled.isEnabled ? 0 : -1,
         'role': 'slider',
-        'aria-valuenow': this.item.markMin,
+        'aria-valuenow': this.item.value.min,
         'aria-valuemin': this.item.marksData.minNumber,
-        'aria-valuemax': this.item.markMax,
+        'aria-valuemax': this.item.value.max,
         'aria-orientation': this.props.vertical ? 'vertical' : 'horizontal',
-        'aria-disabled': this.props.disabled ? 'true' : undefined,
+        ...this.item.enabled.aria,
         'onKeydown': this.item.onKeydown,
         'onMousedown': (event: MouseEvent) => this.item.onMousedown(event, 'min'),
         'onTouchstart': (event: TouchEvent) => this.item.onMousedown(event, 'min')
@@ -165,7 +164,7 @@ export class SliderDesign<
         h(
           'span',
           {
-            ref: this.item.min.elementLabel,
+            ref: this.item.minElement.elementLabel,
             class: this.getSubClass('label')
           },
           [minLabelContent]
@@ -182,28 +181,28 @@ export class SliderDesign<
    * @returns VNode / VNode ползунка
    */
   readonly renderThumbMax = (): VNode => {
-    const maxItem = this.item.max.item
+    const maxItem = this.item.maxElement.item.value
     const maxLabelContent = this.slots?.maxLabel
-      ? this.slots.maxLabel({ value: this.item.markMax, item: maxItem })
-      : this.item.max.labelText
+      ? this.slots.maxLabel({ value: this.item.value.max, item: maxItem })
+      : this.item.maxElement.label
 
     const rippleVNode = this.components?.render('ripple', {
-      visible: this.item.isRipple
+      visible: this.item.isRipple()
     })
 
     return h(
       'button',
       {
-        'ref': this.item.max.element,
+        'ref': this.item.maxElement.element,
         'class': [this.getSubClass('thumb'), this.getSubClass('thumbMax')],
         'type': 'button',
-        'tabindex': this.props.disabled ? -1 : 0,
+        'tabindex': this.item.enabled.isEnabled ? 0 : -1,
         'role': 'slider',
-        'aria-valuenow': this.item.markMax,
-        'aria-valuemin': this.props.multiple ? this.item.markMin : this.item.marksData.minNumber,
+        'aria-valuenow': this.item.value.max,
+        'aria-valuemin': this.props.multiple ? this.item.value.min : this.item.marksData.minNumber,
         'aria-valuemax': this.item.marksData.maxNumber,
         'aria-orientation': this.props.vertical ? 'vertical' : 'horizontal',
-        'aria-disabled': this.props.disabled ? 'true' : undefined,
+        ...this.item.enabled.aria,
         'onKeydown': this.item.onKeydown,
         'onMousedown': (event: MouseEvent) => this.item.onMousedown(event, 'max'),
         'onTouchstart': (event: TouchEvent) => this.item.onMousedown(event, 'max')
@@ -212,7 +211,7 @@ export class SliderDesign<
         h(
           'span',
           {
-            ref: this.item.max.elementLabel,
+            ref: this.item.maxElement.elementLabel,
             class: this.getSubClass('label')
           },
           [maxLabelContent]
