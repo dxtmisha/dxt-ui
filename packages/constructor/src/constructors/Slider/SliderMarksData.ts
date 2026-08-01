@@ -1,4 +1,4 @@
-import { computed } from 'vue'
+import { computed, type ComputedRef } from 'vue'
 import {
   isArray,
   isObject,
@@ -37,6 +37,7 @@ export class SliderMarksData {
       })
 
       if (resultList.length > 0) {
+        resultList.sort((itemA, itemB) => itemA.mark - itemB.mark)
         return resultList
       }
     }
@@ -56,6 +57,67 @@ export class SliderMarksData {
   }
 
   /**
+   * Returns maximum numeric value of range.
+   *
+   * Возвращает максимальное числовое значение диапазона.
+   * @returns maximum value / максимальное значение
+   */
+  get maxNumber(): number {
+    return toNumber(this.props.max ?? 100)
+  }
+
+  /**
+   * Returns minimum numeric value of range.
+   *
+   * Возвращает минимальное числовое значение диапазона.
+   * @returns minimum value / минимальное значение
+   */
+  get minNumber(): number {
+    return toNumber(this.props.min ?? 0)
+  }
+
+  /**
+   * Returns minimum required distance between handles in multiple mode.
+   *
+   * Возвращает минимальное допустимое расстояние между ползунками в режиме множественного выбора.
+   * @returns minimum distance / минимальное расстояние
+   */
+  get minimumDistanceNumber(): number {
+    return toNumber(this.props.minimumDistance ?? 1)
+  }
+
+  /**
+   * Returns step size for value increment.
+   *
+   * Возвращает размер шага для прироста значения.
+   * @returns step size / размер шага
+   */
+  get stepNumber(): number {
+    const step = toNumber(this.props.step ?? 1)
+    return step > 0 ? step : 1
+  }
+
+  /**
+   * Checks if mark items list is present and non-empty.
+   *
+   * Проверяет, присутствует ли список элементов меток и не пуст ли он.
+   * @returns true if marks exist / true если метки присутствуют
+   */
+  is(): this is { data: ComputedRef<SliderMarkList> } {
+    return Boolean(this.data.value)
+  }
+
+  /**
+   * Returns list of normalized mark items.
+   *
+   * Возвращает список нормализованных элементов меток.
+   * @returns mark items list or undefined / список элементов меток или undefined
+   */
+  get(): SliderMarkList | undefined {
+    return this.data.value
+  }
+
+  /**
    * Converts a numeric value to percentage relative to min and max.
    *
    * Переводит числовое значение в процент относительно min и max.
@@ -63,8 +125,8 @@ export class SliderMarksData {
    * @returns calculated percentage / вычисленный процент
    */
   toPercent(value: number): number {
-    const min = toNumber(this.props.min ?? 0)
-    const max = toNumber(this.props.max ?? 100)
+    const min = this.minNumber
+    const max = this.maxNumber
 
     if (
       max <= min
@@ -78,6 +140,24 @@ export class SliderMarksData {
     }
 
     return toPercentBy100(max - min, value - min)
+  }
+
+  /**
+   * Converts percentage back into a numeric value relative to min, max, and step.
+   *
+   * Переводит процент обратно в числовое значение относительно min, max и step.
+   * @param percent percentage value / значение в процентах
+   * @returns calculated bounded value / вычисленное ограниченное значение
+   */
+  toValue(percent: number): number {
+    const min = this.minNumber
+    const max = this.maxNumber
+    const step = this.stepNumber
+
+    const rawValue = ((max - min) / 100) * percent + min
+    const stepValue = Math.round((rawValue - min) / step) * step + min
+
+    return Math.max(min, Math.min(max, stepValue))
   }
 
   /**

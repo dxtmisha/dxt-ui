@@ -13,6 +13,7 @@ import {
 } from '@dxtmisha/functional'
 
 import { ModelValueInclude } from '../../classes/ModelValueInclude'
+import { SliderElement } from './SliderElement'
 import { SliderMarks } from './SliderMarks'
 import { SliderMarksData } from './SliderMarksData'
 import { SliderThumb } from './SliderThumb'
@@ -37,6 +38,9 @@ export class Slider {
 
   /** Max thumb handle manager / Менеджер максимального ползунка */
   readonly max: SliderThumb
+
+  /** Slider element manager instance / Экземпляр менеджера элементов слайдера */
+  readonly sliderElement: SliderElement
 
   /** Slider marks data manager instance / Экземпляр менеджера данных меток слайдера */
   readonly marksData: SliderMarksData
@@ -76,6 +80,7 @@ export class Slider {
     protected readonly emits?: ConstrEmit<SliderEmits>,
     constructors: {
       ModelValueIncludeConstructor?: typeof ModelValueInclude<SliderValueType>
+      SliderElementConstructor?: typeof SliderElement
       SliderMarksConstructor?: typeof SliderMarks
       SliderMarksDataConstructor?: typeof SliderMarksData
       SliderThumbConstructor?: typeof SliderThumb
@@ -83,11 +88,13 @@ export class Slider {
   ) {
     const {
       ModelValueIncludeConstructor = ModelValueInclude,
+      SliderElementConstructor = SliderElement,
       SliderMarksConstructor = SliderMarks,
       SliderMarksDataConstructor = SliderMarksData,
       SliderThumbConstructor = SliderThumb
     } = constructors
 
+    this.sliderElement = new SliderElementConstructor(this.props)
     this.marksData = new SliderMarksDataConstructor(this.props, this.className)
     this.marks = new SliderMarksConstructor(this.props, this.className, this.marksData)
 
@@ -131,9 +138,9 @@ export class Slider {
   get markMin(): number {
     const currentValue = this.value.value
     if (this.props.multiple && isArray(currentValue)) {
-      return currentValue[0] ?? this.marks.minNumber
+      return currentValue[0] ?? this.marksData.minNumber
     }
-    return this.marks.minNumber
+    return this.marksData.minNumber
   }
 
   /**
@@ -145,9 +152,9 @@ export class Slider {
   get markMax(): number {
     const currentValue = this.value.value
     if (isArray(currentValue)) {
-      return currentValue[1] ?? currentValue[0] ?? this.marks.maxNumber
+      return currentValue[1] ?? currentValue[0] ?? this.marksData.maxNumber
     }
-    return typeof currentValue === 'number' ? currentValue : this.marks.maxNumber
+    return typeof currentValue === 'number' ? currentValue : this.marksData.maxNumber
   }
 
   /**
@@ -191,7 +198,7 @@ export class Slider {
       [`${this.className}--disabled`]: Boolean(this.props.disabled),
       [`${this.className}--readonly`]: Boolean(this.props.readonly),
       [`${this.className}--vertical`]: Boolean(this.props.vertical),
-      [`${this.className}--mark`]: Boolean(this.marks.normalizedMarks.value),
+      [`${this.className}--mark`]: this.marksData.is(),
       [`${this.className}--appearance--${this.props.appearance}`]: Boolean(this.props.appearance)
     }
   }
@@ -203,8 +210,8 @@ export class Slider {
    * @returns style dictionary / словарь стилей
    */
   get styles(): ConstrStyles {
-    const minPercent = this.marks.toPercent(this.markMin)
-    const maxPercent = this.marks.toPercent(this.markMax)
+    const minPercent = this.marksData.toPercent(this.markMin)
+    const maxPercent = this.marksData.toPercent(this.markMax)
 
     return {
       [`--${this.className}-sys-thumb-min-x`]: `${minPercent}%`,
@@ -294,7 +301,7 @@ export class Slider {
     if (this.props.default !== undefined) {
       return this.props.default
     }
-    return this.props.multiple ? [this.marks.minNumber, this.marks.maxNumber] : this.marks.minNumber
+    return this.props.multiple ? [this.marksData.minNumber, this.marksData.maxNumber] : this.marksData.minNumber
   }
 
   /**
@@ -340,7 +347,7 @@ export class Slider {
       return
     }
 
-    const percentage = this.marks.getMovePercent(coordinate, sliderRect, Boolean(this.props.vertical))
+    const percentage = this.sliderElement.getMovePercent(coordinate, sliderRect)
     const markValue = this.marks.toMark(percentage)
 
     this.setValue(markValue, this.focus.value)
@@ -402,18 +409,18 @@ export class Slider {
         break
       case 'Home':
         event.preventDefault()
-        this.setValue(this.marks.minNumber, this.focus.value)
+        this.setValue(this.marksData.minNumber, this.focus.value)
         this.emitEvent('change')
         break
       case 'End':
         event.preventDefault()
-        this.setValue(this.marks.maxNumber, this.focus.value)
+        this.setValue(this.marksData.maxNumber, this.focus.value)
         this.emitEvent('change')
         break
       case 'PageUp': {
         event.preventDefault()
-        const range = this.marks.maxNumber - this.marks.minNumber
-        const pageStep = Math.max(this.marks.stepNumber, Math.round(range * 0.1))
+        const range = this.marksData.maxNumber - this.marksData.minNumber
+        const pageStep = Math.max(this.marksData.stepNumber, Math.round(range * 0.1))
         const currentValue = this.focus.value === 'min' ? this.markMin : this.markMax
         this.setValue(currentValue + pageStep, this.focus.value)
         this.emitEvent('change')
@@ -421,8 +428,8 @@ export class Slider {
       }
       case 'PageDown': {
         event.preventDefault()
-        const range = this.marks.maxNumber - this.marks.minNumber
-        const pageStep = Math.max(this.marks.stepNumber, Math.round(range * 0.1))
+        const range = this.marksData.maxNumber - this.marksData.minNumber
+        const pageStep = Math.max(this.marksData.stepNumber, Math.round(range * 0.1))
         const currentValue = this.focus.value === 'min' ? this.markMin : this.markMax
         this.setValue(currentValue - pageStep, this.focus.value)
         this.emitEvent('change')
@@ -475,11 +482,10 @@ export class Slider {
     if (forcedFocus) {
       this.focus.value = forcedFocus
     } else {
-      this.focus.value = this.marks.getTypeByCoordinate(
+      this.focus.value = this.sliderElement.getTypeByCoordinate(
         coordinate,
         this.getMinRectangle(),
-        this.getMaxRectangle(),
-        Boolean(this.props.vertical)
+        this.getMaxRectangle()
       )
     }
 

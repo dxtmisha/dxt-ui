@@ -46,7 +46,7 @@ export class SliderThumb {
    * @returns mark item / элемент метки
    */
   get item(): SliderMarkItem {
-    return this.marks.getRead(this.mark)
+    return this.marks.getItem(this.mark)
   }
 
   /**

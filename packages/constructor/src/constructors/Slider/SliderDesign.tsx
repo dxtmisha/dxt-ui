@@ -153,7 +153,7 @@ export class SliderDesign<
         'tabindex': this.props.disabled ? -1 : 0,
         'role': 'slider',
         'aria-valuenow': this.item.markMin,
-        'aria-valuemin': this.item.marks.minNumber,
+        'aria-valuemin': this.item.marksData.minNumber,
         'aria-valuemax': this.item.markMax,
         'aria-orientation': this.props.vertical ? 'vertical' : 'horizontal',
         'aria-disabled': this.props.disabled ? 'true' : undefined,
@@ -200,8 +200,8 @@ export class SliderDesign<
         'tabindex': this.props.disabled ? -1 : 0,
         'role': 'slider',
         'aria-valuenow': this.item.markMax,
-        'aria-valuemin': this.props.multiple ? this.item.markMin : this.item.marks.minNumber,
-        'aria-valuemax': this.item.marks.maxNumber,
+        'aria-valuemin': this.props.multiple ? this.item.markMin : this.item.marksData.minNumber,
+        'aria-valuemax': this.item.marksData.maxNumber,
         'aria-orientation': this.props.vertical ? 'vertical' : 'horizontal',
         'aria-disabled': this.props.disabled ? 'true' : undefined,
         'onKeydown': this.item.onKeydown,
@@ -253,13 +253,13 @@ export class SliderDesign<
    * @returns VNode or undefined / VNode или undefined
    */
   readonly renderMarks = (): VNode | undefined => {
-    const marksList = this.item.marks.normalizedMarks.value
-
-    if (!marksList) {
+    if (!this.item.marksData.is()) {
       return undefined
     }
 
-    const markVNodes = marksList.map(markItem => {
+    const marksList = this.item.marksData.get()!
+
+    const markVNodes = marksList.map((markItem) => {
       const markSlotContent = this.slots?.mark
         ? this.slots.mark({ item: markItem })
         : undefined
