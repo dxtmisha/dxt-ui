@@ -1,12 +1,11 @@
-import type { SliderPropsBasic } from '../Slider/props'
-import type { SliderFieldPropsInclude } from './basicTypes'
-
 type SliderFieldPropsToken = {
   // :type [!] System label / Системная метка
   // :type [!] System label / Системная метка
 }
 
-export type SliderFieldPropsBasic = SliderPropsBasic & SliderFieldPropsInclude
+export type SliderFieldPropsBasic = {
+  // TODO: Location for a custom property / Место для пользовательского свойства
+}
 
 /**
  * Type describing incoming properties.
@@ -20,12 +19,8 @@ export type SliderFieldProps = SliderFieldPropsBasic & SliderFieldPropsToken
  *
  * Значение по умолчанию для свойства.
  */
-export const defaultsSliderField: SliderFieldPropsBasic = {
-  min: 0,
-  max: 100,
-  step: 1,
-  showLabel: true,
-  ripple: true,
+export const defaultsSliderField = {
+  // TODO: Location for a user-defined default value / Место для пользовательского значения по умолчанию
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

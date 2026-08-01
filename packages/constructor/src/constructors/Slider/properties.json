@@ -1,24 +1,2 @@
 {
-  "height": {
-    "_type": "var"
-  },
-  "size": {
-    "_type": "var"
-  },
-  "width": {
-    "_type": "var"
-  },
-  "#rail": {},
-  "#track": {},
-  "#select": {},
-  "#thumb": {},
-  "#thumbMin": {},
-  "#thumbMax": {},
-  "#labelMin": {},
-  "#labelMax": {},
-  "#marks": {},
-  "#mark": {},
-  "~vertical": {},
-  "~disabled": {},
-  "~drop": {}
 }
