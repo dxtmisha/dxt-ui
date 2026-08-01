@@ -87,8 +87,11 @@ export class MotionFlipAction {
       this.isTransitioning = true
 
       requestAnimationFrame(() => {
-        this.elementManager.resetStatus()
-        this.isTransitioning = false
+        this.stop()
+
+        if (this.props.auto) {
+          this.items.init()
+        }
       })
     }
   }
@@ -106,5 +109,6 @@ export class MotionFlipAction {
 
     this.isTransitioning = false
     this.elementManager.resetStatus()
+    this.items.reset()
   }
 }

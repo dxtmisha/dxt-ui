@@ -21,12 +21,12 @@ export class MotionFlipItems {
   ) { }
 
   /**
-   * Updates positions and sizes for all child item elements.
+   * Resets all child item elements.
    *
-   * Обновляет положения и размеры для всех дочерних элементов.
+   * Сбрасывает все дочерние элементы.
    */
-  update(): void {
-    this.items.forEach(item => item.update())
+  reset(): void {
+    this.items.forEach(item => item.reset())
   }
 
   /**
@@ -46,6 +46,15 @@ export class MotionFlipItems {
     }
 
     return false
+  }
+
+  /**
+   * Updates positions and sizes for all child item elements.
+   *
+   * Обновляет положения и размеры для всех дочерних элементов.
+   */
+  update(): void {
+    this.items.forEach(item => item.update())
   }
 
   /**

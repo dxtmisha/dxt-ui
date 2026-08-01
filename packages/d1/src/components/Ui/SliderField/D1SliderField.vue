@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import {
-  inArray,
-  isFilled,
   type ConstrClasses,
   type ConstrStyles
 } from '@dxtmisha/functional'
@@ -12,7 +10,7 @@ import {
   type SliderFieldSlots
 } from '@dxtmisha/constructor/SliderField'
 
-import { defaults, type SliderFieldProps, propsValues } from './props'
+import { defaults, type SliderFieldProps } from './props'
 import './styleToken.scss'
 
 defineOptions({

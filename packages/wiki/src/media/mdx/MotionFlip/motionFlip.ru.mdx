@@ -7,9 +7,10 @@ MotionFlip автоматически анимирует изменение по
 **Основные возможности:**
 
 - Плавные FLIP-анимации перестроения при обновлениях DOM
-- Асинхронное выполнение обновлений через метод update
+- Автоматическое отслеживание изменений DOM с помощью свойства \`auto\`
+- Асинхронное выполнение обновлений через метод \`update\`
 - Автоматическая очистка стилей после завершения анимации
-- Возможность отключения анимации перестроения с помощью свойства disabled
+- Возможность отключения анимации перестроения с помощью свойства \`disabled\`
 
 **Типичные сценарии использования:**
 
@@ -25,6 +26,25 @@ import { ref } from 'vue'
 
 const flipRef = ref()
 const items = ref([1, 2, 3, 4, 5])
+let nextId = 6
+
+const add = async () => {
+  if (flipRef.value) {
+    await flipRef.value.update(() => {
+      const index = Math.floor(Math.random() * (items.value.length + 1))
+      items.value.splice(index, 0, nextId++)
+    })
+  }
+}
+
+const remove = async () => {
+  if (flipRef.value && items.value.length > 0) {
+    await flipRef.value.update(() => {
+      const index = Math.floor(Math.random() * items.value.length)
+      items.value.splice(index, 1)
+    })
+  }
+}
 
 const shuffle = async () => {
   if (flipRef.value) {
@@ -36,11 +56,15 @@ const shuffle = async () => {
 </script>
 
 <template>
-  <button @click="shuffle">Перемешать элементы</button>
+  <button @click="add">Добавить</button>
+  <button @click="remove">Удалить</button>
+  <button @click="shuffle">Перемешать</button>
 
   <MotionFlip ref="flipRef" class="list">
-    <div v-for="item in items" :key="item" class="item">
-      Элемент {{ item }}
+    <div v-for="item in items" :key="item">
+      <div class="item">
+        Элемент {{ item }}
+      </div>
     </div>
   </MotionFlip>
 </template>

@@ -7,11 +7,11 @@
     position: relative;
   }
 
-  &--freeze {
-    & > *:not(#{ui.c('??__item')}) {
-      opacity: 0;
-    }
+  &--freeze > *:not(&__item) {
+    opacity: 0;
+  }
 
+  &--freeze {
     @include ui.subclass('item') {
       z-index: 4;
 
@@ -34,15 +34,15 @@
     }
   }
 
+  &--go > *:not(&__item) {
+    opacity: 1;
+
+    transition-property: opacity;
+    transition-duration: ui.v('d.sys.transitionDuration.largeExpanding');
+    transition-timing-function: ui.v('d.sys.transitionFunction.emphasized');
+  }
+
   &--go {
-    & > *:not(#{ui.c('??__item')}) {
-      opacity: 1;
-
-      transition-property: opacity;
-      transition-duration: ui.v('d.sys.transitionDuration.largeExpanding');
-      transition-timing-function: ui.v('d.sys.transitionFunction.emphasized');
-    }
-
     @include ui.subclass('item') {
       > * {
         width: ui.v('??sys.width');

@@ -1,0 +1,39 @@
+## Usage Modes: Manual vs. Auto
+
+MotionFlip provides two different modes for tracking layout changes: **Manual Mode** and **Auto Mode**. Understanding the difference is crucial for choosing the right approach for your application's performance and control needs.
+
+### Manual Mode (Default)
+
+By default, MotionFlip operates in manual mode. In this mode, the component does not track DOM changes automatically. Instead, you must explicitly inform MotionFlip when a change is about to happen by calling the `update()` method and wrapping your state modifications within its callback.
+
+**How it works:**
+1. You call `await flipRef.value.update(callback)`.
+2. MotionFlip records the exact positions and sizes of all child elements *before* your callback runs.
+3. Your callback executes, updating the Vue state (e.g., adding, removing, or shuffling items).
+4. MotionFlip waits for the DOM to update, measures the *new* positions, and smoothly animates the elements from their old positions to the new ones.
+
+**Pros:**
+- **Maximum Performance:** Avoids the overhead of continuous `MutationObserver` background tracking.
+- **Precision and Control:** Animations are perfectly synchronized with your specific state changes.
+- **Graceful Interruptions:** If a new animation is triggered before the current one finishes, MotionFlip can seamlessly calculate the visual transition.
+
+**When to use:** Recommended for almost all use cases, especially complex lists, drag-and-drop interfaces, and large grids.
+
+### Auto Mode
+
+Auto mode can be enabled by setting the `auto` property to `true`. In this mode, MotionFlip utilizes a `MutationObserver` to automatically detect when child elements are added, removed, or rearranged in the DOM.
+
+**How it works:**
+1. MotionFlip constantly monitors its container for DOM mutations (`childList` changes).
+2. When you modify your list state (e.g., `items.value.push(newItem)`), Vue updates the DOM.
+3. The `MutationObserver` detects this change and automatically triggers the FLIP animation.
+
+**Pros:**
+- **Simpler Code:** You do not need to call the `update()` method or manage component refs. Simply mutate your state, and the animation happens automatically.
+- **External Changes:** Useful if DOM changes are made by third-party libraries outside of Vue's reactivity system.
+
+**Cons:**
+- **Performance Overhead:** The `MutationObserver` runs continuously, which can slightly impact performance on pages with heavy DOM activity.
+- **Asynchronous Limitations:** Because `MutationObserver` fires *after* the DOM has already mutated, Auto Mode cannot cleanly interrupt an ongoing animation if a new mutation occurs before the previous transition finishes.
+
+**When to use:** Best for simple applications, prototypes, or when changes are driven by unpredictable external sources.

@@ -7,6 +7,7 @@ import {
 import { MotionFlipAction } from './MotionFlipAction'
 import { MotionFlipElement } from './MotionFlipElement'
 import { MotionFlipItems } from './MotionFlipItems'
+import { MotionFlipObserver } from './MotionFlipObserver'
 
 import type {
   MotionFlipComponents,
@@ -32,6 +33,9 @@ export class MotionFlip {
   /** Item list controller / Контроллер списка элементов */
   readonly items: MotionFlipItems
 
+  /** Observer controller / Контроллер наблюдения */
+  readonly observer: MotionFlipObserver
+
   /**
    * Constructor
    * @param props input data / входные данные
@@ -46,6 +50,7 @@ export class MotionFlip {
    * @param constructors.MotionFlipActionConstructor class for managing actions / класс для управления действиями
    * @param constructors.MotionFlipElementConstructor class for working with elements / класс для работы с элементами
    * @param constructors.MotionFlipItemsConstructor class for working with items / класс для работы со списком элементов
+   * @param constructors.MotionFlipObserverConstructor class for managing mutation observations / класс для управления наблюдением за мутациями
    */
   constructor(
     protected readonly props: MotionFlipProps,
@@ -60,16 +65,19 @@ export class MotionFlip {
       MotionFlipActionConstructor?: typeof MotionFlipAction
       MotionFlipElementConstructor?: typeof MotionFlipElement
       MotionFlipItemsConstructor?: typeof MotionFlipItems
+      MotionFlipObserverConstructor?: typeof MotionFlipObserver
     } = {}
   ) {
     const {
       MotionFlipActionConstructor = MotionFlipAction,
       MotionFlipElementConstructor = MotionFlipElement,
-      MotionFlipItemsConstructor = MotionFlipItems
+      MotionFlipItemsConstructor = MotionFlipItems,
+      MotionFlipObserverConstructor = MotionFlipObserver
     } = constructors
 
     this.elementManager = new MotionFlipElementConstructor(this.element, this.className)
     this.items = new MotionFlipItemsConstructor(this.elementManager)
     this.action = new MotionFlipActionConstructor(this.props, this.elementManager, this.items)
+    this.observer = new MotionFlipObserverConstructor(this.props, this.action, this.elementManager, this.items)
   }
 }

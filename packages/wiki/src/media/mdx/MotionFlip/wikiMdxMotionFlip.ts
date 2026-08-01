@@ -1,9 +1,9 @@
 import type { StorybookComponentsMdxItem } from '../../../types/storybookTypes'
 
-import classesEn from './classes.en.mdx'
-import classesRu from './classes.ru.mdx'
 import exposeEn from './expose.en.mdx'
 import exposeRu from './expose.ru.mdx'
+import modeEn from './mode.en.mdx'
+import modeRu from './mode.ru.mdx'
 import motionFlipEn from './motionFlip.en.mdx'
 import motionFlipRu from './motionFlip.ru.mdx'
 
@@ -15,15 +15,15 @@ import motionFlipRu from './motionFlip.ru.mdx'
 export const wikiMdxMotionFlip: StorybookComponentsMdxItem = {
   name: 'MotionFlip',
   descriptions: {
-    'classes': {
-      en: classesEn,
-      ru: classesRu
-    },
-    'expose': {
+    expose: {
       en: exposeEn,
       ru: exposeRu
     },
-    'motionFlip': {
+    mode: {
+      en: modeEn,
+      ru: modeRu
+    },
+    motionFlip: {
       en: motionFlipEn,
       ru: motionFlipRu
     }

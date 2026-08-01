@@ -34,6 +34,18 @@ export class MotionFlipItem {
   }
 
   /**
+   * Removes item sub-class and resets system CSS properties on the element.
+   *
+   * Удаляет подкласс элемента и сбрасывает системные CSS-свойства с элемента.
+   * @returns current instance / текущий экземпляр
+   */
+  reset(): this {
+    return this
+      .resetStyle()
+      .removeClass()
+  }
+
+  /**
    * Updates CSS position and size variables for the item element based on original rectangle.
    *
    * Обновляет переменные CSS положения и размера для элемента на основе исходного прямоугольника.
@@ -54,18 +66,6 @@ export class MotionFlipItem {
     }
 
     return this
-  }
-
-  /**
-   * Removes item sub-class and resets system CSS properties on the element.
-   *
-   * Удаляет подкласс элемента и сбрасывает системные CSS-свойства с элемента.
-   * @returns current instance / текущий экземпляр
-   */
-  reset(): this {
-    return this
-      .resetStyle()
-      .removeClass()
   }
 
   /**

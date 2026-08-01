@@ -10,6 +10,16 @@ import {
  * Свойства для компонента Wiki в Storybook
  */
 export const wikiOption: StorybookArgsToList = {
+  auto: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.option,
+      description: {
+        en: 'Enables automatic behavior or state tracking for the component',
+        ru: 'Включает автоматическое поведение или отслеживание состояния для компонента'
+      }
+    }
+  },
   autoClose: {
     type: StorybookControl.boolean,
     options: {

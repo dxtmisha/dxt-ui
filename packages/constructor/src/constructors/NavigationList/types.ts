@@ -52,7 +52,6 @@ export type NavigationListClasses = {
   management: string
   group: string
   menu: string
-  menuGroup: string
   filterInput: string
   none: string
   // :classes [!] System label / Системная метка

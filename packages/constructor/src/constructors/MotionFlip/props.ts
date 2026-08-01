@@ -14,6 +14,8 @@ type MotionFlipPropsToken = {
  * Интерфейс, представляющий входящие свойства базового компонента.
  */
 export type MotionFlipPropsBasic = {
+  /** Enables automatic DOM change detection / Включает автоматическое отслеживание изменений DOM */
+  auto?: boolean
   /** Disables the FLIP animation / Отключает анимацию FLIP */
   disabled?: boolean
 }
@@ -31,9 +33,5 @@ export type MotionFlipProps = MotionFlipPropsBasic & MotionFlipPropsToken
  * Значение по умолчанию для свойства.
  */
 export const defaultsMotionFlip: MotionFlipPropsBasic = {
-  disabled: false,
-  ...{
-    // :default [!] System label / Системная метка
-    // :default [!] System label / Системная метка
-  }
+  auto: true
 }
