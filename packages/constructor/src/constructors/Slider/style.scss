@@ -1,5 +1,177 @@
-@use "@dxtmisha/styles/properties" as ui;
+@use '../../styles/mixins' as ui;
 
-@mixin mixinSlider {
+.d-slider {
+  --d-slider-sys-size: 40px;
+  --d-slider-sys-height: 4px;
+  --d-slider-sys-thumb-size: 16px;
+  --d-slider-sys-mark-size: 6px;
 
+  position: relative;
+  width: 100%;
+  height: ui.v('??sys-size');
+  display: flex;
+  align-items: center;
+
+  &__rail,
+  &__track,
+  &__select {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin: auto 0;
+    border-radius: 4px;
+    height: ui.v('??sys-height');
+  }
+
+  &__rail {
+    left: 0;
+    width: 100%;
+    background-color: var(--sys-outline-variant, #e0e0e0);
+  }
+
+  &__track {
+    background-color: var(--sys-primary, #1976d2);
+    left: ui.v('??sys-thumb-min-x', 0%);
+    right: calc(100% - ui.v('??sys-thumb-max-x', 100%));
+    transition-property: left, right;
+  }
+
+  &__select {
+    left: 0;
+    width: 100%;
+    height: ui.v('??sys-thumb-size');
+    cursor: pointer;
+    z-index: 2;
+  }
+
+  &__marks {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto 0;
+    height: ui.v('??sys-height');
+    pointer-events: none;
+  }
+
+  &__mark {
+    position: absolute;
+    width: ui.v('??sys-mark-size');
+    height: ui.v('??sys-mark-size');
+    border-radius: 50%;
+    background-color: var(--sys-outline, #bdbdbd);
+    left: calc(ui.v('??sys-mark', 0%) - ui.v('??sys-mark-size') / 2);
+    top: calc(50% - ui.v('??sys-mark-size') / 2);
+  }
+
+  &__thumb {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin: auto 0;
+    width: ui.v('??sys-size');
+    height: ui.v('??sys-size');
+    border: none;
+    background: transparent;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 4;
+    transform: translateX(calc(ui.v('??sys-size') / -2));
+    outline: none;
+
+    &::after {
+      content: '';
+      display: block;
+      width: ui.v('??sys-thumb-size');
+      height: ui.v('??sys-thumb-size');
+      border-radius: 50%;
+      background-color: var(--sys-primary, #1976d2);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    &--min {
+      left: ui.v('??sys-thumb-min-x', 0%);
+    }
+
+    &--max {
+      left: ui.v('??sys-thumb-max-x', 100%);
+    }
+
+    &:focus-visible::after {
+      outline: 2px solid var(--sys-primary, #1976d2);
+      outline-offset: 2px;
+    }
+  }
+
+  &__label {
+    position: absolute;
+    bottom: calc(100% + 4px);
+    padding: 2px 6px;
+    border-radius: 4px;
+    background-color: var(--sys-inverse-surface, #333);
+    color: var(--sys-inverse-on-surface, #fff);
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.15s ease-in-out, visibility 0.15s ease-in-out;
+  }
+
+  &__thumb:focus &__label,
+  &__thumb:hover &__label {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  &--vertical {
+    width: ui.v('??sys-size');
+    height: 100%;
+    flex-direction: column;
+
+    .d-slider__rail,
+    .d-slider__track,
+    .d-slider__select {
+      width: ui.v('??sys-height');
+      height: auto;
+      margin: 0 auto;
+      top: 0;
+      bottom: 0;
+    }
+
+    .d-slider__track {
+      bottom: ui.v('??sys-thumb-min-x', 0%);
+      top: calc(100% - ui.v('??sys-thumb-max-x', 100%));
+      left: 0;
+      right: 0;
+    }
+
+    .d-slider__thumb {
+      left: 0;
+      right: 0;
+      margin: 0 auto;
+      transform: translateY(calc(ui.v('??sys-size') / -2));
+
+      &--min {
+        top: calc(100% - ui.v('??sys-thumb-min-x', 0%));
+      }
+
+      &--max {
+        top: calc(100% - ui.v('??sys-thumb-max-x', 100%));
+      }
+    }
+
+    .d-slider__label {
+      left: calc(100% + 4px);
+      bottom: auto;
+    }
+  }
+
+  &--disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
 }

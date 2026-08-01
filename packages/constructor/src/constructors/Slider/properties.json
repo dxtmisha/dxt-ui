@@ -1,2 +1,19 @@
 {
+  "~appearance": {
+    "~basic": {},
+    "~drop": {},
+    "_default": "basic"
+  },
+  "~vertical": {},
+  "~disabled": {},
+  "~mark": {},
+  "#thumb": {},
+  "#thumbMin": {},
+  "#thumbMax": {},
+  "#rail": {},
+  "#track": {},
+  "#marks": {},
+  "#mark": {},
+  "#label": {},
+  "#select": {}
 }

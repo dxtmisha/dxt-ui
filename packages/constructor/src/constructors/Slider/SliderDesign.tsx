@@ -7,9 +7,7 @@ import {
 
 import { Slider } from './Slider'
 
-import {
-  type SliderPropsBasic
-} from './props'
+import { type SliderPropsBasic } from './props'
 import {
   type SliderClasses,
   type SliderComponents,
@@ -19,7 +17,9 @@ import {
 } from './types'
 
 /**
- * SliderDesign
+ * SliderDesign class for assembling Vue DOM tree.
+ *
+ * Класс SliderDesign для сборки DOM-дерева Vue.
  */
 export class SliderDesign<
   COMP extends SliderComponents,
@@ -27,22 +27,22 @@ export class SliderDesign<
   CLASSES extends SliderClasses,
   P extends SliderPropsBasic
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
-    COMP,
-    SliderEmits,
-    EXPOSE,
-    SliderSlots,
-    CLASSES,
-    P
-  > {
+  HTMLDivElement,
+  COMP,
+  SliderEmits,
+  EXPOSE,
+  SliderSlots,
+  CLASSES,
+  P
+> {
   protected readonly item: Slider
 
   /**
    * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor constructors item class/ класс элемента конструкторов
+   * @param name class name / название класса
+   * @param props properties / свойства
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor constructors item class / класс элемента конструкторов
    */
   constructor(
     name: string,
@@ -67,21 +67,21 @@ export class SliderDesign<
       this.emits
     )
 
-    // TODO: Method for initializing base objects
-    // TODO: Метод для инициализации базовых объектов
-
     this.init()
   }
 
   /**
-   * Initialization of all the necessary properties for work
+   * Initialization of exposed properties.
    *
-   * Инициализация всех необходимых свойств для работы.
+   * Инициализация экспонируемых свойств.
+   * @returns expose object / объект экспорта
    */
   protected initExpose(): EXPOSE {
     return {
-      // TODO: list of properties for export
-      // TODO: список свойств для экспорта
+      getValue: () => this.item.value.value,
+      setValue: val => this.item.setValue(val),
+      increase: () => this.item.increase(),
+      decrease: () => this.item.decrease()
     } as EXPOSE
   }
 
@@ -89,12 +89,24 @@ export class SliderDesign<
    * Improvement of the obtained list of classes.
    *
    * Доработка полученного списка классов.
+   * @returns classes partial / список классов
    */
   protected initClasses(): Partial<CLASSES> {
     return {
-      main: {},
+      main: {
+        ...this.item.classes
+      },
       ...{
         // :classes [!] System label / Системная метка
+        mark: this.getSubClass('mark'),
+        thumb: this.getSubClass('thumb'),
+        thumbMin: this.getSubClass('thumbMin'),
+        thumbMax: this.getSubClass('thumbMax'),
+        rail: this.getSubClass('rail'),
+        track: this.getSubClass('track'),
+        marks: this.getSubClass('marks'),
+        label: this.getSubClass('label'),
+        select: this.getSubClass('select')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -104,26 +116,213 @@ export class SliderDesign<
    * Refinement of the received list of styles.
    *
    * Доработка полученного списка стилей.
+   * @returns custom styles / пользовательские стили
    */
   protected initStyles(): ConstrStyles {
     return {
-      // TODO: list of user styles
-      // TODO: список пользовательских стилей
+      ...this.item.styles
     }
   }
 
   /**
-   * A method for rendering.
+   * Renders minimum thumb handle button for range mode.
    *
-   * Метод для рендеринга.
+   * Рендерит кнопку минимального ползунка для режима диапазона.
+   * @returns VNode or undefined / VNode или undefined
    */
-  protected initRender(): VNode {
-    // const children: any[] = []
+  readonly renderThumbMin = (): VNode | undefined => {
+    if (!this.props.multiple) {
+      return undefined
+    }
+
+    const minItem = this.item.min.item
+    const minLabelContent = this.slots?.minLabel
+      ? this.slots.minLabel({ value: this.item.markMin, item: minItem })
+      : this.item.min.labelText
+
+    const rippleVNode = this.components?.render('ripple', {
+      visible: this.item.isRipple
+    })
+
+    return h(
+      'button',
+      {
+        'ref': this.item.min.element,
+        'class': [this.getSubClass('thumb'), this.getSubClass('thumbMin')],
+        'type': 'button',
+        'tabindex': this.props.disabled ? -1 : 0,
+        'role': 'slider',
+        'aria-valuenow': this.item.markMin,
+        'aria-valuemin': this.item.marks.minNumber,
+        'aria-valuemax': this.item.markMax,
+        'aria-orientation': this.props.vertical ? 'vertical' : 'horizontal',
+        'aria-disabled': this.props.disabled ? 'true' : undefined,
+        'onKeydown': this.item.onKeydown,
+        'onMousedown': (event: MouseEvent) => this.item.onMousedown(event, 'min'),
+        'onTouchstart': (event: TouchEvent) => this.item.onMousedown(event, 'min')
+      },
+      [
+        h(
+          'span',
+          {
+            ref: this.item.min.elementLabel,
+            class: this.getSubClass('label')
+          },
+          [minLabelContent]
+        ),
+        ...(rippleVNode ? [rippleVNode] : [])
+      ]
+    )
+  }
+
+  /**
+   * Renders maximum thumb handle button.
+   *
+   * Рендерит кнопку максимального ползунка.
+   * @returns VNode / VNode ползунка
+   */
+  readonly renderThumbMax = (): VNode => {
+    const maxItem = this.item.max.item
+    const maxLabelContent = this.slots?.maxLabel
+      ? this.slots.maxLabel({ value: this.item.markMax, item: maxItem })
+      : this.item.max.labelText
+
+    const rippleVNode = this.components?.render('ripple', {
+      visible: this.item.isRipple
+    })
+
+    return h(
+      'button',
+      {
+        'ref': this.item.max.element,
+        'class': [this.getSubClass('thumb'), this.getSubClass('thumbMax')],
+        'type': 'button',
+        'tabindex': this.props.disabled ? -1 : 0,
+        'role': 'slider',
+        'aria-valuenow': this.item.markMax,
+        'aria-valuemin': this.props.multiple ? this.item.markMin : this.item.marks.minNumber,
+        'aria-valuemax': this.item.marks.maxNumber,
+        'aria-orientation': this.props.vertical ? 'vertical' : 'horizontal',
+        'aria-disabled': this.props.disabled ? 'true' : undefined,
+        'onKeydown': this.item.onKeydown,
+        'onMousedown': (event: MouseEvent) => this.item.onMousedown(event, 'max'),
+        'onTouchstart': (event: TouchEvent) => this.item.onMousedown(event, 'max')
+      },
+      [
+        h(
+          'span',
+          {
+            ref: this.item.max.elementLabel,
+            class: this.getSubClass('label')
+          },
+          [maxLabelContent]
+        ),
+        ...(rippleVNode ? [rippleVNode] : [])
+      ]
+    )
+  }
+
+  /**
+   * Renders slider background rail element.
+   *
+   * Рендерит элемент рельса заднего плана слайдера.
+   * @returns VNode / VNode рельса
+   */
+  readonly renderRail = (): VNode => {
+    return h('div', {
+      class: this.getSubClass('rail')
+    })
+  }
+
+  /**
+   * Renders active track element.
+   *
+   * Рендерит элемент активной дорожки слайдера.
+   * @returns VNode / VNode дорожки
+   */
+  readonly renderTrack = (): VNode => {
+    return h('div', {
+      class: this.getSubClass('track')
+    })
+  }
+
+  /**
+   * Renders tick marks container and items.
+   *
+   * Рендерит контейнер и элементы делений/меток.
+   * @returns VNode or undefined / VNode или undefined
+   */
+  readonly renderMarks = (): VNode | undefined => {
+    const marksList = this.item.marks.normalizedMarks.value
+
+    if (!marksList) {
+      return undefined
+    }
+
+    const markVNodes = marksList.map(markItem => {
+      const markSlotContent = this.slots?.mark
+        ? this.slots.mark({ item: markItem })
+        : undefined
+
+      return h('span', {
+        'key': markItem.mark,
+        'class': this.getSubClass('mark'),
+        'data-text': markItem.text,
+        'data-value': markItem.value,
+        'style': markItem.style
+      }, [markSlotContent])
+    })
 
     return h('div', {
-      // ...this.getAttrs(),
-      ref: this.element,
-      class: this.classes?.value.main
+      class: this.getSubClass('marks')
+    }, markVNodes)
+  }
+
+  /**
+   * Renders clickable/touchable interactive selection area.
+   *
+   * Рендерит кликабельную/интерактивную область выбора.
+   * @returns VNode / VNode области выбора
+   */
+  readonly renderSelect = (): VNode => {
+    return h('div', {
+      class: this.getSubClass('select'),
+      onMousedown: this.item.onMousedown,
+      onTouchstart: this.item.onMousedown
     })
+  }
+
+  /**
+   * A method for rendering main DOM tree.
+   *
+   * Метод для рендеринга главного DOM-дерева.
+   * @returns root VNode / корневой VNode
+   */
+  protected initRender(): VNode {
+    const minThumb = this.renderThumbMin()
+    const maxThumb = this.renderThumbMax()
+    const rail = this.renderRail()
+    const track = this.renderTrack()
+    const marks = this.renderMarks()
+    const select = this.renderSelect()
+
+    const children: VNode[] = [
+      ...(minThumb ? [minThumb] : []),
+      maxThumb,
+      rail,
+      track,
+      ...(marks ? [marks] : []),
+      select
+    ]
+
+    return h(
+      'div',
+      {
+        ref: this.element,
+        class: this.classes?.value.main,
+        style: this.styles?.value
+      },
+      children
+    )
   }
 }
