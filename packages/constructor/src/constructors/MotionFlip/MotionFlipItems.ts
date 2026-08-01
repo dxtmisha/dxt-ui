@@ -49,9 +49,9 @@ export class MotionFlipItems {
   }
 
   /**
-   * Initializes and caches original sizes for all child item elements.
+   * Initializes and creates all child item elements with their original sizes.
    *
-   * Инициализирует и кэширует исходные размеры для всех дочерних элементов.
+   * Инициализирует и создаёт все дочерние элементы с их исходными размерами.
    */
   init(): void {
     const element = this.elementManager.getElement()
@@ -65,6 +65,15 @@ export class MotionFlipItems {
     } else {
       this.items = []
     }
+  }
+
+  /**
+   * Initializes and caches original sizes for all existing child item elements.
+   *
+   * Инициализирует и кэширует исходные размеры для всех существующих дочерних элементов.
+   */
+  initOriginalSize(): void {
+    this.items.forEach(item => item.initOriginalSize())
   }
 
   /**

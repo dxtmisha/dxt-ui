@@ -24,6 +24,13 @@ export type MotionFlipEmits = {
  */
 export interface MotionFlipExpose {
   /**
+   * Stops active FLIP animation and clears state.
+   *
+   * Останавливает активную FLIP анимацию и сбрасывает состояние.
+   */
+  stop: () => void
+
+  /**
    * FLIP update animation handler.
    *
    * Обработчик обновления FLIP анимации.

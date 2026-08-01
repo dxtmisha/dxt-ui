@@ -1,5 +1,6 @@
 export * from './basicTypes'
 export * from './MotionFlip'
+export * from './MotionFlipAction'
 export * from './MotionFlipDesign'
 export * from './MotionFlipElement'
 export * from './MotionFlipItem'

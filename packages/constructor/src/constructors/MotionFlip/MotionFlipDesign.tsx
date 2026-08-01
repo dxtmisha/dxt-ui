@@ -80,7 +80,8 @@ export class MotionFlipDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      update: (callback: MotionFlipCallback) => this.item.update(callback)
+      stop: () => this.item.action.stop(),
+      update: (callback: MotionFlipCallback) => this.item.action.update(callback)
     } as EXPOSE
   }
 
@@ -95,6 +96,7 @@ export class MotionFlipDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
+        item: this.getSubClass('item')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -122,7 +124,7 @@ export class MotionFlipDesign<
       {
         ref: this.element,
         class: this.classes?.value.main,
-        onTransitionend: this.item.onTransition
+        onTransitionend: this.item.action.onTransition
       },
       this.initSlot('default')
     )
