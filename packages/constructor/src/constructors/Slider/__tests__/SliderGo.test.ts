@@ -26,8 +26,8 @@ function createSliderGo(initialValue: SliderValueType, props: Partial<SliderProp
   const model = new ModelValueInclude<SliderValueType>('modelValue', undefined, undefined, ref(initialValue))
   const value = new SliderValue(focus, marks, model, fullProps)
 
-  const minElement = new SliderThumbMin(marks, value)
-  const maxElement = new SliderThumbMax(marks, value)
+  const minElement = new SliderThumbMin(fullProps, marksData, marks, value)
+  const maxElement = new SliderThumbMax(fullProps, marksData, marks, value)
   const elementRef = ref<HTMLElement | undefined>(undefined)
   const sliderElement = new SliderElement(fullProps, elementRef, maxElement, minElement)
 

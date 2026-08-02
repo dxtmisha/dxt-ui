@@ -1,6 +1,7 @@
 import { isArray } from '@dxtmisha/functional'
 
 import type { ModelValueInclude } from '../../classes/ModelValueInclude'
+
 import type { SliderFocus } from './SliderFocus'
 import type { SliderMarks } from './SliderMarks'
 

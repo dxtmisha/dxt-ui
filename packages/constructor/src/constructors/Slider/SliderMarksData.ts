@@ -1,4 +1,5 @@
 import { computed, type ComputedRef } from 'vue'
+
 import {
   isArray,
   isObject,
@@ -29,7 +30,7 @@ export class SliderMarksData {
         resultList.push({
           mark,
           value,
-          text: this.getItemText(item, value),
+          label: this.getItemLabel(item, value),
           style: {
             [`--${this.className}-sys-mark`]: `${this.toPercent(mark)}%`
           }
@@ -167,7 +168,7 @@ export class SliderMarksData {
    * @returns key name / имя ключа
    */
   protected get keyLabel(): string {
-    return this.props.keyLabel ?? 'text'
+    return this.props.keyLabel ?? 'label'
   }
 
   /**
@@ -203,9 +204,9 @@ export class SliderMarksData {
    * @param value computed item value / вычисленное значение элемента
    * @returns text label string / строка текста метки
    */
-  protected getItemText(item: any, value: any): string {
+  protected getItemLabel(item: any, value: any): string {
     if (isObjectNotArray(item)) {
-      return String(item[this.keyLabel] ?? item.text ?? value)
+      return String(item[this.keyLabel] ?? item.label ?? value)
     }
 
     return String(item)

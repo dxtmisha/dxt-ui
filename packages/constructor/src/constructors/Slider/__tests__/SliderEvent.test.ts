@@ -25,16 +25,16 @@ function createSliderEvent(initialValue: SliderValueType = 50, props: Partial<Sl
   const focus = new SliderFocus()
   const marksData = new SliderMarksData(fullProps, className)
   const marks = new SliderMarks(fullProps, className, marksData)
-  const model = new ModelValueInclude<SliderValueType>('modelValue', undefined, undefined, ref(initialValue))
+  const model = new ModelValueInclude<SliderValueType>('value', undefined, undefined, ref(initialValue))
   const value = new SliderValue(focus, marks, model, fullProps)
 
-  const minElement = new SliderThumbMin(marks, value)
-  const maxElement = new SliderThumbMax(marks, value)
+  const minElement = new SliderThumbMin(fullProps, marksData, marks, value)
+  const maxElement = new SliderThumbMax(fullProps, marksData, marks, value)
 
   const elementRef = ref<HTMLElement | undefined>(undefined)
   const sliderElement = new SliderElement(fullProps, elementRef, maxElement, minElement)
 
-  const mockEmit = vi.fn()
+  const mockEmit = vi.fn() as any
   const emitsItem = new SliderEmit(fullProps, model, value, minElement, maxElement, mockEmit)
 
   const go = new SliderGo(emitsItem, enabled, focus, marks, sliderElement, value)
@@ -169,5 +169,65 @@ describe('SliderEvent', () => {
 
     expect(mousedownEvent.preventDefault).not.toHaveBeenCalled()
     expect(dragStartSpy).not.toHaveBeenCalled()
+  })
+
+  it('should return object with 3 event handlers from getEventsMin and getEventsMax', () => {
+    const { sliderEvent, focus, dragEvent } = createSliderEvent([20, 80], { multiple: true })
+
+    vi.spyOn(dragEvent, 'start').mockImplementation(() => {})
+    vi.spyOn(sliderEvent, 'focusElement').mockImplementation(() => {})
+
+    const eventsMin = sliderEvent.getEventsMin()
+    expect(eventsMin).toHaveProperty('onKeydown')
+    expect(eventsMin).toHaveProperty('onMousedown')
+    expect(eventsMin).toHaveProperty('onTouchstart')
+
+    const minEvent = {
+      preventDefault: vi.fn(),
+      stopPropagation: vi.fn(),
+      clientX: 20
+    } as unknown as MouseEvent
+
+    eventsMin.onMousedown(minEvent)
+    expect(focus.get()).toBe(SliderFocusType.min)
+
+    const eventsMax = sliderEvent.getEventsMax()
+    expect(eventsMax).toHaveProperty('onKeydown')
+    expect(eventsMax).toHaveProperty('onMousedown')
+    expect(eventsMax).toHaveProperty('onTouchstart')
+
+    const maxEvent = {
+      preventDefault: vi.fn(),
+      stopPropagation: vi.fn(),
+      clientX: 80
+    } as unknown as MouseEvent
+
+    eventsMax.onMousedown(maxEvent)
+    expect(focus.get()).toBe(SliderFocusType.max)
+  })
+
+  it('should process onMousedownMin and onMousedownMax methods directly', () => {
+    const { sliderEvent, focus, dragEvent } = createSliderEvent([20, 80], { multiple: true })
+
+    vi.spyOn(dragEvent, 'start').mockImplementation(() => {})
+    vi.spyOn(sliderEvent, 'focusElement').mockImplementation(() => {})
+
+    const minEvent = {
+      preventDefault: vi.fn(),
+      stopPropagation: vi.fn(),
+      clientX: 20
+    } as unknown as MouseEvent
+
+    sliderEvent.onMousedownMin(minEvent)
+    expect(focus.get()).toBe(SliderFocusType.min)
+
+    const maxEvent = {
+      preventDefault: vi.fn(),
+      stopPropagation: vi.fn(),
+      clientX: 80
+    } as unknown as MouseEvent
+
+    sliderEvent.onMousedownMax(maxEvent)
+    expect(focus.get()).toBe(SliderFocusType.max)
   })
 })

@@ -20,10 +20,17 @@ describe('SliderThumbMin', () => {
     const model = new ModelValueInclude<SliderValueType>('modelValue', undefined, undefined, ref(75))
     const value = new SliderValue(focus, marks, model, props)
 
-    const thumbMin = new SliderThumbMin(marks, value)
+    const thumbMin = new SliderThumbMin(props, marksData, marks, value)
 
     expect(thumbMin.mark).toBe(0)
     expect(thumbMin.label).toBe('0')
+    expect(thumbMin.aria).toEqual({
+      'role': 'slider',
+      'aria-valuenow': 0,
+      'aria-valuemin': 0,
+      'aria-valuemax': 75,
+      'aria-orientation': 'horizontal'
+    })
   })
 
   it('should return value.min as mark property in multiple range mode', () => {
@@ -35,9 +42,16 @@ describe('SliderThumbMin', () => {
     const model = new ModelValueInclude<SliderValueType>('modelValue', undefined, undefined, ref([25, 85]))
     const value = new SliderValue(focus, marks, model, props)
 
-    const thumbMin = new SliderThumbMin(marks, value)
+    const thumbMin = new SliderThumbMin(props, marksData, marks, value)
 
     expect(thumbMin.mark).toBe(25)
     expect(thumbMin.label).toBe('25')
+    expect(thumbMin.aria).toEqual({
+      'role': 'slider',
+      'aria-valuenow': 25,
+      'aria-valuemin': 0,
+      'aria-valuemax': 85,
+      'aria-orientation': 'horizontal'
+    })
   })
 })

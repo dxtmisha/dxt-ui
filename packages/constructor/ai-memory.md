@@ -33,3 +33,10 @@
 21. **BEM Class Names in Logic Classes**: All dynamic CSS class objects returned by getters/methods in logical constructor classes MUST format class modifiers using the `this.className` prefix with BEM double-dash syntax (e.g. `[`${this.className}--lazy`]: isLazy`, `[`${this.className}--lazy--visible`]: isLazy && isVisible`, `[`${this.className}--lazy--hidden`]: isLazy && !isVisible`), rather than raw un-prefixed keys.
 22. **No Redundant Wrapper Methods in Design Classes**: Do not create proxy or wrapper methods in `Design` classes (such as `readonly renderCaption = () => this.item.caption.render()`) if they merely delegate directly to an underlying object method without adding any markup wrapping, conditions, or logic. Call the target `.render()` method directly inline (e.g. `...this.item.caption.render()`).
 23. **Master Class Dependency Injection & Instantiation**: Helper and sub-classes (e.g., `SliderMarks.ts`, `SliderMarksData.ts`, `SliderThumb.ts`) must NEVER accept a `constructors` parameter or instantiate other helper classes internally (`new HelperClass(...)`). All `constructors` parameters and `new` instantiations must take place EXCLUSIVELY within the master orchestrator class (e.g., `Slider.ts`), which injects instances and dependencies into helper classes via constructor parameters.
+24. **Import Ordering Rules**: Imports in component files must follow a strict grouped order separated by blank lines:
+    1. External libraries (e.g., `vue`).
+    2. Global/package imports (e.g., `@dxtmisha/functional`).
+    3. Shared classes and utilities from parent/other directories (e.g., `../../classes/...`).
+    4. Local component classes and helper modules (e.g., `./SliderThumbMax`).
+    5. Component type definitions in strict sequence: `./basicTypes`, `./types`, `./props`.
+

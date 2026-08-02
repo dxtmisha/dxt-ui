@@ -3,6 +3,7 @@ import {
   type Ref,
   type ToRefs
 } from 'vue'
+
 import {
   type ConstrClassObject,
   type ConstrEmit,
@@ -146,8 +147,8 @@ export class Slider {
     this.marks = new SliderMarksConstructor(props, className, this.marksData)
     this.value = new SliderValueConstructor(this.focus, this.marks, this.model, props)
 
-    this.minElement = new SliderThumbMinConstructor(this.marks, this.value)
-    this.maxElement = new SliderThumbMaxConstructor(this.marks, this.value)
+    this.minElement = new SliderThumbMinConstructor(props, this.marksData, this.marks, this.value)
+    this.maxElement = new SliderThumbMaxConstructor(props, this.marksData, this.marks, this.value)
     this.sliderElement = new SliderElementConstructor(
       props,
       element,
@@ -198,17 +199,13 @@ export class Slider {
   }
 
   /**
-   * Checks if ripple animation is enabled.
+   * Returns tabindex value based on enabled state.
    *
-   * Проверяет, включена ли анимация ripple.
-   * @returns check result / результат проверки
+   * Возвращает значение tabindex на основе состояния активности.
+   * @returns tabindex number (0 if enabled, -1 if disabled) / значение tabindex
    */
-  isRipple(): boolean {
-    return Boolean(
-      this.props.ripple
-      && !this.props.drop
-      && this.enabled.isEnabled
-    )
+  get tabindex(): number {
+    return this.enabled.isEnabled ? 0 : -1
   }
 
   /**
@@ -234,5 +231,19 @@ export class Slider {
       [`--${this.className}-sys-thumb-min-x`]: `${this.marksData.toPercent(this.value.min)}%`,
       [`--${this.className}-sys-thumb-max-x`]: `${this.marksData.toPercent(this.value.max)}%`
     }
+  }
+
+  /**
+   * Checks if ripple animation is enabled.
+   *
+   * Проверяет, включена ли анимация ripple.
+   * @returns check result / результат проверки
+   */
+  isRipple(): boolean {
+    return Boolean(
+      this.props.ripple
+      && !this.props.drop
+      && this.enabled.isEnabled
+    )
   }
 }

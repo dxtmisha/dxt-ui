@@ -5,9 +5,11 @@ import {
   DesignConstructorAbstract
 } from '@dxtmisha/functional'
 
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
+
 import { Slider } from './Slider'
 
-import { SliderFocusType } from './basicTypes'
+import { type SliderMarkItem } from './basicTypes'
 import { type SliderPropsBasic } from './props'
 import {
   type SliderClasses,
@@ -105,6 +107,7 @@ export class SliderDesign<
         rail: this.getSubClass('rail'),
         track: this.getSubClass('track'),
         marks: this.getSubClass('marks'),
+        mark: this.getSubClass('mark'),
         label: this.getSubClass('label'),
         select: this.getSubClass('select')
         // :classes [!] System label / Системная метка
@@ -125,194 +128,19 @@ export class SliderDesign<
   }
 
   /**
-   * Renders minimum thumb handle button for range mode.
-   *
-   * Рендерит кнопку минимального ползунка для режима диапазона.
-   * @returns VNode or undefined / VNode или undefined
-   */
-  readonly renderThumbMin = (): VNode | undefined => {
-    if (!this.props.multiple) {
-      return undefined
-    }
-
-    const minItem = this.item.minElement.item.value
-    const minLabelContent = this.slots?.minLabel
-      ? this.slots.minLabel({ value: this.item.value.min, item: minItem })
-      : this.item.minElement.label
-
-    const rippleVNode = this.components?.render('ripple', {
-      visible: this.item.isRipple()
-    })
-
-    return h(
-      'button',
-      {
-        'ref': this.item.minElement.element,
-        'class': [this.getSubClass('thumb'), this.getSubClass('thumbMin')],
-        'type': 'button',
-        'tabindex': this.item.enabled.isEnabled ? 0 : -1,
-        'role': 'slider',
-        'aria-valuenow': this.item.value.min,
-        'aria-valuemin': this.item.marksData.minNumber,
-        'aria-valuemax': this.item.value.max,
-        'aria-orientation': this.props.vertical ? 'vertical' : 'horizontal',
-        ...this.item.enabled.aria,
-        'onKeydown': this.item.event.onKeydown,
-        'onMousedown': (event: MouseEvent) => this.item.event.onMousedown(event, SliderFocusType.min),
-        'onTouchstart': (event: TouchEvent) => this.item.event.onMousedown(event, SliderFocusType.min)
-      },
-      [
-        h(
-          'span',
-          {
-            ref: this.item.minElement.elementLabel,
-            class: this.getSubClass('label')
-          },
-          [minLabelContent]
-        ),
-        ...(rippleVNode ? [rippleVNode] : [])
-      ]
-    )
-  }
-
-  /**
-   * Renders maximum thumb handle button.
-   *
-   * Рендерит кнопку максимального ползунка.
-   * @returns VNode / VNode ползунка
-   */
-  readonly renderThumbMax = (): VNode => {
-    const maxItem = this.item.maxElement.item.value
-    const maxLabelContent = this.slots?.maxLabel
-      ? this.slots.maxLabel({ value: this.item.value.max, item: maxItem })
-      : this.item.maxElement.label
-
-    const rippleVNode = this.components?.render('ripple', {
-      visible: this.item.isRipple()
-    })
-
-    return h(
-      'button',
-      {
-        'ref': this.item.maxElement.element,
-        'class': [this.getSubClass('thumb'), this.getSubClass('thumbMax')],
-        'type': 'button',
-        'tabindex': this.item.enabled.isEnabled ? 0 : -1,
-        'role': 'slider',
-        'aria-valuenow': this.item.value.max,
-        'aria-valuemin': this.props.multiple ? this.item.value.min : this.item.marksData.minNumber,
-        'aria-valuemax': this.item.marksData.maxNumber,
-        'aria-orientation': this.props.vertical ? 'vertical' : 'horizontal',
-        ...this.item.enabled.aria,
-        'onKeydown': this.item.event.onKeydown,
-        'onMousedown': (event: MouseEvent) => this.item.event.onMousedown(event, SliderFocusType.max),
-        'onTouchstart': (event: TouchEvent) => this.item.event.onMousedown(event, SliderFocusType.max)
-      },
-      [
-        h(
-          'span',
-          {
-            ref: this.item.maxElement.elementLabel,
-            class: this.getSubClass('label')
-          },
-          [maxLabelContent]
-        ),
-        ...(rippleVNode ? [rippleVNode] : [])
-      ]
-    )
-  }
-
-  /**
-   * Renders slider background rail element.
-   *
-   * Рендерит элемент рельса заднего плана слайдера.
-   * @returns VNode / VNode рельса
-   */
-  readonly renderRail = (): VNode => {
-    return h('div', {
-      class: this.getSubClass('rail')
-    })
-  }
-
-  /**
-   * Renders active track element.
-   *
-   * Рендерит элемент активной дорожки слайдера.
-   * @returns VNode / VNode дорожки
-   */
-  readonly renderTrack = (): VNode => {
-    return h('div', {
-      class: this.getSubClass('track')
-    })
-  }
-
-  /**
-   * Renders tick marks container and items.
-   *
-   * Рендерит контейнер и элементы делений/меток.
-   * @returns VNode or undefined / VNode или undefined
-   */
-  readonly renderMarks = (): VNode | undefined => {
-    if (!this.item.marksData.is()) {
-      return undefined
-    }
-
-    const marksList = this.item.marksData.get()!
-
-    const markVNodes = marksList.map((markItem) => {
-      const markSlotContent = this.slots?.mark
-        ? this.slots.mark({ item: markItem })
-        : undefined
-
-      return h('span', {
-        'key': markItem.mark,
-        'class': this.getSubClass('mark'),
-        'data-text': markItem.text,
-        'data-value': markItem.value,
-        'style': markItem.style
-      }, [markSlotContent])
-    })
-
-    return h('div', {
-      class: this.getSubClass('marks')
-    }, markVNodes)
-  }
-
-  /**
-   * Renders clickable/touchable interactive selection area.
-   *
-   * Рендерит кликабельную/интерактивную область выбора.
-   * @returns VNode / VNode области выбора
-   */
-  readonly renderSelect = (): VNode => {
-    return h('div', {
-      class: this.getSubClass('select'),
-      onMousedown: this.item.event.onMousedown,
-      onTouchstart: this.item.event.onMousedown
-    })
-  }
-
-  /**
    * A method for rendering main DOM tree.
    *
    * Метод для рендеринга главного DOM-дерева.
    * @returns root VNode / корневой VNode
    */
   protected initRender(): VNode {
-    const minThumb = this.renderThumbMin()
-    const maxThumb = this.renderThumbMax()
-    const rail = this.renderRail()
-    const track = this.renderTrack()
-    const marks = this.renderMarks()
-    const select = this.renderSelect()
-
     const children: VNode[] = [
-      ...(minThumb ? [minThumb] : []),
-      maxThumb,
-      rail,
-      track,
-      ...(marks ? [marks] : []),
-      select
+      ...this.renderThumbMin(),
+      ...this.renderThumbMax(),
+      ...this.renderRail(),
+      ...this.renderTrack(),
+      ...this.renderMarks(),
+      ...this.renderSelect()
     ]
 
     return h(
@@ -324,5 +152,183 @@ export class SliderDesign<
       },
       children
     )
+  }
+
+  /**
+   * Renders minimum thumb handle button for range mode.
+   *
+   * Рендерит кнопку минимального ползунка для режима диапазона.
+   * @returns VNode or undefined / VNode или undefined
+   */
+  readonly renderThumbMin = (): VNode[] => {
+    if (this.props.multiple) {
+      const minLabelContent = this.slots?.minLabel
+        ? this.initSlot('minLabel', undefined, this.item.minElement.getSlot())
+        : this.item.minElement.label
+
+      return [
+        h(
+          'button',
+          {
+            ref: this.item.minElement.element,
+            class: [
+              this.classes?.value.thumb,
+              this.classes?.value.thumbMin
+            ],
+            tabindex: this.item.tabindex,
+            ...this.item.minElement.aria,
+            ...this.item.enabled.aria,
+            ...this.item.event.getEventsMin()
+          },
+          this.renderThumbContent(minLabelContent)
+        )
+      ]
+    }
+
+    return []
+  }
+
+  /**
+   * Renders maximum thumb handle button.
+   *
+   * Рендерит кнопку максимального ползунка.
+   * @returns VNode / VNode ползунка
+   */
+  readonly renderThumbMax = (): VNode[] => {
+    const maxLabelContent = this.slots?.maxLabel
+      ? this.initSlot('maxLabel', undefined, this.item.maxElement.getSlot())
+      : this.item.maxElement.label
+
+    return [
+      h(
+        'button',
+        {
+          ref: this.item.maxElement.element,
+          class: [
+            this.classes?.value.thumb,
+            this.classes?.value.thumbMax
+          ],
+          tabindex: this.item.tabindex,
+          ...this.item.maxElement.aria,
+          ...this.item.enabled.aria,
+          ...this.item.event.getEventsMax()
+        },
+        this.renderThumbContent(maxLabelContent)
+      )
+    ]
+  }
+
+  /**
+   * Renders inner elements of thumb button (label element and ripple effect).
+   *
+   * Рендерит внутренние элементы кнопки ползунка (элемент метки и эффект волны).
+   * @param label label content / содержимое метки
+   * @returns VNode[] / массив элементов VNode
+   */
+  readonly renderThumbContent = (label?: any): VNode[] => {
+    return [
+      h(
+        'span',
+        { class: this.classes?.value.label },
+        label
+      ),
+      ...this.renderRipple()
+    ]
+  }
+
+  /**
+   * Renders slider background rail element.
+   *
+   * Рендерит элемент рельса заднего плана слайдера.
+   * @returns VNode / VNode рельса
+   */
+  readonly renderRail = (): VNode[] => {
+    return [
+      h('div', { class: this.classes?.value.rail })
+    ]
+  }
+
+  /**
+   * Renders active track element.
+   *
+   * Рендерит элемент активной дорожки слайдера.
+   * @returns VNode / VNode дорожки
+   */
+  readonly renderTrack = (): VNode[] => {
+    return [
+      h('div', { class: this.classes?.value.track })
+    ]
+  }
+
+  /**
+   * Renders tick marks container and items.
+   *
+   * Рендерит контейнер и элементы делений/меток.
+   * @returns VNode or undefined / VNode или undefined
+   */
+  readonly renderMarks = (): VNode[] => {
+    const marksList = this.item.marksData.get()
+
+    if (marksList) {
+      const children = marksList.map(this.renderMarkItem)
+
+      return [
+        h('div', {
+          class: this.classes?.value.marks,
+          ...AriaStaticInclude.hidden()
+        }, children)
+      ]
+    }
+
+    return []
+  }
+
+  /**
+   * Renders single mark element.
+   *
+   * Рендерит отдельный элемент метки.
+   * @param markItem mark item configuration / конфигурация элемента метки
+   * @returns VNode / VNode метки
+   */
+  readonly renderMarkItem = (markItem: SliderMarkItem): VNode => {
+    return h(
+      'span',
+      {
+        'key': markItem.mark,
+        'class': this.classes?.value.mark,
+        'data-label': markItem.label,
+        'data-value': markItem.value,
+        'style': markItem.style
+      },
+      this.initSlot('mark', undefined, { item: markItem })
+    )
+  }
+
+  /**
+   * Renders clickable/touchable interactive selection area.
+   *
+   * Рендерит кликабельную/интерактивную область выбора.
+   * @returns VNode / VNode области выбора
+   */
+  readonly renderSelect = (): VNode[] => {
+    return [
+      h('div', {
+        class: this.classes?.value.select,
+        onMousedown: this.item.event.onMousedown,
+        onTouchstart: this.item.event.onMousedown
+      })
+    ]
+  }
+
+  /**
+   * Renders ripple animation component if active.
+   *
+   * Рендерит компонент анимации волны (ripple), если активен.
+   * @returns VNode or undefined / VNode или undefined
+   */
+  readonly renderRipple = (): VNode[] => {
+    return this.components?.render('ripple', {
+      visible: this.item.isRipple()
+    })
   }
 }

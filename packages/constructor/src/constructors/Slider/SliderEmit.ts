@@ -2,12 +2,14 @@ import { watch } from 'vue'
 import type { ConstrEmit } from '@dxtmisha/functional'
 
 import type { ModelValueInclude } from '../../classes/ModelValueInclude'
-import type { SliderEventDetail, SliderValueType } from './basicTypes'
-import type { SliderProps } from './props'
+
 import type { SliderThumbMax } from './SliderThumbMax'
 import type { SliderThumbMin } from './SliderThumbMin'
 import type { SliderValue } from './SliderValue'
+
+import type { SliderEventDetail, SliderValueType } from './basicTypes'
 import type { SliderEmits } from './types'
+import type { SliderProps } from './props'
 
 /**
  * Class for managing slider event emission and event detail generation.
@@ -76,8 +78,8 @@ export class SliderEmit {
    * @returns event detail object for range / объект деталей для диапазона
    */
   protected getDetailMultiple(): SliderEventDetail {
-    const minItem = this.minElement.item.value
-    const maxItem = this.maxElement.item.value
+    const minItem = this.minElement.getItem()
+    const maxItem = this.maxElement.getItem()
 
     return {
       mark: [
@@ -102,7 +104,7 @@ export class SliderEmit {
    * @returns event detail object for single mode / объект деталей для одиночного режима
    */
   protected getDetailSingle(): SliderEventDetail {
-    const maxItem = this.maxElement.item.value
+    const maxItem = this.maxElement.getItem()
 
     return {
       mark: this.value.max,

@@ -1,4 +1,5 @@
 import type { SliderMarksData } from './SliderMarksData'
+
 import { SliderFocusType, type SliderMarkItem } from './basicTypes'
 import type { SliderPropsBasic } from './props'
 
@@ -55,7 +56,7 @@ export class SliderMarks {
     return {
       mark: targetValue,
       value: targetValue,
-      text: String(targetValue)
+      label: String(targetValue)
     }
   }
 

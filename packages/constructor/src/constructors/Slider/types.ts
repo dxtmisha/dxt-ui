@@ -1,7 +1,12 @@
 import type { ConstrClass } from '@dxtmisha/functional'
 
 import type { ModelEmits } from '../../types/modelTypes'
-import type { SliderEventDetail, SliderMarkItem, SliderValueType } from './basicTypes'
+import type {
+  SliderEventDetail,
+  SliderMarkSlot,
+  SliderThumbSlot,
+  SliderValueType
+} from './basicTypes'
 
 /**
  * Interface for describing which components need to be connected for work.
@@ -48,12 +53,12 @@ export interface SliderExpose {
  * Тип, описывающий доступные слоты.
  */
 export interface SliderSlots {
-  /** Slot for min thumb label / Слот для метки минимального ползунка */
-  minLabel?: (props: { value: number, item: SliderMarkItem }) => any
-  /** Slot for max thumb label / Слот для метки максимального ползунка */
-  maxLabel?: (props: { value: number, item: SliderMarkItem }) => any
   /** Slot for mark custom rendering / Слот для пользовательского рендеринга метки */
-  mark?: (props: { item: SliderMarkItem }) => any
+  mark?: (props: SliderMarkSlot) => any
+  /** Slot for min thumb label / Слот для метки минимального ползунка */
+  minLabel?: (props: SliderThumbSlot) => any
+  /** Slot for max thumb label / Слот для метки максимального ползунка */
+  maxLabel?: (props: SliderThumbSlot) => any
 }
 
 /**
@@ -70,6 +75,7 @@ export type SliderClasses = {
   rail: string
   track: string
   marks: string
+  mark: string
   label: string
   select: string
   // :classes [!] System label / Системная метка

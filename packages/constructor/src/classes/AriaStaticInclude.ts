@@ -285,6 +285,16 @@ export class AriaStaticInclude {
   }
 
   /**
+   * Get ARIA orientation attribute.
+   *
+   * Получить атрибут ARIA orientation.
+   * @param orientation ARIA orientation attribute / Атрибут ARIA orientation
+   */
+  static orientation(orientation?: AriaList['aria-orientation']): AriaList {
+    return this.isDataToData('aria-orientation', orientation)
+  }
+
+  /**
    * Returns ARIA value now, min and max.
    *
    * Возвращает ARIA value now, min и max.

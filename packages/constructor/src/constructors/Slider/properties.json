@@ -1,4 +1,19 @@
 {
+  "size": {
+    "_type": "var"
+  },
+  "rail-height": {
+    "_type": "var"
+  },
+  "thumb-size": {
+    "_type": "var"
+  },
+  "mark-left": {
+    "_type": "var"
+  },
+  "mark-size": {
+    "_type": "var"
+  },
   "#thumb": {},
   "#thumbMin": {},
   "#thumbMax": {},
@@ -10,7 +25,6 @@
   "#select": {},
   "~disabled": {},
   "~vertical": {},
-  "~mark": {},
   "~basic": {
     "_category": "style",
     "_default": true

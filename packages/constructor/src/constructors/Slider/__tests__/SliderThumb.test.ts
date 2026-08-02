@@ -14,6 +14,18 @@ class ConcreteSliderThumb extends SliderThumb {
   get mark(): number {
     return 50
   }
+
+  get value(): number {
+    return 50
+  }
+
+  get valuemin(): number {
+    return 0
+  }
+
+  get valuemax(): number {
+    return 100
+  }
 }
 
 function createConcreteSliderThumb() {
@@ -25,7 +37,7 @@ function createConcreteSliderThumb() {
   const model = new ModelValueInclude<SliderValueType>('modelValue', undefined, undefined, ref(50))
   const value = new SliderValue(focus, marks, model, props)
 
-  const thumb = new ConcreteSliderThumb(marks, value)
+  const thumb = new ConcreteSliderThumb(props, marksData, marks, value)
 
   return { thumb }
 }
@@ -34,10 +46,15 @@ describe('SliderThumb', () => {
   it('should compute mark item and return label text', () => {
     const { thumb } = createConcreteSliderThumb()
 
-    expect(thumb.item.value).toEqual({
+    expect(thumb.getItem()).toEqual({
       mark: 50,
       value: 50,
-      text: '50'
+      label: '50'
+    })
+    expect(thumb.item.value).toEqual(thumb.getItem())
+    expect(thumb.getSlot()).toEqual({
+      value: 50,
+      item: thumb.getItem()
     })
     expect(thumb.label).toBe('50')
   })

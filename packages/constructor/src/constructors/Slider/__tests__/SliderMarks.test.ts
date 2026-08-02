@@ -23,16 +23,16 @@ describe('SliderMarks', () => {
   it('should retrieve item from mark list or return fallback item if not found', () => {
     const { marks } = createSliderMarks({
       marks: [
-        { mark: 20, value: 20, text: 'Twenty' },
-        { mark: 80, value: 80, text: 'Eighty' }
+        { mark: 20, value: 20, label: 'Twenty' },
+        { mark: 80, value: 80, label: 'Eighty' }
       ]
     })
 
     const itemTwenty = marks.getItem(20)
-    expect(itemTwenty.text).toBe('Twenty')
+    expect(itemTwenty.label).toBe('Twenty')
 
     const itemMissing = marks.getItem(50)
-    expect(itemMissing).toEqual({ mark: 50, value: 50, text: '50' })
+    expect(itemMissing).toEqual({ mark: 50, value: 50, label: '50' })
   })
 
   it('should navigate next and prev values using step when magnet is disabled', () => {

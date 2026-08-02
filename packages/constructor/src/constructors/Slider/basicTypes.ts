@@ -20,13 +20,27 @@ export type SliderMarkItem = {
   /** Associated value payload / Связанное значение данных */
   value?: SliderMarkItemValue
   /** Display label text / Отображаемый текст метки */
-  text: string
+  label: string
   /** Custom CSS style properties / Пользовательские свойства CSS стилей */
   style?: Record<string, any>
 }
 
 /** List of slider mark items / Список элементов меток слайдера */
 export type SliderMarkList = SliderMarkItem[]
+
+/** Slider thumb label slot payload data / Данные для слота метки ползунка слайдера */
+export type SliderThumbSlot = {
+  /** Current numeric value for thumb / Текущее числовое значение ползунка */
+  value: number
+  /** Mark item configuration object / Объект конфигурации элемента метки */
+  item: SliderMarkItem
+}
+
+/** Slider mark slot payload data / Данные для слота деления/метки слайдера */
+export type SliderMarkSlot = {
+  /** Mark item configuration object / Объект конфигурации элемента метки */
+  item: SliderMarkItem
+}
 
 /** Detail data emitted on slider changes / Детальные данные, испускаемые при изменении слайдера */
 export type SliderEventDetail = {

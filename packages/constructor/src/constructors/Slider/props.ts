@@ -4,7 +4,6 @@ import type { SliderValueType } from './basicTypes'
 
 type SliderPropsToken = {
   // :type [!] System label / Системная метка
-  mark?: boolean
   disabled?: boolean
   vertical?: boolean
   basic?: boolean
@@ -64,7 +63,7 @@ export type SliderProps = SliderPropsBasic & SliderPropsToken
  * Значение по умолчанию для свойства.
  */
 export const defaultsSlider = {
-  keyLabel: 'text',
+  keyLabel: 'label',
   keyValue: 'value',
   marksInit: true,
   max: 100,

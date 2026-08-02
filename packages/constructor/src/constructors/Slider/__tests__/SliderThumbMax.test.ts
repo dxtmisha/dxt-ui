@@ -20,10 +20,17 @@ describe('SliderThumbMax', () => {
     const model = new ModelValueInclude<SliderValueType>('modelValue', undefined, undefined, ref(75))
     const value = new SliderValue(focus, marks, model, props)
 
-    const thumbMax = new SliderThumbMax(marks, value)
+    const thumbMax = new SliderThumbMax(props, marksData, marks, value)
 
     expect(thumbMax.mark).toBe(75)
     expect(thumbMax.label).toBe('75')
+    expect(thumbMax.aria).toEqual({
+      'role': 'slider',
+      'aria-valuenow': 75,
+      'aria-valuemin': 0,
+      'aria-valuemax': 100,
+      'aria-orientation': 'horizontal'
+    })
   })
 
   it('should return value.max as mark property in multiple range mode', () => {
@@ -35,9 +42,16 @@ describe('SliderThumbMax', () => {
     const model = new ModelValueInclude<SliderValueType>('modelValue', undefined, undefined, ref([25, 85]))
     const value = new SliderValue(focus, marks, model, props)
 
-    const thumbMax = new SliderThumbMax(marks, value)
+    const thumbMax = new SliderThumbMax(props, marksData, marks, value)
 
     expect(thumbMax.mark).toBe(85)
     expect(thumbMax.label).toBe('85')
+    expect(thumbMax.aria).toEqual({
+      'role': 'slider',
+      'aria-valuenow': 85,
+      'aria-valuemin': 25,
+      'aria-valuemax': 100,
+      'aria-orientation': 'horizontal'
+    })
   })
 })

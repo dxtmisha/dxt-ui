@@ -25,15 +25,17 @@ function createSliderEmit(
   const model = new ModelValueInclude<SliderValueType>('modelValue', undefined, undefined, ref(initialValue))
   const sliderValue = new SliderValue(focus, marks, model, fullProps)
 
-  const mockMinItem: SliderMarkItem = { mark: 10, value: 10, text: '10' }
-  const mockMaxItem: SliderMarkItem = { mark: 80, value: 80, text: '80' }
+  const mockMinItem: SliderMarkItem = { mark: 10, value: 10, label: '10' }
+  const mockMaxItem: SliderMarkItem = { mark: 80, value: 80, label: '80' }
 
   const minElement = {
-    item: ref(mockMinItem)
+    item: ref(mockMinItem),
+    getItem: () => mockMinItem
   } as unknown as SliderThumbMin
 
   const maxElement = {
-    item: ref(mockMaxItem)
+    item: ref(mockMaxItem),
+    getItem: () => mockMaxItem
   } as unknown as SliderThumbMax
 
   const sliderEmit = new SliderEmit(
@@ -57,7 +59,7 @@ describe('SliderEmit', () => {
 
     expect(mockEmits).toHaveBeenCalledWith('change', 80, {
       mark: 80,
-      item: { mark: 80, value: 80, text: '80' },
+      item: { mark: 80, value: 80, label: '80' },
       value: 80
     })
   })
@@ -71,8 +73,8 @@ describe('SliderEmit', () => {
     expect(mockEmits).toHaveBeenCalledWith('change', [10, 80], {
       mark: [10, 80],
       item: [
-        { mark: 10, value: 10, text: '10' },
-        { mark: 80, value: 80, text: '80' }
+        { mark: 10, value: 10, label: '10' },
+        { mark: 80, value: 80, label: '80' }
       ],
       value: [10, 80]
     })

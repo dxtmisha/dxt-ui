@@ -80,13 +80,13 @@ describe('SliderMarksData', () => {
     expect(resultList?.[0]).toEqual({
       mark: 0,
       value: 0,
-      text: '0',
+      label: '0',
       style: { '--dxt-slider-sys-mark': '0%' }
     })
     expect(resultList?.[1]).toEqual({
       mark: 50,
       value: 50,
-      text: '50',
+      label: '50',
       style: { '--dxt-slider-sys-mark': '50%' }
     })
   })
@@ -108,7 +108,7 @@ describe('SliderMarksData', () => {
     expect(resultList?.[0]).toEqual({
       mark: 10,
       value: 'V1',
-      text: 'Low',
+      label: 'Low',
       style: { '--dxt-slider-sys-mark': '10%' }
     })
   })

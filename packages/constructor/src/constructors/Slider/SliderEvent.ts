@@ -48,6 +48,34 @@ export class SliderEvent {
   ) { }
 
   /**
+   * Returns object containing event handlers for minimum thumb handle element.
+   *
+   * Возвращает объект с обработчиками событий для элемента минимального ползунка.
+   * @returns object with event handlers / объект с обработчиками событий
+   */
+  getEventsMin(): Record<string, (event: any) => void> {
+    return {
+      onKeydown: this.onKeydown,
+      onMousedown: this.onMousedownMin,
+      onTouchstart: this.onMousedownMin
+    }
+  }
+
+  /**
+   * Returns object containing event handlers for maximum thumb handle element.
+   *
+   * Возвращает объект с обработчиками событий для элемента максимального ползунка.
+   * @returns object with event handlers / объект с обработчиками событий
+   */
+  getEventsMax(): Record<string, (event: any) => void> {
+    return {
+      onKeydown: this.onKeydown,
+      onMousedown: this.onMousedownMax,
+      onTouchstart: this.onMousedownMax
+    }
+  }
+
+  /**
    * Focuses corresponding thumb element based on current focus type.
    *
    * Фокусирует соответствующий элемент ползунка на основе текущего типа фокуса.
@@ -133,6 +161,26 @@ export class SliderEvent {
 
     this.go.updateFromCoordinate(coordinate)
     this.dragEvent.start()
+  }
+
+  /**
+   * Handles pointer start interaction for minimum thumb handle.
+   *
+   * Обрабатывает начало взаимодействия указателем для минимального ползунка.
+   * @param event MouseEvent or TouchEvent / событие мыши или касания
+   */
+  readonly onMousedownMin = (event: MouseEvent | TouchEvent): void => {
+    this.onMousedown(event, SliderFocusType.min)
+  }
+
+  /**
+   * Handles pointer start interaction for maximum thumb handle.
+   *
+   * Обрабатывает начало взаимодействия указателем для максимального ползунка.
+   * @param event MouseEvent or TouchEvent / событие мыши или касания
+   */
+  readonly onMousedownMax = (event: MouseEvent | TouchEvent): void => {
+    this.onMousedown(event, SliderFocusType.max)
   }
 
   /**
