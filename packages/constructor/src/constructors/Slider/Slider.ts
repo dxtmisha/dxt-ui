@@ -1,6 +1,5 @@
 import {
   onUnmounted,
-  ref,
   type Ref,
   type ToRefs
 } from 'vue'
@@ -8,8 +7,7 @@ import {
   type ConstrClassObject,
   type ConstrEmit,
   type ConstrStyles,
-  type DesignComp,
-  isArray
+  type DesignComp
 } from '@dxtmisha/functional'
 
 import { EnabledInclude } from '../../classes/EnabledInclude'
@@ -17,13 +15,15 @@ import { ModelValueInclude } from '../../classes/ModelValueInclude'
 
 import { SliderElement } from './SliderElement'
 import { SliderEmit } from './SliderEmit'
+import { SliderFocus } from './SliderFocus'
+import { SliderGo } from './SliderGo'
 import { SliderMarks } from './SliderMarks'
 import { SliderMarksData } from './SliderMarksData'
-import { SliderThumbMin } from './SliderThumbMin'
 import { SliderThumbMax } from './SliderThumbMax'
+import { SliderThumbMin } from './SliderThumbMin'
 import { SliderValue } from './SliderValue'
 
-import type { SliderValueType } from './basicTypes'
+import { SliderFocusType, type SliderValueType } from './basicTypes'
 import type { SliderComponents, SliderEmits, SliderSlots } from './types'
 import type { SliderProps } from './props'
 
@@ -35,32 +35,35 @@ import type { SliderProps } from './props'
  * Управляет состоянием значения слайдера, обработкой диапазона, перетаскиванием, клавиатурной навигацией и ARIA-атрибутами.
  */
 export class Slider {
-  /** Enabled include helper instance / Экземпляр помощника состояния активности */
-  readonly enabled: EnabledInclude
-
   /** Slider emit manager instance / Экземпляр менеджера событий слайдера */
   readonly emitsItem: SliderEmit
 
-  /** Active handle focus ('min' or 'max') / Фокус активного ползунка ('min' или 'max') */
-  readonly focus = ref<'min' | 'max'>('max')
+  /** Enabled include helper instance / Экземпляр помощника состояния активности */
+  readonly enabled: EnabledInclude
 
-  /** Min thumb handle manager / Менеджер минимального ползунка */
-  readonly minElement: SliderThumbMin
+  /** Slider focus manager instance / Экземпляр менеджера фокуса слайдера */
+  readonly focus: SliderFocus
 
-  /** Max thumb handle manager / Менеджер максимального ползунка */
-  readonly maxElement: SliderThumbMax
-
-  /** Slider element manager instance / Экземпляр менеджера элементов слайдера */
-  readonly sliderElement: SliderElement
-
-  /** Slider marks data manager instance / Экземпляр менеджера данных меток слайдера */
-  readonly marksData: SliderMarksData
+  /** Slider navigation and step manager instance / Экземпляр менеджера навигации и шагов слайдера */
+  readonly go: SliderGo
 
   /** Slider marks manager instance / Экземпляр менеджера меток слайдера */
   readonly marks: SliderMarks
 
+  /** Slider marks data manager instance / Экземпляр менеджера данных меток слайдера */
+  readonly marksData: SliderMarksData
+
+  /** Max thumb handle manager / Менеджер максимального ползунка */
+  readonly maxElement: SliderThumbMax
+
+  /** Min thumb handle manager / Менеджер минимального ползунка */
+  readonly minElement: SliderThumbMin
+
   /** Model value include helper / Помощник значения модели */
   readonly model: ModelValueInclude<SliderValueType>
+
+  /** Slider element manager instance / Экземпляр менеджера элементов слайдера */
+  readonly sliderElement: SliderElement
 
   /** Slider value bounds manager instance / Экземпляр менеджера значений слайдера */
   readonly value: SliderValue
@@ -98,10 +101,12 @@ export class Slider {
       ModelValueIncludeConstructor?: typeof ModelValueInclude<SliderValueType>
       SliderElementConstructor?: typeof SliderElement
       SliderEmitConstructor?: typeof SliderEmit
+      SliderFocusConstructor?: typeof SliderFocus
+      SliderGoConstructor?: typeof SliderGo
       SliderMarksConstructor?: typeof SliderMarks
       SliderMarksDataConstructor?: typeof SliderMarksData
-      SliderThumbMinConstructor?: typeof SliderThumbMin
       SliderThumbMaxConstructor?: typeof SliderThumbMax
+      SliderThumbMinConstructor?: typeof SliderThumbMin
       SliderValueConstructor?: typeof SliderValue
     } = {}
   ) {
@@ -110,14 +115,17 @@ export class Slider {
       ModelValueIncludeConstructor = ModelValueInclude,
       SliderElementConstructor = SliderElement,
       SliderEmitConstructor = SliderEmit,
+      SliderFocusConstructor = SliderFocus,
+      SliderGoConstructor = SliderGo,
       SliderMarksConstructor = SliderMarks,
       SliderMarksDataConstructor = SliderMarksData,
-      SliderThumbMinConstructor = SliderThumbMin,
       SliderThumbMaxConstructor = SliderThumbMax,
+      SliderThumbMinConstructor = SliderThumbMin,
       SliderValueConstructor = SliderValue
     } = constructors
 
     this.enabled = new EnabledIncludeConstructor(props)
+    this.focus = new SliderFocusConstructor()
 
     this.model = new ModelValueIncludeConstructor(
       'value',
@@ -130,7 +138,7 @@ export class Slider {
 
     this.marksData = new SliderMarksDataConstructor(props, className)
     this.marks = new SliderMarksConstructor(props, className, this.marksData)
-    this.value = new SliderValueConstructor(this.model, this.marksData, props)
+    this.value = new SliderValueConstructor(this.focus, this.marks, this.model, props)
 
     this.minElement = new SliderThumbMinConstructor(this.marks, this.value)
     this.maxElement = new SliderThumbMaxConstructor(this.marks, this.value)
@@ -144,9 +152,14 @@ export class Slider {
       emits
     )
 
-    if (this.model.getValue() === undefined) {
-      this.model.value.value = this.getInitialValue()
-    }
+    this.go = new SliderGoConstructor(
+      this.emitsItem,
+      this.enabled,
+      this.focus,
+      this.marks,
+      this.sliderElement,
+      this.value
+    )
 
     onUnmounted(() => {
       this.stopDrag()
@@ -192,106 +205,6 @@ export class Slider {
     }
   }
 
-
-
-  /**
-   * Gets initial value from props or defaults.
-   *
-   * Получает начальное значение из свойств или по умолчанию.
-   * @returns initial value / начальное значение
-   */
-  protected getInitialValue(): SliderValueType {
-    if (this.props.value !== undefined) {
-      return this.props.value
-    }
-    if (this.props.modelValue !== undefined) {
-      return this.props.modelValue
-    }
-    if (this.props.default !== undefined) {
-      return this.props.default
-    }
-    return this.props.multiple ? [this.marksData.minNumber, this.marksData.maxNumber] : this.marksData.minNumber
-  }
-
-  /**
-   * Programmatically sets slider value.
-   *
-   * Программно устанавливает значение слайдера.
-   * @param targetValue new slider value / новое значение слайдера
-   * @param focusType handle focus / фокус ползунка
-   */
-  setValue(targetValue: SliderValueType, focusType: 'min' | 'max' = 'max'): void {
-    this.focus.value = focusType
-
-    if (this.props.multiple && isArray(targetValue)) {
-      const checkedMin = this.marks.checkValue(targetValue[0], this.value.min, this.value.max, 'min')
-      const checkedMax = this.marks.checkValue(targetValue[1], checkedMin, this.value.max, 'max')
-      this.model.value.value = [checkedMin, checkedMax]
-    } else if (typeof targetValue === 'number') {
-      const checkedValue = this.marks.checkValue(targetValue, this.value.min, this.value.max, focusType)
-
-      if (this.props.multiple) {
-        if (focusType === 'min') {
-          this.model.value.value = [checkedValue, this.value.max]
-        } else {
-          this.model.value.value = [this.value.min, checkedValue]
-        }
-      } else {
-        this.model.value.value = checkedValue
-      }
-    }
-
-    this.emitsItem.emit('input')
-  }
-
-  /**
-   * Position update from pointer coordinate.
-   *
-   * Обновление позиции по координате указателя.
-   * @param coordinate pointer coordinate / координата указателя
-   */
-  updateFromCoordinate(coordinate: number): void {
-    const sliderRect = this.sliderElement.rectangle
-    if (!sliderRect) {
-      return
-    }
-
-    const percentage = this.sliderElement.getMovePercent(coordinate, sliderRect)
-    const markValue = this.marks.toMark(percentage)
-
-    this.setValue(markValue, this.focus.value)
-  }
-
-  /**
-   * Increases active thumb value by step or neighbor mark.
-   *
-   * Увеличивает значение активного ползунка на шаг или соседнюю метку.
-   */
-  increase(): void {
-    if (!this.enabled.isEnabled) {
-      return
-    }
-    const currentActiveValue = this.focus.value === 'min' ? this.value.min : this.value.max
-    const nextValue = this.marks.getMarkNeighbor(currentActiveValue, true)
-    this.setValue(nextValue, this.focus.value)
-    this.emitsItem.emit('change')
-  }
-
-  /**
-   * Decreases active thumb value by step or neighbor mark.
-   *
-   * Уменьшает значение активного ползунка на шаг или соседнюю метку.
-   */
-  decrease(): void {
-    if (!this.enabled.isEnabled) {
-      return
-    }
-    const currentActiveValue = this.focus.value === 'min' ? this.value.min : this.value.max
-    const prevValue = this.marks.getMarkNeighbor(currentActiveValue, false)
-    this.setValue(prevValue, this.focus.value)
-    this.emitsItem.emit('change')
-  }
-
   /**
    * Handles keyboard navigation events on thumb handle buttons.
    *
@@ -309,29 +222,29 @@ export class Slider {
       case 'ArrowRight':
       case 'ArrowUp':
         event.preventDefault()
-        this.increase()
+        this.go.increase()
         break
       case 'ArrowLeft':
       case 'ArrowDown':
         event.preventDefault()
-        this.decrease()
+        this.go.decrease()
         break
       case 'Home':
         event.preventDefault()
-        this.setValue(this.marksData.minNumber, this.focus.value)
+        this.value.set(this.marksData.minNumber, this.focus.get())
         this.emitsItem.emit('change')
         break
       case 'End':
         event.preventDefault()
-        this.setValue(this.marksData.maxNumber, this.focus.value)
+        this.value.set(this.marksData.maxNumber, this.focus.get())
         this.emitsItem.emit('change')
         break
       case 'PageUp': {
         event.preventDefault()
         const range = this.marksData.maxNumber - this.marksData.minNumber
         const pageStep = Math.max(this.marksData.stepNumber, Math.round(range * 0.1))
-        const currentValue = this.focus.value === 'min' ? this.value.min : this.value.max
-        this.setValue(currentValue + pageStep, this.focus.value)
+        const currentValue = this.focus.isMin() ? this.value.min : this.value.max
+        this.value.set(currentValue + pageStep, this.focus.get())
         this.emitsItem.emit('change')
         break
       }
@@ -339,8 +252,8 @@ export class Slider {
         event.preventDefault()
         const range = this.marksData.maxNumber - this.marksData.minNumber
         const pageStep = Math.max(this.marksData.stepNumber, Math.round(range * 0.1))
-        const currentValue = this.focus.value === 'min' ? this.value.min : this.value.max
-        this.setValue(currentValue - pageStep, this.focus.value)
+        const currentValue = this.focus.isMin() ? this.value.min : this.value.max
+        this.value.set(currentValue - pageStep, this.focus.get())
         this.emitsItem.emit('change')
         break
       }
@@ -378,7 +291,7 @@ export class Slider {
    * @param event MouseEvent or TouchEvent / событие мыши или касания
    * @param forcedFocus optional explicit handle target / опциональная явная цель ползунка
    */
-  readonly onMousedown = (event: MouseEvent | TouchEvent, forcedFocus?: 'min' | 'max'): void => {
+  readonly onMousedown = (event: MouseEvent | TouchEvent, forcedFocus?: SliderFocusType): void => {
     if (!this.enabled.isEnabled) {
       return
     }
@@ -389,22 +302,20 @@ export class Slider {
     const coordinate = this.getCoordinates(event)
 
     if (forcedFocus) {
-      this.focus.value = forcedFocus
+      this.focus.set(forcedFocus)
     } else {
-      this.focus.value = this.sliderElement.getTypeByCoordinate(
-        coordinate,
-        this.minElement.rectangle,
-        this.maxElement.rectangle
+      this.focus.set(
+        this.sliderElement.getTypeByCoordinate(
+          coordinate,
+          this.minElement.rectangle,
+          this.maxElement.rectangle
+        )
       )
     }
 
-    if (this.focus.value === 'min') {
-      this.minElement.focus()
-    } else {
-      this.maxElement.focus()
-    }
+    this.focus.focus(this.minElement, this.maxElement)
 
-    this.updateFromCoordinate(coordinate)
+    this.go.updateFromCoordinate(coordinate)
     this.startDrag()
   }
 
@@ -421,7 +332,7 @@ export class Slider {
 
       if (coordinate !== this.previousPointerPosition) {
         this.previousPointerPosition = coordinate
-        this.updateFromCoordinate(coordinate)
+        this.go.updateFromCoordinate(coordinate)
       }
     }
 

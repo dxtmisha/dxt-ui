@@ -79,9 +79,9 @@ export class SliderDesign<
   protected initExpose(): EXPOSE {
     return {
       getValue: () => this.item.model.getValue(),
-      setValue: val => this.item.setValue(val),
-      increase: () => this.item.increase(),
-      decrease: () => this.item.decrease()
+      setValue: val => this.item.value.set(val),
+      increase: () => this.item.go.increase(),
+      decrease: () => this.item.go.decrease()
     } as EXPOSE
   }
 

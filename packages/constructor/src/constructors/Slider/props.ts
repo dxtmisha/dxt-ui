@@ -15,8 +15,6 @@ type SliderPropsToken = {
 export type SliderPropsBasic = ModelProps<SliderValueType> & {
   /** Current value or range / Текущее значение или диапазон */
   value?: SliderValueType
-  /** Initial default value / Начальное значение по умолчанию */
-  default?: SliderValueType
 
   /** List of marks or tick values / Список меток или делений */
   marks?: ListList<any>

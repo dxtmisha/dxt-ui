@@ -1,6 +1,12 @@
 import type { ConstrBind, NumberOrStringOrBoolean } from '@dxtmisha/functional'
 import type { SliderPropsBasic } from './props'
 
+/** Focus handle type enum for Slider / Перечисление типов фокуса ползунка слайдера */
+export enum SliderFocusType {
+  min = 'min',
+  max = 'max'
+}
+
 /** Slider value type (single number or min-max pair) / Тип значения слайдера (одно число или пара мин-макс) */
 export type SliderValueType = number | [number, number]
 

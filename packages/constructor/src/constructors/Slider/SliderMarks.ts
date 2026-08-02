@@ -1,5 +1,5 @@
 import type { SliderMarksData } from './SliderMarksData'
-import type { SliderMarkItem } from './basicTypes'
+import { SliderFocusType, type SliderMarkItem } from './basicTypes'
 import type { SliderPropsBasic } from './props'
 
 /**
@@ -19,6 +19,16 @@ export class SliderMarks {
     protected readonly className: string,
     protected readonly data: SliderMarksData
   ) { }
+
+  /**
+   * Returns marks data manager instance.
+   *
+   * Возвращает экземпляр менеджера данных меток.
+   * @returns marks data manager / менеджер данных меток
+   */
+  getData(): SliderMarksData {
+    return this.data
+  }
 
   /**
    * Retrieves mark item object for a given mark or value.
@@ -172,14 +182,14 @@ export class SliderMarks {
     targetValue: number,
     minCurrent: number,
     maxCurrent: number,
-    focusType: 'min' | 'max'
+    focusType: SliderFocusType
   ): number {
     const minimumDistance = this.data.minimumDistanceNumber
     let minLimit = this.data.minNumber
     let maxLimit = this.data.maxNumber
 
     if (this.props.multiple) {
-      if (focusType === 'min') {
+      if (focusType === SliderFocusType.min) {
         maxLimit = maxCurrent - minimumDistance
       } else {
         minLimit = minCurrent + minimumDistance

@@ -1,4 +1,6 @@
 import type { Ref } from 'vue'
+
+import { SliderFocusType } from './basicTypes'
 import type { SliderPropsBasic } from './props'
 
 /**
@@ -71,7 +73,7 @@ export class SliderElement {
     minRectangle?: DOMRect,
     maxRectangle?: DOMRect,
     isVertical: boolean = Boolean(this.props.vertical)
-  ): 'min' | 'max' {
+  ): SliderFocusType {
     if (
       this.props.multiple
       && minRectangle
@@ -81,9 +83,9 @@ export class SliderElement {
       const distanceMin = Math.abs(minRectangle[positionProperty] - coordinate)
       const distanceMax = Math.abs(maxRectangle[positionProperty] - coordinate)
 
-      return distanceMin < distanceMax ? 'min' : 'max'
+      return distanceMin < distanceMax ? SliderFocusType.min : SliderFocusType.max
     }
 
-    return 'max'
+    return SliderFocusType.max
   }
 }

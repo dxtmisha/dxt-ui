@@ -61,6 +61,16 @@ export class ModelValueInclude<Value = any> {
   }
 
   /**
+   * Sets the model value.
+   *
+   * Устанавливает значение модели.
+   * @param value new model value / новое значение модели
+   */
+  set(value?: Value): void {
+    this.value.value = value
+  }
+
+  /**
    * Click event handler.
    * Updates the model value if a value option is provided and the component is not in a readonly state.
    *

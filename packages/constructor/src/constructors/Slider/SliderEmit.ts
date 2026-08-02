@@ -1,3 +1,4 @@
+import { watch } from 'vue'
 import type { ConstrEmit } from '@dxtmisha/functional'
 
 import type { ModelValueInclude } from '../../classes/ModelValueInclude'
@@ -30,7 +31,14 @@ export class SliderEmit {
     protected readonly minElement: SliderThumbMin,
     protected readonly maxElement: SliderThumbMax,
     protected readonly emits?: ConstrEmit<SliderEmits>
-  ) { }
+  ) {
+    if (this.emits) {
+      watch(
+        this.model.value,
+        () => this.emit('input')
+      )
+    }
+  }
 
   /**
    * Emits input and change events with detail payload.
@@ -72,9 +80,18 @@ export class SliderEmit {
     const maxItem = this.maxElement.item.value
 
     return {
-      mark: [this.value.min, this.value.max],
-      item: [minItem, maxItem],
-      value: [minItem.value, maxItem.value]
+      mark: [
+        this.value.min,
+        this.value.max
+      ],
+      item: [
+        minItem,
+        maxItem
+      ],
+      value: [
+        minItem.value,
+        maxItem.value
+      ]
     }
   }
 
