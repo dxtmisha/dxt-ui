@@ -19,8 +19,8 @@ export class SliderMarksData {
   /** Computed list of normalized mark items / Вычисляемый список нормализованных элементов меток */
   readonly data = computed<SliderMarkList | undefined>(() => {
     if (this.props.marks) {
-      const resultList: SliderMarkList = []
       const rawList = this.getRawMarks()
+      const resultList: SliderMarkList = []
 
       rawList.forEach((item: any) => {
         const mark = this.getItemMark(item)

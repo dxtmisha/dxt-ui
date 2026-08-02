@@ -1,8 +1,5 @@
 import { ref } from 'vue'
 
-import type { SliderThumbMax } from './SliderThumbMax'
-import type { SliderThumbMin } from './SliderThumbMin'
-
 import { SliderFocusType } from './basicTypes'
 
 /**
@@ -52,20 +49,5 @@ export class SliderFocus {
    */
   set(focusType: SliderFocusType): void {
     this.value.value = focusType
-  }
-
-  /**
-   * Focuses corresponding thumb element based on current focus type.
-   *
-   * Фокусирует соответствующий элемент ползунка на основе текущего типа фокуса.
-   * @param minElement min thumb handle manager / менеджер минимального ползунка
-   * @param maxElement max thumb handle manager / менеджер максимального ползунка
-   */
-  focus(minElement: SliderThumbMin, maxElement: SliderThumbMax): void {
-    if (this.isMin()) {
-      minElement.focus()
-    } else {
-      maxElement.focus()
-    }
   }
 }

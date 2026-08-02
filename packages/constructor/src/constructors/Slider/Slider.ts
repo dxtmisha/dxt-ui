@@ -13,8 +13,10 @@ import {
 import { EnabledInclude } from '../../classes/EnabledInclude'
 import { ModelValueInclude } from '../../classes/ModelValueInclude'
 
+import { SliderDragEvent } from './SliderDragEvent'
 import { SliderElement } from './SliderElement'
 import { SliderEmit } from './SliderEmit'
+import { SliderEvent } from './SliderEvent'
 import { SliderFocus } from './SliderFocus'
 import { SliderGo } from './SliderGo'
 import { SliderMarks } from './SliderMarks'
@@ -23,7 +25,7 @@ import { SliderThumbMax } from './SliderThumbMax'
 import { SliderThumbMin } from './SliderThumbMin'
 import { SliderValue } from './SliderValue'
 
-import { SliderFocusType, type SliderValueType } from './basicTypes'
+import { type SliderValueType } from './basicTypes'
 import type { SliderComponents, SliderEmits, SliderSlots } from './types'
 import type { SliderProps } from './props'
 
@@ -35,11 +37,17 @@ import type { SliderProps } from './props'
  * Управляет состоянием значения слайдера, обработкой диапазона, перетаскиванием, клавиатурной навигацией и ARIA-атрибутами.
  */
 export class Slider {
+  /** Slider drag event manager instance / Экземпляр менеджера событий перетаскивания слайдера */
+  readonly dragEvent: SliderDragEvent
+
   /** Slider emit manager instance / Экземпляр менеджера событий слайдера */
   readonly emitsItem: SliderEmit
 
   /** Enabled include helper instance / Экземпляр помощника состояния активности */
   readonly enabled: EnabledInclude
+
+  /** Slider keyboard event manager instance / Экземпляр менеджера событий клавиатуры слайдера */
+  readonly event: SliderEvent
 
   /** Slider focus manager instance / Экземпляр менеджера фокуса слайдера */
   readonly focus: SliderFocus
@@ -68,12 +76,6 @@ export class Slider {
   /** Slider value bounds manager instance / Экземпляр менеджера значений слайдера */
   readonly value: SliderValue
 
-  /** Previous pointer position for drag optimization / Предыдущая позиция указателя для оптимизации перетаскивания */
-  protected previousPointerPosition: number | undefined = undefined
-
-  /** Active document listeners cleanup function / Функция очистки активных слушателей документа */
-  protected dragCleanup?: () => void
-
   /**
    * Constructor
    * @param props input data / входные данные
@@ -99,8 +101,10 @@ export class Slider {
     constructors: {
       EnabledIncludeConstructor?: typeof EnabledInclude
       ModelValueIncludeConstructor?: typeof ModelValueInclude<SliderValueType>
+      SliderDragEventConstructor?: typeof SliderDragEvent
       SliderElementConstructor?: typeof SliderElement
       SliderEmitConstructor?: typeof SliderEmit
+      SliderEventConstructor?: typeof SliderEvent
       SliderFocusConstructor?: typeof SliderFocus
       SliderGoConstructor?: typeof SliderGo
       SliderMarksConstructor?: typeof SliderMarks
@@ -113,8 +117,10 @@ export class Slider {
     const {
       EnabledIncludeConstructor = EnabledInclude,
       ModelValueIncludeConstructor = ModelValueInclude,
+      SliderDragEventConstructor = SliderDragEvent,
       SliderElementConstructor = SliderElement,
       SliderEmitConstructor = SliderEmit,
+      SliderEventConstructor = SliderEvent,
       SliderFocusConstructor = SliderFocus,
       SliderGoConstructor = SliderGo,
       SliderMarksConstructor = SliderMarks,
@@ -142,7 +148,12 @@ export class Slider {
 
     this.minElement = new SliderThumbMinConstructor(this.marks, this.value)
     this.maxElement = new SliderThumbMaxConstructor(this.marks, this.value)
-    this.sliderElement = new SliderElementConstructor(props, element)
+    this.sliderElement = new SliderElementConstructor(
+      props,
+      element,
+      this.maxElement,
+      this.minElement
+    )
     this.emitsItem = new SliderEmitConstructor(
       props,
       this.model,
@@ -161,8 +172,28 @@ export class Slider {
       this.value
     )
 
+    this.dragEvent = new SliderDragEventConstructor(
+      props,
+      this.emitsItem,
+      this.go
+    )
+
+    this.event = new SliderEventConstructor(
+      props,
+      this.dragEvent,
+      this.emitsItem,
+      this.enabled,
+      this.focus,
+      this.go,
+      this.marksData,
+      this.maxElement,
+      this.minElement,
+      this.sliderElement,
+      this.value
+    )
+
     onUnmounted(() => {
-      this.stopDrag()
+      this.dragEvent.stop()
     })
   }
 
@@ -203,169 +234,5 @@ export class Slider {
       [`--${this.className}-sys-thumb-min-x`]: `${this.marksData.toPercent(this.value.min)}%`,
       [`--${this.className}-sys-thumb-max-x`]: `${this.marksData.toPercent(this.value.max)}%`
     }
-  }
-
-  /**
-   * Handles keyboard navigation events on thumb handle buttons.
-   *
-   * Обрабатывает события клавиатурной навигации на кнопках ползунков.
-   * @param event KeyboardEvent / событие клавиатуры
-   */
-  readonly onKeydown = (event: KeyboardEvent): void => {
-    if (!this.enabled.isEnabled) {
-      return
-    }
-
-    const key = event.code || event.key
-
-    switch (key) {
-      case 'ArrowRight':
-      case 'ArrowUp':
-        event.preventDefault()
-        this.go.increase()
-        break
-      case 'ArrowLeft':
-      case 'ArrowDown':
-        event.preventDefault()
-        this.go.decrease()
-        break
-      case 'Home':
-        event.preventDefault()
-        this.value.set(this.marksData.minNumber, this.focus.get())
-        this.emitsItem.emit('change')
-        break
-      case 'End':
-        event.preventDefault()
-        this.value.set(this.marksData.maxNumber, this.focus.get())
-        this.emitsItem.emit('change')
-        break
-      case 'PageUp': {
-        event.preventDefault()
-        const range = this.marksData.maxNumber - this.marksData.minNumber
-        const pageStep = Math.max(this.marksData.stepNumber, Math.round(range * 0.1))
-        const currentValue = this.focus.isMin() ? this.value.min : this.value.max
-        this.value.set(currentValue + pageStep, this.focus.get())
-        this.emitsItem.emit('change')
-        break
-      }
-      case 'PageDown': {
-        event.preventDefault()
-        const range = this.marksData.maxNumber - this.marksData.minNumber
-        const pageStep = Math.max(this.marksData.stepNumber, Math.round(range * 0.1))
-        const currentValue = this.focus.isMin() ? this.value.min : this.value.max
-        this.value.set(currentValue - pageStep, this.focus.get())
-        this.emitsItem.emit('change')
-        break
-      }
-    }
-  }
-
-  /**
-   * Extracts coordinate pointer value from MouseEvent or TouchEvent.
-   *
-   * Извлекает значение координаты указателя из MouseEvent или TouchEvent.
-   * @param event Pointer/Touch event / событие указателя или касания
-   * @returns numeric coordinate / числовая координата
-   */
-  getCoordinates(event: MouseEvent | TouchEvent): number {
-    const isVertical = Boolean(this.props.vertical)
-
-    if ('targetTouches' in event && event.targetTouches.length > 0) {
-      const touch = event.targetTouches[0]
-      return isVertical ? touch.clientY : touch.clientX
-    }
-
-    if ('touches' in event && event.touches.length > 0) {
-      const touch = event.touches[0]
-      return isVertical ? touch.clientY : touch.clientX
-    }
-
-    const mouseEvent = event as MouseEvent
-    return isVertical ? mouseEvent.clientY : mouseEvent.clientX
-  }
-
-  /**
-   * Handles pointer start interaction (mousedown / touchstart).
-   *
-   * Обрабатывает начало взаимодействия указателем (mousedown / touchstart).
-   * @param event MouseEvent or TouchEvent / событие мыши или касания
-   * @param forcedFocus optional explicit handle target / опциональная явная цель ползунка
-   */
-  readonly onMousedown = (event: MouseEvent | TouchEvent, forcedFocus?: SliderFocusType): void => {
-    if (!this.enabled.isEnabled) {
-      return
-    }
-
-    event.preventDefault()
-    event.stopPropagation()
-
-    const coordinate = this.getCoordinates(event)
-
-    if (forcedFocus) {
-      this.focus.set(forcedFocus)
-    } else {
-      this.focus.set(
-        this.sliderElement.getTypeByCoordinate(
-          coordinate,
-          this.minElement.rectangle,
-          this.maxElement.rectangle
-        )
-      )
-    }
-
-    this.focus.focus(this.minElement, this.maxElement)
-
-    this.go.updateFromCoordinate(coordinate)
-    this.startDrag()
-  }
-
-  /**
-   * Starts drag global event listeners.
-   *
-   * Запускает глобальные слушатели событий перетаскивания.
-   */
-  protected startDrag(): void {
-    this.stopDrag()
-
-    const onPointerMove = (event: MouseEvent | TouchEvent): void => {
-      const coordinate = this.getCoordinates(event)
-
-      if (coordinate !== this.previousPointerPosition) {
-        this.previousPointerPosition = coordinate
-        this.go.updateFromCoordinate(coordinate)
-      }
-    }
-
-    const onPointerEnd = (): void => {
-      this.stopDrag()
-      this.emitsItem.emit('change')
-    }
-
-    window.addEventListener('mousemove', onPointerMove)
-    window.addEventListener('mouseup', onPointerEnd)
-    window.addEventListener('touchmove', onPointerMove, { passive: false })
-    window.addEventListener('touchend', onPointerEnd)
-    window.addEventListener('touchcancel', onPointerEnd)
-
-    this.dragCleanup = (): void => {
-      window.removeEventListener('mousemove', onPointerMove)
-      window.removeEventListener('mouseup', onPointerEnd)
-      window.removeEventListener('touchmove', onPointerMove)
-      window.removeEventListener('touchend', onPointerEnd)
-      window.removeEventListener('touchcancel', onPointerEnd)
-    }
-  }
-
-  /**
-   * Stops drag global event listeners.
-   *
-   * Останавливает глобальные слушатели событий перетаскивания.
-   */
-  protected stopDrag(): void {
-    if (this.dragCleanup) {
-      this.dragCleanup()
-      this.dragCleanup = undefined
-    }
-    this.previousPointerPosition = undefined
   }
 }

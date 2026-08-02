@@ -7,6 +7,7 @@ import {
 
 import { Slider } from './Slider'
 
+import { SliderFocusType } from './basicTypes'
 import { type SliderPropsBasic } from './props'
 import {
   type SliderClasses,
@@ -156,9 +157,9 @@ export class SliderDesign<
         'aria-valuemax': this.item.value.max,
         'aria-orientation': this.props.vertical ? 'vertical' : 'horizontal',
         ...this.item.enabled.aria,
-        'onKeydown': this.item.onKeydown,
-        'onMousedown': (event: MouseEvent) => this.item.onMousedown(event, 'min'),
-        'onTouchstart': (event: TouchEvent) => this.item.onMousedown(event, 'min')
+        'onKeydown': this.item.event.onKeydown,
+        'onMousedown': (event: MouseEvent) => this.item.event.onMousedown(event, SliderFocusType.min),
+        'onTouchstart': (event: TouchEvent) => this.item.event.onMousedown(event, SliderFocusType.min)
       },
       [
         h(
@@ -203,9 +204,9 @@ export class SliderDesign<
         'aria-valuemax': this.item.marksData.maxNumber,
         'aria-orientation': this.props.vertical ? 'vertical' : 'horizontal',
         ...this.item.enabled.aria,
-        'onKeydown': this.item.onKeydown,
-        'onMousedown': (event: MouseEvent) => this.item.onMousedown(event, 'max'),
-        'onTouchstart': (event: TouchEvent) => this.item.onMousedown(event, 'max')
+        'onKeydown': this.item.event.onKeydown,
+        'onMousedown': (event: MouseEvent) => this.item.event.onMousedown(event, SliderFocusType.max),
+        'onTouchstart': (event: TouchEvent) => this.item.event.onMousedown(event, SliderFocusType.max)
       },
       [
         h(
@@ -286,8 +287,8 @@ export class SliderDesign<
   readonly renderSelect = (): VNode => {
     return h('div', {
       class: this.getSubClass('select'),
-      onMousedown: this.item.onMousedown,
-      onTouchstart: this.item.onMousedown
+      onMousedown: this.item.event.onMousedown,
+      onTouchstart: this.item.event.onMousedown
     })
   }
 

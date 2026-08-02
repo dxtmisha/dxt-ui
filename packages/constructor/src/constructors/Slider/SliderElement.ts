@@ -1,5 +1,8 @@
 import type { Ref } from 'vue'
 
+import type { SliderThumbMax } from './SliderThumbMax'
+import type { SliderThumbMin } from './SliderThumbMin'
+
 import { SliderFocusType } from './basicTypes'
 import type { SliderPropsBasic } from './props'
 
@@ -13,11 +16,15 @@ export class SliderElement {
    * Constructor
    * @param props input properties / входящие свойства
    * @param element container element reference / ссылка на элемент контейнера
+   * @param maxElement max thumb handle manager / менеджер максимального ползунка
+   * @param minElement min thumb handle manager / менеджер минимального ползунка
    */
   constructor(
     protected readonly props: SliderPropsBasic,
-    protected readonly element?: Ref<HTMLElement | undefined>
-  ) { }
+    protected readonly element: Ref<HTMLElement | undefined>,
+    protected readonly maxElement: SliderThumbMax,
+    protected readonly minElement: SliderThumbMin
+  ) {}
 
   /**
    * Returns BoundingClientRect for slider root container.
@@ -26,7 +33,7 @@ export class SliderElement {
    * @returns DOMRect or undefined / DOMRect или undefined
    */
   get rectangle(): DOMRect | undefined {
-    return this.element?.value?.getBoundingClientRect()
+    return this.element.value?.getBoundingClientRect()
   }
 
   /**
@@ -63,17 +70,16 @@ export class SliderElement {
    *
    * Определяет ближайший тип ползунка ('min' или 'max') для координаты взаимодействия.
    * @param coordinate input coordinate / координата ввода
-   * @param minRectangle min thumb BoundingClientRect / BoundingClientRect мин ползунка
-   * @param maxRectangle max thumb BoundingClientRect / BoundingClientRect макс ползунка
    * @param isVertical vertical layout flag / флаг вертикальной ориентации
    * @returns focus type / тип фокуса
    */
   getTypeByCoordinate(
     coordinate: number,
-    minRectangle?: DOMRect,
-    maxRectangle?: DOMRect,
     isVertical: boolean = Boolean(this.props.vertical)
   ): SliderFocusType {
+    const minRectangle = this.minElement.rectangle
+    const maxRectangle = this.maxElement.rectangle
+
     if (
       this.props.multiple
       && minRectangle
