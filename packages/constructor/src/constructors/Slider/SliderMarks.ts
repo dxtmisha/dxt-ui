@@ -38,7 +38,10 @@ export class SliderMarks {
    * @param searchKey key type to match / тип ключа для поиска
    * @returns mark item / элемент метки
    */
-  getItem(targetValue: number, searchKey: 'mark' | 'value' = 'mark'): SliderMarkItem {
+  getItem(
+    targetValue: number,
+    searchKey: 'mark' | 'value' = 'mark'
+  ): SliderMarkItem {
     const marks = this.data.get()
 
     if (marks) {
