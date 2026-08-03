@@ -32,7 +32,7 @@ function createSliderGo(initialValue: SliderValueType, props: Partial<SliderProp
   const sliderElement = new SliderElement(fullProps, elementRef, maxElement, minElement)
 
   const mockEmit = vi.fn()
-  const emitsItem = new SliderEmit(fullProps, model, value, minElement, maxElement, mockEmit)
+  const emitsItem = new SliderEmit(fullProps, model, value, minElement, maxElement, mockEmit as any)
 
   const go = new SliderGo(emitsItem, enabled, focus, marks, sliderElement, value)
 

@@ -1,3 +1,19 @@
 {
-  "main": "{d.slider}"
+  "main": "{d.slider}",
+  "height": "{ref.spacing.10}",
+  "rail-height": "{ref.spacing.2}",
+  "thumb-size": {
+    "_type": "var"
+  },
+  "mark-left": {
+    "_type": "var"
+  },
+  "mark-size": {
+    "_type": "var"
+  },
+  "border-radius": "{sys.rounded.full}",
+  "#rail": {
+    "background-color": "{sys.palette.scrim}",
+    "background-opacity": "{sys.opacity.scrim}"
+  }
 }

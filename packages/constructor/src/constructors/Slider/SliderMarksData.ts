@@ -58,16 +58,6 @@ export class SliderMarksData {
   }
 
   /**
-   * Returns maximum numeric value of range.
-   *
-   * Возвращает максимальное числовое значение диапазона.
-   * @returns maximum value / максимальное значение
-   */
-  get maxNumber(): number {
-    return toNumber(this.props.max ?? 100)
-  }
-
-  /**
    * Returns minimum numeric value of range.
    *
    * Возвращает минимальное числовое значение диапазона.
@@ -75,6 +65,16 @@ export class SliderMarksData {
    */
   get minNumber(): number {
     return toNumber(this.props.min ?? 0)
+  }
+
+  /**
+   * Returns maximum numeric value of range.
+   *
+   * Возвращает максимальное числовое значение диапазона.
+   * @returns maximum value / максимальное значение
+   */
+  get maxNumber(): number {
+    return toNumber(this.props.max ?? 100)
   }
 
   /**
@@ -182,21 +182,6 @@ export class SliderMarksData {
   }
 
   /**
-   * Extracts numeric mark position value from raw item.
-   *
-   * Извлекает числовое значение позиции метки из сырого элемента.
-   * @param item raw item / сырой элемент
-   * @returns numeric mark value / числовое значение метки
-   */
-  protected getItemMark(item: any): number {
-    if (isObjectNotArray(item)) {
-      return toNumber(item.mark ?? item[this.keyValue] ?? item.value ?? 0)
-    }
-
-    return toNumber(item)
-  }
-
-  /**
    * Extracts text label representation from raw item.
    *
    * Извлекает текстовое представление метки из сырого элемента.
@@ -210,6 +195,21 @@ export class SliderMarksData {
     }
 
     return String(item)
+  }
+
+  /**
+   * Extracts numeric mark position value from raw item.
+   *
+   * Извлекает числовое значение позиции метки из сырого элемента.
+   * @param item raw item / сырой элемент
+   * @returns numeric mark value / числовое значение метки
+   */
+  protected getItemMark(item: any): number {
+    if (isObjectNotArray(item)) {
+      return toNumber(item.mark ?? item[this.keyValue] ?? item.value ?? 0)
+    }
+
+    return toNumber(item)
   }
 
   /**

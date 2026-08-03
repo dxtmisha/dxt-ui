@@ -5,35 +5,47 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
-  { name: 'appearance', type: 'string' },
+  { name: 'basic', type: 'boolean' },
   { name: 'disabled', type: 'boolean' },
+  { name: 'drop', type: 'boolean' },
+  { name: 'isSkeleton', type: 'boolean' },
+  { name: 'keyLabel', type: 'string' },
+  { name: 'keyValue', type: 'string' },
   { name: 'magnet', type: 'boolean' },
-  { name: 'marks', type: 'unknown' },
-  { name: 'max', type: 'number' },
-  { name: 'min', type: 'number' },
-  { name: 'minimumDistance', type: 'number' },
-  { name: 'modelValue', type: 'SliderValue' },
+  { name: 'marks', type: 'ListList<any>' },
+  { name: 'marksInit', type: 'boolean' },
+  { name: 'max', type: 'NumberOrString' },
+  { name: 'min', type: 'NumberOrString' },
+  { name: 'minimumDistance', type: 'NumberOrString' },
+  { name: 'modelValue', type: 'SliderValueType' },
   { name: 'multiple', type: 'boolean' },
+  { name: 'onUpdate:modelValue', type: '((value: SliderValueType) => void)' },
+  { name: 'onUpdate:value', type: '((value: SliderValueType) => void)' },
   { name: 'readonly', type: 'boolean' },
   { name: 'ripple', type: 'boolean' },
-  { name: 'step', type: 'number' },
-  { name: 'value', type: 'SliderValue' },
+  { name: 'step', type: 'NumberOrString' },
+  { name: 'translation', type: 'any' },
+  { name: 'value', type: 'SliderValueType' },
   { name: 'vertical', type: 'boolean' }
   // :propsList [!] System label / Системная метка
 ]
 
 const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
-  { name: 'default', properties: [{ name: 'props', type: '(any) | undefined' }] }
+  { name: 'mark', description: `Slot for mark custom rendering / Слот для пользовательского рендеринга метки`, properties: [{ name: 'props', type: '(SliderMarkSlot) | undefined' }] },
+  { name: 'maxLabel', description: `Slot for max thumb label / Слот для метки максимального ползунка`, properties: [{ name: 'props', type: '(SliderThumbSlot) | undefined' }] },
+  { name: 'minLabel', description: `Slot for min thumb label / Слот для метки минимального ползунка`, properties: [{ name: 'props', type: '(SliderThumbSlot) | undefined' }] }
   // :slotsList [!] System label / Системная метка
 ]
 
 const eventsNames: StorybookSlots = [
   // :eventsList [!] System label / Системная метка
-  { name: 'on-change', properties: [{ name: 'payload', type: 'SliderEventPayload' }] },
-  { name: 'on-input', properties: [{ name: 'payload', type: 'SliderEventPayload' }] },
-  { name: 'update:modelValue', properties: [{ name: 'value', type: 'SliderValue' }] },
-  { name: 'update:value', properties: [{ name: 'value', type: 'SliderValue' }] }
+  { name: 'change', description: `Emitted on slider value commit / Срабатывает при подтверждении значения слайдера`, properties: [{ name: 'detail', type: 'SliderEventDetail' }] },
+  { name: 'changeLite', description: `Emitted on slider value commit (lite version) / Срабатывает при подтверждении значения слайдера (упрощенная версия)`, properties: [{ name: 'value', type: 'SliderValueType' }] },
+  { name: 'input', description: `Emitted on slider value input / Срабатывает при вводе значения слайдера`, properties: [{ name: 'detail', type: 'SliderEventDetail' }] },
+  { name: 'inputLite', description: `Emitted on slider value input (lite version) / Срабатывает при вводе значения слайдера (упрощенная версия)`, properties: [{ name: 'value', type: 'SliderValueType' }] },
+  { name: 'update:modelValue', description: `Update model value event/ Событие обновления значения модели`, properties: [{ name: 'value', type: 'SliderValueType' }] },
+  { name: 'update:value', description: `Update value event/ Событие обновления значения`, properties: [{ name: 'value', type: 'SliderValueType' }] }
   // :eventsList [!] System label / Системная метка
 ]
 

@@ -12,16 +12,6 @@ export class SliderFocus {
   readonly value = ref<SliderFocusType>(SliderFocusType.max)
 
   /**
-   * Checks if max handle is focused.
-   *
-   * Проверяет, сфокусирован ли максимальный ползунок.
-   * @returns true if max is focused / true, если сфокусирован max
-   */
-  isMax(): boolean {
-    return this.value.value === SliderFocusType.max
-  }
-
-  /**
    * Checks if min handle is focused.
    *
    * Проверяет, сфокусирован ли минимальный ползунок.
@@ -29,6 +19,16 @@ export class SliderFocus {
    */
   isMin(): boolean {
     return this.value.value === SliderFocusType.min
+  }
+
+  /**
+   * Checks if max handle is focused.
+   *
+   * Проверяет, сфокусирован ли максимальный ползунок.
+   * @returns true if max is focused / true, если сфокусирован max
+   */
+  isMax(): boolean {
+    return this.value.value === SliderFocusType.max
   }
 
   /**

@@ -10,6 +10,17 @@
   // Styles from tokens
   // Стили из токенов
   // :style [!] System label / Системная метка
+  & {
+    --d1-slider-height: var(--d1-ref-spacing-10);
+    --d1-slider-railHeight: var(--d1-ref-spacing-2);
+    
+    border-radius: var(--d1-sys-rounded-full);
+    
+    &__rail {
+      @include ui.backgroundColor(#{var(--d1-sys-palette-scrim)});
+      @include ui.backgroundOpacity(#{var(--d1-sys-opacity-scrim)});
+    }
+  }
   // :style [!] System label / Системная метка
 
   // Here are the user styles

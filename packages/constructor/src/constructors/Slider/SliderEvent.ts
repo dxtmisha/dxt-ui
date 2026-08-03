@@ -48,20 +48,6 @@ export class SliderEvent {
   ) { }
 
   /**
-   * Returns object containing event handlers for minimum thumb handle element.
-   *
-   * Возвращает объект с обработчиками событий для элемента минимального ползунка.
-   * @returns object with event handlers / объект с обработчиками событий
-   */
-  getEventsMin(): Record<string, (event: any) => void> {
-    return {
-      onKeydown: this.onKeydown,
-      onMousedown: this.onMousedownMin,
-      onTouchstart: this.onMousedownMin
-    }
-  }
-
-  /**
    * Returns object containing event handlers for maximum thumb handle element.
    *
    * Возвращает объект с обработчиками событий для элемента максимального ползунка.
@@ -72,6 +58,20 @@ export class SliderEvent {
       onKeydown: this.onKeydown,
       onMousedown: this.onMousedownMax,
       onTouchstart: this.onMousedownMax
+    }
+  }
+
+  /**
+   * Returns object containing event handlers for minimum thumb handle element.
+   *
+   * Возвращает объект с обработчиками событий для элемента минимального ползунка.
+   * @returns object with event handlers / объект с обработчиками событий
+   */
+  getEventsMin(): Record<string, (event: any) => void> {
+    return {
+      onKeydown: this.onKeydown,
+      onMousedown: this.onMousedownMin,
+      onTouchstart: this.onMousedownMin
     }
   }
 
@@ -184,6 +184,17 @@ export class SliderEvent {
   }
 
   /**
+   * Sets value for active focused thumb and emits change event.
+   *
+   * Устанавливает значение для активного ползунка и вызывает событие изменения.
+   * @param value target numeric value / целевое числовое значение
+   */
+  protected set(value: number): void {
+    this.value.set(value, this.focus.get())
+    this.emitsItem.emit('change')
+  }
+
+  /**
    * Navigates active thumb value by page step in direction.
    *
    * Изменяет значение активного ползунка на страницу (крупный шаг) в указанном направлении.
@@ -196,16 +207,5 @@ export class SliderEvent {
     const targetValue = isIncrease ? currentValue + pageStep : currentValue - pageStep
 
     this.set(targetValue)
-  }
-
-  /**
-   * Sets value for active focused thumb and emits change event.
-   *
-   * Устанавливает значение для активного ползунка и вызывает событие изменения.
-   * @param value target numeric value / целевое числовое значение
-   */
-  protected set(value: number): void {
-    this.value.set(value, this.focus.get())
-    this.emitsItem.emit('change')
   }
 }

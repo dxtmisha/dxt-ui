@@ -17,6 +17,7 @@ export const wikiDescriptionsSlider: StorybookComponentsDescriptionItem = {
       'disabled and readonly state support',
       'keyboard navigation (arrows, Home, End, PageUp, PageDown)',
       'pointer drag and touch interaction handling',
+      'skeleton state for loading placeholders',
       'slots for custom mark rendering and thumb labels'
     ],
     ru: [
@@ -29,6 +30,7 @@ export const wikiDescriptionsSlider: StorybookComponentsDescriptionItem = {
       'состояния отключения (disabled) и только для чтения (readonly)',
       'клавиатурная навигация (стрелки, Home, End, PageUp, PageDown)',
       'обработка перетаскивания мыши и сенсорных касаний',
+      'состояние скелетона для заполнителей загрузки',
       'слоты для кастомного рендеринга меток и надписей ползунков'
     ]
   },
@@ -94,6 +96,22 @@ export const wikiDescriptionsSlider: StorybookComponentsDescriptionItem = {
           <DesignComponent v-model="sliderValue" :min="0" :max="100" />
         </div>
       `
+    },
+    {
+      id: 'SliderSkeleton',
+      name: {
+        en: 'Skeleton',
+        ru: 'Скелетон'
+      },
+      components: ['Skeleton'],
+      template: `
+        <DesignSkeleton :active="true">
+          <div class="wiki-storybook-flex-column">
+            <DesignComponent isSkeleton />
+            <DesignComponent isSkeleton multiple />
+          </div>
+        </DesignSkeleton>
+      `
     }
   ],
   documentation: {
@@ -108,6 +126,9 @@ export const wikiDescriptionsSlider: StorybookComponentsDescriptionItem = {
 
 <StorybookDescriptions componentName={'Value'} type={'v-model'}/>
 <Canvas of={Component.SliderVModel}/>
+
+<StorybookDescriptions componentName={'Style'} type={'isSkeleton'}/>
+<Canvas of={Component.SliderSkeleton}/>
     `,
     events: `
 <StorybookDescriptions componentName={'Slider'} type={'events'}/>
@@ -120,11 +141,6 @@ export const wikiDescriptionsSlider: StorybookComponentsDescriptionItem = {
     `
   },
   ai: {
-    render: `
-<div style="position: relative; width: 240px;">
-  <Slider v-bind="args"/>
-</div>
-    `,
     description: `
 Slider component for numeric value and range selection through dragging thumbs or keyboard navigation.
 Supports single value and dual-handle range selection modes (multiple), customizable min/max boundaries, step resolution, custom mark items with labels, and magnet position snapping.

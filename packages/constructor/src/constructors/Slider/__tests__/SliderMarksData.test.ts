@@ -96,7 +96,7 @@ describe('SliderMarksData', () => {
       marks: {
         low: { mark: 10, customValue: 'V1', customLabel: 'Low' },
         high: { mark: 90, customValue: 'V2', customLabel: 'High' }
-      },
+      } as any,
       keyValue: 'customValue',
       keyLabel: 'customLabel'
     })

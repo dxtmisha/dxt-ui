@@ -31,24 +31,6 @@ export class SliderGo {
   ) { }
 
   /**
-   * Decreases active thumb value by step or neighbor mark.
-   *
-   * Уменьшает значение активного ползунка на шаг или соседнюю метку.
-   */
-  decrease(): void {
-    this.go(false)
-  }
-
-  /**
-   * Increases active thumb value by step or neighbor mark.
-   *
-   * Увеличивает значение активного ползунка на шаг или соседнюю метку.
-   */
-  increase(): void {
-    this.go(true)
-  }
-
-  /**
    * Position update from pointer coordinate.
    *
    * Обновление позиции по координате указателя.
@@ -63,6 +45,24 @@ export class SliderGo {
 
       this.value.set(markValue, this.focus.get())
     }
+  }
+
+  /**
+   * Increases active thumb value by step or neighbor mark.
+   *
+   * Увеличивает значение активного ползунка на шаг или соседнюю метку.
+   */
+  increase(): void {
+    this.go(true)
+  }
+
+  /**
+   * Decreases active thumb value by step or neighbor mark.
+   *
+   * Уменьшает значение активного ползунка на шаг или соседнюю метку.
+   */
+  decrease(): void {
+    this.go(false)
   }
 
   /**

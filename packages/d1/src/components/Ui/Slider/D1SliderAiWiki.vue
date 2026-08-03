@@ -18,6 +18,11 @@ defineOptions({
     :component="D1Slider"
   >
     <!-- :component-render [!] System label / Системная метка -->
+    <template #render="{ args, classDemo }">
+    <div style="position: relative; width: 240px;">
+  <D1Slider v-bind="args"/>
+</div>
+    </template>
     <!-- :component-render [!] System label / Системная метка -->
   </DxtTestWiki>
 </template>

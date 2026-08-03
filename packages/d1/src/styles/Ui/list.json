@@ -10817,6 +10817,33 @@
           }
         }
       },
+      "slider": {
+        "name": "d1-slider",
+        "type": "component",
+        "value": {
+          "height": {
+            "name": "--d1-slider-height",
+            "type": "var",
+            "value": "{ref.spacing.10}"
+          },
+          "railHeight": {
+            "name": "--d1-slider-railHeight",
+            "type": "var",
+            "value": "{ref.spacing.2}"
+          }
+        }
+      },
+      "sliderField": {
+        "name": "d1-sliderField",
+        "type": "component",
+        "value": {
+          "main": {
+            "name": "--d1-sliderField-main",
+            "type": "var",
+            "value": "{d.sliderField}"
+          }
+        }
+      },
       "snackbar": {
         "name": "d1-snackbar",
         "type": "component",

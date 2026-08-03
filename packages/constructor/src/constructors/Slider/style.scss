@@ -6,7 +6,7 @@
   align-items: center;
 
   width: 100%;
-  height: ui.v('??size');
+  height: ui.v('??height');
 
   &__rail,
   &__track,
@@ -63,8 +63,8 @@
     margin: auto 0;
     padding: 0;
 
-    width: ui.v('??size');
-    height: ui.v('??size');
+    width: ui.v('??height');
+    height: ui.v('??height');
 
     background: transparent;
     border: none;
@@ -123,7 +123,7 @@
   &--vertical {
     flex-direction: column;
 
-    width: ui.v('??size');
+    width: ui.v('??height');
     height: 100%;
 
     @include ui.subclass('rail') {

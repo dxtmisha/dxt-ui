@@ -107,72 +107,6 @@ export class SliderMarks {
   }
 
   /**
-   * Returns next mark or value by step for increasing value.
-   *
-   * Возвращает следующее значение метки или шага для увеличения значения.
-   * @param currentValue current thumb value / текущее значение ползунка
-   * @returns next value / следующее значение
-   */
-  getNext(currentValue: number): number {
-    if (this.props.magnet) {
-      return this.getNextItem(currentValue)?.mark ?? currentValue
-    }
-
-    return currentValue + this.data.stepNumber
-  }
-
-  /**
-   * Finds next mark item with mark greater than currentValue.
-   *
-   * Находит следующий элемент метки со значением больше currentValue.
-   * @param currentValue current thumb value / текущее значение ползунка
-   * @returns next mark item or undefined / следующий элемент метки или undefined
-   */
-  getNextItem(currentValue: number): SliderMarkItem | undefined {
-    const data = this.data.get()
-
-    if (data) {
-      return data.find(item => item.mark > currentValue)
-    }
-
-    return undefined
-  }
-
-  /**
-   * Returns previous mark or value by step for decreasing value.
-   *
-   * Возвращает предыдущее значение метки или шага для уменьшения значения.
-   * @param currentValue current thumb value / текущее значение ползунка
-   * @returns previous value / предыдущее значение
-   */
-  getPrev(currentValue: number): number {
-    if (this.props.magnet) {
-      return this.getPrevItem(currentValue)?.mark ?? currentValue
-    }
-
-    return currentValue - this.data.stepNumber
-  }
-
-  /**
-   * Finds previous mark item with mark less than currentValue.
-   *
-   * Находит предыдущий элемент метки со значением меньше currentValue.
-   * @param currentValue current thumb value / текущее значение ползунка
-   * @returns previous mark item or undefined / предыдущий элемент метки или undefined
-   */
-  getPrevItem(currentValue: number): SliderMarkItem | undefined {
-    const data = this.data.get()
-
-    if (data) {
-      return data.slice()
-        .reverse()
-        .find(item => item.mark < currentValue)
-    }
-
-    return undefined
-  }
-
-  /**
    * Validates target value against min/max limits and minimum distance constraints.
    *
    * Проверяет целевое значение на соответствие ограничениям min/max и минимального расстояния.
@@ -212,5 +146,71 @@ export class SliderMarks {
    */
   toMark(percent: number): number {
     return this.getNearest(this.data.toValue(percent))
+  }
+
+  /**
+   * Returns next mark or value by step for increasing value.
+   *
+   * Возвращает следующее значение метки или шага для увеличения значения.
+   * @param currentValue current thumb value / текущее значение ползунка
+   * @returns next value / следующее значение
+   */
+  protected getNext(currentValue: number): number {
+    if (this.props.magnet) {
+      return this.getNextItem(currentValue)?.mark ?? currentValue
+    }
+
+    return currentValue + this.data.stepNumber
+  }
+
+  /**
+   * Finds next mark item with mark greater than currentValue.
+   *
+   * Находит следующий элемент метки со значением больше currentValue.
+   * @param currentValue current thumb value / текущее значение ползунка
+   * @returns next mark item or undefined / следующий элемент метки или undefined
+   */
+  protected getNextItem(currentValue: number): SliderMarkItem | undefined {
+    const data = this.data.get()
+
+    if (data) {
+      return data.find(item => item.mark > currentValue)
+    }
+
+    return undefined
+  }
+
+  /**
+   * Returns previous mark or value by step for decreasing value.
+   *
+   * Возвращает предыдущее значение метки или шага для уменьшения значения.
+   * @param currentValue current thumb value / текущее значение ползунка
+   * @returns previous value / предыдущее значение
+   */
+  protected getPrev(currentValue: number): number {
+    if (this.props.magnet) {
+      return this.getPrevItem(currentValue)?.mark ?? currentValue
+    }
+
+    return currentValue - this.data.stepNumber
+  }
+
+  /**
+   * Finds previous mark item with mark less than currentValue.
+   *
+   * Находит предыдущий элемент метки со значением меньше currentValue.
+   * @param currentValue current thumb value / текущее значение ползунка
+   * @returns previous mark item or undefined / предыдущий элемент метки или undefined
+   */
+  protected getPrevItem(currentValue: number): SliderMarkItem | undefined {
+    const data = this.data.get()
+
+    if (data) {
+      return data.slice()
+        .reverse()
+        .find(item => item.mark < currentValue)
+    }
+
+    return undefined
   }
 }

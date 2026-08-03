@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.10.9] - 2026-08-03
+
+### Changed
+- **DesignTypes**: Updated AI prompt instructions in `DesignTypes.toAiEdit` and `DesignTypes.toAiDescription`:
+  - Enforced strict prompt boundaries forbidding AI agents from analyzing unprovided external files, links, paths, or environment data.
+  - Enhanced JSDoc generation rules to generate English JSDocs for non-obvious entities directly from JS implementation code.
+  - Expanded project description structure in `toAiDescription` to detail all exposed capabilities and triggers for `ai-types.md` analysis, and added optional `code` parameter support.
+
 ## [0.10.8] - 2026-07-28
 
 ### Added / Updated

@@ -229,7 +229,12 @@ export class SliderDesign<
     return [
       h(
         'span',
-        { class: this.classes?.value.label },
+        {
+          class: [
+            this.classes?.value.label,
+            this.item.skeleton.classesSkeleton.classBackgroundVariant
+          ]
+        },
         label
       ),
       ...this.renderRipple()
@@ -244,7 +249,12 @@ export class SliderDesign<
    */
   readonly renderRail = (): VNode[] => {
     return [
-      h('div', { class: this.classes?.value.rail })
+      h('div', {
+        class: [
+          this.classes?.value.rail,
+          this.item.skeleton.classesSkeleton.classBackground
+        ]
+      })
     ]
   }
 

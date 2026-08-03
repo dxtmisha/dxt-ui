@@ -40,3 +40,4 @@
     4. Local component classes and helper modules (e.g., `./SliderThumbMax`).
     5. Component type definitions in strict sequence: `./basicTypes`, `./types`, `./props`.
 
+25. **Render Methods Visibility in Design Classes**: All `render...` methods (e.g., `readonly renderThumbMin`, `readonly renderRail`, `readonly renderSelect`, etc.) in `Design` classes extending `DesignConstructorAbstract` MUST remain public (declared as `readonly render... = () => ...`). Never mark them as `protected`.

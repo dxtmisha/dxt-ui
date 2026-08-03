@@ -13,6 +13,7 @@ import {
 
 import { EnabledInclude } from '../../classes/EnabledInclude'
 import { ModelValueInclude } from '../../classes/ModelValueInclude'
+import { SkeletonInclude } from '../Skeleton'
 
 import { SliderDragEvent } from './SliderDragEvent'
 import { SliderElement } from './SliderElement'
@@ -71,6 +72,9 @@ export class Slider {
   /** Model value include helper / Помощник значения модели */
   readonly model: ModelValueInclude<SliderValueType>
 
+  /** Skeleton include helper instance / Экземпляр помощника скелетона */
+  readonly skeleton: SkeletonInclude
+
   /** Slider element manager instance / Экземпляр менеджера элементов слайдера */
   readonly sliderElement: SliderElement
 
@@ -102,6 +106,7 @@ export class Slider {
     constructors: {
       EnabledIncludeConstructor?: typeof EnabledInclude
       ModelValueIncludeConstructor?: typeof ModelValueInclude<SliderValueType>
+      SkeletonIncludeConstructor?: typeof SkeletonInclude
       SliderDragEventConstructor?: typeof SliderDragEvent
       SliderElementConstructor?: typeof SliderElement
       SliderEmitConstructor?: typeof SliderEmit
@@ -118,6 +123,7 @@ export class Slider {
     const {
       EnabledIncludeConstructor = EnabledInclude,
       ModelValueIncludeConstructor = ModelValueInclude,
+      SkeletonIncludeConstructor = SkeletonInclude,
       SliderDragEventConstructor = SliderDragEvent,
       SliderElementConstructor = SliderElement,
       SliderEmitConstructor = SliderEmit,
@@ -131,6 +137,10 @@ export class Slider {
       SliderValueConstructor = SliderValue
     } = constructors
 
+    this.skeleton = new SkeletonIncludeConstructor(
+      props,
+      classDesign
+    )
     this.enabled = new EnabledIncludeConstructor(props)
     this.focus = new SliderFocusConstructor()
 
@@ -199,16 +209,6 @@ export class Slider {
   }
 
   /**
-   * Returns tabindex value based on enabled state.
-   *
-   * Возвращает значение tabindex на основе состояния активности.
-   * @returns tabindex number (0 if enabled, -1 if disabled) / значение tabindex
-   */
-  get tabindex(): number {
-    return this.enabled.isEnabled ? 0 : -1
-  }
-
-  /**
    * Computed class list for root element.
    *
    * Вычисляемый список классов для корневого элемента.
@@ -234,6 +234,16 @@ export class Slider {
   }
 
   /**
+   * Returns tabindex value based on enabled state.
+   *
+   * Возвращает значение tabindex на основе состояния активности.
+   * @returns tabindex number (0 if enabled, -1 if disabled) / значение tabindex
+   */
+  get tabindex(): number {
+    return this.enabled.isEnabled ? 0 : -1
+  }
+
+  /**
    * Checks if ripple animation is enabled.
    *
    * Проверяет, включена ли анимация ripple.
@@ -243,6 +253,7 @@ export class Slider {
     return Boolean(
       this.props.ripple
       && !this.props.drop
+      && !this.props.isSkeleton
       && this.enabled.isEnabled
     )
   }

@@ -1,5 +1,7 @@
 import type { ConstrClass } from '@dxtmisha/functional'
 
+import type { RippleComponentInclude } from '../Ripple'
+
 import type { ModelEmits } from '../../types/modelTypes'
 import type {
   SliderEventDetail,
@@ -13,9 +15,7 @@ import type {
  *
  * Интерфейс для описания, какие компоненты надо подключить для работы.
  */
-export type SliderComponents = {
-  ripple?: object
-}
+export type SliderComponents = RippleComponentInclude
 
 /**
  * Type describing available events.
@@ -26,13 +26,13 @@ export type SliderEmits
   = ModelEmits<SliderValueType>
     & {
     /** Emitted on slider value input / Срабатывает при вводе значения слайдера */
-      input?: [detail: SliderEventDetail]
+      input: [detail: SliderEventDetail]
       /** Emitted on slider value input (lite version) / Срабатывает при вводе значения слайдера (упрощенная версия) */
-      inputLite?: [value: SliderValueType]
+      inputLite: [value: SliderValueType]
       /** Emitted on slider value commit / Срабатывает при подтверждении значения слайдера */
-      change?: [detail: SliderEventDetail]
+      change: [detail: SliderEventDetail]
       /** Emitted on slider value commit (lite version) / Срабатывает при подтверждении значения слайдера (упрощенная версия) */
-      changeLite?: [value: SliderValueType]
+      changeLite: [value: SliderValueType]
     }
 
 /**

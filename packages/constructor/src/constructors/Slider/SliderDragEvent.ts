@@ -46,6 +46,16 @@ export class SliderDragEvent {
   }
 
   /**
+   * Global pointer end/up event listener.
+   *
+   * Глобальный слушатель события завершения перемещения указателя.
+   */
+  readonly onPointerEnd = (): void => {
+    this.stop()
+    this.emitsItem.emit('change')
+  }
+
+  /**
    * Global pointer move event listener.
    *
    * Глобальный слушатель события перемещения указателя.
@@ -58,16 +68,6 @@ export class SliderDragEvent {
       this.previousPointerPosition = coordinate
       this.go.updateFromCoordinate(coordinate)
     }
-  }
-
-  /**
-   * Global pointer end/up event listener.
-   *
-   * Глобальный слушатель события завершения перемещения указателя.
-   */
-  readonly onPointerEnd = (): void => {
-    this.stop()
-    this.emitsItem.emit('change')
   }
 
   /**

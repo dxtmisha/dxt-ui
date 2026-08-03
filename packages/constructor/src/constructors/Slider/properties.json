@@ -1,5 +1,5 @@
 {
-  "size": {
+  "height": {
     "_type": "var"
   },
   "rail-height": {
@@ -14,10 +14,10 @@
   "mark-size": {
     "_type": "var"
   },
+  "#rail": {},
   "#thumb": {},
   "#thumbMin": {},
   "#thumbMax": {},
-  "#rail": {},
   "#track": {},
   "#marks": {},
   "#mark": {},

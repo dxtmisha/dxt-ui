@@ -23,7 +23,11 @@ const props = withDefaults(defineProps<SliderProps>(), defaults)
 const classesToken = computed<ConstrClasses>(() => ({
   main: {
     // :classes-values [!] System label / Системная метка
-    'd1-slider': true
+    'd1-slider': true,
+    'd1-slider--disabled': props.disabled,
+    'd1-slider--vertical': props.vertical,
+    'd1-slider--basic': props.basic && !props.drop,
+    'd1-slider--drop': props.drop
     // :classes-values [!] System label / Системная метка
   }
 }))

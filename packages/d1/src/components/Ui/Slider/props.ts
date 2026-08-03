@@ -7,6 +7,10 @@ export const propsValues = {
 
 type PropsToken = {
   // :type [!] System label / Системная метка
+  disabled?: boolean
+  vertical?: boolean
+  basic?: boolean
+  drop?: boolean
   // :type [!] System label / Системная метка
 }
 
@@ -22,6 +26,7 @@ export const defaults: object = {
   ...defaultsSlider,
   ...{
     // :default [!] System label / Системная метка
+    basic: true
     // :default [!] System label / Системная метка
   }
 }
