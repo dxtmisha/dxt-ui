@@ -13,12 +13,35 @@
   & {
     --d1-slider-height: var(--d1-ref-spacing-10);
     --d1-slider-railHeight: var(--d1-ref-spacing-2);
+    --d1-slider-thumbAreaSize: var(--d1-ref-spacing-12);
     
     border-radius: var(--d1-sys-rounded-full);
     
     &__rail {
-      @include ui.backgroundColor(#{var(--d1-sys-palette-scrim)});
-      @include ui.backgroundOpacity(#{var(--d1-sys-opacity-scrim)});
+      @include ui.backgroundOpacity(#{var(--d1-sys-opacity-scrim)}); @include ui.backgroundColor('init');
+      @include ui.paletteBackground(#{var(--d1-sys-palette-primary)});
+    }
+    
+    &__thumb {
+      @include ui.gradientOpacity(#{0}); @include ui.gradient('init');
+      @include ui.paletteGradient(#{var(--d1-sys-palette-primary)});
+      
+      border-radius: var(--d1-sys-rounded-full);
+      
+      @include ui.hover('.d1-slider') {
+        @include ui.gradientOpacity(#{var(--d1-sys-opacity-hover)}); @include ui.gradient('init');
+      }
+      
+      @include ui.active('.d1-slider') {
+        @include ui.gradientOpacity(#{var(--d1-sys-opacity-pressed)}); @include ui.gradient('init');
+      }
+    }
+    
+    &__track {
+      @include ui.backgroundOpacity(#{var(--d1-sys-opacity-surface-high)}); @include ui.backgroundColor('init');
+      @include ui.paletteBackground(#{var(--d1-sys-palette-primary)});
+      
+      backdrop-filter: var(--d1-sys-blur-sm);
     }
   }
   // :style [!] System label / Системная метка

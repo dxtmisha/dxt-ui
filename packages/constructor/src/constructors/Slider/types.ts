@@ -73,10 +73,10 @@ export interface SliderSlots {
 export type SliderClasses = {
   main: ConstrClass
   // :classes [!] System label / Системная метка
+  rail: string
   thumb: string
   thumbMin: string
   thumbMax: string
-  rail: string
   track: string
   marks: string
   mark: string

@@ -10830,6 +10830,11 @@
             "name": "--d1-slider-railHeight",
             "type": "var",
             "value": "{ref.spacing.2}"
+          },
+          "thumbAreaSize": {
+            "name": "--d1-slider-thumbAreaSize",
+            "type": "var",
+            "value": "{ref.spacing.12}"
           }
         }
       },

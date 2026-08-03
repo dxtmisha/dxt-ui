@@ -16,7 +16,7 @@
     bottom: 0;
     margin: auto 0;
     border-radius: inherit;
-    height: ui.v('??rail-height');
+    height: ui.v('??railHeight');
   }
 
   &__rail {
@@ -63,14 +63,14 @@
     margin: auto 0;
     padding: 0;
 
-    width: ui.v('??height');
-    height: ui.v('??height');
+    width: ui.v('??thumbAreaSize');
+    height: ui.v('??thumbAreaSize');
 
     background: transparent;
     border: none;
     outline: none;
 
-    transform: translateX(calc(#{ui.v('??thumb-size')} / -2));
+    transform: translateX(calc(#{ui.v('??thumbAreaSize')} / -2));
 
     cursor: pointer;
 
@@ -82,14 +82,6 @@
       height: ui.v('??thumb-size');
     }
 
-    &--min {
-      left: ui.v('??sys-thumb-min-x', 0%);
-    }
-
-    &--max {
-      left: ui.v('??sys-thumb-max-x', 100%);
-    }
-
     &:focus,
     &:hover {
       @include ui.subclass('label') {
@@ -99,11 +91,19 @@
     }
   }
 
+  &__thumbMin {
+    left: ui.v('??sys.thumb.min.x', 0%);
+  }
+
+  &__thumbMax {
+    left: ui.v('??sys.thumb.max.x', 100%);
+  }
+
   &__marks {
     @include ui.absolute;
 
     margin: auto 0;
-    height: ui.v('??rail-height');
+    height: ui.v('??railHeight');
     pointer-events: none;
   }
 
@@ -132,7 +132,7 @@
 
       margin: 0 auto;
 
-      width: ui.v('??rail-height');
+      width: ui.v('??railHeight');
       height: auto;
     }
 
@@ -144,7 +144,7 @@
 
       margin: 0 auto;
 
-      width: ui.v('??rail-height');
+      width: ui.v('??railHeight');
       height: auto;
     }
 
@@ -154,7 +154,7 @@
 
       margin: 0 auto;
 
-      width: ui.v('??rail-height');
+      width: ui.v('??railHeight');
       height: auto;
     }
 

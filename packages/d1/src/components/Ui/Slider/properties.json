@@ -1,10 +1,11 @@
 {
   "main": "{d.slider}",
   "height": "{ref.spacing.10}",
-  "rail-height": "{ref.spacing.2}",
-  "thumb-size": {
+  "railHeight": "{ref.spacing.2}",
+  "thumbSize": {
     "_type": "var"
   },
+  "thumbAreaSize": "{ref.spacing.12}",
   "mark-left": {
     "_type": "var"
   },
@@ -13,7 +14,23 @@
   },
   "border-radius": "{sys.rounded.full}",
   "#rail": {
-    "background-color": "{sys.palette.scrim}",
+    "palette-background": "{sys.palette.primary}",
     "background-opacity": "{sys.opacity.scrim}"
+  },
+  "#track": {
+    "palette-background": "{sys.palette.primary}",
+    "background-opacity": "{sys.opacity.surface.high}",
+    "backdrop-filter": "{sys.blur.sm}"
+  },
+  "#thumb": {
+    "palette-gradient": "{sys.palette.primary}",
+    "gradient-opacity": "0",
+    "border-radius": "{sys.rounded.full}",
+    "hover": {
+      "gradient-opacity": "{sys.opacity.hover}"
+    },
+    "active": {
+      "gradient-opacity": "{sys.opacity.pressed}"
+    }
   }
 }

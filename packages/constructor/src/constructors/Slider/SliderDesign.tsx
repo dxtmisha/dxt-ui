@@ -101,10 +101,10 @@ export class SliderDesign<
       },
       ...{
         // :classes [!] System label / Системная метка
+        rail: this.getSubClass('rail'),
         thumb: this.getSubClass('thumb'),
         thumbMin: this.getSubClass('thumbMin'),
         thumbMax: this.getSubClass('thumbMax'),
-        rail: this.getSubClass('rail'),
         track: this.getSubClass('track'),
         marks: this.getSubClass('marks'),
         mark: this.getSubClass('mark'),
@@ -135,10 +135,10 @@ export class SliderDesign<
    */
   protected initRender(): VNode {
     const children: VNode[] = [
-      ...this.renderThumbMin(),
-      ...this.renderThumbMax(),
       ...this.renderRail(),
       ...this.renderTrack(),
+      ...this.renderThumbMin(),
+      ...this.renderThumbMax(),
       ...this.renderMarks(),
       ...this.renderSelect()
     ]

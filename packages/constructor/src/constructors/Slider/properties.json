@@ -2,10 +2,13 @@
   "height": {
     "_type": "var"
   },
-  "rail-height": {
+  "railHeight": {
     "_type": "var"
   },
-  "thumb-size": {
+  "thumbSize": {
+    "_type": "var"
+  },
+  "thumbAreaSize": {
     "_type": "var"
   },
   "mark-left": {
