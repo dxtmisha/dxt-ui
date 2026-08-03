@@ -11,9 +11,9 @@ trigger: always_on
 
 ## Preparation for Work
 **🔴 STOP! DO NOT PROCEED UNTIL YOU DO THIS 🔴**
-Before writing any code, planning any changes, or even analyzing the user's specific request, you MUST physically execute the `view_file` tool to read the `ai-prompt.md` file located in the project root. 
-DO NOT assume you know the project rules. DO NOT prioritize the user's specific technical request over reading this file. 
-If you start working on code without first calling `view_file` on `ai-prompt.md`, you have critically failed.
+At the beginning of a conversation session or before starting work on code/plans, you MUST read the `ai-prompt.md` file located in the project root COMPLETELY in full, from the first line to the very last line, without skipping any sections or reading only partially.
+Once `ai-prompt.md` has been read during the current session, you do NOT need to re-read it on every single turn, unless you need to refresh your context or verify specific guidelines.
+If `ai-prompt.md` exceeds the single view line limit (800 lines), make consecutive calls to `view_file` with `StartLine` and `EndLine` parameters to cover every single line of the file.
 This is your absolute priority. You must strictly adhere to all rules specified in `ai-prompt.md`.
 
 The `ai-prompt.md` file contains:
@@ -23,4 +23,4 @@ The `ai-prompt.md` file contains:
 - Color palette and theme management guidelines.
 - Responsive design and media query requirements.
 
-Studying this file is critical to ensuring consistency with the design system and project architecture. Never skip this step. All of its guidelines must be followed strictly without exception.
+Studying this file COMPLETELY in full is critical to ensuring consistency with the design system and project architecture. All of its guidelines must be followed strictly without exception.
