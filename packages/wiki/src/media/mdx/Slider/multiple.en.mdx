@@ -1,0 +1,34 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+## Range selection mode (`multiple`)
+
+Enabling the `multiple` prop transforms the slider into a dual-thumb range selector. In range mode, `v-model` binds to an array of two numbers `[min, max]`.
+
+**Key Properties:**
+
+- `multiple` — enables two handles for bounded range selection
+- `minimumDistance` — enforces a minimum numeric interval between min and max handles (default is `1`)
+
+When adjusting handles in range mode, the component ensures that the minimum handle cannot exceed the maximum handle minus `minimumDistance`, preventing handle overlap and invalid intervals.
+
+<Source
+    code={`
+<script setup>
+import { ref } from 'vue'
+
+const priceRange = ref([100, 500])
+</script>
+
+<template>
+  <Slider
+    v-model="priceRange"
+    multiple
+    :min="0"
+    :max="1000"
+    :step="10"
+    :minimumDistance="50"
+  />
+</template>
+  `}
+    language="html"
+/>

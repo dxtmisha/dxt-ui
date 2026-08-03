@@ -51,9 +51,18 @@ export class SliderEmit {
   emit(eventName: 'input' | 'change'): void {
     const value = this.model.getValue()
     const detail = this.getDetail()
+    const emits: any = this.emits
 
-    if (value) {
-      (this.emits as any)?.(eventName, value, detail)
+    if (value !== undefined) {
+      if (eventName === 'input') {
+        emits?.('input', detail)
+        emits?.('inputLite', value)
+      }
+
+      if (eventName === 'change') {
+        emits?.('change', detail)
+        emits?.('changeLite', value)
+      }
     }
   }
 

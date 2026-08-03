@@ -1,0 +1,44 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+Component for selecting numeric values or ranges using interactive movable slider handles.
+
+Slider provides a customizable user interface for adjusting numbers or setting bounded ranges. It supports single-handle selection as well as dual-handle range selection, configurable minimum and maximum limits, custom step increments, tick mark display with custom labels, magnet position snapping, horizontal and vertical orientation, and full keyboard and touch gesture accessibility.
+
+**Key features:**
+
+- Single value and dual-thumb range selection (`multiple`)
+- Customizable minimum (`min`), maximum (`max`), and step (`step`) parameters
+- Tick mark and label rendering with custom data mapping (`marks`, `keyLabel`, `keyValue`)
+- Magnet snapping mode (`magnet`) for alignment with nearest marks
+- Minimum distance constraint between handles (`minimumDistance`)
+- Horizontal and vertical orientation (`vertical`)
+- Disabled and readonly interactive states
+- Full keyboard navigation and touch/drag gesture support
+- Ripple visual effect and customizable slot rendering
+
+**Common use cases:**
+
+- Volume, brightness, or parameter level adjustments
+- Price, age, or numeric range filtering in search interfaces
+- Percentage and progress setting controls
+- Form inputs requiring constrained numerical values
+
+<Source
+    code={`
+<script setup>
+import { ref } from 'vue'
+
+const singleValue = ref(50)
+const rangeValue = ref([20, 80])
+</script>
+
+<template>
+  <!-- Single value slider -->
+  <Slider v-model="singleValue" :min="0" :max="100" :step="5" />
+
+  <!-- Dual-thumb range slider -->
+  <Slider v-model="rangeValue" multiple :min="0" :max="100" :minimumDistance="10" />
+</template>
+  `}
+    language="html"
+/>

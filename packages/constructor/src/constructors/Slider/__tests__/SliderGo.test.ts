@@ -46,7 +46,8 @@ describe('SliderGo', () => {
     go.increase()
 
     expect(model.getValue()).toBe(60)
-    expect(mockEmit).toHaveBeenCalledWith('change', 60, expect.anything())
+    expect(mockEmit).toHaveBeenCalledWith('change', expect.objectContaining({ mark: 60, value: 60 }))
+    expect(mockEmit).toHaveBeenCalledWith('changeLite', 60)
   })
 
   it('should decrease value by step when decrease is called', () => {
@@ -55,7 +56,8 @@ describe('SliderGo', () => {
     go.decrease()
 
     expect(model.getValue()).toBe(40)
-    expect(mockEmit).toHaveBeenCalledWith('change', 40, expect.anything())
+    expect(mockEmit).toHaveBeenCalledWith('change', expect.objectContaining({ mark: 40, value: 40 }))
+    expect(mockEmit).toHaveBeenCalledWith('changeLite', 40)
   })
 
   it('should update min handle when focus is set to min', () => {

@@ -1,0 +1,63 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+### `input`
+
+Событие срабатывает в реальном времени при изменении положения ползунка (перетаскивание, клавиатура).
+
+**Параметры:**
+- `detail: SliderEventDetail` — объект с детальной информацией о текущем состоянии слайдера
+
+### `inputLite`
+
+Событие срабатывает в реальном времени при изменении положения ползунка, передавая только значение `v-model`.
+
+**Параметры:**
+- `value: SliderValueType` — текущее значение слайдера (`number` или `[number, number]`)
+
+### `change`
+
+Событие срабатывает при завершении перемещения ползунка и фиксации значения.
+
+**Параметры:**
+- `detail: SliderEventDetail` — объект с детальной информацией о зафиксированном состоянии слайдера
+
+### `changeLite`
+
+Событие срабатывает при завершении перемещения ползунка, передавая только фиксированное значение `v-model`.
+
+**Параметры:**
+- `value: SliderValueType` — зафиксированное значение слайдера (`number` или `[number, number]`)
+
+**Структура объекта SliderEventDetail:**
+- `mark: SliderValueType` — текущая числовая позиция или пара позиций `[min, max]`
+- `item: SliderMarkItem | [SliderMarkItem, SliderMarkItem]` — объект активной метки или пара меток для режима `multiple`
+- `value?: SliderMarkItemValue | [SliderMarkItemValue, SliderMarkItemValue]` — пользовательское значение данных из метки
+
+**Структура объекта SliderMarkItem:**
+- `mark: number` — позиция метки на шкале
+- `label: string` — отображаемая текстовая подпись метки
+- `value?: SliderMarkItemValue` — пользовательское значение данных (`NumberOrStringOrBoolean`)
+- `style?: Record<string, any>` — стили позиционирования метки
+
+<Source
+    code={`
+<script setup>
+const handleInput = (detail) => {
+  console.log('Позиция:', detail.mark)
+  console.log('Метка:', detail.item)
+}
+
+const handleChangeLite = (value) => {
+  console.log('Финальное значение:', value)
+}
+</script>
+
+<template>
+  <Slider
+    @input="handleInput"
+    @changeLite="handleChangeLite"
+  />
+</template>
+  `}
+    language="html"
+/>

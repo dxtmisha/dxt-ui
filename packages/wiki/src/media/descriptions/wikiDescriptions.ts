@@ -84,6 +84,7 @@ import { wikiDescriptionsSelectValue } from './wikiDescriptionsSelectValue'
 import { wikiDescriptionsSelectableArea } from './wikiDescriptionsSelectableArea'
 import { wikiDescriptionsSkeleton } from './wikiDescriptionsSkeleton'
 import { wikiDescriptionsSkeletonItem } from './wikiDescriptionsSkeletonItem'
+import { wikiDescriptionsSlider } from './wikiDescriptionsSlider'
 import { wikiDescriptionsSnackbar } from './wikiDescriptionsSnackbar'
 import { wikiDescriptionsSnackbarItem } from './wikiDescriptionsSnackbarItem'
 import { wikiDescriptionsSwitch } from './wikiDescriptionsSwitch'
@@ -192,6 +193,7 @@ export const wikiDescriptions: StorybookComponentsDescription = [
   wikiDescriptionsSelectableArea,
   wikiDescriptionsSkeleton,
   wikiDescriptionsSkeletonItem,
+  wikiDescriptionsSlider,
   wikiDescriptionsSnackbar,
   wikiDescriptionsSnackbarItem,
   wikiDescriptionsSwitch,

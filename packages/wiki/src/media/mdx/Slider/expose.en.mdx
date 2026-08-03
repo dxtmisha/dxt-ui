@@ -1,0 +1,7 @@
+- `getValue(): SliderValueType` — Returns current slider value.
+- `setValue(value: SliderValueType): void` — Programmatically sets new slider value with automatic boundary bounds validation and handle position update.
+- `increase(): void` — Increases active thumb value by step or advances to next mark item.
+- `decrease(): void` — Decreases active thumb value by step or moves to previous mark item.
+
+> **SliderValueType:**
+> - `number | [number, number]` — numeric value (for single-thumb mode) or range pair `[min, max]` (for `multiple` mode).

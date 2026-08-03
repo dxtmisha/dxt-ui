@@ -1,0 +1,130 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+## Marks, steps, and magnet snapping (`marks`)
+
+The `marks` prop allows you to render tick marks and labels along the slider scale, as well as associate numerical slider positions with custom data payloads of any type.
+
+### Data formats for marks
+
+The `marks` property accepts data in several flexible formats:
+
+#### Simple array of numbers
+When passing a simple array of numbers, the slider generates tick marks at the specified numeric positions and uses the numbers as label text.
+
+```html
+<Slider :marks="[0, 20, 50, 80, 100]" />
+```
+
+#### Array of objects (advanced configuration)
+Each array item can be an object with the following properties:
+
+- `mark` *(number)* — numeric position along the slider range (between `min` and `max`).
+- `label` *(string)* — display text label for the tick mark.
+- `value` *(any)* — custom payload or string identifier associated with this mark position.
+
+```html
+<script setup>
+const planMarks = [
+  { mark: 0, value: 'free', label: 'Free' },
+  { mark: 50, value: 'pro', label: 'Pro' },
+  { mark: 100, value: 'enterprise', label: 'Enterprise' }
+]
+</script>
+
+<template>
+  <Slider :marks="planMarks" magnet />
+</template>
+```
+
+#### Object / Dictionary format
+Marks can also be passed as a dictionary object where keys represent positions or identifiers:
+
+```html
+<script setup>
+const speedMarks = {
+  0: '0 km/h',
+  60: '60 km/h',
+  110: '110 km/h (Max)'
+}
+</script>
+
+<template>
+  <Slider :marks="speedMarks" />
+</template>
+```
+
+### Custom Property Mapping (`keyLabel` and `keyValue`)
+
+If your incoming data structure uses custom property names instead of `label` and `value`, configure key aliases using `keyLabel` and `keyValue`:
+
+- `keyLabel` — property name containing the display label text (default `'label'`).
+- `keyValue` — property name containing the payload data (default `'value'`).
+
+<Source
+    code={`
+<script setup>
+import { ref } from 'vue'
+
+const selectedCategory = ref(2)
+const categories = [
+  { id: 1, title: 'Economy', position: 0 },
+  { id: 2, title: 'Standard', position: 50 },
+  { id: 3, title: 'Premium', position: 100 }
+]
+</script>
+
+<template>
+  <Slider
+    v-model="selectedCategory"
+    :marks="categories"
+    keyLabel="title"
+    keyValue="id"
+    magnet
+  />
+</template>
+  `}
+    language="html"
+/>
+
+### Magnet Snapping (`magnet`) and Step Increments (`step`)
+
+- `step` — defines discrete numerical value increments during pointer drag or arrow key navigation (default `1`).
+- `magnet` — boolean flag enabling magnet snapping mode. When `magnet` is active, the slider handle automatically snaps to the nearest defined mark item in the `marks` list, preventing selection of unlisted values between marks.
+
+```html
+<!-- Handle snaps strictly to defined mark positions -->
+<Slider
+  v-model="volume"
+  :marks="[0, 25, 50, 75, 100]"
+  magnet
+/>
+```
+
+### Event Detail Payload (`@input` and `@change`)
+
+When slider values change, `@input` and `@change` emit a detailed `detail` object with the following structure:
+
+- `detail.mark` — numeric mark position value (or `[min, max]` pair in `multiple` mode).
+- `detail.item` — normalized mark item object (`{ mark, value, label, style }`).
+- `detail.value` — custom data payload extracted from the mark item's `value` property.
+
+Simplified events `@inputLite` and `@changeLite` are also available for receiving raw `v-model` values directly.
+
+### Custom Mark Rendering via `#mark` Slot
+
+Customize the visual rendering of mark items using the `#mark` slot, which exposes `{ item }`:
+
+<Source
+    code={`
+<template>
+  <Slider :marks="[0, 50, 100]">
+    <template #mark="{ item }">
+      <span class="custom-mark">
+        <strong>{{ item.label }}</strong>
+      </span>
+    </template>
+  </Slider>
+</template>
+  `}
+    language="html"
+/>

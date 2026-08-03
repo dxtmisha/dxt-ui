@@ -25,10 +25,14 @@ export type SliderComponents = {
 export type SliderEmits
   = ModelEmits<SliderValueType>
     & {
-      /** Emitted on slider value input / Срабатывает при вводе значения слайдера */
-      input?: [value: SliderValueType, detail: SliderEventDetail]
+    /** Emitted on slider value input / Срабатывает при вводе значения слайдера */
+      input?: [detail: SliderEventDetail]
+      /** Emitted on slider value input (lite version) / Срабатывает при вводе значения слайдера (упрощенная версия) */
+      inputLite?: [value: SliderValueType]
       /** Emitted on slider value commit / Срабатывает при подтверждении значения слайдера */
-      change?: [value: SliderValueType, detail: SliderEventDetail]
+      change?: [detail: SliderEventDetail]
+      /** Emitted on slider value commit (lite version) / Срабатывает при подтверждении значения слайдера (упрощенная версия) */
+      changeLite?: [value: SliderValueType]
     }
 
 /**

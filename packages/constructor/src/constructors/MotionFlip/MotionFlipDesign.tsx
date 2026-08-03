@@ -28,14 +28,14 @@ export class MotionFlipDesign<
   P extends MotionFlipPropsBasic,
   SLOTS extends MotionFlipSlots = MotionFlipSlots
 > extends DesignConstructorAbstract<
-  HTMLDivElement,
-  COMP,
-  MotionFlipEmits,
-  EXPOSE,
-  SLOTS,
-  CLASSES,
-  P
-> {
+    HTMLDivElement,
+    COMP,
+    MotionFlipEmits,
+    EXPOSE,
+    SLOTS,
+    CLASSES,
+    P
+  > {
   /** FLIP animation instance controller / Контроллер экземпляра FLIP анимации */
   protected readonly item: MotionFlip
 

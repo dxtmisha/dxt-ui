@@ -1,0 +1,10 @@
+- `mark(props: SliderMarkSlot): any` — Slot for custom rendering of a tick mark item.
+- `minLabel(props: SliderThumbSlot): any` — Slot for custom rendering of the minimum handle label in range selection mode.
+- `maxLabel(props: SliderThumbSlot): any` — Slot for custom rendering of the maximum (or single) handle label.
+
+> **SliderMarkSlot:**
+> - `item: SliderMarkItem` — mark configuration object (includes `mark`, `label`, `value`, `style`).
+
+> **SliderThumbSlot:**
+> - `value: number` — current numeric value of the handle.
+> - `item: SliderMarkItem` — mark configuration object for the handle position.

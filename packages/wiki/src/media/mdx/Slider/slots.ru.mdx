@@ -1,0 +1,10 @@
+- `mark(props: SliderMarkSlot): any` — Слот для пользовательского рендеринга метки/деления.
+- `minLabel(props: SliderThumbSlot): any` — Слот для пользовательского рендеринга подписи минимального ползунка в режиме диапазона.
+- `maxLabel(props: SliderThumbSlot): any` — Слот для пользовательского рендеринга подписи максимального (или единственного) ползунка.
+
+> **SliderMarkSlot:**
+> - `item: SliderMarkItem` — объект конфигурации метки (включает `mark`, `label`, `value`, `style`).
+
+> **SliderThumbSlot:**
+> - `value: number` — текущее числовое значение ползунка.
+> - `item: SliderMarkItem` — объект конфигурации метки для позиции ползунка.

@@ -51,26 +51,27 @@ function createSliderEmit(
 }
 
 describe('SliderEmit', () => {
-  it('should emit single mode detail when emit is called', () => {
+  it('should emit single mode detail and changeLite when emit is called', () => {
     const mockEmits = vi.fn()
     const { sliderEmit } = createSliderEmit(80, { multiple: false }, mockEmits)
 
     sliderEmit.emit('change')
 
-    expect(mockEmits).toHaveBeenCalledWith('change', 80, {
+    expect(mockEmits).toHaveBeenCalledWith('change', {
       mark: 80,
       item: { mark: 80, value: 80, label: '80' },
       value: 80
     })
+    expect(mockEmits).toHaveBeenCalledWith('changeLite', 80)
   })
 
-  it('should emit multiple range mode detail when emit is called', () => {
+  it('should emit multiple range mode detail and changeLite when emit is called', () => {
     const mockEmits = vi.fn()
     const { sliderEmit } = createSliderEmit([10, 80], { multiple: true }, mockEmits)
 
     sliderEmit.emit('change')
 
-    expect(mockEmits).toHaveBeenCalledWith('change', [10, 80], {
+    expect(mockEmits).toHaveBeenCalledWith('change', {
       mark: [10, 80],
       item: [
         { mark: 10, value: 10, label: '10' },
@@ -78,15 +79,20 @@ describe('SliderEmit', () => {
       ],
       value: [10, 80]
     })
+    expect(mockEmits).toHaveBeenCalledWith('changeLite', [10, 80])
   })
 
-  it('should automatically emit input when model value changes', async () => {
+  it('should automatically emit input and inputLite when model value changes', async () => {
     const mockEmits = vi.fn()
     const { model } = createSliderEmit(20, { multiple: false }, mockEmits)
 
     model.set(50)
     await nextTick()
 
-    expect(mockEmits).toHaveBeenCalledWith('input', 50, expect.anything())
+    expect(mockEmits).toHaveBeenCalledWith('input', expect.objectContaining({
+      mark: 50,
+      value: 80
+    }))
+    expect(mockEmits).toHaveBeenCalledWith('inputLite', 50)
   })
 })

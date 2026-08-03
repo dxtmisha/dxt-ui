@@ -1,0 +1,63 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+### `input`
+
+Emitted in real-time on every thumb position shift (dragging, keyboard).
+
+**Parameters:**
+- `detail: SliderEventDetail` — detail object containing slider state information
+
+### `inputLite`
+
+Lightweight real-time input event emitting only raw `v-model` value.
+
+**Parameters:**
+- `value: SliderValueType` — current slider value (`number` or `[number, number]`)
+
+### `change`
+
+Emitted when interaction ends and value is committed.
+
+**Parameters:**
+- `detail: SliderEventDetail` — detail object containing committed slider state information
+
+### `changeLite`
+
+Lightweight change event emitting only committed raw `v-model` value.
+
+**Parameters:**
+- `value: SliderValueType` — committed slider value (`number` or `[number, number]`)
+
+**Structure of SliderEventDetail:**
+- `mark: SliderValueType` — current position value or range pair `[min, max]`
+- `item: SliderMarkItem | [SliderMarkItem, SliderMarkItem]` — active mark item object or pair of mark items
+- `value?: SliderMarkItemValue | [SliderMarkItemValue, SliderMarkItemValue]` — custom payload data extracted from the mark
+
+**Structure of SliderMarkItem:**
+- `mark: number` — numeric position along the slider scale
+- `label: string` — display text label of the mark
+- `value?: SliderMarkItemValue` — custom payload (`NumberOrStringOrBoolean`)
+- `style?: Record<string, any>` — inline positioning styles dictionary
+
+<Source
+    code={`
+<script setup>
+const handleInput = (detail) => {
+  console.log('Position:', detail.mark)
+  console.log('Mark item:', detail.item)
+}
+
+const handleChangeLite = (value) => {
+  console.log('Committed value:', value)
+}
+</script>
+
+<template>
+  <Slider
+    @input="handleInput"
+    @changeLite="handleChangeLite"
+  />
+</template>
+  `}
+    language="html"
+/>
