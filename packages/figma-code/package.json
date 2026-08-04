@@ -34,9 +34,11 @@
     "public-to-npm": "npm publish --access public"
   },
   "files": [
+    "ai-prompts",
     "dist",
     "ai-description.md",
     "ai-doc.md",
+    "ai-mcp.json",
     "ai-types.md",
     "CHANGELOG.md",
     "LICENSE",

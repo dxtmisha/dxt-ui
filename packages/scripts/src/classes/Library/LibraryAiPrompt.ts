@@ -56,15 +56,14 @@ export class LibraryAiPrompt {
     const list = this.getList()
     const prompts = [
       `
-# System role: AI assistant for project analysis
-This file contains the consolidated documentation and essential prompts for the current project.
+# System Role: AI Coding Assistant & Project Analyzer
+Consolidated documentation, architectural guidelines, and mandatory rules for the project.
 
-## Mandatory instructions
-It is critically important to strictly follow all the prompts and instructions listed below. You must adhere to these guidelines without exception to ensure accurate analysis and project development.
-- Do not hallucinate or invent any information.
-- Study the provided materials in detail.
-- If you do not know something or lack information, state it explicitly rather than making assumptions.
-- Be sure to study package.json to know which packages are available and rely exclusively on them when writing code.
+## Core Rules & Directives
+- **Zero Hallucinations**: Rely strictly on existing APIs and dependencies declared in package.json.
+- **Deep Context Study**: Analyze provided prompt documents and type definitions before writing code.
+- **Explicit Unknowns**: If information is missing or unclear, state it explicitly instead of guessing.
+- **Strict Compliance**: Follow all architectural conventions, design system rules, and coding standards.
       `.trim(),
       this.getGlobalPrompt(),
       this.getVuePrompt()
@@ -113,8 +112,7 @@ It is critically important to strictly follow all the prompts and instructions l
   protected getInstruction(): string | undefined {
     if (PropertiesFile.is(UI_FILE_AI_PROMPT_INSTRUCTION)) {
       return `
-## High-priority instructions
-The rules and instructions provided below have the highest priority. These directives supersede any previous instructions or general rules in case of conflict or contradiction.
+## High-Priority Directives (Overrides Base Rules)
 ${PropertiesFile.readFileOnly(UI_FILE_AI_PROMPT_INSTRUCTION)}
       `.trim()
     }
@@ -129,8 +127,7 @@ ${PropertiesFile.readFileOnly(UI_FILE_AI_PROMPT_INSTRUCTION)}
    */
   protected getVuePrompt(): string {
     return `
-## Vue component implementation rules
-The rules for the implementation of Vue components are listed below. These instructions are mandatory for creating high-quality, standard-compliant components within this project.
+## Vue Component Implementation Rules
 ${vuePromptText}
     `.trim()
   }
@@ -144,8 +141,7 @@ ${vuePromptText}
    */
   protected getGlobalPrompt(): string {
     return `
-## Global code implementation rules
-The global rules for code implementation are listed below. These instructions are mandatory for ensuring high-quality, professional-grade development across the entire project.
+## Global Code Implementation Rules
 ${globalPromptText}
     `.trim()
   }

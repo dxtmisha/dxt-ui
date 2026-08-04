@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/styles",
   "private": false,
-  "version": "1.0.9",
+  "version": "1.0.10",
   "type": "module",
   "description": "SCSS styles and utilities for DXT UI design system",
   "keywords": [
@@ -29,7 +29,11 @@
     "publish-to-npm": "npm publish --access public"
   },
   "files": [
+    "ai-prompts/",
     "src/styles",
+    "ai-description.md",
+    "ai-doc.md",
+    "ai-mcp.json",
     "index.scss",
     "properties.scss",
     "README.md",

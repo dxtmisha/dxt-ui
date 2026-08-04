@@ -1,12 +1,12 @@
-import { forEach, ServerStorage } from '@dxtmisha/functional-basic'
+import { forEach, isFilled, ServerStorage } from '@dxtmisha/functional-basic'
 import { getPackageJson } from '../../functions/getPackageJson'
 import { useAi } from '../../composables/useAi'
 
 import { PropertiesFile } from '../Properties/PropertiesFile'
 
-import type { DesignTypesList } from '../../types/designTypes'
+import type { DesignMcpResourceItem, DesignMcpResources, DesignTypesList } from '../../types/designTypes'
 
-import { UI_DIR_CONSTRUCTOR, UI_FILE_AI_DESCRIPTION, UI_FILE_AI_TYPES } from '../../config'
+import { UI_DIR_CONSTRUCTOR, UI_FILE_AI_DESCRIPTION, UI_FILE_AI_MCP, UI_FILE_AI_TYPES, UI_MODULES } from '../../config'
 
 /**
  * Engine for generating compressed and AI-optimized TypeScript type definitions.
@@ -28,9 +28,11 @@ export class DesignTypes {
    *
    * Конструктор для DesignTypes.
    * @param dir input directory path containing declaration files / входной путь к директории, содержащей файлы деклараций
+   * @param promptsDir input directory path containing prompt files / входной путь к директории, содержащей файлы промптов
    */
   constructor(
-    protected readonly dir: string = 'dist'
+    protected readonly dir: string = 'dist',
+    protected readonly promptsDir: string = 'ai-prompts'
   ) {
     ServerStorage.setErrorStatus(true)
     this.dirArray = this.dir.split('/')
@@ -54,7 +56,17 @@ export class DesignTypes {
     this.save(aiContent)
 
     const aiDescription = await this.toAiDescription(fullContent, fullJsContent)
-    this.saveDescription(aiDescription)
+
+    const promptList = this.getListPrompts()
+    const prompts = await this.toAiPrompts(promptList)
+
+    this.saveDescription(`${aiDescription}\n${prompts}`)
+
+    const mcpPrompts = await this.toAiMcpPrompts(promptList)
+
+    if (mcpPrompts) {
+      this.saveMcp(mcpPrompts)
+    }
 
     console.log('DesignTypes: AI types saved.')
   }
@@ -112,6 +124,16 @@ export class DesignTypes {
   }
 
   /**
+   * Returns the project name from package.json.
+   *
+   * Возвращает название проекта из package.json.
+   * @returns project name or 'none' / название проекта или 'none'
+   */
+  protected getProjectName(): string {
+    return getPackageJson()?.name ?? 'none'
+  }
+
+  /**
    * Reads the directory recursively.
    *
    * Читает директорию рекурсивно.
@@ -165,6 +187,30 @@ export class DesignTypes {
   }
 
   /**
+   * Gets a list of prompt files.
+   *
+   * Получает список файлов с промптами.
+   */
+  protected getListPrompts(): DesignTypesList {
+    const files = PropertiesFile.readDirRecursive(this.promptsDir)
+
+    return forEach(
+      files,
+      (file) => {
+        const path = `${this.promptsDir}/${file}`
+        const content = PropertiesFile.readFileOnly(path)
+
+        if (content) {
+          return {
+            path,
+            content
+          }
+        }
+      }
+    ) as DesignTypesList
+  }
+
+  /**
    * Reads the content of a file.
    *
    * Читает содержимое файла.
@@ -210,6 +256,19 @@ export class DesignTypes {
     PropertiesFile.writeByPath(
       UI_FILE_AI_DESCRIPTION,
       content
+    )
+  }
+
+  /**
+   * Saves the AI-generated MCP server resources to a file.
+   *
+   * Сохраняет сгенерированные ИИ ресурсы MCP-сервера в файл.
+   * @param data data to save / данные для сохранения
+   */
+  protected saveMcp(data: object) {
+    PropertiesFile.writeByPath(
+      UI_FILE_AI_MCP,
+      JSON.stringify(data, null, 2)
     )
   }
 
@@ -311,21 +370,155 @@ export class DesignTypes {
   protected async toAiDescription(content: string, code?: string): Promise<string> {
     const generate = await this.toAi(
       content,
-      'Goal: Generate a comprehensive, highly technical, and fluff-free project overview designed for an AI coding assistant to evaluate this library\'s exact contents and capabilities.\n\n'
+      'Goal: Generate a CONCISE, high-density project overview for an AI coding assistant to evaluate this library\'s core purpose, key module groupings, and triggers for studying type definitions.\n\n'
       + 'CRITICAL RESTRICTIONS:\n'
-      + '- Analyze ONLY the code, type definitions, and text explicitly provided in this prompt. Do NOT attempt to read, search, infer, or assume any external files, dependencies, or unprovided data.\n'
-      + '- Do NOT include any file paths, relative links, or external URLs, as reading AI agents will not have environment file access.\n\n'
-      + 'STRUCTURE & CONTENT REQUIREMENTS:\n'
-      + 'Provide an objective, dense, and complete technical summary including:\n'
-      + '1. Core Purpose: What is the primary technical function, responsibility, and role of this library?\n'
-      + '2. Key Expositions & Capabilities: Detail ALL main classes, composables/hooks, utilities, components, services, or data structures exposed by this library. Specify the exact functionality and specific tasks each exposed entity or module performs so reading AI agents clearly understand the full capability set.\n'
-      + '3. Triggers for Studying ai-types.md: Under what specific coding requirements, keywords, tasks, or architectural needs is this library indispensable, making it mandatory for the AI to study "ai-types.md"?\n'
-      + '4. Integration Context: How does this library connect with other technologies, frameworks, or packages in the system stack?\n\n'
+      + '- Keep the output dense, focused, and fluff-free. Avoid bloated descriptions, exhaustive lists of individual methods, classes, or components by name, or repetitive explanations.\n'
+      + '- Always group components, classes, or methods by functional category (e.g. "form components", "navigation controls", "storage utilities") instead of enumerating every individual name.\n'
+      + '- Analyze ONLY the code, type definitions, and text explicitly provided in this prompt. Do NOT assume external unprovided data.\n'
+      + '- Do NOT include file paths, relative links, URLs, or markdown formatting.\n\n'
+      + 'STRUCTURE REQUIREMENTS (Provide a single cohesive text block):\n'
+      + '1. Core Purpose: 1-2 sentences summarizing the library\'s primary technical function and responsibility.\n'
+      + '2. Key Capabilities & Groupings: Group main classes, composables, or components into high-level functional modules (e.g. API/Network, Storage, Localization, Form Components, Layout Controls, Utilities) and summarize their capabilities in tight sentences. Avoid listing individual component or method names—group them by function instead.\n'
+      + '3. Triggers for Studying ai-types.md: Under what specific coding requirements, keywords, tasks, or architectural needs is it mandatory for the AI to study "ai-types.md"?\n'
+      + '4. Integration Context: 1 sentence explaining how this library connects with other stack frameworks or packages.\n\n'
       + 'OUTPUT REQUIREMENTS:\n'
-      + 'Return ONLY the resulting description text. No markdown formatting, no code blocks, no labels (like "Description:"), and no conversational explanations. NOTHING but pure, dense content.',
+      + 'Return ONLY the resulting concise description text. No markdown code blocks (```), no section headers, no labels (like "Description:"), and no conversational fluff.',
       code
     )
 
     return generate ?? ''
+  }
+
+  /**
+   * Generates project rules and prompt triggers description.
+   *
+   * Генерирует описание правил проекта и триггеров промптов.
+   * @param list list of prompt files / список файлов промптов
+   */
+  protected async toAiPrompts(list: DesignTypesList): Promise<string> {
+    const projectName = this.getProjectName()
+    const promptList = await Promise.all(
+      forEach(list, async (item) => {
+        const content = await this.toAiPromptName(item.content)
+
+        if (isFilled(content)) {
+          return `- '${UI_MODULES}/${projectName}/${item.path}': ${content}`
+        }
+
+        return ''
+      })
+    )
+
+    const prompts = promptList.filter(Boolean).join('\n')
+
+    if (prompts) {
+      return '## Mandatory Rules\n'
+        + 'Read the corresponding file if your task relates to:\n'
+        + `${prompts}`
+    }
+
+    return ''
+  }
+
+  /**
+   * Generates a trigger description for studying a prompt file using AI.
+   *
+   * Генерирует описание-триггер для изучения файла промпта с помощью ИИ.
+   * @param content prompt file content / содержимое файла промпта
+   */
+  protected async toAiPromptName(content: string): Promise<string> {
+    const generate = await this.toAi(
+      content,
+      'Goal: Generate an EXTREMELY SHORT, high-density topic summary for an AI coding assistant describing what rules/topics are covered in this prompt document.\n\n'
+      + 'CRITICAL RESTRICTIONS:\n'
+      + '- The output MUST be EXTREMELY CONCISE: 1 short sentence or clause (maximum 10-15 words).\n'
+      + '- Do NOT include repetitive filler like "When working with...", "you MUST study this document", or "in order to follow...".\n'
+      + '- Analyze ONLY the text explicitly provided in this prompt.\n'
+      + '- Do NOT include file paths, URLs, quotes, or markdown syntax.\n\n'
+      + 'EXAMPLES OF GOOD OUTPUT:\n'
+      + '- "Class structure, typing standards, SSR safety, and primitive helpers"\n'
+      + '- "HTTP client, storage management, localization, and DOM event helpers"\n'
+      + '- "MDX documentation generation rules for TypeScript classes"\n\n'
+      + 'OUTPUT REQUIREMENTS:\n'
+      + 'Return ONLY the resulting short topic summary. No markdown code blocks (```), no labels, no quotes, and no conversational text.'
+    )
+
+    return generate ?? ''
+  }
+
+  /**
+   * Generates MCP server resources structure for prompt files using AI.
+   *
+   * Генерирует структуру ресурсов MCP-сервера для файлов промптов с помощью ИИ.
+   * @param list list of prompt files / список файлов промптов
+   * @returns object with resources array or undefined / объект со массивом ресурсов или undefined
+   */
+  protected async toAiMcpPrompts(list: DesignTypesList): Promise<DesignMcpResources | undefined> {
+    const projectName = this.getProjectName()
+    const resources: DesignMcpResourceItem[] = []
+
+    for (const item of list) {
+      const data = await this.toAiMcpResources(item.content, item.path)
+
+      if (
+        data?.name
+        && data?.description
+      ) {
+        resources.push({
+          uri: `${projectName}/${item.path}`,
+          name: data.name,
+          mimeType: data.mimeType ?? 'text/markdown',
+          description: data.description
+        })
+      }
+    }
+
+    if (resources.length > 0) {
+      return resources
+    }
+
+    return undefined
+  }
+
+  /**
+   * Generates MCP server resource metadata for a prompt document using AI.
+   *
+   * Генерирует метаданные ресурса MCP-сервера для документа промпта с помощью ИИ.
+   * @param content prompt file content / содержимое файла промпта
+   * @param file prompt file path or name / путь или имя файла промпта
+   * @returns resource metadata object or undefined / объект метаданных ресурса или undefined
+   */
+  protected async toAiMcpResources(content: string, file?: string): Promise<Partial<DesignMcpResourceItem> | undefined> {
+    const generate = await this.toAi(
+      content,
+      (file ? `File Name: ${file}\n\n` : '')
+      + 'Goal: Generate an MCP (Model Context Protocol) server resource metadata object in valid JSON format for this prompt document.\n\n'
+      + 'CRITICAL RESTRICTIONS:\n'
+      + '- The output MUST be a valid JSON object with keys: "name", "mimeType", and "description".\n'
+      + '- All text values MUST be strictly in English. Non-English languages are strictly forbidden.\n'
+      + '- "name": A concise, clear English title (2-4 words, e.g. "Coding Standards", "API Reference").\n'
+      + '- "mimeType": Must be strictly "text/markdown".\n'
+      + '- "description": A high-density, professional description strictly in English (1-2 sentences) summarizing what rules, APIs, or architectural conventions are covered in this document.\n'
+      + '- Do NOT include markdown code block wrappers (```json). Return ONLY the raw JSON string.\n\n'
+      + 'EXAMPLES OF GOOD OUTPUT:\n'
+      + '{\n'
+      + '  "name": "Coding Standards",\n'
+      + '  "mimeType": "text/markdown",\n'
+      + '  "description": "Strict architectural conventions and code implementation standards for the product."\n'
+      + '}\n\n'
+      + 'OUTPUT REQUIREMENTS:\n'
+      + 'Return ONLY the JSON object. No explanations, no markdown formatting, no conversational text.'
+    )
+
+    if (generate) {
+      try {
+        const cleaned = generate.replace(/```json|```/g, '').trim()
+        return JSON.parse(cleaned)
+      } catch {
+        return undefined
+      }
+    }
+
+    return undefined
   }
 }

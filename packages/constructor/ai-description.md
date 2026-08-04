@@ -1,19 +1,13 @@
-CORE PURPOSE
-The library serves as a foundational UI constructor and functional architecture layer for building Vue 3 design systems. It supplies headless behavior controllers (Include classes), component type definitions/constructors, ARIA accessibility bindings, touch/keyboard navigation abstractions, and a Vite build plugin for automated component imports and SCSS token transformations.
+Core Purpose: The library is a comprehensive UI component toolkit and architectural framework for Vue, providing reactive layout primitives, accessible interactive controls, and advanced form validation.
 
-KEY EXPOSITIONS
-Component Inclusion Controllers: ComponentIncludeAbstract (abstract base for embedded sub-component rendering and state propagation), FieldValueInclude, FieldValidationInclude, FieldEventInclude, FieldArrowInclude (form input reactive state, DOM validation, and step controls), StickyInclude, MotionSticky (scroll/resize position binding), FocusDirectionInclude, TabIndexInclude (directional arrow navigation and focus trapping), TouchEventInclude (touch/mouse gesture detection), SearchInclude, SortInclude, PaginationInclude (reactive data filtering and multi-column sorting).
-UI Component Constructors: Accordion, ActionSheet, Actions, Alert, Anchor, Avatar, Badge, Bars, Block, Breadcrumbs, Button, ButtonGroup, Cell, Checkbox, Chip, Dialog, DraggableWrapper, Field, Input, InputPhone, List, Menu, Modal, MotionAxis, MotionTransform, Pagination, Select, Table, TableFlex, Tabs, Tooltip, Window.
-Accessibility Utilities: AriaStaticInclude (static ARIA attribute mapping), AriaList, RoleType.
-Vite Plugin: Plugin, PluginCode, PluginComponents, PluginStyle (automates Vue component resolution and SCSS variable/mixin transformation).
+Key Capabilities & Groupings:
+- Form & Input Controls: Encapsulates native and composite input elements, real-time validation checks, regular expression pattern verification, formatted numbers, social media fields, masked inputs, checkboxes, radios, switches, and sliders.
+- Layout & Navigation Controls: Manages layout areas, multi-column navigation rails, tabs, breadcrumbs, expandable accordions, structured block wrappers, dividers, and horizontal scroll containers.
+- Overlays & Popups: Controls dialogs, action sheets, modals, dropdown menus, country/language selectors, context menus, tooltips, and floating notifications via snackbars.
+- Data Display & Tables: Handles sortable lists, filterable search results, paginated record sets, and flexible table components with sticky headers and scroll management.
+- Motion & Animation Utilities: Orchestrates transform animations, axis motions, FLIP layout transitions, sticky positioning, headroom scroll tracking, and gesture detection.
+- Core Utilities & Bindings: Provides ARIA attribute generation, client-side rendering guards, teleportation management, request-isolated translation storage, and a Vite build plugin for automatic component and style imports.
 
-TRIGGERS FOR STUDYING AI-TYPES.MD
-Studying ai-types.md is mandatory when:
-1. Extending ComponentIncludeAbstract to build new sub-components or wrapper components that require proxying child exposed APIs.
-2. Configuring complex form components using FieldAllProps, FieldValidationItem, FieldValidityCode, or custom input masks (MaskSpecialList, MaskTypeItem).
-3. Configuring compound component props that use generic type constraints across sub-components (e.g., TablePropsBasic, SelectPropsBasic, WindowPropsBasic, MenuPropsBasic).
-4. Implementing custom motion, transition, or positioning logic utilizing MotionTransformControlItem, MotionAxisEmitOptions, or WindowControlItem.
-5. Configuring the build plugin via PluginOptions or defining custom SCSS transformation rules.
+Triggers for Studying ai-types.md: Study ai-types.md whenever implementing custom component constructors, extending abstract design classes, mapping reactive props, configuring ARIA accessibility states, or integrating form validation rules.
 
-INTEGRATION CONTEXT
-Engineered for Vue 3 using Composition API primitives (Ref, ComputedRef, VNode, ToRefs) and v-model synchronization protocols. Connects with Vue Router for navigation handling in interactive components (EventClickInclude). Integrates into Vite/Rollup build pipelines via custom transform plugins. Relies on internal packages @dxtmisha/functional and @dxtmisha/functional-basic for base utility types and functional primitives.
+Integration Context: This library seamlessly integrates with Vue 3 reactive ecosystems, Vue Router navigation, and Vite build toolchains.

@@ -1,11 +1,10 @@
-FIGMA UI COMMUNICATION PACKAGE:
-This library is designed to simplify the interaction between the UI part of a Figma plugin (Frontend) and its background process (Backend). It provides abstractions for messaging and retrieving data from Figma.
+Figma plugin UI (frontend) communication library. Interacts with the backend (`figma-code`) for messaging, frames, styles, and storage requests.
 
-1. PURPOSE: The library is used exclusively in the Figma plugin's UI code. It implements `FigmaUiMessenger` for sending (`post`) and receiving messages from the plugin, along with functions for requesting frames, styles, and storage data.
-2. SECURITY: All messaging is tied to a secure code (`FigmaPostCode`), which must match on both sides (UI and Code).
-3. KEY TOOLS:
-   - `FigmaUiMessenger`: A singleton for managing messages on the UI side.
-   - `fetch...` functions: Wrappers over messages for asynchronously retrieving data from Figma (e.g., `fetchFramesSelected`).
+Key elements:
+- `FigmaUiMessenger`: UI messaging singleton.
+- `fetch...`: Async wrappers for retrieving Figma data (e.g., `fetchFramesSelected`).
+- `FigmaPostCode`: Security token for message verification.
 
-Use this package when developing the visual part of a plugin to communicate with the Figma API via the `figma-code` layer.
+Use only in the Figma plugin UI (frontend).
+
 

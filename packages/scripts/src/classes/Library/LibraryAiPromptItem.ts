@@ -206,8 +206,7 @@ ${data.join('\n\n')}
       console.log('-- Description')
 
       return `
-## Project context: Investigation required
-You MUST read and carefully analyze the description of this project below. If there is even a 1% chance that the functionality, components, styles, or helpers from this project could be useful for your task, you MUST immediately start analyzing this project, studying its types, and checking its structure in full to prevent custom code duplication:
+## Package Description & Module Overview
 ${this.readFile(UI_FILE_AI_PROMPT_DESCRIPTION)}
       `.trim()
     }
@@ -227,8 +226,7 @@ ${this.readFile(UI_FILE_AI_PROMPT_DESCRIPTION)}
       console.log('-- Developer')
 
       return `
-## Mandatory Study Before Development
-As soon as you start working with this project (using any of its components/functionality, importing from it, or editing its code), you MUST read and study the architectural rules and instructions in this file as your absolute first action:
+## Developer Rules (Must Read Before Modifying Code)
 '${this.getPathString()}/${UI_FILE_AI_PROMPT_DEVELOPER}'
       `.trim()
     }
@@ -248,8 +246,7 @@ As soon as you start working with this project (using any of its components/func
       console.log('-- Info')
 
       return `
-## Project information: Core overview
-This section contains essential information and the core overview of the project. Review this to understand the fundamental architecture and key features.
+## Package Core Information
 ${this.readFile(UI_FILE_AI_PROMPT_INFO)}
       `.trim()
     }
@@ -269,8 +266,7 @@ ${this.readFile(UI_FILE_AI_PROMPT_INFO)}
       console.log('-- Types')
 
       return `
-## Project types: Essential for analysis
-This file contains the complete type definitions, available utilities, and component structures for the project. As soon as you start working with this project (using any of its components/functionality, importing from it, or editing its code), you MUST read, analyze, and study this type definition file COMPLETELY and IN FULL (NOT partially), as your absolute first action using the view_file tool. This is mandatory to fully understand its API, locate all existing utilities/helpers (полезности), and prevent writing duplicate code:
+## Package Type Definitions (Must Read in Full When Working with Package)
 '${this.getPathString()}/${UI_FILE_AI_PROMPT_TYPES}'
       `.trim()
     }
@@ -293,8 +289,7 @@ This file contains the complete type definitions, available utilities, and compo
 
       const screenshot: string = list.map(item => `- '${this.getPathString()}/${UI_DIR_AI_PROMPT_SCREENSHOT}/${item}'`).join('\n')
 
-      return `## Project screenshots: Visual reference
-The project includes the following screenshots that provide a visual reference for the project's design and functionality:
+      return `## Component Visual References (Screenshots)
 ${screenshot}
       `.trim()
     }

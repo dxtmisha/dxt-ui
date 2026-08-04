@@ -120,6 +120,8 @@ export const UI_FILE_INDEX = 'index.ts'
 export const UI_FILE_AI_TYPES = 'ai-types.md'
 /** AI description file name / Название файла с описанием AI */
 export const UI_FILE_AI_DESCRIPTION = 'ai-description.md'
+/** AI MCP resources file name / Название файла с ресурсами MCP AI */
+export const UI_FILE_AI_MCP = 'ai-mcp.json'
 /** Style SCSS file name / Название файла стилей SCSS */
 export const UI_FILE_STYLE_SCSS = 'style.scss'
 /** UI properties SCSS file name / Название файла свойств UI в SCSS */

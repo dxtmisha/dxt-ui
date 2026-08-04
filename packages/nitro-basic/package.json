@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/nitro-basic",
   "private": false,
-  "version": "0.1.14",
+  "version": "0.1.15",
   "type": "module",
   "description": "A foundational utility library for building robust Server-Side Rendering (SSR) applications with Vue 3 and Nitro.",
   "keywords": [
@@ -38,9 +38,11 @@
     "publish-to-npm": "npm publish --access public"
   },
   "files": [
+    "ai-prompts",
     "dist",
     "ai-description.md",
     "ai-doc.md",
+    "ai-mcp.json",
     "ai-types.md",
     "CHANGELOG.md",
     "LICENSE",

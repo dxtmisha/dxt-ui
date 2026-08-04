@@ -1,0 +1,26 @@
+[
+  {
+    "uri": "@dxtmisha/functional/ai-prompts/api-reference.md",
+    "name": "API Management Reference",
+    "mimeType": "text/markdown",
+    "description": "Guidance and architectural patterns for REST API management and scope-isolated reactive singleton factories using the @dxtmisha/functional library."
+  },
+  {
+    "uri": "@dxtmisha/functional/ai-prompts/localization-seo.md",
+    "name": "Localization SEO Utilities",
+    "mimeType": "text/markdown",
+    "description": "Guidelines and reactive utilities for locale-aware formatting, multi-key translations, geographic context, and dynamic HTML document metadata management."
+  },
+  {
+    "uri": "@dxtmisha/functional/ai-prompts/reactivity-lists.md",
+    "name": "Reactivity and Lists",
+    "mimeType": "text/markdown",
+    "description": "Provides specifications and usage patterns for advanced async reactivity helpers, list selection models, debounced search filters, and DOM observer utilities."
+  },
+  {
+    "uri": "@dxtmisha/functional/ai-prompts/storage-state.md",
+    "name": "Browser State Composables",
+    "mimeType": "text/markdown",
+    "description": "Provides reactive composable wrappers for persistent and synchronized browser state management, including localStorage, sessionStorage, cookies, broadcast channels, and URL hash fragments."
+  }
+]

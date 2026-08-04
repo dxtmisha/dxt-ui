@@ -1,29 +1,7 @@
-1. CORE PURPOSE
-This library (@dxtmisha/functional) provides Vue 3 reactive abstractions, abstract base classes for component architecture, and advanced composables. It elevates low-level functional utilities from @dxtmisha/functional-basic into Vue 3 reactivity system (refs, computed, lifecycle, reactive singletons) to handle REST API orchestration, localization, meta management, routing, client-side storage, lazy loading, list/search data structures, and standard component state construction.
-
-2. KEY EXPOSITIONS
-Abstract Component Base Classes: DesignAbstract, DesignAsyncAbstract, DesignChanged, DesignComponents, DesignComp, DesignConstructorAbstract. These manage component state lifecycle, dynamic class and style processing, event hooks, slot rendering, component modifications, and property mutation tracking.
-
-Reactive API Composables: useApiRef, useApiAsyncRef, useApiManagementRef, useApiManagementAsyncRef, useApiGet, useApiPost, useApiPut, useApiDelete, useApiRequest. These handle REST operations with SSR prefetching, response contract validation, mutation handling, error contract mapping, client-side pagination/filtering, and automatic state reactivity.
-
-Singleton State & Execution Control: executeUse, executeUseGlobal, executeUseProvide, executeUseLocal, executeUseGlobalInit. These encapsulate factory initialization into global, component-tree inject/provide, or closure-local singletons.
-
-Localization & Formatting Classes and Composables: DatetimeRef, GeoFlagRef, GeoIntlRef, GeoRef, GeoUnitRef, useGeoIntlRef, useGeoUnitRef, useFormattersRef, useTranslateRef, t. These offer reactive locale-aware date/time formatting, unit conversion, flag retrieval, and multi-key translation refs.
-
-Data Structures & UI Management: ListDataRef, useRouterList, useSearchRef, useSearchValueRef, useLazyRef, useLazyItemByMarginRef, ScrollbarWidthRef, EventRef, EffectScopeGlobal. These provide reactive list data mapping, search query debounce and highlighting, lazy-loading via IntersectionObserver, scrollbar width tracking, and global effect scopes.
-
-State Persistence & Browser Composables: useBroadcastValueRef, useCookieRef, useHashRef, useQueryRef, useSessionRef, useStorageRef, useMeta. These control cross-tab communication, cookies, URL query/hash reactive synchronization, session/local storage, and reactive HTML document metadata.
-
-Utility Functions & Plugin: computedAsync, computedByLanguage, computedEternity, getBind, getBindRef, render, toBind, toBinds, dxtFunctionalPlugin.
-
-3. TRIGGERS FOR STUDYING AI-TYPES.MD
-Reading ai-types.md is mandatory under any of the following conditions, keywords, or implementation tasks:
-- Extending or sub-classing DesignConstructorAbstract, DesignAbstract, DesignAsyncAbstract, or DesignComponents.
-- Configuring API integrations requiring complex typing, specifically ApiManagementGet, ApiManagementSearch, ApiManagementRequest, or ApiOptions.
-- Utilizing component metadata and binding types, such as ConstrBind, ConstrClasses, ConstrStyles, ConstrOptions, ConstrSetup, ConstrComponentMod, or ConstrProps.
-- Constructing managed singletons using executeUse, executeUseGlobal, executeUseProvide, or executeUseLocal.
-- Typing complex list inputs, search items, and reactive parameters using ListList, ListDataItem, ListDataFull, RefOrNormal, RefType, or RefOrNormalOrFunction.
-- Implementing contract validation functions (validateResponseContract, validateRequestContract) or error contracts (ApiErrorStorageList) with schema validation libraries.
-
-4. INTEGRATION CONTEXT
-Initializes as a Vue 3 plugin via dxtFunctionalPlugin. Connects directly with Vue 3 reactivity and rendering APIs (ref, computed, VNode, provide/inject). Wraps base functional logic from @dxtmisha/functional-basic, integrates with vue-router via RouterItemRef, links to @dxtmisha/media for social icons, and supports runtime schema validation (such as @effect/schema) inside API payload contracts.
+This library provides a reactive utility and component abstraction framework for Vue 3 built on top of functional basic utilities, standardizing UI design system architecture, reactive API request orchestration, localized data formatting, and state management. Its core capabilities span five main modules: the API & Network Module (`useApiRef`, `useApiAsyncRef`, `useApiManagementRef`, `useApiRequest`, and HTTP method composables) manages reactive request lifecycle, SSR prefetching, error contracts, response validation, and list mutations; the Design & Component Architecture Module (`DesignConstructorAbstract`, `DesignComponents`, `DesignAbstract`, `DesignChanged`) provides abstract base classes for component setup, dynamic rendering, class and style calculation, slot management, and prop change tracking; the Localization & Geo Module (`GeoRef`, `GeoIntlRef`, `GeoUnitRef`, `GeoFlagRef`, `DatetimeRef`, `useTranslateRef`) handles reactive internationalization, language/country metadata, locale-sensitive number and date formatting, unit conversions, and translation keys; the Storage & State Module (`useStorageRef`, `useCookieRef`, `useSessionRef`, `useBroadcastValueRef`, `useQueryRef`, `useHashRef`, `executeUse`) binds local/session storage, cookies, cross-tab communication, URL state, and singletons to Vue reactive references; and the DOM, Search & Navigation Module (`useLazyRef`, `RouterItemRef`, `useRouterList`, `useSearchRef`, `useMeta`, `EventRef`) provides lazy visibility tracking, router integration, search indexing, DOM event listeners, and reactive meta tag management. AI assistant study of ai-types.md is mandatory when extending design component abstractions like `DesignConstructorAbstract` or `DesignComponents`, typing component properties, modifications, or emits via `ConstrComponentMod`, `ConstrClasses`, `ConstrEmit`, or `ConstrBind`, configuring API management types including `ApiManagementGet`, `ApiManagementRequest`, or `ApiManagementSearch`, handling reactive input wrappers typed with `RefOrNormal` or `RefOrNormalOrFunction`, or structuring dataset records using `ListListInput`, `ListDataItem`, and `ListSelectedList`. The library seamlessly integrates with Vue 3, vue-router, and @dxtmisha/functional-basic to form a cohesive reactive application infrastructure.
+## Mandatory Rules
+Read the corresponding file if your task relates to:
+- 'node_modules/@dxtmisha/functional/ai-prompts/api-reference.md': Scope-isolated singleton factories and reactive REST API management
+- 'node_modules/@dxtmisha/functional/ai-prompts/localization-seo.md': Geographic context, i18n formatting, translation primitives, document metadata, and scrollbar utilities
+- 'node_modules/@dxtmisha/functional/ai-prompts/reactivity-lists.md': Async reactivity composables, list data models, search filters, and DOM observers
+- 'node_modules/@dxtmisha/functional/ai-prompts/storage-state.md': Composables for reactive browser storage, session, cookies, cross-tab broadcasting, and URL hash state

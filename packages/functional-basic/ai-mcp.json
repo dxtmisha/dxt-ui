@@ -1,0 +1,14 @@
+[
+  {
+    "uri": "@dxtmisha/functional-basic/ai-prompts/api-reference.md",
+    "name": "API Reference",
+    "mimeType": "text/markdown",
+    "description": "Comprehensive API reference and code examples for the functional-basic library, covering HTTP requests, state storage, localization, DOM manipulation, and utility helpers."
+  },
+  {
+    "uri": "@dxtmisha/functional-basic/ai-prompts/coding-standards.md",
+    "name": "Coding Standards",
+    "mimeType": "text/markdown",
+    "description": "Defines class structure ordering, TypeScript styling and typing conventions, isomorphic SSR safety rules, and standard primitive helper function usage."
+  }
+]

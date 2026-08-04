@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/figma-ref",
   "private": false,
-  "version": "0.1.2",
+  "version": "0.1.3",
   "type": "module",
   "description": "Vue 3 composables for Figma plugin development, providing reactive wrappers for Figma storage, selection, and node manipulation.",
   "keywords": [
@@ -35,9 +35,11 @@
     "public-to-npm": "npm publish --access public"
   },
   "files": [
+    "ai-prompts",
     "dist",
     "ai-description.md",
     "ai-doc.md",
+    "ai-mcp.json",
     "ai-types.md",
     "CHANGELOG.md",
     "LICENSE",

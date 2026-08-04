@@ -2,6 +2,6 @@
   "wikiLanguage": "ru",
   "packagePrefix": "@dxtmisha",
   "aiType": "gemini",
-  "aiModel": "gemini-3-flash-preview",
+  "aiModel": "gemini-3.5-flash-lite",
   "aiKey": "key"
 }

@@ -113,3 +113,18 @@ export type DesignTypesItem = {
 }
 
 export type DesignTypesList = DesignTypesItem[]
+
+/** Design MCP resource item / Элемент ресурса MCP дизайна */
+export type DesignMcpResourceItem = {
+  /** Resource URI / URI ресурса */
+  uri: string
+  /** Resource name / Название ресурса */
+  name: string
+  /** Resource MIME type / MIME-тип ресурса */
+  mimeType: string
+  /** Resource description / Описание ресурса */
+  description: string
+}
+
+/** Design MCP resources container / Контейнер ресурсов MCP дизайна */
+export type DesignMcpResources = DesignMcpResourceItem[]
