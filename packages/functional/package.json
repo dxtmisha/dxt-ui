@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/functional",
   "private": false,
-  "version": "1.15.6",
+  "version": "1.15.7",
   "type": "module",
   "description": "A comprehensive library of utilities, base classes, and Vue 3 composables for reactive web development — API orchestration, state singletons (executeUse), storage sync, i18n, formatters, and component design. Extends @dxtmisha/functional-basic.",
   "keywords": [

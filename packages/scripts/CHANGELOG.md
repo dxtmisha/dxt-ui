@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.10.11] - 2026-08-05
+
+### Changed
+- **DesignTypes**: Updated AI JSDoc generation prompt rules in `toAiEdit` to delete JSDocs for obvious entities and generate concise (1-line) or detailed descriptions for non-obvious entities based on JS code inspection.
+- **DesignTypes**: Extended `toAiMcpPrompts` to include `ai-types.md` and `ai-description.md` alongside prompt files when generating MCP server resources (`ai-mcp.json`).
+
+## [0.10.10] - 2026-08-05
+
+### Changed
+- **AI Prompts**: Updated prompt templates (`aiCodeGlobalPrompt.en.md`, `aiCodeGlobalPrompt.ru.md`) to strictly mandate recording developer preferences into package `ai-memory.md` files.
+
 ## [0.10.9] - 2026-08-03
 
 ### Changed

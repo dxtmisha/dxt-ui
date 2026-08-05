@@ -1,14 +1,4 @@
-1) All these methods are in the @dxtmisha/functional-basic library.
-2) Everything that is exported can be used.
-3) Use what is in this library if it exists; do not use other libraries if there is an analogue here. Do not create new ones if an analogue already exists here.
-
-The following is the content of "exports" from package.json:
-{
-  ".": {
-    "import": "./dist/library.js",
-    "types": "./dist/library.d.ts"
-  }
-}
+All these methods are in the @dxtmisha/functional-basic library.
 
 export declare enum ApiMethodItem {
     delete = "DELETE",
@@ -545,47 +535,7 @@ export type TranslateDataFileItem = () => Promise<TranslateDataFileList>;
 export type TranslateDataFile = Record<string, TranslateDataFileItem>;
 export declare const TRANSLATE_GLOBAL_PREFIX = "global";
 export declare const TRANSLATE_TIME_OUT = 160;
-export type IconsItem = string | Promise<string | any> | (() => Promise<string | any>);
-export type IconsConfig = {
-    url?: string;
-    list?: Record<string, IconsItem>;
-};
-export type CookieSameSite = 'strict' | 'lax';
-export type CookieOptions = {
-    age?: number;
-    sameSite?: CookieSameSite;
-    path?: string;
-    domain?: string;
-    secure?: boolean;
-    httpOnly?: boolean;
-    partitioned?: boolean;
-    arguments?: string[] | Record<string, string | number | boolean>;
-};
-export type LoadingDetail = {
-    loading: boolean;
-};
-export type LoadingRegistrationItem = {
-    item: EventItem<Window, CustomEvent, LoadingDetail>;
-    listener: EventListenerDetail<CustomEvent, LoadingDetail>;
-    element?: ElementOrString<HTMLElement>;
-};
-export type ApiInstanceOptions = {
-    headersClass?: typeof ApiHeaders;
-    requestDefaultClass?: typeof ApiDefault;
-    statusClass?: typeof ApiStatus;
-    responseClass?: typeof ApiResponse;
-    preparationClass?: typeof ApiPreparation;
-    loadingClass?: LoadingInstance;
-    errorCenterClass?: ErrorCenterInstance;
-    hydrationClass?: typeof ApiHydration;
-    wrapper?: <R>(callback: () => Promise<R>, apiFetch: ApiFetch) => Promise<R>;
-};
-export declare const GEO_FLAG_ICON_NAME = "f";
-export declare const UI_GEO_COOKIE_KEY = "ui-geo-code";
 export declare const errorCauseList: ErrorCenterCauseList;
-/**
- * Utility for making HTTP requests.
- */
 export declare class Api {
     static isLocalhost(): boolean;
     static getItem(): ApiInstance;
@@ -613,9 +563,6 @@ export declare class Api {
     static patch<T>(request: ApiFetch): Promise<T>;
     static delete<T>(request: ApiFetch): Promise<T>;
 }
-/**
- * Class for caching API responses.
- */
 export declare class ApiCache {
     static init(getListener: (key: string) => Promise<ApiCacheItem | undefined>, setListener: (key: string, value: ApiCacheItem) => Promise<boolean>, removeListener: (key: string) => Promise<boolean>, cacheStepAgeClearOld?: number): void;
     static reset(): void;
@@ -625,9 +572,6 @@ export declare class ApiCache {
     static setByFetch<T>(fetch: ApiFetch, value: T): Promise<void>;
     static remove(key: string): Promise<void>;
 }
-/**
- * Class for handling and processing data returned from an API request.
- */
 export declare class ApiDataReturn<T = any> {
     constructor(apiFetch: ApiFetch, query: Response, end: ApiPreparationEnd, error?: ApiErrorItem | undefined);
     init(): Promise<this>;
@@ -635,26 +579,17 @@ export declare class ApiDataReturn<T = any> {
     getAndStatus(status: ApiStatus): ApiData<T>;
     getData(): ApiData<T> | undefined;
 }
-/**
- * Class for working with default API request data.
- */
 export declare class ApiDefault {
     is(): boolean;
     get(): Record<string, any> | undefined;
     request(request: ApiFetch['request']): ApiFetch['request'];
     set(request: ApiDefaultValue): this;
 }
-/**
- * Utility class for managing the API error storage and creating error items.
- */
 export declare class ApiError {
     static getStorage(): ApiErrorStorage;
     static add(item: Partial<ApiErrorStorageItem> | Partial<ApiErrorStorageItem>[], url?: string | RegExp, method?: ApiMethodItem): void;
     static getItem(method: ApiMethodItem, response: Response): Promise<ApiErrorItem>;
 }
-/**
- * Class for managing and extracting data from an API error response.
- */
 export declare class ApiErrorItem {
     constructor(method: ApiMethodItem, response: Response, error: ApiErrorStorageItem);
     getMethod(): ApiMethodItem;
@@ -664,32 +599,31 @@ export declare class ApiErrorItem {
     getMessage(): string | undefined;
     getStatus(): number;
 }
-/**
- * Manager for handling and identifying API error states.
- */
 export declare class ApiErrorStorage {
     find(method: ApiMethodItem, response: Response): Promise<ApiErrorStorageItem>;
     add(item: Partial<ApiErrorStorageItem> | Partial<ApiErrorStorageItem>[], url?: string | RegExp, method?: ApiMethodItem): this;
 }
-/**
- * Class for managing HTTP request headers.
- */
 export declare class ApiHeaders {
     get(value?: Record<string, string> | null, type?: string | undefined | null): Record<string, string> | undefined;
     getByRequest(request: ApiFetch['request'], value?: Record<string, string> | null, type?: string): Record<string, string> | undefined;
     set(headers: ApiHeadersValue): this;
 }
-/**
- * Class for collecting API data for hydration on the client side during SSR.
- */
 export declare class ApiHydration {
     initResponse(response: ApiResponse): void;
     toClient<T>(apiFetch: ApiFetch, response: T): void;
     toString(): string;
 }
-/**
- * Core class for managing HTTP requests using the Fetch API.
- */
+export type ApiInstanceOptions = {
+    headersClass?: typeof ApiHeaders;
+    requestDefaultClass?: typeof ApiDefault;
+    statusClass?: typeof ApiStatus;
+    responseClass?: typeof ApiResponse;
+    preparationClass?: typeof ApiPreparation;
+    loadingClass?: LoadingInstance;
+    errorCenterClass?: ErrorCenterInstance;
+    hydrationClass?: typeof ApiHydration;
+    wrapper?: <R>(callback: () => Promise<R>, apiFetch: ApiFetch) => Promise<R>;
+};
 export declare class ApiInstance {
     constructor(url?: string, options?: ApiInstanceOptions);
     isLocalhost(): boolean;
@@ -716,18 +650,12 @@ export declare class ApiInstance {
     patch<T>(request: ApiFetch): Promise<T>;
     delete<T>(request: ApiFetch): Promise<T>;
 }
-/**
- * Class for preparing requests before and after execution.
- */
 export declare class ApiPreparation {
     make(active: boolean, apiFetch: ApiFetch): Promise<void>;
     makeEnd(active: boolean, query: Response, apiFetch: ApiFetch): Promise<ApiPreparationEnd>;
     set(callback: (apiFetch: ApiFetch) => Promise<void>): this;
     setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): this;
 }
-/**
- * Class for working with API responses.
- */
 export declare class ApiResponse {
     constructor(requestDefault: ApiDefault);
     get(path: string | undefined, method: ApiMethod, request?: ApiFetch['request'], devMode?: boolean): ApiResponseItem | undefined;
@@ -737,9 +665,6 @@ export declare class ApiResponse {
     emulator<T>(apiFetch: ApiFetch): Promise<T | undefined>;
     emulatorAsync<T>(apiFetch: ApiFetch): T | undefined;
 }
-/**
- * Class for managing API request status.
- */
 export declare class ApiStatus {
     get(): ApiStatusItem | undefined;
     getStatus(): number | undefined;
@@ -757,9 +682,6 @@ export declare class ApiStatus {
     setLastCode(code?: string): this;
     setLastMessage(message?: string): this;
 }
-/**
- * Class for working with BroadcastChannel messages.
- */
 export declare class BroadcastMessage<Message = any> {
     constructor(name: string, callback?: ((event: MessageEvent<Message>) => void) | undefined, callbackError?: ((event: MessageEvent<Message>) => void) | undefined, errorCenter?: ErrorCenterInstance);
     getChannel(): BroadcastChannel | undefined;
@@ -768,35 +690,34 @@ export declare class BroadcastMessage<Message = any> {
     setCallbackError(callbackError: (event: MessageEvent<Message>) => void): this;
     destroy(): this;
 }
-/**
- * Simple in-memory cache class that stores computed values by key.
- * @deprecated
- */
+/** @deprecated This class is obsolete and should not be used */
 export declare class Cache {
     get<T>(name: string, callback: () => T, comparison?: any[]): T;
     getAsync<T>(name: string, callback: () => T, comparison?: any[]): Promise<T>;
 }
-/**
- * Class for managing a single cached value with dependency tracking.
- * @deprecated
- */
+/** @deprecated This class is obsolete and should not be used */
 export declare class CacheItem<T> {
     constructor(callback: () => T);
     getCache(comparison: any[]): T;
     getCacheOld(): T | undefined;
     getCacheAsync(comparison: any[]): Promise<T>;
 }
-/**
- * Static cache class that uses ServerStorage for persistent caching across the application.
- * @deprecated
- */
+/** @deprecated This class is obsolete and should not be used */
 export declare class CacheStatic {
     static get<T>(name: string, callback: () => T, comparison?: any[]): T;
     static getAsync<T>(name: string, callback: () => T, comparison?: any[]): Promise<T>;
 }
-/**
- * Class for managing browser cookies.
- */
+export type CookieSameSite = 'strict' | 'lax';
+export type CookieOptions = {
+    age?: number;
+    sameSite?: CookieSameSite;
+    path?: string;
+    domain?: string;
+    secure?: boolean;
+    httpOnly?: boolean;
+    partitioned?: boolean;
+    arguments?: string[] | Record<string, string | number | boolean>;
+};
 export declare class Cookie<T> {
     static getInstance<T>(name: string): Cookie<T>;
     constructor(name: string);
@@ -804,24 +725,15 @@ export declare class Cookie<T> {
     set(value?: T | string | (() => (T | string)), options?: CookieOptions): void;
     remove(): void;
 }
-/**
- * Class for changing cookie access status.
- */
 export declare class CookieBlock {
     static getItem(): CookieBlockInstance;
     static get(): boolean;
     static set(value: boolean): void;
 }
-/**
- * Class for changing cookie access status instance.
- */
 export declare class CookieBlockInstance {
     get(): boolean;
     set(value: boolean): void;
 }
-/**
- * Class for managing cookie storage with support for custom listeners.
- */
 export declare class CookieStorage {
     static init(getListener?: (key: string) => any | undefined, getListenerRaw?: () => string, setListener?: (key: string, value: any, cookie: string, options?: CookieOptions) => void): void;
     static reset(): void;
@@ -830,9 +742,6 @@ export declare class CookieStorage {
     static remove(name: string): void;
     static update(): void;
 }
-/**
- * Class for working with localStorage and sessionStorage.
- */
 export declare class DataStorage<T> {
     static setPrefix(newPrefix: string): void;
     constructor(name: string, isSession?: boolean, errorCenter?: ErrorCenterInstance);
@@ -842,7 +751,9 @@ export declare class DataStorage<T> {
     update(): this;
 }
 /**
- * Class for date manipulation and formatting.
+ * @remarks
+ * Creating a `Datetime` instance without a specific date (using current time)
+ * in SSR may lead to hydration mismatches.
  */
 export declare class Datetime {
     constructor(date?: NumberOrStringOrDate, type?: GeoDate, code?: string);
@@ -917,9 +828,6 @@ export declare class Datetime {
     cloneDayNext(): Datetime;
     cloneDayPrevious(): Datetime;
 }
-/**
- * Class for managing application error handling globally.
- */
 export declare class ErrorCenter {
     static getItem(): ErrorCenterInstance;
     static has(code: string, group?: string): boolean;
@@ -932,9 +840,6 @@ export declare class ErrorCenter {
     static setIsConsole(isConsole: ErrorCenterHandlerIsConsole): void;
     static on(cause: ErrorCenterCauseItem): void;
 }
-/**
- * Class for managing and triggering error handlers.
- */
 export declare class ErrorCenterHandler {
     constructor(handlers?: ErrorCenterHandlerList, isConsole?: ErrorCenterHandlerIsConsole);
     has(group: ErrorCenterGroup): boolean;
@@ -945,9 +850,6 @@ export declare class ErrorCenterHandler {
     setIsConsole(isConsole: ErrorCenterHandlerIsConsole): this;
     on(cause: ErrorCenterCauseItem): this;
 }
-/**
- * Class for managing error storage and handling within an instance.
- */
 export declare class ErrorCenterInstance {
     constructor(causes?: ErrorCenterCauseList, handler?: ErrorCenterHandler);
     has(code: string, group?: string): boolean;
@@ -960,9 +862,6 @@ export declare class ErrorCenterInstance {
     setIsConsole(isConsole: ErrorCenterHandlerIsConsole): this;
     on(cause: ErrorCenterCauseItem): this;
 }
-/**
- * Wrapper for managing DOM or window event listeners.
- */
 export declare class EventItem<E extends ElementOrWindow, O extends Event, D extends Record<string, any> = Record<string, any>> {
     constructor(elementSelector?: ElementOrString<E>, type?: string | string[], listener?: EventListenerDetail<O, D> | undefined, options?: EventOptions, detail?: D | undefined);
     isActive(): boolean;
@@ -979,9 +878,6 @@ export declare class EventItem<E extends ElementOrWindow, O extends Event, D ext
     toggle(activity: boolean): this;
     reset(): this;
 }
-/**
- * Class for formatting a list of data based on provided options.
- */
 export declare class Formatters<Options extends FormattersOptionsList = FormattersOptionsList, List extends FormattersListProp = FormattersListProp, Item extends FormattersItemProp<List> = FormattersItemProp<List>> {
     constructor(options: Options, list?: List | undefined);
     is(): boolean;
@@ -994,9 +890,6 @@ export declare class Formatters<Options extends FormattersOptionsList = Formatte
     setList(list?: List): this;
     to(): FormattersReturn<List, Options>;
 }
-/**
- * Static class for working with geographical data.
- */
 export declare class Geo {
     static getObject(): GeoInstance;
     static get(): GeoItemFull;
@@ -1021,9 +914,7 @@ export declare class Geo {
     static setTimezone(timezone: number): void;
     static setValueDefault(code?: string | (() => string)): void;
 }
-/**
- * Class for working with flags and geographic information.
- */
+export declare const GEO_FLAG_ICON_NAME = "f";
 export declare class GeoFlag {
     static flags: Record<string, string>;
     constructor(code?: string);
@@ -1037,9 +928,7 @@ export declare class GeoFlag {
     getNationalLanguage(codes?: string[], sort?: boolean): GeoFlagNational[];
     setCode(code: string): this;
 }
-/**
- * Base class for working with geographic data.
- */
+export declare const UI_GEO_COOKIE_KEY = "ui-geo-code";
 export declare class GeoInstance {
     constructor();
     get(): GeoItemFull;
@@ -1064,9 +953,6 @@ export declare class GeoInstance {
     setTimezone(timezone: number): void;
     setValueDefault(code?: string | (() => string)): void;
 }
-/**
- * Internationalization wrapper for numbers, dates, currencies, and plurals.
- */
 export declare class GeoIntl {
     static isItem(code?: string): boolean;
     static getLocation(code?: string): string;
@@ -1098,9 +984,6 @@ export declare class GeoIntl {
     time(value: NumberOrStringOrDate): string;
     sort<T>(data: T[], compareFn?: (a: T, b: T) => [string, string]): T[];
 }
-/**
- * Utility for phone number formatting and country phone codes.
- */
 export declare class GeoPhone {
     static get(code: string): GeoPhoneValue | undefined;
     static getByPhone(phone: string): GeoPhoneMapInfo;
@@ -1110,9 +993,6 @@ export declare class GeoPhone {
     static toMask(phone: string, masks?: string[]): string | undefined;
     static removeZero(phone: string): string;
 }
-/**
- * Class for localized unit formatting and automatic conversions.
- */
 export declare class GeoUnit {
     static getInstance(code?: string): GeoUnit;
     constructor(code?: string);
@@ -1132,17 +1012,11 @@ export declare class GeoUnit {
     kilometerPerHour(value: NumberOrString, options?: Intl.NumberFormatOptions): string;
     format(value: NumberOrString, unit: string, options?: Intl.NumberFormatOptions): string;
 }
-/**
- * Static utility class for global application data.
- */
 export declare class Global {
     static getItem(): Record<string, any>;
     static get<R = any>(name: string): R;
     static add(data: Record<string, any>): void;
 }
-/**
- * Static class for working with URL hash data.
- */
 export declare class Hash {
     static getItem(): HashInstance;
     static get<T>(name: string, defaultValue?: T | (() => T)): T;
@@ -1151,13 +1025,12 @@ export declare class Hash {
     static removeWatch<T>(name: string, callback: (value: T) => void): void;
     static reload(): void;
 }
-/**
- * Instance class for working with URL hash parameters.
- */
 export declare class HashInstance extends UrlInstanceAbstract {}
-/**
- * Class for managing icons.
- */
+export type IconsItem = string | Promise<string | any> | (() => Promise<string | any>);
+export type IconsConfig = {
+    url?: string;
+    list?: Record<string, IconsItem>;
+};
 export declare class Icons {
     static is(index: string): boolean;
     static get(index: string, url?: string, wait?: number): Promise<string>;
@@ -1171,9 +1044,6 @@ export declare class Icons {
     static setUrl(url: string): void;
     static setConfig(config: IconsConfig): void;
 }
-/**
- * Class for managing global loading state.
- */
 export declare class Loading {
     static is(): boolean;
     static get(): number;
@@ -1183,9 +1053,14 @@ export declare class Loading {
     static registrationEvent(listener: EventListenerDetail<CustomEvent, LoadingDetail>, element?: ElementOrString<HTMLElement>): void;
     static unregistrationEvent(listener: EventListenerDetail<CustomEvent, LoadingDetail>, element?: ElementOrString<HTMLElement>): void;
 }
-/**
- * Instance class for managing loading state.
- */
+export type LoadingDetail = {
+    loading: boolean;
+};
+export type LoadingRegistrationItem = {
+    item: EventItem<Window, CustomEvent, LoadingDetail>;
+    listener: EventListenerDetail<CustomEvent, LoadingDetail>;
+    element?: ElementOrString<HTMLElement>;
+};
 export declare class LoadingInstance {
     constructor(eventName?: string);
     is(): boolean;
@@ -1195,9 +1070,6 @@ export declare class LoadingInstance {
     registrationEvent(listener: EventListenerDetail<CustomEvent, LoadingDetail>, element?: ElementOrString<HTMLElement>): void;
     unregistrationEvent(listener: EventListenerDetail<CustomEvent, LoadingDetail>, element?: ElementOrString<HTMLElement>): void;
 }
-/**
- * Class for managing meta tags.
- */
 export declare class Meta extends MetaManager<MetaTag[]> {
     constructor();
     getOg(): MetaOg;
@@ -1224,9 +1096,9 @@ export declare class Meta extends MetaManager<MetaTag[]> {
     html(): string;
     htmlTitle(): string;
 }
-/**
- * Manager class for meta tags.
- */
+type MetaList<T extends readonly string[]> = {
+    [K in T[number]]?: string;
+};
 export declare class MetaManager<T extends readonly string[], Key extends keyof MetaList<T> = keyof MetaList<T>> {
     constructor(listMeta: T, isProperty?: boolean);
     getListMeta(): T;
@@ -1236,12 +1108,6 @@ export declare class MetaManager<T extends readonly string[], Key extends keyof 
     set(name: Key, content: string): this;
     setByList(metaList: MetaList<T>): this;
 }
-type MetaList<T extends readonly string[]> = {
-    [K in T[number]]?: string;
-};
-/**
- * Class for Open Graph meta tags.
- */
 export declare class MetaOg extends MetaManager<MetaOpenGraphTag[]> {
     constructor();
     getTitle(): string;
@@ -1259,9 +1125,6 @@ export declare class MetaOg extends MetaManager<MetaOpenGraphTag[]> {
     setLocale(locale: string): this;
     setSiteName(siteName: string): this;
 }
-/**
- * Static accessor for Meta management.
- */
 export declare class MetaStatic {
     static getItem(): Meta;
     static getOg(): MetaOg;
@@ -1288,9 +1151,6 @@ export declare class MetaStatic {
     static html(): string;
     static htmlTitle(): string;
 }
-/**
- * Class for Twitter Card meta tags.
- */
 export declare class MetaTwitter extends MetaManager<MetaTwitterTag[]> {
     constructor();
     getCard(): MetaTwitterCard;
@@ -1308,9 +1168,6 @@ export declare class MetaTwitter extends MetaManager<MetaTwitterTag[]> {
     setDescription(description: string): this;
     setImage(image: string): this;
 }
-/**
- * Static class for URL query parameter management.
- */
 export declare class Query {
     static getItem(): QueryInstance;
     static get<T>(name: string, defaultValue?: T | (() => T)): T;
@@ -1319,13 +1176,7 @@ export declare class Query {
     static removeWatch<T>(name: string, callback: (value: T) => void): void;
     static reload(): void;
 }
-/**
- * Instance class for URL query parameters.
- */
 export declare class QueryInstance extends UrlInstanceAbstract {}
-/**
- * Class for creating a timer that can be paused and resumed.
- */
 export declare class ResumableTimer {
     constructor(callback: FunctionVoid, delay?: number, blockStart?: boolean);
     resume(): this;
@@ -1333,18 +1184,12 @@ export declare class ResumableTimer {
     reset(): this;
     clear(): this;
 }
-/**
- * Utility class for scrollbar calculations.
- */
 export declare class ScrollbarWidth {
     static is(): Promise<boolean>;
     static get(): Promise<number>;
     static getStorage(): DataStorage<number>;
     static getCalculate(): boolean;
 }
-/**
- * Class for managing search lists.
- */
 export declare class SearchList<T extends SearchItem, K extends SearchColumns<T>> {
     constructor(list: SearchListValue<T>, columns?: K, value?: string, options?: SearchOptions);
     getData(): SearchListData<T, K>;
@@ -1359,9 +1204,6 @@ export declare class SearchList<T extends SearchItem, K extends SearchColumns<T>
     setOptions(options: SearchOptions): this;
     to(): SearchFormatList<T, K>;
 }
-/**
- * Data manager for search lists.
- */
 export declare class SearchListData<T extends SearchItem, K extends SearchColumns<T>> {
     constructor(list: SearchListValue<T>, columns: K | undefined, item: SearchListItem, options: SearchListOptions);
     is(): this is this & {
@@ -1379,9 +1221,6 @@ export declare class SearchListData<T extends SearchItem, K extends SearchColumn
     forEach(callback: (item: SearchCacheItem<T>['item'], value: SearchCacheItem<T>['value']) => SearchFormatItem<T, K> | undefined): SearchFormatList<T, K>;
     toFormatItem(item: T, selection: boolean): SearchFormatItem<T, K>;
 }
-/**
- * Search list item wrapper.
- */
 export declare class SearchListItem {
     constructor(value: string | undefined, options: SearchListOptions);
     is(): this is this & {
@@ -1391,9 +1230,6 @@ export declare class SearchListItem {
     get(): string;
     set(value?: string): this;
 }
-/**
- * Matcher for search list evaluation.
- */
 export declare class SearchListMatcher {
     constructor(item: SearchListItem, options: SearchListOptions);
     is(): boolean;
@@ -1401,9 +1237,6 @@ export declare class SearchListMatcher {
     get(): RegExp | undefined;
     update(): void;
 }
-/**
- * Options container for search lists.
- */
 export declare class SearchListOptions {
     constructor(options?: SearchOptions | undefined);
     getOptions(): SearchOptions;
@@ -1414,22 +1247,16 @@ export declare class SearchListOptions {
     getClassName(): string;
     setOptions(options: SearchOptions): this;
 }
-/**
- * Storage manager for Server-Side Rendering context.
- */
 export declare class ServerStorage {
     static init(listener: () => Record<string, any> | undefined): typeof ServerStorage;
     static reset(): void;
     static has(key: string): boolean;
     static get<T = any>(key: string, defaultValue?: () => T, hydration?: boolean): T;
-    static set<T = any>(key: string, value: () => T, hydration?: boolean, storageList?: Record<string, any>): T;
+    static set<T = any>(key: string, value: () => T, hydration?: boolean, storageList?: ServerStorageList): T;
     static setErrorStatus(hide: boolean): void;
     static remove(key: string): void;
     static toString(): string;
 }
-/**
- * Callback queue for storage mechanisms.
- */
 export declare class StorageCallback<T = any, Callback = (value: T) => void | Promise<void>> {
     static getInstance<T>(name: string, group?: string): StorageCallback<T, (value: T) => void | Promise<void>>;
     constructor(name: string, group?: string);
@@ -1441,9 +1268,6 @@ export declare class StorageCallback<T = any, Callback = (value: T) => void | Pr
     preparation(): this;
     run(value: T): Promise<this>;
 }
-/**
- * Utility for translation text retrieval.
- */
 export declare class Translate {
     static get(name: string, replacement?: string[] | Record<string, string | number>): Promise<string>;
     static getItem(): TranslateInstance;
@@ -1460,9 +1284,6 @@ export declare class Translate {
     static setReadApi(value: boolean): void;
     static setConfig(config: TranslateConfig): void;
 }
-/**
- * Translation file provider.
- */
 export declare class TranslateFile {
     constructor(data?: TranslateDataFile, language?: string | (() => string), location?: string | (() => string));
     isFile(): boolean;
@@ -1471,9 +1292,6 @@ export declare class TranslateFile {
     getList(): Promise<TranslateDataFileList | undefined>;
     add(data: TranslateDataFile): void;
 }
-/**
- * Translation engine instance.
- */
 export declare class TranslateInstance {
     constructor(url?: string, propsName?: string, files?: TranslateFile);
     get(name: string, replacement?: string[] | Record<string, string | number>): Promise<string>;
@@ -1489,9 +1307,6 @@ export declare class TranslateInstance {
     setPropsName(name: string): this;
     setReadApi(value: boolean): this;
 }
-/**
- * Abstract class for URL state instances.
- */
 export declare abstract class UrlInstanceAbstract {
     get<T>(name: string, defaultValue?: T | (() => T)): T;
     set<T>(name: string, callback: T | (() => T)): this;
@@ -1499,9 +1314,6 @@ export declare abstract class UrlInstanceAbstract {
     removeWatch<T>(name: string, callback: (value: T) => void): this;
     reload(): this;
 }
-/**
- * Isomorphic utility class for URL management.
- */
 export declare class UrlItem {
     static getInstance(): UrlItem;
     constructor(url?: string | URL);
@@ -1529,12 +1341,16 @@ export declare class UrlItem {
 }
 export declare function addTagHighlightMatch(value: string, search?: string | RegExp, className?: string, shouldEscape?: boolean): string;
 export declare function anyToString<V>(value: V, isArrayString?: boolean, trim?: boolean): string;
-export declare const applyTemplate: (text: string, replacement?: Record<string, string | number | boolean> | string[]) => string;
+export declare function applyTemplate(text: string, replacement?: Record<string, string | number | boolean> | string[]): string;
 export declare function arrFill<T>(value: T, count: number): T[];
 export declare function blobToBase64(blob: Blob, clean?: boolean): Promise<string | undefined>;
 export declare function capitalize(value: string, isLocale?: boolean): string;
 export declare function copyObject<T>(value: T): T;
 export declare function copyObjectLite<T, R = T>(value: T, source?: any): R;
+/**
+ * @remarks
+ * Always returns `undefined` when running on server.
+ */
 export declare function createElement<T extends HTMLElement>(parentElement?: HTMLElement, tagName?: string, options?: Partial<T> | Record<keyof T, T[keyof T]> | ((element: T) => void), referenceElement?: HTMLElement): T | undefined;
 export declare function domContentLoaded<T = void>(callback: () => T | Promise<T>): Promise<T>;
 export declare function domQuerySelector<E extends Element = Element>(selectors: string): E | undefined;
@@ -1552,10 +1368,27 @@ export declare function getArrayHighlightMatch(value: string, search?: string | 
 export declare function getAttributes<E extends ElementOrWindow>(element?: ElementOrString<E>): Record<string, string | undefined>;
 export declare function getClipboardData(event?: ClipboardEvent): Promise<string>;
 export declare function getColumn<T, K extends keyof T>(array: ObjectOrArray<T>, column: K): (T[K] | undefined)[];
+/**
+ * @remarks
+ * Using in SSR may cause hydration mismatches.
+ */
 export declare function getCurrentDate(format?: GeoDate): string;
+/**
+ * @remarks
+ * Using in SSR will cause hydration mismatches.
+ */
 export declare function getCurrentTime(): number;
 export declare function getElement<E extends ElementOrWindow, R extends Exclude<E, Window>>(element?: ElementOrString<E>): R | undefined;
 export declare function getElementId<E extends ElementOrWindow>(element?: ElementOrString<E>, selector?: string): string;
+/**
+ * @warning Initialization mandatory for correct SSR functioning.
+ * @example
+ * ```typescript
+ * import { useId } from 'vue'
+ * import { initGetElementId } from '@dxtmisha/functional-basic'
+ * initGetElementId(() => useId())
+ * ```
+ */
 export declare function initGetElementId(newListener: () => string | number): void;
 export declare function getElementImage(image: HTMLImageElement | string): HTMLImageElement | undefined;
 export declare function getElementItem<T extends ElementOrWindow, K extends keyof T, D>(element: ElementOrString<T>, index: K | string, defaultValue?: D): T[K] | D | undefined;
@@ -1623,7 +1456,7 @@ export declare function removeCommonPrefix(mainStr: string, prefix: string): str
 export declare const replaceComponentName: (text: string | undefined, name: string, componentName: string) => string | undefined;
 export declare function replaceRecursive<I>(array: ObjectItem<I>, replacement?: ObjectOrArray<I>, isMerge?: boolean): ObjectItem<I>;
 export declare function replaceTemplate(value: string, replaces: Record<string, string | FunctionReturn<string>>): string;
-type ResizeImageByMaxType = 'auto' | 'width' | 'height';
+export type ResizeImageByMaxType = 'auto' | 'width' | 'height';
 export declare function resizeImageByMax(image: HTMLImageElement | string, maxSize: number, type?: ResizeImageByMaxType, typeData?: string): string | undefined;
 export declare function secondToTime(second: number | string | undefined, hasHour?: boolean): string;
 export declare function setElementItem<E extends ElementOrWindow, K extends keyof E, V extends E[K] = E[K]>(element: ElementOrString<E>, index: K, value: V | Record<string, V>): E | undefined;
@@ -1649,9 +1482,6 @@ export declare function toNumberPositive(value?: number | string | null, default
 export declare function toPercent(maxValue: number, value: number): number;
 export declare function toPercentBy100(maxValue: number, value: number): number;
 export declare function toString<T>(value: T): string;
-/**
- * Transforms a string into the corresponding primitive data type or object.
- */
 export declare function transformation(value: any, isFunction?: boolean): any;
 export declare function uint8ArrayToBase64(bytes: Uint8Array): string;
 export declare function uniqueArray<T>(value: T[]): T[];

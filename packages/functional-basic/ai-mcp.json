@@ -1,14 +1,26 @@
 [
   {
-    "uri": "@dxtmisha/functional-basic/ai-prompts/api-reference.md",
-    "name": "API Reference",
+    "uri": "@dxtmisha/functional-basic/ai-types.md",
+    "name": "TypeScript Type Definitions",
     "mimeType": "text/markdown",
-    "description": "Comprehensive API reference and code examples for the functional-basic library, covering HTTP requests, state storage, localization, DOM manipulation, and utility helpers."
+    "description": "Comprehensive TypeScript type definitions, enums, class interfaces, and utility function signatures for API request handling, internationalization, and client-side data management."
+  },
+  {
+    "uri": "@dxtmisha/functional-basic/ai-description.md",
+    "name": "Isomorphic Utility Toolkit",
+    "mimeType": "text/markdown",
+    "description": "Provides an architectural overview of the isomorphic runtime toolkit covering HTTP networking, state persistence, i18n, DOM helpers, and metadata management across browser and SSR environments. Details core utility capabilities and outlines mandatory cross-referencing rules for API references, types, and coding standards."
+  },
+  {
+    "uri": "@dxtmisha/functional-basic/ai-prompts/api-reference.md",
+    "name": "API Reference Guide",
+    "mimeType": "text/markdown",
+    "description": "API reference and code usage examples for @dxtmisha/functional-basic, detailing HTTP clients, caching, storage, geolocation, DOM events, and general utilities."
   },
   {
     "uri": "@dxtmisha/functional-basic/ai-prompts/coding-standards.md",
     "name": "Coding Standards",
     "mimeType": "text/markdown",
-    "description": "Defines class structure ordering, TypeScript styling and typing conventions, isomorphic SSR safety rules, and standard primitive helper function usage."
+    "description": "Architectural conventions, class structure rules, SSR safety guidelines, and TypeScript typing standards for code implementation."
   }
 ]

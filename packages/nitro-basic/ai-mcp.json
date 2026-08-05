@@ -1,0 +1,26 @@
+[
+  {
+    "uri": "@dxtmisha/nitro-basic/ai-types.md",
+    "name": "Vue SSR Types",
+    "mimeType": "text/markdown",
+    "description": "TypeScript declarations and utility functions for initializing Vue SSR applications, Nitro context management, request headers, routing, and server storage."
+  },
+  {
+    "uri": "@dxtmisha/nitro-basic/ai-description.md",
+    "name": "Nitro Vue SSR Architecture",
+    "mimeType": "text/markdown",
+    "description": "Provides core utilities and architectural conventions for server-side rendering, application lifecycle management, context isolation, and state hydration in Vue 3 applications running on Nitro."
+  },
+  {
+    "uri": "@dxtmisha/nitro-basic/ai-prompts/app-bootstrap.md",
+    "name": "App Bootstrapping Conventions",
+    "mimeType": "text/markdown",
+    "description": "Guidelines and API reference for server and client application entry points, SSR initialization, and hydration identity helpers using @dxtmisha/nitro-basic."
+  },
+  {
+    "uri": "@dxtmisha/nitro-basic/ai-prompts/request-context.md",
+    "name": "Nitro Request Context",
+    "mimeType": "text/markdown",
+    "description": "Documentation and code examples for initializing server lifecycle services and accessing request context metadata using Nitro basic utilities."
+  }
+]

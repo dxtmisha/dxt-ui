@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.16] - 2026-08-05
+
+### Changed
+- **NitroAppBasicConfig & NitroAppOptions**: Added `api` configuration (cache storage key prefix and cache cleanup threshold) and router options interfaces to `nitroAppTypes`.
+- **AI Documentation**: Modularized package documentation and added `ai-mcp.json` resource declarations.
+
+## [0.1.15] - 2026-08-05
+
+### Changed
+- **Documentation**: Modularized AI documentation into `ai-prompts/` directory (`app-bootstrap.md`, `request-context.md`) and updated package exports.
+
 ## [0.1.14] - 2026-07-31
 
 ### Added

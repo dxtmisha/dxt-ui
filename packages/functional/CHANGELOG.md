@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.15.7] - 2026-08-05
+
+### Changed
+- **AI Documentation**: Modularized package documentation and generated `ai-mcp.json` resource definitions alongside updated `ai-description.md` and `ai-types.md`.
+
+## [1.15.6] - 2026-07-28
+
+### Changed
+- **GeoIntlRef & useGeoIntlRef**: Added JSDoc `@remarks` guidelines recommending the use of standard non-reactive `GeoIntl` from `@dxtmisha/functional-basic` when reactivity is not required.
+- **Documentation**: Updated AI documentation context (`ai-description.md`, `ai-types.md`) and package type definitions.
+
 ## [1.15.5] - 2026-07-25
 
 ### Added

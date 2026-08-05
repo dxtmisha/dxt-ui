@@ -1,26 +1,38 @@
 [
   {
-    "uri": "@dxtmisha/functional/ai-prompts/api-reference.md",
-    "name": "API Management Reference",
+    "uri": "@dxtmisha/functional/ai-types.md",
+    "name": "Vue Functional Reference",
     "mimeType": "text/markdown",
-    "description": "Guidance and architectural patterns for REST API management and scope-isolated reactive singleton factories using the @dxtmisha/functional library."
+    "description": "TypeScript type definitions and composable API specifications for Vue application state management, data formatting, localization, and API request handling."
+  },
+  {
+    "uri": "@dxtmisha/functional/ai-description.md",
+    "name": "Vue Framework Architecture",
+    "mimeType": "text/markdown",
+    "description": "Comprehensive architectural conventions and guidelines for a Vue 3 reactive utility framework, covering component construction, API lifecycle management, localization, and persistent state controls."
+  },
+  {
+    "uri": "@dxtmisha/functional/ai-prompts/api-reference.md",
+    "name": "API Reference",
+    "mimeType": "text/markdown",
+    "description": "Defines architectural patterns and usage guidelines for REST API management and scope-isolated reactive singletons within @dxtmisha/functional. Details scope factory initialization alongside reactive CRUD operations with client-side caching and contract validation."
   },
   {
     "uri": "@dxtmisha/functional/ai-prompts/localization-seo.md",
-    "name": "Localization SEO Utilities",
+    "name": "Localization and SEO",
     "mimeType": "text/markdown",
-    "description": "Guidelines and reactive utilities for locale-aware formatting, multi-key translations, geographic context, and dynamic HTML document metadata management."
+    "description": "Covers locale-aware formatting, multi-key translations, geographic context management, and reactive HTML document metadata handling for SEO optimization."
   },
   {
     "uri": "@dxtmisha/functional/ai-prompts/reactivity-lists.md",
     "name": "Reactivity and Lists",
     "mimeType": "text/markdown",
-    "description": "Provides specifications and usage patterns for advanced async reactivity helpers, list selection models, debounced search filters, and DOM observer utilities."
+    "description": "Comprehensive guide to advanced asynchronous reactivity composables, list data models, multi-field search filtering, and DOM observer utilities."
   },
   {
     "uri": "@dxtmisha/functional/ai-prompts/storage-state.md",
-    "name": "Browser State Composables",
+    "name": "Reactive Browser State",
     "mimeType": "text/markdown",
-    "description": "Provides reactive composable wrappers for persistent and synchronized browser state management, including localStorage, sessionStorage, cookies, broadcast channels, and URL hash fragments."
+    "description": "API reference and usage examples for reactive composables managing persistent browser state and cross-tab synchronization. Covers localStorage, sessionStorage, cookies, BroadcastChannel, and URL hash state."
   }
 ]

@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.8.4] - 2026-08-05
+
+### Changed
+- **AI Documentation**: Modularized package documentation and generated `ai-mcp.json` resource definitions alongside updated `ai-description.md` and `ai-types.md`.
+
+## [1.8.3] - 2026-08-01
+
+### Changed
+- **Documentation**: Updated `ai-doc.md` and `ai-doc.ru.md` with explicit class method sorting order guidelines (`get/set`, `is/has`, `get.../set...`, `add/remove`, `update/reset`, sorted alphabetically within subgroups).
+
+## [1.8.2] - 2026-07-31
+
+### Changed
+- **Package Metadata**: Standardized package exports and AI documentation files (`ai-description.md`, `ai-types.md`).
+
 ## [1.8.1] - 2026-07-31
 
 ### Added

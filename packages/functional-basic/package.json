@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/functional-basic",
   "private": false,
-  "version": "1.8.3",
+  "version": "1.8.4",
   "type": "module",
   "description": "Foundational isomorphic utility library for modern web and SSR development — HTTP client, state storage, i18n localization, SEO metadata, DOM events, formatting, and data utilities. Framework-agnostic, TypeScript-first.",
   "keywords": [
