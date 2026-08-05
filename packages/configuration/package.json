@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/configuration",
   "private": false,
-  "version": "0.7.8",
+  "version": "0.7.9",
   "type": "module",
   "description": "Shared configuration files for DXT UI - Vite configs and TypeScript configs for building UI components",
   "keywords": [
@@ -83,10 +83,15 @@
   "engines": {
     "node": ">=20.0.0"
   },
-  "peerDependencies": {
+  "dependencies": {
+    "@mdx-js/rollup": "*",
+    "@vitejs/plugin-vue": "*",
+    "browserslist": "*",
+    "lightningcss": "*",
+    "typescript": "*",
     "vite": "*",
-    "typescript": "*"
+    "vite-plugin-dts": "*",
+    "vite-plugin-singlefile": "*"
   },
-  "dependencies": {},
   "ui-test": true
 }

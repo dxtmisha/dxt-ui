@@ -89,6 +89,7 @@
     "puppeteer": "*",
     "sass": "*",
     "typescript": "*",
+    "vite-node": "*",
     "vue": "*"
   },
   "devDependencies": {
