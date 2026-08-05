@@ -310,6 +310,7 @@ export class DesignTypes {
     const ai = useAi()
 
     if (ai) {
+      ai.addPrompt('You are a world-class senior developer and an exceptional technical writer.')
       ai.addPrompt(prompt)
       ai.addPrompt(`File Content: ${content}`)
 
@@ -423,7 +424,7 @@ export class DesignTypes {
 
     if (prompts) {
       return '## Mandatory Rules\n'
-        + 'Read the corresponding file if your task relates to:\n'
+        + 'Read the corresponding file ONLY when working on a task related to (even if not working directly with this package):\n'
         + `${prompts}`
     }
 
@@ -476,7 +477,7 @@ export class DesignTypes {
       ) {
         resources.push({
           uri: `${projectName}/${item.path}`,
-          name: data.name,
+          name: `${data.name} (${projectName})`,
           mimeType: data.mimeType ?? 'text/markdown',
           description: data.description
         })

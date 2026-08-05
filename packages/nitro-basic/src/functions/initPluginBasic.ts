@@ -1,6 +1,6 @@
 // export:none
 
-import type { NitroApp } from 'nitropack'
+import type { NitroApp } from 'nitro/types'
 
 import { initPluginApiCache } from './initPluginApiCache'
 

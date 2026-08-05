@@ -1,5 +1,7 @@
-# AI Memory
+# Package AI Memory: @dxtmisha/nitro-basic
 
-## Guidelines
-- Use `uiIdServer` for server-side ID generator initialization (via `getContextValue`).
-- Use `uiIdClient` for client-side ID generator initialization (via incremental counter starting at 10000).
+Memory file for `@dxtmisha/nitro-basic` package.
+
+## Constraints & Developer Preferences
+- Foundation for Nitro & Vue 3 SSR application bootstrapping and request context.
+- Never import directly in Vue SFCs.

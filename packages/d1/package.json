@@ -543,6 +543,10 @@
     "@dxtmisha/styles": "*",
     "vue": "*"
   },
+  "devDependencies": {
+    "@dxtmisha/test": "*",
+    "@dxtmisha/wiki": "*"
+  },
   "sideEffects": false,
   "web-types": "./dist/web-types.json"
 }

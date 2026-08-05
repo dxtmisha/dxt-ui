@@ -2,6 +2,7 @@
 
 [![npm version](https://badge.fury.io/js/@dxtmisha%2Fzip.svg)](https://www.npmjs.com/package/@dxtmisha/zip)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Node.js Version](https://img.shields.io/badge/node-%3E%3D20.0.0-brightgreen)](https://nodejs.org/)
 
 `@dxtmisha/zip` is a lightweight and high-performance utility library for creating and managing ZIP archives in both browser and Node.js environments. Built on top of the incredibly fast `fflate` engine, it provides a clean, object-oriented API for handling compressed data.
 
@@ -59,7 +60,14 @@ zip.removeFile('config.json')
 - **TypeScript-first** — full type safety for all methods and options.
 - **Lightweight** — focused on doing one thing (ZIP management) exceptionally well.
 
+## Documentation
+
+Full API reference, examples, and guides:
+
+**[📖 https://dxtmisha.github.io/dxt-ui/](https://dxtmisha.github.io/dxt-ui/)**
+
 ## License
 
 [MIT](LICENSE)
+
 

@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.17] - 2026-08-05
+
+### Changed
+- **AI Documentation & Plugin**: Refactored `initPluginBasic` context handling, added MCP resource definitions (`ai-mcp.json`), updated `ai-memory.md`, and cleaned up documentation structure.
+
 ## [0.1.16] - 2026-08-05
 
 ### Changed

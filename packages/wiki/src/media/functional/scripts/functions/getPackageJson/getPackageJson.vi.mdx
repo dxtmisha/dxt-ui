@@ -6,12 +6,15 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 Hàm trả về nội dung của tệp `package.json`.
 
+**Tham số:**
+- `path?: PropertiesFilePath` — đường dẫn tùy chọn đến thư mục hoặc tệp `package.json`.
+
 **Trả về:**
 `Record<string, any> | undefined` — nội dung của tệp `package.json` hoặc `undefined` nếu không thể đọc được tệp.
 
 ## Cơ chế hoạt động
 
-Hàm sử dụng phương thức `PropertiesFile.readFile` để tải nội dung của tệp `package.json` được chỉ định trong cấu hình toàn cục.
+Hàm sử dụng phương thức `PropertiesFile.readFile` để tải nội dung của tệp `package.json`. Nếu tham số `path` được cung cấp, nó sẽ đọc `package.json` từ vị trí chỉ định; nếu không, nó sẽ đọc `package.json` mặc định được cấu hình.
 
 ## Ví dụ
 
@@ -21,5 +24,10 @@ import { getPackageJson } from '@dxtmisha/scripts'
 const packageJson = getPackageJson()
 if (packageJson) {
   console.log(`Package Name: ${packageJson.name}`)
+}
+
+const customPackageJson = getPackageJson(['packages', 'functional'])
+if (customPackageJson) {
+  console.log(`Custom Package Name: ${customPackageJson.name}`)
 }
 ```

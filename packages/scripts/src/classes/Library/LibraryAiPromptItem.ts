@@ -1,12 +1,13 @@
 import { PropertiesFile } from '../Properties/PropertiesFile'
+import { LibraryAiMcpItem } from './LibraryAiMcpItem'
+import { getPackageJson } from '../../functions/getPackageJson'
 
 import {
   UI_DIR_AI_PROMPT_SCREENSHOT,
   UI_FILE_AI_PROMPT_DESCRIPTION,
+  UI_FILE_AI_PROMPT_DEVELOPER,
   UI_FILE_AI_PROMPT_INFO,
-  UI_FILE_AI_PROMPT_TYPES,
-  UI_FILE_PACKAGE,
-  UI_FILE_AI_PROMPT_DEVELOPER
+  UI_FILE_AI_PROMPT_TYPES
 } from '../../config'
 
 /**
@@ -19,8 +20,8 @@ import {
  * для создания насыщенного контекстом промпта для ИИ.
  */
 export class LibraryAiPromptItem {
-  /** Cached partition of package.json. / Кэш содержимого файла package.json. */
-  protected packageJson?: Record<string, any>
+  /** Item instance for working with MCP files. / Экземпляр элемента для работы с файлами MCP. */
+  protected readonly itemMcp: LibraryAiMcpItem
 
   /**
    * Constructor for LibraryAiPromptItem.
@@ -31,6 +32,27 @@ export class LibraryAiPromptItem {
   constructor(
     protected readonly dir: string[] = []
   ) {
+    this.itemMcp = new LibraryAiMcpItem(this.dir)
+  }
+
+  /**
+   * Returns directory path segments.
+   *
+   * Возвращает сегменты пути к директории.
+   * @returns path segments / сегменты пути
+   */
+  getDir(): string[] {
+    return this.dir
+  }
+
+  /**
+   * Reads and returns the list of MCP resource definitions from ai-mcp.json.
+   *
+   * Читает и возвращает список определений ресурсов MCP из ai-mcp.json.
+   * @returns list of MCP resource items or undefined / список элементов ресурсов MCP или undefined
+   */
+  getMcp(): Record<string, any>[] | undefined {
+    return this.itemMcp.make()
   }
 
   /**
@@ -40,7 +62,7 @@ export class LibraryAiPromptItem {
    * @returns project name or 'none' / название проекта или 'none'
    */
   getProjectName(): string {
-    return this.getPackageJson().name ?? 'none'
+    return getPackageJson(this.dir)?.name ?? 'none'
   }
 
   /**
@@ -55,6 +77,7 @@ export class LibraryAiPromptItem {
       || this.isTypes()
       || this.isScreenshot()
       || this.isDeveloper()
+      || this.isMcp()
   }
 
   /**
@@ -88,13 +111,13 @@ export class LibraryAiPromptItem {
   }
 
   /**
-   * Checks if the types file exists.
+   * Checks if the ai-mcp.json file exists.
    *
-   * Проверяет, существует ли файл с типами.
-   * @returns true if types file exists / true, если файл типов существует
+   * Проверяет, существует ли файл ai-mcp.json.
+   * @returns true if ai-mcp.json file exists / true, если файл ai-mcp.json существует
    */
-  isTypes(): boolean {
-    return PropertiesFile.is(this.getPath(UI_FILE_AI_PROMPT_TYPES))
+  isMcp(): boolean {
+    return this.itemMcp.isMcp()
   }
 
   /**
@@ -105,6 +128,16 @@ export class LibraryAiPromptItem {
    */
   isScreenshot(): boolean {
     return PropertiesFile.is(this.getPath(UI_DIR_AI_PROMPT_SCREENSHOT))
+  }
+
+  /**
+   * Checks if the types file exists.
+   *
+   * Проверяет, существует ли файл с типами.
+   * @returns true if types file exists / true, если файл типов существует
+   */
+  isTypes(): boolean {
+    return PropertiesFile.is(this.getPath(UI_FILE_AI_PROMPT_TYPES))
   }
 
   /**
@@ -135,63 +168,6 @@ ${data.join('\n\n')}
     }
 
     return undefined
-  }
-
-  /**
-   * Constructs a full path for a file within the item's directory.
-   *
-   * Создает полный путь к файлу внутри директории элемента.
-   * @param dirFile File name / Имя файла
-   * @returns path segments / сегменты пути
-   * @protected
-   */
-  protected getPath(dirFile: string): string[] {
-    return [...this.dir, dirFile]
-  }
-
-  /**
-   * Returns the directory path as a string joined by a slash.
-   *
-   * Возвращает путь к директории в виде строки, объединенной слешем.
-   * @returns path string / строка пути
-   * @protected
-   */
-  protected getPathString(): string {
-    return this.dir.join('/')
-  }
-
-  /**
-   * Retrieves and caches package.json content.
-   *
-   * Получает и кэширует содержимое файла package.json.
-   * @returns package.json object / объект package.json
-   * @protected
-   */
-  protected getPackageJson(): Record<string, any> {
-    if (!this.packageJson) {
-      const path = this.getPath(UI_FILE_PACKAGE)
-      this.packageJson = PropertiesFile.readFile(path) ?? {}
-    }
-
-    return this.packageJson
-  }
-
-  /**
-   * Reads content of a file by its name relative to the item's directory.
-   *
-   * Читает содержимое файла по его имени относительно директории элемента.
-   * @param dirFile File name / Имя файла
-   * @returns file content / содержимое файла
-   * @protected
-   */
-  protected readFile(dirFile: string): string {
-    const file = PropertiesFile.readFileOnly(this.getPath(dirFile))
-
-    if (file) {
-      return file.replace(/([ '"`]|^)\.\//g, `$1${this.getPathString()}/`)
-    }
-
-    return ''
   }
 
   /**
@@ -255,23 +231,26 @@ ${this.readFile(UI_FILE_AI_PROMPT_INFO)}
   }
 
   /**
-   * Formats and returns the types section for the prompt.
+   * Constructs a full path for a file within the item's directory.
    *
-   * Форматирует и возвращает секцию типов для промпта.
-   * @returns formatted types reference or undefined / отформатированная ссылка на типы или undefined
+   * Создает полный путь к файлу внутри директории элемента.
+   * @param dirFile File name / Имя файла
+   * @returns path segments / сегменты пути
    * @protected
    */
-  protected getTypes(): string | undefined {
-    if (this.isTypes()) {
-      console.log('-- Types')
+  protected getPath(dirFile: string): string[] {
+    return [...this.dir, dirFile]
+  }
 
-      return `
-## Package Type Definitions (Must Read in Full When Working with Package)
-'${this.getPathString()}/${UI_FILE_AI_PROMPT_TYPES}'
-      `.trim()
-    }
-
-    return undefined
+  /**
+   * Returns the directory path as a string joined by a slash.
+   *
+   * Возвращает путь к директории в виде строки, объединенной слешем.
+   * @returns path string / строка пути
+   * @protected
+   */
+  protected getPathString(): string {
+    return this.dir.join('/')
   }
 
   /**
@@ -310,5 +289,43 @@ ${screenshot}
     }
 
     return undefined
+  }
+
+  /**
+   * Formats and returns the types section for the prompt.
+   *
+   * Форматирует и возвращает секцию типов для промпта.
+   * @returns formatted types reference or undefined / отформатированная ссылка на типы или undefined
+   * @protected
+   */
+  protected getTypes(): string | undefined {
+    if (this.isTypes()) {
+      console.log('-- Types')
+
+      return `
+## Package Type Definitions (Must Read in Full When Working with Package)
+'${this.getPathString()}/${UI_FILE_AI_PROMPT_TYPES}'
+      `.trim()
+    }
+
+    return undefined
+  }
+
+  /**
+   * Reads content of a file by its name relative to the item's directory.
+   *
+   * Читает содержимое файла по его имени относительно директории элемента.
+   * @param dirFile File name / Имя файла
+   * @returns file content / содержимое файла
+   * @protected
+   */
+  protected readFile(dirFile: string): string {
+    const file = PropertiesFile.readFileOnly(this.getPath(dirFile))
+
+    if (file) {
+      return file.replace(/([ '"`]|^)\.\//g, `$1${this.getPathString()}/`)
+    }
+
+    return ''
   }
 }

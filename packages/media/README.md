@@ -1,313 +1,62 @@
 # @dxtmisha/media
 
-Flag SVG assets + lightweight geographical dataset (ISO country codes, primary timezone, phone codes & masks, language hints, first weekday).  
-Designed for internationalization (i18n) UI components: country pickers, phone inputs, locale selectors, onboarding flows.
+[![npm version](https://badge.fury.io/js/@dxtmisha%2Fmedia.svg)](https://www.npmjs.com/package/@dxtmisha/media)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Node.js Version](https://img.shields.io/badge/node-%3E%3D20.0.0-brightgreen)](https://nodejs.org/)
 
-Pure data + assets. No runtime logic. ESM build + TypeScript declarations.
+`@dxtmisha/media` is a lightweight media resources and geographical dataset library for DXT UI. It provides SVG country flags (250+ countries) and structured i18n country metadata (ISO codes, phone masks, timezones, primary languages, and first weekday).
 
----
+## Why this library?
 
-## Table of Contents
+Handling internationalization features like country pickers, phone input masks, and locale selectors usually requires pulling heavy third-party datasets or manually maintaining scattered SVG assets and country metadata across projects.
 
-- [Features](#features)
-- [Installation](#installation)
-- [Entry Points](#entry-points)
-- [Quick Start](#quick-start)
-- [API Overview](#api-overview)
-- [Data Model](#data-model)
-- [Flags Usage Patterns](#flags-usage-patterns)
-- [Architecture](#architecture)
-- [Tree Shaking & Bundling](#tree-shaking--bundling)
-- [Performance Tips](#performance-tips)
-- [Versioning](#versioning)
-- [Troubleshooting](#troubleshooting)
-- [FAQ](#faq)
-- [Recipes](#recipes)
-- [Contributing](#contributing)
-- [Security](#security)
-- [License](#license)
-- [At a Glance](#at-a-glance)
+`media` solves this by packaging clean, tree-shakeable SVG flag assets and a standardized ISO 3166-1 geographical dataset into a single zero-dependency library ready for any web application.
 
----
+## What does it do?
 
-## Features
+For **country flag assets** — 250+ vector SVG country flags with uniform PascalCase naming (`UsSvg`, `FrSvg`, `DeSvg`), fully tree-shakeable for optimal bundle sizes.
 
-| Area | Description |
-|------|-------------|
-| Comprehensive Flags | 250+ ISO 3166‑1 alpha‑2 flags (SVG). |
-| Uniform Naming | Each flag exported as `CcSvg` (PascalCase of the 2‑letter code: `UsSvg`, `DeSvg`). |
-| Geo Dataset | Country object list with phone code, mask(s), timezone, language, first weekday. |
-| TypeScript | Full `.d.ts` emitted in `dist/`. |
-| ESM Build | Modern modules; side‑effect free for tree shaking. |
-| Flexible Imports | Single flag named import or aggregate default object. |
-| Zero Dependencies | No external runtime dependencies. |
-| UI Ready | Ideal for dropdowns, phone inputs, identity/verification flows. |
+For **geographical dataset (`geo`)** — comprehensive ISO country metadata including phone codes, input masks, primary timezones, default languages, and first day of the week.
 
----
+For **internationalization (i18n)** — ready-to-use dataset for locale pickers, phone inputs, identity verification, and onboarding flows.
+
+For **TypeScript & ESM** — 100% typed with `.d.ts` declarations and side-effect free ESM modules.
 
 ## Installation
 
 ```bash
-# npm
 npm install @dxtmisha/media
-
-# pnpm
-pnpm add @dxtmisha/media
-
-# yarn
-yarn add @dxtmisha/media
 ```
-
-Node: >= 18  
-Peer dependencies: none.
-
----
-
-## Entry Points
-
-| Import Path | Purpose |
-|-------------|---------|
-| `@dxtmisha/media` | Geo dataset (`geo`). |
-| `@dxtmisha/media/flags` | Flag SVG exports (named + default aggregate). |
-| `@dxtmisha/media/types/*` | Type declarations passthrough (if you want direct type imports). |
-
----
 
 ## Quick Start
 
-```ts
-// Geographical data
+```typescript
 import { geo } from '@dxtmisha/media'
-
-// Single flags (preferred)
 import { UsSvg, FrSvg } from '@dxtmisha/media/flags'
 
-// Aggregate object (may increase bundle size)
-import flags from '@dxtmisha/media/flags'
-
+// Search country metadata
 const us = geo.find(c => c.country === 'US')
 console.log(us?.phoneCode) // "1"
-console.log(UsSvg) // URL / inlined string (depends on bundler)
+console.log(us?.phoneMask) // "(...)"
+
+// Use SVG flags
+console.log(UsSvg)
 ```
 
----
+## Principles
 
-## API Overview
+- **Zero external dependencies** — standalone SVG assets and JSON dataset.
+- **Tree-shaking optimized** — import individual flag icons to minimize bundle size.
+- **TypeScript-first** — complete type safety for country records and flag components.
+- **Framework-agnostic** — works with Vue, React, Svelte, Nuxt, or plain JavaScript.
 
-### Dataset
+## Documentation
 
-```ts
-import { geo } from '@dxtmisha/media'
+Full API reference, examples, and guides:
 
-/**
- * geo: GeoData[]
- */
-console.log(geo.length)
-```
-
-### Flags
-
-```ts
-import { DeSvg, JpSvg } from '@dxtmisha/media/flags'
-import allFlags from '@dxtmisha/media/flags'
-
-const germany = DeSvg
-const japan = allFlags.JpSvg
-```
-
----
-
-## Data Model
-
-```ts
-interface GeoData {
-  country: string               // ISO alpha-2, e.g. "US"
-  countryAlternative?: string[] // Alternative codes (optional)
-  language: string              // Primary language code
-  languageAlternative?: string[]
-  firstDay: string | null       // "Mo" | "Su" | null
-  zone: string                  // Representative IANA timezone
-  phoneCode: string             // Without '+', e.g. "1"
-  phoneMask: string[]           // Formatting templates, e.g. ["+1-***-***-****"]
-}
-```
-
----
-
-## Flags Usage Patterns
-
-| Pattern | Import | Pros | Cons |
-|---------|--------|------|------|
-| Named import | `import { UsSvg } from '@dxtmisha/media/flags'` | Allows bundler to potentially drop others | Requires many import specifiers |
-| Aggregate object | `import flags from '@dxtmisha/media/flags'` | Simple dynamic access | Risk of bundling all flags |
-| Dynamic import | `await import('@dxtmisha/media/flags')` | Lazy load large sets | Adds async boundary |
-
----
-
-## Architecture
-
-```
-packages/media/
-  src/
-    assets/flags/        # Raw SVG files
-    flags.ts             # Imports all SVG and exports map + named
-    media/geo.json       # Dataset
-    library.ts           # Root export (geo)
-  dist/                  # Build output (published)
-  package.json
-  README.md
-```
-
-Build:
-- Vite library build (generates `dist/*`).
-- Types emitted to `dist/*.d.ts`.
-- Export map provides: root, flags, types wildcard.
-
----
-
-## Tree Shaking & Bundling
-
-- Flags file statically imports every SVG. A smart bundler can treeshake unused named exports when:
-    - ESM is preserved
-    - No wildcard runtime usage of the aggregate object
-- Using the default aggregate import (`flags`) may inhibit full shaking.
-- To minimize bundle size: prefer named imports.
-
----
-
-## Performance Tips
-
-| Goal | Strategy |
-|------|----------|
-| Minimize initial JS size | Only import required flags named. |
-| Lazy load rarely used sets | Dynamic `import('@dxtmisha/media/flags')`. |
-| Reduce HTML size | Use CSS `background-image` if repeating icons. |
-| Optimize inline SVG | Run additional SVGO if required (project-level). |
-
----
-
-## Versioning
-
-Semantic Versioning:
-- Patch: dataset corrections / flag asset tweaks.
-- Minor: additional fields / new territories.
-- Major: structural changes (naming, breaking data shape).
-
----
-
-## Troubleshooting
-
-| Issue | Likely Cause | Resolution |
-|-------|--------------|-----------|
-| Flag not found | Wrong casing (should be PascalCase) | Use `UsSvg` not `USSvg` / `usSvg`. |
-| Bundle unexpectedly large | Imported aggregate flags object | Switch to named imports. |
-| Incorrect phone formatting | Masks are generic | Apply locale-specific formatter on top. |
-| Timezone mismatch | Multi-zone country | Choose a specific zone in your app UI. |
-
----
-
-## FAQ
-
-**Are the SVGs optimized?**  
-Yes—baseline optimization; further pipeline compression optional.
-
-**Why no region / continent grouping?**  
-Kept minimal. Compose your own mapping arrays.
-
-**Can I extend the dataset?**  
-Yes—spread merge your custom entries after import.
-
-**Do you export emoji flags?**  
-No—focus is SVG assets.
-
-**Can I tree shake the dataset?**  
-Dataset is a single JSON import; you get the full array.
-
----
-
-## Recipes
-
-### Region Filtering (Custom)
-
-```ts
-const EU = ['DE', 'FR', 'ES', 'IT', 'NL', 'BE', 'SE']
-import { geo } from '@dxtmisha/media'
-const european = geo.filter(c => EU.includes(c.country))
-```
-
-### Safe Lookup
-
-```ts
-import { geo } from '@dxtmisha/media'
-export function getCountry(code: string) {
-  const entry = geo.find(c => c.country === code.toUpperCase())
-  if (!entry) throw new Error(`Unknown ISO code: ${code}`)
-  return entry
-}
-```
-
-### Dial Code Dropdown Data
-
-```ts
-import { geo } from '@dxtmisha/media'
-import * as flags from '@dxtmisha/media/flags'
-
-const dialOptions = geo.map(c => ({
-  value: c.country,
-  dial: `+${c.phoneCode}`,
-  flag: (flags as any)[`${c.country[0]}${c.country[1].toLowerCase()}Svg`]
-}))
-```
-
-### Dynamic Import Example
-
-```ts
-async function loadFlag(code: string) {
-  const mod = await import('@dxtmisha/media/flags')
-  // Construct PascalCase variant
-  const name = `${code[0]}${code[1].toLowerCase()}Svg`
-  return (mod as any)[name]
-}
-```
-
----
-
-## Contributing
-
-1. Fork repository
-2. Branch: `feat/media-<topic>`
-3. Add / optimize SVG (proper viewBox, minimal paths)
-4. Update `geo.json` if necessary (maintain integrity)
-5. Run build & lint
-6. Open PR with clear description
-
----
-
-## Security
-
-Static assets + JSON only.  
-Report concerns privately: `dxtmisha@gmail.com` (subject: SECURITY @dxtmisha/media).
-
----
+**[📖 https://dxtmisha.github.io/dxt-ui/](https://dxtmisha.github.io/dxt-ui/)**
 
 ## License
 
-[MIT](./LICENSE) © dxtmisha
+[MIT](LICENSE)
 
----
-
-## At a Glance
-
-```ts
-import { geo } from '@dxtmisha/media'
-import { UsSvg, DeSvg } from '@dxtmisha/media/flags'
-
-const us = geo.find(c => c.country === 'US')
-console.log(us?.phoneMask?.[0]) // Example mask
-
-const img = new Image()
-img.src = UsSvg
-document.body.appendChild(img)
-```
-
-Build international UIs faster.

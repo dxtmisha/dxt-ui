@@ -1,26 +1,77 @@
-import { OpenAI } from 'openai'
-import { AiOpenAiLite } from './AiOpenAiLite'
+import { createXai, type XaiProvider } from '@ai-sdk/xai'
+import { generateText } from 'ai'
+import { forEach } from '@dxtmisha/functional-basic'
+
+import { AiAbstract } from './AiAbstract'
 
 /**
- * Z.ai (Zhipu AI) implementation extending AiOpenAiLite.
- * Performs requests to the OpenAI-compatible Z.ai endpoint.
+ * xAI (Grok) implementation of AiAbstract using @ai-sdk/xai and ai SDK.
+ * Performs text generation requests via Grok models (e.g. grok-4.5).
  *
- * Реализация Z.ai (Zhipu AI) расширяющая AiOpenAiLite.
- * Выполняет запросы к OpenAI-совместимому эндпоинту Z.ai.
+ * Реализация xAI (Grok) поверх AiAbstract с использованием @ai-sdk/xai и ai SDK.
+ * Выполняет запросы генерации текста через модели Grok (например, grok-4.5).
  *
  * Responsibilities / Ответственности:
- * - Initialize OpenAI client with Z.ai baseURL / Инициализировать клиент OpenAI с baseURL Z.ai
+ * - Initialize xAI client provider / Инициализировать провайдер клиента xAI
+ * - Execute generateText via Grok responses model / Выполнять generateText через модель ответов Grok
  */
-export class AiZAiLite extends AiOpenAiLite {
+export class AiZAiLite extends AiAbstract<XaiProvider> {
   /**
-   * Initializes OpenAI client instance configured for Z.ai.
+   * Initializes xAI client provider instance.
    *
-   * Инициализирует экземпляр клиента OpenAI, настроенный для Z.ai.
+   * Инициализирует экземпляр провайдера клиента xAI.
    */
-  protected override init(): void {
-    this.ai = new OpenAI({
-      apiKey: this.key,
-      baseURL: 'https://api.z.ai/api/paas/v4'
+  protected init(): void {
+    this.ai = createXai({
+      apiKey: this.key
     })
+  }
+
+  /**
+   * Implementation hook: convert accumulated images to model-specific format.
+   *
+   * Хук реализации: преобразовать накопленные изображения в формат, специфичный для модели.
+   */
+  protected toImages(): any[] {
+    return forEach(this.images, image => ({
+      type: 'image',
+      image: `data:${image.mime};base64,${image.base64}`
+    }))
+  }
+
+  /**
+   * Implementation hook: convert accumulated contents to model-specific format.
+   *
+   * Хук реализации: преобразовать накопленное содержимое в формат, специфичный для модели.
+   */
+  protected toContents(): any[] {
+    return forEach(this.contents, content => ({
+      type: 'text',
+      text: content
+    }))
+  }
+
+  /**
+   * Performs content generation request using xAI responses model and returns textual result.
+   *
+   * Выполняет запрос генерации контента с использованием модели ответов xAI и возвращает текстовый результат.
+   * @param model - Model identifier (e.g., 'grok-4.5') / Идентификатор модели
+   * @param contents - Composed contents for generation / Собранный контент для генерации
+   * @returns Generated text response / Сгенерированный текстовый ответ
+   */
+  protected async response(
+    model: string,
+    contents: string
+  ): Promise<string> {
+    const client = this.ai ?? createXai({ apiKey: this.key })
+    const activeModel = model || 'grok-4.5'
+
+    const { text } = await generateText({
+      model: client.responses(activeModel as any),
+      prompt: contents,
+      ...this.config
+    })
+
+    return text ?? ''
   }
 }

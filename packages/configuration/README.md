@@ -1,124 +1,61 @@
 # @dxtmisha/configuration
 
-🔧 **Shared configuration files** for DXT UI projects - ready-to-use Vite and TypeScript configurations for building UI components.
-
 [![npm version](https://badge.fury.io/js/@dxtmisha%2Fconfiguration.svg)](https://www.npmjs.com/package/@dxtmisha/configuration)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Node.js Version](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen)](https://nodejs.org/)
+[![Node.js Version](https://img.shields.io/badge/node-%3E%3D20.0.0-brightgreen)](https://nodejs.org/)
 
-## 🚀 Installation
+`@dxtmisha/configuration` provides shared, ready-to-use Vite and TypeScript configuration presets for building UI components, libraries, and applications within the DXT UI ecosystem.
+
+## Why this library?
+
+Configuring Vite build pipelines and TypeScript options across multiple packages in a monorepo often leads to duplicated config files, inconsistent build settings, and maintenance overhead.
+
+`configuration` centralizes standardized build presets (Vite configs, TypeScript bases, rollup plugins, MDX support) into reusable exports, ensuring consistent build outputs and zero boilerplate across packages.
+
+## What does it do?
+
+For **Vite build presets** — reusable Vite configurations (`viteBasic`, `viteBasicFunction`, `viteComponentOnly`, `viteFlags`, `viteMdx`, `viteLibraries`) optimized for Vue 3 component packages and library builds.
+
+For **TypeScript configurations** — extended tsconfig presets (`tsconfig.app.json`, `tsconfig.node.json`) for application and node build environments.
+
+For **monorepo build standardization** — unified build targets, peer dependency externalization, and dxt-ui plugin hooks out of the box.
+
+## Installation
 
 ```bash
 npm install @dxtmisha/configuration
 ```
 
-## 📦 What's included
-
-### Vite configurations:
-- **viteBasic** - basic configuration for UI components
-- **viteBasicFunction** - functional version of basic configuration
-- **viteComponentOnly** - for components only, without application
-- **viteFlags** - specialized for packages with flags/icons
-- **viteMdx** - MDX files support
-
-### TypeScript configurations:
-- **tsconfig.app.json** - for applications
-- **tsconfig.node.json** - for Node.js environment
-
-## 🛠️ Usage
-
-### Vite configurations
+## Quick Start
 
 ```javascript
 // vite.config.js - basic configuration
 import { viteBasic } from '@dxtmisha/configuration/viteBasic'
+
 export default viteBasic
-
-// vite.config.js - functional version with customization
-import { viteBasicFunction } from '@dxtmisha/configuration/viteBasicFunction'
-export default viteBasicFunction({
-  // your additional settings
-})
-
-// vite.config.js - components only
-import { viteComponentOnly } from '@dxtmisha/configuration/viteComponentOnly'
-export default viteComponentOnly
-
-// vite.config.js - for packages with flags
-import { viteFlags } from '@dxtmisha/configuration/viteFlags'
-export default viteFlags
-
-// vite.config.js - with MDX support
-import { viteMdx } from '@dxtmisha/configuration/viteMdx'
-export default viteMdx
-```
-
-### TypeScript configurations
-
-```json
-{
-  "extends": "@dxtmisha/configuration/tsconfig/tsconfig.app.json",
-  "compilerOptions": {
-  }
-}
 ```
 
 ```json
+// tsconfig.json - extending TypeScript preset
 {
-  "extends": "@dxtmisha/configuration/tsconfig/tsconfig.node.json"
+  "extends": "@dxtmisha/configuration/tsconfig/tsconfig.app.json"
 }
 ```
 
-## 📚 Available exports
+## Principles
 
-| Export | Description |
-|--------|-------------|
-| `./viteBasic` | Ready-to-use basic Vite configuration |
-| `./viteBasicFunction` | Function for creating Vite configuration |
-| `./viteComponentOnly` | Configuration for components only |
-| `./viteFlags` | Configuration for packages with flags |
-| `./viteMdx` | Configuration with MDX support |
-| `./tsconfig/*` | All TypeScript configurations |
+- **Zero boilerplate** — pre-configured plugins, aliases, and rollup options for instant setup.
+- **Modular presets** — select specialized configs for component libraries, flags, or MDX docs.
+- **DXT UI ecosystem default** — guarantees full compatibility across all monorepo packages.
+- **TypeScript & ESM first** — strict typing and modern ESM module outputs.
 
-## 🎯 Who is this package for
+## Documentation
 
-- **UI library developers** - standardized configurations
-- **Monorepo projects** - unified settings for all packages  
-- **DXT UI ecosystem** - official configurations
-- **Vue.js developers** - optimized for Vue components
+Full API reference, examples, and guides:
 
-## ✨ Features
+**[📖 https://dxtmisha.github.io/dxt-ui/](https://dxtmisha.github.io/dxt-ui/)**
 
-- ✅ **TypeScript support** out of the box
-- ✅ **Vue.js optimizations** for components
-- ✅ **MDX support** for documentation
-- ✅ **Tree-shaking** and bundle optimization
-- ✅ **ESM modules** modern standard
-- ✅ **Ready-made presets** for different tasks
+## License
 
-## 🔧 Requirements
+[MIT](LICENSE)
 
-- **Node.js**: ≥18.0.0
-- **Vite**: ≥4.0.0 (peer dependency)
-- **TypeScript**: ≥4.5.0 (peer dependency)
-
-## 🤝 Compatibility
-
-| Tool | Version |
-|------|---------|
-| **Vite** | ≥4.0.0 |
-| **Vue** | 3+ |
-| **TypeScript** | ≥4.5.0 |
-| **Node.js** | ≥18.0.0 |
-
-## 📄 License
-
-MIT © [dxtmisha](https://github.com/dxtmisha)
-
-## 🐛 Report an issue
-
-[GitHub Issues](https://github.com/dxtmisha/dxt-ui/issues)
-
----
-
-⭐ **Give us a star** if these configurations were helpful!

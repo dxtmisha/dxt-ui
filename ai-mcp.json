@@ -1,0 +1,86 @@
+[
+  {
+    "uri": "@dxtmisha/functional/ai-types.md",
+    "name": "Vue Functional Reference",
+    "mimeType": "text/markdown",
+    "description": "TypeScript type definitions and composable API specifications for Vue application state management, data formatting, localization, and API request handling."
+  },
+  {
+    "uri": "@dxtmisha/functional/ai-description.md",
+    "name": "Vue Framework Architecture",
+    "mimeType": "text/markdown",
+    "description": "Comprehensive architectural conventions and guidelines for a Vue 3 reactive utility framework, covering component construction, API lifecycle management, localization, and persistent state controls."
+  },
+  {
+    "uri": "@dxtmisha/functional/ai-prompts/api-reference.md",
+    "name": "API Reference",
+    "mimeType": "text/markdown",
+    "description": "Defines architectural patterns and usage guidelines for REST API management and scope-isolated reactive singletons within @dxtmisha/functional. Details scope factory initialization alongside reactive CRUD operations with client-side caching and contract validation."
+  },
+  {
+    "uri": "@dxtmisha/functional/ai-prompts/localization-seo.md",
+    "name": "Localization and SEO",
+    "mimeType": "text/markdown",
+    "description": "Covers locale-aware formatting, multi-key translations, geographic context management, and reactive HTML document metadata handling for SEO optimization."
+  },
+  {
+    "uri": "@dxtmisha/functional/ai-prompts/reactivity-lists.md",
+    "name": "Reactivity and Lists",
+    "mimeType": "text/markdown",
+    "description": "Comprehensive guide to advanced asynchronous reactivity composables, list data models, multi-field search filtering, and DOM observer utilities."
+  },
+  {
+    "uri": "@dxtmisha/functional/ai-prompts/storage-state.md",
+    "name": "Reactive Browser State",
+    "mimeType": "text/markdown",
+    "description": "API reference and usage examples for reactive composables managing persistent browser state and cross-tab synchronization. Covers localStorage, sessionStorage, cookies, BroadcastChannel, and URL hash state."
+  },
+  {
+    "uri": "@dxtmisha/functional-basic/ai-types.md",
+    "name": "TypeScript Type Definitions",
+    "mimeType": "text/markdown",
+    "description": "Comprehensive TypeScript type definitions, enums, class interfaces, and utility function signatures for API request handling, internationalization, and client-side data management."
+  },
+  {
+    "uri": "@dxtmisha/functional-basic/ai-description.md",
+    "name": "Isomorphic Utility Toolkit",
+    "mimeType": "text/markdown",
+    "description": "Provides an architectural overview of the isomorphic runtime toolkit covering HTTP networking, state persistence, i18n, DOM helpers, and metadata management across browser and SSR environments. Details core utility capabilities and outlines mandatory cross-referencing rules for API references, types, and coding standards."
+  },
+  {
+    "uri": "@dxtmisha/functional-basic/ai-doc.md",
+    "name": "Coding Standards and Core Info",
+    "mimeType": "text/markdown",
+    "description": "Architectural conventions, class structure rules, SSR safety guidelines, and TypeScript typing standards for code implementation."
+  },
+  {
+    "uri": "@dxtmisha/functional-basic/ai-prompts/api-reference.md",
+    "name": "API Reference Guide",
+    "mimeType": "text/markdown",
+    "description": "API reference and code usage examples for @dxtmisha/functional-basic, detailing HTTP clients, caching, storage, geolocation, DOM events, and general utilities."
+  },
+  {
+    "uri": "@dxtmisha/nitro-basic/ai-types.md",
+    "name": "Vue SSR Types",
+    "mimeType": "text/markdown",
+    "description": "TypeScript declarations and utility functions for initializing Vue SSR applications, Nitro context management, request headers, routing, and server storage."
+  },
+  {
+    "uri": "@dxtmisha/nitro-basic/ai-description.md",
+    "name": "Nitro Vue SSR Architecture",
+    "mimeType": "text/markdown",
+    "description": "Provides core utilities and architectural conventions for server-side rendering, application lifecycle management, context isolation, and state hydration in Vue 3 applications running on Nitro."
+  },
+  {
+    "uri": "@dxtmisha/nitro-basic/ai-prompts/app-bootstrap.md",
+    "name": "App Bootstrapping Conventions",
+    "mimeType": "text/markdown",
+    "description": "Guidelines and API reference for server and client application entry points, SSR initialization, and hydration identity helpers using @dxtmisha/nitro-basic."
+  },
+  {
+    "uri": "@dxtmisha/nitro-basic/ai-prompts/request-context.md",
+    "name": "Nitro Request Context",
+    "mimeType": "text/markdown",
+    "description": "Documentation and code examples for initializing server lifecycle services and accessing request context metadata using Nitro basic utilities."
+  }
+]

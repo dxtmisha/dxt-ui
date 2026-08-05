@@ -1,20 +1,26 @@
 {
   "name": "@dxtmisha/scripts",
   "private": false,
-  "version": "0.10.11",
+  "version": "0.10.12",
   "type": "module",
-  "description": "Development scripts and CLI tools for DXT UI projects - automated component generation, library building and project management tools",
+  "description": "CLI tools, AI integration scripts, and automation utilities for DXT UI — automated component scaffolding, Figma layout generation, library packaging, documentation building, screenshot captures, and AI prompt processing.",
   "keywords": [
-    "scripts",
     "cli",
-    "development",
-    "component-generator",
-    "ui-library",
-    "dxt-ui",
+    "scripts",
     "automation",
+    "generators",
+    "scaffolding",
     "build-tools",
+    "component-generator",
+    "figma-sync",
+    "ai-tools",
+    "ai-prompts",
+    "storybook",
+    "documentation",
     "typescript",
-    "vue"
+    "vue",
+    "dxt",
+    "dxt-ui"
   ],
   "author": "dxtmisha@gmail.com",
   "license": "MIT",
@@ -70,17 +76,22 @@
     "node": ">=20.0.0"
   },
   "dependencies": {
+    "@ai-sdk/xai": "*",
+    "@anthropic-ai/claude-agent-sdk": "*",
     "@anthropic-ai/sdk": "*",
-    "@dxtmisha/configuration": "*",
     "@dxtmisha/functional": "*",
     "@dxtmisha/functional-basic": "*",
     "@dxtmisha/media": "*",
-    "@dxtmisha/styles": "*",
-    "@dxtmisha/wiki": "*",
     "@google/genai": "*",
+    "@napi-rs/canvas": "*",
+    "ai": "*",
     "openai": "*",
     "puppeteer": "*",
+    "sass": "*",
     "typescript": "*",
     "vue": "*"
+  },
+  "devDependencies": {
+    "@dxtmisha/wiki": "*"
   }
 }

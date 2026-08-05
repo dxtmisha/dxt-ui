@@ -1,10 +1,18 @@
-1) All these methods are in the @dxtmisha/functional library.
+All these methods are in the @dxtmisha/functional library.
 
-import { ComputedRef, Ref, ShallowRef, ToRefs, VNode, DebuggerOptions, ComputedGetter, PropType, VNodeArrayChildren, Plugin } from 'vue';
-import { RouteLocationRaw, Router, _RouterClassic } from 'vue-router';
+import { ComputedRef, Ref, ShallowRef, ToRefs, VNode, VNodeArrayChildren, ComputedGetter, DebuggerOptions, Plugin, PropType } from 'vue';
+import { Datetime, GeoDate, GeoFirstDay, GeoHours, NumberOrStringOrDate, ElementOrString, ElementOrWindow, EventItem, EventListenerDetail, EventOptions, GeoFlag, GeoFlagItem, GeoFlagNational, ItemValue, NumberOrString, GeoItemFull, GeoUnit, ApiInstance, ApiData, ApiDataValidation, ApiErrorStorageList, ApiErrorItem, ApiFetch, FormattersListColumns, FormattersOptionsList, SearchColumns, SearchFormatList, FormattersListProp, FormattersReturn, MetaRobots, Meta, SearchItem, SearchOptions, TranslateInstance, TranslateList, ApiConfig, ErrorCenterCauseList, ErrorCenterHandlerCallback, ErrorCenterHandlerList, IconsConfig, TranslateConfig, ItemList, ApiDefaultValue, ApiMethodItem, Undefined, NumberOrStringOrBoolean, SearchListValue } from '@dxtmisha/functional-basic';
 import { InputSocialIcons } from '@dxtmisha/media';
-import { Datetime, GeoDate, GeoFirstDay, GeoHours, NumberOrStringOrDate, ElementOrString, ElementOrWindow, EventItem, EventListenerDetail, EventOptions, GeoFlag, GeoFlagItem, GeoFlagNational, ItemValue, NumberOrString, GeoItemFull, GeoUnit, ApiInstance, ApiData, ApiDataValidation, ApiErrorStorageList, ApiFetch, ArrayToItem, FormattersListColumns, FormattersOptionsList, SearchColumns, SearchFormatList, ApiErrorItem, FormattersListProp, FormattersReturn, MetaRobots, Meta, SearchItem, SearchOptions, TranslateInstance, TranslateList, ApiConfig, ErrorCenterCauseList, ErrorCenterHandlerCallback, ErrorCenterHandlerList, IconsConfig, TranslateConfig, Undefined, NumberOrStringOrBoolean, ApiDefaultValue, SearchListValue, ItemList, ApiMethodItem } from '@dxtmisha/functional-basic';
-export * from '@dxtmisha/functional-basic';
+import { RouteLocationRaw, Router, _RouterClassic } from 'vue-router';
+export type RefType<T> = ComputedRef<T> | Ref<T>;
+export type RefUndefined<T> = RefType<T | undefined>;
+export type RefOrNormal<T> = RefType<T> | T;
+export type RefOrNormalOrFunction<T> = RefOrNormal<T> | (() => RefOrNormal<T>);
+export type RawChildren = string | number | boolean | VNode | VNodeArrayChildren | (() => any);
+export type RawSlots = {
+    [name: string]: unknown;
+    $stable?: boolean;
+};
 export type ApiOptions = ApiMethodItem | RefOrNormal<ApiFetch>;
 export type ApiManagementValue = ApiDefaultValue | ApiDefaultValue[];
 export type ApiManagementGet<Return extends ApiManagementValue, Type extends ApiManagementValue = Return> = {
@@ -120,15 +128,6 @@ export type ListSelectedItem = NumberOrStringOrBoolean;
 export type ListSelectedList = ListSelectedItem | ListSelectedItem[];
 export type ListName = string | number | undefined;
 export type ListNames = ListName[];
-export type RefType<T> = ComputedRef<T> | Ref<T>;
-export type RefUndefined<T> = RefType<T | undefined>;
-export type RefOrNormal<T> = RefType<T> | T;
-export type RefOrNormalOrFunction<T> = RefOrNormal<T> | (() => RefOrNormal<T>);
-export type RawChildren = string | number | boolean | VNode | VNodeArrayChildren | (() => any);
-export type RawSlots = {
-    [name: string]: unknown;
-    $stable?: boolean;
-};
 export type SearchListValueRef<T extends SearchItem> = RefOrNormal<SearchListValue<T>>;
 export type SearchListInput<T extends SearchItem> = SearchListValueRef<T> | (() => SearchListValueRef<T>);
 export type SearchColumnsRef<T extends SearchItem, K extends SearchColumns<T>> = RefOrNormal<K>;
@@ -160,6 +159,7 @@ export declare class DesignComponents<COMP extends ConstrComponent, P extends Co
     renderAdd<K extends keyof COMP, PK extends keyof P>(item: any[], name: K & string, props?: P[PK] & ConstrItem | ConstrItem, children?: RawChildren | RawSlots, index?: PK & string | string): this;
 }
 export declare abstract class DesignConstructorAbstract<E extends Element, COMP extends ConstrComponent, EMITS extends ConstrItem, EXPOSE extends ConstrItem, SLOTS extends ConstrItem, CLASSES extends ConstrClasses, P extends ConstrItem> {
+    constructor(name: string, props: Readonly<P>, options?: ConstrOptions<COMP, EMITS, P> | undefined);
     getName(): string;
     getDesign(): string;
     getSubClass(name: string | string[]): string;
@@ -203,13 +203,6 @@ export declare class GeoFlagRef {
     getNational(codes?: RefOrNormal<string[] | undefined>): ComputedRef<GeoFlagNational[]>;
     getNationalLanguage(codes?: RefOrNormal<string[] | undefined>): ComputedRef<GeoFlagNational[]>;
 }
-/**
- * Reactive class for managing the formatting of numbers and dates.
- *
- * @remarks
- * Avoid using this reactive class if reactive updates are not required.
- * For non-reactive formatting, use the standard `GeoIntl` class from `@dxtmisha/functional-basic`.
- */
 export declare class GeoIntlRef {
     constructor(code?: RefOrNormal<string>);
     display(value?: RefOrNormal<string>, typeOptions?: Intl.DisplayNamesOptions['type'] | Intl.DisplayNamesOptions): ComputedRef<string>;
@@ -328,13 +321,34 @@ export declare class ScrollbarWidthRef {
 }
 /**
  * Asynchronous reactive composable for API requests with built-in SSR support.
+ * Wraps `useApiRef` and immediately calls `initSsr()` to ensure data is pre-fetched on the server side.
+ * Use this composable ONLY if you need the request to be executed on the server side during SSR.
+ * For all other cases, use `useApiRef`.
  *
  * @example
  * ```typescript
  * import { Schema as S } from '@effect/schema'
  * import { useApiAsyncRef } from '@dxtmisha/functional'
+ *
  * const userSchema = S.Struct({ id: S.Number, name: S.String })
- * const { data, loading, errorItem } = useApiAsyncRef('/users/1')
+ *
+ * const { data, loading, errorItem, isResponseContractValid } = useApiAsyncRef(
+ *   '/users/1',
+ *   { method: 'GET' },
+ *   true,
+ *   undefined,
+ *   undefined,
+ *   (data) => {
+ *     try {
+ *       return { status: 'success', data: S.decodeUnknownSync(userSchema)(data) }
+ *     } catch (e) {
+ *       return { status: 'error', errors: e }
+ *     }
+ *   },
+ *   [
+ *     { status: 404, message: 'User not found' }
+ *   ]
+ * )
  * ```
  */
 export declare function useApiAsyncRef<R, T = R>(path?: RefOrNormal<string | undefined>, options?: ApiOptions, reactivity?: boolean, conditions?: RefType<boolean>, transformation?: (data: T, isResponseContractValid?: ApiDataValidation) => ApiData<R>, validateResponseContract?: (data: T) => ApiDataValidation, errorContract?: ApiErrorStorageList, unmounted?: boolean, apiInstance?: ApiInstance): UseApiRef<R>;
@@ -350,6 +364,12 @@ export declare function useApiGet<T, Request extends ApiFetch['request'] = ApiFe
     loading: Ref<boolean, boolean>;
     send(request?: Request | undefined): Promise<Return | undefined>;
 };
+/**
+ * Asynchronous reactive composable for API management requests with built-in SSR support.
+ * Wraps `useApiManagementRef` and immediately calls `initSsr()` to ensure data is pre-fetched on the server side.
+ * Use this composable ONLY if you need the request to be executed on the server side during SSR.
+ * For all other cases, use `useApiManagementRef`.
+ */
 export declare function useApiManagementAsyncRef<Return extends ApiManagementValue, FormattersOptions extends FormattersOptionsList, Post extends Record<string, any>, Put extends Record<string, any>, Delete extends Record<string, any>, Type extends ApiManagementValue = Return, Item extends ArrayToItem<Return> = ArrayToItem<Return>, ItemFormatters extends FormattersListColumns<Item, FormattersOptions>[number] = FormattersListColumns<Item, FormattersOptions>[number], Columns extends SearchColumns<ItemFormatters> = []>(propsGet: ApiManagementGet<Return, Type>, formattersOptions?: FormattersOptions, searchOptions?: ApiManagementSearch<Item, Columns>, postRequest?: ApiManagementRequest<Post>, putRequest?: ApiManagementRequest<Put>, deleteRequest?: ApiManagementRequest<Delete>, action?: () => Promise<void> | void, apiInstance?: ApiInstance): {
     isValid: ComputedRef<boolean>;
     isResponseContractValid: ComputedRef<boolean>;
@@ -378,24 +398,35 @@ export declare function useApiManagementAsyncRef<Return extends ApiManagementVal
 };
 /**
  * A powerful composable for comprehensive API request orchestration.
+ * It centrally manages data loading (GET), list formatting, client-side searching,
+ * and mutations (POST, PUT, DELETE) through a single reactive interface.
  *
- * @note
- * This hook is recommended to be used in tandem with `executeUse` for centralized state management.
+ * @note This hook is recommended to be used in tandem with `executeUse` for centralized state management.
+ * By wrapping `useApiManagementRef` in `executeUseProvide` or `executeUseGlobal`, you can ensure
+ * a single source of truth across the component tree or the entire application.
  *
  * @remarks
  * Data formatting guidelines for `formattersOptions`:
- * - Recommended for formatting: Numbers that represent values, dates, currency, units, and statuses.
+ * - Recommended for formatting: Numbers that represent values (prices, counts), dates, currency, units, and statuses.
  * - Not recommended for formatting: Technical identifiers such as ID, UUID, account numbers, types, or internal codes.
  *
  * @example
- * ```typescript
  * const products = useApiManagementRef(
+ *   {
+ *     path: '/api/v1/products',
+ *     skeleton: () => Array(5).fill({ id: 0, name: 'Loading...', price: 0 })
+ *   },
+ *   {
+ *     price: (v) => `${v} USD`,
+ *     created_at: (v) => new Date(v).toLocaleDateString()
+ *   },
+ *   {
+ *     columns: ['name', 'category']
+ *   },
  *   { path: '/api/v1/products' },
- *   { price: (v) => `${v} USD` },
- *   { columns: ['name', 'category'] },
- *   { path: '/api/v1/products' }
+ *   { path: (data) => `/api/v1/products/${data.id}` },
+ *   { path: (data) => `/api/v1/products/${data.id}` }
  * );
- * ```
  */
 export declare function useApiManagementRef<Return extends ApiManagementValue, FormattersOptions extends FormattersOptionsList, Post extends Record<string, any>, Put extends Record<string, any>, Delete extends Record<string, any>, Type extends ApiManagementValue = Return, Item extends ArrayToItem<Return> = ArrayToItem<Return>, ItemFormatters extends FormattersListColumns<Item, FormattersOptions>[number] = FormattersListColumns<Item, FormattersOptions>[number], Columns extends SearchColumns<ItemFormatters> = []>(propsGet: ApiManagementGet<Return, Type>, formattersOptions?: FormattersOptions, searchOptions?: ApiManagementSearch<Item, Columns>, postRequest?: ApiManagementRequest<Post>, putRequest?: ApiManagementRequest<Put>, deleteRequest?: ApiManagementRequest<Delete>, action?: () => Promise<void> | void, apiInstance?: ApiInstance): {
     isValid: ComputedRef<boolean>;
@@ -457,12 +488,35 @@ export interface UseApiRef<R> {
 }
 /**
  * Main reactive composable for working with API requests in Vue.
+ * Automatically handles SSR, reactivity, caching, error storage, data validation, and transformation.
  *
  * @example
  * ```typescript
  * import { Schema as S } from '@effect/schema'
  * import { useApiRef } from '@dxtmisha/functional'
- * const { data, loading } = useApiRef('/users/1')
+ *
+ * const userSchema = S.Struct({ id: S.Number, name: S.String })
+ *
+ * const { data, loading, errorItem, isResponseContractValid } = useApiRef(
+ *   '/users/1',
+ *   { method: 'GET' },
+ *   true,
+ *   undefined,
+ *   (data) => ({ ...data, isTransformed: true }),
+ *   (data) => {
+ *     try {
+ *       return { status: 'success', data: S.decodeUnknownSync(userSchema)(data) }
+ *     } catch (e) {
+ *       return { status: 'error', errors: e }
+ *     }
+ *   },
+ *   [
+ *     {
+ *       status: 404,
+ *       message: 'User not found'
+ *     }
+ *   ]
+ * )
  * ```
  */
 export declare function useApiRef<R, T = R>(path?: RefOrNormal<string | undefined>, options?: ApiOptions, reactivity?: boolean, conditions?: RefType<boolean>, transformation?: (data: T, isResponseContractValid?: ApiDataValidation) => ApiData<R>, validateResponseContract?: (data: T) => ApiDataValidation, errorContract?: ApiErrorStorageList, unmounted?: boolean, apiInstance?: ApiInstance): UseApiRef<R>;
@@ -597,7 +651,9 @@ export declare function useSearchValueRef<T extends SearchItem, K extends Search
 export declare function useSessionRef<T>(name: string, defaultValue?: T | (() => T)): Ref<T | undefined>;
 export declare function useStorageRef<T>(name: string, defaultValue?: T | (() => T), cache?: number): Ref<T | undefined>;
 /**
- * Getting translated text by array of keys or key string.
+ * Getting the translated text by an array of keys or a string with a key.
+ * Returns a `ShallowRef` that automatically updates when the global language changes.
+ * Use `as const` for arrays to ensure proper TypeScript key inference.
  *
  * @example
  * ```typescript
@@ -608,6 +664,7 @@ export declare function useStorageRef<T>(name: string, defaultValue?: T | (() =>
 export declare function useTranslateRef<T extends (string | string[])[]>(names: T, translateInstance?: TranslateInstance): ShallowRef<TranslateList<T>>;
 export declare const t: <T extends string[]>(names: T) => ShallowRef<TranslateList<T>>;
 export declare const uiMakeFlags: () => void;
+export * from '@dxtmisha/functional-basic';
 export declare function computedAsync<R>(getter: (() => Promise<R>) | (() => R) | R, initialState?: (() => R) | R, ignore?: R, debugOptions?: DebuggerOptions): ComputedRef<R | undefined>;
 export declare function computedByLanguage<T, R extends (T | undefined) = T | undefined>(getter: ComputedGetter<R>, getterNone?: R | (() => R), conditions?: () => boolean, debugOptions?: DebuggerOptions): ComputedRef<R>;
 export declare function computedEternity<T>(getter: () => Promise<T> | T, initialState?: (() => T) | T): Ref<T, T>;
@@ -624,14 +681,21 @@ export interface FunctionalPluginOptions {
     errorCallbacks?: ErrorCenterHandlerCallback[];
 }
 /**
- * Vue plugin for initializing global functional services.
+ * Vue plugin for initializing and configuring global functional services
+ * (Api, Translate, Icons, Meta).
  *
  * @example
  * ```typescript
  * import { createApp } from 'vue'
  * import { dxtFunctionalPlugin } from '@dxtmisha/functional'
+ * import router from './router'
+ *
  * const app = createApp(App)
- * app.use(dxtFunctionalPlugin, { api: { url: 'https://api.example.com' } })
+ * app.use(dxtFunctionalPlugin, {
+ *   api: { url: 'https://api.example.com' },
+ *   metaSuffix: ' | My App',
+ *   router
+ * })
  * ```
  */
 export declare const dxtFunctionalPlugin: Plugin;
@@ -646,16 +710,28 @@ export type ExecuteUseReturn<R> = Readonly<R & {
 }>;
 /**
  * Creates a managed singleton that encapsulates initialization logic and access mode.
+ * Supports initialization strategies: 'global', 'provide', 'local'.
  *
  * @remarks
- * Use this function for API services, resource optimization, shared state, or external SDKs.
+ * Use this function for API services, shared reactive states, and singleton resource optimizations.
  *
  * @example
- * ```typescript
- * export const useUserApi = executeUseGlobal(() => useApiGet('/api/user'));
- * ```
+ * export const useUserApi = executeUseGlobal(() => {
+ *   return useApiGet('/api/user');
+ * });
+ *
+ * export const useFeatureState = executeUseProvide(() => {
+ *   const items = [];
+ *   const addItem = (item) => items.push(item);
+ *   return { items, addItem };
+ * });
  */
 export declare function executeUse<R, O extends any[], RI extends ExecuteUseReturn<R> = ExecuteUseReturn<R>>(callback: (...args: O) => R, type?: ExecuteUseType): ((...args: O) => RI) | (() => RI);
+
+/**
+ * Creates a global singleton.
+ * @remarks See {@link executeUse} for more details.
+ */
 export declare function executeUseGlobal<R>(callback: () => R): (() => Readonly<R & {
     init(): Readonly<R>;
     destroyExecute?(): void;
@@ -663,6 +739,11 @@ export declare function executeUseGlobal<R>(callback: () => R): (() => Readonly<
     init(): Readonly<R>;
     destroyExecute?(): void;
 }>);
+
+/**
+ * Creates a component-scoped singleton.
+ * @remarks Best for sharing state within a component sub-tree. See {@link executeUse} for more details.
+ */
 export declare function executeUseProvide<R, O extends any[]>(callback: (...args: O) => R): ((...args: O) => Readonly<R & {
     init(): Readonly<R>;
     destroyExecute?(): void;
@@ -670,6 +751,11 @@ export declare function executeUseProvide<R, O extends any[]>(callback: (...args
     init(): Readonly<R>;
     destroyExecute?(): void;
 }>);
+
+/**
+ * Creates a local singleton.
+ * @remarks Best for internal state preservation within a closure. See {@link executeUse} for more details.
+ */
 export declare function executeUseLocal<R, O extends any[]>(callback: (...args: O) => R): ((...args: O) => Readonly<R & {
     init(): Readonly<R>;
     destroyExecute?(): void;
@@ -677,6 +763,7 @@ export declare function executeUseLocal<R, O extends any[]>(callback: (...args: 
     init(): Readonly<R>;
     destroyExecute?(): void;
 }>);
+
 export declare function executeUseGlobalInit(): void;
 export declare function getInject<T>(name: string): T | undefined;
 export declare const getOptions: (options?: ApiOptions) => RefOrNormal<ApiFetch>;

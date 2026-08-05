@@ -37,7 +37,7 @@
     "build-functional": "dxt-build-functional",
     "build-packages": "dxt-build-packages",
     "build-publish-packages": "dxt-build-publish-packages",
-    "prompt": "dxt-prompt",
+    "prompt": "dxt-prompt 1",
     "prepublishOnly": "npm run build"
   },
   "files": [
@@ -70,6 +70,7 @@
     "packages/*"
   ],
   "dependencies": {
+    "@ai-sdk/xai": "^4.0.28",
     "@dxtmisha/configuration": "workspace:*",
     "@dxtmisha/constructor": "workspace:*",
     "@dxtmisha/figma": "workspace:*",
@@ -82,10 +83,12 @@
     "@dxtmisha/scripts": "workspace:*",
     "@dxtmisha/styles": "workspace:*",
     "@dxtmisha/wiki": "workspace:*",
+    "ai": "^7.0.52",
     "sass": "^1.101.0",
     "typescript": "^6.0.3",
     "vue": "^3.5.39",
-    "vue-router": "^5.1.0"
+    "vue-router": "^5.1.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@anthropic-ai/claude-agent-sdk": "^0.3.201",

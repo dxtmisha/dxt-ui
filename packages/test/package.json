@@ -1,15 +1,29 @@
 {
   "name": "@dxtmisha/test",
   "private": false,
-  "version": "0.1.6",
+  "version": "0.1.7",
   "type": "module",
+  "description": "Modular Vue 3 UI testing and documentation harness library — structured test containers, visual regression utilities, composition API helpers, and interactive wiki documentation components.",
+  "keywords": [
+    "vue",
+    "vue3",
+    "testing",
+    "test-harness",
+    "visual-regression",
+    "wiki",
+    "documentation",
+    "components",
+    "typescript",
+    "dxt",
+    "ui"
+  ],
   "author": "dxtmisha@gmail.com",
   "license": "MIT",
-  "homepage": "https://github.com/dxtmisha/dxt-ui/tree/main/packages/functional",
+  "homepage": "https://github.com/dxtmisha/dxt-ui/tree/main/packages/test",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/dxtmisha/dxt-ui.git",
-    "directory": "packages/functional"
+    "directory": "packages/test"
   },
   "bugs": {
     "url": "https://github.com/dxtmisha/dxt-ui/issues"
@@ -42,8 +56,13 @@
   "engines": {
     "node": ">=20.0.0"
   },
-  "peerDependenciesMeta": {},
-  "dependencies": {},
+  "dependencies": {
+    "@dxtmisha/functional": "*",
+    "@dxtmisha/functional-basic": "*",
+    "@dxtmisha/styles": "*",
+    "@dxtmisha/wiki": "*",
+    "vue": "*"
+  },
   "devDependencies": {},
   "ui-priority": 450
 }

@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.7.2] - 2026-08-05
+
+### Changed
+- **Documentation**: Updated `README.md` with comprehensive documentation, badge badges, quick start examples, and standardized usage rules.
+
 ## [0.7.0] - 2026-07-02
 
 ### Added

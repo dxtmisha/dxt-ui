@@ -1,24 +1,63 @@
 # @dxtmisha/test
 
-A modular Vue 3 testing library featuring UI testing components, TypeScript support, and documentation helpers.
+[![npm version](https://badge.fury.io/js/@dxtmisha%2Ftest.svg)](https://www.npmjs.com/package/@dxtmisha/test)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Node.js Version](https://img.shields.io/badge/node-%3E%3D20.0.0-brightgreen)](https://nodejs.org/)
 
-## Key Features
+`@dxtmisha/test` is a modular Vue 3 testing and documentation library. It provides dedicated test harness components, visual regression utilities, and interactive documentation helpers for building and validating UI components.
 
-*   **Vue 3 & Composition API**: Built using modern Vue 3 patterns, including `<script setup>` and Composition API for optimal performance and developer experience.
-*   **TypeScript First**: Written entirely in TypeScript with comprehensive type definitions for Props, Emits, Slots, and Expose interfaces.
-*   **Testing Architecture**: Unique set of components (e.g., `DxtTestPage`, `DxtTestBlock`) designed to structure and visualize test cases, decoupling test logic from the visual representation.
-*   **Wiki Documentation**: Integrated components to automatically generate detailed documentation and visual examples for your UI library.
-*   **Modular Ecosystem**:
-    *   `@dxtmisha/constructor`: Core logic and state management.
-    *   `@dxtmisha/styles`: SCSS mixins and CSS variable tokens.
-    *   `@dxtmisha/functional`: Utility functions and helpers.
-*   **Advanced Testing Capabilities**:
-    *   Visual regression testing support.
-    *   Built-in screenshot generation helpers.
-    *   Flexible layout for test scenarios.
-*   **Storybook Integration**: Designed to work alongside Storybook for a complete development environment.
+## Why this library?
+
+Testing UI components and maintaining visual documentation often requires combining disparate tools, custom test pages, and manual screenshot workflows. Without a structured harness, test scenarios become fragmented and hard to maintain across a monorepo.
+
+`test` simplifies this by offering structured test containers (such as `DxtTestPage` and `DxtTestBlock`) that decouple test logic from visual presentation, making it easy to create reproducible test cases, visual regression suites, and living documentation.
+
+## What does it do?
+
+For **test structure & layout** — container components like `DxtTestPage` and `DxtTestBlock` to organize test scenarios, isolate states, and render structured test cases cleanly.
+
+For **visual regression & screenshots** — built-in helpers and layout primitives for consistent automated visual regression testing and screenshot generation across UI components.
+
+For **documentation & wiki** — seamless integration with `@dxtmisha/wiki` to automatically render interactive code examples and live component demonstrations.
+
+For **Vue 3 & TypeScript** — full Composition API support with `<script setup>`, strict typing for props, slots, emits, and exposed component APIs.
+
+## Installation
+
+```bash
+npm install @dxtmisha/test
+```
+
+## Quick Start
+
+```vue
+<template>
+  <DxtTestPage title="Button Component Test">
+    <DxtTestBlock title="Default State">
+      <button>Click me</button>
+    </DxtTestBlock>
+  </DxtTestPage>
+</template>
+
+<script setup lang="ts">
+import { DxtTestPage, DxtTestBlock } from '@dxtmisha/test'
+</script>
+```
+
+## Principles
+
+- **Visual isolation** — cleanly separate test block setups and scenarios from application logic.
+- **Vue 3 & Composition API** — native `<script setup>` support with clean reactivity.
+- **TypeScript-first** — strict typing for props, slots, and component events out of the box.
+- **Documentation-ready** — interactive wiki components for instant doc generation.
 
 ## Documentation
 
-For detailed documentation, examples, and API references, please visit:
-[https://dxtmisha.github.io/dxt-ui/](https://dxtmisha.github.io/dxt-ui/)
+Full API reference, examples, and guides:
+
+**[📖 https://dxtmisha.github.io/dxt-ui/](https://dxtmisha.github.io/dxt-ui/)**
+
+## License
+
+[MIT](LICENSE)
+

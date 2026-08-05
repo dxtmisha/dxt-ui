@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.8.5] - 2026-08-05
+
+### Changed
+- **AI Documentation**: Updated JSDoc prompt rules, added MCP resource definitions (`ai-mcp.json`), removed redundant prompt files, and updated package metadata (`ai-description.md`, `ai-types.md`).
+
 ## [1.8.4] - 2026-08-05
 
 ### Changed

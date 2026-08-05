@@ -6,12 +6,15 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 Функция возвращает содержимое файла `package.json`.
 
+**Параметры:**
+- `path?: PropertiesFilePath` — опциональный путь к директории или файлу `package.json`.
+
 **Возвращает:**
 `Record<string, any> | undefined` — содержимое файла `package.json` или `undefined`, если файл не удалось прочитать.
 
 ## Как это работает
 
-Функция использует метод `PropertiesFile.readFile` для загрузки содержимого файла `package.json`, указанного в глобальной конфигурации.
+Функция использует метод `PropertiesFile.readFile` для загрузки содержимого файла `package.json`. Если передан параметр `path`, то файл считывается по указанному пути, иначе считывается стандартный `package.json`, указанный в конфигурации.
 
 ## Пример
 
@@ -21,5 +24,10 @@ import { getPackageJson } from '@dxtmisha/scripts'
 const packageJson = getPackageJson()
 if (packageJson) {
   console.log(`Package Name: ${packageJson.name}`)
+}
+
+const customPackageJson = getPackageJson(['packages', 'functional'])
+if (customPackageJson) {
+  console.log(`Custom Package Name: ${customPackageJson.name}`)
 }
 ```

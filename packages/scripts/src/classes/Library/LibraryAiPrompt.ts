@@ -1,4 +1,5 @@
 import {
+  UI_FILE_AI_MCP,
   UI_FILE_AI_PROMPT_INSTRUCTION,
   UI_FILE_AI_PROMPT_PROMPT,
   UI_MODULES
@@ -35,9 +36,11 @@ export class LibraryAiPrompt {
    *
    * Конструктор для LibraryAiPrompt.
    * @param dirs Additional directories to scan / Дополнительные директории для сканирования
+   * @param isMcp Flag indicating whether to generate MCP configuration file / Флаг, указывающий, нужно ли генерировать конфигурационный файл MCP
    */
   constructor(
-    dirs: string[] = []
+    dirs: string[] = [],
+    protected readonly isMcp: boolean = false
   ) {
     this.dirs = [
       ...LIBRARY_AI_PROMPT_LIST_DIRS,
@@ -68,6 +71,7 @@ Consolidated documentation, architectural guidelines, and mandatory rules for th
       this.getGlobalPrompt(),
       this.getVuePrompt()
     ]
+    const mcpData: Record<string, any>[] = []
 
     if (list.length > 0) {
       list.forEach((item) => {
@@ -75,6 +79,14 @@ Consolidated documentation, architectural guidelines, and mandatory rules for th
 
         if (prompt) {
           prompts.push(prompt)
+        }
+
+        if (this.isMcp) {
+          const mcp = item.getMcp()
+
+          if (mcp) {
+            mcpData.push(...mcp)
+          }
         }
       })
     }
@@ -86,6 +98,10 @@ Consolidated documentation, architectural guidelines, and mandatory rules for th
     }
 
     this.write(prompts)
+
+    if (this.isMcp) {
+      this.writeMcp(mcpData)
+    }
 
     console.log('end')
   }
@@ -212,6 +228,23 @@ ${globalPromptText}
 ---
 
 `)
+    )
+
+    return this
+  }
+
+  /**
+   * Writes the collected MCP definitions to a file.
+   *
+   * Записывает собранные определения MCP в файл.
+   * @param mcpData list of MCP resource definitions / список определений ресурсов MCP
+   * @returns this instance / этот экземпляр
+   * @protected
+   */
+  protected writeMcp(mcpData: Record<string, any>[]): this {
+    PropertiesFile.writeByPath(
+      UI_FILE_AI_MCP,
+      mcpData
     )
 
     return this

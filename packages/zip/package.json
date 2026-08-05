@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/zip",
   "private": false,
-  "version": "0.1.1",
+  "version": "0.1.2",
   "type": "module",
   "description": "Library for creating and managing ZIP archives in the browser and Node.js environments.",
   "keywords": [
@@ -24,19 +24,25 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc -b && vite build",
+    "build": "vite build",
     "preview": "vite preview",
-    "test": "vitest",
-    "component": "dxt-component",
+    "test": "NODE_OPTIONS=\"--no-webstorage\" vitest",
     "library": "dxt-library",
-    "wiki": "dxt-ai-doc",
+    "types": "dxt-types",
     "prepublishOnly": "npm run library && npm run build",
     "publish-to-npm": "npm publish --access public"
   },
   "files": [
+    "ai-prompts",
     "dist",
-    "README.md",
-    "package.json"
+    "ai-description.md",
+    "ai-doc.md",
+    "ai-mcp.json",
+    "ai-types.md",
+    "CHANGELOG.md",
+    "LICENSE",
+    "package.json",
+    "README.md"
   ],
   "main": "dist/library.js",
   "module": "dist/library.js",
@@ -49,8 +55,10 @@
     "./style.css": "./dist/style.css"
   },
   "dependencies": {
+    "@dxtmisha/functional-basic": "*",
     "fflate": "*"
   },
   "devDependencies": {},
+  "sideEffects": false,
   "ui-priority": 450
 }

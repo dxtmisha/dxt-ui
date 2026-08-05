@@ -67,12 +67,10 @@
   "engines": {
     "node": ">=20.0.0"
   },
-  "dependencies": {},
-  "peerDependencies": {
+  "dependencies": {
     "@dxtmisha/functional": "*",
-    "@dxtmisha/media": "*",
+    "@dxtmisha/functional-basic": "*",
     "@dxtmisha/styles": "*",
-    "@mdx-js/react": "*",
     "@storybook/addon-docs": "*",
     "react": "*",
     "vue": "*"

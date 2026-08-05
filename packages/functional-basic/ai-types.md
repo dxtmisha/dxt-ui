@@ -535,7 +535,6 @@ export type TranslateDataFileItem = () => Promise<TranslateDataFileList>;
 export type TranslateDataFile = Record<string, TranslateDataFileItem>;
 export declare const TRANSLATE_GLOBAL_PREFIX = "global";
 export declare const TRANSLATE_TIME_OUT = 160;
-export declare const errorCauseList: ErrorCenterCauseList;
 export declare class Api {
     static isLocalhost(): boolean;
     static getItem(): ApiInstance;
@@ -690,34 +689,20 @@ export declare class BroadcastMessage<Message = any> {
     setCallbackError(callbackError: (event: MessageEvent<Message>) => void): this;
     destroy(): this;
 }
-/** @deprecated This class is obsolete and should not be used */
 export declare class Cache {
     get<T>(name: string, callback: () => T, comparison?: any[]): T;
     getAsync<T>(name: string, callback: () => T, comparison?: any[]): Promise<T>;
 }
-/** @deprecated This class is obsolete and should not be used */
 export declare class CacheItem<T> {
     constructor(callback: () => T);
     getCache(comparison: any[]): T;
     getCacheOld(): T | undefined;
     getCacheAsync(comparison: any[]): Promise<T>;
 }
-/** @deprecated This class is obsolete and should not be used */
 export declare class CacheStatic {
     static get<T>(name: string, callback: () => T, comparison?: any[]): T;
     static getAsync<T>(name: string, callback: () => T, comparison?: any[]): Promise<T>;
 }
-export type CookieSameSite = 'strict' | 'lax';
-export type CookieOptions = {
-    age?: number;
-    sameSite?: CookieSameSite;
-    path?: string;
-    domain?: string;
-    secure?: boolean;
-    httpOnly?: boolean;
-    partitioned?: boolean;
-    arguments?: string[] | Record<string, string | number | boolean>;
-};
 export declare class Cookie<T> {
     static getInstance<T>(name: string): Cookie<T>;
     constructor(name: string);
@@ -734,6 +719,17 @@ export declare class CookieBlockInstance {
     get(): boolean;
     set(value: boolean): void;
 }
+export type CookieSameSite = 'strict' | 'lax';
+export type CookieOptions = {
+    age?: number;
+    sameSite?: CookieSameSite;
+    path?: string;
+    domain?: string;
+    secure?: boolean;
+    httpOnly?: boolean;
+    partitioned?: boolean;
+    arguments?: string[] | Record<string, string | number | boolean>;
+};
 export declare class CookieStorage {
     static init(getListener?: (key: string) => any | undefined, getListenerRaw?: () => string, setListener?: (key: string, value: any, cookie: string, options?: CookieOptions) => void): void;
     static reset(): void;
@@ -751,9 +747,12 @@ export declare class DataStorage<T> {
     update(): this;
 }
 /**
+ * A class for working with dates and localized date-time operations.
+ *
  * @remarks
- * Creating a `Datetime` instance without a specific date (using current time)
- * in SSR may lead to hydration mismatches.
+ * Creating a `Datetime` instance without a specific date (using the current time)
+ * for rendering in SSR may lead to hydration mismatches because the time or time zone
+ * on the server may differ from the time on the client.
  */
 export declare class Datetime {
     constructor(date?: NumberOrStringOrDate, type?: GeoDate, code?: string);
@@ -862,6 +861,25 @@ export declare class ErrorCenterInstance {
     setIsConsole(isConsole: ErrorCenterHandlerIsConsole): this;
     on(cause: ErrorCenterCauseItem): this;
 }
+/**
+ * Advanced wrapper for managing event listeners on DOM elements or the `window` object.
+ *
+ * ### Key Features:
+ * - Lifecycle Control: Easily `start`, `stop`, `toggle`, or `reset` event listeners.
+ * - DOM Safety: Automatically halts the event if the target element is removed from the DOM.
+ * - Specialized Optimizations:
+ *   - `resize`: Uses `ResizeObserver` for any HTML element (not limited to `window`).
+ *   - `scroll-sync`: High-performance scroll tracking using `requestAnimationFrame`.
+ * - Dynamic Configuration: Chained setters for target element, event type, listener, and options.
+ * - Custom Event Dispatching: Built-in support for triggering events with custom data via `dispatch`.
+ * - Strict Typing: Generic support for elements, event objects, and custom detail data.
+ *
+ * @example
+ * ```typescript
+ * const clickEvent = new EventItem('.btn', 'click', (e) => console.log('Clicked!'));
+ * clickEvent.start();
+ * ```
+ */
 export declare class EventItem<E extends ElementOrWindow, O extends Event, D extends Record<string, any> = Record<string, any>> {
     constructor(elementSelector?: ElementOrString<E>, type?: string | string[], listener?: EventListenerDetail<O, D> | undefined, options?: EventOptions, detail?: D | undefined);
     isActive(): boolean;
@@ -1025,7 +1043,8 @@ export declare class Hash {
     static removeWatch<T>(name: string, callback: (value: T) => void): void;
     static reload(): void;
 }
-export declare class HashInstance extends UrlInstanceAbstract {}
+export declare class HashInstance extends UrlInstanceAbstract {
+}
 export type IconsItem = string | Promise<string | any> | (() => Promise<string | any>);
 export type IconsConfig = {
     url?: string;
@@ -1176,7 +1195,8 @@ export declare class Query {
     static removeWatch<T>(name: string, callback: (value: T) => void): void;
     static reload(): void;
 }
-export declare class QueryInstance extends UrlInstanceAbstract {}
+export declare class QueryInstance extends UrlInstanceAbstract {
+}
 export declare class ResumableTimer {
     constructor(callback: FunctionVoid, delay?: number, blockStart?: boolean);
     resume(): this;
@@ -1252,7 +1272,7 @@ export declare class ServerStorage {
     static reset(): void;
     static has(key: string): boolean;
     static get<T = any>(key: string, defaultValue?: () => T, hydration?: boolean): T;
-    static set<T = any>(key: string, value: () => T, hydration?: boolean, storageList?: ServerStorageList): T;
+    static set<T = any>(key: string, value: () => T, hydration?: boolean, storageList?: Record<string, any>): T;
     static setErrorStatus(hide: boolean): void;
     static remove(key: string): void;
     static toString(): string;
@@ -1341,15 +1361,19 @@ export declare class UrlItem {
 }
 export declare function addTagHighlightMatch(value: string, search?: string | RegExp, className?: string, shouldEscape?: boolean): string;
 export declare function anyToString<V>(value: V, isArrayString?: boolean, trim?: boolean): string;
-export declare function applyTemplate(text: string, replacement?: Record<string, string | number | boolean> | string[]): string;
+export declare const applyTemplate: (text: string, replacement?: Record<string, string | number | boolean> | string[]) => string;
 export declare function arrFill<T>(value: T, count: number): T[];
 export declare function blobToBase64(blob: Blob, clean?: boolean): Promise<string | undefined>;
 export declare function capitalize(value: string, isLocale?: boolean): string;
 export declare function copyObject<T>(value: T): T;
 export declare function copyObjectLite<T, R = T>(value: T, source?: any): R;
 /**
+ * Creates an HTML element with the specified tag name and options.
+ *
  * @remarks
- * Always returns `undefined` when running on server.
+ * When running on the server, the function always returns `undefined`.
+ * If you use it within a component's rendering logic, it may lead to hydration mismatches.
+ * It is recommended to call this function only inside lifecycle hooks that run exclusively on the client (e.g., `onMounted` in Vue or `useEffect` in React).
  */
 export declare function createElement<T extends HTMLElement>(parentElement?: HTMLElement, tagName?: string, options?: Partial<T> | Record<keyof T, T[keyof T]> | ((element: T) => void), referenceElement?: HTMLElement): T | undefined;
 export declare function domContentLoaded<T = void>(callback: () => T | Promise<T>): Promise<T>;
@@ -1369,23 +1393,33 @@ export declare function getAttributes<E extends ElementOrWindow>(element?: Eleme
 export declare function getClipboardData(event?: ClipboardEvent): Promise<string>;
 export declare function getColumn<T, K extends keyof T>(array: ObjectOrArray<T>, column: K): (T[K] | undefined)[];
 /**
+ * Returns the current date in the specified format.
+ *
  * @remarks
- * Using in SSR may cause hydration mismatches.
+ * Using this function for rendering in SSR may lead to hydration mismatches
+ * because the time or time zone on the server may differ from the time on the client.
+ * It is recommended to use this function inside client-side hooks only (e.g., `onMounted` in Vue or `useEffect` in React).
  */
 export declare function getCurrentDate(format?: GeoDate): string;
 /**
+ * Returns the current time in milliseconds.
+ *
  * @remarks
- * Using in SSR will cause hydration mismatches.
+ * Using this function for rendering in SSR will almost certainly lead to hydration mismatches
+ * because the timestamp on the server will differ from the timestamp on the client.
  */
 export declare function getCurrentTime(): number;
 export declare function getElement<E extends ElementOrWindow, R extends Exclude<E, Window>>(element?: ElementOrString<E>): R | undefined;
 export declare function getElementId<E extends ElementOrWindow>(element?: ElementOrString<E>, selector?: string): string;
 /**
- * @warning Initialization mandatory for correct SSR functioning.
+ * Initializes getElementId with a context provider.
+ *
+ * @warning
+ * Mandatory for correct SSR behavior on both server and client.
+ *
  * @example
  * ```typescript
  * import { useId } from 'vue'
- * import { initGetElementId } from '@dxtmisha/functional-basic'
  * initGetElementId(() => useId())
  * ```
  */
@@ -1456,7 +1490,7 @@ export declare function removeCommonPrefix(mainStr: string, prefix: string): str
 export declare const replaceComponentName: (text: string | undefined, name: string, componentName: string) => string | undefined;
 export declare function replaceRecursive<I>(array: ObjectItem<I>, replacement?: ObjectOrArray<I>, isMerge?: boolean): ObjectItem<I>;
 export declare function replaceTemplate(value: string, replaces: Record<string, string | FunctionReturn<string>>): string;
-export type ResizeImageByMaxType = 'auto' | 'width' | 'height';
+type ResizeImageByMaxType = 'auto' | 'width' | 'height';
 export declare function resizeImageByMax(image: HTMLImageElement | string, maxSize: number, type?: ResizeImageByMaxType, typeData?: string): string | undefined;
 export declare function secondToTime(second: number | string | undefined, hasHour?: boolean): string;
 export declare function setElementItem<E extends ElementOrWindow, K extends keyof E, V extends E[K] = E[K]>(element: ElementOrString<E>, index: K, value: V | Record<string, V>): E | undefined;
@@ -1476,6 +1510,14 @@ export declare function toCamelCase(value: string): string;
 export declare function toCamelCaseFirst(value: string): string;
 export declare function toDate<T extends Date | number | string>(value?: T): (T & Date) | Date;
 export declare function toKebabCase(value: string): string;
+/**
+ * Converts a string or number to a finite floating-point number.
+ *
+ * @example
+ * toNumber("1 234,56") // 1234.56
+ * toNumber("1,234.56") // 1234.56
+ * toNumber("1,234")    // 1.234
+ */
 export declare function toNumber(value?: NumberOrString): number;
 export declare function toNumberByMax(value: string | number, max?: string | number, formatting?: boolean, language?: string): string | number;
 export declare function toNumberPositive(value?: number | string | null, defaultValue?: number): number;
@@ -1486,3 +1528,4 @@ export declare function transformation(value: any, isFunction?: boolean): any;
 export declare function uint8ArrayToBase64(bytes: Uint8Array): string;
 export declare function uniqueArray<T>(value: T[]): T[];
 export declare function writeClipboardData(text: string): Promise<void>;
+export declare const errorCauseList: ErrorCenterCauseList;

@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.10.12] - 2026-08-05
+
+### Changed
+- **AI Generators & Design Types**: Added support for generating `ai-mcp.json` resources in `LibraryAiPrompt`, updated `DesignTypes.toAiEdit` JSDoc instructions, updated `AiZAiLite` prompt parameters, and updated package metadata (`ai-memory.md`).
+
 ## [0.10.11] - 2026-08-05
 
 ### Changed

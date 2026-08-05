@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - **ListRecord**: Refactored `ListRecord<Item extends ListDataBasic>` type definition to `Item[] | Record<string, Item>` for enhanced flexibility with custom item objects and record structures.
 - **package.json**: Expanded package `files` distribution list to include `ai-prompts` and `ai-mcp.json` context definitions.
+- **AI Documentation**: Updated JSDoc prompt rules, added MCP resource definitions (`ai-mcp.json`), and updated package metadata (`ai-description.md`, `ai-types.md`).
 
 ## [1.15.7] - 2026-08-05
 

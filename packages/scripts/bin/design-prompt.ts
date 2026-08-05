@@ -2,4 +2,6 @@
 
 import { LibraryAiPrompt } from '../src/classes/Library/LibraryAiPrompt'
 
-new LibraryAiPrompt().make()
+const isMcp = process.argv?.[2] === 'true' || process.argv?.[2] === '1'
+
+new LibraryAiPrompt([], isMcp).make()
