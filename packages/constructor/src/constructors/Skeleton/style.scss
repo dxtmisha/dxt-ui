@@ -32,6 +32,8 @@
       border-color: transparent !important;
 
       box-shadow: none !important;
+
+      @include ui.scrollbarHide;
     }
 
     svg {
@@ -96,15 +98,19 @@
     0% {
       opacity: 1;
     }
+
     10% {
       opacity: 1;
     }
+
     50% {
       opacity: ui.v('??opacity');
     }
+
     90% {
       opacity: 1;
     }
+
     100% {
       opacity: 1;
     }
