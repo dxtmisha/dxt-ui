@@ -1,0 +1,47 @@
+{
+  "name": "@dxtmisha/mcp",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "[description]",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc -b && vite build",
+    "preview": "vite preview",
+    "test": "vitest",
+    "component": "dxt-component",
+    "library": "dxt-library",
+    "types": "npm run prepublishOnly && dxt-types",
+    "wiki": "dxt-ai-doc",
+    "prepublishOnly": "npm run library && npm run build",
+    "publish-to-npm": "npm publish --access public"
+  },
+  "files": [
+    "ai-prompts/",
+    "ai-screenshot/",
+    "dist",
+    "ai-description.md",
+    "ai-doc.md",
+    "ai-mcp.json",
+    "ai-types.md",
+    "CHANGELOG.md",
+    "LICENSE",
+    "package.json",
+    "README.md"
+  ],
+  "main": "dist/library.js",
+  "module": "dist/library.js",
+  "types": "dist/library.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/library.js",
+      "types": "./dist/library.d.ts"
+    },
+    "./style.css": "./dist/style.css"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "*"
+  },
+  "devDependencies": {},
+  "sideEffects": false
+}
