@@ -10831,10 +10831,20 @@
             "type": "var",
             "value": "{ref.spacing.2}"
           },
+          "thumbSize": {
+            "name": "--d1-slider-thumbSize",
+            "type": "var",
+            "value": "{ref.spacing.6}"
+          },
           "thumbAreaSize": {
             "name": "--d1-slider-thumbAreaSize",
             "type": "var",
             "value": "{ref.spacing.12}"
+          },
+          "thumbAreaShift": {
+            "name": "--d1-slider-thumbAreaShift",
+            "type": "var",
+            "value": "{ref.spacing.1}"
           }
         }
       },

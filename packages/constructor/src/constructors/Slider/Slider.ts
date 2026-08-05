@@ -251,9 +251,7 @@ export class Slider {
    */
   isRipple(): boolean {
     return Boolean(
-      this.props.ripple
-      && !this.props.drop
-      && !this.props.isSkeleton
+      !this.props.isSkeleton
       && this.enabled.isEnabled
     )
   }

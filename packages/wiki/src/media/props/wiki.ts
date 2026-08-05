@@ -77,6 +77,7 @@ import { wikiSelectValue } from './wikiSelectValue'
 import { wikiSnackbar } from './wikiSnackbar'
 import { wikiSnackbarItem } from './wikiSnackbarItem'
 import { wikiSkeletonItem } from './wikiSkeletonItem'
+import { wikiSlider } from './wikiSlider'
 import { wikiSwitch } from './wikiSwitch'
 import { wikiTabs } from './wikiTabs'
 import { wikiSegmentControl } from './wikiSegmentControl'
@@ -168,6 +169,7 @@ export const wiki: StorybookArgsToList = {
   ...wikiSnackbar,
   ...wikiSnackbarItem,
   ...wikiSkeletonItem,
+  ...wikiSlider,
   ...wikiSwitch,
   ...wikiTabs,
   ...wikiSegmentControl,

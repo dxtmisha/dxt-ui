@@ -11,6 +11,9 @@
   "thumbAreaSize": {
     "_type": "var"
   },
+  "thumbAreaShift": {
+    "_type": "var"
+  },
   "mark-left": {
     "_type": "var"
   },
@@ -27,12 +30,5 @@
   "#label": {},
   "#select": {},
   "~disabled": {},
-  "~vertical": {},
-  "~basic": {
-    "_category": "style",
-    "_default": true
-  },
-  "~drop": {
-    "_category": "style"
-  }
+  "~vertical": {}
 }

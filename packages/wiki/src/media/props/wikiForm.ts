@@ -214,6 +214,18 @@ export const wikiForm: StorybookArgsToList = {
     },
     hide: true
   },
+  minimumDistance: {
+    type: StorybookControl.number,
+    options: {
+      category: StorybookCategory.form,
+      type: ['number', 'string'],
+      description: {
+        en: 'Minimum required distance between thumbs in range mode',
+        ru: 'Минимальное допустимое расстояние между ползунками в режиме диапазона'
+      }
+    },
+    hide: true
+  },
   minlength: {
     type: StorybookControl.number,
     options: {

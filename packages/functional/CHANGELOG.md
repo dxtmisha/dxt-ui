@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.15.8] - 2026-08-05
+
+### Changed
+- **ListRecord**: Refactored `ListRecord<Item extends ListDataBasic>` type definition to `Item[] | Record<string, Item>` for enhanced flexibility with custom item objects and record structures.
+- **package.json**: Expanded package `files` distribution list to include `ai-prompts` and `ai-mcp.json` context definitions.
+
 ## [1.15.7] - 2026-08-05
 
 ### Changed

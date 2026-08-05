@@ -5,15 +5,12 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
-  { name: 'basic', type: 'boolean' },
   { name: 'disabled', type: 'boolean' },
-  { name: 'drop', type: 'boolean' },
   { name: 'isSkeleton', type: 'boolean' },
   { name: 'keyLabel', type: 'string' },
   { name: 'keyValue', type: 'string' },
   { name: 'magnet', type: 'boolean' },
   { name: 'marks', type: 'ListList<any>' },
-  { name: 'marksInit', type: 'boolean' },
   { name: 'max', type: 'NumberOrString' },
   { name: 'min', type: 'NumberOrString' },
   { name: 'minimumDistance', type: 'NumberOrString' },
@@ -22,9 +19,7 @@ const propsNames: StorybookProps = [
   { name: 'onUpdate:modelValue', type: '((value: SliderValueType) => void)' },
   { name: 'onUpdate:value', type: '((value: SliderValueType) => void)' },
   { name: 'readonly', type: 'boolean' },
-  { name: 'ripple', type: 'boolean' },
   { name: 'step', type: 'NumberOrString' },
-  { name: 'translation', type: 'any' },
   { name: 'value', type: 'SliderValueType' },
   { name: 'vertical', type: 'boolean' }
   // :propsList [!] System label / Системная метка

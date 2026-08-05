@@ -60,7 +60,15 @@ export class SliderValue {
       return currentValue[1] ?? currentValue[0] ?? this.marks.getData().maxNumber
     }
 
-    return typeof currentValue === 'number' ? currentValue : this.marks.getData().maxNumber
+    if (typeof currentValue === 'number') {
+      return currentValue
+    }
+
+    if (this.props.multiple) {
+      return this.marks.getData().maxNumber
+    }
+
+    return this.marks.getData().minNumber
   }
 
   /**

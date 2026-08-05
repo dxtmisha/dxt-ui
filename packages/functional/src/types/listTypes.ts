@@ -50,7 +50,7 @@ export type ListList<
  */
 export type ListRecord<
   Item extends ListDataBasic = ListDataBasic
-> = ListList<Item> | Record<string, any>
+> = Item[] | Record<string, Item>
 
 /**
  * Extended list item with additional state properties/

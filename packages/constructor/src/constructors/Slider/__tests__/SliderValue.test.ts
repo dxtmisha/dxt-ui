@@ -43,7 +43,7 @@ describe('SliderValue', () => {
     const { sliderValue } = createSliderValue(undefined, { multiple: false })
 
     expect(sliderValue.min).toBe(0)
-    expect(sliderValue.max).toBe(100)
+    expect(sliderValue.max).toBe(0)
   })
 
   it('should return correct min and max for multiple range mode', () => {

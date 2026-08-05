@@ -45,6 +45,9 @@
     white-space: nowrap;
     opacity: 0;
     visibility: hidden;
+    z-index: 24;
+
+    transform: translateY(calc(#{ui.v('??thumbAreaSize')} / -2 - 50% - #{ui.v('??thumbAreaShift', 0)}));
 
     transition-duration: ui.v('d.sys.transitionDuration.fade.enter');
     transition-property: opacity, visibility;
@@ -77,9 +80,12 @@
     &::after {
       content: '';
       display: block;
+      z-index: 16;
 
-      width: ui.v('??thumb-size');
-      height: ui.v('??thumb-size');
+      width: ui.v('??thumbSize');
+      height: ui.v('??thumbSize');
+
+      border-radius: inherit;
     }
 
     &:focus,

@@ -390,6 +390,16 @@ export const wikiOption: StorybookArgsToList = {
       }
     }
   },
+  magnet: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.option,
+      description: {
+        en: 'Magnetizes value or position to the nearest mark',
+        ru: 'Притягивание значения или позиции к ближайшей метке'
+      }
+    }
+  },
   maxlengthOnce: {
     type: StorybookControl.number,
     options: {

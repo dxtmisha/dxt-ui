@@ -2,10 +2,9 @@
   "main": "{d.slider}",
   "height": "{ref.spacing.10}",
   "railHeight": "{ref.spacing.2}",
-  "thumbSize": {
-    "_type": "var"
-  },
+  "thumbSize": "{ref.spacing.6}",
   "thumbAreaSize": "{ref.spacing.12}",
+  "thumbAreaShift": "{ref.spacing.1}",
   "mark-left": {
     "_type": "var"
   },
@@ -19,13 +18,31 @@
   },
   "#track": {
     "palette-background": "{sys.palette.primary}",
-    "background-opacity": "{sys.opacity.surface.high}",
+    "background-opacity": "{sys.opacity.surface.medium}",
     "backdrop-filter": "{sys.blur.sm}"
+  },
+  "#label": {
+    "paddingX": "{sys.spacing.xs}",
+    "paddingY": "{sys.spacing.x}",
+    "link|font": "{font.titleMedium}",
+    "color": "{sys.palette.surface}",
+    "color-opacity": "{sys.opacity.primary.high}",
+    "background-color": "{sys.palette.scrim}",
+    "background-opacity": "{sys.opacity.primary.medium}",
+    "border-radius": "{sys.rounded.md}",
+    "box-shadow": "{sys.shadow.md}",
+    "backdrop-filter": "{sys.blur.md}"
   },
   "#thumb": {
     "palette-gradient": "{sys.palette.primary}",
     "gradient-opacity": "0",
     "border-radius": "{sys.rounded.full}",
+    "after": {
+      "palette-background": "{sys.palette.primary}",
+      "background-opacity": "{sys.opacity.surface.high}",
+      "box-shadow": "{sys.shadow.sm}",
+      "backdrop-filter": "{sys.blur.md}"
+    },
     "hover": {
       "gradient-opacity": "{sys.opacity.hover}"
     },
