@@ -115,11 +115,11 @@
 
   &__mark {
     position: absolute;
-    top: calc(50% - #{ui.v('??mark-size')} / 2);
-    left: calc(ui.v('??mark-left', 0%) - #{ui.v('??mark-size')} / 2);
+    top: calc(50% - #{ui.v('??markSize', 0px)} / 2);
+    left: calc(ui.v('??sys.mark', 0%) - #{ui.v('??markSize', 0px)} / 2);
 
-    width: ui.v('??mark-size');
-    height: ui.v('??mark-size');
+    width: ui.v('??markSize');
+    height: ui.v('??markSize');
   }
 
   &--disabled {

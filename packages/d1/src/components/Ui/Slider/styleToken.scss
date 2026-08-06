@@ -16,6 +16,7 @@
     --d1-slider-thumbSize: var(--d1-ref-spacing-6);
     --d1-slider-thumbAreaSize: var(--d1-ref-spacing-12);
     --d1-slider-thumbAreaShift: var(--d1-ref-spacing-1);
+    --d1-slider-markSize: var(--d1-ref-spacing-1);
     
     border-radius: var(--d1-sys-rounded-full);
     
@@ -32,7 +33,7 @@
       
       &::after {
         content: ' ';
-        @include ui.backgroundOpacity(#{var(--d1-sys-opacity-surface-high)}); @include ui.backgroundColor('init');
+        @include ui.backgroundOpacity(#{var(--d1-sys-opacity-primary-high)}); @include ui.backgroundColor('init');
         @include ui.paletteBackground(#{var(--d1-sys-palette-primary)});
         
         box-shadow: var(--d1-sys-shadow-sm);
@@ -55,6 +56,13 @@
       backdrop-filter: var(--d1-sys-blur-sm);
     }
     
+    &__mark {
+      @include ui.backgroundColor(#{var(--d1-sys-palette-surface)});
+      @include ui.backgroundOpacity(#{var(--d1-sys-opacity-primary-high)});
+      
+      border-radius: var(--d1-sys-rounded-full);
+    }
+    
     &__label {
       @include ui.paddingX(#{var(--d1-sys-spacing-xs)});
       @include ui.paddingY(#{var(--d1-sys-spacing-x)});
@@ -75,6 +83,28 @@
       
       box-shadow: var(--d1-sys-shadow-md);
       backdrop-filter: var(--d1-sys-blur-md);
+    }
+    
+    &--disabled {
+      & .d1-slider__rail {
+        @include ui.backgroundOpacity(#{var(--d1-sys-opacity-disabled)}); @include ui.backgroundColor('init');
+        @include ui.paletteBackground(#{var(--d1-sys-palette-onSurface)});
+      }
+      
+      & .d1-slider__track {
+        @include ui.backgroundOpacity(#{var(--d1-sys-opacity-surface-disabled)}); @include ui.backgroundColor('init');
+        @include ui.paletteBackground(#{var(--d1-sys-palette-onSurface)});
+      }
+      
+      & .d1-slider__thumb {
+        &::after {
+          content: ' ';
+          @include ui.backgroundOpacity(#{var(--d1-sys-opacity-primary-disabled)}); @include ui.backgroundColor('init');
+          @include ui.paletteBackground(#{var(--d1-sys-palette-onSurface)});
+          
+          backdrop-filter: var(--d1-sys-blur-lg);
+        }
+      }
     }
   }
   // :style [!] System label / Системная метка

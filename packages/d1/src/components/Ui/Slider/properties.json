@@ -5,12 +5,7 @@
   "thumbSize": "{ref.spacing.6}",
   "thumbAreaSize": "{ref.spacing.12}",
   "thumbAreaShift": "{ref.spacing.1}",
-  "mark-left": {
-    "_type": "var"
-  },
-  "mark-size": {
-    "_type": "var"
-  },
+  "markSize": "{ref.spacing.1}",
   "border-radius": "{sys.rounded.full}",
   "#rail": {
     "palette-background": "{sys.palette.primary}",
@@ -39,7 +34,7 @@
     "border-radius": "{sys.rounded.full}",
     "after": {
       "palette-background": "{sys.palette.primary}",
-      "background-opacity": "{sys.opacity.surface.high}",
+      "background-opacity": "{sys.opacity.primary.high}",
       "box-shadow": "{sys.shadow.sm}",
       "backdrop-filter": "{sys.blur.md}"
     },
@@ -48,6 +43,28 @@
     },
     "active": {
       "gradient-opacity": "{sys.opacity.pressed}"
+    }
+  },
+  "#mark": {
+    "background-color": "{sys.palette.surface}",
+    "background-opacity": "{sys.opacity.primary.high}",
+    "border-radius": "{sys.rounded.full}"
+  },
+  "disabled": {
+    "#rail": {
+      "palette-background": "{sys.palette.onSurface}",
+      "background-opacity": "{sys.opacity.disabled}"
+    },
+    "#track": {
+      "palette-background": "{sys.palette.onSurface}",
+      "background-opacity": "{sys.opacity.surface.disabled}"
+    },
+    "#thumb": {
+      "after": {
+        "palette-background": "{sys.palette.onSurface}",
+        "background-opacity": "{sys.opacity.primary.disabled}",
+        "backdrop-filter": "{sys.blur.lg}"
+      }
     }
   }
 }

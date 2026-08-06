@@ -10845,6 +10845,11 @@
             "name": "--d1-slider-thumbAreaShift",
             "type": "var",
             "value": "{ref.spacing.1}"
+          },
+          "markSize": {
+            "name": "--d1-slider-markSize",
+            "type": "var",
+            "value": "{ref.spacing.1}"
           }
         }
       },

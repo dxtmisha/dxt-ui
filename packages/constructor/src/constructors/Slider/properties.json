@@ -14,10 +14,7 @@
   "thumbAreaShift": {
     "_type": "var"
   },
-  "mark-left": {
-    "_type": "var"
-  },
-  "mark-size": {
+  "markSize": {
     "_type": "var"
   },
   "#rail": {},

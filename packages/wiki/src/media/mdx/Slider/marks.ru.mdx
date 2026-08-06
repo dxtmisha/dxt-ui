@@ -11,9 +11,12 @@ import { Source } from '@storybook/addon-docs/blocks';
 #### Простой массив чисел
 Если передать простой массив чисел, слайдер построит деления в указанных точках и использует сами числа в качестве подписей.
 
-```html
+<Source
+    code={`
 <Slider :marks="[0, 20, 50, 80, 100]" />
-```
+  `}
+    language="html"
+/>
 
 #### Массив объектов (расширенная настройка)
 Каждый элемент массива может быть объектом со следующими свойствами:
@@ -22,7 +25,8 @@ import { Source } from '@storybook/addon-docs/blocks';
 - `label` *(string)* — текстовая подпись для отображения.
 - `value` *(any)* — пользовательские данные или текстовый идентификатор, привязанный к этой метке.
 
-```html
+<Source
+    code={`
 <script setup>
 const planMarks = [
   { mark: 0, value: 'free', label: 'Бесплатный' },
@@ -34,12 +38,15 @@ const planMarks = [
 <template>
   <Slider :marks="planMarks" magnet />
 </template>
-```
+  `}
+    language="html"
+/>
 
 #### Объект-словарь (ключ-значение)
 Метки можно передать в виде объекта, где ключами являются позиции или идентификаторы:
 
-```html
+<Source
+    code={`
 <script setup>
 const speedMarks = {
   0: '0 км/ч',
@@ -51,7 +58,9 @@ const speedMarks = {
 <template>
   <Slider :marks="speedMarks" />
 </template>
-```
+  `}
+    language="html"
+/>
 
 ### Кастомные ключи (`keyLabel` и `keyValue`)
 
@@ -91,14 +100,17 @@ const categories = [
 - `step` — определяет дискретный шаг изменения значения при перетаскивании или нажатии клавиш стрелок (по умолчанию `1`).
 - `magnet` — включается логическим флагом. В режиме `magnet` ползунок автоматически «прилипает» к ближайшей метке из списка `marks`, не позволяя выбрать промежуточные значения вне меток.
 
-```html
+<Source
+    code={`
 <!-- Ползунок передвигается строго по меткам -->
 <Slider
   v-model="volume"
   :marks="[0, 25, 50, 75, 100]"
   magnet
 />
-```
+  `}
+    language="html"
+/>
 
 ### Данные в событиях (`@input` и `@change`)
 
