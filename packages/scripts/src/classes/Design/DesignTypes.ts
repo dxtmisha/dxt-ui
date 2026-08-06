@@ -311,6 +311,7 @@ export class DesignTypes {
 
     if (ai) {
       ai.addPrompt('You are a world-class senior developer and an exceptional technical writer.')
+      ai.addPrompt('CRITICAL DIRECTIVE: No data stored in history, previous chat messages, or prior conversation context must influence the result. Process strictly and exclusively the data provided in the text below.')
       ai.addPrompt(prompt)
       ai.addPrompt(`File Content: ${content}`)
 
@@ -408,24 +409,20 @@ export class DesignTypes {
    */
   protected async toAiPrompts(list: DesignTypesList): Promise<string> {
     const projectName = this.getProjectName()
-    const promptList = await Promise.all(
-      forEach(list, async (item) => {
-        const content = await this.toAiPromptName(item.content)
+    const prompts: string[] = []
 
-        if (isFilled(content)) {
-          return `- '${UI_MODULES}/${projectName}/${item.path}': ${content}`
-        }
+    for (const item of list) {
+      const content = await this.toAiPromptName(item.content)
 
-        return ''
-      })
-    )
+      if (isFilled(content)) {
+        prompts.push(`- '${UI_MODULES}/${projectName}/${item.path}': ${content}`)
+      }
+    }
 
-    const prompts = promptList.filter(Boolean).join('\n')
-
-    if (prompts) {
+    if (prompts.length > 0) {
       return '## Mandatory Rules\n'
         + 'Read the corresponding file ONLY when working on a task related to (even if not working directly with this package):\n'
-        + `${prompts}`
+        + `${prompts.join('\n')}`
     }
 
     return ''
@@ -440,18 +437,19 @@ export class DesignTypes {
   protected async toAiPromptName(content: string): Promise<string> {
     const generate = await this.toAi(
       content,
-      'Goal: Generate an EXTREMELY SHORT, high-density topic summary for an AI coding assistant describing what rules/topics are covered in this prompt document.\n\n'
+      'Goal: Generate an EXTREMELY SHORT, high-density trigger and topic summary for an AI coding assistant describing what rules/topics are covered AND under what specific tasks, conditions, or use cases this document must be studied.\n\n'
       + 'CRITICAL RESTRICTIONS:\n'
-      + '- The output MUST be EXTREMELY CONCISE: 1 short sentence or clause (maximum 10-15 words).\n'
-      + '- Do NOT include repetitive filler like "When working with...", "you MUST study this document", or "in order to follow...".\n'
+      + '- The output MUST be EXTREMELY CONCISE: 1-2 short sentence or clause (maximum 30-35 words).\n'
+      + '- Clearly specify BOTH the key topics/rules AND the specific scenarios, tasks, or triggers when this document must be read.\n'
+      + '- Do NOT include repetitive filler like "you MUST study this document", "in order to follow...", or "when working with...".\n'
       + '- Analyze ONLY the text explicitly provided in this prompt.\n'
       + '- Do NOT include file paths, URLs, quotes, or markdown syntax.\n\n'
       + 'EXAMPLES OF GOOD OUTPUT:\n'
-      + '- "Class structure, typing standards, SSR safety, and primitive helpers"\n'
-      + '- "HTTP client, storage management, localization, and DOM event helpers"\n'
-      + '- "MDX documentation generation rules for TypeScript classes"\n\n'
+      + '- "Class structure, typing standards, SSR safety, and primitive utility functions"\n'
+      + '- "HTTP client, storage management, localization formatting, and DOM event helpers"\n'
+      + '- "Implementing or wrapping D1 components, slot/event types, or customizing theme variables"\n\n'
       + 'OUTPUT REQUIREMENTS:\n'
-      + 'Return ONLY the resulting short topic summary. No markdown code blocks (```), no labels, no quotes, and no conversational text.'
+      + 'Return ONLY the resulting short trigger and topic summary. No markdown code blocks (```), no labels, no quotes, and no conversational text.'
     )
 
     return generate ?? ''

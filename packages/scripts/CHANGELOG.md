@@ -2,7 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.10.12] - 2026-08-05
+## [0.10.13] - 2026-08-06
+
+### Changed
+- **AI Workspace Memory**: Updated `aiCodeGlobalPrompt` templates (EN & RU) and root `ai-prompt.md` to restrict `ai-memory.md` updates strictly to explicit developer requests or critical architectural rules.
+- **DesignTypes**: Refined AI prompt summary generation in `toAiPromptName` to produce high-density topic and trigger criteria descriptions, and fixed prompt string joining formatting.
+
+
 
 ### Changed
 - **AI Generators & Design Types**: Added support for generating `ai-mcp.json` resources in `LibraryAiPrompt`, updated `DesignTypes.toAiEdit` JSDoc instructions, updated `AiZAiLite` prompt parameters, and updated package metadata (`ai-memory.md`).
