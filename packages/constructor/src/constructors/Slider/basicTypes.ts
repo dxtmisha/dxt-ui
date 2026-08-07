@@ -1,4 +1,4 @@
-import type { ConstrBind, NumberOrStringOrBoolean } from '@dxtmisha/functional'
+import type { ConstrBind, NumberOrString, NumberOrStringOrBoolean } from '@dxtmisha/functional'
 import type { SliderPropsBasic } from './props'
 
 /** Focus handle type enum for Slider / Перечисление типов фокуса ползунка слайдера */
@@ -9,6 +9,9 @@ export enum SliderFocusType {
 
 /** Slider value type (single number or min-max pair) / Тип значения слайдера (одно число или пара мин-макс) */
 export type SliderValueType = number | [number, number]
+
+/** Slider value prop type (single number or min-max pair) / Тип проп значения слайдера (одно число или пара мин-макс) */
+export type SliderValueProp = NumberOrString | [NumberOrString, NumberOrString]
 
 /** Slider mark item value payload type / Тип значения элемента метки слайдера */
 export type SliderMarkItemValue = NumberOrStringOrBoolean | undefined

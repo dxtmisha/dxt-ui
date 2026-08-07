@@ -20,7 +20,7 @@ const propsNames: StorybookProps = [
   { name: 'onUpdate:value', type: '((value: string) => void)' },
   { name: 'readonly', type: 'boolean' },
   { name: 'step', type: 'NumberOrString' },
-  { name: 'value', type: 'SliderValueType' },
+  { name: 'value', type: 'SliderValueProp' },
   { name: 'vertical', type: 'boolean' }
   // :propsList [!] System label / Системная метка
 ]

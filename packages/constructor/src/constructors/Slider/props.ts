@@ -4,7 +4,7 @@ import type { SkeletonPropsInclude } from '../Skeleton'
 
 import type { ModelProps } from '../../types/modelTypes'
 
-import type { SliderMarkItem, SliderValueType } from './basicTypes'
+import type { SliderMarkItem, SliderValueProp } from './basicTypes'
 
 type SliderPropsToken = {
   // :type [!] System label / Системная метка
@@ -22,7 +22,7 @@ export type SliderPropsBasic = ModelProps
     readonly?: boolean
 
     /** Current value or range / Текущее значение или диапазон */
-    value?: SliderValueType
+    value?: SliderValueProp
     /** List of marks or tick values / Список меток или делений */
     marks?: ListRecord<SliderMarkItem> | number[]
 
