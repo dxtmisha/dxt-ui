@@ -171,13 +171,14 @@ describe('SliderEvent', () => {
     expect(dragStartSpy).not.toHaveBeenCalled()
   })
 
-  it('should return object with 3 event handlers from getEventsMin and getEventsMax', () => {
+  it('should return object with 4 event handlers from eventsMin and eventsMax', () => {
     const { sliderEvent, focus, dragEvent } = createSliderEvent([20, 80], { multiple: true })
 
     vi.spyOn(dragEvent, 'start').mockImplementation(() => {})
     vi.spyOn(sliderEvent, 'focusElement').mockImplementation(() => {})
 
-    const eventsMin = sliderEvent.getEventsMin()
+    const eventsMin = sliderEvent.eventsMin
+    expect(eventsMin).toHaveProperty('onFocus')
     expect(eventsMin).toHaveProperty('onKeydown')
     expect(eventsMin).toHaveProperty('onMousedown')
     expect(eventsMin).toHaveProperty('onTouchstart')
@@ -191,7 +192,8 @@ describe('SliderEvent', () => {
     eventsMin.onMousedown(minEvent)
     expect(focus.get()).toBe(SliderFocusType.min)
 
-    const eventsMax = sliderEvent.getEventsMax()
+    const eventsMax = sliderEvent.eventsMax
+    expect(eventsMax).toHaveProperty('onFocus')
     expect(eventsMax).toHaveProperty('onKeydown')
     expect(eventsMax).toHaveProperty('onMousedown')
     expect(eventsMax).toHaveProperty('onTouchstart')
@@ -206,11 +208,17 @@ describe('SliderEvent', () => {
     expect(focus.get()).toBe(SliderFocusType.max)
   })
 
-  it('should process onMousedownMin and onMousedownMax methods directly', () => {
+  it('should process onMousedownMin, onMousedownMax, onFocusMin, and onFocusMax methods directly', () => {
     const { sliderEvent, focus, dragEvent } = createSliderEvent([20, 80], { multiple: true })
 
     vi.spyOn(dragEvent, 'start').mockImplementation(() => {})
     vi.spyOn(sliderEvent, 'focusElement').mockImplementation(() => {})
+
+    sliderEvent.onFocusMin()
+    expect(focus.get()).toBe(SliderFocusType.min)
+
+    sliderEvent.onFocusMax()
+    expect(focus.get()).toBe(SliderFocusType.max)
 
     const minEvent = {
       preventDefault: vi.fn(),

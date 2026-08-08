@@ -173,12 +173,13 @@ export class SliderDesign<
             ref: this.item.minElement.element,
             class: [
               this.classes?.value.thumb,
-              this.classes?.value.thumbMin
+              this.classes?.value.thumbMin,
+              this.item.skeleton.classesSkeleton.classBackgroundAfter
             ],
             tabindex: this.item.tabindex,
             ...this.item.minElement.aria,
             ...this.item.enabled.aria,
-            ...this.item.event.getEventsMin()
+            ...this.item.event.eventsMin
           },
           this.renderThumbContent(minLabelContent)
         )
@@ -206,12 +207,13 @@ export class SliderDesign<
           ref: this.item.maxElement.element,
           class: [
             this.classes?.value.thumb,
-            this.classes?.value.thumbMax
+            this.classes?.value.thumbMax,
+            this.item.skeleton.classesSkeleton.classBackgroundAfter
           ],
           tabindex: this.item.tabindex,
           ...this.item.maxElement.aria,
           ...this.item.enabled.aria,
-          ...this.item.event.getEventsMax()
+          ...this.item.event.eventsMax
         },
         this.renderThumbContent(maxLabelContent)
       )
@@ -230,10 +232,7 @@ export class SliderDesign<
       h(
         'span',
         {
-          class: [
-            this.classes?.value.label,
-            this.item.skeleton.classesSkeleton.classBackgroundVariant
-          ]
+          class: this.classes?.value.label
         },
         label
       ),

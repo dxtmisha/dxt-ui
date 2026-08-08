@@ -29,7 +29,7 @@ Strictly follow these rules for flawless dxt-ui code:
 7. **Security & Performance**: Error-proof code (`?.`, `??`, guard clauses). Use explicit `try-catch` for async. Never swallow errors. Avoid heavy ops in loops/reactivity.
 8. **Aesthetics & Conciseness**: Group logically. Save tokens by avoiding redundant comments if code is self-explanatory.
 9. **Strict Adherence & Optimization**: Follow instructions precisely without guessing. Propose relevant technical optimizations while strictly adhering to plans.
-10. **AI Workspace Memory (`ai-memory.md`)**: Actively APPLY its rules (highest priority). Update local `ai-memory.md` **ONLY** upon explicit developer command (e.g., "remember", "save to memory") or for critical architectural rules/fixes. Do NOT add routine edits indiscriminately, change logs, or absolute paths (use relative only). Keep it focused strictly on critical architectural constraints and explicit developer instructions.
+10. **AI Workspace Memory (`ai-memory.md`)**: Actively APPLY its rules (highest priority). Update local `ai-memory.md` **ONLY** upon explicit developer command (e.g., "remember", "save to memory") or for critical architectural rules/fixes. **STRICTLY FORBIDDEN** to overwrite or delete existing file contents: you MUST **ONLY append** new directives to the end of the file. Do NOT add routine edits indiscriminately, change logs, or absolute paths (use relative only). Keep it focused strictly on critical architectural constraints and explicit developer instructions.
 11. **Mandatory Full-File Self-Audit**: When creating new entities, you MUST audit the ENTIRE file (not just modified parts) to ensure no logic duplication (DRY) and full compliance with project rules. *Exception: minor bug fixes to existing code do not require a full audit.*
 
 ---
@@ -185,13 +185,13 @@ Vue 3 reactive composables for Figma plugin UI state synchronization (`useFigmaF
 The project is located at: 'node_modules/@dxtmisha/functional'.
 
 ## Package Description & Module Overview
-This library is a reactive utility and component architecture framework for Vue 3 that standardizes design system component construction, locale-aware data formatting, browser storage state, and API request lifecycle orchestration. It provides abstract component models for computing styles, classes, slots, and properties, alongside wrappers for reactive state synchronization and dynamic component rendering. Design System Architecture components abstractly encapsulate Vue component structures, automating class and style generation, property change detection, slot bindings, and dynamic component rendering. API and Network Management modules manage asynchronous HTTP request lifecycles, server-side prefetching, CRUD mutations, response contract validation, error handling, and unified client-side search or formatting pipelines. Localization and Formatting utilities deliver reactive interfaces for internationalized formatting of dates, currencies, numbers, measurement units, country flag metadata, and dynamic translation lists. Storage and State controls wrap browser local storage, session storage, cookies, broadcast channels, and URL query or hash parameters into reactive references. List and Search utilities provide reactive controllers for hierarchical list filtering, multi-item selection tracking, focus navigation, and debounced text searches. DOM and Lifecycle controls manage intersection observers for lazy loading, document head metadata, scrollbar dimensions, global loading state tracking, and reactive event listeners. Injection and Singleton utilities support managed lifecycle topologies across application, component-subtree, or closure scopes. Studying ai-types.md is mandatory when implementing custom component constructors extending base design abstract classes, defining request or response validation contracts, configuring complex API management options, typing list data inputs and selection states, setting up functional plugin options, or establishing singleton execution topologies. The library integrates directly with Vue 3 reactivity and SSR runtime paradigms, Vue Router navigation mechanisms, and core functional utility packages.
+A reactive utility and component architecture library for Vue 3 providing high-level abstract base classes, state management composables, and localized formatting helpers. It standardizes reactive API orchestration, browser storage binding, DOM visibility tracking, internationalization, and design component construction across client and server-rendered environments. Key capabilities are grouped into API and network composables for managing asynchronous HTTP requests, mutation workflows, SSR prefetching, response contract validation, error mappings, and list orchestration; design component base classes for standardized component rendering, dynamic class and style computation, prop change tracking, slot management, and element exposure; localization and formatting utilities for reactive handling of dates, numbers, currency, unit conversions, country flags, dynamic translations, and language-dependent computed properties; persistent storage composables synchronizing state with cookies, web storage, URL query or hash parameters, and cross-tab messaging; list and search helpers for managing reactive data filtering, selection state, text highlighting, debouncing, and router-bound navigation lists; and DOM system utilities for IntersectionObserver lazy visibility tracking, reactive page metadata management, global loading states, scrollbar measurements, and singleton dependency injection. Study ai-types.md when implementing abstract component constructors, defining API validation contracts or error schemas, typing complex list structures and search options, configuring singleton execution scopes, or managing reactive Vue prop and subcomponent bindings. This library integrates natively into Vue 3 and Vue Router applications through a unified global plugin that configures shared API, routing, localization, and metadata services.
 ## Mandatory Rules
-Read the corresponding file if your task relates to:
-- 'node_modules/@dxtmisha/functional/ai-prompts/api-reference.md': Scope factory initialization, reactive singletons, and REST API management patterns
-- 'node_modules/@dxtmisha/functional/ai-prompts/localization-seo.md': Geographic context, internationalization formatting, translation utilities, HTML metadata management, and scrollbar measurement
-- 'node_modules/@dxtmisha/functional/ai-prompts/reactivity-lists.md': Async reactivity helpers, list management, search filtering, and DOM event observers
-- 'node_modules/@dxtmisha/functional/ai-prompts/storage-state.md': Reactive composables for persistent browser storage, cookies, broadcast messaging, and URL hashes
+Read the corresponding file ONLY when working on a task related to (even if not working directly with this package):
+- 'node_modules/@dxtmisha/functional/ai-prompts/api-reference.md': Reactive singleton scope initialization and REST API management patterns
+- 'node_modules/@dxtmisha/functional/ai-prompts/localization-seo.md': Geographic context, locale-aware formatting, reactive translations, document metadata, and scrollbar width measurement
+- 'node_modules/@dxtmisha/functional/ai-prompts/reactivity-lists.md': Async reactivity composables, reactive list models, search filtering, and DOM observer utilities
+- 'node_modules/@dxtmisha/functional/ai-prompts/storage-state.md': Reactive composables for browser storage, cookies, cross-tab synchronization, and URL hash state
 
 ## Package Core Information
 # @dxtmisha/functional Reference
@@ -213,16 +213,10 @@ Vue 3 reactive utilities built on `@dxtmisha/functional-basic`. See `ai-types.md
 The project is located at: 'node_modules/@dxtmisha/functional-basic'.
 
 ## Package Description & Module Overview
-This library serves as a comprehensive isomorphic runtime toolkit providing core utility primitives for HTTP networking, state persistence, internationalization, metadata management, DOM manipulation, and data transformation across browser and server-side rendering environments.
-
-Its main capabilities are organized into high-level functional groupings: API and network utilities handle HTTP request orchestration, response caching, structured error normalization, retry strategies, and SSR hydration script generation; storage utilities manage cookies, local and session storage, request-isolated server storage, and inter-tab broadcast messaging; internationalization and localization modules process geographic standards, timezone conversions, localized number/date/unit formatting, phone masking, and pluralization rules; DOM and event helpers provide lifecycle-managed event listeners, smooth scrolling, visibility checks, element creation, and global loading indicators; metadata modules provide a unified interface to generate and manage HTML, Open Graph, and Twitter Card tags; and data processing functions handle string transformations, deep copying, template replacement, fuzzy searching with query highlighting, and list sorting.
-
-It is mandatory to study "ai-types.md" when configuring typed API request payloads and hooks, defining custom error center callbacks, constructing complex localized formatter options, implementing schema-driven search or sorting parameters, or working with environment-specific storage contracts.
-
-The library integrates into modern web application stacks by offering framework-agnostic utilities that safely detect browser versus SSR runtimes while supporting seamless client hydration workflows.
+The library provides an isomorphic suite of client- and server-side utilities designed for web application infrastructure, state management, internationalization, and network communication, serving as a unified foundation for API lifecycle management, SSR hydration, browser storage, and data transformation across JavaScript runtimes. API and network utilities streamline HTTP fetch requests with configurable defaults, automatic retries with jitter, response caching, error classification, and SSR client hydration script generation. Storage and state management modules supply request-isolated SSR storage contexts, type-safe cookie management, synchronized URL query and hash state, local and session storage with age-based expiration, and cross-tab broadcast messaging. Localization and geographic tools provide automated country and language detection, phone number mask matching, metric-to-imperial unit conversion, pluralization, currency formatting, and asynchronous multi-language translation resolution. Search and data handling capabilities enable multi-column list searching, search match highlighting, fuzzy and exact regular expression matching, multi-field array sorting, and recursive object template replacement. UI, DOM, and event helpers deliver DOM element manipulation, ResizeObserver and scroll-sync event listeners, global loading indicators, icon registration, resumable timers, and isomorphic HTML meta tag management for standard SEO, Open Graph, and Twitter Cards. Studying type definitions in ai-types.md is mandatory when typing complex API request or response structures, configuring custom request wrappers, defining criteria for error storage items, specifying search column paths, setting up custom translation dictionaries, or implementing isolated server storage contexts during SSR. This package connects with modern web frameworks and SSR environments by wrapping standard Web APIs, fetch interfaces, and DOM listeners with environment-agnostic abstractions and automated client-side hydration hooks.
 ## Mandatory Rules
-Read the corresponding file if your task relates to:
-- 'node_modules/@dxtmisha/functional-basic/ai-prompts/api-reference.md': HTTP client, caching, storage, geolocation, localization, formatting, DOM events, and utility helpers
+Read the corresponding file ONLY when working on a task related to (even if not working directly with this package):
+- 'node_modules/@dxtmisha/functional-basic/ai-prompts/api-reference.md': HTTP client caching, storage management, geolocation localization, and DOM utility helpers
 
 ## Package Core Information
 Framework-agnostic utility library. **Vue developers MUST search `@dxtmisha/functional` first**; use this ONLY if no reactive/Vue-specific analog exists.
@@ -239,26 +233,26 @@ Framework-agnostic utility library. **Vue developers MUST search `@dxtmisha/func
 
 ---
 
-# @dxtmisha/nitro-basic
+# @dxtmisha/mcp
 ## Project location: Root directory
-The project is located at: 'node_modules/@dxtmisha/nitro-basic'.
+The project is located at: 'node_modules/@dxtmisha/mcp'.
 
 ## Package Description & Module Overview
-This library provides server-side rendering initialization, application lifecycle management, context isolation, and state hydration for Vue 3 applications running on Nitro. Application Lifecycle and SSR Rendering utilities handle server and client application bootstrapping, rendering Vue apps to HTML strings with interpolated context metadata, client-side mounting, and script hydration generation. Request and Network Context modules handle request header management, base API origin initialization, URL parsing, and request-scoped context tracking using AsyncLocalStorage. State and Storage Isolation utilities configure context-backed cookie handling, server storage injection, and Nitro API caching with configurable cleanup thresholds. Routing and Identifier utilities manage universal Vue Router creation across client WebHistory and server MemoryHistory environments alongside deterministic element ID generation. Studying ai-types.md is mandatory when configuring application bootstrap options, customizing router parameters, typing SSR rendering contexts, modifying Nitro API cache configurations, or referencing context injection keys. The library integrates Vue 3, Vue Router, Nitropack, unctx, and dxtmisha functional utilities to streamline universal server-side rendering and client hydration.
-## Mandatory Rules
-Read the corresponding file if your task relates to:
-- 'node_modules/@dxtmisha/nitro-basic/ai-prompts/app-bootstrap.md': App bootstrapping, client and server entry points, environment initialization, and hydration identity helpers
-- 'node_modules/@dxtmisha/nitro-basic/ai-prompts/request-context.md': Server lifecycle initializers, request context metadata, header utilities, and URL helpers
+Core Purpose: This library provides a template structure for creating modular, reusable, and type-safe component/utility packages within the design system.
 
-## Package Core Information
-Foundation for Nitro & Vue 3 SSR. Used ONLY in server bootstrap/plugins. **Never import directly in Vue SFCs**; use `@dxtmisha/functional` instead.
+Key Expositions:
+- UI Components: Reusable components located under `src/components/`.
+- Composables: Stateful composition hooks under `src/composables/`.
+- Classes: Logical or utility class abstractions under `src/classes/`.
+- Functions: Pure helpers and utility functions under `src/functions/`.
+- Types: TypeScript declarations and interfaces under `src/types/`.
 
-## Mandatory Rules
-- 'node_modules/@dxtmisha/nitro-basic/ai-prompts/app-bootstrap.md': App instantiation (`uiCreateApp`), server/client entries (`uiCreateServerApp`), hydration, and element IDs.
-- 'node_modules/@dxtmisha/nitro-basic/ai-prompts/request-context.md': Request headers (`useHeaders`), URLs (`getRequestHref`), and SSR initializers (`initApi`, `initServerStorage`).
-
-## Package Type Definitions (Must Read in Full When Working with Package)
-'node_modules/@dxtmisha/nitro-basic/ai-types.md'
+Critical Development Rules:
+- **Do NOT modify `src/library.ts` directly**: This file is auto-generated and serves as the main entry point exporting all library entities. Manually editing it is strictly forbidden.
+- **Run the library generation script**: When creating, renaming, or deleting any new class, component, function, composable, or type, you MUST run the generation command to update the exports automatically:
+  ```bash
+  npm run library
+  ```
 
 ---
 
@@ -282,6 +276,18 @@ System-wide SCSS styling guidelines and mixin structure.
 Read the corresponding file if your task relates to:
 - 'node_modules/@dxtmisha/styles/ai-prompts/colors-layout.md': SCSS imports, color/palette mixins (`backgroundColor`, `paletteBackgroundColor`), flexbox, padding, margin, and border radius.
 - 'node_modules/@dxtmisha/styles/ai-prompts/media-typography.md': Media & container query mixins (`mediaMinWidth`), typography styles (`font`), BEM naming, and architectural rules.
+
+---
+
+# @dxtmisha/zip
+## Project location: Root directory
+The project is located at: 'node_modules/@dxtmisha/zip'.
+
+## Package Description & Module Overview
+This library provides client-side functionality for programmatically constructing, managing, and downloading compressed ZIP archives. It wraps low-level compression logic into an object-oriented interface to manage in-memory file buffers and trigger browser-based file downloads. Main functional groupings include archive lifecycle controls, which handle archive initialization, file staging, file removal, data normalization, and browser download triggers, alongside compression utilities that perform DEFLATE encoding, CRC32 calculations, and string-to-binary conversions. Studying ai-types.md is mandatory when fine-tuning archive compression options, working with direct byte array getters, handling custom data conversion methods, or extending ZIP configuration parameters in TypeScript projects. The library integrates with web runtime environments by leveraging DOM utilities from functional-basic to perform automated anchor-click file saving.
+
+## Package Type Definitions (Must Read in Full When Working with Package)
+'node_modules/@dxtmisha/zip/ai-types.md'
 
 ---
 

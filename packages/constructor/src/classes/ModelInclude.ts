@@ -78,6 +78,7 @@ export class ModelInclude<Value = string> {
    * @param value The new value to set / Новое значение для установки
    */
   readonly update = (value: Value): void => {
+    console.log('update', value)
     if (this.isValue()) {
       this.syncValue.value = value
     }

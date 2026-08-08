@@ -20,5 +20,16 @@ export const wikiSlider: StorybookArgsToList = {
         ru: 'Список меток или делений'
       }
     }
+  },
+  'slider.vertical': {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Vertical layout orientation',
+        ru: 'Вертикальная ориентация'
+      }
+    },
+    isDemo: true
   }
 }

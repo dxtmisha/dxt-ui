@@ -1,4 +1,5 @@
 import {
+  computed,
   onUnmounted,
   type Ref,
   type ToRefs
@@ -148,7 +149,7 @@ export class Slider {
       'value',
       emits,
       undefined,
-      refs.value,
+      computed(() => props.modelValue ?? props.value),
       refs.readonly,
       refs.multiple
     )

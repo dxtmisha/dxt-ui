@@ -42,6 +42,25 @@ export const wikiDescriptionsSlider: StorybookComponentsDescriptionItem = {
     `,
   stories: [
     {
+      id: 'SliderOrientation',
+      name: {
+        en: 'Orientation',
+        ru: 'Ориентация'
+      },
+      template: `
+        <div class="wiki-storybook-group">
+          <div class="wiki-storybook-item wiki-storybook-item--squared--lg wiki-storybook-item--padding wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">Horizontal</div>
+            <DesignComponent :value="40" />
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--lg wiki-storybook-item--padding wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">Vertical</div>
+            <DesignComponent vertical :value="60" />
+          </div>
+        </div>
+      `
+    },
+    {
       id: 'SliderMultiple',
       name: {
         en: 'Range selection',
@@ -117,6 +136,7 @@ export const wikiDescriptionsSlider: StorybookComponentsDescriptionItem = {
   documentation: {
     body: `
 <StorybookDescriptions componentName={'Slider'} type={'slider'}/>
+<Canvas of={Component.SliderOrientation}/>
 
 <StorybookDescriptions componentName={'Slider'} type={'multiple'}/>
 <Canvas of={Component.SliderMultiple}/>

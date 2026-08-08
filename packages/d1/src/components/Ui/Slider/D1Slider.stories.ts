@@ -40,6 +40,24 @@ export const Slider: Story = {
 }
 
 // :story-items [!] System label / Системная метка
+export const SliderOrientation: Story = {
+  name: 'Ориентация',
+  render: () => ({
+    components: { D1Slider },
+    template: `
+        <div class="wiki-storybook-group">
+          <div class="wiki-storybook-item wiki-storybook-item--squared--lg wiki-storybook-item--padding wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">Horizontal</div>
+            <D1Slider :value="40" />
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--lg wiki-storybook-item--padding wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">Vertical</div>
+            <D1Slider vertical :value="60" />
+          </div>
+        </div>
+    `
+  })
+}
 export const SliderMultiple: Story = {
   name: 'Выбор диапазона',
   render: () => ({

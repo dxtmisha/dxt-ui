@@ -1,4 +1,4 @@
-import { isArray } from '@dxtmisha/functional'
+import { isArray, isFilled } from '@dxtmisha/functional'
 
 import type { ModelValueInclude } from '../../classes/ModelValueInclude'
 
@@ -60,8 +60,8 @@ export class SliderValue {
       return currentValue[1] ?? currentValue[0] ?? this.marks.getData().maxNumber
     }
 
-    if (typeof currentValue === 'number') {
-      return currentValue
+    if (isFilled(currentValue, true)) {
+      return Number(currentValue)
     }
 
     if (this.props.multiple) {

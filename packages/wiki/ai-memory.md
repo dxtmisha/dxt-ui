@@ -38,3 +38,6 @@ Must be placed in a single `## Methods` section.
 
 ## Rules for MDX Headers in Component Descriptions
 - **No Headers in Main Description Files**: The main component description MDX files (mapped under component name keys in MDX mapping files, e.g. `switch`, `radio`, `progressBar`) must start directly with the text description. They must NOT contain a `## Description` or `## Описание` header.
+
+## Mandatory Build Rule (Developer Directive)
+- **Always build after code modifications**: After making any changes in `packages/wiki`, run `npm run build` inside `packages/wiki` or `npm run build-packages` from root to build the package artifacts.

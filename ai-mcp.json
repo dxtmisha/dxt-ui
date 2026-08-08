@@ -1,86 +1,68 @@
 [
   {
     "uri": "@dxtmisha/functional/ai-types.md",
-    "name": "Vue Functional Reference",
+    "name": "Vue Functional Types (@dxtmisha/functional)",
     "mimeType": "text/markdown",
-    "description": "TypeScript type definitions and composable API specifications for Vue application state management, data formatting, localization, and API request handling."
+    "description": "Type definitions and interface declarations for Vue 3 composables, reactive API abstractions, i18n helpers, design constructors, and utility state managers."
   },
   {
     "uri": "@dxtmisha/functional/ai-description.md",
-    "name": "Vue Framework Architecture",
+    "name": "Vue Utility Architecture (@dxtmisha/functional)",
     "mimeType": "text/markdown",
-    "description": "Comprehensive architectural conventions and guidelines for a Vue 3 reactive utility framework, covering component construction, API lifecycle management, localization, and persistent state controls."
+    "description": "Architectural guidelines and utility reference for Vue 3 applications, covering reactive state management, API orchestration, component base classes, localization, and storage synchronization."
   },
   {
     "uri": "@dxtmisha/functional/ai-prompts/api-reference.md",
-    "name": "API Reference",
+    "name": "API Reference (@dxtmisha/functional)",
     "mimeType": "text/markdown",
-    "description": "Defines architectural patterns and usage guidelines for REST API management and scope-isolated reactive singletons within @dxtmisha/functional. Details scope factory initialization alongside reactive CRUD operations with client-side caching and contract validation."
+    "description": "Provides guidelines and usage patterns for REST API management and reactive scope-isolated singletons in @dxtmisha/functional."
   },
   {
     "uri": "@dxtmisha/functional/ai-prompts/localization-seo.md",
-    "name": "Localization and SEO",
+    "name": "Localization SEO Utilities (@dxtmisha/functional)",
     "mimeType": "text/markdown",
-    "description": "Covers locale-aware formatting, multi-key translations, geographic context management, and reactive HTML document metadata handling for SEO optimization."
+    "description": "Provides reactive utilities and helper functions for locale-aware formatting, translation primitives, geographic context, and dynamic HTML document metadata management."
   },
   {
     "uri": "@dxtmisha/functional/ai-prompts/reactivity-lists.md",
-    "name": "Reactivity and Lists",
+    "name": "Reactivity List Utilities (@dxtmisha/functional)",
     "mimeType": "text/markdown",
-    "description": "Comprehensive guide to advanced asynchronous reactivity composables, list data models, multi-field search filtering, and DOM observer utilities."
+    "description": "Comprehensive API reference for async reactivity composables, reactive list structures, debounced multi-field search helpers, and lifecycle-managed DOM observers."
   },
   {
     "uri": "@dxtmisha/functional/ai-prompts/storage-state.md",
-    "name": "Reactive Browser State",
+    "name": "Browser State Composables (@dxtmisha/functional)",
     "mimeType": "text/markdown",
-    "description": "API reference and usage examples for reactive composables managing persistent browser state and cross-tab synchronization. Covers localStorage, sessionStorage, cookies, BroadcastChannel, and URL hash state."
+    "description": "Reactive composable wrappers for persistent and synchronized browser state management, including localStorage, sessionStorage, cookies, BroadcastChannel, and URL hash fragments."
   },
   {
     "uri": "@dxtmisha/functional-basic/ai-types.md",
-    "name": "TypeScript Type Definitions",
+    "name": "TypeScript Types Reference (@dxtmisha/functional-basic)",
     "mimeType": "text/markdown",
-    "description": "Comprehensive TypeScript type definitions, enums, class interfaces, and utility function signatures for API request handling, internationalization, and client-side data management."
+    "description": "Comprehensive TypeScript type definitions, enums, classes, and utility function declarations covering API client interfaces, metadata management, internationalization, and DOM utilities."
   },
   {
     "uri": "@dxtmisha/functional-basic/ai-description.md",
-    "name": "Isomorphic Utility Toolkit",
+    "name": "Utility Library Overview (@dxtmisha/functional-basic)",
     "mimeType": "text/markdown",
-    "description": "Provides an architectural overview of the isomorphic runtime toolkit covering HTTP networking, state persistence, i18n, DOM helpers, and metadata management across browser and SSR environments. Details core utility capabilities and outlines mandatory cross-referencing rules for API references, types, and coding standards."
-  },
-  {
-    "uri": "@dxtmisha/functional-basic/ai-doc.md",
-    "name": "Coding Standards and Core Info",
-    "mimeType": "text/markdown",
-    "description": "Architectural conventions, class structure rules, SSR safety guidelines, and TypeScript typing standards for code implementation."
+    "description": "Provides an overview of isomorphic client and server utilities for HTTP networking, state management, localization, data search, DOM handling, and SSR hydration. Outlines architectural conventions and package capabilities across browser and server runtimes."
   },
   {
     "uri": "@dxtmisha/functional-basic/ai-prompts/api-reference.md",
-    "name": "API Reference Guide",
+    "name": "API Reference Guide (@dxtmisha/functional-basic)",
     "mimeType": "text/markdown",
-    "description": "API reference and code usage examples for @dxtmisha/functional-basic, detailing HTTP clients, caching, storage, geolocation, DOM events, and general utilities."
+    "description": "Comprehensive API reference and usage examples for the `@dxtmisha/functional-basic` package. Covers HTTP client configurations, caching, state storage, localization, DOM events, and core utility functions."
   },
   {
-    "uri": "@dxtmisha/nitro-basic/ai-types.md",
-    "name": "Vue SSR Types",
+    "uri": "@dxtmisha/zip/ai-types.md",
+    "name": "ZIP Archive Interface (@dxtmisha/zip)",
     "mimeType": "text/markdown",
-    "description": "TypeScript declarations and utility functions for initializing Vue SSR applications, Nitro context management, request headers, routing, and server storage."
+    "description": "TypeScript type declarations and API reference for managing, compiling, and downloading browser-based ZIP archives using fflate."
   },
   {
-    "uri": "@dxtmisha/nitro-basic/ai-description.md",
-    "name": "Nitro Vue SSR Architecture",
+    "uri": "@dxtmisha/zip/ai-description.md",
+    "name": "ZIP Archive Manager (@dxtmisha/zip)",
     "mimeType": "text/markdown",
-    "description": "Provides core utilities and architectural conventions for server-side rendering, application lifecycle management, context isolation, and state hydration in Vue 3 applications running on Nitro."
-  },
-  {
-    "uri": "@dxtmisha/nitro-basic/ai-prompts/app-bootstrap.md",
-    "name": "App Bootstrapping Conventions",
-    "mimeType": "text/markdown",
-    "description": "Guidelines and API reference for server and client application entry points, SSR initialization, and hydration identity helpers using @dxtmisha/nitro-basic."
-  },
-  {
-    "uri": "@dxtmisha/nitro-basic/ai-prompts/request-context.md",
-    "name": "Nitro Request Context",
-    "mimeType": "text/markdown",
-    "description": "Documentation and code examples for initializing server lifecycle services and accessing request context metadata using Nitro basic utilities."
+    "description": "Comprehensive technical guidelines and API overview for client-side ZIP archive creation, in-memory buffer management, compression utilities, and automated browser file downloads."
   }
 ]

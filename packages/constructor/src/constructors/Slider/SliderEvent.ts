@@ -53,8 +53,9 @@ export class SliderEvent {
    * Возвращает объект с обработчиками событий для элемента максимального ползунка.
    * @returns object with event handlers / объект с обработчиками событий
    */
-  getEventsMax(): Record<string, (event: any) => void> {
+  get eventsMax(): Record<string, (event: any) => void> {
     return {
+      onFocus: this.onFocusMax,
       onKeydown: this.onKeydown,
       onMousedown: this.onMousedownMax,
       onTouchstart: this.onMousedownMax
@@ -67,8 +68,9 @@ export class SliderEvent {
    * Возвращает объект с обработчиками событий для элемента минимального ползунка.
    * @returns object with event handlers / объект с обработчиками событий
    */
-  getEventsMin(): Record<string, (event: any) => void> {
+  get eventsMin(): Record<string, (event: any) => void> {
     return {
+      onFocus: this.onFocusMin,
       onKeydown: this.onKeydown,
       onMousedown: this.onMousedownMin,
       onTouchstart: this.onMousedownMin
@@ -161,6 +163,24 @@ export class SliderEvent {
 
     this.go.updateFromCoordinate(coordinate)
     this.dragEvent.start()
+  }
+
+  /**
+   * Handles focus event for minimum thumb handle.
+   *
+   * Обрабатывает событие фокуса для минимального ползунка.
+   */
+  readonly onFocusMin = (): void => {
+    this.focus.set(SliderFocusType.min)
+  }
+
+  /**
+   * Handles focus event for maximum thumb handle.
+   *
+   * Обрабатывает событие фокуса для максимального ползунка.
+   */
+  readonly onFocusMax = (): void => {
+    this.focus.set(SliderFocusType.max)
   }
 
   /**
