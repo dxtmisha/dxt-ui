@@ -30,9 +30,9 @@ export type SliderFieldPropsBasic<
     showValue?: boolean
 
     /** Label or placeholder for minimum value / Метка или плейсхолдер для минимального значения */
-    textMin?: string
+    labelMin?: string
     /** Label or placeholder for maximum value / Метка или плейсхолдер для максимального значения */
-    textMax?: string
+    labelMax?: string
     /** Text displayed before slider or min input / Текст, отображаемый перед слайдером или мин инпутом */
     labelLeading?: string
     /** Text displayed after slider or max input / Текст, отображаемый после слайдера или макс инпута */

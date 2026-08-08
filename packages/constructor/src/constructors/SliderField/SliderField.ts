@@ -181,19 +181,19 @@ export class SliderField {
   })
 
   /** Minimum text label or placeholder / Текстовая метка или плейсхолдер для минимума */
-  readonly textMin = computed<string>(() => {
-    return this.props.textMin ?? String(this.valueMin.value)
+  readonly labelMin = computed<string>(() => {
+    return this.props.labelMin ?? String(this.valueMin.value)
   })
 
   /** Maximum text label or placeholder / Текстовая метка или плейсхолдер для максимума */
-  readonly textMax = computed<string>(() => {
-    return this.props.textMax ?? String(this.valueMax.value)
+  readonly labelMax = computed<string>(() => {
+    return this.props.labelMax ?? String(this.valueMax.value)
   })
 
   /** Formatted string representation of the current value / Форматированное строковое представление текущего значения */
   readonly textLabel = computed<string>(() => {
     if (this.props.multiple) {
-      return `${this.textMin.value} - ${this.textMax.value}`
+      return `${this.labelMin.value} - ${this.labelMax.value}`
     }
 
     return String(this.valueMin.value)

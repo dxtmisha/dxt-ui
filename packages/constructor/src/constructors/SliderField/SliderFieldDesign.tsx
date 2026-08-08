@@ -241,7 +241,7 @@ export class SliderFieldDesign<
       return [
         h('input', {
           'type': 'text',
-          'placeholder': this.item.textMin.value,
+          'placeholder': this.item.labelMin.value,
           'class': this.classes?.value.inputMin,
           'data-type': 'min',
           'onBlur': this.item.onBlur,
@@ -263,7 +263,7 @@ export class SliderFieldDesign<
   readonly renderValueMin = (): VNode | undefined => {
     return h('span', {
       class: [(this.classes?.value as Record<string, any>)?.value, 'is-min'],
-      innerHTML: this.item.textMin.value
+      innerHTML: this.item.labelMin.value
     })
   }
 
@@ -307,7 +307,7 @@ export class SliderFieldDesign<
     return h('input', {
       ...this.props.inputAttrs,
       'type': 'text',
-      'placeholder': this.item.textMax.value,
+      'placeholder': this.item.labelMax.value,
       'class': this.classes?.value.inputMax,
       'data-type': 'max',
       'onBlur': this.item.onBlur,
@@ -325,7 +325,7 @@ export class SliderFieldDesign<
   readonly renderValueMax = (): VNode | undefined => {
     return h('span', {
       class: [(this.classes?.value as Record<string, any>)?.value, 'is-max'],
-      innerHTML: this.item.textMax.value
+      innerHTML: this.item.labelMax.value
     })
   }
 }
