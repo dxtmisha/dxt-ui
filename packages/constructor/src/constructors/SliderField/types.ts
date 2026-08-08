@@ -1,29 +1,36 @@
 import type { ConstrClass } from '@dxtmisha/functional'
 
+import type { FieldLabelComponentInclude, FieldLabelSlotsInclude } from '../FieldLabel'
+import type { FieldMessageComponentInclude } from '../FieldMessage'
+import type { IconComponentInclude } from '../Icon'
+import type { SliderComponentInclude, SliderSlots, SliderValueType } from '../Slider'
+
+import type { FieldBasicEmits, FieldBasicExpose } from '../../types/fieldTypes'
+
 /**
  * Interface for describing which components need to be connected for work.
  *
  * Интерфейс для описания, какие компоненты надо подключить для работы.
  */
-export type SliderFieldComponents = {
-  // componentName: object
-}
+export type SliderFieldComponents
+  = SliderComponentInclude
+    & FieldLabelComponentInclude
+    & FieldMessageComponentInclude
+    & IconComponentInclude
 
 /**
  * Type describing available events.
  *
  * Тип, описывающий доступные события.
  */
-export type SliderFieldEmits = {
-  // load: [value: string]
-}
+export type SliderFieldEmits = FieldBasicEmits<SliderValueType>
 
 /**
  * Type describing available properties.
  *
  * Тип, описывающий доступные свойства.
  */
-export interface SliderFieldExpose {
+export interface SliderFieldExpose extends FieldBasicExpose<SliderValueType> {
 }
 
 /**
@@ -31,8 +38,9 @@ export interface SliderFieldExpose {
  *
  * Тип, описывающий доступные слоты.
  */
-export interface SliderFieldSlots {
-  // default? (props: any): any
+export interface SliderFieldSlots extends FieldLabelSlotsInclude, SliderSlots {
+  labelLeading?: (props: any) => any
+  labelTrailing?: (props: any) => any
 }
 
 /**
@@ -43,5 +51,13 @@ export interface SliderFieldSlots {
 export type SliderFieldClasses = {
   main: ConstrClass
   // :classes [!] System label / Системная метка
+  body: string
+  hidden: string
+  labelLeading: string
+  labelTrailing: string
+  inputMin: string
+  inputMax: string
+  value: string
+  slider: string
   // :classes [!] System label / Системная метка
 }

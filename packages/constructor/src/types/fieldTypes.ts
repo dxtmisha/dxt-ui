@@ -417,6 +417,16 @@ export type FieldSelectLiteProps<Value = any>
   >
 
 /**
+ * Props for slider input elements (excluding type field)/
+ * Свойства для инпутов slider (без поля type)
+ */
+export type FieldSliderProps<Value = any>
+  = Omit<FieldBasicProps<Value>, 'type' | 'match'> & FieldStepProps & {
+    /** Range selection mode with two thumbs / Режим выбора диапазона с двумя ползунками */
+    multiple?: boolean
+  }
+
+/**
  * All possible field properties combined/
  * Все возможные свойства поля в одном интерфейсе
  */
@@ -426,3 +436,4 @@ export type FieldAllProps<Value = any>
     & FieldInputCheckProps<Value>
     & FieldTextareaProps<Value>
     & FieldSelectProps<Value>
+    & FieldSliderProps<Value>

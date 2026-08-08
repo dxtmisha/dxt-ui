@@ -1,4 +1,4 @@
-import type { ConstrBind, NumberOrString, NumberOrStringOrBoolean } from '@dxtmisha/functional'
+import type { NumberOrString, NumberOrStringOrBoolean } from '@dxtmisha/functional'
 import type { SliderPropsBasic } from './props'
 
 /** Focus handle type enum for Slider / Перечисление типов фокуса ползунка слайдера */
@@ -64,7 +64,8 @@ export type SliderComponentInclude = {
 /** Interface for including Slider properties / Интерфейс для включения свойств слайдера */
 export type SliderPropsInclude<
   Slider extends SliderPropsBasic = SliderPropsBasic
-> = {
-  /** Value or slider configuration / Значение или конфигурация слайдера */
-  slider?: SliderValueType | ConstrBind<Slider>
-}
+> = SliderPropsBasic
+  & {
+    /** Additional attributes for slider component / Дополнительные атрибуты для компонента слайдера */
+    sliderAttrs?: Slider
+  }

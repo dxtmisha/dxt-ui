@@ -1,5 +1,7 @@
 import type { ListRecord, NumberOrString } from '@dxtmisha/functional'
 
+import type { EnabledProps } from '../../types/enabledTypes'
+import type { FieldStepProps } from '../../types/fieldTypes'
 import type { SkeletonPropsInclude } from '../Skeleton'
 
 import type { ModelProps } from '../../types/modelTypes'
@@ -14,29 +16,26 @@ type SliderPropsToken = {
 }
 
 export type SliderPropsBasic = ModelProps
+  & FieldStepProps
+  & EnabledProps
   & SkeletonPropsInclude
   & {
-    /** Disabled state / Состояние отключения */
-    disabled?: boolean
-    /** Readonly state / Состояние только для чтения */
-    readonly?: boolean
-
+    /** Name of input field / Название поля ввода */
+    name?: string
     /** Current value or range / Текущее значение или диапазон */
     value?: SliderValueProp
     /** List of marks or tick values / Список меток или делений */
     marks?: ListRecord<SliderMarkItem> | number[]
+    /** Magnetize thumb position to nearest mark / Притягивание ползуа к ближайшей метке */
+    magnet?: boolean
 
     /** Property key for text label / Ключ свойства для текстовой метки */
     keyLabel?: string
     /** Property key for value / Ключ свойства для значения */
     keyValue?: string
 
-    /** Step size for increments / Шаг изменения значения */
-    step?: NumberOrString
-    /** Minimum range value / Минимальное значение диапазона */
-    min?: NumberOrString
-    /** Maximum range value / Максимальное значение диапазона */
-    max?: NumberOrString
+    /** Required state / Обязательное состояние */
+    required?: boolean
 
     /** Range selection mode with two thumbs / Режим выбора диапазона с двумя ползунками */
     multiple?: boolean
@@ -45,8 +44,12 @@ export type SliderPropsBasic = ModelProps
 
     /** Vertical layout orientation / Вертикальная ориентация */
     vertical?: boolean
-    /** Magnetize thumb position to nearest mark / Притягивание ползуа к ближайшей метке */
-    magnet?: boolean
+
+    /** Show thumb value label element / Показывать элемент метки значения на ползунке */
+    showThumbLabel?: boolean
+
+    /** Additional attributes for the input element/ Дополнительные атрибуты для элемента ввода */
+    inputAttrs?: Partial<HTMLInputElement>
   }
 
 /**
@@ -68,6 +71,7 @@ export const defaultsSlider = {
   max: 100,
   min: 0,
   minimumDistance: 1,
+  showThumbLabel: true,
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

@@ -140,7 +140,8 @@ export class SliderDesign<
       ...this.renderThumbMin(),
       ...this.renderThumbMax(),
       ...this.renderMarks(),
-      ...this.renderSelect()
+      ...this.renderSelect(),
+      ...this.renderInput()
     ]
 
     return h(
@@ -228,16 +229,21 @@ export class SliderDesign<
    * @returns VNode[] / массив элементов VNode
    */
   readonly renderThumbContent = (label?: any): VNode[] => {
-    return [
-      h(
-        'span',
-        {
-          class: this.classes?.value.label
-        },
-        label
-      ),
-      ...this.renderRipple()
-    ]
+    const children: VNode[] = []
+
+    if (this.props.showThumbLabel) {
+      children.push(
+        h(
+          'span',
+          { class: this.classes?.value.label },
+          label
+        )
+      )
+    }
+
+    children.push(...this.renderRipple())
+
+    return children
   }
 
   /**
@@ -339,5 +345,23 @@ export class SliderDesign<
     return this.components?.render('ripple', {
       visible: this.item.isRipple()
     })
+  }
+
+  /**
+   * Renders hidden input element.
+   *
+   * Рендерит скрытый элемент input.
+   * @returns VNode[] / массив элементов VNode
+   */
+  readonly renderInput = (): VNode[] => {
+    return [
+      h('input', {
+        name: this.props.name,
+        type: 'hidden',
+        value: this.item.value.get() || '',
+        required: this.props.required,
+        ...this.props.inputAttrs
+      })
+    ]
   }
 }

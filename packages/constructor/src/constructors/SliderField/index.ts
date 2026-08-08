@@ -1,5 +1,5 @@
+export * from './basicTypes'
+export * from './props'
 export * from './SliderField'
 export * from './SliderFieldDesign'
-export * from './props'
 export * from './types'
-export * from './basicTypes'

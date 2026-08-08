@@ -124,11 +124,19 @@ export class SliderEvent {
         break
       case 'PageUp':
         event.preventDefault()
-        this.page(true)
+        if (this.marksData.is()) {
+          this.go.increase()
+        } else {
+          this.page(true)
+        }
         break
       case 'PageDown':
         event.preventDefault()
-        this.page(false)
+        if (this.marksData.is()) {
+          this.go.decrease()
+        } else {
+          this.page(false)
+        }
         break
     }
   }

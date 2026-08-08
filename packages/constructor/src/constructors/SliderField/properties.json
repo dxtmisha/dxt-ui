@@ -1,2 +1,10 @@
 {
+  "#body": {},
+  "#hidden": {},
+  "#labelLeading": {},
+  "#labelTrailing": {},
+  "#inputMin": {},
+  "#inputMax": {},
+  "#value": {},
+  "#slider": {}
 }
