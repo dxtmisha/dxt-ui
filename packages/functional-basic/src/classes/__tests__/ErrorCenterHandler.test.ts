@@ -108,4 +108,3 @@ describe('ErrorCenterHandler', () => {
     expect(consoleErrorSpy).toHaveBeenCalledWith('Error Center: LOG_ME')
   })
 })
-

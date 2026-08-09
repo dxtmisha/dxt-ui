@@ -1,4 +1,5 @@
-import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{a as n,d as r,l as i,m as a,n as o,t as s,u as c}from"./wiki-CUC2UhNU.js";import{i as l,n as u,r as d,t as f}from"./D1Tooltip-DfHxV9FW.js";var p,m,h,g,_=t((()=>{s(),l(),p=[{name:`arrowAttrs`,type:`ConstrBind<ArrowProps>`},{name:`arrowPosition`,type:`string`,option:[`auto`,`top`,`bottom`,`left`,`right`]},{name:`arrowShow`,type:`boolean`},{name:`delay`,type:`number`},{name:`delayHide`,type:`number`},{name:`description`,type:`string | number`},{name:`descriptionId`,type:`string`},{name:`disabled`,type:`boolean`},{name:`embedded`,type:`boolean`},{name:`indent`,type:`number`},{name:`inDom`,type:`boolean`},{name:`interactive`,type:`boolean`},{name:`label`,type:`NumberOrString`},{name:`labelId`,type:`string`},{name:`maxWidth`,type:`string`,option:[`sm`,`md`,`lg`]},{name:`open`,type:`boolean`},{name:`top`,type:`boolean`}],m=[{name:`body`,description:`Slot for the tooltip body content/ Слот для основного содержимого тултипа`,properties:[{name:`props`,type:`(() => any) | undefined`}]},{name:`control`,description:`Slot for the control element that triggers the tooltip/ Слот для управляющего элемента, вызывающего тултип`,properties:[{name:`props`,type:`(TooltipControl) | undefined`}]},{name:`default`,description:`Default slot content/ Содержимое слота по умолчанию`,properties:[{name:`props`,type:`(any) | undefined`}]},{name:`description`,description:`Description slot/ Слот описания`,properties:[{name:`props`,type:`(any) | undefined`}]}],h=[{name:`tooltip`,description:`Event triggered when the tooltip open state changes/ Событие при изменении состояния открытости тултипа`,properties:[{name:`open`,type:`boolean`}]}],g={component:`Tooltip`,props:p,slots:m,events:h,defaults:d,wikiDesign:o}})),v,y=t((()=>{r(),i(),_(),v=new c(g.component,g.props,g.defaults,g.wikiDesign,n,a)})),b=e({Tooltip:()=>S,TooltipAllSlots:()=>C,__namedExportsOrder:()=>w,default:()=>x}),x,S,C,w,T=t((()=>{u(),y(),x={title:`Ui/Tooltip`,component:f,parameters:{design:`d1`,docs:{description:{component:v.getDescription()}}},argTypes:v.getWiki(),args:v.getValues()},S={render:e=>({components:{D1Tooltip:f},setup:()=>({args:e}),template:`
+import { a as e, i as t } from './preload-helper-Cv19cBWa.js'; import { a as n, d as r, l as i, m as a, n as o, t as s, u as c } from './wiki-CUC2UhNU.js'; import { i as l, n as u, r as d, t as f } from './D1Tooltip-DfHxV9FW.js'; var p, m, h, g, _ = t(() => { s(), l(), p = [{ name: `arrowAttrs`, type: `ConstrBind<ArrowProps>` }, { name: `arrowPosition`, type: `string`, option: [`auto`, `top`, `bottom`, `left`, `right`] }, { name: `arrowShow`, type: `boolean` }, { name: `delay`, type: `number` }, { name: `delayHide`, type: `number` }, { name: `description`, type: `string | number` }, { name: `descriptionId`, type: `string` }, { name: `disabled`, type: `boolean` }, { name: `embedded`, type: `boolean` }, { name: `indent`, type: `number` }, { name: `inDom`, type: `boolean` }, { name: `interactive`, type: `boolean` }, { name: `label`, type: `NumberOrString` }, { name: `labelId`, type: `string` }, { name: `maxWidth`, type: `string`, option: [`sm`, `md`, `lg`] }, { name: `open`, type: `boolean` }, { name: `top`, type: `boolean` }], m = [{ name: `body`, description: `Slot for the tooltip body content/ Слот для основного содержимого тултипа`, properties: [{ name: `props`, type: `(() => any) | undefined` }] }, { name: `control`, description: `Slot for the control element that triggers the tooltip/ Слот для управляющего элемента, вызывающего тултип`, properties: [{ name: `props`, type: `(TooltipControl) | undefined` }] }, { name: `default`, description: `Default slot content/ Содержимое слота по умолчанию`, properties: [{ name: `props`, type: `(any) | undefined` }] }, { name: `description`, description: `Description slot/ Слот описания`, properties: [{ name: `props`, type: `(any) | undefined` }] }], h = [{ name: `tooltip`, description: `Event triggered when the tooltip open state changes/ Событие при изменении состояния открытости тултипа`, properties: [{ name: `open`, type: `boolean` }] }], g = { component: `Tooltip`, props: p, slots: m, events: h, defaults: d, wikiDesign: o } }), v, y = t(() => { r(), i(), _(), v = new c(g.component, g.props, g.defaults, g.wikiDesign, n, a) }), b = e({ Tooltip: () => S, TooltipAllSlots: () => C, __namedExportsOrder: () => w, default: () => x }), x, S, C, w, T = t(() => {
+  u(), y(), x = { title: `Ui/Tooltip`, component: f, parameters: { design: `d1`, docs: { description: { component: v.getDescription() } } }, argTypes: v.getWiki(), args: v.getValues() }, S = { render: e => ({ components: { D1Tooltip: f }, setup: () => ({ args: e }), template: `
       <D1Tooltip v-bind="args">
         <template #control="{ binds }">
           <span v-bind="binds">
@@ -6,7 +7,7 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{a as n,d as r,l a
           </span>
         </template>
       </D1Tooltip>
-    `})},C={name:`Демонстрация всех слотов`,render:()=>({components:{D1Tooltip:f},template:`
+    ` }) }, C = { name: `Демонстрация всех слотов`, render: () => ({ components: { D1Tooltip: f }, template: `
         <D1Tooltip>
           <template #control="{ binds }">
             <button class="wiki-storybook-button" v-bind="binds">
@@ -28,7 +29,7 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{a as n,d as r,l a
             </div>
           </template>
         </D1Tooltip>
-    `})},S.parameters={...S.parameters,docs:{...S.parameters?.docs,source:{originalSource:`{
+    ` }) }, S.parameters = { ...S.parameters, docs: { ...S.parameters?.docs, source: { originalSource: `{
   // :story-main [!] System label / Системная метка
   render: (args: any) => ({
     components: {
@@ -48,7 +49,7 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{a as n,d as r,l a
     \`
   })
   // :story-main [!] System label / Системная метка
-}`,...S.parameters?.docs?.source}}},C.parameters={...C.parameters,docs:{...C.parameters?.docs,source:{originalSource:`{
+}`, ...S.parameters?.docs?.source } } }, C.parameters = { ...C.parameters, docs: { ...C.parameters?.docs, source: { originalSource: `{
   name: 'Демонстрация всех слотов',
   render: () => ({
     components: {
@@ -78,4 +79,5 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{a as n,d as r,l a
         </D1Tooltip>
     \`
   })
-}`,...C.parameters?.docs?.source}}},w=[`Tooltip`,`TooltipAllSlots`]}));T();export{S as Tooltip,C as TooltipAllSlots,w as __namedExportsOrder,x as default,y as i,T as n,v as r,b as t};
+}`, ...C.parameters?.docs?.source } } }, w = [`Tooltip`, `TooltipAllSlots`]
+}); T(); export { S as Tooltip, C as TooltipAllSlots, w as __namedExportsOrder, x as default, y as i, T as n, v as r, b as t }

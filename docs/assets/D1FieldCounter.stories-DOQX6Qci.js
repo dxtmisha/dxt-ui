@@ -1,4 +1,5 @@
-import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{a as n,d as r,l as i,m as a,n as o,t as s,u as c}from"./wiki-CUC2UhNU.js";import{i as l,n as u,r as d,t as f}from"./D1FieldCounter-BBCsKuuI.js";var p,m,h,g,_=t((()=>{s(),l(),p=[{name:`counter`,type:`string | number`},{name:`id`,type:`string`},{name:`maxlength`,type:`string | number`},{name:`maxlengthOnce`,type:`string | number`},{name:`template`,type:`string`},{name:`textCharacterLimit`,type:`TextValue`},{name:`textCharacterRemaining`,type:`TextValue`}],m=[],h=[],g={component:`FieldCounter`,props:p,slots:m,events:h,defaults:d,wikiDesign:o}})),v,y=t((()=>{r(),i(),_(),v=new c(g.component,g.props,g.defaults,g.wikiDesign,n,a)})),b=e({FieldCounter:()=>S,FieldCounterTemplate:()=>C,__namedExportsOrder:()=>w,default:()=>x}),x,S,C,w,T=t((()=>{u(),y(),x={title:`Ui/FieldCounter`,component:f,parameters:{design:`d1`,docs:{description:{component:v.getDescription()}}},argTypes:v.getWiki(),args:v.getValues()},S={},C={name:`Пользовательский шаблон`,render:()=>({components:{D1FieldCounter:f},template:`
+import { a as e, i as t } from './preload-helper-Cv19cBWa.js'; import { a as n, d as r, l as i, m as a, n as o, t as s, u as c } from './wiki-CUC2UhNU.js'; import { i as l, n as u, r as d, t as f } from './D1FieldCounter-BBCsKuuI.js'; var p, m, h, g, _ = t(() => { s(), l(), p = [{ name: `counter`, type: `string | number` }, { name: `id`, type: `string` }, { name: `maxlength`, type: `string | number` }, { name: `maxlengthOnce`, type: `string | number` }, { name: `template`, type: `string` }, { name: `textCharacterLimit`, type: `TextValue` }, { name: `textCharacterRemaining`, type: `TextValue` }], m = [], h = [], g = { component: `FieldCounter`, props: p, slots: m, events: h, defaults: d, wikiDesign: o } }), v, y = t(() => { r(), i(), _(), v = new c(g.component, g.props, g.defaults, g.wikiDesign, n, a) }), b = e({ FieldCounter: () => S, FieldCounterTemplate: () => C, __namedExportsOrder: () => w, default: () => x }), x, S, C, w, T = t(() => {
+  u(), y(), x = { title: `Ui/FieldCounter`, component: f, parameters: { design: `d1`, docs: { description: { component: v.getDescription() } } }, argTypes: v.getWiki(), args: v.getValues() }, S = {}, C = { name: `Пользовательский шаблон`, render: () => ({ components: { D1FieldCounter: f }, template: `
         <div class="wiki-storybook-group">
           <div class="wiki-storybook-item wiki-storybook-item--squared--md wiki-storybook-item--auto wiki-storybook-item--padding">
             <div class="wiki-storybook-item__label wiki-storybook-item__label--static">Default template</div>
@@ -13,10 +14,10 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{a as n,d as r,l a
             <D1FieldCounter :counter="42" template="<b>[c]</b> chars"/>
           </div>
         </div>
-    `})},S.parameters={...S.parameters,docs:{...S.parameters?.docs,source:{originalSource:`{
+    ` }) }, S.parameters = { ...S.parameters, docs: { ...S.parameters?.docs, source: { originalSource: `{
   // :story-main [!] System label / Системная метка
   // :story-main [!] System label / Системная метка
-}`,...S.parameters?.docs?.source}}},C.parameters={...C.parameters,docs:{...C.parameters?.docs,source:{originalSource:`{
+}`, ...S.parameters?.docs?.source } } }, C.parameters = { ...C.parameters, docs: { ...C.parameters?.docs, source: { originalSource: `{
   name: 'Пользовательский шаблон',
   render: () => ({
     components: {
@@ -39,4 +40,5 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{a as n,d as r,l a
         </div>
     \`
   })
-}`,...C.parameters?.docs?.source}}},w=[`FieldCounter`,`FieldCounterTemplate`]}));T();export{S as FieldCounter,C as FieldCounterTemplate,w as __namedExportsOrder,x as default,y as i,T as n,v as r,b as t};
+}`, ...C.parameters?.docs?.source } } }, w = [`FieldCounter`, `FieldCounterTemplate`]
+}); T(); export { S as FieldCounter, C as FieldCounterTemplate, w as __namedExportsOrder, x as default, y as i, T as n, v as r, b as t }

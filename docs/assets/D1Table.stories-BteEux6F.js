@@ -1,8 +1,11 @@
-import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{Gt as n,Ut as r,Vt as i,Wt as a,Yt as o,cn as s,dn as c,en as l}from"./iframe-D7czqiJA.js";import{a as u,d,l as f,m as p,n as m,t as h,u as g}from"./wiki-CUC2UhNU.js";import{a as _,i as v,n as y,t as b}from"./ScrollSticky-WG-SPDAX.js";import{n as x,t as S}from"./D1TableRecord-D0cvRJyo.js";var C,w=t((()=>{v(),C={lazy:!0,page:1,stickyScrollBottom:!0}})),T,E=t((()=>{x(),T=S})),D,O=t((()=>{w(),D={...C}})),k=t((()=>{})),A,j=t((()=>{i(),w(),y(),E(),O(),k(),A=n({name:`D1Table`,__name:`D1Table`,props:o({caption:{},captionDecorative:{type:Boolean},list:{},search:{},searchColumns:{},searchOptions:{},sort:{},sortDir:{},sortFunction:{type:Function},page:{},rows:{},stickyScrollBottom:{type:Boolean},isSkeleton:{type:Boolean},stickyLeft:{},tableItemAttrs:{},tableItemColumnAttrs:{},selected:{},stickyTop:{},keyValue:{},lazy:{type:Boolean},defaultHeight:{},tableRecordAttrs:{},tableRowAttrs:{},columns:{},columnsWidth:{},header:{},foot:{},headerTop:{type:Boolean},captionBottom:{type:Boolean},bleed:{type:Boolean}},D),emits:[`sort`],setup(e,{expose:t,emit:n}){let i=n,o=e,s=new _(`d1.table`,o,{emits:i,classes:r(()=>({main:{"d1-table":!0,"d1-table--headerTop":o.headerTop,"d1-table--captionBottom":o.captionBottom,"d1-table--bleed":o.bleed}})),styles:r(()=>({})),components:{tableRecord:T,scrollSticky:b}}),u=s.render();return t(s.expose()),(e,t)=>(l(),a(c(u)))}})})),M,N=t((()=>{j(),j(),M=A,A.__docgenInfo=Object.assign({displayName:A.name??A.__name},{name:`D1Table`,exportName:`default`,displayName:`D1Table`,description:``,tags:{},sourceFiles:[`/Volumes/T7/Code/dxt-ui/packages/d1/src/components/Ui/Table/D1Table.vue`]})})),P,F,I,L,R=t((()=>{h(),O(),P=[{name:`bleed`,type:`boolean`},{name:`caption`,type:`string | number`},{name:`captionBottom`,type:`boolean`},{name:`captionDecorative`,type:`boolean`},{name:`columns`,type:`string[]`},{name:`columnsWidth`,type:`Record<string, string | number>`},{name:`defaultHeight`,type:`string | number`},{name:`foot`,type:`TableHeader<TableRecordProps> | TableHeaders<TableRecordProps>`},{name:`header`,type:`TableHeader<TableRecordProps> | TableHeaders<TableRecordProps>`},{name:`headerTop`,type:`boolean`},{name:`isSkeleton`,type:`boolean`},{name:`keyValue`,type:`string`},{name:`lazy`,type:`boolean`},{name:`list`,type:`(TableItemProps[] & TableList<TableItemProps>)`},{name:`page`,type:`string | number`},{name:`rows`,type:`string | number`},{name:`search`,type:`string`},{name:`searchColumns`,type:`string[]`},{name:`searchOptions`,type:`SearchOptions`},{name:`selected`,type:`string | string[]`},{name:`sort`,type:`SortColumn`},{name:`sortDir`,type:`string`,option:[`asc`,`desc`]},{name:`sortFunction`,type:`SortFunction<TableItemProps>`},{name:`stickyLeft`,type:`string[]`},{name:`stickyScrollBottom`,type:`boolean`},{name:`stickyTop`,type:`string[]`},{name:`tableItemAttrs`,type:`ConstrBind<TableItemProps>`},{name:`tableItemColumnAttrs`,type:`Record<string, ConstrBind<TableItemProps>>`},{name:`tableRecordAttrs`,type:`ConstrBind<TableRecordPropsBasic<TableItemProps, TableRecordProps>>`},{name:`tableRowAttrs`,type:`Record<string, ConstrBind<TableRecordPropsBasic<TableItemProps, TableRecordProps>>>`}],F=[{name:`body`,description:`Slot for custom table body content /
-Слот для пользовательского содержимого тела таблицы`,properties:[{name:`props`,type:`(any) | undefined`}]},{name:`caption`,description:`Caption slot/ Слот заголовка`,properties:[{name:`props`,type:`(any) | undefined`}]},{name:`foot`,description:`Slot for custom table footer content /
-Слот для пользовательского содержимого подвала таблицы`,properties:[{name:`props`,type:`({ columns: string[]; }) | undefined`}]},{name:`header`,description:`Slot for custom table header content /
-Слот для пользовательского содержимого шапки таблицы`,properties:[{name:`props`,type:`({ columns: string[]; }) | undefined`}]},{name:`items`,description:`Slot for custom table items content /
-Слот для пользовательского содержимого элементов таблицы`,properties:[{name:`props`,type:`({ columns: string[]; }) | undefined`}]}],I=[{name:`sort`,description:`Event triggered when sort button is clicked / Событие, вызываемое при клике по кнопке сортировки`,properties:[{name:`item`,type:`SortColumnItem`}]}],L={component:`Table`,props:P,slots:F,events:I,defaults:D,wikiDesign:m}})),z,B=t((()=>{d(),f(),R(),z=new g(L.component,L.props,L.defaults,L.wikiDesign,u,p)})),V=e({Table:()=>U,TableBasic:()=>W,TableSearch:()=>q,TableSlots:()=>G,TableSort:()=>K,__namedExportsOrder:()=>J,default:()=>H}),H,U,W,G,K,q,J,Y=t((()=>{N(),B(),i(),H={title:`Ui/Table`,component:M,parameters:{design:`d1`,docs:{description:{component:z.getDescription()}}},argTypes:z.getWiki(),args:z.getValues()},U={},W={name:`Базовый`,render:()=>({components:{D1Table:M},template:`
+import { a as e, i as t } from './preload-helper-Cv19cBWa.js'; import { Gt as n, Ut as r, Vt as i, Wt as a, Yt as o, cn as s, dn as c, en as l } from './iframe-D7czqiJA.js'; import { a as u, d, l as f, m as p, n as m, t as h, u as g } from './wiki-CUC2UhNU.js'; import { a as _, i as v, n as y, t as b } from './ScrollSticky-WG-SPDAX.js'; import { n as x, t as S } from './D1TableRecord-D0cvRJyo.js'; var C, w = t(() => { v(), C = { lazy: !0, page: 1, stickyScrollBottom: !0 } }), T, E = t(() => { x(), T = S }), D, O = t(() => { w(), D = { ...C } }), k = t(() => {}), A, j = t(() => { i(), w(), y(), E(), O(), k(), A = n({ name: `D1Table`, __name: `D1Table`, props: o({ caption: {}, captionDecorative: { type: Boolean }, list: {}, search: {}, searchColumns: {}, searchOptions: {}, sort: {}, sortDir: {}, sortFunction: { type: Function }, page: {}, rows: {}, stickyScrollBottom: { type: Boolean }, isSkeleton: { type: Boolean }, stickyLeft: {}, tableItemAttrs: {}, tableItemColumnAttrs: {}, selected: {}, stickyTop: {}, keyValue: {}, lazy: { type: Boolean }, defaultHeight: {}, tableRecordAttrs: {}, tableRowAttrs: {}, columns: {}, columnsWidth: {}, header: {}, foot: {}, headerTop: { type: Boolean }, captionBottom: { type: Boolean }, bleed: { type: Boolean } }, D), emits: [`sort`], setup(e, { expose: t, emit: n }) { let i = n, o = e, s = new _(`d1.table`, o, { emits: i, classes: r(() => ({ main: { 'd1-table': !0, 'd1-table--headerTop': o.headerTop, 'd1-table--captionBottom': o.captionBottom, 'd1-table--bleed': o.bleed } })), styles: r(() => ({})), components: { tableRecord: T, scrollSticky: b } }), u = s.render(); return t(s.expose()), (e, t) => (l(), a(c(u))) } }) }), M, N = t(() => { j(), j(), M = A, A.__docgenInfo = Object.assign({ displayName: A.name ?? A.__name }, { name: `D1Table`, exportName: `default`, displayName: `D1Table`, description: ``, tags: {}, sourceFiles: [`/Volumes/T7/Code/dxt-ui/packages/d1/src/components/Ui/Table/D1Table.vue`] }) }), P, F, I, L, R = t(() => {
+    h(), O(), P = [{ name: `bleed`, type: `boolean` }, { name: `caption`, type: `string | number` }, { name: `captionBottom`, type: `boolean` }, { name: `captionDecorative`, type: `boolean` }, { name: `columns`, type: `string[]` }, { name: `columnsWidth`, type: `Record<string, string | number>` }, { name: `defaultHeight`, type: `string | number` }, { name: `foot`, type: `TableHeader<TableRecordProps> | TableHeaders<TableRecordProps>` }, { name: `header`, type: `TableHeader<TableRecordProps> | TableHeaders<TableRecordProps>` }, { name: `headerTop`, type: `boolean` }, { name: `isSkeleton`, type: `boolean` }, { name: `keyValue`, type: `string` }, { name: `lazy`, type: `boolean` }, { name: `list`, type: `(TableItemProps[] & TableList<TableItemProps>)` }, { name: `page`, type: `string | number` }, { name: `rows`, type: `string | number` }, { name: `search`, type: `string` }, { name: `searchColumns`, type: `string[]` }, { name: `searchOptions`, type: `SearchOptions` }, { name: `selected`, type: `string | string[]` }, { name: `sort`, type: `SortColumn` }, { name: `sortDir`, type: `string`, option: [`asc`, `desc`] }, { name: `sortFunction`, type: `SortFunction<TableItemProps>` }, { name: `stickyLeft`, type: `string[]` }, { name: `stickyScrollBottom`, type: `boolean` }, { name: `stickyTop`, type: `string[]` }, { name: `tableItemAttrs`, type: `ConstrBind<TableItemProps>` }, { name: `tableItemColumnAttrs`, type: `Record<string, ConstrBind<TableItemProps>>` }, { name: `tableRecordAttrs`, type: `ConstrBind<TableRecordPropsBasic<TableItemProps, TableRecordProps>>` }, { name: `tableRowAttrs`, type: `Record<string, ConstrBind<TableRecordPropsBasic<TableItemProps, TableRecordProps>>>` }], F = [{ name: `body`, description: `Slot for custom table body content /
+Слот для пользовательского содержимого тела таблицы`, properties: [{ name: `props`, type: `(any) | undefined` }] }, { name: `caption`, description: `Caption slot/ Слот заголовка`, properties: [{ name: `props`, type: `(any) | undefined` }] }, { name: `foot`, description: `Slot for custom table footer content /
+Слот для пользовательского содержимого подвала таблицы`, properties: [{ name: `props`, type: `({ columns: string[]; }) | undefined` }] }, { name: `header`, description: `Slot for custom table header content /
+Слот для пользовательского содержимого шапки таблицы`, properties: [{ name: `props`, type: `({ columns: string[]; }) | undefined` }] }, { name: `items`, description: `Slot for custom table items content /
+Слот для пользовательского содержимого элементов таблицы`, properties: [{ name: `props`, type: `({ columns: string[]; }) | undefined` }] }], I = [{ name: `sort`, description: `Event triggered when sort button is clicked / Событие, вызываемое при клике по кнопке сортировки`, properties: [{ name: `item`, type: `SortColumnItem` }] }], L = { component: `Table`, props: P, slots: F, events: I, defaults: D, wikiDesign: m }
+  }), z, B = t(() => { d(), f(), R(), z = new g(L.component, L.props, L.defaults, L.wikiDesign, u, p) }), V = e({ Table: () => U, TableBasic: () => W, TableSearch: () => q, TableSlots: () => G, TableSort: () => K, __namedExportsOrder: () => J, default: () => H }), H, U, W, G, K, q, J, Y = t(() => {
+    N(), B(), i(), H = { title: `Ui/Table`, component: M, parameters: { design: `d1`, docs: { description: { component: z.getDescription() } } }, argTypes: z.getWiki(), args: z.getValues() }, U = {}, W = { name: `Базовый`, render: () => ({ components: { D1Table: M }, template: `
         <div class="wiki-storybook-item wiki-storybook-item--rectangle wiki-storybook-item--overflowAuto wiki-storybook-item--padding" style="max-height: 360px;">
           <D1Table
             :columns="['id', 'name', 'status', 'role', 'email', 'age', 'country', 'city', 'salary']"
@@ -61,7 +64,7 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{Gt as n,Ut as r,V
             ]"
           />
         </div>
-    `})},G={name:`Использование слотов`,render:()=>({components:{D1Table:M},template:`
+    ` }) }, G = { name: `Использование слотов`, render: () => ({ components: { D1Table: M }, template: `
         <D1Table
           caption="Table Caption"
           :columns="['id', 'name', 'status']"
@@ -117,7 +120,7 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{Gt as n,Ut as r,V
             Foot Cell Slot: {{ value }}
           </template>
         </D1Table>
-    `})},K={name:`Сортировка`,render:()=>({components:{D1Table:M},template:`
+    ` }) }, K = { name: `Сортировка`, render: () => ({ components: { D1Table: M }, template: `
         <D1Table
           :columns="['id', 'name', 'role', 'age', 'salary']"
           :header="[
@@ -139,7 +142,7 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{Gt as n,Ut as r,V
             { id: '5', name: 'Edward Norton', role: 'Tester', age: 26, salary: 7000 }
           ]"
         />
-    `})},q={name:`Поиск`,render:()=>({components:{D1Table:M},setup(){return{searchValue:s(`an`)}},template:`
+    ` }) }, q = { name: `Поиск`, render: () => ({ components: { D1Table: M }, setup() { return { searchValue: s(`an`) } }, template: `
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex-align-center">
             <input class="wiki-storybook-input" type="text" v-model="searchValue" placeholder="Search name or role..."/>
@@ -179,10 +182,10 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{Gt as n,Ut as r,V
             </template>
           </D1Table>
         </div>
-    `})},U.parameters={...U.parameters,docs:{...U.parameters?.docs,source:{originalSource:`{
+    ` }) }, U.parameters = { ...U.parameters, docs: { ...U.parameters?.docs, source: { originalSource: `{
   // :story-main [!] System label / Системная метка
   // :story-main [!] System label / Системная метка
-}`,...U.parameters?.docs?.source}}},W.parameters={...W.parameters,docs:{...W.parameters?.docs,source:{originalSource:`{
+}`, ...U.parameters?.docs?.source } } }, W.parameters = { ...W.parameters, docs: { ...W.parameters?.docs, source: { originalSource: `{
   name: 'Базовый',
   render: () => ({
     components: {
@@ -249,7 +252,7 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{Gt as n,Ut as r,V
         </div>
     \`
   })
-}`,...W.parameters?.docs?.source}}},G.parameters={...G.parameters,docs:{...G.parameters?.docs,source:{originalSource:`{
+}`, ...W.parameters?.docs?.source } } }, G.parameters = { ...G.parameters, docs: { ...G.parameters?.docs, source: { originalSource: `{
   name: 'Использование слотов',
   render: () => ({
     components: {
@@ -313,7 +316,7 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{Gt as n,Ut as r,V
         </D1Table>
     \`
   })
-}`,...G.parameters?.docs?.source}}},K.parameters={...K.parameters,docs:{...K.parameters?.docs,source:{originalSource:`{
+}`, ...G.parameters?.docs?.source } } }, K.parameters = { ...K.parameters, docs: { ...K.parameters?.docs, source: { originalSource: `{
   name: 'Сортировка',
   render: () => ({
     components: {
@@ -343,7 +346,7 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{Gt as n,Ut as r,V
         />
     \`
   })
-}`,...K.parameters?.docs?.source}}},q.parameters={...q.parameters,docs:{...q.parameters?.docs,source:{originalSource:`{
+}`, ...K.parameters?.docs?.source } } }, q.parameters = { ...q.parameters, docs: { ...q.parameters?.docs, source: { originalSource: `{
   name: 'Поиск',
   render: () => ({
     components: {
@@ -396,4 +399,5 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{Gt as n,Ut as r,V
         </div>
     \`
   })
-}`,...q.parameters?.docs?.source}}},J=[`Table`,`TableBasic`,`TableSlots`,`TableSort`,`TableSearch`]}));Y();export{U as Table,W as TableBasic,q as TableSearch,G as TableSlots,K as TableSort,J as __namedExportsOrder,H as default,B as i,Y as n,z as r,V as t};
+}`, ...q.parameters?.docs?.source } } }, J = [`Table`, `TableBasic`, `TableSlots`, `TableSort`, `TableSearch`]
+  }); Y(); export { U as Table, W as TableBasic, q as TableSearch, G as TableSlots, K as TableSort, J as __namedExportsOrder, H as default, B as i, Y as n, z as r, V as t }

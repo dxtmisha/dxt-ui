@@ -1,4 +1,5 @@
-import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{a as n,d as r,l as i,m as a,n as o,t as s,u as c}from"./wiki-CUC2UhNU.js";import{i as l,n as u,r as d,t as f}from"./D1HorizontalScroll-BemTQK4w.js";var p,m,h,g,_=t((()=>{s(),l(),p=[{name:`align`,type:`string`,option:[`block`,`center`,`left`,`right`]},{name:`bleed`,type:`boolean`},{name:`tag`,type:`string`}],m=[{name:`default`,description:`Slot for default horizontal scroll content/ Слот для основного содержимого горизонтальной прокрутки`,properties:[{name:`props`,type:`(any) | undefined`}]}],h=[],g={component:`HorizontalScroll`,props:p,slots:m,events:h,defaults:d,wikiDesign:o}})),v,y=t((()=>{r(),i(),_(),v=new c(g.component,g.props,g.defaults,g.wikiDesign,n,a)})),b=e({HorizontalScroll:()=>S,HorizontalScrollBasic:()=>C,__namedExportsOrder:()=>w,default:()=>x}),x,S,C,w,T=t((()=>{u(),y(),x={title:`Ui/HorizontalScroll`,component:f,parameters:{design:`d1`,docs:{description:{component:v.getDescription()}}},argTypes:v.getWiki(),args:v.getValues()},S={render:e=>({components:{D1HorizontalScroll:f},setup:()=>({args:e}),template:`
+import { a as e, i as t } from './preload-helper-Cv19cBWa.js'; import { a as n, d as r, l as i, m as a, n as o, t as s, u as c } from './wiki-CUC2UhNU.js'; import { i as l, n as u, r as d, t as f } from './D1HorizontalScroll-BemTQK4w.js'; var p, m, h, g, _ = t(() => { s(), l(), p = [{ name: `align`, type: `string`, option: [`block`, `center`, `left`, `right`] }, { name: `bleed`, type: `boolean` }, { name: `tag`, type: `string` }], m = [{ name: `default`, description: `Slot for default horizontal scroll content/ Слот для основного содержимого горизонтальной прокрутки`, properties: [{ name: `props`, type: `(any) | undefined` }] }], h = [], g = { component: `HorizontalScroll`, props: p, slots: m, events: h, defaults: d, wikiDesign: o } }), v, y = t(() => { r(), i(), _(), v = new c(g.component, g.props, g.defaults, g.wikiDesign, n, a) }), b = e({ HorizontalScroll: () => S, HorizontalScrollBasic: () => C, __namedExportsOrder: () => w, default: () => x }), x, S, C, w, T = t(() => {
+  u(), y(), x = { title: `Ui/HorizontalScroll`, component: f, parameters: { design: `d1`, docs: { description: { component: v.getDescription() } } }, argTypes: v.getWiki(), args: v.getValues() }, S = { render: e => ({ components: { D1HorizontalScroll: f }, setup: () => ({ args: e }), template: `
       <D1HorizontalScroll v-bind="args">
       <template #default="{ classItem }">
         <div class="wiki-storybook-flex-center" :class="classItem" style="width: 256px; height: 128px; background: oklch(0.94 0.06 25);">Item 1</div>
@@ -19,7 +20,7 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{a as n,d as r,l a
         <div class="wiki-storybook-flex-center" :class="classItem" style="width: 256px; height: 128px; background: oklch(0.93 0.08 345);">Item 16</div>
       </template>
     </D1HorizontalScroll>
-    `})},C={name:`Базовое использование`,render:()=>({components:{D1HorizontalScroll:f},template:`
+    ` }) }, C = { name: `Базовое использование`, render: () => ({ components: { D1HorizontalScroll: f }, template: `
         <div class="wiki-storybook-flex-column">
           <D1HorizontalScroll>
             <template #default="{ classItem }">
@@ -40,7 +41,7 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{a as n,d as r,l a
             </template>
           </D1HorizontalScroll>
         </div>
-    `})},S.parameters={...S.parameters,docs:{...S.parameters?.docs,source:{originalSource:`{
+    ` }) }, S.parameters = { ...S.parameters, docs: { ...S.parameters?.docs, source: { originalSource: `{
   // :story-main [!] System label / Системная метка
   render: (args: any) => ({
     components: {
@@ -73,7 +74,7 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{a as n,d as r,l a
     \`
   })
   // :story-main [!] System label / Системная метка
-}`,...S.parameters?.docs?.source}}},C.parameters={...C.parameters,docs:{...C.parameters?.docs,source:{originalSource:`{
+}`, ...S.parameters?.docs?.source } } }, C.parameters = { ...C.parameters, docs: { ...C.parameters?.docs, source: { originalSource: `{
   name: 'Базовое использование',
   render: () => ({
     components: {
@@ -102,4 +103,5 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{a as n,d as r,l a
         </div>
     \`
   })
-}`,...C.parameters?.docs?.source}}},w=[`HorizontalScroll`,`HorizontalScrollBasic`]}));T();export{S as HorizontalScroll,C as HorizontalScrollBasic,w as __namedExportsOrder,x as default,y as i,T as n,v as r,b as t};
+}`, ...C.parameters?.docs?.source } } }, w = [`HorizontalScroll`, `HorizontalScrollBasic`]
+}); T(); export { S as HorizontalScroll, C as HorizontalScrollBasic, w as __namedExportsOrder, x as default, y as i, T as n, v as r, b as t }

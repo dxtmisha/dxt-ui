@@ -1,4 +1,4 @@
-import{r as e}from"../_libs/h3+rou3+srvx.mjs";var t=()=>new e(`<!doctype html>
+import { r as e } from '../_libs/h3+rou3+srvx.mjs'; var t = () => new e(`<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -12,4 +12,4 @@ import{r as e}from"../_libs/h3+rou3+srvx.mjs";var t=()=>new e(`<!doctype html>
     <div id="app"></div>
   </body>
 </html>
-`,{headers:{"content-type":`text/html; charset=utf-8`}});function n(e){return t(e.req)}export{n as default};
+`, { headers: { 'content-type': `text/html; charset=utf-8` } }); function n(e) { return t(e.req) } export { n as default }

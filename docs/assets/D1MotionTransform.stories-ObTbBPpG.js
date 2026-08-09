@@ -1,4 +1,5 @@
-import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{Vt as n,cn as r}from"./iframe-D7czqiJA.js";import{a as i,d as a,l as o,m as s,n as c,t as l,u}from"./wiki-CUC2UhNU.js";import{i as d,n as f,r as p,t as m}from"./D1MotionTransform-DUqJj7wj.js";var h,g,_,v,y=t((()=>{l(),d(),h=[{name:`adaptive`,type:`string`,option:[`planeAlways`,`planeSm`,`planeMd`,`planeLg`,`planeXl`,`plane2xl`]},{name:`animationHeadPosition`,type:`string`,option:[`top`,`toBottom`]},{name:`animationShow`,type:`boolean`},{name:`ariaDescribedby`,type:`string`},{name:`ariaLabelledby`,type:`string`},{name:`autoClose`,type:`boolean`},{name:`clickOpen`,type:`boolean`},{name:`ignore`,type:`string | HTMLElement`},{name:`ignoreSelector`,type:`string`},{name:`inDom`,type:`boolean`},{name:`modelOpen`,type:`boolean`},{name:`onUpdate:modelOpen`,type:`((value: boolean) => void)`},{name:`onUpdate:open`,type:`((value: boolean) => void)`},{name:`open`,type:`boolean`},{name:`section`,type:`boolean`},{name:`tagBody`,type:`string`}],g=[{name:`body`,description:`Body slot for content/ Слот тела для содержимого`,properties:[{name:`props`,type:`(MotionTransformControlItem) | undefined`}]},{name:`head`,description:`Head slot for controls/ Слот шапки для элементов управления`,properties:[{name:`props`,type:`(MotionTransformControlItem) | undefined`}]}],_=[{name:`transform`,description:`Event triggered on transformation completion/ Событие, вызываемое при завершении трансформации`,properties:[{name:`event`,type:`Event | undefined`},{name:`options`,type:`MotionTransformEmitOptions`}]},{name:`transformLite`,description:`Lightweight transformation event/ Облегченное событие трансформации`,properties:[{name:`options`,type:`MotionTransformEmitOptions`}]},{name:`update:modelOpen`,description:`Update model open event/ Событие обновления открытия модели`,properties:[{name:`value`,type:`boolean`}]},{name:`update:open`,description:`Update open event/ Событие обновления открытия`,properties:[{name:`value`,type:`boolean`}]}],v={component:`MotionTransform`,props:h,slots:g,events:_,defaults:p,wikiDesign:c}})),b,x=t((()=>{a(),o(),y(),b=new u(v.component,v.props,v.defaults,v.wikiDesign,i,s)})),S=e({MotionTransform:()=>w,MotionTransformAnimationHeadPosition:()=>T,MotionTransformIgnore:()=>E,MotionTransformVModel:()=>D,__namedExportsOrder:()=>O,default:()=>C}),C,w,T,E,D,O,k=t((()=>{f(),x(),n(),C={title:`Ui/MotionTransform`,component:m,parameters:{design:`d1`,docs:{description:{component:b.getDescription()}}},argTypes:b.getWiki(),args:b.getValues()},w={render:e=>({components:{D1MotionTransform:m},setup:()=>({args:e}),template:`
+import { a as e, i as t } from './preload-helper-Cv19cBWa.js'; import { Vt as n, cn as r } from './iframe-D7czqiJA.js'; import { a as i, d as a, l as o, m as s, n as c, t as l, u } from './wiki-CUC2UhNU.js'; import { i as d, n as f, r as p, t as m } from './D1MotionTransform-DUqJj7wj.js'; var h, g, _, v, y = t(() => { l(), d(), h = [{ name: `adaptive`, type: `string`, option: [`planeAlways`, `planeSm`, `planeMd`, `planeLg`, `planeXl`, `plane2xl`] }, { name: `animationHeadPosition`, type: `string`, option: [`top`, `toBottom`] }, { name: `animationShow`, type: `boolean` }, { name: `ariaDescribedby`, type: `string` }, { name: `ariaLabelledby`, type: `string` }, { name: `autoClose`, type: `boolean` }, { name: `clickOpen`, type: `boolean` }, { name: `ignore`, type: `string | HTMLElement` }, { name: `ignoreSelector`, type: `string` }, { name: `inDom`, type: `boolean` }, { name: `modelOpen`, type: `boolean` }, { name: `onUpdate:modelOpen`, type: `((value: boolean) => void)` }, { name: `onUpdate:open`, type: `((value: boolean) => void)` }, { name: `open`, type: `boolean` }, { name: `section`, type: `boolean` }, { name: `tagBody`, type: `string` }], g = [{ name: `body`, description: `Body slot for content/ Слот тела для содержимого`, properties: [{ name: `props`, type: `(MotionTransformControlItem) | undefined` }] }, { name: `head`, description: `Head slot for controls/ Слот шапки для элементов управления`, properties: [{ name: `props`, type: `(MotionTransformControlItem) | undefined` }] }], _ = [{ name: `transform`, description: `Event triggered on transformation completion/ Событие, вызываемое при завершении трансформации`, properties: [{ name: `event`, type: `Event | undefined` }, { name: `options`, type: `MotionTransformEmitOptions` }] }, { name: `transformLite`, description: `Lightweight transformation event/ Облегченное событие трансформации`, properties: [{ name: `options`, type: `MotionTransformEmitOptions` }] }, { name: `update:modelOpen`, description: `Update model open event/ Событие обновления открытия модели`, properties: [{ name: `value`, type: `boolean` }] }, { name: `update:open`, description: `Update open event/ Событие обновления открытия`, properties: [{ name: `value`, type: `boolean` }] }], v = { component: `MotionTransform`, props: h, slots: g, events: _, defaults: p, wikiDesign: c } }), b, x = t(() => { a(), o(), y(), b = new u(v.component, v.props, v.defaults, v.wikiDesign, i, s) }), S = e({ MotionTransform: () => w, MotionTransformAnimationHeadPosition: () => T, MotionTransformIgnore: () => E, MotionTransformVModel: () => D, __namedExportsOrder: () => O, default: () => C }), C, w, T, E, D, O, k = t(() => {
+  f(), x(), n(), C = { title: `Ui/MotionTransform`, component: m, parameters: { design: `d1`, docs: { description: { component: b.getDescription() } } }, argTypes: b.getWiki(), args: b.getValues() }, w = { render: e => ({ components: { D1MotionTransform: m }, setup: () => ({ args: e }), template: `
       <D1MotionTransform v-bind="args">
         <template #head>
           <div class="wiki-storybook-item--padding">
@@ -24,7 +25,7 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{Vt as n,cn as r}f
           </div>
         </template>
       </D1MotionTransform>
-    `})},T={name:`Анимация позиции заголовка`,render:()=>({components:{D1MotionTransform:m},template:`
+    ` }) }, T = { name: `Анимация позиции заголовка`, render: () => ({ components: { D1MotionTransform: m }, template: `
         <div class="wiki-storybook-flex-column">
           <D1MotionTransform animationHeadPosition="top">
             <template #head>
@@ -72,7 +73,7 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{Vt as n,cn as r}f
             </template>
           </D1MotionTransform>
         </div>
-    `})},E={name:`Зоны игнорирования`,render:()=>({components:{D1MotionTransform:m},template:`
+    ` }) }, E = { name: `Зоны игнорирования`, render: () => ({ components: { D1MotionTransform: m }, template: `
         <div class="wiki-storybook-flex-column">
           <D1MotionTransform ignoreSelector=".mt-ignore">
             <template #head>
@@ -102,7 +103,7 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{Vt as n,cn as r}f
             <button class="wiki-storybook-button">Ignored button</button>
           </div>
         </div>
-    `})},D={name:`Двусторонняя привязка (v-model)`,render:()=>({components:{D1MotionTransform:m},setup(){return{open:r(!1)}},template:`
+    ` }) }, D = { name: `Двусторонняя привязка (v-model)`, render: () => ({ components: { D1MotionTransform: m }, setup() { return { open: r(!1) } }, template: `
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex">
             <button class="wiki-storybook-button" @click="open = !open">Toggle ({{ open }})</button>
@@ -124,7 +125,7 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{Vt as n,cn as r}f
             </template>
           </D1MotionTransform>
         </div>
-    `})},w.parameters={...w.parameters,docs:{...w.parameters?.docs,source:{originalSource:`{
+    ` }) }, w.parameters = { ...w.parameters, docs: { ...w.parameters?.docs, source: { originalSource: `{
   // :story-main [!] System label / Системная метка
   render: (args: any) => ({
     components: {
@@ -162,7 +163,7 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{Vt as n,cn as r}f
     \`
   })
   // :story-main [!] System label / Системная метка
-}`,...w.parameters?.docs?.source}}},T.parameters={...T.parameters,docs:{...T.parameters?.docs,source:{originalSource:`{
+}`, ...w.parameters?.docs?.source } } }, T.parameters = { ...T.parameters, docs: { ...T.parameters?.docs, source: { originalSource: `{
   name: 'Анимация позиции заголовка',
   render: () => ({
     components: {
@@ -218,7 +219,7 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{Vt as n,cn as r}f
         </div>
     \`
   })
-}`,...T.parameters?.docs?.source}}},E.parameters={...E.parameters,docs:{...E.parameters?.docs,source:{originalSource:`{
+}`, ...T.parameters?.docs?.source } } }, E.parameters = { ...E.parameters, docs: { ...E.parameters?.docs, source: { originalSource: `{
   name: 'Зоны игнорирования',
   render: () => ({
     components: {
@@ -256,7 +257,7 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{Vt as n,cn as r}f
         </div>
     \`
   })
-}`,...E.parameters?.docs?.source}}},D.parameters={...D.parameters,docs:{...D.parameters?.docs,source:{originalSource:`{
+}`, ...E.parameters?.docs?.source } } }, D.parameters = { ...D.parameters, docs: { ...D.parameters?.docs, source: { originalSource: `{
   name: 'Двусторонняя привязка (v-model)',
   render: () => ({
     components: {
@@ -291,4 +292,5 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{Vt as n,cn as r}f
         </div>
     \`
   })
-}`,...D.parameters?.docs?.source}}},O=[`MotionTransform`,`MotionTransformAnimationHeadPosition`,`MotionTransformIgnore`,`MotionTransformVModel`]}));k();export{w as MotionTransform,T as MotionTransformAnimationHeadPosition,E as MotionTransformIgnore,D as MotionTransformVModel,O as __namedExportsOrder,C as default,x as i,k as n,b as r,S as t};
+}`, ...D.parameters?.docs?.source } } }, O = [`MotionTransform`, `MotionTransformAnimationHeadPosition`, `MotionTransformIgnore`, `MotionTransformVModel`]
+}); k(); export { w as MotionTransform, T as MotionTransformAnimationHeadPosition, E as MotionTransformIgnore, D as MotionTransformVModel, O as __namedExportsOrder, C as default, x as i, k as n, b as r, S as t }

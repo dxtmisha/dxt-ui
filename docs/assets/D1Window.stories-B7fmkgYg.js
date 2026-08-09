@@ -1,8 +1,11 @@
-import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{Vt as n,cn as r}from"./iframe-D7czqiJA.js";import{a as i,d as a,l as o,m as s,n as c,t as l,u}from"./wiki-CUC2UhNU.js";import{i as d,n as f,r as p,t as m}from"./D1Window-Zc4NQuvt.js";var h,g,_,v,y=t((()=>{l(),d(),h=[{name:`adaptive`,type:`string`,option:[`menu`,`menuWindow`,`modal`,`modalDynamic`,`actionSheetRight`,`actionSheetBottom`,`static`,`actionSheet`,`actionSheetToModal`,`autoStaticSm`,`autoStaticMd`,`autoStaticLg`,`autoStaticXl`,`autoStatic2xl`]},{name:`alignment`,type:`string`,option:[`top`,`left`,`center`,`topRight`,`topLeft`,`topFull`,`right`,`rightFull`,`bottom`,`bottomRight`,`bottomLeft`,`bottomFull`,`leftFull`]},{name:`ariaDescribedby`,type:`string`},{name:`ariaHaspopup`,type:`string`,option:[`menu`,`dialog`,`grid`,`listbox`,`tree`,`true`,`false`]},{name:`ariaLabelledby`,type:`string`},{name:`autoClose`,type:`boolean`},{name:`autoTabIndex`,type:`boolean`},{name:`axis`,type:`string`,option:[`x`,`y`,`on`]},{name:`beforeClosing`,type:`(() => NormalOrPromise<boolean>)`},{name:`beforeOpening`,type:`(() => NormalOrPromise<boolean>)`},{name:`closeButton`,type:`boolean`},{name:`closeMobileHide`,type:`boolean`},{name:`closeOnEsc`,type:`boolean`},{name:`closing`,type:`(() => NormalOrPromise<boolean>)`},{name:`contextmenu`,type:`boolean`},{name:`dense`,type:`boolean`},{name:`disabled`,type:`boolean`},{name:`divider`,type:`boolean`},{name:`embedded`,type:`boolean`},{name:`flash`,type:`boolean`},{name:`fullscreen`,type:`boolean`},{name:`height`,type:`string`,option:[`auto`,`max`,`sm`,`md`,`lg`,`custom`]},{name:`hide`,type:`boolean`},{name:`iconClose`,type:`IconValue<IconProps>`},{name:`image`,type:`string | ConstrBind<ImageProps>`},{name:`imageAttrs`,type:`ConstrBind<ImageProps>`},{name:`imagePosition`,type:`string`,option:[`top`,`left`,`adaptiveSm`,`adaptiveMd`,`adaptiveLg`,`adaptiveXl`,`adaptive2xl`]},{name:`imageSize`,type:`string`,option:[`sm`,`md`,`lg`,`quarter`,`half`]},{name:`indent`,type:`number`},{name:`inDom`,type:`boolean`},{name:`inert`,type:`boolean`},{name:`modelOpen`,type:`boolean`},{name:`onUpdate:modelOpen`,type:`((value: boolean) => void)`},{name:`onUpdate:open`,type:`((value: boolean) => void)`},{name:`open`,type:`boolean`},{name:`opening`,type:`(() => NormalOrPromise<boolean>)`},{name:`openOnArrowDown`,type:`boolean`},{name:`origin`,type:`string`,option:[`top`,`left`,`center`,`right`,`bottom`,`topToBottom`,`rightToLeft`,`bottomToTop`,`leftToRight`]},{name:`overElement`,type:`ElementOrString<HTMLElement>`},{name:`overscroll`,type:`boolean`},{name:`persistent`,type:`boolean`},{name:`preparation`,type:`(() => NormalOrPromise<void>)`},{name:`role`,type:`string`},{name:`scrollbarAttrs`,type:`ConstrBind<ScrollbarProps>`},{name:`staticMode`,type:`boolean`},{name:`textClose`,type:`TextValue`},{name:`width`,type:`string`,option:[`auto`,`max`,`sm`,`md`,`lg`,`custom`]},{name:`widthMatch`,type:`boolean`}],g=[{name:`control`,description:`Control slot for window management/
-Слот управления для управления окном`,properties:[{name:`props`,type:`(WindowControlItem) | undefined`}]},{name:`default`,description:`Default slot for main content/
-Основной слот для главного содержимого`,properties:[{name:`props`,type:`(WindowControlItem) | undefined`}]},{name:`footer`,description:`Footer slot for window bottom/
-Слот подвала для низа окна`,properties:[{name:`props`,type:`(WindowControlItem) | undefined`}]},{name:`title`,description:`Title slot for window header/
-Слот заголовка для шапки окна`,properties:[{name:`props`,type:`(WindowControlItem) | undefined`}]}],_=[{name:`load`,description:`Event triggered when the image is loaded/ Событие, срабатывающее при загрузке изображения`,properties:[{name:`image`,type:`ImageEventData`}]},{name:`scrollbarBottom`,description:`Event triggered when reaching the bottom/ Событие при достижении низа`,properties:[{name:`isBottom`,type:`boolean`}]},{name:`scrollbarEdge`,description:`Event triggered when reaching any edge/ Событие при достижении любого края`,properties:[{name:`isTop`,type:`boolean`},{name:`isBottom`,type:`boolean`},{name:`edge`,type:`ScrollbarEdgeType`}]},{name:`scrollbarLeaveBottom`,description:`Event triggered when leaving the bottom position/ Событие при уходе с нижней позиции`},{name:`scrollbarLeaveTop`,description:`Event triggered when leaving the top position/ Событие при уходе с верхней позиции`},{name:`scrollbarReachBottom`,description:`Event triggered when precisely reaching the bottom position/ Событие при точном достижении нижней позиции`},{name:`scrollbarReachTop`,description:`Event triggered when precisely reaching the top position/ Событие при точном достижении верхней позиции`},{name:`scrollbarTop`,description:`Event triggered when reaching the top/ Событие при достижении верха`,properties:[{name:`isTop`,type:`boolean`}]},{name:`update:modelOpen`,description:`Update model open event/ Событие обновления открытия модели`,properties:[{name:`value`,type:`boolean`}]},{name:`update:open`,description:`Update open event/ Событие обновления открытия`,properties:[{name:`value`,type:`boolean`}]},{name:`window`,description:`Window event triggered on state change/ Событие окна при изменении состояния`,properties:[{name:`options`,type:`WindowEmitOptions`}]}],v={component:`Window`,props:h,slots:g,events:_,defaults:p,wikiDesign:c}})),b,x=t((()=>{a(),o(),y(),b=new u(v.component,v.props,v.defaults,v.wikiDesign,i,s)})),S=e({Window:()=>w,WindowAxis:()=>E,WindowStaticMode:()=>T,WindowVModel:()=>D,__namedExportsOrder:()=>O,default:()=>C}),C,w,T,E,D,O,k=t((()=>{f(),x(),n(),C={title:`Ui/Window`,component:m,parameters:{design:`d1`,docs:{description:{component:b.getDescription()}}},argTypes:b.getWiki(),args:b.getValues()},w={args:{image:`https://oboitd.ru/images/goods/big/20221019093936_Priroda_8361-M.jpg`,closeButton:!0},render:e=>({components:{D1Window:m},setup:()=>({args:e}),template:`
+import { a as e, i as t } from './preload-helper-Cv19cBWa.js'; import { Vt as n, cn as r } from './iframe-D7czqiJA.js'; import { a as i, d as a, l as o, m as s, n as c, t as l, u } from './wiki-CUC2UhNU.js'; import { i as d, n as f, r as p, t as m } from './D1Window-Zc4NQuvt.js'; var h, g, _, v, y = t(() => {
+    l(), d(), h = [{ name: `adaptive`, type: `string`, option: [`menu`, `menuWindow`, `modal`, `modalDynamic`, `actionSheetRight`, `actionSheetBottom`, `static`, `actionSheet`, `actionSheetToModal`, `autoStaticSm`, `autoStaticMd`, `autoStaticLg`, `autoStaticXl`, `autoStatic2xl`] }, { name: `alignment`, type: `string`, option: [`top`, `left`, `center`, `topRight`, `topLeft`, `topFull`, `right`, `rightFull`, `bottom`, `bottomRight`, `bottomLeft`, `bottomFull`, `leftFull`] }, { name: `ariaDescribedby`, type: `string` }, { name: `ariaHaspopup`, type: `string`, option: [`menu`, `dialog`, `grid`, `listbox`, `tree`, `true`, `false`] }, { name: `ariaLabelledby`, type: `string` }, { name: `autoClose`, type: `boolean` }, { name: `autoTabIndex`, type: `boolean` }, { name: `axis`, type: `string`, option: [`x`, `y`, `on`] }, { name: `beforeClosing`, type: `(() => NormalOrPromise<boolean>)` }, { name: `beforeOpening`, type: `(() => NormalOrPromise<boolean>)` }, { name: `closeButton`, type: `boolean` }, { name: `closeMobileHide`, type: `boolean` }, { name: `closeOnEsc`, type: `boolean` }, { name: `closing`, type: `(() => NormalOrPromise<boolean>)` }, { name: `contextmenu`, type: `boolean` }, { name: `dense`, type: `boolean` }, { name: `disabled`, type: `boolean` }, { name: `divider`, type: `boolean` }, { name: `embedded`, type: `boolean` }, { name: `flash`, type: `boolean` }, { name: `fullscreen`, type: `boolean` }, { name: `height`, type: `string`, option: [`auto`, `max`, `sm`, `md`, `lg`, `custom`] }, { name: `hide`, type: `boolean` }, { name: `iconClose`, type: `IconValue<IconProps>` }, { name: `image`, type: `string | ConstrBind<ImageProps>` }, { name: `imageAttrs`, type: `ConstrBind<ImageProps>` }, { name: `imagePosition`, type: `string`, option: [`top`, `left`, `adaptiveSm`, `adaptiveMd`, `adaptiveLg`, `adaptiveXl`, `adaptive2xl`] }, { name: `imageSize`, type: `string`, option: [`sm`, `md`, `lg`, `quarter`, `half`] }, { name: `indent`, type: `number` }, { name: `inDom`, type: `boolean` }, { name: `inert`, type: `boolean` }, { name: `modelOpen`, type: `boolean` }, { name: `onUpdate:modelOpen`, type: `((value: boolean) => void)` }, { name: `onUpdate:open`, type: `((value: boolean) => void)` }, { name: `open`, type: `boolean` }, { name: `opening`, type: `(() => NormalOrPromise<boolean>)` }, { name: `openOnArrowDown`, type: `boolean` }, { name: `origin`, type: `string`, option: [`top`, `left`, `center`, `right`, `bottom`, `topToBottom`, `rightToLeft`, `bottomToTop`, `leftToRight`] }, { name: `overElement`, type: `ElementOrString<HTMLElement>` }, { name: `overscroll`, type: `boolean` }, { name: `persistent`, type: `boolean` }, { name: `preparation`, type: `(() => NormalOrPromise<void>)` }, { name: `role`, type: `string` }, { name: `scrollbarAttrs`, type: `ConstrBind<ScrollbarProps>` }, { name: `staticMode`, type: `boolean` }, { name: `textClose`, type: `TextValue` }, { name: `width`, type: `string`, option: [`auto`, `max`, `sm`, `md`, `lg`, `custom`] }, { name: `widthMatch`, type: `boolean` }], g = [{ name: `control`, description: `Control slot for window management/
+Слот управления для управления окном`, properties: [{ name: `props`, type: `(WindowControlItem) | undefined` }] }, { name: `default`, description: `Default slot for main content/
+Основной слот для главного содержимого`, properties: [{ name: `props`, type: `(WindowControlItem) | undefined` }] }, { name: `footer`, description: `Footer slot for window bottom/
+Слот подвала для низа окна`, properties: [{ name: `props`, type: `(WindowControlItem) | undefined` }] }, { name: `title`, description: `Title slot for window header/
+Слот заголовка для шапки окна`, properties: [{ name: `props`, type: `(WindowControlItem) | undefined` }] }], _ = [{ name: `load`, description: `Event triggered when the image is loaded/ Событие, срабатывающее при загрузке изображения`, properties: [{ name: `image`, type: `ImageEventData` }] }, { name: `scrollbarBottom`, description: `Event triggered when reaching the bottom/ Событие при достижении низа`, properties: [{ name: `isBottom`, type: `boolean` }] }, { name: `scrollbarEdge`, description: `Event triggered when reaching any edge/ Событие при достижении любого края`, properties: [{ name: `isTop`, type: `boolean` }, { name: `isBottom`, type: `boolean` }, { name: `edge`, type: `ScrollbarEdgeType` }] }, { name: `scrollbarLeaveBottom`, description: `Event triggered when leaving the bottom position/ Событие при уходе с нижней позиции` }, { name: `scrollbarLeaveTop`, description: `Event triggered when leaving the top position/ Событие при уходе с верхней позиции` }, { name: `scrollbarReachBottom`, description: `Event triggered when precisely reaching the bottom position/ Событие при точном достижении нижней позиции` }, { name: `scrollbarReachTop`, description: `Event triggered when precisely reaching the top position/ Событие при точном достижении верхней позиции` }, { name: `scrollbarTop`, description: `Event triggered when reaching the top/ Событие при достижении верха`, properties: [{ name: `isTop`, type: `boolean` }] }, { name: `update:modelOpen`, description: `Update model open event/ Событие обновления открытия модели`, properties: [{ name: `value`, type: `boolean` }] }, { name: `update:open`, description: `Update open event/ Событие обновления открытия`, properties: [{ name: `value`, type: `boolean` }] }, { name: `window`, description: `Window event triggered on state change/ Событие окна при изменении состояния`, properties: [{ name: `options`, type: `WindowEmitOptions` }] }], v = { component: `Window`, props: h, slots: g, events: _, defaults: p, wikiDesign: c }
+  }), b, x = t(() => { a(), o(), y(), b = new u(v.component, v.props, v.defaults, v.wikiDesign, i, s) }), S = e({ Window: () => w, WindowAxis: () => E, WindowStaticMode: () => T, WindowVModel: () => D, __namedExportsOrder: () => O, default: () => C }), C, w, T, E, D, O, k = t(() => {
+    f(), x(), n(), C = { title: `Ui/Window`, component: m, parameters: { design: `d1`, docs: { description: { component: b.getDescription() } } }, argTypes: b.getWiki(), args: b.getValues() }, w = { args: { image: `https://oboitd.ru/images/goods/big/20221019093936_Priroda_8361-M.jpg`, closeButton: !0 }, render: e => ({ components: { D1Window: m }, setup: () => ({ args: e }), template: `
       <D1Window v-bind="args">
         <template #control="{binds}">
           <button class="wiki-storybook-button" v-bind="binds">Open Window</button>
@@ -38,7 +41,7 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{Vt as n,cn as r}f
           </div>
         </template>
       </D1Window>
-    `})},T={name:`Статический режим`,render:()=>({components:{D1Window:m},template:`
+    ` }) }, T = { name: `Статический режим`, render: () => ({ components: { D1Window: m }, template: `
         <D1Window :staticMode="true" adaptive="static">
           <template #default>
             <h4>Static Mode Window</h4>
@@ -55,7 +58,7 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{Vt as n,cn as r}f
             </div>
           </template>
         </D1Window>
-    `})},E={name:`Позиционирование по оси`,render:()=>({components:{D1Window:m},template:`
+    ` }) }, E = { name: `Позиционирование по оси`, render: () => ({ components: { D1Window: m }, template: `
         <div class="wiki-storybook-flex wiki-storybook-gap">
           <!-- Axis: x -->
           <D1Window axis="x" adaptive="menu" :indent="8">
@@ -108,13 +111,13 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{Vt as n,cn as r}f
             </template>
           </D1Window>
         </div>
-    `})},D={name:`Двусторонняя привязка (v-model)`,render:()=>({components:{D1Window:m},setup(){return{open:r(!1)}},template:`
+    ` }) }, D = { name: `Двусторонняя привязка (v-model)`, render: () => ({ components: { D1Window: m }, setup() { return { open: r(!1) } }, template: `
         <button class="wiki-storybook-button" @click="open = true">Open via v-model ({{ open }})</button>
 
         <D1Window v-model:open="open">
           <div class="wiki-storybook-item--padding">Your content here</div>
         </D1Window>
-    `})},w.parameters={...w.parameters,docs:{...w.parameters?.docs,source:{originalSource:`{
+    ` }) }, w.parameters = { ...w.parameters, docs: { ...w.parameters?.docs, source: { originalSource: `{
   args: {
     image: 'https://oboitd.ru/images/goods/big/20221019093936_Priroda_8361-M.jpg',
     closeButton: true
@@ -166,7 +169,7 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{Vt as n,cn as r}f
     \`
   })
   // :story-main [!] System label / Системная метка
-}`,...w.parameters?.docs?.source}}},T.parameters={...T.parameters,docs:{...T.parameters?.docs,source:{originalSource:`{
+}`, ...w.parameters?.docs?.source } } }, T.parameters = { ...T.parameters, docs: { ...T.parameters?.docs, source: { originalSource: `{
   name: 'Статический режим',
   render: () => ({
     components: {
@@ -191,7 +194,7 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{Vt as n,cn as r}f
         </D1Window>
     \`
   })
-}`,...T.parameters?.docs?.source}}},E.parameters={...E.parameters,docs:{...E.parameters?.docs,source:{originalSource:`{
+}`, ...T.parameters?.docs?.source } } }, E.parameters = { ...E.parameters, docs: { ...E.parameters?.docs, source: { originalSource: `{
   name: 'Позиционирование по оси',
   render: () => ({
     components: {
@@ -252,7 +255,7 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{Vt as n,cn as r}f
         </div>
     \`
   })
-}`,...E.parameters?.docs?.source}}},D.parameters={...D.parameters,docs:{...D.parameters?.docs,source:{originalSource:`{
+}`, ...E.parameters?.docs?.source } } }, D.parameters = { ...D.parameters, docs: { ...D.parameters?.docs, source: { originalSource: `{
   name: 'Двусторонняя привязка (v-model)',
   render: () => ({
     components: {
@@ -271,4 +274,5 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{Vt as n,cn as r}f
         </D1Window>
     \`
   })
-}`,...D.parameters?.docs?.source}}},O=[`Window`,`WindowStaticMode`,`WindowAxis`,`WindowVModel`]}));k();export{w as Window,E as WindowAxis,T as WindowStaticMode,D as WindowVModel,O as __namedExportsOrder,C as default,x as i,k as n,b as r,S as t};
+}`, ...D.parameters?.docs?.source } } }, O = [`Window`, `WindowStaticMode`, `WindowAxis`, `WindowVModel`]
+  }); k(); export { w as Window, E as WindowAxis, T as WindowStaticMode, D as WindowVModel, O as __namedExportsOrder, C as default, x as i, k as n, b as r, S as t }

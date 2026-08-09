@@ -1,4 +1,5 @@
-import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{a as n,d as r,l as i,m as a,n as o,t as s,u as c}from"./wiki-CUC2UhNU.js";import{i as l,n as u,r as d,t as f}from"./D1ScrollSticky-Bn06npK4.js";var p,m,h,g,_=t((()=>{s(),l(),p=[{name:`visible`,type:`boolean`}],m=[{name:`context`,description:`Slot for context element replacement / Слот для замены элемента контекста`,properties:[{name:`props`,type:`(ScrollStickyBindItem) | undefined`}]},{name:`default`,description:`Slot for default ScrollSticky content / Слот для основного содержимого ScrollSticky`,properties:[{name:`props`,type:`((props: { onResize(): void; }) => any) | undefined`}]},{name:`scroll`,description:`Slot for scroll element replacement / Слот для замены элемента прокрутки`,properties:[{name:`props`,type:`(ScrollStickyBindItem) | undefined`}]}],h=[],g={component:`ScrollSticky`,props:p,slots:m,events:h,defaults:d,wikiDesign:o}})),v,y=t((()=>{r(),i(),_(),v=new c(g.component,g.props,g.defaults,g.wikiDesign,n,a)})),b=e({ScrollSticky:()=>S,__namedExportsOrder:()=>C,default:()=>x}),x,S,C,w=t((()=>{u(),y(),x={title:`Ui/ScrollSticky`,component:f,parameters:{design:`d1`,docs:{description:{component:v.getDescription()}}},argTypes:v.getWiki(),args:v.getValues()},S={render:e=>({components:{D1ScrollSticky:f},setup:()=>({args:e}),template:`
+import { a as e, i as t } from './preload-helper-Cv19cBWa.js'; import { a as n, d as r, l as i, m as a, n as o, t as s, u as c } from './wiki-CUC2UhNU.js'; import { i as l, n as u, r as d, t as f } from './D1ScrollSticky-Bn06npK4.js'; var p, m, h, g, _ = t(() => { s(), l(), p = [{ name: `visible`, type: `boolean` }], m = [{ name: `context`, description: `Slot for context element replacement / Слот для замены элемента контекста`, properties: [{ name: `props`, type: `(ScrollStickyBindItem) | undefined` }] }, { name: `default`, description: `Slot for default ScrollSticky content / Слот для основного содержимого ScrollSticky`, properties: [{ name: `props`, type: `((props: { onResize(): void; }) => any) | undefined` }] }, { name: `scroll`, description: `Slot for scroll element replacement / Слот для замены элемента прокрутки`, properties: [{ name: `props`, type: `(ScrollStickyBindItem) | undefined` }] }], h = [], g = { component: `ScrollSticky`, props: p, slots: m, events: h, defaults: d, wikiDesign: o } }), v, y = t(() => { r(), i(), _(), v = new c(g.component, g.props, g.defaults, g.wikiDesign, n, a) }), b = e({ ScrollSticky: () => S, __namedExportsOrder: () => C, default: () => x }), x, S, C, w = t(() => {
+  u(), y(), x = { title: `Ui/ScrollSticky`, component: f, parameters: { design: `d1`, docs: { description: { component: v.getDescription() } } }, argTypes: v.getWiki(), args: v.getValues() }, S = { render: e => ({ components: { D1ScrollSticky: f }, setup: () => ({ args: e }), template: `
       <div class="wiki-storybook-item wiki-storybook-item--rectangle wiki-storybook-item--overflowAuto wiki-storybook-item--padding">
         <div style="height: 320px;"/>
         <D1ScrollSticky v-bind="args" style="max-width: 400px;">
@@ -29,7 +30,7 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{a as n,d as r,l a
         </D1ScrollSticky>
         <div style="height: 320px;"/>
       </div>
-    `})},S.parameters={...S.parameters,docs:{...S.parameters?.docs,source:{originalSource:`{
+    ` }) }, S.parameters = { ...S.parameters, docs: { ...S.parameters?.docs, source: { originalSource: `{
   // :story-main [!] System label / Системная метка
   render: (args: any) => ({
     components: {
@@ -72,4 +73,5 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{a as n,d as r,l a
     \`
   })
   // :story-main [!] System label / Системная метка
-}`,...S.parameters?.docs?.source}}},C=[`ScrollSticky`]}));w();export{S as ScrollSticky,C as __namedExportsOrder,x as default,y as i,w as n,v as r,b as t};
+}`, ...S.parameters?.docs?.source } } }, C = [`ScrollSticky`]
+}); w(); export { S as ScrollSticky, C as __namedExportsOrder, x as default, y as i, w as n, v as r, b as t }

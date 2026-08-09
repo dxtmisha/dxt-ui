@@ -1,4 +1,5 @@
-import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{a as n,d as r,l as i,m as a,n as o,o as s,t as c,u as l}from"./wiki-CUC2UhNU.js";import{i as u,n as d,r as f,t as p}from"./D1Skeleton-atWhpGi3.js";var m,h,g,_,v=t((()=>{c(),u(),m=[{name:`active`,type:`boolean`}],h=[{name:`default`,description:`Slot for default skeleton content/ Слот для основного содержимого скелета`,properties:[{name:`props`,type:`(SkeletonClassesList) | undefined`}]}],g=[],_={component:`Skeleton`,props:m,slots:h,events:g,defaults:f,wikiDesign:o}})),y,b=t((()=>{r(),i(),v(),y=new l(_.component,_.props,_.defaults,_.wikiDesign,n,a)})),x=e({Skeleton:()=>C,SkeletonBasic:()=>w,__namedExportsOrder:()=>T,default:()=>S}),S,C,w,T,E=t((()=>{d(),b(),i(),S={title:`Ui/Skeleton`,component:p,parameters:{design:`d1`,docs:{description:{component:y.getDescription()}}},argTypes:y.getWiki(),args:y.getValues()},C={render:e=>({components:{D1Skeleton:p},setup:()=>({args:e}),template:`
+import { a as e, i as t } from './preload-helper-Cv19cBWa.js'; import { a as n, d as r, l as i, m as a, n as o, o as s, t as c, u as l } from './wiki-CUC2UhNU.js'; import { i as u, n as d, r as f, t as p } from './D1Skeleton-atWhpGi3.js'; var m, h, g, _, v = t(() => { c(), u(), m = [{ name: `active`, type: `boolean` }], h = [{ name: `default`, description: `Slot for default skeleton content/ Слот для основного содержимого скелета`, properties: [{ name: `props`, type: `(SkeletonClassesList) | undefined` }] }], g = [], _ = { component: `Skeleton`, props: m, slots: h, events: g, defaults: f, wikiDesign: o } }), y, b = t(() => { r(), i(), v(), y = new l(_.component, _.props, _.defaults, _.wikiDesign, n, a) }), x = e({ Skeleton: () => C, SkeletonBasic: () => w, __namedExportsOrder: () => T, default: () => S }), S, C, w, T, E = t(() => {
+  d(), b(), i(), S = { title: `Ui/Skeleton`, component: p, parameters: { design: `d1`, docs: { description: { component: y.getDescription() } } }, argTypes: y.getWiki(), args: y.getValues() }, C = { render: e => ({ components: { D1Skeleton: p }, setup: () => ({ args: e }), template: `
       <D1Skeleton v-bind="args">
       <div class="wiki-storybook-card d1-skeleton__background">
         <div class="wiki-storybook-card__image d1-skeleton__background" style="background-image: url('${s}')"/>
@@ -16,7 +17,7 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{a as n,d as r,l a
         </div>
       </div>
     </D1Skeleton>
-    `})},w={name:`Базовое использование`,render:()=>({components:{D1Skeleton:p},template:`
+    ` }) }, w = { name: `Базовое использование`, render: () => ({ components: { D1Skeleton: p }, template: `
         <div class="wiki-storybook-group">
           <div class="wiki-storybook-item wiki-storybook-item--squared--md wiki-storybook-item--center">
             <div class="wiki-storybook-item__label">text</div>
@@ -84,7 +85,7 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{a as n,d as r,l a
             </D1Skeleton>
           </div>
         </div>
-    `})},C.parameters={...C.parameters,docs:{...C.parameters?.docs,source:{originalSource:`{
+    ` }) }, C.parameters = { ...C.parameters, docs: { ...C.parameters?.docs, source: { originalSource: `{
   // :story-main [!] System label / Системная метка
   render: (args: any) => ({
     components: {
@@ -114,7 +115,7 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{a as n,d as r,l a
     \`
   })
   // :story-main [!] System label / Системная метка
-}`,...C.parameters?.docs?.source}}},w.parameters={...w.parameters,docs:{...w.parameters?.docs,source:{originalSource:`{
+}`, ...C.parameters?.docs?.source } } }, w.parameters = { ...w.parameters, docs: { ...w.parameters?.docs, source: { originalSource: `{
   name: 'Базовое использование',
   render: () => ({
     components: {
@@ -190,4 +191,5 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{a as n,d as r,l a
         </div>
     \`
   })
-}`,...w.parameters?.docs?.source}}},T=[`Skeleton`,`SkeletonBasic`]}));E();export{C as Skeleton,w as SkeletonBasic,T as __namedExportsOrder,S as default,b as i,E as n,y as r,x as t};
+}`, ...w.parameters?.docs?.source } } }, T = [`Skeleton`, `SkeletonBasic`]
+}); E(); export { C as Skeleton, w as SkeletonBasic, T as __namedExportsOrder, S as default, b as i, E as n, y as r, x as t }

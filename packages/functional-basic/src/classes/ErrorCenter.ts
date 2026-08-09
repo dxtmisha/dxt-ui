@@ -130,4 +130,3 @@ export class ErrorCenter {
     this.getItem().on(cause)
   }
 }
-

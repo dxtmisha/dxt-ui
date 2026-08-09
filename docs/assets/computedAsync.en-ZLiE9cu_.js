@@ -1,16 +1,17 @@
-import{i as e}from"./preload-helper-Cv19cBWa.js";import{a as t,t as n}from"./jsx-runtime-D1H6-shM.js";import{f as r,s as i}from"./blocks-CKlddtvc.js";import{t as a}from"./mdx-react-shim-B1U8VZv0.js";function o(e){let n={code:`code`,h1:`h1`,li:`li`,p:`p`,pre:`pre`,strong:`strong`,ul:`ul`,...t(),...e.components};return(0,c.jsxs)(c.Fragment,{children:[(0,c.jsx)(i,{title:`@dxtmisha/en/functional/Functions/computedAsync - Async computed property`}),`
-`,(0,c.jsx)(n.h1,{id:`computedasync`,children:(0,c.jsx)(n.code,{children:`computedAsync`})}),`
-`,(0,c.jsxs)(n.p,{children:[`Creates a computed property that can handle asynchronous getters. Unlike Vue's standard `,(0,c.jsx)(n.code,{children:`computed`}),`, `,(0,c.jsx)(n.code,{children:`computedAsync`}),` accepts async functions, synchronous functions, or raw values — the result is automatically resolved and exposed as a reactive computed ref. Initialization is lazy and occurs upon first access to the property.`]}),`
-`,(0,c.jsx)(n.p,{children:(0,c.jsx)(n.strong,{children:`Parameters:`})}),`
-`,(0,c.jsxs)(n.ul,{children:[`
-`,(0,c.jsxs)(n.li,{children:[(0,c.jsx)(n.code,{children:`getter: (() => Promise<R>) | (() => R) | R`}),` — An async function, synchronous function, or raw value to compute the result from.`]}),`
-`,(0,c.jsxs)(n.li,{children:[(0,c.jsx)(n.code,{children:`initialState?: R`}),` — The initial value of the result.`]}),`
-`,(0,c.jsxs)(n.li,{children:[(0,c.jsx)(n.code,{children:`ignore?: R`}),` — A value to be ignored (will not be set as the result).`]}),`
-`,(0,c.jsxs)(n.li,{children:[(0,c.jsx)(n.code,{children:`debugOptions?: DebuggerOptions`}),` — Options used for debugging reactive computations, supported by Vue.js.`]}),`
-`]}),`
-`,(0,c.jsxs)(n.p,{children:[(0,c.jsx)(n.strong,{children:`Returns:`}),`
-`,(0,c.jsx)(n.code,{children:`ComputedRef<R | undefined>`}),` — A reactive computed ref containing the resolved result of the getter.`]}),`
-`,(0,c.jsx)(n.pre,{children:(0,c.jsx)(n.code,{className:`language-typescript`,children:`import { computedAsync } from '@dxtmisha/functional'
+import { i as e } from './preload-helper-Cv19cBWa.js'; import { a as t, t as n } from './jsx-runtime-D1H6-shM.js'; import { f as r, s as i } from './blocks-CKlddtvc.js'; import { t as a } from './mdx-react-shim-B1U8VZv0.js'; function o(e) {
+  let n = { code: `code`, h1: `h1`, li: `li`, p: `p`, pre: `pre`, strong: `strong`, ul: `ul`, ...t(), ...e.components }; return (0, c.jsxs)(c.Fragment, { children: [(0, c.jsx)(i, { title: `@dxtmisha/en/functional/Functions/computedAsync - Async computed property` }), `
+`, (0, c.jsx)(n.h1, { id: `computedasync`, children: (0, c.jsx)(n.code, { children: `computedAsync` }) }), `
+`, (0, c.jsxs)(n.p, { children: [`Creates a computed property that can handle asynchronous getters. Unlike Vue's standard `, (0, c.jsx)(n.code, { children: `computed` }), `, `, (0, c.jsx)(n.code, { children: `computedAsync` }), ` accepts async functions, synchronous functions, or raw values — the result is automatically resolved and exposed as a reactive computed ref. Initialization is lazy and occurs upon first access to the property.`] }), `
+`, (0, c.jsx)(n.p, { children: (0, c.jsx)(n.strong, { children: `Parameters:` }) }), `
+`, (0, c.jsxs)(n.ul, { children: [`
+`, (0, c.jsxs)(n.li, { children: [(0, c.jsx)(n.code, { children: `getter: (() => Promise<R>) | (() => R) | R` }), ` — An async function, synchronous function, or raw value to compute the result from.`] }), `
+`, (0, c.jsxs)(n.li, { children: [(0, c.jsx)(n.code, { children: `initialState?: R` }), ` — The initial value of the result.`] }), `
+`, (0, c.jsxs)(n.li, { children: [(0, c.jsx)(n.code, { children: `ignore?: R` }), ` — A value to be ignored (will not be set as the result).`] }), `
+`, (0, c.jsxs)(n.li, { children: [(0, c.jsx)(n.code, { children: `debugOptions?: DebuggerOptions` }), ` — Options used for debugging reactive computations, supported by Vue.js.`] }), `
+`] }), `
+`, (0, c.jsxs)(n.p, { children: [(0, c.jsx)(n.strong, { children: `Returns:` }), `
+`, (0, c.jsx)(n.code, { children: `ComputedRef<R | undefined>` }), ` — A reactive computed ref containing the resolved result of the getter.`] }), `
+`, (0, c.jsx)(n.pre, { children: (0, c.jsx)(n.code, { className: `language-typescript`, children: `import { computedAsync } from '@dxtmisha/functional'
 
 // Initial state
 const status = computedAsync(async () => {
@@ -30,4 +31,5 @@ const label = computedAsync(() => 'Hello, World!')
 
 // Raw value
 const count = computedAsync(42)
-`})})]})}function s(e={}){let{wrapper:n}={...t(),...e.components};return n?(0,c.jsx)(n,{...e,children:(0,c.jsx)(o,{...e})}):o(e)}var c;e((()=>{c=n(),a(),r()}))();export{s as default};
+` }) })] })
+} function s(e = {}) { let { wrapper: n } = { ...t(), ...e.components }; return n ? (0, c.jsx)(n, { ...e, children: (0, c.jsx)(o, { ...e }) }) : o(e) } var c; e(() => { c = n(), a(), r() })(); export { s as default }

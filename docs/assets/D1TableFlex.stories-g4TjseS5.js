@@ -1,8 +1,11 @@
-import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{Gt as n,Ut as r,Vt as i,Wt as a,Yt as o,cn as s,dn as c,en as l}from"./iframe-D7czqiJA.js";import{a as u,d,l as f,m as p,n as m,t as h,u as g}from"./wiki-CUC2UhNU.js";import{n as _,t as v}from"./AriaStaticInclude-BsKgXpT8-Crt3dq7t.js";import{a as y,i as b,n as ee,r as x,t as S}from"./ScrollSticky-WG-SPDAX.js";import{n as C,t as w}from"./D1TableFlexRecord-DdSD6HWF.js";var T,E,D,O=t((()=>{v(),b(),T={lazy:!0,page:1,stickyScrollBottom:!0},E=class extends x{get tag(){return`div`}get tagCaption(){return`div`}get tagColgroup(){}get tagHeader(){return`div`}get tagFoot(){return`div`}get tagItems(){return`div`}get binds(){return{...super.binds,..._.role(`table`)}}},D=class extends y{constructor(e,t,n,r=E){super(e,t,n,r)}initClasses(){return{main:{},table:this.getSubClass(`table`),colgroup:this.getSubClass(`colgroup`),col:this.getSubClass(`col`),header:this.getSubClass(`header`),foot:this.getSubClass(`foot`),items:this.getSubClass(`items`),caption:this.getSubClass(`caption`)}}}})),k,A=t((()=>{C(),k=w})),j,M=t((()=>{O(),j={...T}})),N=t((()=>{})),P,F=t((()=>{i(),O(),ee(),A(),M(),N(),P=n({name:`D1TableFlex`,__name:`D1TableFlex`,props:o({caption:{},captionDecorative:{type:Boolean},list:{},search:{},searchColumns:{},searchOptions:{},sort:{},sortDir:{},sortFunction:{type:Function},page:{},rows:{},stickyScrollBottom:{type:Boolean},isSkeleton:{type:Boolean},stickyLeft:{},tableItemAttrs:{},tableItemColumnAttrs:{},selected:{},stickyTop:{},keyValue:{},lazy:{type:Boolean},defaultHeight:{},tableRecordAttrs:{},tableRowAttrs:{},columns:{},columnsWidth:{},header:{},foot:{},headerTop:{type:Boolean},captionBottom:{type:Boolean},bleed:{type:Boolean}},j),emits:[`sort`],setup(e,{expose:t,emit:n}){let i=n,o=e,s=new D(`d1.tableFlex`,o,{emits:i,classes:r(()=>({main:{"d1-tableFlex":!0,"d1-tableFlex--headerTop":o.headerTop,"d1-tableFlex--captionBottom":o.captionBottom,"d1-tableFlex--bleed":o.bleed}})),styles:r(()=>({})),components:{tableRecord:k,scrollSticky:S}}),u=s.render();return t(s.expose()),(e,t)=>(l(),a(c(u)))}})})),I,L=t((()=>{F(),F(),I=P,P.__docgenInfo=Object.assign({displayName:P.name??P.__name},{name:`D1TableFlex`,exportName:`default`,displayName:`D1TableFlex`,description:``,tags:{},sourceFiles:[`/Volumes/T7/Code/dxt-ui/packages/d1/src/components/Ui/TableFlex/D1TableFlex.vue`]})})),R,z,B,V,H=t((()=>{h(),M(),R=[{name:`bleed`,type:`boolean`},{name:`caption`,type:`string | number`},{name:`captionBottom`,type:`boolean`},{name:`captionDecorative`,type:`boolean`},{name:`columns`,type:`string[]`},{name:`columnsWidth`,type:`Record<string, string | number>`},{name:`defaultHeight`,type:`string | number`},{name:`foot`,type:`TableHeader<TableFlexHeaderItemProps> | TableHeaders<TableFlexHeaderItemProps>`},{name:`header`,type:`TableHeader<TableFlexHeaderItemProps> | TableHeaders<TableFlexHeaderItemProps>`},{name:`headerTop`,type:`boolean`},{name:`isSkeleton`,type:`boolean`},{name:`keyValue`,type:`string`},{name:`lazy`,type:`boolean`},{name:`list`,type:`(TableFlexItemProps[] & TableList<TableFlexItemProps>)`},{name:`page`,type:`string | number`},{name:`rows`,type:`string | number`},{name:`search`,type:`string`},{name:`searchColumns`,type:`string[]`},{name:`searchOptions`,type:`SearchOptions`},{name:`selected`,type:`string | string[]`},{name:`sort`,type:`SortColumn`},{name:`sortDir`,type:`string`,option:[`asc`,`desc`]},{name:`sortFunction`,type:`SortFunction<TableFlexItemProps>`},{name:`stickyLeft`,type:`string[]`},{name:`stickyScrollBottom`,type:`boolean`},{name:`stickyTop`,type:`string[]`},{name:`tableItemAttrs`,type:`ConstrBind<TableFlexItemProps>`},{name:`tableItemColumnAttrs`,type:`Record<string, ConstrBind<TableFlexItemProps>>`},{name:`tableRecordAttrs`,type:`ConstrBind<TableFlexRecordProps>`},{name:`tableRowAttrs`,type:`Record<string, ConstrBind<TableFlexRecordProps>>`}],z=[{name:`body`,description:`Slot for custom table body content /
-Слот для пользовательского содержимого тела таблицы`,properties:[{name:`props`,type:`(any) | undefined`}]},{name:`caption`,description:`Caption slot/ Слот заголовка`,properties:[{name:`props`,type:`(any) | undefined`}]},{name:`foot`,description:`Slot for custom table footer content /
-Слот для пользовательского содержимого подвала таблицы`,properties:[{name:`props`,type:`({ columns: string[]; }) | undefined`}]},{name:`header`,description:`Slot for custom table header content /
-Слот для пользовательского содержимого шапки таблицы`,properties:[{name:`props`,type:`({ columns: string[]; }) | undefined`}]},{name:`items`,description:`Slot for custom table items content /
-Слот для пользовательского содержимого элементов таблицы`,properties:[{name:`props`,type:`({ columns: string[]; }) | undefined`}]}],B=[{name:`sort`,description:`Event triggered when sort button is clicked / Событие, вызываемое при клике по кнопке сортировки`,properties:[{name:`item`,type:`SortColumnItem`}]}],V={component:`TableFlex`,props:R,slots:z,events:B,defaults:j,wikiDesign:m}})),U,W=t((()=>{d(),f(),H(),U=new g(V.component,V.props,V.defaults,V.wikiDesign,u,p)})),G=e({TableFlex:()=>q,TableFlexBasic:()=>J,TableFlexSearch:()=>Z,TableFlexSlots:()=>Y,TableFlexSort:()=>X,__namedExportsOrder:()=>Q,default:()=>K}),K,q,J,Y,X,Z,Q,$=t((()=>{L(),W(),i(),K={title:`Ui/TableFlex`,component:I,parameters:{design:`d1`,docs:{description:{component:U.getDescription()}}},argTypes:U.getWiki(),args:U.getValues()},q={},J={name:`Базовый`,render:()=>({components:{D1TableFlex:I},template:`
+import { a as e, i as t } from './preload-helper-Cv19cBWa.js'; import { Gt as n, Ut as r, Vt as i, Wt as a, Yt as o, cn as s, dn as c, en as l } from './iframe-D7czqiJA.js'; import { a as u, d, l as f, m as p, n as m, t as h, u as g } from './wiki-CUC2UhNU.js'; import { n as _, t as v } from './AriaStaticInclude-BsKgXpT8-Crt3dq7t.js'; import { a as y, i as b, n as ee, r as x, t as S } from './ScrollSticky-WG-SPDAX.js'; import { n as C, t as w } from './D1TableFlexRecord-DdSD6HWF.js'; var T, E, D, O = t(() => { v(), b(), T = { lazy: !0, page: 1, stickyScrollBottom: !0 }, E = class extends x {get tag() { return `div` } get tagCaption() { return `div` } get tagColgroup() {} get tagHeader() { return `div` } get tagFoot() { return `div` } get tagItems() { return `div` } get binds() { return { ...super.binds, ..._.role(`table`) } }}, D = class extends y {constructor(e, t, n, r = E) { super(e, t, n, r) }initClasses() { return { main: {}, table: this.getSubClass(`table`), colgroup: this.getSubClass(`colgroup`), col: this.getSubClass(`col`), header: this.getSubClass(`header`), foot: this.getSubClass(`foot`), items: this.getSubClass(`items`), caption: this.getSubClass(`caption`) } }} }), k, A = t(() => { C(), k = w }), j, M = t(() => { O(), j = { ...T } }), N = t(() => {}), P, F = t(() => { i(), O(), ee(), A(), M(), N(), P = n({ name: `D1TableFlex`, __name: `D1TableFlex`, props: o({ caption: {}, captionDecorative: { type: Boolean }, list: {}, search: {}, searchColumns: {}, searchOptions: {}, sort: {}, sortDir: {}, sortFunction: { type: Function }, page: {}, rows: {}, stickyScrollBottom: { type: Boolean }, isSkeleton: { type: Boolean }, stickyLeft: {}, tableItemAttrs: {}, tableItemColumnAttrs: {}, selected: {}, stickyTop: {}, keyValue: {}, lazy: { type: Boolean }, defaultHeight: {}, tableRecordAttrs: {}, tableRowAttrs: {}, columns: {}, columnsWidth: {}, header: {}, foot: {}, headerTop: { type: Boolean }, captionBottom: { type: Boolean }, bleed: { type: Boolean } }, j), emits: [`sort`], setup(e, { expose: t, emit: n }) { let i = n, o = e, s = new D(`d1.tableFlex`, o, { emits: i, classes: r(() => ({ main: { 'd1-tableFlex': !0, 'd1-tableFlex--headerTop': o.headerTop, 'd1-tableFlex--captionBottom': o.captionBottom, 'd1-tableFlex--bleed': o.bleed } })), styles: r(() => ({})), components: { tableRecord: k, scrollSticky: S } }), u = s.render(); return t(s.expose()), (e, t) => (l(), a(c(u))) } }) }), I, L = t(() => { F(), F(), I = P, P.__docgenInfo = Object.assign({ displayName: P.name ?? P.__name }, { name: `D1TableFlex`, exportName: `default`, displayName: `D1TableFlex`, description: ``, tags: {}, sourceFiles: [`/Volumes/T7/Code/dxt-ui/packages/d1/src/components/Ui/TableFlex/D1TableFlex.vue`] }) }), R, z, B, V, H = t(() => {
+    h(), M(), R = [{ name: `bleed`, type: `boolean` }, { name: `caption`, type: `string | number` }, { name: `captionBottom`, type: `boolean` }, { name: `captionDecorative`, type: `boolean` }, { name: `columns`, type: `string[]` }, { name: `columnsWidth`, type: `Record<string, string | number>` }, { name: `defaultHeight`, type: `string | number` }, { name: `foot`, type: `TableHeader<TableFlexHeaderItemProps> | TableHeaders<TableFlexHeaderItemProps>` }, { name: `header`, type: `TableHeader<TableFlexHeaderItemProps> | TableHeaders<TableFlexHeaderItemProps>` }, { name: `headerTop`, type: `boolean` }, { name: `isSkeleton`, type: `boolean` }, { name: `keyValue`, type: `string` }, { name: `lazy`, type: `boolean` }, { name: `list`, type: `(TableFlexItemProps[] & TableList<TableFlexItemProps>)` }, { name: `page`, type: `string | number` }, { name: `rows`, type: `string | number` }, { name: `search`, type: `string` }, { name: `searchColumns`, type: `string[]` }, { name: `searchOptions`, type: `SearchOptions` }, { name: `selected`, type: `string | string[]` }, { name: `sort`, type: `SortColumn` }, { name: `sortDir`, type: `string`, option: [`asc`, `desc`] }, { name: `sortFunction`, type: `SortFunction<TableFlexItemProps>` }, { name: `stickyLeft`, type: `string[]` }, { name: `stickyScrollBottom`, type: `boolean` }, { name: `stickyTop`, type: `string[]` }, { name: `tableItemAttrs`, type: `ConstrBind<TableFlexItemProps>` }, { name: `tableItemColumnAttrs`, type: `Record<string, ConstrBind<TableFlexItemProps>>` }, { name: `tableRecordAttrs`, type: `ConstrBind<TableFlexRecordProps>` }, { name: `tableRowAttrs`, type: `Record<string, ConstrBind<TableFlexRecordProps>>` }], z = [{ name: `body`, description: `Slot for custom table body content /
+Слот для пользовательского содержимого тела таблицы`, properties: [{ name: `props`, type: `(any) | undefined` }] }, { name: `caption`, description: `Caption slot/ Слот заголовка`, properties: [{ name: `props`, type: `(any) | undefined` }] }, { name: `foot`, description: `Slot for custom table footer content /
+Слот для пользовательского содержимого подвала таблицы`, properties: [{ name: `props`, type: `({ columns: string[]; }) | undefined` }] }, { name: `header`, description: `Slot for custom table header content /
+Слот для пользовательского содержимого шапки таблицы`, properties: [{ name: `props`, type: `({ columns: string[]; }) | undefined` }] }, { name: `items`, description: `Slot for custom table items content /
+Слот для пользовательского содержимого элементов таблицы`, properties: [{ name: `props`, type: `({ columns: string[]; }) | undefined` }] }], B = [{ name: `sort`, description: `Event triggered when sort button is clicked / Событие, вызываемое при клике по кнопке сортировки`, properties: [{ name: `item`, type: `SortColumnItem` }] }], V = { component: `TableFlex`, props: R, slots: z, events: B, defaults: j, wikiDesign: m }
+  }), U, W = t(() => { d(), f(), H(), U = new g(V.component, V.props, V.defaults, V.wikiDesign, u, p) }), G = e({ TableFlex: () => q, TableFlexBasic: () => J, TableFlexSearch: () => Z, TableFlexSlots: () => Y, TableFlexSort: () => X, __namedExportsOrder: () => Q, default: () => K }), K, q, J, Y, X, Z, Q, $ = t(() => {
+    L(), W(), i(), K = { title: `Ui/TableFlex`, component: I, parameters: { design: `d1`, docs: { description: { component: U.getDescription() } } }, argTypes: U.getWiki(), args: U.getValues() }, q = {}, J = { name: `Базовый`, render: () => ({ components: { D1TableFlex: I }, template: `
         <div class="wiki-storybook-item wiki-storybook-item--rectangle wiki-storybook-item--overflowAuto wiki-storybook-item--padding" style="max-height: 360px;">
           <D1TableFlex
             :columns="['id', 'name', 'status', 'role', 'email', 'age', 'country', 'city', 'salary']"
@@ -55,7 +58,7 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{Gt as n,Ut as r,V
             ]"
           />
         </div>
-    `})},Y={name:`Использование слотов`,render:()=>({components:{D1TableFlex:I},template:`
+    ` }) }, Y = { name: `Использование слотов`, render: () => ({ components: { D1TableFlex: I }, template: `
         <D1TableFlex
           caption="Table Caption"
           :columns="['id', 'name', 'status']"
@@ -103,7 +106,7 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{Gt as n,Ut as r,V
             Foot Cell Slot: {{ value }}
           </template>
         </D1TableFlex>
-    `})},X={name:`Сортировка`,render:()=>({components:{D1TableFlex:I},template:`
+    ` }) }, X = { name: `Сортировка`, render: () => ({ components: { D1TableFlex: I }, template: `
         <D1TableFlex
           :columns="['id', 'name', 'role', 'age', 'salary']"
           :header="[
@@ -125,7 +128,7 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{Gt as n,Ut as r,V
             { id: '5', name: 'Edward Norton', role: 'Tester', age: 26, salary: 7000 }
           ]"
         />
-    `})},Z={name:`Поиск`,render:()=>({components:{D1TableFlex:I},setup(){return{searchValue:s(`an`)}},template:`
+    ` }) }, Z = { name: `Поиск`, render: () => ({ components: { D1TableFlex: I }, setup() { return { searchValue: s(`an`) } }, template: `
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex-align-center">
             <input class="wiki-storybook-input" type="text" v-model="searchValue" placeholder="Search name or role..."/>
@@ -165,10 +168,10 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{Gt as n,Ut as r,V
             </template>
           </D1TableFlex>
         </div>
-    `})},q.parameters={...q.parameters,docs:{...q.parameters?.docs,source:{originalSource:`{
+    ` }) }, q.parameters = { ...q.parameters, docs: { ...q.parameters?.docs, source: { originalSource: `{
   // :story-main [!] System label / Системная метка
   // :story-main [!] System label / Системная метка
-}`,...q.parameters?.docs?.source}}},J.parameters={...J.parameters,docs:{...J.parameters?.docs,source:{originalSource:`{
+}`, ...q.parameters?.docs?.source } } }, J.parameters = { ...J.parameters, docs: { ...J.parameters?.docs, source: { originalSource: `{
   name: 'Базовый',
   render: () => ({
     components: {
@@ -229,7 +232,7 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{Gt as n,Ut as r,V
         </div>
     \`
   })
-}`,...J.parameters?.docs?.source}}},Y.parameters={...Y.parameters,docs:{...Y.parameters?.docs,source:{originalSource:`{
+}`, ...J.parameters?.docs?.source } } }, Y.parameters = { ...Y.parameters, docs: { ...Y.parameters?.docs, source: { originalSource: `{
   name: 'Использование слотов',
   render: () => ({
     components: {
@@ -285,7 +288,7 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{Gt as n,Ut as r,V
         </D1TableFlex>
     \`
   })
-}`,...Y.parameters?.docs?.source}}},X.parameters={...X.parameters,docs:{...X.parameters?.docs,source:{originalSource:`{
+}`, ...Y.parameters?.docs?.source } } }, X.parameters = { ...X.parameters, docs: { ...X.parameters?.docs, source: { originalSource: `{
   name: 'Сортировка',
   render: () => ({
     components: {
@@ -315,7 +318,7 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{Gt as n,Ut as r,V
         />
     \`
   })
-}`,...X.parameters?.docs?.source}}},Z.parameters={...Z.parameters,docs:{...Z.parameters?.docs,source:{originalSource:`{
+}`, ...X.parameters?.docs?.source } } }, Z.parameters = { ...Z.parameters, docs: { ...Z.parameters?.docs, source: { originalSource: `{
   name: 'Поиск',
   render: () => ({
     components: {
@@ -368,4 +371,5 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{Gt as n,Ut as r,V
         </div>
     \`
   })
-}`,...Z.parameters?.docs?.source}}},Q=[`TableFlex`,`TableFlexBasic`,`TableFlexSlots`,`TableFlexSort`,`TableFlexSearch`]}));$();export{q as TableFlex,J as TableFlexBasic,Z as TableFlexSearch,Y as TableFlexSlots,X as TableFlexSort,Q as __namedExportsOrder,K as default,W as i,$ as n,U as r,G as t};
+}`, ...Z.parameters?.docs?.source } } }, Q = [`TableFlex`, `TableFlexBasic`, `TableFlexSlots`, `TableFlexSort`, `TableFlexSearch`]
+  }); $(); export { q as TableFlex, J as TableFlexBasic, Z as TableFlexSearch, Y as TableFlexSlots, X as TableFlexSort, Q as __namedExportsOrder, K as default, W as i, $ as n, U as r, G as t }

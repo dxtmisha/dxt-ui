@@ -1,20 +1,21 @@
-import{i as e}from"./preload-helper-Cv19cBWa.js";import{a as t,t as n}from"./jsx-runtime-D1H6-shM.js";import{c as r,f as i,s as a}from"./blocks-CKlddtvc.js";import{t as o}from"./mdx-react-shim-B1U8VZv0.js";function s(e){let n={code:`code`,h1:`h1`,h2:`h2`,li:`li`,p:`p`,strong:`strong`,ul:`ul`,...t(),...e.components};return(0,l.jsxs)(l.Fragment,{children:[(0,l.jsx)(a,{title:`@dxtmisha/ru/functional-basic/Functions/applyTemplate - Применение шаблона к тексту`}),`
-`,(0,l.jsx)(n.h1,{id:`applytemplate`,children:(0,l.jsx)(n.code,{children:`applyTemplate`})}),`
-`,(0,l.jsx)(n.p,{children:`Утилита для замены меток в тексте на значения из объекта или массива.`}),`
-`,(0,l.jsx)(n.p,{children:(0,l.jsx)(n.strong,{children:`Параметры:`})}),`
-`,(0,l.jsxs)(n.ul,{children:[`
-`,(0,l.jsxs)(n.li,{children:[(0,l.jsx)(n.code,{children:`text: string`}),` — Исходный текст с шаблоном.`]}),`
-`,(0,l.jsxs)(n.li,{children:[(0,l.jsx)(n.code,{children:`replacement: Record<string, string | number | boolean> | string[]`}),` — Объект или массив со значениями.`]}),`
-`]}),`
-`,(0,l.jsx)(n.p,{children:(0,l.jsx)(n.strong,{children:`Форматы замены (replacement)`})}),`
-`,(0,l.jsxs)(n.ul,{children:[`
-`,(0,l.jsxs)(n.li,{children:[(0,l.jsx)(n.strong,{children:`Массив`}),`: Используется для позиционных меток `,(0,l.jsx)(n.code,{children:`%d`}),`, `,(0,l.jsx)(n.code,{children:`%e`}),`, `,(0,l.jsx)(n.code,{children:`%f`}),` и далее по алфавиту.`]}),`
-`,(0,l.jsxs)(n.li,{children:[(0,l.jsx)(n.strong,{children:`Объект`}),`: Используется для именованных меток в скобках `,(0,l.jsx)(n.code,{children:`[key]`}),` или `,(0,l.jsx)(n.code,{children:`{key}`}),`, а также для парных тегов `,(0,l.jsx)(n.code,{children:`[tag]текст[/tag]`}),`.`]}),`
-`]}),`
-`,(0,l.jsxs)(n.p,{children:[(0,l.jsx)(n.strong,{children:`Возвращает:`}),`
-`,(0,l.jsx)(n.code,{children:`string`}),` — Текст с подставленными значениями.`]}),`
-`,(0,l.jsx)(n.h2,{id:`примеры`,children:`Примеры`}),`
-`,(0,l.jsx)(r,{language:`typescript`,code:`
+import { i as e } from './preload-helper-Cv19cBWa.js'; import { a as t, t as n } from './jsx-runtime-D1H6-shM.js'; import { c as r, f as i, s as a } from './blocks-CKlddtvc.js'; import { t as o } from './mdx-react-shim-B1U8VZv0.js'; function s(e) {
+  let n = { code: `code`, h1: `h1`, h2: `h2`, li: `li`, p: `p`, strong: `strong`, ul: `ul`, ...t(), ...e.components }; return (0, l.jsxs)(l.Fragment, { children: [(0, l.jsx)(a, { title: `@dxtmisha/ru/functional-basic/Functions/applyTemplate - Применение шаблона к тексту` }), `
+`, (0, l.jsx)(n.h1, { id: `applytemplate`, children: (0, l.jsx)(n.code, { children: `applyTemplate` }) }), `
+`, (0, l.jsx)(n.p, { children: `Утилита для замены меток в тексте на значения из объекта или массива.` }), `
+`, (0, l.jsx)(n.p, { children: (0, l.jsx)(n.strong, { children: `Параметры:` }) }), `
+`, (0, l.jsxs)(n.ul, { children: [`
+`, (0, l.jsxs)(n.li, { children: [(0, l.jsx)(n.code, { children: `text: string` }), ` — Исходный текст с шаблоном.`] }), `
+`, (0, l.jsxs)(n.li, { children: [(0, l.jsx)(n.code, { children: `replacement: Record<string, string | number | boolean> | string[]` }), ` — Объект или массив со значениями.`] }), `
+`] }), `
+`, (0, l.jsx)(n.p, { children: (0, l.jsx)(n.strong, { children: `Форматы замены (replacement)` }) }), `
+`, (0, l.jsxs)(n.ul, { children: [`
+`, (0, l.jsxs)(n.li, { children: [(0, l.jsx)(n.strong, { children: `Массив` }), `: Используется для позиционных меток `, (0, l.jsx)(n.code, { children: `%d` }), `, `, (0, l.jsx)(n.code, { children: `%e` }), `, `, (0, l.jsx)(n.code, { children: `%f` }), ` и далее по алфавиту.`] }), `
+`, (0, l.jsxs)(n.li, { children: [(0, l.jsx)(n.strong, { children: `Объект` }), `: Используется для именованных меток в скобках `, (0, l.jsx)(n.code, { children: `[key]` }), ` или `, (0, l.jsx)(n.code, { children: `{key}` }), `, а также для парных тегов `, (0, l.jsx)(n.code, { children: `[tag]текст[/tag]` }), `.`] }), `
+`] }), `
+`, (0, l.jsxs)(n.p, { children: [(0, l.jsx)(n.strong, { children: `Возвращает:` }), `
+`, (0, l.jsx)(n.code, { children: `string` }), ` — Текст с подставленными значениями.`] }), `
+`, (0, l.jsx)(n.h2, { id: `примеры`, children: `Примеры` }), `
+`, (0, l.jsx)(r, { language: `typescript`, code: `
 import { applyTemplate } from '@dxtmisha/functional-basic'
 
 // 1. Позиционные маркеры (массив)
@@ -36,4 +37,5 @@ applyTemplate('Нажми [link]здесь[/link]', tags)  // 'Нажми <a hre
 
 // 6. Макросы списка (выход за границы)
 applyTemplate('Список: %d, %e, %f', ['A', 'B'])  // 'Список: A, B, '
-`})]})}function c(e={}){let{wrapper:n}={...t(),...e.components};return n?(0,l.jsx)(n,{...e,children:(0,l.jsx)(s,{...e})}):s(e)}var l;e((()=>{l=n(),o(),i()}))();export{c as default};
+` })] })
+} function c(e = {}) { let { wrapper: n } = { ...t(), ...e.components }; return n ? (0, l.jsx)(n, { ...e, children: (0, l.jsx)(s, { ...e }) }) : s(e) } var l; e(() => { l = n(), o(), i() })(); export { c as default }

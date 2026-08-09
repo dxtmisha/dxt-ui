@@ -120,12 +120,12 @@ export type WebTypesVueComponentItem = WebTypesInfo & {
  * Корневой объект для JSON Web Types.
  */
 export type WebTypesVueJson = {
-  $schema: string
-  framework: 'vue'
-  name: string
-  version: string
+  '$schema': string
+  'framework': 'vue'
+  'name': string
+  'version': string
   'js-types-syntax'?: 'typescript'
-  contributions: {
+  'contributions': {
     html: {
       'description-markup': 'markdown'
       'vue-components': WebTypesVueComponentItem[]

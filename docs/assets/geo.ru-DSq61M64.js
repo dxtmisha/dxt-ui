@@ -1,9 +1,10 @@
-import{i as e}from"./preload-helper-Cv19cBWa.js";import{a as t,t as n}from"./jsx-runtime-D1H6-shM.js";import{f as r,s as i}from"./blocks-CKlddtvc.js";import{t as a}from"./mdx-react-shim-B1U8VZv0.js";function o(e){let n={code:`code`,h1:`h1`,h2:`h2`,p:`p`,pre:`pre`,...t(),...e.components};return(0,c.jsxs)(c.Fragment,{children:[(0,c.jsx)(i,{title:`@dxtmisha/ru/functional-basic/# Geo и форматирование`}),`
-`,(0,c.jsx)(n.h1,{id:`geo-и-форматирование`,children:`Geo и форматирование`}),`
-`,(0,c.jsx)(n.p,{children:`Инструменты для управления локализацией (i18n), географическими данными и умного форматирования. Система автоматически определяет настройки пользователя и обеспечивает корректное отображение валют, дат и чисел по государственным стандартам.`}),`
-`,(0,c.jsx)(n.h2,{id:`локализация-geo`,children:`Локализация (Geo)`}),`
-`,(0,c.jsx)(n.p,{children:`Управление глобальным состоянием страны, языка и временной зоны. Поддерживает автоопределение по браузеру и сохранение в сессии.`}),`
-`,(0,c.jsx)(n.pre,{children:(0,c.jsx)(n.code,{className:`language-javascript`,children:`import { Geo } from '@dxtmisha/functional-basic'
+import { i as e } from './preload-helper-Cv19cBWa.js'; import { a as t, t as n } from './jsx-runtime-D1H6-shM.js'; import { f as r, s as i } from './blocks-CKlddtvc.js'; import { t as a } from './mdx-react-shim-B1U8VZv0.js'; function o(e) {
+  let n = { code: `code`, h1: `h1`, h2: `h2`, p: `p`, pre: `pre`, ...t(), ...e.components }; return (0, c.jsxs)(c.Fragment, { children: [(0, c.jsx)(i, { title: `@dxtmisha/ru/functional-basic/# Geo и форматирование` }), `
+`, (0, c.jsx)(n.h1, { id: `geo-и-форматирование`, children: `Geo и форматирование` }), `
+`, (0, c.jsx)(n.p, { children: `Инструменты для управления локализацией (i18n), географическими данными и умного форматирования. Система автоматически определяет настройки пользователя и обеспечивает корректное отображение валют, дат и чисел по государственным стандартам.` }), `
+`, (0, c.jsx)(n.h2, { id: `локализация-geo`, children: `Локализация (Geo)` }), `
+`, (0, c.jsx)(n.p, { children: `Управление глобальным состоянием страны, языка и временной зоны. Поддерживает автоопределение по браузеру и сохранение в сессии.` }), `
+`, (0, c.jsx)(n.pre, { children: (0, c.jsx)(n.code, { className: `language-javascript`, children: `import { Geo } from '@dxtmisha/functional-basic'
 
 // Глобальные настройки
 Geo.set('en-US', true)      // Установить локаль и сохранить в браузере
@@ -14,10 +15,10 @@ Geo.getCountry()            // 'US'
 const list = Geo.getList()  // Полный список стран и языков
 const current = Geo.getItem() // Объект с данными текущей локали
 const hasRU = Geo.hasCountry('RU') // Проверка поддержки страны
-`})}),`
-`,(0,c.jsx)(n.h2,{id:`форматирование-geointl`,children:`Форматирование (GeoIntl)`}),`
-`,(0,c.jsxs)(n.p,{children:[`Универсальный движок для работы с данными на основе нативного `,(0,c.jsx)(n.code,{children:`Intl`}),`.`]}),`
-`,(0,c.jsx)(n.pre,{children:(0,c.jsx)(n.code,{className:`language-javascript`,children:`import { GeoIntl } from '@dxtmisha/functional-basic'
+` }) }), `
+`, (0, c.jsx)(n.h2, { id: `форматирование-geointl`, children: `Форматирование (GeoIntl)` }), `
+`, (0, c.jsxs)(n.p, { children: [`Универсальный движок для работы с данными на основе нативного `, (0, c.jsx)(n.code, { children: `Intl` }), `.`] }), `
+`, (0, c.jsx)(n.pre, { children: (0, c.jsx)(n.code, { className: `language-javascript`, children: `import { GeoIntl } from '@dxtmisha/functional-basic'
 
 const intl = GeoIntl.getInstance()
 
@@ -35,10 +36,10 @@ intl.plural(5, 'яблоко|яблока|яблок') // Склонение
 intl.sizeFile(1024 * 1024)           // '1 МБ'
 intl.sort(['яблоко', 'Ёж', 'арбуз'])  // Умная сортировка списка
 intl.displayNames('DE', 'region')    // 'Германия' (локализовано)
-`})}),`
-`,(0,c.jsx)(n.h2,{id:`флаги-стран-geoflag`,children:`Флаги стран (GeoFlag)`}),`
-`,(0,c.jsx)(n.p,{children:`Получение иконок флагов и названий стран на родном языке или языке системы.`}),`
-`,(0,c.jsx)(n.pre,{children:(0,c.jsx)(n.code,{className:`language-javascript`,children:`import { GeoFlag } from '@dxtmisha/functional-basic'
+` }) }), `
+`, (0, c.jsx)(n.h2, { id: `флаги-стран-geoflag`, children: `Флаги стран (GeoFlag)` }), `
+`, (0, c.jsx)(n.p, { children: `Получение иконок флагов и названий стран на родном языке или языке системы.` }), `
+`, (0, c.jsx)(n.pre, { children: (0, c.jsx)(n.code, { className: `language-javascript`, children: `import { GeoFlag } from '@dxtmisha/functional-basic'
 
 const geoFlag = new GeoFlag('ru-RU')
 
@@ -48,10 +49,10 @@ const ru = geoFlag.get('RU') // { icon: 'f-ru', country: 'Россия', area: '
 // Список имен на языке оригинала
 const native = geoFlag.getNational(['DE']) 
 // [{ country: 'Германия', nationalCountry: 'Deutschland', ... }]
-`})}),`
-`,(0,c.jsx)(n.h2,{id:`телефоны-geophone`,children:`Телефоны (GeoPhone)`}),`
-`,(0,c.jsx)(n.p,{children:`Автоопределение страны по номеру и работа с международными масками.`}),`
-`,(0,c.jsx)(n.pre,{children:(0,c.jsx)(n.code,{className:`language-javascript`,children:`import { GeoPhone } from '@dxtmisha/functional-basic'
+` }) }), `
+`, (0, c.jsx)(n.h2, { id: `телефоны-geophone`, children: `Телефоны (GeoPhone)` }), `
+`, (0, c.jsx)(n.p, { children: `Автоопределение страны по номеру и работа с международными масками.` }), `
+`, (0, c.jsx)(n.pre, { children: (0, c.jsx)(n.code, { className: `language-javascript`, children: `import { GeoPhone } from '@dxtmisha/functional-basic'
 
 // Умная детекция
 const { item, phone } = GeoPhone.getByPhone('79001234567') 
@@ -60,10 +61,10 @@ const { item, phone } = GeoPhone.getByPhone('79001234567')
 // Форматирование
 GeoPhone.toMask(phone, item.mask) // '+7 (900) 123-45-67'
 GeoPhone.clear(' +7 (900) 123-45-67 ') // '79001234567' (очистка)
-`})}),`
-`,(0,c.jsx)(n.h2,{id:`списки-formatters`,children:`Списки (Formatters)`}),`
-`,(0,c.jsxs)(n.p,{children:[`Массовое форматирование массивов объектов. Автоматически создает новые свойства с суффиксом `,(0,c.jsx)(n.code,{children:`Format`}),`.`]}),`
-`,(0,c.jsx)(n.pre,{children:(0,c.jsx)(n.code,{className:`language-javascript`,children:`import { Formatters } from '@dxtmisha/functional-basic'
+` }) }), `
+`, (0, c.jsx)(n.h2, { id: `списки-formatters`, children: `Списки (Formatters)` }), `
+`, (0, c.jsxs)(n.p, { children: [`Массовое форматирование массивов объектов. Автоматически создает новые свойства с суффиксом `, (0, c.jsx)(n.code, { children: `Format` }), `.`] }), `
+`, (0, c.jsx)(n.pre, { children: (0, c.jsx)(n.code, { className: `language-javascript`, children: `import { Formatters } from '@dxtmisha/functional-basic'
 
 const options = {
   price: { type: 'currency', options: 'USD' },
@@ -77,4 +78,5 @@ const options = {
 
 // transformed — копия data с полями priceFormat, birthdayFormat и т.д.
 const transformed = new Formatters(options, data).to()
-`})})]})}function s(e={}){let{wrapper:n}={...t(),...e.components};return n?(0,c.jsx)(n,{...e,children:(0,c.jsx)(o,{...e})}):o(e)}var c;e((()=>{c=n(),a(),r()}))();export{s as default};
+` }) })] })
+} function s(e = {}) { let { wrapper: n } = { ...t(), ...e.components }; return n ? (0, c.jsx)(n, { ...e, children: (0, c.jsx)(o, { ...e }) }) : o(e) } var c; e(() => { c = n(), a(), r() })(); export { s as default }

@@ -127,7 +127,7 @@ export class DesignWikiStormItem {
       const slots: WebTypesSlots = []
 
       data.slots.forEach(
-        slot => {
+        (slot) => {
           const vueProperties: WebTypesProperty[] = (slot.properties ?? []).map(p => ({
             name: p.name,
             type: p.type ? this.cleanType(p.type) : undefined,
@@ -160,7 +160,7 @@ export class DesignWikiStormItem {
       const events: WebTypesEventItem[] = []
 
       data.events.forEach(
-        event => {
+        (event) => {
           let typeString = '() => void'
           if (event.properties && event.properties.length > 0) {
             const args = event.properties

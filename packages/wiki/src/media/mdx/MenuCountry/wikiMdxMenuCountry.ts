@@ -7,7 +7,7 @@ import menuCountryRu from './menuCountry.ru.mdx'
 export const wikiMdxMenuCountry: StorybookComponentsMdxItem = {
   name: 'MenuCountry',
   descriptions: {
-    'menuCountry': {
+    menuCountry: {
       en: menuCountryEn,
       ru: menuCountryRu
     }

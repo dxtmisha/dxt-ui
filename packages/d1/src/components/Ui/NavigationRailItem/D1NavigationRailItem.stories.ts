@@ -28,8 +28,8 @@ type Story = StoryObj<typeof meta>
 
 export const NavigationRailItem: Story = {
   args: {
-    badge: "",
-    icon: "",
+    badge: '',
+    icon: '',
     badgeDot: true
   }
 }

@@ -1,4 +1,5 @@
-import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{Vt as n,cn as r}from"./iframe-D7czqiJA.js";import{a as i,d as a,l as o,m as s,n as c,t as l,u}from"./wiki-CUC2UhNU.js";import{i as d,n as f,r as p,t as m}from"./D1Arrow-nILAKLvP.js";var h,g,_,v,y=t((()=>{l(),d(),h=[{name:`clientOnly`,type:`boolean`},{name:`elementTarget`,type:`string | HTMLElement`},{name:`position`,type:`string`,option:[`auto`,`top`,`bottom`,`left`,`right`]},{name:`size`,type:`string`,option:[`sm`,`md`,`lg`]}],g=[],_=[],v={component:`Arrow`,props:h,slots:g,events:_,defaults:p,wikiDesign:c}})),b,x=t((()=>{a(),o(),y(),b=new u(v.component,v.props,v.defaults,v.wikiDesign,i,s)})),S=e({Arrow:()=>w,ArrowBasic:()=>T,__namedExportsOrder:()=>E,default:()=>C}),C,w,T,E,D=t((()=>{f(),x(),n(),C={title:`Ui/Arrow`,component:m,parameters:{design:`d1`,docs:{description:{component:b.getDescription()}}},argTypes:b.getWiki(),args:b.getValues()},w={render:e=>({components:{D1Arrow:m},setup:()=>({args:e}),template:`
+import { a as e, i as t } from './preload-helper-Cv19cBWa.js'; import { Vt as n, cn as r } from './iframe-D7czqiJA.js'; import { a as i, d as a, l as o, m as s, n as c, t as l, u } from './wiki-CUC2UhNU.js'; import { i as d, n as f, r as p, t as m } from './D1Arrow-nILAKLvP.js'; var h, g, _, v, y = t(() => { l(), d(), h = [{ name: `clientOnly`, type: `boolean` }, { name: `elementTarget`, type: `string | HTMLElement` }, { name: `position`, type: `string`, option: [`auto`, `top`, `bottom`, `left`, `right`] }, { name: `size`, type: `string`, option: [`sm`, `md`, `lg`] }], g = [], _ = [], v = { component: `Arrow`, props: h, slots: g, events: _, defaults: p, wikiDesign: c } }), b, x = t(() => { a(), o(), y(), b = new u(v.component, v.props, v.defaults, v.wikiDesign, i, s) }), S = e({ Arrow: () => w, ArrowBasic: () => T, __namedExportsOrder: () => E, default: () => C }), C, w, T, E, D = t(() => {
+  f(), x(), n(), C = { title: `Ui/Arrow`, component: m, parameters: { design: `d1`, docs: { description: { component: b.getDescription() } } }, argTypes: b.getWiki(), args: b.getValues() }, w = { render: e => ({ components: { D1Arrow: m }, setup: () => ({ args: e }), template: `
       <div class="wiki-storybook-item wiki-storybook-item--rectangle wiki-storybook-item--center">
         <div>
           <div
@@ -35,7 +36,7 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{Vt as n,cn as r}f
           </div>
         </div>
       </div>
-    `})},T={name:`Базовые`,render:()=>({components:{D1Arrow:m},setup(){let e=r(),t=r(),n=r(),i=r(`0px`),a=r(`0px`);return{elementBasic:e,elementTarget:t,elementArray:n,x:i,y:a,onClick:r=>{if(e.value){let o=e.value.getBoundingClientRect(),s=0,c=0;if(t.value){let e=t.value.getBoundingClientRect();s=e.width/2,c=e.height/2}i.value=r.clientX-o.left-s+`px`,a.value=r.clientY-o.top-c+`px`,requestAnimationFrame(()=>n.value?.update())}}}},template:`
+    ` }) }, T = { name: `Базовые`, render: () => ({ components: { D1Arrow: m }, setup() { let e = r(), t = r(), n = r(), i = r(`0px`), a = r(`0px`); return { elementBasic: e, elementTarget: t, elementArray: n, x: i, y: a, onClick: (r) => { if (e.value) { let o = e.value.getBoundingClientRect(), s = 0, c = 0; if (t.value) { let e = t.value.getBoundingClientRect(); s = e.width / 2, c = e.height / 2 }i.value = r.clientX - o.left - s + `px`, a.value = r.clientY - o.top - c + `px`, requestAnimationFrame(() => n.value?.update()) } } } }, template: `
         <div
           class="wiki-storybook-item wiki-storybook-item--rectangle wiki-storybook-item--center"
           style="cursor: crosshair;"
@@ -97,7 +98,7 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{Vt as n,cn as r}f
             </div>
           </div>
         </div>
-    `})},w.parameters={...w.parameters,docs:{...w.parameters?.docs,source:{originalSource:`{
+    ` }) }, w.parameters = { ...w.parameters, docs: { ...w.parameters?.docs, source: { originalSource: `{
   // :story-main [!] System label / Системная метка
   render: (args: any) => ({
     components: {
@@ -146,7 +147,7 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{Vt as n,cn as r}f
     \`
   })
   // :story-main [!] System label / Системная метка
-}`,...w.parameters?.docs?.source}}},T.parameters={...T.parameters,docs:{...T.parameters?.docs,source:{originalSource:`{
+}`, ...w.parameters?.docs?.source } } }, T.parameters = { ...T.parameters, docs: { ...T.parameters?.docs, source: { originalSource: `{
   name: 'Базовые',
   render: () => ({
     components: {
@@ -246,4 +247,5 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{Vt as n,cn as r}f
         </div>
     \`
   })
-}`,...T.parameters?.docs?.source}}},E=[`Arrow`,`ArrowBasic`]}));D();export{w as Arrow,T as ArrowBasic,E as __namedExportsOrder,C as default,x as i,D as n,b as r,S as t};
+}`, ...T.parameters?.docs?.source } } }, E = [`Arrow`, `ArrowBasic`]
+}); D(); export { w as Arrow, T as ArrowBasic, E as __namedExportsOrder, C as default, x as i, D as n, b as r, S as t }

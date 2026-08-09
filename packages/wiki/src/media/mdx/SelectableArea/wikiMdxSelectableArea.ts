@@ -21,23 +21,23 @@ import vModelRu from './v-model.ru.mdx'
 export const wikiMdxSelectableArea: StorybookComponentsMdxItem = {
   name: 'SelectableArea',
   descriptions: {
-    selectableArea: {
+    'selectableArea': {
       en: selectableAreaEn,
       ru: selectableAreaRu
     },
-    events: {
+    'events': {
       en: eventsEn,
       ru: eventsRu
     },
-    expose: {
+    'expose': {
       en: exposeEn,
       ru: exposeRu
     },
-    howToWork: {
+    'howToWork': {
       en: howToWorkEn,
       ru: howToWorkRu
     },
-    slots: {
+    'slots': {
       en: slotsEn,
       ru: slotsRu
     },

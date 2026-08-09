@@ -7,7 +7,7 @@ import menuLanguageRu from './menuLanguage.ru.mdx'
 export const wikiMdxMenuLanguage: StorybookComponentsMdxItem = {
   name: 'MenuLanguage',
   descriptions: {
-    'menuLanguage': {
+    menuLanguage: {
       en: menuLanguageEn,
       ru: menuLanguageRu
     }

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import TranslateKeyCreationPrefixAdd from './Add/TranslateKeyCreationPrefixAdd.vue';
+import TranslateKeyCreationPrefixAdd from './Add/TranslateKeyCreationPrefixAdd.vue'
 
 defineOptions({
   name: 'TranslateKeyCreationPrefix'

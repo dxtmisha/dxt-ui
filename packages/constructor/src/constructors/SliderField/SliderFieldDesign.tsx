@@ -31,14 +31,14 @@ export class SliderFieldDesign<
   CLASSES extends SliderFieldClasses,
   P extends SliderFieldPropsBasic
 > extends DesignConstructorAbstract<
-  HTMLDivElement,
-  COMP,
-  SliderFieldEmits,
-  EXPOSE,
-  SliderFieldSlots,
-  CLASSES,
-  P
-> {
+    HTMLDivElement,
+    COMP,
+    SliderFieldEmits,
+    EXPOSE,
+    SliderFieldSlots,
+    CLASSES,
+    P
+  > {
   /** Instance of the SliderField logic controller / Экземпляр контроллера логики SliderField */
   protected readonly item: SliderField
 
@@ -241,7 +241,7 @@ export class SliderFieldDesign<
       return [
         h('input', {
           'type': 'text',
-          'placeholder': this.item.labelMin.value,
+          'placeholder': this.item.label.min,
           'class': this.classes?.value.inputMin,
           'data-type': 'min',
           'onBlur': this.item.onBlur,
@@ -263,7 +263,7 @@ export class SliderFieldDesign<
   readonly renderValueMin = (): VNode | undefined => {
     return h('span', {
       class: [(this.classes?.value as Record<string, any>)?.value, 'is-min'],
-      innerHTML: this.item.labelMin.value
+      innerHTML: this.item.label.min
     })
   }
 
@@ -290,8 +290,8 @@ export class SliderFieldDesign<
       magnet: this.props.magnet,
       disabled: this.props.disabled,
       readonly: this.props.readonly,
-      onInput: this.item.onSelect,
-      onChange: this.item.onChange
+      onInputLite: this.item.onSliderInput,
+      onChangeLite: this.item.onSliderChange
     })
 
     return node ? [node] : []
@@ -307,7 +307,7 @@ export class SliderFieldDesign<
     return h('input', {
       ...this.props.inputAttrs,
       'type': 'text',
-      'placeholder': this.item.labelMax.value,
+      'placeholder': this.item.label.max,
       'class': this.classes?.value.inputMax,
       'data-type': 'max',
       'onBlur': this.item.onBlur,
@@ -325,7 +325,7 @@ export class SliderFieldDesign<
   readonly renderValueMax = (): VNode | undefined => {
     return h('span', {
       class: [(this.classes?.value as Record<string, any>)?.value, 'is-max'],
-      innerHTML: this.item.labelMax.value
+      innerHTML: this.item.label.max
     })
   }
 }

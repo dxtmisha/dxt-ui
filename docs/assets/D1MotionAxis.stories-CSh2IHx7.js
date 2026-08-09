@@ -1,4 +1,5 @@
-import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{Vt as n,cn as r}from"./iframe-D7czqiJA.js";import{a as i,d as a,l as o,m as s,n as c,t as l,u}from"./wiki-CUC2UhNU.js";import{i as d,n as f,r as p,t as m}from"./D1MotionAxis-C5NIdLMj.js";var h,g,_,v,y=t((()=>{l(),d(),h=[{name:`animationHeight`,type:`boolean`},{name:`axis`,type:`string`,option:[`x`,`y`,`z`]},{name:`direction`,type:`string`,option:[`next`,`back`,`auto`]},{name:`inDom`,type:`boolean`},{name:`inDomSlide`,type:`string[]`},{name:`modelSelected`,type:`MotionAxisSelectedValue`},{name:`onUpdate:modelSelected`,type:`((value: MotionAxisSelectedValue) => void)`},{name:`onUpdate:selected`,type:`((value: MotionAxisSelectedValue) => void)`},{name:`selected`,type:`MotionAxisSelectedValue`}],g=[],_=[{name:`end`,description:`Event triggered at the end of animation/ Событие завершения анимации`,properties:[{name:`selected`,type:`MotionAxisSelectedValue`}]},{name:`motionAxis`,description:`Event for axis motion/ Событие движения оси`,properties:[{name:`options`,type:`MotionAxisEmitOptions`}]},{name:`start`,description:`Event triggered at the start of animation/ Событие начала анимации`,properties:[{name:`selected`,type:`MotionAxisSelectedValue`}]},{name:`update:modelSelected`,description:`Update model value event/ Событие обновления значения модели`,properties:[{name:`value`,type:`MotionAxisSelectedValue`}]},{name:`update:selected`,description:`Update value event/ Событие обновления значения`,properties:[{name:`value`,type:`MotionAxisSelectedValue`}]}],v={component:`MotionAxis`,props:h,slots:g,events:_,defaults:p,wikiDesign:c}})),b,x=t((()=>{a(),o(),y(),b=new u(v.component,v.props,v.defaults,v.wikiDesign,i,s)})),S=e({MotionAxis:()=>w,MotionAxisBasic:()=>T,MotionAxisScroll:()=>E,MotionAxisVModel:()=>D,__namedExportsOrder:()=>O,default:()=>C}),C,w,T,E,D,O,k=t((()=>{f(),x(),n(),C={title:`Ui/MotionAxis`,component:m,parameters:{design:`d1`,docs:{description:{component:b.getDescription()}}},argTypes:b.getWiki(),args:b.getValues()},w={render:e=>({components:{D1MotionAxis:m},setup:()=>({args:e}),template:`
+import { a as e, i as t } from './preload-helper-Cv19cBWa.js'; import { Vt as n, cn as r } from './iframe-D7czqiJA.js'; import { a as i, d as a, l as o, m as s, n as c, t as l, u } from './wiki-CUC2UhNU.js'; import { i as d, n as f, r as p, t as m } from './D1MotionAxis-C5NIdLMj.js'; var h, g, _, v, y = t(() => { l(), d(), h = [{ name: `animationHeight`, type: `boolean` }, { name: `axis`, type: `string`, option: [`x`, `y`, `z`] }, { name: `direction`, type: `string`, option: [`next`, `back`, `auto`] }, { name: `inDom`, type: `boolean` }, { name: `inDomSlide`, type: `string[]` }, { name: `modelSelected`, type: `MotionAxisSelectedValue` }, { name: `onUpdate:modelSelected`, type: `((value: MotionAxisSelectedValue) => void)` }, { name: `onUpdate:selected`, type: `((value: MotionAxisSelectedValue) => void)` }, { name: `selected`, type: `MotionAxisSelectedValue` }], g = [], _ = [{ name: `end`, description: `Event triggered at the end of animation/ Событие завершения анимации`, properties: [{ name: `selected`, type: `MotionAxisSelectedValue` }] }, { name: `motionAxis`, description: `Event for axis motion/ Событие движения оси`, properties: [{ name: `options`, type: `MotionAxisEmitOptions` }] }, { name: `start`, description: `Event triggered at the start of animation/ Событие начала анимации`, properties: [{ name: `selected`, type: `MotionAxisSelectedValue` }] }, { name: `update:modelSelected`, description: `Update model value event/ Событие обновления значения модели`, properties: [{ name: `value`, type: `MotionAxisSelectedValue` }] }, { name: `update:selected`, description: `Update value event/ Событие обновления значения`, properties: [{ name: `value`, type: `MotionAxisSelectedValue` }] }], v = { component: `MotionAxis`, props: h, slots: g, events: _, defaults: p, wikiDesign: c } }), b, x = t(() => { a(), o(), y(), b = new u(v.component, v.props, v.defaults, v.wikiDesign, i, s) }), S = e({ MotionAxis: () => w, MotionAxisBasic: () => T, MotionAxisScroll: () => E, MotionAxisVModel: () => D, __namedExportsOrder: () => O, default: () => C }), C, w, T, E, D, O, k = t(() => {
+  f(), x(), n(), C = { title: `Ui/MotionAxis`, component: m, parameters: { design: `d1`, docs: { description: { component: b.getDescription() } } }, argTypes: b.getWiki(), args: b.getValues() }, w = { render: e => ({ components: { D1MotionAxis: m }, setup: () => ({ args: e }), template: `
       <D1MotionAxis v-bind="args">
       <template #slide1>
         <div class="wiki-storybook-item wiki-storybook-item--auto wiki-storybook-item--padding">
@@ -17,7 +18,7 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{Vt as n,cn as r}f
         </div>
       </template>
     </D1MotionAxis>
-    `})},T={name:`Базовое использование`,render:()=>({components:{D1MotionAxis:m},setup(){return{selected:r(`slide1`)}},template:`
+    ` }) }, T = { name: `Базовое использование`, render: () => ({ components: { D1MotionAxis: m }, setup() { return { selected: r(`slide1`) } }, template: `
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex">
             <button class="wiki-storybook-button" @click="selected = 'slide1'">1</button>
@@ -44,7 +45,7 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{Vt as n,cn as r}f
             </template>
           </D1MotionAxis>
         </div>
-    `})},E={name:`Управление скроллом`,render:()=>({components:{D1MotionAxis:m},setup(){return{selected:r(`short`)}},template:`
+    ` }) }, E = { name: `Управление скроллом`, render: () => ({ components: { D1MotionAxis: m }, setup() { return { selected: r(`short`) } }, template: `
         <div class="wiki-storybook-flex-column d1-motionAxis__scroll">
           <div class="wiki-storybook-flex">
             <button class="wiki-storybook-button" @click="selected = 'short'">short</button>
@@ -67,7 +68,7 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{Vt as n,cn as r}f
             </template>
           </D1MotionAxis>
         </div>
-    `})},D={name:`Двусторонняя привязка (v-model)`,render:()=>({components:{D1MotionAxis:m},setup(){return{selected:r(`slide1`)}},template:`
+    ` }) }, D = { name: `Двусторонняя привязка (v-model)`, render: () => ({ components: { D1MotionAxis: m }, setup() { return { selected: r(`slide1`) } }, template: `
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex-align-center">
             <span>Current value: {{ selected }}</span>
@@ -94,7 +95,7 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{Vt as n,cn as r}f
             </template>
           </D1MotionAxis>
         </div>
-    `})},w.parameters={...w.parameters,docs:{...w.parameters?.docs,source:{originalSource:`{
+    ` }) }, w.parameters = { ...w.parameters, docs: { ...w.parameters?.docs, source: { originalSource: `{
   // :story-main [!] System label / Системная метка
   render: (args: any) => ({
     components: {
@@ -125,7 +126,7 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{Vt as n,cn as r}f
     \`
   })
   // :story-main [!] System label / Системная метка
-}`,...w.parameters?.docs?.source}}},T.parameters={...T.parameters,docs:{...T.parameters?.docs,source:{originalSource:`{
+}`, ...w.parameters?.docs?.source } } }, T.parameters = { ...T.parameters, docs: { ...T.parameters?.docs, source: { originalSource: `{
   name: 'Базовое использование',
   render: () => ({
     components: {
@@ -166,7 +167,7 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{Vt as n,cn as r}f
         </div>
     \`
   })
-}`,...T.parameters?.docs?.source}}},E.parameters={...E.parameters,docs:{...E.parameters?.docs,source:{originalSource:`{
+}`, ...T.parameters?.docs?.source } } }, E.parameters = { ...E.parameters, docs: { ...E.parameters?.docs, source: { originalSource: `{
   name: 'Управление скроллом',
   render: () => ({
     components: {
@@ -203,7 +204,7 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{Vt as n,cn as r}f
         </div>
     \`
   })
-}`,...E.parameters?.docs?.source}}},D.parameters={...D.parameters,docs:{...D.parameters?.docs,source:{originalSource:`{
+}`, ...E.parameters?.docs?.source } } }, D.parameters = { ...D.parameters, docs: { ...D.parameters?.docs, source: { originalSource: `{
   name: 'Двусторонняя привязка (v-model)',
   render: () => ({
     components: {
@@ -244,4 +245,5 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{Vt as n,cn as r}f
         </div>
     \`
   })
-}`,...D.parameters?.docs?.source}}},O=[`MotionAxis`,`MotionAxisBasic`,`MotionAxisScroll`,`MotionAxisVModel`]}));k();export{w as MotionAxis,T as MotionAxisBasic,E as MotionAxisScroll,D as MotionAxisVModel,O as __namedExportsOrder,C as default,x as i,k as n,b as r,S as t};
+}`, ...D.parameters?.docs?.source } } }, O = [`MotionAxis`, `MotionAxisBasic`, `MotionAxisScroll`, `MotionAxisVModel`]
+}); k(); export { w as MotionAxis, T as MotionAxisBasic, E as MotionAxisScroll, D as MotionAxisVModel, O as __namedExportsOrder, C as default, x as i, k as n, b as r, S as t }

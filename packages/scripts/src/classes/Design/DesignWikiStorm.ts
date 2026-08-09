@@ -43,12 +43,12 @@ export class DesignWikiStorm {
 
     if (packageFile) {
       const data: WebTypesVueJson = {
-        $schema: 'https://raw.githubusercontent.com/JetBrains/web-types/master/schema/web-types.json',
-        framework: 'vue',
-        name: toCamelCaseFirst(PropertiesConfig.getDesignName()),
-        version: packageFile.version,
+        '$schema': 'https://raw.githubusercontent.com/JetBrains/web-types/master/schema/web-types.json',
+        'framework': 'vue',
+        'name': toCamelCaseFirst(PropertiesConfig.getDesignName()),
+        'version': packageFile.version,
         'js-types-syntax': 'typescript',
-        contributions: {
+        'contributions': {
           html: {
             'description-markup': 'markdown',
             'vue-components': await this.getComponents()

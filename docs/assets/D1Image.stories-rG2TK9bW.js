@@ -1,8 +1,9 @@
-import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{a as n,c as r,d as i,i as a,l as o,m as s,n as c,o as l,r as u,s as d,t as f,u as p}from"./wiki-CUC2UhNU.js";import{i as m,n as h,r as g,t as _}from"./D1Image-CvZj8ueg.js";var v,y,b,x,S=t((()=>{f(),m(),v=[{name:`adaptive`,type:`boolean`},{name:`adaptiveAlways`,type:`boolean`},{name:`adaptiveGroup`,type:`string`},{name:`alt`,type:`string`},{name:`coordinator`,type:`number[] | any`},{name:`disabled`,type:`boolean`},{name:`fetchPriority`,type:`string`,option:[`auto`,`high`,`low`]},{name:`hide`,type:`boolean`},{name:`lazy`,type:`boolean`},{name:`objectHeight`,type:`string | number`},{name:`objectWidth`,type:`string | number`},{name:`picture`,type:`ImagePicture`},{name:`preloadOffset`,type:`string`},{name:`size`,type:`string`,option:[`auto`,`contain`,`cover`]},{name:`srcset`,type:`string | Record<string, string>`},{name:`tagImg`,type:`boolean`},{name:`turn`,type:`boolean`},{name:`url`,type:`string`},{name:`value`,type:`string | any`},{name:`x`,type:`string | number`},{name:`y`,type:`string | number`}],y=[],b=[{name:`load`,description:`Event triggered when the image is loaded/ Событие, срабатывающее при загрузке изображения`,properties:[{name:`image`,type:`ImageEventData`}]}],x={component:`Image`,props:v,slots:y,events:b,defaults:g,wikiDesign:c}})),C,w=t((()=>{i(),o(),S(),C=new p(x.component,x.props,x.defaults,x.wikiDesign,n,s)})),T=e({Image:()=>D,ImageAdaptive:()=>j,ImageSize:()=>k,ImageTagImg:()=>A,ImageType:()=>O,__namedExportsOrder:()=>M,default:()=>E}),E,D,O,k,A,j,M,N=t((()=>{h(),w(),o(),E={title:`Ui/Image`,component:_,parameters:{design:`d1`,docs:{description:{component:C.getDescription()}}},argTypes:C.getWiki(),args:C.getValues()},D={args:{value:`https://png.pngtree.com/thumb_back/fh260/background/20230611/pngtree-sunset-images-free-download-free-landscape-wallpapers-image_2913889.jpg`,tagImg:!0,disabled:!1,hide:!1,turn:!1,alt:``,size:`auto`,x:``,y:``,lazy:!0,fetchPriority:`high`},render:e=>({components:{D1Image:_},setup:()=>({args:e}),template:`
+import { a as e, i as t } from './preload-helper-Cv19cBWa.js'; import { a as n, c as r, d as i, i as a, l as o, m as s, n as c, o as l, r as u, s as d, t as f, u as p } from './wiki-CUC2UhNU.js'; import { i as m, n as h, r as g, t as _ } from './D1Image-CvZj8ueg.js'; var v, y, b, x, S = t(() => { f(), m(), v = [{ name: `adaptive`, type: `boolean` }, { name: `adaptiveAlways`, type: `boolean` }, { name: `adaptiveGroup`, type: `string` }, { name: `alt`, type: `string` }, { name: `coordinator`, type: `number[] | any` }, { name: `disabled`, type: `boolean` }, { name: `fetchPriority`, type: `string`, option: [`auto`, `high`, `low`] }, { name: `hide`, type: `boolean` }, { name: `lazy`, type: `boolean` }, { name: `objectHeight`, type: `string | number` }, { name: `objectWidth`, type: `string | number` }, { name: `picture`, type: `ImagePicture` }, { name: `preloadOffset`, type: `string` }, { name: `size`, type: `string`, option: [`auto`, `contain`, `cover`] }, { name: `srcset`, type: `string | Record<string, string>` }, { name: `tagImg`, type: `boolean` }, { name: `turn`, type: `boolean` }, { name: `url`, type: `string` }, { name: `value`, type: `string | any` }, { name: `x`, type: `string | number` }, { name: `y`, type: `string | number` }], y = [], b = [{ name: `load`, description: `Event triggered when the image is loaded/ Событие, срабатывающее при загрузке изображения`, properties: [{ name: `image`, type: `ImageEventData` }] }], x = { component: `Image`, props: v, slots: y, events: b, defaults: g, wikiDesign: c } }), C, w = t(() => { i(), o(), S(), C = new p(x.component, x.props, x.defaults, x.wikiDesign, n, s) }), T = e({ Image: () => D, ImageAdaptive: () => j, ImageSize: () => k, ImageTagImg: () => A, ImageType: () => O, __namedExportsOrder: () => M, default: () => E }), E, D, O, k, A, j, M, N = t(() => {
+  h(), w(), o(), E = { title: `Ui/Image`, component: _, parameters: { design: `d1`, docs: { description: { component: C.getDescription() } } }, argTypes: C.getWiki(), args: C.getValues() }, D = { args: { value: `https://png.pngtree.com/thumb_back/fh260/background/20230611/pngtree-sunset-images-free-download-free-landscape-wallpapers-image_2913889.jpg`, tagImg: !0, disabled: !1, hide: !1, turn: !1, alt: ``, size: `auto`, x: ``, y: ``, lazy: !0, fetchPriority: `high` }, render: e => ({ components: { D1Image: _ }, setup: () => ({ args: e }), template: `
       <div class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--squared--sm">
         <D1Image v-bind="args"/>
       </div>
-    `})},O={name:`Тип значения`,render:()=>({components:{D1Image:_},setup(){return{image1:l,demoPdf:d}},template:`
+    ` }) }, O = { name: `Тип значения`, render: () => ({ components: { D1Image: _ }, setup() { return { image1: l, demoPdf: d } }, template: `
         <div class="wiki-storybook-group">
           <div class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--squared--lg">
             <div class="wiki-storybook-item__label">Icon</div>
@@ -17,7 +18,7 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{a as n,c as r,d a
             <D1Image :value="demoPdf"/>
           </div>
         </div>
-    `})},k={name:`Отображение`,render:()=>({components:{D1Image:_},setup(){return{image1:l}},template:`
+    ` }) }, k = { name: `Отображение`, render: () => ({ components: { D1Image: _ }, setup() { return { image1: l } }, template: `
         <div class="wiki-storybook-group">
           <div class="wiki-storybook-item wiki-storybook-item--squared--md">
             <div class="wiki-storybook-item__label">size: auto (default)</div>
@@ -40,7 +41,7 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{a as n,c as r,d a
             <D1Image :value="image1" x="20%" y="-10%" tag-img/>
           </div>
         </div>
-    `})},A={name:`Использование тега img`,render:()=>({components:{D1Image:_},setup(){return{image1:l}},template:`
+    ` }) }, A = { name: `Использование тега img`, render: () => ({ components: { D1Image: _ }, setup() { return { image1: l } }, template: `
         <div class="wiki-storybook-group">
           <div class="wiki-storybook-item wiki-storybook-item--squared--md">
             <div class="wiki-storybook-item__label">Background (default)</div>
@@ -59,7 +60,7 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{a as n,c as r,d a
             <D1Image :value="image1" tag-img alt="Adaptive image" :picture="{ 768: image1, 1024: image1 }"/>
           </div>
         </div>
-    `})},j={name:`Адаптированные изображения`,render:()=>({components:{D1Image:_},setup(){return{phone1:u,phone2:r,phone3:a}},template:`
+    ` }) }, j = { name: `Адаптированные изображения`, render: () => ({ components: { D1Image: _ }, setup() { return { phone1: u, phone2: r, phone3: a } }, template: `
         <div class="wiki-storybook-group">
           <div class="wiki-storybook-item wiki-storybook-item--squared--md">
             <D1Image :value="phone1" adaptive object-width="76.2"/>
@@ -71,7 +72,7 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{a as n,c as r,d a
             <D1Image :value="phone3" adaptive object-width="129.9" tag-img/>
           </div>
         </div>
-    `})},D.parameters={...D.parameters,docs:{...D.parameters?.docs,source:{originalSource:`{
+    ` }) }, D.parameters = { ...D.parameters, docs: { ...D.parameters?.docs, source: { originalSource: `{
   args: {
     value: 'https://png.pngtree.com/thumb_back/fh260/background/20230611/pngtree-sunset-images-free-download-free-landscape-wallpapers-image_2913889.jpg',
     tagImg: true,
@@ -100,7 +101,7 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{a as n,c as r,d a
     \`
   })
   // :story-main [!] System label / Системная метка
-}`,...D.parameters?.docs?.source}}},O.parameters={...O.parameters,docs:{...O.parameters?.docs,source:{originalSource:`{
+}`, ...D.parameters?.docs?.source } } }, O.parameters = { ...O.parameters, docs: { ...O.parameters?.docs, source: { originalSource: `{
   name: 'Тип значения',
   render: () => ({
     components: {
@@ -129,7 +130,7 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{a as n,c as r,d a
         </div>
     \`
   })
-}`,...O.parameters?.docs?.source}}},k.parameters={...k.parameters,docs:{...k.parameters?.docs,source:{originalSource:`{
+}`, ...O.parameters?.docs?.source } } }, k.parameters = { ...k.parameters, docs: { ...k.parameters?.docs, source: { originalSource: `{
   name: 'Отображение',
   render: () => ({
     components: {
@@ -165,7 +166,7 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{a as n,c as r,d a
         </div>
     \`
   })
-}`,...k.parameters?.docs?.source}}},A.parameters={...A.parameters,docs:{...A.parameters?.docs,source:{originalSource:`{
+}`, ...k.parameters?.docs?.source } } }, A.parameters = { ...A.parameters, docs: { ...A.parameters?.docs, source: { originalSource: `{
   name: 'Использование тега img',
   render: () => ({
     components: {
@@ -197,7 +198,7 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{a as n,c as r,d a
         </div>
     \`
   })
-}`,...A.parameters?.docs?.source}}},j.parameters={...j.parameters,docs:{...j.parameters?.docs,source:{originalSource:`{
+}`, ...A.parameters?.docs?.source } } }, j.parameters = { ...j.parameters, docs: { ...j.parameters?.docs, source: { originalSource: `{
   name: 'Адаптированные изображения',
   render: () => ({
     components: {
@@ -224,4 +225,5 @@ import{a as e,i as t}from"./preload-helper-Cv19cBWa.js";import{a as n,c as r,d a
         </div>
     \`
   })
-}`,...j.parameters?.docs?.source}}},M=[`Image`,`ImageType`,`ImageSize`,`ImageTagImg`,`ImageAdaptive`]}));N();export{D as Image,j as ImageAdaptive,k as ImageSize,A as ImageTagImg,O as ImageType,M as __namedExportsOrder,E as default,w as i,N as n,C as r,T as t};
+}`, ...j.parameters?.docs?.source } } }, M = [`Image`, `ImageType`, `ImageSize`, `ImageTagImg`, `ImageAdaptive`]
+}); N(); export { D as Image, j as ImageAdaptive, k as ImageSize, A as ImageTagImg, O as ImageType, M as __namedExportsOrder, E as default, w as i, N as n, C as r, T as t }

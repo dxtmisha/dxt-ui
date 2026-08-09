@@ -52,4 +52,3 @@ export type ErrorCenterHandlerIsConsoleCallback = (cause: ErrorCenterCauseItem) 
  * Type for console logging configuration / Тип для конфигурации вывода в консоль
  */
 export type ErrorCenterHandlerIsConsole = boolean | ErrorCenterHandlerIsConsoleCallback
-
