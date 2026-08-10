@@ -1,5 +1,5 @@
 This library provides a comprehensive suite of Vue 3 UI components (prefixed with D1) built upon the @dxtmisha/constructor design system. It handles UI rendering, property definition types, build-time integration via uiD1VitePlugin, and media utilities (d1MakeIcons). Triggers for studying ai-types.md include implementing or wrapping D1 components, configuring uiD1VitePlugin, resolving slot/event type definitions, or customizing theme variables via style regex patterns. Integrates with Vue 3 and @dxtmisha/constructor.
 ## Mandatory Rules
 Read the corresponding file if your task relates to:
-- 'node_modules/@dxtmisha/d1/ai-prompts/styling-tokens.md': SCSS tokens (sys-), palette mixins (ui.paletteBackgroundColor), and color variable rules
-- 'node_modules/@dxtmisha/d1/ai-prompts/responsive-typography.md': Responsive media mixins (ui.mediaMinWidth), typography classes (d1-font.scss), and BEM class structure
+- 'node_modules/@dxtmisha/d1/ai-resources/styling-tokens.md': SCSS tokens (sys-), palette mixins (ui.paletteBackgroundColor), and color variable rules
+- 'node_modules/@dxtmisha/d1/ai-resources/responsive-typography.md': Responsive media mixins (ui.mediaMinWidth), typography classes (d1-font.scss), and BEM class structure

@@ -12,7 +12,7 @@
     "description": "Provides an overview of isomorphic client and server utilities for HTTP networking, state management, localization, data search, DOM handling, and SSR hydration. Outlines architectural conventions and package capabilities across browser and server runtimes."
   },
   {
-    "uri": "@dxtmisha/functional-basic/ai-prompts/api-reference.md",
+    "uri": "@dxtmisha/functional-basic/ai-resources/api-reference.md",
     "name": "API Reference Guide (@dxtmisha/functional-basic)",
     "mimeType": "text/markdown",
     "description": "Comprehensive API reference and usage examples for the `@dxtmisha/functional-basic` package. Covers HTTP client configurations, caching, state storage, localization, DOM events, and core utility functions."

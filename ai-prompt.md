@@ -87,16 +87,16 @@ The project is located at: 'node_modules/@dxtmisha/d1'.
 This library provides a comprehensive suite of Vue 3 UI components (prefixed with D1) built upon the @dxtmisha/constructor design system. It handles UI rendering, property definition types, build-time integration via uiD1VitePlugin, and media utilities (d1MakeIcons). Triggers for studying ai-types.md include implementing or wrapping D1 components, configuring uiD1VitePlugin, resolving slot/event type definitions, or customizing theme variables via style regex patterns. Integrates with Vue 3 and @dxtmisha/constructor.
 ## Mandatory Rules
 Read the corresponding file if your task relates to:
-- 'node_modules/@dxtmisha/d1/ai-prompts/styling-tokens.md': SCSS tokens (sys-), palette mixins (ui.paletteBackgroundColor), and color variable rules
-- 'node_modules/@dxtmisha/d1/ai-prompts/responsive-typography.md': Responsive media mixins (ui.mediaMinWidth), typography classes (d1-font.scss), and BEM class structure
+- 'node_modules/@dxtmisha/d1/ai-resources/styling-tokens.md': SCSS tokens (sys-), palette mixins (ui.paletteBackgroundColor), and color variable rules
+- 'node_modules/@dxtmisha/d1/ai-resources/responsive-typography.md': Responsive media mixins (ui.mediaMinWidth), typography classes (d1-font.scss), and BEM class structure
 
 ## Package Core Information
 Vue 3 layout library with pre-registered global `D1...` components. **No imports needed for D1 components and icons.**
 
 ## Mandatory Rules
 Read the corresponding file if your task relates to:
-- 'node_modules/@dxtmisha/d1/ai-prompts/styling-tokens.md': SCSS tokens (`sys-`), palette mixins (`ui.paletteBackgroundColor`), and color variable rules.
-- 'node_modules/@dxtmisha/d1/ai-prompts/responsive-typography.md': Responsive media mixins (`ui.mediaMinWidth`), typography classes (`d1-font.scss`), and BEM class structure.
+- 'node_modules/@dxtmisha/d1/ai-resources/styling-tokens.md': SCSS tokens (`sys-`), palette mixins (`ui.paletteBackgroundColor`), and color variable rules.
+- 'node_modules/@dxtmisha/d1/ai-resources/responsive-typography.md': Responsive media mixins (`ui.mediaMinWidth`), typography classes (`d1-font.scss`), and BEM class structure.
 
 ## Package Type Definitions (Must Read in Full When Working with Package)
 'node_modules/@dxtmisha/d1/ai-types.md'
@@ -188,10 +188,10 @@ The project is located at: 'node_modules/@dxtmisha/functional'.
 A reactive utility and component architecture library for Vue 3 providing high-level abstract base classes, state management composables, and localized formatting helpers. It standardizes reactive API orchestration, browser storage binding, DOM visibility tracking, internationalization, and design component construction across client and server-rendered environments. Key capabilities are grouped into API and network composables for managing asynchronous HTTP requests, mutation workflows, SSR prefetching, response contract validation, error mappings, and list orchestration; design component base classes for standardized component rendering, dynamic class and style computation, prop change tracking, slot management, and element exposure; localization and formatting utilities for reactive handling of dates, numbers, currency, unit conversions, country flags, dynamic translations, and language-dependent computed properties; persistent storage composables synchronizing state with cookies, web storage, URL query or hash parameters, and cross-tab messaging; list and search helpers for managing reactive data filtering, selection state, text highlighting, debouncing, and router-bound navigation lists; and DOM system utilities for IntersectionObserver lazy visibility tracking, reactive page metadata management, global loading states, scrollbar measurements, and singleton dependency injection. Study ai-types.md when implementing abstract component constructors, defining API validation contracts or error schemas, typing complex list structures and search options, configuring singleton execution scopes, or managing reactive Vue prop and subcomponent bindings. This library integrates natively into Vue 3 and Vue Router applications through a unified global plugin that configures shared API, routing, localization, and metadata services.
 ## Mandatory Rules
 Read the corresponding file ONLY when working on a task related to (even if not working directly with this package):
-- 'node_modules/@dxtmisha/functional/ai-prompts/api-reference.md': Reactive singleton scope initialization and REST API management patterns
-- 'node_modules/@dxtmisha/functional/ai-prompts/localization-seo.md': Geographic context, locale-aware formatting, reactive translations, document metadata, and scrollbar width measurement
-- 'node_modules/@dxtmisha/functional/ai-prompts/reactivity-lists.md': Async reactivity composables, reactive list models, search filtering, and DOM observer utilities
-- 'node_modules/@dxtmisha/functional/ai-prompts/storage-state.md': Reactive composables for browser storage, cookies, cross-tab synchronization, and URL hash state
+- 'node_modules/@dxtmisha/functional/ai-resources/api-reference.md': Reactive singleton scope initialization and REST API management patterns
+- 'node_modules/@dxtmisha/functional/ai-resources/localization-seo.md': Geographic context, locale-aware formatting, reactive translations, document metadata, and scrollbar width measurement
+- 'node_modules/@dxtmisha/functional/ai-resources/reactivity-lists.md': Async reactivity composables, reactive list models, search filtering, and DOM observer utilities
+- 'node_modules/@dxtmisha/functional/ai-resources/storage-state.md': Reactive composables for browser storage, cookies, cross-tab synchronization, and URL hash state
 
 ## Package Core Information
 # @dxtmisha/functional Reference
@@ -216,7 +216,7 @@ The project is located at: 'node_modules/@dxtmisha/functional-basic'.
 The library provides an isomorphic suite of client- and server-side utilities designed for web application infrastructure, state management, internationalization, and network communication, serving as a unified foundation for API lifecycle management, SSR hydration, browser storage, and data transformation across JavaScript runtimes. API and network utilities streamline HTTP fetch requests with configurable defaults, automatic retries with jitter, response caching, error classification, and SSR client hydration script generation. Storage and state management modules supply request-isolated SSR storage contexts, type-safe cookie management, synchronized URL query and hash state, local and session storage with age-based expiration, and cross-tab broadcast messaging. Localization and geographic tools provide automated country and language detection, phone number mask matching, metric-to-imperial unit conversion, pluralization, currency formatting, and asynchronous multi-language translation resolution. Search and data handling capabilities enable multi-column list searching, search match highlighting, fuzzy and exact regular expression matching, multi-field array sorting, and recursive object template replacement. UI, DOM, and event helpers deliver DOM element manipulation, ResizeObserver and scroll-sync event listeners, global loading indicators, icon registration, resumable timers, and isomorphic HTML meta tag management for standard SEO, Open Graph, and Twitter Cards. Studying type definitions in ai-types.md is mandatory when typing complex API request or response structures, configuring custom request wrappers, defining criteria for error storage items, specifying search column paths, setting up custom translation dictionaries, or implementing isolated server storage contexts during SSR. This package connects with modern web frameworks and SSR environments by wrapping standard Web APIs, fetch interfaces, and DOM listeners with environment-agnostic abstractions and automated client-side hydration hooks.
 ## Mandatory Rules
 Read the corresponding file ONLY when working on a task related to (even if not working directly with this package):
-- 'node_modules/@dxtmisha/functional-basic/ai-prompts/api-reference.md': HTTP client caching, storage management, geolocation localization, and DOM utility helpers
+- 'node_modules/@dxtmisha/functional-basic/ai-resources/api-reference.md': HTTP client caching, storage management, geolocation localization, and DOM utility helpers
 
 ## Package Core Information
 Framework-agnostic utility library. **Vue developers MUST search `@dxtmisha/functional` first**; use this ONLY if no reactive/Vue-specific analog exists.
@@ -264,8 +264,8 @@ The project is located at: 'node_modules/@dxtmisha/styles'.
 A foundational SCSS framework and dynamic style generation engine designed for building scalable, multi-theme design systems. Its primary function is to provide a comprehensive set of low-level SCSS mixins, functions, and a sophisticated configuration-driven property generation system. The core architecture centers around dynamic CSS variable management, specifically for color spaces where RGB channels and opacity are decoupled (using --sys-* and --sys-palette-* prefixes) to allow for real-time reactive theme modifications and complex transparency effects. Studying ai-types.md or SCSS definitions is mandatory when: 1. Investigating global CSS variable tokens for colors, dimensions, and typography. 2. Developing or modifying UI components that require RTL (Right-to-Left) support through directional abstractions (dir.scss). 3. Implementing complex layout patterns using semantic mixins for Flexbox orchestration, adaptive spacing, and relative positioning. 4. Understanding the 'Properties' engine (src/styles/properties) which programmatically transforms SCSS maps into atomic utility classes and root-level variable definitions. 5. Managing design system palettes and shade scales where automated accessibility and consistency are required. The library is architected as a modular SCSS-first system, utilizing @use and @forward for clean namespace management. It functions as the visual source of truth for all @dxtmisha packages.
 ## Mandatory Rules
 Read the corresponding file if your task relates to:
-- 'node_modules/@dxtmisha/styles/ai-prompts/colors-layout.md': SCSS imports, color/palette mixins, flexbox, padding, margin, and border radius
-- 'node_modules/@dxtmisha/styles/ai-prompts/media-typography.md': Media and container query mixins, typography styles, BEM naming, and architectural rules
+- 'node_modules/@dxtmisha/styles/ai-resources/colors-layout.md': SCSS imports, color/palette mixins, flexbox, padding, margin, and border radius
+- 'node_modules/@dxtmisha/styles/ai-resources/media-typography.md': Media and container query mixins, typography styles, BEM naming, and architectural rules
 
 ## Package Core Information
 # @dxtmisha/styles Reference
@@ -274,8 +274,8 @@ System-wide SCSS styling guidelines and mixin structure.
 
 ## Mandatory Rules
 Read the corresponding file if your task relates to:
-- 'node_modules/@dxtmisha/styles/ai-prompts/colors-layout.md': SCSS imports, color/palette mixins (`backgroundColor`, `paletteBackgroundColor`), flexbox, padding, margin, and border radius.
-- 'node_modules/@dxtmisha/styles/ai-prompts/media-typography.md': Media & container query mixins (`mediaMinWidth`), typography styles (`font`), BEM naming, and architectural rules.
+- 'node_modules/@dxtmisha/styles/ai-resources/colors-layout.md': SCSS imports, color/palette mixins (`backgroundColor`, `paletteBackgroundColor`), flexbox, padding, margin, and border radius.
+- 'node_modules/@dxtmisha/styles/ai-resources/media-typography.md': Media & container query mixins (`mediaMinWidth`), typography styles (`font`), BEM naming, and architectural rules.
 
 ---
 
@@ -309,7 +309,7 @@ This library provides client-side functionality for programmatically constructin
 #### Development Rules for AI:
 1.  **Purity & Atomicity**: Components must be minimal. All business logic must be extracted to **Composables**.
 2.  **Typing**: Strict TypeScript, no `any`. Mandatory usage of interfaces for Props and Emits.
-3.  **Documentation**: Use JSDoc/TSDoc formatted strictly according to the guidelines in [jdoc.md](ai-prompts/jdoc.md). All comments must follow a mandatory bilingual standard (English and Russian):
+3.  **Documentation**: Use JSDoc/TSDoc formatted strictly according to the guidelines in [jdoc.md](ai-resources/jdoc.md). All comments must follow a mandatory bilingual standard (English and Russian):
     - **Classes/Functions/Methods**: Detailed multiline descriptions (English on top, Russian on bottom). Use `@param` and `@returns` with bilingual descriptions separated by ` / `.
     - **Interfaces, Types, Enums, and Properties**: Compact single line (or double line if long) with a forward slash separator: `/** English / Russian */`.
 4.  **Styles**: Use SCSS. Modifying the base library styles is strictly prohibited unless explicitly requested.

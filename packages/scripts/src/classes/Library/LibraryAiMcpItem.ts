@@ -6,10 +6,10 @@ import {
 
 /**
  * Class representing an MCP item in the AI prompt generation process.
- * Handles reading `ai-mcp.json` configuration files for a package directory.
+ * Handles reading `ai-mcp-resources.json` configuration files for a package directory.
  *
  * Класс, представляющий элемент MCP в процессе создания промпта для ИИ.
- * Управляет чтением конфигурационных файлов `ai-mcp.json` для директории пакета.
+ * Управляет чтением конфигурационных файлов `ai-mcp-resources.json` для директории пакета.
  */
 export class LibraryAiMcpItem {
   /**
@@ -23,19 +23,19 @@ export class LibraryAiMcpItem {
   ) { }
 
   /**
-   * Checks if the ai-mcp.json file exists in the directory.
+   * Checks if the ai-mcp-resources.json file exists in the directory.
    *
-   * Проверяет, существует ли файл ai-mcp.json в директории.
-   * @returns true if ai-mcp.json file exists / true, если файл ai-mcp.json существует
+   * Проверяет, существует ли файл ai-mcp-resources.json в директории.
+   * @returns true if ai-mcp-resources.json file exists / true, если файл ai-mcp-resources.json существует
    */
   isMcp(): boolean {
     return PropertiesFile.is(this.getPath(UI_FILE_AI_MCP))
   }
 
   /**
-   * Reads and returns the list of MCP resource definitions from ai-mcp.json.
+   * Reads and returns the list of MCP resource definitions from ai-mcp-resources.json.
    *
-   * Читает и возвращает список определений ресурсов MCP из ai-mcp.json.
+   * Читает и возвращает список определений ресурсов MCP из ai-mcp-resources.json.
    * @returns list of MCP resource items or undefined / список элементов ресурсов MCP или undefined
    */
   make(): Record<string, any>[] | undefined {

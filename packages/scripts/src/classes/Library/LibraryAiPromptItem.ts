@@ -46,9 +46,9 @@ export class LibraryAiPromptItem {
   }
 
   /**
-   * Reads and returns the list of MCP resource definitions from ai-mcp.json.
+   * Reads and returns the list of MCP resource definitions from ai-mcp-resources.json.
    *
-   * Читает и возвращает список определений ресурсов MCP из ai-mcp.json.
+   * Читает и возвращает список определений ресурсов MCP из ai-mcp-resources.json.
    * @returns list of MCP resource items or undefined / список элементов ресурсов MCP или undefined
    */
   getMcp(): Record<string, any>[] | undefined {
@@ -111,10 +111,10 @@ export class LibraryAiPromptItem {
   }
 
   /**
-   * Checks if the ai-mcp.json file exists.
+   * Checks if the ai-mcp-resources.json file exists.
    *
-   * Проверяет, существует ли файл ai-mcp.json.
-   * @returns true if ai-mcp.json file exists / true, если файл ai-mcp.json существует
+   * Проверяет, существует ли файл ai-mcp-resources.json.
+   * @returns true if ai-mcp-resources.json file exists / true, если файл ai-mcp-resources.json существует
    */
   isMcp(): boolean {
     return this.itemMcp.isMcp()

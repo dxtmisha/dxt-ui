@@ -65,7 +65,7 @@
     "src/constructors/**/*.json",
     "ai-description.md",
     "ai-doc.md",
-    "ai-mcp.json",
+    "ai-mcp-resources.json",
     "ai-types.md",
     "CHANGELOG.md",
     "LICENSE",

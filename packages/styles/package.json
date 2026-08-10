@@ -29,11 +29,11 @@
     "publish-to-npm": "npm publish --access public"
   },
   "files": [
-    "ai-prompts/",
+    "ai-resources/",
     "src/styles",
     "ai-description.md",
     "ai-doc.md",
-    "ai-mcp.json",
+    "ai-mcp-resources.json",
     "index.scss",
     "properties.scss",
     "README.md",

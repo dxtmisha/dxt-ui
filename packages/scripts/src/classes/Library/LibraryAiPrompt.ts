@@ -1,5 +1,5 @@
 import {
-  UI_FILE_AI_MCP,
+  UI_FILE_AI_MCP_ALL,
   UI_FILE_AI_PROMPT_INSTRUCTION,
   UI_FILE_AI_PROMPT_PROMPT,
   UI_MODULES
@@ -243,7 +243,7 @@ ${globalPromptText}
    */
   protected writeMcp(mcpData: Record<string, any>[]): this {
     PropertiesFile.writeByPath(
-      UI_FILE_AI_MCP,
+      UI_FILE_AI_MCP_ALL,
       mcpData
     )
 
