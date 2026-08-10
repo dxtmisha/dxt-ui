@@ -65,7 +65,7 @@
     "preview": "vite preview",
     "test": "NODE_OPTIONS=\"--no-webstorage\" vitest",
     "library": "dxt-library",
-    "types": "dxt-types",
+    "types": "dxt-types raw",
     "prepublishOnly": "npm run library && npm run build",
     "publish-to-npm": "npm publish --access public"
   },

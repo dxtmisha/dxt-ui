@@ -51,7 +51,7 @@ export class DesignTypes {
     const files = this.getListByFilter()
     const jsFiles = this.getListByFilterJs()
 
-    const fullContent = this.toOneFile(files)
+    const fullContent = this.cleanContent(this.toOneFile(files))
     const fullJsContent = this.toOneFile(jsFiles)
 
     const aiContent = this.isRaw
@@ -338,6 +338,28 @@ export class DesignTypes {
     }
 
     return undefined
+  }
+
+  /**
+   * Cleans up the content by removing imports, local exports, and empty lines.
+   *
+   * Очищает контент, удаляя импорты, локальные экспорты и пустые строки.
+   * @param content content to clean / контент для очистки
+   */
+  protected cleanContent(content: string): string {
+    return content
+      // Remove multi-line and single-line imports (only local files)
+      .replace(/^import\s+(?:{[^}]+}|[^{]+)\s+from\s+['"]\.[^'"]+['"];?/gm, '')
+      .replace(/^import\s+['"]\.[^'"]+['"];?/gm, '')
+      // Remove local internal re-exports (e.g., export * from "./...")
+      .replace(/^export\s+(?:\*|{[^}]+})\s+from\s+['"]\.[^'"]+['"];?/gm, '')
+      // Remove single-line private and protected properties
+      .replace(/^\s*(?:private|protected)\s+[^({]+;/gm, '')
+      // Remove lines that only contain inline comments
+      .replace(/^\s*\/\/.*$/gm, '')
+      // Remove empty lines
+      .replace(/^\s*[\r\n]/gm, '')
+      .trim()
   }
 
   /**
