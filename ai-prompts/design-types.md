@@ -17,13 +17,14 @@ Your goal is to generate clean, optimized TypeScript type definitions (`ai-types
    *(Alternative: `npm run types raw` or `npx vite-node node_modules/@dxtmisha/scripts/bin/design-types.ts raw`)*
 
 2. **Step 2: AI Agent Optimization (Cleanup & Manual JSDoc Processing)**
-   The AI agent processes the generated `ai-types.md`. All processing (cleanup, translation, and JSDoc optimization) is performed in a single stage STRICTLY MANUALLY, section by section. If the file is too big, it MUST be divided into parts and fully processed. Leaving the file "as is" is STRICTLY FORBIDDEN. The use of automated scripts is also STRICTLY FORBIDDEN.
+   The AI agent processes the generated `ai-types.md`. All processing (cleanup, translation, and JSDoc optimization) is performed in a single stage STRICTLY MANUALLY, section by section. If the file is too big, it MUST be divided into parts and fully processed (when dividing into parts, take the maximum possible volume at a time; if it can be processed entirely, it is better to choose processing it as a whole). Leaving the file "as is" is STRICTLY FORBIDDEN. The use of automated scripts is also STRICTLY FORBIDDEN.
 
 ---
 
 ## CRITICAL REQUIREMENT: Strict Manual Processing
 
-- **NO SCRIPTS**: Writing or executing custom helper scripts (e.g., Node.js, Python, bash parsing, regex automation) is **STRICTLY FORBIDDEN** for any tasks (cleanup, translation, JSDoc generation, etc.). All work must be done MANUALLY, no matter the file size or volume. The process can be divided into stages (chunk by chunk) if the file is too large, but `ai-types.md` MUST be fully processed—leaving it "as is" is STRICTLY FORBIDDEN. Manual inspection and editing using direct file tools is required.
+- **NO SCRIPTS**: Writing or executing custom helper scripts (e.g., Node.js, Python, bash parsing, regex automation) is **STRICTLY FORBIDDEN** for any tasks (cleanup, translation, JSDoc generation, etc.). All work must be done MANUALLY, no matter the file size or volume. The process can be divided into stages (chunk by chunk) if the file is too large (when dividing, take the maximum possible volume at a time; process entirely if possible), but `ai-types.md` MUST be fully processed—leaving it "as is" is STRICTLY FORBIDDEN. Manual inspection and editing using direct file tools is required.
+- **FULL PROCESSING WITHOUT OMISSIONS**: The file MUST be processed IN ITS ENTIRETY. It is strictly forbidden to omit, skip, or delete anything (unless explicitly permitted by the cleaning rules).
 - **DEEP MANUAL STUDY**: The AI agent MUST manually read, inspect, and analyze the JS implementation files in `dist/` or `src/` to fully understand every function, method, class, parameter, return value, and side effect before writing JSDocs.
 
 ---
@@ -46,7 +47,7 @@ Your goal is to generate clean, optimized TypeScript type definitions (`ai-types
 
 ### Step 1: Run Script in Raw Mode
 Run `npx dxt-types raw` in the package directory. This creates:
-- `ai-types.md`: Contains concatenated `.d.ts` declaration content with header `All these methods are in the <package-name> library.`
+- `ai-types.md`: Contains concatenated `.d.ts` declaration content with header `All these methods are in the <package-name> (v<version>) library.`
 - `ai-description.md`: Created as an empty file.
 - `ai-mcp-resources.json`: Created as an empty array (`[]`).
 
@@ -56,7 +57,7 @@ Run `npx dxt-types raw` in the package directory. This creates:
 Read `ai-types.md` and inspect JS implementation code in `dist/` or `src/` manually to sanitize and optimize type contracts for AI consumption.
 
 #### Cleaning & Sanitization Rules (Must Be Performed Manually):
-- **Header Preservation**: Keep the first line intact: `All these methods are in the <package-name> library.`
+- **Header Preservation**: Keep the first line intact: `All these methods are in the <package-name> (v<version>) library.`
 - **Preserve All Exported Entities**: It is STRICTLY FORBIDDEN to delete, omit, or remove any exported functions, methods, classes, interfaces, or types. Every single public API entity exported by the package MUST be retained in `ai-types.md`.
 - **Imports & Re-exports**: Remove all internal `import` statements and local internal re-exports (e.g. `export * from "./..."`). Retain exports from external packages.
 - **Access Control**: Delete non-public content (private/protected class members, unexported helper functions). Preserve all public API surfaces.

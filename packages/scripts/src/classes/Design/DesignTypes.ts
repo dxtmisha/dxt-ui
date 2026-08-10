@@ -250,10 +250,11 @@ export class DesignTypes {
     const packageJson = getPackageJson()
 
     if (packageJson) {
+      const versionStr = packageJson.version ? ` (v${packageJson.version})` : ''
       PropertiesFile.writeByPath(
         UI_FILE_AI_TYPES,
         [
-          `All these methods are in the ${packageJson.name} library.`,
+          `All these methods are in the ${packageJson.name}${versionStr} library.`,
           '',
           content
         ].join('\n')

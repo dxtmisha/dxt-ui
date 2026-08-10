@@ -13,13 +13,14 @@ Your goal is to incrementally update the existing TypeScript type definitions (`
    Use git (e.g., `git diff`, `git log`, `git status`) to identify exactly which implementation files (`dist/` or `src/`) were recently changed, added, or deleted. DO NOT run `npx dxt-types raw`.
 
 2. **Step 2: Incremental AI Agent Update**
-   The AI agent processes the changes and manually updates the existing `ai-types.md`, `ai-description.md`, and `ai-mcp-resources.json` files to reflect the new state. This must be done STRICTLY MANUALLY. The use of automated scripts is STRICTLY FORBIDDEN.
+   The AI agent processes the changes and manually updates the existing `ai-types.md`, `ai-description.md`, and `ai-mcp-resources.json` files to reflect the new state (if the file needs to be divided into parts, take the maximum possible volume at a time; if it can be processed entirely, it is better to choose processing it as a whole). This must be done STRICTLY MANUALLY. The use of automated scripts is STRICTLY FORBIDDEN.
 
 ---
 
 ## CRITICAL REQUIREMENT: Strict Manual Processing
 
-- **NO SCRIPTS**: Writing or executing custom helper scripts (e.g., Node.js, Python, bash parsing, regex automation) or running `npx dxt-types raw` is **STRICTLY FORBIDDEN** for any tasks. All work must be done MANUALLY using direct file editing tools.
+- **NO SCRIPTS**: Writing or executing custom helper scripts (e.g., Node.js, Python, bash parsing, regex automation) or running `npx dxt-types raw` is **STRICTLY FORBIDDEN** for any tasks. All work must be done MANUALLY using direct file editing tools (if the process requires dividing the file into parts, take the maximum possible volume at a time; process entirely if possible).
+- **FULL PROCESSING WITHOUT OMISSIONS**: The files and updates MUST be processed IN THEIR ENTIRETY. It is strictly forbidden to omit, skip, or delete anything (unless required by the incremental update logic).
 - **DEEP MANUAL STUDY**: The AI agent MUST manually read, inspect, and analyze the specific JS implementation files in `dist/` or `src/` that have changed to fully understand the updates before editing the metadata.
 
 ---
@@ -50,7 +51,7 @@ Open the existing `ai-types.md` file and manually apply the updates based on you
 
 #### Cleaning & Updating Rules:
 - **Incremental Changes Only**: Do NOT regenerate the whole file. Only add new entities, update modified entities, and remove deleted entities based on the git diff.
-- **Header Preservation**: Keep the first line intact: `All these methods are in the <package-name> library.`
+- **Header Preservation**: Keep the first line intact: `All these methods are in the <package-name> (v<version>) library.`
 - **Preserve Unchanged Entities**: It is STRICTLY FORBIDDEN to delete or omit any exported entities that were not affected by the recent changes.
 - **Imports & Re-exports**: Do not add internal `import` statements or local re-exports.
 - **Access Control**: Do not add non-public content (private/protected members).

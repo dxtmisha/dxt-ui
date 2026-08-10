@@ -1,0 +1,14 @@
+[
+  {
+    "uri": "@dxtmisha/constructor/ai-types.md",
+    "name": "Type Definitions (@dxtmisha/constructor)",
+    "mimeType": "text/markdown",
+    "description": "Compressed and AI-optimized TypeScript declaration contracts for component logic constructors, ARIA controllers, and UI primitives."
+  },
+  {
+    "uri": "@dxtmisha/constructor/ai-description.md",
+    "name": "Package Overview & Rules (@dxtmisha/constructor)",
+    "mimeType": "text/markdown",
+    "description": "High-density package overview, module capabilities, and type definition trigger guidelines for @dxtmisha/constructor."
+  }
+]

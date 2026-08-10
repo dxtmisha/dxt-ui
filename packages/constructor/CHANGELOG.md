@@ -2,9 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.100.0] - 2026-07-28
+## [0.100.0] - 2026-08-10
 
 ### Added
+- **Slider Component Constructor**:
+  - Migrated and refactored the `Slider` logic constructor component.
+  - Decomposed architecture into specialized logic helper classes: `SliderElement` (DOM geometry calculations), `SliderMarks` & `SliderMarksData` (tick marks generation and step snapping), `SliderThumb` (min/max handle positioning), `SliderValue` (value range processing and step clamping), and `SliderEvent` & `SliderDrag` (drag tracking, pointer events, and keyboard step adjustment).
+  - Added vertical orientation support (`vertical` prop) with dedicated CSS layout positioning.
+  - Added support for string and number values via `SliderValueProp` (`NumberOrString | [NumberOrString, NumberOrString]`).
+  - Added `markSize` token support and disabled state styling for slider track, rail, and thumbs.
+  - Added accessible dual-handle focus event handlers (`onFocusMin`, `onFocusMax`, `eventsMin`, `eventsMax`).
+- **SliderField Component Constructor**:
+  - Introduced `SliderField` constructor integrating slider controls with form field inputs and labels.
+  - Extracted min/max calculation into `SliderFieldValue` class and label formatting into `SliderFieldLabel` class.
+  - Added `showInput`, `showValueInLabel`, `labelMin`, `labelMax`, `labelLeading`, and `labelTrailing` props, and exported `FieldSliderProps`.
 - **TableFlex & Flex Table Sub-Components**:
   - Introduced `TableFlex` component constructor for flexible CSS flexbox table layouts.
   - Added `TableFlexItem`, `TableFlexHeaderItem`, and `TableFlexRecord` sub-components for flex table header cells, data cells, and row records.
@@ -20,7 +31,13 @@ All notable changes to this project will be documented in this file.
 - **Placeholder**:
   - Ported `Placeholder` constructor with `AriaStaticInclude` for dynamic ARIA label references.
 - **Unit Tests**:
-  - Added unit test suites for `StickyInclude`, `SortInclude`, `SearchInclude`, `PaginationInclude`, `TextareaAutosize`, `Tooltip`, `Window`, and constructor helper classes.
+  - Added unit test suites for `Slider`, `SliderEvent`, `SliderFieldValue`, `SliderFieldLabel`, `StickyInclude`, `SortInclude`, `SearchInclude`, `PaginationInclude`, `TextareaAutosize`, `Tooltip`, and `Window`.
+
+### Changed
+- **Skeleton**:
+  - Applied scrollbar hiding (`ui.scrollbarHide`) to active skeleton components to visually hide scrollbars during loading states while maintaining scrollability.
+- **AI Infrastructure**:
+  - Updated AI prompt references to `ai-resources` and configured `ai-mcp-resources.json` in `package.json`.
 
 ## [0.84.3] - 2026-07-16
 
