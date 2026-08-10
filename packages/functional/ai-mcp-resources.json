@@ -1,1 +1,38 @@
-[]
+[
+  {
+    "uri": "@dxtmisha/functional/ai-types.md",
+    "name": "Type Definitions (@dxtmisha/functional)",
+    "mimeType": "text/markdown",
+    "description": "Compressed and AI-optimized TypeScript declaration contracts for functional Vue 3 utilities and base components."
+  },
+  {
+    "uri": "@dxtmisha/functional/ai-description.md",
+    "name": "Package Overview & Rules (@dxtmisha/functional)",
+    "mimeType": "text/markdown",
+    "description": "High-density project overview, key capabilities, and prompt trigger guidelines."
+  },
+  {
+    "uri": "@dxtmisha/functional/ai-resources/api-reference.md",
+    "name": "API Rules (@dxtmisha/functional)",
+    "mimeType": "text/markdown",
+    "description": "Reactive singleton scope initialization and REST API management patterns."
+  },
+  {
+    "uri": "@dxtmisha/functional/ai-resources/localization-seo.md",
+    "name": "Localization Rules (@dxtmisha/functional)",
+    "mimeType": "text/markdown",
+    "description": "Geographic context, locale-aware formatting, reactive translations, and document metadata."
+  },
+  {
+    "uri": "@dxtmisha/functional/ai-resources/reactivity-lists.md",
+    "name": "Lists Rules (@dxtmisha/functional)",
+    "mimeType": "text/markdown",
+    "description": "Async reactivity composables, reactive list models, search filtering, and DOM observer utilities."
+  },
+  {
+    "uri": "@dxtmisha/functional/ai-resources/storage-state.md",
+    "name": "Storage Rules (@dxtmisha/functional)",
+    "mimeType": "text/markdown",
+    "description": "Reactive composables for browser storage, cookies, cross-tab synchronization, and URL hash state."
+  }
+]
