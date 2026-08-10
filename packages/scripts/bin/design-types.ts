@@ -2,8 +2,10 @@
 
 import { DesignTypes } from '../src/classes/Design/DesignTypes'
 
-const dir: string = process.argv?.[2] ?? 'dist'
+const isRaw: boolean = process.argv?.[2] === 'raw' || process.argv?.[2] === '1' || process.argv?.[2] === 'true'
+const dir: string = process.argv?.[3]
+const resourcesDir: string = process.argv?.[4]
 
-new DesignTypes(dir)
+new DesignTypes(dir, resourcesDir, isRaw)
   .make()
   .then()

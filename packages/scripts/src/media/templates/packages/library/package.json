@@ -17,7 +17,7 @@
     "publish-to-npm": "npm publish --access public"
   },
   "files": [
-    "ai-prompts/",
+    "ai-resources/",
     "ai-screenshot/",
     "dist",
     "ai-description.md",

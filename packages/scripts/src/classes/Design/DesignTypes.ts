@@ -29,10 +29,12 @@ export class DesignTypes {
    * Конструктор для DesignTypes.
    * @param dir input directory path containing declaration files / входной путь к директории, содержащей файлы деклараций
    * @param promptsDir input directory path containing prompt files / входной путь к директории, содержащей файлы промптов
+   * @param isRaw flag disabling AI processing to create raw types and empty description / флаг отключения ИИ обработки для создания сырых типов и пустого описания
    */
   constructor(
     protected readonly dir: string = 'dist',
-    protected readonly promptsDir: string = 'ai-prompts'
+    protected readonly promptsDir: string = 'ai-resources',
+    protected readonly isRaw: boolean = false
   ) {
     ServerStorage.setErrorStatus(true)
     this.dirArray = this.dir.split('/')
@@ -52,34 +54,39 @@ export class DesignTypes {
     const fullContent = this.toOneFile(files)
     const fullJsContent = this.toOneFile(jsFiles)
 
-    const aiContent = await this.toAiEdit(fullContent, fullJsContent)
+    const aiContent = this.isRaw
+      ? fullContent
+      : await this.toAiEdit(fullContent, fullJsContent)
+    let fullDescription = ''
+    let mcpPrompts: DesignMcpResources | undefined
+
     this.save(aiContent)
 
-    const aiDescription = await this.toAiDescription(fullContent, fullJsContent)
+    if (!this.isRaw) {
+      const aiDescription = await this.toAiDescription(fullContent, fullJsContent)
 
-    const promptList = this.getListPrompts()
-    const prompts = await this.toAiPrompts(promptList)
+      const promptList = this.getListPrompts()
+      const prompts = await this.toAiPrompts(promptList)
 
-    const fullDescription = `${aiDescription}\n${prompts}`
-    this.saveDescription(fullDescription)
+      fullDescription = `${aiDescription}\n${prompts}`
 
-    const mcpList: DesignTypesList = [
-      {
-        path: UI_FILE_AI_TYPES,
-        content: aiContent
-      },
-      {
-        path: UI_FILE_AI_DESCRIPTION,
-        content: fullDescription
-      },
-      ...promptList
-    ]
+      const mcpList: DesignTypesList = [
+        {
+          path: UI_FILE_AI_TYPES,
+          content: aiContent
+        },
+        {
+          path: UI_FILE_AI_DESCRIPTION,
+          content: fullDescription
+        },
+        ...promptList
+      ]
 
-    const mcpPrompts = await this.toAiMcpPrompts(mcpList)
-
-    if (mcpPrompts) {
-      this.saveMcp(mcpPrompts)
+      mcpPrompts = await this.toAiMcpPrompts(mcpList)
     }
+
+    this.saveDescription(fullDescription)
+    this.saveMcp(mcpPrompts ?? [])
 
     console.log('DesignTypes: AI types saved.')
   }
@@ -307,6 +314,10 @@ export class DesignTypes {
     prompt: string,
     code?: string
   ): Promise<string | undefined> {
+    if (this.isRaw) {
+      return undefined
+    }
+
     const ai = useAi()
 
     if (ai) {
