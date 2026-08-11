@@ -44,7 +44,7 @@ Strictly follow these rules for flawless dxt-ui code:
 - **Lists (v-for)**: Always use a unique `:key`. Avoid using the array index as a key.
 - **Directives**: Never use `v-if` on the same element as `v-for`.
 - **Reactivity**: Use `ref` for data. Calculate complex logic via `computed`.
-- **Logic**: ALL logic must be moved to Composables. The component should only contain the composable call and the template.
+- **Logic**: Extract only complex logic into Composables. Simple logic or calling existing hooks (even multiple) does not need to be extracted into a separate composable.
 - **Templates**: Cleanest possible HTML. No function calls, calculations, or inline styles. If complex logic is needed, split into sub-components.
 - **Props**: One-way data flow. Never mutate incoming props.
 - **Events**: Event names must be strictly in kebab-case.
@@ -219,6 +219,7 @@ Vue 3 reactive utilities built on `@dxtmisha/functional-basic`. See `ai-types.md
 - **Priority**: Always use `@dxtmisha/functional` reactive composables instead of low-level `@dxtmisha/functional-basic` primitives in Vue 3 applications.
 - **API & State Singletons**: **NEVER** call `useApi*` / `executeUse*` hooks directly in Vue components (`<script setup>`). Wrap them in `executeUseGlobal` (startup), `executeUseLocal` (lazy, session scope), or `executeUseProvide` (scoped tree) inside external service files. Components only import and call the resulting hook.
 - **Purity & Atomicity**: Keep Vue components minimal. Extract all reactive state management, network orchestration, and side effects into external composables.
+- **Reusable Business Logic (`executeUse*`)**: Any complex business logic or state logic with any potential for reuse MUST be extracted into external service composables wrapped with `executeUse*` (`executeUseGlobal`, `executeUseLocal`, or `executeUseProvide`).
 
 ## Package Type Definitions (Must Read in Full When Working with Package)
 'node_modules/@dxtmisha/functional/ai-types.md'

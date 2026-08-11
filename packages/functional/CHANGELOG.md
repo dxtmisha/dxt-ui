@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.15.10] - 2026-08-11
+
+### Changed
+- **AI Documentation**: Added architectural directive in `ai-doc.md` requiring complex business logic with potential for reuse to be extracted into external service composables wrapped with `executeUse*` (`executeUseGlobal`, `executeUseLocal`, or `executeUseProvide`).
+
 ## [1.15.8] - 2026-08-05
 
 ### Changed

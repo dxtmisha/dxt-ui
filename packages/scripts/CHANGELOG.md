@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.10.16] - 2026-08-11
+
+### Changed
+- **AI Prompts**: Refined Vue component logic rules in `aiCodeVuePrompt.en.md` and `aiCodeVuePrompt.ru.md` — restricted mandatory composable extraction to complex logic, clarifying that simple logic or calling existing hooks does not require a separate composable.
+
 ## [0.10.15] - 2026-08-10
 
 ### Added

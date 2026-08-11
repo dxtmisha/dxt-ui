@@ -7,7 +7,7 @@
 - **Lists (v-for)**: Always use a unique `:key`. Avoid using the array index as a key.
 - **Directives**: Never use `v-if` on the same element as `v-for`.
 - **Reactivity**: Use `ref` for data. Calculate complex logic via `computed`.
-- **Logic**: ALL logic must be moved to Composables. The component should only contain the composable call and the template.
+- **Logic**: Extract only complex logic into Composables. Simple logic or calling existing hooks (even multiple) does not need to be extracted into a separate composable.
 - **Templates**: Cleanest possible HTML. No function calls, calculations, or inline styles. If complex logic is needed, split into sub-components.
 - **Props**: One-way data flow. Never mutate incoming props.
 - **Events**: Event names must be strictly in kebab-case.
