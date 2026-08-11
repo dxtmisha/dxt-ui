@@ -94,7 +94,7 @@
 
 ```markdown
 ## Mandatory Rules
-Read the corresponding file ONLY when working on a task related to (even if not working directly with this package):
+You MUST evaluate whether your task relates to any of the following topics (even if not working directly with this package). If related material is present, you are strictly obligated to read and study the corresponding file before proceeding:
 - 'node_modules/<package-name>/<file-path>': <краткое 1-2 предложения описание триггера и темы (максимум 30-35 words на английском)>
 ```
 

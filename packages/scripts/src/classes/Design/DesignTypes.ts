@@ -455,7 +455,7 @@ export class DesignTypes {
 
     if (prompts.length > 0) {
       return '## Mandatory Rules\n'
-        + 'Read the corresponding file ONLY when working on a task related to (even if not working directly with this package):\n'
+        + 'You MUST evaluate whether your task relates to any of the following topics (even if not working directly with this package). If related material is present, you are strictly obligated to read and study the corresponding file before proceeding:\n'
         + `${prompts.join('\n')}`
     }
 

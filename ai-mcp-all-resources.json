@@ -1,57 +1,69 @@
 [
   {
-    "uri": "@dxtmisha/functional/ai-types.md",
-    "name": "Vue Functional Types (@dxtmisha/functional)",
+    "uri": "@dxtmisha/constructor/ai-types.md",
+    "name": "Type Definitions (@dxtmisha/constructor)",
     "mimeType": "text/markdown",
-    "description": "Type definitions and interface declarations for Vue 3 composables, reactive API abstractions, i18n helpers, design constructors, and utility state managers."
+    "description": "Compressed and AI-optimized TypeScript declaration contracts for component logic constructors, ARIA controllers, and UI primitives."
+  },
+  {
+    "uri": "@dxtmisha/constructor/ai-description.md",
+    "name": "Package Overview & Rules (@dxtmisha/constructor)",
+    "mimeType": "text/markdown",
+    "description": "High-density package overview, module capabilities, and type definition trigger guidelines for @dxtmisha/constructor."
+  },
+  {
+    "uri": "@dxtmisha/functional/ai-types.md",
+    "name": "Type Definitions (@dxtmisha/functional)",
+    "mimeType": "text/markdown",
+    "description": "Compressed and AI-optimized TypeScript declaration contracts for functional Vue 3 utilities and base components."
   },
   {
     "uri": "@dxtmisha/functional/ai-description.md",
-    "name": "Vue Utility Architecture (@dxtmisha/functional)",
+    "name": "Package Overview & Rules (@dxtmisha/functional)",
     "mimeType": "text/markdown",
-    "description": "Architectural guidelines and utility reference for Vue 3 applications, covering reactive state management, API orchestration, component base classes, localization, and storage synchronization."
+    "description": "High-density project overview, key capabilities, and prompt trigger guidelines."
   },
   {
-    "uri": "@dxtmisha/functional/ai-prompts/api-reference.md",
-    "name": "API Reference (@dxtmisha/functional)",
+    "uri": "@dxtmisha/functional/ai-resources/api-reference.md",
+    "name": "API Rules (@dxtmisha/functional)",
     "mimeType": "text/markdown",
-    "description": "Provides guidelines and usage patterns for REST API management and reactive scope-isolated singletons in @dxtmisha/functional."
+    "description": "Reactive singleton scope initialization and REST API management patterns."
   },
   {
-    "uri": "@dxtmisha/functional/ai-prompts/localization-seo.md",
-    "name": "Localization SEO Utilities (@dxtmisha/functional)",
+    "uri": "@dxtmisha/functional/ai-resources/localization-seo.md",
+    "name": "Localization Rules (@dxtmisha/functional)",
     "mimeType": "text/markdown",
-    "description": "Provides reactive utilities and helper functions for locale-aware formatting, translation primitives, geographic context, and dynamic HTML document metadata management."
+    "description": "Geographic context, locale-aware formatting, reactive translations, and document metadata."
   },
   {
-    "uri": "@dxtmisha/functional/ai-prompts/reactivity-lists.md",
-    "name": "Reactivity List Utilities (@dxtmisha/functional)",
+    "uri": "@dxtmisha/functional/ai-resources/reactivity-lists.md",
+    "name": "Lists Rules (@dxtmisha/functional)",
     "mimeType": "text/markdown",
-    "description": "Comprehensive API reference for async reactivity composables, reactive list structures, debounced multi-field search helpers, and lifecycle-managed DOM observers."
+    "description": "Async reactivity composables, reactive list models, search filtering, and DOM observer utilities."
   },
   {
-    "uri": "@dxtmisha/functional/ai-prompts/storage-state.md",
-    "name": "Browser State Composables (@dxtmisha/functional)",
+    "uri": "@dxtmisha/functional/ai-resources/storage-state.md",
+    "name": "Storage Rules (@dxtmisha/functional)",
     "mimeType": "text/markdown",
-    "description": "Reactive composable wrappers for persistent and synchronized browser state management, including localStorage, sessionStorage, cookies, BroadcastChannel, and URL hash fragments."
+    "description": "Reactive composables for browser storage, cookies, cross-tab synchronization, and URL hash state."
   },
   {
     "uri": "@dxtmisha/functional-basic/ai-types.md",
-    "name": "TypeScript Types Reference (@dxtmisha/functional-basic)",
+    "name": "Type Definitions (@dxtmisha/functional-basic)",
     "mimeType": "text/markdown",
-    "description": "Comprehensive TypeScript type definitions, enums, classes, and utility function declarations covering API client interfaces, metadata management, internationalization, and DOM utilities."
+    "description": "Compressed and AI-optimized TypeScript declaration contracts for core utilities."
   },
   {
     "uri": "@dxtmisha/functional-basic/ai-description.md",
-    "name": "Utility Library Overview (@dxtmisha/functional-basic)",
+    "name": "Package Overview & Rules (@dxtmisha/functional-basic)",
     "mimeType": "text/markdown",
-    "description": "Provides an overview of isomorphic client and server utilities for HTTP networking, state management, localization, data search, DOM handling, and SSR hydration. Outlines architectural conventions and package capabilities across browser and server runtimes."
+    "description": "High-density project overview, key capabilities, and prompt trigger guidelines."
   },
   {
-    "uri": "@dxtmisha/functional-basic/ai-prompts/api-reference.md",
-    "name": "API Reference Guide (@dxtmisha/functional-basic)",
+    "uri": "@dxtmisha/functional-basic/ai-resources/api-reference.md",
+    "name": "API & Core Utilities (@dxtmisha/functional-basic)",
     "mimeType": "text/markdown",
-    "description": "Comprehensive API reference and usage examples for the `@dxtmisha/functional-basic` package. Covers HTTP client configurations, caching, state storage, localization, DOM events, and core utility functions."
+    "description": "HTTP client caching, storage management, geolocation localization, and DOM utility helpers."
   },
   {
     "uri": "@dxtmisha/zip/ai-types.md",

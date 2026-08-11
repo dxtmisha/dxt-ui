@@ -97,6 +97,8 @@ Consolidated documentation, architectural guidelines, and mandatory rules for th
       prompts.push(instruction)
     }
 
+    prompts.push(this.getAuditPrompt())
+
     this.write(prompts)
 
     if (this.isMcp) {
@@ -116,6 +118,26 @@ Consolidated documentation, architectural guidelines, and mandatory rules for th
    */
   protected isFileOnDirs(dirs: string[]): boolean {
     return dirs.some(path => this.exFileOnDirs.test(path))
+  }
+
+  /**
+   * Retrieves the final self-audit prompt for AI code verification.
+   *
+   * Получает итоговый промпт самоаудита для проверки кода ИИ.
+   * @returns formatted audit prompt / отформатированный промпт аудита
+   * @protected
+   */
+  protected getAuditPrompt(): string {
+    return `
+## Mandatory Final Self-Audit (CRITICAL GUARD & STRICT COMPLIANCE)
+
+🔴 **STOP! BEFORE DECLARING WORK COMPLETE OR ENDING YOUR TURN, YOU MUST AUDIT ALL CODE!** 🔴
+
+1. **Mandatory Full Re-Study**: Inspect EVERY single line of code created or modified in this task.
+2. **Rule-by-Rule Compliance Check**: Cross-reference all code changes against ALL architectural conventions, coding standards, JSDoc/TSDoc guidelines, and package rules defined in \`ai-prompt.md\`.
+3. **Zero Ignored Rules**: Ensure NO project rule, typing constraint, or code structure guideline was bypassed, forgotten, or ignored.
+4. **Self-Correction**: If any discrepancy, missing typing, bad JSDoc formatting, or rule violation is found during this audit, fix it IMMEDIATELY before concluding your turn.
+    `.trim()
   }
 
   /**

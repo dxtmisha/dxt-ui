@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.10.15] - 2026-08-10
+
+### Added
+- **AI Prompt Self-Audit Directive**: Added `getAuditPrompt` method in `LibraryAiPrompt` to append a strict, mandatory self-audit directive (`## Mandatory Final Self-Audit (CRITICAL GUARD & STRICT COMPLIANCE)`) at the end of generated AI prompt files (`ai-prompt.md`), instructing AI models to re-study and audit all generated code against project rules before concluding work.
+
 ## [0.10.13] - 2026-08-06
 
 ### Changed

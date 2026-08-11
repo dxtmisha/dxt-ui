@@ -60,13 +60,13 @@ Strictly follow these rules for flawless dxt-ui code:
 The project is located at: 'node_modules/@dxtmisha/constructor'.
 
 ## Package Description & Module Overview
-A lightweight Vue UI component library providing building blocks, layout primitives, accessible interactive controls, and styling plugins. It encapsulates functional primitives for forms, navigation, formatting, data management, and overlay states.
+A lightweight Vue 3 component logic library providing class-based component constructors, state logic engines, ARIA accessibility controllers, and build-time styling plugins. It encapsulates functional primitives for forms, navigation, formatting, data management, and overlay states independently of visual styling or framework templates.
 
-Form fields and inputs, selection controls, navigation systems, structural layout primitives, overlay and dialog containers, presentation and formatting utilities, and styling plugins.
+Key capabilities are organized into core functional modules: Form Fields & Inputs for managing reactive field values, validation rules, input modes, masking, stepper controls, and visibility toggles; Selection Controls for handling single/multiple choice states, item filtering, searching, and sorting; Navigation Primitives for tab indexing, focus trap management, directional arrow key focus, headroom scroll tracking, and anchor scroll interactions; Structural Layout Controls for managing grid, flex, bleed, section, headroom, and sticky positioning; Overlay & Dialog Containers for modal windows, action sheets, snackbars, and teleported elements with SSR compatibility; Motion & Animations for axis transitions, flip animations, sticky movements, and ripple effects; Presentation & Formatting Utilities for formatted numbers, units, badges, avatars, breadcrumbs, skeletons, and loading indicators; and System Infrastructure providing Vite build plugins, component auto-import registrations, and style modification transformers.
 
-Type definitions in ai-types.md must be studied when configuring library component props, managing reactive model bindings, handling ARIA accessibility attributes, or implementing custom component constructors.
+Type definitions in ai-types.md must be studied when configuring library component props, managing reactive model bindings, handling ARIA accessibility attributes, extending abstract component includes, or customizing Vite build plugin integrations.
 
-Designed for seamless integration into Vue-based application architectures alongside Vite build tooling and routing utilities.
+Designed for seamless integration into Vue-based application architectures alongside Vite build tooling, SCSS design systems, and higher-level UI component libraries.
 
 ## Package Core Information
 Auxiliary base library for UI components and typings. **DO NOT import directly in code**; use ready-made design system components (e.g., D1).
@@ -185,7 +185,24 @@ Vue 3 reactive composables for Figma plugin UI state synchronization (`useFigmaF
 The project is located at: 'node_modules/@dxtmisha/functional'.
 
 ## Package Description & Module Overview
-A reactive utility and component architecture library for Vue 3 providing high-level abstract base classes, state management composables, and localized formatting helpers. It standardizes reactive API orchestration, browser storage binding, DOM visibility tracking, internationalization, and design component construction across client and server-rendered environments. Key capabilities are grouped into API and network composables for managing asynchronous HTTP requests, mutation workflows, SSR prefetching, response contract validation, error mappings, and list orchestration; design component base classes for standardized component rendering, dynamic class and style computation, prop change tracking, slot management, and element exposure; localization and formatting utilities for reactive handling of dates, numbers, currency, unit conversions, country flags, dynamic translations, and language-dependent computed properties; persistent storage composables synchronizing state with cookies, web storage, URL query or hash parameters, and cross-tab messaging; list and search helpers for managing reactive data filtering, selection state, text highlighting, debouncing, and router-bound navigation lists; and DOM system utilities for IntersectionObserver lazy visibility tracking, reactive page metadata management, global loading states, scrollbar measurements, and singleton dependency injection. Study ai-types.md when implementing abstract component constructors, defining API validation contracts or error schemas, typing complex list structures and search options, configuring singleton execution scopes, or managing reactive Vue prop and subcomponent bindings. This library integrates natively into Vue 3 and Vue Router applications through a unified global plugin that configures shared API, routing, localization, and metadata services.
+# @dxtmisha/functional Reference
+
+A reactive utility and component architecture library for Vue 3 providing high-level abstract base classes, state management composables, and localized formatting helpers.
+
+## Key Capabilities & Groupings
+- **API & Network**: Reactive composables for asynchronous HTTP requests, mutation workflows, SSR prefetching, response contract validation, error mappings, and list orchestration.
+- **Storage & State**: Persistent storage composables synchronizing state with cookies, web storage, URL query/hash parameters, and cross-tab messaging.
+- **Localization & Formatting**: Utilities for reactive handling of dates, numbers, currency, unit conversions, country flags, and dynamic translations.
+- **List & Search**: Helpers for managing reactive data filtering, selection state, text highlighting, debouncing, and router-bound navigation lists.
+- **DOM & System**: DOM visibility tracking, reactive page metadata management, global loading states, scrollbar measurements, and singleton dependency injection.
+- **Design Components**: Abstract base classes for standardized component rendering, dynamic class/style computation, prop tracking, and element exposure.
+
+## Triggers for Studying `ai-types.md`
+Study `ai-types.md` when implementing abstract component constructors, defining API validation contracts or error schemas, typing complex list structures and search options, configuring singleton execution scopes, or managing reactive Vue prop and subcomponent bindings.
+
+## Integration Context
+This library integrates natively into Vue 3 and Vue Router applications through a unified global plugin that configures shared API, routing, localization, and metadata services.
+
 ## Mandatory Rules
 Read the corresponding file ONLY when working on a task related to (even if not working directly with this package):
 - 'node_modules/@dxtmisha/functional/ai-resources/api-reference.md': Reactive singleton scope initialization and REST API management patterns
@@ -213,7 +230,24 @@ Vue 3 reactive utilities built on `@dxtmisha/functional-basic`. See `ai-types.md
 The project is located at: 'node_modules/@dxtmisha/functional-basic'.
 
 ## Package Description & Module Overview
-The library provides an isomorphic suite of client- and server-side utilities designed for web application infrastructure, state management, internationalization, and network communication, serving as a unified foundation for API lifecycle management, SSR hydration, browser storage, and data transformation across JavaScript runtimes. API and network utilities streamline HTTP fetch requests with configurable defaults, automatic retries with jitter, response caching, error classification, and SSR client hydration script generation. Storage and state management modules supply request-isolated SSR storage contexts, type-safe cookie management, synchronized URL query and hash state, local and session storage with age-based expiration, and cross-tab broadcast messaging. Localization and geographic tools provide automated country and language detection, phone number mask matching, metric-to-imperial unit conversion, pluralization, currency formatting, and asynchronous multi-language translation resolution. Search and data handling capabilities enable multi-column list searching, search match highlighting, fuzzy and exact regular expression matching, multi-field array sorting, and recursive object template replacement. UI, DOM, and event helpers deliver DOM element manipulation, ResizeObserver and scroll-sync event listeners, global loading indicators, icon registration, resumable timers, and isomorphic HTML meta tag management for standard SEO, Open Graph, and Twitter Cards. Studying type definitions in ai-types.md is mandatory when typing complex API request or response structures, configuring custom request wrappers, defining criteria for error storage items, specifying search column paths, setting up custom translation dictionaries, or implementing isolated server storage contexts during SSR. This package connects with modern web frameworks and SSR environments by wrapping standard Web APIs, fetch interfaces, and DOM listeners with environment-agnostic abstractions and automated client-side hydration hooks.
+# Package Overview & Rules (@dxtmisha/functional-basic)
+
+## Core Purpose
+This library provides an isomorphic suite of client- and server-side utilities designed for web application infrastructure, state management, internationalization, and network communication. It serves as a unified foundation for API lifecycle management, SSR hydration, browser storage, and data transformation across JavaScript runtimes.
+
+## Key Capabilities & Groupings
+- **API & Network**: Streamlines HTTP fetch requests with configurable defaults, automatic retries with jitter, response caching, error classification, and SSR client hydration script generation.
+- **Storage & State Management**: Supplies request-isolated SSR storage contexts, type-safe cookie management, synchronized URL query and hash state, local and session storage with age-based expiration, and cross-tab broadcast messaging.
+- **Localization & Geographic Tools**: Provides automated country and language detection, phone number mask matching, metric-to-imperial unit conversion, pluralization, currency formatting, and asynchronous multi-language translation resolution.
+- **Search & Data Handling**: Enables multi-column list searching, search match highlighting, fuzzy and exact regular expression matching, multi-field array sorting, and recursive object template replacement.
+- **UI, DOM, & Event Helpers**: Delivers DOM element manipulation, ResizeObserver and scroll-sync event listeners, global loading indicators, icon registration, resumable timers, and isomorphic HTML meta tag management for standard SEO, Open Graph, and Twitter Cards.
+
+## Triggers for Studying `ai-types.md`
+Studying type definitions in `ai-types.md` is mandatory when typing complex API request or response structures, configuring custom request wrappers, defining criteria for error storage items, specifying search column paths, setting up custom translation dictionaries, or implementing isolated server storage contexts during SSR.
+
+## Integration Context
+This package connects with modern web frameworks and SSR environments by wrapping standard Web APIs, fetch interfaces, and DOM listeners with environment-agnostic abstractions and automated client-side hydration hooks.
+
 ## Mandatory Rules
 Read the corresponding file ONLY when working on a task related to (even if not working directly with this package):
 - 'node_modules/@dxtmisha/functional-basic/ai-resources/api-reference.md': HTTP client caching, storage management, geolocation localization, and DOM utility helpers
@@ -309,7 +343,7 @@ This library provides client-side functionality for programmatically constructin
 #### Development Rules for AI:
 1.  **Purity & Atomicity**: Components must be minimal. All business logic must be extracted to **Composables**.
 2.  **Typing**: Strict TypeScript, no `any`. Mandatory usage of interfaces for Props and Emits.
-3.  **Documentation**: Use JSDoc/TSDoc formatted strictly according to the guidelines in [jdoc.md](ai-resources/jdoc.md). All comments must follow a mandatory bilingual standard (English and Russian):
+3.  **Documentation**: Use JSDoc/TSDoc formatted strictly according to the guidelines in [jdoc.md](ai-prompts/jdoc.md). All comments must follow a mandatory bilingual standard (English and Russian):
     - **Classes/Functions/Methods**: Detailed multiline descriptions (English on top, Russian on bottom). Use `@param` and `@returns` with bilingual descriptions separated by ` / `.
     - **Interfaces, Types, Enums, and Properties**: Compact single line (or double line if long) with a forward slash separator: `/** English / Russian */`.
 4.  **Styles**: Use SCSS. Modifying the base library styles is strictly prohibited unless explicitly requested.
@@ -317,3 +351,14 @@ This library provides client-side functionality for programmatically constructin
 6.  **Strict Adherence**: Do strictly and only what is requested in the user's prompt. Never make unsolicited changes, refactorings, cleanups, or modifications to other files unless explicitly instructed by the user.
 
 Generate code in a way that allows it to be copied and run immediately (**Copy-Paste Ready**).
+
+---
+
+## Mandatory Final Self-Audit (CRITICAL GUARD & STRICT COMPLIANCE)
+
+🔴 **STOP! BEFORE DECLARING WORK COMPLETE OR ENDING YOUR TURN, YOU MUST AUDIT ALL CODE!** 🔴
+
+1. **Mandatory Full Re-Study**: Inspect EVERY single line of code created or modified in this task.
+2. **Rule-by-Rule Compliance Check**: Cross-reference all code changes against ALL architectural conventions, coding standards, JSDoc/TSDoc guidelines, and package rules defined in `ai-prompt.md`.
+3. **Zero Ignored Rules**: Ensure NO project rule, typing constraint, or code structure guideline was bypassed, forgotten, or ignored.
+4. **Self-Correction**: If any discrepancy, missing typing, bad JSDoc formatting, or rule violation is found during this audit, fix it IMMEDIATELY before concluding your turn.
