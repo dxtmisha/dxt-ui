@@ -21,21 +21,16 @@ export type SliderFieldPropsBasic<
   & FieldValueProps<SliderValueType>
   & SliderPropsInclude<Slider>
   & {
-  /** Show value in label title / Показывать значение в заголовке метки */
+    /** Show value in label title / Показывать значение в заголовке метки */
     showValueInLabel?: boolean
     /** Show numeric input text boxes / Показывать числовые поля ввода */
     showInput?: boolean
-
     /** Show current value badge / Показывать метку текущего значения */
     showValue?: boolean
 
-    /** Label or placeholder for minimum value / Метка или плейсхолдер для минимального значения */
-    labelMin?: string
-    /** Label or placeholder for maximum value / Метка или плейсхолдер для максимального значения */
-    labelMax?: string
-    /** Text displayed before slider or min input / Текст, отображаемый перед слайдером или мин инпутом */
+    /** Text displayed before the component content / Текст, отображаемый перед содержимым компонента */
     labelLeading?: string
-    /** Text displayed after slider or max input / Текст, отображаемый после слайдера или макс инпута */
+    /** Text displayed after the component content / Текст, отображаемый после содержимого компонента */
     labelTrailing?: string
 
     /** Separator between label title and value / Разделитель между заголовком метки и значением */

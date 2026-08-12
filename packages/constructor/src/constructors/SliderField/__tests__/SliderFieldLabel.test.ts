@@ -35,25 +35,4 @@ describe('SliderFieldLabel', () => {
     expect(labelItem.max).toBe('80')
     expect(labelItem.label).toBe('20 - 80')
   })
-
-  it('should use explicit labelMin and labelMax props when provided', () => {
-    const props = {
-      min: 0,
-      max: 100,
-      multiple: true,
-      labelMin: 'Min Label',
-      labelMax: 'Max Label'
-    } as SliderFieldProps
-
-    const valueInclude = {
-      item: ref<SliderValueType>([10, 90])
-    } as FieldValueInclude<SliderValueType>
-
-    const valueItem = new SliderFieldValue(props, valueInclude)
-    const labelItem = new SliderFieldLabel(props, valueItem)
-
-    expect(labelItem.min).toBe('Min Label')
-    expect(labelItem.max).toBe('Max Label')
-    expect(labelItem.label).toBe('Min Label - Max Label')
-  })
 })

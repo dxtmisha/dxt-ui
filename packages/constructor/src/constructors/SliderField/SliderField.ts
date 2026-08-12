@@ -3,7 +3,6 @@ import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
 import { FieldChangeInclude } from '../../classes/Field/FieldChangeInclude'
 import { FieldAttributesInclude } from '../../classes/Field/FieldAttributesInclude'
-import { FieldElementInclude } from '../../classes/Field/FieldElementInclude'
 import { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
 import { FieldCodeInclude } from '../../classes/Field/FieldCodeInclude'
 import { FieldValidationInclude } from '../../classes/Field/FieldValidationInclude'
@@ -14,6 +13,7 @@ import { FieldLabelInclude } from '../FieldLabel'
 import { FieldMessageInclude } from '../FieldMessage'
 import { type SliderValueType } from '../Slider'
 
+import { SliderFieldEvent } from './SliderFieldEvent'
 import { SliderFieldLabel } from './SliderFieldLabel'
 import { SliderFieldValue } from './SliderFieldValue'
 
@@ -33,26 +33,31 @@ export class SliderField {
   readonly change: FieldChangeInclude
   /** Field attributes include instance / Экземпляр атрибутов поля */
   readonly attributes: FieldAttributesInclude
-  /** Field element include instance / Экземпляр HTML-элемента поля */
-  readonly elementItem: FieldElementInclude
+
   /** Field value include instance / Экземпляр значения поля */
   readonly value: FieldValueInclude<SliderValueType>
   /** Slider field value instance / Экземпляр значения поля слайдера */
   readonly valueItem: SliderFieldValue
-  /** Slider field label text instance / Экземпляр меток текста поля слайдера */
-  readonly label: SliderFieldLabel
+
   /** Field code include instance / Экземпляр кода поля */
   readonly code: FieldCodeInclude
   /** Field validation include instance / Экземпляр валидации поля */
   readonly validation: FieldValidationInclude
   /** Field event include instance / Экземпляр событий поля */
   readonly event: FieldEventInclude
+  /** Slider field event instance / Экземпляр событий поля слайдера */
+  readonly sliderEvent: SliderFieldEvent
+
   /** Field label include instance / Экземпляр включения метки поля */
   readonly fieldLabel: FieldLabelInclude
+
   /** Field message include instance / Экземпляр включения сообщения поля */
   readonly fieldMessage: FieldMessageInclude
+
   /** Icon trailing include instance / Экземпляр включения иконки */
   readonly icon: IconTrailingInclude
+  /** Slider field label text instance / Экземпляр меток текста поля слайдера */
+  readonly label: SliderFieldLabel
 
   /**
    * Constructor
@@ -90,13 +95,13 @@ export class SliderField {
       FieldAttributesIncludeConstructor?: typeof FieldAttributesInclude
       FieldChangeIncludeConstructor?: typeof FieldChangeInclude
       FieldCodeIncludeConstructor?: typeof FieldCodeInclude
-      FieldElementIncludeConstructor?: typeof FieldElementInclude
       FieldEventIncludeConstructor?: typeof FieldEventInclude
       FieldLabelIncludeConstructor?: typeof FieldLabelInclude
       FieldMessageIncludeConstructor?: typeof FieldMessageInclude
       FieldValidationIncludeConstructor?: typeof FieldValidationInclude
       FieldValueIncludeConstructor?: typeof FieldValueInclude
       IconTrailingIncludeConstructor?: typeof IconTrailingInclude
+      SliderFieldEventConstructor?: typeof SliderFieldEvent
       SliderFieldLabelConstructor?: typeof SliderFieldLabel
       SliderFieldValueConstructor?: typeof SliderFieldValue
     } = {}
@@ -105,58 +110,43 @@ export class SliderField {
       FieldAttributesIncludeConstructor = FieldAttributesInclude,
       FieldChangeIncludeConstructor = FieldChangeInclude,
       FieldCodeIncludeConstructor = FieldCodeInclude,
-      FieldElementIncludeConstructor = FieldElementInclude,
       FieldEventIncludeConstructor = FieldEventInclude,
       FieldLabelIncludeConstructor = FieldLabelInclude,
       FieldMessageIncludeConstructor = FieldMessageInclude,
       FieldValidationIncludeConstructor = FieldValidationInclude,
       FieldValueIncludeConstructor = FieldValueInclude,
       IconTrailingIncludeConstructor = IconTrailingInclude,
+      SliderFieldEventConstructor = SliderFieldEvent,
       SliderFieldLabelConstructor = SliderFieldLabel,
       SliderFieldValueConstructor = SliderFieldValue
     } = constructors
 
-    this.change = new FieldChangeIncludeConstructor(this.props)
-    this.attributes = new FieldAttributesIncludeConstructor(this.props)
+    this.change = new FieldChangeIncludeConstructor(props)
+    this.attributes = new FieldAttributesIncludeConstructor(props)
 
-    this.elementItem = new FieldElementIncludeConstructor(
-      this.props,
-      this.element
-    )
+    this.value = new FieldValueIncludeConstructor<SliderValueType>(props, refs)
+    this.valueItem = new SliderFieldValueConstructor(props, this.value)
 
-    this.value = new FieldValueIncludeConstructor<SliderValueType>(
-      this.props,
-      this.refs,
-      this.elementItem
-    )
-
-    this.valueItem = new SliderFieldValueConstructor(
-      this.props,
-      this.value
-    )
-
-    this.label = new SliderFieldLabelConstructor(
-      this.props,
-      this.valueItem
-    )
-
-    this.code = new FieldCodeIncludeConstructor(this.props)
+    this.code = new FieldCodeIncludeConstructor(props)
     this.validation = new FieldValidationIncludeConstructor(
-      this.props,
+      props,
       this.attributes,
       this.value,
       this.change,
       this.code
     )
     this.event = new FieldEventIncludeConstructor(
-      this.props,
+      props,
       this.change,
       this.value,
       this.validation,
-      this.emits
+      emits
     )
-
-    this.icon = new IconTrailingIncludeConstructor(this.props, this.className, this.components)
+    this.sliderEvent = new SliderFieldEventConstructor(
+      props,
+      this.event,
+      this.valueItem
+    )
 
     this.fieldLabel = new FieldLabelIncludeConstructor(
       this.className,
@@ -166,85 +156,14 @@ export class SliderField {
 
     this.fieldMessage = new FieldMessageIncludeConstructor(
       this.className,
-      this.props,
+      props,
       this.components,
       undefined,
       undefined,
       () => this.validation.message
     )
-  }
 
-  /**
-   * Event handler when slider value is selected or dragged.
-   *
-   * Обработчик события при выборе или перетаскивании значения слайдера.
-   * @param value selected detail object or value / выбранный объект деталей или значение
-   */
-  readonly onSliderInput = (value: SliderValueType): void => {
-    this.event.onInput(
-      new InputEvent('input'),
-      { value }
-    )
-  }
-
-  /**
-   * Event handler when slider value change is committed.
-   *
-   * Обработчик события при подтверждении изменения значения слайдера.
-   */
-  readonly onSliderChange = (): void => {
-    this.event.onChange(new InputEvent('change'))
-  }
-
-  /**
-   * Input handler for numeric input fields.
-   *
-   * Обработчик ввода для числовых полей ввода.
-   * @param event input event / событие ввода
-   */
-  readonly onInput = (event: Event): void => {
-    const target = event.target as HTMLInputElement
-    const valueFocus = target.valueAsNumber || 0
-    const type = target.dataset.type
-
-    if (this.props.multiple) {
-      const min = type === 'min' ? valueFocus : this.valueItem.min
-      const max = type === 'max' ? valueFocus : this.valueItem.max
-
-      this.onSliderInput([min, max])
-    } else {
-      this.onSliderInput(valueFocus)
-    }
-  }
-
-  /**
-   * Focus handler for numeric input fields.
-   *
-   * Обработчик фокуса для числовых полей ввода.
-   * @param event focus event / событие фокуса
-   */
-  readonly onFocus = (event: FocusEvent): void => {
-    const target = event.target as HTMLInputElement
-
-    switch (target.dataset.type) {
-      case 'min':
-        target.value = String(this.valueItem.min)
-        break
-      case 'max':
-        target.value = String(this.valueItem.max)
-        break
-    }
-  }
-
-  /**
-   * Blur handler for numeric input fields.
-   *
-   * Обработчик потери фокуса для числовых полей ввода.
-   * @param event blur event / событие потери фокуса
-   */
-  readonly onBlur = (event: FocusEvent): void => {
-    const target = event.target as HTMLInputElement
-
-    target.value = ''
+    this.icon = new IconTrailingIncludeConstructor(props, this.className, this.components)
+    this.label = new SliderFieldLabelConstructor(props, this.valueItem)
   }
 }

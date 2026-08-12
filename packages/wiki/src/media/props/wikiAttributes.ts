@@ -296,6 +296,17 @@ export const wikiAttributes: StorybookArgsToList = {
     },
     hide: true
   },
+  sliderAttrs: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.attributes,
+      description: {
+        en: 'Additional attributes for the Slider component',
+        ru: 'Дополнительные атрибуты для компонента Slider'
+      }
+    },
+    hide: true
+  },
   tabItemAttrs: {
     type: StorybookControl.object,
     options: {

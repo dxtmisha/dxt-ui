@@ -22,7 +22,7 @@ export class SliderFieldLabel {
    * @returns min label string / строка метки минимума
    */
   get min(): string {
-    return this.props.labelMin ?? String(this.valueItem.min)
+    return String(this.valueItem.min)
   }
 
   /**
@@ -30,7 +30,7 @@ export class SliderFieldLabel {
    * @returns max label string / строка метки максимума
    */
   get max(): string {
-    return this.props.labelMax ?? String(this.valueItem.max)
+    return String(this.valueItem.max)
   }
 
   /**

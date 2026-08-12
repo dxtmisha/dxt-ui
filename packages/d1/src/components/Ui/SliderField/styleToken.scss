@@ -10,6 +10,15 @@
   // Styles from tokens
   // Стили из токенов
   // :style [!] System label / Системная метка
+  & {
+    &__body {
+      gap: var(--d1-sys-spacing-sm);
+    }
+    
+    &__slider {
+      @include ui.marginX(#{var(--d1-sys-spacing-sm)});
+    }
+  }
   // :style [!] System label / Системная метка
 
   // Here are the user styles

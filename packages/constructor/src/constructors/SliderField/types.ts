@@ -39,8 +39,8 @@ export interface SliderFieldExpose extends FieldBasicExpose<SliderValueType> {
  * Тип, описывающий доступные слоты.
  */
 export interface SliderFieldSlots extends FieldLabelSlotsInclude, SliderSlots {
-  labelLeading?: (props: any) => any
-  labelTrailing?: (props: any) => any
+  leading?: (props: any) => any
+  trailing?: (props: any) => any
 }
 
 /**
@@ -53,11 +53,15 @@ export type SliderFieldClasses = {
   // :classes [!] System label / Системная метка
   body: string
   hidden: string
+  labelSlider: string
   labelLeading: string
   labelTrailing: string
+  input: string
   inputMin: string
   inputMax: string
   value: string
+  valueMin: string
+  valueMax: string
   slider: string
   // :classes [!] System label / Системная метка
 }

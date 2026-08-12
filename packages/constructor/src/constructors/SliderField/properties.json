@@ -1,10 +1,17 @@
 {
+  "width": {
+    "_type": "var"
+  },
   "#body": {},
   "#hidden": {},
+  "#labelSlider": {},
   "#labelLeading": {},
   "#labelTrailing": {},
+  "#input": {},
   "#inputMin": {},
   "#inputMax": {},
   "#value": {},
+  "#valueMin": {},
+  "#valueMax": {},
   "#slider": {}
 }

@@ -18,13 +18,41 @@ import {SliderFieldWikiStorybook} from './wiki'
 />
 
 [//]: # (:documentation-body [!] System label / Системная метка)
+
+<StorybookDescriptions componentName={'SliderField'} type={'sliderField'}/>
+<Canvas of={SliderField.SliderFieldBasic}/>
+
+<StorybookDescriptions componentName={'Value'} type={'v-model'}/>
+<Canvas of={SliderField.SliderFieldVModel}/>
+
+<StorybookDescriptions componentName={'Style'} type={'isSkeleton'}/>
+<Canvas of={SliderField.SliderFieldSkeleton}/>
+    
 [//]: # (:documentation-body [!] System label / Системная метка)
 
 [//]: # (:documentation-events [!] System label / Системная метка)
+## Events
+
+<StorybookDescriptions componentName={'Event'} type={'input'}/>
+<StorybookDescriptions componentName={'Event'} type={'change'}/>
+    
 [//]: # (:documentation-events [!] System label / Системная метка)
 
 [//]: # (:documentation-expose [!] System label / Системная метка)
+## Expose
+
+<StorybookDescriptions componentName={'Expose'} type={'getValue'}/>
+<StorybookDescriptions componentName={'Expose'} type={'checkValidity'}/>
+<StorybookDescriptions componentName={'Expose'} type={'getValidationMessage'}/>
+    
 [//]: # (:documentation-expose [!] System label / Системная метка)
 
 [//]: # (:documentation-slots [!] System label / Системная метка)
+## Slots
+
+<StorybookDescriptions componentName={'Slot'} type={'label'} />
+<StorybookDescriptions componentName={'Slot'} type={'leading'} />
+<StorybookDescriptions componentName={'Slot'} type={'trailing'} />
+<StorybookDescriptions componentName={'Slider'} type={'slots'}/>
+    
 [//]: # (:documentation-slots [!] System label / Системная метка)

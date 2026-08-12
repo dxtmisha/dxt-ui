@@ -467,6 +467,16 @@ export const wikiOption: StorybookArgsToList = {
       }
     }
   },
+  showInput: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.option,
+      description: {
+        en: 'Show numeric input text boxes',
+        ru: 'Показывать числовые поля ввода'
+      }
+    }
+  },
   showLabel: {
     type: StorybookControl.boolean,
     options: {
@@ -495,6 +505,36 @@ export const wikiOption: StorybookArgsToList = {
       description: {
         en: 'Whether to show the search field',
         ru: 'Показывать ли поле поиска'
+      }
+    }
+  },
+  showThumbLabel: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.option,
+      description: {
+        en: 'Show thumb label',
+        ru: 'Показывать метку ползунка'
+      }
+    }
+  },
+  showValue: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.option,
+      description: {
+        en: 'Show current value badge',
+        ru: 'Показывать метку текущего значения'
+      }
+    }
+  },
+  showValueInLabel: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.option,
+      description: {
+        en: 'Show value in label title',
+        ru: 'Показывать значение в заголовке метки'
       }
     }
   },

@@ -1,4 +1,8 @@
 import { type SliderFieldPropsBasic, defaultsSliderField } from '@dxtmisha/constructor/SliderField'
+import type { IconProps } from '../Icon'
+import type { FieldLabelProps } from '../FieldLabel'
+import type { FieldMessageProps } from '../FieldMessage'
+import type { SliderProps } from '../Slider'
 
 export const propsValues = {
   // :values [!] System label / Системная метка
@@ -13,7 +17,12 @@ type PropsToken = {
 /**
  * Type describing incoming properties/ Тип, описывающий входящие свойства
  */
-export type SliderFieldProps = SliderFieldPropsBasic & PropsToken
+export type SliderFieldProps = SliderFieldPropsBasic<
+  IconProps,
+  FieldLabelProps,
+  FieldMessageProps,
+  SliderProps
+> & PropsToken
 
 /**
  * Default value for property/ Значение по умолчанию для свойства

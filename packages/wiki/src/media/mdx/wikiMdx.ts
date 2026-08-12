@@ -93,6 +93,7 @@ import { wikiMdxSelectableArea } from './SelectableArea/wikiMdxSelectableArea'
 import { wikiMdxSkeleton } from './Skeleton/wikiMdxSkeleton'
 import { wikiMdxSkeletonItem } from './SkeletonItem/wikiMdxSkeletonItem'
 import { wikiMdxSlider } from './Slider/wikiMdxSlider'
+import { wikiMdxSliderField } from './SliderField/wikiMdxSliderField'
 import { wikiMdxSnackbar } from './Snackbar/wikiMdxSnackbar'
 import { wikiMdxSnackbarItem } from './SnackbarItem/wikiMdxSnackbarItem'
 import { wikiMdxSwitch } from './Switch/wikiMdxSwitch'
@@ -208,6 +209,7 @@ export const wikiMdx: StorybookComponentsMdx = [
   wikiMdxSkeleton,
   wikiMdxSkeletonItem,
   wikiMdxSlider,
+  wikiMdxSliderField,
   wikiMdxSnackbar,
   wikiMdxSnackbarItem,
   wikiMdxSwitch,

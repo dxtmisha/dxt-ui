@@ -33,15 +33,5 @@ export const wikiMenuButton: StorybookArgsToList = {
     }
   },
   'menuButton.inputSearchAttrs': wikiSelect['select.inputSearchAttrs'],
-  'menuButton.labelSeparator': {
-    type: StorybookControl.string,
-    options: {
-      category: StorybookCategory.information,
-      description: {
-        en: 'Separator for the displayed labels of the selected values',
-        ru: 'Разделитель отображаемых меток выбранных значений'
-      }
-    }
-  },
   'menuButton.option': wikiSelect['select.option']
 }

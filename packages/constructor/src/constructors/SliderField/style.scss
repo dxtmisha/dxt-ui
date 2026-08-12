@@ -1,5 +1,54 @@
 @use "@dxtmisha/styles/properties" as ui;
 
 @mixin mixinSliderField {
+  @include ui.subclass('body') {
+    @include ui.flexX;
+    max-width: 100%;
+    width: ui.v('??width');
+  }
 
+  @include ui.subclass('labelSlider') {
+    @include ui.flexX;
+
+    font: inherit;
+  }
+
+  @include ui.subclass('input') {
+    font: inherit;
+    text-align: center;
+    background-color: transparent;
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+    }
+
+    &:focus,
+    &:focus-visible {
+      outline: none;
+
+      &::placeholder {
+        opacity: 0;
+      }
+    }
+  }
+
+  @include ui.subclass('value') {
+    @include ui.flexCenter;
+    font: inherit;
+    text-align: center;
+  }
+
+  @include ui.subclass('slider') {
+    flex-grow: 1;
+    flex-shrink: 1;
+  }
+
+  &--vertical {
+    @include ui.subclass('body') {
+      @include ui.flexY;
+      height: ui.v('??width');
+      width: auto;
+    }
+  }
 }

@@ -10853,17 +10853,6 @@
           }
         }
       },
-      "sliderField": {
-        "name": "d1-sliderField",
-        "type": "component",
-        "value": {
-          "main": {
-            "name": "--d1-sliderField-main",
-            "type": "var",
-            "value": "{d.sliderField}"
-          }
-        }
-      },
       "snackbar": {
         "name": "d1-snackbar",
         "type": "component",

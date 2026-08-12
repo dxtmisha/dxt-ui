@@ -162,6 +162,45 @@ export const wikiInformation: StorybookArgsToList = {
     },
     hide: true
   },
+  labelLeading: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.information,
+      type: 'string',
+      description: {
+        en: 'Text displayed before the component content',
+        ru: 'Текст, отображаемый перед содержимым компонента'
+      }
+    },
+    isDemo: true,
+    demo: 'Leading'
+  },
+  labelTrailing: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.information,
+      type: 'string',
+      description: {
+        en: 'Text displayed after the component content',
+        ru: 'Текст, отображаемый после содержимого компонента'
+      }
+    },
+    isDemo: true,
+    demo: 'Trailing'
+  },
+  labelSeparator: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.information,
+      type: 'string',
+      description: {
+        en: 'Separator between label title and value',
+        ru: 'Разделитель между заголовком метки и значением'
+      }
+    },
+    isDemo: true,
+    demo: ': '
+  },
   links: {
     type: StorybookControl.object,
     options: {

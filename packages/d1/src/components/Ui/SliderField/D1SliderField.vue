@@ -10,6 +10,11 @@ import {
   type SliderFieldSlots
 } from '@dxtmisha/constructor/SliderField'
 
+import { D1Icon } from '../Icon'
+import { D1FieldLabel } from '../FieldLabel'
+import { D1FieldMessage } from '../FieldMessage'
+import { D1Slider } from '../Slider'
+
 import { defaults, type SliderFieldProps } from './props'
 import './styleToken.scss'
 
@@ -38,7 +43,13 @@ const design = new SliderFieldDesign(
   {
     emits,
     classes: classesToken,
-    styles: stylesToken
+    styles: stylesToken,
+    components: {
+      icon: D1Icon,
+      fieldLabel: D1FieldLabel,
+      fieldMessage: D1FieldMessage,
+      slider: D1Slider
+    }
   }
 )
 

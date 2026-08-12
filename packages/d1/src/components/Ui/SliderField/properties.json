@@ -1,3 +1,6 @@
 {
-  "main": "{d.sliderField}"
+  "main": "{d.sliderField}",
+  "#body": {
+    "gap": "{sys.spacing.sm}"
+  }
 }
