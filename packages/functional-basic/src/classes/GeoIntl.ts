@@ -34,8 +34,7 @@ export class GeoIntl {
    * Checks if an instance of the class exists for the specified country code.
    *
    * Проверяет, существует ли экземпляр класса для указанного кода страны.
-   * @param code country code, full form language-country or one of them/
-   * код страны, полный вид язык-страна или один из них
+   * @param code country code, full form language-country or one of them / код страны, полный вид язык-страна или один из них
    */
   static isItem(
     code: string = Geo.getLocation()
@@ -48,8 +47,7 @@ export class GeoIntl {
    * Returns the standard location code.
    *
    * Возвращает стандартный код местоположения.
-   * @param code country code, full form language-country or one of them/
-   * код страны, полный вид язык-страна или один из них
+   * @param code country code, full form language-country or one of them / код страны, полный вид язык-страна или один из них
    */
   static getLocation(code: string = Geo.getLocation()) {
     if (code in locations) {
@@ -65,8 +63,7 @@ export class GeoIntl {
    * Returns an instance of the class according to the specified country code.
    *
    * Возвращает экземпляр класса по указанному коду страны.
-   * @param code country code, full form language-country or one of them/
-   * код страны, полный вид язык-страна или один из них
+   * @param code country code, full form language-country or one of them / код страны, полный вид язык-страна или один из них
    */
   static getInstance(code: string = Geo.getLocation()) {
     const location = this.getLocation(code)
@@ -78,12 +75,12 @@ export class GeoIntl {
     return new GeoIntl(code)
   }
 
+  /** Full geo item data / Полные данные гео-объекта */
   private readonly geo: GeoItemFull
 
   /**
    * Constructor
-   * @param code country code, full form language-country or one of them/
-   * код страны, полный вид язык-страна или один из них
+   * @param code country code, full form language-country or one of them / код страны, полный вид язык-страна или один из них
    * @param errorCenter error center instance/ экземпляр центра ошибок
    */
   constructor(
@@ -123,9 +120,8 @@ export class GeoIntl {
    * The consistent translation of language, region and script display names.
    *
    * Последовательный перевод отображаемых названий языка, региона и скрипта.
-   * @param value the code to provide depends on the type/ предоставляемый код зависит от типа
-   * @param typeOptions an object with some or all of the following properties/
-   * объект с некоторыми или всеми из следующих свойств
+   * @param value the code to provide depends on the type / предоставляемый код зависит от типа
+   * @param typeOptions an object with some or all of the following properties / объект с некоторыми или всеми из следующих свойств
    */
   display(
     value?: string,
@@ -275,10 +271,9 @@ export class GeoIntl {
    * Currency formatting.
    *
    * Форматирование валюты.
-   * @param value a number, bigint, or string, to format/ число для форматирования
-   * @param currencyOptions the currency to use in currency formatting/
-   * валюта для использования в форматировании валюты
-   * @param numberOnly do not display the currency symbol/ не выводить значок валюты
+   * @param value a number, bigint, or string, to format / число для форматирования
+   * @param currencyOptions the currency to use in currency formatting / валюта для использования в форматировании валюты
+   * @param numberOnly do not display the currency symbol / не выводить значок валюты
    */
   currency(
     value: NumberOrString,
@@ -330,10 +325,8 @@ export class GeoIntl {
    * Returns the currency symbol if it exists, otherwise the currency code.
    *
    * Возвращает символ для валюты, если он есть, или сам код валюты.
-   * @param currency the currency to use in currency formatting/
-   * валюта для использования в форматировании валюты
-   * @param currencyDisplay how to display the currency in currency formatting/
-   * как отобразить валюту в формате валюты
+   * @param currency the currency to use in currency formatting / валюта для использования в форматировании валюты
+   * @param currencyDisplay how to display the currency in currency formatting / как отобразить валюту в формате валюты
    */
   currencySymbol(
     currency: string,
@@ -437,9 +430,8 @@ export class GeoIntl {
    * Number as a percentage (unit).
    *
    * Число в виде процента (единица).
-   * @param value a number, bigint, or string, to format/ число для форматирования
-   * @param options an object with some or all properties/
-   * объект с некоторыми или всеми свойствами
+   * @param value a number, bigint, or string, to format / число для форматирования
+   * @param options an object with some or all properties / объект с некоторыми или всеми свойствами
    */
   percentBy100(
     value: NumberOrString,
@@ -450,9 +442,8 @@ export class GeoIntl {
 
   /**
    * Применять форматирование, учитывающее множественное число, и языковые правила, связанные с множественным числом
-   * @param value a number, bigint, or string, to format/ число для форматирования
-   * @param words list of words for formatting (in the format one|two|few|many|other|zero)/
-   * список слов для форматирования (в формате `one|two|few|many|other|zero`)
+   * @param value a number, bigint, or string, to format / число для форматирования
+   * @param words list of words for formatting (in the format one|two|few|many|other|zero) / список слов для форматирования (в формате `one|two|few|many|other|zero`)
    * @param options Property for PluralRules/ свойство для PluralRules
    * @param optionsNumber an object with some or all properties/ объект с некоторыми или всеми свойствами
    */
@@ -549,9 +540,8 @@ export class GeoIntl {
    * Enables language-sensitive relative time formatting.
    *
    * Включает форматирование относительного времени с учетом языка.
-   * @param value a number, bigint, or string, to format/ число для форматирования
-   * @param styleOptions the length of the internationalized message/
-   * длина интернационализированного сообщения
+   * @param value a number, bigint, or string, to format / число для форматирования
+   * @param styleOptions the length of the internationalized message / длина интернационализированного сообщения
    * @param todayValue current day/ текущий день
    * @returns formatted relative time/ отформатированное относительное время
    */
@@ -606,12 +596,10 @@ export class GeoIntl {
    * Включает форматирование относительного времени с учетом языка.
    * Включая возможность добавления лимита, чтобы выводить уже стандартный формат времени,
    * если значение вышло за пределы допустимого.
-   * @param value a number, bigint, or string, to format/ число для форматирования
-   * @param limit values that determine the output limit (values per day)/
-   * значения, по которым определяем предел вывода (значения в день)
-   * @param todayValue current day/ текущий день
-   * @param relativeOptions the length of the internationalized message/
-   * длина интернационализированного сообщения
+   * @param value a number, bigint, or string, to format / число для форматирования
+   * @param limit values that determine the output limit (values per day) / значения, по которым определяем предел вывода (значения в день)
+   * @param todayValue current day / текущий день
+   * @param relativeOptions the length of the internationalized message / длина интернационализированного сообщения
    * @param dateOptions the representation of the month/ представление месяца
    * @param type type of data format/ тип формата data
    * @param hour24 whether to use 12-hour time/ использовать ли 12-часовое время
@@ -885,8 +873,7 @@ export class GeoIntl {
    * The object enables language-sensitive number formatting.
    *
    * Объект включает форматирование чисел с учетом языка.
-   * @param options an object with some or all properties/
-   * объект с некоторыми или всеми свойствами
+   * @param options an object with some or all properties / объект с некоторыми или всеми свойствами
    */
   private numberObject(options?: Intl.NumberFormatOptions): Intl.NumberFormat | undefined {
     try {

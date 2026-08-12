@@ -6,9 +6,13 @@ import { type FunctionVoid } from '../types/basicTypes'
  * Класс для создания таймера, который можно приостанавливать и возобновлять.
  */
 export class ResumableTimer {
+  /** setTimeout identifier / Идентификатор setTimeout */
   protected timerId?: ReturnType<typeof setTimeout>
+  /** Timestamp when timer started / Метка времени старта таймера */
   protected startTime?: number
+  /** Remaining milliseconds / Оставшиеся миллисекунды */
   protected remaining?: number
+  /** Completion flag / Флаг завершения */
   protected completed: boolean = false
 
   /**

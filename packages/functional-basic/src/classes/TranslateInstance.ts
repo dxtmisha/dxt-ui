@@ -82,10 +82,8 @@ export class TranslateInstance {
    *
    * Получение текста перевода по его коду (Sync).
    * @param name code name/ название кода
-   * @param first If set to false, returns an empty string if there is no text/
-   * если установлено false, возвращает пустую строку, если нет текста
-   * @param replacement If set, replaces the text with the specified values/
-   * если установлено, заменяет текст на указанные значения
+   * @param first If set to false, returns an empty string if there is no text / если установлено false, возвращает пустую строку, если нет текста
+   * @param replacement If set, replaces the text with the specified values / если установлено, заменяет текст на указанные значения
    * @returns translation text / текст перевода
    */
   getSync(
@@ -134,9 +132,8 @@ export class TranslateInstance {
    * Getting a list of translations by an array of text codes.
    *
    * Получение списка переводов по массиву кодов текста.
-   * @param names list of codes to get translations/ список кодов для получения переводов
-   * @param first If set to false, returns an empty string if there is no text/
-   * если установлено false, возвращает пустую строку, если нет текста
+   * @param names list of codes to get translations / список кодов для получения переводов
+   * @param first If set to false, returns an empty string if there is no text / если установлено false, возвращает пустую строку, если нет текста
    * @returns object with translations / объект с переводами
    */
   getListSync<T extends TranslateCode[]>(names: T, first: boolean = false): TranslateList<T> {

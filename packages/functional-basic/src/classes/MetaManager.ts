@@ -4,6 +4,7 @@ import { encodeLiteAttribute } from '../functions/encodeLiteAttribute'
 import { forEach } from '../functions/forEach'
 import { isDomRuntime } from '../functions/isDomRuntime'
 
+/** Meta-tags dictionary structure / Структура словаря мета-тегов */
 type MetaList<T extends readonly string[]> = {
   [K in T[number]]?: string
 }
@@ -17,6 +18,7 @@ export class MetaManager<
   T extends readonly string[],
   Key extends keyof MetaList<T> = keyof MetaList<T>
 > {
+  /** Meta tags map / Карта мета-тегов */
   protected readonly items: MetaList<T> = {}
 
   /**

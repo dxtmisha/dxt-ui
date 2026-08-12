@@ -7,21 +7,13 @@ import {
   type EventListenerDetail
 } from '../types/basicTypes'
 
-/**
- * Data for the loading event.
- *
- * Данные для события загрузки.
- */
+/** Data for the loading event / Данные для события загрузки */
 export type LoadingDetail = {
   /** Loading status / Статус загрузки */
   loading: boolean
 }
 
-/**
- * Registration item for the loading event.
- *
- * Элемент регистрации для события загрузки.
- */
+/** Registration item for the loading event / Элемент регистрации для события загрузки */
 export type LoadingRegistrationItem = {
   /** Event item / Элемент события */
   item: EventItem<Window, CustomEvent, LoadingDetail>
@@ -83,7 +75,7 @@ export class LoadingInstance {
    * Shows the loader.
    *
    * Показывает загрузчик.
-   * @returns void
+   * @returns void / ничего не возвращает
    */
   show(): void {
     this.value++
@@ -94,7 +86,7 @@ export class LoadingInstance {
    * Hides the loader.
    *
    * Скрывает загрузчик.
-   * @returns void
+   * @returns void / ничего не возвращает
    */
   hide(): void {
     if (this.is()) {
@@ -107,11 +99,9 @@ export class LoadingInstance {
    * Event registration to listen for data changes.
    *
    * Регистрация события для прослушивания изменений данных.
-   * @param listener the object that receives a notification (an object that implements the
-   * Event interface) when an event of the specified type occurs/ объект, который принимает
-   * уведомление, когда событие указанного типа произошло
-   * @param element element/ элемент
-   * @returns void
+   * @param listener the object that receives a notification when an event occurs / объект, который принимает уведомление, когда событие указанного типа произошло
+   * @param element element / элемент
+   * @returns void / ничего не возвращает
    */
   registrationEvent(
     listener: EventListenerDetail<CustomEvent, LoadingDetail>,
@@ -134,11 +124,9 @@ export class LoadingInstance {
    * Unregistration of an event.
    *
    * Отмена регистрации события.
-   * @param listener the object that receives a notification (an object that implements the
-   * Event interface) when an event of the specified type occurs/ объект, который принимает
-   * уведомление, когда событие указанного типа произошло
-   * @param element element/ элемент
-   * @returns void
+   * @param listener the object that receives a notification when an event occurs / объект, который принимает уведомление, когда событие указанного типа произошло
+   * @param element element / элемент
+   * @returns void / ничего не возвращает
    */
   unregistrationEvent(
     listener: EventListenerDetail<CustomEvent, LoadingDetail>,

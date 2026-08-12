@@ -8,6 +8,11 @@ import { MetaTwitterCard, MetaTwitterTag } from '../types/metaTypes'
  * Класс для управления мета-тегами Twitter Card.
  */
 export class MetaTwitter extends MetaManager<MetaTwitterTag[]> {
+  /**
+   * Constructor for MetaTwitter.
+   *
+   * Конструктор для MetaTwitter.
+   */
   constructor() {
     super(Object.values(MetaTwitterTag))
   }
@@ -46,7 +51,7 @@ export class MetaTwitter extends MetaManager<MetaTwitterTag[]> {
    * Gets the page URL.
    *
    * Получает URL страницы.
-   * @returns URL / URL
+   * @returns URL / URL адрес
    */
   getUrl(): string {
     return this.get(MetaTwitterTag.url)
@@ -122,7 +127,7 @@ export class MetaTwitter extends MetaManager<MetaTwitterTag[]> {
    * Sets the page URL.
    *
    * Устанавливает URL страницы.
-   * @param url URL / URL
+   * @param url URL / URL адрес
    * @returns current instance / текущий экземпляр
    */
   setUrl(url: string): this {

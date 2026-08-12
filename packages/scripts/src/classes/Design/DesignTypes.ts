@@ -1,13 +1,14 @@
-import { createHash } from 'node:crypto'
-import { forEach, isFilled, ServerStorage } from '@dxtmisha/functional-basic'
+import { ServerStorage } from '@dxtmisha/functional-basic'
 import { getPackageJson } from '../../functions/getPackageJson'
-import { useAi } from '../../composables/useAi'
 
 import { PropertiesFile } from '../Properties/PropertiesFile'
+import { DesignTypesAi } from './DesignTypesAi'
+import { DesignTypesMake } from './DesignTypesMake'
+import { DesignTypesPrompts } from './DesignTypesPrompts'
 
 import type { DesignMcpResourceItem, DesignMcpResources, DesignTypesList } from '../../types/designTypes'
 
-import { UI_DIR_AI_TYPES_LIST, UI_DIR_CONSTRUCTOR, UI_FILE_AI_DESCRIPTION, UI_FILE_AI_MCP, UI_FILE_AI_TYPES, UI_MODULES } from '../../config'
+import { UI_FILE_AI_DESCRIPTION, UI_FILE_AI_MCP, UI_FILE_AI_TYPES } from '../../config'
 
 /**
  * Engine for generating compressed and AI-optimized TypeScript type definitions.
@@ -17,12 +18,11 @@ import { UI_DIR_AI_TYPES_LIST, UI_DIR_CONSTRUCTOR, UI_FILE_AI_DESCRIPTION, UI_FI
  * Сканирует выходные данные сборки на наличие файлов деклараций, очищает их и использует ИИ для создания минимальной, насыщенной контекстом библиотеки типов для использования в автоматизированных помощниках по кодированию.
  */
 export class DesignTypes {
-  /**
-   * Array of directory path segments.
-   *
-   * Массив сегментов пути директории.
-   */
-  protected readonly dirArray: string[]
+  /** Instance of DesignTypesAi for AI interactions / Экземпляр DesignTypesAi для ИИ взаимодействия */
+  protected readonly ai: DesignTypesAi
+
+  /** Instance of DesignTypesPrompts for prompt file processing / Экземпляр DesignTypesPrompts для обработки файлов промптов */
+  protected readonly prompts: DesignTypesPrompts
 
   /**
    * Constructor for DesignTypes.
@@ -38,53 +38,42 @@ export class DesignTypes {
     protected readonly isRaw: boolean = false
   ) {
     ServerStorage.setErrorStatus(true)
-    this.dirArray = this.dir.split('/')
+    this.ai = new DesignTypesAi(this.dir, this.isRaw)
+    this.prompts = new DesignTypesPrompts(this.promptsDir, this.ai)
   }
 
   /**
    * Main method to execute the type generation process.
    *
    * Основной метод для выполнения процесса генерации типов.
+   * @returns current instance / текущий экземпляр
    */
-  async make() {
+  async make(): Promise<this> {
     console.log('DesignTypes: making AI types...')
 
-    const files = this.getListByFilter()
-    const jsFiles = this.getListByFilterJs()
+    const makeTypes = await new DesignTypesMake(this.ai).make()
 
-    const updatedFiles = this.saveList(files)
-    console.log('files', files)
-    return
-
-    const fullContent = this.cleanContent(this.toOneFile(files))
-    const fullJsContent = this.toOneFile(jsFiles)
-
-    const aiContent = this.isRaw
-      ? fullContent
-      : await this.toAiEdit(fullContent, fullJsContent)
     let fullDescription = ''
     let mcpPrompts: DesignMcpResources | undefined
 
-    this.save(aiContent)
-
     if (!this.isRaw) {
+      const fullContent = makeTypes.getFullContent()
+      const fullJsContent = makeTypes.getFullJsContent()
       const aiDescription = await this.toAiDescription(fullContent, fullJsContent)
 
-      const promptList = this.getListPrompts()
-      const prompts = await this.toAiPrompts(promptList)
+      const promptList = this.prompts.getListPrompts()
+      const promptsText = await this.prompts.toAiPrompts(this.getProjectName())
 
-      fullDescription = `${aiDescription}\n${prompts}`
+      fullDescription = `${aiDescription}\n${promptsText}`
 
       const mcpList: DesignTypesList = [
         {
           path: UI_FILE_AI_TYPES,
-          content: aiContent,
-          md5: this.getMd5(aiContent)
+          content: fullContent
         },
         {
           path: UI_FILE_AI_DESCRIPTION,
-          content: fullDescription,
-          md5: this.getMd5(fullDescription)
+          content: fullDescription
         },
         ...promptList
       ]
@@ -96,59 +85,11 @@ export class DesignTypes {
     this.saveMcp(mcpPrompts ?? [])
 
     console.log('DesignTypes: AI types saved.')
+
+    return this
   }
 
-  /**
-   * Checks if the file is a valid declaration file.
-   *
-   * Проверяет, является ли файл валидным файлом декларации.
-   * @param file file name / имя файла
-   */
-  protected isFile(file: string): boolean {
-    return file.endsWith('.d.ts')
-      && !file.endsWith('.vue.d.ts')
-      && !file.endsWith('wiki.d.ts')
-      && !file.endsWith('wikiData.d.ts')
-      && (
-        !file.includes(`${UI_DIR_CONSTRUCTOR}/`)
-        || file.endsWith('/basicTypes.d.ts')
-        || file.endsWith('/types.d.ts')
-        || file.endsWith('/props.d.ts')
-      )
-  }
 
-  /**
-   * Checks if the file is a valid JavaScript or TypeScript file.
-   *
-   * Проверяет, является ли файл валидным JavaScript или TypeScript файлом.
-   * @param file file name / имя файла
-   */
-  protected isFileJs(file: string): boolean {
-    return file.endsWith('.js')
-  }
-
-  /**
-   * Checks if the content contains type definitions.
-   *
-   * Проверяет, содержит ли контент определения типов.
-   * @param content file content / содержимое файла
-   */
-  protected isContent(content?: string): content is string {
-    return Boolean(
-      content
-      && content.includes('export')
-    )
-  }
-
-  /**
-   * Returns the full path segments for a file.
-   *
-   * Возвращает сегменты полного пути для файла.
-   * @param file file name / имя файла
-   */
-  protected getPath(file: string): string[] {
-    return [...this.dirArray, file]
-  }
 
   /**
    * Returns the project name from package.json.
@@ -158,160 +99,6 @@ export class DesignTypes {
    */
   protected getProjectName(): string {
     return getPackageJson()?.name ?? 'none'
-  }
-
-  /**
-   * Reads the directory recursively.
-   *
-   * Читает директорию рекурсивно.
-   */
-  protected getList() {
-    return PropertiesFile.readDirRecursive(this.dirArray)
-  }
-
-  /**
-   * Gets a list of files filtered by a provided checker function.
-   *
-   * Получает список файлов, отфильтрованный переданной функцией проверки.
-   * @param checkFile function to check if the file matches criteria / функция проверки соответствия файла критериям
-   */
-  protected getListBy(checkFile: (file: string) => boolean): DesignTypesList {
-    return forEach(
-      this.getList(),
-      (file) => {
-        if (checkFile(file)) {
-          const content = this.readFile(file)
-
-          if (this.isContent(content)) {
-            return {
-              path: file,
-              content,
-              md5: this.getMd5(content)
-            }
-          }
-        }
-
-        return undefined
-      }
-    ) as DesignTypesList
-  }
-
-  /**
-   * Gets a list of files filtered by criteria.
-   *
-   * Получает список файлов, отфильтрованный по критериям.
-   */
-  protected getListByFilter(): DesignTypesList {
-    return this.getListBy(file => this.isFile(file))
-  }
-
-  /**
-   * Gets a list of JS files filtered by criteria.
-   *
-   * Получает список JS файлов, отфильтрованный по критериям.
-   */
-  protected getListByFilterJs(): DesignTypesList {
-    return this.getListBy(file => this.isFileJs(file))
-  }
-
-  /**
-   * Gets a list of prompt files.
-   *
-   * Получает список файлов с промптами.
-   */
-  protected getListPrompts(): DesignTypesList {
-    const files = PropertiesFile.readDirRecursive(this.promptsDir)
-
-    return forEach(
-      files,
-      (file) => {
-        const path = `${this.promptsDir}/${file}`
-        const content = PropertiesFile.readFileOnly(path)
-
-        if (content) {
-          return {
-            path,
-            content,
-            md5: this.getMd5(content)
-          }
-        }
-      }
-    ) as DesignTypesList
-  }
-
-  /**
-   * Generates MD5 hash for the given content.
-   *
-   * Генерирует MD5 хэш для переданного содержимого.
-   * @param content file or text content / содержимое файла или текста
-   * @returns MD5 hash string / MD5 хэш строка
-   */
-  protected getMd5(content: string): string {
-    return createHash('md5').update(content).digest('hex')
-  }
-
-  /**
-   * Reads the content of a file.
-   *
-   * Читает содержимое файла.
-   * @param path file path / путь к файлу
-   */
-  protected readFile(path: string): string | undefined {
-    return PropertiesFile.readFileOnly(this.getPath(path))
-  }
-
-  /**
-   * Saves the generated content to a file.
-   *
-   * Сохраняет сгенерированный контент в файл.
-   * @param content content to save / контент для сохранения
-   */
-  protected save(content: string) {
-    const packageJson = getPackageJson()
-
-    if (packageJson) {
-      const versionStr = packageJson.version ? ` (v${packageJson.version})` : ''
-      PropertiesFile.writeByPath(
-        UI_FILE_AI_TYPES,
-        [
-          `All these methods are in the ${packageJson.name}${versionStr} library.`,
-          '',
-          content
-        ].join('\n')
-      )
-    }
-  }
-
-  /**
-   * Saves copies of type definition files to the ai-types-list directory with an MD5 header.
-   * Skips saving if the file already exists with the same MD5 hash.
-   *
-   * Сохраняет копии файлов определений типов в директорию ai-types-list с заголовком MD5.
-   * Пропускает сохранение, если файл уже существует с таким же хэшем MD5.
-   * @param files list of type definition files / список файлов определений типов
-   * @returns list of updated files / список обновленных файлов
-   */
-  protected saveList(files: DesignTypesList): DesignTypesList {
-    return forEach(
-      files,
-      (item) => {
-        const targetPath = [UI_DIR_AI_TYPES_LIST, item.path]
-        const oldContent = PropertiesFile.readFileOnly(targetPath)
-
-        if (
-          !oldContent?.startsWith(`// md5:${item.md5}`)
-        ) {
-          PropertiesFile.writeByPath(
-            targetPath,
-            `// md5:${item.md5}\n${item.content}`
-          )
-
-          return item
-        }
-
-        return undefined
-      }
-    ) as DesignTypesList
   }
 
   /**
@@ -341,132 +128,15 @@ export class DesignTypes {
   }
 
   /**
-   * Combines a list of files into a single string.
-   *
-   * Объединяет список файлов в одну строку.
-   * @param list list of files / список файлов
-   */
-  protected toOneFile(list: DesignTypesList): string {
-    return forEach(
-      list,
-      item => `// File: ${item.path}\n${item.content}`
-    )
-      .join('\n\n')
-  }
-
-  /**
-   * Sends content and a prompt to the AI for processing.
-   *
-   * Отправляет контент и промпт ИИ для обработки.
-   * @param content content for processing / контент для обработки
-   * @param prompt instructions for the AI / инструкции для ИИ
-   * @param code code to optimize / код для оптимизации
-   */
-  protected async toAi(
-    content: string,
-    prompt: string,
-    code?: string
-  ): Promise<string | undefined> {
-    if (this.isRaw) {
-      return undefined
-    }
-
-    const ai = useAi()
-
-    if (ai) {
-      ai.addPrompt('You are a world-class senior developer and an exceptional technical writer.')
-      ai.addPrompt('CRITICAL DIRECTIVE: No data stored in history, previous chat messages, or prior conversation context must influence the result. Process strictly and exclusively the data provided in the text below.')
-      ai.addPrompt(prompt)
-      ai.addPrompt(`File Content: ${content}`)
-
-      if (code) {
-        ai.addPrompt(`File JS Code: ${code}`)
-      }
-
-      const generate = await ai.generate('go!')
-
-      if (generate) {
-        return generate
-      }
-    }
-
-    return undefined
-  }
-
-  /**
-   * Cleans up the content by removing imports, local exports, and empty lines.
-   *
-   * Очищает контент, удаляя импорты, локальные экспорты и пустые строки.
-   * @param content content to clean / контент для очистки
-   */
-  protected cleanContent(content: string): string {
-    return content
-      // Remove multi-line and single-line imports (only local files)
-      .replace(/^import\s+(?:{[^}]+}|[^{]+)\s+from\s+['"]\.[^'"]+['"];?/gm, '')
-      .replace(/^import\s+['"]\.[^'"]+['"];?/gm, '')
-      // Remove local internal re-exports (e.g., export * from "./...")
-      .replace(/^export\s+(?:\*|{[^}]+})\s+from\s+['"]\.[^'"]+['"];?/gm, '')
-      // Remove single-line private and protected properties
-      .replace(/^\s*(?:private|protected)\s+[^({]+;/gm, '')
-      // Remove lines that only contain inline comments
-      .replace(/^\s*\/\/.*$/gm, '')
-      // Remove empty lines
-      .replace(/^\s*[\r\n]/gm, '')
-      .trim()
-  }
-
-  /**
-   * Sends content to AI for optimization.
-   *
-   * Отправляет контент ИИ для оптимизации.
-   * @param content content to optimize / контент для оптимизации
-   * @param code code to optimize / код для оптимизации
-   */
-  protected async toAiEdit(content: string, code: string): Promise<string> {
-    const generate = await this.toAi(
-      content,
-      'Goal: Optimize and generate clean, highly informative TypeScript type definitions based ONLY on the provided code and types.\n\n'
-      + 'CRITICAL CONTEXT & SCOPE RESTRICTIONS:\n'
-      + '- IMPORTANT: The AI coding agent that will write code for developers using this library will NEVER see or have access to the underlying JS implementation code or external files. It will rely EXCLUSIVELY on the output document generated by you in this session. You MUST ensure that your output provides complete, flawless context, clear JSDoc explanations, and precise type contracts so that the reading AI agent can write accurate code without making assumptions.\n'
-      + '- Analyze ONLY the code, type definitions, and text explicitly provided in this prompt. Do NOT attempt to read, search, infer, or assume any external files, imports, project structure, or unprovided environment data.\n'
-      + '- Do NOT include any references, links, file paths, or pointers to external files or local directories in the final output, as AI agents will have no environment file access.\n'
-      + '- Do NOT return the provided JS code in your response.\n\n'
-      + 'JSDOC & COMMENT RULES:\n'
-      + '- STUDY THE PROVIDED JS CODE: You are explicitly provided with the JS implementation code (`File JS Code`). You MUST study the JS code for every function/method/property to understand its exact logic, behavior, and purpose.\n'
-      + '- IF AN EXISTING JSDOC / COMMENT IS PRESENT:\n'
-      + '  * Obvious entities (e.g., `isString`, `capitalize`, `copyObject`): DELETE the JSDoc / comment entirely.\n'
-      + '  * Non-obvious entities: OPTIMIZE the existing JSDoc — remove fluff, translate to clear English, and PRESERVE ONLY `@example`, `@remarks`, `@note`, and `@warning` tags (remove all other JSDoc tags).\n'
-      + '- IF NO JSDOC / COMMENT IS PRESENT:\n'
-      + '  * Obvious entities: DO NOTHING (do NOT add any JSDoc).\n'
-      + '  * Moderately non-obvious entities (obscure, custom, abbreviated, or ambiguous naming): Generate and add a SHORT, concise, 1-line English JSDoc description derived from inspecting its JS implementation code.\n'
-      + '  * Very unclear or highly complex entities (intricate operational logic, complex parameters, or subtle side effects): Generate and add a DETAILED, comprehensive English JSDoc description derived from inspecting its JS implementation code.\n'
-      + '- Place all JSDoc comments STRICTLY directly above the target declaration.\n'
-      + '- Translate all non-English comments and JSDocs to English.\n'
-      + '- Remove regular inline comments (`//` or `/* ... */`).\n'
-      + 'CLEANING & OPTIMIZATION:\n'
-      + '- Remove all `import` statements and local internal re-exports (e.g., `export * from "./..."`). Strictly KEEP exports from external packages.\n'
-      + '- Delete all non-public content (private/protected class members, unexported elements). Keep all public API surfaces.\n'
-      + '- Do NOT delete any `type` definitions; they are strictly required.\n'
-      + '- Remove large Enums or structures that add length without critical context.\n'
-      + '- Exercise extreme caution when removing abstract classes: if there is even a 5% chance it helps understand the API or generate code, keep it.\n'
-      + '- Format output tightly with no blank lines.\n\n'
-      + 'OUTPUT REQUIREMENTS:\n'
-      + 'Return ONLY the resulting optimized TypeScript type definitions code. No markdown formatting, no code blocks (```), no explanations, and no additional AI text. NOTHING but pure code.',
-      code
-    )
-
-    return generate ?? content
-  }
-
-  /**
    * Generates a project description and usage guidelines using AI.
    *
    * Генерирует описание проекта и рекомендации по использованию с помощью ИИ.
    * @param content cleaned type definitions / очищенные определения типов
    * @param code JS code for analysis / JS код для анализа
+   * @returns project description string / строка описания проекта
    */
   protected async toAiDescription(content: string, code?: string): Promise<string> {
-    const generate = await this.toAi(
+    const generate = await this.ai.toAi(
       content,
       'Goal: Generate a CONCISE, high-density project overview for an AI coding assistant to evaluate this library\'s core purpose, key module groupings, and triggers for studying type definitions.\n\n'
       + 'CRITICAL RESTRICTIONS:\n'
@@ -482,60 +152,6 @@ export class DesignTypes {
       + 'OUTPUT REQUIREMENTS:\n'
       + 'Return ONLY the resulting concise description text. No markdown code blocks (```), no section headers, no labels (like "Description:"), and no conversational fluff.',
       code
-    )
-
-    return generate ?? ''
-  }
-
-  /**
-   * Generates project rules and prompt triggers description.
-   *
-   * Генерирует описание правил проекта и триггеров промптов.
-   * @param list list of prompt files / список файлов промптов
-   */
-  protected async toAiPrompts(list: DesignTypesList): Promise<string> {
-    const projectName = this.getProjectName()
-    const prompts: string[] = []
-
-    for (const item of list) {
-      const content = await this.toAiPromptName(item.content)
-
-      if (isFilled(content)) {
-        prompts.push(`- '${UI_MODULES}/${projectName}/${item.path}': ${content}`)
-      }
-    }
-
-    if (prompts.length > 0) {
-      return '## Mandatory Rules\n'
-        + 'You MUST evaluate whether your task relates to any of the following topics (even if not working directly with this package). If related material is present, you are strictly obligated to read and study the corresponding file before proceeding:\n'
-        + `${prompts.join('\n')}`
-    }
-
-    return ''
-  }
-
-  /**
-   * Generates a trigger description for studying a prompt file using AI.
-   *
-   * Генерирует описание-триггер для изучения файла промпта с помощью ИИ.
-   * @param content prompt file content / содержимое файла промпта
-   */
-  protected async toAiPromptName(content: string): Promise<string> {
-    const generate = await this.toAi(
-      content,
-      'Goal: Generate an EXTREMELY SHORT, high-density trigger and topic summary for an AI coding assistant describing what rules/topics are covered AND under what specific tasks, conditions, or use cases this document must be studied.\n\n'
-      + 'CRITICAL RESTRICTIONS:\n'
-      + '- The output MUST be EXTREMELY CONCISE: 1-2 short sentence or clause (maximum 30-35 words).\n'
-      + '- Clearly specify BOTH the key topics/rules AND the specific scenarios, tasks, or triggers when this document must be read.\n'
-      + '- Do NOT include repetitive filler like "you MUST study this document", "in order to follow...", or "when working with...".\n'
-      + '- Analyze ONLY the text explicitly provided in this prompt.\n'
-      + '- Do NOT include file paths, URLs, quotes, or markdown syntax.\n\n'
-      + 'EXAMPLES OF GOOD OUTPUT:\n'
-      + '- "Class structure, typing standards, SSR safety, and primitive utility functions"\n'
-      + '- "HTTP client, storage management, localization formatting, and DOM event helpers"\n'
-      + '- "Implementing or wrapping D1 components, slot/event types, or customizing theme variables"\n\n'
-      + 'OUTPUT REQUIREMENTS:\n'
-      + 'Return ONLY the resulting short trigger and topic summary. No markdown code blocks (```), no labels, no quotes, and no conversational text.'
     )
 
     return generate ?? ''
@@ -584,7 +200,7 @@ export class DesignTypes {
    * @returns resource metadata object or undefined / объект метаданных ресурса или undefined
    */
   protected async toAiMcpResources(content: string, file?: string): Promise<Partial<DesignMcpResourceItem> | undefined> {
-    const generate = await this.toAi(
+    const generate = await this.ai.toAi(
       content,
       (file ? `File Name: ${file}\n\n` : '')
       + 'Goal: Generate an MCP (Model Context Protocol) server resource metadata object in valid JSON format for this prompt document.\n\n'

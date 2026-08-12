@@ -7,6 +7,7 @@ import type { ApiStatusItem, ApiStatusType } from '../types/apiTypes'
  * Класс для управления статусом запросов API.
  */
 export class ApiStatus {
+  /** API status item data / Данные элемента статуса API */
   protected value?: ApiStatusItem
 
   /**

@@ -170,6 +170,14 @@ export class ApiErrorStorage {
     }
   }
 
+  /**
+   * Retrieves data from the response body by key.
+   *
+   * Получает данные из тела ответа по ключу.
+   * @param body response body / тело ответа
+   * @param key property key / ключ свойства
+   * @returns extracted value or undefined / извлеченное значение или undefined
+   */
   protected getDataByKey<R = string>(
     body: any,
     key: string
@@ -192,7 +200,7 @@ export class ApiErrorStorage {
    * Attempts to extract an error code from the response body in JSON format.
    *
    * Пытается извлечь код ошибки из тела ответа в формате JSON.
-   * @param response fetch response / Ответ fetch
+   * @param body response body / тело ответа
    * @returns extracted error code or undefined / извлеченный код ошибки или undefined
    */
   protected getCode(body: any): string | undefined {

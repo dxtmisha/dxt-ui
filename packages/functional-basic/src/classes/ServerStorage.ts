@@ -10,6 +10,7 @@ type ServerStorageItem = {
   value: any
   hydration: boolean
 }
+/** Map of server storage items / Карта элементов серверного хранилища */
 type ServerStorageList = Record<string, ServerStorageItem>
 
 /** Server storage key / Ключ серверного хранилища */
@@ -26,8 +27,11 @@ const SERVER_STORAGE_ID = '__ui:server:storage:id__'
  * Обеспечивает изоляцию данных между параллельными запросами, используя контекст конкретного запроса.
  */
 export class ServerStorage {
+  /** In-memory storage fallback / Резервное хранилище в памяти */
   protected static storage?: ServerStorageList
+  /** Request context listener / Слушатель контекста запроса */
   protected static listener?: () => Record<string, any> | undefined
+  /** Flag to hide missing storage error / Флаг скрытия ошибки отсутствия хранилища */
   protected static hideError?: boolean
 
   /**
@@ -159,8 +163,7 @@ export class ServerStorage {
    * Returns storage.
    *
    * Возвращает хранилище.
-   * @param isInit whether to initialize the storage if it does not exist /
-   * инициализировать ли хранилище, если оно не существует
+   * @param isInit whether to initialize the storage if it does not exist / инициализировать ли хранилище, если оно не существует
    * @param status optional status for error reporting / необязательный статус для отчета об ошибках
    * @returns storage list / список хранилища
    */

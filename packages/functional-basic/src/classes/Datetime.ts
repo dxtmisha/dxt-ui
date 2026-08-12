@@ -27,8 +27,11 @@ import {
  * сервера могут отличаться от времени на стороне клиента.
  */
 export class Datetime {
+  /** Date object / Объект даты */
   protected date: Date
+  /** Whether 24-hour format is used / Использовать ли 24-часовой формат */
   protected hour24 = false
+  /** Callback on date update / Колбэк при изменении даты */
   protected watch?: (date: Date, type: GeoDate, hour24: boolean) => void
 
   /**
@@ -382,8 +385,7 @@ export class Datetime {
    * Change the date completely.
    *
    * Изменять полностью дату.
-   * @param value an integer value representing the number /
-   * целочисленное значение, представляющее число
+   * @param value an integer value representing the number / целочисленное значение, представляющее число
    * @returns this instance / текущий экземпляр
    */
   setDate(value: NumberOrStringOrDate): this {
@@ -411,8 +413,7 @@ export class Datetime {
    * Whether to use a 24-hour time format.
    *
    * Использовать ли 24-часовой формат времени.
-   * @param value If true, output the 24-hour time format /
-   * если true, выводить 24-часовой формат времени
+   * @param value If true, output the 24-hour time format / если true, выводить 24-часовой формат времени
    * @returns this instance / текущий экземпляр
    */
   setHour24(value: boolean): this {

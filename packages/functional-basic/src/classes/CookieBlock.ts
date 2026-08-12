@@ -32,7 +32,7 @@ export class CookieBlock {
    *
    * Изменение статуса.
    * @param value value to be changed/ значение, на которое будет изменен
-   * @returns void
+   * @returns void / ничего не возвращает
    */
   static set(value: boolean): void {
     this.getItem().set(value)

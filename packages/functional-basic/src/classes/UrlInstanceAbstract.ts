@@ -7,9 +7,13 @@ import { forEach } from '../functions/forEach'
  * Базовый абстрактный класс для работы с состояниями на основе URL (Hash, Query).
  */
 export abstract class UrlInstanceAbstract {
+  /** URL state data record / Запись данных состояния URL */
   protected data?: Record<string, any>
+  /** Watchers map for URL state variables / Карта слушателей для переменных состояния URL */
   protected watch: Record<string, ((value: any) => void)[]> = {}
+  /** Update block flag / Флаг блокировки обновления */
   protected block = false
+  /** Debounce timer instance / Экземпляр таймера задержки */
   protected time?: any
 
   /**

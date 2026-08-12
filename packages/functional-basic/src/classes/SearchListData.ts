@@ -16,6 +16,7 @@ export class SearchListData<
   T extends SearchItem,
   K extends SearchColumns<T>
 > {
+  /** Search items cache / Кэш элементов поиска */
   protected listCache?: SearchCache<T>
 
   /**
@@ -262,7 +263,7 @@ export class SearchListData<
    * Initializes the search cache.
    *
    * Инициализирует кэш поиска.
-   * @returns void
+   * @returns void / ничего не возвращает
    */
   protected initCache(): void {
     this.listCache = this.generateCache()
@@ -272,7 +273,7 @@ export class SearchListData<
    * Resets the search cache.
    *
    * Сбрасывает кэш поиска.
-   * @returns void
+   * @returns void / ничего не возвращает
    */
   protected resetCache(): void {
     this.listCache = undefined

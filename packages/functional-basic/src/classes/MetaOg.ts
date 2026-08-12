@@ -8,6 +8,11 @@ import { MetaOpenGraphTag, MetaOpenGraphType } from '../types/metaTypes'
  * Класс для управления мета-тегами Open Graph.
  */
 export class MetaOg extends MetaManager<MetaOpenGraphTag[]> {
+  /**
+   * Constructor for MetaOg.
+   *
+   * Конструктор для MetaOg.
+   */
   constructor() {
     super(Object.values(MetaOpenGraphTag), true)
   }
@@ -36,7 +41,7 @@ export class MetaOg extends MetaManager<MetaOpenGraphTag[]> {
    * Gets the Open Graph URL.
    *
    * Получает URL Open Graph.
-   * @returns URL / URL
+   * @returns URL / URL адрес
    */
   getUrl(): string {
     return this.get(MetaOpenGraphTag.url)
@@ -108,7 +113,7 @@ export class MetaOg extends MetaManager<MetaOpenGraphTag[]> {
    * Sets the Open Graph URL.
    *
    * Устанавливает URL Open Graph.
-   * @param url URL / URL
+   * @param url URL / URL адрес
    * @returns current instance / текущий экземпляр
    */
   setUrl(url: string): this {

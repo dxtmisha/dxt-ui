@@ -37,7 +37,9 @@ export class StorageCallback<
     return new StorageCallback<T>(name, group)
   }
 
+  /** List of registered callbacks / Список зарегистрированных колбэков */
   protected callbacks: { callback: Callback, isOnce?: boolean }[] = []
+  /** Loading state / Состояние загрузки */
   protected loading: boolean = false
 
   /**

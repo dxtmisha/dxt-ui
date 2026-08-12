@@ -26,10 +26,14 @@ export class SearchList<
   T extends SearchItem,
   K extends SearchColumns<T>
 > {
+  /** Search options instance / Экземпляр опций поиска */
   protected options: SearchListOptions
+  /** Search list item state / Состояние элемента списка поиска */
   protected item: SearchListItem
 
+  /** Search matcher instance / Экземпляр сопоставителя поиска */
   protected matcher: SearchListMatcher
+  /** Search data storage instance / Экземпляр хранилища данных поиска */
   protected data: SearchListData<T, K>
 
   /**

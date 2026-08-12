@@ -9,6 +9,7 @@ const STORAGE_NAME_BLOCK = '__ui:cookie-block__'
  * Класс для изменения статуса доступа к куки.
  */
 export class CookieBlockInstance {
+  /** Data storage for cookie block status / Хранилище данных для статуса блокировки куки */
   private storage = new DataStorage<boolean>(STORAGE_NAME_BLOCK)
 
   /**
@@ -26,7 +27,7 @@ export class CookieBlockInstance {
    *
    * Изменение статуса.
    * @param value value to be changed/ значение, на которое будет изменен
-   * @returns void
+   * @returns void / ничего не возвращает
    */
   set(value: boolean): void {
     this.storage.set(value)

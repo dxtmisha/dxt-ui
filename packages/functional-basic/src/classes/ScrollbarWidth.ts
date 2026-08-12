@@ -9,6 +9,7 @@ import { DataStorage } from './DataStorage'
  * Класс для получения ширины скролла.
  */
 export class ScrollbarWidth {
+  /** Calculation state flag / Флаг состояния вычисления */
   private static calculate: boolean = false
 
   /**

@@ -13,6 +13,7 @@ import {
  * Класс для получения переведенного текста.
  */
 export class Translate {
+  /** TranslateInstance singleton item / Экземпляр синглтона TranslateInstance */
   protected static item?: TranslateInstance
 
   /**
@@ -48,11 +49,9 @@ export class Translate {
    * Getting the translation text by its code (Sync).
    *
    * Получение текста перевода по его коду (Sync).
-   * @param name code name/ название кода
-   * @param first If set to false, returns an empty string if there is no text/
-   * если установлено false, возвращает пустую строку, если нет текста
-   * @param replacement If set, replaces the text with the specified values/
-   * если установлено, заменяет текст на указанные значения
+   * @param name code name / название кода
+   * @param first If set to false, returns an empty string if there is no text / если установлено false, возвращает пустую строку, если нет текста
+   * @param replacement If set, replaces the text with the specified values / если установлено, заменяет текст на указанные значения
    * @returns translation text / текст перевода
    */
   static getSync(
@@ -78,9 +77,8 @@ export class Translate {
    * Getting a list of translations by an array of text codes.
    *
    * Получение списка переводов по массиву кодов текста.
-   * @param names list of codes to get translations/ список кодов для получения переводов
-   * @param first If set to false, returns an empty string if there is no text/
-   * если установлено false, возвращает пустую строку, если нет текста
+   * @param names list of codes to get translations / список кодов для получения переводов
+   * @param first If set to false, returns an empty string if there is no text / если установлено false, возвращает пустую строку, если нет текста
    * @returns object with translations / объект с переводами
    */
   static getListSync<T extends TranslateCode[]>(names: T, first: boolean = false): TranslateList<T> {

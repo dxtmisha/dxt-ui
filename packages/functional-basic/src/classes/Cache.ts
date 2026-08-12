@@ -7,6 +7,7 @@ import { CacheItem } from './CacheItem'
  * @deprecated This class is obsolete and should not be used / Этот класс устарел и не рекомендуется к использованию
  */
 export class Cache {
+  /** Map of cached items / Карта кэшированных элементов */
   private cache: Record<string, CacheItem<any>> = {}
 
   /**

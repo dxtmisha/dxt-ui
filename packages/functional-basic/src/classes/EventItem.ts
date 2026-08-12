@@ -99,36 +99,18 @@ export class EventItem<
   O extends Event,
   D extends Record<string, any> = Record<string, any>
 > {
-  /**
-   * Element.
-   *
-   * Элемент.
-   */
+  /** Target element / Целевой элемент */
   protected element?: E
 
-  /**
-   * Element for checking. If the element is missing in the DOM, the event is turned off.
-   *
-   * Элемент для проверки. Если элемент отсутствует в DOM, событие выключается.
-   */
+  /** Element for checking control / Элемент для проверки контроля */
   protected elementControl?: ElementOrWindow
+  /** Flag whether control element was explicitly set / Флаг явной установки управляющего элемента */
   protected elementControlEdit?: boolean
 
-  /**
-   * A case-sensitive string representing the event type to listen for.
-   *
-   * Чувствительная к регистру строка, представляющая тип обрабатываемого события.
-   */
+  /** Event types array / Массив типов событий */
   protected type: string[]
 
-  /**
-   * The object that receives a notification (an object that implements the Event interface)
-   * when an event of the specified type occurs. This must be null, an object with a
-   * handleEvent() method, or a JavaScript function.
-   *
-   * Объект, который принимает уведомление, когда событие указанного типа произошло.
-   * Это должен быть объект, реализующий интерфейс EventListener или просто функция JavaScript.
-   */
+  /** Event listener callback wrapper / Обертка колбэка слушателя событий */
   protected listenerRecent = (event?: O | ResizeObserverEntry): void => {
     if (isInDom(this.elementControl)) {
       this.listener?.call(this.element, event as O, this.detail)
@@ -144,12 +126,9 @@ export class EventItem<
     }
   }
 
-  /**
-   * Event states.
-   *
-   * Состояния события.
-   */
+  /** Active state flag / Флаг активности */
   protected activity = false
+  /** Active listener items list / Список активных элементов слушателя */
   protected activityItems: EventActivityItem<E>[] = []
 
   /**

@@ -12,6 +12,7 @@ import type { SearchCacheItem } from '../types/searchTypes'
  * Класс, отвечающий за сопоставление значений поиска с данными списка поиска с использованием регулярных выражений.
  */
 export class SearchListMatcher {
+  /** Regular expression matcher instance / Экземпляр регулярного выражения сопоставителя */
   protected matcher: RegExp | undefined
 
   /**
@@ -67,7 +68,7 @@ export class SearchListMatcher {
    * Updates the matcher based on the current item value and options.
    *
    * Обновляет сопоставитель на основе текущего значения элемента и опций.
-   * @returns void
+   * @returns void / ничего не возвращает
    */
   update(): void {
     this.initMatcher()
@@ -77,7 +78,7 @@ export class SearchListMatcher {
    * Initializes or resets the regular expression matcher.
    *
    * Инициализирует или сбрасывает сопоставитель регулярных выражений.
-   * @returns void
+   * @returns void / ничего не возвращает
    */
   protected initMatcher(): void {
     if (this.item.is()) {

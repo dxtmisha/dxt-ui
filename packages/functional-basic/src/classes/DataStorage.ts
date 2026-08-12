@@ -8,6 +8,7 @@ import { ErrorCenter } from './ErrorCenter'
 import { type ErrorCenterInstance } from './ErrorCenterInstance'
 import { ServerStorage } from './ServerStorage'
 
+/** Storage item wrapper value structure / Структура обёртки хранимого значения в хранилище */
 type DataStorageValue<T> = {
   value: T
   age: number
@@ -44,7 +45,7 @@ export class DataStorage<T> {
    *
    * Изменение префикса в названиях ключей. Вызывать нужно в начале кода.
    * @param newPrefix new prefix/ новый префикс
-   * @returns void
+   * @returns void / ничего не возвращает
    */
   static setPrefix(newPrefix: string): void {
     prefix = newPrefix

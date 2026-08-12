@@ -11,6 +11,7 @@ import type { ErrorCenterInstance } from './ErrorCenterInstance'
  * Класс для работы с сообщениями BroadcastChannel.
  */
 export class BroadcastMessage<Message = any> {
+  /** BroadcastChannel instance / Экземпляр BroadcastChannel */
   protected channel?: BroadcastChannel
 
   /**

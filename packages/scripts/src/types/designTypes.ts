@@ -107,12 +107,17 @@ export type DesignTypescriptItem = {
 /** List of TypeScript items / Список TypeScript элементов */
 export type DesignTypescriptList = DesignTypescriptItem[]
 
+/** Design types item / Элемент типов дизайна */
 export type DesignTypesItem = {
+  /** Relative file path / Относительный путь к файлу */
   path: string
+  /** File content / Содержимое файла */
   content: string
-  md5: string
+  /** MD5 hash string / Строка MD5 хэша */
+  md5?: string
 }
 
+/** List of design types items / Список элементов типов дизайна */
 export type DesignTypesList = DesignTypesItem[]
 
 /** Design MCP resource item / Элемент ресурса MCP дизайна */

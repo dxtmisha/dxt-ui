@@ -80,7 +80,7 @@ export class Query {
    * Update query variables from URL string.
    *
    * Обновление переменных query-параметров из строки URL.
-   * @returns void
+   * @returns void / ничего не возвращает
    */
   static reload(): void {
     this.getItem().reload()

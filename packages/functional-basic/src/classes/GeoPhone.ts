@@ -15,7 +15,9 @@ import {
  * Класс для хранения и обработка маски телефона.
  */
 export class GeoPhone {
+  /** Phone masks list / Список масок телефонов */
   protected static list?: GeoPhoneValue[]
+  /** Phone codes map / Карта телефонных кодов */
   protected static map?: Record<string, GeoPhoneMap>
 
   /**

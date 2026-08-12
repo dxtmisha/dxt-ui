@@ -3,7 +3,9 @@ import { isFunction } from '../functions/isFunction'
 
 import { Api } from './Api'
 
+/** Icon item type definition / Определение типа элемента иконки */
 export type IconsItem = string | Promise<string | any> | (() => Promise<string | any>)
+/** Icon configuration object / Объект конфигурации иконок */
 export type IconsConfig = {
   /** URL to the icons storage / URL к хранилищу иконок */
   url?: string
@@ -20,7 +22,9 @@ const ICONS_LOAD = '--LOAD--'
  * Класс для управления иконками.
  */
 export class Icons {
+  /** Registered icons map / Карта зарегистрированных иконок */
   protected static icons: Record<string, IconsItem> = {}
+  /** Base icons storage URL / Базовый URL хранилища иконок */
   protected static url: string = '/icons/'
 
   /**
@@ -38,10 +42,8 @@ export class Icons {
    *
    * Возвращает иконку по названию.
    * @param index icon name/ название иконки
-   * @param url path to the storage location of the icon, if the icon does not exist/
-   * путь к месту хранения иконки, если иконка не существует
-   * @param wait waiting time for picture loading (ms)/
-   * время ожидания загрузки картинки (мс)
+   * @param url path to the storage location of the icon, if the icon does not exist / путь к месту хранения иконки, если иконка не существует
+   * @param wait waiting time for picture loading (ms) / время ожидания загрузки картинки (мс)
    * @returns icon path or content/ путь к иконке или контент
    */
   static async get(
@@ -75,8 +77,7 @@ export class Icons {
    *
    * Возвращает иконку, если она уже загружена или является строкой.
    * @param index icon name/ название иконки
-   * @param url path to the storage location of the icon, if the icon does not exist/
-   * путь к месту хранения иконки, если иконка не существует
+   * @param url path to the storage location of the icon, if the icon does not exist / путь к месту хранения иконки, если иконка не существует
    * @returns icon path or content/ путь к иконке или контент
    */
   static getAsync(
@@ -201,8 +202,7 @@ export class Icons {
    *
    * Возвращает исходные данные иконки по названию.
    * @param index icon name/ название иконки
-   * @param url path to the storage location of the icon, if the icon does not exist/
-   * путь к месту хранения иконки, если иконка не существует
+   * @param url path to the storage location of the icon, if the icon does not exist / путь к месту хранения иконки, если иконка не существует
    * @returns icon path or content/ путь к иконке или контент
    */
   protected static getRaw(index: string, url = ''): IconsItem {

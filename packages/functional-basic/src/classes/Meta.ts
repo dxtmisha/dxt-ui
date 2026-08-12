@@ -14,9 +14,12 @@ import { MetaRobots, MetaTag } from '../types/metaTypes'
  * Унифицированный класс для управления всеми типами мета-тегов (стандартные HTML, Open Graph, Twitter Card).
  */
 export class Meta extends MetaManager<MetaTag[]> {
+  /** Page title suffix / Суффикс заголовка страницы */
   protected suffix?: string
 
+  /** Open Graph meta instance / Экземпляр мета-тегов Open Graph */
   protected og: MetaOg
+  /** Twitter Card meta instance / Экземпляр мета-тегов Twitter Card */
   protected twitter: MetaTwitter
 
   /**
@@ -271,7 +274,7 @@ export class Meta extends MetaManager<MetaTag[]> {
    *
    * Устанавливает суффикс для добавления к заголовку страницы.
    * @param suffix title suffix (e.g. 'My Site') / суффикс заголовка (например, 'Мой Сайт')
-   * @returns void
+   * @returns void / ничего не возвращает
    */
   setSuffix(suffix?: string) {
     this.suffix = suffix

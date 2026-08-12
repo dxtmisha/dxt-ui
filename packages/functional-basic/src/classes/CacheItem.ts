@@ -5,8 +5,11 @@
  * @deprecated This class is obsolete and should not be used / Этот класс устарел и не рекомендуется к использованию
  */
 export class CacheItem<T> {
+  /** Cached value / Кэшированное значение */
   private cache?: T
+  /** Previous cached value / Предыдущее кэшированное значение */
   private cacheOld?: T
+  /** Dependency comparison array / Массив сравнения зависимостей */
   private comparisons: any[] = []
 
   /**

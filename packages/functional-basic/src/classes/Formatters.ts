@@ -192,10 +192,9 @@ export class Formatters<
    * @param valueOriginal original value to format/ исходное значение для форматирования
    * @param item entire item context/ весь контекст элемента
    * @param type type of formatter to use/ тип используемого форматировщика
-   * @param options additional options for the specific formatter/
-   * дополнительные параметры для конкретного форматировщика
+   * @param options additional options for the specific formatter / дополнительные параметры для конкретного форматировщика
    * @protected
-   * @returns Formatted string/ отформатированная строка
+   * @returns Formatted string / отформатированная строка
    */
   protected transformation<Type extends FormattersType>(
     valueOriginal: any,
@@ -289,11 +288,9 @@ export class Formatters<
    *
    * Форматирует полное имя из нескольких имен свойств.
    * @param item item context containing name components/ контекст элемента, содержащий компоненты имени
-   * @param options name formatting options (prop names for first, last, surname)/
-   * параметры форматирования имени (имена свойств для имени, фамилии, отчества)
+   * @param options name formatting options (prop names for first, last, surname) / параметры форматирования имени (имена свойств для имени, фамилии, отчества)
    * @protected
-   * @returns Formatted name string or empty string if components are missing/
-   * отформатированная строка имени или пустая строка, если компоненты отсутствуют
+   * @returns Formatted name string or empty string if components are missing / отформатированная строка имени или пустая строка, если компоненты отсутствуют
    */
   protected formatName(
     item: Item,
@@ -343,10 +340,9 @@ export class Formatters<
    *
    * Форматирует значение на основе правил множественного числа.
    * @param value numeric value for pluralization/ числовое значение для плюрализации
-   * @param options plural formatting options (words and rules)/
-   * параметры форматирования множественного числа (слова и правила)
+   * @param options plural formatting options (words and rules) / параметры форматирования множественного числа (слова и правила)
    * @protected
-   * @returns Formatted plural string/ отформатированная строка множественного числа
+   * @returns Formatted plural string / отформатированная строка множественного числа
    */
   protected formatPlural(
     value: any,

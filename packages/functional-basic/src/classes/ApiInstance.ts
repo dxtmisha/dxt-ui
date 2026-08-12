@@ -91,6 +91,7 @@ export class ApiInstance {
   /** Timeout for the request in milliseconds / Таймаут запроса в миллисекундах */
   protected timeout: number = 16000
 
+  /** Base URL origin / Базовый origin URL */
   protected origin?: string
 
   /** Wrapper function for requests / Функция-обертка для запросов */

@@ -66,6 +66,7 @@ export class CookieStorage {
    *
    * Инициализирует хранилище слушателями.
    * @param getListener Storage mechanism for getting data / механизм хранения для получения данных
+   * @param getListenerRaw Storage mechanism for getting raw cookie string / механизм хранения для получения сырой строки cookie
    * @param setListener Storage mechanism for setting data / механизм хранения для сохранения данных
    */
   static init(
@@ -163,7 +164,7 @@ export class CookieStorage {
    *
    * Удаление данных из хранилища.
    * @param name cookie name / имя cookie
-   * @returns void
+   * @returns void / ничего не возвращает
    */
   static remove(name: string): void {
     this.set(name, '', { age: -1 })

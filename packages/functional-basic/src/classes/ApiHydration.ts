@@ -15,6 +15,7 @@ const API_HYDRATION_ID = '__ui:api:hydration:id__'
  * Класс для сбора данных API для последующей гидратации на стороне клиента при SSR.
  */
 export class ApiHydration {
+  /** Hydration data list / Список данных гидратации */
   protected list: ApiHydrationList = []
 
   /**

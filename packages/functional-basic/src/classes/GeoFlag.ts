@@ -465,7 +465,7 @@ export class GeoFlag {
    *
    * Изменяет текущую локаль/местоположение.
    * @param code country and language code / код страны и языка
-   * @returns this
+   * @returns this / текущий экземпляр
    */
   setCode(code: string): this {
     this.code = code

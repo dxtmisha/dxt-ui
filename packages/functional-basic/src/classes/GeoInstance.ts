@@ -295,6 +295,7 @@ export class GeoInstance {
    *
    * Преобразует гео-объект в его стандартное строковое представление (язык-страна).
    * @param item geo item data / данные гео-объекта
+   * @param language optional language override / опциональное переопределение языка
    * @returns standard code string / строка стандартного кода
    */
   toStandard(

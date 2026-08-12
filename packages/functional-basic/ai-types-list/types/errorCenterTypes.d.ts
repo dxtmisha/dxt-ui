@@ -1,0 +1,51 @@
+// md5:bf23865013a81a7239624eb5263978f3
+/**
+ * Error group identifier / Идентификатор группы ошибок
+ */
+export type ErrorCenterGroup = string | undefined;
+/**
+ * Interface for an error item / Интерфейс для элемента ошибки
+ */
+export type ErrorCenterCauseItem<D = any> = {
+    /** Error group / Группа ошибки */
+    group?: ErrorCenterGroup;
+    /** Error code / Код ошибки */
+    code: string;
+    /** Priority / Приоритет */
+    priority?: number;
+    /** Error label / Название ошибки */
+    label?: string;
+    /** Error message / Сообщение ошибки */
+    message?: string;
+    /** Additional details / Дополнительные детали */
+    details?: D;
+};
+/**
+ * List of error items / Список элементов ошибок
+ */
+export type ErrorCenterCauseList = ErrorCenterCauseItem[];
+/**
+ * Callback function for error handling / Функция обратного вызова для обработки ошибок
+ */
+export type ErrorCenterHandlerCallback = (cause: ErrorCenterCauseItem) => void;
+/**
+ * Interface for error handler storage / Интерфейс для хранения обработчика ошибок
+ */
+export type ErrorCenterHandlerItem = {
+    /** Targeted error group / Целевая группа ошибок */
+    group?: ErrorCenterGroup;
+    /** List of handlers / Список обработчиков */
+    handlers: ErrorCenterHandlerCallback[];
+};
+/**
+ * List of error handlers / Список обработчиков ошибок
+ */
+export type ErrorCenterHandlerList = ErrorCenterHandlerItem[];
+/**
+ * Callback function to check whether to log error to console / Функция обратного вызова для проверки вывода ошибки в консоль
+ */
+export type ErrorCenterHandlerIsConsoleCallback = (cause: ErrorCenterCauseItem) => boolean;
+/**
+ * Type for console logging configuration / Тип для конфигурации вывода в консоль
+ */
+export type ErrorCenterHandlerIsConsole = boolean | ErrorCenterHandlerIsConsoleCallback;

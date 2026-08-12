@@ -31,7 +31,7 @@ export class Global {
    *
    * Добавляет данные, этот метод работает только 1 раз.
    * @param data global data/ глобальные данные
-   * @returns void
+   * @returns void / ничего не возвращает
    */
   static add(data: Record<string, any>) {
     const dataStorage = this.getItem()
