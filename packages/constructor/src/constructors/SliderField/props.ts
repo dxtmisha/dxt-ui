@@ -1,15 +1,23 @@
 import type { FieldLabelPropsBasic, FieldLabelPropsInclude } from '../FieldLabel'
 import type { FieldMessagePropsBasic, FieldMessagePropsInclude } from '../FieldMessage'
 import type { IconPropsBasic, IconTrailingPropsInclude } from '../Icon'
-import type { SliderPropsBasic, SliderPropsInclude, SliderValueType } from '../Slider'
+import { defaultsSlider, type SliderPropsBasic, type SliderPropsInclude, type SliderValueType } from '../Slider'
 
 import type { FieldValueProps } from '../../types/fieldTypes'
 
+/** SliderField design token properties interface / Интерфейс токенов дизайна свойств SliderField */
 type SliderFieldPropsToken = {
   // :type [!] System label / Системная метка
+  disabled?: boolean
+  vertical?: boolean
   // :type [!] System label / Системная метка
 }
 
+/**
+ * Basic properties interface for SliderField component.
+ *
+ * Базовый интерфейс свойств для компонента SliderField.
+ */
 export type SliderFieldPropsBasic<
   Icon extends IconPropsBasic = IconPropsBasic,
   FieldLabel extends FieldLabelPropsBasic = FieldLabelPropsBasic,
@@ -51,10 +59,7 @@ export type SliderFieldProps = SliderFieldPropsBasic & SliderFieldPropsToken
  * Значение по умолчанию для свойства.
  */
 export const defaultsSliderField = {
-  min: 0,
-  max: 100,
-  step: 1,
-  minimumDistance: 1,
+  ...defaultsSlider,
   showValue: true,
   labelSeparator: ': ',
   ...{

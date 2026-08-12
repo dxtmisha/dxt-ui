@@ -149,7 +149,7 @@ export class Slider {
       'value',
       emits,
       undefined,
-      computed(() => props.modelValue ?? props.value),
+      computed(() => props.modelValue || props.value),
       refs.readonly,
       refs.multiple
     )

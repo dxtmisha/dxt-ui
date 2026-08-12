@@ -41,6 +41,9 @@
     "hover": {
       "gradient-opacity": "{sys.opacity.hover}"
     },
+    "focus-visible": {
+      "gradient-opacity": "{sys.opacity.hover}"
+    },
     "active": {
       "gradient-opacity": "{sys.opacity.pressed}"
     }
@@ -49,6 +52,20 @@
     "background-color": "{sys.palette.surface}",
     "background-opacity": "{sys.opacity.primary.high}",
     "border-radius": "{sys.rounded.full}"
+  },
+  "~selected": {
+    "#rail": {
+      "palette-background": "{sys.palette.primaryVariant}"
+    },
+    "#track": {
+      "palette-background": "{sys.palette.primaryVariant}"
+    },
+    "#thumb": {
+      "palette-gradient": "{sys.palette.primaryVariant}",
+      "after": {
+        "palette-background": "{sys.palette.primaryVariant}"
+      }
+    }
   },
   "disabled": {
     "#rail": {

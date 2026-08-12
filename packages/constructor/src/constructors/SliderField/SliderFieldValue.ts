@@ -45,6 +45,24 @@ export class SliderFieldValue {
       return toNumber(itemValue[1])
     }
 
-    return toNumber(itemValue ?? this.props.max ?? 100)
+    if (itemValue) {
+      return toNumber(itemValue)
+    }
+
+    if (this.props.multiple) {
+      return toNumber(this.props.max ?? 100)
+    }
+
+    return toNumber(this.props.min ?? 0)
+  }
+
+  /**
+   * Sets slider field value.
+   *
+   * Устанавливает значение поля слайдера.
+   * @param value new value / новое значение
+   */
+  set(value: SliderValueType): void {
+    this.value.set(value)
   }
 }

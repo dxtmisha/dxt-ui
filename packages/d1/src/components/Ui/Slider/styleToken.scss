@@ -47,6 +47,10 @@
       @include ui.active('.d1-slider') {
         @include ui.gradientOpacity(#{var(--d1-sys-opacity-pressed)}); @include ui.gradient('init');
       }
+      
+      &:focus-visible {
+        @include ui.gradientOpacity(#{var(--d1-sys-opacity-hover)}); @include ui.gradient('init');
+      }
     }
     
     &__track {
@@ -83,6 +87,25 @@
       
       box-shadow: var(--d1-sys-shadow-md);
       backdrop-filter: var(--d1-sys-blur-md);
+    }
+    
+    &--selected {
+      & .d1-slider__rail {
+        @include ui.paletteBackground(#{var(--d1-sys-palette-primaryVariant)});
+      }
+      
+      & .d1-slider__track {
+        @include ui.paletteBackground(#{var(--d1-sys-palette-primaryVariant)});
+      }
+      
+      & .d1-slider__thumb {
+        @include ui.paletteGradient(#{var(--d1-sys-palette-primaryVariant)});
+        
+        &::after {
+          content: ' ';
+          @include ui.paletteBackground(#{var(--d1-sys-palette-primaryVariant)});
+        }
+      }
     }
     
     &--disabled {

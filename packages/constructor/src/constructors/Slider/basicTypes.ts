@@ -3,7 +3,9 @@ import type { SliderPropsBasic } from './props'
 
 /** Focus handle type enum for Slider / Перечисление типов фокуса ползунка слайдера */
 export enum SliderFocusType {
+  /** Minimum slider handle / Минимальный ползунок слайдера */
   min = 'min',
+  /** Maximum slider handle / Максимальный ползунок слайдера */
   max = 'max'
 }
 
@@ -55,13 +57,21 @@ export type SliderEventDetail = {
   value?: SliderMarkItemValue | [SliderMarkItemValue, SliderMarkItemValue]
 }
 
-/** Interface for describing which components need to be connected for Slider work / Интерфейс для описания, какие компоненты надо подключить для работы Slider */
+/**
+ * Interface for describing which components need to be connected for Slider work.
+ *
+ * Интерфейс для описания, какие компоненты надо подключить для работы Slider.
+ */
 export type SliderComponentInclude = {
   /** Slider component configuration / Конфигурация компонента слайдера */
   slider?: object
 }
 
-/** Interface for including Slider properties / Интерфейс для включения свойств слайдера */
+/**
+ * Interface for including Slider properties.
+ *
+ * Интерфейс для включения свойств слайдера.
+ */
 export type SliderPropsInclude<
   Slider extends SliderPropsBasic = SliderPropsBasic
 > = SliderPropsBasic

@@ -6,6 +6,7 @@ import { defaults } from './props'
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
   { name: 'disabled', type: 'boolean' },
+  { name: 'inputAttrs', type: 'Partial<HTMLInputElement>' },
   { name: 'isSkeleton', type: 'boolean' },
   { name: 'keyLabel', type: 'string' },
   { name: 'keyValue', type: 'string' },
@@ -16,9 +17,13 @@ const propsNames: StorybookProps = [
   { name: 'minimumDistance', type: 'NumberOrString' },
   { name: 'modelValue', type: 'string' },
   { name: 'multiple', type: 'boolean' },
+  { name: 'name', type: 'string' },
   { name: 'onUpdate:modelValue', type: '((value: string) => void)' },
   { name: 'onUpdate:value', type: '((value: string) => void)' },
   { name: 'readonly', type: 'boolean' },
+  { name: 'required', type: 'boolean' },
+  { name: 'selected', type: 'boolean' },
+  { name: 'showThumbLabel', type: 'boolean' },
   { name: 'step', type: 'NumberOrString' },
   { name: 'value', type: 'SliderValueProp' },
   { name: 'vertical', type: 'boolean' }

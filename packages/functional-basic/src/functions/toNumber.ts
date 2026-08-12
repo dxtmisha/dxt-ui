@@ -1,4 +1,6 @@
 import type { NumberOrString } from '../types/basicTypes'
+import { isFilled } from './isFilled'
+import { isString } from './isString'
 
 /**
  * Filters out all characters except digits, signs (+, -), dots, commas, and spaces /
@@ -64,25 +66,28 @@ export function toNumber(value?: NumberOrString): number {
     return Number.isFinite(value) ? (value || 0) : 0
   }
 
-  if (!value) {
-    return 0
+  if (
+    isFilled(value)
+    && isString(value)
+  ) {
+    let number = value.replace(REGEXP_FILTER, '')
+
+    if (REGEXP_SPACE_THOUSANDS.test(number)) {
+      number = number
+        .replace(REGEXP_SPACE, '')
+        .replace(REGEXP_COMMA, '.')
+    } else if (REGEXP_COMMA_THOUSANDS.test(number)) {
+      number = number.replace(REGEXP_COMMA, '')
+    } else if (REGEXP_DOT_THOUSANDS.test(number)) {
+      number = number
+        .replace(REGEXP_DOT, '')
+        .replace(REGEXP_COMMA, '.')
+    } else {
+      number = number.replace(REGEXP_COMMA, '.')
+    }
+
+    return parseFloat(number) || 0
   }
 
-  let number = value.replace(REGEXP_FILTER, '')
-
-  if (REGEXP_SPACE_THOUSANDS.test(number)) {
-    number = number
-      .replace(REGEXP_SPACE, '')
-      .replace(REGEXP_COMMA, '.')
-  } else if (REGEXP_COMMA_THOUSANDS.test(number)) {
-    number = number.replace(REGEXP_COMMA, '')
-  } else if (REGEXP_DOT_THOUSANDS.test(number)) {
-    number = number
-      .replace(REGEXP_DOT, '')
-      .replace(REGEXP_COMMA, '.')
-  } else {
-    number = number.replace(REGEXP_COMMA, '.')
-  }
-
-  return parseFloat(number) || 0
+  return 0
 }

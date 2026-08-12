@@ -41,12 +41,14 @@ export class FieldValueInclude<Value = any> {
    * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
    * @param element object for working with the input element / объект для работы с элементом ввода
    * @param original original values / оригинальные значения
+   * @param isMultiple flag enabling multiple selection handling in setValues / флаг включения множественного выбора в setValues
    */
   constructor(
     protected readonly props: FieldValueProps<Value>,
     protected readonly refs: ToRefs<FieldValueProps<Value>>,
     protected readonly element?: FieldElementInclude,
-    protected readonly original?: RefOrNormal<Value>
+    protected readonly original?: RefOrNormal<Value>,
+    protected readonly isMultiple: boolean = true
   ) {
     this.item.value = this.getOriginal()
 
@@ -175,7 +177,7 @@ export class FieldValueInclude<Value = any> {
         this.item.value,
         value,
         {
-          multiple: this.props.multiple,
+          multiple: this.isMultiple ? this.props.multiple : false,
           maxlength: toNumber(this.props.maxlength)
         }
       ) as Value

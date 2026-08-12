@@ -71,6 +71,7 @@ export interface SliderSlots {
  * Тип, описывающий подклассы.
  */
 export type SliderClasses = {
+  /** Main CSS class / Главный CSS класс */
   main: ConstrClass
   // :classes [!] System label / Системная метка
   rail: string

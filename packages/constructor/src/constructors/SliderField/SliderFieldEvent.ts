@@ -89,20 +89,27 @@ export class SliderFieldEvent {
       const min = type === 'min' ? valueFocus : this.valueItem.min
       const max = type === 'max' ? valueFocus : this.valueItem.max
 
-      this.onSliderInput([min, max])
+      this.valueItem.set([min, max])
     } else {
-      this.onSliderInput(valueFocus)
+      this.valueItem.set(valueFocus)
     }
   }
 
   /**
-   * Input event handlers for numeric input fields.
+   * Input attributes and event handlers for numeric input fields.
    *
-   * Обработчики событий ввода для числовых полей ввода.
+   * Атрибуты и обработчики событий ввода для числовых полей ввода.
+   * @returns input attributes and events object / объект атрибутов и событий ввода
    */
-  readonly inputEvents = {
-    onBlur: this.onBlur,
-    onFocus: this.onFocus,
-    onInput: this.onInput
+  get inputBinds(): Record<string, any> {
+    return {
+      type: 'number',
+      min: this.props.min,
+      max: this.props.max,
+      step: this.props.step,
+      onBlur: this.onBlur,
+      onFocus: this.onFocus,
+      onInput: this.onInput
+    }
   }
 }

@@ -20,7 +20,13 @@ import {SliderFieldWikiStorybook} from './wiki'
 [//]: # (:documentation-body [!] System label / Системная метка)
 
 <StorybookDescriptions componentName={'SliderField'} type={'sliderField'}/>
-<Canvas of={SliderField.SliderFieldBasic}/>
+<Canvas of={SliderField.SliderFieldOrientation}/>
+
+<StorybookDescriptions componentName={'Slider'} type={'multiple'}/>
+<Canvas of={SliderField.SliderFieldMultiple}/>
+
+<StorybookDescriptions componentName={'Slider'} type={'marks'}/>
+<Canvas of={SliderField.SliderFieldMarks}/>
 
 <StorybookDescriptions componentName={'Value'} type={'v-model'}/>
 <Canvas of={SliderField.SliderFieldVModel}/>

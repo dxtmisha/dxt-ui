@@ -8,13 +8,20 @@ import type { ModelProps } from '../../types/modelTypes'
 
 import type { SliderMarkItem, SliderValueProp } from './basicTypes'
 
+/** Slider design token properties interface / Интерфейс токенов дизайна свойств слайдера */
 type SliderPropsToken = {
   // :type [!] System label / Системная метка
+  selected?: boolean
   disabled?: boolean
   vertical?: boolean
   // :type [!] System label / Системная метка
 }
 
+/**
+ * Basic properties interface for Slider component.
+ *
+ * Базовый интерфейс свойств для компонента Slider.
+ */
 export type SliderPropsBasic = ModelProps
   & FieldStepProps
   & EnabledProps
@@ -26,7 +33,7 @@ export type SliderPropsBasic = ModelProps
     value?: SliderValueProp
     /** List of marks or tick values / Список меток или делений */
     marks?: ListRecord<SliderMarkItem> | number[]
-    /** Magnetize thumb position to nearest mark / Притягивание ползуа к ближайшей метке */
+    /** Magnetize thumb position to nearest mark / Притягивание ползунка к ближайшей метке */
     magnet?: boolean
 
     /** Property key for text label / Ключ свойства для текстовой метки */
@@ -48,7 +55,7 @@ export type SliderPropsBasic = ModelProps
     /** Show thumb value label element / Показывать элемент метки значения на ползунке */
     showThumbLabel?: boolean
 
-    /** Additional attributes for the input element/ Дополнительные атрибуты для элемента ввода */
+    /** Additional attributes for the input element / Дополнительные атрибуты для элемента ввода */
     inputAttrs?: Partial<HTMLInputElement>
   }
 

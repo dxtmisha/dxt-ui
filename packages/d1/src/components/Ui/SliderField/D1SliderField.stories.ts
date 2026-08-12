@@ -28,34 +28,75 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const SliderField: Story = {
-  // :story-main [!] System label / Системная метка
-  // :story-main [!] System label / Системная метка
+  args: {
+    multiple: true,
+    selected: false,
+    icon: "",
+    disabled: false,
+    labelLeading: "",
+    labelSeparator: "",
+    labelTrailing: "",
+    placeholder: "",
+    validationMessage: "",
+    showValue: true,
+    showInput: true
+  }
 }
 
 // :story-items [!] System label / Системная метка
-export const SliderFieldBasic: Story = {
-  name: 'Базовые',
+export const SliderFieldOrientation: Story = {
+  name: 'Ориентация',
   render: () => ({
     components: { D1SliderField },
     template: `
-        <div class="wiki-storybook-flex-column">
-          <D1SliderField
-            label="Single value"
-            showInput
-            :value="40"
-          />
-          <D1SliderField
-            label="Range selection"
-            multiple
-            showInput
-            :value="[20, 80]"
-          />
-          <D1SliderField
-            label="With min/max value"
-            showValue
-            :value="60"
-          />
+        <div class="wiki-storybook-group">
+          <div class="wiki-storybook-item wiki-storybook-item--squared--lg wiki-storybook-item--padding wiki-storybook-item--center">
+            <D1SliderField label="Horizontal" :value="40" />
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--lg wiki-storybook-item--padding wiki-storybook-item--center">
+            <D1SliderField vertical label="Vertical" :value="60" />
+          </div>
         </div>
+    `
+  })
+}
+export const SliderFieldMultiple: Story = {
+  name: 'Выбор диапазона',
+  render: () => ({
+    components: { D1SliderField },
+    template: `
+        <D1SliderField
+          label="Range selection"
+          multiple
+          showInput
+          :value="[20, 80]"
+        />
+    `
+  })
+}
+export const SliderFieldMarks: Story = {
+  name: 'Метки и деления',
+  render: () => ({
+    components: { D1SliderField },
+    setup() {
+      return {
+        customMarks: [
+          { mark: 0, label: '0%' },
+          { mark: 25, label: '25%' },
+          { mark: 50, label: '50%' },
+          { mark: 75, label: '75%' },
+          { mark: 100, label: '100%' }
+        ]
+      }
+    },
+    template: `
+        <D1SliderField
+          label="Slider with marks"
+          :marks="customMarks"
+          magnet
+          :step="5"
+          showInput
+        />
     `
   })
 }
@@ -105,7 +146,7 @@ export const SliderFieldSkeleton: Story = {
   render: () => ({
     components: { D1SliderField, D1Skeleton },
     template: `
-        <D1Skeleton :active="true" style="max-width:360px">
+        <D1Skeleton :active="true">
           <div class="wiki-storybook-flex-column">
             <D1SliderField
               isSkeleton

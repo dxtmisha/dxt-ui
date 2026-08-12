@@ -38,32 +38,67 @@ export const wikiDescriptionsSliderField: StorybookComponentsDescriptionItem = {
   import: [
     'import { ref } from \'vue\''
   ],
+  render: `
+      <DesignComponent v-bind="args" />
+    `,
   stories: [
     {
-      id: 'SliderFieldBasic',
+      id: 'SliderFieldOrientation',
       name: {
-        en: 'Basic',
-        ru: 'Базовые'
+        en: 'Orientation',
+        ru: 'Ориентация'
       },
       template: `
-        <div class="wiki-storybook-flex-column">
-          <DesignComponent
-            label="Single value"
-            showInput
-            :value="40"
-          />
-          <DesignComponent
-            label="Range selection"
-            multiple
-            showInput
-            :value="[20, 80]"
-          />
-          <DesignComponent
-            label="With min/max value"
-            showValue
-            :value="60"
-          />
+        <div class="wiki-storybook-group">
+          <div class="wiki-storybook-item wiki-storybook-item--squared--lg wiki-storybook-item--padding wiki-storybook-item--center">
+            <DesignComponent label="Horizontal" :value="40" />
+          </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--lg wiki-storybook-item--padding wiki-storybook-item--center">
+            <DesignComponent vertical label="Vertical" :value="60" />
+          </div>
         </div>
+      `
+    },
+    {
+      id: 'SliderFieldMultiple',
+      name: {
+        en: 'Range selection',
+        ru: 'Выбор диапазона'
+      },
+      template: `
+        <DesignComponent
+          label="Range selection"
+          multiple
+          showInput
+          :value="[20, 80]"
+        />
+      `
+    },
+    {
+      id: 'SliderFieldMarks',
+      name: {
+        en: 'Marks and ticks',
+        ru: 'Метки и деления'
+      },
+      setup: `
+      return {
+        customMarks: [
+          { mark: 0, label: '0%' },
+          { mark: 25, label: '25%' },
+          { mark: 50, label: '50%' },
+          { mark: 75, label: '75%' },
+          { mark: 100, label: '100%' }
+        ]
+      }
+      `,
+      template: `
+        <DesignComponent
+          label="Slider with marks"
+          :marks="customMarks"
+          magnet
+          :step="5"
+          showInput
+        />
       `
     },
     {
@@ -116,7 +151,7 @@ export const wikiDescriptionsSliderField: StorybookComponentsDescriptionItem = {
       },
       components: ['Skeleton'],
       template: `
-        <DesignSkeleton :active="true" style="max-width:360px">
+        <DesignSkeleton :active="true">
           <div class="wiki-storybook-flex-column">
             <DesignComponent
               isSkeleton
@@ -131,7 +166,13 @@ export const wikiDescriptionsSliderField: StorybookComponentsDescriptionItem = {
   documentation: {
     body: `
 <StorybookDescriptions componentName={'SliderField'} type={'sliderField'}/>
-<Canvas of={Component.SliderFieldBasic}/>
+<Canvas of={Component.SliderFieldOrientation}/>
+
+<StorybookDescriptions componentName={'Slider'} type={'multiple'}/>
+<Canvas of={Component.SliderFieldMultiple}/>
+
+<StorybookDescriptions componentName={'Slider'} type={'marks'}/>
+<Canvas of={Component.SliderFieldMarks}/>
 
 <StorybookDescriptions componentName={'Value'} type={'v-model'}/>
 <Canvas of={Component.SliderFieldVModel}/>

@@ -39,7 +39,9 @@ export interface SliderFieldExpose extends FieldBasicExpose<SliderValueType> {
  * Тип, описывающий доступные слоты.
  */
 export interface SliderFieldSlots extends FieldLabelSlotsInclude, SliderSlots {
+  /** Slot for leading content / Слот для префиксного содержимого */
   leading?: (props: any) => any
+  /** Slot for trailing content / Слот для суффиксного содержимого */
   trailing?: (props: any) => any
 }
 
@@ -49,6 +51,7 @@ export interface SliderFieldSlots extends FieldLabelSlotsInclude, SliderSlots {
  * Тип, описывающий подклассы.
  */
 export type SliderFieldClasses = {
+  /** Main CSS class / Главный CSS класс */
   main: ConstrClass
   // :classes [!] System label / Системная метка
   body: string

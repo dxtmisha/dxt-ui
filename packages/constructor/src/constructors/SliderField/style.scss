@@ -1,19 +1,24 @@
 @use "@dxtmisha/styles/properties" as ui;
 
 @mixin mixinSliderField {
-  @include ui.subclass('body') {
+  width: 100%;
+
+  &__body {
     @include ui.flexX;
     max-width: 100%;
-    width: ui.v('??width');
+    width: ui.v('??width', auto);
   }
 
-  @include ui.subclass('labelSlider') {
+  &__labelSlider {
     @include ui.flexX;
+    order: 4;
 
     font: inherit;
   }
 
-  @include ui.subclass('input') {
+  &__input {
+    order: 4;
+
     font: inherit;
     text-align: center;
     background-color: transparent;
@@ -33,22 +38,50 @@
     }
   }
 
-  @include ui.subclass('value') {
+  &__value {
     @include ui.flexCenter;
+    order: 4;
+
     font: inherit;
     text-align: center;
   }
 
-  @include ui.subclass('slider') {
+  &__slider {
     flex-grow: 1;
     flex-shrink: 1;
+    order: 4;
+  }
+
+  &__slider+&__labelSlider,
+  &__slider+&__input,
+  &__slider+&__value,
+  &__labelSlider+&__slider,
+  &__input+&__slider,
+  &__value+&__slider {
+    margin-left: ui.v('??sliderMargin');
   }
 
   &--vertical {
+    @include ui.flexY;
+    width: auto;
+    height: 100%;
+
     @include ui.subclass('body') {
       @include ui.flexY;
-      height: ui.v('??width');
+      flex-grow: 1;
+      flex-shrink: 1;
+      height: ui.v('??width', 100%);
       width: auto;
     }
+  }
+
+  &--vertical &__slider+&__labelSlider,
+  &--vertical &__slider+&__input,
+  &--vertical &__slider+&__value,
+  &--vertical &__labelSlider+&__slider,
+  &--vertical &__input+&__slider,
+  &--vertical &__value+&__slider {
+    margin-left: unset;
+    margin-top: ui.v('??sliderMargin');
   }
 }

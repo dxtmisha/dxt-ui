@@ -1,6 +1,45 @@
 {
   "main": "{d.sliderField}",
+  "sliderMargin": "{sys.spacing.sm}",
   "#body": {
-    "gap": "{sys.spacing.sm}"
+    "gap": "{sys.spacing.xs}"
+  },
+  "#labelSlider": {
+    "link|font": "{font.labelLarge}"
+  },
+  "#input": {
+    "paddingX": "{sys.spacing.x}",
+    "paddingY": "{sys.spacing.x}",
+    "width": "{ref.spacing.14}",
+    "border-style": "solid",
+    "border-width": "{sys.spacing.outline}",
+    "palette-border": "{sys.palette.outline}",
+    "border-opacity": "{sys.opacity.outline}",
+    "border-radius": "{sys.rounded.md}",
+    "focus-visible": {
+      "outline": "{outline.md}"
+    },
+    "focus": {
+      "palette-background": "{sys.palette.primary}",
+      "background-opacity": "{sys.opacity.overlay}",
+      "palette-border": "{sys.palette.primary}",
+      "border-opacity": "{sys.opacity.scrim}"
+    }
+  },
+  "#value": {
+    "paddingX": "{sys.spacing.x}",
+    "link|font": "{font.labelSmall}",
+    "border-style": "solid",
+    "border-width": "{sys.spacing.outline}",
+    "palette-border": "{sys.palette.outline}",
+    "border-opacity": "{sys.opacity.outline}",
+    "border-radius": "{sys.rounded.md}",
+    "palette-background": "{sys.palette.surface}",
+    "background-opacity": "{sys.opacity.overlay}"
+  },
+  "disabled": {
+    "#body": {
+      "color-opacity": "{sys.opacity.surface.disabled}"
+    }
   }
 }

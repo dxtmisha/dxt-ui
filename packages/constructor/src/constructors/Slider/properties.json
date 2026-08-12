@@ -26,6 +26,7 @@
   "#mark": {},
   "#label": {},
   "#select": {},
+  "~selected": {},
   "~disabled": {},
   "~vertical": {}
 }

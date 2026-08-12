@@ -2,6 +2,9 @@
   "width": {
     "_type": "var"
   },
+  "sliderMargin": {
+    "_type": "var"
+  },
   "#body": {},
   "#hidden": {},
   "#labelSlider": {},
@@ -13,5 +16,7 @@
   "#value": {},
   "#valueMin": {},
   "#valueMax": {},
-  "#slider": {}
+  "#slider": {},
+  "~disabled": {},
+  "~vertical": {}
 }

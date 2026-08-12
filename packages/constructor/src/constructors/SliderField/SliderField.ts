@@ -124,7 +124,7 @@ export class SliderField {
     this.change = new FieldChangeIncludeConstructor(props)
     this.attributes = new FieldAttributesIncludeConstructor(props)
 
-    this.value = new FieldValueIncludeConstructor<SliderValueType>(props, refs)
+    this.value = new FieldValueIncludeConstructor<SliderValueType>(props, refs, undefined, undefined, false)
     this.valueItem = new SliderFieldValueConstructor(props, this.value)
 
     this.code = new FieldCodeIncludeConstructor(props)
@@ -165,5 +165,20 @@ export class SliderField {
 
     this.icon = new IconTrailingIncludeConstructor(props, this.className, this.components)
     this.label = new SliderFieldLabelConstructor(props, this.valueItem)
+  }
+
+  /**
+   * Returns input name attribute value with optional suffix.
+   *
+   * Возвращает значение атрибута name для ввода с опциональным суффиксом.
+   * @param suffix optional name suffix / опциональный суффикс имени
+   * @returns name attribute string or undefined / значение атрибута name или undefined
+   */
+  getName(suffix?: string): string | undefined {
+    if (this.props.name) {
+      return suffix ? `${this.props.name}-${suffix}` : this.props.name
+    }
+
+    return undefined
   }
 }

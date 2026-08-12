@@ -68,11 +68,11 @@ const propsNames: StorybookProps = [
 const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
   { name: 'label', description: `Label slot content/ Содержимое слота метки`, properties: [{ name: 'props', type: '(any) | undefined' }] },
-  { name: 'leading', properties: [{ name: 'props', type: '(any) | undefined' }] },
+  { name: 'leading', description: `Slot for leading content / Слот для префиксного содержимого`, properties: [{ name: 'props', type: '(any) | undefined' }] },
   { name: 'mark', description: `Slot for mark custom rendering / Слот для пользовательского рендеринга метки`, properties: [{ name: 'props', type: '(SliderMarkSlot) | undefined' }] },
   { name: 'maxLabel', description: `Slot for max thumb label / Слот для метки максимального ползунка`, properties: [{ name: 'props', type: '(SliderThumbSlot) | undefined' }] },
   { name: 'minLabel', description: `Slot for min thumb label / Слот для метки минимального ползунка`, properties: [{ name: 'props', type: '(SliderThumbSlot) | undefined' }] },
-  { name: 'trailing', properties: [{ name: 'props', type: '(any) | undefined' }] }
+  { name: 'trailing', description: `Slot for trailing content / Слот для суффиксного содержимого`, properties: [{ name: 'props', type: '(any) | undefined' }] }
   // :slotsList [!] System label / Системная метка
 ]
 

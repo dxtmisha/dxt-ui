@@ -32,14 +32,14 @@ export class SliderFieldDesign<
   CLASSES extends SliderFieldClasses,
   P extends SliderFieldPropsBasic
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
-    COMP,
-    SliderFieldEmits,
-    EXPOSE,
-    SliderFieldSlots,
-    CLASSES,
-    P
-  > {
+  HTMLDivElement,
+  COMP,
+  SliderFieldEmits,
+  EXPOSE,
+  SliderFieldSlots,
+  CLASSES,
+  P
+> {
   /** Instance of the SliderField logic controller / Экземпляр контроллера логики SliderField */
   protected readonly item: SliderField
 
@@ -208,9 +208,7 @@ export class SliderFieldDesign<
    * @returns trailing elements virtual nodes / виртуальные узлы замыкающих элементов
    */
   readonly renderLabelTrailing = (): VNode[] => {
-    const children: VNode[] = [
-      ...this.item.icon.renderIconTrailing()
-    ]
+    const children: VNode[] = []
 
     if (this.props.labelTrailing) {
       children.push(
@@ -247,14 +245,14 @@ export class SliderFieldDesign<
       return [
         h('input', {
           'key': 'inputMin',
-          'type': 'text',
           'placeholder': this.item.label.min,
           'class': [
             this.classes?.value.input,
             this.classes?.value.inputMin
           ],
+          'name': this.item.getName('min'),
           'data-type': 'min',
-          ...this.item.sliderEvent.inputEvents
+          ...this.item.sliderEvent.inputBinds
         })
       ]
     }
@@ -274,14 +272,14 @@ export class SliderFieldDesign<
         h('input', {
           'key': 'inputMax',
           ...this.props.inputAttrs,
-          'type': 'text',
           'placeholder': this.item.label.max,
           'class': [
             this.classes?.value.input,
             this.classes?.value.inputMax
           ],
+          'name': this.item.getName('max'),
           'data-type': 'max',
-          ...this.item.sliderEvent.inputEvents
+          ...this.item.sliderEvent.inputBinds
         })
       ]
     }
@@ -361,9 +359,9 @@ export class SliderFieldDesign<
         {
           readonly: this.props.readonly,
           disabled: this.props.disabled,
+          selected: this.props.selected,
 
           name: this.props.name,
-          value: this.item.value.item.value,
           marks: this.props.marks,
           magnet: this.props.magnet,
 
@@ -386,6 +384,7 @@ export class SliderFieldDesign<
         this.props.sliderAttrs,
         {
           class: this.classes?.value.slider,
+          value: this.item.value.item.value,
           onInputLite: this.item.sliderEvent.onSliderInput,
           onChangeLite: this.item.sliderEvent.onSliderChange
         }

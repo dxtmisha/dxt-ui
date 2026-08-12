@@ -11,8 +11,72 @@
   // Стили из токенов
   // :style [!] System label / Системная метка
   & {
+    --d1-sliderField-sliderMargin: var(--d1-sys-spacing-sm);
+    
     &__body {
-      gap: var(--d1-sys-spacing-sm);
+      gap: var(--d1-sys-spacing-xs);
+    }
+    
+    &__labelSlider {
+      font-family: var(--d1-sys-font-family-basic), sans-serif;
+      @include ui.fontSize(#{var(--d1-sys-font-size-sm)});
+      font-weight: var(--d1-sys-font-weight-medium);
+      @include ui.lineHeight(#{var(--d1-sys-lineHeight-sm)});
+      letter-spacing: var(--d1-sys-letterSpacing-xs);
+    }
+    
+    &__input {
+      @include ui.paddingX(#{var(--d1-sys-spacing-x)});
+      @include ui.paddingY(#{var(--d1-sys-spacing-x)});
+      
+      @include ui.width(#{var(--d1-ref-spacing-14)});
+      
+      border-radius: var(--d1-sys-rounded-md);
+      border-width: var(--d1-sys-spacing-outline);
+      border-style: solid;
+      @include ui.borderOpacity(#{var(--d1-sys-opacity-outline)}); @include ui.borderColor('init');
+      @include ui.paletteBorder(#{var(--d1-sys-palette-outline)});
+      
+      @include ui.focus('.d1-sliderField') {
+        @include ui.backgroundOpacity(#{var(--d1-sys-opacity-overlay)}); @include ui.backgroundColor('init');
+        @include ui.paletteBackground(#{var(--d1-sys-palette-primary)});
+        
+        @include ui.borderOpacity(#{var(--d1-sys-opacity-scrim)}); @include ui.borderColor('init');
+        @include ui.paletteBorder(#{var(--d1-sys-palette-primary)});
+      }
+      
+      &:focus-visible {
+        @include ui.outlineOpacity(#{var(--d1-sys-opacity-outline)});
+        
+        outline-width: var(--d1-ref-spacing-1);
+        outline-style: solid;
+        @include ui.outlineColor(#{var(--d1-sys-palette-primary)});
+      }
+    }
+    
+    &__value {
+      @include ui.paddingX(#{var(--d1-sys-spacing-x)});
+      
+      font-family: var(--d1-sys-font-family-basic), sans-serif;
+      @include ui.fontSize(#{var(--d1-sys-font-size-x)});
+      font-weight: var(--d1-sys-font-weight-medium);
+      @include ui.lineHeight(#{var(--d1-sys-lineHeight-xs)});
+      letter-spacing: var(--d1-sys-letterSpacing-xl);
+      
+      @include ui.backgroundOpacity(#{var(--d1-sys-opacity-overlay)}); @include ui.backgroundColor('init');
+      @include ui.paletteBackground(#{var(--d1-sys-palette-surface)});
+      
+      border-radius: var(--d1-sys-rounded-md);
+      border-width: var(--d1-sys-spacing-outline);
+      border-style: solid;
+      @include ui.borderOpacity(#{var(--d1-sys-opacity-outline)}); @include ui.borderColor('init');
+      @include ui.paletteBorder(#{var(--d1-sys-palette-outline)});
+    }
+    
+    &--disabled {
+      & .d1-sliderField__body {
+        @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-disabled)}); @include ui.color('init');
+      }
     }
   }
   // :style [!] System label / Системная метка
