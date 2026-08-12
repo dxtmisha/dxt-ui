@@ -110,6 +110,7 @@ export type DesignTypescriptList = DesignTypescriptItem[]
 export type DesignTypesItem = {
   path: string
   content: string
+  md5: string
 }
 
 export type DesignTypesList = DesignTypesItem[]

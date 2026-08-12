@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto'
 import { forEach, isFilled, ServerStorage } from '@dxtmisha/functional-basic'
 import { getPackageJson } from '../../functions/getPackageJson'
 import { useAi } from '../../composables/useAi'
@@ -6,7 +7,7 @@ import { PropertiesFile } from '../Properties/PropertiesFile'
 
 import type { DesignMcpResourceItem, DesignMcpResources, DesignTypesList } from '../../types/designTypes'
 
-import { UI_DIR_CONSTRUCTOR, UI_FILE_AI_DESCRIPTION, UI_FILE_AI_MCP, UI_FILE_AI_TYPES, UI_MODULES } from '../../config'
+import { UI_DIR_AI_TYPES_LIST, UI_DIR_CONSTRUCTOR, UI_FILE_AI_DESCRIPTION, UI_FILE_AI_MCP, UI_FILE_AI_TYPES, UI_MODULES } from '../../config'
 
 /**
  * Engine for generating compressed and AI-optimized TypeScript type definitions.
@@ -51,6 +52,10 @@ export class DesignTypes {
     const files = this.getListByFilter()
     const jsFiles = this.getListByFilterJs()
 
+    const updatedFiles = this.saveList(files)
+    console.log('files', files)
+    return
+
     const fullContent = this.cleanContent(this.toOneFile(files))
     const fullJsContent = this.toOneFile(jsFiles)
 
@@ -73,11 +78,13 @@ export class DesignTypes {
       const mcpList: DesignTypesList = [
         {
           path: UI_FILE_AI_TYPES,
-          content: aiContent
+          content: aiContent,
+          md5: this.getMd5(aiContent)
         },
         {
           path: UI_FILE_AI_DESCRIPTION,
-          content: fullDescription
+          content: fullDescription,
+          md5: this.getMd5(fullDescription)
         },
         ...promptList
       ]
@@ -178,7 +185,8 @@ export class DesignTypes {
           if (this.isContent(content)) {
             return {
               path: file,
-              content
+              content,
+              md5: this.getMd5(content)
             }
           }
         }
@@ -223,11 +231,23 @@ export class DesignTypes {
         if (content) {
           return {
             path,
-            content
+            content,
+            md5: this.getMd5(content)
           }
         }
       }
     ) as DesignTypesList
+  }
+
+  /**
+   * Generates MD5 hash for the given content.
+   *
+   * Генерирует MD5 хэш для переданного содержимого.
+   * @param content file or text content / содержимое файла или текста
+   * @returns MD5 hash string / MD5 хэш строка
+   */
+  protected getMd5(content: string): string {
+    return createHash('md5').update(content).digest('hex')
   }
 
   /**
@@ -260,6 +280,38 @@ export class DesignTypes {
         ].join('\n')
       )
     }
+  }
+
+  /**
+   * Saves copies of type definition files to the ai-types-list directory with an MD5 header.
+   * Skips saving if the file already exists with the same MD5 hash.
+   *
+   * Сохраняет копии файлов определений типов в директорию ai-types-list с заголовком MD5.
+   * Пропускает сохранение, если файл уже существует с таким же хэшем MD5.
+   * @param files list of type definition files / список файлов определений типов
+   * @returns list of updated files / список обновленных файлов
+   */
+  protected saveList(files: DesignTypesList): DesignTypesList {
+    return forEach(
+      files,
+      (item) => {
+        const targetPath = [UI_DIR_AI_TYPES_LIST, item.path]
+        const oldContent = PropertiesFile.readFileOnly(targetPath)
+
+        if (
+          !oldContent?.startsWith(`// md5:${item.md5}`)
+        ) {
+          PropertiesFile.writeByPath(
+            targetPath,
+            `// md5:${item.md5}\n${item.content}`
+          )
+
+          return item
+        }
+
+        return undefined
+      }
+    ) as DesignTypesList
   }
 
   /**

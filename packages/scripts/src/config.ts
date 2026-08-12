@@ -25,6 +25,8 @@ export const UI_DIR_IN = 'src'
 export const UI_DIR_AI = 'ai'
 /** Screenshot folder name for AI / Название папки со снимками экрана для AI */
 export const UI_DIR_AI_PROMPT_SCREENSHOT = 'ai-screenshot'
+/** AI types list directory name / Название директории со списком типов AI */
+export const UI_DIR_AI_TYPES_LIST = 'ai-types-list'
 /** Components directory name/ Название директории компонентов */
 export const UI_DIR_COMPONENTS = 'components'
 /** Constructors directory name/ Название директории конструкторов */
