@@ -51,9 +51,9 @@
     "build": "vue-tsc -b && vite build",
     "build-recovery": "npm run build && npm run wiki-storm",
     "preview": "vite preview",
-    "ui": "dxt-ui SliderField",
+    "ui": "dxt-ui",
     "wiki-storm": "dxt-wiki-storm",
-    "types": "dxt-types",
+    "types": "npm run prepublishOnly && dxt-types",
     "screenshot": "dxt-screenshot",
     "prepublishOnly": "npm run ui && npm run build && npm run wiki-storm",
     "publish-to-npm": "npm publish --access public"

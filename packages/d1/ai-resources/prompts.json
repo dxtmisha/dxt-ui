@@ -1,0 +1,14 @@
+[
+  {
+    "path": "ai-resources/responsive-typography.md",
+    "md5": "7a0a16c4f6b1ea9ec13418887a323115",
+    "name": "Responsive Layout and Typography",
+    "description": "Defines SCSS styling standards, including BEM class naming conventions, forbidden direct media queries in favor of library mixins, and typography class usage rules for UI components."
+  },
+  {
+    "path": "ai-resources/styling-tokens.md",
+    "md5": "89b609dfa20ce871114b0dbb23f9debe",
+    "name": "Styling and CSS Tokens",
+    "description": "Defines SCSS token naming conventions, system token hierarchy, and CSS variable usage rules. Solves the technical task of maintaining consistent styling and dynamic theming across components without hardcoded values."
+  }
+]
