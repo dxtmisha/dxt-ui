@@ -13,6 +13,8 @@ dist-ssr
 *.local
 .cache
 
+ai-types.md
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
