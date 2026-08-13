@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.108.0] - 2026-08-13
+
+### Added
+- **SliderField Event Architecture**: Introduced `SliderFieldEvent` class to encapsulate event listeners, focus states, and input synchronization logic for `SliderField`.
+
+### Changed
+- **SliderField & Slider**:
+  - Refactored `SliderField` SCSS structure and selector nesting for design system compliance.
+  - Integrated vertical orientation support (`vertical` prop) and refined value clamping across `Slider` and `SliderField`.
+  - Connected component include interfaces (`IconPropsInclude`, `FieldLabelPropsInclude`, `FieldMessagePropsInclude`, `SliderPropsInclude`) into `SliderField` props.
+- **Scripts**: Updated `types` script to `npm run library && npm run constructor && npm run build && dxt-types` and `prepublishOnly` to execute `dxt-types-save`.
+- **AI Documentation & Types**: Added `.gitignore` rule for `ai-types.md` and generated modular `ai-types-list/` type declaration files.
+
 ## [0.100.0] - 2026-08-10
 
 ### Added

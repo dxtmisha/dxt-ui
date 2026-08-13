@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.8.7] - 2026-08-12
+
+### Changed
+- **toNumber**: Refactored `toNumber` utility function to use primitive helper functions (`isFilled`, `isString`) for safer type coercion and input handling.
+- **AI Documentation & Types**: Standardized bilingual JSDoc/TSDoc comments across library classes, functions, and type definitions; updated `ai-types.md` and `ai-types-list/` generated declaration files.
+- **Scripts**: Updated `types` script in `package.json` to execute `library` and `build` before `dxt-types`.
+
+## [1.8.6] - 2026-08-10
+
+### Changed
+- **AI Resources**: Renamed `ai-prompts/` directory to `ai-resources/` and `ai-mcp.json` to `ai-mcp-resources.json` across package metadata and configuration.
+- **Package Metadata**: Updated `package.json` `files` list to include `ai-resources` and `ai-mcp-resources.json`.
+
 ## [1.8.5] - 2026-08-05
 
 ### Changed

@@ -66,7 +66,7 @@
     "test": "vitest",
     "library": "dxt-library",
     "types": "npm run library && npm run build && dxt-types",
-    "prepublishOnly": "npm run library && npm run build",
+    "prepublishOnly": "npm run library && npm run build && dxt-types-save",
     "publish-to-npm": "npm publish --access public"
   },
   "files": [

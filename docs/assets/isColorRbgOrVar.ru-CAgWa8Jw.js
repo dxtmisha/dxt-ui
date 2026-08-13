@@ -1,0 +1,18 @@
+import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{n as t,r as n}from"./lib-BRDOWE9X.js";import{t as r}from"./jsx-runtime-DeHZSEgm.js";import{f as i,s as a}from"./blocks-WIGGT2yz.js";function o(e){let t={code:`code`,h1:`h1`,h2:`h2`,li:`li`,p:`p`,pre:`pre`,strong:`strong`,ul:`ul`,...n(),...e.components};return(0,c.jsxs)(c.Fragment,{children:[(0,c.jsx)(a,{title:`@dxtmisha/ru/styles/color/| functions/isColorRbgOrVar - Проверить цвет`}),`
+`,(0,c.jsx)(t.h1,{id:`iscolorrbgorvar`,children:(0,c.jsx)(t.code,{children:`isColorRbgOrVar`})}),`
+`,(0,c.jsxs)(t.p,{children:[`Функция проверяет, является ли значение допустимым цветом или специальным ключевым словом CSS (например, `,(0,c.jsx)(t.code,{children:`transparent`}),`, `,(0,c.jsx)(t.code,{children:`initial`}),`, `,(0,c.jsx)(t.code,{children:`inherit`}),` и т. д.).`]}),`
+`,(0,c.jsx)(t.p,{children:(0,c.jsx)(t.strong,{children:`Параметры:`})}),`
+`,(0,c.jsxs)(t.ul,{children:[`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.code,{children:`$color: Color | String`}),` — значение цвета или ключевое слово CSS для проверки.`]}),`
+`]}),`
+`,(0,c.jsx)(t.p,{children:(0,c.jsx)(t.strong,{children:`Возвращает:`})}),`
+`,(0,c.jsxs)(t.ul,{children:[`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.code,{children:`Boolean`}),` — `,(0,c.jsx)(t.code,{children:`true`}),`, если значение является допустимым цветом или ключевым словом.`]}),`
+`]}),`
+`,(0,c.jsx)(t.h2,{id:`пример`,children:`Пример`}),`
+`,(0,c.jsx)(t.pre,{children:(0,c.jsx)(t.code,{className:`language-scss`,children:`@use '@dxtmisha/styles';
+
+$is-color: styles.isColorRbgOrVar(#ff0000); // true
+$is-keyword: styles.isColorRbgOrVar('transparent'); // true
+$is-invalid: styles.isColorRbgOrVar('none'); // false
+`})})]})}function s(e={}){let{wrapper:t}={...n(),...e.components};return t?(0,c.jsx)(t,{...e,children:(0,c.jsx)(o,{...e})}):o(e)}var c;function l(){return(l=e((()=>{c=r(),t(),i()})))()}l();export{s as default};

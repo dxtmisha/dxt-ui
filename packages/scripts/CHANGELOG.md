@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.11.0] - 2026-08-13
+
+### Added
+- **CLI `dxt-types-save` & Fast Save Mode**: Added `dxt-types-save` CLI executable script (`bin/design-types-save.ts`) and `makeSave()` method in `DesignTypes` to generate `ai-types.md` from cached `ai-types-list` files without invoking AI APIs.
+- **MD5 Hash Calculation & `ai-types-list` Sync**:
+  - Added `md5` hash property to `DesignTypesItem` (`DesignTypesList`) and `getMd5` calculation utility in `DesignTypes`.
+  - Added `UI_DIR_AI_TYPES_LIST` constant (`ai-types-list`) to `src/config.ts`.
+  - Added `saveList` method to save copies of type definition files with MD5 headers (`// md5:...`) to `ai-types-list`, skipping redundant writes for unchanged content.
+- **Modular Class Structure for AI Types Generation**:
+  - Extracted core `DesignTypes` logic into specialized sub-classes: `DesignTypesAi`, `DesignTypesMake`, `DesignTypesPrompts`, `DesignTypesDescription`, and `DesignTypesMcp`.
+  - Registered and exported new classes in `@dxtmisha/scripts` entrypoint (`src/library.ts`).
+- **Prompt Metadata & Cache System**:
+  - Structured AI prompt generation output using JSON metadata (title, description) via `toAiJson`.
+  - Implemented prompt item caching with MD5 hash validation (`DesignTypesPromptCacheItem` and `DesignTypesPrompts` cache persistence).
+- **Dedicated MCP & Description Generators**:
+  - Added `DesignTypesDescription` for generating high-density project overview descriptions with capability lists and study triggers.
+  - Added `DesignTypesMcp` for populating MCP server resource descriptors (`ai-mcp.json`) using cached prompt metadata.
+
+### Changed
+- **AI Types & Prompt Optimization**:
+  - Optimized JSDoc extraction in `DesignTypesMake` (`hasJSDoc` check): skips passing full JS source implementation (`fullJsContent`) when TypeScript declarations already contain complete JSDoc annotations, significantly reducing token usage.
+  - Restructured AI prompt context in `DesignTypesAi` to separate target declaration file content from supplementary JS implementation context.
+  - Updated prompt guidelines for `dxt-types` generation to require concise JSDocs, keyword search tags, and stripped `@returns` tags.
+- **Scaffolding Template**: Added `ai-types.md` to package template `.gitignore` (`_.gitignore.txt`).
+
 ## [0.10.16] - 2026-08-11
 
 ### Changed

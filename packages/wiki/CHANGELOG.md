@@ -2,6 +2,40 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.108.0] - 2026-08-13
+
+### Added
+- **Slider & SliderField**:
+  - Registered descriptions (`wikiDescriptionsSlider.ts`, `wikiDescriptionsSliderField.ts`) and MDX documentation (`slider.en.mdx` / `slider.ru.mdx`, `sliderField.en.mdx` / `sliderField.ru.mdx`).
+  - Added specialized MDX pages for `Slider` (`event`, `expose`, `marks`, `multiple`, `slots`).
+  - Added property modules `wikiSlider.ts` and `wikiSliderField.ts` with support for `vertical` orientation, `marks`, `magnet`, and `minimumDistance`.
+- **MotionFlip**:
+  - Registered descriptions (`wikiDescriptionsMotionFlip.ts`) and MDX documentation (`motionFlip.en.mdx` / `motionFlip.ru.mdx`, `mode.en.mdx` / `mode.ru.mdx`, `work.en.mdx` / `work.ru.mdx`, `expose.en.mdx` / `expose.ru.mdx`).
+  - Added property module `wikiMotionFlip.ts`.
+- **Headroom**:
+  - Registered descriptions (`wikiDescriptionsHeadroom.ts`) and MDX documentation (`headroom.en.mdx` / `headroom.ru.mdx`, `expose.en.mdx` / `expose.ru.mdx`).
+  - Added event documentation for `headroomScroll` (`events.headroomScroll.en.mdx` / `events.headroomScroll.ru.mdx`) and `headroomSticky` (`events.headroomSticky.en.mdx` / `events.headroomSticky.ru.mdx`).
+  - Created property module `wikiHeadroom.ts` including support for `disappears` prop.
+- **Navigation Components**:
+  - Added descriptions and MDX documentation for `NavigationItem` (`wikiDescriptionsNavigationItem.ts`, `navigationItem.en.mdx` / `navigationItem.ru.mdx`).
+  - Added descriptions and MDX documentation for `NavigationList` (`wikiDescriptionsNavigationList.ts`, `navigationList.en.mdx` / `navigationList.ru.mdx`).
+  - Added descriptions and MDX documentation for `NavigationRail` (`wikiDescriptionsNavigationRail.ts`, `navigationRail.en.mdx` / `navigationRail.ru.mdx`).
+  - Added descriptions and MDX documentation for `NavigationRailItem` (`wikiDescriptionsNavigationRailItem.ts`, `navigationRailItem.en.mdx` / `navigationRailItem.ru.mdx`).
+  - Created property modules `wikiNavigationItem.ts`, `wikiNavigationList.ts`, `wikiNavigationRail.ts`, and `wikiNavigationRailItem.ts`.
+- **TableFlex Components**:
+  - Added descriptions (`wikiDescriptionsTableFlex.ts`, `wikiDescriptionsTableFlexItem.ts`, `wikiDescriptionsTableFlexHeaderItem.ts`, `wikiDescriptionsTableFlexRecord.ts`).
+  - Created MDX documentation pages (`tableFlex`, `differences`, `tableFlexItem`, `tableFlexHeaderItem`, `tableFlexRecord`).
+  - Added property modules `wikiTableFlex.ts`, `wikiTableFlexHeaderItem.ts`, and `wikiTableFlexRecord.ts`.
+- **Table**:
+  - Added `bleed` prop and horizontal margin bleed documentation in `wikiDescriptionsTable.ts`.
+  - Added search and sort interactive demo stories, `@sort` events, and 3-state sorting cycle controls in `wikiTableHeaderItem.ts`, `wikiIconInclude.ts`, and `wikiSort.ts`.
+- **ErrorCenter**:
+  - Added `isConsole` option documentation in `wikiOption.ts`.
+
+### Changed
+- **Slider**: Updated event signatures (`input`, `inputLite`, `change`, `changeLite`) and updated MDX documentation examples to use `<Source />` components.
+- **Table / TableHeaderItem**: Enhanced ARIA sorting states documentation (`ariaSort`, `aria-selected`, `aria-disabled`).
+
 ## [0.100.0] - 2026-07-28
 
 ### Added

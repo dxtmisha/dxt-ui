@@ -1,0 +1,17 @@
+import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{n as t,r as n}from"./lib-BRDOWE9X.js";import{t as r}from"./jsx-runtime-DeHZSEgm.js";import{f as i,s as a}from"./blocks-WIGGT2yz.js";function o(e){let t={code:`code`,h1:`h1`,h2:`h2`,li:`li`,p:`p`,pre:`pre`,strong:`strong`,ul:`ul`,...n(),...e.components};return(0,c.jsxs)(c.Fragment,{children:[(0,c.jsx)(a,{title:`@dxtmisha/vi/styles/color/| functions/toColorOpacity - Trích xuất độ mờ`}),`
+`,(0,c.jsx)(t.h1,{id:`tocoloropacity`,children:(0,c.jsx)(t.code,{children:`toColorOpacity`})}),`
+`,(0,c.jsx)(t.p,{children:`Hàm trích xuất kênh alpha (độ mờ) từ một đối tượng Màu Sass hoặc một chuỗi biến CSS tùy chỉnh.`}),`
+`,(0,c.jsx)(t.p,{children:(0,c.jsx)(t.strong,{children:`Tham số:`})}),`
+`,(0,c.jsxs)(t.ul,{children:[`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.code,{children:`$color: Color | String`}),` — giá trị màu cần trích xuất độ mờ.`]}),`
+`]}),`
+`,(0,c.jsx)(t.p,{children:(0,c.jsx)(t.strong,{children:`Trả về:`})}),`
+`,(0,c.jsxs)(t.ul,{children:[`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.code,{children:`Number | String`}),` — giá trị alpha [0..1] hoặc chuỗi biến CSS đã được sửa đổi.`]}),`
+`]}),`
+`,(0,c.jsx)(t.h2,{id:`ví-dụ`,children:`Ví dụ`}),`
+`,(0,c.jsx)(t.pre,{children:(0,c.jsx)(t.code,{className:`language-scss`,children:`@use '@dxtmisha/styles';
+
+$opacity: styles.toColorOpacity(rgba(255, 0, 0, 0.5)); // 0.5
+$var-opacity: styles.toColorOpacity(var(--sys-color)); // var(--sys-color-opacity)
+`})})]})}function s(e={}){let{wrapper:t}={...n(),...e.components};return t?(0,c.jsx)(t,{...e,children:(0,c.jsx)(o,{...e})}):o(e)}var c;function l(){return(l=e((()=>{c=r(),t(),i()})))()}l();export{s as default};

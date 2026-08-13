@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.15.12] - 2026-08-13
+
+### Changed
+- **Scripts**: Updated `prepublishOnly` script in `package.json` to execute `dxt-types-save` (`npm run library && npm run build && dxt-types-save`).
+
+## [1.15.11] - 2026-08-13
+
+### Changed
+- **AI Documentation & Types**: Updated `types` script in `package.json` to build the library before running `dxt-types`, added `ai-types.md` to `.gitignore`, and regenerated modular `ai-types-list/` type declaration files.
+
 ## [1.15.10] - 2026-08-11
 
 ### Changed

@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.108.0] - 2026-08-13
+
+### Changed
+- **D1SliderField**:
+  - Connected child D1 components (`D1Icon`, `D1FieldLabel`, `D1FieldMessage`, `D1Slider`) inside `D1SliderField.vue`.
+  - Updated `D1SliderField` stories (`D1SliderField.stories.ts`) and wiki descriptions with orientation (`vertical`), range selection, marks, and custom field values.
+  - Adjusted spacing tokens under `properties.json` and regenerated style tokens (`styleToken.scss`).
+  - Updated `dxt-wiki-storm` documentation generation for `D1SliderField`.
+- **Scripts**: Updated `types` script to `npm run ui && npm run build && npm run wiki-storm && dxt-types` and `prepublishOnly` to execute `dxt-types-save`.
+
 ## [0.100.0] - 2026-07-28
 
 ### Added

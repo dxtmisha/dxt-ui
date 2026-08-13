@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/scripts",
   "private": false,
-  "version": "0.10.16",
+  "version": "0.11.0",
   "type": "module",
   "description": "CLI tools, AI integration scripts, and automation utilities for DXT UI — automated component scaffolding, Figma layout generation, library packaging, documentation building, screenshot captures, and AI prompt processing.",
   "keywords": [
@@ -62,6 +62,7 @@
     "dxt-prompt": "bin/design-prompt.ts",
     "dxt-screenshot": "bin/design-screenshot.ts",
     "dxt-types": "bin/design-types.ts",
+    "dxt-types-save": "bin/design-types-save.ts",
     "dxt-ui": "bin/design-ui.ts",
     "dxt-wiki-storm": "bin/design-wiki-storm.ts"
   },

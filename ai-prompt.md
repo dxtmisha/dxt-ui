@@ -60,13 +60,26 @@ Strictly follow these rules for flawless dxt-ui code:
 The project is located at: 'node_modules/@dxtmisha/constructor'.
 
 ## Package Description & Module Overview
-A lightweight Vue 3 component logic library providing class-based component constructors, state logic engines, ARIA accessibility controllers, and build-time styling plugins. It encapsulates functional primitives for forms, navigation, formatting, data management, and overlay states independently of visual styling or framework templates.
+This package is a comprehensive Vue UI component library and infrastructure engine that provides foundational classes, layout utilities, accessibility helpers, and customizable reactive form/navigation constructors.
 
-Key capabilities are organized into core functional modules: Form Fields & Inputs for managing reactive field values, validation rules, input modes, masking, stepper controls, and visibility toggles; Selection Controls for handling single/multiple choice states, item filtering, searching, and sorting; Navigation Primitives for tab indexing, focus trap management, directional arrow key focus, headroom scroll tracking, and anchor scroll interactions; Structural Layout Controls for managing grid, flex, bleed, section, headroom, and sticky positioning; Overlay & Dialog Containers for modal windows, action sheets, snackbars, and teleported elements with SSR compatibility; Motion & Animations for axis transitions, flip animations, sticky movements, and ripple effects; Presentation & Formatting Utilities for formatted numbers, units, badges, avatars, breadcrumbs, skeletons, and loading indicators; and System Infrastructure providing Vite build plugins, component auto-import registrations, and style modification transformers.
+Triggers for Studying ai-types.md:
+- Implementing or modifying form validation, input masking, and field state controllers.
+- Managing accessible ARIA attributes, keyboard navigation, or focus direction logic.
+- Configuring component include classes, layout wrappers, modals, menus, or data tables.
 
-Type definitions in ai-types.md must be studied when configuring library component props, managing reactive model bindings, handling ARIA accessibility attributes, extending abstract component includes, or customizing Vite build plugin integrations.
-
-Designed for seamless integration into Vue-based application architectures alongside Vite build tooling, SCSS design systems, and higher-level UI component libraries.
+Key Capabilities:
+- Form Controls
+- Accessibility State
+- Keyboard Navigation
+- Data Pagination
+- Sorting Management
+- Window Management
+- Component Includes
+- Input Masking
+## Mandatory Rules
+You MUST evaluate whether your task relates to any of the following topics (even if not working directly with this package). If related material is present, you are strictly obligated to read and study the corresponding file before proceeding:
+- 'node_modules/@dxtmisha/constructor/ai-resources/colors-and-palettes-ru.md': Документ содержит строгие правила верстки на SCSS и настройки UI в JSON с использованием системных токенов и миксинов. Использование данных стандартов исключает жесткие цветовые коды, обеспечивая автоматическую адаптацию компонентов под динамические темы приложения.
+- 'node_modules/@dxtmisha/constructor/ai-resources/colors-and-palettes.md': Defines strict styling standards, rules, and mixins for UI components to enforce theme-adaptive styling and prevent hardcoded color usage. Solves the technical task of maintaining consistent, dynamic color palettes and state opacities across SCSS and Vue files.
 
 ## Package Core Information
 Auxiliary base library for UI components and typings. **DO NOT import directly in code**; use ready-made design system components (e.g., D1).
@@ -84,11 +97,21 @@ Auxiliary base library for UI components and typings. **DO NOT import directly i
 The project is located at: 'node_modules/@dxtmisha/d1'.
 
 ## Package Description & Module Overview
-This library provides a comprehensive suite of Vue 3 UI components (prefixed with D1) built upon the @dxtmisha/constructor design system. It handles UI rendering, property definition types, build-time integration via uiD1VitePlugin, and media utilities (d1MakeIcons). Triggers for studying ai-types.md include implementing or wrapping D1 components, configuring uiD1VitePlugin, resolving slot/event type definitions, or customizing theme variables via style regex patterns. Integrates with Vue 3 and @dxtmisha/constructor.
+This package provides a comprehensive collection of Vue 3 UI components and design system utilities built on top of the constructor architecture, delivering structured layout, navigation, and form controls.
+
+Study "ai-types.md" when implementing custom Vue components, configuring UI component props, mapping design tokens, or integrating design system plugins that require strict type definitions and setup component structures.
+
+Key Capabilities:
+- UI Components
+- Form Controls
+- Layout Design
+- Navigation Systems
+- Modal Windows
+- Data Display
 ## Mandatory Rules
-Read the corresponding file if your task relates to:
-- 'node_modules/@dxtmisha/d1/ai-resources/styling-tokens.md': SCSS tokens (sys-), palette mixins (ui.paletteBackgroundColor), and color variable rules
-- 'node_modules/@dxtmisha/d1/ai-resources/responsive-typography.md': Responsive media mixins (ui.mediaMinWidth), typography classes (d1-font.scss), and BEM class structure
+You MUST evaluate whether your task relates to any of the following topics (even if not working directly with this package). If related material is present, you are strictly obligated to read and study the corresponding file before proceeding:
+- 'node_modules/@dxtmisha/d1/ai-resources/responsive-typography.md': Defines SCSS styling standards, including BEM class naming conventions, forbidden direct media queries in favor of library mixins, and typography class usage rules for UI components.
+- 'node_modules/@dxtmisha/d1/ai-resources/styling-tokens.md': Defines SCSS token naming conventions, system token hierarchy, and CSS variable usage rules. Solves the technical task of maintaining consistent styling and dynamic theming across components without hardcoded values.
 
 ## Package Core Information
 Vue 3 layout library with pre-registered global `D1...` components. **No imports needed for D1 components and icons.**
@@ -185,30 +208,20 @@ Vue 3 reactive composables for Figma plugin UI state synchronization (`useFigmaF
 The project is located at: 'node_modules/@dxtmisha/functional'.
 
 ## Package Description & Module Overview
-# @dxtmisha/functional Reference
+This package is a comprehensive Vue-based utility library designed to simplify state management, reactive routing, internationalization, and API communication. Developers should study this package to leverage its pre-built reactive wrappers, robust component constructors, and seamless API integration tools for modern frontend applications.
 
-A reactive utility and component architecture library for Vue 3 providing high-level abstract base classes, state management composables, and localized formatting helpers.
-
-## Key Capabilities & Groupings
-- **API & Network**: Reactive composables for asynchronous HTTP requests, mutation workflows, SSR prefetching, response contract validation, error mappings, and list orchestration.
-- **Storage & State**: Persistent storage composables synchronizing state with cookies, web storage, URL query/hash parameters, and cross-tab messaging.
-- **Localization & Formatting**: Utilities for reactive handling of dates, numbers, currency, unit conversions, country flags, and dynamic translations.
-- **List & Search**: Helpers for managing reactive data filtering, selection state, text highlighting, debouncing, and router-bound navigation lists.
-- **DOM & System**: DOM visibility tracking, reactive page metadata management, global loading states, scrollbar measurements, and singleton dependency injection.
-- **Design Components**: Abstract base classes for standardized component rendering, dynamic class/style computation, prop tracking, and element exposure.
-
-## Triggers for Studying `ai-types.md`
-Study `ai-types.md` when implementing abstract component constructors, defining API validation contracts or error schemas, typing complex list structures and search options, configuring singleton execution scopes, or managing reactive Vue prop and subcomponent bindings.
-
-## Integration Context
-This library integrates natively into Vue 3 and Vue Router applications through a unified global plugin that configures shared API, routing, localization, and metadata services.
-
+Key Capabilities:
+- API Integration
+- Reactive Storage
+- Internationalization Formatting
+- Component Management
+- Route Navigation
 ## Mandatory Rules
-Read the corresponding file ONLY when working on a task related to (even if not working directly with this package):
-- 'node_modules/@dxtmisha/functional/ai-resources/api-reference.md': Reactive singleton scope initialization and REST API management patterns
-- 'node_modules/@dxtmisha/functional/ai-resources/localization-seo.md': Geographic context, locale-aware formatting, reactive translations, document metadata, and scrollbar width measurement
-- 'node_modules/@dxtmisha/functional/ai-resources/reactivity-lists.md': Async reactivity composables, reactive list models, search filtering, and DOM observer utilities
-- 'node_modules/@dxtmisha/functional/ai-resources/storage-state.md': Reactive composables for browser storage, cookies, cross-tab synchronization, and URL hash state
+You MUST evaluate whether your task relates to any of the following topics (even if not working directly with this package). If related material is present, you are strictly obligated to read and study the corresponding file before proceeding:
+- 'node_modules/@dxtmisha/functional/ai-resources/api-reference.md': Defines usage patterns and guidelines for REST API management and scope-isolated singleton factories within the @dxtmisha/functional library. It provides technical instructions for initializing global, local, and provided singletons alongside reactive CRUD operations.
+- 'node_modules/@dxtmisha/functional/ai-resources/localization-seo.md': Provides utilities for locale-aware formatting, translation primitives, geographic context resolution, and reactive HTML document metadata handling. Solves internationalization and SEO management tasks in web applications using functional components.
+- 'node_modules/@dxtmisha/functional/ai-resources/reactivity-lists.md': This file provides advanced async reactivity composables, list data models, search filters, and DOM observers for managing application state and UI lifecycle. It solves technical tasks related to asynchronous computed properties, optimized multi-field searching, and safe event listener management in frontend codebases.
+- 'node_modules/@dxtmisha/functional/ai-resources/storage-state.md': Provides composable Vue-like reactive wrappers for persistent and synchronized browser state management, including localStorage, sessionStorage, cookies, broadcast channels, and URL hash fragments. Solves technical tasks related to cross-tab communication, SSR-safe cookie handling, and state persistence for web applications.
 
 ## Package Core Information
 # @dxtmisha/functional Reference
@@ -231,27 +244,19 @@ Vue 3 reactive utilities built on `@dxtmisha/functional-basic`. See `ai-types.md
 The project is located at: 'node_modules/@dxtmisha/functional-basic'.
 
 ## Package Description & Module Overview
-# Package Overview & Rules (@dxtmisha/functional-basic)
+This package is a comprehensive utility library providing robust tools for API requests, data caching, localization, formatting, and state management. Study it to understand enterprise-grade frontend architecture, robust error handling, SSR-compatible data hydration, and advanced internationalization primitives.
 
-## Core Purpose
-This library provides an isomorphic suite of client- and server-side utilities designed for web application infrastructure, state management, internationalization, and network communication. It serves as a unified foundation for API lifecycle management, SSR hydration, browser storage, and data transformation across JavaScript runtimes.
-
-## Key Capabilities & Groupings
-- **API & Network**: Streamlines HTTP fetch requests with configurable defaults, automatic retries with jitter, response caching, error classification, and SSR client hydration script generation.
-- **Storage & State Management**: Supplies request-isolated SSR storage contexts, type-safe cookie management, synchronized URL query and hash state, local and session storage with age-based expiration, and cross-tab broadcast messaging.
-- **Localization & Geographic Tools**: Provides automated country and language detection, phone number mask matching, metric-to-imperial unit conversion, pluralization, currency formatting, and asynchronous multi-language translation resolution.
-- **Search & Data Handling**: Enables multi-column list searching, search match highlighting, fuzzy and exact regular expression matching, multi-field array sorting, and recursive object template replacement.
-- **UI, DOM, & Event Helpers**: Delivers DOM element manipulation, ResizeObserver and scroll-sync event listeners, global loading indicators, icon registration, resumable timers, and isomorphic HTML meta tag management for standard SEO, Open Graph, and Twitter Cards.
-
-## Triggers for Studying `ai-types.md`
-Studying type definitions in `ai-types.md` is mandatory when typing complex API request or response structures, configuring custom request wrappers, defining criteria for error storage items, specifying search column paths, setting up custom translation dictionaries, or implementing isolated server storage contexts during SSR.
-
-## Integration Context
-This package connects with modern web frameworks and SSR environments by wrapping standard Web APIs, fetch interfaces, and DOM listeners with environment-agnostic abstractions and automated client-side hydration hooks.
-
+API Integration
+State Management
+Caching
+Internationalization
+Localization
+URL Routing
+Event Handling
+Meta Tags
 ## Mandatory Rules
-Read the corresponding file ONLY when working on a task related to (even if not working directly with this package):
-- 'node_modules/@dxtmisha/functional-basic/ai-resources/api-reference.md': HTTP client caching, storage management, geolocation localization, and DOM utility helpers
+You MUST evaluate whether your task relates to any of the following topics (even if not working directly with this package). If related material is present, you are strictly obligated to read and study the corresponding file before proceeding:
+- 'node_modules/@dxtmisha/functional-basic/ai-resources/api-reference.md': Provides code examples and usage patterns for the @dxtmisha/functional-basic library modules including HTTP client, storage, geolocation, and DOM helpers. It helps AI agents understand how to correctly integrate and utilize utility functions for frontend and backend tasks.
 
 ## Package Core Information
 Framework-agnostic utility library. **Vue developers MUST search `@dxtmisha/functional` first**; use this ONLY if no reactive/Vue-specific analog exists.
@@ -319,10 +324,16 @@ Read the corresponding file if your task relates to:
 The project is located at: 'node_modules/@dxtmisha/zip'.
 
 ## Package Description & Module Overview
-This library provides client-side functionality for programmatically constructing, managing, and downloading compressed ZIP archives. It wraps low-level compression logic into an object-oriented interface to manage in-memory file buffers and trigger browser-based file downloads. Main functional groupings include archive lifecycle controls, which handle archive initialization, file staging, file removal, data normalization, and browser download triggers, alongside compression utilities that perform DEFLATE encoding, CRC32 calculations, and string-to-binary conversions. Studying ai-types.md is mandatory when fine-tuning archive compression options, working with direct byte array getters, handling custom data conversion methods, or extending ZIP configuration parameters in TypeScript projects. The library integrates with web runtime environments by leveraging DOM utilities from functional-basic to perform automated anchor-click file saving.
+Package Description:
+This package provides a lightweight utility class for creating, managing, and downloading ZIP archives directly in browser environments.
 
-## Package Type Definitions (Must Read in Full When Working with Package)
-'node_modules/@dxtmisha/zip/ai-types.md'
+Triggers for Studying ai-types.md:
+An AI assistant must study "ai-types.md" when implementing functionality related to ZIP archive generation, file compression configuration, archive management, or browser-based file downloads.
+
+Key Capabilities:
+- Archive Creation
+- File Management
+- Browser Download
 
 ---
 

@@ -3,78 +3,114 @@
     "uri": "@dxtmisha/constructor/ai-types.md",
     "name": "Type Definitions (@dxtmisha/constructor)",
     "mimeType": "text/markdown",
-    "description": "Compressed and AI-optimized TypeScript declaration contracts for component logic constructors, ARIA controllers, and UI primitives."
+    "description": "TypeScript type definitions and signatures for AI coding assistant."
   },
   {
     "uri": "@dxtmisha/constructor/ai-description.md",
-    "name": "Package Overview & Rules (@dxtmisha/constructor)",
+    "name": "Project Overview (@dxtmisha/constructor)",
     "mimeType": "text/markdown",
-    "description": "High-density package overview, module capabilities, and type definition trigger guidelines for @dxtmisha/constructor."
+    "description": "Project overview, usage guidelines, and mandatory prompt rules for AI coding assistant."
+  },
+  {
+    "uri": "@dxtmisha/constructor/ai-resources/colors-and-palettes-ru.md",
+    "name": "Директива стилизации и верстки (@dxtmisha/constructor)",
+    "mimeType": "text/markdown",
+    "description": "Документ содержит строгие правила верстки на SCSS и настройки UI в JSON с использованием системных токенов и миксинов. Использование данных стандартов исключает жесткие цветовые коды, обеспечивая автоматическую адаптацию компонентов под динамические темы приложения."
+  },
+  {
+    "uri": "@dxtmisha/constructor/ai-resources/colors-and-palettes.md",
+    "name": "AI UI SCSS Styling Directive (@dxtmisha/constructor)",
+    "mimeType": "text/markdown",
+    "description": "Defines strict styling standards, rules, and mixins for UI components to enforce theme-adaptive styling and prevent hardcoded color usage. Solves the technical task of maintaining consistent, dynamic color palettes and state opacities across SCSS and Vue files."
+  },
+  {
+    "uri": "@dxtmisha/d1/ai-types.md",
+    "name": "Type Definitions (@dxtmisha/d1)",
+    "mimeType": "text/markdown",
+    "description": "TypeScript type definitions and signatures for AI coding assistant."
+  },
+  {
+    "uri": "@dxtmisha/d1/ai-description.md",
+    "name": "Project Overview (@dxtmisha/d1)",
+    "mimeType": "text/markdown",
+    "description": "Project overview, usage guidelines, and mandatory prompt rules for AI coding assistant."
+  },
+  {
+    "uri": "@dxtmisha/d1/ai-resources/responsive-typography.md",
+    "name": "Responsive Layout and Typography (@dxtmisha/d1)",
+    "mimeType": "text/markdown",
+    "description": "Defines SCSS styling standards, including BEM class naming conventions, forbidden direct media queries in favor of library mixins, and typography class usage rules for UI components."
+  },
+  {
+    "uri": "@dxtmisha/d1/ai-resources/styling-tokens.md",
+    "name": "Styling and CSS Tokens (@dxtmisha/d1)",
+    "mimeType": "text/markdown",
+    "description": "Defines SCSS token naming conventions, system token hierarchy, and CSS variable usage rules. Solves the technical task of maintaining consistent styling and dynamic theming across components without hardcoded values."
   },
   {
     "uri": "@dxtmisha/functional/ai-types.md",
     "name": "Type Definitions (@dxtmisha/functional)",
     "mimeType": "text/markdown",
-    "description": "Compressed and AI-optimized TypeScript declaration contracts for functional Vue 3 utilities and base components."
+    "description": "TypeScript type definitions and signatures for AI coding assistant."
   },
   {
     "uri": "@dxtmisha/functional/ai-description.md",
-    "name": "Package Overview & Rules (@dxtmisha/functional)",
+    "name": "Project Overview (@dxtmisha/functional)",
     "mimeType": "text/markdown",
-    "description": "High-density project overview, key capabilities, and prompt trigger guidelines."
+    "description": "Project overview, usage guidelines, and mandatory prompt rules for AI coding assistant."
   },
   {
     "uri": "@dxtmisha/functional/ai-resources/api-reference.md",
-    "name": "API Rules (@dxtmisha/functional)",
+    "name": "API Management and Scope Singletons (@dxtmisha/functional)",
     "mimeType": "text/markdown",
-    "description": "Reactive singleton scope initialization and REST API management patterns."
+    "description": "Defines usage patterns and guidelines for REST API management and scope-isolated singleton factories within the @dxtmisha/functional library. It provides technical instructions for initializing global, local, and provided singletons alongside reactive CRUD operations."
   },
   {
     "uri": "@dxtmisha/functional/ai-resources/localization-seo.md",
-    "name": "Localization Rules (@dxtmisha/functional)",
+    "name": "Localization and SEO Utilities (@dxtmisha/functional)",
     "mimeType": "text/markdown",
-    "description": "Geographic context, locale-aware formatting, reactive translations, and document metadata."
+    "description": "Provides utilities for locale-aware formatting, translation primitives, geographic context resolution, and reactive HTML document metadata handling. Solves internationalization and SEO management tasks in web applications using functional components."
   },
   {
     "uri": "@dxtmisha/functional/ai-resources/reactivity-lists.md",
-    "name": "Lists Rules (@dxtmisha/functional)",
+    "name": "Reactivity Helpers and DOM Utilities (@dxtmisha/functional)",
     "mimeType": "text/markdown",
-    "description": "Async reactivity composables, reactive list models, search filtering, and DOM observer utilities."
+    "description": "This file provides advanced async reactivity composables, list data models, search filters, and DOM observers for managing application state and UI lifecycle. It solves technical tasks related to asynchronous computed properties, optimized multi-field searching, and safe event listener management in frontend codebases."
   },
   {
     "uri": "@dxtmisha/functional/ai-resources/storage-state.md",
-    "name": "Storage Rules (@dxtmisha/functional)",
+    "name": "Reactive Storage Composables (@dxtmisha/functional)",
     "mimeType": "text/markdown",
-    "description": "Reactive composables for browser storage, cookies, cross-tab synchronization, and URL hash state."
+    "description": "Provides composable Vue-like reactive wrappers for persistent and synchronized browser state management, including localStorage, sessionStorage, cookies, broadcast channels, and URL hash fragments. Solves technical tasks related to cross-tab communication, SSR-safe cookie handling, and state persistence for web applications."
   },
   {
     "uri": "@dxtmisha/functional-basic/ai-types.md",
     "name": "Type Definitions (@dxtmisha/functional-basic)",
     "mimeType": "text/markdown",
-    "description": "Compressed and AI-optimized TypeScript declaration contracts for core utilities."
+    "description": "TypeScript type definitions and signatures for AI coding assistant."
   },
   {
     "uri": "@dxtmisha/functional-basic/ai-description.md",
-    "name": "Package Overview & Rules (@dxtmisha/functional-basic)",
+    "name": "Project Overview (@dxtmisha/functional-basic)",
     "mimeType": "text/markdown",
-    "description": "High-density project overview, key capabilities, and prompt trigger guidelines."
+    "description": "Project overview, usage guidelines, and mandatory prompt rules for AI coding assistant."
   },
   {
     "uri": "@dxtmisha/functional-basic/ai-resources/api-reference.md",
-    "name": "API & Core Utilities (@dxtmisha/functional-basic)",
+    "name": "API Reference and Examples (@dxtmisha/functional-basic)",
     "mimeType": "text/markdown",
-    "description": "HTTP client caching, storage management, geolocation localization, and DOM utility helpers."
+    "description": "Provides code examples and usage patterns for the @dxtmisha/functional-basic library modules including HTTP client, storage, geolocation, and DOM helpers. It helps AI agents understand how to correctly integrate and utilize utility functions for frontend and backend tasks."
   },
   {
     "uri": "@dxtmisha/zip/ai-types.md",
-    "name": "ZIP Archive Interface (@dxtmisha/zip)",
+    "name": "Type Definitions (@dxtmisha/zip)",
     "mimeType": "text/markdown",
-    "description": "TypeScript type declarations and API reference for managing, compiling, and downloading browser-based ZIP archives using fflate."
+    "description": "TypeScript type definitions and signatures for AI coding assistant."
   },
   {
     "uri": "@dxtmisha/zip/ai-description.md",
-    "name": "ZIP Archive Manager (@dxtmisha/zip)",
+    "name": "Project Overview (@dxtmisha/zip)",
     "mimeType": "text/markdown",
-    "description": "Comprehensive technical guidelines and API overview for client-side ZIP archive creation, in-memory buffer management, compression utilities, and automated browser file downloads."
+    "description": "Project overview, usage guidelines, and mandatory prompt rules for AI coding assistant."
   }
 ]

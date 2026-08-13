@@ -69,4 +69,20 @@ export class DesignTypes {
 
     return this
   }
+
+  /**
+   * Generates type definitions by combining processed files from ai-types-list directory without running AI.
+   *
+   * Генерирует определения типов путем объединения обработанных файлов из директории ai-types-list без запуска ИИ.
+   * @returns current instance / текущий экземпляр
+   */
+  makeSave(): this {
+    console.log('DesignTypes: saving AI types from list...')
+
+    this.makeTypes.makeSave()
+
+    console.log('DesignTypes: AI types saved.')
+
+    return this
+  }
 }
