@@ -11,6 +11,8 @@ node_modules
 dist-ssr
 *.local
 
+ai-types.md
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
