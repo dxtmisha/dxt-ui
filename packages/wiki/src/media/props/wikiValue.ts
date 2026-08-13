@@ -107,6 +107,18 @@ export const wikiValue: StorybookArgsToList = {
     },
     hide: true
   },
+  files: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.value,
+      type: ['File[]', 'FileList', 'File'],
+      description: {
+        en: 'Selected or dropped file(s) for file input or dropzone',
+        ru: 'Выбранный или перетащенный файл(ы) для файлового ввода или dropzone'
+      }
+    },
+    hide: true
+  },
   fraction: {
     type: StorybookControl.string,
     options: {

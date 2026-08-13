@@ -10,6 +10,28 @@ import {
  * Объект wikiHook содержит общие hook-свойства для всех компонентов
  */
 export const wikiHook: StorybookArgsToList = {
+  'onUpdate:files': {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.hook,
+      description: {
+        en: 'Event handler called on update:files with the new files array or FileList',
+        ru: 'Обработчик события update:files, вызывается с новым массивом файлов или FileList'
+      }
+    },
+    hide: true
+  },
+  'onUpdate:modelFiles': {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.hook,
+      description: {
+        en: 'Event handler called on update:modelFiles with the new files array or FileList',
+        ru: 'Обработчик события update:modelFiles, вызывается с новым массивом файлов или FileList'
+      }
+    },
+    hide: true
+  },
   'onUpdate:modelOpen': {
     type: StorybookControl.object,
     options: {

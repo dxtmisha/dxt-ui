@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.109.0] - 2026-08-14
+
+### Added
+- **D1Dropzone UI Component**:
+  - Introduced `D1Dropzone` UI component wrapping the `Dropzone` constructor with drag-and-drop file upload capabilities, slot support, and interactive file pickers.
+  - Added component file structure (`D1Dropzone.vue`, `D1DropzoneAiWiki.vue`, `D1Dropzone.stories.ts`, `D1Dropzone.mdx`, `props.ts`, `styleToken.scss`, `wiki.ts`, `wikiData.ts`, `index.ts`).
+  - Added package export entry `./D1Dropzone` in `package.json`.
+  - Registered `D1Dropzone` component regex and import mapping in `design.ts`, runtime Vue components interface in `types.ts`, AI wiki list (`ai-list.wiki.ts`), and style token definitions in `properties.scss`.
+
 ## [0.108.0] - 2026-08-13
 
 ### Changed

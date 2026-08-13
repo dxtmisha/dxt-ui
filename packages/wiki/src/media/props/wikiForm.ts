@@ -1,6 +1,18 @@
 import { type StorybookArgsToList, StorybookCategory, StorybookControl } from '../../types/storybookTypes'
 
 export const wikiForm: StorybookArgsToList = {
+  accept: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.form,
+      type: 'string',
+      description: {
+        en: 'Specifies acceptable file types/MIME types for file input or dropzone (e.g., "image/*,.pdf")',
+        ru: 'Указывает допустимые типы файлов/MIME типы для файлового ввода или dropzone (например, "image/*,.pdf")'
+      }
+    },
+    hide: true
+  },
   arrow: {
     type: StorybookControl.select,
     options: {

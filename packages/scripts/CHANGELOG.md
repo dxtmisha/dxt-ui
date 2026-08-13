@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.11.1] - 2026-08-14
+
+### Changed
+- **AI Prompt Templates**:
+  - Refined AI initialization step in `aiCodeGlobalPrompt.en.md` and `aiCodeGlobalPrompt.ru.md` to load `ai-types.md` and `ai-developer.md` conditionally only when relevant to the task.
+  - Added directive to search `ai-prompt.md` and `ai-types.md` for existing utilities and keywords before writing custom code logic.
+
 ## [0.11.0] - 2026-08-13
 
 ### Added

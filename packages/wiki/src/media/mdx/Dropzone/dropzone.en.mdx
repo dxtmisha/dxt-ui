@@ -1,0 +1,35 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+The `Dropzone` component provides an accessible, interactive area for uploading files via drag-and-drop or by opening the standard file selection dialog. It integrates sub-helpers for handling file input elements, drag events, icons, labels, descriptions, and reactive `v-model` binding.
+
+**Key features:**
+
+- Interactive drag-and-drop dropzone area
+- Supports single and multiple file selection (`multiple` prop)
+- File type filtering via `accept` prop
+- Customizable icon, label, and description sub-elements and slots
+- Fully accessible ARIA state management (`aria-disabled`, `aria-labelledby`, `aria-describedby`)
+- Exposed `open()` and `clear()` methods for programmatic control
+
+**Common use cases:**
+
+- Form file attachment inputs
+- Image or document upload areas
+- Bulk file importer dropzones
+
+<Source
+    code={`
+<template>
+  <Dropzone
+    accept="image/*"
+    label="Drop images here or click to upload"
+    description="PNG, JPG or WebP up to 5MB"
+    icon="upload"
+    @drop="handleDrop"
+  />
+</template>
+  `}
+    language="html"
+/>
+
+> Dropzone delivers a seamless file drag-and-drop interface compliant with accessibility standards and framework conventions.

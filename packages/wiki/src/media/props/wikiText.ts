@@ -94,6 +94,18 @@ export const wikiText: StorybookArgsToList = {
     },
     hide: true
   },
+  textDropzone: {
+    type: StorybookControl.text,
+    options: {
+      category: StorybookCategory.text,
+      type: 'string | (() => string)',
+      description: {
+        en: 'Dropzone prompt text for dropping or selecting files',
+        ru: 'Текст подсказки Dropzone для сброса или выбора файлов'
+      }
+    },
+    hide: true
+  },
   textEntriesMatch: {
     type: StorybookControl.text,
     options: {

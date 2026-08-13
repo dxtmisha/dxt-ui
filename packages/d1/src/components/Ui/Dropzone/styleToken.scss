@@ -1,0 +1,66 @@
+@use "../../../styles/Ui/properties";
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/style.scss" as Dropzone;
+
+@include ui.initDesignBasic('d1.dropzone') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include Dropzone.mixinDropzone;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+    gap: var(--d1-sys-spacing-xs);
+    
+    padding: var(--d1-sys-spacing-md);
+    
+    @include ui.color(#{var(--d1-sys-palette-onSurface)});
+    @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)});
+    
+    @include ui.backgroundColor(#{var(--d1-sys-palette-surface)});
+    @include ui.backgroundOpacity(#{var(--d1-sys-opacity-primary-high)});
+    @include ui.gradient(#{var(--d1-sys-palette-primary)});
+    @include ui.gradientOpacity(#{0});
+    
+    border-radius: var(--d1-sys-rounded-lg);
+    border-width: var(--d1-sys-spacing-2px);
+    @include ui.borderColor(#{var(--d1-sys-palette-outline)});
+    @include ui.borderOpacity(#{var(--d1-sys-opacity-outline)});
+    
+    backdrop-filter: var(--d1-sys-blur-md);
+    
+    &__label {
+      font-family: var(--d1-sys-font-family-basic), sans-serif;
+      @include ui.fontSize(#{var(--d1-sys-font-size-md)});
+      font-weight: var(--d1-sys-font-weight-medium);
+      @include ui.lineHeight(#{var(--d1-sys-lineHeight-md)});
+      letter-spacing: var(--d1-sys-letterSpacing-sm);
+    }
+    
+    &__description {
+      font-family: var(--d1-sys-font-family-basic), sans-serif;
+      @include ui.fontSize(#{var(--d1-sys-font-size-xs)});
+      font-weight: var(--d1-sys-font-weight-regular);
+      @include ui.lineHeight(#{var(--d1-sys-lineHeight-xs)});
+      letter-spacing: var(--d1-sys-letterSpacing-lg);
+    }
+    
+    @include ui.disabled {
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-disabled)}); @include ui.color('init');
+      
+      @include ui.borderOpacity(#{calc(var(--d1-sys-opacity-outline) * var(--d1-sys-opacity-surface-disabled))}); @include ui.borderColor('init');
+    }
+    
+    &--enter {
+      @include ui.gradientOpacity(#{var(--d1-sys-opacity-dragged)}); @include ui.gradient('init');
+      
+      @include ui.borderOpacity(#{var(--d1-sys-opacity-primary-high)}); @include ui.borderColor('init');
+      @include ui.paletteBorder(#{var(--d1-sys-palette-primary)});
+    }
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

@@ -29,6 +29,7 @@ import _D1Container from '../components/Ui/Container/D1Container.vue'
 import _D1Dialog from '../components/Ui/Dialog/D1Dialog.vue'
 import _D1Divider from '../components/Ui/Divider/D1Divider.vue'
 import _D1DraggableWrapper from '../components/Ui/DraggableWrapper/D1DraggableWrapper.vue'
+import _D1Dropzone from '../components/Ui/Dropzone/D1Dropzone.vue'
 import _D1Dummy from '../components/Ui/Dummy/D1Dummy.vue'
 import _D1Field from '../components/Ui/Field/D1Field.vue'
 import _D1FieldCounter from '../components/Ui/FieldCounter/D1FieldCounter.vue'
@@ -140,6 +141,7 @@ declare module '@vue/runtime-core' {
     D1Dialog: typeof _D1Dialog
     D1Divider: typeof _D1Divider
     D1DraggableWrapper: typeof _D1DraggableWrapper
+    D1Dropzone: typeof _D1Dropzone
     D1Dummy: typeof _D1Dummy
     D1Field: typeof _D1Field
     D1FieldCounter: typeof _D1FieldCounter

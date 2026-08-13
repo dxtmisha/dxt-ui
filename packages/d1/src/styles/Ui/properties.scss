@@ -12552,6 +12552,11 @@
         name: 'd1-draggableWrapper',
         type: 'component',
       ),
+      'dropzone':(
+        index: 'dropzone',
+        name: 'd1-dropzone',
+        type: 'component',
+      ),
       'dummy':(
         index: 'dummy',
         name: 'd1-dummy',
@@ -13353,6 +13358,11 @@
       'draggableWrapper':(
         index: 'draggableWrapper',
         name: 'd-draggableWrapper',
+        type: 'component',
+      ),
+      'dropzone':(
+        index: 'dropzone',
+        name: 'd-dropzone',
         type: 'component',
       ),
       'dummy':(

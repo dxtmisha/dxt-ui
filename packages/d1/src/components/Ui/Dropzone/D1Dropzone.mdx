@@ -1,0 +1,54 @@
+import {Canvas, Meta} from '@storybook/addon-docs/blocks'
+import {
+    StorybookDescriptions,
+    StorybookMain
+} from '@dxtmisha/wiki/storybook'
+
+import * as Dropzone from './D1Dropzone.stories'
+import {DropzoneWikiStorybook} from './wiki'
+
+[//]: # (:documentation-import [!] System label / Системная метка)
+[//]: # (:documentation-import [!] System label / Системная метка)
+
+<Meta of={Dropzone}/>
+<StorybookMain
+    name={DropzoneWikiStorybook.getName()}
+    description={DropzoneWikiStorybook.getDescription()}
+    story={Dropzone.Dropzone}
+/>
+
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+<StorybookDescriptions componentName={'Dropzone'} type={'dropzone'}/>
+
+<StorybookDescriptions componentName={'Value'} type={'v-model'}/>
+<Canvas of={Dropzone.DropzoneVModel}/>
+
+<StorybookDescriptions componentName={'Style'} type={'isSkeleton'}/>
+<Canvas of={Dropzone.DropzoneSkeleton}/>
+    
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+[//]: # (:documentation-events [!] System label / Системная метка)
+## Events
+
+<StorybookDescriptions componentName={'Event'} type={'dropzone'}/>
+    
+[//]: # (:documentation-events [!] System label / Системная метка)
+
+[//]: # (:documentation-expose [!] System label / Системная метка)
+## Expose
+
+<StorybookDescriptions componentName={'Expose'} type={'open'}/>
+<StorybookDescriptions componentName={'Expose'} type={'clear'}/>
+    
+[//]: # (:documentation-expose [!] System label / Системная метка)
+
+[//]: # (:documentation-slots [!] System label / Системная метка)
+## Slots
+
+<Canvas of={Dropzone.DropzoneSlots}/>
+<StorybookDescriptions componentName={'Slot'} type={'default'}/>
+<StorybookDescriptions componentName={'Slot'} type={'description'}/>
+    
+[//]: # (:documentation-slots [!] System label / Системная метка)

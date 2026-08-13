@@ -29,6 +29,7 @@ import D1Container from '../../src/components/Ui/Container/D1ContainerAiWiki.vue
 import D1Dialog from '../../src/components/Ui/Dialog/D1DialogAiWiki.vue'
 import D1Divider from '../../src/components/Ui/Divider/D1DividerAiWiki.vue'
 import D1DraggableWrapper from '../../src/components/Ui/DraggableWrapper/D1DraggableWrapperAiWiki.vue'
+import D1Dropzone from '../../src/components/Ui/Dropzone/D1DropzoneAiWiki.vue'
 import D1Dummy from '../../src/components/Ui/Dummy/D1DummyAiWiki.vue'
 import D1Field from '../../src/components/Ui/Field/D1FieldAiWiki.vue'
 import D1FieldCounter from '../../src/components/Ui/FieldCounter/D1FieldCounterAiWiki.vue'
@@ -139,6 +140,7 @@ export const aiList: any[] = [
   D1Dialog,
   D1Divider,
   D1DraggableWrapper,
+  D1Dropzone,
   D1Dummy,
   D1Field,
   D1FieldCounter,

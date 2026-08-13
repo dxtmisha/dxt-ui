@@ -90,6 +90,11 @@ export class TextInclude {
     return this.get('textDecrement')
   }
 
+  /** Dropzone default text / Текст области загрузки по умолчанию */
+  get dropzone() {
+    return this.get('textDropzone')
+  }
+
   /** Entries match text / Текст о несовпадении записей */
   get entriesMatch() {
     return this.get('textEntriesMatch')

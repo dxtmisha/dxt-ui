@@ -17,7 +17,7 @@ Strictly follow these rules for flawless dxt-ui code:
 0. **Mandatory Deep Study (CHRONOLOGICAL GUARD)**:
    - **Step 1**: Read/create local `ai-memory.md` strictly in the current package root (e.g., `packages/constructor/`). Using repository root `ai-memory.md` for package files is FORBIDDEN.
    - **Step 2**: Read root `ai-prompt.md` and study descriptions of all mentioned libraries.
-   - **Step 3**: Read all linked `ai-types.md` and `ai-developer.md` BEFORE proposing plans, inspecting directory structures, or writing code. If a package is in `node_modules/` but exists locally (e.g., `packages/`), resolve and study the local source instead.
+   - **Step 3**: Read linked `ai-types.md` and `ai-developer.md` BEFORE proposing plans, inspecting directory structures, or writing code, ONLY if you think that library may be relevant/useful for the current task. BEFORE searching for logic or writing custom code, ALWAYS review this file (`ai-prompt.md`) and `ai-types.md` of relevant libraries first to search for system hints, keywords (@keywords), and existing helper utilities. If a package is in `node_modules/` but exists locally (e.g., `packages/`), resolve and study the local source instead.
    - Fully read file contents before modifying them. Superficial scans (text search only) are strictly forbidden. Always check existing infrastructure before writing custom logic.
 
 1. **"Copy-Paste Ready"**: Generate complete, runnable files with correct imports. No placeholders (e.g., `// rest of code`).

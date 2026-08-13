@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/d1",
   "private": false,
-  "version": "0.108.0",
+  "version": "0.109.0",
   "type": "module",
   "description": "Vue 3 design system component library (DXT-UI D1) with comprehensive UI components, design tokens, SCSS mixins, and Vite plugin",
   "keywords": [
@@ -51,7 +51,7 @@
     "build": "vue-tsc -b && vite build",
     "build-recovery": "npm run build && npm run wiki-storm",
     "preview": "vite preview",
-    "ui": "dxt-ui",
+    "ui": "dxt-ui Dropzone",
     "wiki-storm": "dxt-wiki-storm",
     "types": "npm run ui && npm run build && npm run wiki-storm && dxt-types",
     "screenshot": "dxt-screenshot",
@@ -524,6 +524,10 @@
     "./D1Headroom": {
       "types": "./dist/library/D1Headroom.d.ts",
       "default": "./dist/D1Headroom.js"
+    },
+    "./D1Dropzone": {
+      "types": "./dist/library/D1Dropzone.d.ts",
+      "default": "./dist/D1Dropzone.js"
     }
   },
   "buildOptions": {

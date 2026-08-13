@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/wiki",
   "private": false,
-  "version": "0.108.0",
+  "version": "0.109.0",
   "type": "module",
   "description": "Storybook documentation toolkit, component metadata registry, and MDX documentation system for DXT UI design system",
   "keywords": [

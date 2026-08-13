@@ -1,0 +1,31 @@
+{
+  "main": "{d.dropzone}",
+  "gap": "{sys.spacing.xs}",
+  "padding": "{sys.spacing.md}",
+  "color": "{sys.palette.onSurface}",
+  "color-opacity": "{sys.opacity.surface.medium}",
+  "background-color": "{sys.palette.surface}",
+  "background-opacity": "{sys.opacity.primary.high}",
+  "gradient": "{sys.palette.primary}",
+  "gradient-opacity": "0",
+  "backdrop-filter": "{sys.blur.md}",
+  "border-width": "{sys.spacing.2px}",
+  "border-color": "{sys.palette.outline}",
+  "border-opacity": "{sys.opacity.outline}",
+  "border-radius": "{sys.rounded.lg}",
+  "#label": {
+    "link|font": "{font.titleMedium}"
+  },
+  "#description": {
+    "link|font": "{font.bodySmall}"
+  },
+  "disabled": {
+    "color-opacity": "{sys.opacity.surface.disabled}",
+    "border-opacity": "calc({sys.opacity.outline} * {sys.opacity.surface.disabled})"
+  },
+  "~enter": {
+    "palette-border": "{sys.palette.primary}",
+    "border-opacity": "{sys.opacity.primary.high}",
+    "gradient-opacity": "{sys.opacity.dragged}"
+  }
+}

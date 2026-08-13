@@ -8,6 +8,7 @@ export type TextIndex = 'cancel'
   | 'close'
   | 'copiedClipboard'
   | 'decrement'
+  | 'dropzone'
   | 'entriesMatch'
   | 'first'
   | 'hide'
@@ -71,6 +72,12 @@ export type TextCopiedClipboardPropsInclude = {
 export type TextDecrementPropsInclude = {
   /** Text for decreasing value/ Текст для уменьшения значения */
   textDecrement?: TextValue
+}
+
+/** Interface for including dropzone text/ Интерфейс для включения текста области загрузки */
+export type TextDropzonePropsInclude = {
+  /** Dropzone text/ Текст области загрузки */
+  textDropzone?: TextValue
 }
 
 /** Interface for including entries match text/ Интерфейс для включения текста совпадения записей */
@@ -189,6 +196,7 @@ export type TextAllPropsInclude = TextBreadcrumbPropsInclude
   & TextClosePropsInclude
   & TextCopiedClipboardPropsInclude
   & TextDecrementPropsInclude
+  & TextDropzonePropsInclude
   & TextEntriesMatchPropsInclude
   & TextFirstPropsInclude
   & TextHidePropsInclude

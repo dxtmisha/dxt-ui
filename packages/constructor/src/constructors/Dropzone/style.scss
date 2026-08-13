@@ -1,0 +1,28 @@
+@use "@dxtmisha/styles/properties" as ui;
+
+@mixin mixinDropzone {
+  @include ui.absolute;
+  @include ui.flexY;
+  justify-content: center;
+  z-index: 8;
+
+  border-style: dashed;
+
+  transition-property: background-color, border-color;
+  transition-duration: ui.v('d.sys.transitionDuration.standard');
+  transition-timing-function: ui.v('d.sys.transitionFunction.standard');
+
+  &--disabled {
+    pointer-events: none;
+  }
+
+  @include ui.subclass('input') {
+    position: absolute;
+    visibility: hidden;
+
+    width: 0;
+    height: 0;
+    opacity: 0;
+    pointer-events: none;
+  }
+}

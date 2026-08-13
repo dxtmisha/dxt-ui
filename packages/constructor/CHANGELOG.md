@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.109.0] - 2026-08-14
+
+### Added
+- **Dropzone Constructor**:
+  - Introduced `Dropzone` component logic constructor (`src/constructors/Dropzone/`) supporting drag-and-drop file upload, file selection, and custom drag states.
+  - Added export entrypoint `./Dropzone` in `package.json` and registered `@forward "../constructors/Dropzone/style"` in SCSS entry.
+  - Generated AI type definitions under `ai-types-list/constructors/Dropzone/` and `ai-types-list/library/dropzone.d.ts`.
+- **Model Files Binding Types**: Added `ModelPropsFiles` (`modelFiles`, `onUpdate:files`, `onUpdate:modelFiles`) and `ModelEmitsFiles` (`update:files`, `update:modelFiles`) in `modelTypes.ts` for file `v-model` integration.
+- **TextDropzone Property Inclusion**: Added `TextDropzonePropsInclude` (`textDropzone`) interface in `textTypes.ts` and default string fallback in `TextIncludeInstance` and `TextInclude`.
+
+### Changed
+- **AI Workspace Memory**: Added directives for automatic subclass generation via `properties.json` and script execution constraints to `ai-memory.md`.
+
 ## [0.108.0] - 2026-08-13
 
 ### Added

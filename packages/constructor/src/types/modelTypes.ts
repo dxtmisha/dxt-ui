@@ -10,6 +10,17 @@ export type ModelEmits<Value = string> = {
 }
 
 /**
+ * Event signatures for model files updates/
+ * Сигнатуры событий для обновления файлов модели
+ */
+export type ModelEmitsFiles<Value = FileList | undefined> = {
+  /** Update files event/ Событие обновления файлов */
+  'update:files': [value: Value]
+  /** Update model files event/ Событие обновления файлов модели */
+  'update:modelFiles': [value: Value]
+}
+
+/**
  * Event signatures for model open updates/
  * Сигнатуры событий для обновления открытия модели
  */
@@ -42,6 +53,19 @@ export type ModelProps<Value = string> = {
   'onUpdate:value'?: (value: Value) => void
   /** Update model value handler/ Обработчик обновления значения модели */
   'onUpdate:modelValue'?: (value: Value) => void
+}
+
+/**
+ * Props for model files used with v-model/
+ * Свойства для файлов модели, используемых с v-model
+ */
+export type ModelPropsFiles<Value = FileList | undefined> = {
+  /** Model files prop/ Свойство файлов модели */
+  'modelFiles'?: Value
+  /** Update files handler/ Обработчик обновления файлов */
+  'onUpdate:files'?: (value: Value) => void
+  /** Update model files handler/ Обработчик обновления файлов модели */
+  'onUpdate:modelFiles'?: (value: Value) => void
 }
 
 /**

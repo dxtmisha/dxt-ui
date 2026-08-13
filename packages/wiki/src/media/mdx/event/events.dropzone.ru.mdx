@@ -1,0 +1,26 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+### `drop`
+
+Событие срабатывает при сбросе файлов в область перетаскивания или при их выборе через стандартный диалог.
+
+**Параметры:**
+- `event: DropzoneEventParameters` — объект, содержащий выбранные или перетащенные файлы
+
+**Структура DropzoneEventParameters:**
+- `files: FileList | undefined` — список выбранных или перетащенных файлов
+
+<Source
+    code={`
+<script setup>
+const handleDrop = (event) => {
+  console.log('Выбранные файлы:', event.files)
+}
+</script>
+
+<template>
+  <Dropzone @drop="handleDrop" />
+</template>
+  `}
+    language="html"
+/>

@@ -197,6 +197,17 @@ export const wikiTechnical: StorybookArgsToList = {
     },
     hide: true
   },
+  modelFiles: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.technical,
+      description: {
+        en: 'Two-way binding for selected/dropped files (v-model:files)',
+        ru: 'Двусторонняя привязка для выбранных/перетащенных файлов (v-model:files)'
+      }
+    },
+    hide: true
+  },
   modelRows: {
     type: StorybookControl.string,
     options: {

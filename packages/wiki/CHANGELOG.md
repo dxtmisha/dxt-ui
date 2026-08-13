@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.109.0] - 2026-08-14
+
+### Added
+- **D1Dropzone MDX & Wiki Documentation**:
+  - Registered component descriptions in `wikiDescriptionsDropzone.ts` and main registry `wikiDescriptions.ts`.
+  - Created MDX documentation pages in `src/media/mdx/Dropzone/` (`wikiMdxDropzone.ts`) and registered in `wikiMdx.ts`.
+  - Added MDX event documentation for dropzone events (`events.dropzone.en.mdx` / `events.dropzone.ru.mdx`) and expose methods (`expose.open.en.mdx` / `expose.open.ru.mdx`).
+- **Property Wiki Definitions**:
+  - Added `accept` file filter property definition in `wikiForm.ts`.
+  - Added `onUpdate:files` and `onUpdate:modelFiles` hook descriptions in `wikiHook.ts`.
+  - Added `modelFiles` technical prop description in `wikiTechnical.ts`.
+  - Added `textDropzone` text prop description in `wikiText.ts`.
+  - Added `files` value prop description in `wikiValue.ts`.
+
 ## [0.108.0] - 2026-08-13
 
 ### Added

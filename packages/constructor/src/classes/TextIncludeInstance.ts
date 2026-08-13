@@ -17,6 +17,7 @@ export class TextIncludeInstance {
     close: 'Close',
     copiedClipboard: 'Copied to the clipboard',
     decrement: 'Decrease',
+    dropzone: 'Drop files here or click to upload',
     entriesMatch: 'Entries do not match',
     first: 'First',
     hide: 'Hide',
