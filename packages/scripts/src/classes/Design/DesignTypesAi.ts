@@ -1,3 +1,4 @@
+import { getPackageJson } from '../../functions/getPackageJson'
 import { useAi } from '../../composables/useAi'
 
 /**
@@ -6,6 +7,9 @@ import { useAi } from '../../composables/useAi'
  * Класс для низкоуровневого взаимодействия с ИИ, конфигурации директории и выполнения промптов.
  */
 export class DesignTypesAi {
+  /** Cached project name / Кэшированное название проекта */
+  protected projectName: string
+
   /** Array of directory path segments / Массив сегментов пути директории */
   protected readonly dirArray: string[]
 
@@ -21,6 +25,7 @@ export class DesignTypesAi {
     protected readonly isRaw: boolean = false
   ) {
     this.dirArray = this.dir.split('/')
+    this.projectName = getPackageJson()?.name ?? 'none'
   }
 
   /**
@@ -31,6 +36,16 @@ export class DesignTypesAi {
    */
   getDirArray(): string[] {
     return this.dirArray
+  }
+
+  /**
+   * Returns the project name from package.json.
+   *
+   * Возвращает название проекта из package.json.
+   * @returns project name or 'none' / название проекта или 'none'
+   */
+  getProjectName(): string {
+    return this.projectName
   }
 
   /**
@@ -67,6 +82,34 @@ export class DesignTypesAi {
 
       if (generate) {
         return generate
+      }
+    }
+
+    return undefined
+  }
+
+  /**
+   * Sends content and a prompt to the AI for processing and parses the resulting JSON response.
+   *
+   * Отправляет контент и промпт ИИ для обработки и парсит полученный JSON-ответ.
+   * @param content content for processing / контент для обработки
+   * @param prompt instructions for the AI / инструкции для ИИ
+   * @param code code to optimize / код для оптимизации
+   * @returns parsed JSON object or undefined / распарсенный JSON объект или undefined
+   */
+  async toAiJson<T>(
+    content: string,
+    prompt: string,
+    code?: string
+  ): Promise<T | undefined> {
+    const generate = await this.toAi(content, prompt, code)
+
+    if (generate) {
+      try {
+        const cleaned = generate.replace(/```json|```/g, '').trim()
+        return JSON.parse(cleaned) as T
+      } catch {
+        return undefined
       }
     }
 

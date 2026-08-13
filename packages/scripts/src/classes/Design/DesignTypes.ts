@@ -1,5 +1,4 @@
 import { ServerStorage } from '@dxtmisha/functional-basic'
-import { getPackageJson } from '../../functions/getPackageJson'
 
 import { PropertiesFile } from '../Properties/PropertiesFile'
 import { DesignTypesAi } from './DesignTypesAi'
@@ -21,6 +20,9 @@ export class DesignTypes {
   /** Instance of DesignTypesAi for AI interactions / Экземпляр DesignTypesAi для ИИ взаимодействия */
   protected readonly ai: DesignTypesAi
 
+  /** Instance of DesignTypesMake for declaration file processing / Экземпляр DesignTypesMake для обработки файлов деклараций */
+  protected readonly makeTypes: DesignTypesMake
+
   /** Instance of DesignTypesPrompts for prompt file processing / Экземпляр DesignTypesPrompts для обработки файлов промптов */
   protected readonly prompts: DesignTypesPrompts
 
@@ -38,7 +40,9 @@ export class DesignTypes {
     protected readonly isRaw: boolean = false
   ) {
     ServerStorage.setErrorStatus(true)
+
     this.ai = new DesignTypesAi(this.dir, this.isRaw)
+    this.makeTypes = new DesignTypesMake(this.ai)
     this.prompts = new DesignTypesPrompts(this.promptsDir, this.ai)
   }
 
@@ -51,18 +55,18 @@ export class DesignTypes {
   async make(): Promise<this> {
     console.log('DesignTypes: making AI types...')
 
-    const makeTypes = await new DesignTypesMake(this.ai).make()
+    await this.makeTypes.make()
 
     let fullDescription = ''
     let mcpPrompts: DesignMcpResources | undefined
 
     if (!this.isRaw) {
-      const fullContent = makeTypes.getFullContent()
-      const fullJsContent = makeTypes.getFullJsContent()
+      const fullContent = this.makeTypes.getFullContent()
+      const fullJsContent = this.makeTypes.getFullJsContent()
       const aiDescription = await this.toAiDescription(fullContent, fullJsContent)
 
       const promptList = this.prompts.getListPrompts()
-      const promptsText = await this.prompts.toAiPrompts(this.getProjectName())
+      const promptsText = await this.prompts.toAiPrompts()
 
       fullDescription = `${aiDescription}\n${promptsText}`
 
@@ -87,18 +91,6 @@ export class DesignTypes {
     console.log('DesignTypes: AI types saved.')
 
     return this
-  }
-
-
-
-  /**
-   * Returns the project name from package.json.
-   *
-   * Возвращает название проекта из package.json.
-   * @returns project name or 'none' / название проекта или 'none'
-   */
-  protected getProjectName(): string {
-    return getPackageJson()?.name ?? 'none'
   }
 
   /**
@@ -165,7 +157,7 @@ export class DesignTypes {
    * @returns object with resources array or undefined / объект со массивом ресурсов или undefined
    */
   protected async toAiMcpPrompts(list: DesignTypesList): Promise<DesignMcpResources | undefined> {
-    const projectName = this.getProjectName()
+    const projectName = this.ai.getProjectName()
     const resources: DesignMcpResourceItem[] = []
 
     for (const item of list) {
@@ -200,7 +192,7 @@ export class DesignTypes {
    * @returns resource metadata object or undefined / объект метаданных ресурса или undefined
    */
   protected async toAiMcpResources(content: string, file?: string): Promise<Partial<DesignMcpResourceItem> | undefined> {
-    const generate = await this.ai.toAi(
+    return this.ai.toAiJson<Partial<DesignMcpResourceItem>>(
       content,
       (file ? `File Name: ${file}\n\n` : '')
       + 'Goal: Generate an MCP (Model Context Protocol) server resource metadata object in valid JSON format for this prompt document.\n\n'
@@ -220,16 +212,5 @@ export class DesignTypes {
       + 'OUTPUT REQUIREMENTS:\n'
       + 'Return ONLY the JSON object. No explanations, no markdown formatting, no conversational text.'
     )
-
-    if (generate) {
-      try {
-        const cleaned = generate.replace(/```json|```/g, '').trim()
-        return JSON.parse(cleaned)
-      } catch {
-        return undefined
-      }
-    }
-
-    return undefined
   }
 }

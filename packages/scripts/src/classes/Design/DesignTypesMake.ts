@@ -37,9 +37,9 @@ export class DesignTypesMake {
   ) { }
 
   /**
-   * Reads processed type definition files, combines them into a single string, and cleans the content, using cached result if available.
+   * Reads processed type definition files, combines them into a single string, and cleans the content.
    *
-   * Читает обработанные файлы определений типов, объединяет их в одну строку и очищает контент, используя кэшированный результат при наличии.
+   * Читает обработанные файлы определений типов, объединяет их в одну строку и очищает контент.
    * @returns combined and cleaned full type definitions content / объединенное и очищенное содержимое полных определений типов
    */
   getFullContent(): string {
@@ -54,9 +54,9 @@ export class DesignTypesMake {
   }
 
   /**
-   * Gets the combined JS content for all filtered JavaScript files, using cached result if available.
+   * Gets the combined JS content for all filtered JavaScript files.
    *
-   * Получает объединенный JS контент для всех отфильтрованных JavaScript файлов, используя кэшированный результат при наличии.
+   * Получает объединенный JS контент для всех отфильтрованных JavaScript файлов.
    * @returns combined JS content string / строка объединенного JS контента
    */
   getFullJsContent(): string {
@@ -196,9 +196,9 @@ export class DesignTypesMake {
   }
 
   /**
-   * Gets a list of files filtered by criteria, using cached result if available.
+   * Gets a list of files filtered by criteria.
    *
-   * Получает список файлов, отфильтрованный по критериям, используя кэшированный результат при наличии.
+   * Получает список файлов, отфильтрованный по критериям.
    * @returns list of filtered type definition files / список отфильтрованных файлов определений типов
    */
   protected getListByFilter(): DesignTypesList {
@@ -210,9 +210,9 @@ export class DesignTypesMake {
   }
 
   /**
-   * Gets a list of JS files filtered by criteria, using cached result if available.
+   * Gets a list of JS files filtered by criteria.
    *
-   * Получает список JS файлов, отфильтрованный по критериям, используя кэшированный результат при наличии.
+   * Получает список JS файлов, отфильтрованный по критериям.
    * @returns list of filtered JavaScript files / список отфильтрованных JavaScript файлов
    */
   protected getListByFilterJs(): DesignTypesList {
@@ -368,7 +368,12 @@ export class DesignTypesMake {
     files: DesignTypesList,
     fullJsContent: string
   ): Promise<void> {
-    for (const item of files) {
+    const total = files.length
+
+    for (let index = 0; index < total; index += 1) {
+      const item = files[index]
+      console.log(`-- processing AI types [${index + 1}/${total}] for ${item.path}...`)
+
       const aiContent = await this.toAiEdit(item.content, fullJsContent)
 
       this.saveFile(

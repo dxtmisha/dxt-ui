@@ -120,6 +120,37 @@ export type DesignTypesItem = {
 /** List of design types items / Список элементов типов дизайна */
 export type DesignTypesList = DesignTypesItem[]
 
+/** Design types prompt cache item / Элемент кэша промпта типов дизайна */
+export type DesignTypesPromptCacheItem = {
+  /** Relative file path / Относительный путь к файлу */
+  path: string
+  /** MD5 hash string / Строка MD5 хэша */
+  md5: string
+  /** Document title / Название документа */
+  name: string
+  /** Document description / Описание документа */
+  description: string
+}
+
+/** List of design types prompt cache items / Список элементов кэша промптов типов дизайна */
+export type DesignTypesPromptCacheList = DesignTypesPromptCacheItem[]
+
+/** Design types prompt data item / Элемент данных промпта типов дизайна */
+export type DesignTypesPromptData = {
+  /** Document title / Название документа */
+  name?: string
+  /** Document description / Описание документа */
+  description?: string
+}
+
+/** Design types prompt item result / Результат обработки элемента промпта типов дизайна */
+export type DesignTypesPromptResult = {
+  /** Formatted prompt rule string / Отформатированная строка правила промпта */
+  prompt?: string
+  /** Flag indicating whether the cache was changed / Флаг указывающий был ли изменен кэш */
+  isChanged: boolean
+}
+
 /** Design MCP resource item / Элемент ресурса MCP дизайна */
 export type DesignMcpResourceItem = {
   /** Resource URI / URI ресурса */
