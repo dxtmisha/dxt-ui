@@ -1,1 +1,10 @@
-This library provides client-side functionality for programmatically constructing, managing, and downloading compressed ZIP archives. It wraps low-level compression logic into an object-oriented interface to manage in-memory file buffers and trigger browser-based file downloads. Main functional groupings include archive lifecycle controls, which handle archive initialization, file staging, file removal, data normalization, and browser download triggers, alongside compression utilities that perform DEFLATE encoding, CRC32 calculations, and string-to-binary conversions. Studying ai-types.md is mandatory when fine-tuning archive compression options, working with direct byte array getters, handling custom data conversion methods, or extending ZIP configuration parameters in TypeScript projects. The library integrates with web runtime environments by leveraging DOM utilities from functional-basic to perform automated anchor-click file saving.
+Package Description:
+This package provides a lightweight utility class for creating, managing, and downloading ZIP archives directly in browser environments.
+
+Triggers for Studying ai-types.md:
+An AI assistant must study "ai-types.md" when implementing functionality related to ZIP archive generation, file compression configuration, archive management, or browser-based file downloads.
+
+Key Capabilities:
+- Archive Creation
+- File Management
+- Browser Download

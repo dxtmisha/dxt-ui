@@ -1,14 +1,14 @@
 [
   {
     "uri": "@dxtmisha/zip/ai-types.md",
-    "name": "ZIP Archive Interface (@dxtmisha/zip)",
+    "name": "Type Definitions (@dxtmisha/zip)",
     "mimeType": "text/markdown",
-    "description": "TypeScript type declarations and API reference for managing, compiling, and downloading browser-based ZIP archives using fflate."
+    "description": "TypeScript type definitions and signatures for AI coding assistant."
   },
   {
     "uri": "@dxtmisha/zip/ai-description.md",
-    "name": "ZIP Archive Manager (@dxtmisha/zip)",
+    "name": "Project Overview (@dxtmisha/zip)",
     "mimeType": "text/markdown",
-    "description": "Comprehensive technical guidelines and API overview for client-side ZIP archive creation, in-memory buffer management, compression utilities, and automated browser file downloads."
+    "description": "Project overview, usage guidelines, and mandatory prompt rules for AI coding assistant."
   }
 ]
