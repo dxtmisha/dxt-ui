@@ -54,7 +54,7 @@
     "test": "vitest",
     "constructor": "dxt-constructor",
     "library": "dxt-library",
-    "types": "dxt-types",
+    "types": "npm run prepublishOnly && dxt-types",
     "prepublishOnly": "npm run library && npm run constructor && npm run build",
     "publish-to-npm": "npm publish --access public"
   },

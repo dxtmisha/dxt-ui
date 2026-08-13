@@ -1,0 +1,17 @@
+// md5:d080332393a29613ab5be70e9da41843
+import { BlockProps } from '../Block';
+type PageAreaPropsToken = {};
+export type PageAreaPropsBasic = BlockProps;
+/**
+ * Type describing incoming properties.
+ *
+ * Тип, описывающий входящие свойства.
+ */
+export type PageAreaProps = PageAreaPropsBasic & PageAreaPropsToken;
+/**
+ * Default value for property.
+ *
+ * Значение по умолчанию для свойства.
+ */
+export declare const defaultsPageArea: {};
+export {};

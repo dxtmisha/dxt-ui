@@ -1,0 +1,73 @@
+// md5:741bf3471af4cf38477aab08789dac53
+import { ConstrClass } from '@dxtmisha/functional';
+import { EventClickEmits, EventClickValue } from '../../types/eventClickTypes';
+import { ModelEmits } from '../../types/modelTypes';
+import { ButtonComponentInclude } from '../Button';
+import { MenuComponentInclude } from '../Menu';
+/**
+ * Interface for describing which components need to be connected for work.
+ *
+ * Интерфейс для описания, какие компоненты надо подключить для работы.
+ */
+export type PaginationComponents = ButtonComponentInclude & MenuComponentInclude;
+/**
+ * Type describing available events.
+ *
+ * Тип, описывающий доступные события.
+ */
+export type PaginationEmits = EventClickEmits & ModelEmits<number> & {
+    'update:rows': [value: number];
+    'update:modelRows': [value: number];
+    'more': [
+        event: MouseEvent,
+        options?: EventClickValue
+    ];
+    'moreLite': [options?: EventClickValue];
+    'morePrev': [
+        event: MouseEvent,
+        options?: EventClickValue
+    ];
+    'morePrevLite': [options?: EventClickValue];
+    'rows': [
+        event: MouseEvent,
+        options?: EventClickValue
+    ];
+    'rowsLite': [options?: EventClickValue];
+};
+/**
+ * Type describing available properties.
+ *
+ * Тип, описывающий доступные свойства.
+ */
+export interface PaginationExpose {
+}
+/**
+ * Type describing available slots.
+ *
+ * Тип, описывающий доступные слоты.
+ */
+export interface PaginationSlots {
+    /** Slot at the very beginning of the component / Слот в самом начале компонента */
+    leading?(): any;
+    /** Slot in the middle before the spacer / Слот в середине перед разделителем (spacer) */
+    info?(): any;
+    /** Slot at the very end of the component / Слот в самом конце компонента */
+    trailing?(): any;
+}
+/**
+ * Type describing subclasses.
+ *
+ * Тип, описывающий подклассы.
+ */
+export type PaginationClasses = {
+    main: ConstrClass;
+    button: string;
+    navigation: string;
+    more: string;
+    morePrev: string;
+    info: string;
+    menuRows: string;
+    menuRowsLabel: string;
+    ellipsis: string;
+    spacer: string;
+};

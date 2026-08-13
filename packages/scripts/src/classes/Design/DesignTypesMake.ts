@@ -141,6 +141,16 @@ export class DesignTypesMake {
   }
 
   /**
+   * Checks if the content contains JSDoc comments.
+   *
+   * Проверяет, содержит ли контент JSDoc комментарии.
+   * @param content file content / содержимое файла
+   */
+  protected hasJSDoc(content: string): boolean {
+    return content.includes('/**')
+  }
+
+  /**
    * Reads the directory recursively.
    *
    * Читает директорию рекурсивно.
@@ -376,7 +386,10 @@ export class DesignTypesMake {
 
       if (isFilled(content)) {
         console.log(`-- processing AI types [${index + 1}/${total}] for ${item.path}...`)
-        content = await this.toAiEdit(content, fullJsContent)
+        content = await this.toAiEdit(
+          content,
+          this.hasJSDoc(content) ? '' : fullJsContent
+        )
       }
 
       this.saveFile(
