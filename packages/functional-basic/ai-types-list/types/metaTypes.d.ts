@@ -1,587 +1,370 @@
-// md5:fa7d3afc8eab015d6dd3385b86686619
-/**
- * Standard HTML meta tags/
- * Стандартные HTML мета-теги
- * @enum {string}
- */
+// md5:9bd29ee7d6803ff83ff2c6366c22f51f true
+/** Standard HTML meta tags @keywords meta_tag title description keywords robots author */
 export declare enum MetaTag {
-    /** Page title/ Заголовок страницы */
+    /** Page title */
     title = "title",
-    /** Page description/ Описание страницы */
+    /** Page description */
     description = "description",
-    /** Keywords/ Ключевые слова */
+    /** Keywords */
     keywords = "keywords",
-    /** Canonical URL/ Канонический URL */
+    /** Canonical URL */
     canonical = "canonical",
-    /** Search engine instructions/ Инструкции для поисковиков */
+    /** Search engine instructions */
     robots = "robots",
-    /** Content author/ Автор контента */
+    /** Content author */
     author = "author"
 }
+
+/** Search engine crawler directives @keywords robots_directive index follow archive snippet */
 export declare enum MetaRobots {
-    /**
-     * Allow indexing and following links (default)/
-     * Разрешает индексировать страницу и переходить по ссылкам (по умолчанию)
-     */
+    /** Allow indexing and following links */
     indexFollow = "index, follow",
-    /**
-     * Do not index the page, but follow its links/
-     * Не индексировать страницу, но переходить по ссылкам
-     */
+    /** Do not index the page, but follow its links */
     noIndexFollow = "noindex, follow",
-    /**
-     * Index the page, but do not follow its links/
-     * Индексировать страницу, но не переходить по ссылкам
-     */
+    /** Index the page, but do not follow its links */
     indexNoFollow = "index, nofollow",
-    /**
-     * Do not index the page and do not follow its links/
-     * Не индексировать страницу и не переходить по ссылкам
-     */
+    /** Do not index the page and do not follow its links */
     noIndexNoFollow = "noindex, nofollow",
-    /** Prevent caching of the page/ Запрещает кэширование страницы */
+    /** Prevent caching of the page */
     noArchive = "noarchive",
-    /**
-     * Do not show a snippet or description in search results/
-     * Не показывать сниппет (описание) в результатах поиска
-     */
+    /** Do not show a snippet or description in search results */
     noSnippet = "nosnippet",
-    /**
-     * Do not display image preview in search results/
-     * Не показывать превью изображений в результатах поиска
-     */
+    /** Do not display image preview in search results */
     noImageIndex = "noimageindex",
-    /** Allow indexing images only/ Разрешить индексировать только изображения */
+    /** Allow indexing images only */
     images = "images",
-    /**
-     * Do not show cached version or translation link/
-     * Не показывать кэш и ссылку "Перевести" в результатах
-     */
+    /** Do not show cached version or translation link */
     noTranslate = "notranslate",
-    /**
-     * Prevent page being shown in "Preview" (Instant Preview)/
-     * Не показывать страницу в предпросмотре (Instant Preview)
-     */
+    /** Prevent page being shown in preview */
     noPreview = "nopreview",
-    /**
-     * Allow only text content indexing (no media)/
-     * Разрешить индексировать только текст, без медиа
-     */
+    /** Allow only text content indexing */
     textOnly = "textonly",
-    /**
-     * Do not index subpages or parameters/
-     * Не индексировать подстраницы или страницы с параметрами
-     */
+    /** Do not index subpages or parameters */
     noIndexSubpages = "noindex, noarchive",
-    /**
-     * Use meta directives from HTTP headers (advanced)/
-     * Использовать директивы из HTTP-заголовков (расширенная настройка)
-     */
+    /** Use meta directives from HTTP headers */
     none = "none"
 }
-/**
- * Enumeration of Open Graph tags for metadata/
- * Перечисление Open Graph тegов для мета-данных
- * @enum {string}
- */
+
+/** Open Graph metadata tags @keywords open_graph og_tag social_meta */
 export declare enum MetaOpenGraphTag {
-    /** Page title/ Заголовок страницы */
+    /** Page title */
     title = "og:title",
-    /**
-     * Content type (website, article, product, video, profile, etc.)/
-     * Тип контента (website, article, product, video, profile и т.д.)
-     */
+    /** Content type */
     type = "og:type",
-    /** Canonical URL of the page/ Канонический URL страницы */
+    /** Canonical URL of the page */
     url = "og:url",
-    /** Preview image URL/ Ссылка на изображение для предпросмотра */
+    /** Preview image URL */
     image = "og:image",
-    /**
-     * Brief page description (up to ~200 characters)/
-     * Краткое описание страницы (до ~200 символов)
-     */
+    /** Brief page description */
     description = "og:description",
-    /**
-     * Page language (e.g., ru_RU, en_US)/
-     * Язык страницы (например: ru_RU, en_US)
-     */
+    /** Page language */
     locale = "og:locale",
-    /** Site name/ Название сайта */
+    /** Site name */
     siteName = "og:site_name",
-    /**
-     * Alternative language versions (for multilingual sites)/
-     * Альтернативные языковые версии (для мультиязычных сайтов)
-     */
+    /** Alternative language versions */
     localeAlternate = "og:locale:alternate",
-    /**
-     * Alternative form of og:image/
-     * Альтернативная форма записи og:image
-     */
+    /** Alternative form of image */
     imageUrl = "og:image:url",
-    /** HTTPS version of the image/ HTTPS-версия изображения */
+    /** HTTPS version of the image */
     imageSecureUrl = "og:image:secure_url",
-    /**
-     * Image MIME type (image/jpeg, image/png)/
-     * MIME-тип изображения (image/jpeg, image/png)
-     */
+    /** Image MIME type */
     imageType = "og:image:type",
-    /** Image width in pixels/ Ширина изображения в пикселях */
+    /** Image width in pixels */
     imageWidth = "og:image:width",
-    /** Image height in pixels/ Высота изображения в пикселях */
+    /** Image height in pixels */
     imageHeight = "og:image:height",
-    /**
-     * Alternative image text (for accessibility)/
-     * Альтернативный текст изображения (для доступности)
-     */
+    /** Alternative image text */
     imageAlt = "og:image:alt",
-    /** Video URL/ Ссылка на видео */
+    /** Video URL */
     video = "og:video",
-    /** Alternative video URL/ Альтернативная ссылка на видео */
+    /** Alternative video URL */
     videoUrl = "og:video:url",
-    /** HTTPS version of video/ HTTPS-версия видео */
+    /** HTTPS version of video */
     videoSecureUrl = "og:video:secure_url",
-    /**
-     * Video MIME type (video/mp4, video/webm)/
-     * MIME-тип видео (video/mp4, video/webm)
-     */
+    /** Video MIME type */
     videoType = "og:video:type",
-    /** Video width/ Ширина видео */
+    /** Video width */
     videoWidth = "og:video:width",
-    /** Video height/ Высота видео */
+    /** Video height */
     videoHeight = "og:video:height",
-    /** Audio file URL/ Ссылка на аудиофайл */
+    /** Audio file URL */
     audio = "og:audio",
-    /** HTTPS version of audio/ HTTPS-версия аудио */
+    /** HTTPS version of audio */
     audioSecureUrl = "og:audio:secure_url",
-    /** Audio MIME type (audio/mpeg)/ MIME-тип аудио (audio/mpeg) */
+    /** Audio MIME type */
     audioType = "og:audio:type",
-    /** Publication date/ Дата публикации */
+    /** Publication date */
     articlePublishedTime = "article:published_time",
-    /** Last update date/ Дата последнего обновления */
+    /** Last update date */
     articleModifiedTime = "article:modified_time",
-    /** Expiration date (if any)/ Дата устаревания (если есть) */
+    /** Expiration date */
     articleExpirationTime = "article:expiration_time",
-    /** Author (URL or name)/ Автор (URL или имя) */
+    /** Author */
     articleAuthor = "article:author",
-    /** Article category/ Категория статьи */
+    /** Article category */
     articleSection = "article:section",
-    /** Tags / keywords/ Теги / ключевые слова */
+    /** Tags or keywords */
     articleTag = "article:tag",
-    /** Book author/ Автор книги */
+    /** Book author */
     bookAuthor = "book:author",
-    /** Book ISBN/ ISBN книги */
+    /** Book ISBN */
     bookIsbn = "book:isbn",
-    /** Book publication date/ Дата публикации книги */
+    /** Book publication date */
     bookReleaseDate = "book:release_date",
-    /** Topics / tags/ Темы / теги */
+    /** Topics or tags */
     bookTag = "book:tag",
-    /**
-     * Track duration (in seconds)/
-     * Длительность трека (в секундах)
-     */
+    /** Track duration in seconds */
     musicDuration = "music:duration",
-    /** Album URL/ Ссылка на альбом */
+    /** Album URL */
     musicAlbum = "music:album",
-    /** Disc number/ Номер диска */
+    /** Disc number */
     musicAlbumDisc = "music:album:disc",
-    /** Track number in album/ Номер трека в альбоме */
+    /** Track number in album */
     musicAlbumTrack = "music:album:track",
-    /** Musician/ Исполнитель */
+    /** Musician */
     musicMusician = "music:musician",
-    /** Song URL/ Ссылка на песню */
+    /** Song URL */
     musicSong = "music:song",
-    /**
-     * Disc number where the song is/
-     * Номер диска, на котором песня
-     */
+    /** Disc number where the song is */
     musicSongDisc = "music:song:disc",
-    /** Track number in song/ Номер трека в песне */
+    /** Track number in song */
     musicSongTrack = "music:song:track",
-    /** Release date/ Дата релиза */
+    /** Release date */
     musicReleaseDate = "music:release_date",
-    /** Content creator/ Создатель контента */
+    /** Content creator */
     musicCreator = "music:creator",
-    /** Actor/ Актёр */
+    /** Actor */
     videoActor = "video:actor",
-    /** Actor's role/ Роль актёра */
+    /** Actor's role */
     videoActorRole = "video:actor:role",
-    /** Director/ Режиссёр */
+    /** Director */
     videoDirector = "video:director",
-    /** Screenwriter/ Сценарист */
+    /** Screenwriter */
     videoWriter = "video:writer",
-    /**
-     * Video duration (in seconds)/
-     * Длительность видео (в секундах)
-     */
+    /** Video duration in seconds */
     videoDuration = "video:duration",
-    /** Video release date/ Дата выхода видео */
+    /** Video release date */
     videoReleaseDate = "video:release_date",
-    /** Tags / topics/ Теги / темы видео */
+    /** Tags or topics */
     videoTag = "video:tag",
-    /**
-     * Series to which the episode belongs/
-     * Сериал, к которому относится эпизод
-     */
+    /** Series to which the episode belongs */
     videoSeries = "video:series",
-    /** First name/ Имя */
+    /** First name */
     profileFirstName = "profile:first_name",
-    /** Last name/ Фамилия */
+    /** Last name */
     profileLastName = "profile:last_name",
-    /** Username / login/ Имя пользователя / логин */
+    /** Username or login */
     profileUsername = "profile:username",
-    /** Gender (male / female)/ Пол (male / female) */
+    /** Gender */
     profileGender = "profile:gender",
-    /** Brand name/ Название бренда */
+    /** Brand name */
     productBrand = "product:brand",
-    /**
-     * Product availability (in stock / out of stock / preorder)/
-     * Наличие товара (in stock / out of stock / preorder)
-     */
+    /** Product availability */
     productAvailability = "product:availability",
-    /**
-     * Product condition (new / used / refurbished)/
-     * Состояние товара (new / used / refurbished)
-     */
+    /** Product condition */
     productCondition = "product:condition",
-    /** Price/ Цена */
+    /** Price amount */
     productPriceAmount = "product:price:amount",
-    /**
-     * Currency (USD, RUB, EUR, etc.)/
-     * Валюта (USD, RUB, EUR и т.д.)
-     */
+    /** Currency code */
     productPriceCurrency = "product:price:currency",
-    /** Internal product ID/ Внутренний ID товара */
+    /** Internal product ID */
     productRetailerItemId = "product:retailer_item_id",
-    /** Product category/ Категория товара */
+    /** Product category */
     productCategory = "product:category",
-    /** EAN code/ EAN код */
+    /** EAN code */
     productEan = "product:ean",
-    /** ISBN (if product is a book)/ ISBN (если товар — книга) */
+    /** ISBN if product is a book */
     productIsbn = "product:isbn",
-    /** Manufacturer part number/ Номер производителя */
+    /** Manufacturer part number */
     productMfrPartNo = "product:mfr_part_no",
-    /** UPC code/ UPC код */
+    /** UPC code */
     productUpc = "product:upc",
-    /** Weight (value)/ Вес (значение) */
+    /** Weight value */
     productWeightValue = "product:weight:value",
-    /**
-     * Weight (units, e.g., kg)/
-     * Вес (единицы измерения, например: kg)
-     */
+    /** Weight units */
     productWeightUnits = "product:weight:units",
-    /** Product color/ Цвет товара */
+    /** Product color */
     productColor = "product:color",
-    /** Product material/ Материал товара */
+    /** Product material */
     productMaterial = "product:material",
-    /** Pattern / design/ Узор / дизайн */
+    /** Pattern or design */
     productPattern = "product:pattern",
-    /**
-     * Age group (adult, kids, baby)/
-     * Возрастная группа (adult, kids, baby)
-     */
+    /** Age group */
     productAgeGroup = "product:age_group",
-    /**
-     * Gender (for whom — male, female, unisex)/
-     * Пол (для кого — male, female, unisex)
-     */
+    /** Gender target */
     productGender = "product:gender"
 }
-/**
- * Possible content types for Open Graph (og:type)/
- * Возможные типы контента для Open Graph (og:type)
- */
+
+/** Open Graph content types @keywords og_type website article video product */
 export declare enum MetaOpenGraphType {
-    /**
-     * Regular web page or article/
-     * Обычная веб-страница или статья
-     */
+    /** Regular web page or article */
     website = "website",
-    /**
-     * News article, blog post, or other text material/
-     * Новостная статья, блог-пост или другой текстовый материал
-     */
+    /** News article or blog post */
     article = "article",
-    /**
-     * Video (e.g., clip, film, series, music video)/
-     * Видео (например, ролик, фильм, сериал, клип)
-     */
+    /** Video content */
     video = "video.other",
-    /** Entire TV series/ Сериал целиком */
+    /** Entire TV series */
     videoTvShow = "video.tv_show",
-    /**
-     * Specific TV series episode/
-     * Конкретный эпизод сериала
-     */
+    /** Specific TV series episode */
     videoEpisode = "video.episode",
-    /** Movie/ Фильм */
+    /** Movie */
     videoMovie = "video.movie",
-    /** Music album/ Музыкальный альбом */
+    /** Music album */
     musicAlbum = "music.album",
-    /** Music playlist/ Музыкальный плейлист */
+    /** Music playlist */
     musicPlaylist = "music.playlist",
-    /** Individual track (song)/ Отдельный трек (песня) */
+    /** Individual track or song */
     musicSong = "music.song",
-    /**
-     * Radio station or audio stream/
-     * Радиостанция или стрим аудио
-     */
+    /** Radio station or audio stream */
     musicRadioStation = "music.radio_station",
-    /**
-     * Application (web, mobile, or desktop)/
-     * Приложение (веб-, мобильное или десктопное)
-     */
+    /** Application */
     app = "app",
-    /**
-     * Product or item (e.g., in a store)/
-     * Продукт или товар (например, в магазине)
-     */
+    /** Product or item */
     product = "product",
-    /**
-     * Brand, company, organization/
-     * Бренд, компания, организация
-     */
+    /** Brand, company, or organization */
     business = "business.business",
-    /**
-     * Place (geolocation, point on a map)/
-     * Место (геолокация, точка на карте)
-     */
+    /** Place or geolocation */
     place = "place",
-    /**
-     * Event (event, meeting, concert, etc.)/
-     * Событие (ивент, встреча, концерт и т.п.)
-     */
+    /** Event or meeting */
     event = "event",
-    /**
-     * User profile (personal page, author, etc.)/
-     * Профиль пользователя (личная страница, автор и т.д.)
-     */
+    /** User profile */
     profile = "profile",
-    /** Book page/ Страница книги */
+    /** Book page */
     book = "book"
 }
-/**
- * Product availability states/
- * Состояния доступности товара
- */
+
+/** Product availability states @keywords availability stock preorder */
 export declare enum MetaOpenGraphAvailability {
-    /** In stock, available for purchase/ В наличии, доступен для покупки */
+    /** In stock and available */
     inStock = "in stock",
-    /** Out of stock, currently unavailable/ Нет в наличии, в настоящее время недоступен */
+    /** Out of stock */
     outOfStock = "out of stock",
-    /** Available for pre-order/ Доступен для предзаказа */
+    /** Available for pre-order */
     preorder = "preorder",
-    /**
-     * Backordered, temporarily out of stock/
-     * В ожидании поставки, временно отсутствует на складе
-     */
+    /** Backordered and temporarily out of stock */
     backorder = "backorder",
-    /** Discontinued, no longer available/ Снят с производства, больше не доступен */
+    /** Discontinued and no longer available */
     discontinued = "discontinued",
-    /**
-     * Pending availability status/
-     * Ожидается информация о доступности
-     */
+    /** Pending availability status */
     pending = "pending"
 }
-/**
- * Product condition states/
- * Состояния товара
- */
+
+/** Product condition states @keywords condition new used refurbished */
 export declare enum MetaOpenGraphCondition {
-    /** Brand new product, never used/ Новый товар, не использовался */
+    /** Brand new product */
     new = "new",
-    /** Used product, previously owned/ Подержанный, бывший в употреблении */
+    /** Used product */
     used = "used",
-    /**
-     * Refurbished / restored product/
-     * Восстановленный (ремонтированный, refurbished)
-     */
+    /** Refurbished product */
     refurbished = "refurbished"
 }
-/**
- * Age groups for products/
- * Возрастные группы для товаров
- */
+
+/** Product age groups @keywords age_group newborn infant toddler kids adult */
 export declare enum MetaOpenGraphAge {
-    /** For newborns (0–12 months)/ Для новорожденных (0–12 месяцев) */
+    /** For newborns */
     newborn = "newborn",
-    /** For infants (0–24 months)/ Для младенцев (0–24 месяцев) */
+    /** For infants */
     infant = "infant",
-    /** For toddlers (approximately 2–4 years)/ Для малышей (примерно 2–4 года) */
+    /** For toddlers */
     toddler = "toddler",
-    /** For kids (approximately 4–12 years)/ Для детей (примерно 4–12 лет) */
+    /** For kids */
     kids = "kids",
-    /** For adults/ Для взрослых */
+    /** For adults */
     adult = "adult"
 }
-/**
- * Gender categories for products/
- * Гендерные категории для товаров
- */
+
+/** Product gender categories @keywords gender female male unisex */
 export declare enum MetaOpenGraphGender {
-    /** For women/ Для женщин */
+    /** For women */
     female = "female",
-    /** For men/ Для мужчин */
+    /** For men */
     male = "male",
-    /** Universal / suitable for everyone/ Универсальное / подходит всем */
+    /** Universal for everyone */
     unisex = "unisex"
 }
-/**
- * Twitter Card meta-properties/
- * Мета теги Twitter Card
- */
+
+/** Twitter Card meta-properties @keywords twitter_tag card site creator */
 export declare enum MetaTwitterTag {
-    /**
-     * Type of card (summary, summary_large_image, app, player, product)/
-     * Тип карточки (summary, summary_large_image, app, player, product)
-     */
+    /** Type of card */
     card = "twitter:card",
-    /** Website or brand @username/ Аккаунт сайта или бренда (@username) */
+    /** Website or brand username */
     site = "twitter:site",
-    /** Content creator @username/ Автор контента (@username) */
+    /** Content creator username */
     creator = "twitter:creator",
-    /** Page URL/ URL страницы */
+    /** Page URL */
     url = "twitter:url",
-    /** Title of the card/ Заголовок карточки */
+    /** Title of the card */
     title = "twitter:title",
-    /** Short description of the card/ Краткое описание карточки */
+    /** Short description of the card */
     description = "twitter:description",
-    /** Main image for the card/ Основное изображение карточки */
+    /** Main image for the card */
     image = "twitter:image",
-    /**
-     * Alternative text for the image (for accessibility)/
-     * Альтернативный текст изображения (для доступности)
-     */
+    /** Alternative text for the image */
     imageAlt = "twitter:image:alt",
-    /**
-     * Alternative way to define image source/
-     * Альтернативный способ указания изображения
-     */
+    /** Alternative image source */
     imageSrc = "twitter:image:src",
-    /** Image width (optional)/ Ширина изображения (опционально) */
+    /** Image width */
     imageWidth = "twitter:image:width",
-    /** Image height (optional)/ Высота изображения (опционально) */
+    /** Image height */
     imageHeight = "twitter:image:height",
-    /**
-     * Custom label 1 (used in summary/product cards)/
-     * Пользовательская метка 1 (используется в summary/product карточках)
-     */
+    /** Custom label 1 */
     label1 = "twitter:label1",
-    /**
-     * Custom value 1 (used with label1)/
-     * Пользовательское значение 1 (используется с label1)
-     */
+    /** Custom value 1 */
     data1 = "twitter:data1",
-    /**
-     * Custom label 2 (used in summary/product cards)/
-     * Пользовательская метка 2 (используется в summary/product карточках)
-     */
+    /** Custom label 2 */
     label2 = "twitter:label2",
-    /**
-     * Custom value 2 (used with label2)/
-     * Пользовательское значение 2 (используется с label2)
-     */
+    /** Custom value 2 */
     data2 = "twitter:data2",
-    /** iPhone app name/ Название приложения для iPhone */
+    /** iPhone app name */
     appNameIphone = "twitter:app:name:iphone",
-    /**
-     * iPhone app ID (App Store ID)/
-     * Идентификатор приложения в App Store (iPhone)
-     */
+    /** iPhone app ID */
     appIdIphone = "twitter:app:id:iphone",
-    /** iPhone app URL (deep link)/ Ссылка на приложение iPhone (deep link) */
+    /** iPhone app URL */
     appUrlIphone = "twitter:app:url:iphone",
-    /** iPad app name/ Название приложения для iPad */
+    /** iPad app name */
     appNameIpad = "twitter:app:name:ipad",
-    /**
-     * iPad app ID (App Store ID)/
-     * Идентификатор приложения в App Store (iPad)
-     */
+    /** iPad app ID */
     appIdIpad = "twitter:app:id:ipad",
-    /** iPad app URL (deep link)/ Ссылка на приложение iPad (deep link) */
+    /** iPad app URL */
     appUrlIpad = "twitter:app:url:ipad",
-    /** Google Play app name/ Название приложения в Google Play */
+    /** Google Play app name */
     appNameGooglePlay = "twitter:app:name:googleplay",
-    /**
-     * Google Play app ID (package name)/
-     * Идентификатор приложения в Google Play (package name)
-     */
+    /** Google Play app ID */
     appIdGooglePlay = "twitter:app:id:googleplay",
-    /**
-     * Google Play app URL (deep link)/
-     * Ссылка на приложение в Google Play (deep link)
-     */
+    /** Google Play app URL */
     appUrlGooglePlay = "twitter:app:url:googleplay",
-    /** Player iframe URL/ URL iframe плеера */
+    /** Player iframe URL */
     player = "twitter:player",
-    /** Player width/ Ширина плеера */
+    /** Player width */
     playerWidth = "twitter:player:width",
-    /** Player height/ Высота плеера */
+    /** Player height */
     playerHeight = "twitter:player:height",
-    /**
-     * Direct media stream URL (video/audio)/
-     * Прямая ссылка на видео- или аудио поток
-     */
+    /** Direct media stream URL */
     playerStream = "twitter:player:stream",
-    /**
-     * MIME type of the media stream/
-     * MIME-тип потока (например, video/mp4)
-     */
+    /** MIME type of the media stream */
     playerStreamContentType = "twitter:player:stream:content_type"
 }
-/**
- * Twitter Card types/
- * Возможные значения для `twitter:card`
- */
+
+/** Twitter Card types @keywords twitter_card summary large_image app player */
 export declare enum MetaTwitterCard {
-    /**
-     * Summary card — small image, short title and description/
-     * Карточка-сводка — небольшое изображение, короткий заголовок и описание
-     */
+    /** Summary card with small image */
     summary = "summary",
-    /**
-     * Summary card with large image — most popular card type/
-     * Карточка с большим изображением — самый распространённый тип
-     */
+    /** Summary card with large image */
     summaryLargeImage = "summary_large_image",
-    /**
-     * App card — used for promoting mobile applications (iOS / Android)/
-     * Карточка приложения — используется для продвижения мобильных приложений (iOS / Android)
-     */
+    /** App card for mobile applications */
     app = "app",
-    /**
-     * Player card — for embedding video, audio, or other rich media/
-     * Карточка плеера — для встроенного видео, аудио или интерактивного контента
-     */
+    /** Player card for rich media */
     player = "player",
-    /**
-     * Product card (deprecated) — used for e-commerce products/
-     * Карточка товара (устаревшая) — использовалась для отображения товаров в Twitter
-     */
+    /** Product card for e-commerce */
     product = "product",
-    /**
-     * Gallery card (deprecated) — used for displaying multiple images/
-     * Галерея (устаревшая) — использовалась для показа нескольких изображений
-     */
+    /** Gallery card for multiple images */
     gallery = "gallery",
-    /**
-     * Photo card (deprecated) — single image card, replaced by summary_large_image/
-     * Фото-карточка (устаревшая) — карточка с одним изображением, заменена на summary_large_image
-     */
+    /** Photo card */
     photo = "photo",
-    /**
-     * Lead generation card (deprecated) — for collecting user data (via CTA)/
-     * Карточка для лидогенерации (устаревшая) — использовалась для сбора данных пользователей через кнопку
-     */
+    /** Lead generation card */
     leadGeneration = "lead_generation",
-    /**
-     * Audio card (experimental) — similar to player, but focused on audio players/
-     * Аудио-карточка (экспериментальная) — аналог player, ориентирована на аудио
-     */
+    /** Audio card */
     audio = "audio",
-    /**
-     * Poll card (internal/experimental) — used for Twitter polls/
-     * Карточка опроса (внутренняя/экспериментальная) — используется для твитов-опросов
-     */
+    /** Poll card */
     poll = "poll"
 }

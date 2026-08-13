@@ -1,9 +1,3 @@
-// md5:61f34b721bb682819ff66678d628bf62
-/**
- * Returns a new object with keys from the keys list.
- *
- * Возвращает новый объект с ключами из списка keys.
- * @param data object with data/ объект с данными
- * @param keys list of keys/ список ключей
- */
+// md5:59d72b901ef4f143e9488deb98be00ba true
+/** Filter object by keys @keywords getObjectByKeys pick keys */
 export declare function getObjectByKeys<T extends Record<string, any>, K extends keyof T>(data: T, keys: K[]): Pick<T, K>;

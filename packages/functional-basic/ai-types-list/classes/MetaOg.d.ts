@@ -1,121 +1,33 @@
-// md5:b2a64c96f6c2b35b2f308c48e95bcec0
-import { MetaManager } from './MetaManager';
-import { MetaOpenGraphTag, MetaOpenGraphType } from '../types/metaTypes';
-/**
- * Class for working with Open Graph meta tags.
- *
- * Класс для управления мета-тегами Open Graph.
- */
+// md5:d14066fba059a3b971577896eb2837a4 true
 export declare class MetaOg extends MetaManager<MetaOpenGraphTag[]> {
-    /**
-     * Constructor for MetaOg.
-     *
-     * Конструктор для MetaOg.
-     */
+    /** Creates MetaOg instance. @keywords constructor, open, graph */
     constructor();
-    /**
-     * Gets the Open Graph title.
-     *
-     * Получает заголовок Open Graph.
-     * @returns title / заголовок
-     */
+    /** Gets the Open Graph title. @keywords get, title, og */
     getTitle(): string;
-    /**
-     * Gets the Open Graph type.
-     *
-     * Получает тип Open Graph.
-     * @returns type / тип
-     */
+    /** Gets the Open Graph type. @keywords get, type, og */
     getType(): MetaOpenGraphType;
-    /**
-     * Gets the Open Graph URL.
-     *
-     * Получает URL Open Graph.
-     * @returns URL / URL адрес
-     */
+    /** Gets the Open Graph URL. @keywords get, url, og */
     getUrl(): string;
-    /**
-     * Gets the Open Graph image URL.
-     *
-     * Получает URL изображения Open Graph.
-     * @returns image URL / URL изображения
-     */
+    /** Gets the Open Graph image URL. @keywords get, image, og */
     getImage(): string;
-    /**
-     * Gets the Open Graph description.
-     *
-     * Получает описание Open Graph.
-     * @returns description / описание
-     */
+    /** Gets the Open Graph description. @keywords get, description, og */
     getDescription(): string;
-    /**
-     * Gets the Open Graph locale.
-     *
-     * Получает локаль Open Graph.
-     * @returns locale / локаль
-     */
+    /** Gets the Open Graph locale. @keywords get, locale, og */
     getLocale(): string;
-    /**
-     * Gets the Open Graph site name.
-     *
-     * Получает название сайта Open Graph.
-     * @returns site name / название сайта
-     */
+    /** Gets the Open Graph site name. @keywords get, site, name, og */
     getSiteName(): string;
-    /**
-     * Sets the Open Graph title.
-     *
-     * Устанавливает заголовок Open Graph.
-     * @param title title / заголовок
-     * @returns current instance / текущий экземпляр
-     */
+    /** Sets the Open Graph title. @keywords set, title, og */
     setTitle(title: string): this;
-    /**
-     * Sets the Open Graph type.
-     *
-     * Устанавливает тип Open Graph.
-     * @param type type / тип
-     * @returns current instance / текущий экземпляр
-     */
+    /** Sets the Open Graph type. @keywords set, type, og */
     setType(type: MetaOpenGraphType): this;
-    /**
-     * Sets the Open Graph URL.
-     *
-     * Устанавливает URL Open Graph.
-     * @param url URL / URL адрес
-     * @returns current instance / текущий экземпляр
-     */
+    /** Sets the Open Graph URL. @keywords set, url, og */
     setUrl(url: string): this;
-    /**
-     * Sets the Open Graph image URL.
-     *
-     * Устанавливает URL изображения Open Graph.
-     * @param url image URL / URL изображения
-     * @returns current instance / текущий экземпляр
-     */
+    /** Sets the Open Graph image URL. @keywords set, image, og */
     setImage(url: string): this;
-    /**
-     * Sets the Open Graph description.
-     *
-     * Устанавливает описание Open Graph.
-     * @param description description / описание
-     * @returns current instance / текущий экземпляр
-     */
+    /** Sets the Open Graph description. @keywords set, description, og */
     setDescription(description: string): this;
-    /**
-     * Sets the Open Graph locale.
-     *
-     * Устанавливает локаль Open Graph.
-     * @param locale locale (e.g. 'en_US', 'ru_RU') / локаль (например, 'en_US', 'ru_RU')
-     * @returns current instance / текущий экземпляр
-     */
+    /** Sets the Open Graph locale. @keywords set, locale, og */
     setLocale(locale: string): this;
-    /**
-     * Sets the Open Graph site name.
-     *
-     * Устанавливает название сайта Open Graph.
-     * @param siteName site name / название сайта
-     * @returns current instance / текущий экземпляр
-     */
+    /** Sets the Open Graph site name. @keywords set, site, name, og */
     setSiteName(siteName: string): this;
 }

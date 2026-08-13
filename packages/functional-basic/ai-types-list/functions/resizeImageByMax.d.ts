@@ -1,20 +1,6 @@
-// md5:d81c7d9228cfc5390ff32e225e29bfa3
-/**
- * Resize type for image scaling.
- *
- * Тип изменения размера для масштабирования изображения.
- */
+// md5:e90c389ab2e6b7f1d8761afe60f55210 true
+/** Resize type for image scaling. @keywords resize, image, scale, max */
 type ResizeImageByMaxType = 'auto' | 'width' | 'height';
-/**
- * Resizes an image to fit within a maximum size constraint.
- *
- * Изменяет размер изображения в соответствии с ограничением максимального размера.
- * @param image image element or URL / элемент изображения или URL
- * @param maxSize maximum size for width or height / максимальный размер ширины или высоты
- * @param type resize type (auto, width, height) / тип изменения размера (auto, width, height)
- * @param typeData optional data type for the resulting image /
- * необязательный тип данных для результирующего изображения
- * @returns base64 image string or undefined / строка base64 изображения или undefined
- */
+/** Resizes an image to fit within a maximum size constraint. @keywords resize, image, scale, max, dimensions */
 export declare function resizeImageByMax(image: HTMLImageElement | string, maxSize: number, type?: ResizeImageByMaxType, typeData?: string): string | undefined;
 export {};

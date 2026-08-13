@@ -1,10 +1,3 @@
-// md5:6c9984e782762140c8a61e8ad9cfc8e5
-/**
- * Testing isSelected property for the entire list of values.
- *
- * Проверка свойства isSelected для всех значений списка.
- * @param values list of values for comparison/ список значений для сравнения
- * @param selected array or string for comparison/ массив или строка для сравнения
- * @returns true if all selected / true, если все выбраны
- */
+// md5:fadf1a6ce6eea956a693912e7d5a257d true
+/** Checks if all values in the list are selected. @keywords isSelectedByList, select, match */
 export declare function isSelectedByList<T>(values: T | T[], selected: T | T[]): boolean;

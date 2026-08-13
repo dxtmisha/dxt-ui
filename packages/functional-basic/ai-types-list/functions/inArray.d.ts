@@ -1,10 +1,3 @@
-// md5:97c70f301730708c224c875387cbbdc3
-/**
- * Checks if the value is in the current array.
- *
- * Проверяет, есть ли значение в текущем массиве.
- * @param array array for checking/ массив для проверки
- * @param value value to be checked/ проверяемое значение
- * @returns true if in array / true, если в массиве
- */
+// md5:452e1eee09d25d8857115832c0ccc7ad true
+/** Checks if the value is in the current array. @keywords inArray array search contains */
 export declare function inArray<T>(array: T[], value: T): boolean;

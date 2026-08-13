@@ -1,21 +1,12 @@
-// md5:f9970a606a0edd3f6544b764588dc146
-/**
- * Sorting direction. /
- * Направление сортировки.
- */
+// md5:a38bb83ae28ff4c77d709cdff8cc0547 true
+/** Sort direction @keywords sort direction asc desc */
 export type SortDir = 'asc' | 'desc';
-/**
- * Single column sorting specification item. /
- * Элемент спецификации сортировки по отдельной колонке.
- */
+/** Single column sorting specification item @keywords sort column item */
 export type SortColumnItem = {
-    /** Column or property key for sorting / Колонка или ключ свойства для сортировки */
+    /** Column or property key for sorting @keywords sort column property */
     column?: string;
-    /** Sorting direction ('asc' or 'desc') / Направление сортировки ('asc' или 'desc') */
+    /** Sorting direction @keywords sort dir */
     dir?: SortDir;
 };
-/**
- * Custom sort function signature. /
- * Сигнатура пользовательской функции сортировки.
- */
+/** Custom sort function signature @keywords custom sort function */
 export type SortFunction<T = any> = (a: T, b: T, column?: string, dir?: SortDir) => number;

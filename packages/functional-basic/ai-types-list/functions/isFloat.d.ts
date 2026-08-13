@@ -1,9 +1,3 @@
-// md5:dc15162f296559762fe370da2946ebe4
-/**
- * Checks if the value is an integer or a floating-point number.
- *
- * Проверяет, является ли значение числом или дробным числом.
- * @param value values for checking/ значения для проверки
- * @returns true if number/ true, если число
- */
+// md5:f64b69fd8758b508abc65e511b5fc8aa true
+/** Checks if the value is an integer or floating-point number. @keywords isFloat number check */
 export declare function isFloat(value: any): boolean;

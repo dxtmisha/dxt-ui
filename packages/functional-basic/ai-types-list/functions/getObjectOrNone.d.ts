@@ -1,9 +1,3 @@
-// md5:337c5f7a4ceda3bb2684d0dbff801f52
-/**
- * Returns the object if the object’s values are set.
- *
- * Возвращает объект, если заданы значения объекта.
- * @param value let’s assume that this is an object/ предположим, что это объект
- * @returns object or empty object/ объект или пустой объект
- */
+// md5:5f6c7371f59236c5890d3ab698f2d412 true
+/** Returns the object if values are set, otherwise an empty object. @keywords object none check @param value The value to evaluate */
 export declare function getObjectOrNone<T>(value: T): T & Record<string, any>;

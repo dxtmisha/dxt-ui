@@ -1,8 +1,3 @@
-// md5:ed72fafc1c742d9c563221d9c3fc600b
-/**
- * Stop listening to events in depth.
- *
- * Остановить прослушивания события в глубину.
- * @param event event instance/ экземпляр события
- */
+// md5:654aa831a8222c647d8df2d959dd23cf true
+/** Stop event propagation and default behavior @keywords stop propagation event prevent default */
 export declare function eventStopPropagation(event: Event): void;

@@ -1,9 +1,6 @@
-// md5:dce5ad651e574e06bbaa2e83899c292a
+// md5:d5b86efb3f0e75b064431bbee4fa2869 true
 /**
  * Conversion to Date object.
- *
- * Преобразование в объект Date.
- * @param value input value/ входное значение
- * @returns date object/ объект даты
+ * @keywords toDate, date, parse, time, transform
  */
 export declare function toDate<T extends Date | number | string>(value?: T): (T & Date) | Date;

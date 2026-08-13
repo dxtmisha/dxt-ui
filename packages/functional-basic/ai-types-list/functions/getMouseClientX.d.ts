@@ -1,9 +1,6 @@
-// md5:7ce7f827883df574b5bb95318d0e2d2f
+// md5:0d8f48e81f23f7af344a107df33d1c98 true
 /**
- * Returns the position of the mouse cursor or the location of the click (X).
- *
- * Возвращает позицию курсора мыши или место нажатия (X).
- * @param event event object/ объект события
- * @returns X coordinate / координата X
+ * Returns the client X coordinate from mouse or touch events.
+ * @keywords mouse client x coordinate touch clientX
  */
 export declare function getMouseClientX(event: MouseEvent & TouchEvent): number;

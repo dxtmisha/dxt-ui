@@ -1,86 +1,26 @@
-// md5:3a40834601faab55b5e032ae31e585d0
-import { FunctionVoid } from '../types/basicTypes';
-/**
- * Class for creating a timer that can be paused and resumed.
- *
- * Класс для создания таймера, который можно приостанавливать и возобновлять.
- */
+// md5:94b6d5fad132d7f0574dc694745546a8 true
+/** Timer that can be paused and resumed @keywords timer resumable pause resume delay */
 export declare class ResumableTimer {
-    protected callback: FunctionVoid;
-    protected delay: number;
-    /** setTimeout identifier / Идентификатор setTimeout */
-    protected timerId?: ReturnType<typeof setTimeout>;
-    /** Timestamp when timer started / Метка времени старта таймера */
-    protected startTime?: number;
-    /** Remaining milliseconds / Оставшиеся миллисекунды */
-    protected remaining?: number;
-    /** Completion flag / Флаг завершения */
-    protected completed: boolean;
-    /**
-     * Constructor
-     * @param callback function to be called after the delay / функция, которая будет вызвана после задержки
-     * @param delay delay in milliseconds / задержка в миллисекундах
-     * @param blockStart if true, the timer will not start immediately / если true, таймер не запустится сразу
-     */
+    /** Creates a resumable timer */
     constructor(callback: FunctionVoid, delay?: number, blockStart?: boolean);
-    /**
-     * Resumes the timer if it was paused or starts it for the first time.
-     *
-     * Возобновляет таймер, если он был приостановлен, или запускает его впервые.
-     */
+    /** Resumes the timer @keywords resume start timer */
     resume(): this;
-    /**
-     * Pauses the timer and calculates the remaining time.
-     *
-     * Приостанавливает таймер и вычисляет оставшееся время.
-     */
+    /** Pauses the timer @keywords pause timer */
     pause(): this;
-    /**
-     * Resets and restarts the timer with the original delay.
-     *
-     * Сбрасывает и перезапускает таймер с исходной задержкой.
-     */
+    /** Resets and restarts the timer @keywords reset restart */
     reset(): this;
-    /**
-     * Completely clears the timer and resets its state.
-     *
-     * Полностью очищает таймер и сбрасывает его состояние.
-     */
+    /** Clears the timer and resets state @keywords clear */
     clear(): this;
-    /**
-     * Returns the remaining time or the initial delay.
-     *
-     * Возвращает оставшееся время или начальную задержку.
-     */
+    /** Gets the remaining time */
     protected getRemaining(): number;
-    /**
-     * Returns the time when the timer was started or the current time.
-     *
-     * Возвращает время запуска таймера или текущее время.
-     */
+    /** Gets the start time */
     protected getStartTime(): number;
-    /**
-     * Executes the callback and marks the timer as completed.
-     *
-     * Выполняет колбэк и отмечает таймер как завершенный.
-     */
+    /** Executes the callback */
     protected go(): this;
-    /**
-     * Updates the remaining time based on the elapsed time.
-     *
-     * Обновляет оставшееся время на основе прошедшего времени.
-     */
+    /** Updates the remaining time */
     protected updateRemaining(): this;
-    /**
-     * Sets the current time as the start time.
-     *
-     * Устанавливает текущее время как время начала.
-     */
+    /** Updates the start time */
     protected updateStartTime(): this;
-    /**
-     * Stops the timer and clears the timeout ID.
-     *
-     * Останавливает таймер и очищает идентификатор таймаута.
-     */
+    /** Stops the timer */
     protected stop(): this;
 }

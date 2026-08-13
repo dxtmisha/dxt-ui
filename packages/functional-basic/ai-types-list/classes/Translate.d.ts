@@ -1,118 +1,32 @@
-// md5:03768312b80b7adb5a1196790308f461
-import { TranslateInstance } from './TranslateInstance';
-import { TranslateCode, TranslateConfig, TranslateDataFile, TranslateList } from '../types/translateTypes';
-/**
- * Class for getting the translated text.
- *
- * Класс для получения переведенного текста.
- */
+// md5:c6f1179ea57b752f90d07d0deceeaee4 true
+/** Class for getting the translated text. @keywords translate, i18n, localization */
 export declare class Translate {
-    /** TranslateInstance singleton item / Экземпляр синглтона TranslateInstance */
-    protected static item?: TranslateInstance;
-    /**
-     * Getting the translation text by its code.
-     *
-     * Получение текста перевода по его коду.
-     * @param name code name/ название кода
-     * @param replacement If set, replaces the text with the specified values/ если установлено, заменяет текст на указанные значения
-     * @returns translation text / текст перевода
-     */
+    /** Gets translated text by code. @keywords get, translate */
     static get(name: string, replacement?: string[] | Record<string, string | number>): Promise<string>;
-    /**
-     * Returns a request-isolated instance of TranslateInstance.
-     *
-     * Возвращает изолированный в рамках запроса экземпляр TranslateInstance.
-     * @returns TranslateInstance instance / экземпляр TranslateInstance
-     */
+    /** Returns TranslateInstance singleton. @keywords get, instance, translate */
     static getItem(): TranslateInstance;
-    /**
-     * Getting the translation text by its code (Sync).
-     *
-     * Получение текста перевода по его коду (Sync).
-     * @param name code name / название кода
-     * @param first If set to false, returns an empty string if there is no text / если установлено false, возвращает пустую строку, если нет текста
-     * @param replacement If set, replaces the text with the specified values / если установлено, заменяет текст на указанные значения
-     * @returns translation text / текст перевода
-     */
+    /** Gets translated text by code synchronously. @keywords get, sync, translate */
     static getSync(name: string, first?: boolean, replacement?: string[] | Record<string, string | number>): string;
-    /**
-     * Getting a list of translations by an array of text codes.
-     *
-     * Получение списка переводов по массиву кодов текста.
-     * @param names list of codes to get translations/ список кодов для получения переводов
-     * @returns object with translations / объект с переводами
-     */
+    /** Gets a list of translations by codes. @keywords get, list, translate */
     static getList<T extends TranslateCode[]>(names: T): Promise<TranslateList<T>>;
-    /**
-     * Getting a list of translations by an array of text codes.
-     *
-     * Получение списка переводов по массиву кодов текста.
-     * @param names list of codes to get translations / список кодов для получения переводов
-     * @param first If set to false, returns an empty string if there is no text / если установлено false, возвращает пустую строку, если нет текста
-     * @returns object with translations / объект с переводами
-     */
+    /** Gets a list of translations by codes synchronously. @keywords get, list, sync, translate */
     static getListSync<T extends TranslateCode[]>(names: T, first?: boolean): TranslateList<T>;
-    /**
-     * Added a list of translated texts.
-     *
-     * Добавлен список переведенных текстов.
-     * @param names list of codes to get translations/ список кодов для получения переводов
-     */
+    /** Adds translations. @keywords add, translate */
     static add(names: string | string[]): Promise<void>;
-    /**
-     * Adds texts in sync mode.
-     *
-     * Добавляет тексты в режиме синхронизации.
-     * @param data list of texts in the form of key-value/ список текстов в виде ключ-значение
-     */
+    /** Adds translations synchronously. @keywords add, sync, translate */
     static addSync(data: Record<string, string>): void;
-    /**
-     * Adding data in the form of a query or directly, depending on the execution environment.
-     *
-     * Добавление данных в виде запроса или напрямую, в зависимости от среды выполнения.
-     * @param data list of texts in the form of key-value/ список текстов в виде ключ-значение
-     */
+    /** Adds translations normally or synchronously based on environment. @keywords add, normal, sync, translate */
     static addNormalOrSync(data: Record<string, string>): Promise<void>;
-    /**
-     * Adds texts synchronously by location.
-     *
-     * Добавляет тексты синхронно по местоположению.
-     * @param data list of texts by location/ список текстов по местоположению
-     */
+    /** Adds translations synchronously by location. @keywords add, location, sync, translate */
     static addSyncByLocation(data: Record<string, Record<string, string>>): void;
-    /**
-     * Adds texts synchronously from the file.
-     *
-     * Добавляет тексты синхронно из файла.
-     * @param data file with translations/ файл с переводами
-     */
+    /** Adds translations synchronously from file. @keywords add, file, sync, translate */
     static addSyncByFile(data: TranslateDataFile): void;
-    /**
-     * Change the path to the script for obtaining the translation.
-     *
-     * Изменить путь к скрипту для получения перевода.
-     * @param url path to the script/ путь к скрипту
-     */
+    /** Sets the translation endpoint URL. @keywords set, url, translate */
     static setUrl(url: string): void;
-    /**
-     * Change the name of the property to get the translation.
-     *
-     * Изменить имя свойства для получения перевода.
-     * @param name property name/ имя свойства
-     */
+    /** Sets the property name for request payload. @keywords set, props, name, translate */
     static setPropsName(name: string): void;
-    /**
-     * Change the read mode from the API.
-     *
-     * Изменить режим чтения из API.
-     * @param value read mode/ режим чтения
-     */
+    /** Enables or disables API reading mode. @keywords set, api, read, translate */
     static setReadApi(value: boolean): void;
-    /**
-     * Set the configuration for the translation.
-     *
-     * Установить конфигурацию для перевода.
-     * @param config configuration/ конфигурация
-     */
+    /** Sets the translation configuration. @keywords set, config, translate */
     static setConfig(config: TranslateConfig): void;
 }

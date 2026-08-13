@@ -1,63 +1,18 @@
-// md5:9cc00fdeee6989b1f5bb003e1f749715
-import { LoadingInstance, LoadingDetail } from './LoadingInstance';
-import { ElementOrString, EventListenerDetail } from '../types/basicTypes';
-/**
- * Class for working with global loading.
- *
- * Класс для работы с глобальной загрузкой.
- */
+// md5:b6910bbe7a7568f82dbbb36de5fe9d44 true
+/** Class for working with global loading. @keywords loading loader global */
 export declare class Loading {
-    /**
-     * Check if the loader is active now.
-     *
-     * Проверить, активен ли сейчас загрузчик.
-     * @returns boolean/ логическое значение
-     */
+    /** Check if the loader is active. @keywords loading active check */
     static is(): boolean;
-    /**
-     * Get current loading value.
-     *
-     * Получить текущее значение загрузки.
-     * @returns current loading value/ текущее значение загрузки
-     */
+    /** Get current loading value. @keywords loading get count */
     static get(): number;
-    /**
-     * Returns a request-isolated instance of LoadingInstance.
-     *
-     * Возвращает изолированный в рамках запроса экземпляр LoadingInstance.
-     * @returns LoadingInstance instance / экземпляр LoadingInstance
-     */
+    /** Get LoadingInstance item. @keywords loading instance item */
     static getItem(): LoadingInstance;
-    /**
-     * Shows the loader.
-     *
-     * Показывает загрузчик.
-     * @returns void / ничего не возвращает
-     */
+    /** Show the loader. @keywords loading show start */
     static show(): void;
-    /**
-     * Hides the loader.
-     *
-     * Скрывает загрузчик.
-     * @returns void / ничего не возвращает
-     */
+    /** Hide the loader. @keywords loading hide stop */
     static hide(): void;
-    /**
-     * Event registration to listen for data changes.
-     *
-     * Регистрация события для прослушивания изменений данных.
-     * @param listener the object that receives a notification when an event occurs / объект, который принимает уведомление, когда событие указанного типа произошло
-     * @param element element / элемент
-     * @returns void / ничего не возвращает
-     */
+    /** Register loading event. @keywords loading event register */
     static registrationEvent(listener: EventListenerDetail<CustomEvent, LoadingDetail>, element?: ElementOrString<HTMLElement>): void;
-    /**
-     * Unregistration of an event.
-     *
-     * Отмена регистрации события.
-     * @param listener the object that receives a notification when an event occurs / объект, который принимает уведомление, когда событие указанного типа произошло
-     * @param element element / элемент
-     * @returns void / ничего не возвращает
-     */
+    /** Unregister loading event. @keywords loading event unregister */
     static unregistrationEvent(listener: EventListenerDetail<CustomEvent, LoadingDetail>, element?: ElementOrString<HTMLElement>): void;
 }

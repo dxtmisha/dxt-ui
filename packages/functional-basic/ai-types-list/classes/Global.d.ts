@@ -1,30 +1,10 @@
-// md5:48a02ed033ad27cedac545df67e304e7
-/**
- * Static utility class for storing and retrieving application-wide global data.
- *
- * Статический служебный класс для хранения и получения глобальных данных приложения.
- */
+// md5:3092649fdf8dca8dd4aca9e7545e1c50 true
+/** Static utility class for storing application-wide global data. @keywords global, storage, data */
 export declare class Global {
-    /**
-     * Returns the instance of the class.
-     *
-     * Возвращает инстанс класса.
-     * @returns global data storage / хранилище глобальных данных
-     */
-    static getItem(): Record<string, any>;
-    /**
-     * Returns the value by its name.
-     *
-     * Возвращает значение по его имени.
-     * @param name property name/ название свойства
-     */
-    static get<R = any>(name: string): R;
-    /**
-     * Adds data, this method works only once.
-     *
-     * Добавляет данные, этот метод работает только 1 раз.
-     * @param data global data/ глобальные данные
-     * @returns void / ничего не возвращает
-     */
-    static add(data: Record<string, any>): void;
+	/** Returns the global data store instance. @keywords get, item, store */
+	static getItem(): Record<string, any>;
+	/** Returns a value by name. @keywords get, property, value */
+	static get<R = any>(name: string): R;
+	/** Adds global data once. @keywords add, data, set */
+	static add(data: Record<string, any>): void;
 }

@@ -1,41 +1,22 @@
-// md5:b254436aeadbf2bff4c729668b3f64b1
-import { ApiResponse } from './ApiResponse';
-import { ApiFetch, ApiHydrationList } from '../types/apiTypes';
+// md5:23f6294f60fc28c1012a0f90fc4e058c true
 /**
- * Class for collecting API data for hydration on the client side during SSR.
- *
- * Класс для сбора данных API для последующей гидратации на стороне клиента при SSR.
+ * Manages API response hydration for server-side rendering (SSR).
+ * @keywords api, hydration, ssr, client, cache
  */
 export declare class ApiHydration {
-    /** Hydration data list / Список данных гидратации */
-    protected list: ApiHydrationList;
     /**
-     * Initializes the response with hydration data.
-     *
-     * Инициализирует ответ данными гидратации.
-     * @param response API response / ответ API
-     * @returns void / ничего не возвращает
+     * Initializes response collection from client data.
+     * @keywords init, response, hydration
      */
     initResponse(response: ApiResponse): void;
     /**
-     * Saves API response for client-side hydration.
-     *
-     * Сохраняет ответ API для гидратации на стороне клиента.
-     * @param apiFetch API request configuration / конфигурация запроса API
-     * @param response API response data / данные ответа API
-     * @returns void / ничего не возвращает
+     * Stores API fetch and response pair for client hydration.
+     * @keywords to, client, hydration, save
      */
     toClient<T>(apiFetch: ApiFetch, response: T): void;
     /**
-     * Returns a string representation of the hydration data for the client.
-     *
-     * Возвращает строковое представление данных гидратации для клиента.
+     * Serializes hydration data into a script string.
+     * @keywords to, string, serialize, html
      */
     toString(): string;
-    /**
-     * Returns the list of API responses for the client.
-     *
-     * Возвращает список ответов API для клиента.
-     */
-    protected getListByClient(): ApiHydrationList;
 }

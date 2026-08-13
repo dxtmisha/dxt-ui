@@ -1,10 +1,6 @@
-// md5:e9aed95f0552fad3e23c211749450ee0
+// md5:204938e2de22e040bcc6bff70202f223 true
 /**
- * The method retrieves drag data (as a string) for the specified type.
- * If the drag operation does not include data, this method returns an empty string.
- *
- * Метод извлекает данные перетаскивания (в виде строки) для указанного типа.
- * @param event the ClipboardEvent interface / интерфейс ClipboardEvent
- * @returns data from the clipboard / данные из буфера обмена
+ * Retrieves drag or clipboard text data.
+ * @keywords clipboard, read, text, get
  */
 export declare function getClipboardData(event?: ClipboardEvent): Promise<string>;

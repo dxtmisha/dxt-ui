@@ -1,27 +1,15 @@
-// md5:8a52e766b5cecca6533ac6281acf6ceb
-import { ElementOrString, ElementOrWindow } from '../types/basicTypes';
+// md5:ee1a909022a72ba03c90ccbff561f81b true
 /**
- * Returns the identifier (ID) of the element or creates it if the element has no ID.
- *
- * Возвращает идентификатор (ID) элемента или создает его, если у элемента нет ID.
- * @param element element from which you obtain an ID / элемент, с которого получаете ID
- * @param selector selectors for matching / селекторов для сопоставления
- * @returns element ID / идентификатор элемента
+ * Returns the identifier (ID) of the element or creates it if missing.
+ * @keywords getElementId, element, id, dom
+ * @param element element to get ID from
+ * @param selector optional selector suffix
  */
 export declare function getElementId<E extends ElementOrWindow>(element?: ElementOrString<E>, selector?: string): string;
+
 /**
- * Initializes the getElementId function with a listener.
- *
- * Инициализирует функцию getElementId слушателем.
- * @param newListener listener that returns the current request context / слушатель, возвращающий контекст текущего запроса
- * @warning Initialization is mandatory for correct functioning of SSR on both server and client sides./
- * Инициализация обязательна для корректной работы SSR как на стороне сервера, так и на стороне клиента.
- * @example
- * ```typescript
- * import { useId } from 'vue'
- * import { initGetElementId } from '@dxtmisha/functional-basic'
- *
- * initGetElementId(() => useId())
- * ```
+ * Initializes the getElementId function with a custom listener.
+ * @keywords initGetElementId, id, generator, ssr
+ * @warning Initialization is mandatory for correct SSR functioning.
  */
 export declare function initGetElementId(newListener: () => string | number): void;

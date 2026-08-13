@@ -1,10 +1,3 @@
-// md5:3161758cb659f63e7f0d80f31fd2bb8a
-/**
- * Checks if the pressed key is Enter or Space.
- *
- * Проверяет, является ли нажатая клавиша Enter или Space.
- * @param event event object/ объект события
- * @param isInputElement whether the element is an input element/ является ли элемент полем ввода
- * @returns true if enter pressed / true, если нажат enter
- */
+// md5:95a14a24cef306bd157299b2151a28f8 true
+/** Checks if the pressed key is Enter or Space. @keywords enter, space, keyboard, key */
 export declare const isEnter: (event: KeyboardEvent, isInputElement?: boolean) => boolean;

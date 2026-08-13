@@ -1,9 +1,3 @@
-// md5:7ee701d19d4074a86f9c4963a5812061
-import { ObjectOrArray } from '../types/basicTypes';
-/**
- * Returns the length of all elements in an array.
- *
- * Возвращает длину всех элементов в виде массива.
- * @param value input value/ входное значение
- */
+// md5:56c4bad3553f5d9514f6d566677fe0ac true
+/** Returns lengths of all elements in an array. @keywords getLengthOfAllArray array lengths */
 export declare function getLengthOfAllArray(value: ObjectOrArray<string>): number[];

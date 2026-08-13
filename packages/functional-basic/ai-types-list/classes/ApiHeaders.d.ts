@@ -1,38 +1,22 @@
-// md5:bb8eb358bed8e63e85c3c5ab230aafbd
-import { ApiFetch, ApiHeadersValue } from '../types/apiTypes';
+// md5:ff6369e27093d00dafed05b62c7a8dcc true
 /**
- * Class for managing HTTP request headers.
- *
- * Класс для управления заголовками HTTP-запросов.
+ * Manages HTTP request headers.
+ * @keywords api headers request content-type
  */
 export declare class ApiHeaders {
-    /** Default headers / Заголовки по умолчанию */
-    protected headers: ApiHeadersValue;
     /**
-     * Gets the headers for the request.
-     *
-     * Получает заголовки для запроса.
-     * @param value list of headers / список заголовков
-     * @param type Content-Type header value / значение заголовка Content-Type
-     * @returns merged headers or undefined / объединенные заголовки или undefined
+     * Retrieves request headers.
+     * @keywords get headers content-type
      */
     get(value?: Record<string, string> | null, type?: string | undefined | null): Record<string, string> | undefined;
     /**
-     * Gets the headers for the request based on request type.
-     *
-     * Получает заголовки для запроса на основе типа запроса.
-     * @param request request data / данные запроса
-     * @param value list of headers / список заголовков
-     * @param type Content-Type header value / значение заголовка Content-Type
-     * @returns merged headers or undefined / объединенные заголовки или undefined
+     * Retrieves headers based on request data.
+     * @keywords get headers request content-type
      */
     getByRequest(request: ApiFetch['request'], value?: Record<string, string> | null, type?: string): Record<string, string> | undefined;
     /**
-     * Sets the default headers.
-     *
-     * Устанавливает заголовки по умолчанию.
-     * @param headers list of default headers/ список заголовков по умолчанию
-     * @returns this instance for chaining / текущий экземпляр для цепочки вызовов
+     * Sets default headers.
+     * @keywords set headers defaults
      */
     set(headers: ApiHeadersValue): this;
 }

@@ -1,10 +1,3 @@
-// md5:640c91a647a5ae2b5a07a187362edb4f
-import { ObjectOrArray } from '../types/basicTypes';
-/**
- * Searches for the longest string in the array and returns its length.
- *
- * Ищет самую длинную строку в массиве и возвращает её длину.
- * @param data array with data/ массив с данными
- * @returns length of the longest string/ длина самой длинной строки
- */
+// md5:20df6b8a3c12f055d294c3363a708bb7 true
+/** Searches for the longest string in the array and returns its length. @keywords getMaxLengthAllArray max length array string */
 export declare function getMaxLengthAllArray(data: ObjectOrArray<string>): number;

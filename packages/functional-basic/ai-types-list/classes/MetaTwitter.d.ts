@@ -1,121 +1,34 @@
-// md5:d26834a1a0b371416d89cb82ba754cf1
-import { MetaManager } from './MetaManager';
-import { MetaTwitterCard, MetaTwitterTag } from '../types/metaTypes';
-/**
- * Class for working with Twitter Card meta tags.
- *
- * Класс для управления мета-тегами Twitter Card.
- */
+// md5:cf1a2c13e0d332846621d09ae77641c6 true
+/** Manage Twitter Card meta tags @keywords meta twitter card tags */
 export declare class MetaTwitter extends MetaManager<MetaTwitterTag[]> {
-    /**
-     * Constructor for MetaTwitter.
-     *
-     * Конструктор для MetaTwitter.
-     */
-    constructor();
-    /**
-     * Gets the Twitter Card type.
-     *
-     * Получает тип Twitter Card.
-     * @returns card type / тип карточки
-     */
-    getCard(): MetaTwitterCard;
-    /**
-     * Gets the website or brand @username.
-     *
-     * Получает аккаунт сайта или бренда (@username).
-     * @returns @username / аккаунт
-     */
-    getSite(): string;
-    /**
-     * Gets the content creator @username.
-     *
-     * Получает автора контента (@username).
-     * @returns @username / аккаунт автора
-     */
-    getCreator(): string;
-    /**
-     * Gets the page URL.
-     *
-     * Получает URL страницы.
-     * @returns URL / URL адрес
-     */
-    getUrl(): string;
-    /**
-     * Gets the card title.
-     *
-     * Получает заголовок карточки.
-     * @returns title / заголовок
-     */
-    getTitle(): string;
-    /**
-     * Gets the card description.
-     *
-     * Получает описание карточки.
-     * @returns description / описание
-     */
-    getDescription(): string;
-    /**
-     * Gets the card image URL.
-     *
-     * Получает URL изображения карточки.
-     * @returns image URL / URL изображения
-     */
-    getImage(): string;
-    /**
-     * Sets the Twitter Card type.
-     *
-     * Устанавливает тип Twitter Card.
-     * @param card card type / тип карточки
-     * @returns current instance / текущий экземпляр
-     */
-    setCard(card: MetaTwitterCard): this;
-    /**
-     * Sets the website or brand @username.
-     *
-     * Устанавливает аккаунт сайта или бренда (@username).
-     * @param site @username / аккаунт
-     * @returns current instance / текущий экземпляр
-     */
-    setSite(site: string): this;
-    /**
-     * Sets the content creator @username.
-     *
-     * Устанавливает автора контента (@username).
-     * @param creator @username / аккаунт автора
-     * @returns current instance / текущий экземпляр
-     */
-    setCreator(creator: string): this;
-    /**
-     * Sets the page URL.
-     *
-     * Устанавливает URL страницы.
-     * @param url URL / URL адрес
-     * @returns current instance / текущий экземпляр
-     */
-    setUrl(url: string): this;
-    /**
-     * Sets the card title.
-     *
-     * Устанавливает заголовок карточки.
-     * @param title title / заголовок
-     * @returns current instance / текущий экземпляр
-     */
-    setTitle(title: string): this;
-    /**
-     * Sets the card description.
-     *
-     * Устанавливает описание карточки.
-     * @param description description / описание
-     * @returns current instance / текущий экземпляр
-     */
-    setDescription(description: string): this;
-    /**
-     * Sets the card image URL.
-     *
-     * Устанавливает URL изображения карточки.
-     * @param image image URL / URL изображения
-     * @returns current instance / текущий экземпляр
-     */
-    setImage(image: string): this;
+	/** Initialize MetaTwitter instance @keywords constructor create */
+	constructor();
+	/** Get Twitter Card type @keywords get card type */
+	getCard(): MetaTwitterCard;
+	/** Get website or brand username @keywords get site username */
+	getSite(): string;
+	/** Get content creator username @keywords get creator username */
+	getCreator(): string;
+	/** Get page URL @keywords get url */
+	getUrl(): string;
+	/** Get card title @keywords get title */
+	getTitle(): string;
+	/** Get card description @keywords get description */
+	getDescription(): string;
+	/** Get card image URL @keywords get image */
+	getImage(): string;
+	/** Set Twitter Card type @keywords set card type */
+	setCard(card: MetaTwitterCard): this;
+	/** Set website or brand username @keywords set site username */
+	setSite(site: string): this;
+	/** Set content creator username @keywords set creator username */
+	setCreator(creator: string): this;
+	/** Set page URL @keywords set url */
+	setUrl(url: string): this;
+	/** Set card title @keywords set title */
+	setTitle(title: string): this;
+	/** Set card description @keywords set description */
+	setDescription(description: string): this;
+	/** Set card image URL @keywords set image */
+	setImage(image: string): this;
 }

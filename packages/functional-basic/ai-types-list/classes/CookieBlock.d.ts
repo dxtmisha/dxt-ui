@@ -1,31 +1,10 @@
-// md5:d3b6837356742fd254f6c499379f9149
-import { CookieBlockInstance } from './CookieBlockInstance';
-/**
- * Class for changing cookie access status.
- *
- * Класс для изменения статуса доступа к куки.
- */
+// md5:ff4f53746bd78e0b5469f50522883f3b true
+/** Class for changing cookie access status. @keywords cookie, block, status */
 export declare class CookieBlock {
-    /**
-     * Returns a request-isolated instance of CookieBlockInstance.
-     *
-     * Возвращает изолированный в рамках запроса экземпляр CookieBlockInstance.
-     * @returns CookieBlockInstance instance / экземпляр CookieBlockInstance
-     */
+    /** Returns a request-isolated instance of CookieBlockInstance. @keywords instance, get, item */
     static getItem(): CookieBlockInstance;
-    /**
-     * Obtaining status.
-     *
-     * Получение статуса.
-     * @returns boolean current block status/ текущий статус блокировки
-     */
+    /** Obtaining status. @keywords get, status, blocked */
     static get(): boolean;
-    /**
-     * Changing status.
-     *
-     * Изменение статуса.
-     * @param value value to be changed/ значение, на которое будет изменен
-     * @returns void / ничего не возвращает
-     */
+    /** Changing status. @keywords set, status, block */
     static set(value: boolean): void;
 }

@@ -1,13 +1,3 @@
-// md5:f561e301c4483086ba9034c34d2e0dcf
-/**
- * Splits a string by a separator, limited to a certain number of elements.
- * If a limit is specified, the last element will contain the remainder of the string.
- *
- * Разделяет строку по разделителю, ограничивая количество элементов.
- * Если указан лимит, последний элемент будет содержать остаток строки.
- * @param value input value/ входное значение
- * @param separator separator/ разделитель
- * @param limit limit/ лимит
- * @returns split array/ разделенный массив
- */
+// md5:3c1fb44f47604d44b124a22e61b4be31 true
+/** Splits a string by a separator with an optional limit. @keywords string split divide limit */
 export declare function strSplit(value: number | string, separator: string, limit?: number): string[];

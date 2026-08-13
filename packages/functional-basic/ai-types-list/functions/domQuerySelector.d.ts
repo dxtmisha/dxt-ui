@@ -1,9 +1,6 @@
-// md5:240fdfbb3daa84b85ac994660fe24cc4
+// md5:00bd3329f0e441347c9b5ad0f8e1f3e3 true
 /**
- * Selects the first element that matches the specified selectors.
- *
- * Выбирает первый элемент, который соответствует указанным селекторам.
- * @param selectors selectors / селекторы
- * @returns first matched element or undefined / первый найденный элемент или undefined
+ * Selects the first element matching the specified selectors.
+ * @keywords querySelector, dom, element, select
  */
 export declare function domQuerySelector<E extends Element = Element>(selectors: string): E | undefined;

@@ -1,10 +1,6 @@
-// md5:0b3c7741075edfd2866d5e77f8e9c6c3
-import { ElementOrString, ElementOrWindow } from '../types/basicTypes';
+// md5:13795a5401d8b82fbdce7b52e4286ebf true
 /**
- * Returns the first Element in the document that matches the specified selector or the element.
- *
- * Возвращает первый Element документа, который соответствует указанному селектору или сам элемент.
- * @param element selectors for matching or an Element / селектор для сопоставления или Element
- * @returns found element or undefined / найденный элемент или undefined
+ * Returns the first Element matching the specified selector or element.
+ * @keywords getElement querySelector dom element
  */
 export declare function getElement<E extends ElementOrWindow, R extends Exclude<E, Window>>(element?: ElementOrString<E>): R | undefined;

@@ -1,132 +1,34 @@
-// md5:120328da45bffbb12a75f007ff24f07b
-import { ApiStatusItem, ApiStatusType } from '../types/apiTypes';
-/**
- * Class for managing API request status.
- *
- * Класс для управления статусом запросов API.
- */
+// md5:9e1d28f8520c7770bee84383192f8d75 true
+/** Manages API request status and tracking. @keywords api status tracker */
 export declare class ApiStatus {
-    /** API status item data / Данные элемента статуса API */
-    protected value?: ApiStatusItem;
-    /**
-     * Returns the last status item data.
-     *
-     * Возвращает данные последнего элемента статуса.
-     * @returns status item or undefined / элемент статуса или undefined
-     */
+    /** Gets the current API status data. @keywords get status */
     get(): ApiStatusItem | undefined;
-    /**
-     * Returns the execution status code.
-     *
-     * Возвращает код статуса выполнения.
-     * @returns HTTP status code or undefined / код статуса HTTP или undefined
-     */
+    /** Gets the HTTP response status code. @keywords get status code */
     getStatus(): number | undefined;
-    /**
-     * Returns the execution status text.
-     *
-     * Возвращает текст статуса выполнения.
-     * @returns status text or undefined / текст статуса или undefined
-     */
+    /** Gets the HTTP response status text. @keywords get status text */
     getStatusText(): string | undefined;
-    /**
-     * Returns the last status type.
-     *
-     * Возвращает последний тип статуса.
-     * @returns status type or undefined / тип статуса или undefined
-     */
+    /** Gets the last status type. @keywords get status type */
     getStatusType(): ApiStatusType | undefined;
-    /**
-     * Returns the execution status code (string or number from response).
-     *
-     * Возвращает код статуса выполнения (строка или число из ответа).
-     * @returns status code or undefined / код статуса или undefined
-     */
+    /** Gets the last error code. @keywords get code */
     getCode(): string | undefined;
-    /**
-     * Returns the script execution error.
-     *
-     * Возвращает ошибку выполнения скрипта.
-     * @returns error message or undefined / сообщение об ошибке или undefined
-     */
+    /** Gets the current error string. @keywords get error */
     getError(): string | undefined;
-    /**
-     * Returns the data of the last request.
-     *
-     * Возвращает данные последнего запроса.
-     * @returns last response data or undefined / данные последнего ответа или undefined
-     */
+    /** Gets the last response data payload. @keywords get response data */
     getResponse<T>(): T | undefined;
-    /**
-     * Returns messages from the last request.
-     *
-     * Возвращает сообщения от последнего запроса.
-     * @returns message string / строка сообщения
-     */
+    /** Gets the last response message string. @keywords get message */
     getMessage(): string;
-    /**
-     * Sets the status item data.
-     *
-     * Устанавливает данные элемента статуса.
-     * @param data status item data/ данные элемента статуса
-     * @returns this instance for chaining / текущий экземпляр для цепочки вызовов
-     */
+    /** Sets full status data object. @keywords set status data */
     set(data: ApiStatusItem): this;
-    /**
-     * Sets the status code and optional status text.
-     *
-     * Устанавливает код статуса и необязательный текст статуса.
-     * @param status status code / код статуса
-     * @param statusText optional status text / необязательный текст статуса
-     * @returns this instance for chaining / текущий экземпляр для цепочки вызовов
-     */
+    /** Sets HTTP status code and optional text. @keywords set status */
     setStatus(status?: number, statusText?: string): this;
-    /**
-     * Sets the error message.
-     *
-     * Устанавливает сообщение об ошибке.
-     * @param error error message/ сообщение об ошибке
-     * @returns this instance for chaining / текущий экземпляр для цепочки вызовов
-     */
+    /** Sets the error message state. @keywords set error */
     setError(error?: string): this;
-    /**
-     * Sets the data of the last response and automatically extracts status/message if it's an object.
-     *
-     * Устанавливает данные последнего ответа и автоматически извлекает статус / сообщение, если это объект.
-     * @param response response data / данные ответа
-     * @returns this instance for chaining / текущий экземпляр для цепочки вызовов
-     */
+    /** Sets the last response and extracts metadata. @keywords set last response */
     setLastResponse(response?: any): this;
-    /**
-     * Sets the last status.
-     *
-     * Устанавливает последний статус.
-     * @param status status/ статус
-     * @returns this instance for chaining / текущий экземпляр для цепочки вызовов
-     */
+    /** Sets the last status type. @keywords set last status */
     setLastStatus(status?: ApiStatusType): this;
-    /**
-     * Sets the last execution code.
-     *
-     * Устанавливает последний код выполнения.
-     * @param code status code / код статуса
-     * @returns this instance for chaining / текущий экземпляр для цепочки вызовов
-     */
+    /** Sets the last execution code. @keywords set last code */
     setLastCode(code?: string): this;
-    /**
-     * Sets messages from the last request.
-     *
-     * Устанавливает сообщения от последнего запроса.
-     * @param message message text/ текст сообщения
-     * @returns this instance for chaining / текущий экземпляр для цепочки вызовов
-     */
+    /** Sets the last response message. @keywords set last message */
     setLastMessage(message?: string): this;
-    /**
-     * Sets a specific field in the status item.
-     *
-     * Устанавливает конкретное поле в элементе статуса.
-     * @param name field name/ название поля
-     * @param value field value/ значение поля
-     */
-    protected setValue<K extends keyof ApiStatusItem>(name: K, value?: ApiStatusItem[K]): void;
 }

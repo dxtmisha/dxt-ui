@@ -1,40 +1,10 @@
-// md5:319f13abb98efd4c03a1a59d48d1a6d8
-import { ApiErrorItem } from './ApiErrorItem';
-import { ApiErrorStorage } from './ApiErrorStorage';
-import { ApiErrorStorageItem, ApiMethodItem } from '../types/apiTypes';
-/**
- * Utility class for managing the API error storage and creating error items.
- * It provides a centralized way to access the error storage and wrap raw
- * responses into structured error items.
- *
- * Утилитарный класс для управления хранилищем ошибок API и создания элементов ошибок.
- * Обеспечивает централизованный способ доступа к хранилищу ошибок и оборачивания
- * сырых ответов в структурированные элементы ошибок.
- */
+// md5:2c174819262b262d3fb876c7f5ad8e00 true
+/** Manages API error storage and error items. @keywords api error storage handler */
 export declare class ApiError {
-    /**
-     * Retrieves the singleton instance of the API error storage.
-     *
-     * Возвращает синглтон-экземпляр хранилища ошибок API.
-     * @returns error storage instance / экземпляр хранилища ошибок
-     */
+    /** Gets the API error storage instance. @keywords get storage error */
     static getStorage(): ApiErrorStorage;
-    /**
-     * Adds an error item or a list of error items to the storage.
-     *
-     * Добавляет элемент ошибки или список элементов ошибок в хранилище.
-     * @param item error item or list of error items / элемент ошибки или список элементов ошибок
-     * @param url URL pattern or RegExp / шаблон URL или регулярное выражение
-     * @param method HTTP method of the request / HTTP-метод запроса
-     */
+    /** Adds error items to storage. @keywords add error item */
     static add(item: Partial<ApiErrorStorageItem> | Partial<ApiErrorStorageItem>[], url?: string | RegExp, method?: ApiMethodItem): void;
-    /**
-     * Creates an ApiErrorItem by matching the response against stored error criteria.
-     *
-     * Создает ApiErrorItem путем сопоставления ответа с сохраненными критериями ошибок.
-     * @param method HTTP method of the request / HTTP-метод запроса
-     * @param response raw Fetch response / сырой ответ Fetch
-     * @returns structured error item / структурированный элемент ошибки
-     */
+    /** Gets structured error item from response. @keywords get error item response */
     static getItem(method: ApiMethodItem, response: Response): Promise<ApiErrorItem>;
 }

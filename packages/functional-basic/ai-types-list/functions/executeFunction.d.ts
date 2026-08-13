@@ -1,13 +1,3 @@
-// md5:786e4a1df8eeceb42d8cc199eb26cf9c
-import { FunctionArgs } from '../types/basicTypes';
-/**
- * Flexible utility that executes the provided argument if it is a function, otherwise returns it as is.
- * Supports passing arbitrary arguments to the callback.
- *
- * Универсальная утилита, которая выполняет переданный аргумент, если он является функцией, иначе возвращает его без изменений.
- * Поддерживает передачу произвольных аргументов в функцию обратного вызова.
- * @param callback function or any value / функция или любое значение
- * @param args arguments of the function / аргументы функции
- * @returns result of the execution or the value itself / результат выполнения или само значение
- */
+// md5:5e31ec04c4377e9cd4c9ec98582a589f true
+/** Executes the argument if it is a function, otherwise returns it as is. @keywords execute, function, callback */
 export declare function executeFunction<T>(callback: T | FunctionArgs<any, T>, ...args: any[]): T;

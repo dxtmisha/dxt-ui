@@ -1,111 +1,18 @@
-// md5:07a9aaf4573dbec2aa72a472235e8f34
-import { GeoPhoneValue, GeoPhoneMap, GeoPhoneMapInfo } from '../types/geoTypes';
-/**
- * A class for storing and processing phone number masks.
- *
- * Класс для хранения и обработка маски телефона.
- */
+// md5:e7be4b7059f4fb463e05e1d07594d993 true
+/** Stores and processes phone number masks @keywords geophone phone mask country code */
 export declare class GeoPhone {
-    /** Phone masks list / Список масок телефонов */
-    protected static list?: GeoPhoneValue[];
-    /** Phone codes map / Карта телефонных кодов */
-    protected static map?: Record<string, GeoPhoneMap>;
-    /**
-     * Getting an object with information about the phone code and country.
-     *
-     * Получение объекта с информацией о телефонном коде и стране.
-     * @param code country and language code/ код страны и языка
-     */
+    /** Retrieves phone info by country code @keywords get phone info country */
     static get(code: string): GeoPhoneValue | undefined;
-    /**
-     * Getting information by phone.
-     *
-     * Получение информации по телефону.
-     * @param phone phone number/ номер телефон
-     */
+    /** Retrieves phone info by phone number @keywords get by phone number */
     static getByPhone(phone: string): GeoPhoneMapInfo;
-    /**
-     * Retrieves complete mask data by country code.
-     *
-     * Получает полные данные о маске по коду страны.
-     * @param code country and language code/ код страны и языка
-     */
+    /** Retrieves mask data by country code @keywords get by code country */
     static getByCode(code: string): GeoPhoneMap | undefined;
-    /**
-     * We get an array from a list of all phone numbers.
-     *
-     * Получаем массив из списка всех телефонных кодов.
-     */
+    /** Retrieves list of all phone values @keywords get list phone values */
     static getList(): GeoPhoneValue[];
-    /**
-     * We get a map of a tree, sorted by its code.
-     *
-     * Получаем карту дерева, отсортированную по его коду.
-     */
+    /** Retrieves tree map sorted by code @keywords get map tree */
     static getMap(): Record<string, GeoPhoneMap>;
-    /**
-     * Convert to phone mask.
-     *
-     * Преобразовать в маску телефона.
-     * @param phone phone number/ номер телефон
-     * @param masks a mask to transform a phone number/ маска для преобразования номер телефон
-     */
+    /** Converts number to phone mask @keywords to mask format */
     static toMask(phone: string, masks?: string[]): string | undefined;
-    /**
-     * Deletes the country code from the input number.
-     *
-     * Удаляет код страны по входному номеру.
-     * @param phone phone number/ номер телефон
-     */
+    /** Removes country code from phone number @keywords remove zero prefix */
     static removeZero(phone: string): string;
-    /**
-     * Returns the symbol by the internal country code.
-     *
-     * Возвращает символ по коду внутри страны.
-     * @param within internal country code/ код внутри страны
-     */
-    protected static getWithinSymbol(within: number | string): string;
-    /**
-     * Deletes all characters that do not belong to the mask.
-     *
-     * Удаляет все символы, не относящиеся к маске.
-     * @param mask A mask to transform a phone number/ маска для преобразования номер телефон
-     */
-    protected static getUnnecessaryLength(mask: string): number;
-    /**
-     * Creating a list for the map.
-     *
-     * Формирование списка данных.
-     */
-    protected static makeList(): void;
-    /**
-     * Creating a map for search.
-     *
-     * Создание карты для поиска.
-     */
-    protected static makeMap(): void;
-    /**
-     * The method parses a string argument and returns an array of numbers as strings.
-     *
-     * Метод принимает строку в качестве аргумента и возвращает массив цифр в виде строк.
-     * @param value the value to parse/ текстовая строка
-     * @returns array of numbers/ массив цифр
-     */
-    protected static toNumber(value: string): string[];
-    /**
-     * Converts the phone to a standard.
-     *
-     * Преобразовывает телефон в стандарт.
-     * @param phone phone number/ номер телефон
-     * @param mask a mask to transform a phone number/ маска для преобразования номер телефон
-     */
-    protected static toStandard(phone: string, mask: string): string;
-    /**
-     * Replaces the first character with the internal country code
-     *
-     * Заменяет первый символ на код внутри страны.
-     * @param mask a mask to transform a phone number/ маска для преобразования номер телефон
-     * @param within internal country code/ код внутри страны
-     */
-    protected static toWithin(mask: string, within: number | string): string;
 }

@@ -1,9 +1,3 @@
-// md5:d6eded307ece7d80753f4d799e968d95
-/**
- * Checks if the element is an input field or editable.
- *
- * Проверяет, является ли элемент полем ввода или редактируемым.
- * @param element element to check/ проверяемый элемент
- * @returns true if input element / true, если элемент ввода
- */
+// md5:d45bb878b4ca9b9dad9be0cd8fd5607d true
+/** Checks if the element is an input field or editable. @keywords isInput input editable form @param element The element to check */
 export declare const isInput: (element: HTMLElement | EventTarget | null) => boolean;

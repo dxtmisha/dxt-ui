@@ -1,10 +1,3 @@
-// md5:9d42e6e0f421b12a69e7f640a5d05409
-/**
- * Converts values to percentages
- *
- * Преобразует значения в проценты
- * @param maxValue maximum value/ максимальное значение
- * @param value current value/ текущее значение
- * @returns percentage value / значение в процентах
- */
+// md5:f1798b9be71c92ad7f5dfac38cdd3906 true
+/** Converts values to percentages @keywords toPercent percent ratio calculate */
 export declare function toPercent(maxValue: number, value: number): number;

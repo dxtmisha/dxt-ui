@@ -1,9 +1,3 @@
-// md5:4669296ff849bbb716fc5e21ff019d4d
-/**
- * Checks if a value is an object.
- *
- * Проверяет, является ли значение объектом.
- * @param value input value/ входное значение
- * @returns true if object/ true, если объект
- */
+// md5:8169ce4dda9ae640fa4591ca9e483547 true
+/** Checks if a value is an object. @keywords isObject object type check */
 export declare function isObject<T>(value: T): value is Extract<T, Record<any, any>>;

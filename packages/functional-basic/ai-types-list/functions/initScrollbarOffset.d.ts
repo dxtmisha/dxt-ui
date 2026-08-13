@@ -1,8 +1,5 @@
-// md5:7a0864958e3ca67474665d8692cf1389
+// md5:264cb4f13d2ae2c7d3eaea2528ee73d9 true
 /**
- * Initialization of data for scroll control.
- *
- * Инициализация данных для управления скроллом.
- * @returns promise without return value / промис без возвращаемого значения
+ * Initialization of data for scroll control. @keywords init scrollbar offset layout ui
  */
 export declare function initScrollbarOffset(): Promise<void>;

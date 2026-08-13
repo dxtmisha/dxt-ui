@@ -1,9 +1,6 @@
-// md5:b14ebd2e3269155c762033ec678aabb7
-import { ObjectOrArray } from '../types/basicTypes';
+// md5:279652e0989c0c51fc2fc42f477502d1 true
 /**
- * Searches for the shortest string in the array and returns its length.
- *
- * Ищет самую короткую строку в массиве и возвращает её длину.
- * @param data array with data/ массив с данными
+ * Returns the minimum length among all string values in an object or array.
+ * @keywords getMinLengthAllArray, min_length, array, length
  */
 export declare function getMinLengthAllArray(data: ObjectOrArray<string>): number;

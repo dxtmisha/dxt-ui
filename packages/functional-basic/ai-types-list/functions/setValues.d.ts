@@ -1,16 +1,5 @@
-// md5:e9bfd97322b3e75e0bef9da6920cae42
-/**
- * Modifies data according to its type and settings.
- *
- * Изменяет данные в соответствии с их типом и настройками.
- * @param selected base values/ базовые значения
- * @param value new values/ новые значения
- * @param multiple support for multiple values/ поддержка нескольких значений
- * @param maxlength maximum values/ максимальные значения
- * @param alwaysChange updating values in any case/ обновление значений при любом случае
- * @param notEmpty do not make the values empty/ не делать значения пустыми
- * @returns modified values/ измененные значения
- */
+// md5:1d7237c022b205e3e9eface7ac6e4775 true
+/** Modifies data according to its type and settings. @keywords set values modify multiple */
 export declare function setValues<T>(selected: T | T[] | undefined, value: any, { multiple, maxlength, alwaysChange, notEmpty }: {
     multiple?: boolean | undefined;
     maxlength?: number | undefined;

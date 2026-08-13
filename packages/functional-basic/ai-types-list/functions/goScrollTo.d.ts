@@ -1,11 +1,3 @@
-// md5:8ed853868c92f8fd6f482988747aa8f9
-/**
- * Scrolls the container to make the target element visible.
- *
- * Прокручивает контейнер, чтобы целевой элемент стал видимым.
- * @param element container element/ элемент контейнера
- * @param elementTo target element/ целевой элемент
- * @param behavior scroll behavior/ режим прокрутки
- * @returns void / ничего не возвращает
- */
+// md5:0057a233c49d0b3fbdbbdb2760d8278e true
+/** Scrolls the container to make the target element visible. @keywords scroll container target visible @param element container element @param elementTo target element @param behavior scroll behavior */
 export declare function goScrollTo(element?: HTMLElement, elementTo?: HTMLElement, behavior?: ScrollBehavior): void;

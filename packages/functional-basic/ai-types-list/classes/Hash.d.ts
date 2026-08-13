@@ -1,58 +1,16 @@
-// md5:8139ea127913cb29040ba6a03aa8d43b
-import { HashInstance } from './HashInstance';
-/**
- * Static class for working with data stored in the URL hash.
- * Provides a centralized interface delegating to HashInstance.
- *
- * Статический класс для работы с данными, сохранёнными в хеше URL.
- * Предоставляет централизованный интерфейс, делегируя вызовы HashInstance.
- */
+// md5:f3a9a9a523e6d0c2a38f3e53ffbaa669 true
+/** Static class for working with URL hash data. @keywords hash, url, parameters, state */
 export declare class Hash {
-    /**
-     * Returns a request-isolated instance of HashInstance.
-     *
-     * Возвращает изолированный в рамках запроса экземпляр HashInstance.
-     * @returns HashInstance instance / экземпляр HashInstance
-     */
+    /** Returns HashInstance item. @keywords get, instance, item */
     static getItem(): HashInstance;
-    /**
-     * Get data from hash.
-     *
-     * Получение данных из хэша.
-     * @param name variable name / название переменной
-     * @param defaultValue value or function to change data / значение или функция для изменения данных
-     * @returns stored value / сохранённое значение
-     */
+    /** Gets value by name from hash. @keywords get, read, value */
     static get<T>(name: string, defaultValue?: T | (() => T)): T;
-    /**
-     * Change data in hash.
-     *
-     * Изменение данных в хэше.
-     * @param name variable name / название переменной
-     * @param callback value or function to change data / значение или функция для изменения данных
-     */
+    /** Sets value by name in hash. @keywords set, write, update */
     static set<T>(name: string, callback: T | (() => T)): void;
-    /**
-     * Adding an event when data is changed.
-     *
-     * Добавление события при изменении данных.
-     * @param name variable name / название переменной
-     * @param callback the function is called when the data is changed / функция вызывается при изменении данных
-     */
+    /** Adds watch callback for hash property. @keywords watch, event, listener, add */
     static addWatch<T>(name: string, callback: (value: T) => void): void;
-    /**
-     * Removing an event when data is changed.
-     *
-     * Удаление события при изменении данных.
-     * @param name variable name / название переменной
-     * @param callback the function is called when the data is changed / функция вызывается при изменении данных
-     */
+    /** Removes watch callback for hash property. @keywords watch, event, listener, remove */
     static removeWatch<T>(name: string, callback: (value: T) => void): void;
-    /**
-     * Update hash variable from URL string.
-     *
-     * Обновление переменной хэша из строки URL.
-     * @returns void / ничего не возвращает
-     */
+    /** Reloads hash state. @keywords reload, refresh, update */
     static reload(): void;
 }

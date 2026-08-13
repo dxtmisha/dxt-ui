@@ -1,11 +1,3 @@
-// md5:02e395ff5032de1c60e9c3e36c4d93e6
-import { ObjectOrArray } from '../types/basicTypes';
-/**
- * Returns an array of values for a specific column in the input array.
- *
- * Возвращает массив значений для определенного столбца входного массива.
- * @param array a multi-dimensional array or an array of objects / многомерный массив или массив объектов
- * @param column the column of values to return / ключ столбца, значения которого нужно вернуть
- * @returns list of values for the column / список значений для столбца
- */
+// md5:edea2aa75de7ca7c85fd0bffe7873fc2 true
+/** Returns column values from an array or object. @keywords get_column, column, array */
 export declare function getColumn<T, K extends keyof T>(array: ObjectOrArray<T>, column: K): (T[K] | undefined)[];

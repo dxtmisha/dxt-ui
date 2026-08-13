@@ -1,10 +1,3 @@
-// md5:5da3892282339b297e52ed9ce3d7fdcb
-/**
- * Generates a safe script tag for data hydration.
- *
- * Генерирует безопасный тег скрипта для гидратации данных.
- * @param id script tag ID / ID тега скрипта
- * @param data data to be stored / данные для хранения
- * @returns generated script tag string / сгенерированная строка тега скрипта
- */
+// md5:6d278e98d2ed00148b2c44f987265cb0 true
+/** Generates a safe script tag for data hydration. @keywords hydration script tag data @param id script tag ID @param data data to be stored */
 export declare function getElementSafeScript(id: string, data: any): string;

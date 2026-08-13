@@ -1,13 +1,6 @@
-// md5:612c8a4aa0a0a0139ced293d5f82024b
+// md5:cb709441304263efe35a3d1daa8754df true
 /**
- * Generates text.
- *
- * Генерирует текст.
- * @param min minimum word/ минимальное слово
- * @param max maximum word/ максимальное слово
- * @param symbol symbol for replacing a letter/ символ для замены буквы
- * @param lengthMin minimum word length/ минимальная длина слова
- * @param lengthMax maximum word length/ максимальная длина слова
- * @returns generated text/ сгенерированный текст
+ * Generates random text.
+ * @keywords generate text random string
  */
 export declare function getRandomText(min: number, max: number, symbol?: string, lengthMin?: number, lengthMax?: number): string;

@@ -1,190 +1,52 @@
-// md5:fc8ca5e8ff342a20afffbf353abfaf09
-import { MetaManager } from './MetaManager';
-import { MetaOg } from './MetaOg';
-import { MetaTwitter } from './MetaTwitter';
-import { MetaRobots, MetaTag } from '../types/metaTypes';
-/**
- * Unified class for managing all types of meta tags (standard HTML, Open Graph, Twitter Card).
- *
- * Унифицированный класс для управления всеми типами мета-тегов (стандартные HTML, Open Graph, Twitter Card).
- */
+// md5:21a81095e4f8eef8d979333c30970526 true
+/** Unified class for managing all types of meta tags. @keywords meta, seo, openGraph, twitter */
 export declare class Meta extends MetaManager<MetaTag[]> {
-    /** Page title suffix / Суффикс заголовка страницы */
-    protected suffix?: string;
-    /** Open Graph meta instance / Экземпляр мета-тегов Open Graph */
-    protected og: MetaOg;
-    /** Twitter Card meta instance / Экземпляр мета-тегов Twitter Card */
-    protected twitter: MetaTwitter;
-    /**
-     * Creates an instance of Meta with integrated Open Graph and Twitter Card support.
-     *
-     * Создает экземпляр Meta с интегрированной поддержкой Open Graph и Twitter Card.
-     */
+    /** Creates an instance of Meta with integrated Open Graph and Twitter Card support. @keywords meta, constructor */
     constructor();
-    /**
-     * Gets the MetaOg instance for advanced Open Graph operations.
-     *
-     * Получает экземпляр MetaOg для расширенных операций с Open Graph.
-     */
+    /** Gets the MetaOg instance for advanced Open Graph operations. @keywords og, openGraph */
     getOg(): MetaOg;
-    /**
-     * Gets the MetaTwitter instance for advanced Twitter Card operations.
-     *
-     * Получает экземпляр MetaTwitter для расширенных операций с Twitter Card.
-     */
+    /** Gets the MetaTwitter instance for advanced Twitter Card operations. @keywords twitter, card */
     getTwitter(): MetaTwitter;
-    /**
-     * Gets the page title without suffix.
-     *
-     * Получает заголовок страницы без суффикса.
-     * @returns title without suffix/ заголовок без суффикса
-     */
+    /** Gets the page title without suffix. @keywords title, get */
     getTitle(): string;
-    /**
-     * Gets the keywords meta tag.
-     *
-     * Получает мета-тег keywords.
-     * @returns keywords content/ содержимое keywords
-     */
+    /** Gets the keywords meta tag. @keywords keywords, seo */
     getKeywords(): string;
-    /**
-     * Gets the description meta tag.
-     *
-     * Получает мета-тег description.
-     * @returns description content / содержимое description
-     */
+    /** Gets the description meta tag. @keywords description, seo */
     getDescription(): string;
-    /**
-     * Gets the Open Graph image URL.
-     *
-     * Получает URL изображения Open Graph.
-     * @returns image URL / URL изображения
-     */
+    /** Gets the Open Graph image URL. @keywords image, og */
     getImage(): string;
-    /**
-     * Gets the canonical URL.
-     *
-     * Получает канонический URL.
-     * @returns canonical URL / канонический URL
-     */
+    /** Gets the canonical URL. @keywords canonical, url */
     getCanonical(): string;
-    /**
-     * Gets the robots meta tag value.
-     *
-     * Получает значение мета-тега robots.
-     * @returns robots directive/ директива robots
-     */
+    /** Gets the robots meta tag value. @keywords robots, index */
     getRobots(): MetaRobots;
-    /**
-     * Gets the author meta tag.
-     *
-     * Получает мета-тег author.
-     * @returns author name / имя автора
-     */
+    /** Gets the author meta tag. @keywords author, meta */
     getAuthor(): string;
-    /**
-     * Gets the Open Graph site name.
-     *
-     * Получает название сайта Open Graph.
-     * @returns site name / название сайта
-     */
+    /** Gets the Open Graph site name. @keywords siteName, og */
     getSiteName(): string;
-    /**
-     * Gets the Open Graph locale.
-     *
-     * Получает локаль Open Graph.
-     * @returns locale / локаль
-     */
+    /** Gets the Open Graph locale. @keywords locale, og */
     getLocale(): string;
-    /**
-     * Sets the page title (with suffix) and updates Open Graph and Twitter Card titles.
-     *
-     * Устанавливает заголовок страницы (с суффиксом) и обновляет заголовки Open Graph и Twitter Card.
-     * @param title page title / заголовок страницы
-     */
+    /** Sets the page title (with suffix) and updates Open Graph and Twitter Card titles. @keywords title, set */
     setTitle(title: string): this;
-    /**
-     * Sets the keywords meta tag.
-     *
-     * Устанавливает мета-тег keywords.
-     * @param keywords keywords as string or array / ключевые слова в виде строки или массива
-     */
+    /** Sets the keywords meta tag. @keywords keywords, set */
     setKeywords(keywords: string | string[]): this;
-    /**
-     * Sets the description meta tag.
-     *
-     * Устанавливает мета-тег description.
-     * @param description page description / описание страницы
-     */
+    /** Sets the description meta tag. @keywords description, set */
     setDescription(description: string): this;
-    /**
-     * Sets the image for Open Graph and Twitter Card.
-     *
-     * Устанавливает изображение для Open Graph и Twitter Card.
-     * @param image image URL / URL изображения
-     */
+    /** Sets the image for Open Graph and Twitter Card. @keywords image, set */
     setImage(image: string): this;
-    /**
-     * Sets the canonical URL and updates Open Graph and Twitter Card URLs.
-     *
-     * Устанавливает канонический URL и обновляет URL для Open Graph и Twitter Card.
-     * @param canonical canonical URL / канонический URL
-     */
+    /** Sets the canonical URL and updates Open Graph and Twitter Card URLs. @keywords canonical, set */
     setCanonical(canonical: string): this;
-    /**
-     * Sets the robots meta tag.
-     *
-     * Устанавливает мета-тег robots.
-     * @param robots robots directive / директива robots
-     */
+    /** Sets the robots meta tag. @keywords robots, set */
     setRobots(robots: MetaRobots): this;
-    /**
-     * Sets the author meta tag.
-     *
-     * Устанавливает мета-тег author.
-     * @param author author name / имя автора
-     */
+    /** Sets the author meta tag. @keywords author, set */
     setAuthor(author: string): this;
-    /**
-     * Sets the site name for Open Graph and Twitter Card.
-     *
-     * Устанавливает название сайта для Open Graph и Twitter Card.
-     * @param siteName site name / название сайта
-     */
+    /** Sets the site name for Open Graph and Twitter Card. @keywords siteName, set */
     setSiteName(siteName: string): this;
-    /**
-     * Sets the locale for Open Graph.
-     *
-     * Устанавливает локаль для Open Graph.
-     * @param locale locale (e.g. 'en_US', 'ru_RU') / локаль (например, 'en_US', 'ru_RU')
-     */
+    /** Sets the locale for Open Graph. @keywords locale, set */
     setLocale(locale: string): this;
-    /**
-     * Sets the suffix to append to page title.
-     *
-     * Устанавливает суффикс для добавления к заголовку страницы.
-     * @param suffix title suffix (e.g. 'My Site') / суффикс заголовка (например, 'Мой Сайт')
-     * @returns void / ничего не возвращает
-     */
+    /** Sets the suffix to append to page title. @keywords suffix, title */
     setSuffix(suffix?: string): void;
-    /**
-     * Generates the complete HTML for all meta-tags including Open Graph and Twitter Card.
-     *
-     * Генерирует полный HTML для всех мета-тегов, включая Open Graph и Twitter Card.
-     * @returns complete HTML string/ полная HTML-строка
-     */
+    /** Generates the complete HTML for all meta-tags including Open Graph and Twitter Card. @keywords html, render */
     html(): string;
-    /**
-     * Generates the title as an HTML-safe string.
-     *
-     * Генерирует заголовок в виде HTML-безопасной строки.
-     * @returns title HTML-safe string / HTML-безопасная строка заголовка
-     */
+    /** Generates the title as an HTML-safe string. @keywords html, title */
     htmlTitle(): string;
-    /**
-     * Gets the formatted suffix with separator.
-     *
-     * Получает отформатированный суффикс с разделителем.
-     */
-    protected getSuffix(): string;
 }

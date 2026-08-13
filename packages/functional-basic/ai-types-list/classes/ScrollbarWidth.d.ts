@@ -1,53 +1,14 @@
-// md5:dd02d5a1aa07172ec75eb0746fb9628d
-import { DataStorage } from './DataStorage';
-/**
- * Class for getting the scroll width.
- *
- * Класс для получения ширины скролла.
- */
+// md5:3b09133e825a2ec80bbdbdca589ddb5e true
+/** Scrollbar width helper utility @keywords scrollbar, width, scroll */
 export declare class ScrollbarWidth {
-    /** Calculation state flag / Флаг состояния вычисления */
-    private static calculate;
-    /**
-     * Checks whether to enable scroll hiding.
-     *
-     * Проверяет, надо ли включить скрытие скролла.
-     * @returns boolean indicating if scroll hiding is enabled/ логическое значение, указывающее, включено ли скрытие скролла
-     */
+    /** Checks whether to enable scroll hiding @keywords scrollbar, hide, check */
     static is(): Promise<boolean>;
-    /**
-     * Returns the width of the scroll.
-     *
-     * Возвращает ширину скролла.
-     * @returns scrollbar width in pixels/ ширина скролла в пикселях
-     */
+    /** Returns the width of the scroll @keywords scrollbar, width, size */
     static get(): Promise<number>;
-    /**
-     * Returns the storage for scroll width.
-     *
-     * Возвращает хранилище для ширины скролла.
-     * @returns DataStorage instance/ экземпляр DataStorage
-     */
+    /** Returns the storage for scroll width @keywords scrollbar, storage */
     static getStorage(): DataStorage<number>;
-    /**
-     * Returns the calculate flag, indicating if width calculation is in progress.
-     *
-     * Возвращает флаг вычисления, указывающий, идет ли расчет ширины.
-     * @returns calculation flag/ флаг вычисления
-     */
+    /** Returns the calculation flag @keywords scrollbar, calculate, state */
     static getCalculate(): boolean;
-    /**
-     * Creates elements to check the width of the scroll.
-     *
-     * Создает элементы для проверки ширины скролла.
-     * @returns created element / созданный элемент
-     */
-    private static createElement;
-    /**
-     * Initialization of data to check the width of the scroll.
-     *
-     * Инициализация данных для проверки ширины скролла.
-     * @returns a promise that resolves with the scrollbar width / промис, который разрешается шириной скролла
-     */
-    private static init;
+    /** Creates elements to check the width of the scroll @keywords scrollbar, element, create */
+    static createElement(): HTMLElement | void;
 }

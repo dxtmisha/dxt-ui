@@ -1,10 +1,3 @@
-// md5:456b618a7980458b00defb5b304a959d
-/**
- * Copies a simple object.
- *
- * Копирует простой объект.
- * @param value object for copying / объект для копирования
- * @param source additional properties for copying / дополнительные свойства для копирования
- * @returns returns a new copy of the object / возвращает новую копию объекта
- */
+// md5:18d19d06c798fe1a1738bf11a1756eab true
+/** Copies a simple object. @keywords copy object lite clone @param value Object for copying @param source Additional properties for copying */
 export declare function copyObjectLite<T, R = T>(value: T, source?: any): R;

@@ -1,20 +1,3 @@
-// md5:d5287afcf4d8151f119ed583a8ad687c
-import { NumberOrString } from '../types/basicTypes';
-/**
- * Converts a string or number to a finite floating-point number.
- * Handles various separators (spaces, commas, dots) and strips non-numeric characters.
- * Safe for use in SSR (Server-Side Rendering) environments.
- *
- * Преобразует строку или число в конечное число с плавающей точкой.
- * Обрабатывает различные разделители (пробелы, запятые, точки) и удаляет нечисловые символы.
- * Безопасно для использования в SSR (Server-Side Rendering) средах.
- *
- * @param value - The input value to convert / Входное значение для преобразования
- * @returns The parsed number or 0 if conversion fails / Распарсенное число или 0, если конвертация не удалась
- *
- * @example
- * toNumber("1 234,56") // 1234.56
- * toNumber("1,234.56") // 1234.56
- * toNumber("1,234")    // 1.234
- */
+// md5:faad8c1e12ca5129686fe94b424f923d true
+/** Converts a value to a finite number @keywords number, parse, float, toNumber */
 export declare function toNumber(value?: NumberOrString): number;

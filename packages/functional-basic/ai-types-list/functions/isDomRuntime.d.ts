@@ -1,11 +1,3 @@
-// md5:d8a3bfbbafaa13c56d068692b8185ae9
-/**
- * Проверяет, выполняется ли код в браузере, где доступен объект `window`.
- * Возвращает `true`, если `window` доступен, что означает, что код выполняется в браузере.
- *
- * Checks if the code is running in a browser where the `window` object is available.
- * Returns `true` if `window` is defined, indicating the code is running in a browser.
- *
- * @returns `true`, если выполняется в браузере, иначе `false`/ `true` if running in a browser, otherwise `false`
- */
+// md5:d1d6bc1fc6dd80128693d8b6967f971a true
+/** Checks if code is running in a browser environment with window available. @keywords dom runtime browser window */
 export declare function isDomRuntime(): boolean;

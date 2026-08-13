@@ -1,10 +1,3 @@
-// md5:bc78b0606499108e7d39445b85355164
-import { ImageCoordinator } from '../types/basicTypes';
-/**
- * Returns the position of the mouse cursor or the location of the click.
- *
- * Возвращает позицию курсора мыши или место нажатия.
- * @param event event object/ объект события
- * @returns coordinates of the mouse cursor / координаты курсора мыши
- */
+// md5:aa1e5497f9947b6c8c4cd2ba2e0d6805 true
+/** Returns mouse client coordinates from event. @keywords mouse, coordinates, clientX, clientY */
 export declare function getMouseClient(event: MouseEvent & TouchEvent): ImageCoordinator;

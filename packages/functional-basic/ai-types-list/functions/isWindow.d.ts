@@ -1,8 +1,3 @@
-// md5:493a36d24e5a173f097ea975f1ea49ae
-/**
- * Checks if object is Window.
- *
- * Проверяет, является ли объект Window.
- * @param element selectors for matching or an Element/ селекторов для сопоставления или Element
- */
+// md5:2d03a35fb5a3c4312474e8e796b5c490 true
+/** Checks if object is Window. @keywords isWindow window dom */
 export declare function isWindow<E>(element: E): element is Extract<E, Window>;

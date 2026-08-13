@@ -1,9 +1,7 @@
-// md5:e25193df52bc35677e894b74c0455098
+// md5:9013230fd448779ab9fe12899e449540 true
 /**
  * Returns the last element of an array or object.
- *
- * Возвращает последний элемент массива или объекта.
- * @param value input value / входное значение
- * @returns last element of the array or object / последний элемент массива или объекта
+ * @keywords last, element, array, object
+ * @param value input value
  */
 export declare function getLast<T>(value: T | T[] | Record<string, T>): T | undefined;

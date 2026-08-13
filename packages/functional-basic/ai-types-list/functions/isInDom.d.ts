@@ -1,10 +1,6 @@
-// md5:f0054661dbcc70835e328ed66995c6a6
-import { ElementOrString, ElementOrWindow } from '../types/basicTypes';
+// md5:77984c3c7ff5fafedbe8fcd8085ac88f true
 /**
  * Checks if an element is still in the DOM tree.
- *
- * Проверяет, находится ли еще элемент в дереве DOM.
- * @param element selectors for matching or an Element/ селекторов для сопоставления или Element
- * @returns true if in DOM / true, если в DOM
+ * @keywords isInDom dom element check connected
  */
 export declare function isInDom<E extends ElementOrWindow>(element?: ElementOrString<E>): boolean;

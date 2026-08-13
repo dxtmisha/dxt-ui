@@ -1,22 +1,3 @@
-// md5:0dbf499f69f50cbdaaf99331a367dffd
-/**
- * Преобразует строку в соответствующий тип данных.
- * В зависимости от содержания строки, она может быть преобразована в
- * `undefined`, `null`, `true`, `false`, объект, число или функцию.
- *
- * Transforms a string into the corresponding data type.
- * Based on the string content, it may be transformed into `undefined`,
- * `null`, `true`, `false`, object, number, or function.
- *
- * @param value - Значение, которое необходимо преобразовать
- *
- * The value to be transformed
- * @param isFunction - Флаг, который указывает, необходимо ли проверять функцию
- * в глобальном объекте window
- *
- * A flag that indicates whether to check for a function in the global window object
- * @returns Преобразованное значение
- *
- * The transformed value
- */
+// md5:1d506b77d9b0515de327a47b476c08b2 true
+/** Transforms a string or value into its corresponding data type. @keywords transformation, parse, cast, data_type */
 export declare function transformation(value: any, isFunction?: boolean): any;

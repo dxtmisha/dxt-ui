@@ -1,87 +1,24 @@
-// md5:634bf372de5d4d7a6ceba3f84213f6cd
-import { ErrorCenterInstance } from './ErrorCenterInstance';
-import { ErrorCenterCauseItem, ErrorCenterCauseList, ErrorCenterGroup, ErrorCenterHandlerCallback, ErrorCenterHandlerIsConsole, ErrorCenterHandlerList } from '../types/errorCenterTypes';
-/**
- * Class for managing error storage and handling.
- *
- * Класс для управления хранилищем ошибок и их обработкой.
- */
+// md5:8533cfc1c0e0242583dec5ebb402532b true
+/** Error management and storage class @keywords error center handler */
 export declare class ErrorCenter {
-    /** Instance of the error center / Экземпляр центра ошибок */
-    protected static item: ErrorCenterInstance;
-    /**
-     * Returns a request-isolated instance of ErrorCenterInstance.
-     *
-     * Возвращает изолированный в рамках запроса экземпляр ErrorCenterInstance.
-     * @returns ErrorCenterInstance instance / экземпляр ErrorCenterInstance
-     */
+    /** Returns request-isolated ErrorCenterInstance @keywords get item instance */
     static getItem(): ErrorCenterInstance;
-    /**
-     * Checks if a cause with specific code exists.
-     *
-     * Проверяет наличие причины с конкретным кодом.
-     * @param code error code / код ошибки
-     * @param group error group / группа ошибки
-     * @returns true if cause exists / true, если причина существует
-     */
+    /** Checks if error cause exists @keywords has check error */
     static has(code: string, group?: string): boolean;
-    /**
-     * Gets a specific error cause by code and group.
-     *
-     * Получает конкретную причину ошибки по коду и группе.
-     * @param code error code / код ошибки
-     * @param group error group / группа ошибки
-     * @returns error cause item or undefined / элемент причины ошибки или undefined
-     */
+    /** Gets specific error cause @keywords get error cause */
     static get(code: string, group?: string): ErrorCenterCauseItem | undefined;
-    /**
-     * Adds an error cause to the storage.
-     *
-     * Добавляет причину ошибки в хранилище.
-     * @param cause error cause item / элемент причины ошибки
-     */
+    /** Adds error cause @keywords add error cause */
     static add(cause: ErrorCenterCauseItem): void;
-    /**
-     * Adds a list of error causes to the storage.
-     *
-     * Добавляет список причин ошибок в хранилище.
-     * @param causes error causes list / список причин ошибок
-     */
+    /** Adds list of error causes @keywords add list causes */
     static addList(causes: ErrorCenterCauseList): void;
-    /**
-     * Registers a new handler.
-     *
-     * Регистрирует новый обработчик.
-     * @param group target group / целевая группа
-     * @param handler handler callback / обратный вызов обработчика
-     */
+    /** Registers error handler @keywords add handler */
     static addHandler(group: ErrorCenterGroup, handler: ErrorCenterHandlerCallback): void;
-    /**
-     * Registers a list of handlers.
-     *
-     * Регистрирует список обработчиков.
-     * @param handlers handlers list / список обработчиков
-     */
+    /** Registers list of error handlers @keywords add handler list */
     static addHandlerList(handlers: ErrorCenterHandlerList): void;
-    /**
-     * Adds a callback to be executed on any error.
-     *
-     * Добавляет обратный вызов, который будет выполняться при любой ошибке.
-     * @param callback callback function / функция обратного вызова
-     */
+    /** Adds global error callback @keywords add callback */
     static addCallback(callback: ErrorCenterHandlerCallback): void;
-    /**
-     * Sets console output flag or filter function.
-     *
-     * Устанавливает флаг или функцию фильтрации вывода в консоль.
-     * @param isConsole console output flag or filter function / флаг или функция вывода в консоль
-     */
+    /** Sets console output configuration @keywords set console */
     static setIsConsole(isConsole: ErrorCenterHandlerIsConsole): void;
-    /**
-     * Triggers error handling for a group.
-     *
-     * Вызывает обработку ошибки для группы.
-     * @param cause error cause details / детали причины ошибки
-     */
+    /** Triggers error event handling @keywords on error */
     static on(cause: ErrorCenterCauseItem): void;
 }

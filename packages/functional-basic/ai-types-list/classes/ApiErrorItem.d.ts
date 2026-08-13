@@ -1,71 +1,18 @@
-// md5:6e10a6919495639cc22c8c89962d3b2c
-import { ApiErrorStorageItem, ApiMethodItem } from '../types/apiTypes';
-/**
- * Class for managing and extracting data from an API error response.
- * It encapsulates the request method, raw response, and identified error criteria,
- * providing unified methods to retrieve error codes, messages, and status.
- *
- * Класс для управления и извлечения данных из ответа об ошибке API.
- * Инкапсулирует метод запроса, сырой ответ и идентифицированные критерии ошибки,
- * предоставляя единые методы для получения кодов ошибок, сообщений и статуса.
- */
+// md5:96fcc1ff87ca2956b380d1c83a4c256f true
+/** Retrieves or manages API error response details. @keywords api error item response status */
 export declare class ApiErrorItem {
-    protected readonly method: ApiMethodItem;
-    protected readonly response: Response;
-    protected readonly error: ApiErrorStorageItem;
-    /** Cached JSON response body / Кэшированное тело ответа JSON */
-    protected jsonResponse: any | undefined;
-    /**
-     * Constructor for ApiErrorItem.
-     *
-     * Конструктор для ApiErrorItem.
-     * @param method HTTP method used for the request / HTTP-метод, использованный для запроса
-     * @param response raw Fetch response object / сырой объект ответа Fetch
-     * @param error matched error item from storage (optional) / найденный элемент ошибки из хранилища (опционально)
-     */
+    /** Creates an instance of ApiErrorItem. @keywords create constructor api error item */
     constructor(method: ApiMethodItem, response: Response, error: ApiErrorStorageItem);
-    /**
-     * Returns the HTTP method used for the request.
-     *
-     * Возвращает HTTP-метод, использованный для запроса.
-     * @returns HTTP method / HTTP-метод
-     */
+    /** Gets the HTTP request method. @keywords get method http */
     getMethod(): ApiMethodItem;
-    /**
-     * Returns the raw Fetch response object.
-     *
-     * Возвращает сырой объект ответа Fetch.
-     * @returns Fetch response / ответ Fetch
-     */
+    /** Gets the raw fetch response object. @keywords get response fetch */
     getResponse(): Response;
-    /**
-     * Returns the identified error item from storage if it exists.
-     *
-     * Возвращает идентифицированный элемент ошибки из хранилища, если он существует.
-     * @returns error item or undefined / элемент ошибки или undefined
-     */
+    /** Gets the matched error storage item. @keywords get error storage item */
     getError(): ApiErrorStorageItem;
-    /**
-     * Asynchronously retrieves the error code from storage or the response body.
-     *
-     * Асинхронно получает код ошибки из хранилища или тела ответа.
-     * @returns error code or undefined / код ошибки или undefined
-     */
+    /** Gets the error code. @keywords get error code */
     getCode(): string | undefined;
-    /**
-     * Asynchronously retrieves the error message.
-     * Checks the identified error item, the response body, or falls back to status text.
-     *
-     * Асинхронно получает сообщение об ошибке.
-     * Проверяет идентифицированный элемент ошибки, тело ответа или использует текст статуса.
-     * @returns error message or undefined / сообщение об ошибке или undefined
-     */
+    /** Gets the error message. @keywords get error message */
     getMessage(): string | undefined;
-    /**
-     * Returns the HTTP status code of the response.
-     *
-     * Возвращает код статуса HTTP ответа.
-     * @returns status code / код статуса
-     */
+    /** Gets the HTTP response status code. @keywords get status code */
     getStatus(): number;
 }

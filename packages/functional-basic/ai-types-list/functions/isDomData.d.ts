@@ -1,8 +1,3 @@
-// md5:63641fcacc8b4d1ee33129ccf18c0a2c
-/**
- * Checks if the current environment is a data URL.
- *
- * Проверяет, является ли текущая среда URL-адресом данных.
- * @returns true if in data URL / true, если в data URL
- */
+// md5:ce118409c4e04d6b332e750fb19870d4 true
+/** Checks if the current environment is a data URL. @keywords isDomData, data url, dom */
 export declare function isDomData(): boolean;

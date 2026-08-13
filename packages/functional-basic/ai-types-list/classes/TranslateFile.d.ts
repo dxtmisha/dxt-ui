@@ -1,82 +1,18 @@
-// md5:ad10602f4d8e5adc413709e9bf2aec8d
-import { TranslateDataFile, TranslateDataFileList } from '../types/translateTypes';
-/**
- * Class for working with translation files.
- *
- * Класс для работы с файлами перевода.
- */
+// md5:1d71862b95fc2500767d74c0da698542 true
+/** Manages translation files and loading data @keywords translate, file, localization */
 export declare class TranslateFile {
     protected language: string | (() => string);
     protected location: string | (() => string);
-    /** List of files with translations/ Список файлов с переводами */
-    protected files: TranslateDataFile;
-    /** Data from files/ Данные из файлов */
-    protected data: Record<string, TranslateDataFileList>;
-    /**
-     * Creates an instance of the class.
-     *
-     * Создает экземпляр класса.
-     * @param data list of files/ список файлов
-     * @param language language/ язык
-     * @param location location/ местоположение
-     */
+    /** Creates an instance of the class. @keywords constructor, translate */
     constructor(data?: TranslateDataFile, language?: string | (() => string), location?: string | (() => string));
-    /**
-     * Checks if there are files for the current location or language.
-     *
-     * Проверяет, есть ли файлы для текущего местоположения или языка.
-     * @returns boolean / логическое значение
-     */
+    /** Checks if files exist for the current location or language. @keywords isFile, check, translate */
     isFile(): boolean;
-    /**
-     * Returns the location.
-     *
-     * Возвращает местоположение.
-     * @returns location / местоположение
-     */
+    /** Returns the current location. @keywords getLocation, location, translate */
     getLocation(): string;
-    /**
-     * Returns the language.
-     *
-     * Возвращает язык.
-     * @returns language / язык
-     */
+    /** Returns the current language. @keywords getLanguage, language, translate */
     getLanguage(): string;
-    /**
-     * Returns a list of translations from the file for the current location.
-     *
-     * Возвращает список переводов из файла для текущего местоположения.
-     * @returns promise with list of translations / промис со списком переводов
-     */
+    /** Returns translation list for the current location. @keywords getList, translations, load */
     getList(): Promise<TranslateDataFileList | undefined>;
-    /**
-     * Adds a list of files with translations.
-     *
-     * Добавляет список файлов с переводами.
-     * @param data list of files/ список файлов
-     */
+    /** Adds a list of translation files. @keywords add, files, translate */
     add(data: TranslateDataFile): void;
-    /**
-     * Returns the key for the current location from the list of files.
-     *
-     * Возвращает ключ для текущего местоположения из списка файлов.
-     * @returns file key or undefined / ключ файла или undefined
-     */
-    protected getIndex(): string | undefined;
-    /**
-     * Returns a list of translations from the cache.
-     *
-     * Возвращает список переводов из кэша.
-     * @param index file key/ ключ файла
-     * @returns list of translations or undefined / список переводов или undefined
-     */
-    protected getByData(index: string): TranslateDataFileList | undefined;
-    /**
-     * Returns a list of translations from the file and caches the result.
-     *
-     * Возвращает список переводов из файла и кэширует результат.
-     * @param index file key/ ключ файла
-     * @returns promise with list of translations or undefined / промис со списком переводов или undefined
-     */
-    protected getByFile(index: string): Promise<TranslateDataFileList | undefined>;
 }

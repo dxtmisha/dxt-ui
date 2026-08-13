@@ -1,10 +1,3 @@
-// md5:6caa6e7f019c64ced5bfcd7f61189eca
-/**
- * Computes the intersection of arrays using keys for comparison.
- *
- * Вычислить пересечение массивов, сравнивая ключи.
- * @param data the array with master keys to check/ основной проверяемый массив
- * @param comparison arrays to compare keys against/ массивы, с которыми идёт сравнение
- * @returns object with intersected keys/ объект с пересекающимися ключами
- */
+// md5:3d036ef3a43557cb07dd69b17c4eea70 true
+/** Computes the intersection of object keys. @keywords intersect key object */
 export declare function intersectKey<T, KT extends keyof T, C, KC extends keyof C>(data?: T, comparison?: C): Record<KT & KC, T[KT]>;

@@ -1,16 +1,3 @@
-// md5:1dff8c804895a55819e72076d4ffe5a7
-/**
- * Returns the current time in milliseconds.
- *
- * Возвращает текущее время в миллисекундах.
- *
- * @remarks
- * **Warning (SSR):** Using this function for rendering in SSR will almost certainly lead to hydration mismatches
- * because the timestamp on the server will differ from the timestamp on the client.
- *
- * **Внимание (SSR):** Использование этой функции для отрисовки в SSR практически наверняка приведет к ошибкам гидратации,
- * так как временная метка (timestamp) сервера будет отличаться от метки на стороне клиента.
- *
- * @returns current time in milliseconds / текущее время в миллисекундах
- */
+// md5:88ba641627c0f51eaa48660a1cf24513 true
+/** Returns the current time in milliseconds. @keywords getCurrentTime time milliseconds timestamp */
 export declare function getCurrentTime(): number;

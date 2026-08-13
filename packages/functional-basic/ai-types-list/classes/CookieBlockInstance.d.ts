@@ -1,25 +1,8 @@
-// md5:9cbf63c3ae2ec8b5225371945dd288b7
-/**
- * Class for changing cookie access status.
- *
- * Класс для изменения статуса доступа к куки.
- */
+// md5:4a7c1b519a24a51c670f940dc74841d4 true
+/** Cookie block instance class @keywords cookie, block, status */
 export declare class CookieBlockInstance {
-    /** Data storage for cookie block status / Хранилище данных для статуса блокировки куки */
-    private storage;
-    /**
-     * Obtaining status.
-     *
-     * Получение статуса.
-     * @returns boolean current block status/ текущий статус блокировки
-     */
+    /** Gets cookie block status @keywords get, cookie, block */
     get(): boolean;
-    /**
-     * Changing status.
-     *
-     * Изменение статуса.
-     * @param value value to be changed/ значение, на которое будет изменен
-     * @returns void / ничего не возвращает
-     */
+    /** Sets cookie block status @keywords set, cookie, block */
     set(value: boolean): void;
 }

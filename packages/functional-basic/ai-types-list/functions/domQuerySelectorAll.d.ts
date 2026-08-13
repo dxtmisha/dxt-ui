@@ -1,9 +1,3 @@
-// md5:4b46cfb805805c6a5c23fe018dc072f2
-/**
- * Selects all elements that match the specified selectors.
- *
- * Выбирает все элементы, которые соответствуют указанным селекторам.
- * @param selectors selectors / селекторы
- * @returns list of matched elements or undefined / список найденных элементов или undefined
- */
+// md5:8290b5681a38fd3007b640da735bacbe true
+/** Selects all elements matching the given CSS selector. @keywords dom query selector all list elements */
 export declare function domQuerySelectorAll<E extends Element = Element>(selectors: string): NodeListOf<E> | undefined;

@@ -1,10 +1,3 @@
-// md5:8d4466f22289bbffc5d668ce4eeea4ca
-/**
- * Returns the unit of measurement for a single step relative to the given value
- *
- * Возвращает единицу измерения одного шага относительно заданного значения
- * @param min minimum value/ минимальное значение
- * @param max maximum value/ максимальное значение
- * @returns step value / значение шага
- */
+// md5:fbeeaf78621149ffd2a3031a12f190a3 true
+/** Returns the step value relative to the given minimum and maximum. @keywords getStepValue step value minimum maximum */
 export declare function getStepValue(min: number | undefined, max: number): number;

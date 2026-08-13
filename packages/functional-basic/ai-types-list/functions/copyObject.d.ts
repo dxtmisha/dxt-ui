@@ -1,11 +1,3 @@
-// md5:9d3d41d32b7fdb158c63c1b06374f9d0
-/**
- * Creates a deep copy of an object for independent data management.
- * The goal of the method is to get a completely new separate instance of the object to avoid unwanted mutations.
- *
- * Создает глубокую копию объекта для независимого управления данными.
- * Цель метода — получить полностью новый отдельный экземпляр объекта во избежание нежелательных мутаций.
- * @param value object for copying / объект для копирования
- * @returns returns a new copy of the object / возвращает новую копию объекта
- */
+// md5:39caafdfdc144a9fe14a41f7695b2a29 true
+/** Creates a deep copy of an object. @keywords copy clone object mutate */
 export declare function copyObject<T>(value: T): T;

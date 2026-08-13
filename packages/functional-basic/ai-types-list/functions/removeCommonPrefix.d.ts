@@ -1,10 +1,3 @@
-// md5:98557d033ecc9ea7f97abf030edfc836
-/**
- * Removes the common prefix from the main string.
- *
- * Убирает общий префикс из основной строки.
- * @param mainStr - The main string / Основная строка
- * @param prefix - The prefix string to remove / Строка префикса для удаления
- * @returns string without prefix / строка без префикса
- */
+// md5:893a03ded5b92ebd034cb124967ec2b6 true
+/** Removes common prefix from string. @keywords remove_prefix string */
 export declare function removeCommonPrefix(mainStr: string, prefix: string): string;

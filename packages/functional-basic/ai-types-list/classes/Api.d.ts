@@ -1,210 +1,54 @@
-// md5:49e7009d2a6463705824340156566959
-import { ApiInstance } from './ApiInstance';
-import { ApiConfig, ApiDefaultValue, ApiFetch, ApiHeadersValue, ApiMethodItem, ApiPreparationEnd } from '../types/apiTypes';
-import { ApiStatus } from './ApiStatus';
-import { ApiResponse } from './ApiResponse';
-import { ApiHydration } from './ApiHydration';
-/**
- * Class for working with HTTP requests.
- *
- * Класс для работы с HTTP-запросами.
- */
+// md5:6b28e9b75c79c5c3ee9ba17825867aa0 true
+/** Check if server runs on localhost @keywords api, localhost */
 export declare class Api {
-    /**
-     * Checks if the server is running on localhost.
-     *
-     * Проверяет, работает ли сервер на localhost.
-     * @returns true if server is localhost / true, если сервер является локальным
-     */
+    /** Check if server is running on localhost. @keywords api, localhost */
     static isLocalhost(): boolean;
-    /**
-     * Returns the singleton instance of the ApiInstance class.
-     *
-     * Возвращает синглтон-экземпляр класса ApiInstance.
-     * @returns ApiInstance singleton / синглтон ApiInstance
-     */
+    /** Get ApiInstance singleton. @keywords api, instance */
     static getItem(): ApiInstance;
-    /**
-     * Returns the status of the last request.
-     *
-     * Возвращает статус последнего запроса.
-     * @returns ApiStatus instance / экземпляр ApiStatus
-     */
+    /** Get last request status. @keywords api, status */
     static getStatus(): ApiStatus;
-    /**
-     * Gets the response handler.
-     *
-     * Получает обработчик ответа.
-     * @returns ApiResponse instance / экземпляр ApiResponse
-     */
+    /** Get response handler. @keywords api, response */
     static getResponse(): ApiResponse;
-    /**
-     * Gets the hydration handler.
-     *
-     * Получает обработчик гидратации.
-     * @returns ApiHydration instance / экземпляр ApiHydration
-     */
+    /** Get hydration handler. @keywords api, hydration */
     static getHydration(): ApiHydration;
-    /**
-     * Returns a string representation of the hydration data for the client.
-     *
-     * Возвращает строковое представление данных гидратации для клиента.
-     * @returns HTML script element string / строка HTML элемента script
-     */
+    /** Get hydration data script string. @keywords api, hydration, script */
     static getHydrationScript(): string;
-    /**
-     * Gets the base origin URL combined with the API path.
-     *
-     * Получает базовый URL источника, объединенный с путем API.
-     * @returns final base URL string / итоговая строка базового URL
-     */
+    /** Get base origin URL. @keywords api, origin, url */
     static getOrigin(): string;
-    /**
-     * Gets the full path to the request script.
-     *
-     * Получает полный путь к скрипту запроса.
-     * @param path path to the script / путь к скрипту
-     * @param api whether to prepend base API URL / нужно ли добавить базовый URL API
-     * @returns full URL / полный URL
-     */
+    /** Get full request URL. @keywords api, url */
     static getUrl(path: string, api?: boolean): string;
-    /**
-     * Gets data for the request body.
-     *
-     * Получает данные для тела запроса.
-     * @param request request data / данные запроса
-     * @param method HTTP method / HTTP метод
-     * @returns body data for non-GET requests or FormData / данные тела для не-GET запросов или FormData
-     */
+    /** Get request body data. @keywords api, body, request */
     static getBody(request?: ApiFetch['request'], method?: ApiMethodItem): string | FormData | undefined;
-    /**
-     * Gets query string for GET method requests.
-     *
-     * Получает строку запроса для GET-методов.
-     * @param request request data / данные запроса
-     * @param path path to request / путь к запросу
-     * @param method HTTP method / HTTP метод
-     * @returns query string for GET requests / строка запроса для GET-запросов
-     */
+    /** Get query string for GET requests. @keywords api, query, get */
     static getBodyForGet(request: ApiFetch['request'], path?: string, method?: ApiMethodItem): string;
-    /**
-     * Modifies the default header data.
-     *
-     * Изменяет данные заголовка по умолчанию.
-     * @param headers default headers / заголовки по умолчанию
-     * @returns void / ничего не возвращает
-     */
+    /** Set default headers. @keywords api, headers */
     static setHeaders(headers: ApiHeadersValue): void;
-    /**
-     * Modifies the default request data.
-     *
-     * Изменяет данные запроса по умолчанию.
-     * @param request default request data / данные запроса по умолчанию
-     * @returns void / ничего не возвращает
-     */
+    /** Set default request data. @keywords api, request, default */
     static setRequestDefault(request: ApiDefaultValue): void;
-    /**
-     * Changes the base path to the script.
-     *
-     * Изменяет базовый путь к скрипту.
-     * @param url path to the script / путь к скрипту
-     * @returns void / ничего не возвращает
-     */
+    /** Set base URL. @keywords api, url */
     static setUrl(url: string): void;
-    /**
-     * Modifies the function to be called before the request.
-     *
-     * Изменяет функцию для вызова перед запросом.
-     * @param callback function to call before request / функция для вызова перед запросом
-     * @returns void / ничего не возвращает
-     */
+    /** Set preparation callback. @keywords api, preparation */
     static setPreparation(callback: (apiFetch: ApiFetch) => Promise<void>): void;
-    /**
-     * Modifies the function to be called after the request.
-     *
-     * Изменяет функцию для вызова после запроса.
-     * @param callback function to call after request / функция для вызова после запроса
-     * @returns void / ничего не возвращает
-     */
+    /** Set end callback. @keywords api, end */
     static setEnd(callback: (query: Response, apiFetch: ApiFetch) => Promise<ApiPreparationEnd>): void;
-    /**
-     * Changes the timeout for the request in milliseconds.
-     *
-     * Изменяет таймаут запроса в миллисекундах.
-     * @param timeout timeout in milliseconds / таймаут в миллисекундах
-     * @returns void / ничего не возвращает
-     */
+    /** Set request timeout. @keywords api, timeout */
     static setTimeout(timeout: number): void;
-    /**
-     * Changes the origin (protocol and domain) for the base URL.
-     *
-     * Изменяет источник (протокол и домен) для базового URL.
-     * @param origin protocol and domain / протокол и домен
-     * @returns void / ничего не возвращает
-     */
+    /** Set base origin. @keywords api, origin */
     static setOrigin(origin: string): void;
-    /**
-     * Sets the wrapper function for requests.
-     *
-     * Устанавливает функцию-обертку для запросов.
-     * @param wrapper wrapper function / функция-обертка
-     * @returns void / ничего не возвращает
-     */
+    /** Set request wrapper function. @keywords api, wrapper */
     static setWrapper(wrapper: <R>(callback: () => Promise<R>, apiFetch: ApiFetch) => Promise<R>): void;
-    /**
-     * Sets multiple API configuration options at once.
-     *
-     * Устанавливает несколько опций конфигурации API одновременно.
-     * @param config configuration object / объект конфигурации
-     * @returns void / ничего не возвращает
-     */
+    /** Set API configuration. @keywords api, config */
     static setConfig(config?: ApiConfig): void;
-    /**
-     * Executes a request with the given path or configuration.
-     *
-     * Выполняет запрос с указанным путем или конфигурацией.
-     * @param pathRequest path or configuration / путь или конфигурация запроса
-     * @returns Promise with response data / Promise с данными ответа
-     */
+    /** Execute HTTP request. @keywords api, request */
     static request<T>(pathRequest: string | ApiFetch): Promise<T>;
-    /**
-     * Sends a GET method request.
-     *
-     * Отправляет запрос метода GET.
-     * @param request fetch configuration / конфигурация запроса
-     * @returns Promise with response data / Promise с данными ответа
-     */
+    /** Execute GET request. @keywords api, get, request */
     static get<T>(request: ApiFetch): Promise<T>;
-    /**
-     * Sends a POST method request.
-     *
-     * Отправляет запрос метода POST.
-     * @param request fetch configuration / конфигурация запроса
-     * @returns Promise with response data / Promise с данными ответа
-     */
+    /** Execute POST request. @keywords api, post, request */
     static post<T>(request: ApiFetch): Promise<T>;
-    /**
-     * Sends a PUT method request.
-     *
-     * Отправляет запрос метода PUT.
-     * @param request fetch configuration / конфигурация запроса
-     * @returns Promise with response data / Promise с данными ответа
-     */
+    /** Execute PUT request. @keywords api, put, request */
     static put<T>(request: ApiFetch): Promise<T>;
-    /**
-     * Sends a PATCH method request.
-     *
-     * Отправляет запрос метода PATCH.
-     * @param request fetch configuration / конфигурация запроса
-     * @returns Promise with response data / Promise с данными ответа
-     */
+    /** Execute PATCH request. @keywords api, patch, request */
     static patch<T>(request: ApiFetch): Promise<T>;
-    /**
-     * Sends a DELETE method request.
-     *
-     * Отправляет запрос метода DELETE.
-     * @param request fetch configuration / конфигурация запроса
-     * @returns Promise with response data / Promise с данными ответа
-     */
+    /** Execute DELETE request. @keywords api, delete, request */
     static delete<T>(request: ApiFetch): Promise<T>;
 }

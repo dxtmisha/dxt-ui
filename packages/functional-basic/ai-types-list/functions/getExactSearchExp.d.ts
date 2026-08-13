@@ -1,9 +1,3 @@
-// md5:1e0463008edd5d7a0379ccf641204ccb
-/**
- * Creates a case-insensitive regular expression for an exact match of a phrase (without anchors).
- *
- * Создает регистронезависимое регулярное выражение для точного совпадения фразы (без якорей).
- * @param search search string / строка поиска
- * @returns regular expression for exact search / регулярное выражение для точного поиска
- */
+// md5:821271aba11b181c250a0f5bef859b62 true
+/** Creates a case-insensitive regular expression for exact match of a phrase. @keywords exact search expression regular expression */
 export declare function getExactSearchExp(search: string): RegExp;

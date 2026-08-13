@@ -1,111 +1,26 @@
-// md5:a7a4d06be2633466c46a9d9c71065308
-/** Item stored in the server storage/ Элемент, хранящийся в серверном хранилище */
+// md5:3f251242ad4d24b9eb0b0e9152d1444e true
 type ServerStorageItem = {
     value: any;
     hydration: boolean;
 };
-/** Map of server storage items / Карта элементов серверного хранилища */
 type ServerStorageList = Record<string, ServerStorageItem>;
-/**
- * Class for managing data storage during server-side rendering (SSR).
- * Handles data isolation between parallel requests by using a request-specific context.
- *
- * Класс для управления хранением данных при серверном рендеринге (SSR).
- * Обеспечивает изоляцию данных между параллельными запросами, используя контекст конкретного запроса.
- */
+/** @keywords ServerStorage, SSR, storage, isolation */
 export declare class ServerStorage {
-    /** In-memory storage fallback / Резервное хранилище в памяти */
-    protected static storage?: ServerStorageList;
-    /** Request context listener / Слушатель контекста запроса */
-    protected static listener?: () => Record<string, any> | undefined;
-    /** Flag to hide missing storage error / Флаг скрытия ошибки отсутствия хранилища */
-    protected static hideError?: boolean;
-    /**
-     * Initializes the storage with a context listener.
-     *
-     * Инициализирует хранилище слушателем контекста.
-     * @param listener function that returns the current request context / функция, возвращающая контекст текущего запроса
-     * @returns this instance / текущий класс
-     */
+    /** @keywords init, context, listener */
     static init(listener: () => Record<string, any> | undefined): typeof ServerStorage;
-    /**
-     * Resets the storage.
-     *
-     * Сбрасывает хранилище.
-     */
+    /** @keywords reset, clear */
     static reset(): void;
-    /**
-     * Checks if a value exists in storage.
-     *
-     * Проверяет наличие значения в хранилище.
-     * @param key unique storage key / уникальный ключ хранилища
-     * @returns boolean / логическое значение
-     */
+    /** @keywords has, check, key */
     static has(key: string): boolean;
-    /**
-     * Retrieves a value from storage. If it doesn't exist, creates it using the default value factory.
-     *
-     * Извлекает значение из хранилища. Если оно не существует, создает его с помощью фабрики значений по умолчанию.
-     * @param key unique storage key / уникальный ключ хранилища
-     * @param defaultValue function that returns the default value if not found / функция, возвращающая значение по умолчанию, если оно не найдено
-     * @param hydration whether the value should be included in hydration / должно ли значение быть включено в гидратацию
-     * @returns stored value / сохраненное значение
-     */
+    /** @keywords get, retrieve, value */
     static get<T = any>(key: string, defaultValue?: () => T, hydration?: boolean): T;
-    /**
-     * Saves a value to storage.
-     *
-     * Сохраняет значение в хранилище.
-     * @param key unique storage key / уникальный ключ хранилища
-     * @param value function that returns the value to save / функция, возвращающая значение для сохранения
-     * @param hydration whether the value should be included in hydration / должно ли значение быть включено в гидратацию
-     * @param storageList optional storage list / необязательный список хранилища
-     * @returns saved value / сохраненное значение
-     */
+    /** @keywords set, save, store */
     static set<T = any>(key: string, value: () => T, hydration?: boolean, storageList?: ServerStorageList): T;
-    /**
-     * Sets the visibility of error messages.
-     *
-     * Устанавливает видимость сообщений об ошибках.
-     * @param hide boolean value to hide or show errors / логическое значение для скрытия или отображения ошибок
-     */
+    /** @keywords error, status, hide */
     static setErrorStatus(hide: boolean): void;
-    /**
-     * Removes a value from storage.
-     *
-     * Удаляет значение из хранилища.
-     * @param key unique storage key / уникальный ключ хранилища
-     */
+    /** @keywords remove, delete */
     static remove(key: string): void;
-    /**
-     * Returns a string representation of the storage for hydration.
-     *
-     * Возвращает строковое представление хранилища для гидратации.
-     * @returns script tag string / строка тега скрипта
-     */
+    /** @keywords toString, hydration, html */
     static toString(): string;
-    /**
-     * Returns storage.
-     *
-     * Возвращает хранилище.
-     * @param isInit whether to initialize the storage if it does not exist / инициализировать ли хранилище, если оно не существует
-     * @param status optional status for error reporting / необязательный статус для отчета об ошибках
-     * @returns storage list / список хранилища
-     */
-    protected static getStorage(isInit?: boolean, status?: string): ServerStorageList;
-    /**
-     * Returns storage from DOM.
-     *
-     * Возвращает хранилище из DOM.
-     * @returns storage list from DOM / список хранилища из DOM
-     */
-    protected static getStorageDom(): ServerStorageList;
-    /**
-     * Returns data for hydration.
-     *
-     * Возвращает данные для гидратации.
-     * @returns record of hydration data / запись данных гидратации
-     */
-    protected static getDataForHydration(): Record<string, any>;
 }
 export {};

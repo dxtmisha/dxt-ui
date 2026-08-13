@@ -1,10 +1,4 @@
-// md5:0ad320ab22a4e915f9dc3454b66f99a6
+// md5:92f9fdb1f5d975f4827c3d67a44dff6a true
 /**
- * Checks if the value is between integers.
- *
- * Проверяет, лежит ли значение между целыми числами.
- * @param value input value/ входное значение
- * @param between value for rounding/ значение для округления
- * @returns true if between integers / true, если между целыми числами
- */
+ * Checks if the value is between integers. @keywords isIntegerBetween, integer, between, range, check */
 export declare function isIntegerBetween(value: number, between: number): boolean;

@@ -1,11 +1,3 @@
-// md5:5c7d10da8ba1fafd09773ee4be5770a6
-import { HighlightMatchItem } from '../types/searchTypes';
-/**
- * Split a string into an array of objects to highlight matches.
- *
- * Разделяет строку на массив объектов для выделения совпадений.
- * @param value initial string / исходная строка
- * @param search search string / строка поиска
- * @returns array of objects with text and match flag / массив объектов с текстом и флагом совпадения
- */
+// md5:3e2133d697abead5f0bc95a0eb316969 true
+/** Split a string into an array of objects to highlight matches. @keywords highlight match search array */
 export declare function getArrayHighlightMatch(value: string, search?: string | RegExp): HighlightMatchItem[];

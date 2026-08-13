@@ -1,9 +1,3 @@
-// md5:2afde57df5f0a382f540085c08e48b8e
-/**
- * Writes data to the buffer.
- *
- * Записывает данные в буфер.
- * @param text text for recording/ текст для записи
- * @returns promise without return value / промис без возвращаемого значения
- */
+// md5:c51c0223e39e6cdaa214cf05109e3c6c true
+/** Writes data to the clipboard. @keywords write clipboard text copy */
 export declare function writeClipboardData(text: string): Promise<void>;

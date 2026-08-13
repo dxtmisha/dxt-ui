@@ -65,7 +65,7 @@
     "preview": "vite preview",
     "test": "vitest",
     "library": "dxt-library",
-    "types": "dxt-types",
+    "types": "npm run library && npm run build && dxt-types",
     "prepublishOnly": "npm run library && npm run build",
     "publish-to-npm": "npm publish --access public"
   },

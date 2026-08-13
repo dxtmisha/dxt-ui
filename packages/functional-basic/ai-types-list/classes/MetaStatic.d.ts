@@ -1,180 +1,52 @@
-// md5:3492a081424a9a08e9741095c02893a4
-import { Meta } from './Meta';
-import { MetaOg } from './MetaOg';
-import { MetaTwitter } from './MetaTwitter';
-import { MetaRobots } from '../types/metaTypes';
-/**
- * Static class for managing meta tags.
- *
- * Статичный класс для управления мета-тегами.
- */
+// md5:6a331ca900c5644d6d4fb327e56ffbeb true
+/** Static class for managing page meta tags @keywords meta static manager tags */
 export declare class MetaStatic {
-    /**
-     * Returns the singleton instance of the Meta class.
-     *
-     * Возвращает синглтон-экземпляр класса Meta.
-     * @returns Meta singleton / синглтон Meta
-     */
-    static getItem(): Meta;
-    /**
-     * Gets the MetaOg instance for advanced Open Graph operations.
-     *
-     * Получает экземпляр MetaOg для расширенных операций с Open Graph.
-     * @returns MetaOg instance / экземпляр MetaOg
-     */
-    static getOg(): MetaOg;
-    /**
-     * Gets the MetaTwitter instance for advanced Twitter Card operations.
-     *
-     * Получает экземпляр MetaTwitter для расширенных операций с Twitter Card.
-     * @returns MetaTwitter instance / экземпляр MetaTwitter
-     */
-    static getTwitter(): MetaTwitter;
-    /**
-     * Gets the page title without suffix.
-     *
-     * Получает заголовок страницы без суффикса.
-     * @returns title without suffix / заголовок без суффикса
-     */
+    /** Gets singleton instance @keywords meta singleton item */
+    static getItem(): At;
+    /** Gets Open Graph instance @keywords meta og get */
+    static getOg(): Ot;
+    /** Gets Twitter Card instance @keywords meta twitter get */
+    static getTwitter(): kt;
+    /** Gets page title @keywords meta title get */
     static getTitle(): string;
-    /**
-     * Gets the keywords meta tag.
-     *
-     * Получает мета-тег keywords.
-     * @returns keywords content / содержимое keywords
-     */
+    /** Gets meta keywords @keywords meta keywords get */
     static getKeywords(): string;
-    /**
-     * Gets the description meta tag.
-     *
-     * Получает мета-тег description.
-     * @returns description content / содержимое description
-     */
+    /** Gets meta description @keywords meta description get */
     static getDescription(): string;
-    /**
-     * Gets the Open Graph image URL.
-     *
-     * Получает URL изображения Open Graph.
-     * @returns image URL / URL изображения
-     */
+    /** Gets image URL @keywords meta image get */
     static getImage(): string;
-    /**
-     * Gets the canonical URL.
-     *
-     * Получает канонический URL.
-     * @returns canonical URL / канонический URL
-     */
+    /** Gets canonical URL @keywords meta canonical get */
     static getCanonical(): string;
-    /**
-     * Gets the robots meta tag value.
-     *
-     * Получает значение мета-тега robots.
-     * @returns robots directive / директива robots
-     */
+    /** Gets robots directive @keywords meta robots get */
     static getRobots(): MetaRobots;
-    /**
-     * Gets the author meta tag.
-     *
-     * Получает мета-тег author.
-     * @returns author name / имя автора
-     */
+    /** Gets author name @keywords meta author get */
     static getAuthor(): string;
-    /**
-     * Gets the Open Graph site name.
-     *
-     * Получает название сайта Open Graph.
-     * @returns site name / название сайта
-     */
+    /** Gets site name @keywords meta sitename get */
     static getSiteName(): string;
-    /**
-     * Gets the Open Graph locale.
-     *
-     * Получает локаль Open Graph.
-     * @returns locale / локаль
-     */
+    /** Gets locale @keywords meta locale get */
     static getLocale(): string;
-    /**
-     * Sets the page title (with suffix) and updates Open Graph and Twitter Card titles.
-     *
-     * Устанавливает заголовок страницы (с суффиксом) и обновляет заголовки Open Graph и Twitter Card.
-     * @param title page title / заголовок страницы
-     */
-    static setTitle(title: string): typeof MetaStatic;
-    /**
-     * Sets the keywords meta tag.
-     *
-     * Устанавливает мета-тег keywords.
-     * @param keywords keywords as string or array / ключевые слова в виде строки или массива
-     */
-    static setKeywords(keywords: string | string[]): typeof MetaStatic;
-    /**
-     * Sets the description meta tag.
-     *
-     * Устанавливает мета-тег description.
-     * @param description page description / описание страницы
-     */
-    static setDescription(description: string): typeof MetaStatic;
-    /**
-     * Sets the image for Open Graph and Twitter Card.
-     *
-     * Устанавливает изображение для Open Graph и Twitter Card.
-     * @param image image URL / URL изображения
-     */
-    static setImage(image: string): typeof MetaStatic;
-    /**
-     * Sets the canonical URL and updates Open Graph and Twitter Card URLs.
-     *
-     * Устанавливает канонический URL и обновляет URL для Open Graph и Twitter Card.
-     * @param canonical canonical URL / канонический URL
-     */
-    static setCanonical(canonical: string): typeof MetaStatic;
-    /**
-     * Sets the robots meta tag.
-     *
-     * Устанавливает мета-тег robots.
-     * @param robots robots directive / директива robots
-     */
-    static setRobots(robots: MetaRobots): typeof MetaStatic;
-    /**
-     * Sets the author meta tag.
-     *
-     * Устанавливает мета-тег author.
-     * @param author author name / имя автора
-     */
-    static setAuthor(author: string): typeof MetaStatic;
-    /**
-     * Sets the site name for Open Graph and Twitter Card.
-     *
-     * Устанавливает название сайта для Open Graph и Twitter Card.
-     * @param siteName site name / название сайта
-     */
-    static setSiteName(siteName: string): typeof MetaStatic;
-    /**
-     * Sets the locale for Open Graph.
-     *
-     * Устанавливает локаль для Open Graph.
-     * @param locale locale (e.g. 'en_US', 'ru_RU') / локаль (например, 'en_US', 'ru_RU')
-     */
-    static setLocale(locale: string): typeof MetaStatic;
-    /**
-     * Sets the suffix to append to page title.
-     *
-     * Устанавливает суффикс для добавления к заголовку страницы.
-     * @param suffix title suffix (e.g. 'My Site') / суффикс заголовка (например, 'Мой Сайт')
-     */
-    static setSuffix(suffix?: string): typeof MetaStatic;
-    /**
-     * Generates the complete HTML for all meta-tags including Open Graph and Twitter Card.
-     *
-     * Генерирует полный HTML для всех мета-тегов, включая Open Graph и Twitter Card.
-     * @returns complete HTML string / полная HTML-строка
-     */
+    /** Sets page title @keywords meta title set */
+    static setTitle(e: string): typeof MetaStatic;
+    /** Sets meta keywords @keywords meta keywords set */
+    static setKeywords(e: string | string[]): typeof MetaStatic;
+    /** Sets meta description @keywords meta description set */
+    static setDescription(e: string): typeof MetaStatic;
+    /** Sets image URL @keywords meta image set */
+    static setImage(e: string): typeof MetaStatic;
+    /** Sets canonical URL @keywords meta canonical set */
+    static setCanonical(e: string): typeof MetaStatic;
+    /** Sets robots directive @keywords meta robots set */
+    static setRobots(e: MetaRobots): typeof MetaStatic;
+    /** Sets author name @keywords meta author set */
+    static setAuthor(e: string): typeof MetaStatic;
+    /** Sets site name @keywords meta sitename set */
+    static setSiteName(e: string): typeof MetaStatic;
+    /** Sets locale @keywords meta locale set */
+    static setLocale(e: string): typeof MetaStatic;
+    /** Sets title suffix @keywords meta suffix set */
+    static setSuffix(e?: string): typeof MetaStatic;
+    /** Generates meta tags HTML @keywords meta html generate */
     static html(): string;
-    /**
-     * Generates the title as an HTML-safe string.
-     *
-     * Генерирует заголовок в виде HTML-безопасной строки.
-     * @returns title HTML-safe string / HTML-безопасная строка заголовка
-     */
+    /** Generates safe title HTML @keywords meta title html */
     static htmlTitle(): string;
 }

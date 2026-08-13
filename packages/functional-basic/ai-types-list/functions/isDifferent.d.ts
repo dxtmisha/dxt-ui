@@ -1,11 +1,3 @@
-// md5:46dfeadc75a5bffb9f69c4c0b0f87bf7
-import { ObjectItem } from '../types/basicTypes';
-/**
- * Checks if the values of two objects are different.
- *
- * Проверяет, различаются ли значения двух объектов.
- * @param value current values/ текущие значения
- * @param old old values/ старые значения
- * @returns true if different / true, если отличаются
- */
+// md5:f891cdcc61f1eb41b51c67cb994cc654 true
+/** Checks if the values of two objects are different. @keywords isDifferent object compare */
 export declare function isDifferent<T>(value: ObjectItem<T>, old: ObjectItem<T>): boolean;

@@ -1,129 +1,35 @@
-// md5:71cd1764dfa4b93355bab349ae53120b
-/** Icon item type definition / Определение типа элемента иконки */
+// md5:01e7e867f6e99cdae68c47149f0951bc true
+/** @keywords icon item type */
 export type IconsItem = string | Promise<string | any> | (() => Promise<string | any>);
-/** Icon configuration object / Объект конфигурации иконок */
+
+/** @keywords icon configuration */
 export type IconsConfig = {
-    /** URL to the icons storage / URL к хранилищу иконок */
     url?: string;
-    /** List of custom icons / Список пользовательских иконок */
     list?: Record<string, IconsItem>;
 };
-/**
- * Class for managing icons.
- *
- * Класс для управления иконками.
- */
+
+/** @keywords icons manager, svg */
 export declare class Icons {
-    /** Registered icons map / Карта зарегистрированных иконок */
-    protected static icons: Record<string, IconsItem>;
-    /** Base icons storage URL / Базовый URL хранилища иконок */
-    protected static url: string;
-    /**
-     * Checks if the given icon is in the list of connected icons.
-     *
-     * Проверяет, есть ли данная иконка в списке подключенных иконок.
-     * @param index icon name/ название иконки
-     */
+    /** @keywords check icon existence */
     static is(index: string): boolean;
-    /**
-     * Returns the icon by the name.
-     *
-     * Возвращает иконку по названию.
-     * @param index icon name/ название иконки
-     * @param url path to the storage location of the icon, if the icon does not exist / путь к месту хранения иконки, если иконка не существует
-     * @param wait waiting time for picture loading (ms) / время ожидания загрузки картинки (мс)
-     * @returns icon path or content/ путь к иконке или контент
-     */
+    /** @keywords get icon value or promise */
     static get(index: string, url?: string, wait?: number): Promise<string>;
-    /**
-     * Returns the icon if it is already loaded or is a string.
-     *
-     * Возвращает иконку, если она уже загружена или является строкой.
-     * @param index icon name/ название иконки
-     * @param url path to the storage location of the icon, if the icon does not exist / путь к месту хранения иконки, если иконка не существует
-     * @returns icon path or content/ путь к иконке или контент
-     */
+    /** @keywords get icon async */
     static getAsync(index: string, url?: string): string;
-    /**
-     * Returns a list of names of all registered icons.
-     *
-     * Возвращает список названий всех зарегистрированных иконок.
-     * @returns list of icon names/ список названий иконок
-     */
+    /** @keywords get icon name list */
     static getNameList(): string[];
-    /**
-     * Returns a global link.
-     *
-     * Возвращает глобальную ссылку.
-     * @returns string global link/ глобальная ссылка
-     */
+    /** @keywords get global url */
     static getUrlGlobal(): string;
-    /**
-     * Adding custom icons.
-     *
-     * Добавление пользовательских иконок.
-     * @param index icon name/ название иконки
-     * @param file path to the file/ путь к файлу
-     */
+    /** @keywords add icon */
     static add(index: string, file: IconsItem): void;
-    /**
-     * Adding custom icons in loading mode.
-     *
-     * Добавление пользовательских иконок в режиме загрузки.
-     * @param index icon name/ название иконки
-     */
+    /** @keywords add icon load */
     static addLoad(index: string): void;
-    /**
-     * Adding custom global icons.
-     *
-     * Добавление пользовательских глобальных иконок.
-     * @param index icon name/ название иконки
-     * @param file path to the file/ путь к файлу
-     */
+    /** @keywords add global icon */
     static addGlobal(index: string, file: string): void;
-    /**
-     * Adding an icon by the list.
-     *
-     * Добавление иконки по списку.
-     * @param list list of icons/ список иконки
-     */
+    /** @keywords add icons by list */
     static addByList(list: Record<string, IconsItem>): void;
-    /**
-     * Changes the file path.
-     *
-     * Изменяет путь к файлу.
-     * @param url new file path/ новый путь к файлу
-     */
+    /** @keywords set icons url */
     static setUrl(url: string): void;
-    /**
-     * Changes the configuration.
-     *
-     * Изменяет конфигурацию.
-     * @param config new configuration/ новая конфигурация
-     */
+    /** @keywords set icons config */
     static setConfig(config: IconsConfig): void;
-    /**
-     * Returns the icon name with the prefix.
-     *
-     * Возвращает название иконки с префиксом.
-     * @param index icon name/ название иконки
-     * @returns icon name with prefix/ название иконки с префиксом
-     */
-    protected static getName(index: string): string;
-    /**
-     * Returns the raw icon data by the name.
-     *
-     * Возвращает исходные данные иконки по названию.
-     * @param index icon name/ название иконки
-     * @param url path to the storage location of the icon, if the icon does not exist / путь к месту хранения иконки, если иконка не существует
-     * @returns icon path or content/ путь к иконке или контент
-     */
-    protected static getRaw(index: string, url?: string): IconsItem;
-    /**
-     * Script execution delay.
-     *
-     * Задержка выполнения скрипта.
-     * @returns Promise<void> Promise for delay/ Promise для задержки
-     */
-    protected static wait(): Promise<void>;
 }

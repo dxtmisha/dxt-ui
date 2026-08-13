@@ -1,9 +1,3 @@
-// md5:16665f9ad60ad21624957690474d0f7d
-/**
- * Converts the given value to a string. Returns an empty string if the value is null or undefined.
- *
- * Преобразование значения в строку. Возвращает пустую строку, если значение равно null или undefined.
- * @param value value for conversion / значение для преобразования
- * @returns string representation of the value / строковое представление значения
- */
+// md5:067e88e2dbe444bfd76a170f9dddfd77 true
+/** Converts the value to a string. @keywords to_string convert string */
 export declare function toString<T>(value: T): string;

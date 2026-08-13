@@ -1,11 +1,3 @@
-// md5:3d183919e530e372ec41e9f4703531ed
-import { EmptyValue } from '../types/basicTypes';
-/**
- * Checks if the field is filled.
- *
- * Проверяет, заполнено ли поле.
- * @param value input value/ входное значение
- * @param zeroTrue if true, '0' is considered filled/ если true, то '0' считается заполненным
- * @returns true if filled / true, если заполнено
- */
+// md5:e79e38dc53e823f5f003741e3fc30f24 true
+/** Checks if field is filled. @keywords isFilled, check, filled, empty */
 export declare function isFilled<T>(value: T, zeroTrue?: boolean): value is Exclude<T, EmptyValue>;

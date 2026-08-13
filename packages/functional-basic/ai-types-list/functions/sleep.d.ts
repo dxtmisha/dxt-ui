@@ -1,9 +1,3 @@
-// md5:6dea0cef3c0159f6dc8ec32a8f56934f
-/**
- * Pause execution for a specified number of milliseconds.
- *
- * Приостановить выполнение на указанное количество миллисекунд.
- * @param ms milliseconds/ миллисекунды
- * @returns promise that resolves after delay/ промис, который разрешается после задержки
- */
+// md5:39175af5e65b8fd750e4a509700ead06 true
+/** Pause execution for specified milliseconds. @keywords sleep delay timer timeout */
 export declare function sleep(ms: number): Promise<void>;

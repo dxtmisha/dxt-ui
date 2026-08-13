@@ -1,11 +1,3 @@
-// md5:bf59973628d62a46632149ca79c2e5c5
-import { FunctionReturn } from '../types/basicTypes';
-/**
- * Replacing the value from replaces in value.
- *
- * Замена значения из replaces в value.
- * @param value template string/ строка шаблона
- * @param replaces object with data for replacement/ объект с данными для замены
- * @returns replaced string/ замененная строка
- */
+// md5:b27386f405a92bb8850476d80a327f0c true
+/** Replaces template placeholders with values. @keywords replace template string */
 export declare function replaceTemplate(value: string, replaces: Record<string, string | FunctionReturn<string>>): string;

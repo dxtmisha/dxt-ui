@@ -1,9 +1,6 @@
-// md5:02e8b3a35cc59684b6f8dd438dd026f4
+// md5:3e5ce7845ff4b4c04e940625882c6228 true
 /**
  * Removes duplicate entries in an array.
- *
- * Удаляет повторяющиеся записи в массиве.
- * @param value input value/ входное значение
- * @returns array without duplicates / массив без дубликатов
+ * @keywords unique array duplicates remove
  */
 export declare function uniqueArray<T>(value: T[]): T[];

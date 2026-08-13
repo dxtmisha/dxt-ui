@@ -1,9 +1,3 @@
-// md5:694015fa0837f5f36ee0aa0b3dfaed82
-/**
- * Encodes special characters in a string for safe use in HTML attributes.
- *
- * Кодирует специальные символы в строке для безопасного использования в HTML-атрибутах.
- * @param text text to encode / текст для кодирования
- * @returns encoded text / закодированный текст
- */
+// md5:89b5de4a4b086819fc234362e6a2db59 true
+/** @keywords encode, attribute, html, escape */
 export declare function encodeAttribute(text: string): string;

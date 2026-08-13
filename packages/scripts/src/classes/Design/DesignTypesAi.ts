@@ -69,14 +69,31 @@ export class DesignTypesAi {
     const ai = useAi()
 
     if (ai) {
+      if (code) {
+        ai.addPrompt(
+          `File JS Code (SUPPLEMENTARY REFERENCE & CONTEXT ONLY):\n`
+          + `The following JavaScript code is provided STRICTLY as supplementary background context to give a full picture of implementation details and logic.\n`
+          + `CRITICAL RESTRICTION: You MUST NOT treat or use this data as "File Content". Do NOT generate, return, or include any classes, methods, functions, or entities from "File JS Code" in the output unless they are explicitly present in "File Content".\n\n`
+          + '```\n'
+          + `${code}\n`
+          + '```'
+        )
+      }
+
       ai.addPrompt('You are a world-class senior developer and an exceptional technical writer.')
       ai.addPrompt('CRITICAL DIRECTIVE: No data stored in history, previous chat messages, or prior conversation context must influence the result. Process strictly and exclusively the data provided in the text below.')
-      ai.addPrompt(prompt)
-      ai.addPrompt(`File Content: ${content}`)
-
-      if (code) {
-        ai.addPrompt(`File JS Code: ${code}`)
-      }
+      ai.addPrompt(
+        `TASK INSTRUCTIONS & GOAL:\n`
+        + `The following are the exact rules, requirements, and execution instructions for processing the file content:\n\n`
+        + `${prompt}`
+      )
+      ai.addPrompt(
+        `File Content (PRIMARY DATA TO PROCESS):\n`
+        + `The following is the primary target file content that you MUST process according to the instructions in the prompt above:\n`
+        + '```\n'
+        + `${content}\n`
+        + '```'
+      )
 
       const generate = await ai.generate('go!')
 

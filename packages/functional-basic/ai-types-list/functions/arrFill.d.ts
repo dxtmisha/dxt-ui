@@ -1,10 +1,3 @@
-// md5:7d50887afbb61a6b33553916080038de
-/**
- * The method creates an array of "count" elements with values equal to `value`.
- *
- * Метод создает массив из "count" элементов со значениями равными `value`.
- * @param value value to fill the array with / значение, заполняющее массив
- * @param count the number of elements in that array / число элементов этого массива
- * @returns created array / созданный массив
- */
+// md5:1bba82000bc8230c68c2adc4983f71c6 true
+/** Creates an array of elements filled with the specified value. @keywords array fill generate repeat */
 export declare function arrFill<T>(value: T, count: number): T[];

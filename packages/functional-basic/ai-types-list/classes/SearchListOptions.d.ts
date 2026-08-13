@@ -1,67 +1,20 @@
-// md5:b4799d38717f25894ad9f81e24686b72
-import { SearchOptions } from '../types/searchTypes';
-/**
- * Class for managing search list options.
- *
- * Класс для управления опциями списка поиска.
- */
+// md5:11360d07086d6838b19af0a80ea63986 true
+/** Manage search list options @keywords search_list_options search_options */
 export declare class SearchListOptions {
-    protected options?: SearchOptions | undefined;
-    /**
-     * Constructor for SearchListOptions.
-     *
-     * Конструктор для SearchListOptions.
-     * @param options search options/ опции поиска
-     */
+    /** @keywords constructor search_list_options */
     constructor(options?: SearchOptions | undefined);
-    /**
-     * Returns the current search options.
-     *
-     * Возвращает текущие опции поиска.
-     * @returns search options/ опции поиска
-     */
+    /** Get current search options @keywords get_options search_options */
     getOptions(): SearchOptions;
-    /**
-     * Returns the minimum number of characters required to trigger a search.
-     *
-     * Возвращает минимальное количество символов, необходимых для запуска поиска.
-     * @returns limit value/ значение лимита
-     */
+    /** Get minimum character limit for search @keywords get_limit search_limit */
     getLimit(): number;
-    /**
-     * Returns whether to return all items even if they don't match the search query.
-     *
-     * Возвращает, следует ли возвращать все элементы, даже если они не соответствуют поисковому запросу.
-     * @returns boolean value/ логическое значение
-     */
+    /** Check if all items should be returned regardless of match @keywords get_return_everything search_all */
     getReturnEverything(): boolean;
-    /**
-     * Returns the search delay in milliseconds.
-     *
-     * Возвращает задержку поиска в миллисекундах.
-     * @returns delay value/ значение задержки
-     */
+    /** Get search delay in milliseconds @keywords get_delay search_delay */
     getDelay(): number;
-    /**
-     * Returns whether to perform an exact match search.
-     *
-     * Возвращает, следует ли выполнять поиск с точным совпадением.
-     * @returns boolean value/ логическое значение
-     */
+    /** Check if exact match search is enabled @keywords get_find_exact_match exact_search */
     getFindExactMatch(): boolean;
-    /**
-     * Returns the CSS class name used for highlighting matches.
-     *
-     * Возвращает имя класса CSS, используемое для выделения совпадений.
-     * @returns class name/ имя класса
-     */
+    /** Get CSS class name for match highlighting @keywords get_class_name search_highlight_class */
     getClassName(): string;
-    /**
-     * Sets new search options.
-     *
-     * Устанавливает новые опции поиска.
-     * @param options search options/ опции поиска
-     * @returns this instance/ данный экземпляр
-     */
+    /** Set new search options @keywords set_options search_options */
     setOptions(options: SearchOptions): this;
 }

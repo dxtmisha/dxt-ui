@@ -1,10 +1,3 @@
-// md5:da4f0ee727156fe38d0ec11f7d1eba5f
-/**
- * Converts seconds into a time string.
- *
- * Преобразовывает секунды в строку с временем.
- * @param second specified seconds/ указанные секунды
- * @param hasHour whether to include hours/ нужно ли указывать часы
- * @returns string formatted time/ форматированная строка с временем
- */
+// md5:c411aade8c64e8d3b417708927186937 true
+/** Converts seconds into a time string. @keywords time, seconds, format, clock @param second specified seconds @param hasHour whether to include hours */
 export declare function secondToTime(second: number | string | undefined, hasHour?: boolean): string;

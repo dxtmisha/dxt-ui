@@ -1,12 +1,3 @@
-// md5:a53b27da97b1dbaf2b2bcf39b6af52cf
-/**
- * Adds a tag to highlight the match in the string.
- *
- * Добавляет тег для выделения совпадения в строке.
- * @param value initial string / исходная строка
- * @param search search string or RegExp / строка поиска или регулярное выражение
- * @param className highlighting class / класс выделения
- * @param shouldEscape should escape the string / нужно ли экранировать строку
- * @returns string with highlighting / строка с выделением
- */
+// md5:f4294d982215281002bea493a677470b true
+/** Adds a tag to highlight matching text within a string. @keywords highlight match search wrap tag @param value target string @param search search query or pattern */
 export declare function addTagHighlightMatch(value: string, search?: string | RegExp, className?: string, shouldEscape?: boolean): string;

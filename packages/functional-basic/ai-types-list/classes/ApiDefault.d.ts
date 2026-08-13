@@ -1,50 +1,14 @@
-// md5:543fb65e9c97a5736534dd14a4db682b
-import { ApiDefaultValue, ApiFetch } from '../types/apiTypes';
-/**
- * Class for working with default API request data.
- *
- * Класс для работы с данными запроса API по умолчанию.
- */
+// md5:c003c02c58dbbd4d76813f393386b8e1 true
+/** Manages default request data and parameters. @keywords api default request parameters */
 export declare class ApiDefault {
-    /** Default request data / Данные запроса по умолчанию */
-    protected value?: ApiDefaultValue;
-    /**
-     * Checks if default request data exists.
-     *
-     * Проверяет, существуют ли данные запроса по умолчанию.
-     * @returns true if default data exists / true, если данные по умолчанию существуют
-     */
+    /** Checks if default request data is defined. @keywords api check default */
     is(): boolean;
-    /**
-     * Gets the default request data.
-     *
-     * Получает данные запроса по умолчанию.
-     * @returns default request data or undefined / данные запроса по умолчанию или undefined
-     */
+    /** Gets default request data. @keywords api get default */
     get(): Record<string, any> | undefined;
-    /**
-     * Adds default data to the request.
-     *
-     * Добавляет данные по умолчанию к запросу.
-     * @param request request data / данные запроса
-     * @returns merged request data / объединенные данные запроса
-     */
+    /** Merges default data into request. @keywords api request merge */
     request(request: ApiFetch['request']): ApiFetch['request'];
-    /**
-     * Sets the default request data.
-     *
-     * Устанавливает данные запроса по умолчанию.
-     * @param request default request data / данные запроса по умолчанию
-     * @returns this instance for chaining / текущий экземпляр для цепочки вызовов
-     */
+    /** Sets default request data. @keywords api set default */
     set(request: ApiDefaultValue): this;
-    /**
-     * Adds default data to FormData request.
-     *
-     * Добавляет данные по умолчанию к запросу FormData.
-     * @param request FormData request / запрос FormData
-     * @param value default values / значения по умолчанию
-     * @returns this instance for chaining / текущий экземпляр для цепочки вызовов
-     */
+    /** Adds default data to FormData. @keywords api form data add */
     protected addByFormData(request: FormData, value: ApiDefaultValue): this;
 }

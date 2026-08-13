@@ -1,10 +1,6 @@
-// md5:1d2e1a71e423ca5385ce1604cdaa0942
-import { ElementOrString, ElementOrWindow } from '../types/basicTypes';
+// md5:46b18cff5db37251ea2299695fc52030 true
 /**
  * Gets a list of attributes of an element.
- *
- * Получает список атрибутов у элемента.
- * @param element selectors for matching or an Element / селекторов для сопоставления или Element
- * @returns list of attributes / список атрибутов
+ * @keywords get_attributes element dom
  */
 export declare function getAttributes<E extends ElementOrWindow>(element?: ElementOrString<E>): Record<string, string | undefined>;

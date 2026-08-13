@@ -1,9 +1,3 @@
-// md5:3aefa79319df0ab221cb39a410d0ca25
-/**
- * Returns the pressed key.
- *
- * Возвращает нажатую клавишу.
- * @param event event object/ объект события
- * @returns pressed key / нажатая клавиша
- */
+// md5:3f8c92b1b91e35060a77770a2bfdf600 true
+/** Returns the pressed key from keyboard event. @keywords key, keyboard, event */
 export declare function getKey(event: KeyboardEvent): string | number | undefined;

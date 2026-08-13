@@ -1,10 +1,6 @@
-// md5:c79423f05b61b67c9b0d12d2170bf0f6
+// md5:2ad6f1b2736b4da59a7f947e3200ccfa true
 /**
- * Checks if value is in the array selected or if value equals selected, if selected is a string.
- *
- * Проверяет, есть ли value в массиве selected или равен ли value selected, если selected - строка.
- * @param value input value/ входное значение
- * @param selected array or string for comparison/ массив или строка для сравнения
- * @returns true if selected / true, если выбрано
+ * Checks if value is selected within an array or equals a string.
+ * @keywords isSelected, check, selected, value, match
  */
 export declare function isSelected<T, S>(value: T, selected: T | T[] | S): boolean;

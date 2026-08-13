@@ -1,88 +1,26 @@
-// md5:c393812420e131f491438fbc445f6058
-import { EventItem } from './EventItem';
-import { ElementOrString, EventListenerDetail } from '../types/basicTypes';
-/** Data for the loading event / Данные для события загрузки */
+// md5:0176ff26850c6286c00de710e4080c3b true
 export type LoadingDetail = {
-    /** Loading status / Статус загрузки */
     loading: boolean;
 };
-/** Registration item for the loading event / Элемент регистрации для события загрузки */
 export type LoadingRegistrationItem = {
-    /** Event item / Элемент события */
     item: EventItem<Window, CustomEvent, LoadingDetail>;
-    /** Event listener / Слушатель события */
     listener: EventListenerDetail<CustomEvent, LoadingDetail>;
-    /** Element / Элемент */
     element?: ElementOrString<HTMLElement>;
 };
-/**
- * Class for working with global loading.
- *
- * Класс для работы с глобальной загрузкой.
- */
+/** Loading instance manager class @keywords loading, loader, spinner, global */
 export declare class LoadingInstance {
-    protected eventName: string;
-    /** Current loading value / Текущее значение загрузки */
-    protected value: number;
-    /** Event item / Элемент события */
-    protected event?: EventItem<Window, CustomEvent>;
-    /** Registration list / Список регистрации */
-    protected registrationList: LoadingRegistrationItem[];
-    /**
-     * Constructor
-     * @param eventName name of the event for tracking loading/ название события для отслеживания загрузки
-     */
+    /** Create loading instance @keywords constructor, init */
     constructor(eventName?: string);
-    /**
-     * Check if the loader is active now.
-     *
-     * Проверить, активен ли сейчас загрузчик.
-     * @returns returns true if the loader is active/ возвращает true, если загрузчик активен
-     */
+    /** Check if loading is active @keywords is, active, check */
     is(): boolean;
-    /**
-     * Get current loading value.
-     *
-     * Получить текущее значение загрузки.
-     * @returns returns the current loading value/ возвращает текущее значение загрузки
-     */
+    /** Get current loading counter value @keywords get, count, value */
     get(): number;
-    /**
-     * Shows the loader.
-     *
-     * Показывает загрузчик.
-     * @returns void / ничего не возвращает
-     */
+    /** Show loading indicator @keywords show, start, loading */
     show(): void;
-    /**
-     * Hides the loader.
-     *
-     * Скрывает загрузчик.
-     * @returns void / ничего не возвращает
-     */
+    /** Hide loading indicator @keywords hide, stop, loading */
     hide(): void;
-    /**
-     * Event registration to listen for data changes.
-     *
-     * Регистрация события для прослушивания изменений данных.
-     * @param listener the object that receives a notification when an event occurs / объект, который принимает уведомление, когда событие указанного типа произошло
-     * @param element element / элемент
-     * @returns void / ничего не возвращает
-     */
+    /** Register loading event listener @keywords register, event, listener */
     registrationEvent(listener: EventListenerDetail<CustomEvent, LoadingDetail>, element?: ElementOrString<HTMLElement>): void;
-    /**
-     * Unregistration of an event.
-     *
-     * Отмена регистрации события.
-     * @param listener the object that receives a notification when an event occurs / объект, который принимает уведомление, когда событие указанного типа произошло
-     * @param element element / элемент
-     * @returns void / ничего не возвращает
-     */
+    /** Unregister loading event listener @keywords unregister, remove, event */
     unregistrationEvent(listener: EventListenerDetail<CustomEvent, LoadingDetail>, element?: ElementOrString<HTMLElement>): void;
-    /**
-     * Calls the event listener.
-     *
-     * Вызывает слушателя событий.
-     */
-    protected dispatch(): void;
 }

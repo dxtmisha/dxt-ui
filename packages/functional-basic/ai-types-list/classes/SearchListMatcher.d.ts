@@ -1,59 +1,16 @@
-// md5:49d93f01ef933883cf8f8d1f3fb612fb
-import { SearchListItem } from './SearchListItem';
-import { SearchListOptions } from './SearchListOptions';
-import { SearchCacheItem } from '../types/searchTypes';
-/**
- * Class responsible for matching search values against the search list data using regular expressions.
- *
- * Класс, отвечающий за сопоставление значений поиска с данными списка поиска с использованием регулярных выражений.
- */
+// md5:f6b45a3cacfde06a0e135d1af93d0426 true
+/** Matches search values against dataset using regex. @keywords search list matcher filter regex */
 export declare class SearchListMatcher {
-    protected item: SearchListItem;
-    protected options: SearchListOptions;
-    /** Regular expression matcher instance / Экземпляр регулярного выражения сопоставителя */
-    protected matcher: RegExp | undefined;
-    /**
-     * Constructor for SearchListMatcher.
-     *
-     * Конструктор для SearchListMatcher.
-     * @param item search item containing the current value/ элемент поиска, содержащий текущее значение
-     * @param options search options/ опции поиска
-     */
+    /** Creates a search list matcher instance. */
     constructor(item: SearchListItem, options: SearchListOptions);
-    /**
-     * Checks if the matcher is initialized.
-     *
-     * Проверяет, инициализирован ли сопоставитель.
-     * @returns boolean/ логическое значение
-     */
+    /** Checks if the matcher is initialized. */
     is(): boolean;
-    /**
-     * Checks if the given value matches the current search expression.
-     *
-     * Проверяет, соответствует ли данное значение текущему поисковому выражению.
-     * @param value value to check/ проверяемое значение
-     * @returns boolean indicating a match/ логическое значение, указывающее на совпадение
-     */
+    /** Checks if value matches search expression. */
     isSelection(value: SearchCacheItem<any>['value']): boolean;
-    /**
-     * Returns the current regular expression matcher.
-     *
-     * Возвращает текущий сопоставитель регулярных выражений.
-     * @returns RegExp or undefined/ RegExp или undefined
-     */
+    /** Returns current regular expression matcher. */
     get(): RegExp | undefined;
-    /**
-     * Updates the matcher based on the current item value and options.
-     *
-     * Обновляет сопоставитель на основе текущего значения элемента и опций.
-     * @returns void / ничего не возвращает
-     */
+    /** Updates matcher based on current item and options. */
     update(): void;
-    /**
-     * Initializes or resets the regular expression matcher.
-     *
-     * Инициализирует или сбрасывает сопоставитель регулярных выражений.
-     * @returns void / ничего не возвращает
-     */
+    /** Initializes or resets regular expression matcher. */
     protected initMatcher(): void;
 }

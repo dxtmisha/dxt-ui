@@ -1,9 +1,3 @@
-// md5:d57f2beb933588c9063eb560b70c4007
-/**
- * Возвращает первый элемент массива или объекта
- *
- * Returns the first element of an array or object
- * @param value Входное значение
- * @returns Первый элемент массива или объекта
- */
+// md5:1ca54207def52a75ac01e59f68dd1982 true
+/** Returns the first element of an array or object. @keywords get first element array object */
 export declare function getFirst<T>(value: T | T[] | Record<string, T>): T | undefined;
