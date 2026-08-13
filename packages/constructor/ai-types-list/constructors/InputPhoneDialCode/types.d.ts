@@ -1,38 +1,19 @@
-// md5:5413a141230c6ce107c6ddcc66f712ec
+// md5:5413a141230c6ce107c6ddcc66f712ec true
 import { ConstrClass } from '@dxtmisha/functional';
-import { ButtonComponentInclude } from '../Button';
-import { MenuCountryComponentInclude, MenuCountryEmits } from '../MenuCountry';
-/**
- * Interface for describing which components need to be connected for work.
- *
- * Интерфейс для описания, какие компоненты надо подключить для работы.
- */
+
+/** Components required for phone dial code functionality. @keywords components, phone, dial, code */
 export type InputPhoneDialCodeComponents = ButtonComponentInclude & MenuCountryComponentInclude;
-/**
- * Type describing available events.
- *
- * Тип, описывающий доступные события.
- */
+
+/** Available events for phone dial code component. @keywords emits, events, phone, dial */
 export type InputPhoneDialCodeEmits = MenuCountryEmits;
-/**
- * Type describing available properties.
- *
- * Тип, описывающий доступные свойства.
- */
+
 export interface InputPhoneDialCodeExpose {
 }
-/**
- * Type describing available slots.
- *
- * Тип, описывающий доступные слоты.
- */
+
 export interface InputPhoneDialCodeSlots {
 }
-/**
- * Type describing subclasses.
- *
- * Тип, описывающий подклассы.
- */
+
+/** Subclass CSS classes for phone dial code elements. @keywords classes, css, styles, phone */
 export type InputPhoneDialCodeClasses = {
     main: ConstrClass;
     button: string;

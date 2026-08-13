@@ -1,7 +1,4 @@
-// md5:09afbe064ff290d13124796a439a3fea
-import { IconPropsBasic, IconPropsInclude } from '../Icon';
-import { LabelNumberProps } from '../../types/labelTypes';
-import { AriaLabelPropsInclude } from '../../types/ariaTypes';
+// md5:09afbe064ff290d13124796a439a3fea true
 export type BadgePropsToken = {
     selected?: boolean;
     hide?: boolean;
@@ -11,20 +8,11 @@ export type BadgePropsToken = {
     horizontal?: 'right' | 'center' | 'left';
 };
 export type BadgePropsBasic<Icon extends IconPropsBasic = IconPropsBasic> = IconPropsInclude<Icon> & LabelNumberProps & AriaLabelPropsInclude & {
-    /** Whether to show as a dot/ Отображать как точку */
+    /** Whether to show as a dot @keywords badge dot indicator */
     dot?: boolean;
 };
-/**
- * Type describing incoming properties.
- *
- * Тип, описывающий входящие свойства.
- */
 export type BadgeProps = BadgePropsBasic & BadgePropsToken;
-/**
- * Default value for property.
- *
- * Значение по умолчанию для свойства.
- */
+/** Default values for badge properties @keywords defaults badge config */
 export declare const defaultsBadge: {
     overlap: string;
     vertical: string;

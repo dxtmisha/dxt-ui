@@ -1,2 +1,1 @@
-// md5:5d3d5f50ae801ba26e990d6b4e1238ac
-export * from '../constructors/Accordion/index';
+// md5:5d3d5f50ae801ba26e990d6b4e1238ac true

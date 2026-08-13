@@ -1,87 +1,73 @@
-// md5:4170d3f6b8290fd034ed447abe49ef30
+// md5:4170d3f6b8290fd034ed447abe49ef30 true
 import { ConstrBind } from '@dxtmisha/functional';
-import { AreaPropsInclude } from '../../types/areaTypes';
-import { ModelProps } from '../../types/modelTypes';
-import { TextFirstPropsInclude, TextLastPropsInclude, TextMorePropsInclude, TextMorePrevPropsInclude, TextRowsPerPagePropsInclude, TextInfoPropsInclude, TextPreviousPropsInclude, TextNextPropsInclude } from '../../types/textTypes';
-import { ButtonPropsBasic } from '../Button';
-import { IconPropsBasic, IconValue } from '../Icon';
-import { MenuPropsBasic } from '../Menu';
 type PaginationPropsToken = {
     adaptive?: 'lineAlways';
     adaptiveMore?: 'lineAlways';
     adaptiveMorePrev?: 'lineAlways';
 };
 export type PaginationPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Button extends ButtonPropsBasic = ButtonPropsBasic, Menu extends MenuPropsBasic = MenuPropsBasic> = TextFirstPropsInclude & TextLastPropsInclude & TextMorePropsInclude & TextMorePrevPropsInclude & TextRowsPerPagePropsInclude & TextInfoPropsInclude & TextPreviousPropsInclude & TextNextPropsInclude & AreaPropsInclude & ModelProps<number | string> & {
-    /** Current page / Текущая страница */
+    /** Current page @keywords pagination, value, page */
     'value'?: number | string;
-    /** Total item count / Общее количество элементов */
+    /** Total item count @keywords pagination, count, total */
     'count'?: number | string;
-    /** Number of rows per page / Количество строк на странице */
+    /** Number of rows per page @keywords pagination, rows, limit */
     'rows'?: number | string;
-    /** Option list for rows count select / Список вариантов количества строк */
+    /** Option list for rows count select @keywords pagination, menuRows, options */
     'menuRows'?: number[];
-    /** Number of visible page links / Количество отображаемых ссылок на страницы */
+    /** Number of visible page links @keywords pagination, visible, links */
     'visible'?: number;
-    /** Number of buttons for the first and last pages / Количество отображаемых кнопок у первой и последней страниц */
+    /** Number of buttons for first and last pages @keywords pagination, ends */
     'ends'?: number;
-    /** Ellipsis text separator / Текст многоточия-разделителя */
+    /** Ellipsis text separator @keywords pagination, ellipsis, separator */
     'ellipsis'?: string;
-    /** Whether to hide pagination if only one page exists / Скрывать ли пагинацию, если страница всего одна */
+    /** Whether to hide pagination if only one page exists @keywords pagination, hideIfOne */
     'hideIfOne'?: boolean;
-    /** Whether to show the page navigation buttons / Показывать ли панель с кнопками страниц */
+    /** Whether to show page navigation buttons @keywords pagination, showPagination */
     'showPagination'?: boolean;
-    /** Whether to show the next and back buttons / Показывать ли кнопки «Назад» и «Вперед» */
+    /** Whether to show next and back buttons @keywords pagination, showArrows */
     'showArrows'?: boolean;
-    /** Whether to show the first and last page buttons / Показывать ли кнопки перехода к первой и последней страницам */
+    /** Whether to show first and last page buttons @keywords pagination, showFirstLast */
     'showFirstLast'?: boolean;
-    /** Whether to show the first and last page buttons as numbers and ellipsis / Показывать ли первую и последнюю страницы и многоточие между ними */
+    /** Whether to show first/last pages as numbers and ellipsis @keywords pagination, showEnds */
     'showEnds'?: boolean;
-    /** Whether to show "Show more" button / Показывать ли кнопку "Показать еще" */
+    /** Whether to show show more button @keywords pagination, showMore */
     'showMore'?: boolean;
-    /** Whether to show "Show previous" button / Показывать ли кнопку "Показать предыдущие" */
+    /** Whether to show show previous button @keywords pagination, showMorePrev */
     'showMorePrev'?: boolean;
-    /** Whether to show page range information / Показывать ли информацию о диапазоне страниц */
+    /** Whether to show page range information @keywords pagination, showInfo */
     'showInfo'?: boolean;
-    /** Whether to show the text rows per page / Показывать ли текст количества строк на странице */
+    /** Whether to show text rows per page label @keywords pagination, showRowsPerPageLabel */
     'showRowsPerPageLabel'?: boolean;
-    /** Icon for down arrow / Иконка для стрелки вниз */
+    /** Icon for down arrow @keywords pagination, iconArrowDown */
     'iconArrowDown'?: IconValue<Icon>;
-    /** Icon for the first arrow / Иконка для первой страницы */
+    /** Icon for first arrow @keywords pagination, iconArrowFirst */
     'iconArrowFirst'?: IconValue<Icon>;
-    /** Icon for the last arrow / Иконка для последней страницы */
+    /** Icon for last arrow @keywords pagination, iconArrowLast */
     'iconArrowLast'?: IconValue<Icon>;
-    /** Icon for the left arrow / Иконка для стрелки влево */
+    /** Icon for left arrow @keywords pagination, iconArrowLeft */
     'iconArrowLeft'?: IconValue<Icon>;
-    /** Icon for the right arrow / Иконка для стрелки вправо */
+    /** Icon for right arrow @keywords pagination, iconArrowRight */
     'iconArrowRight'?: IconValue<Icon>;
-    /** Custom attributes for button components / Пользовательские атрибуты для кнопок */
+    /** Custom attributes for button components @keywords pagination, buttonAttrs */
     'buttonAttrs'?: ConstrBind<Button>;
-    /** Custom attributes for more button component / Пользовательские атрибуты для кнопки "Показать еще" */
+    /** Custom attributes for more button component @keywords pagination, buttonMoreAttrs */
     'buttonMoreAttrs'?: ConstrBind<Button>;
-    /** Custom attributes for more previous button component / Пользовательские атрибуты для кнопки "Показать предыдущие" */
+    /** Custom attributes for more previous button component @keywords pagination, buttonMorePrevAttrs */
     'buttonMorePrevAttrs'?: ConstrBind<Button>;
-    /** Custom attributes for menu button component / Пользовательские атрибуты для кнопки меню */
+    /** Custom attributes for menu button component @keywords pagination, buttonMenuAttrs */
     'buttonMenuAttrs'?: ConstrBind<Button>;
-    /** Custom attributes for menu component / Пользовательские атрибуты для меню */
+    /** Custom attributes for menu component @keywords pagination, menuAttrs */
     'menuAttrs'?: ConstrBind<Menu>;
-    /** Model rows prop / Свойство количества строк модели */
+    /** Model rows prop @keywords pagination, modelRows */
     'modelRows'?: number | string;
-    /** Update rows handler / Обработчик обновления строк */
+    /** Update rows handler @keywords pagination, onUpdate:rows */
     'onUpdate:rows'?: (value: number | string) => void;
-    /** Update model rows handler / Обработчик обновления количества строк модели */
+    /** Update model rows handler @keywords pagination, onUpdate:modelRows */
     'onUpdate:modelRows'?: (value: number | string) => void;
 };
-/**
- * Type describing incoming properties.
- *
- * Тип, описывающий входящие свойства.
- */
+/** Pagination properties @keywords pagination, props */
 export type PaginationProps = PaginationPropsBasic & PaginationPropsToken;
-/**
- * Default value for property.
- *
- * Значение по умолчанию для свойства.
- */
+/** Default values for pagination component @keywords pagination, defaults */
 export declare const defaultsPagination: {
     value: number;
     visible: number;

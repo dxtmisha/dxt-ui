@@ -1,22 +1,10 @@
-// md5:dea8a2e16aaa6e37761f90c131b9497b
-import { LabelProps } from '../../types/labelTypes';
-type TextLabelPropsToken = {};
+// md5:dea8a2e16aaa6e37761f90c131b9497b true
 export type TextLabelPropsBasic = LabelProps & {
-    /** html tag for wrapping the text/html тег для оборачивания текста */
+    /** Html tag for wrapping the text @keywords tag wrapper element */
     tag?: string;
 };
-/**
- * Type describing incoming properties.
- *
- * Тип, описывающий входящие свойства.
- */
-export type TextLabelProps = TextLabelPropsBasic & TextLabelPropsToken;
-/**
- * Default value for property.
- *
- * Значение по умолчанию для свойства.
- */
+export type TextLabelProps = TextLabelPropsBasic & {};
+/** Default values for text label properties @keywords defaults configuration */
 export declare const defaultsTextLabel: {
     tag: string;
 };
-export {};

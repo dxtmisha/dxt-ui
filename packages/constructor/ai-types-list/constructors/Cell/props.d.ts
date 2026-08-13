@@ -1,13 +1,4 @@
-// md5:7d5b120019908379c8a196f7164e885c
-import { LabelProps } from '../../types/labelTypes';
-import { DescriptionProps } from '../../types/descriptionTypes';
-import { CaptionProps } from '../../types/captionTypes';
-import { EnabledProps } from '../../types/enabledTypes';
-import { SkeletonPropsInclude } from '../Skeleton';
-import { EventClickProps } from '../../types/eventClickTypes';
-import { IconPropsBasic, IconTrailingPropsInclude } from '../Icon';
-import { ProgressPropsBasic, ProgressPropsInclude } from '../Progress';
-import { AriaRolePropsInclude } from '../../types/ariaTypes';
+// md5:7d5b120019908379c8a196f7164e885c true
 export type CellPropsToken = {
     focus?: boolean;
     selected?: boolean;
@@ -20,25 +11,13 @@ export type CellPropsToken = {
     iconTop?: boolean;
 };
 export type CellPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Progress extends ProgressPropsBasic = ProgressPropsBasic> = LabelProps & DescriptionProps & CaptionProps & EnabledProps & IconTrailingPropsInclude<Icon> & ProgressPropsInclude<Progress> & SkeletonPropsInclude & EventClickProps & AriaRolePropsInclude & {
-    /** Style/ Стили */
-    /** HTML tag for the cell container/ HTML-тег для контейнера ячейки */
     tag?: string;
-    /** Whether to show the divider/ Показывать ли разделитель */
     divider?: boolean;
-    /** Whether the cell has dynamic behavior (hover/active states)/ Имеет ли ячейка динамическое поведение (состояния ховера/активности) */
     dynamic?: boolean;
 };
-/**
- * Type describing incoming properties.
- *
- * Тип, описывающий входящие свойства.
- */
+/** Cell properties combining basic and token properties. @keywords cell properties props token basic */
 export type CellProps = CellPropsBasic & CellPropsToken;
-/**
- * Default value for property.
- *
- * Значение по умолчанию для свойства.
- */
+/** Default values for cell properties. @keywords cell defaults default values */
 export declare const defaultsCell: {
     divider: boolean;
     tag: string;

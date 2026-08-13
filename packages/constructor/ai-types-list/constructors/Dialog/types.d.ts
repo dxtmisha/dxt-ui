@@ -1,45 +1,21 @@
-// md5:4e0dba0421513ab03092c99cc53d75bd
+// md5:4e0dba0421513ab03092c99cc53d75bd true
 import { ConstrClass } from '@dxtmisha/functional';
-import { ModalComponents, ModalEmits, ModalExpose, ModalSlots } from '../Modal';
-import { IconComponentInclude } from '../Icon';
-import { LabelAlternativeSlots } from '../../types/labelTypes';
-import { DescriptionSlots } from '../../types/descriptionTypes';
-/**
- * Interface for describing which components need to be connected for work.
- *
- * Интерфейс для описания, какие компоненты надо подключить для работы.
- */
+
 export type DialogComponents = ModalComponents & IconComponentInclude;
-/**
- * Type describing available events.
- *
- * Тип, описывающий доступные события.
- */
+
+/** Dialog available events definition @keywords dialog, emits, events */
 export type DialogEmits = ModalEmits & {
-    /** Event for clicking the OK button/ Событие клика на кнопку подтверждения */
     ok: [];
-    /** Event for clicking the close button/ Событие клика на кнопку закрытия */
     close: [];
 };
-/**
- * Type describing available properties.
- *
- * Тип, описывающий доступные свойства.
- */
+
 export interface DialogExpose extends ModalExpose {
 }
-/**
- * Type describing available slots.
- *
- * Тип, описывающий доступные слоты.
- */
+
 export interface DialogSlots extends ModalSlots, LabelAlternativeSlots, DescriptionSlots {
 }
-/**
- * Type describing subclasses.
- *
- * Тип, описывающий подклассы.
- */
+
+/** Dialog CSS classes mapping structure @keywords dialog, classes, styles */
 export type DialogClasses = {
     main: ConstrClass;
     title: string;

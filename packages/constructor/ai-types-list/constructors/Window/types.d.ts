@@ -1,84 +1,37 @@
-// md5:6a3933fae14620b043a380d08b52c407
+// md5:6a3933fae14620b043a380d08b52c407 true
 import { ConstrClass } from '@dxtmisha/functional';
-import { ButtonComponentInclude } from '../Button';
-import { ImageComponentInclude, ImageEmitsInclude } from '../Image';
-import { ScrollbarComponentInclude, ScrollbarEmitsInclude } from '../Scrollbar';
-import { ModelEmitsOpen } from '../../types/modelTypes';
-import { WindowControlItem, WindowEmitOptions } from './basicTypes';
-/**
- * Interface for describing which components need to be connected for work.
- *
- * Интерфейс для описания, какие компоненты надо подключить для работы.
- */
+
 export type WindowComponents = ScrollbarComponentInclude & ButtonComponentInclude & ImageComponentInclude;
-/**
- * Type describing available events.
- *
- * Тип, описывающий доступные события.
- */
+
 export type WindowEmits = ScrollbarEmitsInclude & ImageEmitsInclude & ModelEmitsOpen & {
-    /** Window event triggered on state change/ Событие окна при изменении состояния */
     window: [options: WindowEmitOptions];
 };
-/**
- * Type describing available properties.
- *
- * Тип, описывающий доступные свойства.
- */
+
+/** @keywords window, expose, api */
 export interface WindowExpose {
-    /** Unique identifier of the window/ Уникальный идентификатор окна */
+    /** @keywords id, get */
     getId(): string | undefined;
-    /** Reactive state of window visibility/ Реактивное состояние видимости окна */
+    /** @keywords open, state, get */
     getOpen(): boolean;
-    /** Control item data for window management/ Данные элемента управления для управления окном */
+    /** @keywords control, item, get */
     getControl(): WindowControlItem | undefined;
-    /**
-     * Sets window open state/
-     * Устанавливает состояние открытия окна
-     */
+    /** @keywords open, set */
     setOpen(open: boolean): Promise<void>;
-    /** Transition to opening state/ Переход в состояние открытия */
+    /** @keywords open, transition */
     toOpen(): Promise<void>;
-    /** Transition to closing state/ Переход в состояние закрытия */
+    /** @keywords close, transition */
     toClose(): Promise<void>;
-    /**
-     * Toggles window visibility/
-     * Переключает видимость окна
-     */
+    /** @keywords toggle, visibility */
     toggle(): Promise<void>;
 }
-/**
- * Type describing available slots.
- *
- * Тип, описывающий доступные слоты.
- */
+
 export interface WindowSlots {
-    /**
-     * Control slot for window management/
-     * Слот управления для управления окном
-     */
     control?(props: WindowControlItem): any;
-    /**
-     * Title slot for window header/
-     * Слот заголовка для шапки окна
-     */
     title?(props: WindowControlItem): any;
-    /**
-     * Footer slot for window bottom/
-     * Слот подвала для низа окна
-     */
     footer?(props: WindowControlItem): any;
-    /**
-     * Default slot for main content/
-     * Основной слот для главного содержимого
-     */
     default?(props: WindowControlItem): any;
 }
-/**
- * Type describing subclasses.
- *
- * Тип, описывающий подклассы.
- */
+
 export type WindowClasses = {
     main: ConstrClass;
     body: string;

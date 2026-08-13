@@ -1,32 +1,15 @@
-// md5:031fe4f5b611389ce6756dc9c7773163
-import { FieldCounterPropsBasic, FieldCounterPropsInclude } from '../FieldCounter';
-import { SkeletonPropsInclude } from '../Skeleton';
+// md5:031fe4f5b611389ce6756dc9c7773163 true
 export type FieldMessagePropsToken = {};
 export type FieldMessagePropsBasic<FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic> = FieldCounterPropsInclude<FieldCounter> & SkeletonPropsInclude & {
-    /** Whether to force show the message/ Принудительно ли показывать сообщение */
     forceShow?: boolean;
-    /** Whether the message can contain HTML code/ Может ли сообщение содержать HTML-код */
     hasHtmlCode?: boolean;
-    /** Whether the field is disabled/ Отключено ли поле */
     disabled?: boolean;
-    /** Helper message text/ Текст вспомогательного сообщения */
     helperMessage?: string;
-    /** Validation message text/ Текст сообщения валидации */
     validationMessage?: string;
-    /** Unique ID for the helper message/ Уникальный идентификатор вспомогательного сообщения */
     helperId?: string;
-    /** Unique ID for the validation message/ Уникальный идентификатор сообщения валидации */
     validationId?: string;
 };
-/**
- * Type describing incoming properties.
- *
- * Тип, описывающий входящие свойства.
- */
+/** Incoming properties for field message. @keywords FieldMessageProps message props */
 export type FieldMessageProps = FieldMessagePropsBasic & FieldMessagePropsToken;
-/**
- * Default value for property.
- *
- * Значение по умолчанию для свойства.
- */
+/** Default properties for field message. @keywords defaultsFieldMessage default values */
 export declare const defaultsFieldMessage: {};

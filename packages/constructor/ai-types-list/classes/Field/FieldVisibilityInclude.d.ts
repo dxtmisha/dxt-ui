@@ -1,18 +1,9 @@
-// md5:f0b297f426148c8c5df2601e3cb731a9
+// md5:f0b297f426148c8c5df2601e3cb731a9 true
 import { Ref } from 'vue';
-/**
- * Class for working with data visualization. This is for working with the password type.
- *
- * Класс для работы с визуализацией данных. Это для работы с типом пароля.
- */
+
+/** Manages password field visibility state. @keywords field visibility toggle password */
 export declare class FieldVisibilityInclude {
-    /** Visibility state flag / Флаг состояния видимости */
     readonly item: Ref<boolean, boolean>;
-    /**
-     * Toggles the values.
-     *
-     * Переключает значения.
-     * @returns current instance / текущий экземпляр
-     */
+    /** Toggles the visibility state. @keywords toggle visibility state */
     toggle(): this;
 }

@@ -1,37 +1,17 @@
-// md5:6086a04f46eed818f5bd3ac7977e4851
+// md5:6086a04f46eed818f5bd3ac7977e4851 true
 import { ConstrClass } from '@dxtmisha/functional';
-import { ListComponents, ListEmits, ListExpose, ListSlots } from '../List';
-/**
- * Interface for describing which components need to be connected for work.
- *
- * Интерфейс для описания, какие компоненты надо подключить для работы.
- */
+
 export type NavigationListComponents = ListComponents;
-/**
- * Type describing available events.
- *
- * Тип, описывающий доступные события.
- */
+
 export type NavigationListEmits = ListEmits;
-/**
- * Type describing available properties.
- *
- * Тип, описывающий доступные свойства.
- */
+
 export interface NavigationListExpose extends ListExpose {
 }
-/**
- * Type describing available slots.
- *
- * Тип, описывающий доступные слоты.
- */
+
 export interface NavigationListSlots extends ListSlots {
 }
-/**
- * Type describing subclasses.
- *
- * Тип, описывающий подклассы.
- */
+
+/** Navigation list CSS classes configuration @keywords navigation classes styles */
 export type NavigationListClasses = {
     main: ConstrClass;
     space: string;

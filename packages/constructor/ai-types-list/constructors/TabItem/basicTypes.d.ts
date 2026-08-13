@@ -1,9 +1,4 @@
-// md5:445c9f73458f1d18223d5c6a06cf3372
-/**
- * Interface for describing which components need to be connected for TabItem work/
- * Интерфейс для описания, какие компоненты надо подключить для работы TabItem
- */
+// md5:445c9f73458f1d18223d5c6a06cf3372 true
 export type TabItemComponentInclude = {
-    /** TabItem component configuration/ Конфигурация компонента элемента вкладки */
     tabItem?: object;
 };

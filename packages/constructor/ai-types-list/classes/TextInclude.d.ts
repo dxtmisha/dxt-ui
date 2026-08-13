@@ -1,104 +1,65 @@
-// md5:3571743bb489a4bfdaee9a00503d2165
+// md5:3571743bb489a4bfdaee9a00503d2165 true
 import { ShallowRef } from 'vue';
-import { TextIncludeInstance } from './TextIncludeInstance';
-import { TextAllPropsInclude, TextIndex, TextList, TextValue } from '../types/textTypes';
-/**
- * TextInclude class for managing text-related properties.
- *
- * Класс TextInclude для управления свойствами, связанными с текстом.
- */
 export declare class TextInclude {
-    protected readonly props: TextAllPropsInclude;
-    /**
-     * Returns a request-isolated instance of TextIncludeInstance.
-     *
-     * Возвращает изолированный в рамках запроса экземпляр TextIncludeInstance.
-     * @returns TextIncludeInstance instance / экземпляр TextIncludeInstance
-     */
+    /** Get request-isolated TextIncludeInstance. @keywords getObject, instance, textIncludeInstance */
     static getObject(): TextIncludeInstance;
-    /** Global list of texts for all components / Глобальный список текстов для всех компонентов */
+    /** Global list of texts for all components. @keywords list, shallowRef, texts */
     static get list(): ShallowRef<TextList>;
-    /**
-     * Initialize global texts.
-     *
-     * Инициализация глобальных текстов.
-     * @param texts List of texts / Список текстов
-     */
+    /** Initialize global texts. @keywords initText, texts, global */
     static initText(texts: TextList): void;
-    /** Cached text getter functions / Кэшированные функции-геттеры для текстов */
     readonly texts: Record<string, () => (string | undefined)>;
-    /**
-     * Constructor for TextInclude class.
-     *
-     * Конструктор для класса TextInclude.
-     * @param props Component properties / Свойства компонента
-     */
+    /** Create TextInclude instance. @keywords constructor, textInclude, props */
     constructor(props: TextAllPropsInclude);
-    /** Breadcrumb navigation text / Текст навигации хлебных крошек */
+    /** Breadcrumb navigation text. @keywords breadcrumb, text */
     get breadcrumb(): string | undefined;
-    /** Cancel text / Текст отмены */
+    /** Cancel text. @keywords cancel, text */
     get cancel(): string | undefined;
-    /** Character limit exceeded text / Текст о превышении лимита символов */
+    /** Character limit exceeded text. @keywords characterLimit, limit, text */
     get characterLimit(): string | undefined;
-    /** Remaining characters text / Текст об оставшихся символах */
+    /** Remaining characters text. @keywords characterRemaining, remaining, text */
     get characterRemaining(): string | undefined;
-    /** Close text / Текст закрытия */
+    /** Close text. @keywords close, text */
     get close(): string | undefined;
-    /** Copied to the clipboard text / Текст о копировании в буфер обмена */
+    /** Copied to clipboard text. @keywords copiedClipboard, clipboard, text */
     get copiedClipboard(): string | undefined;
-    /** Text for decreasing value / Текст для уменьшения значения */
+    /** Decrement value text. @keywords decrement, decrease, text */
     get decrement(): string | undefined;
-    /** Entries match text / Текст о несовпадении записей */
+    /** Entries match text. @keywords entriesMatch, match, text */
     get entriesMatch(): string | undefined;
-    /** First page text / Текст первой страницы */
+    /** First page text. @keywords first, page, text */
     get first(): string | undefined;
-    /** Hide text / Текст скрытия */
+    /** Hide text. @keywords hide, text */
     get hide(): string | undefined;
-    /** Text for increasing value / Текст для увеличения значения */
+    /** Increment value text. @keywords increment, increase, text */
     get increment(): string | undefined;
-    /** Info text / Текст информации о диапазоне */
+    /** Range info text. @keywords info, range, text */
     get info(): string | undefined;
-    /** Last page text / Текст последней страницы */
+    /** Last page text. @keywords last, page, text */
     get last(): string | undefined;
-    /** Loading text / Текст загрузки */
+    /** Loading text. @keywords loading, text */
     get loading(): string | undefined;
-    /** More text / Текст "показать еще" */
+    /** More text. @keywords more, text */
     get more(): string | undefined;
-    /** More previous text / Текст "показать предыдущие" */
+    /** More previous text. @keywords morePrev, previous, text */
     get morePrev(): string | undefined;
-    /** Next text / Текст следующего */
+    /** Next text. @keywords next, text */
     get next(): string | undefined;
-    /** Nothing found text / Текст о том, что ничего не найдено */
+    /** Nothing found text. @keywords notFound, empty, text */
     get notFound(): string | undefined;
-    /** Notifications text / Текст уведомлений */
+    /** Notifications text. @keywords notifications, text */
     get notifications(): string | undefined;
-    /** OK text / Текст подтверждения */
+    /** OK confirmation text. @keywords ok, confirm, text */
     get ok(): string | undefined;
-    /** Page text / Текст страницы */
+    /** Page text. @keywords page, text */
     get page(): string | undefined;
-    /** Previous text / Текст предыдущего */
+    /** Previous text. @keywords previous, text */
     get previous(): string | undefined;
-    /** Rows per page text / Текст "строк на странице" */
+    /** Rows per page text. @keywords rowsPerPage, pagination, text */
     get rowsPerPage(): string | undefined;
-    /** Show text / Текст показа */
+    /** Show text. @keywords show, text */
     get show(): string | undefined;
-    /** Symbol text / Текст символа */
+    /** Symbol text. @keywords symbol, text */
     get symbol(): string | undefined;
-    /**
-     * Get the text by its name.
-     *
-     * Получить текст по его названию.
-     * @param name property name / название свойства
-     * @returns resolved text value / полученное текстовое значение
-     */
+    /** Get text by name. @keywords get, text, name */
     get(name: keyof TextAllPropsInclude): string | undefined;
-    /**
-     * Get text by index, with priority to local value.
-     *
-     * Получение текста по индексу с приоритетом локального значения.
-     * @param index Text index / Индекс текста
-     * @param value Local text value / Локальное значение текста
-     * @returns resolved text string / полученная строка текста
-     */
-    protected getText(index: TextIndex, value: TextValue): string | undefined;
 }

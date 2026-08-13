@@ -1,35 +1,9 @@
-// md5:c4aa2dfdef9b3ca33ed916f715695400
-/**
- * Class for importing plugins.
- *
- * Класс для импорта плагинов.
- */
+// md5:c4aa2dfdef9b3ca33ed916f715695400 true
 export declare class PluginImport {
-    protected readonly packageName: string;
-    protected code: string;
-    /**
-     * Constructor
-     * @param packageName package name / название пакета
-     * @param code file content / содержимое файла
-     */
+    /** Creates a PluginImport instance. @keywords plugin import constructor */
     constructor(packageName: string, code: string);
-    /**
-     * Returns the file content.
-     *
-     * Возвращает содержимое файла.
-     */
+    /** Returns file content. @keywords get content */
     get(): string;
-    /**
-     * Returns the style connection code.
-     *
-     * Возвращает код подключения стиля.
-     */
+    /** Returns style connection code. @keywords import style */
     importStyle(): this;
-    /**
-     * Creates an import line.
-     *
-     * Создает строку импорта.
-     * @param name file name / имя файла
-     */
-    protected makeImport(name: string): void;
 }

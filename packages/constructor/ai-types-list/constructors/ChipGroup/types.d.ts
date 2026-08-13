@@ -1,41 +1,18 @@
-// md5:9ae3ef5fe35ef14da131ab0ed51e67f9
+// md5:9ae3ef5fe35ef14da131ab0ed51e67f9 true
 import { ConstrClass, ListSelectedList } from '@dxtmisha/functional';
-import { ChipComponentInclude } from '../Chip';
-import { EventClickEmits } from '../../types/eventClickTypes';
-import { ModelEmitsSelected } from '../../types/modelTypes';
-/**
- * Interface for describing which components need to be connected for work.
- *
- * Интерфейс для описания, какие компоненты надо подключить для работы.
- */
+
 export type ChipGroupComponents = ChipComponentInclude;
-/**
- * Type describing available events.
- *
- * Тип, описывающий доступные события.
- */
+
 export type ChipGroupEmits = EventClickEmits & ModelEmitsSelected<ListSelectedList>;
-/**
- * Type describing available properties.
- *
- * Тип, описывающий доступные свойства.
- */
+
 export interface ChipGroupExpose {
 }
-/**
- * Type describing available slots.
- *
- * Тип, описывающий доступные слоты.
- */
+
+/** Chip group slots configuration @keywords slots, chip group, custom list */
 export interface ChipGroupSlots {
-    /** Slot for displaying a custom list of chips/ Слот для отображения пользовательского списка чипов */
     default?(props: any): any;
 }
-/**
- * Type describing subclasses.
- *
- * Тип, описывающий подклассы.
- */
+
 export type ChipGroupClasses = {
     main: ConstrClass;
     item: string;

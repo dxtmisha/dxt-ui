@@ -1,106 +1,77 @@
-// md5:16a34c6a758bd633308d543e11edbc95
+// md5:16a34c6a758bd633308d543e11edbc95 true
 import { ConstrBind, Undefined } from '@dxtmisha/functional';
-import { ImageEmits } from './types';
-import { ImagePropsBasic } from './props';
-/** Enumeration of image types / Перечисление типов изображений */
 export declare enum ImageTypeValue {
-    /** PDF file/ PDF файл */
+    /** PDF file @keywords pdf file */
     pdf = "pdf",
-    /** Generic file/ Файл общего вида */
+    /** Generic file @keywords file generic */
     file = "file",
-    /** Array of values/ Массив значений */
+    /** Array of values @keywords array values */
     array = "array",
-    /** Direct link to an image/ Прямая ссылка на изображение */
+    /** Direct link to an image @keywords image direct link */
     image = "image",
-    /** Flag icon/ Иконка флага */
+    /** Flag icon @keywords flag icon */
     flag = "flag",
-    /** Compressed flag icon/ Сжатая иконка флага */
+    /** Compressed flag icon @keywords flag compressed icon */
     flagCompressed = "flag-compressed",
-    /** Solid color/ Сплошной цвет */
+    /** Solid color @keywords color solid */
     color = "color",
-    /** Publicly available link/ Публично доступная ссылка */
+    /** Publicly available link @keywords public link */
     public = "public",
-    /** Filled style/ Заполненный стиль */
+    /** Filled style @keywords filled style */
     filled = "filled",
-    /** Outlined style/ Контурный стиль */
+    /** Outlined style @keywords outlined style */
     outlined = "outlined",
-    /** Rounded style/ Закругленный стиль */
+    /** Rounded style @keywords round style */
     round = "round",
-    /** Sharp style/ Острый стиль */
+    /** Sharp style @keywords sharp style */
     sharp = "sharp",
-    /** Two-tone style/ Двухцветный стиль */
+    /** Two-tone style @keywords two-tone style */
     twoTone = "two-tone",
-    /** Material design icon/ Иконка Material Design */
+    /** Material design icon @keywords material design icon */
     material = "material",
-    /** Generic icon/ Иконка общего вида */
+    /** Generic icon @keywords icon generic */
     icon = "icon"
 }
-/** Image element type / Тип элемента изображения */
 export type ImageElement = HTMLElement | undefined;
-/** Image attribute type / Тип атрибутов изображения */
 export type ImageAttrs = Record<keyof HTMLImageElement, any>;
-/** Image coordinator item type / Тип элемента координат изображения */
 export type ImageCoordinatorItem = [number] | [number, number] | [number, number, number] | [number, number, number, number] | Undefined;
-/** Image size type / Тип размера изображения */
+/** Image size definition @keywords image size width height */
 export type ImageSize<T = number> = {
-    /** Width/ Ширина */
     width: T;
-    /** Height/ Высота */
     height: T;
 };
-/** Image picture item type / Тип элемента изображения picture */
 export type ImagePictureItem = Record<keyof HTMLSourceElement & 'key', any>;
-/** List of image picture items / Список элементов изображения picture */
 export type ImagePictureList = ImagePictureItem[];
-/** Image picture type / Тип изображения picture */
 export type ImagePicture = Record<string, string> | ImagePictureList;
-/** Image Uint8Array type / Тип Image Uint8Array */
 export type ImageUint8ArrayType = Uint8Array<ArrayBuffer> | ArrayBuffer;
-/** Image Uint8Array item / Элемент Image Uint8Array */
+/** Image Uint8Array item data @keywords image uint8array item */
 export type ImageUint8ArrayItem = {
-    /** Data buffer/ Буфер данных */
     item: ImageUint8ArrayType;
-    /** MIME type/ MIME-тип */
     type: string;
-    /** Source URL/ URL-источник */
     src: string;
 };
-/** Image Uint8Array cache / Кэш Image Uint8Array */
 export type ImageUint8ArrayCache = ImageUint8ArrayItem[];
-/** Parameters for the uploaded image or the one available by a direct link / Параметры для загруженного изображения или доступного по прямой ссылке */
+/** Uploaded or direct link image parameters @keywords image item parameters */
 export type ImageItem = ImageSize & {
-    /** Image element/ Элемент изображения */
     image: HTMLImageElement;
-    /** Source URL/ URL-источник */
     src: string;
 };
-/** Image type item / Элемент типа изображения */
 export type ImageTypeItem = ImageTypeValue | Undefined;
-/** Image event item type / Тип элемента события изображения */
 export type ImageEventItem = ImageItem | string | undefined;
-/** Image event type / Тип события изображения */
+/** Image event type structure @keywords image event type */
 export type ImageEventType = {
-    /** Event type/ Тип события */
     type: ImageTypeItem;
 };
-/** Image event data type / Тип данных события изображения */
+/** Image event data structure @keywords image event data */
 export type ImageEventData = ImageEventType & {
-    /** Image event data/ Данные события изображения */
     image: ImageEventItem;
 };
-/** Image value type / Тип значения изображения */
 export type ImageValue<Image extends ImagePropsBasic = ImagePropsBasic> = string | ConstrBind<Image> | null;
-/** Image component inclusion type / Тип включения компонента изображения */
 export type ImageComponentInclude = {
-    /** Image component configuration/ Конфигурация компонента изображения */
     image?: object;
 };
-/** Image emits inclusion type / Тип включения событий изображения */
 export type ImageEmitsInclude = ImageEmits;
-/** Image props inclusion type / Тип включения свойств изображения */
 export type ImagePropsInclude<Image extends ImagePropsBasic = ImagePropsBasic> = {
-    /** Image value or attributes/ Значение или атрибуты изображения */
     image?: string | ConstrBind<Image>;
-    /** Additional image parameters/ Дополнительные параметры изображения */
     imageAttrs?: ConstrBind<Image>;
 };

@@ -1,30 +1,18 @@
-// md5:9bc8656769a2dc8282dc4d7db50cac50
+// md5:9bc8656769a2dc8282dc4d7db50cac50 true
 type HorizontalScrollPropsToken = {
     bleed?: boolean;
     align?: 'block' | 'center' | 'left' | 'right';
 };
 export type HorizontalScrollPropsBasic = {
-    /** Styles/ Стили */
-    /** Whether the scroll area is flush with the edges/ Прилегает ли область прокрутки к краям */
+    /** Whether the scroll area is flush with the edges @keywords bleed scroll flush edge */
     bleed?: boolean;
-    /** Options/ Опции */
-    /** HTML tag for the scroll element/ HTML-тег для элемента прокрутки */
+    /** HTML tag for the scroll element @keywords tag element html */
     tag?: string;
 };
-/**
- * Type describing incoming properties.
- *
- * Тип, описывающий входящие свойства.
- */
 export type HorizontalScrollProps = HorizontalScrollPropsBasic & HorizontalScrollPropsToken;
-/**
- * Default value for property.
- *
- * Значение по умолчанию для свойства.
- */
+/** Default values for horizontal scroll properties @keywords default defaults horizontal scroll */
 export declare const defaultsHorizontalScroll: {
     bleed: boolean;
     align: string;
     tag: string;
 };
-export {};

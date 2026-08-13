@@ -1,5 +1,4 @@
-// md5:bf4de0bac791058c479f3b4d80310d8e
-import { ImagePicture } from './basicTypes';
+// md5:bf4de0bac791058c479f3b4d80310d8e true
 export type ImagePropsToken = {
     turn?: boolean;
     disabled?: boolean;
@@ -8,68 +7,41 @@ export type ImagePropsToken = {
     size?: 'auto' | 'contain' | 'cover';
 };
 export type ImagePropsBasic = {
-    /**
-     * Accepts icon name, image URL, File object or PDF link/
-     * Принимает название иконки, ссылку на изображение, объект File или ссылку на PDF файл
-     */
+    /** Accepts icon name, image URL, File object or PDF link @keywords image value source file pdf */
     value?: string | any;
-    /** Image URL/ URL изображения */
+    /** Image URL @keywords image url address */
     url?: string;
-    /**
-     * Adaptive group (e.g. for different resolutions)/
-     * Группа адаптивности (например, для разных разрешений)
-     */
+    /** Adaptive group for different resolutions @keywords image adaptive group */
     adaptiveGroup?: string;
-    /** Always use adaptivity/ Всегда использовать адаптивность */
+    /** Always use adaptivity @keywords image adaptive always */
     adaptiveAlways?: boolean;
-    /** Image object width/ Ширина объекта изображения */
+    /** Image object width @keywords image width size */
     objectWidth?: string | number;
-    /** Image object height/ Высота объекта изображения */
+    /** Image object height @keywords image height size */
     objectHeight?: string | number;
-    /**
-     * Image coordinates (e.g. for cropping or positioning)/
-     * Координаты изображения (например, для обрезки или позиционирования)
-     */
+    /** Image coordinates for cropping or positioning @keywords image coordinator crop position */
     coordinator?: number[] | any;
-    /** X position/ Позиция по оси X */
+    /** X position @keywords image position x */
     x?: string | number;
-    /** Y position/ Позиция по оси Y */
+    /** Y position @keywords image position y */
     y?: string | number;
-    /**
-     * Use <img> tag instead of background image/
-     * Использовать тег <img> вместо фонового изображения
-     */
+    /** Use <img> tag instead of background image @keywords image tag img */
     tagImg?: boolean;
-    /**
-     * Image source set for different resolutions/
-     * Набор источников изображения для разных разрешений
-     */
+    /** Image source set for different resolutions @keywords image srcset sources */
     srcset?: string | Record<string, string>;
-    /**
-     * Picture sources for different resolutions using <picture> tag/
-     * Источники для разных разрешений с использованием тега <picture>
-     */
+    /** Picture sources for different resolutions using <picture> tag @keywords image picture sources */
     picture?: ImagePicture;
-    /** Alt text/ Текст alt */
+    /** Alt text @keywords image alt alternative text */
     alt?: string;
-    /** Lazy loading/ Ленивя загрузка */
+    /** Lazy loading @keywords image lazy load */
     lazy?: boolean;
-    /** Preload offset/ Смещение для предзагрузки */
+    /** Preload offset @keywords image preload offset */
     preloadOffset?: string;
-    /** Image fetch priority (low, high, auto)/ Приоритет загрузки изображения (low, high, auto) */
+    /** Image fetch priority @keywords image fetch priority */
     fetchPriority?: HTMLImageElement['fetchPriority'];
 };
-/**
- * Type describing incoming properties.
- *
- * Тип, описывающий входящие свойства.
- */
 export type ImageProps = ImagePropsBasic & ImagePropsToken;
-/**
- * Default value for property.
- *
- * Значение по умолчанию для свойства.
- */
+/** Default value for image properties @keywords image defaults configuration */
 export declare const defaultsImage: {
     adaptiveGroup: string;
     preloadOffset: string;

@@ -1,38 +1,21 @@
-// md5:450d33853aa8f4d10c40ecd3187d95b8
+// md5:450d33853aa8f4d10c40ecd3187d95b8 true
 import { ConstrClass } from '@dxtmisha/functional';
-import { ChipComponentInclude } from '../Chip';
-import { EventClickEmits } from '../../types/eventClickTypes';
-/**
- * Interface for describing which components need to be connected for work.
- *
- * Интерфейс для описания, какие компоненты надо подключить для работы.
- */
+
+/** Components required for work. @keywords select value components */
 export type SelectValueComponents = ChipComponentInclude;
-/**
- * Type describing available events.
- *
- * Тип, описывающий доступные события.
- */
+
+/** Available events. @keywords select value emits events */
 export type SelectValueEmits = EventClickEmits;
-/**
- * Type describing available properties.
- *
- * Тип, описывающий доступные свойства.
- */
+
+/** Available properties. @keywords select value expose properties */
 export interface SelectValueExpose {
 }
-/**
- * Type describing available slots.
- *
- * Тип, описывающий доступные слоты.
- */
+
+/** Available slots. @keywords select value slots */
 export interface SelectValueSlots {
 }
-/**
- * Type describing subclasses.
- *
- * Тип, описывающий подклассы.
- */
+
+/** Subclasses definition. @keywords select value classes subclasses */
 export type SelectValueClasses = {
     main: ConstrClass;
     item: string;

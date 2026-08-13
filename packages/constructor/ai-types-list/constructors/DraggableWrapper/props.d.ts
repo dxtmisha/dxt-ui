@@ -1,21 +1,22 @@
-// md5:372a46511592e64368ed9ee550ca2067
-/** Type describing token properties / Тип, описывающий свойства токенов */
+// md5:372a46511592e64368ed9ee550ca2067 true
 type DraggableWrapperPropsToken = {};
-/** Type describing basic properties / Тип, описывающий базовые свойства */
+
+/** Basic properties for draggable wrapper component. @keywords draggable wrapper basic properties */
 export type DraggableWrapperPropsBasic = {
-    /** Disables the drag-and-drop sorting functionality / Отключает функционал сортировки перетаскиванием */
+    /** Disables drag-and-drop sorting. @keywords disabled sorting */
     disabled?: boolean;
-    /** HTML tag of the wrapper element / HTML-тег элемента обертки */
+    /** HTML wrapper element tag name. @keywords html tag element */
     tag?: string;
-    /** Delay before dragging starts in milliseconds / Задержка перед началом перетаскивания в миллисекундах */
+    /** Drag start delay in milliseconds or string format. @keywords delay milliseconds */
     delay?: number | string;
-    /** Custom classes for the placeholder square element / Пользовательские классы для элемента-заполнителя */
+    /** Custom CSS classes for placeholder element. @keywords classes square placeholder */
     classesSquare?: string | string[];
 };
-/** Type describing incoming properties / Тип, описывающий входящие свойства */
+
+/** Incoming properties for draggable wrapper component combining basic and token props. @keywords draggable wrapper props */
 export type DraggableWrapperProps = DraggableWrapperPropsBasic & DraggableWrapperPropsToken;
-/** Default value for property / Значение по умолчанию для свойства */
+
+/** Default configuration values for draggable wrapper component. @keywords defaults draggable wrapper */
 export declare const defaultsDraggableWrapper: {
     tag: string;
 };
-export {};

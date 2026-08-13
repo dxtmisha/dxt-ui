@@ -1,48 +1,14 @@
-// md5:26a6383ec3c8a45f6d6594bf3c7268ed
-import { ConstrClass } from '@dxtmisha/functional';
-import { IconComponentInclude } from '../Icon';
-import { ProgressComponentInclude } from '../Progress';
-import { RippleComponentInclude } from '../Ripple';
-import { CaptionSlots } from '../../types/captionTypes';
-import { DescriptionSlots } from '../../types/descriptionTypes';
-import { EventClickEmits, EventClickExpose } from '../../types/eventClickTypes';
-import { LabelSlots } from '../../types/labelTypes';
-import { CellClassesSub } from './basicTypes';
-/**
- * Interface for describing which components need to be connected for work.
- *
- * Интерфейс для описания, какие компоненты надо подключить для работы.
- */
+// md5:26a6383ec3c8a45f6d6594bf3c7268ed true
 export type CellComponents = IconComponentInclude & ProgressComponentInclude & RippleComponentInclude;
-/**
- * Type describing available events.
- *
- * Тип, описывающий доступные события.
- */
 export type CellEmits = EventClickEmits;
-/**
- * Type describing available properties.
- *
- * Тип, описывающий доступные свойства.
- */
 export interface CellExpose extends EventClickExpose {
 }
-/**
- * Type describing available slots.
- *
- * Тип, описывающий доступные слоты.
- */
 export interface CellSlots extends LabelSlots, DescriptionSlots, CaptionSlots {
-    /** Slot for displaying additional content on the right side of the cell/ Слот для отображения дополнительного контента в правой части ячейки */
+    /** Slot for trailing content @keywords trailing, right, cell */
     trailing?(props: CellClassesSub): any;
-    /** Slot for displaying the main body content of the cell/ Слот для отображения основного содержимого тела ячейки */
+    /** Slot for body content @keywords body, main, cell */
     body?(props: CellClassesSub): any;
 }
-/**
- * Type describing subclasses.
- *
- * Тип, описывающий подклассы.
- */
 export type CellClasses = {
     main: ConstrClass;
     context: string;

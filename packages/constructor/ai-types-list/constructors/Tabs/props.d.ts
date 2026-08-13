@@ -1,21 +1,9 @@
-// md5:12f191cf3795b6fbef4e26b2cc1c0661
+// md5:12f191cf3795b6fbef4e26b2cc1c0661 true
 import { ListSelectedList } from '@dxtmisha/functional';
-import { TabItemPropsBasic } from '../TabItem';
-import { TabsNavigationPropsBasic, TabsNavigationPropsInclude } from '../TabsNavigation';
-import { MotionAxisPropsBasic, MotionAxisPropsInclude } from '../MotionAxis';
-import { ModelPropsSelected } from '../../types/modelTypes';
 type TabsPropsToken = {};
 export type TabsPropsBasic<TabItem extends TabItemPropsBasic = TabItemPropsBasic, TabsNavigation extends TabsNavigationPropsBasic = TabsNavigationPropsBasic, MotionAxis extends MotionAxisPropsBasic = MotionAxisPropsBasic> = TabsNavigationPropsInclude<TabItem, TabsNavigation> & MotionAxisPropsInclude<MotionAxis> & ModelPropsSelected<ListSelectedList>;
-/**
- * Type describing incoming properties.
- *
- * Тип, описывающий входящие свойства.
- */
+/** Incoming properties for tabs component. @keywords tabs properties config */
 export type TabsProps = TabsPropsBasic & TabsPropsToken;
-/**
- * Default value for property.
- *
- * Значение по умолчанию для свойства.
- */
+/** Default values for tabs properties. @keywords tabs defaults configuration */
 export declare const defaultsTabs: {};
 export {};

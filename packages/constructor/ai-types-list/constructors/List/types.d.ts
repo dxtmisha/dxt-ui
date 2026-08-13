@@ -1,51 +1,21 @@
-// md5:62725fc34c7d46a670a585541f8d61c3
+// md5:62725fc34c7d46a670a585541f8d61c3 true
 import { ConstrClass, ListList, ListNames } from '@dxtmisha/functional';
-import { EventClickEmits } from '../../types/eventClickTypes';
-import { ListItemComponentInclude } from '../ListItem';
-import { ListGroupComponentInclude } from '../ListGroup';
-import { ListMenuComponentInclude } from '../ListMenu';
-import { InputComponentInclude } from '../Input';
-/**
- * Interface for describing which components need to be connected for work.
- *
- * Интерфейс для описания, какие компоненты надо подключить для работы.
- */
 export type ListComponents = ListItemComponentInclude & ListGroupComponentInclude & ListMenuComponentInclude & InputComponentInclude;
-/**
- * Type describing available events.
- *
- * Тип, описывающий доступные события.
- */
 export type ListEmits = EventClickEmits & {
-    /** Event for closing the list/ Событие закрытия списка */
     close: [];
 };
-/**
- * Type describing available properties.
- *
- * Тип, описывающий доступные свойства.
- */
+/** Interface describing exposed component properties and methods. @keywords expose methods state */
 export interface ListExpose {
-    /** Whether at least one item is selected/ Выбран ли хотя бы один элемент */
+    /** Checks if at least one item is selected. @keywords isSelected check selected */
     isSelected(): boolean;
-    /** List of selected elements/ Список выбранных элементов */
+    /** Returns the list of selected elements. @keywords getSelectedList selected elements */
     getSelectedList(): ListList;
-    /** Names of selected elements/ Названия выбранных элементов */
+    /** Returns the names of selected elements. @keywords getSelectedNames selected names */
     getSelectedNames(): ListNames;
-    /** Values of selected elements/ Значения выбранных элементов */
+    /** Returns the values of selected elements. @keywords getSelectedValues selected values */
     getSelectedValues(): any[];
 }
-/**
- * Type describing available slots.
- *
- * Тип, описывающий доступные слоты.
- */
 export type ListSlots = Record<string, (props: any) => any>;
-/**
- * Type describing subclasses.
- *
- * Тип, описывающий подклассы.
- */
 export type ListClasses = {
     main: ConstrClass;
     space: string;

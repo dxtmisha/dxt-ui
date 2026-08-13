@@ -1,20 +1,11 @@
-// md5:d9764fb6264f3c9997006f3bbc5f47f2
-type BleedPropsToken = {};
+// md5:d9764fb6264f3c9997006f3bbc5f47f2 true
 export type BleedPropsBasic = {
     tag?: string;
 };
-/**
- * Type describing incoming properties.
- *
- * Тип, описывающий входящие свойства.
- */
+/** Type describing incoming properties. @keywords BleedProps properties */
 export type BleedProps = BleedPropsBasic & BleedPropsToken;
-/**
- * Default value for property.
- *
- * Значение по умолчанию для свойства.
- */
+/** Default value for property. @keywords defaultsBleed default */
 export declare const defaultsBleed: {
     tag: string;
 };
-export {};
+type BleedPropsToken = {};

@@ -1,2 +1,1 @@
-// md5:2f1f635cdfbb75d54bd9c2eafd566649
-export * from '../constructors/MenuChip/index';
+// md5:2f1f635cdfbb75d54bd9c2eafd566649 true

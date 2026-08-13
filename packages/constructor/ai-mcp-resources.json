@@ -3,12 +3,24 @@
     "uri": "@dxtmisha/constructor/ai-types.md",
     "name": "Type Definitions (@dxtmisha/constructor)",
     "mimeType": "text/markdown",
-    "description": "Compressed and AI-optimized TypeScript declaration contracts for component logic constructors, ARIA controllers, and UI primitives."
+    "description": "TypeScript type definitions and signatures for AI coding assistant."
   },
   {
     "uri": "@dxtmisha/constructor/ai-description.md",
-    "name": "Package Overview & Rules (@dxtmisha/constructor)",
+    "name": "Project Overview (@dxtmisha/constructor)",
     "mimeType": "text/markdown",
-    "description": "High-density package overview, module capabilities, and type definition trigger guidelines for @dxtmisha/constructor."
+    "description": "Project overview, usage guidelines, and mandatory prompt rules for AI coding assistant."
+  },
+  {
+    "uri": "@dxtmisha/constructor/ai-resources/colors-and-palettes-ru.md",
+    "name": "Директива стилизации и верстки (@dxtmisha/constructor)",
+    "mimeType": "text/markdown",
+    "description": "Документ содержит строгие правила верстки на SCSS и настройки UI в JSON с использованием системных токенов и миксинов. Использование данных стандартов исключает жесткие цветовые коды, обеспечивая автоматическую адаптацию компонентов под динамические темы приложения."
+  },
+  {
+    "uri": "@dxtmisha/constructor/ai-resources/colors-and-palettes.md",
+    "name": "AI UI SCSS Styling Directive (@dxtmisha/constructor)",
+    "mimeType": "text/markdown",
+    "description": "Defines strict styling standards, rules, and mixins for UI components to enforce theme-adaptive styling and prevent hardcoded color usage. Solves the technical task of maintaining consistent, dynamic color palettes and state opacities across SCSS and Vue files."
   }
 ]

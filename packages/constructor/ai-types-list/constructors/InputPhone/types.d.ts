@@ -1,40 +1,21 @@
-// md5:cd5fa1235c7231cb90cdf815da24008f
+// md5:cd5fa1235c7231cb90cdf815da24008f true
 import { ConstrClass } from '@dxtmisha/functional';
-import { FieldComponentInclude, FieldSlotsInclude } from '../Field';
-import { InputPhoneDialCodeComponentInclude } from '../InputPhoneDialCode';
-import { MaskComponentInclude } from '../Mask';
-import { FieldBasicEmits, FieldBasicExpose } from '../../types/fieldTypes';
-/**
- * Interface for describing which components need to be connected for work.
- *
- * Интерфейс для описания, какие компоненты надо подключить для работы.
- */
+
+/** Components required for input phone operation @keywords input phone components include */
 export type InputPhoneComponents = FieldComponentInclude & MaskComponentInclude & InputPhoneDialCodeComponentInclude;
-/**
- * Type describing available events.
- *
- * Тип, описывающий доступные события.
- */
+
+/** Available events for input phone @keywords input phone emits events */
 export type InputPhoneEmits = FieldBasicEmits;
-/**
- * Type describing available properties.
- *
- * Тип, описывающий доступные свойства.
- */
+
+/** Exposed methods and properties for input phone @keywords input phone expose properties */
 export interface InputPhoneExpose extends FieldBasicExpose {
 }
-/**
- * Type describing available slots.
- *
- * Тип, описывающий доступные слоты.
- */
+
+/** Available slots for input phone component @keywords input phone slots */
 export interface InputPhoneSlots extends FieldSlotsInclude {
 }
-/**
- * Type describing subclasses.
- *
- * Тип, описывающий подклассы.
- */
+
+/** CSS class definitions for input phone elements @keywords input phone classes main */
 export type InputPhoneClasses = {
     main: ConstrClass;
 };

@@ -1,42 +1,17 @@
-// md5:b9116a403dbfa39cac78ffc67b1496da
+// md5:b9116a403dbfa39cac78ffc67b1496da true
 import { ConstrClass } from '@dxtmisha/functional';
-/**
- * Interface for describing which components need to be connected for work.
- *
- * Интерфейс для описания, какие компоненты надо подключить для работы.
- */
 export type MotionStickyComponents = {};
-/**
- * Type describing available events.
- *
- * Тип, описывающий доступные события.
- */
 export type MotionStickyEmits = {
-    /** Event triggered when sticky status changes / Событие при изменении статуса прикрепления */
+    /** Triggered when sticky status changes @keywords sticky status change event */
     sticky: [status: boolean];
 };
-/**
- * Type describing available properties.
- *
- * Тип, описывающий доступные свойства.
- */
 export interface MotionStickyExpose {
 }
-/**
- * Type describing available slots.
- *
- * Тип, описывающий доступные слоты.
- */
 export interface MotionStickySlots {
-    /** Slot for default content / Слот для основного содержимого */
+    /** Default slot content @keywords default slot content */
     default?(props: any): any;
 }
-/**
- * Type describing subclasses.
- *
- * Тип, описывающий подклассы.
- */
 export type MotionStickyClasses = {
-    /** Main class of the component / Основной класс компонента */
+    /** Main component class @keywords main class style */
     main: ConstrClass;
 };

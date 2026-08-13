@@ -1,9 +1,3 @@
-// md5:c28e97dbfbcd493fa87743316525b201
-/**
- * Generates CSS class for tag 'a' without any static styles.
- *
- * Генерирует CSS класс для тега 'a' без каких-либо статических стилей.
- * @param design design system prefix/ префикс дизайн-системы
- * @returns CSS class string/ строка CSS класса
- */
+// md5:c28e97dbfbcd493fa87743316525b201 true
+/** Generates CSS class for tag 'a' without static styles. @keywords class, tag, a, css */
 export declare const getClassTagAStatic: (design: string) => string;

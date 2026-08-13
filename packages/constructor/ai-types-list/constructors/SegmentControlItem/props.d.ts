@@ -1,7 +1,4 @@
-// md5:09ec5f78399350e9644390d63838d757
-import { IconPropsBasic } from '../Icon';
-import { BadgePropsBasic } from '../Badge';
-import { TabItemPropsBasic } from '../TabItem';
+// md5:09ec5f78399350e9644390d63838d757 true
 type SegmentControlItemPropsToken = {
     focus?: boolean;
     open?: boolean;
@@ -12,16 +9,7 @@ type SegmentControlItemPropsToken = {
     container?: boolean;
 };
 export type SegmentControlItemPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Badge extends BadgePropsBasic = BadgePropsBasic> = TabItemPropsBasic<Icon, Badge>;
-/**
- * Type describing incoming properties.
- *
- * Тип, описывающий входящие свойства.
- */
+/** Type describing incoming properties. @keywords segment control item props */
 export type SegmentControlItemProps = SegmentControlItemPropsBasic & SegmentControlItemPropsToken;
-/**
- * Default value for property.
- *
- * Значение по умолчанию для свойства.
- */
+/** Default value for property. @keywords default segment control item defaults */
 export declare const defaultsSegmentControlItem: {};
-export {};

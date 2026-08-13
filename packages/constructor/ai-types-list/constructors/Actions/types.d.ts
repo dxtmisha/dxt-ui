@@ -1,42 +1,20 @@
-// md5:a1b8ab6dc90acfb8d71302b7824f6df5
+// md5:a1b8ab6dc90acfb8d71302b7824f6df5 true
 import { ConstrClass } from '@dxtmisha/functional';
-import { ButtonComponentInclude } from '../Button';
-import { EventClickEmits } from '../../types/eventClickTypes';
-/**
- * Interface for describing which components need to be connected for work.
- *
- * Интерфейс для описания, какие компоненты надо подключить для работы.
- */
+
 export type ActionsComponents = ButtonComponentInclude;
-/**
- * Type describing available events.
- *
- * Тип, описывающий доступные события.
- */
+
 export type ActionsEmits = EventClickEmits;
-/**
- * Type describing available properties.
- *
- * Тип, описывающий доступные свойства.
- */
+
 export interface ActionsExpose {
 }
-/**
- * Type describing available slots.
- *
- * Тип, описывающий доступные слоты.
- */
+
 export interface ActionsSlots {
-    /** Slot for the main list of actions/ Слот для основного списка действий */
+    /** @keywords slot, default, action */
     default?(props: any): any;
-    /** Slot for the secondary list of actions/ Слот для вторичного списка действий */
+    /** @keywords slot, secondary, action */
     secondary?(props: any): any;
 }
-/**
- * Type describing subclasses.
- *
- * Тип, описывающий подклассы.
- */
+
 export type ActionsClasses = {
     main: ConstrClass;
     item: string;

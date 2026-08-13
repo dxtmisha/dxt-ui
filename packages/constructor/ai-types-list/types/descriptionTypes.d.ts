@@ -1,17 +1,10 @@
-// md5:8bc0c7bda7e8c4a814c7df84986f8da2
-/**
- * Slots for description functionality/ Слоты для функциональности описания
- */
+// md5:8bc0c7bda7e8c4a814c7df84986f8da2 true
 export interface DescriptionSlots {
-    /** Description slot/ Слот описания */
+    /** Description slot. @keywords description slot render props */
     description?(props: any): any;
 }
-/**
- * Props for description functionality/ Пропсы для функциональности описания
- */
+
 export type DescriptionProps = {
-    /** Description text or number/ Текст или число описания */
     description?: string | number;
-    /** Description identifier/ Идентификатор описания */
     descriptionId?: string;
 };

@@ -1,31 +1,13 @@
-// md5:6f14a51542ddc276726e3563059ae774
-import { ConstrBind } from '@dxtmisha/functional';
-import { LabelProps } from '../../types/labelTypes';
-import { DescriptionProps } from '../../types/descriptionTypes';
-import { IconLitePropsInclude, IconPropsBasic, IconValue } from '../Icon';
-import { CellPropsBasic } from '../Cell';
-import { MotionTransformPropsBasic, MotionTransformPropsInclude } from '../MotionTransform';
-import { ModelPropsOpen } from '../../types/modelTypes';
+// md5:6f14a51542ddc276726e3563059ae774 true
 export type AccordionPropsToken = {
     divider?: boolean;
 };
 export type AccordionPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Cell extends CellPropsBasic = CellPropsBasic, MotionTransform extends MotionTransformPropsBasic = MotionTransformPropsBasic> = LabelProps & DescriptionProps & IconLitePropsInclude<Icon> & MotionTransformPropsInclude<MotionTransform> & ModelPropsOpen & {
-    /** Icon for the dropdown indicator/ Иконка для индикатора раскрывающегося списка */
     iconArrowDown?: IconValue<Icon>;
-    /** Additional attributes for the header cell component/ Дополнительные атрибуты для компонента ячейки заголовка */
     cellAttrs?: ConstrBind<Cell>;
 };
-/**
- * Type describing incoming properties.
- *
- * Тип, описывающий входящие свойства.
- */
 export type AccordionProps = AccordionPropsBasic & AccordionPropsToken;
-/**
- * Default value for property.
- *
- * Значение по умолчанию для свойства.
- */
+/** Default accordion properties values @keywords defaults, accordion, configuration */
 export declare const defaultsAccordion: {
     divider: boolean;
     clickOpen: boolean;

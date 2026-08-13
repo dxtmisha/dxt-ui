@@ -1,18 +1,9 @@
-// md5:c04b8cc2c867fcd1606f1206b7c6870d
+// md5:c04b8cc2c867fcd1606f1206b7c6870d true
 export type RipplePropsToken = {};
 export type RipplePropsBasic = {
-    /** Whether the ripple is disabled/ Отключена ли пульсация */
+    /** Whether the ripple effect is disabled @keywords disabled, ripple, props */
     disabled?: boolean;
 };
-/**
- * Type describing incoming properties.
- *
- * Тип, описывающий входящие свойства.
- */
 export type RippleProps = RipplePropsBasic & RipplePropsToken;
-/**
- * Default value for property.
- *
- * Значение по умолчанию для свойства.
- */
+/** Default properties for ripple component @keywords defaults, ripple, config */
 export declare const defaultsRipple: {};

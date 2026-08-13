@@ -1,51 +1,27 @@
-// md5:8c6e1a35009e56a97aa111e658ec1030
+// md5:8c6e1a35009e56a97aa111e658ec1030 true
 import { ConstrClass } from '@dxtmisha/functional';
-import { SnackbarItemComponentInclude } from '../SnackbarItem';
-import { SnackbarValue } from './basicTypes';
-/**
- * Interface for describing which components need to be connected for work.
- *
- * Интерфейс для описания, какие компоненты надо подключить для работы.
- */
+
 export type SnackbarComponents = SnackbarItemComponentInclude;
-/**
- * Type describing available events.
- *
- * Тип, описывающий доступные события.
- */
+
 export type SnackbarEmits = {
-    /** Event triggered when notification is shown/ Событие при показе уведомления */
     show: [value: string, item: SnackbarValue];
-    /** Event triggered when notification is hidden/ Событие при скрытии уведомления */
     hide: [value: string, item: SnackbarValue];
 };
-/**
- * Type describing available properties.
- *
- * Тип, описывающий доступные свойства.
- */
+
+/** Checks for active notifications @keywords state, check, isItem */
 export interface SnackbarExpose {
-    /** Reactive state indicating if there are notifications/ Реактивное состояние, указывающее на наличие уведомлений */
     isItem(): boolean;
-    /** Adds a new notification/ Добавляет новое уведомление */
+    /** Adds a new notification item @keywords add, push, insert */
     add(item: SnackbarValue): void;
-    /** Removes a notification by its value/ Удаляет уведомление по его значению */
+    /** Removes a notification by value @keywords remove, delete */
     remove(value: string): void;
-    /** Clears all notifications/ Очищает все уведомления */
+    /** Clears all notifications @keywords clear, reset, empty */
     clear(): void;
 }
-/**
- * Type describing available slots.
- *
- * Тип, описывающий доступные слоты.
- */
+
 export interface SnackbarSlots {
 }
-/**
- * Type describing subclasses.
- *
- * Тип, описывающий подклассы.
- */
+
 export type SnackbarClasses = {
     main: ConstrClass;
     item: string;

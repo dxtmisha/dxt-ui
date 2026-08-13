@@ -1,16 +1,8 @@
-// md5:2d979baa51a38bd50a2315ef63bdb362
+// md5:2d979baa51a38bd50a2315ef63bdb362 true
 type GridPropsToken = {};
 export type GridPropsBasic = {};
-/**
- * Type describing incoming properties.
- *
- * Тип, описывающий входящие свойства.
- */
+/** Type describing incoming properties. @keywords GridProps incoming properties */
 export type GridProps = GridPropsBasic & GridPropsToken;
-/**
- * Default value for property.
- *
- * Значение по умолчанию для свойства.
- */
+/** Default value for property. @keywords defaultsGrid default value property */
 export declare const defaultsGrid: {};
 export {};

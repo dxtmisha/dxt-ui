@@ -1,45 +1,37 @@
-// md5:8a768ef292d4e9d65e66a1ab43cb97c5
+// md5:8a768ef292d4e9d65e66a1ab43cb97c5 true
 import { Ref } from 'vue';
 import { ConstrBind, NumberOrStringOrBoolean } from '@dxtmisha/functional';
-import { WindowControlItem } from '../Window';
-import { ListSlotsInclude } from '../List';
-import { MenuExpose } from './types';
-import { MenuPropsBasic } from './props';
-/** Basic control for the menu/ Базовое управление для меню */
 export type MenuControlBasic = ListSlotsInclude & {
-    /** Current loading state/ Текущее состояние загрузки */
+    /** Current loading state @keywords loading state menu */
     loading: Ref<boolean>;
-    /** Switches to the previous item/ Переключает на предыдущий элемент */
+    /** Switches to the previous item @keywords previous item switch menu */
     previous(): NumberOrStringOrBoolean | undefined;
-    /** Switches to the next item/ Переключает на следующий элемент */
+    /** Switches to the next item @keywords next item switch menu */
     next(): NumberOrStringOrBoolean | undefined;
 };
-/** Menu control item combining basic menu and window controls/ Элемент управления меню, сочетающий базовые элементы управления меню и окна */
 export type MenuControlItem = MenuControlBasic & WindowControlItem;
-/** Interface for describing which components need to be connected for Menu work/ Интерфейс для описания, какие компоненты надо подключить для работы Menu */
 export type MenuComponentInclude = {
-    /** Menu component configuration/ Конфигурация компонента меню */
+    /** Menu component configuration @keywords menu component configuration */
     menu?: object;
 };
-/** Type for menu expose functionality/ Тип для функциональности экспорта меню */
+/** Menu expose functionality @keywords menu expose interface */
 export interface MenuExposeInclude extends MenuExpose {
-    /** Reference to the menu element/ Ссылка на элемент меню */
+    /** Reference to the menu element @keywords get menu element ref */
     getMenuElement(): Ref<ConstrBind<MenuExpose> | undefined>;
 }
 export type MenuSlotInclude = {
-    /** Title slot for window title/ Слот заголовка для заголовка окна */
+    /** Title slot for window title @keywords title slot window */
     title?(props: MenuControlItem): any;
-    /** Footer slot for window bottom/ Слот подвала для низа окна */
+    /** Footer slot for window bottom @keywords footer slot window */
     footer?(props: MenuControlItem): any;
-    /** Context slot for top area / Слот контекстной области сверху */
+    /** Context slot for top area @keywords context top slot */
     contextTop?(props: MenuControlItem): any;
-    /** Context slot for bottom area / Слот контекстной области снизу */
+    /** Context slot for bottom area @keywords context bottom slot */
     contextBottom?(props: MenuControlItem): any;
 };
-/** Interface for menu include props/ Интерфейс для свойств включения меню */
 export type MenuPropsInclude<Menu extends MenuPropsBasic = MenuPropsBasic> = {
-    /** Whether the menu is disabled/ Отключено ли меню */
+    /** Whether the menu is disabled @keywords menu disabled prop */
     disabled?: boolean;
-    /** Additional attributes for the Menu component/ Дополнительные атрибуты для компонента меню */
+    /** Additional attributes for the Menu component @keywords menu attributes props */
     menuAttrs?: ConstrBind<Menu>;
 };

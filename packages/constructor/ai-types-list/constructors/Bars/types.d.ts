@@ -1,49 +1,20 @@
-// md5:9a38fdf0523362959a2eaa2035f2d149
+// md5:9a38fdf0523362959a2eaa2035f2d149 true
 import { ConstrClass } from '@dxtmisha/functional';
-import { ButtonComponentInclude } from '../Button';
-import { EventClickEmits } from '../../types/eventClickTypes';
-import { LabelSlots } from '../../types/labelTypes';
-import { DescriptionSlots } from '../../types/descriptionTypes';
-/**
- * Interface for describing which components need to be connected for work.
- *
- * Интерфейс для описания, какие компоненты надо подключить для работы.
- */
 export type BarsComponents = ButtonComponentInclude;
-/**
- * Type describing available events.
- *
- * Тип, описывающий доступные события.
- */
 export type BarsEmits = EventClickEmits & {
-    /** Event for updating the action mode status/ Событие обновления статуса режима действия */
+    /** Event for updating the action mode status @keywords update action status */
     'update:action': [value: boolean];
-    /** Event for updating the action mode model status/ Событие обновления статуса модели режима действия */
+    /** Event for updating the action model status @keywords update model action status */
     'update:modelAction': [value: boolean];
 };
-/**
- * Type describing available properties.
- *
- * Тип, описывающий доступные свойства.
- */
 export interface BarsExpose {
 }
-/**
- * Type describing available slots.
- *
- * Тип, описывающий доступные слоты.
- */
 export interface BarsSlots extends LabelSlots, DescriptionSlots {
-    /** Slot for displaying a list of buttons/ Слот для отображения списка кнопок */
+    /** Slot for displaying a list of buttons @keywords bars slot buttons */
     bars?(props: any): any;
-    /** Slot for displaying a list of buttons in action mode/ Слот для отображения списка кнопок в режиме действия */
+    /** Slot for displaying buttons in action mode @keywords action bars slot */
     actionBars?(props: any): any;
 }
-/**
- * Type describing subclasses.
- *
- * Тип, описывающий подклассы.
- */
 export type BarsClasses = {
     main: ConstrClass;
     context: string;

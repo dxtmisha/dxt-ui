@@ -1,17 +1,8 @@
-// md5:46c277d0d8a80b29f944523416fcecab
-/**
- * Slots for caption functionality/ Слоты для функциональности заголовка
- */
+// md5:46c277d0d8a80b29f944523416fcecab true
 export interface CaptionSlots {
-    /** Caption slot/ Слот заголовка */
     caption?(props: any): any;
 }
-/**
- * Props for caption functionality/ Пропсы для функциональности заголовка
- */
 export type CaptionProps = {
-    /** Caption text or number/ Текст или число заголовка */
     caption?: string | number;
-    /** Whether the caption is decorative/ Является ли подпись декоративной */
     captionDecorative?: boolean;
 };

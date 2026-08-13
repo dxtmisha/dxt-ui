@@ -1,39 +1,7 @@
-// md5:c23cab5043953d3af22e8dbf8c67b632
-import { PluginCode } from './PluginCode';
-import { PluginData } from './PluginData';
-import { PluginComponentItem } from '../../types/pluginTypes';
-/**
- * Class for connecting components.
- *
- * Класс для подключения компонентов.
- */
+// md5:c23cab5043953d3af22e8dbf8c67b632 true
 export declare class PluginComponents {
-    protected readonly code: PluginCode;
-    protected readonly pluginData: PluginData;
-    /**
-     * Constructor
-     * @param code file content / содержимое файла
-     * @param pluginData plugin data / данные плагина
-     */
+    /** Creates an instance of PluginComponents. @keywords constructor, init @param code file content @param pluginData plugin data */
     constructor(code: PluginCode, pluginData: PluginData);
-    /**
-     * Initializes the data.
-     *
-     * Инициализирует данные.
-     */
+    /** Initializes plugin component data and generates imports. @keywords make, initialize, components */
     make(): void;
-    /**
-     * Returns the path to the component.
-     *
-     * Возвращает путь к компоненту.
-     * @param item component data / данные компонента
-     */
-    protected getPath(item: PluginComponentItem): string;
-    /**
-     * Generates the import string for a component.
-     *
-     * Генерирует строку импорта для компонента.
-     * @param item component data / данные компонента
-     */
-    protected importComponent(item: PluginComponentItem): string;
 }

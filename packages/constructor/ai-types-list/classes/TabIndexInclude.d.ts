@@ -1,109 +1,19 @@
-// md5:1ea95ab5c43b67c9498eb7bfa0ea60c6
+// md5:1ea95ab5c43b67c9498eb7bfa0ea60c6 true
 import { Ref } from 'vue';
-import { EventItem } from '@dxtmisha/functional';
-/**
- * Class for managing focus and tab index of elements
- *
- * Класс для управления фокусом и табиндексом элементов
- */
+/** Manages focus and tab index of HTML elements. @keywords tabindex focus management keyboard */
 export declare class TabIndexInclude<E extends HTMLElement = HTMLElement> {
-    protected readonly element: Ref<E | undefined> | (() => E | undefined);
-    protected readonly active: () => boolean;
-    protected readonly activeOpen: () => boolean;
-    protected readonly activeClose: () => boolean;
-    /** Previously focused element / Ранее сфокусированный элемент */
-    protected oldElement?: HTMLElement | Element | null;
-    /** Event item for focus events / Элемент события для событий фокуса */
-    protected event?: EventItem<HTMLElement, any>;
-    /**
-     * Constructor
-     * @param element - Reference to the element / Ссылка на элемент
-     * @param active - Return focus to the previous element / Возвращать фокус на предыдущий элемент
-     * @param activeOpen - Is active when opening / Активен при открытии
-     * @param activeClose - Is active when closing / Активен при закрытии
-     */
+    /** Creates a TabIndexInclude instance. @keywords constructor tab index */
     constructor(element: Ref<E | undefined> | (() => E | undefined), active?: () => boolean, activeOpen?: () => boolean, activeClose?: () => boolean);
-    /**
-     * Set focus to the element.
-     *
-     * Устанавливает фокус на элемент.
-     */
+    /** Sets focus to the managed element. @keywords go to focus activate */
     goTo(): this;
-    /**
-     * Reset focus to the previously focused element.
-     *
-     * Сбрасывает фокус на ранее сфокусированный элемент.
-     */
+    /** Resets focus to the previously focused element. @keywords reset focus restore */
     reset(): this;
-    /**
-     * Toggle focus based on status.
-     *
-     * Переключает фокус в зависимости от статуса.
-     * @param status Focus status / Статус фокуса
-     */
+    /** Toggles focus state based on the provided status. @keywords toggle focus state */
     toggle(status: boolean): this;
-    /**
-     * Save the currently focused element.
-     *
-     * Сохраняет текущий сфокусированный элемент.
-     */
+    /** Saves the currently active focused element. @keywords update old element save focus */
     updateOldElement(): void;
-    /**
-     * Check if the element is defined.
-     *
-     * Проверяет, определен ли элемент.
-     */
-    protected isElement(): this is {
-        element: Ref<E>;
-    };
-    /**
-     * Check if the Shift key is pressed.
-     *
-     * Проверяет, нажата ли клавиша Shift.
-     * @param event Keyboard event / Событие клавиатуры
-     */
-    protected isShift(event: KeyboardEvent): boolean;
-    /**
-     * Get the element.
-     *
-     * Получает элемент.
-     */
-    protected getElement(): E | undefined;
-    /**
-     * Find the first focusable element.
-     *
-     * Находит первый фокусируемый элемент.
-     */
+    /** Finds the first focusable child element. @keywords find first element focusable */
     findFirstElement(): HTMLElement | undefined;
-    /**
-     * Find the last focusable element.
-     *
-     * Находит последний фокусируемый элемент.
-     */
+    /** Finds the last focusable child element. @keywords find last element focusable */
     findLastElement(): HTMLElement | undefined;
-    /**
-     * Set focus with temporary tab index modification.
-     *
-     * Устанавливает фокус с временным изменением табиндекса.
-     */
-    protected toFocus(): this;
-    /**
-     * Event listener for keyboard events.
-     *
-     * Слушатель событий для событий клавиатуры.
-     * @param event Keyboard event / Событие клавиатуры
-     */
-    protected listenEvent: (event: KeyboardEvent) => void;
-    /**
-     * Start the event listener.
-     *
-     * Запускает слушатель событий.
-     */
-    protected startEvent(): void;
-    /**
-     * Stop the event listener.
-     *
-     * Останавливает слушатель событий.
-     */
-    protected stopEvent(): void;
 }

@@ -1,39 +1,21 @@
-// md5:487f3868b7a6334e74c69f35843e1dab
+// md5:487f3868b7a6334e74c69f35843e1dab true
 import { ConstrClass } from '@dxtmisha/functional';
-import { TabsNavigationEmits, TabsNavigationExpose, TabsNavigationSlots } from '../TabsNavigation';
-import { HorizontalScrollComponentInclude } from '../HorizontalScroll';
-import { SegmentControlItemComponentInclude } from '../SegmentControlItem';
-/**
- * Interface for describing which components need to be connected for work.
- *
- * Интерфейс для описания, какие компоненты надо подключить для работы.
- */
+
+/** Components required for segment control operation. @keywords SegmentControlComponents components scroll item */
 export type SegmentControlComponents = HorizontalScrollComponentInclude & SegmentControlItemComponentInclude;
-/**
- * Type describing available events.
- *
- * Тип, описывающий доступные события.
- */
+
+/** Available segment control events. @keywords SegmentControlEmits events tabs navigation */
 export type SegmentControlEmits = TabsNavigationEmits;
-/**
- * Type describing available properties.
- *
- * Тип, описывающий доступные свойства.
- */
+
+/** Exposed properties of segment control. @keywords SegmentControlExpose properties tabs navigation */
 export interface SegmentControlExpose extends TabsNavigationExpose {
 }
-/**
- * Type describing available slots.
- *
- * Тип, описывающий доступные слоты.
- */
+
+/** Available slots for segment control. @keywords SegmentControlSlots slots tabs navigation */
 export interface SegmentControlSlots extends TabsNavigationSlots {
 }
-/**
- * Type describing subclasses.
- *
- * Тип, описывающий подклассы.
- */
+
+/** CSS classes for segment control elements. @keywords SegmentControlClasses classes main item */
 export type SegmentControlClasses = {
     main: ConstrClass;
     item: string;

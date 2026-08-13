@@ -1,44 +1,22 @@
-// md5:6570c455fc177fc76ab7e7cf82a3bd09
+// md5:6570c455fc177fc76ab7e7cf82a3bd09 true
 import { ConstrClass } from '@dxtmisha/functional';
-import { MotionTransformComponentInclude } from '../MotionTransform';
-import { ListGroupSlotsPropsInclude } from './basicTypes';
-/**
- * Interface for describing which components need to be connected for work.
- *
- * Интерфейс для описания, какие компоненты надо подключить для работы.
- */
+
 export type ListGroupComponents = MotionTransformComponentInclude;
-/**
- * Type describing available events.
- *
- * Тип, описывающий доступные события.
- */
+
 export type ListGroupEmits = {};
-/**
- * Type describing available properties.
- *
- * Тип, описывающий доступные свойства.
- */
+
 export interface ListGroupExpose {
-    /** Whether the group is currently open/ Открыта ли группа в данный момент */
+    /** Get open state @keywords getOpen open state list group */
     getOpen(): boolean;
 }
-/**
- * Type describing available slots.
- *
- * Тип, описывающий доступные слоты.
- */
+
 export interface ListGroupSlots {
-    /** Slot for the group header/ Слот для заголовка группы */
+    /** Slot for the group header @keywords head slot list group */
     head?(props: ListGroupSlotsPropsInclude): any;
-    /** Slot for the group list content/ Слот для содержимого списка группы */
+    /** Slot for the group list content @keywords list slot content */
     list?(props: any): any;
 }
-/**
- * Type describing subclasses.
- *
- * Тип, описывающий подклассы.
- */
+
 export type ListGroupClasses = {
     main: ConstrClass;
     head: string;

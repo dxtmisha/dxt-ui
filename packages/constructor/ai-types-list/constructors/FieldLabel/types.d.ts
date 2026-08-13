@@ -1,39 +1,21 @@
-// md5:0af44750ee4ca8f63a9f027d9d1a0a49
+// md5:0af44750ee4ca8f63a9f027d9d1a0a49 true
 import { ConstrClass } from '@dxtmisha/functional';
-import { LabelAlternativeSlots } from '../../types/labelTypes';
-import { FieldCounterComponentInclude } from '../FieldCounter';
-import { ProgressComponentInclude } from '../Progress';
-/**
- * Interface for describing which components need to be connected for work.
- *
- * Интерфейс для описания, какие компоненты надо подключить для работы.
- */
+
+/** Interface for connected components. @keywords FieldLabelComponents, components */
 export type FieldLabelComponents = FieldCounterComponentInclude & ProgressComponentInclude;
-/**
- * Type describing available events.
- *
- * Тип, описывающий доступные события.
- */
+
+/** Available events type. @keywords FieldLabelEmits, events */
 export type FieldLabelEmits = {};
-/**
- * Type describing available properties.
- *
- * Тип, описывающий доступные свойства.
- */
+
+/** Available properties interface. @keywords FieldLabelExpose, expose, properties */
 export interface FieldLabelExpose {
 }
-/**
- * Type describing available slots.
- *
- * Тип, описывающий доступные слоты.
- */
+
+/** Available slots interface. @keywords FieldLabelSlots, slots */
 export interface FieldLabelSlots extends LabelAlternativeSlots {
 }
-/**
- * Type describing subclasses.
- *
- * Тип, описывающий подклассы.
- */
+
+/** Subclasses type definition. @keywords FieldLabelClasses, classes */
 export type FieldLabelClasses = {
     main: ConstrClass;
     label: string;

@@ -1,14 +1,13 @@
-// md5:f2841dc799293f4763df81e5103cffbb
+// md5:f2841dc799293f4763df81e5103cffbb true
 import { ConstrBind } from '@dxtmisha/functional';
-import { BulletItemPropsBasic } from './props';
-/** Type describing components for nested bullet items / Тип, описывающий компоненты для вложенных элементов списка */
+
+/** Type describing components for nested bullet items @keywords BulletItemComponentInclude bulletItem component */
 export type BulletItemComponentInclude = {
     bulletItem?: object;
 };
-/** Type describing properties for nested bullet items / Тип, описывающий свойства для вложенных элементов списка */
+
+/** Type describing properties for nested bullet items @keywords BulletItemPropsInclude bulletItem list itemAttrs */
 export type BulletItemPropsInclude<BulletItemProps extends BulletItemPropsBasic = BulletItemPropsBasic> = {
-    /** List of items / Список настроек элементов */
     list?: string[];
-    /** Additional attributes for item component / Дополнительные атрибуты для компонента элемента */
     itemAttrs?: ConstrBind<BulletItemProps>;
 };

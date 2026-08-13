@@ -1,41 +1,21 @@
-// md5:bf3507019c32eb2433e1b6efc15d395a
+// md5:bf3507019c32eb2433e1b6efc15d395a true
 import { ConstrClass } from '@dxtmisha/functional';
-import { WindowComponentInclude, WindowControlItem, WindowEmitsInclude, WindowExposeInclude } from '../Window';
-/**
- * Interface for describing which components need to be connected for work.
- *
- * Интерфейс для описания, какие компоненты надо подключить для работы.
- */
+
 export type ListMenuComponents = WindowComponentInclude;
-/**
- * Type describing available events.
- *
- * Тип, описывающий доступные события.
- */
+
 export type ListMenuEmits = WindowEmitsInclude;
-/**
- * Type describing available properties.
- *
- * Тип, описывающий доступные свойства.
- */
+
 export interface ListMenuExpose extends WindowExposeInclude {
 }
-/**
- * Type describing available slots.
- *
- * Тип, описывающий доступные слоты.
- */
+
+/** Component slots for header and list content @keywords slots, render, list */
 export interface ListMenuSlots {
-    /** Slot for the menu header/ Слот для заголовка меню */
+    /** Slot for the menu header @keywords header, slot */
     head?(props: WindowControlItem): any;
-    /** Slot for the menu list content/ Слот для содержимого списка меню */
+    /** Slot for the menu list content @keywords list, content, slot */
     list?(props: any): any;
 }
-/**
- * Type describing subclasses.
- *
- * Тип, описывающий подклассы.
- */
+
 export type ListMenuClasses = {
     main: ConstrClass;
     head: string;

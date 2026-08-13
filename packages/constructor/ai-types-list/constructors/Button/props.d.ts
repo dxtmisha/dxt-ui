@@ -1,12 +1,5 @@
-// md5:a38c6089bbdc8416d80651ac9486da66
+// md5:a38c6089bbdc8416d80651ac9486da66 true
 import { ConstrHrefProps } from '@dxtmisha/functional';
-import { IconPropsBasic, IconTrailingPropsInclude } from '../Icon';
-import { ProgressPropsBasic, ProgressPropsInclude } from '../Progress';
-import { SkeletonPropsInclude } from '../Skeleton';
-import { LabelProps } from '../../types/labelTypes';
-import { EnabledProps } from '../../types/enabledTypes';
-import { EventClickProps } from '../../types/eventClickTypes';
-import { AriaLabelPropsInclude } from '../../types/ariaTypes';
 export type ButtonPropsToken = {
     focus?: boolean;
     disabled?: boolean;
@@ -19,20 +12,10 @@ export type ButtonPropsToken = {
     textAlign?: 'left' | 'center' | 'right';
 };
 export type ButtonPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Progress extends ProgressPropsBasic = ProgressPropsBasic> = LabelProps & EnabledProps & IconTrailingPropsInclude<Icon> & ProgressPropsInclude<Progress> & SkeletonPropsInclude & EventClickProps & ConstrHrefProps & AriaLabelPropsInclude & {
-    /** HTML tag for the button container/ HTML-тег для контейнера кнопки */
     tag?: 'button' | 'a' | 'span' | string;
-    /** HTML type for the button element/ HTML-тип для элемента кнопки */
     type?: 'button' | 'submit' | 'reset' | string;
 };
-/**
- * Type describing incoming properties.
- *
- * Тип, описывающий входящие свойства.
- */
+/** Button properties configuration. @keywords button properties props config */
 export type ButtonProps = ButtonPropsBasic & ButtonPropsToken;
-/**
- * Default value for property.
- *
- * Значение по умолчанию для свойства.
- */
+/** Default button property values. @keywords button defaults constant */
 export declare const defaultsButton: {};

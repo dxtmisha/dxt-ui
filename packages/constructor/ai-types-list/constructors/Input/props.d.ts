@@ -1,26 +1,10 @@
-// md5:c31d540fc4fc7b2af3659209cf3eb49b
+// md5:c31d540fc4fc7b2af3659209cf3eb49b true
 import { NumberOrString } from '@dxtmisha/functional';
-import { MaskPropsBasic, MaskPropsInclude } from '../Mask';
-import { IconPropsBasic } from '../Icon';
-import { FieldPropsBasic, FieldPropsInclude } from '../Field';
-import { FieldLabelPropsBasic } from '../FieldLabel';
-import { FieldMessagePropsBasic } from '../FieldMessage';
-import { FieldCounterPropsBasic } from '../FieldCounter';
-import { ProgressPropsBasic } from '../Progress';
-import { FieldInputProps } from '../../types/fieldTypes';
 export type InputPropsToken = {};
 export type InputPropsBasic<Mask extends MaskPropsBasic = MaskPropsBasic, Icon extends IconPropsBasic = IconPropsBasic, Field extends FieldPropsBasic = FieldPropsBasic, FieldLabel extends FieldLabelPropsBasic = FieldLabelPropsBasic, FieldMessage extends FieldMessagePropsBasic = FieldMessagePropsBasic, FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic, Progress extends ProgressPropsBasic = ProgressPropsBasic> = MaskPropsInclude<Mask> & FieldPropsInclude<Icon, Field, FieldLabel, FieldMessage, FieldCounter, Progress> & FieldInputProps<NumberOrString>;
-/**
- * Type describing incoming properties.
- *
- * Тип, описывающий входящие свойства.
- */
+/** Type describing incoming properties. @keywords input_props incoming properties */
 export type InputProps = InputPropsBasic & InputPropsToken;
-/**
- * Default value for property.
- *
- * Значение по умолчанию для свойства.
- */
+/** Default values for input properties. @keywords defaults_input default values */
 export declare const defaultsInput: {
     type: string;
     autocomplete: string;

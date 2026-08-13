@@ -1,7 +1,4 @@
-// md5:5c9e88964878f380c21b1cc1eaec50aa
-import { IconPropsBasic } from '../Icon';
-import { ProgressPropsBasic } from '../Progress';
-import { ButtonPropsBasic } from '../Button';
+// md5:5c9e88964878f380c21b1cc1eaec50aa true
 export type ChipPropsToken = {
     focus?: boolean;
     disabled?: boolean;
@@ -14,17 +11,9 @@ export type ChipPropsToken = {
     textAlign?: 'left' | 'center' | 'right';
 };
 export type ChipPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Progress extends ProgressPropsBasic = ProgressPropsBasic> = ButtonPropsBasic<Icon, Progress>;
-/**
- * Type describing incoming properties.
- *
- * Тип, описывающий входящие свойства.
- */
+/** Incoming properties for Chip component. @keywords chip properties props */
 export type ChipProps = ChipPropsBasic & ChipPropsToken;
-/**
- * Default value for property.
- *
- * Значение по умолчанию для свойства.
- */
+/** Default properties for Chip component. @keywords chip defaults configuration */
 export declare const defaultsChip: {
     tag: string;
 };

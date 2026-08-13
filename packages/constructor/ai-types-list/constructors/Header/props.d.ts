@@ -1,25 +1,12 @@
-// md5:3eb7a275ede0f1b7c36d60ad58317d73
-import { AreaPropsInclude } from '../../types/areaTypes';
-import { CaptionProps } from '../../types/captionTypes';
-import { LabelProps } from '../../types/labelTypes';
-import { IconPropsBasic, IconPropsInclude } from '../Icon';
+// md5:3eb7a275ede0f1b7c36d60ad58317d73 true
 type HeaderPropsToken = {
     tag?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 };
 export type HeaderPropsBasic<Icon extends IconPropsBasic = IconPropsBasic> = LabelProps & CaptionProps & IconPropsInclude<Icon> & AreaPropsInclude;
-/**
- * Type describing incoming properties.
- *
- * Тип, описывающий входящие свойства.
- */
+/** Incoming properties for header component. @keywords header props configuration */
 export type HeaderProps = HeaderPropsBasic & HeaderPropsToken;
-/**
- * Default value for property.
- *
- * Значение по умолчанию для свойства.
- */
+/** Default values for header properties. @keywords defaults header configuration */
 export declare const defaultsHeader: {
     tag: string;
     area: string;
 };
-export {};

@@ -1,37 +1,21 @@
-// md5:7bef7e5f28d5a66744d5d6b68355ebf8
+// md5:7bef7e5f28d5a66744d5d6b68355ebf8 true
 import { ConstrClass } from '@dxtmisha/functional';
-import { HeadroomEmitsInclude, HeadroomExposeInclude } from '../../types/headroomTypes';
-/**
- * Interface for describing which components need to be connected for work.
- *
- * Интерфейс для описания, какие компоненты надо подключить для работы.
- */
+
+/** Interface describing required components for work. @keywords headroom, components, connect */
 export type HeadroomComponents = {};
-/**
- * Type describing available events.
- *
- * Тип, описывающий доступные события.
- */
+
+/** Type describing available events. @keywords headroom, emits, events */
 export type HeadroomEmits = HeadroomEmitsInclude;
-/**
- * Type describing available properties.
- *
- * Тип, описывающий доступные свойства.
- */
+
+/** Type describing available properties. @keywords headroom, expose, properties */
 export type HeadroomExpose = HeadroomExposeInclude;
-/**
- * Type describing available slots.
- *
- * Тип, описывающий доступные слоты.
- */
+
+/** Type describing available slots. @keywords headroom, slots, default */
 export interface HeadroomSlots {
     default?(props: any): any;
 }
-/**
- * Type describing subclasses.
- *
- * Тип, описывающий подклассы.
- */
+
+/** Type describing subclasses. @keywords headroom, classes, main */
 export type HeadroomClasses = {
     main: ConstrClass;
 };

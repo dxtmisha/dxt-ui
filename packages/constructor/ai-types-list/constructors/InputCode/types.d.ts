@@ -1,70 +1,22 @@
-// md5:44496d8bd48d8e52beef8ee6dbfd8ec5
+// md5:44496d8bd48d8e52beef8ee6dbfd8ec5 true
 import { ConstrClass } from '@dxtmisha/functional';
-import { ModelEmits } from '../../types/modelTypes';
-import { FieldLabelComponentInclude } from '../FieldLabel';
-import { FieldMessageComponentInclude } from '../FieldMessage';
-import { InputCodeItemComponentInclude } from '../InputCodeItem';
-/**
- * Interface for describing which components need to be connected for work.
- *
- * Интерфейс для описания, какие компоненты надо подключить для работы.
- */
 export type InputCodeComponents = InputCodeItemComponentInclude & FieldLabelComponentInclude & FieldMessageComponentInclude;
-/**
- * Type describing available events.
- *
- * Тип, описывающий доступные события.
- */
 export type InputCodeEmits = ModelEmits & {
-    /** Event triggered on value change / Событие, вызываемое при изменении значения */
     input: [value: string];
 };
-/**
- * Type describing available properties.
- *
- * Тип, описывающий доступные свойства.
- */
 export interface InputCodeExpose {
-    /**
-     * Returns the current value.
-     *
-     * Возвращает текущее значение.
-     */
+    /** Returns current value @keywords getValue, get, code, string */
     getValue(): string;
-    /**
-     * Set new value.
-     *
-     * Установить новое значение.
-     * @param value new value / новое значение
-     */
+    /** Sets new value @keywords set, value, number, string */
     set(value: string | number): void;
-    /**
-     * Reset value.
-     *
-     * Сбросить значение.
-     */
+    /** Resets current value @keywords reset, clear */
     reset(): void;
-    /**
-     * Set focus.
-     *
-     * Установить фокус.
-     */
+    /** Focuses the input element @keywords focus, active */
     focus(): void;
 }
-/**
- * Type describing available slots.
- *
- * Тип, описывающий доступные слоты.
- */
 export interface InputCodeSlots {
 }
-/**
- * Type describing subclasses.
- *
- * Тип, описывающий подклассы.
- */
 export type InputCodeClasses = {
-    /** Main class name / Основное имя класса */
     main: ConstrClass;
     context: string;
 };

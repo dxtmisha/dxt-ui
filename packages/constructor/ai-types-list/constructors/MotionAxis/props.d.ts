@@ -1,36 +1,23 @@
-// md5:841c7f01a0ef340dc8724eee5ed4a540
-import { ModelPropsSelected } from '../../types/modelTypes';
-import { MotionAxisSelectedValue } from './basicTypes';
-type MotionAxisPropsToken = {
+// md5:841c7f01a0ef340dc8724eee5ed4a540 true
+export type MotionAxisPropsBasic = ModelPropsSelected<MotionAxisSelectedValue> & {
+    /** Selected element @keywords selected element */
+    selected?: MotionAxisSelectedValue;
+    /** Whether to animate height change @keywords animation height */
+    animationHeight?: boolean;
+    /** Whether the elements are in the DOM @keywords inDom dom status */
+    inDom?: boolean;
+    /** List of elements in the DOM for slide @keywords inDomSlide slide elements */
+    inDomSlide?: string[];
+};
+
+/** Type describing incoming properties @keywords motion axis props properties */
+export type MotionAxisProps = MotionAxisPropsBasic & {
     axis?: 'x' | 'y' | 'z';
     direction?: 'next' | 'back' | 'auto';
 };
-export type MotionAxisPropsBasic = ModelPropsSelected<MotionAxisSelectedValue> & {
-    /** Status/ Статус */
-    /** Selected element/ Выбранный элемент */
-    selected?: MotionAxisSelectedValue;
-    /** Style/ Стили */
-    /** Whether to animate height change/ Анимировать ли изменение высоты */
-    animationHeight?: boolean;
-    /** Options/ Опции */
-    /** Whether the elements are in the DOM/ Находятся ли элементы в DOM */
-    inDom?: boolean;
-    /** List of elements in the DOM for slide/ Список элементов в DOM для слайда */
-    inDomSlide?: string[];
-};
-/**
- * Type describing incoming properties.
- *
- * Тип, описывающий входящие свойства.
- */
-export type MotionAxisProps = MotionAxisPropsBasic & MotionAxisPropsToken;
-/**
- * Default value for property.
- *
- * Значение по умолчанию для свойства.
- */
+
+/** Default value for property @keywords defaults motion axis default values */
 export declare const defaultsMotionAxis: {
     axis: string;
     direction: string;
 };
-export {};

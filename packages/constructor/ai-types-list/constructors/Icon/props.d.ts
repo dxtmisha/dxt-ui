@@ -1,9 +1,4 @@
-// md5:2ff826b3861996503eb74245ac2c6bdc
-import { ImagePropsBasic, ImageValue } from '../Image';
-import { SkeletonPropsInclude } from '../Skeleton';
-import { AriaLabelPropsInclude } from '../../types/ariaTypes';
-import { EventClickProps } from '../../types/eventClickTypes';
-import { RoleType } from '../../types/roleTypes';
+// md5:2ff826b3861996503eb74245ac2c6bdc true
 export type IconPropsToken = {
     turn?: boolean;
     disabled?: boolean;
@@ -19,28 +14,19 @@ export type IconPropsToken = {
     animationShow?: boolean;
 };
 export type IconPropsBasic<Image extends ImagePropsBasic = ImagePropsBasic> = SkeletonPropsInclude & AriaLabelPropsInclude & EventClickProps & {
-    /** Активное состояние иконки/ Active state of the icon */
+    /** Active state of the icon @keywords active state */
     active?: boolean;
-    /** Value of the main icon/ Значение основной иконки */
+    /** Value of the main icon @keywords main icon value */
     icon?: ImageValue<Image>;
-    /** Value of the active icon/ Значение активной иконки */
+    /** Value of the active icon @keywords active icon value */
     iconActive?: ImageValue<Image>;
-    /** ARIA role for the icon/ ARIA-роль для иконки */
+    /** ARIA role for the icon @keywords aria role */
     role?: RoleType;
-    /** Tab index for keyboard navigation/ Индекс табуляции для навигации с клавиатуры */
+    /** Tab index for keyboard navigation @keywords tab index */
     tabindex?: number | string;
 };
-/**
- * Type describing incoming properties.
- *
- * Тип, описывающий входящие свойства.
- */
 export type IconProps = IconPropsBasic & IconPropsToken;
-/**
- * Default value for property.
- *
- * Значение по умолчанию для свойства.
- */
+/** Default icon properties configuration @keywords defaults icon config */
 export declare const defaultsIcon: {
     animationType: string;
 };

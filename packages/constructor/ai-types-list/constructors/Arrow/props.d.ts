@@ -1,25 +1,12 @@
-// md5:840958a1a675b7a61e6137b88b3cf035
-import { ClientOnlyPropsInclude } from '../../types/clientOnlyTypes';
-/** Arrow position and direction tokens/ Токены позиционирования и направления стрелки */
+// md5:840958a1a675b7a61e6137b88b3cf035 true
 export type ArrowPropsToken = {
     position?: 'auto' | 'top' | 'bottom' | 'left' | 'right';
 };
-/** Basic properties of the arrow component/ Основные свойства компонента стрелки */
 export type ArrowPropsBasic = ClientOnlyPropsInclude & {
-    /** The HTML element or its selector that the arrow points to/ HTML-элемент или его селектор, на который указывает стрелка */
     elementTarget?: HTMLElement | string;
 };
-/**
- * Type describing incoming properties.
- *
- * Тип, описывающий входящие свойства.
- */
 export type ArrowProps = ArrowPropsBasic & ArrowPropsToken;
-/**
- * Default value for property.
- *
- * Значение по умолчанию для свойства.
- */
+/** Default arrow configuration values @keywords defaults, arrow, configuration */
 export declare const defaultsArrow: {
     position: string;
 };

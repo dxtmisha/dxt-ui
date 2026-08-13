@@ -1,73 +1,14 @@
-// md5:6ef1c72c3caf415c1bc9c9fec12cc1a1
+// md5:6ef1c72c3caf415c1bc9c9fec12cc1a1 true
 import { RefType } from '@dxtmisha/functional';
-import { EventClickInclude } from './EventClickInclude';
-import { EventClickValue } from '../types/eventClickTypes';
-import { Ref } from 'vue';
-/**
- * Class for managing the model value with a reactive reference and click handling.
- * It synchronizes the state using ModelInclude and listens for input value updates.
- * Supports single and multiple selection modes and respects the readonly flag.
- *
- * Класс для управления значением модели с реактивной ссылкой и обработкой клика.
- * Синхронизирует состояние с помощью ModelInclude и отслеживает обновления входного значения.
- * Поддерживает режимы одиночного и множественного выбора, а также учитывает флаг readonly.
- */
 export declare class ModelValueInclude<Value = any> {
-    protected readonly index: string;
-    protected readonly emits?: any | undefined;
-    protected readonly event?: EventClickInclude | undefined;
-    protected readonly inputValue?: RefType<any> | undefined;
-    protected readonly readonly?: RefType<boolean | undefined> | undefined;
-    protected readonly multiple?: RefType<boolean | undefined> | undefined;
-    /** Reactive reference to the model value / Реактивная ссылка на значение модели */
-    readonly value: Ref<Value | undefined, Value | undefined>;
-    /**
-     * Constructor.
-     *
-     * Конструктор.
-     * @param index unique identifier for the model emit / уникальный идентификатор для эмита модели
-     * @param emits emit function for triggering events / функция эмитов для вызова событий
-     * @param event click event handling class / класс для обработки событий клика
-     * @param inputValue reference to the input value / ссылка на входное значение
-     * @param readonly reactive flag for readonly state / реактивный флаг состояния только для чтения
-     * @param multiple reactive flag enabling multiple selection / реактивный флаг множественного выбора
-     */
+    /** Creates a model value manager instance. @keywords model value constructor init */
     constructor(index: string, emits?: any | undefined, event?: EventClickInclude | undefined, inputValue?: RefType<any> | undefined, readonly?: RefType<boolean | undefined> | undefined, multiple?: RefType<boolean | undefined> | undefined);
-    /**
-     * Returns the current model value.
-     *
-     * Возвращает текущее значение модели.
-     * @returns current model value / текущее значение модели
-     */
+    /** Returns current model value. @keywords get value current */
     getValue(): Value | undefined;
-    /**
-     * Sets the model value.
-     *
-     * Устанавливает значение модели.
-     * @param value new model value / новое значение модели
-     */
+    /** Sets model value. @keywords set value update */
     set(value?: Value): void;
-    /**
-     * Click event handler.
-     * Updates the model value if a value option is provided and the component is not in a readonly state.
-     *
-     * Обработчик события клика.
-     * Обновляет значение модели, если передан параметр значения и компонент не находится в состоянии только для чтения.
-     * @param event native mouse click event / нативное событие клика мыши
-     * @param options event click options / опции клика события
-     */
+    /** Handles click events to update model value. @keywords click handler event */
     readonly onClick: (event: MouseEvent, options?: EventClickValue) => void;
-    /**
-     * Directly updates the model value with the given value.
-     *
-     * Напрямую обновляет значение модели переданным значением.
-     * @param value new model value / новое значение модели
-     */
+    /** Directly updates model value. @keywords update model value */
     readonly onUpdate: (value: Value) => void;
-    /**
-     * Updates the internal model value from the input value reference.
-     *
-     * Обновляет внутреннее значение модели из ссылки на входное значение.
-     */
-    protected readonly update: () => void;
 }

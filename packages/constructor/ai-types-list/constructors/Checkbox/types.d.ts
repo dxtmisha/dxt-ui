@@ -1,44 +1,13 @@
-// md5:09a35d4ec67f8f650b3c82e8b1acec47
+// md5:09a35d4ec67f8f650b3c82e8b1acec47 true
 import { ConstrClass } from '@dxtmisha/functional';
-import { ImageComponentInclude } from '../Image';
-import { FieldMessageComponentInclude } from '../FieldMessage';
-import { ProgressComponentInclude } from '../Progress';
-import { RippleComponentInclude } from '../Ripple';
-import { FieldBasicEmits, FieldBasicExpose } from '../../types/fieldTypes';
-import { LabelSlots } from '../../types/labelTypes';
-import { DescriptionSlots } from '../../types/descriptionTypes';
-import { ModelEmitsSelected } from '../../types/modelTypes';
-/**
- * Interface for describing which components need to be connected for work.
- *
- * Интерфейс для описания, какие компоненты надо подключить для работы.
- */
 export type CheckboxComponents = ImageComponentInclude & FieldMessageComponentInclude & ProgressComponentInclude & RippleComponentInclude;
-/**
- * Type describing available events.
- *
- * Тип, описывающий доступные события.
- */
 export type CheckboxEmits = FieldBasicEmits<boolean> & ModelEmitsSelected;
-/**
- * Type describing available properties.
- *
- * Тип, описывающий доступные свойства.
- */
+/** Checkbox component exposed interface @keywords checkbox expose properties */
 export interface CheckboxExpose extends FieldBasicExpose<boolean> {
 }
-/**
- * Type describing available slots.
- *
- * Тип, описывающий доступные слоты.
- */
+/** Checkbox component slots @keywords checkbox slots template */
 export interface CheckboxSlots extends LabelSlots, DescriptionSlots {
 }
-/**
- * Type describing subclasses.
- *
- * Тип, описывающий подклассы.
- */
 export type CheckboxClasses = {
     main: ConstrClass;
     input: string;

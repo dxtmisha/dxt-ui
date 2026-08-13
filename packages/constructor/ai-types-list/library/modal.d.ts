@@ -1,2 +1,1 @@
-// md5:2a9e8e6b342397d4e80ca5e27af0f751
-export * from '../constructors/Modal/index';
+// md5:2a9e8e6b342397d4e80ca5e27af0f751 true

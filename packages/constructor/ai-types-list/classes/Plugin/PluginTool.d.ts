@@ -1,43 +1,14 @@
-// md5:0bfa91ec8ef5c72b89db54dfd88c9385
-/**
- * A class for obtaining data to work with plugins.
- *
- * Класс для получения данных для работы с плагинами.
- */
+// md5:0bfa91ec8ef5c72b89db54dfd88c9385 true
+/** Plugin data utility class @keywords plugin tool src js vue css dev */
 export declare class PluginTool {
-    /**
-     * Checks if the id is a user’s file.
-     *
-     * Проверяет, является ли id файлом пользователя.
-     * @param id file identification / идентификация файла
-     */
+    /** Checks if the id is a user's file @keywords isSrc source file check */
     static isSrc(id: string): boolean;
-    /**
-     * Checks if the id is a JS user’s file.
-     *
-     * Проверяет, является ли id файлом JS пользователя.
-     * @param id file identification / идентификация файла
-     */
+    /** Checks if the id is a JS user's file @keywords isJs javascript file check */
     static isJs(id: string): boolean;
-    /**
-     * Checks if the id is a Vue user’s file.
-     *
-     * Проверяет, является ли id файлом vue пользователя.
-     * @param id file identification / идентификация файла
-     */
+    /** Checks if the id is a Vue user's file @keywords isVue vue file check */
     static isVue(id: string): boolean;
-    /**
-     * Checks if the id is a Style user’s file.
-     *
-     * Проверяет, является ли id файлом style пользователя.
-     * @param id file identification / идентификация файла
-     */
+    /** Checks if the id is a Style user's file @keywords isCss css style file check */
     static isCss(id: string): boolean;
-    /**
-     * Checks if it is development mode.
-     *
-     * Проверяет, является ли режим разработка.
-     * @param mode current mode / текущий режим
-     */
+    /** Checks if it is development mode @keywords isDev development mode check */
     static isDev(mode: string): boolean;
 }

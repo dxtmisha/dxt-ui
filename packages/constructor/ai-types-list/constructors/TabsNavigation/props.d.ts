@@ -1,43 +1,19 @@
-// md5:5bd5e2555a6fa3b91491594b9ca85d3e
+// md5:5bd5e2555a6fa3b91491594b9ca85d3e true
 import { ConstrBind, ListRecord, ListSelectedList } from '@dxtmisha/functional';
-import { TabItemPropsBasic } from '../TabItem';
-import { HorizontalScrollPropsInclude } from '../HorizontalScroll';
-import { ModelPropsSelected } from '../../types/modelTypes';
 type TabsNavigationPropsToken = {
     divider?: boolean;
 };
 export type TabsNavigationPropsBasic<TabItem extends TabItemPropsBasic = TabItemPropsBasic> = HorizontalScrollPropsInclude & ModelPropsSelected<ListSelectedList> & {
-    /** Status/ Статусы */
-    /** List of selected values/ Список выбранных значений */
     selected?: ListSelectedList;
-    /** Value/ Значения */
-    /** List of tab items/ Список элементов вкладок */
     list?: ListRecord<TabItem>;
-    /** Style/ Стили */
-    /** HTML tag for the tabs navigation/ HTML-тег для навигации вкладок */
     tag?: TabItem['tag'];
-    /** Options/ Опции */
-    /** Key for the label/ Ключ для подписи */
     keyLabel?: string;
-    /** Key for the value/ Ключ для значения */
     keyValue?: string;
-    /** Attributes/ Атрибуты */
-    /** Additional attributes for each tab item/ Дополнительные атрибуты для каждого элемента вкладки */
     itemAttrs?: ConstrBind<TabItem>;
 };
-/**
- * Type describing incoming properties.
- *
- * Тип, описывающий входящие свойства.
- */
 export type TabsNavigationProps = TabsNavigationPropsBasic & TabsNavigationPropsToken;
-/**
- * Default value for property.
- *
- * Значение по умолчанию для свойства.
- */
+/** Default values for tabs navigation properties @keywords defaults, navigation, tabs */
 export declare const defaultsTabsNavigation: {
     horizontalScrollBleed: boolean;
     horizontalScrollAlign: string;
 };
-export {};

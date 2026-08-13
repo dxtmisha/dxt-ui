@@ -1,41 +1,19 @@
-// md5:3074525c2509ecb129dbfc6fe2f7f370
+// md5:3074525c2509ecb129dbfc6fe2f7f370 true
 import { ConstrClass } from '@dxtmisha/functional';
-import { TooltipComponentInclude, TooltipSlotsInclude } from '../Tooltip';
-import { LabelSlots } from '../../types/labelTypes';
-import { IconComponentInclude } from '../Icon';
-/**
- * Interface for describing which components need to be connected for work.
- *
- * Интерфейс для описания, какие компоненты надо подключить для работы.
- */
+
 export type AnchorComponents = TooltipComponentInclude & IconComponentInclude;
-/**
- * Type describing available events.
- *
- * Тип, описывающий доступные события.
- */
+
 export type AnchorEmits = {};
-/**
- * Type describing available properties.
- *
- * Тип, описывающий доступные свойства.
- */
+
+/** Exposes anchor component methods. @keywords anchor expose go */
 export interface AnchorExpose {
-    /** Navigates to the specified target/ Переходит к указанной цели */
+    /** Navigates to the specified target. @keywords anchor go navigate */
     go(): void;
 }
-/**
- * Type describing available slots.
- *
- * Тип, описывающий доступные слоты.
- */
+
 export interface AnchorSlots extends LabelSlots, TooltipSlotsInclude {
 }
-/**
- * Type describing subclasses.
- *
- * Тип, описывающий подклассы.
- */
+
 export type AnchorClasses = {
     main: ConstrClass;
     label: string;

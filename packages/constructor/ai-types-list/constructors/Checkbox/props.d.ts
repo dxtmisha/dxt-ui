@@ -1,15 +1,5 @@
-// md5:e56ed8e21965ce22d11014646753f846
+// md5:e56ed8e21965ce22d11014646753f846 true
 import { ConstrBind } from '@dxtmisha/functional';
-import { LabelProps } from '../../types/labelTypes';
-import { DescriptionProps } from '../../types/descriptionTypes';
-import { FieldInputCheckProps } from '../../types/fieldTypes';
-import { EnabledProps } from '../../types/enabledTypes';
-import { ModelProps, ModelPropsSelected } from '../../types/modelTypes';
-import { ImagePropsBasic } from '../Image';
-import { FieldMessagePropsBasic, FieldMessagePropsInclude } from '../FieldMessage';
-import { FieldCounterPropsBasic } from '../FieldCounter';
-import { ProgressPropsBasic, ProgressPropsInclude } from '../Progress';
-import { SkeletonPropsInclude } from '../Skeleton';
 type CheckboxPropsToken = {
     block?: boolean;
     adaptive?: 'rightAlways';
@@ -21,25 +11,16 @@ type CheckboxPropsToken = {
 };
 export type CheckboxPropsBasic<Image extends ImagePropsBasic = ImagePropsBasic, FieldMessage extends FieldMessagePropsBasic = FieldMessagePropsBasic, FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic, Progress extends ProgressPropsBasic = ProgressPropsBasic> = LabelProps & DescriptionProps & FieldMessagePropsInclude<FieldMessage, FieldCounter> & FieldInputCheckProps & ProgressPropsInclude<Progress> & EnabledProps & ModelProps<boolean> & ModelPropsSelected & SkeletonPropsInclude & {
     selected?: string;
-    /** Icon for the checked state/ Иконка для отмеченного состояния */
+    /** Icon for checked state @keywords checkbox icon checked */
     iconCheckbox?: string | ConstrBind<Image> | null;
-    /** Icon for the indeterminate state/ Иконка для неопределенного состояния */
+    /** Icon for indeterminate state @keywords checkbox icon indeterminate */
     iconIndeterminate?: string | ConstrBind<Image> | null;
 };
-/**
- * Type describing incoming properties.
- *
- * Тип, описывающий входящие свойства.
- */
+/** Incoming properties for checkbox component @keywords checkbox props */
 export type CheckboxProps = CheckboxPropsBasic & CheckboxPropsToken;
-/**
- * Default value for property.
- *
- * Значение по умолчанию для свойства.
- */
+/** Default property values for checkbox @keywords checkbox defaults */
 export declare const defaultsCheckbox: {
     block: boolean;
     itemCenter: boolean;
     valueVariantHide: string;
 };
-export {};

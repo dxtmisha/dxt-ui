@@ -1,5 +1,4 @@
-// md5:036470c099de17ee2ceee231876d1233
-import { ClientOnlyPropsInclude } from '../../types/clientOnlyTypes';
+// md5:036470c099de17ee2ceee231876d1233 true
 export type ScrollbarPropsToken = {
     visible?: boolean;
     divider?: boolean;
@@ -10,20 +9,12 @@ export type ScrollbarPropsToken = {
     standard?: boolean;
 };
 export type ScrollbarPropsBasic = ClientOnlyPropsInclude & {
-    /** HTML tag for the scrollbar element/ HTML-тег для элемента скроллбара */
+    /** HTML element tag for the scrollbar @keywords tag element html */
     tag?: string;
 };
-/**
- * Type describing incoming properties.
- *
- * Тип, описывающий входящие свойства.
- */
+/** Incoming properties for the scrollbar component @keywords scrollbar properties props */
 export type ScrollbarProps = ScrollbarPropsBasic & ScrollbarPropsToken;
-/**
- * Default value for property.
- *
- * Значение по умолчанию для свойства.
- */
+/** Default property values for the scrollbar component @keywords defaults default values scrollbar */
 export declare const defaultsScrollbar: {
     clientOnly: boolean;
     tag: string;

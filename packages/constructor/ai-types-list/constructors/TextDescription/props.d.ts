@@ -1,22 +1,10 @@
-// md5:08b50b53e64221fbce4f3d886350b62e
-import { DescriptionProps } from '../../types/descriptionTypes';
-type TextDescriptionPropsToken = {};
+// md5:08b50b53e64221fbce4f3d886350b62e true
 export type TextDescriptionPropsBasic = DescriptionProps & {
-    /** html tag for wrapping the description/html тег для оборачивания описания */
+    /** HTML tag for wrapping the description @keywords tag wrapper html element */
     tag?: string;
 };
-/**
- * Type describing incoming properties.
- *
- * Тип, описывающий входящие свойства.
- */
-export type TextDescriptionProps = TextDescriptionPropsBasic & TextDescriptionPropsToken;
-/**
- * Default value for property.
- *
- * Значение по умолчанию для свойства.
- */
+export type TextDescriptionProps = TextDescriptionPropsBasic & {};
+/** Default values for text description properties @keywords defaults configuration */
 export declare const defaultsTextDescription: {
     tag: string;
 };
-export {};

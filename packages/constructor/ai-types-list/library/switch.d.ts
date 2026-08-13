@@ -1,2 +1,1 @@
-// md5:95ca837c9f928769b1a149a71d5337e4
-export * from '../constructors/Switch/index';
+// md5:95ca837c9f928769b1a149a71d5337e4 true

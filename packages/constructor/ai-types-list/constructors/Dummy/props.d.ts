@@ -1,16 +1,5 @@
-// md5:b382921128d21cd6e140d5b973c023fc
-type DummyPropsToken = {};
+// md5:b382921128d21cd6e140d5b973c023fc true
 export type DummyPropsBasic = {};
-/**
- * Type describing incoming properties.
- *
- * Тип, описывающий входящие свойства.
- */
-export type DummyProps = DummyPropsBasic & DummyPropsToken;
-/**
- * Default value for property.
- *
- * Значение по умолчанию для свойства.
- */
+export type DummyProps = DummyPropsBasic & {};
+/** Default value for property. @keywords defaults, dummy, properties */
 export declare const defaultsDummy: {};
-export {};

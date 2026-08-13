@@ -1,36 +1,12 @@
-// md5:d6552815ecdba95b0778162175bbf3d9
+// md5:d6552815ecdba95b0778162175bbf3d9 true
 import { ConstrClass } from '@dxtmisha/functional';
-/**
- * Interface for describing which components need to be connected for work.
- *
- * Интерфейс для описания, какие компоненты надо подключить для работы.
- */
 export type ProgressComponents = {};
-/**
- * Type describing available events.
- *
- * Тип, описывающий доступные события.
- */
 export type ProgressEmits = {};
-/**
- * Type describing available properties.
- *
- * Тип, описывающий доступные свойства.
- */
 export interface ProgressExpose {
 }
-/**
- * Type describing available slots.
- *
- * Тип, описывающий доступные слоты.
- */
 export interface ProgressSlots {
 }
-/**
- * Type describing subclasses.
- *
- * Тип, описывающий подклассы.
- */
+/** Subclasses mapping for progress component elements. @keywords progress classes subclasses */
 export type ProgressClasses = {
     main: ConstrClass;
     circle: string;

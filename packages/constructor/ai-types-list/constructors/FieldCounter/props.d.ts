@@ -1,31 +1,17 @@
-// md5:c60fd32e445c4428b9a710a672794add
-import { TextCharacterLimitPropsInclude, TextCharacterRemainingPropsInclude } from '../../types/textTypes';
+// md5:c60fd32e445c4428b9a710a672794add true
 export type FieldCounterPropsToken = {};
 export type FieldCounterPropsBasic = TextCharacterLimitPropsInclude & TextCharacterRemainingPropsInclude & {
-    /** Current counter value/ Текущее значение счетчика */
+    /** Current counter value @keywords counter, value */
     counter?: string | number;
-    /** Maximum allowed length/ Максимально допустимая длина */
+    /** Maximum allowed length @keywords maxlength, limit */
     maxlength?: string | number;
-    /**
-     * The number of characters remaining at which the screen reader starts announcing/
-     * Количество оставшихся символов, при котором скринридер начинает произносить
-     */
+    /** Characters remaining threshold for screen reader announcements @keywords maxlengthOnce, a11y, screenreader */
     maxlengthOnce?: string | number;
-    /** Template for formatting the counter display/ Шаблон для форматирования отображения счетчика */
+    /** Template for formatting the counter display @keywords template, format */
     template?: string;
-    /** Technical/ Технические свойства */
-    /** Unique identifier for the element/ Уникальный идентификатор для элемента */
+    /** Unique identifier for the element @keywords id, identifier */
     id?: string;
 };
-/**
- * Type describing incoming properties.
- *
- * Тип, описывающий входящие свойства.
- */
 export type FieldCounterProps = FieldCounterPropsBasic & FieldCounterPropsToken;
-/**
- * Default value for property.
- *
- * Значение по умолчанию для свойства.
- */
+/** Default value for field counter property @keywords defaultsFieldCounter, default */
 export declare const defaultsFieldCounter: {};

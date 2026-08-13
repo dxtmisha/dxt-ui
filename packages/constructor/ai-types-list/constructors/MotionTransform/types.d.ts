@@ -1,69 +1,33 @@
-// md5:af9c3f9991c6730e9dfb0794ad68538f
-import { ConstrClass } from '@dxtmisha/functional';
-import { ModelEmitsOpen } from '../../types/modelTypes';
-import { MotionTransformControlItem, MotionTransformEmitOptions } from './basicTypes';
-/**
- * Interface for describing which components need to be connected for work.
- *
- * Интерфейс для описания, какие компоненты надо подключить для работы.
- */
+// md5:af9c3f9991c6730e9dfb0794ad68538f true
 export type MotionTransformComponents = {};
-/**
- * Type describing available events.
- *
- * Тип, описывающий доступные события.
- */
 export type MotionTransformEmits = ModelEmitsOpen & {
-    /** Event triggered on transformation completion/ Событие, вызываемое при завершении трансформации */
     transform: [
         event: Event | undefined,
         options: MotionTransformEmitOptions
     ];
-    /** Lightweight transformation event/ Облегченное событие трансформации */
     transformLite: [
         options: MotionTransformEmitOptions
     ];
 };
-/**
- * Type describing available properties.
- *
- * Тип, описывающий доступные свойства.
- */
 export interface MotionTransformExpose {
-    /**
-     * Returns computed state indicating if component is shown or being prepared for display/
-     * Возвращает вычисляемое состояние, указывающее отображается ли компонент или готовится к отображению
-     */
+    /** Returns computed state indicating if component is shown. @keywords isShow, state, visible */
     isShow(): boolean;
-    /** Returns state of window visibility/ Возвращает состояние видимости окна */
+    /** Returns state of window visibility. @keywords getOpen, visibility, state */
     getOpen(): boolean;
-    /** Sets open state/ Устанавливает состояние открытия */
+    /** Sets open state. @keywords setOpen, state, open */
     setOpen(open: boolean): void;
-    /** Transition to opening state/ Переход в состояние открытия */
+    /** Transition to opening state. @keywords toOpen, open, transition */
     toOpen(): void;
-    /** Transition to closing state/ Переход в состояние закрытия */
+    /** Transition to closing state. @keywords toClose, close, transition */
     toClose(): void;
-    /** Toggles open state/ Переключает состояние открытия */
+    /** Toggles open state. @keywords toggle, open, close */
     toggle(): void;
 }
-/**
- * Type describing available slots.
- *
- * Тип, описывающий доступные слоты.
- */
 export interface MotionTransformSlots {
-    /** Head slot for controls/ Слот шапки для элементов управления */
     head?(props: MotionTransformControlItem): any;
-    /** Body slot for content/ Слот тела для содержимого */
     body?(props: MotionTransformControlItem): any;
 }
-/**
- * Type describing subclasses.
- *
- * Тип, описывающий подклассы.
- */
 export type MotionTransformClasses = {
-    /** Main class/ Основной класс */
     main: ConstrClass;
     context: string;
     head: string;

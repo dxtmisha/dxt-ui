@@ -1,10 +1,4 @@
-// md5:580e83911ed0fb070f1fced089b604d8
-import { ListItemPropsBasic } from '../ListItem';
-import { IconPropsBasic } from '../Icon';
-import { BadgePropsBasic } from '../Badge';
-import { ProgressPropsBasic } from '../Progress';
-import { CheckboxPropsBasic } from '../Checkbox';
-import { RadioPropsBasic } from '../Radio';
+// md5:580e83911ed0fb070f1fced089b604d8 true
 type NavigationItemPropsToken = {
     focus?: boolean;
     open?: boolean;
@@ -17,22 +11,9 @@ type NavigationItemPropsToken = {
     fill?: string | 'custom';
     divider?: boolean;
 };
-/**
- * Basic props interface for NavigationItem component /
- * Базовый интерфейс свойств для компонента NavigationItem
- */
 export type NavigationItemPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Badge extends BadgePropsBasic = BadgePropsBasic, Progress extends ProgressPropsBasic = ProgressPropsBasic, Checkbox extends CheckboxPropsBasic = CheckboxPropsBasic, Radio extends RadioPropsBasic = RadioPropsBasic> = ListItemPropsBasic<Icon, Badge, Progress, Checkbox, Radio>;
-/**
- * Type describing incoming properties.
- *
- * Тип, описывающий входящие свойства.
- */
 export type NavigationItemProps = NavigationItemPropsBasic & NavigationItemPropsToken;
-/**
- * Default value for property.
- *
- * Значение по умолчанию для свойства.
- */
+/** Default properties for NavigationItem component. @keywords defaultsNavigationItem, navigation_item_defaults */
 export declare const defaultsNavigationItem: {
     iconAlign: string;
     controlPosition: string;
@@ -41,4 +22,3 @@ export declare const defaultsNavigationItem: {
     role: string;
     selectionStyle: string;
 };
-export {};

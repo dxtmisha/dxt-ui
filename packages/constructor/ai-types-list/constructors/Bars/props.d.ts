@@ -1,51 +1,36 @@
-// md5:6ff3d763e9bc206b32bbb274232d4150
+// md5:6ff3d763e9bc206b32bbb274232d4150 true
 import { ConstrBind } from '@dxtmisha/functional';
-import { IconPropsBasic, IconValue } from '../Icon';
-import { ButtonPropsBasic } from '../Button';
-import { SkeletonPropsInclude } from '../Skeleton';
-import { LabelProps } from '../../types/labelTypes';
-import { DescriptionProps } from '../../types/descriptionTypes';
-import { TextClosePropsInclude } from '../../types/textTypes';
 export type BarsPropsToken = {};
 export type BarsPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Button extends ButtonPropsBasic = ButtonPropsBasic> = LabelProps & DescriptionProps & SkeletonPropsInclude & TextClosePropsInclude & {
-    /** Whether the action mode is active/ Активен ли режим действия */
+    /** Whether the action mode is active @keywords action active mode */
     'action'?: boolean;
-    /** Properties for the back button/ Свойства для кнопки «Назад» */
+    /** Properties for the back button @keywords back button props */
     'backButton'?: ConstrBind<Button>;
-    /** Whether to hide the back button/ Скрывать ли кнопку «Назад» */
+    /** Whether to hide the back button @keywords back hide button */
     'backHide'?: boolean;
-    /** Whether to hide the back button specifically in action mode/ Скрывать ли кнопку «Назад» именно в режиме действия */
+    /** Whether to hide the back button specifically in action mode @keywords back action hide */
     'backActionHide'?: boolean;
-    /** List of additional buttons/ Список дополнительных кнопок */
+    /** List of additional buttons @keywords bars buttons list */
     'bars'?: ConstrBind<Button>[];
-    /** Label override for action mode/ Переопределение заголовка для режима действия */
+    /** Label override for action mode @keywords action label */
     'actionLabel'?: LabelProps['label'];
-    /** Description override for action mode/ Переопределение описания для режима действия */
+    /** Description override for action mode @keywords action description */
     'actionDescription'?: DescriptionProps['description'];
-    /** List of buttons for action mode/ Список кнопок для режима действия */
+    /** List of buttons for action mode @keywords action bars buttons */
     'actionBars'?: ConstrBind<Button>[];
-    /** Attributes for the button component/ Атрибуты для компонента кнопки */
+    /** Attributes for the button component @keywords button attrs */
     'buttonAttrs'?: ConstrBind<Button>;
-    /** Icon for the back button/ Иконка для кнопки «Назад» */
+    /** Icon for the back button @keywords icon back */
     'iconBack'?: IconValue<Icon>;
-    /** Icon for the close button/ Иконка для кнопки закрытия */
+    /** Icon for the close button @keywords icon close */
     'iconClose'?: IconValue<Icon>;
-    /** Whether the action mode model is active/ Активна ли модель режима действия */
+    /** Whether the action mode model is active @keywords model action */
     'modelAction'?: boolean;
-    /** Event for updating the action mode status/ Событие обновления статуса режима действия */
+    /** Event for updating the action mode status @keywords update action event */
     'onUpdate:action'?: (value: boolean) => void;
-    /** Event for updating the action mode model status/ Событие обновления статуса модели режима действия */
+    /** Event for updating the action mode model status @keywords update model action event */
     'onUpdate:modelAction'?: (value: boolean) => void;
 };
-/**
- * Type describing incoming properties.
- *
- * Тип, описывающий входящие свойства.
- */
 export type BarsProps = BarsPropsBasic & BarsPropsToken;
-/**
- * Default value for property.
- *
- * Значение по умолчанию для свойства.
- */
+/** Default value for property @keywords defaults bars */
 export declare const defaultsBars: {};

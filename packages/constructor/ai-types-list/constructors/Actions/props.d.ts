@@ -1,33 +1,23 @@
-// md5:332282993401d1dfba432764441a5d8b
+// md5:332282993401d1dfba432764441a5d8b true
 import { ConstrBind } from '@dxtmisha/functional';
-import { AreaPropsInclude } from '../../types/areaTypes';
-import { ButtonPropsBasic } from '../Button';
 export type ActionsPropsToken = {
     align?: 'none' | 'center' | 'left' | 'right' | 'block' | 'auto';
     flexible?: boolean;
     wrap?: boolean;
 };
 export type ActionsPropsBasic<Button extends ButtonPropsBasic = ButtonPropsBasic> = AreaPropsInclude & {
-    /** Primary list of action configurations/ Основной список конфигураций действий */
+    /** Primary list of action configurations @keywords list, actions */
     list?: ConstrBind<Button>[];
-    /** Secondary list of action configurations/ Вторичный список конфигураций действий */
+    /** Secondary list of action configurations @keywords secondary, list, actions */
     listSecondary?: ConstrBind<Button>[];
-    /** Shared attributes for buttons in the primary list/ Общие атрибуты для кнопок в основном списке */
+    /** Shared attributes for buttons in the primary list @keywords button, attrs */
     buttonAttrs?: ConstrBind<Button>;
-    /** Shared attributes for buttons in the secondary list/ Общие атрибуты для кнопок во вторичном списке */
+    /** Shared attributes for buttons in the secondary list @keywords button, secondary, attrs */
     buttonSecondaryAttrs?: ConstrBind<Button>;
 };
-/**
- * Type describing incoming properties.
- *
- * Тип, описывающий входящие свойства.
- */
+/** Type describing incoming properties. @keywords actions, props */
 export type ActionsProps = ActionsPropsBasic & ActionsPropsToken;
-/**
- * Default value for property.
- *
- * Значение по умолчанию для свойства.
- */
+/** Default value for property. @keywords defaults, actions */
 export declare const defaultsActions: {
     align: string;
     area: string;

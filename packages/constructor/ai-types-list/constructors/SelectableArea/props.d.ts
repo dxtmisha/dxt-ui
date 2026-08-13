@@ -1,22 +1,18 @@
-// md5:40b1abbf51e5cd177c9ff28f0d290c34
-import { ModelPropsSelected } from '../../types/modelTypes';
-/** Type describing token properties / Тип, описывающий свойства токенов */
-type SelectableAreaPropsToken = {};
-/** Type describing basic properties / Тип, описывающий базовые свойства */
+// md5:40b1abbf51e5cd177c9ff28f0d290c34 true
+export type SelectableAreaPropsToken = {};
+/** Basic selectable area properties @keywords selectable area props basic configuration */
 export type SelectableAreaPropsBasic = ModelPropsSelected & {
-    /** Disables the selection functionality / Отключает функционал выделения */
+    /** Disables selection @keywords disabled boolean */
     disabled?: boolean;
-    /** Active status for continuous selection / Активный статус для непрерывного выделения */
+    /** Active status @keywords active continuous selection */
     active?: boolean;
-    /** Array or string of currently selected values / Массив или строка текущих выбранных значений */
+    /** Selected values @keywords selected values string array */
     selected?: string | string[];
-    /** HTML tag of the wrapper element / HTML-тег элемента обертки */
+    /** Wrapper HTML tag @keywords tag html element */
     tag?: string;
 };
-/** Type describing incoming properties / Тип, описывающий входящие свойства */
 export type SelectableAreaProps = SelectableAreaPropsBasic & SelectableAreaPropsToken;
-/** Default value for property / Значение по умолчанию для свойства */
+/** Default properties @keywords defaults selectable area tag */
 export declare const defaultsSelectableArea: {
     tag: string;
 };
-export {};

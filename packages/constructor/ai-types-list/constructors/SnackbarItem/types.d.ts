@@ -1,47 +1,24 @@
-// md5:4704cf597d4cb0111ce00d960fe34043
+// md5:4704cf597d4cb0111ce00d960fe34043 true
 import { ConstrClass } from '@dxtmisha/functional';
-import { DescriptionSlots } from '../../types/descriptionTypes';
-import { EventClickEmits } from '../../types/eventClickTypes';
-import { LabelSlots } from '../../types/labelTypes';
-import { ActionsComponentInclude, ActionsEmitsInclude } from '../Actions';
-import { ButtonComponentInclude } from '../Button';
-import { IconComponentInclude } from '../Icon';
-/**
- * Interface for describing which components need to be connected for work.
- *
- * Интерфейс для описания, какие компоненты надо подключить для работы.
- */
+
 export type SnackbarItemComponents = IconComponentInclude & ButtonComponentInclude & ActionsComponentInclude;
-/**
- * Type describing available events.
- *
- * Тип, описывающий доступные события.
- */
+
+/** Type describing available events. @keywords snackbar item emits events */
 export type SnackbarItemEmits = ActionsEmitsInclude & EventClickEmits & {
-    /** Event triggered when notification is closed/ Событие при закрытии уведомления */
+    /** Event triggered when notification is closed @keywords close event */
     close: [value: string | undefined];
 };
-/**
- * Type describing available properties.
- *
- * Тип, описывающий доступные свойства.
- */
+
 export interface SnackbarItemExpose {
 }
-/**
- * Type describing available slots.
- *
- * Тип, описывающий доступные слоты.
- */
+
+/** Type describing available slots. @keywords snackbar item slots */
 export interface SnackbarItemSlots extends LabelSlots, DescriptionSlots {
-    /** Slot for the notification body/ Слот для содержимого уведомления */
+    /** Slot for the notification body @keywords body slot */
     body?(props: any): any;
 }
-/**
- * Type describing subclasses.
- *
- * Тип, описывающий подклассы.
- */
+
+/** Type describing subclasses. @keywords snackbar item classes */
 export type SnackbarItemClasses = {
     main: ConstrClass;
     tool: string;

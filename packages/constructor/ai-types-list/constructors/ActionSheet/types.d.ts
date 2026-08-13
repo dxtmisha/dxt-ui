@@ -1,37 +1,12 @@
-// md5:76b279b1efeea54f3d7bf4870d8b48d8
+// md5:76b279b1efeea54f3d7bf4870d8b48d8 true
 import { ConstrClass } from '@dxtmisha/functional';
-import { ModalComponents, ModalEmits, ModalExpose, ModalSlots } from '../Modal';
-/**
- * Interface for describing which components need to be connected for work.
- *
- * Интерфейс для описания, какие компоненты надо подключить для работы.
- */
 export type ActionSheetComponents = ModalComponents;
-/**
- * Type describing available events.
- *
- * Тип, описывающий доступные события.
- */
 export type ActionSheetEmits = ModalEmits;
-/**
- * Type describing available properties.
- *
- * Тип, описывающий доступные свойства.
- */
 export interface ActionSheetExpose extends ModalExpose {
 }
-/**
- * Type describing available slots.
- *
- * Тип, описывающий доступные слоты.
- */
 export interface ActionSheetSlots extends ModalSlots {
 }
-/**
- * Type describing subclasses.
- *
- * Тип, описывающий подклассы.
- */
+/** Action sheet CSS classes. @keywords actionsheet classes styling */
 export type ActionSheetClasses = {
     main: ConstrClass;
     title: string;

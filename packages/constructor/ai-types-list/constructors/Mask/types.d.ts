@@ -1,74 +1,37 @@
-// md5:0a75339595ef09f1328fd2473f6c0106
-import { ConstrClass } from '@dxtmisha/functional';
-import { FieldValidationItem } from '../../types/fieldTypes';
-/**
- * Interface for describing which components need to be connected for work.
- *
- * Интерфейс для описания, какие компоненты надо подключить для работы.
- */
+// md5:0a75339595ef09f1328fd2473f6c0106 true
 export type MaskComponents = {};
-/**
- * Type describing available events.
- *
- * Тип, описывающий доступные события.
- */
 export type MaskEmits = {
-    /** Event triggered on focus/ Событие при фокусе */
     focus: [event: FocusEvent];
-    /** Event triggered on blur/ Событие при потере фокуса */
     blur: [event: FocusEvent];
-    /** Event triggered on key down/ Событие при нажатии клавиши */
     keydown: [event: KeyboardEvent];
-    /** Event triggered on key up/ Событие при отпускании клавиши */
     keyup: [event: KeyboardEvent];
-    /** Event triggered before input/ Событие перед вводом */
     beforeinput: [event: InputEvent];
-    /** Event triggered on input/ Событие при вводе */
     input: [
         event: InputEvent,
         value: FieldValidationItem
     ];
-    /** Event triggered on simplified input/ Событие при упрощенном вводе */
     inputLite: [value: FieldValidationItem];
-    /** Event triggered on change/ Событие при изменении */
     change: [
         event: InputEvent,
         value: FieldValidationItem
     ];
-    /** Event triggered on simplified change/ Событие при упрощенном изменении */
     changeLite: [value: FieldValidationItem];
-    /** Event triggered on paste/ Событие при вставке */
     paste: [event: ClipboardEvent];
-    /** Event triggered on reset/ Событие при сбросе */
     reset: [event: Event];
 };
-/**
- * Type describing available properties.
- *
- * Тип, описывающий доступные свойства.
- */
+/** Mask exposed component methods API @keywords mask expose methods value */
 export interface MaskExpose {
-    /** Returns the raw, unformatted value/ Возвращает неотформатированное («базовое») значение */
+    /** Returns the raw, unformatted value @keywords get raw value basic */
     getValueBasic(): string;
-    /** Returns the current formatted value/ Возвращает текущее отформатированное значение */
+    /** Returns the current formatted value @keywords get value formatted */
     getValue(): string;
-    /** Sets a new value/ Устанавливает новое значение */
+    /** Sets a new value @keywords set value */
     setValue(value: string): boolean;
-    /** Clears the current value/ Очищает текущее значение */
+    /** Clears the current value @keywords clear value */
     clear(): boolean;
 }
-/**
- * Type describing available slots.
- *
- * Тип, описывающий доступные слоты.
- */
 export interface MaskSlots {
 }
-/**
- * Type describing subclasses.
- *
- * Тип, описывающий подклассы.
- */
 export type MaskClasses = {
     main: ConstrClass;
     input: string;

@@ -1,34 +1,9 @@
-// md5:f499d50c7d2d485196625a7c765b8f18
-import { FieldVisibilityInclude } from './FieldVisibilityInclude';
-import { FieldAllProps, FieldType } from '../../types/fieldTypes';
-/**
- * Class for working with the input type.
- *
- * Класс для работы с типом ввода.
- */
+// md5:f499d50c7d2d485196625a7c765b8f18 true
 export declare class FieldTypeInclude {
-    protected readonly props: FieldAllProps;
-    protected readonly visibility?: FieldVisibilityInclude | undefined;
-    /**
-     * Constructor
-     *
-     * Конструктор
-     * @param props input data / входные данные
-     * @param visibility object for working with visualization / объект для работы с визуализацией
-     */
+    /** Creates a FieldTypeInclude instance. @keywords field type constructor props */
     constructor(props: FieldAllProps, visibility?: FieldVisibilityInclude | undefined);
-    /**
-     * Returns the input type.
-     *
-     * Возвращает тип ввода.
-     * @returns type value / значение типа
-     */
+    /** Gets the field input type item. @keywords get item field type getter */
     get item(): FieldType;
-    /**
-     * Returns the input type.
-     *
-     * Возвращает тип ввода.
-     * @returns type value / значение типа
-     */
+    /** Gets the field input type value. @keywords get field type value */
     get(): FieldType;
 }

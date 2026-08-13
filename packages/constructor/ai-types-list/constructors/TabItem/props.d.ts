@@ -1,11 +1,4 @@
-// md5:1bdbe511fca3895672532f3eb1e10e02
-import { LabelProps } from '../../types/labelTypes';
-import { IconPropsBasic, IconPropsInclude } from '../Icon';
-import { BadgePropsBasic, BadgePropsInclude } from '../Badge';
-import { SkeletonPropsInclude } from '../Skeleton';
-import { EnabledProps } from '../../types/enabledTypes';
-import { EventClickProps } from '../../types/eventClickTypes';
-import { AriaRolePropsInclude } from '../../types/ariaTypes';
+// md5:1bdbe511fca3895672532f3eb1e10e02 true
 type TabItemPropsToken = {
     focus?: boolean;
     open?: boolean;
@@ -16,27 +9,13 @@ type TabItemPropsToken = {
     container?: boolean;
 };
 export type TabItemPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Badge extends BadgePropsBasic = BadgePropsBasic> = LabelProps & IconPropsInclude<Icon> & BadgePropsInclude<Badge> & SkeletonPropsInclude & EnabledProps & EventClickProps & AriaRolePropsInclude & {
-    /** Value/ Значения */
-    /** Item index/ Индекс элемента */
     index?: any;
-    /** URL address for links/ URL-адрес для ссылок */
     href?: string;
-    /** Style/ Стили */
-    /** HTML tag for the tab item/ HTML-тег для элемента вкладки */
     tag?: 'button' | 'a' | 'span' | 'li' | 'div' | string;
 };
-/**
- * Type describing incoming properties.
- *
- * Тип, описывающий входящие свойства.
- */
+/** Tab item properties. @keywords TabItemProps, properties, tabs */
 export type TabItemProps = TabItemPropsBasic & TabItemPropsToken;
-/**
- * Default value for property.
- *
- * Значение по умолчанию для свойства.
- */
+/** Default tab item configuration values. @keywords defaultsTabItem, default, config */
 export declare const defaultsTabItem: {
     role: string;
 };
-export {};

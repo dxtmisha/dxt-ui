@@ -1,82 +1,27 @@
-// md5:1637c3c8bd0b92918f948712cb4a90e3
-import { PluginComponentImports, PluginComponentItem } from '../../types/pluginTypes';
-/**
- * Class for storing plugin data.
- *
- * Класс для хранения данных плагина.
- */
+// md5:1637c3c8bd0b92918f948712cb4a90e3 true
+export type PluginComponentItem = {
+    name: string;
+    importPath: string;
+};
+
+export type PluginComponentImports = Record<string, PluginComponentItem>;
+
+/** Class for storing plugin data. @keywords plugin data design components vars */
 export declare class PluginData {
-    protected readonly design: string;
-    protected readonly packageName: string;
-    protected readonly componentsReg: RegExp;
-    protected readonly styleVarsReg: RegExp;
-    protected readonly componentsList: PluginComponentImports;
-    protected readonly styleModification: Record<string, string>;
-    /**
-     * Constructor
-     * @param design design name / название дизайна
-     * @param packageName package name / название пакета
-     * @param componentsReg regular expression for finding components / регулярное выражение для поиска компонентов
-     * @param styleVarsReg regular expression for finding variables / регулярное выражение для поиска переменных
-     * @param componentsList list of components / список компонентов
-     */
+    /** Creates plugin data instance. @keywords constructor plugin data */
     constructor(design: string, packageName: string, componentsReg: RegExp, styleVarsReg: RegExp, componentsList: PluginComponentImports);
-    /**
-     * Checks if the code contains a component.
-     *
-     * Проверяет, содержит ли код компонент.
-     * @param code code to check / код для проверки
-     */
+    /** Checks if the code contains a component. @keywords has component check */
     hasComponent(code: string): boolean;
-    /**
-     * Checks if the code contains variables.
-     *
-     * Проверяет, содержит ли код переменные.
-     * @param code code to check / код для проверки
-     */
+    /** Checks if the code contains variables. @keywords has vars check */
     hasVars(code: string): boolean;
-    /**
-     * Returns the design name.
-     *
-     * Возвращает название дизайна.
-     */
+    /** Returns the design name. @keywords get design name */
     getDesign(): string;
-    /**
-     * Returns the package name.
-     *
-     * Возвращает название пакета.
-     */
+    /** Returns the package name. @keywords get package name */
     getPackageName(): string;
-    /**
-     * Returns a list of all components in the code.
-     *
-     * Возвращает список всех компонентов в коде.
-     * @param code code to check / код для проверки
-     */
+    /** Returns a list of all components in the code. @keywords get components list */
     getComponents(code: string): PluginComponentImports;
-    /**
-     * Returns the regular expression for finding variables.
-     *
-     * Возвращает регулярное выражение для поиска переменных.
-     */
+    /** Returns the regular expression for finding variables. @keywords get style vars regex */
     getStyleVarsReg(): RegExp;
-    /**
-     * Returns the style modification map.
-     *
-     * Возвращает карту модификации стилей.
-     */
+    /** Returns the style modification map. @keywords get style modification */
     getStyleModification(): Record<string, string>;
-    /**
-     * Finds a component by name.
-     *
-     * Находит компонент по имени.
-     * @param component component name / название компонента
-     */
-    protected findComponent(component: string): PluginComponentItem | undefined;
-    /**
-     * Initializes the style modification map.
-     *
-     * Инициализирует карту модификации стилей.
-     */
-    protected initStyleModification(): Record<string, string>;
 }

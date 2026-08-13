@@ -1,64 +1,37 @@
-// md5:e978bd3ec9ba6500d7b102108390651d
+// md5:e978bd3ec9ba6500d7b102108390651d true
 import { ConstrClass } from '@dxtmisha/functional';
-import { ModelEmitsSelected } from '../../types/modelTypes';
-import { MotionAxisEmitOptions, MotionAxisSelectedValue } from './basicTypes';
-/**
- * Interface for describing which components need to be connected for work.
- *
- * Интерфейс для описания, какие компоненты надо подключить для работы.
- */
 export type MotionAxisComponents = {};
-/**
- * Type describing available events.
- *
- * Тип, описывающий доступные события.
- */
 export type MotionAxisEmits = ModelEmitsSelected<MotionAxisSelectedValue> & {
-    /** Event for axis motion/ Событие движения оси */
+    /** Axis motion event @keywords motionAxis, axis, move */
     motionAxis: [options: MotionAxisEmitOptions];
-    /** Event triggered at the start of animation/ Событие начала анимации */
+    /** Animation start event @keywords start, animation */
     start: [selected: MotionAxisSelectedValue];
-    /** Event triggered at the end of animation/ Событие завершения анимации */
+    /** Animation end event @keywords end, animation */
     end: [selected: MotionAxisSelectedValue];
 };
-/**
- * Type describing available properties.
- *
- * Тип, описывающий доступные свойства.
- */
 export interface MotionAxisExpose {
-    /** Goes back to the previous element/ Возвращается к предыдущему элементу */
+    /** Goes back to the previous element @keywords back, previous */
     back(): void;
-    /** Goes to the next element/ Переходит к следующему элементу */
+    /** Goes to the next element @keywords next, forward */
     next(): void;
-    /** Goes to the specified element/ Переходит к указанному элементу */
+    /** Goes to the specified element @keywords to, element */
     to(selected: MotionAxisSelectedValue): void;
-    /** Goes to the top element/ Переходит к верхнему элементу */
+    /** Goes to the top element @keywords top, up */
     top(selected: MotionAxisSelectedValue): void;
-    /** Goes to the right element/ Переходит к правому элементу */
+    /** Goes to the right element @keywords right */
     right(selected: MotionAxisSelectedValue): void;
-    /** Goes to the bottom element/ Переходит к нижнему элементу */
+    /** Goes to the bottom element @keywords bottom, down */
     bottom(selected: MotionAxisSelectedValue): void;
-    /** Goes to the left element/ Переходит к левому элементу */
+    /** Goes to the left element @keywords left */
     left(selected: MotionAxisSelectedValue): void;
-    /** Goes down to the specified element/ Переходит вниз к указанному элементу */
+    /** Goes down to the specified element @keywords down */
     down(selected: MotionAxisSelectedValue): void;
-    /** Goes up to the specified element/ Переходит вверх к указанному элементу */
+    /** Goes up to the specified element @keywords up */
     up(selected: MotionAxisSelectedValue): void;
 }
-/**
- * Type describing available slots.
- *
- * Тип, описывающий доступные слоты.
- */
 export type MotionAxisSlots = {
     [K in string]?: (props: any) => any;
 };
-/**
- * Type describing subclasses.
- *
- * Тип, описывающий подклассы.
- */
 export type MotionAxisClasses = {
     main: ConstrClass;
     slide: string;

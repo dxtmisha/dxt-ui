@@ -1,47 +1,18 @@
-// md5:6c126089104825032ec8bc2191a2f342
+// md5:6c126089104825032ec8bc2191a2f342 true
 import { ConstrClass, ListSelectedList } from '@dxtmisha/functional';
-import { HorizontalScrollComponentInclude } from '../HorizontalScroll';
-import { TabItemComponentInclude } from '../TabItem';
-import { EventClickEmits } from '../../types/eventClickTypes';
-import { ModelEmitsSelected } from '../../types/modelTypes';
-import { TabsNavigationIdsList } from './basicTypes';
-/**
- * Interface for describing which components need to be connected for work.
- *
- * Интерфейс для описания, какие компоненты надо подключить для работы.
- */
 export type TabsNavigationComponents = HorizontalScrollComponentInclude & TabItemComponentInclude;
-/**
- * Type describing available events.
- *
- * Тип, описывающий доступные события.
- */
 export type TabsNavigationEmits = EventClickEmits & ModelEmitsSelected<ListSelectedList>;
-/**
- * Type describing available properties.
- *
- * Тип, описывающий доступные свойства.
- */
+/** Exposes methods to retrieve unique DOM identifiers for tab items. @keywords tabs navigation expose ids */
 export interface TabsNavigationExpose {
-    /** Map of item values to their unique DOM identifiers / Карта значений элементов и их уникальных DOM-идентификаторов */
+    /** Map of item values to their unique DOM identifiers @keywords ids mapping */
     ids(): TabsNavigationIdsList;
 }
-/**
- * Type describing available slots.
- *
- * Тип, описывающий доступные слоты.
- */
 export interface TabsNavigationSlots {
-    /** Slot for content before the tabs/ Слот для содержимого перед вкладками */
+    /** Slot for content before the tabs @keywords leading slot */
     leading?(props: any): any;
-    /** Slot for content after the tabs/ Слот для содержимого после вкладок */
+    /** Slot for content after the tabs @keywords trailing slot */
     trailing?(props: any): any;
 }
-/**
- * Type describing subclasses.
- *
- * Тип, описывающий подклассы.
- */
 export type TabsNavigationClasses = {
     main: ConstrClass;
     item: string;

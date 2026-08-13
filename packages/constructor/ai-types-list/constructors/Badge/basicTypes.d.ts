@@ -1,23 +1,14 @@
-// md5:cf71d32b9a37f21ce1fb59dbe56b5973
+// md5:cf71d32b9a37f21ce1fb59dbe56b5973 true
 import { ConstrBind } from '@dxtmisha/functional';
-import { BadgePropsBasic } from './props';
-/**
- * Component map for including the Badge component/
- * Карта компонентов для подключения компонента Badge
- */
+
+/** Badge component configuration @keywords badge component include map */
 export type BadgeComponentInclude = {
-    /** Badge component configuration/ Конфигурация компонента значка */
     badge?: object;
 };
-/**
- * Props used to include and configure the Badge component/
- * Свойства для подключения и настройки компонента Badge
- */
+
+/** Props used to include and configure the Badge component @keywords badge props include configuration */
 export type BadgePropsInclude<Badge extends BadgePropsBasic = BadgePropsBasic> = {
-    /** Badge value or properties/ Значение или свойства значка */
     badge?: string | number | ConstrBind<Badge>;
-    /** Whether to show only a dot/ Показывать ли только точку */
     badgeDot?: boolean;
-    /** Additional attributes for Badge component / Дополнительные атрибуты для компонента Badge */
     badgeAttrs?: ConstrBind<Badge>;
 };
