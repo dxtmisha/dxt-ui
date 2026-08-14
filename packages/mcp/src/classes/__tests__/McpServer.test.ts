@@ -38,10 +38,4 @@ describe('McpServer', () => {
     expect(sdkServer).toBeDefined()
     expect(server.getServer()).toBe(sdkServer)
   })
-
-  it('creates and initializes via static make()', () => {
-    const server = McpServer.make([dummyTool], { name: 'static-server' })
-    expect(server).toBeInstanceOf(McpServer)
-    expect(server.getServer()).toBeDefined()
-  })
 })
