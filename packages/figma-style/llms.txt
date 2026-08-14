@@ -1,0 +1,17 @@
+# @dxtmisha/figma-style
+
+> Figma DevMode plugin for style, token, and layout extraction into code.
+
+A dual-target plugin (backend sandbox `code.ts` + Vue 3 iframe UI `App.vue`) for inspecting Figma designs, extracting design system CSS variables, and copying style specifications.
+
+## Key Modules & Files
+
+- [manifest.json](manifest.json): Figma plugin configuration and capabilities (DevMode inspection).
+- [code.ts](src/code.ts): Plugin backend entry point handling Figma canvas node traversal and style extraction.
+- [App.vue](src/App.vue): Main plugin UI component built with DXT UI components.
+- [classes](src/classes): Specialized style extraction and token formatting classes.
+- [composables](src/composables): Vue composables for DevMode inspection state.
+
+## Optional
+
+- [package.json](package.json): Build scripts for UI and backend bundles.

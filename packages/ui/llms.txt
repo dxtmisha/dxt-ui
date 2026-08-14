@@ -1,0 +1,20 @@
+# @dxtmisha/ui
+
+> Complete DXT UI design system meta-package.
+
+Bundles all essential packages into a single dependency: `@dxtmisha/constructor`, `@dxtmisha/functional`, `@dxtmisha/styles`, `@dxtmisha/media`, `@dxtmisha/wiki`, `@dxtmisha/configuration`, and `@dxtmisha/scripts`.
+
+## Included Libraries
+
+- [@dxtmisha/constructor](../constructor/llms.txt): Headless UI component constructors and ARIA accessibility.
+- [@dxtmisha/functional](../functional/llms.txt): Vue 3 composables, reactive storage, and API singletons.
+- [@dxtmisha/styles](../styles/llms.txt): SCSS design tokens, mixins, and CSS variables.
+- [@dxtmisha/media](../media/llms.txt): SVG country flags and geographical metadata.
+- [@dxtmisha/wiki](../wiki/llms.txt): Storybook documentation toolkit and MDX content.
+- [@dxtmisha/configuration](../configuration/llms.txt): Vite and TypeScript build presets.
+- [@dxtmisha/scripts](../scripts/llms.txt): CLI tools and component scaffolding scripts.
+
+## Optional
+
+- [README.md](README.md): Comprehensive design system overview, installation, and usage guides.
+- [package.json](package.json): Package dependencies and peer requirements.

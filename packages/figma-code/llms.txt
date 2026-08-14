@@ -1,0 +1,19 @@
+# @dxtmisha/figma-code
+
+> Structured TypeScript abstraction layer for Figma Plugin main thread (backend) development.
+
+Provides object-oriented wrappers around native Figma node APIs, persistent storage management with caching, and bidirectional messaging dispatch.
+
+## Key Classes & Utilities
+
+- [FigmaPluginMessenger](src/classes/FigmaPluginMessenger.ts): Main thread messaging singleton for posting and handling UI requests.
+- [FigmaItem](src/classes/FigmaItem.ts): DOM-like wrapper for Figma nodes providing type checks, parent traversal, and property extraction.
+- [FigmaFrame](src/classes/FigmaFrame.ts): Frame-specific wrapper for extracting layout properties, child hierarchies, and style tokens.
+- [FigmaStorage](src/classes/FigmaStorage.ts): Node-level persistent storage (`setPluginData`) with memory caching and aging logic.
+- [FigmaClientStorage](src/classes/FigmaClientStorage.ts): Plugin-level persistent storage (`figma.clientStorage`) wrapper.
+- [FigmaAiText](src/classes/FigmaAiText.ts): Text analysis and extraction module for AI-driven localization and codegen workflows.
+
+## Optional & AI Resources
+
+- [ai-types.md](ai-types.md): Public TypeScript declarations and method signatures.
+- [README.md](README.md): Backend plugin development guide and code examples.

@@ -1,0 +1,16 @@
+# @dxtmisha/figma-translate
+
+> Figma plugin for automated design text translation, codegen localization, and i18n extraction.
+
+Enables batch extraction of text layers from Figma designs, multi-language translation management, and export into design system localization keys.
+
+## Key Modules & Files
+
+- [manifest.json](manifest.json): Figma plugin manifest defining codegen and inspect capabilities.
+- [code.ts](src/code.ts): Backend sandbox script for finding, reading, and updating text nodes.
+- [App.vue](src/App.vue): Plugin user interface for language selection, translation preview, and batch processing.
+- [classes](src/classes): Translation models and localization token builders.
+
+## Optional
+
+- [package.json](package.json): Scripts for building dual-target Figma plugin bundles.

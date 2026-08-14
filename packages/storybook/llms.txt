@@ -1,0 +1,15 @@
+# @dxtmisha/storybook
+
+> Storybook development, interactive component playground, and documentation build package for DXT UI.
+
+Hosts the Storybook instance configured with `@storybook/vue3-vite`, MDX documentation plugins, accessibility checks, and dynamic design token integration.
+
+## Key Configuration & Files
+
+- [.storybook/main.ts](.storybook/main.ts): Storybook core configuration, Vite builder settings, and MDX addons.
+- [.storybook/preview.ts](.storybook/preview.ts): Global preview decorators, theme providers, and control definitions.
+- [package.json](package.json): Storybook scripts (`npm run storybook`, `npm run build-storybook`).
+
+## Optional
+
+- [vite.config.ts](vite.config.ts): Local Vite configuration for Storybook.

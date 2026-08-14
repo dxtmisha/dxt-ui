@@ -21,6 +21,5 @@
 4.  **Styles**: Use SCSS. Modifying the base library styles is strictly prohibited unless explicitly requested.
 5.  **Dependencies**: Use only the packages specified in `package.json`. Zero tolerance for hallucinations.
 6.  **Strict Adherence**: Do strictly and only what is requested in the user's prompt. Never make unsolicited changes, refactorings, cleanups, or modifications to other files unless explicitly instructed by the user.
-
-Generate code in a way that allows it to be copied and run immediately (**Copy-Paste Ready**).
+7.  **Naming**: No abbreviations in variable/function names (`el`, `val`, `temp`, etc. are forbidden). Use full, descriptive names.
 

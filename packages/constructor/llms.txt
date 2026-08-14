@@ -1,0 +1,28 @@
+# @dxtmisha/constructor
+
+> Class-based Vue 3 component constructors, state logic engines, and ARIA accessibility controllers for the DXT UI design system.
+
+`@dxtmisha/constructor` decouples component architecture into pure TypeScript classes that encapsulate component lifecycles, ARIA accessibility, focus management, form validation, dynamic BEM modifier calculation, and event handling.
+
+## Core Constructors & Modules
+
+- [Button](src/constructors/Button): Button constructor managing loading states, icons, palettes, and ARIA button roles.
+- [Field](src/constructors/Field): Input field container coordinating floating labels, validation states, character counters, and messages.
+- [Input](src/constructors/Input): Headless text input constructor with mask handling, prefix/suffix icons, and clear actions.
+- [Select](src/constructors/Select): Dropdown select constructor with keyboard navigation, value mapping, and menu binding.
+- [Table](src/constructors/Table): Data table controller coordinating column headers, sorting, pagination, and sticky headers.
+- [Modal](src/constructors/Modal): Modal overlay controller with focus trap, ESC key handling, backdrop management, and scroll lock.
+- [List](src/constructors/List): List and item selection engine with keyboard navigation and grouping.
+- [Menu](src/constructors/Menu): Menu and popup navigation constructor with positioning and keyboard traversal.
+- [Checkbox](src/constructors/Checkbox): Accessible checkbox and multi-value checkbox group controller.
+- [Radio](src/constructors/Radio): Accessible radio button and radio group state engine.
+- [Switch](src/constructors/Switch): Accessible toggle switch controller.
+- [Tabs](src/constructors/Tabs): Accessible tablist and tab navigation controller.
+- [Window](src/constructors/Window): Floating window and popup anchor positioning controller.
+
+## Optional & AI Resources
+
+- [ai-types.md](ai-types.md): Comprehensive TypeScript reference with all constructor signatures and `@keywords`.
+- [ai-developer.md](ai-developer.md): Architectural developer guidelines and constructor implementation rules.
+- [ai-resources/colors-and-palettes.md](ai-resources/colors-and-palettes.md): SCSS styling rules and color palette token standards.
+- [README.md](README.md): Full package documentation and usage guides.

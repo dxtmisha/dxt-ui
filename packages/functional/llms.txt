@@ -1,0 +1,23 @@
+# @dxtmisha/functional
+
+> Comprehensive library of utilities, base classes, and Vue 3 composables for reactive web development.
+
+Extends `@dxtmisha/functional-basic` with Composition API primitives, reactive API management (`useApiRef`), state singletons (`executeUse`), browser storage synchronization, and internationalization composables.
+
+## Key Modules & Composables
+
+- [executeUseGlobal / executeUseLocal / executeUseProvide](src/functions): Singleton factories for reusable service state and decoupled API management.
+- [useApiRef / useApiManagementRef](src/composables): Reactive HTTP client composables with loading states, caching, pagination, search, and SSR hydration.
+- [useStorageRef / useSessionRef / useCookieRef](src/composables): Reactive wrappers for persistent storage with automatic cross-tab synchronization.
+- [useGeoIntlRef / useGeoUnitRef / t](src/composables): Locale-aware formatting for numbers, dates, currencies, units, and reactive translations.
+- [DesignConstructorAbstract / DesignComponents](src/classes): Class-based base architecture for building component constructors with lifecycle management.
+- [useMeta](src/composables): Reactive document title, Open Graph, and Twitter card synchronization.
+- [computedAsync / computedEternity](src/functions): Async computed property helpers for Vue 3.
+
+## Optional & AI Resources
+
+- [ai-types.md](ai-types.md): Public TypeScript declarations and signatures.
+- [ai-resources/api-reference.md](ai-resources/api-reference.md): API management and singleton factory guidelines.
+- [ai-resources/storage-state.md](ai-resources/storage-state.md): Reactive storage and cross-tab state management patterns.
+- [ai-resources/localization-seo.md](ai-resources/localization-seo.md): Internationalization and SEO meta handling.
+- [README.md](README.md): Full documentation, principles, and difference from `functional-basic`.

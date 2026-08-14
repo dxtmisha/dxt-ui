@@ -1,0 +1,18 @@
+# @dxtmisha/demo
+
+> Interactive sandbox application and playground for DXT UI components and SSR rendering.
+
+Demonstrates real-world usage of `@dxtmisha/d1`, `@dxtmisha/functional`, and `@dxtmisha/nitro-basic` in both client-side and server-side rendering modes.
+
+## Key Modules & Files
+
+- [App.vue](src/App.vue): Root Vue application component.
+- [router.ts](src/router.ts): Client and SSR application routes for component playgrounds.
+- [entry-client.ts](src/entry-client.ts): Client hydration entry point using `nitro-basic`.
+- [entry-server.ts](src/entry-server.ts): Nitro SSR server entry point.
+- [pages](src/pages): Interactive demo pages showcasing DXT UI components and layout systems.
+- [templates](src/templates): HTML document templates for SSR rendering.
+
+## Optional
+
+- [package.json](package.json): Scripts for running the dev server and building the demo.

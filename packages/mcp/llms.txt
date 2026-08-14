@@ -1,0 +1,21 @@
+# @dxtmisha/mcp
+
+> Model Context Protocol (MCP) server integration and tool provider for the DXT UI design system.
+
+Implements Model Context Protocol endpoints to expose DXT UI component documentation, constructors, design tokens, and AI prompt tools directly to AI coding assistants and IDEs.
+
+## Key Modules & Classes
+
+- [McpServer](src/classes/McpServer.ts): Main MCP server implementation handling tools, resources, and prompt definitions via `@modelcontextprotocol/sdk`.
+- [library.ts](src/library.ts): Auto-generated library export barrel (managed via `dxt-library`).
+- [classes](src/classes): MCP handler and protocol controller classes.
+- [functions](src/functions): Protocol formatting and validation helpers.
+
+## Development Rules
+
+- Do NOT manually edit `src/library.ts`. Run `npm run library` to regenerate exports.
+
+## Optional
+
+- [ai-description.md](ai-description.md): Package architecture and exposition rules.
+- [package.json](package.json): Package dependencies and scripts.

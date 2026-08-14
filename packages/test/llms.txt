@@ -1,0 +1,16 @@
+# @dxtmisha/test
+
+> Modular Vue 3 UI testing and documentation harness library.
+
+Provides dedicated test containers (`DxtTestPage`, `DxtTestBlock`), visual regression helpers, and interactive documentation widgets for testing DXT UI components.
+
+## Key Components & Modules
+
+- [DxtTestPage](src/components/DxtTestPage.vue): Root layout wrapper for component test suites.
+- [DxtTestBlock](src/components/DxtTestBlock.vue): Isolated scenario container for rendering individual component states and props.
+- [library.ts](src/library.ts): Barrel exporting all test harness components and utilities.
+
+## Optional
+
+- [README.md](README.md): Test harness usage guide and component examples.
+- [package.json](package.json): Package dependencies and scripts.

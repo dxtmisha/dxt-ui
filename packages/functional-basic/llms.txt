@@ -1,0 +1,21 @@
+# @dxtmisha/functional-basic
+
+> Foundational isomorphic utility library for modern web and SSR development — framework-agnostic, TypeScript-first.
+
+Zero-dependency core library providing robust HTTP client abstraction, caching, state storage, i18n localization, SEO metadata, DOM events, formatting, and data utilities.
+
+## Key Classes & Utilities
+
+- [Api](src/classes/Api.ts): Isomorphic HTTP client with request interceptors, response mocking, caching, and abort controller support.
+- [Cache](src/classes/Cache.ts): High-performance in-memory cache with expiration, dependency keys, and SSR hydration safety.
+- [GeoIntl](src/classes/GeoIntl.ts): Native `Intl`-based formatter for numbers, currencies, dates, relative times, and units.
+- [Geo](src/classes/Geo.ts): Country detection, phone codes, and formatting metadata.
+- [Meta](src/classes/Meta.ts): Unified SEO manager updating `<title>`, Open Graph tags, and Twitter Cards simultaneously.
+- [DataStorage / SessionStorage / Cookie](src/classes): Isomorphic storage abstractions with serialization and change subscriptions.
+- [functions](src/functions): Pure utility functions for object manipulation (`deepCopy`, `get`), arrays, strings, validation (`isFilled`, `isObject`), and DOM.
+
+## Optional & AI Resources
+
+- [ai-types.md](ai-types.md): Public TypeScript declarations and type signatures.
+- [ai-resources/api-reference.md](ai-resources/api-reference.md): HTTP client and utility usage patterns.
+- [README.md](README.md): Full documentation and code examples.

@@ -1,0 +1,19 @@
+# @dxtmisha/nitro-basic
+
+> Foundational utility library for building robust Server-Side Rendering (SSR) applications with Vue 3 and Nitro.
+
+Provides unified client and server application bootstrapping, hydration-safe router creation, cookie synchronization, and SSR header propagation for Nitro and H3.
+
+## Key Functions & Modules
+
+- [uiCreateApp](src/functions/uiCreateApp.ts): Unified factory to create Vue application instances for both CSR and SSR.
+- [uiBootstrapClient / uiCreateClientApp](src/functions): Client bootstrapping and DOM mounting helpers.
+- [uiBootstrapServer / uiCreateServerApp](src/functions): Server request handler rendering Vue SSR markup and headers.
+- [uiCreateSsrRouter](src/functions/uiCreateSsrRouter.ts): Router factory choosing between memory history (server) and web history (client).
+- [uiCookieStorage / uiServerStorage](src/classes): SSR-safe cookie and request-isolated storage wrappers.
+- [initApi / initHeaders](src/functions): Propagates request origin and auth headers to the API client during SSR requests.
+
+## Optional & AI Resources
+
+- [ai-types.md](ai-types.md): Public TypeScript declarations and options interfaces.
+- [README.md](README.md): Full SSR architecture guide and code walkthroughs.

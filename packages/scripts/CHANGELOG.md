@@ -2,12 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.11.2] - 2026-08-14
+
+### Changed
+- **AI Prompt Templates**:
+  - Streamlined global development principles in `aiCodeGlobalPrompt.en.md` and `aiCodeGlobalPrompt.ru.md` to remove redundant guidelines and improve token efficiency.
+  - Strengthened strict instruction-following directives with explicit prohibitions against unsolicited changes, arbitrary refactoring, and unauthorized file modifications.
+  - Updated TSDoc documentation language rule to default to `[wikiLanguage]` unless the project defines its own documentation standard.
+  - Clarified source code reading requirements: strictly forbidding superficial scans when modifying existing files while encouraging keyword search before scanning large `ai-types.md` references.
+- **Library AI Prompt Generator**:
+  - Removed duplicate `## Core Rules & Directives` preamble block in `LibraryAiPrompt` to keep generated `ai-prompt.md` clean and consistent.
+
 ## [0.11.1] - 2026-08-14
 
 ### Changed
 - **AI Prompt Templates**:
   - Refined AI initialization step in `aiCodeGlobalPrompt.en.md` and `aiCodeGlobalPrompt.ru.md` to load `ai-types.md` and `ai-developer.md` conditionally only when relevant to the task.
-  - Added directive to search `ai-prompt.md` and `ai-types.md` for existing utilities and keywords before writing custom code logic.
+  - Added comprehensive definitions of `ai-types.md` (what the file is, its contents including TypeScript signatures and `@keywords` search tags, and how to work with it).
+  - Added directive to use fast text/grep search on `ai-types.md` before scanning the entire file line-by-line to preserve context tokens.
 
 ## [0.11.0] - 2026-08-13
 

@@ -1,0 +1,19 @@
+# @dxtmisha/zip
+
+> High-performance utility library for creating and managing ZIP archives in browser and Node.js environments.
+
+Built on top of `fflate`, `@dxtmisha/zip` provides a simple object-oriented API for compressing files, managing in-memory archives, and triggering native browser downloads.
+
+## Key Classes & Methods
+
+- [Zip](src/classes/Zip.ts): Main class managing archive lifecycle.
+  - `addFile(name, data, options)`: Add text string, Uint8Array, or Blob to the archive.
+  - `removeFile(name)`: Remove a file from the archive.
+  - `is()`: Check if the archive contains any files.
+  - `get()`: Generate and return the compressed `Uint8Array` buffer.
+  - `save(name?)`: Trigger native browser file download via Blob and temporary object URL.
+
+## Optional & AI Resources
+
+- [ai-description.md](ai-description.md): Package architecture and capabilities.
+- [README.md](README.md): Quick start guide and browser/Node usage examples.

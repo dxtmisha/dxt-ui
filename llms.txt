@@ -1,0 +1,48 @@
+# DXT UI
+
+> Modular Vue 3 UI library, design system constructor, Figma tooling, and AI-automated documentation monorepo.
+
+DXT UI is an ecosystem for building enterprise-grade Vue 3 applications and design systems with strict TypeScript typing, headless constructor architecture, SCSS design tokens, and automated AI documentation workflows.
+
+## Documentation & Links
+
+- [Official Documentation](https://dxtmisha.github.io/dxt-ui/): Interactive Storybook documentation, guides, and component playgrounds.
+- [GitHub Repository](https://github.com/dxtmisha/dxt-ui): Source code, issues, and monorepo workspace structure.
+
+## Core Packages
+
+- [d1](packages/d1/llms.txt): Production-ready Vue 3 component library (100+ components, design tokens, Vite plugin).
+- [constructor](packages/constructor/llms.txt): Headless class-based component constructors, state logic engines, and ARIA accessibility controllers.
+- [styles](packages/styles/llms.txt): SCSS design system tokens, dynamic CSS variable engine (`--sys-*`), and responsive mixins.
+- [functional](packages/functional/llms.txt): Reactive Vue 3 utilities, composables, API orchestration (`useApiRef`), and state singletons (`executeUse`).
+- [functional-basic](packages/functional-basic/llms.txt): Framework-agnostic isomorphic utility library (HTTP client, storage, i18n, SEO meta, DOM helpers).
+- [ui](packages/ui/llms.txt): Meta-package bundling all core DXT UI packages into a single dependency.
+
+## Ecosystem & Tooling Packages
+
+- [configuration](packages/configuration/llms.txt): Shared Vite and TypeScript configuration presets for building UI packages.
+- [scripts](packages/scripts/llms.txt): CLI tools, component scaffolding, AI prompt processing, screenshot captures, and barrel exports.
+- [wiki](packages/wiki/llms.txt): Storybook documentation toolkit, argTypes builders (`WikiStorybook`), and MDX documentation system.
+- [media](packages/media/llms.txt): 250+ vector SVG country flags and ISO 3166-1 country dataset.
+- [nitro-basic](packages/nitro-basic/llms.txt): SSR bootstrapping utilities and state synchronization for Vue 3 and Nitro.
+- [zip](packages/zip/llms.txt): Lightweight ZIP archive creation and browser download management based on fflate.
+- [test](packages/test/llms.txt): Vue 3 UI test harnesses, test containers, and visual regression fixtures.
+- [mcp](packages/mcp/llms.txt): Model Context Protocol (MCP) server implementations and tools for design system integration.
+
+## Figma Synchronization Packages
+
+- [figma](packages/figma/llms.txt): Core bidirectional messaging middleware between Figma plugin sandbox and iframe UI.
+- [figma-code](packages/figma-code/llms.txt): TypeScript backend abstraction for Figma plugins (node traversal, persistent storage, design tokens).
+- [figma-ref](packages/figma-ref/llms.txt): Reactive Vue 3 composables for Figma plugin UI (`useFigmaStorage`, `useFigmaFrameSelection`).
+- [figma-style](packages/figma-style/llms.txt): Figma DevMode plugin for style, token, and layout extraction.
+- [figma-translate](packages/figma-translate/llms.txt): Figma plugin for automated text translation and codegen localization.
+
+## Applications & Development
+
+- [demo](packages/demo/llms.txt): Sandbox playground and SSR/CSR demonstration application.
+- [storybook](packages/storybook/llms.txt): Storybook development and build environment.
+
+## Optional
+
+- [README](README.md): Project overview and quick start guide.
+- [ai-prompt](ai-prompt.md): AI coding assistant rules, architectural guidelines, and design system constraints.

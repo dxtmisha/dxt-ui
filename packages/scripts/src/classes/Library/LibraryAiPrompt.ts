@@ -61,12 +61,6 @@ export class LibraryAiPrompt {
       `
 # System Role: AI Coding Assistant & Project Analyzer
 Consolidated documentation, architectural guidelines, and mandatory rules for the project.
-
-## Core Rules & Directives
-- **Zero Hallucinations**: Rely strictly on existing APIs and dependencies declared in package.json.
-- **Deep Context Study**: Analyze provided prompt documents and type definitions before writing code.
-- **Explicit Unknowns**: If information is missing or unclear, state it explicitly instead of guessing.
-- **Strict Compliance**: Follow all architectural conventions, design system rules, and coding standards.
       `.trim(),
       this.getGlobalPrompt(),
       this.getVuePrompt()

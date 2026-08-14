@@ -1,0 +1,17 @@
+# @dxtmisha/styles
+
+> SCSS design system tokens, dynamic CSS variable engine (`--sys-*`), and responsive mixins for DXT UI.
+
+Provides the visual source of truth for all `@dxtmisha` packages, decoupling color channels and opacity for dynamic theming, fluid typography, and flexbox orchestration.
+
+## SCSS Modules & Mixins
+
+- [src/styles/index.scss](src/styles/index.scss): Main entry point importing all SCSS mixins and utilities.
+- [src/styles/properties/index.scss](src/styles/properties/index.scss): Dynamic CSS custom properties generator engine.
+- [colors-layout.md](ai-resources/colors-layout.md): Guidelines for color mixins (`backgroundColor`, `paletteBackgroundColor`), borders, and spacing.
+- [media-typography.md](ai-resources/media-typography.md): Responsive media mixins (`mediaMinWidth`), typography styles (`font`), and BEM naming rules.
+
+## Optional & AI Resources
+
+- [ai-description.md](ai-description.md): Technical architecture and SCSS property pipeline.
+- [README.md](README.md): Installation and quick start SCSS examples.

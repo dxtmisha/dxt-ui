@@ -1,0 +1,22 @@
+# @dxtmisha/d1
+
+> Production-ready Vue 3 component library (100+ components, design tokens, SCSS mixins, and Vite plugin).
+
+`@dxtmisha/d1` is the visual implementation layer of the DXT UI design system built on top of `@dxtmisha/constructor`. All components are globally registered via `uiD1VitePlugin`.
+
+## Component Categories
+
+- [Form & Input Controls](src/components): `D1Input`, `D1Select`, `D1Checkbox`, `D1Radio`, `D1Switch`, `D1Textarea`, `D1InputPhone`, `D1InputCode`, `D1InputSocial`, `D1Field`.
+- [Actions & Buttons](src/components): `D1Button`, `D1Chip`, `D1Icon`, `D1Badge`, `D1Anchor`.
+- [Data Tables & Grids](src/components): `D1Table`, `D1TableFlex`, `D1Grid`, `D1Pagination`, `D1Cell`.
+- [Dialogs & Overlays](src/components): `D1Modal`, `D1Dialog`, `D1ActionSheet`, `D1Alert`, `D1Snackbar`, `D1Tooltip`, `D1Window`, `D1Mask`.
+- [Navigation & Menus](src/components): `D1Menu`, `D1List`, `D1Tabs`, `D1Breadcrumbs`, `D1SegmentControl`, `D1MenuButton`, `D1MenuChip`, `D1MenuCountry`, `D1MenuLanguage`.
+- [Layout & Containers](src/components): `D1Page`, `D1PageArea`, `D1Section`, `D1Block`, `D1Group`, `D1Container`, `D1Header`, `D1Scrollbar`.
+- [Feedback & Progress](src/components): `D1Progress`, `D1ProgressBar`, `D1Skeleton`, `D1MotionTransform`.
+
+## Optional & AI Resources
+
+- [ai-types.md](ai-types.md): Complete public TypeScript types and component prop definitions.
+- [ai-resources/styling-tokens.md](ai-resources/styling-tokens.md): SCSS token guidelines, palette mixins, and CSS custom properties.
+- [ai-resources/responsive-typography.md](ai-resources/responsive-typography.md): Responsive media mixins, typography styles, and BEM standards.
+- [README.md](README.md): Full component documentation, installation, and setup guide.

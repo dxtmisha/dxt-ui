@@ -17,20 +17,24 @@ Strictly follow these rules for flawless dxt-ui code:
 0. **Mandatory Deep Study (CHRONOLOGICAL GUARD)**:
    - **Step 1**: Read/create local `ai-memory.md` strictly in the current package root (e.g., `packages/constructor/`). Using repository root `ai-memory.md` for package files is FORBIDDEN.
    - **Step 2**: Read root `ai-prompt.md` and study descriptions of all mentioned libraries.
-   - **Step 3**: Read linked `ai-types.md` and `ai-developer.md` BEFORE proposing plans, inspecting directory structures, or writing code, ONLY if you think that library may be relevant/useful for the current task. BEFORE searching for logic or writing custom code, ALWAYS review this file (`ai-prompt.md`) and `ai-types.md` of relevant libraries first to search for system hints, keywords (@keywords), and existing helper utilities. If a package is in `node_modules/` but exists locally (e.g., `packages/`), resolve and study the local source instead.
-   - Fully read file contents before modifying them. Superficial scans (text search only) are strictly forbidden. Always check existing infrastructure before writing custom logic.
+   - **Step 3**: Study linked `ai-types.md` and `ai-developer.md` BEFORE proposing plans, inspecting directory structures, or writing code, ONLY if you think that library may be relevant/useful for the current task. If a package is in `node_modules/` but exists locally (e.g., `packages/`), resolve and study the local source instead.
+   - Fully read source file contents before modifying them (superficial scans without reading context are forbidden when modifying existing code). Always check existing infrastructure before writing custom logic.
 
 1. **"Copy-Paste Ready"**: Generate complete, runnable files with correct imports. No placeholders (e.g., `// rest of code`).
 2. **Zero Hallucinations**: Strictly use `package.json` dependencies. No invented APIs. Ask if unsure.
 3. **Clean Code (DRY/KISS/SOLID)**: Declarative style. Single responsibility (1 task = 1 function). No abbreviations (`el`, `val`, etc. are forbidden). Optimized and legible.
 4. **Uncompromising TS**: No `any` (use `unknown` or generics). Interfaces for all I/O. `as const`, `readonly`, enums. Use `@ts-expect-error` with comments, never `@ts-ignore`.
-5. **Professional Documentation (TSDoc)**: Document all exported entities (purpose, params, returns) in [wikiLanguage]. Include examples for complex logic.
-6. **Architectural Consistency**: Respect project structure. Reuse existing infrastructure (always check `ai-types.md` first). Do not modify global/base UI styles unless explicitly requested.
+5. **Professional Documentation (TSDoc)**: Document all exported entities (purpose, params, returns) in ru. Include examples for complex logic.
+6. **Architectural Consistency**: Respect project structure. Reuse existing infrastructure (always re-study this file before writing custom code). Do not modify global/base UI styles unless explicitly requested.
 7. **Security & Performance**: Error-proof code (`?.`, `??`, guard clauses). Use explicit `try-catch` for async. Never swallow errors. Avoid heavy ops in loops/reactivity.
 8. **Aesthetics & Conciseness**: Group logically. Save tokens by avoiding redundant comments if code is self-explanatory.
-9. **Strict Adherence & Optimization**: Follow instructions precisely without guessing. Propose relevant technical optimizations while strictly adhering to plans.
+9. **Strict Adherence & Optimization (STRICT PROHIBITION OF UNSOLICITED ACTIONS)**: Do STRICTLY and ONLY what is requested in the prompt. Making unsolicited changes, arbitrary refactoring, or modifying unrelated files without explicit instructions is STRICTLY FORBIDDEN. Follow instructions precisely without guessing, proposing technical optimizations only within the approved scope.
 10. **AI Workspace Memory (`ai-memory.md`)**: Actively APPLY its rules (highest priority). Update local `ai-memory.md` **ONLY** upon explicit developer command (e.g., "remember", "save to memory") or for critical architectural rules/fixes. **STRICTLY FORBIDDEN** to overwrite or delete existing file contents: you MUST **ONLY append** new directives to the end of the file. Do NOT add routine edits indiscriminately, change logs, or absolute paths (use relative only). Keep it focused strictly on critical architectural constraints and explicit developer instructions.
-11. **Mandatory Full-File Self-Audit**: When creating new entities, you MUST audit the ENTIRE file (not just modified parts) to ensure no logic duplication (DRY) and full compliance with project rules. *Exception: minor bug fixes to existing code do not require a full audit.*
+11. **Package Type Reference (`ai-types.md`)**:
+    - **Purpose & Content**: An AI-optimized complete technical reference of a package containing all public TypeScript declarations (classes, methods, functions, types, interfaces, enums, constants) with concise JSDoc and search tags (`@keywords`).
+    - **How to Work (Search Before Full Scan)**: Due to the large size of `ai-types.md` files (thousands of lines), do **NOT** read or scan the entire file line-by-line upfront. **First, use text search** (by keywords, `@keywords`, function/class names) to locate required helpers, types, and signatures quickly to save context tokens. Reading the entire file is only needed when performing deep architectural analysis of the whole package.
+    - **Code Reuse**: Before writing custom utility logic or types, ALWAYS check `ai-types.md` of relevant packages to discover and reuse existing infrastructure, classes, and helper functions (DRY).
+12. **Mandatory Full-File Self-Audit**: When creating new entities, you MUST audit the ENTIRE file (not just modified parts) to ensure no logic duplication (DRY) and full compliance with project rules. *Exception: minor bug fixes to existing code do not require a full audit.*
 
 ---
 
@@ -60,22 +64,14 @@ Strictly follow these rules for flawless dxt-ui code:
 The project is located at: 'node_modules/@dxtmisha/constructor'.
 
 ## Package Description & Module Overview
-This package is a comprehensive Vue UI component library and infrastructure engine that provides foundational classes, layout utilities, accessibility helpers, and customizable reactive form/navigation constructors.
+This package provides a comprehensive set of UI constructors, component state managers, and accessibility utilities designed for building robust Vue applications. Study ai-types.md whenever you need to implement, extend, or configure core user interface components, form controls, layout structures, accessibility attributes (ARIA), or behavioral classes like window management, navigation, and input validation.
 
-Triggers for Studying ai-types.md:
-- Implementing or modifying form validation, input masking, and field state controllers.
-- Managing accessible ARIA attributes, keyboard navigation, or focus direction logic.
-- Configuring component include classes, layout wrappers, modals, menus, or data tables.
-
-Key Capabilities:
-- Form Controls
-- Accessibility State
-- Keyboard Navigation
-- Data Pagination
-- Sorting Management
-- Window Management
-- Component Includes
-- Input Masking
+Form Controls
+Aria Attributes
+Data Validation
+Component State
+Layout Management
+Event Handling
 ## Mandatory Rules
 You MUST evaluate whether your task relates to any of the following topics (even if not working directly with this package). If related material is present, you are strictly obligated to read and study the corresponding file before proceeding:
 - 'node_modules/@dxtmisha/constructor/ai-resources/colors-and-palettes-ru.md': Документ содержит строгие правила верстки на SCSS и настройки UI в JSON с использованием системных токенов и миксинов. Использование данных стандартов исключает жесткие цветовые коды, обеспечивая автоматическую адаптацию компонентов под динамические темы приложения.

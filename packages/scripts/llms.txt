@@ -1,0 +1,23 @@
+# @dxtmisha/scripts
+
+> CLI tools, AI integration scripts, and automation utilities for the DXT UI ecosystem.
+
+Provides automated Vue component scaffolding, Figma layout synchronization, library packaging, documentation generation via AI (Gemini, Claude, OpenAI), visual regression screenshot capturing, and prompt builders.
+
+## CLI Commands & Binaries
+
+- [dxt-component](bin/design-component.ts): Scaffolds complete Vue component directory structure (`.vue`, `props.ts`, `styleToken.scss`, and exports).
+- [dxt-component-wiki](bin/design-component-wiki.ts): Generates Storybook and MDX wiki documentation for components.
+- [dxt-constructor](bin/design-constructor.ts): Builds and links component constructors.
+- [dxt-library](bin/design-library.ts): Automatically generates `library.ts` barrel files across packages.
+- [dxt-ui](bin/design-ui.ts): Full UI component and documentation rebuild pipeline.
+- [dxt-figma-layout](bin/design-figma.ts): Synchronizes Figma layout tokens with code.
+- [dxt-flags](bin/design-flags.ts): Rebuilds SVG flag assets and country dataset.
+- [dxt-prompt](bin/design-prompt.ts): Generates consolidated `ai-prompt.md` files for AI coding assistants.
+- [dxt-screenshot](bin/design-screenshot.ts): Puppeteer-based automated component screenshot capture across themes.
+- [dxt-types / dxt-types-save](bin/design-types.ts): Generates AI-optimized `ai-types.md` technical references.
+
+## Optional
+
+- [README.md](README.md): Command documentation and programmatic usage guide.
+- [CHANGELOG.md](CHANGELOG.md): Version history and feature updates.

@@ -1,0 +1,19 @@
+# @dxtmisha/figma-ref
+
+> Reactive Vue 3 composables for Figma plugin development.
+
+Bridges asynchronous Figma messaging and plugin state into reactive Vue `ref` and `computed` properties for responsive plugin user interfaces.
+
+## Key Composables
+
+- [useFigmaStorage](src/composables/useFigmaStorage.ts): Reactive Vue ref bound to Figma node persistent storage (`pluginData`) with automatic auto-save.
+- [useFigmaClientStorage](src/composables/useFigmaClientStorage.ts): Reactive Vue ref bound to `figma.clientStorage`.
+- [useFigmaUiSelected](src/composables/useFigmaUiSelected.ts): Reactive list of currently selected canvas elements.
+- [useFigmaFrameSelection](src/composables/useFigmaFrameSelection.ts): Composable to observe and toggle canvas frame selection states.
+- [useFigmaUiFrames](src/composables/useFigmaUiFrames.ts): Reactive collection of top-level frames for navigation or layer lists.
+- [useFigmaFrameStyles](src/composables/useFigmaFrameStyles.ts): Reactive observer for Figma frame CSS styles and visual properties.
+
+## Optional & AI Resources
+
+- [ai-types.md](ai-types.md): Public TypeScript declarations and return type contracts.
+- [README.md](README.md): Vue 3 integration guide and quick start examples.

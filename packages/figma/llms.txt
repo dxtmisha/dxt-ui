@@ -1,0 +1,19 @@
+# @dxtmisha/figma
+
+> Core communication middleware for Figma plugins, providing a structured bidirectional messaging bridge between sandbox logic and the UI layer.
+
+Abstracts `window.postMessage` and `figma.ui.postMessage` into a type-safe, verified event bus with security codes (`FigmaPostCode`) to prevent collision and ensure origin authenticity.
+
+## Key Classes & Functions
+
+- [FigmaUiMessenger](src/classes/FigmaUiMessenger.ts): UI-side messaging singleton for subscribing to backend events and posting requests.
+- [fetchTopLevelFrames](src/functions/fetchTopLevelFrames.ts): Async helper to query top-level canvas frame hierarchies from the UI.
+- [fetchFramesSelected](src/functions/fetchFramesSelected.ts): Async helper to query currently selected Figma canvas nodes.
+- [fetchStorage / fetchClientStorage](src/functions/fetchStorage.ts): Async wrappers for retrieving pluginData and clientStorage values.
+- [sendFrameStyles](src/functions/sendFrameStyles.ts): Dispatch extracted CSS style payloads to the UI layer.
+- [FigmaPostCode](src/classes/FigmaPostCode.ts): Security token verification for message authenticity.
+
+## Optional & AI Resources
+
+- [ai-types.md](ai-types.md): Public TypeScript declarations and payload contracts.
+- [README.md](README.md): Usage guide and UI messaging patterns.

@@ -1,0 +1,18 @@
+# @dxtmisha/wiki
+
+> Storybook documentation toolkit, component metadata registry, and MDX documentation system for DXT UI.
+
+Centralizes component metadata, prop categories, Storybook argTypes builders (`WikiStorybook`), React documentation components (`StorybookMain`), and bilingual MDX documentation (en/ru/vi).
+
+## Key Classes & Modules
+
+- [WikiStorybook](src/classes/WikiStorybook.ts): Builder class creating Storybook-compatible `argTypes` maps from component props and presets.
+- [WikiStorybookItem](src/classes/WikiStorybookItem.ts): Represents individual prop metadata, categories (`Status`, `Values`, `Styles`, `Adaptive`, `Technical`, `Hook`), and control configs.
+- [StorybookMain / StorybookDescriptions](src/components): Pre-built React components for rendering standard Storybook documentation layouts.
+- [media presets](src/media): Pre-configured prop control maps (`wikiStatus`, `wikiValue`, `wikiStyle`, `wikiButton`, `wikiField`, etc.).
+- [MDX documentation](src/media/functional): Structured bilingual markdown/MDX files for design system utilities and components.
+
+## Optional
+
+- [README.md](README.md): Usage guide for integrating with Storybook.
+- [package.json](package.json): Package exports and dependencies.

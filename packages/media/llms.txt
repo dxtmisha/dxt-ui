@@ -1,0 +1,16 @@
+# @dxtmisha/media
+
+> Media resources and geographical dataset library for DXT UI — 250+ vector SVG country flags and ISO 3166-1 country metadata.
+
+Framework-agnostic, tree-shakeable, zero-dependency library providing vector country flags and structured country information (phone codes, phone masks, timezones, primary languages, and first day of the week).
+
+## Key Exports & Modules
+
+- [geo](src/media/geo.ts): Comprehensive geographical dataset containing ISO 3166-1 country metadata.
+- [flags](src/flags.ts): 250+ SVG country flag exports in PascalCase (`UsSvg`, `FrSvg`, `DeSvg`, `VnSvg`, `RuSvg`, etc.).
+- [library.ts](src/library.ts): Main library barrel exporting datasets and helpers.
+
+## Optional
+
+- [README.md](README.md): Quick start guide and usage patterns.
+- [package.json](package.json): Package exports mapping (`@dxtmisha/media/flags`).
