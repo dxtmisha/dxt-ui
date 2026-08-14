@@ -64,7 +64,7 @@ const item = executeUseLocal(() => {
 
           zip
             .addFile(`${name}style.json`, JSON.stringify(getData(item)))
-            .addFile(`${name}preview.jpg`, item.image)
+            .addFile(`${name}preview.svg`, item.svg)
         })
       })
     }

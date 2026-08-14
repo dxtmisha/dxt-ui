@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/figma-code",
   "private": false,
-  "version": "0.1.2",
+  "version": "0.1.3",
   "type": "module",
   "description": "Structured TypeScript abstraction layer for Figma Plugin development, focused on node manipulation, state management, and messaging.",
   "keywords": [
