@@ -9,6 +9,8 @@ export type UiFigmaFramesItem = {
   id: string
   /** Image as a byte array or Base64 string / Изображение в виде байтового массива или строки Base64 */
   image?: Uint8Array<ArrayBufferLike> | string
+  /** SVG image as a byte array or Base64 string / SVG-изображение в виде байтового массива или строки Base64 */
+  svg?: Uint8Array<ArrayBufferLike> | string
 }
 
 /**

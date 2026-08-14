@@ -279,7 +279,8 @@ export class FigmaItem<T extends UiFigmaNode = UiFigmaNode> {
     return {
       name: this.getName(),
       id: this.getId(),
-      image: await this.exportJpg()
+      image: await this.exportJpg(),
+      svg: await this.exportSvg()
     }
   }
 
@@ -335,6 +336,20 @@ export class FigmaItem<T extends UiFigmaNode = UiFigmaNode> {
     }
 
     return undefined
+  }
+
+  /**
+   * Exports the node as SVG.
+   *
+   * Экспортирует узел в формате SVG.
+   * @param svgIdAttribute whether to include layer names as ID attributes in the SVG / включать ли имена слоев в качестве атрибутов ID в SVG
+   * @returns promise with SVG data as Uint8Array / промис с данными SVG в формате Uint8Array
+   */
+  async exportSvg(svgIdAttribute: boolean = true) {
+    return await this.exportItem({
+      format: 'SVG',
+      svgIdAttribute
+    })
   }
 
   /**

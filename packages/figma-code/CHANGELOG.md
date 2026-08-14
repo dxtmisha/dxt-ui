@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.3] - 2026-08-14
+
+### Added
+- **SVG Export**: Added `exportSvg` method to `FigmaItem` for exporting nodes in SVG format with element ID preservation (`svgIdAttribute: true`).
+- **Frame Info Enhancement**: Added `svg` property with exported SVG data to the return value of `FigmaItem.getInfo()`.
+
 ## [0.1.0] - 2026-05-10
 
 ### Added
