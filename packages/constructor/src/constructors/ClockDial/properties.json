@@ -1,0 +1,55 @@
+{
+  "width": {
+    "_type": "var"
+  },
+  "padding": {
+    "_type": "var"
+  },
+  "background": {
+    "_type": "var"
+  },
+  "valueWidth": {
+    "_type": "var"
+  },
+  "valueSection": {
+    "_type": "var"
+  },
+  "valueDotWidth": {
+    "_type": "var"
+  },
+  "arrowHeight": {
+    "_type": "var"
+  },
+  "arrowHourHeight": {
+    "_type": "var"
+  },
+  "arrowMinuteHeight": {
+    "_type": "var"
+  },
+  "pointHeight": {
+    "_type": "var"
+  },
+  "#list": {},
+  "#value": {},
+  "#name": {},
+  "#info": {},
+  "#arrow": {},
+  "#point": {},
+  "#dial": {},
+  "#censor": {},
+  "~disabled": {},
+  "~readonly": {},
+  "~type": {
+    "~12": {},
+    "~24": {},
+    "~minute": {},
+    "~second": {},
+    "_default": "12"
+  },
+  "~shape": {
+    "~pill": {},
+    "~round": {},
+    "~square": {},
+    "_default": "pill"
+  }
+}

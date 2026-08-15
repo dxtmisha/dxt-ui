@@ -5,6 +5,12 @@
  * @param event event object/ объект события
  * @returns Y coordinate / координата Y
  */
-export function getMouseClientY(event: MouseEvent & TouchEvent): number {
-  return event?.clientY || event?.targetTouches?.[0]?.clientY || event?.touches?.[0]?.clientY || 0
+export function getMouseClientY(event: MouseEvent | TouchEvent): number {
+  if ('clientY' in event) {
+    return event.clientY
+  }
+
+  return event?.targetTouches?.[0]?.clientY
+    || event?.touches?.[0]?.clientY
+    || 0
 }

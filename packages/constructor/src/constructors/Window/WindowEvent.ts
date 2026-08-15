@@ -197,8 +197,8 @@ export class WindowEvent {
   protected async on(event: WindowEventClickType): Promise<void> {
     this.tabIndex.updateOldElement()
     this.client.set(
-      getMouseClientX(event as MouseEvent & TouchEvent),
-      getMouseClientY(event as MouseEvent & TouchEvent)
+      getMouseClientX(event as MouseEvent | TouchEvent),
+      getMouseClientY(event as MouseEvent | TouchEvent)
     )
 
     if ('target' in event) {

@@ -102,7 +102,7 @@ export type WindowClassesList = {
  * Window event click type/
  * Тип события клика окна
  */
-export type WindowEventClickType = MouseEvent & TouchEvent | KeyboardEvent | MouseEvent | TouchEvent
+export type WindowEventClickType = KeyboardEvent | MouseEvent | TouchEvent
 
 /**
  * Window event click handler/

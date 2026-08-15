@@ -9,7 +9,7 @@ Extracts the Y coordinate (vertical position) of the pointer (mouse or touch) re
 The function processes both standard mouse events (`MouseEvent`) and touch events (`TouchEvent`), giving priority to the `clientY` property. If `clientY` is not found directly on the event, it searches within the `targetTouches` and `touches` arrays.
 
 **Parameters:**
-- `event: MouseEvent & TouchEvent` — The event object (`mousemove`, `touchmove`, `click`, etc.).
+- `event: MouseEvent | TouchEvent` — The event object (`mousemove`, `touchmove`, `click`, etc.).
 
 **Returns:**
 `number` — The Y coordinate of the cursor/touch. If not found, it returns `0`.

@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.8.8] - 2026-08-15
+
+### Changed
+- **getMouseClient / getMouseClientX / getMouseClientY**: Updated event parameter type definition from `MouseEvent & TouchEvent` to `MouseEvent | TouchEvent` and refactored coordinate resolution with explicit `'clientX' in event` and `'clientY' in event` property checks.
+- **Tests & Documentation**: Updated unit test suites and wiki documentation files across all languages (ru, en, vi) to match the updated `MouseEvent | TouchEvent` event signature.
+
 ## [1.8.7] - 2026-08-12
 
 ### Changed

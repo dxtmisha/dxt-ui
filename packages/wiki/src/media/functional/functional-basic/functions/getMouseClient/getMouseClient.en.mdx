@@ -9,7 +9,7 @@ Extracts the X and Y coordinates of the pointer (mouse or touch) relative to the
 The function handles both standard mouse events (`MouseEvent`) and touch events (`TouchEvent`), providing a unified interface (returning an `ImageCoordinator` object containing `x` and `y` properties). This is especially useful when creating drag-and-drop interfaces, sliders, and other interactive elements meant to work across different devices.
 
 **Parameters:**
-- `event: MouseEvent & TouchEvent` — The event object (`mousemove`, `touchmove`, `click`, etc.).
+- `event: MouseEvent | TouchEvent` — The event object (`mousemove`, `touchmove`, `click`, etc.).
 
 **Returns:**
 `ImageCoordinator` — An object containing `x` and `y` coordinate properties. If coordinates are not found in the event, it defaults to `{ x: 0, y: 0 }`.

@@ -9,7 +9,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 Функция обрабатывает как обычные события мыши (`MouseEvent`), так и события касания (`TouchEvent`), отдавая приоритет свойству `clientX`. Если `clientX` не найден в самом событии, производится поиск в массивах касаний `targetTouches` и `touches`.
 
 **Параметры:**
-- `event: MouseEvent & TouchEvent` — Объект события (`mousemove`, `touchmove`, `click` и т.д.).
+- `event: MouseEvent | TouchEvent` — Объект события (`mousemove`, `touchmove`, `click` и т.д.).
 
 **Возвращает:**
 `number` — X координата курсора/касания. В случае её отсутствия возвращается `0`.

@@ -9,7 +9,7 @@ Extracts the X coordinate (horizontal position) of the pointer (mouse or touch) 
 The function processes both standard mouse events (`MouseEvent`) and touch events (`TouchEvent`), giving priority to the `clientX` property. If `clientX` is not found directly on the event, it searches within the `targetTouches` and `touches` arrays.
 
 **Parameters:**
-- `event: MouseEvent & TouchEvent` — The event object (`mousemove`, `touchmove`, `click`, etc.).
+- `event: MouseEvent | TouchEvent` — The event object (`mousemove`, `touchmove`, `click`, etc.).
 
 **Returns:**
 `number` — The X coordinate of the cursor/touch. If not found, it returns `0`.

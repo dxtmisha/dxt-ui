@@ -105,7 +105,7 @@ export class DraggableWrapperEvents {
     this.item.getFocus().set(item)
 
     this.delay.start(() => {
-      const client = getMouseClient(event as MouseEvent & TouchEvent)
+      const client = getMouseClient(event)
 
       this.client.prepare(item, client)
       this.item.getActive().prepare(item, client)
@@ -151,7 +151,7 @@ export class DraggableWrapperEvents {
     ) {
       event.stopPropagation()
 
-      const client = getMouseClient(event as MouseEvent & TouchEvent)
+      const client = getMouseClient(event)
 
       this.client.move(client)
       this.position.update(client)

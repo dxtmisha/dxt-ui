@@ -1,0 +1,166 @@
+@use "@dxtmisha/styles/properties" as ui;
+
+@mixin mixinClockDial {
+  @include ui.initByCustom('_valuePadding', calc(ui.v('??valueWidth', 48px) / 2));
+
+  position: relative;
+  border-radius: 50%;
+  width: ui.v('??width', 256px);
+  height: ui.v('??width', 256px);
+  background-color: ui.v('??background', transparent);
+
+  @include ui.textSelectNone;
+
+  &__list {
+    @include ui.absolute(ui.v('??padding', 8px));
+  }
+
+  &__value {
+    position: absolute;
+    display: block;
+    top: calc(50% - #{ui.v('??_valuePadding')});
+    left: 0;
+    right: 50%;
+    transform: rotate(calc(90deg + #{ui.v('??sys-value-rotate', 0deg)}));
+    transform-origin: right center;
+    z-index: 8;
+
+    &--selected {
+      color: ui.v('d.sys.color.primary');
+    }
+
+    &--disabled {
+      opacity: ui.v('d.sys.opacity.disabled', 0.38);
+      pointer-events: none;
+    }
+  }
+
+  &--type-24 &__value:nth-child(n+13) {
+    @include ui.font('labelSmall');
+    padding-left: calc(#{ui.v('??valueWidth', 48px)} - #{ui.v('??valueSection', 8px)});
+
+    &:not(.d-clock-dial__value--selected):not(.d-clock-dial__value--disabled) {
+      opacity: ui.v('d.sys.opacity.medium', 0.6);
+    }
+  }
+
+  &__name {
+    @include ui.flexCenter;
+    @include ui.squared(ui.v('??valueWidth', 48px));
+    border-radius: 50%;
+    cursor: default;
+    position: relative;
+    transform: rotate(calc(-90deg - #{ui.v('??sys-value-rotate', 0deg)}));
+    z-index: 4;
+  }
+
+  &--type-minute &__value:not(:nth-child(5n)) &__name,
+  &--type-second &__value:not(:nth-child(5n)) &__name {
+    color: transparent;
+  }
+
+  &--type-minute &__value:not(:nth-child(5n)).d-clock-dial__value--selected &__name,
+  &--type-second &__value:not(:nth-child(5n)).d-clock-dial__value--selected &__name {
+    &::after {
+      @include ui.squared(ui.v('??valueDotWidth', 6px));
+      background-color: ui.v('d.sys.color.primary');
+      border-radius: 50%;
+      content: "";
+      margin: auto;
+      position: absolute;
+    }
+  }
+
+  &--selected &__name {
+    cursor: pointer;
+  }
+
+  &__info {
+    @include ui.absolute(ui.v('??padding', 8px));
+    pointer-events: none;
+  }
+
+  &__arrow {
+    background-color: ui.v('d.sys.color.primary');
+    border-radius: ui.v('??arrowHeight', 2px);
+    display: block;
+    height: ui.v('??arrowHeight', 2px);
+    left: ui.v('??_valuePadding');
+    right: 50%;
+    position: absolute;
+    top: calc(50% - (#{ui.v('??arrowHeight', 2px)} / 2));
+    transform: rotate(calc(90deg + #{ui.v('??sys-arrow-rotate', 0deg)}));
+    transform-origin: right center;
+    z-index: 4;
+
+    &--select {
+      &::after {
+        @include ui.squared(ui.v('??valueWidth', 48px));
+        background-color: inherit;
+        border-radius: 50%;
+        content: "";
+        left: calc(0px - #{ui.v('??_valuePadding')});
+        position: absolute;
+        top: calc(50% - #{ui.v('??_valuePadding')});
+      }
+    }
+
+    &--hour {
+      height: ui.v('??arrowHourHeight', 4px);
+      top: calc(50% - (#{ui.v('??arrowHourHeight', 4px)} / 2));
+      left: calc(#{ui.v('??_valuePadding')} * 3);
+    }
+
+    &--minute {
+      height: ui.v('??arrowMinuteHeight', 3px);
+      top: calc(50% - (#{ui.v('??arrowMinuteHeight', 3px)} / 2));
+      left: calc(#{ui.v('??_valuePadding')} * 2);
+    }
+
+    &--second {
+      background-color: ui.v('d.sys.color.secondary', ui.v('d.sys.color.primary'));
+    }
+  }
+
+  &--section &__arrow--select {
+    left: calc(#{ui.v('??_valuePadding')} + #{ui.v('??valueWidth', 48px)} - #{ui.v('??valueSection', 8px)});
+
+    &::after {
+      transform: scale(0.875);
+    }
+  }
+
+  &__point {
+    @include ui.squared(ui.v('??pointHeight', 8px));
+    background-color: ui.v('d.sys.color.primary');
+    border-radius: 50%;
+    position: absolute;
+    top: calc(50% - (#{ui.v('??pointHeight', 8px)} / 2));
+    left: calc(50% - (#{ui.v('??pointHeight', 8px)} / 2));
+    right: 0;
+    bottom: 0;
+    z-index: 6;
+    pointer-events: none;
+  }
+
+  &__dial {
+    @include ui.absolute(ui.v('??padding', 8px));
+    @include ui.flexCenter;
+    @include ui.font('bodyMedium');
+    top: 50%;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  &__censor {
+    @include ui.absolute;
+    z-index: 16;
+    cursor: pointer;
+    border-radius: 50%;
+  }
+
+  &--disabled {
+    opacity: ui.v('d.sys.opacity.disabled', 0.38);
+    pointer-events: none;
+  }
+}

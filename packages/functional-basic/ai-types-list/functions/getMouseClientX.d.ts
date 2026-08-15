@@ -1,6 +1,3 @@
-// md5:0d8f48e81f23f7af344a107df33d1c98 true
-/**
- * Returns the client X coordinate from mouse or touch events.
- * @keywords mouse client x coordinate touch clientX
- */
-export declare function getMouseClientX(event: MouseEvent & TouchEvent): number;
+// md5:aff3d5de84726fb0377d4cf35a078242 true
+/** Returns mouse X coordinate or click location. @keywords mouse client x coordinate */
+export declare function getMouseClientX(event: MouseEvent | TouchEvent): number;

@@ -9,7 +9,7 @@ Trích xuất tọa độ X (vị trí ngang) của con trỏ (chuột hoặc c�
 Hàm này xử lý cả các sự kiện chuột tiêu chuẩn (`MouseEvent`) và các sự kiện chạm (`TouchEvent`), ưu tiên thuộc tính `clientX`. Nếu `clientX` không được tìm thấy trực tiếp trên sự kiện, nó sẽ tiếp tục tìm kiếm bên trong các mảng `targetTouches` và `touches`.
 
 **Tham số:**
-- `event: MouseEvent & TouchEvent` — Đối tượng sự kiện (`mousemove`, `touchmove`, `click`, v.v.).
+- `event: MouseEvent | TouchEvent` — Đối tượng sự kiện (`mousemove`, `touchmove`, `click`, v.v.).
 
 **Trả về:**
 `number` — Tọa độ X của con trỏ/điểm chạm. Nếu không tìm thấy, nó sẽ trả về `0`.

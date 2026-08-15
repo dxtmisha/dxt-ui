@@ -9,7 +9,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 Функция обрабатывает как обычные события мыши (`MouseEvent`), так и события касания (`TouchEvent`), обеспечивая единый интерфейс (возвращает объект типа `ImageCoordinator` со свойствами `x` и `y`). Это полезно при создании drag-and-drop интерфейсов, слайдеров и других интерактивных элементов, работающих на разных устройствах.
 
 **Параметры:**
-- `event: MouseEvent & TouchEvent` — Объект события (`mousemove`, `touchmove`, `click` и т.д.).
+- `event: MouseEvent | TouchEvent` — Объект события (`mousemove`, `touchmove`, `click` и т.д.).
 
 **Возвращает:**
 `ImageCoordinator` — Объект, содержащий свойства `x` и `y` (координаты). Если координаты не найдены в событии, возвращается `{ x: 0, y: 0 }`.

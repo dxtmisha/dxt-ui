@@ -47,7 +47,7 @@ export type WindowClassesList = {
 };
 
 /** Window event click type supporting mouse, touch, and keyboard @keywords window event click type */
-export type WindowEventClickType = MouseEvent & TouchEvent | KeyboardEvent | MouseEvent | TouchEvent;
+export type WindowEventClickType = KeyboardEvent | MouseEvent | TouchEvent;
 
 /** Window click event handler returning a promise @keywords window event click handler */
 export type WindowEventClick = (event: WindowEventClickType) => Promise<void>;

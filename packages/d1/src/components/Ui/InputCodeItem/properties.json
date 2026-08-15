@@ -1,6 +1,6 @@
 {
   "main": "{d.inputCodeItem}",
-  "padding": "{sys.spacing.sm}",
+  "paddingX": "{sys.spacing.sm}",
   "background-color": "{sys.palette.surface}",
   "background-opacity": "{sys.opacity.primary.high}",
   "backdrop-filter": "{sys.blur.md}",
