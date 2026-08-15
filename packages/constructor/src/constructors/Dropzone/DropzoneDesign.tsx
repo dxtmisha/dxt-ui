@@ -27,14 +27,14 @@ export class DropzoneDesign<
   CLASSES extends DropzoneClasses,
   P extends DropzonePropsBasic
 > extends DesignConstructorAbstract<
-  HTMLLabelElement,
-  COMP,
-  DropzoneEmits,
-  EXPOSE,
-  DropzoneSlots,
-  CLASSES,
-  P
-> {
+    HTMLLabelElement,
+    COMP,
+    DropzoneEmits,
+    EXPOSE,
+    DropzoneSlots,
+    CLASSES,
+    P
+  > {
   protected readonly item: Dropzone
 
   /**

@@ -145,7 +145,7 @@ export class ClockDial {
    */
   get classes(): ConstrClassObject {
     return {
-      [`${this.className}--section`]: this.list.isSection(this.model.getValue()),
+      [`${this.className}--section`]: this.list.isSection(this.valueItem.value),
       [`${this.className}--selected`]: this.valueItem.isSelectVisible()
     }
   }

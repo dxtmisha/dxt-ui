@@ -51,7 +51,7 @@
     "build": "vue-tsc -b && vite build",
     "build-recovery": "npm run build && npm run wiki-storm",
     "preview": "vite preview",
-    "ui": "dxt-ui Dropzone",
+    "ui": "dxt-ui ClockDial",
     "wiki-storm": "dxt-wiki-storm",
     "types": "npm run ui && npm run build && npm run wiki-storm && dxt-types",
     "screenshot": "dxt-screenshot",
@@ -528,6 +528,10 @@
     "./D1Dropzone": {
       "types": "./dist/library/D1Dropzone.d.ts",
       "default": "./dist/D1Dropzone.js"
+    },
+    "./D1ClockDial": {
+      "types": "./dist/library/D1ClockDial.d.ts",
+      "default": "./dist/D1ClockDial.js"
     }
   },
   "buildOptions": {

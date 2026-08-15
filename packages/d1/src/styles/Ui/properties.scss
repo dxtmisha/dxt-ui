@@ -12532,6 +12532,11 @@
         name: 'd1-clientOnly',
         type: 'component',
       ),
+      'clockDial':(
+        index: 'clockDial',
+        name: 'd1-clockDial',
+        type: 'component',
+      ),
       'container':(
         index: 'container',
         name: 'd1-container',
@@ -13338,6 +13343,11 @@
       'clientOnly':(
         index: 'clientOnly',
         name: 'd-clientOnly',
+        type: 'component',
+      ),
+      'clockDial':(
+        index: 'clockDial',
+        name: 'd-clockDial',
         type: 'component',
       ),
       'container':(

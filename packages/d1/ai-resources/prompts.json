@@ -7,8 +7,62 @@
   },
   {
     "path": "ai-resources/styling-tokens.md",
-    "md5": "89b609dfa20ce871114b0dbb23f9debe",
-    "name": "Styling and CSS Tokens",
-    "description": "Defines SCSS token naming conventions, system token hierarchy, and CSS variable usage rules. Solves the technical task of maintaining consistent styling and dynamic theming across components without hardcoded values."
+    "md5": "850924d4f74beba579776c24dc821908",
+    "name": "Design Tokens and Styling Guide",
+    "description": "Architectural reference for design tokens, properties.json configuration, token resolution, and SCSS integration in the @dxtmisha/d1 component library. Provides exact standards for token hierarchies, semantic palettes, typography presets, and component styling rules to assist AI coding agents."
+  },
+  {
+    "path": "ai-resources/color.md",
+    "md5": "96691e8313c01cbf6b46070fe9bc2fe5",
+    "name": "SCSS Color and Palette Guide",
+    "description": "Defines SCSS standards, rules, and mixins for applying text colors, icon strokes, SVG fills, and dynamic palette theming using system tokens. Solves the technical task of maintaining consistent, theme-reactive styling without hardcoded values across UI components."
+  },
+  {
+    "path": "ai-resources/background.md",
+    "md5": "2afb98b4b6560f08d061c233b830de18",
+    "name": "SCSS Background Guidelines",
+    "description": "Rules and mixins for configuring background colors, surface opacities, gradients, and backdrop filters in SCSS using the dxtmisha library. Defines best practices for token-aligned, theme-adaptive styling and dynamic palette bindings."
+  },
+  {
+    "path": "ai-resources/size.md",
+    "md5": "e7293014fd41b4deb363d1d4c79826e0",
+    "name": "SCSS Sizing Guide",
+    "description": "This file contains standards, rules, and mixins for managing component dimensions, spacing tokens, and dynamic viewport units in SCSS. It helps AI agents generate consistent sizing, width, and height rules for UI components."
+  },
+  {
+    "path": "ai-resources/spacing.md",
+    "md5": "f101e446b8a05165a5787669446ce47e",
+    "name": "SCSS Spacing Guide",
+    "description": "This document contains standards and mixins for implementing padding, margin, and gaps in SCSS with full bidirectional RTL and LTR support. It provides an AI coding assistant with rules for using logical properties and standard 4px-based spacing tokens to build adaptable UI components."
+  },
+  {
+    "path": "ai-resources/border.md",
+    "md5": "879535f5b47cf420a5268529b9d445d9",
+    "name": "SCSS Border and Divider Guidelines",
+    "description": "This file contains SCSS coding standards, mixins, and rules for implementing borders, outlines, dividers, and dynamic palette borders using the `@dxtmisha/d1` library. It solves technical styling tasks by enforcing explicit property separation, color token handling, and opacity management for component design systems."
+  },
+  {
+    "path": "ai-resources/outline.md",
+    "md5": "31db20dd562ce7d562fb4e90ded60970",
+    "name": "SCSS Outline Guidelines",
+    "description": "This file contains SCSS styling standards and mixins for implementing accessible focus rings, outline opacity, and dynamic palette outlines. It guides AI agents on how to correctly apply non-shorthand outline properties and theme bindings for interactive UI components."
+  },
+  {
+    "path": "ai-resources/elevation.md",
+    "md5": "8c75800eeb56bfdb6321cef86dab99e3",
+    "name": "SCSS Elevation Guide",
+    "description": "Guidelines and standard system tokens for applying box shadows, backdrop-filter blur effects, and depth elevation in SCSS UI components."
+  },
+  {
+    "path": "ai-resources/rounded.md",
+    "md5": "a076b48f005bbc3504331d89d46835da",
+    "name": "SCSS Border Radius Guide",
+    "description": "Defines standards, tokens, and rules for applying corner radii, pill shapes, and adaptive height-relative border-radius scaling in SCSS for the @dxtmisha/d1 design system."
+  },
+  {
+    "path": "ai-resources/typography.md",
+    "md5": "826e4ceaa0bd65d7c5c387e2ef79b14e",
+    "name": "SCSS Typography Guide",
+    "description": "This file contains standards and mixins for SCSS typography, text sizing, and multi-line clamping using the @dxtmisha/d1 library. It solves technical tasks related to consistent font styling, bidirectional alignment, and text truncation across web interfaces."
   }
 ]

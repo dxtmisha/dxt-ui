@@ -1,0 +1,151 @@
+@use "../../../styles/Ui/properties";
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/style.scss" as ClockDial;
+
+@include ui.initDesignBasic('d1.clockDial') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include ClockDial.mixinClockDial;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+    --d1-clockDial-padding: var(--d1-sys-spacing-xs);
+    --d1-clockDial-valueWidth: var(--d1-ref-spacing-10);
+    --d1-clockDial-valueSection: var(--d1-ref-spacing-2);
+    
+    @include ui.width(#{var(--d1-ref-spacing-64)});
+    
+    @include ui.backgroundColor(#{var(--d1-sys-palette-onSurface)});
+    @include ui.backgroundOpacity(#{var(--d1-sys-opacity-overlay)});
+    
+    border-radius: 50%;
+    
+    &__value {
+      font-family: var(--d1-sys-font-family-basic), sans-serif;
+      @include ui.fontSize(#{var(--d1-sys-font-size-sm)});
+      font-weight: var(--d1-sys-font-weight-medium);
+      @include ui.lineHeight(#{var(--d1-sys-lineHeight-sm)});
+      letter-spacing: var(--d1-sys-letterSpacing-xs);
+      
+      @include ui.color(#{var(--d1-sys-palette-onSurface)});
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-high)});
+      
+      @include ui.disabled('.d1-clockDial') {
+        @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-disabled)}); @include ui.color('init');
+      }
+      
+      &--selected {
+        font-family: var(--d1-sys-font-family-basic), sans-serif;
+        @include ui.fontSize(#{var(--d1-sys-font-size-md)});
+        font-weight: var(--d1-sys-font-weight-medium);
+        @include ui.lineHeight(#{var(--d1-sys-lineHeight-md)});
+        letter-spacing: var(--d1-sys-letterSpacing-sm);
+        
+        @include ui.color(#{var(--d1-sys-palette-onPrimary)});
+        @include ui.colorOpacity(#{var(--d1-sys-opacity-primary-high)});
+      }
+    }
+    
+    &__name {
+      &::after {
+        content: ' ';
+        @include ui.width(#{var(--d1-ref-spacing-4px)});
+        
+        @include ui.backgroundColor(#{var(--d1-sys-palette-onPrimary)});
+        @include ui.backgroundOpacity(#{var(--d1-sys-opacity-primary-high)});
+        
+        border-radius: 50%;
+      }
+    }
+    
+    &__arrow {
+      @include ui.height(#{var(--d1-ref-spacing-2px)});
+      
+      @include ui.backgroundOpacity(#{var(--d1-sys-opacity-primary-high)}); @include ui.backgroundColor('init');
+      @include ui.paletteBackground(#{var(--d1-sys-palette-primary)});
+      
+      border-radius: var(--d1-sys-rounded-full);
+    }
+    
+    &__arrowHour {
+      @include ui.height(#{var(--d1-ref-spacing-8px)});
+      
+      @include ui.backgroundOpacity(#{var(--d1-sys-opacity-primary-high)}); @include ui.backgroundColor('init');
+      @include ui.paletteBackground(#{var(--d1-sys-palette-primary)});
+    }
+    
+    &__arrowMinute {
+      @include ui.height(#{var(--d1-ref-spacing-4px)});
+      
+      @include ui.backgroundOpacity(#{var(--d1-sys-opacity-primary-medium)}); @include ui.backgroundColor('init');
+      @include ui.paletteBackground(#{var(--d1-sys-palette-primary)});
+    }
+    
+    &__arrowSecond {
+      @include ui.backgroundColor(#{var(--d1-sys-palette-error)});
+      @include ui.backgroundOpacity(#{var(--d1-sys-opacity-primary-high)});
+    }
+    
+    &__arrowSelect {
+      @include ui.backgroundOpacity(#{var(--d1-sys-opacity-primary-high)}); @include ui.backgroundColor('init');
+      @include ui.paletteBackground(#{var(--d1-sys-palette-primary)});
+      
+      &::after {
+        content: ' ';
+        border-radius: 50%;
+        
+        backdrop-filter: var(--d1-sys-blur-sm);
+      }
+    }
+    
+    &__point {
+      @include ui.width(#{var(--d1-ref-spacing-12px)});
+      @include ui.height(#{var(--d1-ref-spacing-12px)});
+      
+      @include ui.backgroundOpacity(#{1}); @include ui.backgroundColor('init');
+      @include ui.paletteBackground(#{var(--d1-sys-palette-primary)});
+      
+      border-radius: 50%;
+    }
+    
+    &__dial {
+      font-family: var(--d1-sys-font-family-basic), sans-serif;
+      @include ui.fontSize(#{var(--d1-sys-font-size-sm)});
+      font-weight: var(--d1-sys-font-weight-regular);
+      @include ui.lineHeight(#{var(--d1-sys-lineHeight-sm)});
+      letter-spacing: var(--d1-sys-letterSpacing-md);
+      
+      @include ui.color(#{var(--d1-sys-palette-onSurface)});
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)});
+    }
+    
+    &--disabled {
+      @include ui.backgroundOpacity(#{calc(var(--d1-sys-opacity-overlay) * var(--d1-sys-opacity-surface-disabled))}); @include ui.backgroundColor('init');
+      
+      & .d1-clockDial__arrowSelect {
+        @include ui.backgroundColor(#{var(--d1-sys-palette-onSurface)});
+        @include ui.backgroundOpacity(#{var(--d1-sys-opacity-surface-disabled)});
+      }
+      
+      & .d1-clockDial__point {
+        @include ui.backgroundColor(#{var(--d1-sys-palette-onSurface)});
+      }
+    }
+    
+    &--type {
+      &--24 {
+        & .d1-clockDial__value {
+          &:nth-child(n+13) {
+            @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)}); @include ui.color('init');
+          }
+        }
+      }
+    }
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

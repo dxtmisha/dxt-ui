@@ -62,11 +62,25 @@ describe('ClockDialList', () => {
     expect(listManager.isSection(undefined)).toBe(false)
   })
 
+  it('marks items as disabled when not matching step constraint', () => {
+    const listManager = new ClockDialList({ type: 'minute', step: 5 }, 'd-clock-dial')
+    const items = listManager.marks.value
+
+    expect(items[0].value).toBe(1)
+    expect(items[0].disabled).toBe(true)
+    expect(items[4].value).toBe(5)
+    expect(items[4].disabled).toBe(false)
+    expect(items[9].value).toBe(10)
+    expect(items[9].disabled).toBe(false)
+    expect(items[59].value).toBe(0)
+    expect(items[59].disabled).toBe(false)
+  })
+
   it('finds clock mark items by value', () => {
     const listManager = new ClockDialList({ type: '12' }, 'd-clock-dial')
 
-    expect(listManager.find(6)?.name).toBe('06')
+    expect(listManager.find(5)?.value).toBe(5)
+    expect(listManager.find(99)).toBeUndefined()
     expect(listManager.find(undefined)).toBeUndefined()
-    expect(listManager.find(-1)).toBeUndefined()
   })
 })

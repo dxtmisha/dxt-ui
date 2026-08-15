@@ -46,7 +46,7 @@ export class ClockDialEvent {
    * @param event native mouse event / нативное событие мыши
    */
   readonly onClick = (event: MouseEvent): void => {
-    if (!this.enabled.isEnabled) {
+    if (!this.enabled.isEnabled || this.props.clock) {
       return
     }
 
@@ -72,6 +72,7 @@ export class ClockDialEvent {
   readonly onStart = (event: MouseEvent | TouchEvent): void => {
     if (
       !this.enabled.isEnabled
+      || this.props.clock
       || ('button' in event && event.button !== 0)
     ) {
       return

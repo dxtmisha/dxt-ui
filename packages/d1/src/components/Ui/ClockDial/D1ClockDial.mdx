@@ -1,0 +1,54 @@
+import {Canvas, Meta} from '@storybook/addon-docs/blocks'
+import {
+    StorybookDescriptions,
+    StorybookMain
+} from '@dxtmisha/wiki/storybook'
+
+import * as ClockDial from './D1ClockDial.stories'
+import {ClockDialWikiStorybook} from './wiki'
+
+[//]: # (:documentation-import [!] System label / Системная метка)
+[//]: # (:documentation-import [!] System label / Системная метка)
+
+<Meta of={ClockDial}/>
+<StorybookMain
+    name={ClockDialWikiStorybook.getName()}
+    description={ClockDialWikiStorybook.getDescription()}
+    story={ClockDial.ClockDial}
+/>
+
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+<StorybookDescriptions componentName={'ClockDial'} type={'clockDial'}/>
+
+<StorybookDescriptions componentName={'ClockDial'} type={'type'}/>
+<Canvas of={ClockDial.ClockDialType}/>
+
+<StorybookDescriptions componentName={'Value'} type={'v-model'}/>
+<Canvas of={ClockDial.ClockDialVModel}/>
+
+<StorybookDescriptions componentName={'ClockDial'} type={'hands'}/>
+<Canvas of={ClockDial.ClockDialClock}/>
+    
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+[//]: # (:documentation-events [!] System label / Системная метка)
+## Events
+
+<StorybookDescriptions componentName={'ClockDial'} type={'events'}/>
+    
+[//]: # (:documentation-events [!] System label / Системная метка)
+
+[//]: # (:documentation-expose [!] System label / Системная метка)
+## Expose
+
+<StorybookDescriptions componentName={'ClockDial'} type={'expose'}/>
+    
+[//]: # (:documentation-expose [!] System label / Системная метка)
+
+[//]: # (:documentation-slots [!] System label / Системная метка)
+## Slots
+
+<StorybookDescriptions componentName={'ClockDial'} type={'slots'}/>
+    
+[//]: # (:documentation-slots [!] System label / Системная метка)

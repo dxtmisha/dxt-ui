@@ -32,14 +32,14 @@ export class SliderFieldDesign<
   CLASSES extends SliderFieldClasses,
   P extends SliderFieldPropsBasic
 > extends DesignConstructorAbstract<
-  HTMLDivElement,
-  COMP,
-  SliderFieldEmits,
-  EXPOSE,
-  SliderFieldSlots,
-  CLASSES,
-  P
-> {
+    HTMLDivElement,
+    COMP,
+    SliderFieldEmits,
+    EXPOSE,
+    SliderFieldSlots,
+    CLASSES,
+    P
+  > {
   /** Instance of the SliderField logic controller / Экземпляр контроллера логики SliderField */
   protected readonly item: SliderField
 

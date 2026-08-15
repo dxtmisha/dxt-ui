@@ -1,0 +1,69 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+### `input`
+
+Вызывается в реальном времени при перемещении указателя по делениям циферблата или клике.
+
+**Параметры:**
+- `event: ClockDialEventItem` — подробный объект данных события.
+- `value: number` — текущее выбранное числовое значение.
+
+### `inputLite`
+
+Облегченная версия события ввода, передающая только числовое значение.
+
+**Параметры:**
+- `value: number` — выбранное числовое значение.
+
+### `change`
+
+Вызывается в момент завершения взаимодействия (отпускание кнопки мыши или пальца после перетаскивания, либо по клику).
+
+**Параметры:**
+- `event: ClockDialEventItem` — подробный объект данных события.
+- `value: number` — зафиксированное числовое значение.
+
+### `changeLite`
+
+Облегченная версия события изменения, передающая только зафиксированное числовое значение.
+
+**Параметры:**
+- `value: number` — зафиксированное числовое значение.
+
+### Структуры данных
+
+**`ClockDialEventItem`:**
+- `clock?: ClockDialProps['type']` — активный тип циферблата (`'12'`, `'24'`, `'minute'`, `'second'`).
+- `item?: ClockDialMarkItem` — объект выбранного деления циферблата.
+- `value?: number` — выбранное числовое значение.
+
+**`ClockDialMarkItem`:**
+- `name: string` — текстовая подпись метки (например, `'05'`, `'12'`).
+- `rotate: string` — вычисленный CSS-угол поворота (например, `'90deg'`).
+- `section: boolean` — признак внутреннего круга для 24-часового циферблата.
+- `style: ConstrStyles` — инлайн-стили с переменной угла поворота.
+- `value: number` — числовое значение деления.
+- `disabled: boolean` — флаг отключения деления (по `min`, `max`, `step` или `disabled`).
+
+<Source
+    code={`
+<script setup>
+const handleInput = (event, value) => {
+  console.log('Элемент:', event.item?.name, 'Значение:', value)
+}
+
+const handleChangeLite = (value) => {
+  console.log('Выбранное значение:', value)
+}
+</script>
+
+<template>
+  <ClockDial
+    type="12"
+    @input="handleInput"
+    @change-lite="handleChangeLite"
+  />
+</template>
+  `}
+    language="html"
+/>

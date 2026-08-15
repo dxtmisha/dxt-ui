@@ -8,7 +8,7 @@ import {
 import { ClockDial } from './ClockDial'
 
 import type { ClockDialMarkItem } from './basicTypes'
-import type { ClockDialPropsBasic } from './props'
+import type { ClockDialProps } from './props'
 import type {
   ClockDialClasses,
   ClockDialComponents,
@@ -26,7 +26,7 @@ export class ClockDialDesign<
   COMP extends ClockDialComponents,
   EXPOSE extends ClockDialExpose,
   CLASSES extends ClockDialClasses,
-  P extends ClockDialPropsBasic
+  P extends ClockDialProps
 > extends DesignConstructorAbstract<
   HTMLDivElement,
   COMP,
@@ -163,12 +163,12 @@ export class ClockDialDesign<
    */
   readonly renderList = (): VNode[] => {
     const items = this.item.list.marks.value
-    const selectedValue = this.item.model.getValue()
+    const selectedValue = this.item.valueItem.value
 
     this.item.select.reset()
 
     const children = items.map((item: ClockDialMarkItem, index: number) => {
-      const isSelected = item.value === selectedValue
+      const isSelected = item.value === selectedValue && this.item.valueItem.isSelectVisible()
       const content = this.slots?.item
         ? this.initSlot('item', undefined, { item })
         : item.name
@@ -217,7 +217,7 @@ export class ClockDialDesign<
   readonly renderInfo = (): VNode[] => {
     const children: VNode[] = []
 
-    if (this.item.valueItem.isSelectVisible()) {
+    if (this.item.valueItem.isArrowSelectVisible()) {
       children.push(
         h('span', {
           class: [
@@ -227,7 +227,7 @@ export class ClockDialDesign<
           style: this.item.arrows.styleSelect
         })
       )
-    } else {
+    } else if (this.props.clock) {
       if (this.item.valueItem.isHourVisible()) {
         children.push(
           h('span', {

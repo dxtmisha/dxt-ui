@@ -55,7 +55,7 @@ export class ClockDialValue {
    * @returns selected numeric value / выбранное числовое значение
    */
   get value(): number {
-    return this.model.getValue() ?? 0
+    return Number(this.model.getValue() ?? 0)
   }
 
   /**
@@ -89,13 +89,22 @@ export class ClockDialValue {
   }
 
   /**
+   * Whether the selection mode is active.
+   *
+   * Активен ли режим выбора значения.
+   * @returns boolean visibility / флаг видимости
+   */
+  isSelectVisible(): boolean {
+    return !this.props.clock && !isNull(this.model.getValue())
+  }
+
+  /**
    * Whether the selected pointer arrow is visible.
    *
    * Отображается ли стрелка выбранного значения.
    * @returns boolean visibility / флаг видимости
    */
-  isSelectVisible(): boolean {
-    const selectedValue = this.model.getValue()
-    return !isNull(selectedValue) && selectedValue > -1
+  isArrowSelectVisible(): boolean {
+    return this.isSelectVisible() && (this.props.type !== '12' || this.value > 0)
   }
 }

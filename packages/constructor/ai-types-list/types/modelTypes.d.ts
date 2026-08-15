@@ -1,7 +1,11 @@
-// md5:0217dca8302170deab4adac8fad40239 true
+// md5:0436427ebcf47956ead4e0afbbdb92fa true
 export type ModelEmits<Value = string> = {
     'update:value': [value: Value];
     'update:modelValue': [value: Value];
+};
+export type ModelEmitsFiles<Value = FileList | undefined> = {
+    'update:files': [value: Value];
+    'update:modelFiles': [value: Value];
 };
 export type ModelEmitsOpen<Value = boolean> = {
     'update:open': [value: Value];
@@ -15,6 +19,11 @@ export type ModelProps<Value = string> = {
     'modelValue'?: Value;
     'onUpdate:value'?: (value: Value) => void;
     'onUpdate:modelValue'?: (value: Value) => void;
+};
+export type ModelPropsFiles<Value = FileList | undefined> = {
+    'modelFiles'?: Value;
+    'onUpdate:files'?: (value: Value) => void;
+    'onUpdate:modelFiles'?: (value: Value) => void;
 };
 export type ModelPropsOpen<Value = boolean> = {
     'modelOpen'?: Value;

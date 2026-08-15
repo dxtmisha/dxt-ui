@@ -30,6 +30,7 @@ import { wikiMdxCheckbox } from './Checkbox/wikiMdxCheckbox'
 import { wikiMdxChip } from './Chip/wikiMdxChip'
 import { wikiMdxChipGroup } from './ChipGroup/wikiMdxChipGroup'
 import { wikiMdxClientOnly } from './ClientOnly/wikiMdxClientOnly'
+import { wikiMdxClockDial } from './ClockDial/wikiMdxClockDial'
 import { wikiMdxContainer } from './Container/wikiMdxContainer'
 import { wikiMdxDialog } from './Dialog/wikiMdxDialog'
 import { wikiMdxDivider } from './Divider/wikiMdxDivider'
@@ -147,6 +148,7 @@ export const wikiMdx: StorybookComponentsMdx = [
   wikiMdxChip,
   wikiMdxChipGroup,
   wikiMdxClientOnly,
+  wikiMdxClockDial,
   wikiMdxContainer,
   wikiMdxDialog,
   wikiMdxDivider,

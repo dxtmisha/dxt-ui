@@ -1,65 +1,68 @@
-// md5:3571743bb489a4bfdaee9a00503d2165 true
+// md5:fac3439e55b407b4fd458b83ae69810a true
 import { ShallowRef } from 'vue';
+/** Manages text-related properties and localized UI strings. @keywords text, localization, strings */
 export declare class TextInclude {
-    /** Get request-isolated TextIncludeInstance. @keywords getObject, instance, textIncludeInstance */
+    /** Returns a request-isolated instance of TextIncludeInstance. @keywords instance, isolated */
     static getObject(): TextIncludeInstance;
-    /** Global list of texts for all components. @keywords list, shallowRef, texts */
+    /** Global list of texts for all components. @keywords list, global, texts */
     static get list(): ShallowRef<TextList>;
-    /** Initialize global texts. @keywords initText, texts, global */
+    /** Initialize global texts. @keywords init, global, texts */
     static initText(texts: TextList): void;
     readonly texts: Record<string, () => (string | undefined)>;
-    /** Create TextInclude instance. @keywords constructor, textInclude, props */
+    /** Creates an instance of TextInclude. @keywords constructor, text */
     constructor(props: TextAllPropsInclude);
-    /** Breadcrumb navigation text. @keywords breadcrumb, text */
+    /** Breadcrumb navigation text. @keywords breadcrumb, navigation */
     get breadcrumb(): string | undefined;
-    /** Cancel text. @keywords cancel, text */
+    /** Cancel text. @keywords cancel, button */
     get cancel(): string | undefined;
-    /** Character limit exceeded text. @keywords characterLimit, limit, text */
+    /** Character limit exceeded text. @keywords character, limit, error */
     get characterLimit(): string | undefined;
-    /** Remaining characters text. @keywords characterRemaining, remaining, text */
+    /** Remaining characters text. @keywords character, remaining, count */
     get characterRemaining(): string | undefined;
-    /** Close text. @keywords close, text */
+    /** Close text. @keywords close, button */
     get close(): string | undefined;
-    /** Copied to clipboard text. @keywords copiedClipboard, clipboard, text */
+    /** Copied to the clipboard text. @keywords copied, clipboard */
     get copiedClipboard(): string | undefined;
-    /** Decrement value text. @keywords decrement, decrease, text */
+    /** Text for decreasing value. @keywords decrement, decrease */
     get decrement(): string | undefined;
-    /** Entries match text. @keywords entriesMatch, match, text */
+    /** Dropzone default text. @keywords dropzone, upload */
+    get dropzone(): string | undefined;
+    /** Entries match text. @keywords entries, match */
     get entriesMatch(): string | undefined;
-    /** First page text. @keywords first, page, text */
+    /** First page text. @keywords first, page, pagination */
     get first(): string | undefined;
-    /** Hide text. @keywords hide, text */
+    /** Hide text. @keywords hide, toggle */
     get hide(): string | undefined;
-    /** Increment value text. @keywords increment, increase, text */
+    /** Text for increasing value. @keywords increment, increase */
     get increment(): string | undefined;
-    /** Range info text. @keywords info, range, text */
+    /** Info text. @keywords info, range */
     get info(): string | undefined;
-    /** Last page text. @keywords last, page, text */
+    /** Last page text. @keywords last, page, pagination */
     get last(): string | undefined;
-    /** Loading text. @keywords loading, text */
+    /** Loading text. @keywords loading, spinner */
     get loading(): string | undefined;
-    /** More text. @keywords more, text */
+    /** More text. @keywords more, show */
     get more(): string | undefined;
-    /** More previous text. @keywords morePrev, previous, text */
+    /** More previous text. @keywords more, previous */
     get morePrev(): string | undefined;
-    /** Next text. @keywords next, text */
+    /** Next text. @keywords next, pagination */
     get next(): string | undefined;
-    /** Nothing found text. @keywords notFound, empty, text */
+    /** Nothing found text. @keywords notFound, empty */
     get notFound(): string | undefined;
-    /** Notifications text. @keywords notifications, text */
+    /** Notifications text. @keywords notifications, alerts */
     get notifications(): string | undefined;
-    /** OK confirmation text. @keywords ok, confirm, text */
+    /** OK text. @keywords ok, confirm */
     get ok(): string | undefined;
-    /** Page text. @keywords page, text */
+    /** Page text. @keywords page, pagination */
     get page(): string | undefined;
-    /** Previous text. @keywords previous, text */
+    /** Previous text. @keywords previous, pagination */
     get previous(): string | undefined;
-    /** Rows per page text. @keywords rowsPerPage, pagination, text */
+    /** Rows per page text. @keywords rowsPerPage, table */
     get rowsPerPage(): string | undefined;
-    /** Show text. @keywords show, text */
+    /** Show text. @keywords show, toggle */
     get show(): string | undefined;
-    /** Symbol text. @keywords symbol, text */
+    /** Symbol text. @keywords symbol, character */
     get symbol(): string | undefined;
-    /** Get text by name. @keywords get, text, name */
+    /** Get the text by its name. @keywords get, text, name */
     get(name: keyof TextAllPropsInclude): string | undefined;
 }

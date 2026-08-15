@@ -74,6 +74,12 @@ export class ClockDialSelect {
     let closestItem: ClockDialMarkItem | undefined = undefined
 
     for (let index = 0; index < list.length; index++) {
+      const item = list[index]
+
+      if (item.disabled) {
+        continue
+      }
+
       const itemElement = this.itemElements.get(index)
 
       if (!itemElement) {
@@ -90,7 +96,7 @@ export class ClockDialSelect {
 
       if (closestDistance === undefined || distance < closestDistance) {
         closestDistance = distance
-        closestItem = list[index]
+        closestItem = item
       }
     }
 

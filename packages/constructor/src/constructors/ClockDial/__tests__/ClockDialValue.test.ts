@@ -35,7 +35,7 @@ describe('ClockDialValue', () => {
 
   it('correctly handles 0 as a valid numeric value for hands', () => {
     const model = new ModelValueInclude<number>('value', undefined, undefined, ref(0))
-    const valueManager = new ClockDialValue({ hour: 0, minute: 0, second: 0 }, model)
+    const valueManager = new ClockDialValue({ type: 'minute', hour: 0, minute: 0, second: 0 }, model)
 
     expect(valueManager.value).toBe(0)
     expect(valueManager.hour).toBe(0)
@@ -43,5 +43,39 @@ describe('ClockDialValue', () => {
     expect(valueManager.isHourVisible()).toBe(true)
     expect(valueManager.isMinuteVisible()).toBe(true)
     expect(valueManager.isSecondVisible()).toBe(true)
+  })
+
+  it('hides arrowSelect when value is 0 for type 12', () => {
+    const model = new ModelValueInclude<number>('value', undefined, undefined, ref(0))
+    const valueManager = new ClockDialValue({ type: '12' }, model)
+
+    expect(valueManager.isSelectVisible()).toBe(true)
+    expect(valueManager.isArrowSelectVisible()).toBe(false)
+  })
+
+  it('shows arrowSelect when value is greater than 0 for type 12', () => {
+    const model = new ModelValueInclude<number>('value', undefined, undefined, ref(3))
+    const valueManager = new ClockDialValue({ type: '12' }, model)
+
+    expect(valueManager.isSelectVisible()).toBe(true)
+    expect(valueManager.isArrowSelectVisible()).toBe(true)
+  })
+
+  it('shows arrowSelect when value is 0 for type minute', () => {
+    const model = new ModelValueInclude<number>('value', undefined, undefined, ref(0))
+    const valueManager = new ClockDialValue({ type: 'minute' }, model)
+
+    expect(valueManager.isSelectVisible()).toBe(true)
+    expect(valueManager.isArrowSelectVisible()).toBe(true)
+  })
+
+  it('hides selection and arrow when clock prop is true', () => {
+    const model = new ModelValueInclude<number>('value', undefined, undefined, ref(5))
+    const valueManager = new ClockDialValue({ clock: true, hour: 5, minute: 30 }, model)
+
+    expect(valueManager.isSelectVisible()).toBe(false)
+    expect(valueManager.isArrowSelectVisible()).toBe(false)
+    expect(valueManager.isHourVisible()).toBe(true)
+    expect(valueManager.isMinuteVisible()).toBe(true)
   })
 })

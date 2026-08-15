@@ -9032,6 +9032,27 @@
           }
         }
       },
+      "clockDial": {
+        "name": "d1-clockDial",
+        "type": "component",
+        "value": {
+          "padding": {
+            "name": "--d1-clockDial-padding",
+            "type": "var",
+            "value": "{sys.spacing.xs}"
+          },
+          "valueWidth": {
+            "name": "--d1-clockDial-valueWidth",
+            "type": "var",
+            "value": "{ref.spacing.10}"
+          },
+          "valueSection": {
+            "name": "--d1-clockDial-valueSection",
+            "type": "var",
+            "value": "{ref.spacing.2}"
+          }
+        }
+      },
       "container": {
         "name": "d1-container",
         "type": "component",
@@ -9614,8 +9635,8 @@
         "name": "d1-inputCodeItem",
         "type": "component",
         "value": {
-          "padding": {
-            "name": "--d1-inputCodeItem-padding",
+          "paddingX": {
+            "name": "--d1-inputCodeItem-paddingX",
             "type": "var",
             "value": "{sys.spacing.sm}"
           },

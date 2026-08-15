@@ -42,7 +42,7 @@ export class ClockDialArrows {
       }
 
       return {
-        [`--${this.className}-sys-arrow-rotate`]: `${rotateDegrees}deg`
+        [`--${this.className}-sys-arrowRotate`]: `${rotateDegrees}deg`
       }
     }
 
@@ -64,7 +64,7 @@ export class ClockDialArrows {
       }
 
       return {
-        [`--${this.className}-sys-arrow-rotate`]: `${rotateDegrees}deg`
+        [`--${this.className}-sys-arrowRotate`]: `${rotateDegrees}deg`
       }
     }
 
@@ -82,7 +82,7 @@ export class ClockDialArrows {
       const rotateDegrees = (360 / 60) * this.valueItem.second
 
       return {
-        [`--${this.className}-sys-arrow-rotate`]: `${rotateDegrees}deg`
+        [`--${this.className}-sys-arrowRotate`]: `${rotateDegrees}deg`
       }
     }
 
@@ -96,11 +96,11 @@ export class ClockDialArrows {
    * @returns CSS style dictionary / словарь CSS стилей
    */
   get styleSelect(): ConstrStyles {
-    if (this.valueItem.isSelectVisible()) {
+    if (this.valueItem.isArrowSelectVisible()) {
       const rotateDegrees = this.list.rotate * this.valueItem.value
 
       return {
-        [`--${this.className}-sys-arrow-rotate`]: `${rotateDegrees}deg`
+        [`--${this.className}-sys-arrowRotate`]: `${rotateDegrees}deg`
       }
     }
 

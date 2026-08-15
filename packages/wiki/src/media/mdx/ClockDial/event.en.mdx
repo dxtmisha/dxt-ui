@@ -1,0 +1,69 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+### `input`
+
+Triggered in real time whenever pointer moves across dial divisions or on click.
+
+**Parameters:**
+- `event: ClockDialEventItem` — detailed event object.
+- `value: number` — currently selected numeric value.
+
+### `inputLite`
+
+Lightweight version of the input event carrying only the numeric value.
+
+**Parameters:**
+- `value: number` — selected numeric value.
+
+### `change`
+
+Triggered upon interaction completion (pointer release after drag, or click).
+
+**Parameters:**
+- `event: ClockDialEventItem` — detailed event object.
+- `value: number` — committed numeric value.
+
+### `changeLite`
+
+Lightweight version of the change event carrying only the committed numeric value.
+
+**Parameters:**
+- `value: number` — committed numeric value.
+
+### Data Structures
+
+**`ClockDialEventItem`:**
+- `clock?: ClockDialProps['type']` — active dial type (`'12'`, `'24'`, `'minute'`, `'second'`).
+- `item?: ClockDialMarkItem` — clock dial division item object.
+- `value?: number` — selected numeric value.
+
+**`ClockDialMarkItem`:**
+- `name: string` — display text label (e.g. `'05'`, `'12'`).
+- `rotate: string` — computed CSS rotation angle (e.g. `'90deg'`).
+- `section: boolean` — inner ring flag for 24-hour dial.
+- `style: ConstrStyles` — inline CSS styles with rotation variable.
+- `value: number` — mark numeric value.
+- `disabled: boolean` — whether mark is disabled (due to `min`, `max`, `step`, or `disabled`).
+
+<Source
+    code={`
+<script setup>
+const handleInput = (event, value) => {
+  console.log('Mark item:', event.item?.name, 'Value:', value)
+}
+
+const handleChangeLite = (value) => {
+  console.log('Committed value:', value)
+}
+</script>
+
+<template>
+  <ClockDial
+    type="12"
+    @input="handleInput"
+    @change-lite="handleChangeLite"
+  />
+</template>
+  `}
+    language="html"
+/>

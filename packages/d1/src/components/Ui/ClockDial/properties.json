@@ -1,0 +1,91 @@
+{
+  "main": "{d.clockDial}",
+  "width": "{ref.spacing.64}",
+  "padding": "{sys.spacing.xs}",
+  "valueWidth": "{ref.spacing.10}",
+  "valueSection": "{ref.spacing.2}",
+  "background-color": "{sys.palette.onSurface}",
+  "background-opacity": "{sys.opacity.overlay}",
+  "border-radius": "50%",
+  "#value": {
+    "link|font": "{font.titleSmall}",
+    "color": "{sys.palette.onSurface}",
+    "color-opacity": "{sys.opacity.surface.high}",
+    "selected": {
+      "link|font": "{font.titleMedium}",
+      "color": "{sys.palette.onPrimary}",
+      "color-opacity": "{sys.opacity.primary.high}"
+    },
+    "disabled": {
+      "color-opacity": "{sys.opacity.surface.disabled}"
+    }
+  },
+  "#name": {
+    "after": {
+      "width": "{ref.spacing.4px}",
+      "background-color": "{sys.palette.onPrimary}",
+      "background-opacity": "{sys.opacity.primary.high}",
+      "border-radius": "50%"
+    }
+  },
+  "#arrow": {
+    "height": "{ref.spacing.2px}",
+    "palette-background": "{sys.palette.primary}",
+    "background-opacity": "{sys.opacity.primary.high}",
+    "border-radius": "{sys.rounded.full}"
+  },
+  "#arrowHour": {
+    "height": "{ref.spacing.8px}",
+    "palette-background": "{sys.palette.primary}",
+    "background-opacity": "{sys.opacity.primary.high}"
+  },
+  "#arrowMinute": {
+    "height": "{ref.spacing.4px}",
+    "palette-background": "{sys.palette.primary}",
+    "background-opacity": "{sys.opacity.primary.medium}"
+  },
+  "#arrowSecond": {
+    "background-color": "{sys.palette.error}",
+    "background-opacity": "{sys.opacity.primary.high}"
+  },
+  "#arrowSelect": {
+    "palette-background": "{sys.palette.primary}",
+    "background-opacity": "{sys.opacity.primary.high}",
+    "after": {
+      "border-radius": "50%",
+      "backdrop-filter": "{sys.blur.sm}"
+    }
+  },
+  "#point": {
+    "width": "{ref.spacing.12px}",
+    "height": "{ref.spacing.12px}",
+    "palette-background": "{sys.palette.primary}",
+    "background-opacity": "1",
+    "border-radius": "50%"
+  },
+  "#dial": {
+    "link|font": "{font.bodyMedium}",
+    "color": "{sys.palette.onSurface}",
+    "color-opacity": "{sys.opacity.surface.medium}"
+  },
+  "disabled": {
+    "background-opacity": "calc({sys.opacity.overlay} * {sys.opacity.surface.disabled})",
+    "#arrowSelect": {
+      "background-color": "{sys.palette.onSurface}",
+      "background-opacity": "{sys.opacity.surface.disabled}"
+    },
+    "#point": {
+      "background-color": "{sys.palette.onSurface}"
+    }
+  },
+  "~type": {
+    "24": {
+      "#value": {
+        "&:nth-child(n+13)": {
+          "color-opacity": "{sys.opacity.surface.medium}"
+        }
+      }
+    }
+  },
+  "@@palette": "{palette}"
+}

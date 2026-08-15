@@ -29,6 +29,9 @@ export type ClockDialPropsBasic = ModelProps<number>
     minute?: number
     /** Current second value / Текущее значение секунд */
     second?: number
+
+    /** Clock display mode (selection disabled) / Режим отображения часов (без выбора) */
+    clock?: boolean
   }
 
 /**

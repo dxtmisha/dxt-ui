@@ -1,0 +1,10 @@
+- `getValue(): number | undefined` — Возвращает текущее выбранное числовое значение.
+- `setValue(value?: number): void` — Программно устанавливает новое числовое значение.
+- `selectByCoordinates(clientX: number, clientY: number): ClockDialMarkItem | null` — Находит и выбирает ближайшее активное деление циферблата по переданным экранным координатам курсора или касания (с учетом `step` и границ `min`/`max`).
+
+> **ClockDialMarkItem:**
+> - `name: string` — отображаемая текстовая подпись деления
+> - `value: number` — числовое значение деления
+> - `rotate: string` — вычисленный угол поворота
+> - `section: boolean` — принадлежит ли метка внутреннему кругу (для 24-часового режима)
+> - `disabled: boolean` — статус отключения деления

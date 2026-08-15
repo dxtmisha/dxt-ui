@@ -1,0 +1,42 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+## Dial types (`type`)
+
+The `type` property defines the scale format, number of divisions, and rotation step of the clock dial:
+
+- `12` *(default)* — classic 12-hour dial with divisions from 1 to 12 and a 30° rotation step. When value is zero, the selection arrow is hidden.
+- `24` — dual-tier 24-hour dial. The outer ring contains daytime hours (1–12), while the inner ring contains night hours (13–24 and 0) with reduced contrast. Selecting an inner mark activates the `--section` modifier on the root element.
+- `minute` — 60-minute dial with a 6° rotation step. Number labels are rendered every 5 minutes (00, 05, 10...), while intermediate ticks display a dot indicator when selected.
+- `second` — 60-second dial with a 6° rotation step. Number labels are rendered every 5 seconds, with intermediate marks rendered as dot indicators.
+
+### Range limits and step constraints (`min`, `max`, `step`)
+
+You can configure boundaries and discrete increments for valid values:
+
+- `min` — minimum allowed value. Divisions below `min` are disabled.
+- `max` — maximum allowed value. Divisions above `max` are disabled.
+- `step` — discrete interval increment. Values not aligned with `step` relative to `min` are disabled. Hand movement snaps directly to the nearest active division.
+
+<Source
+    code={`
+<script setup>
+import { ref } from 'vue'
+
+const hour = ref(10)
+const hour24 = ref(16)
+const minute = ref(30)
+</script>
+
+<template>
+  <!-- 12-hour format -->
+  <ClockDial v-model="hour" type="12" />
+
+  <!-- 24-hour format with working hour constraints -->
+  <ClockDial v-model="hour24" type="24" :min="9" :max="18" />
+
+  <!-- Minute format with 5-minute intervals -->
+  <ClockDial v-model="minute" type="minute" :step="5" />
+</template>
+  `}
+    language="html"
+/>

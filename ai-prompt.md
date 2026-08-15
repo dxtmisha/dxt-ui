@@ -1,12 +1,6 @@
 # System Role: AI Coding Assistant & Project Analyzer
 Consolidated documentation, architectural guidelines, and mandatory rules for the project.
 
-## Core Rules & Directives
-- **Zero Hallucinations**: Rely strictly on existing APIs and dependencies declared in package.json.
-- **Deep Context Study**: Analyze provided prompt documents and type definitions before writing code.
-- **Explicit Unknowns**: If information is missing or unclear, state it explicitly instead of guessing.
-- **Strict Compliance**: Follow all architectural conventions, design system rules, and coding standards.
-
 ---
 
 ## Global Code Implementation Rules
@@ -22,19 +16,15 @@ Strictly follow these rules for flawless dxt-ui code:
 
 1. **"Copy-Paste Ready"**: Generate complete, runnable files with correct imports. No placeholders (e.g., `// rest of code`).
 2. **Zero Hallucinations**: Strictly use `package.json` dependencies. No invented APIs. Ask if unsure.
-3. **Clean Code (DRY/KISS/SOLID)**: Declarative style. Single responsibility (1 task = 1 function). No abbreviations (`el`, `val`, etc. are forbidden). Optimized and legible.
-4. **Uncompromising TS**: No `any` (use `unknown` or generics). Interfaces for all I/O. `as const`, `readonly`, enums. Use `@ts-expect-error` with comments, never `@ts-ignore`.
-5. **Professional Documentation (TSDoc)**: Document all exported entities (purpose, params, returns) in ru. Include examples for complex logic.
-6. **Architectural Consistency**: Respect project structure. Reuse existing infrastructure (always re-study this file before writing custom code). Do not modify global/base UI styles unless explicitly requested.
-7. **Security & Performance**: Error-proof code (`?.`, `??`, guard clauses). Use explicit `try-catch` for async. Never swallow errors. Avoid heavy ops in loops/reactivity.
-8. **Aesthetics & Conciseness**: Group logically. Save tokens by avoiding redundant comments if code is self-explanatory.
-9. **Strict Adherence & Optimization (STRICT PROHIBITION OF UNSOLICITED ACTIONS)**: Do STRICTLY and ONLY what is requested in the prompt. Making unsolicited changes, arbitrary refactoring, or modifying unrelated files without explicit instructions is STRICTLY FORBIDDEN. Follow instructions precisely without guessing, proposing technical optimizations only within the approved scope.
-10. **AI Workspace Memory (`ai-memory.md`)**: Actively APPLY its rules (highest priority). Update local `ai-memory.md` **ONLY** upon explicit developer command (e.g., "remember", "save to memory") or for critical architectural rules/fixes. **STRICTLY FORBIDDEN** to overwrite or delete existing file contents: you MUST **ONLY append** new directives to the end of the file. Do NOT add routine edits indiscriminately, change logs, or absolute paths (use relative only). Keep it focused strictly on critical architectural constraints and explicit developer instructions.
-11. **Package Type Reference (`ai-types.md`)**:
+3. **Uncompromising TS**: No `any` (use `unknown` or generics). Interfaces for all I/O. `as const`, `readonly`, enums. Use `@ts-expect-error` with comments, never `@ts-ignore`.
+4. **Professional Documentation (TSDoc)**: Document all exported entities (purpose, params, returns). Use [wikiLanguage] by default unless the project defines its own documentation standard. Include examples for complex logic.
+5. **Architectural Consistency**: Respect project structure. Reuse existing infrastructure (always re-study this file before writing custom code). Do not modify global/base UI styles unless explicitly requested.
+6. **Strict Adherence & Optimization (STRICT PROHIBITION OF UNSOLICITED ACTIONS)**: Do STRICTLY and ONLY what is requested in the prompt. Making unsolicited changes, arbitrary refactoring, or modifying unrelated files without explicit instructions is STRICTLY FORBIDDEN. Follow instructions precisely without guessing, proposing technical optimizations only within the approved scope.
+7. **AI Workspace Memory (`ai-memory.md`)**: Actively APPLY its rules (highest priority). Update local `ai-memory.md` **ONLY** upon explicit developer command (e.g., "remember", "save to memory") or for critical architectural rules/fixes. **STRICTLY FORBIDDEN** to overwrite or delete existing file contents: you MUST **ONLY append** new directives to the end of the file. Do NOT add routine edits indiscriminately, change logs, or absolute paths (use relative only). Keep it focused strictly on critical architectural constraints and explicit developer instructions.
+8. **Package Type Reference (`ai-types.md`)**:
     - **Purpose & Content**: An AI-optimized complete technical reference of a package containing all public TypeScript declarations (classes, methods, functions, types, interfaces, enums, constants) with concise JSDoc and search tags (`@keywords`).
     - **How to Work (Search Before Full Scan)**: Due to the large size of `ai-types.md` files (thousands of lines), do **NOT** read or scan the entire file line-by-line upfront. **First, use text search** (by keywords, `@keywords`, function/class names) to locate required helpers, types, and signatures quickly to save context tokens. Reading the entire file is only needed when performing deep architectural analysis of the whole package.
     - **Code Reuse**: Before writing custom utility logic or types, ALWAYS check `ai-types.md` of relevant packages to discover and reuse existing infrastructure, classes, and helper functions (DRY).
-12. **Mandatory Full-File Self-Audit**: When creating new entities, you MUST audit the ENTIRE file (not just modified parts) to ensure no logic duplication (DRY) and full compliance with project rules. *Exception: minor bug fixes to existing code do not require a full audit.*
 
 ---
 
@@ -93,29 +83,27 @@ Auxiliary base library for UI components and typings. **DO NOT import directly i
 The project is located at: 'node_modules/@dxtmisha/d1'.
 
 ## Package Description & Module Overview
-This package provides a comprehensive collection of Vue 3 UI components and design system utilities built on top of the constructor architecture, delivering structured layout, navigation, and form controls.
-
-Study "ai-types.md" when implementing custom Vue components, configuring UI component props, mapping design tokens, or integrating design system plugins that require strict type definitions and setup component structures.
+This package provides a comprehensive collection of Vue 3 UI components and design tokens built for the D1 design system, enabling the creation of scalable and responsive user interfaces. Study "ai-types.md" when configuring component properties, handling TypeScript definitions for UI components, or working with design system integration and plugin options.
 
 Key Capabilities:
-- UI Components
 - Form Controls
-- Layout Design
-- Navigation Systems
-- Modal Windows
+- Layout Components
+- Navigation Elements
+- Modals And Overlays
 - Data Display
 ## Mandatory Rules
 You MUST evaluate whether your task relates to any of the following topics (even if not working directly with this package). If related material is present, you are strictly obligated to read and study the corresponding file before proceeding:
+- 'node_modules/@dxtmisha/d1/ai-resources/background.md': Rules and mixins for configuring background colors, surface opacities, gradients, and backdrop filters in SCSS using the dxtmisha library. Defines best practices for token-aligned, theme-adaptive styling and dynamic palette bindings.
+- 'node_modules/@dxtmisha/d1/ai-resources/border.md': This file contains SCSS coding standards, mixins, and rules for implementing borders, outlines, dividers, and dynamic palette borders using the `@dxtmisha/d1` library. It solves technical styling tasks by enforcing explicit property separation, color token handling, and opacity management for component design systems.
+- 'node_modules/@dxtmisha/d1/ai-resources/color.md': Defines SCSS standards, rules, and mixins for applying text colors, icon strokes, SVG fills, and dynamic palette theming using system tokens. Solves the technical task of maintaining consistent, theme-reactive styling without hardcoded values across UI components.
+- 'node_modules/@dxtmisha/d1/ai-resources/elevation.md': Guidelines and standard system tokens for applying box shadows, backdrop-filter blur effects, and depth elevation in SCSS UI components.
+- 'node_modules/@dxtmisha/d1/ai-resources/outline.md': This file contains SCSS styling standards and mixins for implementing accessible focus rings, outline opacity, and dynamic palette outlines. It guides AI agents on how to correctly apply non-shorthand outline properties and theme bindings for interactive UI components.
 - 'node_modules/@dxtmisha/d1/ai-resources/responsive-typography.md': Defines SCSS styling standards, including BEM class naming conventions, forbidden direct media queries in favor of library mixins, and typography class usage rules for UI components.
-- 'node_modules/@dxtmisha/d1/ai-resources/styling-tokens.md': Defines SCSS token naming conventions, system token hierarchy, and CSS variable usage rules. Solves the technical task of maintaining consistent styling and dynamic theming across components without hardcoded values.
-
-## Package Core Information
-Vue 3 layout library with pre-registered global `D1...` components. **No imports needed for D1 components and icons.**
-
-## Mandatory Rules
-Read the corresponding file if your task relates to:
-- 'node_modules/@dxtmisha/d1/ai-resources/styling-tokens.md': SCSS tokens (`sys-`), palette mixins (`ui.paletteBackgroundColor`), and color variable rules.
-- 'node_modules/@dxtmisha/d1/ai-resources/responsive-typography.md': Responsive media mixins (`ui.mediaMinWidth`), typography classes (`d1-font.scss`), and BEM class structure.
+- 'node_modules/@dxtmisha/d1/ai-resources/rounded.md': Defines standards, tokens, and rules for applying corner radii, pill shapes, and adaptive height-relative border-radius scaling in SCSS for the @dxtmisha/d1 design system.
+- 'node_modules/@dxtmisha/d1/ai-resources/size.md': This file contains standards, rules, and mixins for managing component dimensions, spacing tokens, and dynamic viewport units in SCSS. It helps AI agents generate consistent sizing, width, and height rules for UI components.
+- 'node_modules/@dxtmisha/d1/ai-resources/spacing.md': This document contains standards and mixins for implementing padding, margin, and gaps in SCSS with full bidirectional RTL and LTR support. It provides an AI coding assistant with rules for using logical properties and standard 4px-based spacing tokens to build adaptable UI components.
+- 'node_modules/@dxtmisha/d1/ai-resources/styling-tokens.md': Architectural reference for design tokens, properties.json configuration, token resolution, and SCSS integration in the @dxtmisha/d1 component library. Provides exact standards for token hierarchies, semantic palettes, typography presets, and component styling rules to assist AI coding agents.
+- 'node_modules/@dxtmisha/d1/ai-resources/typography.md': This file contains standards and mixins for SCSS typography, text sizing, and multi-line clamping using the @dxtmisha/d1 library. It solves technical tasks related to consistent font styling, bidirectional alignment, and text truncation across web interfaces.
 
 ## Package Type Definitions (Must Read in Full When Working with Package)
 'node_modules/@dxtmisha/d1/ai-types.md'
@@ -240,16 +228,21 @@ Vue 3 reactive utilities built on `@dxtmisha/functional-basic`. See `ai-types.md
 The project is located at: 'node_modules/@dxtmisha/functional-basic'.
 
 ## Package Description & Module Overview
-This package is a comprehensive utility library providing robust tools for API requests, data caching, localization, formatting, and state management. Study it to understand enterprise-grade frontend architecture, robust error handling, SSR-compatible data hydration, and advanced internationalization primitives.
+This package provides robust utility modules and classes for modern web applications, focusing on robust API interactions, internationalization (i18n), geographic and localization management, state synchronization via URLs/cookies/storage, error handling, and search matching functionality.
+
+Study "ai-types.md" when implementing or configuring type definitions, interfaces, or class signatures related to API clients, request payloads, error handling structures, formatting options, geographic/localization metadata, SEO/meta-tags, or search filtering options.
 
 API Integration
-State Management
-Caching
+Caching Layer
+Cookie Management
+Data Storage
+Geolocation Services
 Internationalization
-Localization
-URL Routing
-Event Handling
+Error Management
 Meta Tags
+Query Parameters
+Search Filtering
+Translation Management
 ## Mandatory Rules
 You MUST evaluate whether your task relates to any of the following topics (even if not working directly with this package). If related material is present, you are strictly obligated to read and study the corresponding file before proceeding:
 - 'node_modules/@dxtmisha/functional-basic/ai-resources/api-reference.md': Provides code examples and usage patterns for the @dxtmisha/functional-basic library modules including HTTP client, storage, geolocation, and DOM helpers. It helps AI agents understand how to correctly integrate and utilize utility functions for frontend and backend tasks.
@@ -303,16 +296,6 @@ Read the corresponding file if your task relates to:
 - 'node_modules/@dxtmisha/styles/ai-resources/colors-layout.md': SCSS imports, color/palette mixins, flexbox, padding, margin, and border radius
 - 'node_modules/@dxtmisha/styles/ai-resources/media-typography.md': Media and container query mixins, typography styles, BEM naming, and architectural rules
 
-## Package Core Information
-# @dxtmisha/styles Reference
-
-System-wide SCSS styling guidelines and mixin structure.
-
-## Mandatory Rules
-Read the corresponding file if your task relates to:
-- 'node_modules/@dxtmisha/styles/ai-resources/colors-layout.md': SCSS imports, color/palette mixins (`backgroundColor`, `paletteBackgroundColor`), flexbox, padding, margin, and border radius.
-- 'node_modules/@dxtmisha/styles/ai-resources/media-typography.md': Media & container query mixins (`mediaMinWidth`), typography styles (`font`), BEM naming, and architectural rules.
-
 ---
 
 # @dxtmisha/zip
@@ -357,8 +340,7 @@ Key Capabilities:
 4.  **Styles**: Use SCSS. Modifying the base library styles is strictly prohibited unless explicitly requested.
 5.  **Dependencies**: Use only the packages specified in `package.json`. Zero tolerance for hallucinations.
 6.  **Strict Adherence**: Do strictly and only what is requested in the user's prompt. Never make unsolicited changes, refactorings, cleanups, or modifications to other files unless explicitly instructed by the user.
-
-Generate code in a way that allows it to be copied and run immediately (**Copy-Paste Ready**).
+7.  **Naming**: No abbreviations in variable/function names (`el`, `val`, `temp`, etc. are forbidden). Use full, descriptive names.
 
 ---
 

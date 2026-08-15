@@ -1,7 +1,7 @@
 @use "@dxtmisha/styles/properties" as ui;
 
 @mixin mixinClockDial {
-  @include ui.initByCustom('sys.valuePadding', calc(ui.v('??valueWidth', 16px) / 2));
+  @include ui.initByCustom('sys.valuePadding', calc(ui.v('??valueWidth') / 2));
 
   position: relative;
   @include ui.aspectRatio(#{1/1});
@@ -19,149 +19,137 @@
     right: 50%;
     transform: rotate(calc(90deg + #{ui.v('??sys.valueRotate', 0deg)}));
     transform-origin: right center;
-    z-index: 8;
-
-    &--selected {
-      color: ui.v('d.sys.color.primary');
-    }
+    z-index: 16;
 
     &--disabled {
-      opacity: ui.v('d.sys.opacity.disabled', 0.38);
       pointer-events: none;
-    }
-  }
-
-  &--type-24 &__value:nth-child(n+13) {
-    @include ui.font('labelSmall');
-    padding-left: calc(#{ui.v('??valueWidth', 48px)} - #{ui.v('??valueSection', 8px)});
-
-    &:not(.d-clock-dial__value--selected):not(.d-clock-dial__value--disabled) {
-      opacity: ui.v('d.sys.opacity.medium', 0.6);
     }
   }
 
   &__name {
     @include ui.flexCenter;
-    @include ui.squared(ui.v('??valueWidth', 48px));
+    @include ui.squared(ui.v('??valueWidth'));
     border-radius: 50%;
     cursor: default;
     position: relative;
     transform: rotate(calc(-90deg - #{ui.v('??sys.valueRotate', 0deg)}));
     z-index: 4;
-  }
 
-  &--type-minute &__value:not(:nth-child(5n)) &__name,
-  &--type-second &__value:not(:nth-child(5n)) &__name {
-    color: transparent;
-  }
-
-  &--type-minute &__value:not(:nth-child(5n)).d-clock-dial__value--selected &__name,
-  &--type-second &__value:not(:nth-child(5n)).d-clock-dial__value--selected &__name {
     &::after {
-      @include ui.squared(ui.v('??valueDotWidth', 6px));
-      background-color: ui.v('d.sys.color.primary');
-      border-radius: 50%;
       content: "";
-      margin: auto;
       position: absolute;
+      margin: auto;
+      opacity: 0;
+
+      @include ui.aspectRatio(#{1/1});
     }
   }
 
-  &--selected &__name {
-    cursor: pointer;
-  }
-
   &__info {
-    @include ui.absolute(ui.v('??padding', 8px));
+    @include ui.absolute(ui.v('??padding'));
     pointer-events: none;
   }
 
   &__arrow {
-    background-color: ui.v('d.sys.color.primary');
-    border-radius: ui.v('??arrowHeight', 2px);
     display: block;
-    height: ui.v('??arrowHeight', 2px);
+    position: absolute;
+    top: calc(50% - (#{var(--sys-height)} / 2));
     left: ui.v('??sys.valuePadding');
     right: 50%;
-    position: absolute;
-    top: calc(50% - (#{ui.v('??arrowHeight', 2px)} / 2));
-    transform: rotate(calc(90deg + #{ui.v('??sys-arrow-rotate', 0deg)}));
+    transform: rotate(calc(90deg + #{ui.v('??sys.arrowRotate', 0deg)}));
     transform-origin: right center;
-    z-index: 4;
+    z-index: 12;
+  }
 
-    &Select,
-    &--select {
-      &::after {
-        @include ui.squared(ui.v('??valueWidth', 48px));
-        background-color: inherit;
-        border-radius: 50%;
-        content: "";
-        left: calc(0px - #{ui.v('??sys.valuePadding')});
-        position: absolute;
-        top: calc(50% - #{ui.v('??sys.valuePadding')});
-      }
-    }
-
-    &Hour,
-    &--hour {
-      height: ui.v('??arrowHourHeight', 4px);
-      top: calc(50% - (#{ui.v('??arrowHourHeight', 4px)} / 2));
-      left: calc(#{ui.v('??sys.valuePadding')} * 3);
-    }
-
-    &Minute,
-    &--minute {
-      height: ui.v('??arrowMinuteHeight', 3px);
-      top: calc(50% - (#{ui.v('??arrowMinuteHeight', 3px)} / 2));
-      left: calc(#{ui.v('??sys.valuePadding')} * 2);
-    }
-
-    &Second,
-    &--second {
-      background-color: ui.v('d.sys.color.secondary', ui.v('d.sys.color.primary'));
+  &__arrowSelect {
+    &::after {
+      content: "";
+      position: absolute;
+      top: calc(50% - #{ui.v('??sys.valuePadding')});
+      left: calc(0px - #{ui.v('??sys.valuePadding')});
+      @include ui.squared(ui.v('??valueWidth'));
+      background-color: inherit;
     }
   }
 
-  &--section &__arrowSelect,
-  &--section &__arrow--select {
-    left: calc(#{ui.v('??sys.valuePadding')} + #{ui.v('??valueWidth', 48px)} - #{ui.v('??valueSection', 8px)});
+  &__arrowHour {
+    left: calc(#{ui.v('??sys.valuePadding')} * 2.8);
+  }
 
-    &::after {
-      transform: scale(0.875);
-    }
+  &__arrowMinute {
+    left: calc(#{ui.v('??sys.valuePadding')} * 2);
   }
 
   &__point {
-    @include ui.squared(ui.v('??pointHeight', 8px));
-    background-color: ui.v('d.sys.color.primary');
-    border-radius: 50%;
     position: absolute;
-    top: calc(50% - (#{ui.v('??pointHeight', 8px)} / 2));
-    left: calc(50% - (#{ui.v('??pointHeight', 8px)} / 2));
+    top: calc(50% - (#{var(--sys-height)} / 2));
+    left: calc(50% - (#{var(--sys-height)} / 2));
     right: 0;
     bottom: 0;
-    z-index: 6;
+    z-index: 16;
     pointer-events: none;
   }
 
   &__dial {
-    @include ui.absolute(ui.v('??padding', 8px));
+    @include ui.absolute(ui.v('??padding'));
     @include ui.flexCenter;
-    @include ui.font('bodyMedium');
     top: 50%;
-    z-index: 2;
+    z-index: 4;
     pointer-events: none;
   }
 
   &__censor {
     @include ui.absolute;
-    z-index: 16;
+    z-index: 24;
     cursor: pointer;
-    border-radius: 50%;
+  }
+
+  &--type {
+    &--24 {
+      @include ui.subclass('value') {
+        &:nth-child(n+13) {
+          padding-left: calc(#{ui.v('??valueWidth')} - #{ui.v('??valueSection')});
+        }
+      }
+    }
+
+    &--minute,
+    &--second {
+      @include ui.subclass('value') {
+        &:not(:nth-child(5n)) {
+          @include ui.subclass('name') {
+            color: transparent;
+          }
+        }
+
+        &--selected:not(:nth-child(5n)) {
+          @include ui.subclass('name') {
+            &::after {
+              opacity: 1;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  &--selected {
+    @include ui.subclass('name') {
+      cursor: pointer;
+    }
+  }
+
+  &--section {
+    @include ui.subclass('arrowSelect') {
+      left: calc(#{ui.v('??sys.valuePadding')} + #{ui.v('??valueWidth')} - #{ui.v('??valueSection')});
+
+      &::after {
+        transform: scale(0.875);
+      }
+    }
   }
 
   &--disabled {
-    opacity: ui.v('d.sys.opacity.disabled', 0.38);
     pointer-events: none;
   }
 }

@@ -22,6 +22,7 @@ export class ClockDialList {
     const rotateStep = this.rotate
     const minimum = toNumber(this.props.min ?? 0)
     const maximum = toNumber(this.props.max ?? 60)
+    const step = toNumber(this.props.step ?? 1)
 
     for (let index = 1; index <= count; index++) {
       const isZeroValue = index === count && count !== 12
@@ -29,7 +30,11 @@ export class ClockDialList {
       const valueRotate = `${rotateStep * index}deg`
       const name = value < 10 ? `0${value}` : `${value}`
       const section = count === 24 && (value > 12 || value === 0)
-      const disabled = Boolean(this.props.disabled) || value < minimum || value > maximum
+      const isStepValid = step <= 1 || ((value - minimum) % step === 0)
+      const disabled = Boolean(this.props.disabled)
+        || value < minimum
+        || value > maximum
+        || !isStepValid
 
       items.push({
         name,

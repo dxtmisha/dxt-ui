@@ -30,14 +30,14 @@ export class SliderDesign<
   CLASSES extends SliderClasses,
   P extends SliderPropsBasic
 > extends DesignConstructorAbstract<
-  HTMLDivElement,
-  COMP,
-  SliderEmits,
-  EXPOSE,
-  SliderSlots,
-  CLASSES,
-  P
-> {
+    HTMLDivElement,
+    COMP,
+    SliderEmits,
+    EXPOSE,
+    SliderSlots,
+    CLASSES,
+    P
+  > {
   /** Instance of the Slider logic controller / Экземпляр контроллера логики Slider */
   protected readonly item: Slider
 

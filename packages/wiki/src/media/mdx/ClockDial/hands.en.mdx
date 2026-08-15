@@ -1,0 +1,28 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+## Analog clock hands mode (`clock`)
+
+When the `clock` boolean property is enabled, the component switches to clock display mode without interactive selection. In this mode, individual time hands are rendered:
+
+- `clock: boolean` — activates analog clock display mode with hands.
+- `hour: number` — hour hand position (`arrowHour`) with continuous advancement based on minutes and seconds.
+- `minute: number` — minute hand position (`arrowMinute`) with advancement based on seconds.
+- `second: number` — second hand position (`arrowSecond`).
+
+A center axis pin point (`point`) connects the hands at the center of the dial face.
+
+<Source
+    code={`
+<template>
+  <!-- Display analog time 10:15:30 -->
+  <ClockDial
+    clock
+    type="12"
+    :hour="10"
+    :minute="15"
+    :second="30"
+  />
+</template>
+  `}
+    language="html"
+/>

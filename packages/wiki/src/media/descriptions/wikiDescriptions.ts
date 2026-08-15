@@ -24,6 +24,7 @@ import { wikiDescriptionsCheckbox } from './wikiDescriptionsCheckbox'
 import { wikiDescriptionsChip } from './wikiDescriptionsChip'
 import { wikiDescriptionsChipGroup } from './wikiDescriptionsChipGroup'
 import { wikiDescriptionsClientOnly } from './wikiDescriptionsClientOnly'
+import { wikiDescriptionsClockDial } from './wikiDescriptionsClockDial'
 import { wikiDescriptionsContainer } from './wikiDescriptionsContainer'
 import { wikiDescriptionsDialog } from './wikiDescriptionsDialog'
 import { wikiDescriptionsDivider } from './wikiDescriptionsDivider'
@@ -135,6 +136,7 @@ export const wikiDescriptions: StorybookComponentsDescription = [
   wikiDescriptionsChip,
   wikiDescriptionsChipGroup,
   wikiDescriptionsClientOnly,
+  wikiDescriptionsClockDial,
   wikiDescriptionsContainer,
   wikiDescriptionsDialog,
   wikiDescriptionsDivider,

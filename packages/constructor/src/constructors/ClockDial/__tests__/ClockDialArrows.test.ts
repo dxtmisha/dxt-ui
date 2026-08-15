@@ -16,7 +16,7 @@ describe('ClockDialArrows', () => {
     const arrows = new ClockDialArrows(props, 'd-clock-dial', list, valueItem)
 
     expect(arrows.styleSelect).toEqual({
-      '--d-clock-dial-sys-arrow-rotate': '180deg'
+      '--d-clock-dial-sys-arrowRotate': '180deg'
     })
   })
 
@@ -39,7 +39,7 @@ describe('ClockDialArrows', () => {
 
     const expectedHourDeg = (360 / 12) * 3 + (360 / 12 / 60) * 30 + (360 / 12 / 3600) * 30
     expect(arrows.styleHour).toEqual({
-      '--d-clock-dial-sys-arrow-rotate': `${expectedHourDeg}deg`
+      '--d-clock-dial-sys-arrowRotate': `${expectedHourDeg}deg`
     })
   })
 
@@ -52,7 +52,7 @@ describe('ClockDialArrows', () => {
 
     const expectedMinuteDeg = (360 / 60) * 15 + (360 / 3600) * 30
     expect(arrows.styleMinute).toEqual({
-      '--d-clock-dial-sys-arrow-rotate': `${expectedMinuteDeg}deg`
+      '--d-clock-dial-sys-arrowRotate': `${expectedMinuteDeg}deg`
     })
   })
 
@@ -64,7 +64,7 @@ describe('ClockDialArrows', () => {
     const arrows = new ClockDialArrows(props, 'd-clock-dial', list, valueItem)
 
     expect(arrows.styleSecond).toEqual({
-      '--d-clock-dial-sys-arrow-rotate': '270deg'
+      '--d-clock-dial-sys-arrowRotate': '270deg'
     })
   })
 

@@ -1,16 +1,25 @@
-// md5:1787f2bb9d23cf9d320e54e8f91f674e true
+// md5:83676cfa9d1599457b9038e1c5a32f9a true
 import { ConstrClass } from '@dxtmisha/functional';
-export type DropzoneComponents = {};
-export type DropzoneEmits = {
+
+export type DropzoneComponents = IconComponentInclude;
+
+export type DropzoneEmits = ModelEmitsFiles & {
+    /** Triggered when files are dropped or selected @keywords dropzone, files, events */
     drop: [event: DropzoneEventParameters];
 };
+
 export interface DropzoneExpose {
-    /** Opens file picker dialog @keywords dropzone, open, dialog */
+    /** Open file picker dialog @keywords dropzone, open, dialog */
     open: () => void;
+    /** Clear selected files @keywords dropzone, clear, files */
+    clear: () => void;
 }
-export interface DropzoneSlots {
+
+export interface DropzoneSlots extends LabelSlots, DescriptionSlots {
+    /** Default slot @keywords dropzone, slot, default */
     default?: (props: any) => any;
 }
+
 export type DropzoneClasses = {
     main: ConstrClass;
     input: string;

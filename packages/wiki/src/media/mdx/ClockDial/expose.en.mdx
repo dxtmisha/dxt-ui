@@ -1,0 +1,10 @@
+- `getValue(): number | undefined` — Returns the current selected numeric value.
+- `setValue(value?: number): void` — Programmatically sets a new numeric value.
+- `selectByCoordinates(clientX: number, clientY: number): ClockDialMarkItem | null` — Finds and selects the closest enabled clock dial mark item by client screen coordinates (respecting `step` and `min`/`max` limits).
+
+> **ClockDialMarkItem:**
+> - `name: string` — mark text label
+> - `value: number` — mark numeric value
+> - `rotate: string` — computed rotation angle
+> - `section: boolean` — whether mark belongs to the inner ring (for 24-hour mode)
+> - `disabled: boolean` — disabled status

@@ -1,0 +1,44 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+Component for selecting and displaying time values on an interactive circular clock dial.
+
+`ClockDial` provides a circular interface for choosing hours, minutes, and seconds. It supports standard 12-hour and 24-hour dual-ring hour selection, 60-division minute and second dials, continuous pointer tracking, an analog clock display mode (`clock`), hand rotation calculations, coordinate-based touch/click selection, stepping constraints (`step`), and customizable mark slots.
+
+**Key features:**
+
+- **Multiple dial modes (`type`)**: `12` (12-hour dial), `24` (24-hour dual-tier dial), `minute` (60-minute dial), and `second` (60-second dial).
+- **Analog clock mode (`clock`)**: Displays hour (`hour`), minute (`minute`), and second (`second`) hands while disabling interactive selection.
+- **Value and step constraints**: Minimum (`min`), maximum (`max`), and step (`step`) intervals.
+- **Interactive selection**: Real-time dragging, touch gestures, and direct coordinate resolution (`selectByCoordinates`).
+- **States**: Disabled (`disabled`) and read-only (`readonly`) modes.
+- **Custom slots**: Custom rendering for division tick items (`item`) and central dial overlay (`default`).
+
+**Common use cases:**
+
+- Time pickers and alarm schedulers.
+- Analog clock visualizations.
+- Timer and countdown dials.
+- Appointment and business hour selection.
+
+<Source
+    code={`
+<script setup>
+import { ref } from 'vue'
+
+const selectedHour = ref(10)
+const selectedMinute = ref(30)
+</script>
+
+<template>
+  <!-- 12-hour dial picker -->
+  <ClockDial v-model="selectedHour" type="12" />
+
+  <!-- Minute dial picker with 5-minute stepping -->
+  <ClockDial v-model="selectedMinute" type="minute" :step="5" />
+
+  <!-- Clock mode with hands -->
+  <ClockDial clock type="12" :hour="10" :minute="30" :second="45" />
+</template>
+  `}
+    language="html"
+/>

@@ -1,8 +1,8 @@
-// md5:98d948f9799c55cc57694d0e762f89f4 true
+// md5:cc64d8ec2d9badd35c89a9a9bcf3d098 true
 import { Ref } from 'vue';
 import { ConstrBind } from '@dxtmisha/functional';
 
-/** Window lifecycle states @keywords window status item lifecycle state */
+/** Window status lifecycle states @keywords window status display preparation flash open hide close */
 export declare enum WindowStatusItem {
     display = "display",
     preparation = "preparation",
@@ -12,7 +12,7 @@ export declare enum WindowStatusItem {
     close = "close"
 }
 
-/** Window control options and behavior items @keywords window control status item behavior */
+/** Window status control configuration items @keywords window control block persistent static */
 export declare enum WindowStatusControlItem {
     block = "block",
     blockChildren = "blockChildren",
@@ -46,10 +46,8 @@ export type WindowClassesList = {
     persistent: string;
 };
 
-/** Window event click type supporting mouse, touch, and keyboard @keywords window event click type */
 export type WindowEventClickType = KeyboardEvent | MouseEvent | TouchEvent;
 
-/** Window click event handler returning a promise @keywords window event click handler */
 export type WindowEventClick = (event: WindowEventClickType) => Promise<void>;
 
 export type WindowControlBasic = {
@@ -78,9 +76,8 @@ export type WindowEmitsInclude = {
     window: [options: WindowEmitOptions];
 };
 
-/** Window expose inclusion interface with element accessor @keywords window expose include interface */
 export interface WindowExposeInclude extends WindowExpose {
-    /** Returns reference to the window element @keywords get window element expose */
+    /** Returns reference to the window element @keywords window element expose constrbind */
     getWindowElement(): ConstrBind<WindowExpose> | undefined;
 }
 
@@ -90,5 +87,5 @@ export type WindowPropsInclude<Window extends WindowPropsBasic = WindowPropsBasi
     windowAttrs?: ConstrBind<Window>;
 };
 
-/** CSS variable name for MotionTransform body type @keywords window type body name css variable */
+/** CSS variable name for MotionTransform body type @keywords css variable type body */
 export declare const __WINDOW_TYPE_BODY_NAME = "--sys-type-body";

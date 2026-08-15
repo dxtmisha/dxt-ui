@@ -8,21 +8,6 @@
   "valueSection": {
     "_type": "var"
   },
-  "valueDotWidth": {
-    "_type": "var"
-  },
-  "arrowHeight": {
-    "_type": "var"
-  },
-  "arrowHourHeight": {
-    "_type": "var"
-  },
-  "arrowMinuteHeight": {
-    "_type": "var"
-  },
-  "pointHeight": {
-    "_type": "var"
-  },
   "#list": {},
   "#value": {},
   "#name": {},

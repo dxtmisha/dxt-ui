@@ -25,6 +25,7 @@ import D1Checkbox from '../../src/components/Ui/Checkbox/D1CheckboxAiWiki.vue'
 import D1Chip from '../../src/components/Ui/Chip/D1ChipAiWiki.vue'
 import D1ChipGroup from '../../src/components/Ui/ChipGroup/D1ChipGroupAiWiki.vue'
 import D1ClientOnly from '../../src/components/Ui/ClientOnly/D1ClientOnlyAiWiki.vue'
+import D1ClockDial from '../../src/components/Ui/ClockDial/D1ClockDialAiWiki.vue'
 import D1Container from '../../src/components/Ui/Container/D1ContainerAiWiki.vue'
 import D1Dialog from '../../src/components/Ui/Dialog/D1DialogAiWiki.vue'
 import D1Divider from '../../src/components/Ui/Divider/D1DividerAiWiki.vue'
@@ -136,6 +137,7 @@ export const aiList: any[] = [
   D1Chip,
   D1ChipGroup,
   D1ClientOnly,
+  D1ClockDial,
   D1Container,
   D1Dialog,
   D1Divider,
