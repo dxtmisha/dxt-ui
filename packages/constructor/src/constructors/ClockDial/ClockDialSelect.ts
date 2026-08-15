@@ -28,6 +28,32 @@ export class ClockDialSelect {
   ) { }
 
   /**
+   * Registers or unregisters a DOM element reference for a clock division.
+   *
+   * Регистрирует или удаляет ссылку на DOM-элемент для деления часов.
+   * @param index item index / индекс элемента
+   * @param element target DOM element / целевой DOM-элемент
+   */
+  setElement(index: number, element?: HTMLElement | null): void {
+    if (element) {
+      this.itemElements.set(index, element)
+    } else {
+      this.itemElements.delete(index)
+    }
+  }
+
+  /**
+   * Resets and clears the registered DOM elements map.
+   *
+   * Сбрасывает и очищает карту зарегистрированных DOM-элементов.
+   * @returns this instance / текущий экземпляр
+   */
+  reset(): this {
+    this.itemElements.clear()
+    return this
+  }
+
+  /**
    * Determines and selects the closest clock dial mark item from client screen coordinates.
    *
    * Определяет и выбирает ближайший элемент метки циферблата часов по экранным координатам клиента.
@@ -78,20 +104,5 @@ export class ClockDialSelect {
     }
 
     return null
-  }
-
-  /**
-   * Registers or unregisters a DOM element reference for a clock division.
-   *
-   * Регистрирует или удаляет ссылку на DOM-элемент для деления часов.
-   * @param index item index / индекс элемента
-   * @param element target DOM element / целевой DOM-элемент
-   */
-  setElement(index: number, element?: HTMLElement | null): void {
-    if (element) {
-      this.itemElements.set(index, element)
-    } else {
-      this.itemElements.delete(index)
-    }
   }
 }

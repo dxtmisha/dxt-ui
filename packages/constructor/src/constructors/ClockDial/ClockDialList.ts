@@ -36,7 +36,7 @@ export class ClockDialList {
         rotate: valueRotate,
         section,
         style: {
-          [`--${this.className}-sys-value-rotate`]: valueRotate
+          [`--${this.className}-sys-valueRotate`]: valueRotate
         },
         value,
         disabled

@@ -1,11 +1,5 @@
 {
-  "width": {
-    "_type": "var"
-  },
   "padding": {
-    "_type": "var"
-  },
-  "background": {
     "_type": "var"
   },
   "valueWidth": {
@@ -34,6 +28,10 @@
   "#name": {},
   "#info": {},
   "#arrow": {},
+  "#arrowHour": {},
+  "#arrowMinute": {},
+  "#arrowSecond": {},
+  "#arrowSelect": {},
   "#point": {},
   "#dial": {},
   "#censor": {},

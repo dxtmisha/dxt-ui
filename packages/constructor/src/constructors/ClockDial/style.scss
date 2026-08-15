@@ -1,27 +1,23 @@
 @use "@dxtmisha/styles/properties" as ui;
 
 @mixin mixinClockDial {
-  @include ui.initByCustom('_valuePadding', calc(ui.v('??valueWidth', 48px) / 2));
+  @include ui.initByCustom('sys.valuePadding', calc(ui.v('??valueWidth', 16px) / 2));
 
   position: relative;
-  border-radius: 50%;
-  width: ui.v('??width', 256px);
-  height: ui.v('??width', 256px);
-  background-color: ui.v('??background', transparent);
-
+  @include ui.aspectRatio(#{1/1});
   @include ui.textSelectNone;
 
   &__list {
-    @include ui.absolute(ui.v('??padding', 8px));
+    @include ui.absolute(ui.v('??padding'));
   }
 
   &__value {
     position: absolute;
     display: block;
-    top: calc(50% - #{ui.v('??_valuePadding')});
+    top: calc(50% - #{ui.v('??sys.valuePadding')});
     left: 0;
     right: 50%;
-    transform: rotate(calc(90deg + #{ui.v('??sys-value-rotate', 0deg)}));
+    transform: rotate(calc(90deg + #{ui.v('??sys.valueRotate', 0deg)}));
     transform-origin: right center;
     z-index: 8;
 
@@ -50,7 +46,7 @@
     border-radius: 50%;
     cursor: default;
     position: relative;
-    transform: rotate(calc(-90deg - #{ui.v('??sys-value-rotate', 0deg)}));
+    transform: rotate(calc(-90deg - #{ui.v('??sys.valueRotate', 0deg)}));
     z-index: 4;
   }
 
@@ -85,7 +81,7 @@
     border-radius: ui.v('??arrowHeight', 2px);
     display: block;
     height: ui.v('??arrowHeight', 2px);
-    left: ui.v('??_valuePadding');
+    left: ui.v('??sys.valuePadding');
     right: 50%;
     position: absolute;
     top: calc(50% - (#{ui.v('??arrowHeight', 2px)} / 2));
@@ -93,37 +89,42 @@
     transform-origin: right center;
     z-index: 4;
 
+    &Select,
     &--select {
       &::after {
         @include ui.squared(ui.v('??valueWidth', 48px));
         background-color: inherit;
         border-radius: 50%;
         content: "";
-        left: calc(0px - #{ui.v('??_valuePadding')});
+        left: calc(0px - #{ui.v('??sys.valuePadding')});
         position: absolute;
-        top: calc(50% - #{ui.v('??_valuePadding')});
+        top: calc(50% - #{ui.v('??sys.valuePadding')});
       }
     }
 
+    &Hour,
     &--hour {
       height: ui.v('??arrowHourHeight', 4px);
       top: calc(50% - (#{ui.v('??arrowHourHeight', 4px)} / 2));
-      left: calc(#{ui.v('??_valuePadding')} * 3);
+      left: calc(#{ui.v('??sys.valuePadding')} * 3);
     }
 
+    &Minute,
     &--minute {
       height: ui.v('??arrowMinuteHeight', 3px);
       top: calc(50% - (#{ui.v('??arrowMinuteHeight', 3px)} / 2));
-      left: calc(#{ui.v('??_valuePadding')} * 2);
+      left: calc(#{ui.v('??sys.valuePadding')} * 2);
     }
 
+    &Second,
     &--second {
       background-color: ui.v('d.sys.color.secondary', ui.v('d.sys.color.primary'));
     }
   }
 
+  &--section &__arrowSelect,
   &--section &__arrow--select {
-    left: calc(#{ui.v('??_valuePadding')} + #{ui.v('??valueWidth', 48px)} - #{ui.v('??valueSection', 8px)});
+    left: calc(#{ui.v('??sys.valuePadding')} + #{ui.v('??valueWidth', 48px)} - #{ui.v('??valueSection', 8px)});
 
     &::after {
       transform: scale(0.875);

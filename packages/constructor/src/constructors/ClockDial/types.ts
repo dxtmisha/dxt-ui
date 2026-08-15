@@ -69,6 +69,10 @@ export type ClockDialClasses = {
   name: string
   info: string
   arrow: string
+  arrowHour: string
+  arrowMinute: string
+  arrowSecond: string
+  arrowSelect: string
   point: string
   dial: string
   censor: string

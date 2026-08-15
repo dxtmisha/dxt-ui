@@ -104,6 +104,10 @@ export class ClockDialDesign<
         name: this.getSubClass('name'),
         info: this.getSubClass('info'),
         arrow: this.getSubClass('arrow'),
+        arrowHour: this.getSubClass('arrowHour'),
+        arrowMinute: this.getSubClass('arrowMinute'),
+        arrowSecond: this.getSubClass('arrowSecond'),
+        arrowSelect: this.getSubClass('arrowSelect'),
         point: this.getSubClass('point'),
         dial: this.getSubClass('dial'),
         censor: this.getSubClass('censor')
@@ -161,7 +165,9 @@ export class ClockDialDesign<
     const items = this.item.list.marks.value
     const selectedValue = this.item.model.getValue()
 
-    const itemVNodes = items.map((item: ClockDialMarkItem, index: number) => {
+    this.item.select.reset()
+
+    const children = items.map((item: ClockDialMarkItem, index: number) => {
       const isSelected = item.value === selectedValue
       const content = this.slots?.item
         ? this.initSlot('item', undefined, { item })
@@ -171,11 +177,11 @@ export class ClockDialDesign<
         'span',
         {
           'key': `${item.value}-${index}`,
-          'class': [
-            this.classes?.value.value,
-            isSelected && `${this.getName()}__value--selected`,
-            item.disabled && `${this.getName()}__value--disabled`
-          ],
+          'class': {
+            [`${this.classes?.value.value}`]: true,
+            [`${this.classes?.value.value}--selected`]: isSelected,
+            [`${this.classes?.value.value}--disabled`]: item.disabled
+          },
           'data-value': item.value,
           'style': item.style,
           'onClick': this.item.event.onClick
@@ -184,7 +190,7 @@ export class ClockDialDesign<
           h(
             'span',
             {
-              ref: (element: unknown) => this.item.select.setElement(index, element as HTMLElement | null),
+              ref: (element: any) => this.item.select.setElement(index, element),
               class: this.classes?.value.name
             },
             content
@@ -197,7 +203,7 @@ export class ClockDialDesign<
       h(
         'div',
         { class: this.classes?.value.list },
-        itemVNodes
+        children
       )
     ]
   }
@@ -209,25 +215,25 @@ export class ClockDialDesign<
    * @returns VNode[] array of elements / массив элементов VNode
    */
   readonly renderInfo = (): VNode[] => {
-    const arrowChildren: VNode[] = []
+    const children: VNode[] = []
 
     if (this.item.valueItem.isSelectVisible()) {
-      arrowChildren.push(
+      children.push(
         h('span', {
           class: [
             this.classes?.value.arrow,
-            `${this.getName()}__arrow--select`
+            this.classes?.value.arrowSelect
           ],
           style: this.item.arrows.styleSelect
         })
       )
     } else {
       if (this.item.valueItem.isHourVisible()) {
-        arrowChildren.push(
+        children.push(
           h('span', {
             class: [
               this.classes?.value.arrow,
-              `${this.getName()}__arrow--hour`
+              this.classes?.value.arrowHour
             ],
             style: this.item.arrows.styleHour
           })
@@ -235,11 +241,11 @@ export class ClockDialDesign<
       }
 
       if (this.item.valueItem.isMinuteVisible()) {
-        arrowChildren.push(
+        children.push(
           h('span', {
             class: [
               this.classes?.value.arrow,
-              `${this.getName()}__arrow--minute`
+              this.classes?.value.arrowMinute
             ],
             style: this.item.arrows.styleMinute
           })
@@ -247,11 +253,11 @@ export class ClockDialDesign<
       }
 
       if (this.item.valueItem.isSecondVisible()) {
-        arrowChildren.push(
+        children.push(
           h('span', {
             class: [
               this.classes?.value.arrow,
-              `${this.getName()}__arrow--second`
+              this.classes?.value.arrowSecond
             ],
             style: this.item.arrows.styleSecond
           })
@@ -263,7 +269,7 @@ export class ClockDialDesign<
       h(
         'div',
         { class: this.classes?.value.info },
-        arrowChildren
+        children
       )
     ]
   }
