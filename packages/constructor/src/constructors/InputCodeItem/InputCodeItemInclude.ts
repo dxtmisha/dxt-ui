@@ -60,7 +60,7 @@ export class InputCodeItemInclude extends ComponentIncludeAbstract<
 
     if (match) {
       return forEach(
-        text.split(''),
+        String(text ?? '').split(''),
         (char) => {
           if (char.match(match)) {
             return char
@@ -264,6 +264,7 @@ export class InputCodeItemInclude extends ComponentIncludeAbstract<
       },
 
       disabled: props.disabled,
+      hide: props.hide,
       isSkeleton: props.isSkeleton,
       name: props.name,
       match: props.match,

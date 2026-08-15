@@ -103,6 +103,11 @@ export class InputCodeItemEvent {
   readonly onInput = (event: InputEvent) => {
     const value = (event.target as HTMLInputElement).value
 
+    if (value.length > 1) {
+      this.emits?.('paste', this.getIndex(), value)
+      return
+    }
+
     this.value.set(value)
     this.emits?.('input', this.getIndex(), value)
 
@@ -133,10 +138,10 @@ export class InputCodeItemEvent {
    * @param key symbol that needs to be added / символ, который необходимо добавить
    * @returns status / статус
    */
-  protected isMatch(key: string): boolean {
+  protected isMatch(key?: string): boolean {
     return Boolean(
       this.props.match
-      && key.match(this.props.match)
+      && key?.match(this.props.match)
     )
   }
 

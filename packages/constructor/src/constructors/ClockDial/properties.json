@@ -45,11 +45,5 @@
     "~minute": {},
     "~second": {},
     "_default": "12"
-  },
-  "~shape": {
-    "~pill": {},
-    "~round": {},
-    "~square": {},
-    "_default": "pill"
   }
 }

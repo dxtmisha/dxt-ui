@@ -1,10 +1,5 @@
 import type { ConstrStyles } from '@dxtmisha/functional'
-
-/** Clock dial type variants / Варианты типа циферблата часов */
-export type ClockDialType = '12' | '24' | 'minute' | 'second'
-
-/** Clock dial shape variants / Варианты формы циферблата часов */
-export type ClockDialShape = 'pill' | 'round' | 'square' | string
+import type { ClockDialProps } from './props'
 
 /** Clock dial tick mark item data / Данные элемента деления/метки циферблата часов */
 export type ClockDialMarkItem = {
@@ -31,7 +26,7 @@ export type ClockDialMarkSlot = {
 /** Event payload item for ClockDial / Элемент полезной нагрузки события для ClockDial */
 export type ClockDialEventItem = {
   /** Clock type / Тип часов */
-  clock?: ClockDialType
+  clock?: ClockDialProps['type']
   /** Selected clock mark item / Выбранный элемент метки часов */
   item?: ClockDialMarkItem
   /** Selected numeric value / Выбранное числовое значение */

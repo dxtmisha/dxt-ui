@@ -35,7 +35,10 @@ export class ClockDialSelect {
    * @param clientY vertical client coordinate / вертикальная координата клиента
    * @returns selected clock dial mark item or null / выбранный элемент метки циферблата или null
    */
-  selectByCoordinates(clientX: number, clientY: number): ClockDialMarkItem | null {
+  readonly selectByCoordinates = (
+    clientX: number,
+    clientY: number
+  ): ClockDialMarkItem | null => {
     if (!this.enabled.isEnabled) {
       return null
     }

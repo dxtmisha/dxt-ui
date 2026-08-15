@@ -1,4 +1,6 @@
 import { computed, type ComputedRef } from 'vue'
+import { toNumber } from '@dxtmisha/functional'
+
 import type { ClockDialMarkItem } from './basicTypes'
 import type { ClockDialProps } from './props'
 
@@ -18,8 +20,8 @@ export class ClockDialList {
     const items: ClockDialMarkItem[] = []
     const count = this.maxCount
     const rotateStep = this.rotate
-    const minimum = this.props.min ?? 0
-    const maximum = this.props.max ?? 60
+    const minimum = toNumber(this.props.min ?? 0)
+    const maximum = toNumber(this.props.max ?? 60)
 
     for (let index = 1; index <= count; index++) {
       const isZeroValue = index === count && count !== 12

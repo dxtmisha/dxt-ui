@@ -25,6 +25,8 @@ export type InputCodeItemPropsInclude<
 > = SkeletonPropsInclude & {
   /** Whether the component is disabled / Отключен ли компонент */
   disabled?: boolean
+  /** Whether to hide the input / Скрыть ли ввод */
+  hide?: boolean
 
   /** Input name / Название поля ввода */
   name?: string

@@ -1,6 +1,5 @@
 import {
   computed,
-  type ComputedRef,
   type Ref,
   type ToRefs
 } from 'vue'
@@ -23,7 +22,6 @@ import { ClockDialList } from './ClockDialList'
 import { ClockDialSelect } from './ClockDialSelect'
 import { ClockDialValue } from './ClockDialValue'
 
-import type { ClockDialMarkItem } from './basicTypes'
 import type { ClockDialComponents, ClockDialEmits, ClockDialSlots } from './types'
 import type { ClockDialProps } from './props'
 
@@ -147,8 +145,6 @@ export class ClockDial {
    */
   get classes(): ConstrClassObject {
     return {
-      [`${this.className}--type-${this.props.type}`]: Boolean(this.props.type),
-      [`${this.className}--shape-${this.props.shape}`]: Boolean(this.props.shape),
       [`${this.className}--section`]: this.list.isSection(this.model.getValue()),
       [`${this.className}--selected`]: this.valueItem.isSelectVisible()
     }
@@ -175,37 +171,5 @@ export class ClockDial {
       ...AriaStaticInclude.role('group'),
       ...this.enabled.aria
     }
-  }
-
-  /**
-   * Gets current selected numeric value.
-   *
-   * Получает текущее выбранное числовое значение.
-   * @returns current value or undefined / текущее значение или undefined
-   */
-  getValue(): number | undefined {
-    return this.model.getValue()
-  }
-
-  /**
-   * Sets new selected numeric value.
-   *
-   * Устанавливает новое выбранное числовое значение.
-   * @param value new numeric value / новое числовое значение
-   */
-  setValue(value?: number): void {
-    this.model.set(value)
-  }
-
-  /**
-   * Selects item from client screen coordinates.
-   *
-   * Выбирает элемент по экранным координатам клиента.
-   * @param clientX horizontal coordinate / горизонтальная координата
-   * @param clientY vertical coordinate / вертикальная координата
-   * @returns selected clock item or null / выбранный элемент часов или null
-   */
-  selectByCoordinates(clientX: number, clientY: number): ClockDialMarkItem | null {
-    return this.select.selectByCoordinates(clientX, clientY)
   }
 }

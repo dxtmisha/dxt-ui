@@ -56,7 +56,7 @@ export class ModelValueInclude<Value = any> {
    * Возвращает текущее значение модели.
    * @returns current model value / текущее значение модели
    */
-  getValue(): Value | undefined {
+  readonly getValue = (): Value | undefined => {
     return this.value.value
   }
 
@@ -66,7 +66,7 @@ export class ModelValueInclude<Value = any> {
    * Устанавливает значение модели.
    * @param value new model value / новое значение модели
    */
-  set(value?: Value): void {
+  readonly set = (value?: Value): void => {
     this.value.value = value
   }
 

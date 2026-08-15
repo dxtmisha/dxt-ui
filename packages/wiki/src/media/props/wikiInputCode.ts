@@ -1,3 +1,5 @@
+import { wikiInputCodeItem } from './wikiInputCodeItem'
+
 import {
   type StorybookArgsToList,
   StorybookCategory,
@@ -10,6 +12,7 @@ import {
  * Объект wikiInputCode содержит описание всех свойств для компонента InputCode
  */
 export const wikiInputCode: StorybookArgsToList = {
+  'inputCode.hide': wikiInputCodeItem['inputCodeItem.hide'],
   'inputCode.length': {
     type: StorybookControl.number,
     options: {
@@ -21,15 +24,5 @@ export const wikiInputCode: StorybookArgsToList = {
       }
     }
   },
-  'inputCode.match': {
-    type: StorybookControl.string,
-    options: {
-      category: StorybookCategory.value,
-      type: 'RegExp',
-      description: {
-        en: 'RegExp for input verification',
-        ru: 'Регулярное выражение для проверки ввода'
-      }
-    }
-  }
+  'inputCode.match': wikiInputCodeItem['inputCodeItem.match']
 }
