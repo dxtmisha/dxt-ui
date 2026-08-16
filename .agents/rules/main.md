@@ -24,3 +24,7 @@ The `ai-prompt.md` file contains:
 - Responsive design and media query requirements.
 
 Studying this file COMPLETELY in full is critical to ensuring consistency with the design system and project architecture. All of its guidelines must be followed strictly without exception.
+
+## Browser Automation & Testing
+- **STRICT PROHIBITION**: NEVER invoke `browser_subagent` under any circumstances (causes deadlocks and freezes on macOS).
+- **MANDATORY**: For all browser automation, testing Storybook components, UI checks, DOM inspection, and console verification, always use **Chrome DevTools MCP / Chrome Remote Debugging Protocol (CDP on port 9222)** or `read_url_content`.
