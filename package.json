@@ -40,7 +40,8 @@
     "build-packages": "dxt-build-packages",
     "build-publish-packages": "dxt-build-publish-packages",
     "prompt": "dxt-prompt",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "postinstall": "npm run prompt"
   },
   "files": [
     "packages/mcp/dist",

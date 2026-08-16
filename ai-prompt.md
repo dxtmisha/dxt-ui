@@ -54,18 +54,20 @@ Strictly follow these rules for flawless dxt-ui code:
 The project is located at: 'node_modules/@dxtmisha/constructor'.
 
 ## Package Description & Module Overview
-This package provides a comprehensive set of UI constructors, component state managers, and accessibility utilities designed for building robust Vue applications. Study ai-types.md whenever you need to implement, extend, or configure core user interface components, form controls, layout structures, accessibility attributes (ARIA), or behavioral classes like window management, navigation, and input validation.
+This package is a comprehensive TypeScript UI component library and framework utility suite designed for building robust, accessible, and reactive Vue applications. It should be studied to understand component architecture, state management patterns, and accessibility primitives used across the design system.
 
 Form Controls
-Aria Attributes
-Data Validation
-Component State
-Layout Management
-Event Handling
+Aria Management
+State Synchronization
+List Navigation
+Modal Management
+Localization Strings
+Sticky Positioning
+Sorting And Filtering
 ## Mandatory Rules
 You MUST evaluate whether your task relates to any of the following topics (even if not working directly with this package). If related material is present, you are strictly obligated to read and study the corresponding file before proceeding:
-- 'node_modules/@dxtmisha/constructor/ai-resources/colors-and-palettes-ru.md': Документ содержит строгие правила верстки на SCSS и настройки UI в JSON с использованием системных токенов и миксинов. Использование данных стандартов исключает жесткие цветовые коды, обеспечивая автоматическую адаптацию компонентов под динамические темы приложения.
 - 'node_modules/@dxtmisha/constructor/ai-resources/colors-and-palettes.md': Defines strict styling standards, rules, and mixins for UI components to enforce theme-adaptive styling and prevent hardcoded color usage. Solves the technical task of maintaining consistent, dynamic color palettes and state opacities across SCSS and Vue files.
+- 'node_modules/@dxtmisha/constructor/ai-resources/constructor.md': Строгие архитектурные стандарты, шаблоны проектирования и правила реализации UI-компонентов-конструкторов для пакета dxt-ui. Определяет требования к разделению логики и рендеринга, структуре файлов, управлению зависимостями и использованию токенов дизайна.
 
 ## Package Core Information
 Auxiliary base library for UI components and typings. **DO NOT import directly in code**; use ready-made design system components (e.g., D1).
@@ -83,14 +85,12 @@ Auxiliary base library for UI components and typings. **DO NOT import directly i
 The project is located at: 'node_modules/@dxtmisha/d1'.
 
 ## Package Description & Module Overview
-This package provides a comprehensive collection of Vue 3 UI components and design tokens built for the D1 design system, enabling the creation of scalable and responsive user interfaces. Study "ai-types.md" when configuring component properties, handling TypeScript definitions for UI components, or working with design system integration and plugin options.
+This package provides a comprehensive collection of Vue 3 UI components and design system utilities built on top of constructor primitives for building web applications. Study ai-types.md when implementing or configuring component props, types, and design tokens for any UI element within this design system.
 
 Key Capabilities:
 - Form Controls
-- Layout Components
-- Navigation Elements
-- Modals And Overlays
-- Data Display
+- Layout Navigation
+- Modal Windows
 ## Mandatory Rules
 You MUST evaluate whether your task relates to any of the following topics (even if not working directly with this package). If related material is present, you are strictly obligated to read and study the corresponding file before proceeding:
 - 'node_modules/@dxtmisha/d1/ai-resources/background.md': Rules and mixins for configuring background colors, surface opacities, gradients, and backdrop filters in SCSS using the dxtmisha library. Defines best practices for token-aligned, theme-adaptive styling and dynamic palette bindings.
@@ -228,21 +228,20 @@ Vue 3 reactive utilities built on `@dxtmisha/functional-basic`. See `ai-types.md
 The project is located at: 'node_modules/@dxtmisha/functional-basic'.
 
 ## Package Description & Module Overview
-This package provides robust utility modules and classes for modern web applications, focusing on robust API interactions, internationalization (i18n), geographic and localization management, state synchronization via URLs/cookies/storage, error handling, and search matching functionality.
+This package provides robust utility modules for HTTP API requests, caching, localization, state management, and DOM manipulation.
 
-Study "ai-types.md" when implementing or configuring type definitions, interfaces, or class signatures related to API clients, request payloads, error handling structures, formatting options, geographic/localization metadata, SEO/meta-tags, or search filtering options.
+Study "ai-types.md" when implementing or configuring features related to API clients, request/response caching, internationalization (Geo/Intl), translations, meta tags management, search filtering, or URL state synchronization.
 
 API Integration
-Caching Layer
-Cookie Management
-Data Storage
-Geolocation Services
+Error Handling
+Cache Management
+Cookie Storage
+Geographic Localization
 Internationalization
-Error Management
+Data Formatting
 Meta Tags
-Query Parameters
-Search Filtering
-Translation Management
+State Management
+Search Matching
 ## Mandatory Rules
 You MUST evaluate whether your task relates to any of the following topics (even if not working directly with this package). If related material is present, you are strictly obligated to read and study the corresponding file before proceeding:
 - 'node_modules/@dxtmisha/functional-basic/ai-resources/api-reference.md': Provides code examples and usage patterns for the @dxtmisha/functional-basic library modules including HTTP client, storage, geolocation, and DOM helpers. It helps AI agents understand how to correctly integrate and utilize utility functions for frontend and backend tasks.
