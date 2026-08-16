@@ -1,16 +1,17 @@
-import { onUnmounted } from 'vue'
-import { getMouseClient } from '@dxtmisha/functional'
+import { onUnmounted, type Ref } from 'vue'
+import { getKey, getMouseClient } from '@dxtmisha/functional'
 
 import type { EnabledInclude } from '../../classes/EnabledInclude'
 import type { ModelValueInclude } from '../../classes/ModelValueInclude'
+import type { ClockDialControl } from './ClockDialControl'
 import type { ClockDialEmit } from './ClockDialEmit'
 import type { ClockDialSelect } from './ClockDialSelect'
 import type { ClockDialProps } from './props'
 
 /**
- * Class for managing user pointer and touch interactions on the ClockDial component.
+ * Class for managing user pointer, touch, and keyboard interactions on the ClockDial component.
  *
- * Класс для управления взаимодействием пользователя с помощью указателя и касания на компоненте ClockDial.
+ * Класс для управления взаимодействием пользователя с помощью указателя, касания и клавиатуры на компоненте ClockDial.
  */
 export class ClockDialEvent {
   /** Flag indicating that value was modified during current drag session / Флаг, указывающий на изменение значения во время текущей сессии перетаскивания */
@@ -22,17 +23,21 @@ export class ClockDialEvent {
   /**
    * Constructor
    * @param props component input properties / входные свойства компонента
+   * @param control clock dial keyboard and step control manager / менеджер управления клавиатурой и шагами циферблата часов
    * @param emitsItem event emission manager / менеджер эмита событий
    * @param enabled enabled state helper instance / экземпляр помощника состояния активности
    * @param model model value helper instance / экземпляр помощника значения модели
    * @param select coordinate hit-testing selector / селектор проверки попадания координат
+   * @param element container element reference / ссылка на элемент контейнера
    */
   constructor(
     protected readonly props: ClockDialProps,
+    protected readonly control: ClockDialControl,
     protected readonly emitsItem: ClockDialEmit,
     protected readonly enabled: EnabledInclude,
     protected readonly model: ModelValueInclude<number>,
-    protected readonly select: ClockDialSelect
+    protected readonly select: ClockDialSelect,
+    protected readonly element?: Ref<HTMLElement | undefined>
   ) {
     onUnmounted(() => {
       this.stopListeners()
@@ -50,6 +55,8 @@ export class ClockDialEvent {
       return
     }
 
+    this.element?.value?.focus()
+
     const target = (event.target as HTMLElement)?.closest<HTMLElement>('[data-value]')
 
     if (target?.dataset?.value !== undefined) {
@@ -57,9 +64,49 @@ export class ClockDialEvent {
 
       if (!isNaN(value)) {
         this.model.set(value)
-        this.emitsItem.emit('input', value)
-        this.emitsItem.emit('change', value)
+        this.emitsItem.emit('input')
+        this.emitsItem.emit('change')
       }
+    }
+  }
+
+  /**
+   * Keyboard keydown event listener on focused clock dial.
+   * Handles arrow keys navigation (ArrowUp, ArrowDown, ArrowLeft, ArrowRight) and Home/End.
+   *
+   * Слушатель события нажатия клавиш клавиатуры на сфокусированном циферблате часов.
+   * Обрабатывает навигацию стрелками (ArrowUp, ArrowDown, ArrowLeft, ArrowRight) и Home/End.
+   * @param event native keyboard event / нативное событие клавиатуры
+   */
+  readonly onKeydown = (event: KeyboardEvent): void => {
+    if (
+      !this.enabled.isEnabled
+      || this.props.clock
+    ) {
+      return
+    }
+
+    const key = getKey(event)
+
+    switch (key) {
+      case 'ArrowRight':
+      case 'ArrowUp':
+        event.preventDefault()
+        this.control.increase()
+        break
+      case 'ArrowLeft':
+      case 'ArrowDown':
+        event.preventDefault()
+        this.control.decrease()
+        break
+      case 'Home':
+        event.preventDefault()
+        this.control.toEdge(false)
+        break
+      case 'End':
+        event.preventDefault()
+        this.control.toEdge(true)
+        break
     }
   }
 
@@ -77,6 +124,8 @@ export class ClockDialEvent {
     ) {
       return
     }
+
+    this.element?.value?.focus()
 
     event.preventDefault()
     this.isDragging = true

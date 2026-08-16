@@ -36,7 +36,8 @@ const classesToken = computed<ConstrClasses>(() => ({
     'd1-checkbox--required': props.required,
     'd1-checkbox--itemCenter': props.itemCenter,
     'd1-checkbox--focus': props.focus,
-    'd1-checkbox--disabled': props.disabled
+    'd1-checkbox--disabled': props.disabled,
+    [`d1-palette d1-palette--${props.palette}`]: inArray(propsValues.palette, props.palette)
     // :classes-values [!] System label / Системная метка
   }
 }))

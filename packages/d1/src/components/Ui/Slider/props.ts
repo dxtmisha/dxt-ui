@@ -2,6 +2,7 @@ import { type SliderPropsBasic, defaultsSlider } from '@dxtmisha/constructor/Sli
 
 export const propsValues = {
   // :values [!] System label / Системная метка
+  palette: ['red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose', 'slate', 'gray', 'zinc', 'neutral', 'stone', 'black', 'white']
   // :values [!] System label / Системная метка
 }
 
@@ -10,6 +11,7 @@ type PropsToken = {
   selected?: boolean
   disabled?: boolean
   vertical?: boolean
+  palette?: 'red' | 'orange' | 'amber' | 'yellow' | 'lime' | 'green' | 'emerald' | 'teal' | 'cyan' | 'sky' | 'blue' | 'indigo' | 'violet' | 'purple' | 'fuchsia' | 'pink' | 'rose' | 'slate' | 'gray' | 'zinc' | 'neutral' | 'stone' | 'black' | 'white'
   // :type [!] System label / Системная метка
 }
 

@@ -33,14 +33,14 @@
     &__body {
       @include ui.backgroundColor(#{var(--d1-sys-palette-surface)});
       @include ui.backgroundOpacity(#{var(--d1-sys-opacity-primary-high)});
-      @include ui.gradient(#{var(--d1-sys-palette-primary)});
-      @include ui.gradientOpacity(#{0});
+      @include ui.gradientOpacity(#{0}); @include ui.gradient('init');
+      @include ui.paletteGradient(#{var(--d1-sys-palette-primary)});
       
       backdrop-filter: var(--d1-sys-blur-md);
       
       &__input {
-        @include ui.gradient(#{var(--d1-sys-palette-primary)});
-        @include ui.gradientOpacity(#{0});
+        @include ui.gradientOpacity(#{0}); @include ui.gradient('init');
+        @include ui.paletteGradient(#{var(--d1-sys-palette-primary)});
         
         &::placeholder {
           @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)}); @include ui.color('init');
@@ -152,8 +152,8 @@
       --d1-field-focusWithin-borderWidth: 0;
       
       & .d1-field__body {
-        @include ui.backgroundColor(#{var(--d1-sys-palette-primary)});
-        @include ui.backgroundOpacity(#{var(--d1-sys-opacity-overlay)});
+        @include ui.backgroundOpacity(#{var(--d1-sys-opacity-overlay)}); @include ui.backgroundColor('init');
+        @include ui.paletteBackground(#{var(--d1-sys-palette-primary)});
         
         backdrop-filter: var(--d1-sys-blur-xl);
       }

@@ -8,7 +8,8 @@ import type { ProgressProps } from '../Progress'
 export const propsValues = {
   // :values [!] System label / Системная метка
   adaptive: ['rightAlways', 'rightSm', 'rightMd', 'rightLg', 'rightXl', 'right2xl'],
-  container: ['rightSm', 'rightMd', 'rightLg', 'rightXl', 'right2xl']
+  container: ['rightSm', 'rightMd', 'rightLg', 'rightXl', 'right2xl'],
+  palette: ['red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose', 'slate', 'gray', 'zinc', 'neutral', 'stone', 'black', 'white']
   // :values [!] System label / Системная метка
 }
 
@@ -21,6 +22,7 @@ type PropsToken = {
   itemCenter?: boolean
   focus?: boolean
   disabled?: boolean
+  palette?: 'red' | 'orange' | 'amber' | 'yellow' | 'lime' | 'green' | 'emerald' | 'teal' | 'cyan' | 'sky' | 'blue' | 'indigo' | 'violet' | 'purple' | 'fuchsia' | 'pink' | 'rose' | 'slate' | 'gray' | 'zinc' | 'neutral' | 'stone' | 'black' | 'white'
   // :type [!] System label / Системная метка
 }
 

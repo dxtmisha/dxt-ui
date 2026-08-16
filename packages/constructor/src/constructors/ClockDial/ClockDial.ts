@@ -16,12 +16,14 @@ import { EnabledInclude } from '../../classes/EnabledInclude'
 import { ModelValueInclude } from '../../classes/ModelValueInclude'
 
 import { ClockDialArrows } from './ClockDialArrows'
+import { ClockDialControl } from './ClockDialControl'
 import { ClockDialEmit } from './ClockDialEmit'
 import { ClockDialEvent } from './ClockDialEvent'
 import { ClockDialList } from './ClockDialList'
 import { ClockDialSelect } from './ClockDialSelect'
 import { ClockDialValue } from './ClockDialValue'
 
+import type { AriaList } from '../../types/ariaTypes'
 import type { ClockDialComponents, ClockDialEmits, ClockDialSlots } from './types'
 import type { ClockDialProps } from './props'
 
@@ -35,6 +37,9 @@ import type { ClockDialProps } from './props'
 export class ClockDial {
   /** Clock hands (arrows) manager instance / Экземпляр менеджера стрелок часов */
   readonly arrows: ClockDialArrows
+
+  /** Clock dial control manager instance / Экземпляр менеджера управления циферблатом часов */
+  readonly control: ClockDialControl
 
   /** Clock dial emit manager instance / Экземпляр менеджера событий циферблата часов */
   readonly emitsItem: ClockDialEmit
@@ -75,6 +80,7 @@ export class ClockDial {
    * @param constructors.ClockDialArrowsConstructor class for working with clock hands / класс для работы со стрелками часов
    * @param constructors.ClockDialSelectConstructor class for working with item selection / класс для работы с выбором элементов
    * @param constructors.ClockDialEmitConstructor class for working with emits / класс для работы с эмитами
+   * @param constructors.ClockDialControlConstructor class for working with control / класс для работы с управлением
    * @param constructors.ClockDialEventConstructor class for working with events / класс для работы с событиями
    */
   constructor(
@@ -94,6 +100,7 @@ export class ClockDial {
       ClockDialArrowsConstructor?: typeof ClockDialArrows
       ClockDialSelectConstructor?: typeof ClockDialSelect
       ClockDialEmitConstructor?: typeof ClockDialEmit
+      ClockDialControlConstructor?: typeof ClockDialControl
       ClockDialEventConstructor?: typeof ClockDialEvent
     } = {}
   ) {
@@ -105,6 +112,7 @@ export class ClockDial {
       ClockDialArrowsConstructor = ClockDialArrows,
       ClockDialSelectConstructor = ClockDialSelect,
       ClockDialEmitConstructor = ClockDialEmit,
+      ClockDialControlConstructor = ClockDialControl,
       ClockDialEventConstructor = ClockDialEvent
     } = constructors
 
@@ -127,14 +135,63 @@ export class ClockDial {
       this.valueItem
     )
     this.select = new ClockDialSelectConstructor(props, this.list, this.model, this.enabled)
-    this.emitsItem = new ClockDialEmitConstructor(props, this.list, this.model, emits)
-    this.event = new ClockDialEventConstructor(
+    this.emitsItem = new ClockDialEmitConstructor(props, this.list, this.valueItem, emits)
+    this.control = new ClockDialControlConstructor(
       props,
       this.emitsItem,
       this.enabled,
-      this.model,
-      this.select
+      this.list,
+      this.valueItem
     )
+    this.event = new ClockDialEventConstructor(
+      props,
+      this.control,
+      this.emitsItem,
+      this.enabled,
+      this.model,
+      this.select,
+      this.element
+    )
+  }
+
+  /**
+   * Returns ARIA attributes for the clock dial.
+   *
+   * Возвращает ARIA-атрибуты для циферблата часов.
+   * @returns ARIA attributes record / запись ARIA-атрибутов
+   */
+  get aria(): AriaList {
+    if (this.props.clock) {
+      return {
+        ...AriaStaticInclude.role('timer'),
+        ...AriaStaticInclude.label(this.valueItem.text),
+        ...this.enabled.aria
+      }
+    }
+
+    return {
+      ...AriaStaticInclude.role('slider'),
+      ...AriaStaticInclude.valueMinMax(
+        this.valueItem.value,
+        this.props.min,
+        this.props.max
+      ),
+      ...this.enabled.aria
+    }
+  }
+
+  /**
+   * Returns binding attributes and event listeners for root element.
+   *
+   * Возвращает атрибуты привязки и слушатели событий для корневого элемента.
+   * @returns binds record / запись привязок
+   */
+  get binds(): Record<string, any> {
+    return {
+      tabindex: this.tabindex,
+      onKeydown: this.event.onKeydown,
+      ...this.aria
+    }
   }
 
   /**
@@ -161,15 +218,12 @@ export class ClockDial {
   }
 
   /**
-   * Returns ARIA attributes for the clock dial.
+   * Tabindex value for root element.
    *
-   * Возвращает ARIA-атрибуты для циферблата часов.
-   * @returns ARIA attributes record / запись ARIA-атрибутов
+   * Значение tabindex для корневого элемента.
+   * @returns tabindex number or undefined / значение tabindex или undefined
    */
-  get aria(): Record<string, any> {
-    return {
-      ...AriaStaticInclude.role('group'),
-      ...this.enabled.aria
-    }
+  get tabindex(): number | undefined {
+    return this.props.clock ? undefined : (this.enabled.isEnabled ? 0 : -1)
   }
 }

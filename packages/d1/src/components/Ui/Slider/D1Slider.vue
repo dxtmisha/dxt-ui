@@ -2,7 +2,8 @@
 import { computed } from 'vue'
 import {
   type ConstrClasses,
-  type ConstrStyles
+  type ConstrStyles,
+  inArray
 } from '@dxtmisha/functional'
 import {
   SliderDesign,
@@ -10,7 +11,7 @@ import {
   type SliderSlots
 } from '@dxtmisha/constructor/Slider'
 
-import { defaults, type SliderProps } from './props'
+import { defaults, type SliderProps, propsValues } from './props'
 import './styleToken.scss'
 
 defineOptions({
@@ -26,7 +27,8 @@ const classesToken = computed<ConstrClasses>(() => ({
     'd1-slider': true,
     'd1-slider--selected': props.selected,
     'd1-slider--disabled': props.disabled,
-    'd1-slider--vertical': props.vertical
+    'd1-slider--vertical': props.vertical,
+    [`d1-palette d1-palette--${props.palette}`]: inArray(propsValues.palette, props.palette)
     // :classes-values [!] System label / Системная метка
   }
 }))

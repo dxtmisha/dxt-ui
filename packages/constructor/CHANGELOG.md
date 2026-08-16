@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.110.1] - 2026-08-16
+
+### Added
+- **ClockDial Keyboard Navigation & Step Control**:
+  - Introduced `ClockDialControl` (`src/constructors/ClockDial/ClockDialControl.ts`) to manage keyboard navigation, step increments (`increase`, `decrease`), edge bounds (`toEdge`), and closest mark selection.
+  - Added unit test suite `ClockDialControl.test.ts`.
+- **ClockDial Time Display & ARIA Support**:
+  - Added `showTime` prop to `ClockDialPropsBasic` to support displaying formatted time text in the center of the clock face.
+  - Added `text` getter to `ClockDialValue` using `GeoIntl` for localized time formatting and screen-reader accessibility.
+  - Added `isTextVisible` and `isArrowSelectVisible` helper methods to `ClockDialValue`.
+
+### Changed
+- **ClockDial Component**:
+  - Integrated keyboard navigation (`ArrowUp`, `ArrowDown`, `ArrowLeft`, `ArrowRight`, `Home`, `End`) into `ClockDialEvent` delegating to `ClockDialControl`.
+  - Added container element ref and focus management upon click and drag interaction in `ClockDialEvent` and `ClockDialDesign.tsx`.
+  - Updated `ClockDialDesign.tsx` with center time text rendering, focus styling, and keyboard event bindings.
+  - Simplified event emission handling in `ClockDialEmit`.
+- **Field Styling**:
+  - Updated `src/constructors/Field/style.scss` to use `@include ui.paletteBorder` instead of `@include ui.borderColor`.
+
 ## [0.110.0] - 2026-08-16
 
 ### Added

@@ -1,4 +1,5 @@
-import { isNull } from '@dxtmisha/functional'
+import { GeoIntl, isNull } from '@dxtmisha/functional'
+
 import type { ModelValueInclude } from '../../classes/ModelValueInclude'
 import type { ClockDialProps } from './props'
 
@@ -49,6 +50,23 @@ export class ClockDialValue {
   }
 
   /**
+   * Formatted time string representation for ARIA and screen readers.
+   *
+   * Форматированная строка времени для ARIA и программ чтения с экрана.
+   * @returns formatted time string / форматированная строка времени
+   */
+  get text(): string {
+    const date = new Date(1970, 0, 1, this.hour, this.minute, this.second)
+
+    return new GeoIntl().date(
+      date,
+      this.isSecondVisible() ? 'time' : 'hour-minute',
+      undefined,
+      this.props.type === '24'
+    )
+  }
+
+  /**
    * Current selected value or 0.
    *
    * Текущее выбранное значение или 0.
@@ -56,6 +74,16 @@ export class ClockDialValue {
    */
   get value(): number {
     return Number(this.model.getValue() ?? 0)
+  }
+
+  /**
+   * Whether the selected pointer arrow is visible.
+   *
+   * Отображается ли стрелка выбранного значения.
+   * @returns boolean visibility / флаг видимости
+   */
+  isArrowSelectVisible(): boolean {
+    return this.isSelectVisible() && (this.props.type !== '12' || this.value > 0)
   }
 
   /**
@@ -99,12 +127,22 @@ export class ClockDialValue {
   }
 
   /**
-   * Whether the selected pointer arrow is visible.
+   * Whether the time text should be displayed in the dial center.
    *
-   * Отображается ли стрелка выбранного значения.
+   * Отображается ли текст времени в центре циферблата.
    * @returns boolean visibility / флаг видимости
    */
-  isArrowSelectVisible(): boolean {
-    return this.isSelectVisible() && (this.props.type !== '12' || this.value > 0)
+  isTextVisible(): boolean {
+    return Boolean(this.props.clock && this.props.showTime)
+  }
+
+  /**
+   * Sets new numeric value to the model.
+   *
+   * Устанавливает новое числовое значение в модель.
+   * @param value numeric value to set / числовое значение для установки
+   */
+  set(value?: number): void {
+    this.model.set(value)
   }
 }

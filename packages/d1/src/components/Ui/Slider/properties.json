@@ -83,5 +83,6 @@
         "backdrop-filter": "{sys.blur.lg}"
       }
     }
-  }
+  },
+  "@@palette": "{palette}"
 }

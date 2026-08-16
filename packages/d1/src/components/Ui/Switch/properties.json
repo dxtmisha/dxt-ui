@@ -23,15 +23,15 @@
     "gap": "{sys.spacing.md}"
   },
   "#track": {
-    "background-color": "{??comp.backgroundColor}",
+    "palette-background": "{??comp.backgroundColor}",
     "background-opacity": "{sys.opacity.scrim}",
     "border-radius": "{sys.rounded.full}",
     "hover": {
     }
   },
   "#item": {
-    "color": "{??comp.backgroundColor}",
-    "background-color": "{??comp.backgroundColor}",
+    "palette-color": "{??comp.backgroundColor}",
+    "palette-background": "{??comp.backgroundColor}",
     "background-opacity": "0"
   },
   "#icon": {
@@ -63,7 +63,7 @@
       "_type": "var"
     },
     "#icon": {
-      "background-color": "{??comp.backgroundColor}"
+      "palette-background": "{??comp.backgroundColor}"
     },
     "#loading": {
       "color": "{sys.palette.onPrimary}"
@@ -84,5 +84,6 @@
       "background-color": "{sys.palette.onSurface}",
       "background-opacity": "{sys.opacity.primary.disabled}"
     }
-  }
+  },
+  "@@palette": "{palette}"
 }

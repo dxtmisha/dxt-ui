@@ -149,7 +149,7 @@ export class ClockDialDesign<
         ref: this.element,
         class: this.classes?.value.main,
         style: this.styles?.value,
-        ...this.item.aria
+        ...this.item.binds
       },
       children
     )
@@ -293,11 +293,14 @@ export class ClockDialDesign<
    * @returns VNode[] array of elements / массив элементов VNode
    */
   readonly renderDial = (): VNode[] => {
+    const content = this.initSlot('default')
+      ?? (this.item.valueItem.isTextVisible() ? this.item.valueItem.text : undefined)
+
     return [
       h(
         'div',
         { class: this.classes?.value.dial },
-        this.initSlot('default')
+        content
       )
     ]
   }

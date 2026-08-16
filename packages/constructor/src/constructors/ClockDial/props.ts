@@ -32,6 +32,8 @@ export type ClockDialPropsBasic = ModelProps<number>
 
     /** Clock display mode (selection disabled) / Режим отображения часов (без выбора) */
     clock?: boolean
+    /** Display time text in clock mode / Отображать текст времени в режиме часов */
+    showTime?: boolean
   }
 
 /**

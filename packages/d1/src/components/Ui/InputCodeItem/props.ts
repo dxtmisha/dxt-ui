@@ -2,7 +2,8 @@ import { type InputCodeItemPropsBasic, defaultsInputCodeItem } from '@dxtmisha/c
 
 export const propsValues = {
   // :values [!] System label / Системная метка
-  size: ['sm', 'md', 'lg', 'display']
+  size: ['sm', 'md', 'lg', 'display'],
+  palette: ['red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose', 'slate', 'gray', 'zinc', 'neutral', 'stone', 'black', 'white']
   // :values [!] System label / Системная метка
 }
 
@@ -13,6 +14,7 @@ type PropsToken = {
   error?: boolean
   hide?: boolean
   size?: 'sm' | 'md' | 'lg' | 'display'
+  palette?: 'red' | 'orange' | 'amber' | 'yellow' | 'lime' | 'green' | 'emerald' | 'teal' | 'cyan' | 'sky' | 'blue' | 'indigo' | 'violet' | 'purple' | 'fuchsia' | 'pink' | 'rose' | 'slate' | 'gray' | 'zinc' | 'neutral' | 'stone' | 'black' | 'white'
   // :type [!] System label / Системная метка
 }
 

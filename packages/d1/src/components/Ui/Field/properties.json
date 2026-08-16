@@ -26,11 +26,11 @@
   "#body": {
     "background-color": "{sys.palette.surface}",
     "background-opacity": "{sys.opacity.primary.high}",
-    "gradient": "{sys.palette.primary}",
+    "palette-gradient": "{sys.palette.primary}",
     "gradient-opacity": "0",
     "backdrop-filter": "{sys.blur.md}",
     "#input": {
-      "gradient": "{sys.palette.primary}",
+      "palette-gradient": "{sys.palette.primary}",
       "gradient-opacity": "0",
       "::placeholder": {
         "color-opacity": "{sys.opacity.surface.medium}"
@@ -106,7 +106,7 @@
       "border-width": "0"
     },
     "#body": {
-      "background-color": "{sys.palette.primary}",
+      "palette-background": "{sys.palette.primary}",
       "background-opacity": "{sys.opacity.overlay}",
       "backdrop-filter": "{sys.blur.xl}"
     },
@@ -180,5 +180,6 @@
       }
     },
     "_default": "md"
-  }
+  },
+  "@@palette": "{palette}"
 }

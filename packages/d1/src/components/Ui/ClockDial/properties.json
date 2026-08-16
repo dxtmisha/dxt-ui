@@ -7,6 +7,9 @@
   "background-color": "{sys.palette.onSurface}",
   "background-opacity": "{sys.opacity.overlay}",
   "border-radius": "50%",
+  "focus-visible": {
+    "outline": "{outline.md}"
+  },
   "#value": {
     "link|font": "{font.titleSmall}",
     "color": "{sys.palette.onSurface}",

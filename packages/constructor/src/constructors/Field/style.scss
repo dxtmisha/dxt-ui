@@ -11,7 +11,7 @@
       &::after,
       &__label::after {
         border-top-width: ui.v('??sys.border.width');
-        @include ui.borderColor(ui.v('??sys.border.color'));
+        @include ui.paletteBorder(ui.v('??sys.border.color'));
         @include ui.borderOpacity(ui.v('??sys.border.opacity', 1));
       }
 
@@ -29,7 +29,7 @@
       border-right-width: ui.v('??sys.border.width', 0);
       border-bottom-width: ui.v('??sys.border.width', 0);
       border-left-width: ui.v('??sys.border.width', 0);
-      @include ui.borderColor(ui.v('??sys.border.color'));
+      @include ui.paletteBorder(ui.v('??sys.border.color'));
       @include ui.borderOpacity(ui.v('??sys.border.opacity', 1));
     }
   }

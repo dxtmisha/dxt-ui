@@ -1,7 +1,8 @@
 import type { ConstrEmit } from '@dxtmisha/functional'
-import type { ModelValueInclude } from '../../classes/ModelValueInclude'
+
 import type { ClockDialEventItem } from './basicTypes'
 import type { ClockDialList } from './ClockDialList'
+import type { ClockDialValue } from './ClockDialValue'
 import type { ClockDialEmits } from './types'
 import type { ClockDialProps } from './props'
 
@@ -15,13 +16,13 @@ export class ClockDialEmit {
    * Constructor
    * @param props component input properties / входные свойства компонента
    * @param list clock dial list manager / менеджер списка циферблата часов
-   * @param model model value helper instance / экземпляр помощника значения модели
+   * @param valueItem time values manager / менеджер значений времени
    * @param emits callback function triggered on events / функция обратного вызова, запускаемая при событиях
    */
   constructor(
     protected readonly props: ClockDialProps,
     protected readonly list: ClockDialList,
-    protected readonly model: ModelValueInclude<number>,
+    protected readonly valueItem: ClockDialValue,
     protected readonly emits?: ConstrEmit<ClockDialEmits>
   ) { }
 
@@ -30,13 +31,9 @@ export class ClockDialEmit {
    *
    * Испускает событие input или change с полной полезной нагрузкой часов и числовым значением.
    * @param eventType type of event to emit ('input' or 'change') / тип испускаемого события ('input' или 'change')
-   * @param value optional explicit value / необязательное явное значение
    */
-  emit(
-    eventType: 'input' | 'change' = 'input',
-    value?: number
-  ): void {
-    const currentValue = value ?? this.model.getValue() ?? 0
+  emit(eventType: 'input' | 'change' = 'input'): void {
+    const currentValue = this.valueItem.value
     const currentItem = this.list.find(currentValue)
 
     const eventItem: ClockDialEventItem = {

@@ -1,6 +1,7 @@
 export * from './basicTypes'
 export * from './ClockDial'
 export * from './ClockDialArrows'
+export * from './ClockDialControl'
 export * from './ClockDialDesign'
 export * from './ClockDialEmit'
 export * from './ClockDialEvent'

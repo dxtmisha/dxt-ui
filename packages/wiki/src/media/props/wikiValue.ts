@@ -154,6 +154,17 @@ export const wikiValue: StorybookArgsToList = {
       }
     }
   },
+  hour: {
+    type: StorybookControl.number,
+    options: {
+      category: StorybookCategory.value,
+      description: {
+        en: 'Current hour value',
+        ru: 'Текущее значение часа'
+      }
+    },
+    isDemo: true
+  },
   href: {
     type: StorybookControl.string,
     options: {
@@ -180,6 +191,17 @@ export const wikiValue: StorybookArgsToList = {
       value: true
     }
   },
+  minute: {
+    type: StorybookControl.number,
+    options: {
+      category: StorybookCategory.value,
+      description: {
+        en: 'Current minute value',
+        ru: 'Текущее значение минут'
+      }
+    },
+    isDemo: true
+  },
   page: {
     type: StorybookControl.string,
     options: {
@@ -201,6 +223,17 @@ export const wikiValue: StorybookArgsToList = {
         ru: 'Строка поискового запроса'
       }
     }
+  },
+  second: {
+    type: StorybookControl.number,
+    options: {
+      category: StorybookCategory.value,
+      description: {
+        en: 'Current second value',
+        ru: 'Текущее значение секунд'
+      }
+    },
+    isDemo: true
   },
   tabs: {
     type: StorybookControl.object,

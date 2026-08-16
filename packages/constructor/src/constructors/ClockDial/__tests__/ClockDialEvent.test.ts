@@ -3,23 +3,28 @@ import { describe, expect, it, vi } from 'vitest'
 import { ref } from 'vue'
 import { EnabledInclude } from '../../../classes/EnabledInclude'
 import { ModelValueInclude } from '../../../classes/ModelValueInclude'
+import { ClockDialControl } from '../ClockDialControl'
 import { ClockDialEmit } from '../ClockDialEmit'
 import { ClockDialEvent } from '../ClockDialEvent'
 import { ClockDialList } from '../ClockDialList'
 import { ClockDialSelect } from '../ClockDialSelect'
+import { ClockDialValue } from '../ClockDialValue'
 import type { ClockDialProps } from '../props'
 
 describe('ClockDialEvent', () => {
-  function createClockDialEvent(props: ClockDialProps = { type: '12' }) {
+  function createClockDialEvent(props: ClockDialProps = { type: '12' }, initialValue: number = 2) {
     const emitsSpy = vi.fn()
     const enabled = new EnabledInclude(props)
     const list = new ClockDialList(props, 'd-clock-dial')
-    const model = new ModelValueInclude<number>('value', emitsSpy, undefined, ref(2))
+    const model = new ModelValueInclude<number>('value', emitsSpy, undefined, ref(initialValue))
     const select = new ClockDialSelect(props, list, model, enabled)
-    const emitsItem = new ClockDialEmit(props, list, model, emitsSpy as any)
-    const eventManager = new ClockDialEvent(props, emitsItem, enabled, model, select)
+    const valueItem = new ClockDialValue(props, model)
+    const emitsItem = new ClockDialEmit(props, list, valueItem, emitsSpy as any)
+    const control = new ClockDialControl(props, emitsItem, enabled, list, valueItem)
+    const element = ref<HTMLElement>(document.createElement('div'))
+    const eventManager = new ClockDialEvent(props, control, emitsItem, enabled, model, select, element)
 
-    return { eventManager, model, select, emitsSpy, enabled }
+    return { eventManager, model, select, control, emitsSpy, enabled, element }
   }
 
   it('updates value and emits events on onClick with valid data-value', () => {
@@ -92,5 +97,23 @@ describe('ClockDialEvent', () => {
 
     eventManager.onStart(startEvent)
     expect(selectSpy).not.toHaveBeenCalled()
+  })
+
+  it('handles onKeydown arrow keys and Home/End', () => {
+    const { eventManager, model } = createClockDialEvent({ type: '12' }, 2)
+    const preventDefault = vi.fn()
+
+    eventManager.onKeydown({ key: 'ArrowRight', preventDefault } as unknown as KeyboardEvent)
+    expect(preventDefault).toHaveBeenCalled()
+    expect(model.getValue()).toBe(3)
+
+    eventManager.onKeydown({ key: 'ArrowDown', preventDefault } as unknown as KeyboardEvent)
+    expect(model.getValue()).toBe(2)
+
+    eventManager.onKeydown({ key: 'Home', preventDefault } as unknown as KeyboardEvent)
+    expect(model.getValue()).toBe(1)
+
+    eventManager.onKeydown({ key: 'End', preventDefault } as unknown as KeyboardEvent)
+    expect(model.getValue()).toBe(12)
   })
 })

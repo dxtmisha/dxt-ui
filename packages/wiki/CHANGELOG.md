@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.110.1] - 2026-08-16
+
+### Added
+- **Storybook & Wiki Property Definitions**:
+  - Added `showTime` boolean property definition in `wikiOption.ts`.
+  - Added `hour`, `minute`, and `second` numeric property definitions in `wikiValue.ts`.
+
+### Changed
+- **ClockDial Property Registry**:
+  - Refactored `wikiClockDial.ts` by replacing component-specific `clockDial.hour`, `clockDial.minute`, and `clockDial.second` with shared global definitions in `wikiValue.ts`.
+
 ## [0.110.0] - 2026-08-16
 
 ### Added

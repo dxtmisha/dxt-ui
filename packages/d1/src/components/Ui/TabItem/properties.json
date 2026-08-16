@@ -11,7 +11,7 @@
   "gradient-opacity": "0",
   "border-radius": "var(--sys-height) * {sys.rounded.adaptive.sm}",
   "before": {
-    "background-color": "{sys.palette.primary}",
+    "palette-background": "{sys.palette.primary}",
     "background-opacity": "{sys.opacity.surface.high}",
     "border-radius": "{sys.rounded.full}"
   },
@@ -33,5 +33,6 @@
   "open": {
     "palette-background": "{sys.palette.primary}",
     "background-opacity": "{sys.opacity.pressed}"
-  }
+  },
+  "@@palette": "{palette}"
 }

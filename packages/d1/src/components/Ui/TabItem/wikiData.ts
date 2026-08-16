@@ -25,6 +25,7 @@ const propsNames: StorybookProps = [
   { name: 'label', type: 'NumberOrString' },
   { name: 'labelId', type: 'string' },
   { name: 'open', type: 'boolean' },
+  { name: 'palette', type: 'string', option: ['red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose', 'slate', 'gray', 'zinc', 'neutral', 'stone', 'black', 'white'] },
   { name: 'readonly', type: 'boolean' },
   { name: 'role', type: 'string' },
   { name: 'selected', type: 'boolean' },

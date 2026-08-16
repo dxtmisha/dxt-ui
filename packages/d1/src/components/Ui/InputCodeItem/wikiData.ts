@@ -14,6 +14,7 @@ const propsNames: StorybookProps = [
   { name: 'match', type: 'RegExp' },
   { name: 'move', type: 'boolean' },
   { name: 'name', type: 'string' },
+  { name: 'palette', type: 'string', option: ['red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose', 'slate', 'gray', 'zinc', 'neutral', 'stone', 'black', 'white'] },
   { name: 'placeholder', type: 'string' },
   { name: 'size', type: 'string', option: ['sm', 'md', 'lg', 'display'] },
   { name: 'success', type: 'boolean' },

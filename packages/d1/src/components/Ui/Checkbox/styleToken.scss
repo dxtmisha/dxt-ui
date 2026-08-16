@@ -31,11 +31,11 @@
     &__item {
       @include ui.circle(#{var(--d1-ref-spacing-10)});
       
-      @include ui.color(#{var(--d1-checkbox-comp-color)});
-      @include ui.colorOpacity(#{var(--d1-checkbox-comp-colorOpacity)});
+      @include ui.colorOpacity(#{var(--d1-checkbox-comp-colorOpacity)}); @include ui.color('init');
+      @include ui.paletteColor(#{var(--d1-checkbox-comp-color)});
       
-      @include ui.backgroundColor(#{var(--d1-checkbox-comp-backgroundColor)});
-      @include ui.backgroundOpacity(#{0});
+      @include ui.backgroundOpacity(#{0}); @include ui.backgroundColor('init');
+      @include ui.paletteBackground(#{var(--d1-checkbox-comp-backgroundColor)});
       @include ui.gradient(#{var(--sys-color)});
       @include ui.gradientOpacity(#{0});
       
@@ -51,14 +51,14 @@
     &__icon {
       @include ui.squared(#{var(--d1-ref-spacing-6)});
       
-      @include ui.backgroundColor(#{var(--d1-checkbox-comp-backgroundColor)});
-      @include ui.backgroundOpacity(#{var(--d1-checkbox-comp-backgroundOpacity)});
+      @include ui.backgroundOpacity(#{var(--d1-checkbox-comp-backgroundOpacity)}); @include ui.backgroundColor('init');
+      @include ui.paletteBackground(#{var(--d1-checkbox-comp-backgroundColor)});
       
       border-radius: calc(var(--sys-width) * var(--d1-sys-rounded-adaptive-md));
       border-width: var(--d1-ref-spacing-2px);
       border-style: solid;
-      @include ui.borderColor(#{var(--d1-checkbox-comp-borderColor)});
-      @include ui.borderOpacity(#{var(--d1-checkbox-comp-borderOpacity)});
+      @include ui.borderOpacity(#{var(--d1-checkbox-comp-borderOpacity)}); @include ui.borderColor('init');
+      @include ui.paletteBorder(#{var(--d1-checkbox-comp-borderColor)});
     }
     
     &__loading {
@@ -277,8 +277,8 @@
     
     &__input:checked ~ * {
       & .d1-checkbox__item {
-        @include ui.color(#{var(--d1-checkbox-comp-checked-color)});
-        @include ui.colorOpacity(#{var(--d1-checkbox-comp-checked-colorOpacity)});
+        @include ui.colorOpacity(#{var(--d1-checkbox-comp-checked-colorOpacity)}); @include ui.color('init');
+        @include ui.paletteColor(#{var(--d1-checkbox-comp-checked-color)});
       }
       
       & .d1-checkbox__icon {

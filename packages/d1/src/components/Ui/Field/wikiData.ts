@@ -59,6 +59,7 @@ const propsNames: StorybookProps = [
   { name: 'loading', type: 'boolean | ConstrBind<ProgressProps>' },
   { name: 'maxlength', type: 'string | number' },
   { name: 'outlined', type: 'boolean' },
+  { name: 'palette', type: 'string', option: ['red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose', 'slate', 'gray', 'zinc', 'neutral', 'stone', 'black', 'white'] },
   { name: 'prefix', type: 'string | number' },
   { name: 'prefixId', type: 'string' },
   { name: 'readonly', type: 'boolean' },

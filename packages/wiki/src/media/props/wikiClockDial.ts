@@ -10,39 +10,6 @@ import {
  * Объект wikiClockDial содержит свойства для компонента ClockDial
  */
 export const wikiClockDial: StorybookArgsToList = {
-  'clockDial.hour': {
-    type: StorybookControl.number,
-    options: {
-      category: StorybookCategory.value,
-      description: {
-        en: 'Current hour value',
-        ru: 'Текущее значение часа'
-      }
-    },
-    isDemo: true
-  },
-  'clockDial.minute': {
-    type: StorybookControl.number,
-    options: {
-      category: StorybookCategory.value,
-      description: {
-        en: 'Current minute value',
-        ru: 'Текущее значение минут'
-      }
-    },
-    isDemo: true
-  },
-  'clockDial.second': {
-    type: StorybookControl.number,
-    options: {
-      category: StorybookCategory.value,
-      description: {
-        en: 'Current second value',
-        ru: 'Текущее значение секунд'
-      }
-    },
-    isDemo: true
-  },
   'clockDial.clock': {
     type: StorybookControl.boolean,
     options: {

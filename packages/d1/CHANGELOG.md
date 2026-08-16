@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.110.1] - 2026-08-16
+
+### Added
+- **Palette Prop Support**:
+  - Added `palette` prop token support to `D1Checkbox`, `D1Field`, `D1InputCodeItem`, `D1Slider`, `D1Switch`, and `D1TabItem` components for dynamic palette theming.
+  - Added `showTime` prop support to `D1ClockDial` in `properties.json` and generated style tokens for center time display.
+
+### Changed
+- **Component Style Tokens & Mixins**:
+  - Migrated styling tokens in `properties.json` and `styleToken.scss` for `D1Checkbox`, `D1Field`, `D1InputCodeItem`, `D1Switch`, and `D1TabItem` to use `palette-background`, `palette-border`, and `palette-color` mixins for robust multi-theme palette support.
+
 ## [0.110.0] - 2026-08-16
 
 ### Added

@@ -4,6 +4,7 @@ import { ref } from 'vue'
 import { ModelValueInclude } from '../../../classes/ModelValueInclude'
 import { ClockDialEmit } from '../ClockDialEmit'
 import { ClockDialList } from '../ClockDialList'
+import { ClockDialValue } from '../ClockDialValue'
 import type { ClockDialProps } from '../props'
 
 describe('ClockDialEmit', () => {
@@ -12,9 +13,10 @@ describe('ClockDialEmit', () => {
     const props: ClockDialProps = { type: '12' }
     const list = new ClockDialList(props, 'd-clock-dial')
     const model = new ModelValueInclude<number>('value', emitsSpy, undefined, ref(4))
-    const emitManager = new ClockDialEmit(props, list, model, emitsSpy as any)
+    const valueItem = new ClockDialValue(props, model)
+    const emitManager = new ClockDialEmit(props, list, valueItem, emitsSpy as any)
 
-    emitManager.emit('input', 4)
+    emitManager.emit('input')
 
     expect(emitsSpy).toHaveBeenCalledWith(
       'input',
@@ -33,9 +35,10 @@ describe('ClockDialEmit', () => {
     const props: ClockDialProps = { type: '24' }
     const list = new ClockDialList(props, 'd-clock-dial')
     const model = new ModelValueInclude<number>('value', emitsSpy, undefined, ref(14))
-    const emitManager = new ClockDialEmit(props, list, model, emitsSpy as any)
+    const valueItem = new ClockDialValue(props, model)
+    const emitManager = new ClockDialEmit(props, list, valueItem, emitsSpy as any)
 
-    emitManager.emit('change', 14)
+    emitManager.emit('change')
 
     expect(emitsSpy).toHaveBeenCalledWith(
       'change',
@@ -47,22 +50,5 @@ describe('ClockDialEmit', () => {
       14
     )
     expect(emitsSpy).toHaveBeenCalledWith('changeLite', 14)
-  })
-
-  it('uses current model value if explicit value is not passed', () => {
-    const emitsSpy = vi.fn()
-    const props: ClockDialProps = { type: '12' }
-    const list = new ClockDialList(props, 'd-clock-dial')
-    const model = new ModelValueInclude<number>('value', emitsSpy, undefined, ref(9))
-    const emitManager = new ClockDialEmit(props, list, model, emitsSpy as any)
-
-    emitManager.emit('input')
-
-    expect(emitsSpy).toHaveBeenCalledWith(
-      'input',
-      expect.objectContaining({ value: 9 }),
-      9
-    )
-    expect(emitsSpy).toHaveBeenCalledWith('inputLite', 9)
   })
 })

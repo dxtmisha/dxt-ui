@@ -518,6 +518,16 @@ export const wikiOption: StorybookArgsToList = {
       }
     }
   },
+  showTime: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.option,
+      description: {
+        en: 'Show time',
+        ru: 'Показывать время'
+      }
+    }
+  },
   showValue: {
     type: StorybookControl.boolean,
     options: {

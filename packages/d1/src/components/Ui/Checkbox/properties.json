@@ -24,9 +24,9 @@
   },
   "#item": {
     "circle": "{ref.spacing.10}",
-    "color": "{??comp.color}",
+    "palette-color": "{??comp.color}",
     "color-opacity": "{??comp.colorOpacity}",
-    "background-color": "{??comp.backgroundColor}",
+    "palette-background": "{??comp.backgroundColor}",
     "background-opacity": "0",
     "gradient": "var(--sys-color)",
     "gradient-opacity": "0",
@@ -39,11 +39,11 @@
   },
   "#icon": {
     "squared": "{ref.spacing.6}",
-    "background-color": "{??comp.backgroundColor}",
+    "palette-background": "{??comp.backgroundColor}",
     "background-opacity": "{??comp.backgroundOpacity}",
     "border-style": "solid",
     "border-width": "{ref.spacing.2px}",
-    "border-color": "{??comp.borderColor}",
+    "palette-border": "{??comp.borderColor}",
     "border-opacity": "{??comp.borderOpacity}",
     "border-radius": "var(--sys-width) * {sys.rounded.adaptive.md}"
   },
@@ -66,7 +66,7 @@
   },
   "checked": {
     "#item": {
-      "color": "{??comp.checked.color}",
+      "palette-color": "{??comp.checked.color}",
       "color-opacity": "{??comp.checked.colorOpacity}"
     },
     "#icon": {
@@ -86,5 +86,6 @@
       },
       "_type": "var"
     }
-  }
+  },
+  "@@palette": "{palette}"
 }

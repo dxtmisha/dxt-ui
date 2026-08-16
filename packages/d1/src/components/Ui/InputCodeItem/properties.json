@@ -5,7 +5,7 @@
   "background-opacity": "{sys.opacity.primary.high}",
   "backdrop-filter": "{sys.blur.md}",
   "border-radius": "{??height} * {?sys.rounded.adaptive.md}",
-  "gradient": "{sys.palette.primary}",
+  "palette-gradient": "{sys.palette.primary}",
   "gradient-opacity": "0",
   "after": {
     "position": "absolute",
@@ -24,7 +24,7 @@
     "outline-opacity": "{sys.opacity.outline}",
     "outline-width": "{ref.spacing.1}",
     "after": {
-      "border-color": "{sys.palette.primary}",
+      "palette-border": "{sys.palette.primary}",
       "border-width": "{ref.spacing.2px}",
       "border-opacity": "{sys.opacity.primary.high}"
     }
@@ -66,5 +66,6 @@
   "~size": {
     "link|size": "{?field.size}",
     "_default": "md"
-  }
+  },
+  "@@palette": "{palette}"
 }

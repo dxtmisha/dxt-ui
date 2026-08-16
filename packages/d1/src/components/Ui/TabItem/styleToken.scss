@@ -30,8 +30,8 @@
     
     &::before {
       content: ' ';
-      @include ui.backgroundColor(#{var(--d1-sys-palette-primary)});
-      @include ui.backgroundOpacity(#{var(--d1-sys-opacity-surface-high)});
+      @include ui.backgroundOpacity(#{var(--d1-sys-opacity-surface-high)}); @include ui.backgroundColor('init');
+      @include ui.paletteBackground(#{var(--d1-sys-palette-primary)});
       
       border-radius: var(--d1-sys-rounded-full);
     }

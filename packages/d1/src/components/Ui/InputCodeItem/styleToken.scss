@@ -15,8 +15,8 @@
     
     @include ui.backgroundColor(#{var(--d1-sys-palette-surface)});
     @include ui.backgroundOpacity(#{var(--d1-sys-opacity-primary-high)});
-    @include ui.gradient(#{var(--d1-sys-palette-primary)});
-    @include ui.gradientOpacity(#{0});
+    @include ui.gradientOpacity(#{0}); @include ui.gradient('init');
+    @include ui.paletteGradient(#{var(--d1-sys-palette-primary)});
     
     border-radius: calc(var(--d1-inputCodeItem-height) * var(--d1-sys-rounded-adaptive-md));
     
@@ -59,8 +59,8 @@
       &::after {
         content: ' ';
         border-width: var(--d1-ref-spacing-2px);
-        @include ui.borderColor(#{var(--d1-sys-palette-primary)});
-        @include ui.borderOpacity(#{var(--d1-sys-opacity-primary-high)});
+        @include ui.borderOpacity(#{var(--d1-sys-opacity-primary-high)}); @include ui.borderColor('init');
+        @include ui.paletteBorder(#{var(--d1-sys-palette-primary)});
       }
     }
     

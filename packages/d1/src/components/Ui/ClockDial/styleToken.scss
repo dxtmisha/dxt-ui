@@ -121,6 +121,14 @@
       @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)});
     }
     
+    &:focus-visible {
+      @include ui.outlineOpacity(#{var(--d1-sys-opacity-outline)});
+      
+      outline-width: var(--d1-ref-spacing-1);
+      outline-style: solid;
+      @include ui.outlineColor(#{var(--d1-sys-palette-primary)});
+    }
+    
     &--disabled {
       @include ui.backgroundOpacity(#{calc(var(--d1-sys-opacity-overlay) * var(--d1-sys-opacity-surface-disabled))}); @include ui.backgroundColor('init');
       

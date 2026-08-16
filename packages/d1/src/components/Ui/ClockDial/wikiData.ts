@@ -17,6 +17,7 @@ const propsNames: StorybookProps = [
   { name: 'palette', type: 'string', option: ['red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose', 'slate', 'gray', 'zinc', 'neutral', 'stone', 'black', 'white'] },
   { name: 'readonly', type: 'boolean' },
   { name: 'second', type: 'number' },
+  { name: 'showTime', type: 'boolean' },
   { name: 'step', type: 'NumberOrString' },
   { name: 'type', type: 'string', option: ['12', '24', 'minute', 'second'] },
   { name: 'value', type: 'number' }

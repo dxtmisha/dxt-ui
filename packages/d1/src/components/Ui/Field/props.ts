@@ -12,7 +12,8 @@ export const propsValues = {
   cancel: ['auto', 'always', 'none'],
   align: ['center', 'right', 'left'],
   width: [],
-  size: ['sm', 'md', 'lg', 'display']
+  size: ['sm', 'md', 'lg', 'display'],
+  palette: ['red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose', 'slate', 'gray', 'zinc', 'neutral', 'stone', 'black', 'white']
   // :values [!] System label / Системная метка
 }
 
@@ -37,6 +38,7 @@ type PropsToken = {
   align?: 'center' | 'right' | 'left'
   width?: string | 'custom'
   size?: 'sm' | 'md' | 'lg' | 'display'
+  palette?: 'red' | 'orange' | 'amber' | 'yellow' | 'lime' | 'green' | 'emerald' | 'teal' | 'cyan' | 'sky' | 'blue' | 'indigo' | 'violet' | 'purple' | 'fuchsia' | 'pink' | 'rose' | 'slate' | 'gray' | 'zinc' | 'neutral' | 'stone' | 'black' | 'white'
   // :type [!] System label / Системная метка
 }
 

@@ -36,7 +36,8 @@ const classesToken = computed<ConstrClasses>(() => ({
     'd1-tabItem--readonly': props.readonly,
     'd1-tabItem--disabled': props.disabled,
     [`d1-tabItem--adaptive--${props.adaptive}`]: inArray(propsValues.adaptive, props.adaptive),
-    [`d1-tabItem--container--${props.container}`]: inArray(propsValues.container, props.container)
+    [`d1-tabItem--container--${props.container}`]: inArray(propsValues.container, props.container),
+    [`d1-palette d1-palette--${props.palette}`]: inArray(propsValues.palette, props.palette)
     // :classes-values [!] System label / Системная метка
   }
 }))

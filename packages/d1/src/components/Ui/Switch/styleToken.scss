@@ -25,10 +25,10 @@
     }
     
     &__item {
-      @include ui.color(#{var(--d1-switch-comp-backgroundColor)});
+      @include ui.paletteColor(#{var(--d1-switch-comp-backgroundColor)});
       
-      @include ui.backgroundColor(#{var(--d1-switch-comp-backgroundColor)});
-      @include ui.backgroundOpacity(#{0});
+      @include ui.backgroundOpacity(#{0}); @include ui.backgroundColor('init');
+      @include ui.paletteBackground(#{var(--d1-switch-comp-backgroundColor)});
     }
     
     &__icon {
@@ -52,8 +52,8 @@
     }
     
     &__track {
-      @include ui.backgroundColor(#{var(--d1-switch-comp-backgroundColor)});
-      @include ui.backgroundOpacity(#{var(--d1-sys-opacity-scrim)});
+      @include ui.backgroundOpacity(#{var(--d1-sys-opacity-scrim)}); @include ui.backgroundColor('init');
+      @include ui.paletteBackground(#{var(--d1-switch-comp-backgroundColor)});
       
       border-radius: var(--d1-sys-rounded-full);
     }
@@ -268,7 +268,7 @@
       --d1-switch-comp-backgroundColor: var(--d1-switch-comp-checked-backgroundColor);
       
       & .d1-switch__icon {
-        @include ui.backgroundColor(#{var(--d1-switch-comp-backgroundColor)});
+        @include ui.paletteBackground(#{var(--d1-switch-comp-backgroundColor)});
       }
       
       & .d1-switch__loading {

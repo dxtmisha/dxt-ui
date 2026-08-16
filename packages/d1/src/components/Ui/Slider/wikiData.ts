@@ -20,6 +20,7 @@ const propsNames: StorybookProps = [
   { name: 'name', type: 'string' },
   { name: 'onUpdate:modelValue', type: '((value: string) => void)' },
   { name: 'onUpdate:value', type: '((value: string) => void)' },
+  { name: 'palette', type: 'string', option: ['red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose', 'slate', 'gray', 'zinc', 'neutral', 'stone', 'black', 'white'] },
   { name: 'readonly', type: 'boolean' },
   { name: 'required', type: 'boolean' },
   { name: 'selected', type: 'boolean' },
