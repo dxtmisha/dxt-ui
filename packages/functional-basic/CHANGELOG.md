@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.8.9] - 2026-08-16
+
+### Added
+- **LLM Configuration**: Added `llms.txt` configuration for package-level LLM context and documentation indexing.
+
+### Changed
+- **AI Documentation & Types**: Regenerated package descriptions (`ai-description.md`) and updated AI type definitions.
+
 ## [1.8.8] - 2026-08-15
 
 ### Changed

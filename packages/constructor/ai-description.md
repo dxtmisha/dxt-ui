@@ -1,16 +1,15 @@
-This package is a modular Vue UI component library providing core composition classes, utility mixins, and reactive layout logic for building accessible design systems.
-
-An AI assistant must study "ai-types.md" when implementing, extending, or configuring component classes, handling reactive props/emits interfaces, managing ARIA states, or resolving TypeScript definitions for design system elements.
+This package provides a comprehensive collection of Vue component constructors, reactive include classes, utilities, and design system primitives built for modern web applications. Study this codebase to understand advanced component architecture, state synchronization, accessibility (ARIA) attributes handling, and robust form validation patterns.
 
 Form Controls
 Aria Attributes
-State Management
+Data Pagination
 Client Rendering
-Localization Strings
-Event Handling
-Pagination Logic
-Sorting Management
+Component Lifecycle
+State Management
 Sticky Positioning
+Event Handling
+List Filtering
+Column Sorting
 ## Mandatory Rules
 You MUST evaluate whether your task relates to any of the following topics (even if not working directly with this package). If related material is present, you are strictly obligated to read and study the corresponding file before proceeding:
 - 'node_modules/@dxtmisha/constructor/ai-resources/colors-and-palettes-ru.md': Документ содержит строгие правила верстки на SCSS и настройки UI в JSON с использованием системных токенов и миксинов. Использование данных стандартов исключает жесткие цветовые коды, обеспечивая автоматическую адаптацию компонентов под динамические темы приложения.

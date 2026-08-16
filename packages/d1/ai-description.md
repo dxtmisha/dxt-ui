@@ -1,11 +1,9 @@
-This package provides a comprehensive collection of Vue 3 UI components and design tokens built for the D1 design system, enabling the creation of scalable and responsive user interfaces. Study "ai-types.md" when configuring component properties, handling TypeScript definitions for UI components, or working with design system integration and plugin options.
+This package provides a comprehensive collection of Vue 3 UI components and design system utilities built on top of constructor primitives for building web applications. Study ai-types.md when implementing or configuring component props, types, and design tokens for any UI element within this design system.
 
 Key Capabilities:
 - Form Controls
-- Layout Components
-- Navigation Elements
-- Modals And Overlays
-- Data Display
+- Layout Navigation
+- Modal Windows
 ## Mandatory Rules
 You MUST evaluate whether your task relates to any of the following topics (even if not working directly with this package). If related material is present, you are strictly obligated to read and study the corresponding file before proceeding:
 - 'node_modules/@dxtmisha/d1/ai-resources/background.md': Rules and mixins for configuring background colors, surface opacities, gradients, and backdrop filters in SCSS using the dxtmisha library. Defines best practices for token-aligned, theme-adaptive styling and dynamic palette bindings.

@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.110.0] - 2026-08-16
+
+### Added
+- **D1ClockDial UI Component**:
+  - Introduced `D1ClockDial` UI component wrapping the `ClockDial` constructor for circular clock face time selection (hours, minutes, seconds).
+  - Added component structure (`D1ClockDial.vue`, `D1ClockDialAiWiki.vue`, `D1ClockDial.stories.ts`, `D1ClockDial.mdx`, `props.ts`, `styleToken.scss`, `properties.json`, `wiki.ts`, `wikiData.ts`, `index.ts`).
+  - Added package export entry `./D1ClockDial` in `package.json` and registered component mapping in `design.ts`, `types.ts`, `ai-list.wiki.ts`, and `properties.scss`.
+  - Added design tokens for dial size, marks, hours/minutes/seconds arrows, selection indicator, and center point in `properties.json`.
+- **Hide Prop Support**:
+  - Added `hide` property support across `D1Dropzone`, `D1Slider`, and `D1SliderField` components.
+- **AI Styling Resource Guides**:
+  - Added comprehensive SCSS styling guidelines and mixin documentation under `ai-resources/` (`background.md`, `border.md`, `color.md`, `elevation.md`, `outline.md`, `rounded.md`, `size.md`, `spacing.md`, `styling-tokens.md`, `typography.md`).
+  - Updated AI MCP resources, description mappings, and generated modular AI type definitions for `D1ClockDial`.
+
+### Changed
+- **D1InputCodeItem**:
+  - Updated custom design token mapping in `properties.json` from `padding` to `paddingX`.
+
 ## [0.109.0] - 2026-08-14
 
 ### Added

@@ -12,6 +12,7 @@ const propsNames: StorybookProps = [
   { name: 'hasHtmlCode', type: 'boolean' },
   { name: 'helperId', type: 'string' },
   { name: 'helperMessage', type: 'string' },
+  { name: 'hide', type: 'boolean' },
   { name: 'inputMode', type: 'string' },
   { name: 'isSkeleton', type: 'boolean' },
   { name: 'itemAttrs', type: 'ConstrBind<InputCodeItemProps>' },

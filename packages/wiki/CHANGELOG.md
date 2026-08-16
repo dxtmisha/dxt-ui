@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.110.0] - 2026-08-16
+
+### Added
+- **ClockDial MDX & Wiki Documentation**:
+  - Registered component descriptions in `wikiDescriptionsClockDial.ts` and main registry `wikiDescriptions.ts`.
+  - Created MDX documentation pages in `src/media/mdx/ClockDial/` (`clockDial`, `event`, `expose`, `hands`, `slots`, `type` in English and Russian).
+  - Registered MDX configuration mappings in `wikiMdxClockDial.ts` and `wikiMdx.ts`.
+  - Added property controls module `wikiClockDial.ts` and registered it in `wiki.ts`.
+- **LLM Configuration**:
+  - Added `llms.txt` configuration for package-level LLM context and documentation indexing.
+
+### Changed
+- **InputCode**:
+  - Cleaned up and updated `wikiInputCode.ts` property definitions to align with component constructor updates.
+- **Functions & Window Documentation**:
+  - Updated MDX documentation for `getMouseClient`, `getMouseClientX`, and `getMouseClientY` across languages (EN, RU, VI) for the updated `MouseEvent | TouchEvent` signature.
+  - Updated `Window` slot documentation in `slots.en.mdx` and `slots.ru.mdx`.
+
 ## [0.109.0] - 2026-08-14
 
 ### Added

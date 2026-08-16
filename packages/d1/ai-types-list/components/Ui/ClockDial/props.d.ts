@@ -1,16 +1,18 @@
-// md5:2af277285f5a7e7ce98fd51dcd16458a true
+// md5:24e60b063542b9d7d34d068651c31c3b true
 import { ClockDialPropsBasic } from '@dxtmisha/constructor/ClockDial';
-/** Allowed property types for the clock dial. @keywords propsValues, types */
+/** Allowed values for props configuration. @keywords propsValues, config */
 export declare const propsValues: {
     type: string[];
+    palette: string[];
 };
 type PropsToken = {
     disabled?: boolean;
     readonly?: boolean;
     type?: '12' | '24' | 'minute' | 'second';
+    palette?: 'red' | 'orange' | 'amber' | 'yellow' | 'lime' | 'green' | 'emerald' | 'teal' | 'cyan' | 'sky' | 'blue' | 'indigo' | 'violet' | 'purple' | 'fuchsia' | 'pink' | 'rose' | 'slate' | 'gray' | 'zinc' | 'neutral' | 'stone' | 'black' | 'white';
 };
-/** Combined properties for the clock dial component. @keywords ClockDialProps, properties */
+/** Clock dial component properties. @keywords ClockDialProps, properties */
 export type ClockDialProps = ClockDialPropsBasic & PropsToken;
-/** Default values for clock dial properties. @keywords defaults, configuration */
+/** Default property values. @keywords defaults, object */
 export declare const defaults: object;
 export {};

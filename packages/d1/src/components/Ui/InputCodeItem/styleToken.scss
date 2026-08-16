@@ -11,7 +11,7 @@
   // Стили из токенов
   // :style [!] System label / Системная метка
   & {
-    --d1-inputCodeItem-padding: var(--d1-sys-spacing-sm);
+    --d1-inputCodeItem-paddingX: var(--d1-sys-spacing-sm);
     
     @include ui.backgroundColor(#{var(--d1-sys-palette-surface)});
     @include ui.backgroundOpacity(#{var(--d1-sys-opacity-primary-high)});

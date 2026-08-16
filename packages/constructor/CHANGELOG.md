@@ -2,6 +2,45 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.110.0] - 2026-08-16
+
+### Added
+- **ClockDial Component Constructor**:
+  - Introduced `ClockDial` constructor (`src/constructors/ClockDial/`) for circular clock face selection and visual dial displays (hours, minutes, seconds).
+  - Decomposed architecture into specialized helper classes:
+    - `ClockDialValue`: Manages value bounds, step increments, 12/24-hour modes, angle snapping, and degree calculation.
+    - `ClockDialList`: Computes mark data points, label positioning, and dynamic CSS rotation angles (`--sys-value-rotate`).
+    - `ClockDialArrows`: Calculates clock hand rotations and lengths for hour, minute, second, and selection indicator hands.
+    - `ClockDialSelect`: Coordinates pointer/touch selection, coordinate-based hit testing (`selectByCoordinates`), and DOM element registry.
+    - `ClockDialEvent`: Handles pointer drag tracking, click events, and document window listener binding.
+    - `ClockDialEmit`: Triggers reactive `input`, `inputLite`, `change`, and `changeLite` event emissions.
+  - Added export entrypoint `./ClockDial` in `package.json`, `src/library/clockDial.ts`, and registered `@forward "../constructors/ClockDial/style"` in SCSS library entry.
+  - Registered arrow subclasses (`arrowHour`, `arrowMinute`, `arrowSecond`, `arrowSelect`) in `properties.json` and `types.ts`.
+  - Added unit test suites covering `ClockDialArrows`, `ClockDialEmit`, `ClockDialEvent`, `ClockDialList`, `ClockDialSelect`, and `ClockDialValue`.
+- **InputCodeItem Property Inclusion**:
+  - Added `hide` property to `InputCodeItemPropsInclude` in `basicTypes.ts` to support hiding characters/inputs.
+- **AI Documentation & Types**:
+  - Added `ai-resources/constructor.md` reference guide and updated `ai-description.md`, `ai-mcp-resources.json`, and `ai-resources/prompts.json`.
+  - Generated modular AI type definitions under `ai-types-list/constructors/ClockDial/` and `ai-types-list/library/clockDial.d.ts`.
+
+### Changed
+- **ClockDial**:
+  - Refactored `ClockDialDesign.tsx` using standard children variables, object class bindings, and `aspectRatio` mixin.
+  - Migrated styling variables `_valuePadding` and `sys-value-rotate` to `sys.valuePadding` and `sys.valueRotate`.
+  - Integrated `FieldStepProps` and converted class methods (`getValue`, `setValue`, `selectByCoordinates`) to arrow functions.
+- **InputCodeItem**:
+  - Renamed custom property `padding` to `paddingX` in `properties.json`.
+- **ModelValueInclude**:
+  - Converted `getValue` and `set` methods to arrow functions.
+
+### Fixed
+- **Event Typing**:
+  - Updated `WindowEventClickType` and `WindowEvent.ts` to support `KeyboardEvent | MouseEvent | TouchEvent` union type.
+  - Updated `DraggableWrapperEvents.ts` to pass unified `MouseEvent | TouchEvent` into `getMouseClient`.
+- **InputCodeItem Autofill & Input**:
+  - Fixed undefined key match crash during browser autofill in `InputCodeItemEvent.ts`.
+  - Added multi-character input event handling to properly treat pasted or autofilled character sequences.
+
 ## [0.109.0] - 2026-08-14
 
 ### Added
