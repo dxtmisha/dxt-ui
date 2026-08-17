@@ -36,5 +36,14 @@
     "12": {
       "grid-column": "span 12"
     }
+  },
+  "~align": {
+    "~center": {},
+    "~top": {},
+    "~bottom": {},
+    "~stretch": {},
+    "~baseline": {},
+    "~start": {},
+    "~end": {}
   }
 }

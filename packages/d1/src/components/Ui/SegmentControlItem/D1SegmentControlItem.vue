@@ -35,7 +35,8 @@ const classesToken = computed<ConstrClasses>(() => ({
     'd1-segmentControlItem--readonly': props.readonly,
     'd1-segmentControlItem--disabled': props.disabled,
     [`d1-segmentControlItem--adaptive--${props.adaptive}`]: inArray(propsValues.adaptive, props.adaptive),
-    [`d1-segmentControlItem--container--${props.container}`]: inArray(propsValues.container, props.container)
+    [`d1-segmentControlItem--container--${props.container}`]: inArray(propsValues.container, props.container),
+    [`d1-palette d1-palette--${props.palette}`]: inArray(propsValues.palette, props.palette)
     // :classes-values [!] System label / Системная метка
   }
 }))

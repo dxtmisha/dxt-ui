@@ -1,0 +1,45 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+An interactive rectangular crop and frame area component for image and media content manipulation.
+
+`CropArea` overlays an interactive clipping mask and resizable boundary box on top of images, canvases, or media viewports. It calculates coordinate insets in percentages (`[top, right, bottom, left]`) relative to the container element and automatically synchronizes them via CSS custom properties and reactive Vue model events. It features 8-directional resize handles, pan-dragging of the central crop rectangle, minimum dimension enforcement, and individual edge disable controls.
+
+**Key Features:**
+
+- 8-directional resize handles (4 edges: top, right, bottom, left; 4 corners: top-left, top-right, bottom-left, bottom-right)
+- Central panning handle (`center`) to drag the entire cropped area without resizing
+- Automatic CSS custom variable binding (`--sys-crop-top`, `--sys-crop-right`, `--sys-crop-bottom`, `--sys-crop-left`)
+- Percentage-based coordinate array (`[top, right, bottom, left]`)
+- Minimum dimension threshold enforcement via `min` prop (default: 8%)
+- Direction-specific disabling (`disabledTop`, `disabledRight`, `disabledBottom`, `disabledLeft`, `disabled`)
+- Full text selection locking on `document.body` during active drag operations
+- Touch and mouse pointer event handling with boundary clamping
+
+**Common Use Cases:**
+
+- Avatar and profile picture cropping dialogs
+- Image editing and thumbnail adjustment tools
+- Document scanning and photo trimming workflows
+- Custom viewport clipping and focal region selection
+
+<Source
+    code={`
+<script setup>
+import { ref } from 'vue'
+
+const cropCoordinates = ref([10, 15, 10, 15])
+</script>
+
+<template>
+  <div style="position: relative; width: 400px; height: 300px; overflow: hidden;">
+    <img
+      src="/demo-image.jpg"
+      style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;"
+      alt="Preview"
+    />
+    <CropArea v-model:value="cropCoordinates" />
+  </div>
+</template>
+  `}
+    language="html"
+/>

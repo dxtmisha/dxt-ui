@@ -51,7 +51,7 @@
     "build": "vue-tsc -b && vite build",
     "build-recovery": "npm run build && npm run wiki-storm",
     "preview": "vite preview",
-    "ui": "dxt-ui TabItem",
+    "ui": "dxt-ui CropArea",
     "wiki-storm": "dxt-wiki-storm",
     "types": "npm run ui && npm run build && npm run wiki-storm && dxt-types",
     "screenshot": "dxt-screenshot",
@@ -532,6 +532,10 @@
     "./D1ClockDial": {
       "types": "./dist/library/D1ClockDial.d.ts",
       "default": "./dist/D1ClockDial.js"
+    },
+    "./D1CropArea": {
+      "types": "./dist/library/D1CropArea.d.ts",
+      "default": "./dist/D1CropArea.js"
     }
   },
   "buildOptions": {

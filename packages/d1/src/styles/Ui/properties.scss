@@ -12542,6 +12542,11 @@
         name: 'd1-container',
         type: 'component',
       ),
+      'cropArea':(
+        index: 'cropArea',
+        name: 'd1-cropArea',
+        type: 'component',
+      ),
       'dialog':(
         index: 'dialog',
         name: 'd1-dialog',
@@ -13353,6 +13358,11 @@
       'container':(
         index: 'container',
         name: 'd-container',
+        type: 'component',
+      ),
+      'cropArea':(
+        index: 'cropArea',
+        name: 'd-cropArea',
         type: 'component',
       ),
       'dialog':(

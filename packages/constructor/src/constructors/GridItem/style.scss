@@ -1,5 +1,33 @@
 @use "@dxtmisha/styles/properties" as ui;
 
 @mixin mixinGridItem {
+  &--align {
+    &-center {
+      align-self: center;
+    }
 
+    &-top {
+      align-self: start;
+    }
+
+    &-bottom {
+      align-self: end;
+    }
+
+    &-stretch {
+      align-self: stretch;
+    }
+
+    &-baseline {
+      align-self: baseline;
+    }
+
+    &-start {
+      align-self: start;
+    }
+
+    &-end {
+      align-self: end;
+    }
+  }
 }

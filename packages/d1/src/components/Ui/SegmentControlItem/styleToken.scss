@@ -32,6 +32,7 @@
       content: ' ';
       @include ui.backgroundColor(#{var(--d1-sys-palette-onPrimary)});
       @include ui.backgroundOpacity(#{var(--d1-sys-opacity-primary-high)});
+      @include ui.paletteBackground(#{var(--d1-sys-palette-primary)});
       
       border-radius: inherit;
       

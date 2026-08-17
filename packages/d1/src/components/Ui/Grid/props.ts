@@ -2,11 +2,13 @@ import { type GridPropsBasic, defaultsGrid } from '@dxtmisha/constructor/Grid'
 
 export const propsValues = {
   // :values [!] System label / Системная метка
+  align: ['center', 'top', 'bottom', 'stretch', 'baseline', 'start', 'end']
   // :values [!] System label / Системная метка
 }
 
 type PropsToken = {
   // :type [!] System label / Системная метка
+  align?: 'center' | 'top' | 'bottom' | 'stretch' | 'baseline' | 'start' | 'end'
   // :type [!] System label / Системная метка
 }
 

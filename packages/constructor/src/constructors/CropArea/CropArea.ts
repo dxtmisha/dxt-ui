@@ -1,14 +1,16 @@
-import { computed, type ComputedRef, type Ref, type ToRefs } from 'vue'
-import { type ConstrClass, type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
+import type { Ref, ToRefs } from 'vue'
+import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
 import { ModelInclude } from '../../classes/ModelInclude'
-import { CropAreaClassesData } from './CropAreaClassesData'
+
+import { CropAreaCoordinates } from './CropAreaCoordinates'
+import { CropAreaElement } from './CropAreaElement'
 import { CropAreaEmit } from './CropAreaEmit'
 import { CropAreaEvents } from './CropAreaEvents'
 import { CropAreaPosition } from './CropAreaPosition'
 import { CropAreaStyle } from './CropAreaStyle'
 
-import type { CropAreaCoordinator, CropAreaSlotProps } from './basicTypes'
+import type { CropAreaCoordinator } from './basicTypes'
 import type { CropAreaComponents, CropAreaEmits, CropAreaSlots } from './types'
 import type { CropAreaProps } from './props'
 
@@ -18,8 +20,8 @@ import type { CropAreaProps } from './props'
  * Главный класс-оркестратор для управления состоянием, позиционированием и событиями CropArea.
  */
 export class CropArea {
-  /** Classes helper instance / Экземпляр помощника по классам */
-  readonly classes: CropAreaClassesData
+  /** Element helper instance / Экземпляр помощника по элементу */
+  readonly elementItem: CropAreaElement
 
   /** Style helper instance / Экземпляр помощника по стилям */
   readonly style: CropAreaStyle
@@ -29,6 +31,9 @@ export class CropArea {
 
   /** Event emit helper / Помощник по испусканию событий */
   readonly emit: CropAreaEmit
+
+  /** Coordinates helper instance / Экземпляр помощника по координатам */
+  readonly coordinates: CropAreaCoordinates
 
   /** Event listeners helper / Помощник по слушателям событий */
   readonly events: CropAreaEvents
@@ -46,10 +51,11 @@ export class CropArea {
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
    * @param constructors object with classes / объект с классами
-   * @param constructors.CropAreaClassesConstructor class for working with classes / класс для работы с классами
+   * @param constructors.CropAreaElementConstructor class for working with element / класс для работы с элементом
    * @param constructors.CropAreaStyleConstructor class for working with styles / класс для работы со стилями
-   * @param constructors.CropAreaPositionConstructor class for working with coordinates / класс для работы с координатами
+   * @param constructors.CropAreaPositionConstructor class for working with position coordinates / класс для работы с координатами позиции
    * @param constructors.CropAreaEmitConstructor class for working with emits / класс для работы с событиями
+   * @param constructors.CropAreaCoordinatesConstructor class for working with coordinates / класс для работы с координатами
    * @param constructors.CropAreaEventsConstructor class for working with events / класс для работы с событиями
    * @param constructors.ModelIncludeConstructor class for working with model synchronization / класс для работы с синхронизацией модели
    */
@@ -63,28 +69,31 @@ export class CropArea {
     protected readonly slots?: CropAreaSlots,
     protected readonly emits?: ConstrEmit<CropAreaEmits>,
     constructors: {
-      CropAreaClassesConstructor?: typeof CropAreaClassesData
+      CropAreaElementConstructor?: typeof CropAreaElement
       CropAreaStyleConstructor?: typeof CropAreaStyle
       CropAreaPositionConstructor?: typeof CropAreaPosition
       CropAreaEmitConstructor?: typeof CropAreaEmit
+      CropAreaCoordinatesConstructor?: typeof CropAreaCoordinates
       CropAreaEventsConstructor?: typeof CropAreaEvents
       ModelIncludeConstructor?: typeof ModelInclude<CropAreaCoordinator>
     } = {}
   ) {
     const {
-      CropAreaClassesConstructor = CropAreaClassesData,
+      CropAreaElementConstructor = CropAreaElement,
       CropAreaStyleConstructor = CropAreaStyle,
       CropAreaPositionConstructor = CropAreaPosition,
       CropAreaEmitConstructor = CropAreaEmit,
+      CropAreaCoordinatesConstructor = CropAreaCoordinates,
       CropAreaEventsConstructor = CropAreaEvents,
       ModelIncludeConstructor = ModelInclude
     } = constructors
 
-    this.classes = new CropAreaClassesConstructor(element, classDesign, className)
-    this.style = new CropAreaStyleConstructor(this.classes)
+    this.elementItem = new CropAreaElementConstructor(element, className)
+    this.style = new CropAreaStyleConstructor(element, className)
     this.position = new CropAreaPositionConstructor(props, this.style)
-    this.emit = new CropAreaEmitConstructor(emits)
-    this.events = new CropAreaEventsConstructor(props, this.classes, this.position, this.emit)
+    this.emit = new CropAreaEmitConstructor(this.position, emits)
+    this.coordinates = new CropAreaCoordinatesConstructor(this.elementItem, this.position, this.emit)
+    this.events = new CropAreaEventsConstructor(props, this.elementItem, this.coordinates)
 
     new ModelIncludeConstructor('value', this.emits, this.position.item)
   }
@@ -97,43 +106,5 @@ export class CropArea {
    */
   get tag(): string {
     return this.props.tag || 'div'
-  }
-
-  /**
-   * Returns computed coordinator array.
-   *
-   * Возвращает вычисляемый массив координат.
-   * @returns computed coordinator / вычисляемые координаты
-   */
-  get coordinator(): ComputedRef<CropAreaCoordinator> {
-    return computed(() => this.position.get())
-  }
-
-  /**
-   * Returns slot properties for default slot.
-   *
-   * Возвращает свойства слота для слота по умолчанию.
-   * @returns slot properties / свойства слота
-   */
-  get slotProps(): CropAreaSlotProps {
-    return {
-      coordinator: this.position.get()
-    }
-  }
-
-  /**
-   * Returns reactive CSS classes for the root element.
-   *
-   * Возвращает реактивные CSS-классы для корневого элемента.
-   * @returns CSS classes object / объект CSS-классов
-   */
-  get classesData(): ConstrClass {
-    return {
-      [`${this.className}--disabled`]: Boolean(this.props.disabled),
-      [`${this.className}--disabledTop`]: Boolean(this.props.disabled || this.props.disabledTop),
-      [`${this.className}--disabledRight`]: Boolean(this.props.disabled || this.props.disabledRight),
-      [`${this.className}--disabledBottom`]: Boolean(this.props.disabled || this.props.disabledBottom),
-      [`${this.className}--disabledLeft`]: Boolean(this.props.disabled || this.props.disabledLeft)
-    }
   }
 }

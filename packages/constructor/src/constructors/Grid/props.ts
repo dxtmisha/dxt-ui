@@ -1,5 +1,6 @@
 type GridPropsToken = {
   // :type [!] System label / Системная метка
+  align?: 'center' | 'top' | 'bottom' | 'stretch' | 'baseline' | 'start' | 'end'
   // :type [!] System label / Системная метка
 }
 

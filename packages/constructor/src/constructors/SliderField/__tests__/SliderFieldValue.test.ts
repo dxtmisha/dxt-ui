@@ -33,8 +33,21 @@ describe('SliderFieldValue', () => {
     expect(sliderFieldValue.max).toBe(80)
   })
 
-  it('should fallback to props min and max if item value is undefined', () => {
+  it('should fallback to props min for both min and max if item value is undefined in single mode', () => {
     const props = { min: 5, max: 95, multiple: false } as SliderFieldProps
+    const valueRef = ref<SliderValueType | undefined>(undefined)
+    const valueInclude = {
+      item: valueRef
+    } as unknown as FieldValueInclude<SliderValueType>
+
+    const sliderFieldValue = new SliderFieldValue(props, valueInclude)
+
+    expect(sliderFieldValue.min).toBe(5)
+    expect(sliderFieldValue.max).toBe(5)
+  })
+
+  it('should fallback to props min and max if item value is undefined in multiple mode', () => {
+    const props = { min: 5, max: 95, multiple: true } as SliderFieldProps
     const valueRef = ref<SliderValueType | undefined>(undefined)
     const valueInclude = {
       item: valueRef

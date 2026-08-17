@@ -1,7 +1,7 @@
 import type { ConstrClass } from '@dxtmisha/functional'
 
 import type { ModelEmits } from '../../types/modelTypes'
-import type { CropAreaCoordinator, CropAreaEventParameters, CropAreaSlotProps } from './basicTypes'
+import type { CropAreaCoordinator, CropAreaEventParameters } from './basicTypes'
 
 /**
  * Interface for describing which components need to be connected for work.
@@ -9,7 +9,6 @@ import type { CropAreaCoordinator, CropAreaEventParameters, CropAreaSlotProps } 
  * Интерфейс для описания, какие компоненты надо подключить для работы.
  */
 export type CropAreaComponents = {
-  // componentName: object
 }
 
 /**
@@ -43,8 +42,6 @@ export interface CropAreaExpose {
  * Тип, описывающий доступные слоты.
  */
 export interface CropAreaSlots {
-  /** Default slot inside the active crop area / Дефолтный слот внутри активной области кадрирования */
-  default?(props: CropAreaSlotProps): any
 }
 
 /**
@@ -59,7 +56,7 @@ export type CropAreaClasses = {
   left: string
   center: string
   right: string
-  active: string
+  crop: string
   move: string
   // :classes [!] System label / Системная метка
 }

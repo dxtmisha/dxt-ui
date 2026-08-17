@@ -2,5 +2,14 @@
   "columns": {
     "value": "12",
     "_type": "var"
+  },
+  "~align": {
+    "~center": {},
+    "~top": {},
+    "~bottom": {},
+    "~stretch": {},
+    "~baseline": {},
+    "~start": {},
+    "~end": {}
   }
 }

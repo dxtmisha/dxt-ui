@@ -1,0 +1,30 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+### `resize`
+
+Event emitted continuously while the user resizes or drags the crop area.
+
+**Parameters:**
+- `parameters: CropAreaEventParameters` — event details object
+
+**CropAreaEventParameters structure:**
+- `direction: CropAreaDirection` — identifier of the active handle or drag area (`'top'`, `'right'`, `'bottom'`, `'left'`, `'right-top'`, `'right-bottom'`, `'left-top'`, `'left-bottom'`, `'center'`)
+- `value: number` — modified single coordinate percentage value (or `0` for center drag)
+- `coordinator: CropAreaCoordinator` — current 4-tuple coordinate array `[top, right, bottom, left]` in percentages
+
+<Source
+    code={`
+<script setup>
+const handleResize = (parameters) => {
+  console.log('Drag direction:', parameters.direction)
+  console.log('Single value:', parameters.value)
+  console.log('Current coordinates [top, right, bottom, left]:', parameters.coordinator)
+}
+</script>
+
+<template>
+  <CropArea @resize="handleResize" />
+</template>
+  `}
+    language="html"
+/>

@@ -58,6 +58,7 @@ This is particularly useful in Server-Side Rendering (SSR) or Static Site Genera
 (like those relying on browser-only APIs like 'window' or 'document', or complex visualizations) should not be executed or rendered on the server.
 It works by waiting until the component is mounted in the browser before rendering its content.
 Controlled by the 'clientOnly' boolean property (default is true).
-    `
+    `,
+    hide: true
   }
 }

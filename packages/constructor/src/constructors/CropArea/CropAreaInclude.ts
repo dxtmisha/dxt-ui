@@ -17,11 +17,4 @@ export class CropAreaInclude extends ComponentIncludeAbstract<
   protected override readonly name = 'cropArea'
   protected override readonly propsAttrsName = 'cropAreaAttrs'
   protected readonly hasInitElement: boolean = false
-
-  override get is(): boolean {
-    return (
-      'value' in this.binds.value
-      || 'min' in this.binds.value
-    )
-  }
 }

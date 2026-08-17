@@ -26,6 +26,7 @@ const classesToken = computed<ConstrClasses>(() => ({
     // :classes-values [!] System label / Системная метка
     'd1-gridItem': true,
     [`d1-gridItem--base--${props.base}`]: inArray(propsValues.base, props.base),
+    [`d1-gridItem--align--${props.align}`]: inArray(propsValues.align, props.align),
     [`d1-gridItem--sm--${props.sm}`]: inArray(propsValues.sm, props.sm),
     [`d1-gridItem--md--${props.md}`]: inArray(propsValues.md, props.md),
     [`d1-gridItem--lg--${props.lg}`]: inArray(propsValues.lg, props.lg),

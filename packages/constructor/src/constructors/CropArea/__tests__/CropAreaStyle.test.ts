@@ -1,15 +1,13 @@
 // @vitest-environment jsdom
 import { describe, it, expect } from 'vitest'
 import { ref } from 'vue'
-import { CropAreaClassesData } from '../CropAreaClassesData'
 import { CropAreaStyle } from '../CropAreaStyle'
 
 describe('CropAreaStyle', () => {
   it('should set CSS custom properties on the element', () => {
     const element = document.createElement('div')
     const elementRef = ref(element)
-    const classes = new CropAreaClassesData(elementRef, 'd1', 'd1-crop-area')
-    const style = new CropAreaStyle(classes)
+    const style = new CropAreaStyle(elementRef, 'd1-crop-area')
 
     style.set([10, 20, 30, 40])
 
@@ -21,8 +19,7 @@ describe('CropAreaStyle', () => {
 
   it('should do nothing if element is not mounted', () => {
     const elementRef = ref<HTMLElement | undefined>(undefined)
-    const classes = new CropAreaClassesData(elementRef, 'd1', 'd1-crop-area')
-    const style = new CropAreaStyle(classes)
+    const style = new CropAreaStyle(elementRef, 'd1-crop-area')
 
     expect(() => style.set([10, 20, 30, 40])).not.toThrow()
   })

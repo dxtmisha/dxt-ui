@@ -1,7 +1,6 @@
 // @vitest-environment jsdom
 import { describe, it, expect } from 'vitest'
 import { reactive, ref } from 'vue'
-import { CropAreaClassesData } from '../CropAreaClassesData'
 import { CropAreaPosition } from '../CropAreaPosition'
 import { CropAreaStyle } from '../CropAreaStyle'
 import type { CropAreaProps } from '../props'
@@ -16,8 +15,7 @@ describe('CropAreaPosition', () => {
       ...propsInit
     }) as CropAreaProps
 
-    const classes = new CropAreaClassesData(elementRef, 'd1', 'd1-crop-area')
-    const style = new CropAreaStyle(classes)
+    const style = new CropAreaStyle(elementRef, 'd1-crop-area')
     const position = new CropAreaPosition(props, style)
 
     return { element, position, props, style }

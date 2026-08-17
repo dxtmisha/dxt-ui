@@ -1,4 +1,4 @@
-import { ref, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { isArray } from '@dxtmisha/functional'
 
 import type { CropAreaStyle } from './CropAreaStyle'
@@ -39,7 +39,9 @@ export class CropAreaPosition {
     protected readonly props: CropAreaProps,
     protected readonly style: CropAreaStyle
   ) {
-    this.item.value = this.normalize(props.value)
+    if (this.props.value) {
+      this.item.value = this.normalize(this.props.value)
+    }
 
     watch(
       () => this.props.value,
@@ -50,6 +52,10 @@ export class CropAreaPosition {
       },
       { deep: true }
     )
+
+    onMounted(() => {
+      this.style.set(this.item.value)
+    })
   }
 
   /**
@@ -68,7 +74,7 @@ export class CropAreaPosition {
    * Возвращает текущий массив координат.
    * @returns coordinator values / значения координат
    */
-  get(): CropAreaCoordinator {
+  readonly get = (): CropAreaCoordinator => {
     return [...this.item.value]
   }
 
@@ -78,7 +84,7 @@ export class CropAreaPosition {
    * Устанавливает новые значения координат и обновляет стили.
    * @param coordinator coordinator array / массив координат
    */
-  set(coordinator: CropAreaCoordinator): void {
+  readonly set = (coordinator: CropAreaCoordinator): void => {
     this.item.value = this.normalize(coordinator)
     this.style.set(this.item.value)
   }
@@ -88,7 +94,7 @@ export class CropAreaPosition {
    *
    * Сбрасывает координаты к начальным значениям по умолчанию.
    */
-  reset(): void {
+  readonly reset = (): void => {
     this.item.value = this.normalize(this.props.value)
     this.style.set(this.item.value)
   }

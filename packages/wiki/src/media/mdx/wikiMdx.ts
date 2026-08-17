@@ -32,6 +32,7 @@ import { wikiMdxChipGroup } from './ChipGroup/wikiMdxChipGroup'
 import { wikiMdxClientOnly } from './ClientOnly/wikiMdxClientOnly'
 import { wikiMdxClockDial } from './ClockDial/wikiMdxClockDial'
 import { wikiMdxContainer } from './Container/wikiMdxContainer'
+import { wikiMdxCropArea } from './CropArea/wikiMdxCropArea'
 import { wikiMdxDialog } from './Dialog/wikiMdxDialog'
 import { wikiMdxDivider } from './Divider/wikiMdxDivider'
 import { wikiMdxDraggableWrapper } from './DraggableWrapper/wikiMdxDraggableWrapper'
@@ -150,6 +151,7 @@ export const wikiMdx: StorybookComponentsMdx = [
   wikiMdxClientOnly,
   wikiMdxClockDial,
   wikiMdxContainer,
+  wikiMdxCropArea,
   wikiMdxDialog,
   wikiMdxDivider,
   wikiMdxDraggableWrapper,

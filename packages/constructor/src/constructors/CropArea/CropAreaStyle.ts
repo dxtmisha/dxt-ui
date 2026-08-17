@@ -1,4 +1,5 @@
-import type { CropAreaClassesData } from './CropAreaClassesData'
+import type { Ref } from 'vue'
+
 import type { CropAreaCoordinator } from './basicTypes'
 
 /**
@@ -23,13 +24,13 @@ export class CropAreaStyle {
    * Constructor.
    *
    * Конструктор.
-   * @param classes classes manager / менеджер классов
+   * @param element wrapper element reference / ссылка на элемент обертки
+   * @param className main component class name / имя класса основного компонента
    */
   constructor(
-    protected readonly classes: CropAreaClassesData
+    protected readonly element: Ref<HTMLElement | undefined>,
+    className: string
   ) {
-    const className = this.classes.name
-
     this.property = {
       top: `--${className}-sys-crop-top`,
       right: `--${className}-sys-crop-right`,
@@ -45,7 +46,7 @@ export class CropAreaStyle {
    * @param coordinator coordinator array [top, right, bottom, left] / массив координат [сверху, справа, снизу, слева]
    */
   set(coordinator: CropAreaCoordinator): void {
-    const element = this.classes.elementItem
+    const element = this.element.value
 
     if (element) {
       const [top, right, bottom, left] = coordinator

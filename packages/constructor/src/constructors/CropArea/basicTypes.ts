@@ -44,22 +44,6 @@ export interface CropAreaEventParameters {
   coordinator: CropAreaCoordinator
 }
 
-/** Type describing lists of classes for CropArea / Тип, описывающий список классов для CropArea */
-export type CropAreaClassesList = {
-  /** Class for blocking text selection on document body / Класс для блокировки выделения текста на body */
-  blockSelection: string
-  /** Class for the active crop rectangle / Класс для активного прямоугольника кадрирования */
-  active: string
-  /** Class for the resize move handles / Класс для ручек изменения размера */
-  move: string
-}
-
-/** Slot parameters for the default slot / Параметры слота по умолчанию */
-export type CropAreaSlotProps = {
-  /** Current coordinator values / Текущие значения координат */
-  coordinator: CropAreaCoordinator
-}
-
 /** CropArea component dependency registration / Регистрация зависимости компонента CropArea */
 export type CropAreaComponentInclude = {
   /** CropArea component configuration / Конфигурация компонента CropArea */

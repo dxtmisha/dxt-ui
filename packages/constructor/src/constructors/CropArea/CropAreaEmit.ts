@@ -1,6 +1,7 @@
 import { isFunction, type ConstrEmit } from '@dxtmisha/functional'
 
-import type { CropAreaCoordinator, CropAreaDirection, CropAreaEventParameters } from './basicTypes'
+import type { CropAreaPosition } from './CropAreaPosition'
+import type { CropAreaDirection, CropAreaEventParameters } from './basicTypes'
 import type { CropAreaEmits } from './types'
 
 /**
@@ -13,9 +14,11 @@ export class CropAreaEmit {
    * Constructor.
    *
    * Конструктор.
+   * @param position position coordinator manager / менеджер координат позиции
    * @param emits event emitter function / функция испускания событий
    */
   constructor(
+    protected readonly position: CropAreaPosition,
     protected readonly emits?: ConstrEmit<CropAreaEmits>
   ) {
   }
@@ -23,21 +26,19 @@ export class CropAreaEmit {
   /**
    * Emits the resize event with current parameters.
    *
-   * Испускает событие resize с текущими параметрами.
+   * Испускает событие изменения размера с текущими параметрами.
    * @param direction interaction direction / направление взаимодействия
    * @param value updated single coordinate value / обновленное значение отдельной координаты
-   * @param coordinator full current coordinates / полные текущие координаты
    */
-  onResize(
+  resize(
     direction: CropAreaDirection,
-    value: number,
-    coordinator: CropAreaCoordinator
+    value = 0
   ): void {
     if (isFunction(this.emits)) {
       const parameters: CropAreaEventParameters = {
         direction,
         value,
-        coordinator
+        coordinator: this.position.get()
       }
 
       this.emits('resize', parameters)

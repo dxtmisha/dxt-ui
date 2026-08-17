@@ -5,4 +5,34 @@
   grid-template-columns: repeat(ui.v('??columns', 12), 1fr);
   grid-template-rows: auto;
   align-content: stretch;
+
+  &--align {
+    &-center {
+      align-items: center;
+    }
+
+    &-top {
+      align-items: start;
+    }
+
+    &-bottom {
+      align-items: end;
+    }
+
+    &-stretch {
+      align-items: stretch;
+    }
+
+    &-baseline {
+      align-items: baseline;
+    }
+
+    &-start {
+      align-items: start;
+    }
+
+    &-end {
+      align-items: end;
+    }
+  }
 }

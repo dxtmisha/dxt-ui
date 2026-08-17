@@ -32,11 +32,11 @@
     &__item {
       @include ui.circle(#{var(--d1-ref-spacing-10)});
       
-      @include ui.color(#{var(--d1-radio-comp-color)});
-      @include ui.colorOpacity(#{var(--d1-radio-comp-colorOpacity)});
+      @include ui.colorOpacity(#{var(--d1-radio-comp-colorOpacity)}); @include ui.color('init');
+      @include ui.paletteColor(#{var(--d1-radio-comp-color)});
       
-      @include ui.backgroundColor(#{var(--d1-radio-comp-backgroundColor)});
-      @include ui.backgroundOpacity(#{0});
+      @include ui.backgroundOpacity(#{0}); @include ui.backgroundColor('init');
+      @include ui.paletteBackground(#{var(--d1-radio-comp-backgroundColor)});
       @include ui.gradient(#{var(--sys-color)});
       @include ui.gradientOpacity(#{0});
       
@@ -52,14 +52,14 @@
     &__icon {
       @include ui.squared(#{var(--d1-ref-spacing-6)});
       
-      @include ui.backgroundColor(#{var(--d1-radio-comp-backgroundColor)});
-      @include ui.backgroundOpacity(#{var(--d1-radio-comp-backgroundOpacity)});
+      @include ui.backgroundOpacity(#{var(--d1-radio-comp-backgroundOpacity)}); @include ui.backgroundColor('init');
+      @include ui.paletteBackground(#{var(--d1-radio-comp-backgroundColor)});
       
       border-radius: var(--d1-sys-rounded-full);
       border-width: var(--d1-ref-spacing-2px);
       border-style: solid;
-      @include ui.borderColor(#{var(--d1-radio-comp-borderColor)});
-      @include ui.borderOpacity(#{var(--d1-radio-comp-borderOpacity)});
+      @include ui.borderOpacity(#{var(--d1-radio-comp-borderOpacity)}); @include ui.borderColor('init');
+      @include ui.paletteBorder(#{var(--d1-radio-comp-borderColor)});
     }
     
     &__loading {
@@ -278,8 +278,8 @@
     
     &__input:checked ~ * {
       & .d1-radio__item {
-        @include ui.color(#{var(--d1-radio-comp-checked-color)});
-        @include ui.colorOpacity(#{var(--d1-radio-comp-checked-colorOpacity)});
+        @include ui.colorOpacity(#{var(--d1-radio-comp-checked-colorOpacity)}); @include ui.color('init');
+        @include ui.paletteColor(#{var(--d1-radio-comp-checked-color)});
       }
       
       & .d1-radio__icon {

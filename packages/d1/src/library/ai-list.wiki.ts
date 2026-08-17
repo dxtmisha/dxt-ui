@@ -27,6 +27,7 @@ import D1ChipGroup from '../../src/components/Ui/ChipGroup/D1ChipGroupAiWiki.vue
 import D1ClientOnly from '../../src/components/Ui/ClientOnly/D1ClientOnlyAiWiki.vue'
 import D1ClockDial from '../../src/components/Ui/ClockDial/D1ClockDialAiWiki.vue'
 import D1Container from '../../src/components/Ui/Container/D1ContainerAiWiki.vue'
+import D1CropArea from '../../src/components/Ui/CropArea/D1CropAreaAiWiki.vue'
 import D1Dialog from '../../src/components/Ui/Dialog/D1DialogAiWiki.vue'
 import D1Divider from '../../src/components/Ui/Divider/D1DividerAiWiki.vue'
 import D1DraggableWrapper from '../../src/components/Ui/DraggableWrapper/D1DraggableWrapperAiWiki.vue'
@@ -139,6 +140,7 @@ export const aiList: any[] = [
   D1ClientOnly,
   D1ClockDial,
   D1Container,
+  D1CropArea,
   D1Dialog,
   D1Divider,
   D1DraggableWrapper,

@@ -1,13 +1,6 @@
 @use "@dxtmisha/styles/properties" as ui;
 
 @mixin mixinCropArea {
-  @include ui.initByCustom('border-width', ui.v('d.sys.borderWidth.sm', 1px));
-  @include ui.initByCustom('border-color', ui.v('d.sys.color.primary'));
-  @include ui.initByCustom('border-opacity', ui.v('d.sys.opacity.surface.high', 1));
-  @include ui.initByCustom('scrim-color', ui.v('d.sys.color.scrim', rgba(0, 0, 0, 0.4)));
-  @include ui.initByCustom('scrim-opacity', ui.v('d.sys.opacity.surface.medium', 0.5));
-  @include ui.initByCustom('handle-size', ui.v('d.sys.size.sm', 16px));
-
   @include ui.absolute;
   display: flex;
   z-index: 4;
@@ -16,8 +9,7 @@
 
   &__left,
   &__right {
-    display: flex;
-    flex-direction: column;
+    @include ui.flexStretchY;
     flex-grow: 0;
     flex-shrink: 0;
   }
@@ -31,36 +23,26 @@
   }
 
   &__center {
-    display: flex;
-    flex-direction: column;
-    flex: 1 1 auto;
-    min-width: 0;
+    @include ui.flexStretchY;
+    @include ui.flexDynamic;
   }
 
-  &__active {
-    display: flex;
-    flex: 1 1 auto;
-    min-height: 0;
-    position: relative;
+  &__crop {
     box-sizing: border-box;
+    @include ui.flexDynamic;
+    position: relative;
     cursor: move;
 
     &::after {
       content: "";
       @include ui.absolute;
       pointer-events: none;
-      border-style: solid;
-      border-width: ui.v('??border-width');
-      border-color: ui.v('??border-color');
-      opacity: ui.v('??border-opacity');
     }
   }
 
   &__move {
-    background-color: ui.v('??scrim-color');
-    opacity: ui.v('??scrim-opacity');
-    position: relative;
     box-sizing: border-box;
+    position: relative;
     flex-basis: 0;
 
     &::after {
@@ -69,36 +51,36 @@
       z-index: 4;
     }
 
-    &--left,
-    &--right {
-      flex: 1 1 auto;
+    &[data-value="left"],
+    &[data-value="right"] {
+      @include ui.flexDynamic;
       cursor: ew-resize;
 
       &::after {
-        width: ui.v('??handle-size');
+        width: ui.v('??handleSize');
       }
     }
 
-    &--left::after {
+    &[data-value="left"]::after {
       right: 0;
       left: auto;
     }
 
-    &--right::after {
+    &[data-value="right"]::after {
       left: 0;
       right: auto;
     }
 
-    &--top,
-    &--bottom {
+    &[data-value="top"],
+    &[data-value="bottom"] {
       cursor: ns-resize;
 
       &::after {
-        height: ui.v('??handle-size');
+        height: ui.v('??handleSize');
       }
     }
 
-    &--top {
+    &[data-value="top"] {
       flex-basis: ui.v('??sys-crop-top', 0%);
 
       &::after {
@@ -107,7 +89,7 @@
       }
     }
 
-    &--bottom {
+    &[data-value="bottom"] {
       flex-basis: ui.v('??sys-crop-bottom', 0%);
 
       &::after {
@@ -116,17 +98,17 @@
       }
     }
 
-    &--leftTop,
-    &--leftBottom,
-    &--rightTop,
-    &--rightBottom {
+    &[data-value="left-top"],
+    &[data-value="left-bottom"],
+    &[data-value="right-top"],
+    &[data-value="right-bottom"] {
       &::after {
-        width: ui.v('??handle-size');
-        height: ui.v('??handle-size');
+        width: ui.v('??handleSize');
+        height: ui.v('??handleSize');
       }
     }
 
-    &--leftTop {
+    &[data-value="left-top"] {
       flex-basis: ui.v('??sys-crop-top', 0%);
       cursor: nwse-resize;
 
@@ -138,7 +120,7 @@
       }
     }
 
-    &--leftBottom {
+    &[data-value="left-bottom"] {
       flex-basis: ui.v('??sys-crop-bottom', 0%);
       cursor: nesw-resize;
 
@@ -150,7 +132,7 @@
       }
     }
 
-    &--rightTop {
+    &[data-value="right-top"] {
       flex-basis: ui.v('??sys-crop-top', 0%);
       cursor: nesw-resize;
 
@@ -162,7 +144,7 @@
       }
     }
 
-    &--rightBottom {
+    &[data-value="right-bottom"] {
       flex-basis: ui.v('??sys-crop-bottom', 0%);
       cursor: nwse-resize;
 
@@ -182,32 +164,12 @@
   @include ui.disabled {
     cursor: default;
 
-    & &__active {
-      cursor: default;
-
-      &::after {
-        border-color: ui.v('d.sys.color.disabled', gray);
-      }
-    }
-
-    & &__move {
+    @include ui.subclass('crop') {
       cursor: default;
     }
-  }
 
-  &--disabledTop &__active::after {
-    border-top-color: ui.v('d.sys.color.disabled', gray);
-  }
-
-  &--disabledRight &__active::after {
-    border-right-color: ui.v('d.sys.color.disabled', gray);
-  }
-
-  &--disabledBottom &__active::after {
-    border-bottom-color: ui.v('d.sys.color.disabled', gray);
-  }
-
-  &--disabledLeft &__active::after {
-    border-left-color: ui.v('d.sys.color.disabled', gray);
+    @include ui.subclass('move') {
+      cursor: default;
+    }
   }
 }

@@ -29,16 +29,5 @@ describe('CropArea', () => {
     )
 
     expect(cropArea.tag).toBe('section')
-    expect(cropArea.coordinator.value).toEqual([5, 10, 15, 20])
-    expect(cropArea.slotProps).toEqual({
-      coordinator: [5, 10, 15, 20]
-    })
-    expect(cropArea.classesData).toEqual({
-      'd1-crop-area--disabled': false,
-      'd1-crop-area--disabledTop': false,
-      'd1-crop-area--disabledRight': false,
-      'd1-crop-area--disabledBottom': false,
-      'd1-crop-area--disabledLeft': false
-    })
   })
 })

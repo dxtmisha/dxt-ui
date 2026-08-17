@@ -1,0 +1,6 @@
+- `get(): CropAreaCoordinator` — Returns the current coordinate array `[top, right, bottom, left]` in percentages.
+- `set(coordinator: CropAreaCoordinator): void` — Programmatically sets new coordinates and updates the CSS custom properties on the DOM element.
+- `reset(): void` — Resets coordinates to the initial values (from the `value` prop or `[0, 0, 0, 0]`) and recalculates component styles.
+
+> **CropAreaCoordinator:**
+> - `[number, number, number, number]` — 4-tuple of percentage coordinates representing `[top, right, bottom, left]` insets.

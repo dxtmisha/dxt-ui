@@ -1,12 +1,15 @@
 {
+  "handleSize": {
+    "_type": "var"
+  },
   "#left": {},
   "#center": {},
   "#right": {},
-  "#active": {},
+  "#crop": {},
   "#move": {},
-  "disabled": { "_type": "state" },
-  "disabledTop": { "_type": "state" },
-  "disabledRight": { "_type": "state" },
-  "disabledBottom": { "_type": "state" },
-  "disabledLeft": { "_type": "state" }
+  "~disabled": {},
+  "~disabledTop": {},
+  "~disabledRight": {},
+  "~disabledBottom": {},
+  "~disabledLeft": {}
 }

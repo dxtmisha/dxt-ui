@@ -1,0 +1,30 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+### `resize`
+
+Событие, непрерывно генерируемое при изменении размера или перетаскивании области кадрирования.
+
+**Параметры:**
+- `parameters: CropAreaEventParameters` — объект с параметрами события
+
+**Структура CropAreaEventParameters:**
+- `direction: CropAreaDirection` — идентификатор активного маркера или зоны перемещения (`'top'`, `'right'`, `'bottom'`, `'left'`, `'right-top'`, `'right-bottom'`, `'left-top'`, `'left-bottom'`, `'center'`)
+- `value: number` — измененное значение отдельной координаты в процентах (или `0` для перемещения по центру)
+- `coordinator: CropAreaCoordinator` — текущий массив из 4 координат `[сверху, справа, снизу, слева]` в процентах
+
+<Source
+    code={`
+<script setup>
+const handleResize = (parameters) => {
+  console.log('Направление перетаскивания:', parameters.direction)
+  console.log('Значение координаты:', parameters.value)
+  console.log('Текущие координаты [сверху, справа, снизу, слева]:', parameters.coordinator)
+}
+</script>
+
+<template>
+  <CropArea @resize="handleResize" />
+</template>
+  `}
+    language="html"
+/>

@@ -2,8 +2,7 @@ import { h, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
-  DesignConstructorAbstract,
-  toCamelCase
+  DesignConstructorAbstract
 } from '@dxtmisha/functional'
 
 import { CropArea } from './CropArea'
@@ -85,9 +84,9 @@ export class CropAreaDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      get: this.item.position.get.bind(this.item.position),
-      set: this.item.position.set.bind(this.item.position),
-      reset: this.item.position.reset.bind(this.item.position)
+      get: this.item.position.get,
+      set: this.item.position.set,
+      reset: this.item.position.reset
     } as EXPOSE
   }
 
@@ -99,13 +98,13 @@ export class CropAreaDesign<
    */
   protected initClasses(): Partial<CLASSES> {
     return {
-      main: this.item.classesData,
+      main: {},
       ...{
         // :classes [!] System label / Системная метка
         left: this.getSubClass('left'),
         center: this.getSubClass('center'),
         right: this.getSubClass('right'),
-        active: this.getSubClass('active'),
+        crop: this.getSubClass('crop'),
         move: this.getSubClass('move')
         // :classes [!] System label / Системная метка
       }
@@ -135,7 +134,6 @@ export class CropAreaDesign<
         ...this.getAttrs(),
         ref: this.element,
         class: this.classes?.value.main,
-        style: this.styles?.value,
         ...this.item.events.binds
       },
       [
@@ -167,19 +165,12 @@ export class CropAreaDesign<
    * @returns center column node / узел центральной колонки
    */
   protected readonly renderCenter = (): VNode => {
-    const activeChildren: any[] = []
-    this.initSlot('default', activeChildren, this.item.slotProps)
-
     return h('div', { class: this.classes?.value.center }, [
       this.renderMove('top'),
-      h(
-        'div',
-        {
-          class: this.classes?.value.active,
-          'data-value': 'center'
-        },
-        activeChildren
-      ),
+      h('div', {
+        'class': this.classes?.value.crop,
+        'data-value': 'center'
+      }),
       this.renderMove('bottom')
     ])
   }
@@ -207,10 +198,7 @@ export class CropAreaDesign<
    */
   protected readonly renderMove = (direction: CropAreaDirection): VNode => {
     return h('div', {
-      class: [
-        this.classes?.value.move,
-        this.getSubClass(`move--${toCamelCase(direction)}`)
-      ],
+      'class': this.classes?.value.move,
       'data-value': direction
     })
   }

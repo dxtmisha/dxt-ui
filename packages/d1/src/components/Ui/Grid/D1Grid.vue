@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import {
+  inArray,
   type ConstrClasses,
   type ConstrStyles
 } from '@dxtmisha/functional'
@@ -10,7 +11,7 @@ import {
   type GridSlots
 } from '@dxtmisha/constructor/Grid'
 
-import { defaults, type GridProps } from './props'
+import { defaults, type GridProps, propsValues } from './props'
 import './styleToken.scss'
 
 defineOptions({
@@ -23,7 +24,8 @@ const props = withDefaults(defineProps<GridProps>(), defaults)
 const classesToken = computed<ConstrClasses>(() => ({
   main: {
     // :classes-values [!] System label / Системная метка
-    'd1-grid': true
+    'd1-grid': true,
+    [`d1-grid--align--${props.align}`]: inArray(propsValues.align, props.align)
     // :classes-values [!] System label / Системная метка
   }
 }))

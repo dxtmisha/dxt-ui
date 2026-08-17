@@ -18,8 +18,9 @@ describe('SliderFieldEvent', () => {
 
     valueItemMock = {
       min: 10,
-      max: 90
-    } as SliderFieldValue
+      max: 90,
+      set: vi.fn()
+    } as unknown as SliderFieldValue
 
     propsMock = {
       multiple: false
@@ -88,7 +89,7 @@ describe('SliderFieldEvent', () => {
   })
 
   describe('onInput', () => {
-    it('should trigger onSliderInput with valueFocus for single mode', () => {
+    it('should trigger valueItem.set with valueFocus for single mode', () => {
       const sliderEvent = new SliderFieldEvent(propsMock, eventMock, valueItemMock)
       const input = document.createElement('input')
       input.type = 'number'
@@ -99,11 +100,10 @@ describe('SliderFieldEvent', () => {
 
       sliderEvent.onInput(inputEvent)
 
-      const [_, detailArg] = vi.mocked(eventMock.onInput).mock.calls[0]
-      expect(detailArg).toEqual({ value: 25 })
+      expect(valueItemMock.set).toHaveBeenCalledWith(25)
     })
 
-    it('should trigger onSliderInput with array for min type in multiple mode', () => {
+    it('should trigger valueItem.set with array for min type in multiple mode', () => {
       propsMock.multiple = true
       const sliderEvent = new SliderFieldEvent(propsMock, eventMock, valueItemMock)
 
@@ -117,11 +117,10 @@ describe('SliderFieldEvent', () => {
 
       sliderEvent.onInput(inputEvent)
 
-      const [_, detailArg] = vi.mocked(eventMock.onInput).mock.calls[0]
-      expect(detailArg).toEqual({ value: [25, 90] })
+      expect(valueItemMock.set).toHaveBeenCalledWith([25, 90])
     })
 
-    it('should trigger onSliderInput with array for max type in multiple mode', () => {
+    it('should trigger valueItem.set with array for max type in multiple mode', () => {
       propsMock.multiple = true
       const sliderEvent = new SliderFieldEvent(propsMock, eventMock, valueItemMock)
 
@@ -135,8 +134,7 @@ describe('SliderFieldEvent', () => {
 
       sliderEvent.onInput(inputEvent)
 
-      const [_, detailArg] = vi.mocked(eventMock.onInput).mock.calls[0]
-      expect(detailArg).toEqual({ value: [10, 75] })
+      expect(valueItemMock.set).toHaveBeenCalledWith([10, 75])
     })
 
     it('should fallback to 0 if valueAsNumber is NaN', () => {
@@ -150,8 +148,7 @@ describe('SliderFieldEvent', () => {
 
       sliderEvent.onInput(inputEvent)
 
-      const [_, detailArg] = vi.mocked(eventMock.onInput).mock.calls[0]
-      expect(detailArg).toEqual({ value: 0 })
+      expect(valueItemMock.set).toHaveBeenCalledWith(0)
     })
   })
 })
