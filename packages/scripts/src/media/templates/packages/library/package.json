@@ -12,6 +12,7 @@
     "component": "dxt-component",
     "library": "dxt-library",
     "types": "npm run library && npm run build && dxt-types",
+    "screenshot": "dxt-screenshot",
     "wiki": "dxt-ai-doc",
     "prepublishOnly": "npm run library && npm run build && dxt-types-save",
     "publish-to-npm": "npm publish --access public"

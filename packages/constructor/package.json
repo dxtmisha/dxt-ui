@@ -524,6 +524,10 @@
     "./ClockDial": {
       "types": "./dist/constructors/ClockDial/index.d.ts",
       "default": "./dist/clockDial.js"
+    },
+    "./CropArea": {
+      "types": "./dist/constructors/CropArea/index.d.ts",
+      "default": "./dist/cropArea.js"
     }
   },
   "buildOptions": {

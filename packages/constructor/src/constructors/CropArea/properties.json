@@ -1,0 +1,12 @@
+{
+  "#left": {},
+  "#center": {},
+  "#right": {},
+  "#active": {},
+  "#move": {},
+  "disabled": { "_type": "state" },
+  "disabledTop": { "_type": "state" },
+  "disabledRight": { "_type": "state" },
+  "disabledBottom": { "_type": "state" },
+  "disabledLeft": { "_type": "state" }
+}

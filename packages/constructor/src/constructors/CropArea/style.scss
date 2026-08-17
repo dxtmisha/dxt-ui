@@ -1,0 +1,213 @@
+@use "@dxtmisha/styles/properties" as ui;
+
+@mixin mixinCropArea {
+  @include ui.initByCustom('border-width', ui.v('d.sys.borderWidth.sm', 1px));
+  @include ui.initByCustom('border-color', ui.v('d.sys.color.primary'));
+  @include ui.initByCustom('border-opacity', ui.v('d.sys.opacity.surface.high', 1));
+  @include ui.initByCustom('scrim-color', ui.v('d.sys.color.scrim', rgba(0, 0, 0, 0.4)));
+  @include ui.initByCustom('scrim-opacity', ui.v('d.sys.opacity.surface.medium', 0.5));
+  @include ui.initByCustom('handle-size', ui.v('d.sys.size.sm', 16px));
+
+  @include ui.absolute;
+  display: flex;
+  z-index: 4;
+  box-sizing: border-box;
+  pointer-events: auto;
+
+  &__left,
+  &__right {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 0;
+    flex-shrink: 0;
+  }
+
+  &__left {
+    flex-basis: ui.v('??sys-crop-left', 0%);
+  }
+
+  &__right {
+    flex-basis: ui.v('??sys-crop-right', 0%);
+  }
+
+  &__center {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  &__active {
+    display: flex;
+    flex: 1 1 auto;
+    min-height: 0;
+    position: relative;
+    box-sizing: border-box;
+    cursor: move;
+
+    &::after {
+      content: "";
+      @include ui.absolute;
+      pointer-events: none;
+      border-style: solid;
+      border-width: ui.v('??border-width');
+      border-color: ui.v('??border-color');
+      opacity: ui.v('??border-opacity');
+    }
+  }
+
+  &__move {
+    background-color: ui.v('??scrim-color');
+    opacity: ui.v('??scrim-opacity');
+    position: relative;
+    box-sizing: border-box;
+    flex-basis: 0;
+
+    &::after {
+      content: "";
+      @include ui.absolute;
+      z-index: 4;
+    }
+
+    &--left,
+    &--right {
+      flex: 1 1 auto;
+      cursor: ew-resize;
+
+      &::after {
+        width: ui.v('??handle-size');
+      }
+    }
+
+    &--left::after {
+      right: 0;
+      left: auto;
+    }
+
+    &--right::after {
+      left: 0;
+      right: auto;
+    }
+
+    &--top,
+    &--bottom {
+      cursor: ns-resize;
+
+      &::after {
+        height: ui.v('??handle-size');
+      }
+    }
+
+    &--top {
+      flex-basis: ui.v('??sys-crop-top', 0%);
+
+      &::after {
+        bottom: 0;
+        top: auto;
+      }
+    }
+
+    &--bottom {
+      flex-basis: ui.v('??sys-crop-bottom', 0%);
+
+      &::after {
+        top: 0;
+        bottom: auto;
+      }
+    }
+
+    &--leftTop,
+    &--leftBottom,
+    &--rightTop,
+    &--rightBottom {
+      &::after {
+        width: ui.v('??handle-size');
+        height: ui.v('??handle-size');
+      }
+    }
+
+    &--leftTop {
+      flex-basis: ui.v('??sys-crop-top', 0%);
+      cursor: nwse-resize;
+
+      &::after {
+        right: 0;
+        bottom: 0;
+        left: auto;
+        top: auto;
+      }
+    }
+
+    &--leftBottom {
+      flex-basis: ui.v('??sys-crop-bottom', 0%);
+      cursor: nesw-resize;
+
+      &::after {
+        right: 0;
+        top: 0;
+        left: auto;
+        bottom: auto;
+      }
+    }
+
+    &--rightTop {
+      flex-basis: ui.v('??sys-crop-top', 0%);
+      cursor: nesw-resize;
+
+      &::after {
+        left: 0;
+        bottom: 0;
+        right: auto;
+        top: auto;
+      }
+    }
+
+    &--rightBottom {
+      flex-basis: ui.v('??sys-crop-bottom', 0%);
+      cursor: nwse-resize;
+
+      &::after {
+        left: 0;
+        top: 0;
+        right: auto;
+        bottom: auto;
+      }
+    }
+  }
+
+  &__blockSelection {
+    @include ui.textSelectNone;
+  }
+
+  @include ui.disabled {
+    cursor: default;
+
+    & &__active {
+      cursor: default;
+
+      &::after {
+        border-color: ui.v('d.sys.color.disabled', gray);
+      }
+    }
+
+    & &__move {
+      cursor: default;
+    }
+  }
+
+  &--disabledTop &__active::after {
+    border-top-color: ui.v('d.sys.color.disabled', gray);
+  }
+
+  &--disabledRight &__active::after {
+    border-right-color: ui.v('d.sys.color.disabled', gray);
+  }
+
+  &--disabledBottom &__active::after {
+    border-bottom-color: ui.v('d.sys.color.disabled', gray);
+  }
+
+  &--disabledLeft &__active::after {
+    border-left-color: ui.v('d.sys.color.disabled', gray);
+  }
+}
