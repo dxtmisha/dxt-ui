@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "dxt-demo-mcp": {
+      "command": "node",
+      "args": [
+        "/Users/tung/Documents/GitHub/dxt-ui/node_modules/vite-node/dist/cli.mjs",
+        "/Users/tung/Documents/GitHub/dxt-ui/packages/demo-mcp/bin/demo-mcp.ts"
+      ]
+    }
+  }
+}

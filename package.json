@@ -44,6 +44,8 @@
     "postinstall": "npm run prompt"
   },
   "files": [
+    "packages/demo-mcp/dist",
+    "packages/demo-mcp/package.json",
     "packages/mcp/dist",
     "packages/mcp/package.json",
     "packages/zip/dist",
@@ -55,6 +57,10 @@
     "LICENSE"
   ],
   "exports": {
+    "./demo-mcp": {
+      "import": "./dist/demo-mcp.js",
+      "types": "./dist/demo-mcp.d.ts"
+    },
     "./mcp": {
       "import": "./dist/mcp.js",
       "types": "./dist/mcp.d.ts"
@@ -79,6 +85,7 @@
     "packages/*"
   ],
   "dependencies": {
+    "@dxtmisha/demo-mcp": "workspace:*",
     "@dxtmisha/mcp": "workspace:*",
     "@dxtmisha/configuration": "workspace:*",
     "@dxtmisha/constructor": "workspace:*",

@@ -15,6 +15,8 @@ function getAbsolutePath(value: string): any {
 
 const config: StorybookConfig = {
   stories: [
+    '../../demo-mcp/src/**/*.mdx',
+    '../../demo-mcp/src/**/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../../mcp/src/**/*.mdx',
     '../../mcp/src/**/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../../d1/src/**/*.mdx',
