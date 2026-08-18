@@ -27,4 +27,5 @@ Studying this file COMPLETELY in full is critical to ensuring consistency with t
 
 ## Browser Automation & Testing
 - **STRICT PROHIBITION**: NEVER invoke `browser_subagent` under any circumstances (causes deadlocks and freezes on macOS).
-- **MANDATORY**: For all browser automation, testing Storybook components, UI checks, DOM inspection, and console verification, always use **Chrome DevTools MCP / Chrome Remote Debugging Protocol (CDP on port 9222)** or `read_url_content`.
+- **MANDATORY Desktop**: For desktop browser automation, testing Storybook components, UI checks, DOM inspection, and console verification, always use **Chrome DevTools MCP / Chrome Remote Debugging Protocol (CDP on port 9222)** or `read_url_content`.
+- **MANDATORY Mobile**: For mobile/phone testing («на телефоне», «в симуляторе», «на реальном устройстве»), always use **Apple Xcode Simulator (`Simulator.app` + `xcrun simctl`)** with `DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer` as defined in `browser.md`.
