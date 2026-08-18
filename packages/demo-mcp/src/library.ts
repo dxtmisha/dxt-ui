@@ -1,11 +1,3 @@
-import './style.scss'
-
-// Classes
-
-// Components
-
-// Composables
-
 // Functions
 export * from './functions/demoTools'
 

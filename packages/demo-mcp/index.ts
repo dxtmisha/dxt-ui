@@ -1,14 +1,16 @@
-#!/usr/bin/env vite-node
+#!/usr/bin/env node
 
 import { McpServer } from '@dxtmisha/mcp'
-import { getDemoTools } from '../src/functions/demoTools'
+import { getDemoTools } from './src/functions/demoTools'
+
+export * from './src/library'
 
 /**
  * Starts the MCP demo server using tools from demoTools.
  *
  * Запускает демонстрационный MCP сервер с инструментами из demoTools.
  */
-const server = new McpServer(getDemoTools(), {
+export const server = new McpServer(getDemoTools(), {
   name: 'dxt-demo-mcp',
   version: '1.0.0'
 })

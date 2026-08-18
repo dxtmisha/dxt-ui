@@ -4,7 +4,7 @@ import { viteBasicFunction } from '@dxtmisha/configuration/viteBasicFunction'
 export default viteBasicFunction(
   undefined,
   undefined,
-  undefined,
+  'index.ts',
   undefined,
   undefined,
   undefined,

@@ -72,9 +72,6 @@ You MUST evaluate whether your task relates to any of the following topics (even
 ## Package Core Information
 Auxiliary base library for UI components and typings. **DO NOT import directly in code**; use ready-made design system components (e.g., D1).
 
-## Package Type Definitions (Must Read in Full When Working with Package)
-'node_modules/@dxtmisha/constructor/ai-types.md'
-
 ## Developer Rules (Must Read Before Modifying Code)
 'node_modules/@dxtmisha/constructor/ai-developer.md'
 
@@ -105,9 +102,6 @@ You MUST evaluate whether your task relates to any of the following topics (even
 - 'node_modules/@dxtmisha/d1/ai-resources/styling-tokens.md': Architectural reference for design tokens, properties.json configuration, token resolution, and SCSS integration in the @dxtmisha/d1 component library. Provides exact standards for token hierarchies, semantic palettes, typography presets, and component styling rules to assist AI coding agents.
 - 'node_modules/@dxtmisha/d1/ai-resources/typography.md': This file contains standards and mixins for SCSS typography, text sizing, and multi-line clamping using the @dxtmisha/d1 library. It solves technical tasks related to consistent font styling, bidirectional alignment, and text truncation across web interfaces.
 
-## Package Type Definitions (Must Read in Full When Working with Package)
-'node_modules/@dxtmisha/d1/ai-types.md'
-
 ## Component Visual References (Screenshots)
 - 'node_modules/@dxtmisha/d1/ai-screenshot/screenshot-6_1.webp'
 - 'node_modules/@dxtmisha/d1/ai-screenshot/screenshot-6_2.webp'
@@ -117,6 +111,29 @@ You MUST evaluate whether your task relates to any of the following topics (even
 - 'node_modules/@dxtmisha/d1/ai-screenshot/screenshot-6_6.webp'
 - 'node_modules/@dxtmisha/d1/ai-screenshot/screenshot-code.html'
 - 'node_modules/@dxtmisha/d1/ai-screenshot/screenshot-styles.css'
+
+---
+
+# @dxtmisha/demo-mcp
+## Project location: Root directory
+The project is located at: 'node_modules/@dxtmisha/demo-mcp'.
+
+## Package Description & Module Overview
+Core Purpose: This library provides a template structure for creating modular, reusable, and type-safe component/utility packages within the design system.
+
+Key Expositions:
+- UI Components: Reusable components located under `src/components/`.
+- Composables: Stateful composition hooks under `src/composables/`.
+- Classes: Logical or utility class abstractions under `src/classes/`.
+- Functions: Pure helpers and utility functions under `src/functions/`.
+- Types: TypeScript declarations and interfaces under `src/types/`.
+
+Critical Development Rules:
+- **Do NOT modify `src/library.ts` directly**: This file is auto-generated and serves as the main entry point exporting all library entities. Manually editing it is strictly forbidden.
+- **Run the library generation script**: When creating, renaming, or deleting any new class, component, function, composable, or type, you MUST run the generation command to update the exports automatically:
+  ```bash
+  npm run library
+  ```
 
 ---
 
@@ -218,9 +235,6 @@ Vue 3 reactive utilities built on `@dxtmisha/functional-basic`. See `ai-types.md
 - **Purity & Atomicity**: Keep Vue components minimal. Extract all reactive state management, network orchestration, and side effects into external composables.
 - **Reusable Business Logic (`executeUse*`)**: Any complex business logic or state logic with any potential for reuse MUST be extracted into external service composables wrapped with `executeUse*` (`executeUseGlobal`, `executeUseLocal`, or `executeUseProvide`).
 
-## Package Type Definitions (Must Read in Full When Working with Package)
-'node_modules/@dxtmisha/functional/ai-types.md'
-
 ---
 
 # @dxtmisha/functional-basic
@@ -255,9 +269,6 @@ Framework-agnostic utility library. **Vue developers MUST search `@dxtmisha/func
 - **Style/Types**: `PascalCase` classes, `camelCase` methods/props, `UPPER_SNAKE_CASE` constants. No `any` (use `unknown`/generics). Explicit return types for ALL methods. Export all interfaces. Type files: `*Types.ts`. Use `@effect/schema` for schemas.
 - **SSR Safety**: Isomorphic code. Do NOT store request state in globals. Use `isDomRuntime()` before `window`/`document`. Use `ServerStorage.get('key', () => new Class())` for request-isolated singletons.
 - **Utility & Primitive Functions**: ALWAYS use primitive helper functions from this package (e.g. `isFunction`, `executeFunction`, `isFilled`, `isObject`, `isString`, `isArray`, etc.) instead of writing custom inline checks or conditions.
-
-## Package Type Definitions (Must Read in Full When Working with Package)
-'node_modules/@dxtmisha/functional-basic/ai-types.md'
 
 ---
 
