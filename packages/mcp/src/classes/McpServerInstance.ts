@@ -1,10 +1,11 @@
 import { McpServer as McpServerSdk } from '@modelcontextprotocol/sdk/server/mcp'
-import { ErrorCenter } from '@dxtmisha/functional-basic'
+import { ErrorCenter, forEach, isArray, isFilled } from '@dxtmisha/functional-basic'
 
+import { McpResourceAbstract } from './McpResourceAbstract'
 import { McpTransport } from './McpTransport'
 
-import type { CallToolResult } from '@modelcontextprotocol/sdk/types'
-import type { McpServerOptions, McpToolItem } from '../types/McpTypes'
+import type { CallToolResult, ReadResourceResult } from '@modelcontextprotocol/sdk/types'
+import type { McpResourceItem, McpServerOptions, McpToolItem } from '../types/McpTypes'
 
 /**
  * Class representing an instance of the MCP server.
@@ -39,16 +40,49 @@ export class McpServerInstance {
   }
 
   /**
-   * Starts the MCP server using the configured transport.
+   * Registers a single resource or resource collection on the SDK McpServer instance.
    *
-   * Запускает MCP сервер с использованием настроенного транспорта.
-   * @returns Promise<McpServerSdk>
+   * Регистрирует один ресурс или коллекцию ресурсов на экземпляре SDK McpServer.
+   * @param resource Resource item or resource collection / Элемент ресурса или коллекция ресурсов
+   * @returns void
    */
-  async start(): Promise<McpServerSdk> {
-    const server = this.getServer()
-    await server.connect(this.transport.get())
+  setupResource(resource: McpResourceItem | McpResourceAbstract): void {
+    if (resource instanceof McpResourceAbstract) {
+      const items = resource.toMcpResources()
+      forEach(items, (item: McpResourceItem) => this.setupResource(item))
+      return
+    }
 
-    return server
+    const server = this.getServer()
+    const metadata = {
+      description: resource.description,
+      mimeType: resource.mimeType,
+      _meta: resource._meta
+    }
+
+    server.registerResource(
+      resource.name,
+      resource.uri,
+      metadata,
+      async (uri: URL, extra: unknown): Promise<ReadResourceResult> => {
+        return this.executeResource(resource, uri, extra)
+      }
+    )
+  }
+
+  /**
+   * Registers resources on the SDK McpServer instance.
+   *
+   * Регистрирует ресурсы на экземпляре SDK McpServer.
+   * @param resources List of resources / Список ресурсов
+   * @returns void
+   */
+  setupResourceHandlers(resources: (McpResourceItem | McpResourceAbstract)[] = []): void {
+    if (isArray(resources)) {
+      forEach(resources, (resource: McpResourceItem | McpResourceAbstract) => {
+        this.setupResource(resource)
+      })
+    }
   }
 
   /**
@@ -93,7 +127,69 @@ export class McpServerInstance {
    * @returns void
    */
   setupToolHandlers(tools: McpToolItem[] = []): void {
-    tools.forEach(tool => this.setupTool(tool))
+    if (isArray(tools)) {
+      forEach(tools, (tool: McpToolItem) => this.setupTool(tool))
+    }
+  }
+
+  /**
+   * Starts the MCP server using the configured transport.
+   *
+   * Запускает MCP сервер с использованием настроенного транспорта.
+   * @returns Promise<McpServerSdk>
+   */
+  async start(): Promise<McpServerSdk> {
+    const server = this.getServer()
+    await server.connect(this.transport.get())
+
+    return server
+  }
+
+  /**
+   * Executes a resource read handler safely and formats the result.
+   *
+   * Безопасно выполняет обработчик чтения ресурса и форматирует результат.
+   * @param resource Resource item / Объект ресурса
+   * @param uri Requested resource URI / Запрошенный URI ресурса
+   * @param extra Extra context / Дополнительный контекст
+   * @returns Promise<ReadResourceResult>
+   */
+  protected async executeResource(
+    resource: McpResourceItem,
+    uri: URL,
+    extra: unknown
+  ): Promise<ReadResourceResult> {
+    try {
+      let rawResult: unknown
+
+      if (resource.handler) {
+        rawResult = await resource.handler(uri, extra)
+      } else if (isFilled(resource.text) || isFilled(resource.blob)) {
+        rawResult = {
+          uri: resource.uri,
+          mimeType: resource.mimeType,
+          text: resource.text,
+          blob: resource.blob
+        }
+      } else {
+        rawResult = resource.description || resource.name
+      }
+
+      return this.formatResourceResult(resource, rawResult, uri)
+    } catch (error) {
+      ErrorCenter.on({
+        group: 'mcp',
+        code: 'resource',
+        message: `Error executing resource "${resource.name}" (${resource.uri})`,
+        details: {
+          resource: resource.name,
+          uri: resource.uri,
+          error
+        }
+      })
+
+      throw error
+    }
   }
 
   /**
@@ -126,6 +222,121 @@ export class McpServerInstance {
       })
 
       throw error
+    }
+  }
+
+  /**
+   * Formats the result returned by a resource handler into standard ReadResourceResult structure.
+   *
+   * Форматирует результат выполнения обработчика ресурса в стандартную структуру ответа ReadResourceResult.
+   * @param resource Resource item / Объект ресурса
+   * @param result Raw resource result / Сырой результат ресурса
+   * @param uri Requested URI / Запрошенный URI
+   * @returns ReadResourceResult
+   */
+  protected formatResourceResult(
+    resource: McpResourceItem,
+    result: unknown,
+    uri: URL
+  ): ReadResourceResult {
+    if (
+      result
+      && typeof result === 'object'
+      && Array.isArray((result as any).contents)
+    ) {
+      return result as ReadResourceResult
+    }
+
+    if (Array.isArray(result)) {
+      return {
+        contents: result.map((item: unknown) => {
+          if (typeof item === 'string') {
+            return {
+              uri: uri.toString() || resource.uri,
+              mimeType: resource.mimeType || 'text/plain',
+              text: item
+            }
+          }
+
+          if (item && typeof item === 'object') {
+            const itemObj = item as Record<string, unknown>
+            if (typeof itemObj.blob === 'string') {
+              return {
+                uri: (itemObj.uri as string) || uri.toString() || resource.uri,
+                mimeType: (itemObj.mimeType as string) || resource.mimeType || 'application/octet-stream',
+                blob: itemObj.blob,
+                _meta: itemObj._meta as Record<string, unknown> | undefined
+              }
+            }
+
+            return {
+              uri: (itemObj.uri as string) || uri.toString() || resource.uri,
+              mimeType: (itemObj.mimeType as string) || resource.mimeType || 'text/plain',
+              text: typeof itemObj.text === 'string' ? itemObj.text : JSON.stringify(item, null, 2),
+              _meta: itemObj._meta as Record<string, unknown> | undefined
+            }
+          }
+
+          return {
+            uri: uri.toString() || resource.uri,
+            mimeType: resource.mimeType || 'text/plain',
+            text: String(item ?? '')
+          }
+        })
+      }
+    }
+
+    if (result && typeof result === 'object') {
+      const contentObj = result as Record<string, unknown>
+      if (typeof contentObj.blob === 'string') {
+        return {
+          contents: [
+            {
+              uri: (contentObj.uri as string) || uri.toString() || resource.uri,
+              mimeType: (contentObj.mimeType as string) || resource.mimeType || 'application/octet-stream',
+              blob: contentObj.blob,
+              _meta: contentObj._meta as Record<string, unknown> | undefined
+            }
+          ]
+        }
+      }
+
+      if (typeof contentObj.text === 'string') {
+        return {
+          contents: [
+            {
+              uri: (contentObj.uri as string) || uri.toString() || resource.uri,
+              mimeType: (contentObj.mimeType as string) || resource.mimeType || 'text/plain',
+              text: contentObj.text,
+              _meta: contentObj._meta as Record<string, unknown> | undefined
+            }
+          ]
+        }
+      }
+
+      return {
+        contents: [
+          {
+            uri: uri.toString() || resource.uri,
+            mimeType: resource.mimeType || 'application/json',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      }
+    }
+
+    const textContent = typeof result === 'string'
+      ? result
+      : String(result ?? '')
+
+    return {
+      contents: [
+        {
+          uri: uri.toString() || resource.uri,
+          mimeType: resource.mimeType || 'text/plain',
+          text: textContent
+        }
+      ]
     }
   }
 
@@ -172,6 +383,7 @@ export class McpServerInstance {
     const serverOptions = {
       capabilities: {
         tools: {},
+        resources: {},
         ...this.options.capabilities
       },
       ...this.options.options
@@ -183,3 +395,4 @@ export class McpServerInstance {
     )
   }
 }
+

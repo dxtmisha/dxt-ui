@@ -24,6 +24,12 @@
     "description": "Defines strict styling standards, rules, and mixins for UI components to enforce theme-adaptive styling and prevent hardcoded color usage. Solves the technical task of maintaining consistent, dynamic color palettes and state opacities across SCSS and Vue files."
   },
   {
+    "uri": "@dxtmisha/constructor/ai-resources/constructor.md",
+    "name": "Constructor Architecture Guide (@dxtmisha/constructor)",
+    "mimeType": "text/markdown",
+    "description": "Строгие архитектурные стандарты, шаблоны проектирования и правила реализации UI-компонентов-конструкторов для пакета dxt-ui. Определяет требования к разделению логики и рендеринга, структуре файлов, управлению зависимостями и использованию токенов дизайна."
+  },
+  {
     "uri": "@dxtmisha/d1/ai-types.md",
     "name": "Type Definitions (@dxtmisha/d1)",
     "mimeType": "text/markdown",
@@ -43,9 +49,63 @@
   },
   {
     "uri": "@dxtmisha/d1/ai-resources/styling-tokens.md",
-    "name": "Styling and CSS Tokens (@dxtmisha/d1)",
+    "name": "Design Tokens and Styling Guide (@dxtmisha/d1)",
     "mimeType": "text/markdown",
-    "description": "Defines SCSS token naming conventions, system token hierarchy, and CSS variable usage rules. Solves the technical task of maintaining consistent styling and dynamic theming across components without hardcoded values."
+    "description": "Architectural reference for design tokens, properties.json configuration, token resolution, and SCSS integration in the @dxtmisha/d1 component library. Provides exact standards for token hierarchies, semantic palettes, typography presets, and component styling rules to assist AI coding agents."
+  },
+  {
+    "uri": "@dxtmisha/d1/ai-resources/color.md",
+    "name": "SCSS Color and Palette Guide (@dxtmisha/d1)",
+    "mimeType": "text/markdown",
+    "description": "Defines SCSS standards, rules, and mixins for applying text colors, icon strokes, SVG fills, and dynamic palette theming using system tokens. Solves the technical task of maintaining consistent, theme-reactive styling without hardcoded values across UI components."
+  },
+  {
+    "uri": "@dxtmisha/d1/ai-resources/background.md",
+    "name": "SCSS Background Guidelines (@dxtmisha/d1)",
+    "mimeType": "text/markdown",
+    "description": "Rules and mixins for configuring background colors, surface opacities, gradients, and backdrop filters in SCSS using the dxtmisha library. Defines best practices for token-aligned, theme-adaptive styling and dynamic palette bindings."
+  },
+  {
+    "uri": "@dxtmisha/d1/ai-resources/size.md",
+    "name": "SCSS Sizing Guide (@dxtmisha/d1)",
+    "mimeType": "text/markdown",
+    "description": "This file contains standards, rules, and mixins for managing component dimensions, spacing tokens, and dynamic viewport units in SCSS. It helps AI agents generate consistent sizing, width, and height rules for UI components."
+  },
+  {
+    "uri": "@dxtmisha/d1/ai-resources/spacing.md",
+    "name": "SCSS Spacing Guide (@dxtmisha/d1)",
+    "mimeType": "text/markdown",
+    "description": "This document contains standards and mixins for implementing padding, margin, and gaps in SCSS with full bidirectional RTL and LTR support. It provides an AI coding assistant with rules for using logical properties and standard 4px-based spacing tokens to build adaptable UI components."
+  },
+  {
+    "uri": "@dxtmisha/d1/ai-resources/border.md",
+    "name": "SCSS Border and Divider Guidelines (@dxtmisha/d1)",
+    "mimeType": "text/markdown",
+    "description": "This file contains SCSS coding standards, mixins, and rules for implementing borders, outlines, dividers, and dynamic palette borders using the `@dxtmisha/d1` library. It solves technical styling tasks by enforcing explicit property separation, color token handling, and opacity management for component design systems."
+  },
+  {
+    "uri": "@dxtmisha/d1/ai-resources/outline.md",
+    "name": "SCSS Outline Guidelines (@dxtmisha/d1)",
+    "mimeType": "text/markdown",
+    "description": "This file contains SCSS styling standards and mixins for implementing accessible focus rings, outline opacity, and dynamic palette outlines. It guides AI agents on how to correctly apply non-shorthand outline properties and theme bindings for interactive UI components."
+  },
+  {
+    "uri": "@dxtmisha/d1/ai-resources/elevation.md",
+    "name": "SCSS Elevation Guide (@dxtmisha/d1)",
+    "mimeType": "text/markdown",
+    "description": "Guidelines and standard system tokens for applying box shadows, backdrop-filter blur effects, and depth elevation in SCSS UI components."
+  },
+  {
+    "uri": "@dxtmisha/d1/ai-resources/rounded.md",
+    "name": "SCSS Border Radius Guide (@dxtmisha/d1)",
+    "mimeType": "text/markdown",
+    "description": "Defines standards, tokens, and rules for applying corner radii, pill shapes, and adaptive height-relative border-radius scaling in SCSS for the @dxtmisha/d1 design system."
+  },
+  {
+    "uri": "@dxtmisha/d1/ai-resources/typography.md",
+    "name": "SCSS Typography Guide (@dxtmisha/d1)",
+    "mimeType": "text/markdown",
+    "description": "This file contains standards and mixins for SCSS typography, text sizing, and multi-line clamping using the @dxtmisha/d1 library. It solves technical tasks related to consistent font styling, bidirectional alignment, and text truncation across web interfaces."
   },
   {
     "uri": "@dxtmisha/functional/ai-types.md",

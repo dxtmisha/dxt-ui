@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import { z } from 'zod'
+import { McpResource } from '../McpResource'
 import { McpServer } from '../McpServer'
-import type { McpToolItem } from '../../types/McpTypes'
+import type { McpResourceItem, McpToolItem } from '../../types/McpTypes'
 
 describe('McpServer', () => {
   const dummyTool: McpToolItem = {
@@ -11,6 +12,13 @@ describe('McpServer', () => {
       message: z.string()
     },
     handler: args => `Hello, ${args.message}`
+  }
+
+  const dummyResource: McpResourceItem = {
+    uri: 'custom://test-res',
+    name: 'Test Resource',
+    description: 'A resource for testing',
+    handler: () => 'Test resource content'
   }
 
   it('creates an instance with tools and options', () => {
@@ -27,8 +35,25 @@ describe('McpServer', () => {
     expect(server.getTools()).toHaveLength(1)
   })
 
+  it('adds resources via constructor options and dynamically', () => {
+    const mcpResource = new McpResource([
+      { uri: '@dxtmisha/test/types.md', name: 'Types' }
+    ])
+
+    const server = new McpServer([], {
+      resources: [mcpResource]
+    })
+
+    expect(server.getResources()).toHaveLength(1)
+
+    server.addResource(dummyResource)
+    expect(server.getResources()).toHaveLength(2)
+  })
+
   it('initializes and starts the underlying SDK Server object via start()', async () => {
-    const server = new McpServer([dummyTool])
+    const server = new McpServer([dummyTool], {
+      resources: [dummyResource]
+    })
     expect(server.isStart()).toBe(false)
     expect(server.getServer()).toBeUndefined()
 
@@ -38,3 +63,4 @@ describe('McpServer', () => {
     expect(server.getServer()).toBe(sdkServer)
   })
 })
+
