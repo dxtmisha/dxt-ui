@@ -19,22 +19,21 @@ describe('McpServer', () => {
     expect(server.getTools()[0].name).toBe('test-tool')
   })
 
-  it('adds and removes tools dynamically', () => {
+  it('adds tools dynamically', () => {
     const server = new McpServer()
     expect(server.getTools()).toHaveLength(0)
 
     server.addTool(dummyTool)
     expect(server.getTools()).toHaveLength(1)
-
-    server.removeTool('test-tool')
-    expect(server.getTools()).toHaveLength(0)
   })
 
-  it('creates an underlying SDK Server object via make()', () => {
+  it('initializes and starts the underlying SDK Server object via start()', async () => {
     const server = new McpServer([dummyTool])
+    expect(server.isStart()).toBe(false)
     expect(server.getServer()).toBeUndefined()
 
-    const sdkServer = server.make()
+    const sdkServer = await server.start()
+    expect(server.isStart()).toBe(true)
     expect(sdkServer).toBeDefined()
     expect(server.getServer()).toBe(sdkServer)
   })

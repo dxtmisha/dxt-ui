@@ -1,7 +1,8 @@
-import type { McpServer as McpServerSdk } from '@modelcontextprotocol/sdk/server/mcp'
-import type { Transport } from '@modelcontextprotocol/sdk/shared/transport'
 import { McpServerInstance } from './McpServerInstance'
 import { McpTransport } from './McpTransport'
+
+import type { McpServer as McpServerSdk } from '@modelcontextprotocol/sdk/server/mcp'
+import type { Transport } from '@modelcontextprotocol/sdk/shared/transport'
 import type { McpServerOptions, McpToolItem } from '../types/McpTypes'
 
 /**
@@ -10,8 +11,6 @@ import type { McpServerOptions, McpToolItem } from '../types/McpTypes'
  * Класс для создания и запуска MCP сервера.
  */
 export class McpServer {
-  protected tools: McpToolItem[] = []
-  protected options: McpServerOptions = {}
   protected transport: McpTransport
   protected serverInstance?: McpServerInstance
 
@@ -23,12 +22,20 @@ export class McpServer {
    * @param options Server options / Настройки сервера
    */
   constructor(
-    tools: McpToolItem[] = [],
-    options: McpServerOptions = {}
+    protected tools: McpToolItem[] = [],
+    protected options: McpServerOptions = {}
   ) {
-    this.tools = [...tools]
-    this.options = { ...options }
     this.transport = new McpTransport(this.options.transport)
+  }
+
+  /**
+   * Checks if the server instance is initialized.
+   *
+   * Проверяет, инициализирован ли экземпляр сервера.
+   * @returns boolean
+   */
+  isStart(): boolean {
+    return Boolean(this.serverInstance)
   }
 
   /**
@@ -90,57 +97,26 @@ export class McpServer {
    */
   addTool(tool: McpToolItem): this {
     this.tools.push(tool)
-    if (this.serverInstance?.getServer()) {
-      this.serverInstance.setupToolHandlers(this.tools)
-    }
-    return this
-  }
 
-  /**
-   * Removes a tool by name.
-   *
-   * Удаляет инструмент по имени.
-   * @param name Tool name / Имя инструмента
-   * @returns this
-   */
-  removeTool(name: string): this {
-    const index = this.tools.findIndex(item => item.name === name)
-    if (index !== -1) {
-      this.tools.splice(index, 1)
-      if (this.serverInstance?.getServer()) {
-        this.serverInstance.setupToolHandlers(this.tools)
-      }
+    if (this.serverInstance) {
+      this.serverInstance.setupTool(tool)
     }
-    return this
-  }
 
-  /**
-   * Creates and initializes the underlying SDK McpServer instance.
-   *
-   * Создает и инициализирует базовый экземпляр SDK McpServer.
-   * @returns McpServerSdk
-   */
-  make(): McpServerSdk {
-    this.serverInstance = new McpServerInstance(this.options, this.transport)
-    return this.serverInstance.make(this.tools)
+    return this
   }
 
   /**
    * Starts the MCP server using the configured transport.
    *
    * Запускает MCP сервер с использованием настроенного транспорта.
-   * @param transport Optional transport instance / Опциональный экземпляр транспорта
    * @returns Promise<McpServerSdk>
    */
-  async start(transport?: Transport): Promise<McpServerSdk> {
-    if (transport) {
-      this.transport.set(transport)
-    }
-
+  async start(): Promise<McpServerSdk> {
     if (!this.serverInstance) {
-      this.make()
+      this.serverInstance = new McpServerInstance(this.options, this.transport)
+      this.serverInstance.setupToolHandlers(this.tools)
     }
 
-    return this.serverInstance!.start(transport)
+    return this.serverInstance.start()
   }
 }

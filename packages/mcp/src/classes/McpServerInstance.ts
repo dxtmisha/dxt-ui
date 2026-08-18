@@ -1,7 +1,9 @@
 import { McpServer as McpServerSdk } from '@modelcontextprotocol/sdk/server/mcp'
-import type { CallToolResult } from '@modelcontextprotocol/sdk/types'
-import type { Transport } from '@modelcontextprotocol/sdk/shared/transport'
+import { ErrorCenter } from '@dxtmisha/functional-basic'
+
 import { McpTransport } from './McpTransport'
+
+import type { CallToolResult } from '@modelcontextprotocol/sdk/types'
 import type { McpServerOptions, McpToolItem } from '../types/McpTypes'
 
 /**
@@ -10,7 +12,7 @@ import type { McpServerOptions, McpToolItem } from '../types/McpTypes'
  * Класс, представляющий экземпляр MCP сервера.
  */
 export class McpServerInstance {
-  protected serverInstance?: McpServerSdk
+  protected serverInstance: McpServerSdk
 
   /**
    * Constructor
@@ -20,46 +22,19 @@ export class McpServerInstance {
    * @param transport Transport manager instance / Экземпляр менеджера транспорта
    */
   constructor(
-    protected options: McpServerOptions = {},
-    protected transport: McpTransport = new McpTransport(options.transport)
-  ) { }
+    protected options: McpServerOptions,
+    protected transport: McpTransport
+  ) {
+    this.serverInstance = this.init()
+  }
 
   /**
    * Returns the underlying SDK McpServer instance.
    *
    * Возвращает базовый экземпляр SDK McpServer.
-   * @returns McpServerSdk | undefined
-   */
-  getServer(): McpServerSdk | undefined {
-    return this.serverInstance
-  }
-
-  /**
-   * Creates and initializes the underlying SDK McpServer instance.
-   *
-   * Создает и инициализирует базовый экземпляр SDK McpServer.
-   * @param tools List of tools / Список инструментов
    * @returns McpServerSdk
    */
-  make(tools: McpToolItem[] = []): McpServerSdk {
-    const name = this.options.name || 'mcp-server'
-    const version = this.options.version || '1.0.0'
-
-    const serverOptions = {
-      capabilities: {
-        tools: {},
-        ...this.options.capabilities
-      },
-      ...this.options.options
-    }
-
-    this.serverInstance = new McpServerSdk(
-      { name, version },
-      serverOptions
-    )
-
-    this.setupToolHandlers(tools)
-
+  getServer(): McpServerSdk {
     return this.serverInstance
   }
 
@@ -67,22 +42,47 @@ export class McpServerInstance {
    * Starts the MCP server using the configured transport.
    *
    * Запускает MCP сервер с использованием настроенного транспорта.
-   * @param transport Optional transport instance / Опциональный экземпляр транспорта
    * @returns Promise<McpServerSdk>
    */
-  async start(transport?: Transport): Promise<McpServerSdk> {
-    if (!this.serverInstance) {
-      this.make()
+  async start(): Promise<McpServerSdk> {
+    const server = this.getServer()
+    await server.connect(this.transport.get())
+
+    return server
+  }
+
+  /**
+   * Registers a single tool on the SDK McpServer instance.
+   *
+   * Регистрирует один инструмент на экземпляре SDK McpServer.
+   * @param tool Tool item / Объект инструмента
+   * @returns void
+   */
+  setupTool(tool: McpToolItem): void {
+    const server = this.getServer()
+
+    if (tool.inputSchema) {
+      server.registerTool(
+        tool.name,
+        {
+          description: tool.description,
+          inputSchema: tool.inputSchema as any
+        },
+        async (args: Record<string, unknown>, extra: unknown): Promise<CallToolResult> => {
+          return this.executeTool(tool, args || {}, extra)
+        }
+      )
+    } else {
+      server.registerTool(
+        tool.name,
+        {
+          description: tool.description
+        },
+        async (extra: unknown): Promise<CallToolResult> => {
+          return this.executeTool(tool, {}, extra)
+        }
+      )
     }
-
-    if (transport) {
-      this.transport.set(transport)
-    }
-
-    const selectedTransport = this.transport.get()
-    await this.serverInstance!.connect(selectedTransport)
-
-    return this.serverInstance!
   }
 
   /**
@@ -93,61 +93,39 @@ export class McpServerInstance {
    * @returns void
    */
   setupToolHandlers(tools: McpToolItem[] = []): void {
-    if (!this.serverInstance) {
-      return
-    }
+    tools.forEach(tool => this.setupTool(tool))
+  }
 
-    for (const tool of tools) {
-      if (tool.inputSchema) {
-        this.serverInstance.registerTool(
-          tool.name,
-          {
-            description: tool.description,
-            inputSchema: tool.inputSchema as any
-          },
-          async (args: Record<string, unknown>, extra: unknown): Promise<CallToolResult> => {
-            try {
-              const rawResult = await tool.handler(args || {}, extra)
-              return this.formatToolResult(rawResult)
-            } catch (error) {
-              const errorMessage = error instanceof Error ? error.message : String(error)
-              return {
-                isError: true,
-                content: [
-                  {
-                    type: 'text',
-                    text: `Error executing tool "${tool.name}": ${errorMessage}`
-                  }
-                ]
-              }
-            }
-          }
-        )
-      } else {
-        this.serverInstance.registerTool(
-          tool.name,
-          {
-            description: tool.description
-          },
-          async (extra: unknown): Promise<CallToolResult> => {
-            try {
-              const rawResult = await tool.handler({}, extra)
-              return this.formatToolResult(rawResult)
-            } catch (error) {
-              const errorMessage = error instanceof Error ? error.message : String(error)
-              return {
-                isError: true,
-                content: [
-                  {
-                    type: 'text',
-                    text: `Error executing tool "${tool.name}": ${errorMessage}`
-                  }
-                ]
-              }
-            }
-          }
-        )
-      }
+  /**
+   * Executes a tool handler safely and formats the result.
+   *
+   * Безопасно выполняет обработчик инструмента и форматирует результат.
+   * @param tool Tool item / Объект инструмента
+   * @param args Tool arguments / Аргументы инструмента
+   * @param extra Extra context / Дополнительный контекст
+   * @returns Promise<CallToolResult>
+   */
+  protected async executeTool(
+    tool: McpToolItem,
+    args: Record<string, unknown>,
+    extra: unknown
+  ): Promise<CallToolResult> {
+    try {
+      const rawResult = await tool.handler(args, extra)
+      return this.formatToolResult(rawResult)
+    } catch (error) {
+      ErrorCenter.on({
+        group: 'mcp',
+        code: 'tool',
+        message: `Error executing tool "${tool.name}"`,
+        details: {
+          tool: tool.name,
+          args,
+          error
+        }
+      })
+
+      throw error
     }
   }
 
@@ -179,5 +157,29 @@ export class McpServerInstance {
         }
       ]
     }
+  }
+
+  /**
+   * Initializes and creates the underlying SDK McpServer instance.
+   *
+   * Инициализирует и создает базовый экземпляр SDK McpServer.
+   * @returns McpServerSdk
+   */
+  protected init(): McpServerSdk {
+    const name = this.options.name || 'mcp-server'
+    const version = this.options.version || '1.0.0'
+
+    const serverOptions = {
+      capabilities: {
+        tools: {},
+        ...this.options.capabilities
+      },
+      ...this.options.options
+    }
+
+    return new McpServerSdk(
+      { name, version },
+      serverOptions
+    )
   }
 }
