@@ -7,3 +7,4 @@ const resourcesDir: string = process.argv?.[3]
 
 new DesignTypes(dir, resourcesDir)
   .makeSave()
+  .then()

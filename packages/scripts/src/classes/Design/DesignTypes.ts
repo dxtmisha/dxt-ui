@@ -76,10 +76,11 @@ export class DesignTypes {
    * Генерирует определения типов путем объединения обработанных файлов из директории ai-types-list без запуска ИИ.
    * @returns current instance / текущий экземпляр
    */
-  makeSave(): this {
+  async makeSave(): Promise<this> {
     console.log('DesignTypes: saving AI types from list...')
 
     this.makeTypes.makeSave()
+    await this.description.make()
 
     console.log('DesignTypes: AI types saved.')
 

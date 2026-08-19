@@ -12,6 +12,7 @@ dist-ssr
 *.local
 
 ai-types.md
+ai-description.md
 
 # Editor directories and files
 .vscode/*

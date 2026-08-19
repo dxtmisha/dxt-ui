@@ -13,8 +13,8 @@
   },
   {
     "uri": "@dxtmisha/functional-basic/ai-resources/api-reference.md",
-    "name": "API Reference and Examples (@dxtmisha/functional-basic)",
+    "name": "API Reference And Examples (@dxtmisha/functional-basic)",
     "mimeType": "text/markdown",
-    "description": "Provides code examples and usage patterns for the @dxtmisha/functional-basic library modules including HTTP client, storage, geolocation, and DOM helpers. It helps AI agents understand how to correctly integrate and utilize utility functions for frontend and backend tasks."
+    "description": "Provides code examples and usage patterns for HTTP clients, caching, data storage, localization, and DOM helpers from the @dxtmisha/functional-basic library. Guides AI assistants on how to properly implement core functional utilities in TypeScript applications."
   }
 ]

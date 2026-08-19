@@ -1,8 +1,0 @@
-[
-  {
-    "path": "ai-resources/api-reference.md",
-    "md5": "5b6b7850a06fbe60c2ff108599c45dc3",
-    "name": "API Reference and Examples",
-    "description": "Provides code examples and usage patterns for the @dxtmisha/functional-basic library modules including HTTP client, storage, geolocation, and DOM helpers. It helps AI agents understand how to correctly integrate and utilize utility functions for frontend and backend tasks."
-  }
-]

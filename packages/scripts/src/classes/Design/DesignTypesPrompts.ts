@@ -12,12 +12,12 @@ import type {
   DesignTypesPromptResult
 } from '../../types/designTypes'
 
-import { UI_MODULES } from '../../config'
+import { UI_DIR_AI_TYPES_LIST, UI_DIR_RESOURCES, UI_MODULES } from '../../config'
 
 /**
- * Class for reading prompt files and generating AI project rules and prompt triggers description.
+ * Class for reading prompt files, managing individual prompt metadata files, and generating AI project rules and prompt triggers description.
  *
- * Класс для чтения файлов промптов и генерации описания правил проекта ИИ и триггеров промптов.
+ * Класс для чтения файлов промптов, управления отдельными файлами метаданных промптов и генерации описания правил проекта ИИ и триггеров промптов.
  */
 export class DesignTypesPrompts {
   /** Cached list of prompt files / Кэшированный список файлов с промптами */
@@ -39,17 +39,33 @@ export class DesignTypesPrompts {
   ) { }
 
   /**
-   * Reads and returns the prompt cache list from the JSON cache file.
+   * Reads and returns the prompt cache list from individual JSON files in the resources directory.
    *
-   * Читает и возвращает список кэша промптов из JSON файла кэша.
+   * Читает и возвращает список кэша промптов из отдельных JSON файлов в директории ресурсов.
    * @returns prompt cache list / список кэша промптов
    */
   getCacheList(): DesignTypesPromptCacheList {
     if (this.cacheList === undefined) {
-      const cachePath = this.getCachePath()
-      const data = PropertiesFile.readFile<DesignTypesPromptCacheList>(cachePath)
+      const cacheDir = this.getCacheDir()
+      const files = PropertiesFile.readDirRecursive(cacheDir)
+      const list: DesignTypesPromptCacheList = []
 
-      this.cacheList = Array.isArray(data) ? data : []
+      for (const file of files) {
+        if (file.endsWith('.json')) {
+          const item = PropertiesFile.readFile<DesignTypesPromptCacheItem>([cacheDir, file])
+
+          if (
+            item
+            && isFilled(item.path)
+            && isFilled(item.name)
+            && isFilled(item.description)
+          ) {
+            list.push(item)
+          }
+        }
+      }
+
+      this.cacheList = list
     }
 
     return this.cacheList
@@ -114,25 +130,16 @@ export class DesignTypesPrompts {
   }
 
   /**
-   * Processes prompt files using AI and updates the JSON cache file if changes are detected.
+   * Processes prompt files using AI and updates individual JSON cache files if changes are detected.
    *
-   * Обрабатывает файлы промптов с помощью ИИ и обновляет JSON файл кэша при обнаружении изменений.
+   * Обрабатывает файлы промптов с помощью ИИ и обновляет отдельные JSON файлы кэша при обнаружении изменений.
    * @returns current instance / текущий экземпляр
    */
   async make(): Promise<this> {
     const list = this.getListPrompts()
-    let isCacheChanged = false
 
     for (const item of list) {
-      const result = await this.toAiPromptItem(item)
-
-      if (result.isChanged) {
-        isCacheChanged = true
-      }
-    }
-
-    if (isCacheChanged) {
-      this.saveCacheList(this.getCacheList())
+      await this.toAiPromptItem(item)
     }
 
     return this
@@ -157,13 +164,31 @@ export class DesignTypesPrompts {
   }
 
   /**
-   * Gets the cache JSON file path for prompts.
+   * Gets the cache directory path for individual prompt JSON files.
    *
-   * Получает путь к JSON файлу кэша для промптов.
+   * Получает путь к директории кэша для отдельных JSON файлов промптов.
+   * @returns cache directory path / путь к директории кэша
+   */
+  protected getCacheDir(): string {
+    return PropertiesFile.joinPath([UI_DIR_AI_TYPES_LIST, UI_DIR_RESOURCES])
+  }
+
+  /**
+   * Gets the cache JSON file path for a specific prompt file path.
+   *
+   * Получает путь к JSON файлу кэша для конкретного пути к файлу промпта.
+   * @param path relative file path of the prompt / относительный путь к файлу промпта
    * @returns cache JSON file path / путь к JSON файлу кэша
    */
-  protected getCachePath(): string {
-    return `${this.promptsDir}/prompts.json`
+  protected getCachePath(path: string): string {
+    const relativePath = path
+      .replace(new RegExp(`^${this.promptsDir}/`), '')
+      .replace(/\.[^/.]+$/, '.json')
+
+    return PropertiesFile.joinPath([
+      this.getCacheDir(),
+      relativePath
+    ])
   }
 
   /**
@@ -193,14 +218,30 @@ export class DesignTypesPrompts {
   }
 
   /**
-   * Saves the prompt cache list to the JSON cache file.
+   * Saves an individual prompt cache item to its JSON cache file.
    *
-   * Сохраняет список кэша промптов в JSON файл кэша.
+   * Сохраняет отдельный элемент кэша промпта в его JSON файл кэша.
+   * @param item prompt cache item to save / элемент кэша промпта для сохранения
+   */
+  protected saveCacheItem(item: DesignTypesPromptCacheItem): void {
+    PropertiesFile.writeByPath(
+      this.getCachePath(item.path),
+      item
+    )
+  }
+
+  /**
+   * Saves the prompt cache list to individual JSON cache files.
+   *
+   * Сохраняет список кэша промптов в отдельные JSON файлы кэша.
    * @param cache cache list to save / список кэша для сохранения
    */
   protected saveCacheList(cache: DesignTypesPromptCacheList): void {
     this.cacheList = cache
-    PropertiesFile.writeByPath(this.getCachePath(), cache)
+
+    for (const item of cache) {
+      this.saveCacheItem(item)
+    }
   }
 
   /**
@@ -230,9 +271,9 @@ export class DesignTypesPrompts {
   }
 
   /**
-   * Processes a single prompt file item using cache or AI into a formatted rule entry string and updates cache list if changed.
+   * Processes a single prompt file item using cache or AI into a formatted rule entry string and updates individual cache file if changed.
    *
-   * Обрабатывает один элемент файла промпта с использованием кэша или ИИ в отформатированную строку правила и обновляет список кэша при изменениях.
+   * Обрабатывает один элемент файла промпта с использованием кэша или ИИ в отформатированную строку правила и обновляет отдельный файл кэша при изменениях.
    * @param item prompt file item / элемент файла промпта
    * @returns object with formatted rule string and changed flag / объект с отформатированной строкой правила и флагом изменений
    */
@@ -277,6 +318,8 @@ export class DesignTypesPrompts {
       } else {
         cache.push(newItem)
       }
+
+      this.saveCacheItem(newItem)
 
       return {
         prompt: this.getPromptLine(item.path, data.description),
