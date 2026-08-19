@@ -1,0 +1,6 @@
+{
+  "path": "ai-resources/skeleton.md",
+  "md5": "0b1e64e597eb19099d1649e9f8eb093a",
+  "name": "Skeleton Architecture Guide",
+  "description": "Defines rules, class conventions, and code standards for non-destructive Skeleton loading systems in UI templates using constructor libraries. Guides AI assistants on implementing single-markup placeholders without template duplication."
+}

@@ -1,0 +1,6 @@
+{
+  "path": "ai-resources/constructor.md",
+  "md5": "bf5e6ff7ce0869b2ab96a81c9e3fb694",
+  "name": "Constructor Architecture Guide",
+  "description": "Строгие архитектурные стандарты, правила структурирования файлов и паттерны Dependency Injection для создания модульных UI-компонентов в пакете dxt-ui."
+}

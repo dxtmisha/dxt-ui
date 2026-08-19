@@ -23,6 +23,12 @@ You must save your changes in the correct target locations:
 - **Documentation & Playground changes** (including MDX files and `stories.ts` playground configurations) must be saved inside this current directory (the `wiki` folder).
 - **Component source changes** (including Vue SFC and typings/properties files) must be saved inside the parent directory (one level up from this current directory).
 
+- **Storybook Stories Configuration (`*.stories.ts`)**:
+  - In the `meta` object of `*.stories.ts`, you MUST append a concise short description of the component (2–4 words) to the `title` field after the component name separated by a dash:
+    `title: '[project]/[ComponentName] - [short description of 2-4 words]'` (e.g. `'d1/Button - Interactive action trigger'` or `'d1/Button - Интерактивная кнопка действия'`).
+  - The short description must capture the primary purpose of the component in 2–4 words in the target documentation language ([wikiLanguage]).
+  - **No `argTypes`**: Adding `argTypes` to the `meta` configuration object or anywhere in `*.stories.ts` is **STRICTLY FORBIDDEN**.
+
 > [!IMPORTANT]
 > **Ignore Output Separation Rules in componentPrompt:**
 > You must completely ignore any instructions or constraints in `componentPrompt.en.txt`/`componentPrompt.ru.txt` regarding how the final result/output should be returned or structured (specifically ignore rules 5-8, the requirement to split the response into 5 parts separated by "#########", and the prohibition on writing or modifying files).

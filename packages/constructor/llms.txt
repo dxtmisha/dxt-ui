@@ -25,4 +25,6 @@
 - [ai-types.md](ai-types.md): Comprehensive TypeScript reference with all constructor signatures and `@keywords`.
 - [ai-developer.md](ai-developer.md): Architectural developer guidelines and constructor implementation rules.
 - [ai-resources/colors-and-palettes.md](ai-resources/colors-and-palettes.md): SCSS styling rules and color palette token standards.
+- [ai-resources/constructor.md](ai-resources/constructor.md): Architectural standards and implementation rules for UI component constructors.
+- [ai-resources/skeleton.md](ai-resources/skeleton.md): Reactive loading state architecture, SkeletonInclude integration, and SkeletonItem guide.
 - [README.md](README.md): Full package documentation and usage guides.

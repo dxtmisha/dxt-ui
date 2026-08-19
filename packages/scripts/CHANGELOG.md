@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.11.6] - 2026-08-19
+
+### Changed
+- **Component Documentation Prompt (`prompt.md`)**:
+  - Added requirement for `*.stories.ts` to append a concise short description of the component (2–4 words) to the `meta.title` property after the component name separated by a dash.
+  - Added a strict prohibition against defining or adding `argTypes` to `meta` or stories in `*.stories.ts`.
+- **Project Template (`.gitignore`)**:
+  - Added `ai-types.md`, `ai-description.md`, and `ai-mcp-resources.json` to the project package template's `_.gitignore.txt`.
+- **Template Cleanups**:
+  - Renamed template `.gitignore` files to `_.gitignore.txt` across scaffolding templates.
+  - Removed deprecated `run.ts` script from the `componentDoc/wiki/` template.
+
 ## [0.11.5] - 2026-08-19
 
 ### Changed

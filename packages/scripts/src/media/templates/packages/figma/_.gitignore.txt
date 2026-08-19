@@ -10,7 +10,12 @@ lerna-debug.log*
 node_modules
 dist-ssr
 *.local
-.output
+
+/ai.config.ts
+
+ai-types.md
+ai-description.md
+ai-mcp-resources.json
 
 # Editor directories and files
 .vscode/*
