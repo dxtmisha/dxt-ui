@@ -2,11 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.11.5] - 2026-08-19
+
+### Changed
+- **Library Package Template (`.gitignore`)**:
+  - Added `ai-mcp-resources.json` to the library template's `_.gitignore.txt` to automatically ignore generated MCP resource files in newly scaffolded libraries.
+
 ## [0.11.4] - 2026-08-19
 
 ### Changed
 - **AI Types Save Workflow (`dxt-types-save`)**:
-  - Added MCP resources generation (`await this.mcp.make()`) into `DesignTypes.makeSave()` to automatically generate and synchronize MCP resource manifests (`ai-mcp.json`) when running fast type saving.
+  - Added MCP resources generation (`await this.mcp.make()`) into `DesignTypes.makeSave()` to automatically generate and synchronize MCP resource manifests (`ai-mcp-resources.json`) when running fast type saving.
 
 ## [0.11.3] - 2026-08-19
 
