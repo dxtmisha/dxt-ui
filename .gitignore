@@ -16,6 +16,8 @@ dist-ssr
 
 ai-types.md
 ai-description.md
+ai-mcp-resources.json
+ai-mcp-all-resources.json
 
 # Editor directories and files
 .vscode/*
