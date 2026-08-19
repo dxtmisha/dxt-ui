@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { McpServer } from '@dxtmisha/mcp'
+import { McpResource, McpServer } from '@dxtmisha/mcp'
+import allResources from '../../../../../ai-mcp-all-resources.json'
 
 import { calculateTool, dxtComponentsTool, echoTool, getDemoTools, systemInfoTool } from '../demoTools'
 import type {
@@ -35,6 +36,18 @@ describe('Demo Tools & McpServer Integration', () => {
     expect(server.isStart()).toBe(true)
     expect(sdkServer).toBeDefined()
     expect(server.getServer()).toBe(sdkServer)
+  })
+
+  it('initializes server with demo tools and allResources McpResource', () => {
+    const resource = new McpResource(allResources)
+    const server = new McpServer(getDemoTools(), {
+      name: 'dxt-demo-mcp',
+      version: '1.0.0'
+    }, [resource])
+
+    expect(server.getTools()).toHaveLength(4)
+    expect(server.getResources()).toHaveLength(1)
+    expect(resource.getItems().length).toBeGreaterThan(0)
   })
 
   describe('Tool Handlers', () => {

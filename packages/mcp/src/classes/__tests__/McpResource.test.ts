@@ -41,7 +41,7 @@ describe('McpResource and McpResourceAbstract', () => {
 
     const itemByName = resourceManager.getItemByName('Project Overview (@dxtmisha/constructor)')
     expect(itemByName).toBeDefined()
-    expect(itemByName?.uri).toBe('@dxtmisha/constructor/ai-description.md')
+    expect(itemByName?.uri).toBe('dxt:///@dxtmisha/constructor/ai-description.md')
   })
 
   it('adds and removes items dynamically', () => {
@@ -88,15 +88,32 @@ describe('McpResource and McpResourceAbstract', () => {
     })
   })
 
-  it('reads resource fallback with description when no text or handler is present', async () => {
+  it('reads existing file content from disk when resource points to a file', async () => {
     const resourceManager = new McpResource(sampleResources)
     const item = resourceManager.getItem('@dxtmisha/constructor/ai-types.md')!
 
-    const result = await resourceManager.read(item, new URL('http://localhost/@dxtmisha/constructor/ai-types.md'))
+    const result = await resourceManager.read(item, new URL('dxt:///@dxtmisha/constructor/ai-types.md'))
+    expect(result).toHaveProperty('text')
+    expect((result as any).text).toContain('@dxtmisha/constructor')
+    expect((result as any).uri).toBe('dxt:///@dxtmisha/constructor/ai-types.md')
+  })
+
+  it('reads resource fallback with description when file is not found on disk', async () => {
+    const resourceManager = new McpResource([
+      {
+        uri: '@dxtmisha/constructor/non-existent-file.md',
+        name: 'Non Existent',
+        mimeType: 'text/markdown',
+        description: 'Fallback description for non-existent file.'
+      }
+    ])
+    const item = resourceManager.getItem('@dxtmisha/constructor/non-existent-file.md')!
+
+    const result = await resourceManager.read(item, new URL('dxt:///@dxtmisha/constructor/non-existent-file.md'))
     expect(result).toEqual({
-      uri: '@dxtmisha/constructor/ai-types.md',
+      uri: 'dxt:///@dxtmisha/constructor/non-existent-file.md',
       mimeType: 'text/markdown',
-      text: 'TypeScript type definitions and signatures for AI coding assistant.'
+      text: 'Fallback description for non-existent file.'
     })
   })
 
@@ -126,6 +143,21 @@ describe('McpResource and McpResourceAbstract', () => {
       text: 'Hello from inline content!',
       blob: undefined
     })
+  })
+
+  it('allows customizing and changing the URI scheme protocol', () => {
+    const resourceManager = new McpResource([
+      { uri: 'docs/guide.md', name: 'Guide' }
+    ], { scheme: 'my-custom-scheme' })
+
+    expect(resourceManager.getScheme()).toBe('my-custom-scheme')
+    expect(resourceManager.getItems()[0].uri).toBe('my-custom-scheme:///docs/guide.md')
+    expect(resourceManager.hasItem('docs/guide.md')).toBe(true)
+    expect(resourceManager.hasItem('my-custom-scheme:///docs/guide.md')).toBe(true)
+
+    resourceManager.setScheme('new-scheme')
+    expect(resourceManager.getScheme()).toBe('new-scheme')
+    expect(resourceManager.normalizeUri('another/file.md')).toBe('new-scheme:///another/file.md')
   })
 
   it('can be extended via custom subclass of McpResourceAbstract', async () => {

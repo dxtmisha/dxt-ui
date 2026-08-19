@@ -15,7 +15,7 @@
     "types": "npm run library && npm run build && dxt-types",
     "screenshot": "dxt-screenshot",
     "wiki": "dxt-ai-doc",
-    "prepublishOnly": "npm run library && npm run build && dxt-types-save",
+    "prepublishOnly": "npm run library && npm run build",
     "publish-to-npm": "npm publish --access public"
   },
   "files": [

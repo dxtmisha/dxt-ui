@@ -98,6 +98,10 @@ export interface McpResourceItem {
 
 /** Interface for MCP resource class options / Интерфейс настроек класса ресурса MCP */
 export interface McpResourceOptions {
+  /** Custom URI scheme protocol (defaults to 'dxt') / Пользовательский протокол схемы URI (по умолчанию 'dxt') */
+  scheme?: string
+  /** Base directory path for resolving file URIs / Базовый путь к директории для разрешения URI файлов */
+  basePath?: string
   /** Custom resource content loader / Пользовательский загрузчик содержимого ресурса */
   loader?: (
     resource: McpResourceItem,
@@ -112,6 +116,8 @@ export interface McpServerOptions {
   name?: string
   /** Server version / Версия сервера */
   version?: string
+  /** Resource URI scheme protocol (defaults to 'dxt') / Протокол схемы URI ресурсов (по умолчанию 'dxt') */
+  scheme?: string
   /** Server capabilities / Возможности сервера */
   capabilities?: ServerCapabilities
   /** SDK Server options / Дополнительные опции сервера SDK */

@@ -1,19 +1,24 @@
 #!/usr/bin/env node
 
-import { McpServer } from '@dxtmisha/mcp'
+import { McpResource, McpServer } from '@dxtmisha/mcp'
+import allResources from '../../ai-mcp-all-resources.json'
 import { getDemoTools } from './src/functions/demoTools'
 
 export * from './src/library'
 
 /**
- * Starts the MCP demo server using tools from demoTools.
+ * Starts the MCP demo server using tools from demoTools and resources from ai-mcp-all-resources.json.
  *
- * Запускает демонстрационный MCP сервер с инструментами из demoTools.
+ * Запускает демонстрационный MCP сервер с инструментами из demoTools и ресурсами из ai-mcp-all-resources.json.
  */
-export const server = new McpServer(getDemoTools(), {
-  name: 'dxt-demo-mcp',
-  version: '1.0.0'
-})
+export const server = new McpServer(
+  getDemoTools(),
+  {
+    name: 'dxt-demo-mcp',
+    version: '1.0.0'
+  },
+  [new McpResource(allResources)]
+)
 
 server.start().catch((error: unknown) => {
   console.error('Failed to start MCP server:', error)

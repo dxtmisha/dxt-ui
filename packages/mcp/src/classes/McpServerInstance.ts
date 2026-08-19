@@ -60,9 +60,13 @@ export class McpServerInstance {
       _meta: resource._meta
     }
 
+    const resourceUri = resource.uri.includes('://')
+      ? resource.uri
+      : `dxt:///${resource.uri.replace(/^\/+/, '')}`
+
     server.registerResource(
       resource.name,
-      resource.uri,
+      resourceUri,
       metadata,
       async (uri: URL, extra: unknown): Promise<ReadResourceResult> => {
         return this.executeResource(resource, uri, extra)

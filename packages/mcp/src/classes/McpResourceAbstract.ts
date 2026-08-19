@@ -16,15 +16,44 @@ import type {
 export abstract class McpResourceAbstract {
   /** List of resource items / Список элементов ресурсов */
   protected items: McpResourceItem[] = []
+  /** URI scheme protocol for resources / Протокол схемы URI для ресурсов */
+  protected scheme: string = 'dxt'
 
   /**
    * Constructor
    *
    * Конструктор
    * @param items List of initial resource items or records / Список начальных элементов или записей ресурсов
+   * @param scheme Optional URI scheme protocol (defaults to 'dxt') / Опциональный протокол схемы URI (по умолчанию 'dxt')
    */
-  constructor(items: (McpResourceItem | McpResourceRecord)[] = []) {
+  constructor(
+    items: (McpResourceItem | McpResourceRecord)[] = [],
+    scheme: string = 'dxt'
+  ) {
+    this.scheme = scheme
     this.addItems(items)
+  }
+
+  /**
+   * Returns current URI scheme protocol.
+   *
+   * Возвращает текущий протокол схемы URI.
+   * @returns string
+   */
+  getScheme(): string {
+    return this.scheme
+  }
+
+  /**
+   * Sets new URI scheme protocol.
+   *
+   * Устанавливает новый протокол схемы URI.
+   * @param scheme New URI scheme / Новый протокол схемы URI
+   * @returns this
+   */
+  setScheme(scheme: string): this {
+    this.scheme = scheme
+    return this
   }
 
   /**
@@ -35,7 +64,8 @@ export abstract class McpResourceAbstract {
    * @returns boolean
    */
   hasItem(uri: string): boolean {
-    return this.items.some(item => item.uri === uri)
+    const targetUri = this.normalizeUri(uri)
+    return this.items.some(item => item.uri === targetUri || item.uri === uri)
   }
 
   /**
@@ -46,7 +76,8 @@ export abstract class McpResourceAbstract {
    * @returns McpResourceItem | undefined
    */
   getItem(uri: string): McpResourceItem | undefined {
-    return this.items.find(item => item.uri === uri)
+    const targetUri = this.normalizeUri(uri)
+    return this.items.find(item => item.uri === targetUri || item.uri === uri)
   }
 
   /**
@@ -131,6 +162,21 @@ export abstract class McpResourceAbstract {
   }
 
   /**
+   * Normalizes a resource URI string into a valid URI format with a scheme.
+   *
+   * Нормализует строку URI ресурса в валидный формат URI со схемой.
+   * @param uri Resource URI string / Строка URI ресурса
+   * @returns string
+   */
+  normalizeUri(uri: string): string {
+    if (uri.includes('://')) {
+      return uri
+    }
+
+    return `${this.getScheme()}:///${uri.replace(/^\/+/, '')}`
+  }
+
+  /**
    * Abstract method to read the content of a resource.
    *
    * Абстрактный метод для чтения содержимого ресурса.
@@ -167,7 +213,7 @@ export abstract class McpResourceAbstract {
    */
   protected normalizeItem(item: McpResourceItem | McpResourceRecord): McpResourceItem {
     return {
-      uri: item.uri,
+      uri: this.normalizeUri(item.uri),
       name: item.name,
       mimeType: item.mimeType || 'text/plain',
       description: item.description,

@@ -14,7 +14,13 @@ import type { McpResourceAbstract } from './McpResourceAbstract'
  * Класс для создания и запуска MCP сервера.
  */
 export class McpServer {
+  /** List of registered tools / Список зарегистрированных инструментов */
+  protected tools: McpToolItem[] = []
+  /** List of registered resources / Список зарегистрированных ресурсов */
+  protected resources: (McpResourceItem | McpResourceAbstract)[] = []
+  /** Transport manager instance / Экземпляр менеджера транспорта */
   protected transport: McpTransport
+  /** MCP server instance manager / Менеджер экземпляра MCP сервера */
   protected serverInstance?: McpServerInstance
 
   /**
@@ -26,21 +32,19 @@ export class McpServer {
    * @param resources List of initial resources or resource collections / Список начальных ресурсов или коллекций ресурсов
    */
   constructor(
-    protected tools: McpToolItem[] = [],
+    tools: McpToolItem[] = [],
     protected options: McpServerOptions = {},
-    protected resources: (McpResourceItem | McpResourceAbstract)[] = []
+    resources: (McpResourceItem | McpResourceAbstract)[] = []
   ) {
     this.transport = new McpTransport(this.options.transport)
+
+    this.addTools(tools)
 
     if (this.options.resources) {
       this.addResources(this.options.resources)
     }
 
-    if (this.resources.length > 0) {
-      const initialResources = [...this.resources]
-      this.resources = []
-      this.addResources(initialResources)
-    }
+    this.addResources(resources)
   }
 
   /**
