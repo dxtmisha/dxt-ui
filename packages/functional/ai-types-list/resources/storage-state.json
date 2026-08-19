@@ -1,0 +1,6 @@
+{
+  "path": "ai-resources/storage-state.md",
+  "md5": "7c6142dc8dc5172b2cbf5fca08b2b2d5",
+  "name": "Reactive Storage Composables",
+  "description": "Provides composable Vue-like functions for managing persistent and synchronized browser state across localStorage, sessionStorage, cookies, BroadcastChannel, and URL hash fragments. Solves technical tasks related to cross-tab communication, SSR-safe cookie handling, and reactive storage binding."
+}

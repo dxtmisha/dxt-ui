@@ -13,26 +13,26 @@
   },
   {
     "uri": "@dxtmisha/functional/ai-resources/api-reference.md",
-    "name": "API Management and Scope Singletons (@dxtmisha/functional)",
+    "name": "API Management and Reactive Singletons (@dxtmisha/functional)",
     "mimeType": "text/markdown",
-    "description": "Defines usage patterns and guidelines for REST API management and scope-isolated singleton factories within the @dxtmisha/functional library. It provides technical instructions for initializing global, local, and provided singletons alongside reactive CRUD operations."
+    "description": "Defines guidance and usage patterns for REST API management and scope-isolated singleton factories within the library. It solves the technical task of configuring reactive CRUD operations, caching, and lifecycle scopes like global, local, and provided singletons."
   },
   {
     "uri": "@dxtmisha/functional/ai-resources/localization-seo.md",
-    "name": "Localization and SEO Utilities (@dxtmisha/functional)",
+    "name": "Localization and SEO Management (@dxtmisha/functional)",
     "mimeType": "text/markdown",
-    "description": "Provides utilities for locale-aware formatting, translation primitives, geographic context resolution, and reactive HTML document metadata handling. Solves internationalization and SEO management tasks in web applications using functional components."
+    "description": "Utilities for locale-aware formatting, multi-key translations, and reactive HTML document metadata handling. Solves internationalization and SEO requirements in frontend applications."
   },
   {
     "uri": "@dxtmisha/functional/ai-resources/reactivity-lists.md",
     "name": "Reactivity Helpers and DOM Utilities (@dxtmisha/functional)",
     "mimeType": "text/markdown",
-    "description": "This file provides advanced async reactivity composables, list data models, search filters, and DOM observers for managing application state and UI lifecycle. It solves technical tasks related to asynchronous computed properties, optimized multi-field searching, and safe event listener management in frontend codebases."
+    "description": "Provides advanced async reactivity composables, reactive list data models, debounced search filters, and DOM observer utilities. This file solves complex state management and performance optimization tasks in frontend applications using functional helpers."
   },
   {
     "uri": "@dxtmisha/functional/ai-resources/storage-state.md",
     "name": "Reactive Storage Composables (@dxtmisha/functional)",
     "mimeType": "text/markdown",
-    "description": "Provides composable Vue-like reactive wrappers for persistent and synchronized browser state management, including localStorage, sessionStorage, cookies, broadcast channels, and URL hash fragments. Solves technical tasks related to cross-tab communication, SSR-safe cookie handling, and state persistence for web applications."
+    "description": "Provides composable Vue-like functions for managing persistent and synchronized browser state across localStorage, sessionStorage, cookies, BroadcastChannel, and URL hash fragments. Solves technical tasks related to cross-tab communication, SSR-safe cookie handling, and reactive storage binding."
   }
 ]

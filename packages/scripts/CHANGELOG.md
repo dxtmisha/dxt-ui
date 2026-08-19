@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.11.3] - 2026-08-19
+
+### Added
+- **Constants**: Added `UI_DIR_RESOURCES` (`'resources'`) directory constant in `src/config.ts`.
+- **Scaffolding Template**: Added `"screenshot": "dxt-screenshot"` script entry to the library package template (`src/media/templates/packages/library/package.json`).
+
+### Changed
+- **AI Prompt Metadata Separation & Granular Cache**:
+  - Split prompt metadata caching from monolithic `prompts.json` files into individual JSON files saved in `ai-types-list/resources/`.
+  - Updated `DesignTypesPrompts` to read, aggregate, and persist prompt cache items as separate `.json` files in the resources directory.
+  - Added `getCacheDir()`, `getCachePath()`, and `saveCacheItem()` methods in `DesignTypesPrompts` to manage individual prompt metadata files.
+  - Refactored `make()` and `toAiPromptItem()` to write prompt cache files immediately on change.
+- **AI Types Save Workflow (`dxt-types-save`)**:
+  - Made `DesignTypes.makeSave()` asynchronous (`Promise<this>`) and added automatic package description generation via `await this.description.make()`.
+  - Updated `bin/design-types-save.ts` to await `makeSave()`.
+
 ## [0.11.2] - 2026-08-14
 
 ### Changed

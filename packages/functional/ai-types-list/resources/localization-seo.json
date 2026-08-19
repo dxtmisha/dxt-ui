@@ -1,0 +1,6 @@
+{
+  "path": "ai-resources/localization-seo.md",
+  "md5": "99983d3a7683e94f3e62b67851b8244d",
+  "name": "Localization and SEO Management",
+  "description": "Utilities for locale-aware formatting, multi-key translations, and reactive HTML document metadata handling. Solves internationalization and SEO requirements in frontend applications."
+}

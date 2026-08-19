@@ -1,0 +1,6 @@
+{
+  "path": "ai-resources/reactivity-lists.md",
+  "md5": "6e8b7100e59f0ffd08416bed080802db",
+  "name": "Reactivity Helpers and DOM Utilities",
+  "description": "Provides advanced async reactivity composables, reactive list data models, debounced search filters, and DOM observer utilities. This file solves complex state management and performance optimization tasks in frontend applications using functional helpers."
+}
