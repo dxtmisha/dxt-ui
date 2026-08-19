@@ -1,19 +1,21 @@
-// md5:e01c723ca610da590147b09bb43f2bb7 true
-type CropAreaPropsToken = {
+// md5:14b9c7b1f94d95f4a119823ab75cb1ce true
+export type CropAreaPropsBasic = ModelProps<any> & {
+    value?: CropAreaCoordinator;
+    min?: number;
+    step?: number;
+    tabindex?: number | string;
+    tag?: string;
+};
+export type CropAreaProps = CropAreaPropsBasic & {
     disabled?: boolean;
     disabledTop?: boolean;
     disabledRight?: boolean;
     disabledBottom?: boolean;
     disabledLeft?: boolean;
 };
-export type CropAreaPropsBasic = ModelProps<CropAreaCoordinator> & {
-    value?: CropAreaCoordinator;
-    min?: number;
-    tag?: string;
-};
-export type CropAreaProps = CropAreaPropsBasic & CropAreaPropsToken;
-/** Default values for crop area properties @keywords defaults, crop area */
+/** Default configuration values for crop area @keywords defaults, crop, area, configuration */
 export declare const defaultsCropArea: {
     min: number;
+    step: number;
     tag: string;
 };

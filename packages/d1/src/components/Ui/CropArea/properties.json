@@ -1,3 +1,15 @@
 {
-  "main": "{d.cropArea}"
+  "main": "{d.cropArea}",
+  "#crop": {
+    "border-width": "{ref.spacing.2px}",
+    "palette-border": "{sys.palette.primary}",
+    "border-opacity": "{sys.opacity.primary.high}"
+  },
+  "#move": {
+    "background-color": "{sys.palette.scrim}",
+    "background-opacity": "{sys.opacity.scrim}"
+  },
+  "focus-visible": {
+    "outline": "{outline.md}"
+  }
 }

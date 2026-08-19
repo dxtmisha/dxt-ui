@@ -1,11 +1,14 @@
 @use "@dxtmisha/styles/properties" as ui;
 
 @mixin mixinCropArea {
+  @include ui.initByCustom('handleSize', 8px);
+
   @include ui.absolute;
   display: flex;
   z-index: 4;
   box-sizing: border-box;
   pointer-events: auto;
+  outline: none;
 
   &__left,
   &__right {

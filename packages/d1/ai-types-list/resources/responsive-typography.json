@@ -1,0 +1,6 @@
+{
+  "path": "ai-resources/responsive-typography.md",
+  "md5": "7a0a16c4f6b1ea9ec13418887a323115",
+  "name": "Responsive Layout And Typography",
+  "description": "Defines SCSS styling standards, including BEM class naming conventions, mandatory responsive media query mixins via the d1 library, and standardized typography classes. Solves the task of ensuring consistent, scalable, and responsive component styling across the codebase."
+}

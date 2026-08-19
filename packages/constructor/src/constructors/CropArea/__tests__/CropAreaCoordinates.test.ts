@@ -108,6 +108,59 @@ describe('CropAreaCoordinates', () => {
     })
   })
 
+  it('should move by discrete step via moveByStep and emit resize', () => {
+    const { coordinates, emits, position } = createInstances()
+
+    coordinates.moveByStep(5, -5)
+
+    expect(position.get()).toEqual([5, 5, 15, 15])
+    expect(emits).toHaveBeenCalledWith('resize', {
+      direction: 'center',
+      value: 0,
+      coordinator: [5, 5, 15, 15]
+    })
+  })
+
+  it('should resize by discrete step via resizeByStep and emit resize', () => {
+    const { coordinates, emits, position } = createInstances()
+
+    // Expand width (deltaX = 5 -> right moves -5 -> right goes from 10 to 5)
+    coordinates.resizeByStep(5, 0)
+    expect(position.get()).toEqual([10, 5, 10, 10])
+    expect(emits).toHaveBeenCalledWith('resize', {
+      direction: 'right',
+      value: 5,
+      coordinator: [10, 5, 10, 10]
+    })
+
+    // Expand height (deltaY = 5 -> bottom moves -5 -> bottom goes from 10 to 5)
+    coordinates.resizeByStep(0, 5)
+    expect(position.get()).toEqual([10, 5, 5, 10])
+    expect(emits).toHaveBeenCalledWith('resize', {
+      direction: 'bottom',
+      value: 5,
+      coordinator: [10, 5, 5, 10]
+    })
+
+    // Opposite resize: left (deltaX = -5 -> left moves -5 -> left goes from 10 to 5)
+    coordinates.resizeByStep(-5, 0, true)
+    expect(position.get()).toEqual([10, 5, 5, 5])
+    expect(emits).toHaveBeenCalledWith('resize', {
+      direction: 'left',
+      value: 5,
+      coordinator: [10, 5, 5, 5]
+    })
+
+    // Opposite resize: top (deltaY = -5 -> top moves -5 -> top goes from 10 to 5)
+    coordinates.resizeByStep(0, -5, true)
+    expect(position.get()).toEqual([5, 5, 5, 5])
+    expect(emits).toHaveBeenCalledWith('resize', {
+      direction: 'top',
+      value: 5,
+      coordinator: [5, 5, 5, 5]
+    })
+  })
+
   it('should reset coordinates state', () => {
     const { coordinates } = createInstances()
     const startEvent = new MouseEvent('mousedown', { clientX: 50, clientY: 50 })

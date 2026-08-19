@@ -1,0 +1,6 @@
+{
+  "path": "ai-resources/rounded.md",
+  "md5": "a076b48f005bbc3504331d89d46835da",
+  "name": "SCSS Border Radius Guide",
+  "description": "Contains SCSS guidelines, tokens, and code examples for applying standard corner radii, pill shapes, and adaptive height-relative border-radius scaling using the @dxtmisha/d1 design system."
+}

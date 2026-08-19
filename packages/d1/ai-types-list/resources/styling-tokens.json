@@ -1,0 +1,6 @@
+{
+  "path": "ai-resources/styling-tokens.md",
+  "md5": "850924d4f74beba579776c24dc821908",
+  "name": "Design Tokens Guide",
+  "description": "Comprehensive reference for design tokens, properties.json configuration, token resolution, and SCSS integration in the @dxtmisha/d1 component library. It defines architectural hierarchies, naming conventions, dynamic palettes, and best practices for component styling."
+}

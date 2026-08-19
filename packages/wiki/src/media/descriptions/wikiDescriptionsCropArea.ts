@@ -36,7 +36,7 @@ export const wikiDescriptionsCropArea: StorybookComponentsDescriptionItem = {
   ],
   render: `
     <div
-      class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--squared--lg wiki-storybook-dummy--color--blue"
+      class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--overflowVisible wiki-storybook-dummy--color--blue"
     >
       <DesignComponent v-bind="args"/>
     </div>
@@ -62,7 +62,7 @@ export const wikiDescriptionsCropArea: StorybookComponentsDescriptionItem = {
           </div>
 
           <div
-            class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--squared--lg wiki-storybook-dummy--color--blue"
+            class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--overflowVisible wiki-storybook-dummy--color--blue"
           >
             <DesignComponent v-model="coordinator"/>
           </div>

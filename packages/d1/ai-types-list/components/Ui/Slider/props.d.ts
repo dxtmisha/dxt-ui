@@ -1,12 +1,16 @@
-// md5:e5aef5e606b381cba2a7b51269b856df true
+// md5:ce1093b0bdaf3a56b17ae1545baabcac true
 import { SliderPropsBasic } from '@dxtmisha/constructor/Slider';
-export declare const propsValues: {};
+/** Default values for slider properties @keywords defaults, slider, config */
+export declare const propsValues: {
+    palette: string[];
+};
 type PropsToken = {
     selected?: boolean;
     disabled?: boolean;
     vertical?: boolean;
+    palette?: 'red' | 'orange' | 'amber' | 'yellow' | 'lime' | 'green' | 'emerald' | 'teal' | 'cyan' | 'sky' | 'blue' | 'indigo' | 'violet' | 'purple' | 'fuchsia' | 'pink' | 'rose' | 'slate' | 'gray' | 'zinc' | 'neutral' | 'stone' | 'black' | 'white';
 };
-/** Slider component properties @keywords SliderProps, properties */
+/** Slider properties combining basic config and token styles @keywords slider, props, types */
 export type SliderProps = SliderPropsBasic & PropsToken;
-/** Default values for slider properties @keywords defaults, configuration */
+/** Default object configuration for slider @keywords defaults, object, slider */
 export declare const defaults: object;

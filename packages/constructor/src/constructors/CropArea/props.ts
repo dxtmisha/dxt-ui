@@ -13,13 +13,19 @@ type CropAreaPropsToken = {
 }
 
 /** Type describing basic properties / Тип, описывающий базовые свойства */
-export type CropAreaPropsBasic = ModelProps<CropAreaCoordinator>
+export type CropAreaPropsBasic = ModelProps<any>
   & {
     /** Initial coordinate values [top, right, bottom, left] / Начальные значения координат [сверху, справа, снизу, слева] */
     value?: CropAreaCoordinator
 
     /** Minimum dimension size in percentage / Минимальный размер стороны в процентах */
     min?: number
+
+    /** Step size for keyboard arrow movement in percentage / Шаг смещения для стрелок клавиатуры в процентах */
+    step?: number
+
+    /** Tab index order / Порядок табуляции */
+    tabindex?: number | string
 
     /** HTML tag of the wrapper element / HTML-тег элемента обертки */
     tag?: string
@@ -39,6 +45,7 @@ export type CropAreaProps = CropAreaPropsBasic & CropAreaPropsToken
  */
 export const defaultsCropArea = {
   min: 8,
+  step: 1,
   tag: 'div',
   ...{
     // :default [!] System label / Системная метка

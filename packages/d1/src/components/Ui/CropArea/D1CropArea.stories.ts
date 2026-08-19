@@ -33,7 +33,7 @@ export const CropArea: Story = {
     setup: () => ({ args }),
     template: `
       <div
-      class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--squared--lg wiki-storybook-dummy--color--blue"
+      class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--overflowVisible wiki-storybook-dummy--color--blue"
     >
       <D1CropArea v-bind="args"/>
     </div>
@@ -61,7 +61,7 @@ export const CropAreaVModel: Story = {
           </div>
 
           <div
-            class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--squared--lg wiki-storybook-dummy--color--blue"
+            class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--overflowVisible wiki-storybook-dummy--color--blue"
           >
             <D1CropArea v-model="coordinator"/>
           </div>

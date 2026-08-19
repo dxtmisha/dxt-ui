@@ -1,4 +1,5 @@
 import { onUnmounted } from 'vue'
+import { getKey } from '@dxtmisha/functional'
 import { eventStopPropagation } from '@dxtmisha/functional-basic'
 
 import type { CropAreaCoordinates } from './CropAreaCoordinates'
@@ -39,9 +40,25 @@ export class CropAreaEvents {
    */
   get binds() {
     return {
+      tabindex: this.tabindex,
       onMousedown: this.onMousedown,
-      onTouchstart: this.onMousedown
+      onTouchstart: this.onMousedown,
+      onKeydown: this.onKeydown
     }
+  }
+
+  /**
+   * Returns tabindex attribute for focusability.
+   *
+   * Возвращает атрибут tabindex для возможности фокусировки.
+   * @returns tabindex value or undefined / значение tabindex или undefined
+   */
+  get tabindex(): number | string | undefined {
+    if (this.props.disabled) {
+      return undefined
+    }
+
+    return this.props.tabindex ?? 0
   }
 
   /**
@@ -69,6 +86,52 @@ export class CropAreaEvents {
    */
   isNoButtons(event: Event): boolean {
     return event instanceof MouseEvent && event.buttons === 0
+  }
+
+  /**
+   * Keyboard arrow navigation event handler when focused.
+   *
+   * Обработчик события навигации стрелками клавиатуры при фокусе.
+   * @param event keyboard event / событие клавиатуры
+   */
+  readonly onKeydown = (event: KeyboardEvent): void => {
+    if (this.props.disabled) {
+      return
+    }
+
+    const key = getKey(event)
+    const stepMultiplier = event.altKey ? 10 : 1
+    const step = (this.props.step ?? 1) * stepMultiplier
+
+    let deltaX = 0
+    let deltaY = 0
+
+    switch (key) {
+      case 'ArrowUp':
+        deltaY = -step
+        break
+      case 'ArrowDown':
+        deltaY = step
+        break
+      case 'ArrowLeft':
+        deltaX = -step
+        break
+      case 'ArrowRight':
+        deltaX = step
+        break
+      default:
+        return
+    }
+
+    event.preventDefault()
+
+    const isOpposite = event.ctrlKey || event.metaKey
+
+    if (event.shiftKey || isOpposite) {
+      this.coordinates.resizeByStep(deltaX, deltaY, isOpposite)
+    } else {
+      this.coordinates.moveByStep(deltaX, deltaY)
+    }
   }
 
   /**

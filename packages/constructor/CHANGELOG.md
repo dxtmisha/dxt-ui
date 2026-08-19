@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.111.0] - 2026-08-20
+
+### Added
+- **CropArea Keyboard Navigation & W3C ARIA Accessibility**:
+  - Implemented keyboard navigation in `CropAreaEvents` according to W3C ARIA standards:
+    - Arrow keys (`ArrowUp`, `ArrowDown`, `ArrowLeft`, `ArrowRight`): move the entire crop area by step (`moveByStep`).
+    - `Shift + Arrow keys`: resize primary edges (`right` and `bottom`) by step (`resizeByStep`).
+    - `Ctrl/Meta + Arrow keys`: resize opposite edges (`left` and `top`) by step (`resizeByStep` with `isOpposite = true`).
+    - `Alt + Arrow keys`: apply a 10x step multiplier for fast positioning and resizing.
+  - Added `step` (default `1`) and `tabindex` props to `CropAreaPropsBasic` in `props.ts`.
+  - Added `tabindex` getter and `onKeydown` listener to `CropAreaEvents`, exposed via `binds`.
+  - Added `moveByStep`, `resizeByStep`, and protected `updateSingle` methods to `CropAreaCoordinates` for unified coordinate updates, boundary checks, and resize event emissions.
+  - Integrated `AriaStaticInclude.disabled` into `CropArea` via `get aria()` and aggregated into root element `get binds()`.
+  - Added unit test suites for keyboard navigation, resizing, opposite resizing, modifier keys, and ARIA attributes in `CropAreaCoordinates.test.ts`, `CropAreaEvents.test.ts`, and `CropArea.test.ts`.
+
+### Changed
+- **CropArea**:
+  - Updated `CropAreaDesign.tsx` to bind `...this.item.binds` containing both ARIA accessibility attributes and event listeners to the root element.
+  - Added `outline: none;` to `mixinCropArea` in `style.scss` to allow customized design-token focus rings.
+  - Reordered class methods in `CropAreaCoordinates` and `CropAreaPosition` to strictly adhere to architectural method ordering standards (`get/set` -> `is/has` -> `update/reset` -> remaining methods).
+
 ## [0.110.1] - 2026-08-16
 
 ### Added

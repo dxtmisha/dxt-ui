@@ -1,9 +1,9 @@
-// md5:7e6399809ffd9156081bedf32645fbf6 true
+// md5:94173868dfe6cca78327d2f3902d1475 true
 import { SegmentControlItemPropsBasic } from '@dxtmisha/constructor/SegmentControlItem';
-/** Default props values for adaptive and container variants @keywords propsValues, adaptive, container */
 export declare const propsValues: {
     adaptive: string[];
     container: string[];
+    palette: string[];
 };
 type PropsToken = {
     focus?: boolean;
@@ -13,8 +13,10 @@ type PropsToken = {
     disabled?: boolean;
     adaptive?: 'iconAlways' | 'auto' | 'iconSm' | 'iconMd' | 'iconLg' | 'iconXl' | 'icon2xl' | 'fullSm' | 'fullMd' | 'fullLg' | 'fullXl' | 'full2xl';
     container?: 'iconSm' | 'iconMd' | 'iconLg' | 'iconXl' | 'icon2xl' | 'fullSm' | 'fullMd' | 'fullLg' | 'fullXl' | 'full2xl';
+    palette?: 'red' | 'orange' | 'amber' | 'yellow' | 'lime' | 'green' | 'emerald' | 'teal' | 'cyan' | 'sky' | 'blue' | 'indigo' | 'violet' | 'purple' | 'fuchsia' | 'pink' | 'rose' | 'slate' | 'gray' | 'zinc' | 'neutral' | 'stone' | 'black' | 'white';
 };
+/** Segment control item properties @keywords segment, control, item, props */
 export type SegmentControlItemProps = SegmentControlItemPropsBasic<IconProps, BadgeProps> & PropsToken;
-/** Default values for segment control item @keywords defaults, object */
+/** Default property values @keywords defaults, object, segment, control */
 export declare const defaults: object;
 export {};

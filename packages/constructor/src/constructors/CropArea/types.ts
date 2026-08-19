@@ -16,7 +16,7 @@ export type CropAreaComponents = {
  *
  * Тип, описывающий доступные события.
  */
-export type CropAreaEmits = ModelEmits<CropAreaCoordinator>
+export type CropAreaEmits = ModelEmits<any>
   & {
     /** Event emitted during resizing or moving / Событие, вызываемое при изменении размера или перемещении */
     resize: [parameters: CropAreaEventParameters]

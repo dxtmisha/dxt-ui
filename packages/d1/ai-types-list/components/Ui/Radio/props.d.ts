@@ -1,9 +1,10 @@
-// md5:04894da5f5e237236fd93ecd3276a8b3 true
+// md5:ceabc406d268a0c59b8daa294ad9ca74 true
 import { RadioPropsBasic } from '@dxtmisha/constructor/Radio';
-/** @keywords propsValues, adaptive, container */
+/** Configuration values for radio properties @keywords propsValues adaptive container palette */
 export declare const propsValues: {
     adaptive: string[];
     container: string[];
+    palette: string[];
 };
 type PropsToken = {
     block?: boolean;
@@ -13,8 +14,10 @@ type PropsToken = {
     itemCenter?: boolean;
     focus?: boolean;
     disabled?: boolean;
+    palette?: 'red' | 'orange' | 'amber' | 'yellow' | 'lime' | 'green' | 'emerald' | 'teal' | 'cyan' | 'sky' | 'blue' | 'indigo' | 'violet' | 'purple' | 'fuchsia' | 'pink' | 'rose' | 'slate' | 'gray' | 'zinc' | 'neutral' | 'stone' | 'black' | 'white';
 };
-/** @keywords RadioProps, properties */
+/** Radio component properties @keywords RadioProps RadioPropsBasic */
 export type RadioProps = RadioPropsBasic<ImageProps, FieldMessageProps, FieldCounterProps, ProgressProps> & PropsToken;
-/** @keywords defaults, object */
+/** Default values for radio properties @keywords defaults */
 export declare const defaults: object;
+export {};

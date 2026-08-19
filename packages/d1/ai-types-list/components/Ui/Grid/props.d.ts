@@ -1,9 +1,13 @@
-// md5:586c53e087a1bae4bef1d185f2326ca2 true
+// md5:c90ae46a3504bf1a546a2b012e804353 true
 import { GridPropsBasic } from '@dxtmisha/constructor/Grid';
-/** Component property values @keywords propsValues, values */
-export declare const propsValues: {};
-type PropsToken = {};
-/** Grid component properties @keywords GridProps, properties */
+/** Allowed values for grid alignment properties @keywords propsValues, align, grid */
+export declare const propsTypeValues: {
+    align: string[];
+};
+type PropsToken = {
+    align?: 'center' | 'top' | 'bottom' | 'stretch' | 'baseline' | 'start' | 'end';
+};
+/** Combined grid properties contract @keywords GridProps, GridPropsBasic, PropsToken */
 export type GridProps = GridPropsBasic & PropsToken;
-/** Default component properties @keywords defaults, object */
+/** Default configuration object for grid component @keywords defaults, object */
 export declare const defaults: object;

@@ -1,8 +1,9 @@
-// md5:667e6ca9c79ce60d58c94a3c13823475 true
+// md5:8332c77771de53cc19953a6abfee8bc8 true
 import { InputCodeItemPropsBasic } from '@dxtmisha/constructor/InputCodeItem';
-/** Default size values @keywords propsValues, size */
+/** Available property values for size and palette @keywords propsValues, size, palette */
 export declare const propsValues: {
     size: string[];
+    palette: string[];
 };
 type PropsToken = {
     disabled?: boolean;
@@ -10,8 +11,9 @@ type PropsToken = {
     error?: boolean;
     hide?: boolean;
     size?: 'sm' | 'md' | 'lg' | 'display';
+    palette?: 'red' | 'orange' | 'amber' | 'yellow' | 'lime' | 'green' | 'emerald' | 'teal' | 'cyan' | 'sky' | 'blue' | 'indigo' | 'violet' | 'purple' | 'fuchsia' | 'pink' | 'rose' | 'slate' | 'gray' | 'zinc' | 'neutral' | 'stone' | 'black' | 'white';
 };
-/** Properties for InputCodeItem component @keywords InputCodeItemProps, props */
+/** Component input properties combining basic items and token styling @keywords InputCodeItemProps, properties */
 export type InputCodeItemProps = InputCodeItemPropsBasic & PropsToken;
-/** Default object values @keywords defaults, object */
+/** Default values for component properties @keywords defaults, object */
 export declare const defaults: object;

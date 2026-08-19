@@ -31,6 +31,16 @@ export class DesignTypesDescription {
   ) { }
 
   /**
+   * Checks if the AI description file exists.
+   *
+   * Проверяет, существует ли файл описания ИИ.
+   * @returns true if description file exists / true, если файл описания существует
+   */
+  is(): boolean {
+    return PropertiesFile.is(UI_FILE_AI_DESCRIPTION)
+  }
+
+  /**
    * Returns the generated full description content.
    *
    * Возвращает сгенерированный полный контент описания.

@@ -1,19 +1,19 @@
-// md5:e08a93994470ec98da4e5f699534c517 true
+// md5:c1750d3cb719eefb81efe63bf9bd5bbd true
 import { ConstrClass } from '@dxtmisha/functional';
 
 export type CropAreaComponents = {};
 
-export type CropAreaEmits = ModelEmits<CropAreaCoordinator> & {
-    /** Event emitted during resizing or moving @keywords resize move crop_event */
+export type CropAreaEmits = ModelEmits<any> & {
+    /** Resize event @keywords resize move crop_area */
     resize: [parameters: CropAreaEventParameters];
 };
 
 export interface CropAreaExpose {
-    /** Get current coordinator array [top, right, bottom, left] @keywords get coordinator bounds */
+    /** Get current coordinates [top, right, bottom, left] @keywords get coordinator crop_area */
     get: () => CropAreaCoordinator;
-    /** Sets coordinator values @keywords set coordinator bounds */
+    /** Set coordinate values @keywords set coordinator crop_area */
     set: (coordinator: CropAreaCoordinator) => void;
-    /** Resets coordinator values to defaults @keywords reset coordinator defaults */
+    /** Reset coordinates to defaults @keywords reset coordinator crop_area */
     reset: () => void;
 }
 
@@ -21,7 +21,7 @@ export interface CropAreaSlots {
 }
 
 export type CropAreaClasses = {
-    /** Main root CSS class @keywords css class main root */
+    /** Main root CSS class @keywords main class crop_area */
     main: ConstrClass;
     left: string;
     center: string;

@@ -1,6 +1,7 @@
 import type { Ref, ToRefs } from 'vue'
 import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { ModelInclude } from '../../classes/ModelInclude'
 
 import { CropAreaCoordinates } from './CropAreaCoordinates'
@@ -10,6 +11,7 @@ import { CropAreaEvents } from './CropAreaEvents'
 import { CropAreaPosition } from './CropAreaPosition'
 import { CropAreaStyle } from './CropAreaStyle'
 
+import type { AriaList } from '../../types/ariaTypes'
 import type { CropAreaCoordinator } from './basicTypes'
 import type { CropAreaComponents, CropAreaEmits, CropAreaSlots } from './types'
 import type { CropAreaProps } from './props'
@@ -96,6 +98,31 @@ export class CropArea {
     this.events = new CropAreaEventsConstructor(props, this.elementItem, this.coordinates)
 
     new ModelIncludeConstructor('value', this.emits, this.position.item)
+  }
+
+  /**
+   * Returns ARIA accessibility attributes.
+   *
+   * Возвращает атрибуты доступности ARIA.
+   * @returns ARIA attributes list / список атрибутов ARIA
+   */
+  get aria(): AriaList {
+    return {
+      ...AriaStaticInclude.disabled(this.props.disabled)
+    }
+  }
+
+  /**
+   * Returns binding attributes for the root element.
+   *
+   * Возвращает атрибуты привязки для корневого элемента.
+   * @returns element binding properties / свойства привязки элемента
+   */
+  get binds(): Record<string, any> {
+    return {
+      ...this.aria,
+      ...this.events.binds
+    }
   }
 
   /**

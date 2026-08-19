@@ -39,22 +39,24 @@ export class CropAreaPosition {
     protected readonly props: CropAreaProps,
     protected readonly style: CropAreaStyle
   ) {
-    if (this.props.value) {
-      this.item.value = this.normalize(this.props.value)
-    }
+    const value = this.props.modelValue ?? this.props.value
 
-    watch(
-      () => this.props.value,
-      (value) => {
-        if (value) {
-          this.set(value)
-        }
-      },
-      { deep: true }
-    )
+    if (value) {
+      this.item.value = this.normalize(value)
+    }
 
     onMounted(() => {
       this.style.set(this.item.value)
+
+      watch(
+        () => this.props.modelValue ?? this.props.value,
+        (value) => {
+          if (value) {
+            this.set(value)
+          }
+        },
+        { deep: true }
+      )
     })
   }
 
@@ -86,16 +88,6 @@ export class CropAreaPosition {
    */
   readonly set = (coordinator: CropAreaCoordinator): void => {
     this.item.value = this.normalize(coordinator)
-    this.style.set(this.item.value)
-  }
-
-  /**
-   * Resets coordinator to initial default values.
-   *
-   * Сбрасывает координаты к начальным значениям по умолчанию.
-   */
-  readonly reset = (): void => {
-    this.item.value = this.normalize(this.props.value)
     this.style.set(this.item.value)
   }
 
@@ -159,6 +151,16 @@ export class CropAreaPosition {
   }
 
   /**
+   * Resets coordinator to initial default values.
+   *
+   * Сбрасывает координаты к начальным значениям по умолчанию.
+   */
+  readonly reset = (): void => {
+    this.item.value = this.normalize(this.props.modelValue ?? this.props.value)
+    this.style.set(this.item.value)
+  }
+
+  /**
    * Moves a single edge with boundary and minimum size validation.
    *
    * Перемещает отдельный край с валидацией границ и минимального размера.
@@ -190,8 +192,12 @@ export class CropAreaPosition {
     }
 
     if (this.item.value[index] !== candidate) {
-      this.item.value[index] = candidate
+      const coordinator: CropAreaCoordinator = [...this.item.value]
+
+      coordinator[index] = candidate
+      this.item.value = coordinator
       this.style.set(this.item.value)
+
       return candidate
     }
 

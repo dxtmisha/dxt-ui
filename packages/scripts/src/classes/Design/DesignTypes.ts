@@ -80,7 +80,11 @@ export class DesignTypes {
     console.log('DesignTypes: saving AI types from list...')
 
     this.makeTypes.makeSave()
-    await this.description.make()
+
+    if (!this.description.is()) {
+      await this.description.make()
+    }
+
     await this.mcp.make()
 
     console.log('DesignTypes: AI types saved.')

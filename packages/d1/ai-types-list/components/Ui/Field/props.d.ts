@@ -1,4 +1,4 @@
-// md5:a9430a5099e53fb02552eb3abdb98e84 true
+// md5:759a364db14fcce7c558e74a7514d075 true
 import { FieldPropsBasic } from '@dxtmisha/constructor/Field';
 export declare const propsValues: {
     arrowAlign: string[];
@@ -6,6 +6,7 @@ export declare const propsValues: {
     align: string[];
     width: never[];
     size: string[];
+    palette: string[];
 };
 type PropsToken = {
     focus?: boolean;
@@ -27,9 +28,10 @@ type PropsToken = {
     align?: 'center' | 'right' | 'left';
     width?: string | 'custom';
     size?: 'sm' | 'md' | 'lg' | 'display';
+    palette?: 'red' | 'orange' | 'amber' | 'yellow' | 'lime' | 'green' | 'emerald' | 'teal' | 'cyan' | 'sky' | 'blue' | 'indigo' | 'violet' | 'purple' | 'fuchsia' | 'pink' | 'rose' | 'slate' | 'gray' | 'zinc' | 'neutral' | 'stone' | 'black' | 'white';
 };
-/** Field component properties definition @keywords field_props, properties */
+/** Field component properties type @keywords field, properties, props */
 export type FieldProps = FieldPropsBasic<IconProps, FieldLabelProps, FieldMessageProps, FieldCounterProps, ProgressProps> & PropsToken;
-/** Default properties object @keywords defaults, field_defaults */
+/** Default property values object @keywords defaults, object */
 export declare const defaults: object;
 export {};

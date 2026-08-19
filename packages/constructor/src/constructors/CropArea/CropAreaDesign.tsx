@@ -134,7 +134,7 @@ export class CropAreaDesign<
         ...this.getAttrs(),
         ref: this.element,
         class: this.classes?.value.main,
-        ...this.item.events.binds
+        ...this.item.binds
       },
       [
         this.renderLeft(),

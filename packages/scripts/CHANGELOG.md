@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.11.7] - 2026-08-19
+
+### Changed
+- **AI Types Save Workflow (`dxt-types-save`)**:
+  - Added existence check for `ai-description.md` (`this.description.is()`) before invoking AI description generation in `DesignTypes.makeSave()`. Description generation will now execute only when the file does not already exist, preventing redundant AI API calls during quick type saves.
+  - Added `is()` method to `DesignTypesDescription` to verify the presence of `ai-description.md`.
+
 ## [0.11.6] - 2026-08-19
 
 ### Changed
