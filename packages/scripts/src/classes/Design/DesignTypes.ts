@@ -81,6 +81,7 @@ export class DesignTypes {
 
     this.makeTypes.makeSave()
     await this.description.make()
+    await this.mcp.make()
 
     console.log('DesignTypes: AI types saved.')
 

@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/scripts",
   "private": false,
-  "version": "0.11.3",
+  "version": "0.11.4",
   "type": "module",
   "description": "CLI tools, AI integration scripts, and automation utilities for DXT UI — automated component scaffolding, Figma layout generation, library packaging, documentation building, screenshot captures, and AI prompt processing.",
   "keywords": [
