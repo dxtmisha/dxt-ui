@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { McpResource, McpServer } from '@dxtmisha/mcp'
+import { Mcp, McpResource } from '@dxtmisha/mcp'
 import allResources from '../../ai-mcp-all-resources.json'
 import { getDemoTools } from './src/functions/demoTools'
 
@@ -11,7 +11,7 @@ export * from './src/library'
  *
  * Запускает демонстрационный MCP сервер с инструментами из demoTools и ресурсами из ai-mcp-all-resources.json.
  */
-export const server = new McpServer(
+export const server = new Mcp(
   getDemoTools(),
   {
     name: 'dxt-demo-mcp',

@@ -1,11 +1,11 @@
 import './style.scss'
 
 // Classes
+export * from './classes/Mcp'
+export * from './classes/McpItemAbstract'
+export * from './classes/McpPrompt'
 export * from './classes/McpResource'
-export * from './classes/McpResourceAbstract'
-export * from './classes/McpServer'
-export * from './classes/McpServerInstance'
-export * from './classes/McpTransport'
+export * from './classes/McpTool'
 
 // Components
 

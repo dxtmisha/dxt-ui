@@ -1,321 +1,331 @@
-import fs from 'node:fs'
-import path from 'node:path'
-import { fileURLToPath } from 'node:url'
-import { executeFunction, isFilled } from '@dxtmisha/functional-basic'
-import { McpResourceAbstract } from './McpResourceAbstract'
-
+import { isArray, isFilled, isFunction, isObject, isString } from '@dxtmisha/functional-basic'
+import type { ReadResourceResult } from '@modelcontextprotocol/sdk/types.js'
+import { McpItemAbstract } from './McpItemAbstract'
 import type {
-  McpResourceContent,
+  McpResourceInput,
   McpResourceItem,
-  McpResourceOptions,
-  McpResourceRecord,
-  McpResourceResult
+  SdkMcpServer
 } from '../types/McpTypes'
 
 /**
- * Concrete class for managing and serving MCP resources from structured data (such as JSON configuration files).
+ * Class for managing and reading MCP resources.
  *
- * Конкретный класс для управления и предоставления ресурсов MCP из структурированных данных (таких как файлы конфигурации JSON).
+ * Класс для управления и чтения ресурсов MCP.
  */
-export class McpResource extends McpResourceAbstract {
+export class McpResource extends McpItemAbstract<
+  McpResourceItem,
+  McpResourceInput | McpResource | (McpResourceItem | McpResource)[]
+> {
   /**
-   * Constructor
+   * Adds resource items, an array of items, or merges another McpResource instance.
    *
-   * Конструктор
-   * @param data List of resource records or items (e.g. from ai-mcp-all-resources.json) / Список записей или элементов ресурсов (например, из ai-mcp-all-resources.json)
-   * @param options Resource options including custom loader / Настройки ресурса, включая пользовательский загрузчик
+   * Добавляет элементы ресурсов, массив элементов или объединяет другой экземпляр McpResource.
+   * @param resource Resource item, input data or McpResource instance / Элемент ресурса, входные данные или экземпляр McpResource
+   * @returns current instance / текущий экземпляр
    */
-  constructor(
-    data: (McpResourceItem | McpResourceRecord)[] = [],
-    protected options: McpResourceOptions = {}
-  ) {
-    super(data, options.scheme || 'dxt')
-  }
-
-  /**
-   * Returns current resource options.
-   *
-   * Возвращает текущие настройки ресурсов.
-   * @returns McpResourceOptions
-   */
-  getOptions(): McpResourceOptions {
-    return this.options
-  }
-
-  /**
-   * Sets new resource options.
-   *
-   * Устанавливает новые настройки ресурсов.
-   * @param options New resource options / Новые настройки ресурсов
-   * @returns this
-   */
-  setOptions(options: McpResourceOptions): this {
-    this.options = options
-    if (options.scheme) {
-      this.setScheme(options.scheme)
+  override add(
+    resource: McpResourceInput | McpResource | (McpResourceItem | McpResource)[]
+  ): this {
+    if (resource instanceof McpResource) {
+      this.addItems(resource.getItems())
+    } else if (isArray(resource)) {
+      resource.forEach(resourceItem => {
+        if (resourceItem instanceof McpResource) {
+          this.addItems(resourceItem.getItems())
+        } else {
+          this.addItem(resourceItem as McpResourceItem)
+        }
+      })
+    } else if (isObject(resource)) {
+      this.addItem(resource as McpResourceItem)
     }
+
     return this
   }
 
   /**
-   * Reads the content of a resource using custom handler, loader, static definition, or file system loading.
+   * Adds a single resource item or raw configuration to the registry.
    *
-   * Читает содержимое ресурса с использованием пользовательского обработчика, загрузчика, статического определения или загрузки из файловой системы.
-   * @param resource Resource item definition / Определение элемента ресурса
-   * @param uri Requested resource URI / Запрошенный URI ресурса
-   * @param extra Extra context / Дополнительный контекст
-   * @returns Promise<McpResourceResult | McpResourceContent | McpResourceContent[] | string> | McpResourceResult | McpResourceContent | McpResourceContent[] | string
+   * Добавляет один элемент ресурса или конфигурацию в реестр.
+   * @param item Resource item or raw configuration to add / Элемент ресурса или конфигурация для добавления
+   * @returns current instance / текущий экземпляр
+   */
+  override addItem(item: McpResourceItem | Record<string, unknown>): this {
+    const normalizedItem = this.normalizeItem(item)
+    return super.addItem(normalizedItem)
+  }
+
+  /**
+   * Reads a resource by its URI and returns standard ReadResourceResult.
+   *
+   * Читает ресурс по его URI и возвращает стандартный ReadResourceResult.
+   * @param uri Resource URI or URL object / URI ресурса или объект URL
+   * @param extra Optional execution context metadata / Опциональные метаданные контекста выполнения
+   * @returns standard MCP resource read result / стандартный результат чтения ресурса MCP
    */
   async read(
-    resource: McpResourceItem,
-    uri: URL,
-    extra?: unknown
-  ): Promise<McpResourceResult | McpResourceContent | McpResourceContent[] | string> {
-    if (resource.handler) {
-      return executeFunction(resource.handler, uri, extra)
-    }
+    uri: string | URL,
+    extra?: Record<string, unknown>
+  ): Promise<ReadResourceResult> {
+    const uriString = String(uri)
+    const resourceItem = this.getItem(uriString)
 
-    if (this.options.loader) {
-      return executeFunction(this.options.loader, resource, uri, extra)
-    }
-
-    if (isFilled(resource.text) || isFilled(resource.blob)) {
+    if (!resourceItem) {
       return {
-        uri: resource.uri,
-        mimeType: resource.mimeType,
-        text: resource.text,
-        blob: resource.blob,
-        _meta: resource._meta
+        contents: [
+          {
+            uri: uriString,
+            mimeType: 'text/plain',
+            text: `Resource "${uriString}" not found.`
+          }
+        ]
       }
     }
 
-    const fileContent = this.readFileContent(resource)
-    if (fileContent) {
-      return fileContent
+    if (isFunction(resourceItem.handler)) {
+      const urlInstance = typeof uri === 'string'
+        ? new URL(uri.startsWith('http') || uri.startsWith('file') ? uri : `mcp://${uri}`)
+        : uri
+
+      const rawResult = await resourceItem.handler(urlInstance, extra)
+      return this.formatResult(rawResult, resourceItem.uri, resourceItem.mimeType)
+    }
+
+    if (isFilled(resourceItem.text)) {
+      return {
+        contents: [
+          {
+            uri: resourceItem.uri,
+            mimeType: resourceItem.mimeType ?? 'text/plain',
+            text: resourceItem.text
+          }
+        ]
+      }
+    }
+
+    if (isFilled(resourceItem.blob)) {
+      return {
+        contents: [
+          {
+            uri: resourceItem.uri,
+            mimeType: resourceItem.mimeType ?? 'application/octet-stream',
+            blob: resourceItem.blob
+          }
+        ]
+      }
     }
 
     return {
-      uri: resource.uri,
-      mimeType: resource.mimeType || 'text/plain',
-      text: resource.description || resource.name
-    }
-  }
-
-  /**
-   * Determines if a MIME type represents binary content.
-   *
-   * Определяет, представляет ли MIME-тип бинарное содержимое.
-   * @param mimeType MIME type string / Строка MIME-типа
-   * @returns boolean
-   */
-  protected isBinaryMimeType(mimeType?: string): boolean {
-    if (!mimeType) {
-      return false
-    }
-
-    const binaryPrefixes = ['image/', 'audio/', 'video/']
-    const isPrefixBinary = binaryPrefixes.some(prefix => mimeType.startsWith(prefix))
-
-    if (isPrefixBinary) {
-      return true
-    }
-
-    const binaryTypes = [
-      'application/octet-stream',
-      'application/pdf',
-      'application/zip',
-      'application/gzip',
-      'application/x-tar'
-    ]
-
-    return binaryTypes.includes(mimeType)
-  }
-
-  /**
-   * Checks if the given path exists and is a regular file.
-   *
-   * Проверяет, существует ли указанный путь и является ли он обычным файлом.
-   * @param targetPath Path to inspect / Путь для проверки
-   * @returns boolean
-   */
-  protected isFile(targetPath: string): boolean {
-    try {
-      return fs.existsSync(targetPath) && fs.statSync(targetPath).isFile()
-    } catch {
-      return false
-    }
-  }
-
-  /**
-   * Detects the MIME type based on file extension.
-   *
-   * Определяет MIME-тип по расширению файла.
-   * @param filePath File path / Путь к файлу
-   * @returns string
-   */
-  protected detectMimeType(filePath: string): string {
-    const extension = path.extname(filePath).toLowerCase()
-
-    switch (extension) {
-      case '.md':
-      case '.markdown':
-        return 'text/markdown'
-      case '.json':
-        return 'application/json'
-      case '.ts':
-      case '.tsx':
-        return 'text/typescript'
-      case '.js':
-      case '.jsx':
-      case '.mjs':
-      case '.cjs':
-        return 'text/javascript'
-      case '.html':
-      case '.htm':
-        return 'text/html'
-      case '.css':
-      case '.scss':
-        return 'text/css'
-      case '.svg':
-        return 'image/svg+xml'
-      case '.png':
-        return 'image/png'
-      case '.jpg':
-      case '.jpeg':
-        return 'image/jpeg'
-      case '.webp':
-        return 'image/webp'
-      case '.gif':
-        return 'image/gif'
-      case '.pdf':
-        return 'application/pdf'
-      case '.zip':
-        return 'application/zip'
-      default:
-        return 'text/plain'
-    }
-  }
-
-  /**
-   * Reads the content of a resource from the local filesystem.
-   *
-   * Читает содержимое ресурса из локальной файловой системы.
-   * @param resource Resource item definition / Определение элемента ресурса
-   * @returns McpResourceContent | undefined
-   */
-  protected readFileContent(resource: McpResourceItem): McpResourceContent | undefined {
-    const resolvedPath = this.resolveFilePath(resource.uri)
-    if (!resolvedPath) {
-      return undefined
-    }
-
-    try {
-      const mimeType = resource.mimeType || this.detectMimeType(resolvedPath)
-      const isBinary = this.isBinaryMimeType(mimeType)
-
-      if (isBinary) {
-        const buffer = fs.readFileSync(resolvedPath)
-        return {
-          uri: resource.uri,
-          mimeType,
-          blob: buffer.toString('base64'),
-          _meta: resource._meta
+      contents: [
+        {
+          uri: resourceItem.uri,
+          mimeType: resourceItem.mimeType ?? 'text/plain',
+          text: ''
         }
-      }
-
-      const text = fs.readFileSync(resolvedPath, 'utf-8')
-      return {
-        uri: resource.uri,
-        mimeType,
-        text,
-        _meta: resource._meta
-      }
-    } catch {
-      return undefined
-    }
-  }
-
-  /**
-   * Returns list of base directories to search for resource files.
-   *
-   * Возвращает список базовых директорий для поиска файлов ресурсов.
-   * @returns string[]
-   */
-  protected getSearchBases(): string[] {
-    const bases: string[] = []
-
-    if (this.options.basePath) {
-      bases.push(this.options.basePath)
-    }
-
-    if (typeof process !== 'undefined' && typeof process.cwd === 'function') {
-      let currentDirectory = process.cwd()
-      bases.push(currentDirectory)
-
-      for (let iteration = 0; iteration < 5; iteration++) {
-        const parentDirectory = path.dirname(currentDirectory)
-        if (parentDirectory === currentDirectory) {
-          break
-        }
-        if (!bases.includes(parentDirectory)) {
-          bases.push(parentDirectory)
-        }
-        currentDirectory = parentDirectory
-      }
-    }
-
-    return bases
-  }
-
-  /**
-   * Resolves the absolute path on the filesystem for the given resource URI.
-   *
-   * Разрешает абсолютный путь в файловой системе для указанного URI ресурса.
-   * @param uri Resource URI string / Строка URI ресурса
-   * @returns string | undefined
-   */
-  protected resolveFilePath(uri: string): string | undefined {
-    let targetPath = uri
-
-    if (targetPath.startsWith('file://')) {
-      try {
-        targetPath = fileURLToPath(targetPath)
-      } catch {
-        targetPath = targetPath.replace(/^file:\/\/\/?/, '')
-      }
-    } else if (targetPath.includes('://')) {
-      targetPath = targetPath.replace(/^[a-z0-9+.-]+:\/\/\/?/i, '')
-    }
-
-    if (path.isAbsolute(targetPath) && this.isFile(targetPath)) {
-      return targetPath
-    }
-
-    const searchBases = this.getSearchBases()
-
-    for (const baseDirectory of searchBases) {
-      const candidatePaths: string[] = [
-        path.resolve(baseDirectory, targetPath),
-        path.resolve(baseDirectory, 'node_modules', targetPath)
       ]
+    }
+  }
 
-      if (targetPath.startsWith('@')) {
-        const pathSegments = targetPath.split('/')
-        if (pathSegments.length >= 3) {
-          const packageName = pathSegments[1]
-          const subPath = pathSegments.slice(2).join('/')
-          candidatePaths.push(path.resolve(baseDirectory, 'packages', packageName, subPath))
-          candidatePaths.push(path.resolve(baseDirectory, 'packages', `${pathSegments[0]}/${pathSegments[1]}`, subPath))
-        }
+  /**
+   * Registers all managed resources into an SDK McpServer instance.
+   *
+   * Регистрирует все управляемые ресурсы в экземпляре SDK McpServer.
+   * @param sdkServer SDK McpServer instance / Экземпляр SDK McpServer
+   */
+  override register(sdkServer: SdkMcpServer): void {
+    this.items.forEach(resourceItem => {
+      const resourceMetadata: Record<string, unknown> = {}
+
+      if (isFilled(resourceItem.description)) {
+        resourceMetadata.description = resourceItem.description
       }
 
-      for (const candidatePath of candidatePaths) {
-        if (this.isFile(candidatePath)) {
-          return candidatePath
+      if (isFilled(resourceItem.mimeType)) {
+        resourceMetadata.mimeType = resourceItem.mimeType
+      }
+
+      sdkServer.registerResource(
+        resourceItem.name,
+        resourceItem.uri,
+        resourceMetadata,
+        async (uri: URL, extra: unknown) => {
+          return this.read(uri, extra as Record<string, unknown>)
         }
+      )
+    })
+  }
+
+  /**
+   * Extracts the unique key from a resource item.
+   *
+   * Извлекает уникальный ключ из элемента ресурса.
+   * @param item Target resource item / Целевой элемент ресурса
+   * @returns unique resource URI / уникальный URI ресурса
+   * @protected
+   */
+  protected override getKey(item: McpResourceItem): string {
+    return item.uri
+  }
+
+  /**
+   * Checks if a resource item matches the given URI or name.
+   *
+   * Проверяет, соответствует ли элемент ресурса указанному URI или имени.
+   * @param item Target resource item / Целевой элемент ресурса
+   * @param key Key to match against / Ключ для проверки
+   * @returns true if matches URI or name / true, если соответствует URI или имени
+   * @protected
+   */
+  protected override isMatch(item: McpResourceItem, key: string): boolean {
+    return item.uri === key || item.name === key
+  }
+
+  /**
+   * Normalizes raw object or input into a standard McpResourceItem.
+   *
+   * Нормализует сырой объект или входные данные в стандартный McpResourceItem.
+   * @param rawItem Raw item object / Сырой объект элемента
+   * @returns normalized resource item / нормализованный элемент ресурса
+   * @protected
+   */
+  protected normalizeItem(rawItem: unknown): McpResourceItem {
+    if (!isObject(rawItem)) {
+      const stringValue = String(rawItem ?? '')
+      return {
+        uri: stringValue,
+        name: stringValue,
+        mimeType: 'text/plain',
+        text: stringValue
       }
     }
 
-    return undefined
+    const candidate = rawItem as Record<string, unknown>
+    const resolvedUri = isString(candidate.uri) && isFilled(candidate.uri)
+      ? candidate.uri
+      : isString(candidate.path) && isFilled(candidate.path)
+        ? candidate.path
+        : isString(candidate.name) && isFilled(candidate.name)
+          ? candidate.name
+          : `mcp://resource/${this.items.length}`
+
+    const resolvedName = isString(candidate.name) && isFilled(candidate.name)
+      ? candidate.name
+      : isString(candidate.title) && isFilled(candidate.title)
+        ? candidate.title
+        : resolvedUri
+
+    const resolvedDescription = isString(candidate.description)
+      ? candidate.description
+      : undefined
+
+    let resolvedMimeType: string | undefined = isString(candidate.mimeType)
+      ? candidate.mimeType
+      : undefined
+
+    if (!resolvedMimeType) {
+      if (resolvedUri.endsWith('.json')) {
+        resolvedMimeType = 'application/json'
+      } else if (resolvedUri.endsWith('.md')) {
+        resolvedMimeType = 'text/markdown'
+      } else if (resolvedUri.endsWith('.html')) {
+        resolvedMimeType = 'text/html'
+      }
+    }
+
+    const resolvedHandler = isFunction(candidate.handler)
+      ? (candidate.handler as McpResourceItem['handler'])
+      : undefined
+
+    let resolvedText: string | undefined = isString(candidate.text)
+      ? candidate.text
+      : isString(candidate.content)
+        ? candidate.content
+        : undefined
+
+    if (!resolvedHandler && !resolvedText && !isFilled(candidate.blob)) {
+      resolvedText = JSON.stringify(rawItem, null, 2)
+    }
+
+    return {
+      uri: resolvedUri,
+      name: resolvedName,
+      description: resolvedDescription,
+      mimeType: resolvedMimeType,
+      text: resolvedText,
+      blob: isString(candidate.blob) ? candidate.blob : undefined,
+      handler: resolvedHandler
+    }
+  }
+
+  /**
+   * Formats dynamic read output into ReadResourceResult format.
+   *
+   * Форматирует динамический вывод чтения в формат ReadResourceResult.
+   * @param result Raw handler result / Сырой результат обработчика
+   * @param uriString Fallback URI string / Запасная строка URI
+   * @param mimeType Optional MIME type / Опциональный MIME-тип
+   * @returns standard ReadResourceResult / стандартный ReadResourceResult
+   * @protected
+   */
+  protected formatResult(
+    result: unknown,
+    uriString: string,
+    mimeType?: string
+  ): ReadResourceResult {
+    if (isObject(result)) {
+      const candidate = result as Record<string, unknown>
+
+      if (isArray(candidate.contents)) {
+        return candidate as unknown as ReadResourceResult
+      }
+
+      if (isString(candidate.blob)) {
+        const itemUri = isString(candidate.uri) ? candidate.uri : uriString
+
+        return {
+          contents: [
+            {
+              uri: itemUri,
+              mimeType: isString(candidate.mimeType) ? candidate.mimeType : (mimeType ?? 'application/octet-stream'),
+              blob: candidate.blob
+            }
+          ]
+        }
+      }
+
+      if (isString(candidate.text)) {
+        const itemUri = isString(candidate.uri) ? candidate.uri : uriString
+
+        return {
+          contents: [
+            {
+              uri: itemUri,
+              mimeType: isString(candidate.mimeType) ? candidate.mimeType : (mimeType ?? 'text/plain'),
+              text: candidate.text
+            }
+          ]
+        }
+      }
+
+      return {
+        contents: [
+          {
+            uri: uriString,
+            mimeType: mimeType ?? 'application/json',
+            text: JSON.stringify(result, null, 2)
+          }
+        ]
+      }
+    }
+
+    return {
+      contents: [
+        {
+          uri: uriString,
+          mimeType: mimeType ?? 'text/plain',
+          text: String(result ?? '')
+        }
+      ]
+    }
   }
 }

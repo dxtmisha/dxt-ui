@@ -1,6 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { McpResource, McpServer } from '@dxtmisha/mcp'
-import allResources from '../../../../../ai-mcp-all-resources.json'
+import { Mcp, McpResource } from '@dxtmisha/mcp'
 
 import { calculateTool, dxtComponentsTool, echoTool, getDemoTools, systemInfoTool } from '../demoTools'
 import type {
@@ -10,7 +9,7 @@ import type {
   McpDemoSystemInfoResult
 } from '../../types/McpDemoTypes'
 
-describe('Demo Tools & McpServer Integration', () => {
+describe('Demo Tools & Mcp Integration', () => {
   it('returns all pre-configured demo tools via getDemoTools()', () => {
     const tools = getDemoTools()
     expect(tools).toHaveLength(4)
@@ -22,8 +21,8 @@ describe('Demo Tools & McpServer Integration', () => {
     ])
   })
 
-  it('initializes and runs McpServer from @dxtmisha/mcp with demo tools', async () => {
-    const server = new McpServer(getDemoTools(), {
+  it('initializes and runs Mcp server from @dxtmisha/mcp with demo tools', async () => {
+    const server = new Mcp(getDemoTools(), {
       name: 'test-mcp-demo',
       version: '1.0.0'
     })
@@ -39,8 +38,14 @@ describe('Demo Tools & McpServer Integration', () => {
   })
 
   it('initializes server with demo tools and allResources McpResource', () => {
-    const resource = new McpResource(allResources)
-    const server = new McpServer(getDemoTools(), {
+    const resource = new McpResource([
+      {
+        uri: 'mcp://packages/d1',
+        name: '@dxtmisha/d1',
+        description: 'Design system Vue 3 UI component collection.'
+      }
+    ])
+    const server = new Mcp(getDemoTools(), {
       name: 'dxt-demo-mcp',
       version: '1.0.0'
     }, [resource])

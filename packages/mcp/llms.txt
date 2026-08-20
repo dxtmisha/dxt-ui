@@ -6,7 +6,8 @@ Implements Model Context Protocol endpoints to expose DXT UI component documenta
 
 ## Key Modules & Classes
 
-- [McpServer](src/classes/McpServer.ts): Main MCP server implementation handling tools, resources, and prompt definitions via `@modelcontextprotocol/sdk`.
+- [Mcp](src/classes/Mcp.ts): Main MCP server implementation handling tools, resources, and prompt definitions via `@modelcontextprotocol/sdk`.
+- [McpItemAbstract](src/classes/McpItemAbstract.ts): Base abstract class for managing MCP item collections (Tools, Resources, Prompts).
 - [library.ts](src/library.ts): Auto-generated library export barrel (managed via `dxt-library`).
 - [classes](src/classes): MCP handler and protocol controller classes.
 - [functions](src/functions): Protocol formatting and validation helpers.
