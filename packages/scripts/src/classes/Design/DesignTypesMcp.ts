@@ -6,7 +6,12 @@ import { DesignTypesPrompts } from './DesignTypesPrompts'
 
 import type { DesignMcpResourceItem } from '../../types/designTypes'
 
-import { UI_FILE_AI_DESCRIPTION, UI_FILE_AI_MCP, UI_FILE_AI_TYPES } from '../../config'
+import {
+  UI_DIR_AI_PROMPT_SCREENSHOT,
+  UI_FILE_AI_DESCRIPTION,
+  UI_FILE_AI_MCP,
+  UI_FILE_AI_TYPES
+} from '../../config'
 
 /**
  * Class for generating, processing, and saving MCP server resources for AI documentation.
@@ -53,6 +58,8 @@ export class DesignTypesMcp {
         description: 'Project overview, usage guidelines, and mandatory prompt rules for AI coding assistant.'
       })
 
+      resources.push(...this.getScreenshotList(projectName))
+
       const cache = this.prompts.getCacheList()
 
       for (const item of cache) {
@@ -73,6 +80,72 @@ export class DesignTypesMcp {
     this.saveMcp(resources)
 
     return this
+  }
+
+  /**
+   * Returns MIME type based on file extension.
+   *
+   * Возвращает MIME-тип на основе расширения файла.
+   * @param file filename or path / имя файла или путь
+   * @returns MIME type string / строка MIME-типа
+   * @protected
+   */
+  protected getMimeType(file: string): string {
+    if (file.endsWith('.webp')) {
+      return 'image/webp'
+    }
+    if (file.endsWith('.png')) {
+      return 'image/png'
+    }
+    if (file.endsWith('.jpg') || file.endsWith('.jpeg')) {
+      return 'image/jpeg'
+    }
+    if (file.endsWith('.svg')) {
+      return 'image/svg+xml'
+    }
+    if (file.endsWith('.html') || file.endsWith('.htm')) {
+      return 'text/html'
+    }
+    if (file.endsWith('.css')) {
+      return 'text/css'
+    }
+    if (file.endsWith('.json')) {
+      return 'application/json'
+    }
+    if (file.endsWith('.md')) {
+      return 'text/markdown'
+    }
+
+    return 'text/plain'
+  }
+
+  /**
+   * Retrieves and formats the list of MCP screenshot resources.
+   *
+   * Получает и форматирует список ресурсов скриншотов MCP.
+   * @param projectName project name / название проекта
+   * @returns list of screenshot MCP resource items / список элементов MCP-ресурсов скриншотов
+   * @protected
+   */
+  protected getScreenshotList(projectName: string): DesignMcpResourceItem[] {
+    const resources: DesignMcpResourceItem[] = []
+
+    if (PropertiesFile.is(UI_DIR_AI_PROMPT_SCREENSHOT)) {
+      const screenshotFiles = PropertiesFile.readDir(UI_DIR_AI_PROMPT_SCREENSHOT)
+
+      for (const file of screenshotFiles) {
+        if (!file.startsWith('.')) {
+          resources.push({
+            uri: `${projectName}/${UI_DIR_AI_PROMPT_SCREENSHOT}/${file}`,
+            name: `Screenshot: ${file} (${projectName})`,
+            mimeType: this.getMimeType(file),
+            description: `Visual reference screenshot / asset (${file}) for ${projectName}.`
+          })
+        }
+      }
+    }
+
+    return resources
   }
 
   /**

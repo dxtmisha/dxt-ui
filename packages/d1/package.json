@@ -437,6 +437,8 @@
       "sass": "./ui-properties.scss",
       "default": "./ui-properties.scss"
     },
+    "./ai-resources/*": "./ai-resources/*",
+    "./ai-screenshot/*": "./ai-screenshot/*",
     "./D1SegmentControl": {
       "types": "./dist/library/D1SegmentControl.d.ts",
       "default": "./dist/D1SegmentControl.js"
@@ -536,7 +538,11 @@
     "./D1CropArea": {
       "types": "./dist/library/D1CropArea.d.ts",
       "default": "./dist/D1CropArea.js"
-    }
+    },
+    "./ai-types.md": "./ai-types.md",
+    "./ai-description.md": "./ai-description.md",
+    "./ai-resources/*": "./ai-resources/*",
+    "./ai-screenshot/*": "./ai-screenshot/*"
   },
   "buildOptions": {
     "name": "@dxtmisha/constructor",

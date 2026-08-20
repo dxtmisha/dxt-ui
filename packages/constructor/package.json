@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/constructor",
   "private": false,
-  "version": "0.111.1",
+  "version": "0.111.2",
   "type": "module",
   "description": "Class-based Vue 3 component constructors, state logic engines, and ARIA accessibility controllers for DXT UI design system",
   "keywords": [
@@ -59,6 +59,8 @@
     "publish-to-npm": "npm publish --access public"
   },
   "files": [
+    "ai-resources/",
+    "ai-screenshot/",
     "dist/",
     "src/library/style.scss",
     "src/constructors/**/*.scss",
@@ -517,6 +519,10 @@
       "default": "./dist/plugin.js"
     },
     "./style.scss": "./src/library/style.scss",
+    "./ai-types.md": "./ai-types.md",
+    "./ai-description.md": "./ai-description.md",
+    "./ai-resources/*": "./ai-resources/*",
+    "./ai-screenshot/*": "./ai-screenshot/*",
     "./Dropzone": {
       "types": "./dist/constructors/Dropzone/index.d.ts",
       "default": "./dist/dropzone.js"

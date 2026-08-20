@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.111.2] - 2026-08-20
+
+### Added
+- **AI Documentation & Resources Export**:
+  - Added `"./ai-resources/*"` export entry and included `"ai-resources/"` in the `"files"` distribution list in `package.json`.
+  - Added `ai-resources/skeleton.md` architecture guide detailing non-destructive skeleton loading patterns and single-markup placeholders.
+  - Added `llms.txt` configuration for LLM context indexing and documentation discovery.
+
+### Changed
+- **AI Infrastructure & Tooling**:
+  - Cleaned up obsolete `ai-mcp-resources.json`, `ai-description.md`, and `prompts.json` files.
+  - Updated `.gitignore` to ignore generated AI metadata and type files (`ai-types.md`, `ai-description.md`, `ai-mcp-resources.json`).
+
 ## [0.111.0] - 2026-08-20
 
 ### Added

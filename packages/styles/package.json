@@ -30,6 +30,7 @@
   },
   "files": [
     "ai-resources/",
+    "ai-screenshot/",
     "src/styles",
     "ai-description.md",
     "ai-doc.md",
@@ -47,7 +48,11 @@
     },
     "./properties": {
       "sass": "./src/styles/properties/index.scss"
-    }
+    },
+    "./ai-types.md": "./ai-types.md",
+    "./ai-description.md": "./ai-description.md",
+    "./ai-resources/*": "./ai-resources/*",
+    "./ai-screenshot/*": "./ai-screenshot/*"
   },
   "engines": {
     "node": ">=20.0.0"

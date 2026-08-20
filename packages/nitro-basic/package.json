@@ -39,6 +39,7 @@
   },
   "files": [
     "ai-resources",
+    "ai-screenshot",
     "dist",
     "ai-description.md",
     "ai-doc.md",
@@ -64,7 +65,11 @@
     "./plugin": {
       "import": "./dist/library-plugin.js",
       "types": "./dist/library-plugin.d.ts"
-    }
+    },
+    "./ai-types.md": "./ai-types.md",
+    "./ai-description.md": "./ai-description.md",
+    "./ai-resources/*": "./ai-resources/*",
+    "./ai-screenshot/*": "./ai-screenshot/*"
   },
   "engines": {
     "node": ">=20.0.0"

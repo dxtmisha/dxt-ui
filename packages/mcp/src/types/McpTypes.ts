@@ -120,10 +120,40 @@ export type McpResourceItem = {
 /** Array of resource items / Массив элементов ресурсов */
 export type McpResourceList = McpResourceItem[]
 
+/** Raw resource descriptor / Сырой дескриптор ресурса */
+export type McpResourceRawItem = {
+  /** Resource URI / URI ресурса */
+  uri: string
+  /** Resource name / Название ресурса */
+  name?: string
+  /** Resource MIME type / MIME-тип ресурса */
+  mimeType?: string
+  /** Resource description / Описание ресурса */
+  description?: string
+  /** Static text content / Статическое текстовое содержимое */
+  text?: string
+  /** Static binary blob / Статический бинарный блоб */
+  blob?: string
+  /** Dynamic resource read handler / Обработчик динамического чтения ресурса */
+  handler?: McpResourceReadHandler
+  /** Additional metadata / Дополнительные метаданные */
+  [key: string]: unknown
+}
+
+/** Options for getting MCP resources / Параметры для получения ресурсов MCP */
+export type McpGetResourcesOptions = {
+  /** Base filesystem path for resolving relative resource paths / Базовый путь в файловой системе для разрешения относительных путей ресурсов */
+  basePath?: string
+  /** Optional custom scheme / Опциональная пользовательская схема */
+  scheme?: string
+}
+
 /** Polymorphic input for resources initialization / Полиморфный вход для инициализации ресурсов */
-export type McpResourceInput =
-  | McpResourceItem
+export type McpResourceInput
+  = | McpResourceItem
   | McpResourceItem[]
+  | McpResourceRawItem
+  | McpResourceRawItem[]
   | Record<string, unknown>
   | Record<string, unknown>[]
 

@@ -18,9 +18,9 @@
     "publish-to-npm": "npm publish --access public"
   },
   "files": [
+    "dist",
     "ai-resources/",
     "ai-screenshot/",
-    "dist",
     "ai-description.md",
     "ai-doc.md",
     "ai-mcp-resources.json",
@@ -38,6 +38,10 @@
       "import": "./dist/library.js",
       "types": "./dist/library.d.ts"
     },
+    "./ai-types.md": "./ai-types.md",
+    "./ai-description.md": "./ai-description.md",
+    "./ai-resources/*": "./ai-resources/*",
+    "./ai-screenshot/*": "./ai-screenshot/*",
     "./style.css": "./dist/style.css"
   },
   "dependencies": {},

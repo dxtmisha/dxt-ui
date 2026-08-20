@@ -37,7 +37,11 @@
       "import": "./dist/library.js",
       "types": "./dist/library.d.ts"
     },
-    "./style.css": "./dist/style.css"
+    "./style.css": "./dist/style.css",
+    "./ai-types.md": "./ai-types.md",
+    "./ai-description.md": "./ai-description.md",
+    "./ai-resources/*": "./ai-resources/*",
+    "./ai-screenshot/*": "./ai-screenshot/*"
   },
   "dependencies": {
     "@dxtmisha/functional-basic": "*",

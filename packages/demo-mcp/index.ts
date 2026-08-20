@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { Mcp, McpResource } from '@dxtmisha/mcp'
+import { Mcp, McpResource, getMcpResources } from '@dxtmisha/mcp'
 import allResources from '../../ai-mcp-all-resources.json'
 import { getDemoTools } from './src/functions/demoTools'
 
@@ -17,7 +17,7 @@ export const server = new Mcp(
     name: 'dxt-demo-mcp',
     version: '1.0.0'
   },
-  [new McpResource(allResources)]
+  [new McpResource(getMcpResources(allResources))]
 )
 
 server.start().catch((error: unknown) => {
