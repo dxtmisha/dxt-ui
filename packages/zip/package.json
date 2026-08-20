@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/zip",
   "private": false,
-  "version": "0.1.2",
+  "version": "0.1.3",
   "type": "module",
   "description": "Library for creating and managing ZIP archives in the browser and Node.js environments.",
   "keywords": [
@@ -28,8 +28,8 @@
     "preview": "vite preview",
     "test": "NODE_OPTIONS=\"--no-webstorage\" vitest",
     "library": "dxt-library",
-    "types": "npm run prepublishOnly && dxt-types",
-    "prepublishOnly": "npm run library && npm run build",
+    "types": "npm run library && npm run build && dxt-types",
+    "prepublishOnly": "npm run library && npm run build && dxt-types-save",
     "publish-to-npm": "npm publish --access public"
   },
   "files": [

@@ -27,15 +27,22 @@ export class DesignScreenshot {
   }
 
   /**
-   * starts the screenshot process.
+   * Starts the screenshot process.
    *
    * Запускает процесс создания скриншота.
+   * @returns this instance / этот экземпляр
    */
-  async make() {
+  async make(): Promise<this> {
     console.info('Screenshot')
 
-    PropertiesFile.createDir(PropertiesFile.getPathDir(this.file + '.file'))
+    const pathDir = PropertiesFile.getPathDir(`${this.file}.file`)
+
+    PropertiesFile.removeDir(pathDir)
+    PropertiesFile.createDir(pathDir)
+
     this.makeServer()
+
+    return this
   }
 
   /**

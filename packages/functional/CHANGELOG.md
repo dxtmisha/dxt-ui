@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.15.13] - 2026-08-20
+
+### Added
+- **LLM Configuration (`llms.txt`)**: Added `llms.txt` indexing package capabilities, core composables (`executeUse`, `useApiRef`, `useStorageRef`, `useGeoIntlRef`), and AI resource documentation links.
+
+### Changed
+- **AI Resource Metadata & Types**:
+  - Migrated prompt resource cache from monolithic `prompts.json` to individual resource descriptor files in `ai-types-list/resources/`.
+  - Regenerated AI type definitions and package descriptions with updated AI prompt formats.
+
 ## [1.15.12] - 2026-08-13
 
 ### Changed

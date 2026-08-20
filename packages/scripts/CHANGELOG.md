@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.11.8] - 2026-08-20
+
+### Changed
+- **Screenshot Generation (`DesignScreenshot`)**:
+  - Added directory cleanup (`PropertiesFile.removeDir(pathDir)`) before recreating the destination folder in `DesignScreenshot.make()` to ensure fresh captures and eliminate stale image artifacts.
+  - Updated `DesignScreenshot.make()` return signature to `Promise<this>` with bilingual JSDoc documentation.
+- **AI Package Description Prompt (`DesignTypesDescription`)**:
+  - Updated AI prompt instructions in `DesignTypesDescription.toAiDescription` to require maximally dense and concise trigger explanations for studying `ai-types.md`.
+  - Enforced single comma-separated list formatting for `Key Capabilities` (1–3 words per capability) with strict restrictions against bullet points or multiline listings.
+
 ## [0.11.7] - 2026-08-19
 
 ### Changed

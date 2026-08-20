@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.8.10] - 2026-08-20
+
+### Changed
+- **AI Resource Metadata & Types**:
+  - Migrated prompt resource metadata from monolithic `prompts.json` into individual resource descriptor files (`ai-types-list/resources/api-reference.json`).
+  - Regenerated AI type definitions and package descriptions with updated AI prompt formats.
+- **Git Configuration**:
+  - Added `ai-description.md` and `ai-mcp-resources.json` to `.gitignore`.
+
 ## [1.8.9] - 2026-08-16
 
 ### Added
