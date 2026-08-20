@@ -14,10 +14,12 @@ dist-ssr
 
 /design.config.json
 
+ai-prompt.md
 ai-types.md
 ai-description.md
 ai-mcp-resources.json
 ai-mcp-all-resources.json
+ai-tmp
 
 # Editor directories and files
 .vscode/*
