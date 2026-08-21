@@ -1,0 +1,6 @@
+{
+  "path": "ai-resources/media-typography.md",
+  "md5": "71a84bd182b74ddaae80a7456a80e267",
+  "name": "Media Queries and Typography",
+  "description": "Defines architectural conventions for styling, including BEM naming, mandatory system mixins instead of raw media queries, and typography standards. Solves the task of standardizing responsive design and typography implementation in frontend components for an AI coding assistant."
+}

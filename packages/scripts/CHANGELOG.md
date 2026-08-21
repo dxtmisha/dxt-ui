@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.11.9] - 2026-08-21
+
+### Fixed
+- **AI Description Generation (`DesignTypesDescription`)**:
+  - Added emptiness check using `isFilled` for `content` and `code` in `toAiDescription()`, returning an empty string immediately if both inputs are empty to avoid redundant AI requests.
+
 ## [0.11.8] - 2026-08-20
 
 ### Changed

@@ -1,0 +1,6 @@
+{
+  "path": "ai-resources/colors-layout.md",
+  "md5": "0f0a13d0910fd79f4a67b8bf1449995d",
+  "name": "SCSS Styles and Layouts",
+  "description": "Defines SCSS import standards, color palette mixins with opacity handling, and layout utility mixins for spacing and flexbox. This document guides an AI agent in applying correct design system tokens and styling patterns for UI development."
+}

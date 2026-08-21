@@ -1,3 +1,5 @@
+import { isFilled } from '@dxtmisha/functional-basic'
+
 import { PropertiesFile } from '../Properties/PropertiesFile'
 import { DesignTypesAi } from './DesignTypesAi'
 import { DesignTypesMake } from './DesignTypesMake'
@@ -97,6 +99,10 @@ export class DesignTypesDescription {
    * @returns project description string / строка описания проекта
    */
   protected async toAiDescription(content: string, code?: string): Promise<string> {
+    if (!isFilled(content) && !isFilled(code)) {
+      return ''
+    }
+
     const generate = await this.ai.toAi(
       content,
       'Goal: Generate a concise package overview for an AI coding assistant detailing what this package is, why to study it, and listing its key capabilities.\n\n'

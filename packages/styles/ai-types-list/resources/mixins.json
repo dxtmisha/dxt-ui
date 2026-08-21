@@ -1,0 +1,6 @@
+{
+  "path": "ai-resources/mixins.md",
+  "md5": "56c619f63a9d39374f82cb5cc0f3e05d",
+  "name": "SCSS Mixins Reference",
+  "description": "Comprehensive documentation of SCSS mixins and utilities provided by the @dxtmisha/styles library. Defines layout, color, typography, spacing, and state management rules to assist AI in writing consistent styles."
+}

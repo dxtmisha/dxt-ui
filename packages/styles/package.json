@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/styles",
   "private": false,
-  "version": "1.0.11",
+  "version": "1.0.12",
   "type": "module",
   "description": "SCSS styles and utilities for DXT UI design system",
   "keywords": [
@@ -26,6 +26,7 @@
     "url": "https://github.com/dxtmisha/dxt-ui/issues"
   },
   "scripts": {
+    "types": "dxt-types",
     "publish-to-npm": "npm publish --access public"
   },
   "files": [
