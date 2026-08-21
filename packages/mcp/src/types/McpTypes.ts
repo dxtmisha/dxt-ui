@@ -140,14 +140,6 @@ export type McpResourceRawItem = {
   [key: string]: unknown
 }
 
-/** Options for getting MCP resources / Параметры для получения ресурсов MCP */
-export type McpGetResourcesOptions = {
-  /** Base filesystem path for resolving relative resource paths / Базовый путь в файловой системе для разрешения относительных путей ресурсов */
-  basePath?: string
-  /** Optional custom scheme / Опциональная пользовательская схема */
-  scheme?: string
-}
-
 /** Polymorphic input for resources initialization / Полиморфный вход для инициализации ресурсов */
 export type McpResourceInput
   = | McpResourceItem

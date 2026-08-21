@@ -1,4 +1,3 @@
-import { isArray, isObject } from '@dxtmisha/functional-basic'
 import { McpServer as SdkMcpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 import type { Transport } from '@modelcontextprotocol/sdk/shared/transport.js'
@@ -46,33 +45,24 @@ export class Mcp {
    * Constructor for Mcp.
    *
    * Конструктор для Mcp.
-   * @param tools Initial tools, tool manager or server options / Начальные инструменты, менеджер инструментов или параметры сервера
-   * @param options Server metadata and configuration options / Метаданные и параметры конфигурации сервера
+   * @param tools Initial tools or tool manager / Начальные инструменты или менеджер инструментов
    * @param resources Initial resources or resource manager / Начальные ресурсы или менеджер ресурсов
    * @param prompts Initial prompts or prompt manager / Начальные промпты или менеджер промптов
+   * @param options Server metadata and configuration options / Метаданные и параметры конфигурации сервера
    */
   constructor(
-    tools?: McpToolItem[] | McpTool | McpServerOptions,
-    options?: McpServerOptions,
+    tools?: McpToolItem[] | McpTool,
     resources?: McpResourceInput | McpResource | (McpResourceItem | McpResource)[],
-    prompts?: McpPromptItem | McpPromptItem[] | McpPrompt
+    prompts?: McpPromptItem | McpPromptItem[] | McpPrompt,
+    options?: McpServerOptions
   ) {
-    if (
-      isObject(tools)
-      && !isArray(tools)
-      && !(tools instanceof McpTool)
-      && 'name' in tools && 'version' in tools
-    ) {
-      this.options = tools as McpServerOptions
-    } else {
-      this.options = options ?? {
-        name: 'mcp-server',
-        version: '1.0.0'
-      }
+    this.options = options ?? {
+      name: 'mcp-server',
+      version: '1.0.0'
+    }
 
-      if (tools) {
-        this.addTool(tools as McpToolItem[] | McpTool)
-      }
+    if (tools) {
+      this.addTool(tools)
     }
 
     if (resources) {

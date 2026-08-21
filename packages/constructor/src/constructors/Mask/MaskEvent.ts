@@ -184,9 +184,16 @@ export class MaskEvent {
    * @param event invoked event/ вызываемое событие
    */
   readonly onInput = (event: InputEvent): void => {
-    if (this.unidentified) {
-      const target = event.target as HTMLInputElement
+    const target = event.target as HTMLInputElement
 
+    if (event.inputType === 'insertReplacementText') {
+      this.data.reset(target.value)
+      this.makeChange(event)
+      this.unidentified = undefined
+      return
+    }
+
+    if (this.unidentified) {
       if (
         this.unidentified.length > target.value.length
         || this.unidentified.start !== this.unidentified.end
@@ -194,13 +201,8 @@ export class MaskEvent {
         this.data.pop(this.unidentified.start, this.unidentified.end)
       }
 
-      if ('data' in event) {
-        if (
-          event.data
-          && this.buffer.go(event.data)
-        ) {
-          this.data.add(this.unidentified.start, event.data)
-        }
+      if (event.data && this.buffer.go(event.data)) {
+        this.data.add(this.unidentified.start, event.data)
       } else {
         this.data.reset(target.value)
       }
@@ -274,7 +276,7 @@ export class MaskEvent {
   protected isCut(event: KeyboardEvent): boolean {
     return event.type === 'cut'
       || Boolean(
-        event.key.toLowerCase() === 'x'
+        event.key?.toLowerCase() === 'x'
         && (
           event.metaKey
           || event.ctrlKey
@@ -289,7 +291,7 @@ export class MaskEvent {
    * @param event invoked event/ вызываемое событие
    */
   protected isKey(event: KeyboardEvent): boolean {
-    return 'key' in event && event.key !== 'Unidentified'
+    return Boolean(event.key && event.key !== 'Unidentified')
   }
 
   /**

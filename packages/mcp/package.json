@@ -1,24 +1,48 @@
 {
   "name": "@dxtmisha/mcp",
-  "private": true,
-  "version": "0.0.0",
+  "private": false,
+  "version": "0.1.0",
   "type": "module",
-  "description": "[description]",
+  "description": "A lightweight and modular TypeScript library for building Model Context Protocol (MCP) servers with structured prompts, tools, and dynamic resources. Built on top of @modelcontextprotocol/sdk.",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "mcp-server",
+    "mcp-tools",
+    "mcp-resources",
+    "mcp-prompts",
+    "ai",
+    "llm",
+    "assistant",
+    "agent",
+    "typescript",
+    "dxt",
+    "dxtmisha"
+  ],
+  "author": "dxtmisha@gmail.com",
+  "license": "MIT",
+  "homepage": "https://github.com/dxtmisha/dxt-ui/tree/main/packages/mcp",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dxtmisha/dxt-ui.git",
+    "directory": "packages/mcp"
+  },
+  "bugs": {
+    "url": "https://github.com/dxtmisha/dxt-ui/issues"
+  },
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc -b && vite build",
+    "build": "vite build",
     "preview": "vite preview",
     "test": "vitest",
-    "component": "dxt-component",
     "library": "dxt-library",
-    "types": "npm run prepublishOnly && dxt-types",
-    "wiki": "dxt-ai-doc",
-    "prepublishOnly": "npm run library && npm run build",
+    "types": "npm run library && npm run build && dxt-types",
+    "prepublishOnly": "npm run library && npm run build && dxt-types-save",
     "publish-to-npm": "npm publish --access public"
   },
   "files": [
-    "ai-resources/",
-    "ai-screenshot/",
+    "ai-resources",
+    "ai-screenshot",
     "dist",
     "ai-description.md",
     "ai-doc.md",
@@ -37,16 +61,19 @@
       "import": "./dist/library.js",
       "types": "./dist/library.d.ts"
     },
-    "./style.css": "./dist/style.css",
     "./ai-types.md": "./ai-types.md",
     "./ai-description.md": "./ai-description.md",
     "./ai-resources/*": "./ai-resources/*",
     "./ai-screenshot/*": "./ai-screenshot/*"
+  },
+  "engines": {
+    "node": ">=20.0.0"
   },
   "dependencies": {
     "@dxtmisha/functional-basic": "*",
     "@modelcontextprotocol/sdk": "*"
   },
   "devDependencies": {},
-  "sideEffects": false
+  "sideEffects": false,
+  "ui-priority": 250
 }

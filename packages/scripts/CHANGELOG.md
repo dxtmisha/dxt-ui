@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.12.0] - 2026-08-21
+
+### Added
+- **`LibraryAiMcp` Generator**:
+  - Added new `LibraryAiMcp` class (`src/classes/Library/LibraryAiMcp.ts`) that transforms aggregated MCP JSON resources (`ai-mcp-all-resources.json`) and system prompt (`ai-prompt.md`) into a fully typed TypeScript resource module (`ai-mcp-all-resources.ts`).
+  - Automatically generates dynamic import `handler` callbacks (`async () => (await import(...))?.default`) with `?raw` support for markdown, text, HTML, and CSS assets, enabling lazy, on-demand resource loading for `@dxtmisha/mcp`.
+  - Groups resources into package-level constants (`mcpConstructorResources`, `mcpD1Resources`, etc.), a grouped record map (`mcpPackageResources`), and an aggregated export (`mcpAllResources`, `export default mcpAllResources`).
+  - Added comprehensive unit test suite in `src/classes/Library/__tests__/LibraryAiMcp.test.ts`.
+- **Constants & Exports**:
+  - Added `UI_FILE_AI_MCP_ALL_TS` (`'ai-mcp-all-resources.ts'`) in `src/config.ts`.
+  - Exported `LibraryAiMcp` from `src/library.ts`.
+
+### Changed
+- **AI Prompt Generation (`LibraryAiPrompt`)**:
+  - Integrated `LibraryAiMcp.make()` invocation directly into `LibraryAiPrompt.make()` when the MCP flag is active, automatically synchronizing `ai-mcp-all-resources.ts` during prompt builds (`dxt-prompt`).
+
 ## [0.11.9] - 2026-08-21
 
 ### Fixed

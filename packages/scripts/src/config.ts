@@ -128,6 +128,8 @@ export const UI_FILE_AI_DESCRIPTION = 'ai-description.md'
 export const UI_FILE_AI_MCP = 'ai-mcp-resources.json'
 /** AI MCP all resources file name / Название файла со всеми ресурсами MCP AI */
 export const UI_FILE_AI_MCP_ALL = 'ai-mcp-all-resources.json'
+/** AI MCP all resources TypeScript file name / Название TypeScript файла со всеми ресурсами MCP AI */
+export const UI_FILE_AI_MCP_ALL_TS = 'ai-mcp-all-resources.ts'
 /** Style SCSS file name / Название файла стилей SCSS */
 export const UI_FILE_STYLE_SCSS = 'style.scss'
 /** UI properties SCSS file name / Название файла свойств UI в SCSS */

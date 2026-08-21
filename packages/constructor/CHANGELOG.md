@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.111.3] - 2026-08-21
+
+### Fixed
+- **Mask Browser Autofill & Undefined Event Key**:
+  - Fixed `TypeError: Cannot read properties of undefined (reading 'toLowerCase')` in `MaskEvent.isCut` when processing browser autofill or synthetic keyboard events with `event.key === undefined`.
+  - Hardened `MaskEvent.isKey` check to verify that `event.key` is defined and non-empty before processing key events.
+  - Added native browser autofill support in `MaskEvent.onInput` for `event.inputType === 'insertReplacementText'`, ensuring the entire autofilled value is correctly reset and formatted via `MaskData.reset`.
+  - Added unit test coverage for undefined key events and `insertReplacementText` browser autofill handling in `MaskEvent.test.ts`.
+
 ## [0.111.2] - 2026-08-20
 
 ### Added

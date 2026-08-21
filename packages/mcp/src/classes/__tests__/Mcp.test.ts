@@ -34,12 +34,12 @@ describe('Mcp', () => {
     expect(server.getPrompts()).toHaveLength(0)
   })
 
-  it('initializes with tools, options, resources and prompts', () => {
+  it('initializes with tools, resources, prompts and options', () => {
     const server = new Mcp(
       [sampleTool],
-      { name: 'custom-server', version: '2.0.0' },
       [sampleResource],
-      [samplePrompt]
+      [samplePrompt],
+      { name: 'custom-server', version: '2.0.0' }
     )
 
     expect(server.getOptions().name).toBe('custom-server')
@@ -61,10 +61,15 @@ describe('Mcp', () => {
   })
 
   it('starts and stops server with lifecycle state updates', async () => {
-    const server = new Mcp([sampleTool], {
-      name: 'test-lifecycle-server',
-      version: '1.0.0'
-    })
+    const server = new Mcp(
+      [sampleTool],
+      undefined,
+      undefined,
+      {
+        name: 'test-lifecycle-server',
+        version: '1.0.0'
+      }
+    )
 
     expect(server.isStart()).toBe(false)
 

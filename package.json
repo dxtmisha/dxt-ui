@@ -39,7 +39,7 @@
     "build-functional": "dxt-build-functional",
     "build-packages": "dxt-build-packages",
     "build-publish-packages": "dxt-build-publish-packages",
-    "prompt": "dxt-prompt 1",
+    "prompt": "dxt-prompt",
     "prepublishOnly": "npm run build",
     "postinstall": "npm run prompt"
   },

@@ -6,6 +6,7 @@ import {
 } from '../../config'
 
 import { PropertiesFile } from '../Properties/PropertiesFile'
+import { LibraryAiMcp } from './LibraryAiMcp'
 import { LibraryAiPromptItem } from './LibraryAiPromptItem'
 
 import vuePromptText from '../../media/templates/prompts/aiCodeVuePrompt.en.md?raw'
@@ -97,6 +98,7 @@ Consolidated documentation, architectural guidelines, and mandatory rules for th
 
     if (this.isMcp) {
       this.writeMcp(mcpData)
+      new LibraryAiMcp().make()
     }
 
     console.log('end')
