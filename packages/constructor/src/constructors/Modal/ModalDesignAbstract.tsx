@@ -142,7 +142,7 @@ export abstract class ModalDesignAbstract<
       children.push(
         h(
           'div',
-          { class: this.classes?.value.title },
+          this.getKeyClass('title'),
           this.initSlot('title', undefined, props)
         )
       )
@@ -169,7 +169,7 @@ export abstract class ModalDesignAbstract<
       children.push(
         h(
           'div',
-          { class: this.classes?.value.header },
+          this.getKeyClass('header'),
           this.initSlot('header', undefined, props)
         )
       )
@@ -182,7 +182,7 @@ export abstract class ModalDesignAbstract<
       children.push(
         h(
           'div',
-          { class: this.classes?.value.body },
+          this.getKeyClass('body'),
           this.initSlot('default', undefined, props)
         )
       )
@@ -213,7 +213,7 @@ export abstract class ModalDesignAbstract<
       children.push(
         h(
           'div',
-          { class: this.classes?.value.footer },
+          this.getKeyClass('footer'),
           this.initSlot('footer', undefined, props)
         )
       )

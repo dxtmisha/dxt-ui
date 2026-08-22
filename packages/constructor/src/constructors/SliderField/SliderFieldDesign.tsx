@@ -159,10 +159,7 @@ export class SliderFieldDesign<
    */
   readonly renderBody = (): VNode[] => {
     return [
-      h('div', {
-        key: 'body',
-        class: this.classes?.value.body
-      }, [
+      h('div', this.getKeyClass('body'), [
         ...this.item.icon.render(),
         ...this.renderLabelLeading(),
         ...this.renderInputMin(),

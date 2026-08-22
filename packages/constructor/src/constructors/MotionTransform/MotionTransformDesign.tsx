@@ -228,10 +228,7 @@ export class MotionTransformDesign<
   readonly renderScrim = (): VNode[] => {
     if (this.item.state.teleport.value) {
       return [
-        h('div', {
-          key: 'scrim',
-          class: this.classes?.value.scrim
-        })
+        h('div', this.getKeyClass('scrim'))
       ]
     }
 

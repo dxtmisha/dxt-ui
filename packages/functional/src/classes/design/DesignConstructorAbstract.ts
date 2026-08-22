@@ -162,6 +162,19 @@ export abstract class DesignConstructorAbstract<
   }
 
   /**
+   * Getting key and class attributes for a sub-element.
+   *
+   * Получение атрибутов key и class для подэлемента.
+   * @param name element class/key name/ имя класса/ключа элемента
+   */
+  getKeyClass<K extends keyof CLASSES>(name: K & string) {
+    return {
+      key: name,
+      class: (this.classes?.value as ConstrItem | undefined)?.[name]
+    }
+  }
+
+  /**
    * List of available external variables.
    *
    * Список доступных переменных извне.

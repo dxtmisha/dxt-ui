@@ -24,6 +24,7 @@ const classesToken = computed<ConstrClasses>(() => ({
   main: {
     // :classes-values [!] System label / Системная метка
     'd1-cropArea': true,
+    'd1-cropArea--readonly': props.readonly,
     'd1-cropArea--disabled': props.disabled,
     'd1-cropArea--disabledTop': props.disabledTop,
     'd1-cropArea--disabledRight': props.disabledRight,

@@ -182,7 +182,7 @@ export class ListItemDesign<
     return [
       h(
         'div',
-        { class: this.classes?.value.body },
+        this.getKeyClass('body'),
         children
       )
     ]
@@ -200,7 +200,7 @@ export class ListItemDesign<
     return [
       h(
         'div',
-        { class: this.classes?.value.context },
+        this.getKeyClass('context'),
         [
           ...this.item.prefix.render(),
           ...this.item.label.render(),
@@ -261,7 +261,7 @@ export class ListItemDesign<
       return [
         h(
           'div',
-          { class: this.classes?.value.control },
+          this.getKeyClass('control'),
           children
         )
       ]

@@ -12642,6 +12642,11 @@
         name: 'd1-image',
         type: 'component',
       ),
+      'imageCrop':(
+        index: 'imageCrop',
+        name: 'd1-imageCrop',
+        type: 'component',
+      ),
       'input':(
         index: 'input',
         name: 'd1-input',
@@ -13458,6 +13463,11 @@
       'image':(
         index: 'image',
         name: 'd-image',
+        type: 'component',
+      ),
+      'imageCrop':(
+        index: 'imageCrop',
+        name: 'd-imageCrop',
         type: 'component',
       ),
       'input':(

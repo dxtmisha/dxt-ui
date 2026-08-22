@@ -52,6 +52,7 @@ import { wikiMdxHeadroom } from './Headroom/wikiMdxHeadroom'
 import { wikiMdxHorizontalScroll } from './HorizontalScroll/wikiMdxHorizontalScroll'
 import { wikiMdxIcon } from './Icon/wikiMdxIcon'
 import { wikiMdxImage } from './Image/wikiMdxImage'
+import { wikiMdxImageCrop } from './ImageCrop/wikiMdxImageCrop'
 import { wikiMdxInput } from './Input/wikiMdxInput'
 import { wikiMdxInputCode } from './InputCode/wikiMdxInputCode'
 import { wikiMdxInputCodeItem } from './InputCodeItem/wikiMdxInputCodeItem'
@@ -171,6 +172,7 @@ export const wikiMdx: StorybookComponentsMdx = [
   wikiMdxHorizontalScroll,
   wikiMdxIcon,
   wikiMdxImage,
+  wikiMdxImageCrop,
   wikiMdxInput,
   wikiMdxInputCode,
   wikiMdxInputCodeItem,

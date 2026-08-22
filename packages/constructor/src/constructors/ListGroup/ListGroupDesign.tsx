@@ -156,9 +156,7 @@ export class ListGroupDesign<
   readonly renderHead = (item: MotionTransformControlItem): VNode => {
     return h(
       'div',
-      {
-        class: this.classes?.value.head
-      },
+      this.getKeyClass('head'),
       this.initSlot(
         'head',
         undefined,
@@ -178,9 +176,7 @@ export class ListGroupDesign<
   readonly renderList = (): VNode => {
     return h(
       'div',
-      {
-        class: this.classes?.value.list
-      },
+      this.getKeyClass('list'),
       this.initSlot('list')
     )
   }

@@ -534,6 +534,10 @@
     "./CropArea": {
       "types": "./dist/constructors/CropArea/index.d.ts",
       "default": "./dist/cropArea.js"
+    },
+    "./ImageCrop": {
+      "types": "./dist/constructors/ImageCrop/index.d.ts",
+      "default": "./dist/imageCrop.js"
     }
   },
   "buildOptions": {
@@ -546,7 +550,7 @@
     "node": ">=20.0.0"
   },
   "dependencies": {
-    "@dxtmisha/functional": "*",
+    "@dxtmisha/functional": ">=1.15.14",
     "@dxtmisha/functional-basic": "*",
     "@dxtmisha/media": "*",
     "@dxtmisha/styles": "*",

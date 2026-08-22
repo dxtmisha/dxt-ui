@@ -146,10 +146,7 @@ export class SnackbarItemDesign<
     return [
       h(
         'div',
-        {
-          key: 'tool',
-          class: this.classes?.value.tool
-        },
+        this.getKeyClass('tool'),
         [
           ...this.item.icon.render(),
           ...this.renderContext(),
@@ -171,10 +168,7 @@ export class SnackbarItemDesign<
     return [
       h(
         'div',
-        {
-          key: 'context',
-          class: this.classes?.value.context
-        },
+        this.getKeyClass('context'),
         [
           ...this.item.label.render(),
           ...this.item.description.render(),

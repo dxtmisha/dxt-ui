@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.15.14] - 2026-08-22
+
+### Added
+- **DesignConstructorAbstract**: Added `getKeyClass(name)` method to retrieve `{ key, class }` binding object for component sub-elements based on element class/key name.
+- **ConstrBind**: Added default generic parameter `T = ConstrItem` to `ConstrBind<T = ConstrItem>` type definition.
+- **Exports & Distribution**: Added `ai-screenshot` to package `files` and configured explicit export mappings for `./ai-types.md`, `./ai-description.md`, `./ai-resources/*`, and `./ai-screenshot/*` in `package.json`.
+
 ## [1.15.13] - 2026-08-20
 
 ### Added

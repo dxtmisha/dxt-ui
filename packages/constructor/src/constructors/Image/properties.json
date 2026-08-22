@@ -9,6 +9,7 @@
   "~disabled": {},
   "~hide": {},
   "~adaptive": {},
+  "~static": {},
   "~size": {
     "~auto": {},
     "~contain": {},

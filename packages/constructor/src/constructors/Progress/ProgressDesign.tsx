@@ -186,7 +186,7 @@ export class ProgressDesign<
         || ((this.props as any).indeterminate) === 'type1'
       )
     ) {
-      return [h('span', { class: this.classes?.value.point })]
+      return [h('span', this.getKeyClass('point'))]
     }
 
     return []

@@ -199,19 +199,19 @@ export class FieldDesign<
     if (this.props.required) {
       children.push(h(
         'span',
-        { class: this.classes?.value.required }
+        this.getKeyClass('required')
       ))
     }
 
     return h(
       'span',
-      { class: this.classes?.value.bodyTitle },
+      this.getKeyClass('bodyTitle'),
       h(
         'span',
-        { class: this.classes?.value.bodyTitleLabel },
+        this.getKeyClass('bodyTitleLabel'),
         h(
           'span',
-          { class: this.classes?.value.bodyTitleLabelText },
+          this.getKeyClass('bodyTitleLabelText'),
           children
         )
       )
@@ -253,7 +253,7 @@ export class FieldDesign<
       if ('leading' in this.slots) {
         slots.push(h(
           'span',
-          { class: this.classes?.value.bodyScoreboardLeft },
+          this.getKeyClass('bodyScoreboardLeft'),
           this.initSlot('leading')
         ))
       }
@@ -261,7 +261,7 @@ export class FieldDesign<
       if ('trailing' in this.slots) {
         slots.push(h(
           'span',
-          { class: this.classes?.value.bodyScoreboardRight },
+          this.getKeyClass('bodyScoreboardRight'),
           this.initSlot('trailing')
         ))
       }
@@ -336,7 +336,7 @@ export class FieldDesign<
     return [
       h(
         'span',
-        { class: this.classes?.value.bodyScoreboardSpace },
+        this.getKeyClass('bodyScoreboardSpace'),
         children
       )
     ]
@@ -349,6 +349,6 @@ export class FieldDesign<
    * @returns border virtual node / виртуальный узел границы
    */
   readonly renderBodyBorder = (): VNode => {
-    return h('span', { class: this.classes?.value.bodyBorder })
+    return h('span', this.getKeyClass('bodyBorder'))
   }
 }

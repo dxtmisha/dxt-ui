@@ -29,6 +29,7 @@ const classesToken = computed<ConstrClasses>(() => ({
     'd1-image--disabled': props.disabled,
     'd1-image--hide': props.hide,
     'd1-image--adaptive': props.adaptive,
+    'd1-image--static': props.static,
     [`d1-image--size--${props.size}`]: inArray(propsValues.size, props.size)
     // :classes-values [!] System label / Системная метка
   }

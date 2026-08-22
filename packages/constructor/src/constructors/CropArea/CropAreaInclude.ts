@@ -1,6 +1,6 @@
 import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
 import type { CropAreaPropsInclude } from './basicTypes'
-import type { CropAreaPropsBasic } from './props'
+import type { CropAreaProps } from './props'
 import type { CropAreaExpose } from './types'
 
 /**
@@ -10,11 +10,22 @@ import type { CropAreaExpose } from './types'
  */
 export class CropAreaInclude extends ComponentIncludeAbstract<
   CropAreaPropsInclude,
-  CropAreaPropsBasic,
+  CropAreaProps,
   CropAreaExpose,
   any
 > {
   protected override readonly name = 'cropArea'
   protected override readonly propsAttrsName = 'cropAreaAttrs'
   protected readonly hasInitElement: boolean = false
+
+  /**
+   * Checks whether the crop area should be displayed.
+   * Returns false if readonly is set to true.
+   *
+   * Проверяет, должна ли отображаться область кадрирования.
+   * Возвращает false, если установлено readonly: true.
+   */
+  override get is(): boolean {
+    return !this.binds.value.readonly
+  }
 }

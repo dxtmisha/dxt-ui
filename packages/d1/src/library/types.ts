@@ -47,6 +47,7 @@ import _D1Headroom from '../components/Ui/Headroom/D1Headroom.vue'
 import _D1HorizontalScroll from '../components/Ui/HorizontalScroll/D1HorizontalScroll.vue'
 import _D1Icon from '../components/Ui/Icon/D1Icon.vue'
 import _D1Image from '../components/Ui/Image/D1Image.vue'
+import _D1ImageCrop from '../components/Ui/ImageCrop/D1ImageCrop.vue'
 import _D1Input from '../components/Ui/Input/D1Input.vue'
 import _D1InputCode from '../components/Ui/InputCode/D1InputCode.vue'
 import _D1InputCodeItem from '../components/Ui/InputCodeItem/D1InputCodeItem.vue'
@@ -161,6 +162,7 @@ declare module '@vue/runtime-core' {
     D1HorizontalScroll: typeof _D1HorizontalScroll
     D1Icon: typeof _D1Icon
     D1Image: typeof _D1Image
+    D1ImageCrop: typeof _D1ImageCrop
     D1Input: typeof _D1Input
     D1InputCode: typeof _D1InputCode
     D1InputCodeItem: typeof _D1InputCodeItem

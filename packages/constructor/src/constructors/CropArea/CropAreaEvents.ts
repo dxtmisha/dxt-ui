@@ -101,7 +101,7 @@ export class CropAreaEvents {
 
     const key = getKey(event)
     const stepMultiplier = event.altKey ? 10 : 1
-    const step = (this.props.step ?? 1) * stepMultiplier
+    const step = Number(this.props.step ?? 1) * stepMultiplier
 
     let deltaX = 0
     let deltaY = 0

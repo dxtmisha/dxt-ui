@@ -70,14 +70,14 @@
     }
 
     &--pdf {
-      > object {
+      >object {
         width: 100%;
         height: 100%;
       }
     }
 
     &--flag-compressed {
-      > * {
+      >* {
         @include ui.absolute;
       }
     }
@@ -100,6 +100,28 @@
   &--adaptive {
     @include ui.initByCustom('img.height', auto);
     background-size: 100%;
+  }
+
+  &--static {
+    position: relative;
+    align-items: unset;
+    justify-content: unset;
+    width: 100%;
+    height: auto;
+
+    img {
+      position: static;
+      top: auto;
+      left: auto;
+      margin: 0;
+      width: 100%;
+      height: auto;
+      min-width: 0;
+      min-height: 0;
+      display: block;
+      --sys-transform-translateX: 0%;
+      --sys-transform-translateY: 0%;
+    }
   }
 
   &--turn {

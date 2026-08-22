@@ -141,10 +141,7 @@ export class HeaderDesign<
     const children: any[] = []
 
     if (this.slots?.trailing) {
-      children.push(h('div', {
-        key: 'spacer',
-        class: this.classes?.value.space
-      }))
+      children.push(h('div', this.getKeyClass('space')))
 
       this.initSlot('trailing', children)
     }

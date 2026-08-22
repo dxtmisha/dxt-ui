@@ -45,6 +45,17 @@ describe('CropAreaPosition', () => {
     expect(constrained).toBeUndefined()
   })
 
+  it('should validate and constrain max size', () => {
+    const { position } = createInstances({ value: [20, 20, 20, 20], min: 8, max: 70 })
+
+    // Current height: 100 - 20 - 20 = 60
+    // Move top up by 5% => candidate = 15 => size = 100 - 15 - 20 = 65 <= 70 (valid)
+    expect(position.moveSingle('top', 20, -5)).toBe(15)
+
+    // Move top up by 15% => candidate = 0 => size = 100 - 0 - 20 = 80 > 70 (exceeds max => constrained)
+    expect(position.moveSingle('top', 15, -20)).toBeUndefined()
+  })
+
   it('should move center crop box within boundaries without resizing', () => {
     const { position } = createInstances({ value: [10, 10, 10, 10] })
 

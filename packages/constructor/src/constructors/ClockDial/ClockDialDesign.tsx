@@ -202,7 +202,7 @@ export class ClockDialDesign<
     return [
       h(
         'div',
-        { class: this.classes?.value.list },
+        this.getKeyClass('list'),
         children
       )
     ]
@@ -268,7 +268,7 @@ export class ClockDialDesign<
     return [
       h(
         'div',
-        { class: this.classes?.value.info },
+        this.getKeyClass('info'),
         children
       )
     ]
@@ -282,7 +282,7 @@ export class ClockDialDesign<
    */
   readonly renderPoint = (): VNode[] => {
     return [
-      h('div', { class: this.classes?.value.point })
+      h('div', this.getKeyClass('point'))
     ]
   }
 
@@ -299,7 +299,7 @@ export class ClockDialDesign<
     return [
       h(
         'div',
-        { class: this.classes?.value.dial },
+        this.getKeyClass('dial'),
         content
       )
     ]

@@ -67,7 +67,17 @@ export class CropAreaPosition {
    * @returns minimum size in percentage / минимальный размер в процентах
    */
   get min(): number {
-    return this.props.min ?? 8
+    return Number(this.props.min ?? 8)
+  }
+
+  /**
+   * Returns maximum size constraint.
+   *
+   * Возвращает ограничение максимального размера.
+   * @returns maximum size in percentage / максимальный размер в процентах
+   */
+  get max(): number {
+    return Number(this.props.max ?? 100)
   }
 
   /**
@@ -186,8 +196,9 @@ export class CropAreaPosition {
     }
 
     const oppositeValue = this.item.value[opposite]
+    const size = 100 - candidate - oppositeValue
 
-    if (100 - candidate - oppositeValue < this.min) {
+    if (size < this.min || size > this.max) {
       return undefined
     }
 

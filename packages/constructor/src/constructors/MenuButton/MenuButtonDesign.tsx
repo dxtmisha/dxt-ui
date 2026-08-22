@@ -191,8 +191,8 @@ export class MenuButtonDesign<
     ) {
       if (hasValue) {
         children.push(
-          h('span', { class: this.classes?.value.label }, this.props.label),
-          h('span', { class: this.classes?.value.separator }, this.props.labelSeparator)
+          h('span', this.getKeyClass('label'), this.props.label),
+          h('span', this.getKeyClass('separator'), this.props.labelSeparator)
         )
       } else {
         children.push(
@@ -205,7 +205,7 @@ export class MenuButtonDesign<
       children.push(
         h(
           'span',
-          { class: this.classes?.value.selected },
+          this.getKeyClass('selected'),
           selectedNames.join(', ')
         )
       )

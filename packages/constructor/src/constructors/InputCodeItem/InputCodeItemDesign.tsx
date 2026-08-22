@@ -161,7 +161,7 @@ export class InputCodeItemDesign<
    */
   readonly renderSub = (): VNode[] => {
     if (this.props.hide) {
-      return [h('span', { class: this.classes?.value.sub })]
+      return [h('span', this.getKeyClass('sub'))]
     }
 
     return []

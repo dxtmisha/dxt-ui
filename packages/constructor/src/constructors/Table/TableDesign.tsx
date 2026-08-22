@@ -202,7 +202,7 @@ export class TableDesign<
     return [
       h(
         tag,
-        { class: this.classes?.value.colgroup },
+        this.getKeyClass('colgroup'),
         cols.map(attr => h(this.item.tagCol, { ...attr, class: this.classes?.value.col }))
       )
     ]
@@ -258,7 +258,7 @@ export class TableDesign<
       return [
         h(
           this.item.tagFoot,
-          { class: this.classes?.value.foot },
+          this.getKeyClass('foot'),
           children
         )
       ]
@@ -286,7 +286,7 @@ export class TableDesign<
       return [
         h(
           this.item.tagItems,
-          { class: this.classes?.value.items },
+          this.getKeyClass('items'),
           children
         )
       ]

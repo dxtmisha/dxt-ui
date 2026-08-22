@@ -154,10 +154,7 @@ export class BlockDesign<
       this.initSlot('headline', children)
 
       return [
-        h('div', {
-          key: 'headline',
-          class: this.classes?.value.headline
-        }, children)
+        h('div', this.getKeyClass('headline'), children)
       ]
     }
 
@@ -198,10 +195,7 @@ export class BlockDesign<
 
     if (children.length > 0) {
       return [
-        h('div', {
-          key: 'body',
-          class: this.classes?.value.body
-        }, children)
+        h('div', this.getKeyClass('body'), children)
       ]
     }
 

@@ -148,9 +148,7 @@ export class PlaceholderDesign<
     if (this.item.image.is) {
       return [h(
         'div',
-        {
-          class: this.classes?.value.image
-        },
+        this.getKeyClass('image'),
         this.item.image.render()
       )]
     }

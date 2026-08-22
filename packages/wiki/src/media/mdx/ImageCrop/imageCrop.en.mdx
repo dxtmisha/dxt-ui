@@ -1,0 +1,44 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+An interactive image cropping component that seamlessly pairs an underlying image viewport with an overlay cropping area.
+
+`ImageCrop` combines the capabilities of the `Image` and `CropArea` components into a single unified interface. It renders the source graphic (URLs, uploaded files, or custom media) within a responsive container and overlays a resizable, draggable crop boundary box over it. The crop coordinates are managed as percentage insets (`[top, right, bottom, left]`) and can be bound reactively using `v-model` (or `v-model:value`).
+
+**Key Features:**
+
+- Integrated image display and overlay crop mask in a single component
+- 8-directional boundary resize handles (top, right, bottom, left, and all 4 corners)
+- Central panning handle for repositioning the crop frame without resizing
+- Two-way reactive coordinate binding via `v-model` (`[top, right, bottom, left]` in percentages)
+- Automatic coordination with `CropArea` and `Image` sub-components
+- Image customization via `image` and `imageAttrs` props
+- Accessible ARIA attributes and keyboard/pointer navigation support
+- Interactive state controls: `disabled` to disable all interactions, `readonly` to lock crop boundaries
+
+**Common Use Cases:**
+
+- User profile picture and avatar upload/crop dialogs
+- Banner, cover image, and thumbnail editing tools
+- Photo trimming, document alignment, and focal region selection
+- Media management dashboards and image upload pipelines
+
+<Source
+    code={`
+<script setup>
+import { ref } from 'vue'
+
+const cropCoordinates = ref([15, 20, 15, 20])
+</script>
+
+<template>
+  <div style="position: relative; width: 400px; height: 300px;">
+    <ImageCrop
+      image="/demo-image.jpg"
+      alt="Profile picture preview"
+      v-model="cropCoordinates"
+    />
+  </div>
+</template>
+  `}
+    language="html"
+/>

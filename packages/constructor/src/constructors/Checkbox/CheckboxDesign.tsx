@@ -242,7 +242,7 @@ export class CheckboxDesign<
     ) {
       return [h(
         'span',
-        { class: this.classes?.value.info },
+        this.getKeyClass('info'),
         [
           ...this.item.label.render(),
           ...this.item.description.render(),

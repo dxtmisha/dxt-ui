@@ -8,7 +8,7 @@ import {
 import { CropArea } from './CropArea'
 
 import type { CropAreaDirection } from './basicTypes'
-import type { CropAreaPropsBasic } from './props'
+import type { CropAreaProps } from './props'
 import type {
   CropAreaClasses,
   CropAreaComponents,
@@ -28,7 +28,7 @@ export class CropAreaDesign<
   COMP extends CropAreaComponents,
   EXPOSE extends CropAreaExpose,
   CLASSES extends CropAreaClasses,
-  P extends CropAreaPropsBasic
+  P extends CropAreaProps
 > extends DesignConstructorAbstract<
     HTMLDivElement,
     COMP,
@@ -127,7 +127,11 @@ export class CropAreaDesign<
    * Метод для рендеринга.
    * @returns rendered node / отрендеренный узел
    */
-  protected initRender(): VNode {
+  protected initRender(): VNode | undefined {
+    if (this.props.readonly) {
+      return undefined
+    }
+
     return h(
       this.item.tag,
       {
@@ -151,7 +155,7 @@ export class CropAreaDesign<
    * @returns left column node / узел левой колонки
    */
   protected readonly renderLeft = (): VNode => {
-    return h('div', { class: this.classes?.value.left }, [
+    return h('div', this.getKeyClass('left'), [
       this.renderMove('left-top'),
       this.renderMove('left'),
       this.renderMove('left-bottom')
@@ -165,10 +169,10 @@ export class CropAreaDesign<
    * @returns center column node / узел центральной колонки
    */
   protected readonly renderCenter = (): VNode => {
-    return h('div', { class: this.classes?.value.center }, [
+    return h('div', this.getKeyClass('center'), [
       this.renderMove('top'),
       h('div', {
-        'class': this.classes?.value.crop,
+        ...this.getKeyClass('crop'),
         'data-value': 'center'
       }),
       this.renderMove('bottom')
@@ -182,7 +186,7 @@ export class CropAreaDesign<
    * @returns right column node / узел правой колонки
    */
   protected readonly renderRight = (): VNode => {
-    return h('div', { class: this.classes?.value.right }, [
+    return h('div', this.getKeyClass('right'), [
       this.renderMove('right-top'),
       this.renderMove('right'),
       this.renderMove('right-bottom')
@@ -198,7 +202,7 @@ export class CropAreaDesign<
    */
   protected readonly renderMove = (direction: CropAreaDirection): VNode => {
     return h('div', {
-      'class': this.classes?.value.move,
+      ...this.getKeyClass('move'),
       'data-value': direction
     })
   }

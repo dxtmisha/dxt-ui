@@ -153,7 +153,7 @@ export class InputCodeDesign<
   protected readonly renderContext = (): VNode => {
     return h(
       'div',
-      { class: this.classes?.value.context },
+      this.getKeyClass('context'),
       this.renderItems()
     )
   }

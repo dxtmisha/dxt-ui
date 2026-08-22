@@ -236,7 +236,7 @@ export class SliderDesign<
       children.push(
         h(
           'span',
-          { class: this.classes?.value.label },
+          this.getKeyClass('label'),
           label
         )
       )
@@ -272,7 +272,7 @@ export class SliderDesign<
    */
   readonly renderTrack = (): VNode[] => {
     return [
-      h('div', { class: this.classes?.value.track })
+      h('div', this.getKeyClass('track'))
     ]
   }
 

@@ -30,14 +30,14 @@ export class AlertDesign<
   CLASSES extends AlertClasses,
   P extends AlertPropsBasic
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
-    COMP,
-    AlertEmits,
-    EXPOSE,
-    AlertSlots,
-    CLASSES,
-    P
-  > {
+  HTMLDivElement,
+  COMP,
+  AlertEmits,
+  EXPOSE,
+  AlertSlots,
+  CLASSES,
+  P
+> {
   /** Alert control item instance / Экземпляр элемента управления Alert */
   protected readonly item: Alert
 
@@ -158,9 +158,7 @@ export class AlertDesign<
   readonly renderContext = (): VNode => {
     return h(
       'div',
-      {
-        class: this.classes?.value.context
-      },
+      this.getKeyClass('context'),
       [
         ...this.item.label.render(),
         ...this.item.description.render(),
@@ -193,9 +191,7 @@ export class AlertDesign<
     }
 
     if (children.length > 0) {
-      return [h('div', {
-        class: this.classes?.value.trailing
-      }, children)]
+      return [h('div', this.getKeyClass('trailing'), children)]
     }
 
     return []
@@ -214,7 +210,7 @@ export class AlertDesign<
     ) {
       return [h(
         'div',
-        { class: this.classes?.value.body },
+        this.getKeyClass('body'),
         this.initSlot('body')
       )]
     }
@@ -231,6 +227,7 @@ export class AlertDesign<
   readonly renderButtonClose = (): VNode[] => {
     if (this.props.closeButton) {
       return this.item.buttonClose.render(undefined, {
+        key: 'buttonClose',
         class: this.classes?.value.buttonClose,
         onClick: this.item.alertEvent.onClose,
         ...AriaStaticInclude.label(this.item.text.close)

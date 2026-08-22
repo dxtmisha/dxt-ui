@@ -200,7 +200,7 @@ export class SnackbarDesign<
   readonly renderSpace = (): VNode[] => {
     if (this.item.data.isPriority()) {
       return [
-        h('div', { class: this.classes?.value.space })
+        h('div', this.getKeyClass('space'))
       ]
     }
 

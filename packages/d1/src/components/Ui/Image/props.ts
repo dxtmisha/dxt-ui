@@ -12,6 +12,7 @@ type PropsToken = {
   disabled?: boolean
   hide?: boolean
   adaptive?: boolean
+  static?: boolean
   size?: 'auto' | 'contain' | 'cover'
   // :type [!] System label / Системная метка
 }

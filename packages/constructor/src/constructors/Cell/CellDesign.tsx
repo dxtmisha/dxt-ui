@@ -157,10 +157,7 @@ export class CellDesign<
     return [
       h(
         'div',
-        {
-          key: 'context',
-          class: this.classes?.value.context
-        },
+        this.getKeyClass('context'),
         [
           ...this.item.label.render(),
           ...this.item.caption.render(),
@@ -184,10 +181,7 @@ export class CellDesign<
       return [
         h(
           'div',
-          {
-            key: 'trailing',
-            class: this.classes?.value.contextTrailing
-          },
+          this.getKeyClass('contextTrailing'),
           this.initSlot('trailing', undefined, this.item.classesSub)
         )
       ]
@@ -210,10 +204,7 @@ export class CellDesign<
       return [
         h(
           'div',
-          {
-            key: 'body',
-            class: this.classes?.value.body
-          },
+          this.getKeyClass('body'),
           this.initSlot('body', undefined, this.item.classesSub)
         )
       ]

@@ -109,6 +109,17 @@ export const wikiAttributes: StorybookArgsToList = {
     },
     hide: true
   },
+  cropAreaAttrs: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.attributes,
+      description: {
+        en: 'Additional attributes for the CropArea component',
+        ru: 'Дополнительные атрибуты для компонента CropArea'
+      }
+    },
+    hide: true
+  },
   fieldAttrs: {
     type: StorybookControl.object,
     options: {

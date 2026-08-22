@@ -20,6 +20,7 @@ const propsNames: StorybookProps = [
   { name: 'preloadOffset', type: 'string' },
   { name: 'size', type: 'string', option: ['auto', 'contain', 'cover'] },
   { name: 'srcset', type: 'string | Record<string, string>' },
+  { name: 'static', type: 'boolean' },
   { name: 'tagImg', type: 'boolean' },
   { name: 'turn', type: 'boolean' },
   { name: 'url', type: 'string' },

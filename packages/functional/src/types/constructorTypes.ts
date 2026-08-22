@@ -120,7 +120,7 @@ export type ConstrRegistration = {
  * Constructor bind type for component binding with class and style support/
  * Тип привязки конструктора для привязки компонента с поддержкой классов и стилей
  */
-export type ConstrBind<T>
+export type ConstrBind<T = ConstrItem>
   = T
     & Record<string, any>
     & {

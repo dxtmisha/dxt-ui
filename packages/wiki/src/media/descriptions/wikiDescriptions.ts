@@ -46,6 +46,7 @@ import { wikiDescriptionsHeadroom } from './wikiDescriptionsHeadroom'
 import { wikiDescriptionsHorizontalScroll } from './wikiDescriptionsHorizontalScroll'
 import { wikiDescriptionsIcon } from './wikiDescriptionsIcon'
 import { wikiDescriptionsImage } from './wikiDescriptionsImage'
+import { wikiDescriptionsImageCrop } from './wikiDescriptionsImageCrop'
 import { wikiDescriptionsInput } from './wikiDescriptionsInput'
 import { wikiDescriptionsInputCode } from './wikiDescriptionsInputCode'
 import { wikiDescriptionsInputCodeItem } from './wikiDescriptionsInputCodeItem'
@@ -159,6 +160,7 @@ export const wikiDescriptions: StorybookComponentsDescription = [
   wikiDescriptionsHorizontalScroll,
   wikiDescriptionsIcon,
   wikiDescriptionsImage,
+  wikiDescriptionsImageCrop,
   wikiDescriptionsInput,
   wikiDescriptionsInputCode,
   wikiDescriptionsInputCodeItem,

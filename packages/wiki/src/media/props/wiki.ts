@@ -47,6 +47,7 @@ import { wikiGridItem } from './wikiGridItem'
 import { wikiHeadroom } from './wikiHeadroom'
 import { wikiIcon } from './wikiIcon'
 import { wikiImage } from './wikiImage'
+import { wikiImageCrop } from './wikiImageCrop'
 import { wikiInput } from './wikiInput'
 import { wikiInputCode } from './wikiInputCode'
 import { wikiInputCodeItem } from './wikiInputCodeItem'
@@ -142,6 +143,7 @@ export const wiki: StorybookArgsToList = {
   ...wikiHeadroom,
   ...wikiIcon,
   ...wikiImage,
+  ...wikiImageCrop,
   ...wikiInput,
   ...wikiInputCode,
   ...wikiInputCodeItem,

@@ -29,14 +29,14 @@ export class AccordionDesign<
   CLASSES extends AccordionClasses,
   P extends AccordionProps
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
-    COMP,
-    AccordionEmits,
-    EXPOSE,
-    AccordionSlots,
-    CLASSES,
-    P
-  > {
+  HTMLDivElement,
+  COMP,
+  AccordionEmits,
+  EXPOSE,
+  AccordionSlots,
+  CLASSES,
+  P
+> {
   protected readonly item: Accordion
 
   /**
@@ -177,7 +177,7 @@ export class AccordionDesign<
   readonly renderBody = (props: any): VNode => {
     return h(
       'div',
-      { class: this.classes?.value.body },
+      this.getKeyClass('body'),
       this.initSlot('default', undefined, props)
     )
   }

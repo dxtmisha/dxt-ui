@@ -157,7 +157,7 @@ export class TableHeaderItemDesign<
       return [
         h(
           'div',
-          { class: this.classes?.value.body },
+          this.getKeyClass('body'),
           children
         )
       ]

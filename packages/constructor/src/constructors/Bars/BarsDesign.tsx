@@ -170,9 +170,7 @@ export class BarsDesign<
     return [
       h(
         'div',
-        {
-          class: this.classes?.value.context
-        },
+        this.getKeyClass('context'),
         [
           ...this.item.label.render(),
           ...this.item.description.render()

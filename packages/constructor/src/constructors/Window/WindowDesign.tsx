@@ -213,10 +213,7 @@ export class WindowDesign<
     this.initSlot('footer', children, this.item.slotData)
 
     return [
-      h('div', {
-        key: 'group',
-        class: this.classes?.value.bodyGroup
-      }, children)
+      h('div', this.getKeyClass('bodyGroup'), children)
     ]
   }
 

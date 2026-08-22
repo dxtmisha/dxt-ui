@@ -157,9 +157,7 @@ export class NavigationRailItemDesign<
     if (this.item.badge.is) {
       if (this.item.icon.isIcon()) {
         return [
-          h('div', {
-            class: this.classes?.value.context
-          }, [
+          h('div', this.getKeyClass('context'), [
             ...this.item.icon.renderIcon(),
             ...this.item.badge.render()
           ]),
@@ -168,9 +166,7 @@ export class NavigationRailItemDesign<
       }
 
       return [
-        h('div', {
-          class: this.classes?.value.contextLine
-        }, [
+        h('div', this.getKeyClass('contextLine'), [
           ...this.item.label.render(),
           ...this.item.badge.render()
         ])

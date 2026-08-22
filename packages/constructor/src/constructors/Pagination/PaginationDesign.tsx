@@ -216,7 +216,7 @@ export class PaginationDesign<
     if (this.props.showInfo) {
       return [h(
         'div',
-        { class: this.classes?.value.info },
+        this.getKeyClass('info'),
         this.item.page.info.value
       )]
     }
@@ -241,7 +241,7 @@ export class PaginationDesign<
       ]
 
       return [
-        h('div', { class: this.classes?.value.menuRows }, children)
+        h('div', this.getKeyClass('menuRows'), children)
       ]
     }
 
@@ -259,7 +259,7 @@ export class PaginationDesign<
       return [
         h(
           'div',
-          { class: this.classes?.value.menuRowsLabel },
+          this.getKeyClass('menuRowsLabel'),
           this.item.menuRows.labelRowsPerPage
         )
       ]
@@ -313,7 +313,7 @@ export class PaginationDesign<
     if (this.props.showPagination) {
       return [h(
         'div',
-        { class: this.classes?.value.navigation },
+        this.getKeyClass('navigation'),
         [
           ...this.renderFirst(),
           ...this.renderBack(),
@@ -522,7 +522,7 @@ export class PaginationDesign<
    */
   readonly renderEllipsis = (): VNode[] => {
     return [
-      h('span', { class: this.classes?.value.ellipsis }, this.props.ellipsis)
+      h('span', this.getKeyClass('ellipsis'), this.props.ellipsis)
     ]
   }
 
@@ -533,6 +533,6 @@ export class PaginationDesign<
    * @returns spacer element / элемент-разделитель
    */
   readonly renderSpacer = (): VNode[] => {
-    return [h('div', { class: this.classes?.value.spacer })]
+    return [h('div', this.getKeyClass('spacer'))]
   }
 }

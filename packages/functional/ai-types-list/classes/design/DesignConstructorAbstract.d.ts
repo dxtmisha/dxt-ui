@@ -1,39 +1,44 @@
-// md5:aab6d6864d240f9e03b65f0f7a34dd68 true
+// md5:7cb0661d2825e4abeb90ef048f4400df true
 import { ComputedRef, ToRefs, VNode, Ref } from 'vue';
-/** Component constructor abstract class. @keywords design constructor abstract component */
+
+/** Abstract base class for functional components and design constructors. @keywords design constructor, abstract component, vue */
 export declare abstract class DesignConstructorAbstract<E extends Element, COMP extends ConstrComponent, EMITS extends ConstrItem, EXPOSE extends ConstrItem, SLOTS extends ConstrItem, CLASSES extends ConstrClasses, P extends ConstrItem> {
-    /** Creates instance of design constructor. @keywords constructor design */
+    /** Creates an instance of DesignConstructorAbstract. @keywords constructor, initialize */
     protected constructor(name: string, props: Readonly<P>, options?: ConstrOptions<COMP, EMITS, P> | undefined);
-    /** Initializes instance properties. @keywords init design */
     protected init(): this;
-    /** Gets full class name. @keywords get name class */
+    /** Gets the class name. @keywords get name, class */
     getName(): string;
-    /** Gets design prefix/name. @keywords get design */
+    /** Gets the design name. @keywords get design, name */
     getDesign(): string;
-    /** Gets sub-class name by levels. @keywords get sub class */
+    /** Gets sub-class names by levels. @keywords sub class, levels */
     getSubClass(name: string | string[]): string;
-    /** Gets status modifier class name. @keywords get status class */
+    /** Gets status class names. @keywords status class, state */
     getStatusClass(name: string | string[]): string;
-    /** Gets CSS custom property name. @keywords get style var */
+    /** Gets style property names. @keywords style property, css */
     getStyle(name: string | string[]): string;
-    /** Gets filtered element attributes. @keywords get attrs */
+    /** Gets additional attributes. @keywords get attributes, attrs */
     getAttrs(): ConstrItem;
-    /** Exposes public component properties and element. @keywords expose component */
+    /** Gets key and class attributes for a sub-element. @keywords key class, sub element */
+    getKeyClass<K extends keyof CLASSES>(name: K & string): {
+        key: K & string;
+        class: any;
+    };
+    /** Exposes available external variables. @keywords expose, public api */
     expose(): ConstrExpose<E, EXPOSE>;
-    /** Returns component render function. @keywords render function */
+    /** Renders the component setup. @keywords render function, setup */
     render(): () => VNode | (VNode | any)[] | undefined;
-    /** Initializes exposed context. @keywords init expose */
+    /** Initializes exposed properties. @keywords init expose, abstract */
     protected abstract initExpose(): EXPOSE;
-    /** Initializes computed CSS classes. @keywords init classes */
+    /** Initializes and improves the list of classes. @keywords init classes, abstract */
     protected abstract initClasses(): Partial<CLASSES>;
-    /** Initializes computed inline styles. @keywords init styles */
+    /** Initializes and refines styles. @keywords init styles, abstract */
     protected abstract initStyles(): ConstrStyles;
-    /** Renders component template VNode. @keywords init render */
+    /** Renders the component content. @keywords init render, abstract */
     protected abstract initRender(): VNode | (VNode | any)[] | undefined;
-    /** Initializes slot content and optionally pushes to children. @keywords init slot */
+    /** Initializes a component slot. @keywords init slot, template */
     protected initSlot<K extends keyof SLOTS>(name: K, children?: any[], props?: ConstrItem): VNode | undefined;
-    /** Normalizes class definition into class object map. @keywords to class */
+    /** Transforms a class value into an object. @keywords to class, object */
     protected toClass(classes?: ConstrClass): ConstrClassObject;
-    /** Maps class definition placeholders to component names. @keywords to class name */
+    /** Converts a class name to the component standard. @keywords to class name, standard */
     protected toClassName<T extends ConstrItem>(classes?: ConstrItem): T;
 }

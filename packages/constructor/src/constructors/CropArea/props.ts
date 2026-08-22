@@ -1,9 +1,11 @@
+import type { FieldStepProps } from '../../types/fieldTypes'
 import type { ModelProps } from '../../types/modelTypes'
 import type { CropAreaCoordinator } from './basicTypes'
 
 /** Type describing token properties / Тип, описывающий свойства токенов */
 type CropAreaPropsToken = {
   // :type [!] System label / Системная метка
+  readonly?: boolean
   disabled?: boolean
   disabledTop?: boolean
   disabledRight?: boolean
@@ -14,15 +16,10 @@ type CropAreaPropsToken = {
 
 /** Type describing basic properties / Тип, описывающий базовые свойства */
 export type CropAreaPropsBasic = ModelProps<any>
+  & FieldStepProps
   & {
     /** Initial coordinate values [top, right, bottom, left] / Начальные значения координат [сверху, справа, снизу, слева] */
     value?: CropAreaCoordinator
-
-    /** Minimum dimension size in percentage / Минимальный размер стороны в процентах */
-    min?: number
-
-    /** Step size for keyboard arrow movement in percentage / Шаг смещения для стрелок клавиатуры в процентах */
-    step?: number
 
     /** Tab index order / Порядок табуляции */
     tabindex?: number | string

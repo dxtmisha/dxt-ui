@@ -1,6 +1,17 @@
 import { type StorybookArgsToList, StorybookCategory, StorybookControl } from '../../types/storybookTypes'
 
 export const wikiInformation: StorybookArgsToList = {
+  alt: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.information,
+      type: 'string',
+      description: {
+        en: 'Alternative text for image',
+        ru: 'Альтернативный текст для изображения'
+      }
+    }
+  },
   button: {
     type: StorybookControl.object,
     options: {

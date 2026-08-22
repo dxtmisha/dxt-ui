@@ -202,10 +202,7 @@ export class ArrowDesign<
    */
   readonly renderBorder = (): VNode[] => {
     return [
-      h('div', {
-        key: 'border',
-        class: this.classes?.value.border
-      })
+      h('div', this.getKeyClass('border'))
     ]
   }
 }
