@@ -1,11 +1,14 @@
 import type { Ref, ToRefs } from 'vue'
-import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
+import type { ConstrEmit, DesignComp } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { ModelInclude } from '../../classes/ModelInclude'
 
 import { CropAreaInclude } from '../CropArea'
 import { ImageInclude } from '../Image'
+import { ProgressInclude } from '../Progress'
+
+import { ImageCropImage } from './ImageCropImage'
 
 import type { CropAreaCoordinator, CropAreaEventParameters } from '../CropArea'
 import type { AriaList } from '../../types/ariaTypes'
@@ -18,14 +21,20 @@ import type { ImageCropProps } from './props'
  * Главный класс-оркестратор для управления состоянием ImageCrop, загрузкой изображения, стилями и областью кадрирования.
  */
 export class ImageCrop {
-  /** Model manager / Менеджер модели */
-  readonly model: ModelInclude<CropAreaCoordinator>
+  /** Image helper instance / Экземпляр помощника по изображению */
+  readonly cropImage: ImageCropImage
 
   /** Image component inclusion controller / Контроллер включения компонента изображения */
   readonly image: ImageInclude
 
   /** CropArea component inclusion controller / Контроллер включения компонента CropArea */
   readonly cropArea: CropAreaInclude
+
+  /** Progress indicator manager instance / Экземпляр менеджера индикатора прогресса */
+  readonly progress: ProgressInclude
+
+  /** Model manager / Менеджер модели */
+  readonly model: ModelInclude<CropAreaCoordinator>
 
   /**
    * Constructor.
@@ -40,9 +49,11 @@ export class ImageCrop {
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
    * @param constructors object with classes / объект с классами
-   * @param constructors.ImageIncludeConstructor class for working with image inclusion / класс для работы с включением изображения
    * @param constructors.CropAreaIncludeConstructor class for working with crop area inclusion / класс для работы с включением области кадрирования
+   * @param constructors.ImageCropImageConstructor class for working with image state / класс для работы с состоянием изображения
+   * @param constructors.ImageIncludeConstructor class for working with image inclusion / класс для работы с включением изображения
    * @param constructors.ModelIncludeConstructor class for working with model synchronization / класс для работы с синхронизацией модели
+   * @param constructors.ProgressConstructor class for creating a progress indicator / класс для создания индикатора прогресса
    */
   constructor(
     protected readonly props: ImageCropProps,
@@ -54,18 +65,23 @@ export class ImageCrop {
     protected readonly slots?: ImageCropSlots,
     protected readonly emits?: ConstrEmit<ImageCropEmits>,
     constructors: {
-      ImageIncludeConstructor?: typeof ImageInclude
       CropAreaIncludeConstructor?: typeof CropAreaInclude
+      ImageCropImageConstructor?: typeof ImageCropImage
+      ImageIncludeConstructor?: typeof ImageInclude
       ModelIncludeConstructor?: typeof ModelInclude<CropAreaCoordinator>
+      ProgressConstructor?: typeof ProgressInclude
     } = {}
   ) {
     const {
-      ImageIncludeConstructor = ImageInclude,
       CropAreaIncludeConstructor = CropAreaInclude,
-      ModelIncludeConstructor = ModelInclude
+      ImageCropImageConstructor = ImageCropImage,
+      ImageIncludeConstructor = ImageInclude,
+      ModelIncludeConstructor = ModelInclude,
+      ProgressConstructor = ProgressInclude
     } = constructors
 
     this.model = new ModelIncludeConstructor('value', this.emits)
+    this.cropImage = new ImageCropImageConstructor(className, props, emits)
 
     this.image = new ImageIncludeConstructor(
       className,
@@ -74,9 +90,10 @@ export class ImageCrop {
       () => ({
         alt: this.props.alt,
         disabled: this.props.disabled,
+        size: 'contain',
         static: true,
         tagImg: true,
-        size: 'contain'
+        onLoad: this.cropImage.onLoad
       }),
       emits
     )
@@ -93,6 +110,17 @@ export class ImageCrop {
         onResize: (event: CropAreaEventParameters) => this.model.emit(event.coordinator)
       })
     )
+
+    this.progress = new ProgressConstructor(
+      className,
+      () => ({
+        loading: this.cropImage.isLoading()
+      }),
+      components,
+      {
+        circular: true
+      }
+    )
   }
 
   /**
@@ -103,6 +131,7 @@ export class ImageCrop {
    */
   get aria(): AriaList {
     return {
+      ...this.progress.aria.value,
       ...AriaStaticInclude.disabled(this.props.disabled)
     }
   }

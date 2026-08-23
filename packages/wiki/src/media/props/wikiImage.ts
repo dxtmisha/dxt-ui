@@ -175,6 +175,16 @@ export const wikiImage: StorybookArgsToList = {
       }
     }
   },
+  'image.static': {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Disables absolute positioning and makes the image static in normal document flow',
+        ru: 'Отключает абсолютное позиционирование и делает изображение статичным в обычном потоке документа'
+      }
+    }
+  },
   'image.tagImg': {
     type: StorybookControl.boolean,
     options: {

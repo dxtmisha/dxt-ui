@@ -37,7 +37,7 @@ export const wikiDescriptionsImageCrop: StorybookComponentsDescriptionItem = {
   ],
   render: `
     <DesignComponent
-      class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--overflowVisible wiki-storybook-dummy--color--blue"
+      class="wiki-storybook-item wiki-storybook-item--rectangle wiki-storybook-item--overflowVisible wiki-storybook-dummy--color--blue"
       v-bind="args"
     />
   `,
@@ -63,7 +63,7 @@ export const wikiDescriptionsImageCrop: StorybookComponentsDescriptionItem = {
           </div>
 
           <DesignComponent
-            class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--overflowVisible wiki-storybook-dummy--color--blue"
+            class="wiki-storybook-item wiki-storybook-item--rectangle wiki-storybook-item--overflowVisible wiki-storybook-dummy--color--blue"
             :image="image1"
             v-model="coordinator"
           />

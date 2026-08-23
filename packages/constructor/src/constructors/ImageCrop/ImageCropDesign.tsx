@@ -98,7 +98,8 @@ export class ImageCropDesign<
         // :classes [!] System label / Системная метка
         body: this.getSubClass('body'),
         image: this.getSubClass('image'),
-        cropArea: this.getSubClass('cropArea')
+        cropArea: this.getSubClass('cropArea'),
+        loading: this.getSubClass('loading')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -111,7 +112,7 @@ export class ImageCropDesign<
    * @returns list of styles / список стилей
    */
   protected initStyles(): ConstrStyles {
-    return {}
+    return this.item.cropImage.styles
   }
 
   /**
@@ -123,7 +124,8 @@ export class ImageCropDesign<
   protected initRender(): VNode {
     const children: any[] = [
       ...this.item.image.render(),
-      ...this.item.cropArea.render()
+      ...this.item.cropArea.render(),
+      ...this.item.progress.render()
     ]
 
     this.initSlot('default', children)
@@ -133,6 +135,7 @@ export class ImageCropDesign<
       {
         ...this.getAttrs(),
         class: this.classes?.value.main,
+        style: this.styles?.value,
         ...this.item.aria
       },
       h('div', this.getKeyClass('body'), children)

@@ -19,7 +19,7 @@ export const wikiImageCrop: StorybookArgsToList = {
         en: 'Specifies the source image for cropping (URL, File, or image props object)',
         ru: 'Указывает исходное изображение для кадрирования (URL, File или объект свойств изображения)'
       },
-      value: 'https://picsum.photos/300/500?random=42'
+      value: 'https://picsum.photos/800/600?random=42'
     },
     isDemo: true
   }

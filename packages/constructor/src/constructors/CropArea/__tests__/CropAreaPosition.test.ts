@@ -82,4 +82,16 @@ describe('CropAreaPosition', () => {
     expect(position.isDirectionDisabled('left-top')).toBe(true)
     expect(position.isDirectionDisabled('bottom')).toBe(false)
   })
+
+  it('should round coordinates to exactly 1 decimal place', () => {
+    const { position } = createInstances({ value: [10.234, 15.678, 20.123, 25.456] })
+    expect(position.get()).toEqual([10.2, 15.7, 20.1, 25.5])
+
+    const updated = position.moveSingle('top', 10.2, 3.456)
+    expect(updated).toBe(13.7)
+    expect(position.get()[0]).toBe(13.7)
+
+    const centerMoved = position.moveCenter([10, 10, 10, 10], 2.345, 4.567)
+    expect(centerMoved).toEqual([14.6, 7.6, 5.4, 12.3])
+  })
 })

@@ -189,14 +189,14 @@ export class CropAreaPosition {
     }
 
     const { index, opposite } = CropAreaPosition.indexMap[direction]
-    let candidate = startValue + delta
+    let candidate = this.round(startValue + delta)
 
     if (candidate < 0) {
       candidate = 0
     }
 
     const oppositeValue = this.item.value[opposite]
-    const size = 100 - candidate - oppositeValue
+    const size = this.round(100 - candidate - oppositeValue)
 
     if (size < this.min || size > this.max) {
       return undefined
@@ -234,31 +234,43 @@ export class CropAreaPosition {
     }
 
     const [startTop, startRight, startBottom, startLeft] = startCoordinator
-    const boxWidth = 100 - startLeft - startRight
-    const boxHeight = 100 - startTop - startBottom
+    const boxWidth = this.round(100 - startLeft - startRight)
+    const boxHeight = this.round(100 - startTop - startBottom)
 
-    let newTop = startTop + deltaY
-    let newLeft = startLeft + deltaX
+    let newTop = this.round(startTop + deltaY)
+    let newLeft = this.round(startLeft + deltaX)
 
     if (newTop < 0) {
       newTop = 0
     } else if (newTop + boxHeight > 100) {
-      newTop = 100 - boxHeight
+      newTop = this.round(100 - boxHeight)
     }
 
     if (newLeft < 0) {
       newLeft = 0
     } else if (newLeft + boxWidth > 100) {
-      newLeft = 100 - boxWidth
+      newLeft = this.round(100 - boxWidth)
     }
 
-    const newBottom = 100 - newTop - boxHeight
-    const newRight = 100 - newLeft - boxWidth
+    const newBottom = this.round(100 - newTop - boxHeight)
+    const newRight = this.round(100 - newLeft - boxWidth)
 
     this.item.value = [newTop, newRight, newBottom, newLeft]
     this.style.set(this.item.value)
 
     return this.item.value
+  }
+
+  /**
+   * Rounds a coordinate value to 1 decimal place.
+   *
+   * Округляет значение координаты до 1 знака после запятой.
+   * @param value numeric value / числовое значение
+   * @returns rounded value / округленное значение
+   */
+  protected round(value: number): number {
+    const result = Math.round(value * 10) / 10
+    return Object.is(result, -0) ? 0 : result
   }
 
   /**
@@ -271,10 +283,10 @@ export class CropAreaPosition {
   protected normalize(value?: CropAreaCoordinator | number[]): CropAreaCoordinator {
     if (isArray(value) && value.length === 4) {
       return [
-        value[0] ?? 0,
-        value[1] ?? 0,
-        value[2] ?? 0,
-        value[3] ?? 0
+        this.round(Number(value[0]) || 0),
+        this.round(Number(value[1]) || 0),
+        this.round(Number(value[2]) || 0),
+        this.round(Number(value[3]) || 0)
       ]
     }
 

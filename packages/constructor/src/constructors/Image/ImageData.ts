@@ -51,14 +51,18 @@ export class ImageData {
 
     onMounted(() => {
       if (emits) {
-        watch(this.image, (image) => {
-          if (typeof image === 'object') {
-            emits('load', {
-              type: this.type.item.value,
-              image
-            })
-          }
-        })
+        watch(
+          this.image,
+          (image) => {
+            if (typeof image === 'object') {
+              emits('load', {
+                type: this.type.item.value,
+                image
+              })
+            }
+          },
+          { immediate: true }
+        )
       }
     })
   }

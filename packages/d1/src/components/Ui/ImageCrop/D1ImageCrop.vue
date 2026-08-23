@@ -12,6 +12,7 @@ import {
 
 import { D1CropArea } from '../CropArea'
 import { D1Image } from '../Image'
+import { D1Progress } from '../Progress'
 
 import { defaults, type ImageCropProps } from './props'
 import './styleToken.scss'
@@ -46,7 +47,8 @@ const design = new ImageCropDesign(
     styles: stylesToken,
     components: {
       image: D1Image,
-      cropArea: D1CropArea
+      cropArea: D1CropArea,
+      progress: D1Progress
     }
   }
 )

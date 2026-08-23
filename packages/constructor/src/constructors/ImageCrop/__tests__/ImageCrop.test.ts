@@ -31,6 +31,51 @@ describe('ImageCrop', () => {
     expect(imageCrop.aria).toEqual({})
     expect(imageCrop.image).toBeDefined()
     expect(imageCrop.cropArea).toBeDefined()
+    expect(imageCrop.cropImage).toBeDefined()
+    expect(imageCrop.progress).toBeDefined()
+    expect(imageCrop.cropImage.styles).toEqual({})
+  })
+
+  it('should calculate aspect ratio and emit load on onLoad', () => {
+    const element = document.createElement('div')
+    const elementRef = ref(element)
+    const props = reactive({
+      image: 'path/to/test.jpg',
+      disabled: false
+    }) as ImageCropProps
+
+    const refs = toRefs(props)
+    const emits = vi.fn()
+
+    const imageCrop = new ImageCrop(
+      props,
+      refs,
+      elementRef,
+      'd1',
+      'd1-image-crop',
+      undefined,
+      undefined,
+      emits
+    )
+
+    expect(imageCrop.cropImage.styles).toEqual({})
+
+    imageCrop.cropImage.onLoad({
+      type: undefined,
+      image: {
+        width: 1920,
+        height: 1080,
+        image: {} as HTMLImageElement,
+        src: 'path/to/test.jpg'
+      }
+    })
+
+    expect(imageCrop.cropImage.styles).toEqual({
+      '--d1-image-crop-sys-aspect-ratio': '1920 / 1080',
+      '--d1-image-crop-sys-width': 'auto',
+      '--d1-image-crop-sys-height': 'inherit'
+    })
+    expect(emits).toHaveBeenCalledWith('load', expect.any(Object))
   })
 
   it('should return aria-disabled true when disabled', () => {

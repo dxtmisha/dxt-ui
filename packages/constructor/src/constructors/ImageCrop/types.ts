@@ -2,6 +2,7 @@ import type { ConstrClass } from '@dxtmisha/functional'
 
 import type { CropAreaComponentInclude } from '../CropArea'
 import type { ImageComponentInclude, ImageEmitsInclude } from '../Image'
+import type { ProgressComponentInclude } from '../Progress'
 
 import type { ModelEmits } from '../../types/modelTypes'
 
@@ -10,7 +11,9 @@ import type { ModelEmits } from '../../types/modelTypes'
  *
  * Интерфейс для описания, какие компоненты надо подключить для работы.
  */
-export type ImageCropComponents = ImageComponentInclude & CropAreaComponentInclude
+export type ImageCropComponents = ImageComponentInclude
+  & CropAreaComponentInclude
+  & ProgressComponentInclude
 
 /**
  * Type describing available events.
@@ -48,5 +51,6 @@ export type ImageCropClasses = {
   body: string
   image: string
   cropArea: string
+  loading: string
   // :classes [!] System label / Системная метка
 }

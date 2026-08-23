@@ -1,18 +1,13 @@
 @use "@dxtmisha/styles/properties" as ui;
 
 @mixin mixinImageCrop {
-  position: relative;
   @include ui.flexCenter;
-  overflow: hidden;
 
   &__body {
     position: relative;
-    height: inherit;
-    max-width: 100%;
-    max-height: 100%;
-  }
-
-  &__image {
+    aspect-ratio: #{ui.v('??sys-aspect-ratio', auto)};
+    width: ui.v('??sys-width', 100%);
+    height: ui.v('??sys-height', 100%);
     max-width: 100%;
     max-height: 100%;
   }

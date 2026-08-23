@@ -97,7 +97,7 @@ export class Image {
     this.clientOnly = new ClientOnlyConstructor({ clientOnly: true })
 
     this.type = new ImageTypeConstructor(props, this.clientOnly)
-    this.data = new ImageDataConstructor(props, this.clientOnly, this.type)
+    this.data = new ImageDataConstructor(props, this.clientOnly, this.type, this.emits)
 
     this.coordinator = new ImageCoordinatorConstructor(props)
     this.position = new ImagePositionConstructor(props, this.coordinator)

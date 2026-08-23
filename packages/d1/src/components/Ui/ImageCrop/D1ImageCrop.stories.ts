@@ -34,7 +34,7 @@ export const ImageCrop: Story = {
     setup: () => ({ args }),
     template: `
       <D1ImageCrop
-      class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--overflowVisible wiki-storybook-dummy--color--blue"
+      class="wiki-storybook-item wiki-storybook-item--rectangle wiki-storybook-item--overflowVisible wiki-storybook-dummy--color--blue"
       v-bind="args"
     />
     `
@@ -62,7 +62,7 @@ export const ImageCropVModel: Story = {
           </div>
 
           <D1ImageCrop
-            class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--overflowVisible wiki-storybook-dummy--color--blue"
+            class="wiki-storybook-item wiki-storybook-item--rectangle wiki-storybook-item--overflowVisible wiki-storybook-dummy--color--blue"
             :image="image1"
             v-model="coordinator"
           />
