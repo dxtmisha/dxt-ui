@@ -1,0 +1,35 @@
+@use "@dxtmisha/styles/properties" as ui;
+
+@mixin mixinInputImage {
+  @include ui.flexCenter;
+  position: relative;
+  cursor: pointer;
+  border-style: dashed;
+
+  transition-property: background-color, border-color, opacity;
+  transition-duration: ui.v('d.sys.transitionDuration.standard');
+  transition-timing-function: ui.v('d.sys.transitionFunction.standard');
+
+  &--enter {
+    border-style: solid;
+  }
+
+  &--has-image {
+    border-style: none;
+    cursor: default;
+  }
+
+  &--disabled {
+    pointer-events: none;
+  }
+
+  @include ui.subclass('input') {
+    position: absolute;
+    visibility: hidden;
+
+    width: 0;
+    height: 0;
+    opacity: 0;
+    pointer-events: none;
+  }
+}

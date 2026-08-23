@@ -538,6 +538,10 @@
     "./ImageCrop": {
       "types": "./dist/constructors/ImageCrop/index.d.ts",
       "default": "./dist/imageCrop.js"
+    },
+    "./InputImage": {
+      "types": "./dist/constructors/InputImage/index.d.ts",
+      "default": "./dist/inputImage.js"
     }
   },
   "buildOptions": {
