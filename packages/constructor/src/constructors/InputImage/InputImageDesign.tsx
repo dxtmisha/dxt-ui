@@ -6,6 +6,7 @@ import {
 } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
+
 import { InputImage } from './InputImage'
 
 import type { InputImagePropsBasic } from './props'
@@ -105,7 +106,8 @@ export class InputImageDesign<
         input: this.getSubClass('input'),
         body: this.getSubClass('body'),
         crop: this.getSubClass('crop'),
-        dropzone: this.getSubClass('dropzone')
+        dropzone: this.getSubClass('dropzone'),
+        actions: this.getSubClass('actions')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -129,61 +131,83 @@ export class InputImageDesign<
    */
   protected initRender(): VNode {
     return h(
-      'label',
+      'div',
       {
         ...this.getAttrs(),
         ref: this.element,
         class: this.classes?.value.main,
         ...AriaStaticInclude.labelledby(this.item.label.id),
-        ...AriaStaticInclude.describedby(this.item.message.id),
-        ...this.item.events.binds
+        ...AriaStaticInclude.describedby(this.item.message.id)
       },
       [
-        this.renderInput(),
-        this.renderBody(),
+        ...this.renderBody(),
+        ...this.renderActions(),
         ...this.item.message.render()
       ]
     )
   }
 
   /**
-   * Rendering method for the hidden file input element.
+   * Rendering method for the action buttons.
    *
-   * Метод рендеринга для скрытого элемента ввода файла.
-   * @returns rendered virtual node / отрендеренная виртуальная нода
+   * Метод рендеринга для кнопок действий.
+   * @returns array of virtual nodes / массив виртуальных нод
    */
-  protected renderInput(): VNode {
-    return h('input', {
-      ...this.item.input.binds,
-      class: this.classes?.value.input
-    })
+  readonly renderActions = (): VNode[] => {
+    if (this.item.files.hasImage()) {
+      return this.item.actions.render(undefined, {
+        class: this.classes?.value.actions
+      })
+    }
+
+    return []
   }
 
   /**
-   * Rendering method for the main body content (crop or dropzone).
+   * Rendering method for the main body content (crop and dropzone).
    *
-   * Метод рендеринга для основного содержимого (кадрирование или область загрузки).
-   * @returns rendered virtual node / отрендеренная виртуальная нода
+   * Метод рендеринга для основного содержимого (кадрирование и область загрузки).
+   * @returns array of virtual nodes / массив виртуальных нод
    */
-  protected renderBody(): VNode {
-    const children: VNode[] = []
+  readonly renderBody = (): VNode[] => {
+    return [
+      h(
+        'div',
+        { class: this.classes?.value.body },
+        [
+          ...this.renderCrop(),
+          ...this.renderDropzone()
+        ]
+      )
+    ]
+  }
 
-    if (this.item.hasImage()) {
-      const cropChildren: VNode[] = [
-        ...this.item.imageCrop.render()
-      ]
-
-      this.initSlot('crop', cropChildren)
-      children.push(...cropChildren)
-    } else {
-      const dropzoneChildren: VNode[] = [
-        ...this.item.label.render()
-      ]
-
-      this.initSlot('dropzone', dropzoneChildren)
-      children.push(...dropzoneChildren)
+  /**
+   * Rendering method for the image cropping component.
+   *
+   * Метод рендеринга для компонента кадрирования изображения.
+   * @returns array of virtual nodes / массив виртуальных нод
+   */
+  readonly renderCrop = (): VNode[] => {
+    if (this.item.files.hasImage()) {
+      return this.item.imageCrop.render(undefined, {
+        class: this.classes?.value.crop
+      })
     }
 
-    return h('div', { class: this.classes?.value.body }, children)
+    return []
+  }
+
+  /**
+   * Rendering method for the dropzone component.
+   *
+   * Метод рендеринга для компонента области загрузки.
+   * @returns array of virtual nodes / массив виртуальных нод
+   */
+  readonly renderDropzone = (): VNode[] => {
+    return this.item.dropzone.render(undefined, {
+      class: this.classes?.value.dropzone,
+      style: this.item.files.hasImage() ? { display: 'none' } : undefined
+    })
   }
 }

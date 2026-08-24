@@ -31,14 +31,14 @@ export class ImageCropDesign<
   CLASSES extends ImageCropClasses,
   P extends ImageCropPropsBasic
 > extends DesignConstructorAbstract<
-  HTMLDivElement,
-  COMP,
-  ImageCropEmits,
-  EXPOSE,
-  ImageCropSlots,
-  CLASSES,
-  P
-> {
+    HTMLDivElement,
+    COMP,
+    ImageCropEmits,
+    EXPOSE,
+    ImageCropSlots,
+    CLASSES,
+    P
+  > {
   /** Orchestrator item / Элемент оркестратора */
   protected readonly item: ImageCrop
 

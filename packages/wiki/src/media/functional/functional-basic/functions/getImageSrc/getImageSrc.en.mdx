@@ -1,0 +1,29 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/getImageSrc - Get image source URL'/>
+
+# `getImageSrc`
+
+Safely extracts the source URL or Data URL string from an `HTMLImageElement` or string value. If a string is provided, it is returned directly. If an `<img>` element is provided, its `src` attribute is returned. Returns an empty string if undefined or empty.
+
+**Parameters:**
+- `image?: HTMLImageElement | string` — The image element, string source (URL), or `undefined`.
+
+**Returns:**
+`string` — The image source string or an empty string `''`.
+
+```typescript
+import { getImageSrc } from '@dxtmisha/functional-basic'
+
+// Passing a string URL
+const src1 = getImageSrc('https://example.com/photo.png')
+console.log(src1) // 'https://example.com/photo.png'
+
+// Passing an HTMLImageElement
+const imgElement = document.querySelector('img')
+const src2 = getImageSrc(imgElement)
+console.log(src2) // 'https://example.com/...'
+
+// Passing undefined
+console.log(getImageSrc(undefined)) // ''
+```

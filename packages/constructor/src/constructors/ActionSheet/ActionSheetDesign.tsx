@@ -24,14 +24,14 @@ export class ActionSheetDesign<
   CLASSES extends ActionSheetClasses,
   P extends ActionSheetPropsBasic
 > extends ModalDesignAbstract<
-  COMP,
-  ActionSheetEmits,
-  EXPOSE,
-  ActionSheetSlots,
-  CLASSES,
-  P,
-  ActionSheet
-> {
+    COMP,
+    ActionSheetEmits,
+    EXPOSE,
+    ActionSheetSlots,
+    CLASSES,
+    P,
+    ActionSheet
+  > {
   /**
    * Creates an instance of the item class.
    *

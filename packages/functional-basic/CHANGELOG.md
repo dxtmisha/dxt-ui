@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.9.0] - 2026-08-24
+
+### Added
+- **`getImageSrc`**: Utility function to safely extract the image source string from `HTMLImageElement`, string URL, or `undefined`.
+- **`resizeImage`**: Asynchronous utility function to scale down images that exceed a maximum size constraint (`maxSize`) returning a Data URL or the original source string.
+- **Unit Tests**: Added test suites for `getImageSrc` and `resizeImage`.
+- **Documentation**: Added MDX documentation and usage examples across English, Russian, and Vietnamese.
+- **AI Types**: Generated type definitions for `getImageSrc` and `resizeImage`.
+
 ## [1.8.10] - 2026-08-20
 
 ### Changed

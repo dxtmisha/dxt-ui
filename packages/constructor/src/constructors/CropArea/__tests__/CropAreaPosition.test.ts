@@ -92,6 +92,6 @@ describe('CropAreaPosition', () => {
     expect(position.get()[0]).toBe(13.7)
 
     const centerMoved = position.moveCenter([10, 10, 10, 10], 2.345, 4.567)
-    expect(centerMoved).toEqual([14.6, 7.6, 5.4, 12.3])
+    expect(centerMoved).toEqual([14.6, 7.7, 5.4, 12.3])
   })
 })

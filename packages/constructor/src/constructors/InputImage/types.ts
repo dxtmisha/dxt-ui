@@ -1,8 +1,10 @@
 import type { ConstrClass } from '@dxtmisha/functional'
 
-import type { ImageCropComponentInclude } from '../ImageCrop'
+import type { ActionsComponentInclude } from '../Actions'
+import type { DropzoneComponentInclude } from '../Dropzone'
 import type { FieldLabelComponentInclude } from '../FieldLabel'
 import type { FieldMessageComponentInclude } from '../FieldMessage'
+import type { ImageCropComponentInclude } from '../ImageCrop'
 
 import type { FieldBasicEmits, FieldBasicExpose } from '../../types/fieldTypes'
 import type { LabelSlots } from '../../types/labelTypes'
@@ -14,9 +16,11 @@ import type { InputImageValue } from './basicTypes'
  *
  * Интерфейс для описания, какие компоненты надо подключить для работы.
  */
-export type InputImageComponents = ImageCropComponentInclude
+export type InputImageComponents = ActionsComponentInclude
+  & DropzoneComponentInclude
   & FieldLabelComponentInclude
   & FieldMessageComponentInclude
+  & ImageCropComponentInclude
 
 /**
  * Type describing available events.
@@ -31,10 +35,9 @@ export type InputImageEmits = FieldBasicEmits<InputImageValue>
  * Тип, описывающий доступные свойства для экспорта.
  */
 export interface InputImageExpose extends FieldBasicExpose<InputImageValue> {
-  /** Opens the file selector dialog / Открывает диалог выбора файла */
+  /** Opens the file selection dialog / Открывает диалог выбора файла */
   open: () => void
-
-  /** Clears the image and crop coordinates / Очищает изображение и координаты кадрирования */
+  /** Clears the image and crop / Очищает изображение и кадрирование */
   clear: () => void
 }
 
@@ -44,10 +47,6 @@ export interface InputImageExpose extends FieldBasicExpose<InputImageValue> {
  * Тип, описывающий доступные слоты.
  */
 export interface InputImageSlots extends LabelSlots {
-  /** Dropzone placeholder slot / Слот области загрузки */
-  dropzone?: (props: any) => any
-  /** Preview and crop slot / Слот предпросмотра и кадрирования */
-  crop?: (props: any) => any
 }
 
 /**
@@ -62,5 +61,6 @@ export type InputImageClasses = {
   body: string
   crop: string
   dropzone: string
+  actions: string
   // :classes [!] System label / Системная метка
 }

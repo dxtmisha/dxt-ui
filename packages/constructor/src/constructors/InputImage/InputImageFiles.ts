@@ -2,14 +2,14 @@ import { ref } from 'vue'
 import {
   isObject,
   isString,
-  resizeImageByMax
+  resizeImage
 } from '@dxtmisha/functional'
 
 import type { FieldEventInclude } from '../../classes/Field/FieldEventInclude'
 import type { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
 
-import { ImageFile } from '../Image'
 import type { CropAreaCoordinator } from '../CropArea'
+import { ImageFile } from '../Image'
 
 import type { InputImageItem, InputImageValue } from './basicTypes'
 import type { InputImageProps } from './props'
@@ -39,12 +39,41 @@ export class InputImageFiles {
   }
 
   /**
+   * Returns crop coordinates.
+   *
+   * Возвращает координаты кадрирования.
+   * @returns crop coordinates or undefined / координаты кадрирования или undefined
+   */
+  get crop(): CropAreaCoordinator | undefined {
+    return this.get()?.crop
+  }
+
+  /**
+   * Returns image source string.
+   *
+   * Возвращает строку источника изображения.
+   * @returns image source string or undefined / строка источника изображения или undefined
+   */
+  get src(): string | undefined {
+    return this.get()?.value
+  }
+
+  /**
+   * Clears image and crop coordinates.
+   *
+   * Очищает изображение и координаты кадрирования.
+   */
+  clear(): void {
+    this.updateValue(undefined)
+  }
+
+  /**
    * Returns current value object with image source and crop coordinates.
    *
    * Возвращает текущий объект значения с источником изображения и координатами кадрирования.
-   * @returns image value object / объект значения изображения
+   * @returns image value object or undefined / объект значения изображения или undefined
    */
-  get(): InputImageValue {
+  get(): InputImageValue | undefined {
     const raw = this.value.item.value
 
     if (isString(raw)) {
@@ -61,27 +90,7 @@ export class InputImageFiles {
       }
     }
 
-    return {}
-  }
-
-  /**
-   * Returns image source string.
-   *
-   * Возвращает строку источника изображения.
-   * @returns image source string or undefined / строка источника изображения или undefined
-   */
-  get src(): string | undefined {
-    return this.get().value
-  }
-
-  /**
-   * Returns crop coordinates.
-   *
-   * Возвращает координаты кадрирования.
-   * @returns crop coordinates or undefined / координаты кадрирования или undefined
-   */
-  get crop(): CropAreaCoordinator | undefined {
-    return this.get().crop
+    return undefined
   }
 
   /**
@@ -95,31 +104,16 @@ export class InputImageFiles {
   }
 
   /**
-   * Sets image source string and triggers change.
-   *
-   * Устанавливает строку источника изображения и вызывает событие изменения.
-   * @param source image source URL or base64 / URL или base64 источника изображения
-   */
-  setImage(source?: string): void {
-    const updated: InputImageValue = {
-      ...this.get(),
-      value: source
-    }
-    this.updateValue(updated)
-  }
-
-  /**
    * Sets crop coordinates and triggers change.
    *
    * Устанавливает координаты кадрирования и вызывает событие изменения.
    * @param crop crop coordinates / координаты кадрирования
    */
   setCrop(crop?: CropAreaCoordinator): void {
-    const updated: InputImageValue = {
+    this.updateValue({
       ...this.get(),
       crop
-    }
-    this.updateValue(updated)
+    })
   }
 
   /**
@@ -138,12 +132,13 @@ export class InputImageFiles {
 
     try {
       const source = await this.processFile(file)
+
       if (source) {
-        const updated: InputImageValue = {
+        this.updateValue({
           value: source,
           crop: this.props.crop
-        }
-        this.updateValue(updated)
+        })
+
         return source
       }
     } finally {
@@ -154,12 +149,55 @@ export class InputImageFiles {
   }
 
   /**
-   * Clears image and crop coordinates.
+   * Asynchronously reads, validates, resizes, and sets the image from a FileList object.
    *
-   * Очищает изображение и координаты кадрирования.
+   * Асинхронно читает, проверяет, изменяет размер и устанавливает изображение из объекта FileList.
+   * @param files selected or dropped file list / список выбранных или сброшенных файлов
+   * @returns loaded and resized image source string or undefined / загруженная и масштабированная строка источника изображения или undefined
    */
-  clear(): void {
-    this.updateValue({})
+  async setFiles(files?: FileList): Promise<string | undefined> {
+    if (
+      files
+      && files.length > 0
+    ) {
+      return this.setFile(files[0])
+    }
+
+    return undefined
+  }
+
+  /**
+   * Sets image source string and triggers change.
+   *
+   * Устанавливает строку источника изображения и вызывает событие изменения.
+   * @param source image source URL or base64 / URL или base64 источника изображения
+   */
+  setImage(source?: string): void {
+    this.updateValue({
+      ...this.get(),
+      value: source
+    })
+  }
+
+  /**
+   * Processes a File by reading it as Data URL and resizing down to maxSize if necessary.
+   *
+   * Обрабатывает File, читая его как Data URL и уменьшая до maxSize при необходимости.
+   * @param file file to process / файл для обработки
+   * @returns processed data URL string or undefined / обработанная строка Data URL или undefined
+   */
+  protected async processFile(file: File): Promise<string | undefined> {
+    if (!ImageFile.isImage(file)) {
+      return undefined
+    }
+
+    const dataUrl = await ImageFile.getFileResult(file)
+
+    if (!dataUrl) {
+      return undefined
+    }
+
+    return resizeImage(dataUrl, this.props.maxSize ?? 1280)
   }
 
   /**
@@ -168,46 +206,7 @@ export class InputImageFiles {
    * Обновляет значение поля и вызывает события ввода/изменения поля.
    * @param value new image value / новое значение изображения
    */
-  protected updateValue(value: InputImageValue): void {
+  protected updateValue(value?: InputImageValue): void {
     this.value.item.value = value
-    // this.event?.onInput(undefined, { value })
-    // this.event?.onChange(undefined, { value })
-  }
-
-  /**
-   * Processes a File by reading it as Data URL and resizing down to maxSize if necessary.
-   *
-   * Обрабатывает File, читая его как Data URL и уменьшая до maxSize при необходимости.
-   * @param file file to process / файл для обработки
-   * @returns processed data URL string / обработанная строка Data URL
-   */
-  protected async processFile(file: File): Promise<string> {
-    if (!ImageFile.isImage(file)) {
-      return ''
-    }
-
-    const dataUrl = await ImageFile.getFileResult(file)
-    if (!dataUrl) {
-      return ''
-    }
-
-    const maxSize = this.props.maxSize ?? 1280
-    if (maxSize <= 0) {
-      return dataUrl
-    }
-
-    return new Promise<string>((resolve) => {
-      const image = new Image()
-      image.onerror = () => resolve(dataUrl)
-      image.onload = () => {
-        if (image.naturalWidth > maxSize || image.naturalHeight > maxSize) {
-          const resized = resizeImageByMax(image, maxSize)
-          resolve(resized ?? dataUrl)
-        } else {
-          resolve(dataUrl)
-        }
-      }
-      image.src = dataUrl
-    })
   }
 }

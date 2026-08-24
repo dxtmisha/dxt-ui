@@ -1,6 +1,7 @@
 import type { ConstrBind } from '@dxtmisha/functional'
 
 import type { CropAreaCoordinator } from '../CropArea'
+
 import type { InputImagePropsBasic } from './props'
 import type { InputImageEmits } from './types'
 

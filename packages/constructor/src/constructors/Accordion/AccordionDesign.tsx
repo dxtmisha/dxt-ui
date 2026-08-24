@@ -29,14 +29,14 @@ export class AccordionDesign<
   CLASSES extends AccordionClasses,
   P extends AccordionProps
 > extends DesignConstructorAbstract<
-  HTMLDivElement,
-  COMP,
-  AccordionEmits,
-  EXPOSE,
-  AccordionSlots,
-  CLASSES,
-  P
-> {
+    HTMLDivElement,
+    COMP,
+    AccordionEmits,
+    EXPOSE,
+    AccordionSlots,
+    CLASSES,
+    P
+  > {
   protected readonly item: Accordion
 
   /**

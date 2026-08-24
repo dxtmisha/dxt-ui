@@ -10,18 +10,18 @@ export type CropAreaCoordinator = [number, number, number, number]
 /** Single edge direction / Направление отдельного края */
 export type CropAreaDirectionSingle
   = | 'top'
-  | 'right'
-  | 'bottom'
-  | 'left'
+    | 'right'
+    | 'bottom'
+    | 'left'
 
 /** Available crop manipulation directions / Доступные направления манипуляции кадрированием */
 export type CropAreaDirection
   = | CropAreaDirectionSingle
-  | 'right-top'
-  | 'right-bottom'
-  | 'left-top'
-  | 'left-bottom'
-  | 'center'
+    | 'right-top'
+    | 'right-bottom'
+    | 'left-top'
+    | 'left-bottom'
+    | 'center'
 
 /** Position index map item / Элемент карты индексов позиций */
 export type CropAreaPositionItem = {

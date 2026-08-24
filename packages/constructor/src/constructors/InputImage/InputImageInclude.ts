@@ -1,6 +1,7 @@
 import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
+
 import type { InputImagePropsInclude } from './basicTypes'
-import type { InputImageProps } from './props'
+import type { InputImagePropsBasic } from './props'
 import type { InputImageExpose, InputImageSlots } from './types'
 
 /**
@@ -10,7 +11,7 @@ import type { InputImageExpose, InputImageSlots } from './types'
  */
 export class InputImageInclude extends ComponentIncludeAbstract<
   InputImagePropsInclude,
-  InputImageProps,
+  InputImagePropsBasic,
   InputImageExpose,
   InputImageSlots
 > {

@@ -30,14 +30,14 @@ export class AlertDesign<
   CLASSES extends AlertClasses,
   P extends AlertPropsBasic
 > extends DesignConstructorAbstract<
-  HTMLDivElement,
-  COMP,
-  AlertEmits,
-  EXPOSE,
-  AlertSlots,
-  CLASSES,
-  P
-> {
+    HTMLDivElement,
+    COMP,
+    AlertEmits,
+    EXPOSE,
+    AlertSlots,
+    CLASSES,
+    P
+  > {
   /** Alert control item instance / Экземпляр элемента управления Alert */
   protected readonly item: Alert
 

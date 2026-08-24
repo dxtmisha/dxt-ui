@@ -10,10 +10,8 @@ import { FieldValidationInclude } from '../../../classes/Field/FieldValidationIn
 import { FieldChangeInclude } from '../../../classes/Field/FieldChangeInclude'
 import { FieldAttributesInclude } from '../../../classes/Field/FieldAttributesInclude'
 import { InputImage } from '../InputImage'
-import { InputImageEvents } from '../InputImageEvents'
 import { InputImageFiles } from '../InputImageFiles'
 import { InputImageInclude } from '../InputImageInclude'
-import { InputImageInput } from '../InputImageInput'
 import type { InputImageProps } from '../props'
 import type { InputImageItem, InputImageValue } from '../basicTypes'
 
@@ -30,7 +28,7 @@ describe('InputImage', () => {
   })
 
   it('should initialize orchestrator with DI and provide default state and getters', () => {
-    const element = document.createElement('input')
+    const element = document.createElement('div')
     const elementRef = ref(element)
     const props = reactive({
       value: undefined,
@@ -51,19 +49,15 @@ describe('InputImage', () => {
       emits
     )
 
-    expect(inputImage.hasImage()).toBe(false)
-    expect(inputImage.files.get()).toEqual({})
-    expect(inputImage.binds.onDragover).toBeDefined()
-    expect(inputImage.binds.onDragenter).toBeDefined()
-    expect(inputImage.binds.onDragleave).toBeDefined()
-    expect(inputImage.binds.onDrop).toBeDefined()
+    expect(inputImage.files.hasImage()).toBe(false)
+    expect(inputImage.files.get()).toBeUndefined()
     expect(inputImage.binds.onBlur).toBeDefined()
     expect(inputImage.binds.onInput).toBeDefined()
     expect(inputImage.binds.onChange).toBeDefined()
   })
 
   it('should initialize with string value and object value', () => {
-    const element = document.createElement('input')
+    const element = document.createElement('div')
     const elementRef = ref(element)
     const props = reactive({
       value: {
@@ -87,20 +81,20 @@ describe('InputImage', () => {
       emits
     )
 
-    expect(inputImage.hasImage()).toBe(true)
+    expect(inputImage.files.hasImage()).toBe(true)
     expect(inputImage.files.get()).toEqual({
       value: 'https://example.com/test.jpg',
       crop: [10, 20, 30, 40]
     })
   })
 
-  it('should handle crop coordinator updates and emit { value, crop }', () => {
+  it('should handle crop coordinator updates and update files value', () => {
     const props = reactive({
       value: 'https://example.com/test.jpg',
       disabled: false
     }) as InputImageProps
     const refs = toRefs(props)
-    const elementRef = ref(document.createElement('input'))
+    const elementRef = ref(document.createElement('div'))
     const emits = vi.fn()
 
     const elementItem = new FieldElementInclude(props, elementRef)
@@ -125,8 +119,6 @@ describe('InputImage', () => {
     }
 
     expect(files.get()).toEqual(expected)
-    expect(emits).toHaveBeenCalledWith('input', undefined, expect.objectContaining({ value: expected }))
-    expect(emits).toHaveBeenCalledWith('change', undefined, expect.objectContaining({ value: expected }))
   })
 
   it('should process and resize image file in InputImageFiles', async () => {
@@ -154,7 +146,7 @@ describe('InputImage', () => {
     }) as InputImageProps
 
     const refs = toRefs(props)
-    const elementRef = ref(document.createElement('input'))
+    const elementRef = ref(document.createElement('div'))
     const emits = vi.fn()
 
     const elementItem = new FieldElementInclude(props, elementRef)
@@ -174,19 +166,15 @@ describe('InputImage', () => {
 
     expect(result).toBeDefined()
     expect(files.get().value).toBeDefined()
-    expect(emits).toHaveBeenCalledWith('input', undefined, expect.objectContaining({
-      value: expect.objectContaining({ crop: undefined })
-    }))
   })
 
-  it('should handle drag and drop events', () => {
+  it('should handle setFiles and call setFile with first file', async () => {
     const props = reactive({
-      disabled: false,
-      readonly: false
+      disabled: false
     }) as InputImageProps
 
     const refs = toRefs(props)
-    const elementRef = ref(document.createElement('input'))
+    const elementRef = ref(document.createElement('div'))
     const emits = vi.fn()
 
     const elementItem = new FieldElementInclude(props, elementRef)
@@ -199,32 +187,18 @@ describe('InputImage', () => {
     const files = new InputImageFiles(props, value, event)
     const setFileSpy = vi.spyOn(files, 'setFile').mockResolvedValue('data:image/png;base64,mock')
 
-    const events = new InputImageEvents(props, files, emits)
+    const mockFile = new File(['image-bytes'], 'photo.jpg', { type: 'image/jpeg' })
+    const fileList = {
+      0: mockFile,
+      length: 1,
+      item: (i: number) => (i === 0 ? mockFile : null)
+    } as unknown as FileList
 
-    const dragEnterEvent = new Event('dragenter') as DragEvent
-    events.binds.onDragenter(dragEnterEvent)
-    expect(events.enter.value).toBe(true)
-
-    const dragLeaveEvent = new Event('dragleave') as DragEvent
-    events.binds.onDragleave(dragLeaveEvent)
-    expect(events.enter.value).toBe(false)
-
-    const mockFile = new File(['fake-image-content'], 'test.png', { type: 'image/png' })
-    const dropEvent = {
-      preventDefault: vi.fn(),
-      stopPropagation: vi.fn(),
-      dataTransfer: {
-        files: [mockFile]
-      }
-    } as unknown as DragEvent
-
-    events.binds.onDrop(dropEvent)
-    expect(events.enter.value).toBe(false)
+    await files.setFiles(fileList)
     expect(setFileSpy).toHaveBeenCalledWith(mockFile)
-    expect(emits).toHaveBeenCalledWith('drop', dropEvent)
   })
 
-  it('should open file picker and clear values', () => {
+  it('should clear values and call open', () => {
     const props = reactive({
       value: 'https://example.com/image.png',
       disabled: false
@@ -232,7 +206,7 @@ describe('InputImage', () => {
 
     const refs = toRefs(props)
     const emits = vi.fn()
-    const elementRef = ref(document.createElement('input'))
+    const elementRef = ref(document.createElement('div'))
 
     const inputImage = new InputImage(
       props,
@@ -245,50 +219,13 @@ describe('InputImage', () => {
       emits
     )
 
-    const clickSpy = vi.fn()
-    inputImage.input.element.value = {
-      click: clickSpy,
-      value: 'foo',
-      files: null
-    } as unknown as HTMLInputElement
-
-    inputImage.open()
-    expect(clickSpy).toHaveBeenCalled()
-
+    expect(inputImage.files.hasImage()).toBe(true)
     inputImage.clear()
-    expect(inputImage.hasImage()).toBe(false)
-    expect(inputImage.files.get()).toEqual({})
-  })
+    expect(inputImage.files.hasImage()).toBe(false)
+    expect(inputImage.files.get()).toBeUndefined()
 
-  it('should handle input change and trigger file processing', async () => {
-    const props = reactive({
-      disabled: false
-    }) as InputImageProps
-
-    const refs = toRefs(props)
-    const elementRef = ref(document.createElement('input'))
-    const emits = vi.fn()
-
-    const elementItem = new FieldElementInclude(props, elementRef)
-    const value = new FieldValueInclude<InputImageItem>(props, refs, elementItem)
-    const change = new FieldChangeInclude(props)
-    const attributes = new FieldAttributesInclude(props)
-    const validation = new FieldValidationInclude(props, attributes, value, change)
-    const event = new FieldEventInclude(props, change, value, validation, emits)
-
-    const files = new InputImageFiles(props, value, event)
-    const setFileSpy = vi.spyOn(files, 'setFile').mockResolvedValue('data:image/png;base64,mock')
-    const input = new InputImageInput(props, files)
-
-    const mockFile = new File(['image-bytes'], 'photo.jpg', { type: 'image/jpeg' })
-    const changeEvent = {
-      target: {
-        files: [mockFile]
-      }
-    } as unknown as Event
-
-    input.binds.onChange(changeEvent)
-    expect(setFileSpy).toHaveBeenCalledWith(mockFile)
+    expect(inputImage.actions).toBeDefined()
+    expect(typeof inputImage.open).toBe('function')
   })
 
   it('should instantiate InputImageInclude correctly', () => {

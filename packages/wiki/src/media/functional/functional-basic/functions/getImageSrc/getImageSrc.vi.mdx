@@ -1,0 +1,29 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/getImageSrc - Lấy đường dẫn nguồn hình ảnh'/>
+
+# `getImageSrc`
+
+Dùng để lấy chuỗi nguồn (`src`) một cách an toàn từ đối tượng `HTMLImageElement` hoặc chuỗi (URL / Data URL). Nếu truyền vào một chuỗi, hàm sẽ trả về chính chuỗi đó. Nếu truyền vào một phần tử `<img>`, hàm sẽ trả về giá trị thuộc tính `src`. Nếu không có giá trị, hàm trả về chuỗi rỗng.
+
+**Tham số:**
+- `image?: HTMLImageElement | string` — Phần tử hình ảnh, nguồn chuỗi (URL) hoặc `undefined`.
+
+**Trả về:**
+`string` — Chuỗi nguồn hình ảnh hoặc chuỗi rỗng `''`.
+
+```typescript
+import { getImageSrc } from '@dxtmisha/functional-basic'
+
+// Truyền vào chuỗi URL
+const src1 = getImageSrc('https://example.com/photo.png')
+console.log(src1) // 'https://example.com/photo.png'
+
+// Truyền vào phần tử img
+const imgElement = document.querySelector('img')
+const src2 = getImageSrc(imgElement)
+console.log(src2) // 'https://example.com/...'
+
+// Truyền vào undefined
+console.log(getImageSrc(undefined)) // ''
+```

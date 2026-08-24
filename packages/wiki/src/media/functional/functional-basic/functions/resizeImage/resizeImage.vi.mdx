@@ -1,0 +1,27 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/resizeImage - Thay đổi kích thước hình ảnh bất đồng bộ'/>
+
+# `resizeImage`
+
+Tải và thay đổi kích thước hình ảnh một cách bất đồng bộ nếu chiều rộng hoặc chiều cao vượt quá `maxSize` được chỉ định. Trả về một Promise chứa chuỗi Data URL của hình ảnh đã thu nhỏ, hoặc nguồn ban đầu nếu không cần thu nhỏ.
+
+**Tham số:**
+- `image: HTMLImageElement | string` — Phần tử hình ảnh hoặc nguồn chuỗi (URL, Data URL).
+- `maxSize: number` — Kích thước tối đa cho phép tính bằng pixel (mặc định là `1280`).
+- `typeData?: string` — Loại MIME tùy chọn cho Data URL kết quả (ví dụ: `'image/jpeg'`).
+
+**Trả về:**
+`Promise<string>` — Một promise trả về chuỗi Data URL đã thay đổi kích thước hoặc nguồn ban đầu.
+
+```typescript
+import { resizeImage } from '@dxtmisha/functional-basic'
+
+// Thu nhỏ hình ảnh từ Data URL hoặc URL
+const resizedDataUrl = await resizeImage('data:image/png;base64,...', 1280)
+console.log(resizedDataUrl)
+
+// Sử dụng với phần tử <img>
+const img = document.querySelector('img')
+const result = await resizeImage(img, 800, 'image/jpeg')
+```

@@ -1,13 +1,16 @@
 import type { CropAreaCoordinator } from '../CropArea'
-import type { ImageCropPropsBasic, ImageCropPropsInclude } from '../ImageCrop'
+import type { DropzonePropsBasic, DropzonePropsInclude } from '../Dropzone'
+import type { FieldCounterPropsBasic } from '../FieldCounter'
 import type { FieldLabelPropsBasic, FieldLabelPropsInclude } from '../FieldLabel'
 import type { FieldMessagePropsBasic, FieldMessagePropsInclude } from '../FieldMessage'
-import type { FieldCounterPropsBasic } from '../FieldCounter'
+import type { IconPropsBasic } from '../Icon'
+import type { ImageCropPropsBasic, ImageCropPropsInclude } from '../ImageCrop'
 import type { SkeletonPropsInclude } from '../Skeleton'
 
 import type { EnabledProps } from '../../types/enabledTypes'
 import type { FieldInputFileProps } from '../../types/fieldTypes'
 import type { ModelProps } from '../../types/modelTypes'
+import type { TextCancelPropsInclude, TextClosePropsInclude } from '../../types/textTypes'
 
 import type { InputImageItem } from './basicTypes'
 
@@ -20,23 +23,34 @@ export type InputImagePropsToken = {
 
 /** Type describing basic properties / Тип, описывающий базовые свойства */
 export type InputImagePropsBasic<
-  ImageCrop extends ImageCropPropsBasic = ImageCropPropsBasic,
+  Dropzone extends DropzonePropsBasic = DropzonePropsBasic,
+  FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic,
   FieldLabel extends FieldLabelPropsBasic = FieldLabelPropsBasic,
   FieldMessage extends FieldMessagePropsBasic = FieldMessagePropsBasic,
-  FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic
-> = FieldLabelPropsInclude<FieldLabel, FieldCounter>
-  & FieldMessagePropsInclude<FieldMessage, FieldCounter>
-  & FieldInputFileProps<InputImageItem>
+  Icon extends IconPropsBasic = IconPropsBasic,
+  ImageCrop extends ImageCropPropsBasic = ImageCropPropsBasic
+> = DropzonePropsInclude<Icon, Dropzone>
   & EnabledProps
+  & FieldInputFileProps<InputImageItem>
+  & FieldLabelPropsInclude<FieldLabel, FieldCounter>
+  & FieldMessagePropsInclude<FieldMessage, FieldCounter>
+  & ImageCropPropsInclude<ImageCrop>
   & ModelProps<InputImageItem>
   & SkeletonPropsInclude
-  & ImageCropPropsInclude<ImageCrop>
+  & TextCancelPropsInclude
+  & TextClosePropsInclude
   & {
     /** Initial or current crop coordinates [top, right, bottom, left] / Начальные или текущие координаты кадрирования [сверху, справа, снизу, слева] */
     crop?: CropAreaCoordinator
 
     /** Maximum image dimension (width or height) for resize scaling / Максимальный размер изображения (ширина или высота) для масштабирования */
     maxSize?: number
+
+    /** Upload button icon / Иконка кнопки загрузки */
+    iconUpload?: string
+
+    /** Reset button icon / Иконка кнопки сброса */
+    iconReset?: string
   }
 
 /**

@@ -28,14 +28,14 @@ export class ClockDialDesign<
   CLASSES extends ClockDialClasses,
   P extends ClockDialProps
 > extends DesignConstructorAbstract<
-  HTMLDivElement,
-  COMP,
-  ClockDialEmits,
-  EXPOSE,
-  ClockDialSlots,
-  CLASSES,
-  P
-> {
+    HTMLDivElement,
+    COMP,
+    ClockDialEmits,
+    EXPOSE,
+    ClockDialSlots,
+    CLASSES,
+    P
+  > {
   /** Instance of the ClockDial logic controller / Экземпляр контроллера логики ClockDial */
   protected readonly item: ClockDial
 

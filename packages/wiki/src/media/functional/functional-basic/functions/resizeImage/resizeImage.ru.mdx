@@ -1,0 +1,27 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/functional-basic/Functions/resizeImage - Асинхронное масштабирование изображения'/>
+
+# `resizeImage`
+
+Асинхронно загружает и масштабирует изображение, если его ширина или высота превышают указанный максимальный размер `maxSize`. Возвращает Promise со строкой Data URL уменьшенного изображения или исходным URL/строкой, если уменьшение не требуется.
+
+**Параметры:**
+- `image: HTMLImageElement | string` — Элемент изображения или строковый источник (URL, Data URL).
+- `maxSize: number` — Максимальный допустимый размер в пикселях (по умолчанию `1280`).
+- `typeData?: string` — Опциональный MIME-тип для результирующего Data URL (например, `'image/jpeg'`).
+
+**Возвращает:**
+`Promise<string>` — Промис со строкой Data URL сжатого изображения или исходным источником.
+
+```typescript
+import { resizeImage } from '@dxtmisha/functional-basic'
+
+// Уменьшение изображения из Data URL или URL
+const resizedDataUrl = await resizeImage('data:image/png;base64,...', 1280)
+console.log(resizedDataUrl)
+
+// Использование с элементом <img>
+const img = document.querySelector('img')
+const result = await resizeImage(img, 800, 'image/jpeg')
+```

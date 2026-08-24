@@ -73,7 +73,7 @@ describe('ImageCrop', () => {
     expect(imageCrop.cropImage.styles).toEqual({
       '--d1-image-crop-sys-aspect-ratio': '1920 / 1080',
       '--d1-image-crop-sys-width': 'auto',
-      '--d1-image-crop-sys-height': 'inherit'
+      '--d1-image-crop-sys-height': 'auto'
     })
     expect(emits).toHaveBeenCalledWith('load', expect.any(Object))
   })
