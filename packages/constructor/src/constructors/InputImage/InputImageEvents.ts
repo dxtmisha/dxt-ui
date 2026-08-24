@@ -106,7 +106,7 @@ export class InputImageEvents {
       const files = event.dataTransfer?.files
       if (files && files.length > 0) {
         this.files.setFile(files[0])
-        this.emits?.('drop', event)
+        // this.emits?.('drop', event)
       }
     }
   }

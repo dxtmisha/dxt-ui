@@ -1,5 +1,6 @@
 import { ref } from 'vue'
 
+import { DropzoneEvents } from './DropzoneEvents'
 import { DropzoneFiles } from './DropzoneFiles'
 
 import type { DropzoneProps } from './props'
@@ -17,10 +18,12 @@ export class DropzoneInput {
    * Constructor
    * @param props input data / входные данные
    * @param files file manager instance / экземпляр менеджера файлов
+   * @param events events manager instance / экземпляр менеджера событий
    */
   constructor(
     protected readonly props: DropzoneProps,
-    protected readonly files: DropzoneFiles
+    protected readonly files: DropzoneFiles,
+    protected readonly events?: DropzoneEvents
   ) {
   }
 
@@ -38,8 +41,10 @@ export class DropzoneInput {
       disabled: this.props.disabled,
       multiple: this.props.multiple,
       type: 'file',
-      onChange: this.onChange,
-      onClick: this.onFocus
+      ...this.events?.binds,
+      onFocus: this.onFocus,
+      onClick: this.onFocus,
+      onChange: this.onChange
     }
   }
 
@@ -81,6 +86,6 @@ export class DropzoneInput {
    */
   protected readonly onChange = (event: Event): void => {
     const target = event.target as HTMLInputElement
-    this.files.set(target.files || undefined)
+    this.files.set(target.files || undefined, event)
   }
 }

@@ -1,12 +1,11 @@
 import type { ConstrClass } from '@dxtmisha/functional'
 
 import type { DescriptionSlots } from '../../types/descriptionTypes'
+import type { FieldBasicEmits } from '../../types/fieldTypes'
 import type { LabelSlots } from '../../types/labelTypes'
 import type { ModelEmitsFiles } from '../../types/modelTypes'
 
 import type { IconComponentInclude } from '../Icon'
-
-import type { DropzoneEventParameters } from './basicTypes'
 
 /**
  * Interface for describing which components need to be connected for work.
@@ -20,10 +19,7 @@ export type DropzoneComponents = IconComponentInclude
  *
  * Тип, описывающий доступные события.
  */
-export type DropzoneEmits = ModelEmitsFiles & {
-  /** Triggered when files are dropped or selected / Срабатывает при сбросе или выборе файлов */
-  drop: [event: DropzoneEventParameters]
-}
+export type DropzoneEmits = FieldBasicEmits<FileList | undefined> & ModelEmitsFiles
 
 /**
  * Type describing available properties.

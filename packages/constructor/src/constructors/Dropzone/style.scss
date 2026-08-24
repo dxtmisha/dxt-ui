@@ -12,17 +12,12 @@
   transition-duration: ui.v('d.sys.transitionDuration.standard');
   transition-timing-function: ui.v('d.sys.transitionFunction.standard');
 
-  &--disabled {
-    pointer-events: none;
+  &__input {
+    @include ui.absolute;
+    opacity: 0;
   }
 
-  @include ui.subclass('input') {
-    position: absolute;
-    visibility: hidden;
-
-    width: 0;
-    height: 0;
-    opacity: 0;
+  &--disabled {
     pointer-events: none;
   }
 }

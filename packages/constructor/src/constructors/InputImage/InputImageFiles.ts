@@ -1,14 +1,16 @@
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import {
   isObject,
   isString,
   resizeImageByMax
 } from '@dxtmisha/functional'
 
-import { ImageFile } from '../Image/ImageFile'
-import type { CropAreaCoordinator } from '../CropArea'
 import type { FieldEventInclude } from '../../classes/Field/FieldEventInclude'
 import type { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
+
+import { ImageFile } from '../Image'
+import type { CropAreaCoordinator } from '../CropArea'
+
 import type { InputImageItem, InputImageValue } from './basicTypes'
 import type { InputImageProps } from './props'
 
@@ -44,6 +46,7 @@ export class InputImageFiles {
    */
   get(): InputImageValue {
     const raw = this.value.item.value
+
     if (isString(raw)) {
       return {
         value: raw,
@@ -167,8 +170,8 @@ export class InputImageFiles {
    */
   protected updateValue(value: InputImageValue): void {
     this.value.item.value = value
-    this.event?.onInput(undefined, { value })
-    this.event?.onChange(undefined, { value })
+    // this.event?.onInput(undefined, { value })
+    // this.event?.onChange(undefined, { value })
   }
 
   /**

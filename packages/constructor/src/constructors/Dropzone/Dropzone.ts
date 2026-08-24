@@ -134,8 +134,8 @@ export class Dropzone {
     )
 
     this.files = new DropzoneFilesConstructor(this.props, this.emits)
-    this.events = new DropzoneEventsConstructor(this.props, this.files)
-    this.input = new DropzoneInputConstructor(this.props, this.files)
+    this.events = new DropzoneEventsConstructor(this.props)
+    this.input = new DropzoneInputConstructor(this.props, this.files, this.events)
 
     new ModelIncludeConstructor('files', this.emits, this.files.item)
   }
@@ -161,8 +161,7 @@ export class Dropzone {
    */
   get binds(): Record<string, any> {
     return {
-      ...this.aria,
-      ...this.events.binds
+      ...this.aria
     }
   }
 

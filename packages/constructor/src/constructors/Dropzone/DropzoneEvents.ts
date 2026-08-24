@@ -1,7 +1,5 @@
 import { ref } from 'vue'
-import { eventStopPropagation } from '@dxtmisha/functional'
 
-import { DropzoneFiles } from './DropzoneFiles'
 import type { DropzoneProps } from './props'
 
 /**
@@ -16,23 +14,20 @@ export class DropzoneEvents {
   /**
    * Constructor
    * @param props input data / входные данные
-   * @param files file manager instance / экземпляр менеджера файлов
    */
   constructor(
-    protected readonly props: DropzoneProps,
-    protected readonly files: DropzoneFiles
+    protected readonly props: DropzoneProps
   ) {
   }
 
   /**
-   * Returns binding drag-and-drop event handlers for the label container.
+   * Returns binding drag-and-drop event handlers for the input element.
    *
-   * Возвращает обработчики событий привязки перетаскивания для контейнера label.
+   * Возвращает обработчики событий привязки перетаскивания для элемента input.
    * @returns object with event handlers / объект с обработчиками событий
    */
   get binds(): Record<string, any> {
     return {
-      onDragover: this.onDragover,
       onDragenter: this.onDragenter,
       onDragleave: this.onDragleave,
       onDrop: this.onDrop
@@ -40,24 +35,11 @@ export class DropzoneEvents {
   }
 
   /**
-   * Dragover event handler.
-   *
-   * Обработчик события dragover.
-   * @param event drag event / событие перетаскивания
-   */
-  protected readonly onDragover = (event: DragEvent): void => {
-    eventStopPropagation(event)
-  }
-
-  /**
    * Dragenter event handler.
    *
    * Обработчик события dragenter.
-   * @param event drag event / событие перетаскивания
    */
-  protected readonly onDragenter = (event: DragEvent): void => {
-    eventStopPropagation(event)
-
+  protected readonly onDragenter = (): void => {
     if (!this.props.disabled) {
       this.enter.value = true
     }
@@ -67,22 +49,8 @@ export class DropzoneEvents {
    * Dragleave event handler.
    *
    * Обработчик события dragleave.
-   * @param event drag event / событие перетаскивания
    */
-  protected readonly onDragleave = (event: DragEvent): void => {
-    eventStopPropagation(event)
-
-    const currentTarget = event.currentTarget as HTMLElement
-    const relatedTarget = event.relatedTarget as Node
-
-    if (
-      relatedTarget
-      && currentTarget
-      && currentTarget.contains(relatedTarget)
-    ) {
-      return
-    }
-
+  protected readonly onDragleave = (): void => {
     this.enter.value = false
   }
 
@@ -90,17 +58,8 @@ export class DropzoneEvents {
    * Drop event handler.
    *
    * Обработчик события drop.
-   * @param event drop event / событие сброса файлов
    */
-  protected readonly onDrop = (event: DragEvent): void => {
-    eventStopPropagation(event)
-
-    if (!this.props.disabled) {
-      this.enter.value = false
-
-      if (event.dataTransfer?.files) {
-        this.files.set(event.dataTransfer.files)
-      }
-    }
+  protected readonly onDrop = (): void => {
+    this.enter.value = false
   }
 }

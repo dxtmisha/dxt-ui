@@ -102,6 +102,10 @@ export class InputImageDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
+        input: this.getSubClass('input'),
+        body: this.getSubClass('body'),
+        crop: this.getSubClass('crop'),
+        dropzone: this.getSubClass('dropzone')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -173,8 +177,7 @@ export class InputImageDesign<
       children.push(...cropChildren)
     } else {
       const dropzoneChildren: VNode[] = [
-        ...this.item.label.render(),
-        ...this.item.progress.render()
+        ...this.item.label.render()
       ]
 
       this.initSlot('dropzone', dropzoneChildren)

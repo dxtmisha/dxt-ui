@@ -3,7 +3,6 @@ import type { ConstrClass } from '@dxtmisha/functional'
 import type { ImageCropComponentInclude } from '../ImageCrop'
 import type { FieldLabelComponentInclude } from '../FieldLabel'
 import type { FieldMessageComponentInclude } from '../FieldMessage'
-import type { ProgressComponentInclude } from '../Progress'
 
 import type { FieldBasicEmits, FieldBasicExpose } from '../../types/fieldTypes'
 import type { LabelSlots } from '../../types/labelTypes'
@@ -18,7 +17,6 @@ import type { InputImageValue } from './basicTypes'
 export type InputImageComponents = ImageCropComponentInclude
   & FieldLabelComponentInclude
   & FieldMessageComponentInclude
-  & ProgressComponentInclude
 
 /**
  * Type describing available events.
@@ -60,5 +58,9 @@ export interface InputImageSlots extends LabelSlots {
 export type InputImageClasses = {
   main: ConstrClass
   // :classes [!] System label / Системная метка
+  input: string
+  body: string
+  crop: string
+  dropzone: string
   // :classes [!] System label / Системная метка
 }

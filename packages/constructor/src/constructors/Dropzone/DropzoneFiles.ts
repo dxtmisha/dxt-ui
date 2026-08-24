@@ -1,6 +1,7 @@
 import { ref } from 'vue'
 import { type ConstrEmit } from '@dxtmisha/functional'
 
+import type { FieldValidationItem } from '../../types/fieldTypes'
 import type { DropzoneEmits } from './types'
 import type { DropzoneProps } from './props'
 
@@ -35,14 +36,15 @@ export class DropzoneFiles {
   }
 
   /**
-   * Sets new file list and triggers drop event.
+   * Sets new file list and triggers change and input events.
    *
-   * Устанавливает новый список файлов и вызывает событие drop.
+   * Устанавливает новый список файлов и вызывает события изменения и ввода.
    * @param files file list / список файлов
+   * @param event DOM event / DOM-событие
    */
-  set(files?: FileList): void {
+  set(files?: FileList, event?: Event): void {
     this.item.value = files
-    this.emit()
+    this.emit(event)
   }
 
   /**
@@ -55,11 +57,37 @@ export class DropzoneFiles {
   }
 
   /**
-   * Emits the drop event with current files.
+   * Emits change and input events with current files.
    *
-   * Отправляет событие drop с текущими файлами.
+   * Отправляет события change и input с текущими файлами.
+   * @param event DOM event / DOM-событие
    */
-  protected emit(): void {
-    this.emits?.('drop', { files: this.item.value })
+  protected emit(event?: Event): void {
+    const data = this.getData()
+
+    if (event) {
+      this.emits?.('input', event, data)
+      this.emits?.('change', event, data)
+    }
+
+    this.emits?.('inputLite', data)
+    this.emits?.('changeLite', data)
+  }
+
+  /**
+   * Generates validation data item for event emission.
+   *
+   * Генерирует элемент данных валидации для отправки событий.
+   * @returns validation item data / данные элемента валидации
+   */
+  protected getData(): FieldValidationItem<FileList | undefined> {
+    const isFull = Boolean(this.item.value && this.item.value.length > 0)
+
+    return {
+      status: true,
+      isFull,
+      value: this.item.value,
+      valueInput: this.item.value
+    }
   }
 }

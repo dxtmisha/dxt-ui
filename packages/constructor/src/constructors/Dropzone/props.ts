@@ -27,8 +27,6 @@ export type DropzonePropsBasic<
     accept?: string
     /** Allow selecting multiple files / Разрешить выбор нескольких файлов */
     multiple?: boolean
-    /** Selected file list / Список выбранных файлов */
-    files?: FileList
   }
 
 /**

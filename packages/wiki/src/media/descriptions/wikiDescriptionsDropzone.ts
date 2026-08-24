@@ -116,7 +116,8 @@ export const wikiDescriptionsDropzone: StorybookComponentsDescriptionItem = {
 <StorybookDescriptions componentName={'Slot'} type={'description'}/>
     `,
     events: `
-<StorybookDescriptions componentName={'Event'} type={'dropzone'}/>
+<StorybookDescriptions componentName={'Event'} type={'input'}/>
+<StorybookDescriptions componentName={'Event'} type={'change'}/>
     `,
     expose: `
 <StorybookDescriptions componentName={'Expose'} type={'open'}/>
@@ -134,7 +135,7 @@ export const wikiDescriptionsDropzone: StorybookComponentsDescriptionItem = {
     `,
     description: `
 Dropzone component designed for file uploading via drag-and-drop or file picker dialog. Integrates sub-components for rendering file input, drag event management, icon, label, and description.
-Controlled via accept, disabled, multiple, icon, label, description, and files / modelFiles props. Exposes open() and clear() methods.
+Controlled via accept, disabled, multiple, icon, label, description, and modelFiles props. Emits standard input and change events. Exposes open() and clear() methods.
     `
   }
 }

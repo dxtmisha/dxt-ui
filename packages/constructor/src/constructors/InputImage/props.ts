@@ -3,7 +3,6 @@ import type { ImageCropPropsBasic, ImageCropPropsInclude } from '../ImageCrop'
 import type { FieldLabelPropsBasic, FieldLabelPropsInclude } from '../FieldLabel'
 import type { FieldMessagePropsBasic, FieldMessagePropsInclude } from '../FieldMessage'
 import type { FieldCounterPropsBasic } from '../FieldCounter'
-import type { ProgressPropsBasic, ProgressPropsInclude } from '../Progress'
 import type { SkeletonPropsInclude } from '../Skeleton'
 
 import type { EnabledProps } from '../../types/enabledTypes'
@@ -14,6 +13,8 @@ import type { InputImageItem } from './basicTypes'
 
 export type InputImagePropsToken = {
   // :type [!] System label / Системная метка
+  disabled?: boolean
+  readonly?: boolean
   // :type [!] System label / Системная метка
 }
 
@@ -22,12 +23,10 @@ export type InputImagePropsBasic<
   ImageCrop extends ImageCropPropsBasic = ImageCropPropsBasic,
   FieldLabel extends FieldLabelPropsBasic = FieldLabelPropsBasic,
   FieldMessage extends FieldMessagePropsBasic = FieldMessagePropsBasic,
-  FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic,
-  Progress extends ProgressPropsBasic = ProgressPropsBasic
+  FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic
 > = FieldLabelPropsInclude<FieldLabel, FieldCounter>
   & FieldMessagePropsInclude<FieldMessage, FieldCounter>
   & FieldInputFileProps<InputImageItem>
-  & ProgressPropsInclude<Progress>
   & EnabledProps
   & ModelProps<InputImageItem>
   & SkeletonPropsInclude

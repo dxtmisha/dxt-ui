@@ -2,7 +2,6 @@ import type { Ref, ToRefs } from 'vue'
 import type { ConstrEmit, DesignComp } from '@dxtmisha/functional'
 
 import { EnabledInclude } from '../../classes/EnabledInclude'
-import { TextInclude } from '../../classes/TextInclude'
 
 import { FieldAttributesInclude } from '../../classes/Field/FieldAttributesInclude'
 import { FieldChangeInclude } from '../../classes/Field/FieldChangeInclude'
@@ -15,7 +14,6 @@ import { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
 import { FieldLabelInclude } from '../FieldLabel'
 import { FieldMessageInclude } from '../FieldMessage'
 import { ImageCropInclude } from '../ImageCrop'
-import { ProgressInclude } from '../Progress'
 import { SkeletonInclude } from '../Skeleton'
 
 import { InputImageEvents } from './InputImageEvents'
@@ -34,9 +32,6 @@ import type { InputImageProps } from './props'
  * Главный класс-оркестратор для управления вводом изображения, загрузкой, изменением размера, перетаскиванием, кадрированием и валидацией.
  */
 export class InputImage {
-  /** Input type string identifier / Строковый идентификатор типа инпута */
-  readonly type: string = 'file'
-
   /** Field attributes manager / Менеджер атрибутов поля */
   readonly attributes: FieldAttributesInclude
 
@@ -61,14 +56,8 @@ export class InputImage {
   /** Message component inclusion controller / Контроллер включения сообщения поля */
   readonly message: FieldMessageInclude<any, any>
 
-  /** Progress indicator manager / Экземпляр менеджера индикатора прогресса */
-  readonly progress: ProgressInclude
-
   /** Skeleton controller / Контроллер скелетона */
   readonly skeleton: SkeletonInclude
-
-  /** Text controller / Контроллер текста */
-  readonly text: TextInclude
 
   /** Field validation manager / Менеджер валидации поля */
   readonly validation: FieldValidationInclude
@@ -115,9 +104,7 @@ export class InputImage {
    * @param constructors.InputImageEventsConstructor class for working with events / класс для работы с событиями
    * @param constructors.InputImageFilesConstructor class for working with files / класс для работы с файлами
    * @param constructors.InputImageInputConstructor class for working with input / класс для работы с инпутом
-   * @param constructors.ProgressConstructor class for creating a progress indicator / класс для создания индикатора прогресса
    * @param constructors.SkeletonConstructor class for creating a skeleton / класс для создания скелета
-   * @param constructors.TextIncludeConstructor class for working with text / класс для работы с текстом
    */
   constructor(
     protected readonly props: InputImageProps,
@@ -143,9 +130,7 @@ export class InputImage {
       InputImageEventsConstructor?: typeof InputImageEvents
       InputImageFilesConstructor?: typeof InputImageFiles
       InputImageInputConstructor?: typeof InputImageInput
-      ProgressConstructor?: typeof ProgressInclude
       SkeletonConstructor?: typeof SkeletonInclude
-      TextIncludeConstructor?: typeof TextInclude
     } = {}
   ) {
     const {
@@ -163,22 +148,10 @@ export class InputImage {
       InputImageEventsConstructor = InputImageEvents,
       InputImageFilesConstructor = InputImageFiles,
       InputImageInputConstructor = InputImageInput,
-      ProgressConstructor = ProgressInclude,
-      SkeletonConstructor = SkeletonInclude,
-      TextIncludeConstructor = TextInclude
+      SkeletonConstructor = SkeletonInclude
     } = constructors
 
     this.skeleton = new SkeletonConstructor(this.props, this.classDesign, ['classBackground'])
-    this.text = new TextIncludeConstructor(this.props)
-    this.progress = new ProgressConstructor(
-      this.className,
-      this.props,
-      this.components,
-      {
-        circular: true,
-        inverse: true
-      }
-    )
     this.change = new FieldChangeIncludeConstructor(this.props)
 
     this.elementItem = new FieldElementIncludeConstructor(this.props, this.element)
@@ -187,7 +160,7 @@ export class InputImage {
       undefined,
       undefined,
       undefined,
-      this.type
+      'file'
     )
 
     this.value = new FieldValueIncludeConstructor(
@@ -231,18 +204,18 @@ export class InputImage {
     this.events = new InputImageEventsConstructor(this.props, this.files, this.emits)
     this.input = new InputImageInputConstructor(this.props, this.files)
 
-    this.enabled = new EnabledConstructor(props, this.progress)
+    this.enabled = new EnabledConstructor(props)
 
     this.imageCrop = new ImageCropIncludeConstructor(
       this.className,
       this.props,
       this.components,
       () => ({
-        value: this.files.crop,
-        modelValue: this.files.crop,
-        image: this.files.src,
-        disabled: this.props.disabled,
-        readonly: this.props.readonly,
+        'value': this.files.crop,
+        'modelValue': this.files.crop,
+        'image': this.files.src,
+        'disabled': this.props.disabled,
+        'readonly': this.props.readonly,
         'onUpdate:value': this.onCropUpdate,
         'onUpdate:modelValue': this.onCropUpdate
       })
