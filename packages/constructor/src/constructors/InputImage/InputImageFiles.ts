@@ -1,11 +1,9 @@
-import { ref } from 'vue'
 import {
   isObject,
   isString,
   resizeImage
 } from '@dxtmisha/functional'
 
-import type { FieldEventInclude } from '../../classes/Field/FieldEventInclude'
 import type { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
 
 import type { CropAreaCoordinator } from '../CropArea'
@@ -20,21 +18,16 @@ import type { InputImageProps } from './props'
  * Класс для управления файлами изображений, загрузкой, изменением размера и состоянием кадрирования в InputImage.
  */
 export class InputImageFiles {
-  /** Reactive loading indicator state / Реактивное состояние индикатора загрузки */
-  readonly loading = ref<boolean>(false)
-
   /**
    * Constructor.
    *
    * Конструктор.
    * @param props input data / входные данные
    * @param value field value controller / контроллер значения поля
-   * @param event field event controller / контроллер событий поля
    */
   constructor(
     protected readonly props: InputImageProps,
-    protected readonly value: FieldValueInclude<InputImageItem>,
-    protected readonly event?: FieldEventInclude
+    protected readonly value: FieldValueInclude<InputImageItem>
   ) {
   }
 
@@ -59,15 +52,6 @@ export class InputImageFiles {
   }
 
   /**
-   * Clears image and crop coordinates.
-   *
-   * Очищает изображение и координаты кадрирования.
-   */
-  clear(): void {
-    this.updateValue(undefined)
-  }
-
-  /**
    * Returns current value object with image source and crop coordinates.
    *
    * Возвращает текущий объект значения с источником изображения и координатами кадрирования.
@@ -76,7 +60,7 @@ export class InputImageFiles {
   get(): InputImageValue | undefined {
     const raw = this.value.item.value
 
-    if (isString(raw)) {
+    if (isString(raw) && raw) {
       return {
         value: raw,
         crop: this.props.crop
@@ -128,21 +112,15 @@ export class InputImageFiles {
       return undefined
     }
 
-    this.loading.value = true
+    const source = await this.processFile(file)
 
-    try {
-      const source = await this.processFile(file)
+    if (source) {
+      this.updateValue({
+        value: source,
+        crop: this.props.crop
+      })
 
-      if (source) {
-        this.updateValue({
-          value: source,
-          crop: this.props.crop
-        })
-
-        return source
-      }
-    } finally {
-      this.loading.value = false
+      return source
     }
 
     return undefined
@@ -164,19 +142,6 @@ export class InputImageFiles {
     }
 
     return undefined
-  }
-
-  /**
-   * Sets image source string and triggers change.
-   *
-   * Устанавливает строку источника изображения и вызывает событие изменения.
-   * @param source image source URL or base64 / URL или base64 источника изображения
-   */
-  setImage(source?: string): void {
-    this.updateValue({
-      ...this.get(),
-      value: source
-    })
   }
 
   /**

@@ -1,3 +1,4 @@
+import type { ActionsPropsBasic, ActionsPropsInclude } from '../Actions'
 import type { CropAreaCoordinator } from '../CropArea'
 import type { DropzonePropsBasic, DropzonePropsInclude } from '../Dropzone'
 import type { FieldCounterPropsBasic } from '../FieldCounter'
@@ -23,13 +24,15 @@ export type InputImagePropsToken = {
 
 /** Type describing basic properties / Тип, описывающий базовые свойства */
 export type InputImagePropsBasic<
+  Actions extends ActionsPropsBasic = ActionsPropsBasic,
   Dropzone extends DropzonePropsBasic = DropzonePropsBasic,
   FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic,
   FieldLabel extends FieldLabelPropsBasic = FieldLabelPropsBasic,
   FieldMessage extends FieldMessagePropsBasic = FieldMessagePropsBasic,
   Icon extends IconPropsBasic = IconPropsBasic,
   ImageCrop extends ImageCropPropsBasic = ImageCropPropsBasic
-> = DropzonePropsInclude<Icon, Dropzone>
+> = ActionsPropsInclude<Actions>
+  & DropzonePropsInclude<Icon, Dropzone>
   & EnabledProps
   & FieldInputFileProps<InputImageItem>
   & FieldLabelPropsInclude<FieldLabel, FieldCounter>
@@ -49,8 +52,8 @@ export type InputImagePropsBasic<
     /** Upload button icon / Иконка кнопки загрузки */
     iconUpload?: string
 
-    /** Reset button icon / Иконка кнопки сброса */
-    iconReset?: string
+    /** Close button icon / Иконка кнопки закрытия */
+    iconClose?: string
   }
 
 /**

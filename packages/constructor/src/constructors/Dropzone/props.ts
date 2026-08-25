@@ -1,3 +1,5 @@
+import type { ConstrBind } from '@dxtmisha/functional'
+
 import type { IconPropsBasic, IconPropsInclude } from '../Icon'
 import type { SkeletonPropsInclude } from '../Skeleton'
 
@@ -27,6 +29,8 @@ export type DropzonePropsBasic<
     accept?: string
     /** Allow selecting multiple files / Разрешить выбор нескольких файлов */
     multiple?: boolean
+    /** Additional attributes for the input element / Дополнительные атрибуты для элемента ввода */
+    inputAttrs?: ConstrBind<HTMLInputElement>
   }
 
 /**

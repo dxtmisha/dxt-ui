@@ -148,7 +148,7 @@ export class FieldEventInclude {
    * Вызов события для удаления всех значений.
    * @param event event object / объект события
    */
-  readonly onClear = (event: MouseEvent): void => {
+  readonly onClear = (event?: MouseEvent): void => {
     if (this.isEnabled()) {
       this.value.clear()
       this.onAndChange(event)
@@ -161,9 +161,12 @@ export class FieldEventInclude {
    * Вызов события для установки конкретного значения.
    * @param value new value / новое значение
    */
-  readonly onValue = (value: any): void => {
+  readonly onValue = (value?: any): void => {
     if (this.isEnabled()) {
-      this.value.set(value)
+      if (value !== undefined) {
+        this.value.set(value)
+      }
+
       this.onAndChange()
     }
   }
@@ -191,6 +194,20 @@ export class FieldEventInclude {
 
     this.emits?.(type as 'input', event as Event, data)
     this.emits?.(`${type}Lite` as 'inputLite', data)
+
+    return this
+  }
+
+  /**
+   * Triggering the event and change event.
+   *
+   * Вызов события и события изменения.
+   * @param event event object / объект события
+   * @returns current instance / текущий экземпляр
+   */
+  readonly onAndChange = (event?: InputEvent | Event): this => {
+    this.on(event)
+      .onChange(event)
 
     return this
   }
@@ -244,19 +261,5 @@ export class FieldEventInclude {
     }
 
     return {} as FieldValidationItem
-  }
-
-  /**
-   * Triggering the event and change event.
-   *
-   * Вызов события и события изменения.
-   * @param event event object / объект события
-   * @returns current instance / текущий экземпляр
-   */
-  protected onAndChange(event?: InputEvent | Event): this {
-    this.on(event)
-      .onChange(event)
-
-    return this
   }
 }

@@ -1,12 +1,11 @@
 {
-  "#input": {},
   "#body": {},
   "#crop": {},
   "#dropzone": {},
   "#actions": {},
   "~disabled": {},
   "~readonly": {},
-  "~enter": {
+  "~hasImage": {
     "_prop": false
   }
 }

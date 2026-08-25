@@ -1,5 +1,9 @@
 import type { Ref, ToRefs } from 'vue'
-import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
+import {
+  type ConstrClass,
+  type ConstrEmit,
+  type DesignComp
+} from '@dxtmisha/functional'
 
 import { EnabledInclude } from '../../classes/EnabledInclude'
 import { TextInclude } from '../../classes/TextInclude'
@@ -19,11 +23,10 @@ import { FieldMessageInclude } from '../FieldMessage'
 import { ImageCropInclude } from '../ImageCrop'
 import { SkeletonInclude } from '../Skeleton'
 
+import { InputImageEvent } from './InputImageEvent'
 import { InputImageFiles } from './InputImageFiles'
 
-import type { CropAreaEventParameters } from '../CropArea'
-
-import type { FieldElementInput, FieldValidationItem } from '../../types/fieldTypes'
+import type { FieldElementInput } from '../../types/fieldTypes'
 
 import type { InputImageItem } from './basicTypes'
 import type { InputImageProps } from './props'
@@ -64,6 +67,9 @@ export class InputImage {
 
   /** ImageCrop component inclusion controller / Контроллер включения компонента кадрирования изображения */
   readonly imageCrop: ImageCropInclude
+
+  /** InputImage event manager helper instance / Вспомогательный класс для управления событиями ввода изображения */
+  readonly eventItem: InputImageEvent
 
   /** Label controller / Контроллер метки */
   readonly label: FieldLabelInclude
@@ -109,6 +115,7 @@ export class InputImage {
    * @param constructors.FieldValidationIncludeConstructor class for creating field validation / класс для создания валидации поля
    * @param constructors.FieldValueIncludeConstructor class for creating field value attributes / класс для создания атрибутов значения поля
    * @param constructors.ImageCropIncludeConstructor class for working with image crop / класс для работы с кадрированием изображения
+   * @param constructors.InputImageEventConstructor class for working with input image events / класс для работы с событиями ввода изображения
    * @param constructors.InputImageFilesConstructor class for working with files / класс для работы с файлами
    * @param constructors.SkeletonConstructor class for creating a skeleton / класс для создания скелета
    * @param constructors.TextIncludeConstructor class for working with text / класс для работы с текстом
@@ -136,6 +143,7 @@ export class InputImage {
       FieldValidationIncludeConstructor?: typeof FieldValidationInclude
       FieldValueIncludeConstructor?: typeof FieldValueInclude<InputImageItem>
       ImageCropIncludeConstructor?: typeof ImageCropInclude
+      InputImageEventConstructor?: typeof InputImageEvent
       InputImageFilesConstructor?: typeof InputImageFiles
       SkeletonConstructor?: typeof SkeletonInclude
       TextIncludeConstructor?: typeof TextInclude
@@ -155,6 +163,7 @@ export class InputImage {
       FieldValidationIncludeConstructor = FieldValidationInclude,
       FieldValueIncludeConstructor = FieldValueInclude,
       ImageCropIncludeConstructor = ImageCropInclude,
+      InputImageEventConstructor = InputImageEvent,
       InputImageFilesConstructor = InputImageFiles,
       SkeletonConstructor = SkeletonInclude,
       TextIncludeConstructor = TextInclude
@@ -209,7 +218,7 @@ export class InputImage {
       () => this.validation.message
     )
 
-    this.files = new InputImageFilesConstructor(this.props, this.value, this.event)
+    this.files = new InputImageFilesConstructor(this.props, this.value)
     this.enabled = new EnabledConstructor(props)
     this.text = new TextIncludeConstructor(this.props)
 
@@ -221,7 +230,8 @@ export class InputImage {
         accept: this.props.accept,
         disabled: this.props.disabled,
         readonly: this.props.readonly,
-        onInput: this.onDropzoneInput
+        inputAttrs: this.attributes.listForInput,
+        onInput: this.eventItem.onDropzoneInput
       })
     )
 
@@ -234,27 +244,29 @@ export class InputImage {
         image: this.files.src,
         disabled: this.props.disabled,
         readonly: this.props.readonly,
-        onResize: this.onCropResize
+        onResize: this.eventItem.onCropResize
       })
+    )
+
+    this.eventItem = new InputImageEventConstructor(
+      this.files,
+      this.dropzone,
+      this.event
     )
 
     this.actions = new ActionsIncludeConstructor(
       this.className,
-      undefined,
+      props,
       this.components,
       () => ({
         list: [
           {
             icon: this.props.iconUpload,
-            disabled: this.props.disabled,
-            readonly: this.props.readonly,
-            onClick: this.open
+            onClick: this.eventItem.open
           },
           {
-            icon: this.props.iconReset ?? this.props.iconClose,
-            disabled: this.props.disabled,
-            readonly: this.props.readonly,
-            onClick: this.clear
+            icon: this.props.iconClose,
+            onClick: this.event.onClear
           }
         ]
       })
@@ -262,58 +274,14 @@ export class InputImage {
   }
 
   /**
-   * Returns binding values and event handlers for the input.
+   * Computed list of classes for the main element.
    *
-   * Возвращает значения привязок и обработчики событий для ввода.
-   * @returns bindings object / объект привязок
+   * Вычисляемый список классов для главного элемента.
+   * @returns computed classes / вычисленные классы
    */
-  get binds(): Record<string, any> {
+  get classes(): ConstrClass {
     return {
-      ...this.attributes.listForInput,
-      value: this.files.src,
-      onBlur: this.event.onBlur,
-      onInput: this.event.onInput,
-      onChange: this.event.onChange
+      [`${this.className}--hasImage`]: this.files.hasImage()
     }
-  }
-
-  /**
-   * Clears the selected image and crop coordinates.
-   *
-   * Очищает выбранное изображение и координаты кадрирования.
-   */
-  readonly clear = (): void => {
-    this.dropzone.expose.clear?.()
-    this.files.clear()
-  }
-
-  /**
-   * Triggers the file selection dialog.
-   *
-   * Открывает диалог выбора файла.
-   */
-  readonly open = (): void => {
-    this.dropzone.expose.open?.()
-  }
-
-  /**
-   * Handles crop area resize event.
-   *
-   * Обрабатывает событие изменения размера области кадрирования.
-   * @param event crop area event parameters / параметры события области кадрирования
-   */
-  protected readonly onCropResize = (event: CropAreaEventParameters): void => {
-    this.files.setCrop(event.coordinator)
-  }
-
-  /**
-   * Handles Dropzone input event.
-   *
-   * Обрабатывает событие ввода Dropzone.
-   * @param _event DOM event / событие DOM
-   * @param data validation item / элемент валидации
-   */
-  protected readonly onDropzoneInput = (_event: Event, data: FieldValidationItem<FileList | undefined>): void => {
-    this.files.setFiles(data.value)
   }
 }

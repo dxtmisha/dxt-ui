@@ -7,7 +7,7 @@ import type { FieldMessageComponentInclude } from '../FieldMessage'
 import type { ImageCropComponentInclude } from '../ImageCrop'
 
 import type { FieldBasicEmits, FieldBasicExpose } from '../../types/fieldTypes'
-import type { LabelSlots } from '../../types/labelTypes'
+import type { LabelAlternativeSlots } from '../../types/labelTypes'
 
 import type { InputImageValue } from './basicTypes'
 
@@ -46,7 +46,7 @@ export interface InputImageExpose extends FieldBasicExpose<InputImageValue> {
  *
  * Тип, описывающий доступные слоты.
  */
-export interface InputImageSlots extends LabelSlots {
+export interface InputImageSlots extends LabelAlternativeSlots {
 }
 
 /**
@@ -57,7 +57,6 @@ export interface InputImageSlots extends LabelSlots {
 export type InputImageClasses = {
   main: ConstrClass
   // :classes [!] System label / Системная метка
-  input: string
   body: string
   crop: string
   dropzone: string

@@ -41,6 +41,7 @@ export class DropzoneInput {
       disabled: this.props.disabled,
       multiple: this.props.multiple,
       type: 'file',
+      ...this.props.inputAttrs,
       ...this.events?.binds,
       onFocus: this.onFocus,
       onClick: this.onFocus,

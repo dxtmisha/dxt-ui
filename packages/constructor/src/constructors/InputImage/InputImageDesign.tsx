@@ -87,8 +87,8 @@ export class InputImageDesign<
     return {
       ...this.item.value.expose(),
       ...this.item.validation.expose(),
-      open: this.item.open,
-      clear: this.item.clear
+      open: this.item.eventItem.open,
+      clear: () => this.item.event.onClear()
     } as EXPOSE
   }
 
@@ -100,10 +100,9 @@ export class InputImageDesign<
    */
   protected initClasses(): Partial<CLASSES> {
     return {
-      main: {},
+      main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
-        input: this.getSubClass('input'),
         body: this.getSubClass('body'),
         crop: this.getSubClass('crop'),
         dropzone: this.getSubClass('dropzone'),
@@ -140,6 +139,7 @@ export class InputImageDesign<
         ...AriaStaticInclude.describedby(this.item.message.id)
       },
       [
+        ...this.item.label.render(this.slots),
         ...this.renderBody(),
         ...this.renderActions(),
         ...this.item.message.render()
@@ -154,7 +154,11 @@ export class InputImageDesign<
    * @returns array of virtual nodes / массив виртуальных нод
    */
   readonly renderActions = (): VNode[] => {
-    if (this.item.files.hasImage()) {
+    if (
+      this.item.files.hasImage()
+      && !this.props.disabled
+      && !this.props.readonly
+    ) {
       return this.item.actions.render(undefined, {
         class: this.classes?.value.actions
       })
@@ -173,7 +177,12 @@ export class InputImageDesign<
     return [
       h(
         'div',
-        { class: this.classes?.value.body },
+        {
+          class: [
+            this.classes?.value.body,
+            this.item.skeleton.classes
+          ]
+        },
         [
           ...this.renderCrop(),
           ...this.renderDropzone()
@@ -206,8 +215,7 @@ export class InputImageDesign<
    */
   readonly renderDropzone = (): VNode[] => {
     return this.item.dropzone.render(undefined, {
-      class: this.classes?.value.dropzone,
-      style: this.item.files.hasImage() ? { display: 'none' } : undefined
+      class: this.classes?.value.dropzone
     })
   }
 }

@@ -96,4 +96,16 @@ describe('FieldEventInclude', () => {
     expect(mockValue.clear).toHaveBeenCalled()
     expect(emitsSpy).toHaveBeenCalledWith('input', mockEvent, expect.any(Object))
   })
+
+  it('should handle onValue event with and without value', () => {
+    const eventInclude = new FieldEventInclude({}, mockChange, mockValue, mockValidation, emitsSpy)
+
+    eventInclude.onValue('custom-value')
+    expect(mockValue.set).toHaveBeenCalledWith('custom-value')
+    expect(emitsSpy).toHaveBeenCalledWith('input', undefined, expect.any(Object))
+
+    mockValue.set.mockClear()
+    eventInclude.onValue()
+    expect(mockValue.set).not.toHaveBeenCalled()
+  })
 })
