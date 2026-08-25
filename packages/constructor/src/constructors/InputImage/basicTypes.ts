@@ -1,5 +1,8 @@
 import type { CropAreaCoordinator } from '../CropArea'
 
+/** Counter display mode / Режим отображения счетчика */
+export type InputImageCounterType = 'auto' | 'pixel' | 'size' | 'hide'
+
 /**
  * Image input value structure with image source and crop coordinates.
  *

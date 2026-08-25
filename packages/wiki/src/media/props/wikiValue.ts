@@ -95,6 +95,17 @@ export const wikiValue: StorybookArgsToList = {
       }
     }
   },
+  crop: {
+    type: StorybookControl.array,
+    options: {
+      category: StorybookCategory.value,
+      type: 'CropAreaCoordinator',
+      description: {
+        en: 'Initial or current crop coordinates [top, right, bottom, left]',
+        ru: 'Начальные или текущие координаты кадрирования [сверху, справа, снизу, слева]'
+      }
+    }
+  },
   detail: {
     type: StorybookControl.object,
     options: {

@@ -102,6 +102,18 @@ export const wikiForm: StorybookArgsToList = {
     },
     hide: true
   },
+  capture: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.form,
+      type: ['string', 'boolean'],
+      description: {
+        en: 'Specifies capture mode for media input on mobile devices (e.g., "user", "environment")',
+        ru: 'Указывает режим захвата медиафайлов на мобильных устройствах (например, "user", "environment")'
+      }
+    },
+    hide: true
+  },
   cols: {
     type: StorybookControl.number,
     options: {

@@ -120,6 +120,17 @@ export const wikiAttributes: StorybookArgsToList = {
     },
     hide: true
   },
+  dropzoneAttrs: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.attributes,
+      description: {
+        en: 'Additional attributes for the Dropzone component',
+        ru: 'Дополнительные атрибуты для компонента Dropzone'
+      }
+    },
+    hide: true
+  },
   fieldAttrs: {
     type: StorybookControl.object,
     options: {
@@ -215,6 +226,17 @@ export const wikiAttributes: StorybookArgsToList = {
       description: {
         en: 'Additional attributes for the image element',
         ru: 'Дополнительные атрибуты для элемента изображения'
+      }
+    },
+    hide: true
+  },
+  imageCropAttrs: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.attributes,
+      description: {
+        en: 'Additional attributes for the ImageCrop component',
+        ru: 'Дополнительные атрибуты для компонента ImageCrop'
       }
     },
     hide: true

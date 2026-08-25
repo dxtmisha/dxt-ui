@@ -1,3 +1,4 @@
+import { ref } from 'vue'
 import {
   isObject,
   isString,
@@ -18,6 +19,9 @@ import type { InputImageProps } from './props'
  * Класс для управления файлами изображений, загрузкой, изменением размера и состоянием кадрирования в InputImage.
  */
 export class InputImageFiles {
+  /** Currently loaded or selected file object / Текущий загруженный или выбранный объект файла */
+  readonly file = ref<File | undefined>()
+
   /**
    * Constructor.
    *
@@ -108,6 +112,8 @@ export class InputImageFiles {
    * @returns loaded and resized image source string or undefined / загруженная и масштабированная строка источника изображения или undefined
    */
   async setFile(file?: File): Promise<string | undefined> {
+    this.file.value = file
+
     if (!file) {
       return undefined
     }
@@ -123,6 +129,7 @@ export class InputImageFiles {
       return source
     }
 
+    this.file.value = undefined
     return undefined
   }
 
@@ -145,14 +152,18 @@ export class InputImageFiles {
   }
 
   /**
-   * Processes a File by reading it as Data URL and resizing down to maxSize if necessary.
+   * Processes a File by checking file size, reading it as Data URL and resizing down to maxPixel if necessary.
    *
-   * Обрабатывает File, читая его как Data URL и уменьшая до maxSize при необходимости.
+   * Обрабатывает File, проверяя размер файла, читая его как Data URL и уменьшая до maxPixel при необходимости.
    * @param file file to process / файл для обработки
    * @returns processed data URL string or undefined / обработанная строка Data URL или undefined
    */
   protected async processFile(file: File): Promise<string | undefined> {
     if (!ImageFile.isImage(file)) {
+      return undefined
+    }
+
+    if (this.props.maxFileSize && file.size > this.props.maxFileSize) {
       return undefined
     }
 
@@ -162,7 +173,7 @@ export class InputImageFiles {
       return undefined
     }
 
-    return resizeImage(dataUrl, this.props.maxSize ?? 1280)
+    return resizeImage(dataUrl, this.props.maxPixel ?? 1280)
   }
 
   /**

@@ -11,9 +11,11 @@ import type { SkeletonPropsInclude } from '../Skeleton'
 import type { EnabledProps } from '../../types/enabledTypes'
 import type { FieldInputFileProps } from '../../types/fieldTypes'
 import type { ModelProps } from '../../types/modelTypes'
-import type { TextCancelPropsInclude, TextClosePropsInclude } from '../../types/textTypes'
+import type { TextCancelPropsInclude, TextChangePropsInclude } from '../../types/textTypes'
 
-import type { InputImageItem } from './basicTypes'
+import type { InputImageCounterType, InputImageItem } from './basicTypes'
+
+export type { InputImageCounterType }
 
 export type InputImagePropsToken = {
   // :type [!] System label / Системная метка
@@ -31,7 +33,7 @@ export type InputImagePropsBasic<
   FieldMessage extends FieldMessagePropsBasic = FieldMessagePropsBasic,
   Icon extends IconPropsBasic = IconPropsBasic,
   ImageCrop extends ImageCropPropsBasic = ImageCropPropsBasic
-> = ActionsPropsInclude<Actions>
+> = Omit<ActionsPropsInclude<Actions>, 'actionsList' | 'actionsSecondary'>
   & DropzonePropsInclude<Icon, Dropzone>
   & EnabledProps
   & FieldInputFileProps<InputImageItem>
@@ -41,13 +43,19 @@ export type InputImagePropsBasic<
   & ModelProps<InputImageItem>
   & SkeletonPropsInclude
   & TextCancelPropsInclude
-  & TextClosePropsInclude
+  & TextChangePropsInclude
   & {
+    /** Counter display mode / Режим отображения счетчика */
+    counterType?: InputImageCounterType
+
     /** Initial or current crop coordinates [top, right, bottom, left] / Начальные или текущие координаты кадрирования [сверху, справа, снизу, слева] */
     crop?: CropAreaCoordinator
 
-    /** Maximum image dimension (width or height) for resize scaling / Максимальный размер изображения (ширина или высота) для масштабирования */
-    maxSize?: number
+    /** Maximum file size in bytes / Максимальный размер файла в байтах */
+    maxFileSize?: number
+
+    /** Maximum image dimension in pixels / Максимальный размер изображения в пикселях */
+    maxPixel?: number
 
     /** Upload button icon / Иконка кнопки загрузки */
     iconUpload?: string
@@ -70,7 +78,7 @@ export type InputImageProps = InputImagePropsBasic & InputImagePropsToken
  */
 export const defaultsInputImage = {
   accept: 'image/*',
-  maxSize: 1280,
+  counterType: 'auto' as InputImageCounterType,
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

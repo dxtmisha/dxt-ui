@@ -26,7 +26,8 @@ const classesToken = computed<ConstrClasses>(() => ({
   main: {
     // :classes-values [!] System label / Системная метка
     'd1-dropzone': true,
-    'd1-dropzone--disabled': props.disabled
+    'd1-dropzone--disabled': props.disabled,
+    'd1-dropzone--readonly': props.readonly
     // :classes-values [!] System label / Системная метка
   }
 }))

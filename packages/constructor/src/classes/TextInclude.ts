@@ -65,6 +65,11 @@ export class TextInclude {
     return this.get('textCancel')
   }
 
+  /** Change text / Текст изменения */
+  get change() {
+    return this.get('textChange')
+  }
+
   /** Character limit exceeded text / Текст о превышении лимита символов */
   get characterLimit() {
     return this.get('textCharacterLimit')
@@ -93,6 +98,11 @@ export class TextInclude {
   /** Dropzone default text / Текст области загрузки по умолчанию */
   get dropzone() {
     return this.get('textDropzone')
+  }
+
+  /** Edit text / Текст редактирования */
+  get edit() {
+    return this.get('textEdit')
   }
 
   /** Entries match text / Текст о несовпадении записей */

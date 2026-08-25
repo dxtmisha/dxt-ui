@@ -1,10 +1,14 @@
 import {
   anyToString,
   createElement,
+  ErrorCenter,
   executeFunction,
   isFilled,
-  isString
+  isString,
+  toArray
 } from '@dxtmisha/functional'
+
+import { CONSTRUCTOR_ERROR_GROUP } from '../../types/errorTypes'
 
 import type { FieldCodeInclude } from './FieldCodeInclude'
 
@@ -60,6 +64,8 @@ export class FieldInputCheckInclude<Value = any> {
         || input.type === 'radio'
       ) {
         input.checked = Boolean(value)
+      } else if (input.type === 'file') {
+        return this.checkFile(input, value)
       } else {
         input.value = anyToString(value)
       }
@@ -75,14 +81,55 @@ export class FieldInputCheckInclude<Value = any> {
   }
 
   /**
+   * Runs validation for file input and returns result.
+   *
+   * Выполняет проверку для файлового инпута и возвращает результат.
+   * @param input file input element / элемент файлового инпута
+   * @param value checked value / проверяемое значение
+   * @returns validation item data / данные элемента валидации
+   */
+  protected checkFile(
+    input: HTMLInputElement,
+    value: Value
+  ): FieldValidationItem {
+    try {
+      if (value instanceof FileList) {
+        input.files = value
+      } else if (
+        (value instanceof File || Array.isArray(value))
+        && typeof DataTransfer !== 'undefined'
+      ) {
+        const dataTransfer = new DataTransfer()
+        toArray(value).forEach((file) => {
+          if (file instanceof File) {
+            dataTransfer.items.add(file)
+          }
+        })
+        input.files = dataTransfer.files
+      } else {
+        input.value = ''
+      }
+    } catch {
+      ErrorCenter.on({
+        group: CONSTRUCTOR_ERROR_GROUP,
+        code: 'field-input-check-file'
+      })
+    }
+
+    return this.checkByInput(input, value)
+  }
+
+  /**
    * Runs validation by input and returns result.
    *
    * Выполняет проверку по инпуту и возвращает результат.
    * @param input input element / элемент инпута
+   * @param value checked value / проверяемое значение
    * @returns validation item data / данные элемента валидации
    */
   checkByInput(
-    input: FieldElementDom
+    input: FieldElementDom,
+    value?: Value
   ): FieldValidationItem {
     return {
       group: this.group,
@@ -93,7 +140,7 @@ export class FieldInputCheckInclude<Value = any> {
       validityMessage: this.code?.get(input.validity),
       required: input.required,
       pattern: this.pattern,
-      value: input.value
+      value: value ?? input.value
     }
   }
 

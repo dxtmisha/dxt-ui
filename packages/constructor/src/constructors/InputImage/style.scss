@@ -1,6 +1,14 @@
 @use "@dxtmisha/styles/properties" as ui;
 
 @mixin mixinInputImage {
+  &__body {
+    position: relative;
+  }
+
+  &__crop {
+    @include ui.absolute;
+  }
+
   &--hasImage {
     @include ui.subclass('dropzone') {
       @include ui.absolute;

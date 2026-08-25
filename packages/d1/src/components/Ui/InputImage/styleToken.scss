@@ -1,0 +1,51 @@
+@use "../../../styles/Ui/properties";
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/style.scss" as InputImage;
+
+@include ui.initDesignBasic('d1.inputImage') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include InputImage.mixinInputImage;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+    &__actions {
+      padding-top: var(--d1-sys-spacing-x);
+    }
+    
+    &--hasImage {
+      & .d1-inputImage__body {
+        @include ui.backgroundColor(#{var(--d1-sys-palette-scrim)});
+        @include ui.backgroundOpacity(#{var(--d1-sys-opacity-overlay)});
+        
+        border-radius: var(--d1-sys-rounded-lg);
+      }
+    }
+    
+    &--size {
+      &--sm {
+        & .d1-inputImage__body {
+          @include ui.height(#{var(--d1-ref-spacing-60)});
+        }
+      }
+      
+      &--md {
+        & .d1-inputImage__body {
+          @include ui.height(#{var(--d1-ref-spacing-72)});
+        }
+      }
+      
+      &--lg {
+        & .d1-inputImage__body {
+          @include ui.height(#{var(--d1-ref-spacing-80)});
+        }
+      }
+    }
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

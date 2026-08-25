@@ -9,13 +9,13 @@ const propsNames: StorybookProps = [
   { name: 'description', type: 'string | number' },
   { name: 'descriptionId', type: 'string' },
   { name: 'disabled', type: 'boolean' },
-  { name: 'files', type: 'FileList' },
   { name: 'icon', type: 'IconValue<IconProps>' },
   { name: 'iconAttrs', type: 'ConstrBind<IconProps>' },
   { name: 'iconDir', type: 'boolean' },
   { name: 'iconHide', type: 'boolean' },
   { name: 'iconPalette', type: 'boolean' },
   { name: 'iconTurn', type: 'boolean' },
+  { name: 'inputAttrs', type: 'ConstrBind<HTMLInputElement>' },
   { name: 'isSkeleton', type: 'boolean' },
   { name: 'label', type: 'NumberOrString' },
   { name: 'labelId', type: 'string' },
@@ -23,6 +23,7 @@ const propsNames: StorybookProps = [
   { name: 'multiple', type: 'boolean' },
   { name: 'onUpdate:files', type: '((value: FileList ) => void) | undefined' },
   { name: 'onUpdate:modelFiles', type: '((value: FileList ) => void) | undefined' },
+  { name: 'readonly', type: 'boolean' },
   { name: 'selected', type: 'boolean' },
   { name: 'textDropzone', type: 'TextValue' }
   // :propsList [!] System label / Системная метка
@@ -37,9 +38,18 @@ const slotsNames: StorybookSlots = [
 
 const eventsNames: StorybookSlots = [
   // :eventsList [!] System label / Системная метка
-  { name: 'drop', description: `Triggered when files are dropped or selected / Срабатывает при сбросе или выборе файлов`, properties: [{ name: 'event', type: 'DropzoneEventParameters' }] },
+  { name: 'change', description: `Emitted when value is committed (blur/confirm)/
+Эмит при подтверждении значения (blur/confirm): [event, value]`, properties: [{ name: 'event', type: 'InputEvent | Event' }, { name: 'value', type: 'FieldValidationItem<FileList | undefined>' }] },
+  { name: 'changeLite', description: `Lightweight change emit without DOM event/
+Лёгкий эмит подтверждения без события: [value]`, properties: [{ name: 'value', type: 'FieldValidationItem<FileList | undefined>' }] },
+  { name: 'input', description: `Emitted on input events (every change while typing)/
+Эмит при вводе (каждое изменение): [event, value]`, properties: [{ name: 'event', type: 'InputEvent | Event' }, { name: 'value', type: 'FieldValidationItem<FileList | undefined>' }] },
+  { name: 'inputLite', description: `Lightweight input emit without DOM event/
+Лёгкий эмит ввода без DOM-события: [value]`, properties: [{ name: 'value', type: 'FieldValidationItem<FileList | undefined>' }] },
   { name: 'update:files', description: `Update files event/ Событие обновления файлов`, properties: [{ name: 'value', type: 'FileList | undefined' }] },
-  { name: 'update:modelFiles', description: `Update model files event/ Событие обновления файлов модели`, properties: [{ name: 'value', type: 'FileList | undefined' }] }
+  { name: 'update:modelFiles', description: `Update model files event/ Событие обновления файлов модели`, properties: [{ name: 'value', type: 'FileList | undefined' }] },
+  { name: 'update:modelValue', description: `Update model value event/ Событие обновления значения модели`, properties: [{ name: 'value', type: 'FileList | undefined' }] },
+  { name: 'update:value', description: `Update value event/ Событие обновления значения`, properties: [{ name: 'value', type: 'FileList | undefined' }] }
   // :eventsList [!] System label / Системная метка
 ]
 

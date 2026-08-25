@@ -29,7 +29,7 @@ describe('InputImageFiles', () => {
     const props = reactive({
       value: undefined,
       disabled: false,
-      maxSize: 1280,
+      maxPixel: 1280,
       ...initialProps
     }) as InputImageProps
 
@@ -115,7 +115,7 @@ describe('InputImageFiles', () => {
     }
     globalThis.Image = MockImage as unknown as typeof Image
 
-    const { files } = createHelper({ maxSize: 500 })
+    const { files } = createHelper({ maxPixel: 500 })
 
     vi.spyOn(ImageFile, 'isImage').mockReturnValue(true)
     vi.spyOn(ImageFile, 'getFileResult').mockResolvedValue('data:image/png;base64,mock')
@@ -125,6 +125,16 @@ describe('InputImageFiles', () => {
 
     expect(result).toBeDefined()
     expect(files.src).toBeDefined()
+  })
+
+  it('should return undefined when file exceeds maxFileSize', async () => {
+    const { files } = createHelper({ maxFileSize: 10 })
+
+    vi.spyOn(ImageFile, 'isImage').mockReturnValue(true)
+    const largeFile = new File(['large-content-exceeding-limit'], 'large.png', { type: 'image/png' })
+    const result = await files.setFile(largeFile)
+
+    expect(result).toBeUndefined()
   })
 
   it('should return undefined when setFile receives undefined or invalid image file', async () => {

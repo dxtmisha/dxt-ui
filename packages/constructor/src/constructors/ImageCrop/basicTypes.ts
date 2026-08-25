@@ -19,9 +19,6 @@ export type ImageCropComponentInclude = {
 export type ImageCropPropsInclude<
   ImageCrop extends ImageCropPropsBasic = ImageCropPropsBasic
 > = {
-  /** ImageCrop value or attributes / Значение или атрибуты ImageCrop */
-  imageCrop?: boolean | ConstrBind<ImageCrop>
-
   /** Bound attributes passed directly to ImageCrop / Атрибуты привязки, передаваемые напрямую в ImageCrop */
   imageCropAttrs?: ConstrBind<ImageCrop>
 }

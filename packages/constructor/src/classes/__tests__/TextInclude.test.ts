@@ -22,8 +22,10 @@ vi.mock('@dxtmisha/functional-basic', async () => {
 
 describe('TextInclude', () => {
   it('should resolve local property values first', () => {
-    const textInclude = new TextInclude({ textCancel: 'Local Cancel' })
+    const textInclude = new TextInclude({ textCancel: 'Local Cancel', textChange: 'Local Change', textEdit: 'Local Edit' })
     expect(textInclude.cancel).toBe('Local Cancel')
+    expect(textInclude.change).toBe('Local Change')
+    expect(textInclude.edit).toBe('Local Edit')
   })
 
   it('should resolve function properties dynamically', () => {

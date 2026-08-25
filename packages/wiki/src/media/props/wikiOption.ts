@@ -411,6 +411,28 @@ export const wikiOption: StorybookArgsToList = {
       }
     }
   },
+  maxFileSize: {
+    type: StorybookControl.number,
+    options: {
+      category: StorybookCategory.option,
+      type: 'number',
+      description: {
+        en: 'Maximum file size in bytes',
+        ru: 'Максимальный размер файла в байтах'
+      }
+    }
+  },
+  maxPixel: {
+    type: StorybookControl.number,
+    options: {
+      category: StorybookCategory.option,
+      type: 'number',
+      description: {
+        en: 'Maximum image dimension in pixels',
+        ru: 'Максимальный размер изображения в пикселях'
+      }
+    }
+  },
   orientation: {
     type: StorybookControl.select,
     options: {

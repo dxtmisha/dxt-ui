@@ -148,7 +148,7 @@ export class Dropzone {
    */
   get classes(): ConstrClass {
     return {
-      [`${this.className}--enter`]: this.events.enter.value && !this.props.disabled,
+      [`${this.className}--enter`]: this.events.enter.value && !this.props.disabled && !this.props.readonly,
       ...this.skeleton.classes
     }
   }
@@ -173,7 +173,8 @@ export class Dropzone {
    */
   get aria(): AriaList {
     const aria: AriaList = {
-      ...AriaStaticInclude.disabled(this.props.disabled)
+      ...AriaStaticInclude.disabled(this.props.disabled),
+      ...AriaStaticInclude.readonly(this.props.readonly)
     }
 
     if (this.label.is) {

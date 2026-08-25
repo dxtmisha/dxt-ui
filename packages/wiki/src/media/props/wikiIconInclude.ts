@@ -1,6 +1,18 @@
 import { type StorybookArgsToList, StorybookCategory, StorybookControl } from '../../types/storybookTypes'
 
 export const wikiIconInclude: StorybookArgsToList = {
+  dropzoneIcon: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.icon,
+      type: ['string', 'File'],
+      description: {
+        en: 'Sets icon for the Dropzone component',
+        ru: 'Задает иконку для компонента Dropzone'
+      }
+    },
+    hide: true
+  },
   icon: {
     type: StorybookControl.string,
     options: {
@@ -386,6 +398,17 @@ export const wikiIconInclude: StorybookArgsToList = {
       }
     },
     isDemo: true
+  },
+  iconUpload: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.icon,
+      description: {
+        en: 'Sets icon for upload button',
+        ru: 'Задает иконку для кнопки загрузки'
+      }
+    },
+    hide: true
   },
   iconVisibility: {
     type: StorybookControl.string,

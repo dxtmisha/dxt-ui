@@ -198,7 +198,9 @@ export class InputImageDesign<
    * @returns array of virtual nodes / массив виртуальных нод
    */
   readonly renderCrop = (): VNode[] => {
-    if (this.item.files.hasImage()) {
+    if (
+      this.item.files.hasImage()
+    ) {
       return this.item.imageCrop.render(undefined, {
         class: this.classes?.value.crop
       })

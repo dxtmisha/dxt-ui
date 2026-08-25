@@ -3,12 +3,14 @@ export type TextValue = string | (() => string) | undefined
 
 /** List of available text indexes/ Список доступных индексов текста */
 export type TextIndex = 'cancel'
+  | 'change'
   | 'characterLimit'
   | 'characterRemaining'
   | 'close'
   | 'copiedClipboard'
   | 'decrement'
   | 'dropzone'
+  | 'edit'
   | 'entriesMatch'
   | 'first'
   | 'hide'
@@ -42,6 +44,12 @@ export type TextBreadcrumbPropsInclude = {
 export type TextCancelPropsInclude = {
   /** Cancel text/ Текст отмены */
   textCancel?: TextValue
+}
+
+/** Interface for including change text/ Интерфейс для включения текста изменения */
+export type TextChangePropsInclude = {
+  /** Change text/ Текст изменения */
+  textChange?: TextValue
 }
 
 /** Interface for including character limit text/ Интерфейс для включения текста лимита символов */
@@ -78,6 +86,12 @@ export type TextDecrementPropsInclude = {
 export type TextDropzonePropsInclude = {
   /** Dropzone text/ Текст области загрузки */
   textDropzone?: TextValue
+}
+
+/** Interface for including edit text/ Интерфейс для включения текста редактирования */
+export type TextEditPropsInclude = {
+  /** Edit text/ Текст редактирования */
+  textEdit?: TextValue
 }
 
 /** Interface for including entries match text/ Интерфейс для включения текста совпадения записей */
@@ -191,12 +205,14 @@ export type TextSymbolPropsInclude = {
 /** Type for including all text properties/ Тип для включения всех текстовых свойств */
 export type TextAllPropsInclude = TextBreadcrumbPropsInclude
   & TextCancelPropsInclude
+  & TextChangePropsInclude
   & TextCharacterLimitPropsInclude
   & TextCharacterRemainingPropsInclude
   & TextClosePropsInclude
   & TextCopiedClipboardPropsInclude
   & TextDecrementPropsInclude
   & TextDropzonePropsInclude
+  & TextEditPropsInclude
   & TextEntriesMatchPropsInclude
   & TextFirstPropsInclude
   & TextHidePropsInclude

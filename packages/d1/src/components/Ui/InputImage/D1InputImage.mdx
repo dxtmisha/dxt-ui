@@ -4,28 +4,28 @@ import {
     StorybookMain
 } from '@dxtmisha/wiki/storybook'
 
-import * as Dropzone from './D1Dropzone.stories'
-import {DropzoneWikiStorybook} from './wiki'
+import * as InputImage from './D1InputImage.stories'
+import {InputImageWikiStorybook} from './wiki'
 
 [//]: # (:documentation-import [!] System label / Системная метка)
 [//]: # (:documentation-import [!] System label / Системная метка)
 
-<Meta of={Dropzone}/>
+<Meta of={InputImage}/>
 <StorybookMain
-    name={DropzoneWikiStorybook.getName()}
-    description={DropzoneWikiStorybook.getDescription()}
-    story={Dropzone.Dropzone}
+    name={InputImageWikiStorybook.getName()}
+    description={InputImageWikiStorybook.getDescription()}
+    story={InputImage.InputImage}
 />
 
 [//]: # (:documentation-body [!] System label / Системная метка)
 
-<StorybookDescriptions componentName={'Dropzone'} type={'dropzone'}/>
+<StorybookDescriptions componentName={'InputImage'} type={'inputImage'}/>
 
 <StorybookDescriptions componentName={'Value'} type={'v-model'}/>
-<Canvas of={Dropzone.DropzoneVModel}/>
+<Canvas of={InputImage.InputImageVModel}/>
 
 <StorybookDescriptions componentName={'Style'} type={'isSkeleton'}/>
-<Canvas of={Dropzone.DropzoneSkeleton}/>
+<Canvas of={InputImage.InputImageSkeleton}/>
     
 [//]: # (:documentation-body [!] System label / Системная метка)
 
@@ -48,8 +48,6 @@ import {DropzoneWikiStorybook} from './wiki'
 [//]: # (:documentation-slots [!] System label / Системная метка)
 ## Slots
 
-<Canvas of={Dropzone.DropzoneSlots}/>
-<StorybookDescriptions componentName={'Slot'} type={'default'}/>
-<StorybookDescriptions componentName={'Slot'} type={'description'}/>
+<StorybookDescriptions componentName={'Slot'} type={'label'}/>
     
 [//]: # (:documentation-slots [!] System label / Системная метка)

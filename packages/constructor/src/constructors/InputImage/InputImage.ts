@@ -25,6 +25,7 @@ import { SkeletonInclude } from '../Skeleton'
 
 import { InputImageEvent } from './InputImageEvent'
 import { InputImageFiles } from './InputImageFiles'
+import { InputImageSize } from './InputImageSize'
 
 import type { FieldElementInput } from '../../types/fieldTypes'
 
@@ -77,6 +78,9 @@ export class InputImage {
   /** Message component inclusion controller / Контроллер включения сообщения поля */
   readonly message: FieldMessageInclude<any, any>
 
+  /** Image size manager helper instance / Вспомогательный класс для управления размером изображения */
+  readonly size: InputImageSize
+
   /** Skeleton controller / Контроллер скелетона */
   readonly skeleton: SkeletonInclude
 
@@ -117,6 +121,7 @@ export class InputImage {
    * @param constructors.ImageCropIncludeConstructor class for working with image crop / класс для работы с кадрированием изображения
    * @param constructors.InputImageEventConstructor class for working with input image events / класс для работы с событиями ввода изображения
    * @param constructors.InputImageFilesConstructor class for working with files / класс для работы с файлами
+   * @param constructors.InputImageSizeConstructor class for working with image size / класс для работы с размером изображения
    * @param constructors.SkeletonConstructor class for creating a skeleton / класс для создания скелета
    * @param constructors.TextIncludeConstructor class for working with text / класс для работы с текстом
    */
@@ -145,6 +150,7 @@ export class InputImage {
       ImageCropIncludeConstructor?: typeof ImageCropInclude
       InputImageEventConstructor?: typeof InputImageEvent
       InputImageFilesConstructor?: typeof InputImageFiles
+      InputImageSizeConstructor?: typeof InputImageSize
       SkeletonConstructor?: typeof SkeletonInclude
       TextIncludeConstructor?: typeof TextInclude
     } = {}
@@ -165,6 +171,7 @@ export class InputImage {
       ImageCropIncludeConstructor = ImageCropInclude,
       InputImageEventConstructor = InputImageEvent,
       InputImageFilesConstructor = InputImageFiles,
+      InputImageSizeConstructor = InputImageSize,
       SkeletonConstructor = SkeletonInclude,
       TextIncludeConstructor = TextInclude
     } = constructors
@@ -203,22 +210,8 @@ export class InputImage {
       this.emits
     )
 
-    this.label = new FieldLabelConstructor(
-      this.className,
-      this.props,
-      this.components
-    )
-
-    this.message = new FieldMessageConstructor(
-      this.className,
-      this.props,
-      this.components,
-      undefined,
-      undefined,
-      () => this.validation.message
-    )
-
     this.files = new InputImageFilesConstructor(this.props, this.value)
+    this.size = new InputImageSizeConstructor(this.props, this.files)
     this.enabled = new EnabledConstructor(props)
     this.text = new TextIncludeConstructor(this.props)
 
@@ -235,6 +228,31 @@ export class InputImage {
       })
     )
 
+    this.eventItem = new InputImageEventConstructor(
+      this.files,
+      this.dropzone,
+      this.event
+    )
+
+    this.label = new FieldLabelConstructor(
+      this.className,
+      this.props,
+      this.components,
+      () => this.size.getExtra(),
+      undefined,
+      undefined,
+      () => this.size.isCounter()
+    )
+
+    this.message = new FieldMessageConstructor(
+      this.className,
+      this.props,
+      this.components,
+      undefined,
+      undefined,
+      () => this.validation.message
+    )
+
     this.imageCrop = new ImageCropIncludeConstructor(
       this.className,
       this.props,
@@ -248,12 +266,6 @@ export class InputImage {
       })
     )
 
-    this.eventItem = new InputImageEventConstructor(
-      this.files,
-      this.dropzone,
-      this.event
-    )
-
     this.actions = new ActionsIncludeConstructor(
       this.className,
       props,
@@ -262,10 +274,12 @@ export class InputImage {
         list: [
           {
             icon: this.props.iconUpload,
+            label: this.text.change,
             onClick: this.eventItem.open
           },
           {
             icon: this.props.iconClose,
+            label: this.text.cancel,
             onClick: this.event.onClear
           }
         ]

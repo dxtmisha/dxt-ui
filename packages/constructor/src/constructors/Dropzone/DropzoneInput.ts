@@ -38,7 +38,7 @@ export class DropzoneInput {
       ref: this.element,
       key: 'input',
       accept: this.props.accept,
-      disabled: this.props.disabled,
+      disabled: this.props.disabled || this.props.readonly,
       multiple: this.props.multiple,
       type: 'file',
       ...this.props.inputAttrs,
@@ -55,7 +55,12 @@ export class DropzoneInput {
    * Вызывает клик по элементу выбора файла для открытия диалога выбора.
    */
   readonly open = (): void => {
-    this.element.value?.click()
+    if (
+      !this.props.disabled
+      && !this.props.readonly
+    ) {
+      this.element.value?.click()
+    }
   }
 
   /**

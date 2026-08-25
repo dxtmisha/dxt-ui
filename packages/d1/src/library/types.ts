@@ -51,6 +51,7 @@ import _D1ImageCrop from '../components/Ui/ImageCrop/D1ImageCrop.vue'
 import _D1Input from '../components/Ui/Input/D1Input.vue'
 import _D1InputCode from '../components/Ui/InputCode/D1InputCode.vue'
 import _D1InputCodeItem from '../components/Ui/InputCodeItem/D1InputCodeItem.vue'
+import _D1InputImage from '../components/Ui/InputImage/D1InputImage.vue'
 import _D1InputPhone from '../components/Ui/InputPhone/D1InputPhone.vue'
 import _D1InputPhoneDialCode from '../components/Ui/InputPhoneDialCode/D1InputPhoneDialCode.vue'
 import _D1InputSocial from '../components/Ui/InputSocial/D1InputSocial.vue'
@@ -166,6 +167,7 @@ declare module '@vue/runtime-core' {
     D1Input: typeof _D1Input
     D1InputCode: typeof _D1InputCode
     D1InputCodeItem: typeof _D1InputCodeItem
+    D1InputImage: typeof _D1InputImage
     D1InputPhone: typeof _D1InputPhone
     D1InputPhoneDialCode: typeof _D1InputPhoneDialCode
     D1InputSocial: typeof _D1InputSocial

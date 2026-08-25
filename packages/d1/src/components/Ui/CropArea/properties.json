@@ -11,5 +11,10 @@
   },
   "focus-visible": {
     "outline": "{outline.md}"
+  },
+  "disabled": {
+    "#crop": {
+      "border-width": "0"
+    }
   }
 }

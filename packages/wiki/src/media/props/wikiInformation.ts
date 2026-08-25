@@ -99,6 +99,28 @@ export const wikiInformation: StorybookArgsToList = {
     },
     hide: true
   },
+  dropzoneDescription: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.information,
+      type: ['string', 'number'],
+      description: {
+        en: 'Dropzone description text',
+        ru: 'Текст описания для Dropzone'
+      }
+    }
+  },
+  dropzoneLabel: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.information,
+      type: ['string', 'number'],
+      description: {
+        en: 'Dropzone label text',
+        ru: 'Текст метки для Dropzone'
+      }
+    }
+  },
   forceShowMessage: {
     type: StorybookControl.boolean,
     options: {

@@ -1,6 +1,7 @@
 {
   "#input": {},
   "disabled": {},
+  "readonly": {},
   "~enter": {
     "_prop": false
   }

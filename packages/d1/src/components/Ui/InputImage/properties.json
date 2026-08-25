@@ -1,0 +1,31 @@
+{
+  "main": "{d.inputImage}",
+  "#actions": {
+    "padding-top": "{sys.spacing.x}"
+  },
+  "~size": {
+    "sm": {
+      "#body": {
+        "height": "{ref.spacing.60}"
+      }
+    },
+    "md": {
+      "#body": {
+        "height": "{ref.spacing.72}"
+      }
+    },
+    "lg": {
+      "#body": {
+        "height": "{ref.spacing.80}"
+      }
+    },
+    "_default": "md"
+  },
+  "~hasImage": {
+    "#body": {
+      "background-color": "{sys.palette.scrim}",
+      "background-opacity": "{sys.opacity.overlay}",
+      "border-radius": "{sys.rounded.lg}"
+    }
+  }
+}

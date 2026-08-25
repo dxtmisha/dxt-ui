@@ -34,6 +34,18 @@ export const wikiText: StorybookArgsToList = {
     },
     hide: true
   },
+  textChange: {
+    type: StorybookControl.text,
+    options: {
+      category: StorybookCategory.text,
+      type: 'string | (() => string)',
+      description: {
+        en: 'Change text',
+        ru: 'Текст изменения'
+      }
+    },
+    hide: true
+  },
   textCharacterLimit: {
     type: StorybookControl.text,
     options: {
@@ -102,6 +114,18 @@ export const wikiText: StorybookArgsToList = {
       description: {
         en: 'Dropzone prompt text for dropping or selecting files',
         ru: 'Текст подсказки Dropzone для сброса или выбора файлов'
+      }
+    },
+    hide: true
+  },
+  textEdit: {
+    type: StorybookControl.text,
+    options: {
+      category: StorybookCategory.text,
+      type: 'string | (() => string)',
+      description: {
+        en: 'Edit text',
+        ru: 'Текст редактирования'
       }
     },
     hide: true

@@ -14,7 +14,7 @@ export const wikiDescriptionsInputImage: StorybookComponentsDescriptionItem = {
   possibilities: {
     en: [
       'integrated drag-and-drop file upload via embedded Dropzone',
-      'automatic image validation and client-side resizing to maxSize',
+      'automatic image validation and client-side resizing to maxPixel',
       'interactive 8-directional boundary cropping via embedded ImageCrop',
       'quick actions toolbar with upload replacement and clear buttons',
       'two-way reactive binding for image source and crop coordinates via v-model',
@@ -25,7 +25,7 @@ export const wikiDescriptionsInputImage: StorybookComponentsDescriptionItem = {
     ],
     ru: [
       'интегрированная загрузка файлов через Drag and Drop во встроенном Dropzone',
-      'автоматическая проверка формата и клиентское масштабирование до maxSize',
+      'автоматическая проверка формата и клиентское масштабирование до maxPixel',
       'интерактивное кадрирование по 8 направлениям во встроенном ImageCrop',
       'панель быстрых действий с кнопками замены изображения и очистки',
       'двусторонняя реактивная привязка источника изображения и координат через v-model',
@@ -39,11 +39,6 @@ export const wikiDescriptionsInputImage: StorybookComponentsDescriptionItem = {
     'import { ref } from \'vue\'',
     'import { image1 } from \'@dxtmisha/wiki/media\''
   ],
-  render: `
-    <div class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--squared--sm wiki-storybook-item--borderNone">
-      <DesignComponent v-bind="args" />
-    </div>
-  `,
   stories: [
     {
       id: 'InputImageVModel',
@@ -68,13 +63,11 @@ export const wikiDescriptionsInputImage: StorybookComponentsDescriptionItem = {
             <button class="wiki-storybook-button" @click="value = { value: image1, crop: [20, 20, 20, 20] }">Reset crop</button>
           </div>
 
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--squared--sm wiki-storybook-item--borderNone">
-            <DesignComponent
-              label="User avatar"
-              helperMessage="Drop an image here or click to select"
-              v-model="value"
-            />
-          </div>
+          <DesignComponent
+            label="User avatar"
+            helperMessage="Drop an image here or click to select"
+            v-model="value"
+          />
         </div>
       `
     },
@@ -117,18 +110,10 @@ export const wikiDescriptionsInputImage: StorybookComponentsDescriptionItem = {
     `
   },
   ai: {
-    render: `
-<div
-  :class="classDemo.item"
-  style="position: relative; width: 320px; min-height: 240px;"
->
-  <InputImage v-bind="args" />
-</div>
-    `,
     description: `
 Composite form input component for selecting, uploading, resizing, and cropping images.
 Integrates Dropzone for drag-and-drop and file picking, ImageCrop for coordinate-based interactive cropping, and Actions for quick image replacement and reset.
-Supports v-model binding with InputImageValue structure ({ value?: string, crop?: CropAreaCoordinator }), automatic downscaling to maxSize, field validation, and accessible states.
+Supports v-model binding with InputImageValue structure ({ value?: string, crop?: CropAreaCoordinator }), automatic downscaling to maxPixel, field validation, and accessible states.
     `
   }
 }

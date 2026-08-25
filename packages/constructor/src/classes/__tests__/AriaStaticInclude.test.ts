@@ -48,6 +48,12 @@ describe('AriaStaticInclude', () => {
     expect(AriaStaticInclude.disabled()).toEqual({ 'aria-disabled': 'true' })
   })
 
+  it('should return readonly attribute', () => {
+    expect(AriaStaticInclude.readonly(true)).toEqual({ 'aria-readonly': 'true' })
+    expect(AriaStaticInclude.readonly(false)).toEqual({})
+    expect(AriaStaticInclude.readonly()).toEqual({ 'aria-readonly': 'true' })
+  })
+
   it('should return expanded attribute', () => {
     expect(AriaStaticInclude.expanded(true)).toEqual({ 'aria-expanded': 'true' })
     expect(AriaStaticInclude.expanded(false)).toEqual({ 'aria-expanded': 'false' })

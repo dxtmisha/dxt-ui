@@ -29,6 +29,12 @@
       outline-style: solid;
       @include ui.outlineColor(#{var(--d1-sys-palette-primary)});
     }
+    
+    &--disabled {
+      & .d1-cropArea__crop {
+        border-width: 0;
+      }
+    }
   }
   // :style [!] System label / Системная метка
 

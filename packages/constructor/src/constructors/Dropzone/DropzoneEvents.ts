@@ -40,7 +40,7 @@ export class DropzoneEvents {
    * Обработчик события dragenter.
    */
   protected readonly onDragenter = (): void => {
-    if (!this.props.disabled) {
+    if (!this.props.disabled && !this.props.readonly) {
       this.enter.value = true
     }
   }

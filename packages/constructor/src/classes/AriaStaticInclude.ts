@@ -108,6 +108,22 @@ export class AriaStaticInclude {
   }
 
   /**
+   * Get ARIA readonly attribute.
+   *
+   * Получить атрибут ARIA readonly.
+   * @param isReadonly is readonly / является только для чтения
+   */
+  static readonly(isReadonly: boolean = true): AriaList {
+    if (isReadonly) {
+      return {
+        'aria-readonly': this.isTrueOrFalse(isReadonly)
+      }
+    }
+
+    return {}
+  }
+
+  /**
    * Get ARIA expanded attribute.
    *
    * Получить атрибут ARIA expanded.

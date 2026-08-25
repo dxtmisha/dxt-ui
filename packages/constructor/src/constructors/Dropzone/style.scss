@@ -17,7 +17,8 @@
     opacity: 0;
   }
 
-  &--disabled {
+  &--disabled,
+  &--readonly {
     pointer-events: none;
   }
 }

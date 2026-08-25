@@ -51,7 +51,7 @@
     "build": "vue-tsc -b && vite build",
     "build-recovery": "npm run build && npm run wiki-storm",
     "preview": "vite preview",
-    "ui": "dxt-ui ImageCrop",
+    "ui": "dxt-ui",
     "wiki-storm": "dxt-wiki-storm",
     "types": "npm run ui && npm run build && npm run wiki-storm && dxt-types",
     "screenshot": "dxt-screenshot",
@@ -544,6 +544,10 @@
     "./D1ImageCrop": {
       "types": "./dist/library/D1ImageCrop.d.ts",
       "default": "./dist/D1ImageCrop.js"
+    },
+    "./D1InputImage": {
+      "types": "./dist/library/D1InputImage.d.ts",
+      "default": "./dist/D1InputImage.js"
     }
   },
   "buildOptions": {

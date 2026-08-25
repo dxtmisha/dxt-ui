@@ -48,4 +48,16 @@ describe('FieldInputCheckInclude', () => {
     expect(result.validityMessage).toBe('Must contain lowercase letters only')
     expect(result.group).toBe('custom-group')
   })
+
+  it('should handle type="file" inputs correctly with File and empty values', () => {
+    const checkInclude = new FieldInputCheckInclude({ type: 'file' })
+    const file = new File(['test'], 'test.png', { type: 'image/png' })
+
+    const resultWithFile = checkInclude.check(file)
+    expect(resultWithFile.status).toBe(true)
+    expect(resultWithFile.value).toBe(file)
+
+    const resultEmpty = checkInclude.check(undefined)
+    expect(resultEmpty.status).toBe(true)
+  })
 })

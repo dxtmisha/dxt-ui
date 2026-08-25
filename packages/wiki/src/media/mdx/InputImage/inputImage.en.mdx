@@ -2,12 +2,12 @@ import { Source } from '@storybook/addon-docs/blocks';
 
 A composite image input component combining drag-and-drop file upload, automated client-side downscaling, and interactive boundary cropping.
 
-`InputImage` brings together the full image selection and preparation workflow into a single cohesive form control. It embeds `Dropzone` for intuitive drag-and-drop or file dialog selection, validates image formats, automatically downscales large images to `maxSize`, and launches an interactive `ImageCrop` viewport for percentage-based coordinate trimming. Quick action buttons allow seamless image replacement and clearing.
+`InputImage` brings together the full image selection and preparation workflow into a single cohesive form control. It embeds `Dropzone` for intuitive drag-and-drop or file dialog selection, validates image formats, automatically downscales large images to `maxPixel`, and launches an interactive `ImageCrop` viewport for percentage-based coordinate trimming. Quick action buttons allow seamless image replacement and clearing.
 
 **Key Features:**
 
 - **Drag-and-Drop & Picker:** Embedded `Dropzone` supporting file dragging and native file dialog opening
-- **Automatic Downscaling:** Client-side image processing and resizing down to configurable `maxSize` (default: 1280px)
+- **Automatic Downscaling:** Client-side image processing and resizing down to configurable `maxPixel` (default: 1280px)
 - **Interactive Cropping:** Embedded `ImageCrop` with 8-directional edge/corner resize handles and central panning
 - **Quick Action Toolbar:** Overlaid action buttons for uploading replacements and clearing the current image
 - **Two-Way Data Binding:** Seamless `v-model` binding for structured `{ value?: string, crop?: CropAreaCoordinator }` data or raw string sources

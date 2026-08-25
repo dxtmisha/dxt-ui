@@ -11,7 +11,9 @@ describe('MotionAxisStatus', () => {
       toMove: vi.fn(),
       blockScroll: vi.fn(),
       returnScroll: vi.fn(),
-      initEvent: vi.fn()
+      initEvent: vi.fn(),
+      getElementPreparation: vi.fn(),
+      get: vi.fn()
     } as any
     const mockSelected = {
       item: ref('slide-2'),
