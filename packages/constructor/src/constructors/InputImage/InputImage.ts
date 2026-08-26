@@ -21,7 +21,6 @@ import { DropzoneInclude } from '../Dropzone'
 import { FieldLabelInclude } from '../FieldLabel'
 import { FieldMessageInclude } from '../FieldMessage'
 import { ImageCropInclude } from '../ImageCrop'
-import { SkeletonInclude } from '../Skeleton'
 
 import { InputImageEvent } from './InputImageEvent'
 import { InputImageFiles } from './InputImageFiles'
@@ -81,9 +80,6 @@ export class InputImage {
   /** Image size manager helper instance / Вспомогательный класс для управления размером изображения */
   readonly size: InputImageSize
 
-  /** Skeleton controller / Контроллер скелетона */
-  readonly skeleton: SkeletonInclude
-
   /** Text manager for translations / Менеджер текста для переводов */
   readonly text: TextInclude
 
@@ -122,7 +118,6 @@ export class InputImage {
    * @param constructors.InputImageEventConstructor class for working with input image events / класс для работы с событиями ввода изображения
    * @param constructors.InputImageFilesConstructor class for working with files / класс для работы с файлами
    * @param constructors.InputImageSizeConstructor class for working with image size / класс для работы с размером изображения
-   * @param constructors.SkeletonConstructor class for creating a skeleton / класс для создания скелета
    * @param constructors.TextIncludeConstructor class for working with text / класс для работы с текстом
    */
   constructor(
@@ -151,7 +146,6 @@ export class InputImage {
       InputImageEventConstructor?: typeof InputImageEvent
       InputImageFilesConstructor?: typeof InputImageFiles
       InputImageSizeConstructor?: typeof InputImageSize
-      SkeletonConstructor?: typeof SkeletonInclude
       TextIncludeConstructor?: typeof TextInclude
     } = {}
   ) {
@@ -172,11 +166,9 @@ export class InputImage {
       InputImageEventConstructor = InputImageEvent,
       InputImageFilesConstructor = InputImageFiles,
       InputImageSizeConstructor = InputImageSize,
-      SkeletonConstructor = SkeletonInclude,
       TextIncludeConstructor = TextInclude
     } = constructors
 
-    this.skeleton = new SkeletonConstructor(this.props, this.classDesign, ['classBackground'])
     this.change = new FieldChangeIncludeConstructor(this.props)
 
     this.elementItem = new FieldElementIncludeConstructor(this.props, this.element)
@@ -223,6 +215,7 @@ export class InputImage {
         accept: this.props.accept,
         disabled: this.props.disabled,
         readonly: this.props.readonly,
+        isSkeleton: this.props.isSkeleton,
         inputAttrs: this.attributes.listForInput,
         onInput: this.eventItem.onDropzoneInput
       })
@@ -238,7 +231,10 @@ export class InputImage {
       this.className,
       this.props,
       this.components,
-      () => this.size.getExtra(),
+      () => ({
+        ...this.size.getExtra(),
+        isSkeleton: this.props.isSkeleton
+      }),
       undefined,
       undefined,
       () => this.size.isCounter()

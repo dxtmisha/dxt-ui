@@ -178,10 +178,7 @@ export class InputImageDesign<
       h(
         'div',
         {
-          class: [
-            this.classes?.value.body,
-            this.item.skeleton.classes
-          ]
+          class: this.classes?.value.body
         },
         [
           ...this.renderCrop(),

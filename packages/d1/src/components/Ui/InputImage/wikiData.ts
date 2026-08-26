@@ -17,6 +17,7 @@ const propsNames: StorybookProps = [
   { name: 'counterId', type: 'string' },
   { name: 'counterShow', type: 'boolean' },
   { name: 'counterTemplate', type: 'string' },
+  { name: 'counterType', type: 'string', option: ['auto', 'pixel', 'size', 'hide'] },
   { name: 'crop', type: 'CropAreaCoordinator' },
   { name: 'detail', type: 'Record<string, any>' },
   { name: 'disabled', type: 'boolean' },

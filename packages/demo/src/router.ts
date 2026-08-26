@@ -28,8 +28,10 @@ import DemoFormattedPage from './pages/components/DemoFormattedPage.vue'
 import DemoHorizontalScrollPage from './pages/components/DemoHorizontalScrollPage.vue'
 import DemoIconPage from './pages/components/DemoIconPage.vue'
 import DemoImagePage from './pages/components/DemoImagePage.vue'
+import DemoImageCropPage from './pages/components/DemoImageCropPage.vue'
 import DemoInputPage from './pages/components/DemoInputPage.vue'
 import DemoInputCodePage from './pages/components/DemoInputCodePage.vue'
+import DemoInputImagePage from './pages/components/DemoInputImagePage.vue'
 import DemoInputPhonePage from './pages/components/DemoInputPhonePage.vue'
 import DemoInputSocialPage from './pages/components/DemoInputSocialPage.vue'
 import DemoListPage from './pages/components/DemoListPage.vue'
@@ -193,6 +195,11 @@ export const routes: RouteRecordRaw[] = [
     component: DemoImagePage
   },
   {
+    path: '/component-image-crop',
+    name: 'component-image-crop',
+    component: DemoImageCropPage
+  },
+  {
     path: '/component-input',
     name: 'component-input',
     component: DemoInputPage
@@ -201,6 +208,11 @@ export const routes: RouteRecordRaw[] = [
     path: '/component-input-code',
     name: 'component-input-code',
     component: DemoInputCodePage
+  },
+  {
+    path: '/component-input-image',
+    name: 'component-input-image',
+    component: DemoInputImagePage
   },
   {
     path: '/component-input-phone',

@@ -33,6 +33,22 @@ export const wikiFieldCounterInclude: StorybookArgsToList = {
     },
     isDemo: true
   },
+  counterType: {
+    type: StorybookControl.select,
+    options: {
+      category: StorybookCategory.counter,
+      type: 'string',
+      options: ['auto', 'pixel', 'size', 'hide'],
+      description: {
+        en: 'Counter calculation type (auto, pixel, size, hide)',
+        ru: 'Тип подсчета счетчика (auto, pixel, size, hide)'
+      }
+    },
+    isDemo: true,
+    demoOptions: {
+      counterShow: true
+    }
+  },
   counterId: {
     type: StorybookControl.string,
     options: {

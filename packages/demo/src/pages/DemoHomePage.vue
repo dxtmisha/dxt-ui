@@ -33,8 +33,10 @@ import DemoLink from '../components/DemoLink.vue'
         <DemoLink label="HorizontalScroll" name="component-horizontal-scroll"/>
         <DemoLink label="Icon" name="component-icon"/>
         <DemoLink label="Image" name="component-image"/>
+        <DemoLink label="ImageCrop" name="component-image-crop"/>
         <DemoLink label="Input" name="component-input"/>
         <DemoLink label="InputCode" name="component-input-code"/>
+        <DemoLink label="InputImage" name="component-input-image"/>
         <DemoLink label="InputPhone" name="component-input-phone"/>
         <DemoLink label="InputSocial" name="component-input-social"/>
         <DemoLink label="List" name="component-list"/>
