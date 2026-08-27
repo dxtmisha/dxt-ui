@@ -1,5 +1,6 @@
 import type { ConstrBind } from '@dxtmisha/functional'
 import type { CropAreaPropsBasic } from './props'
+import type { CropAreaEmits } from './types'
 
 /**
  * Coordinate array format [top, right, bottom, left] in percentages /
@@ -57,3 +58,10 @@ export type CropAreaPropsInclude<
   /** Bound attributes passed directly to CropArea / Атрибуты привязки, передаваемые напрямую в CropArea */
   cropAreaAttrs?: ConstrBind<CropArea>
 }
+
+/**
+ * Emits interface for CropArea inclusion /
+ * Интерфейс событий для включения CropArea
+ */
+export type CropAreaEmitsInclude = CropAreaEmits
+

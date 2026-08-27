@@ -1,6 +1,6 @@
 import type { ConstrClass } from '@dxtmisha/functional'
 
-import type { CropAreaComponentInclude } from '../CropArea'
+import type { CropAreaComponentInclude, CropAreaEmitsInclude } from '../CropArea'
 import type { ImageComponentInclude, ImageEmitsInclude } from '../Image'
 import type { ProgressComponentInclude } from '../Progress'
 
@@ -20,7 +20,9 @@ export type ImageCropComponents = ImageComponentInclude
  *
  * Тип, описывающий доступные события.
  */
-export type ImageCropEmits = ImageEmitsInclude & ModelEmits<any>
+export type ImageCropEmits = CropAreaEmitsInclude
+  & ImageEmitsInclude
+  & ModelEmits<any>
 
 /**
  * Type describing available properties.

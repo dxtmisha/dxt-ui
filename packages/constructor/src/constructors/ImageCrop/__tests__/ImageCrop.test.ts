@@ -91,4 +91,42 @@ describe('ImageCrop', () => {
 
     expect(imageCrop.aria).toEqual({ 'aria-disabled': 'true' })
   })
+
+  it('should emit resize and model update when cropArea onResize is triggered', () => {
+    const element = document.createElement('div')
+    const elementRef = ref(element)
+    const props = reactive({
+      value: [0, 0, 0, 0] as [number, number, number, number],
+      disabled: false
+    }) as ImageCropProps
+
+    const refs = toRefs(props)
+    const emits = vi.fn()
+
+    const imageCrop = new ImageCrop(
+      props,
+      refs,
+      elementRef,
+      'd1',
+      'd1-image-crop',
+      undefined,
+      undefined,
+      emits
+    )
+
+    const cropAreaBinds = (imageCrop.cropArea as any).binds.value
+    expect(cropAreaBinds.onResize).toBeDefined()
+
+    const mockParameters = {
+      direction: 'right',
+      value: 20,
+      coordinator: [0, 20, 0, 0]
+    }
+
+    cropAreaBinds.onResize(mockParameters)
+
+    expect(emits).toHaveBeenCalledWith('update:value', [0, 20, 0, 0])
+    expect(emits).toHaveBeenCalledWith('update:modelValue', [0, 20, 0, 0])
+    expect(emits).toHaveBeenCalledWith('resize', mockParameters)
+  })
 })

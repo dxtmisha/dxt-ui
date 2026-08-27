@@ -107,7 +107,10 @@ export class ImageCrop {
         modelValue: this.props.modelValue,
         disabled: this.props.disabled,
         readonly: this.props.readonly,
-        onResize: (event: CropAreaEventParameters) => this.model.emit(event.coordinator)
+        onResize: (event: CropAreaEventParameters) => {
+          this.model.emit(event.coordinator)
+          this.emits?.('resize', event)
+        }
       })
     )
 
