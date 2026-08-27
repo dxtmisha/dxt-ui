@@ -1,0 +1,43 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/scripts/Classes/LibraryAiMcp - Генератор TypeScript-файла ресурсов MCP'/>
+
+# Класс LibraryAiMcp
+
+Класс `LibraryAiMcp` отвечает за генерацию TypeScript-файла (`ai-mcp-all-resources.ts`) со структурированными ресурсами MCP на основе объединенного манифеста `ai-mcp-all-resources.json`.
+
+## Ключевые особенности
+
+- **Автоматическая генерация TypeScript-модуля** — преобразует JSON-ресурсы в строго типизированный TypeScript-файл с динамическими импортами.
+- **Группировка по пакетам** — группирует ресурсы по именам npm-пакетов и создает переменные вида `mcp<PackageName>`.
+- **Поддержка динамических обработчиков** — регистрирует асинхронные обработчики `read: () => import(...)` для текстовых и графических ресурсов.
+- **Интеграция с ai-prompt.md** — автоматически включает корневой файл `ai-prompt.md` в список глобальных ресурсов MCP при его наличии.
+
+## Инициализация
+
+**Параметры конструктора:**
+- `source: PropertiesFilePath | Record<string, unknown>[]` — *(опционально, по умолчанию `UI_FILE_AI_MCP_ALL`)* путь к JSON-файлу ресурсов или массив записей.
+- `fileTs: PropertiesFilePath` — *(опционально, по умолчанию `UI_FILE_AI_MCP_ALL_TS`)* путь к целевому TypeScript-файлу.
+
+```typescript
+import { LibraryAiMcp } from '@dxtmisha/scripts'
+
+const mcp = new LibraryAiMcp()
+```
+
+## Методы
+
+### `isPrompt(): boolean`
+Проверяет существование файла `ai-prompt.md` в корне проекта.
+
+### `make(): void`
+Читает `ai-mcp-all-resources.json` и генерирует `ai-mcp-all-resources.ts`.
+
+## Пример использования
+
+```typescript
+import { LibraryAiMcp } from '@dxtmisha/scripts'
+
+const mcp = new LibraryAiMcp()
+mcp.make()
+```

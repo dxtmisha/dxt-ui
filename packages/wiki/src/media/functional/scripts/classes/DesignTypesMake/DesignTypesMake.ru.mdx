@@ -1,0 +1,51 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/scripts/Classes/DesignTypesMake - Движок генерации и кэширования типов для ИИ'/>
+
+# Класс DesignTypesMake
+
+Класс `DesignTypesMake` — это высокопроизводительный движок для сканирования скомпилированных файлов деклараций TypeScript (`.d.ts`), отслеживания их изменений с помощью MD5-хешей, очистки от лишнего шаблонного кода и генерации единого файла типов `ai-types.md`.
+
+## Ключевые особенности
+
+- **MD5-кэширование файлов** — вычисляет контрольные суммы файлов деклараций и кэширует результаты обработки ИИ в папке `ai-types-list/`, предотвращая повторные дорогостоящие вызовы API.
+- **Интеллектуальная очистка деклараций** — удаляет внутренние импорты, циклические ссылки, аннотации JSDoc, не относящиеся к публичному API, и нормализует синтаксис.
+- **Сквозная поддержка JS-кода** — сканирует и объединяет связанные файлы JavaScript для предоставления глубокого контекста логики работы.
+- **Консолидация в один файл** — объединяет десятки файлов деклараций в компактный файл `ai-types.md` с оглавлением и удобной навигацией для ИИ.
+
+## Инициализация
+
+**Параметры конструктора:**
+- `ai: DesignTypesAi` — экземпляр клиента ИИ для сжатия и оптимизации деклараций.
+
+```typescript
+import { DesignTypesAi, DesignTypesMake } from '@dxtmisha/scripts'
+
+const ai = new DesignTypesAi('dist')
+const makeTypes = new DesignTypesMake(ai)
+```
+
+## Методы
+
+### `getFullContent(): string`
+Возвращает объединенный и оптимизированный контент всех деклараций типов проекта.
+
+### `getFullJsContent(): string`
+Возвращает объединенный контент всех отфильтрованных JavaScript-файлов проекта.
+
+### `make(): Promise<this>`
+Выполняет полный цикл генерации, включая проверку кэша, обработку через ИИ и сохранение `ai-types.md`.
+
+### `save(content: string): void`
+Сохраняет итоговые определения типов в файл `ai-types.md`.
+
+## Пример использования
+
+```typescript
+import { DesignTypesAi, DesignTypesMake } from '@dxtmisha/scripts'
+
+const ai = new DesignTypesAi('dist')
+const makeTypes = new DesignTypesMake(ai)
+
+await makeTypes.make()
+```

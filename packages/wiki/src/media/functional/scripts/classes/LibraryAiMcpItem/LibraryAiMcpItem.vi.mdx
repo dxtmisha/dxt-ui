@@ -1,0 +1,45 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/LibraryAiMcpItem - Trình xử lý tài nguyên MCP cho gói đơn lẻ'/>
+
+# Lớp LibraryAiMcpItem
+
+Lớp `LibraryAiMcpItem` đại diện cho một phần tử gói riêng lẻ trong quá trình tạo tệp kê khai MCP toàn cầu và quản lý việc phát hiện cũng như đọc các tệp cấu hình `ai-mcp-resources.json`.
+
+## Các tính năng chính
+
+- **Kiểm tra tệp cấu hình** — Kiểm tra sự tồn tại của tệp `ai-mcp-resources.json` trong thư mục gói mục tiêu.
+- **Đọc dữ liệu an toàn** — Đọc và xác thực mảng định nghĩa tài nguyên MCP.
+- **Hỗ trợ phân đoạn đường dẫn** — Xử lý các phân đoạn đường dẫn để đảm bảo tương thích đa nền tảng.
+
+## Khởi tạo
+
+**Tham số khởi tạo:**
+- `dir: string[]` — *(tùy chọn, mặc định `[]`)* Các phân đoạn đường dẫn đến thư mục gói.
+
+```typescript
+import { LibraryAiMcpItem } from '@dxtmisha/scripts'
+
+const item = new LibraryAiMcpItem(['packages', 'core'])
+```
+
+## Phương thức
+
+### `isMcp(): boolean`
+Trả về `true` nếu tệp `ai-mcp-resources.json` tồn tại trong thư mục gói.
+
+### `make(): Record<string, any>[] | undefined`
+Đọc và trả về danh sách định nghĩa tài nguyên MCP hoặc `undefined`.
+
+## Ví dụ sử dụng
+
+```typescript
+import { LibraryAiMcpItem } from '@dxtmisha/scripts'
+
+const item = new LibraryAiMcpItem(['packages', 'core'])
+
+if (item.isMcp()) {
+  const resources = item.make()
+  console.log(resources)
+}
+```

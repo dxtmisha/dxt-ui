@@ -1,19 +1,24 @@
 import { Meta } from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/en/scripts/Composables/useAi - AI Instance Procurement'/>
+<Meta title='@dxtmisha/en/scripts/Composables/useAi - Get AI Instance'/>
 
 # `useAi`
 
-Composable to obtain an AI instance based on the current configuration.
+Composable to obtain an AI adapter instance based on the current project configuration.
 
 **Returns:**
-`AiAbstract | undefined` — An instance of an AI class (e.g., `AiGoogle` or `AiGoogleCli`) based on the configured AI type, or `undefined` if the type is not recognized or not configured.
+`AiAbstract | undefined` — An instance of the configured AI provider class (such as `AiGoogle`, `AiGoogleCli`, `AiClaude`, `AiClaudeAgent`, `AiClaudeCli`, `AiOpenAi`, `AiZAi`) depending on the configured AI type, or `undefined` if the type is unrecognized or unconfigured.
 
 ## How it works
 
-The composable reads the AI type from `PropertiesConfig.getAiType()` and returns a new instance of the corresponding class:
-- `'gemini'` returns a new `AiGoogle` instance.
-- `'gemini-cli'` returns a new `AiGoogleCli` instance.
+The composable reads the AI type from `PropertiesConfig.getAiType()` and instantiates the corresponding class:
+- `'claude'` — returns `AiClaude` (Anthropic Claude API).
+- `'claude-agent'` — returns `AiClaudeAgent` (Anthropic Claude Agent SDK).
+- `'claude-cli'` — returns `AiClaudeCli` (Claude CLI interface).
+- `'gemini'` — returns `AiGoogle` (Google Gemini API).
+- `'gemini-cli'` — returns `AiGoogleCli` (Google Gemini CLI interface).
+- `'openai'` — returns `AiOpenAi` (OpenAI GPT API).
+- `'zai'` — returns `AiZAi` (xAI / Grok API).
 - Other types return `undefined`.
 
 ## Example
@@ -24,7 +29,6 @@ import { useAi } from '@dxtmisha/scripts'
 const ai = useAi()
 
 if (ai) {
-  // Use the AI instance
   const response = await ai.generate('Hello, AI!')
   console.log(response)
 }

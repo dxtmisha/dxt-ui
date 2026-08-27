@@ -1,0 +1,45 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/scripts/Classes/LibraryAiMcpItem - Обработчик MCP ресурсов для отдельного пакета'/>
+
+# Класс LibraryAiMcpItem
+
+Класс `LibraryAiMcpItem` представляет отдельный элемент пакета при сборке глобального манифеста MCP и управляет обнаружением и чтением конфигурационных файлов `ai-mcp-resources.json`.
+
+## Ключевые особенности
+
+- **Проверка наличия манифеста** — проверяет наличие файла `ai-mcp-resources.json` в целевой директории пакета.
+- **Безопасное чтение** — считывает и валидирует массив определений ресурсов MCP.
+- **Поддержка составных путей** — оперирует сегментами путей для кроссплатформенной совместимости.
+
+## Инициализация
+
+**Параметры конструктора:**
+- `dir: string[]` — *(опционально, по умолчанию `[]`)* сегменты пути к директории пакета.
+
+```typescript
+import { LibraryAiMcpItem } from '@dxtmisha/scripts'
+
+const item = new LibraryAiMcpItem(['packages', 'core'])
+```
+
+## Методы
+
+### `isMcp(): boolean`
+Возвращает `true`, если в директории пакета присутствует файл `ai-mcp-resources.json`.
+
+### `make(): Record<string, any>[] | undefined`
+Читает и возвращает массив определений ресурсов MCP или `undefined`.
+
+## Пример использования
+
+```typescript
+import { LibraryAiMcpItem } from '@dxtmisha/scripts'
+
+const item = new LibraryAiMcpItem(['packages', 'core'])
+
+if (item.isMcp()) {
+  const resources = item.make()
+  console.log(resources)
+}
+```

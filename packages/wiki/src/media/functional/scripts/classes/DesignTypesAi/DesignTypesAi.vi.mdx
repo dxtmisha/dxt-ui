@@ -1,0 +1,50 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/DesignTypesAi - Client AI cấp thấp để tạo kiểu'/>
+
+# Lớp DesignTypesAi
+
+Lớp `DesignTypesAi` được thiết kế để tương tác cấp thấp với các mô hình AI trong quá trình tạo và tối ưu hóa kiểu TypeScript, quản lý đường dẫn thư mục và thực thi các prompt độc lập.
+
+## Các tính năng chính
+
+- **Ngữ cảnh prompt độc lập** — Thiết lập các chỉ thị nghiêm ngặt ngăn chặn lịch sử hội thoại trước đó làm ảnh hưởng đến kết quả sinh kiểu.
+- **Hỗ trợ ngữ cảnh mã bổ sung** — Cung cấp mã JavaScript nguồn làm tài liệu tham khảo mà không để lộ các thực thể không được export vào đầu ra.
+- **Phân tích cú pháp JSON** — Phương thức `toAiJson` tự động làm sạch khối mã markdown và phân tích cú pháp phản hồi JSON có cấu trúc từ LLM.
+- **Xác định ngữ cảnh dự án** — Trích xuất và lưu trữ tên dự án từ `package.json`.
+
+## Khởi tạo
+
+**Tham số khởi tạo:**
+- `dir: string` — *(tùy chọn, mặc định `'dist'`)* Đường dẫn thư mục chứa các tệp khai báo kiểu.
+- `isRaw: boolean` — *(tùy chọn, mặc định `false`)* Cờ tắt hoàn toàn việc xử lý qua AI.
+
+```typescript
+import { DesignTypesAi } from '@dxtmisha/scripts'
+
+const ai = new DesignTypesAi('dist', false)
+```
+
+## Phương thức
+
+### `getDirArray(): string[]`
+Trả về mảng các phân đoạn đường dẫn đến thư mục mục tiêu.
+
+### `getProjectName(): string`
+Trả về tên dự án hiện tại từ `package.json`.
+
+### `toAi(content: string, prompt: string, code?: string): Promise<string | undefined>`
+Gửi nội dung và prompt đến nhà cung cấp AI và trả về phản hồi chuỗi được tạo.
+
+### `toAiJson<T>(content: string, prompt: string, code?: string): Promise<T | undefined>`
+Gửi yêu cầu đến AI và phân tích phản hồi nhận được thành một đối tượng định kiểu `T`.
+
+## Ví dụ sử dụng
+
+```typescript
+import { DesignTypesAi } from '@dxtmisha/scripts'
+
+const ai = new DesignTypesAi('dist')
+const prompt = 'Tối ưu hóa các kiểu bằng cách loại bỏ các interface nội bộ'
+const result = await ai.toAi(dtsContent, prompt, jsCode)
+```

@@ -1,6 +1,6 @@
 import {Meta} from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/en/# UI/# Wiki Data Configuration'/>
+<Meta title='@dxtmisha/en/# UI/4. Wiki Data Configuration'/>
 
 # Wiki Data Configuration
 
@@ -73,10 +73,11 @@ This is a record type (`Record`) used for argument configuration.
 
 Describes the configuration of a specific Storybook control.
 
-- `type: StorybookControl` — defines the interface type for value control (text field, checkbox, etc.).
+- `type: StorybookControl` — defines the interface type for controlling the value (text field, toggle, etc.).
 - `options: StorybookArgsToOptionsByType` — an object for advanced behavior and display settings.
 - `isDemo?: boolean` — indicates that the parameter is for demonstration purposes only.
-- `demo?: any` — demonstration data that will be substituted in examples.
+- `demo?: any` — demonstration data that will be substituted into examples.
+- `demoOptions?: Record<string, any>` — additional demo options for the item.
 - `hide?: boolean` — allows hiding the parameter from the argument table if it is purely technical.
 
 ---
@@ -85,11 +86,12 @@ Describes the configuration of a specific Storybook control.
 
 An object for configuring argument metadata and constraints.
 
-- `category?: StorybookCategory` — the category name for grouping in the table (use values from the `StorybookCategory` enum).
-- `value?: any` — the current value of the argument.
-- `defaultValue?: string | number | boolean` — the value that will be displayed as "default" in the documentation.
-- `description?: string | Record<string, string>` — description of the property. Can be a string or an object for different languages.
-- `options?: string[] | Record<string, string>` — a list of available options for selection (relevant for `select` or `radio` types).
+- `category?: StorybookCategory` — category name for grouping in the table (use values from the `StorybookCategory` enum).
+- `type?: StorybookControl | string | string[]` — data type or target control type (e.g., `'string'`, `['string', 'File']`).
+- `defaultValue?: string | number | boolean` — default value displayed in documentation.
+- `value?: any` — current value of the argument.
+- `description?: StorybookArgsToDescription` (`string | Record<string, string>`) — property description. Can be a string or an object with language translations (`en`, `ru`, `vi`).
+- `options?: (string | number)[] | Record<string, string>` — list of available options for selection (relevant for `select` control type).
 - `min?: number` / `max?: number` — minimum and maximum values for numeric controls.
 - `order?: number` — numeric index for sorting arguments in the list.
 
@@ -100,15 +102,32 @@ An object for configuring argument metadata and constraints.
 #### `StorybookControl`
 Defines the visual type of the control:
 - `text` — text field.
-- `boolean` — checkbox (true/false).
+- `string` — string input field.
 - `number` — numeric input.
+- `boolean` — checkbox/toggle (true/false).
 - `select` — dropdown list (requires `options` to be filled).
+- `array` — array input.
 - `object` — editor for JSON objects.
 
 #### `StorybookCategory`
 Used for grouping properties into logical blocks:
-- `Values` — primary values.
-- `Styles` — appearance parameters.
-- `Technical` — technical and internal settings.
-- `Adaptive` — responsiveness parameters.
-- `Status` — component states.
+- `actions` (`'Actions'`) — actions and events.
+- `adaptive` (`'Adaptive'`) — responsiveness and adaptive alignment parameters.
+- `aria` (`'ARIA'`) — accessibility (ARIA) attributes.
+- `arrow` (`'Arrow'`) — arrow and directional indicator parameters.
+- `attributes` (`'Attributes'`) — HTML attributes and system properties.
+- `bars` (`'Bars'`) — bars, panels, and progress indicator parameters.
+- `counter` (`'Counter'`) — counter and badge parameters.
+- `form` (`'Form'`) — form and input element properties.
+- `hook` (`'Hook'`) — hooks and composable function parameters.
+- `icon` (`'Icon'`) — icon parameters.
+- `information` (`'Information'`) — informational properties and tooltips.
+- `mask` (`'Mask'`) — input mask parameters.
+- `option` (`'Options'`) — options and selection lists.
+- `search` (`'Search'`) — search and filtering parameters.
+- `sort` (`'Sort'`) — sorting parameters.
+- `status` (`'Status'`) — component states (loading, error, active, etc.).
+- `style` (`'Styles'`) — appearance and styling parameters.
+- `technical` (`'Technical'`) — technical and internal settings.
+- `text` (`'Text'`) — text parameters and typography.
+- `value` (`'Values'`) — primary component values.

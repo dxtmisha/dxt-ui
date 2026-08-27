@@ -1,45 +1,89 @@
 import {Meta} from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/en/# UI/! About the library'/>
+<Meta title='@dxtmisha/en/# UI/# About the library'/>
 
-# [@dxtmisha/ui](https://github.com/dxtmisha/dxt-ui/tree/main/packages/constructor)
+# About the Library
 
-The `@dxtmisha/ui` project is developed as a technological foundation for designing new UI components based on design system principles. The primary goal of the project is to provide developers with a ready-made logical base that simplifies the creation of scalable and consistent interfaces in the Vue 3 environment.
+The **`@dxtmisha/constructor`** package is the core engine and foundation of the design system, providing over 110 ready-to-use component constructors for Vue 3 and TypeScript.
 
-At the core of the system is the separation of concerns between component logic and its visual representation, allowing elements to be adapted to any design requirements without re-implementing complex mechanics.
+The library follows the **Headless UI** architecture: all business logic, reactive state management, event handling, accessibility (WAI-ARIA), and keyboard navigation are encapsulated inside independent constructor classes, completely decoupled from visual presentation.
 
-## Central Part of the Project: @dxtmisha/constructor
+## Design System Architecture Overview
 
-The key element is the **`@dxtmisha/constructor`** package. It serves as the "engine" for components, encapsulating:
-- Reactive state and lifecycle management.
-- Standardized event and data input handling.
-- Accessibility logic (a11y) and keyboard control.
-- Typing of input parameters (props) and slots.
+The `@dxtmisha/constructor` package serves as the core foundation for creating production-ready UI libraries (such as `@dxtmisha/d1`):
 
-Using this approach allows developers to focus on the visual implementation and UX, relying on the already tested and stable core logic.
+```text
+┌─────────────────────────────────────────────────────────────────────────┐
+│                 1. Logic Engine (@dxtmisha/constructor)                 │
+│  • 110+ abstract classes (Button, Modal, Input, Table, Select...)       │
+│  • WAI-ARIA accessibility, keyboard navigation & Focus Trap             │
+│  • Reactive states (:focus, :active, :hover, loading, disabled)         │
+│  • Form input management, data validation & input masking               │
+└────────────────────────────────────┬────────────────────────────────────┘
+                                     │
+                                     ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│                   2. Build Tooling (@dxtmisha/scripts)                  │
+│  • dxt-ui generator: bridges constructor logic with design tokens       │
+│  • Automated generation of props.ts, styleToken.scss & exports          │
+└────────────────────────────────────┬────────────────────────────────────┘
+                                     │
+                                     ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│               3. Design System (Example from @dxtmisha/d1)              │
+│  • Design token configuration in src/media/ (colors, typography, grid)  │
+│  • D1*.vue components: wire constructor logic with BEM classes          │
+│  • SCSS styling: visual tokens applied via @dxtmisha/styles mixins      │
+└─────────────────────────────────────────────────────────────────────────┘
+```
 
-## Capabilities and Tools
+## Key Benefits of Using the Constructor
 
-The system provides a comprehensive set of tools necessary for modern interface development:
+- **Multi-Design Scalability**: A single Constructor core simultaneously powers multiple distinct UI kits (such as `@dxtmisha/d1`, enterprise themes, mobile-first designs). Creating a new design system no longer requires rewriting the logic for 110+ components — only defining tokens and templates is needed.
+- **Centralized Bug Fixes (Single Point of Fix)**: Resolving edge cases, mobile browser quirks (iOS/Android), keyboard navigation, or input mask issues in the Constructor core automatically fixes them across all connected design systems upon package update.
+- **Safe Evolution Without Regressions (Zero Regression)**: Adding new features or props to Constructor expands the capabilities of all design kits without breaking their visual layout. Conversely, redesigning styles or tokens cannot break underlying logic (a11y, focus, overlays).
+- **Guaranteed Accessibility (a11y)**: Every constructor fully adheres to the WAI-ARIA specification out of the box.
+- **Reduced Maintenance Overhead (TCO)**: Business logic is verified once at the Constructor level. UI kit testing focuses purely on visual tokens and layout.
+- **Code Cleanliness & Rapid Development**: Eliminates boilerplate code and complex JS event handlers — new components are built in minutes by wiring a pre-tested constructor class.
 
-**Functional Base (@dxtmisha/functional)**
-A set of tools for integration with the Vue Composition API. Ensures reactive interaction with APIs, synchronization with web storage, and internationalization (i18n).
+## Features & Capabilities of @dxtmisha/constructor
 
-**Visual Parameters System (@dxtmisha/styles)**
-A library of SCSS mixins and design tokens. It allows for managing component geometry and themes at the compilation level, ensuring a link between logical parameters and the resulting style.
+The constructor covers all core requirements of modern frontend development:
 
-**Process Automation (@dxtmisha/scripts)**
-CLI tools to accelerate development. The package automates the scaffolding of new components, documentation generation, and export management. Includes AI integration capabilities for creating technical descriptions of elements.
+### 1. Forms and Data Input
+- **Text Inputs and Masks**: `Input`, `InputPhone` (with international dialing codes and auto-formatting), `InputCode` (SMS/2FA), `InputImage`, and `ImageCrop`.
+- **Selection Controls**: `Checkbox`, `Radio`, `Switch`, `SegmentControl`, `Chip`, `ChipGroup`.
+- **Selects and Dropdowns**: `Select`, `SelectValue`, `SelectableArea`.
+- **Form Utilities**: Automatic character counters (`FieldCounter`), validation messages (`FieldMessage`), responsive labels (`FieldLabel`).
 
-## Who the Project is For
+### 2. Overlays, Dialogs and Floating Surfaces
+- **Modal Interfaces**: `Modal`, `Dialog`, `Window`, `ActionSheet`.
+- **Popovers and Menus**: `Tooltip`, `Menu`, `MenuButton`, `MenuCountry`, `MenuLanguage`.
+- **Notifications**: `Snackbar`, `SnackbarItem` with queue management.
+- **Built-in Overlay Mechanics**: Automated focus trapping (Focus Trap), background scroll locking, `Escape` key and Click Outside dismissal, and anchor positioning (`Anchor`).
 
-The project is aimed at developers and teams tasked with:
-- Creating their own component libraries with unique designs.
-- Designing complex interface systems with high architectural requirements.
-- Developing business applications where a clear separation of logic and data representation is critical.
+### 3. Navigation and Lists
+- **Navigation Layouts**: `NavigationRail`, `Tabs`, `TabsNavigation`, `Breadcrumbs`, `Pagination`.
+- **Lists and Accordions**: `Accordion`, `List`, `ListMenu`, `ListGroup`, `ListItem`.
 
-The library acts as a reliable foundation, allowing for consistent design standards throughout the product lifecycle.
+### 4. Data Display and Content
+- **Tables**: `Table`, `TableFlex`, `TableHeaderItem`, `TableRecord` (sorting, row selection, responsive columns).
+- **Indicators and Skeletons**: `Skeleton`, `Progress`, `ProgressBar`, `Badge`, `Avatar`, `Bullet`.
+- **Formatters**: `FormattedNumber`, `FormattedUnit`.
 
-## Git
+### 5. Motion, Scrolling and Interactivity
+- **Scroll Management**: `Headroom`, `ScrollSticky`, `HorizontalScroll`, `Scrollbar`.
+- **Motion Animations**: `MotionAxis`, `MotionFlip`, `MotionTransform`, `MotionSticky`.
+- **Interactive Effects**: `Ripple`, `DraggableWrapper`, `Dropzone`.
+
+## Supporting Ecosystem Packages
+
+To support the constructor workflow, the ecosystem provides specialized packages:
+
+- **`@dxtmisha/styles`** — SCSS framework with token architecture, two-tier opacity, responsive mixins, and dynamic palettes (`paletteBackgroundColor`, `paletteColor`).
+- **`@dxtmisha/functional`** — Vue 3 Composition API composables, SSR isolation (`ServerStorage`), internationalization (i18n), and centralized vector icon management (`Icons`).
+- **`@dxtmisha/scripts`** — CLI tools for component scaffolding (`dxt-ui`), library bundling (`dxt-library`), and documentation generation.
+
+## Repository
 
 [https://github.com/dxtmisha/dxt-ui/tree/main/packages/constructor](https://github.com/dxtmisha/dxt-ui/tree/main/packages/constructor)

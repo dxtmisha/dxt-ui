@@ -1,0 +1,43 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/LibraryAiMcp - TypeScript MCP Resource Module Generator'/>
+
+# Class LibraryAiMcp
+
+The `LibraryAiMcp` class generates the TypeScript module (`ai-mcp-all-resources.ts`) from the aggregated `ai-mcp-all-resources.json` manifest, enabling typed dynamic imports for MCP resources.
+
+## Key Features
+
+- **TypeScript Module Compilation** — Converts JSON resource lists into a strongly-typed TypeScript file with lazy dynamic import handlers.
+- **Package-Level Grouping** — Groups resources by npm package, generating clean variables like `mcp<PackageName>`.
+- **Dynamic Content Loaders** — Registers asynchronous `read: () => import(...)` loaders for both text markdown and image assets.
+- **Root ai-prompt.md Integration** — Automatically incorporates the root `ai-prompt.md` into the global MCP resource registry if present.
+
+## Initialization
+
+**Constructor Parameters:**
+- `source: PropertiesFilePath | Record<string, unknown>[]` — *(optional, default `UI_FILE_AI_MCP_ALL`)* Path to JSON file or resource records array.
+- `fileTs: PropertiesFilePath` — *(optional, default `UI_FILE_AI_MCP_ALL_TS`)* Path to target TypeScript output file.
+
+```typescript
+import { LibraryAiMcp } from '@dxtmisha/scripts'
+
+const mcp = new LibraryAiMcp()
+```
+
+## Methods
+
+### `isPrompt(): boolean`
+Checks if the root `ai-prompt.md` exists.
+
+### `make(): void`
+Parses `ai-mcp-all-resources.json` and writes `ai-mcp-all-resources.ts`.
+
+## Example
+
+```typescript
+import { LibraryAiMcp } from '@dxtmisha/scripts'
+
+const mcp = new LibraryAiMcp()
+mcp.make()
+```

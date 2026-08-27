@@ -1,45 +1,89 @@
 import {Meta} from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/vi/# UI/! Giới thiệu'/>
+<Meta title='@dxtmisha/vi/# UI/# Giới thiệu'/>
 
-# [@dxtmisha/ui](https://github.com/dxtmisha/dxt-ui/tree/main/packages/constructor)
+# Giới thiệu về thư viện
 
-Dự án `@dxtmisha/ui` được phát triển như một nền tảng công nghệ để thiết kế các thành phần UI mới dựa trên các nguyên tắc của hệ thống thiết kế. Mục tiêu chính của dự án là cung cấp cho các nhà phát triển một cơ sở logic có sẵn giúp đơn giản hóa việc tạo ra các giao diện có khả năng mở rộng và nhất quán trong môi trường Vue 3.
+Gói **`@dxtmisha/constructor`** là lõi logic và động cơ công nghệ của hệ thống thiết kế, cung cấp hơn 110 constructor thành phần có sẵn cho Vue 3 và TypeScript.
 
-Cốt lõi của hệ thống là sự phân tách các mối quan tâm giữa logic thành phần và biểu diễn hình ảnh của nó, cho phép các phần tử được điều chỉnh theo bất kỳ yêu cầu thiết kế nào mà không cần triển khai lại các cơ chế phức tạp.
+Thư viện được xây dựng theo kiến trúc **Headless UI**: toàn bộ logic nghiệp vụ, quản lý trạng thái phản hồi, xử lý sự kiện, khả năng tiếp cận (WAI-ARIA) và điều hướng bàn phím đều được đóng gói độc lập bên trong các lớp constructor, hoàn toàn tách biệt khỏi kiểu dáng trực quan.
 
-## Phần trung tâm của dự án: @dxtmisha/constructor
+## Kiến trúc tương tác với hệ thống thiết kế
 
-Yếu tố then chốt là gói **`@dxtmisha/constructor`**. Nó đóng vai trò là "động cơ" cho các thành phần, bao bọc:
-- Quản lý trạng thái phản hồi và vòng đời.
-- Xử lý nhập dữ liệu và sự kiện tiêu chuẩn hóa.
-- Logic truy cập (a11y) và điều khiển bàn phím.
-- Định kiểu cho các tham số đầu vào (props) và slots.
+Gói `@dxtmisha/constructor` đóng vai trò là nền tảng cốt lõi để tạo ra các thư viện thành phần hoàn chỉnh (như `@dxtmisha/d1`):
 
-Việc sử dụng phương pháp này cho phép các nhà phát triển tập trung vào triển khai hình ảnh và UX, dựa trên logic cốt lõi đã được kiểm chứng và ổn định.
+```text
+┌─────────────────────────────────────────────────────────────────────────┐
+│                 1. Động cơ logic (@dxtmisha/constructor)                │
+│  • 110+ lớp trừu tượng (Button, Modal, Input, Table, Select...)         │
+│  • Khả năng tiếp cận WAI-ARIA, điều hướng bàn phím & Focus Trap         │
+│  • Trạng thái phản hồi (:focus, :active, :hover, loading, disabled)     │
+│  • Quản lý nhập dữ liệu, xác thực và mặt nạ nhập liệu                   │
+└────────────────────────────────────┬────────────────────────────────────┘
+                                     │
+                                     ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│                   2. Công cụ hỗ trợ (@dxtmisha/scripts)                 │
+│  • Trình tạo dxt-ui: liên kết constructor với các design token          │
+│  • Tự động tạo props.ts, styleToken.scss và xuất bản module             │
+└────────────────────────────────────┬────────────────────────────────────┘
+                                     │
+                                     ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│               3. Hệ thống thiết kế (Ví dụ từ @dxtmisha/d1)              │
+│  • Cấu hình design token trong src/media/ (màu sắc, phông chữ, lưới)    │
+│  • Thành phần D1*.vue: sử dụng constructor và các lớp BEM               │
+│  • Định kiểu SCSS: áp dụng token qua mixin của @dxtmisha/styles         │
+└─────────────────────────────────────────────────────────────────────────┘
+```
 
-## Khả năng và Công cụ
+## Ưu điểm cốt lõi khi sử dụng Constructor
 
-Hệ thống cung cấp một bộ công cụ toàn diện cần thiết cho việc phát triển giao diện hiện đại:
+- **Khả năng mở rộng Đa thiết kế (Multi-Design)**: Trên cùng một lõi Constructor, bạn có thể phát triển song song nhiều bộ UI kit khác nhau (như `@dxtmisha/d1`, chủ đề doanh nghiệp, giao diện di động). Việc tạo thiết kế mới không cần viết lại logic cho hơn 110 thành phần — chỉ cần định nghĩa token và mã mẫu.
+- **Điểm sửa lỗi tập trung (Single Point of Fix)**: Mọi bản vá lỗi (giữ tiêu điểm, lỗi trên trình duyệt di động iOS/Android, phím tắt hoặc mặt nạ nhập liệu) chỉ cần sửa một lần tại lõi Constructor và tự động cập nhật đến tất cả các hệ thống thiết kế.
+- **Tiến hóa an toàn không lỗi hồi quy (Zero Regression)**: Bổ sung tính năng mới vào Constructor giúp mở rộng khả năng của toàn bộ UI kit mà không làm hỏng giao diện. Ngược lại, việc tái thiết kế kiểu dáng hoặc đổi token không thể làm hỏng logic hành vi bên dưới (a11y, modal, xác thực).
+- **Đảm bảo khả năng tiếp cận (a11y)**: Mỗi constructor đều tuân thủ đầy đủ chuẩn WAI-ARIA ngay khi khởi tạo.
+- **Tiết kiệm chi phí bảo trì (TCO)**: Logic nghiệp vụ chỉ cần kiểm thử một lần ở cấp độ Constructor. Việc kiểm thử UI kit chỉ tập trung vào giao diện và token.
+- **Mã nguồn tinh gọn và phát triển thần tốc**: Loại bỏ hoàn toàn mã lặp và các hàm xử lý sự kiện phức tạp — thành phần mới được tạo nhanh chóng chỉ bằng việc kết nối lớp constructor có sẵn.
 
-**Cơ sở chức năng (@dxtmisha/functional)**
-Một bộ công cụ để tích hợp với Vue Composition API. Đảm bảo tương tác phản hồi với các API, đồng bộ hóa với bộ nhớ web và quốc tế hóa (i18n).
+## Các tính năng & Khả năng của @dxtmisha/constructor
 
-**Hệ thống thông số hình ảnh (@dxtmisha/styles)**
-Thư viện các mixin SCSS và thiết kế token. Nó cho phép quản lý hình học và chủ đề của thành phần ở cấp độ biên dịch, đảm bảo liên kết giữa các thông số logic và kiểu dáng kết quả.
+Constructor đáp ứng mọi yêu cầu cốt lõi của quá trình phát triển frontend hiện đại:
 
-**Tự động hóa quy trình (@dxtmisha/scripts)**
-Công cụ CLI để tăng tốc độ phát triển. Gói tự động hóa việc scaffolding các thành phần mới, tạo tài liệu và quản lý xuất bản. Bao gồm khả năng tích hợp AI để tạo mô tả kỹ thuật cho các phần tử.
+### 1. Biểu mẫu và Nhập dữ liệu
+- **Trường văn bản và Mặt nạ**: `Input`, `InputPhone` (với mã quốc gia quốc tế và tự động định dạng), `InputCode` (xác thực SMS/2FA), `InputImage` và `ImageCrop`.
+- **Thành phần lựa chọn**: `Checkbox`, `Radio`, `Switch`, `SegmentControl`, `Chip`, `ChipGroup`.
+- **Hộp chọn và Menu thả xuống**: `Select`, `SelectValue`, `SelectableArea`.
+- **Tiện ích biểu mẫu**: Bộ đếm ký tự tự động (`FieldCounter`), thông báo xác thực (`FieldMessage`), nhãn thích ứng (`FieldLabel`).
 
-## Dự án này dành cho ai
+### 2. Lớp phủ, Hộp thoại và Cửa sổ nổi
+- **Giao diện Modal**: `Modal`, `Dialog`, `Window`, `ActionSheet`.
+- **Cửa sổ nổi & Menu**: `Tooltip`, `Menu`, `MenuButton`, `MenuCountry`, `MenuLanguage`.
+- **Thông báo nổi**: `Snackbar`, `SnackbarItem` với hệ thống quản lý hàng đợi.
+- **Cơ chế lớp phủ tích hợp**: Tự động giữ tiêu điểm (Focus Trap), khóa cuộn trang nền khi mở, đóng bằng phím `Escape` và bấm ra ngoài (Click Outside), định vị theo điểm neo (`Anchor`).
 
-Dự án hướng tới các nhà phát triển và các nhóm có nhiệm vụ:
-- Tạo thư viện thành phần riêng với thiết kế độc đáo.
-- Thiết kế các hệ thống giao diện phức tạp với yêu cầu kiến trúc cao.
-- Phát triển các ứng dụng kinh doanh mà việc phân tách rõ ràng giữa logic và biểu diễn dữ liệu là cực kỳ quan trọng.
+### 3. Điều hướng và Danh sách
+- **Cấu trúc điều hướng**: `NavigationRail`, `Tabs`, `TabsNavigation`, `Breadcrumbs`, `Pagination`.
+- **Danh sách và Khối xếp gọn**: `Accordion`, `List`, `ListMenu`, `ListGroup`, `ListItem`.
 
-Thư viện đóng vai trò như một nền tảng đáng tin cậy, cho phép duy trì các tiêu chuẩn thiết kế nhất quán trong suốt vòng đời của sản phẩm.
+### 4. Hiển thị dữ liệu và Nội dung
+- **Bảng dữ liệu**: `Table`, `TableFlex`, `TableHeaderItem`, `TableRecord` (hỗ trợ sắp xếp, chọn hàng, cột thích ứng).
+- **Chỉ báo và Khung chờ**: `Skeleton`, `Progress`, `ProgressBar`, `Badge`, `Avatar`, `Bullet`.
+- **Định dạng dữ liệu**: `FormattedNumber`, `FormattedUnit`.
 
-## Git
+### 5. Hoạt ảnh, Cuộn trang và Tương tác
+- **Quản lý cuộn**: `Headroom`, `ScrollSticky`, `HorizontalScroll`, `Scrollbar`.
+- **Hoạt ảnh chuyển động**: `MotionAxis`, `MotionFlip`, `MotionTransform`, `MotionSticky`.
+- **Hiệu ứng tương tác**: `Ripple`, `DraggableWrapper`, `Dropzone`.
+
+## Các gói hỗ trợ trong hệ sinh thái
+
+Để hỗ trợ quy trình làm việc với constructor, hệ sinh thái cung cấp các gói chuyên biệt:
+
+- **`@dxtmisha/styles`** — Khung SCSS với kiến trúc token, độ mờ 2 tầng, mixin đáp ứng và bảng màu động (`paletteBackgroundColor`, `paletteColor`).
+- **`@dxtmisha/functional`** — Các composable cho Vue 3 Composition API, cách ly SSR (`ServerStorage`), quốc tế hóa (i18n) và trình quản lý biểu tượng vector (`Icons`).
+- **`@dxtmisha/scripts`** — Công cụ CLI để scaffolding thành phần (`dxt-ui`), đóng gói thư viện (`dxt-library`) và tạo tài liệu.
+
+## Kho lưu trữ dự án
 
 [https://github.com/dxtmisha/dxt-ui/tree/main/packages/constructor](https://github.com/dxtmisha/dxt-ui/tree/main/packages/constructor)

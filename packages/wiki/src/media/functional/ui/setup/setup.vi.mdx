@@ -1,6 +1,6 @@
 import {Meta} from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/vi/# UI/# Chuẩn bị dự án'/>
+<Meta title='@dxtmisha/vi/# UI/1. Chuẩn bị dự án'/>
 
 # Chuẩn bị dự án
 
@@ -62,11 +62,15 @@ Thêm các mã lệnh sau vào tệp `package.json` của bạn để tự độ
   "scripts": {
     "ui": "dxt-ui",
     "wiki-storm": "dxt-wiki-storm",
-    "types": "dxt-types"
+    "types": "npm run ui && npm run build && npm run wiki-storm && dxt-types",
+    "screenshot": "dxt-screenshot",
+    "prepublishOnly": "npm run ui && npm run build && npm run wiki-storm && dxt-types-save"
   }
 }
 ```
 
 - **ui**: Khởi chạy chu kỳ tạo thành phần giao diện người dùng (UI) chính.
 - **wiki-storm**: Tạo và cập nhật các tệp cho Wiki/Storybook.
-- **types**: Cập nhật các kiểu dữ liệu dựa trên cấu hình hiện tại.
+- **types**: Chạy toàn bộ chu kỳ xây dựng và cập nhật các kiểu dữ liệu.
+- **screenshot**: Khởi chạy kiểm thử hồi quy trực quan và tạo ảnh chụp màn hình.
+- **prepublishOnly**: Thực hiện xây dựng hoàn chỉnh, tạo tài liệu và lưu ảnh chụp kiểu dữ liệu trước khi xuất bản gói.

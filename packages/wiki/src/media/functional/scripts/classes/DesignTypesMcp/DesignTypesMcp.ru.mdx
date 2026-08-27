@@ -1,0 +1,45 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/scripts/Classes/DesignTypesMcp - Генератор ресурсов MCP-сервера для ИИ'/>
+
+# Класс DesignTypesMcp
+
+Класс `DesignTypesMcp` отвечает за генерацию, форматирование и сохранение файла манифеста ресурсов MCP-сервера (`ai-mcp-resources.json`), обеспечивающего интеграцию проекта с протоколом Model Context Protocol (MCP) для ИИ-ассистентов.
+
+## Ключевые особенности
+
+- **Автоматическая регистрация ресурсов** — регистрирует файлы `ai-types.md`, `ai-description.md`, снимки экрана и промпты как стандартизированные ресурсы MCP.
+- **Поддержка динамических URI** — формирует уникальные URI для каждого ресурса в формате `<projectName>/<filePath>`.
+- **Интеграция с скриншотами** — сканирует директорию снимков экранов `ai-screenshot` и регистрирует визуальные ассеты с MIME-типами `image/png`.
+- **Сохранение конфигурации** — записывает массив определений ресурсов в `ai-mcp-resources.json`.
+
+## Инициализация
+
+**Параметры конструктора:**
+- `ai: DesignTypesAi` — экземпляр клиента ИИ для получения имени проекта и контекста.
+- `prompts: DesignTypesPrompts` — менеджер промптов для получения списка специализированных файлов инструкций.
+- `isRaw: boolean` — *(опционально, по умолчанию `false`)* флаг отключения ИИ обработки.
+
+```typescript
+import {
+  DesignTypesAi,
+  DesignTypesPrompts,
+  DesignTypesMcp
+} from '@dxtmisha/scripts'
+
+const ai = new DesignTypesAi('dist')
+const prompts = new DesignTypesPrompts('ai-resources', ai)
+const mcp = new DesignTypesMcp(ai, prompts)
+```
+
+## Методы
+
+### `make(): Promise<this>`
+Формирует список ресурсов MCP (типы, описание, скриншоты, промпты) и сохраняет их в `ai-mcp-resources.json`.
+
+## Пример использования
+
+```typescript
+const mcp = new DesignTypesMcp(ai, prompts)
+await mcp.make()
+```

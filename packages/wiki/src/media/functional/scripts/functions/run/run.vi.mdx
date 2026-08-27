@@ -1,0 +1,33 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Functions/run - Thực thi lệnh gói'/>
+
+# `run`
+
+Hàm bất đồng bộ để thực thi một lệnh shell bên trong thư mục làm việc của gói được chỉ định.
+
+**Tham số:**
+- `packageFile: PackageFile` — Đối tượng biểu diễn tệp gói cung cấp tên gói và đường dẫn thư mục.
+- `command: string` — Chuỗi lệnh shell cần thực thi.
+- `showStdout: boolean` — *(tùy chọn, mặc định `false`)* Cờ hiển thị `stdout` ra console.
+- `showStderr: boolean` — *(tùy chọn, mặc định `false`)* Cờ hiển thị `stderr` ra console.
+
+**Trả về:**
+`Promise<boolean>` — Trả về `true` nếu lệnh hoàn thành thành công (exit code 0), hoặc `false` nếu phát sinh lỗi.
+
+## Cách hoạt động
+
+Hàm thực thi lệnh bất đồng bộ thông qua `child_process.exec` bên trong thư mục gói `packageFile.getDir()`. Khi xảy ra lỗi, hàm sẽ bắt ngoại lệ, ghi log lỗi và trả về `false`.
+
+## Ví dụ
+
+```typescript
+import { PackageFile, run } from '@dxtmisha/scripts'
+
+const packageFile = new PackageFile(['packages', 'core'])
+const success = await run(packageFile, 'npm run build', true, true)
+
+if (success) {
+  console.log('Biên dịch gói thành công')
+}
+```

@@ -1,19 +1,24 @@
 import { Meta } from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/vi/scripts/Composables/useAi - Lấy instance AI'/>
+<Meta title='@dxtmisha/vi/scripts/Composables/useAi - Nhận phiên bản AI'/>
 
 # `useAi`
 
-Composable để lấy một instance AI dựa trên cấu hình hiện tại.
+Composable để nhận phiên bản adapter AI dựa trên cấu hình hiện tại của dự án.
 
 **Trả về:**
-`AiAbstract | undefined` — Một instance của lớp AI (ví dụ: `AiGoogle` hoặc `AiGoogleCli`) dựa trên loại AI được định cấu hình, hoặc `undefined` nếu loại đó không được nhận dạng hoặc không được định cấu hình.
+`AiAbstract | undefined` — Một phiên bản của lớp nhà cung cấp AI (như `AiGoogle`, `AiGoogleCli`, `AiClaude`, `AiClaudeAgent`, `AiClaudeCli`, `AiOpenAi`, `AiZAi`) tùy thuộc vào loại AI được cấu hình, hoặc `undefined` nếu loại không được nhận dạng hoặc chưa được cấu hình.
 
-## Cơ chế hoạt động
+## Cách hoạt động
 
-Composable đọc loại AI từ `PropertiesConfig.getAiType()` và trả về một instance mới của lớp tương ứng:
-- `'gemini'` trả về một instance `AiGoogle` mới.
-- `'gemini-cli'` trả về một instance `AiGoogleCli` mới.
+Composable đọc loại AI từ `PropertiesConfig.getAiType()` và khởi tạo lớp tương ứng:
+- `'claude'` — trả về `AiClaude` (Anthropic Claude API).
+- `'claude-agent'` — trả về `AiClaudeAgent` (Anthropic Claude Agent SDK).
+- `'claude-cli'` — trả về `AiClaudeCli` (Giao diện dòng lệnh Claude CLI).
+- `'gemini'` — trả về `AiGoogle` (Google Gemini API).
+- `'gemini-cli'` — trả về `AiGoogleCli` (Giao diện dòng lệnh Google Gemini CLI).
+- `'openai'` — trả về `AiOpenAi` (OpenAI GPT API).
+- `'zai'` — trả về `AiZAi` (xAI / Grok API).
 - Các loại khác trả về `undefined`.
 
 ## Ví dụ
@@ -24,7 +29,6 @@ import { useAi } from '@dxtmisha/scripts'
 const ai = useAi()
 
 if (ai) {
-  // Sử dụng instance AI
   const response = await ai.generate('Xin chào, AI!')
   console.log(response)
 }

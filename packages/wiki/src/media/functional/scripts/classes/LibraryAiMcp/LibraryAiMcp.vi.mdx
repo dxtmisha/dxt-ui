@@ -1,0 +1,43 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/LibraryAiMcp - Trình tạo module tài nguyên MCP TypeScript'/>
+
+# Lớp LibraryAiMcp
+
+Lớp `LibraryAiMcp` chịu trách nhiệm tạo tệp TypeScript (`ai-mcp-all-resources.ts`) chứa các tài nguyên MCP có cấu trúc dựa trên tệp kê khai tổng hợp `ai-mcp-all-resources.json`.
+
+## Các tính năng chính
+
+- **Biên dịch module TypeScript tự động** — Chuyển đổi danh sách tài nguyên JSON thành tệp TypeScript định kiểu nghiêm ngặt với các import động.
+- **Nhóm theo gói** — Nhóm các tài nguyên theo tên gói npm và tạo các biến có định dạng `mcp<PackageName>`.
+- **Hỗ trợ trình xử lý động** — Đăng ký các trình xử lý bất đồng bộ `read: () => import(...)` cho các tài nguyên văn bản và hình ảnh.
+- **Tích hợp ai-prompt.md** — Tự động đưa tệp `ai-prompt.md` gốc vào danh sách tài nguyên MCP toàn cầu nếu tồn tại.
+
+## Khởi tạo
+
+**Tham số khởi tạo:**
+- `source: PropertiesFilePath | Record<string, unknown>[]` — *(tùy chọn, mặc định `UI_FILE_AI_MCP_ALL`)* Đường dẫn đến tệp JSON tài nguyên hoặc mảng dữ liệu.
+- `fileTs: PropertiesFilePath` — *(tùy chọn, mặc định `UI_FILE_AI_MCP_ALL_TS`)* Đường dẫn đến tệp TypeScript đích.
+
+```typescript
+import { LibraryAiMcp } from '@dxtmisha/scripts'
+
+const mcp = new LibraryAiMcp()
+```
+
+## Phương thức
+
+### `isPrompt(): boolean`
+Kiểm tra sự tồn tại của tệp `ai-prompt.md` ở thư mục gốc của dự án.
+
+### `make(): void`
+Đọc `ai-mcp-all-resources.json` và tạo ra `ai-mcp-all-resources.ts`.
+
+## Ví dụ sử dụng
+
+```typescript
+import { LibraryAiMcp } from '@dxtmisha/scripts'
+
+const mcp = new LibraryAiMcp()
+mcp.make()
+```

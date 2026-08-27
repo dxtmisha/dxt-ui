@@ -1,0 +1,56 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/DesignTypesDescription - AI Package Description Generator'/>
+
+# Class DesignTypesDescription
+
+The `DesignTypesDescription` class generates, processes, and persists the package description file (`ai-description.md`), containing core capabilities, type study triggers, and prompt guidelines for AI coding assistants.
+
+## Key Features
+
+- **Automated API Analysis** — Analyzes compiled TypeScript declarations and JavaScript code to synthesize high-density package overviews.
+- **Rules and Prompts Integration** — Blends technical summaries with specialized prompt directives managed by `DesignTypesPrompts`.
+- **Dense Output Format** — Enforces a strict structure: concise purpose statement, explicit triggers for examining `ai-types.md`, and comma-separated capabilities (1–3 words per item).
+- **Artifact Persistence** — Writes the generated description to `ai-description.md` at the package root.
+
+## Initialization
+
+**Constructor Parameters:**
+- `ai: DesignTypesAi` — AI client instance for handling generation requests.
+- `makeTypes: DesignTypesMake` — Type generator instance providing type definitions and JS content.
+- `prompts: DesignTypesPrompts` — Prompts manager providing project rules and prompt resources.
+- `isRaw: boolean` — *(optional, default `false`)* Flag to disable AI generation.
+
+```typescript
+import {
+  DesignTypesAi,
+  DesignTypesMake,
+  DesignTypesPrompts,
+  DesignTypesDescription
+} from '@dxtmisha/scripts'
+
+const ai = new DesignTypesAi('dist')
+const makeTypes = new DesignTypesMake(ai)
+const prompts = new DesignTypesPrompts('ai-resources', ai)
+const desc = new DesignTypesDescription(ai, makeTypes, prompts)
+```
+
+## Methods
+
+### `is(): boolean`
+Checks if the `ai-description.md` file exists in the current project.
+
+### `getFullDescription(): string`
+Returns the generated full description string.
+
+### `make(): Promise<this>`
+Executes the AI description generation pipeline and writes `ai-description.md`.
+
+## Example
+
+```typescript
+const desc = new DesignTypesDescription(ai, makeTypes, prompts)
+await desc.make()
+
+console.log(desc.getFullDescription())
+```

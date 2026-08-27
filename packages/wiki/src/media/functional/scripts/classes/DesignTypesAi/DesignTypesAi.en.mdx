@@ -1,0 +1,50 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/DesignTypesAi - Low-Level AI Client for Type Generation'/>
+
+# Class DesignTypesAi
+
+The `DesignTypesAi` class manages low-level AI interactions during TypeScript declaration extraction, directory resolution, and isolated prompt execution.
+
+## Key Features
+
+- **Isolated Prompt Context** — Enforces strict directives preventing previous conversation history from contaminating generated types.
+- **Supplementary Code Context** — Supplies raw JavaScript implementation as background context without erroneously leaking unexported entities into the output.
+- **JSON Response Parsing** — The `toAiJson` method strips markdown blocks and parses structured JSON output from LLM responses.
+- **Project Name Resolution** — Resolves and caches the package name from `package.json`.
+
+## Initialization
+
+**Constructor Parameters:**
+- `dir: string` — *(optional, default `'dist'`)* Directory path containing declaration files.
+- `isRaw: boolean` — *(optional, default `false`)* Flag to disable AI processing entirely.
+
+```typescript
+import { DesignTypesAi } from '@dxtmisha/scripts'
+
+const ai = new DesignTypesAi('dist', false)
+```
+
+## Methods
+
+### `getDirArray(): string[]`
+Returns the array of directory path segments.
+
+### `getProjectName(): string`
+Returns the project name resolved from `package.json`.
+
+### `toAi(content: string, prompt: string, code?: string): Promise<string | undefined>`
+Sends content and prompt instructions to the configured AI provider and returns the raw string response.
+
+### `toAiJson<T>(content: string, prompt: string, code?: string): Promise<T | undefined>`
+Sends an AI prompt and parses the resulting output into a typed JSON object `T`.
+
+## Example
+
+```typescript
+import { DesignTypesAi } from '@dxtmisha/scripts'
+
+const ai = new DesignTypesAi('dist')
+const prompt = 'Optimize types by stripping internal interfaces'
+const result = await ai.toAi(dtsContent, prompt, jsCode)
+```

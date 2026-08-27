@@ -1,0 +1,56 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/scripts/Classes/DesignTypesDescription - Генератор описания пакета для ИИ'/>
+
+# Класс DesignTypesDescription
+
+Класс `DesignTypesDescription` отвечает за автоматическую генерацию, форматирование и сохранение файла описания пакета (`ai-description.md`), содержащего ключевые возможности, триггеры изучения типов и правила для ИИ-ассистентов.
+
+## Ключевые особенности
+
+- **Автоматический анализ API** — отправляет скомпилированные типы и JavaScript-код ИИ для создания высокоточного резюме пакета.
+- **Интеграция промптов и правил** — объединяет техническое описание пакета со списком специализированных промптов из `DesignTypesPrompts`.
+- **Строгий формат вывода** — генерирует сжатый обзор без шаблонного текста: назначение пакета, триггеры чтения `ai-types.md` и список ключевых возможностей (1–3 слова на пункт).
+- **Сохранение артефакта** — записывает результат в файл `ai-description.md` в корне пакета.
+
+## Инициализация
+
+**Параметры конструктора:**
+- `ai: DesignTypesAi` — экземпляр клиента ИИ для выполнения запросов.
+- `makeTypes: DesignTypesMake` — генератор определений типов для получения полного контента деклараций и JS-кода.
+- `prompts: DesignTypesPrompts` — менеджер промптов для интеграции правил и ресурсов.
+- `isRaw: boolean` — *(опционально, по умолчанию `false`)* флаг отключения ИИ.
+
+```typescript
+import {
+  DesignTypesAi,
+  DesignTypesMake,
+  DesignTypesPrompts,
+  DesignTypesDescription
+} from '@dxtmisha/scripts'
+
+const ai = new DesignTypesAi('dist')
+const makeTypes = new DesignTypesMake(ai)
+const prompts = new DesignTypesPrompts('ai-resources', ai)
+const desc = new DesignTypesDescription(ai, makeTypes, prompts)
+```
+
+## Методы
+
+### `is(): boolean`
+Проверяет наличие файла `ai-description.md` в проекте.
+
+### `getFullDescription(): string`
+Возвращает сгенерированный текст полного описания.
+
+### `make(): Promise<this>`
+Запускает процесс генерации описания через ИИ и сохраняет файл `ai-description.md`.
+
+## Пример использования
+
+```typescript
+const desc = new DesignTypesDescription(ai, makeTypes, prompts)
+await desc.make()
+
+console.log(desc.getFullDescription())
+```

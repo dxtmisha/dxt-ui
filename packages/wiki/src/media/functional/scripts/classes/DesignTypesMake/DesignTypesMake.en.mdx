@@ -1,0 +1,51 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/DesignTypesMake - Type Generation and Caching Engine for AI'/>
+
+# Class DesignTypesMake
+
+The `DesignTypesMake` class is a high-performance engine for scanning compiled TypeScript declaration files (`.d.ts`), tracking modifications via MD5 hashes, stripping boilerplate metadata, and generating the consolidated `ai-types.md` artifact.
+
+## Key Features
+
+- **MD5-Based File Caching** — Calculates checksums for declaration files and caches AI optimizations in `ai-types-list/`, preventing redundant, costly API calls.
+- **Smart Declaration Cleansing** — Strips internal imports, circular type references, and redundant annotations, normalizing types into clean contracts.
+- **JavaScript Code Context** — Scans and aggregates accompanying JavaScript source code to provide deep execution context for LLMs.
+- **Single-File Consolidation** — Merges dozens of fragmented `.d.ts` files into a compact, navigable `ai-types.md` document.
+
+## Initialization
+
+**Constructor Parameters:**
+- `ai: DesignTypesAi` — AI client instance used for declaration compression.
+
+```typescript
+import { DesignTypesAi, DesignTypesMake } from '@dxtmisha/scripts'
+
+const ai = new DesignTypesAi('dist')
+const makeTypes = new DesignTypesMake(ai)
+```
+
+## Methods
+
+### `getFullContent(): string`
+Returns the combined and optimized type definition content across all declaration files.
+
+### `getFullJsContent(): string`
+Returns the combined JavaScript content across all filtered package source files.
+
+### `make(): Promise<this>`
+Executes the full generation pipeline including cache validation, AI processing, and file persistence.
+
+### `save(content: string): void`
+Writes the processed type definitions to `ai-types.md`.
+
+## Example
+
+```typescript
+import { DesignTypesAi, DesignTypesMake } from '@dxtmisha/scripts'
+
+const ai = new DesignTypesAi('dist')
+const makeTypes = new DesignTypesMake(ai)
+
+await makeTypes.make()
+```

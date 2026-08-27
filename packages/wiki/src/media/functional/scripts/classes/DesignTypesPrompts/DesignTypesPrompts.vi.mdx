@@ -1,0 +1,51 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/DesignTypesPrompts - Trình quản lý prompt và quy tắc cho AI'/>
+
+# Lớp DesignTypesPrompts
+
+Lớp `DesignTypesPrompts` quản lý việc đọc các tệp prompt từ thư mục `ai-resources/`, lưu bộ nhớ đệm siêu dữ liệu prompt dưới dạng JSON và tạo các hướng dẫn cũng như điều kiện kích hoạt sử dụng cho trợ lý AI.
+
+## Các tính năng chính
+
+- **Theo dõi prompt theo MD5** — Nhận diện thay đổi trong các tệp Markdown prompt nguồn và lưu siêu dữ liệu do AI tạo vào bộ nhớ đệm `.json`.
+- **Tóm tắt thông minh** — Sử dụng AI để tạo mô tả ngắn gọn về mục đích và điều kiện kích hoạt cho từng tệp prompt.
+- **Tích hợp quy tắc hệ thống** — Trích xuất và định dạng các quy tắc dự án và điều kiện gọi prompt để đưa vào `ai-description.md`.
+- **Hỗ trợ đường dẫn động** — Quét thư mục `ai-resources/` bên trong gói và node_modules.
+
+## Khởi tạo
+
+**Tham số khởi tạo:**
+- `promptsDir: string` — *(tùy chọn, mặc định `'ai-resources'`)* Đường dẫn đến thư mục chứa tệp prompt.
+- `ai: DesignTypesAi` — Đối tượng client AI để tạo siêu dữ liệu.
+
+```typescript
+import { DesignTypesAi, DesignTypesPrompts } from '@dxtmisha/scripts'
+
+const ai = new DesignTypesAi('dist')
+const prompts = new DesignTypesPrompts('ai-resources', ai)
+```
+
+## Phương thức
+
+### `getCacheList(): DesignTypesPromptCacheList`
+Trả về danh sách siêu dữ liệu prompt đã được lưu trong bộ nhớ đệm.
+
+### `toAiPrompts(): Promise<string>`
+Tạo khối định dạng chứa quy tắc dự án và các điều kiện kích hoạt prompt cho trợ lý AI.
+
+### `make(): Promise<this>`
+Thực hiện quét prompt, cập nhật bộ nhớ đệm siêu dữ liệu và chuẩn bị để xuất bản.
+
+## Ví dụ sử dụng
+
+```typescript
+import { DesignTypesAi, DesignTypesPrompts } from '@dxtmisha/scripts'
+
+const ai = new DesignTypesAi('dist')
+const prompts = new DesignTypesPrompts('ai-resources', ai)
+
+await prompts.make()
+const rules = await prompts.toAiPrompts()
+console.log(rules)
+```

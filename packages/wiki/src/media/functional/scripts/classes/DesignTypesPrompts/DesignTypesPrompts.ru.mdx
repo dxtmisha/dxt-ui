@@ -1,0 +1,51 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/scripts/Classes/DesignTypesPrompts - Менеджер промптов и правил для ИИ'/>
+
+# Класс DesignTypesPrompts
+
+Класс `DesignTypesPrompts` управляет чтением файлов промптов из директории `ai-resources/`, кэшированием метаданных промптов в формате JSON и генерацией инструкций и триггеров использования для ИИ-ассистентов.
+
+## Ключевые особенности
+
+- **MD5-отслеживание промптов** — отслеживает изменения в исходных Markdown-файлах промптов и сохраняет сгенерированные метаданные в `.json` кэш.
+- **Интеллектуальное резюмирование** — с помощью ИИ генерирует лаконичное описание назначения и условий применения для каждого файла промпта.
+- **Интеграция системных правил** — извлекает и форматирует системные правила проекта и триггеры вызова промптов для включения в `ai-description.md`.
+- **Поддержка динамического пути** — сканирует директорию `ai-resources/` внутри пакета и node_modules.
+
+## Инициализация
+
+**Параметры конструктора:**
+- `promptsDir: string` — *(опционально, по умолчанию `'ai-resources'`)* путь к директории с файлами промптов.
+- `ai: DesignTypesAi` — экземпляр клиента ИИ для генерации метаданных.
+
+```typescript
+import { DesignTypesAi, DesignTypesPrompts } from '@dxtmisha/scripts'
+
+const ai = new DesignTypesAi('dist')
+const prompts = new DesignTypesPrompts('ai-resources', ai)
+```
+
+## Методы
+
+### `getCacheList(): DesignTypesPromptCacheList`
+Возвращает список закэшированных метаданных промптов.
+
+### `toAiPrompts(): Promise<string>`
+Генерирует форматированный блок правил проекта и триггеров вызова промптов для ИИ-ассистента.
+
+### `make(): Promise<this>`
+Выполняет сканирование промптов, обновляет кэш метаданных и подготавливает их для экспорта.
+
+## Пример использования
+
+```typescript
+import { DesignTypesAi, DesignTypesPrompts } from '@dxtmisha/scripts'
+
+const ai = new DesignTypesAi('dist')
+const prompts = new DesignTypesPrompts('ai-resources', ai)
+
+await prompts.make()
+const rules = await prompts.toAiPrompts()
+console.log(rules)
+```

@@ -1,6 +1,6 @@
 import {Meta} from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/en/# UI/# Project Setup'/>
+<Meta title='@dxtmisha/en/# UI/1. Project Setup'/>
 
 # Project Setup
 
@@ -62,11 +62,15 @@ Add the following scripts to your `package.json` to automate code generation, do
   "scripts": {
     "ui": "dxt-ui",
     "wiki-storm": "dxt-wiki-storm",
-    "types": "dxt-types"
+    "types": "npm run ui && npm run build && npm run wiki-storm && dxt-types",
+    "screenshot": "dxt-screenshot",
+    "prepublishOnly": "npm run ui && npm run build && npm run wiki-storm && dxt-types-save"
   }
 }
 ```
 
 - **ui**: Launches the main UI component generation cycle.
 - **wiki-storm**: Generates and updates files for Wiki/Storybook.
-- **types**: Updates data types based on the current configuration.
+- **types**: Runs the full build cycle and updates data types.
+- **screenshot**: Runs visual regression testing and generates screenshots.
+- **prepublishOnly**: Performs a full build, documentation generation, and type snapshot saving before publishing the package.

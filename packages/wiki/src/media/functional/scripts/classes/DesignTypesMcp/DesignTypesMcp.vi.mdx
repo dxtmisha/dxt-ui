@@ -1,0 +1,45 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/DesignTypesMcp - Trình tạo tài nguyên máy chủ MCP cho AI'/>
+
+# Lớp DesignTypesMcp
+
+Lớp `DesignTypesMcp` chịu trách nhiệm tạo, định dạng và lưu tệp kê khai tài nguyên máy chủ MCP (`ai-mcp-resources.json`), giúp tích hợp dự án với giao thức Model Context Protocol (MCP) cho các trợ lý AI.
+
+## Các tính năng chính
+
+- **Đăng ký tài nguyên tự động** — Đăng ký các tệp `ai-types.md`, `ai-description.md`, ảnh chụp màn hình và prompt thành các tài nguyên MCP tiêu chuẩn.
+- **Hỗ trợ URI động** — Tạo URI định danh duy nhất cho từng tài nguyên theo định dạng `<projectName>/<filePath>`.
+- **Tích hợp ảnh chụp màn hình** — Quét thư mục `ai-screenshot` và đăng ký các tài nguyên hình ảnh với loại MIME `image/png`.
+- **Lưu cấu hình** — Ghi mảng định nghĩa tài nguyên vào `ai-mcp-resources.json`.
+
+## Khởi tạo
+
+**Tham số khởi tạo:**
+- `ai: DesignTypesAi` — Đối tượng client AI để lấy tên dự án và ngữ cảnh.
+- `prompts: DesignTypesPrompts` — Trình quản lý prompt để nhận danh sách các tệp hướng dẫn chuyên biệt.
+- `isRaw: boolean` — *(tùy chọn, mặc định `false`)* Cờ tắt xử lý AI.
+
+```typescript
+import {
+  DesignTypesAi,
+  DesignTypesPrompts,
+  DesignTypesMcp
+} from '@dxtmisha/scripts'
+
+const ai = new DesignTypesAi('dist')
+const prompts = new DesignTypesPrompts('ai-resources', ai)
+const mcp = new DesignTypesMcp(ai, prompts)
+```
+
+## Phương thức
+
+### `make(): Promise<this>`
+Tổng hợp danh sách tài nguyên MCP (kiểu, mô tả, ảnh màn hình, prompt) và lưu vào `ai-mcp-resources.json`.
+
+## Ví dụ sử dụng
+
+```typescript
+const mcp = new DesignTypesMcp(ai, prompts)
+await mcp.make()
+```

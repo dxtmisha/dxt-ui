@@ -1,0 +1,33 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/scripts/Functions/run - Выполнение команды пакета'/>
+
+# `run`
+
+Асинхронная функция для выполнения терминальной команды внутри рабочей директории указанного пакета.
+
+**Параметры:**
+- `packageFile: PackageFile` — объект представления пакета, предоставляющий имя и путь к его рабочей директории.
+- `command: string` — строка shell-команды для выполнения.
+- `showStdout: boolean` — *(опционально, по умолчанию `false`)* флаг вывода `stdout` в консоль.
+- `showStderr: boolean` — *(опционально, по умолчанию `false`)* флаг вывода `stderr` в консоль.
+
+**Возвращает:**
+`Promise<boolean>` — возвращает `true`, если команда завершилась успешно (exit code 0), или `false` в случае возникновения ошибки.
+
+## Как это работает
+
+Функция выполняет команду асинхронно через `child_process.exec` внутри директории пакета `packageFile.getDir()`. При наличии ошибок выполнения функция перехватывает исключение, логирует ошибку и возвращает `false`.
+
+## Пример
+
+```typescript
+import { PackageFile, run } from '@dxtmisha/scripts'
+
+const packageFile = new PackageFile(['packages', 'core'])
+const success = await run(packageFile, 'npm run build', true, true)
+
+if (success) {
+  console.log('Сборка пакета прошла успешно')
+}
+```

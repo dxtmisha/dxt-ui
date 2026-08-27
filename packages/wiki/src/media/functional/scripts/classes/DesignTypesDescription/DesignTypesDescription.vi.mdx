@@ -1,0 +1,56 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/DesignTypesDescription - Trình tạo mô tả gói cho AI'/>
+
+# Lớp DesignTypesDescription
+
+Lớp `DesignTypesDescription` chịu trách nhiệm tự động tạo, định dạng và lưu tệp mô tả gói (`ai-description.md`), bao gồm các khả năng cốt lõi, điều kiện kích hoạt việc nghiên cứu kiểu và các quy tắc dành cho trợ lý AI.
+
+## Các tính năng chính
+
+- **Phân tích API tự động** — Phân tích các tệp khai báo kiểu TypeScript và mã JavaScript để tạo bản tóm tắt gói có độ chính xác cao.
+- **Tích hợp prompt và quy tắc** — Kết hợp mô tả kỹ thuật với danh sách các prompt chuyên biệt được quản lý bởi `DesignTypesPrompts`.
+- **Định dạng đầu ra súc tích** — Tạo cấu trúc nghiêm ngặt: mục đích cốt lõi, điều kiện kích hoạt đọc `ai-types.md` và danh sách các khả năng chính (1–3 từ mỗi mục).
+- **Lưu trữ tệp cấu hình** — Ghi kết quả vào tệp `ai-description.md` ở thư mục gốc của gói.
+
+## Khởi tạo
+
+**Tham số khởi tạo:**
+- `ai: DesignTypesAi` — Đối tượng client AI để thực hiện các yêu cầu sinh mã.
+- `makeTypes: DesignTypesMake` — Trình tạo kiểu để truy cập định nghĩa kiểu và mã nguồn JS.
+- `prompts: DesignTypesPrompts` — Trình quản lý prompt để tích hợp quy tắc dự án.
+- `isRaw: boolean` — *(tùy chọn, mặc định `false`)* Cờ tắt xử lý AI.
+
+```typescript
+import {
+  DesignTypesAi,
+  DesignTypesMake,
+  DesignTypesPrompts,
+  DesignTypesDescription
+} from '@dxtmisha/scripts'
+
+const ai = new DesignTypesAi('dist')
+const makeTypes = new DesignTypesMake(ai)
+const prompts = new DesignTypesPrompts('ai-resources', ai)
+const desc = new DesignTypesDescription(ai, makeTypes, prompts)
+```
+
+## Phương thức
+
+### `is(): boolean`
+Kiểm tra xem tệp `ai-description.md` có tồn tại trong dự án hay không.
+
+### `getFullDescription(): string`
+Trả về chuỗi nội dung mô tả đầy đủ đã được tạo.
+
+### `make(): Promise<this>`
+Thực thi quy trình tạo mô tả qua AI và lưu tệp `ai-description.md`.
+
+## Ví dụ sử dụng
+
+```typescript
+const desc = new DesignTypesDescription(ai, makeTypes, prompts)
+await desc.make()
+
+console.log(desc.getFullDescription())
+```

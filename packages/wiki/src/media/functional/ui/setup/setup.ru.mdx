@@ -1,6 +1,6 @@
 import {Meta} from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/ru/# UI/# Подготовка проекта'/>
+<Meta title='@dxtmisha/ru/# UI/1. Подготовка проекта'/>
 
 # Подготовка проекта
 
@@ -62,11 +62,15 @@ export default viteComponents
   "scripts": {
     "ui": "dxt-ui",
     "wiki-storm": "dxt-wiki-storm",
-    "types": "dxt-types"
+    "types": "npm run ui && npm run build && npm run wiki-storm && dxt-types",
+    "screenshot": "dxt-screenshot",
+    "prepublishOnly": "npm run ui && npm run build && npm run wiki-storm && dxt-types-save"
   }
 }
 ```
 
 - **ui**: Запускает основной цикл генерации UI-компонентов.
 - **wiki-storm**: Генерирует и обновляет файлы для Wiki/Storybook.
-- **types**: Обновляет типы данных на основе текущей конфигурации.
+- **types**: Выполняет полный цикл сборки и обновляет типы данных.
+- **screenshot**: Запускает визуальное регрессионное тестирование и создание скриншотов.
+- **prepublishOnly**: Выполняет полную сборку, генерацию документации и фиксацию типов перед публикацией пакета.

@@ -1,0 +1,33 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Functions/run - Execute Package Command'/>
+
+# `run`
+
+Asynchronous utility function to execute a shell command inside the working directory of a specified package.
+
+**Parameters:**
+- `packageFile: PackageFile` — Package file representation object providing the package name and directory path.
+- `command: string` — Shell command string to execute.
+- `showStdout: boolean` — *(optional, default `false`)* Flag to output `stdout` to console.
+- `showStderr: boolean` — *(optional, default `false`)* Flag to output `stderr` to console.
+
+**Returns:**
+`Promise<boolean>` — Resolves to `true` if the command completed successfully (exit code 0), or `false` on failure.
+
+## How it works
+
+The function executes the command asynchronously using `child_process.exec` within the package directory resolved via `packageFile.getDir()`. If execution errors occur, the function catches the exception, logs error details, and returns `false`.
+
+## Example
+
+```typescript
+import { PackageFile, run } from '@dxtmisha/scripts'
+
+const packageFile = new PackageFile(['packages', 'core'])
+const success = await run(packageFile, 'npm run build', true, true)
+
+if (success) {
+  console.log('Package built successfully')
+}
+```

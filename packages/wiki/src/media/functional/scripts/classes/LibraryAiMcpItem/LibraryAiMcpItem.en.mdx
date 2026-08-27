@@ -1,0 +1,45 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/LibraryAiMcpItem - Single Package MCP Resource Handler'/>
+
+# Class LibraryAiMcpItem
+
+The `LibraryAiMcpItem` class represents an individual package directory during global MCP manifest aggregation and handles discovering and parsing `ai-mcp-resources.json` files.
+
+## Key Features
+
+- **Manifest Existence Checking** — Verifies presence of `ai-mcp-resources.json` inside the package directory.
+- **Safe Parsing** — Reads and validates arrays of MCP resource definitions.
+- **Path Segment Resolution** — Operates on segment arrays for cross-platform file path resolution.
+
+## Initialization
+
+**Constructor Parameters:**
+- `dir: string[]` — *(optional, default `[]`)* Path segments to package directory.
+
+```typescript
+import { LibraryAiMcpItem } from '@dxtmisha/scripts'
+
+const item = new LibraryAiMcpItem(['packages', 'core'])
+```
+
+## Methods
+
+### `isMcp(): boolean`
+Returns `true` if `ai-mcp-resources.json` exists in the target directory.
+
+### `make(): Record<string, any>[] | undefined`
+Reads and returns the array of MCP resource definitions or `undefined`.
+
+## Example
+
+```typescript
+import { LibraryAiMcpItem } from '@dxtmisha/scripts'
+
+const item = new LibraryAiMcpItem(['packages', 'core'])
+
+if (item.isMcp()) {
+  const resources = item.make()
+  console.log(resources)
+}
+```

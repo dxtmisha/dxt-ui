@@ -1,0 +1,51 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/DesignTypesPrompts - AI Prompt and Rules Manager'/>
+
+# Class DesignTypesPrompts
+
+The `DesignTypesPrompts` class reads prompt templates in `ai-resources/`, caches prompt metadata in JSON files, and generates project rule descriptions and prompt triggers for AI coding assistants.
+
+## Key Features
+
+- **MD5-Based Prompt Tracking** — Detects modifications in prompt markdown files and caches AI-generated metadata in JSON.
+- **Smart Summarization** — Uses LLMs to generate concise purpose statements and trigger conditions for each prompt asset.
+- **Rules Compilation** — Assembles project rules and prompt invocation guidelines for inclusion into `ai-description.md`.
+- **Dynamic Path Scanning** — Recursively discovers prompt templates within local `ai-resources/` and dependencies.
+
+## Initialization
+
+**Constructor Parameters:**
+- `promptsDir: string` — *(optional, default `'ai-resources'`)* Directory containing prompt files.
+- `ai: DesignTypesAi` — AI client instance used for prompt metadata synthesis.
+
+```typescript
+import { DesignTypesAi, DesignTypesPrompts } from '@dxtmisha/scripts'
+
+const ai = new DesignTypesAi('dist')
+const prompts = new DesignTypesPrompts('ai-resources', ai)
+```
+
+## Methods
+
+### `getCacheList(): DesignTypesPromptCacheList`
+Reads and returns the cached list of prompt metadata.
+
+### `toAiPrompts(): Promise<string>`
+Generates a formatted markdown block of project rules and prompt triggers for AI assistants.
+
+### `make(): Promise<this>`
+Scans prompt files, updates the metadata cache, and compiles prompt descriptions.
+
+## Example
+
+```typescript
+import { DesignTypesAi, DesignTypesPrompts } from '@dxtmisha/scripts'
+
+const ai = new DesignTypesAi('dist')
+const prompts = new DesignTypesPrompts('ai-resources', ai)
+
+await prompts.make()
+const rules = await prompts.toAiPrompts()
+console.log(rules)
+```

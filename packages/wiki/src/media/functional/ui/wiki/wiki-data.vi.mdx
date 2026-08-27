@@ -1,6 +1,6 @@
 import {Meta} from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/vi/# UI/# Cấu hình dữ liệu Wiki'/>
+<Meta title='@dxtmisha/vi/# UI/4. Cấu hình dữ liệu Wiki'/>
 
 # Cấu hình dữ liệu Wiki
 
@@ -74,9 +74,10 @@ Nếu khóa chứa dấu chấm, nó được hiểu là `[TênThànhPhần].[T�
 Mô tả cấu hình của một điều khiển Storybook cụ thể.
 
 - `type: StorybookControl` — xác định kiểu giao diện để điều khiển giá trị (trường văn bản, hộp kiểm, v.v.).
-- `options: StorybookArgsToOptionsByType` — một đối tượng cho các cài đặt hành vi và hiển thị nâng cao.
+- `options: StorybookArgsToOptionsByType` — đối tượng cho các cài đặt hành vi và hiển thị nâng cao.
 - `isDemo?: boolean` — chỉ ra rằng tham số này chỉ dành cho mục đích demo.
 - `demo?: any` — dữ liệu demo sẽ được thay thế trong các ví dụ.
+- `demoOptions?: Record<string, any>` — các tùy chọn demo bổ sung cho phần tử.
 - `hide?: boolean` — cho phép ẩn tham số khỏi bảng đối số nếu nó thuần túy mang tính kỹ thuật.
 
 ---
@@ -86,10 +87,11 @@ Mô tả cấu hình của một điều khiển Storybook cụ thể.
 Một đối tượng để cấu hình siêu dữ liệu và các ràng buộc của đối số.
 
 - `category?: StorybookCategory` — tên danh mục để nhóm trong bảng (sử dụng các giá trị từ enum `StorybookCategory`).
-- `value?: any` — giá trị hiện tại của đối số.
+- `type?: StorybookControl | string | string[]` — kiểu dữ liệu hoặc kiểu điều khiển đích (ví dụ: `'string'`, `['string', 'File']`).
 - `defaultValue?: string | number | boolean` — giá trị sẽ được hiển thị là "mặc định" trong tài liệu.
-- `description?: string | Record<string, string>` — mô tả của thuộc tính. Có thể là một chuỗi hoặc một đối tượng cho các ngôn ngữ khác nhau.
-- `options?: string[] | Record<string, string>` — danh sách các tùy chọn có sẵn để lựa chọn (có liên quan đến các kiểu `select` hoặc `radio`).
+- `value?: any` — giá trị hiện tại của đối số.
+- `description?: StorybookArgsToDescription` (`string | Record<string, string>`) — mô tả của thuộc tính. Có thể là một chuỗi hoặc một đối tượng có bản dịch theo ngôn ngữ (`en`, `ru`, `vi`).
+- `options?: (string | number)[] | Record<string, string>` — danh sách các tùy chọn có sẵn để lựa chọn (có liên quan đến kiểu `select`).
 - `min?: number` / `max?: number` — giá trị tối thiểu và tối đa cho các điều khiển số.
 - `order?: number` — chỉ số số để sắp xếp các đối số trong danh sách.
 
@@ -100,15 +102,32 @@ Một đối tượng để cấu hình siêu dữ liệu và các ràng buộc 
 #### `StorybookControl`
 Xác định kiểu hiển thị của điều khiển:
 - `text` — trường văn bản.
-- `boolean` — hộp kiểm (true/false).
+- `string` — trường nhập chuỗi ký tự.
 - `number` — nhập số.
+- `boolean` — hộp kiểm (true/false).
 - `select` — danh sách thả xuống (yêu cầu điền `options`).
+- `array` — nhập mảng giá trị.
 - `object` — trình chỉnh sửa cho các đối tượng JSON.
 
 #### `StorybookCategory`
 Được sử dụng để nhóm các thuộc tính vào các khối logic:
-- `Values` — các giá trị chính.
-- `Styles` — các tham số ngoại hình.
-- `Technical` — các cài đặt kỹ thuật và nội bộ.
-- `Adaptive` — các tham số về khả năng đáp ứng.
-- `Status` — các trạng thái của thành phần.
+- `actions` (`'Actions'`) — hành động và sự kiện.
+- `adaptive` (`'Adaptive'`) — các tham số về khả năng đáp ứng và căn chỉnh thích ứng.
+- `aria` (`'ARIA'`) — các thuộc tính trợ năng (ARIA).
+- `arrow` (`'Arrow'`) — các tham số mũi tên và chỉ hướng.
+- `attributes` (`'Attributes'`) — các thuộc tính HTML và thuộc tính hệ thống.
+- `bars` (`'Bars'`) — các tham số thanh, bảng điều khiển và chỉ báo tiến trình.
+- `counter` (`'Counter'`) — các tham số bộ đếm và huy hiệu.
+- `form` (`'Form'`) — các thuộc tính biểu mẫu và phần tử nhập liệu.
+- `hook` (`'Hook'`) — các tham số hook và hàm composable.
+- `icon` (`'Icon'`) — các tham số biểu tượng (icon).
+- `information` (`'Information'`) — các thuộc tính thông tin và chú thích.
+- `mask` (`'Mask'`) — các tham số mặt nạ nhập liệu.
+- `option` (`'Options'`) — các tùy chọn và danh sách lựa chọn.
+- `search` (`'Search'`) — các tham số tìm kiếm và bộ lọc.
+- `sort` (`'Sort'`) — các tham số sắp xếp.
+- `status` (`'Status'`) — các trạng thái thành phần (đang tải, lỗi, hoạt động, v.v.).
+- `style` (`'Styles'`) — các tham số ngoại hình và phong cách.
+- `technical` (`'Technical'`) — các cài đặt kỹ thuật và nội bộ.
+- `text` (`'Text'`) — các tham số văn bản và kiểu chữ.
+- `value` (`'Values'`) — các giá trị chính của thành phần.

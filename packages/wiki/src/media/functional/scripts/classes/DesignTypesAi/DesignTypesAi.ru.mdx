@@ -1,0 +1,50 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/scripts/Classes/DesignTypesAi - Низкоуровневый клиент ИИ для генерации типов'/>
+
+# Класс DesignTypesAi
+
+Класс `DesignTypesAi` предназначен для низкоуровневого взаимодействия с ИИ-моделями в процессе генерации и оптимизации TypeScript-типов, управления путями директорий и выполнения изолированных промптов.
+
+## Ключевые особенности
+
+- **Изолированный контекст промптов** — формирует строгие директивы для ИИ, предотвращая влияние истории диалога на результат генерации типов.
+- **Поддержка вспомогательного контекста кода** — передает исходный JavaScript-код как справочный материал без включения лишних сущностей в финальный вывод.
+- **Парсинг JSON-ответов** — метод `toAiJson` автоматически очищает markdown-блоки кода и парсит структурированные JSON-ответы от LLM.
+- **Определение контекста проекта** — извлекает и кэширует имя проекта из `package.json`.
+
+## Инициализация
+
+**Параметры конструктора:**
+- `dir: string` — *(опционально, по умолчанию `'dist'`)* путь к директории с декларациями типов.
+- `isRaw: boolean` — *(опционально, по умолчанию `false`)* флаг полного отключения обработки через ИИ.
+
+```typescript
+import { DesignTypesAi } from '@dxtmisha/scripts'
+
+const ai = new DesignTypesAi('dist', false)
+```
+
+## Методы
+
+### `getDirArray(): string[]`
+Возвращает массив сегментов пути к целевой директории.
+
+### `getProjectName(): string`
+Возвращает название текущего проекта из `package.json`.
+
+### `toAi(content: string, prompt: string, code?: string): Promise<string | undefined>`
+Отправляет контент и промпт в ИИ-провайдер и возвращает сгенерированный строковый ответ.
+
+### `toAiJson<T>(content: string, prompt: string, code?: string): Promise<T | undefined>`
+Отправляет запрос ИИ и парсит полученный ответ как строго типизированный объект `T`.
+
+## Пример использования
+
+```typescript
+import { DesignTypesAi } from '@dxtmisha/scripts'
+
+const ai = new DesignTypesAi('dist')
+const prompt = 'Оптимизируй типы, удалив неэкспортируемые интерфейсы'
+const result = await ai.toAi(dtsContent, prompt, jsCode)
+```
