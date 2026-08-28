@@ -1,20 +1,12 @@
 // export:none
 
-import { dirname } from 'node:path'
-import { fileURLToPath } from 'node:url'
 import { toKebabCase } from '@dxtmisha/functional-basic'
 import { getComponentPaths } from '../../functions/getComponentPaths'
-import { hasNativeDirname } from '../../functions/hasNativeDirname'
 
 import { PropertiesFile } from '../Properties/PropertiesFile'
 
+import { componentDocTemplates } from '../../media/templates/componentDocTemplates'
 import { UI_FILE_PACKAGE } from '../../config'
-
-const dirnamePath = hasNativeDirname()
-  ? __dirname
-  : dirname(fileURLToPath(import.meta.url))
-
-const DIR_SAMPLE = [dirnamePath, '..', '..', 'media', 'templates', 'componentDoc']
 
 /**
  * Class for creating component files from templates.
@@ -22,9 +14,13 @@ const DIR_SAMPLE = [dirnamePath, '..', '..', 'media', 'templates', 'componentDoc
  * Класс для создания файлов компонента из шаблонов.
  */
 export class ComponentItem {
+  protected sample: Record<string, string> = componentDocTemplates
+
   /**
-   * Constructor
-   * @param path component directory path/ путь к директории компонента
+   * Constructor for ComponentItem.
+   *
+   * Конструктор для ComponentItem.
+   * @param path component directory path / путь к директории компонента
    */
   constructor(
     protected readonly path: string
@@ -45,7 +41,7 @@ export class ComponentItem {
       .forEach((path) => {
         this.writeFile(
           path,
-          this.replacement(this.readFile(path))
+          this.replacement(this.readSample(path))
         )
       })
 
@@ -53,9 +49,36 @@ export class ComponentItem {
   }
 
   /**
+   * Builds destination file path for output.
+   *
+   * Строит путь назначения для выходного файла.
+   * @param path filename / имя файла
+   * @returns destination path segments / сегменты пути назначения
+   * @protected
+   */
+  protected getFilePath(path: string): string[] {
+    return [
+      ...getComponentPaths(this.path),
+      this.replacement(path)
+    ]
+  }
+
+  /**
+   * Lists all template file names.
+   *
+   * Получает список всех имен файлов шаблонов.
+   * @returns list of template file paths / список путей файлов шаблонов
+   * @protected
+   */
+  protected getFilesSample(): string[] {
+    return Object.keys(this.sample)
+  }
+
+  /**
    * Gets component name from directory path.
    *
    * Получает имя компонента из пути директории.
+   * @returns component name / имя компонента
    * @protected
    */
   protected getName(): string {
@@ -67,6 +90,7 @@ export class ComponentItem {
    * Reads project name from package.json.
    *
    * Читает имя проекта из package.json.
+   * @returns project name / имя проекта
    * @protected
    */
   protected getProjectName(): string {
@@ -74,55 +98,10 @@ export class ComponentItem {
   }
 
   /**
-   * Builds destination file path for output.
-   *
-   * Строит путь назначения для выходного файла.
-   * @param path filename/ имя файла
-   * @protected
-   */
-  protected getFilePath(path: string): string[] {
-    return [
-      ...getComponentPaths(this.path),
-      this.replacement(path)
-    ]
-  }
-
-  /**
-   * Builds template file path for reading.
-   *
-   * Строит путь к файлу шаблона для чтения.
-   * @param path filename/ имя файла
-   * @protected
-   */
-  protected getSamplePath(path: string): string[] {
-    return [...DIR_SAMPLE, path]
-  }
-
-  /**
-   * Lists all template files recursively.
-   *
-   * Получает список всех файлов шаблонов рекурсивно.
-   * @protected
-   */
-  protected getFilesSample(): string[] {
-    return PropertiesFile.readDirRecursive(DIR_SAMPLE)
-  }
-
-  /**
-   * Reads template file content as string.
-   *
-   * Читает содержимое файла шаблона как строку.
-   * @param path filename/ имя файла
-   * @protected
-   */
-  protected readFile(path: string): string {
-    return String(PropertiesFile.readFile(this.getSamplePath(path)))
-  }
-
-  /**
    * Reads package.json data or returns empty object.
    *
    * Читает данные package.json или возвращает пустой объект.
+   * @returns package.json contents / содержимое package.json
    * @protected
    */
   protected readPackage(): Record<string, any> {
@@ -130,11 +109,40 @@ export class ComponentItem {
   }
 
   /**
+   * Reads template file content as string from sample cache.
+   *
+   * Читает содержимое файла шаблона как строку из кэша шаблонов.
+   * @param path filename / имя файла
+   * @returns template file content / содержимое файла шаблона
+   * @protected
+   */
+  protected readSample(path: string): string {
+    return this.sample?.[path] ?? ''
+  }
+
+  /**
+   * Replaces template placeholders with actual values.
+   *
+   * Заменяет плейсхолдеры шаблона реальными значениями.
+   * @param contentOrPath content or path / содержимое или путь
+   * @returns processed content or path / обработанное содержимое или путь
+   * @protected
+   */
+  protected replacement(contentOrPath: string): string {
+    return contentOrPath
+      .replace('_.gitignore.txt', '.gitignore')
+      .replace(/ComponentDoc/g, this.getName())
+      .replace(/component-doc/g, toKebabCase(this.getName()))
+      .replace(/\[project]/g, this.getProjectName())
+      .replace(/\[path]/g, PropertiesFile.splitForDir(this.path).join('/'))
+  }
+
+  /**
    * Writes generated file to destination.
    *
    * Записывает сгенерированный файл в место назначения.
-   * @param path filename/ имя файла
-   * @param content file content/ содержимое файла
+   * @param path filename / имя файла
+   * @param content file content / содержимое файла
    * @protected
    */
   protected writeFile(path: string, content: string): void {
@@ -142,20 +150,5 @@ export class ComponentItem {
 
     PropertiesFile.writeByPath(paths, content)
     PropertiesFile.chmod(paths)
-  }
-
-  /**
-   * Replaces template placeholders with actual values.
-   *
-   * Заменяет плейсхолдеры шаблона реальными значениями.
-   * @param contentOrPath content or path/ содержимое или путь
-   * @protected
-   */
-  protected replacement(contentOrPath: string): string {
-    return contentOrPath
-      .replace(/ComponentDoc/g, this.getName())
-      .replace(/component-doc/g, toKebabCase(this.getName()))
-      .replace(/\[project]/g, this.getProjectName())
-      .replace(/\[path]/g, PropertiesFile.splitForDir(this.path).join('/'))
   }
 }

@@ -1,20 +1,14 @@
 // export:none
 
 import requirePath from 'node:path'
-import { fileURLToPath } from 'node:url'
-import { isFilled } from '@dxtmisha/functional-basic'
-import { hasNativeDirname } from '../../functions/hasNativeDirname'
+import { forEach, isFilled } from '@dxtmisha/functional-basic'
 
 import { PropertiesConfig } from '../Properties/PropertiesConfig'
 import { PropertiesFile } from '../Properties/PropertiesFile'
 
+import { packageTemplates } from '../../media/templates/packageTemplates'
 import { UI_DIR_PACKAGES, UI_DIRS_LIBRARY, UI_FILE_PACKAGE } from '../../config'
 
-const dirnamePath = hasNativeDirname()
-  ? __dirname
-  : requirePath.dirname(fileURLToPath(import.meta.url))
-
-const DIR_SAMPLE = [dirnamePath, '..', '..', 'media', 'templates', 'packages']
 const DIR_STORYBOOK = [
   UI_DIR_PACKAGES,
   'storybook',
@@ -34,6 +28,8 @@ type PackageInitItemFile = {
  * Класс для инициализации отдельного компонента пакета, управления его файлами, зависимостями и интеграцией.
  */
 export class PackageInitItem {
+  protected sample: Record<string, Record<string, string>> = packageTemplates
+
   /**
    * Constructor for PackageInitItem.
    *
@@ -56,7 +52,7 @@ export class PackageInitItem {
    *
    * Выполняет полный цикл инициализации элемента пакета, включая создание файлов и обновление интеграций.
    */
-  make() {
+  make(): void {
     console.log('Package init in:', this.dir)
 
     ;[
@@ -78,229 +74,10 @@ export class PackageInitItem {
   }
 
   /**
-   * Gets the original file name by replacing placeholders.
-   *
-   * Получает оригинальное имя файла, заменяя заполнители.
-   * @param filePath file path with placeholders / путь к файлу с заполнителями
-   */
-  protected getFileName(filePath: string): string {
-    return filePath.replace('_.gitignore.txt', '.gitignore')
-  }
-
-  /**
-   * Gets sample files for the specified package type.
-   *
-   * Получает файлы-образцы для указанного типа пакета.
-   */
-  protected getSample(): PackageInitItemFile[] {
-    return this.getFileByList([...DIR_SAMPLE, this.type])
-  }
-
-  /**
-   * Gets template files if templates path is specified.
-   *
-   * Получает файлы шаблонов, если указан путь к шаблонам.
-   */
-  protected getTemplates(): PackageInitItemFile[] {
-    if (isFilled(this.templates)) {
-      return this.getFileByList([this.templates])
-    }
-
-    return []
-  }
-
-  /**
-   * Creates a package file object with content from the specified path.
-   *
-   * Создает объект файла пакета с содержимым из указанного пути.
-   * @param file file name / имя файла
-   * @param path file path array / массив пути к файлу
-   */
-  protected getFile(
-    file: string,
-    path: string[]
-  ): PackageInitItemFile {
-    return {
-      file: PropertiesFile.joinPath([...this.dir, file]),
-      path: PropertiesFile.joinPath(path),
-      content: String(PropertiesFile.readFileOnly(path))
-    }
-  }
-
-  /**
-   * Gets all files from directory and converts them to PackageInitItemFile objects.
-   *
-   * Получает все файлы из директории и преобразует их в объекты PackageInitItemFile.
-   * @param dir directory path array / массив пути к директории
-   */
-  protected getFileByList(dir: string[]): PackageInitItemFile[] {
-    const list = PropertiesFile.readDirRecursive(dir)
-
-    const data: PackageInitItemFile[] = []
-
-    list.forEach((item) => {
-      data.push(this.getFile(item, [...dir, item]))
-    })
-
-    return data
-  }
-
-  /**
-   * Gets normalized package name by replacing path separators.
-   *
-   * Получает нормализованное имя пакета, заменяя разделители путей.
-   */
-  protected getName(): string {
-    return this.name.replace(requirePath.sep, '/')
-  }
-
-  /**
-   * Gets package code by replacing path separators with hyphens.
-   *
-   * Получает код пакета, заменяя разделители путей на дефисы.
-   */
-  protected getCode(): string {
-    return this.getName().replace('/', '-')
-  }
-
-  /**
-   * Reads project name from package.json.
-   *
-   * Читает имя проекта из package.json.
-   */
-  protected getProjectName(): string {
-    const name = this.getName()
-    const packagePrefix = PropertiesConfig.getPackagePrefix()
-
-    if (packagePrefix) {
-      return `${packagePrefix}/${name}`
-    }
-
-    const mainName = String(this.readPackage()?.name)
-    const code = mainName.split('/')?.[0] ?? mainName
-
-    return `${code}/${name}`
-  }
-
-  /**
-   * Reads package.json data or returns empty object.
-   *
-   * Читает данные package.json или возвращает пустой объект.
-   */
-  protected readPackage(): Record<string, any> {
-    return PropertiesFile.readFile(UI_FILE_PACKAGE) ?? {}
-  }
-
-  /**
-   * Writes file with content replacement and sets permissions.
-   *
-   * Записывает файл с заменой содержимого и устанавливает права доступа.
-   * @param path file path / путь к файлу
-   * @param content file content / содержимое файла
-   */
-  protected writeFile(path: string, content: string): void {
-    const contentEdit = content
-      .replace(/@packages\/library/g, this.getProjectName())
-      .replace(/\[name]/g, this.getName())
-
-    PropertiesFile.writeByPath(path, contentEdit)
-    PropertiesFile.chmod(path)
-  }
-
-  /**
-   * Generates a library file for the package.
-   *
-   * Генерирует файл библиотеки для пакета.
-   */
-  protected makeLibrary(): this {
-    const name = this.getCode() + '.ts'
-    const path: string[] = [...UI_DIRS_LIBRARY, name]
-
-    if (
-      PropertiesFile.is(UI_DIRS_LIBRARY)
-      && !PropertiesFile.is(path)
-    ) {
-      console.log('Generate library...')
-
-      PropertiesFile.writeByPath(path, `import '${this.getProjectName()}/style.css'
-export * from '${this.getProjectName()}'
-`
-      )
-    }
-
-    return this
-  }
-
-  /**
-   * Updates package.json to include the new package.
-   *
-   * Обновляет package.json для включения нового пакета.
-   */
-  protected makePackage(): this {
-    let packageFile = PropertiesFile.readFileOnly(UI_FILE_PACKAGE)
-    const name = this.getCode()
-
-    if (
-      packageFile
-      && !packageFile.match(new RegExp(`["']${this.getProjectName()}["']`))
-    ) {
-      let edit = false
-
-      if (
-        packageFile.match(/["']dependencies["']/)
-      ) {
-        console.log('Update package.json: dependencies...')
-
-        edit = true
-        packageFile = packageFile.replace(
-          /(["']dependencies["']:[^{]+{)/,
-          `$1
-    "${this.getProjectName()}": "workspace:*",`
-        )
-      }
-
-      if (
-        packageFile.match(/["']exports["']/)
-      ) {
-        console.log('Update package.json: exports...')
-
-        edit = true
-        packageFile = packageFile.replace(
-          /(["']exports["']:[^{]+{)/,
-          `$1
-    "./${name}": {
-      "import": "./dist/${name}.js",
-      "types": "./dist/${name}.d.ts"
-    },`
-        )
-      }
-
-      if (
-        packageFile.match(/["']files["']/)
-      ) {
-        console.log('Update package.json: files...')
-
-        edit = true
-        packageFile = packageFile.replace(
-          /(["']files["']:[^[]+\[)/,
-          `$1
-    "packages/${name}/dist",
-    "packages/${name}/package.json",`
-        )
-      }
-
-      if (edit) {
-        PropertiesFile.writeByPath(UI_FILE_PACKAGE, packageFile)
-      }
-    }
-
-    return this
-  }
-
-  /**
    * Updates Storybook configuration to include the new package stories.
    *
    * Обновляет конфигурацию Storybook для включения историй нового пакета.
+   * @returns current instance / текущий экземпляр
    */
   makeStorybook(): this {
     if (PropertiesFile.is(DIR_STORYBOOK)) {
@@ -325,5 +102,259 @@ export * from '${this.getProjectName()}'
     }
 
     return this
+  }
+
+  /**
+   * Gets package code by replacing path separators with hyphens.
+   *
+   * Получает код пакета, заменяя разделители путей на дефисы.
+   * @returns package code / код пакета
+   * @protected
+   */
+  protected getCode(): string {
+    return this.getName().replace('/', '-')
+  }
+
+  /**
+   * Creates a package file object with content from the specified path.
+   *
+   * Создает объект файла пакета с содержимым из указанного пути.
+   * @param file file name / имя файла
+   * @param path file path array / массив пути к файлу
+   * @returns package file representation / представление файла пакета
+   * @protected
+   */
+  protected getFile(
+    file: string,
+    path: string[]
+  ): PackageInitItemFile {
+    return {
+      file: PropertiesFile.joinPath([...this.dir, file]),
+      path: PropertiesFile.joinPath(path),
+      content: String(PropertiesFile.readFileOnly(path))
+    }
+  }
+
+  /**
+   * Gets all files from directory and converts them to PackageInitItemFile objects.
+   *
+   * Получает все файлы из директории и преобразует их в объекты PackageInitItemFile.
+   * @param dir directory path array / массив пути к директории
+   * @returns list of package files / список файлов пакета
+   * @protected
+   */
+  protected getFileByList(dir: string[]): PackageInitItemFile[] {
+    const list = PropertiesFile.readDirRecursive(dir)
+    const data: PackageInitItemFile[] = []
+
+    list.forEach((item) => {
+      data.push(this.getFile(item, [...dir, item]))
+    })
+
+    return data
+  }
+
+  /**
+   * Gets the original file name by replacing placeholders.
+   *
+   * Получает оригинальное имя файла, заменяя заполнители.
+   * @param filePath file path with placeholders / путь к файлу с заполнителями
+   * @returns normalized file name / нормализованное имя файла
+   * @protected
+   */
+  protected getFileName(filePath: string): string {
+    return filePath.replace('_.gitignore.txt', '.gitignore')
+  }
+
+  /**
+   * Gets normalized package name by replacing path separators.
+   *
+   * Получает нормализованное имя пакета, заменяя разделители путей.
+   * @returns normalized package name / нормализованное имя пакета
+   * @protected
+   */
+  protected getName(): string {
+    return this.name.replace(requirePath.sep, '/')
+  }
+
+  /**
+   * Reads project name from package.json.
+   *
+   * Читает имя проекта из package.json.
+   * @returns project name / имя проекта
+   * @protected
+   */
+  protected getProjectName(): string {
+    const name = this.getName()
+    const packagePrefix = PropertiesConfig.getPackagePrefix()
+
+    if (packagePrefix) {
+      return `${packagePrefix}/${name}`
+    }
+
+    const mainName = String(this.readPackage()?.name)
+    const code = mainName.split('/')?.[0] ?? mainName
+
+    return `${code}/${name}`
+  }
+
+  /**
+   * Gets sample files for the specified package type.
+   *
+   * Получает файлы-образцы для указанного типа пакета.
+   * @returns list of sample files / список файлов-образцов
+   * @protected
+   */
+  protected getSample(): PackageInitItemFile[] {
+    const templates = this.sample?.[this.type]
+
+    if (templates) {
+      const data: PackageInitItemFile[] = []
+
+      forEach(templates, (content, file) => {
+        data.push({
+          file: PropertiesFile.joinPath([...this.dir, file]),
+          path: file,
+          content
+        })
+      })
+
+      return data
+    }
+
+    return []
+  }
+
+  /**
+   * Gets template files if templates path is specified.
+   *
+   * Получает файлы шаблонов, если указан путь к шаблонам.
+   * @returns list of custom template files / список файлов пользовательских шаблонов
+   * @protected
+   */
+  protected getTemplates(): PackageInitItemFile[] {
+    if (isFilled(this.templates)) {
+      return this.getFileByList([this.templates])
+    }
+
+    return []
+  }
+
+  /**
+   * Reads package.json data or returns empty object.
+   *
+   * Читает данные package.json или возвращает пустой объект.
+   * @returns package.json data / данные package.json
+   * @protected
+   */
+  protected readPackage(): Record<string, any> {
+    return PropertiesFile.readFile(UI_FILE_PACKAGE) ?? {}
+  }
+
+  /**
+   * Generates a library file for the package.
+   *
+   * Генерирует файл библиотеки для пакета.
+   * @returns current instance / текущий экземпляр
+   * @protected
+   */
+  protected makeLibrary(): this {
+    const name = this.getCode() + '.ts'
+    const path: string[] = [...UI_DIRS_LIBRARY, name]
+
+    if (
+      PropertiesFile.is(UI_DIRS_LIBRARY)
+      && !PropertiesFile.is(path)
+    ) {
+      console.log('Generate library...')
+
+      PropertiesFile.writeByPath(
+        path,
+        `import '${this.getProjectName()}/style.css'
+export * from '${this.getProjectName()}'
+`
+      )
+    }
+
+    return this
+  }
+
+  /**
+   * Updates package.json to include the new package.
+   *
+   * Обновляет package.json для включения нового пакета.
+   * @returns current instance / текущий экземпляр
+   * @protected
+   */
+  protected makePackage(): this {
+    let packageFile = PropertiesFile.readFileOnly(UI_FILE_PACKAGE)
+    const name = this.getCode()
+
+    if (
+      packageFile
+      && !packageFile.match(new RegExp(`["']${this.getProjectName()}["']`))
+    ) {
+      let edit = false
+
+      if (packageFile.match(/["']dependencies["']/)) {
+        console.log('Update package.json: dependencies...')
+
+        edit = true
+        packageFile = packageFile.replace(
+          /(["']dependencies["']:[^{]+{)/,
+          `$1
+    "${this.getProjectName()}": "workspace:*",`
+        )
+      }
+
+      if (packageFile.match(/["']exports["']/)) {
+        console.log('Update package.json: exports...')
+
+        edit = true
+        packageFile = packageFile.replace(
+          /(["']exports["']:[^{]+{)/,
+          `$1
+    "./${name}": {
+      "import": "./dist/${name}.js",
+      "types": "./dist/${name}.d.ts"
+    },`
+        )
+      }
+
+      if (packageFile.match(/["']files["']/)) {
+        console.log('Update package.json: files...')
+
+        edit = true
+        packageFile = packageFile.replace(
+          /(["']files["']:[^[]+\[)/,
+          `$1
+    "packages/${name}/dist",
+    "packages/${name}/package.json",`
+        )
+      }
+
+      if (edit) {
+        PropertiesFile.writeByPath(UI_FILE_PACKAGE, packageFile)
+      }
+    }
+
+    return this
+  }
+
+  /**
+   * Writes file with content replacement and sets permissions.
+   *
+   * Записывает файл с заменой содержимого и устанавливает права доступа.
+   * @param path file path / путь к файлу
+   * @param content file content / содержимое файла
+   * @protected
+   */
+  protected writeFile(path: string, content: string): void {
+    const contentEdit = content
+      .replace(/@packages\/library/g, this.getProjectName())
+      .replace(/\[name]/g, this.getName())
+
+    PropertiesFile.writeByPath(path, contentEdit)
+    PropertiesFile.chmod(path)
   }
 }
