@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import process from 'node:process'
 import { DesignTypes } from '../dist/library.js'
 
 const dir = process.argv?.[2]

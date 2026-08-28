@@ -36,7 +36,6 @@
     "package-library": "dxt-package library",
     "package-project": "dxt-package project",
     "package-figma": "dxt-package figma",
-    "build-functional": "dxt-build-functional",
     "build-packages": "dxt-build-packages",
     "build-publish-packages": "dxt-build-publish-packages",
     "prompt": "dxt-prompt",

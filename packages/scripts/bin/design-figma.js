@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import process from 'node:process'
 import { DesignFigma } from '../dist/library.js'
 
 const fileKey = process.argv?.[2] ?? 'fileKey'

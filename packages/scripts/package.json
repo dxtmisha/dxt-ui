@@ -54,7 +54,6 @@
   "module": "./dist/library.js",
   "types": "./dist/library.d.ts",
   "bin": {
-    "dxt-build-functional": "bin/build-functional.js",
     "dxt-build-packages": "bin/build-packages.js",
     "dxt-build-publish-packages": "bin/build-publish-packages.js",
     "dxt-component": "bin/design-component.js",
