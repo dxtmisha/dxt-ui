@@ -5,6 +5,7 @@ import { toCamelCase, toCamelCaseFirst } from '@dxtmisha/functional-basic'
 import { PropertiesFile } from '../Properties/PropertiesFile'
 
 import { DesignCommand } from './DesignCommand'
+import { constructorTemplates } from '../../media/templates/constructorTemplates'
 
 import { UI_DIR_IN, UI_DIR_CONSTRUCTOR, UI_DIRS_LIBRARY } from '../../config'
 
@@ -25,7 +26,8 @@ const FILE_INDEX = 'index.ts'
  * Автоматизирует создание определений свойств, файлов типов, стилей и логики интеграции для конструкторов.
  */
 export class DesignConstructor extends DesignCommand {
-  protected DIR_SAMPLE: string = UI_DIR_CONSTRUCTOR
+  protected sample = constructorTemplates
+  protected mark = UI_DIR_CONSTRUCTOR
   protected dir: string[]
 
   /**
@@ -44,7 +46,7 @@ export class DesignConstructor extends DesignCommand {
     this.dir = [
       PropertiesFile.getRoot(),
       UI_DIR_IN,
-      this.DIR_SAMPLE,
+      this.mark,
       this.getStructure().getComponentNameFirst()
     ]
   }

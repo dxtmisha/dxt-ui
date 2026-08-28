@@ -1,9 +1,6 @@
 // export:none
 
-import { dirname } from 'node:path'
-import { fileURLToPath } from 'node:url'
 import { toArray, toCamelCase, toCamelCaseFirst, toKebabCase } from '@dxtmisha/functional-basic'
-import { hasNativeDirname } from '../../functions/hasNativeDirname'
 import { getPackageJson } from '../../functions/getPackageJson'
 
 import { PropertiesConfig } from '../Properties/PropertiesConfig'
@@ -13,12 +10,6 @@ import { DesignReplace } from './DesignReplace'
 
 import { UI_FILE_PACKAGE } from '../../config'
 
-const dirnamePath = hasNativeDirname()
-  ? __dirname
-  : dirname(fileURLToPath(import.meta.url))
-
-const DIR_SAMPLE = [dirnamePath, '..', '..', 'media', 'templates']
-
 /**
  * Base abstract class for generating script files and design system components.
  * Provides unified logic for template reading, data transformation, and file writing.
@@ -27,7 +18,8 @@ const DIR_SAMPLE = [dirnamePath, '..', '..', 'media', 'templates']
  * Обеспечивает единую логику чтения шаблонов, трансформации данных и записи файлов.
  */
 export abstract class DesignCommand {
-  protected abstract DIR_SAMPLE: string
+  protected abstract sample: Record<string, string>
+  protected abstract mark: string
   protected abstract dir: string[]
 
   protected structure?: DesignStructure
@@ -132,7 +124,7 @@ export abstract class DesignCommand {
   protected getReplace(sample?: string): DesignReplace {
     return new DesignReplace(
       this.getStructure(),
-      this.DIR_SAMPLE,
+      this.mark,
       sample ?? ''
     )
   }
@@ -154,7 +146,7 @@ export abstract class DesignCommand {
    * @param name file name/ название файла
    */
   protected readSample(name: string): string | undefined {
-    return PropertiesFile.readFile<string>([...DIR_SAMPLE, this.DIR_SAMPLE, name])
+    return this.sample?.[name]
   }
 
   /**

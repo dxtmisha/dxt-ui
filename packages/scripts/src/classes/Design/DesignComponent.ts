@@ -17,6 +17,8 @@ import { DesignCommand } from './DesignCommand'
 import { DesignTypescript } from './DesignTypescript'
 import type { DesignReplace } from './DesignReplace'
 
+import { componentTemplates } from '../../media/templates/componentTemplates'
+
 import {
   UI_DIR_COMPONENTS,
   UI_DIR_CONSTRUCTOR,
@@ -49,7 +51,8 @@ const FILE_STORIES_DOCUMENTATION = 'DesignComponent.mdx'
  * Управляет жизненным циклом свойств, стилей, компонентов Vue, историй и вики-документации.
  */
 export class DesignComponent extends DesignCommand {
-  protected DIR_SAMPLE: string = 'component'
+  protected sample = componentTemplates
+  protected mark = 'component'
   protected dir: string[]
   protected propsType: DesignTypescriptProp[] | undefined
   protected slotsType: DesignTypescriptProp[] | undefined
