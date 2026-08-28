@@ -50,7 +50,9 @@ export const viteComponents = mergeConfig(
       }
     },
     plugins: [
-      mdx(),
+      mdx({
+        exclude: [/\?raw$/, /media\/templates/]
+      }),
       vitePluginComponents()
     ]
   }

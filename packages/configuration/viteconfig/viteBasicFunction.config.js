@@ -27,6 +27,7 @@ import { browserslistToTargets } from 'lightningcss'
  * @param browserslistValue browserslist query / запрос browserslist
  * @param exclude patterns to exclude for d.ts / паттерны исключения для d.ts
  * @param excludeExtended extra exclude patterns / дополнительные паттерны исключения
+ * @param noDiscovery disable automatic dependency discovery for pre-bundling / отключить автоматическое сканирование зависимостей для пре-бандлинга
  * @returns Vite config / конфигурация Vite
  */
 export const viteBasicFunction = (
@@ -54,6 +55,7 @@ export const viteBasicFunction = (
     '@vue/reactivity',
     'react',
     'react/jsx-runtime',
+    'react/jsx-dev-runtime',
     '@storybook',
     '@storybook/addon-docs',
     '@dxtmisha/configuration',
@@ -94,7 +96,8 @@ export const viteBasicFunction = (
     '**/main.ts',
     '**/main.tsx'
   ],
-  excludeExtended = []
+  excludeExtended = [],
+  noDiscovery = true
 ) => defineConfig({
   build: {
     target,
@@ -135,6 +138,7 @@ export const viteBasicFunction = (
     }
   },
   optimizeDeps: {
+    noDiscovery,
     exclude: ['@napi-rs/canvas', 'fsevents']
   },
   css: {

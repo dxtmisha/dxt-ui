@@ -15,6 +15,7 @@
  * @param browserslistValue browserslist query / запрос browserslist
  * @param exclude patterns to exclude for d.ts / паттерны исключения для d.ts
  * @param excludeExtended extra exclude patterns / дополнительные паттерны исключения
+ * @param noDiscovery disable automatic dependency discovery for pre-bundling / отключить автоматическое сканирование зависимостей для пре-бандлинга
  * @returns Vite config / конфигурация Vite
  */
 export declare const viteBasicFunction: (
@@ -30,5 +31,6 @@ export declare const viteBasicFunction: (
   bundledPackages?: string[],
   browserslistValue?: string,
   exclude?: string[],
-  excludeExtended?: string[]
+  excludeExtended?: string[],
+  noDiscovery?: boolean
 ) => import('vite').UserConfigExport
