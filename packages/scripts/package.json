@@ -53,7 +53,6 @@
     "dxt-build-packages": "bin/build-packages.ts",
     "dxt-build-publish-packages": "bin/build-publish-packages.ts",
     "dxt-component": "bin/design-component.ts",
-    "dxt-component-wiki": "bin/design-component-wiki.ts",
     "dxt-constructor": "bin/design-constructor.ts",
     "dxt-figma-layout": "bin/design-figma.ts",
     "dxt-flags": "bin/design-flags.ts",
