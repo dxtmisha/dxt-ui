@@ -33,7 +33,7 @@ export class VitePluginComponents {
         return this.renderChunk(code, chunk)
       },
       closeBundle: () => {
-        this.removeWikiFiles(this.outputDirectory)
+        //this.removeWikiFiles(this.outputDirectory)
       }
     }
   }

@@ -107,17 +107,17 @@ export class DesignUi {
     if (packageJson?.exports) {
       packageJson.exports['.'] = {
         types: './dist/library/types.d.ts',
-        default: './dist/types.js'
+        default: './dist/library/types.js'
       }
       packageJson.exports['./plugin'] = {
         types: './dist/library/plugin.d.ts',
-        default: './dist/plugin.js'
+        default: './dist/library/plugin.js'
       }
       packageJson.exports['./media'] = {
         types: './dist/library/media.d.ts',
-        default: './dist/media.js'
+        default: './dist/library/media.js'
       }
-      packageJson.exports['./style.css'] = './dist/style.css'
+      packageJson.exports['./style.css'] = `./dist/styles/${projectName}/main.css`
       packageJson.exports['./style/ui.scss'] = `./src/styles/${projectName}/main.scss`
       packageJson.exports['./ui-properties'] = {
         sass: './ui-properties.scss',
@@ -125,6 +125,15 @@ export class DesignUi {
       }
       packageJson.exports['./types.d.ts'] = './dist/library/types.d.ts'
       packageJson['web-types'] = './dist/web-types.json'
+      packageJson.main = './dist/library/types.js'
+      packageJson.module = './dist/library/types.js'
+      packageJson.types = './dist/library/types.d.ts'
+      packageJson.sideEffects = [
+        '*.css',
+        '*.scss',
+        '**/*.css',
+        '**/*.scss'
+      ]
 
       PropertiesFile.writeByPath(UI_FILE_PACKAGE, packageJson)
     }
@@ -133,9 +142,11 @@ export class DesignUi {
   }
 
   protected makeUiProperties(): this {
+    const projectName = toCamelCaseFirst(PropertiesConfig.getProjectName())
+
     PropertiesFile.writeByPath(
       UI_FILE_STYLE_PROPERTIES,
-      '@forward "./src/styles/Ui/style.scss";'
+      `@forward "./src/styles/${projectName}/style.scss";`
     )
 
     return this

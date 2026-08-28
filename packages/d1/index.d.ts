@@ -1,1 +1,1 @@
-/// <reference types="./dist/types.d.ts" />
+/// <reference types="./dist/library/types.d.ts" />

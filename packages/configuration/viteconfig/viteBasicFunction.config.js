@@ -25,6 +25,8 @@ import { browserslistToTargets } from 'lightningcss'
  * @param rollupTypes whether to use rollupTypes in dts plugin / использовать ли rollupTypes в плагине dts
  * @param bundledPackages packages to bundle types for / пакеты, типы которых нужно собрать
  * @param browserslistValue browserslist query / запрос browserslist
+ * @param exclude patterns to exclude for d.ts / паттерны исключения для d.ts
+ * @param excludeExtended extra exclude patterns / дополнительные паттерны исключения
  * @returns Vite config / конфигурация Vite
  */
 export const viteBasicFunction = (
@@ -73,7 +75,26 @@ export const viteBasicFunction = (
   fileCssName = 'style.css',
   rollupTypes = false,
   bundledPackages = undefined,
-  browserslistValue = '>= 5%'
+  browserslistValue = '>= 5%',
+  exclude = [
+    '**/__tests__/**',
+    '**/*.test.ts',
+    '**/*.spec.ts',
+    '**/*.stories.ts',
+    '**/*.stories.tsx',
+    '**/*.json',
+    '**/node_modules/**',
+    '**/dist/**',
+    '**/dist-temporary/**',
+    '**/*.config.ts',
+    '**/*.config.js',
+    '**/.gitignore',
+    '**/vite-env.d.ts',
+    '**/App.vue',
+    '**/main.ts',
+    '**/main.tsx'
+  ],
+  excludeExtended = []
 ) => defineConfig({
   build: {
     target,
@@ -129,19 +150,8 @@ export const viteBasicFunction = (
       clearPureImport: true,
       copyDtsFiles: true,
       exclude: [
-        '**/__tests__/**',
-        '**/*.test.ts',
-        '**/*.spec.ts',
-        '**/*.stories.ts',
-        '**/*.stories.tsx',
-        '**/*.json',
-        '**/node_modules/**',
-        '**/dist/**',
-        '**/dist-temporary/**',
-        '**/*.config.ts',
-        '**/*.config.js',
-        '**/.gitignore',
-        '**/vite-env.d.ts'
+        ...exclude,
+        ...excludeExtended
       ],
       include: [
         ...(Array.isArray(entry) ? entry : [entry]),

@@ -20,8 +20,24 @@ export const viteComponents = mergeConfig(
     undefined,
     undefined,
     undefined,
+    '',
     false,
-    false
+    undefined,
+    undefined,
+    undefined,
+    [
+      '**/*AiWiki*',
+      '**/*AiWiki.vue',
+      '**/AiWiki.vue',
+      '**/wiki.ts',
+      '**/wikiData.ts',
+      '**/*.wiki.ts',
+      '**/*.wiki.*',
+      '**/wiki/**',
+      '**/App.vue',
+      '**/main.ts',
+      '**/main.tsx'
+    ]
   ),
   {
     build: {

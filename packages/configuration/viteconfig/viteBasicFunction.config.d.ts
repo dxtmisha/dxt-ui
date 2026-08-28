@@ -13,6 +13,8 @@
  * @param rollupTypes whether to use rollupTypes in dts plugin / использовать ли rollupTypes в плагине dts
  * @param bundledPackages packages to bundle types for / пакеты, типы которых нужно собрать
  * @param browserslistValue browserslist query / запрос browserslist
+ * @param exclude patterns to exclude for d.ts / паттерны исключения для d.ts
+ * @param excludeExtended extra exclude patterns / дополнительные паттерны исключения
  * @returns Vite config / конфигурация Vite
  */
 export declare const viteBasicFunction: (
@@ -25,5 +27,8 @@ export declare const viteBasicFunction: (
   externalExtended?: string[],
   fileCssName?: string,
   rollupTypes?: boolean,
-  bundledPackages?: string[]
+  bundledPackages?: string[],
+  browserslistValue?: string,
+  exclude?: string[],
+  excludeExtended?: string[]
 ) => import('vite').UserConfigExport
