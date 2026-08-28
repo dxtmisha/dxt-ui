@@ -10,8 +10,6 @@
     "component": "dxt-component"
   },
   "dependencies": {},
-  "devDependencies": {
-    "nitropack": "*"
-  },
+  "devDependencies": {},
   "ui-test": true
 }

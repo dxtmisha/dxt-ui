@@ -44,11 +44,11 @@ export abstract class DesignCommand {
    * Основная точка входа для выполнения команды.
    * Проверяет входные данные и запускает основную логику инициализации.
    */
-  make(): void {
+  async make(): Promise<void> {
     if (this.command) {
       console.info(`-- ${PropertiesConfig.getDesignName()}.${this.command}:`)
 
-      this.initMain()
+      await this.initMain()
 
       console.info('-- end')
     } else {
@@ -61,7 +61,7 @@ export abstract class DesignCommand {
    *
    * Инициализирует создание всех файлов для текущей команды.
    */
-  protected abstract initMain(): void
+  protected abstract initMain(): void | Promise<void>
 
   /**
    * Checks the presence of a file.

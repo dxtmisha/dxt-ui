@@ -555,7 +555,7 @@
     }
   },
   "buildOptions": {
-    "name": "@dxtmisha/constructor",
+    "name": "@dxtmisha/d1",
     "formats": [
       "esm-bundler"
     ]
@@ -571,10 +571,7 @@
     "@dxtmisha/styles": "*",
     "vue": "*"
   },
-  "devDependencies": {
-    "@dxtmisha/test": "*",
-    "@dxtmisha/wiki": "*"
-  },
+  "devDependencies": {},
   "sideEffects": [
     "*.css",
     "*.scss",

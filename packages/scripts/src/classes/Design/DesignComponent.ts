@@ -7,7 +7,6 @@ import {
   toArray,
   toCamelCase
 } from '@dxtmisha/functional-basic'
-import { wikiDescriptions } from '@dxtmisha/wiki/media'
 import type { StorybookComponentsDescriptionItem } from '@dxtmisha/wiki'
 
 import { PropertiesConfig } from '../Properties/PropertiesConfig'
@@ -86,20 +85,21 @@ export class DesignComponent extends DesignCommand {
    *
    * Инициализирует создание всех файлов для текущей команды.
    */
-  protected initMain(): void {
+  protected async initMain(): Promise<void> {
     this
       .makeProperties()
       .makeProps()
       .makeStyle()
       .makeMain()
-      .makeMainAi()
       .makeIndex()
       .makeWiki()
       .makeWikiData()
-      .makeStories()
-      .makeStoriesDocumentation()
       .makeFilePackage()
       .makeLibrary()
+
+    await this.makeMainAi()
+    await this.makeStories()
+    await this.makeStoriesDocumentation()
   }
 
   /**
@@ -174,13 +174,13 @@ export class DesignComponent extends DesignCommand {
    *
    * Генерация файла DesignComponentWikiAi.vue.
    */
-  protected makeMainAi(): this {
+  protected async makeMainAi(): Promise<this> {
     const file = FILE_CLASS_AI
     const sample = this.readDefinable(file)
     const design = this.getStructure().getDesignFirst()
     const componentName = this.getStructure().getComponentNameFirst()
     const fullComponentName = this.getStructure().getFullComponentName()
-    const item = this.getWikiDescription()
+    const item = await this.getWikiDescription()
 
     if (
       item?.ai
@@ -362,10 +362,10 @@ export class DesignComponent extends DesignCommand {
    *
    * Генерация файла stories.ts.
    */
-  protected makeStories(): this {
+  protected async makeStories(): Promise<this> {
     const file = FILE_STORIES
     const sample = this.readDefinable(file)
-    const description = this.getWikiDescription()
+    const description = await this.getWikiDescription()
 
     if (description) {
       this.replaceMarkStoriesRender(sample, description)
@@ -382,10 +382,11 @@ export class DesignComponent extends DesignCommand {
    *
    * Генерация файла mdx.
    */
-  protected makeStoriesDocumentation(): this {
+  protected async makeStoriesDocumentation(): Promise<this> {
     const file = FILE_STORIES_DOCUMENTATION
     const sample = this.readDefinable(file)
-    const documentation = this.getWikiDescription()?.documentation
+    const description = await this.getWikiDescription()
+    const documentation = description?.documentation
 
     if (documentation) {
       this
@@ -556,9 +557,14 @@ export class DesignComponent extends DesignCommand {
    *
    * Возвращает описание компонента из вики
    */
-  private getWikiDescription(): StorybookComponentsDescriptionItem | undefined {
+  private async getWikiDescription(): Promise<StorybookComponentsDescriptionItem | undefined> {
     const name = this.getStructure().getComponentNameFirst()
-    return wikiDescriptions.find(item => item.name === name)
+    try {
+      const { wikiDescriptions } = await import('@dxtmisha/wiki/media')
+      return wikiDescriptions.find((item: any) => item.name === name)
+    } catch {
+      return undefined
+    }
   }
 
   /**

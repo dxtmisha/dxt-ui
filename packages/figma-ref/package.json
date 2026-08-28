@@ -64,7 +64,8 @@
     "@dxtmisha/figma": "*",
     "@dxtmisha/functional": "*",
     "@dxtmisha/functional-basic": "*",
-    "@figma/plugin-typings": "*"
+    "@figma/plugin-typings": "*",
+    "vue": "*"
   },
   "devDependencies": {},
   "sideEffects": false

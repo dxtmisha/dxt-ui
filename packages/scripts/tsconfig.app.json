@@ -11,9 +11,12 @@
     "jsxImportSource": "react"
   },
   "include": [
-    "bin/**/*.ts",
     "src/**/*.ts",
     "src/**/*.tsx",
     "src/**/*.vue"
+  ],
+  "exclude": [
+    "src/media/templates/**/*",
+    "bin/**/*"
   ]
 }

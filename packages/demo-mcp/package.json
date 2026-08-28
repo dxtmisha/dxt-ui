@@ -33,10 +33,7 @@
       "import": "./dist/index.js"
     }
   },
-  "dependencies": {
-    "@dxtmisha/functional-basic": "*",
-    "@dxtmisha/mcp": "*"
-  },
+  "dependencies": {},
   "devDependencies": {},
   "sideEffects": false
 }

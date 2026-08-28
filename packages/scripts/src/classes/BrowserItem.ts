@@ -1,10 +1,9 @@
-import {
-  type Browser,
-  type EvaluateFunc,
-  type HTTPResponse,
-  launch,
-  type Page,
-  type PuppeteerLifeCycleEvent
+import type {
+  Browser,
+  EvaluateFunc,
+  HTTPResponse,
+  Page,
+  PuppeteerLifeCycleEvent
 } from 'puppeteer'
 import { sleep } from '@dxtmisha/functional-basic'
 
@@ -111,6 +110,7 @@ export class BrowserItem {
    */
   async getBrowser(): Promise<Browser> {
     if (!this.browser) {
+      const { launch } = await import('puppeteer')
       this.browser = await launch({
         headless: true,
         args: this.args

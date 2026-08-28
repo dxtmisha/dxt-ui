@@ -554,11 +554,12 @@
     "node": ">=20.0.0"
   },
   "dependencies": {
-    "@dxtmisha/functional": ">=1.15.14",
+    "@dxtmisha/functional": "*",
     "@dxtmisha/functional-basic": "*",
     "@dxtmisha/media": "*",
     "@dxtmisha/styles": "*",
-    "vue": "*"
+    "vue": "*",
+    "vue-router": "*"
   },
   "sideEffects": false,
   "ui-priority": 300

@@ -62,6 +62,7 @@
   "dependencies": {
     "@dxtmisha/figma": "*",
     "@dxtmisha/functional-basic": "*",
+    "@dxtmisha/scripts": "*",
     "@figma/plugin-typings": "*"
   },
   "devDependencies": {},

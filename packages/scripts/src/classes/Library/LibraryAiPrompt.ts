@@ -102,6 +102,7 @@ Consolidated documentation, architectural guidelines, and mandatory rules for th
     }
 
     console.log('end')
+    process.exit(0)
   }
 
   /**

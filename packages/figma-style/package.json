@@ -31,7 +31,16 @@
     "./types/*": "./dist/*",
     "./types/**/*.d.ts": "./dist/**/*.d.ts"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@dxtmisha/d1": "*",
+    "@dxtmisha/figma": "*",
+    "@dxtmisha/figma-code": "*",
+    "@dxtmisha/figma-ref": "*",
+    "@dxtmisha/functional": "*",
+    "@dxtmisha/functional-basic": "*",
+    "@dxtmisha/zip": "*",
+    "vue": "*"
+  },
   "devDependencies": {},
   "ui-test": true,
   "ui-no-publish": true

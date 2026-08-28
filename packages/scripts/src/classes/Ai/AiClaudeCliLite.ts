@@ -30,7 +30,7 @@ export class AiClaudeCliLite extends AiAbstract<{}> {
    * Инициализирует "клиента".
    * Для CLI мы просто помечаем его как инициализированный.
    */
-  protected init(): void {
+  protected async init(): Promise<void> {
     this.ai = {}
   }
 

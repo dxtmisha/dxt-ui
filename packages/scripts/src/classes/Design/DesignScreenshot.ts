@@ -109,6 +109,7 @@ export class DesignScreenshot {
               server.kill()
 
               console.info('Server', 'kill')
+              process.exit(0)
             }
           })
       }

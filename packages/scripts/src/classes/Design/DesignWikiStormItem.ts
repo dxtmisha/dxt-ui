@@ -1,6 +1,5 @@
 import { toCamelCaseFirst } from '@dxtmisha/functional'
-import { type WikiDataItem, WikiStorybook, WikiStorybookProp } from '@dxtmisha/wiki'
-import { wiki, wikiDescriptions } from '@dxtmisha/wiki/media'
+import type { WikiDataItem, WikiStorybook, WikiStorybookProp } from '@dxtmisha/wiki'
 
 import { PropertiesConfig } from '../Properties/PropertiesConfig'
 import { PropertiesFile } from '../Properties/PropertiesFile'
@@ -128,7 +127,7 @@ export class DesignWikiStormItem {
 
       data.slots.forEach(
         (slot) => {
-          const vueProperties: WebTypesProperty[] = (slot.properties ?? []).map(p => ({
+          const vueProperties: WebTypesProperty[] = (slot.properties ?? []).map((p: any) => ({
             name: p.name,
             type: p.type ? this.cleanType(p.type) : undefined,
             description: p.description
@@ -301,6 +300,9 @@ export class DesignWikiStormItem {
     const data = await this.getData()
 
     if (data) {
+      const { WikiStorybook } = await import('@dxtmisha/wiki')
+      const { wiki, wikiDescriptions } = await import('@dxtmisha/wiki/media')
+
       return new WikiStorybook(
         data.component,
         data.props,

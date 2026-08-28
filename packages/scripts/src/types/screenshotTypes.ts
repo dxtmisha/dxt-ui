@@ -1,4 +1,4 @@
-import { type PuppeteerLifeCycleEvent } from 'puppeteer'
+import type { PuppeteerLifeCycleEvent } from 'puppeteer'
 
 /** Options for page sizes/ Опции для размеров страницы */
 export interface ScreenshotMetrics {

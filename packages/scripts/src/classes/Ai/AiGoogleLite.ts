@@ -1,6 +1,6 @@
 import { forEach } from '@dxtmisha/functional-basic'
 import { AiAbstract } from './AiAbstract'
-import { GoogleGenAI } from '@google/genai'
+import type { GoogleGenAI } from '@google/genai'
 
 /**
  * Google AI (Gemini) implementation of AiAbstract.
@@ -24,7 +24,8 @@ export class AiGoogleLite extends AiAbstract<GoogleGenAI> {
    *
    * Инициализирует экземпляр клиента GoogleGenAI.
    */
-  protected init(): void {
+  protected async init(): Promise<void> {
+    const { GoogleGenAI } = await import('@google/genai')
     this.ai = new GoogleGenAI({ apiKey: this.key })
   }
 

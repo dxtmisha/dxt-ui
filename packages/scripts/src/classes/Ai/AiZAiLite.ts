@@ -1,5 +1,4 @@
-import { createXai, type XaiProvider } from '@ai-sdk/xai'
-import { generateText } from 'ai'
+import type { XaiProvider } from '@ai-sdk/xai'
 import { forEach } from '@dxtmisha/functional-basic'
 
 import { AiAbstract } from './AiAbstract'
@@ -21,7 +20,8 @@ export class AiZAiLite extends AiAbstract<XaiProvider> {
    *
    * Инициализирует экземпляр провайдера клиента xAI.
    */
-  protected init(): void {
+  protected async init(): Promise<void> {
+    const { createXai } = await import('@ai-sdk/xai')
     this.ai = createXai({
       apiKey: this.key
     })
@@ -63,6 +63,8 @@ export class AiZAiLite extends AiAbstract<XaiProvider> {
     model: string,
     contents: string
   ): Promise<string> {
+    const { generateText } = await import('ai')
+    const { createXai } = await import('@ai-sdk/xai')
     const client = this.ai ?? createXai({ apiKey: this.key })
     const activeModel = model || 'grok-4.5'
 

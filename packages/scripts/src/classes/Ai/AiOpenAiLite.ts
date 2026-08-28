@@ -1,4 +1,4 @@
-import { OpenAI } from 'openai'
+import type { OpenAI } from 'openai'
 import { forEach } from '@dxtmisha/functional-basic'
 
 import { AiAbstract } from './AiAbstract'
@@ -25,7 +25,8 @@ export class AiOpenAiLite extends AiAbstract<OpenAI> {
    *
    * Инициализирует экземпляр клиента OpenAI.
    */
-  protected init(): void {
+  protected async init(): Promise<void> {
+    const { OpenAI } = await import('openai')
     this.ai = new OpenAI({
       apiKey: this.key
     })

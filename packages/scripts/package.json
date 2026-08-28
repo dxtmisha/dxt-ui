@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/scripts",
   "private": false,
-  "version": "0.12.0",
+  "version": "1.0.0",
   "type": "module",
   "description": "CLI tools, AI integration scripts, and automation utilities for DXT UI — automated component scaffolding, Figma layout generation, library packaging, documentation building, screenshot captures, and AI prompt processing.",
   "keywords": [
@@ -34,65 +34,110 @@
     "url": "https://github.com/dxtmisha/dxt-ui/issues"
   },
   "scripts": {
-    "library": "dxt-library",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "prepublishOnly": "npm run build",
     "publish-to-npm": "npm publish --access public"
   },
   "files": [
     "bin/",
-    "src/",
+    "dist/",
+    "src/media/properties.json",
     "ai-resources/",
     "CHANGELOG.md",
     "LICENSE",
     "README.md",
     "package.json"
   ],
-  "main": "./src/library.ts",
-  "module": "./src/library.ts",
+  "main": "./dist/library.js",
+  "module": "./dist/library.js",
+  "types": "./dist/library.d.ts",
   "bin": {
-    "dxt-build-functional": "bin/build-functional.ts",
-    "dxt-build-packages": "bin/build-packages.ts",
-    "dxt-build-publish-packages": "bin/build-publish-packages.ts",
-    "dxt-component": "bin/design-component.ts",
-    "dxt-constructor": "bin/design-constructor.ts",
-    "dxt-figma-layout": "bin/design-figma.ts",
-    "dxt-flags": "bin/design-flags.ts",
-    "dxt-library": "bin/design-library.ts",
-    "dxt-package": "bin/design-package.ts",
-    "dxt-prompt": "bin/design-prompt.ts",
-    "dxt-screenshot": "bin/design-screenshot.ts",
-    "dxt-types": "bin/design-types.ts",
-    "dxt-types-save": "bin/design-types-save.ts",
-    "dxt-ui": "bin/design-ui.ts",
-    "dxt-wiki-storm": "bin/design-wiki-storm.ts"
+    "dxt-build-functional": "bin/build-functional.js",
+    "dxt-build-packages": "bin/build-packages.js",
+    "dxt-build-publish-packages": "bin/build-publish-packages.js",
+    "dxt-component": "bin/design-component.js",
+    "dxt-constructor": "bin/design-constructor.js",
+    "dxt-figma-layout": "bin/design-figma.js",
+    "dxt-flags": "bin/design-flags.js",
+    "dxt-library": "bin/design-library.js",
+    "dxt-package": "bin/design-package.js",
+    "dxt-prompt": "bin/design-prompt.js",
+    "dxt-screenshot": "bin/design-screenshot.js",
+    "dxt-types": "bin/design-types.js",
+    "dxt-types-save": "bin/design-types-save.js",
+    "dxt-ui": "bin/design-ui.js",
+    "dxt-wiki-storm": "bin/design-wiki-storm.js"
   },
   "exports": {
-    ".": "./src/library.ts",
-    "./ai": "./src/library-ai.ts",
-    "./plugin": "./src/library-plugin.ts",
-    "./config": "./src/config.ts",
+    ".": {
+      "types": "./dist/library.d.ts",
+      "default": "./dist/library.js"
+    },
+    "./ai": {
+      "types": "./dist/library-ai.d.ts",
+      "default": "./dist/library-ai.js"
+    },
+    "./config": {
+      "types": "./dist/config.d.ts",
+      "default": "./dist/config.js"
+    },
     "./properties.json": "./src/media/properties.json"
   },
   "engines": {
     "node": ">=20.0.0"
   },
   "dependencies": {
-    "@ai-sdk/xai": "*",
-    "@anthropic-ai/claude-agent-sdk": "*",
-    "@anthropic-ai/sdk": "*",
     "@dxtmisha/functional": "*",
     "@dxtmisha/functional-basic": "*",
     "@dxtmisha/media": "*",
-    "@google/genai": "*",
-    "@napi-rs/canvas": "*",
-    "ai": "*",
-    "openai": "*",
-    "puppeteer": "*",
     "sass": "*",
     "typescript": "*",
     "vite-node": "*",
     "vue": "*"
   },
   "devDependencies": {
-    "@dxtmisha/wiki": "*"
+    "puppeteer": "*"
+  },
+  "peerDependencies": {
+    "@ai-sdk/xai": "*",
+    "@anthropic-ai/claude-agent-sdk": "*",
+    "@anthropic-ai/sdk": "*",
+    "@dxtmisha/wiki": "*",
+    "@google/genai": "*",
+    "@napi-rs/canvas": "*",
+    "ai": "*",
+    "openai": "*",
+    "puppeteer": "*"
+  },
+  "peerDependenciesMeta": {
+    "@ai-sdk/xai": {
+      "optional": true
+    },
+    "@anthropic-ai/claude-agent-sdk": {
+      "optional": true
+    },
+    "@anthropic-ai/sdk": {
+      "optional": true
+    },
+    "@dxtmisha/wiki": {
+      "optional": true
+    },
+    "@google/genai": {
+      "optional": true
+    },
+    "@napi-rs/canvas": {
+      "optional": true
+    },
+    "ai": {
+      "optional": true
+    },
+    "openai": {
+      "optional": true
+    },
+    "puppeteer": {
+      "optional": true
+    }
   }
 }

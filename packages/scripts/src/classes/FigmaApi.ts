@@ -141,8 +141,6 @@ export class FigmaApi {
       Object.assign(request, parameters)
     }
 
-    console.log('request', request, Object.keys(request).length)
-
     const queryParams = Object.keys(request).length > 0
       ? `?${new URLSearchParams(request).toString()}`
       : ''
@@ -170,14 +168,10 @@ export class FigmaApi {
       'Content-Type': 'application/json'
     }
 
-    console.log('url', url)
-
     const response = await fetch(url, {
       method: 'GET',
       headers
     })
-
-    console.log('response', response.ok)
 
     if (response.ok) {
       return response.json()

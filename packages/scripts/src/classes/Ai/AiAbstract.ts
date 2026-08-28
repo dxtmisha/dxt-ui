@@ -136,7 +136,7 @@ export abstract class AiAbstract<AI = any> {
     this.key = key
 
     if (this.ai) {
-      this.init()
+      this.ai = undefined
     }
 
     return this
@@ -170,7 +170,7 @@ export abstract class AiAbstract<AI = any> {
    */
   async generate(contents: string): Promise<string> {
     if (!this.ai) {
-      this.init()
+      await this.init()
 
       console.log(
         `[Ai] Initialized AI client with model: ${this.model}`
@@ -212,7 +212,7 @@ export abstract class AiAbstract<AI = any> {
    *
    * Хук реализации: инициализация клиента / транспорта / авторизации.
    */
-  protected abstract init(): void
+  protected abstract init(): Promise<void> | void
 
   /**
    * Implementation hook: convert accumulated images to model-specific format.

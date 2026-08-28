@@ -1,4 +1,4 @@
-import { Anthropic } from '@anthropic-ai/sdk'
+import type { Anthropic } from '@anthropic-ai/sdk'
 import { forEach } from '@dxtmisha/functional-basic'
 
 import { AiAbstract } from './AiAbstract'
@@ -25,7 +25,8 @@ export class AiClaudeLite extends AiAbstract<Anthropic> {
    *
    * Инициализирует экземпляр клиента Anthropic.
    */
-  protected init(): void {
+  protected async init(): Promise<void> {
+    const { Anthropic } = await import('@anthropic-ai/sdk')
     this.ai = new Anthropic({
       apiKey: this.key
     })

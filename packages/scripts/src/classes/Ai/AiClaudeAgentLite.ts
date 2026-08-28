@@ -1,4 +1,3 @@
-import { query } from '@anthropic-ai/claude-agent-sdk'
 import { AiAbstract } from './AiAbstract'
 
 /**
@@ -18,7 +17,7 @@ export class AiClaudeAgentLite extends AiAbstract<{}> {
    * Initializes the "client".
    * For Agent SDK, we mark it as initialized.
    */
-  protected init(): void {
+  protected async init(): Promise<void> {
     this.ai = {}
   }
 
@@ -53,6 +52,7 @@ export class AiClaudeAgentLite extends AiAbstract<{}> {
     ].filter(Boolean).join('\n\n')
 
     try {
+      const { query } = await import('@anthropic-ai/claude-agent-sdk')
       const q = query({
         prompt: fullPrompt,
         options: {

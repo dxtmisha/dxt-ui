@@ -1,6 +1,6 @@
 // export:none
 
-import { Canvas, createCanvas, loadImage, type SKRSContext2D } from '@napi-rs/canvas'
+import type { Canvas, SKRSContext2D } from '@napi-rs/canvas'
 import { PropertiesFile } from '../Properties/PropertiesFile'
 
 import type { DesignFlagsItem, DesignFlagsList } from '../../types/designTypes'
@@ -33,8 +33,8 @@ export class DesignFlags {
   protected top: number
   protected left: number
 
-  protected readonly canvas: Canvas
-  protected readonly context: SKRSContext2D
+  protected canvas!: Canvas
+  protected context!: SKRSContext2D
 
   /**
    * Constructor for DesignFlags.
@@ -55,12 +55,11 @@ export class DesignFlags {
     this.square = this.initSquare()
     this.top = this.initTop()
     this.left = this.initLeft()
-
-    this.canvas = this.initCanvas()
-    this.context = this.initContext()
   }
 
   async make() {
+    await this.initGraphics()
+
     for (const file of this.list) {
       await this.addImage(file)
 
@@ -134,6 +133,7 @@ ${DESIGN_FLAGS_CLASS_NAME}--${item.name} {
 
   protected async addImage(file: string): Promise<void> {
     const path = PropertiesFile.joinPath([this.dir, file])
+    const { loadImage } = await import('@napi-rs/canvas')
     const image = await loadImage(path)
 
     this.context.drawImage(
@@ -181,15 +181,15 @@ ${DESIGN_FLAGS_CLASS_NAME}--${item.name} {
     )
   }
 
-  protected initCanvas(): Canvas {
-    return createCanvas(
+  protected async initGraphics(): Promise<void> {
+    const { createCanvas } = await import('@napi-rs/canvas')
+
+    this.canvas = createCanvas(
       this.getCanvasWidth(),
       this.getCanvasHeight()
     )
-  }
 
-  protected initContext(): SKRSContext2D {
-    return this.canvas.getContext('2d', { alpha: true })
+    this.context = this.canvas.getContext('2d', { alpha: true })
   }
 
   protected initLeft(): number {
