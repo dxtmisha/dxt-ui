@@ -27,6 +27,7 @@ const slotsNames: StorybookSlots = [
 const eventsNames: StorybookSlots = [
   // :eventsList [!] System label / Системная метка
   { name: 'load', description: `Event triggered when the image is loaded/ Событие, срабатывающее при загрузке изображения`, properties: [{ name: 'image', type: 'ImageEventData' }] },
+  { name: 'resize', description: `Event emitted during resizing or moving / Событие, вызываемое при изменении размера или перемещении`, properties: [{ name: 'parameters', type: 'CropAreaEventParameters' }] },
   { name: 'update:modelValue', description: `Update model value event/ Событие обновления значения модели`, properties: [{ name: 'value', type: 'any' }] },
   { name: 'update:value', description: `Update value event/ Событие обновления значения`, properties: [{ name: 'value', type: 'any' }] }
   // :eventsList [!] System label / Системная метка

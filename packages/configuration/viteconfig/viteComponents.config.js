@@ -2,6 +2,7 @@ import { mergeConfig } from 'vite'
 import mdx from '@mdx-js/rollup'
 
 import { viteBasicFunction } from './viteBasicFunction.config.js'
+import { vitePluginComponents } from '../functions/vitePluginComponents.js'
 import { getLibraryEntries } from '../functions/getLibraryEntries.js'
 
 // https://vite.dev/config/
@@ -19,10 +20,22 @@ export const viteComponents = mergeConfig(
     undefined,
     undefined,
     undefined,
-    undefined,
+    false,
     false
   ),
   {
-    plugins: [mdx()]
+    build: {
+      cssCodeSplit: true,
+      rollupOptions: {
+        output: {
+          preserveModules: true,
+          assetFileNames: '[name][extname]'
+        }
+      }
+    },
+    plugins: [
+      mdx(),
+      vitePluginComponents()
+    ]
   }
 )
