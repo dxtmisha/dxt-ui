@@ -12,8 +12,7 @@
     "preview": "vite preview",
     "test": "vitest",
     "component": "dxt-component",
-    "library": "dxt-library",
-    "wiki": "dxt-ai-doc src/storybook"
+    "library": "dxt-library"
   },
   "files": [
     "dist",

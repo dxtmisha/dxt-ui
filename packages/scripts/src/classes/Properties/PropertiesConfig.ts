@@ -7,8 +7,6 @@ import { PropertiesFile } from './PropertiesFile'
 import type { AiType, DesignUiConfig } from '../../types/configTypes'
 
 import {
-  UI_AI_DOC_DIRECTORY,
-  UI_AI_DOC_STORYBOOK,
   UI_CONFIG_FILE
 } from '../../config'
 
@@ -139,23 +137,6 @@ export class PropertiesConfig {
     return this.config.aiConfig ?? {}
   }
 
-  /**
-   * Returns the list of directories targeted for AI-driven documentation.
-   *
-   * Возвращает список директорий, предназначенных для автоматической документации через ИИ.
-   */
-  static getAiDocDirectory(): string[] {
-    return this.config.aiDocDirectory ?? UI_AI_DOC_DIRECTORY
-  }
-
-  /**
-   * Returns the export path for Storybook-compatible AI documentation.
-   *
-   * Возвращает путь экспорта для AI-документации, совместимой со Storybook.
-   */
-  static getAiDocStorybookPath(): string {
-    return this.config.aiDocStorybookPath ?? UI_AI_DOC_STORYBOOK
-  }
 
   /**
    * Recursively retrieves and merges extended configuration files.

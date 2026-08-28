@@ -48,7 +48,6 @@
   "main": "./src/library.ts",
   "module": "./src/library.ts",
   "bin": {
-    "dxt-ai-doc": "bin/ai-doc.ts",
     "dxt-build-functional": "bin/build-functional.ts",
     "dxt-build-packages": "bin/build-packages.ts",
     "dxt-build-publish-packages": "bin/build-publish-packages.ts",
