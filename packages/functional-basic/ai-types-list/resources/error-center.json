@@ -1,0 +1,6 @@
+{
+  "path": "ai-resources/error-center.md",
+  "md5": "e3d4bda56f61b790ab47ed937a85f778",
+  "name": "Centralized Error Handling Guide",
+  "description": "Comprehensive instructions and rules for centralized error handling with ErrorCenter in @dxtmisha/functional-basic. Mandates routing all errors through ErrorCenter instead of raw console logging, and details registry, handler, and triggering patterns."
+}

@@ -432,4 +432,77 @@ describe('GeoInstance', () => {
       expect(geo.getCountry()).toHaveLength(2)
     })
   })
+
+  // ---------------------------------------------------------------------------
+  // add and addList
+  // ---------------------------------------------------------------------------
+  describe('add and addList', () => {
+    it('creates a new country entry when country does not exist in the list', () => {
+      const geo = new GeoInstance()
+      geo.add('ZZ', {
+        language: 'zz',
+        firstDay: 'Su',
+        phoneCode: '999'
+      })
+
+      const item = geo.getByCountry('ZZ')
+      expect(item).toBeDefined()
+      expect(item?.country).toBe('ZZ')
+      expect(item?.language).toBe('zz')
+      expect(item?.firstDay).toBe('Su')
+      expect(item?.phoneCode).toBe('999')
+    })
+
+    it('merges data into an existing country entry', () => {
+      const geo = new GeoInstance()
+      const original = geo.getByCountry('US')
+      expect(original).toBeDefined()
+
+      geo.add('US', {
+        firstDay: 'Mo',
+        phoneWithin: '9'
+      })
+
+      const updated = geo.getByCountry('US')
+      expect(updated?.firstDay).toBe('Mo')
+      expect(updated?.phoneWithin).toBe('9')
+      expect(updated?.language).toBe('en') // preserves existing language
+      expect(updated?.country).toBe('US')
+    })
+
+    it('merges unit configurations for existing countries', () => {
+      const geo = new GeoInstance()
+      geo.add('FR', {
+        unit: {
+          meter: 'm_custom'
+        }
+      })
+
+      const item = geo.getByCountry('FR')
+      expect(item?.unit?.meter).toBe('m_custom')
+    })
+
+    it('updates current item when the modified country is the active country', () => {
+      const geo = new GeoInstance()
+      geo.set('ru-RU')
+      expect(geo.getItem().firstDay).toBe('Mo')
+
+      geo.add('RU', {
+        firstDay: 'Su'
+      })
+
+      expect(geo.getItem().firstDay).toBe('Su')
+    })
+
+    it('addList with object map adds and merges multiple countries', () => {
+      const geo = new GeoInstance()
+      geo.addList({
+        XX: { language: 'xx', phoneCode: '111' },
+        YY: { language: 'yy', phoneCode: '222' }
+      })
+
+      expect(geo.getByCountry('XX')?.phoneCode).toBe('111')
+      expect(geo.getByCountry('YY')?.phoneCode).toBe('222')
+    })
+  })
 })

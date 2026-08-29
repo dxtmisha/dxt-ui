@@ -136,4 +136,29 @@ describe('Geo', () => {
       expect(instance2.getLocation()).toBe('en-GB') // Default for SSR
     })
   })
+
+  describe('add and addList', () => {
+    beforeEach(() => {
+      vi.mocked(isDomRuntime).mockReturnValue(true)
+    })
+
+    it('should add a new country or merge with existing through static Geo facade', () => {
+      Geo.add('VN', {
+        firstDay: 'Mo',
+        phoneWithin: '0'
+      })
+
+      const item = Geo.getByCountry('VN')
+      expect(item?.firstDay).toBe('Mo')
+      expect(item?.phoneWithin).toBe('0')
+    })
+
+    it('should add multiple countries using Geo.addList', () => {
+      Geo.addList({
+        QQ: { language: 'qq', phoneCode: '777' }
+      })
+
+      expect(Geo.getByCountry('QQ')?.phoneCode).toBe('777')
+    })
+  })
 })

@@ -240,4 +240,34 @@ export class Geo {
   static setValueDefault(code?: string | (() => string)) {
     this.getObject().setValueDefault(code)
   }
+
+  /**
+   * Adds or updates country geo data.
+   * Merges with existing country data if found, or creates a new entry.
+   *
+   * Добавляет или обновляет гео-данные страны.
+   * Объединяет с существующими данными страны, если она найдена, или создает новую запись.
+   * @param country country code (e.g., 'US', 'VN') / код страны (например, 'US', 'VN')
+   * @param item partial or full geo item data / частичные или полные гео-данные
+   * @returns GeoInstance instance / экземпляр GeoInstance
+   */
+  static add(
+    country: string,
+    item: Partial<GeoItem>
+  ): GeoInstance {
+    return this.getObject().add(country, item)
+  }
+
+  /**
+   * Adds or updates multiple countries in the geo list.
+   *
+   * Добавляет или обновляет несколько стран в гео-списке.
+   * @param list map of country codes to geo items / карта кодов стран к гео-объектам
+   * @returns GeoInstance instance / экземпляр GeoInstance
+   */
+  static addList(
+    list: Record<string, Partial<GeoItem>>
+  ): GeoInstance {
+    return this.getObject().addList(list)
+  }
 }

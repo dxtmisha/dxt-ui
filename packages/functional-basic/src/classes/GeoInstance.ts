@@ -1,4 +1,5 @@
 import { executeFunction } from '../functions/executeFunction'
+import { forEach } from '../functions/forEach'
 import { isDomRuntime } from '../functions/isDomRuntime'
 import { isSelected } from '../functions/isSelected'
 
@@ -28,6 +29,12 @@ const STORAGE_NAME_CODE = '__ui:geo-code__'
  * Включает методы для определения местоположения, языка и часового пояса.
  */
 export class GeoInstance {
+  /**
+   * List of available countries/
+   * Список доступных стран
+   */
+  private list: GeoItem[] = [...geo]
+
   /**
    * Data storage instance for geo code/
    * Экземпляр хранилища данных для гео-кода
@@ -175,7 +182,7 @@ export class GeoInstance {
    * @returns list of geo items / список гео-объектов
    */
   getList(): GeoItem[] {
-    return geo
+    return this.list
   }
 
   /**
@@ -354,6 +361,67 @@ export class GeoInstance {
     this.location = this.findLocation()
     this.item = this.getByCode(this.location)
     this.language = this.findLanguage(this.location)
+  }
+
+  /**
+   * Adds or updates country geo data.
+   * Merges with existing country data if found, or creates a new entry.
+   *
+   * Добавляет или обновляет гео-данные страны.
+   * Объединяет с существующими данными страны, если она найдена, или создает новую запись.
+   * @param country country code (e.g., 'US', 'VN') / код страны (например, 'US', 'VN')
+   * @param item partial or full geo item data / частичные или полные гео-данные
+   * @returns current instance / текущий экземпляр
+   */
+  add(
+    country: string,
+    item: Partial<GeoItem>
+  ): this {
+    const index = this.list.findIndex(
+      geoItem => geoItem.country === country
+    )
+
+    if (index !== -1) {
+      const current = this.list[index]
+
+      this.list[index] = {
+        ...current,
+        ...item
+      }
+    } else {
+      this.list.push({
+        language: 'en',
+        ...item,
+        country
+      })
+    }
+
+    if (
+      this.item.country === country
+      || this.toCountry(this.location) === country
+    ) {
+      this.item = this.getByCode(this.location)
+      this.language = this.findLanguage(this.location)
+    }
+
+    return this
+  }
+
+  /**
+   * Adds or updates multiple countries in the geo list.
+   *
+   * Добавляет или обновляет несколько стран в гео-списке.
+   * @param list map of country codes to geo items / карта кодов стран к гео-объектам
+   * @returns current instance / текущий экземпляр
+   */
+  addList(
+    list: Record<string, Partial<GeoItem>>
+  ): this {
+    forEach(list, (item, country) => {
+      this.add(country, item)
+    })
+
+    return this
   }
 
   /**
