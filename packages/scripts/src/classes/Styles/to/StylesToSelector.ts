@@ -8,15 +8,16 @@ import { StylesToAbstract } from './StylesToAbstract'
 import { PropertyKey } from '../../../types/propertyTypes'
 
 /**
- * Class for generating data for sub property styles.
+ * Class for generating state selector rules and pseudo-class mixins (hover, active, focus, disabled, readonly).
  *
- * Класс для генерация данный для под свойство стили.
+ * Класс для генерации правил селекторов состояний и миксинов псевдоклассов (hover, active, focus, disabled, readonly).
  */
 export class StylesToSelector extends StylesToAbstract {
   /**
-   * Method for converting data into a style structure.
+   * Generates selector block wrapping nested state styles.
    *
-   * Метод преобразования данных в структуру стиля.
+   * Генерирует блок селектора, оборачивающий вложенные стили состояния.
+   * @returns array of SCSS selector rule lines / массив строк правил SCSS-селектора
    */
   protected treatment(): string[] {
     const content = this.content()
@@ -34,9 +35,10 @@ export class StylesToSelector extends StylesToAbstract {
   }
 
   /**
-   * Getting the name of the class of a component.
+   * Retrieves the full CSS class name string for the component.
    *
-   * Получение названия класса у компонента.
+   * Получение полной строки имени CSS-класса для компонента.
+   * @returns quoted class name string / строка имени класса в кавычках
    */
   private getClassName(): string {
     const {
@@ -48,9 +50,10 @@ export class StylesToSelector extends StylesToAbstract {
   }
 
   /**
-   * Returns a string for a selector.
+   * Resolves the appropriate SCSS mixin or pseudo-class selector string based on state name.
    *
-   * Возвращает строку для селектора.
+   * Определяет подходящую строку SCSS-миксина или селектора псевдокласса на основе имени состояния.
+   * @returns selector or mixin inclusion declaration / объявление селектора или вызова миксина
    */
   private getSelector(): string {
     const name = this.getName()

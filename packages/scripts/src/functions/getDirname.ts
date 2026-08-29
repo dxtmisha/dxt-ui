@@ -4,9 +4,10 @@ import { fileURLToPath } from 'node:url'
 import { hasNativeDirname } from './hasNativeDirname'
 
 /**
- * Gets the current directory name.
+ * Resolves current directory path in both CommonJS and ES module environments.
  *
- * Получает имя текущей директории.
+ * Получает путь к текущей директории в средах CommonJS и ES-модулей.
+ * @returns directory path string / строка пути к директории
  */
 export function getDirname(): string {
   if (hasNativeDirname()) {

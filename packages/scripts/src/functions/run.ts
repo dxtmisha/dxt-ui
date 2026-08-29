@@ -7,13 +7,14 @@ import { PropertiesFile } from '../classes/Properties/PropertiesFile'
 const execAsync = promisify(exec)
 
 /**
- * Executes a command for a specific package.
+ * Executes a shell command inside the directory of a specific package and logs output.
  *
- * Выполняет команду для конкретного пакета.
- * @param packageFile package file object / объект файла пакета
- * @param command command to execute / команда для выполнения
- * @param showStdout whether to show stdout in the console / нужно ли выводить stdout в консоль
- * @param showStderr whether to show stderr in the console / нужно ли выводить stderr в консоль
+ * Выполняет команду оболочки внутри директории конкретного пакета и логирует вывод.
+ * @param packageFile target package file wrapper instance / экземпляр обертки файла целевого пакета
+ * @param command shell command string to execute / строка команды оболочки для выполнения
+ * @param showStdout whether to output stdout to the console / выводить ли стандартный вывод в консоль
+ * @param showStderr whether to output stderr to the console / выводить ли стандартный поток ошибок в консоль
+ * @returns promise resolving to true if command succeeded, false otherwise / промис, возвращающий true при успешном выполнении, иначе false
  */
 export async function run(
   packageFile: PackageFile,

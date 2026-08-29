@@ -3,11 +3,11 @@
 import requirePath from 'path'
 
 /**
- * Convert path to use standard separators for the current OS.
+ * Converts path forward slashes to standard path separators for the current operating system.
  *
- * Преобразовать путь для использования стандартных разделителей для текущей ОС.
- * @param path The input path string/ Входная строка пути
- * @returns The path with standard separators/ Путь со стандартными разделителями
+ * Преобразует прямые слеши пути в стандартные системные разделители для текущей операционной системы.
+ * @param path input path string / входная строка пути
+ * @returns normalized path string with OS-specific separators / нормализованная строка пути с системными разделителями
  */
 export function toPathStandardSep(path: string): string {
   return path.replace(/\//g, requirePath.sep)

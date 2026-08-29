@@ -10,9 +10,12 @@ import { AiOpenAi } from '../classes/Ai/AiOpenAi'
 import { AiZAi } from '../classes/Ai/AiZAi'
 
 /**
- * Composable to obtain an AI instance based on configuration.
+ * Composable to resolve and instantiate the configured AI client provider.
+ * Reads the AI provider type from properties configuration and returns the corresponding client implementation.
  *
- * Композабл для получения экземпляра AI на основе конфигурации.
+ * Композабл для определения и инициализации настроенного провайдера клиента AI.
+ * Считывает тип AI-провайдера из конфигурации свойств и возвращает соответствующую реализацию клиента.
+ * @returns initialized AI client instance or undefined if unrecognized / инициализированный экземпляр клиента AI или undefined, если тип не распознан
  */
 export function useAi(): AiAbstract | undefined {
   const type = PropertiesConfig.getAiType()

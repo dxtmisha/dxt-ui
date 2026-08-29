@@ -9,19 +9,22 @@ import {
 } from '../../../types/propertyTypes'
 
 /**
- * Base class for conversion.
+ * Abstract base class for converting specific property token types into SCSS rule blocks and lines.
  *
- * Базовый класс для преобразования.
+ * Абстрактный базовый класс для преобразования определенных типов токенов свойств в блоки и строки правил SCSS.
  */
 export abstract class StylesToAbstract {
+  /** Current property item metadata / Метаданные текущего элемента свойства */
   protected item: PropertyItem
 
   /**
-   * Constructor
-   * @param property current branch/ текущая ветка
-   * @param space space/ пробел
-   * @param content callable function for sub property/ вызываемая функция для под свойства
-   * @param first the first element in the list/ первый элемент в списке
+   * Constructor for StylesToAbstract.
+   *
+   * Конструктор для StylesToAbstract.
+   * @param property current property item in the tree / текущий элемент свойства в дереве
+   * @param space indentation prefix string / строка префикса отступа
+   * @param content function yielding nested child SCSS lines / функция, возвращающая вложенные строки SCSS
+   * @param first indicates whether this is the first element in the group / указывает, является ли этот элемент первым в группе
    */
   constructor(
     protected property: PropertyItemsItem,
@@ -33,27 +36,30 @@ export abstract class StylesToAbstract {
   }
 
   /**
-   * Getting processed data.
+   * Generates and returns indented SCSS lines for the property.
    *
-   * Получение обработанных данных.
+   * Генерирует и возвращает строки SCSS с отступами для свойства.
+   * @returns array of indented SCSS code lines / массив строк кода SCSS с отступами
    */
   make(): string[] {
     return this.addSpace(this.treatment())
   }
 
   /**
-   * Getting the name of a property.
+   * Retrieves the CSS property or selector name.
    *
-   * Получение названия свойства.
+   * Получение названия свойства CSS или селектора.
+   * @returns property name string / строка названия свойства
    */
   protected getName(): string {
     return this.item?.[PropertyKey.name] ?? ''
   }
 
   /**
-   * Gets the value of a property.
+   * Retrieves and normalizes the raw CSS value from metadata.
    *
-   * Получает значение свойства.
+   * Получает и нормализует исходное значение CSS из метаданных.
+   * @returns normalized CSS value string or undefined / нормализованная строка значения CSS или undefined
    */
   protected getValue(): string | undefined {
     const value = this.item?.[PropertyKey.css]
@@ -66,26 +72,29 @@ export abstract class StylesToAbstract {
   }
 
   /**
-   * Method for converting data into a style structure.
+   * Transforms property item data into unindented SCSS rules.
    *
-   * Метод преобразования данных в структуру стиля.
+   * Преобразует данные элемента свойства в правила SCSS без внешнего отступа.
+   * @returns array of SCSS rule lines / массив строк правил SCSS
    */
   protected abstract treatment(): string[]
 
   /**
-   * Adding a space in each line.
+   * Prefixes each line in the array with the current indentation space.
    *
-   * Добавление пробела в каждую строку.
-   * @param data data for processing/ данные для обработки
+   * Добавляет текущую строку отступа в начало каждой строки массива.
+   * @param data array of unindented code lines / массив строк кода без отступа
+   * @returns array of indented code lines / массив строк кода с отступом
    */
   protected addSpace(data: string[]): string[] {
     return forEach(data, item => `${this.space}${item}`)
   }
 
   /**
-   * Adds an empty line if the element is not the first in the tree.
+   * Returns an array with an empty separator line if not the first element in the block.
    *
-   * Добавляет пустую строку, если элемент не является первым в дереве.
+   * Возвращает массив с пустой строкой-разделителем, если элемент не первый в блоке.
+   * @returns array containing an empty line or empty array / массив с пустой строкой или пустой массив
    */
   protected addEmptyString(): string[] {
     return (this.first ? [''] : [])

@@ -20,35 +20,53 @@ import {
 
 import { UI_KEY_CONSTRUCTOR, UI_EXTENSION_STYLE } from '../../config'
 
+/** Name of the file for variables / Имя файла для переменных */
 const FILE_VAR = 'vars'
+
+/** Name of the file for classes / Имя файла для классов */
 const FILE_CLASS = 'classes'
+
+/** Name of the file for properties / Имя файла для свойств */
 const FILE_PROPERTIES = 'properties'
+
+/** Name of the file for property list / Имя файла для списка свойств */
 const FILE_LIST = 'list'
+
+/** Name of the file for basic imports / Имя файла для базовых импортов */
 const FILE_BASIC = 'basic'
+
+/** Name of the file for styles / Имя файла для стилей */
 const FILE_STYLE = 'style'
+
+/** Name of the file for main styles entry / Имя файла для главного входа стилей */
 const FILE_MAIN = 'main'
 
+/** Name of the directory for classes / Имя директории для классов */
 const DIR_CLASS = 'classes'
 
 /**
- * Base class for generating basic properties.
+ * Base class for generating basic SCSS stylesheets, variables, and classes from design tokens.
  *
- * Базовый класс для генерации базовых свойств.
+ * Базовый класс для генерации базовых таблиц стилей SCSS, переменных и классов из дизайн-токенов.
  */
 export class Styles {
+  /** Properties management instance / Экземпляр управления свойствами */
   private readonly properties: Properties
 
   /**
-   * Constructor
+   * Constructor for Styles.
+   *
+   * Конструктор для Styles.
    */
   constructor() {
     this.properties = new Properties()
   }
 
   /**
-   * Generating all basic data.
+   * Generates all basic style files and data across all designs.
    *
-   * Генерация всех базовых данных.
+   * Генерация всех базовых файлов стилей и данных по всем дизайнам.
+   * @returns current instance / текущий экземпляр
    */
   make(): this {
     this.getByDesigns((
@@ -66,10 +84,11 @@ export class Styles {
   }
 
   /**
-   * Generating basic variables.
+   * Generates basic CSS variables file from root tokens.
    *
-   * Генерация базовых переменных.
-   * @param items current element/ текущий элемент
+   * Генерация файла базовых переменных CSS из корневых токенов.
+   * @param items properties collection instance / экземпляр коллекции свойств
+   * @returns current instance / текущий экземпляр
    */
   protected initRoot(
     items: PropertiesItems
@@ -87,10 +106,11 @@ export class Styles {
   }
 
   /**
-   * Generating all base classes.
+   * Generates all base class files and the unified class index file.
    *
-   * Генерация всех базовых классов.
-   * @param items current element/ текущий элемент
+   * Генерация всех файлов базовых классов и единого индексного файла классов.
+   * @param items properties collection instance / экземпляр коллекции свойств
+   * @returns current instance / текущий экземпляр
    */
   protected initClasses(
     items: PropertiesItems
@@ -119,6 +139,13 @@ export class Styles {
     return this
   }
 
+  /**
+   * Generates SCSS property definitions file.
+   *
+   * Генерация файла определений свойств SCSS.
+   * @param items properties collection instance / экземпляр коллекции свойств
+   * @returns current instance / текущий экземпляр
+   */
   protected initProperties(
     items: PropertiesItems
   ): this {
@@ -134,6 +161,13 @@ export class Styles {
     return this
   }
 
+  /**
+   * Generates the filtered JSON list file containing valid design properties.
+   *
+   * Генерация отфильтрованного JSON файла списка, содержащего валидные свойства дизайна.
+   * @param items properties collection instance / экземпляр коллекции свойств
+   * @returns current instance / текущий экземпляр
+   */
   protected initList(
     items: PropertiesItems
   ): this {
@@ -147,10 +181,11 @@ export class Styles {
   }
 
   /**
-   * Creates files for connection.
+   * Creates connection and entry SCSS files (basic, style, and main).
    *
-   * Создает файлы для подключения.
-   * @param design design name/ название дизайна
+   * Создает файлы подключения и входных точек SCSS (basic, style и main).
+   * @param design design name / название дизайна
+   * @returns current instance / текущий экземпляр
    */
   protected initBasic(design: string): this {
     const dir = StylesTool.getDir()
@@ -201,10 +236,10 @@ export class Styles {
   }
 
   /**
-   * Generating a list of properties from a design.
+   * Iterates over all non-constructor designs and executes the callback.
    *
-   * Получение списка свойств по дизайну.
-   * @param callback data processing function/ функция для обработки данных
+   * Перебирает все дизайны, кроме конструктора, и выполняет функцию обратного вызова.
+   * @param callback data processing function / функция для обработки данных
    */
   private getByDesigns(callback: (design: string, items: PropertiesItems) => void): void {
     const properties = this.properties.get().get()
@@ -222,6 +257,13 @@ export class Styles {
       })
   }
 
+  /**
+   * Filters out extraneous properties and retains only variables or non-empty nested objects.
+   *
+   * Отфильтровывает лишние свойства и сохраняет только переменные или непустые вложенные объекты.
+   * @param data property list to filter / список свойств для фильтрации
+   * @returns filtered properties record / отфильтрованная запись свойств
+   */
   private removeExcess(data: PropertyList) {
     const list: Record<string, any> = {}
 

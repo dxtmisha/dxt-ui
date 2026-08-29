@@ -21,6 +21,7 @@ describe('DesignConstructor and DesignConstructors', () => {
     const makeSpy = vi.spyOn(DesignConstructor.prototype, 'make').mockImplementation(async () => { })
     vi.spyOn(PropertiesFile, 'readDir').mockReturnValue(['Button'])
     vi.spyOn(PropertiesFile, 'write').mockImplementation(() => { })
+    vi.spyOn(PropertiesFile, 'writeByPath').mockImplementation(() => { })
 
     const constructors = new DesignConstructors('Button')
     constructors.make()
@@ -32,6 +33,7 @@ describe('DesignConstructor and DesignConstructors', () => {
     const makeSpy = vi.spyOn(DesignConstructor.prototype, 'make').mockImplementation(async () => { })
     vi.spyOn(PropertiesFile, 'readDir').mockReturnValue(['Button', 'Input', 'Card'])
     vi.spyOn(PropertiesFile, 'write').mockImplementation(() => { })
+    vi.spyOn(PropertiesFile, 'writeByPath').mockImplementation(() => { })
 
     const constructors = new DesignConstructors()
     constructors.make()

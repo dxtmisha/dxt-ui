@@ -1,3 +1,8 @@
+/**
+ * Property types enum defining token behavior, scope, and target generation pipeline.
+ *
+ * Перечисление типов свойств, определяющее поведение токена, область видимости и целевой конвейер генерации.
+ */
 export enum PropertyType {
   /**
    * Design name, it forms the first group of names /
@@ -155,6 +160,11 @@ export enum PropertyType {
   other = 'other'
 }
 
+/**
+ * Property category enum for explicit grouping and routing during token processing.
+ *
+ * Перечисление категорий свойств для явной группировки и маршрутизации при обработке токенов.
+ */
 export enum PropertyCategory {
   /**
    * Indicates that for this branch, paths need to be regenerated /
@@ -214,6 +224,11 @@ export enum PropertyCategory {
   style = 'style'
 }
 
+/**
+ * Property meta key enum defining special configuration and internal processing flags.
+ *
+ * Перечисление специальных мета-ключей свойств для конфигурации и внутренних служебных флагов.
+ */
 export enum PropertyKey {
   /** Main property value / Основное значение свойства */
   value = 'value',
@@ -301,11 +316,17 @@ export type PropertyReplace = {
 }
 
 /**
- * Property value type with support for strings, numbers, arrays, objects and null /
- * Тип значения свойства с поддержкой строк, чисел, массивов, объектов и null
+ * Property value type with support for strings, numbers, arrays, objects and null.
+ *
+ * Тип значения свойства с поддержкой строк, чисел, массивов, объектов и null.
  */
 export type PropertyValue<T> = string | string[] | number | Record<string, T> | null
 
+/**
+ * Main property item structure representing a design token with its configuration, modifiers, and child values.
+ *
+ * Основная структура элемента свойства, представляющая токен дизайна с конфигурацией, модификаторами и дочерними значениями.
+ */
 export type PropertyItem = {
   /**
    * Property value, can be string, number, array or object /

@@ -1,39 +1,60 @@
-/** Figma REST API endpoints/ Эндпоинты Figma REST API */
+/**
+ * Figma REST API endpoints enum.
+ *
+ * Перечисление эндпоинтов Figma REST API.
+ */
 export enum FigmaApiEndpoint {
   /** Get file content / Получить содержимое файла */
   files = 'files/:file_key',
+
   /** Get specific nodes from a file / Получить конкретные узлы из файла */
   fileNodes = 'files/:file_key/nodes',
+
   /** Get specific images from a file / Получить конкретные изображения из файла */
   fileImages = 'images/:file_key',
+
   /** Get image fills from a file / Получить заливки изображений из файла */
   fileImageFills = 'files/:file_key/images',
+
   /** Get file versions / Получить версии файла */
   fileVersions = 'files/:file_key/versions',
+
   /** Get file comments / Получить комментарии файла */
   fileComments = 'files/:file_key/comments',
+
   /** Get user information / Получить информацию о пользователе */
   me = 'me',
+
   /** Get team projects / Получить проекты команды */
   teamProjects = 'teams/:team_id/projects',
+
   /** Get project files / Получить файлы проекта */
   projectFiles = 'projects/:project_id/files',
+
   /** Get component information / Получить информацию о компоненте */
   components = 'components/:key',
+
   /** Get file components / Получить компоненты файла */
   fileComponents = 'files/:file_key/components',
+
   /** Get team components / Получить компоненты команды */
   teamComponents = 'teams/:team_id/components',
+
   /** Get component set information / Получить информацию о наборе компонентов */
   componentSets = 'component_sets/:key',
+
   /** Get file component sets / Получить наборы компонентов файла */
   fileComponentSets = 'files/:file_key/component_sets',
+
   /** Get team component sets / Получить наборы компонентов команды */
   teamComponentSets = 'teams/:team_id/component_sets',
+
   /** Get style information / Получить информацию о стиле */
   styles = 'styles/:key',
+
   /** Get file styles / Получить стили файла */
   fileStyles = 'files/:file_key/styles',
+
   /** Get team styles / Получить стили команды */
   teamStyles = 'teams/:team_id/styles'
 }

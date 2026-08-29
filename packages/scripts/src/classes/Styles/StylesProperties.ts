@@ -22,11 +22,13 @@ import {
   PropertyType
 } from '../../types/propertyTypes'
 
+/** List of auxiliary property types / Список вспомогательных типов свойств */
 const TYPE_AUXILIARY = [
   'selector',
   'virtual'
 ]
 
+/** List of basic property types / Список базовых типов свойств */
 const TYPE_BASIC = [
   'var',
   'property',
@@ -34,23 +36,28 @@ const TYPE_BASIC = [
 ]
 
 /**
- * A class for converting all property types in SCSS.
+ * Class for converting hierarchical design property structures into formatted SCSS rules and directives.
  *
- * Класс для преобразования всех тип свойство в виде scss.
+ * Класс для преобразования иерархических структур свойств дизайна в форматированные правила и директивы SCSS.
  */
 export class StylesProperties {
+  /** Current property item metadata / Метаданные текущего элемента свойства */
   private readonly item: PropertyItem
+
+  /** Array of accumulated SCSS code lines / Массив накопленных строк кода SCSS */
   private readonly data: string[] = []
 
+  /** Indicates whether the first property rule was generated / Указывает, было ли сгенерировано первое правило свойства */
   private first: boolean = false
 
   /**
-   * Constructor
-   * @param space пробелы
-   * @param property array with all property records/ массив со всеми записями свойств
-   * @param parent object of ancestor/ объект предка
+   * Constructor for StylesProperties.
+   *
+   * Конструктор для StylesProperties.
+   * @param space indentation string / строка отступа
+   * @param property property tree item / элемент дерева свойств
+   * @param parent ancestor property item / родительский элемент свойства
    */
-
   constructor(
     private space: string,
     private property: PropertyItemsItem,
@@ -60,9 +67,10 @@ export class StylesProperties {
   }
 
   /**
-   * Generating all properties and variables.
+   * Generates all properties, variables, and nested rules.
    *
-   * Генерация всех свойств и переменных.
+   * Генерация всех свойств, переменных и вложенных правил.
+   * @returns array of generated SCSS lines / массив сгенерированных строк SCSS
    */
   make(): string[] {
     (new PropertiesItems({})).eachMainOnly((property) => {
@@ -99,10 +107,11 @@ export class StylesProperties {
   }
 
   /**
-   * Checks if the type is one that requires a space at the beginning.
+   * Checks if the property item type is auxiliary (e.g. selector or virtual).
    *
-   * Проверяет, является ли тип тот, для которого надо пробел поставить в начале.
-   * @param item element for checking/ элемент для проверки
+   * Проверяет, является ли тип элемента свойства вспомогательным (например, selector или virtual).
+   * @param item property item to inspect / элемент свойства для проверки
+   * @returns check result / результат проверки
    */
   private isAuxiliary(
     item = this.parent
@@ -111,20 +120,22 @@ export class StylesProperties {
   }
 
   /**
-   * Checks if the type is a base property of variables.
+   * Checks if the property item type is non-basic (not var, property, or scss).
    *
-   * Проверяет, является ли тип базовым свойством переменных.
-   * @param item element for checking/ элемент для проверки
+   * Проверяет, является ли тип элемента свойства небазовым (не var, property или scss).
+   * @param item property item to inspect / элемент свойства для проверки
+   * @returns check result / результат проверки
    */
   private isNotBasic(item: PropertyItem): boolean {
     return !(item && TYPE_BASIC.indexOf(item?.[PropertyKey.variable] as string) !== -1)
   }
 
   /**
-   * Returns a function for iterating over all records.
+   * Returns a closure for generating child content rules.
    *
-   * Возвращает функцию для обхода всех записей.
-   * @param property initial variables for processing/ начальные переменные для обработки
+   * Возвращает функцию замыкания для генерации правил дочернего содержимого.
+   * @param property target property item / целевой элемент свойства
+   * @returns generator function returning code lines / функция-генератор, возвращающая строки кода
    */
   private getContent(
     property: PropertyItemsItem
@@ -137,10 +148,11 @@ export class StylesProperties {
   }
 
   /**
-   * Parameters for a class that converts data by type.
+   * Builds arguments tuple for child transformer classes.
    *
-   * Параметры для класса, который преобразует данные по типу.
-   * @param property initial variables for processing/ начальные переменные для обработки
+   * Формирует кортеж аргументов для дочерних классов преобразователей.
+   * @param property target property item / целевой элемент свойства
+   * @returns tuple with property item, space, content closure, and first-item flag / кортеж с элементом свойства, отступом, замыканием контента и флагом первого элемента
    */
   private getArgumentsForTo(
     property: PropertyItemsItem
@@ -154,10 +166,11 @@ export class StylesProperties {
   }
 
   /**
-   * Converting a value to a string depending on the type.
+   * Dispatches and converts a property into SCSS lines based on its variable type.
    *
-   * Преобразования значения в строка в зависимости от типа.
-   * @param property initial variables for processing/ начальные переменные для обработки
+   * Выбирает преобразователь и преобразует свойство в строки SCSS в зависимости от типа его переменной.
+   * @param property property item to transform / элемент свойства для преобразования
+   * @returns array of transformed SCSS lines / массив преобразованных строк SCSS
    */
   private toByType(
     property: PropertyItemsItem

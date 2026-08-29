@@ -11,10 +11,11 @@ import type { PropertyItem, PropertyList } from '../types/propertyTypes'
 import { UI_DIR_CONSTRUCTOR, UI_DIR_IN, UI_FILE_PROPERTY } from '../config'
 
 /**
- * Returns properties of the constructor.
+ * Reads and returns design property definitions for the specified list of component constructors.
  *
- * Возвращает свойства у конструктора.
- * @param names list of constructors/ список конструкторов
+ * Считывает и возвращает определения свойств дизайна для указанного списка конструкторов компонентов.
+ * @param names list of constructor names / список названий конструкторов
+ * @returns map of constructor property collections / карта коллекций свойств конструкторов
  */
 export const getConstructorProperties = (names: string[]): PropertyList => {
   const data: PropertyList = {}

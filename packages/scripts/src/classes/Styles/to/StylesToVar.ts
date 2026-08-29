@@ -15,15 +15,16 @@ import {
 } from '../../../types/propertyTypes'
 
 /**
- * CSS variable converter class.
+ * Class for converting design tokens into CSS custom property variables and optional color opacity variables.
  *
- * Класс для преобразования в переменные CSS.
+ * Класс для преобразования дизайн-токенов в переменные пользовательских свойств CSS и опциональные переменные прозрачности цвета.
  */
 export class StylesToVar extends StylesToAbstract {
   /**
-   * Getting all variables in the current branch.
+   * Extracts and formats all CSS variable declarations for the current branch.
    *
-   * Получение всех переменных в текущей ветке.
+   * Извлекает и форматирует все объявления CSS-переменных для текущей ветки.
+   * @returns array of CSS variable declarations / массив объявлений CSS-переменных
    */
   protected treatment(): string[] {
     const { value } = this.property
@@ -60,10 +61,11 @@ export class StylesToVar extends StylesToAbstract {
   }
 
   /**
-   * Acquiring full ownership.
+   * Formats a single property item into a CSS variable declaration string.
    *
-   * Получения полного свойства.
-   * @param item current element/ текущий элемент
+   * Форматирует отдельный элемент свойства в строку объявления CSS-переменной.
+   * @param item property item to format / элемент свойства для форматирования
+   * @returns formatted CSS variable declaration line / форматированная строка объявления CSS-переменной
    */
   private getCode(
     item: PropertyItem = this.item
@@ -82,10 +84,11 @@ export class StylesToVar extends StylesToAbstract {
   }
 
   /**
-   * Adds a property responsible for transparency.
+   * Generates a companion opacity variable for color tokens if configured.
    *
-   * Добавляет свойство, отвечающее за прозрачность.
-   * @param item current element/ текущий элемент
+   * Генерирует сопутствующую переменную прозрачности для цветовых токенов, если она настроена.
+   * @param item property item to format / элемент свойства для форматирования
+   * @returns formatted opacity variable declaration line / форматированная строка объявления переменной прозрачности
    */
   private getCodeColorOpacity(
     item: PropertyItem = this.item

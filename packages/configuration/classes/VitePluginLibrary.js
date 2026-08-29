@@ -52,33 +52,41 @@ export class VitePluginLibrary {
       configResolved: (config) => {
         this.outputDirectory = config.build.outDir || 'dist'
       },
-      renderChunk: (code, chunk) => {
-        return this.renderChunk(code, chunk)
+      generateBundle: (options, bundle) => {
+        this.processBundle(options, bundle)
       }
     }
   }
 
   /**
-   * Processes a code chunk and injects the style import if it matches a library entry.
+   * Processes the bundle and injects style import into library entries if CSS was emitted.
    *
-   * Обрабатывает чанк кода и внедряет импорт стилей, если он соответствует точке входа библиотеки.
-   * @param {string} code source code of the chunk / исходный код чанка
-   * @param {import('rollup').RenderedChunk} chunk rendered chunk information / информация об отрендренном чанке
-   * @returns {{ code: string, map: null } | null} transformed code or null / трансформированный код или null
+   * Обрабатывает бандл и внедряет импорт стилей в точки входа библиотеки, если был сгенерирован CSS.
+   * @param {import('rollup').NormalizedOutputOptions} options output options / параметры вывода
+   * @param {import('rollup').OutputBundle} bundle output bundle / бандл вывода
    */
-  renderChunk(code, chunk) {
-    if (
-      this.fileCssName
-      && this.isLibraryIndex(chunk.fileName)
-      && !code.includes(this.fileCssName)
-    ) {
-      return {
-        code: `import './${this.fileCssName}';\n${code}`,
-        map: null
-      }
+  processBundle(_options, bundle) {
+    if (!this.fileCssName) {
+      return
     }
 
-    return null
+    const hasCss = Object.keys(bundle).some(
+      fileName => fileName === this.fileCssName || fileName.endsWith(`/${this.fileCssName}`)
+    )
+
+    if (!hasCss) {
+      return
+    }
+
+    for (const [fileName, chunk] of Object.entries(bundle)) {
+      if (
+        chunk.type === 'chunk'
+        && this.isLibraryIndex(fileName)
+        && !chunk.code.includes(this.fileCssName)
+      ) {
+        chunk.code = `import './${this.fileCssName}';\n${chunk.code}`
+      }
+    }
   }
 
   /**

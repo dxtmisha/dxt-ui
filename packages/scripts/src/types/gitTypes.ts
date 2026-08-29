@@ -1,6 +1,7 @@
 /**
- * Git file status codes/
- * Коды статусов файлов Git
+ * Git file status codes.
+ *
+ * Коды статусов файлов Git.
  */
 export enum GitStatus {
   // Basic statuses
@@ -20,6 +21,7 @@ export enum GitStatus {
   UNTRACKED = '??',
   /** File is ignored / Файл игнорируется */
   IGNORED = '!!',
+
   // Merge conflict statuses
   /** File modified by both sides / Файл изменен с обеих сторон */
   BOTH_MODIFIED = 'UU',
@@ -35,6 +37,7 @@ export enum GitStatus {
   BOTH_ADDED = 'AA',
   /** File deleted by both sides / Файл удален с обеих сторон */
   BOTH_DELETED = 'DD',
+
   // Index and work tree statuses
   /** File modified in index / Файл изменен в индексе */
   MODIFIED_IN_INDEX = 'MM',
@@ -48,12 +51,31 @@ export enum GitStatus {
   COPIED_IN_INDEX = 'CM'
 }
 
+/**
+ * Git file item containing paths, modification date, and status.
+ *
+ * Элемент файла Git, содержащий пути, дату изменения и статус.
+ */
 export type GitFileItem = {
+  /** Relative repository path / Относительный путь в репозитории */
   path: string
+
+  /** Array of path segments formatted for the current OS / Массив сегментов пути, отформатированный для текущей ОС */
   pathByOS: string[]
+
+  /** Full absolute filesystem path / Полный абсолютный путь в файловой системе */
   pathFull: string
+
+  /** Last modification date or commit timestamp / Дата последнего изменения или временная метка коммита */
   date: string
+
+  /** Git status code / Код статуса Git */
   status?: GitStatus
 }
 
+/**
+ * List of Git file items.
+ *
+ * Список элементов файлов Git.
+ */
 export type GitFileList = GitFileItem[]

@@ -1,55 +1,70 @@
 import type { PuppeteerLifeCycleEvent } from 'puppeteer'
 
-/** Options for page sizes/ Опции для размеров страницы */
+/**
+ * Viewport dimension metrics for taking screenshots.
+ *
+ * Метрики размеров области просмотра (viewport) для создания скриншотов.
+ */
 export interface ScreenshotMetrics {
-  /** Width of the page/ Ширина страницы */
+  /** Width of the page in pixels / Ширина страницы в пикселях */
   width: number
-  /** Height of the page/ Высота страницы */
+
+  /** Height of the page in pixels / Высота страницы в пикселях */
   height: number
 }
 
-/** Options for taking screenshots/ Опции для создания скриншотов */
+/**
+ * Configuration options for capturing screenshots via Puppeteer.
+ *
+ * Опции конфигурации для создания скриншотов через Puppeteer.
+ */
 export interface ScreenshotOptions {
-  /** Additional arguments for browser launch/ Дополнительные аргументы для запуска браузера */
+  /** Additional CLI flags for browser launch / Дополнительные CLI-флаги для запуска браузера */
   args?: string[]
-  /** When to consider navigation succeeded/ Когда считать навигацию успешной */
+
+  /** Navigation lifecycle event conditions to consider page loaded / Условия событий жизненного цикла навигации для завершения загрузки */
   waitUntil?: PuppeteerLifeCycleEvent | PuppeteerLifeCycleEvent[]
-  /** Timeout for loading the page/ Таймаут для загрузки страницы */
+
+  /** Maximum timeout in milliseconds for loading the page / Максимальный таймаут в миллисекундах для загрузки страницы */
   timeout?: number
 
-  /** Width of the screenshot/ Ширина скриншота */
+  /** Width of the screenshot viewport in pixels / Ширина области просмотра скриншота в пикселях */
   width?: number
-  /** Height of the screenshot/ Высота скриншота */
+
+  /** Height of the screenshot viewport in pixels / Высота области просмотра скриншота в пикселях */
   height?: number
-  /** Format of the screenshot/ Формат скриншота */
+
+  /** Image output format / Формат сохранения изображения */
   format?: 'png' | 'jpeg' | 'webp'
-  /** Quality of the screenshot/ Качество скриншота */
+
+  /** Image compression quality (1-100) / Качество сжатия изображения (1-100) */
   quality?: number
-  /** Whether to take a full page screenshot/ Делать ли скриншот всей страницы */
+
+  /** Whether to capture full scrollable page height / Делать ли снимок всей прокручиваемой страницы */
   fullPage?: boolean
 }
 
-/** Default screenshot args/ Стандартные аргументы для запуска браузера */
+/** Default Chromium launch arguments / Стандартные аргументы запуска Chromium */
 export const SCREENSHOT_ARGS = [
   '--no-sandbox',
   '--disable-setuid-sandbox',
   '--disable-dev-shm-usage'
 ]
 
-/** Default screenshot format/ Стандартный формат скриншотов */
+/** Default image output format / Стандартный формат вывода скриншотов */
 export const SCREENSHOT_FORMAT = 'webp'
 
-/** Default screenshot heights/ Стандартные высоты скриншотов */
+/** Default viewport height in pixels / Стандартная высота области просмотра в пикселях */
 export const SCREENSHOT_HEIGHTS = 1080
 
-/** Default screenshot quality/ Стандартное качество скриншотов */
+/** Default image compression quality / Стандартное качество сжатия изображений */
 export const SCREENSHOT_QUALITY = 80
 
-/** Default screenshot timeout/ Стандартный таймаут для загрузки страницы */
+/** Default page load timeout in milliseconds / Стандартный таймаут загрузки страницы в миллисекундах */
 export const SCREENSHOT_TIMEOUT = 320_000
 
-/** Default wait until condition/ Стандартное условие ожидания загрузки */
+/** Default page navigation readiness conditions / Стандартные условия готовности страницы при навигации */
 export const SCREENSHOT_WAIT_UNTIL: PuppeteerLifeCycleEvent[] = ['networkidle0', 'domcontentloaded']
 
-/** Default screenshot widths/ Стандартные ширины скриншотов */
+/** Default viewport width in pixels / Стандартная ширина области просмотра в пикселях */
 export const SCREENSHOT_WIDTHS = 1920

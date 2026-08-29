@@ -83,12 +83,14 @@ describe('LibraryAiPrompt and LibraryAiPromptItem', () => {
       const item = new LibraryAiPromptItem(['packages', 'scripts'])
 
       vi.spyOn(PropertiesFile, 'is').mockReturnValue(true)
+      vi.spyOn(PropertiesFile, 'isDir').mockReturnValue(true)
+      vi.spyOn(PropertiesFile, 'readFile').mockReturnValue({ name: '@dxtmisha/scripts' } as any)
       vi.spyOn(PropertiesFile, 'readFileOnly').mockReturnValue('Section content')
       vi.spyOn(PropertiesFile, 'readDir').mockReturnValue(['screen.png'])
 
       const result = item.make()
       expect(result).toBeDefined()
-      expect(result).toContain('packages/scripts')
+      expect(result).toContain('@dxtmisha/scripts')
       expect(result).toContain('Section content')
     })
   })
