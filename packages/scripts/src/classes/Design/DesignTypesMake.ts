@@ -103,6 +103,7 @@ export class DesignTypesMake {
    *
    * Проверяет, содержит ли контент определения типов.
    * @param content file content / содержимое файла
+   * @returns true if content contains exports / true, если контент содержит экспорты
    */
   protected isContent(content?: string): content is string {
     return Boolean(
@@ -116,6 +117,7 @@ export class DesignTypesMake {
    *
    * Проверяет, является ли файл валидным файлом декларации.
    * @param file file name / имя файла
+   * @returns true if file is valid declaration file / true, если файл является валидным файлом деклараций
    */
   protected isFile(file: string): boolean {
     return file.endsWith('.d.ts')
@@ -135,6 +137,7 @@ export class DesignTypesMake {
    *
    * Проверяет, является ли файл валидным JavaScript или TypeScript файлом.
    * @param file file name / имя файла
+   * @returns true if file is JavaScript / true, если файл является JavaScript
    */
   protected isFileJs(file: string): boolean {
     return file.endsWith('.js')
@@ -145,6 +148,7 @@ export class DesignTypesMake {
    *
    * Проверяет, содержит ли контент JSDoc комментарии.
    * @param content file content / содержимое файла
+   * @returns true if content contains JSDoc block / true, если контент содержит блок JSDoc
    */
   protected hasJSDoc(content: string): boolean {
     return content.includes('/**')
@@ -154,8 +158,9 @@ export class DesignTypesMake {
    * Reads the directory recursively.
    *
    * Читает директорию рекурсивно.
+   * @returns array of relative file paths / массив относительных путей к файлам
    */
-  protected getList() {
+  protected getList(): string[] {
     return PropertiesFile.readDirRecursive(this.ai.getDirArray())
   }
 
@@ -183,6 +188,7 @@ export class DesignTypesMake {
    *
    * Получает список файлов, отфильтрованный переданной функцией проверки.
    * @param checkFile function to check if the file matches criteria / функция проверки соответствия файла критериям
+   * @returns filtered list of design type items / отфильтрованный список элементов типов
    */
   protected getListBy(checkFile: (file: string) => boolean): DesignTypesList {
     return forEach(
@@ -263,6 +269,7 @@ export class DesignTypesMake {
    *
    * Возвращает сегменты полного пути для файла.
    * @param file file name / имя файла
+   * @returns array of path segments / массив сегментов пути
    */
   protected getPath(file: string): string[] {
     return [...this.ai.getDirArray(), file]
@@ -273,6 +280,7 @@ export class DesignTypesMake {
    *
    * Очищает контент, удаляя импорты, локальные экспорты и пустые строки.
    * @param content content to clean / контент для очистки
+   * @returns cleaned content string / очищенная строка контента
    */
   protected cleanContent(content: string): string {
     return content
@@ -290,6 +298,7 @@ export class DesignTypesMake {
    *
    * Читает содержимое файла.
    * @param path file path / путь к файлу
+   * @returns file content or undefined / содержимое файла или undefined
    */
   protected readFile(path: string): string | undefined {
     return PropertiesFile.readFileOnly(this.getPath(path))

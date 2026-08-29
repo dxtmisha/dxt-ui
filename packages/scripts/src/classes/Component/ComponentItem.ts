@@ -9,11 +9,14 @@ import { componentDocTemplates } from '../../media/templates/componentDocTemplat
 import { UI_FILE_PACKAGE } from '../../config'
 
 /**
- * Class for creating component files from templates.
+ * Scaffolds and writes component template files into a target directory.
+ * Substitutes template placeholders with component name, kebab-case names, and project information.
  *
- * Класс для создания файлов компонента из шаблонов.
+ * Создает и записывает шаблонные файлы компонента в целевую директорию.
+ * Заменяет плейсхолдеры шаблонов именем компонента, kebab-case именами и информацией о проекте.
  */
 export class ComponentItem {
+  /** Map of template filenames to their template content / Карта имен файлов шаблонов и их содержимого */
   protected sample: Record<string, string> = componentDocTemplates
 
   /**

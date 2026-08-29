@@ -52,6 +52,7 @@ export class DesignConstructors {
    * Returns a list of components.
    *
    * Возвращает список компонентов.
+   * @returns list of component names / список имен компонентов
    */
   getComponents(): string[] {
     return PropertiesFile.readDir(this.getDir())
@@ -61,6 +62,7 @@ export class DesignConstructors {
    * Returns a list of component styles.
    *
    * Возвращает список стилей компонентов.
+   * @returns list of style import strings / список строк импорта стилей
    */
   getComponentsStyle(): string[] {
     const list: string[] = []
@@ -78,6 +80,7 @@ export class DesignConstructors {
    * Returns the directory path for constructors.
    *
    * Возвращает путь к директории конструкторов.
+   * @returns directory path segments / сегменты пути директории
    */
   protected getDir(): string[] {
     return [

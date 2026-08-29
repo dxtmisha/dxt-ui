@@ -11,6 +11,7 @@ import { DesignStructureItemAbstract } from './DesignStructureItemAbstract'
  * Координирует преобразование структурных метаданных в правила стилей CSS-in-JS с использованием глобального тематического окружения.
  */
 export class DesignStructureStyles extends DesignStructureItemAbstract<string[]> {
+  /** Array of compiled CSS style rules / Массив скомпилированных правил CSS-стилей */
   protected data: string[]
 
   /**
@@ -27,9 +28,10 @@ export class DesignStructureStyles extends DesignStructureItemAbstract<string[]>
   }
 
   /**
-   * Performing transformation.
+   * Performing transformation of tokens into CSS rules.
    *
-   * Выполнение преобразования.
+   * Выполнение преобразования токенов в правила CSS.
+   * @returns array of compiled CSS lines / массив скомпилированных строк CSS
    */
   make(): string[] {
     if (this.items) {

@@ -9,13 +9,21 @@ import { constructorTemplates } from '../../media/templates/constructorTemplates
 
 import { UI_DIR_IN, UI_DIR_CONSTRUCTOR, UI_DIRS_LIBRARY } from '../../config'
 
+/** Properties configuration filename / Имя файла конфигурации свойств */
 const FILE_PROPERTIES = 'properties.json'
+/** Props definition filename / Имя файла определения props */
 const FILE_PROPS = 'props.ts'
+/** Types definition filename / Имя файла определения типов */
 const FILE_TYPES = 'types.ts'
+/** Basic types definition filename / Имя файла определения базовых типов */
 const FILE_TYPES_BASIC = 'basicTypes.ts'
+/** Component style SCSS filename / Имя файла SCSS стилей компонента */
 const FILE_STYLE = 'style.scss'
+/** Constructor implementation filename / Имя файла реализации конструктора */
 const FILE_CODE = 'Constructors.ts'
+/** Design JSX wrapper filename / Имя файла JSX-обертки дизайна */
 const FILE_CLASS = 'ConstructorsDesign.tsx'
+/** Module entrypoint filename / Имя файла точки входа модуля */
 const FILE_INDEX = 'index.ts'
 
 /**
@@ -26,8 +34,13 @@ const FILE_INDEX = 'index.ts'
  * Автоматизирует создание определений свойств, файлов типов, стилей и логики интеграции для конструкторов.
  */
 export class DesignConstructor extends DesignCommand {
+  /** Map of constructor template files / Карта файлов шаблонов конструктора */
   protected sample = constructorTemplates
+
+  /** Target directory mark / Маркер целевой директории */
   protected mark = UI_DIR_CONSTRUCTOR
+
+  /** Target directory path segments / Сегменты пути целевой директории */
   protected dir: string[]
 
   /**
@@ -74,6 +87,7 @@ export class DesignConstructor extends DesignCommand {
    * This code generates the properties.json.
    *
    * Генерация файла properties.json.
+   * @returns current instance / текущий экземпляр
    */
   protected makeProperties(): this {
     const file = FILE_PROPERTIES
@@ -89,6 +103,7 @@ export class DesignConstructor extends DesignCommand {
    * This code generates the props.ts.
    *
    * Генерация файла props.ts.
+   * @returns current instance / текущий экземпляр
    */
   protected makeProps(): this {
     const file = FILE_PROPS
@@ -107,6 +122,7 @@ export class DesignConstructor extends DesignCommand {
    * This code generates the types.ts.
    *
    * Генерация файла types.ts.
+   * @returns current instance / текущий экземпляр
    */
   protected makeTypes(): this {
     const file = FILE_TYPES
@@ -122,6 +138,7 @@ export class DesignConstructor extends DesignCommand {
    * This code generates the basicTypes.ts.
    *
    * Генерация файла basicTypes.ts.
+   * @returns current instance / текущий экземпляр
    */
   protected makeTypesBasic(): this {
     return this.makeFileStandard(FILE_TYPES_BASIC)
@@ -131,6 +148,7 @@ export class DesignConstructor extends DesignCommand {
    * This code generates the style.scss.
    *
    * Генерация файла style.scss.
+   * @returns current instance / текущий экземпляр
    */
   protected makeStyle(): this {
     const file = FILE_STYLE
@@ -147,6 +165,7 @@ export class DesignConstructor extends DesignCommand {
    * This code generates the Constructors.ts.
    *
    * Генерация файла Constructors.ts.
+   * @returns current instance / текущий экземпляр
    */
   protected makeCode(): this {
     return this.makeFileStandard(FILE_CODE)
@@ -156,6 +175,7 @@ export class DesignConstructor extends DesignCommand {
    * This code generates the ConstructorsDesign.tsx.
    *
    * Генерация файла ConstructorsDesign.tsx.
+   * @returns current instance / текущий экземпляр
    */
   protected makeMain(): this {
     return this.makeFileStandard(FILE_CLASS)
@@ -165,6 +185,7 @@ export class DesignConstructor extends DesignCommand {
    * This code generates the index.ts.
    *
    * Генерация файла index.ts.
+   * @returns current instance / текущий экземпляр
    */
   protected makeIndex(): this {
     return this.makeFileStandard(FILE_INDEX)
@@ -174,7 +195,8 @@ export class DesignConstructor extends DesignCommand {
    * Generates a standard file based on a template.
    *
    * Генерирует стандартный файл на основе шаблона.
-   * @param file file name/ имя файла
+   * @param file file name / имя файла
+   * @returns current instance / текущий экземпляр
    */
   protected makeFileStandard(file: string): this {
     const sample = this.readDefinable(file)
@@ -189,6 +211,7 @@ export class DesignConstructor extends DesignCommand {
    * Updates the package.json file.
    *
    * Обновляет файл package.json.
+   * @returns current instance / текущий экземпляр
    */
   protected makeFilePackage(): this {
     const command = this.getName()
@@ -209,6 +232,7 @@ export class DesignConstructor extends DesignCommand {
    * Generates a library file.
    *
    * Генерирует файл библиотеки.
+   * @returns current instance / текущий экземпляр
    */
   protected makeLibrary(): this {
     const name = toCamelCase(this.getCommand())

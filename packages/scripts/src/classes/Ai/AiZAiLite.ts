@@ -31,6 +31,7 @@ export class AiZAiLite extends AiAbstract<XaiProvider> {
    * Implementation hook: convert accumulated images to model-specific format.
    *
    * Хук реализации: преобразовать накопленные изображения в формат, специфичный для модели.
+   * @returns array of converted image blocks / массив преобразованных блоков изображений
    */
   protected toImages(): any[] {
     return forEach(this.images, image => ({
@@ -43,6 +44,7 @@ export class AiZAiLite extends AiAbstract<XaiProvider> {
    * Implementation hook: convert accumulated contents to model-specific format.
    *
    * Хук реализации: преобразовать накопленное содержимое в формат, специфичный для модели.
+   * @returns array of converted text blocks / массив преобразованных текстовых блоков
    */
   protected toContents(): any[] {
     return forEach(this.contents, content => ({
@@ -55,8 +57,8 @@ export class AiZAiLite extends AiAbstract<XaiProvider> {
    * Performs content generation request using xAI responses model and returns textual result.
    *
    * Выполняет запрос генерации контента с использованием модели ответов xAI и возвращает текстовый результат.
-   * @param model - Model identifier (e.g., 'grok-4.5') / Идентификатор модели
-   * @param contents - Composed contents for generation / Собранный контент для генерации
+   * @param model Model identifier (e.g., 'grok-4.5') / Идентификатор модели
+   * @param contents Composed contents for generation / Собранный контент для генерации
    * @returns Generated text response / Сгенерированный текстовый ответ
    */
   protected async response(

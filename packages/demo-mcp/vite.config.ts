@@ -1,14 +1,7 @@
 import { viteBasicFunction } from '@dxtmisha/configuration/viteBasicFunction'
 
 // https://vite.dev/config/
-export default viteBasicFunction(
-  undefined,
-  undefined,
-  'index.ts',
-  undefined,
-  undefined,
-  undefined,
-  undefined,
-  undefined,
-  true
-)
+export default viteBasicFunction({
+  entry: 'index.ts',
+  rollupTypes: true
+})

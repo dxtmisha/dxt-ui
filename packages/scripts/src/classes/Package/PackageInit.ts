@@ -31,7 +31,7 @@ export class PackageInit {
    *
    * Запускает процесс создания пакета и инициализирует необходимые файлы.
    */
-  make() {
+  make(): void {
     console.log(`Initializing package of type: ${this.type} with templates: ${this.templates}`)
 
     this.getDirs()
@@ -44,6 +44,7 @@ export class PackageInit {
    * Returns an array of directory names for package initialization.
    *
    * Возвращает массив имен директорий для инициализации пакета.
+   * @returns array of empty package directory names / массив имен пустых директорий пакетов
    */
   protected getDirs(): string[] {
     return PropertiesFile.readDir(this.dir)

@@ -21,6 +21,7 @@ import {
  * Рекурсивно анализирует свойства компонента для идентификации подклассов и построения имен классов, соответствующих BEM.
  */
 export class DesignStructureClasses extends DesignStructureItemAbstract<DesignStructureClassesList> {
+  /** List of resolved structure classes / Список разрешенных классов структуры */
   protected data: DesignStructureClassesList = []
 
   /**
@@ -40,8 +41,9 @@ export class DesignStructureClasses extends DesignStructureItemAbstract<DesignSt
    * Returns records that meet state conditions.
    *
    * Возвращает записи, удовлетворяющие условиям состояния.
-   * @param properties input data/ входной данный
-   * @param parent ancestor name/ название предка
+   * @param properties input data / входные данные
+   * @param parent ancestor name / название предка
+   * @returns array of structure class items / массив элементов классов структуры
    */
   protected make(
     properties?: PropertyItem['value'],
@@ -75,7 +77,8 @@ export class DesignStructureClasses extends DesignStructureItemAbstract<DesignSt
    * Does this property belong to the class.
    *
    * Является ли это свойство частью класса.
-   * @param item object for checking/ объект для проверки
+   * @param item object for checking / объект для проверки
+   * @returns true if property defines a subclass / true, если свойство определяет подкласс
    */
   protected isClasses(item: PropertyItem): boolean {
     return Boolean(
@@ -87,8 +90,9 @@ export class DesignStructureClasses extends DesignStructureItemAbstract<DesignSt
    * Obtaining the name of the class.
    *
    * Получение имени класса.
-   * @param item object for checking/ объект для проверки
-   * @param parent list of names of ancestors/ список имен предков
+   * @param item object for checking / объект для проверки
+   * @param parent list of names of ancestors / список имен предков
+   * @returns array of class name segments / массив сегментов имени класса
    */
   protected getNames(
     item: PropertyItem,

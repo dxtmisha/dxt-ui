@@ -26,10 +26,16 @@ import {
  * Служит центральным узлом для чтения метаданных компонента, генерации маппингов классов и разрешения стилевых токенов.
  */
 export class DesignStructure {
+  /** Component identifier name / Идентификатор имени компонента */
   protected readonly component: string
 
+  /** Cached structure list / Кэшированный список структуры */
   protected items?: DesignStructureList
+
+  /** Cached structure classes list / Кэшированный список классов структуры */
   protected itemsClasses?: DesignStructureClassesList
+
+  /** Cached styles list / Кэшированный список стилей */
   protected itemsStyles?: string[]
 
   /**
@@ -48,6 +54,7 @@ export class DesignStructure {
    * Getting all data from the structure.
    *
    * Получение всех данных из структуры.
+   * @returns structure list / список элементов структуры
    */
   get(): DesignStructureList {
     if (this.items === undefined) {
@@ -61,6 +68,7 @@ export class DesignStructure {
    * Obtaining a list of subclasses from a structure.
    *
    * Получение списка подклассов из структуры.
+   * @returns structure classes list / список классов структуры
    */
   getClasses(): DesignStructureClassesList {
     if (this.itemsClasses === undefined) {
@@ -74,6 +82,7 @@ export class DesignStructure {
    * Returns all styles from tokens.
    *
    * Возвращает все стили из токенов.
+   * @returns array of style declarations / массив объявлений стилей
    */
   getStyles(): string[] {
     if (this.itemsStyles === undefined) {
@@ -87,6 +96,7 @@ export class DesignStructure {
    * Returns the name of the design.
    *
    * Возвращает название дизайна.
+   * @returns design system name / название дизайн-системы
    */
   getDesign(): string {
     return PropertiesConfig.getDesignName()
@@ -96,6 +106,7 @@ export class DesignStructure {
    * Returns the name of the design with a capital letter.
    *
    * Возвращает название дизайна с заглавной буквы.
+   * @returns capitalized design system name / название дизайн-системы с заглавной буквы
    */
   getDesignFirst(): string {
     return toCamelCaseFirst(PropertiesConfig.getDesignName())
@@ -105,6 +116,7 @@ export class DesignStructure {
    * Returns the name of the component.
    *
    * Возвращает название компонента.
+   * @returns component name / название компонента
    */
   getComponentName(): string {
     return this.component
@@ -114,6 +126,7 @@ export class DesignStructure {
    * Returns the name of the component with a capital letter.
    *
    * Возвращает название компонента с заглавной буквой.
+   * @returns capitalized component name / название компонента с заглавной буквы
    */
   getComponentNameFirst(): string {
     return toCamelCaseFirst(this.component)
@@ -123,6 +136,7 @@ export class DesignStructure {
    * Returns the full name of the component, including design and component name.
    *
    * Возвращает полное название компонента, включая название дизайна и компонента.
+   * @returns full component name / полное название компонента
    */
   getFullComponentName(): string {
     const design = this.getDesignFirst()
@@ -135,6 +149,7 @@ export class DesignStructure {
    * Returns the names of component files.
    *
    * Возвращает названия файлов компонентов.
+   * @returns component filename / имя файла компонента
    */
   getFileName(): string {
     return toCamelCaseFirst(this.getPathName())
@@ -146,6 +161,7 @@ export class DesignStructure {
    *
    * Возвращает название файла для кэша.
    * Это полный массив со всеми обработанными свойствами.
+   * @returns path cache key / ключ кэша пути
    */
   getPathName(): string {
     return `${PropertiesConfig.getDesignName()}-${this.component}`
@@ -155,6 +171,7 @@ export class DesignStructure {
    * Returns the name of the file with data about the subclass.
    *
    * Возвращает название файла с данными о подклассе.
+   * @returns classes path cache key / ключ кэша пути классов
    */
   protected getPathClasses(): string {
     return `${this.getPathName()}-${UI_STRUCTURE_CLASSES}`
@@ -164,6 +181,7 @@ export class DesignStructure {
    * Data generation.
    *
    * Генерация данных.
+   * @returns resolved structure list / разрешенный список структуры
    */
   protected make(): DesignStructureList {
     return PropertiesCache.get<DesignStructureList>(
@@ -179,6 +197,7 @@ export class DesignStructure {
    * Generation of data for the subclass.
    *
    * Генерация данных для подкласса.
+   * @returns resolved structure classes list / разрешенный список классов структуры
    */
   protected makeClasses(): DesignStructureClassesList {
     return PropertiesCache.get<DesignStructureClassesList>(
@@ -194,6 +213,7 @@ export class DesignStructure {
    * Performing transformation of tokens into styles for the component.
    *
    * Выполнение преобразования токенов в стили для компонента.
+   * @returns generated component styles / сгенерированные стили компонента
    */
   protected makeStyles(): string[] {
     return new DesignStructureStyles(this.component).get()

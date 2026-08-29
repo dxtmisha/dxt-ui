@@ -10,17 +10,17 @@ import {
 } from '../../config'
 
 /**
- * Class for generating exportable data
+ * Class for generating exportable data and aggregate module entries.
  *
- * Класс для генерации экспортируемых данных
+ * Класс для генерации экспортируемых данных и агрегации точек входа модулей.
  */
 export class LibraryExport {
   /**
-   * Start of data generation
+   * Start of data generation.
    *
-   * Начало генерации данных
+   * Начало генерации данных.
    */
-  make() {
+  make(): void {
     console.log('Library export')
 
     PropertiesFile.writeByPath(
@@ -32,29 +32,32 @@ export class LibraryExport {
   }
 
   /**
-   * Returns the path to the directory
+   * Returns the path to the directory.
    *
-   * Возвращает путь к директории
-   * @param directory selected directory/ выбранная директория
+   * Возвращает путь к директории.
+   * @param directory selected directory / выбранная директория
+   * @returns path segments array / массив сегментов пути
    */
   protected getPath(directory: string): string[] {
     return [UI_DIR_IN, directory]
   }
 
   /**
-   * Проверяет, нужно ли экспортировать этот файл
+   * Checks whether this file needs to be exported.
    *
-   * Checks whether this file needs to be exported
-   * @param path filename/ имя файла
+   * Проверяет, нужно ли экспортировать этот файл.
+   * @param path filename or path segments / имя файла или сегменты пути
+   * @returns true if file is eligible for export / true, если файл подлежит экспорту
    */
   protected isExport(path: string | string[]): boolean {
     return !PropertiesFile.joinPath(path).match('.test.') && !this.getFile(path).match(UI_FLAG_NOT_EXPORT)
   }
 
   /**
-   * Returns a list of all files for export
+   * Returns a list of all files for export.
    *
-   * Возвращает список всех файлов для экспорта
+   * Возвращает список всех файлов для экспорта.
+   * @returns list of export file groups / список групп файлов для экспорта
    */
   protected getDirectory(): LibraryFiles {
     const files: LibraryFiles = []
@@ -77,29 +80,32 @@ export class LibraryExport {
   }
 
   /**
-   * Returns the folder name
+   * Returns the folder name with capitalized first letter.
    *
-   * Возвращает название папки
-   * @param name folder name/ название папки
+   * Возвращает название папки с заглавной буквы.
+   * @param name folder name / название папки
+   * @returns capitalized folder name / название папки с заглавной буквы
    */
-  protected getName(name: string) {
+  protected getName(name: string): string {
     return name.replace(/^[a-z]/, char => char.toUpperCase())
   }
 
   /**
-   * Возвращает содержимое файла
+   * Returns the content of the file.
    *
-   * Returns the content of the file
-   * @param path filename/ имя файла
+   * Возвращает содержимое файла.
+   * @param path filename or path segments / имя файла или сегменты пути
+   * @returns file content string / строка содержимого файла
    */
   protected getFile(path: string | string[]): string {
     return PropertiesFile.readFile<string>(path) ?? ''
   }
 
   /**
-   * File generation for saving
+   * File generation for saving.
    *
-   * Генерация файла для сохранения
+   * Генерация файла для сохранения.
+   * @returns generated export code / сгенерированный код экспорта
    */
   protected initFile(): string {
     const files: LibraryFiles = this.getDirectory()
@@ -143,9 +149,10 @@ export class LibraryExport {
   }
 
   /**
-   * Generates imports for global styles
+   * Generates imports for global styles.
    *
-   * Генерация импортов для глобальных стилей
+   * Генерация импортов для глобальных стилей.
+   * @returns generated style import statements / сгенерированные инструкции импорта стилей
    */
   protected initStyles(): string {
     const imports: string[] = []

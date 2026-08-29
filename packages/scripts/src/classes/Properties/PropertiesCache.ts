@@ -27,19 +27,27 @@ type PropertiesCacheSystem = {
  * Предоставляет структурированный механизм для хранения трансформированных токенов, отслеживания зависимостей файлов и обеспечения производительности инкрементальной сборки за счет исключения повторной обработки.
  */
 export class PropertiesCache {
+  /** Timestamp of the cache snapshot / Временная метка снимка кэша */
   private static time = 0
+
+  /** Registered file dependencies for cache keys / Зарегистрированные файловые зависимости для ключей кэша */
   private static readonly files: PropertiesCacheList = {}
+
+  /** Recorded file sizes for cache validation / Зафиксированные размеры файлов для валидации кэша */
   private static readonly sizes: PropertiesCacheList = {}
+
+  /** Stack of active cache listener key names / Стек имен ключей активных слушателей кэша */
   private static readonly listenerName: string[] = ['global']
 
   /**
    * Retrieves data from the cache or executes the callback to regenerate and store it if the cache is missing or outdated.
    *
    * Извлекает данные из кэша или выполняет функцию обратного вызова для регенерации и сохранения данных, если кэш отсутствует или устарел.
-   * @param path the logical path structure for the cache file/ логическая структура пути для файла кэша
-   * @param name the unique identifier for the cache entry/ уникальный идентификатор записи кэша
-   * @param callback the generator function to execute on cache miss/ функция-генератор, выполняемая при отсутствии данных в кэше
-   * @param extension the file extension, typically 'json'/ расширение файла, обычно 'json'
+   * @param path the logical path structure for the cache file / логическая структура пути для файла кэша
+   * @param name the unique identifier for the cache entry / уникальный идентификатор записи кэша
+   * @param callback the generator function to execute on cache miss / функция-генератор, выполняемая при отсутствии данных в кэше
+   * @param extension the file extension, typically 'json' / расширение файла, обычно 'json'
+   * @returns cached or freshly computed value / кэшированное или заново вычисленное значение
    */
   static get<T extends PropertiesFileValue>(
     path: PropertiesFilePath,
@@ -69,7 +77,8 @@ export class PropertiesCache {
    * Directly reads a file and registers it as a dependency for the currently active cache listener.
    *
    * Напрямую читает файл и регистрирует его как зависимость для текущего активного слушателя кэша.
-   * @param path the path to the file to be read/ путь к считываемому файлу
+   * @param path the path to the file to be read / путь к считываемому файлу
+   * @returns file content or undefined / содержимое файла или undefined
    */
   static read<R>(path: PropertiesFilePath): R | undefined {
     if (PropertiesFile.is(path)) {
@@ -91,8 +100,8 @@ export class PropertiesCache {
    * Persists intermediate results to the temporary step-based cache directory.
    *
    * Сохраняет промежуточные результаты во временную директорию пошагового кэша.
-   * @param name the name of the cached step result/ название кэшированного результата шага
-   * @param value the data structure to persist/ структура данных для сохранения
+   * @param name the name of the cached step result / название кэшированного результата шага
+   * @param value the data structure to persist / структура данных для сохранения
    */
   static write<T extends PropertiesFileValue>(name: string, value: T): void {
     this.writeFile<T>(DIR_STEP, name, value)

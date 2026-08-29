@@ -1,36 +1,52 @@
+import type { UserConfigExport } from 'vite'
+import type { VitePluginLibraryTarget } from '../classes/VitePluginLibrary'
+
+/** Options for base Vite library configuration / Параметры базовой конфигурации Vite для библиотек */
+export interface ViteBasicFunctionOptions {
+  /** Entry points / Входные точки сборки */
+  entry?: string | string[] | Record<string, string>
+  /** Global library name / Глобальное имя библиотеки */
+  name?: string
+  /** Build target / Цель сборки */
+  target?: string
+
+  /** Name of the output CSS file / Имя выходного CSS файла */
+  fileCssName?: string
+  /** Target library file name(s) / Имя(имена) целевых файлов библиотеки */
+  fileLibraryName?: VitePluginLibraryTarget
+
+  /** Glob patterns for d.ts / Паттерны для генерации d.ts */
+  include?: string[]
+  /** Extra include patterns / Дополнительные паттерны включения */
+  includeExtended?: string[]
+  /** Patterns to exclude for d.ts / Паттерны исключения для d.ts */
+  exclude?: string[]
+  /** Extra exclude patterns / Дополнительные паттерны исключения */
+  excludeExtended?: string[]
+
+  /** External dependencies / Внешние зависимости */
+  external?: string[]
+  /** Extra external dependencies / Дополнительные внешние зависимости */
+  externalExtended?: string[]
+
+  /** Packages to bundle types for / Пакеты, типы которых нужно собрать */
+  bundledPackages?: string[]
+  /** Whether to use rollupTypes in dts plugin / Использовать ли rollupTypes в плагине dts */
+  rollupTypes?: boolean
+
+  /** Browserslist query / Запрос browserslist */
+  browserslistValue?: string
+  /** Disable automatic dependency discovery for pre-bundling / Отключить автоматическое сканирование зависимостей для пре-бандлинга */
+  noDiscovery?: boolean
+}
+
 /****
  * Creates a base Vite config for libraries with functions/composables/classes.
  *
  * Создаёт базовую конфигурацию Vite для библиотек с функциями/композаблами/классами.
- * @param name global library name / глобальное имя библиотеки
- * @param target build target / цель сборки
- * @param entry entry points / входные точки сборки
- * @param include glob patterns for d.ts / паттерны для генерации d.ts
- * @param includeExtended extra patterns / дополнительные паттерны
- * @param external external dependencies / внешние зависимости
- * @param externalExtended extra dependencies / дополнительные зависимости
- * @param fileCssName name of the output CSS file / имя выходного CSS файла
- * @param rollupTypes whether to use rollupTypes in dts plugin / использовать ли rollupTypes в плагине dts
- * @param bundledPackages packages to bundle types for / пакеты, типы которых нужно собрать
- * @param browserslistValue browserslist query / запрос browserslist
- * @param exclude patterns to exclude for d.ts / паттерны исключения для d.ts
- * @param excludeExtended extra exclude patterns / дополнительные паттерны исключения
- * @param noDiscovery disable automatic dependency discovery for pre-bundling / отключить автоматическое сканирование зависимостей для пре-бандлинга
+ * @param options configuration options / параметры конфигурации
  * @returns Vite config / конфигурация Vite
  */
 export declare const viteBasicFunction: (
-  name?: string,
-  target?: string,
-  entry?: string | string[] | Record<string, string>,
-  include?: string[],
-  includeExtended?: string[],
-  external?: string[],
-  externalExtended?: string[],
-  fileCssName?: string,
-  rollupTypes?: boolean,
-  bundledPackages?: string[],
-  browserslistValue?: string,
-  exclude?: string[],
-  excludeExtended?: string[],
-  noDiscovery?: boolean
-) => import('vite').UserConfigExport
+  options?: ViteBasicFunctionOptions
+) => UserConfigExport

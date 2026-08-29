@@ -13,9 +13,13 @@ import type { PropertyItemsItem } from '../../types/propertyTypes'
  * Предоставляет основу для разрешения свойств и метаданных компонента из центрального хранилища дизайн-системы.
  */
 export abstract class DesignStructureItemAbstract<D> {
+  /** Properties management instance / Экземпляр управления свойствами */
   protected properties: Properties
+
+  /** Resolved property metadata / Разрешенные метаданные свойства */
   protected items?: PropertyItemsItem
 
+  /** Underlying structured data / Лежащие в основе структурированные данные */
   protected abstract data: D
 
   /**
@@ -35,6 +39,7 @@ export abstract class DesignStructureItemAbstract<D> {
    * Getting all data about dependencies of the current component.
    *
    * Получение всех данных об зависимостях у текущего компонента.
+   * @returns resolved structure data / разрешенные данные структуры
    */
   get(): D {
     return this.data
@@ -44,7 +49,7 @@ export abstract class DesignStructureItemAbstract<D> {
    * Returns a reference to the component.
    *
    * Возвращает ссылку на компонент.
-   * Это полный массив со всеми обработанными свойствами.
+   * @returns component token link string / строка ссылки на токен компонента
    */
   protected getLink(): string {
     return `{${PropertiesConfig.getDesignName()}.${this.component}}`

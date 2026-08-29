@@ -18,10 +18,16 @@ import { UI_FILE_PACKAGE } from '../../config'
  * Обеспечивает единую логику чтения шаблонов, трансформации данных и записи файлов.
  */
 export abstract class DesignCommand {
+  /** Map of template filenames and contents / Карта имен шаблонов и их содержимого */
   protected abstract sample: Record<string, string>
+
+  /** Identifier mark for replacements / Маркер-идентификатор для замен */
   protected abstract mark: string
+
+  /** Target directory path segments / Сегменты пути целевой директории */
   protected abstract dir: string[]
 
+  /** Design structure metadata instance / Экземпляр метаданных структуры дизайна */
   protected structure?: DesignStructure
 
   /**
@@ -67,37 +73,69 @@ export abstract class DesignCommand {
    * Checks the presence of a file.
    *
    * Проверяет наличие файла.
-   * @param name file name/ название файла
+   * @param name file name / название файла
+   * @returns true if file exists / true, если файл существует
    */
   protected isFile(name: string | string[]): boolean {
     return PropertiesFile.is([...this.dir, ...toArray(name)])
   }
 
   /**
-   * Returns the names for the team.
+   * Returns the command name.
    *
-   * Возвращает названия для команды.
+   * Возвращает название команды.
+   * @returns command identifier / идентификатор команды
    */
   protected getCommand(): string {
     return this.command
   }
 
+  /**
+   * Returns PascalCase component name.
+   *
+   * Возвращает имя компонента в PascalCase.
+   * @returns PascalCase component name / имя компонента в PascalCase
+   */
   protected getName(): string {
     return toCamelCaseFirst(this.getCommand())
   }
 
+  /**
+   * Returns camelCase component name.
+   *
+   * Возвращает имя компонента в camelCase.
+   * @returns camelCase component name / имя компонента в camelCase
+   */
   protected getNameMin(): string {
     return toCamelCase(this.getCommand())
   }
 
+  /**
+   * Returns kebab-case component name.
+   *
+   * Возвращает имя компонента в kebab-case.
+   * @returns kebab-case component name / имя компонента в kebab-case
+   */
   protected getCode(): string {
     return toKebabCase(this.getCommand())
   }
 
+  /**
+   * Returns full PascalCase design component name.
+   *
+   * Возвращает полное имя дизайн-компонента в PascalCase.
+   * @returns full design component name / полное имя дизайн-компонента
+   */
   protected getFullName(): string {
     return toCamelCaseFirst(`${PropertiesConfig.getDesignName()}-${this.getCommand()}`)
   }
 
+  /**
+   * Returns PascalCase project name.
+   *
+   * Возвращает имя проекта в PascalCase.
+   * @returns PascalCase project name / имя проекта в PascalCase
+   */
   protected getProjectName(): string {
     return toCamelCaseFirst(PropertiesConfig.getProjectName())
   }
@@ -106,6 +144,7 @@ export abstract class DesignCommand {
    * Returns a structure object.
    *
    * Возвращает объект структуры.
+   * @returns structure instance / экземпляр структуры
    */
   protected getStructure(): DesignStructure {
     if (!this.structure) {
@@ -119,7 +158,8 @@ export abstract class DesignCommand {
    * Returns an object for template transformation.
    *
    * Возвращает объект для преобразования шаблона.
-   * @param sample property template/ шаблон свойства
+   * @param sample property template / шаблон свойства
+   * @returns replacement helper instance / экземпляр хелпера замен
    */
   protected getReplace(sample?: string): DesignReplace {
     return new DesignReplace(
@@ -130,20 +170,22 @@ export abstract class DesignCommand {
   }
 
   /**
-   * Reading.
+   * Reads file content as string.
    *
-   * Читает файл.
-   * @param name file name/ название файла
+   * Читает содержимое файла как строку.
+   * @param name file name / название файла
+   * @returns file content or undefined / содержимое файла или undefined
    */
   protected read(name: string | string[]): string | undefined {
     return PropertiesFile.readFile<string>([...this.dir, ...toArray(name)])
   }
 
   /**
-   * This code reads a template.
+   * Reads a template from the sample map.
    *
-   * Читает шаблона.
-   * @param name file name/ название файла
+   * Читает шаблон из карты шаблонов.
+   * @param name file name / название файла
+   * @returns sample content or undefined / содержимое шаблона или undefined
    */
   protected readSample(name: string): string | undefined {
     return this.sample?.[name]
@@ -153,8 +195,9 @@ export abstract class DesignCommand {
    * Reads the file itself or its template if it is not found.
    *
    * Читает сам файл или его шаблон, если его нет.
-   * @param name file name/ название файла
-   * @param callback the function is executed if there is no such file/ функция выполняется, если такого файла нет
+   * @param name file name / название файла
+   * @param callback the function is executed if there is no such file / функция выполняется, если такого файла нет
+   * @returns replacement instance / экземпляр объекта замен
    */
   protected readDefinable(name: string, callback?: (sample: DesignReplace) => void): DesignReplace {
     const fileName = this.getReplace().getNameFile(name)
@@ -180,8 +223,8 @@ export abstract class DesignCommand {
    * Creating or rewriting a file.
    *
    * Создание или перезапись файла.
-   * @param name file name/ название файла
-   * @param value values for storage/ значения для хранения
+   * @param name file name / название файла
+   * @param value values for storage / значения для хранения
    */
   protected write(name: string, value: string): void {
     this.console(name)

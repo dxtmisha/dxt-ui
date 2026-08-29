@@ -33,6 +33,7 @@ export class AiGoogleLite extends AiAbstract<GoogleGenAI> {
    * Implementation hook: convert accumulated images to model-specific format.
    *
    * Хук реализации: преобразовать накопленные изображения в формат, специфичный для модели.
+   * @returns array of converted inline data images / массив преобразованных встроенных данных изображений
    */
   protected toImages(): any {
     return forEach(this.images, image => ({
@@ -43,6 +44,12 @@ export class AiGoogleLite extends AiAbstract<GoogleGenAI> {
     }))
   }
 
+  /**
+   * Implementation hook: convert accumulated contents to model-specific format.
+   *
+   * Хук реализации: преобразовать накопленное содержимое в формат, специфичный для модели.
+   * @returns array of converted text parts / массив преобразованных текстовых частей
+   */
   protected toContents(): any {
     return forEach(this.contents, content => ({
       text: content
@@ -53,8 +60,9 @@ export class AiGoogleLite extends AiAbstract<GoogleGenAI> {
    * Performs content generation request and returns textual result.
    *
    * Выполняет запрос генерации контента и возвращает текстовый результат.
-   * @param model Model identifier / Идентификатор модели
-   * @param contents Composed contents for generation / Собранный контент для генерации
+   * @param model model identifier / идентификатор модели
+   * @param contents composed contents for generation / собранный контент для генерации
+   * @returns generated text response / сгенерированный текстовый ответ
    */
   protected async response(
     model: string,

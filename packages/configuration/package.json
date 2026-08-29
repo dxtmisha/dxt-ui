@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/configuration",
   "private": false,
-  "version": "0.7.10",
+  "version": "1.0.0",
   "type": "module",
   "description": "Shared configuration files for DXT UI - Vite configs and TypeScript configs for building UI components",
   "keywords": [
@@ -48,10 +48,6 @@
       "types": "./viteconfig/viteBasicFunction.config.d.ts",
       "default": "./viteconfig/viteBasicFunction.config.js"
     },
-    "./viteComponentOnly": {
-      "types": "./viteconfig/viteComponentOnly.config.d.ts",
-      "default": "./viteconfig/viteComponentOnly.config.js"
-    },
     "./viteComponents": {
       "types": "./viteconfig/viteComponents.config.d.ts",
       "default": "./viteconfig/viteComponents.config.js"
@@ -68,10 +64,6 @@
       "types": "./viteconfig/viteFlags.config.d.ts",
       "default": "./viteconfig/viteFlags.config.js"
     },
-    "./viteLibraries": {
-      "types": "./viteconfig/viteLibraries.config.d.ts",
-      "default": "./viteconfig/viteLibraries.config.js"
-    },
     "./viteLibrariesRollup": {
       "types": "./viteconfig/viteLibrariesRollup.config.d.ts",
       "default": "./viteconfig/viteLibrariesRollup.config.js"
@@ -79,6 +71,14 @@
     "./viteMdx": {
       "types": "./viteconfig/viteMdx.config.d.ts",
       "default": "./viteconfig/viteMdx.config.js"
+    },
+    "./vitePluginComponents": {
+      "types": "./functions/vitePluginComponents.d.ts",
+      "default": "./functions/vitePluginComponents.js"
+    },
+    "./vitePluginLibrary": {
+      "types": "./functions/vitePluginLibrary.d.ts",
+      "default": "./functions/vitePluginLibrary.js"
     }
   },
   "engines": {

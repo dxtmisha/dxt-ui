@@ -18,12 +18,14 @@ import {
  * Отвечает за поиск, загрузку и слияние файла конфигурации `design-ui.json`, обработку рекурсивных расширений и предоставление централизованного интерфейса для доступа к общепроектным настройкам, включая именование, разделители и параметры интеграции ИИ.
  */
 export class PropertiesConfig {
+  /** Loaded design-ui.json configuration object / Загруженный объект конфигурации design-ui.json */
   protected static config: DesignUiConfig
 
   /**
    * Retrieves the global project identifier.
    *
    * Получает глобальный идентификатор проекта.
+   * @returns project name string / строка имени проекта
    */
   static getProjectName(): string {
     return this.config.project ?? 'ui'
@@ -33,6 +35,7 @@ export class PropertiesConfig {
    * Retrieves the primary design system name.
    *
    * Получает основное название дизайн-системы.
+   * @returns design system name string / строка названия дизайн-системы
    */
   static getDesignName(): string {
     return this.config.name ?? 'ui'
@@ -42,6 +45,7 @@ export class PropertiesConfig {
    * Returns alternative design system aliases.
    *
    * Возвращает альтернативные алиасы дизайн-системы.
+   * @returns array of alternative design names or undefined / массив альтернативных названий дизайна или undefined
    */
   static getDesignAlternativeName(): string[] | undefined {
     return this.config?.alternativeName
@@ -51,6 +55,7 @@ export class PropertiesConfig {
    * Returns the token path separator character.
    *
    * Возвращает символ-разделитель пути токена.
+   * @returns separator character string / строка символа-разделителя
    */
   static getSeparator(): string {
     return this.config.separator ?? '/'
@@ -60,6 +65,7 @@ export class PropertiesConfig {
    * Returns the identifier for the base level separator.
    *
    * Возвращает идентификатор для базового разделителя.
+   * @returns basic separator name string / строка базового имени разделителя
    */
   static getSeparatorBasicName(): string {
     return this.config.separatorBasicName ?? 'basic'
@@ -69,6 +75,7 @@ export class PropertiesConfig {
    * Returns the maximum depth for token path segments.
    *
    * Возвращает максимальную глубину сегментов пути токена.
+   * @returns separator depth limit number / число лимита глубины разделителя
    */
   static getSeparatorLimit(): number {
     return this.config.separatorLimit ?? 6
@@ -78,6 +85,7 @@ export class PropertiesConfig {
    * Returns the primary language for documentation generation.
    *
    * Возвращает основной язык для генерации документации.
+   * @returns wiki language code / код языка вики
    */
   static getWikiLanguage(): string {
     return this.config.wikiLanguage ?? 'en'
@@ -87,6 +95,7 @@ export class PropertiesConfig {
    * Returns the prefix for generated npm packages.
    *
    * Возвращает префикс для генерируемых npm-пакетов.
+   * @returns package prefix or undefined / префикс пакета или undefined
    */
   static getPackagePrefix(): string | undefined {
     return this.config.packagePrefix ?? undefined
@@ -96,6 +105,7 @@ export class PropertiesConfig {
    * Returns the configured AI provider type.
    *
    * Возвращает настроенный тип ИИ-провайдера.
+   * @returns AI provider type / тип ИИ-провайдера
    */
   static getAiType(): AiType {
     return this.config.aiType ?? 'gemini'
@@ -105,6 +115,7 @@ export class PropertiesConfig {
    * Returns the specific AI model identifier.
    *
    * Возвращает конкретный идентификатор модели ИИ.
+   * @returns AI model name string / строка названия модели ИИ
    */
   static getAiModel(): string {
     return this.config.aiModel ?? ''
@@ -114,6 +125,7 @@ export class PropertiesConfig {
    * Returns the secure API key for AI authentication.
    *
    * Возвращает безопасный API-ключ для аутентификации ИИ.
+   * @returns AI API key string / строка API-ключа ИИ
    */
   static getAiKey(): string {
     return this.config.aiKey ?? ''
@@ -123,6 +135,7 @@ export class PropertiesConfig {
    * Returns the Figma access token.
    *
    * Возвращает токен доступа к Figma.
+   * @returns Figma token string / строка токена Figma
    */
   static getFigmaToken(): string {
     return this.config.figmaToken ?? ''
@@ -132,18 +145,19 @@ export class PropertiesConfig {
    * Returns the AI configuration object.
    *
    * Возвращает объект конфигурации ИИ.
+   * @returns AI configuration object / объект конфигурации ИИ
    */
   static getAiConfig(): Record<string, any> {
     return this.config.aiConfig ?? {}
   }
 
-
   /**
    * Recursively retrieves and merges extended configuration files.
    *
    * Рекурсивно получает и объединяет расширенные файлы конфигурации.
-   * @param file path to the configuration file/ путь к файлу конфигурации
-   * @param dir array of directory paths/ массив путей директорий
+   * @param file path to the configuration file / путь к файлу конфигурации
+   * @param dir array of directory paths / массив путей директорий
+   * @returns merged design UI config / объединенная конфигурация design UI
    */
   protected static getExtends(
     file: string,

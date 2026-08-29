@@ -16,6 +16,11 @@ import { AiGoogleCliLite } from './AiGoogleCliLite'
  * - Uses getConfigAi() to retrieve credentials / Использует getConfigAi() для получения учетных данных
  */
 export class AiGoogleCli extends AiGoogleCliLite {
+  /**
+   * Constructor initializes Google CLI AI with project configuration.
+   *
+   * Конструктор инициализирует Google CLI AI с конфигурацией проекта.
+   */
   constructor() {
     super(
       ...getConfigAi()

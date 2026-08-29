@@ -16,6 +16,7 @@ import type { WebTypesVueComponentItem, WebTypesVueJson } from '../../types/webT
  * Он агрегирует теги компонентов, атрибуты и события из всей библиотеки и форматирует их в стандартную схему Web-Types.
  */
 export class DesignWikiStorm {
+  /** Library items repository instance / Экземпляр репозитория элементов библиотеки */
   protected readonly components: LibraryItems
 
   /**
@@ -67,6 +68,7 @@ export class DesignWikiStorm {
    * Creates or updates the list of components.
    *
    * Создает или обновляет список компонентов.
+   * @returns array of Vue component items for web-types / массив элементов компонентов Vue для web-types
    */
   protected async getComponents(): Promise<WebTypesVueComponentItem[]> {
     const packageFile = getPackageJson()

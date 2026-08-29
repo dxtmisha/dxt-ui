@@ -38,6 +38,7 @@ export class AiClaudeLite extends AiAbstract<Anthropic> {
    *
    * Хук реализации: преобразовать накопленные изображения в формат, специфичный для модели.
    * Claude ожидает изображения как блоки контента с типом 'image'.
+   * @returns array of converted image blocks / массив преобразованных блоков изображений
    */
   protected toImages(): any {
     return forEach(this.images, image => ({
@@ -56,6 +57,7 @@ export class AiClaudeLite extends AiAbstract<Anthropic> {
    *
    * Хук реализации: преобразовать накопленное содержимое в формат, специфичный для модели.
    * Claude ожидает текст как блоки контента с типом 'text'.
+   * @returns array of converted text blocks / массив преобразованных текстовых блоков
    */
   protected toContents(): any {
     return forEach(this.contents, content => ({
@@ -68,8 +70,9 @@ export class AiClaudeLite extends AiAbstract<Anthropic> {
    * Performs content generation request and returns textual result.
    *
    * Выполняет запрос генерации контента и возвращает текстовый результат.
-   * @param model Model identifier (e.g., 'claude-3-5-sonnet-20241022') / Идентификатор модели
-   * @param contents Composed contents for generation / Собранный контент для генерации
+   * @param model model identifier (e.g., 'claude-3-5-sonnet-20241022') / идентификатор модели
+   * @param contents composed contents for generation / собранный контент для генерации
+   * @returns generated text response / сгенерированный текстовый ответ
    */
   protected async response(
     model: string,

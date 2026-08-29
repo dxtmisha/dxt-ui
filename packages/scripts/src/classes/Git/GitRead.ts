@@ -16,6 +16,7 @@ export class GitRead {
    *
    * Получает список файлов с их метаданными.
    * @param filter - file filter function / функция фильтрации файлов
+   * @returns list of git files / список файлов git
    */
   static getList(
     filter?: (file: string) => boolean
@@ -50,6 +51,7 @@ export class GitRead {
    *
    * Получает список файлов в формате porcelain с их метаданными.
    * @param filter - file filter function / функция фильтрации файлов
+   * @returns list of git files with porcelain status / список файлов git со статусом porcelain
    */
   static getListPorcelain(
     filter?: (file: string) => boolean
@@ -94,6 +96,7 @@ export class GitRead {
    *
    * Получает уникальный список файлов из обоих стандартных и porcelain списков.
    * @param filter - file filter function / функция фильтрации файлов
+   * @returns merged unique list of git files / объединенный уникальный список файлов git
    */
   static getListUnique(
     filter: (file: string) => boolean
@@ -109,10 +112,11 @@ export class GitRead {
    *
    * Получает список файлов по директории с расширением .ts, исключая тестовые файлы.
    * @param directory - directory path or regex / путь к директории или регулярное выражение
+   * @returns list of matching git files / список подходящих файлов git
    */
   static getListByDirectory(
     directory: string | RegExp
-  ) {
+  ): GitFileList {
     return this.getListUnique(
       (file: string) => Boolean(
         file.match(directory)
@@ -126,15 +130,17 @@ export class GitRead {
    * Gets list of class files (*.ts in /classes/ directory).
    *
    * Получает список файлов классов (*.ts в директории /classes/).
+   * @returns list of class git files / список файлов классов git
    */
   static getClassesList(): GitFileList {
     return this.getListByDirectory('/classes/')
   }
 
   /**
-   * Gets list of class files (*.ts in /classes/ directory).
+   * Gets list of function files (*.ts in /functions/ directory).
    *
-   * Получает список файлов классов (*.ts в директории /classes/).
+   * Получает список файлов функций (*.ts в директории /functions/).
+   * @returns list of function git files / список файлов функций git
    */
   static getFunctionsList(): GitFileList {
     return this.getListByDirectory('/functions/')
@@ -144,6 +150,7 @@ export class GitRead {
    * Gets list of all file paths in repository.
    *
    * Получает список всех путей файлов в репозитории.
+   * @returns array of file paths / массив путей к файлам
    */
   static getFilesPath(): string[] {
     return forEach(
@@ -156,6 +163,7 @@ export class GitRead {
    * Gets list of files in porcelain format.
    *
    * Получает список файлов в формате porcelain.
+   * @returns array of porcelain status lines / массив строк статуса porcelain
    */
   static getFilesPorcelain(): string[] {
     return forEach(
@@ -169,6 +177,7 @@ export class GitRead {
    *
    * Получает дату последнего коммита для файла.
    * @param filePath - path to file / путь к файлу
+   * @returns commit date string / строка даты коммита
    */
   static getFileDate(filePath: string): string {
     return this.exec(`git log -1 --format="%ci" -- "${filePath}"`)
@@ -178,6 +187,7 @@ export class GitRead {
    * Gets the directory prefix of the current Git repository.
    *
    * Получает префикс директории текущего Git репозитория.
+   * @returns directory prefix string / строка префикса директории
    */
   static getDirPrefix(): string {
     return this.exec('git rev-parse --show-prefix')
@@ -188,6 +198,7 @@ export class GitRead {
    *
    * Форматирует строку даты в стандартный полный формат.
    * @param date - date string / строка даты
+   * @returns formatted date string / отформатированная строка даты
    */
   static getDate(date?: string): string {
     return new Datetime(date)
@@ -200,6 +211,7 @@ export class GitRead {
    *
    * Фильтрует список файлов Git по префиксу текущей директории.
    * @param list - list of Git files / список файлов Git
+   * @returns filtered list of git files / отфильтрованный список файлов git
    */
   static filterByDirectory(
     list: GitFileList
@@ -215,6 +227,7 @@ export class GitRead {
    * Объединяет два списка файлов Git, обеспечивая уникальность по пути файла.
    * @param listA - first list to merge / первый список для объединения
    * @param listB - lists to merge / списки для объединения
+   * @returns merged unique list of git files / объединенный уникальный список файлов git
    */
   static mergeUnique(
     listA: GitFileList,
@@ -243,6 +256,7 @@ export class GitRead {
    *
    * Разбивает путь файла на его компоненты.
    * @param path - file path / путь к файлу
+   * @returns array of path components / массив компонентов пути
    */
   static splitPath(path: string): string[] {
     return path.split('/').filter(part => part.length > 0)

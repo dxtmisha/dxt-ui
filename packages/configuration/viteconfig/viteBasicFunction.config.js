@@ -8,56 +8,55 @@ import dts from 'vite-plugin-dts'
 import browserslist from 'browserslist'
 import { browserslistToTargets } from 'lightningcss'
 
+import { vitePluginLibrary } from '../functions/vitePluginLibrary.js'
+
 // https://vite.dev/config/
 
 /**
  * Creates a base Vite config for libraries with functions/composables/classes.
  *
  * Создаёт базовую конфигурацию Vite для библиотек с функциями/композаблами/классами.
- * @param name global library name / глобальное имя библиотеки
- * @param target build target / цель сборки
- * @param {string|string[]} entry entry points / входные точки сборки
- * @param include glob patterns for d.ts / паттерны для генерации d.ts
- * @param includeExtended extra patterns / дополнительные паттерны
- * @param external external dependencies / внешние зависимости
- * @param externalExtended extra dependencies / дополнительные зависимости
- * @param fileCssName name of the output CSS file / имя выходного CSS файла
- * @param rollupTypes whether to use rollupTypes in dts plugin / использовать ли rollupTypes в плагине dts
- * @param bundledPackages packages to bundle types for / пакеты, типы которых нужно собрать
- * @param browserslistValue browserslist query / запрос browserslist
- * @param exclude patterns to exclude for d.ts / паттерны исключения для d.ts
- * @param excludeExtended extra exclude patterns / дополнительные паттерны исключения
- * @param noDiscovery disable automatic dependency discovery for pre-bundling / отключить автоматическое сканирование зависимостей для пре-бандлинга
- * @returns Vite config / конфигурация Vite
+ * @param {import('./viteBasicFunction.config').ViteBasicFunctionOptions} [options] configuration options / параметры конфигурации
+ * @returns {import('vite').UserConfigExport} Vite config / конфигурация Vite
  */
-export const viteBasicFunction = (
+export const viteBasicFunction = ({
+  entry = 'src/library.ts',
   name = 'dxt-ui',
   target = 'es2018',
-  entry = 'src/library.ts',
+
+  fileCssName = 'style.css',
+  fileLibraryName = undefined,
+
   include = [
+    '@dxtmisha/constructor',
     'src/**/*.ts',
     'src/**/*.tsx',
-    'src/**/*.vue',
-    '@dxtmisha/constructor'
+    'src/**/*.vue'
   ],
   includeExtended = [],
+  exclude = [
+    '**/.gitignore',
+    '**/__tests__/**',
+    '**/dist/**',
+    '**/dist-temporary/**',
+    '**/node_modules/**',
+    '**/vite-env.d.ts',
+    '**/*.config.js',
+    '**/*.config.ts',
+    '**/*.json',
+    '**/*.spec.ts',
+    '**/*.stories.ts',
+    '**/*.stories.tsx',
+    '**/*.test.ts',
+    '**/App.vue',
+    '**/main.ts',
+    '**/main.tsx'
+  ],
+  excludeExtended = [],
+
   external = [
     ...builtinModules,
     ...builtinModules.map(m => `node:${m}`),
-    'typescript',
-    'nitro',
-    'nitropack',
-    'nitropack/runtime',
-    'vue',
-    'vue-router',
-    '@vue/runtime-core',
-    '@vue/runtime-dom',
-    '@vue/reactivity',
-    'react',
-    'react/jsx-runtime',
-    'react/jsx-dev-runtime',
-    '@storybook',
-    '@storybook/addon-docs',
     '@dxtmisha/configuration',
     '@dxtmisha/constructor',
     '@dxtmisha/d1',
@@ -71,34 +70,30 @@ export const viteBasicFunction = (
     '@dxtmisha/wiki',
     '@emotion/react',
     '@emotion/styled',
-    '@napi-rs/canvas'
+    '@napi-rs/canvas',
+    '@storybook',
+    '@storybook/addon-docs',
+    '@vue/reactivity',
+    '@vue/runtime-core',
+    '@vue/runtime-dom',
+    'nitro',
+    'nitropack',
+    'nitropack/runtime',
+    'react',
+    'react/jsx-dev-runtime',
+    'react/jsx-runtime',
+    'typescript',
+    'vue',
+    'vue-router'
   ],
   externalExtended = [],
-  fileCssName = 'style.css',
-  rollupTypes = false,
+
   bundledPackages = undefined,
+  rollupTypes = false,
+
   browserslistValue = '>= 5%',
-  exclude = [
-    '**/__tests__/**',
-    '**/*.test.ts',
-    '**/*.spec.ts',
-    '**/*.stories.ts',
-    '**/*.stories.tsx',
-    '**/*.json',
-    '**/node_modules/**',
-    '**/dist/**',
-    '**/dist-temporary/**',
-    '**/*.config.ts',
-    '**/*.config.js',
-    '**/.gitignore',
-    '**/vite-env.d.ts',
-    '**/App.vue',
-    '**/main.ts',
-    '**/main.tsx'
-  ],
-  excludeExtended = [],
   noDiscovery = true
-) => defineConfig({
+} = {}) => defineConfig({
   build: {
     target,
     lib: {
@@ -167,6 +162,7 @@ export const viteBasicFunction = (
       rollupTypes,
       staticImport: true,
       tsconfigPath: './tsconfig.app.json'
-    })
+    }),
+    vitePluginLibrary(fileCssName, fileLibraryName)
   ]
 })

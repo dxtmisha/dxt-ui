@@ -56,6 +56,7 @@ export class LibraryTypes {
    *
    * Возвращает путь к компоненту.
    * @param component component data / данные компонента
+   * @returns component relative path string / строка относительного пути к компоненту
    */
   protected getPathComponent(component: LibraryData): string {
     return `../components/${PropertiesConfig.getProjectName()}/${component.dir}`
@@ -65,6 +66,7 @@ export class LibraryTypes {
    * Returns a list of imports for the file.
    *
    * Возвращает список импортов для файла.
+   * @returns array of component import statements / массив инструкций импорта компонентов
    */
   protected initImports(): string[] {
     const list: string[] = []
@@ -83,6 +85,7 @@ export class LibraryTypes {
    * Returns a list of exports for the file.
    *
    * Возвращает список экспортов для файла.
+   * @returns string of formatted component exports / строка отформатированных экспортов компонентов
    */
   protected initExports(): string {
     const list: string[] = []
@@ -97,6 +100,12 @@ export class LibraryTypes {
     return list.join(',\r\n')
   }
 
+  /**
+   * Generates Vue plugin component registration calls.
+   *
+   * Генерирует вызовы регистрации компонентов в плагине Vue.
+   * @returns array of registration code lines / массив строк кода регистрации
+   */
   protected initIncludeVueComponents(): string[] {
     const list: string[] = []
 
@@ -114,6 +123,7 @@ export class LibraryTypes {
    * Returns a list of global components for Vue.
    *
    * Возвращает список глобальных компонентов для Vue.
+   * @returns array of global component type definitions / массив определений типов глобальных компонентов
    */
   protected initGlobalComponentsVue(): string[] {
     const list: string[] = []

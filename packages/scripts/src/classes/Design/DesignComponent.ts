@@ -30,16 +30,27 @@ import {
 } from '../../config'
 import type { DesignTypescriptProp } from '../../types/designTypes'
 
+/** Properties configuration filename / Имя файла конфигурации свойств */
 const FILE_PROPERTIES = 'properties.json'
+/** Props definition filename / Имя файла определения props */
 const FILE_PROPS = 'props.ts'
+/** Style tokens SCSS filename / Имя файла токенов стилей SCSS */
 const FILE_STYLE = 'styleToken.scss'
+/** Vue component filename / Имя файла компонента Vue */
 const FILE_CLASS = 'DesignComponent.vue'
+/** AI wiki documentation component filename / Имя файла компонента ИИ вики-документации */
 const FILE_CLASS_AI = 'DesignComponentAiWiki.vue'
+/** Module entrypoint filename / Имя файла точки входа модуля */
 const FILE_INDEX = 'index.ts'
+/** Type declaration entrypoint filename / Имя файла точки входа объявлений типов */
 const FILE_INDEX_DTS = 'index.d.ts'
+/** Wiki entrypoint filename / Имя файла точки входа вики */
 const FILE_WIKI = 'wiki.ts'
+/** Wiki data definition filename / Имя файла определений данных вики */
 const FILE_WIKI_DATA = 'wikiData.ts'
+/** Storybook stories filename / Имя файла историй Storybook */
 const FILE_STORIES = 'DesignComponent.stories.ts'
+/** Storybook MDX documentation filename / Имя файла MDX-документации Storybook */
 const FILE_STORIES_DOCUMENTATION = 'DesignComponent.mdx'
 
 /**
@@ -50,11 +61,22 @@ const FILE_STORIES_DOCUMENTATION = 'DesignComponent.mdx'
  * Управляет жизненным циклом свойств, стилей, компонентов Vue, историй и вики-документации.
  */
 export class DesignComponent extends DesignCommand {
+  /** Map of component templates / Карта шаблонов компонентов */
   protected sample = componentTemplates
+
+  /** Replacement mark identifier / Идентификатор маркера замены */
   protected mark = 'component'
+
+  /** Component directory path segments / Сегменты пути директории компонента */
   protected dir: string[]
+
+  /** Cached parsed props list / Кэшированный список распарсенных props */
   protected propsType: DesignTypescriptProp[] | undefined
+
+  /** Cached parsed slots list / Кэшированный список распарсенных слотов */
   protected slotsType: DesignTypescriptProp[] | undefined
+
+  /** Cached parsed events list / Кэшированный список распарсенных событий */
   protected eventsType: DesignTypescriptProp[] | undefined
 
   /**
@@ -106,6 +128,7 @@ export class DesignComponent extends DesignCommand {
    * This code generates the properties.json.
    *
    * Генерация файла properties.json.
+   * @returns current instance / текущий экземпляр
    */
   protected makeProperties(): this {
     const file = FILE_PROPERTIES
@@ -121,6 +144,7 @@ export class DesignComponent extends DesignCommand {
    * This code generates the props.ts.
    *
    * Генерация файла props.ts.
+   * @returns current instance / текущий экземпляр
    */
   protected makeProps(): this {
     const file = FILE_PROPS
@@ -141,6 +165,7 @@ export class DesignComponent extends DesignCommand {
    * This code generates the style.scss.
    *
    * Генерация файла style.scss.
+   * @returns current instance / текущий экземпляр
    */
   protected makeStyle(): this {
     const file = FILE_STYLE
@@ -157,6 +182,7 @@ export class DesignComponent extends DesignCommand {
    * This code generates the style.scss.
    *
    * Генерация файла style.scss.
+   * @returns current instance / текущий экземпляр
    */
   protected makeMain(): this {
     const file = FILE_CLASS
@@ -173,6 +199,7 @@ export class DesignComponent extends DesignCommand {
    * This code generates the DesignComponentWikiAi.vue.
    *
    * Генерация файла DesignComponentWikiAi.vue.
+   * @returns current instance / текущий экземпляр
    */
   protected async makeMainAi(): Promise<this> {
     const file = FILE_CLASS_AI
@@ -230,6 +257,7 @@ export class DesignComponent extends DesignCommand {
    * This code generates the index.ts.
    *
    * Генерация файла index.ts.
+   * @returns current instance / текущий экземпляр
    */
   protected makeIndex(): this {
     const file = FILE_INDEX
@@ -243,6 +271,7 @@ export class DesignComponent extends DesignCommand {
    * This code generates the wiki.ts.
    *
    * Генерация файла wiki.ts.
+   * @returns current instance / текущий экземпляр
    */
   protected makeWiki(): this {
     const file = FILE_WIKI
@@ -256,6 +285,7 @@ export class DesignComponent extends DesignCommand {
    * This code generates the wikiData.ts.
    *
    * Генерация файла wikiData.ts.
+   * @returns current instance / текущий экземпляр
    */
   protected makeWikiData(): this {
     const file = FILE_WIKI_DATA
@@ -361,6 +391,7 @@ export class DesignComponent extends DesignCommand {
    * This code generates the stories.ts.
    *
    * Генерация файла stories.ts.
+   * @returns current instance / текущий экземпляр
    */
   protected async makeStories(): Promise<this> {
     const file = FILE_STORIES
@@ -381,6 +412,7 @@ export class DesignComponent extends DesignCommand {
    * This code generates the mdx.
    *
    * Генерация файла mdx.
+   * @returns current instance / текущий экземпляр
    */
   protected async makeStoriesDocumentation(): Promise<this> {
     const file = FILE_STORIES_DOCUMENTATION
@@ -405,7 +437,8 @@ export class DesignComponent extends DesignCommand {
    * Getting the contents of a file from a constructor.
    *
    * Получение содержимого файла из конструктора.
-   * @param file file name/ имя файла
+   * @param file file name / имя файла
+   * @returns file contents string / строка содержимого файла
    */
   private getFileConstructor(file: string): string {
     const path: string[] = ['..', '..', UI_DIR_CONSTRUCTOR, this.getStructure().getComponentNameFirst(), file]
@@ -418,7 +451,7 @@ export class DesignComponent extends DesignCommand {
    * Getting the paths for the typescript compiler.
    *
    * Получение путей для компилятора typescript.
-   * @returns paths for the typescript compiler/ пути для компилятора typescript
+   * @returns paths for the typescript compiler / пути для компилятора typescript
    */
   private getTypescriptPaths(): string[] | undefined {
     const root = PropertiesFile.getRootProject()
@@ -441,6 +474,7 @@ export class DesignComponent extends DesignCommand {
    * Getting the path to the index file.
    *
    * Получение пути к файлу index.
+   * @returns path to index.d.ts file / путь к файлу index.d.ts
    */
   private getTypescriptPathsIndex(): string | undefined {
     const paths = this.getTypescriptPaths()
@@ -459,6 +493,7 @@ export class DesignComponent extends DesignCommand {
    * Getting the path to the type file.
    *
    * Получение пути к файлу type.
+   * @returns path to types.d.ts file / путь к файлу types.d.ts
    */
   private getTypescriptPathsType(): string | undefined {
     const paths = this.getTypescriptPaths()
@@ -477,6 +512,7 @@ export class DesignComponent extends DesignCommand {
    * Getting a list of all properties of a component.
    *
    * Получение списка всех свойств компонента.
+   * @returns array of component typescript props / массив typescript props компонента
    */
   private getPropsList(): DesignTypescriptProp[] | undefined {
     if (!this.propsType) {
@@ -511,6 +547,7 @@ export class DesignComponent extends DesignCommand {
    * Getting a list of all slots of a component.
    *
    * Получение списка всех слотов компонента.
+   * @returns array of component slots / массив слотов компонента
    */
   private getSlotsList(): DesignTypescriptProp[] | undefined {
     if (!this.slotsType) {
@@ -528,6 +565,7 @@ export class DesignComponent extends DesignCommand {
    * Getting a list of all events of a component.
    *
    * Получение списка всех событий компонента.
+   * @returns array of component events / массив событий компонента
    */
   private getEventsList(): DesignTypescriptProp[] | undefined {
     if (!this.eventsType) {
@@ -553,9 +591,10 @@ export class DesignComponent extends DesignCommand {
   }
 
   /**
-   * Returns the description of the component from the wiki
+   * Returns the description of the component from the wiki.
    *
-   * Возвращает описание компонента из вики
+   * Возвращает описание компонента из вики.
+   * @returns wiki description item or undefined / элемент описания вики или undefined
    */
   private async getWikiDescription(): Promise<StorybookComponentsDescriptionItem | undefined> {
     const name = this.getStructure().getComponentNameFirst()
@@ -571,7 +610,8 @@ export class DesignComponent extends DesignCommand {
    * Returns the import of components for stories.
    *
    * Возвращает импорт компонентов для сториз.
-   * @param description description of the component/ описание компонента
+   * @param description description of the component / описание компонента
+   * @returns array of component names / массив имен компонентов
    */
   private getStoriesComponentsImport(description: StorybookComponentsDescriptionItem): string[] {
     if (description.stories) {
@@ -595,7 +635,8 @@ export class DesignComponent extends DesignCommand {
    * Getting the types from the constructor.
    *
    * Получение типов из конструктора.
-   * @param name name of the type/ имя типа
+   * @param name name of the type / имя типа
+   * @returns array of parsed props or undefined / массив распарсенных свойств или undefined
    */
   private getTypesFromConstructor(name: string): DesignTypescriptProp[] | undefined {
     const paths = this.getTypescriptPathsType()
@@ -613,7 +654,8 @@ export class DesignComponent extends DesignCommand {
    * Converts the code to the component name.
    *
    * Преобразует код в название компонента.
-   * @param code code to convert/ код для преобразования
+   * @param code code to convert / код для преобразования
+   * @returns converted code string / преобразованная строка кода
    */
   private toComponentName(code: string): string {
     const design = this.getStructure().getDesignFirst()
@@ -630,8 +672,9 @@ export class DesignComponent extends DesignCommand {
    * Replaces the render in the sample.
    *
    * Заменяет рендер в сэмпле.
-   * @param sample sample for replacement/ сэмпл для замены
-   * @param description description of the component/ описание компонента
+   * @param sample sample for replacement / сэмпл для замены
+   * @param description description of the component / описание компонента
+   * @returns current instance / текущий экземпляр
    */
   private replaceMarkStoriesRender(
     sample: DesignReplace,
@@ -661,8 +704,9 @@ export class DesignComponent extends DesignCommand {
    * Replaces the import in the sample.
    *
    * Заменяет импорт в сэмпле.
-   * @param sample sample for replacement/ сэмпл для замены
-   * @param description description of the component/ описание компонента
+   * @param sample sample for replacement / сэмпл для замены
+   * @param description description of the component / описание компонента
+   * @returns current instance / текущий экземпляр
    */
   private replaceMarkStoriesImport(
     sample: DesignReplace,
@@ -688,8 +732,9 @@ export class DesignComponent extends DesignCommand {
    * Replaces the stories in the sample.
    *
    * Заменяет истории в сэмпле.
-   * @param sample sample for replacement/ сэмпл для замены
-   * @param description description of the component/ описание компонента
+   * @param sample sample for replacement / сэмпл для замены
+   * @param description description of the component / описание компонента
+   * @returns current instance / текущий экземпляр
    */
   private replaceMarkStoriesStories(
     sample: DesignReplace,
@@ -748,10 +793,11 @@ export class DesignComponent extends DesignCommand {
    * Replaces the documentation in the sample.
    *
    * Заменяет документацию в сэмпле.
-   * @param sample sample for replacement/ сэмпл для замены
-   * @param type type of the documentation to replace/ тип документации для замены
-   * @param documentation documentation text/ текст документации
-   * @param name name of the documentation section/ название секции документации
+   * @param sample sample for replacement / сэмпл для замены
+   * @param type type of the documentation to replace / тип документации для замены
+   * @param documentation documentation text / текст документации
+   * @param name name of the documentation section / название секции документации
+   * @returns current instance / текущий экземпляр
    */
   private replaceMarkDocumentation(
     sample: DesignReplace,
@@ -795,6 +841,7 @@ export class DesignComponent extends DesignCommand {
    * Updates the package.json file.
    *
    * Обновляет файл package.json.
+   * @returns current instance / текущий экземпляр
    */
   protected makeFilePackage(): this {
     const name = `./${this.getFullName()}`
@@ -814,6 +861,7 @@ export class DesignComponent extends DesignCommand {
    * Generates a library file.
    *
    * Генерирует файл библиотеки.
+   * @returns current instance / текущий экземпляр
    */
   protected makeLibrary(): this {
     const dir: string = `../${UI_DIR_COMPONENTS}/${this.getProjectName()}/${this.getName()}/`

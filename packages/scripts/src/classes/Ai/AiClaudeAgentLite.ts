@@ -14,8 +14,9 @@ import { AiAbstract } from './AiAbstract'
  */
 export class AiClaudeAgentLite extends AiAbstract<{}> {
   /**
-   * Initializes the "client".
-   * For Agent SDK, we mark it as initialized.
+   * Initializes the Agent SDK client instance.
+   *
+   * Инициализирует экземпляр клиента Agent SDK.
    */
   protected async init(): Promise<void> {
     this.ai = {}
@@ -24,6 +25,10 @@ export class AiClaudeAgentLite extends AiAbstract<{}> {
   /**
    * Implementation hook: convert accumulated images to model-specific format.
    * Agent SDK implementation logic for images can be added if supported by the SDK.
+   *
+   * Хук реализации: преобразовать накопленные изображения в формат, специфичный для модели.
+   * Логика изображений может быть добавлена при поддержке SDK.
+   * @returns array of converted images / массив преобразованных изображений
    */
   protected toImages(): any {
     return []
@@ -31,6 +36,9 @@ export class AiClaudeAgentLite extends AiAbstract<{}> {
 
   /**
    * Implementation hook: convert accumulated contents to model-specific format.
+   *
+   * Хук реализации: преобразовать накопленное содержимое в формат, специфичный для модели.
+   * @returns formatted content string / отформатированная строка содержимого
    */
   protected toContents(): any {
     return this.contents.join('\n\n')
@@ -39,8 +47,10 @@ export class AiClaudeAgentLite extends AiAbstract<{}> {
   /**
    * Performs content generation request via Agent SDK and returns textual result.
    *
-   * @param model Model identifier / Идентификатор модели
-   * @param contents Composed contents for generation / Собранный контент для генерации
+   * Выполняет запрос генерации контента через Agent SDK и возвращает текстовый результат.
+   * @param model model identifier / идентификатор модели
+   * @param contents composed contents for generation / собранный контент для генерации
+   * @returns generated text response / сгенерированный текстовый ответ
    */
   protected async response(
     model: string,

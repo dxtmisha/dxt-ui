@@ -8,12 +8,10 @@ Provides centralized and standardized Vite configs, Rollup plugins, and TypeScri
 
 - [viteBasic](viteconfig/viteBasic.config.js): Default Vite configuration for standard libraries.
 - [viteBasicFunction](viteconfig/viteBasicFunction.config.js): Vite config optimized for functional utility packages.
-- [viteComponentOnly](viteconfig/viteComponentOnly.config.js): Vite config for standalone Vue 3 component builds.
 - [viteComponents](viteconfig/viteComponents.config.js): Vite configuration for component libraries with auto-import and styles.
 - [viteConstructors](viteconfig/viteConstructors.config.js): Vite config for constructor-based packages.
 - [viteFigma](viteconfig/viteFigma.config.js): Specialized config for Figma plugin bundles (sandbox code + iframe UI).
 - [viteFlags](viteconfig/viteFlags.config.js): Optimized build config for SVG flag asset packages.
-- [viteLibraries](viteconfig/viteLibraries.config.js): Multi-entry library build configuration.
 - [viteLibrariesRollup](viteconfig/viteLibrariesRollup.config.js): Rollup-specific library configuration.
 - [viteMdx](viteconfig/viteMdx.config.js): Vite configuration with MDX documentation support.
 - [tsconfig.app.json](tsconfig/tsconfig.app.json): Base TypeScript configuration for browser application code.

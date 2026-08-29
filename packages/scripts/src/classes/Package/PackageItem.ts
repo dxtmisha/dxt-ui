@@ -28,6 +28,7 @@ type PackageInitItemFile = {
  * Класс для инициализации отдельного компонента пакета, управления его файлами, зависимостями и интеграцией.
  */
 export class PackageInitItem {
+  /** Sample template records mapping / Карта записей шаблонов-образцов */
   protected sample: Record<string, Record<string, string>> = packageTemplates
 
   /**

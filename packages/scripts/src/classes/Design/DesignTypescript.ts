@@ -16,9 +16,16 @@ import type {
  * Анализирует интерфейсы и псевдонимы типов для получения сведений о свойствах, включая типы, литеральные объединения и комментарии к документации.
  */
 export class DesignTypescript {
+  /** TypeScript program instance / Экземпляр программы TypeScript */
   protected readonly program: ts.Program
+
+  /** TypeScript type checker instance / Экземпляр TypeChecker TypeScript */
   protected readonly checker: ts.TypeChecker
+
+  /** Parsed AST source file / Распарсенный AST файл исходного кода */
   protected readonly sourceFile?: ts.SourceFile
+
+  /** Cached list of extracted TypeScript types / Кэшированный список извлеченных типов TypeScript */
   protected types?: DesignTypescriptList
 
   /**
@@ -38,9 +45,10 @@ export class DesignTypescript {
   }
 
   /**
-   * Returns the TypeScript types from the source file
+   * Returns the TypeScript types from the source file.
    *
-   * Возвращает типы TypeScript из исходного файла
+   * Возвращает типы TypeScript из исходного файла.
+   * @returns list of parsed TypeScript items / список распарсенных элементов TypeScript
    */
   getTypes(): DesignTypescriptList {
     if (!this.types && this.sourceFile) {
@@ -77,21 +85,23 @@ export class DesignTypescript {
   }
 
   /**
-   * Returns the TypeScript type by name
+   * Returns the TypeScript type by name.
    *
-   * Возвращает тип TypeScript по имени
-   * @param name Name of the type/ имя типа
+   * Возвращает тип TypeScript по имени.
+   * @param name Name of the type / имя типа
+   * @returns found TypeScript item or undefined / найденный элемент TypeScript или undefined
    */
   getType(name: string): DesignTypescriptItem | undefined {
     return this.getTypes().find(type => type.name === name)
   }
 
   /**
-   * Returns the type of the property
+   * Returns the type of the property.
    *
-   * Возвращает тип свойства
-   * @param type TypeScript type/ тип TypeScript
-   * @param prop Symbol of the property/ символ свойства
+   * Возвращает тип свойства.
+   * @param type TypeScript type / тип TypeScript
+   * @param prop Symbol of the property / символ свойства
+   * @returns string representation of property type / строковое представление типа свойства
    */
   protected getPropType(
     type: ts.Type,
@@ -138,10 +148,11 @@ export class DesignTypescript {
   }
 
   /**
-   * Returns the option of the property
+   * Returns the option of the property.
    *
-   * Возвращает опцию свойства
-   * @param type TypeScript type/ тип TypeScript
+   * Возвращает опцию свойства.
+   * @param type TypeScript type / тип TypeScript
+   * @returns array of literal string options or undefined / массив строковых литеральных опций или undefined
    */
   protected getPropOption(type: ts.Type): DesignTypescriptProp['option'] {
     if (type.isUnion()) {
@@ -166,11 +177,11 @@ export class DesignTypescript {
   }
 
   /**
-   * Extracts literal options from a property TypeNode union
+   * Extracts literal options from a property TypeNode union.
    *
-   * Извлекает литеральные опции из узла типа свойства (union)
-   * @param type Property type AST node/ узел AST типа свойства
-   * @returns Array of literal values or undefined/ Массив литеральных значений или undefined
+   * Извлекает литеральные опции из узла типа свойства (union).
+   * @param type Property type AST node / узел AST типа свойства
+   * @returns array of literal values or undefined / массив литеральных значений или undefined
    */
   protected getPropOptionByNode(type: ts.TypeNode): DesignTypescriptProp['option'] {
     if (ts.isUnionTypeNode(type)) {
@@ -192,11 +203,11 @@ export class DesignTypescript {
   }
 
   /**
-   * Extracts literal options from property declarations by reading their type nodes
+   * Extracts literal options from property declarations by reading their type nodes.
    *
-   * Извлекает литеральные опции из деклараций свойства, анализируя их узлы типа
-   * @param declarations Symbol declarations/ декларации символа
-   * @returns Array of literal values or empty array/ Массив литеральных значений или пустой массив
+   * Извлекает литеральные опции из деклараций свойства, анализируя их узлы типа.
+   * @param declarations Symbol declarations / декларации символа
+   * @returns array of literal values or empty array / массив литеральных значений или пустой массив
    */
   protected getPropOptionByDeclarations(declarations?: ts.Declaration[]): DesignTypescriptProp['option'] {
     if (declarations) {
@@ -220,11 +231,12 @@ export class DesignTypescript {
   }
 
   /**
-   * Returns information about the property
+   * Returns information about the property.
    *
-   * Возвращает информацию о свойстве
-   * @param node Type alias or interface declaration/ объявление псевдонима типа или интерфейса
-   * @param prop Symbol of the property/ символ свойства
+   * Возвращает информацию о свойстве.
+   * @param node Type alias or interface declaration / объявление псевдонима типа или интерфейса
+   * @param prop Symbol of the property / символ свойства
+   * @returns structured prop information object / структурированный объект информации о свойстве
    */
   protected getPropInformation(
     node: ts.TypeAliasDeclaration | ts.InterfaceDeclaration,

@@ -22,7 +22,10 @@ import { PropertiesConfig } from '../Properties/PropertiesConfig'
  * Управляет преобразованием меток (marks) в реальные сегменты кода, включая типы свойств, значения по умолчанию и маппинг CSS-классов.
  */
 export class DesignReplace {
+  /** Component name in PascalCase / Имя компонента в PascalCase */
   protected readonly component: string
+
+  /** Replacement mark identifier in PascalCase / Идентификатор метки замены в PascalCase */
   protected readonly mark: string
 
   /**
@@ -46,6 +49,7 @@ export class DesignReplace {
    * Returns the modified template.
    *
    * Возвращает изменённый шаблон.
+   * @returns processed template string / обработанная строка шаблона
    */
   get(): string {
     return this.sample
@@ -55,6 +59,7 @@ export class DesignReplace {
    * Returns the path for importing the module.
    *
    * Возвращает путь для подключения модуля.
+   * @returns relative root import path / относительный корневой путь импорта
    */
   getRoot(): string {
     // const path = __filename.match(/node_modules\/([^/]+)/)
@@ -70,7 +75,8 @@ export class DesignReplace {
    * Changes the names in accordance with the component name.
    *
    * Изменяет названия в соответствии с названием компонента.
-   * @param name the name of a file/ название файла
+   * @param name the name of a file / название файла
+   * @returns replaced filename string / преобразованная строка имени файла
    */
   getNameFile(name: string): string {
     return name
@@ -87,6 +93,7 @@ export class DesignReplace {
    * Changing the name of the component.
    *
    * Изменение названия компонента.
+   * @returns current instance / текущий экземпляр
    */
   replaceName(): this {
     this.sample = this.getNameFile(this.sample)
@@ -97,6 +104,7 @@ export class DesignReplace {
    * Change the path to the file.
    *
    * Изменение пути к файлу.
+   * @returns current instance / текущий экземпляр
    */
   replacePath(): this {
     this.sample = this.sample.replace(/..\/..\/..\//g, this.getRoot())
@@ -107,9 +115,10 @@ export class DesignReplace {
    * Replaces values with selected label.
    *
    * Заменяет значения на выбранную метку.
-   * @param name label name/ название метки
-   * @param data data for replacement/ данные для замены
-   * @param end symbol at the end of the line/ символ в конце строки
+   * @param name label name / название метки
+   * @param data data for replacement / данные для замены
+   * @param end symbol at the end of the line / символ в конце строки
+   * @returns current instance / текущий экземпляр
    */
   replaceMark(
     name: string,
@@ -156,8 +165,9 @@ export class DesignReplace {
    * Replaces values with the selected label only once.
    *
    * Заменяет значения на выбранную метку только 1 раз.
-   * @param name label name/ название метки
-   * @param removeReplacement data deletion/ удаление данных
+   * @param name label name / название метки
+   * @param removeReplacement data deletion / удаление данных
+   * @returns current instance / текущий экземпляр
    */
   replaceOnce(
     name = toCamelCase(this.mark),
@@ -193,7 +203,8 @@ export class DesignReplace {
    * Adding types for properties.
    *
    * Добавление типов для свойств.
-   * @param constructor additional data for processing/ дополнительные данные для обработки
+   * @param constructor additional data for processing / дополнительные данные для обработки
+   * @returns current instance / текущий экземпляр
    */
   replaceType(constructor?: string): this {
     const mark = 'type'
@@ -230,6 +241,7 @@ export class DesignReplace {
    * Adding default values for properties.
    *
    * Добавление значения по умолчанию для свойств.
+   * @returns current instance / текущий экземпляр
    */
   replaceDefault(): this {
     const mark = 'default'
@@ -252,6 +264,7 @@ export class DesignReplace {
    * Adding types for properties.
    *
    * Добавление самих свойств.
+   * @returns current instance / текущий экземпляр
    */
   replaceProps(): this {
     const mark = 'prop'
@@ -283,6 +296,7 @@ export class DesignReplace {
    * Transforms the given value into a list.
    *
    * Преобразовывает данное значение в список.
+   * @returns current instance / текущий экземпляр
    */
   replacePropsValues(): this {
     const mark = 'values'
@@ -308,8 +322,9 @@ export class DesignReplace {
    * Adding a list of available classes.
    *
    * Добавление списка доступных классов.
-   * @param template a function that returns a template/ функция, которая возвращает шаблон
-   * @param end symbol at the end of the line/ символ в конце строки
+   * @param template a function that returns a template / функция, которая возвращает шаблон
+   * @param end symbol at the end of the line / символ в конце строки
+   * @returns current instance / текущий экземпляр
    */
   replaceClasses(
     template: (item: DesignStructureClassesItem) => string = (item: DesignStructureClassesItem) => `${item.index}: string`,
@@ -328,6 +343,7 @@ export class DesignReplace {
    * Transformation for active status classes.
    *
    * Преобразование для активных классов статуса.
+   * @returns current instance / текущий экземпляр
    */
   replaceClassesValues(): this {
     const mark = 'classes-values'
@@ -343,6 +359,7 @@ export class DesignReplace {
    * Transformation for active status classes.
    *
    * Преобразование для активных классов статуса.
+   * @returns current instance / текущий экземпляр
    */
   replaceStylesValues(): this {
     const mark = 'styles-values'
@@ -355,6 +372,7 @@ export class DesignReplace {
    * Adding a list of available classes for a constructor.
    *
    * Добавление списка доступных классов для конструктора.
+   * @returns current instance / текущий экземпляр
    */
   replaceConstructorClasses(): this {
     return this.replaceClasses(
@@ -373,7 +391,8 @@ export class DesignReplace {
    * Checks if the data type is boolean.
    *
    * Проверяет, является ли тип данных булевым.
-   * @param value values to check/ значения для проверки
+   * @param value values to check / значения для проверки
+   * @returns true if boolean is present / true, если присутствует boolean
    */
   protected isBoolean(value: DesignStructureItem['value']): boolean {
     return value.indexOf(true) !== -1
@@ -383,7 +402,8 @@ export class DesignReplace {
    * Checks if the data type is string.
    *
    * Проверяет, является ли тип данных строковым.
-   * @param value values to check/ значения для проверки
+   * @param value values to check / значения для проверки
+   * @returns true if values represent strings / true, если значения представляют строки
    */
   protected isString(value: DesignStructureItem['value']): boolean {
     return value.length > 0 && value[0] !== true
@@ -393,8 +413,9 @@ export class DesignReplace {
    * Checks whether the current property should be excluded by its label.
    *
    * Проверяет, следует ли исключить текущее свойство по его метке.
-   * @param mark label property/ метка свойства
-   * @param name property name/ название свойства
+   * @param mark label property / метка свойства
+   * @param name property name / название свойства
+   * @returns true if property has none mark / true, если свойство помечено как none
    */
   protected isNoMark(
     mark: string,
@@ -407,7 +428,8 @@ export class DesignReplace {
    * Returns default values.
    *
    * Возвращает значения по умолчанию.
-   * @param value default values/ значения по умолчанию
+   * @param value default values / значения по умолчанию
+   * @returns formatted default value / отформатированное значение по умолчанию
    */
   protected getDefault(value: DesignStructureItem['default']): string {
     if (typeof value === 'string') {
@@ -421,8 +443,9 @@ export class DesignReplace {
    * Returns available types for property.
    *
    * Возвращает доступные типы для свойства.
-   * @param name property name/ название свойства
-   * @param value values to check/ значения для проверки
+   * @param name property name / название свойства
+   * @param value values to check / значения для проверки
+   * @returns prop definition type string / строка типа определения prop
    */
   protected getPropByValue(
     name: string,
@@ -446,8 +469,9 @@ export class DesignReplace {
    * Returns a string with the data type.
    *
    * Возвращает строку с типом данных.
-   * @param value values to check/ значения для проверки
-   * @param style is the property style present/ является ли свойство style
+   * @param value values to check / значения для проверки
+   * @param style is the property style present / является ли свойство style
+   * @returns TypeScript type string / строка типа TypeScript
    */
   protected getPropTypeByValue(
     value: DesignStructureItem['value'],
@@ -478,7 +502,8 @@ export class DesignReplace {
    * Getting a list of available data for the property.
    *
    * Получение списка доступных данных у свойства.
-   * @param value values to check/ значения для проверки
+   * @param value values to check / значения для проверки
+   * @returns string of formatted values or undefined / строка отформатированных значений или undefined
    */
   protected getPropValuesByValue(
     value: DesignStructureItem['value']
@@ -501,6 +526,7 @@ export class DesignReplace {
    * Returns the names of parameters.
    *
    * Возвращает названия параметров переменных.
+   * @returns props type name or undefined / имя типа props или undefined
    */
   protected getIndexProp(): string | undefined {
     return this.sample.match(/type ([a-zA-Z]*Props[a-zA-Z]*) =/)?.[1]
@@ -510,6 +536,7 @@ export class DesignReplace {
    * Returns the names of parameters and their default values.
    *
    * Возвращает названия параметров и значения по умолчанию.
+   * @returns defaults constant name or undefined / имя константы defaults или undefined
    */
   protected getIndexDefault(): string | undefined {
     return this.sample.match(/const ([a-zA-Z]*defaults[a-zA-Z]*)[ :]/)?.[1]
@@ -519,7 +546,8 @@ export class DesignReplace {
    * Getting base properties from a constructor.
    *
    * Получение базовых свойств из конструктора.
-   * @param constructor data for processing/ данные для обработки
+   * @param constructor data for processing / данные для обработки
+   * @returns array of constructor prop templates / массив шаблонов props конструктора
    */
   protected getTypeForConstructor(constructor: string): string[] {
     const props = getColumn(this.structure.get(), 'name')
@@ -542,9 +570,10 @@ export class DesignReplace {
    * Adds new data from tokens to existing data.
    *
    * Добавляет новые данные из токенов к уже существующим.
-   * @param mark label property/ метка свойства
-   * @param name property name/ название свойства
-   * @param value property value/ значение свойства
+   * @param mark label property / метка свойства
+   * @param name property name / название свойства
+   * @param value property value / значение свойства
+   * @returns true if replacement succeeded / true, если замена выполнена успешно
    */
   protected initMarkAddValue(
     mark: string,
@@ -570,9 +599,10 @@ export class DesignReplace {
    * Getting an array with all classes and conditions of activity status.
    *
    * Получение массива со всеми классами и условиями статуса активности.
-   * @param items data list/ список данных
-   * @param parent ancestor data/ данные о предке
-   * @param values activity conditions/ условия активности
+   * @param items data list / список данных
+   * @param parent ancestor data / данные о предке
+   * @param values activity conditions / условия активности
+   * @returns array of class value statements / массив выражений значений классов
    * @protected
    */
   protected initClassesValues(
@@ -623,7 +653,8 @@ export class DesignReplace {
    * Adding an exception for the current property.
    *
    * Добавление исключения для текущего свойства.
-   * @param item object for checking/ объект для проверки
+   * @param item object for checking / объект для проверки
+   * @returns array of negated prop condition strings / массив строк отрицаний условий props
    */
   protected initClassesCategory(item: DesignStructureItem | DesignStructureItemSub): string[] {
     const values: string[] = []
@@ -650,7 +681,8 @@ export class DesignReplace {
    * Getting an array with all component styles.
    *
    * Получение массива со всеми стилями компонента.
-   * @param items data list/ список данных
+   * @param items data list / список данных
+   * @returns array of CSS variable assignment strings / массив строк присваивания CSS-переменных
    */
   protected initStylesValues(
     items: DesignStructureList = this.structure.get()

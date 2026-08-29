@@ -14,6 +14,7 @@ import { UI_DIRS_STYLES, UI_FILE_NAME_DESIGN } from '../../config'
  * Класс для создания обзорного файла дизайн-системы, включая импорты компонентов и регулярные выражения.
  */
 export class LibraryList {
+  /** Cached package name from package.json / Кэшированное имя пакета из package.json */
   protected readonly packageName: string
 
   /**
@@ -32,7 +33,7 @@ export class LibraryList {
    * Creates the design system overview file (`design.ts`) with metadata and component lists.
    *
    * Создает обзорный файл дизайн-системы (`design.ts`) с метаданными и списками компонентов.
-   * @returns this
+   * @returns this instance / текущий экземпляр
    */
   make(): this {
     const list = this.getComponents()
@@ -62,6 +63,7 @@ export class LibraryList {
    * Returns a list of components for the file.
    *
    * Возвращает список компонентов для файла.
+   * @returns array of component import definition strings / массив строк определений импорта компонентов
    */
   protected getComponents(): string[] {
     const list: string[] = []
@@ -85,6 +87,7 @@ export class LibraryList {
    * Returns a regular expression for all components.
    *
    * Возвращает регулярное выражение для всех компонентов.
+   * @returns string representation of component regex / строковое представление регулярного выражения компонентов
    */
   protected getComponentsReg(): string {
     const names: string[] = forEach(
@@ -99,6 +102,7 @@ export class LibraryList {
    * Returns a list of design names.
    *
    * Возвращает список названий дизайнов.
+   * @returns array of design names / массив названий дизайнов
    */
   protected getDesigns(): string[] {
     return [
@@ -113,6 +117,7 @@ export class LibraryList {
    * Генерирует регулярное выражение для списка имен.
    * @param names list of names / список имен
    * @param only exact match / точное совпадение
+   * @returns regex literal string / строка литерала регулярного выражения
    */
   protected getReg(
     names: string[],
@@ -136,6 +141,7 @@ export class LibraryList {
    *
    * Форматирует имена для регулярного выражения.
    * @param names list of names / список имен
+   * @returns formatted name pattern string / строка отформатированного паттерна имен
    */
   protected getRegName(names: string[]): string {
     return forEach(
@@ -149,6 +155,7 @@ export class LibraryList {
    * Returns a list of CSS variables.
    *
    * Возвращает список CSS переменных.
+   * @returns array of CSS variable prefixes / массив префиксов CSS-переменных
    */
   protected getVars(): string[] {
     const design: string = toCamelCase(PropertiesConfig.getDesignName())
@@ -183,6 +190,12 @@ export class LibraryList {
     return uniqueArray(data)
   }
 
+  /**
+   * Generates regular expression for CSS variables.
+   *
+   * Генерирует регулярное выражение для CSS-переменных.
+   * @returns regex literal string for style variables / строка литерала регулярного выражения для стилевых переменных
+   */
   protected getVarsReg(): string {
     return `/(?<=var\\(--)(${this.getVars().join('|')})/ig`
   }

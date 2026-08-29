@@ -5,18 +5,24 @@ import { PackageFile } from '../Package/PackageFile'
 
 import { UI_DIR_PACKAGES } from '../../config'
 
+/** Path to build log cache file / Путь к файлу кэша лога сборки */
 const UI_BUILD_LOG_FILE = ['.', 'logs', 'ui-build.log.json']
 
 /**
- * Class for building all packages in the project.
+ * Orchestrator for scanning, sorting, and building monorepo packages.
+ * Manages build order based on package priorities and tracks build versions via log cache.
  *
- * Класс для сборки всех пакетов в проекте.
+ * Оркестратор для сканирования, сортировки и сборки пакетов монорепозитория.
+ * Управляет порядком сборки на основе приоритетов пакетов и отслеживает версии сборки через лог-кэш.
  */
 export class BuildPackages {
+  /** Map of cached package build versions / Карта кэшированных версий сборки пакетов */
   protected readonly log: Record<string, string>
 
   /**
-   * Constructor
+   * Constructor initializes packages path and loads build log.
+   *
+   * Конструктор инициализирует путь к пакетам и загружает лог сборки.
    * @param path packages directory path / путь к директории пакетов
    */
   constructor(
@@ -54,6 +60,13 @@ export class BuildPackages {
     }
   }
 
+  /**
+   * Executes the build script command for the package.
+   *
+   * Выполняет команду скрипта сборки для пакета.
+   * @param packageFile package file instance / экземпляр файла пакета
+   * @returns boolean indicating build success / флаг успешности сборки
+   */
   protected async build(packageFile: PackageFile): Promise<boolean> {
     const code = packageFile.getCodeBuildOrRecovery()
 
@@ -69,6 +82,7 @@ export class BuildPackages {
    *
    * Проверяет, нужно ли обновлять пакет.
    * @param packageFile package file object / объект файла пакета
+   * @returns true if version differs from log cache / true, если версия отличается от кэша лога
    */
   protected isUpdate(packageFile: PackageFile): boolean {
     return !packageFile.isVersionConsistency(
@@ -111,6 +125,7 @@ export class BuildPackages {
    *
    * Возвращает кэшированную версию пакета из лога сборки.
    * @param name package name / имя пакета
+   * @returns cached version string / строка кэшированной версии
    */
   protected getVersionLog(name: string): string {
     return this.log?.[name] ?? '0.0.0'

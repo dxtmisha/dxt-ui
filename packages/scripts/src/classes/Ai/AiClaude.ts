@@ -18,6 +18,11 @@ import { AiClaudeLite } from './AiClaudeLite'
  * - Returns empty string if response is missing / Возвращает пустую строку при отсутствии результата
  */
 export class AiClaude extends AiClaudeLite {
+  /**
+   * Constructor initializes Claude AI with project configuration.
+   *
+   * Конструктор инициализирует Claude AI с конфигурацией проекта.
+   */
   constructor() {
     super(
       ...getConfigAi()

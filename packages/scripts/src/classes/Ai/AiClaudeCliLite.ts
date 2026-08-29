@@ -21,14 +21,13 @@ import { ApiTmp } from './ApiTmp'
  * - API key is passed via environment variable or config / API ключ передается через переменную окружения или конфиг
  */
 export class AiClaudeCliLite extends AiAbstract<{}> {
+  /** Temporary prompt file manager / Менеджер временных файлов промпта */
   protected readonly tmp = new ApiTmp()
 
   /**
-   * Initializes the "client".
-   * For CLI, we just mark it as initialized.
+   * Initializes the client instance.
    *
-   * Инициализирует "клиента".
-   * Для CLI мы просто помечаем его как инициализированный.
+   * Инициализирует экземпляр клиента.
    */
   protected async init(): Promise<void> {
     this.ai = {}
@@ -40,6 +39,7 @@ export class AiClaudeCliLite extends AiAbstract<{}> {
    *
    * Хук реализации: преобразовать накопленные изображения в формат, специфичный для модели.
    * Реализация CLI в настоящее время игнорирует изображения.
+   * @returns array of converted images / массив преобразованных изображений
    */
   protected toImages(): any {
     return []
@@ -47,10 +47,9 @@ export class AiClaudeCliLite extends AiAbstract<{}> {
 
   /**
    * Implementation hook: convert accumulated contents to model-specific format.
-   * Returns array of strings.
    *
    * Хук реализации: преобразовать накопленное содержимое в формат, специфичный для модели.
-   * Возвращает массив строк.
+   * @returns array of formatted prompt strings / массив отформатированных строк промпта
    */
   protected toContents(): any {
     return forEach(
@@ -63,8 +62,9 @@ export class AiClaudeCliLite extends AiAbstract<{}> {
    * Performs content generation request via CLI and returns textual result.
    *
    * Выполняет запрос генерации контента через CLI и возвращает текстовый результат.
-   * @param model Model identifier / Идентификатор модели
-   * @param contents Composed contents for generation / Собранный контент для генерации
+   * @param model model identifier / идентификатор модели
+   * @param contents composed contents for generation / собранный контент для генерации
+   * @returns generated text response / сгенерированный текстовый ответ
    */
   protected async response(
     model: string,

@@ -33,6 +33,7 @@ export class LibraryAiWiki {
    * Returns the file name for the list.
    *
    * Возвращает имя файла для списка.
+   * @returns list filename without extension / имя файла списка без расширения
    */
   protected getFileList(): string {
     return 'ai-list'
@@ -42,6 +43,7 @@ export class LibraryAiWiki {
    * Returns a list of components for AI Wiki.
    *
    * Возвращает список компонентов для AI Wiki.
+   * @returns array of available AI wiki component items / массив доступных элементов компонентов AI wiki
    */
   protected getList(): LibraryAiWikiItem[] {
     const data: LibraryAiWikiItem[] = []

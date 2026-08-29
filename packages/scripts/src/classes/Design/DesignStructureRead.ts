@@ -26,8 +26,10 @@ import { UI_PROPERTY_FOR_PROPS } from '../../config'
  * Обрабатывает сырые метаданные свойств для идентификации интерактивных состояний, связанных классов и компиляции всех возможных значений для генерации кода.
  */
 export class DesignStructureRead extends DesignStructureItemAbstract<DesignStructureList> {
+  /** List of resolved structure states / Список разрешенных состояний структуры */
   protected states: DesignStructureStateList
 
+  /** Resolved structure dictionary / Словарь разрешенных элементов структуры */
   protected data: DesignStructureList = {}
 
   /**
@@ -53,6 +55,7 @@ export class DesignStructureRead extends DesignStructureItemAbstract<DesignStruc
    * Getting all dependencies of the component.
    *
    * Получение всех зависимостей у компонента.
+   * @returns resolved state list / список разрешенных состояний
    */
   getStates(): DesignStructureStateList {
     return this.states
@@ -62,7 +65,8 @@ export class DesignStructureRead extends DesignStructureItemAbstract<DesignStruc
    * Checks if the property is available for addition to props.
    *
    * Проверяет, доступно ли свойство для добавления в props.
-   * @param item object for checking/ объект для проверки
+   * @param item object for checking / объект для проверки
+   * @returns true if property can be exposed as prop / true, если свойство может быть использовано как prop
    */
   protected isProps(item: PropertyItem): boolean {
     const is = item?.[PropertyKey.prop]
@@ -78,7 +82,8 @@ export class DesignStructureRead extends DesignStructureItemAbstract<DesignStruc
    * Checks whether the property is a reference to a class.
    *
    * Проверяет, является ли свойство ссылкой на класс.
-   * @param item object for checking/ объект для проверки
+   * @param item object for checking / объект для проверки
+   * @returns true if property links to class / true, если свойство ссылается на класс
    */
   protected isLinkClass(item: PropertyItem): boolean {
     return typeof item.value === 'string'
@@ -89,7 +94,8 @@ export class DesignStructureRead extends DesignStructureItemAbstract<DesignStruc
    * Transformations to a class name.
    *
    * Преобразование в имя класса.
-   * @param value values of properties from the value field/ значения свойств из поля value
+   * @param value values of properties from the value field / значения свойств из поля value
+   * @returns formatted CSS class name / отформатированное имя CSS-класса
    */
   protected getClass(value: string): string {
     return this.properties.get()
@@ -103,7 +109,8 @@ export class DesignStructureRead extends DesignStructureItemAbstract<DesignStruc
    * Returns all properties of a component by its reference.
    *
    * Возвращает все свойства компонента по его reference.
-   * @param index link to a property/ ссылка на свойство
+   * @param index link to a property / ссылка на свойство
+   * @returns property item or undefined / элемент свойства или undefined
    */
   protected getClassState(index: string): PropertyItem | undefined {
     return this.properties.get().getItem(index)
@@ -113,7 +120,8 @@ export class DesignStructureRead extends DesignStructureItemAbstract<DesignStruc
    * Returns records that meet state conditions.
    *
    * Возвращает записи, удовлетворяющие условиям состояния.
-   * @param properties input data/ входной данный
+   * @param properties input data / входные данные
+   * @returns list of structure states / список состояний структуры
    */
   protected makeState(properties?: PropertyItem['value']): DesignStructureStateList {
     const state: DesignStructureStateList = []
@@ -160,6 +168,7 @@ export class DesignStructureRead extends DesignStructureItemAbstract<DesignStruc
    * Retrieves all properties for preparing data filling.
    *
    * Получает все свойства для подготовки заполнения данными.
+   * @returns current instance / текущий экземпляр
    */
   protected makeMain(): this {
     this.states?.forEach(({
@@ -189,6 +198,7 @@ export class DesignStructureRead extends DesignStructureItemAbstract<DesignStruc
    * Receives the default values.
    *
    * Получает базовые значения.
+   * @returns current instance / текущий экземпляр
    */
   protected makeValue(): this {
     this.states?.forEach(({
@@ -205,7 +215,8 @@ export class DesignStructureRead extends DesignStructureItemAbstract<DesignStruc
    * Gets all possible values.
    *
    * Получает всех возможных значения.
-   * @param state basic values/ базовые значения
+   * @param state basic values / базовые значения
+   * @returns current instance / текущий экземпляр
    */
   protected makeValueAll(state = this.states): this {
     state?.forEach(({
@@ -230,6 +241,7 @@ export class DesignStructureRead extends DesignStructureItemAbstract<DesignStruc
    * Updates values by removing duplicates and updating the style property value.
    *
    * Обновляет значения, удаляя все повторы и обновляя значения свойства style.
+   * @returns current instance / текущий экземпляр
    */
   protected makeValueUnique(): this {
     forEach(this.data, (property) => {
@@ -251,8 +263,9 @@ export class DesignStructureRead extends DesignStructureItemAbstract<DesignStruc
    * Updates values in a map.
    *
    * Обновляет значения в карте.
-   * @param states basic values/ базовые значения
-   * @param parent
+   * @param states basic values / базовые значения
+   * @param parent parent state items list / родительский список элементов состояния
+   * @returns current instance / текущий экземпляр
    */
   protected makeValueState(
     states = this.states,
@@ -296,8 +309,9 @@ export class DesignStructureRead extends DesignStructureItemAbstract<DesignStruc
    * Returns a formatted string with the property name.
    *
    * Возвращает отформатированную строку с названием свойства.
-   * @param item object for checking/ объект для проверки
-   * @param index property identifier/ идентификатор свойства
+   * @param item object for checking / объект для проверки
+   * @param index property identifier / идентификатор свойства
+   * @returns camelCase property name / имя свойства в camelCase
    */
   protected toName(item: PropertyItem, index: string): string {
     const prop = item?.[PropertyKey.prop]
@@ -314,7 +328,8 @@ export class DesignStructureRead extends DesignStructureItemAbstract<DesignStruc
    * Returns all available values.
    *
    * Возвращает все доступные значения.
-   * @param properties array with all property records/ массив со всеми записями свойств
+   * @param properties array with all property records / массив со всеми записями свойств
+   * @returns array of resolved property values / массив разрешенных значений свойства
    */
   protected toValue(properties?: PropertyItem['value']): DesignStructureItem['value'] {
     if (

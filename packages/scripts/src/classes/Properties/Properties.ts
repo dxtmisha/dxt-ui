@@ -52,7 +52,10 @@ const FILE_CACHE = 'properties'
  * Отвечает за загрузку, слияние и выполнение многоэтапного конвейера преобразований для конвертации необработанных определений свойств в структурированные, разрешенные данные для различных выходных форматов.
  */
 export class Properties {
+  /** List of design system names / Список названий дизайн-систем */
   private readonly designs: string[]
+
+  /** Transformed properties items collection / Коллекция преобразованных элементов свойств */
   private readonly items: PropertiesItems
 
   /**
@@ -71,8 +74,9 @@ export class Properties {
    * Returns the processed collection of design tokens.
    *
    * Возвращает обработанную коллекцию токенов дизайна.
+   * @returns processed properties items container / контейнер обработанных элементов свойств
    */
-  get() {
+  get(): PropertiesItems {
     return this.items
   }
 
@@ -80,6 +84,7 @@ export class Properties {
    * Getting structured data for use in an SCSS file.
    *
    * Получение структурированных данных для работы в SCSS файле.
+   * @returns generated SCSS code string / строка сгенерированного SCSS кода
    */
   getScss(): string {
     return PropertiesCache.get([], this.getPathName(), () => {
@@ -95,6 +100,7 @@ export class Properties {
    * Processing of basic data.
    *
    * Обработка базовых данных.
+   * @returns resolved property list / разрешенный список свойств
    */
   protected read(): PropertyList {
     return PropertiesCache.get<PropertyList>([], this.getPathName(), () => {
@@ -160,9 +166,9 @@ export class Properties {
    * Basic transformations.
    *
    * Базовые преобразования.
-   * @param properties a class that contains all data/ класс со всеми данными
+   * @param properties properties items collection to transform / коллекция элементов свойств для преобразования
    */
-  private toBasic(properties: PropertiesItems) {
+  private toBasic(properties: PropertiesItems): void {
     new PropertiesToReplace(properties).to()
     new PropertiesToPalette(properties).to()
     new PropertiesToLink(properties).to()

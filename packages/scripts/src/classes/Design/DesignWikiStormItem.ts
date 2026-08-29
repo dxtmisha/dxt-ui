@@ -8,10 +8,7 @@ import type { LibraryData } from '../../types/libraryTypes'
 import type { WebTypesVueComponentItem, WebTypesPropItem, WebTypesSlots, WebTypesEventItem, WebTypesProperty } from '../../types/webTypes'
 import { forEach } from '@dxtmisha/functional-basic'
 
-/**
- * List of basic types that do not need to be wrapped in quotes for web-types/
- * Список базовых типов, которые не нужно оборачивать в кавычки для web-types
- */
+/** Regular expression for basic types that do not need to be wrapped in quotes for web-types / Регулярное выражение для базовых типов, которые не нужно оборачивать в кавычки для web-types */
 const BASE_TYPES = /^(boolean|number|string|null|any|void|object|unknown|never)$/
 
 /**
@@ -22,7 +19,10 @@ const BASE_TYPES = /^(boolean|number|string|null|any|void|object|unknown|never)$
  * Координирует преобразование данных вики для Storybook в определения тегов и атрибутов JetBrains Web-Types.
  */
 export class DesignWikiStormItem {
+  /** Storybook wiki instance / Экземпляр Storybook вики */
   protected wiki?: WikiStorybook
+
+  /** Component wiki data item / Элемент данных вики компонента */
   protected dataComponent?: WikiDataItem
 
   /**
@@ -44,6 +44,7 @@ export class DesignWikiStormItem {
    * Returns the tag definition for web-types.
    *
    * Возвращает определение тега для web-types.
+   * @returns component item for web-types or undefined / элемент компонента для web-types или undefined
    */
   async get(): Promise<WebTypesVueComponentItem | undefined> {
     if (this.wiki) {
@@ -84,6 +85,7 @@ export class DesignWikiStormItem {
    *
    * Возвращает определение свойства.
    * @param item prop item / элемент свойства
+   * @returns prop item definition / определение элемента свойства
    */
   getProp(item: WikiStorybookProp): WebTypesPropItem {
     const type = this.prepareType(item.getType())
@@ -100,6 +102,7 @@ export class DesignWikiStormItem {
    * Returns a list of props.
    *
    * Возвращает список свойств.
+   * @returns list of prop items / список элементов свойств
    */
   getProps(): WebTypesPropItem[] {
     const props: WebTypesPropItem[] = []
@@ -118,6 +121,7 @@ export class DesignWikiStormItem {
    * Returns a list of slots.
    *
    * Возвращает список слотов.
+   * @returns list of web-types slots or undefined / список слотов web-types или undefined
    */
   async getSlots(): Promise<WebTypesSlots | undefined> {
     const data = await this.getData()
@@ -151,6 +155,7 @@ export class DesignWikiStormItem {
    * Returns a list of events.
    *
    * Возвращает список событий.
+   * @returns list of web-types event items or undefined / список элементов событий web-types или undefined
    */
   async getEvents(): Promise<WebTypesEventItem[] | undefined> {
     const data = await this.getData()
@@ -186,8 +191,9 @@ export class DesignWikiStormItem {
    * Returns the directory name.
    *
    * Возвращает имя директории.
+   * @returns component directory name / имя директории компонента
    */
-  getDirName() {
+  getDirName(): string {
     return this.data.dir
   }
 
@@ -195,6 +201,7 @@ export class DesignWikiStormItem {
    * Initializes the class.
    *
    * Инициализирует класс.
+   * @returns current instance / текущий экземпляр
    */
   async init(): Promise<this> {
     this.wiki = await this.initWiki()
@@ -205,6 +212,7 @@ export class DesignWikiStormItem {
    * Gets data from wikiData.ts.
    *
    * Получает данные из wikiData.ts.
+   * @returns wiki data item or undefined / элемент данных вики или undefined
    */
   protected async getData(): Promise<WikiDataItem | undefined> {
     if (!this.dataComponent) {
@@ -227,6 +235,7 @@ export class DesignWikiStormItem {
    * Returns the list of directories.
    *
    * Возвращает список директорий.
+   * @returns directory path segments / сегменты пути директории
    */
   protected getDirs(): string[] {
     return [
@@ -241,6 +250,7 @@ export class DesignWikiStormItem {
    *
    * Возвращает полный путь к файлу.
    * @param paths path segments / сегменты пути
+   * @returns full combined path segments / полные объединенные сегменты пути
    */
   protected getPaths(paths: string[]): string[] {
     return [
@@ -254,6 +264,7 @@ export class DesignWikiStormItem {
    *
    * Форматирует строку типа для web-types.
    * @param type original type string / исходная строка типа
+   * @returns formatted type string or undefined / отформатированная строка типа или undefined
    */
   protected prepareType(type?: string): string | undefined {
     if (type) {
@@ -283,6 +294,8 @@ export class DesignWikiStormItem {
    * Cleans a type string by removing redundant parentheses, e.g., (CellClassesSub) | undefined -> CellClassesSub | undefined
    *
    * Очищает строку типа, удаляя лишние скобки, например: (CellClassesSub) | undefined -> CellClassesSub | undefined
+   * @param type input type string / входная строка типа
+   * @returns cleaned type string / очищенная строка типа
    */
   protected cleanType(type: string): string {
     return type
@@ -295,6 +308,7 @@ export class DesignWikiStormItem {
    * Initializes the wiki object.
    *
    * Инициализирует объект wiki.
+   * @returns initialized WikiStorybook instance or undefined / инициализированный экземпляр WikiStorybook или undefined
    */
   protected async initWiki(): Promise<WikiStorybook | undefined> {
     const data = await this.getData()

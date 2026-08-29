@@ -9,6 +9,11 @@ import { AiZAiLite } from './AiZAiLite'
  * Автоматически настраивается с использованием настроек окружения проекта.
  */
 export class AiZAi extends AiZAiLite {
+  /**
+   * Constructor initializes Z.ai / xAI with project configuration.
+   *
+   * Конструктор инициализирует Z.ai / xAI с конфигурацией проекта.
+   */
   constructor() {
     super(
       ...getConfigAi()

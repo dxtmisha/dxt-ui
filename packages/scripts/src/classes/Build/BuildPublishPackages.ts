@@ -3,18 +3,24 @@ import { PackageFile } from '../Package/PackageFile'
 import { run } from '../../functions/run'
 import { UI_DIR_PACKAGES } from '../../config'
 
+/** Path to publish log cache file / Путь к файлу кэша лога публикации */
 const UI_PUBLISH_LOG_FILE = ['.', 'logs', 'ui-publish.log.json']
 
 /**
- * Class for publishing all packages in the project.
+ * Orchestrator for scanning and publishing changed packages to the npm registry.
+ * Compares current package versions against published log cache and publishes updated packages.
  *
- * Класс для публикации всех пакетов в проекте.
+ * Оркестратор для сканирования и публикации измененных пакетов в реестр npm.
+ * Сравнивает текущие версии пакетов с логом публикаций и публикует обновленные пакеты.
  */
 export class BuildPublishPackages {
+  /** Map of cached published package versions / Карта кэшированных версий опубликованных пакетов */
   protected readonly log: Record<string, string>
 
   /**
-   * Constructor
+   * Constructor initializes packages directory path and loads publish log.
+   *
+   * Конструктор инициализирует путь к директории пакетов и загружает лог публикаций.
    * @param path packages directory path / путь к директории пакетов
    */
   constructor(
@@ -67,6 +73,7 @@ export class BuildPublishPackages {
    *
    * Проверяет, нужно ли публиковать пакет.
    * @param packageFile package file object / объект файла пакета
+   * @returns true if version differs from log cache / true, если версия отличается от кэша лога
    */
   protected isUpdate(packageFile: PackageFile): boolean {
     return !packageFile.isVersionConsistency(
@@ -79,6 +86,7 @@ export class BuildPublishPackages {
    *
    * Возвращает кэшированную версию пакета из лога публикации.
    * @param name package name / имя пакета
+   * @returns cached version string / строка кэшированной версии
    */
   protected getVersionLog(name: string): string {
     return this.log?.[name] ?? '0.0.0'

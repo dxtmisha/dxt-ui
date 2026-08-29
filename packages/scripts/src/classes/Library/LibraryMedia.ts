@@ -64,8 +64,9 @@ export class LibraryMedia {
    * Returns the list of available icons.
    *
    * Возвращает список доступных иконок.
+   * @returns array of library icon items / массив элементов иконок библиотеки
    */
-  private getIconImport() {
+  private getIconImport(): LibraryIconItem[] {
     const data: LibraryIconItem[] = []
     const path = [PropertiesFile.getRoot(), ...UI_DIRS_ICONS]
 
@@ -87,10 +88,11 @@ export class LibraryMedia {
   }
 
   /**
-   * Returns the icon name.
+   * Returns the icon name without extension.
    *
-   * Возвращает название иконки.
-   * @param icon icon name/ название иконки
+   * Возвращает название иконки без расширения.
+   * @param icon icon filename / имя файла иконки
+   * @returns icon name / название иконки
    */
   private getIconName(icon: string): string {
     return icon
@@ -98,19 +100,21 @@ export class LibraryMedia {
   }
 
   /**
-   * Returns the path to the icon.
+   * Returns the relative path to the icon file.
    *
-   * Возвращает путь к иконке.
-   * @param icon icon name/ название иконки
+   * Возвращает относительный путь к файлу иконки.
+   * @param icon icon filename / имя файла иконки
+   * @returns relative path string / строка относительного пути
    */
   private getIconPath(icon: string): string {
     return PropertiesFile.joinPath(['.', '..', '..', ...UI_DIRS_ICONS, icon])
   }
 
   /**
-   * Generates the code to add the icon.
+   * Generates the code to register icons in the Icons registry.
    *
-   * Создаёт код для добавления иконки.
+   * Создаёт код для регистрации иконок в реестре Icons.
+   * @returns array of registration code lines / массив строк кода регистрации
    */
   private initIcon(): string[] {
     const data: string[] = []
@@ -123,9 +127,10 @@ export class LibraryMedia {
   }
 
   /**
-   * Generates the code to connect the icon.
+   * Generates dynamic import statements for icons.
    *
-   * Создаёт код для подключения иконки.
+   * Создаёт инструкции динамического импорта для иконок.
+   * @returns array of import code lines / массив строк кода импорта
    */
   private initIconImport(): string[] {
     const data: string[] = []

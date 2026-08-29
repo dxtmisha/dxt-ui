@@ -5,19 +5,23 @@ import { PropertiesFile } from '../Properties/PropertiesFile'
 import { BrowserItem } from '../BrowserItem'
 
 /**
- * Class for automatic capturing of screenshots by running dev server.
+ * Automates the capturing of full-page component screenshots and extraction of DOM/CSS styles.
+ * Spawns a local development server, navigates headless browser, captures screenshots, and dumps HTML and CSS artifacts.
  *
- * Класс для автоматического захвата скриншотов путем запуска сервера разработки.
+ * Автоматизирует создание полностраничных скриншотов компонентов и извлечение DOM/CSS стилей.
+ * Запускает локальный сервер разработки, открывает headless-браузер, делает скриншоты и сохраняет HTML и CSS артефакты.
  */
 export class DesignScreenshot {
-  /** indicates if screenshot process is running / указывает, запущен ли процесс создания скриншота */
+  /** Indicates if screenshot process is running / Указывает, запущен ли процесс создания скриншота */
   protected isReading: boolean = false
 
-  /** server url / URL сервера */
+  /** Server URL / URL сервера */
   protected url?: string
 
   /**
-   * Constructor
+   * Constructor initializes output screenshot file path.
+   *
+   * Конструктор инициализирует путь к выходному файлу скриншота.
    * @param file output path / путь к файлу
    */
   constructor(

@@ -24,6 +24,7 @@ export class LibraryAiWikiItem {
    * Checks if the AI Wiki file exists.
    *
    * Проверяет, существует ли файл AI Wiki.
+   * @returns true if AI wiki component file exists / true, если файл компонента AI wiki существует
    */
   isAiWiki(): boolean {
     return PropertiesFile.is(this.getPath())
@@ -33,6 +34,7 @@ export class LibraryAiWikiItem {
    * Returns the component code.
    *
    * Возвращает код компонента.
+   * @returns component full code identifier / полный строковый идентификатор компонента
    */
   getCode(): string {
     return this.item.codeFull
@@ -42,6 +44,7 @@ export class LibraryAiWikiItem {
    * Returns the file name for the AI Wiki component.
    *
    * Возвращает имя файла для компонента AI Wiki.
+   * @returns filename of AI wiki Vue component / имя файла Vue-компонента AI wiki
    */
   getComponentFileNameAiWiki(): string {
     return `${this.item.codeFull}AiWiki.vue`
@@ -51,6 +54,7 @@ export class LibraryAiWikiItem {
    * Returns the import string for the component.
    *
    * Возвращает строку импорта для компонента.
+   * @returns import statement string / строка инструкции импорта
    */
   getImport(): string {
     const code = this.item.codeFull
@@ -67,6 +71,7 @@ export class LibraryAiWikiItem {
    * Returns the path to the file.
    *
    * Возвращает путь к файлу.
+   * @returns path segments array to AI wiki component / массив сегментов пути к компоненту AI wiki
    */
   protected getPath(): string[] {
     return [

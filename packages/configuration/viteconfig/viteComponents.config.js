@@ -12,20 +12,11 @@ import { getLibraryEntries } from '../functions/getLibraryEntries.js'
  * Конфигурация Vite для сборки компонентов.
  */
 export const viteComponents = mergeConfig(
-  viteBasicFunction(
-    undefined,
-    undefined,
-    getLibraryEntries(),
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    '',
-    false,
-    undefined,
-    undefined,
-    undefined,
-    [
+  viteBasicFunction({
+    entry: getLibraryEntries(),
+    fileCssName: '',
+    rollupTypes: false,
+    excludeExtended: [
       '**/*AiWiki*',
       '**/*AiWiki.vue',
       '**/AiWiki.vue',
@@ -38,7 +29,7 @@ export const viteComponents = mergeConfig(
       '**/main.ts',
       '**/main.tsx'
     ]
-  ),
+  }),
   {
     build: {
       cssCodeSplit: true,

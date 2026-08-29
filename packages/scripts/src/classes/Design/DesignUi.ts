@@ -28,6 +28,7 @@ import { UI_FILE_PACKAGE, UI_FILE_STYLE_PROPERTIES } from '../../config'
  * Координирует генерацию стилей, документации, структур компонентов и экспортов на уровне библиотеки (медиа, плагины, типы).
  */
 export class DesignUi {
+  /** Library items repository instance / Экземпляр репозитория элементов библиотеки */
   protected readonly components: LibraryItems
 
   /**
@@ -46,6 +47,7 @@ export class DesignUi {
    * Returns the component name by its name.
    *
    * Возвращает название компонента по имени.
+   * @returns kebab-case component name / имя компонента в kebab-case
    */
   protected get component(): string {
     return toKebabCase(this.name).trim()
@@ -77,6 +79,7 @@ export class DesignUi {
    * Creates or updates the list of components.
    *
    * Создает или обновляет список компонентов.
+   * @returns current instance / текущий экземпляр
    */
   protected makeConstructorComponent(): this {
     const componentDef = this.component
@@ -99,6 +102,7 @@ export class DesignUi {
    * Updates the package.json file by adding export paths for UI styles and saves the changes.
    *
    * Обновляет файл package.json, добавляя пути экспорта для стилей UI, и сохраняет изменения.
+   * @returns current instance / текущий экземпляр
    */
   protected makePackage(): this {
     const packageJson = getPackageJson()
@@ -141,6 +145,12 @@ export class DesignUi {
     return this
   }
 
+  /**
+   * Generates the root ui-properties.scss style file.
+   *
+   * Генерирует корневой файл стилей ui-properties.scss.
+   * @returns current instance / текущий экземпляр
+   */
   protected makeUiProperties(): this {
     const projectName = toCamelCaseFirst(PropertiesConfig.getProjectName())
 

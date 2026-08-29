@@ -41,8 +41,10 @@ export class BrowserItem {
   protected pageHeight: number = -1
 
   /**
-   * Constructor
-   * @param url component path / путь к компоненту
+   * Constructor for BrowserItem.
+   *
+   * Конструктор для BrowserItem.
+   * @param url component or page URL / URL компонента или страницы
    * @param options additional options for capture / дополнительные опции захвата
    */
   constructor(

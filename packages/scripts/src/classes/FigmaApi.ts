@@ -17,6 +17,14 @@ import {
  * Класс для взаимодействия с Figma REST API.
  */
 export class FigmaApi {
+  /**
+   * Constructor for FigmaApi.
+   *
+   * Конструктор для FigmaApi.
+   * @param token Figma REST API access token / токен доступа к REST API Figma
+   * @param fileKey unique Figma file identifier / уникальный идентификатор файла Figma
+   * @param nodeId optional target node identifier / необязательный идентификатор целевого узла
+   */
   constructor(
     protected token: string,
     protected fileKey: string,

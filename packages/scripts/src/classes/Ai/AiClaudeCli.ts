@@ -16,6 +16,11 @@ import { AiClaudeCliLite } from './AiClaudeCliLite'
  * - Uses getConfigAi() to retrieve credentials / Использует getConfigAi() для получения учетных данных
  */
 export class AiClaudeCli extends AiClaudeCliLite {
+  /**
+   * Constructor initializes Claude CLI AI with project configuration.
+   *
+   * Конструктор инициализирует Claude CLI AI с конфигурацией проекта.
+   */
   constructor() {
     super(
       ...getConfigAi()

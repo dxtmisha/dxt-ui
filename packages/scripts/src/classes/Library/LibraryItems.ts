@@ -15,10 +15,13 @@ import { UI_DIRS_LIBRARY, UI_DIRS_COMPONENTS } from '../../config'
  * Класс для работы со списком компонентов.
  */
 export class LibraryItems {
+  /** Library items array grouped by design / Массив элементов библиотеки, сгруппированных по дизайну */
   protected readonly items: LibraryAll
 
   /**
-   * Constructor
+   * Constructor initializes library items.
+   *
+   * Конструктор инициализирует элементы библиотеки.
    */
   constructor() {
     this.items = this.initItems()
@@ -28,6 +31,7 @@ export class LibraryItems {
    * Returns the list of components divided by design groups.
    *
    * Возвращает список компонентов, разделенных по группам дизайна.
+   * @returns list of components grouped by design / список компонентов, сгруппированных по дизайну
    */
   get(): LibraryAll {
     return this.items
@@ -37,6 +41,7 @@ export class LibraryItems {
    * Returns the list of components as an array.
    *
    * Возвращает список компонентов в виде массива.
+   * @returns array of component data items / массив элементов данных компонентов
    */
   getComponentList(): LibraryData[] {
     const list: LibraryData[] = []
@@ -50,15 +55,17 @@ export class LibraryItems {
    * Returns the number of components.
    *
    * Возвращает количество компонентов.
+   * @returns total component count / общее количество компонентов
    */
   getCount(): number {
     return this.getComponentList().length
   }
 
   /**
-   * Returns the path to the design system components directory
+   * Returns the path to the design system components directory.
    *
-   * Возвращает путь к директории компонентов дизайн-системы
+   * Возвращает путь к директории компонентов дизайн-системы.
+   * @returns array of directory path segments / массив сегментов пути директории
    */
   getComponentsPath(): string[] {
     return [...UI_DIRS_COMPONENTS, PropertiesConfig.getProjectName()]
@@ -67,10 +74,10 @@ export class LibraryItems {
   /**
    * Writes data in the file.
    *
-   * Записывает данные в файле.
-   * @param name file name/ название файла
-   * @param data values for writing/ значения для записи
-   * @param extension file extension by default is json/ расширение файла по умолчанию - json
+   * Записывает данные в файл.
+   * @param name file name / название файла
+   * @param data values for writing / значения для записи
+   * @param extension file extension (default 'ts') / расширение файла (по умолчанию 'ts')
    */
   write(
     name: string,
@@ -99,6 +106,7 @@ export class LibraryItems {
    * Returns a list of components.
    *
    * Возвращает список компонентов.
+   * @returns list of component metadata items / список элементов метаданных компонентов
    */
   protected getComponents(): LibraryData[] {
     const list: LibraryData[] = []
@@ -126,6 +134,7 @@ export class LibraryItems {
    * Initializes data about the component.
    *
    * Инициализирует данные о компоненте.
+   * @returns library design groups array / массив групп дизайна библиотеки
    */
   protected initItems(): LibraryAll {
     return [

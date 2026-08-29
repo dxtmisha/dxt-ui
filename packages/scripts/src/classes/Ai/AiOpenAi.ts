@@ -18,6 +18,11 @@ import { getConfigAi } from '../../functions/getConfigAi'
  * - Returns empty string if response is missing / Возвращает пустую строку при отсутствии результата
  */
 export class AiOpenAi extends AiOpenAiLite {
+  /**
+   * Constructor initializes OpenAI with project configuration.
+   *
+   * Конструктор инициализирует OpenAI с конфигурацией проекта.
+   */
   constructor() {
     super(
       ...getConfigAi()

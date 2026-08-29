@@ -11,20 +11,13 @@ import { getLibraryEntries } from '../functions/getLibraryEntries.js'
  * Конфигурация Vite для конструкторов.
  */
 export const viteConstructors = mergeConfig(
-  viteBasicFunction(
-    undefined,
-    undefined,
-    [
+  viteBasicFunction({
+    entry: [
       ...getLibraryEntries(),
       'src/library.ts'
     ],
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    false
-  ),
+    rollupTypes: false
+  }),
   {
     plugins: [mdx()]
   }

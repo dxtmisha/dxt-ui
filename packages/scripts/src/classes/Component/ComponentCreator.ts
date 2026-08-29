@@ -8,13 +8,17 @@ import { ComponentItem } from './ComponentItem'
 import { UI_DIRS_COMPONENTS } from '../../config'
 
 /**
- * Class for scaffolding components in empty directories.
+ * Automation utility for discovering empty component directories and scaffolding their initial structure.
+ * Scans configured component paths and initializes boilerplate files for newly created component folders.
  *
- * Класс для создания заготовок компонентов в пустых директориях.
+ * Утилита автоматизации для обнаружения пустых директорий компонентов и создания их начальной структуры.
+ * Сканирует настроенные пути компонентов и инициализирует шаблонные файлы для вновь созданных папок компонентов.
  */
 export class ComponentCreator {
   /**
-   * Constructor
+   * Constructor initializes ComponentCreator instance.
+   *
+   * Конструктор инициализирует экземпляр ComponentCreator.
    */
   constructor() {
   }
@@ -34,7 +38,7 @@ export class ComponentCreator {
    * Collects only empty component directories.
    *
    * Собирает только пустые директории компонентов.
-   * @protected
+   * @returns array of empty component directory paths / массив путей пустых директорий компонентов
    */
   protected getDirs(): string[] {
     return PropertiesFile.readDirOnlyRecursive(UI_DIRS_COMPONENTS)

@@ -18,6 +18,11 @@ import { AiGoogleLite } from './AiGoogleLite'
  * - Returns empty string if response is missing / Возвращает пустую строку при отсутствии результата
  */
 export class AiGoogle extends AiGoogleLite {
+  /**
+   * Constructor initializes Google AI with project configuration.
+   *
+   * Конструктор инициализирует Google AI с конфигурацией проекта.
+   */
   constructor() {
     super(
       ...getConfigAi()
