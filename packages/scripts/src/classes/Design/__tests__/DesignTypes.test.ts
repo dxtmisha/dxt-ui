@@ -1,9 +1,10 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
+import { DesignTypes } from '../DesignTypes'
 import { DesignTypesAi } from '../DesignTypesAi'
 import { DesignTypesMake } from '../DesignTypesMake'
 import { DesignTypesMcp } from '../DesignTypesMcp'
 import { DesignTypesPrompts } from '../DesignTypesPrompts'
-import { PropertiesFile } from '../../Properties/PropertiesFile'
+import { DesignTypesPromptsAbstract } from '../DesignTypesPromptsAbstract'
 
 class TestDesignTypesMake extends DesignTypesMake {
   public testIsContent(content?: string) {
@@ -97,8 +98,8 @@ describe('DesignTypes Subsystem', () => {
       ].join('\n')
 
       const cleaned = make.testCleanContent(raw)
-      expect(cleaned).not.toContain("import { foo } from './foo'")
-      expect(cleaned).not.toContain("export * from './bar'")
+      expect(cleaned).not.toContain('import { foo } from \'./foo\'')
+      expect(cleaned).not.toContain('export * from \'./bar\'')
       expect(cleaned).toContain('export type A = string;')
     })
 
@@ -138,6 +139,12 @@ describe('DesignTypes Subsystem', () => {
   })
 
   describe('DesignTypesPrompts', () => {
+    it('extends DesignTypesPromptsAbstract', () => {
+      const ai = new DesignTypesAi('dist')
+      const prompts = new DesignTypesPrompts('ai-resources', ai)
+      expect(prompts).toBeInstanceOf(DesignTypesPromptsAbstract)
+    })
+
     it('formats prompt rule lines and cache paths', () => {
       const ai = new DesignTypesAi('dist')
       const prompts = new TestDesignTypesPrompts('ai-resources', ai)
@@ -148,6 +155,30 @@ describe('DesignTypes Subsystem', () => {
 
       const cachePath = prompts.testGetCachePath('ai-resources/sub/rule.md')
       expect(cachePath).toContain('sub/rule.json')
+    })
+  })
+
+  describe('DesignTypes Orchestrator', () => {
+    it('accepts custom DesignTypesPromptsAbstract implementation', async () => {
+      let customMakeCalled = false
+
+      class CustomPrompts extends DesignTypesPrompts {
+        getCacheList() {
+          return []
+        }
+
+        async make() {
+          customMakeCalled = true
+          return this
+        }
+
+        async toAiPrompts() {
+          return 'custom prompts'
+        }
+      }
+
+      const designTypes = new DesignTypes('dist', 'ai-resources', true, CustomPrompts)
+      expect(designTypes).toBeDefined()
     })
   })
 })

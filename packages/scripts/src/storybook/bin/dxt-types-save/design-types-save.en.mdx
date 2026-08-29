@@ -1,0 +1,29 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/# Commands/dxt-types-save - Save AI Type Definitions'/>
+
+# dxt-types-save
+
+The `dxt-types-save` command compiles and saves AI-optimized TypeScript definitions from cached/prepared list files without invoking AI generation models. It generates type definitions rapidly, verifies that the developer guide exists, and compiles MCP server resources.
+
+## Key Features
+
+- **Fast Offline Saving**: Combines processed declarations from the `ai-types-list` directory without spending tokens or making AI network requests.
+- **Automatic Description Check**: Checks if `ai-developer.md` exists; if missing, generates it automatically.
+- **MCP Resource Compilation**: Prepares MCP resources and metadata for the library.
+
+## How does it work?
+
+1. **Read Processed List**: Scans the `ai-types-list` directory for prepared type definitions.
+2. **Assemble `ai-types.md`**: Joins and writes the complete AI-optimized TypeScript type reference.
+3. **Ensure Description**: Verifies that the package overview in `ai-developer.md` is present.
+4. **Generate MCP Config**: Compiles Model Context Protocol resources via `DesignTypesMcp`.
+
+## Usage
+
+Run the type saver via `npx`:
+```bash
+npx dxt-types-save [build_dir] [resources_dir]
+```
+- `build_dir` (Optional): Directory to scan. Defaults to `dist`.
+- `resources_dir` (Optional): Directory containing prompt and resource files. Defaults to `ai-resources`.

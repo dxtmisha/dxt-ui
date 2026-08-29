@@ -2,7 +2,7 @@ import { isFilled } from '@dxtmisha/functional-basic'
 
 import { PropertiesFile } from '../Properties/PropertiesFile'
 import { DesignTypesAi } from './DesignTypesAi'
-import { DesignTypesPrompts } from './DesignTypesPrompts'
+import type { DesignTypesPromptsAbstract } from './DesignTypesPromptsAbstract'
 
 import type { DesignMcpResourceItem } from '../../types/designTypes'
 
@@ -24,12 +24,12 @@ export class DesignTypesMcp {
    *
    * Конструктор для DesignTypesMcp.
    * @param ai instance of DesignTypesAi for AI interactions / экземпляр DesignTypesAi для ИИ взаимодействия
-   * @param prompts instance of DesignTypesPrompts for prompt list management / экземпляр DesignTypesPrompts для управления списком промптов
+   * @param prompts instance of DesignTypesPromptsAbstract for prompt list management / экземпляр DesignTypesPromptsAbstract для управления списком промптов
    * @param isRaw flag disabling AI processing / флаг отключения ИИ обработки
    */
   constructor(
     protected readonly ai: DesignTypesAi,
-    protected readonly prompts: DesignTypesPrompts,
+    protected readonly prompts: DesignTypesPromptsAbstract,
     protected readonly isRaw: boolean = false
   ) { }
 

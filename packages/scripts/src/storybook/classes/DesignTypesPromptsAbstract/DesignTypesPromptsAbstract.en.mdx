@@ -1,0 +1,19 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/DesignTypesPromptsAbstract - Abstract AI Prompts and Rules Manager'/>
+
+# Class DesignTypesPromptsAbstract
+
+The `DesignTypesPromptsAbstract` class provides the base abstract architecture for discovering, analyzing, caching, and compiling AI prompts and rule definitions (`ai-resources/`) into mandatory agent directives.
+
+## Key Features
+
+- **Prompt Discovery**: Recursively scans prompt and rule markdown files.
+- **Incremental MD5 Caching**: Generates and manages individual JSON metadata cache files in `ai-types-list/ai-resources/`.
+- **AI Rule Summarization**: Uses LLM prompts to extract concise document titles and descriptions.
+- **Mandatory Directives Compilation**: Generates formatted mandatory rule triggers for inclusion in project descriptions.
+
+## Parameters
+
+- `promptsDir: string` — relative path to prompt files directory (default: `'ai-resources'`).
+- `ai: DesignTypesAi` — instance of `DesignTypesAi` for AI operations and project name resolution.

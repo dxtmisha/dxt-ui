@@ -1,0 +1,29 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/# Lệnh/dxt-types-save - Lưu Định nghĩa Kiểu cho AI'/>
+
+# dxt-types-save
+
+Lệnh `dxt-types-save` biên dịch và lưu các định nghĩa kiểu TypeScript được tối ưu hóa cho AI từ danh sách các tệp đã xử lý trước đó mà không cần gọi lại các mô hình AI. Nó tạo ra các định nghĩa kiểu nhanh chóng, kiểm tra xem hướng dẫn cho nhà phát triển đã tồn tại chưa và biên dịch tài nguyên máy chủ MCP.
+
+## Các tính năng chính
+
+- **Lưu Ngoại Tuyến Nhanh Chóng**: Kết hợp các khai báo đã xử lý từ thư mục `ai-types-list` mà không tốn mã thông báo (token) hoặc gửi yêu cầu mạng tới API AI.
+- **Tự Động Kiểm Tra Mô Tả**: Kiểm tra xem tệp `ai-developer.md` đã tồn tại chưa và chỉ tạo khi còn thiếu.
+- **Biên Dịch Tài Nguyên MCP**: Chuẩn bị tài nguyên và siêu dữ liệu giao thức MCP (Model Context Protocol).
+
+## Nó hoạt động như thế nào?
+
+1. **Đọc Danh Sách Đã Xử Lý**: Quét thư mục `ai-types-list` để lấy các định nghĩa kiểu đã chuẩn bị sẵn.
+2. **Tập Hợp `ai-types.md`**: Ghép nối và lưu tài liệu tham khảo kiểu TypeScript hoàn chỉnh được tối ưu hóa cho AI.
+3. **Đảm Bảo Mô Tả**: Xác minh rằng tài liệu tóm tắt trong `ai-developer.md` đã có mặt.
+4. **Tạo Cấu Hình MCP**: Biên dịch tài nguyên MCP thông qua `DesignTypesMcp`.
+
+## Cách sử dụng
+
+Chạy trình lưu kiểu thông qua `npx`:
+```bash
+npx dxt-types-save [build_dir] [resources_dir]
+```
+- `build_dir` (Tùy chọn): Thư mục để quét. Mặc định là `dist`.
+- `resources_dir` (Tùy chọn): Thư mục chứa các tệp prompt và tài nguyên. Mặc định là `ai-resources`.

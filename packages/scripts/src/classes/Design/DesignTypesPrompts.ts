@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto'
 import { forEach, isFilled } from '@dxtmisha/functional-basic'
 import { PropertiesFile } from '../Properties/PropertiesFile'
-import { DesignTypesAi } from './DesignTypesAi'
+import { DesignTypesPromptsAbstract } from './DesignTypesPromptsAbstract'
 
 import type {
   DesignTypesItem,
@@ -19,24 +19,12 @@ import { UI_DIR_AI_TYPES_LIST, UI_DIR_RESOURCES, UI_MODULES } from '../../config
  *
  * Класс для чтения файлов промптов, управления отдельными файлами метаданных промптов и генерации описания правил проекта ИИ и триггеров промптов.
  */
-export class DesignTypesPrompts {
+export class DesignTypesPrompts extends DesignTypesPromptsAbstract {
   /** Cached list of prompt files / Кэшированный список файлов с промптами */
   protected listPrompts?: DesignTypesList
 
   /** Cached prompt AI metadata list / Кэшированный список метаданных промптов ИИ */
   protected cacheList?: DesignTypesPromptCacheList
-
-  /**
-   * Constructor for DesignTypesPrompts.
-   *
-   * Конструктор для DesignTypesPrompts.
-   * @param promptsDir input directory path containing prompt files / входной путь к директории, содержащей файлы промптов
-   * @param ai instance of DesignTypesAi for AI interactions / экземпляр DesignTypesAi для ИИ взаимодействия
-   */
-  constructor(
-    protected readonly promptsDir: string = 'ai-resources',
-    protected readonly ai: DesignTypesAi
-  ) { }
 
   /**
    * Reads and returns the prompt cache list from individual JSON files in the resources directory.

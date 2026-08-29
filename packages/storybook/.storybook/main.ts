@@ -21,6 +21,8 @@ const config: StorybookConfig = {
     '../../mcp/src/**/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../../d1/src/**/*.mdx',
     '../../d1/src/**/*.stories.@(js|jsx|mjs|ts|tsx)',
+    '../../scripts/src/**/*.mdx',
+    '../../scripts/src/**/*.stories.@(js|jsx|mjs|ts|tsx)',
 
     '../../wiki/src/media/functional/**/*.mdx',
     '../../wiki/src/media/functional/**/*.stories.@(js|jsx|mjs|ts|tsx)',

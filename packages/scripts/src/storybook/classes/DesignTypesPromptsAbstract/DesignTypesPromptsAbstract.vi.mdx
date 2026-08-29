@@ -1,0 +1,19 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/DesignTypesPromptsAbstract - Lớp trừu tượng quản lý prompt và quy tắc cho AI'/>
+
+# Lớp DesignTypesPromptsAbstract
+
+Lớp trừu tượng `DesignTypesPromptsAbstract` cung cấp kiến trúc cơ sở để quét, phân tích, lưu cache và biên dịch các tệp prompt và quy tắc (`ai-resources/`) thành các chỉ thị bắt buộc cho trợ lý AI.
+
+## Tính năng chính
+
+- **Tìm kiếm prompt**: Quét đệ quy các tệp prompt và hướng dẫn markdown.
+- **Cache MD5 tăng dần**: Tạo và duy trì các tệp JSON metadata riêng biệt trong `ai-types-list/ai-resources/`.
+- **Tóm tắt quy tắc bằng AI**: Sử dụng LLM để trích xuất tên ngắn gọn và mô tả tài liệu.
+- **Biên dịch chỉ thị bắt buộc**: Tạo các chỉ thị được định dạng để đưa vào `ai-description.md`.
+
+## Tham số khởi tạo
+
+- `promptsDir: string` — đường dẫn tương đối đến thư mục prompt (mặc định `'ai-resources'`).
+- `ai: DesignTypesAi` — đối tượng `DesignTypesAi` để tương tác với AI và phân giải tên dự án.

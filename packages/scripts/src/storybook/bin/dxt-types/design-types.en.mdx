@@ -25,6 +25,8 @@ The `dxt-types` command compiles, sanitizes, and compresses TypeScript declarati
 
 Run the type compiler via `npx`:
 ```bash
-npx dxt-types [build_dir]
+npx dxt-types [is_raw] [build_dir] [resources_dir]
 ```
-- `build_dir` (Optional): The directory to scan. Defaults to `dist`.
+- `is_raw` (Optional): Flag disabling AI processing (`raw`, `1`, `true`) to generate raw types without querying AI APIs. Defaults to `false`.
+- `build_dir` (Optional): Directory to scan for declaration files. Defaults to `dist`.
+- `resources_dir` (Optional): Directory containing prompt and resource files. Defaults to `ai-resources`.

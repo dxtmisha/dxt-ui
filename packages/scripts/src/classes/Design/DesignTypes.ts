@@ -5,6 +5,7 @@ import { DesignTypesDescription } from './DesignTypesDescription'
 import { DesignTypesMake } from './DesignTypesMake'
 import { DesignTypesMcp } from './DesignTypesMcp'
 import { DesignTypesPrompts } from './DesignTypesPrompts'
+import type { DesignTypesPromptsAbstract } from './DesignTypesPromptsAbstract'
 
 /**
  * Engine for generating compressed and AI-optimized TypeScript type definitions.
@@ -27,7 +28,7 @@ export class DesignTypes {
   protected readonly mcp: DesignTypesMcp
 
   /** Instance of DesignTypesPrompts for prompt file processing / Экземпляр DesignTypesPrompts для обработки файлов промптов */
-  protected readonly prompts: DesignTypesPrompts
+  protected readonly prompts: DesignTypesPromptsAbstract
 
   /**
    * Constructor for DesignTypes.
@@ -36,17 +37,19 @@ export class DesignTypes {
    * @param dir input directory path containing declaration files / входной путь к директории, содержащей файлы деклараций
    * @param promptsDir input directory path containing prompt files / входной путь к директории, содержащей файлы промптов
    * @param isRaw flag disabling AI processing to create raw types and empty description / флаг отключения ИИ обработки для создания сырых типов и пустого описания
+   * @param DesignTypesPromptsConstructor class for prompt file processing / класс для обработки файлов промптов
    */
   constructor(
     protected readonly dir: string = 'dist',
     protected readonly promptsDir: string = 'ai-resources',
-    protected readonly isRaw: boolean = false
+    protected readonly isRaw: boolean = false,
+    DesignTypesPromptsConstructor: typeof DesignTypesPrompts = DesignTypesPrompts
   ) {
     ServerStorage.setErrorStatus(true)
 
     this.ai = new DesignTypesAi(this.dir, this.isRaw)
     this.makeTypes = new DesignTypesMake(this.ai)
-    this.prompts = new DesignTypesPrompts(this.promptsDir, this.ai)
+    this.prompts = new DesignTypesPromptsConstructor(this.promptsDir, this.ai)
     this.description = new DesignTypesDescription(this.ai, this.makeTypes, this.prompts, this.isRaw)
     this.mcp = new DesignTypesMcp(this.ai, this.prompts, this.isRaw)
   }
