@@ -1,3 +1,5 @@
+// export:none
+
 import { PropertiesConfig } from '../Properties/PropertiesConfig'
 import { LibraryItems } from './LibraryItems'
 

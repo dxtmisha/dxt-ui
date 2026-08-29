@@ -4,30 +4,49 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # Класс BuildPublishPackages
 
-Класс `BuildPublishPackages` — это утилита, отвечающая за автоматическую публикацию npm-пакетов в рабочем пространстве монорепозитория. Он сканирует директорию `packages`, определяет изменения версий по сравнению с локальным кэшем логов и публикует обновленные пакеты в npm.
+Класс `BuildPublishPackages` — это оркестратор для сканирования, фильтрации и автоматической публикации измененных npm-пакетов монорепозитория в реестр npm. Он отслеживает версии пакетов через локальный файл кэша логов (`./logs/ui-publish.log.json`), автоматически регистрирует новые пакеты и публикует модули при повышении их версии.
 
 ## Ключевые возможности
 
-- **Автоматическое сканирование директорий** — сканирует папку пакетов (`packages/`) на наличие директорий с корректным файлом `package.json`.
-- **Инкрементальное кэширование по версиям** — сравнивает версию пакета с данными в `./logs/ui-publish.log.json` для предотвращения повторной публикации неизмененного кода.
-- **Интеллектуальный выбор скрипта** — запускает `publish-to-npm`, если он объявлен в скриптах `package.json`, иначе переходит к стандартной публикации `npm publish --access public`.
-- **Исключение из публикации** — игнорирует пакеты, отмеченные свойством `"private": true` или `"ui-no-publish": true`.
+- **Автоматическое сканирование монорепозитория**: Сканирует директорию пакетов (`packages/`) и находит все активные модули, содержащие валидный файл `package.json`.
+- **Инкрементальное кэширование по версиям**: Предотвращает повторную публикацию уже опубликованных версий благодаря фиксации версий в файле `./logs/ui-publish.log.json`.
+- **Интеллектуальный выбор команды публикации**: Автоматически выполняет кастомный скрипт `"publish-to-npm"` из `package.json`, либо использует команду по умолчанию `npm publish --access public`.
+- **Автоматическая синхронизация новых пакетов**: Если пакет отсутствует в лог-кэше, его текущая версия регистрируется в кэше без повторной публикации.
+- **Исключение из публикации**: Автоматически пропускает пакеты, помеченные свойством `"private": true` или `"ui-no-publish": true`.
+- **Логирование вывода в реальном времени**: При выполнении публикации выводит полные потоки stdout и stderr команды в консоль.
+- **Автоматическое сохранение лога**: Записывает обновленные версии в `./logs/ui-publish.log.json` только при наличии изменений (`changed > 0`).
 
-## Инициализация
+## Конструктор
 
-Вы можете создать экземпляр `BuildPublishPackages`, опционально передав кастомный путь к директории пакетов.
+Конструктор принимает путь к директории с пакетами (по умолчанию константа `UI_DIR_PACKAGES` = `'packages'`) и загружает существующий кэш версий из файла `./logs/ui-publish.log.json`:
 
 ```typescript
-import { BuildPublishPackages } from './BuildPublishPackages'
+import { BuildPublishPackages } from '@dxtmisha/scripts'
 
+// Создание с директорией по умолчанию ('packages')
 const publisher = new BuildPublishPackages()
-await publisher.make()
+
+// Или с указанием пользовательского пути к пакетам
+const customPublisher = new BuildPublishPackages('custom-packages')
+await customPublisher.make()
 ```
+
+### Свойства класса
+
+- `protected readonly path: string` — путь к корневой директории пакетов монорепозитория (по умолчанию `'packages'`).
+- `protected readonly log: Record<string, string>` — оперативная карта кэшированных версий опубликованных пакетов вида `{ [packageName]: version }`.
 
 ## Методы
 
-- `make(): Promise<void>` — инициализирует сканирование и запускает процесс публикации для каждого обнаруженного пакета.
-- `isUpdate(packageFile: PackageFile): boolean` — проверяет, отличается ли текущая версия пакета в `package.json` от версии, сохраненной в файле лога.
-- `getVersionLog(name: string): string` — возвращает кэшированную версию пакета из лога публикации.
-- `updateLog(packageFile: PackageFile): void` — обновляет оперативную копию лога публикации текущей версией пакета.
-- `saveLog(): void` — сохраняет лог публикации из оперативной памяти в файл `./logs/ui-publish.log.json`.
+- `make(): Promise<void>` — основной метод оркестрации:
+  1. Сканирует директорию `this.path` и получает список папок через `PropertiesFile.readDir`.
+  2. Выводит в консоль общее количество найденных директорий (`Publish packages(N)...`).
+  3. Для каждой папки создает экземпляр `PackageFile`, проверяет наличие `package.json` и отсутствие исключений (`!packageFile.isNoPublish()`).
+  4. Если пакет еще не зарегистрирован в логе (`this.log[name] === undefined`), фиксирует его текущую версию в кэше и увеличивает `changed`.
+  5. Если пакет уже есть в логе и его версия обновилась (`isUpdate`), запускает публикацию через `packageFile.getCodePublish()` с выводом логов stdout/stderr. При успехе обновляет кэш (`updateLog`) и увеличивает `changed`.
+  6. Если `changed > 0`, сохраняет файл кэша на диск (`saveLog`) и логирует `Publish packages changed: N`.
+  7. Если изменений не было, выводит `Publish packages - no changes`.
+- `protected isUpdate(packageFile: PackageFile): boolean` — проверяет, отличается ли текущая версия в `package.json` от зафиксированной в логе (`!packageFile.isVersionConsistency(this.getVersionLog(packageFile.getName()))`).
+- `protected getVersionLog(name: string): string` — возвращает кэшированную версию пакета из лога (возвращает `'0.0.0'`, если пакет ранее не фиксировался).
+- `protected updateLog(packageFile: PackageFile): void` — обновляет запись версии в оперативной карте `this.log[packageFile.getName()] = packageFile.getVersion()`.
+- `protected saveLog(): void` — сохраняет текущую карту версий `this.log` в файл `./logs/ui-publish.log.json` через `PropertiesFile.writeByPath`.

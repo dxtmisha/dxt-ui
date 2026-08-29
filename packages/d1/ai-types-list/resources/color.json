@@ -1,6 +1,0 @@
-{
-  "path": "ai-resources/color.md",
-  "md5": "96691e8313c01cbf6b46070fe9bc2fe5",
-  "name": "SCSS Color and Palette Guide",
-  "description": "Defines SCSS standards, mixins, and guidelines for applying system color tokens, managing opacities, and implementing dynamic palette theming for UI components. It solves the technical task of maintaining consistent, theme-reactive styling without hardcoded values or manual color manipulations."
-}

@@ -42,10 +42,22 @@ const currentTokens = manager.get()
 - `getInfo(index): PropertyItemsItem` — разрешает полные метаданные и иерархию родителей для данного индекса.
 - `getKeys(index): string[]` — декодирует строку пути в нормализованные сегменты ключей.
 - `getName(name, item): string` — возвращает отображаемое имя свойства с учетом переименований.
+- `getReName(name, item): string` — возвращает переименованное имя свойства.
+- `getParentsName(parents, variable?): string[]` — возвращает имена родительских категорий.
+- `getMedia(): PropertyItemsMedia` — возвращает карту медиа-запросов и точек останова.
+- `getLink(design, component, value): string` — разрешает ссылку токена дизайна.
+- `getLinkToName(design, component, value): void` — связывает токен с именем свойства.
+- `getLinkToValue(design, component, value): void` — связывает токен со значением свойства.
+- `getLinkForName(design, component, value): void` — разрешает ссылку для имени свойства.
+- `getLinkByDesign(design, value): string` — разрешает ссылку с учетом активного дизайна.
 - `each(callback, property?): T[]` — выполняет глубокий рекурсивный обход дерева.
+- `eachMainOnly(callback, property?): T[]` — итерирует только по основным свойствам токенов.
 - `find(callback): PropertyItemsItem[]` — ищет записи, соответствующие пользовательским условиям.
 - `findCategory(category): PropertyItemsItem[]` — извлекает токены, относящиеся к специфическим функциональным категориям.
+- `findVariable(variable): PropertyItemsItem[]` — выполняет поиск свойств по CSS-переменной.
+- `isFocusDesign(name, design?): boolean` — проверяет, относится ли свойство к активному дизайну.
 - `setFocusDesign(design): this` — ограничивает область операций конкретным дизайном.
+- `write(name): void` — сохраняет свойства в файл.
 
 ## Операции
 

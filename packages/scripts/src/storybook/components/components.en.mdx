@@ -1,0 +1,155 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/2. Component Creation'/>
+
+# Component Creation and Development
+
+In the **DXT UI** design system, the process of creating new components is fully automated using the `dxt-component` CLI tool. Developers no longer need to manually construct folder trees, configure boilerplate files, manage barrel exports, or configure Storybook setups.
+
+The tool handles the routine and scaffolds a standard architecture for every new component in a fraction of a second.
+
+## Key Advantages
+
+### 1. Standard Architecture with Zero Boilerplate
+Instead of manually writing files with complex imports and bindings, the developer only needs to create a single empty directory. `dxt-component` automatically generates the entire standard file set, eliminating typos in BEM classes, paths, and interface names.
+
+### 2. Strict Typing via `DefineSetupFnComponent`
+The generated `index.ts` entry point uses Vue 3 utility types to provide comprehensive IDE IntelliSense and strict validation of props, slots, and emits in project templates.
+
+### 3. Native Integration with Storybook and AI
+Every newly generated component is immediately runnable in Storybook and includes dedicated `prompt.md` instructions for AI-assisted workflows.
+
+## Step-by-Step Guide (What to Do)
+
+### Step 1. Create an Empty Component Folder
+Inside `src/components/`, create a new empty directory named after your component in PascalCase (e.g., `Badge` or `UserAvatar`):
+
+```bash
+mkdir src/components/Badge
+```
+
+### Step 2. Run the Scaffolding Command
+Execute `dxt-component` in your terminal:
+
+```bash
+npx dxt-component
+```
+
+The generator automatically discovers the empty folder and generates all necessary files:
+
+```text
+Component create: Badge
+path: Badge
+end
+```
+
+### Step 3. Inspect the Generated Structure
+Inside the component folder, 8 standard files are created:
+
+```text
+src/components/Badge/
+├── Badge.vue                  # Vue 3 SFC component (<script setup>, types, styles)
+├── index.ts                   # Entry point with DefineSetupFnComponent typing
+├── types.ts                   # Interfaces for Props, Emits, Slots, and Defaults
+├── materials/
+│   └── prompt.md              # AI prompt for materials and implementation
+├── subcomponents/
+│   └── .gitignore             # Isolation for internal subcomponents
+└── wiki/
+    ├── Badge.mdx              # Storybook MDX documentation
+    ├── Badge.stories.ts       # Interactive Storybook Vue 3 stories
+    └── prompt.md              # AI prompt for Wiki documentation
+```
+
+### Step 4. Define Component Props and Types
+Open `types.ts` and define your component's input properties (`Props`), events (`Emits`), and slots (`Slots`):
+
+```typescript
+export type BadgeEmits = {
+  click: [event: MouseEvent]
+}
+
+export interface BadgeSlots {
+  default? (props: any): any
+  icon? (props: any): any
+}
+
+export interface BadgeProps {
+  label?: string
+  color?: string
+  outline?: boolean
+}
+
+export const BadgeDefaults: BadgeProps = {
+  color: 'primary',
+  outline: false
+}
+```
+
+### Step 5. Implement Template and Styles
+Open `Badge.vue` and add your component logic and SCSS styles:
+
+```html
+<script setup lang="ts">
+import {
+  BadgeDefaults,
+  type BadgeEmits,
+  type BadgeProps,
+  type BadgeSlots
+} from './types'
+
+defineOptions({
+  name: 'Badge'
+})
+
+withDefaults(defineProps<BadgeProps>(), BadgeDefaults)
+defineEmits<BadgeEmits>()
+defineSlots<BadgeSlots>()
+</script>
+
+<template>
+  <div class="badge">
+    <slot name="icon" />
+    <slot>{{ label }}</slot>
+  </div>
+</template>
+
+<style lang="scss">
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+</style>
+```
+
+### Step 6. Configure Storybook Documentation and Previews
+- To generate stories and documentation, drag and drop `wiki/prompt.md` into the AI chat and ask to execute the task (if the send button in the chat window is active right away, you do not need to write anything).
+- In `wiki/Badge.stories.ts`, configure interactive usage scenarios for the component.
+- In `wiki/Badge.mdx`, add textual descriptions, property tables, and interactive demos.
+- Run Storybook (`npm run storybook`) to review your component live.
+
+## Working with the materials Directory (Design Materials)
+
+The `materials/` directory is an isolated component workspace for collecting raw design assets, specifications, and development context:
+
+- **`prompt.md` file**: System instruction file for AI agents, automatically linked to design system standards (`componentMaterials.md`). The developer specifies Figma links, state descriptions, prop specs, and behavior rules here — everything the AI needs to know.
+- **Design assets and screenshots**: Place Figma screenshots, SVG vectors, layouts, and component state diagrams here.
+- **AI-assisted development**: Drag and drop `materials/prompt.md` into the AI chat and ask to execute the task (if the send button in the chat window is active right away, you do not need to write anything). The AI will generate component code according to your specifications.
+- **Preserve design context**: The folder remains in the repository as a persistent single source of truth for design decisions, enabling any future developer to quickly understand the original component intent.
+
+## Working with the wiki Directory (Documentation and Storybook)
+
+The `wiki/` directory is a dedicated component space for interactive Storybook stories and technical documentation:
+
+- **`[ComponentName].mdx` file**: Main MDX documentation article utilizing `<StorybookMain />` from `@dxtmisha/wiki/storybook`, complete with property descriptions and interactive demos.
+- **`[ComponentName].stories.ts` file**: Executable Storybook Vue 3 stories showcasing various states, props, and component use cases.
+- **`prompt.md` file**: System instruction file for AI assistants, automatically linked to documentation standards (`componentWiki.md`). The developer can add any specific usage notes, edge cases, or documentation requirements here.
+- **AI-assisted generation**: Drag and drop `wiki/prompt.md` into the AI chat and ask to execute the task (if the send button in the chat window is active right away, you do not need to write anything). The AI will analyze the component code and types to generate ready-to-use stories and documentation.
+
+## Advantages Over Manual Creation
+
+- **Instant Speed**: Generates all 8 files in under 1 second compared to 5–10 minutes of manual setup.
+- **Complete Architecture**: Scaffolds all necessary files automatically, including Storybook stories, strict types, and AI instructions.
+- **100% Code Precision**: Eliminates typos in BEM classes, relative import paths, and interface names.
+- **Ready Out of the Box**: The component can be previewed in Storybook immediately after creation.

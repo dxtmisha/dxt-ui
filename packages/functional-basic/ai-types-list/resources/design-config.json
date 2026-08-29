@@ -1,0 +1,6 @@
+{
+  "path": "ai-resources/design-config.md",
+  "md5": "2a9b78f175e6d6595244356b7162b115",
+  "name": "design.config.json Guide",
+  "description": "Defines configuration specifications, inheritance mechanics, and property schemas for design.config.json across DXT UI monorepo packages. Configures type scanning, token segmentation, AI backend integrations, and documentation generation settings. Provides operational guidelines for AI assistants to handle inheritance, declaration filtering, and configuration access."
+}

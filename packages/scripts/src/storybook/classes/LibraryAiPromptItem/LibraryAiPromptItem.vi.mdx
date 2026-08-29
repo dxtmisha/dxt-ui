@@ -50,12 +50,16 @@ Tất cả các phương thức kiểm tra trạng thái đều trả về kiể
 - `isDescription()` — Xác minh xem tệp `description.txt` có tồn tại hay không.
 - `isInfo()` — Xác minh xem tệp `info.txt` có tồn tại hay không.
 - `isTypes()` — Xác minh xem tệp `ai-types.txt` có tồn tại hay không.
-- `isScreenshot()` — Xác minh xem thư mục `ai-screenshot` có tồn tại hay không.
+- `isScreenshot()` — Kiểm tra sự tồn tại của thư mục `ai-screenshot`.
+- `isDeveloper()` — Kiểm tra sự tồn tại của tệp `ai-developer.md`.
+- `isMcp()` — Kiểm tra sự tồn tại của tài nguyên máy chủ MCP.
 
 ---
 
 ### Phương thức Trợ giúp Công khai & Bảo vệ (Protected)
-- `getProjectName(): string` — Đọc tên dự án từ tệp cấu hình `package.json` cục bộ.
+- `getProjectName(): string` — Đọc tên dự án từ tệp `package.json` cục bộ.
+- `getDir(): string[]` — Trả về mảng phân đoạn đường dẫn thư mục của mô-đun.
+- `getMcp(): Record<string, any>[] | undefined` — Đọc và trả về cấu hình tài nguyên máy chủ MCP.
 - `getPath(dirFile: string): string[]` — Trả về mảng phân đoạn đường dẫn đầy đủ cho tệp được chỉ định trong thư mục mô-đun.
 - `getPathString(): string` — Trả về chuỗi đường dẫn mô-đun được liên kết bằng dấu gạch chéo.
 - `getPackageJson(): Record<string, any>` — Đọc và lưu trữ cache nội dung tệp `package.json`.

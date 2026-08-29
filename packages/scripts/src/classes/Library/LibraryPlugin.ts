@@ -1,3 +1,5 @@
+// export:none
+
 import { toCamelCaseFirst, toKebabCase } from '@dxtmisha/functional-basic'
 
 import { PropertiesConfig } from '../Properties/PropertiesConfig'

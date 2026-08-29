@@ -4,40 +4,64 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # dxt-build-publish-packages
 
-Lệnh `dxt-build-publish-packages` cung cấp khả năng tự động công bố (publish) các gói npm trong không gian làm việc. Công cụ này sử dụng `BuildPublishPackages` và `PackageFile` để quét các thư mục thư viện hoạt động, theo dõi các phiên bản và công bố gói lên npm khi phát hiện phiên bản mới.
+Lệnh `dxt-build-publish-packages` cung cấp khả năng tự động công bố (publish) tăng dần các gói npm trong không gian làm việc monorepo. Công cụ này sử dụng lớp `BuildPublishPackages` và trình bao bọc `PackageFile` để quét các thư mục gói, xác minh các bản cập nhật phiên bản qua bộ nhớ đệm nhật ký cục bộ và công bố các bản phát hành mới lên sổ đăng ký npm.
 
 ## Các tính năng chính
 
-- **Tự động quét Monorepo**: Tự động phát hiện các thư mục gói đang hoạt động dưới `/packages/` có chứa tệp `package.json` hợp lệ.
-- **Bộ nhớ đệm tăng dần dựa trên Phiên bản**: Tránh các hoạt động công bố dư thừa bằng cách duy trì bộ nhớ đệm công bố cục bộ trong `./logs/ui-publish.log.json`. Nó chỉ kích hoạt các hoạt động công bố nếu phiên bản hiện tại của gói trong `package.json` thay đổi so với phiên bản được lưu trong bộ nhớ đệm.
-- **Giải quyết Tập lệnh Thông minh**: Tự động thực thi tập lệnh `"publish-to-npm"` nếu nó được định nghĩa trong các tập lệnh của gói, và chuyển sang lệnh tiêu chuẩn `npm publish --access public` nếu không tìm thấy tập lệnh đầu tiên.
-- **Loại trừ Công bố**: Tự động bỏ qua các gói được đánh dấu là riêng tư (`"private": true`) hoặc có thuộc tính `"ui-no-publish": true` trong tệp `package.json`.
+- **Tự động quét Monorepo**: Phát hiện các thư mục gói hoạt động dưới `/packages/` có chứa tệp `package.json` hợp lệ.
+- **Bộ nhớ đệm tăng dần theo phiên bản**: Tránh các hoạt động công bố dư thừa bằng cách duy trì sổ đăng ký phiên bản cục bộ trong `./logs/ui-publish.log.json`. Quá trình công bố chỉ được kích hoạt khi phiên bản của gói trong `package.json` khác với giá trị đã lưu.
+- **Giải quyết tập lệnh thông minh**: Tự động thực thi tập lệnh `"publish-to-npm"` nếu được định nghĩa trong `package.json`, chuyển về mặc định `npm publish --access public`.
+- **Đồng bộ hóa phiên bản cơ sở**: Tự động ghi lại các gói chưa theo dõi vào bộ nhớ đệm trong lần chạy đầu tiên mà không gửi các lệnh công bố không mong muốn.
+- **Loại trừ công bố**: Tự động bỏ qua các gói được đánh dấu là riêng tư (`"private": true` trong `package.json`) hoặc được gắn cờ `"ui-no-publish": true`.
+- **Ghi nhật ký luồng theo thời gian thực**: Chuyển tiếp toàn bộ luồng stdout và stderr của các lệnh công bố trực tiếp ra bảng điều khiển.
 
 ## Nó hoạt động như thế nào?
 
-Quy trình công bố gói tự động hóa việc kiểm tra và gửi lệnh công bố:
+Quy trình công bố gói tự động hóa việc xác minh phiên bản và gửi phát hành:
 
-1. **Quét Thư mục**: Lớp `BuildPublishPackages` quét thư mục gói mục tiêu (mặc định là `/packages/`) và đọc tệp nhật ký bộ nhớ đệm công bố `./logs/ui-publish.log.json`.
-2. **Lọc & Xác thực**: Đối với mỗi thư mục, nó khởi tạo một trình bao bọc `PackageFile` để xác minh rằng đó là một gói hợp lệ và không bị loại trừ khỏi quy trình công bố.
-3. **Thực thi Công bố**: Nếu phát hiện phiên bản mới hoặc gói chưa được ghi nhận trong bộ nhớ đệm:
-   - Nếu tồn tại tập lệnh `"publish-to-npm"`, nó sẽ thực thi `npm run publish-to-npm`.
-   - Ngược lại, nó sẽ thực thi lệnh `npm publish --access public`.
-4. **Đồng bộ hóa Nhật ký**: Sau khi công bố thành công một gói, phiên bản của nó được cập nhật trong bộ nhớ đệm trong bộ nhớ tạm (in-memory cache).
-5. **Lưu trữ Nhật ký**: Nếu một hoặc nhiều gói được công bố thành công, bộ nhớ đệm cập nhật sẽ được lưu lại vào `./logs/ui-publish.log.json`.
+1. **Quét và khởi tạo bộ nhớ đệm**: Lớp `BuildPublishPackages` đọc bộ nhớ đệm công bố `./logs/ui-publish.log.json` và quét thư mục gói (`packages/`).
+2. **Lọc & Xác thực**: Đối với mỗi thư mục, nó khởi tạo trình bao bọc `PackageFile` để xác minh rằng `package.json` tồn tại và không bị loại trừ (`!packageFile.isNoPublish()`).
+3. **Kiểm tra trạng thái công bố**:
+   - **Đăng ký cơ sở**: Nếu gói chưa có trong bộ nhớ đệm nhật ký (`this.log[name] === undefined`), phiên bản hiện tại của gói sẽ được ghi vào bộ nhớ đệm mà không chạy lệnh công bố.
+   - **Nâng cấp phiên bản**: Nếu gói đã được ghi nhật ký và phiên bản của nó trong `package.json` khác với bộ nhớ đệm (`isUpdate`):
+     - Nếu tồn tại tập lệnh `"publish-to-npm"`, nó sẽ thực thi `npm run publish-to-npm`.
+     - Ngược lại, nó sẽ thực thi `npm publish --access public`.
+4. **Đồng bộ hóa nhật ký**: Sau khi công bố thành công một gói, phiên bản của nó được cập nhật trong bộ nhớ tạm.
+5. **Lưu trữ nhật ký**: Nếu một hoặc nhiều gói được đăng ký hoặc công bố (`changed > 0`), bộ nhớ đệm cập nhật sẽ được lưu lại vào `./logs/ui-publish.log.json`. Nếu không có gói nào cần thay đổi, nó sẽ ghi nhật ký `Publish packages - no changes`.
+
+## Sử dụng
+
+Chạy lệnh công bố thông qua CLI:
+
+```bash
+npx dxt-build-publish-packages
+```
+
+Hoặc cấu hình trong phần scripts của tệp `package.json` gốc:
+
+```json
+{
+  "scripts": {
+    "publish:packages": "dxt-build-publish-packages"
+  }
+}
+```
 
 ## Thông tin chi tiết bổ sung
 
 ### Tệp bộ nhớ đệm nhật ký (`ui-publish.log.json`)
 
-Bộ nhớ đệm cục bộ được lưu trữ tại:
+Bộ nhớ đệm phiên bản cục bộ được lưu trữ tại:
 ```
 ./logs/ui-publish.log.json
 ```
-Nếu bạn muốn buộc công bố lại tất cả các gói bất kể tính nhất quán của phiên bản, bạn có thể xóa tệp này hoặc đặt lại nội dung của nó thành dấu ngoặc nhọn trống `{}`.
+
+Nếu bạn muốn buộc công bố lại tất cả các gói bất kể tính nhất quán của phiên bản, bạn có thể xóa tệp này hoặc đặt lại nội dung của nó thành `{}`.
 
 ### Loại trừ các gói khỏi quy trình công bố
 
 Nếu bạn muốn một gói được bỏ qua bởi trình công bố, hãy thêm một trong các thuộc tính sau vào tệp `package.json` của gói đó:
+
 ```json
 {
   "private": true
@@ -47,5 +71,17 @@ hoặc:
 ```json
 {
   "ui-no-publish": true
+}
+```
+
+### Lệnh công bố tùy chỉnh
+
+Bạn có thể xác định một tập lệnh công bố tùy chỉnh bên trong phần `scripts` của tệp `package.json` của gói:
+
+```json
+{
+  "scripts": {
+    "publish-to-npm": "npm publish --access public --tag next"
+  }
 }
 ```

@@ -1,65 +1,131 @@
 import { Meta } from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/vi/scripts/# Hệ thống thiết kế (Design System)'/>
+<Meta title='@dxtmisha/vi/scripts/1. Hệ thống thiết kế (Design System)'/>
 
-# Làm việc với Hệ thống thiết kế
+# Kiến trúc và Ưu điểm của Hệ thống thiết kế
 
-Package `@dxtmisha/scripts` là một công cụ mạnh mẽ và là "bộ não" tự động hóa của toàn bộ hệ thống thiết kế **DXT UI**. Đây là một tập hợp các tiện ích và lệnh CLI, đảm nhận công việc lặp đi lặp lại của việc tạo mới, liên kết, kiểm thử và viết tài liệu cho các component.
+Package `@dxtmisha/scripts` là hạt nhân hạ tầng và bộ sinh mã (code generator) của hệ thống thiết kế **DXT UI**. Nó triển khai mô hình kiến trúc tiên tiến phân tách triệt để logic hành vi trừu tượng và giao diện trực quan, tự động hóa toàn bộ quy trình khởi tạo, liên kết, định kiểu dữ liệu (typing) và tạo tài liệu cho tất cả component trong thư viện.
 
-Mục tiêu chính của package này là cung cấp cho các nhà phát triển và bộ phận kinh doanh một quy trình phát triển UI kit thống nhất, tự động hóa, nơi yếu tố con người và các lỗi khi viết mã chuẩn (boilerplate) được giảm xuống mức 0.
+Mục tiêu cốt lõi của hệ thống là cung cấp cho các nhà phát triển một quy trình tự động hóa hoàn chỉnh, loại bỏ hoàn toàn mã lặp lại (boilerplate), ngăn ngừa lỗi do con người và đảm bảo tính nhất quán xuyên suốt giữa thiết kế, kiểu dáng SCSS, logic component và TypeScript types.
 
-Giá trị đặc biệt của package này nằm ở vai trò là **cầu nối giữa logic nghiệp vụ trừu tượng và thiết kế hình ảnh**.
+## Sơ đồ Kiến trúc
 
-## Phân tách giữa Logic và Thiết kế
+```text
+​
+ ┌──────────────────────────────────────────────┐
+ │ @dxtmisha/constructor (Lõi Headless)         │
+ │ • Logic, WAI-ARIA truy cập, state, focus     │
+ └──────────────────────┬───────────────────────┘
+                        │
+                        │ + properties.json (Design tokens)
+                        ▼
+ ┌──────────────────────────────────────────────┐
+ │ @dxtmisha/scripts (CLI: dxt-ui)              │
+ │ • Phân tích token & tự động sinh mã          │
+ └──────────────────────┬───────────────────────┘
+                        │
+      ┌─────────────────┼─────────────────┐
+      ▼                 ▼                 ▼
+ ┌──────────┐     ┌───────────┐     ┌───────────┐
+ │ props.ts │     │styleToken │     │ D1*.vue   │
+ │ TS Types │     │CSS Tokens │     │ Bản đồ BEM│
+ └────┬─────┘     └─────┬─────┘     └─────┬─────┘
+      │                 │                 │
+      └─────────────────┼─────────────────┘
+                        ▼
+ ┌──────────────────────────────────────────────┐
+ │ UI Component Hoàn chỉnh                      │
+ │ • 100% Type-Safe & Gợi ý IDE thông minh      │
+ │ • Chuẩn WAI-ARIA & Zero-Boilerplate          │
+ └──────────────────────────────────────────────┘
+```
 
-Kiến trúc của DXT UI được xây dựng dựa trên sự phân tách nghiêm ngặt:
-- **Logic trừu tượng (Constructor)** — các lớp độc lập quản lý thuộc tính ARIA, sự kiện, focus và trạng thái, nhưng không biết gì về màu sắc, kích thước hoặc CSS class.
-- **Thiết kế hình ảnh (Visual Design)** — sự triển khai cụ thể (tokens, khoảng cách, bảng màu).
+## Các Ưu điểm Triển khai Vượt trội
 
-Package `scripts` đảm nhận nhiệm vụ tự động và "khâu" hai thế giới này lại với nhau một cách hoàn hảo.
+### 1. Phân tách Triệt để Logic và Giao diện (Headless + Design System)
+Toàn bộ logic hành vi (xử lý bàn phím, bẫy focus, thuật toán vị trí, khả năng truy cập ARIA, đồng bộ trạng thái) được đóng gói hoàn toàn trong `@dxtmisha/constructor`.
+- **Dễ dàng tạo mới các UI kit:** Để xây dựng một bộ giao diện mới (ví dụ `d2` hoặc giao diện thương hiệu riêng), bạn không cần viết lại bất kỳ dòng logic phức tạp nào — chỉ cần khai báo file `properties.json` và file styles mới.
+- **Độ tin cậy được đảm bảo:** Việc sửa lỗi trong constructor sẽ tự động cập nhật và sửa lỗi cho tất cả các hệ thống thiết kế đang sử dụng constructor đó.
 
-## Cách thức hoạt động:
+### 2. Không còn mã rập khuôn và Tăng tốc độ phát triển gấp 10 lần (Zero-Boilerplate)
+Trong cách tiếp cận truyền thống, việc thêm một prop mới đòi hỏi phải chỉnh sửa thủ công ở 5–7 vị trí khác nhau (types, Vue props, validators, template classes, SCSS selectors, tài liệu).
+- Trong DXT UI, lập trình viên chỉ cần thêm **một dòng** vào `properties.json`.
+- Lệnh `dxt-ui` chỉ trong vài giây sẽ tự động cập nhật `props.ts`, mapping BEM trong `.vue`, biến SCSS trong `styleToken.scss` và metadata cho IDE.
 
-1. **`properties.json` là Nguồn chân lý duy nhất (Single Source of Truth):**
-   Nhà phát triển hoặc nhà thiết kế chỉ mô tả các thuộc tính hình ảnh của component (tokens, màu sắc, kích thước, trạng thái `:hover`/`:active`, modifiers) trong một file cấu hình duy nhất `properties.json`.
-   
-2. **Phân tích và Tạo mã (Scaffolding):**
-   Package `scripts` đọc file cấu hình này và tự động tạo ra toàn bộ cơ sở hạ tầng liên kết:
-   - `props.ts` — TypeScript interface mở rộng các thuộc tính cơ bản từ Constructor, thêm các kiểu dữ liệu chính xác cho thiết kế (ví dụ: `size: 'sm' | 'md'`) và giá trị mặc định.
-   - `styleToken.scss` — các mixin SCSS có sẵn và biến CSS (design tokens).
-   - `DesignComponent.vue` — Vue template nơi điều kỳ diệu xảy ra: script tạo ra các BEM class được tính toán dựa trên các thuộc tính và truyền chúng vào lớp `Design` trừu tượng từ Constructor (tiêm phụ thuộc - dependency injection).
-   
-3. **Điều phối Kiểu dữ liệu (`dxt-constructor`):**
-   Việc thêm một thuộc tính mới vào `properties.json` sẽ tự động cập nhật các interface toàn cục của dự án. IDE ngay lập tức bắt đầu gợi ý mã cho các thuộc tính mới khi sử dụng component (ví dụ: qua `web-types.json`).
+### 3. Nguồn Chân lý Duy nhất & An toàn Kiểu dữ liệu 100% (100% Type Safety)
+File `properties.json` đóng vai trò là nguồn chân lý duy nhất cho toàn bộ không gian làm việc:
+- **TypeScript**: Định kiểu nghiêm ngặt cho tất cả các giá trị prop hợp lệ (`size: 'sm' | 'md' | 'lg'`).
+- **Kiểm tra Runtime**: Tự động sinh mảng giá trị hợp lệ (`propsValues`) để kiểm tra nhanh bằng các helper `inArray`.
+- **Tự động hoàn thành mã trong IDE**: Tự động cập nhật `web-types.json`, cung cấp trải nghiệm IntelliSense mạnh mẽ trong WebStorm và VS Code.
+- Loại bỏ hoàn toàn lỗi con người: không còn lỗi chính tả trong tên class BEM, không lệch giữa styles và types, không quên export.
 
-4. **Tạo tài liệu bằng AI (AI-Docs):**
-   Tích hợp với trí tuệ nhân tạo (Google Gemini / Anthropic Claude) cho phép package tự động tạo tài liệu tham khảo, mô tả prop và các ví dụ mã nguồn trực tiếp dựa trên `properties.json` và TypeScript.
+### 4. Tái cấu trúc Toàn cục Tức thì cho Toàn bộ Hệ thống Thiết kế
+Khi bạn cần đổi tiền tố class BEM, điều chỉnh quy tắc sinh biến CSS hoặc hỗ trợ chuẩn trình duyệt mới trên hơn 100 component:
+- Chỉ cần sửa đổi logic generator trong `@dxtmisha/scripts`.
+- Chạy lệnh build sẽ tự động biên dịch lại toàn bộ các component trong monorepo chỉ trong vài giây.
 
-## Lợi ích mang lại cho kinh doanh và nhóm phát triển là gì?
+### 5. Quản lý Bảng màu và Theme Khai báo Không làm Phình to CSS
+Bộ phân tích cú pháp token hỗ trợ các mô hình styling nâng cao:
+- **`flag-theme` & Bảng màu**: Chuyển đổi theme sáng/tối và thay đổi bảng màu động mà không cần nhân bản mã CSS, thông qua các biến CSS cấp bảng màu.
+- **Tách rời Màu sắc và Độ mờ (Opacity)**: Hỗ trợ tự nhiên các token với độ mờ độc lập (`backgroundOpacity`, `colorOpacity`).
+- **BEM Modifiers thông minh (`flag-subclass`, `flag-replace`)**: Các class modifier chỉ được thêm vào DOM khi các flag tương ứng được kích hoạt.
 
-- **Tốc độ phát triển cao:** Trọng tâm chuyển từ việc viết mã boilerplate sang việc tạo ra sản phẩm thực tế. Việc tạo một component hoặc modifier mới chỉ mất vài giây.
-- **Đảm bảo tính nhất quán:** Loại bỏ các trường hợp quên export, lỗi đánh máy trong tên CSS class hoặc sai lệch giữa TypeScript và SCSS. Logic (ví dụ: khả năng truy cập ARIA) luôn hoạt động hoàn hảo vì nó được kế thừa từ Constructor, trong khi phần hình ảnh khớp 100% với các token.
-- **Dễ dàng bảo trì và mở rộng:** Để thay đổi logic tạo CSS class hoặc cấu trúc thư mục trong toàn bộ thư viện, bạn chỉ cần sửa đổi logic của package `scripts`, sau đó toàn bộ thư viện UI sẽ được biên dịch lại chỉ bằng một lệnh.
-- **Tích hợp với Thiết kế (Figma):** Các Figma API client tích hợp sẵn cho phép trích xuất cấu trúc frame, design token và styles trực tiếp từ bản thiết kế, tự động chuyển đổi chúng thành mã nguồn.
+### 6. Tự động Tiêm Phụ thuộc (Dependency Injection) cho Subcomponent
+Component `.vue` được sinh ra tự động liên kết và truyền các thành phần phụ trợ (icon `D1Icon`, loader `D1Progress`, hiệu ứng ripple `D1Ripple`) trực tiếp vào lớp `Design`. Template component giữ được sự gọn gàng và tối giản tuyệt đối:
+```html
+<script setup lang="ts">
+// Liên kết được sinh tự động
+const design = new ButtonDesign('d1.button', props, {
+  emits,
+  classes: classesToken,
+  styles: stylesToken,
+  components: { icon: D1Icon, progress: D1Progress, ripple: D1Ripple }
+})
+const render = design.render()
+</script>
 
-## Các lệnh chính (CLI)
+<template>
+  <render/>
+</template>
+```
 
-- **`dxt-ui [ComponentName]`**
-  Bộ điều phối chính. Quét các file `properties.json`, tạo ra template, "khâu" chúng với các lớp Constructor, và cập nhật props cũng như styles. 
-- **`dxt-constructor`**
-  Biên dịch lại các class và kiểu dữ liệu toàn cục của logic constructor, đảm bảo tất cả các kiểu thuộc tính luôn được cập nhật.
-  Khởi chạy việc tạo tài liệu component bằng AI cho Storybook/MDX và định dạng dữ liệu cho tự động hoàn thành trong IDE (WebStorm).
-- **`dxt-library`**
-  Quét cây thư mục và tự động tạo các file export `index.ts` trong tất cả các package của không gian làm việc.
-- **`dxt-screenshot`**
-  Môi trường kiểm thử hồi quy trực quan sử dụng Puppeteer.
+### 7. Hệ sinh thái AI-Native và Tự động hóa Tài liệu
+- **Sinh `ai-types.md`**: Biên dịch các tài liệu tham khảo kiểu dữ liệu siêu gọn, cho phép các mô hình LLM nhanh chóng hiểu toàn bộ API mà không cần quét hàng ngàn dòng mã nguồn.
+- **AI Docs & Storybook MDX**: Tự động tạo mô tả thuộc tính và ví dụ sử dụng tương tác phong phú.
+- **Đồng bộ Figma API**: Trực tiếp trích xuất frames, design tokens và styles từ Figma vào mã nguồn dự án.
 
-## Tích hợp sâu các styles và design tokens
+## Cơ chế Hoạt động Bên dưới
 
-Mô-đun phân tích cú pháp design token (các lớp `Properties*`) là trái tim của bộ tạo mã. Script nhận diện nhiều loại thuộc tính từ JSON:
-- **`type-var` / `flag-var`**: Các thuộc tính được biên dịch trực tiếp thành các biến CSS (quản lý padding động, border-radius).
-- **`type-state`**: Các trạng thái component trực quan động.
-- **`flag-theme` / Bảng màu (Palettes)**: Quản lý màu sắc và hỗ trợ theme tối/sáng mà không cần nhân bản CSS.
-- **`flag-subclass` / `flag-replace`**: Quản lý CSS class thông minh bằng BEM, chỉ thêm các modifier class khi flag được kích hoạt.
+### 1. Khai báo Hợp đồng Giao diện (`properties.json`)
+Các thuộc tính hình ảnh của component được khai báo dưới định dạng JSON rõ ràng:
+```json
+{
+  "size": {
+    "type": "type-var",
+    "value": ["sm", "md", "lg"],
+    "default": "md"
+  },
+  "palette": {
+    "type": "flag-theme",
+    "value": ["primary", "secondary", "tertiary", "error"]
+  },
+  "outline": {
+    "type": "flag-subclass"
+  }
+}
+```
 
-Hệ thống script tự động dịch tất cả các mối quan hệ này thành mã SCSS tối ưu và TypeScript nghiêm ngặt, tạo thành một cầu nối hoàn hảo giữa thiết kế trực quan và lõi logic của các component.
+### 2. Tự động Sinh Mã Nguồn
+Công cụ `dxt-ui` biên dịch cấu hình JSON thành các tài nguyên đồng bộ:
+1. **`props.ts`**: Kết hợp props từ constructor logic và tokens hình ảnh với các giá trị mặc định.
+2. **`styleToken.scss`**: Sinh ra các mixin SCSS và biến CSS cho từng trạng thái token.
+3. **`D1[Component].vue`**: Thiết lập bản đồ BEM phản ứng (`classesToken`) và khởi tạo instance `Design`.
+4. **`index.ts`**: Đóng gói và export component cùng với tất cả các types liên quan.
+
+## Các Lệnh CLI Chính trong Hệ sinh thái
+
+- **`dxt-ui [ComponentName]`** — Bộ điều phối chính xây dựng UI. Quét `properties.json`, sinh template, bản đồ BEM, typed props và liên kết với lớp Constructor.
+- **`dxt-constructor`** — Biên dịch lại các class và interface toàn cục cho logic constructor, giữ cho các types luôn đồng bộ.
+- **`dxt-library`** — Quét cây thư mục và tự động cập nhật các file export trong toàn bộ monorepo.
+- **`dxt-screenshot`** — Môi trường kiểm thử hồi quy trực quan tự động dựa trên Puppeteer.
+- **`dxt-types-save`** — Tạo tài liệu tham khảo `ai-types.md` tối ưu hóa cho AI và các công cụ LLM.

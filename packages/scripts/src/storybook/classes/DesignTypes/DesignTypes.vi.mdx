@@ -32,7 +32,8 @@ generator.make()
 
 ### Điều khiển
 
-- `make(): void` — Bắt đầu toàn bộ quy trình tạo: khám phá, kết hợp, xử lý AI và lưu trữ.
+- `make(): Promise<this>` — thực thi toàn bộ quy trình tạo kiểu: biên dịch khai báo, lưu đệm MD5, xử lý AI, tạo mô tả, MCP và lưu đầu ra.
+- `makeSave(): Promise<this>` — tạo và lưu định nghĩa kiểu và siêu dữ liệu từ bộ nhớ đệm mà không cần chạy lại AI.
 
 ## Các thao tác (Operations)
 

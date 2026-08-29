@@ -1,4 +1,5 @@
 import type { DesignTypesAi } from './DesignTypesAi'
+import { PropertiesConfig } from '../Properties/PropertiesConfig'
 import type { DesignTypesPromptCacheList } from '../../types/designTypes'
 
 /**
@@ -17,7 +18,7 @@ export abstract class DesignTypesPromptsAbstract {
    * @param ai instance of DesignTypesAi for AI interactions / экземпляр DesignTypesAi для ИИ взаимодействия
    */
   constructor(
-    protected readonly promptsDir: string = 'ai-resources',
+    protected readonly promptsDir: string = PropertiesConfig.getAiResourcesDir(),
     protected readonly ai: DesignTypesAi
   ) { }
 

@@ -20,36 +20,38 @@ Một lớp cơ sở trừu tượng được thiết kế để cung cấp các
 Vì `AiAbstract` là một lớp trừu tượng, nó không thể được khởi tạo trực tiếp. Bạn nên sử dụng một triển khai cụ thể (ví dụ: `AiOpenAI` hoặc `AiAnthropic`).
 
 **Tham số khởi tạo:**
-- `key: string` — API key cho dịch vụ AI.
-- `model: string` — Định danh mô hình ban đầu (ví dụ: 'gpt-4o').
+- `key: string` — Khóa API cho dịch vụ AI.
+- `model: string` — Mã định danh mô hình ban đầu (ví dụ: 'gpt-4o').
+- `config: Record<string, any>` — Đối tượng cấu hình tùy chọn (mặc định `{}`).
 
 ```typescript
-// Ví dụ về cách sử dụng một triển khai cụ thể
+// Ví dụ sử dụng một triển khai cụ thể
 const ai = new AiOpenAI(process.env.OPENAI_API_KEY, 'gpt-4o')
 
 // Thêm ngữ cảnh
 ai.addPrompt('Bạn là một trợ lý hữu ích.')
-  .addContent('Giải thích vật lý lượng tử bằng các thuật ngữ đơn giản.')
+  .addContent('Giải thích vật lý lượng tử bằng những thuật ngữ đơn giản.')
 
 // Tạo phản hồi
-const response = await ai.generate('Tập trung vào tính lưỡng tính sóng-hạt.')
+const response = await ai.generate('Tập trung vào tính lưỡng dụng sóng hạt.')
 ```
 
-## Phương thức
+## Các phương thức
 
 ### Thông tin
 
-- `getImages(): AiImageList` — Trả về danh sách các hình ảnh đã tích lũy.
-- `getContents(): string[]` — Trả về danh sách các nội dung bổ sung đã tích lũy.
+- `getImages(): AiImageList` — Trả về danh sách hình ảnh đã tích lũy.
+- `getContents(): string[]` — Trả về danh sách nội dung bổ sung đã tích lũy.
 
 ### Cấu hình (Setters)
 
-Các phương thức trong nhóm này hỗ trợ chuỗi lệnh.
+Các phương thức trong nhóm này hỗ trợ chuỗi lệnh (chaining).
 
-- `setKey(key: string): this` — Thiết lập hoặc thay đổi API key. Khởi tạo lại client nếu nó đã hoạt động.
-- `setModel(model: string): this` — Thay đổi mô hình hiện tại để tạo phản hồi.
-- `addPrompt(prompt: string): void` — Thêm một dòng mới vào bộ đệm lời nhắc cố định.
-- `addImage(image: AiImageItem): this` — Thêm một hình ảnh vào danh sách tích lũy.
+- `setKey(key: string): this` — Đặt hoặc chuyển đổi khóa API. Khởi tạo lại client nếu nó đang hoạt động.
+- `setModel(model: string): this` — Chuyển đổi mô hình hiện tại để tạo phản hồi.
+- `setConfig(config: Record<string, any>): this` — Đặt hoặc cập nhật đối tượng cấu hình.
+- `addPrompt(prompt: string): void` — Nối thêm một dòng mới vào bộ đệm prompt liên tục.
+- `addImage(image: AiImageItem): this` — Thêm hình ảnh vào danh sách tích lũy.
 - `addContent(content: string): this` — Thêm nội dung văn bản vào danh sách tích lũy.
 
 ### Điều khiển

@@ -1,40 +1,37 @@
 import { Meta } from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/vi/scripts/! Giới thiệu về gói'/>
+<Meta title='@dxtmisha/vi/scripts/# Giới thiệu về gói'/>
 
-# Hệ sinh thái kịch bản (Scripts)
+# [@dxtmisha/scripts](https://github.com/dxtmisha/dxt-ui/tree/main/packages/scripts)
 
-Gói `@dxtmisha/scripts` là một bộ công cụ tự động hóa CLI và các tập lệnh phát triển mạnh mẽ được thiết kế đặc biệt để tạo khung (scaffolding), biên dịch, tài liệu hóa và kiểm tra trực quan các thành phần trong hệ thống thiết kế.
+Gói `@dxtmisha/scripts` đóng vai trò là trung tâm điều phối và động cơ hạ tầng tự động hóa cho toàn bộ hệ sinh thái `dxt-ui`. Gói liên kết chặt chẽ quy trình tạo mã nguồn, biên dịch hệ thống thiết kế, đồng bộ hóa kiểu dữ liệu, xây dựng tài liệu đa ngôn ngữ, kiểm tra giao diện trực quan và tích hợp trí tuệ nhân tạo thành một luồng làm việc thống nhất.
 
-Nó liên kết chặt chẽ giữa thành phần giao diện, các bảng kiểu (styles), các token thiết kế và tài liệu hệ thống nhằm loại bỏ các tác vụ lặp đi lặp lại và duy trì mã nguồn sạch sẽ, dễ mở rộng.
+Mục tiêu cốt lõi của gói là loại bỏ hoàn toàn các thao tác thủ công lặp đi lặp lại, triệt tiêu sai sót do con người và duy trì tính nhất quán kiến trúc trên tất cả các gói trong monorepo.
 
-## Các phân hệ chính
+## Vai trò trong kiến trúc hệ thống thiết kế
 
-### 1. Tạo Khung Component & Tài liệu
-- **`dxt-component`**: Tự động tạo các mẫu thành phần Vue, tệp giao diện thuộc tính (`props.ts`), tệp kiểu dáng và xuất bản nội bộ.
-- **`dxt-constructor`**: Tạo khung mã nguồn của các lớp dựng logic (constructors) và các cấu hình cho thành phần.
+Trong một hệ sinh thái quy mô lớn bao gồm các bộ dựng logic trừu tượng, thư viện thành phần giao diện, các tiện ích phản ứng và khung SCSS, việc đồng bộ thủ công sẽ dễ dẫn đến sai lệch. Gói `@dxtmisha/scripts` giải quyết triệt để bài toán này bằng cách đóng vai trò là nhạc trưởng điều phối toàn bộ vòng đời phát triển.
 
-### 2. Biên dịch & Quản lý Kiểu Thiết kế
-- **`dxt-ui`**: Trình điều phối trung tâm quản lý việc biên dịch kiểu dáng, danh sách thành phần, xuất bản kiểu dữ liệu và cập nhật tài liệu.
-- **`dxt-types`**: Trích xuất và nén các khai báo TypeScript (`.d.ts`) thành các hướng dẫn kiểu được tối ưu hóa cho AI (`ai-types.md` và `ai-developer.md`).
-- **`dxt-wiki-storm`**: Định dạng các thuộc tính và sự kiện của thành phần thành tệp `web-types.json` để phục vụ tính năng tự động hoàn thành trong các JetBrains IDE (WebStorm, IntelliJ IDEA).
+Hệ thống tự động tạo khung mẫu cho các thành phần Vue và bộ dựng logic theo tiêu chuẩn kiến trúc nghiêm ngặt, tự động sinh các định nghĩa thuộc tính có kiểu dữ liệu chặt chẽ, các tệp kiểu dáng và cấu trúc xuất bản. Các tiện ích liên kết thuộc tính thành phần với các token thiết kế, tạo tệp SCSS và tự động duy trì các điểm xuất bản thống nhất cho mọi thư viện.
 
-### 3. Tự động hóa Bản dựng & Xuất bản
-- **`dxt-build-packages`**: Quét không gian làm việc và biên dịch tăng dần (incremental) chỉ với các gói có sự thay đổi.
-- **`dxt-build-publish-packages`**: Tự động hóa quá trình xây dựng và xuất bản các gói cập nhật trong không gian làm việc.
+## Tự động hóa bản dựng và phát hành
 
-### 4. Tiện ích và Kiểm tra Giao diện
-- **`dxt-screenshot`**: Khởi chạy dev server, sử dụng Puppeteer để chụp ảnh màn hình thành phần và xuất bản tệp HTML/CSS thô để phục vụ kiểm tra trực quan (visual audit).
-- **`dxt-flags`**: Biên dịch các tệp cờ quốc gia SVG thành bản đồ sprite và các lớp CSS tối ưu.
-- **`dxt-library`**: Tự động hóa việc duy trì các điểm xuất bản (barrel files) trong tất cả các thư viện của gói.
-- **`dxt-prompt`**: Đóng gói các tiêu chuẩn SCSS, BEM và Vue thành một tệp lời nhắc hệ thống hợp nhất (`ai-prompt.md`) dành cho các trợ lý AI.
+Gói cung cấp cơ chế biên dịch thông minh trong monorepo thông qua việc phân tích cây phụ thuộc và chỉ biên dịch tăng dần các gói có sự thay đổi thực tế. Điều này giúp rút ngắn đáng kể thời gian phát triển cục bộ và tối ưu hóa quy trình tích hợp liên tục.
 
-## Tại sao nên sử dụng gói này?
+Quy trình quản lý phiên bản, đóng gói thành phẩm và phát hành lên kho lưu trữ được tự động hóa hoàn toàn, đảm bảo tính tái lập và ngăn chặn sự không đồng bộ giữa các mô-đun phụ thuộc.
 
-- **Không còn Viết mã Rập khuôn**: Tự động hóa hoàn toàn cấu trúc thư mục thành phần, các tệp CSS và các nhập khẩu.
-- **Quy trình Tối ưu hóa bởi AI**: Sử dụng AI thế hệ mới để viết tài liệu chi tiết và giúp các trợ lý AI khác hiểu rõ hơn về API hệ thống.
-- **Tự động hóa Monorepo**: Giảm thiểu tối đa chi phí quản lý các bản dựng và đồng bộ hóa các gói trong npm workspaces.
+## Tích hợp trí tuệ nhân tạo và tài liệu
 
-## Kho lưu trữ nguồn
+Một điểm nổi bật của dự án là khả năng tích hợp sâu sắc với trí tuệ nhân tạo và hệ thống tài liệu thông minh. Gói trích xuất các khai báo TypeScript và chuyển đổi chúng thành các sổ tay kiểu dữ liệu cô đọng, được tối ưu hóa cho mô hình ngôn ngữ lớn nhằm tiết kiệm ngữ cảnh và nâng cao độ chính xác.
+
+Bên cạnh đó, hệ thống tự động tổng hợp các tệp chỉ dẫn hợp nhất về quy chuẩn mã nguồn, tiêu chuẩn SCSS và quy tắc Vue dành cho các trợ lý AI. Để mang lại trải nghiệm phát triển tối ưu, các siêu dữ liệu của thành phần cũng được định dạng cho các IDE nhằm hỗ trợ tính năng gợi ý mã tự động. Ngoài ra, các công cụ còn tự động điều khiển trình duyệt không giao diện để chụp ảnh trực quan thành phần và xuất bản mã phục vụ kiểm định giao diện.
+
+## Giá trị và triết lý phát triển
+
+Nhờ chuyển giao toàn bộ các tác vụ cấu trúc và tạo mã mẫu cho các tập lệnh tự động, lập trình viên có thể tập trung trọn vẹn vào việc thiết kế giao diện và xây dựng logic nghiệp vụ. Mọi thành phần, điểm xuất bản hay kiểu dáng được tạo ra đều tuân thủ chặt chẽ các quy ước chuẩn mực về định danh, kiểu dữ liệu và cô lập phong cách.
+
+Sự tự động hóa toàn diện này biến quá trình phát triển và bảo trì thư viện thành một quy trình kỹ thuật chuẩn xác, ổn định và đáng tin cậy từ bước khởi tạo đầu tiên cho đến khi phát hành chính thức.
+
+## Kho lưu trữ dự án
 
 [https://github.com/dxtmisha/dxt-ui/tree/main/packages/scripts](https://github.com/dxtmisha/dxt-ui/tree/main/packages/scripts)

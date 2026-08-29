@@ -29,6 +29,13 @@ const prompts = new DesignTypesPrompts('ai-resources', ai)
 ## Phương thức
 
 ### `getCacheList(): DesignTypesPromptCacheList`
+Truy xuất danh sách siêu dữ liệu prompt trong bộ nhớ đệm.
+
+### `getListPrompts(): DesignTypesList`
+Truy xuất danh sách tất cả các tệp prompt kèm nội dung và mã băm MD5.
+
+### `init(): Promise<string[]>`
+Khởi tạo các quy tắc prompt và trả về mảng các chuỗi chỉ thị được định dạng.
 Trả về danh sách siêu dữ liệu prompt đã được lưu trong bộ nhớ đệm.
 
 ### `toAiPrompts(): Promise<string>`

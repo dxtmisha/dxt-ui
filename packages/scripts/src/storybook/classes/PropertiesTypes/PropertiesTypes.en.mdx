@@ -60,6 +60,15 @@ const hasSymbol = PropertiesTypes.isTypeInName('$myVar');
 // Result: true
 ```
 
+### `isContainer(type: PropertyItem['_type']): boolean`
+Checks if the property type is a container query type.
+
+### `isScss(name: string): boolean`
+Checks if the property name is a special SCSS variable.
+
+### `isRoot(name: string): boolean`
+Checks if the property targets the root level (:root).
+
 ### `isMedia`
 A specialized check to determine if the property type refers to media queries (`media` or `media-max`).
 

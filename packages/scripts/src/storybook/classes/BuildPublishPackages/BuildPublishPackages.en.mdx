@@ -4,30 +4,49 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # BuildPublishPackages Class
 
-The `BuildPublishPackages` class is a utility responsible for automated publishing of npm packages across the monorepo workspace. It scans the `packages` directory, determines version changes compared to a local log cache, and publishes updated packages to npm.
+The `BuildPublishPackages` class is an orchestrator responsible for scanning, filtering, and automatically publishing changed npm packages across the monorepo workspace to the npm registry. It tracks package versions using a local log cache file (`./logs/ui-publish.log.json`), automatically registers new packages, and publishes packages upon version upgrades.
 
 ## Key Features
 
-- **Automated Directory Scanning** — Scans the packages folder (`packages/`) for directories containing a valid `package.json`.
-- **Incremental Version-Based Caching** — Compares the package version with `./logs/ui-publish.log.json` to prevent republishing unchanged code.
-- **Intelligent Script Resolution** — Runs `publish-to-npm` if defined in `package.json` scripts, otherwise falls back to standard `npm publish --access public`.
-- **Publish Exclusion** — Skips packages marked as private (`"private": true`) or with `"ui-no-publish": true`.
+- **Automated Monorepo Scanning**: Scans the packages directory (`packages/`) and discovers all active packages containing a valid `package.json`.
+- **Incremental Version-Based Caching**: Prevents duplicate publications of previously released versions by maintaining a local version registry in `./logs/ui-publish.log.json`.
+- **Intelligent Publish Command Resolution**: Automatically executes custom `"publish-to-npm"` script if defined in `package.json`, or falls back to default `npm publish --access public`.
+- **Automatic Baseline Sync for New Packages**: Automatically records current versions of previously untracked packages without re-triggering publish.
+- **Publish Exclusion**: Automatically skips packages marked with `"private": true` or `"ui-no-publish": true`.
+- **Real-Time Stream Logging**: Forwards full stdout and stderr streams of publication commands directly to the console.
+- **Automatic Log Persistence**: Writes updated versions to `./logs/ui-publish.log.json` only when changes have occurred (`changed > 0`).
 
-## Initialization
+## Constructor
 
-You can create an instance of `BuildPublishPackages` by optionally passing a custom packages directory path.
+The constructor accepts a custom packages directory path (defaults to the `UI_DIR_PACKAGES` constant = `'packages'`) and loads the existing publish cache log from `./logs/ui-publish.log.json`:
 
 ```typescript
-import { BuildPublishPackages } from './BuildPublishPackages'
+import { BuildPublishPackages } from '@dxtmisha/scripts'
 
+// Initialize using default packages directory ('packages')
 const publisher = new BuildPublishPackages()
-await publisher.make()
+
+// Or specify a custom packages path
+const customPublisher = new BuildPublishPackages('custom-packages')
+await customPublisher.make()
 ```
+
+### Class Properties
+
+- `protected readonly path: string` — Monorepo packages root directory path (defaults to `'packages'`).
+- `protected readonly log: Record<string, string>` — In-memory map of cached published package versions `{ [packageName]: version }`.
 
 ## Methods
 
-- `make(): Promise<void>` — Initiates scanning and triggers the publication process for each detected package.
-- `isUpdate(packageFile: PackageFile): boolean` — Checks whether the package's version in `package.json` is different from the version stored in the log file.
-- `getVersionLog(name: string): string` — Retrieves the cached version of the package from the publish log.
-- `updateLog(packageFile: PackageFile): void` — Updates the in-memory publish log with the current package version.
-- `saveLog(): void` — Saves the in-memory publish log to the `./logs/ui-publish.log.json` file.
+- `make(): Promise<void>` — Main orchestration pipeline:
+  1. Scans `this.path` and retrieves folder names via `PropertiesFile.readDir`.
+  2. Logs total discovered packages count (`Publish packages(N)...`).
+  3. For each folder, creates a `PackageFile` instance, verifies `package.json` existence, and checks `!packageFile.isNoPublish()`.
+  4. If the package is not yet registered in the log (`this.log[name] === undefined`), records its current version in the cache and increments `changed`.
+  5. If the package is already logged and its version is updated (`isUpdate`), executes publication via `packageFile.getCodePublish()` with real-time stdout/stderr output. On success, updates the cache (`updateLog`) and increments `changed`.
+  6. If `changed > 0`, saves the updated log file to disk (`saveLog`) and logs `Publish packages changed: N`.
+  7. If no packages required publishing or registration, logs `Publish packages - no changes`.
+- `protected isUpdate(packageFile: PackageFile): boolean` — Checks if a package requires publishing via `!packageFile.isVersionConsistency(this.getVersionLog(packageFile.getName()))`.
+- `protected getVersionLog(name: string): string` — Retrieves the cached package version from the publish log (returns `'0.0.0'` if the package has not been logged yet).
+- `protected updateLog(packageFile: PackageFile): void` — Updates the in-memory version entry `this.log[packageFile.getName()] = packageFile.getVersion()`.
+- `protected saveLog(): void` — Persists the current in-memory log map `this.log` to `./logs/ui-publish.log.json` via `PropertiesFile.writeByPath`.

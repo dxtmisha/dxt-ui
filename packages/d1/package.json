@@ -51,9 +51,9 @@
     "build": "vue-tsc -b && vite build",
     "build-recovery": "npm run build && npm run wiki-storm",
     "preview": "vite preview",
-    "ui": "dxt-ui",
+    "ui": "dxt-ui Alert",
     "wiki-storm": "dxt-wiki-storm",
-    "types": "npm run ui && npm run build && npm run wiki-storm && dxt-types",
+    "types": "dxt-types",
     "screenshot": "dxt-screenshot",
     "prepublishOnly": "npm run ui && npm run build && npm run wiki-storm && dxt-types-save",
     "publish-to-npm": "npm publish --access public"

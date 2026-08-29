@@ -1,0 +1,39 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/DesignTypesBuild - Động cơ biên dịch khai báo TypeScript và Vue'/>
+
+# Lớp DesignTypesBuild
+
+Lớp `DesignTypesBuild` chịu trách nhiệm biên dịch trước các tệp nguồn TypeScript và thành phần Vue Single File Components (`.vue`) thành các tệp khai báo kiểu (`.d.ts`) trong thư mục tạm trước khi thực hiện tối ưu hóa và xuất tài liệu kiểu cho AI.
+
+## Các tính năng chính
+
+- **Hỗ trợ TypeScript và Vue**: Tự động phát hiện các thành phần `.vue` và kích hoạt `vue-tsc` để trích xuất khai báo kiểu của component, hoặc sử dụng TypeScript Compiler API cho các gói mã nguồn TypeScript tiêu chuẩn.
+- **Bộ lọc thông minh**: Tuân thủ cấu hình đường dẫn quét (`typesPaths`), mẫu chấp nhận (`typesMatch`) và quy tắc loại trừ (`typesExclude`) từ tệp `design-ui.json`.
+- **Dọn dẹp tự động**: Tự động xóa sạch thư mục tạm trước khi biên dịch và loại bỏ các tệp không cần thiết (tệp kiểm thử, tệp Storybook, tệp điểm vào nội bộ).
+
+## Hàm khởi tạo
+
+**Tham số:**
+- `temporaryDirectory: string` — đường dẫn thư mục tạm cho quá trình biên dịch. Mặc định lấy từ `PropertiesConfig.getTypesTemporaryDirectory()`.
+
+```typescript
+import { DesignTypesBuild } from '@dxtmisha/scripts'
+
+const builder = new DesignTypesBuild()
+builder.build()
+```
+
+## Các phương thức
+
+### `is(): boolean`
+Kiểm tra xem thư mục biên dịch tạm thời có tồn tại trên đĩa hay không.
+
+### `isVue(): boolean`
+Xác định xem dự án có chứa các thành phần Vue (`.vue`) cần trình biên dịch `vue-tsc` hay không.
+
+### `build(): this`
+Thực thi quy trình biên dịch khai báo kiểu, tự động lựa chọn `vue-tsc` khi có tệp Vue hoặc trình biên dịch TypeScript tiêu chuẩn.
+
+### `clean(): this`
+Xóa bỏ thư mục biên dịch tạm cùng toàn bộ các tệp được tạo bên trong.

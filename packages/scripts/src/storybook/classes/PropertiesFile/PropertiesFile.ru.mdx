@@ -36,6 +36,20 @@ const fullPath = PropertiesFile.joinPath(['src', 'tokens', 'colors.json'])
 - `isDir(path): boolean` — определяет, указывает ли путь на директорию.
 - `isModule(): boolean` — определяет, подключен ли текущий пакет как внешний модуль.
 
+## Дополнительные системные методы
+
+- `getRootProject(rootProject?: string, maxDepth?: number): string | undefined` — ищет корневой каталог монорепозитория.
+- `getDirname(): string` — возвращает имя текущей рабочей директории.
+- `splitForDir(path: PropertiesFilePath): string[]` — разделяет путь на сегменты директорий.
+- `parse(path: PropertiesFilePath): ParsedPath` — парсит путь на компоненты (root, dir, base, ext, name).
+- `stat(path: PropertiesFilePath): Stats | undefined` — возвращает информацию fs.Stats о файле.
+- `getTime(path: PropertiesFilePath): string | undefined` — возвращает время последней модификации в формате ISO.
+- `readDirRecursiveWithIndex(path: PropertiesFilePath): string[]` — рекурсивно считывает директорию с включением индексных файлов.
+- `readDirOnlyRecursive(path: PropertiesFilePath): string[]` — рекурсивно возвращает только список директорий.
+- `readDirAndFileRecursive(path: PropertiesFilePath, fullPath?: PropertiesFilePath, isIndex?: boolean): string[]` — рекурсивно считывает директории и файлы.
+- `rename(path: PropertiesFilePath, newPath: PropertiesFilePath): void` — переименовывает или перемещает файл/папку.
+- `chmod(path: PropertiesFilePath, mode?: string | number): void` — устанавливает права доступа (permissions) для файла.
+
 ## Методы работы с путями
 
 ### `joinPath`

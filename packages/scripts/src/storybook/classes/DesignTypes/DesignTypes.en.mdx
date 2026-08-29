@@ -32,7 +32,8 @@ generator.make()
 
 ### Control
 
-- `make(): void` — Starts the full generation pipeline: discovery, combination, AI processing, and storage.
+- `make(): Promise<this>` — executes the complete generation pipeline: declaration build, MD5 caching, AI processing, descriptions, MCP, and output saving.
+- `makeSave(): Promise<this>` — generates and saves final type definitions and metadata from cache without running AI.
 
 ## Operations
 

@@ -16,7 +16,9 @@ The `DesignTypesMake` class is a high-performance engine for scanning compiled T
 ## Initialization
 
 **Constructor Parameters:**
-- `ai: DesignTypesAi` — AI client instance used for declaration compression.
+- `ai: DesignTypesAi` — AI client instance for optimizing declarations.
+- `dir: string` — input declaration directory path (defaults to `PropertiesConfig.getTypesTemporaryDirectory()`).
+- `dirDist: string` — compiled JavaScript directory path (defaults to `PropertiesConfig.getDistDir()`).
 
 ```typescript
 import { DesignTypesAi, DesignTypesMake } from '@dxtmisha/scripts'
@@ -36,8 +38,8 @@ Returns the combined JavaScript content across all filtered package source files
 ### `make(): Promise<this>`
 Executes the full generation pipeline including cache validation, AI processing, and file persistence.
 
-### `save(content: string): void`
-Writes the processed type definitions to `ai-types.md`.
+### `makeSave(): this`
+Generates full type definitions content and writes it directly to `ai-types.md`.
 
 ## Example
 

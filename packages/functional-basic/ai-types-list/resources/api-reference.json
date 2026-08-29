@@ -1,6 +1,6 @@
 {
   "path": "ai-resources/api-reference.md",
   "md5": "5b6b7850a06fbe60c2ff108599c45dc3",
-  "name": "API Reference And Examples",
-  "description": "Provides code examples and usage patterns for HTTP clients, caching, data storage, localization, and DOM helpers from the @dxtmisha/functional-basic library. Guides AI assistants on how to properly implement core functional utilities in TypeScript applications."
+  "name": "Functional Basic API Reference",
+  "description": "Provides code examples and API usage for the @dxtmisha/functional-basic package. Covers HTTP client configuration, caching, cookie and storage abstractions, internationalization, and safe DOM utility functions. Helps developers efficiently handle data fetching, state persistence, localization, and runtime helper execution."
 }

@@ -25,12 +25,10 @@ export class DesignTypesMcp {
    * Конструктор для DesignTypesMcp.
    * @param ai instance of DesignTypesAi for AI interactions / экземпляр DesignTypesAi для ИИ взаимодействия
    * @param prompts instance of DesignTypesPromptsAbstract for prompt list management / экземпляр DesignTypesPromptsAbstract для управления списком промптов
-   * @param isRaw flag disabling AI processing / флаг отключения ИИ обработки
    */
   constructor(
     protected readonly ai: DesignTypesAi,
-    protected readonly prompts: DesignTypesPromptsAbstract,
-    protected readonly isRaw: boolean = false
+    protected readonly prompts: DesignTypesPromptsAbstract
   ) { }
 
   /**
@@ -43,37 +41,35 @@ export class DesignTypesMcp {
     const projectName = this.ai.getProjectName()
     const resources: DesignMcpResourceItem[] = []
 
-    if (!this.isRaw) {
-      resources.push({
-        uri: `${projectName}/${UI_FILE_AI_TYPES}`,
-        name: `Type Definitions (${projectName})`,
-        mimeType: 'text/markdown',
-        description: 'TypeScript type definitions and signatures for AI coding assistant.'
-      })
+    resources.push({
+      uri: `${projectName}/${UI_FILE_AI_TYPES}`,
+      name: `Type Definitions (${projectName})`,
+      mimeType: 'text/markdown',
+      description: 'TypeScript type definitions and signatures for AI coding assistant.'
+    })
 
-      resources.push({
-        uri: `${projectName}/${UI_FILE_AI_DESCRIPTION}`,
-        name: `Project Overview (${projectName})`,
-        mimeType: 'text/markdown',
-        description: 'Project overview, usage guidelines, and mandatory prompt rules for AI coding assistant.'
-      })
+    resources.push({
+      uri: `${projectName}/${UI_FILE_AI_DESCRIPTION}`,
+      name: `Project Overview (${projectName})`,
+      mimeType: 'text/markdown',
+      description: 'Project overview, usage guidelines, and mandatory prompt rules for AI coding assistant.'
+    })
 
-      resources.push(...this.getScreenshotList(projectName))
+    resources.push(...this.getScreenshotList(projectName))
 
-      const cache = this.prompts.getCacheList()
+    const cache = this.prompts.getCacheList()
 
-      for (const item of cache) {
-        if (
-          isFilled(item.name)
-          && isFilled(item.description)
-        ) {
-          resources.push({
-            uri: `${projectName}/${item.path}`,
-            name: `${item.name} (${projectName})`,
-            mimeType: 'text/markdown',
-            description: item.description
-          })
-        }
+    for (const item of cache) {
+      if (
+        isFilled(item.name)
+        && isFilled(item.description)
+      ) {
+        resources.push({
+          uri: `${projectName}/${item.path}`,
+          name: `${item.name} (${projectName})`,
+          mimeType: 'text/markdown',
+          description: item.description
+        })
       }
     }
 

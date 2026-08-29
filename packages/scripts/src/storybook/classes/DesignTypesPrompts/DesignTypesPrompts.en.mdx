@@ -29,6 +29,13 @@ const prompts = new DesignTypesPrompts('ai-resources', ai)
 ## Methods
 
 ### `getCacheList(): DesignTypesPromptCacheList`
+Retrieves the cached prompt metadata list.
+
+### `getListPrompts(): DesignTypesList`
+Retrieves list of all discovered prompt files with contents and MD5 hashes.
+
+### `init(): Promise<string[]>`
+Initializes prompt rules and returns an array of formatted directive strings.
 Reads and returns the cached list of prompt metadata.
 
 ### `toAiPrompts(): Promise<string>`

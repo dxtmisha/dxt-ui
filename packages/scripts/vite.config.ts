@@ -6,6 +6,8 @@ export default viteBasicFunction({
   entry: [
     'src/library.ts',
     'src/library-ai.ts',
+    'src/library-figma.ts',
+    'src/library-ui.ts',
     'src/config.ts'
   ]
 })

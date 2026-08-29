@@ -100,5 +100,51 @@ describe('LibraryAiPrompt and LibraryAiPromptItem', () => {
       const prompt = new LibraryAiPrompt()
       expect(prompt).toBeDefined()
     })
+
+    it('includes repository root in getList when root prompt exists', () => {
+      class TestLibraryAiPrompt extends LibraryAiPrompt {
+        public testGetList() {
+          return this.getList()
+        }
+      }
+
+      vi.spyOn(PropertiesFile, 'readDir').mockReturnValue([])
+      vi.spyOn(PropertiesFile, 'is').mockImplementation((path: any) => {
+        const pathString = Array.isArray(path) ? path.join('/') : path
+        return pathString === 'ai-types.md' || pathString === 'package.json'
+      })
+      vi.spyOn(PropertiesFile, 'isDir').mockReturnValue(true)
+      vi.spyOn(PropertiesFile, 'readFile').mockReturnValue({ name: '@dxtmisha/root-pkg' } as any)
+
+      const prompt = new TestLibraryAiPrompt()
+      const list = prompt.testGetList()
+
+      expect(list.length).toBeGreaterThanOrEqual(1)
+      expect(list[0].getDir()).toEqual([])
+      expect(list[0].getProjectName()).toBe('@dxtmisha/root-pkg')
+    })
+  })
+
+  describe('LibraryAiPromptItem for repository root', () => {
+    it('formats paths correctly without leading slash when dir is empty', () => {
+      const rootItem = new TestLibraryAiPromptItem([])
+      expect(rootItem.getDir()).toEqual([])
+
+      vi.spyOn(PropertiesFile, 'is').mockReturnValue(true)
+      vi.spyOn(PropertiesFile, 'isDir').mockReturnValue(true)
+      vi.spyOn(PropertiesFile, 'readFile').mockReturnValue({ name: '@dxtmisha/root-pkg' } as any)
+      vi.spyOn(PropertiesFile, 'readFileOnly').mockReturnValue('Root description with ./ai-resources/test')
+      vi.spyOn(PropertiesFile, 'readDir').mockReturnValue(['root-screenshot.webp'])
+
+      expect(rootItem.testGetDeveloper()).toContain('\'ai-developer.md\'')
+      expect(rootItem.testGetTypes()).toContain('\'ai-types.md\'')
+      expect(rootItem.testGetScreenshot()).toContain('\'ai-screenshot/root-screenshot.webp\'')
+
+      const result = rootItem.make()
+      expect(result).toBeDefined()
+      expect(result).toContain('# @dxtmisha/root-pkg')
+      expect(result).toContain('The project is located at: \'.\'.')
+    })
   })
 })
+

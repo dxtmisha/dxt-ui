@@ -5,5 +5,14 @@
   "alternativeName": [
     "dd"
   ],
+  "typesExclude": [
+    "main\\.(d\\.)?ts$",
+    "\\.wiki\\.(d\\.)?ts$",
+    "wiki\\.(d\\.)?ts$",
+    "wikiData\\.(d\\.)?ts$",
+    "wiki/",
+    "library/"
+  ],
+  "typesWithoutVue": true,
   "wikiLanguage": "ru"
 }

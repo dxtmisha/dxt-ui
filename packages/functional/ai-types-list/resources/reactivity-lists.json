@@ -2,5 +2,5 @@
   "path": "ai-resources/reactivity-lists.md",
   "md5": "6e8b7100e59f0ffd08416bed080802db",
   "name": "Reactivity and DOM Utilities",
-  "description": "Provides advanced asynchronous reactivity composables, reactive list data structures, search filters, and DOM lifecycle helpers. It facilitates efficient async state management, selection tracking, and intersection-based lazy loading."
+  "description": "Provides utility composables and classes for asynchronous computed state, reactive list management, debounced search, and DOM event handling. It solves technical tasks related to state caching, automated lifecycle cleanup, and lazy-loading in Vue applications."
 }

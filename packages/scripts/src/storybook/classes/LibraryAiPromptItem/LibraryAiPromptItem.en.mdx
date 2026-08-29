@@ -50,12 +50,16 @@ All status checkers return `boolean`.
 - `isDescription()` — Verifies if `description.txt` exists.
 - `isInfo()` — Verifies if `info.txt` exists.
 - `isTypes()` — Verifies if `ai-types.txt` exists.
-- `isScreenshot()` — Verifies if `ai-screenshot` directory exists.
+- `isScreenshot()` — Checks if `ai-screenshot` directory exists.
+- `isDeveloper()` — Checks if `ai-developer.md` file exists.
+- `isMcp()` — Checks if MCP server resources exist.
 
 ---
 
 ### Public & Protected Helpers
-- `getProjectName(): string` — Reads the project name from the local `package.json` manifest.
+- `getProjectName(): string` — Reads project name from local `package.json`.
+- `getDir(): string[]` — Returns directory path segments array for the module.
+- `getMcp(): Record<string, any>[] | undefined` — Reads and returns MCP server resources configuration.
 - `getPath(dirFile: string): string[]` — Returns complete path segment array for the specified file in the module folder.
 - `getPathString(): string` — Returns the module path segments joined by a slash.
 - `getPackageJson(): Record<string, any>` — Reads and caches `package.json` manifest content.

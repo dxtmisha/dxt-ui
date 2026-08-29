@@ -4,43 +4,47 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # Lớp ComponentItem
 
-Một lớp chuyên dụng để tạo các tệp thành phần riêng lẻ dựa trên các mẫu. Nó quản lý toàn bộ quá trình tạo, từ việc đọc các mẫu tệp đến việc thực hiện thay thế chuỗi động và đặt các quyền hệ thống tệp chính xác.
+Lớp `ComponentItem` chịu trách nhiệm tạo và ghi toàn bộ các tệp khung sườn (boilerplate) cho một thành phần cụ thể. Lớp này nạp các mẫu tích hợp sẵn (`componentDocTemplates`), thực hiện thay thế động các trình giữ chỗ và lưu tệp với quyền truy cập hệ thống chính xác.
 
 ## Các tính năng chính
 
-- **Dựa trên mẫu** — sử dụng kho lưu trữ tập trung các mẫu thành phần để tạo tệp nhất quán.
-- **Thay thế động** — tự động thay thế các dấu hiệu như `ComponentDoc`, `[project]` và `[path]` bằng các giá trị cụ thể theo ngữ cảnh.
-- **Hỗ trợ trình giữ chỗ** — xử lý các chuyển đổi cả camelCase (tên lớp) và kebab-case (tên tệp).
-- **Quản lý quyền** — đảm bảo các tệp được tạo có quyền thực thi và đọc/ghi chính xác.
+- **Tạo 8 tệp mẫu chuẩn**: Tạo Vue 3 SFC (`.vue`), điểm xuất `index.ts`, định nghĩa kiểu `types.ts`, gợi ý AI cho tài liệu thiết kế (`materials/prompt.md`), thành phần con (`subcomponents/.gitignore`) và tài liệu Storybook (`wiki/ComponentDoc.mdx`, `wiki/ComponentDoc.stories.ts`, `wiki/prompt.md`).
+- **Thay thế động các trình giữ chỗ**:
+  - `ComponentDoc` -> Tên thành phần dạng PascalCase (`this.getName()`)
+  - `component-doc` -> Tên thành phần dạng kebab-case (`toKebabCase(this.getName())`)
+  - `[project]` -> Tên gói từ `package.json` (`this.getProjectName()`)
+  - `[path]` -> Đường dẫn tương đối đến thành phần (`src/components/ComponentName`)
+  - `_.gitignore.txt` -> `.gitignore`
+- **Quản lý quyền truy cập tệp**: Tự động gọi `PropertiesFile.chmod` cho tất cả các tệp đã ghi.
 
-## Khởi tạo
+## Hàm dựng (Constructor)
 
-Để khởi tạo đối tượng, hãy gọi hàm tạo `ComponentItem(path)`.
-
-**Tham số:**
-- `path: string` — đường dẫn tương đối hoặc tuyệt đối đến thư mục nơi thành phần sẽ được tạo.
+Chấp nhận đường dẫn thư mục thành phần:
 
 ```typescript
 import { ComponentItem } from '@dxtmisha/scripts'
 
-const component = new ComponentItem('src/components/MyComponent')
-
-// Tạo các tệp
+const component = new ComponentItem('Button')
 component.make()
 ```
 
+### Các thuộc tính của lớp
+
+- `protected readonly path: string` — Đường dẫn thư mục thành phần tương đối.
+- `protected sample: Record<string, string>` — Bản đồ các khóa tệp mẫu và nội dung thô (`componentDocTemplates`).
+
 ## Các phương thức
 
-### Điều khiển
-
-- `make(): void` — Phương thức chính đọc tất cả các tệp mẫu và ghi các phiên bản đã xử lý của chúng vào thư mục thành phần.
-
-## Ví dụ
-
-### Tạo dàn giáo thủ công
-Trong khi `ComponentCreator` xử lý việc tạo hàng loạt, `ComponentItem` có thể được sử dụng trực tiếp để kiểm soát chi tiết một thành phần cụ thể.
-
-```javascript
-const item = new ComponentItem('packages/ui/src/components/Avatar')
-item.make()
-```
+- `make(): void` — Phương thức tạo chính:
+  1. Ghi nhật ký tên thành phần và đường dẫn (`Component create: <Name>`, `path: <path>`).
+  2. Lặp qua tất cả các khóa mẫu từ `getFilesSample()`.
+  3. Đọc nội dung mẫu thô (`readSample`), thực hiện thay thế dữ liệu (`replacement`) và ghi tệp đầu ra (`writeFile`).
+  4. Ghi nhật ký `end`.
+- `protected getFilePath(path: string): string[]` — Xây dựng các phân đoạn đường dẫn tệp đích bằng cách sử dụng `getComponentPaths(this.path)` kèm theo thay thế tên tệp.
+- `protected getFilesSample(): string[]` — Trả về danh sách tất cả các khóa tệp mẫu (`Object.keys(this.sample)`).
+- `protected getName(): string` — Trích xuất tên thành phần từ phân đoạn cuối cùng của `this.path`.
+- `protected getProjectName(): string` — Lấy tên gói dự án từ `package.json` hoặc mặc định là `'Project'`.
+- `protected readPackage(): Record<string, any>` — Đọc `package.json` từ không gian làm việc hiện tại.
+- `protected readSample(path: string): string` — Đọc nội dung tệp mẫu từ bộ nhớ đệm mẫu.
+- `protected replacement(contentOrPath: string): string` — Thực hiện thay thế chuỗi trên đường dẫn tệp và nội dung mẫu.
+- `protected writeFile(path: string, content: string): void` — Ghi tệp đã tạo vào đĩa qua `PropertiesFile.writeByPath` và áp dụng `PropertiesFile.chmod`.

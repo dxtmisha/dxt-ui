@@ -17,3 +17,14 @@ The `DesignTypesPromptsAbstract` class provides the base abstract architecture f
 
 - `promptsDir: string` — relative path to prompt files directory (default: `'ai-resources'`).
 - `ai: DesignTypesAi` — instance of `DesignTypesAi` for AI operations and project name resolution.
+
+## Methods
+
+### `abstract getCacheList(): DesignTypesPromptCacheList`
+Retrieves prompt metadata list from cache.
+
+### `abstract make(): Promise<this>`
+Processes prompt files and updates metadata cache.
+
+### `abstract toAiPrompts(): Promise<string>`
+Compiles formatted mandatory AI rule directives from prompts.

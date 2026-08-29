@@ -38,7 +38,8 @@ const item = new PackageInitItem(
 
 ### Control
 
-- `make(): void` — Executes the full initialization sequence: creating files, updating the library, `package.json`, and Storybook.
+- `make(): void` — executes the complete initialization cycle: file creation, library, `package.json`, and Storybook updates.
+- `makeStorybook(): this` — updates Storybook configuration (.storybook/main.ts) to include new stories.
 
 ## Operations
 

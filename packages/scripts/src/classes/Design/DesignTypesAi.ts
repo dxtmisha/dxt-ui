@@ -1,5 +1,7 @@
+import { createHash } from 'node:crypto'
 import { getPackageJson } from '../../functions/getPackageJson'
 import { useAi } from '../../composables/useAi'
+import { PropertiesConfig } from '../Properties/PropertiesConfig'
 
 /**
  * Class for handling low-level AI interactions, directory configuration, and prompt execution.
@@ -18,14 +20,34 @@ export class DesignTypesAi {
    *
    * Конструктор для DesignTypesAi.
    * @param dir input directory path containing declaration files / входной путь к директории, содержащей файлы деклараций
-   * @param isRaw flag disabling AI processing / флаг отключения ИИ обработки
    */
   constructor(
-    protected readonly dir: string = 'dist',
-    protected readonly isRaw: boolean = false
+    protected readonly dir: string = PropertiesConfig.getTypesTemporaryDirectory()
   ) {
     this.dirArray = this.dir.split('/')
     this.projectName = getPackageJson()?.name ?? 'none'
+  }
+
+  /**
+   * Checks if the file is a valid declaration file (.d.ts).
+   *
+   * Проверяет, является ли файл валидным файлом декларации (.d.ts).
+   * @param file file name or path / имя или путь к файлу
+   * @returns true if file is a declaration file / true, если файл является файлом деклараций
+   */
+  isFile(file: string): boolean {
+    return file.endsWith('.d.ts')
+  }
+
+  /**
+   * Checks if the file is a valid JavaScript file (.js).
+   *
+   * Проверяет, является ли файл валидным JavaScript файлом (.js).
+   * @param file file name or path / имя или путь к файлу
+   * @returns true if file is JavaScript / true, если файл является JavaScript
+   */
+  isFileJs(file: string): boolean {
+    return file.endsWith('.js')
   }
 
   /**
@@ -36,6 +58,17 @@ export class DesignTypesAi {
    */
   getDirArray(): string[] {
     return this.dirArray
+  }
+
+  /**
+   * Generates MD5 hash for the given content.
+   *
+   * Генерирует MD5 хэш для переданного содержимого.
+   * @param content file or text content / содержимое файла или текста
+   * @returns MD5 hash string / MD5 хэш строка
+   */
+  getMd5(content: string): string {
+    return createHash('md5').update(content.trim()).digest('hex')
   }
 
   /**
@@ -62,10 +95,6 @@ export class DesignTypesAi {
     prompt: string,
     code?: string
   ): Promise<string | undefined> {
-    if (this.isRaw) {
-      return undefined
-    }
-
     const ai = useAi()
 
     if (ai) {

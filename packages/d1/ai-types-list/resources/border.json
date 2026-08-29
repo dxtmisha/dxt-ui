@@ -1,6 +1,0 @@
-{
-  "path": "ai-resources/border.md",
-  "md5": "879535f5b47cf420a5268529b9d445d9",
-  "name": "SCSS Border Guidelines",
-  "description": "This file contains SCSS styling standards, mixins, and guidelines for applying borders, outlines, dividers, and dynamic palette colors within the @dxtmisha/d1 UI library. It solves technical challenges related to separating border color and opacity tokens to ensure consistent, theme-aware component styling."
-}

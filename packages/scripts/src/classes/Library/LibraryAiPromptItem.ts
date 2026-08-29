@@ -158,10 +158,12 @@ export class LibraryAiPromptItem {
     ].filter(item => item !== undefined) as string[]
 
     if (data.length > 0) {
+      const location = this.getPathString() || '.'
+
       return `
 # ${this.getProjectName()}
 ## Project location: Root directory
-The project is located at: '${this.getPathString()}'.
+The project is located at: '${location}'.
 
 ${data.join('\n\n')}
     `.trim()
@@ -203,7 +205,7 @@ ${this.readFile(UI_FILE_AI_PROMPT_DESCRIPTION)}
 
       return `
 ## Developer Rules (Must Read Before Modifying Code)
-'${this.getPathString()}/${UI_FILE_AI_PROMPT_DEVELOPER}'
+'${this.getPathString(UI_FILE_AI_PROMPT_DEVELOPER)}'
       `.trim()
     }
 
@@ -243,14 +245,21 @@ ${this.readFile(UI_FILE_AI_PROMPT_INFO)}
   }
 
   /**
-   * Returns the directory path as a string joined by a slash.
+   * Returns the directory path or file path within the directory as a string.
    *
-   * Возвращает путь к директории в виде строки, объединенной слешем.
-   * @returns path string / строка пути
+   * Возвращает путь к директории или путь к файлу внутри директории в виде строки.
+   * @param dirFile optional file name or subpath / опциональное имя файла или подпуть
+   * @returns formatted path string / отформатированная строка пути
    * @protected
    */
-  protected getPathString(): string {
-    return this.dir.join('/')
+  protected getPathString(dirFile?: string): string {
+    const base = this.dir.join('/')
+
+    if (dirFile) {
+      return base ? `${base}/${dirFile}` : dirFile
+    }
+
+    return base
   }
 
   /**
@@ -266,7 +275,8 @@ ${this.readFile(UI_FILE_AI_PROMPT_INFO)}
     if (list) {
       console.log('-- Screenshot')
 
-      const screenshot: string = list.map(item => `- '${this.getPathString()}/${UI_DIR_AI_PROMPT_SCREENSHOT}/${item}'`).join('\n')
+      const prefix = this.getPathString(UI_DIR_AI_PROMPT_SCREENSHOT)
+      const screenshot: string = list.map(item => `- '${prefix}/${item}'`).join('\n')
 
       return `## Component Visual References (Screenshots)
 ${screenshot}
@@ -304,7 +314,7 @@ ${screenshot}
 
       return `
 ## Package Type Definitions (Must Read in Full When Working with Package)
-'${this.getPathString()}/${UI_FILE_AI_PROMPT_TYPES}'
+'${this.getPathString(UI_FILE_AI_PROMPT_TYPES)}'
       `.trim()
     }
 
@@ -323,7 +333,11 @@ ${screenshot}
     const file = PropertiesFile.readFileOnly(this.getPath(dirFile))
 
     if (file) {
-      return file.replace(/([ '"`]|^)\.\//g, `$1${this.getPathString()}/`)
+      if (this.dir.length > 0) {
+        return file.replace(/([ '"`]|^)\.\//g, `$1${this.getPathString()}/`)
+      }
+
+      return file
     }
 
     return ''

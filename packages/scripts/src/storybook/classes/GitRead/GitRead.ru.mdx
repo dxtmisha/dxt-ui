@@ -156,6 +156,93 @@ const funcs = GitRead.getFunctionsList()
  */
 ```
 
+
+### `getFilesPath`
+Возвращает массив всех отслеживаемых путей файлов в репозитории.
+
+**Пример:**
+```typescript
+const paths = GitRead.getFilesPath()
+// ['src/index.ts', 'package.json', ...]
+```
+
+### `getFilesPorcelain`
+Возвращает необработанный вывод `git status --porcelain` в виде массива строк.
+
+**Пример:**
+```typescript
+const porcelain = GitRead.getFilesPorcelain()
+// [' M src/index.ts', '?? new-file.txt']
+```
+
+### `getFileDate`
+Возвращает дату последнего коммита для конкретного файла.
+
+**Параметры:**
+- `filePath: string` — путь к целевому файлу.
+
+**Пример:**
+```typescript
+const date = GitRead.getFileDate('src/index.ts')
+// '2024-03-20 12:00:00 +0300'
+```
+
+### `getDirPrefix`
+Возвращает префикс текущей директории внутри репозитория Git.
+
+**Пример:**
+```typescript
+const prefix = GitRead.getDirPrefix()
+// 'packages/scripts/'
+```
+
+### `getDate`
+Форматирует строку даты в стандартизированный формат.
+
+**Параметры:**
+- `date?: string` — строка даты для форматирования (опционально).
+
+**Пример:**
+```typescript
+const formatted = GitRead.getDate('2024-03-20')
+// '2024-03-20 00:00:00'
+```
+
+### `filterByDirectory`
+Фильтрует `GitFileList`, оставляя только элементы, принадлежащие текущему префиксу директории.
+
+**Параметры:**
+- `list: GitFileList` — список файлов для фильтрации.
+
+**Пример:**
+```typescript
+const filtered = GitRead.filterByDirectory(myList)
+```
+
+### `mergeUnique`
+Объединяет два массива `GitFileList`, гарантируя уникальность каждого пути файла.
+
+**Параметры:**
+- `listA: GitFileList` — первый список.
+- `listB: GitFileList` — второй список.
+
+**Пример:**
+```typescript
+const merged = GitRead.mergeUnique(list1, list2)
+```
+
+### `splitPath`
+Разделяет строку пути к файлу на массив сегментов пути.
+
+**Параметры:**
+- `path: string` — путь для разделения.
+
+**Пример:**
+```typescript
+const parts = GitRead.splitPath('src/classes/GitRead.ts')
+// ['src', 'classes', 'GitRead.ts']
+```
+
 ## Структуры данных
 
 ### `GitFileItem`

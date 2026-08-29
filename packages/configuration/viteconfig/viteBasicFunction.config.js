@@ -23,7 +23,9 @@ export const viteBasicFunction = ({
   entry = 'src/library.ts',
   name = 'dxt-ui',
   target = 'es2018',
+  minify = true,
 
+  isPluginLibrary = false,
   fileCssName = 'style.css',
   fileLibraryName = undefined,
 
@@ -54,96 +56,26 @@ export const viteBasicFunction = ({
   ],
   excludeExtended = [],
 
+  isExternalAll = true,
   external = [
     ...builtinModules,
-    ...builtinModules.map(m => `node:${m}`),
-    '@dxtmisha/configuration',
-    '@dxtmisha/constructor',
-    '@dxtmisha/d1',
-    '@dxtmisha/figma',
-    '@dxtmisha/functional',
-    '@dxtmisha/functional-basic',
-    '@dxtmisha/media',
-    '@dxtmisha/player',
-    '@dxtmisha/scripts',
-    '@dxtmisha/styles',
-    '@dxtmisha/wiki',
-    '@emotion/react',
-    '@emotion/styled',
-    '@napi-rs/canvas',
-    '@storybook',
-    '@storybook/addon-docs',
-    '@vue/reactivity',
-    '@vue/runtime-core',
-    '@vue/runtime-dom',
-    'nitro',
-    'nitropack',
-    'nitropack/runtime',
-    'react',
-    'react/jsx-dev-runtime',
-    'react/jsx-runtime',
-    'typescript',
-    'vue',
-    'vue-router'
+    ...builtinModules.map(m => `node:${m}`)
   ],
   externalExtended = [],
 
   bundledPackages = undefined,
+  bundleTypes = true,
   rollupTypes = false,
 
   browserslistValue = '>= 5%',
   noDiscovery = true
-} = {}) => defineConfig({
-  build: {
-    target,
-    lib: {
-      entry,
-      name,
-      formats: ['es'],
-      fileName: (_, entryName) => `${entryName}.js`
-    },
-    rollupOptions: {
-      external: (id) => {
-        if (!id.startsWith('.') && !path.isAbsolute(id)) {
-          // return true
-        }
+} = {}) => {
+  const isBundleTypes = bundleTypes || rollupTypes
+  const bundleTypesConfig = isBundleTypes
+    ? (bundledPackages ? { bundledPackages } : true)
+    : false
 
-        const externalsList = [
-          ...external,
-          ...externalExtended
-        ]
-
-        return externalsList.some(ext => id === ext || id.startsWith(ext + '/'))
-      },
-      output: {
-        assetFileNames: (assetInfo) => {
-          const fileName = assetInfo.names?.[0] || assetInfo.originalFileName
-
-          if (
-            fileCssName
-            && fileName
-            && fileName.endsWith('.css')
-          ) {
-            return fileCssName
-          }
-
-          return '[name]-[hash][extname]'
-        }
-      }
-    }
-  },
-  optimizeDeps: {
-    noDiscovery,
-    exclude: ['@napi-rs/canvas', 'fsevents']
-  },
-  css: {
-    transformer: 'lightningcss',
-    lightningcss: {
-      // Настройки целей браузеров (автоматически берет из browserslist если не задано)
-      targets: browserslistToTargets(browserslist((browserslistValue)))
-    }
-  },
-  plugins: [
+  const plugins = [
     vue(),
     dts({
       clearPureImport: true,
@@ -159,10 +91,67 @@ export const viteBasicFunction = ({
       ],
       outDir: 'dist',
       bundledPackages,
-      rollupTypes,
+      bundleTypes: bundleTypesConfig,
+      rollupTypes: isBundleTypes,
       staticImport: true,
       tsconfigPath: './tsconfig.app.json'
-    }),
-    vitePluginLibrary(fileCssName, fileLibraryName)
+    })
   ]
-})
+
+  if (isPluginLibrary) {
+    plugins.push(vitePluginLibrary(fileCssName, fileLibraryName))
+  }
+
+  return defineConfig({
+    build: {
+      minify,
+      target,
+      lib: {
+        entry,
+        name,
+        formats: ['es'],
+        fileName: (_, entryName) => `${entryName}.js`
+      },
+      rollupOptions: {
+        external: (id) => {
+          if (isExternalAll && !id.startsWith('.') && !path.isAbsolute(id)) {
+            return true
+          }
+
+          const externalsList = [
+            ...external,
+            ...externalExtended
+          ]
+
+          return externalsList.some(ext => id === ext || id.startsWith(ext + '/'))
+        },
+        output: {
+          assetFileNames: (assetInfo) => {
+            const fileName = assetInfo.names?.[0] || assetInfo.originalFileName
+
+            if (
+              fileCssName
+              && fileName
+              && fileName.endsWith('.css')
+            ) {
+              return fileCssName
+            }
+
+            return '[name]-[hash][extname]'
+          }
+        }
+      }
+    },
+    optimizeDeps: {
+      noDiscovery,
+      exclude: ['@napi-rs/canvas', 'fsevents']
+    },
+    css: {
+      transformer: 'lightningcss',
+      lightningcss: {
+        targets: browserslistToTargets(browserslist((browserslistValue)))
+      }
+    },
+    plugins
+  })
+}

@@ -60,6 +60,15 @@ const hasSymbol = PropertiesTypes.isTypeInName('$myVar');
 // Kết quả: true
 ```
 
+### `isContainer(type: PropertyItem['_type']): boolean`
+Kiểm tra xem kiểu thuộc tính có thuộc kiểu container query hay không.
+
+### `isScss(name: string): boolean`
+Kiểm tra xem tên thuộc tính có phải là biến SCSS đặc biệt hay không.
+
+### `isRoot(name: string): boolean`
+Kiểm tra xem thuộc tính có áp dụng cho cấp gốc (:root) hay không.
+
 ### `isMedia`
 Một kiểm tra chuyên biệt để xác định xem kiểu thuộc tính có liên quan đến các truy vấn truyền thông hay không (`media` hoặc `media-max`).
 

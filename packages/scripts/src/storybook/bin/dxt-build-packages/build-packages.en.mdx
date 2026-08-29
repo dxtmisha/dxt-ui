@@ -4,40 +4,78 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # dxt-build-packages
 
-The `dxt-build-packages` command provides automated building of changed npm packages across the workspace. It uses `BuildPackages` and `PackageFile` to scan for active library folders, track versions, and incrementally compile package structures when changes are detected.
+The `dxt-build-packages` command provides automated incremental building of npm packages across the monorepo workspace. It utilizes the `BuildPackages` class and `PackageFile` wrapper to scan package directories, sort them by build priority, track version changes via a local log cache, and compile only packages with updated versions.
 
 ## Key Features
 
-- **Automated Monorepo Scanning**: Automatically detects active package directories under `/packages/` that contain a valid `package.json`.
-- **Incremental Version-Based Caching**: Avoids redundant builds by maintaining a local build cache in `./logs/ui-build.log.json`. It only triggers build operations if a package's version has changed compared to the cache.
-- **Intelligent Script Resolution**: Automatically executes `"build-recovery"` script if it is defined in the package's scripts, falling back to the standard `"build"` script.
-- **Test Package Exclusion**: Automatically skips packages marked as tests (`"ui-test": true` in `package.json`).
+- **Automated Monorepo Scanning**: Scans the packages directory (`packages/`) and discovers all active packages containing a valid `package.json`.
+- **Priority-Based Build Ordering (`ui-priority`)**: Automatically sorts packages based on the `ui-priority` field in `package.json` (defaults to `500`), ensuring dependencies build in proper order from foundational utilities to high-level components.
+- **Incremental Version-Based Caching**: Prevents redundant builds by tracking package versions in `./logs/ui-build.log.json`. Compilation is only triggered when a package version changes or is not yet cached.
+- **Intelligent Script Resolution**: Automatically resolves the first available build command in `package.json` in strict priority order: `prepublishOnly`, then `build-recovery`, then `build`.
+- **Test Package Exclusion**: Automatically skips packages marked with `"ui-test": true` in `package.json`.
 
 ## How does it work?
 
-The package compilation workflow automates checks and build dispatching:
+The package compilation workflow runs through the following step-by-step process:
 
-1. **Scan Directories**: The `BuildPackages` class scans the target packages directory (by default, `/packages/`) and reads the build cache log `./logs/ui-build.log.json`.
-2. **Filter & Validate**: For each directory, it instantiates a `PackageFile` wrapper to verify that it is a package, that it is not a test package, and that its current version differs from the version recorded in the build cache.
-3. **Execute Build**: If an update is required, it checks the package's `package.json` scripts:
-   - If `"build-recovery"` script exists, it executes `npm run build-recovery`.
-   - Otherwise, if `"build"` script exists, it executes `npm run build`.
-4. **Log Synchronization**: Upon successful compilation of a package, its version is updated in the in-memory cache.
-5. **Persist Logs**: If one or more packages were successfully built, the updated cache is saved back to `./logs/ui-build.log.json`.
+1. **Scan and Cache Initialization**: The `BuildPackages` class reads the build cache `./logs/ui-build.log.json` and scans the packages directory (`packages/`).
+2. **Package Filtering**: A `PackageFile` instance is created for each folder, filtering out non-package folders and test packages (`"ui-test": true`).
+3. **Priority Sorting**: Valid packages are sorted in ascending order according to their `ui-priority` value (defaults to `500` if not specified).
+4. **Version Consistency Check**: Compares the current version in `package.json` against the cached version log.
+5. **Execute Build**: If a package version differs (or has never been built):
+   - The build script is resolved from `package.json` by priority:
+     1. If `"prepublishOnly"` is defined, it runs `npm run prepublishOnly`.
+     2. Otherwise, if `"build-recovery"` is defined, it runs `npm run build-recovery`.
+     3. Otherwise, if `"build"` is defined, it runs `npm run build`.
+6. **Log Update**: Upon successful build, the package version is recorded in the in-memory log.
+7. **Cache Persistence**: If one or more packages were compiled (`changed > 0`), the updated cache is written back to `./logs/ui-build.log.json`. If no packages required updating, it logs `Build packages - no changes`.
+
+## Usage
+
+Run the build command via CLI:
+
+```bash
+npx dxt-build-packages
+```
+
+Or configure it in the monorepo's root `package.json` scripts:
+
+```json
+{
+  "scripts": {
+    "build:packages": "dxt-build-packages"
+  }
+}
+```
 
 ## Additional Information
 
-### Log Caching File (`ui-build.log.json`)
+### Managing Build Priorities (`ui-priority`)
 
-The local cache is stored at:
+To ensure foundational libraries (e.g. basic utilities or design tokens) compile before dependent UI components, specify a numeric priority in the package's `package.json` (lower numbers execute first):
+
+```json
+{
+  "name": "@dxtmisha/functional-basic",
+  "ui-priority": 100
+}
+```
+
+Packages with `ui-priority: 100` are built prior to packages with default priority `500`.
+
+### Log Cache File (`ui-build.log.json`)
+
+The local version cache is stored at:
 ```
 ./logs/ui-build.log.json
 ```
-If you wish to force-rebuild all packages regardless of version consistency, you can delete this file or reset its contents to empty `{}`.
 
-### Excluding Test Packages
+To force a full rebuild of all packages regardless of version consistency, delete this file or reset its content to `{}`.
 
-If you want a package to be ignored by the builder, add the following property to its `package.json`:
+### Excluding Test Packages (`ui-test`)
+
+To exclude a package from automated builds, add the following flag to its `package.json`:
+
 ```json
 {
   "ui-test": true

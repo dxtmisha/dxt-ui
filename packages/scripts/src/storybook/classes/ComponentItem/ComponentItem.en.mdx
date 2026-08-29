@@ -4,43 +4,47 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # ComponentItem Class
 
-A specialized class for generating individual component files based on templates. It manages the entire creation process, from reading template samples to performing dynamic string replacements and setting correct file system permissions.
+The `ComponentItem` class is responsible for generating and writing a complete set of boilerplate files for a specific component. It loads built-in templates (`componentDocTemplates`), performs contextual placeholder replacements, and saves files with proper system permissions.
 
 ## Key Features
 
-- **Template-Driven** — uses a centralized repository of component templates for consistent file generation.
-- **Dynamic Replacements** — automatically replaces markers like `ComponentDoc`, `[project]`, and `[path]` with context-specific values.
-- **Placeholder Support** — handles both camelCase (class names) and kebab-case (filenames) transformations.
-- **Permission Management** — ensures generated files have the correct execution and read/write permissions.
+- **Generates 8 template files**: Creates Vue 3 SFC (`.vue`), entry point `index.ts`, types `types.ts`, materials prompt (`materials/prompt.md`), subcomponents (`subcomponents/.gitignore`), and Storybook documentation (`wiki/ComponentDoc.mdx`, `wiki/ComponentDoc.stories.ts`, `wiki/prompt.md`).
+- **Dynamic Placeholder Replacements**:
+  - `ComponentDoc` -> PascalCase component name (`this.getName()`)
+  - `component-doc` -> kebab-case component name (`toKebabCase(this.getName())`)
+  - `[project]` -> package name from `package.json` (`this.getProjectName()`)
+  - `[path]` -> relative component directory path (`src/components/ComponentName`)
+  - `_.gitignore.txt` -> `.gitignore`
+- **Permission Management**: Automatically invokes `PropertiesFile.chmod` for all written files.
 
-## Initialization
+## Constructor
 
-To initialize the object, call the `ComponentItem(path)` constructor.
-
-**Parameters:**
-- `path: string` — the relative or absolute path to the directory where the component will be created.
+Accepts the target component directory path:
 
 ```typescript
 import { ComponentItem } from '@dxtmisha/scripts'
 
-const component = new ComponentItem('src/components/MyComponent')
-
-// Generating files
+const component = new ComponentItem('Button')
 component.make()
 ```
 
+### Class Properties
+
+- `protected readonly path: string` — Relative component directory path.
+- `protected sample: Record<string, string>` — Map of template file paths and raw contents (`componentDocTemplates`).
+
 ## Methods
 
-### Control
-
-- `make(): void` — The main method that reads all template files and writes their processed versions to the component directory.
-
-## Examples
-
-### Manual Scaffolding
-While `ComponentCreator` handles batch creation, `ComponentItem` can be used directly for fine-grained control over a specific component.
-
-```javascript
-const item = new ComponentItem('packages/ui/src/components/Avatar')
-item.make()
-```
+- `make(): void` — Primary generation method:
+  1. Logs component name and path (`Component create: <Name>`, `path: <path>`).
+  2. Iterates over all template keys from `getFilesSample()`.
+  3. Reads raw template content (`readSample`), executes data replacement (`replacement`), and writes output file (`writeFile`).
+  4. Logs `end`.
+- `protected getFilePath(path: string): string[]` — Builds destination file path segments using `getComponentPaths(this.path)` with filename replacement.
+- `protected getFilesSample(): string[]` — Returns the list of all template file keys (`Object.keys(this.sample)`).
+- `protected getName(): string` — Extracts the component name from the last segment of `this.path`.
+- `protected getProjectName(): string` — Retrieves the project package name from `package.json` or defaults to `'Project'`.
+- `protected readPackage(): Record<string, any>` — Reads `package.json` from the current workspace.
+- `protected readSample(path: string): string` — Reads template file content from the in-memory sample cache.
+- `protected replacement(contentOrPath: string): string` — Performs string substitutions across file paths and template contents.
+- `protected writeFile(path: string, content: string): void` — Writes generated file to disk via `PropertiesFile.writeByPath` and applies `PropertiesFile.chmod`.

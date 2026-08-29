@@ -27,6 +27,8 @@ export const UI_DIR_AI = 'ai'
 export const UI_DIR_AI_PROMPT_SCREENSHOT = 'ai-screenshot'
 /** AI types list directory name / Название директории со списком типов AI */
 export const UI_DIR_AI_TYPES_LIST = 'ai-types-list'
+/** AI types temporary directory name / Название временной директории типов AI */
+export const UI_DIR_AI_TYPES_TEMPORARY = 'ai-types-temp'
 /** Resources directory name / Название директории ресурсов */
 export const UI_DIR_RESOURCES = 'resources'
 /** Components directory name/ Название директории компонентов */

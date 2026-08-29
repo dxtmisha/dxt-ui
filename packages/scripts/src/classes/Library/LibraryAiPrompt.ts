@@ -202,6 +202,14 @@ ${globalPromptText}
 
     const items: LibraryAiPromptItem[] = []
 
+    if (path.length === 0) {
+      const rootItem = this.getRootItem()
+
+      if (rootItem) {
+        items.push(rootItem)
+      }
+    }
+
     for (const dir of dirs) {
       if (this.exNotRead.test(dir)) {
         continue
@@ -229,6 +237,23 @@ ${globalPromptText}
     }
 
     return items
+  }
+
+  /**
+   * Retrieves the prompt item for the current repository root if it contains prompt data.
+   *
+   * Получает элемент промпта для корня текущего репозитория, если он содержит данные промпта.
+   * @returns root prompt item or undefined / элемент промпта корня или undefined
+   * @protected
+   */
+  protected getRootItem(): LibraryAiPromptItem | undefined {
+    const item = new LibraryAiPromptItem([])
+
+    if (item.isPrompt()) {
+      return item
+    }
+
+    return undefined
   }
 
   /**

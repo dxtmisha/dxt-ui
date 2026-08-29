@@ -16,16 +16,24 @@ The `DesignTypesAi` class manages low-level AI interactions during TypeScript de
 ## Initialization
 
 **Constructor Parameters:**
-- `dir: string` — *(optional, default `'dist'`)* Directory path containing declaration files.
-- `isRaw: boolean` — *(optional, default `false`)* Flag to disable AI processing entirely.
+- `dir: string` — *(optional, default `'ai-types-temp'`)* Directory path containing declaration files.
 
 ```typescript
 import { DesignTypesAi } from '@dxtmisha/scripts'
 
-const ai = new DesignTypesAi('dist', false)
+const ai = new DesignTypesAi('ai-types-temp')
 ```
 
 ## Methods
+
+### `isFile(file: string): boolean`
+Checks if the file is a valid TypeScript declaration file (.d.ts).
+
+### `isFileJs(file: string): boolean`
+Checks if the file is a valid JavaScript file (.js).
+
+### `getMd5(content: string): string`
+Generates an MD5 hash for the given text content.
 
 ### `getDirArray(): string[]`
 Returns the array of directory path segments.

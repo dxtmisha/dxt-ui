@@ -1,6 +1,0 @@
-{
-  "path": "ai-resources/size.md",
-  "md5": "e7293014fd41b4deb363d1d4c79826e0",
-  "name": "SCSS Sizing Guide",
-  "description": "Defines rules, CSS variables, and mixins for managing component dimensions, scaling, and dynamic viewport units in SCSS. It helps AI agents generate consistent sizing, spacing token references, and responsive layout styles for the UI library."
-}

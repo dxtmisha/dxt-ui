@@ -39,9 +39,12 @@ const tagMetadata = resolver.get()
 
 ### Получение информации
 
-- `get(): WebTypesTagItem | undefined` — возвращает консолидированное определение тега, содержащее имя, описание, источник и атрибуты.
-- `getAttribute(item: WikiStorybookProp): WebTypesAttributeItem` — преобразует отдельное свойство Storybook в определение атрибута Web-Types.
-- `getAttributes(): WebTypesAttributes` — компилирует полный список атрибутов для компонента.
+- `get(): Promise<WebTypesVueComponentItem | undefined>` — возвращает определение тега компонента для Web-Types.
+- `getProp(item: WikiStorybookProp): WebTypesPropItem` — преобразует отдельное свойство Storybook в определение свойства Web-Types.
+- `getProps(): WebTypesPropItem[]` — компилирует полный список свойств (props) компонента.
+- `getSlots(): Promise<WebTypesSlots | undefined>` — возвращает слоты (slots) компонента для Web-Types.
+- `getEvents(): Promise<WebTypesEventItem[] | undefined>` — возвращает события (emits) компонента для Web-Types.
+- `getDirName(): string` — возвращает имя директории компонента.
 
 ### Управление
 

@@ -16,16 +16,24 @@ Lớp `DesignTypesAi` được thiết kế để tương tác cấp thấp vớ
 ## Khởi tạo
 
 **Tham số khởi tạo:**
-- `dir: string` — *(tùy chọn, mặc định `'dist'`)* Đường dẫn thư mục chứa các tệp khai báo kiểu.
-- `isRaw: boolean` — *(tùy chọn, mặc định `false`)* Cờ tắt hoàn toàn việc xử lý qua AI.
+- `dir: string` — *(tùy chọn, mặc định `'ai-types-temp'`)* Đường dẫn thư mục chứa các tệp khai báo kiểu.
 
 ```typescript
 import { DesignTypesAi } from '@dxtmisha/scripts'
 
-const ai = new DesignTypesAi('dist', false)
+const ai = new DesignTypesAi('ai-types-temp')
 ```
 
 ## Phương thức
+
+### `isFile(file: string): boolean`
+Kiểm tra xem tệp có phải là tệp khai báo (.d.ts) hợp lệ hay không.
+
+### `isFileJs(file: string): boolean`
+Kiểm tra xem tệp có phải là tệp JavaScript (.js) hợp lệ hay không.
+
+### `getMd5(content: string): string`
+Tạo mã băm MD5 cho nội dung văn bản được cung cấp.
 
 ### `getDirArray(): string[]`
 Trả về mảng các phân đoạn đường dẫn đến thư mục mục tiêu.

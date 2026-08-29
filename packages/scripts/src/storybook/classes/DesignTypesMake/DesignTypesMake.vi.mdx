@@ -16,7 +16,9 @@ Lớp `DesignTypesMake` là một động cơ hiệu suất cao dùng để qué
 ## Khởi tạo
 
 **Tham số khởi tạo:**
-- `ai: DesignTypesAi` — Đối tượng client AI dùng để nén và tối ưu hóa các khai báo.
+- `ai: DesignTypesAi` — thực thể AI client để tối ưu hóa khai báo.
+- `dir: string` — đường dẫn thư mục khai báo đầu vào (mặc định `PropertiesConfig.getTypesTemporaryDirectory()`).
+- `dirDist: string` — đường dẫn thư mục JavaScript đã biên dịch (mặc định `PropertiesConfig.getDistDir()`).
 
 ```typescript
 import { DesignTypesAi, DesignTypesMake } from '@dxtmisha/scripts'
@@ -36,8 +38,8 @@ Trả về nội dung JavaScript kết hợp từ tất cả các tệp nguồn 
 ### `make(): Promise<this>`
 Thực thi toàn bộ quy trình sinh mã bao gồm kiểm tra bộ nhớ đệm, xử lý qua AI và lưu tệp `ai-types.md`.
 
-### `save(content: string): void`
-Ghi các định nghĩa kiểu đã xử lý vào tệp `ai-types.md`.
+### `makeSave(): this`
+Tổng hợp các định nghĩa kiểu cuối cùng và lưu trực tiếp vào tệp `ai-types.md`.
 
 ## Ví dụ sử dụng
 

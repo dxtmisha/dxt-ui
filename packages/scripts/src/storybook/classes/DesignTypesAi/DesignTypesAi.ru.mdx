@@ -16,16 +16,24 @@ import {Meta} from '@storybook/addon-docs/blocks'
 ## Инициализация
 
 **Параметры конструктора:**
-- `dir: string` — *(опционально, по умолчанию `'dist'`)* путь к директории с декларациями типов.
-- `isRaw: boolean` — *(опционально, по умолчанию `false`)* флаг полного отключения обработки через ИИ.
+- `dir: string` — *(опционально, по умолчанию `'ai-types-temp'`)* путь к директории с декларациями типов.
 
 ```typescript
 import { DesignTypesAi } from '@dxtmisha/scripts'
 
-const ai = new DesignTypesAi('dist', false)
+const ai = new DesignTypesAi('ai-types-temp')
 ```
 
 ## Методы
+
+### `isFile(file: string): boolean`
+Проверяет, является ли файл валидным файлом декларации (.d.ts).
+
+### `isFileJs(file: string): boolean`
+Проверяет, является ли файл валидным JavaScript файлом (.js).
+
+### `getMd5(content: string): string`
+Генерирует MD5 хэш для переданного текстового содержимого.
 
 ### `getDirArray(): string[]`
 Возвращает массив сегментов пути к целевой директории.

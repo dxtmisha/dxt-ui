@@ -1,3 +1,5 @@
+// export:none
+
 import type { LibraryData } from '../../types/libraryTypes'
 
 import { PropertiesConfig } from '../Properties/PropertiesConfig'

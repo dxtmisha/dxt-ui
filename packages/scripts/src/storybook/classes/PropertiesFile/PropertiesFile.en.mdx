@@ -36,6 +36,20 @@ const fullPath = PropertiesFile.joinPath(['src', 'tokens', 'colors.json'])
 - `isDir(path): boolean` — determines if the specified path points to a directory.
 - `isModule(): boolean` — determines if the project is connected as an external module.
 
+## Additional System Methods
+
+- `getRootProject(rootProject?: string, maxDepth?: number): string | undefined` — searches for the monorepo root project directory.
+- `getDirname(): string` — returns the current working directory name.
+- `splitForDir(path: PropertiesFilePath): string[]` — splits a path into directory segments.
+- `parse(path: PropertiesFilePath): ParsedPath` — parses path into components (root, dir, base, ext, name).
+- `stat(path: PropertiesFilePath): Stats | undefined` — returns fs.Stats information for the file.
+- `getTime(path: PropertiesFilePath): string | undefined` — returns last modified timestamp in ISO format.
+- `readDirRecursiveWithIndex(path: PropertiesFilePath): string[]` — recursively reads directory including index files.
+- `readDirOnlyRecursive(path: PropertiesFilePath): string[]` — recursively returns directory paths only.
+- `readDirAndFileRecursive(path: PropertiesFilePath, fullPath?: PropertiesFilePath, isIndex?: boolean): string[]` — recursively reads both directories and files.
+- `rename(path: PropertiesFilePath, newPath: PropertiesFilePath): void` — renames or moves a file/directory.
+- `chmod(path: PropertiesFilePath, mode?: string | number): void` — sets file permissions (chmod).
+
 ## Path Management Methods
 
 ### `joinPath`

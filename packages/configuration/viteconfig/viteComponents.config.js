@@ -15,7 +15,6 @@ export const viteComponents = mergeConfig(
   viteBasicFunction({
     entry: getLibraryEntries(),
     fileCssName: '',
-    rollupTypes: false,
     excludeExtended: [
       '**/*AiWiki*',
       '**/*AiWiki.vue',

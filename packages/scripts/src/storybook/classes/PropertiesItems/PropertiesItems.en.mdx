@@ -36,16 +36,28 @@ const currentTokens = manager.get()
 
 ## Methods
 
-- `get(): PropertyList` — returns the current property structure (supports focus filtering).
-- `getDesigns(): string[]` — returns a list of available design names.
-- `getItem(index): PropertyItem` — retrieves a specific property record by its index.
-- `getInfo(index): PropertyItemsItem` — resolves full metadata and parental hierarchy for a given index.
-- `getKeys(index): string[]` — decodes a path string into normalized key segments.
-- `getName(name, item): string` — returns the display name of a property, accounting for renames.
-- `each(callback, property?): T[]` — performs a deep recursive traversal of the tree.
-- `find(callback): PropertyItemsItem[]` — searches for records matching custom conditions.
-- `findCategory(category): PropertyItemsItem[]` — extracts tokens belonging to specific functional categories.
-- `setFocusDesign(design): this` — restricts the operational scope to a specific design.
+- `get(): PropertyList` — returns the current property tree (supports focus filtering).
+- `getDesigns(): string[]` — returns the list of available design names.
+- `getItem(index): PropertyItem` — retrieves a specific property record by index.
+- `getInfo(index): PropertyItemsItem` — resolves full metadata and parent hierarchy for an index.
+- `getKeys(index): string[]` — decodes path string into normalized key segments.
+- `getName(name, item): string` — returns the display property name respecting renames.
+- `getReName(name, item): string` — returns renamed property identifier.
+- `getParentsName(parents, variable?): string[]` — returns parent category names.
+- `getMedia(): PropertyItemsMedia` — returns media queries and breakpoints map.
+- `getLink(design, component, value): string` — resolves design token link.
+- `getLinkToName(design, component, value): void` — binds token to property name.
+- `getLinkToValue(design, component, value): void` — binds token to property value.
+- `getLinkForName(design, component, value): void` — resolves link for property name.
+- `getLinkByDesign(design, value): string` — resolves link respecting design context.
+- `each(callback, property?): T[]` — performs deep recursive traversal of the property tree.
+- `eachMainOnly(callback, property?): T[]` — iterates over primary token properties only.
+- `find(callback): PropertyItemsItem[]` — searches records matching custom predicates.
+- `findCategory(category): PropertyItemsItem[]` — retrieves tokens belonging to specific functional categories.
+- `findVariable(variable): PropertyItemsItem[]` — searches properties by CSS variable.
+- `isFocusDesign(name, design?): boolean` — checks if property belongs to active design.
+- `setFocusDesign(design): this` — scopes operations to a specific design.
+- `write(name): void` — saves properties to file.
 
 ## Operations
 

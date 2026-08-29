@@ -17,3 +17,14 @@ Lớp trừu tượng `DesignTypesPromptsAbstract` cung cấp kiến trúc cơ s
 
 - `promptsDir: string` — đường dẫn tương đối đến thư mục prompt (mặc định `'ai-resources'`).
 - `ai: DesignTypesAi` — đối tượng `DesignTypesAi` để tương tác với AI và phân giải tên dự án.
+
+## Các phương thức
+
+### `abstract getCacheList(): DesignTypesPromptCacheList`
+Truy xuất danh sách siêu dữ liệu prompt từ bộ nhớ đệm.
+
+### `abstract make(): Promise<this>`
+ xử lý các tệp prompt và cập nhật bộ nhớ đệm siêu dữ liệu.
+
+### `abstract toAiPrompts(): Promise<string>`
+Tổng hợp các chỉ thị quy tắc AI bắt buộc từ các prompt.

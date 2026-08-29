@@ -1,0 +1,39 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/DesignTypesBuild - TypeScript and Vue Declaration Compiler Engine'/>
+
+# Class DesignTypesBuild
+
+The `DesignTypesBuild` class compiles TypeScript source files and Vue Single File Components (`.vue`) into declaration files (`.d.ts`) inside a temporary directory prior to generating AI type references and documentation.
+
+## Key Features
+
+- **TypeScript and Vue Support**: Automatically detects `.vue` components and runs `vue-tsc` to extract component typings, or uses the TypeScript Compiler API for standard TypeScript packages.
+- **Intelligent Filtering**: Respects scan directory paths (`typesPaths`), inclusion patterns (`typesMatch`), and exclusion rules (`typesExclude`) defined in `design-ui.json`.
+- **Automatic Cleanup**: Cleans the temporary directory prior to compilation and purges non-essential declaration files (tests, stories, internal entry points).
+
+## Constructor
+
+**Parameters:**
+- `temporaryDirectory: string` — temporary compilation directory path. Defaults to `PropertiesConfig.getTypesTemporaryDirectory()`.
+
+```typescript
+import { DesignTypesBuild } from '@dxtmisha/scripts'
+
+const builder = new DesignTypesBuild()
+builder.build()
+```
+
+## Methods
+
+### `is(): boolean`
+Checks if the temporary compilation directory currently exists on disk.
+
+### `isVue(): boolean`
+Determines whether the project contains Vue components (`.vue`) requiring `vue-tsc` compilation.
+
+### `build(): this`
+Executes the declaration compilation process, automatically selecting `vue-tsc` when Vue files are present or the standard TypeScript compiler otherwise.
+
+### `clean(): this`
+Deletes the temporary compilation directory and all files within it.

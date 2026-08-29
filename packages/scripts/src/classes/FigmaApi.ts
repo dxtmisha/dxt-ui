@@ -1,3 +1,5 @@
+// export:none
+
 import {
   FIGMA_API_URL,
   FigmaApiEndpoint,

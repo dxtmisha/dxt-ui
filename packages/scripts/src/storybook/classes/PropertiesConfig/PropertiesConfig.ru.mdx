@@ -33,8 +33,27 @@ const separator = PropertiesConfig.getSeparator()
 - `getProjectName(): string` — получает корневой идентификатор проекта.
 - `getDesignName(): string` — возвращает основной идентификатор дизайн-системы.
 - `getDesignAlternativeName(): string[]` — возвращает альтернативные алиасы для дизайна.
+- `getPackagePrefix(): string | undefined` — возвращает префикс npm-пакетов рабочего пространства.
 - `getSeparator(): string` — возвращает символ-разделитель путей в токенах.
+- `getSeparatorBasicName(): string` — возвращает базовое имя разделителя токенов.
+- `getSeparatorLimit(): number` — возвращает максимальный лимит глубины разделителя токенов.
 - `getWikiLanguage(): string` — возвращает код целевого языка для документации.
+- `getDistDir(): string` — возвращает путь к директории сборки (dist).
+- `getFigmaToken(): string` — возвращает токен доступа к Figma API.
+
+### Конфигурация типов и ИИ
+
+- `getTypesTemporaryDirectory(): string` — возвращает путь к временной директории для компиляции деклараций типов.
+- `getTypesPaths(): string[] | undefined` — возвращает список исходных путей для сканирования типов.
+- `getTypesMatch(): string | string[] | undefined` — возвращает шаблоны соответствия файлов для сканирования типов.
+- `getTypesExclude(): string | string[] | undefined` — возвращает шаблоны исключения файлов при сканировании типов.
+- `getTypesWithoutVue(): boolean | undefined` — возвращает флаг отключения Vue-компиляции типов.
+- `isTypesWithoutVue(): boolean` — проверяет, отключена ли обработка файлов Vue при генерации типов.
+- `getAiResourcesDir(): string` — возвращает путь к директории с промптами и правилами ИИ.
+- `getAiType(): AiType` — возвращает настроенного ИИ-провайдера.
+- `getAiModel(): string` — возвращает название конкретной модели ИИ.
+- `getAiKey(): string` — возвращает API-ключ для сервиса ИИ.
+- `getAiConfig(): Record<string, any>` — возвращает объект конфигурации клиента ИИ.
 
 ### ИИ и Документация
 

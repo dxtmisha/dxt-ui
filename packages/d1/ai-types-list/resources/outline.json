@@ -1,6 +1,0 @@
-{
-  "path": "ai-resources/outline.md",
-  "md5": "31db20dd562ce7d562fb4e90ded60970",
-  "name": "SCSS Outline Guidelines",
-  "description": "This file contains SCSS standards, mixins, and rules for implementing accessible focus rings, outline opacity, and dynamic palette outlines for the @dxtmisha/d1 library. It solves technical tasks related to keyboard navigation accessibility and consistent UI component theming."
-}

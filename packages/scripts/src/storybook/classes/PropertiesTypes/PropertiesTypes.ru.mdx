@@ -60,6 +60,15 @@ const hasSymbol = PropertiesTypes.isTypeInName('$myVar');
 // Результат: true
 ```
 
+### `isContainer(type: PropertyItem['_type']): boolean`
+Проверяет, относится ли тип свойства к контейнерным типам (container query).
+
+### `isScss(name: string): boolean`
+Проверяет, является ли имя свойства специальной переменной SCSS.
+
+### `isRoot(name: string): boolean`
+Проверяет, относится ли свойство к корневому уровню (:root).
+
 ### `isMedia`
 Специализированная проверка, определяющая, относится ли тип к медиа-запросам (`media` или `media-max`).
 

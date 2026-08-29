@@ -38,7 +38,8 @@ const item = new PackageInitItem(
 
 ### Điều khiển
 
-- `make(): void` — Thực hiện chu trình khởi tạo đầy đủ: tạo tệp, cập nhật thư viện, `package.json` và Storybook.
+- `make(): void` — thực thi toàn bộ vòng đời khởi tạo: tạo tệp, cập nhật thư viện, `package.json` và Storybook.
+- `makeStorybook(): this` — cập nhật cấu hình Storybook (.storybook/main.ts) để thêm đường dẫn câu chuyện mới.
 
 ## Các thao tác (Operations)
 

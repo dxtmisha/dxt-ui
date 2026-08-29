@@ -1,5 +1,3 @@
-// export:none
-
 import { PropertiesFile } from '../Properties/PropertiesFile'
 import { PackageInitItem } from './PackageItem'
 

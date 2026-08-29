@@ -1,3 +1,5 @@
+// export:none
+
 import { PropertiesConfig } from '../classes/Properties/PropertiesConfig'
 
 /**

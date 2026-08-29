@@ -1,0 +1,10 @@
+.ui-sys-flags {
+  --sys-flags-width: 96px;
+  --sys-flags-height: 72px;
+  --sys-flags-top: 60px;
+  --sys-flags-left: 48px;
+  --sys-flags-lines: 0;
+
+  background-image: url("./../assets/flags.webp");
+  background-size: calc(100% * 24) calc(100% * 0);
+}

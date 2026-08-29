@@ -30,11 +30,30 @@ const separator = PropertiesConfig.getSeparator()
 
 ### General Configuration
 
-- `getProjectName(): string` — Retrieves the project's root identifier.
-- `getDesignName(): string` — Returns the primary design system identifier.
-- `getDesignAlternativeName(): string[]` — Returns alternative aliases for the design.
-- `getSeparator(): string` — Returns the path separator used in token definitions.
-- `getWikiLanguage(): string` — Returns the target language code for documentation.
+- `getProjectName(): string` — retrieves the root project identifier.
+- `getDesignName(): string` — returns the primary design system identifier.
+- `getDesignAlternativeName(): string[]` — returns alternative aliases for the design system.
+- `getPackagePrefix(): string | undefined` — returns the workspace npm package prefix.
+- `getSeparator(): string` — returns token path separator character.
+- `getSeparatorBasicName(): string` — returns the basic token separator name.
+- `getSeparatorLimit(): number` — returns maximum depth limit for token separation.
+- `getWikiLanguage(): string` — returns the target documentation language code.
+- `getDistDir(): string` — returns the build output directory path (dist).
+- `getFigmaToken(): string` — returns the Figma API access token.
+
+### Type Compilation & AI Configuration
+
+- `getTypesTemporaryDirectory(): string` — returns the temporary directory path for compiling type declarations.
+- `getTypesPaths(): string[] | undefined` — returns the list of source paths for type scanning.
+- `getTypesMatch(): string | string[] | undefined` — returns match patterns for type scanning.
+- `getTypesExclude(): string | string[] | undefined` — returns exclusion patterns for type scanning.
+- `getTypesWithoutVue(): boolean | undefined` — returns the flag disabling Vue compilation for types.
+- `isTypesWithoutVue(): boolean` — checks if Vue file compilation is disabled for types.
+- `getAiResourcesDir(): string` — returns the AI resources and prompts directory path.
+- `getAiType(): AiType` — returns the configured AI provider.
+- `getAiModel(): string` — returns the specific AI model name.
+- `getAiKey(): string` — returns the API key for AI services.
+- `getAiConfig(): Record<string, any>` — returns the AI client configuration object.
 
 ### AI & Documentation
 

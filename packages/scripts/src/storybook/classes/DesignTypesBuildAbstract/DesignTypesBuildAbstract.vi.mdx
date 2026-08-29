@@ -1,0 +1,44 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/DesignTypesBuildAbstract - Lớp biên dịch trừu tượng khai báo TypeScript'/>
+
+# Lớp DesignTypesBuildAbstract
+
+Lớp cơ sở trừu tượng `DesignTypesBuildAbstract` định nghĩa giao diện và kiến trúc nền tảng cho việc biên dịch các tệp nguồn TypeScript và Vue thành các tệp khai báo kiểu (`.d.ts`) vào thư mục tạm trước khi xử lý và tối ưu hóa cho AI.
+
+## Hàm khởi tạo
+
+**Tham số:**
+- `temporaryDirectory: string` — đường dẫn thư mục tạm để lưu trữ các tệp khai báo. Mặc định lấy từ `PropertiesConfig.getTypesTemporaryDirectory()`.
+
+```typescript
+import { DesignTypesBuildAbstract } from '@dxtmisha/scripts'
+
+class CustomTypesBuild extends DesignTypesBuildAbstract {
+  is(): boolean {
+    // Kiểm tra sự tồn tại của thư mục
+    return false
+  }
+
+  clean(): this {
+    // Dọn dẹp thư mục tạm
+    return this
+  }
+
+  build(): this {
+    // Biên dịch khai báo kiểu
+    return this
+  }
+}
+```
+
+## Các phương thức
+
+### `abstract is(): boolean`
+Kiểm tra xem thư mục biên dịch tạm có tồn tại trên đĩa hay không.
+
+### `abstract clean(): this`
+Dọn dẹp hoặc xóa toàn bộ thư mục biên dịch tạm và các tệp khai báo đã tạo.
+
+### `abstract build(): this`
+Thực hiện biên dịch các khai báo TypeScript từ mã nguồn vào thư mục tạm.

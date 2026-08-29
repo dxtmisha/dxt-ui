@@ -1,3 +1,5 @@
+// export:none
+
 import { FigmaApi } from '../FigmaApi'
 import { PropertiesConfig } from '../Properties/PropertiesConfig.ts'
 

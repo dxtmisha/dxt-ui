@@ -36,6 +36,20 @@ const fullPath = PropertiesFile.joinPath(['src', 'tokens', 'colors.json'])
 - `isDir(path): boolean` — Xác định xem đường dẫn có trỏ đến một thư mục hay không.
 - `isModule(): boolean` — Xác định xem gói hiện tại có được kết nối dưới dạng mô-đun ngoài hay không.
 
+## Các phương thức hệ thống bổ sung
+
+- `getRootProject(rootProject?: string, maxDepth?: number): string | undefined` — tìm kiếm thư mục gốc của dự án monorepo.
+- `getDirname(): string` — trả về tên thư mục làm việc hiện tại.
+- `splitForDir(path: PropertiesFilePath): string[]` — chia đường dẫn thành các phân đoạn thư mục.
+- `parse(path: PropertiesFilePath): ParsedPath` — phân tích đường dẫn thành các thành phần (root, dir, base, ext, name).
+- `stat(path: PropertiesFilePath): Stats | undefined` — trả về thông tin fs.Stats của tệp.
+- `getTime(path: PropertiesFilePath): string | undefined` — trả về thời gian sửa đổi cuối cùng theo định dạng ISO.
+- `readDirRecursiveWithIndex(path: PropertiesFilePath): string[]` — đọc đệ quy thư mục bao gồm cả tệp index.
+- `readDirOnlyRecursive(path: PropertiesFilePath): string[]` — chỉ trả về danh sách thư mục đệ quy.
+- `readDirAndFileRecursive(path: PropertiesFilePath, fullPath?: PropertiesFilePath, isIndex?: boolean): string[]` — đọc đệ quy cả thư mục và tệp.
+- `rename(path: PropertiesFilePath, newPath: PropertiesFilePath): void` — đổi tên hoặc di chuyển tệp/thư mục.
+- `chmod(path: PropertiesFilePath, mode?: string | number): void` — thiết lập quyền truy cập (chmod) cho tệp.
+
 ## Các phương thức quản lý đường dẫn
 
 ### `joinPath`

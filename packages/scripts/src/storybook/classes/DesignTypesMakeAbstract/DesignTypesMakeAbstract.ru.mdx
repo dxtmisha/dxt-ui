@@ -1,0 +1,50 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/scripts/Classes/DesignTypesMakeAbstract - Абстрактный генератор типов для ИИ'/>
+
+# Класс DesignTypesMakeAbstract
+
+Абстрактный класс `DesignTypesMakeAbstract` определяет базовый интерфейс и архитектуру для обработки файлов деклараций TypeScript, отслеживания изменений по MD5-хешам и генерации оптимизированных для ИИ определений типов (`ai-types.md`).
+
+## Конструктор
+
+**Параметры:**
+- `ai: DesignTypesAi` — экземпляр `DesignTypesAi` для обработки и оптимизации через ИИ.
+- `dir: string` — путь к входной директории с файлами деклараций. По умолчанию получается из `PropertiesConfig.getTypesTemporaryDirectory()`.
+- `dirDist: string` — путь к директории со скомпилированным JavaScript-кодом. По умолчанию получается из `PropertiesConfig.getDistDir()`.
+
+```typescript
+import { DesignTypesAi, DesignTypesMakeAbstract } from '@dxtmisha/scripts'
+
+class CustomTypesMake extends DesignTypesMakeAbstract {
+  getFullContent(): string {
+    return ''
+  }
+
+  getFullJsContent(): string {
+    return ''
+  }
+
+  async make(): Promise<this> {
+    return this
+  }
+
+  makeSave(): this {
+    return this
+  }
+}
+```
+
+## Методы
+
+### `abstract getFullContent(): string`
+Считывает обработанные файлы деклараций, объединяет их в единую строку и очищает содержимое от лишнего шаблонного кода.
+
+### `abstract getFullJsContent(): string`
+Считывает и объединяет содержимое всех отфильтрованных файлов скомпилированного JavaScript.
+
+### `abstract make(): Promise<this>`
+Выполняет полный цикл генерации определений типов, включая MD5-кэширование, обработку через ИИ и вызов сохранения.
+
+### `abstract makeSave(): this`
+Генерирует итоговый контент типов и сохраняет его в файл `ai-types.md`.

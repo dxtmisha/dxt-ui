@@ -17,3 +17,14 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 - `promptsDir: string` — относительный путь к директории с промптами (по умолчанию `'ai-resources'`).
 - `ai: DesignTypesAi` — экземпляр `DesignTypesAi` для выполнения запросов к ИИ и получения имени проекта.
+
+## Методы
+
+### `abstract getCacheList(): DesignTypesPromptCacheList`
+Возвращает список метаданных промптов из кэша.
+
+### `abstract make(): Promise<this>`
+Обрабатывает файлы промптов и обновляет кэш метаданных.
+
+### `abstract toAiPrompts(): Promise<string>`
+Формирует строку обязательных правил для ИИ на основе промптов.

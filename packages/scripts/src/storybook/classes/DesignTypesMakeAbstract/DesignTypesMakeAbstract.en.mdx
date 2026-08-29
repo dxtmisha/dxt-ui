@@ -1,0 +1,50 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/DesignTypesMakeAbstract - Abstract AI Type Definition Generator'/>
+
+# Class DesignTypesMakeAbstract
+
+The `DesignTypesMakeAbstract` abstract base class establishes the standard interface and pipeline for scanning TypeScript declaration files, tracking modifications via MD5 hashes, and producing AI-optimized type guidelines (`ai-types.md`).
+
+## Constructor
+
+**Parameters:**
+- `ai: DesignTypesAi` — instance of `DesignTypesAi` for AI-assisted transformation and directory resolution.
+- `dir: string` — input directory path containing emitted declaration files. Defaults to `PropertiesConfig.getTypesTemporaryDirectory()`.
+- `dirDist: string` — input directory path containing compiled JavaScript artifacts. Defaults to `PropertiesConfig.getDistDir()`.
+
+```typescript
+import { DesignTypesAi, DesignTypesMakeAbstract } from '@dxtmisha/scripts'
+
+class CustomTypesMake extends DesignTypesMakeAbstract {
+  getFullContent(): string {
+    return ''
+  }
+
+  getFullJsContent(): string {
+    return ''
+  }
+
+  async make(): Promise<this> {
+    return this
+  }
+
+  makeSave(): this {
+    return this
+  }
+}
+```
+
+## Methods
+
+### `abstract getFullContent(): string`
+Reads processed declaration files, combines them into a single string, and cleans repetitive boilerplate.
+
+### `abstract getFullJsContent(): string`
+Retrieves and combines the contents of all filtered compiled JavaScript files.
+
+### `abstract make(): Promise<this>`
+Executes the complete generation cycle, including MD5 cache validation, AI transformation, and saving output.
+
+### `abstract makeSave(): this`
+Compiles the full combined type definition content and writes it directly to `ai-types.md`.

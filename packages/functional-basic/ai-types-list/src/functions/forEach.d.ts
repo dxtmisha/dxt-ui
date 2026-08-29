@@ -1,0 +1,3 @@
+// md5:fbf8463d16d9de36cfec4200ca6b2c78 true
+/** Executes a callback for each element in an array, object, Map, or Set and collects results into an array. @keywords forEach iterate map loop collection */
+export declare function forEach<T, R, D extends T[] | Record<string, T> | Map<string, T> | Set<T> = T[] | Record<string, T> | Map<string, T> | Set<T>, K = D extends T[] ? number : string>(data: D & (T[] | Record<string, T> | Map<string, T> | Set<T>), callback: (item: T, key: K, dataMain: typeof data) => R, saveUndefined?: boolean): R[];

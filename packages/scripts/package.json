@@ -37,6 +37,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
+    "library": "dxt-library",
     "test": "vitest run",
     "prepublishOnly": "npm run build",
     "publish-to-npm": "npm publish --access public"
@@ -55,20 +56,20 @@
   "module": "./dist/library.js",
   "types": "./dist/library.d.ts",
   "bin": {
-    "dxt-build-packages": "bin/build-packages.js",
-    "dxt-build-publish-packages": "bin/build-publish-packages.js",
-    "dxt-component": "bin/design-component.js",
-    "dxt-constructor": "bin/design-constructor.js",
-    "dxt-figma-layout": "bin/design-figma.js",
-    "dxt-flags": "bin/design-flags.js",
-    "dxt-library": "bin/design-library.js",
-    "dxt-package": "bin/design-package.js",
-    "dxt-prompt": "bin/design-prompt.js",
-    "dxt-screenshot": "bin/design-screenshot.js",
-    "dxt-types": "bin/design-types.js",
-    "dxt-types-save": "bin/design-types-save.js",
-    "dxt-ui": "bin/design-ui.js",
-    "dxt-wiki-storm": "bin/design-wiki-storm.js"
+    "dxt-build-packages": "bin/build-packages.ts",
+    "dxt-build-publish-packages": "bin/build-publish-packages.ts",
+    "dxt-component": "bin/design-component.ts",
+    "dxt-constructor": "bin/design-constructor.ts",
+    "dxt-figma-layout": "bin/design-figma.ts",
+    "dxt-flags": "bin/design-flags.ts",
+    "dxt-library": "bin/design-library.ts",
+    "dxt-package": "bin/design-package.ts",
+    "dxt-prompt": "bin/design-prompt.ts",
+    "dxt-screenshot": "bin/design-screenshot.ts",
+    "dxt-types": "bin/design-types.ts",
+    "dxt-types-save": "bin/design-types-save.ts",
+    "dxt-ui": "bin/design-ui.ts",
+    "dxt-wiki-storm": "bin/design-wiki-storm.ts"
   },
   "exports": {
     ".": {
@@ -78,6 +79,10 @@
     "./ai": {
       "types": "./dist/library-ai.d.ts",
       "default": "./dist/library-ai.js"
+    },
+    "./figma": {
+      "types": "./dist/library-figma.d.ts",
+      "default": "./dist/library-figma.js"
     },
     "./config": {
       "types": "./dist/config.d.ts",

@@ -1,3 +1,5 @@
+// export:none
+
 import { PropertiesFile } from '../Properties/PropertiesFile'
 import { LibraryItems } from './LibraryItems'
 import { LibraryAiWikiItem } from './LibraryAiWikiItem'

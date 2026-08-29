@@ -1,0 +1,50 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/DesignTypesMakeAbstract - Lớp tạo định nghĩa kiểu trừu tượng cho AI'/>
+
+# Lớp DesignTypesMakeAbstract
+
+Lớp cơ sở trừu tượng `DesignTypesMakeAbstract` thiết lập giao diện và kiến trúc quy chuẩn cho việc xử lý các tệp khai báo TypeScript, theo dõi thay đổi qua mã băm MD5 và tạo tệp hướng dẫn kiểu được tối ưu hóa cho AI (`ai-types.md`).
+
+## Hàm khởi tạo
+
+**Tham số:**
+- `ai: DesignTypesAi` — thực thể `DesignTypesAi` để tối ưu hóa và cấu hình xử lý AI.
+- `dir: string` — đường dẫn thư mục đầu vào chứa các tệp khai báo. Mặc định lấy từ `PropertiesConfig.getTypesTemporaryDirectory()`.
+- `dirDist: string` — đường dẫn thư mục đầu vào chứa các tệp JavaScript đã biên dịch. Mặc định lấy từ `PropertiesConfig.getDistDir()`.
+
+```typescript
+import { DesignTypesAi, DesignTypesMakeAbstract } from '@dxtmisha/scripts'
+
+class CustomTypesMake extends DesignTypesMakeAbstract {
+  getFullContent(): string {
+    return ''
+  }
+
+  getFullJsContent(): string {
+    return ''
+  }
+
+  async make(): Promise<this> {
+    return this
+  }
+
+  makeSave(): this {
+    return this
+  }
+}
+```
+
+## Các phương thức
+
+### `abstract getFullContent(): string`
+Đọc các tệp khai báo đã xử lý, hợp nhất chúng thành một chuỗi duy nhất và làm sạch mã khuôn mẫu thừa.
+
+### `abstract getFullJsContent(): string`
+Truy xuất và hợp nhất nội dung của tất cả các tệp JavaScript đã được lọc.
+
+### `abstract make(): Promise<this>`
+Thực thi toàn bộ quy trình tạo định nghĩa kiểu, bao gồm kiểm tra bộ nhớ đệm MD5, xử lý AI và lưu kết quả.
+
+### `abstract makeSave(): this`
+Tổng hợp nội dung kiểu dữ liệu hoàn chỉnh và lưu trực tiếp vào tệp `ai-types.md`.

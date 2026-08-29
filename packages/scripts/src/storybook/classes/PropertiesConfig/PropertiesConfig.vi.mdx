@@ -30,11 +30,30 @@ const separator = PropertiesConfig.getSeparator()
 
 ### Cấu hình chung
 
-- `getProjectName(): string` — Truy xuất định danh gốc của dự án.
-- `getDesignName(): string` — Trả về định danh chính của hệ thống thiết kế.
-- `getDesignAlternativeName(): string[]` — Trả về các alias thay thế cho thiết kế.
-- `getSeparator(): string` — Trả về ký tự phân tách đường dẫn được sử dụng trong các token.
-- `getWikiLanguage(): string` — Trả về mã ngôn ngữ đích cho tài liệu.
+- `getProjectName(): string` — lấy mã định danh dự án gốc.
+- `getDesignName(): string` — trả về định danh hệ thống thiết kế chính.
+- `getDesignAlternativeName(): string[]` — trả về danh sách bí danh thay thế của thiết kế.
+- `getPackagePrefix(): string | undefined` — trả về tiền tố gói npm trong không gian làm việc.
+- `getSeparator(): string` — trả về ký tự phân tách đường dẫn token.
+- `getSeparatorBasicName(): string` — trả về tên cơ bản của bộ phân tách token.
+- `getSeparatorLimit(): number` — trả về giới hạn độ sâu phân tách token.
+- `getWikiLanguage(): string` — trả về mã ngôn ngữ tài liệu mục tiêu.
+- `getDistDir(): string` — trả về đường dẫn thư mục xuất bản (dist).
+- `getFigmaToken(): string` — trả về mã truy cập Figma API.
+
+### Cấu hình biên dịch kiểu & AI
+
+- `getTypesTemporaryDirectory(): string` — trả về đường dẫn thư mục tạm cho biên dịch khai báo kiểu.
+- `getTypesPaths(): string[] | undefined` — trả về danh sách đường dẫn quét kiểu dữ liệu.
+- `getTypesMatch(): string | string[] | undefined` — trả về các mẫu khớp tệp để quét kiểu.
+- `getTypesExclude(): string | string[] | undefined` — trả về các mẫu loại trừ tệp khi quét kiểu.
+- `getTypesWithoutVue(): boolean | undefined` — trả về cờ vô hiệu hóa biên dịch Vue cho kiểu.
+- `isTypesWithoutVue(): boolean` — kiểm tra xem xử lý tệp Vue có bị tắt khi tạo kiểu hay không.
+- `getAiResourcesDir(): string` — trả về đường dẫn thư mục tài nguyên và prompt AI.
+- `getAiType(): AiType` — trả về nhà cung cấp AI đã cấu hình.
+- `getAiModel(): string` — trả về tên mô hình AI cụ thể.
+- `getAiKey(): string` — trả về khóa API cho dịch vụ AI.
+- `getAiConfig(): Record<string, any>` — trả về đối tượng cấu hình client AI.
 
 ### AI & Tài liệu
 

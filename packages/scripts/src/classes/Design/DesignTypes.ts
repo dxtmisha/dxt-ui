@@ -1,57 +1,75 @@
 import { ServerStorage } from '@dxtmisha/functional-basic'
 
+import { PropertiesConfig } from '../Properties/PropertiesConfig'
 import { DesignTypesAi } from './DesignTypesAi'
+import { DesignTypesBuild } from './DesignTypesBuild'
 import { DesignTypesDescription } from './DesignTypesDescription'
 import { DesignTypesMake } from './DesignTypesMake'
 import { DesignTypesMcp } from './DesignTypesMcp'
 import { DesignTypesPrompts } from './DesignTypesPrompts'
+import type { DesignTypesBuildAbstract } from './DesignTypesBuildAbstract'
+import type { DesignTypesMakeAbstract } from './DesignTypesMakeAbstract'
 import type { DesignTypesPromptsAbstract } from './DesignTypesPromptsAbstract'
 
 /**
- * Engine for generating compressed and AI-optimized TypeScript type definitions.
- * It scans the build output for declaration files, sanitizes them, and uses AI to produce a minimal, context-rich type library for use in automated coding assistants.
+ * Engine for compiling TypeScript declarations into a temporary directory and generating AI-optimized type definitions.
+ * It compiles TypeScript sources, cleanses declaration files, uses AI to produce a minimal, context-rich type library, and removes temporary artifacts upon completion.
  *
- * Движок для генерации сжатых и оптимизированных для ИИ определений типов TypeScript.
- * Сканирует выходные данные сборки на наличие файлов деклараций, очищает их и использует ИИ для создания минимальной, насыщенной контекстом библиотеки типов для использования в автоматизированных помощниках по кодированию.
+ * Движок для компиляции деклараций TypeScript во временную директорию и генерации оптимизированных ИИ определений типов.
+ * Компилирует исходники TypeScript, очищает файлы деклараций, использует ИИ для создания минимальной, насыщенной контекстом библиотеки типов и удаляет временные артефакты после завершения.
  */
 export class DesignTypes {
   /** Instance of DesignTypesAi for AI interactions / Экземпляр DesignTypesAi для ИИ взаимодействия */
   protected readonly ai: DesignTypesAi
 
+  /** Instance of DesignTypesBuildAbstract for compiling TypeScript declarations / Экземпляр DesignTypesBuildAbstract для компиляции деклараций TypeScript */
+  protected readonly buildTypes: DesignTypesBuildAbstract
+
   /** Instance of DesignTypesDescription for description generation / Экземпляр DesignTypesDescription для генерации описания */
   protected readonly description: DesignTypesDescription
 
-  /** Instance of DesignTypesMake for declaration file processing / Экземпляр DesignTypesMake для обработки файлов деклараций */
-  protected readonly makeTypes: DesignTypesMake
+  /** Instance of DesignTypesMakeAbstract for declaration file processing / Экземпляр DesignTypesMakeAbstract для обработки файлов деклараций */
+  protected readonly makeTypes: DesignTypesMakeAbstract
 
   /** Instance of DesignTypesMcp for MCP server resources processing / Экземпляр DesignTypesMcp для обработки ресурсов MCP-сервера */
   protected readonly mcp: DesignTypesMcp
 
-  /** Instance of DesignTypesPrompts for prompt file processing / Экземпляр DesignTypesPrompts для обработки файлов промптов */
+  /** Instance of DesignTypesPromptsAbstract for prompt file processing / Экземпляр DesignTypesPromptsAbstract для обработки файлов промптов */
   protected readonly prompts: DesignTypesPromptsAbstract
 
   /**
    * Constructor for DesignTypes.
    *
    * Конструктор для DesignTypes.
-   * @param dir input directory path containing declaration files / входной путь к директории, содержащей файлы деклараций
    * @param promptsDir input directory path containing prompt files / входной путь к директории, содержащей файлы промптов
-   * @param isRaw flag disabling AI processing to create raw types and empty description / флаг отключения ИИ обработки для создания сырых типов и пустого описания
-   * @param DesignTypesPromptsConstructor class for prompt file processing / класс для обработки файлов промптов
+   * @param dir input directory path containing declaration files / входной путь к директории, содержащей файлы деклараций
+   * @param dirDist output directory path containing compiled JavaScript files / выходной путь к директории скомпилированных JavaScript файлов
+   * @param constructors optional constructors map for custom subsystem implementations / опциональный объект конструкторов для кастомных реализаций подсистем
    */
   constructor(
-    protected readonly dir: string = 'dist',
-    protected readonly promptsDir: string = 'ai-resources',
-    protected readonly isRaw: boolean = false,
-    DesignTypesPromptsConstructor: typeof DesignTypesPrompts = DesignTypesPrompts
+    protected readonly promptsDir: string = PropertiesConfig.getAiResourcesDir(),
+    protected readonly dir: string = PropertiesConfig.getTypesTemporaryDirectory(),
+    protected readonly dirDist: string = PropertiesConfig.getDistDir(),
+    constructors: {
+      DesignTypesBuildConstructor?: typeof DesignTypesBuildAbstract
+      DesignTypesMakeConstructor?: typeof DesignTypesMakeAbstract
+      DesignTypesPromptsConstructor?: typeof DesignTypesPromptsAbstract
+    } = {}
   ) {
+    const {
+      DesignTypesBuildConstructor = DesignTypesBuild,
+      DesignTypesMakeConstructor = DesignTypesMake,
+      DesignTypesPromptsConstructor = DesignTypesPrompts
+    } = constructors
+
     ServerStorage.setErrorStatus(true)
 
-    this.ai = new DesignTypesAi(this.dir, this.isRaw)
-    this.makeTypes = new DesignTypesMake(this.ai)
-    this.prompts = new DesignTypesPromptsConstructor(this.promptsDir, this.ai)
-    this.description = new DesignTypesDescription(this.ai, this.makeTypes, this.prompts, this.isRaw)
-    this.mcp = new DesignTypesMcp(this.ai, this.prompts, this.isRaw)
+    this.ai = new DesignTypesAi(this.dir)
+    this.buildTypes = new (DesignTypesBuildConstructor as typeof DesignTypesBuild)(this.dir)
+    this.makeTypes = new (DesignTypesMakeConstructor as typeof DesignTypesMake)(this.ai, this.dir, this.dirDist)
+    this.prompts = new (DesignTypesPromptsConstructor as typeof DesignTypesPrompts)(this.promptsDir, this.ai)
+    this.description = new DesignTypesDescription(this.ai, this.makeTypes, this.prompts)
+    this.mcp = new DesignTypesMcp(this.ai, this.prompts)
   }
 
   /**
@@ -63,10 +81,16 @@ export class DesignTypes {
   async make(): Promise<this> {
     console.log('DesignTypes: making AI types...')
 
-    await this.makeTypes.make()
-    await this.prompts.make()
-    await this.description.make()
-    await this.mcp.make()
+    try {
+      this.buildTypes.build()
+
+      await this.makeTypes.make()
+      await this.prompts.make()
+      await this.description.make()
+      await this.mcp.make()
+    } finally {
+      this.buildTypes.clean()
+    }
 
     console.log('DesignTypes: AI types saved.')
 
@@ -85,7 +109,12 @@ export class DesignTypes {
     this.makeTypes.makeSave()
 
     if (!this.description.is()) {
-      await this.description.make()
+      try {
+        this.buildTypes.build()
+        await this.description.make()
+      } finally {
+        this.buildTypes.clean()
+      }
     }
 
     await this.mcp.make()

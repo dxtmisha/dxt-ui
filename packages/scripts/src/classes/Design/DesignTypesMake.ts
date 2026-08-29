@@ -1,19 +1,20 @@
-import { createHash } from 'node:crypto'
 import { forEach, isFilled } from '@dxtmisha/functional-basic'
 import { getPackageJson } from '../../functions/getPackageJson'
+import { PropertiesConfig } from '../Properties/PropertiesConfig'
 import { PropertiesFile } from '../Properties/PropertiesFile'
 import { DesignTypesAi } from './DesignTypesAi'
+import { DesignTypesMakeAbstract } from './DesignTypesMakeAbstract'
 
 import type { DesignTypesItem, DesignTypesList } from '../../types/designTypes'
 
-import { UI_DIR_AI_TYPES_LIST, UI_DIR_CONSTRUCTOR, UI_FILE_AI_TYPES } from '../../config'
+import { UI_DIR_AI_TYPES_LIST, UI_FILE_AI_TYPES } from '../../config'
 
 /**
  * Engine for scanning declaration files, MD5 change tracking, and generating AI-optimized TypeScript type definitions.
  *
  * Движок для сканирования файлов деклараций, отслеживания изменений по MD5 и генерации оптимизированных ИИ определений типов TypeScript.
  */
-export class DesignTypesMake {
+export class DesignTypesMake extends DesignTypesMakeAbstract {
   /** Cached combined full type definitions content / Кэшированный объединенный полный контент определений типов */
   protected fullContent?: string
 
@@ -31,10 +32,16 @@ export class DesignTypesMake {
    *
    * Конструктор для DesignTypesMake.
    * @param ai instance of DesignTypesAi for AI optimization and directory configuration / экземпляр DesignTypesAi для ИИ оптимизации и конфигурации директории
+   * @param dir input directory path containing declaration files / входной путь к директории, содержащей файлы деклараций
+   * @param dirDist input directory path containing compiled JavaScript files / входной путь к директории, содержащей скомпилированные файлы JavaScript
    */
   constructor(
-    protected readonly ai: DesignTypesAi
-  ) { }
+    ai: DesignTypesAi,
+    dir: string = PropertiesConfig.getTypesTemporaryDirectory(),
+    dirDist: string = PropertiesConfig.getDistDir()
+  ) {
+    super(ai, dir, dirDist)
+  }
 
   /**
    * Reads processed type definition files, combines them into a single string, and cleans the content.
@@ -113,37 +120,6 @@ export class DesignTypesMake {
   }
 
   /**
-   * Checks if the file is a valid declaration file.
-   *
-   * Проверяет, является ли файл валидным файлом декларации.
-   * @param file file name / имя файла
-   * @returns true if file is valid declaration file / true, если файл является валидным файлом деклараций
-   */
-  protected isFile(file: string): boolean {
-    return file.endsWith('.d.ts')
-      && !file.endsWith('.vue.d.ts')
-      && !file.endsWith('wiki.d.ts')
-      && !file.endsWith('wikiData.d.ts')
-      && (
-        !file.includes(`${UI_DIR_CONSTRUCTOR}/`)
-        || file.endsWith('/basicTypes.d.ts')
-        || file.endsWith('/types.d.ts')
-        || file.endsWith('/props.d.ts')
-      )
-  }
-
-  /**
-   * Checks if the file is a valid JavaScript or TypeScript file.
-   *
-   * Проверяет, является ли файл валидным JavaScript или TypeScript файлом.
-   * @param file file name / имя файла
-   * @returns true if file is JavaScript / true, если файл является JavaScript
-   */
-  protected isFileJs(file: string): boolean {
-    return file.endsWith('.js')
-  }
-
-  /**
    * Checks if the content contains JSDoc comments.
    *
    * Проверяет, содержит ли контент JSDoc комментарии.
@@ -155,13 +131,14 @@ export class DesignTypesMake {
   }
 
   /**
-   * Reads the directory recursively.
+   * Reads a directory recursively.
    *
    * Читает директорию рекурсивно.
+   * @param directory directory path to read / путь к директории для чтения
    * @returns array of relative file paths / массив относительных путей к файлам
    */
-  protected getList(): string[] {
-    return PropertiesFile.readDirRecursive(this.ai.getDirArray())
+  protected getList(directory: string = this.getTemporaryDirectory()): string[] {
+    return PropertiesFile.is(directory) ? PropertiesFile.readDirRecursive(directory) : []
   }
 
   /**
@@ -184,24 +161,28 @@ export class DesignTypesMake {
   }
 
   /**
-   * Gets a list of files filtered by a provided checker function.
+   * Gets a list of files filtered by a provided checker function from a specific directory.
    *
-   * Получает список файлов, отфильтрованный переданной функцией проверки.
+   * Получает список файлов, отфильтрованный переданной функцией проверки из указанной директории.
    * @param checkFile function to check if the file matches criteria / функция проверки соответствия файла критериям
+   * @param directory source directory path / путь к исходной директории
    * @returns filtered list of design type items / отфильтрованный список элементов типов
    */
-  protected getListBy(checkFile: (file: string) => boolean): DesignTypesList {
+  protected getListBy(
+    checkFile: (file: string) => boolean,
+    directory: string = this.getTemporaryDirectory()
+  ): DesignTypesList {
     return forEach(
-      this.getList(),
+      this.getList(directory),
       (file) => {
         if (checkFile(file)) {
-          const content = this.readFile(file)
+          const content = this.readFile(file, directory)
 
           if (this.isContent(content)) {
             return {
               path: file,
               content,
-              md5: this.getMd5(content)
+              md5: this.ai.getMd5(content)
             }
           }
         }
@@ -219,7 +200,10 @@ export class DesignTypesMake {
    */
   protected getListByFilter(): DesignTypesList {
     if (this.listByFilter === undefined) {
-      this.listByFilter = this.getListBy(file => this.isFile(file))
+      this.listByFilter = this.getListBy(
+        file => this.ai.isFile(file),
+        this.getTemporaryDirectory()
+      )
     }
 
     return this.listByFilter
@@ -233,21 +217,13 @@ export class DesignTypesMake {
    */
   protected getListByFilterJs(): DesignTypesList {
     if (this.listByFilterJs === undefined) {
-      this.listByFilterJs = this.getListBy(file => this.isFileJs(file))
+      this.listByFilterJs = this.getListBy(
+        file => this.ai.isFileJs(file),
+        this.getDistDirectory()
+      )
     }
 
     return this.listByFilterJs
-  }
-
-  /**
-   * Generates MD5 hash for the given content.
-   *
-   * Генерирует MD5 хэш для переданного содержимого.
-   * @param content file or text content / содержимое файла или текста
-   * @returns MD5 hash string / MD5 хэш строка
-   */
-  protected getMd5(content: string): string {
-    return createHash('md5').update(content.trim()).digest('hex')
   }
 
   /**
@@ -269,10 +245,31 @@ export class DesignTypesMake {
    *
    * Возвращает сегменты полного пути для файла.
    * @param file file name / имя файла
+   * @param directory directory containing the file / директория, содержащая файл
    * @returns array of path segments / массив сегментов пути
    */
-  protected getPath(file: string): string[] {
-    return [...this.ai.getDirArray(), file]
+  protected getPath(file: string, directory: string = this.getTemporaryDirectory()): string[] {
+    return [directory, file]
+  }
+
+  /**
+   * Returns the path to the temporary compilation directory.
+   *
+   * Возвращает путь к временной директории компиляции.
+   * @returns temporary compilation directory path / путь к временной директории компиляции
+   */
+  protected getTemporaryDirectory(): string {
+    return this.dir
+  }
+
+  /**
+   * Returns the path to the compiled distribution directory.
+   *
+   * Возвращает путь к директории собранных файлов.
+   * @returns compiled distribution directory path / путь к директории собранных файлов
+   */
+  protected getDistDirectory(): string {
+    return this.dirDist
   }
 
   /**
@@ -298,10 +295,11 @@ export class DesignTypesMake {
    *
    * Читает содержимое файла.
    * @param path file path / путь к файлу
+   * @param directory directory containing the file / директория, содержащая файл
    * @returns file content or undefined / содержимое файла или undefined
    */
-  protected readFile(path: string): string | undefined {
-    return PropertiesFile.readFileOnly(this.getPath(path))
+  protected readFile(path: string, directory: string = this.getTemporaryDirectory()): string | undefined {
+    return PropertiesFile.readFileOnly(this.getPath(path, directory))
   }
 
   /**

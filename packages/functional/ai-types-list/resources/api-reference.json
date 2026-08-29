@@ -1,6 +1,6 @@
 {
   "path": "ai-resources/api-reference.md",
   "md5": "4b38e33b9fd417537df8bf76c492d263",
-  "name": "API Management Reactive Singletons",
-  "description": "Provides guidance and usage patterns for REST API management and reactive singleton factories in @dxtmisha/functional. Details scope factory initializations alongside reactive CRUD operations handled by useApiManagementRef. Solves client-side caching, state isolation, filtering, and contract validation for application data layers."
+  "name": "API Management & Reactive Singletons",
+  "description": "Defines usage patterns and standards for scope-isolated singleton factories and REST API management in @dxtmisha/functional. Details scope initialization strategies alongside reactive CRUD data handling with built-in caching and contract validation. Enables structured, reactive state management and API integration across application components."
 }

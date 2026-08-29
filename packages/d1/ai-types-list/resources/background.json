@@ -1,6 +1,0 @@
-{
-  "path": "ai-resources/background.md",
-  "md5": "2afb98b4b6560f08d061c233b830de18",
-  "name": "SCSS Background Guide",
-  "description": "Rules and mixins for configuring background colors, surface opacities, gradients, and backdrop filters in SCSS for the @dxtmisha/d1 library. Solves the technical task of maintaining theme-adaptive, token-aligned styling without shorthand property conflicts."
-}

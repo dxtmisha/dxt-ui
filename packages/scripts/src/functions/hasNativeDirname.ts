@@ -1,3 +1,5 @@
+// export:none
+
 /**
  * Checks whether native CommonJS `__dirname` global variable is available in the current runtime.
  *

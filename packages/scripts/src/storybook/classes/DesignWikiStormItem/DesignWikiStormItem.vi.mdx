@@ -39,9 +39,12 @@ const tagMetadata = resolver.get()
 
 ### Thu thập thông tin
 
-- `get(): WebTypesTagItem | undefined` — Trả về định nghĩa thẻ đã hợp nhất chứa tên, mô tả, nguồn và các thuộc tính.
-- `getAttribute(item: WikiStorybookProp): WebTypesAttributeItem` — Chuyển đổi một thuộc tính Storybook duy nhất thành định nghĩa thuộc tính Web-Types.
-- `getAttributes(): WebTypesAttributes` — Biên soạn danh sách đầy đủ các thuộc tính cho thành phần.
+- `get(): Promise<WebTypesVueComponentItem | undefined>` — Trả về định nghĩa thẻ hợp nhất chứa tên, mô tả, nguồn và các thuộc tính.
+- `getProp(item: WikiStorybookProp): WebTypesPropItem` — Chuyển đổi một thuộc tính Storybook thành định nghĩa thuộc tính Web-Types.
+- `getProps(): WebTypesPropItem[]` — Biên dịch danh sách đầy đủ các thuộc tính (props) của component.
+- `getSlots(): Promise<WebTypesSlots | undefined>` — Trả về các slot của component cho Web-Types.
+- `getEvents(): Promise<WebTypesEventItem[] | undefined>` — Trả về các sự kiện (emits) của component cho Web-Types.
+- `getDirName(): string` — Trả về tên thư mục của component.
 
 ### Điều khiển
 

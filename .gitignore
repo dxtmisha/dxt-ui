@@ -21,6 +21,7 @@ ai-mcp-resources.json
 ai-mcp-all-resources.json
 ai-mcp-all-resources.ts
 ai-tmp
+ai-types-temp
 
 # Editor directories and files
 .vscode/*

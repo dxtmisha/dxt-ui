@@ -1,4 +1,6 @@
-import { toCamelCaseFirst } from '@dxtmisha/functional'
+// export:none
+
+import { forEach, toCamelCaseFirst } from '@dxtmisha/functional-basic'
 import type { WikiDataItem, WikiStorybook, WikiStorybookProp } from '@dxtmisha/wiki'
 
 import { PropertiesConfig } from '../Properties/PropertiesConfig'
@@ -6,7 +8,6 @@ import { PropertiesFile } from '../Properties/PropertiesFile'
 
 import type { LibraryData } from '../../types/libraryTypes'
 import type { WebTypesVueComponentItem, WebTypesPropItem, WebTypesSlots, WebTypesEventItem, WebTypesProperty } from '../../types/webTypes'
-import { forEach } from '@dxtmisha/functional-basic'
 
 /** Regular expression for basic types that do not need to be wrapped in quotes for web-types / Регулярное выражение для базовых типов, которые не нужно оборачивать в кавычки для web-types */
 const BASE_TYPES = /^(boolean|number|string|null|any|void|object|unknown|never)$/

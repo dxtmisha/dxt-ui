@@ -1,4 +1,3 @@
-import { createHash } from 'node:crypto'
 import { forEach, isFilled } from '@dxtmisha/functional-basic'
 import { PropertiesFile } from '../Properties/PropertiesFile'
 import { DesignTypesPromptsAbstract } from './DesignTypesPromptsAbstract'
@@ -187,7 +186,7 @@ export class DesignTypesPrompts extends DesignTypesPromptsAbstract {
    * @returns MD5 hash string / MD5 хэш строка
    */
   protected getMd5(content: string): string {
-    return createHash('md5').update(content.trim()).digest('hex')
+    return this.ai.getMd5(content)
   }
 
   /**

@@ -22,6 +22,7 @@ Since `AiAbstract` is an abstract class, it cannot be instantiated directly. You
 **Constructor Parameters:**
 - `key: string` — The API key for the AI service.
 - `model: string` — The initial model identifier (e.g., 'gpt-4o').
+- `config: Record<string, any>` — Optional configuration object (defaults to `{}`).
 
 ```typescript
 // Example of a concrete implementation usage
@@ -48,6 +49,7 @@ Methods in this group support chaining.
 
 - `setKey(key: string): this` — Sets or switches the API key. Re-initializes the client if it's already active.
 - `setModel(model: string): this` — Switches the current model for generation.
+- `setConfig(config: Record<string, any>): this` — Sets or updates the configuration object.
 - `addPrompt(prompt: string): void` — Appends a new line to the persistent prompt buffer.
 - `addImage(image: AiImageItem): this` — Adds an image to the accumulation list.
 - `addContent(content: string): this` — Adds text content to the accumulation list.

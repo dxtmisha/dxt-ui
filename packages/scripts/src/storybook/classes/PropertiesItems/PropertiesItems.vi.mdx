@@ -42,10 +42,22 @@ const currentTokens = manager.get()
 - `getInfo(index): PropertyItemsItem` — phân giải siêu dữ liệu đầy đủ và phân cấp cha cho một chỉ mục nhất định.
 - `getKeys(index): string[]` — giải mã một chuỗi đường dẫn thành các phân đoạn khóa đã chuẩn hóa.
 - `getName(name, item): string` — trả về tên hiển thị của một thuộc tính, có tính đến việc đổi tên.
+- `getReName(name, item): string` — trả về tên thuộc tính đã đổi tên.
+- `getParentsName(parents, variable?): string[]` — trả về danh sách tên danh mục cha.
+- `getMedia(): PropertyItemsMedia` — trả về bản đồ truy vấn phương tiện và điểm ngắt.
+- `getLink(design, component, value): string` — giải quyết liên kết token thiết kế.
+- `getLinkToName(design, component, value): void` — liên kết token với tên thuộc tính.
+- `getLinkToValue(design, component, value): void` — liên kết token với giá trị thuộc tính.
+- `getLinkForName(design, component, value): void` — giải quyết liên kết cho tên thuộc tính.
+- `getLinkByDesign(design, value): string` — giải quyết liên kết dựa trên thiết kế hoạt động.
 - `each(callback, property?): T[]` — thực hiện duyệt đệ quy sâu của cây.
+- `eachMainOnly(callback, property?): T[]` — lặp qua các thuộc tính token chính.
 - `find(callback): PropertyItemsItem[]` — tìm kiếm các bản ghi khớp với các điều kiện tùy chỉnh.
 - `findCategory(category): PropertyItemsItem[]` — trích xuất các token thuộc về các danh mục chức năng cụ thể.
+- `findVariable(variable): PropertyItemsItem[]` — tìm kiếm thuộc tính theo biến CSS.
+- `isFocusDesign(name, design?): boolean` — kiểm tra xem thuộc tính có thuộc thiết kế hoạt động hay không.
 - `setFocusDesign(design): this` — giới hạn phạm vi hoạt động ở một thiết kế cụ thể.
+- `write(name): void` — lưu các thuộc tính vào tệp.
 
 ## Các thao tác (Operations)
 

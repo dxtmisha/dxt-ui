@@ -1,17 +1,6 @@
-import { mergeConfig } from 'vite'
-
-import { viteBasic } from './viteBasic.config.js'
+import { viteBasicFunction } from './viteBasicFunction.config.js'
 
 // https://vite.dev/config/
-export const viteFlags = mergeConfig(
-  viteBasic,
-  {
-    build: {
-      lib: {
-        entry: [
-          'src/flags.ts'
-        ]
-      }
-    }
-  }
-)
+export const viteFlags = viteBasicFunction({
+  entry: ['src/flags.ts']
+})

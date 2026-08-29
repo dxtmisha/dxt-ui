@@ -4,31 +4,56 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # Lớp BuildPackages
 
-Lớp `BuildPackages` là một tiện ích chịu trách nhiệm xây dựng lại các gói npm đã thay đổi trong không gian làm việc monorepo. Nó quét thư mục `packages`, xác định các thay đổi phiên bản so với bộ nhớ đệm nhật ký cục bộ và thực hiện biên dịch tăng dần chỉ cho các gói có phiên bản được cập nhật.
+Lớp `BuildPackages` là một bộ điều phối (orchestrator) chịu trách nhiệm quét, lọc, sắp xếp theo thứ tự ưu tiên và xây dựng tăng dần các gói npm trong monorepo. Lớp này theo dõi các thay đổi phiên bản bằng tệp nhật ký bộ nhớ đệm cục bộ (`./logs/ui-build.log.json`) và chỉ biên dịch các mô-đun có phiên bản đã thay đổi hoặc chưa từng được xây dựng.
 
 ## Các tính năng chính
 
-- **Tự động quét thư mục** — Quét thư mục gói (`packages/`) để tìm các thư mục chứa tệp `package.json` hợp lệ.
-- **Bộ nhớ đệm tăng dần theo phiên bản** — So sánh phiên bản gói với dữ liệu trong `./logs/ui-build.log.json` để ngăn việc xây dựng lại mã chưa thay đổi.
-- **Giải quyết tập lệnh thông minh** — Chạy `build-recovery` nếu được định nghĩa trong tập lệnh `package.json`, ngược lại sẽ chuyển sang xây dựng mặc định `build`.
-- **Lọc gói thử nghiệm** — Bỏ qua các gói được đánh dấu bằng thuộc tính `"ui-test": true`.
+- **Tự động quét Monorepo**: Quét thư mục gói (`packages/`) và phát hiện tất cả các gói hoạt động có chứa tệp `package.json` hợp lệ.
+- **Sắp xếp theo thứ tự ưu tiên (`ui-priority`)**: Sắp xếp các gói theo `ui-priority` (mặc định là `500`, thứ tự tăng dần), đảm bảo các gói tiện ích và thiết kế cấp thấp được xây dựng trước các thành phần giao diện phụ thuộc.
+- **Bộ nhớ đệm tăng dần theo phiên bản**: So sánh phiên bản gói với dữ liệu trong `./logs/ui-build.log.json` để ngăn việc xây dựng lại mã chưa thay đổi.
+- **Giải quyết tập lệnh thông minh**: Tự động chọn lệnh xây dựng đầu tiên có sẵn trong `package.json` theo thứ tự ưu tiên nghiêm ngặt:
+  1. `prepublishOnly` (Ưu tiên 1)
+  2. `build-recovery` (Ưu tiên 2)
+  3. `build` (Ưu tiên 3)
+- **Lọc gói thử nghiệm**: Bỏ qua các gói được đánh dấu bằng thuộc tính `"ui-test": true`.
+- **Tự động lưu trữ nhật ký**: Ghi lại các phiên bản cập nhật vào `./logs/ui-build.log.json` chỉ khi có ít nhất một gói được biên dịch thành công (`changed > 0`).
 
-## Khởi tạo
+## Hàm dựng (Constructor)
 
-Bạn có thể tạo một phiên bản của `BuildPackages` bằng cách truyền tùy chọn đường dẫn thư mục gói tùy chỉnh.
+Hàm dựng chấp nhận đường dẫn thư mục gói tùy chỉnh (mặc định là hằng số `UI_DIR_PACKAGES` = `'packages'`) và tải nhật ký bộ nhớ đệm hiện có từ `./logs/ui-build.log.json`:
 
 ```typescript
-import { BuildPackages } from './BuildPackages'
+import { BuildPackages } from '@dxtmisha/scripts'
 
+// Khởi tạo với thư mục mặc định ('packages')
 const builder = new BuildPackages()
-await builder.make()
+
+// Hoặc chỉ định đường dẫn gói tùy chỉnh
+const customBuilder = new BuildPackages('custom-packages')
+await customBuilder.make()
 ```
+
+### Các thuộc tính của lớp
+
+- `protected readonly path: string` — Đường dẫn thư mục gốc chứa các gói monorepo (mặc định là `'packages'`).
+- `protected readonly log: Record<string, string>` — Bản đồ lưu trữ tạm thời các phiên bản gói đã lưu `{ [packageName]: version }`.
 
 ## Các phương thức
 
-- `make(): Promise<void>` — Khởi tạo quá trình quét và kích hoạt quy trình xây dựng tăng dần cho từng gói được phát hiện.
-- `build(packageFile: PackageFile): Promise<boolean>` — Thực thi lệnh xây dựng thực tế (`npm run build-recovery` hoặc `npm run build`) cho gói được chỉ định.
-- `isUpdate(packageFile: PackageFile): boolean` — Kiểm tra xem phiên bản hiện tại của gói trong `package.json` có khác với phiên bản được lưu trữ trong tệp nhật ký hay không.
-- `getVersionLog(name: string): string` — Lấy phiên bản được lưu trong bộ nhớ đệm của gói từ nhật ký xây dựng.
-- `updateLog(packageFile: PackageFile): void` — Cập nhật bản ghi nhật ký xây dựng trong bộ nhớ với phiên bản gói hiện tại.
-- `saveLog(): void` — Lưu nhật ký xây dựng từ bộ nhớ tạm vào tệp `./logs/ui-build.log.json`.
+- `make(): Promise<void>` — Quy trình điều phối chính:
+  1. Lấy danh sách các gói hợp lệ đã được sắp xếp qua `getList()`.
+  2. Ghi nhật ký tổng số gói tìm thấy (`Build packages(N)...`).
+  3. Đối với mỗi gói, kiểm tra xem có cần cập nhật hay không (`isUpdate`).
+  4. Kích hoạt biên dịch gói nếu cần (`build`).
+  5. Khi xây dựng thành công, cập nhật phiên bản trong bộ nhớ tạm (`updateLog`) và tăng số đếm `changed`.
+  6. Nếu `changed > 0`, lưu tệp nhật ký cập nhật vào đĩa (`saveLog`) và ghi nhật ký `Build packages changed: N`.
+  7. Nếu không có gói nào cần biên dịch, ghi nhật ký `Build packages - no changes`.
+- `protected build(packageFile: PackageFile): Promise<boolean>` — Thực thi lệnh xây dựng cho một gói:
+  - Xác định tập lệnh qua `packageFile.getCodeBuildOrRecovery()` (`prepublishOnly` -> `build-recovery` -> `build`).
+  - Chạy `npm run <script>` bên trong thư mục gói bằng hàm tiện ích `run`.
+  - Trả về `true` khi hoàn thành thành công, hoặc `false` nếu thực thi thất bại / không tìm thấy tập lệnh xây dựng.
+- `protected isUpdate(packageFile: PackageFile): boolean` — Kiểm tra xem gói có cần xây dựng lại hay không thông qua `!packageFile.isVersionConsistency(this.getVersionLog(packageFile.getName()))`.
+- `protected getVersionLog(name: string): string` — Lấy phiên bản gói được lưu trong bộ nhớ đệm từ nhật ký (trả về `'0.0.0'` nếu gói chưa từng được ghi nhật ký).
+- `protected updateLog(packageFile: PackageFile): void` — Cập nhật mục phiên bản trong bộ nhớ `this.log[packageFile.getName()] = packageFile.getVersion()`.
+- `protected saveLog(): void` — Lưu bản đồ nhật ký hiện tại `this.log` vào `./logs/ui-build.log.json` thông qua `PropertiesFile.writeByPath`.
+- `private getList(): PackageFile[]` — Quét `this.path`, lọc các thư mục (đảm bảo tồn tại `package.json` và không có `"ui-test": true`), và sắp xếp các gói theo thứ tự tăng dần dựa trên `ui-priority` (mặc định là `500`).

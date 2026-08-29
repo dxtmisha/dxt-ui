@@ -17,6 +17,8 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 **Параметры конструктора:**
 - `ai: DesignTypesAi` — экземпляр клиента ИИ для сжатия и оптимизации деклараций.
+- `dir: string` — путь к директории с декларациями типов (по умолчанию `PropertiesConfig.getTypesTemporaryDirectory()`).
+- `dirDist: string` — путь к директории скомпилированных JavaScript-файлов (по умолчанию `PropertiesConfig.getDistDir()`).
 
 ```typescript
 import { DesignTypesAi, DesignTypesMake } from '@dxtmisha/scripts'
@@ -36,8 +38,8 @@ const makeTypes = new DesignTypesMake(ai)
 ### `make(): Promise<this>`
 Выполняет полный цикл генерации, включая проверку кэша, обработку через ИИ и сохранение `ai-types.md`.
 
-### `save(content: string): void`
-Сохраняет итоговые определения типов в файл `ai-types.md`.
+### `makeSave(): this`
+Генерирует полный контент типов и сохраняет его в файл `ai-types.md`.
 
 ## Пример использования
 

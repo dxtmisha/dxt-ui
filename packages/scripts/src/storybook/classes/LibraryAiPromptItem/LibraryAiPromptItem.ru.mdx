@@ -51,11 +51,15 @@ const promptBlock = item.make()
 - `isInfo()` — Проверяет существование файла `info.txt`.
 - `isTypes()` — Проверяет существование файла `ai-types.txt`.
 - `isScreenshot()` — Проверяет существование папки `ai-screenshot`.
+- `isDeveloper()` — Проверяет существование файла `ai-developer.md`.
+- `isMcp()` — Проверяет существование ресурсов MCP-сервера.
 
 ---
 
 ### Публичные и защищенные вспомогательные методы
 - `getProjectName(): string` — Считывает имя проекта из локального файла `package.json`.
+- `getDir(): string[]` — Возвращает массив сегментов пути к директории модуля.
+- `getMcp(): Record<string, any>[] | undefined` — Считывает и возвращает конфигурацию ресурсов MCP-сервера.
 - `getPath(dirFile: string): string[]` — Возвращает полный массив сегментов пути для указанного файла в папке модуля.
 - `getPathString(): string` — Возвращает сегменты пути модуля, объединенные через слэш.
 - `getPackageJson(): Record<string, any>` — Считывает и кэширует манифест `package.json`.

@@ -4,38 +4,38 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # Lớp ComponentCreator
 
-Một lớp tiện ích để tự động hóa việc tạo khung sườn (skeleton) của thành phần trong các thư mục trống. Nó chủ động xác định các thư mục trong thư mục thành phần còn thiếu tệp và khởi tạo chúng bằng các mẫu tiêu chuẩn của dự án.
+Lớp `ComponentCreator` là một tiện ích tự động hóa để phát hiện các thư mục trống trong thư mục thành phần (`src/components/`) và tạo cấu trúc ban đầu (scaffolding) cho chúng. Lớp này quét các đường dẫn thành phần đã được định cấu hình và bắt đầu tạo toàn bộ bộ tệp mẫu thông qua `ComponentItem`.
 
 ## Các tính năng chính
 
-- **Tự động khám phá** — quét thư mục thành phần theo cách đệ quy để tìm các thư mục trống.
-- **Tạo khung sườn thông minh** — tự động kích hoạt quá trình tạo cho mỗi thư mục được xác định.
-- **Tính nhất quán của dự án** — đảm bảo tất cả các thành phần mới đều bắt đầu với cùng một cấu trúc cơ bản và các tệp giống nhau.
+- **Tự động khám phá**: Quét đệ quy thư mục `src/components/` bằng `PropertiesFile.readDirOnlyRecursive`.
+- **Lọc thư mục trống**: Chọn các thư mục hoàn toàn không chứa bất kỳ tệp nào.
+- **Tạo hàng loạt**: Khởi tạo `ComponentItem` cho mỗi thư mục trống được phát hiện để tạo bộ tệp thành phần hoàn chỉnh.
+- **Tính nhất quán của hệ thống thiết kế**: Đảm bảo cấu trúc cơ sở thống nhất cho tất cả các thành phần mới được tạo.
 
 ## Khởi tạo
 
-Khởi tạo một phiên bản mới của `ComponentCreator`. Nó tự động nhắm mục tiêu vào thư mục thành phần tiêu chuẩn được xác định trong cấu hình dự án.
+Khởi tạo một phiên bản của `ComponentCreator`. Lớp này tự động nhắm mục tiêu vào thư mục thành phần tiêu chuẩn `src/components/`:
 
 ```typescript
 import { ComponentCreator } from '@dxtmisha/scripts'
 
 const creator = new ComponentCreator()
+creator.make()
 ```
 
 ## Các phương thức
 
-### `make`
+- `make(): void` — Phương thức điều phối chính:
+  1. Gọi `getDirs()` để lấy danh sách các đường dẫn thư mục trống.
+  2. Đối với mỗi đường dẫn phát hiện được, tạo một phiên bản `ComponentItem(path)` và gọi `.make()`.
+- `protected getDirs(): string[]` — Quét `UI_DIRS_COMPONENTS` (`src/components/`) qua `PropertiesFile.readDirOnlyRecursive` và trả về mảng các đường dẫn thư mục mà `PropertiesFile.readDir(getComponentPaths(path)).length === 0`.
 
-Phương thức điều phối chính thực hiện quét đệ quy thư mục thành phần, xác định các thư mục không có tệp và kích hoạt quá trình tạo khung sườn `ComponentItem` cho mỗi thư mục đó.
+## Ví dụ sử dụng
 
-**Trả về:** `void`
+```typescript
+import { ComponentCreator } from '@dxtmisha/scripts'
 
-## Ví dụ
-
-### Quy trình tạo khung sườn hoàn chỉnh
-Chạy creator như một phần của kịch bản xây dựng hoặc chuẩn bị để đảm bảo rằng ngay cả các thư mục trống được tạo thủ công cũng được khởi tạo đúng cách với các tệp cần thiết (`index.ts`, `types.ts`, v.v.).
-
-```javascript
-const creator = new ComponentCreator()
-creator.make()
+// Quét và tạo khung sườn cho tất cả các thư mục thành phần trống
+new ComponentCreator().make()
 ```

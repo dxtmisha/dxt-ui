@@ -4,43 +4,47 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # Класс ComponentItem
 
-Специализированный класс для генерации отдельных файлов компонентов на основе шаблонов. Он управляет всем процессом создания: от чтения образцов шаблонов до выполнения динамических замен строк и установки правильных разрешений файловой системы.
+Класс `ComponentItem` отвечает за создание и запись полного набора шаблонных файлов для конкретного компонента. Он загружает встроенные шаблоны (`componentDocTemplates`), выполняет контекстную замену плейсхолдеров и сохраняет файлы с корректными правами доступа.
 
-## Ключевые особенности
+## Ключевые возможности
 
-- **На основе шаблонов** — использует централизованный репозиторий шаблонов компонентов для единообразной генерации файлов.
-- **Динамические замены** — автоматически заменяет маркеры, такие как `ComponentDoc`, `[project]` и `[path]`, на контекстные значения.
-- **Поддержка плейсхолдеров** — обрабатывает преобразования как в camelCase (имена классов), так и в kebab-case (имена файлов).
-- **Управление правами** — гарантирует, что сгенерированные файлы имеют правильные права на выполнение, чтение и запись.
+- **Генерация 8 шаблонных файлов**: Создает Vue 3 SFC (`.vue`), входную точку `index.ts`, типы `types.ts`, промпт материалов (`materials/prompt.md`), подкомпоненты (`subcomponents/.gitignore`) и документацию Storybook (`wiki/ComponentDoc.mdx`, `wiki/ComponentDoc.stories.ts`, `wiki/prompt.md`).
+- **Динамическая замена плейсхолдеров**:
+  - `ComponentDoc` -> имя компонента в PascalCase (`this.getName()`)
+  - `component-doc` -> имя компонента в kebab-case (`toKebabCase(this.getName())`)
+  - `[project]` -> имя пакета из `package.json` (`this.getProjectName()`)
+  - `[path]` -> относительный путь компонента (`src/components/ComponentName`)
+  - `_.gitignore.txt` -> `.gitignore`
+- **Управление правами доступа**: Вызывает `PropertiesFile.chmod` для всех записанных файлов.
 
-## Инициализация
+## Конструктор
 
-Для инициализации объекта вызовите конструктор `ComponentItem(path)`.
-
-**Параметры:**
-- `path: string` — относительный или абсолютный путь к директории, в которой будет создан компонент.
+Принимает путь к директории компонента:
 
 ```typescript
 import { ComponentItem } from '@dxtmisha/scripts'
 
-const component = new ComponentItem('src/components/MyComponent')
-
-// Генерация файлов
+const component = new ComponentItem('Button')
 component.make()
 ```
 
+### Свойства класса
+
+- `protected readonly path: string` — относительный путь к директории компонента.
+- `protected sample: Record<string, string>` — карта файлов шаблонов (`componentDocTemplates`).
+
 ## Методы
 
-### Управление
-
-- `make(): void` — основной метод, который считывает все файлы шаблонов и записывает их обработанные версии в директорию компонента.
-
-## Примеры
-
-### Ручное создание заготовки
-В то время как `ComponentCreator` управляет пакетным созданием, `ComponentItem` можно использовать напрямую для точного контроля над конкретным компонентом.
-
-```javascript
-const item = new ComponentItem('packages/ui/src/components/Avatar')
-item.make()
-```
+- `make(): void` — основной метод генерации:
+  1. Выводит в консоль имя компонента и путь (`Component create: <Name>`, `path: <path>`).
+  2. Итерирует по всем шаблонам из `getFilesSample()`.
+  3. Читает содержимое шаблона (`readSample`), выполняет подстановку данных (`replacement`) и записывает файл (`writeFile`).
+  4. Выводит в консоль `end`.
+- `protected getFilePath(path: string): string[]` — формирует путь назначения для выходного файла через `getComponentPaths(this.path)` с заменой имени файла.
+- `protected getFilesSample(): string[]` — возвращает список путей всех файлов шаблонов (`Object.keys(this.sample)`).
+- `protected getName(): string` — извлекает имя компонента из последнего сегмента пути `this.path`.
+- `protected getProjectName(): string` — возвращает имя проекта из `package.json` или `'Project'`.
+- `protected readPackage(): Record<string, any>` — считывает `package.json` текущего пакета.
+- `protected readSample(path: string): string` — возвращает исходный текст шаблона по его ключу.
+- `protected replacement(contentOrPath: string): string` — выполняет строковые подстановки плейсхолдеров в путях и содержимом файлов.
+- `protected writeFile(path: string, content: string): void` — записывает сгенерированный файл на диск через `PropertiesFile.writeByPath` и применяет `PropertiesFile.chmod`.

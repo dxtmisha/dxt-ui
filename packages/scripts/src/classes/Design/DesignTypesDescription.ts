@@ -2,7 +2,7 @@ import { isFilled } from '@dxtmisha/functional-basic'
 
 import { PropertiesFile } from '../Properties/PropertiesFile'
 import { DesignTypesAi } from './DesignTypesAi'
-import { DesignTypesMake } from './DesignTypesMake'
+import type { DesignTypesMakeAbstract } from './DesignTypesMakeAbstract'
 import type { DesignTypesPromptsAbstract } from './DesignTypesPromptsAbstract'
 
 import { UI_FILE_AI_DESCRIPTION } from '../../config'
@@ -21,15 +21,13 @@ export class DesignTypesDescription {
    *
    * Конструктор для DesignTypesDescription.
    * @param ai instance of DesignTypesAi for AI interactions / экземпляр DesignTypesAi для ИИ взаимодействия
-   * @param makeTypes instance of DesignTypesMake for type definitions content access / экземпляр DesignTypesMake для доступа к контенту определений типов
+   * @param makeTypes instance of DesignTypesMakeAbstract for type definitions content access / экземпляр DesignTypesMakeAbstract для доступа к контенту определений типов
    * @param prompts instance of DesignTypesPromptsAbstract for prompt list management / экземпляр DesignTypesPromptsAbstract для управления списком промптов
-   * @param isRaw flag disabling AI processing / флаг отключения ИИ обработки
    */
   constructor(
     protected readonly ai: DesignTypesAi,
-    protected readonly makeTypes: DesignTypesMake,
-    protected readonly prompts: DesignTypesPromptsAbstract,
-    protected readonly isRaw: boolean = false
+    protected readonly makeTypes: DesignTypesMakeAbstract,
+    protected readonly prompts: DesignTypesPromptsAbstract
   ) { }
 
   /**
@@ -59,17 +57,12 @@ export class DesignTypesDescription {
    * @returns current instance / текущий экземпляр
    */
   async make(): Promise<this> {
-    let fullDescription = ''
+    const fullContent = this.makeTypes.getFullContent()
+    const fullJsContent = this.makeTypes.getFullJsContent()
+    const promptsText = await this.prompts.toAiPrompts()
 
-    if (!this.isRaw) {
-      const fullContent = this.makeTypes.getFullContent()
-      const fullJsContent = this.makeTypes.getFullJsContent()
-      const promptsText = await this.prompts.toAiPrompts()
-
-      const aiDescription = await this.toAiDescription(fullContent, fullJsContent)
-
-      fullDescription = `${aiDescription}\n${promptsText}`
-    }
+    const aiDescription = await this.toAiDescription(fullContent, fullJsContent)
+    const fullDescription = `${aiDescription}\n${promptsText}`
 
     this.fullDescription = fullDescription
     this.saveDescription(fullDescription)

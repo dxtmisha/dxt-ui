@@ -4,31 +4,56 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 # BuildPackages Class
 
-The `BuildPackages` class is a utility responsible for rebuilding changed npm packages across the monorepo workspace. It scans the `packages` directory, determines version changes compared to a local log cache, and incrementally builds only packages with updated versions.
+The `BuildPackages` class is an orchestrator responsible for scanning, filtering, priority sorting, and incrementally building npm packages across the monorepo workspace. It tracks package version changes using a local log cache file (`./logs/ui-build.log.json`) and compiles only modules whose versions have changed or have not yet been built.
 
 ## Key Features
 
-- **Automated Directory Scanning** — Scans the packages folder (`packages/`) for directories containing a valid `package.json`.
-- **Incremental Version-Based Caching** — Compares the package version with `./logs/ui-build.log.json` to prevent rebuilding unchanged code.
-- **Intelligent Script Resolution** — Runs `build-recovery` if defined in `package.json` scripts, otherwise falls back to `build`.
-- **Test Package Filtering** — Ignores packages marked with `"ui-test": true`.
+- **Automated Monorepo Scanning**: Scans the packages directory (`packages/`) and discovers all active packages containing a valid `package.json`.
+- **Priority-Based Build Ordering (`ui-priority`)**: Sorts packages by `ui-priority` (defaults to `500`, ascending order), ensuring lower-level utility and design packages build prior to dependent high-level components.
+- **Incremental Version-Based Caching**: Compares the package version with `./logs/ui-build.log.json` to prevent rebuilding unchanged code.
+- **Intelligent Script Resolution**: Automatically resolves the first available build command in `package.json` following strict priority order:
+  1. `prepublishOnly` (Priority 1)
+  2. `build-recovery` (Priority 2)
+  3. `build` (Priority 3)
+- **Test Package Filtering**: Ignores packages marked with `"ui-test": true`.
+- **Automatic Log Persistence**: Writes updated build versions to `./logs/ui-build.log.json` only when at least one package was successfully compiled (`changed > 0`).
 
-## Initialization
+## Constructor
 
-You can create an instance of `BuildPackages` by optionally passing a custom packages directory path.
+The constructor accepts a custom packages directory path (defaults to the `UI_DIR_PACKAGES` constant = `'packages'`) and loads the existing build cache log from `./logs/ui-build.log.json`:
 
 ```typescript
-import { BuildPackages } from './BuildPackages'
+import { BuildPackages } from '@dxtmisha/scripts'
 
+// Initialize using default packages directory ('packages')
 const builder = new BuildPackages()
-await builder.make()
+
+// Or specify a custom packages path
+const customBuilder = new BuildPackages('custom-packages')
+await customBuilder.make()
 ```
+
+### Class Properties
+
+- `protected readonly path: string` — Monorepo packages root directory path (defaults to `'packages'`).
+- `protected readonly log: Record<string, string>` — In-memory map of cached package versions `{ [packageName]: version }`.
 
 ## Methods
 
-- `make(): Promise<void>` — Initiates scanning and triggers the incremental build process for each detected package.
-- `build(packageFile: PackageFile): Promise<boolean>` — Executes the actual build command (`npm run build-recovery` or `npm run build`) for the package.
-- `isUpdate(packageFile: PackageFile): boolean` — Checks whether the package's version in `package.json` is different from the version stored in the log file.
-- `getVersionLog(name: string): string` — Retrieves the cached version of the package from the build log.
-- `updateLog(packageFile: PackageFile): void` — Updates the in-memory build log with the current package version.
-- `saveLog(): void` — Saves the in-memory build log to the `./logs/ui-build.log.json` file.
+- `make(): Promise<void>` — Main orchestration pipeline:
+  1. Retrieves the sorted list of valid packages via `getList()`.
+  2. Logs total discovered packages count (`Build packages(N)...`).
+  3. For each package, verifies whether an update is required (`isUpdate`).
+  4. Triggers package compilation if needed (`build`).
+  5. On successful build, updates the in-memory version log (`updateLog`) and increments `changed` count.
+  6. If `changed > 0`, saves the updated log file to disk (`saveLog`) and logs `Build packages changed: N`.
+  7. If no packages required compilation, logs `Build packages - no changes`.
+- `protected build(packageFile: PackageFile): Promise<boolean>` — Executes the build command for a package:
+  - Resolves the script via `packageFile.getCodeBuildOrRecovery()` (`prepublishOnly` -> `build-recovery` -> `build`).
+  - Runs `npm run <script>` inside the package directory using the `run` helper function.
+  - Returns `true` on successful completion, or `false` on execution failure / if no build script was found.
+- `protected isUpdate(packageFile: PackageFile): boolean` — Checks if a package requires rebuilding via `!packageFile.isVersionConsistency(this.getVersionLog(packageFile.getName()))`.
+- `protected getVersionLog(name: string): string` — Retrieves the cached package version from the log (returns `'0.0.0'` if the package has not been logged yet).
+- `protected updateLog(packageFile: PackageFile): void` — Updates the in-memory version entry `this.log[packageFile.getName()] = packageFile.getVersion()`.
+- `protected saveLog(): void` — Persists the current in-memory log map `this.log` to `./logs/ui-build.log.json` via `PropertiesFile.writeByPath`.
+- `private getList(): PackageFile[]` — Scans `this.path`, filters directories (ensures `package.json` exists and `"ui-test": true` is absent), and sorts packages in ascending order based on `ui-priority` (defaults to `500`).

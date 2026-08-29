@@ -1,0 +1,44 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/scripts/Classes/DesignTypesBuildAbstract - Абстрактный компилятор деклараций TypeScript'/>
+
+# Класс DesignTypesBuildAbstract
+
+Абстрактный базовый класс `DesignTypesBuildAbstract` определяет интерфейс и общую архитектуру для компиляции исходных файлов TypeScript и Vue в файлы деклараций типов (`.d.ts`) во временную директорию перед их обработкой и оптимизацией для ИИ.
+
+## Конструктор
+
+**Параметры:**
+- `temporaryDirectory: string` — путь к временной директории для хранения скомпилированных файлов деклараций. По умолчанию получается из `PropertiesConfig.getTypesTemporaryDirectory()`.
+
+```typescript
+import { DesignTypesBuildAbstract } from '@dxtmisha/scripts'
+
+class CustomTypesBuild extends DesignTypesBuildAbstract {
+  is(): boolean {
+    // Проверка существования директории
+    return false
+  }
+
+  clean(): this {
+    // Очистка временной директории
+    return this
+  }
+
+  build(): this {
+    // Сборка деклараций типов
+    return this
+  }
+}
+```
+
+## Методы
+
+### `abstract is(): boolean`
+Проверяет, существует ли временная директория компиляции на диске.
+
+### `abstract clean(): this`
+Очищает или удаляет временную директорию компиляции со всеми сгенерированными декларациями.
+
+### `abstract build(): this`
+Выполняет компиляцию деклараций типов из исходных файлов во временную директорию.
