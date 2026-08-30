@@ -1,10 +1,10 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { PackageFile } from '../../classes/Package/PackageFile'
 
-const { mockExec } = vi.hoisted(() => {
+const { mockExecFile } = vi.hoisted(() => {
   const fn: any = vi.fn()
   fn[Symbol.for('nodejs.util.promisify.custom')] = vi.fn()
-  return { mockExec: fn }
+  return { mockExecFile: fn }
 })
 
 vi.mock('node:child_process', async (importOriginal) => {
@@ -13,9 +13,9 @@ vi.mock('node:child_process', async (importOriginal) => {
     ...actual,
     default: {
       ...actual,
-      exec: mockExec
+      execFile: mockExecFile
     },
-    exec: mockExec
+    execFile: mockExecFile
   }
 })
 
@@ -31,7 +31,7 @@ describe('run', () => {
     vi.spyOn(mockPackageFile, 'getName').mockReturnValue('scripts')
     vi.spyOn(mockPackageFile, 'getDir').mockReturnValue(['packages', 'scripts'])
 
-    mockExec[Symbol.for('nodejs.util.promisify.custom')].mockResolvedValue({ stdout: 'build success', stderr: '' })
+    mockExecFile[Symbol.for('nodejs.util.promisify.custom')].mockResolvedValue({ stdout: 'build success', stderr: '' })
 
     const logSpy = vi.spyOn(console, 'log').mockImplementation(() => {})
 
@@ -46,7 +46,7 @@ describe('run', () => {
     const mockPackageFile = new PackageFile(['packages', 'scripts'])
     vi.spyOn(mockPackageFile, 'getName').mockReturnValue('scripts')
 
-    mockExec[Symbol.for('nodejs.util.promisify.custom')].mockRejectedValue(new Error('Command failed'))
+    mockExecFile[Symbol.for('nodejs.util.promisify.custom')].mockRejectedValue(new Error('Command failed'))
 
     const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
 

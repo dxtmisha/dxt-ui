@@ -51,7 +51,7 @@ describe('AiGoogleCliLite and AiGoogleCli', () => {
 
   it('executes child_process.execFile and returns stdout', async () => {
     vi.spyOn(PropertiesFile, 'writeByPath').mockImplementation(() => {})
-    const removeDirSpy = vi.spyOn(PropertiesFile, 'removeDir').mockImplementation(() => {})
+    const removeFileSpy = vi.spyOn(PropertiesFile, 'removeFile').mockImplementation(() => {})
 
     vi.mocked(execFile).mockImplementation(((
       _file: string,
@@ -69,12 +69,12 @@ describe('AiGoogleCliLite and AiGoogleCli', () => {
     const result = await ai.testResponse('gemini-2.5-flash', 'User instruction')
 
     expect(result).toBe('Generated Gemini CLI response')
-    expect(removeDirSpy).toHaveBeenCalledWith('./ai-tmp')
+    expect(removeFileSpy).toHaveBeenCalled()
   })
 
   it('handles child_process.execFile error gracefully', async () => {
     vi.spyOn(PropertiesFile, 'writeByPath').mockImplementation(() => {})
-    const removeDirSpy = vi.spyOn(PropertiesFile, 'removeDir').mockImplementation(() => {})
+    const removeFileSpy = vi.spyOn(PropertiesFile, 'removeFile').mockImplementation(() => {})
 
     vi.mocked(execFile).mockImplementation(((
       _file: string,
@@ -92,7 +92,7 @@ describe('AiGoogleCliLite and AiGoogleCli', () => {
     const result = await ai.testResponse('gemini-2.5-flash', 'User instruction')
 
     expect(result).toBe('')
-    expect(removeDirSpy).toHaveBeenCalledWith('./ai-tmp')
+    expect(removeFileSpy).toHaveBeenCalled()
   })
 
   it('initializes AiGoogleCli with credentials from PropertiesConfig', () => {

@@ -1,14 +1,13 @@
-import ts from 'typescript'
-import { forEach, isFilled } from '@dxtmisha/functional-basic'
-import { getPackageJson } from '../../functions/getPackageJson'
+import { isFilled } from '@dxtmisha/functional-basic'
 import { PropertiesConfig } from '../Properties/PropertiesConfig'
-import { PropertiesFile } from '../Properties/PropertiesFile'
 import { DesignTypesAi } from './DesignTypesAi'
 import { DesignTypesMakeAbstract } from './DesignTypesMakeAbstract'
+import { DesignTypesMakeFile } from './DesignTypesMakeFile'
+import { DesignTypesMakeTsTransformer } from './DesignTypesMakeTsTransformer'
 
 import type { DesignTypesItem, DesignTypesList } from '../../types/designTypes'
 
-import { UI_DIR_AI_TYPES_LIST, UI_FILE_AI_TYPES } from '../../config'
+import aiTypeOptimizationPrompt from '../../media/templates/prompts/aiTypeOptimization.en.md?raw'
 
 /**
  * Engine for scanning declaration files, MD5 change tracking, and generating AI-optimized TypeScript type definitions.
@@ -22,14 +21,14 @@ export class DesignTypesMake extends DesignTypesMakeAbstract {
   /** Cached combined JS content / Кэшированный объединенный JS контент */
   protected fullJsContent?: string
 
-  /** Cached list of filtered type definition files / Кэшированный список отфильтрованных файлов определений типов */
-  protected listByFilter?: DesignTypesList
-
-  /** Cached list of filtered JavaScript files / Кэшированный список отфильтрованных JavaScript файлов */
-  protected listByFilterJs?: DesignTypesList
-
   /** Maximum number of type definition files processed by AI concurrently / Максимальное количество файлов определений типов, обрабатываемых ИИ одновременно */
   protected readonly AI_TYPES_CONCURRENCY = 8
+
+  /** TypeScript AST transformer for cleaning declaration file content / TypeScript AST трансформер для очистки содержимого файлов деклараций */
+  protected readonly tsTransformer = new DesignTypesMakeTsTransformer()
+
+  /** Instance of DesignTypesMakeFile for file operations / Экземпляр DesignTypesMakeFile для файловых операций */
+  protected readonly files: DesignTypesMakeFile
 
   /**
    * Constructor for DesignTypesMake.
@@ -45,6 +44,7 @@ export class DesignTypesMake extends DesignTypesMakeAbstract {
     dirDist: string = PropertiesConfig.getDistDir()
   ) {
     super(ai, dir, dirDist)
+    this.files = new DesignTypesMakeFile(this.ai, this.dir, this.dirDist)
   }
 
   /**
@@ -55,10 +55,10 @@ export class DesignTypesMake extends DesignTypesMakeAbstract {
    */
   getFullContent(): string {
     if (this.fullContent === undefined) {
-      const files = this.getListByFilter()
-      const processedFiles = this.getListAi(files)
+      const files = this.files.getListByFilter()
+      const processedFiles = this.files.getListAi(files)
 
-      this.fullContent = this.toOneFile(processedFiles)
+      this.fullContent = this.files.toOneFile(processedFiles)
     }
 
     return this.fullContent
@@ -72,7 +72,7 @@ export class DesignTypesMake extends DesignTypesMakeAbstract {
    */
   getFullJsContent(): string {
     if (this.fullJsContent === undefined) {
-      this.fullJsContent = this.toOneFile(this.getListByFilterJs())
+      this.fullJsContent = this.files.toOneFile(this.files.getListByFilterJs())
     }
 
     return this.fullJsContent
@@ -85,10 +85,10 @@ export class DesignTypesMake extends DesignTypesMakeAbstract {
    * @returns current instance / текущий экземпляр
    */
   async make(): Promise<this> {
-    const files = this.getListByFilter()
+    const files = this.files.getListByFilter()
     const fullJsContent = this.getFullJsContent()
 
-    const updatedFiles = this.saveList(files)
+    const updatedFiles = this.files.saveList(files)
 
     await this.saveListAi(updatedFiles, fullJsContent)
 
@@ -104,23 +104,9 @@ export class DesignTypesMake extends DesignTypesMakeAbstract {
   makeSave(): this {
     const fullContent = this.getFullContent()
 
-    this.save(fullContent)
+    this.files.save(fullContent)
 
     return this
-  }
-
-  /**
-   * Checks if the content contains type definitions.
-   *
-   * Проверяет, содержит ли контент определения типов.
-   * @param content file content / содержимое файла
-   * @returns true if content contains exports / true, если контент содержит экспорты
-   */
-  protected isContent(content?: string): content is string {
-    return Boolean(
-      content
-      && content.includes('export')
-    )
   }
 
   /**
@@ -135,148 +121,6 @@ export class DesignTypesMake extends DesignTypesMakeAbstract {
   }
 
   /**
-   * Reads a directory recursively.
-   *
-   * Читает директорию рекурсивно.
-   * @param directory directory path to read / путь к директории для чтения
-   * @returns array of relative file paths / массив относительных путей к файлам
-   */
-  protected getList(directory: string = this.getTemporaryDirectory()): string[] {
-    return PropertiesFile.is(directory) ? PropertiesFile.readDirRecursive(directory) : []
-  }
-
-  /**
-   * Gets a list of type definition files with cleaned content read from the AI types list directory.
-   *
-   * Получает список файлов определений типов с очищенным содержимым, прочитанным из директории списка ИИ типов.
-   * @param files list of type definition files / список файлов определений типов
-   * @returns list of type definition files with cleaned AI content / список файлов определений типов с очищенным ИИ содержимым
-   */
-  protected getListAi(files: DesignTypesList): DesignTypesList {
-    return forEach(files, (item) => {
-      const raw = PropertiesFile.readFileOnly([UI_DIR_AI_TYPES_LIST, item.path])
-      const content = raw ? raw.replace(/^\/\/ md5:[^\n]*\n?/, '') : item.content
-
-      return {
-        ...item,
-        content: content.trim()
-      }
-    }) as DesignTypesList
-  }
-
-  /**
-   * Gets a list of files filtered by a provided checker function from a specific directory.
-   *
-   * Получает список файлов, отфильтрованный переданной функцией проверки из указанной директории.
-   * @param checkFile function to check if the file matches criteria / функция проверки соответствия файла критериям
-   * @param directory source directory path / путь к исходной директории
-   * @returns filtered list of design type items / отфильтрованный список элементов типов
-   */
-  protected getListBy(
-    checkFile: (file: string) => boolean,
-    directory: string = this.getTemporaryDirectory()
-  ): DesignTypesList {
-    return forEach(
-      this.getList(directory),
-      (file) => {
-        if (checkFile(file)) {
-          const content = this.readFile(file, directory)
-
-          if (this.isContent(content)) {
-            return {
-              path: file,
-              content,
-              md5: this.ai.getMd5(content)
-            }
-          }
-        }
-
-        return undefined
-      }
-    ) as DesignTypesList
-  }
-
-  /**
-   * Gets a list of files filtered by criteria.
-   *
-   * Получает список файлов, отфильтрованный по критериям.
-   * @returns list of filtered type definition files / список отфильтрованных файлов определений типов
-   */
-  protected getListByFilter(): DesignTypesList {
-    if (this.listByFilter === undefined) {
-      this.listByFilter = this.getListBy(
-        file => this.ai.isFile(file),
-        this.getTemporaryDirectory()
-      )
-    }
-
-    return this.listByFilter
-  }
-
-  /**
-   * Gets a list of JS files filtered by criteria.
-   *
-   * Получает список JS файлов, отфильтрованный по критериям.
-   * @returns list of filtered JavaScript files / список отфильтрованных JavaScript файлов
-   */
-  protected getListByFilterJs(): DesignTypesList {
-    if (this.listByFilterJs === undefined) {
-      this.listByFilterJs = this.getListBy(
-        file => this.ai.isFileJs(file),
-        this.getDistDirectory()
-      )
-    }
-
-    return this.listByFilterJs
-  }
-
-  /**
-   * Generates the MD5 header string for a type definition file.
-   *
-   * Генерирует строку заголовка MD5 для файла определений типов.
-   * @param md5 MD5 hash string / строка MD5 хэша
-   * @param isProcessed flag indicating if file is AI-processed / флаг, указывающий, обработан ли файл ИИ
-   * @returns formatted MD5 header string / отформатированная строка заголовка MD5
-   */
-  protected getMd5Header(md5?: string, isProcessed: boolean = false): string {
-    const status = isProcessed ? ' true' : ''
-
-    return `// md5:${md5 ?? 'none'}${status}`
-  }
-
-  /**
-   * Returns the full path segments for a file.
-   *
-   * Возвращает сегменты полного пути для файла.
-   * @param file file name / имя файла
-   * @param directory directory containing the file / директория, содержащая файл
-   * @returns array of path segments / массив сегментов пути
-   */
-  protected getPath(file: string, directory: string = this.getTemporaryDirectory()): string[] {
-    return [directory, file]
-  }
-
-  /**
-   * Returns the path to the temporary compilation directory.
-   *
-   * Возвращает путь к временной директории компиляции.
-   * @returns temporary compilation directory path / путь к временной директории компиляции
-   */
-  protected getTemporaryDirectory(): string {
-    return this.dir
-  }
-
-  /**
-   * Returns the path to the compiled distribution directory.
-   *
-   * Возвращает путь к директории собранных файлов.
-   * @returns compiled distribution directory path / путь к директории собранных файлов
-   */
-  protected getDistDirectory(): string {
-    return this.dirDist
-  }
-
-  /**
    * Cleans up the declaration content via TypeScript AST transformation by removing relative imports, relative re-exports, non-public members, and empty lines.
    *
    * Очищает контент деклараций через AST-трансформацию TypeScript, удаляя относительные импорты, относительные реэкспорты, непубличные члены и пустые строки.
@@ -284,184 +128,7 @@ export class DesignTypesMake extends DesignTypesMakeAbstract {
    * @returns cleaned content string / очищенная строка контента
    */
   protected cleanContent(content: string): string {
-    const sourceFile = ts.createSourceFile(
-      'clean.d.ts',
-      content,
-      ts.ScriptTarget.Latest,
-      true,
-      ts.ScriptKind.TS
-    )
-
-    const transformation = ts.transform(
-      sourceFile,
-      [this.getCleanTransformer()]
-    )
-    const printer = ts.createPrinter({ newLine: ts.NewLineKind.LineFeed })
-    const printed = printer.printNode(
-      ts.EmitHint.Unspecified,
-      transformation.transformed[0],
-      sourceFile
-    )
-
-    transformation.dispose()
-
-    return printed
-      .replace(/^\s*\/\/.*$/gm, '')
-      .replace(/^\s*[\r\n]/gm, '')
-      .trim()
-  }
-
-  /**
-   * Creates a transformer factory that removes relative imports, relative re-exports, and non-public members from declaration files.
-   *
-   * Создает фабрику трансформеров, удаляющую относительные импорты, относительные реэкспорты и непубличные члены из файлов деклараций.
-   * @returns transformer factory for declaration cleaning / фабрика трансформеров для очистки деклараций
-   */
-  protected getCleanTransformer(): ts.TransformerFactory<ts.SourceFile> {
-    return context => (rootNode) => {
-      const visit: ts.Visitor = (node) => {
-        if (
-          this.isRelativeImport(node)
-          || this.isRelativeExport(node)
-          || this.isNonPublicMember(node)
-        ) {
-          return undefined
-        }
-
-        return ts.visitEachChild(node, visit, context)
-      }
-
-      return ts.visitNode(rootNode, visit) as ts.SourceFile
-    }
-  }
-
-  /**
-   * Checks if the node is a non-public (private or protected) class member.
-   *
-   * Проверяет, является ли узел непубличным (private или protected) членом класса.
-   * @param node AST node to check / узел AST для проверки
-   * @returns true if node has private or protected modifier / true, если узел имеет модификатор private или protected
-   */
-  protected isNonPublicMember(node: ts.Node): boolean {
-    const modifiers = ts.canHaveModifiers(node) ? ts.getModifiers(node) : undefined
-
-    return Boolean(
-      modifiers?.some(modifier =>
-        modifier.kind === ts.SyntaxKind.PrivateKeyword
-        || modifier.kind === ts.SyntaxKind.ProtectedKeyword
-      )
-    )
-  }
-
-  /**
-   * Checks if the node is an import declaration with a relative module specifier.
-   *
-   * Проверяет, является ли узел импортом с относительным спецификатором модуля.
-   * @param node AST node to check / узел AST для проверки
-   * @returns true if node is a relative import / true, если узел является относительным импортом
-   */
-  protected isRelativeImport(node: ts.Node): boolean {
-    return ts.isImportDeclaration(node)
-      && ts.isStringLiteral(node.moduleSpecifier)
-      && node.moduleSpecifier.text.startsWith('.')
-  }
-
-  /**
-   * Checks if the node is an export declaration with a relative module specifier.
-   *
-   * Проверяет, является ли узел реэкспортом с относительным спецификатором модуля.
-   * @param node AST node to check / узел AST для проверки
-   * @returns true if node is a relative re-export / true, если узел является относительным реэкспортом
-   */
-  protected isRelativeExport(node: ts.Node): boolean {
-    return ts.isExportDeclaration(node)
-      && node.moduleSpecifier !== undefined
-      && ts.isStringLiteral(node.moduleSpecifier)
-      && node.moduleSpecifier.text.startsWith('.')
-  }
-
-  /**
-   * Reads the content of a file.
-   *
-   * Читает содержимое файла.
-   * @param path file path / путь к файлу
-   * @param directory directory containing the file / директория, содержащая файл
-   * @returns file content or undefined / содержимое файла или undefined
-   */
-  protected readFile(path: string, directory: string = this.getTemporaryDirectory()): string | undefined {
-    return PropertiesFile.readFileOnly(this.getPath(path, directory))
-  }
-
-  /**
-   * Saves the generated content to a file.
-   *
-   * Сохраняет сгенерированный контент в файл.
-   * @param content content to save / контент для сохранения
-   */
-  protected save(content: string) {
-    const packageJson = getPackageJson()
-
-    if (packageJson) {
-      const versionStr = packageJson.version ? ` (v${packageJson.version})` : ''
-      PropertiesFile.writeByPath(
-        UI_FILE_AI_TYPES,
-        [
-          `All these methods are in the ${packageJson.name}${versionStr} library.`,
-          '',
-          content
-        ].join('\n')
-      )
-    }
-  }
-
-  /**
-   * Saves a type definition file to the ai-types-list directory with an MD5 header.
-   *
-   * Сохраняет файл определений типов в директорию ai-types-list с заголовком MD5.
-   * @param item type definition file item / элемент файла определений типов
-   * @param isProcessed flag indicating if file is AI-processed / флаг, указывающий, обработан ли файл ИИ
-   */
-  protected saveFile(item: DesignTypesItem, isProcessed: boolean = false) {
-    PropertiesFile.writeByPath(
-      [UI_DIR_AI_TYPES_LIST, item.path],
-      `${this.getMd5Header(item.md5, isProcessed)}\n${item.content}`
-    )
-  }
-
-  /**
-   * Saves copies of type definition files to the ai-types-list directory with an MD5 header.
-   * Returns files that are new, modified, or not yet marked as AI-processed.
-   *
-   * Сохраняет копии файлов определений типов в директорию ai-types-list с заголовком MD5.
-   * Возвращает файлы, которые являются новыми, измененными или еще не отмеченными как обработанные ИИ.
-   * @param files list of type definition files / список файлов определений типов
-   * @returns list of updated or unprocessed files / список обновленных или необработанных файлов
-   */
-  protected saveList(files: DesignTypesList): DesignTypesList {
-    return forEach(
-      files,
-      (item) => {
-        const targetPath = [UI_DIR_AI_TYPES_LIST, item.path]
-        const oldContent = PropertiesFile.readFileOnly(targetPath)
-
-        if (
-          !isFilled(oldContent)
-          || !oldContent.startsWith(this.getMd5Header(item.md5))
-        ) {
-          this.saveFile(item)
-
-          return item
-        }
-
-        if (
-          !oldContent.startsWith(this.getMd5Header(item.md5, true))
-        ) {
-          return item
-        }
-
-        return undefined
-      }
-    ) as DesignTypesList
+    return this.tsTransformer.cleanContent(content)
   }
 
   /**
@@ -481,19 +148,18 @@ export class DesignTypesMake extends DesignTypesMakeAbstract {
       return
     }
 
-    let nextIndex = 0
-    let started = 0
+    const queue = [...files]
+    let processed = 0
 
     const worker = async (): Promise<void> => {
-      while (nextIndex < total) {
-        const item = files[nextIndex]
-        nextIndex += 1
+      let item: DesignTypesItem | undefined
 
+      while ((item = queue.shift()) !== undefined) {
         let content = this.cleanContent(item.content)
 
         if (isFilled(content)) {
-          started += 1
-          console.log(`-- processing AI types [${started}/${total}] for ${item.path}...`)
+          processed += 1
+          console.log(`-- processing AI types [${processed}/${total}] for ${item.path}...`)
           content = await this.toAiEdit(
             content,
             this.hasJSDoc(content) ? '' : fullJsContent
@@ -501,7 +167,7 @@ export class DesignTypesMake extends DesignTypesMakeAbstract {
         }
 
         if (item.content !== content) {
-          this.saveFile(
+          this.files.saveFile(
             {
               ...item,
               content
@@ -531,48 +197,10 @@ export class DesignTypesMake extends DesignTypesMakeAbstract {
   protected async toAiEdit(content: string, code: string): Promise<string> {
     const generate = await this.ai.toAi(
       content,
-      'Goal: Optimize TypeScript type definitions for declarations in `File Content`.\n\n'
-      + 'SCOPE & CONTEXT:\n'
-      + '- Process STRICTLY entities in `File Content`. Do NOT add unexported entities or code from `File JS Code`.\n'
-      + '- Use `File JS Code` ONLY as reference to understand implementation logic for writing JSDoc descriptions.\n'
-      + '- AI coding agents will rely EXCLUSIVELY on this output. Ensure complete type contracts and clear JSDoc descriptions.\n'
-      + '- Do NOT include file paths, links, or internal imports in the output.\n\n'
-      + 'JSDOC RULES:\n'
-      + '- MANDATORY FOR ALL CLASSES, METHODS, FUNCTIONS & ACCESSORS: Every `class`, `declare class`, `abstract class`, `function`, `declare function`, method (public/static/abstract), `constructor`, and `get`/`set` accessor MUST ALWAYS have a JSDoc description.\n'
-      + '  * Style: Descriptions MUST be maximally clear and informative, yet maximally short and concise. Avoid fluff.\n'
-      + '  * Single-Line Preference: Prefer single-line JSDoc format (`/** Description @keywords search_terms */`) to conserve vertical space and reduce file size.\n'
-      + '  * Remove `@return` / `@returns`: STRICTLY REMOVE `@return` and `@returns` tags from all JSDoc comments.\n'
-      + '  * `@param` Tag: Include `@param` ONLY if critically necessary to clarify parameter behavior; otherwise omit `@param`.\n'
-      + '  * AI Search Keywords: Include relevant search tags/keywords (e.g. `@keywords` tag or search terms) to help AI code search easily discover functionality.\n'
-      + '  * Allowed tags: PRESERVE ONLY `@example`, `@remarks`, `@note`, `@warning`, `@keywords`, and critical `@param` tags. Remove `@return`/`@returns` and all other tags.\n'
-      + '  * If JSDoc is missing: Generate a clear, concise, search-optimized English JSDoc derived from inspecting `File JS Code`.\n'
-      + '  * If JSDoc exists: Optimize, condense, translate to English, and apply tag rules.\n'
-      + '- TYPES, INTERFACES & ENUMS: Delete JSDoc for simple/obvious types; add or keep concise JSDoc for complex types.\n'
-      + '- Place JSDoc directly above declarations. Remove regular inline comments (`//` or `/* */`).\n\n'
-      + 'CLEANING & STRUCTURING:\n'
-      + '- Remove internal `import` statements and internal re-exports. Keep external package exports.\n'
-      + '- Delete non-public content (private/protected members, unexported elements). Keep all public API surfaces.\n'
-      + '- Do NOT delete any `type` definitions. Preserve abstract classes.\n'
-      + '- Format output tightly without unnecessary blank lines.\n\n'
-      + 'OUTPUT FORMAT:\n'
-      + 'Return ONLY raw TypeScript code corresponding to `File Content`. No markdown, no code blocks (```), no text explanations.',
+      aiTypeOptimizationPrompt,
       code
     )
 
     return generate ?? content
-  }
-
-  /**
-   * Combines a list of files into a single string.
-   *
-   * Объединяет список файлов в одну строку.
-   * @param list list of files / список файлов
-   */
-  protected toOneFile(list: DesignTypesList): string {
-    return forEach(
-      list,
-      item => item.content
-    )
-      .join('\n\n')
   }
 }

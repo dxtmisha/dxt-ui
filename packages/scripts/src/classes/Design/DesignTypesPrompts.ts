@@ -13,6 +13,8 @@ import type {
 
 import { UI_DIR_AI_TYPES_LIST, UI_DIR_RESOURCES, UI_MODULES } from '../../config'
 
+import aiPromptMetadataPrompt from '../../media/templates/prompts/aiPromptMetadata.en.md?raw'
+
 /**
  * Class for reading prompt files, managing individual prompt metadata files, and generating AI project rules and prompt triggers description.
  *
@@ -241,19 +243,7 @@ export class DesignTypesPrompts extends DesignTypesPromptsAbstract {
   protected async toAiPromptData(content: string): Promise<DesignTypesPromptData | undefined> {
     return this.ai.toAiJson<DesignTypesPromptData>(
       content,
-      'Goal: Generate a document metadata object in valid JSON format for an AI coding assistant.\n\n'
-      + 'CRITICAL RESTRICTIONS:\n'
-      + '- The output MUST be a valid JSON object with keys: "name" and "description".\n'
-      + '- Field "name": Short and concise document title (maximum 4-5 words).\n'
-      + '- Field "description": Clear description for an AI agent explaining what exact standards, rules, or tools this file contains and what commercial or technical task it solves (maximum 3 sentences).\n'
-      + '- Do NOT include markdown code block wrappers (```json). Return ONLY the raw JSON string.\n\n'
-      + 'EXAMPLES OF GOOD OUTPUT:\n'
-      + '{\n'
-      + '  "name": "Coding Standards",\n'
-      + '  "description": "Строгие архитектурные конвенции и стандарты написания кода для продукта"\n'
-      + '}\n\n'
-      + 'OUTPUT REQUIREMENTS:\n'
-      + 'Return ONLY the JSON object. No explanations, no markdown formatting, no conversational text.'
+      aiPromptMetadataPrompt
     )
   }
 

@@ -55,19 +55,19 @@ describe('PackageFile', () => {
       scripts: { prepublishOnly: 'npm run build' }
     })
     const pkg1 = new PackageFile('pkg1')
-    expect(pkg1.getCodeBuildOrRecovery()).toBe('prepublishOnly')
+    expect(pkg1.getCodeBuildOrRecovery()).toBe('npm run prepublishOnly')
 
     vi.spyOn(PropertiesFile, 'readFile').mockReturnValue({
       scripts: { 'build-recovery': 'npm run build' }
     })
     const pkg2 = new PackageFile('pkg2')
-    expect(pkg2.getCodeBuildOrRecovery()).toBe('build-recovery')
+    expect(pkg2.getCodeBuildOrRecovery()).toBe('npm run build-recovery')
 
     vi.spyOn(PropertiesFile, 'readFile').mockReturnValue({
       scripts: { build: 'vite build' }
     })
     const pkg3 = new PackageFile('pkg3')
-    expect(pkg3.getCodeBuildOrRecovery()).toBe('build')
+    expect(pkg3.getCodeBuildOrRecovery()).toBe('npm run build')
 
     vi.spyOn(PropertiesFile, 'readFile').mockReturnValue({
       scripts: {}

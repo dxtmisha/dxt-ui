@@ -17,6 +17,10 @@ const { values } = parseCliArguments(
   }
 )
 
-new LibraryAiPrompt([], values.mcp === true).make()
-
-process.exit(0)
+try {
+  new LibraryAiPrompt([], values.mcp === true).make()
+  process.exit(0)
+} catch (error) {
+  console.error('dxt-prompt failed:', error)
+  process.exit(1)
+}

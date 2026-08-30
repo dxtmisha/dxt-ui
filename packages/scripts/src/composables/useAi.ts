@@ -10,32 +10,30 @@ import { AiOpenAi } from '../classes/Ai/AiOpenAi'
 import { AiZAi } from '../classes/Ai/AiZAi'
 
 /**
+ * Registry of AI provider factory functions keyed by provider type identifier.
+ *
+ * Реестр фабричных функций AI-провайдеров, индексированный по идентификатору типа провайдера.
+ */
+const AI_PROVIDER_REGISTRY = new Map<string, () => AiAbstract>([
+  ['claude', () => new AiClaude()],
+  ['claude-agent', () => new AiClaudeAgent()],
+  ['claude-cli', () => new AiClaudeCli()],
+  ['gemini', () => new AiGoogle()],
+  ['gemini-cli', () => new AiGoogleCli()],
+  ['openai', () => new AiOpenAi()],
+  ['zai', () => new AiZAi()]
+])
+
+/**
  * Composable to resolve and instantiate the configured AI client provider.
- * Reads the AI provider type from properties configuration and returns the corresponding client implementation.
+ * Uses a registry-based lookup (Open-Closed Principle) to map provider type to its factory.
  *
  * Композабл для определения и инициализации настроенного провайдера клиента AI.
- * Считывает тип AI-провайдера из конфигурации свойств и возвращает соответствующую реализацию клиента.
+ * Использует реестр (принцип открытости-закрытости) для сопоставления типа провайдера с его фабрикой.
  * @returns initialized AI client instance or undefined if unrecognized / инициализированный экземпляр клиента AI или undefined, если тип не распознан
  */
 export function useAi(): AiAbstract | undefined {
   const type = PropertiesConfig.getAiType()
 
-  switch (type) {
-    case 'claude':
-      return new AiClaude()
-    case 'claude-agent':
-      return new AiClaudeAgent()
-    case 'claude-cli':
-      return new AiClaudeCli()
-    case 'gemini':
-      return new AiGoogle()
-    case 'gemini-cli':
-      return new AiGoogleCli()
-    case 'openai':
-      return new AiOpenAi()
-    case 'zai':
-      return new AiZAi()
-  }
-
-  return undefined
+  return AI_PROVIDER_REGISTRY.get(type)?.()
 }

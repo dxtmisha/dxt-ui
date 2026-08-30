@@ -1,3 +1,4 @@
+import { random, sleep } from '@dxtmisha/functional-basic'
 import type { AiImageItem, AiImageList } from '../../types/aiTypes'
 
 /**
@@ -176,12 +177,20 @@ export abstract class AiAbstract<AI = any> {
 
   /**
    * Generates AI response using active model and composed contents.
+   * Supports retry with random delay and configurable error handling.
    *
    * Генерирует отклик ИИ, используя активную модель и собранный контент.
+   * Поддерживает повторные попытки со случайной задержкой и настраиваемой обработкой ошибок.
    * @param contents input contents for generation / входное содержимое для генерации
+   * @param exitOnError whether to terminate the process on unrecoverable failure / завершать ли процесс при неустранимой ошибке
+   * @param maxRetries number of retry attempts before giving up / количество повторных попыток перед отказом
    * @returns generated response text / сгенерированный текст ответа
    */
-  async generate(contents: string): Promise<string> {
+  async generate(
+    contents: string,
+    exitOnError: boolean = true,
+    maxRetries: number = 0
+  ): Promise<string> {
     if (!this.ai) {
       await this.init()
 
@@ -191,20 +200,31 @@ export abstract class AiAbstract<AI = any> {
     }
 
     if (this.ai) {
-      console.log('[Ai] Generating')
+      const totalAttempts = 1 + maxRetries
 
-      try {
-        const generate = await this.response(
-          this.model,
-          this.getMainContents(contents)
-        )
+      for (let attempt = 1; attempt <= totalAttempts; attempt++) {
+        console.log(`[Ai] Generating${totalAttempts > 1 ? ` (attempt ${attempt}/${totalAttempts})` : ''}`)
 
-        console.log(`[Ai] End (length: ${generate.length})`)
+        try {
+          const generate = await this.response(
+            this.model,
+            this.getMainContents(contents)
+          )
 
-        return generate
-      } catch (error) {
-        console.error('[Ai] Generation error:', error)
-        process.exit(1)
+          console.log(`[Ai] End (length: ${generate.length})`)
+
+          return generate
+        } catch (error) {
+          console.error(`[Ai] Generation error (attempt ${attempt}/${totalAttempts}):`, error)
+
+          if (attempt < totalAttempts) {
+            const delayMs = random(1000, 2000)
+            console.log(`[Ai] Retrying in ${delayMs}ms...`)
+            await sleep(delayMs)
+          } else if (exitOnError) {
+            process.exit(1)
+          }
+        }
       }
     }
 
