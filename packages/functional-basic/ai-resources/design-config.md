@@ -27,6 +27,7 @@ Configuration specification for DXT UI packages and monorepo root.
 - `typesDir` (`string`, default: `'ai-types-temp'`): Directory path for temporary TypeScript declarations compilation.
 - `distDir` (`string`, default: `'dist'`): Output directory path for compiled JavaScript files.
 - `aiResourcesDir` (`string`, default: `'ai-resources'`): Directory path containing AI resource and prompt files.
+- `promptScanDepth` (`number`, default: `6`): Maximum directory scan depth for collecting AI prompt packages.
 - `separator` (`string`, default: `'/'`): Token path delimiter used when splitting design tokens into sub-branches.
 - `separatorBasicName` (`string`): Base token name stripped during branch segmentation.
 - `separatorLimit` (`number`): Maximum recursion depth for token key splitting.
@@ -36,6 +37,7 @@ Configuration specification for DXT UI packages and monorepo root.
 - `aiModel` (`string`): Specific model identifier (e.g. `'gemini-3.7-flash'`, `'gpt-4o'`).
 - `aiKey` (`string`): API key or token for AI provider.
 - `aiConfig` (`Record<string, any>`, default: `{}`): Provider-specific options (temperature, tokens, headers).
+- `aiTypesConcurrency` (`number`, default: `8`): Maximum number of type definition files processed by AI concurrently.
 - `figmaToken` (`string`): Personal access token for Figma REST API integration.
 
 ---
@@ -70,6 +72,7 @@ Complete `design.config.json` incorporating all available configuration properti
   "typesDir": "ai-types-temp",
   "distDir": "dist",
   "aiResourcesDir": "ai-resources",
+  "promptScanDepth": 6,
   "separator": "/",
   "separatorBasicName": "basic",
   "separatorLimit": 3,
@@ -81,6 +84,7 @@ Complete `design.config.json` incorporating all available configuration properti
   "aiConfig": {
     "temperature": 0.2
   },
+  "aiTypesConcurrency": 8,
   "figmaToken": "figd_..."
 }
 ```

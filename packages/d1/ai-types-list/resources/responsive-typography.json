@@ -1,0 +1,6 @@
+{
+  "path": "ai-resources/responsive-typography.md",
+  "md5": "7a0a16c4f6b1ea9ec13418887a323115",
+  "name": "Responsive Layout and Typography",
+  "description": "Defines CSS class naming conventions using BEM and mandates responsive design via dedicated SCSS media query mixins. Enforces standardized typography classes from d1-font.scss to ensure visual consistency across UI components."
+}

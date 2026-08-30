@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/constructor",
   "private": false,
-  "version": "0.111.3",
+  "version": "0.113.0",
   "type": "module",
   "description": "Class-based Vue 3 component constructors, state logic engines, and ARIA accessibility controllers for DXT UI design system",
   "keywords": [

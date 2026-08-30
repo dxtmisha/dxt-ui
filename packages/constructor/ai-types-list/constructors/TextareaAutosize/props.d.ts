@@ -3,11 +3,14 @@ export type TextareaAutosizePropsToken = {
     autosize?: boolean;
 };
 export type TextareaAutosizePropsBasic = {
+    /** Current text value */
     value?: string;
+    /** Additional attributes for the textarea element */
     inputAttrs?: Record<string, any>;
 };
+/** Properties for the textarea autosize component @keywords textarea, autosize, props */
 export type TextareaAutosizeProps = TextareaAutosizePropsBasic & TextareaAutosizePropsToken;
-/** Default properties configuration for textarea autosize. @keywords defaults, textarea, autosize */
+/** Default properties for the textarea autosize component @keywords textarea, autosize, defaults */
 export declare const defaultsTextareaAutosize: {
     autosize: boolean;
 };

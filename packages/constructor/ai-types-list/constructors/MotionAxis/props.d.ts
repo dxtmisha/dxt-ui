@@ -1,22 +1,21 @@
-// md5:841c7f01a0ef340dc8724eee5ed4a540 true
-export type MotionAxisPropsBasic = ModelPropsSelected<MotionAxisSelectedValue> & {
-    /** Selected element @keywords selected element */
-    selected?: MotionAxisSelectedValue;
-    /** Whether to animate height change @keywords animation height */
-    animationHeight?: boolean;
-    /** Whether the elements are in the DOM @keywords inDom dom status */
-    inDom?: boolean;
-    /** List of elements in the DOM for slide @keywords inDomSlide slide elements */
-    inDomSlide?: string[];
-};
-
-/** Type describing incoming properties @keywords motion axis props properties */
-export type MotionAxisProps = MotionAxisPropsBasic & {
+// md5:68f25b5834b314b1f75c140cb446d4ff true
+type MotionAxisPropsToken = {
     axis?: 'x' | 'y' | 'z';
     direction?: 'next' | 'back' | 'auto';
 };
-
-/** Default value for property @keywords defaults motion axis default values */
+export type MotionAxisPropsBasic = ModelPropsSelected<MotionAxisSelectedValue> & {
+    /** Selected element */
+    selected?: MotionAxisSelectedValue;
+    /** Whether to animate height changes */
+    animationHeight?: boolean;
+    /** Whether elements are present in DOM */
+    inDom?: boolean;
+    /** List of slide elements present in DOM */
+    inDomSlide?: string[];
+};
+/** MotionAxis component properties. @keywords motion, axis, props */
+export type MotionAxisProps = MotionAxisPropsBasic & MotionAxisPropsToken;
+/** Default property values for MotionAxis. @keywords motion, axis, defaults */
 export declare const defaultsMotionAxis: {
     axis: string;
     direction: string;

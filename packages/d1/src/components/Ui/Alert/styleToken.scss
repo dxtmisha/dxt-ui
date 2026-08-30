@@ -11,7 +11,6 @@
   // Стили из токенов
   // :style [!] System label / Системная метка
   & {
-    --d1-alert-main: var(--d-alert);
     --d1-alert-linkGap: var(--d1-sys-spacing-xs);
     
     gap: var(--d1-sys-spacing-lg);
@@ -33,6 +32,12 @@
       letter-spacing: var(--d1-sys-letterSpacing-sm);
     }
     
+    &--itemCenter {
+      & .d1-alert__icon {
+        margin-top: 0;
+      }
+    }
+    
     &--primary {
       @include ui.color(#{var(--d1-sys-palette-onPrimary)});
       @include ui.colorOpacity(#{var(--d1-sys-opacity-primary-high)});
@@ -52,12 +57,6 @@
       @include ui.paletteBackground(#{var(--d1-sys-palette-primary)});
       
       backdrop-filter: var(--d1-sys-blur-sm);
-    }
-    
-    &--itemCenter {
-      & .d1-alert__icon {
-        margin-top: 0;
-      }
     }
   }
   // :style [!] System label / Системная метка

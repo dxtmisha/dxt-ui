@@ -1,13 +1,19 @@
-// md5:09a35d4ec67f8f650b3c82e8b1acec47 true
-import { ConstrClass } from '@dxtmisha/functional';
+// md5:ca043db2bb50ce423588c81345e249e3 true
+import type { ConstrClass } from '@dxtmisha/functional';
+
+/** Components required for checkbox functionality. @keywords checkbox, components */
 export type CheckboxComponents = ImageComponentInclude & FieldMessageComponentInclude & ProgressComponentInclude & RippleComponentInclude;
+
+/** Checkbox event emissions. @keywords checkbox, emits, events */
 export type CheckboxEmits = FieldBasicEmits<boolean> & ModelEmitsSelected;
-/** Checkbox component exposed interface @keywords checkbox expose properties */
-export interface CheckboxExpose extends FieldBasicExpose<boolean> {
-}
-/** Checkbox component slots @keywords checkbox slots template */
-export interface CheckboxSlots extends LabelSlots, DescriptionSlots {
-}
+
+/** Checkbox exposed instance properties and methods. @keywords checkbox, expose */
+export interface CheckboxExpose extends FieldBasicExpose<boolean> {}
+
+/** Available slot definitions for checkbox component. @keywords checkbox, slots */
+export interface CheckboxSlots extends LabelSlots, DescriptionSlots {}
+
+/** Element class structure for checkbox styling. @keywords checkbox, classes, style */
 export type CheckboxClasses = {
     main: ConstrClass;
     input: string;

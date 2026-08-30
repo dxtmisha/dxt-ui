@@ -1,16 +1,21 @@
-// md5:9e92c02c1b85e445361d63f984a02192 true
-import { ConstrBind } from '@dxtmisha/functional';
-import { ResumableTimer } from '@dxtmisha/functional-basic';
+// md5:e704ab5bea996e4670a9173911751045 true
+import type { ConstrBind } from '@dxtmisha/functional';
+import type { ResumableTimer } from '@dxtmisha/functional-basic';
 
-/** Snackbar value item defining notification properties and timers. @keywords snackbar value notification item */
+/** Snackbar notification item configuration. @keywords snackbar, toast, notification, value */
 export type SnackbarValue = {
+    /** Custom component for the snackbar item. */
     component?: any;
+    /** Data properties for the snackbar item. */
     data?: ConstrBind<SnackbarItemPropsBasic>;
+    /** Whether the notification has high priority. */
     highPriority?: boolean;
+    /** Delay before auto-closing in milliseconds. */
     delay?: number;
+    /** Text content of the notification. */
     value?: string;
+    /** Timer instance managing auto-close state. */
     resumableTimer?: ResumableTimer;
 };
 
-/** Array list of snackbar notification values. @keywords snackbar list values array */
 export type SnackbarList = SnackbarValue[];

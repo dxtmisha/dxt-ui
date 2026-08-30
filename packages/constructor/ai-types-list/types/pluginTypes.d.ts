@@ -1,12 +1,13 @@
-// md5:2a8963bdc4603321f685ab9cbe70f5ab true
-import { Plugin as VitePlugin } from 'vite';
+// md5:602ddc82c1133ea44e1c70163434867a true
+import type { Plugin as VitePlugin } from 'vite';
+/** Library component item with name and regex matcher. @keywords component, regex */
 export type PluginComponentItem = {
     name: string;
     reg: RegExp;
 };
 export type PluginComponentList = Record<string, PluginComponentItem>;
 export type PluginComponentImports = PluginComponentItem[];
-/** Configuration options for the plugin @keywords plugin options configuration */
+/** Configuration options for the plugin. @keywords plugin, options, configuration */
 export type PluginOptions = {
     style?: boolean;
     styleNamespace?: string;

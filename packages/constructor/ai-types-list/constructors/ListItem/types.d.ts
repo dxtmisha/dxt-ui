@@ -1,21 +1,27 @@
-// md5:9858fd5d5170c26be7b7a051ad910c54 true
-import { ConstrClass } from '@dxtmisha/functional';
+// md5:57ce6703bc025f46fcee093a98b36393 true
+import type { ConstrClass } from '@dxtmisha/functional';
+
+/** Configuration interface for connected components in list item. @keywords components, setup */
 export type ListItemComponents = IconComponentInclude & BadgeComponentInclude & ProgressComponentInclude & RippleComponentInclude & {
     checkbox?: object;
     radio?: object;
 };
+
 export type ListItemEmits = EventClickEmits;
-export interface ListItemExpose extends EventClickExpose {
-}
-/** Interface for list item slots @keywords slots, list, item, template */
+
+export interface ListItemExpose extends EventClickExpose {}
+
+/** Available slot definitions for list item. @keywords slots, template */
 export interface ListItemSlots extends LabelHighlightSlots, DescriptionSlots, PrefixSlots, CaptionSlots, SuffixSlots {
-    /** Slot for the leading element @keywords slot, leading */
+    /** Slot for the leading element. @keywords leading, slot */
     leading?(props: any): any;
-    /** Slot for the trailing element @keywords slot, trailing */
+    /** Slot for the trailing element. @keywords trailing, slot */
     trailing?(props: any): any;
-    /** Slot for the list item body @keywords slot, body */
+    /** Slot for the list item body content. @keywords body, slot */
     body?(props: any): any;
 }
+
+/** CSS class names mapping for list item sub-elements. @keywords classes, styles */
 export type ListItemClasses = {
     main: ConstrClass;
     body: string;

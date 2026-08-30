@@ -1,23 +1,22 @@
-// md5:332282993401d1dfba432764441a5d8b true
-import { ConstrBind } from '@dxtmisha/functional';
+// md5:3cedfbf3d92c5d489b33b360a9172e20 true
+import type { ConstrBind } from '@dxtmisha/functional';
 export type ActionsPropsToken = {
     align?: 'none' | 'center' | 'left' | 'right' | 'block' | 'auto';
     flexible?: boolean;
     wrap?: boolean;
 };
 export type ActionsPropsBasic<Button extends ButtonPropsBasic = ButtonPropsBasic> = AreaPropsInclude & {
-    /** Primary list of action configurations @keywords list, actions */
+    /** Primary list of action configurations. @keywords actions, list, buttons */
     list?: ConstrBind<Button>[];
-    /** Secondary list of action configurations @keywords secondary, list, actions */
+    /** Secondary list of action configurations. @keywords secondary, list, buttons */
     listSecondary?: ConstrBind<Button>[];
-    /** Shared attributes for buttons in the primary list @keywords button, attrs */
+    /** Shared attributes for primary list buttons. @keywords button, attributes, props */
     buttonAttrs?: ConstrBind<Button>;
-    /** Shared attributes for buttons in the secondary list @keywords button, secondary, attrs */
+    /** Shared attributes for secondary list buttons. @keywords button, secondary, attributes */
     buttonSecondaryAttrs?: ConstrBind<Button>;
 };
-/** Type describing incoming properties. @keywords actions, props */
 export type ActionsProps = ActionsPropsBasic & ActionsPropsToken;
-/** Default value for property. @keywords defaults, actions */
+/** Default values for actions properties. @keywords defaults, actions */
 export declare const defaultsActions: {
     align: string;
     area: string;

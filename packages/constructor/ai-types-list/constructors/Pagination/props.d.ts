@@ -1,73 +1,78 @@
-// md5:4170d3f6b8290fd034ed447abe49ef30 true
-import { ConstrBind } from '@dxtmisha/functional';
+// md5:179817c8099a03ed31fd8009d0d70191 true
+import type { ConstrBind } from '@dxtmisha/functional';
+
 type PaginationPropsToken = {
     adaptive?: 'lineAlways';
     adaptiveMore?: 'lineAlways';
     adaptiveMorePrev?: 'lineAlways';
 };
+
+/** Pagination component basic properties interface @keywords pagination, props */
 export type PaginationPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Button extends ButtonPropsBasic = ButtonPropsBasic, Menu extends MenuPropsBasic = MenuPropsBasic> = TextFirstPropsInclude & TextLastPropsInclude & TextMorePropsInclude & TextMorePrevPropsInclude & TextRowsPerPagePropsInclude & TextInfoPropsInclude & TextPreviousPropsInclude & TextNextPropsInclude & AreaPropsInclude & ModelProps<number | string> & {
-    /** Current page @keywords pagination, value, page */
+    /** Current active page number or identifier */
     'value'?: number | string;
-    /** Total item count @keywords pagination, count, total */
+    /** Total item count across all pages */
     'count'?: number | string;
-    /** Number of rows per page @keywords pagination, rows, limit */
+    /** Number of rows or items per page */
     'rows'?: number | string;
-    /** Option list for rows count select @keywords pagination, menuRows, options */
+    /** Select options list for rows per page count */
     'menuRows'?: number[];
-    /** Number of visible page links @keywords pagination, visible, links */
+    /** Number of visible page links */
     'visible'?: number;
-    /** Number of buttons for first and last pages @keywords pagination, ends */
+    /** Number of buttons for the first and last pages */
     'ends'?: number;
-    /** Ellipsis text separator @keywords pagination, ellipsis, separator */
+    /** Ellipsis separator text */
     'ellipsis'?: string;
-    /** Whether to hide pagination if only one page exists @keywords pagination, hideIfOne */
+    /** Hide pagination if only one page exists */
     'hideIfOne'?: boolean;
-    /** Whether to show page navigation buttons @keywords pagination, showPagination */
+    /** Display the page navigation buttons */
     'showPagination'?: boolean;
-    /** Whether to show next and back buttons @keywords pagination, showArrows */
+    /** Display the previous and next arrow buttons */
     'showArrows'?: boolean;
-    /** Whether to show first and last page buttons @keywords pagination, showFirstLast */
+    /** Display the first and last page buttons */
     'showFirstLast'?: boolean;
-    /** Whether to show first/last pages as numbers and ellipsis @keywords pagination, showEnds */
+    /** Display first and last page numbers with ellipsis between */
     'showEnds'?: boolean;
-    /** Whether to show show more button @keywords pagination, showMore */
+    /** Display the "Show more" button */
     'showMore'?: boolean;
-    /** Whether to show show previous button @keywords pagination, showMorePrev */
+    /** Display the "Show previous" button */
     'showMorePrev'?: boolean;
-    /** Whether to show page range information @keywords pagination, showInfo */
+    /** Display page range information label */
     'showInfo'?: boolean;
-    /** Whether to show text rows per page label @keywords pagination, showRowsPerPageLabel */
+    /** Display the rows-per-page text label */
     'showRowsPerPageLabel'?: boolean;
-    /** Icon for down arrow @keywords pagination, iconArrowDown */
+    /** Icon configuration for the down arrow */
     'iconArrowDown'?: IconValue<Icon>;
-    /** Icon for first arrow @keywords pagination, iconArrowFirst */
+    /** Icon configuration for the first page arrow */
     'iconArrowFirst'?: IconValue<Icon>;
-    /** Icon for last arrow @keywords pagination, iconArrowLast */
+    /** Icon configuration for the last page arrow */
     'iconArrowLast'?: IconValue<Icon>;
-    /** Icon for left arrow @keywords pagination, iconArrowLeft */
+    /** Icon configuration for the left/previous arrow */
     'iconArrowLeft'?: IconValue<Icon>;
-    /** Icon for right arrow @keywords pagination, iconArrowRight */
+    /** Icon configuration for the right/next arrow */
     'iconArrowRight'?: IconValue<Icon>;
-    /** Custom attributes for button components @keywords pagination, buttonAttrs */
+    /** Custom attributes bound to button components */
     'buttonAttrs'?: ConstrBind<Button>;
-    /** Custom attributes for more button component @keywords pagination, buttonMoreAttrs */
+    /** Custom attributes bound to the more button component */
     'buttonMoreAttrs'?: ConstrBind<Button>;
-    /** Custom attributes for more previous button component @keywords pagination, buttonMorePrevAttrs */
+    /** Custom attributes bound to the previous more button component */
     'buttonMorePrevAttrs'?: ConstrBind<Button>;
-    /** Custom attributes for menu button component @keywords pagination, buttonMenuAttrs */
+    /** Custom attributes bound to the menu trigger button */
     'buttonMenuAttrs'?: ConstrBind<Button>;
-    /** Custom attributes for menu component @keywords pagination, menuAttrs */
+    /** Custom attributes bound to the menu component */
     'menuAttrs'?: ConstrBind<Menu>;
-    /** Model rows prop @keywords pagination, modelRows */
+    /** Model binding for rows count */
     'modelRows'?: number | string;
-    /** Update rows handler @keywords pagination, onUpdate:rows */
+    /** Callback triggered when rows count updates */
     'onUpdate:rows'?: (value: number | string) => void;
-    /** Update model rows handler @keywords pagination, onUpdate:modelRows */
+    /** Callback triggered when model rows count updates */
     'onUpdate:modelRows'?: (value: number | string) => void;
 };
-/** Pagination properties @keywords pagination, props */
+
+/** Properties for the pagination component @keywords pagination, props */
 export type PaginationProps = PaginationPropsBasic & PaginationPropsToken;
-/** Default values for pagination component @keywords pagination, defaults */
+
+/** Default property values for pagination @keywords pagination, defaults */
 export declare const defaultsPagination: {
     value: number;
     visible: number;
@@ -79,4 +84,3 @@ export declare const defaultsPagination: {
     showFirstLast: boolean;
     showRowsPerPageLabel: boolean;
 };
-export {};

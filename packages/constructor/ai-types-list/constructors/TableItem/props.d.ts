@@ -1,6 +1,4 @@
-// md5:ad21679c52818eb2215cec52e91ef079 true
-import { LabelProps, DescriptionProps, SkeletonPropsInclude } from '@storefront-ui/shared';
-
+// md5:e38f2815897b493ec61d2b319ae9b989 true
 type TableItemPropsToken = {
     disabled?: boolean;
     selected?: boolean;
@@ -12,7 +10,6 @@ type TableItemPropsToken = {
     stickyTop?: boolean;
     stickyLeft?: boolean;
 };
-
 export type TableItemPropsBasic = LabelProps & DescriptionProps & SkeletonPropsInclude & {
     value?: string;
     tag?: string;
@@ -21,10 +18,8 @@ export type TableItemPropsBasic = LabelProps & DescriptionProps & SkeletonPropsI
     keyItem?: string;
     index?: string | number;
 };
-
 export type TableItemProps = TableItemPropsBasic & TableItemPropsToken;
-
-/** Default values for TableItem component properties @keywords table item defaults */
+/** Default properties for the TableItem component. @keywords table, item, cell, defaults */
 export declare const defaultsTableItem: {
     align: string;
     alignVertical: string;

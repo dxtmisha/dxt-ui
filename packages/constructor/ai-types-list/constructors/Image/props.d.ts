@@ -1,47 +1,48 @@
-// md5:bf4de0bac791058c479f3b4d80310d8e true
+// md5:03a466a5ff32c8965475ba4d94fc4c52 true
 export type ImagePropsToken = {
     turn?: boolean;
     disabled?: boolean;
     hide?: boolean;
     adaptive?: boolean;
+    static?: boolean;
     size?: 'auto' | 'contain' | 'cover';
 };
 export type ImagePropsBasic = {
-    /** Accepts icon name, image URL, File object or PDF link @keywords image value source file pdf */
+    /** Icon name, image URL, File object, or PDF link */
     value?: string | any;
-    /** Image URL @keywords image url address */
+    /** Image URL */
     url?: string;
-    /** Adaptive group for different resolutions @keywords image adaptive group */
+    /** Adaptive resolution group identifier */
     adaptiveGroup?: string;
-    /** Always use adaptivity @keywords image adaptive always */
+    /** Always enable adaptivity */
     adaptiveAlways?: boolean;
-    /** Image object width @keywords image width size */
+    /** Image object width */
     objectWidth?: string | number;
-    /** Image object height @keywords image height size */
+    /** Image object height */
     objectHeight?: string | number;
-    /** Image coordinates for cropping or positioning @keywords image coordinator crop position */
+    /** Image crop or position coordinates */
     coordinator?: number[] | any;
-    /** X position @keywords image position x */
+    /** X-axis position */
     x?: string | number;
-    /** Y position @keywords image position y */
+    /** Y-axis position */
     y?: string | number;
-    /** Use <img> tag instead of background image @keywords image tag img */
+    /** Render as `<img>` tag instead of background image */
     tagImg?: boolean;
-    /** Image source set for different resolutions @keywords image srcset sources */
+    /** Responsive image source set */
     srcset?: string | Record<string, string>;
-    /** Picture sources for different resolutions using <picture> tag @keywords image picture sources */
+    /** `<picture>` element source configurations */
     picture?: ImagePicture;
-    /** Alt text @keywords image alt alternative text */
+    /** Alternative text description */
     alt?: string;
-    /** Lazy loading @keywords image lazy load */
+    /** Enable lazy loading */
     lazy?: boolean;
-    /** Preload offset @keywords image preload offset */
+    /** Preload viewport offset threshold */
     preloadOffset?: string;
-    /** Image fetch priority @keywords image fetch priority */
+    /** Image fetch priority hint */
     fetchPriority?: HTMLImageElement['fetchPriority'];
 };
 export type ImageProps = ImagePropsBasic & ImagePropsToken;
-/** Default value for image properties @keywords image defaults configuration */
+/** Default image property values @keywords image, defaults */
 export declare const defaultsImage: {
     adaptiveGroup: string;
     preloadOffset: string;

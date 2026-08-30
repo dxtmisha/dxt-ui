@@ -1,6 +1,6 @@
 {
   "path": "ai-resources/error-center.md",
   "md5": "e3d4bda56f61b790ab47ed937a85f778",
-  "name": "ErrorCenter Handling Guide",
-  "description": "Defines mandatory rules and architecture for centralized error management using ErrorCenter in @dxtmisha/functional-basic. Prohibits direct console logging and standardizes error routing via structured codes, groups, and handlers. Enables consistent error dispatching, telemetry integration, and centralized monitoring across applications."
+  "name": "Centralized Error Handling Guide",
+  "description": "Defines mandatory error management standards and API rules using ErrorCenter in @dxtmisha/functional-basic. Prohibits direct console logging and enforces structured error dispatching across all application domains. Guides error registration, custom group handlers, and external telemetry integration."
 }

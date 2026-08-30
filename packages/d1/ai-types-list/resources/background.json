@@ -1,0 +1,6 @@
+{
+  "path": "ai-resources/background.md",
+  "md5": "2afb98b4b6560f08d061c233b830de18",
+  "name": "SCSS Background Gradient Guide",
+  "description": "Provides styling rules, mixins, and best practices for configuring background colors, surface opacities, and gradients in SCSS using @dxtmisha/d1. It ensures dynamic theme palette adaptability, token compliance, and prevents CSS anti-patterns like hardcoded colors."
+}

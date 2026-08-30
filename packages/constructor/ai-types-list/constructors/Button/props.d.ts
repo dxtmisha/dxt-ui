@@ -1,5 +1,6 @@
-// md5:a38c6089bbdc8416d80651ac9486da66 true
-import { ConstrHrefProps } from '@dxtmisha/functional';
+// md5:a7bef9bc1037e57464590fdcede9de31 true
+import type { ConstrHrefProps } from '@dxtmisha/functional';
+
 export type ButtonPropsToken = {
     focus?: boolean;
     disabled?: boolean;
@@ -12,10 +13,12 @@ export type ButtonPropsToken = {
     textAlign?: 'left' | 'center' | 'right';
 };
 export type ButtonPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Progress extends ProgressPropsBasic = ProgressPropsBasic> = LabelProps & EnabledProps & IconTrailingPropsInclude<Icon> & ProgressPropsInclude<Progress> & SkeletonPropsInclude & EventClickProps & ConstrHrefProps & AriaLabelPropsInclude & {
+    /** HTML tag for the button container. @keywords button, tag */
     tag?: 'button' | 'a' | 'span' | string;
+    /** HTML type for the button element. @keywords button, type */
     type?: 'button' | 'submit' | 'reset' | string;
 };
-/** Button properties configuration. @keywords button properties props config */
+/** Properties for the Button component. @keywords button, props */
 export type ButtonProps = ButtonPropsBasic & ButtonPropsToken;
-/** Default button property values. @keywords button defaults constant */
+/** Default property values for Button component. @keywords button, defaults */
 export declare const defaultsButton: {};

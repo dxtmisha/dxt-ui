@@ -1,5 +1,5 @@
-// md5:ebae1538c00aa25187dd202c3ae8d317 true
-export type TableFlexHeaderItemPropsToken = {
+// md5:99bde913d39c81690b8787ce8046dedf true
+type TableFlexHeaderItemPropsToken = {
     disabled?: boolean;
     selected?: boolean;
     align?: 'left' | 'center' | 'right';
@@ -12,7 +12,7 @@ export type TableFlexHeaderItemPropsToken = {
 };
 export type TableFlexHeaderItemPropsBasic<Chip extends ChipPropsBasic = ChipPropsBasic, Icon extends IconPropsBasic = IconPropsBasic, Tooltip extends TooltipProps = TooltipProps> = TableHeaderItemPropsBasic<Chip, Icon, Tooltip>;
 export type TableFlexHeaderItemProps = TableFlexHeaderItemPropsBasic & TableFlexHeaderItemPropsToken;
-/** Default values for TableFlexHeaderItem component properties. @keywords table flex header item defaults */
+/** Default properties for TableFlexHeaderItem component. @keywords table, flex, header, item, defaults */
 export declare const defaultsTableFlexHeaderItem: {
     align: string;
     alignVertical: string;

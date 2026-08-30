@@ -54,11 +54,13 @@ const separator = PropertiesConfig.getSeparator()
 - `getAiModel(): string` — trả về tên mô hình AI cụ thể.
 - `getAiKey(): string` — trả về khóa API cho dịch vụ AI.
 - `getAiConfig(): Record<string, any>` — trả về đối tượng cấu hình client AI.
+- `getAiTypesConcurrency(): number` — trả về giới hạn số lượng tệp định nghĩa kiểu xử lý đồng thời qua AI.
 
 ### AI & Tài liệu
 
 - `getAiType(): AiType` — Trả về nhà cung cấp AI đã cấu hình (ví dụ: 'gemini').
 - `getAiModel(): string` — Trả về tên mô hình AI cụ thể.
+- `getAiTypesConcurrency(): number` — Trả về số lượng tệp định nghĩa kiểu tối đa được AI xử lý đồng thời.
 
 ## Các thao tác (Operations)
 

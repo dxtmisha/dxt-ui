@@ -1,5 +1,5 @@
-// md5:e4d620d03f51bddd5a3abdfec696bf33 true
-import { ConstrClass } from '@dxtmisha/functional';
+// md5:2baca57a3bd45f3008c5647e90251a09 true
+import type { ConstrClass } from '@dxtmisha/functional';
 
 export type InputCodeItemComponents = {};
 
@@ -12,20 +12,19 @@ export type InputCodeItemEmits = {
 
 export interface InputCodeItemExpose {
     index: InputCodeItemPropsBasic['index'];
-    /** Get value @keywords getValue, code */
+    /** Gets current input item value. @keywords get, value, code */
     getValue(): string;
-    /** Set value @keywords set, code */
+    /** Sets the input item value. @keywords set, value */
     set(value: string): void;
-    /** Set tabindex @keywords setTabindex, tab */
+    /** Sets the tabindex attribute for the input element. @keywords tabindex, focus */
     setTabindex(value: number | string | undefined): void;
-    /** Reset value @keywords reset, clear */
+    /** Resets the input item value. @keywords reset, clear */
     reset(): void;
-    /** Focus input element @keywords focus, input */
+    /** Focuses the input element. @keywords focus, input */
     focusInput(): void;
 }
 
-export interface InputCodeItemSlots {
-}
+export interface InputCodeItemSlots {}
 
 export type InputCodeItemClasses = {
     main: ConstrClass;

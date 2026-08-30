@@ -1,17 +1,10 @@
-// md5:cca6bae070cab6b9f9eec7583c7c0dce true
-import { ConstrClass } from '@dxtmisha/functional';
+// md5:f6a633bd9514b3324895289b1bc316e9 true
+import type { ConstrClass } from '@dxtmisha/functional';
 
 export type MenuLanguageComponents = MenuCountryComponents;
-
 export type MenuLanguageEmits = MenuCountryEmits;
-
-export interface MenuLanguageExpose extends MenuCountryExpose {
-}
-
-export interface MenuLanguageSlots extends MenuCountrySlots {
-}
-
-/** Subclasses definition @keywords menu language classes */
+export interface MenuLanguageExpose extends MenuCountryExpose {}
+export interface MenuLanguageSlots extends MenuCountrySlots {}
 export type MenuLanguageClasses = {
-    main: ConstrClass;
+  main: ConstrClass;
 };

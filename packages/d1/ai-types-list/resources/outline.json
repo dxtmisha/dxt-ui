@@ -1,0 +1,6 @@
+{
+  "path": "ai-resources/outline.md",
+  "md5": "31db20dd562ce7d562fb4e90ded60970",
+  "name": "SCSS Outline and Focus Guide",
+  "description": "Provides guidelines, mixins, and preset specifications for implementing accessible focus rings and dynamic palette outlines in `@dxtmisha/d1`. Standardizes focus-visible behavior and outline styling across interactive UI components."
+}

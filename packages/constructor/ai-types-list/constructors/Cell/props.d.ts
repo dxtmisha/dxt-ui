@@ -1,4 +1,4 @@
-// md5:7d5b120019908379c8a196f7164e885c true
+// md5:3cfd02dad56a930a5113f2e85be74469 true
 export type CellPropsToken = {
     focus?: boolean;
     selected?: boolean;
@@ -15,9 +15,9 @@ export type CellPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Progres
     divider?: boolean;
     dynamic?: boolean;
 };
-/** Cell properties combining basic and token properties. @keywords cell properties props token basic */
+/** Properties for the Cell component. @keywords cell, props */
 export type CellProps = CellPropsBasic & CellPropsToken;
-/** Default values for cell properties. @keywords cell defaults default values */
+/** Default property values for the Cell component. @keywords cell, defaults */
 export declare const defaultsCell: {
     divider: boolean;
     tag: string;

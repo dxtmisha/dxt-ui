@@ -1,22 +1,16 @@
-// md5:c2713db5e7242a26ae2df1e22f4ab950 true
-import { ConstrClass } from '@dxtmisha/functional';
-
+// md5:6c0195603a8fbc462cff839288f9da25 true
+import type { ConstrClass } from '@dxtmisha/functional';
 export type ModalComponents = WindowComponentInclude & BarsComponentInclude & ActionsComponentInclude;
-
 export type ModalEmits = WindowEmitsInclude & BarsEmitsInclude & ActionsEmitsInclude & ModelEmitsOpen;
-
-export interface ModalExpose extends WindowExposeInclude {
-}
-
+export interface ModalExpose extends WindowExposeInclude {}
 export interface ModalSlots extends WindowSlots {
-    /** Modal header slot @keywords header slot */
-    header(props: WindowControlItem): any;
+  /** Slot for rendering the modal header content. @keywords modal, header, slot */
+  header(props: WindowControlItem): any;
 }
-
 export type ModalClasses = {
-    main: ConstrClass;
-    title: string;
-    header: string;
-    body: string;
-    footer: string;
+  main: ConstrClass;
+  title: string;
+  header: string;
+  body: string;
+  footer: string;
 };

@@ -1,4 +1,4 @@
-// md5:76bb883972c0f1e299734e84ac8e14db true
+// md5:5363d73cbd7faba99d79862fb6cc7e53 true
 type SnackbarPropsToken = {
     full?: boolean;
     all?: boolean;
@@ -8,12 +8,12 @@ type SnackbarPropsToken = {
     origin?: 'topToBottom' | 'bottomToTop' | 'rightToLeft' | 'leftToRight';
 };
 export type SnackbarPropsBasic = TextNotificationsPropsInclude & {
-    /** Delay before auto-closing the notification @keywords delay, timeout, duration */
+    /** Delay before auto-closing the notification @keywords delay timeout duration */
     delay?: number;
 };
-/** Type describing incoming snackbar properties @keywords snackbar, props, configuration */
+/** Properties for the Snackbar component @keywords snackbar props */
 export type SnackbarProps = SnackbarPropsBasic & SnackbarPropsToken;
-/** Default values for snackbar properties @keywords defaults, snackbar, configuration */
+/** Default property values for Snackbar @keywords snackbar defaults */
 export declare const defaultsSnackbar: {
     delay: number;
 };

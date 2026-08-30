@@ -1,34 +1,38 @@
-// md5:6a3933fae14620b043a380d08b52c407 true
-import { ConstrClass } from '@dxtmisha/functional';
+// md5:77f799f11b5c279fdd4f260dd4ff5915 true
+import type { ConstrClass } from '@dxtmisha/functional';
 
 export type WindowComponents = ScrollbarComponentInclude & ButtonComponentInclude & ImageComponentInclude;
 
 export type WindowEmits = ScrollbarEmitsInclude & ImageEmitsInclude & ModelEmitsOpen & {
+    /** Window state change event. @keywords window, state, emit */
     window: [options: WindowEmitOptions];
 };
 
-/** @keywords window, expose, api */
 export interface WindowExpose {
-    /** @keywords id, get */
+    /** Returns the unique identifier of the window. @keywords id, window */
     getId(): string | undefined;
-    /** @keywords open, state, get */
+    /** Returns the reactive open state of the window. @keywords open, visibility, state */
     getOpen(): boolean;
-    /** @keywords control, item, get */
+    /** Returns the control item data for window management. @keywords control, trigger */
     getControl(): WindowControlItem | undefined;
-    /** @keywords open, set */
+    /** Sets the window open state. @keywords open, state */
     setOpen(open: boolean): Promise<void>;
-    /** @keywords open, transition */
+    /** Opens the window. @keywords open, show */
     toOpen(): Promise<void>;
-    /** @keywords close, transition */
+    /** Closes the window. @keywords close, hide */
     toClose(): Promise<void>;
-    /** @keywords toggle, visibility */
+    /** Toggles window visibility state. @keywords toggle, visibility */
     toggle(): Promise<void>;
 }
 
 export interface WindowSlots {
+    /** Slot for window control trigger element. @keywords slot, control */
     control?(props: WindowControlItem): any;
+    /** Slot for window title/header. @keywords slot, title, header */
     title?(props: WindowControlItem): any;
+    /** Slot for window footer. @keywords slot, footer */
     footer?(props: WindowControlItem): any;
+    /** Default slot for main content. @keywords slot, default, content */
     default?(props: WindowControlItem): any;
 }
 

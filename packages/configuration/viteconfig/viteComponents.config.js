@@ -27,7 +27,9 @@ export const viteComponents = mergeConfig(
       '**/App.vue',
       '**/main.ts',
       '**/main.tsx'
-    ]
+    ],
+    bundleTypes: false,
+    rollupTypes: false
   }),
   {
     build: {

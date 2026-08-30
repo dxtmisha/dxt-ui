@@ -1,18 +1,11 @@
-// md5:24eb4971748b8273e8a28d31168a893f true
-import { ConstrClass } from '@dxtmisha/functional';
+// md5:16c7b05a3635809ce9ec01283ee287e5 true
+import type { ConstrClass } from '@dxtmisha/functional';
 
 export type TextLabelComponents = {};
-
 export type TextLabelEmits = {};
-
-export interface TextLabelExpose {
-}
-
-export interface TextLabelSlots extends LabelSlots {
-}
-
-/** Class definitions for text label elements @keywords text label classes */
+export interface TextLabelExpose {}
+export interface TextLabelSlots extends LabelSlots {}
 export type TextLabelClasses = {
-    main: ConstrClass;
-    label: string;
+  main: ConstrClass;
+  label: string;
 };

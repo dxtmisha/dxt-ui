@@ -1,8 +1,9 @@
-// md5:99e205f6b93aa4d613f696bcb6ed4265 true
+// md5:52f4cd4c053295032b44a05e07da7caf true
+type MenuLanguagePropsToken = {};
 export type MenuLanguagePropsBasic<Menu extends MenuPropsBasic = MenuPropsBasic> = MenuCountryPropsBasic<Menu>;
-/** Type describing incoming properties. @keywords MenuLanguageProps, incoming properties */
-export type MenuLanguageProps = MenuLanguagePropsBasic & {};
-/** Default value for property. @keywords defaultsMenuLanguage, default value */
+/** Language menu component properties. @keywords menu, language, props */
+export type MenuLanguageProps = MenuLanguagePropsBasic & MenuLanguagePropsToken;
+/** Default properties for the language menu component. @keywords menu, language, defaults */
 export declare const defaultsMenuLanguage: {
     isSelectedByValue: boolean;
 };

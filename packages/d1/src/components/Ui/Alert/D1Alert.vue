@@ -30,9 +30,9 @@ const classesToken = computed<ConstrClasses>(() => ({
   main: {
     // :classes-values [!] System label / Системная метка
     'd1-alert': true,
+    'd1-alert--itemCenter': props.itemCenter,
     'd1-alert--primary': props.primary,
     'd1-alert--secondary': props.secondary && !props.primary,
-    'd1-alert--itemCenter': props.itemCenter,
     [`d1-palette d1-palette--${props.palette}`]: inArray(propsValues.palette, props.palette)
     // :classes-values [!] System label / Системная метка
   }

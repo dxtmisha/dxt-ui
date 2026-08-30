@@ -1,12 +1,10 @@
-// md5:d6552815ecdba95b0778162175bbf3d9 true
-import { ConstrClass } from '@dxtmisha/functional';
+// md5:188dd7487752725ece8daadcbf017c59 true
+import type { ConstrClass } from '@dxtmisha/functional';
+
 export type ProgressComponents = {};
 export type ProgressEmits = {};
-export interface ProgressExpose {
-}
-export interface ProgressSlots {
-}
-/** Subclasses mapping for progress component elements. @keywords progress classes subclasses */
+export interface ProgressExpose {}
+export interface ProgressSlots {}
 export type ProgressClasses = {
     main: ConstrClass;
     circle: string;

@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/zip",
   "private": false,
-  "version": "0.1.3",
+  "version": "0.1.4",
   "type": "module",
   "description": "Library for creating and managing ZIP archives in the browser and Node.js environments.",
   "keywords": [

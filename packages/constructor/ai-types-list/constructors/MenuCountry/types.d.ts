@@ -1,16 +1,20 @@
-// md5:0d58bcf8e6b507a7bbf41442f85b1fc2 true
-import { ConstrClass, NumberOrStringOrBoolean } from '@dxtmisha/functional';
+// md5:0093e2e1f5b23fcb35df127ecb42bdc9 true
+import type { ConstrClass, NumberOrStringOrBoolean } from '@dxtmisha/functional';
+
 export type MenuCountryComponents = MenuComponentInclude;
+
 export type MenuCountryEmits = ModelEmitsSelected & EventClickEmits & {
-    /** Event for updating the value @keywords updateValue value */
-    updateValue: [value?: NumberOrStringOrBoolean];
+  /** Event triggered when the selected value updates. */
+  updateValue: [value?: NumberOrStringOrBoolean];
 };
-export interface MenuCountryExpose extends MenuExposeInclude {
-}
+
+export interface MenuCountryExpose extends MenuExposeInclude {}
+
 export interface MenuCountrySlots extends MenuSlotInclude {
-    /** Control slot for window management @keywords control window slot */
-    control?(props: MenuControlItem): any;
+  /** Control slot for menu trigger and window management. */
+  control?(props: MenuControlItem): any;
 }
+
 export type MenuCountryClasses = {
-    main: ConstrClass;
+  main: ConstrClass;
 };

@@ -1,12 +1,11 @@
-// md5:76b279b1efeea54f3d7bf4870d8b48d8 true
-import { ConstrClass } from '@dxtmisha/functional';
+// md5:f32a5f6a325fdb06ae3a8ba9660620f6 true
+import type { ConstrClass } from '@dxtmisha/functional';
+
 export type ActionSheetComponents = ModalComponents;
 export type ActionSheetEmits = ModalEmits;
-export interface ActionSheetExpose extends ModalExpose {
-}
-export interface ActionSheetSlots extends ModalSlots {
-}
-/** Action sheet CSS classes. @keywords actionsheet classes styling */
+export interface ActionSheetExpose extends ModalExpose {}
+export interface ActionSheetSlots extends ModalSlots {}
+/** ActionSheet CSS class names structure. @keywords action-sheet, classes, styles */
 export type ActionSheetClasses = {
     main: ConstrClass;
     title: string;

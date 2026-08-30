@@ -1,4 +1,4 @@
-// md5:09afbe064ff290d13124796a439a3fea true
+// md5:073057f26585ae07314d6e36a354e15c true
 export type BadgePropsToken = {
     selected?: boolean;
     hide?: boolean;
@@ -8,11 +8,10 @@ export type BadgePropsToken = {
     horizontal?: 'right' | 'center' | 'left';
 };
 export type BadgePropsBasic<Icon extends IconPropsBasic = IconPropsBasic> = IconPropsInclude<Icon> & LabelNumberProps & AriaLabelPropsInclude & {
-    /** Whether to show as a dot @keywords badge dot indicator */
     dot?: boolean;
 };
 export type BadgeProps = BadgePropsBasic & BadgePropsToken;
-/** Default values for badge properties @keywords defaults badge config */
+/** Default property values for the badge component. @keywords badge, defaults */
 export declare const defaultsBadge: {
     overlap: string;
     vertical: string;

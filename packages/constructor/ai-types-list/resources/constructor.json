@@ -1,6 +1,6 @@
 {
   "path": "ai-resources/constructor.md",
   "md5": "bf5e6ff7ce0869b2ab96a81c9e3fb694",
-  "name": "Constructor Architecture Guide",
-  "description": "Строгие архитектурные стандарты, правила структурирования файлов и паттерны Dependency Injection для создания модульных UI-компонентов в пакете dxt-ui."
+  "name": "DXT-UI Constructor Architecture Guide",
+  "description": "Defines architectural standards, file structure specifications, and implementation rules for creating UI component constructors in @dxtmisha/constructor. Details the separation of business logic from rendering, dependency injection patterns, token management via properties.json, and SCSS styling conventions. Guides developers in building, extending, and maintaining framework-agnostic design system components reliably."
 }

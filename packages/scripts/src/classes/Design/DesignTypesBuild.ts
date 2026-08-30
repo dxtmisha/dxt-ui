@@ -52,7 +52,7 @@ export class DesignTypesBuild extends DesignTypesBuildAbstract {
     const paths = isFilled(typesPaths) ? typesPaths : ['src']
 
     for (const directory of paths) {
-      const sourceDirectory = PropertiesFile.joinPath(directory)
+      const sourceDirectory = this.resolveDirectory(directory)
 
       if (PropertiesFile.is(sourceDirectory)) {
         const files = PropertiesFile.readDirRecursive(sourceDirectory)
@@ -219,11 +219,16 @@ export class DesignTypesBuild extends DesignTypesBuildAbstract {
 
     return paths.some((path) => {
       const normalizedPath = path.replace(/^[./\\]+/, '').replace(/[/\\]+$/, '')
+      const pathWithoutSrc = normalizedPath.replace(/^src[/\\]/, '')
 
       return file.startsWith(normalizedPath)
         || file.startsWith(`./${normalizedPath}`)
+        || file.startsWith(pathWithoutSrc)
+        || file.startsWith(`./${pathWithoutSrc}`)
         || file.includes(`/${normalizedPath}/`)
         || file.includes(`\\${normalizedPath}\\`)
+        || file.includes(`/${pathWithoutSrc}/`)
+        || file.includes(`\\${pathWithoutSrc}\\`)
     })
   }
 
@@ -341,7 +346,7 @@ export class DesignTypesBuild extends DesignTypesBuildAbstract {
     const result: string[] = []
 
     for (const directory of paths) {
-      const sourceDirectory = PropertiesFile.joinPath(directory)
+      const sourceDirectory = this.resolveDirectory(directory)
 
       if (PropertiesFile.is(sourceDirectory)) {
         const files = PropertiesFile.readDirRecursive(sourceDirectory)
@@ -371,18 +376,23 @@ export class DesignTypesBuild extends DesignTypesBuildAbstract {
     const sourceFiles = this.getTsSourceFiles()
 
     if (sourceFiles.length > 0) {
+      const rootDir = parsedConfiguration?.options?.rootDir
+        ?? (PropertiesFile.is('src') ? 'src' : undefined)
+
       const compilerOptions: ts.CompilerOptions = {
         ...(parsedConfiguration?.options ?? {}),
         declaration: true,
         emitDeclarationOnly: true,
         noEmit: false,
-        outDir: temporaryDirectory
+        outDir: temporaryDirectory,
+        ...(rootDir ? { rootDir } : {})
       }
 
       const host = ts.createCompilerHost(compilerOptions)
       const program = ts.createProgram(sourceFiles, compilerOptions, host)
 
       program.emit()
+      this.cleanExcess()
     }
 
     return this
@@ -438,5 +448,28 @@ export class DesignTypesBuild extends DesignTypesBuildAbstract {
     }
 
     return this
+  }
+
+  /**
+   * Resolves a configured directory path to an existing filesystem path.
+   *
+   * Разрешает путь к настроенной директории в существующий путь в файловой системе.
+   * @param directory directory path to resolve / путь к директории для разрешения
+   * @returns resolved directory path / разрешенный путь к директории
+   */
+  protected resolveDirectory(directory: string): string {
+    const cleanDir = directory.replace(/^[./\\]+/, '').replace(/[/\\]+$/, '')
+
+    if (PropertiesFile.is(cleanDir)) {
+      return cleanDir
+    }
+
+    const srcDir = PropertiesFile.joinPath(['src', cleanDir])
+
+    if (PropertiesFile.is(srcDir)) {
+      return srcDir
+    }
+
+    return PropertiesFile.joinPath(cleanDir)
   }
 }

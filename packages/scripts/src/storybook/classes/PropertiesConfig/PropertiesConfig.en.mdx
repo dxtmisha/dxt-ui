@@ -54,11 +54,13 @@ const separator = PropertiesConfig.getSeparator()
 - `getAiModel(): string` — returns the specific AI model name.
 - `getAiKey(): string` — returns the API key for AI services.
 - `getAiConfig(): Record<string, any>` — returns the AI client configuration object.
+- `getAiTypesConcurrency(): number` — returns the concurrency limit for processing type definition files via AI.
 
 ### AI & Documentation
 
 - `getAiType(): AiType` — Returns the configured AI provider (e.g., 'gemini').
 - `getAiModel(): string` — Returns the specific AI model name.
+- `getAiTypesConcurrency(): number` — Returns the maximum number of type definition files processed by AI concurrently.
 
 ## Operations
 

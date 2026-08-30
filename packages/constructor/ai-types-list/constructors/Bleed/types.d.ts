@@ -1,12 +1,12 @@
-// md5:b4295ad90697532af6105afdb69c09c8 true
-import { ConstrClass } from '@dxtmisha/functional';
+// md5:ebffd17b6206e54e9ef1c321e7c97804 true
+import type { ConstrClass } from '@dxtmisha/functional';
+
 export type BleedComponents = {};
 export type BleedEmits = {};
-export interface BleedExpose {
-}
+export interface BleedExpose {}
 export interface BleedSlots {
-    default?(props: any): any;
+  default?(props: any): any;
 }
 export type BleedClasses = {
-    main: ConstrClass;
+  main: ConstrClass;
 };

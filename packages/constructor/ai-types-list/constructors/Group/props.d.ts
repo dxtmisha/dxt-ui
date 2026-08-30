@@ -1,8 +1,8 @@
-// md5:78533f669d1970fbf59122a58e353bb2 true
+// md5:e2bed9b82d5b5535096a504dcfde3a47 true
+type GroupPropsToken = {};
 export type GroupPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Header extends HeaderPropsBasic = HeaderPropsBasic> = BlockPropsBasic<Icon, Header>;
-/** Type describing incoming properties. @keywords GroupProps properties input */
-export type GroupProps = GroupPropsBasic & {};
-/** Default value for property. @keywords defaultsGroup default values configuration */
+export type GroupProps = GroupPropsBasic & GroupPropsToken;
+/** Default values for group properties. @keywords group, defaults, properties */
 export declare const defaultsGroup: {
     area: string;
     tag: string;

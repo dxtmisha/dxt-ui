@@ -1,8 +1,7 @@
-// md5:ed56031e29e074df19ac1198ffec89ad true
-export type PlaceholderPropsToken = {};
+// md5:978b01324a9d6e3441df26ce03f4e3d6 true
+type PlaceholderPropsToken = {};
 export type PlaceholderPropsBasic<Image extends ImagePropsBasic = ImagePropsBasic, Actions extends ActionsPropsBasic = ActionsPropsBasic> = ImagePropsInclude<Image> & LabelProps & DescriptionProps & ActionsPropsInclude<Actions>;
-/** Type describing incoming properties. @keywords placeholder props properties */
+/** Placeholder component properties. @keywords placeholder, props */
 export type PlaceholderProps = PlaceholderPropsBasic & PlaceholderPropsToken;
-/** Default value for property. @keywords defaults placeholder default */
+/** Default properties for Placeholder component. @keywords placeholder, defaults */
 export declare const defaultsPlaceholder: {};
-export {};

@@ -2,5 +2,5 @@
   "path": "ai-resources/colors-and-palettes.md",
   "md5": "ba32f1253c35d41222788353c5fe1222",
   "name": "UI SCSS Styling Directive",
-  "description": "Establishes strict rules for UI styling using dynamic palette mixins and JSON tokens instead of hardcoded colors. Solves the problem of theme-adaptive styling and consistency across SCSS and Vue components."
+  "description": "Defines strict styling standards, SCSS mixins, and design token conventions for SCSS and Vue components. It specifies dynamic palette and static color usage alongside properties.json configuration rules for UI states. This ensures seamless theme adaptability, design token compliance, and prevents hardcoded color values."
 }

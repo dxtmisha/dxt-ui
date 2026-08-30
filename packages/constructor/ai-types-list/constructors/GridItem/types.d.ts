@@ -1,13 +1,17 @@
-// md5:342ff30b240f1e2059e6d1bb4dc29956 true
-import { ConstrClass } from '@dxtmisha/functional';
+// md5:891f0fe86d799148b5f33361b04a91a3 true
+import type { ConstrClass } from '@dxtmisha/functional';
+
 export type GridItemComponents = {};
+
 export type GridItemEmits = {};
-export interface GridItemExpose {
-}
+
+export interface GridItemExpose {}
+
 export interface GridItemSlots {
-    /** Slot for default grid item content @keywords default slot content */
-    default?(props: any): any;
+  /** Default slot for grid item content. @keywords grid item slot default */
+  default?(props: any): any;
 }
+
 export type GridItemClasses = {
-    main: ConstrClass;
+  main: ConstrClass;
 };

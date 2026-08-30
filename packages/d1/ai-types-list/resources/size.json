@@ -1,0 +1,6 @@
+{
+  "path": "ai-resources/size.md",
+  "md5": "e7293014fd41b4deb363d1d4c79826e0",
+  "name": "SCSS Sizing & Dimensions Guide",
+  "description": "Defines SCSS mixins, tokens, and rules for managing component widths, heights, dynamic viewport units, and aspect ratios. It standardizes element dimensions and ensures consistent responsive layout behavior across UI components."
+}

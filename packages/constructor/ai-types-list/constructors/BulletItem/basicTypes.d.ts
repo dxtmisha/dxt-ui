@@ -1,12 +1,12 @@
-// md5:f2841dc799293f4763df81e5103cffbb true
-import { ConstrBind } from '@dxtmisha/functional';
+// md5:1bd2133e9b394e1eb87ab8dc0b8c696f true
+import type { ConstrBind } from '@dxtmisha/functional';
 
-/** Type describing components for nested bullet items @keywords BulletItemComponentInclude bulletItem component */
+/** Components configuration for nested bullet items. @keywords bullet item, component include */
 export type BulletItemComponentInclude = {
     bulletItem?: object;
 };
 
-/** Type describing properties for nested bullet items @keywords BulletItemPropsInclude bulletItem list itemAttrs */
+/** Properties configuration for nested bullet items. @keywords bullet item, props include */
 export type BulletItemPropsInclude<BulletItemProps extends BulletItemPropsBasic = BulletItemPropsBasic> = {
     list?: string[];
     itemAttrs?: ConstrBind<BulletItemProps>;

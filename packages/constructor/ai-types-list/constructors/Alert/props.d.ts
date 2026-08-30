@@ -1,18 +1,18 @@
-// md5:f461de0ec73eba268ff1a3f3695db6a9 true
-type AlertPropsToken = {
-    itemCenter?: boolean;
-};
+// md5:ab966ebcb49ac795c87ea4f846212ecc true
+import type { ConstrBind } from '@dxtmisha/functional';
 export type AlertPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, AlertLink extends AlertLinkPropsBasic = AlertLinkPropsBasic, Actions extends ActionsPropsBasic = ActionsPropsBasic, Button extends ButtonPropsBasic = ButtonPropsBasic> = LabelProps & DescriptionProps & IconTrailingPropsInclude<Icon> & AlertLinkPropsInclude<AlertLink> & ActionsPropsInclude<Actions> & AriaRolePropsInclude & AriaLivePropsInclude & TextClosePropsInclude & {
-    /** Close button value @keywords button, value */
+    /** Close button value or binding @keywords button, close */
     button?: string | number | ConstrBind<Button>;
     /** Close button icon name @keywords icon, close */
     iconClose?: string;
-    /** Shows the close button @keywords close, button, visible */
+    /** Toggles close button visibility @keywords close, button */
     closeButton?: boolean;
 };
-/** Type describing incoming properties. @keywords alert, props, properties */
-export type AlertProps = AlertPropsBasic & AlertPropsToken;
-/** Default value for property. @keywords defaults, alert */
+/** Properties for Alert component @keywords alert, props */
+export type AlertProps = AlertPropsBasic & {
+    itemCenter?: boolean;
+};
+/** Default property values for Alert @keywords alert, defaults */
 export declare const defaultsAlert: {
     itemCenter: boolean;
     role: string;

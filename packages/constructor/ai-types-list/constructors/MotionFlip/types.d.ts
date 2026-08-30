@@ -1,19 +1,25 @@
-// md5:cbe106d57dfa31a91ac4b36cdf42d80b true
-import { ConstrClass } from '@dxtmisha/functional';
+// md5:9084c5ef07913e0b42bcfde0aebb5b01 true
+import type { ConstrClass } from '@dxtmisha/functional';
+
 export type MotionFlipComponents = {};
+
 export type MotionFlipEmits = {};
-/** Interface describing exposed methods for MotionFlip. @keywords MotionFlip expose methods */
+
+/** Exposed methods for MotionFlip. @keywords motion, flip, expose, methods */
 export interface MotionFlipExpose {
-    /** Stops active FLIP animation and clears state. @keywords stop animation */
+    /** Stops active FLIP animation and clears state. @keywords stop, cancel, flip, reset */
     stop: () => void;
-    /** FLIP update animation handler. @keywords update animation callback @param callback Function performing DOM updates */
+    /** Triggers FLIP update animation sequence. @param callback Function performing DOM updates. @keywords update, flip, animate, transition */
     update: (callback: MotionFlipCallback) => Promise<void>;
 }
+
 export interface MotionFlipSlots {
-    /** Default slot for content elements */
+    /** Default slot for content elements. */
     default?(props: any): any;
 }
+
 export type MotionFlipClasses = {
+    /** Main container class. */
     main: ConstrClass;
     item: string;
 };

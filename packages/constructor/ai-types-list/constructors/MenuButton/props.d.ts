@@ -1,9 +1,9 @@
-// md5:bbd85491875d137c5011f47fe4ac8458 true
+// md5:77d5f79f4f06817d700bb7a7792addc0 true
 type MenuButtonPropsToken = {};
 export type MenuButtonPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Button extends ButtonPropsBasic = ButtonPropsBasic, Menu extends MenuPropsBasic = MenuPropsBasic> = LabelProps & ButtonPropsInclude<Button> & FieldSelectLiteProps & MenuPropsInclude<Menu> & MenuButtonPropsTool<Icon>;
-/** Type describing incoming properties. @keywords menu button props input */
+/** Menu button component properties contract. @keywords menu button, props */
 export type MenuButtonProps = MenuButtonPropsBasic & MenuButtonPropsToken;
-/** Default values for menu button properties. @keywords defaults menu button config */
+/** Default property values for the menu button component. @keywords menu button, defaults */
 export declare const defaultsMenuButton: {
     labelSeparator: string;
     hideLabelValue: boolean;

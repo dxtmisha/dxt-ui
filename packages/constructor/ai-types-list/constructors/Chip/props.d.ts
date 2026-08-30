@@ -1,4 +1,4 @@
-// md5:5c9e88964878f380c21b1cc1eaec50aa true
+// md5:f19bae6f0c2d8103dd233299a532b6a7 true
 export type ChipPropsToken = {
     focus?: boolean;
     disabled?: boolean;
@@ -11,9 +11,9 @@ export type ChipPropsToken = {
     textAlign?: 'left' | 'center' | 'right';
 };
 export type ChipPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Progress extends ProgressPropsBasic = ProgressPropsBasic> = ButtonPropsBasic<Icon, Progress>;
-/** Incoming properties for Chip component. @keywords chip properties props */
+/** Properties for the Chip component. @keywords chip, props */
 export type ChipProps = ChipPropsBasic & ChipPropsToken;
-/** Default properties for Chip component. @keywords chip defaults configuration */
+/** Default values for Chip component properties. @keywords chip, defaults */
 export declare const defaultsChip: {
     tag: string;
 };

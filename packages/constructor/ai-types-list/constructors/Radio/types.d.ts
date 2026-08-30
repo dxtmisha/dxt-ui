@@ -1,17 +1,11 @@
-// md5:591a47f1be1188a750312f00e8832076 true
-import { ConstrClass } from '@dxtmisha/functional';
+// md5:03a6120684703246a840715b62164c7f true
+import type { ConstrClass } from '@dxtmisha/functional';
 
 export type RadioComponents = CheckboxComponents;
-
 export type RadioEmits = CheckboxEmits;
-
-export interface RadioExpose extends CheckboxExpose {
-}
-
-export interface RadioSlots extends CheckboxSlots {
-}
-
-/** Radio classes mapping structure @keywords radio classes css structure */
+export interface RadioExpose extends CheckboxExpose {}
+export interface RadioSlots extends CheckboxSlots {}
+/** CSS class names for Radio component sub-elements. @keywords radio, classes, style */
 export type RadioClasses = {
     main: ConstrClass;
     input: string;

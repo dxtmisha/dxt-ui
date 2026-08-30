@@ -10,6 +10,8 @@ describe('getConstructorProperties', () => {
   it('reads constructor property files and maps them by name', () => {
     const mockPropertyItem = { name: 'Button', value: { color: { value: '#000' } } }
 
+    vi.spyOn(PropertiesFile, 'getRootProject').mockReturnValue(undefined)
+    vi.spyOn(PropertiesFile, 'is').mockReturnValue(true)
     vi.spyOn(PropertiesFile, 'readFile').mockImplementation((path) => {
       if (Array.isArray(path) && path.includes('Button')) {
         return mockPropertyItem as any
@@ -24,6 +26,8 @@ describe('getConstructorProperties', () => {
   })
 
   it('handles read errors gracefully without throwing', () => {
+    vi.spyOn(PropertiesFile, 'getRootProject').mockReturnValue(undefined)
+    vi.spyOn(PropertiesFile, 'is').mockReturnValue(true)
     vi.spyOn(PropertiesFile, 'readFile').mockImplementation(() => {
       throw new Error('Read error')
     })

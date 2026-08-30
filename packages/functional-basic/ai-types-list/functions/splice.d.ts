@@ -1,0 +1,3 @@
+// md5:635465fe853124e9d6f8db7773e2725c true
+/** Copies enumerable own properties from a source to a target object according to priority list. @keywords splice, copy, assign, merge, object */
+export declare function splice<I>(array: ObjectItem<I>, replacement?: ObjectItem<I> | I, indexStart?: string): ObjectItem<I>;

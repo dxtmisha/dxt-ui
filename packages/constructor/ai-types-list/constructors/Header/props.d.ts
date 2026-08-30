@@ -1,11 +1,10 @@
-// md5:3eb7a275ede0f1b7c36d60ad58317d73 true
+// md5:62440810c2795052d76384f9225a125f true
 type HeaderPropsToken = {
     tag?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 };
 export type HeaderPropsBasic<Icon extends IconPropsBasic = IconPropsBasic> = LabelProps & CaptionProps & IconPropsInclude<Icon> & AreaPropsInclude;
-/** Incoming properties for header component. @keywords header props configuration */
 export type HeaderProps = HeaderPropsBasic & HeaderPropsToken;
-/** Default values for header properties. @keywords defaults header configuration */
+/** Default property values for the Header component. @keywords header, defaults, props */
 export declare const defaultsHeader: {
     tag: string;
     area: string;

@@ -54,11 +54,13 @@ const separator = PropertiesConfig.getSeparator()
 - `getAiModel(): string` — возвращает название конкретной модели ИИ.
 - `getAiKey(): string` — возвращает API-ключ для сервиса ИИ.
 - `getAiConfig(): Record<string, any>` — возвращает объект конфигурации клиента ИИ.
+- `getAiTypesConcurrency(): number` — возвращает лимит параллельной обработки файлов типов через ИИ.
 
 ### ИИ и Документация
 
 - `getAiType(): AiType` — возвращает настроенного ИИ-провайдера (например, 'gemini').
 - `getAiModel(): string` — возвращает название конкретной модели ИИ.
+- `getAiTypesConcurrency(): number` — возвращает количество одновременно обрабатываемых файлов определений типов.
 
 ## Операции
 

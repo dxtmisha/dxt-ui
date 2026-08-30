@@ -2,14 +2,13 @@ import requireFs from 'node:fs'
 import requirePath from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { Datetime, forEach, toArray, toKebabCase, transformation } from '@dxtmisha/functional-basic'
-import { hasNativeDirname } from '../../functions/hasNativeDirname'
 
 import { UI_FILE_INDEX, UI_MODULES, UI_PROJECT_NAME } from '../../config'
 
 export type PropertiesFilePath = string | string[]
 export type PropertiesFileValue<T = any> = string | Record<string, T> | Buffer
 
-const dirnamePath = hasNativeDirname() ? __dirname : requirePath.dirname(fileURLToPath(import.meta.url))
+const dirnamePath = requirePath.dirname(fileURLToPath(import.meta.url))
 
 /**
  * Universal static utility for filesystem orchestration.
@@ -121,10 +120,6 @@ export class PropertiesFile {
     }
 
     return undefined
-  }
-
-  static getDirname(): string {
-    return dirnamePath
   }
 
   /**

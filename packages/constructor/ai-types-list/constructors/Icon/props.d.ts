@@ -1,4 +1,4 @@
-// md5:2ff826b3861996503eb74245ac2c6bdc true
+// md5:4db84df79e4468c613f698a89d12f701 true
 export type IconPropsToken = {
     turn?: boolean;
     disabled?: boolean;
@@ -14,19 +14,20 @@ export type IconPropsToken = {
     animationShow?: boolean;
 };
 export type IconPropsBasic<Image extends ImagePropsBasic = ImagePropsBasic> = SkeletonPropsInclude & AriaLabelPropsInclude & EventClickProps & {
-    /** Active state of the icon @keywords active state */
+    /** Active state of the icon. */
     active?: boolean;
-    /** Value of the main icon @keywords main icon value */
+    /** Main icon value. */
     icon?: ImageValue<Image>;
-    /** Value of the active icon @keywords active icon value */
+    /** Active icon value. */
     iconActive?: ImageValue<Image>;
-    /** ARIA role for the icon @keywords aria role */
+    /** ARIA role for the icon. */
     role?: RoleType;
-    /** Tab index for keyboard navigation @keywords tab index */
+    /** Tab index for keyboard navigation. */
     tabindex?: number | string;
 };
+/** Icon component properties. @keywords icon, properties */
 export type IconProps = IconPropsBasic & IconPropsToken;
-/** Default icon properties configuration @keywords defaults icon config */
+/** Default property values for the icon component. @keywords icon, defaults */
 export declare const defaultsIcon: {
     animationType: string;
 };

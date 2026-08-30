@@ -1,25 +1,20 @@
-// md5:bcf7b8777c99907733329e8f310217ad true
-import { Ref } from 'vue';
-import { ListRecord, NumberOrString, NumberOrStringOrBoolean } from '@dxtmisha/functional';
+// md5:8fd63343115316b8dfd8098aae5536be true
+import type { Ref } from 'vue';
+import type { ListRecord, NumberOrString, NumberOrStringOrBoolean } from '@dxtmisha/functional';
 
-/** Supported field types @keywords field, type, input */
 export type FieldType = 'text' | 'search' | 'number' | 'number-format' | 'currency' | 'email' | 'password' | 'datetime' | 'date' | 'year-month' | 'time' | 'hour-minute' | 'tel' | 'url' | 'checkbox' | 'radio';
 
-/** Base input or textarea element @keywords dom, input, textarea */
 export type FieldElementDom = HTMLInputElement | HTMLTextAreaElement;
 
-/** Any supported field element @keywords element, input, wrapper */
 export type FieldElementInput = FieldElementDom | HTMLElement | Record<string, any> | undefined;
 
-/** Map validity flags to custom messages @keywords validity, message, map */
 export type FieldValidityCodeItem = {
     [K in keyof ValidityState]?: string;
 };
 
-/** Global validation message or map @keywords validity, message */
 export type FieldValidityCode = string | FieldValidityCodeItem;
 
-/** Single mask fragment meta @keywords mask, fragment, meta */
+/** Mask segment metadata. @keywords mask, input_mask, fragment */
 export type FieldMaskItem = {
     group: string;
     value: string;
@@ -29,47 +24,38 @@ export type FieldMaskItem = {
     chars: string[];
 };
 
-/** Masks data split by groups @keywords mask, group */
 export type FieldMasks = Record<string, FieldMaskItem>;
 
-/** Partial input element for pattern @keywords pattern, input */
 export type FieldPatternElement = Partial<HTMLInputElement>;
 
-/** Pattern string or element @keywords pattern, string */
 export type FieldPatternItem = string | FieldPatternElement;
 
-/** Pattern or factory function @keywords pattern, function */
 export type FieldPatternItemOrFunction = FieldPatternItem | ((item: FieldMasks) => FieldPatternItem);
 
-/** Named pattern list @keywords pattern, list */
 export type FieldPatternList = Record<string, FieldPatternItemOrFunction>;
 
-/** Match config object @keywords match, config, validation */
 export type FieldMatchItem = {
     name?: string | HTMLInputElement;
     validationMessage?: string;
 };
 
-/** Match definition @keywords match, definition */
 export type FieldMatch = string | HTMLInputElement | FieldMatchItem;
 
-/** Base data for validation check @keywords validation, check */
 export type FieldCheckMain = {
     group?: string;
     input?: FieldElementDom;
     pattern?: FieldPatternItemOrFunction;
 };
 
-/** Check item interface @keywords check, item */
+/** Validation check item. @keywords validation, validator */
 export type FieldCheckItem<Value = any> = FieldCheckMain & {
-    /** Run validation for value @keywords check, validate */
+    /** Executes validation on the provided value. @keywords check, validate */
     check(value: Value): FieldValidationItem<Value>;
 };
 
-/** Map of check items @keywords check, list */
 export type FieldCheckList = Record<string, FieldCheckItem>;
 
-/** Single validation result @keywords validation, result, item */
+/** Validation result details. @keywords validation, result, validity */
 export type FieldValidationItem<Value = any> = FieldCheckMain & {
     type?: string;
     status?: boolean;
@@ -83,30 +69,26 @@ export type FieldValidationItem<Value = any> = FieldCheckMain & {
     detail?: Record<string, any>;
 };
 
-/** Emitted events for field components @keywords emits, events, field */
+/** Field component emitted events. @keywords emits, events, input, change */
 export type FieldBasicEmits<T = any> = ModelEmits<T> & {
-    /** Emitted on input events @keywords event, input, typing */
     input: [event: InputEvent | Event, value: FieldValidationItem<T>];
-    /** Lightweight input emit without DOM event @keywords event, input, lite */
     inputLite: [value: FieldValidationItem<T>];
-    /** Emitted when value is confirmed @keywords event, change, confirm */
     change: [event: InputEvent | Event, value: FieldValidationItem<T>];
-    /** Lightweight change emit without DOM event @keywords event, change, lite */
     changeLite: [value: FieldValidationItem<T>];
 };
 
-/** Interface describing exposed properties for basic field functionality @keywords expose, field, api */
+/** Exposed methods and properties for basic field components. @keywords expose, ref, api */
 export type FieldBasicExpose<T = string> = {
     value: Ref<T>;
-    /** Returns current value @keywords get, value */
+    /** Returns the current field value. @keywords getValue, value */
     getValue: () => T | undefined;
-    /** Checks field validity and returns status @keywords check, validity, status */
+    /** Checks validity of the field and returns status. @keywords checkValidity, validity */
     checkValidity: () => boolean;
-    /** Returns validation message @keywords get, message, validation */
+    /** Returns the current validation message. @keywords getValidationMessage, error */
     getValidationMessage: () => string;
 };
 
-/** Properties that describe the value and its handling @keywords props, value, include */
+/** Field value and constraint properties. @keywords props, value, constraints */
 export type FieldValueProps<Value = any> = ModelProps<Value> & {
     placeholder?: string;
     multiple?: boolean;
@@ -115,9 +97,9 @@ export type FieldValueProps<Value = any> = ModelProps<Value> & {
     detail?: Record<string, any> | undefined;
 };
 
-/** Basic HTML input attributes without value-length specifics @keywords props, input, basic */
+/** Basic HTML input properties and validation configuration. @keywords props, input, validation */
 export type FieldBasicProps<Value = any> = Omit<FieldValueProps<Value>, 'multiple' | 'maxlength'> & {
-    type?: 'text' | 'search' | 'number' | 'number-format' | 'currency' | 'email' | 'password' | 'datetime' | 'date' | 'year-month' | 'time' | 'hour-minute' | 'tel' | 'url' | 'checkbox' | 'radio';
+    type?: FieldType;
     name?: string;
     id?: string | number;
     required?: boolean;
@@ -132,32 +114,27 @@ export type FieldBasicProps<Value = any> = Omit<FieldValueProps<Value>, 'multipl
     inputAttrs?: Record<string, any>;
 };
 
-/** Numeric stepping and range constraints @keywords props, step, range, number */
 export type FieldStepProps = {
     step?: NumberOrString;
     min?: NumberOrString;
     max?: NumberOrString;
 };
 
-/** Input arrow controls @keywords props, arrow, number */
 export type FieldArrowProps = {
     arrow?: 'auto' | 'carousel' | 'stepper' | 'none';
     arrowStep?: NumberOrString;
     arrowAlign?: 'center' | 'right' | 'left';
 };
 
-/** Text length constraints @keywords props, length, limit */
 export type FieldLengthProps = {
     minlength?: NumberOrString;
     maxlength?: NumberOrString;
 };
 
-/** Validation pattern attribute @keywords props, pattern */
 export type FieldPatternProps = {
     pattern?: string;
 };
 
-/** UX input control attributes @keywords props, ux, autocomplete */
 export type FieldUxProps = {
     autocomplete?: string;
     autocapitalize?: 'off' | 'none' | 'sentences' | 'words' | 'characters' | string;
@@ -167,36 +144,34 @@ export type FieldUxProps = {
     autocorrect?: 'on' | 'off' | string;
 };
 
-/** Composite props for standard textual / numeric inputs @keywords props, input, composite */
+/** Composite properties for standard textual and numeric inputs. @keywords props, input */
 export type FieldInputProps<Value = any> = FieldBasicProps<Value> & FieldStepProps & FieldArrowProps & FieldLengthProps & FieldPatternProps & FieldUxProps & {
     list?: string;
     iconVisibility?: string;
     iconVisibilityOff?: string;
 };
 
-/** Phone input props @keywords props, phone, input */
 export type FieldInputPhoneProps = Omit<FieldBasicProps<string>, 'match' | 'pattern'> & FieldPatternProps;
 
-/** Props for social field elements @keywords props, social, input */
 export type FieldInputSocialProps = Omit<FieldBasicProps<string>, 'match' | 'pattern'> & {
     autocomplete?: string;
 };
 
-/** Props for file input elements @keywords props, file, input */
+/** Properties for file input elements. @keywords props, file_input */
 export type FieldInputFileProps<Value = any> = Omit<FieldBasicProps<Value>, 'type'> & FieldLengthProps & FieldUxProps & {
     multiple?: boolean;
     accept?: string;
     capture?: string | boolean;
 };
 
-/** Props for checkbox & radio inputs @keywords props, checkbox, radio, check */
+/** Properties for checkbox and radio inputs. @keywords props, checkbox, radio */
 export type FieldInputCheckProps<Value = boolean> = Omit<FieldBasicProps<Value>, 'type'> & FieldUxProps & {
     valueVariant?: NumberOrStringOrBoolean;
     valueVariantHide?: NumberOrStringOrBoolean;
     indeterminate?: boolean;
 };
 
-/** Props for textarea elements with sizing & wrapping @keywords props, textarea, size */
+/** Properties for textarea elements. @keywords props, textarea */
 export type FieldTextareaProps<Value = any> = Omit<FieldBasicProps<Value>, 'type'> & FieldLengthProps & FieldUxProps & {
     rows?: NumberOrString;
     cols?: NumberOrString;
@@ -204,20 +179,19 @@ export type FieldTextareaProps<Value = any> = Omit<FieldBasicProps<Value>, 'type
     fieldSizing?: 'content' | 'fixed' | string;
 };
 
-/** Props for select elements @keywords props, select, dropdown */
+/** Properties for select elements. @keywords props, select */
 export type FieldSelectProps<Value = any> = Omit<FieldBasicProps<Value>, 'type'> & Omit<FieldStepProps, 'min' | 'step'> & FieldArrowProps & FieldUxProps & {
     option?: ListRecord;
     multiple?: boolean;
     selectionStyle?: ListItemPropsBasic['selectionStyle'] | 'auto';
 };
 
-/** Simplified properties for lightweight select component @keywords props, select, lite */
 export type FieldSelectLiteProps<Value = any> = Omit<FieldSelectProps<Value>, 'placeholder' | 'validationMessage' | 'validationCode' | 'arrow' | 'arrowAlign' | 'arrowStep'>;
 
-/** Props for slider input elements @keywords props, slider, range */
+/** Properties for slider inputs. @keywords props, slider, range */
 export type FieldSliderProps<Value = any> = Omit<FieldBasicProps<Value>, 'type' | 'match'> & FieldStepProps & {
     multiple?: boolean;
 };
 
-/** All possible field properties combined @keywords props, all, field */
+/** Combined composite properties for all field types. @keywords props, field_all */
 export type FieldAllProps<Value = any> = FieldInputProps<Value> & FieldInputFileProps<Value> & FieldInputCheckProps<Value> & FieldTextareaProps<Value> & FieldSelectProps<Value> & FieldSliderProps<Value>;

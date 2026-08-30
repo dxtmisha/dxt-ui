@@ -3,7 +3,7 @@ type GridPropsToken = {
     align?: 'center' | 'top' | 'bottom' | 'stretch' | 'baseline' | 'start' | 'end';
 };
 export type GridPropsBasic = {};
-/** Incoming properties for grid component. @keywords grid props incoming properties */
+/** Grid component properties. @keywords grid, layout, props */
 export type GridProps = GridPropsBasic & GridPropsToken;
-/** Default value for grid property. @keywords defaults grid default value */
+/** Default property values for the Grid component. @keywords grid, defaults */
 export declare const defaultsGrid: {};

@@ -1,17 +1,10 @@
-// md5:adcd9f0462c70d105eed19a2eea5d878 true
-import { ConstrClass } from '@dxtmisha/functional';
+// md5:6ec427633d52773f3d71257069b0fc47 true
+import type { ConstrClass } from '@dxtmisha/functional';
 
 export type DividerComponents = {};
-
 export type DividerEmits = {};
-
-export interface DividerExpose {
-}
-
-export interface DividerSlots {
-}
-
-/** Subclasses definition @keywords divider classes subclasses */
+export interface DividerExpose {}
+export interface DividerSlots {}
 export type DividerClasses = {
     main: ConstrClass;
 };

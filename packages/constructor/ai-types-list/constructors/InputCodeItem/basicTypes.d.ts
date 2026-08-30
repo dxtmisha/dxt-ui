@@ -1,14 +1,10 @@
-// md5:aa9aaa3ebf6e568725fbdf0b2ead2711 true
-import { ConstrBind } from '@dxtmisha/functional';
-
+// md5:3e62c1c5a339b4a0d6c1d1b7f1807425 true
+import type { ConstrBind } from '@dxtmisha/functional';
 export type InputCodeItemElement = HTMLElement | Element | null | undefined;
-
-/** Component map for InputCodeItem inclusion. @keywords InputCodeItemComponentInclude, component map */
 export type InputCodeItemComponentInclude = {
     inputCodeItem?: object;
 };
-
-/** Props for including and configuring InputCodeItem. @keywords InputCodeItemPropsInclude, component props */
+/** Props for configuring and embedding the InputCodeItem component @keywords input, code, item, props, config */
 export type InputCodeItemPropsInclude<InputCodeItem extends InputCodeItemPropsBasic = InputCodeItemPropsBasic> = SkeletonPropsInclude & {
     disabled?: boolean;
     hide?: boolean;

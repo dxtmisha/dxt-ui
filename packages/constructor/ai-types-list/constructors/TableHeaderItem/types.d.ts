@@ -1,24 +1,22 @@
-// md5:b521b6d995dfb6db5383a3b3ac5b31ed true
-import { ConstrClass, SortColumnItem } from '@dxtmisha/functional';
+// md5:97227e1345ee20e62c02d91b3f834ec6 true
+import type { ConstrClass, SortColumnItem } from '@dxtmisha/functional';
 
+/** Components required for table header item sub-elements @keywords components, table-header */
 export type TableHeaderItemComponents = ChipComponentInclude & IconComponentInclude & TooltipComponentInclude;
 
-/** @keywords events, table, sort */
+/** Event signatures emitted by table header item @keywords emits, events, table-header */
 export type TableHeaderItemEmits = {
-    /** @keywords sort, click */
     sort: [item: SortColumnItem];
 };
 
-export interface TableHeaderItemExpose {
-}
+export interface TableHeaderItemExpose {}
 
-/** @keywords slots, table, tooltip */
+/** Slot definitions for table header item @keywords slots, table-header */
 export interface TableHeaderItemSlots extends TableItemSlots {
-    /** @keywords tooltip, slot */
     tooltip?(): any;
 }
 
-/** @keywords classes, styling, table */
+/** CSS class names structure for table header item elements @keywords classes, styling */
 export type TableHeaderItemClasses = {
     main: ConstrClass;
     label: string;

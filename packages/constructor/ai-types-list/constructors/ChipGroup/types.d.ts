@@ -1,5 +1,5 @@
-// md5:9ae3ef5fe35ef14da131ab0ed51e67f9 true
-import { ConstrClass, ListSelectedList } from '@dxtmisha/functional';
+// md5:3b1c57e3d6c0d29eb9203b7ce9d3aaf0 true
+import type { ConstrClass, ListSelectedList } from '@dxtmisha/functional';
 
 export type ChipGroupComponents = ChipComponentInclude;
 
@@ -8,8 +8,8 @@ export type ChipGroupEmits = EventClickEmits & ModelEmitsSelected<ListSelectedLi
 export interface ChipGroupExpose {
 }
 
-/** Chip group slots configuration @keywords slots, chip group, custom list */
 export interface ChipGroupSlots {
+    /** Default slot for displaying a custom list of chips. @keywords default, slot, chips */
     default?(props: any): any;
 }
 

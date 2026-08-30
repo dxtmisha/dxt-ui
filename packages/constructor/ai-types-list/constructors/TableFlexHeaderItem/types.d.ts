@@ -1,12 +1,10 @@
-// md5:e31f480fa5287516278a0211c5130760 true
-import { ConstrClass } from '@dxtmisha/functional';
+// md5:fa464b83e82597eb6699026b84cd6656 true
+import type { ConstrClass } from '@dxtmisha/functional';
+
 export type TableFlexHeaderItemComponents = TableHeaderItemComponents;
 export type TableFlexHeaderItemEmits = TableHeaderItemEmits;
-export interface TableFlexHeaderItemExpose extends TableHeaderItemExpose {
-}
-export interface TableFlexHeaderItemSlots extends TableHeaderItemSlots {
-}
-/** Subclasses structure for table flex header item @keywords classes, style, table */
+export interface TableFlexHeaderItemExpose extends TableHeaderItemExpose {}
+export interface TableFlexHeaderItemSlots extends TableHeaderItemSlots {}
 export type TableFlexHeaderItemClasses = {
     main: ConstrClass;
     label: string;

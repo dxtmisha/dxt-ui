@@ -1,6 +1,9 @@
-// md5:defea4f56a4cc5d76d78fec54e667449 true
-/** ARIA true or false type @keywords aria, boolean */
+// md5:d0df99cfa660c212543bdb311498fc1e true
+import type { NumberOrString } from '@dxtmisha/functional';
+
 export type AriaTrueOrFalse = 'true' | 'false' | boolean;
+
+/** ARIA accessibility attributes definition. @keywords aria, accessibility, a11y */
 export type AriaList = {
     'aria-activedescendant'?: string;
     'aria-atomic'?: AriaTrueOrFalse;
@@ -53,35 +56,45 @@ export type AriaList = {
     'role'?: RoleType;
     'tabindex'?: NumberOrString;
 };
+
 export type AriaAtomicPropsInclude = {
     ariaAtomic?: AriaList['aria-atomic'];
 };
+
 export type AriaByPropsInclude = {
     ariaLabelledby?: string;
     ariaDescribedby?: string;
 };
+
 export type AriaDescriptionPropsInclude = {
     ariaDescription?: string;
 };
+
 export type AriaHaspopupPropsInclude = {
     ariaHaspopup?: AriaList['aria-haspopup'];
 };
+
 export type AriaLabelPropsInclude = {
     ariaLabel?: string;
 };
+
 export type AriaLivePropsInclude = {
     ariaLive?: AriaList['aria-live'];
 };
+
 export type AriaMultiselectablePropsInclude = {
     ariaMultiselectable?: boolean;
 };
+
 export type AriaRoleByPropsInclude = AriaRolePropsInclude & AriaByPropsInclude;
+
 export type AriaRoleControlPropsInclude = AriaRolePropsInclude & AriaHaspopupPropsInclude & {
     id?: string;
     ariaControls?: string;
     ariaHaspopup?: AriaList['aria-haspopup'];
     ariaExpanded?: string;
 };
+
 export type AriaRolePropsInclude = {
     role?: RoleType;
 };

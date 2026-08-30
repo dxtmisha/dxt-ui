@@ -22,7 +22,7 @@ export class DesignTypesMake extends DesignTypesMakeAbstract {
   protected fullJsContent?: string
 
   /** Maximum number of type definition files processed by AI concurrently / Максимальное количество файлов определений типов, обрабатываемых ИИ одновременно */
-  protected readonly AI_TYPES_CONCURRENCY = 8
+  protected readonly AI_TYPES_CONCURRENCY = PropertiesConfig.getAiTypesConcurrency()
 
   /** TypeScript AST transformer for cleaning declaration file content / TypeScript AST трансформер для очистки содержимого файлов деклараций */
   protected readonly tsTransformer = new DesignTypesMakeTsTransformer()

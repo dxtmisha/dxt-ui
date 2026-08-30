@@ -68,6 +68,10 @@ class TestDesignTypesBuild extends DesignTypesBuild {
   public testCleanExcess() {
     return this.cleanExcess()
   }
+
+  public testResolveDirectory(directory: string) {
+    return this.resolveDirectory(directory)
+  }
 }
 
 describe('DesignTypesBuild', () => {
@@ -212,7 +216,13 @@ describe('DesignTypesBuild', () => {
 
     vi.spyOn(PropertiesConfig, 'getTypesPaths').mockReturnValue(['src/components'])
     expect(build.testIsPath('src/components/Button.ts')).toBe(true)
+    expect(build.testIsPath('components/Button.d.ts')).toBe(true)
     expect(build.testIsPath('src/media/icon.ts')).toBe(false)
+
+    vi.spyOn(PropertiesConfig, 'getTypesPaths').mockReturnValue(['/constructors/'])
+    expect(build.testIsPath('src/constructors/Accordion/types.ts')).toBe(true)
+    expect(build.testIsPath('constructors/Accordion/types.d.ts')).toBe(true)
+    expect(build.testIsPath('src/classes/TextInclude.ts')).toBe(false)
   })
 
   it('handles pattern matching and invalid regex fallback', () => {
@@ -269,5 +279,17 @@ describe('DesignTypesBuild', () => {
     expect(removeFileSpy).toHaveBeenCalledWith(['ai-types-temp', 'App.d.ts'])
     expect(removeFileSpy).toHaveBeenCalledWith(['ai-types-temp', 'components/Ui/Button/Button.stories.d.ts'])
     expect(removeFileSpy).not.toHaveBeenCalledWith(['ai-types-temp', 'components/Ui/Button/props.d.ts'])
+  })
+
+  it('resolves directories with resolveDirectory fallback to src', () => {
+    vi.spyOn(PropertiesFile, 'joinPath').mockImplementation((p: any) => Array.isArray(p) ? p.join('/') : String(p))
+    const isSpy = vi.spyOn(PropertiesFile, 'is')
+
+    isSpy.mockImplementation((dir: any) => dir === 'src/constructors')
+    expect(build.testResolveDirectory('/constructors/')).toBe('src/constructors')
+    expect(build.testResolveDirectory('constructors')).toBe('src/constructors')
+
+    isSpy.mockImplementation((dir: any) => dir === 'src/components')
+    expect(build.testResolveDirectory('src/components')).toBe('src/components')
   })
 })

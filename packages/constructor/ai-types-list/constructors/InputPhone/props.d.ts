@@ -1,14 +1,31 @@
-// md5:9dc3d3ffeecac8e346dbe51aadccb423 true
-import { ConstrBind } from '@dxtmisha/functional';
+// md5:6132c44e5a421118bb181fc5d55131ed true
+import type { ConstrBind } from '@dxtmisha/functional';
+
 type InputPhonePropsToken = {};
-export type InputPhonePropsBasic<InputPhoneDialCode extends InputPhoneDialCodePropsBasic = InputPhoneDialCodePropsBasic, Mask extends MaskPropsBasic = MaskPropsBasic, Icon extends IconPropsBasic = IconPropsBasic, Field extends FieldPropsBasic = FieldPropsBasic, FieldLabel extends FieldLabelPropsBasic = FieldLabelPropsBasic, FieldMessage extends FieldMessagePropsBasic = FieldMessagePropsBasic, FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic, Progress extends ProgressPropsBasic = ProgressPropsBasic> = InputPhoneDialCodePropsInclude<InputPhoneDialCode> & Omit<FieldPropsInclude<Icon, Field, FieldLabel, FieldMessage, FieldCounter, Progress>, 'caption' | 'counterShow'> & FieldInputPhoneProps & {
-    /** Default country @keywords country_default, input_phone */
+
+/** Basic properties for the InputPhone component @keywords phone_input, input_phone, properties */
+export type InputPhonePropsBasic<
+  InputPhoneDialCode extends InputPhoneDialCodePropsBasic = InputPhoneDialCodePropsBasic,
+  Mask extends MaskPropsBasic = MaskPropsBasic,
+  Icon extends IconPropsBasic = IconPropsBasic,
+  Field extends FieldPropsBasic = FieldPropsBasic,
+  FieldLabel extends FieldLabelPropsBasic = FieldLabelPropsBasic,
+  FieldMessage extends FieldMessagePropsBasic = FieldMessagePropsBasic,
+  FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic,
+  Progress extends ProgressPropsBasic = ProgressPropsBasic
+> = InputPhoneDialCodePropsInclude<InputPhoneDialCode> &
+  Omit<FieldPropsInclude<Icon, Field, FieldLabel, FieldMessage, FieldCounter, Progress>, 'caption' | 'counterShow'> &
+  FieldInputPhoneProps & {
+    /** Default country code @keywords default_country */
     countryDefault?: string;
-    /** Flag to disable dynamic country detection by phone number @keywords country_block, input_phone */
+    /** Disables dynamic country detection by phone number @keywords country_block, disable_detection */
     countryBlock?: boolean;
-    /** Additional attributes for the mask @keywords mask_attrs, input_phone */
+    /** Additional attributes for the input mask @keywords mask_attributes */
     maskAttrs?: ConstrBind<Mask>;
-};
+  };
+
+/** Properties for the InputPhone component @keywords phone_input, props */
 export type InputPhoneProps = InputPhonePropsBasic & InputPhonePropsToken;
-/** Default values for input phone properties @keywords defaults_input_phone */
+
+/** Default property values for the InputPhone component @keywords defaults */
 export declare const defaultsInputPhone: {};

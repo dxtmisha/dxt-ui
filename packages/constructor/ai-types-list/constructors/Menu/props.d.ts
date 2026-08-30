@@ -1,5 +1,5 @@
-// md5:485e8af3375a31fc74c493437d884aed true
-import { ApiFetch, ConstrBind, ListRecord, ListSelectedList, NormalOrPromise } from '@dxtmisha/functional';
+// md5:7c5bbc20137aabe83e234e25f84508e3 true
+import type { ApiFetch, ConstrBind, ListRecord, ListSelectedList, NormalOrPromise } from '@dxtmisha/functional';
 export type MenuPropsToken = {
     hideList?: boolean;
     barsAdaptive?: 'showAlways';
@@ -29,9 +29,9 @@ export type MenuPropsBasic<List extends ListPropsBasic = ListPropsBasic, ListIte
     isSelectedByValue?: boolean;
     embedded?: boolean;
 };
-/** Menu component input properties @keywords menu, props, properties */
+/** Menu component properties. @keywords menu, props */
 export type MenuProps = MenuPropsBasic & MenuPropsToken;
-/** Default configuration values for menu component @keywords menu, defaults, configuration */
+/** Default properties for the Menu component. @keywords menu, defaults */
 export declare const defaultsMenu: {
     liteThreshold: number;
     barsHide: boolean;

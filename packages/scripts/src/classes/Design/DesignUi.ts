@@ -58,13 +58,15 @@ export class DesignUi {
    *
    * Инициализация компоненты.
    */
-  make(): void {
+  async make(): Promise<void> {
     PropertiesCache.clear()
 
     new Styles().make()
     new DesignWiki().make()
 
-    this.makeConstructorComponent()
+    await this.makeConstructorComponent()
+
+    this
       .makePackage()
       .makeUiProperties()
 
@@ -81,18 +83,17 @@ export class DesignUi {
    * Создает или обновляет список компонентов.
    * @returns current instance / текущий экземпляр
    */
-  protected makeConstructorComponent(): this {
+  protected async makeConstructorComponent(): Promise<this> {
     const componentDef = this.component
 
     if (componentDef !== '') {
-      new DesignComponent(componentDef).make()
+      await new DesignComponent(componentDef).make()
     } else {
-      this.components.getComponentList()
-        .forEach((component) => {
-          console.log(`Component update: ${component.alias}`)
+      for (const component of this.components.getComponentList()) {
+        console.log(`Component update: ${component.alias}`)
 
-          new DesignComponent(component.name).make()
-        })
+        await new DesignComponent(component.name).make()
+      }
     }
 
     return this

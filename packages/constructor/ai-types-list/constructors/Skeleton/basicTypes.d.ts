@@ -1,4 +1,5 @@
 // md5:928f63c7cc4bf623a3cd82f1fc2d03e1 true
+/** CSS class names for skeleton elements @keywords skeleton, classes, styling */
 export type SkeletonClassesList = {
     classText: string;
     classTextVariant: string;
@@ -10,7 +11,7 @@ export type SkeletonClassesList = {
     classBorderVariant: string;
     classNone: string;
 };
+/** Properties for components supporting skeleton loading state @keywords skeleton, loading, props */
 export type SkeletonPropsInclude = {
-    /** Whether the skeleton is active @keywords skeleton active include */
     isSkeleton?: boolean;
 };

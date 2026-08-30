@@ -1,0 +1,6 @@
+{
+  "path": "ai-resources/elevation.md",
+  "md5": "8c75800eeb56bfdb6321cef86dab99e3",
+  "name": "SCSS Elevation and Blur Guide",
+  "description": "Provides standards, token specifications, and SCSS usage patterns for elevation shadows and backdrop blur filters in the @dxtmisha/d1 design system. Enables consistent depth hierarchies, interactive hover lifts, and glassmorphism styling across UI components."
+}

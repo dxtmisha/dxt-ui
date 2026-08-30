@@ -1,22 +1,22 @@
-// md5:ccac1de946d3d97fefc92c1b78e55622 true
-import { ZipOptions } from 'fflate';
+// md5:6196612d27b3a5e1ffe4c524321c5d52 true
+import { type ZipOptions } from 'fflate';
 
-/** Creates and manages ZIP archives. @keywords zip archive constructor */
+/** Creates and manages ZIP archives. @keywords zip, archive, compression, fflate */
 export declare class Zip {
-    /** Creates a new ZIP instance. @keywords zip constructor */
+    /** Initializes a new ZIP archive instance. @keywords zip, archive, constructor */
     constructor(name: string, options?: ZipOptions);
-    /** Checks if archive has data. @keywords zip check has data */
+    /** Checks whether the archive contains any data. @keywords has_data, check, zip */
     is(): boolean;
-    /** Returns ZIP buffer. @keywords zip get buffer */
+    /** Generates and returns the compiled ZIP buffer. @keywords buffer, export, binary, uint8array */
     get(): Uint8Array | undefined;
-    /** Sets archive name. @keywords zip set name */
+    /** Sets the archive filename. @keywords set_name, filename */
     setName(name: string): this;
-    /** Sets ZIP options. @keywords zip set options */
+    /** Sets compression and formatting options for the archive. @keywords options, compression, config */
     setOptions(options: ZipOptions): this;
-    /** Adds file to archive. @keywords zip add file */
+    /** Adds a file to the archive. @keywords add_file, append, write */
     addFile(pathName: string, data: any): this;
-    /** Deletes file from archive by name. @keywords zip remove file */
+    /** Removes a file from the archive by its path or name. @keywords remove_file, delete */
     removeFile(pathName: string): this;
-    /** Saves archive by downloading in browser. @keywords zip save download */
+    /** Saves and triggers download of the ZIP archive in the browser. @keywords save, download, export, browser */
     save(): this;
 }

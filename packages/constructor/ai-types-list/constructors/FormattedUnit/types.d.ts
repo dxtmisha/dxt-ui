@@ -1,12 +1,10 @@
-// md5:ce0c8f22b2094d68b129b35fa5b426d4 true
-import { ConstrClass } from '@dxtmisha/functional';
+// md5:96fda5fdad22cd1c28a8f9b03a0b49d3 true
+import type { ConstrClass } from '@dxtmisha/functional';
+
 export type FormattedUnitComponents = {};
 export type FormattedUnitEmits = {};
-export interface FormattedUnitExpose {
-}
-export interface FormattedUnitSlots {
-}
-/** Subclasses structure definition @keywords subclasses unit classes */
+export interface FormattedUnitExpose {}
+export interface FormattedUnitSlots {}
 export type FormattedUnitClasses = {
-    main: ConstrClass;
+  main: ConstrClass;
 };

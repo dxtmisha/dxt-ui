@@ -1,24 +1,24 @@
-// md5:7ca0336cb9a2c3cdb0da54520d7d7287 true
-import { ConstrBind } from '@dxtmisha/functional';
+// md5:6911a83a50befb958fe734377873c6bb true
+import type { ConstrBind } from '@dxtmisha/functional';
 
-/** Component map for including the Bars component @keywords BarsComponentInclude, bars, component, map */
+/** Component mapping for integrating the Bars component. @keywords bars, component, include */
 export type BarsComponentInclude = {
-    bars?: object;
+  bars?: object;
 };
 
-/** Available events for Bars @keywords BarsEmitsInclude, bars, events, click */
+/** Event emitter types for Bars component interactions. @keywords bars, events, emits */
 export type BarsEmitsInclude = {
-    bars: EventClickEmits['click'];
-    barsLite: EventClickEmits['clickLite'];
-    barsBack: EventClickEmits['clickLite'];
+  bars: EventClickEmits['click'];
+  barsLite: EventClickEmits['clickLite'];
+  barsBack: EventClickEmits['clickLite'];
 };
 
-/** Props used to include and configure the Bars component @keywords BarsPropsInclude, bars, props, configuration */
+/** Properties for integrating and configuring the Bars component. @keywords bars, props, config */
 export type BarsPropsInclude<Bars extends BarsPropsBasic = BarsPropsBasic> = {
-    barsLabel?: string | number;
-    barsDescription?: string;
-    barsBackHide?: boolean;
-    barsHide?: boolean;
-    barsList?: Bars['bars'];
-    barsAttrs?: ConstrBind<Bars>;
+  barsLabel?: string | number;
+  barsDescription?: string;
+  barsBackHide?: boolean;
+  barsHide?: boolean;
+  barsList?: Bars['bars'];
+  barsAttrs?: ConstrBind<Bars>;
 };

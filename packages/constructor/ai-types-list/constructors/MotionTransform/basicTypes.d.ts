@@ -1,9 +1,13 @@
-// md5:77b78bb2919971ce7820fad44285fb4e true
-import { ConstrBind } from '@dxtmisha/functional';
+// md5:51d0099775fc549d4369c162cac70f7e true
+import type { ConstrBind } from '@dxtmisha/functional';
+
+/** Options for MotionTransform events. @keywords motion transform emit options */
 export type MotionTransformEmitOptions = {
     type: 'head' | 'body' | 'top' | 'script';
     open: boolean;
 };
+
+/** CSS classes for MotionTransform styling. @keywords motion transform classes */
 export type MotionTransformClassList = {
     show: string;
     open: string;
@@ -13,6 +17,8 @@ export type MotionTransformClassList = {
     noneGlobal: string;
     close: string;
 };
+
+/** Style variable names for MotionTransform layout. @keywords motion transform styles */
 export type MotionTransformStyle = {
     contextWidth: string;
     contextHeight: string;
@@ -25,6 +31,8 @@ export type MotionTransformStyle = {
     headHeight: string;
     bodyHeight: string;
 };
+
+/** Slot props passed to head and body slots. @keywords motion transform slot props */
 export type MotionTransformControlItem = {
     isOpen: boolean;
     isShow: boolean;
@@ -33,24 +41,26 @@ export type MotionTransformControlItem = {
     idBody: string;
     binds: AriaRoleControlPropsInclude;
 };
+
 export type MotionTransformComponentInclude = {
     motionTransform?: object;
 };
+
 export type MotionTransformEmitsInclude = {
     transform: MotionTransformEmits['transform'];
     transformLite: MotionTransformEmits['transformLite'];
 };
-/** Interface for MotionTransform expose inclusion @keywords motion, transform, expose */
+
 export interface MotionTransformExposeInclude extends MotionTransformExpose {
-    /** Returns the MotionTransform component instance @keywords motion, transform, instance */
+    /** Returns the MotionTransform component instance. @keywords motion transform instance */
     getMotionTransformElement(): ConstrBind<MotionTransformExpose> | undefined;
 }
-/** Props used to include and configure MotionTransform @keywords motion, transform, props */
+
 export interface MotionTransformPropsInclude<MotionTransform extends MotionTransformProps = MotionTransformProps> {
     open?: boolean;
     clickOpen?: boolean;
     autoClose?: boolean;
     motionTransformAttrs?: ConstrBind<MotionTransform>;
 }
-/** CSS variable name for MotionTransform body type @keywords motion, transform, css, variable */
+
 export declare const __MOTION_TRANSFORM_TYPE_BODY_NAME = "--sys-type-body";

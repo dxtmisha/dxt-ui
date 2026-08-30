@@ -1,26 +1,21 @@
-// md5:6086a04f46eed818f5bd3ac7977e4851 true
-import { ConstrClass } from '@dxtmisha/functional';
+// md5:9ae704cdc74d580c1e701ea5c6922672 true
+import type { ConstrClass } from '@dxtmisha/functional';
 
 export type NavigationListComponents = ListComponents;
-
 export type NavigationListEmits = ListEmits;
+export interface NavigationListExpose extends ListExpose {}
+export interface NavigationListSlots extends ListSlots {}
 
-export interface NavigationListExpose extends ListExpose {
-}
-
-export interface NavigationListSlots extends ListSlots {
-}
-
-/** Navigation list CSS classes configuration @keywords navigation classes styles */
+/** NavigationList CSS class structure. @keywords navigation list classes styling */
 export type NavigationListClasses = {
-    main: ConstrClass;
-    space: string;
-    line: string;
-    subtitle: string;
-    html: string;
-    management: string;
-    group: string;
-    menu: string;
-    filterInput: string;
-    none: string;
+  main: ConstrClass;
+  space: string;
+  line: string;
+  subtitle: string;
+  html: string;
+  management: string;
+  group: string;
+  menu: string;
+  filterInput: string;
+  none: string;
 };

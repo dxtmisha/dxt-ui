@@ -1,4 +1,4 @@
-// md5:7213d2ba13c70a1edb8b6eee3470b8a3 true
+// md5:1c9fa7d777ff5c167070595307f38087 true
 type SwitchPropsToken = {
     block?: boolean;
     adaptive?: 'rightAlways';
@@ -9,9 +9,9 @@ type SwitchPropsToken = {
     disabled?: boolean;
 };
 export type SwitchPropsBasic<Image extends ImagePropsBasic = ImagePropsBasic, FieldMessage extends FieldMessagePropsBasic = FieldMessagePropsBasic, FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic, Progress extends ProgressPropsBasic = ProgressPropsBasic> = CheckboxPropsBasic<Image, FieldMessage, FieldCounter, Progress>;
-/** Switch component incoming properties @keywords switch properties props */
+/** Switch component properties. @keywords switch, props */
 export type SwitchProps = SwitchPropsBasic & SwitchPropsToken;
-/** Default values for switch component properties @keywords defaults switch configuration */
+/** Default property values for Switch component. @keywords switch, defaults */
 export declare const defaultsSwitch: {
     block: boolean;
     itemCenter: boolean;

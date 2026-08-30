@@ -1,15 +1,19 @@
-// md5:845c47441544c4514b75d8fd4d8463d4 true
-import { ConstrClass } from '@dxtmisha/functional';
+// md5:929445a97d6040e575bcbb1f3b9c356e true
+import type { ConstrClass } from '@dxtmisha/functional';
+
 export type TextareaAutosizeComponents = {};
+
 export type TextareaAutosizeEmits = {
     input: [event: InputEvent];
 };
+
 export interface TextareaAutosizeExpose {
-    /** Returns current textarea value @keywords textarea, get, value */
+    /** Returns the current textarea value. @keywords textarea value, get text */
     getValue(): string;
 }
-export interface TextareaAutosizeSlots {
-}
+
+export interface TextareaAutosizeSlots {}
+
 export type TextareaAutosizeClasses = {
     main: ConstrClass;
     clone: string;

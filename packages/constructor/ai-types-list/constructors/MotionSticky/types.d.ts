@@ -1,17 +1,21 @@
-// md5:b9116a403dbfa39cac78ffc67b1496da true
-import { ConstrClass } from '@dxtmisha/functional';
+// md5:05c8ef8f14025a8493f2f399d190548e true
+import type { ConstrClass } from '@dxtmisha/functional';
+
 export type MotionStickyComponents = {};
+
+/** Available events emitted by the MotionSticky component. @keywords motion sticky events emits */
 export type MotionStickyEmits = {
-    /** Triggered when sticky status changes @keywords sticky status change event */
     sticky: [status: boolean];
 };
-export interface MotionStickyExpose {
-}
+
+export interface MotionStickyExpose {}
+
+/** Available slot definitions for the MotionSticky component. @keywords motion sticky slots */
 export interface MotionStickySlots {
-    /** Default slot content @keywords default slot content */
     default?(props: any): any;
 }
+
+/** Subclass CSS class mappings for the MotionSticky component. @keywords motion sticky classes */
 export type MotionStickyClasses = {
-    /** Main component class @keywords main class style */
     main: ConstrClass;
 };

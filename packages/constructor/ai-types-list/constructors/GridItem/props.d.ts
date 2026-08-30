@@ -4,8 +4,9 @@ type GridItemPropsToken = {
     align?: 'center' | 'top' | 'bottom' | 'stretch' | 'baseline' | 'start' | 'end';
 };
 export type GridItemPropsBasic = {};
+/** Grid item component properties. @keywords grid item, props, layout */
 export type GridItemProps = GridItemPropsBasic & GridItemPropsToken;
-/** Default grid item properties @keywords defaults, grid, item */
+/** Default values for GridItem properties. @keywords grid item, defaults */
 export declare const defaultsGridItem: {
     base: string;
 };

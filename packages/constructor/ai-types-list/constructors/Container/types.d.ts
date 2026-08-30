@@ -1,9 +1,9 @@
-// md5:ef82afc9a7f66644b1f5648a9258dbbe true
-import { ConstrClass } from '@dxtmisha/functional';
+// md5:34af77f67471187aabf62a1d2657ad7d true
+import type { ConstrClass } from '@dxtmisha/functional';
+
 export type ContainerComponents = {};
 export type ContainerEmits = {};
-export interface ContainerExpose {
-}
+export interface ContainerExpose {}
 export interface ContainerSlots {
     default?(props: any): any;
 }

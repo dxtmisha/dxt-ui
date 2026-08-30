@@ -1,4 +1,4 @@
-// md5:580e83911ed0fb070f1fced089b604d8 true
+// md5:d0ca156d19c2e9bbcd2f75441aea7922 true
 type NavigationItemPropsToken = {
     focus?: boolean;
     open?: boolean;
@@ -11,9 +11,11 @@ type NavigationItemPropsToken = {
     fill?: string | 'custom';
     divider?: boolean;
 };
+/** Basic properties for the NavigationItem component. @keywords navigation, item, props */
 export type NavigationItemPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Badge extends BadgePropsBasic = BadgePropsBasic, Progress extends ProgressPropsBasic = ProgressPropsBasic, Checkbox extends CheckboxPropsBasic = CheckboxPropsBasic, Radio extends RadioPropsBasic = RadioPropsBasic> = ListItemPropsBasic<Icon, Badge, Progress, Checkbox, Radio>;
+/** NavigationItem component properties. @keywords navigation, item, properties */
 export type NavigationItemProps = NavigationItemPropsBasic & NavigationItemPropsToken;
-/** Default properties for NavigationItem component. @keywords defaultsNavigationItem, navigation_item_defaults */
+/** Default property values for the NavigationItem component. @keywords defaults, navigation, item */
 export declare const defaultsNavigationItem: {
     iconAlign: string;
     controlPosition: string;

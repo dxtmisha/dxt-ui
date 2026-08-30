@@ -6,6 +6,7 @@ export type ListGroupPropsToken = {
 export type ListGroupPropsBasic = {
     divider?: boolean;
 };
+/** Properties for the ListGroup component. @keywords list, group, props */
 export type ListGroupProps = ListGroupPropsBasic & ListGroupPropsToken;
-/** Default properties for list group @keywords defaults, listgroup */
+/** Default properties for ListGroup component. @keywords list, group, defaults */
 export declare const defaultsListGroup: {};

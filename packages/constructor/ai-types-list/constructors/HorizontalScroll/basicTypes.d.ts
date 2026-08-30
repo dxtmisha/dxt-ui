@@ -1,6 +1,7 @@
-// md5:a4e87c924695f8efd053a0ce6b085909 true
-import { ConstrBind } from '@dxtmisha/functional';
+// md5:7db053fd339fff1937b5c3a7cc8e0594 true
+import type { ConstrBind } from '@dxtmisha/functional';
 
+/** Type for the horizontal scroll control item. @keywords horizontal scroll, control item, binds */
 export type HorizontalScrollControlItem = {
     classItem: string;
     classItemSelected: string;
@@ -9,10 +10,12 @@ export type HorizontalScrollControlItem = {
     };
 };
 
+/** Type for the horizontal scroll component include configuration. @keywords horizontal scroll, component, include */
 export type HorizontalScrollComponentInclude = {
     horizontalScroll?: object;
 };
 
+/** Type for horizontal scroll inclusion properties. @keywords horizontal scroll, props, include */
 export type HorizontalScrollPropsInclude<HorizontalScroll extends HorizontalScrollPropsBasic = HorizontalScrollPropsBasic> = {
     horizontalScrollBleed?: boolean;
     horizontalScrollAlign?: 'block' | 'left';

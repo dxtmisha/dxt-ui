@@ -201,6 +201,7 @@ export abstract class AiAbstract<AI = any> {
 
     if (this.ai) {
       const totalAttempts = 1 + maxRetries
+      let delayMs = random(1000, 2000)
 
       for (let attempt = 1; attempt <= totalAttempts; attempt++) {
         console.log(`[Ai] Generating${totalAttempts > 1 ? ` (attempt ${attempt}/${totalAttempts})` : ''}`)
@@ -218,9 +219,9 @@ export abstract class AiAbstract<AI = any> {
           console.error(`[Ai] Generation error (attempt ${attempt}/${totalAttempts}):`, error)
 
           if (attempt < totalAttempts) {
-            const delayMs = random(1000, 2000)
-            console.log(`[Ai] Retrying in ${delayMs}ms...`)
+            console.log(`[Ai] Retrying in ${Math.round(delayMs)}ms...`)
             await sleep(delayMs)
+            delayMs = Math.round(delayMs * 1.6)
           } else if (exitOnError) {
             process.exit(1)
           }

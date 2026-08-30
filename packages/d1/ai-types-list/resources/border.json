@@ -1,0 +1,6 @@
+{
+  "path": "ai-resources/border.md",
+  "md5": "879535f5b47cf420a5268529b9d445d9",
+  "name": "SCSS Border & Divider Guide",
+  "description": "Guidelines, rules, and SCSS mixins for implementing borders, dividers, and dynamic palette borders within the @dxtmisha/d1 design system. Enforces separate declaration of border properties and opacity management to ensure consistent theming across UI components. Provides usage patterns for containers, dividers, outline buttons, and border presets."
+}

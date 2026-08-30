@@ -1,10 +1,9 @@
-// md5:61b9b2434267d19f1c45b7aed52e8532 true
-import { ConstrClass } from '@dxtmisha/functional';
+// md5:5e8b6c73af5a98b056e1a7d6111d85fc true
+import type { ConstrClass } from '@dxtmisha/functional';
+
 export type BulletComponents = BulletItemComponentInclude;
 export type BulletEmits = {};
-export interface BulletExpose {
-}
-/** Default slot definition @keywords slots, default */
+export interface BulletExpose {}
 export interface BulletSlots {
     default?(props: any): any;
 }

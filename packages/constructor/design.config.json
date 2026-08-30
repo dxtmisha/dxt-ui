@@ -1,5 +1,15 @@
 {
   "extends": "../../design.config.json",
   "project": "DxtUi",
-  "name": "d"
+  "name": "d",
+  "typesPaths": [
+    "/constructors/",
+    "/types/"
+  ],
+  "typesMatch": [
+    "basicTypes\\.(d\\.)?ts$",
+    "props\\.(d\\.)?ts$",
+    "types\\.(d\\.)?ts$",
+    "types/"
+  ]
 }

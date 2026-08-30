@@ -1,11 +1,11 @@
-// md5:82ff59e31ea7262e5ac63a86212f5f6f true
+// md5:36c72ed52417787d98b64f6dbaa5cc9a true
 type NavigationListPropsToken = {
     axis?: 'x' | 'y';
     divider?: boolean;
 };
 export type NavigationListPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, NavigationItem extends NavigationItemPropsBasic = NavigationItemPropsBasic, Input extends InputPropsBasic = InputPropsBasic> = ListPropsBasic<Icon, NavigationItem, Input>;
 export type NavigationListProps = NavigationListPropsBasic & NavigationListPropsToken;
-/** @keywords defaultsNavigationList NavigationList defaults configuration */
+/** Default property values for NavigationList component. @keywords navigation list defaults */
 export declare const defaultsNavigationList: {
     axis: string;
     tag: string;

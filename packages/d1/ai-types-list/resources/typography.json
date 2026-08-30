@@ -1,0 +1,6 @@
+{
+  "path": "ai-resources/typography.md",
+  "md5": "826e4ceaa0bd65d7c5c387e2ef79b14e",
+  "name": "SCSS Typography Formatting Guide",
+  "description": "Provides guidelines and mixins for text formatting, typography presets, line heights, and multi-line clamping using @dxtmisha/styles. It helps developers maintain consistent typography styles and direction-aware text alignment across UI components."
+}

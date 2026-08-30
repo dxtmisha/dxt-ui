@@ -1,18 +1,20 @@
-// md5:40b1abbf51e5cd177c9ff28f0d290c34 true
-export type SelectableAreaPropsToken = {};
-/** Basic selectable area properties @keywords selectable area props basic configuration */
+// md5:18f033c42f9f7e526738117027d26aef true
+type SelectableAreaPropsToken = {};
+
 export type SelectableAreaPropsBasic = ModelPropsSelected & {
-    /** Disables selection @keywords disabled boolean */
+    /** Disables selection functionality */
     disabled?: boolean;
-    /** Active status @keywords active continuous selection */
+    /** Active status for continuous selection */
     active?: boolean;
-    /** Selected values @keywords selected values string array */
+    /** Array or string of currently selected values */
     selected?: string | string[];
-    /** Wrapper HTML tag @keywords tag html element */
+    /** HTML tag of the wrapper element */
     tag?: string;
 };
+
 export type SelectableAreaProps = SelectableAreaPropsBasic & SelectableAreaPropsToken;
-/** Default properties @keywords defaults selectable area tag */
+
+/** Default property values for SelectableArea @keywords selectable-area, defaults */
 export declare const defaultsSelectableArea: {
     tag: string;
 };

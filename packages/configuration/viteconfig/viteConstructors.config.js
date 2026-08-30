@@ -15,7 +15,9 @@ export const viteConstructors = mergeConfig(
     entry: [
       ...getLibraryEntries(),
       'src/library.ts'
-    ]
+    ],
+    bundleTypes: false,
+    rollupTypes: false
   }),
   {
     plugins: [mdx()]

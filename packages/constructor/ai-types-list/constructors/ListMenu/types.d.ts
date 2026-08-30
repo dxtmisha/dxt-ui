@@ -1,18 +1,14 @@
-// md5:bf3507019c32eb2433e1b6efc15d395a true
-import { ConstrClass } from '@dxtmisha/functional';
+// md5:092a294f713e0527dcd890c5e6e90230 true
+import type { ConstrClass } from '@dxtmisha/functional';
 
 export type ListMenuComponents = WindowComponentInclude;
-
 export type ListMenuEmits = WindowEmitsInclude;
+export interface ListMenuExpose extends WindowExposeInclude {}
 
-export interface ListMenuExpose extends WindowExposeInclude {
-}
-
-/** Component slots for header and list content @keywords slots, render, list */
 export interface ListMenuSlots {
-    /** Slot for the menu header @keywords header, slot */
+    /** Menu header slot @keywords head, header */
     head?(props: WindowControlItem): any;
-    /** Slot for the menu list content @keywords list, content, slot */
+    /** Menu list content slot @keywords list, content */
     list?(props: any): any;
 }
 

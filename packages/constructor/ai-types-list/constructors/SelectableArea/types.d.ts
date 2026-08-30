@@ -1,19 +1,27 @@
-// md5:54ca0db5ee5cfbfee354ad5a1acaa401 true
-import { ConstrClass } from '@dxtmisha/functional';
+// md5:4d014e21a705122b8859b98c71fa73fa true
+import type { ConstrClass } from '@dxtmisha/functional';
+
 export type SelectableAreaComponents = {};
+
 export type SelectableAreaEmits = ModelEmitsSelected & {
-    selected: [parameters: SelectableAreaEventParameters];
+    /** Event triggered when items are selected @keywords selected, emit */
+    selected: [
+        parameters: SelectableAreaEventParameters
+    ];
 };
-/** Interface exposing selectable area controls @keywords expose, methods */
+
 export interface SelectableAreaExpose {
-    /** Resets the selection @keywords reset, clear */
+    /** Resets the selection state @keywords reset, clear */
     reset: () => void;
-    /** Selects items programmatically @keywords select, set */
+    /** Selects items programmatically @keywords set-selected, select */
     setSelected: (value: string | string[]) => void;
 }
+
 export interface SelectableAreaSlots {
+    /** Default slot containing selectable elements @keywords slot, default */
     default?(props: SelectableAreaControl): any;
 }
+
 export type SelectableAreaClasses = {
     main: ConstrClass;
     item: string;

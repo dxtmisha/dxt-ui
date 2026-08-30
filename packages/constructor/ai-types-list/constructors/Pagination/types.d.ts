@@ -1,35 +1,29 @@
-// md5:741bf3471af4cf38477aab08789dac53 true
-import { ConstrClass } from '@dxtmisha/functional';
+// md5:c3808d25787aa984b5a6895338ee8c25 true
+import type { ConstrClass } from '@dxtmisha/functional';
+/** Components required for pagination functionality. @keywords components, dependencies */
 export type PaginationComponents = ButtonComponentInclude & MenuComponentInclude;
+/** Events emitted by the pagination component. @keywords emits, events */
 export type PaginationEmits = EventClickEmits & ModelEmits<number> & {
     'update:rows': [value: number];
     'update:modelRows': [value: number];
-    'more': [
-        event: MouseEvent,
-        options?: EventClickValue
-    ];
+    'more': [event: MouseEvent, options?: EventClickValue];
     'moreLite': [options?: EventClickValue];
-    'morePrev': [
-        event: MouseEvent,
-        options?: EventClickValue
-    ];
+    'morePrev': [event: MouseEvent, options?: EventClickValue];
     'morePrevLite': [options?: EventClickValue];
-    'rows': [
-        event: MouseEvent,
-        options?: EventClickValue
-    ];
+    'rows': [event: MouseEvent, options?: EventClickValue];
     'rowsLite': [options?: EventClickValue];
 };
-export interface PaginationExpose {
-}
+export interface PaginationExpose {}
+/** Available slots for the pagination component. @keywords slots */
 export interface PaginationSlots {
-    /** Slot at the beginning of the component @keywords slot leading start */
+    /** Slot at the start of the component. */
     leading?(): any;
-    /** Slot in the middle before the spacer @keywords slot info middle spacer */
+    /** Slot in the middle before the spacer. */
     info?(): any;
-    /** Slot at the end of the component @keywords slot trailing end */
+    /** Slot at the end of the component. */
     trailing?(): any;
 }
+/** Class names structure for pagination sub-elements. @keywords classes, styles */
 export type PaginationClasses = {
     main: ConstrClass;
     button: string;

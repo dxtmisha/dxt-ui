@@ -1,12 +1,10 @@
-// md5:8b5fe4affc0042ecd9c665946dbd65f5 true
-import { ConstrClass } from '@dxtmisha/functional';
+// md5:1d79ddbee96fd12ccf638ae4b834d98c true
+import type { ConstrClass } from '@dxtmisha/functional';
+
 export type NavigationItemComponents = ListItemComponents;
 export type NavigationItemEmits = ListItemEmits;
-export interface NavigationItemExpose extends ListItemExpose {
-}
-export interface NavigationItemSlots extends ListItemSlots {
-}
-/** Navigation item element CSS classes @keywords navigation item classes layout */
+export interface NavigationItemExpose extends ListItemExpose {}
+export interface NavigationItemSlots extends ListItemSlots {}
 export type NavigationItemClasses = {
     main: ConstrClass;
     body: string;

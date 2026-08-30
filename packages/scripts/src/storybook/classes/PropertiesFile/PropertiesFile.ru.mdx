@@ -39,7 +39,6 @@ const fullPath = PropertiesFile.joinPath(['src', 'tokens', 'colors.json'])
 ## Дополнительные системные методы
 
 - `getRootProject(rootProject?: string, maxDepth?: number): string | undefined` — ищет корневой каталог монорепозитория.
-- `getDirname(): string` — возвращает имя текущей рабочей директории.
 - `splitForDir(path: PropertiesFilePath): string[]` — разделяет путь на сегменты директорий.
 - `parse(path: PropertiesFilePath): ParsedPath` — парсит путь на компоненты (root, dir, base, ext, name).
 - `stat(path: PropertiesFilePath): Stats | undefined` — возвращает информацию fs.Stats о файле.

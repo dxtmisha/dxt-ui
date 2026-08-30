@@ -1,13 +1,13 @@
-// md5:a227204d943189371780e9afd8c28b50 true
-import { ConstrClass } from '@dxtmisha/functional';
+// md5:e45cc3495268f60522d5c5b93568d750 true
+import type { ConstrClass } from '@dxtmisha/functional';
+
 export type BlockComponents = HeaderComponentInclude;
 export type BlockEmits = {};
-export interface BlockExpose {
-}
+export interface BlockExpose {}
 export interface BlockSlots extends HeaderSlotsInclude, DescriptionSlots {
-    /** @keywords headline slot */
+    /** Headline slot. @keywords headline, title */
     headline?(props: any): any;
-    /** @keywords default slot */
+    /** Default content slot. @keywords default, body */
     default?(props: any): any;
 }
 export type BlockClasses = {

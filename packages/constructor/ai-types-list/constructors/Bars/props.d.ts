@@ -1,36 +1,36 @@
-// md5:6ff3d763e9bc206b32bbb274232d4150 true
-import { ConstrBind } from '@dxtmisha/functional';
+// md5:19c0ecc9a142c004c5776b7ac20befb9 true
+import type { ConstrBind } from '@dxtmisha/functional';
 export type BarsPropsToken = {};
 export type BarsPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, Button extends ButtonPropsBasic = ButtonPropsBasic> = LabelProps & DescriptionProps & SkeletonPropsInclude & TextClosePropsInclude & {
-    /** Whether the action mode is active @keywords action active mode */
+    /** Whether action mode is active. @keywords action, active */
     'action'?: boolean;
-    /** Properties for the back button @keywords back button props */
+    /** Properties for back button. @keywords back, button */
     'backButton'?: ConstrBind<Button>;
-    /** Whether to hide the back button @keywords back hide button */
+    /** Whether to hide back button. @keywords back, hide */
     'backHide'?: boolean;
-    /** Whether to hide the back button specifically in action mode @keywords back action hide */
+    /** Whether to hide back button specifically in action mode. @keywords back, action, hide */
     'backActionHide'?: boolean;
-    /** List of additional buttons @keywords bars buttons list */
+    /** List of additional buttons. @keywords bars, buttons */
     'bars'?: ConstrBind<Button>[];
-    /** Label override for action mode @keywords action label */
+    /** Label override for action mode. @keywords action, label */
     'actionLabel'?: LabelProps['label'];
-    /** Description override for action mode @keywords action description */
+    /** Description override for action mode. @keywords action, description */
     'actionDescription'?: DescriptionProps['description'];
-    /** List of buttons for action mode @keywords action bars buttons */
+    /** List of buttons for action mode. @keywords action, bars */
     'actionBars'?: ConstrBind<Button>[];
-    /** Attributes for the button component @keywords button attrs */
+    /** Attributes for button components. @keywords button, attrs */
     'buttonAttrs'?: ConstrBind<Button>;
-    /** Icon for the back button @keywords icon back */
+    /** Icon for back button. @keywords icon, back */
     'iconBack'?: IconValue<Icon>;
-    /** Icon for the close button @keywords icon close */
+    /** Icon for close button. @keywords icon, close */
     'iconClose'?: IconValue<Icon>;
-    /** Whether the action mode model is active @keywords model action */
+    /** Whether action mode model is active. @keywords model, action */
     'modelAction'?: boolean;
-    /** Event for updating the action mode status @keywords update action event */
+    /** Callback triggered when action status updates. @keywords event, action */
     'onUpdate:action'?: (value: boolean) => void;
-    /** Event for updating the action mode model status @keywords update model action event */
+    /** Callback triggered when model action status updates. @keywords event, model */
     'onUpdate:modelAction'?: (value: boolean) => void;
 };
 export type BarsProps = BarsPropsBasic & BarsPropsToken;
-/** Default value for property @keywords defaults bars */
+/** Default properties for the Bars component. @keywords bars, defaults */
 export declare const defaultsBars: {};

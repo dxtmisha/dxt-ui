@@ -1,5 +1,6 @@
-// md5:b69369da569defc09403b15f0eacd345 true
-import { ElementOrString, NormalOrPromise } from '@dxtmisha/functional';
+// md5:8e1b4f3b02cec5d72646bf6497da0c2a true
+import type { ElementOrString, NormalOrPromise } from '@dxtmisha/functional';
+
 export type WindowPropsToken = {
     width?: string | 'auto' | 'max' | 'custom';
     height?: string | 'auto' | 'max' | 'custom';
@@ -16,13 +17,19 @@ export type WindowPropsToken = {
     closeMobileHide?: boolean;
     widthMatch?: boolean;
 };
+
 export type WindowPropsBasic<Scrollbar extends ScrollbarPropsBasic = ScrollbarPropsBasic, Icon extends IconPropsBasic = IconPropsBasic, Image extends ImagePropsBasic = ImagePropsBasic> = ScrollbarPropsInclude<Scrollbar> & ImagePropsInclude<Image> & AriaRoleByPropsInclude & AriaHaspopupPropsInclude & TextClosePropsInclude & ModelPropsOpen & {
     open?: boolean;
     disabled?: boolean;
+    /** Hook called during window preparation. @keywords hook, preparation */
     preparation?(): NormalOrPromise<void>;
+    /** Hook called before the window starts opening. @keywords hook, beforeOpening */
     beforeOpening?(): NormalOrPromise<boolean>;
+    /** Hook called while the window is opening. @keywords hook, opening */
     opening?(): NormalOrPromise<boolean>;
+    /** Hook called before the window starts closing. @keywords hook, beforeClosing */
     beforeClosing?(): NormalOrPromise<boolean>;
+    /** Hook called while the window is closing. @keywords hook, closing */
     closing?(): NormalOrPromise<boolean>;
     contextmenu?: boolean;
     staticMode?: boolean;
@@ -41,8 +48,11 @@ export type WindowPropsBasic<Scrollbar extends ScrollbarPropsBasic = ScrollbarPr
     openOnArrowDown?: boolean;
     embedded?: boolean;
 };
+
+/** Properties for the Window component. @keywords window, properties, props */
 export type WindowProps = WindowPropsBasic & WindowPropsToken;
-/** Default window property values @keywords defaults, window, properties */
+
+/** Default property values for the Window component. @keywords window, defaults */
 export declare const defaultsWindow: {
     axis: string;
     imagePosition: string;

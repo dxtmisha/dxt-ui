@@ -1,21 +1,16 @@
-// md5:39f950279e55aa82367ae4c1d241bd80 true
-import { ConstrClass } from '@dxtmisha/functional';
+// md5:512a85859bf7fd555439aa5f195c303e true
+import type { ConstrClass } from '@dxtmisha/functional';
 
 export type SectionComponents = BlockComponents;
-
 export type SectionEmits = BlockEmits;
+export interface SectionExpose extends BlockExpose {}
+export interface SectionSlots extends BlockSlots {}
 
-export interface SectionExpose extends BlockExpose {
-}
-
-export interface SectionSlots extends BlockSlots {
-}
-
-/** Section subclasses mapping @keywords classes, styling, section */
+/** CSS class list for the section component structure. @keywords section classes */
 export type SectionClasses = {
-    main: ConstrClass;
-    headline: string;
-    header: string;
-    description: string;
-    body: string;
+  main: ConstrClass;
+  headline: string;
+  header: string;
+  description: string;
+  body: string;
 };

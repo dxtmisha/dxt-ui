@@ -1,8 +1,8 @@
-// md5:cc64d8ec2d9badd35c89a9a9bcf3d098 true
-import { Ref } from 'vue';
-import { ConstrBind } from '@dxtmisha/functional';
+// md5:3869002fa5d1937d2e0aab3b201257ae true
+import type { Ref } from 'vue';
+import type { ConstrBind } from '@dxtmisha/functional';
 
-/** Window status lifecycle states @keywords window status display preparation flash open hide close */
+/** Window lifecycle status states @keywords window, status, lifecycle */
 export declare enum WindowStatusItem {
     display = "display",
     preparation = "preparation",
@@ -12,7 +12,7 @@ export declare enum WindowStatusItem {
     close = "close"
 }
 
-/** Window status control configuration items @keywords window control block persistent static */
+/** Window behavior and appearance control items @keywords window, control, status */
 export declare enum WindowStatusControlItem {
     block = "block",
     blockChildren = "blockChildren",
@@ -77,7 +77,7 @@ export type WindowEmitsInclude = {
 };
 
 export interface WindowExposeInclude extends WindowExpose {
-    /** Returns reference to the window element @keywords window element expose constrbind */
+    /** Returns reference to the window element @keywords window, element, expose */
     getWindowElement(): ConstrBind<WindowExpose> | undefined;
 }
 
@@ -87,5 +87,4 @@ export type WindowPropsInclude<Window extends WindowPropsBasic = WindowPropsBasi
     windowAttrs?: ConstrBind<Window>;
 };
 
-/** CSS variable name for MotionTransform body type @keywords css variable type body */
 export declare const __WINDOW_TYPE_BODY_NAME = "--sys-type-body";

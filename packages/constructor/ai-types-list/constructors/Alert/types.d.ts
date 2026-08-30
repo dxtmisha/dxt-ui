@@ -1,20 +1,25 @@
-// md5:9ffc56ff496a0fe312ef676e6d7291a9 true
-import { ConstrClass } from '@dxtmisha/functional';
+// md5:08eedaf7cacfe6d2d05d59950be17c9e true
+import { type ConstrClass } from '@dxtmisha/functional';
 
+/** Sub-components required for Alert @keywords alert components */
 export type AlertComponents = IconComponentInclude & ButtonComponentInclude & ActionsComponentInclude & AlertLinkComponentInclude;
 
+/** Event emits supported by Alert @keywords alert emits events */
 export type AlertEmits = AlertLinkEmitsInclude & ActionsEmitsInclude & EventClickEmits & {
     close: [];
 };
 
+/** Exposed instance interface for Alert @keywords alert expose */
 export interface AlertExpose {
 }
 
+/** Available slots for Alert @keywords alert slots */
 export interface AlertSlots extends LabelSlots, DescriptionSlots {
     trailing?(props: any): any;
     body?(props: any): any;
 }
 
+/** CSS class names structure for Alert elements @keywords alert classes */
 export type AlertClasses = {
     main: ConstrClass;
     icon: string;

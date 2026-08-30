@@ -35,6 +35,8 @@ describe('PropertiesConfig', () => {
     expect(PropertiesConfig.getTypesTemporaryDirectory()).toBe('ai-types-temp')
     expect(PropertiesConfig.getDistDir()).toBe('dist')
     expect(PropertiesConfig.getAiResourcesDir()).toBe('ai-resources')
+    expect(typeof PropertiesConfig.getAiTypesConcurrency()).toBe('number')
+    expect(PropertiesConfig.getAiTypesConcurrency()).toBe(8)
   })
 
   describe('getLocalPath', () => {

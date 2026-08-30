@@ -1,13 +1,13 @@
-// md5:98085a9eb908555b96421f02075a02bd true
+// md5:b097fb602a6dd4c37629cc9064a86181 true
 type TableFlexPropsToken = {
     headerTop?: boolean;
     captionBottom?: boolean;
     bleed?: boolean;
 };
+/** Basic properties for flex table component. @keywords table flex props */
 export type TableFlexPropsBasic<TableItem extends TableFlexItemPropsBasic = TableFlexItemPropsBasic, TableHeaderItem extends TableFlexHeaderItemPropsBasic = TableFlexHeaderItemPropsBasic, TableRecord extends TableFlexRecordPropsBasic<TableItem, TableHeaderItem> = TableFlexRecordPropsBasic<TableItem, TableHeaderItem>> = TablePropsBasic<TableItem, TableHeaderItem, TableRecord>;
-/** TableFlex component incoming properties @keywords table flex props */
 export type TableFlexProps = TableFlexPropsBasic & TableFlexPropsToken;
-/** Default properties for TableFlex component @keywords defaults table flex */
+/** Default properties for TableFlex. @keywords defaults table flex */
 export declare const defaultsTableFlex: {
     lazy: boolean;
     page: number;

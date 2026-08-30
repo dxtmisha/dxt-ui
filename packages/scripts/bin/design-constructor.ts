@@ -2,7 +2,7 @@
 
 import process from 'node:process'
 import { parseCliArguments } from './arguments'
-import { DesignConstructor } from '../dist/library-ui.js'
+import { DesignConstructors } from '../dist/library-ui.js'
 
 const { values } = parseCliArguments(
   'Generates constructor files: property definitions, types, styles, and integration logic.',
@@ -16,9 +16,9 @@ const { values } = parseCliArguments(
   }
 )
 
-const name = (typeof values.name === 'string' ? values.name : undefined) ?? ''
+const name = typeof values.name === 'string' ? values.name : undefined
 
-new DesignConstructor(name)
+new DesignConstructors(name)
   .make()
   .catch((error) => {
     console.error('dxt-constructor failed:', error)

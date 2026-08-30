@@ -39,7 +39,6 @@ const fullPath = PropertiesFile.joinPath(['src', 'tokens', 'colors.json'])
 ## Các phương thức hệ thống bổ sung
 
 - `getRootProject(rootProject?: string, maxDepth?: number): string | undefined` — tìm kiếm thư mục gốc của dự án monorepo.
-- `getDirname(): string` — trả về tên thư mục làm việc hiện tại.
 - `splitForDir(path: PropertiesFilePath): string[]` — chia đường dẫn thành các phân đoạn thư mục.
 - `parse(path: PropertiesFilePath): ParsedPath` — phân tích đường dẫn thành các thành phần (root, dir, base, ext, name).
 - `stat(path: PropertiesFilePath): Stats | undefined` — trả về thông tin fs.Stats của tệp.

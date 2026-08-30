@@ -1,6 +1,6 @@
 {
   "path": "ai-resources/skeleton.md",
   "md5": "0b1e64e597eb19099d1649e9f8eb093a",
-  "name": "Skeleton Architecture Guide",
-  "description": "Defines rules, class conventions, and code standards for non-destructive Skeleton loading systems in UI templates using constructor libraries. Guides AI assistants on implementing single-markup placeholders without template duplication."
+  "name": "Skeleton Loading Architecture Guide",
+  "description": "Defines rules and implementation standards for zero-duplication skeleton loading states across Vue templates using @dxtmisha/constructor and derivative design libraries. Details how to use the root Skeleton wrapper, utility classes, and the is-skeleton component prop on real markup. Solves UI layout shifts and eliminates template duplication during asynchronous data loading."
 }

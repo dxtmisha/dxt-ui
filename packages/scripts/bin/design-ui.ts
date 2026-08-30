@@ -17,4 +17,9 @@ const { values } = parseCliArguments(
 
 const name = typeof values.name === 'string' ? values.name : undefined
 
-new DesignUi(name).make()
+new DesignUi(name)
+  .make()
+  .catch((error) => {
+    console.error('dxt-ui failed:', error)
+    process.exit(1)
+  })

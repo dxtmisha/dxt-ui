@@ -1,12 +1,14 @@
-// md5:e1c3fb91512194be8a24bbc80b1c8bd3 true
-import { ConstrBind } from '@dxtmisha/functional';
+// md5:004100a7003ce881facb714377b11acf true
+import type { ConstrBind } from '@dxtmisha/functional';
 
-/** Progress component configuration @keywords ProgressComponentInclude progress component configuration */
+/** Progress component inclusion configuration. @keywords progress, component, include */
 export type ProgressComponentInclude = {
+    /** Progress component configuration. */
     progress?: object;
 };
 
-/** Progress properties inclusion interface @keywords ProgressPropsInclude loading progress properties */
+/** Progress and loading property inclusion contract. @keywords progress, props, loading, include */
 export type ProgressPropsInclude<Progress extends ProgressPropsBasic = ProgressPropsBasic> = {
+    /** Loading state flag or progress configuration binding. */
     loading?: boolean | ConstrBind<Progress>;
 };

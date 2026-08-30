@@ -5,5 +5,5 @@ export type TouchEventClient = {
     x: number;
     y: number;
 };
-/** Callback function for touch and mouse event handling @keywords touch event callback gesture direction */
+/** Callback function for touch and mouse gesture event handling. @keywords touch, mouse, gesture, callback */
 export type TouchEventCallback = (typeX: TouchEventTypeX, typeY: TouchEventTypeY, clientX: number, clientY: number, mouse?: TouchEventClient, mouseMove?: TouchEventClient, touche?: Touch, toucheMove?: Touch) => Promise<boolean> | boolean;

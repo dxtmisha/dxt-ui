@@ -3,7 +3,7 @@ export type SkeletonPropsToken = {
     active?: boolean;
 };
 export type SkeletonPropsBasic = {};
-/** Type describing incoming properties. @keywords skeleton props incoming properties */
+/** Skeleton component properties. @keywords skeleton, props */
 export type SkeletonProps = SkeletonPropsBasic & SkeletonPropsToken;
-/** Default value for property. @keywords defaults skeleton default value property */
+/** Default properties for the Skeleton component. @keywords skeleton, defaults */
 export declare const defaultsSkeleton: {};

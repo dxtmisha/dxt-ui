@@ -1,12 +1,15 @@
-// md5:67376477ed64fb4374f71aee7bccf998 true
+// md5:71c49431d82b4178d37c03e775cfbd17 true
 export type TextValue = string | (() => string) | undefined;
-export type TextIndex = 'cancel' | 'characterLimit' | 'characterRemaining' | 'close' | 'copiedClipboard' | 'decrement' | 'dropzone' | 'entriesMatch' | 'first' | 'hide' | 'increment' | 'info' | 'last' | 'loading' | 'more' | 'morePrev' | 'next' | 'notFound' | 'notifications' | 'ok' | 'page' | 'previous' | 'rowsPerPage' | 'show' | 'symbol' | string;
+export type TextIndex = 'cancel' | 'change' | 'characterLimit' | 'characterRemaining' | 'close' | 'copiedClipboard' | 'decrement' | 'dropzone' | 'edit' | 'entriesMatch' | 'first' | 'hide' | 'increment' | 'info' | 'last' | 'loading' | 'more' | 'morePrev' | 'next' | 'notFound' | 'notifications' | 'ok' | 'page' | 'previous' | 'rowsPerPage' | 'show' | 'symbol' | string;
 export type TextList = Record<TextIndex, TextValue>;
 export type TextBreadcrumbPropsInclude = {
     textBreadcrumb?: TextValue;
 };
 export type TextCancelPropsInclude = {
     textCancel?: TextValue;
+};
+export type TextChangePropsInclude = {
+    textChange?: TextValue;
 };
 export type TextCharacterLimitPropsInclude = {
     textCharacterLimit?: TextValue;
@@ -25,6 +28,9 @@ export type TextDecrementPropsInclude = {
 };
 export type TextDropzonePropsInclude = {
     textDropzone?: TextValue;
+};
+export type TextEditPropsInclude = {
+    textEdit?: TextValue;
 };
 export type TextEntriesMatchPropsInclude = {
     textEntriesMatch?: TextValue;
@@ -80,5 +86,5 @@ export type TextShowPropsInclude = {
 export type TextSymbolPropsInclude = {
     textSymbol?: TextValue;
 };
-/** Combines all localized text inclusion interfaces for components @keywords text_props localization i18n */
-export type TextAllPropsInclude = TextBreadcrumbPropsInclude & TextCancelPropsInclude & TextCharacterLimitPropsInclude & TextCharacterRemainingPropsInclude & TextClosePropsInclude & TextCopiedClipboardPropsInclude & TextDecrementPropsInclude & TextDropzonePropsInclude & TextEntriesMatchPropsInclude & TextFirstPropsInclude & TextHidePropsInclude & TextIncrementPropsInclude & TextInfoPropsInclude & TextLastPropsInclude & TextLoadingPropsInclude & TextMorePropsInclude & TextMorePrevPropsInclude & TextNextPropsInclude & TextNotFoundPropsInclude & TextNotificationsPropsInclude & TextOkPropsInclude & TextPagePropsInclude & TextPreviousPropsInclude & TextRowsPerPagePropsInclude & TextShowPropsInclude & TextSymbolPropsInclude;
+/** Combined interface containing all text property configurations. @keywords text, i18n, props */
+export type TextAllPropsInclude = TextBreadcrumbPropsInclude & TextCancelPropsInclude & TextChangePropsInclude & TextCharacterLimitPropsInclude & TextCharacterRemainingPropsInclude & TextClosePropsInclude & TextCopiedClipboardPropsInclude & TextDecrementPropsInclude & TextDropzonePropsInclude & TextEditPropsInclude & TextEntriesMatchPropsInclude & TextFirstPropsInclude & TextHidePropsInclude & TextIncrementPropsInclude & TextInfoPropsInclude & TextLastPropsInclude & TextLoadingPropsInclude & TextMorePropsInclude & TextMorePrevPropsInclude & TextNextPropsInclude & TextNotFoundPropsInclude & TextNotificationsPropsInclude & TextOkPropsInclude & TextPagePropsInclude & TextPreviousPropsInclude & TextRowsPerPagePropsInclude & TextShowPropsInclude & TextSymbolPropsInclude;

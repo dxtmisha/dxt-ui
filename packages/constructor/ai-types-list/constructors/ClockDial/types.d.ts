@@ -1,32 +1,42 @@
-// md5:ea36d02b5c1388f35ea0e4ddb27db3a7 true
-import { ConstrClass } from '@dxtmisha/functional';
+// md5:009a7b1fc6f6ae2a866d95fcfbd52d54 true
+import type { ConstrClass } from '@dxtmisha/functional';
 
 export type ClockDialComponents = {};
 
 export type ClockDialEmits = ModelEmits<number> & {
-    /** Input event triggered on selection change @keywords input selection change */
-    input: [event: ClockDialEventItem, value: number];
-    /** Input event lite version @keywords input lite value */
-    inputLite: [value: number];
-    /** Change event triggered on interaction end @keywords change interaction end */
-    change: [event: ClockDialEventItem, value: number];
-    /** Change event lite version @keywords change lite value */
-    changeLite: [value: number];
+    /** Triggered on selection change. @keywords event, input */
+    input: [
+        event: ClockDialEventItem,
+        value: number
+    ];
+    /** Simplified input event with value only. @keywords event, input, lite */
+    inputLite: [
+        value: number
+    ];
+    /** Triggered when interaction ends. @keywords event, change */
+    change: [
+        event: ClockDialEventItem,
+        value: number
+    ];
+    /** Simplified change event with value only. @keywords event, change, lite */
+    changeLite: [
+        value: number
+    ];
 };
 
 export interface ClockDialExpose {
-    /** Get current selected value @keywords get value selected */
+    /** Gets current selected value. @keywords value, getter, clock */
     getValue(): number | undefined;
-    /** Set new value @keywords set value */
+    /** Sets new value. @keywords value, setter, clock */
     setValue(value?: number): void;
-    /** Select mark item by client coordinates @keywords select coordinates client mark */
+    /** Selects mark item by client coordinates. @keywords select, coordinates, mark */
     selectByCoordinates(clientX: number, clientY: number): ClockDialMarkItem | null;
 }
 
 export interface ClockDialSlots {
-    /** Default center dial slot @keywords default center dial slot */
+    /** Default center dial slot. @keywords slot, default, dial */
     default?(props: any): any;
-    /** Custom clock item slot @keywords custom clock item slot */
+    /** Custom clock item slot. @keywords slot, item, mark */
     item?(props: ClockDialMarkSlot): any;
 }
 

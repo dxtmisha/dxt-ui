@@ -1,0 +1,6 @@
+{
+  "path": "ai-resources/spacing.md",
+  "md5": "f101e446b8a05165a5787669446ce47e",
+  "name": "SCSS Spacing Guide",
+  "description": "Guidelines and SCSS mixins for applying direction-aware padding, margin, and gaps with full RTL/LTR support. It defines standard spacing tokens and scales to ensure consistent layout styling across UI components."
+}

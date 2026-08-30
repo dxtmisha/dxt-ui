@@ -1,21 +1,21 @@
-// md5:e911b78c0cb33ff6520af5f158bbe99d true
-import { ConstrClass } from '@dxtmisha/functional';
+// md5:7d4900f71f32bf9318628630fcbdecc1 true
+import type { ConstrClass } from '@dxtmisha/functional';
 
 export type HorizontalScrollComponents = {};
-
 export type HorizontalScrollEmits = {};
 
 export interface HorizontalScrollExpose {
-    /** Returns main HTML element @keywords getElement main HTMLDivElement */
-    getElement(): HTMLDivElement | undefined;
-    /** Scrolls area to selected element @keywords toSelected scroll */
-    toSelected(): void;
+  /** Gets the root HTML element. @keywords root element dom */
+  getElement(): HTMLDivElement | undefined;
+  /** Scrolls the area to the currently selected element. @keywords scroll toSelected */
+  toSelected(): void;
 }
 
 export interface HorizontalScrollSlots {
-    default?(props: any): any;
+  /** Default content slot for horizontal scroll. @keywords default slot */
+  default?(props: any): any;
 }
 
 export type HorizontalScrollClasses = {
-    main: ConstrClass;
+  main: ConstrClass;
 };

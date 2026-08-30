@@ -1,0 +1,6 @@
+{
+  "path": "ai-resources/rounded.md",
+  "md5": "a076b48f005bbc3504331d89d46835da",
+  "name": "SCSS Border Radius Guide",
+  "description": "Defines standards and design tokens for applying fixed, pill, and height-adaptive corner rounding in SCSS using @dxtmisha/d1. Includes token catalogs, proportional multipliers, and usage examples for components like buttons, cards, and sheets. Ensures visual consistency and proportional corner scaling across UI components."
+}

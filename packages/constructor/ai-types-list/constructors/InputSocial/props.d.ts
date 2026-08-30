@@ -1,12 +1,27 @@
-// md5:9773dbc74b08ac0a076edee83384bcd8 true
-import { InputSocialTypeValue } from '@dxtmisha/media';
+// md5:07ce8b003600bccc0b86aad149165a59 true
+import type { InputSocialTypeValue } from '@dxtmisha/media';
+
 export type InputSocialPropsToken = {};
-export type InputSocialPropsBasic<Mask extends MaskPropsBasic = MaskPropsBasic, Icon extends IconPropsBasic = IconPropsBasic, Field extends FieldPropsBasic = FieldPropsBasic, FieldLabel extends FieldLabelPropsBasic = FieldLabelPropsBasic, FieldMessage extends FieldMessagePropsBasic = FieldMessagePropsBasic, FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic, Progress extends ProgressPropsBasic = ProgressPropsBasic> = MaskPropsInclude<Mask> & FieldPropsInclude<Icon, Field, FieldLabel, FieldMessage, FieldCounter, Progress> & FieldInputSocialProps & {
+
+/** Basic properties of InputSocial component. @keywords input social props */
+export type InputSocialPropsBasic<
+    Mask extends MaskPropsBasic = MaskPropsBasic,
+    Icon extends IconPropsBasic = IconPropsBasic,
+    Field extends FieldPropsBasic = FieldPropsBasic,
+    FieldLabel extends FieldLabelPropsBasic = FieldLabelPropsBasic,
+    FieldMessage extends FieldMessagePropsBasic = FieldMessagePropsBasic,
+    FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic,
+    Progress extends ProgressPropsBasic = ProgressPropsBasic
+> = MaskPropsInclude<Mask> & FieldPropsInclude<Icon, Field, FieldLabel, FieldMessage, FieldCounter, Progress> & FieldInputSocialProps & {
+    /** Social network type. */
     socialType?: InputSocialTypeValue;
+    /** Dictionary of custom icons for each social network. */
     socialIcons?: Record<InputSocialTypeValue, string>;
 };
+
 export type InputSocialProps = InputSocialPropsBasic & InputSocialPropsToken;
-/** Default configuration values for InputSocial component properties @keywords defaults, input_social, configuration */
+
+/** Default values for InputSocial properties. @keywords input social defaults */
 export declare const defaultsInputSocial: {
     type: string;
     autocomplete: string;

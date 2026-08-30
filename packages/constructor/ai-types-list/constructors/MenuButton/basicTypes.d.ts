@@ -1,19 +1,20 @@
-// md5:c500abede4d4b357a401066c62589bb6 true
+// md5:0218829ee96da718608799bc1373555b true
+/** Tool properties for the menu button component. @keywords menu-button, toolbar, options */
 export type MenuButtonPropsTool<Icon extends IconPropsBasic = IconPropsBasic> = {
-    /** Separator for displayed selected value labels @keywords label separator menu button */
+    /** Separator for displayed labels of selected values. */
     labelSeparator?: string;
-    /** Icon displayed in button when value is selected @keywords icon selected menu button */
+    /** Icon displayed in the button when a value is selected. */
     icon?: IconValue<Icon>;
-    /** Whether to hide label when value is selected @keywords hide label value menu button */
+    /** Whether to hide the label when a value is selected. */
     hideLabelValue?: boolean;
-    /** Whether to hide value if icon is present @keywords hide value icon menu button */
+    /** Whether to hide the value if an icon is present. */
     hideValueIcon?: boolean;
-    /** Whether to hide the list @keywords hide list menu button */
+    /** Whether to hide the dropdown list. */
     hideList?: boolean;
-    /** Whether to show search input @keywords show search menu button */
+    /** Whether to display the search input. */
     showSearch?: boolean;
-    /** Whether filtering mode is enabled @keywords filter mode menu button */
+    /** Whether filtering mode is enabled. */
     filterMode?: boolean;
-    /** Icon for the down arrow @keywords icon arrow down menu button */
+    /** Icon for the dropdown arrow. */
     iconArrowDown?: IconValue<Icon>;
 };

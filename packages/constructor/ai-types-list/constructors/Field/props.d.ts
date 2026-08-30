@@ -1,4 +1,4 @@
-// md5:43351481fef4b50e8ba060951e18c101 true
+// md5:30de9e1874084f57fb806d6a501b79e3 true
 export type FieldPropsToken = {
     focus?: boolean;
     disabled?: boolean;
@@ -32,7 +32,7 @@ export type FieldPropsBasic<Icon extends IconPropsBasic = IconPropsBasic, FieldL
     iconClose?: IconValue<Icon>;
 };
 export type FieldProps = FieldPropsBasic & FieldPropsToken;
-/** Default field property values @keywords defaults field properties configuration */
+/** Default property values for the field component @keywords field, defaults */
 export declare const defaultsField: {
     arrowAlign: string;
     cancel: string;

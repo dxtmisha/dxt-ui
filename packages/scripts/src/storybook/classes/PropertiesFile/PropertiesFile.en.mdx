@@ -39,7 +39,6 @@ const fullPath = PropertiesFile.joinPath(['src', 'tokens', 'colors.json'])
 ## Additional System Methods
 
 - `getRootProject(rootProject?: string, maxDepth?: number): string | undefined` — searches for the monorepo root project directory.
-- `getDirname(): string` — returns the current working directory name.
 - `splitForDir(path: PropertiesFilePath): string[]` — splits a path into directory segments.
 - `parse(path: PropertiesFilePath): ParsedPath` — parses path into components (root, dir, base, ext, name).
 - `stat(path: PropertiesFilePath): Stats | undefined` — returns fs.Stats information for the file.

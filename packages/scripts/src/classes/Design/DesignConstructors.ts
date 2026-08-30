@@ -32,17 +32,16 @@ export class DesignConstructors {
    *
    * Запускает процесс создания или обновления конструкторов.
    */
-  make(): void {
+  async make(): Promise<void> {
     PropertiesCache.clear()
 
     if (isFilled(this.name)) {
-      new DesignConstructor(this.name).make()
+      await new DesignConstructor(this.name).make()
     } else {
-      this.getComponents()
-        .forEach((component) => {
-          console.log(`Constructor update: ${component}`)
-          new DesignConstructor(component).make()
-        })
+      for (const component of this.getComponents()) {
+        console.log(`Constructor update: ${component}`)
+        await new DesignConstructor(component).make()
+      }
     }
 
     this.makeStyle()

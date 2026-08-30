@@ -1,5 +1,7 @@
-// md5:e187251ea997c1d9ba492f8ff15cc781 true
-import { ConstrBind } from '@dxtmisha/functional';
+// md5:df6950ec6f9f2bfcf89b11d8443f6ca8 true
+import type { ConstrBind } from '@dxtmisha/functional';
+
+/** Control data passed to slots and subcomponents @keywords field, control, slot_data */
 export type FieldControl = {
     id: string;
     className: string;
@@ -13,24 +15,22 @@ export type FieldControl = {
         'data-input': string;
     };
 };
+
+/** Subcomponent connections configuration for Field @keywords field, component, include */
 export type FieldComponentInclude = {
     field?: object;
 };
-export interface FieldSlotsInclude extends Omit<FieldSlots, 'default'> {
-}
+
+/** Available slots for FieldInclude @keywords field, slots, include */
+export interface FieldSlotsInclude extends Omit<FieldSlots, 'default'> {}
+
+/** Properties for FieldInclude @keywords field, props, include */
 export type FieldPropsInclude<Icon extends IconPropsBasic = IconPropsBasic, Field extends FieldPropsBasic = FieldPropsBasic, FieldLabel extends FieldLabelPropsBasic = FieldLabelPropsBasic, FieldMessage extends FieldMessagePropsBasic = FieldMessagePropsBasic, FieldCounter extends FieldCounterPropsBasic = FieldCounterPropsBasic, Progress extends ProgressPropsBasic = ProgressPropsBasic> = Omit<FieldPropsBasic<Icon, FieldLabel, FieldMessage, FieldCounter, Progress>, 'disabledPrevious' | 'disabledNext' | 'to' | 'value' | 'maxlength' | 'cancelShow' | 'counter' | 'counterTemplate' | 'counterTop' | 'iconArrowLeft' | 'iconArrowRight' | 'iconPlus' | 'iconMinus' | 'iconClose'> & {
-    /** Whether the field is focused @keywords focus state */
     focus?: boolean;
-    /** Whether the field is selected @keywords selected state */
     selected?: boolean;
-    /** Whether the field is read-only @keywords readonly state */
     readonly?: boolean;
-    /** Whether the field is disabled @keywords disabled state */
     disabled?: boolean;
-    /** Alignment of content in the field @keywords alignment align */
     align?: 'center' | 'right' | 'left';
-    /** Cancellation behavior @keywords cancel behavior */
     cancel?: 'auto' | 'always' | 'none';
-    /** Additional attributes for the Field component @keywords field attrs bind */
     fieldAttrs?: ConstrBind<Field>;
 };

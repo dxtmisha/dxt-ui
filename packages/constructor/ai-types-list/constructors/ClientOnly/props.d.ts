@@ -1,8 +1,9 @@
-// md5:859615770799ab8b7e3949b5fd51e66a true
+// md5:0a0a40ac547ed890536f7ee0cda1e0fb true
+type ClientOnlyPropsToken = {};
 export type ClientOnlyPropsBasic = ClientOnlyPropsInclude;
-/** Type describing incoming properties. @keywords client only props properties */
+/** Properties for client-only rendering. @keywords client only props */
 export type ClientOnlyProps = ClientOnlyPropsBasic & ClientOnlyPropsToken;
-/** Default value for property. @keywords defaults client only */
+/** Default values for client-only properties. @keywords defaults client only */
 export declare const defaultsClientOnly: {
     clientOnly: boolean;
 };

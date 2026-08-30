@@ -1,28 +1,40 @@
-// md5:dbdc3e4987dfe96a9b4f981b7ae7e1a6 true
-import { ListRecord, NumberOrString } from '@dxtmisha/functional';
+// md5:a78691aa49d2e79d7a13c30f28a30930 true
+import type { ListRecord, NumberOrString } from '@dxtmisha/functional';
 type SliderPropsToken = {
     selected?: boolean;
     disabled?: boolean;
     vertical?: boolean;
 };
-/** Slider component basic properties @keywords slider props basic configuration */
+/** Basic properties for the Slider component. @keywords slider, props, basic */
 export type SliderPropsBasic = ModelProps & FieldStepProps & EnabledProps & SkeletonPropsInclude & {
+    /** Input field name. */
     name?: string;
+    /** Current value or range. */
     value?: SliderValueProp;
+    /** List of marks or tick values. */
     marks?: ListRecord<SliderMarkItem> | number[];
+    /** Magnetize thumb position to nearest mark. */
     magnet?: boolean;
+    /** Property key for text label. */
     keyLabel?: string;
+    /** Property key for value. */
     keyValue?: string;
+    /** Required input state. */
     required?: boolean;
+    /** Dual-thumb range selection mode. */
     multiple?: boolean;
+    /** Minimum distance between thumbs in range mode. */
     minimumDistance?: NumberOrString;
+    /** Vertical layout orientation. */
     vertical?: boolean;
+    /** Show thumb value label element. */
     showThumbLabel?: boolean;
+    /** Additional attributes for the input element. */
     inputAttrs?: Partial<HTMLInputElement>;
 };
-/** Incoming slider properties @keywords slider props configuration */
+/** Incoming properties for the Slider component. @keywords slider, props */
 export type SliderProps = SliderPropsBasic & SliderPropsToken;
-/** Default slider configuration values @keywords slider defaults config */
+/** Default property values for the Slider component. @keywords slider, defaults */
 export declare const defaultsSlider: {
     keyLabel: string;
     keyValue: string;
@@ -32,4 +44,3 @@ export declare const defaultsSlider: {
     minimumDistance: number;
     showThumbLabel: boolean;
 };
-export {};

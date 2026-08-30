@@ -1,4 +1,4 @@
-// md5:036470c099de17ee2ceee231876d1233 true
+// md5:1fb57229f69b8cbb1bae14a67ca9581f true
 export type ScrollbarPropsToken = {
     visible?: boolean;
     divider?: boolean;
@@ -9,12 +9,12 @@ export type ScrollbarPropsToken = {
     standard?: boolean;
 };
 export type ScrollbarPropsBasic = ClientOnlyPropsInclude & {
-    /** HTML element tag for the scrollbar @keywords tag element html */
+    /** HTML tag for the scrollbar element. */
     tag?: string;
 };
-/** Incoming properties for the scrollbar component @keywords scrollbar properties props */
+/** Scrollbar component properties. @keywords scrollbar, props */
 export type ScrollbarProps = ScrollbarPropsBasic & ScrollbarPropsToken;
-/** Default property values for the scrollbar component @keywords defaults default values scrollbar */
+/** Default property values for Scrollbar. @keywords scrollbar, defaults */
 export declare const defaultsScrollbar: {
     clientOnly: boolean;
     tag: string;

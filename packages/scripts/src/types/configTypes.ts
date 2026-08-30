@@ -124,6 +124,12 @@ export type DesignUiConfig = {
   /** Additional AI provider configuration parameters / Дополнительные параметры конфигурации ИИ-провайдера */
   aiConfig?: Record<string, any>
 
+  /**
+   * Maximum number of type definition files processed by AI concurrently /
+   * Максимальное количество файлов определений типов, обрабатываемых ИИ одновременно
+   */
+  aiTypesConcurrency?: number
+
   // Figma / Интеграция с Figma
 
   /** Figma personal access token for REST API authentication / Персональный токен доступа Figma для аутентификации REST API */

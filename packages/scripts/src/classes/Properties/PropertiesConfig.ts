@@ -243,6 +243,16 @@ export class PropertiesConfig {
     return this.config?.aiConfig ?? {}
   }
 
+  /**
+   * Returns the maximum number of type definition files processed by AI concurrently.
+   *
+   * Возвращает максимальное количество файлов определений типов, обрабатываемых ИИ одновременно.
+   * @returns AI types concurrency limit / лимит параллельной обработки типов ИИ
+   */
+  static getAiTypesConcurrency(): number {
+    return this.config?.aiTypesConcurrency ?? 8
+  }
+
   // Figma / Интеграция с Figma
 
   /**

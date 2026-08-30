@@ -1,0 +1,6 @@
+{
+  "path": "ai-resources/color.md",
+  "md5": "96691e8313c01cbf6b46070fe9bc2fe5",
+  "name": "SCSS Color & Palette Guide",
+  "description": "Defines rules, SCSS mixins, and token standards for applying colors, opacities, and dynamic palette theming via @dxtmisha styling packages. Prohibits hardcoded color values to ensure consistent design tokens and light/dark theme reactivity across components and SVGs."
+}

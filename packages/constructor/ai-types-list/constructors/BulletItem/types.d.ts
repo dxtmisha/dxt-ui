@@ -1,17 +1,10 @@
-// md5:fe2644693da105742434caa5b4554f0c true
-import { ConstrClass } from '@dxtmisha/functional';
+// md5:8b95a77d18b6d2e7a19b75737601f8f5 true
+import type { ConstrClass } from '@dxtmisha/functional';
 
 export type BulletItemComponents = {};
-
 export type BulletItemEmits = {};
-
-export interface BulletItemExpose {
-}
-
-export interface BulletItemSlots extends DescriptionSlots {
-}
-
-/** BulletItemClasses subclass definitions @keywords subclasses bullet item classes */
+export interface BulletItemExpose {}
+export interface BulletItemSlots extends DescriptionSlots {}
 export type BulletItemClasses = {
     main: ConstrClass;
 };

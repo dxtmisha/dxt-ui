@@ -1,18 +1,22 @@
-// md5:8527a610bf05c0f04bd227646e0fa3ad true
-import { ConstrClass } from '@dxtmisha/functional';
+// md5:4071481fd91e9e55f2d7992f1653f1ac true
+import type { ConstrClass } from '@dxtmisha/functional';
+
 export type NavigationRailComponents = NavigationItemComponentInclude & NavigationRailItemComponentInclude & ListMenuComponentInclude;
+
 export type NavigationRailEmits = EventClickEmits & {
-    close: [];
+  /** Event emitted on list close. */
+  close: [];
 };
-export interface NavigationRailExpose extends ListExpose {
-}
+
+export interface NavigationRailExpose extends ListExpose {}
+
 export type NavigationRailSlots = ListSlots;
-/** Navigation rail CSS classes @keywords navigation rail classes */
+
 export type NavigationRailClasses = {
-    main: ConstrClass;
-    space: string;
-    line: string;
-    html: string;
-    management: string;
-    menu: string;
+  main: ConstrClass;
+  space: string;
+  line: string;
+  html: string;
+  management: string;
+  menu: string;
 };

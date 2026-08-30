@@ -1,0 +1,6 @@
+{
+  "path": "ai-resources/styling-tokens.md",
+  "md5": "850924d4f74beba579776c24dc821908",
+  "name": "D1 Design Tokens Guide",
+  "description": "Defines the three-tier design token architecture, composite presets, and syntax rules for component properties.json files in @dxtmisha/d1. It specifies standard practices for dynamic palette generation, typography presets, responsive spacing, and SCSS mixin integration. The guide ensures maintainable, unified component styling across the design system while preventing anti-patterns like hardcoded values."
+}
