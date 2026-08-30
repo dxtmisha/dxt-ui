@@ -1,0 +1,61 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/2. AI/5. Documentation Generation' />
+
+# Types & Documentation Generation (dxt-types)
+
+The `dxt-types` command and its core underlying class `DesignTypes` manage the compilation, sanitization, token compression, and generation of the complete AI artifact suite for any monorepo package.
+
+The engine transforms massive TypeScript declaration files (`.d.ts`) into a concise, token-efficient `ai-types.md` type reference, constructs the architectural `ai-description.md` profile, and registers Model Context Protocol (MCP) resources.
+
+## Architectural Generation Pipeline
+
+The generation pipeline follows structured execution stages:
+
+- **1. Declaration Compilation (`DesignTypesBuild`)**
+  The script builds TypeScript declarations into an isolated temporary directory (e.g., `ai-types-temp/`).
+- **2. Filtering and Structure Sanitization (`DesignTypesMake`)**
+  The engine removes implementation bodies, private (`private`) and protected (`protected`) members, preserving strictly the public API interface.
+- **3. AI Optimization (`DesignTypesAi`)**
+  The AI model analyzes type contracts and compiled JavaScript, strips redundant verbosity, standardizes concise English JSDoc descriptions, and outputs `ai-types.md`.
+- **4. Domain Resource Processing (`DesignTypesPrompts`)**
+  The utility parses the package's `ai-resources/` directory, collecting headers and summaries of specialized rule documents.
+- **5. Package Profile Creation (`DesignTypesDescription`)**
+  Generates `ai-description.md` containing the package description, study triggers, and the `## Mandatory Rules` list.
+- **6. MCP Resource Registration (`DesignTypesMcp`)**
+  Generates `ai-mcp-resources.json` containing URI declarations for all package types, overviews, screenshots, and prompt guidelines for MCP clients.
+- **7. Artifact Cleanup**
+  The temporary compilation directory is automatically wiped upon completion.
+
+## Governing Generation via JSDoc Tags
+
+The pipeline automatically filters out boilerplate comments while **guaranteeing the preservation and transfer** of specialized architectural tags to `ai-types.md`:
+
+- **`@example` (Usage Examples)** — Demonstrates canonical code patterns for calling a method, service, or component.
+- **`@note` (Architectural Notes)** — Records side effects, initialization constraints, and lifecycle behavior.
+- **`@warning` (Warnings and Constraints)** — Highlights critical execution boundaries (e.g., "DOM-only" or "SSR safety").
+- **`@remarks` (Extended Comments)** — Conveys detailed technical rationale for intricate engineering logic.
+- **`@keywords` (Search Tags)** — Associative search terms enabling AI agents to pinpoint the required interface via text search without full-file scans.
+
+## Structure of ai-description.md
+
+The `ai-description.md` file serves as the package summary for the global prompt:
+
+- **Package Description** — 1-2 concise sentences summarizing the technical role of the library.
+- **Triggers for Studying ai-types.md** — Clear technical conditions under which an AI assistant must inspect `ai-types.md`.
+- **Key Capabilities** — Comma-separated list of core capabilities (strictly 1-3 words per item).
+- **Mandatory Rules** — Registry of domain guidelines from `ai-resources/` with concise triggers.
+
+## Execution Modes
+
+- **Standard Generation with AI:**
+  ```bash
+  npx dxt-types
+  ```
+  Performs complete compilation and invokes AI models for optimal text compression and description synthesis.
+
+- **Fast Offline Save (`dxt-types-save`):**
+  ```bash
+  npx dxt-types-save
+  ```
+  Fast mode assembling existing cached types and updating MCP definitions without making external AI API network requests.

@@ -1,10 +1,10 @@
 import { promisify } from 'node:util'
-import { exec } from 'node:child_process'
+import { execFile } from 'node:child_process'
 
 import { PackageFile } from '../classes/Package/PackageFile'
 import { PropertiesFile } from '../classes/Properties/PropertiesFile'
 
-const execAsync = promisify(exec)
+const execFileAsync = promisify(execFile)
 
 /**
  * Executes a shell command inside the directory of a specific package and logs output.
@@ -23,9 +23,10 @@ export async function run(
   showStderr: boolean = false
 ): Promise<boolean> {
   const name = packageFile.getName()
+  const [executable, ...args] = command.split(' ')
 
   try {
-    const { stdout, stderr } = await execAsync(command, {
+    const { stdout, stderr } = await execFileAsync(executable, args, {
       cwd: PropertiesFile.joinPath(packageFile.getDir())
     })
 

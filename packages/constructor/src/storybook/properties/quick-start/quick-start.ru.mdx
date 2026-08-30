@@ -1,0 +1,108 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/constructor/properties/1. Быстрый старт'/>
+
+# Быстрый старт
+
+Данное руководство поможет вам быстро освоить работу с файлом `properties.json` на примере типичного UI-компонента. Файл является **единым источником истины** — из него генерируются как стили (SCSS), так и программный интерфейс (TypeScript Props).
+
+## 1. Базовые свойства и токены
+
+Вместо фиксированных значений (HEX, px) всегда используйте систему дизайн-токенов `{sys...}`. Это гарантирует поддержку тем и консистентность.
+
+```json
+{
+  "padding": "{sys.spacing.md}",
+  "background-color": "{sys.palette.surface}",
+  "border-radius": "{sys.rounded.md}"
+}
+```
+
+**Результат (SCSS):**
+```scss
+.component {
+  padding: var(--sys-spacing-md);
+  background-color: var(--sys-palette-surface);
+  border-radius: var(--sys-rounded-md);
+}
+```
+
+## 2. Состояния (States)
+
+Для описания интерактивности (hover, focus, active, disabled) используйте зарезервированные ключи.
+
+```json
+{
+  "hover": {
+    "background-color": "{sys.palette.surfaceVariant}"
+  },
+  "disabled": {
+    "opacity": "{sys.opacity.disabled}",
+    "cursor": "not-allowed"
+  }
+}
+```
+
+**Результат (SCSS):**
+```scss
+.component {
+  &:hover { background-color: var(--sys-palette-surfaceVariant); }
+  &:disabled { 
+    opacity: var(--sys-opacity-disabled);
+    cursor: not-allowed;
+  }
+}
+```
+
+## 3. Модификаторы (Маркер `~`)
+
+Чтобы создать вариацию компонента (например, `primary` или `secondary`), используйте префикс `~`. Такие ключи автоматически преобразуются в **Props** во Vue/React и в BEM-модификаторы в CSS.
+
+```json
+{
+  "~primary": {
+    "color": "{sys.palette.onPrimary}",
+    "background-color": "{sys.palette.primary}",
+    "_default": true
+  }
+}
+```
+
+**Результат (SCSS):**
+```scss
+.component {
+  &--primary {
+    color: var(--sys-palette-onPrimary);
+    background-color: var(--sys-palette-primary);
+  }
+}
+```
+
+**Результат (TypeScript Props):**
+```typescript
+type PropsToken = {
+  primary?: boolean // Генерируется автоматически
+}
+```
+
+## 4. Кастомные переменные (`_var`)
+
+Если вам нужно, чтобы свойство было доступно как CSS-переменная для внешнего управления или использования в скриптах, добавьте флаг `_var: true`.
+
+```json
+{
+  "height": {
+    "value": "48px",
+    "_var": true
+  }
+}
+```
+
+**Результат (SCSS):**
+```scss
+.component {
+  --component-height: 48px;
+  height: var(--component-height);
+}
+```
+

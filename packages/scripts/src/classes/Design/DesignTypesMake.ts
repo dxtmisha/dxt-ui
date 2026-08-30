@@ -1,3 +1,4 @@
+import ts from 'typescript'
 import { forEach, isFilled } from '@dxtmisha/functional-basic'
 import { getPackageJson } from '../../functions/getPackageJson'
 import { PropertiesConfig } from '../Properties/PropertiesConfig'
@@ -26,6 +27,9 @@ export class DesignTypesMake extends DesignTypesMakeAbstract {
 
   /** Cached list of filtered JavaScript files / Кэшированный список отфильтрованных JavaScript файлов */
   protected listByFilterJs?: DesignTypesList
+
+  /** Maximum number of type definition files processed by AI concurrently / Максимальное количество файлов определений типов, обрабатываемых ИИ одновременно */
+  protected readonly AI_TYPES_CONCURRENCY = 8
 
   /**
    * Constructor for DesignTypesMake.
@@ -273,21 +277,107 @@ export class DesignTypesMake extends DesignTypesMakeAbstract {
   }
 
   /**
-   * Cleans up the content by removing imports, local exports, and empty lines.
+   * Cleans up the declaration content via TypeScript AST transformation by removing relative imports, relative re-exports, non-public members, and empty lines.
    *
-   * Очищает контент, удаляя импорты, локальные экспорты и пустые строки.
+   * Очищает контент деклараций через AST-трансформацию TypeScript, удаляя относительные импорты, относительные реэкспорты, непубличные члены и пустые строки.
    * @param content content to clean / контент для очистки
    * @returns cleaned content string / очищенная строка контента
    */
   protected cleanContent(content: string): string {
-    return content
-      .replace(/^import\s+(?:{[^}]+}|[^{]+)\s+from\s+['"]\.[^'"]+['"];?/gm, '')
-      .replace(/^import\s+['"]\.[^'"]+['"];?/gm, '')
-      .replace(/^export\s+(?:\*|{[^}]+})\s+from\s+['"]\.[^'"]+['"];?/gm, '')
-      .replace(/^\s*(?:private|protected)\s+[^({]+;/gm, '')
+    const sourceFile = ts.createSourceFile(
+      'clean.d.ts',
+      content,
+      ts.ScriptTarget.Latest,
+      true,
+      ts.ScriptKind.TS
+    )
+
+    const transformation = ts.transform(
+      sourceFile,
+      [this.getCleanTransformer()]
+    )
+    const printer = ts.createPrinter({ newLine: ts.NewLineKind.LineFeed })
+    const printed = printer.printNode(
+      ts.EmitHint.Unspecified,
+      transformation.transformed[0],
+      sourceFile
+    )
+
+    transformation.dispose()
+
+    return printed
       .replace(/^\s*\/\/.*$/gm, '')
       .replace(/^\s*[\r\n]/gm, '')
       .trim()
+  }
+
+  /**
+   * Creates a transformer factory that removes relative imports, relative re-exports, and non-public members from declaration files.
+   *
+   * Создает фабрику трансформеров, удаляющую относительные импорты, относительные реэкспорты и непубличные члены из файлов деклараций.
+   * @returns transformer factory for declaration cleaning / фабрика трансформеров для очистки деклараций
+   */
+  protected getCleanTransformer(): ts.TransformerFactory<ts.SourceFile> {
+    return context => (rootNode) => {
+      const visit: ts.Visitor = (node) => {
+        if (
+          this.isRelativeImport(node)
+          || this.isRelativeExport(node)
+          || this.isNonPublicMember(node)
+        ) {
+          return undefined
+        }
+
+        return ts.visitEachChild(node, visit, context)
+      }
+
+      return ts.visitNode(rootNode, visit) as ts.SourceFile
+    }
+  }
+
+  /**
+   * Checks if the node is a non-public (private or protected) class member.
+   *
+   * Проверяет, является ли узел непубличным (private или protected) членом класса.
+   * @param node AST node to check / узел AST для проверки
+   * @returns true if node has private or protected modifier / true, если узел имеет модификатор private или protected
+   */
+  protected isNonPublicMember(node: ts.Node): boolean {
+    const modifiers = ts.canHaveModifiers(node) ? ts.getModifiers(node) : undefined
+
+    return Boolean(
+      modifiers?.some(modifier =>
+        modifier.kind === ts.SyntaxKind.PrivateKeyword
+        || modifier.kind === ts.SyntaxKind.ProtectedKeyword
+      )
+    )
+  }
+
+  /**
+   * Checks if the node is an import declaration with a relative module specifier.
+   *
+   * Проверяет, является ли узел импортом с относительным спецификатором модуля.
+   * @param node AST node to check / узел AST для проверки
+   * @returns true if node is a relative import / true, если узел является относительным импортом
+   */
+  protected isRelativeImport(node: ts.Node): boolean {
+    return ts.isImportDeclaration(node)
+      && ts.isStringLiteral(node.moduleSpecifier)
+      && node.moduleSpecifier.text.startsWith('.')
+  }
+
+  /**
+   * Checks if the node is an export declaration with a relative module specifier.
+   *
+   * Проверяет, является ли узел реэкспортом с относительным спецификатором модуля.
+   * @param node AST node to check / узел AST для проверки
+   * @returns true if node is a relative re-export / true, если узел является относительным реэкспортом
+   */
+  protected isRelativeExport(node: ts.Node): boolean {
+    return ts.isExportDeclaration(node)
+      && node.moduleSpecifier !== undefined
+      && ts.isStringLiteral(node.moduleSpecifier)
+      && node.moduleSpecifier.text.startsWith('.')
   }
 
   /**
@@ -375,9 +465,9 @@ export class DesignTypesMake extends DesignTypesMakeAbstract {
   }
 
   /**
-   * Processes a list of updated type definition files through AI and saves them with an AI-processed header.
+   * Processes a list of updated type definition files through AI concurrently (with limited parallelism) and saves them with an AI-processed header.
    *
-   * Обрабатывает список обновленных файлов определений типов через ИИ и сохраняет их с заголовком ИИ-обработки.
+   * Обрабатывает список обновленных файлов определений типов через ИИ параллельно (с ограниченным параллелизмом) и сохраняет их с заголовком ИИ-обработки.
    * @param files list of updated type definition files / список обновленных файлов определений типов
    * @param fullJsContent combined JS content for context / объединенный JS контент для контекста
    */
@@ -387,26 +477,47 @@ export class DesignTypesMake extends DesignTypesMakeAbstract {
   ): Promise<void> {
     const total = files.length
 
-    for (let index = 0; index < total; index += 1) {
-      const item = files[index]
-      let content = this.cleanContent(item.content)
-
-      if (isFilled(content)) {
-        console.log(`-- processing AI types [${index + 1}/${total}] for ${item.path}...`)
-        content = await this.toAiEdit(
-          content,
-          this.hasJSDoc(content) ? '' : fullJsContent
-        )
-      }
-
-      this.saveFile(
-        {
-          ...item,
-          content
-        },
-        true
-      )
+    if (total === 0) {
+      return
     }
+
+    let nextIndex = 0
+    let started = 0
+
+    const worker = async (): Promise<void> => {
+      while (nextIndex < total) {
+        const item = files[nextIndex]
+        nextIndex += 1
+
+        let content = this.cleanContent(item.content)
+
+        if (isFilled(content)) {
+          started += 1
+          console.log(`-- processing AI types [${started}/${total}] for ${item.path}...`)
+          content = await this.toAiEdit(
+            content,
+            this.hasJSDoc(content) ? '' : fullJsContent
+          )
+        }
+
+        if (item.content !== content) {
+          this.saveFile(
+            {
+              ...item,
+              content
+            },
+            true
+          )
+        }
+      }
+    }
+
+    await Promise.all(
+      Array.from(
+        { length: Math.min(this.AI_TYPES_CONCURRENCY, total) },
+        () => worker()
+      )
+    )
   }
 
   /**

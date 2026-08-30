@@ -1,0 +1,79 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/2. AI/6. Tích hợp IDE' />
+
+# Tích hợp AIDD vào Dự án và IDE
+
+Để triển khai cơ sở hạ tầng AI-Driven Development (AIDD) trong một ứng dụng mới hoặc dự án bên ngoài sử dụng thư viện `dxt-ui`, hãy thực hiện các bước cấu hình chuẩn sau đây.
+
+## Bước 1: Cài đặt Package Scripts
+
+Để dự án có thể tự động tổng hợp tài liệu từ tất cả các dependency `@dxtmisha/*` đã cài đặt, hãy cài đặt `@dxtmisha/scripts`:
+
+```bash
+npm install @dxtmisha/scripts --save-dev
+```
+
+## Bước 2: Cấu hình package.json
+
+Thêm các lệnh tạo lời nhắc vào phần `scripts` trong `package.json` ở thư mục gốc:
+
+```json
+{
+  "scripts": {
+    "prompt": "dxt-prompt",
+    "postinstall": "npm run prompt"
+  }
+}
+```
+
+- **`"prompt": "dxt-prompt"`** — Chạy thủ công lệnh tạo `ai-prompt.md` bất kỳ lúc nào.
+- **`"postinstall": "npm run prompt"`** — Tự động chạy ngay sau khi `npm install` hoặc `npm update`, đảm bảo ngữ cảnh AI luôn được cập nhật mỗi khi cài đặt phiên bản mới của các package `@dxtmisha/*`.
+
+## Bước 3: Cấu hình .gitignore
+
+Các tệp được sinh tự động và tệp tạm thời không nên đưa vào Git. Thêm chúng vào `.gitignore`:
+
+```gitignore
+ai-prompt.md
+ai-types.md
+ai-description.md
+ai-mcp-resources.json
+ai-mcp-all-resources.json
+ai-mcp-all-resources.ts
+ai-tmp
+ai-types-temp
+```
+
+## Bước 4: Cấu hình chỉ thị hệ thống cho AI Agent
+
+Tệp `ai-prompt.md` phát huy hiệu quả cao nhất khi trợ lý AI bắt buộc phải đọc nó ở đầu mỗi phiên làm việc. Hãy tạo tệp quy tắc hệ thống tương ứng với môi trường phát triển:
+
+- **Antigravity IDE / Agent Customizations:** `.agents/rules/main.md`
+- **Cursor IDE:** `.cursorrules` hoặc `.cursor/rules/*.mdc`
+- **Windsurf IDE:** `.windsurfrules`
+- **Claude Code / CLI:** `CLAUDE.md`
+- **GitHub Copilot / Codex:** `AGENTS.md`
+
+Thêm khối chỉ thị bắt buộc sau vào tệp quy tắc:
+
+```markdown
+# AI Agent Rules
+
+## Preparation for Work (MANDATORY GUARD)
+**🔴 STOP! DO NOT PROCEED UNTIL YOU DO THIS 🔴**
+At the beginning of a conversation session or before starting work on code/plans, you MUST read the `ai-prompt.md` file located in the project root COMPLETELY in full, from the first line to the very last line, without skipping any sections or reading only partially.
+Once `ai-prompt.md` has been read during the current session, you do NOT need to re-read it on every single turn, unless you need to refresh your context or verify specific guidelines.
+If `ai-prompt.md` exceeds the single view line limit, make consecutive calls to view tool parameters to cover every single line of the file.
+This is your absolute priority. You must strictly adhere to all rules specified in `ai-prompt.md`.
+```
+
+## Bước 5: Tạo lần đầu và kiểm tra
+
+Sau khi hoàn tất cấu hình, chạy lệnh tổng hợp ngữ cảnh:
+
+```bash
+npm run prompt
+```
+
+Tệp `ai-prompt.md` sẽ được tạo ở thư mục gốc, tổng hợp các hợp đồng component `@dxtmisha/d1`, tiện ích phản ứng `@dxtmisha/functional`, SCSS token `@dxtmisha/styles` và các tiêu chuẩn kỹ thuật cốt lõi.

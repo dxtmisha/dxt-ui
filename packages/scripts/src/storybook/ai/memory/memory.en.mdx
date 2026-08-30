@@ -1,0 +1,60 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/2. AI/3. Project Memory' />
+
+# Local Package Memory (ai-memory.md)
+
+The `ai-memory.md` file is a long-term memory mechanism for AI agents at the level of an individual monorepo package. It preserves architectural experience, design decisions, discovered constraints, and developer preferences across conversation sessions.
+
+Unlike static global prompt files, package memory is dynamically curated during collaborative development and holds the highest local priority when making agent decisions.
+
+## Why Local Memory is Essential in a Monorepo
+
+In a complex monorepo with multiple independent packages (`@dxtmisha/d1`, `@dxtmisha/constructor`, `@dxtmisha/styles`, `@dxtmisha/functional`, etc.), different areas possess unique characteristics:
+
+- **Context Isolation** — Rules and styling constraints of `@dxtmisha/styles` should not contaminate or complicate the context of `@dxtmisha/functional-basic`.
+- **Preventing Repeated Mistakes** — When a developer points out a specific package quirk (such as avoiding tables in MDX for `@dxtmisha/scripts`), the agent records this constraint and never makes the mistake again.
+- **Independence from Chat History** — When restarting context or beginning a new dialogue, the agent reads `ai-memory.md` as step one and immediately respects all local agreements.
+
+## Strict Rules for Maintaining ai-memory.md
+
+To maintain the clarity and efficiency of the workspace memory, strict rules are enforced:
+
+- **Strict Local Placement**
+  The `ai-memory.md` file must reside strictly in the root of the target package (e.g., `packages/scripts/ai-memory.md`). Placing package-specific directives in the repository-root memory file is forbidden.
+
+- **Explicit Developer Trigger**
+  The AI updates `ai-memory.md` **only** upon explicit developer command (keywords: "Remember", "Save to memory", "Запомни") or when finalizing critical architectural fixes.
+
+- **Optimization & Content Integrity**
+  Whenever adding a new rule, the agent must **optimize, structure, and condense the entire accumulated text** in the file: merge related items, eliminate duplicate statements, and keep requirements concise and dense. Discarding or deleting previously established rules and constraints is strictly prohibited.
+
+- **Critical Architectural Rules Only**
+  Recording routine changelogs, verbose chat conversations, or temporary scratch notes is prohibited. The memory file contains strictly actionable architectural constraints, typing contracts, and formatting guidelines.
+
+- **Relative Paths**
+  Only relative paths from the package root are allowed; absolute machine paths are forbidden.
+
+## Example ai-memory.md File
+
+```markdown
+# AI Workspace Memory (packages/scripts)
+
+This file contains package-specific guidelines for @dxtmisha/scripts.
+
+## Guidelines
+- Follow strictly all global development principles from root ai-prompt.md.
+- Documentation formatting rules for Storybook:
+  - Do NOT use horizontal lines (---).
+  - Do NOT use markdown tables (| ... |) — format all structured items as bullet lists (- **Key**: description).
+  - Focus on practical developer workflows and actions, not internal engine details.
+```
+
+## How to Use Memory in Your Workflow
+
+- **Saving an Agreement:**
+  Developer: *"Remember: across all storybook docs in this package, never use horizontal lines or markdown tables."*
+  Agent: Appends the directive to the local `ai-memory.md` file of the current package.
+
+- **Reading at Session Start:**
+  Whenever assigned a task in a package, the agent follows the **Chronological Guard** protocol, reading `ai-memory.md` before taking any action.

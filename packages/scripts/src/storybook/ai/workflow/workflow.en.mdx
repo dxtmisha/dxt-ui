@@ -1,0 +1,85 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/2. AI/4. Full Workflow' />
+
+# Full Development Workflow (AIDD Workflow)
+
+To keep the AI-Driven Development (AIDD) ecosystem synchronized and effective when implementing or maintaining packages across the `dxt-ui` library, developers follow a standardized engineering workflow.
+
+## Step 1: Writing Source Code
+
+Standard development of logic, components, and utilities within the monorepo:
+- Build Vue 3 components strictly using `<script setup lang="ts">`.
+- Extract business logic and state management into external Composables (`executeUseGlobal`, `executeUseLocal`, `executeUseProvide`).
+- Apply SCSS tokens and mixins from `@dxtmisha/styles` without inline styles or raw media queries.
+
+## Step 2: Code Documentation (TSDoc / JSDoc)
+
+Prepare the public API for machine analysis and automated AI metadata generation:
+- **JSDoc Descriptions** — Document exported classes, methods, functions, properties, and interfaces according to bilingual standards (English / Russian).
+- **Special Tags** — Actively apply tags that the generator guarantees to preserve in `ai-types.md`:
+  - `@example` — Canonical usage examples for methods or components.
+  - `@note` — Architectural notes, initialization constraints, and side effects.
+  - `@warning` — Runtime environment limitations (e.g., SSR safety or DOM-only operations).
+  - `@keywords` — Associative search keywords for rapid AI text retrieval.
+
+```typescript
+/**
+ * Executes a localized HTTP request with automatic session token binding and error center routing.
+ *
+ * Выполняет локализованный HTTP-запрос с автоматической привязкой токена сессии и маршрутизацией через центр ошибок.
+ * @example
+ * const data = await apiRequest.get('/user/profile')
+ *
+ * @note Automatically attaches Bearer authorization headers when session token is active.
+ * @warning Do not call directly in component templates; use executeUseLocal service wrappers.
+ * @keywords api request http fetch get post session auth
+ * @param url request endpoint url / url адрес эндпоинта запроса
+ * @param options request configuration / конфигурация запроса
+ * @returns parsed response data / распарсенные данные ответа
+ */
+export async function fetchApi<T>(url: string, options?: RequestOptions): Promise<T> {
+  // ...
+}
+```
+
+## Step 3: Generating Package Types & Metadata
+
+Once code authoring is complete, run the type and metadata generator inside the package directory:
+
+```bash
+npm run types
+```
+
+The command automatically:
+- Compiles `.d.ts` declaration files into a temporary directory.
+- Filters out private and protected members.
+- Generates a compact `ai-types.md` file with optimized signatures and `@keywords` tags.
+- Generates `ai-description.md` with package purpose, study triggers, and the `## Mandatory Rules` block from `ai-resources/`.
+- Updates MCP resource definitions in `ai-mcp-resources.json`.
+
+## Step 4: Capturing Visual Context (Optional for UI)
+
+For UI component libraries (`@dxtmisha/d1`) or visual components, capture visual interface state:
+
+```bash
+npm run screenshot
+```
+
+The utility automatically boots the local dev server, connects via headless browser, captures high-resolution screenshots (`ai-screenshot/*.webp`), and exports the rendered DOM (`screenshot-code.html`) and computed CSS (`screenshot-styles.css`).
+
+## Step 5: Aggregating the Global Prompt
+
+To synchronize all changes into the root system prompt, run in the monorepo root:
+
+```bash
+npm run prompt
+```
+
+The `dxt-prompt` script aggregates metadata across all updated packages and dependencies, rewriting `ai-prompt.md` and `ai-mcp-all-resources.json`.
+
+## Step 6: Task Delegation & Experience Retention
+
+When interacting with AI assistants:
+- The AI reads the updated `ai-prompt.md` and `ai-types.md`, producing precise, hallucination-free code.
+- If specific engineering constraints or lessons arise during the task, use the **"Remember"** trigger so the agent updates `ai-memory.md` for future sessions.

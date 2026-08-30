@@ -2,6 +2,18 @@ import { toArray } from '@dxtmisha/functional-basic'
 import { PropertiesFile } from '../Properties/PropertiesFile'
 import { UI_FILE_PACKAGE } from '../../config'
 
+/** Parsed package.json data / Данные package.json */
+interface PackageJsonData {
+  'name'?: string
+  'version'?: string
+  'private'?: boolean
+  'scripts'?: Record<string, string>
+  'ui-priority'?: number
+  'ui-test'?: boolean
+  'ui-no-publish'?: boolean
+  [key: string]: unknown
+}
+
 /**
  * Class for working with the package.json file.
  *
@@ -9,7 +21,7 @@ import { UI_FILE_PACKAGE } from '../../config'
  */
 export class PackageFile {
   /** Parsed package.json data cache / Кэш распарсенных данных package.json */
-  protected readonly data?: Record<string, any>
+  protected readonly data: PackageJsonData
 
   /**
    * Constructor for PackageFile.
@@ -20,9 +32,7 @@ export class PackageFile {
   constructor(
     protected readonly path: string | string[]
   ) {
-    if (this.is()) {
-      this.data = PropertiesFile.readFile(this.getPath()) ?? {}
-    }
+    this.data = PropertiesFile.readFile<PackageJsonData>(this.getPath()) ?? {}
   }
 
   /**
@@ -73,8 +83,8 @@ export class PackageFile {
    * Возвращает данные пакета.
    * @returns raw package.json object / сырой объект данных package.json
    */
-  get(): Record<string, any> {
-    return this.data ?? {}
+  get(): PackageJsonData {
+    return this.data
   }
 
   /**
@@ -137,15 +147,15 @@ export class PackageFile {
     const scripts = this.getScripts()
 
     if ('prepublishOnly' in scripts) {
-      return 'prepublishOnly'
+      return 'npm run prepublishOnly'
     }
 
     if ('build-recovery' in scripts) {
-      return 'build-recovery'
+      return 'npm run build-recovery'
     }
 
     if ('build' in scripts) {
-      return 'build'
+      return 'npm run build'
     }
 
     return undefined

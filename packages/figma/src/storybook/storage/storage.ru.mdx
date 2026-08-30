@@ -1,0 +1,53 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/3. Figma/4. Работа с хранилищем'/>
+
+# Работа с хранилищем
+
+Figma предоставляет два основных механизма сохранения данных: локальное хранилище пользователя и общее хранилище документа. Библиотека предлагает типизированные обертки для обоих методов, обеспечивая удобный доступ и синхронизацию.
+
+## Бэкенд (Backend / plugin/code.ts)
+
+На стороне кода плагина необходимо инициализировать слушатели сообщений для синхронизации данных с интерфейсом.
+
+### Инициализация
+```typescript
+import { setupStorage, setupClientStorage } from '@dxtmisha/figma-code'
+
+// Активация слушателей для обоих типов хранилищ
+setupStorage()
+setupClientStorage()
+```
+
+### Использование напрямую
+Вы можете работать с данными хранилища прямо в коде бэкенда:
+
+```typescript
+import { FigmaStorage, FigmaClientStorage } from '@dxtmisha/figma-code'
+
+// Общее хранилище документа
+const storage = FigmaStorage.getInstance<string>('project-theme')
+storage.set('dark')
+
+// Личное хранилище пользователя
+const client = FigmaClientStorage.getInstance<boolean>('show-onboarding')
+await client.set(true)
+```
+
+## Интерфейс (UI / Iframe)
+
+В интерфейсе плагина данные доступны через реактивные хуки, которые автоматически синхронизируются с бэкендом.
+
+### Реактивное использование (Vue)
+```typescript
+import { useFigmaStorage, useFigmaClientStorage } from '@dxtmisha/figma-ref'
+
+// Синхронизация с документом
+const { item: theme } = useFigmaStorage('project-theme', 'light')
+
+// Синхронизация с личными настройками пользователя
+const { item: isSeen } = useFigmaClientStorage('show-onboarding', false)
+
+// При изменении .value данные автоматически улетают в Figma
+theme.value = 'dark'
+```

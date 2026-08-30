@@ -1,0 +1,79 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/2. AI/6. Интеграция в IDE' />
+
+# Интеграция AIDD в проекты и IDE
+
+Для развертывания инфраструктуры AI-Driven Development (AIDD) в новом проекте или клиентском приложении на базе библиотеки `dxt-ui` необходимо выполнить стандартную настройку окружения.
+
+## Шаг 1: Подключение пакета скриптов
+
+Для того чтобы проект мог автоматически агрегировать документацию со всех установленных зависимостей `@dxtmisha/*`, установите пакет `@dxtmisha/scripts`:
+
+```bash
+npm install @dxtmisha/scripts --save-dev
+```
+
+## Шаг 2: Настройка package.json
+
+Добавьте команды запуска генератора глобального промпта в секцию `scripts` корневого `package.json`:
+
+```json
+{
+  "scripts": {
+    "prompt": "dxt-prompt",
+    "postinstall": "npm run prompt"
+  }
+}
+```
+
+- **`"prompt": "dxt-prompt"`** — ручной запуск генерации `ai-prompt.md` в любой момент разработки.
+- **`"postinstall": "npm run prompt"`** — автоматический запуск генерации сразу после `npm install` или `npm update`, чтобы контекст ИИ автоматически обновлялся при установке свежих версий пакетов `@dxtmisha/*`.
+
+## Шаг 3: Настройка .gitignore
+
+Сгенерированные артефакты и временные файлы не должны попадать в систему контроля версий Git. Добавьте их в `.gitignore`:
+
+```gitignore
+ai-prompt.md
+ai-types.md
+ai-description.md
+ai-mcp-resources.json
+ai-mcp-all-resources.json
+ai-mcp-all-resources.ts
+ai-tmp
+ai-types-temp
+```
+
+## Шаг 4: Настройка системных инструкций для AI-агентов
+
+Сам по себе файл `ai-prompt.md` работает с максимальной эффективностью, когда AI-ассистент обязан прочесть его на старте сессии. Для этого в проекте создается файл системных правил в зависимости от используемой среды разработки:
+
+- **Antigravity IDE / Agent Customizations:** `.agents/rules/main.md`
+- **Cursor IDE:** `.cursorrules` или `.cursor/rules/*.mdc`
+- **Windsurf IDE:** `.windsurfrules`
+- **Claude Code / CLI:** `CLAUDE.md`
+- **GitHub Copilot / Codex:** `AGENTS.md`
+
+В созданный файл в обязательном порядке помещается следующий блок директив:
+
+```markdown
+# AI Agent Rules
+
+## Preparation for Work (MANDATORY GUARD)
+**🔴 STOP! DO NOT PROCEED UNTIL YOU DO THIS 🔴**
+At the beginning of a conversation session or before starting work on code/plans, you MUST read the `ai-prompt.md` file located in the project root COMPLETELY in full, from the first line to the very last line, without skipping any sections or reading only partially.
+Once `ai-prompt.md` has been read during the current session, you do NOT need to re-read it on every single turn, unless you need to refresh your context or verify specific guidelines.
+If `ai-prompt.md` exceeds the single view line limit, make consecutive calls to view tool parameters to cover every single line of the file.
+This is your absolute priority. You must strictly adhere to all rules specified in `ai-prompt.md`.
+```
+
+## Шаг 5: Первая генерация и проверка
+
+После настройки выполните команду сборки контекста:
+
+```bash
+npm run prompt
+```
+
+В корне репозитория будет создан итоговый файл `ai-prompt.md`, объединяющий контракты компонентов `@dxtmisha/d1`, реактивные утилиты `@dxtmisha/functional`, SCSS-токены `@dxtmisha/styles` и базовые инженерные стандарты.

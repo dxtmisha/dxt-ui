@@ -1,0 +1,114 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/3. Package Creation'/>
+
+# Monorepo Package Creation and Initialization
+
+In the **DXT UI** design system, the process of creating new packages and libraries across the monorepo is fully automated via the `dxt-package` CLI utility. Developers no longer need to manually configure build pipelines, TypeScript configs, `package.json` manifests, or register new modules in Storybook.
+
+The `dxt-package` command (executable `bin/design-package.ts`, class `PackageInit`) scans the monorepo for empty directories and scaffolds a complete, isolated workspace with all required files and integrations in a second.
+
+## Key Advantages
+
+### 1. Standard Environment with Zero Boilerplate
+Instead of manually creating dozens of configuration files, the developer creates only a single empty directory in `packages/`. The utility automatically generates the complete infrastructure: TypeScript, Vite, build scripts, test suites, and publishing hooks.
+
+### 2. Automated Storybook Integration
+When a package is initialized, the script automatically updates `.storybook/main.ts` in `packages/storybook` to include glob paths for the new package's MDX documentation and stories. Stories and documentation become available immediately.
+
+### 3. Native AI and Typing Standards
+Every new package includes an `ai-resources/` structure, `ai-prompt.md`, `ai-memory.md`, and a standard `src/library.ts` entry point with strict typing.
+
+## Step-by-Step Guide (What to Do)
+
+### Step 1. Create an Empty Directory for the Package
+Inside `packages/`, create an empty directory named in kebab-case (e.g., `media-player` or `notifications`):
+
+```bash
+mkdir packages/media-player
+```
+
+### Step 2. Run the Package Generation Command
+Execute `dxt-package` in your terminal:
+
+```bash
+npx dxt-package
+```
+
+The generator automatically discovers the empty folder and generates all necessary files:
+
+```text
+Initializing package of type: library with templates: undefined
+Package init in: packages/media-player
+Update storybook...
+```
+
+### Step 3. Inspect the Generated Structure
+Inside the new package directory, a complete development environment is initialized:
+
+```text
+packages/media-player/
+├── package.json               # Manifest with dependencies, build scripts, and exports
+├── tsconfig.json              # Base TypeScript configuration
+├── tsconfig.app.json          # Application bundler configuration
+├── tsconfig.node.json         # Node.js environment configuration
+├── vite.config.ts             # Vite library build setup
+├── .gitignore                 # Build artifact and local file ignore rules
+├── README.md                  # Package documentation
+├── LICENSE                    # Project license (MIT)
+├── CHANGELOG.md               # Version changelog
+├── ai-prompt.md               # AI system prompt context
+├── ai-memory.md               # AI assistant local memory
+├── src/
+│   ├── library.ts             # Main entry point and barrel exports
+│   ├── config.ts              # Package constants and configuration
+│   └── types.ts               # Interfaces and types
+```
+
+### Step 4. Command Options (Package Types and Custom Templates)
+`dxt-package` supports flexible command-line options:
+
+- **Default (TypeScript library)**:
+```bash
+npx dxt-package
+```
+
+- **Specify Package Type (e.g., vue)**:
+```bash
+npx dxt-package --type vue
+```
+
+- **Apply Custom Templates**:
+```bash
+npx dxt-package --type vue --templates "template1,template2"
+```
+
+- **Specify Custom Base Directory**:
+```bash
+npx dxt-package --dir custom-packages
+```
+
+Available options:
+
+- `--type` (`-t`): Package template type. Defaults to `library`.
+- `--templates`: Directory containing package templates.
+- `--dir` (`-d`): Target packages directory. Defaults to `packages`.
+
+Run `npx dxt-package --help` to print the full list of available options.
+
+## Automatic Package Integrations
+
+- **Storybook (`.storybook/main.ts`)**: Automatically appends `../../${name}/src/**/*.mdx` and `../../${name}/src/**/*.stories.@(js|jsx|mjs|ts|tsx)`.
+- **Package Name and Prefix**: Resolves the full package name formatted as `@dxtmisha/<name>`.
+- **Standard `package.json` Scripts**:
+  - `"dev"`: Runs Vite development server.
+  - `"build"`: Compiles the package bundle (`vite build`).
+  - `"test"`: Runs test suites using Vitest.
+  - `"prepublishOnly"`: Rebuilds before publishing.
+  - `"publish-to-npm"`: Publishes to the npm registry (`npm publish --access public`).
+
+## Advantages Over Manual Setup
+
+- **Instant Setup**: Scaffolding takes less than one second.
+- **100% Architectural Accuracy**: Eliminates Vite, TypeScript, and export configuration bugs.
+- **Monorepo Cohesion**: Automatic Storybook registration and unified versioning standards.

@@ -1,6 +1,6 @@
 import {Meta} from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/en/scripts/# Commands/dxt-wiki-storm - WebStorm IDE Metadata Generator'/>
+<Meta title='@dxtmisha/en/scripts/7. Commands/dxt-wiki-storm - WebStorm IDE Metadata Generator'/>
 
 # dxt-wiki-storm
 
@@ -24,6 +24,7 @@ The `dxt-wiki-storm` command generates a `web-types.json` file inside the compil
 
 Run the metadata compiler via `npx`:
 ```bash
-npx dxt-wiki-storm [output_dir]
+npx dxt-wiki-storm
 ```
-- `output_dir` (Optional): The directory to save the file to. Defaults to `dist`.
+
+The command takes no options; the output directory is determined by the build configuration (by default, `dist`).

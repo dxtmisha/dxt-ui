@@ -1,8 +1,22 @@
 #!/usr/bin/env vite-node
 
 import process from 'node:process'
+import { parseCliArguments } from './arguments'
 import { LibraryAiPrompt } from '../dist/library.js'
 
-const isMcp = process.argv?.[2] === 'true' || process.argv?.[2] === '1'
+const { values } = parseCliArguments(
+  'Generates the consolidated AI prompt file ai-prompt.md for the project.',
+  'Usage: dxt-prompt [--mcp]',
+  {
+    mcp: {
+      type: 'boolean',
+      short: 'm',
+      default: false,
+      description: 'Also generate the MCP configuration files'
+    }
+  }
+)
 
-new LibraryAiPrompt([], isMcp).make()
+new LibraryAiPrompt([], values.mcp === true).make()
+
+process.exit(0)

@@ -1,6 +1,6 @@
 import {Meta} from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/en/scripts/# Commands/dxt-types-save - Save AI Type Definitions'/>
+<Meta title='@dxtmisha/en/scripts/7. Commands/dxt-types-save - Save AI Type Definitions'/>
 
 # dxt-types-save
 
@@ -23,7 +23,10 @@ The `dxt-types-save` command compiles and saves AI-optimized TypeScript definiti
 
 Run the type saver via `npx`:
 ```bash
-npx dxt-types-save [build_dir] [resources_dir]
+npx dxt-types-save
 ```
-- `build_dir` (Optional): Directory to scan. Defaults to `dist`.
-- `resources_dir` (Optional): Directory containing prompt and resource files. Defaults to `ai-resources`.
+- `--prompts` (`-p`) (Optional): Input directory containing prompt files. Defaults to `ai-resources`.
+- `--dir` (`-d`) (Optional): Input directory containing declaration files. Defaults to the temporary compilation directory (`ai-types-temp`).
+- `--dist` (Optional): Output directory containing compiled JavaScript files. Defaults to `dist`.
+
+Run `npx dxt-types-save --help` to print the full list of available options.

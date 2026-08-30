@@ -1,6 +1,6 @@
 import {Meta} from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/ru/scripts/# Команды/dxt-types-save - Сохранение определений типов для ИИ'/>
+<Meta title='@dxtmisha/ru/scripts/7. Команды/dxt-types-save - Сохранение определений типов для ИИ'/>
 
 # dxt-types-save
 
@@ -23,7 +23,10 @@ import {Meta} from '@storybook/addon-docs/blocks'
 
 Запустите сохранение типов через `npx`:
 ```bash
-npx dxt-types-save [build_dir] [resources_dir]
+npx dxt-types-save
 ```
-- `build_dir` (Необязательно): Директория сборки. По умолчанию `dist`.
-- `resources_dir` (Необязательно): Директория с файлами промптов и ресурсов. По умолчанию `ai-resources`.
+- `--prompts` (`-p`) (Необязательно): Входная директория с файлами промптов. По умолчанию `ai-resources`.
+- `--dir` (`-d`) (Необязательно): Входная директория с файлами деклараций. По умолчанию — временная директория компиляции (`ai-types-temp`).
+- `--dist` (Необязательно): Выходная директория со скомпилированными файлами JavaScript. По умолчанию `dist`.
+
+Выполните `npx dxt-types-save --help`, чтобы вывести полный список доступных опций.

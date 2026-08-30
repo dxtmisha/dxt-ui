@@ -1,0 +1,101 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/2. AI/1. Lời nhắc hệ thống' />
+
+# Lời nhắc hệ thống hợp nhất (ai-prompt.md)
+
+Tệp `ai-prompt.md` là tài liệu tổng hợp trung tâm của monorepo, đóng vai trò là **Nguồn chân lý duy nhất (Single Source of Truth)** cho tất cả các mô hình trí tuệ nhân tạo và trợ lý lập trình AI (Claude, Gemini, Antigravity, Cursor, Windsurf, Claude Code, GitHub Copilot).
+
+Tệp này được tạo tự động bởi công cụ `dxt-prompt`, kết hợp các nguyên tắc kỹ thuật cốt lõi, tiêu chuẩn thành phần Vue và tài liệu của tất cả các package trong monorepo cùng các thư viện phụ thuộc.
+
+## Các vấn đề chính được giải quyết bởi `ai-prompt.md`
+
+- **Loại bỏ "Chứng hay quên ngữ cảnh"** — Lập trình viên không còn phải viết lời nhắc hệ thống thủ công, giải thích quy tắc BEM hay cấm sử dụng kiểu `any`. Trợ lý AI tự động nhận được toàn bộ tiêu chuẩn monorepo ngay khi bắt đầu phiên làm việc.
+- **Bảo vệ chống ảo giác (Zero Hallucinations)** — Tài liệu tích hợp danh mục chính xác của tất cả các thư viện có sẵn kèm theo mô tả mục đích, khả năng chức năng và liên kết đến các khai báo kiểu đã được làm sạch (`ai-types.md`). AI chỉ sử dụng các phương thức và interface thực sự tồn tại.
+- **Đồng bộ hóa tức thì trong Monorepo** — Khi các phương thức hoặc component công khai được cập nhật trong bất kỳ package nào (`@dxtmisha/d1`, `@dxtmisha/constructor`, `@dxtmisha/functional`, v.v.), chỉ cần chạy `npm run prompt`: tệp ở thư mục gốc sẽ được cập nhật và tất cả trợ lý AI lập tức có dữ liệu mới nhất.
+- **Độc lập với môi trường phát triển** — Tệp quy tắc markdown chuẩn hóa hoạt động ổn định và nhất quán trên mọi IDE, trình biên tập mã và mô hình AI.
+
+## Cấu trúc nội bộ của ai-prompt.md
+
+Tệp được cấu thành từ bốn khối logic liên kết chặt chẽ:
+
+- **System Role & Global Principles (AI Code Promise)**
+  Các quy tắc nghiêm ngặt về chất lượng mã và kỷ luật của AI:
+  - **Chronological Guard** — Trình tự đọc ngữ cảnh bắt buộc (`ai-memory.md` ➔ `ai-prompt.md` ➔ `ai-types.md`).
+  - **Copy-Paste Ready** — Sinh mã hoàn chỉnh, sẵn sàng chạy ngay mà không có phần giữ chỗ.
+  - **Uncompromising TS** — Kiểu dữ liệu chặt chẽ, cấm `any`, bắt buộc interface cho mọi I/O.
+  - **Strict Scope Lock** — Nghiêm cấm tự ý tái cấu trúc mã hoặc sửa đổi các tệp ngoài phạm vi.
+
+- **Vue Component Implementation Rules (Vue.js Style Guide)**
+  Tiêu chuẩn phát triển UI component:
+  - Sử dụng strictly `<script setup lang="ts">`.
+  - Tên component dạng PascalCase và class CSS theo chuẩn BEM (kebab-case).
+  - Luồng dữ liệu một chiều (Props Down, Events Up).
+  - Nghiêm cấm sửa đổi trực tiếp style gốc của các UI component có sẵn.
+
+- **Danh mục Package và Thư viện (Package Registry)**
+  Tổng quan metadata cho từng package được phát hiện:
+  - Tên package và đường dẫn vị trí.
+  - **Package Description** — Mô tả ngắn gọn về mục đích kỹ thuật của thư viện.
+  - **Triggers for Studying ai-types.md** — Điều kiện cụ thể khi AI bắt buộc phải đọc toàn bộ chữ ký kiểu.
+  - **Key Capabilities** — Danh sách các nhóm tính năng cốt lõi.
+  - **Mandatory Rules** — Danh sách quy tắc chuyên môn bắt buộc kèm trigger nghiên cứu từ `ai-resources/`.
+  - Đường dẫn tham chiếu đến `ai-types.md`, `ai-developer.md` và thư mục `ai-screenshot/`.
+
+- **High-Priority Directives**
+  Các chỉ thị ưu tiên cao từ tệp `ai-instruction.md` (nếu có ở thư mục gốc dự án), ghi đè lên mọi quy tắc mặc định.
+
+- **Mandatory Final Self-Audit**
+  Danh sách kiểm tra bắt buộc trước khi hoàn thành bất kỳ nhiệm vụ nào.
+
+## Ví dụ trích đoạn ai-prompt.md
+
+```markdown
+# System Role: AI Coding Assistant & Project Analyzer
+Consolidated documentation, architectural guidelines, and mandatory rules for the project.
+
+## Global Code Implementation Rules
+### Global Development Principles (AI Code Promise)
+0. Mandatory Deep Study (CHRONOLOGICAL GUARD):
+   - Step 1: Read/create local ai-memory.md strictly in current package root.
+   - Step 2: Read root ai-prompt.md and study library descriptions.
+   - Step 3: Study linked ai-types.md BEFORE writing code.
+1. "Copy-Paste Ready": Generate complete runnable files. No placeholders.
+2. Zero Hallucinations: Strictly use package.json dependencies.
+3. Uncompromising TS: No any. Interfaces for all I/O.
+
+# @dxtmisha/d1
+## Project location: Root directory
+The project is located at: 'node_modules/@dxtmisha/d1'.
+
+## Package Description & Module Overview
+This package provides a comprehensive collection of Vue 3 UI components and design system utilities built on top of constructor primitives.
+
+Key Capabilities: UI Components, Form Controls, Navigation Elements, Layout Containers, Data Display
+
+## Mandatory Rules
+You MUST evaluate whether your task relates to any of the following topics:
+- 'node_modules/@dxtmisha/d1/ai-resources/background.md': Rules and mixins for configuring background colors, surface opacities, and gradients in SCSS.
+- 'node_modules/@dxtmisha/d1/ai-resources/border.md': SCSS styling standards and mixins for borders and dividers.
+
+## Package Type Definitions (Must Read in Full When Working with Package)
+'node_modules/@dxtmisha/d1/ai-types.md'
+
+## Component Visual References (Screenshots)
+- 'node_modules/@dxtmisha/d1/ai-screenshot/screenshot-8_1.webp'
+```
+
+## Chạy công cụ tạo lời nhắc
+
+- **Thông qua npm script:**
+  ```bash
+  npm run prompt
+  ```
+- **Thông qua npx CLI:**
+  ```bash
+  npx dxt-prompt
+  ```
+- **Kèm theo tạo tài nguyên MCP (Model Context Protocol):**
+  ```bash
+  npx dxt-prompt --mcp
+  ```

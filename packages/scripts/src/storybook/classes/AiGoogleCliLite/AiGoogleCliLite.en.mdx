@@ -10,7 +10,7 @@ A specialized implementation of the `AiAbstract` class that interacts with Googl
 
 ## Key Features
 
-- **CLI-driven Workflow** — executes requests by constructing and running shell commands.
+- **CLI-driven Workflow** — executes requests by running the `gemini` CLI directly with an argument array via `execFile`, without a system shell.
 - **Large Prompt Handling** — automatically creates temporary files to pass large prompt contents to the CLI, avoiding command-line length limitations.
 - **Clean Execution** — manages its own temporary storage (`./ai-tmp`) and performs cleanup after each request.
 - **YOLO Mode** — executes commands with strict output flags to ensure results are concise and free of conversational filler.
@@ -53,4 +53,4 @@ const response = await ai.generate('Review this code snippet.')
 ## Limitations
 
 - **Images** — currently, the CLI implementation does not support image passing (`addImage` will have no effect on the generation).
-- **Environment** — relies on the availability of the `exec` function and the filesystem for temporary storage.
+- **Environment** — relies on the availability of the `execFile` function and the filesystem for temporary storage.

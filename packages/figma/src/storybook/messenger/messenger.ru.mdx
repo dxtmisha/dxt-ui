@@ -1,0 +1,67 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/3. Figma/1. Система мессенджеров'/>
+
+# Работа с сообщениями (Messenger)
+
+Механизм сообщений — центральное звено архитектуры Figma-плагинов. Поскольку «сторона кода» (Sandbox) и «сторона интерфейса» (UI) работают в изолированных средах, любое взаимодействие между ними требует использования системы `postMessage`.
+
+Библиотека упрощает этот процесс, предоставляя стандартизированные мессенджеры и автоматическую маршрутизацию.
+
+## Инициализация и безопасность
+
+Плагины Figma работают в среде, где одновременно могут быть активны несколько плагинов. Чтобы предотвратить конфликты сообщений и гарантировать, что ваш UI обрабатывает данные только от вашего конкретного плагина, библиотека использует систему `FigmaPostCode`.
+
+Обе стороны (**Бэкенд** и **Интерфейс**) должны быть инициализированы одним и тем же уникальным идентификатором (обычно это `id` из вашего `manifest.json`) перед использованием мессенджеров.
+
+```typescript
+import { FigmaPostCode } from '@dxtmisha/figma'
+import manifest from '../manifest.json'
+
+// Необходимо вызвать на обеих сторонах (Code и UI)
+FigmaPostCode.set(manifest.id)
+```
+
+## Бэкенд (Backend / plugin/code.ts)
+
+На стороне кода используется класс `FigmaPluginMessenger` для подписки на события и отправки данных в UI.
+
+```typescript
+import { FigmaPostCode } from '@dxtmisha/figma'
+import { FigmaPluginMessenger } from '@dxtmisha/figma-code'
+import manifest from '../manifest.json'
+
+// 1. Инициализация идентификации
+FigmaPostCode.set(manifest.id)
+
+// 2. Работа с мессенджером
+const messenger = FigmaPluginMessenger.getInstance()
+
+messenger.add('my-action', (data) => {
+  console.log('Данные получены:', data)
+  messenger.post('my-action', { status: 'success' })
+})
+```
+
+## Интерфейс (UI / Iframe)
+
+В интерфейсе используется зеркальный класс `FigmaUiMessenger` для взаимодействия с бэкендом.
+
+```typescript
+import { FigmaPostCode } from '@dxtmisha/figma'
+import { FigmaUiMessenger } from '@dxtmisha/figma'
+import manifest from '../manifest.json'
+
+// 1. Инициализация идентификации (тот же ID, что и в бэкенде)
+FigmaPostCode.set(manifest.id)
+
+// 2. Работа с мессенджером
+const messenger = FigmaUiMessenger.getInstance()
+
+messenger.post('my-action', { payload: 'hello' })
+
+messenger.add('my-action', (result) => {
+  console.log('Результат:', result)
+})
+```
+

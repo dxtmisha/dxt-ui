@@ -191,6 +191,16 @@ export class PropertiesConfig {
     return this.config?.aiResourcesDir ?? 'ai-resources'
   }
 
+  /**
+   * Returns the maximum directory scan depth for collecting AI prompt packages.
+   *
+   * Возвращает максимальную глубину сканирования директорий для сбора пакетов промпта ИИ.
+   * @returns scan depth limit number / число лимита глубины сканирования
+   */
+  static getPromptScanDepth(): number {
+    return this.config?.promptScanDepth ?? 6
+  }
+
   // AI Configuration / Конфигурация ИИ
 
   /**

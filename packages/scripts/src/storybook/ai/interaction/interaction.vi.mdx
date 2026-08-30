@@ -1,0 +1,73 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/2. AI/8. Tương tác với AI' />
+
+# Tương tác với AI và Thứ bậc ưu tiên
+
+Kiến trúc AIDD trong `dxt-ui` được thiết kế để đạt độ minh bạch, khả năng dự đoán và tiết kiệm token ngữ cảnh tối đa khi tương tác với các trợ lý AI.
+
+Thay vì tải toàn bộ cơ sở mã khổng lồ của monorepo vào cửa sổ ngữ cảnh, hệ thống áp dụng chiến lược tải lười (lazy loading) nhiều tầng kết hợp với thứ bậc ưu tiên quy tắc nghiêm ngặt.
+
+## Chiến lược tải ngữ cảnh nhiều tầng
+
+- **Tầng 1: Ngữ cảnh tổng quan (Khi bắt đầu phiên)**
+  - Chỉ tệp `ai-prompt.md` được tải ban đầu.
+  - AI tiếp nhận các quy tắc kỹ thuật chung (AI Code Promise, Vue Style Guide) và hồ sơ tóm tắt của tất cả các thư viện (`@dxtmisha/d1`, `@dxtmisha/constructor`, `@dxtmisha/styles`, `@dxtmisha/functional`, v.v.).
+  - *Mục đích:* AI hiểu toàn bộ khả năng của hệ sinh thái mà không làm quá tải bộ nhớ ngữ cảnh bằng chi tiết cài đặt.
+
+- **Tầng 2: Ngữ cảnh chuyên sâu theo yêu cầu (On-Demand)**
+  - **`ai-types.md`** — Đặc tả TypeScript chi tiết (chỉ tải khi cần gọi phương thức hoặc kiểm tra chữ ký hàm).
+  - **`ai-developer.md`** — Tiêu chuẩn nội bộ của package (chỉ tải khi trực tiếp chỉnh sửa mã nguồn của thư viện đó).
+  - **`ai-resources/*.md`** — Quy định theo chủ đề (tải khi điều kiện trong khối `## Mandatory Rules` được kích hoạt).
+  - **`ai-screenshot/`** — Ảnh chụp trực quan và DOM/CSS (tải khi căn chỉnh giao diện và style).
+
+- **Tầng 3: Bộ nhớ cục bộ của Package**
+  - **`ai-memory.md`** — Các ràng buộc, quy tắc và kinh nghiệm được lưu giữ riêng cho package hiện tại.
+
+## Thứ bậc ưu tiên (Priority Chain)
+
+Khi xảy ra bất kỳ mâu thuẫn nào giữa các tệp tài liệu, AI tuân theo thứ tự ưu tiên nghiêm ngặt sau:
+
+- **1. `ai-memory.md` (Ưu tiên cục bộ cao nhất)** — Kinh nghiệm cục bộ và chỉ dẫn trực tiếp của lập trình viên cho package cụ thể có quyền ghi đè mọi quy tắc khác.
+- **2. `ai-instruction.md` (Ưu tiên toàn cục cao nhất)** — Chỉ thị cấp dự án tại thư mục gốc monorepo ghi đè lên các quy ước hệ thống mặc định.
+- **3. `ai-developer.md`** — Tiêu chuẩn kỹ thuật và danh sách kiểm tra đã phê duyệt của package.
+- **4. `ai-resources/*.md`** — Tiêu chuẩn kỹ thuật theo chủ đề chuyên sâu (ví dụ: màu sắc, đường viền, đổ bóng, gọi API).
+- **5. `ai-prompt.md`** — Quy tắc toàn cục nền tảng (AI Code Promise, Vue Guide) và thẻ tổng quan thư viện.
+- **6. `ai-types.md`** — Chữ ký và hợp đồng kiểu TypeScript.
+
+## Kịch bản tương tác thực tế
+
+### Kịch bản 1: Phát triển Component trong @dxtmisha/d1
+
+Lập trình viên giao nhiệm vụ: *«Tạo component D1Badge trong package @dxtmisha/d1»*.
+
+- **1. Bắt đầu:** AI đọc `ai-prompt.md` và tìm thấy mục của package `@dxtmisha/d1`.
+- **2. Nghiên cứu tiêu chuẩn:** AI mở `packages/d1/ai-developer.md` để xem cấu trúc tệp component và quy tắc tích hợp với `@dxtmisha/constructor`.
+- **3. Kiểm tra bộ nhớ:** AI mở `packages/d1/ai-memory.md` để xem các quy ước đã lưu.
+- **4. Kiểm tra Mandatory Rules:** AI xem khối `## Mandatory Rules` trong `ai-description.md`, mở `ai-resources/colors-and-palettes.md` và `ai-resources/rounded.md` để sử dụng đúng token bo góc và bảng màu.
+- **5. Viết mã:** Component được tạo ra hoàn toàn tuân thủ các quy định từ cả bốn tài liệu trên.
+
+### Kịch bản 2: Sử dụng thư viện trong ứng dụng
+
+Lập trình viên giao nhiệm vụ: *«Triển khai HTTP client có bộ đệm và xử lý lỗi qua ErrorCenter»*.
+
+- **1. Bắt đầu:** AI đọc `ai-prompt.md` ở thư mục gốc ứng dụng.
+- **2. Phát hiện dependency:** Trong bảng tổng quan, AI tìm thấy `@dxtmisha/functional-basic` (*«HTTP client, state storage, i18n localization, ErrorCenter»*).
+- **3. Kích hoạt Trigger:** Mô tả có trigger: *«Study when working with HTTP requests, API caching, or ErrorCenter»*.
+- **4. Tải kiểu:** AI mở tệp `node_modules/@dxtmisha/functional-basic/ai-types.md`.
+- **5. Sinh mã chính xác:** AI nhìn thấy class `ApiFetch`, phương thức `get()` / `post()` và `ErrorCenter`, tạo ra các lời gọi hàm chính xác 100% không ảo giác.
+
+### Kịch bản 3: Áp dụng chỉ thị toàn dự án qua ai-instruction.md
+
+Trưởng nhóm muốn áp dụng một quy định khẩn cấp cho tất cả các package:
+
+- Tạo tệp `ai-instruction.md` tại thư mục gốc monorepo với nội dung chỉ thị.
+- Chạy lệnh `npm run prompt`.
+- Script nhúng chỉ thị vào phần `High-Priority Directives` của `ai-prompt.md`.
+- Kể từ thời điểm đó, mọi trợ lý AI khi đọc `ai-prompt.md` sẽ lập tức thực thi quy định này trên toàn bộ monorepo.
+
+## Ma trận tương tác
+
+- **Khi thêm phương thức hoặc export mới** ➔ Chạy `npm run types` ➔ Cập nhật `ai-types.md` và `ai-description.md` ➔ Chạy `npm run prompt` ➔ Cập nhật `ai-prompt.md` toàn cục.
+- **Khi tạo quy định chuyên đề mới** ➔ Tạo tệp trong `ai-resources/` ➔ Chạy `npm run types` ➔ Chạy `npm run prompt`.
+- **Khi điều chỉnh hành vi AI trong phiên chat** ➔ Dùng lệnh «Запомни» / «Remember» ➔ AI ghi thêm quy tắc vào `ai-memory.md` mà không cần build lại dự án.

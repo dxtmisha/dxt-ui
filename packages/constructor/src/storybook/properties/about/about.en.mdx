@@ -1,0 +1,21 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/constructor/properties/# About properties.json'/>
+
+# Configuration (properties.json)
+
+The `properties.json` file is a declarative manifest of your component. In it, you describe the structure, styles, states, and parameters, which are then automatically transformed into production-ready SCSS code and typed TypeScript interfaces (`props.ts`).
+
+## How to work with this file?
+
+Instead of manually writing hundreds of lines of CSS for every pseudo-class or media query, you populate a **property tree**. The system analyzes this file and performs all the routine work for you:
+- **Style Generation (SCSS)**: Creates BEM-style classes, variables, and themes.
+- **Interface Generation (Props)**: Forms public component properties for Vue/React.
+- **Synchronization**: Ensures that styles and the programmatic interface always correspond to each other.
+
+## Core Concept
+
+1.  **Tokens**: JSON tree nodes representing specific CSS properties or nested objects.
+2.  **Types & Flags (_type, _var...)**: Service parameters defining the node processing logic (generating variables, states, or exporting to Props).
+3.  **Links**: The `{...}` system for inheriting values from other tokens or global design variables.
+4.  **Markers & Shortcuts**: Special prefixes (`~`, `group|`) and link placeholders (`?`, `??`) that accelerate the creation of complex configurations.

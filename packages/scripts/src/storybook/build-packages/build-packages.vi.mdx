@@ -1,0 +1,95 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/5. Xây dựng gói (Build Packages)'/>
+
+# Hướng dẫn Xây dựng Gói Monorepo (Build Packages)
+
+Trong hệ thống thiết kế **DXT UI**, quy trình biên dịch toàn bộ các gói liên kết trong monorepo được tự động hóa hoàn toàn nhờ công cụ dòng lệnh `dxt-build-packages`. Lập trình viên không còn phải quản lý thứ tự biên dịch thủ công hoặc mất thời gian biên dịch lại các gói không thay đổi.
+
+Công cụ đảm nhận toàn bộ quy trình biên dịch, tự động phân tích đồ thị phụ thuộc thông qua trọng số ưu tiên và áp dụng bộ nhớ đệm tăng dần thông minh.
+
+## Các ưu điểm vượt trội
+
+### 1. Bộ nhớ đệm thông minh và biên dịch tăng dần tức thì
+Công cụ `dxt-build-packages` theo dõi trạng thái các gói đã biên dịch thông qua tệp bộ nhớ đệm cục bộ `./logs/ui-build.log.json`. Nếu mã nguồn và phiên bản của gói không thay đổi so với lần xây dựng trước, bước biên dịch sẽ được bỏ qua ngay lập tức.
+
+### 2. Đảm bảo thứ tự biên dịch qua độ ưu tiên (`ui-priority`)
+Mỗi gói trong `package.json` có thể khai báo độ ưu tiên biên dịch `ui-priority`. Bộ điều phối sắp xếp thứ tự biên dịch theo giá trị tăng dần, đảm bảo các thư viện nền tảng cơ sở (`functional`, `styles`, `constructor`) được xây dựng trước các thành phần giao diện (`d1`) và tài liệu.
+
+### 3. Tự động tìm kiếm tập lệnh biên dịch
+Bộ điều phối tự động xác định câu lệnh biên dịch tối ưu cho từng gói theo thứ tự ưu tiên: `prepublishOnly` -> `build-recovery` -> `build`.
+
+## Quy trình từng bước (Những việc cần làm)
+
+### Bước 1. Thiết lập cấu hình package.json
+Trong tệp `package.json` của mỗi gói, đảm bảo đã khai báo tập lệnh biên dịch và độ ưu tiên `ui-priority` nếu cần:
+
+```json
+{
+  "name": "@dxtmisha/example-package",
+  "version": "1.0.0",
+  "ui-priority": 400,
+  "scripts": {
+    "build": "vite build",
+    "prepublishOnly": "npm run build"
+  }
+}
+```
+
+### Bước 2. Khởi chạy lệnh xây dựng
+Chạy lệnh `dxt-build-packages` trong terminal của bạn:
+
+```bash
+npx dxt-build-packages
+```
+
+Bộ điều phối sẽ quét thư mục `packages/`, sắp xếp các gói theo độ ưu tiên và chỉ biên dịch các gói có sự thay đổi về phiên bản:
+
+```text
+Build packages(14)...
+Build packages changed: 2
+```
+
+Nếu không có gói nào cần cập nhật, bộ điều phối sẽ kết thúc chỉ trong tích tắc:
+
+```text
+Build packages(14)...
+Build packages - no changes
+```
+
+### Bước 3. Kiểm tra tệp nhật ký bộ nhớ đệm
+Sau khi hoàn tất biên dịch, các phiên bản gói đã xây dựng được lưu tự động vào `./logs/ui-build.log.json`:
+
+```json
+{
+  "@dxtmisha/functional-basic": "1.0.0",
+  "@dxtmisha/functional": "1.0.0",
+  "@dxtmisha/styles": "1.0.0",
+  "@dxtmisha/constructor": "1.0.0",
+  "@dxtmisha/d1": "1.0.0"
+}
+```
+
+### Bước 4. Tái biên dịch khi cập nhật mã
+Khi bạn chỉnh sửa mã nguồn của gói và tăng số phiên bản trong `package.json`, việc chạy lại `npx dxt-build-packages` sẽ tự động phát hiện sự khác biệt phiên bản so với nhật ký và chỉ xây dựng lại gói đã sửa đổi.
+
+## Quản lý mức độ ưu tiên biên dịch (`ui-priority`)
+
+Thuộc tính số `ui-priority` trong `package.json` xác định trình tự biên dịch. Số càng nhỏ thì gói càng được biên dịch trước:
+
+- **100 – 200 (Tiện ích cơ sở và Styles)**: Các thư viện nền tảng không phụ thuộc nội bộ (`@dxtmisha/functional-basic`, `@dxtmisha/functional`, `@dxtmisha/styles`).
+- **300 – 400 (Lớp trừu tượng và Hàm dựng)**: Lõi thành phần và giao thức (`@dxtmisha/constructor`, `@dxtmisha/mcp`).
+- **500 (Độ ưu tiên mặc định)**: Các thư viện thành phần giao diện người dùng (`@dxtmisha/d1`, `@dxtmisha/figma`).
+- **600 – 900 (Tích hợp và Tài liệu)**: Các gói ứng dụng và tài liệu cấp cao (`@dxtmisha/wiki`, `@dxtmisha/storybook`).
+
+## Các cờ cấu hình trong package.json
+
+- **`ui-priority` (number)**: Trọng số ưu tiên trong hàng đợi biên dịch (mặc định là `500`).
+- **`ui-test` (boolean)**: Nếu đặt là `true`, gói được coi là gói thử nghiệm và bị loại trừ khỏi quy trình xây dựng tự động.
+- **Thứ tự ưu tiên tập lệnh**: Bộ điều phối kiểm tra `scripts` và thực thi lệnh đầu tiên tìm thấy: `prepublishOnly`, sau đó đến `build-recovery`, cuối cùng là `build`.
+
+## Ưu điểm so với xây dựng thủ công
+
+- **Tiết kiệm tới 90% thời gian**: Chỉ biên dịch các mô-đun thực sự có thay đổi phiên bản.
+- **Loại bỏ lỗi phụ thuộc**: Đảm bảo các thư viện cấp thấp luôn được biên dịch trước các thành phần phụ thuộc.
+- **Minh bạch tuyệt đối**: Ghi lại đầy đủ trạng thái các bản dựng trong tệp nhật ký cục bộ.

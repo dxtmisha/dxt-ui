@@ -1,6 +1,6 @@
 import {Meta} from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/ru/scripts/# Команды/dxt-prompt - Консолидированный генератор промптов ИИ'/>
+<Meta title='@dxtmisha/ru/scripts/7. Команды/dxt-prompt - Консолидированный генератор промптов ИИ'/>
 
 # dxt-prompt
 
@@ -26,3 +26,10 @@ import {Meta} from '@storybook/addon-docs/blocks'
 npx dxt-prompt
 ```
 Команда автоматически обновит или создаст файл `ai-prompt.md`.
+
+Чтобы дополнительно сгенерировать конфигурационные файлы MCP, добавьте опцию `--mcp` (`-m`):
+```bash
+npx dxt-prompt --mcp
+```
+
+Выполните `npx dxt-prompt --help`, чтобы вывести полный список доступных опций.

@@ -1,6 +1,6 @@
 import {Meta} from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/en/scripts/# Commands/dxt-types - AI Type Definition Generator'/>
+<Meta title='@dxtmisha/en/scripts/7. Commands/dxt-types - AI Type Definition Generator'/>
 
 # dxt-types
 
@@ -25,8 +25,10 @@ The `dxt-types` command compiles, sanitizes, and compresses TypeScript declarati
 
 Run the type compiler via `npx`:
 ```bash
-npx dxt-types [is_raw] [build_dir] [resources_dir]
+npx dxt-types
 ```
-- `is_raw` (Optional): Flag disabling AI processing (`raw`, `1`, `true`) to generate raw types without querying AI APIs. Defaults to `false`.
-- `build_dir` (Optional): Directory to scan for declaration files. Defaults to `dist`.
-- `resources_dir` (Optional): Directory containing prompt and resource files. Defaults to `ai-resources`.
+- `--prompts` (`-p`) (Optional): Input directory containing prompt files. Defaults to `ai-resources`.
+- `--dir` (`-d`) (Optional): Input directory containing declaration files. Defaults to the temporary compilation directory (`ai-types-temp`).
+- `--dist` (Optional): Output directory containing compiled JavaScript files. Defaults to `dist`.
+
+Run `npx dxt-types --help` to print the full list of available options.

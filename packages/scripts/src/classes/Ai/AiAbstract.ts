@@ -204,7 +204,7 @@ export abstract class AiAbstract<AI = any> {
         return generate
       } catch (error) {
         console.error('[Ai] Generation error:', error)
-        process.exit(603)
+        process.exit(1)
       }
     }
 

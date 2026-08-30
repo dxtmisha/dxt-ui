@@ -1,0 +1,51 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/2. AI/7. Ngữ cảnh trực quan (Ảnh chụp màn hình)' />
+
+# Ngữ cảnh trực quan (ai-screenshot)
+
+Một trong những khả năng mạnh mẽ nhất của cơ sở hạ tầng AIDD trong `dxt-ui` là cung cấp cho trí tuệ nhân tạo không chỉ các hợp đồng TypeScript dạng văn bản, mà còn cả **ngữ cảnh trực quan** của giao diện thực tế. Điều này cho phép các mô hình AI đa phương thức (multimodal) quan sát bố cục component, khoảng cách (padding/margin), độ đổ bóng và cách áp dụng token thiết kế.
+
+Chức năng này được quản lý thông qua thư mục `ai-screenshot/`, với các tệp được sinh tự động bằng lệnh `dxt-screenshot` (dựa trên class `DesignScreenshot`).
+
+## Cơ chế hoạt động dưới nền
+
+Bộ sinh ngữ cảnh trực quan hoạt động hoàn toàn tự động theo quy trình sau:
+
+- **1. Khởi động máy chủ phát triển:** Script khởi chạy máy chủ dev cục bộ của package (`npm run dev`) qua tiến trình con (child process).
+- **2. Bắt URL cục bộ:** Công cụ phân tích luồng xuất console (stdout) theo thời gian thực để trích xuất địa chỉ đang chạy (ví dụ: `http://localhost:5173`).
+- **3. Khởi chạy trình duyệt Headless:** Sau khi lấy được URL, một phiên bản trình duyệt không đầu (headless browser) sẽ truy cập vào trang mục tiêu.
+- **4. Chụp trạng thái giao diện:** Trình duyệt chụp toàn bộ màn hình ở độ phân giải cao dưới dạng ảnh `.webp` tối ưu dung lượng, đồng thời trích xuất toàn bộ cây DOM kết xuất và các style CSS thực tế được áp dụng.
+- **5. Dọn dẹp tiến trình:** Script tắt tiến trình máy chủ dev một cách an toàn và lưu toàn bộ tệp vào thư mục `ai-screenshot/`.
+
+## Nội dung thư mục ai-screenshot/
+
+Sau khi tạo, thư mục gốc của package sẽ chứa:
+
+- **`screenshot-*.webp`** — Bộ ảnh chụp giao diện định dạng WebP sắc nét và nhẹ.
+- **`screenshot-code.html`** — Cây DOM kết xuất hoàn chỉnh với đầy đủ class và thuộc tính.
+- **`screenshot-styles.css`** — Bảng mã CSS thực tế được áp dụng cho các phần tử trang.
+
+## Tích hợp vào lời nhắc hệ thống và MCP
+
+Khi chạy `dxt-prompt`, đường dẫn tới tất cả các tệp trong `ai-screenshot/` được tự động nhúng vào danh mục package của `ai-prompt.md`:
+
+```markdown
+## Component Visual References (Screenshots)
+- 'node_modules/@dxtmisha/d1/ai-screenshot/screenshot-8_1.webp'
+- 'node_modules/@dxtmisha/d1/ai-screenshot/screenshot-code.html'
+- 'node_modules/@dxtmisha/d1/ai-screenshot/screenshot-styles.css'
+```
+
+Ngoài ra, `DesignTypesMcp` chuyển đổi các ảnh chụp thành tài nguyên đa phương tiện cho giao thức Model Context Protocol với định dạng MIME chuẩn (`image/webp`, `text/html`, `text/css`), cho phép các AI agent đa phương thức truy vấn trực tiếp qua công cụ.
+
+## Chạy lệnh tạo ảnh chụp
+
+- **Qua npm script trong thư mục package:**
+  ```bash
+  npm run screenshot
+  ```
+- **Qua npx CLI:**
+  ```bash
+  npx dxt-screenshot
+  ```

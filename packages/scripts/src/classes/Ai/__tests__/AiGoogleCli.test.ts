@@ -1,12 +1,12 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { exec } from 'node:child_process'
+import { execFile } from 'node:child_process'
 import { AiGoogleCli } from '../AiGoogleCli'
 import { AiGoogleCliLite } from '../AiGoogleCliLite'
 import { PropertiesConfig } from '../../Properties/PropertiesConfig'
 import { PropertiesFile } from '../../Properties/PropertiesFile'
 
 vi.mock('node:child_process', () => ({
-  exec: vi.fn()
+  execFile: vi.fn()
 }))
 
 class TestAiGoogleCliLite extends AiGoogleCliLite {
@@ -49,13 +49,14 @@ describe('AiGoogleCliLite and AiGoogleCli', () => {
     expect(writeSpy).toHaveBeenCalled()
   })
 
-  it('executes child_process.exec and returns stdout', async () => {
+  it('executes child_process.execFile and returns stdout', async () => {
     vi.spyOn(PropertiesFile, 'writeByPath').mockImplementation(() => {})
     const removeDirSpy = vi.spyOn(PropertiesFile, 'removeDir').mockImplementation(() => {})
 
-    vi.mocked(exec).mockImplementation(((
-      cmd: string,
-      options: any,
+    vi.mocked(execFile).mockImplementation(((
+      _file: string,
+      _args: string[],
+      _options: any,
       callback?: (error: any, stdout: string, stderr: string) => void
     ) => {
       if (callback) {
@@ -71,13 +72,14 @@ describe('AiGoogleCliLite and AiGoogleCli', () => {
     expect(removeDirSpy).toHaveBeenCalledWith('./ai-tmp')
   })
 
-  it('handles child_process.exec error gracefully', async () => {
+  it('handles child_process.execFile error gracefully', async () => {
     vi.spyOn(PropertiesFile, 'writeByPath').mockImplementation(() => {})
     const removeDirSpy = vi.spyOn(PropertiesFile, 'removeDir').mockImplementation(() => {})
 
-    vi.mocked(exec).mockImplementation(((
-      cmd: string,
-      options: any,
+    vi.mocked(execFile).mockImplementation(((
+      _file: string,
+      _args: string[],
+      _options: any,
       callback?: (error: any, stdout: string, stderr: string) => void
     ) => {
       if (callback) {

@@ -1,0 +1,85 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/2. AI/4. Toàn bộ quy trình làm việc' />
+
+# Toàn bộ quy trình làm việc (AIDD Workflow)
+
+Để duy trì hệ sinh thái AI-Driven Development (AIDD) luôn đồng bộ và đạt hiệu quả cao nhất khi phát triển hoặc bảo trì các package trong thư viện `dxt-ui`, lập trình viên tuân theo chu trình kỹ thuật chuẩn hóa sau đây.
+
+## Bước 1: Phát triển mã nguồn
+
+Quá trình lập trình chuẩn về logic, component và tiện ích trong monorepo:
+- Xây dựng component Vue 3 bắt buộc dùng `<script setup lang="ts">`.
+- Tách biệt logic nghiệp vụ và quản lý trạng thái vào các Composable (`executeUseGlobal`, `executeUseLocal`, `executeUseProvide`).
+- Áp dụng các token và mixin SCSS từ `@dxtmisha/styles` mà không dùng inline style hoặc media query tùy tiện.
+
+## Bước 2: Tài liệu hóa mã nguồn (TSDoc / JSDoc)
+
+Chuẩn bị API công khai để phục vụ phân tích tự động và sinh metadata cho AI:
+- **Mô tả JSDoc** — Viết tài liệu cho các class, phương thức, hàm, thuộc tính và interface theo tiêu chuẩn song ngữ (English / Russian).
+- **Thẻ đặc biệt** — Sử dụng các thẻ được bộ sinh mã đảm bảo giữ lại trong `ai-types.md`:
+  - `@example` — Ví dụ mẫu chuẩn về cách gọi phương thức hoặc component.
+  - `@note` — Lưu ý kiến trúc, quy tắc khởi tạo và tác dụng phụ (side effects).
+  - `@warning` — Ràng buộc môi trường thực thi (ví dụ: an toàn SSR hoặc chỉ chạy trên DOM).
+  - `@keywords` — Từ khóa tìm kiếm liên kết giúp AI tra cứu nhanh trong tệp.
+
+```typescript
+/**
+ * Executes a localized HTTP request with automatic session token binding and error center routing.
+ *
+ * Выполняет локализованный HTTP-запрос с автоматической привязкой токена сессии и маршрутизацией через центр ошибок.
+ * @example
+ * const data = await apiRequest.get('/user/profile')
+ *
+ * @note Automatically attaches Bearer authorization headers when session token is active.
+ * @warning Do not call directly in component templates; use executeUseLocal service wrappers.
+ * @keywords api request http fetch get post session auth
+ * @param url request endpoint url / url адрес эндпоинта запроса
+ * @param options request configuration / конфигурация запроса
+ * @returns parsed response data / распарсенные данные ответа
+ */
+export async function fetchApi<T>(url: string, options?: RequestOptions): Promise<T> {
+  // ...
+}
+```
+
+## Bước 3: Tạo định nghĩa kiểu và mô tả Package
+
+Sau khi hoàn tất viết mã, chạy công cụ tạo định nghĩa kiểu và metadata trong thư mục package:
+
+```bash
+npm run types
+```
+
+Lệnh sẽ tự động:
+- Biên dịch các tệp khai báo `.d.ts` vào thư mục tạm thời.
+- Lọc bỏ các thuộc tính private và protected.
+- Tạo tệp `ai-types.md` gọn gàng với các chữ ký tối ưu hóa và thẻ `@keywords`.
+- Tạo tệp `ai-description.md` chứa mục đích của package, trigger nghiên cứu và khối `## Mandatory Rules` từ thư mục `ai-resources/`.
+- Cập nhật định nghĩa tài nguyên MCP trong `ai-mcp-resources.json`.
+
+## Bước 4: Chụp ngữ cảnh trực quan (Tùy chọn cho UI)
+
+Đối với các thư viện component giao diện (`@dxtmisha/d1`) hoặc module trực quan, tiến hành chụp trạng thái giao diện:
+
+```bash
+npm run screenshot
+```
+
+Công cụ sẽ tự động khởi động máy chủ dev cục bộ, kết nối qua trình duyệt headless, chụp ảnh màn hình độ phân giải cao (`ai-screenshot/*.webp`), đồng thời xuất cây DOM (`screenshot-code.html`) và CSS đã tính toán (`screenshot-styles.css`).
+
+## Bước 5: Tổng hợp lời nhắc toàn cục
+
+Để đồng bộ tất cả các thay đổi vào tệp lời nhắc gốc của hệ thống, chạy lệnh tại thư mục gốc monorepo:
+
+```bash
+npm run prompt
+```
+
+Script `dxt-prompt` sẽ tập hợp metadata từ tất cả các package và dependency đã cập nhật, ghi đè lại `ai-prompt.md` và `ai-mcp-all-resources.json`.
+
+## Bước 6: Giao việc cho AI và lưu giữ kinh nghiệm
+
+Khi tương tác với trợ lý AI:
+- AI đọc `ai-prompt.md` và `ai-types.md` đã cập nhật để tạo ra mã nguồn chính xác, không bị ảo giác.
+- Nếu phát hiện các lưu ý hoặc bài học kiến trúc mới, sử dụng lệnh **«Запомни»** / **«Remember»** để AI ghi lại vào `ai-memory.md` của package cho các phiên làm việc sau.

@@ -10,7 +10,7 @@ Một triển khai chuyên biệt của lớp `AiAbstract` tương tác với Go
 
 ## Tính năng chính
 
-- **Quy trình làm việc qua CLI** — thực hiện các yêu cầu bằng cách xây dựng và chạy các lệnh shell.
+- **Quy trình làm việc qua CLI** — thực hiện các yêu cầu bằng cách chạy trực tiếp CLI `gemini` với mảng đối số qua `execFile`, không qua shell hệ thống.
 - **Xử lý Lời nhắc Lớn** — tự động tạo các tệp tạm thời để chuyển nội dung lời nhắc lớn cho CLI, tránh các giới hạn về độ dài dòng lệnh.
 - **Thực thi Sạch sẽ** — quản lý bộ lưu trữ tạm thời của riêng nó (`./ai-tmp`) và thực hiện dọn dẹp sau mỗi yêu cầu.
 - **Chế độ YOLO** — thực thi các lệnh với các cờ đầu ra nghiêm ngặt để đảm bảo kết quả ngắn gọn và không có các nội dung thừa.
@@ -53,4 +53,4 @@ const response = await ai.generate('Kiểm tra đoạn mã này.')
 ## Hạn chế
 
 - **Hình ảnh** — hiện tại, triển khai CLI không hỗ trợ truyền hình ảnh (`addImage` sẽ không có tác dụng đối với việc tạo).
-- **Môi trường** — dựa trên tính khả dụng của hàm `exec` và hệ thống tệp cho lưu trữ tạm thời.
+- **Môi trường** — dựa trên tính khả dụng của hàm `execFile` và hệ thống tệp cho lưu trữ tạm thời.

@@ -9,8 +9,8 @@ Lớp `ApiTmp` là một tiện ích phụ trợ được thiết kế để qu�
 ## Tính năng chính
 
 - **Đệm đĩa An toàn** — ghi các khối lời nhắc lớn vào đĩa cục bộ trong quá trình tạo phản hồi.
-- **Định danh Duy nhất** — tự động tăng ID tệp tin để ngăn chặn xung đột khi thực hiện ghi tệp đồng thời.
-- **Hành động Dọn dẹp Sạch sẽ** — cung cấp phương thức để xóa sạch thư mục tệp tạm thời ngay lập tức, phục hồi dung lượng đĩa hệ thống.
+- **Định danh Duy nhất** — tăng một bộ đếm ID tệp tin toàn cục dùng chung cho tất cả các instance để ngăn chặn xung đột khi ghi đồng thời.
+- **Hành động Dọn dẹp Sạch sẽ** — chỉ xóa các tệp tạm thời do instance đó tạo ra, giữ nguyên các tệp của các instance đang chạy đồng thời.
 
 ## Khởi tạo
 
@@ -39,7 +39,7 @@ const promptReference = tmp.createFile('Xin chào Claude, vui lòng tạo các S
 ```
 
 #### `removeFile`
-Xóa sạch toàn bộ thư mục tệp tạm thời `./ai-tmp` khỏi hệ thống tệp tin.
+Chỉ xóa các tệp tạm thời được tạo bởi instance này khỏi thư mục `./ai-tmp`, giúp việc dọn dẹp an toàn khi thực thi đồng thời.
 
 **Trả về:** `void`
 

@@ -1,0 +1,95 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/5. Build Packages'/>
+
+# Monorepo Package Building
+
+In the **DXT UI** design system, the compilation process for all interdependent packages across the monorepo is fully automated using the `dxt-build-packages` CLI utility. Developers no longer need to manually manage module compilation order or spend time recompiling unchanged packages.
+
+The tool manages the entire build pipeline, automatically resolves the dependency build graph via priority settings, and applies intelligent incremental caching.
+
+## Key Advantages
+
+### 1. Intelligent Caching and Instant Incremental Builds
+`dxt-build-packages` tracks the state of built packages using a local cache file `./logs/ui-build.log.json`. If a package source code and version remain unchanged since the previous build, the compilation step is skipped instantly.
+
+### 2. Guaranteed Build Order via Priorities (`ui-priority`)
+Each package in `package.json` can declare its build priority weight via `ui-priority`. The orchestrator sorts packages in ascending numerical order, ensuring foundational libraries (`functional`, `styles`, `constructor`) are compiled before dependent UI components (`d1`) and documentation.
+
+### 3. Automatic Build Script Discovery
+The orchestrator determines the optimal compilation command for each package using a structured fallback hierarchy: `prepublishOnly` -> `build-recovery` -> `build`.
+
+## Step-by-Step Guide (What to Do)
+
+### Step 1. Configure the package.json File
+Ensure your package's `package.json` includes build scripts and optional `ui-priority` configuration:
+
+```json
+{
+  "name": "@dxtmisha/example-package",
+  "version": "1.0.0",
+  "ui-priority": 400,
+  "scripts": {
+    "build": "vite build",
+    "prepublishOnly": "npm run build"
+  }
+}
+```
+
+### Step 2. Run the Build Command
+Execute `dxt-build-packages` in your terminal:
+
+```bash
+npx dxt-build-packages
+```
+
+The builder scans `packages/`, orders all discovered packages by priority, and builds only those whose versions have changed:
+
+```text
+Build packages(14)...
+Build packages changed: 2
+```
+
+If no packages require an update, the builder exits cleanly in a fraction of a second:
+
+```text
+Build packages(14)...
+Build packages - no changes
+```
+
+### Step 3. Inspect the Build Log Cache
+After compilation, the built package versions are automatically persisted in `./logs/ui-build.log.json`:
+
+```json
+{
+  "@dxtmisha/functional-basic": "1.0.0",
+  "@dxtmisha/functional": "1.0.0",
+  "@dxtmisha/styles": "1.0.0",
+  "@dxtmisha/constructor": "1.0.0",
+  "@dxtmisha/d1": "1.0.0"
+}
+```
+
+### Step 4. Rebuild on Code Updates
+When you modify a package and bump its version in `package.json`, re-running `npx dxt-build-packages` automatically detects the version mismatch against the cached log and rebuilds only that modified package.
+
+## Managing Build Priorities (`ui-priority`)
+
+The `ui-priority` numerical property in `package.json` defines the compilation sequence. Lower numbers build earlier:
+
+- **100 – 200 (Core Utilities and Styles)**: Foundational packages without internal dependencies (`@dxtmisha/functional-basic`, `@dxtmisha/functional`, `@dxtmisha/styles`).
+- **300 – 400 (Abstractions and Constructors)**: Component engine core and protocols (`@dxtmisha/constructor`, `@dxtmisha/mcp`).
+- **500 (Standard Default)**: UI component libraries and design systems (`@dxtmisha/d1`, `@dxtmisha/figma`).
+- **600 – 900 (Integrations and Documentation)**: High-level consumers and tooling (`@dxtmisha/wiki`, `@dxtmisha/storybook`).
+
+## Configuration Flags in package.json
+
+- **`ui-priority` (number)**: Priority weight in the build queue (defaults to `500`).
+- **`ui-test` (boolean)**: When set to `true`, the package is considered a test package and is excluded from automated builds.
+- **Build Script Priority**: The orchestrator inspects `scripts` and executes the first available command: `prepublishOnly`, then `build-recovery`, then `build`.
+
+## Advantages Over Manual Builds
+
+- **Up to 90% Time Savings**: Only packages with version differences are compiled.
+- **Eliminates Broken Dependencies**: Guarantees lower-level libraries are compiled before dependent components.
+- **Full Transparency**: Transparent tracking of all build states in a local log file.

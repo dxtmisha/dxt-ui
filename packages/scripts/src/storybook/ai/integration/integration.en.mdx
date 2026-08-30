@@ -1,0 +1,79 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/2. AI/6. IDE Integration' />
+
+# Integrating AIDD into Projects & IDEs
+
+To roll out the AI-Driven Development (AIDD) infrastructure in a new application or external project leveraging the `dxt-ui` library, perform the following standard setup.
+
+## Step 1: Installing the Scripts Package
+
+To enable automated documentation aggregation from all installed `@dxtmisha/*` dependencies, install `@dxtmisha/scripts`:
+
+```bash
+npm install @dxtmisha/scripts --save-dev
+```
+
+## Step 2: Configuring package.json
+
+Add the prompt generator commands to the `scripts` section of your root `package.json`:
+
+```json
+{
+  "scripts": {
+    "prompt": "dxt-prompt",
+    "postinstall": "npm run prompt"
+  }
+}
+```
+
+- **`"prompt": "dxt-prompt"`** — Manual execution of `ai-prompt.md` generation at any development point.
+- **`"postinstall": "npm run prompt"`** — Automatic generation immediately after `npm install` or `npm update`, ensuring the AI context stays synchronized whenever new `@dxtmisha/*` versions are installed.
+
+## Step 3: Configuring .gitignore
+
+Generated artifacts and temporary files should not be tracked by Git. Add them to `.gitignore`:
+
+```gitignore
+ai-prompt.md
+ai-types.md
+ai-description.md
+ai-mcp-resources.json
+ai-mcp-all-resources.json
+ai-mcp-all-resources.ts
+ai-tmp
+ai-types-temp
+```
+
+## Step 4: Configuring AI Agent System Instructions
+
+The `ai-prompt.md` file achieves peak effectiveness when the AI assistant is strictly obligated to read it at the start of each session. Create a system rules file based on your development environment:
+
+- **Antigravity IDE / Agent Customizations:** `.agents/rules/main.md`
+- **Cursor IDE:** `.cursorrules` or `.cursor/rules/*.mdc`
+- **Windsurf IDE:** `.windsurfrules`
+- **Claude Code / CLI:** `CLAUDE.md`
+- **GitHub Copilot / Codex:** `AGENTS.md`
+
+Insert the mandatory directive block into the rules file:
+
+```markdown
+# AI Agent Rules
+
+## Preparation for Work (MANDATORY GUARD)
+**🔴 STOP! DO NOT PROCEED UNTIL YOU DO THIS 🔴**
+At the beginning of a conversation session or before starting work on code/plans, you MUST read the `ai-prompt.md` file located in the project root COMPLETELY in full, from the first line to the very last line, without skipping any sections or reading only partially.
+Once `ai-prompt.md` has been read during the current session, you do NOT need to re-read it on every single turn, unless you need to refresh your context or verify specific guidelines.
+If `ai-prompt.md` exceeds the single view line limit, make consecutive calls to view tool parameters to cover every single line of the file.
+This is your absolute priority. You must strictly adhere to all rules specified in `ai-prompt.md`.
+```
+
+## Step 5: Initial Generation and Verification
+
+Once configured, run the prompt aggregation script:
+
+```bash
+npm run prompt
+```
+
+The root `ai-prompt.md` file will be generated, consolidating `@dxtmisha/d1` UI contracts, `@dxtmisha/functional` reactive utilities, `@dxtmisha/styles` SCSS tokens, and core engineering standards.

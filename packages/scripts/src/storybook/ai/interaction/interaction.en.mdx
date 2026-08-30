@@ -1,0 +1,73 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/2. AI/8. AI Interaction' />
+
+# AI Interaction & Priority Hierarchy
+
+The AIDD architecture in `dxt-ui` is designed for maximum clarity, predictability, and token efficiency when interacting with AI coding assistants.
+
+Instead of dumping the entire monorepo codebase into the model's context window, it employs a multi-layered lazy loading strategy coupled with a strict priority hierarchy.
+
+## Multi-Layered Context Loading Strategy
+
+- **Layer 1: Overview Context (Session Start)**
+  - Only `ai-prompt.md` is loaded initially.
+  - The AI acquires overarching engineering rules (AI Code Promise, Vue Style Guide) and high-level profiles of all libraries (`@dxtmisha/d1`, `@dxtmisha/constructor`, `@dxtmisha/styles`, `@dxtmisha/functional`, etc.).
+  - *Purpose:* The AI understands the full ecosystem capabilities without saturating context memory with minute implementation details.
+
+- **Layer 2: In-Depth Context On-Demand**
+  - **`ai-types.md`** — Detailed TypeScript specifications (loaded strictly when calling package methods or verifying signatures).
+  - **`ai-developer.md`** — Internal package standards (loaded strictly when editing the package's internal code).
+  - **`ai-resources/*.md`** — Domain regulations (loaded when triggered by the `## Mandatory Rules` block).
+  - **`ai-screenshot/`** — Visual screenshots and DOM/CSS (loaded when styling and building UI interfaces).
+
+- **Layer 3: Local Workspace Memory**
+  - **`ai-memory.md`** — Dynamic constraints, rules, and learnings captured specifically within the current package.
+
+## Priority Chain
+
+When resolving conflicts between different documentation files, the AI follows a strict precedence order:
+
+- **1. `ai-memory.md` (Highest Local Priority)** — Local package experience and explicit developer instructions supersede all other rules.
+- **2. `ai-instruction.md` (Highest Global Priority)** — Project-level directives in the monorepo root overriding base system conventions.
+- **3. `ai-developer.md`** — Approved package-level engineering standards and checklists.
+- **4. `ai-resources/*.md`** — Domain-specific technical standards (e.g., colors, borders, elevation, API reference).
+- **5. `ai-prompt.md`** — Base global principles (AI Code Promise, Vue Guide) and package overview cards.
+- **6. `ai-types.md`** — TypeScript signatures and code contracts.
+
+## Practical Interaction Scenarios
+
+### Scenario 1: Developing a Component in @dxtmisha/d1
+
+Developer task: *"Create the D1Badge component in package @dxtmisha/d1."*
+
+- **1. Start:** The AI reads `ai-prompt.md` and locates the `@dxtmisha/d1` package entry.
+- **2. Studying Standards:** The agent opens `packages/d1/ai-developer.md` to review file structure and `@dxtmisha/constructor` integration patterns.
+- **3. Checking Memory:** The agent opens `packages/d1/ai-memory.md` to verify local conventions.
+- **4. Checking Mandatory Rules:** The agent checks `## Mandatory Rules` in `ai-description.md`, reading `ai-resources/colors-and-palettes.md` and `ai-resources/rounded.md` for proper token resolution.
+- **5. Implementation:** The component is built in strict accordance with the guidelines from all four documents.
+
+### Scenario 2: Consuming a Library in an Application
+
+Developer task: *"Implement a cached HTTP client with error center handling."*
+
+- **1. Start:** The AI reads the project's root `ai-prompt.md`.
+- **2. Detecting Dependency:** In the library summary, it finds `@dxtmisha/functional-basic` (*"HTTP client, state storage, i18n localization, ErrorCenter"*).
+- **3. Trigger Evaluation:** The trigger states: *"Study when working with HTTP requests, API caching, or ErrorCenter"*.
+- **4. Loading Types:** The AI opens `node_modules/@dxtmisha/functional-basic/ai-types.md`.
+- **5. Accurate Code Generation:** The AI identifies the `ApiFetch` class, `get()` / `post()` methods, and `ErrorCenter`, producing 100% accurate calls without hallucinations.
+
+### Scenario 3: Enforcing a Project Directive via ai-instruction.md
+
+A lead engineer introduces an urgent rule across all packages:
+
+- An `ai-instruction.md` file is created in the repository root.
+- The command `npm run prompt` is executed.
+- The script embeds the directive into the `High-Priority Directives` section of `ai-prompt.md`.
+- From that moment, any AI assistant reading `ai-prompt.md` immediately applies the rule across the entire monorepo.
+
+## Interaction Matrix
+
+- **Adding a new method or export** ➔ Run `npm run types` ➔ Updates `ai-types.md` and `ai-description.md` ➔ Run `npm run prompt` ➔ Updates global `ai-prompt.md`.
+- **Adding a new domain rule** ➔ Create file in `ai-resources/` ➔ Run `npm run types` ➔ Run `npm run prompt`.
+- **Correcting AI behavior in chat** ➔ Use trigger "Remember" ➔ AI appends rule to `ai-memory.md` without requiring project rebuilds.

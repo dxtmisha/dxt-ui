@@ -1,6 +1,6 @@
 import {Meta} from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/vi/scripts/# Lệnh/dxt-types - Trình tạo Định nghĩa Kiểu cho AI'/>
+<Meta title='@dxtmisha/vi/scripts/7. Lệnh/dxt-types - Trình tạo Định nghĩa Kiểu cho AI'/>
 
 # dxt-types
 
@@ -25,8 +25,10 @@ Lệnh `dxt-types` biên dịch, làm sạch và nén các tệp khai báo TypeS
 
 Chạy trình biên dịch kiểu thông qua `npx`:
 ```bash
-npx dxt-types [is_raw] [build_dir] [resources_dir]
+npx dxt-types
 ```
-- `is_raw` (Tùy chọn): Cờ tắt xử lý AI (`raw`, `1`, `true`) để tạo kiểu thô mà không cần gọi API AI. Mặc định là `false`.
-- `build_dir` (Tùy chọn): Thư mục để quét các tệp khai báo. Mặc định là `dist`.
-- `resources_dir` (Tùy chọn): Thư mục chứa các tệp prompt và tài nguyên. Mặc định là `ai-resources`.
+- `--prompts` (`-p`) (Tùy chọn): Thư mục đầu vào chứa các tệp prompt. Mặc định là `ai-resources`.
+- `--dir` (`-d`) (Tùy chọn): Thư mục đầu vào chứa các tệp khai báo. Mặc định là thư mục biên dịch tạm thời (`ai-types-temp`).
+- `--dist` (Tùy chọn): Thư mục đầu ra chứa các tệp JavaScript đã biên dịch. Mặc định là `dist`.
+
+Chạy `npx dxt-types --help` để in ra danh sách đầy đủ các tùy chọn khả dụng.

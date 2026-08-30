@@ -1,0 +1,101 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/2. AI/1. System Prompt' />
+
+# Consolidated System Prompt (ai-prompt.md)
+
+The `ai-prompt.md` file is the central consolidated document of the monorepo, serving as the **Single Source of Truth** for all Large Language Models and AI coding assistants (Claude, Gemini, Antigravity, Cursor, Windsurf, Claude Code, GitHub Copilot).
+
+The file is generated automatically by the `dxt-prompt` utility, merging base engineering principles, Vue component standards, and the complete documentation of all monorepo packages and installed dependencies.
+
+## Key Problems Solved by `ai-prompt.md`
+
+- **Eliminating "Context Amnesia"** — Developers no longer need to write tedious system prompts, explain BEM rules, or prohibit `any` types manually. The assistant automatically receives the full monorepo standard at the beginning of each session.
+- **Protection Against Hallucinations (Zero Hallucinations)** — The document embeds an accurate index of all available libraries, complete with their descriptions, capabilities, and links to verified type declarations (`ai-types.md`). The agent only uses genuine methods and interfaces.
+- **Instant Monorepo Synchronization** — Whenever public methods or components are updated in any package (`@dxtmisha/d1`, `@dxtmisha/constructor`, `@dxtmisha/functional`, etc.), running `npm run prompt` updates the root file so all AI assistants immediately gain access to updated signatures.
+- **Tool and Environment Agnostic** — A single standardized markdown rules file works identically across any IDE, code editor, and AI model.
+
+## Internal Structure of ai-prompt.md
+
+The file is structured into four interconnected logical layers:
+
+- **System Role & Global Principles (AI Code Promise)**
+  Strict code quality and agent discipline rules:
+  - **Chronological Guard** — Mandatory reading order (`ai-memory.md` ➔ `ai-prompt.md` ➔ `ai-types.md`).
+  - **Copy-Paste Ready** — Complete, fully runnable files without missing parts or placeholders.
+  - **Uncompromising TS** — Strict typing, prohibition of `any`, mandatory interfaces for all I/O.
+  - **Strict Scope Lock** — Prohibition of unsolicited refactorings, configuration changes, or arbitrary edits.
+
+- **Vue Component Implementation Rules (Vue.js Style Guide)**
+  UI component standards:
+  - Strictly use `<script setup lang="ts">`.
+  - PascalCase component names and kebab-case BEM classes.
+  - Unidirectional data flow (Props Down, Events Up).
+  - Prohibition of modifying base UI styles of existing library components.
+
+- **Package Registry**
+  Metadata overview for each discovered package:
+  - Package name and local path.
+  - **Package Description** — Concise technical purpose of the library.
+  - **Triggers for Studying ai-types.md** — Explicit conditions when the AI must read full type signatures.
+  - **Key Capabilities** — List of core functional modules.
+  - **Mandatory Rules** — Mandatory domain regulations and study triggers from `ai-resources/`.
+  - Relative paths to `ai-types.md`, `ai-developer.md`, and the `ai-screenshot/` directory.
+
+- **High-Priority Directives**
+  Custom project overrides from `ai-instruction.md` (if present in the root directory), taking precedence over all default rules.
+
+- **Mandatory Final Self-Audit**
+  A mandatory verification checklist executed before concluding any task.
+
+## Example ai-prompt.md Excerpt
+
+```markdown
+# System Role: AI Coding Assistant & Project Analyzer
+Consolidated documentation, architectural guidelines, and mandatory rules for the project.
+
+## Global Code Implementation Rules
+### Global Development Principles (AI Code Promise)
+0. Mandatory Deep Study (CHRONOLOGICAL GUARD):
+   - Step 1: Read/create local ai-memory.md strictly in current package root.
+   - Step 2: Read root ai-prompt.md and study library descriptions.
+   - Step 3: Study linked ai-types.md BEFORE writing code.
+1. "Copy-Paste Ready": Generate complete runnable files. No placeholders.
+2. Zero Hallucinations: Strictly use package.json dependencies.
+3. Uncompromising TS: No any. Interfaces for all I/O.
+
+# @dxtmisha/d1
+## Project location: Root directory
+The project is located at: 'node_modules/@dxtmisha/d1'.
+
+## Package Description & Module Overview
+This package provides a comprehensive collection of Vue 3 UI components and design system utilities built on top of constructor primitives.
+
+Key Capabilities: UI Components, Form Controls, Navigation Elements, Layout Containers, Data Display
+
+## Mandatory Rules
+You MUST evaluate whether your task relates to any of the following topics:
+- 'node_modules/@dxtmisha/d1/ai-resources/background.md': Rules and mixins for configuring background colors, surface opacities, and gradients in SCSS.
+- 'node_modules/@dxtmisha/d1/ai-resources/border.md': SCSS styling standards and mixins for borders and dividers.
+
+## Package Type Definitions (Must Read in Full When Working with Package)
+'node_modules/@dxtmisha/d1/ai-types.md'
+
+## Component Visual References (Screenshots)
+- 'node_modules/@dxtmisha/d1/ai-screenshot/screenshot-8_1.webp'
+```
+
+## Running the Generator
+
+- **Via npm script:**
+  ```bash
+  npm run prompt
+  ```
+- **Via npx CLI:**
+  ```bash
+  npx dxt-prompt
+  ```
+- **With MCP (Model Context Protocol) resource generation:**
+  ```bash
+  npx dxt-prompt --mcp
+  ```

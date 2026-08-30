@@ -104,6 +104,12 @@ export type DesignUiConfig = {
    */
   aiResourcesDir?: string
 
+  /**
+   * Maximum directory scan depth for collecting AI prompt packages; deeper nesting is skipped /
+   * Максимальная глубина сканирования директорий для сбора пакетов промпта ИИ; более глубокая вложенность пропускается
+   */
+  promptScanDepth?: number
+
   // AI Configuration / Конфигурация ИИ
 
   /** AI provider type for generating content / Тип ИИ-провайдера для генерации контента */

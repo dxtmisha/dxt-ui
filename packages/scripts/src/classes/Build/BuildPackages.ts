@@ -17,7 +17,7 @@ const UI_BUILD_LOG_FILE = ['.', 'logs', 'ui-build.log.json']
  */
 export class BuildPackages {
   /** Map of cached package build versions / Карта кэшированных версий сборки пакетов */
-  protected readonly log: Record<string, string>
+  protected log: Record<string, string>
 
   /**
    * Constructor initializes packages path and loads build log.
@@ -52,8 +52,9 @@ export class BuildPackages {
       }
     }
 
+    this.saveLog()
+
     if (changed > 0) {
-      this.saveLog()
       console.info(`Build packages changed: ${changed}`)
     } else {
       console.info('Build packages - no changes')
@@ -71,7 +72,7 @@ export class BuildPackages {
     const code = packageFile.getCodeBuildOrRecovery()
 
     if (code) {
-      return await run(packageFile, `npm run ${code}`)
+      return await run(packageFile, code)
     }
 
     return false

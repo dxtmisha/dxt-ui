@@ -15,19 +15,43 @@ function getAbsolutePath(value: string): any {
 
 const config: StorybookConfig = {
   stories: [
+    // Constructor & Styles
+    '../../constructor/src/storybook/**/*.mdx',
+    '../../constructor/src/storybook/**/*.stories.@(js|jsx|mjs|ts|tsx)',
+    '../../styles/src/storybook/**/*.mdx',
+    '../../styles/src/storybook/**/*.stories.@(js|jsx|mjs|ts|tsx)',
+
+    // Figma Ecosystem
+    '../../figma/src/storybook/**/*.mdx',
+    '../../figma/src/storybook/**/*.stories.@(js|jsx|mjs|ts|tsx)',
+    '../../figma-code/src/storybook/**/*.mdx',
+    '../../figma-code/src/storybook/**/*.stories.@(js|jsx|mjs|ts|tsx)',
+    '../../figma-ref/src/storybook/**/*.mdx',
+    '../../figma-ref/src/storybook/**/*.stories.@(js|jsx|mjs|ts|tsx)',
+
+    // Functional & SSR
+    '../../functional/src/storybook/**/*.mdx',
+    '../../functional/src/storybook/**/*.stories.@(js|jsx|mjs|ts|tsx)',
+    '../../functional-basic/src/storybook/**/*.mdx',
+    '../../functional-basic/src/storybook/**/*.stories.@(js|jsx|mjs|ts|tsx)',
+    '../../nitro-basic/src/storybook/**/*.mdx',
+    '../../nitro-basic/src/storybook/**/*.stories.@(js|jsx|mjs|ts|tsx)',
+
+    // MCP & Scripts
     '../../demo-mcp/src/**/*.mdx',
     '../../demo-mcp/src/**/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../../mcp/src/**/*.mdx',
     '../../mcp/src/**/*.stories.@(js|jsx|mjs|ts|tsx)',
+    '../../scripts/src/storybook/**/*.mdx',
+    '../../scripts/src/storybook/**/*.stories.@(js|jsx|mjs|ts|tsx)',
+
+    // Demo & Wiki
     '../../d1/src/**/*.mdx',
     '../../d1/src/**/*.stories.@(js|jsx|mjs|ts|tsx)',
-    '../../scripts/src/**/*.mdx',
-    '../../scripts/src/**/*.stories.@(js|jsx|mjs|ts|tsx)',
-
     '../../wiki/src/media/functional/**/*.mdx',
     '../../wiki/src/media/functional/**/*.stories.@(js|jsx|mjs|ts|tsx)',
-    '../../wiki/src/media/styles/**/*.mdx',
-    '../../wiki/src/media/styles/**/*.stories.@(js|jsx|mjs|ts|tsx)'
+    '../../wiki/src/media/mdx/**/*.mdx',
+    '../../wiki/src/media/mdx/**/*.stories.@(js|jsx|mjs|ts|tsx)'
   ],
   addons: [
     getAbsolutePath('@storybook/addon-vitest'),

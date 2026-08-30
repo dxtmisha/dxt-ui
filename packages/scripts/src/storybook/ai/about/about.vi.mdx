@@ -1,0 +1,88 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/2. AI/# Về phương pháp tiếp cận' />
+
+# Khái niệm AI-Driven Development (AIDD)
+
+Quá trình phát triển trong hệ sinh thái `dxt-ui` được thiết kế để tích hợp sâu rộng và chặt chẽ với các trợ lý trí tuệ nhân tạo (LLM). Dự án xây dựng một cơ sở hạ tầng hoàn chỉnh cho AI, vượt xa các gợi ý tự động hoàn thành mã nguồn thông thường.
+
+Khái niệm cốt lõi dựa trên việc tự động cung cấp dữ liệu có cấu trúc cho AI trước khi bắt đầu tạo mã. Mỗi package trong monorepo đều chứa các quy tắc, hợp đồng kiểu và bộ nhớ máy có thể đọc được, sau đó được tổng hợp thành một ngữ cảnh toàn cục duy nhất.
+
+## Thách thức của phương pháp tiếp cận thông thường
+
+Việc sử dụng AI mà không có cơ sở hạ tầng chuyên biệt thường gặp phải những vấn đề sau:
+
+- **Thiếu ngữ cảnh dự án.** AI không có kiến thức cập nhật về kiến trúc, hệ thống thiết kế, SCSS token và tiêu chuẩn đặt tên của repository cụ thể.
+- **Biến dạng dữ liệu và ảo giác (Hallucinations).** Do thiếu thông tin chính xác về kiểu dữ liệu và các tiện ích có sẵn, mã nguồn do AI tạo ra thường chứa các phương thức không tồn tại hoặc chữ ký cũ.
+- **Phụ thuộc công cụ (Vendor Lock-in).** Các hướng dẫn thường bị gắn chặt vào định dạng của một công cụ cụ thể (ví dụ: `.cursorrules` hoặc Claude Projects). Khi đổi trợ lý hoặc IDE, lập trình viên phải cấu hình lại từ đầu.
+- **Không truy cập được thư viện bên ngoài (`node_modules`).** Các trợ lý lập trình thường bỏ qua thư mục `node_modules` do giới hạn ngữ cảnh token. Do đó, AI không nhìn thấy các hàm, component và kiểu dữ liệu được export, dẫn đến việc tự bịa ra chữ ký hàm.
+- **Thu thập ngữ cảnh thủ công.** Lập trình viên phải tự đính kèm hàng chục tệp mã nguồn vào khung chat để giải thích kiến trúc component.
+- **Mất ngữ cảnh giữa các phiên làm việc.** Các sửa đổi kiến trúc và ràng buộc được thống nhất trong một nhiệm vụ sẽ bị mất trong các phiên hội thoại tiếp theo.
+
+Mục tiêu của kiến trúc AIDD trong `dxt-ui` là loại bỏ hoàn toàn các rủi ro này bằng cách xác định rõ phạm vi trách nhiệm của AI và cung cấp ngữ cảnh tất định, đáng tin cậy và độc lập với nền tảng.
+
+## Nguyên tắc cốt lõi của phương pháp tiếp cận
+
+Nền tảng của AIDD là **quản lý ngữ cảnh tất định** và bắt buộc AI phải nghiên cứu kỹ lưỡng trước khi viết dòng mã đầu tiên. Cầu nối trung tâm và nguồn chân lý duy nhất cho mọi AI agent là tệp `ai-prompt.md`.
+
+Các nguyên tắc kiến trúc chính:
+
+- **Nguồn chân lý duy nhất (Single Source of Truth)**
+  Thay vì hướng dẫn phân mảnh và sao chép thủ công, AI nhận được tệp `ai-prompt.md` tập trung được tự động tổng hợp từ hợp đồng, tài liệu và quy tắc của tất cả các package trong monorepo cũng như các dependency trong `node_modules`.
+
+- **Bắt buộc nghiên cứu kỹ lưỡng trước khi sinh mã (Chronological Guard)**
+  AI bị nghiêm cấm viết mã hoặc đưa ra kế hoạch sơ sài mà chưa đọc ngữ cảnh. Trình tự đọc bắt buộc bao gồm:
+  - Đọc bộ nhớ cục bộ của package (`ai-memory.md`);
+  - Nghiên cứu lời nhắc toàn cục (`ai-prompt.md`) và yêu cầu của các thư viện được sử dụng (`@dxtmisha/d1`, `@dxtmisha/constructor`, `@dxtmisha/styles`, `@dxtmisha/functional`, v.v.);
+  - Đọc chính xác các hợp đồng kiểu (`ai-types.md`), tiêu chuẩn nội bộ (`ai-developer.md`) và quy tắc chuyên biệt (`ai-resources/`) của package liên quan;
+  - Đọc toàn bộ tệp mục tiêu trước khi chỉnh sửa.
+
+- **Phát triển dựa trên hợp đồng & Không ảo giác (Zero Hallucinations)**
+  AI chỉ dựa vào các export thực tế từ `ai-types.md` và dependency đã khai báo trong `package.json`. Nghiêm cấm bịa ra phương thức không tồn tại. Mã nguồn sinh ra phải đầy đủ, có kiểu dữ liệu chặt chẽ và sẵn sàng chạy ngay («Copy-Paste Ready») mà không có phần giữ chỗ (placeholders).
+
+- **Khóa phạm vi nghiêm ngặt (Strict Scope Lock)**
+  AI thực hiện chính xác và duy nhất những gì được yêu cầu trong nhiệm vụ, không vượt ra ngoài phạm vi component hoặc package mục tiêu. Nghiêm cấm tự ý tái cấu trúc mã (refactoring) hoặc chạy các lệnh build không được yêu cầu.
+
+- **Phân tán quy tắc & Lưu giữ kinh nghiệm**
+  Các quy tắc và quyết định kiến trúc được mô tả ở cấp độ từng package riêng biệt, đồng thời cơ chế bộ nhớ cục bộ (`ai-memory.md`) giúp ghi lại các chỉ dẫn quan trọng của lập trình viên để tránh lặp lại lỗi trong các phiên làm việc sau.
+
+- **Tự kiểm tra bắt buộc (Self-Audit)**
+  Trước khi hoàn thành nhiệm vụ, AI bắt buộc phải rà soát từng dòng mã đã thay đổi để đảm bảo tuân thủ 100% tất cả các tiêu chuẩn trong `ai-prompt.md`.
+
+## So sánh cách đặt yêu cầu: Khi không có AIDD vs Khi có AIDD
+
+Dưới đây là minh họa trực quan về sự khác biệt khi giao việc cho AI giữa phương pháp thông thường và hệ sinh thái `dxt-ui`.
+
+### Yêu cầu KHI KHÔNG CÓ cơ sở hạ tầng AIDD (Phương pháp thông thường)
+
+Lập trình viên liên tục phải mất thời gian viết các prompt dài hàng trang, sao chép thủ công hàng chục đoạn mã và nhắc lại các quy tắc kiến trúc:
+
+```text
+«Hãy tạo component Vue 3 thông báo D1Notification.
+CHÚ Ý: bắt buộc dùng <script setup lang="ts">, tuyệt đối không dùng any!
+Props phải định kiểu qua TypeScript interface, emits cũng phải có interface chặt chẽ.
+Đặt tên class theo chuẩn BEM, class gốc là d1-notification.
+Đây là mixin SCSS từ package @dxtmisha/styles của chúng tôi (dán 200 dòng SCSS).
+Đây là danh sách token màu (dán JSON). Không dùng inline style!
+Để quản lý logic hãy dùng constructor từ @dxtmisha/constructor (dán 150 dòng mã ví dụ).
+Đừng quên trạng thái skeleton! Đây là quy tắc cho skeleton (dán thêm tệp nữa).
+Và nhớ: khoảng cách icon phải là sm, không phải md như lần trước bạn làm sai!
+Để hiển thị thông báo dùng composable useSnackbar từ functional, đây là chữ ký hàm...»
+```
+
+- **Kết quả:** Tiêu tốn lượng lớn token ngữ cảnh, dễ trôi thông tin, nguy cơ ảo giác cao, phát sinh nhiều lỗi và phải sửa thủ công nhiều lần.
+
+### Yêu cầu KHI CÓ cơ sở hạ tầng AIDD (Hệ sinh thái dxt-ui)
+
+Nhờ khả năng tự động tạo `ai-prompt.md`, `ai-types.md`, `ai-resources/` và bộ nhớ cục bộ `ai-memory.md`, lập trình viên chỉ cần diễn đạt yêu cầu ngắn gọn trong một câu:
+
+```text
+«Tạo component D1Notification trong package @dxtmisha/d1»
+```
+
+- **Kết quả:**
+  - AI tự động nắm vững toàn bộ tiêu chuẩn BEM, SCSS và Vue Style Guide từ `ai-prompt.md`.
+  - AI tự động đọc các ràng buộc và kinh nghiệm đã lưu từ `packages/d1/ai-memory.md`.
+  - AI mở `ai-resources/colors-and-palettes.md` và `ai-resources/skeleton.md` theo nhu cầu dựa trên trigger trong `Mandatory Rules`.
+  - AI tạo ra mã nguồn sạch sẽ, có kiểu chặt chẽ và sẵn sàng sử dụng ngay («Copy-Paste Ready»).
+  - **Dễ dàng điều chỉnh nhanh:** Ngay cả khi mô hình đôi lúc mắc lỗi nhỏ, việc chỉnh sửa trở nên đơn giản và nhanh chóng hơn rất nhiều: lập trình viên không cần giải thích lại toàn bộ kiến trúc hay dán mã thư viện — chỉ cần một câu nhắc ngắn gọn hoặc lệnh «Запомни: ...» / «Remember: ...» là AI lập tức sửa đổi chính xác và lưu kinh nghiệm cho các phiên sau.

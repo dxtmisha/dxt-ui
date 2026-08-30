@@ -1,6 +1,6 @@
 import {Meta} from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/vi/scripts/# Lệnh/dxt-package - Khởi tạo Cấu trúc Package'/>
+<Meta title='@dxtmisha/vi/scripts/7. Lệnh/dxt-package - Khởi tạo Cấu trúc Package'/>
 
 # dxt-package
 
@@ -10,13 +10,13 @@ Lệnh `dxt-package` tự động hóa việc khởi tạo cấu trúc package m
 
 - **Tự động Quét Thư mục**: Tự động quét thư mục cơ sở được định cấu hình (mặc định là `packages/`) và xác định các thư mục package trống cần được khởi tạo.
 - **Tạo khung dựa trên mẫu**: Hỗ trợ áp dụng các mẫu cụ thể để tùy chỉnh quá trình tạo, điều chỉnh cấu trúc khung dựa trên `type` của package được cung cấp.
-- **Cấu hình Linh hoạt**: Cho phép ghi đè loại package mặc định, các mẫu và thư mục cơ sở đích thông qua các đối số dòng lệnh.
+- **Cấu hình Linh hoạt**: Cho phép ghi đè loại package mặc định, các mẫu và thư mục cơ sở đích thông qua các tùy chọn dòng lệnh.
 
 ## Cách thức hoạt động?
 
 Quy trình khởi tạo package giúp đơn giản hóa việc tạo các package mới:
 
-1. Script đọc các đối số được cung cấp để xác định `type` của package (mặc định là `library`), các `templates` và thư mục đích `dir`.
+1. Script đọc các tùy chọn được cung cấp để xác định `type` của package (mặc định là `library`), các `templates` và thư mục đích `dir`.
 2. Nó quét thư mục đích để tìm bất kỳ thư mục trống nào (các thư mục không chứa phần tử con).
 3. Đối với mỗi thư mục trống được tìm thấy, nó khởi tạo một phiên bản `PackageInitItem`, truyền vào đường dẫn package, loại và các mẫu.
 4. Sau đó, hệ thống xử lý các cấu hình này để tạo ra các tệp bắt buộc và cấu trúc môi trường cho package, giúp nó sẵn sàng để phát triển.
@@ -30,18 +30,20 @@ npx dxt-package
 
 Để chỉ định một loại package tùy chỉnh (ví dụ: `vue`), hãy chạy:
 ```bash
-npx dxt-package vue
+npx dxt-package --type vue
 ```
 
-Để chỉ định loại tùy chỉnh và áp dụng các mẫu cụ thể, hãy truyền chúng dưới dạng đối số:
+Để áp dụng các mẫu cụ thể, hãy kết hợp chúng với loại:
 ```bash
-npx dxt-package vue "template1,template2"
+npx dxt-package --type vue --templates "template1,template2"
 ```
 
-Bạn cũng có thể chỉ định một thư mục cơ sở tùy chỉnh làm đối số thứ ba:
+Bạn cũng có thể chỉ định một thư mục cơ sở tùy chỉnh:
 ```bash
-npx dxt-package vue "template1" "packages/custom-dir"
+npx dxt-package --type vue --templates "template1" --dir packages/custom-dir
 ```
+
+Chạy `npx dxt-package --help` để in ra danh sách đầy đủ các tùy chọn khả dụng.
 
 ## Cấu trúc được tạo
 

@@ -5,6 +5,7 @@ import {
   UI_MODULES
 } from '../../config'
 
+import { PropertiesConfig } from '../Properties/PropertiesConfig'
 import { PropertiesFile } from '../Properties/PropertiesFile'
 import { LibraryAiMcp } from './LibraryAiMcp'
 import { LibraryAiPromptItem } from './LibraryAiPromptItem'
@@ -102,7 +103,6 @@ Consolidated documentation, architectural guidelines, and mandatory rules for th
     }
 
     console.log('end')
-    process.exit(0)
   }
 
   /**
@@ -187,14 +187,14 @@ ${globalPromptText}
    * Рекурсивно сканирует директории для сбора экземпляров LibraryAiPromptItem.
    * @param dirs directories to scan / директории для сканирования
    * @param path current path segments / текущие сегменты пути
-   * @param limit recursion depth limit / лимит глубины рекурсии
+   * @param limit recursion depth limit (defaults to promptScanDepth config) / лимит глубины рекурсии (по умолчанию из конфигурации promptScanDepth)
    * @returns list of prompt items / список элементов промпта
    * @protected
    */
   protected getList(
     dirs: string[] = this.dirs,
     path: string[] = [],
-    limit = 4
+    limit = PropertiesConfig.getPromptScanDepth()
   ): LibraryAiPromptItem[] {
     if (limit <= 0) {
       return []

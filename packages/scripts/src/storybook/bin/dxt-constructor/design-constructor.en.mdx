@@ -1,6 +1,6 @@
 import {Meta} from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/en/scripts/# Commands/dxt-constructor - Component Constructor Scaffolding'/>
+<Meta title='@dxtmisha/en/scripts/7. Commands/dxt-constructor - Component Constructor Scaffolding'/>
 
 # dxt-constructor
 
@@ -16,7 +16,7 @@ The `dxt-constructor` command provides automated generation of core constructor 
 
 The constructor scaffolding workflow automates component integration:
 
-1. The script identifies the targeted component name passed as an argument, or automatically scans the configured system directory for all component names.
+1. The script identifies the targeted component name passed via the `--name` option, or automatically scans the configured system directory for all component names.
 2. It clears the shared `PropertiesCache` to ensure the generation uses completely up-to-date configuration states.
 3. For each component, it invokes the `DesignConstructor` generator to construct properties JSON, properties TypeScript types, basic types, styles, code files, and entry index structures.
 4. It loops through all component directories to collect their individual styles and compiles them into a centralized `@forward` rule set.
@@ -31,10 +31,12 @@ To scaffold all component constructors in the workspace, run:
 npx dxt-constructor
 ```
 
-To target a specific component (e.g. `Button`), specify its name as an argument:
+To target a specific component (e.g. `Button`), specify its name via the `--name` (`-n`) option:
 ```bash
-npx dxt-constructor Button
+npx dxt-constructor --name Button
 ```
+
+Run `npx dxt-constructor --help` to print the full list of available options.
 
 ## Generated File Structure
 

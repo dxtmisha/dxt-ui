@@ -1,0 +1,114 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/3. Tạo gói (Package Creation)'/>
+
+# Hướng dẫn Khởi tạo Gói Monorepo (Package Creation)
+
+Trong hệ thống thiết kế **DXT UI**, quy trình tạo các gói (package) và thư viện mới trong monorepo được tự động hóa hoàn toàn thông qua công cụ dòng lệnh `dxt-package`. Lập trình viên không còn phải tự tay cấu hình quy trình biên dịch, viết tệp TypeScript, tạo `package.json` hay kết nối mô-đun mới vào Storybook.
+
+Lệnh `dxt-package` (tệp thực thi `bin/design-package.ts`, lớp `PackageInit`) quét monorepo để tìm các thư mục trống và thiết lập ngay một không gian làm việc hoàn chỉnh với tất cả các tệp và tích hợp cần thiết chỉ trong chưa đầy một giây.
+
+## Các ưu điểm vượt trội
+
+### 1. Môi trường chuẩn hóa loại bỏ công việc lặp lại (Zero Boilerplate)
+Thay vì phải tạo hàng chục tệp cấu hình thủ công, lập trình viên chỉ cần tạo duy nhất một thư mục trống trong `packages/`. Tiện ích tự động tạo toàn bộ cơ sở hạ tầng: TypeScript, Vite, các tập lệnh xây dựng, kiểm thử và phát hành.
+
+### 2. Tự động tích hợp vào Storybook
+Khi một gói được khởi tạo, tập lệnh sẽ tự động cập nhật cấu hình `.storybook/main.ts` trong `packages/storybook`, thêm đường dẫn tài liệu MDX và câu chuyện của gói mới. Bạn có thể xem ngay trên Storybook mà không cần chỉnh sửa cấu hình thủ công.
+
+### 3. Tích hợp sẵn chuẩn AI và Định kiểu nghiêm ngặt
+Mỗi gói mới đều có sẵn cấu trúc `ai-resources/`, tệp `ai-prompt.md`, `ai-memory.md` và điểm xuất chuẩn `src/library.ts` với định kiểu TypeScript chặt chẽ.
+
+## Quy trình từng bước (Những việc cần làm)
+
+### Bước 1. Tạo thư mục trống cho gói
+Bên trong thư mục `packages/`, tạo một thư mục trống với tên gói theo chuẩn kebab-case (ví dụ: `media-player` hoặc `notifications`):
+
+```bash
+mkdir packages/media-player
+```
+
+### Bước 2. Khởi chạy lệnh tạo gói
+Chạy lệnh `dxt-package` trong terminal của bạn:
+
+```bash
+npx dxt-package
+```
+
+Trình tạo sẽ tự động phát hiện thư mục trống và giải nén toàn bộ các tệp cần thiết:
+
+```text
+Initializing package of type: library with templates: undefined
+Package init in: packages/media-player
+Update storybook...
+```
+
+### Bước 3. Kiểm tra cấu trúc được tạo
+Bên trong thư mục mới, toàn bộ môi trường phát triển đã sẵn sàng:
+
+```text
+packages/media-player/
+├── package.json               # Tệp kê khai với dependencies, build scripts và exports
+├── tsconfig.json              # Cấu hình TypeScript cơ sở
+├── tsconfig.app.json          # Cấu hình đóng gói ứng dụng
+├── tsconfig.node.json         # Cấu hình môi trường Node.js
+├── vite.config.ts             # Cấu hình xây dựng thư viện Vite
+├── .gitignore                 # Bỏ qua tệp cục bộ và bản dựng
+├── README.md                  # Tài liệu hướng dẫn gói
+├── LICENSE                    # Giấy phép dự án (MIT)
+├── CHANGELOG.md               # Nhật ký thay đổi phiên bản
+├── ai-prompt.md               # Ngữ cảnh hệ thống dành cho AI
+├── ai-memory.md               # Bộ nhớ cục bộ dành cho trợ lý AI
+├── src/
+│   ├── library.ts             # Điểm xuất chính (barrel export)
+│   ├── config.ts              # Cấu hình và hằng số của gói
+│   └── types.ts               # Kiểu dữ liệu và giao diện (interfaces)
+```
+
+### Bước 4. Các tùy chọn lệnh (Loại gói và Mẫu tùy chỉnh)
+`dxt-package` hỗ trợ các tùy chọn dòng lệnh linh hoạt:
+
+- **Mặc định (Thư viện TypeScript)**:
+```bash
+npx dxt-package
+```
+
+- **Chỉ định loại gói (ví dụ: vue)**:
+```bash
+npx dxt-package --type vue
+```
+
+- **Áp dụng mẫu tùy chỉnh**:
+```bash
+npx dxt-package --type vue --templates "template1,template2"
+```
+
+- **Chỉ định thư mục cơ sở tùy chỉnh**:
+```bash
+npx dxt-package --dir custom-packages
+```
+
+Các tùy chọn khả dụng:
+
+- `--type` (`-t`): Loại mẫu gói. Mặc định là `library`.
+- `--templates`: Thư mục chứa các mẫu gói.
+- `--dir` (`-d`): Thư mục gói đích. Mặc định là `packages`.
+
+Chạy `npx dxt-package --help` để in ra danh sách đầy đủ các tùy chọn khả dụng.
+
+## Tích hợp gói tự động
+
+- **Storybook (`.storybook/main.ts`)**: Tự động thêm `../../${name}/src/**/*.mdx` và `../../${name}/src/**/*.stories.@(js|jsx|mjs|ts|tsx)`.
+- **Tên gói và Tiền tố**: Tự động tạo tên định dạng `@dxtmisha/<name>`.
+- **Các tập lệnh tiêu chuẩn trong `package.json`**:
+  - `"dev"`: Khởi chạy máy chủ phát triển Vite.
+  - `"build"`: Biên dịch gói thư viện (`vite build`).
+  - `"test"`: Chạy kiểm thử tự động với Vitest.
+  - `"prepublishOnly"`: Tự động biên dịch lại trước khi phát hành.
+  - `"publish-to-npm"`: Xuất bản lên npm registry công khai (`npm publish --access public`).
+
+## Ưu điểm so với tạo thủ công
+
+- **Khởi tạo tức thì**: Toàn bộ quá trình diễn ra trong chưa đầy 1 giây.
+- **Độ chính xác kiến trúc 100%**: Loại bỏ hoàn toàn lỗi cấu hình Vite, TypeScript và xuất tệp.
+- **Tính gắn kết monorepo**: Tự động đăng ký Storybook và đồng bộ tiêu chuẩn quản lý phiên bản.

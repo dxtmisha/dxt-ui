@@ -1,6 +1,6 @@
 import {Meta} from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/vi/scripts/# Lệnh/dxt-constructor - Tạo Khung Bộ Dựng Thành Phần'/>
+<Meta title='@dxtmisha/vi/scripts/7. Lệnh/dxt-constructor - Tạo Khung Bộ Dựng Thành Phần'/>
 
 # dxt-constructor
 
@@ -16,7 +16,7 @@ Lệnh `dxt-constructor` cung cấp khả năng tự động tạo sinh các t�
 
 Quy trình tạo khung bộ dựng tự động hóa quá trình tích hợp các thành phần:
 
-1. Tập lệnh nhận dạng tên thành phần mục tiêu được truyền làm đối số hoặc tự động quét thư mục hệ thống đã được cấu hình để thu thập tất cả tên thành phần.
+1. Tập lệnh nhận dạng tên thành phần mục tiêu được truyền qua tùy chọn `--name` hoặc tự động quét thư mục hệ thống đã được cấu hình để thu thập tất cả tên thành phần.
 2. Tiến hành xóa bộ nhớ đệm thuộc tính dùng chung `PropertiesCache` để đảm bảo quá trình tạo sinh sử dụng các trạng thái cấu hình hoàn toàn cập nhật mới nhất.
 3. Đối với mỗi thành phần, nó triệu gọi trình tạo `DesignConstructor` để xây dựng cấu trúc thuộc tính JSON, các kiểu dữ liệu TypeScript cho thuộc tính, kiểu dữ liệu cơ bản, phong cách, các tệp mã và cấu trúc tệp chỉ mục.
 4. Lặp qua tất cả thư mục thành phần để thu thập phong cách riêng biệt của từng thành phần và biên dịch chúng thành một bộ quy tắc `@forward` tập trung.
@@ -31,10 +31,12 @@ Toàn bộ quy trình sẽ không thiết lập ràng buộc với những cấu
 npx dxt-constructor
 ```
 
-Để nhắm mục tiêu vào một thành phần cụ thể (ví dụ: `Button`), hãy truyền tên thành phần đó làm đối số:
+Để nhắm mục tiêu vào một thành phần cụ thể (ví dụ: `Button`), hãy truyền tên thành phần đó qua tùy chọn `--name` (`-n`):
 ```bash
-npx dxt-constructor Button
+npx dxt-constructor --name Button
 ```
+
+Chạy `npx dxt-constructor --help` để in ra danh sách đầy đủ các tùy chọn khả dụng.
 
 ## Cấu trúc tệp được tạo sinh
 

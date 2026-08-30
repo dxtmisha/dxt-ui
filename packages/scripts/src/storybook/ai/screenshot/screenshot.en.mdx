@@ -1,0 +1,51 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/2. AI/7. Visual Context (Screenshots)' />
+
+# Visual Context (ai-screenshot)
+
+One of the most powerful capabilities of the AIDD infrastructure in `dxt-ui` is providing artificial intelligence not only with textual TypeScript contracts, but also with the **visual context** of the actual UI. This enables multimodal AI models to inspect component layouts, padding, elevation, and design token applications visually.
+
+This functionality is centered around the `ai-screenshot/` directory, populated automatically by the `dxt-screenshot` command (backed by the `DesignScreenshot` class).
+
+## How It Works Under the Hood
+
+The visual context generator operates fully autonomously via the following workflow:
+
+- **1. Starting the Dev Server:** The script launches the package's local development server (`npm run dev`) via a child process.
+- **2. Intercepting the Local URL:** The utility analyzes console output (stdout) in real time to capture the active host address (e.g., `http://localhost:5173`).
+- **3. Launching Headless Browser:** Once the URL is acquired, a headless browser instance navigates to the target page.
+- **4. Capturing UI State:** The browser takes a high-resolution full-page screenshot saved as optimized `.webp` images, extracts the rendered DOM tree, and retrieves the applied CSS styles.
+- **5. Clean Teardown:** The script terminates the dev server process gracefully and persists all artifacts into the `ai-screenshot/` folder.
+
+## Contents of the ai-screenshot/ Directory
+
+Upon completion, the package root contains:
+
+- **`screenshot-*.webp`** — High-resolution, lightweight WebP image snapshots of the component interface.
+- **`screenshot-code.html`** — The complete rendered DOM tree with all classes and attributes.
+- **`screenshot-styles.css`** — The computed CSS stylesheet applied to the rendered elements.
+
+## Integration into System Prompt & MCP
+
+When executing `dxt-prompt`, paths to all files in `ai-screenshot/` are automatically embedded into the package entry in `ai-prompt.md`:
+
+```markdown
+## Component Visual References (Screenshots)
+- 'node_modules/@dxtmisha/d1/ai-screenshot/screenshot-8_1.webp'
+- 'node_modules/@dxtmisha/d1/ai-screenshot/screenshot-code.html'
+- 'node_modules/@dxtmisha/d1/ai-screenshot/screenshot-styles.css'
+```
+
+Additionally, `DesignTypesMcp` converts screenshots into multimedia resources for the Model Context Protocol with accurate MIME types (`image/webp`, `text/html`, `text/css`), enabling multimodal agents to query visual assets dynamically.
+
+## Running the Generator
+
+- **Via npm script in the package root:**
+  ```bash
+  npm run screenshot
+  ```
+- **Via npx CLI:**
+  ```bash
+  npx dxt-screenshot
+  ```

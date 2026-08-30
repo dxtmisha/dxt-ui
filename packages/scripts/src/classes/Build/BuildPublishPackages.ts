@@ -1,33 +1,30 @@
+import { promisify } from 'node:util'
+import { execFile } from 'node:child_process'
+
 import { PropertiesFile } from '../Properties/PropertiesFile'
 import { PackageFile } from '../Package/PackageFile'
 import { run } from '../../functions/run'
 import { UI_DIR_PACKAGES } from '../../config'
 
-/** Path to publish log cache file / Путь к файлу кэша лога публикации */
-const UI_PUBLISH_LOG_FILE = ['.', 'logs', 'ui-publish.log.json']
+const execFileAsync = promisify(execFile)
 
 /**
  * Orchestrator for scanning and publishing changed packages to the npm registry.
- * Compares current package versions against published log cache and publishes updated packages.
+ * Compares current package versions against published versions in npm and publishes updated packages.
  *
  * Оркестратор для сканирования и публикации измененных пакетов в реестр npm.
- * Сравнивает текущие версии пакетов с логом публикаций и публикует обновленные пакеты.
+ * Сравнивает текущие версии пакетов с опубликованными версиями в npm и публикует обновленные пакеты.
  */
 export class BuildPublishPackages {
-  /** Map of cached published package versions / Карта кэшированных версий опубликованных пакетов */
-  protected readonly log: Record<string, string>
-
   /**
-   * Constructor initializes packages directory path and loads publish log.
+   * Constructor initializes packages directory path.
    *
-   * Конструктор инициализирует путь к директории пакетов и загружает лог публикаций.
+   * Конструктор инициализирует путь к директории пакетов.
    * @param path packages directory path / путь к директории пакетов
    */
   constructor(
     protected readonly path: string = UI_DIR_PACKAGES
-  ) {
-    this.log = PropertiesFile.readFile(UI_PUBLISH_LOG_FILE) ?? {}
-  }
+  ) { }
 
   /**
    * Scans the packages directory and publishes each package that has a new version.
@@ -48,20 +45,15 @@ export class BuildPublishPackages {
         && !packageFile.isNoPublish()
       ) {
         if (
-          this.log[packageFile.getName()] === undefined
-          || (
-            this.isUpdate(packageFile)
-            && await run(packageFile, packageFile.getCodePublish(), true, true)
-          )
+          await this.isUpdate(packageFile)
+          && await run(packageFile, packageFile.getCodePublish(), true, true)
         ) {
-          this.updateLog(packageFile)
           changed++
         }
       }
     }
 
     if (changed > 0) {
-      this.saveLog()
       console.info(`Publish packages changed: ${changed}`)
     } else {
       console.info('Publish packages - no changes')
@@ -73,41 +65,33 @@ export class BuildPublishPackages {
    *
    * Проверяет, нужно ли публиковать пакет.
    * @param packageFile package file object / объект файла пакета
-   * @returns true if version differs from log cache / true, если версия отличается от кэша лога
+   * @returns promise resolving to true if package is new or has a newer version / промис, возвращающий true, если пакет новый или имеет более новую версию
    */
-  protected isUpdate(packageFile: PackageFile): boolean {
-    return !packageFile.isVersionConsistency(
-      this.getVersionLog(packageFile.getName())
-    )
+  protected async isUpdate(packageFile: PackageFile): Promise<boolean> {
+    const publishedVersion = await this.getNpmVersion(packageFile.getName())
+
+    if (publishedVersion === undefined) {
+      return true
+    }
+
+    return !packageFile.isVersionConsistency(publishedVersion)
   }
 
   /**
-   * Returns the cached version of the package from the publish log.
+   * Returns the latest published version of the package from the npm registry.
    *
-   * Возвращает кэшированную версию пакета из лога публикации.
+   * Возвращает последнюю опубликованную версию пакета из реестра npm.
    * @param name package name / имя пакета
-   * @returns cached version string / строка кэшированной версии
+   * @returns promise resolving to published version string or undefined if not published / промис, возвращающий строку опубликованной версии или undefined, если не опубликован
    */
-  protected getVersionLog(name: string): string {
-    return this.log?.[name] ?? '0.0.0'
-  }
+  protected async getNpmVersion(name: string): Promise<string | undefined> {
+    try {
+      const { stdout } = await execFileAsync('npm', ['view', name, 'version'])
+      const version = stdout.trim()
 
-  /**
-   * Updates the publish log with the current package version in memory.
-   *
-   * Обновляет лог публикации текущей версией пакета в памяти.
-   * @param packageFile package file object / объект файла пакета
-   */
-  protected updateLog(packageFile: PackageFile): void {
-    this.log[packageFile.getName()] = packageFile.getVersion()
-  }
-
-  /**
-   * Saves the publish log to a file.
-   *
-   * Сохраняет лог публикации в файл.
-   */
-  protected saveLog(): void {
-    PropertiesFile.writeByPath(UI_PUBLISH_LOG_FILE, this.log)
+      return version || undefined
+    } catch {
+      return undefined
+    }
   }
 }

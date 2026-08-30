@@ -1,0 +1,71 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/6. Phát hành gói (Publish Packages)'/>
+
+# Hướng dẫn Phát hành Gói lên npm (Publish Packages)
+
+Trong hệ thống thiết kế **DXT UI**, quy trình phân phối và phát hành các gói monorepo lên registry npm được tự động hóa hoàn toàn thông qua công cụ dòng lệnh `dxt-build-publish-packages`. Lập trình viên không còn phải kiểm tra phiên bản thủ công trên npm, di chuyển vào từng thư mục gói riêng lẻ hoặc lo lắng về xung đột phiên bản phát hành.
+
+Công cụ tự động quét thư mục các gói, kiểm tra bất đồng bộ phiên bản hiện tại trên registry npm công khai và xuất bản an toàn chỉ những gói đã được cập nhật.
+
+## Các ưu điểm vượt trội
+
+### 1. Phân tích vi sai tự động với npm Registry
+Trước khi phát hành, `dxt-build-publish-packages` thực hiện lệnh kiểm tra `npm view <package> version` cho từng gói. Chỉ những gói có phiên bản cục bộ mới hơn phiên bản trên npm (hoặc các gói xuất bản lần đầu) mới được phát hành.
+
+### 2. Phát hành không xung đột (Zero Conflicts)
+Công cụ ngăn chặn hoàn toàn các lỗi `E403` / `E409` (Không thể ghi đè phiên bản đã tồn tại) bằng cách loại trừ triệt để việc xuất bản lại các gói không thay đổi.
+
+### 3. Tự động cách ly các gói nội bộ và riêng tư
+Bộ điều phối tự động bỏ qua các gói riêng tư (`"private": true`) cũng như các gói được gắn cờ `"ui-no-publish": true`.
+
+## Quy trình từng bước (Những việc cần làm)
+
+### Bước 1. Thiết lập cấu hình package.json
+Trong tệp `package.json` của gói, đảm bảo tên gói, phiên bản và tập lệnh phát hành được cấu hình chính xác:
+
+```json
+{
+  "name": "@dxtmisha/example-package",
+  "version": "1.0.1",
+  "scripts": {
+    "publish-to-npm": "npm publish --access public"
+  }
+}
+```
+
+### Bước 2. Nâng cấp phiên bản gói (Bump Version)
+Khi các thay đổi mã nguồn đã sẵn sàng phát hành, tăng số phiên bản trong tệp `package.json` của gói mục tiêu (ví dụ: từ `1.0.0` lên `1.0.1`).
+
+### Bước 3. Khởi chạy lệnh phát hành
+Chạy lệnh `dxt-build-publish-packages` trong terminal từ thư mục gốc của monorepo:
+
+```bash
+npx dxt-build-publish-packages
+```
+
+Bộ điều phối sẽ kiểm tra registry npm và chỉ xuất bản các gói đã được cập nhật:
+
+```text
+Publish packages(14)...
+Publish packages changed: 1
+```
+
+Nếu tất cả các gói trong monorepo đều khớp với phiên bản trên npm, sẽ không có hành động phát hành nào được thực hiện:
+
+```text
+Publish packages(14)...
+Publish packages - no changes
+```
+
+## Các cờ cấu hình trong package.json
+
+- **`ui-no-publish` (boolean)**: Nếu đặt là `true`, gói sẽ bị loại trừ khỏi quy trình phát hành bất kể phiên bản có thay đổi.
+- **`private` (boolean)**: Các gói riêng tư sẽ tự động bị bỏ qua.
+- **`publish-to-npm` (script)**: Nếu được khai báo trong `scripts`, bộ điều phối sẽ thực thi `npm run publish-to-npm`. Ngược lại, lệnh dự phòng mặc định là `npm publish --access public`.
+
+## Ưu điểm so với phát hành thủ công
+
+- **An toàn phát hành tuyệt đối**: Loại bỏ sai sót của con người và lỗi phát hành nhầm gói.
+- **Phát hành hàng loạt chỉ với một câu lệnh**: Cho phép phát hành cập nhật đồng thời hàng chục gói monorepo.
+- **Tích hợp liền mạch CI/CD**: Hoàn hảo cho các luồng tự động hóa khi hợp nhất vào nhánh chính (main).

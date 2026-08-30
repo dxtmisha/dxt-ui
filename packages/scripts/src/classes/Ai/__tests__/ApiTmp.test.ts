@@ -21,12 +21,22 @@ describe('ApiTmp', () => {
     expect(result2).toBe('Please read the following file as it contains the prompt instructions: @./ai-tmp/Prompt-2.txt')
   })
 
-  it('cleans up temporary directory via PropertiesFile.removeDir', () => {
+  it('cleans up only the temporary files created by the instance', () => {
+    vi.spyOn(PropertiesFile, 'writeByPath').mockImplementation(() => {})
+    const removeFileSpy = vi.spyOn(PropertiesFile, 'removeFile').mockImplementation(() => {})
     const removeDirSpy = vi.spyOn(PropertiesFile, 'removeDir').mockImplementation(() => {})
 
     const apiTmp = new ApiTmp()
+    const result = apiTmp.createFile('Instruction to remove')
+    const fileName = result.slice(result.indexOf('@') + 1)
+
     apiTmp.removeFile()
 
-    expect(removeDirSpy).toHaveBeenCalledWith('./ai-tmp')
+    expect(removeFileSpy).toHaveBeenCalledWith(fileName)
+    expect(removeDirSpy).not.toHaveBeenCalled()
+
+    removeFileSpy.mockClear()
+    apiTmp.removeFile()
+    expect(removeFileSpy).not.toHaveBeenCalled()
   })
 })

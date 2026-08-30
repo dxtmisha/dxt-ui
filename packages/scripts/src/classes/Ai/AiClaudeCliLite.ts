@@ -1,19 +1,19 @@
 import { forEach } from '@dxtmisha/functional-basic'
-import { exec } from 'node:child_process'
+import { execFile } from 'node:child_process'
 
 import { AiAbstract } from './AiAbstract'
 import { ApiTmp } from './ApiTmp'
 
 /**
  * Claude AI implementation via CLI.
- * Uses system shell to execute Claude CLI commands.
+ * Executes Claude CLI commands directly without a system shell.
  *
  * Реализация Claude AI через CLI.
- * Использует системную оболочку для выполнения команд Claude CLI.
+ * Выполняет команды Claude CLI напрямую, без системной оболочки.
  *
  * Responsibilities / Ответственности:
  * - Construct CLI command / Сформировать CLI команду
- * - Execute command via shell / Выполнить команду через оболочку
+ * - Execute command without shell / Выполнить команду без оболочки
  * - Return stdout as result / Вернуть stdout как результат
  *
  * Notes / Примечания:
@@ -76,13 +76,15 @@ export class AiClaudeCliLite extends AiAbstract<{}> {
         this.tmp.createFile(contents)
       ].join('\n\n##################\n\n')
 
-      const escapedPrompt = fullPrompt.replace(/"/g, '\\"')
-      const modelFlag = model ? ` --model "${model}"` : ''
-      const command = `claude "${escapedPrompt} -- Output strictly the code/answer. No preamble, no chatter, no reasoning" ${modelFlag}`
+      const commandArguments = [
+        `${fullPrompt} -- Output strictly the code/answer. No preamble, no chatter, no reasoning`,
+        ...(model ? ['--model', model] : [])
+      ]
 
       try {
-        exec(
-          command,
+        execFile(
+          'claude',
+          commandArguments,
           {
             encoding: 'utf8',
             env: {

@@ -1,6 +1,6 @@
 import {Meta} from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/en/scripts/# Commands/dxt-package - Package Structure Initialization'/>
+<Meta title='@dxtmisha/en/scripts/7. Commands/dxt-package - Package Structure Initialization'/>
 
 # dxt-package
 
@@ -10,13 +10,13 @@ The `dxt-package` command automates the initialization of a new package's struct
 
 - **Automated Directory Scanning**: Automatically scans the configured base directory (defaults to `packages/`) and identifies empty package folders that require initialization.
 - **Template-Based Scaffolding**: Supports applying specific templates to customize the generation process, adapting the scaffolded structure based on the provided package `type`.
-- **Flexible Configuration**: Allows overriding the default package type, templates, and target base directory via command-line arguments.
+- **Flexible Configuration**: Allows overriding the default package type, templates, and target base directory via command-line options.
 
 ## How does it work?
 
 The package initialization workflow streamlines the creation of new packages:
 
-1. The script reads the provided arguments to determine the package `type` (defaulting to `library`), `templates`, and target `dir`.
+1. The script reads the provided options to determine the package `type` (defaulting to `library`), `templates`, and target `dir`.
 2. It scans the target directory to find any empty folders (directories with no children).
 3. For each empty directory found, it initializes a `PackageInitItem` instance, passing the package path, type, and templates.
 4. The system then processes these configurations to scaffold the required files and environment structure for the package, making it ready for development.
@@ -30,18 +30,20 @@ npx dxt-package
 
 To specify a custom package type (e.g., `vue`), run:
 ```bash
-npx dxt-package vue
+npx dxt-package --type vue
 ```
 
-To specify a custom type and apply specific templates, pass them as arguments:
+To apply specific templates, combine them with the type:
 ```bash
-npx dxt-package vue "template1,template2"
+npx dxt-package --type vue --templates "template1,template2"
 ```
 
-You can also specify a custom base directory as the third argument:
+You can also specify a custom base directory:
 ```bash
-npx dxt-package vue "template1" "packages/custom-dir"
+npx dxt-package --type vue --templates "template1" --dir packages/custom-dir
 ```
+
+Run `npx dxt-package --help` to print the full list of available options.
 
 ## Generated Structure
 

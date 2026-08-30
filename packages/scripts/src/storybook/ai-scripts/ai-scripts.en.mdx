@@ -1,0 +1,109 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/2. AI Types and Prompts Generation'/>
+
+# AI Types & System Prompt Generation
+
+In the **DXT UI** ecosystem, preparing machine-readable context and training AI coding assistants is completely automated via two complementary CLI utilities: `dxt-types` (`design-types.ts`) and `dxt-prompt` (`design-prompt.ts`).
+
+These tools eliminate the manual burden of copying documentation, creating strictly typed, token-optimized code contracts and consolidated system rulebooks.
+
+## Key Advantages of Automation
+
+### 1. Zero Hallucinations via Pure Type Contracts
+The `dxt-types` command extracts TypeScript declaration files (`.d.ts`), strips private members and implementation details, and preserves strictly the public API. AI assistants rely exclusively on genuine library exports.
+
+### 2. Single Source of Truth
+The `dxt-prompt` command recursively traverses local packages and installed `node_modules` dependencies, compiles metadata, and writes `ai-prompt.md` in the monorepo root, initializing context automatically at the start of any AI session.
+
+### 3. Native Model Context Protocol (MCP) Support
+Both scripts automatically synthesize resource manifests (`ai-mcp-resources.json` and `ai-mcp-all-resources.json`), allowing modern AI coding assistants to connect via the MCP protocol.
+
+## Step-by-Step Guide (What to Do)
+
+### Part 1. Package Types and Profile Generation (`dxt-types`)
+
+#### Step 1.1. Run Type Generation in the Package Directory
+After adding or modifying functions, components, or interfaces, run inside the package folder:
+
+```bash
+npx dxt-types
+```
+
+The script automatically executes the following actions:
+- Compiles TypeScript declarations into an isolated temporary folder.
+- Strips internal implementation details, `private`, and `protected` members.
+- Optimizes JSDoc descriptions using AI, preserving critical architectural tags (`@example`, `@note`, `@warning`, `@remarks`, `@keywords`).
+- Generates the `ai-types.md` file containing compressed type contracts.
+- Synthesizes the library profile `ai-description.md` with the `## Mandatory Rules` block from `ai-resources/`.
+- Writes the resource specification `ai-mcp-resources.json`.
+
+```text
+DesignTypes: making AI types...
+DesignTypes: AI types saved.
+```
+
+#### Step 1.2. Fast Offline Save Without AI (`dxt-types-save`)
+If you need to assemble types from an existing cache without invoking AI APIs:
+
+```bash
+npx dxt-types-save
+```
+
+#### CLI Options for `dxt-types`:
+```bash
+npx dxt-types [--prompts DIR] [--dir DIR] [--dist DIR]
+```
+- **`--prompts` (`-p`)**: Path to local rule prompts (defaults to `ai-resources`).
+- **`--dir` (`-d`)**: Temporary directory for intermediate declarations (defaults to `ai-types-temp`).
+- **`--dist`**: Package compiled JS/DTS output folder (defaults to `dist`).
+
+### Part 2. Global Prompt Consolidation (`dxt-prompt`)
+
+#### Step 2.1. Run the System Prompt Generator
+From the monorepo root, run `dxt-prompt`:
+
+```bash
+npx dxt-prompt
+```
+
+The script builds the consolidated global context:
+- Recursively scans configured module directories (`packages/*`, `node_modules/@dxtmisha/*`).
+- Collects package descriptions (`ai-description.md`), guides (`ai-doc.md`), type links (`ai-types.md`), and screenshots (`ai-screenshot/`).
+- Merges the system role, AI Code Promise principles (`aiCodeGlobalPrompt`), and Vue Style Guide standards (`aiCodeVuePrompt`).
+- Embeds high-priority overrides from `ai-instruction.md` (if present).
+- Injects the mandatory final self-audit checklist (`Self-Audit`).
+- Saves the resulting `ai-prompt.md` in the project root.
+
+```text
+Generating AI prompt...
+end
+```
+
+#### Step 2.2. Generation with Consolidated MCP Registry
+To assemble the consolidated `ai-mcp-all-resources.json` resource manifest, add the `--mcp` (`-m`) option:
+
+```bash
+npx dxt-prompt --mcp
+```
+
+## Tool Architecture Under the Hood
+
+- **Type Generation Engine (`DesignTypes`)**:
+  - `DesignTypesBuild` — Manages temporary compilation of TypeScript declarations.
+  - `DesignTypesMake` — Sanitizes AST declarations and removes private entities.
+  - `DesignTypesAi` — Interacts with language models for JSDoc normalization.
+  - `DesignTypesPrompts` — Caches and parses domain rules from `ai-resources/`.
+  - `DesignTypesDescription` — Synthesizes technical overviews in `ai-description.md`.
+  - `DesignTypesMcp` — Registers MIME-typed resources in `ai-mcp-resources.json`.
+
+- **Prompt Aggregation Engine (`LibraryAiPrompt`)**:
+  - `LibraryAiPromptItem` — Scans individual packages and gathers metadata.
+  - `LibraryAiMcp` — Aggregates the global `ai-mcp-all-resources.json` resource registry.
+  - `LibraryAiWiki` — Synchronizes MDX documentation structures.
+
+## Advantages Over Manual Context Management
+
+- **Automated Synchronization**: AI context always matches active source code accurately.
+- **Up to 80% Token Savings**: Type sanitization and lazy loading prevent context window exhaustion.
+- **Tool-Agnostic Operation**: Generated `ai-prompt.md` operates uniformly across Antigravity, Cursor, Windsurf, Claude Code, and GitHub Copilot.

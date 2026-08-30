@@ -105,6 +105,14 @@ class TestDesignTypesMake extends DesignTypesMake {
   public testToOneFile(list: any[]) {
     return this.toOneFile(list)
   }
+
+  public testGetAiTypesConcurrency() {
+    return this.AI_TYPES_CONCURRENCY
+  }
+
+  public async testSaveListAi(files: any[], fullJsContent: string) {
+    return this.saveListAi(files, fullJsContent)
+  }
 }
 
 class TestDesignTypesMcp extends DesignTypesMcp {
@@ -372,6 +380,32 @@ describe('DesignTypes Subsystem', () => {
       expect(cleaned).toContain('export type A = string;')
     })
 
+    it('cleans content via AST with multiline and structural precision', () => {
+      const raw = [
+        'import { helper } from \'@dxtmisha/functional-basic\';',
+        'declare class Example {',
+        '  private configuration: {',
+        '    option: boolean;',
+        '  };',
+        '  protected execute(',
+        '    option: string',
+        '  ): void;',
+        '  public method(): string;',
+        '}',
+        'export { extra } from \'./extra\';',
+        'export type A = string;'
+      ].join('\n')
+
+      const cleaned = make.testCleanContent(raw)
+
+      expect(cleaned).not.toContain('private configuration')
+      expect(cleaned).not.toContain('protected execute')
+      expect(cleaned).not.toContain('\'./extra\'')
+      expect(cleaned).toContain('@dxtmisha/functional-basic')
+      expect(cleaned).toContain('public method(): string;')
+      expect(cleaned).toContain('export type A = string;')
+    })
+
     it('generates MD5 hashes and formatted headers', () => {
       const md5 = ai.getMd5('export type X = 1')
       expect(md5).toHaveLength(32)
@@ -394,6 +428,35 @@ describe('DesignTypes Subsystem', () => {
       const customMake = new TestDesignTypesMake(new DesignTypesAi(), 'my-temp', 'my-dist')
       expect(customMake.testGetTemporaryDirectory()).toBe('my-temp')
       expect(customMake.testGetDistDirectory()).toBe('my-dist')
+    })
+
+    it('processes AI types concurrently with limited parallelism', async () => {
+      const saveFileSpy = vi.spyOn(make as any, 'saveFile').mockImplementation(() => {})
+
+      let inFlight = 0
+      let maxInFlight = 0
+
+      vi.spyOn(make as any, 'toAiEdit').mockImplementation(async () => {
+        inFlight += 1
+        maxInFlight = Math.max(maxInFlight, inFlight)
+        await new Promise(resolve => setTimeout(resolve, 10))
+        inFlight -= 1
+        return 'export type Optimized = 1;'
+      })
+
+      const concurrencyLimit = make.testGetAiTypesConcurrency()
+      const filesCount = concurrencyLimit + 4
+
+      const files = Array.from({ length: filesCount }, (_item, index) => ({
+        path: `file-${index}.d.ts`,
+        content: `import { example } from './example';\nexport type File${index} = 1;`
+      }))
+
+      await make.testSaveListAi(files, '')
+
+      expect(maxInFlight).toBeGreaterThan(1)
+      expect(maxInFlight).toBeLessThanOrEqual(concurrencyLimit)
+      expect(saveFileSpy).toHaveBeenCalledTimes(filesCount)
     })
   })
 

@@ -1,6 +1,6 @@
 import {Meta} from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/vi/scripts/# Lệnh/dxt-types-save - Lưu Định nghĩa Kiểu cho AI'/>
+<Meta title='@dxtmisha/vi/scripts/7. Lệnh/dxt-types-save - Lưu Định nghĩa Kiểu cho AI'/>
 
 # dxt-types-save
 
@@ -23,7 +23,10 @@ Lệnh `dxt-types-save` biên dịch và lưu các định nghĩa kiểu TypeScr
 
 Chạy trình lưu kiểu thông qua `npx`:
 ```bash
-npx dxt-types-save [build_dir] [resources_dir]
+npx dxt-types-save
 ```
-- `build_dir` (Tùy chọn): Thư mục để quét. Mặc định là `dist`.
-- `resources_dir` (Tùy chọn): Thư mục chứa các tệp prompt và tài nguyên. Mặc định là `ai-resources`.
+- `--prompts` (`-p`) (Tùy chọn): Thư mục đầu vào chứa các tệp prompt. Mặc định là `ai-resources`.
+- `--dir` (`-d`) (Tùy chọn): Thư mục đầu vào chứa các tệp khai báo. Mặc định là thư mục biên dịch tạm thời (`ai-types-temp`).
+- `--dist` (Tùy chọn): Thư mục đầu ra chứa các tệp JavaScript đã biên dịch. Mặc định là `dist`.
+
+Chạy `npx dxt-types-save --help` để in ra danh sách đầy đủ các tùy chọn khả dụng.

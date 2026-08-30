@@ -1,0 +1,60 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/2. AI/3. Bộ nhớ dự án' />
+
+# Bộ nhớ cục bộ của Package (ai-memory.md)
+
+Tệp `ai-memory.md` là cơ chế lưu giữ bộ nhớ dài hạn cho các trợ lý AI ở cấp độ từng package riêng biệt trong monorepo. Nó cho phép ghi nhớ kinh nghiệm kiến trúc, các quyết định thiết kế, ràng buộc phát hiện được và sở thích của lập trình viên qua các phiên làm việc.
+
+Khác với các tệp lời nhắc toàn cục tĩnh, bộ nhớ package được bổ sung động trong quá trình cộng tác và có quyền ưu tiên cục bộ cao nhất khi AI đưa ra quyết định.
+
+## Tại sao bộ nhớ cục bộ lại quan trọng trong Monorepo
+
+Trong một dự án monorepo phức tạp với nhiều package độc lập (`@dxtmisha/d1`, `@dxtmisha/constructor`, `@dxtmisha/styles`, `@dxtmisha/functional`, v.v.), mỗi phần của mã nguồn đều có những đặc thù riêng:
+
+- **Cô lập ngữ cảnh** — Các quy tắc và ràng buộc định kiểu của `@dxtmisha/styles` không được làm ô nhiễm hoặc gây nhiễu ngữ cảnh của `@dxtmisha/functional-basic`.
+- **Ngăn ngừa lỗi lặp lại** — Khi lập trình viên chỉ ra một lưu ý đặc thù (ví dụ: không dùng bảng trong MDX cho `@dxtmisha/scripts`), AI sẽ ghi lại ràng buộc này vào bộ nhớ và không bao giờ lặp lại lỗi đó nữa.
+- **Không phụ thuộc vào lịch sử chat** — Khi làm mới ngữ cảnh hoặc mở phiên làm việc mới, AI đọc `ai-memory.md` ở bước đầu tiên và lập tức nắm bắt toàn bộ thỏa thuận cục bộ.
+
+## Quy tắc nghiêm ngặt khi duy trì ai-memory.md
+
+Để duy trì tính trong sạch và hiệu quả của bộ nhớ, các quy tắc sau bắt buộc phải tuân thủ:
+
+- **Vị trí cục bộ (Bắt buộc ở thư mục gốc của package)**
+  Tệp `ai-memory.md` chỉ được đặt trực tiếp trong thư mục gốc của package tương ứng (ví dụ: `packages/scripts/ai-memory.md`). Nghiêm cấm ghi quy tắc của từng package vào tệp bộ nhớ ở gốc monorepo.
+
+- **Kích hoạt rõ ràng từ lập trình viên**
+  AI **chỉ** cập nhật `ai-memory.md` khi có lệnh trực tiếp từ lập trình viên (từ khóa: «Запомни», «Remember», «Save to memory») hoặc khi xác nhận các sửa đổi kiến trúc quan trọng.
+
+- **Tối ưu hóa và bảo toàn tính toàn vẹn (Optimization & Integrity)**
+  Mỗi khi thêm quy tắc mới, AI bắt buộc phải **tối ưu hóa, cấu trúc lại và cô đọng toàn bộ văn bản đã tích lũy** trong tệp: gộp các mục liên quan, loại bỏ câu trùng lặp và diễn đạt yêu cầu ngắn gọn, súc tích nhất. Nghiêm cấm xóa bỏ hoặc làm mất các quy tắc và ràng buộc đã thiết lập trước đó.
+
+- **Chỉ ghi quy tắc kiến trúc quan trọng**
+  Nghiêm cấm ghi nhật ký thay đổi thông thường, đoạn hội thoại chat hoặc ghi chú tạm thời vào tệp bộ nhớ. Tệp chỉ chứa các ràng buộc kiến trúc, hợp đồng kiểu và quy ước định dạng thực tế.
+
+- **Đường dẫn tương đối**
+  Chỉ sử dụng đường dẫn tương đối từ thư mục gốc của package; nghiêm cấm sử dụng đường dẫn tuyệt đối của máy tính.
+
+## Ví dụ tệp ai-memory.md
+
+```markdown
+# AI Workspace Memory (packages/scripts)
+
+This file contains package-specific guidelines for @dxtmisha/scripts.
+
+## Guidelines
+- Follow strictly all global development principles from root ai-prompt.md.
+- Documentation formatting rules for Storybook:
+  - Do NOT use horizontal lines (---).
+  - Do NOT use markdown tables (| ... |) — format all structured items as bullet lists (- **Key**: description).
+  - Focus on practical developer workflows and actions, not internal engine details.
+```
+
+## Cách sử dụng bộ nhớ trong công việc
+
+- **Lưu lại quy ước:**
+  Lập trình viên: *«Hãy nhớ: trong tất cả tài liệu storybook của package này, không bao giờ dùng dấu gạch ngang phân cách và bảng markdown»*.
+  AI: Ghi thêm mục này vào tệp `ai-memory.md` của package hiện tại.
+
+- **Đọc khi bắt đầu phiên:**
+  Khi nhận bất kỳ nhiệm vụ nào trong package, AI tuân theo quy tắc **Chronological Guard**, mở `ai-memory.md` đầu tiên để áp dụng mọi ràng buộc đã lưu.
