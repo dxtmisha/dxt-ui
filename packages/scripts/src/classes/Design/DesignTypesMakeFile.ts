@@ -20,6 +20,9 @@ export class DesignTypesMakeFile {
   /** Cached list of filtered JavaScript files / Кэшированный список отфильтрованных JavaScript файлов */
   protected listByFilterJs?: DesignTypesList
 
+  /** Cached list of filtered type definition files from cache directory / Кэшированный список отфильтрованных файлов определений типов из директории кэша */
+  protected listCache?: DesignTypesList
+
   /**
    * Constructor for DesignTypesMakeFile.
    *
@@ -66,6 +69,23 @@ export class DesignTypesMakeFile {
     }
 
     return this.listByFilterJs
+  }
+
+  /**
+   * Gets a list of type definition files from the AI types list cache directory (.d.ts).
+   *
+   * Получает список файлов определений типов из директории кэша списка ИИ типов (.d.ts).
+   * @returns list of filtered type definition files from cache / список отфильтрованных файлов определений типов из кэша
+   */
+  getListCache(): DesignTypesList {
+    if (this.listCache === undefined) {
+      this.listCache = this.getListBy(
+        file => this.ai.isFile(file),
+        UI_DIR_AI_TYPES_LIST
+      )
+    }
+
+    return this.listCache
   }
 
   /**

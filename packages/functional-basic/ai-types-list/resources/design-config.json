@@ -1,6 +1,6 @@
 {
   "path": "ai-resources/design-config.md",
-  "md5": "2a9b78f175e6d6595244356b7162b115",
-  "name": "Design Config Specification",
-  "description": "Defines configuration schemas, inheritance rules, and property references for design.config.json files across DXT UI monorepo packages. It standardizes settings for TypeScript declaration scanning, AI providers, Figma integration, and wiki generation. Serves as the operational guide for setting up design tokens and automated tooling workflows."
+  "md5": "8b2f7a965cc3775db55e850db68507e3",
+  "name": "Design Config Guide",
+  "description": "Specification and configuration reference for design.config.json across DXT UI packages and monorepo roots. Defines rules for configuration inheritance, TypeScript declaration scanning, AI provider integrations, and documentation generation. Standardizes build parameters and toolchain automation across packages."
 }

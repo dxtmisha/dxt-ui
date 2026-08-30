@@ -1,0 +1,1 @@
+import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{Rt as t,kt as n}from"./library-CO1fW2cN.js";import{E as r,T as i}from"./wiki-BMj2WokS.js";import{n as a,t as o}from"./areaTypes-Dq4mp14X-NmH9GV9U.js";function s(){let e=t(o,void 0);if(e)return i(e)}function c(){return(c=e((()=>{a(),n(),r()})))()}export{s as n,c as t};

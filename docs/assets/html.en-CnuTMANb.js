@@ -1,0 +1,6 @@
+import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{n as t,r as n}from"./lib-BRDOWE9X.js";import{t as r}from"./jsx-runtime-DeHZSEgm.js";function i(e){let t={blockquote:`blockquote`,code:`code`,h2:`h2`,p:`p`,...n(),...e.components};return(0,o.jsxs)(o.Fragment,{children:[(0,o.jsx)(t.h2,{id:`html-content`,children:`HTML Content`}),`
+`,(0,o.jsxs)(t.p,{children:[`The `,(0,o.jsx)(t.code,{children:`html`}),` property allows you to insert arbitrary HTML code directly into the body of the SnackbarItem.`]}),`
+`,(0,o.jsxs)(t.blockquote,{children:[`
+`,(0,o.jsxs)(t.p,{children:[`[!WARNING]
+Using the `,(0,o.jsx)(t.code,{children:`html`}),` property is not recommended. It can be unsafe and may lead to XSS vulnerabilities. Consider using the `,(0,o.jsx)(t.code,{children:`component`}),` property or slots for safer and more flexible rendering of complex content.`]}),`
+`]})]})}function a(e={}){let{wrapper:t}={...n(),...e.components};return t?(0,o.jsx)(t,{...e,children:(0,o.jsx)(i,{...e})}):i(e)}var o;function s(){return(s=e((()=>{o=r(),t()})))()}s();export{a as default};

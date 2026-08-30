@@ -1,0 +1,3 @@
+import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{n as t,r as n}from"./lib-BRDOWE9X.js";import{t as r}from"./jsx-runtime-DeHZSEgm.js";function i(e){let t={code:`code`,li:`li`,ul:`ul`,...n(),...e.components};return(0,o.jsxs)(t.ul,{children:[`
+`,(0,o.jsxs)(t.li,{children:[(0,o.jsx)(t.code,{children:`[value]: any`}),` — Dynamic slot for rendering custom content (Vue components or HTML) when item `,(0,o.jsx)(t.code,{children:`type`}),` is `,(0,o.jsx)(t.code,{children:`'html'`}),`. Item's `,(0,o.jsx)(t.code,{children:`value`}),` is used as slot name.`]}),`
+`]})}function a(e={}){let{wrapper:t}={...n(),...e.components};return t?(0,o.jsx)(t,{...e,children:(0,o.jsx)(i,{...e})}):i(e)}var o;function s(){return(s=e((()=>{o=r(),t()})))()}s();export{a as default};

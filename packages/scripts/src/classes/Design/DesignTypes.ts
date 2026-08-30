@@ -109,15 +109,12 @@ export class DesignTypes {
     this.makeTypes.makeSave()
 
     if (!this.description.is()) {
-      try {
-        this.buildTypes.build()
-        await this.description.make()
-      } finally {
-        this.buildTypes.clean()
-      }
+      await this.description.make()
     }
 
-    await this.mcp.make()
+    if (!this.mcp.is()) {
+      await this.mcp.make()
+    }
 
     console.log('DesignTypes: AI types saved.')
 

@@ -1,0 +1,8 @@
+import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{n as t,r as n}from"./lib-BRDOWE9X.js";import{t as r}from"./jsx-runtime-DeHZSEgm.js";function i(e){let t={code:`code`,h2:`h2`,li:`li`,p:`p`,strong:`strong`,ul:`ul`,...n(),...e.components};return(0,o.jsxs)(o.Fragment,{children:[(0,o.jsx)(t.h2,{id:`value-and-data-passing`,children:`Value and Data Passing`}),`
+`,(0,o.jsxs)(t.p,{children:[`The `,(0,o.jsx)(t.code,{children:`value`}),` and `,(0,o.jsx)(t.code,{children:`detail`}),` properties are designed to transfer information when interacting with components and handling events.`]}),`
+`,(0,o.jsx)(t.p,{children:(0,o.jsx)(t.strong,{children:`Properties:`})}),`
+`,(0,o.jsxs)(t.ul,{children:[`
+`,(0,o.jsxs)(t.li,{children:[(0,o.jsx)(t.code,{children:`value`}),` — main component value (string, number, object)`]}),`
+`,(0,o.jsxs)(t.li,{children:[(0,o.jsx)(t.code,{children:`detail`}),` — additional data and contextual information`]}),`
+`]}),`
+`,(0,o.jsxs)(t.p,{children:[`Properties work together: `,(0,o.jsx)(t.code,{children:`value`}),` contains the main component value, which is passed during events and accessible via the expose API. `,(0,o.jsx)(t.code,{children:`detail`}),` extends `,(0,o.jsx)(t.code,{children:`value`}),` with additional data such as metadata, identifiers, or other auxiliary information. Both properties are available for programmatic reading and passed in component events, providing complete information about the state and context during interaction.`]})]})}function a(e={}){let{wrapper:t}={...n(),...e.components};return t?(0,o.jsx)(t,{...e,children:(0,o.jsx)(i,{...e})}):i(e)}var o;function s(){return(s=e((()=>{o=r(),t()})))()}s();export{a as default};

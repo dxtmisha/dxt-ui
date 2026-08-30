@@ -1,0 +1,1 @@
+.d1-imageCrop{justify-content:center;align-items:center;display:flex}.d1-imageCrop__body{aspect-ratio:var(--d1-imageCrop-sys-aspect-ratio,auto);width:var(--d1-imageCrop-sys-width,100%);height:var(--d1-imageCrop-sys-height,100%);max-width:100%;max-height:100%;position:relative}.d1-imageCrop:disabled,.d1-imageCrop.d1-imageCrop--disabled,.d1-imageCrop--disabled{pointer-events:none}

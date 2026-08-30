@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.113.0] - 2026-08-30
+
+### Added
+- **`D1CropArea` UI Component**:
+  - Introduced `D1CropArea` UI component wrapping the `CropArea` constructor with full keyboard navigation, boundary handles, ARIA accessibility, and aspect ratio controls.
+  - Added component structure (`D1CropArea.vue`, `D1CropAreaAiWiki.vue`, `D1CropArea.stories.ts`, `D1CropArea.mdx`, `props.ts`, `styleToken.scss`, `properties.json`, `wiki.ts`, `wikiData.ts`, `index.ts`).
+  - Added package export entrypoint `./D1CropArea` in `package.json`.
+- **`D1ImageCrop` UI Component**:
+  - Introduced `D1ImageCrop` UI component wrapping the `ImageCrop` constructor for interactive image cropping, coordinate snapping, and image load handling.
+  - Added component structure (`D1ImageCrop.vue`, `D1ImageCropAiWiki.vue`, `D1ImageCrop.stories.ts`, `D1ImageCrop.mdx`, `props.ts`, `styleToken.scss`, `properties.json`, `wiki.ts`, `wikiData.ts`, `index.ts`).
+  - Added package export entrypoint `./D1ImageCrop` in `package.json`.
+- **`D1InputImage` UI Component**:
+  - Introduced `D1InputImage` UI component wrapping the `InputImage` constructor combining drag-and-drop file upload, client-side image scaling, image cropping, and previews.
+  - Added component structure (`D1InputImage.vue`, `D1InputImageAiWiki.vue`, `D1InputImage.stories.ts`, `D1InputImage.mdx`, `props.ts`, `styleToken.scss`, `properties.json`, `wiki.ts`, `wikiData.ts`, `index.ts`).
+  - Added package export entrypoint `./D1InputImage` in `package.json`.
+- **Build & Distribution**:
+  - Added export mappings for `./ai-types.md`, `./ai-description.md`, `./ai-resources/*`, and `./ai-screenshot/*` in `package.json`.
+  - Added `ai-screenshot/` to package distribution `files` list.
+  - Integrated `VitePluginComponents` for automated post-build style injection and cleanup.
+
 ## [0.110.1] - 2026-08-16
 
 ### Added

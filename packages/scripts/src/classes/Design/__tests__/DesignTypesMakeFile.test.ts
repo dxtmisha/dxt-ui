@@ -1,4 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
+import { UI_DIR_AI_TYPES_LIST } from '../../../config'
+import { PropertiesFile } from '../../Properties/PropertiesFile'
 import { DesignTypesAi } from '../DesignTypesAi'
 import { DesignTypesMakeFile } from '../DesignTypesMakeFile'
 
@@ -55,5 +57,26 @@ describe('DesignTypesMakeFile', () => {
     const customMakeFile = new TestDesignTypesMakeFile(new DesignTypesAi(), 'my-temp', 'my-dist')
     expect(customMakeFile.testGetTemporaryDirectory()).toBe('my-temp')
     expect(customMakeFile.testGetDistDirectory()).toBe('my-dist')
+  })
+
+  it('reads cached files via getListCache()', () => {
+    vi.spyOn(PropertiesFile, 'is').mockReturnValue(true)
+    vi.spyOn(PropertiesFile, 'readDirRecursive').mockImplementation((path) => {
+      if (path === UI_DIR_AI_TYPES_LIST) return ['file1.d.ts']
+      return []
+    })
+    vi.spyOn(PropertiesFile, 'readFileOnly').mockImplementation((path) => {
+      if (Array.isArray(path) && path[0] === UI_DIR_AI_TYPES_LIST && path[1] === 'file1.d.ts') {
+        return '// md5:abc\nexport type File1 = string;'
+      }
+      return undefined
+    })
+
+    const testInstance = new DesignTypesMakeFile(ai, 'dist-temporary', 'dist')
+    const list = testInstance.getListCache()
+
+    expect(list).toHaveLength(1)
+    expect(list[0].path).toBe('file1.d.ts')
+    expect(list[0].content).toContain('export type File1 = string;')
   })
 })

@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.4] - 2026-08-30
+
+### Added
+- **Exports & Distribution**: Added `ai-screenshot` directory to package distribution `files` and configured explicit export mappings for `./ai-types.md`, `./ai-description.md`, `./ai-resources/*`, and `./ai-screenshot/*` in `package.json`.
+
+### Changed
+- **Build Configuration**: Migrated `vite.config.ts` to use `viteBasicFunction()` from `@dxtmisha/configuration/viteBasicFunction`.
+- **AI Type Definitions**: Refined and modernized JSDoc search tags (`@keywords`) and descriptions across `Zip` class methods in `ai-types-list/classes/Zip.d.ts`.
+
 ## [0.1.3] - 2026-08-20
 
 ### Added

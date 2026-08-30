@@ -2,6 +2,41 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.0] - 2026-08-30
+
+### Added
+- **`DesignTypes` Pipeline & Concurrency**:
+  - Added `aiTypesConcurrency` configuration option in `DesignUiConfig` (defaulting to `3`) to control parallel execution during AI type generation.
+  - Added `DesignTypesMakeFile.getListCache()` to read cached `.d.ts` definitions directly from `UI_DIR_AI_TYPES_LIST` without triggering compilation.
+  - Added `DesignTypesMcp.is()` check to prevent regenerating MCP server resource files when they already exist during `dxt-types-save`.
+  - Updated `ai-memory.md` prompt guidelines in templates and storybooks to prohibit modifying existing rules, restricting memory updates to duplicate removal and direct conflict resolution.
+  - Enhanced package root and path resolution in `DesignTypesBuild`.
+  - Modularized `DesignTypes` pipeline into abstract base classes (`DesignTypesPromptsAbstract`) and dedicated template modules (`DesignTypesPromptTemplates`).
+  - Added `.local` configuration file discovery and merging in `PropertiesConfig`, giving priority to local settings.
+  - Refactored configuration loading into static `PropertiesConfig.loadConfig()`.
+  - Added repository root scanning as an auxiliary library in `LibraryAiPrompt`.
+  - Updated `LibraryAiPromptItem.getPathString()` to handle optional subpaths cleanly.
+- **CLI & Scaffolding**:
+  - Added centralized CLI argument parsing across executable scripts in `bin/`.
+  - Added dedicated `vite.config.ts` for scripts library building.
+- **Template System Modernization**:
+  - Migrated template file loading to static raw Vite imports (`?raw`).
+  - Standardized in-memory template loading and AI prompt structures.
+- **Tests & Documentation**:
+  - Added comprehensive unit test suites for `Styles`, composables, utility functions, and classes.
+  - Completed bilingual JSDoc annotations across all exports.
+
+### Changed
+- **CLI Execution**: Migrated executable scripts in `packages/scripts/bin` from TypeScript (`.ts`) execution to compiled JavaScript.
+- **Dependencies & Exports**: Updated package metadata, broadened peer dependencies, and updated export paths.
+
+### Removed
+- **Legacy Subsystems**:
+  - Removed obsolete `AiDoc` subsystem and legacy `ai-doc.md` generators.
+  - Removed deprecated `ComponentWiki` AI generator and related wiki templates.
+  - Removed obsolete `BuildFunctional` / `dxt-build-functional` binary script.
+  - Removed legacy `getDirname` and `hasNativeDirname` helper functions.
+
 ## [0.12.0] - 2026-08-21
 
 ### Added

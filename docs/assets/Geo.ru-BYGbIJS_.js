@@ -1,0 +1,77 @@
+import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{n as t,r as n}from"./lib-BRDOWE9X.js";import{t as r}from"./jsx-runtime-DeHZSEgm.js";import{f as i,s as a}from"./blocks-LSqYfV8h.js";function o(e){let t={code:`code`,h1:`h1`,h2:`h2`,h3:`h3`,li:`li`,p:`p`,pre:`pre`,strong:`strong`,ul:`ul`,...n(),...e.components};return(0,c.jsxs)(c.Fragment,{children:[(0,c.jsx)(a,{title:`@dxtmisha/ru/functional-basic/Classes/Geo - Глобальные Географические Данные`}),`
+`,(0,c.jsx)(t.h1,{id:`класс-geo`,children:`Класс Geo`}),`
+`,(0,c.jsx)(t.p,{children:`Статический служебный класс для централизованного управления географическими данными приложения. Он отвечает за работу с кодами языков (ISO 639-1), стран (ISO 3166-1 alpha-2), временными зонами и локализацией. Класс автоматически определяет настройки окружения и обеспечивает их согласованное использование во всей системе.`}),`
+`,(0,c.jsx)(t.h2,{id:`ключевые-особенности`,children:`Ключевые особенности`}),`
+`,(0,c.jsxs)(t.ul,{children:[`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.strong,{children:`Автоматическое определение`}),` — интеллектуально определяет локаль через хранилище или настройки окружения.`]}),`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.strong,{children:`Персистентность`}),` — использует `,(0,c.jsx)(t.code,{children:`DataStorage`}),` для сохранения и восстановления предпочтений пользователя.`]}),`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.strong,{children:`Интеграция с медиа-базой`}),` — предоставляет доступ к базе данных стран и языков из библиотеки `,(0,c.jsx)(t.code,{children:`@dxtmisha/media`}),`.`]}),`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.strong,{children:`Глобальное управление временем`}),` — централизованная установка и получение смещения часового пояса.`]}),`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.strong,{children:`Статический доступ`}),` — удобный глобальный интерфейс без необходимости ручного создания экземпляров.`]}),`
+`]}),`
+`,(0,c.jsx)(t.h2,{id:`базовое-использование`,children:`Базовое использование`}),`
+`,(0,c.jsx)(t.p,{children:`Поскольку класс статический, его методы можно вызывать напрямую.`}),`
+`,(0,c.jsx)(t.pre,{children:(0,c.jsx)(t.code,{className:`language-javascript`,children:`import { Geo } from '@dxtmisha/functional-basic'
+
+// Получаем текущий код языка
+console.log(Geo.getLanguage()) // например, 'ru'
+
+// Устанавливаем новую локаль и сохраняем её
+Geo.set('en-US', true)
+
+// Получаем форматированную временную зону
+console.log(Geo.getTimezoneFormat()) // например, '+03:00'
+`})}),`
+`,(0,c.jsx)(t.h2,{id:`методы`,children:`Методы`}),`
+`,(0,c.jsx)(t.h3,{id:`общая-информация`,children:`Общая информация`}),`
+`,(0,c.jsxs)(t.ul,{children:[`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.code,{children:`get(): GeoItemFull`}),` — Возвращает полный объект данных о текущей стране и языке.`]}),`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.code,{children:`getCountry(): string`}),` — Возвращает 2-буквенный код текущей страны (в верхнем регистре).`]}),`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.code,{children:`getLanguage(): string`}),` — Возвращает 2-буквенный код текущего языка (в нижнем регистре).`]}),`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.code,{children:`getStandard(): string`}),` — Возвращает комбинированную строку локали (например, `,(0,c.jsx)(t.code,{children:`'ru-RU'`}),`).`]}),`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.code,{children:`getFirstDay(): string`}),` — Возвращает код первого дня недели для текущей локали (`,(0,c.jsx)(t.code,{children:`'Mo'`}),`, `,(0,c.jsx)(t.code,{children:`'Su'`}),` и т.д.).`]}),`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.code,{children:`getLocation(): string`}),` — Возвращает текущую установленную локаль в виде строки.`]}),`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.code,{children:`getItem(): GeoItemFull`}),` — Возвращает копию объекта текущих настроек с учетом языка.`]}),`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.code,{children:`getTimezone(): number`}),` — Возвращает смещение часового пояса в минутах.`]}),`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.code,{children:`getTimezoneFormat(): string`}),` — Возвращает смещение часового пояса в строковом формате (например, `,(0,c.jsx)(t.code,{children:`'+03:00'`}),`).`]}),`
+`]}),`
+`,(0,c.jsx)(t.h3,{id:`списки-и-поиск`,children:`Списки и поиск`}),`
+`,(0,c.jsxs)(t.ul,{children:[`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.code,{children:`getList(): GeoItem[]`}),` — Возвращает полный список доступных стран и языков из медиа-базы.`]}),`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.code,{children:`getByCode(code?: string): GeoItemFull`}),` — Ищет данные по коду языка или страны (с поддержкой фоллбэков).`]}),`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.code,{children:`getByCodeFull(code: string): GeoItem | undefined`}),` — Ищет точное совпадение по полному коду локали (язык-страна).`]}),`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.code,{children:`getByCountry(country: string): GeoItem | undefined`}),` — Ищет данные по коду или альтернативному названию страны.`]}),`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.code,{children:`getByLanguage(language: string): GeoItem | undefined`}),` — Ищет данные по коду языка.`]}),`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.code,{children:`find(code: string): GeoItemFull`}),` — Алиас для метода `,(0,c.jsx)(t.code,{children:`getByCode`}),`.`]}),`
+`]}),`
+`,(0,c.jsx)(t.h3,{id:`изменение-данных-сеттеры`,children:`Изменение данных (Сеттеры)`}),`
+`,(0,c.jsxs)(t.ul,{children:[`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.code,{children:`set(code: string, save?: boolean): void`}),` — Глобально устанавливает текущую локаль. Если `,(0,c.jsx)(t.code,{children:`save`}),` равен `,(0,c.jsx)(t.code,{children:`true`}),`, сохраняет выбор в `,(0,c.jsx)(t.code,{children:`localStorage`}),`.`]}),`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.code,{children:`setTimezone(timezone: number): void`}),` — Устанавливает кастомное смещение часового пояса в минутах.`]}),`
+`]}),`
+`,(0,c.jsx)(t.h3,{id:`утилиты`,children:`Утилиты`}),`
+`,(0,c.jsxs)(t.ul,{children:[`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.code,{children:`toStandard(item: GeoItem): string`}),` — Статический метод для формирования стандартной строки `,(0,c.jsx)(t.code,{children:`'язык-страна'`}),` из объекта `,(0,c.jsx)(t.code,{children:`GeoItem`}),`.`]}),`
+`]}),`
+`,(0,c.jsx)(t.h2,{id:`примеры`,children:`Примеры`}),`
+`,(0,c.jsx)(t.h3,{id:`ручная-установка-локали-при-запуске-приложения`,children:`Ручная установка локали при запуске приложения`}),`
+`,(0,c.jsx)(t.pre,{children:(0,c.jsx)(t.code,{className:`language-javascript`,children:`import { Geo } from '@dxtmisha/functional-basic'
+
+// Предположим, мы получили настройки пользователя из API
+const userLocale = 'vi-VN'
+
+Geo.set(userLocale)
+console.log(Geo.getCountry()) // 'VN'
+`})}),`
+`,(0,c.jsx)(t.h3,{id:`работа-с-временными-зонами`,children:`Работа с временными зонами`}),`
+`,(0,c.jsx)(t.pre,{children:(0,c.jsx)(t.code,{className:`language-javascript`,children:`// Установка смещения для Токио (UTC+9)
+Geo.setTimezone(-540) // смещение в минутах (9 * 60)
+
+console.log(Geo.getTimezoneFormat()) // '+09:00'
+`})}),`
+`,(0,c.jsx)(t.h3,{id:`получение-списка-стран-для-селектора`,children:`Получение списка стран для селектора`}),`
+`,(0,c.jsx)(t.pre,{children:(0,c.jsx)(t.code,{className:`language-javascript`,children:`const countries = Geo.getList().map(item => ({
+  value: item.country,
+  label: \`\${item.language.toUpperCase()} - \${item.country}\`
+}))
+`})})]})}function s(e={}){let{wrapper:t}={...n(),...e.components};return t?(0,c.jsx)(t,{...e,children:(0,c.jsx)(o,{...e})}):o(e)}var c;function l(){return(l=e((()=>{c=r(),t(),i()})))()}l();export{s as default};

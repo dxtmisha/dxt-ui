@@ -1,0 +1,57 @@
+import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{n as t,r as n}from"./lib-BRDOWE9X.js";import{t as r}from"./jsx-runtime-DeHZSEgm.js";import{f as i,s as a}from"./blocks-LSqYfV8h.js";function o(e){let t={code:`code`,h1:`h1`,h2:`h2`,h3:`h3`,h4:`h4`,hr:`hr`,li:`li`,p:`p`,pre:`pre`,strong:`strong`,ul:`ul`,...n(),...e.components};return(0,c.jsxs)(c.Fragment,{children:[(0,c.jsx)(a,{title:`@dxtmisha/ru/scripts/Classes/LibraryAiPromptItem - Элемент агрегатора промптов ИИ`}),`
+`,(0,c.jsx)(t.h1,{id:`класс-libraryaipromptitem`,children:`Класс LibraryAiPromptItem`}),`
+`,(0,c.jsxs)(t.p,{children:[`Класс `,(0,c.jsx)(t.code,{children:`LibraryAiPromptItem`}),` представляет собой отдельный блок контекста модуля или пакета в цепочке генерации ИИ-промптов. Он отвечает за поиск, чтение, кэширование и форматирование специфичных ресурсов модуля (таких как описания, инструкции, типы TypeScript и списки скриншотов интерфейса) в единую структурированную секцию.`]}),`
+`,(0,c.jsx)(t.h2,{id:`ключевые-особенности`,children:`Ключевые особенности`}),`
+`,(0,c.jsxs)(t.ul,{children:[`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.strong,{children:`Поиск ресурсов контекста`}),` — автоматически проверяет наличие описаний, метаданных, типов и скриншотов в целевом подкаталоге модуля.`]}),`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.strong,{children:`Парсинг манифеста пакета`}),` — считывает и парсит `,(0,c.jsx)(t.code,{children:`package.json`}),` модуля для получения его официального названия.`]}),`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.strong,{children:`Структурированная сборка данных`}),` — объединяет найденные файлы в один аккуратный блок markdown с указанием расположения, назначения, типов и визуальных ресурсов.`]}),`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.strong,{children:`Стандартизация путей`}),` — переводит относительные ссылки в текстовых инструкциях в абсолютные пути относительно корня проекта.`]}),`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.strong,{children:`Умное кэширование манифестов`}),` — сохраняет содержимое `,(0,c.jsx)(t.code,{children:`package.json`}),` внутри экземпляра во избежание избыточного чтения с диска.`]}),`
+`]}),`
+`,(0,c.jsx)(t.h2,{id:`инициализация`,children:`Инициализация`}),`
+`,(0,c.jsxs)(t.p,{children:[(0,c.jsx)(t.code,{children:`LibraryAiPromptItem`}),` инициализируется массивом сегментов пути, указывающим на директорию целевого модуля.`]}),`
+`,(0,c.jsx)(t.p,{children:(0,c.jsx)(t.strong,{children:`Параметры конструктора:`})}),`
+`,(0,c.jsxs)(t.ul,{children:[`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.code,{children:`dir: string[]`}),` — Сегменты пути к каталогу модуля (например, `,(0,c.jsx)(t.code,{children:`['packages', 'scripts']`}),`).`]}),`
+`]}),`
+`,(0,c.jsx)(t.pre,{children:(0,c.jsx)(t.code,{className:`language-typescript`,children:`import { LibraryAiPromptItem } from '@dxtmisha/scripts'
+
+const item = new LibraryAiPromptItem(['packages', 'scripts'])
+`})}),`
+`,(0,c.jsx)(t.hr,{}),`
+`,(0,c.jsx)(t.h2,{id:`методы`,children:`Методы`}),`
+`,(0,c.jsx)(t.h3,{id:`выполнение`,children:`Выполнение`}),`
+`,(0,c.jsx)(t.h4,{id:`make`,children:(0,c.jsx)(t.code,{children:`make`})}),`
+`,(0,c.jsx)(t.p,{children:`Основной управляющий метод: проверяет наличие каждого типа ресурсов (описание, информация, типы, скриншоты), объединяет существующие файлы и форматирует их в единый markdown-блок модуля.`}),`
+`,(0,c.jsxs)(t.p,{children:[(0,c.jsx)(t.strong,{children:`Возвращает:`}),` `,(0,c.jsx)(t.code,{children:`string | undefined`})]}),`
+`,(0,c.jsx)(t.pre,{children:(0,c.jsx)(t.code,{className:`language-typescript`,children:`const promptBlock = item.make()
+`})}),`
+`,(0,c.jsx)(t.hr,{}),`
+`,(0,c.jsx)(t.h3,{id:`методы-проверки-статуса`,children:`Методы проверки статуса`}),`
+`,(0,c.jsxs)(t.p,{children:[`Все методы проверки возвращают значение `,(0,c.jsx)(t.code,{children:`boolean`}),`.`]}),`
+`,(0,c.jsxs)(t.ul,{children:[`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.code,{children:`isPrompt()`}),` — Возвращает `,(0,c.jsx)(t.code,{children:`true`}),`, если для модуля существует хотя бы один из ресурсов (описание, информация, типы или скриншоты).`]}),`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.code,{children:`isDescription()`}),` — Проверяет существование файла `,(0,c.jsx)(t.code,{children:`description.txt`}),`.`]}),`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.code,{children:`isInfo()`}),` — Проверяет существование файла `,(0,c.jsx)(t.code,{children:`info.txt`}),`.`]}),`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.code,{children:`isTypes()`}),` — Проверяет существование файла `,(0,c.jsx)(t.code,{children:`ai-types.txt`}),`.`]}),`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.code,{children:`isScreenshot()`}),` — Проверяет существование папки `,(0,c.jsx)(t.code,{children:`ai-screenshot`}),`.`]}),`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.code,{children:`isDeveloper()`}),` — Проверяет существование файла `,(0,c.jsx)(t.code,{children:`ai-developer.md`}),`.`]}),`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.code,{children:`isMcp()`}),` — Проверяет существование ресурсов MCP-сервера.`]}),`
+`]}),`
+`,(0,c.jsx)(t.hr,{}),`
+`,(0,c.jsx)(t.h3,{id:`публичные-и-защищенные-вспомогательные-методы`,children:`Публичные и защищенные вспомогательные методы`}),`
+`,(0,c.jsxs)(t.ul,{children:[`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.code,{children:`getProjectName(): string`}),` — Считывает имя проекта из локального файла `,(0,c.jsx)(t.code,{children:`package.json`}),`.`]}),`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.code,{children:`getDir(): string[]`}),` — Возвращает массив сегментов пути к директории модуля.`]}),`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.code,{children:`getMcp(): Record<string, any>[] | undefined`}),` — Считывает и возвращает конфигурацию ресурсов MCP-сервера.`]}),`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.code,{children:`getPath(dirFile: string): string[]`}),` — Возвращает полный массив сегментов пути для указанного файла в папке модуля.`]}),`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.code,{children:`getPathString(): string`}),` — Возвращает сегменты пути модуля, объединенные через слэш.`]}),`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.code,{children:`getPackageJson(): Record<string, any>`}),` — Считывает и кэширует манифест `,(0,c.jsx)(t.code,{children:`package.json`}),`.`]}),`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.code,{children:`readFile(dirFile: string): string`}),` — Читает содержимое файла, адаптируя ссылки под абсолютную структуру папок проекта.`]}),`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.code,{children:`getDescription(): string | undefined`}),` — Форматирует секцию описания модуля при её наличии.`]}),`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.code,{children:`getInfo(): string | undefined`}),` — Форматирует секцию ключевой информации о модуле при её наличии.`]}),`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.code,{children:`getTypes(): string | undefined`}),` — Форматирует ссылки на файлы типов модуля при их наличии.`]}),`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.code,{children:`getScreenshot(): string | undefined`}),` — Форматирует блок визуальных материалов и скриншотов при их наличии.`]}),`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.code,{children:`getScreenshotList(): string[] | undefined`}),` — Возвращает список файлов из директории `,(0,c.jsx)(t.code,{children:`ai-screenshot`}),`.`]}),`
+`]})]})}function s(e={}){let{wrapper:t}={...n(),...e.components};return t?(0,c.jsx)(t,{...e,children:(0,c.jsx)(o,{...e})}):o(e)}var c;function l(){return(l=e((()=>{c=r(),t(),i()})))()}l();export{s as default};

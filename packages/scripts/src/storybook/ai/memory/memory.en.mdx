@@ -26,8 +26,8 @@ To maintain the clarity and efficiency of the workspace memory, strict rules are
 - **Explicit Developer Trigger**
   The AI updates `ai-memory.md` **only** upon explicit developer command (keywords: "Remember", "Save to memory", "Запомни") or when finalizing critical architectural fixes.
 
-- **Optimization & Content Integrity**
-  Whenever adding a new rule, the agent must **optimize, structure, and condense the entire accumulated text** in the file: merge related items, eliminate duplicate statements, and keep requirements concise and dense. Discarding or deleting previously established rules and constraints is strictly prohibited.
+- **Content Integrity & Deduplication**
+  When adding a new rule, the agent is **only allowed to eliminate exact duplicates or resolve direct conflicts**. The content and wording of existing rules must not be modified, condensed, or rewritten. Deleting previously established rules and constraints is strictly prohibited.
 
 - **Critical Architectural Rules Only**
   Recording routine changelogs, verbose chat conversations, or temporary scratch notes is prohibited. The memory file contains strictly actionable architectural constraints, typing contracts, and formatting guidelines.

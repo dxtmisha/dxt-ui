@@ -1,0 +1,24 @@
+import{n as e,r as t}from"./rolldown-runtime-DkW27tQK.js";import{Bt as n,Dt as r,Ft as i,Gt as a,It as o,Nt as s,Ot as c,Pt as l,dt as u,kt as d,sn as f}from"./library-CO1fW2cN.js";import{E as p,O as m,d as h,f as g,i as _,l as v,m as y,n as b,t as x,u as S}from"./wiki-BMj2WokS.js";import{n as C,t as w}from"./EventClickInclude-BgNX8brc-Ca5_keyg.js";import{n as T,t as E}from"./Button-D3Atie3y.js";import{n as D,t as O}from"./AreaInclude-D20rGVhZ-vH2tR0Fe.js";var k,A,j;function M(){return(M=e((()=>{C(),O(),d(),p(),c(),k=class{constructor(e,t,n,i,a,o,s,c,l={}){r(this,`props`,void 0),r(this,`refs`,void 0),r(this,`element`,void 0),r(this,`classDesign`,void 0),r(this,`className`,void 0),r(this,`components`,void 0),r(this,`slots`,void 0),r(this,`emits`,void 0),r(this,`area`,void 0),r(this,`event`,void 0),this.props=e,this.refs=t,this.element=n,this.classDesign=i,this.className=a,this.components=o,this.slots=s,this.emits=c;let{AreaIncludeConstructor:u=D,EventConstructor:d=w}=l;this.area=new u(e),this.event=new d(void 0,void 0,c)}isList(){var e;return!!(this.props.list||(e=this.slots)!=null&&e.default)}},A={area:`button-group`,orientation:`horizontal`},j=class extends m{constructor(e,t,n,i=k){super(e,t,n),r(this,`item`,void 0),r(this,`renderList`,()=>{let e=[];return this.item.isList()&&(this.props.list&&this.props.list.forEach((t,n)=>{this.components.renderAdd(e,`button`,y({class:this.classes?.value.item,onClick:this.item.event.onClick},this.props.buttonAttrs,t),void 0,`list-${n}`)}),this.initSlot(`default`,e)),e}),this.item=new i(this.props,this.refs,this.element,this.getDesign(),this.getName(),this.components,this.slots,this.emits),this.init()}initExpose(){return{}}initClasses(){return{main:{},item:this.getSubClass(`item`)}}initStyles(){return{}}initRender(){return o(`div`,{...this.getAttrs(),class:this.classes?.value.main},this.renderList())}}})))()}var N,P;function F(){return(F=e((()=>{M(),N={orientation:[`horizontal`,`vertical`]},P={...A,orientation:`horizontal`}})))()}var I;function L(){return(L=e((()=>{d(),p(),M(),T(),F(),I=i({name:`D1ButtonGroup`,__name:`D1ButtonGroup`,props:n({area:{},list:{},buttonAttrs:{},orientation:{},wrap:{type:Boolean}},P),emits:[`click`,`clickLite`],setup(e,{expose:t,emit:n}){let r=n,i=e,o=s(()=>({main:{"d1-buttonGroup":!0,[`d1-buttonGroup--orientation--${i.orientation}`]:u(N.orientation,i.orientation),"d1-buttonGroup--wrap":i.wrap}})),c=s(()=>({})),d=new j(`d1.buttonGroup`,i,{emits:r,classes:o,styles:c,components:{button:E}}),p=d.render();return t(d.expose()),(e,t)=>(a(),l(f(p)))}})})))()}var R;function z(){return(z=e((()=>{L(),R=I,I.__docgenInfo=Object.assign({displayName:I.name??I.__name},{name:`D1ButtonGroup`,exportName:`default`,displayName:`D1ButtonGroup`,description:``,tags:{},sourceFiles:[`/Users/tung/Documents/GitHub/dxt-ui/packages/d1/src/components/Ui/ButtonGroup/D1ButtonGroup.vue`]})})))()}var B,V,H,U;function W(){return(W=e((()=>{x(),F(),B=[{name:`area`,type:`string`},{name:`buttonAttrs`,type:`ConstrBind<ButtonProps>`},{name:`list`,type:`ConstrBind<ButtonProps>[]`},{name:`orientation`,type:`string`,option:[`horizontal`,`vertical`]},{name:`wrap`,type:`boolean`}],V=[{name:`default`,properties:[{name:`props`,type:`(any) | undefined`}]}],H=[{name:`click`,description:`Full click event with MouseEvent/ Полное событие клика с MouseEvent`,properties:[{name:`event`,type:`MouseEvent`},{name:`value`,type:`EventClickValue`}]},{name:`clickLite`,description:`Lightweight click event/ Упрощённое событие клика`,properties:[{name:`value`,type:`EventClickValue`}]}],U={component:`ButtonGroup`,props:B,slots:V,events:H,defaults:P,wikiDesign:b}})))()}var G;function K(){return(K=e((()=>{h(),v(),W(),G=new S(U.component,U.props,U.defaults,U.wikiDesign,_,g)})))()}var q=t({ButtonGroup:()=>Y,ButtonGroupSlots:()=>X,__namedExportsOrder:()=>Z,default:()=>J}),J,Y,X,Z;function Q(){return(Q=e((()=>{z(),K(),J={title:`Ui/ButtonGroup`,component:R,parameters:{design:`d1`,docs:{description:{component:G.getDescription()}}},argTypes:G.getWiki(),args:G.getValues()},Y={},X={name:`Использование слотов`,render:()=>({components:{D1ButtonGroup:R},template:`
+        <D1ButtonGroup>
+          <template #default>
+            Default Slot
+          </template>
+        </D1ButtonGroup>
+    `})},Y.parameters={...Y.parameters,docs:{...Y.parameters?.docs,source:{originalSource:`{
+  // :story-main [!] System label / Системная метка
+  // :story-main [!] System label / Системная метка
+}`,...Y.parameters?.docs?.source}}},X.parameters={...X.parameters,docs:{...X.parameters?.docs,source:{originalSource:`{
+  name: 'Использование слотов',
+  render: () => ({
+    components: {
+      D1ButtonGroup
+    },
+    template: \`
+        <D1ButtonGroup>
+          <template #default>
+            Default Slot
+          </template>
+        </D1ButtonGroup>
+    \`
+  })
+}`,...X.parameters?.docs?.source}}},Z=[`ButtonGroup`,`ButtonGroupSlots`]})))()}export{G as a,Q as i,X as n,K as o,q as r,Y as t};

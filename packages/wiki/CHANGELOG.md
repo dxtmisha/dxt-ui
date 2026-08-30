@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.113.0] - 2026-08-30
+
+### Added
+- **`CropArea` MDX & Wiki Documentation**:
+  - Registered component descriptions (`wikiDescriptionsCropArea.ts`), possibilities, story templates, and metadata.
+  - Created MDX documentation pages (`cropArea.en.mdx`, `cropArea.ru.mdx`, `cropArea.vi.mdx`).
+  - Added property controls module `wikiCropArea.ts` for keyboard navigation steps, aspect ratios, and boundary coordinates.
+- **`ImageCrop` MDX & Wiki Documentation**:
+  - Registered component descriptions (`wikiDescriptionsImageCrop.ts`) and MDX documentation pages (`imageCrop.en.mdx`, `imageCrop.ru.mdx`, `imageCrop.vi.mdx`).
+  - Added property controls module `wikiImageCrop.ts` with support for aspect ratio, coordinate rounding, and image load event handling.
+- **`InputImage` MDX & Wiki Documentation**:
+  - Registered component descriptions (`wikiDescriptionsInputImage.ts`) and MDX documentation pages (`inputImage.en.mdx`, `inputImage.ru.mdx`, `inputImage.vi.mdx`).
+  - Added property controls module `wikiInputImage.ts` supporting `counterType` (`files`, `size`, `filesAndSize`), `dropzoneAttrs`, `imageCropAttrs`, `actionsAttrs`, and `previewAttrs`.
+- **Property Wiki Definitions**:
+  - Added `counterType` property definition in `wikiOption.ts`.
+
+### Changed
+- **Storybook Documentation Structure**:
+  - Migrated package documentation MDX files to their individual package `src/storybook/` directories with standardized multi-language titles.
+
+### Removed
+- **Legacy Wiki Subsystems**:
+  - Removed deprecated `ComponentWiki` templates and legacy wiki generators.
+
 ## [0.110.1] - 2026-08-16
 
 ### Added

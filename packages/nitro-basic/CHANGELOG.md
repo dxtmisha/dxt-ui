@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.18] - 2026-08-30
+
+### Added
+- **LLM Configuration (`llms.txt`)**: Added `llms.txt` summarizing SSR bootstrapping architecture, client/server entrypoints, and AI resource discovery.
+- **Exports & Distribution**: Added `ai-screenshot` to package `files` and configured explicit export mappings for `./ai-types.md`, `./ai-description.md`, `./ai-resources/*`, and `./ai-screenshot/*` in `package.json`.
+- **Documentation**: Migrated package documentation to `src/storybook/` with comprehensive guides across English, Russian, and Vietnamese.
+
+### Changed
+- **Build Configuration**: Migrated `vite.config.ts` to `viteBasicFunction({ entry: ['src/library.ts', 'src/library-client.ts', 'src/library-plugin.ts'] })` and cleaned up config merging.
+
 ## [0.1.17] - 2026-08-05
 
 ### Changed

@@ -26,8 +26,8 @@ Trong một dự án monorepo phức tạp với nhiều package độc lập (`
 - **Kích hoạt rõ ràng từ lập trình viên**
   AI **chỉ** cập nhật `ai-memory.md` khi có lệnh trực tiếp từ lập trình viên (từ khóa: «Запомни», «Remember», «Save to memory») hoặc khi xác nhận các sửa đổi kiến trúc quan trọng.
 
-- **Tối ưu hóa và bảo toàn tính toàn vẹn (Optimization & Integrity)**
-  Mỗi khi thêm quy tắc mới, AI bắt buộc phải **tối ưu hóa, cấu trúc lại và cô đọng toàn bộ văn bản đã tích lũy** trong tệp: gộp các mục liên quan, loại bỏ câu trùng lặp và diễn đạt yêu cầu ngắn gọn, súc tích nhất. Nghiêm cấm xóa bỏ hoặc làm mất các quy tắc và ràng buộc đã thiết lập trước đó.
+- **Bảo toàn tính toàn vẹn và loại bỏ trùng lặp (Integrity & Deduplication)**
+  Khi thêm quy tắc mới, AI **chỉ được phép loại bỏ các câu trùng lặp hoặc giải quyết các xung đột trực tiếp**. Nội dung và cách diễn đạt của các quy tắc hiện có không được thay đổi, rút gọn hoặc viết lại. Nghiêm cấm xóa bỏ các quy tắc và ràng buộc đã thiết lập trước đó.
 
 - **Chỉ ghi quy tắc kiến trúc quan trọng**
   Nghiêm cấm ghi nhật ký thay đổi thông thường, đoạn hội thoại chat hoặc ghi chú tạm thời vào tệp bộ nhớ. Tệp chỉ chứa các ràng buộc kiến trúc, hợp đồng kiểu và quy ước định dạng thực tế.

@@ -25,4 +25,12 @@ describe('DesignTypesMcp', () => {
     expect(mcp.testGetMimeType('doc.md')).toBe('text/markdown')
     expect(mcp.testGetMimeType('plain.txt')).toBe('text/plain')
   })
+
+  it('checks if MCP file exists with is()', () => {
+    const ai = new DesignTypesAi('dist')
+    const prompts = new DesignTypesPrompts('ai-resources', ai)
+    const mcp = new DesignTypesMcp(ai, prompts)
+
+    expect(typeof mcp.is()).toBe('boolean')
+  })
 })

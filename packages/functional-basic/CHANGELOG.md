@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.10.1] - 2026-08-30
+
+### Added
+- **Documentation**:
+  - Migrated package documentation to `src/storybook/` with comprehensive guides across English, Russian, and Vietnamese.
+
+### Changed
+- **Build Configuration**:
+  - Migrated `vite.config.ts` to use `viteBasicFunction()` from `@dxtmisha/configuration`.
+- **AI Type Definitions & Resources**:
+  - Reorganized `ai-types-list/` structure to mirror `src/` directory layout.
+  - Updated `design-config.json` resource metadata descriptor in `ai-types-list/resources/`.
+
+## [1.10.0] - 2026-08-30
+
+### Added
+- **Geo Country Management (`Geo` / `GeoInstance`)**:
+  - Added `add(country: string, item: Partial<GeoItem>)` and `addList(list: Record<string, Partial<GeoItem>>)` methods to dynamically register and merge custom country configurations into the geo registry.
+  - Initialized internal country list directly from the `@dxtmisha/media` dataset, making `getList()` dynamic.
+  - Added unit test coverage for `GeoInstance.add`, `GeoInstance.addList`, `Geo.add`, and `Geo.addList`.
+- **AI Resources**:
+  - Added `error-center.md` architecture guide in `ai-resources/` and metadata descriptor in `ai-types-list/resources/error-center.json`.
+
 ## [1.9.0] - 2026-08-24
 
 ### Added

@@ -55,7 +55,7 @@ export class DesignTypesMake extends DesignTypesMakeAbstract {
    */
   getFullContent(): string {
     if (this.fullContent === undefined) {
-      const files = this.files.getListByFilter()
+      const files = this.files.getListCache()
       const processedFiles = this.files.getListAi(files)
 
       this.fullContent = this.files.toOneFile(processedFiles)

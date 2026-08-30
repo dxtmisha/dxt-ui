@@ -1,0 +1,11 @@
+import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{n as t,r as n}from"./lib-BRDOWE9X.js";import{t as r}from"./jsx-runtime-DeHZSEgm.js";function i(e){let t={blockquote:`blockquote`,code:`code`,h2:`h2`,li:`li`,p:`p`,strong:`strong`,ul:`ul`,...n(),...e.components};return(0,o.jsxs)(o.Fragment,{children:[(0,o.jsx)(t.h2,{id:`позиционирование`,children:`Позиционирование`}),`
+`,(0,o.jsxs)(t.p,{children:[`Группа свойств `,(0,o.jsx)(t.code,{children:`vertical`}),`, `,(0,o.jsx)(t.code,{children:`horizontal`}),` и `,(0,o.jsx)(t.code,{children:`origin`}),` позволяет определить точное местоположение уведомлений на экране и направление их появления.`]}),`
+`,(0,o.jsx)(t.p,{children:(0,o.jsx)(t.strong,{children:`Особенности:`})}),`
+`,(0,o.jsxs)(t.ul,{children:[`
+`,(0,o.jsxs)(t.li,{children:[(0,o.jsx)(t.code,{children:`vertical`}),` — определяет положение по вертикали (`,(0,o.jsx)(t.code,{children:`top`}),`, `,(0,o.jsx)(t.code,{children:`bottom`}),`).`]}),`
+`,(0,o.jsxs)(t.li,{children:[(0,o.jsx)(t.code,{children:`horizontal`}),` — определяет положение по горизонтали (`,(0,o.jsx)(t.code,{children:`right`}),`, `,(0,o.jsx)(t.code,{children:`left`}),`, `,(0,o.jsx)(t.code,{children:`block`}),`).`]}),`
+`,(0,o.jsxs)(t.li,{children:[(0,o.jsx)(t.code,{children:`origin`}),` — задает направление анимации появления (`,(0,o.jsx)(t.code,{children:`topToBottom`}),`, `,(0,o.jsx)(t.code,{children:`bottomToTop`}),`, `,(0,o.jsx)(t.code,{children:`rightToLeft`}),`, `,(0,o.jsx)(t.code,{children:`leftToRight`}),`).`]}),`
+`]}),`
+`,(0,o.jsxs)(t.blockquote,{children:[`
+`,(0,o.jsxs)(t.p,{children:[`Данные свойства предназначены исключительно для настройки поведения и адаптации под различные экраны. Рекомендуется задавать эти значения в конфигурационном файле `,(0,o.jsx)(t.code,{children:`properties.json`}),`.`]}),`
+`]})]})}function a(e={}){let{wrapper:t}={...n(),...e.components};return t?(0,o.jsx)(t,{...e,children:(0,o.jsx)(i,{...e})}):i(e)}var o;function s(){return(s=e((()=>{o=r(),t()})))()}s();export{a as default};

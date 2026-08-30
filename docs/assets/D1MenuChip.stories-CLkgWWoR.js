@@ -1,0 +1,214 @@
+import{n as e,r as t}from"./rolldown-runtime-DkW27tQK.js";import{Bt as n,Dt as r,Ft as i,Gt as a,It as o,Nt as s,Ot as c,Pt as l,in as u,kt as d,sn as f}from"./library-CO1fW2cN.js";import{E as p,O as ee,d as te,f as ne,i as m,l as h,n as g,t as _,u as v}from"./wiki-BMj2WokS.js";import{n as y,t as b}from"./D1Skeleton-0ed2Yx2u.js";import{n as x,t as S}from"./ChipInclude-CV4CiXge-ES-3r_eY.js";import{n as C,t as w}from"./Chip-lmbvZxpN.js";import{n as T,t as E}from"./Menu-C_GY42-L.js";import{n as D,t as O}from"./SelectAbstract-C0Hah54q-CGh-H5MW.js";var k,A,j;function M(){return(M=e((()=>{S(),D(),d(),p(),c(),k=class extends O{constructor(e,t,n,i,a,o,s,c,l={}){super(e,t,n,i,a,o,s,c,l),r(this,`props`,void 0),r(this,`refs`,void 0),r(this,`element`,void 0),r(this,`classDesign`,void 0),r(this,`className`,void 0),r(this,`components`,void 0),r(this,`slots`,void 0),r(this,`emits`,void 0),r(this,`chip`,void 0),this.props=e,this.refs=t,this.element=n,this.classDesign=i,this.className=a,this.components=o,this.slots=s,this.emits=c;let{ChipConstructor:u=x}=l;this.chip=new u(this.className,this.props,this.components,()=>({icon:this.props.icon,disabled:this.props.disabled,readonly:this.props.readonly,iconTrailing:this.iconTrailing}))}},A={labelSeparator:`:`,hideLabelValue:!0,hideValueIcon:!0},j=class extends ee{constructor(e,t,n,i=k){super(e,t,n),r(this,`item`,void 0),r(this,`renderControl`,e=>this.item.chip.render({default:()=>this.renderControlLabel(e.selectedNames?.value)},{...e.binds,iconTurn:e.open.value})),r(this,`renderControlLabel`,e=>{let t=[],n=e&&e.length>0&&!(this.props.hideValueIcon&&this.props.icon);return this.props.label&&(!n||!this.props.hideLabelValue)&&(n?t.push(o(`span`,this.getKeyClass(`label`),this.props.label),o(`span`,this.getKeyClass(`separator`),this.props.labelSeparator)):t.push(this.props.label)),n&&t.push(o(`span`,this.getKeyClass(`selected`),e.join(`, `))),t}),r(this,`renderInput`,()=>o(`input`,{name:this.props.name,value:this.item.value.get(),type:`hidden`})),r(this,`renderTitle`,e=>{let t=[];return this.initSlot(`title`,t,e),t}),this.item=new i(this.props,this.refs,this.element,this.getDesign(),this.getName(),this.components,this.slots,this.emits),this.init()}initExpose(){return{...this.item.menu.expose,...this.item.value.expose(),...this.item.validation.expose()}}initClasses(){return{main:{},label:this.getSubClass(`label`),separator:this.getSubClass(`separator`),selected:this.getSubClass(`selected`)}}initStyles(){return{}}initRender(){return this.item.menu.render({control:e=>[this.renderControl(e),this.renderInput()],title:e=>this.renderTitle(e),footer:e=>this.initSlot(`footer`,void 0,e),contextTop:e=>this.initSlot(`contextTop`,void 0,e),contextBottom:e=>this.initSlot(`contextBottom`,void 0,e)},{selected:this.item.value.item.value})}}})))()}var N;function P(){return(P=e((()=>{M(),N={...A,iconArrowDown:`keyboard_arrow_down`}})))()}var F;function I(){return(I=e((()=>{d(),M(),T(),C(),P(),F=i({name:`D1MenuChip`,__name:`D1MenuChip`,props:n({label:{},labelId:{},chipAttrs:{},modelValue:{},"onUpdate:value":{type:Function},"onUpdate:modelValue":{type:Function},value:{},detail:{},name:{},id:{},required:{type:Boolean},readonly:{type:Boolean},disabled:{type:Boolean},autofocus:{type:Boolean},tabindex:{},form:{},match:{},inputAttrs:{},max:{},autocomplete:{},autocapitalize:{},inputMode:{},enterKeyHint:{},spellcheck:{type:[Boolean,String]},autocorrect:{},option:{},multiple:{type:Boolean},selectionStyle:{},menuAttrs:{},labelSeparator:{},icon:{},hideLabelValue:{type:Boolean},hideValueIcon:{type:Boolean},hideList:{type:Boolean},showSearch:{type:Boolean},filterMode:{type:Boolean},iconArrowDown:{}},N),emits:[`update:value`,`update:modelValue`,`input`,`inputLite`,`change`,`changeLite`],setup(e,{expose:t,emit:n}){let r=n,i=e,o=s(()=>({main:{"d1-menuChip":!0}})),c=s(()=>({})),u=new j(`d1.menuChip`,i,{emits:r,classes:o,styles:c,components:{menu:E,chip:w}}),d=u.render();return t(u.expose()),(e,t)=>(a(),l(f(d)))}})})))()}var L;function R(){return(R=e((()=>{I(),L=F,F.__docgenInfo=Object.assign({displayName:F.name??F.__name},{name:`D1MenuChip`,exportName:`default`,displayName:`D1MenuChip`,description:``,tags:{},sourceFiles:[`/Users/tung/Documents/GitHub/dxt-ui/packages/d1/src/components/Ui/MenuChip/D1MenuChip.vue`]})})))()}var z,B,V,H;function U(){return(U=e((()=>{_(),P(),z=[{name:`autocapitalize`,type:`string`,option:[`off`,`none`,`sentences`,`words`,`characters`]},{name:`autocomplete`,type:`string`},{name:`autocorrect`,type:`string`,option:[`on`,`off`]},{name:`autofocus`,type:`boolean`},{name:`chipAttrs`,type:`ConstrBind<ChipProps>`},{name:`detail`,type:`Record<string, any>`},{name:`disabled`,type:`boolean`},{name:`enterKeyHint`,type:`string`,option:[`enter`,`done`,`go`,`next`,`previous`,`search`,`send`]},{name:`filterMode`,type:`boolean`},{name:`form`,type:`string`},{name:`hideLabelValue`,type:`boolean`},{name:`hideList`,type:`boolean`},{name:`hideValueIcon`,type:`boolean`},{name:`icon`,type:`IconValue<IconProps>`},{name:`iconArrowDown`,type:`IconValue<IconProps>`},{name:`id`,type:`string | number`},{name:`inputAttrs`,type:`Record<string, any>`},{name:`inputMode`,type:`string`,option:[`none`,`text`,`decimal`,`numeric`,`tel`,`search`,`email`,`url`]},{name:`label`,type:`NumberOrString`},{name:`labelId`,type:`string`},{name:`labelSeparator`,type:`string`},{name:`match`,type:`FieldMatch`},{name:`max`,type:`NumberOrString`},{name:`menuAttrs`,type:`ConstrBind<MenuProps>`},{name:`modelValue`,type:`Value`},{name:`multiple`,type:`boolean`},{name:`name`,type:`string`},{name:`onUpdate:modelValue`,type:`((value: any) => void)`},{name:`onUpdate:value`,type:`((value: any) => void)`},{name:`option`,type:`ListRecord`},{name:`readonly`,type:`boolean`},{name:`required`,type:`boolean`},{name:`selectionStyle`,type:`string`,option:[`checkbox`,`none`,`radio`,`checkmark`,`auto`]},{name:`showSearch`,type:`boolean`},{name:`spellcheck`,type:`string`,option:[`true`,`false`]},{name:`tabindex`,type:`number`},{name:`value`,type:`Value`}],B=[{name:`contextBottom`,description:`Context slot for bottom area / Слот контекстной области снизу`,properties:[{name:`props`,type:`(MenuControlItem) | undefined`}]},{name:`contextTop`,description:`Context slot for top area / Слот контекстной области сверху`,properties:[{name:`props`,type:`(MenuControlItem) | undefined`}]},{name:`default`,properties:[{name:`props`,type:`(any) | undefined`}]},{name:`footer`,description:`Footer slot for window bottom/ Слот подвала для низа окна`,properties:[{name:`props`,type:`(MenuControlItem) | undefined`}]},{name:`title`,description:`Title slot for window title/ Слот заголовка для заголовка окна`,properties:[{name:`props`,type:`(MenuControlItem) | undefined`}]}],V=[{name:`change`,description:`Emitted when value is committed (blur/confirm)/
+Эмит при подтверждении значения (blur/confirm): [event, value]`,properties:[{name:`event`,type:`InputEvent | Event`},{name:`value`,type:`FieldValidationItem<any>`}]},{name:`changeLite`,description:`Lightweight change emit without DOM event/
+Лёгкий эмит подтверждения без события: [value]`,properties:[{name:`value`,type:`FieldValidationItem<any>`}]},{name:`input`,description:`Emitted on input events (every change while typing)/
+Эмит при вводе (каждое изменение): [event, value]`,properties:[{name:`event`,type:`InputEvent | Event`},{name:`value`,type:`FieldValidationItem<any>`}]},{name:`inputLite`,description:`Lightweight input emit without DOM event/
+Лёгкий эмит ввода без DOM-события: [value]`,properties:[{name:`value`,type:`FieldValidationItem<any>`}]},{name:`update:modelValue`,description:`Update model value event/ Событие обновления значения модели`,properties:[{name:`value`,type:`any`}]},{name:`update:value`,description:`Update value event/ Событие обновления значения`,properties:[{name:`value`,type:`any`}]}],H={component:`MenuChip`,props:z,slots:B,events:V,defaults:N,wikiDesign:g}})))()}var W;function G(){return(G=e((()=>{te(),h(),U(),W=new v(H.component,H.props,H.defaults,H.wikiDesign,m,ne)})))()}var K=t({MenuChip:()=>J,MenuChipBasic:()=>Y,MenuChipSkeleton:()=>Z,MenuChipVModel:()=>X,__namedExportsOrder:()=>Q,default:()=>q}),q,J,Y,X,Z,Q;function $(){return($=e((()=>{R(),G(),y(),d(),q={title:`Ui/MenuChip`,component:L,parameters:{design:`d1`,docs:{description:{component:W.getDescription()}}},argTypes:W.getWiki(),args:W.getValues()},J={},Y={name:`Базовые`,render:()=>({components:{D1MenuChip:L},setup(){return{options:u([{label:`English`,value:`en`},{label:`Russian`,value:`ru`},{label:`Vietnamese`,value:`vi`},{label:`Spanish`,value:`es`}]),value1:u(`en`),value2:u(`ru`),value3:u(`vi`)}},template:`
+        <div class="wiki-storybook-flex">
+          <D1MenuChip
+            v-model="value1"
+            type="menuChip"
+            label="Language"
+            :option="options"
+          />
+          <D1MenuChip
+            v-model="value2"
+            type="menuChip"
+            label="With search"
+            showSearch
+            :option="options"
+          />
+          <D1MenuChip
+            v-model="value3"
+            type="menuChip"
+            label="Hide value if icon"
+            icon="settings"
+            hideValueIcon
+            :option="options"
+          />
+        </div>
+    `})},X={name:`Двусторонняя привязка (v-model)`,render:()=>({components:{D1MenuChip:L},setup(){return{valueSingle:u(`option2`),valueMultiple:u([`option1`,`option3`]),options:[{label:`First option`,value:`option1`},{label:`Second option`,value:`option2`},{label:`Third option`,value:`option3`}]}},template:`
+        <div class="wiki-storybook-flex-column">
+          <div class="wiki-storybook-flex-align-center">
+            <span>Value: <strong>{{ valueSingle }}</strong></span>
+            <button class="wiki-storybook-button" @click="valueSingle = 'option1'">option 1</button>
+            <button class="wiki-storybook-button" @click="valueSingle = 'option2'">option 2</button>
+            <button class="wiki-storybook-button" @click="valueSingle = 'option3'">option 3</button>
+          </div>
+
+          <D1MenuChip
+            v-model="valueSingle"
+            type="menuChip"
+            label="Single select"
+            :option="options"
+          />
+
+          <div class="wiki-storybook-flex-align-center">
+            <span>Value: <strong>{{ valueMultiple }}</strong></span>
+            <button class="wiki-storybook-button" @click="valueMultiple = ['option1', 'option2']">option 1, 2</button>
+            <button class="wiki-storybook-button wiki-storybook-button--warning" @click="valueMultiple = []">Clear</button>
+          </div>
+
+          <D1MenuChip
+            v-model="valueMultiple"
+            type="menuChip"
+            label="Multiple select"
+            multiple
+            :option="options"
+          />
+        </div>
+    `})},Z={name:`Скелетон`,render:()=>({components:{D1MenuChip:L,D1Skeleton:b},template:`
+        <D1Skeleton :active="true" style="max-width:320px">
+          <div class="wiki-storybook-flex-column">
+            <D1MenuChip
+              type="menuChip"
+              label="Loading menu chip"
+              :option="[
+                { label: 'First option', value: 'option1' },
+                { label: 'Second option', value: 'option2' },
+                { label: 'Third option', value: 'option3' }
+              ]"
+              :chipAttrs="{isSkeleton: true}"
+            />
+          </div>
+        </D1Skeleton>
+    `})},J.parameters={...J.parameters,docs:{...J.parameters?.docs,source:{originalSource:`{
+  // :story-main [!] System label / Системная метка
+  // :story-main [!] System label / Системная метка
+}`,...J.parameters?.docs?.source}}},Y.parameters={...Y.parameters,docs:{...Y.parameters?.docs,source:{originalSource:`{
+  name: 'Базовые',
+  render: () => ({
+    components: {
+      D1MenuChip
+    },
+    setup() {
+      const options = ref([{
+        label: 'English',
+        value: 'en'
+      }, {
+        label: 'Russian',
+        value: 'ru'
+      }, {
+        label: 'Vietnamese',
+        value: 'vi'
+      }, {
+        label: 'Spanish',
+        value: 'es'
+      }]);
+      const value1 = ref('en');
+      const value2 = ref('ru');
+      const value3 = ref('vi');
+      return {
+        options,
+        value1,
+        value2,
+        value3
+      };
+    },
+    template: \`
+        <div class="wiki-storybook-flex">
+          <D1MenuChip
+            v-model="value1"
+            type="menuChip"
+            label="Language"
+            :option="options"
+          />
+          <D1MenuChip
+            v-model="value2"
+            type="menuChip"
+            label="With search"
+            showSearch
+            :option="options"
+          />
+          <D1MenuChip
+            v-model="value3"
+            type="menuChip"
+            label="Hide value if icon"
+            icon="settings"
+            hideValueIcon
+            :option="options"
+          />
+        </div>
+    \`
+  })
+}`,...Y.parameters?.docs?.source}}},X.parameters={...X.parameters,docs:{...X.parameters?.docs,source:{originalSource:`{
+  name: 'Двусторонняя привязка (v-model)',
+  render: () => ({
+    components: {
+      D1MenuChip
+    },
+    setup() {
+      const valueSingle = ref('option2');
+      const valueMultiple = ref(['option1', 'option3']);
+      const options = [{
+        label: 'First option',
+        value: 'option1'
+      }, {
+        label: 'Second option',
+        value: 'option2'
+      }, {
+        label: 'Third option',
+        value: 'option3'
+      }];
+      return {
+        valueSingle,
+        valueMultiple,
+        options
+      };
+    },
+    template: \`
+        <div class="wiki-storybook-flex-column">
+          <div class="wiki-storybook-flex-align-center">
+            <span>Value: <strong>{{ valueSingle }}</strong></span>
+            <button class="wiki-storybook-button" @click="valueSingle = 'option1'">option 1</button>
+            <button class="wiki-storybook-button" @click="valueSingle = 'option2'">option 2</button>
+            <button class="wiki-storybook-button" @click="valueSingle = 'option3'">option 3</button>
+          </div>
+
+          <D1MenuChip
+            v-model="valueSingle"
+            type="menuChip"
+            label="Single select"
+            :option="options"
+          />
+
+          <div class="wiki-storybook-flex-align-center">
+            <span>Value: <strong>{{ valueMultiple }}</strong></span>
+            <button class="wiki-storybook-button" @click="valueMultiple = ['option1', 'option2']">option 1, 2</button>
+            <button class="wiki-storybook-button wiki-storybook-button--warning" @click="valueMultiple = []">Clear</button>
+          </div>
+
+          <D1MenuChip
+            v-model="valueMultiple"
+            type="menuChip"
+            label="Multiple select"
+            multiple
+            :option="options"
+          />
+        </div>
+    \`
+  })
+}`,...X.parameters?.docs?.source}}},Z.parameters={...Z.parameters,docs:{...Z.parameters?.docs,source:{originalSource:`{
+  name: 'Скелетон',
+  render: () => ({
+    components: {
+      D1MenuChip,
+      D1Skeleton
+    },
+    template: \`
+        <D1Skeleton :active="true" style="max-width:320px">
+          <div class="wiki-storybook-flex-column">
+            <D1MenuChip
+              type="menuChip"
+              label="Loading menu chip"
+              :option="[
+                { label: 'First option', value: 'option1' },
+                { label: 'Second option', value: 'option2' },
+                { label: 'Third option', value: 'option3' }
+              ]"
+              :chipAttrs="{isSkeleton: true}"
+            />
+          </div>
+        </D1Skeleton>
+    \`
+  })
+}`,...Z.parameters?.docs?.source}}},Q=[`MenuChip`,`MenuChipBasic`,`MenuChipVModel`,`MenuChipSkeleton`]})))()}export{X as a,G as c,Z as i,J as n,$ as o,Y as r,W as s,K as t};

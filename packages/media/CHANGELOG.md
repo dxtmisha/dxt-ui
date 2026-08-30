@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.7.3] - 2026-08-30
+
+### Added
+- **LLM Configuration (`llms.txt`)**: Added `llms.txt` documenting SVG country flags dataset and ISO 3166-1 geographical metadata discovery.
+
+### Changed
+- **Package Metadata**: Updated `description` and extended `keywords` in `package.json` with comprehensive metadata (`country-flags`, `svg-flags`, `geographical-data`, `iso-3166`, `phone-codes`, `phone-masks`, `timezones`, `i18n`, `localization`, `tree-shakeable`).
+
 ## [0.7.2] - 2026-08-05
 
 ### Changed

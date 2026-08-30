@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.113.0] - 2026-08-30
+
+### Added
+- **`ImageCrop` Component Constructor**:
+  - Introduced `ImageCrop` constructor (`src/constructors/ImageCrop/`) for interactive image cropping, aspect ratio constraint handling, and coordinate calculation.
+  - Decomposed into specialized helper classes: `ImageCropCoordinates`, `ImageCropElement`, `ImageCropEvent`, and `ImageCropImage`.
+  - Added crop coordinate rounding, image load events (`onLoad`), and `resize` event bubbling from `CropArea`.
+  - Added export entrypoint `./ImageCrop` in `package.json` and styles in `src/library/style.scss`.
+- **`InputImage` Component Constructor**:
+  - Introduced `InputImage` constructor (`src/constructors/InputImage/`) combining drag-and-drop file upload (`Dropzone`), image cropping (`ImageCrop`), action buttons (`Actions`), and previews.
+  - Integrated automatic client-side image scaling via `resizeImage` from `@dxtmisha/functional-basic`.
+  - Added `counterType` prop (`'files' | 'size' | 'filesAndSize'`), `aspectRatio`, `maxSize`, and `isSkeleton` loading states.
+  - Added export entrypoint `./InputImage` in `package.json` and styles in `src/library/style.scss`.
+- **Documentation**:
+  - Migrated package Storybook MDX documentation into `src/storybook/` across English, Russian, and Vietnamese.
+
+### Changed
+- **`Dropzone` Refinement**:
+  - Streamlined `Dropzone` event flow to emit standard `FieldBasicEmits` and native input change events.
+
 ## [0.111.3] - 2026-08-21
 
 ### Fixed

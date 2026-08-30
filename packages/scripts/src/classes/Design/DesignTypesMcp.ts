@@ -32,6 +32,16 @@ export class DesignTypesMcp {
   ) { }
 
   /**
+   * Checks if the MCP server resources file exists.
+   *
+   * Проверяет, существует ли файл ресурсов MCP-сервера.
+   * @returns true if MCP resources file exists / true, если файл ресурсов MCP-сервера существует
+   */
+  is(): boolean {
+    return PropertiesFile.is(UI_FILE_AI_MCP)
+  }
+
+  /**
    * Generates and saves MCP server resources file.
    *
    * Генерирует и сохраняет файл ресурсов MCP-сервера.
