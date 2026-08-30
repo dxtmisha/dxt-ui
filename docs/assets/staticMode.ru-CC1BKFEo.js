@@ -1,9 +1,0 @@
-import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{n as t,r as n}from"./lib-BRDOWE9X.js";import{t as r}from"./jsx-runtime-DeHZSEgm.js";function i(e){let t={code:`code`,h2:`h2`,li:`li`,p:`p`,strong:`strong`,ul:`ul`,...n(),...e.components};return(0,o.jsxs)(o.Fragment,{children:[(0,o.jsx)(t.h2,{id:`статический-режим-staticmode`,children:`Статический режим (staticMode)`}),`
-`,(0,o.jsxs)(t.p,{children:[`Компонент Window поддерживает статический режим работы через свойство `,(0,o.jsx)(t.code,{children:`staticMode`}),`. В этом режиме окно работает как встроенный компонент без модального поведения:`]}),`
-`,(0,o.jsxs)(t.ul,{children:[`
-`,(0,o.jsxs)(t.li,{children:[(0,o.jsx)(t.strong,{children:`Содержимое отображается сразу`}),` - окно не скрывается и не требует активации`]}),`
-`,(0,o.jsxs)(t.li,{children:[(0,o.jsx)(t.strong,{children:`Отключены анимации`}),` - нет эффектов появления/исчезновения`]}),`
-`,(0,o.jsxs)(t.li,{children:[(0,o.jsx)(t.strong,{children:`Отключено позиционирование`}),` - окно встраивается в поток документа`]}),`
-`,(0,o.jsxs)(t.li,{children:[(0,o.jsx)(t.strong,{children:`Работает с adaptive`}),` - когда свойство `,(0,o.jsx)(t.code,{children:`adaptive`}),` имеет один из статичных режимов (например, `,(0,o.jsx)(t.code,{children:`static`}),`), включается статичный режим`]}),`
-`]}),`
-`,(0,o.jsx)(t.p,{children:`Статический режим особенно полезен для встраивания содержимого окна непосредственно в интерфейс без модального поведения.`})]})}function a(e={}){let{wrapper:t}={...n(),...e.components};return t?(0,o.jsx)(t,{...e,children:(0,o.jsx)(i,{...e})}):i(e)}var o;function s(){return(s=e((()=>{o=r(),t()})))()}s();export{a as default};

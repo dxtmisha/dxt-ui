@@ -1,4 +1,0 @@
-import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{n as t,r as n}from"./lib-BRDOWE9X.js";import{t as r}from"./jsx-runtime-DeHZSEgm.js";function i(e){let t={code:`code`,li:`li`,ul:`ul`,...n(),...e.components};return(0,o.jsxs)(t.ul,{children:[`
-`,(0,o.jsxs)(t.li,{children:[(0,o.jsx)(t.code,{children:`[area]: any`}),` — Динамический слот для рендеринга контента. Текущее значение области (area) используется как имя слота для выбора соответствующего контента.`]}),`
-`,(0,o.jsxs)(t.li,{children:[(0,o.jsx)(t.code,{children:`default: any`}),` — Слот по умолчанию, который отображается, если для текущего значения области не предоставлен специфический слот или если значение области не определено.`]}),`
-`]})}function a(e={}){let{wrapper:t}={...n(),...e.components};return t?(0,o.jsx)(t,{...e,children:(0,o.jsx)(i,{...e})}):i(e)}var o;function s(){return(s=e((()=>{o=r(),t()})))()}s();export{a as default};

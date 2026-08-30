@@ -1,3 +1,0 @@
-import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{n as t,r as n}from"./lib-BRDOWE9X.js";import{t as r}from"./jsx-runtime-DeHZSEgm.js";function i(e){let t={code:`code`,li:`li`,ul:`ul`,...n(),...e.components};return(0,o.jsxs)(t.ul,{children:[`
-`,(0,o.jsxs)(t.li,{children:[(0,o.jsx)(t.code,{children:`checkValidity(): boolean`}),` — Checks whether the component's value satisfies its validation constraints. Returns `,(0,o.jsx)(t.code,{children:`true`}),` if valid, otherwise `,(0,o.jsx)(t.code,{children:`false`}),`.`]}),`
-`]})}function a(e={}){let{wrapper:t}={...n(),...e.components};return t?(0,o.jsx)(t,{...e,children:(0,o.jsx)(i,{...e})}):i(e)}var o;function s(){return(s=e((()=>{o=r(),t()})))()}s();export{a as default};

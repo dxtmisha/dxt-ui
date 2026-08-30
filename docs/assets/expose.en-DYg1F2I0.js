@@ -1,5 +1,0 @@
-import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{n as t,r as n}from"./lib-BRDOWE9X.js";import{t as r}from"./jsx-runtime-DeHZSEgm.js";function i(e){let t={code:`code`,li:`li`,ul:`ul`,...n(),...e.components};return(0,o.jsxs)(t.ul,{children:[`
-`,(0,o.jsxs)(t.li,{children:[(0,o.jsx)(t.code,{children:`isSticky: ComputedRef<boolean>`}),` — Computed state indicating whether scroll position is greater than zero and sticky behavior is active.`]}),`
-`,(0,o.jsxs)(t.li,{children:[(0,o.jsx)(t.code,{children:`getValues(): HeadroomEventItem`}),` — Function returning an object with all current headroom scroll metrics and event values.`]}),`
-`,(0,o.jsxs)(t.li,{children:[(0,o.jsx)(t.code,{children:`update(): void`}),` — Recalculates scroll metrics and updates headroom states and element transformation styles.`]}),`
-`]})}function a(e={}){let{wrapper:t}={...n(),...e.components};return t?(0,o.jsx)(t,{...e,children:(0,o.jsx)(i,{...e})}):i(e)}var o;function s(){return(s=e((()=>{o=r(),t()})))()}s();export{a as default};

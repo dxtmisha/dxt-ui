@@ -39,7 +39,6 @@
   },
   "files": [
     "dist",
-    "src/media/functional",
     "src/styles",
     "README.md",
     "package.json",

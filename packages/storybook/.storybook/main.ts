@@ -49,9 +49,7 @@ const config: StorybookConfig = {
     '../../d1/src/**/*.mdx',
     '../../d1/src/**/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../../wiki/src/media/functional/**/*.mdx',
-    '../../wiki/src/media/functional/**/*.stories.@(js|jsx|mjs|ts|tsx)',
-    '../../wiki/src/media/mdx/**/*.mdx',
-    '../../wiki/src/media/mdx/**/*.stories.@(js|jsx|mjs|ts|tsx)'
+    '../../wiki/src/media/functional/**/*.stories.@(js|jsx|mjs|ts|tsx)'
   ],
   addons: [
     getAbsolutePath('@storybook/addon-vitest'),

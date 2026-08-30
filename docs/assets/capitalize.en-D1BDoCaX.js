@@ -1,0 +1,19 @@
+import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{n as t,r as n}from"./lib-BRDOWE9X.js";import{t as r}from"./jsx-runtime-DeHZSEgm.js";import{f as i,s as a}from"./blocks-C5PYTnT8.js";function o(e){let t={code:`code`,h1:`h1`,li:`li`,p:`p`,pre:`pre`,strong:`strong`,ul:`ul`,...n(),...e.components};return(0,c.jsxs)(c.Fragment,{children:[(0,c.jsx)(a,{title:`@dxtmisha/en/functional-basic/Functions/capitalize - Capitalizing the first letter of a string`}),`
+`,(0,c.jsx)(t.h1,{id:`capitalize`,children:(0,c.jsx)(t.code,{children:`capitalize`})}),`
+`,(0,c.jsx)(t.p,{children:`Capitalizes the first letter of a string. Returns the same string if it is empty. The function is robust and safe for non-string inputs.`}),`
+`,(0,c.jsx)(t.p,{children:(0,c.jsx)(t.strong,{children:`Parameters:`})}),`
+`,(0,c.jsxs)(t.ul,{children:[`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.code,{children:`value: string`}),` — The original string to capitalize.`]}),`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.code,{children:`isLocale: boolean`}),` (optional) — If `,(0,c.jsx)(t.code,{children:`true`}),`, uses the current global locale (via `,(0,c.jsx)(t.code,{children:`Geo.getLocation()`}),`) for capitalization rules.`]}),`
+`]}),`
+`,(0,c.jsxs)(t.p,{children:[(0,c.jsx)(t.strong,{children:`Returns:`}),`
+`,(0,c.jsx)(t.code,{children:`string`}),` — The string with the first letter capitalized.`]}),`
+`,(0,c.jsx)(t.pre,{children:(0,c.jsx)(t.code,{className:`language-typescript`,children:`import { capitalize, Geo } from '@dxtmisha/functional-basic'
+
+console.log(capitalize('hello')) // 'Hello'
+console.log(capitalize('123'))   // '123'
+
+// Locale-aware capitalization (e.g., for Turkish 'i' -> 'İ')
+Geo.set('tr-TR')
+console.log(capitalize('i', true)) // 'İ'
+`})})]})}function s(e={}){let{wrapper:t}={...n(),...e.components};return t?(0,c.jsx)(t,{...e,children:(0,c.jsx)(o,{...e})}):o(e)}var c;function l(){return(l=e((()=>{c=r(),t(),i()})))()}l();export{s as default};

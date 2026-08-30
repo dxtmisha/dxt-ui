@@ -1,6 +1,0 @@
-import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{n as t,r as n}from"./lib-BRDOWE9X.js";import{t as r}from"./jsx-runtime-DeHZSEgm.js";function i(e){let t={blockquote:`blockquote`,code:`code`,h2:`h2`,p:`p`,...n(),...e.components};return(0,o.jsxs)(o.Fragment,{children:[(0,o.jsx)(t.h2,{id:`html-контент`,children:`HTML-контент`}),`
-`,(0,o.jsxs)(t.p,{children:[`Свойство `,(0,o.jsx)(t.code,{children:`html`}),` позволяет вставлять произвольный HTML-код непосредственно в тело SnackbarItem.`]}),`
-`,(0,o.jsxs)(t.blockquote,{children:[`
-`,(0,o.jsxs)(t.p,{children:[`[!WARNING]
-Использование свойства `,(0,o.jsx)(t.code,{children:`html`}),` не рекомендуется. Это может быть небезопасно и привести к XSS-уязвимостям. Рассмотрите возможность использования свойства `,(0,o.jsx)(t.code,{children:`component`}),` или слотов для более безопасного и гибкого рендеринга сложного содержимого.`]}),`
-`]})]})}function a(e={}){let{wrapper:t}={...n(),...e.components};return t?(0,o.jsx)(t,{...e,children:(0,o.jsx)(i,{...e})}):i(e)}var o;function s(){return(s=e((()=>{o=r(),t()})))()}s();export{a as default};

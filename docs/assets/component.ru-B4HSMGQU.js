@@ -1,8 +1,0 @@
-import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{n as t,r as n}from"./lib-BRDOWE9X.js";import{t as r}from"./jsx-runtime-DeHZSEgm.js";function i(e){let t={code:`code`,h2:`h2`,li:`li`,p:`p`,strong:`strong`,ul:`ul`,...n(),...e.components};return(0,o.jsxs)(o.Fragment,{children:[(0,o.jsx)(t.h2,{id:`кастомный-компонент`,children:`Кастомный компонент`}),`
-`,(0,o.jsxs)(t.p,{children:[`Свойства `,(0,o.jsx)(t.code,{children:`component`}),` и `,(0,o.jsx)(t.code,{children:`componentProps`}),` позволяют вставлять пользовательский Vue-компонент внутрь SnackbarItem. Это полезно, когда стандартных полей (label, description) недостаточно для отображения сложного контента.`]}),`
-`,(0,o.jsx)(t.p,{children:(0,o.jsx)(t.strong,{children:`Особенности:`})}),`
-`,(0,o.jsxs)(t.ul,{children:[`
-`,(0,o.jsxs)(t.li,{children:[(0,o.jsx)(t.code,{children:`component`}),` — принимает объект компонента или его имя.`]}),`
-`,(0,o.jsxs)(t.li,{children:[(0,o.jsx)(t.code,{children:`componentProps`}),` — объект с входными параметрами, которые будут переданы в компонент.`]}),`
-`]}),`
-`,(0,o.jsx)(t.p,{children:`Компонент рендерится внутри специального контейнера с классом основной области контента, что обеспечивает правильные отступы и стилизацию.`})]})}function a(e={}){let{wrapper:t}={...n(),...e.components};return t?(0,o.jsx)(t,{...e,children:(0,o.jsx)(i,{...e})}):i(e)}var o;function s(){return(s=e((()=>{o=r(),t()})))()}s();export{a as default};

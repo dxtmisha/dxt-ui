@@ -1,8 +1,0 @@
-import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{n as t,r as n}from"./lib-BRDOWE9X.js";import{t as r}from"./jsx-runtime-DeHZSEgm.js";function i(e){let t={code:`code`,h2:`h2`,li:`li`,p:`p`,strong:`strong`,ul:`ul`,...n(),...e.components};return(0,o.jsxs)(o.Fragment,{children:[(0,o.jsx)(t.h2,{id:`custom-component`,children:`Custom Component`}),`
-`,(0,o.jsxs)(t.p,{children:[`The `,(0,o.jsx)(t.code,{children:`component`}),` and `,(0,o.jsx)(t.code,{children:`componentProps`}),` properties allow you to insert a custom Vue component inside the SnackbarItem. This is useful when the standard fields (label, description) are not enough to display complex content.`]}),`
-`,(0,o.jsx)(t.p,{children:(0,o.jsx)(t.strong,{children:`Features:`})}),`
-`,(0,o.jsxs)(t.ul,{children:[`
-`,(0,o.jsxs)(t.li,{children:[(0,o.jsx)(t.code,{children:`component`}),` — accepts a component object or its name.`]}),`
-`,(0,o.jsxs)(t.li,{children:[(0,o.jsx)(t.code,{children:`componentProps`}),` — an object with props that will be passed to the component.`]}),`
-`]}),`
-`,(0,o.jsx)(t.p,{children:`The component is rendered inside a special container with the main content area class, ensuring proper padding and styling.`})]})}function a(e={}){let{wrapper:t}={...n(),...e.components};return t?(0,o.jsx)(t,{...e,children:(0,o.jsx)(i,{...e})}):i(e)}var o;function s(){return(s=e((()=>{o=r(),t()})))()}s();export{a as default};
