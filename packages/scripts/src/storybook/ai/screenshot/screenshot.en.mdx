@@ -1,6 +1,6 @@
 import { Meta } from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/en/2. AI/7. Visual Context (Screenshots)' />
+<Meta title='@dxtmisha/en/2. AI/8. Visual Context (Screenshots)' />
 
 # Visual Context (ai-screenshot)
 
@@ -38,6 +38,21 @@ When executing `dxt-prompt`, paths to all files in `ai-screenshot/` are automati
 ```
 
 Additionally, `DesignTypesMcp` converts screenshots into multimedia resources for the Model Context Protocol with accurate MIME types (`image/webp`, `text/html`, `text/css`), enabling multimodal agents to query visual assets dynamically.
+
+## Showcase Design Requirements for Multimodal AI
+
+The primary objective of visual context in AIDD is enabling multimodal models to accurately match design mockups (e.g., Figma screenshots) with existing library components.
+
+When a developer asks an AI assistant to build an interface based on a visual mockup, text-only models often struggle to match image elements with code abstractions, resulting in custom ad-hoc `div` layouts and arbitrary CSS classes. With access to a visual screenshot gallery, the AI instantly recognizes components: *"This section in the design is our existing `<MyCustomCard variant="elevated">`, and the filter bar is `<FilterPanel isCompact>`"*.
+
+To achieve maximum accuracy, the component showcase (demo gallery) must adhere to key design rules:
+
+- **Explicit Component Name and Props Display:**
+  Render the component name and applied props/variants directly alongside each component instance on the page (e.g., `Button [variant="primary", size="sm"]` or `Input [disabled=true, isError=true]`).
+- **Unified Visual and Contract Framing:**
+  Textual labels allow multimodal AI to capture both the visual styling (shadows, spacing, borders) and the exact combination of props that produced it in a single image.
+- **Elimination of Custom Markup Recreation:**
+  By recognizing the component visually, the AI directly utilizes existing design system components with correct props instead of generating redundant HTML and CSS from scratch.
 
 ## Running the Generator
 

@@ -55,8 +55,12 @@ The public package surface utilized by the aggregation engine and consumer appli
 
 - **`ai-resources/` (Domain-Specific Standards Directory)**
   - **Location:** Package root (e.g., `packages/d1/ai-resources/`, `packages/styles/ai-resources/`).
-  - **Purpose:** Contains focused topic regulations (e.g., `colors-and-palettes.md`, `border.md`, `elevation.md`, `spacing.md`, `skeleton.md`, `api-reference.md`, `storage-state.md`).
-  - **Usage:** Scanned during documentation generation to create triggers in the `## Mandatory Rules` section of `ai-description.md`.
+  - **Purpose:** Contains focused topic regulations structured as "Anti-Pattern vs Recommended Pattern" (e.g., `colors-and-palettes.md`, `skeleton.md`, `storage-state.md`).
+  - **Example Rule (Zero-Duplication Skeleton):**
+    - ❌ *Anti-Pattern:* Duplicating markup using `v-if="isLoading"` with custom placeholder boxes.
+    - ✅ *Design System Pattern:* Wrapping the exact same template markup inside `<MySkeleton :active="isLoading">` with skeleton modifier classes.
+  - **Usage:** Scanned by `dxt-types` during documentation builds to automatically populate triggers in the `## Mandatory Rules` section of `ai-description.md`. The AI loads a specific guide only when the assigned task explicitly touches that domain.
+
 
 - **`ai-types.md` (Optimized TypeScript API Specification)**
   - **Location:** Package root.

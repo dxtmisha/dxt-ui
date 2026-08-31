@@ -1,0 +1,158 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/2. AI/6. Library Integration' />
+
+# Integrating AIDD into Libraries & Packages
+
+For a component library, UI kit, or utility package to seamlessly interact with AI assistants under the AI-Driven Development (AIDD) paradigm, the package must directly supply structured, machine-readable metadata.
+
+When such a library is installed into a project, the AI assistant automatically gains access to curated public type definitions (`ai-types.md`), package architectural profiles (`ai-description.md`), specialized topic guidelines (`ai-resources/`), visual snapshots (`ai-screenshot/`), and MCP resources (`ai-mcp-resources.json`). This enables the AI to utilize the library with zero hallucinations and without requiring developers to manually copy and paste source code into the chat.
+
+## Step 1: Installing the Scripts Package
+
+Install the `@dxtmisha/scripts` package into your library's `devDependencies`:
+
+```bash
+npm install @dxtmisha/scripts --save-dev
+```
+
+## Step 2: Configuring design.config.json
+
+All AI metadata generation workflows are managed through the `design.config.json` configuration file located at the library root (or inherited via `"extends"`).
+
+The configuration is created exclusively on the library side to define AI provider settings for intelligent signature and JSDoc formatting:
+
+```json
+{
+  "aiType": "gemini",
+  "aiModel": "gemini-3.7-flash",
+  "aiKey": "AIzaSy...",
+  "aiConfig": {
+    "temperature": 0.2
+  }
+}
+```
+
+Configuration Properties:
+- **`aiType`** — Supported AI provider: `gemini` (including `gemini-cli`), `openai`, `claude` (including `claude-cli` and `claude-agent`), and `zai` (Zhipu AI).
+- **`aiModel`** — Model identifier (e.g. `gemini-3.7-flash`, `gpt-4o`, `claude-3-7-sonnet`).
+- **`aiKey`** — API key for the selected AI provider.
+- **`aiConfig`** — Provider-specific generation options (e.g. response temperature `temperature: 0.2`).
+
+## Step 3: Configuring package.json Build Scripts
+
+Add type and visual context generation commands to the `scripts` section of the library's `package.json`:
+
+```json
+{
+  "scripts": {
+    "build": "vite build && vue-tsc --emitDeclarationOnly",
+    "types": "npm run build && dxt-types",
+    "types:save": "dxt-types-save",
+    "screenshot": "dxt-screenshot"
+  }
+}
+```
+
+Critical Rule: Build the bundle before generating types. The `dxt-types` command must run strictly after building the package bundle (`npm run build && dxt-types`).
+- **Why this is required:** The AI generator analyzes the compiled, production-ready package. The compiled bundle is significantly cleaner than raw source code: it is free of intermediate scaffolding, private internal helpers, and unexported symbols. Analyzing the compiled bundle ensures the cleanest and most accurate public API contract for the AI.
+
+Command Summary:
+- **`npm run types`** — Full type compilation, AST sanitization of private members, AI-powered JSDoc normalization, and generation of `ai-types.md`, `ai-description.md`, and `ai-mcp-resources.json`.
+- **`npm run types:save`** — Fast regeneration of metadata and MCP resources from the existing type cache without invoking external AI APIs.
+- **`npm run screenshot`** — Launches a local dev server in a headless browser, capturing UI component screenshots (`ai-screenshot/*.webp`), rendered DOM (`screenshot-code.html`), and computed CSS styles (`screenshot-styles.css`) for multimodal AI models.
+
+## Step 4: Authoring Code Metadata and Specialized Guides
+
+High-accuracy AI interactions depend on well-structured source code annotations and documentation files:
+
+### 1. JSDoc Annotations (Special Tags & Automatic @keywords)
+Annotate all public methods, functions, interfaces, and components with clear JSDoc comments:
+- **`@example`** — Practical usage examples for methods or component templates.
+- **`@note`** — Architectural caveats, lifecycle rules, and side effects.
+- **`@warning`** — Execution environment constraints (e.g., browser-only execution or template lifecycle warnings).
+- **`@remarks`** — Expanded technical rationale for complex logic.
+- **Automatic `@keywords` Generation:** Search tags and synonyms (`@keywords`) are **generated automatically by the AI** during `npm run types` (`dxt-types`). Developers do not need to write `@keywords` manually: the language model analyzes the function semantics and automatically enhances signatures in `ai-types.md` with associative search keys for rapid AI retrieval.
+
+```typescript
+/**
+ * Executes a localized HTTP request with automatic session token binding.
+ *
+ * Выполняет локализованный HTTP-запрос с автоматической привязкой токена сессии.
+ * @example
+ * const user = await fetchApi<UserProfile>('/api/user/me')
+ *
+ * @note Automatically attaches Bearer token from active session storage.
+ * @warning Do not invoke directly in component template render cycle.
+ * @param url request endpoint URL / URL адрес эндпоинта
+ * @param options request options / параметры запроса
+ * @returns parsed response data / распарсенные данные ответа
+ */
+export async function fetchApi<T>(url: string, options?: RequestOptions): Promise<T>;
+```
+
+### 2. Library Architectural Manifesto (ai-doc.md)
+Create an `ai-doc.md` file in the library root. It documents foundational coding rules and patterns for consumers of the library:
+- Architectural philosophy (e.g. "all UI components are strictly presentation-only; logic must reside in composables").
+- Mandatory constraints (e.g. "never use raw hex colors; use design tokens from the package").
+- During documentation generation, `ai-doc.md` is automatically embedded into `ai-description.md` and consolidated into `ai-prompt.md`.
+
+### 3. Specialized Topic Guides (ai-resources/)
+Place narrow topic guides into the library's `ai-resources/` directory (e.g. `ai-resources/colors.md`, `ai-resources/skeleton.md`, `ai-resources/storage.md`):
+- Format rules following the "Anti-Pattern vs Recommended Pattern" structure.
+- The `dxt-types` script automatically analyzes these files and populates the `## Mandatory Rules` block in `ai-description.md`.
+
+## Step 5: Configuring Library .gitignore
+
+Generated type artifacts and temporary compilation directories must be excluded from Git:
+
+```gitignore
+ai-types.md
+ai-description.md
+ai-types-temp
+ai-tmp
+ai-mcp-resources.json
+```
+
+**Important Rule:** Do **NOT** add `ai-doc.md` or the `ai-resources/` folder to `.gitignore`. These are hand-crafted source files that contain essential architectural knowledge and must be tracked in Git.
+
+## Step 6: Running Generation and Verifying Outputs
+
+Run the type compilation pipeline:
+
+```bash
+npm run types
+```
+
+Upon completion, the package root will contain:
+- **`ai-types.md`** — Token-optimized TypeScript specifications with `@keywords` tags.
+- **`ai-description.md`** — Package capabilities overview with the `## Mandatory Rules` index.
+- **`ai-mcp-resources.json`** — Model Context Protocol resource registry.
+
+For UI packages, capture visual context:
+
+```bash
+npm run screenshot
+```
+
+## Step 7: Publishing and Distributing the Package
+
+To ensure downstream consumers and projects receive out-of-the-box AI integration, verify that AI metadata files are included in the published package bundle.
+
+Check the `files` field in the library's `package.json`:
+
+```json
+{
+  "files": [
+    "dist",
+    "ai-types.md",
+    "ai-description.md",
+    "ai-resources",
+    "ai-screenshot",
+    "ai-mcp-resources.json",
+    "ai-doc.md"
+  ]
+}
+```
+
+When client applications install the published package, running `dxt-prompt` automatically discovers `ai-description.md` and aggregates the library's contracts into the consolidated `ai-prompt.md`.

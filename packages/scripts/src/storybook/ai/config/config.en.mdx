@@ -1,0 +1,94 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/2. AI/10. Configuration (design.config.json)' />
+
+# design.config.json Configuration for AI & Type Generation
+
+The `design.config.json` file serves as the centralized configuration hub for managing AI documentation generation, TypeScript declaration (`.d.ts`) compilation, source file scanning, and AI model parameters.
+
+The configuration file resides at the monorepo root or at individual package roots. Packages can override base settings and inherit them through the `"extends"` inheritance mechanism.
+
+## Minimal Configuration Example for AI
+
+To enable the `dxt-types` generator and the `dxt-prompt` system prompt builder, specifying provider credentials is sufficient:
+
+```json
+{
+  "aiType": "gemini",
+  "aiModel": "gemini-3.7-flash",
+  "aiKey": "AIzaSy...",
+  "aiConfig": {
+    "temperature": 0.2
+  }
+}
+```
+
+## Complete Configuration Example for .d.ts & AI Types
+
+Below is a complete configuration example covering all parameters that govern TypeScript declaration compilation and AI context building:
+
+```json
+{
+  "extends": "../../design.config.json",
+  "packagePrefix": "@dxtmisha",
+  "typesPaths": [
+    "src"
+  ],
+  "typesMatch": [
+    "Button",
+    "Input"
+  ],
+  "typesExclude": [
+    "\\.wiki\\.(d\\.)?ts$",
+    "wiki/",
+    "library/"
+  ],
+  "typesWithoutVue": false,
+  "typesDir": "ai-types-temp",
+  "distDir": "dist",
+  "aiResourcesDir": "ai-resources",
+  "promptScanDepth": 6,
+  "aiType": "gemini",
+  "aiModel": "gemini-3.7-flash",
+  "aiKey": "AIzaSy...",
+  "aiConfig": {
+    "temperature": 0.2
+  },
+  "aiTypesConcurrency": 8
+}
+```
+
+## Parameter Reference for AI & Type Generation
+
+### 1. AI Provider Connection Settings
+- **`aiType`** (`string`, default: `'gemini'`) — AI provider backend for JSDoc normalization and summary generation. Supported options:
+  - `gemini` — Official Google Gemini API (via `@google/genai`).
+  - `gemini-cli` — Local Gemini CLI invocations.
+  - `openai` — OpenAI models (GPT-4o, GPT-4o-mini, and compatible endpoints).
+  - `claude` — Anthropic Claude API.
+  - `claude-cli` / `claude-agent` — Anthropic CLI and agent runners.
+  - `zai` — Zhipu AI (GLM model family).
+- **`aiModel`** (`string`) — Model identifier string (e.g., `gemini-3.7-flash`, `gpt-4o`, `claude-3-7-sonnet`).
+- **`aiKey`** (`string`) — API authentication key for the selected AI provider.
+- **`aiConfig`** (`object`) — Custom generation options (e.g., response temperature `temperature: 0.2`, token limits, custom headers).
+- **`aiTypesConcurrency`** (`number`, default: `8`) — Maximum number of TypeScript declaration files processed by the AI model concurrently during `dxt-types`.
+
+### 2. TypeScript & .d.ts Compilation Parameters
+- **`typesPaths`** (`string[]`, default: `['src']`) — Array of source directories scanned for TypeScript declarations.
+- **`typesMatch`** (`string | string[]`) — Substrings or regex patterns to filter and selectively include specific components or files.
+- **`typesExclude`** (`string | string[]`) — Array of regex patterns or directory paths to exclude auxiliary files, test helpers, and internal wikis from type scanning (e.g., `["\\.wiki\\.(d\\.)?ts$", "wiki/", "library/"]`).
+- **`typesWithoutVue`** (`boolean`, default: `false`) — Compilation mode toggle. Set to `true` for pure TypeScript/JavaScript packages without `.vue` components to bypass `vue-tsc` in favor of standard `tsc`.
+- **`typesDir`** (`string`, default: `'ai-types-temp'`) — Temporary directory name where `dxt-types` extracts raw `.d.ts` files prior to AST sanitization and private member stripping.
+- **`distDir`** (`string`, default: `'dist'`) — Path to the compiled bundle directory, used by the generator to verify export signatures.
+
+### 3. System Prompt Integration
+- **`aiResourcesDir`** (`string`, default: `'ai-resources'`) — Directory containing specialized topic guidelines. `dxt-types` scans this folder and populates the `## Mandatory Rules` block in `ai-description.md`.
+- **`promptScanDepth`** (`number`, default: `6`) — Maximum directory recursion depth when discovering packages and compiling `ai-prompt.md`.
+- **`packagePrefix`** (`string`) — Monorepo scope prefix (e.g., `@dxtmisha` or `@my-org`) for resolving package imports in prompts.
+
+## Inheritance & Secure Local Keys (.local)
+
+- **Inheritance (`extends`):**
+  In monorepo setups, the base configuration resides at the repository root, while individual packages in `packages/*` inherit from it via `"extends": "../../design.config.json"`, overriding only package-specific settings (`typesWithoutVue`, `typesPaths`).
+- **Local Keys (`design.config.local.json`):**
+  To prevent committing personal API keys (`aiKey`) to Git, create a `design.config.local.json` file adjacent to the main config. The scripts automatically merge local properties over base values. Ensure `*.local.json` is listed in `.gitignore`.

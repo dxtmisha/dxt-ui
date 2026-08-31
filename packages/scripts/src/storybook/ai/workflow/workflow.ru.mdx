@@ -17,11 +17,12 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 Подготовка публичного API пакета для последующего машинного анализа и генерации AI-метаданных:
 - **JSDoc-описания** — документируйте классы, методы, функции, свойства и интерфейсы в соответствии с двуязычным стандартом (English / Russian).
-- **Специальные теги** — активно используйте теги, которые генератор гарантированно переносит в `ai-types.md`:
+- **Специальные теги** — используйте теги, которые генератор переносит в `ai-types.md`:
   - `@example` — канонические примеры вызова методов или компонентов.
   - `@note` — архитектурные нюансы, правила инициализации и сайд-эффекты.
   - `@warning` — критические ограничения среды исполнения (например, SSR-безопасность или DOM-only).
-  - `@keywords` — ключевые слова и синонимы для быстрого поиска по файлу агентом.
+  - `@remarks` — развернутые пояснения сложной инженерной логики.
+  *(Поисковые теги `@keywords` писать вручную не нужно — генератор `dxt-types` с помощью ИИ автоматически сформирует их на Шаге 3).*
 
 ```typescript
 /**
@@ -33,7 +34,6 @@ import { Meta } from '@storybook/addon-docs/blocks'
  *
  * @note Automatically attaches Bearer authorization headers when session token is active.
  * @warning Do not call directly in component templates; use executeUseLocal service wrappers.
- * @keywords api request http fetch get post session auth
  * @param url request endpoint url / url адрес эндпоинта запроса
  * @param options request configuration / конфигурация запроса
  * @returns parsed response data / распарсенные данные ответа

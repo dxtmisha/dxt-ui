@@ -55,8 +55,12 @@ Bề mặt công khai của package được công cụ tổng hợp và các �
 
 - **`ai-resources/` (Thư mục quy tắc và tiêu chuẩn chuyên sâu)**
   - **Vị trí:** Thư mục gốc package (ví dụ: `packages/d1/ai-resources/`, `packages/styles/ai-resources/`).
-  - **Mục đích:** Chứa các quy định theo chủ đề (ví dụ: `colors-and-palettes.md`, `border.md`, `elevation.md`, `spacing.md`, `skeleton.md`, `api-reference.md`, `storage-state.md`).
-  - **Sử dụng:** Được phân tích khi tạo tài liệu để hình thành các trigger trong khối `## Mandatory Rules` của `ai-description.md`.
+  - **Mục đích:** Chứa các quy định theo chủ đề được viết theo mẫu «Phản mẫu (Anti-Pattern) vs Mẫu khuyến nghị (Recommended Pattern)» (ví dụ: `colors-and-palettes.md`, `skeleton.md`, `storage-state.md`).
+  - **Ví dụ quy tắc (Zero-Duplication Skeleton):**
+    - ❌ *Phản mẫu:* Nhân đôi template HTML bằng cách dùng `v-if="isLoading"` với các khung xám tự dựng.
+    - ✅ *Mẫu thiết kế chuẩn:* Bọc chính template HTML đó bên trong `<MySkeleton :active="isLoading">` với các modifier skeleton.
+  - **Sử dụng:** Được script `dxt-types` phân tích khi tạo tài liệu để tự động hình thành các trigger trong khối `## Mandatory Rules` của `ai-description.md`. AI chỉ tải tệp hướng dẫn cụ thể khi nhiệm vụ được giao liên quan trực tiếp đến chủ đề đó.
+
 
 - **`ai-types.md` (Đặc tả TypeScript API tối ưu hóa)**
   - **Vị trí:** Thư mục gốc package.

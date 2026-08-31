@@ -1,0 +1,94 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/2. AI/10. Cấu hình (design.config.json)' />
+
+# Cấu hình design.config.json cho AI & Tạo kiểu dữ liệu
+
+Tệp `design.config.json` là trung tâm điều khiển tập trung để quản lý các tham số tạo tài liệu AI, biên dịch khai báo kiểu TypeScript (`.d.ts`), quét mã nguồn và kết nối các mô hình ngôn ngữ.
+
+Tệp cấu hình được đặt ở thư mục gốc của monorepo hoặc thư mục gốc của từng package. Các package có thể ghi đè cài đặt cơ sở và kế thừa thông qua cơ chế `"extends"`.
+
+## Ví dụ cấu hình tối thiểu cho AI
+
+Để bộ sinh `dxt-types` và bộ tổng hợp lời nhắc `dxt-prompt` hoạt động, chỉ cần chỉ định thông tin nhà cung cấp AI:
+
+```json
+{
+  "aiType": "gemini",
+  "aiModel": "gemini-3.7-flash",
+  "aiKey": "AIzaSy...",
+  "aiConfig": {
+    "temperature": 0.2
+  }
+}
+```
+
+## Ví dụ cấu hình đầy đủ cho .d.ts & Kiểu AI
+
+Dưới đây là ví dụ cấu hình đầy đủ bao gồm toàn bộ các tham số kiểm soát quá trình biên dịch khai báo và xây dựng ngữ cảnh AI:
+
+```json
+{
+  "extends": "../../design.config.json",
+  "packagePrefix": "@dxtmisha",
+  "typesPaths": [
+    "src"
+  ],
+  "typesMatch": [
+    "Button",
+    "Input"
+  ],
+  "typesExclude": [
+    "\\.wiki\\.(d\\.)?ts$",
+    "wiki/",
+    "library/"
+  ],
+  "typesWithoutVue": false,
+  "typesDir": "ai-types-temp",
+  "distDir": "dist",
+  "aiResourcesDir": "ai-resources",
+  "promptScanDepth": 6,
+  "aiType": "gemini",
+  "aiModel": "gemini-3.7-flash",
+  "aiKey": "AIzaSy...",
+  "aiConfig": {
+    "temperature": 0.2
+  },
+  "aiTypesConcurrency": 8
+}
+```
+
+## Giải thích các thuộc tính cho AI & Tạo kiểu dữ liệu
+
+### 1. Cài đặt kết nối nhà cung cấp AI
+- **`aiType`** (`string`, mặc định: `'gemini'`) — Nhà cung cấp trí tuệ nhân tạo để tối ưu hóa JSDoc và tạo mô tả. Hỗ trợ:
+  - `gemini` — Google Gemini API chính thức (qua `@google/genai`).
+  - `gemini-cli` — Gọi qua giao diện dòng lệnh Gemini CLI cục bộ.
+  - `openai` — Các mô hình OpenAI (GPT-4o, GPT-4o-mini và các endpoint tương thích).
+  - `claude` — Anthropic Claude API.
+  - `claude-cli` / `claude-agent` — Gọi qua CLI/Agent của Anthropic.
+  - `zai` — Zhipu AI (dòng mô hình GLM).
+- **`aiModel`** (`string`) — Định danh chính xác của mô hình AI (ví dụ: `gemini-3.7-flash`, `gpt-4o`, `claude-3-7-sonnet`).
+- **`aiKey`** (`string`) — Khóa API để xác thực với nhà cung cấp đã chọn.
+- **`aiConfig`** (`object`) — Đối tượng tùy chỉnh nâng cao (ví dụ: nhiệt độ tạo `temperature: 0.2`, giới hạn token, tiêu đề tùy chỉnh).
+- **`aiTypesConcurrency`** (`number`, mặc định: `8`) — Số lượng tệp định nghĩa kiểu tối đa được AI xử lý đồng thời trong quá trình chạy `dxt-types`.
+
+### 2. Tham số quét và biên dịch .d.ts
+- **`typesPaths`** (`string[]`, mặc định: `['src']`) — Mảng đường dẫn thư mục mã nguồn được quét để trích xuất khai báo TypeScript.
+- **`typesMatch`** (`string | string[]`) — Chuỗi mẫu hoặc biểu thức chính quy để lọc và chỉ đưa vào các component hoặc tệp cụ thể.
+- **`typesExclude`** (`string | string[]`) — Mảng biểu thức chính quy hoặc đường dẫn loại trừ tệp phụ trợ, tiện ích kiểm thử và wiki nội bộ khỏi phân tích kiểu (ví dụ: `["\\.wiki\\.(d\\.)?ts$", "wiki/", "library/"]`).
+- **`typesWithoutVue`** (`boolean`, mặc định: `false`) — Chuyển đổi chế độ biên dịch. Đặt thành `true` cho các package thuần TypeScript/JavaScript không có component `.vue` để bỏ qua `vue-tsc` và sử dụng `tsc` tiêu chuẩn.
+- **`typesDir`** (`string`, mặc định: `'ai-types-temp'`) — Tên thư mục tạm nơi `dxt-types` trích xuất tệp `.d.ts` thô trước khi lọc AST và loại bỏ thuộc tính private.
+- **`distDir`** (`string`, mặc định: `'dist'`) — Thư mục chứa bundle đã build, được bộ tạo sử dụng để đối chiếu chữ ký export.
+
+### 3. Tích hợp vào lời nhắc hệ thống
+- **`aiResourcesDir`** (`string`, mặc định: `'ai-resources'`) — Thư mục chứa hướng dẫn chuyên sâu. `dxt-types` quét thư mục này và điền vào khối `## Mandatory Rules` trong `ai-description.md`.
+- **`promptScanDepth`** (`number`, mặc định: `6`) — Độ sâu quét đệ quy tối đa khi tìm kiếm package và tổng hợp `ai-prompt.md`.
+- **`packagePrefix`** (`string`) — Tiền tố scope của monorepo (ví dụ: `@dxtmisha` hoặc `@my-org`) dùng để định dạng đường dẫn import trong prompt.
+
+## Kế thừa và Bảo mật Khóa API cục bộ (.local)
+
+- **Kế thừa (`extends`):**
+  Trong monorepo, cấu hình cơ sở nằm ở thư mục gốc, các package trong `packages/*` kế thừa qua `"extends": "../../design.config.json"`, chỉ ghi đè các tham số đặc thù của mình (`typesWithoutVue`, `typesPaths`).
+- **Khóa cục bộ (`design.config.local.json`):**
+  Để tránh commit API key cá nhân (`aiKey`) lên Git, hãy tạo tệp `design.config.local.json` cạnh tệp cấu hình chính. Các script sẽ tự động ghi đè thuộc tính cục bộ lên cấu hình cơ sở. Đảm bảo `*.local.json` đã có trong `.gitignore`.

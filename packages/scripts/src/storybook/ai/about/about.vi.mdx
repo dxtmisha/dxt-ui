@@ -86,3 +86,16 @@ Nhờ khả năng tự động tạo `ai-prompt.md`, `ai-types.md`, `ai-resource
   - AI mở `ai-resources/colors-and-palettes.md` và `ai-resources/skeleton.md` theo nhu cầu dựa trên trigger trong `Mandatory Rules`.
   - AI tạo ra mã nguồn sạch sẽ, có kiểu chặt chẽ và sẵn sàng sử dụng ngay («Copy-Paste Ready»).
   - **Dễ dàng điều chỉnh nhanh:** Ngay cả khi mô hình đôi lúc mắc lỗi nhỏ, việc chỉnh sửa trở nên đơn giản và nhanh chóng hơn rất nhiều: lập trình viên không cần giải thích lại toàn bộ kiến trúc hay dán mã thư viện — chỉ cần một câu nhắc ngắn gọn hoặc lệnh «Запомни: ...» / «Remember: ...» là AI lập tức sửa đổi chính xác và lưu kinh nghiệm cho các phiên sau.
+
+## Mở rộng và Tiến hóa: Ngữ cảnh tĩnh vs MCP
+
+Khi hệ thống thiết kế mở rộng và kết nối hàng chục package nội bộ, một thách thức kiến trúc tự nhiên xuất hiện giữa kích thước tệp tổng hợp `ai-prompt.md` và dung lượng cửa sổ ngữ cảnh của các LLM hiện đại.
+
+Hệ sinh thái `dxt-ui` hỗ trợ hai mô hình phân phối ngữ cảnh tương hỗ:
+
+- **1. Hợp đồng Markdown tĩnh (Nền tảng hiện tại):**
+  - **Ưu điểm:** Rào cản tiếp cận bằng 0, độ tin cậy 100%, không cần duy trì tiến trình máy chủ nền, hỗ trợ gốc trên mọi môi trường phát triển (Antigravity, Cursor, Windsurf, Claude Code, GitHub Copilot).
+  - **Ứng dụng:** Hoàn hảo cho phần lớn các dự án và đội ngũ sản phẩm, đảm bảo hành vi nhất quán của AI với chi phí hạ tầng tối thiểu.
+- **2. Giao thức Model Context Protocol động (MCP):**
+  - **Ưu điểm:** Truy vấn tài nguyên thông minh theo nhu cầu (on-demand). Trợ lý chỉ yêu cầu các kiểu dữ liệu, token hoặc quy tắc chuyên biệt vào đúng thời điểm gọi công cụ, giúp tiết kiệm token trong các monorepo doanh nghiệp quy mô lớn.
+  - **Sẵn sàng ngay lập tức:** Script `@dxtmisha/scripts` đồng thời tạo ra các tệp đặc tả tài nguyên `ai-mcp-resources.json` và `ai-mcp-all-resources.json`. Nhờ đó, mã nguồn đã sẵn sàng hoàn toàn để triển khai máy chủ MCP cục bộ mà không cần viết lại hệ thống tạo siêu dữ liệu.

@@ -1,0 +1,17 @@
+import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{n as t,r as n}from"./lib-BRDOWE9X.js";import{t as r}from"./jsx-runtime-DeHZSEgm.js";import{f as i,s as a}from"./blocks-8NMpF0hx.js";function o(e){let t={code:`code`,h1:`h1`,h2:`h2`,li:`li`,p:`p`,pre:`pre`,strong:`strong`,ul:`ul`,...n(),...e.components};return(0,c.jsxs)(c.Fragment,{children:[(0,c.jsx)(a,{title:`@dxtmisha/ru/styles/color/| functions/toColorOpacity - Извлечь прозрачность`}),`
+`,(0,c.jsx)(t.h1,{id:`tocoloropacity`,children:(0,c.jsx)(t.code,{children:`toColorOpacity`})}),`
+`,(0,c.jsx)(t.p,{children:`Функция извлекает альфа-канал (прозрачность) из объекта Sass Color или строки пользовательской переменной CSS.`}),`
+`,(0,c.jsx)(t.p,{children:(0,c.jsx)(t.strong,{children:`Параметры:`})}),`
+`,(0,c.jsxs)(t.ul,{children:[`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.code,{children:`$color: Color | String`}),` — значение цвета для извлечения прозрачности.`]}),`
+`]}),`
+`,(0,c.jsx)(t.p,{children:(0,c.jsx)(t.strong,{children:`Возвращает:`})}),`
+`,(0,c.jsxs)(t.ul,{children:[`
+`,(0,c.jsxs)(t.li,{children:[(0,c.jsx)(t.code,{children:`Number | String`}),` — значение альфа [0..1] или модифицированная строка переменной CSS.`]}),`
+`]}),`
+`,(0,c.jsx)(t.h2,{id:`пример`,children:`Пример`}),`
+`,(0,c.jsx)(t.pre,{children:(0,c.jsx)(t.code,{className:`language-scss`,children:`@use '@dxtmisha/styles';
+
+$opacity: styles.toColorOpacity(rgba(255, 0, 0, 0.5)); // 0.5
+$var-opacity: styles.toColorOpacity(var(--sys-color)); // var(--sys-color-opacity)
+`})})]})}function s(e={}){let{wrapper:t}={...n(),...e.components};return t?(0,c.jsx)(t,{...e,children:(0,c.jsx)(o,{...e})}):o(e)}var c;function l(){return(l=e((()=>{c=r(),t(),i()})))()}l();export{s as default};

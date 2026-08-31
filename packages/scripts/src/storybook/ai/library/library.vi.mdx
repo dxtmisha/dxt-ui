@@ -1,0 +1,158 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/2. AI/6. Tích hợp vào thư viện' />
+
+# Tích hợp AIDD vào Thư viện và Package
+
+Để một thư viện component, UI kit hoặc bộ tiện ích có thể tương tác hoàn hảo với các trợ lý AI theo mô hình AI-Driven Development (AIDD), package đó phải tự cung cấp siêu dữ liệu có cấu trúc mà máy có thể đọc được.
+
+Khi thư viện này được cài đặt vào một dự án, trợ lý AI sẽ tự động truy cập được vào bản tóm tắt kiểu dữ liệu công khai (`ai-types.md`), hồ sơ kiến trúc package (`ai-description.md`), các quy tắc chuyên sâu (`ai-resources/`), ảnh chụp trực quan (`ai-screenshot/`) và tài nguyên MCP (`ai-mcp-resources.json`). Điều này giúp AI sử dụng thư viện với độ chính xác tuyệt đối, không bị ảo giác và không đòi hỏi lập trình viên phải sao chép mã nguồn thủ công vào cửa sổ chat.
+
+## Bước 1: Cài đặt Package Scripts
+
+Cài đặt package `@dxtmisha/scripts` vào `devDependencies` của thư viện:
+
+```bash
+npm install @dxtmisha/scripts --save-dev
+```
+
+## Bước 2: Cấu hình tệp design.config.json
+
+Mọi quy trình tạo siêu dữ liệu AI được quản lý thông qua tệp cấu hình `design.config.json` ở thư mục gốc của thư viện (hoặc kế thừa qua cơ chế `"extends"`).
+
+Cấu hình này chỉ tạo ở phía thư viện nhằm xác định tham số kết nối với nhà cung cấp AI để chuẩn hóa chữ ký và JSDoc:
+
+```json
+{
+  "aiType": "gemini",
+  "aiModel": "gemini-3.7-flash",
+  "aiKey": "AIzaSy...",
+  "aiConfig": {
+    "temperature": 0.2
+  }
+}
+```
+
+Các thuộc tính cấu hình:
+- **`aiType`** — Nhà cung cấp AI được hỗ trợ: `gemini` (bao gồm `gemini-cli`), `openai`, `claude` (bao gồm `claude-cli` và `claude-agent`), và `zai` (Zhipu AI).
+- **`aiModel`** — Định danh mô hình sử dụng (ví dụ: `gemini-3.7-flash`, `gpt-4o`, `claude-3-7-sonnet`).
+- **`aiKey`** — API key của nhà cung cấp AI đã chọn.
+- **`aiConfig`** — Các tùy chọn bổ sung khi tạo (ví dụ: nhiệt độ phản hồi `temperature: 0.2`).
+
+## Bước 3: Cấu hình Script Build trong package.json
+
+Thêm các lệnh tạo kiểu và ngữ cảnh trực quan vào phần `scripts` trong `package.json` của thư viện:
+
+```json
+{
+  "scripts": {
+    "build": "vite build && vue-tsc --emitDeclarationOnly",
+    "types": "npm run build && dxt-types",
+    "types:save": "dxt-types-save",
+    "screenshot": "dxt-screenshot"
+  }
+}
+```
+
+Quy tắc tối quan trọng: Build bundle trước khi tạo kiểu. Lệnh `dxt-types` phải luôn chạy sau lệnh build package (`npm run build && dxt-types`).
+- **Vì sao điều này bắt buộc:** Trình tạo AI phân tích chính package đã biên dịch cuối cùng. Bundle đã biên dịch gọn gàng hơn nhiều so với mã nguồn thô: nó không chứa tệp nháp, hàm trợ giúp nội bộ private và các phần tử không được export. Việc phân tích bundle hoàn chỉnh đảm bảo tạo ra hợp đồng API công khai sạch và chính xác nhất cho AI.
+
+Tóm tắt các lệnh:
+- **`npm run types`** — Biên dịch toàn bộ kiểu dữ liệu, lọc bỏ các trường private trong AST, gọi AI chuẩn hóa JSDoc và tạo các tệp `ai-types.md`, `ai-description.md`, `ai-mcp-resources.json`.
+- **`npm run types:save`** — Cập nhật nhanh siêu dữ liệu và tài nguyên MCP từ cache kiểu có sẵn mà không cần gọi lại API mạng đến AI.
+- **`npm run screenshot`** — Khởi chạy dev server trên trình duyệt headless, chụp ảnh màn hình component (`ai-screenshot/*.webp`), trích xuất DOM (`screenshot-code.html`) và CSS đã tính toán (`screenshot-styles.css`) cho các mô hình AI đa phương thức.
+
+## Bước 4: Chuẩn bị Siêu dữ liệu Mã nguồn và Hướng dẫn Chuyên đề
+
+Hiệu quả tương tác của AI phụ thuộc trực tiếp vào cách chú thích mã nguồn và các tệp tài liệu đi kèm:
+
+### 1. Chú thích JSDoc (Thẻ chuyên biệt & Tự động tạo @keywords)
+Thêm chú thích JSDoc rõ ràng cho mọi phương thức, hàm, interface và component công khai:
+- **`@example`** — Các ví dụ thực tế về cách gọi phương thức hoặc mẫu template component.
+- **`@note`** — Các lưu ý kiến trúc, quy tắc vòng đời và tác dụng phụ.
+- **`@warning`** — Giới hạn môi trường thực thi (ví dụ: chỉ chạy trên trình duyệt hoặc không gọi trong template render).
+- **`@remarks`** — Giải thích chi tiết cho logic kỹ thuật phức tạp.
+- **Tự động sinh `@keywords`:** Thẻ tìm kiếm và từ đồng nghĩa (`@keywords`) **do chính AI tự động tạo ra** khi chạy lệnh `npm run types` (`dxt-types`). Lập trình viên không cần viết thủ công: mô hình ngôn ngữ sẽ phân tích ngữ nghĩa hàm và tự động bổ sung vào `ai-types.md` các khóa tìm kiếm liên tưởng để AI tra cứu nhanh chóng.
+
+```typescript
+/**
+ * Executes a localized HTTP request with automatic session token binding.
+ *
+ * Выполняет локализованный HTTP-запрос с автоматической привязкой токена сессии.
+ * @example
+ * const user = await fetchApi<UserProfile>('/api/user/me')
+ *
+ * @note Automatically attaches Bearer token from active session storage.
+ * @warning Do not invoke directly in component template render cycle.
+ * @param url request endpoint URL / URL адрес эндпоинта
+ * @param options request options / параметры запроса
+ * @returns parsed response data / распарсенные данные ответа
+ */
+export async function fetchApi<T>(url: string, options?: RequestOptions): Promise<T>;
+```
+
+### 2. Tuyên ngôn Kiến trúc Thư viện (ai-doc.md)
+Tạo tệp `ai-doc.md` ở thư mục gốc của thư viện. Tệp này ghi lại các quy tắc cốt lõi khi viết mã với package:
+- Triết lý kiến trúc (ví dụ: "mọi component chỉ làm nhiệm vụ hiển thị; logic phải nằm trong composable").
+- Ràng buộc bắt buộc (ví dụ: "không dùng mã màu HEX trực tiếp; chỉ dùng design token từ package").
+- Trong quá trình tạo tài liệu, nội dung `ai-doc.md` sẽ tự động được nhúng vào `ai-description.md` và tổng hợp vào `ai-prompt.md`.
+
+### 3. Quy chuẩn Chuyên đề (ai-resources/)
+Tạo các hướng dẫn chuyên sâu theo từng chủ đề trong thư mục `ai-resources/` của package (ví dụ: `ai-resources/colors.md`, `ai-resources/skeleton.md`, `ai-resources/storage.md`):
+- Viết quy tắc theo cấu trúc "Phản mẫu (Anti-Pattern) vs Mẫu khuyến nghị (Recommended Pattern)".
+- Script `dxt-types` sẽ tự động phân tích các tệp này và điền vào khối `## Mandatory Rules` trong `ai-description.md`.
+
+## Bước 5: Cấu hình .gitignore cho Thư viện
+
+Các tệp kiểu dữ liệu sinh tự động và thư mục biên dịch tạm thời cần được loại trừ khỏi Git:
+
+```gitignore
+ai-types.md
+ai-description.md
+ai-types-temp
+ai-tmp
+ai-mcp-resources.json
+```
+
+**Quy tắc quan trọng:** Tuyệt đối **KHÔNG** đưa `ai-doc.md` và thư mục `ai-resources/` vào `.gitignore`. Đây là các tệp nguồn được viết thủ công chứa tri thức kiến trúc quan trọng và bắt buộc phải được theo dõi trong Git.
+
+## Bước 6: Chạy Tạo và Kiểm tra Kết quả
+
+Chạy quy trình biên dịch kiểu:
+
+```bash
+npm run types
+```
+
+Sau khi hoàn tất, thư mục gốc của package sẽ có:
+- **`ai-types.md`** — Đặc tả TypeScript tối ưu hóa token với các thẻ `@keywords`.
+- **`ai-description.md`** — Tổng quan năng lực package kèm chỉ mục `## Mandatory Rules`.
+- **`ai-mcp-resources.json`** — Danh mục tài nguyên cho giao thức Model Context Protocol.
+
+Nếu thư viện có component giao diện UI, hãy chụp ngữ cảnh trực quan:
+
+```bash
+npm run screenshot
+```
+
+## Bước 7: Xuất bản và Phân phối Package
+
+Để các dự án tiêu thụ thư viện của bạn nhận được đầy đủ cơ sở hạ tầng AI một cách tự động, hãy đảm bảo các tệp siêu dữ liệu được đưa vào package khi publish.
+
+Kiểm tra trường `files` trong `package.json` của thư viện:
+
+```json
+{
+  "files": [
+    "dist",
+    "ai-types.md",
+    "ai-description.md",
+    "ai-resources",
+    "ai-screenshot",
+    "ai-mcp-resources.json",
+    "ai-doc.md"
+  ]
+}
+```
+
+Khi ứng dụng client cài đặt package đã xuất bản, lệnh `dxt-prompt` sẽ tự động tìm thấy `ai-description.md` và tích hợp các hợp đồng của thư viện vào tệp `ai-prompt.md` chung.

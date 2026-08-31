@@ -1,6 +1,6 @@
 import { Meta } from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/vi/2. AI/7. Ngữ cảnh trực quan (Ảnh chụp màn hình)' />
+<Meta title='@dxtmisha/vi/2. AI/8. Ngữ cảnh trực quan (Ảnh chụp màn hình)' />
 
 # Ngữ cảnh trực quan (ai-screenshot)
 
@@ -38,6 +38,21 @@ Khi chạy `dxt-prompt`, đường dẫn tới tất cả các tệp trong `ai-s
 ```
 
 Ngoài ra, `DesignTypesMcp` chuyển đổi các ảnh chụp thành tài nguyên đa phương tiện cho giao thức Model Context Protocol với định dạng MIME chuẩn (`image/webp`, `text/html`, `text/css`), cho phép các AI agent đa phương thức truy vấn trực tiếp qua công cụ.
+
+## Yêu cầu thiết kế trang trưng bày (Showcase) cho AI đa phương thức
+
+Mục tiêu cốt lõi của ngữ cảnh trực quan trong AIDD là giúp các mô hình đa phương thức đối chiếu chính xác thiết kế (ví dụ: ảnh chụp Figma) với các component có sẵn trong thư viện.
+
+Khi lập trình viên yêu cầu trợ lý AI xây dựng giao diện theo bản thiết kế, mô hình chỉ đọc văn bản thường không thể liên kết hình ảnh với mã nguồn và sẽ tự dựng các thẻ `div` thủ công cùng CSS tùy biến. Nhờ có bộ ảnh chụp component, AI sẽ lập tức nhận diện: *"Khối này trong thiết kế chính là `<MyCustomCard variant="elevated">`, và thanh lọc là `<FilterPanel isCompact>`"*.
+
+Để đạt độ chính xác cao nhất, trang trưng bày component (demo showcase) cần tuân thủ các quy tắc thiết kế sau:
+
+- **Hiển thị rõ ràng tên component và props:**
+  Bên cạnh mỗi component được render, cần hiển thị trực quan tên component và danh sách props/variants được áp dụng (ví dụ: `Button [variant="primary", size="sm"]` hoặc `Input [disabled=true, isError=true]`).
+- **Khung hình đồng nhất giữa giao diện và hợp đồng mã:**
+  Các nhãn chú thích dạng chữ giúp AI đa phương thức nắm bắt đồng thời cả kết quả hiển thị (độ bóng, khoảng cách, viền) và tổ hợp props chính xác tạo ra nó chỉ trong một bức ảnh duy nhất.
+- **Loại bỏ việc viết lại giao diện thủ công:**
+  Sau khi nhận diện component qua ảnh chụp, AI sẽ sử dụng ngay component chuẩn của thư viện với các props hợp lệ thay vì tạo mã HTML/CSS dư thừa từ đầu.
 
 ## Chạy lệnh tạo ảnh chụp
 

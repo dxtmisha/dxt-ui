@@ -21,7 +21,8 @@ Chuẩn bị API công khai để phục vụ phân tích tự động và sinh 
   - `@example` — Ví dụ mẫu chuẩn về cách gọi phương thức hoặc component.
   - `@note` — Lưu ý kiến trúc, quy tắc khởi tạo và tác dụng phụ (side effects).
   - `@warning` — Ràng buộc môi trường thực thi (ví dụ: an toàn SSR hoặc chỉ chạy trên DOM).
-  - `@keywords` — Từ khóa tìm kiếm liên kết giúp AI tra cứu nhanh trong tệp.
+  - `@remarks` — Giải thích kỹ thuật mở rộng cho logic phức tạp.
+  *(Thẻ tìm kiếm `@keywords` không cần viết thủ công — bộ sinh `dxt-types` sẽ tự động tạo qua AI ở Bước 3).*
 
 ```typescript
 /**
@@ -33,7 +34,6 @@ Chuẩn bị API công khai để phục vụ phân tích tự động và sinh 
  *
  * @note Automatically attaches Bearer authorization headers when session token is active.
  * @warning Do not call directly in component templates; use executeUseLocal service wrappers.
- * @keywords api request http fetch get post session auth
  * @param url request endpoint url / url адрес эндпоинта запроса
  * @param options request configuration / конфигурация запроса
  * @returns parsed response data / распарсенные данные ответа

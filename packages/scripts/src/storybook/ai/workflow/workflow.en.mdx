@@ -17,11 +17,12 @@ Standard development of logic, components, and utilities within the monorepo:
 
 Prepare the public API for machine analysis and automated AI metadata generation:
 - **JSDoc Descriptions** — Document exported classes, methods, functions, properties, and interfaces according to bilingual standards (English / Russian).
-- **Special Tags** — Actively apply tags that the generator guarantees to preserve in `ai-types.md`:
+- **Special Tags** — Use tags that the generator preserves in `ai-types.md`:
   - `@example` — Canonical usage examples for methods or components.
   - `@note` — Architectural notes, initialization constraints, and side effects.
   - `@warning` — Runtime environment limitations (e.g., SSR safety or DOM-only operations).
-  - `@keywords` — Associative search keywords for rapid AI text retrieval.
+  - `@remarks` — Expanded technical rationale for complex logic.
+  *(Search tags `@keywords` do not need to be written manually — the `dxt-types` generator synthesizes them automatically via AI in Step 3).*
 
 ```typescript
 /**
@@ -33,7 +34,6 @@ Prepare the public API for machine analysis and automated AI metadata generation
  *
  * @note Automatically attaches Bearer authorization headers when session token is active.
  * @warning Do not call directly in component templates; use executeUseLocal service wrappers.
- * @keywords api request http fetch get post session auth
  * @param url request endpoint url / url адрес эндпоинта запроса
  * @param options request configuration / конфигурация запроса
  * @returns parsed response data / распарсенные данные ответа

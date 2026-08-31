@@ -50,6 +50,17 @@ This file contains package-specific guidelines for @dxtmisha/scripts.
   - Focus on practical developer workflows and actions, not internal engine details.
 ```
 
+## Comparing ai-memory.md with Built-in IDE Memories
+
+Modern code editors and AI plugins (Cursor, Windsurf, Claude Code) provide built-in rules and memory mechanisms. However, for professional team workflows and design system maintenance, built-in editor memories suffer from three fundamental drawbacks:
+
+- **1. Vendor Lock-in:**
+  Memories stored inside Cursor do not migrate to Windsurf, Claude Code, GitHub Copilot, or Antigravity IDE. The `ai-memory.md` file uses standard Markdown, universally understood by any modern AI coding assistant.
+- **2. Absence from Version Control (Git):**
+  Built-in editor memories reside locally on an individual developer's machine and are not committed to Git. Consequently, when a new team member joins, their AI assistant starts with a blank slate and repeats previous mistakes. The `ai-memory.md` file is committed to Git, synchronizing engineering context across the entire team.
+- **3. Lack of Modular Scoping (Package Scopes):**
+  Built-in editor memory is typically global across the entire repository. In a monorepo, UI kit styling rules inadvertently pollute backend or utility context. The `ai-memory.md` file is strictly scoped to its own package directory.
+
 ## How to Use Memory in Your Workflow
 
 - **Saving an Agreement:**
@@ -58,3 +69,4 @@ This file contains package-specific guidelines for @dxtmisha/scripts.
 
 - **Reading at Session Start:**
   Whenever assigned a task in a package, the agent follows the **Chronological Guard** protocol, reading `ai-memory.md` before taking any action.
+

@@ -86,3 +86,17 @@ Thanks to automated generation of `ai-prompt.md`, `ai-types.md`, `ai-resources/`
   - The AI agent opens `ai-resources/colors-and-palettes.md` and `ai-resources/skeleton.md` on-demand based on triggers from `Mandatory Rules`.
   - The AI agent generates clean, strictly typed, and "Copy-Paste Ready" code.
   - **Effortless Course Correction:** Even if the model makes an occasional mistake, fixing it is vastly simpler and faster: you no longer need to re-explain the whole architecture or paste library code — a concise one-sentence hint or "Remember: ..." command is enough for the agent to adjust immediately and lock the lesson into memory for future tasks.
+
+## Scaling & Evolution: Static Context vs MCP
+
+As a design system expands and dozens of internal packages are linked, a natural architectural trade-off emerges between the size of the aggregated `ai-prompt.md` and the context window capacity of modern LLMs.
+
+The `dxt-ui` ecosystem supports two complementary models of context delivery:
+
+- **1. Static Markdown Contracts (Current Foundation):**
+  - **Strengths:** Zero barrier to entry, 100% reliability, no requirement to manage background server processes, and native support across all developer environments (Antigravity, Cursor, Windsurf, Claude Code, GitHub Copilot).
+  - **Application:** Best suited for the vast majority of product teams, ensuring deterministic agent behavior with minimal tooling overhead.
+- **2. Dynamic Model Context Protocol (MCP):**
+  - **Strengths:** Intelligent on-demand resource queries. The assistant queries specialized types, tokens, or rules strictly at tool invocation time, saving prompt tokens in enterprise-scale monorepos.
+  - **Out-of-the-Box Readiness:** `@dxtmisha/scripts` concurrently compiles resource manifests `ai-mcp-resources.json` and `ai-mcp-all-resources.json`. The codebase is thus pre-configured to support local MCP servers without needing to rewrite metadata generation pipelines.
+

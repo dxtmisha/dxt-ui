@@ -50,6 +50,17 @@ This file contains package-specific guidelines for @dxtmisha/scripts.
   - Focus on practical developer workflows and actions, not internal engine details.
 ```
 
+## So sánh ai-memory.md với bộ nhớ tích hợp sẵn của IDE
+
+Các trình soạn thảo mã hiện đại và plugin AI (Cursor, Windsurf, Claude Code) đều cung cấp cơ chế lưu trữ bộ nhớ và quy tắc tích hợp sẵn. Tuy nhiên, đối với quy trình phát triển theo nhóm chuyên nghiệp và duy trì thư viện, bộ nhớ tích hợp sẵn của IDE bộc lộ 3 nhược điểm cốt lõi:
+
+- **1. Phụ thuộc vào nhà cung cấp (Vendor Lock-in):**
+  Bộ nhớ được lưu trong Cursor không thể chuyển sang Windsurf, Claude Code, GitHub Copilot hay Antigravity IDE. Tệp `ai-memory.md` sử dụng định dạng Markdown chuẩn, tương thích hoàn hảo với mọi trợ lý AI hiện đại.
+- **2. Không được quản lý phiên bản qua Git:**
+  Bộ nhớ tích hợp sẵn của IDE được lưu cục bộ trên máy tính của từng lập trình viên và không được commit vào Git. Khi một lập trình viên mới tham gia dự án, AI của họ sẽ bắt đầu từ trang giấy trắng và lặp lại các lỗi cũ. Tệp `ai-memory.md` được lưu trong Git, giúp đồng bộ ngữ cảnh kiến trúc cho toàn bộ đội ngũ.
+- **3. Thiếu khả năng cô lập theo phạm vi module (Package Scopes):**
+  Bộ nhớ của IDE thường có tính toàn cục cho toàn bộ repository. Trong môi trường monorepo, các quy tắc cho UI kit giao diện sẽ vô tình làm nhiễu ngữ cảnh khi viết tiện ích logic hoặc backend. Tệp `ai-memory.md` được giới hạn nghiêm ngặt bên trong thư mục package của nó.
+
 ## Cách sử dụng bộ nhớ trong công việc
 
 - **Lưu lại quy ước:**
@@ -58,3 +69,4 @@ This file contains package-specific guidelines for @dxtmisha/scripts.
 
 - **Đọc khi bắt đầu phiên:**
   Khi nhận bất kỳ nhiệm vụ nào trong package, AI tuân theo quy tắc **Chronological Guard**, mở `ai-memory.md` đầu tiên để áp dụng mọi ràng buộc đã lưu.
+

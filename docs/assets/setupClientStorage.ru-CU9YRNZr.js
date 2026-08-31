@@ -1,0 +1,17 @@
+import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{n as t,r as n}from"./lib-BRDOWE9X.js";import{t as r}from"./jsx-runtime-DeHZSEgm.js";import{c as i,f as a,s as o}from"./blocks-8NMpF0hx.js";function s(e){let t={code:`code`,h1:`h1`,h2:`h2`,p:`p`,strong:`strong`,...n(),...e.components};return(0,l.jsxs)(l.Fragment,{children:[(0,l.jsx)(o,{title:`@dxtmisha/ru/figma-code/Functions/setupClientStorage - Настройка обработчиков клиентского хранилища`}),`
+`,(0,l.jsx)(t.h1,{id:`setupclientstorage`,children:(0,l.jsx)(t.code,{children:`setupClientStorage`})}),`
+`,(0,l.jsxs)(t.p,{children:[`Утилита для настройки обработчиков запросов к клиентскому хранилищу Figma (`,(0,l.jsx)(t.code,{children:`clientStorage`}),`). Она связывает запросы из интерфейса (UI) на чтение и запись данных с фактическими операциями в основной части плагина.`]}),`
+`,(0,l.jsxs)(t.p,{children:[(0,l.jsx)(t.strong,{children:`Параметры:`}),`
+Отсутствуют.`]}),`
+`,(0,l.jsxs)(t.p,{children:[(0,l.jsx)(t.strong,{children:`Возвращает:`}),`
+`,(0,l.jsx)(t.code,{children:`void`})]}),`
+`,(0,l.jsx)(t.h2,{id:`примеры`,children:`Примеры`}),`
+`,(0,l.jsx)(i,{language:`typescript`,code:`
+import { setupClientStorage } from '@dxtmisha/figma-code'
+
+// Инициализация в основной части плагина (обычно в code.ts)
+setupClientStorage()
+
+// Теперь UI может использовать fetchClientStorage и sendClientStorage 
+// для взаимодействия с хранилищем Figma.
+`})]})}function c(e={}){let{wrapper:t}={...n(),...e.components};return t?(0,l.jsx)(t,{...e,children:(0,l.jsx)(s,{...e})}):s(e)}var l;function u(){return(u=e((()=>{l=r(),t(),a()})))()}u();export{c as default};
