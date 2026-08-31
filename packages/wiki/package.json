@@ -67,12 +67,12 @@
     "node": ">=20.0.0"
   },
   "dependencies": {
-    "@dxtmisha/functional": "*",
-    "@dxtmisha/functional-basic": "*",
-    "@dxtmisha/styles": "*",
-    "@storybook/addon-docs": "*",
-    "react": "*",
-    "vue": "*"
+    "@dxtmisha/functional": ">=1.15.15",
+    "@dxtmisha/functional-basic": ">=1.10.1",
+    "@dxtmisha/styles": ">=1.0.12",
+    "@storybook/addon-docs": ">=10.5.10",
+    "react": ">=19.2.8",
+    "vue": ">=3.5.42"
   },
   "ui-priority": 400
 }

@@ -18,7 +18,7 @@ Your task is to conduct a complete audit and synchronization of the `dependencie
      - **Extraneous dependencies**: packages that are declared in `dependencies` but are not used in the package's code.
 
 3. **Synchronization and Updating `package.json`**:
-   - Add all missing dependencies to the `dependencies` of the corresponding `package.json` (for internal monorepo packages, as well as DXT ecosystem or Coral Club packages, strictly use the `"*"` version, never `workspace:*`).
+   - Add all missing dependencies to the `dependencies` of the corresponding `package.json` (for internal monorepo packages, as well as DXT ecosystem or Coral Club packages, strictly specify version from the latest version and above `">="`, e.g. `">=1.10.1"`, never `workspace:*` or `"*"`).
    - Carefully update the files, keeping the JSON valid and preserving the structure.
 
 4. **Final Report**:

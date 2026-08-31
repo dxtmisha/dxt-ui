@@ -61,11 +61,11 @@
     "./ai-screenshot/*": "./ai-screenshot/*"
   },
   "dependencies": {
-    "@dxtmisha/figma": "*",
-    "@dxtmisha/functional": "*",
-    "@dxtmisha/functional-basic": "*",
-    "@figma/plugin-typings": "*",
-    "vue": "*"
+    "@dxtmisha/figma": ">=0.1.4",
+    "@dxtmisha/functional": ">=1.15.15",
+    "@dxtmisha/functional-basic": ">=1.10.1",
+    "@figma/plugin-typings": ">=1.136.0",
+    "vue": ">=3.5.42"
   },
   "devDependencies": {},
   "sideEffects": false

@@ -85,15 +85,15 @@
     "node": ">=20.0.0"
   },
   "dependencies": {
-    "@mdx-js/rollup": "*",
-    "@microsoft/api-extractor": "^7.59.0",
-    "@vitejs/plugin-vue": "*",
-    "browserslist": "*",
-    "lightningcss": "*",
-    "typescript": "*",
-    "vite": "*",
-    "vite-plugin-dts": "*",
-    "vite-plugin-singlefile": "*"
+    "@mdx-js/rollup": ">=3.1.1",
+    "@microsoft/api-extractor": ">=7.59.0",
+    "@vitejs/plugin-vue": ">=6.0.8",
+    "browserslist": ">=4.28.8",
+    "lightningcss": ">=1.33.0",
+    "typescript": ">=6.0.3",
+    "vite": ">=8.2.2",
+    "vite-plugin-dts": ">=5.0.3",
+    "vite-plugin-singlefile": ">=2.3.3"
   },
   "ui-test": true
 }

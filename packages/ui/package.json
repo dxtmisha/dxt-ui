@@ -38,8 +38,8 @@
     "node": ">=20.0.0"
   },
   "peerDependencies": {
-    "vue": "*",
-    "sass": "*"
+    "vue": ">=3.5.42",
+    "sass": ">=1.103.1"
   },
   "peerDependenciesMeta": {
     "vue": {
@@ -50,13 +50,13 @@
     }
   },
   "dependencies": {
-    "@dxtmisha/functional": "*",
-    "@dxtmisha/constructor": "*",
-    "@dxtmisha/styles": "*",
-    "@dxtmisha/media": "*",
-    "@dxtmisha/wiki": "*",
-    "@dxtmisha/configuration": "*",
-    "@dxtmisha/scripts": "*"
+    "@dxtmisha/functional": ">=1.15.15",
+    "@dxtmisha/constructor": ">=0.113.0",
+    "@dxtmisha/styles": ">=1.0.12",
+    "@dxtmisha/media": ">=0.7.3",
+    "@dxtmisha/wiki": ">=0.113.0",
+    "@dxtmisha/configuration": ">=1.0.0",
+    "@dxtmisha/scripts": ">=1.0.0"
   },
   "devDependencies": {},
   "ui-test": true

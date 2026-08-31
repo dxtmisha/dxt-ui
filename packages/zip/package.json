@@ -59,8 +59,8 @@
     "./ai-screenshot/*": "./ai-screenshot/*"
   },
   "dependencies": {
-    "@dxtmisha/functional-basic": "*",
-    "fflate": "*"
+    "@dxtmisha/functional-basic": ">=1.10.1",
+    "fflate": ">=0.8.3"
   },
   "devDependencies": {},
   "sideEffects": false,

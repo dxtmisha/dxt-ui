@@ -565,12 +565,12 @@
     "node": ">=20.0.0"
   },
   "dependencies": {
-    "@dxtmisha/constructor": "*",
-    "@dxtmisha/functional": "*",
-    "@dxtmisha/functional-basic": "*",
-    "@dxtmisha/media": "*",
-    "@dxtmisha/styles": "*",
-    "vue": "*"
+    "@dxtmisha/constructor": ">=0.113.0",
+    "@dxtmisha/functional": ">=1.15.15",
+    "@dxtmisha/functional-basic": ">=1.10.1",
+    "@dxtmisha/media": ">=0.7.3",
+    "@dxtmisha/styles": ">=1.0.12",
+    "vue": ">=3.5.42"
   },
   "devDependencies": {},
   "sideEffects": [

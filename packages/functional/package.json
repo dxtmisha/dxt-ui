@@ -103,11 +103,11 @@
     "node": ">=20.0.0"
   },
   "dependencies": {
-    "@dxtmisha/functional-basic": "*",
-    "@dxtmisha/media": "*",
-    "@effect/schema": "*",
-    "vue": "*",
-    "vue-router": "*"
+    "@dxtmisha/functional-basic": ">=1.10.1",
+    "@dxtmisha/media": ">=0.7.3",
+    "@effect/schema": ">=0.75.5",
+    "vue": ">=3.5.42",
+    "vue-router": ">=5.3.0"
   },
   "sideEffects": false,
   "ui-priority": 200

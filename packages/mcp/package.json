@@ -70,8 +70,8 @@
     "node": ">=20.0.0"
   },
   "dependencies": {
-    "@dxtmisha/functional-basic": "*",
-    "@modelcontextprotocol/sdk": "*"
+    "@dxtmisha/functional-basic": ">=1.10.1",
+    "@modelcontextprotocol/sdk": ">=1.30.0"
   },
   "devDependencies": {},
   "sideEffects": false,

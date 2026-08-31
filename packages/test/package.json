@@ -57,11 +57,11 @@
     "node": ">=20.0.0"
   },
   "dependencies": {
-    "@dxtmisha/functional": "*",
-    "@dxtmisha/functional-basic": "*",
-    "@dxtmisha/styles": "*",
-    "@dxtmisha/wiki": "*",
-    "vue": "*"
+    "@dxtmisha/functional": ">=1.15.15",
+    "@dxtmisha/functional-basic": ">=1.10.1",
+    "@dxtmisha/styles": ">=1.0.12",
+    "@dxtmisha/wiki": ">=0.113.0",
+    "vue": ">=3.5.42"
   },
   "devDependencies": {},
   "ui-priority": 450

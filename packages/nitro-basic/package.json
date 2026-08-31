@@ -75,12 +75,12 @@
     "node": ">=20.0.0"
   },
   "dependencies": {
-    "@dxtmisha/functional": "*",
-    "@dxtmisha/functional-basic": "*",
-    "nitro": "*",
-    "unctx": "*",
-    "vue": "*",
-    "vue-router": "*"
+    "@dxtmisha/functional": ">=1.15.15",
+    "@dxtmisha/functional-basic": ">=1.10.1",
+    "nitro": ">=3.0.260610-beta",
+    "unctx": ">=3.0.1",
+    "vue": ">=3.5.42",
+    "vue-router": ">=5.3.0"
   },
   "sideEffects": false,
   "ui-priority": 300
