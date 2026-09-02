@@ -62,6 +62,13 @@ export const viteBasicFunction = ({
     ...builtinModules.map(m => `node:${m}`)
   ],
   externalExtended = [],
+  externalExclude = [
+    '@babel/runtime',
+    '@oxc-project/runtime',
+    '@swc/helpers',
+    'tslib'
+  ],
+  externalExcludeExtended = [],
 
   bundledPackages = undefined,
   bundleTypes = true,
@@ -114,6 +121,15 @@ export const viteBasicFunction = ({
       },
       rollupOptions: {
         external: (id) => {
+          const excludesList = [
+            ...externalExclude,
+            ...externalExcludeExtended
+          ]
+
+          if (excludesList.some(excluded => id === excluded || id.startsWith(`${excluded}/`))) {
+            return false
+          }
+
           if (isExternalAll && !id.startsWith('.') && !path.isAbsolute(id)) {
             return true
           }
@@ -123,7 +139,7 @@ export const viteBasicFunction = ({
             ...externalExtended
           ]
 
-          return externalsList.some(ext => id === ext || id.startsWith(ext + '/'))
+          return externalsList.some(ext => id === ext || id.startsWith(`${ext}/`))
         },
         output: {
           assetFileNames: (assetInfo) => {

@@ -6772,6 +6772,30 @@
         name: 'd1-system',
         type: 'component',
         value: (
+          'layoutPaddingX':(
+            index: 'layoutPaddingX',
+            name: '--d1-layout-paddingX',
+            type: 'var',
+            value: 'var(--d1-sys-spacing-grid-paddingX-md)',
+          ),
+          'layoutPaddingY':(
+            index: 'layoutPaddingY',
+            name: '--d1-layout-paddingY',
+            type: 'var',
+            value: 'var(--d1-sys-spacing-grid-paddingY)',
+          ),
+          'layoutGapX':(
+            index: 'layoutGapX',
+            name: '--d1-layout-gapX',
+            type: 'var',
+            value: 'var(--d1-sys-spacing-grid-gapX-md)',
+          ),
+          'layoutGapY':(
+            index: 'layoutGapY',
+            name: '--d1-layout-gapY',
+            type: 'var',
+            value: 'var(--d1-sys-spacing-grid-gapY-md)',
+          ),
           'layoutMarginX':(
             index: 'layoutMarginX',
             name: '--d1-layout-marginX',
@@ -6783,6 +6807,12 @@
             name: '--d1-layout-marginY',
             type: 'var',
             value: 'var(--d1-ref-spacing-4)',
+          ),
+          'layoutBleed':(
+            index: 'layoutBleed',
+            name: '--d1-layout-bleed',
+            type: 'var',
+            value: 'var(--d1-layout-marginX)',
           ),
           'layoutWidth':(
             index: 'layoutWidth',
@@ -6832,37 +6862,6 @@
             type: 'property',
             value: 'var(--d1-sys-opacity-surface-high)',
           ),
-          'mediaMaxMd':(
-            index: 'mediaMaxMd',
-            name: '(max-width: calc(768px - 1px))',
-            type: 'media-max',
-            value: (
-              'layoutPaddingX':(
-                index: 'layoutPaddingX',
-                name: '--d1-layout-paddingX',
-                type: 'var',
-                value: 'var(--d1-sys-spacing-grid-paddingX-md)',
-              ),
-              'layoutPaddingY':(
-                index: 'layoutPaddingY',
-                name: '--d1-layout-paddingY',
-                type: 'var',
-                value: 'var(--d1-sys-spacing-grid-paddingY)',
-              ),
-              'layoutGapX':(
-                index: 'layoutGapX',
-                name: '--d1-layout-gapX',
-                type: 'var',
-                value: 'var(--d1-sys-spacing-grid-gapX-md)',
-              ),
-              'layoutGapY':(
-                index: 'layoutGapY',
-                name: '--d1-layout-gapY',
-                type: 'var',
-                value: 'var(--d1-sys-spacing-grid-gapY-md)',
-              ),
-            ),
-          ),
           'mediaMd':(
             index: 'mediaMd',
             name: '(min-width: 768px)',
@@ -6911,6 +6910,12 @@
                 type: 'var',
                 value: 'var(--d1-ref-spacing-8)',
               ),
+              'layoutBleed':(
+                index: 'layoutBleed',
+                name: '--d1-layout-bleed',
+                type: 'var',
+                value: 0px,
+              ),
             ),
           ),
           'mediaXl':(
@@ -6939,6 +6944,30 @@
         name: 'd1-main',
         type: 'component',
         value: (
+          'layoutPaddingX':(
+            index: 'layoutPaddingX',
+            name: '--d1-layout-paddingX',
+            type: 'var',
+            value: 'var(--d1-sys-spacing-grid-paddingX-md)',
+          ),
+          'layoutPaddingY':(
+            index: 'layoutPaddingY',
+            name: '--d1-layout-paddingY',
+            type: 'var',
+            value: 'var(--d1-sys-spacing-grid-paddingY)',
+          ),
+          'layoutGapX':(
+            index: 'layoutGapX',
+            name: '--d1-layout-gapX',
+            type: 'var',
+            value: 'var(--d1-sys-spacing-grid-gapX-md)',
+          ),
+          'layoutGapY':(
+            index: 'layoutGapY',
+            name: '--d1-layout-gapY',
+            type: 'var',
+            value: 'var(--d1-sys-spacing-grid-gapY-md)',
+          ),
           'layoutMarginX':(
             index: 'layoutMarginX',
             name: '--d1-layout-marginX',
@@ -6950,6 +6979,12 @@
             name: '--d1-layout-marginY',
             type: 'var',
             value: 'var(--d1-ref-spacing-4)',
+          ),
+          'layoutBleed':(
+            index: 'layoutBleed',
+            name: '--d1-layout-bleed',
+            type: 'var',
+            value: 'var(--d1-layout-marginX)',
           ),
           'layoutWidth':(
             index: 'layoutWidth',
@@ -7005,37 +7040,6 @@
             type: 'property',
             value: 'var(--d1-sys-background-0)',
           ),
-          'mediaMaxMd':(
-            index: 'mediaMaxMd',
-            name: '(max-width: calc(768px - 1px))',
-            type: 'media-max',
-            value: (
-              'layoutPaddingX':(
-                index: 'layoutPaddingX',
-                name: '--d1-layout-paddingX',
-                type: 'var',
-                value: 'var(--d1-sys-spacing-grid-paddingX-md)',
-              ),
-              'layoutPaddingY':(
-                index: 'layoutPaddingY',
-                name: '--d1-layout-paddingY',
-                type: 'var',
-                value: 'var(--d1-sys-spacing-grid-paddingY)',
-              ),
-              'layoutGapX':(
-                index: 'layoutGapX',
-                name: '--d1-layout-gapX',
-                type: 'var',
-                value: 'var(--d1-sys-spacing-grid-gapX-md)',
-              ),
-              'layoutGapY':(
-                index: 'layoutGapY',
-                name: '--d1-layout-gapY',
-                type: 'var',
-                value: 'var(--d1-sys-spacing-grid-gapY-md)',
-              ),
-            ),
-          ),
           'mediaMd':(
             index: 'mediaMd',
             name: '(min-width: 768px)',
@@ -7083,6 +7087,12 @@
                 name: '--d1-layout-marginY',
                 type: 'var',
                 value: 'var(--d1-ref-spacing-8)',
+              ),
+              'layoutBleed':(
+                index: 'layoutBleed',
+                name: '--d1-layout-bleed',
+                type: 'var',
+                value: 0px,
               ),
             ),
           ),
@@ -9493,6 +9503,30 @@
         name: 'd1-layout',
         type: 'component',
         value: (
+          'layoutPaddingX':(
+            index: 'layoutPaddingX',
+            name: '--d1-layout-paddingX',
+            type: 'var',
+            value: 'var(--d1-sys-spacing-grid-paddingX-md)',
+          ),
+          'layoutPaddingY':(
+            index: 'layoutPaddingY',
+            name: '--d1-layout-paddingY',
+            type: 'var',
+            value: 'var(--d1-sys-spacing-grid-paddingY)',
+          ),
+          'layoutGapX':(
+            index: 'layoutGapX',
+            name: '--d1-layout-gapX',
+            type: 'var',
+            value: 'var(--d1-sys-spacing-grid-gapX-md)',
+          ),
+          'layoutGapY':(
+            index: 'layoutGapY',
+            name: '--d1-layout-gapY',
+            type: 'var',
+            value: 'var(--d1-sys-spacing-grid-gapY-md)',
+          ),
           'layoutMarginX':(
             index: 'layoutMarginX',
             name: '--d1-layout-marginX',
@@ -9505,42 +9539,17 @@
             type: 'var',
             value: 'var(--d1-ref-spacing-4)',
           ),
+          'layoutBleed':(
+            index: 'layoutBleed',
+            name: '--d1-layout-bleed',
+            type: 'var',
+            value: 'var(--d1-layout-marginX)',
+          ),
           'layoutWidth':(
             index: 'layoutWidth',
             name: '--d1-layout-width',
             type: 'var',
             value: 'auto',
-          ),
-          'mediaMaxMd':(
-            index: 'mediaMaxMd',
-            name: '(max-width: calc(768px - 1px))',
-            type: 'media-max',
-            value: (
-              'layoutPaddingX':(
-                index: 'layoutPaddingX',
-                name: '--d1-layout-paddingX',
-                type: 'var',
-                value: 'var(--d1-sys-spacing-grid-paddingX-md)',
-              ),
-              'layoutPaddingY':(
-                index: 'layoutPaddingY',
-                name: '--d1-layout-paddingY',
-                type: 'var',
-                value: 'var(--d1-sys-spacing-grid-paddingY)',
-              ),
-              'layoutGapX':(
-                index: 'layoutGapX',
-                name: '--d1-layout-gapX',
-                type: 'var',
-                value: 'var(--d1-sys-spacing-grid-gapX-md)',
-              ),
-              'layoutGapY':(
-                index: 'layoutGapY',
-                name: '--d1-layout-gapY',
-                type: 'var',
-                value: 'var(--d1-sys-spacing-grid-gapY-md)',
-              ),
-            ),
           ),
           'mediaMd':(
             index: 'mediaMd',
@@ -9589,6 +9598,12 @@
                 name: '--d1-layout-marginY',
                 type: 'var',
                 value: 'var(--d1-ref-spacing-8)',
+              ),
+              'layoutBleed':(
+                index: 'layoutBleed',
+                name: '--d1-layout-bleed',
+                type: 'var',
+                value: 0px,
               ),
             ),
           ),

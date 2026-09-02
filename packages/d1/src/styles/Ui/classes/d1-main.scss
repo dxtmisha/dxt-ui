@@ -1,8 +1,13 @@
 @use "@dxtmisha/styles" as ui;
 
 .d1-main {
+  --d1-layout-paddingX: var(--d1-sys-spacing-grid-paddingX-md);
+  --d1-layout-paddingY: var(--d1-sys-spacing-grid-paddingY);
+  --d1-layout-gapX: var(--d1-sys-spacing-grid-gapX-md);
+  --d1-layout-gapY: var(--d1-sys-spacing-grid-gapY-md);
   --d1-layout-marginX: var(--d1-layout-paddingX);
   --d1-layout-marginY: var(--d1-ref-spacing-4);
+  --d1-layout-bleed: var(--d1-layout-marginX);
   --d1-layout-width: auto;
   
   font-family: var(--d1-sys-font-family-basic), sans-serif;
@@ -16,13 +21,6 @@
   
   background: var(--d1-sys-background-0);
   
-  @media screen and (max-width: calc(768px - 1px)) {
-    --d1-layout-paddingX: var(--d1-sys-spacing-grid-paddingX-md);
-    --d1-layout-paddingY: var(--d1-sys-spacing-grid-paddingY);
-    --d1-layout-gapX: var(--d1-sys-spacing-grid-gapX-md);
-    --d1-layout-gapY: var(--d1-sys-spacing-grid-gapY-md);
-  }
-  
   @media screen and (min-width: 768px) {
     --d1-layout-paddingX: var(--d1-sys-spacing-grid-paddingX-lg);
     --d1-layout-paddingY: var(--d1-sys-spacing-grid-paddingY);
@@ -33,6 +31,7 @@
   @media screen and (min-width: 1024px) {
     --d1-layout-marginX: var(--d1-ref-spacing-12);
     --d1-layout-marginY: var(--d1-ref-spacing-8);
+    --d1-layout-bleed: 0px;
   }
   
   @media screen and (min-width: 1280px) {

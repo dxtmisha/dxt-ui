@@ -1,4 +1,20 @@
 {
+  "=?layout-paddingX": {
+    "value": "{sys.spacing.grid.paddingX.md}",
+    "_type": "var"
+  },
+  "=?layout-paddingY": {
+    "value": "{sys.spacing.grid.paddingY}",
+    "_type": "var"
+  },
+  "=?layout-gapX": {
+    "value": "{sys.spacing.grid.gapX.md}",
+    "_type": "var"
+  },
+  "=?layout-gapY": {
+    "value": "{sys.spacing.grid.gapY.md}",
+    "_type": "var"
+  },
   "=?layout-marginX": {
     "value": "{layout.paddingX}",
     "_type": "var"
@@ -7,27 +23,13 @@
     "value": "{ref.spacing.4}",
     "_type": "var"
   },
+  "=?layout-bleed": {
+    "value": "{layout.marginX}",
+    "_type": "var"
+  },
   "=?layout-width": {
     "value": "auto",
     "_type": "var"
-  },
-  "media-max|md": {
-    "=?layout-paddingX": {
-      "value": "{sys.spacing.grid.paddingX.md}",
-      "_type": "var"
-    },
-    "=?layout-paddingY": {
-      "value": "{sys.spacing.grid.paddingY}",
-      "_type": "var"
-    },
-    "=?layout-gapX": {
-      "value": "{sys.spacing.grid.gapX.md}",
-      "_type": "var"
-    },
-    "=?layout-gapY": {
-      "value": "{sys.spacing.grid.gapY.md}",
-      "_type": "var"
-    }
   },
   "media|md": {
     "=?layout-paddingX": {
@@ -54,6 +56,10 @@
     },
     "=?layout-marginY": {
       "value": "{ref.spacing.8}",
+      "_type": "var"
+    },
+    "=?layout-bleed": {
+      "value": "0px",
       "_type": "var"
     }
   },

@@ -91,6 +91,17 @@ export const wikiStyle: StorybookArgsToList = {
     },
     isDemo: true
   },
+  compact: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.style,
+      description: {
+        en: 'Enables compact component size',
+        ru: 'Включает компактный размер компонента'
+      }
+    },
+    isDemo: true
+  },
   container: {
     type: StorybookControl.select,
     options: {

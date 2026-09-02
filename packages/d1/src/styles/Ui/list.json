@@ -5562,6 +5562,26 @@
         "name": "d1-system",
         "type": "component",
         "value": {
+          "layoutPaddingX": {
+            "name": "--d1-layout-paddingX",
+            "type": "var",
+            "value": "{sys.spacing.grid.paddingX.md}"
+          },
+          "layoutPaddingY": {
+            "name": "--d1-layout-paddingY",
+            "type": "var",
+            "value": "{sys.spacing.grid.paddingY}"
+          },
+          "layoutGapX": {
+            "name": "--d1-layout-gapX",
+            "type": "var",
+            "value": "{sys.spacing.grid.gapX.md}"
+          },
+          "layoutGapY": {
+            "name": "--d1-layout-gapY",
+            "type": "var",
+            "value": "{sys.spacing.grid.gapY.md}"
+          },
           "layoutMarginX": {
             "name": "--d1-layout-marginX",
             "type": "var",
@@ -5572,36 +5592,15 @@
             "type": "var",
             "value": "{ref.spacing.4}"
           },
+          "layoutBleed": {
+            "name": "--d1-layout-bleed",
+            "type": "var",
+            "value": "{layout.marginX}"
+          },
           "layoutWidth": {
             "name": "--d1-layout-width",
             "type": "var",
             "value": "auto"
-          },
-          "mediaMaxMd": {
-            "name": "(max-width: calc(768px - 1px))",
-            "type": "media-max",
-            "value": {
-              "layoutPaddingX": {
-                "name": "--d1-layout-paddingX",
-                "type": "var",
-                "value": "{sys.spacing.grid.paddingX.md}"
-              },
-              "layoutPaddingY": {
-                "name": "--d1-layout-paddingY",
-                "type": "var",
-                "value": "{sys.spacing.grid.paddingY}"
-              },
-              "layoutGapX": {
-                "name": "--d1-layout-gapX",
-                "type": "var",
-                "value": "{sys.spacing.grid.gapX.md}"
-              },
-              "layoutGapY": {
-                "name": "--d1-layout-gapY",
-                "type": "var",
-                "value": "{sys.spacing.grid.gapY.md}"
-              }
-            }
           },
           "mediaMd": {
             "name": "(min-width: 768px)",
@@ -5642,6 +5641,11 @@
                 "name": "--d1-layout-marginY",
                 "type": "var",
                 "value": "{ref.spacing.8}"
+              },
+              "layoutBleed": {
+                "name": "--d1-layout-bleed",
+                "type": "var",
+                "value": "0px"
               }
             }
           },
@@ -5667,6 +5671,26 @@
         "name": "d1-main",
         "type": "component",
         "value": {
+          "layoutPaddingX": {
+            "name": "--d1-layout-paddingX",
+            "type": "var",
+            "value": "{sys.spacing.grid.paddingX.md}"
+          },
+          "layoutPaddingY": {
+            "name": "--d1-layout-paddingY",
+            "type": "var",
+            "value": "{sys.spacing.grid.paddingY}"
+          },
+          "layoutGapX": {
+            "name": "--d1-layout-gapX",
+            "type": "var",
+            "value": "{sys.spacing.grid.gapX.md}"
+          },
+          "layoutGapY": {
+            "name": "--d1-layout-gapY",
+            "type": "var",
+            "value": "{sys.spacing.grid.gapY.md}"
+          },
           "layoutMarginX": {
             "name": "--d1-layout-marginX",
             "type": "var",
@@ -5677,36 +5701,15 @@
             "type": "var",
             "value": "{ref.spacing.4}"
           },
+          "layoutBleed": {
+            "name": "--d1-layout-bleed",
+            "type": "var",
+            "value": "{layout.marginX}"
+          },
           "layoutWidth": {
             "name": "--d1-layout-width",
             "type": "var",
             "value": "auto"
-          },
-          "mediaMaxMd": {
-            "name": "(max-width: calc(768px - 1px))",
-            "type": "media-max",
-            "value": {
-              "layoutPaddingX": {
-                "name": "--d1-layout-paddingX",
-                "type": "var",
-                "value": "{sys.spacing.grid.paddingX.md}"
-              },
-              "layoutPaddingY": {
-                "name": "--d1-layout-paddingY",
-                "type": "var",
-                "value": "{sys.spacing.grid.paddingY}"
-              },
-              "layoutGapX": {
-                "name": "--d1-layout-gapX",
-                "type": "var",
-                "value": "{sys.spacing.grid.gapX.md}"
-              },
-              "layoutGapY": {
-                "name": "--d1-layout-gapY",
-                "type": "var",
-                "value": "{sys.spacing.grid.gapY.md}"
-              }
-            }
           },
           "mediaMd": {
             "name": "(min-width: 768px)",
@@ -5747,6 +5750,11 @@
                 "name": "--d1-layout-marginY",
                 "type": "var",
                 "value": "{ref.spacing.8}"
+              },
+              "layoutBleed": {
+                "name": "--d1-layout-bleed",
+                "type": "var",
+                "value": "0px"
               }
             }
           },
@@ -5772,6 +5780,26 @@
         "name": "d1-layout",
         "type": "component",
         "value": {
+          "layoutPaddingX": {
+            "name": "--d1-layout-paddingX",
+            "type": "var",
+            "value": "{sys.spacing.grid.paddingX.md}"
+          },
+          "layoutPaddingY": {
+            "name": "--d1-layout-paddingY",
+            "type": "var",
+            "value": "{sys.spacing.grid.paddingY}"
+          },
+          "layoutGapX": {
+            "name": "--d1-layout-gapX",
+            "type": "var",
+            "value": "{sys.spacing.grid.gapX.md}"
+          },
+          "layoutGapY": {
+            "name": "--d1-layout-gapY",
+            "type": "var",
+            "value": "{sys.spacing.grid.gapY.md}"
+          },
           "layoutMarginX": {
             "name": "--d1-layout-marginX",
             "type": "var",
@@ -5782,36 +5810,15 @@
             "type": "var",
             "value": "{ref.spacing.4}"
           },
+          "layoutBleed": {
+            "name": "--d1-layout-bleed",
+            "type": "var",
+            "value": "{layout.marginX}"
+          },
           "layoutWidth": {
             "name": "--d1-layout-width",
             "type": "var",
             "value": "auto"
-          },
-          "mediaMaxMd": {
-            "name": "(max-width: calc(768px - 1px))",
-            "type": "media-max",
-            "value": {
-              "layoutPaddingX": {
-                "name": "--d1-layout-paddingX",
-                "type": "var",
-                "value": "{sys.spacing.grid.paddingX.md}"
-              },
-              "layoutPaddingY": {
-                "name": "--d1-layout-paddingY",
-                "type": "var",
-                "value": "{sys.spacing.grid.paddingY}"
-              },
-              "layoutGapX": {
-                "name": "--d1-layout-gapX",
-                "type": "var",
-                "value": "{sys.spacing.grid.gapX.md}"
-              },
-              "layoutGapY": {
-                "name": "--d1-layout-gapY",
-                "type": "var",
-                "value": "{sys.spacing.grid.gapY.md}"
-              }
-            }
           },
           "mediaMd": {
             "name": "(min-width: 768px)",
@@ -5852,6 +5859,11 @@
                 "name": "--d1-layout-marginY",
                 "type": "var",
                 "value": "{ref.spacing.8}"
+              },
+              "layoutBleed": {
+                "name": "--d1-layout-bleed",
+                "type": "var",
+                "value": "0px"
               }
             }
           },
@@ -7766,7 +7778,7 @@
           "marginX": {
             "name": "--d1-bleed-marginX",
             "type": "var",
-            "value": "{?layout.marginX}"
+            "value": "{?layout.bleed}"
           }
         }
       },

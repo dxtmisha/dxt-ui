@@ -51,7 +51,7 @@
     "build": "vue-tsc -b && vite build",
     "build-recovery": "npm run build && npm run wiki-storm",
     "preview": "vite preview",
-    "ui": "dxt-ui",
+    "ui": "dxt-ui --name InputImage",
     "wiki-storm": "dxt-wiki-storm",
     "types": "npm run ui && npm run build && dxt-types",
     "types-only": "dxt-types",

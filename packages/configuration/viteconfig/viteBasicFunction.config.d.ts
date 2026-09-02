@@ -35,6 +35,10 @@ export interface ViteBasicFunctionOptions {
   external?: string[]
   /** Extra external dependencies / Дополнительные внешние зависимости */
   externalExtended?: string[]
+  /** Packages to exclude from external (always bundle) / Пакеты, исключаемые из внешних зависимостей (всегда бандлятся) */
+  externalExclude?: string[]
+  /** Extra packages to exclude from external / Дополнительные пакеты, исключаемые из внешних зависимостей */
+  externalExcludeExtended?: string[]
 
   /** Packages to bundle types for / Пакеты, типы которых нужно собрать */
   bundledPackages?: string[]

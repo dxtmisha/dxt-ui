@@ -51,7 +51,7 @@ export const InputImageVModel: Story = {
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex-align-center">
             <span>Current crop: {{ value?.crop }}</span>
-            <button class="wiki-storybook-button" @click="value = undefined">Clear</button>
+            <button class="wiki-storybook-button" @click="value = ''">Clear</button>
             <button class="wiki-storybook-button" @click="value = { value: image1, crop: [20, 20, 20, 20] }">Reset crop</button>
           </div>
 
