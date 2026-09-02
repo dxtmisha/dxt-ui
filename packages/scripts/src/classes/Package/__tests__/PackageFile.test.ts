@@ -38,7 +38,7 @@ describe('PackageFile', () => {
   it('checks ui-test and ui-no-publish / private flags', () => {
     vi.spyOn(PropertiesFile, 'is').mockReturnValue(true)
     vi.spyOn(PropertiesFile, 'readFile').mockReturnValue({
-      name: 'test-pkg',
+      'name': 'test-pkg',
       'ui-test': true,
       'ui-no-publish': true
     })

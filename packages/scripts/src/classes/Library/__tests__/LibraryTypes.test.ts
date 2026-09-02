@@ -28,7 +28,7 @@ describe('LibraryTypes', () => {
     expect(writeSpy).toHaveBeenCalledWith(
       'types',
       expect.arrayContaining([
-        expect.stringContaining("declare module '@vue/runtime-core'"),
+        expect.stringContaining('declare module \'@vue/runtime-core\''),
         expect.stringContaining('DxtButton: typeof _DxtButton')
       ])
     )

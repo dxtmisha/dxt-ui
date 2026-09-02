@@ -34,7 +34,7 @@ describe('Properties Convectors', () => {
       }
 
       convectorFontFamilies(item)
-      expect(item.value).toBe("'Roboto', sans-serif")
+      expect(item.value).toBe('\'Roboto\', sans-serif')
     })
   })
 

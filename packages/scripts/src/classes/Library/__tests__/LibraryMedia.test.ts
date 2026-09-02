@@ -35,7 +35,7 @@ describe('LibraryMedia', () => {
     expect(writeSpy).toHaveBeenCalledWith(
       'style',
       expect.arrayContaining([
-        expect.stringContaining("import '../styles/Ui/main.scss'")
+        expect.stringContaining('import \'../styles/Ui/main.scss\'')
       ])
     )
   })

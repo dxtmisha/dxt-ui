@@ -58,8 +58,8 @@ describe('LibraryExport', () => {
     })
 
     const styles = exporter.testInitStyles()
-    expect(styles).toContain("import './style.scss'")
-    expect(styles).not.toContain("import './style.css'")
+    expect(styles).toContain('import \'./style.scss\'')
+    expect(styles).not.toContain('import \'./style.css\'')
   })
 
   it('writes exported index file in make()', () => {

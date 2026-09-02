@@ -40,7 +40,7 @@ describe('Styles', () => {
     vi.spyOn(Properties.prototype as any, 'read').mockReturnValue(mockPropertyData)
     vi.spyOn(PropertiesItems.prototype, 'getDesigns').mockReturnValue(['dxt', 'c2'])
 
-    const writtenFiles: { path: any; name: string; ext?: string; content?: any }[] = []
+    const writtenFiles: { path: any, name: string, ext?: string, content?: any }[] = []
     vi.spyOn(PropertiesFile, 'write').mockImplementation((path, name, content, ext) => {
       writtenFiles.push({ path, name, ext, content })
     })

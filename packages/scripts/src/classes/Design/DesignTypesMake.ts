@@ -155,7 +155,7 @@ export class DesignTypesMake extends DesignTypesMakeAbstract {
       let item: DesignTypesItem | undefined
 
       while ((item = queue.shift()) !== undefined) {
-        let content = this.cleanContent(item.content)
+        let content: string | undefined = this.cleanContent(item.content)
 
         if (isFilled(content)) {
           processed += 1
@@ -166,7 +166,7 @@ export class DesignTypesMake extends DesignTypesMakeAbstract {
           )
         }
 
-        if (item.content !== content) {
+        if (content) {
           this.files.saveFile(
             {
               ...item,
@@ -174,6 +174,8 @@ export class DesignTypesMake extends DesignTypesMakeAbstract {
             },
             true
           )
+        } else {
+          console.warn(`[Warning] Failed to generate AI types for: ${item.path}`)
         }
       }
     }
@@ -194,13 +196,11 @@ export class DesignTypesMake extends DesignTypesMakeAbstract {
    * @param code code to optimize / код для оптимизации
    * @returns optimized content string / строка оптимизированного контента
    */
-  protected async toAiEdit(content: string, code: string): Promise<string> {
-    const generate = await this.ai.toAi(
+  protected async toAiEdit(content: string, code: string): Promise<string | undefined> {
+    return await this.ai.toAi(
       content,
       aiTypeOptimizationPrompt,
       code
     )
-
-    return generate ?? content
   }
 }
