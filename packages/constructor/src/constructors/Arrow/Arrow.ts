@@ -123,9 +123,9 @@ export class Arrow {
       case ArrowDirection.BOTTOM:
         return `0, 0 ${width / 2}, ${height} ${width}, 0`
       case ArrowDirection.LEFT:
-        return `${width}, 0 0, ${height / 2} ${width}, ${height}`
+        return `${height}, 0 0, ${width / 2} ${height}, ${width}`
       case ArrowDirection.RIGHT:
-        return `0, 0 ${width}, ${height / 2} 0, ${height}`
+        return `0, 0 ${height}, ${width / 2} 0, ${width}`
       default:
         return `0, ${height} ${width / 2}, 0 ${width}, ${height}`
     }

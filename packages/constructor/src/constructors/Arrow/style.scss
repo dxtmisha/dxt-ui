@@ -92,12 +92,12 @@
 
     &--left {
       @include ui.initByCustom('sys.arrow.translateX', 0px);
-      @include ui.initByCustom('sys.arrow.translateY', calc(ui.v('??sys.arrow.translateShift') - #{ui.v('??arrowHeight')} / 2));
+      @include ui.initByCustom('sys.arrow.translateY', calc(ui.v('??sys.arrow.translateShift') - #{ui.v('??arrowWidth')} / 2));
     }
 
     &--right {
-      @include ui.initByCustom('sys.arrow.translateX', calc(100% - #{ui.v('??arrowWidth')}));
-      @include ui.initByCustom('sys.arrow.translateY', calc(ui.v('??sys.arrow.translateShift') - #{ui.v('??arrowHeight')} / 2));
+      @include ui.initByCustom('sys.arrow.translateX', calc(100% - #{ui.v('??arrowHeight')}));
+      @include ui.initByCustom('sys.arrow.translateY', calc(ui.v('??sys.arrow.translateShift') - #{ui.v('??arrowWidth')} / 2));
     }
 
     &--hide {
@@ -109,7 +109,7 @@
 
   &--position {
     &--auto {
-      @include ui.initByCustom('sys.arrow.translateShift.basic', #{calc(#{ui.v('??sys.shift')} + #{ui.v('??arrowWidth')})});
+      @include ui.initByCustom('sys.arrow.translateShift.basic', #{calc(#{ui.v('??sys.shift')} + #{ui.v('??arrowHeight')})});
       @include ui.initByCustom('sys.arrow.translateShift.max', max(#{ui.v('??sys.arrow.translateShift.basic')}, #{ui.v('??sys.borderRadius')}));
       @include ui.initByCustom('sys.arrow.translateShift', ui.v('??sys.arrow.translateShift.basic'));
 

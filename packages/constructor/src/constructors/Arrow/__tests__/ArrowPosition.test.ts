@@ -66,4 +66,62 @@ describe('ArrowPosition', () => {
     expect(position.clipPath.value).toBeDefined()
     expect(position.clipPath.value).toContain('path(')
   })
+
+  it('should resolve left and right directions correctly', () => {
+    const positionLeft = new ArrowPosition(
+      { position: 'left' },
+      mockElementItem,
+      mockElementTarget,
+      mockParent
+    )
+
+    positionLeft.update()
+
+    expect(positionLeft.direction.value).toBe(ArrowDirection.LEFT)
+    expect(positionLeft.isX()).toBe(false)
+    expect(positionLeft.shift.value).toBeDefined()
+
+    const positionRight = new ArrowPosition(
+      { position: 'right' },
+      mockElementItem,
+      mockElementTarget,
+      mockParent
+    )
+
+    positionRight.update()
+
+    expect(positionRight.direction.value).toBe(ArrowDirection.RIGHT)
+    expect(positionRight.isX()).toBe(false)
+    expect(positionRight.shift.value).toBeDefined()
+  })
+
+  it('should calculate clip path correctly for left and right directions', async () => {
+    const positionLeft = new ArrowPosition(
+      { position: 'left' },
+      mockElementItem,
+      mockElementTarget,
+      mockParent
+    )
+
+    positionLeft.update()
+
+    await new Promise(resolve => requestAnimationFrame(resolve))
+
+    expect(positionLeft.clipPath.value).toBeDefined()
+    expect(positionLeft.clipPath.value).toContain('path(')
+
+    const positionRight = new ArrowPosition(
+      { position: 'right' },
+      mockElementItem,
+      mockElementTarget,
+      mockParent
+    )
+
+    positionRight.update()
+
+    await new Promise(resolve => requestAnimationFrame(resolve))
+
+    expect(positionRight.clipPath.value).toBeDefined()
+    expect(positionRight.clipPath.value).toContain('path(')
+  })
 })
