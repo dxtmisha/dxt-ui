@@ -82,6 +82,10 @@ export type FieldBasicExpose<T = string> = {
     value: Ref<T>;
     /** Returns the current field value. @keywords getValue, value */
     getValue: () => T | undefined;
+    /** Sets the field value. @keywords setValue, value */
+    setValue: (value: any) => void;
+    /** Clears the field value. @keywords clear, value */
+    clear: () => void;
     /** Checks validity of the field and returns status. @keywords checkValidity, validity */
     checkValidity: () => boolean;
     /** Returns the current validation message. @keywords getValidationMessage, error */

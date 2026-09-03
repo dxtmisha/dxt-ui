@@ -69,4 +69,29 @@ describe('FieldValueInclude', () => {
     valueInclude.setByEvent({ target: targetInput })
     expect(valueInclude.get()).toBe('event-input')
   })
+
+  it('should set value via expose().setValue()', () => {
+    const props = { value: 'init', modelValue: undefined }
+    const refs = toRefs(ref(props).value)
+    const valueInclude = new FieldValueInclude(props, refs)
+
+    const exposed = valueInclude.expose()
+    expect(typeof exposed.setValue).toBe('function')
+    exposed.setValue('via-expose')
+    expect(valueInclude.get()).toBe('via-expose')
+    expect(exposed.getValue()).toBe('via-expose')
+  })
+
+  it('should clear value via expose().clear()', () => {
+    const props = { value: 'init', modelValue: undefined }
+    const refs = toRefs(ref(props).value)
+    const valueInclude = new FieldValueInclude(props, refs)
+
+    const exposed = valueInclude.expose()
+    expect(typeof exposed.clear).toBe('function')
+    exposed.setValue('test')
+    expect(valueInclude.get()).toBe('test')
+    exposed.clear()
+    expect(valueInclude.get()).toBeUndefined()
+  })
 })

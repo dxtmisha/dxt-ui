@@ -160,7 +160,13 @@ export class FieldValueInclude<Value = any> {
   readonly expose = () => {
     return {
       value: this.item,
-      getValue: () => this.item.value
+      getValue: () => this.item.value,
+      setValue: (value: any) => {
+        this.set(value)
+      },
+      clear: () => {
+        this.clear()
+      }
     }
   }
 

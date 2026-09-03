@@ -156,6 +156,10 @@ export type FieldBasicExpose<T = string> = {
   value: Ref<T>
   /** Returns the current value/ Возвращает текущее значение */
   getValue: () => T | undefined
+  /** Sets the value/ Устанавливает значение */
+  setValue: (value: any) => void
+  /** Clears the value/ Очищает значение */
+  clear: () => void
 
   /** Checks validity of the field and returns status/ Проверяет валидность поля и возвращает статус */
   checkValidity: () => boolean
