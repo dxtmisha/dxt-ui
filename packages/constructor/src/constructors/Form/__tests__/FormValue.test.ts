@@ -17,6 +17,7 @@ describe('FormValue', () => {
       value: ref('admin'),
       getValue: () => 'admin',
       setValue: setUsernameMock,
+      clear: vi.fn(),
       checkValidity: () => true,
       getValidationMessage: () => '',
       data: {
@@ -30,6 +31,7 @@ describe('FormValue', () => {
       value: ref(25),
       getValue: () => 25,
       setValue: setAgeMock,
+      clear: vi.fn(),
       checkValidity: () => true,
       getValidationMessage: () => ''
     })
@@ -94,6 +96,7 @@ describe('FormValue', () => {
       value: ref('Hello'),
       getValue: () => 'Hello',
       setValue: setMock,
+      clear: vi.fn(),
       checkValidity: () => true,
       getValidationMessage: () => ''
     })
@@ -109,6 +112,7 @@ describe('FormValue', () => {
     await nextTick()
 
     expect(setMock).toHaveBeenCalledWith('New World')
+    expect(formValue).toBeDefined()
   })
 
   it('resets custom elements in non-native mode', () => {

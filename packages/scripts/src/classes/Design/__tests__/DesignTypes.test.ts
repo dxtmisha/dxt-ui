@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
+import { PropertiesFile } from '../../Properties/PropertiesFile'
 import { DesignTypes } from '../DesignTypes'
 import { DesignTypesAi } from '../DesignTypesAi'
 import { DesignTypesBuild } from '../DesignTypesBuild'
@@ -59,5 +60,40 @@ describe('DesignTypes', () => {
   it('initializes with default temporary directory', () => {
     const defaultDesignTypes = new DesignTypes()
     expect(defaultDesignTypes).toBeDefined()
+  })
+
+  it('adds generated AI resource files to .gitignore on initGitIgnore', () => {
+    class TestDesignTypes extends DesignTypes {
+      public testInitGitIgnore() {
+        this.initGitIgnore()
+      }
+    }
+
+    vi.spyOn(PropertiesFile, 'readFileOnly').mockReturnValue('')
+    const writeSpy = vi.spyOn(PropertiesFile, 'writeByPath').mockImplementation(() => {})
+
+    const designTypes = new TestDesignTypes()
+    designTypes.testInitGitIgnore()
+
+    expect(writeSpy).toHaveBeenCalledWith(
+      '.gitignore',
+      expect.stringContaining('# AI Resources'),
+      false
+    )
+    expect(writeSpy).toHaveBeenCalledWith(
+      '.gitignore',
+      expect.stringContaining('ai-types.md'),
+      false
+    )
+    expect(writeSpy).toHaveBeenCalledWith(
+      '.gitignore',
+      expect.stringContaining('ai-description.md'),
+      false
+    )
+    expect(writeSpy).toHaveBeenCalledWith(
+      '.gitignore',
+      expect.stringContaining('ai-mcp-resources.json'),
+      false
+    )
   })
 })

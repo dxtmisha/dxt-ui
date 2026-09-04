@@ -1,14 +1,13 @@
-// md5:c64e6dd12c29b5ca9d3dc75f021c1058 true
-import { ReadResourceResult } from '@modelcontextprotocol/sdk/types.js';
-
-/** Manages and reads MCP resources. @keywords mcp resource read manager */
+// md5:9a731059196bd4c23fd240406453b144 true
+import type { ReadResourceResult } from '@modelcontextprotocol/sdk/types.js';
+/** Manages and reads Model Context Protocol (MCP) resources. @keywords mcp, resource, manager, registry */
 export declare class McpResource extends McpItemAbstract<McpResourceItem, McpResourceInput | McpResource | (McpResourceItem | McpResource)[]> {
-    /** Adds resource items, arrays, or merges another McpResource. @keywords add resource merge */
+    /** Adds resource items or merges another McpResource instance. @keywords add, merge, resource */
     add(resource: McpResourceInput | McpResource | (McpResourceItem | McpResource)[]): this;
-    /** Adds a single resource item or raw configuration. @keywords add item resource */
+    /** Adds a single resource item or configuration to the registry. @keywords add, register, item */
     addItem(item: McpResourceItem | Record<string, unknown>): this;
-    /** Reads a resource by URI and returns ReadResourceResult. @keywords read resource uri */
+    /** Reads a resource by URI and returns ReadResourceResult. @keywords read, uri, content */
     read(uri: string | URL, extra?: Record<string, unknown>): Promise<ReadResourceResult>;
-    /** Registers all managed resources into an SDK McpServer. @keywords register sdk server */
+    /** Registers all managed resources into an SDK McpServer instance. @keywords register, server, sdk */
     register(sdkServer: SdkMcpServer): void;
 }

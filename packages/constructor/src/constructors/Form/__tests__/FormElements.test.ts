@@ -31,6 +31,7 @@ describe('FormElements', () => {
       value: ref('test@example.com'),
       getValue: () => 'test@example.com',
       setValue: vi.fn(),
+      clear: vi.fn(),
       checkValidity: () => true,
       getValidationMessage: () => '',
       data: {
@@ -66,6 +67,7 @@ describe('FormElements', () => {
       value: ref('admin'),
       getValue: () => 'admin',
       setValue: vi.fn(),
+      clear: vi.fn(),
       checkValidity: () => true,
       getValidationMessage: () => ''
     }
@@ -86,6 +88,7 @@ describe('FormElements', () => {
       value: ref('admin'),
       getValue: () => 'admin',
       setValue: vi.fn(),
+      clear: vi.fn(),
       checkValidity: () => true,
       getValidationMessage: () => ''
     })
@@ -95,6 +98,7 @@ describe('FormElements', () => {
       value: ref(25),
       getValue: () => 25,
       setValue: vi.fn(),
+      clear: vi.fn(),
       checkValidity: () => true,
       getValidationMessage: () => ''
     })
@@ -115,6 +119,7 @@ describe('FormElements', () => {
       value: ref('admin'),
       getValue: () => 'admin',
       setValue: vi.fn(),
+      clear: vi.fn(),
       checkValidity: () => true,
       getValidationMessage: () => '',
       data: {
@@ -128,6 +133,7 @@ describe('FormElements', () => {
       value: ref(25),
       getValue: () => 25,
       setValue: vi.fn(),
+      clear: vi.fn(),
       checkValidity: () => true,
       getValidationMessage: () => ''
     })
@@ -151,6 +157,7 @@ describe('FormElements', () => {
       value: ref('admin'),
       getValue: () => 'admin',
       setValue: vi.fn(),
+      clear: vi.fn(),
       checkValidity: () => true,
       getValidationMessage: () => ''
     })
@@ -168,6 +175,7 @@ describe('FormElements', () => {
       value: ref('admin'),
       getValue: () => 'admin',
       setValue: setValueMock,
+      clear: vi.fn(),
       checkValidity: () => true,
       getValidationMessage: () => ''
     })
@@ -186,6 +194,7 @@ describe('FormElements', () => {
       value: ref('admin'),
       getValue: () => 'admin',
       setValue: setUsernameMock,
+      clear: vi.fn(),
       checkValidity: () => true,
       getValidationMessage: () => ''
     })
@@ -195,6 +204,7 @@ describe('FormElements', () => {
       value: ref(25),
       getValue: () => 25,
       setValue: setAgeMock,
+      clear: vi.fn(),
       checkValidity: () => true,
       getValidationMessage: () => ''
     })

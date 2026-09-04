@@ -66,6 +66,9 @@ const promptBlock = item.make()
 - `readFile(dirFile: string): string` — Читает содержимое файла, адаптируя ссылки под абсолютную структуру папок проекта.
 - `getDescription(): string | undefined` — Форматирует секцию описания модуля при её наличии.
 - `getInfo(): string | undefined` — Форматирует секцию ключевой информации о модуле при её наличии.
-- `getTypes(): string | undefined` — Форматирует ссылки на файлы типов модуля при их наличии.
+- `getTypes(): string | undefined` — Копирует файл типов модуля в корневую папку `ai-types` под именем проекта и формирует ссылку на копию.
+- `getTypesFileName(): string` — Возвращает имя файла копии типов на основе названия проекта.
+- `getTypesPath(): string[]` — Возвращает путь к скопированному файлу в корневой папке `ai-types`.
+- `copyTypes(targetPath: string[]): void` — Выполняет копирование файла типов модуля в целевую директорию `ai-types`.
 - `getScreenshot(): string | undefined` — Форматирует блок визуальных материалов и скриншотов при их наличии.
 - `getScreenshotList(): string[] | undefined` — Возвращает список файлов из директории `ai-screenshot`.

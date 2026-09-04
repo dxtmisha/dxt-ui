@@ -1,0 +1,6 @@
+{
+  "path": "ai-resources/vue-integration.md",
+  "md5": "2b6be3587c0c696681c4b170255b7367",
+  "name": "Connecting Constructors to Vue",
+  "description": "Rules for integrating constructor design classes, props, dependencies, and render functions into Vue UI components."
+}

@@ -25,6 +25,8 @@ export const UI_DIR_IN = 'src'
 export const UI_DIR_AI = 'ai'
 /** Screenshot folder name for AI / Название папки со снимками экрана для AI */
 export const UI_DIR_AI_PROMPT_SCREENSHOT = 'ai-screenshot'
+/** AI types directory name in root / Название директории типов AI в корне */
+export const UI_DIR_AI_TYPES = 'ai-packages-types'
 /** AI types list directory name / Название директории со списком типов AI */
 export const UI_DIR_AI_TYPES_LIST = 'ai-types-list'
 /** AI types temporary directory name / Название временной директории типов AI */
@@ -81,6 +83,8 @@ export const UI_DIRS_LIST_EXPORT = [
   'types'
 ]
 
+/** Gitignore file name / Название файла .gitignore */
+export const UI_FILE_GITIGNORE = '.gitignore'
 /** Package.json file name/ Название файла package.json */
 export const UI_FILE_PACKAGE = 'package.json'
 /** Name of the main file with tokens/ Название главного файла с токенами */

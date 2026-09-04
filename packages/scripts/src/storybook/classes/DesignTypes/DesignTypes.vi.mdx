@@ -45,6 +45,7 @@ Khi `make()` được thực thi, lớp sẽ điều phối một quy trình là
 3. **Hợp nhất (`toOneFile`)**: Tất cả nội dung tệp được xác định sẽ được hợp nhất thành một chuỗi lớn duy nhất, được gắn thẻ với đường dẫn tệp gốc để cung cấp ngữ cảnh.
 4. **Chuyển đổi AI (`toAiEdit`)**: Nội dung đã hợp nhất được gửi đến trợ lý AI với các hướng dẫn cụ thể để loại bỏ mã mẫu (boilerplate), xóa các chú thích không phải tiếng Anh và tối thiểu hóa cú pháp.
 5. **Lưu trữ (`save`)**: Thư viện kiểu mật độ cao cuối cùng được lưu vào đường dẫn đầu ra đã định cấu hình (thường được chỉ định trong `UI_FILE_AI_TYPES`).
+6. **Tích hợp .gitignore (`initGitIgnore`)**: Tự động thêm các tệp đã tạo (`ai-types.md`, `ai-description.md`, `ai-mcp-resources.json`) vào `.gitignore` của package dưới phần `# AI Resources`.
 
 ### Trường hợp sử dụng: Tiêm ngữ cảnh AI
 

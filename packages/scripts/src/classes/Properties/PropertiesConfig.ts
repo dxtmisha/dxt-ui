@@ -201,6 +201,24 @@ export class PropertiesConfig {
     return this.config?.promptScanDepth ?? 6
   }
 
+  /**
+   * Returns the list of library names to exclude from the ai-prompt.md file.
+   *
+   * Возвращает список названий библиотек, исключаемых из файла ai-prompt.md.
+   * @returns array of excluded library names / массив названий исключаемых библиотек
+   */
+  static getPromptExclude(): string[] {
+    if (Array.isArray(this.config?.promptExclude)) {
+      return this.config.promptExclude
+    }
+
+    if (this.config?.promptExclude) {
+      return [this.config.promptExclude]
+    }
+
+    return []
+  }
+
   // AI Configuration / Конфигурация ИИ
 
   /**

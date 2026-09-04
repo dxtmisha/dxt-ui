@@ -12,10 +12,6 @@ dist-ssr
 *.local
 dist
 
-ai-types.md
-ai-description.md
-ai-mcp-resources.json
-
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -26,3 +22,8 @@ ai-mcp-resources.json
 *.njsproj
 *.sln
 *.sw?
+
+# AI Resources
+ai-types.md
+ai-description.md
+ai-mcp-resources.json

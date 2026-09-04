@@ -1,22 +1,22 @@
-// md5:90c2c1027e628d136926a6184a17c32c true
-/** Base abstract class for managing MCP item collections. @keywords mcp collection item manager abstract */
+// md5:844668d4599ec485597602bb220c1133 true
+/** Base abstract class for managing MCP item collections (Tools, Resources, Prompts). @keywords mcp collection registry manager */
 export declare abstract class McpItemAbstract<Item, Input = Item | Item[]> {
-    /** Creates an item manager instance. @keywords constructor create */
+    /** Initializes MCP item collection with optional initial items. @keywords constructor init */
     constructor(items?: Input);
-    /** Checks if an item exists by key. @keywords has item check exist */
+    /** Checks if an item with the given key is registered. @keywords hasItem exists check */
     hasItem(key: string): boolean;
-    /** Finds a registered item by key. @keywords get item find lookup */
+    /** Finds a registered item by its key identifier. @keywords getItem find lookup */
     getItem(key: string): Item | undefined;
-    /** Returns all registered items. @keywords get items list all */
+    /** Returns a copy of all registered items. @keywords getItems list all */
     getItems(): Item[];
-    /** Adds items or manager. @keywords add abstract input */
+    /** Adds an item, array of items, or merges another manager instance. @keywords add merge batch */
     abstract add(input: Input): this;
-    /** Adds a single item. @keywords add item single */
+    /** Adds a single item to the registry. @keywords addItem add single */
     addItem(item: Item): this;
-    /** Adds multiple items. @keywords add items batch multiple */
+    /** Adds multiple items to the registry. @keywords addItems add batch array */
     addItems(items: Item[]): this;
-    /** Removes an item by key. @keywords remove delete item key */
+    /** Removes an item from the registry by its key. @keywords removeItem delete unregister */
     removeItem(key: string): this;
-    /** Registers items to SDK server. @keywords register sdk server */
+    /** Registers all managed items into an SDK McpServer instance. @keywords register sdk McpServer */
     abstract register(sdkServer: SdkMcpServer): void;
 }

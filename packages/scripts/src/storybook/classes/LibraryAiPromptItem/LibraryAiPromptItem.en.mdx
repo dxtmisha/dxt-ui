@@ -66,6 +66,9 @@ All status checkers return `boolean`.
 - `readFile(dirFile: string): string` — Reads specified file content, updating references to match absolute module directory mapping.
 - `getDescription(): string | undefined` — Formats the module description section if present.
 - `getInfo(): string | undefined` — Formats the module core overview section if present.
-- `getTypes(): string | undefined` — Formats the module type definition catalog links if present.
+- `getTypes(): string | undefined` — Copies the module types file into the root `ai-types` folder using the project name and formats the link to the copy.
+- `getTypesFileName(): string` — Returns the copied types file name based on the project name.
+- `getTypesPath(): string[]` — Returns the path to the copied types file in the root `ai-types` directory.
+- `copyTypes(targetPath: string[]): void` — Copies the module types file into the destination `ai-types` directory.
 - `getScreenshot(): string | undefined` — Formats visual reference links and screenshots list if present.
 - `getScreenshotList(): string[] | undefined` — Lists files inside the `ai-screenshot` subdirectory.

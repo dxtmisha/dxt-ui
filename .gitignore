@@ -14,15 +14,6 @@ dist-ssr
 
 /design.config.json
 
-ai-prompt.md
-ai-types.md
-ai-description.md
-ai-mcp-resources.json
-ai-mcp-all-resources.json
-ai-mcp-all-resources.ts
-ai-tmp
-ai-types-temp
-
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -35,3 +26,7 @@ ai-types-temp
 *.sw?
 packages/wiki/src/classes/WikiStorybook.ts
 packages/scripts/src/classes/Design/DesignReplace.ts
+
+# AI Resources
+ai-prompt.md
+ai-packages-types

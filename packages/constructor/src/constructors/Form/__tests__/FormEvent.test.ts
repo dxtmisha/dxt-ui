@@ -3,6 +3,7 @@ import { describe, expect, it, vi } from 'vitest'
 import { ref } from 'vue'
 
 import { ModelInclude } from '../../../classes/ModelInclude'
+import type { FormElementsValues } from '../basicTypes'
 import { FormElements } from '../FormElements'
 import { FormElementsNative } from '../FormElementsNative'
 import { FormEvent } from '../FormEvent'
@@ -27,6 +28,7 @@ describe('FormEvent', () => {
       value: ref('john'),
       getValue: () => 'john',
       setValue: vi.fn(),
+      clear: vi.fn(),
       checkValidity: () => true,
       getValidationMessage: () => ''
     })
@@ -72,6 +74,7 @@ describe('FormEvent', () => {
       value: ref('25'),
       getValue: () => '25',
       setValue: vi.fn(),
+      clear: vi.fn(),
       checkValidity: () => true,
       getValidationMessage: () => ''
     })
@@ -157,7 +160,7 @@ describe('FormEvent', () => {
     const elements = new FormElements()
     const formValue = new FormValue({ native: false }, undefined, elements)
     const emits = vi.fn()
-    const model = new ModelInclude('value', emits)
+    const model = new ModelInclude<FormElementsValues>('value', emits)
     const modelEmitSpy = vi.spyOn(model, 'emit')
     const formEvent = new FormEvent({ native: false }, formValue, emits, model)
 
@@ -166,6 +169,7 @@ describe('FormEvent', () => {
       value: ref('test@example.com'),
       getValue: () => 'test@example.com',
       setValue: vi.fn(),
+      clear: vi.fn(),
       checkValidity: () => true,
       getValidationMessage: () => ''
     })

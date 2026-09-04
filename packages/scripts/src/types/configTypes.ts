@@ -110,6 +110,12 @@ export type DesignUiConfig = {
    */
   promptScanDepth?: number
 
+  /**
+   * List of library names to exclude from the ai-prompt.md file /
+   * Список названий библиотек, исключаемых из файла ai-prompt.md
+   */
+  promptExclude?: string | string[]
+
   // AI Configuration / Конфигурация ИИ
 
   /** AI provider type for generating content / Тип ИИ-провайдера для генерации контента */

@@ -1,0 +1,55 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/GitIgnore - Managing .gitignore'/>
+
+# GitIgnore Class
+
+A utility class for managing and updating `.gitignore` entries. It allows flexible configuration of paths and comment headers through method chaining, writing modifications via `make()`.
+
+## Key Capabilities
+
+- **Path Normalization** — automatically trims whitespace, filters empty strings, and deduplicates input paths.
+- **Safe Insertion** — checks existing entries against incoming paths while ignoring slash variations to prevent duplicates.
+- **Section Comments** — optionally adds a comment header `# <comment>` above new entries without duplicating existing comments.
+- **State Mutation API** — manages paths (`addPaths`, `setPaths`), comments (`setComment`), and target file path (`setGitignorePath`).
+
+## Core Methods
+
+### `make`
+
+Processes and writes missing entries to the `.gitignore` file.
+
+**Returns:** `boolean` — `true` if new entries were written to the file, `false` otherwise.
+
+**Example:**
+```typescript
+import { GitIgnore } from '@dxtmisha/scripts'
+
+new GitIgnore([
+  'ai-prompt.md',
+  'ai-packages-types'
+], 'AI Resources').make()
+```
+
+### State Mutation Methods
+
+- `addPaths(paths: string | string[]): this` — appends paths to the current path list.
+- `setPaths(paths: string | string[]): this` — replaces the current path list with new entries.
+- `getPaths(): string[]` — returns the current array of paths.
+- `setComment(comment?: string): this` — sets the comment header for the added section.
+- `getComment(): string | undefined` — returns the current comment header.
+- `setGitignorePath(path: PropertiesFilePath): this` — sets the target `.gitignore` file path.
+- `getGitignorePath(): PropertiesFilePath` — returns the current `.gitignore` file path.
+- `getContent(): string` — reads and caches the content of the `.gitignore` file.
+- `resetContent(): this` — resets the cached file content.
+
+**Method Chaining Example:**
+```typescript
+import { GitIgnore } from '@dxtmisha/scripts'
+
+new GitIgnore()
+  .addPaths(['dist', 'temp'])
+  .addPaths('coverage')
+  .setComment('Build Outputs')
+  .make()
+```

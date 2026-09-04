@@ -7,6 +7,11 @@ type FormPropsToken = {
 }
 
 export type FormPropsBasic = ModelProps<FormElementsValues> & {
+  /** Form value / Значение формы */
+  value?: FormElementsValues
+  /** Works with native form elements if true, otherwise with custom / Работает с нативными элементами, если true, иначе с кастомными */
+  native?: boolean
+
   /** Form submission URL / URL отправки формы */
   action?: string
   /** HTTP method for form submission / HTTP-метод для отправки формы */
@@ -17,10 +22,6 @@ export type FormPropsBasic = ModelProps<FormElementsValues> & {
   target?: FormTarget
   /** Autocomplete behavior for form elements / Поведение автозаполнения для элементов формы */
   autocomplete?: string
-  /** Works with native form elements if true, otherwise with custom / Работает с нативными элементами, если true, иначе с кастомными */
-  native?: boolean
-  /** Form value / Значение формы */
-  value?: FormElementsValues
 }
 
 /**

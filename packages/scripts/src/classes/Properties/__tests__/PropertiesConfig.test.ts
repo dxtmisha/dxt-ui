@@ -35,8 +35,25 @@ describe('PropertiesConfig', () => {
     expect(PropertiesConfig.getTypesTemporaryDirectory()).toBe('ai-types-temp')
     expect(PropertiesConfig.getDistDir()).toBe('dist')
     expect(PropertiesConfig.getAiResourcesDir()).toBe('ai-resources')
+    expect(PropertiesConfig.getPromptScanDepth()).toBe(6)
+    expect(PropertiesConfig.getPromptExclude()).toEqual([])
     expect(typeof PropertiesConfig.getAiTypesConcurrency()).toBe('number')
     expect(PropertiesConfig.getAiTypesConcurrency()).toBe(8)
+  })
+
+  describe('getPromptExclude', () => {
+    it('returns array from config or wraps single string', () => {
+      const configTarget = PropertiesConfig as any
+
+      configTarget.config = { promptExclude: ['pkg1', 'pkg2'] }
+      expect(PropertiesConfig.getPromptExclude()).toEqual(['pkg1', 'pkg2'])
+
+      configTarget.config = { promptExclude: 'single-pkg' }
+      expect(PropertiesConfig.getPromptExclude()).toEqual(['single-pkg'])
+
+      configTarget.config = undefined
+      expect(PropertiesConfig.getPromptExclude()).toEqual([])
+    })
   })
 
   describe('getLocalPath', () => {

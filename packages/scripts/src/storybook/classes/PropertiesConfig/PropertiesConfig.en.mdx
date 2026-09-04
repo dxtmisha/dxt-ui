@@ -50,6 +50,8 @@ const separator = PropertiesConfig.getSeparator()
 - `getTypesWithoutVue(): boolean | undefined` — returns the flag disabling Vue compilation for types.
 - `isTypesWithoutVue(): boolean` — checks if Vue file compilation is disabled for types.
 - `getAiResourcesDir(): string` — returns the AI resources and prompts directory path.
+- `getPromptScanDepth(): number` — returns the maximum directory scan depth for AI prompt collection.
+- `getPromptExclude(): string[]` — returns the list of library names to exclude from the ai-prompt.md file.
 - `getAiType(): AiType` — returns the configured AI provider.
 - `getAiModel(): string` — returns the specific AI model name.
 - `getAiKey(): string` — returns the API key for AI services.

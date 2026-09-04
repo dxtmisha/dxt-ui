@@ -50,6 +50,8 @@ const separator = PropertiesConfig.getSeparator()
 - `getTypesWithoutVue(): boolean | undefined` — возвращает флаг отключения Vue-компиляции типов.
 - `isTypesWithoutVue(): boolean` — проверяет, отключена ли обработка файлов Vue при генерации типов.
 - `getAiResourcesDir(): string` — возвращает путь к директории с промптами и правилами ИИ.
+- `getPromptScanDepth(): number` — возвращает максимальную глубину сканирования директорий для промпта ИИ.
+- `getPromptExclude(): string[]` — возвращает список названий библиотек, исключаемых из файла ai-prompt.md.
 - `getAiType(): AiType` — возвращает настроенного ИИ-провайдера.
 - `getAiModel(): string` — возвращает название конкретной модели ИИ.
 - `getAiKey(): string` — возвращает API-ключ для сервиса ИИ.

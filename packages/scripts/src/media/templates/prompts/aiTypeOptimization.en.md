@@ -10,10 +10,9 @@ JSDOC RULES:
 - MANDATORY FOR ALL CLASSES, METHODS, FUNCTIONS & ACCESSORS: Every `class`, `declare class`, `abstract class`, `function`, `declare function`, method (public/static/abstract), `constructor`, and `get`/`set` accessor MUST ALWAYS have a JSDoc description.
   * Style: Descriptions MUST be maximally clear and informative, yet maximally short and concise. Avoid fluff.
   * Single-Line Preference: Prefer single-line JSDoc format (`/** Description @keywords search_terms */`) to conserve vertical space and reduce file size.
-  * Remove `@return` / `@returns`: STRICTLY REMOVE `@return` and `@returns` tags from all JSDoc comments.
-  * `@param` Tag: Include `@param` ONLY if critically necessary to clarify parameter behavior; otherwise omit `@param`.
+  * Remove `@param` and `@return` / `@returns`: STRICTLY REMOVE `@param`, `@return`, and `@returns` tags from all JSDoc comments.
   * AI Search Keywords: Include relevant search tags/keywords (e.g. `@keywords` tag or search terms) to help AI code search easily discover functionality.
-  * Allowed tags: PRESERVE ONLY `@example`, `@remarks`, `@note`, `@warning`, `@keywords`, and critical `@param` tags. Remove `@return`/`@returns` and all other tags.
+  * Allowed tags: PRESERVE ONLY `@example`, `@remarks`, `@note`, `@warning`, and `@keywords`. Remove `@param`, `@return`/`@returns`, and all other tags.
   * If JSDoc is missing: Generate a clear, concise, search-optimized English JSDoc derived from inspecting `File JS Code`.
   * If JSDoc exists: Optimize, condense, translate to English, and apply tag rules.
 - TYPES, INTERFACES & ENUMS: Delete JSDoc for simple/obvious types; add or keep concise JSDoc for complex types.

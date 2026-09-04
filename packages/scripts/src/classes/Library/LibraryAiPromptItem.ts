@@ -4,6 +4,7 @@ import { getPackageJson } from '../../functions/getPackageJson'
 
 import {
   UI_DIR_AI_PROMPT_SCREENSHOT,
+  UI_DIR_AI_TYPES,
   UI_FILE_AI_PROMPT_DESCRIPTION,
   UI_FILE_AI_PROMPT_DEVELOPER,
   UI_FILE_AI_PROMPT_INFO,
@@ -303,8 +304,10 @@ ${screenshot}
 
   /**
    * Formats and returns the types section for the prompt.
+   * Copies the types file to the root types directory and links to the copy.
    *
    * Форматирует и возвращает секцию типов для промпта.
+   * Копирует файл типов в корневую директорию типов и создает ссылку на копию.
    * @returns formatted types reference or undefined / отформатированная ссылка на типы или undefined
    * @protected
    */
@@ -312,13 +315,62 @@ ${screenshot}
     if (this.isTypes()) {
       console.log('-- Types')
 
+      const targetPath = this.getTypesPath()
+      this.copyTypes(targetPath)
+
       return `
-## Package Type Definitions (Must Read in Full When Working with Package)
-'${this.getPathString(UI_FILE_AI_PROMPT_TYPES)}'
+## Package Type Definitions
+'${targetPath.join('/')}'
       `.trim()
     }
 
     return undefined
+  }
+
+  /**
+   * Returns the copied types file name based on the project name.
+   *
+   * Возвращает имя скопированного файла типов на основе названия проекта.
+   * @returns file name / имя файла
+   * @protected
+   */
+  protected getTypesFileName(): string {
+    const projectName = this.getProjectName()
+    const baseName = projectName !== 'none'
+      ? projectName
+      : (this.dir[this.dir.length - 1] ?? 'types')
+
+    const cleanName = baseName
+      .replace(/^@/, '')
+      .replace(/[/\\:]+/g, '-')
+
+    return `${cleanName}.md`
+  }
+
+  /**
+   * Returns path segments for the copied types file in the root types directory.
+   *
+   * Возвращает сегменты пути для скопированного файла типов в корневой директории типов.
+   * @returns target path segments / сегменты целевого пути
+   * @protected
+   */
+  protected getTypesPath(): string[] {
+    return [UI_DIR_AI_TYPES, this.getTypesFileName()]
+  }
+
+  /**
+   * Copies the types file to the target destination in the project root.
+   *
+   * Копирует файл типов в целевое назначение в корне проекта.
+   * @param targetPath target path segments / сегменты целевого пути
+   * @protected
+   */
+  protected copyTypes(targetPath: string[]): void {
+    try {
+      PropertiesFile.copy(targetPath, this.getPath(UI_FILE_AI_PROMPT_TYPES))
+    } catch (error) {
+      console.warn(`LibraryAiPromptItem: failed to copy types to ${targetPath.join('/')}`, error)
+    }
   }
 
   /**

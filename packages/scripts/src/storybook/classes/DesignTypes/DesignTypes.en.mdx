@@ -45,6 +45,7 @@ When `make()` is executed, the class coordinates a multi-stage workflow:
 3. **Consolidation (`toOneFile`)**: All identified file contents are merged into a single large string, tagged with their original file paths for context.
 4. **AI Transformation (`toAiEdit`)**: The merged content is sent to an AI assistant with specific instructions to strip boilerplate, remove non-English comments, and minimize syntax.
 5. **Persistence (`save`)**: The final, high-density type library is saved to the configured output path (usually specified in `UI_FILE_AI_TYPES`).
+6. **.gitignore Integration (`initGitIgnore`)**: Automatically adds generated files (`ai-types.md`, `ai-description.md`, `ai-mcp-resources.json`) to the package's `.gitignore` under the `# AI Resources` section.
 
 ### Use Case: AI Context Injection
 

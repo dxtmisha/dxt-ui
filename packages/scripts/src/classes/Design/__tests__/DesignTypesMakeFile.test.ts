@@ -79,4 +79,20 @@ describe('DesignTypesMakeFile', () => {
     expect(list[0].path).toBe('file1.d.ts')
     expect(list[0].content).toContain('export type File1 = string;')
   })
+
+  it('saves content wrapped in ```typescript markdown code block', () => {
+    const writeSpy = vi.spyOn(PropertiesFile, 'writeByPath').mockImplementation(() => {})
+    vi.spyOn(PropertiesFile, 'readFile').mockReturnValue({
+      name: '@dxtmisha/test-pkg',
+      version: '1.0.0'
+    } as any)
+
+    const testInstance = new DesignTypesMakeFile(ai, 'dist-temporary', 'dist')
+    testInstance.save('export declare const x = 1;')
+
+    expect(writeSpy).toHaveBeenCalledWith(
+      'ai-types.md',
+      expect.stringContaining('```typescript\nexport declare const x = 1;\n```')
+    )
+  })
 })

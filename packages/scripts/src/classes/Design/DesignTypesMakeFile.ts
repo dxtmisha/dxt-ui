@@ -145,12 +145,17 @@ export class DesignTypesMakeFile {
 
     if (packageJson) {
       const versionStr = packageJson.version ? ` (v${packageJson.version})` : ''
+      const trimmed = content.trim()
+      const formattedContent = trimmed.startsWith('```')
+        ? trimmed
+        : `\`\`\`typescript\n${trimmed}\n\`\`\``
+
       PropertiesFile.writeByPath(
         UI_FILE_AI_TYPES,
         [
           `All these methods are in the ${packageJson.name}${versionStr} library.`,
           '',
-          content
+          formattedContent
         ].join('\n')
       )
     }

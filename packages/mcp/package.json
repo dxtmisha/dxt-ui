@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/mcp",
   "private": false,
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "description": "A lightweight and modular TypeScript library for building Model Context Protocol (MCP) servers with structured prompts, tools, and dynamic resources. Built on top of @modelcontextprotocol/sdk.",
   "keywords": [

@@ -50,6 +50,8 @@ const separator = PropertiesConfig.getSeparator()
 - `getTypesWithoutVue(): boolean | undefined` — trả về cờ vô hiệu hóa biên dịch Vue cho kiểu.
 - `isTypesWithoutVue(): boolean` — kiểm tra xem xử lý tệp Vue có bị tắt khi tạo kiểu hay không.
 - `getAiResourcesDir(): string` — trả về đường dẫn thư mục tài nguyên và prompt AI.
+- `getPromptScanDepth(): number` — trả về độ sâu quét thư mục tối đa để thu thập prompt AI.
+- `getPromptExclude(): string[]` — trả về danh sách các thư viện cần loại trừ khỏi tệp ai-prompt.md.
 - `getAiType(): AiType` — trả về nhà cung cấp AI đã cấu hình.
 - `getAiModel(): string` — trả về tên mô hình AI cụ thể.
 - `getAiKey(): string` — trả về khóa API cho dịch vụ AI.

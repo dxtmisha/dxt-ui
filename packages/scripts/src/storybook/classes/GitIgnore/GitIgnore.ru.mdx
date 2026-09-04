@@ -1,0 +1,55 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/scripts/Classes/GitIgnore - Управление .gitignore'/>
+
+# Класс GitIgnore
+
+Класс для автоматического управления и добавления записей в файл `.gitignore`. Позволяет гибко настраивать пути и комментарии через цепочку методов и безопасно записывать данные через вызов метода `make()`.
+
+## Ключевые возможности
+
+- **Нормализация путей** — автоматическая очистка пробелов, удаление пустых значений и устранение дубликатов.
+- **Безопасная вставка** — проверка существующих записей в `.gitignore` с учетом концевых и начальных слешей для предотвращения повторного добавления.
+- **Заголовки секций** — поддержка добавления комментариев `# <comment>` перед списком путей без дублирования уже существующих заголовков.
+- **Мутабельный API** — управление списком путей (`addPaths`, `setPaths`), комментарием (`setComment`) и путем к файлу (`setGitignorePath`).
+
+## Основные методы
+
+### `make`
+
+Генерирует и записывает пути в файл `.gitignore`.
+
+**Возвращает:** `boolean` — `true`, если файл был дополнен новыми записями, иначе `false`.
+
+**Пример:**
+```typescript
+import { GitIgnore } from '@dxtmisha/scripts'
+
+new GitIgnore([
+  'ai-prompt.md',
+  'ai-packages-types'
+], 'AI Resources').make()
+```
+
+### Методы изменения состояния
+
+- `addPaths(paths: string | string[]): this` — добавляет пути к текущему списку путей.
+- `setPaths(paths: string | string[]): this` — заменяет текущий список путей новым набором.
+- `getPaths(): string[]` — возвращает текущий массив путей.
+- `setComment(comment?: string): this` — устанавливает заголовок-комментарий для секции.
+- `getComment(): string | undefined` — возвращает текущий заголовок-комментарий.
+- `setGitignorePath(path: PropertiesFilePath): this` — устанавливает целевой путь к `.gitignore`.
+- `getGitignorePath(): PropertiesFilePath` — возвращает текущий путь к `.gitignore`.
+- `getContent(): string` — считывает и кэширует содержимое файла `.gitignore`.
+- `resetContent(): this` — сбрасывает кэшированное содержимое.
+
+**Пример цепочки вызовов:**
+```typescript
+import { GitIgnore } from '@dxtmisha/scripts'
+
+new GitIgnore()
+  .addPaths(['dist', 'temp'])
+  .addPaths('coverage')
+  .setComment('Build Outputs')
+  .make()
+```

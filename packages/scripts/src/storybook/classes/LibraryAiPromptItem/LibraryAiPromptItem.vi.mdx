@@ -66,6 +66,9 @@ Tất cả các phương thức kiểm tra trạng thái đều trả về kiể
 - `readFile(dirFile: string): string` — Đọc nội dung tệp được chỉ định, cập nhật các tham chiếu đường dẫn tương thích với cấu trúc tuyệt đối của dự án.
 - `getDescription(): string | undefined` — Định dạng phần mô tả mô-đun nếu tồn tại.
 - `getInfo(): string | undefined` — Định dạng phần tổng quan cốt lõi mô-đun nếu tồn tại.
-- `getTypes(): string | undefined` — Định dạng các liên kết định nghĩa kiểu dữ liệu của mô-đun nếu tồn tại.
+- `getTypes(): string | undefined` — Sao chép tệp kiểu dữ liệu mô-đun vào thư mục gốc `ai-types` theo tên dự án và định dạng liên kết đến bản sao.
+- `getTypesFileName(): string` — Trả về tên tệp bản sao kiểu dữ liệu dựa trên tên dự án.
+- `getTypesPath(): string[]` — Trả về đường dẫn đến tệp bản sao trong thư mục `ai-types` ở thư mục gốc.
+- `copyTypes(targetPath: string[]): void` — Sao chép tệp kiểu dữ liệu mô-đun vào thư mục đích `ai-types`.
 - `getScreenshot(): string | undefined` — Định dạng các liên kết tài nguyên hình ảnh và danh sách ảnh chụp màn hình nếu tồn tại.
 - `getScreenshotList(): string[] | undefined` — Trả về danh sách tên tệp hình ảnh trong thư mục `ai-screenshot`.

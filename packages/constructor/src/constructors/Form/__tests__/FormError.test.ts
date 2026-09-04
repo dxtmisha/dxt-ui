@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { describe, expect, it, vi } from 'vitest'
-import { nextTick, ref } from 'vue'
+import { ref } from 'vue'
 
 import { FormElements } from '../FormElements'
 import { FormElementsNative } from '../FormElementsNative'
@@ -25,6 +25,7 @@ describe('FormError', () => {
       value: ref('invalid-email'),
       getValue: () => 'invalid-email',
       setValue: vi.fn(),
+      clear: vi.fn(),
       checkValidity: () => false,
       getValidationMessage: () => 'Invalid email address'
     })

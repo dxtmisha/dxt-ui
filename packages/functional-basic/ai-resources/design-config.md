@@ -28,6 +28,7 @@ Configuration specification for DXT UI packages and monorepo root.
 - `distDir` (`string`, default: `'dist'`): Output directory path for compiled JavaScript files.
 - `aiResourcesDir` (`string`, default: `'ai-resources'`): Directory path containing AI resource and prompt files.
 - `promptScanDepth` (`number`, default: `6`): Maximum directory scan depth for collecting AI prompt packages.
+- `promptExclude` (`string | string[]`): List of library names to exclude from the `ai-prompt.md` file (e.g. `["@dxtmisha/styles"]`).
 - `separator` (`string`, default: `'/'`): Token path delimiter used when splitting design tokens into sub-branches.
 - `separatorBasicName` (`string`): Base token name stripped during branch segmentation.
 - `separatorLimit` (`number`): Maximum recursion depth for token key splitting.
@@ -73,6 +74,9 @@ Complete `design.config.json` incorporating all available configuration properti
   "distDir": "dist",
   "aiResourcesDir": "ai-resources",
   "promptScanDepth": 6,
+  "promptExclude": [
+    "@dxtmisha/styles"
+  ],
   "separator": "/",
   "separatorBasicName": "basic",
   "separatorLimit": 3,
@@ -101,4 +105,5 @@ Complete `design.config.json` incorporating all available configuration properti
    import { PropertiesConfig } from '../Properties/PropertiesConfig'
    const isExcluded = PropertiesConfig.getTypesExclude()
    const skipVue = PropertiesConfig.isTypesWithoutVue()
+   const promptExcluded = PropertiesConfig.getPromptExclude()
    ```

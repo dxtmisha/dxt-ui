@@ -1,0 +1,55 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/GitIgnore - Quản lý .gitignore'/>
+
+# Lớp GitIgnore
+
+Lớp tiện ích để quản lý và cập nhật các mục trong tệp `.gitignore`. Cho phép cấu hình linh hoạt các đường dẫn và tiêu đề nhận xét thông qua chuỗi phương thức và ghi dữ liệu an toàn thông qua việc gọi `make()`.
+
+## Tính năng chính
+
+- **Chuẩn hóa đường dẫn** — tự động cắt khoảng trắng, loại bỏ chuỗi rỗng và loại bỏ các đường dẫn trùng lặp.
+- **Chèn an toàn** — kiểm tra các mục hiện có dựa trên đường dẫn mới mà bỏ qua sự khác biệt về dấu gạch chéo để ngăn chặn trùng lặp.
+- **Tiêu đề bình luận** — tùy chọn thêm tiêu đề bình luận `# <comment>` phía trên các mục mới mà không làm trùng lặp tiêu đề đã tồn tại.
+- **API biến đổi trạng thái** — quản lý đường dẫn (`addPaths`, `setPaths`), nhận xét (`setComment`), và đường dẫn tệp đích (`setGitignorePath`).
+
+## Phương thức chính
+
+### `make`
+
+Tạo và ghi các đường dẫn vào tệp `.gitignore`.
+
+**Trả về:** `boolean` — `true` nếu các mục mới đã được ghi vào tệp, ngược lại là `false`.
+
+**Ví dụ:**
+```typescript
+import { GitIgnore } from '@dxtmisha/scripts'
+
+new GitIgnore([
+  'ai-prompt.md',
+  'ai-packages-types'
+], 'AI Resources').make()
+```
+
+### Các phương thức thay đổi trạng thái
+
+- `addPaths(paths: string | string[]): this` — thêm đường dẫn vào danh sách hiện tại.
+- `setPaths(paths: string | string[]): this` — thay thế danh sách đường dẫn hiện tại bằng tập hợp mới.
+- `getPaths(): string[]` — trả về mảng đường dẫn hiện tại.
+- `setComment(comment?: string): this` — đặt tiêu đề bình luận cho phần được thêm vào.
+- `getComment(): string | undefined` — trả về tiêu đề bình luận hiện tại.
+- `setGitignorePath(path: PropertiesFilePath): this` — đặt đường dẫn tệp `.gitignore` đích.
+- `getGitignorePath(): PropertiesFilePath` — trả về đường dẫn tệp `.gitignore` hiện tại.
+- `getContent(): string` — đọc và lưu vào bộ nhớ cache nội dung tệp `.gitignore`.
+- `resetContent(): this` — đặt lại nội dung đã lưu trong bộ nhớ cache.
+
+**Ví dụ chuỗi phương thức:**
+```typescript
+import { GitIgnore } from '@dxtmisha/scripts'
+
+new GitIgnore()
+  .addPaths(['dist', 'temp'])
+  .addPaths('coverage')
+  .setComment('Build Outputs')
+  .make()
+```

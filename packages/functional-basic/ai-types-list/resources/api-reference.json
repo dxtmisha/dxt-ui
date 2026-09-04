@@ -2,5 +2,5 @@
   "path": "ai-resources/api-reference.md",
   "md5": "5b6b7850a06fbe60c2ff108599c45dc3",
   "name": "Functional Basic API Reference",
-  "description": "Comprehensive API reference and code examples for the @dxtmisha/functional-basic utility package. Covers HTTP networking, client/server storage, internationalization, DOM utilities, and general helper functions. Streamlines common frontend and SSR development tasks including state persistence, API integration, and formatting."
+  "description": "API reference and code examples for HTTP client, storage, localization, DOM, and utility functions."
 }
