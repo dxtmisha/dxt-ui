@@ -1,31 +1,13 @@
 // @vitest-environment jsdom
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { provide, ref } from 'vue'
+import { ref } from 'vue'
 
-import { FORM_NAME_ELEMENT, type FormElementItem } from '../basicTypes'
+import type { FormElementItem } from '../basicTypes'
 import { FormElements } from '../FormElements'
-
-vi.mock('vue', async () => {
-  const actual = await vi.importActual<typeof import('vue')>('vue')
-  return {
-    ...actual,
-    provide: vi.fn()
-  }
-})
 
 describe('FormElements', () => {
   afterEach(() => {
     vi.clearAllMocks()
-  })
-
-  it('calls provide with FORM_NAME_ELEMENT and registration object on construction', () => {
-    const elements = new FormElements()
-
-    expect(provide).toHaveBeenCalledWith(FORM_NAME_ELEMENT, {
-      getValue: elements.getValue,
-      register: elements.register,
-      updateData: elements.updateData
-    })
   })
 
   it('registers child element record and returns items via get()', () => {
@@ -222,6 +204,39 @@ describe('FormElements', () => {
     expect(setAgeMock).toHaveBeenCalledWith(30)
   })
 
+  it('sets values for all registered child elements and clears omitted fields via setValuesAll(values)', () => {
+    const elements = new FormElements()
+    const setUsernameMock = vi.fn()
+    const clearAgeMock = vi.fn()
+
+    elements.register({
+      name: 'username',
+      value: ref('admin'),
+      getValue: () => 'admin',
+      setValue: setUsernameMock,
+      clear: vi.fn(),
+      checkValidity: () => true,
+      getValidationMessage: () => ''
+    })
+
+    elements.register({
+      name: 'age',
+      value: ref(25),
+      getValue: () => 25,
+      setValue: vi.fn(),
+      clear: clearAgeMock,
+      checkValidity: () => true,
+      getValidationMessage: () => ''
+    })
+
+    elements.setValuesAll({
+      username: 'new_user'
+    })
+
+    expect(setUsernameMock).toHaveBeenCalledWith('new_user')
+    expect(clearAgeMock).toHaveBeenCalledTimes(1)
+  })
+
   it('resets registered child elements via reset() calling clear() or setValue(undefined)', () => {
     const elements = new FormElements()
     const clearMock = vi.fn()
@@ -250,6 +265,36 @@ describe('FormElements', () => {
     elements.reset()
     expect(clearMock).toHaveBeenCalledTimes(1)
     expect(setValueMock).toHaveBeenCalledWith(undefined)
+  })
+
+  it('resets registered child elements with initial values via reset(initialValues)', () => {
+    const elements = new FormElements()
+    const setUsernameMock = vi.fn()
+    const setAgeMock = vi.fn()
+
+    elements.register({
+      name: 'username',
+      value: ref('modified'),
+      getValue: () => 'modified',
+      setValue: setUsernameMock,
+      clear: vi.fn(),
+      checkValidity: () => true,
+      getValidationMessage: () => ''
+    })
+
+    elements.register({
+      name: 'age',
+      value: ref(99),
+      getValue: () => 99,
+      setValue: setAgeMock,
+      clear: vi.fn(),
+      checkValidity: () => true,
+      getValidationMessage: () => ''
+    })
+
+    elements.reset({ username: 'original_user', age: 20 })
+    expect(setUsernameMock).toHaveBeenCalledWith('original_user')
+    expect(setAgeMock).toHaveBeenCalledWith(20)
   })
 
   it('updates validation data for registered element via updateData(name, data)', () => {

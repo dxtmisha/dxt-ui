@@ -99,10 +99,11 @@ describe('FieldFormInclude', () => {
     it('should call updateData on context if context exists', () => {
       vi.mocked(inject).mockReturnValue(mockContext)
       formInclude = new FieldFormInclude({} as any, {} as any, {} as any)
+      const mockEvent = new InputEvent('input')
 
-      formInclude.updateData('username', mockData)
+      formInclude.updateData('username', mockData, mockEvent)
 
-      expect(mockContext.updateData).toHaveBeenCalledWith('username', mockData)
+      expect(mockContext.updateData).toHaveBeenCalledWith('username', mockData, mockEvent)
       expect(mockContext.updateData).toHaveBeenCalledTimes(1)
     })
 

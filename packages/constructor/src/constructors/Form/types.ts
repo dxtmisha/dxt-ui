@@ -33,7 +33,7 @@ export type FormEmits = ModelEmits & {
   ]
   /** Form change event / Событие изменения формы */
   change: [
-    event: Event,
+    event: InputEvent,
     data: FormElementsData,
     values: FormElementsValues
   ]
@@ -58,20 +58,26 @@ export type FormEmits = ModelEmits & {
  * Тип, описывающий доступные свойства.
  */
 export interface FormExpose {
-  /** Returns the current form values / Возвращает текущие значения формы */
-  getValues(): FormElementsValues
-  /** Sets the value of a form field / Устанавливает значение поля формы */
-  set(name: string, value: any): void
-  /** Sets multiple values of form fields / Устанавливает несколько значений полей формы */
-  setValues(values: FormElementsValues): void
-
   /** Checks whether the form satisfies validation constraints / Проверяет, удовлетворяет ли форма ограничениям валидации */
   checkValidity(): boolean
 
-  /** Submits the form / Отправляет форму */
-  submit(): void
+  /** Returns the current form values / Возвращает текущие значения формы */
+  getValues(): FormElementsValues
+
   /** Resets the form / Сбрасывает форму */
   reset(): void
+
+  /** Sets the value of a form field / Устанавливает значение поля формы */
+  set(name: string, value: any): void
+
+  /** Sets multiple values of form fields / Устанавливает несколько значений полей формы */
+  setValues(values: FormElementsValues): void
+
+  /** Sets values for all form fields and clears omitted fields / Устанавливает значения для всех полей формы и очищает неуказанные */
+  setValuesAll(values: FormElementsValues): void
+
+  /** Submits the form / Отправляет форму */
+  submit(): void
 }
 
 /**

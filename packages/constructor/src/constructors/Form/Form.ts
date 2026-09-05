@@ -6,6 +6,7 @@ import { FormElements } from './FormElements'
 import { FormElementsNative } from './FormElementsNative'
 import { FormError } from './FormError'
 import { FormEvent } from './FormEvent'
+import { FormProvide } from './FormProvide'
 import { FormValue } from './FormValue'
 
 import type { FormElementsValues } from './basicTypes'
@@ -23,20 +24,23 @@ export class Form {
   /** Object for managing child elements / Объект для управления дочерними элементами */
   readonly elements: FormElements
 
-  /** Object for managing native form elements / Объект для управления нативными элементами формы */
-  readonly native: FormElementsNative
-
-  /** Object for managing form values / Объект для управления значениями формы */
-  readonly value: FormValue
-
   /** Object for managing and storing form error states / Объект для управления и хранения состояний ошибок формы */
   readonly error: FormError
+
+  /** Object for working with events / Объект для работы с событиями */
+  readonly event: FormEvent
 
   /** Object for model synchronization / Объект для синхронизации модели */
   readonly model: ModelInclude<FormElementsValues>
 
-  /** Object for working with events / Объект для работы с событиями */
-  readonly event: FormEvent
+  /** Object for managing native form elements / Объект для управления нативными элементами формы */
+  readonly native: FormElementsNative
+
+  /** Object for providing form context to child elements / Объект для предоставления контекста формы дочерним элементам */
+  readonly provide: FormProvide
+
+  /** Object for managing form values / Объект для управления значениями формы */
+  readonly value: FormValue
 
   /**
    * Constructor
@@ -53,6 +57,7 @@ export class Form {
    * @param constructors.FormElementsNativeConstructor class for working with native form elements / класс для работы с нативными элементами формы
    * @param constructors.FormErrorConstructor class for managing error states / класс для управления состояниями ошибок
    * @param constructors.FormEventConstructor class for working with events / класс для работы с событиями
+   * @param constructors.FormProvideConstructor class for providing form context / класс для предоставления контекста формы
    * @param constructors.FormValueConstructor class for working with form values / класс для работы со значениями формы
    * @param constructors.ModelIncludeConstructor class for working with model synchronization / класс для работы с синхронизацией модели
    */
@@ -70,6 +75,7 @@ export class Form {
       FormElementsNativeConstructor?: typeof FormElementsNative
       FormErrorConstructor?: typeof FormError
       FormEventConstructor?: typeof FormEvent
+      FormProvideConstructor?: typeof FormProvide
       FormValueConstructor?: typeof FormValue
       ModelIncludeConstructor?: typeof ModelInclude<FormElementsValues>
     } = {}
@@ -79,6 +85,7 @@ export class Form {
       FormElementsNativeConstructor = FormElementsNative,
       FormErrorConstructor = FormError,
       FormEventConstructor = FormEvent,
+      FormProvideConstructor = FormProvide,
       FormValueConstructor = FormValue,
       ModelIncludeConstructor = ModelInclude
     } = constructors
@@ -89,6 +96,7 @@ export class Form {
     this.error = new FormErrorConstructor(this.props, this.elements, this.native)
     this.model = new ModelIncludeConstructor('value', emits)
     this.event = new FormEventConstructor(this.props, this.value, emits, this.model)
+    this.provide = new FormProvideConstructor(this.elements, this.event)
   }
 
   /**
@@ -98,15 +106,15 @@ export class Form {
   get binds(): Record<string, any> {
     return {
       action: this.props.action,
-      method: this.props.method,
-      enctype: this.props.enctype,
-      target: this.props.target,
-      novalidate: true,
       autocomplete: this.props.autocomplete,
-      onInput: this.event.onInput,
+      enctype: this.props.enctype,
+      method: this.props.method,
+      novalidate: true,
+      target: this.props.target,
       onChange: this.event.onChange,
-      onSubmit: this.event.onSubmit,
-      onReset: this.event.onReset
+      onInput: this.event.onInput,
+      onReset: this.event.onReset,
+      onSubmit: this.event.onSubmit
     }
   }
 

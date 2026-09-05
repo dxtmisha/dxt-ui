@@ -1,0 +1,97 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+### `input`
+
+Событие срабатывает при изменении значения в любом поле формы, передавая оригинальное DOM-событие, данные валидации всех полей и текущие значения.
+
+**Параметры:**
+- `event: InputEvent` — оригинальное DOM-событие ввода
+- `data: FormElementsData` — объект данных валидации всех полей формы
+- `values: FormElementsValues` — объект «ключ-значение» всех значений формы
+
+**Структура FormElementsData:**
+- `[name: string]: FieldValidationItem` — запись валидации для каждого зарегистрированного поля по имени
+
+**Структура FormElementsValues:**
+- `[name: string]: any` — текущее значение для каждого зарегистрированного поля по имени
+
+<Source
+    code={`
+<script setup>
+const handleInput = (event, data, values) => {
+  console.log('DOM-событие:', event)
+  console.log('Данные валидации:', data)
+  console.log('Значения формы:', values)
+}
+</script>
+
+<template>
+  <Form @input="handleInput">
+    <template #default>
+      <input name="username" placeholder="Имя пользователя" />
+    </template>
+  </Form>
+</template>
+  `}
+    language="html"
+/>
+
+### `inputLite`
+
+Упрощённая версия события `input`, передающая данные валидации и значения формы без оригинального DOM-события.
+
+**Параметры:**
+- `data: FormElementsData` — объект данных валидации всех полей формы
+- `values: FormElementsValues` — объект «ключ-значение» всех значений формы
+
+### `inputValues`
+
+Упрощённая версия события `input`, передающая только актуальные значения полей формы.
+
+**Параметры:**
+- `values: FormElementsValues` — объект «ключ-значение» всех значений формы
+
+### `change`
+
+Событие срабатывает при потере фокуса элементом ввода после изменения значения, передавая оригинальное DOM-событие, данные валидации всех полей и текущие значения.
+
+**Параметры:**
+- `event: Event` — оригинальное DOM-событие изменения
+- `data: FormElementsData` — объект данных валидации всех полей формы
+- `values: FormElementsValues` — объект «ключ-значение» всех значений формы
+
+<Source
+    code={`
+<script setup>
+const handleChange = (event, data, values) => {
+  console.log('DOM-событие:', event)
+  console.log('Данные валидации:', data)
+  console.log('Значения формы:', values)
+}
+</script>
+
+<template>
+  <Form @change="handleChange">
+    <template #default>
+      <input name="username" placeholder="Имя пользователя" />
+    </template>
+  </Form>
+</template>
+  `}
+    language="html"
+/>
+
+### `changeLite`
+
+Упрощённая версия события `change`, передающая данные валидации и значения формы без оригинального DOM-события.
+
+**Параметры:**
+- `data: FormElementsData` — объект данных валидации всех полей формы
+- `values: FormElementsValues` — объект «ключ-значение» всех значений формы
+
+### `changeValues`
+
+Упрощённая версия события `change`, передающая только зафиксированные значения полей формы.
+
+**Параметры:**
+- `values: FormElementsValues` — объект «ключ-значение» всех значений формы

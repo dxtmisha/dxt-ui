@@ -1,6 +1,9 @@
 import fs from 'node:fs'
 import path from 'node:path'
 
+/** Name of the default component SCSS style file / Имя файла стилей SCSS компонента по умолчанию */
+export const FILE_STYLE = 'styleToken.scss'
+
 /** Name of the default component style file / Имя файла стилей компонента по умолчанию */
 export const FILE_STYLE_TOKEN = 'styleToken.css'
 
@@ -29,35 +32,51 @@ export class VitePluginComponents {
       configResolved: (config) => {
         this.outputDirectory = config.build.outDir || 'dist'
       },
-      renderChunk: (code, chunk) => {
-        return this.renderChunk(code, chunk)
+      generateBundle: (options, bundle) => {
+        this.generateBundle(options, bundle)
       },
       closeBundle: () => {
-        //this.removeWikiFiles(this.outputDirectory)
+        // this.removeWikiFiles(this.outputDirectory)
       }
     }
   }
 
   /**
-   * Processes a code chunk and injects the style import if it matches a component index.
+   * Processes generated bundle chunks and injects style imports for components with styles.
    *
-   * Обрабатывает чанк кода и внедряет импорт стилей, если он соответствует индексу компонента.
-   * @param {string} code source code of the chunk / исходный код чанка
-   * @param {import('rollup').RenderedChunk} chunk rendered chunk information / информация об отрендренном чанке
-   * @returns {{ code: string, map: null } | null} transformed code or null / трансформированный код или null
+   * Обрабатывает чанки сгенерированного бандла и внедряет импорт стилей для компонентов со стилями.
+   * @param {import('rollup').NormalizedOutputOptions} _options output options / параметры вывода
+   * @param {import('rollup').OutputBundle} bundle output bundle / бандл вывода
    */
-  renderChunk(code, chunk) {
-    if (
-      this.isComponentIndex(chunk.fileName)
-      && !code.includes(FILE_STYLE_TOKEN)
-    ) {
-      return {
-        code: `import './${FILE_STYLE_TOKEN}';\n${code}`,
-        map: null
+  generateBundle(_options, bundle) {
+    for (const [fileName, chunk] of Object.entries(bundle)) {
+      if (
+        this.isComponentIndex(fileName)
+        && 'code' in chunk
+        && !chunk.code.includes(FILE_STYLE_TOKEN)
+        && this.isStyle(fileName, bundle)
+      ) {
+        chunk.code = `import './${FILE_STYLE_TOKEN}';\n${chunk.code}`
       }
     }
+  }
 
-    return null
+  /**
+   * Checks if a style file exists in the bundle.
+   *
+   * Проверяет наличие файла стилей в бандле.
+   * @param {string} [url] file path or URL / путь к файлу или URL
+   * @param {import('rollup').OutputBundle} [bundle] output bundle / бандл вывода
+   * @returns {boolean} check result / результат проверки
+   */
+  isStyle(url, bundle) {
+    if (!url || !bundle) {
+      return false
+    }
+
+    const stylePath = url.replace(/index\.[^/\\]+$/, FILE_STYLE_TOKEN)
+
+    return stylePath in bundle
   }
 
   /**
@@ -68,8 +87,10 @@ export class VitePluginComponents {
    * @returns {boolean} check result / результат проверки
    */
   isComponentIndex(fileName) {
-    return fileName.includes('components/Ui/')
-      && fileName.endsWith('/index.js')
+    const normalized = fileName.replace(/\\/g, '/')
+
+    return normalized.includes('components/Ui/')
+      && normalized.endsWith('/index.js')
   }
 
   /**

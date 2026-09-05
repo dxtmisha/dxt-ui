@@ -15,6 +15,10 @@ import slotInfoEn from './info.en.mdx'
 import slotInfoRu from './info.ru.mdx'
 import slotFooterEn from './footer.en.mdx'
 import slotFooterRu from './footer.ru.mdx'
+import slotFooterAnyEn from './footerAny.en.mdx'
+import slotFooterAnyRu from './footerAny.ru.mdx'
+import slotHeaderEn from './header.en.mdx'
+import slotHeaderRu from './header.ru.mdx'
 import slotHeadlineEn from './headline.en.mdx'
 import slotHeadlineRu from './headline.ru.mdx'
 import slotLabelEn from './label.en.mdx'
@@ -31,6 +35,7 @@ import slotTooltipEn from './tooltip.en.mdx'
 import slotTooltipRu from './tooltip.ru.mdx'
 import slotTrailingEn from './trailing.en.mdx'
 import slotTrailingRu from './trailing.ru.mdx'
+
 export const wikiMdxSlot: StorybookComponentsMdxItem = {
   name: 'Slot',
   descriptions: {
@@ -65,6 +70,14 @@ export const wikiMdxSlot: StorybookComponentsMdxItem = {
     footer: {
       en: slotFooterEn,
       ru: slotFooterRu
+    },
+    footerAny: {
+      en: slotFooterAnyEn,
+      ru: slotFooterAnyRu
+    },
+    header: {
+      en: slotHeaderEn,
+      ru: slotHeaderRu
     },
     headline: {
       en: slotHeadlineEn,

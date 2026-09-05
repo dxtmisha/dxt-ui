@@ -115,22 +115,43 @@ describe('FormValue', () => {
     expect(formValue).toBeDefined()
   })
 
-  it('resets custom elements in non-native mode', () => {
+  it('resets custom elements in non-native mode with cached initial values', () => {
     const elements = new FormElements()
     const resetSpy = vi.spyOn(elements, 'reset')
-    const formValue = new FormValue({ native: false }, undefined, elements)
+    const formValue = new FormValue({ native: false, value: { username: 'initial' } }, undefined, elements)
+
+    expect(formValue.getCache()).toEqual({ username: 'initial' })
 
     formValue.reset()
-    expect(resetSpy).toHaveBeenCalledTimes(1)
+    expect(resetSpy).toHaveBeenCalledWith({ username: 'initial' })
   })
 
-  it('resets native elements in native mode', () => {
+  it('resets native elements in native mode with cached initial values', () => {
     const form = document.createElement('form')
     const native = new FormElementsNative(ref(form))
     const resetSpy = vi.spyOn(native, 'reset')
-    const formValue = new FormValue({ native: true }, undefined, undefined, native)
+    const formValue = new FormValue({ native: true, value: { email: 'orig@test.com' } }, undefined, undefined, native)
+
+    expect(formValue.getCache()).toEqual({ email: 'orig@test.com' })
 
     formValue.reset()
-    expect(resetSpy).toHaveBeenCalledTimes(1)
+    expect(resetSpy).toHaveBeenCalledWith({ email: 'orig@test.com' })
+  })
+
+  it('delegates setValuesAll to elements and native respectively', () => {
+    const elements = new FormElements()
+    const elementsSpy = vi.spyOn(elements, 'setValuesAll')
+    const formValueCustom = new FormValue({ native: false }, undefined, elements)
+
+    formValueCustom.setValuesAll({ name: 'Alice' })
+    expect(elementsSpy).toHaveBeenCalledWith({ name: 'Alice' })
+
+    const form = document.createElement('form')
+    const native = new FormElementsNative(ref(form))
+    const nativeSpy = vi.spyOn(native, 'setValuesAll')
+    const formValueNative = new FormValue({ native: true }, undefined, undefined, native)
+
+    formValueNative.setValuesAll({ email: 'bob@example.com' })
+    expect(nativeSpy).toHaveBeenCalledWith({ email: 'bob@example.com' })
   })
 })

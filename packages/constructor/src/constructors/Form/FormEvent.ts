@@ -24,35 +24,38 @@ export class FormEvent {
     protected readonly value: FormValue,
     protected readonly emits?: ConstrEmit<FormEmits>,
     protected readonly model?: ModelInclude<FormElementsValues>
-  ) {}
-
-  /**
-   * Handles form input event /
-   * Обрабатывает событие ввода формы
-   * @param event input event / событие ввода
-   */
-  readonly onInput = (event: InputEvent): void => {
-    this.value.update()
-
-    const { data, values } = this.getData()
-
-    this.emits?.('input', event, data, values)
-    this.emits?.('inputLite', data, values)
-    this.emits?.('inputValues', values)
-    this.model?.emit(values)
-  }
+  ) { }
 
   /**
    * Handles form change event /
    * Обрабатывает событие изменения формы
    * @param event change event / событие изменения
    */
-  readonly onChange = (event: Event): void => {
+  readonly onChange = (event?: InputEvent): void => {
     const { data, values } = this.getData()
 
-    this.emits?.('change', event, data, values)
+    this.emits?.('change', event as InputEvent, data, values)
     this.emits?.('changeLite', data, values)
     this.emits?.('changeValues', values)
+    this.model?.emit(values)
+  }
+
+  /**
+   * Handles form input event /
+   * Обрабатывает событие ввода формы
+   * @param event input event / событие ввода
+   */
+  readonly onInput = (event?: InputEvent): void => {
+    this.value.update()
+
+    const { data, values } = this.getData()
+
+    if (event) {
+      this.emits?.('input', event, data, values)
+    }
+
+    this.emits?.('inputLite', data, values)
+    this.emits?.('inputValues', values)
     this.model?.emit(values)
   }
 
@@ -61,8 +64,17 @@ export class FormEvent {
    * Обрабатывает событие сброса формы
    * @param event reset event / событие сброса
    */
-  readonly onReset = (event: Event): void => {
-    this.emits?.('reset', event)
+  readonly onReset = (event?: InputEvent): void => {
+    event?.preventDefault()
+
+    this.value.reset()
+
+    if (event) {
+      this.emits?.('reset', event)
+    }
+
+    this.onInput(event)
+    this.onChange(event)
   }
 
   /**

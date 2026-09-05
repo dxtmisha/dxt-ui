@@ -120,8 +120,9 @@ describe('FieldEventInclude', () => {
       mockForm
     )
 
-    eventInclude.on()
+    const mockEvent = new InputEvent('input')
+    eventInclude.on(mockEvent)
 
-    expect(mockForm.updateData).toHaveBeenCalledWith('username', expect.any(Object))
+    expect(mockForm.updateData).toHaveBeenCalledWith('username', expect.any(Object), mockEvent)
   })
 })

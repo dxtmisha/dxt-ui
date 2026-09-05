@@ -1,0 +1,30 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+### `submit`
+
+Event fires when the form is submitted (by clicking a submit button, pressing Enter in an input field, or programmatically).
+
+**Parameters:**
+- `event: SubmitEvent` — original DOM submit event
+
+<Source
+    code={`
+<script setup>
+const handleSubmit = (event) => {
+  event.preventDefault()
+  console.log('Form submitted:', event)
+}
+</script>
+
+<template>
+  <Form @submit="handleSubmit">
+    <template #default>
+      <input name="username" placeholder="Username" />
+      <button type="submit">Submit</button>
+    </template>
+  </Form>
+</template>
+  `}
+    language="html"
+/>
+

@@ -1,6 +1,4 @@
-import { FILE_STYLE_TOKEN, VitePluginComponents } from '../classes/VitePluginComponents.js'
-
-export { FILE_STYLE_TOKEN, VitePluginComponents }
+import { VitePluginComponents } from '../classes/VitePluginComponents.js'
 
 /**
  * Vite plugin factory for component post-build operations (injecting styles and removing wiki files).

@@ -25,6 +25,7 @@ import DemoClientOnlyPage from './pages/components/DemoClientOnlyPage.vue'
 import DemoDialogPage from './pages/components/DemoDialogPage.vue'
 import DemoDraggableWrapperPage from './pages/components/DemoDraggableWrapperPage.vue'
 import DemoFormattedPage from './pages/components/DemoFormattedPage.vue'
+import DemoFormPage from './pages/components/DemoFormPage.vue'
 import DemoHorizontalScrollPage from './pages/components/DemoHorizontalScrollPage.vue'
 import DemoIconPage from './pages/components/DemoIconPage.vue'
 import DemoImagePage from './pages/components/DemoImagePage.vue'
@@ -178,6 +179,11 @@ export const routes: RouteRecordRaw[] = [
     path: '/component-formatted',
     name: 'component-formatted',
     component: DemoFormattedPage
+  },
+  {
+    path: '/component-form',
+    name: 'component-form',
+    component: DemoFormPage
   },
   {
     path: '/component-horizontal-scroll',

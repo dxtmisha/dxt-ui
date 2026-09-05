@@ -1,0 +1,30 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+### `submit`
+
+Событие срабатывает при отправке формы (нажатие кнопки отправки, клавиши Enter в поле ввода или программный вызов метода `submit()`).
+
+**Параметры:**
+- `event: SubmitEvent` — оригинальное DOM-событие отправки формы
+
+<Source
+    code={`
+<script setup>
+const handleSubmit = (event) => {
+  event.preventDefault()
+  console.log('Форма отправлена:', event)
+}
+</script>
+
+<template>
+  <Form @submit="handleSubmit">
+    <template #default>
+      <input name="username" placeholder="Имя пользователя" />
+      <button type="submit">Отправить</button>
+    </template>
+  </Form>
+</template>
+  `}
+    language="html"
+/>
+

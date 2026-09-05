@@ -29,6 +29,7 @@ import DemoLink from '../components/DemoLink.vue'
         <DemoLink label="ClientOnly" name="component-client-only"/>
         <DemoLink label="Dialog" name="component-dialog"/>
         <DemoLink label="DraggableWrapper" name="component-draggable-wrapper"/>
+        <DemoLink label="Form" name="component-form"/>
         <DemoLink label="Formatted" name="component-formatted"/>
         <DemoLink label="HorizontalScroll" name="component-horizontal-scroll"/>
         <DemoLink label="Icon" name="component-icon"/>

@@ -1,8 +1,9 @@
-import { watch, type ToRefs } from 'vue'
+import { onMounted, watch, type ToRefs } from 'vue'
 
-import type { FormElementsData, FormElementsValues } from './basicTypes'
 import type { FormElements } from './FormElements'
 import type { FormElementsNative } from './FormElementsNative'
+
+import type { FormElementsData, FormElementsValues } from './basicTypes'
 import type { FormPropsBasic } from './props'
 
 /**
@@ -13,6 +14,9 @@ import type { FormPropsBasic } from './props'
  * Координирует чтение и запись значений между кастомными дочерними элементами и нативными элементами управления формы.
  */
 export class FormValue {
+  /** Cached initial form values / Закешированные исходные значения формы */
+  protected cache: FormElementsValues = {}
+
   /**
    * Constructor
    * @param props incoming form properties / входящие свойства формы
@@ -29,7 +33,7 @@ export class FormValue {
     if (this.refs?.value) {
       watch(this.refs.value, (value) => {
         if (value) {
-          this.setValues(value)
+          this.setValuesAll(value)
         }
       })
     }
@@ -37,10 +41,20 @@ export class FormValue {
     if (this.refs?.modelValue) {
       watch(this.refs.modelValue, (value) => {
         if (value) {
-          this.setValues(value)
+          this.setValuesAll(value)
         }
       })
     }
+
+    onMounted(() => {
+      if (this.props?.value) {
+        this.cache = { ...this.props.value }
+      } else if (this.props?.modelValue) {
+        this.cache = { ...this.props.modelValue }
+      }
+
+      this.setValues(this.cache)
+    })
   }
 
   /**
@@ -55,6 +69,16 @@ export class FormValue {
     }
 
     return this.elements?.getValues() ?? {}
+  }
+
+  /**
+   * Returns cached initial form values.
+   *
+   * Возвращает закешированные исходные значения формы.
+   * @returns cached initial values / закешированные исходные значения
+   */
+  getCache(): FormElementsValues {
+    return this.cache
   }
 
   /**
@@ -87,6 +111,19 @@ export class FormValue {
   }
 
   /**
+   * Resets form element values to cached initial values.
+   *
+   * Сбрасывает значения элементов формы к закешированным исходным значениям.
+   */
+  readonly reset = (): void => {
+    if (this.props?.native) {
+      this.native?.reset(this.cache)
+    } else {
+      this.elements?.reset(this.cache)
+    }
+  }
+
+  /**
    * Sets the value of a form element by name.
    *
    * Устанавливает значение элемента формы по имени.
@@ -116,6 +153,22 @@ export class FormValue {
   }
 
   /**
+   * Sets values for all form elements.
+   * If a value is not provided for an element, clears it.
+   *
+   * Устанавливает значения для всех элементов формы.
+   * Если значение для элемента не передано, очищает его.
+   * @param values object of element values keyed by name / объект значений элементов по имени
+   */
+  readonly setValuesAll = (values: FormElementsValues): void => {
+    if (this.props?.native) {
+      this.native?.setValuesAll(values)
+    } else {
+      this.elements?.setValuesAll(values)
+    }
+  }
+
+  /**
    * Updates cached reactive form data when in native mode.
    *
    * Обновляет кешированные реактивные данные формы в нативном режиме.
@@ -127,18 +180,5 @@ export class FormValue {
     }
 
     return this
-  }
-
-  /**
-   * Resets form element values.
-   *
-   * Сбрасывает значения элементов формы.
-   */
-  readonly reset = (): void => {
-    if (this.props?.native) {
-      this.native?.reset()
-    } else {
-      this.elements?.reset()
-    }
   }
 }

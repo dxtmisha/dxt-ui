@@ -1,39 +1,20 @@
-import { provide, shallowRef, type ShallowRef } from 'vue'
+import { shallowRef, type ShallowRef } from 'vue'
 
-import {
-  FORM_NAME_ELEMENT,
-  type FormElementItem,
-  type FormElementRegistration,
-  type FormElementsData,
-  type FormElementsValues
+import type {
+  FormElementItem,
+  FormElementsData,
+  FormElementsValues
 } from './basicTypes'
 import type { FieldValidationItem } from '../../types/fieldTypes'
 
 /**
  * Class for managing child elements of the Form component.
- * Provides element registration via Vue provide.
  *
  * Класс для управления дочерними элементами компонента Form.
- * Предоставляет регистрацию элементов через Vue provide.
  */
 export class FormElements {
   /** Reactive list of registered child elements / Реактивный список зарегистрированных дочерних элементов */
   readonly item = shallowRef<FormElementItem[]>([])
-
-  /**
-   * Constructor for FormElements.
-   * Calls Vue provide to register child elements.
-   *
-   * Конструктор для FormElements.
-   * Вызывает Vue provide для регистрации дочерних элементов.
-   */
-  constructor() {
-    provide<FormElementRegistration>(FORM_NAME_ELEMENT, {
-      getValue: this.getValue,
-      register: this.register,
-      updateData: this.updateData
-    })
-  }
 
   /**
    * Checks if any registered form element has an error.
@@ -71,7 +52,7 @@ export class FormElements {
 
     this.item.value.forEach((element) => {
       data[element.name] = element.data ?? {
-        value: element.getValue?.() ?? element.value?.value
+        value: this.getElementValue(element)
       }
     })
 
@@ -86,8 +67,7 @@ export class FormElements {
    * @returns element value or undefined / значение элемента или undefined
    */
   readonly getValue = (name: string): any => {
-    const element = this.item.value.find(item => item.name === name)
-    return element?.getValue?.() ?? element?.value?.value
+    return this.getElementValue(this.item.value.find(item => item.name === name))
   }
 
   /**
@@ -100,7 +80,7 @@ export class FormElements {
     const values: FormElementsValues = {}
 
     this.item.value.forEach((element) => {
-      values[element.name] = element.getValue?.() ?? element.value?.value
+      values[element.name] = this.getElementValue(element)
     })
 
     return values
@@ -117,12 +97,7 @@ export class FormElements {
   set(name: string, value: any): this {
     for (const element of this.item.value) {
       if (element.name === name) {
-        if (typeof element.setValue === 'function') {
-          element.setValue(value)
-        } else if (element.value) {
-          element.value.value = value
-        }
-
+        this.setElementValue(element, value)
         break
       }
     }
@@ -146,19 +121,24 @@ export class FormElements {
   }
 
   /**
-   * Resets registered child elements.
+   * Sets values for all registered child elements.
+   * If a value is not provided for an element, clears or resets it.
    *
-   * Сбрасывает зарегистрированные дочерние элементы.
+   * Устанавливает значения для всех зарегистрированных дочерних элементов.
+   * Если значение для элемента не передано, очищает или сбрасывает его.
+   * @param values object of element values keyed by name / объект значений элементов по имени
    * @returns current instance / текущий экземпляр
    */
-  readonly reset = (): this => {
+  setValuesAll(values: FormElementsValues): this {
     for (const element of this.item.value) {
-      if (typeof element.clear === 'function') {
+      const value = values[element.name]
+
+      if (value !== undefined) {
+        this.setElementValue(element, value)
+      } else if (typeof element.clear === 'function') {
         element.clear()
-      } else if (typeof element.setValue === 'function') {
-        element.setValue(undefined)
-      } else if (element.value) {
-        element.value.value = undefined
+      } else {
+        this.setElementValue(element, undefined)
       }
     }
 
@@ -181,6 +161,19 @@ export class FormElements {
   }
 
   /**
+   * Resets registered child elements.
+   * Restores initial cached values if provided, or clears elements.
+   *
+   * Сбрасывает зарегистрированные дочерние элементы.
+   * Восстанавливает исходные закешированные значения, если они переданы, или очищает элементы.
+   * @param initialValues optional initial values to restore / опциональные исходные значения для восстановления
+   * @returns current instance / текущий экземпляр
+   */
+  readonly reset = (initialValues?: FormElementsValues): this => {
+    return this.setValuesAll(initialValues ?? {})
+  }
+
+  /**
    * Registers a form child element.
    *
    * Регистрирует дочерний элемент формы.
@@ -190,5 +183,34 @@ export class FormElements {
     if (!this.item.value.includes(element)) {
       this.item.value = [...this.item.value, element]
     }
+  }
+
+  /**
+   * Returns the value of a form element item.
+   *
+   * Возвращает значение элемента формы.
+   * @param element form element item / объект элемента формы
+   * @returns element value or undefined / значение элемента или undefined
+   */
+  protected getElementValue(element?: FormElementItem): any {
+    return element?.getValue?.() ?? element?.value?.value
+  }
+
+  /**
+   * Sets the value of a form element item.
+   *
+   * Устанавливает значение элемента формы.
+   * @param element form element item / объект элемента формы
+   * @param value value to set / устанавливаемое значение
+   * @returns current instance / текущий экземпляр
+   */
+  protected setElementValue(element: FormElementItem, value: any): this {
+    if (typeof element.setValue === 'function') {
+      element.setValue(value)
+    } else if (element.value) {
+      element.value.value = value
+    }
+
+    return this
   }
 }

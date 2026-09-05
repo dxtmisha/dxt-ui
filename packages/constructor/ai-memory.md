@@ -28,7 +28,7 @@
 18. **Component Text Integration**:
     - In the component's `props.ts`, extend the props interface with the respective text props include (e.g., `TextExamplePropsInclude`).
     - Instantiate the `TextInclude` class in the component constructor supporting Dependency Injection (e.g. `this.text = new TextIncludeConstructor(props)`).
-19. **Alphabetical Exports in index.ts**: All export statements in `index.ts` files inside component constructor directories must be sorted in strict alphabetical order (e.g., `export * from './basicTypes'`, `export * from './props'`, etc.).
+
 21. **Adding Subclasses via properties.json**: To add a new subclass/sub-element class for a component (e.g., `"#input": {}`), declare it in `src/constructors/<Component>/properties.json`. Then run `npm run constructor` (or `dxt-constructor <Component>`) inside `packages/constructor` to automatically generate and inject the subclass mapping into `types.ts` and `<Component>Design.tsx` between the system label comments (`// :classes [!] System label`).
 22. **No Unrequested Script Execution**: NEVER run any terminal scripts or build commands (such as `npm run constructor`, `npm run types`, `npm run build`, etc.) automatically after code changes unless explicitly asked by the developer.
 23. **Class Instantiation in Master Orchestrator**: Instantiation and declaration of all dependency classes, inclusion classes (`*Include`), and helper sub-classes must always take place directly inside the master component class (e.g. `[Component].ts`) constructor supporting Dependency Injection, rather than being nested or hidden inside local helper classes.

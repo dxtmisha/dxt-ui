@@ -1,5 +1,8 @@
 import type { Plugin, Rollup } from 'vite'
 
+/** Name of the default component SCSS style file / Имя файла стилей SCSS компонента по умолчанию */
+export declare const FILE_STYLE: string
+
 /** Name of the default component style file / Имя файла стилей компонента по умолчанию */
 export declare const FILE_STYLE_TOKEN: string
 
@@ -21,14 +24,23 @@ export declare class VitePluginComponents {
   init(): Plugin
 
   /**
-   * Processes a code chunk and injects the style import if it matches a component index.
+   * Processes generated bundle chunks and injects style imports for components with styles.
    *
-   * Обрабатывает чанк кода и внедряет импорт стилей, если он соответствует индексу компонента.
-   * @param code source code of the chunk / исходный код чанка
-   * @param chunk rendered chunk information / информация об отрендренном чанке
-   * @returns transformed code or null / трансформированный код или null
+   * Обрабатывает чанки сгенерированного бандла и внедряет импорт стилей для компонентов со стилями.
+   * @param _options output options / параметры вывода
+   * @param bundle output bundle / бандл вывода
    */
-  renderChunk(code: string, chunk: Rollup.RenderedChunk): { code: string; map: null } | null
+  generateBundle(_options: Rollup.NormalizedOutputOptions, bundle: Rollup.OutputBundle): void
+
+  /**
+   * Checks if a style file exists in the bundle.
+   *
+   * Проверяет наличие файла стилей в бандле.
+   * @param url file path or URL / путь к файлу или URL
+   * @param bundle output bundle / бандл вывода
+   * @returns check result / результат проверки
+   */
+  isStyle(url?: string, bundle?: Rollup.OutputBundle): boolean
 
   /**
    * Checks if the file is a component index file.

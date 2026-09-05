@@ -1,0 +1,97 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+### `input`
+
+Event fires when a value changes in any form field, passing the DOM event, all fields validation data, and extracted values.
+
+**Parameters:**
+- `event: InputEvent` — original DOM input event
+- `data: FormElementsData` — validation data object for all form fields
+- `values: FormElementsValues` — key-value object of all form field values
+
+**FormElementsData structure:**
+- `[name: string]: FieldValidationItem` — validation record for each registered field by name
+
+**FormElementsValues structure:**
+- `[name: string]: any` — current value for each registered field by name
+
+<Source
+    code={`
+<script setup>
+const handleInput = (event, data, values) => {
+  console.log('DOM event:', event)
+  console.log('Validation data:', data)
+  console.log('Form values:', values)
+}
+</script>
+
+<template>
+  <Form @input="handleInput">
+    <template #default>
+      <input name="username" placeholder="Username" />
+    </template>
+  </Form>
+</template>
+  `}
+    language="html"
+/>
+
+### `inputLite`
+
+Lightweight version of the `input` event, passing validation data and form values without the DOM event.
+
+**Parameters:**
+- `data: FormElementsData` — validation data object for all form fields
+- `values: FormElementsValues` — key-value object of all form field values
+
+### `inputValues`
+
+Lightweight version of the `input` event, passing only current form values.
+
+**Parameters:**
+- `values: FormElementsValues` — key-value object of all form field values
+
+### `change`
+
+Event fires when an input element loses focus after changes, passing the DOM event, all fields validation data, and extracted values.
+
+**Parameters:**
+- `event: Event` — original DOM change event
+- `data: FormElementsData` — validation data object for all form fields
+- `values: FormElementsValues` — key-value object of all form field values
+
+<Source
+    code={`
+<script setup>
+const handleChange = (event, data, values) => {
+  console.log('DOM event:', event)
+  console.log('Validation data:', data)
+  console.log('Form values:', values)
+}
+</script>
+
+<template>
+  <Form @change="handleChange">
+    <template #default>
+      <input name="username" placeholder="Username" />
+    </template>
+  </Form>
+</template>
+  `}
+    language="html"
+/>
+
+### `changeLite`
+
+Lightweight version of the `change` event, passing validation data and form values without the DOM event.
+
+**Parameters:**
+- `data: FormElementsData` — validation data object for all form fields
+- `values: FormElementsValues` — key-value object of all form field values
+
+### `changeValues`
+
+Lightweight version of the `change` event, passing only committed form values.
+
+**Parameters:**
+- `values: FormElementsValues` — key-value object of all form field values

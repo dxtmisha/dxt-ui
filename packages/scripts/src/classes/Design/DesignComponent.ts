@@ -620,7 +620,9 @@ export class DesignComponent extends DesignCommand {
       description.stories.forEach((story) => {
         if (story.components) {
           story.components.forEach((component) => {
-            components.push(component)
+            if (!components.includes(component)) {
+              components.push(component)
+            }
           })
         }
       })

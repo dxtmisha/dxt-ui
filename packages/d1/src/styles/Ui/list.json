@@ -9395,6 +9395,17 @@
           }
         }
       },
+      "form": {
+        "name": "d1-form",
+        "type": "component",
+        "value": {
+          "main": {
+            "name": "--d1-form-main",
+            "type": "var",
+            "value": "{d.form}"
+          }
+        }
+      },
       "formattedNumber": {
         "name": "d1-formattedNumber",
         "type": "component",

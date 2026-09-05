@@ -80,7 +80,7 @@ describe('FormEvent', () => {
     })
 
     const updateSpy = vi.spyOn(formValue, 'update')
-    const event = new Event('change')
+    const event = new InputEvent('change')
 
     formEvent.onChange(event)
 
@@ -122,15 +122,22 @@ describe('FormEvent', () => {
     )
   })
 
-  it('handles onReset by emitting reset event', () => {
+  it('handles onReset by resetting form value and emitting reset and change events', () => {
     const formValue = new FormValue()
+    const resetSpy = vi.spyOn(formValue, 'reset')
     const emits = vi.fn()
     const formEvent = new FormEvent({}, formValue, emits)
-    const event = new Event('reset')
+    const event = new InputEvent('reset')
+    const preventDefaultSpy = vi.spyOn(event, 'preventDefault')
 
     formEvent.onReset(event)
 
+    expect(preventDefaultSpy).toHaveBeenCalledTimes(1)
+    expect(resetSpy).toHaveBeenCalledTimes(1)
     expect(emits).toHaveBeenCalledWith('reset', event)
+    expect(emits).toHaveBeenCalledWith('change', event, {}, {})
+    expect(emits).toHaveBeenCalledWith('changeLite', {}, {})
+    expect(emits).toHaveBeenCalledWith('changeValues', {})
   })
 
   it('handles onSubmit by emitting submit event', () => {
@@ -149,9 +156,9 @@ describe('FormEvent', () => {
     const formEvent = new FormEvent({}, formValue)
 
     expect(() => {
-      formEvent.onChange(new Event('change'))
+      formEvent.onChange(new InputEvent('change'))
       formEvent.onInput(new InputEvent('input'))
-      formEvent.onReset(new Event('reset'))
+      formEvent.onReset(new InputEvent('reset'))
       formEvent.onSubmit(new SubmitEvent('submit'))
     }).not.toThrow()
   })
@@ -179,7 +186,7 @@ describe('FormEvent', () => {
     expect(emits).toHaveBeenCalledWith('update:value', { email: 'test@example.com' })
     expect(emits).toHaveBeenCalledWith('update:modelValue', { email: 'test@example.com' })
 
-    formEvent.onChange(new Event('change'))
+    formEvent.onChange(new InputEvent('change'))
     expect(modelEmitSpy).toHaveBeenCalledWith({ email: 'test@example.com' })
   })
 })

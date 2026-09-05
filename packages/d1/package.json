@@ -51,7 +51,7 @@
     "build": "vue-tsc -b && vite build",
     "build-recovery": "npm run build && npm run wiki-storm",
     "preview": "vite preview",
-    "ui": "dxt-ui --name InputImage",
+    "ui": "dxt-ui --name Form",
     "wiki-storm": "dxt-wiki-storm",
     "types": "npm run ui && npm run build && dxt-types",
     "types-only": "dxt-types",
@@ -553,6 +553,10 @@
     "./ui-properties": {
       "sass": "./ui-properties.scss",
       "default": "./ui-properties.scss"
+    },
+    "./D1Form": {
+      "types": "./dist/library/D1Form.d.ts",
+      "default": "./dist/library/D1Form.js"
     }
   },
   "buildOptions": {

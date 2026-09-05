@@ -1,0 +1,59 @@
+import {Canvas, Meta} from '@storybook/addon-docs/blocks'
+import {
+    StorybookDescriptions,
+    StorybookMain
+} from '@dxtmisha/wiki/storybook'
+
+import * as Form from './D1Form.stories'
+import {FormWikiStorybook} from './wiki'
+
+[//]: # (:documentation-import [!] System label / Системная метка)
+[//]: # (:documentation-import [!] System label / Системная метка)
+
+<Meta of={Form}/>
+<StorybookMain
+    name={FormWikiStorybook.getName()}
+    description={FormWikiStorybook.getDescription()}
+    story={Form.Form}
+/>
+
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+<StorybookDescriptions componentName={'Form'} type={'form'}/>
+<Canvas of={Form.FormBasic}/>
+
+<StorybookDescriptions componentName={'Form'} type={'native'}/>
+<Canvas of={Form.FormNative}/>
+
+<StorybookDescriptions componentName={'Value'} type={'v-model'}/>
+<Canvas of={Form.FormVModel}/>
+    
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+[//]: # (:documentation-events [!] System label / Системная метка)
+## Events
+
+<StorybookDescriptions componentName={'Form'} type={'events'}/>
+<StorybookDescriptions componentName={'Form'} type={'event.submit'}/>
+<StorybookDescriptions componentName={'Event'} type={'reset'}/>
+    
+[//]: # (:documentation-events [!] System label / Системная метка)
+
+[//]: # (:documentation-expose [!] System label / Системная метка)
+## Expose
+
+<StorybookDescriptions componentName={'Form'} type={'expose'}/>
+<StorybookDescriptions componentName={'Expose'} type={'checkValidity'}/>
+<StorybookDescriptions componentName={'Expose'} type={'reset'}/>
+    
+[//]: # (:documentation-expose [!] System label / Системная метка)
+
+[//]: # (:documentation-slots [!] System label / Системная метка)
+## Slots
+
+<Canvas of={Form.FormSlots}/>
+<StorybookDescriptions componentName={'Slot'} type={'header'}/>
+<StorybookDescriptions componentName={'Slot'} type={'default'}/>
+<StorybookDescriptions componentName={'Slot'} type={'footerAny'}/>
+    
+[//]: # (:documentation-slots [!] System label / Системная метка)

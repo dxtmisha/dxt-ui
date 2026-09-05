@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { ref } from 'vue'
 
 import { FormElementsNative } from '../FormElementsNative'
@@ -83,21 +83,71 @@ describe('FormElementsNative', () => {
     })
   })
 
-  it('resets native form elements via reset()', () => {
+  it('sets values for all native form elements and clears omitted fields via setValuesAll(values)', () => {
     const form = document.createElement('form')
+
     const textInput = document.createElement('input')
     textInput.name = 'username'
-    textInput.defaultValue = 'default_user'
+    textInput.value = 'user1'
+    form.appendChild(textInput)
+
+    const checkbox = document.createElement('input')
+    checkbox.type = 'checkbox'
+    checkbox.name = 'agree'
+    checkbox.checked = true
+    form.appendChild(checkbox)
+
+    const native = new FormElementsNative(ref(form))
+
+    native.setValuesAll({
+      username: 'user2'
+    })
+
+    expect(textInput.value).toBe('user2')
+    expect(checkbox.checked).toBe(false)
+    expect(native.getValues()).toEqual({
+      username: 'user2',
+      agree: false
+    })
+  })
+
+  it('resets native form elements via reset()', () => {
+    const form = document.createElement('form')
+
+    const textInput = document.createElement('input')
+    textInput.name = 'username'
     textInput.value = 'changed_user'
     form.appendChild(textInput)
 
-    const native = new FormElementsNative(ref(form))
-    const resetSpy = vi.spyOn(form, 'reset')
-    const updateSpy = vi.spyOn(native, 'update')
+    const checkbox = document.createElement('input')
+    checkbox.type = 'checkbox'
+    checkbox.name = 'agree'
+    checkbox.checked = true
+    form.appendChild(checkbox)
 
+    const native = new FormElementsNative(ref(form))
+
+    // Reset without initial values -> clears fields
     native.reset()
 
-    expect(resetSpy).toHaveBeenCalledTimes(1)
-    expect(updateSpy).toHaveBeenCalledTimes(1)
+    expect(textInput.value).toBe('')
+    expect(checkbox.checked).toBe(false)
+    expect(native.getValues()).toEqual({
+      username: '',
+      agree: false
+    })
+
+    // Reset with initial values -> restores provided values
+    native.reset({
+      username: 'restored_user',
+      agree: true
+    })
+
+    expect(textInput.value).toBe('restored_user')
+    expect(checkbox.checked).toBe(true)
+    expect(native.getValues()).toEqual({
+      username: 'restored_user',
+      agree: true
+    })
   })
 })

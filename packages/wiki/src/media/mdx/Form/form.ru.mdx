@@ -1,0 +1,64 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+Конструктор контейнера формы, предназначенный для управления элементами ввода, обработки пользовательских данных, координации валидации между дочерними элементами и отправки формы.
+
+Form обеспечивает централизованную оркестрацию на уровне формы. Он отслеживает значения полей, агрегирует статусы валидации дочерних элементов, координирует жизненный цикл сброса и отправки, а также поддерживает стандартные HTML-атрибуты формы. Компонент функционирует в двух режимах: работа с кастомными элементами-конструкторами через контекст Vue `provide/inject` или прямое взаимодействие с нативными элементами управления HTML.
+
+**Основные возможности:**
+
+- Двусторонняя синхронизация данных через `v-model` или свойство `value`
+- Два режима работы: интеграция с кастомными компонентами (по умолчанию) и нативными DOM-элементами (`native: true`)
+- Централизованный учет ошибок и агрегация валидации (`FormError`, `FormElements`)
+- Поддержка стандартных атрибутов HTML `<form>`: `action`, `method`, `enctype`, `target`, `autocomplete`
+- Программное управление через методы expose (`getValues`, `set`, `setValues`, `checkValidity`, `submit`, `reset`)
+- Детальные события изменений: `input`, `inputLite`, `inputValues`, `change`, `changeLite`, `changeValues`, `reset` и `submit`
+- Семантическая структура слотов разметки: `header`, `default` и `footer`
+
+**Типичные сценарии использования:**
+
+- Формы аутентификации, входа и регистрации пользователей
+- Экраны многострочного ввода данных и редактирования профиля
+- Панели настроек и сложные конфигурационные формы
+- Формы, взаимодействующие как со стандартной отправкой браузера, так и с AJAX/REST запросами
+
+<Source
+    code={`
+<script setup>
+import { ref } from 'vue'
+import { Form } from '@dxtmisha/constructor'
+
+const formData = ref({
+  username: '',
+  email: ''
+})
+
+const handleSubmit = (event) => {
+  event.preventDefault()
+  console.log('Отправленные данные:', formData.value)
+}
+</script>
+
+<template>
+  <Form
+    v-model="formData"
+    @submit="handleSubmit"
+  >
+    <template #header>
+      <h2>Вход в систему</h2>
+    </template>
+
+    <template #default>
+      <input name="username" placeholder="Имя пользователя" />
+      <input name="email" type="email" placeholder="Электронная почта" />
+    </template>
+
+    <template #footer>
+      <button type="submit">Войти</button>
+    </template>
+  </Form>
+</template>
+  `}
+    language="html"
+/>
+
+> Form является базовым конструктором, управляющим HTML-элементом `<form>`, обеспечивая координацию состояния, контроль валидации и передачу событий без навязывания жестких визуальных стилей.

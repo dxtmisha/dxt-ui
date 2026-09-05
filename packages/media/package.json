@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/media",
   "private": false,
-  "version": "0.7.3",
+  "version": "0.7.4",
   "type": "module",
   "description": "Media resources and geographical dataset library for DXT UI — 250+ vector SVG country flags with uniform PascalCase exports and structured ISO 3166-1 country metadata (phone codes, masks, timezones, primary languages, first weekday). Framework-agnostic, tree-shakeable, zero dependencies.",
   "keywords": [

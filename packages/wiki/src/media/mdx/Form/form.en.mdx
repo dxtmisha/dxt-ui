@@ -1,0 +1,64 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+Form container constructor designed for managing form controls, handling user input, coordinating validation across child elements, and managing form submissions.
+
+Form provides centralized form-level orchestration. It tracks values, aggregates validation states across child fields, coordinates reset and submission lifecycles, and supports standard HTML form submission attributes. The component operates in two modes: custom constructor child elements via Vue `provide/inject` context or direct integration with native HTML input controls.
+
+**Core capabilities:**
+
+- Two-way data synchronization via `v-model` or `value` prop
+- Dual operating modes: custom component integration (default) and native DOM elements (`native: true`)
+- Centralized error tracking and validation aggregation (`FormError`, `FormElements`)
+- Standard HTML `<form>` attributes support: `action`, `method`, `enctype`, `target`, `autocomplete`
+- Programmatic control via expose methods (`getValues`, `set`, `setValues`, `checkValidity`, `submit`, `reset`)
+- Granular event notification: `input`, `inputLite`, `inputValues`, `change`, `changeLite`, `changeValues`, `reset`, and `submit`
+- Semantic slot layout structure with `header`, `default`, and `footer`
+
+**Typical use cases:**
+
+- User authentication, login, and registration forms
+- Multi-field data entry and profile editing views
+- Settings panels and complex configuration screens
+- Forms interacting with native browser submission or AJAX-based REST workflows
+
+<Source
+    code={`
+<script setup>
+import { ref } from 'vue'
+import { Form } from '@dxtmisha/constructor'
+
+const formData = ref({
+  username: '',
+  email: ''
+})
+
+const handleSubmit = (event) => {
+  event.preventDefault()
+  console.log('Submitted data:', formData.value)
+}
+</script>
+
+<template>
+  <Form
+    v-model="formData"
+    @submit="handleSubmit"
+  >
+    <template #header>
+      <h2>Login</h2>
+    </template>
+
+    <template #default>
+      <input name="username" placeholder="Username" />
+      <input name="email" type="email" placeholder="Email" />
+    </template>
+
+    <template #footer>
+      <button type="submit">Sign In</button>
+    </template>
+  </Form>
+</template>
+  `}
+    language="html"
+/>
+
+> Form is a foundational constructor component that manages the `<form>` HTML element, providing form state coordination, validation tracking, and event emission without imposing rigid visual styling.

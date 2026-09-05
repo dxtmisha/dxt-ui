@@ -1,0 +1,12 @@
+- `checkValidity(): boolean` — Checks whether all registered form fields satisfy validation constraints.
+- `getValues(): FormElementsValues` — Returns a key-value record containing current values for all registered form fields.
+- `reset(): void` — Resets all form fields to their cached initial values or clears them.
+- `set(name: string, value: any): void` — Sets the value of a single field identified by its name.
+- `setValues(values: FormElementsValues): void` — Sets multiple field values simultaneously from an object dictionary without modifying omitted fields.
+- `setValuesAll(values: FormElementsValues): void` — Sets values for all form fields from an object dictionary, clearing or resetting any omitted fields.
+- `submit(): void` — Programmatically submits the form using native `requestSubmit()` if supported, falling back to `submit()`.
+
+> **FormElementsValues:**
+> - `Record<string, any>` — Dictionary mapping field names to their respective values.
+
+

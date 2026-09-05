@@ -1,0 +1,58 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+## Native Mode
+
+The `native` property determines whether the form operates with custom component child controls or interacts directly with native HTML form elements.
+
+**Property:**
+
+- `native?: boolean` — Enables native form mode when set to `true`. Defaults to `false`.
+
+**Operating Modes:**
+
+1. **Custom Mode (`native: false`, default):**
+   - Form establishes a Vue `provide` context using the key `FORM_NAME_ELEMENT`.
+   - Child components (such as constructor-based input controls) register themselves with the form upon mounting.
+   - Values, validation data (`FieldValidationItem`), and error states are tracked reactively through the component tree without querying the DOM directly.
+   - Programmatic value setters update reactive references directly.
+
+2. **Native Mode (`native: true`):**
+   - Form interacts directly with native HTML form elements (`HTMLInputElement`, `HTMLSelectElement`, `HTMLTextAreaElement`) through the DOM form's `elements` collection.
+   - Value queries and modifications are applied directly to the underlying DOM elements.
+   - Validation checks use native browser constraints and HTML5 validation APIs (e.g., `checkValidity()`).
+   - Useful when building lightweight forms using standard HTML tags or third-party non-Vue elements.
+
+<Source
+    code={`
+<script setup>
+import { ref } from 'vue'
+import { Form } from '@dxtmisha/constructor'
+
+const formValues = ref({})
+</script>
+
+<template>
+  <!-- Native form using standard HTML elements -->
+  <Form
+    :native="true"
+    v-model="formValues"
+  >
+    <label>
+      Name:
+      <input name="name" type="text" required />
+    </label>
+
+    <label>
+      Role:
+      <select name="role">
+        <option value="user">User</option>
+        <option value="admin">Admin</option>
+      </select>
+    </label>
+
+    <button type="submit">Submit</button>
+  </Form>
+</template>
+  `}
+    language="html"
+/>

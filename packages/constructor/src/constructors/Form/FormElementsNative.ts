@@ -56,6 +56,17 @@ export class FormElementsNative {
   }
 
   /**
+   * Returns the value of a native form element by name.
+   *
+   * Возвращает значение нативного элемента формы по имени.
+   * @param name element name / имя элемента
+   * @returns element value or undefined / значение элемента или undefined
+   */
+  getValue(name: string): any {
+    return this.item.value[name]?.value
+  }
+
+  /**
    * Returns current object of form element values keyed by element name.
    *
    * Возвращает текущий объект со значениями элементов формы, где ключами являются имена элементов.
@@ -69,17 +80,6 @@ export class FormElementsNative {
     })
 
     return values
-  }
-
-  /**
-   * Returns the value of a native form element by name.
-   *
-   * Возвращает значение нативного элемента формы по имени.
-   * @param name element name / имя элемента
-   * @returns element value or undefined / значение элемента или undefined
-   */
-  getValue(name: string): any {
-    return this.item.value[name]?.value
   }
 
   /**
@@ -121,13 +121,31 @@ export class FormElementsNative {
   }
 
   /**
-   * Resets native form elements.
+   * Sets values for all native form elements.
+   * If a value is not provided for an element, clears it.
    *
-   * Сбрасывает нативные элементы формы.
+   * Устанавливает значения для всех нативных элементов формы.
+   * Если значение для элемента не передано, очищает его.
+   * @param values object of element values keyed by name / объект значений элементов по имени
    * @returns current instance / текущий экземпляр
    */
-  readonly reset = (): this => {
-    this.element.value?.reset()
+  setValuesAll(values: FormElementsValues): this {
+    const form = this.element.value
+
+    if (form?.elements) {
+      Array.from(form.elements).forEach((control) => {
+        if (
+          'name' in control
+          && control.name
+        ) {
+          const name = control.name as string
+          const value = values[name]
+
+          this.setElementValue(control, value)
+        }
+      })
+    }
+
     this.update()
     return this
   }
@@ -157,6 +175,19 @@ export class FormElementsNative {
 
     this.item.value = data
     return this
+  }
+
+  /**
+   * Resets native form elements.
+   * Restores initial cached values if provided, or clears elements.
+   *
+   * Сбрасывает нативные элементы формы.
+   * Восстанавливает исходные закешированные значения, если они переданы, или очищает элементы.
+   * @param initialValues optional initial values to restore / опциональные исходные значения для восстановления
+   * @returns current instance / текущий экземпляр
+   */
+  readonly reset = (initialValues?: FormElementsValues): this => {
+    return this.setValuesAll(initialValues ?? {})
   }
 
   /**
@@ -209,18 +240,26 @@ export class FormElementsNative {
     }
 
     if (element instanceof HTMLInputElement) {
+      if (['button', 'submit', 'reset', 'image'].includes(element.type)) {
+        return
+      }
+
       if (element.type === 'checkbox') {
         element.checked = Boolean(value)
       } else if (element.type === 'radio') {
-        element.checked = element.value === String(value)
+        element.checked = Boolean(value !== undefined && value !== null && element.value === String(value))
       } else {
         element.value = value ?? ''
       }
       return
     }
 
+    if (element instanceof HTMLButtonElement) {
+      return
+    }
+
     if ('value' in element) {
-      element.value = value ?? ''
+      (element as any).value = value ?? ''
     }
   }
 }

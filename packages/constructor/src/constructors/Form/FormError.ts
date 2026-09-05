@@ -48,18 +48,6 @@ export class FormError {
   }
 
   /**
-   * Checks if form has an error.
-   *
-   * Проверяет, есть ли ошибка в форме.
-   * @returns true if has error / true, если есть ошибка
-   */
-  isError(): boolean {
-    return this.props.native
-      ? this.native.isError()
-      : this.elements.isError()
-  }
-
-  /**
    * Checks validity of the form /
    * Проверяет валидность формы
    * @returns validity status / статус валидности
@@ -89,18 +77,15 @@ export class FormError {
   }
 
   /**
-   * Updates error status and errors map based on active elements (native or custom).
+   * Checks if form has an error.
    *
-   * Обновляет статус ошибки и карту ошибок на основе активных элементов (нативных или кастомных).
-   * @returns this instance / текущий экземпляр
+   * Проверяет, есть ли ошибка в форме.
+   * @returns true if has error / true, если есть ошибка
    */
-  readonly update = (): this => {
-    this.error.value = this.isError()
-    this.errors.value = this.props.native
-      ? this.getErrorsNative()
-      : this.getErrorsElements()
-
-    return this
+  isError(): boolean {
+    return this.props.native
+      ? this.native.isError()
+      : this.elements.isError()
   }
 
   /**
@@ -112,6 +97,21 @@ export class FormError {
   readonly reset = (): this => {
     this.error.value = false
     this.errors.value = {}
+    return this
+  }
+
+  /**
+   * Updates error status and errors map based on active elements (native or custom).
+   *
+   * Обновляет статус ошибки и карту ошибок на основе активных элементов (нативных или кастомных).
+   * @returns this instance / текущий экземпляр
+   */
+  readonly update = (): this => {
+    this.error.value = this.isError()
+    this.errors.value = this.props.native
+      ? this.getErrorsNative()
+      : this.getErrorsElements()
+
     return this
   }
 

@@ -80,12 +80,13 @@ export class FormDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      submit: this.item.submit,
-      reset: this.item.value.reset,
       checkValidity: this.item.error.checkValidity,
       getValues: this.item.value.get,
+      reset: this.item.value.reset,
       set: this.item.value.set,
-      setValues: this.item.value.setValues
+      setValues: this.item.value.setValues,
+      setValuesAll: this.item.value.setValuesAll,
+      submit: this.item.submit
     } as unknown as EXPOSE
   }
 

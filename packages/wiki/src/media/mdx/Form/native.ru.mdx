@@ -1,0 +1,58 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+## Нативный режим
+
+Свойство `native` определяет, работает ли форма с кастомными дочерними элементами-компонентами или взаимодействует напрямую с нативными элементами управления HTML.
+
+**Свойство:**
+
+- `native?: boolean` — Включает нативный режим формы при значении `true`. По умолчанию `false`.
+
+**Режимы работы:**
+
+1. **Кастомный режим (`native: false`, по умолчанию):**
+   - Form создает контекст `provide` во Vue с ключом `FORM_NAME_ELEMENT`.
+   - Дочерние компоненты (например, поля ввода на базе конструктора) регистрируются в форме при монтировании.
+   - Значения, данные валидации (`FieldValidationItem`) и состояния ошибок отслеживаются реактивно через дерево компонентов без прямого обращения к DOM.
+   - Программная установка значений обновляет реактивные ссылки компонентов.
+
+2. **Нативный режим (`native: true`):**
+   - Form взаимодействует напрямую со стандартными элементами HTML (`HTMLInputElement`, `HTMLSelectElement`, `HTMLTextAreaElement`) через коллекцию `elements` DOM-формы.
+   - Чтение и запись значений производятся непосредственно через нативные DOM-элементы.
+   - Проверка валидности использует нативные механизмы браузера и HTML5 Validation API (например, `checkValidity()`).
+   - Удобно при создании легковесных форм со стандартными тегами HTML или сторонними библиотеками без оберток Vue.
+
+<Source
+    code={`
+<script setup>
+import { ref } from 'vue'
+import { Form } from '@dxtmisha/constructor'
+
+const formValues = ref({})
+</script>
+
+<template>
+  <!-- Нативная форма со стандартными элементами HTML -->
+  <Form
+    :native="true"
+    v-model="formValues"
+  >
+    <label>
+      Имя:
+      <input name="name" type="text" required />
+    </label>
+
+    <label>
+      Роль:
+      <select name="role">
+        <option value="user">Пользователь</option>
+        <option value="admin">Администратор</option>
+      </select>
+    </label>
+
+    <button type="submit">Отправить</button>
+  </Form>
+</template>
+  `}
+    language="html"
+/>

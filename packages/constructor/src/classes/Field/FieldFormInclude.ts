@@ -73,12 +73,14 @@ export class FieldFormInclude {
    * Обновляет данные валидации зарегистрированного дочернего элемента формы.
    * @param name element name / имя элемента
    * @param data element validation and input data / данные валидации и ввода элемента
+   * @param event event object / объект события
    */
   updateData(
     name: string,
-    data?: FieldValidationItem
+    data?: FieldValidationItem,
+    event?: InputEvent
   ): void {
-    this.context?.updateData(name, data)
+    this.context?.updateData(name, data, event)
   }
 
   /**

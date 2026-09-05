@@ -27,7 +27,7 @@ export type FormElementRegistration<T = any> = {
   /** Register a child element / Зарегистрировать дочерний элемент */
   register: FormElementRegister<T>
   /** Update child element validation data / Обновить данные валидации дочернего элемента */
-  updateData: (name: string, data?: FieldValidationItem<T>) => void
+  updateData: (name: string, data?: FieldValidationItem<T>, event?: InputEvent) => void
 }
 
 /**

@@ -199,7 +199,7 @@ export class FieldEventInclude {
     this.emits?.(`${type}Lite` as 'inputLite', data)
 
     if (this.props.name) {
-      this.form?.updateData(this.props.name, data)
+      this.form?.updateData(this.props.name, data, event as InputEvent)
     }
 
     return this
