@@ -1,13 +1,14 @@
 import { type Ref, type ToRefs } from 'vue'
 import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
-import { FieldElementInclude } from '../../classes/Field/FieldElementInclude'
-import { FieldChangeInclude } from '../../classes/Field/FieldChangeInclude'
-import { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
-import { FieldCodeInclude } from '../../classes/Field/FieldCodeInclude'
-import { FieldValidationInclude } from '../../classes/Field/FieldValidationInclude'
 import { FieldAttributesInclude } from '../../classes/Field/FieldAttributesInclude'
+import { FieldChangeInclude } from '../../classes/Field/FieldChangeInclude'
+import { FieldCodeInclude } from '../../classes/Field/FieldCodeInclude'
+import { FieldElementInclude } from '../../classes/Field/FieldElementInclude'
 import { FieldEventInclude } from '../../classes/Field/FieldEventInclude'
+import { FieldFormInclude } from '../../classes/Field/FieldFormInclude'
+import { FieldValidationInclude } from '../../classes/Field/FieldValidationInclude'
+import { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
 
 import { MenuInclude } from '../Menu'
 import { ButtonInclude } from '../Button'
@@ -49,6 +50,7 @@ export class MenuButton extends SelectAbstract {
    * @param constructors.FieldCodeIncludeConstructor field code class constructor / конструктор класса field code
    * @param constructors.FieldElementIncludeConstructor field element class constructor / конструктор класса field element
    * @param constructors.FieldEventIncludeConstructor field event class constructor / конструктор класса field event
+   * @param constructors.FieldFormIncludeConstructor field form class constructor / конструктор класса field form
    * @param constructors.FieldValidationIncludeConstructor field validation class constructor / конструктор класса field validation
    * @param constructors.FieldValueIncludeConstructor field value class constructor / конструктор класса field value
    * @param constructors.MenuIncludeConstructor menu include class constructor / конструктор класса menu include
@@ -69,6 +71,7 @@ export class MenuButton extends SelectAbstract {
       FieldCodeIncludeConstructor?: typeof FieldCodeInclude
       FieldElementIncludeConstructor?: typeof FieldElementInclude
       FieldEventIncludeConstructor?: typeof FieldEventInclude
+      FieldFormIncludeConstructor?: typeof FieldFormInclude
       FieldValidationIncludeConstructor?: typeof FieldValidationInclude
       FieldValueIncludeConstructor?: typeof FieldValueInclude
       MenuIncludeConstructor?: typeof MenuInclude

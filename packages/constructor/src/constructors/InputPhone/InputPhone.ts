@@ -1,13 +1,14 @@
 import type { Ref, ToRefs } from 'vue'
 import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
-import { FieldChangeInclude } from '../../classes/Field/FieldChangeInclude'
 import { FieldAttributesInclude } from '../../classes/Field/FieldAttributesInclude'
-import { FieldElementInclude } from '../../classes/Field/FieldElementInclude'
-import { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
+import { FieldChangeInclude } from '../../classes/Field/FieldChangeInclude'
 import { FieldCodeInclude } from '../../classes/Field/FieldCodeInclude'
-import { FieldValidationInclude } from '../../classes/Field/FieldValidationInclude'
+import { FieldElementInclude } from '../../classes/Field/FieldElementInclude'
 import { FieldEventInclude } from '../../classes/Field/FieldEventInclude'
+import { FieldFormInclude } from '../../classes/Field/FieldFormInclude'
+import { FieldValidationInclude } from '../../classes/Field/FieldValidationInclude'
+import { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
 
 import { FieldInclude } from '../Field'
 import { InputPhoneDialCodeInclude } from '../InputPhoneDialCode'
@@ -41,6 +42,8 @@ export class InputPhone {
   readonly code: FieldCodeInclude
   /** Field validation include instance / Экземпляр включения валидации поля */
   readonly validation: FieldValidationInclude
+  /** Field form include instance / Экземпляр включения формы поля */
+  readonly form: FieldFormInclude
   /** Field event include instance / Экземпляр включения события поля */
   readonly event: FieldEventInclude
 
@@ -73,6 +76,7 @@ export class InputPhone {
    * @param constructors.FieldCodeIncludeConstructor class for working with field code / класс для работы с кодом поля
    * @param constructors.FieldElementIncludeConstructor class for working with field element / класс для работы с элементом поля
    * @param constructors.FieldEventIncludeConstructor class for working with field event / класс для работы с событием поля
+   * @param constructors.FieldFormIncludeConstructor class for working with form / класс для работы с формой
    * @param constructors.FieldIncludeConstructor class for working with field / класс для работы с полем
    * @param constructors.FieldValidationIncludeConstructor class for working with field validation / класс для работы с валидацией поля
    * @param constructors.FieldValueIncludeConstructor class for working with field value / класс для работы со значением поля
@@ -96,6 +100,7 @@ export class InputPhone {
       FieldCodeIncludeConstructor?: typeof FieldCodeInclude
       FieldElementIncludeConstructor?: typeof FieldElementInclude
       FieldEventIncludeConstructor?: typeof FieldEventInclude
+      FieldFormIncludeConstructor?: typeof FieldFormInclude
       FieldIncludeConstructor?: typeof FieldInclude
       FieldValidationIncludeConstructor?: typeof FieldValidationInclude
       FieldValueIncludeConstructor?: typeof FieldValueInclude
@@ -111,6 +116,7 @@ export class InputPhone {
       FieldCodeIncludeConstructor = FieldCodeInclude,
       FieldElementIncludeConstructor = FieldElementInclude,
       FieldEventIncludeConstructor = FieldEventInclude,
+      FieldFormIncludeConstructor = FieldFormInclude,
       FieldIncludeConstructor = FieldInclude,
       FieldValidationIncludeConstructor = FieldValidationInclude,
       FieldValueIncludeConstructor = FieldValueInclude,
@@ -142,12 +148,18 @@ export class InputPhone {
       this.change,
       this.code
     )
+    this.form = new FieldFormIncludeConstructor(
+      this.props,
+      this.value,
+      this.validation
+    )
     this.event = new FieldEventIncludeConstructor(
       this.props,
       this.change,
       this.value,
       this.validation,
-      this.emits
+      this.emits,
+      this.form
     )
 
     this.data = new InputPhoneDataConstructor(props, this.value, this.event)

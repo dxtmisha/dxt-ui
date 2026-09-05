@@ -1,12 +1,13 @@
 import type { Ref, ToRefs } from 'vue'
 import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
-import { FieldChangeInclude } from '../../classes/Field/FieldChangeInclude'
 import { FieldAttributesInclude } from '../../classes/Field/FieldAttributesInclude'
-import { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
+import { FieldChangeInclude } from '../../classes/Field/FieldChangeInclude'
 import { FieldCodeInclude } from '../../classes/Field/FieldCodeInclude'
-import { FieldValidationInclude } from '../../classes/Field/FieldValidationInclude'
 import { FieldEventInclude } from '../../classes/Field/FieldEventInclude'
+import { FieldFormInclude } from '../../classes/Field/FieldFormInclude'
+import { FieldValidationInclude } from '../../classes/Field/FieldValidationInclude'
+import { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
 
 import { IconTrailingInclude } from '../Icon'
 import { FieldLabelInclude } from '../FieldLabel'
@@ -43,6 +44,8 @@ export class SliderField {
   readonly code: FieldCodeInclude
   /** Field validation include instance / Экземпляр валидации поля */
   readonly validation: FieldValidationInclude
+  /** Field form include instance / Экземпляр формы поля */
+  readonly form: FieldFormInclude
   /** Field event include instance / Экземпляр событий поля */
   readonly event: FieldEventInclude
   /** Slider field event instance / Экземпляр событий поля слайдера */
@@ -75,6 +78,7 @@ export class SliderField {
    * @param constructors.FieldCodeIncludeConstructor class for working with field code / класс для работы с кодом поля
    * @param constructors.FieldElementIncludeConstructor class for working with field element / класс для работы с элементом поля
    * @param constructors.FieldEventIncludeConstructor class for working with field event / класс для работы с событием поля
+   * @param constructors.FieldFormIncludeConstructor class for working with form / класс для работы с формой
    * @param constructors.FieldLabelIncludeConstructor class for working with field label / класс для работы с меткой поля
    * @param constructors.FieldMessageIncludeConstructor class for working with field message / класс для работы с сообщением поля
    * @param constructors.FieldValidationIncludeConstructor class for working with field validation / класс для работы с валидацией поля
@@ -96,6 +100,7 @@ export class SliderField {
       FieldChangeIncludeConstructor?: typeof FieldChangeInclude
       FieldCodeIncludeConstructor?: typeof FieldCodeInclude
       FieldEventIncludeConstructor?: typeof FieldEventInclude
+      FieldFormIncludeConstructor?: typeof FieldFormInclude
       FieldLabelIncludeConstructor?: typeof FieldLabelInclude
       FieldMessageIncludeConstructor?: typeof FieldMessageInclude
       FieldValidationIncludeConstructor?: typeof FieldValidationInclude
@@ -111,6 +116,7 @@ export class SliderField {
       FieldChangeIncludeConstructor = FieldChangeInclude,
       FieldCodeIncludeConstructor = FieldCodeInclude,
       FieldEventIncludeConstructor = FieldEventInclude,
+      FieldFormIncludeConstructor = FieldFormInclude,
       FieldLabelIncludeConstructor = FieldLabelInclude,
       FieldMessageIncludeConstructor = FieldMessageInclude,
       FieldValidationIncludeConstructor = FieldValidationInclude,
@@ -135,12 +141,18 @@ export class SliderField {
       this.change,
       this.code
     )
+    this.form = new FieldFormIncludeConstructor(
+      props,
+      this.value,
+      this.validation
+    )
     this.event = new FieldEventIncludeConstructor(
       props,
       this.change,
       this.value,
       this.validation,
-      emits
+      emits,
+      this.form
     )
     this.sliderEvent = new SliderFieldEventConstructor(
       props,

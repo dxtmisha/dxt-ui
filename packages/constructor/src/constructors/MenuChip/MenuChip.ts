@@ -1,13 +1,14 @@
 import { type Ref, type ToRefs } from 'vue'
 import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
-import { FieldElementInclude } from '../../classes/Field/FieldElementInclude'
-import { FieldChangeInclude } from '../../classes/Field/FieldChangeInclude'
-import { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
-import { FieldCodeInclude } from '../../classes/Field/FieldCodeInclude'
-import { FieldValidationInclude } from '../../classes/Field/FieldValidationInclude'
 import { FieldAttributesInclude } from '../../classes/Field/FieldAttributesInclude'
+import { FieldChangeInclude } from '../../classes/Field/FieldChangeInclude'
+import { FieldCodeInclude } from '../../classes/Field/FieldCodeInclude'
+import { FieldElementInclude } from '../../classes/Field/FieldElementInclude'
 import { FieldEventInclude } from '../../classes/Field/FieldEventInclude'
+import { FieldFormInclude } from '../../classes/Field/FieldFormInclude'
+import { FieldValidationInclude } from '../../classes/Field/FieldValidationInclude'
+import { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
 
 import { MenuInclude } from '../Menu'
 import { ChipInclude } from '../Chip'
@@ -36,6 +37,15 @@ export class MenuChip extends SelectAbstract {
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
    * @param constructors optional override constructors / необязательные переопределяющие конструкторы
    * @param constructors.ChipConstructor chip include class constructor / конструктор класса chip include
+   * @param constructors.FieldAttributesIncludeConstructor class for working with field attributes / класс для работы с атрибутами поля
+   * @param constructors.FieldChangeIncludeConstructor class for working with field change / класс для работы с изменением поля
+   * @param constructors.FieldCodeIncludeConstructor class for working with field code / класс для работы с кодом поля
+   * @param constructors.FieldElementIncludeConstructor class for working with field element / класс для работы с элементом поля
+   * @param constructors.FieldEventIncludeConstructor class for working with field event / класс для работы с событием поля
+   * @param constructors.FieldFormIncludeConstructor class for working with form / класс для работы с формой
+   * @param constructors.FieldValidationIncludeConstructor class for working with field validation / класс для работы с валидацией поля
+   * @param constructors.FieldValueIncludeConstructor class for working with field value / класс для работы со значением поля
+   * @param constructors.MenuIncludeConstructor class for working with menu / класс для работы с меню
    */
   constructor(
     protected readonly props: MenuChipProps,
@@ -53,6 +63,7 @@ export class MenuChip extends SelectAbstract {
       FieldCodeIncludeConstructor?: typeof FieldCodeInclude
       FieldElementIncludeConstructor?: typeof FieldElementInclude
       FieldEventIncludeConstructor?: typeof FieldEventInclude
+      FieldFormIncludeConstructor?: typeof FieldFormInclude
       FieldValidationIncludeConstructor?: typeof FieldValidationInclude
       FieldValueIncludeConstructor?: typeof FieldValueInclude
       MenuIncludeConstructor?: typeof MenuInclude

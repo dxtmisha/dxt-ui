@@ -13,6 +13,7 @@ import { FieldChangeInclude } from '../../classes/Field/FieldChangeInclude'
 import { FieldCodeInclude } from '../../classes/Field/FieldCodeInclude'
 import { FieldElementInclude } from '../../classes/Field/FieldElementInclude'
 import { FieldEventInclude } from '../../classes/Field/FieldEventInclude'
+import { FieldFormInclude } from '../../classes/Field/FieldFormInclude'
 import { FieldValidationInclude } from '../../classes/Field/FieldValidationInclude'
 import { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
 
@@ -86,6 +87,9 @@ export class InputImage {
   /** Field validation manager / Менеджер валидации поля */
   readonly validation: FieldValidationInclude
 
+  /** Field form manager / Менеджер формы поля */
+  readonly form: FieldFormInclude
+
   /** Field value manager / Менеджер значения поля */
   readonly value: FieldValueInclude<InputImageItem>
 
@@ -110,6 +114,7 @@ export class InputImage {
    * @param constructors.FieldCodeIncludeConstructor class for working with field code / класс для работы с кодом поля
    * @param constructors.FieldElementIncludeConstructor class for creating field element attributes / класс для создания атрибутов элемента поля
    * @param constructors.FieldEventIncludeConstructor class for creating field event / класс для создания событий поля
+   * @param constructors.FieldFormIncludeConstructor class for working with form / класс для работы с формой
    * @param constructors.FieldLabelConstructor class for creating field label / класс для создания метки поля
    * @param constructors.FieldMessageConstructor class for creating field message / класс для создания сообщения поля
    * @param constructors.FieldValidationIncludeConstructor class for creating field validation / класс для создания валидации поля
@@ -138,6 +143,7 @@ export class InputImage {
       FieldCodeIncludeConstructor?: typeof FieldCodeInclude
       FieldElementIncludeConstructor?: typeof FieldElementInclude
       FieldEventIncludeConstructor?: typeof FieldEventInclude
+      FieldFormIncludeConstructor?: typeof FieldFormInclude
       FieldLabelConstructor?: typeof FieldLabelInclude
       FieldMessageConstructor?: typeof FieldMessageInclude
       FieldValidationIncludeConstructor?: typeof FieldValidationInclude
@@ -158,6 +164,7 @@ export class InputImage {
       FieldCodeIncludeConstructor = FieldCodeInclude,
       FieldElementIncludeConstructor = FieldElementInclude,
       FieldEventIncludeConstructor = FieldEventInclude,
+      FieldFormIncludeConstructor = FieldFormInclude,
       FieldLabelConstructor = FieldLabelInclude,
       FieldMessageConstructor = FieldMessageInclude,
       FieldValidationIncludeConstructor = FieldValidationInclude,
@@ -194,12 +201,18 @@ export class InputImage {
       this.change,
       this.code
     )
+    this.form = new FieldFormIncludeConstructor(
+      this.props,
+      this.value,
+      this.validation
+    )
     this.event = new FieldEventIncludeConstructor(
       this.props,
       this.change,
       this.value,
       this.validation,
-      this.emits
+      this.emits,
+      this.form
     )
 
     this.files = new InputImageFilesConstructor(this.props, this.value)

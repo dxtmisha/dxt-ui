@@ -18,10 +18,14 @@ describe('FormElements', () => {
     vi.clearAllMocks()
   })
 
-  it('calls provide with FORM_NAME_ELEMENT and register callback on construction', () => {
+  it('calls provide with FORM_NAME_ELEMENT and registration object on construction', () => {
     const elements = new FormElements()
 
-    expect(provide).toHaveBeenCalledWith(FORM_NAME_ELEMENT, elements.register)
+    expect(provide).toHaveBeenCalledWith(FORM_NAME_ELEMENT, {
+      getValue: elements.getValue,
+      register: elements.register,
+      updateData: elements.updateData
+    })
   })
 
   it('registers child element record and returns items via get()', () => {
@@ -246,5 +250,51 @@ describe('FormElements', () => {
     elements.reset()
     expect(clearMock).toHaveBeenCalledTimes(1)
     expect(setValueMock).toHaveBeenCalledWith(undefined)
+  })
+
+  it('updates validation data for registered element via updateData(name, data)', () => {
+    const elements = new FormElements()
+    const mockElement: FormElementItem = {
+      name: 'username',
+      value: ref('admin'),
+      getValue: () => 'admin',
+      setValue: vi.fn(),
+      clear: vi.fn(),
+      checkValidity: () => true,
+      getValidationMessage: () => '',
+      data: {
+        value: 'admin',
+        status: true
+      }
+    }
+
+    elements.register(mockElement)
+    expect(elements.getData().username.status).toBe(true)
+
+    elements.updateData('username', {
+      value: 'admin',
+      status: false,
+      validationMessage: 'Username is required'
+    })
+
+    expect(elements.getData().username).toEqual({
+      value: 'admin',
+      status: false,
+      validationMessage: 'Username is required'
+    })
+    expect(elements.isError()).toBe(true)
+  })
+
+  it('ignores updateData for non-existent element', () => {
+    const elements = new FormElements()
+
+    expect(() => {
+      elements.updateData('nonexistent', {
+        value: 'test',
+        status: false
+      })
+    }).not.toThrow()
+
+    expect(elements.getData()).toEqual({})
   })
 })

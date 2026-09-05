@@ -1,13 +1,14 @@
 import { type Ref, type ToRefs } from 'vue'
 import { type ConstrEmit, type DesignComp, toBinds } from '@dxtmisha/functional'
 
-import { FieldElementInclude } from '../../classes/Field/FieldElementInclude'
-import { FieldChangeInclude } from '../../classes/Field/FieldChangeInclude'
-import { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
-import { FieldCodeInclude } from '../../classes/Field/FieldCodeInclude'
-import { FieldValidationInclude } from '../../classes/Field/FieldValidationInclude'
-import { FieldEventInclude } from '../../classes/Field/FieldEventInclude'
 import { FieldAttributesInclude } from '../../classes/Field/FieldAttributesInclude'
+import { FieldChangeInclude } from '../../classes/Field/FieldChangeInclude'
+import { FieldCodeInclude } from '../../classes/Field/FieldCodeInclude'
+import { FieldElementInclude } from '../../classes/Field/FieldElementInclude'
+import { FieldEventInclude } from '../../classes/Field/FieldEventInclude'
+import { FieldFormInclude } from '../../classes/Field/FieldFormInclude'
+import { FieldValidationInclude } from '../../classes/Field/FieldValidationInclude'
+import { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
 
 import { FieldInclude } from '../Field'
 
@@ -25,6 +26,7 @@ export class Textarea {
   readonly value: FieldValueInclude
   readonly code: FieldCodeInclude
   readonly validation: FieldValidationInclude
+  readonly form: FieldFormInclude
   readonly event: FieldEventInclude
   readonly field: FieldInclude
 
@@ -39,14 +41,15 @@ export class Textarea {
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
    * @param constructors object with classes/ объект с классами
-   * @param constructors.FieldChangeIncludeConstructor class for working with field change/ класс для работы с изменением поля
    * @param constructors.FieldAttributesIncludeConstructor class for working with field attributes/ класс для работы с атрибутами поля
-   * @param constructors.FieldElementIncludeConstructor class for working with field element/ класс для работы с элементом поля
-   * @param constructors.FieldValueIncludeConstructor class for working with field value/ класс для работы со значением поля
+   * @param constructors.FieldChangeIncludeConstructor class for working with field change/ класс для работы с изменением поля
    * @param constructors.FieldCodeIncludeConstructor class for working with field code/ класс для работы с кодом поля
-   * @param constructors.FieldValidationIncludeConstructor class for working with field validation/ класс для работы с валидацией поля
+   * @param constructors.FieldElementIncludeConstructor class for working with field element/ класс для работы с элементом поля
    * @param constructors.FieldEventIncludeConstructor class for working with field event/ класс для работы с событием поля
+   * @param constructors.FieldFormIncludeConstructor class for working with form / класс для работы с формой
    * @param constructors.FieldIncludeConstructor class for working with field/ класс для работы с полем
+   * @param constructors.FieldValidationIncludeConstructor class for working with field validation/ класс для работы с валидацией поля
+   * @param constructors.FieldValueIncludeConstructor class for working with field value/ класс для работы со значением поля
    */
   constructor(
     protected readonly props: TextareaProps,
@@ -63,6 +66,7 @@ export class Textarea {
       FieldCodeIncludeConstructor?: typeof FieldCodeInclude
       FieldElementIncludeConstructor?: typeof FieldElementInclude
       FieldEventIncludeConstructor?: typeof FieldEventInclude
+      FieldFormIncludeConstructor?: typeof FieldFormInclude
       FieldIncludeConstructor?: typeof FieldInclude
       FieldValidationIncludeConstructor?: typeof FieldValidationInclude
       FieldValueIncludeConstructor?: typeof FieldValueInclude
@@ -74,6 +78,7 @@ export class Textarea {
       FieldCodeIncludeConstructor = FieldCodeInclude,
       FieldElementIncludeConstructor = FieldElementInclude,
       FieldEventIncludeConstructor = FieldEventInclude,
+      FieldFormIncludeConstructor = FieldFormInclude,
       FieldIncludeConstructor = FieldInclude,
       FieldValidationIncludeConstructor = FieldValidationInclude,
       FieldValueIncludeConstructor = FieldValueInclude
@@ -100,12 +105,18 @@ export class Textarea {
       this.change,
       this.code
     )
+    this.form = new FieldFormIncludeConstructor(
+      this.props,
+      this.value,
+      this.validation
+    )
     this.event = new FieldEventIncludeConstructor(
       this.props,
       this.change,
       this.value,
       this.validation,
-      this.emits
+      this.emits,
+      this.form
     )
 
     this.field = new FieldIncludeConstructor(

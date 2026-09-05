@@ -8,6 +8,7 @@ import { FieldCodeInclude } from '../../classes/Field/FieldCodeInclude'
 import { FieldValidationInclude } from '../../classes/Field/FieldValidationInclude'
 import { FieldAttributesInclude } from '../../classes/Field/FieldAttributesInclude'
 import { FieldEventInclude } from '../../classes/Field/FieldEventInclude'
+import { FieldFormInclude } from '../../classes/Field/FieldFormInclude'
 
 import { MenuInclude } from '../Menu'
 import { FieldInclude } from '../Field'
@@ -50,6 +51,7 @@ export class Select extends SelectAbstract {
    * @param constructors.FieldCodeIncludeConstructor class for working with field code / класс для работы с кодом поля
    * @param constructors.FieldElementIncludeConstructor class for working with field element / класс для работы с элементом поля
    * @param constructors.FieldEventIncludeConstructor class for working with field event / класс для работы с событием поля
+   * @param constructors.FieldFormIncludeConstructor class for working with form / класс для работы с формой
    * @param constructors.FieldIncludeConstructor class for working with field / класс для работы с полем
    * @param constructors.FieldValidationIncludeConstructor class for working with field validation / класс для работы с валидацией поля
    * @param constructors.FieldValueIncludeConstructor class for working with field value / класс для работы со значением поля
@@ -71,6 +73,7 @@ export class Select extends SelectAbstract {
       FieldCodeIncludeConstructor?: typeof FieldCodeInclude
       FieldElementIncludeConstructor?: typeof FieldElementInclude
       FieldEventIncludeConstructor?: typeof FieldEventInclude
+      FieldFormIncludeConstructor?: typeof FieldFormInclude
       FieldIncludeConstructor?: typeof FieldInclude
       FieldValidationIncludeConstructor?: typeof FieldValidationInclude
       FieldValueIncludeConstructor?: typeof FieldValueInclude

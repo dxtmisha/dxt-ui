@@ -3,9 +3,11 @@ import { provide, shallowRef, type ShallowRef } from 'vue'
 import {
   FORM_NAME_ELEMENT,
   type FormElementItem,
+  type FormElementRegistration,
   type FormElementsData,
   type FormElementsValues
 } from './basicTypes'
+import type { FieldValidationItem } from '../../types/fieldTypes'
 
 /**
  * Class for managing child elements of the Form component.
@@ -26,7 +28,11 @@ export class FormElements {
    * Вызывает Vue provide для регистрации дочерних элементов.
    */
   constructor() {
-    provide(FORM_NAME_ELEMENT, this.register)
+    provide<FormElementRegistration>(FORM_NAME_ELEMENT, {
+      getValue: this.getValue,
+      register: this.register,
+      updateData: this.updateData
+    })
   }
 
   /**
@@ -79,7 +85,7 @@ export class FormElements {
    * @param name element name / имя элемента
    * @returns element value or undefined / значение элемента или undefined
    */
-  getValue(name: string): any {
+  readonly getValue = (name: string): any => {
     const element = this.item.value.find(item => item.name === name)
     return element?.getValue?.() ?? element?.value?.value
   }
@@ -157,6 +163,21 @@ export class FormElements {
     }
 
     return this
+  }
+
+  /**
+   * Updates validation data of a registered form child element.
+   *
+   * Обновляет данные валидации зарегистрированного дочернего элемента формы.
+   * @param name element name / имя элемента
+   * @param data element validation and input data / данные валидации и ввода элемента
+   */
+  readonly updateData = (name: string, data?: FieldValidationItem): void => {
+    const item = this.item.value.find(element => element.name === name)
+
+    if (item) {
+      item.data = data
+    }
   }
 
   /**

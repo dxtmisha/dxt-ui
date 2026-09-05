@@ -2,16 +2,14 @@ import { computed, type Ref, type ToRefs } from 'vue'
 import { MediaSocial, type InputSocialItem } from '@dxtmisha/media'
 import type { ConstrEmit, DesignComp, NumberOrString } from '@dxtmisha/functional'
 
-import { FieldChangeInclude } from '../../classes/Field/FieldChangeInclude'
 import { FieldAttributesInclude } from '../../classes/Field/FieldAttributesInclude'
-
-import { FieldElementInclude } from '../../classes/Field/FieldElementInclude'
-
-import { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
-
+import { FieldChangeInclude } from '../../classes/Field/FieldChangeInclude'
 import { FieldCodeInclude } from '../../classes/Field/FieldCodeInclude'
-import { FieldValidationInclude } from '../../classes/Field/FieldValidationInclude'
+import { FieldElementInclude } from '../../classes/Field/FieldElementInclude'
 import { FieldEventInclude } from '../../classes/Field/FieldEventInclude'
+import { FieldFormInclude } from '../../classes/Field/FieldFormInclude'
+import { FieldValidationInclude } from '../../classes/Field/FieldValidationInclude'
+import { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
 
 import { FieldInclude } from '../Field'
 import { MaskInclude, type MaskPropsInclude } from '../Mask'
@@ -46,6 +44,9 @@ export class InputSocial {
   /** Field validation manager / Менеджер валидации поля */
   readonly validation: FieldValidationInclude
 
+  /** Field form manager / Менеджер формы поля */
+  readonly form: FieldFormInclude
+
   /** Field events manager / Менеджер событий поля */
   readonly event: FieldEventInclude
 
@@ -73,6 +74,7 @@ export class InputSocial {
    * @param constructors.FieldCodeIncludeConstructor class for working with field code / класс для работы с кодом поля
    * @param constructors.FieldElementIncludeConstructor class for working with field element / класс для работы с элементом поля
    * @param constructors.FieldEventIncludeConstructor class for working with field event / класс для работы с событием поля
+   * @param constructors.FieldFormIncludeConstructor class for working with form / класс для работы с формой
    * @param constructors.FieldIncludeConstructor class for working with field / класс для работы с полем
    * @param constructors.FieldValidationIncludeConstructor class for working with field validation / класс для работы с валидацией поля
    * @param constructors.FieldValueIncludeConstructor class for working with field value / класс для работы со значением поля
@@ -93,6 +95,7 @@ export class InputSocial {
       FieldCodeIncludeConstructor?: typeof FieldCodeInclude
       FieldElementIncludeConstructor?: typeof FieldElementInclude
       FieldEventIncludeConstructor?: typeof FieldEventInclude
+      FieldFormIncludeConstructor?: typeof FieldFormInclude
       FieldIncludeConstructor?: typeof FieldInclude
       FieldValidationIncludeConstructor?: typeof FieldValidationInclude
       FieldValueIncludeConstructor?: typeof FieldValueInclude
@@ -105,6 +108,7 @@ export class InputSocial {
       FieldCodeIncludeConstructor = FieldCodeInclude,
       FieldElementIncludeConstructor = FieldElementInclude,
       FieldEventIncludeConstructor = FieldEventInclude,
+      FieldFormIncludeConstructor = FieldFormInclude,
       FieldIncludeConstructor = FieldInclude,
       FieldValidationIncludeConstructor = FieldValidationInclude,
       FieldValueIncludeConstructor = FieldValueInclude,
@@ -134,12 +138,18 @@ export class InputSocial {
       this.code,
       undefined
     )
+    this.form = new FieldFormIncludeConstructor(
+      this.props,
+      this.value,
+      this.validation
+    )
     this.event = new FieldEventIncludeConstructor(
       this.props,
       this.change,
       this.value,
       this.validation,
-      this.emits
+      this.emits,
+      this.form
     )
 
     this.field = new FieldIncludeConstructor(

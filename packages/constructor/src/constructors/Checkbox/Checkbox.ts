@@ -10,6 +10,7 @@ import { FieldChangeInclude } from '../../classes/Field/FieldChangeInclude'
 import { FieldCodeInclude } from '../../classes/Field/FieldCodeInclude'
 import { FieldElementInclude } from '../../classes/Field/FieldElementInclude'
 import { FieldEventInclude } from '../../classes/Field/FieldEventInclude'
+import { FieldFormInclude } from '../../classes/Field/FieldFormInclude'
 import { FieldValidationInclude } from '../../classes/Field/FieldValidationInclude'
 import { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
 
@@ -36,6 +37,7 @@ export class Checkbox {
   readonly description: DescriptionInclude
   readonly elementItem: FieldElementInclude
   readonly enabled: EnabledInclude
+  readonly form: FieldFormInclude
   readonly event: FieldEventInclude
   readonly icon: CheckboxIcon
   readonly label: LabelInclude
@@ -67,6 +69,7 @@ export class Checkbox {
    * @param constructors.FieldChangeIncludeConstructor class for creating field change attributes/ класс для создания атрибутов изменения поля
    * @param constructors.FieldElementIncludeConstructor class for creating field element attributes/ класс для создания атрибутов элемента поля
    * @param constructors.FieldEventIncludeConstructor class for creating field event/ класс для создания событий поля
+   * @param constructors.FieldFormIncludeConstructor class for creating field form / класс для создания формы поля
    * @param constructors.FieldMessageConstructor class for creating field message/ класс для создания сообщения поля
    * @param constructors.FieldValidationIncludeConstructor class for creating field validation/ класс для создания валидации поля
    * @param constructors.FieldValueIncludeConstructor class for creating field value attributes/ класс для создания атрибутов значения поля
@@ -89,6 +92,7 @@ export class Checkbox {
       FieldCodeIncludeConstructor?: typeof FieldCodeInclude
       FieldElementIncludeConstructor?: typeof FieldElementInclude
       FieldEventIncludeConstructor?: typeof FieldEventInclude
+      FieldFormIncludeConstructor?: typeof FieldFormInclude
       FieldMessageConstructor?: typeof FieldMessageInclude
       FieldValidationIncludeConstructor?: typeof FieldValidationInclude
       FieldValueIncludeConstructor?: typeof FieldValueInclude<boolean>
@@ -107,6 +111,7 @@ export class Checkbox {
       FieldCodeIncludeConstructor = FieldCodeInclude,
       FieldElementIncludeConstructor = FieldElementInclude,
       FieldEventIncludeConstructor = FieldEventInclude,
+      FieldFormIncludeConstructor = FieldFormInclude,
       FieldMessageConstructor = FieldMessageInclude,
       FieldValidationIncludeConstructor = FieldValidationInclude,
       FieldValueIncludeConstructor = FieldValueInclude,
@@ -151,13 +156,18 @@ export class Checkbox {
       this.change,
       this.code
     )
-
+    this.form = new FieldFormIncludeConstructor(
+      this.props,
+      this.value,
+      this.validation
+    )
     this.event = new FieldEventIncludeConstructor(
       this.props,
       this.change,
       this.value,
       this.validation,
-      this.emits
+      this.emits,
+      this.form
     )
 
     this.message = new FieldMessageConstructor(

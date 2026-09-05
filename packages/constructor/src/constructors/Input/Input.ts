@@ -17,6 +17,7 @@ import { FieldInputModeInclude } from '../../classes/Field/FieldInputModeInclude
 import { FieldCodeInclude } from '../../classes/Field/FieldCodeInclude'
 import { FieldValidationInclude } from '../../classes/Field/FieldValidationInclude'
 import { FieldEventInclude } from '../../classes/Field/FieldEventInclude'
+import { FieldFormInclude } from '../../classes/Field/FieldFormInclude'
 import { TextInclude } from '../../classes/TextInclude'
 
 import { FieldInclude } from '../Field'
@@ -49,6 +50,7 @@ export class Input {
 
   readonly code: FieldCodeInclude
   readonly validation: FieldValidationInclude
+  readonly form: FieldFormInclude
   readonly event: FieldEventInclude
 
   readonly field: FieldInclude
@@ -71,6 +73,7 @@ export class Input {
    * @param constructors.FieldCodeIncludeConstructor class for working with field code/ класс для работы с кодом поля
    * @param constructors.FieldElementIncludeConstructor class for working with field element/ класс для работы с элементом поля
    * @param constructors.FieldEventIncludeConstructor class for working with field event/ класс для работы с событием поля
+   * @param constructors.FieldFormIncludeConstructor class for working with form / класс для работы с формой
    * @param constructors.FieldIncludeConstructor class for working with field/ класс для работы с полем
    * @param constructors.FieldInputModeIncludeConstructor class for working with field input mode/ класс для работы с режимом ввода поля
    * @param constructors.FieldMatchIncludeConstructor class for working with field match/ класс для работы с совпадением поля
@@ -99,6 +102,7 @@ export class Input {
       FieldCodeIncludeConstructor?: typeof FieldCodeInclude
       FieldElementIncludeConstructor?: typeof FieldElementInclude
       FieldEventIncludeConstructor?: typeof FieldEventInclude
+      FieldFormIncludeConstructor?: typeof FieldFormInclude
       FieldIncludeConstructor?: typeof FieldInclude
       FieldInputModeIncludeConstructor?: typeof FieldInputModeInclude
       FieldMatchIncludeConstructor?: typeof FieldMatchInclude
@@ -119,6 +123,7 @@ export class Input {
       FieldCodeIncludeConstructor = FieldCodeInclude,
       FieldElementIncludeConstructor = FieldElementInclude,
       FieldEventIncludeConstructor = FieldEventInclude,
+      FieldFormIncludeConstructor = FieldFormInclude,
       FieldIncludeConstructor = FieldInclude,
       FieldInputModeIncludeConstructor = FieldInputModeInclude,
       FieldMatchIncludeConstructor = FieldMatchInclude,
@@ -172,12 +177,18 @@ export class Input {
       this.code,
       this.match
     )
+    this.form = new FieldFormIncludeConstructor(
+      this.props,
+      this.value,
+      this.validation
+    )
     this.event = new FieldEventIncludeConstructor(
       this.props,
       this.change,
       this.value,
       this.validation,
-      this.emits
+      this.emits,
+      this.form
     )
 
     this.field = new FieldIncludeConstructor(

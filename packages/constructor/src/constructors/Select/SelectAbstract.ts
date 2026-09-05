@@ -11,12 +11,13 @@ import type { ListItemPropsBasic } from '../ListItem'
 import { MenuInclude } from '../Menu'
 
 import { FieldAttributesInclude } from '../../classes/Field/FieldAttributesInclude'
-import { FieldElementInclude } from '../../classes/Field/FieldElementInclude'
 import { FieldChangeInclude } from '../../classes/Field/FieldChangeInclude'
-import { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
 import { FieldCodeInclude } from '../../classes/Field/FieldCodeInclude'
-import { FieldValidationInclude } from '../../classes/Field/FieldValidationInclude'
+import { FieldElementInclude } from '../../classes/Field/FieldElementInclude'
 import { FieldEventInclude } from '../../classes/Field/FieldEventInclude'
+import { FieldFormInclude } from '../../classes/Field/FieldFormInclude'
+import { FieldValidationInclude } from '../../classes/Field/FieldValidationInclude'
+import { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
 
 import type { SelectComponents, SelectEmits, SelectSlots } from './types'
 import type { SelectProps } from './props'
@@ -46,6 +47,8 @@ export abstract class SelectAbstract {
   readonly code: FieldCodeInclude
   /** Field validation manager / Менеджер валидации поля */
   readonly validation: FieldValidationInclude
+  /** Field form manager / Менеджер формы поля */
+  readonly form: FieldFormInclude
   /** Field event manager / Менеджер событий поля */
   readonly event: FieldEventInclude
 
@@ -70,6 +73,7 @@ export abstract class SelectAbstract {
    * @param constructors.FieldCodeIncludeConstructor class for working with field code / класс для работы с кодом поля
    * @param constructors.FieldElementIncludeConstructor class for working with field element / класс для работы с элементом поля
    * @param constructors.FieldEventIncludeConstructor class for working with field event / класс для работы с событием поля
+   * @param constructors.FieldFormIncludeConstructor class for working with form / класс для работы с формой
    * @param constructors.FieldValidationIncludeConstructor class for working with field validation / класс для работы с валидацией поля
    * @param constructors.FieldValueIncludeConstructor class for working with field value / класс для работы со значением поля
    * @param constructors.MenuIncludeConstructor class for working with menu / класс для работы с меню
@@ -89,6 +93,7 @@ export abstract class SelectAbstract {
       FieldCodeIncludeConstructor?: typeof FieldCodeInclude
       FieldElementIncludeConstructor?: typeof FieldElementInclude
       FieldEventIncludeConstructor?: typeof FieldEventInclude
+      FieldFormIncludeConstructor?: typeof FieldFormInclude
       FieldValidationIncludeConstructor?: typeof FieldValidationInclude
       FieldValueIncludeConstructor?: typeof FieldValueInclude
       MenuIncludeConstructor?: typeof MenuInclude
@@ -100,6 +105,7 @@ export abstract class SelectAbstract {
       FieldCodeIncludeConstructor = FieldCodeInclude,
       FieldElementIncludeConstructor = FieldElementInclude,
       FieldEventIncludeConstructor = FieldEventInclude,
+      FieldFormIncludeConstructor = FieldFormInclude,
       FieldValidationIncludeConstructor = FieldValidationInclude,
       FieldValueIncludeConstructor = FieldValueInclude,
       MenuIncludeConstructor = MenuInclude
@@ -127,12 +133,18 @@ export abstract class SelectAbstract {
       this.change,
       this.code
     )
+    this.form = new FieldFormIncludeConstructor(
+      this.props,
+      this.value,
+      this.validation
+    )
     this.event = new FieldEventIncludeConstructor(
       this.props,
       this.change,
       this.value,
       this.validation,
-      this.emits
+      this.emits,
+      this.form
     )
 
     this.menu = new MenuIncludeConstructor(

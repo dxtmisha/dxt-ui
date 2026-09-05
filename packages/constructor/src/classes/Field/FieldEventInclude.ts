@@ -1,8 +1,9 @@
 import { type ConstrEmit } from '@dxtmisha/functional'
 
 import { FieldChangeInclude } from './FieldChangeInclude'
-import { FieldValueInclude } from './FieldValueInclude'
+import { FieldFormInclude } from './FieldFormInclude'
 import { FieldValidationInclude } from './FieldValidationInclude'
+import { FieldValueInclude } from './FieldValueInclude'
 import { ModelInclude } from '../ModelInclude'
 
 import type { FieldAllProps, FieldBasicEmits, FieldValidationItem } from '../../types/fieldTypes'
@@ -25,13 +26,15 @@ export class FieldEventInclude {
    * @param value object for working with values / объект для работы со значениями
    * @param validation object for working with validity / объект для работы с валидностью
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
+   * @param form object for working with the form element context / объект для работы с контекстом элемента формы
    */
   constructor(
     protected readonly props: FieldAllProps,
     protected readonly change: FieldChangeInclude,
     protected readonly value: FieldValueInclude,
     protected readonly validation?: FieldValidationInclude,
-    protected readonly emits?: ConstrEmit<FieldBasicEmits>
+    protected readonly emits?: ConstrEmit<FieldBasicEmits>,
+    protected readonly form?: FieldFormInclude
   ) {
     this.model = new ModelInclude(
       'value',
@@ -194,6 +197,10 @@ export class FieldEventInclude {
 
     this.emits?.(type as 'input', event as Event, data)
     this.emits?.(`${type}Lite` as 'inputLite', data)
+
+    if (this.props.name) {
+      this.form?.updateData(this.props.name, data)
+    }
 
     return this
   }

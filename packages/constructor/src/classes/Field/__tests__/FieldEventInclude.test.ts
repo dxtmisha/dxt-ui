@@ -108,4 +108,20 @@ describe('FieldEventInclude', () => {
     eventInclude.onValue()
     expect(mockValue.set).not.toHaveBeenCalled()
   })
+
+  it('should call form.updateData on event when form and props.name are provided', () => {
+    const mockForm = { updateData: vi.fn() } as any
+    const eventInclude = new FieldEventInclude(
+      { name: 'username' },
+      mockChange,
+      mockValue,
+      mockValidation,
+      emitsSpy,
+      mockForm
+    )
+
+    eventInclude.on()
+
+    expect(mockForm.updateData).toHaveBeenCalledWith('username', expect.any(Object))
+  })
 })
