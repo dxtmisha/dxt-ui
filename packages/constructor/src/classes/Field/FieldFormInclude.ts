@@ -1,4 +1,5 @@
 import { inject } from 'vue'
+import { executeFunction, getElementId, type FunctionOr } from '@dxtmisha/functional'
 
 import { FieldValidationInclude } from './FieldValidationInclude'
 import { FieldValueInclude } from './FieldValueInclude'
@@ -12,9 +13,13 @@ import type { FieldAllProps, FieldValidationItem } from '../../types/fieldTypes'
 
 /**
  * Class for working with the form element context.
+ *
  * Класс для работы с контекстом элемента формы.
  */
 export class FieldFormInclude {
+  /** Unique element identifier / Уникальный идентификатор элемента */
+  readonly id: string = getElementId()
+
   protected context: FormElementRegistration | undefined
 
   /**
@@ -22,11 +27,13 @@ export class FieldFormInclude {
    * @param props input data / входные данные
    * @param value object for working with values / объект для работы со значениями
    * @param validation object for working with validity / объект для работы с валидностью
+   * @param extra additional parameters or function returning parameters / дополнительные параметры или функция, возвращающая параметры
    */
   constructor(
     protected readonly props: FieldAllProps,
     protected readonly value: FieldValueInclude,
-    protected readonly validation: FieldValidationInclude
+    protected readonly validation: FieldValidationInclude,
+    protected readonly extra?: FunctionOr<Record<string, any>>
   ) {
     this.context = inject<FormElementRegistration | undefined>(FORM_NAME_ELEMENT, undefined)
 
@@ -49,10 +56,12 @@ export class FieldFormInclude {
     }
 
     return {
+      id: this.id,
       name: this.props.name,
       data: this.validation.item.value,
       ...this.value.expose(),
-      ...this.validation.expose()
+      ...this.validation.expose(),
+      ...executeFunction(this.extra)
     }
   }
 
@@ -71,16 +80,14 @@ export class FieldFormInclude {
    * Updates validation data of a registered form child element.
    *
    * Обновляет данные валидации зарегистрированного дочернего элемента формы.
-   * @param name element name / имя элемента
    * @param data element validation and input data / данные валидации и ввода элемента
    * @param event event object / объект события
    */
   updateData(
-    name: string,
     data?: FieldValidationItem,
     event?: InputEvent
   ): void {
-    this.context?.updateData(name, data, event)
+    this.context?.updateData(this.id, data, event)
   }
 
   /**

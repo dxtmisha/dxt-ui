@@ -1,6 +1,6 @@
-// md5:71e2178694d78128f7b32aa3f7e45400 true
+// md5:f714e1c5517657f238dfc73251f91f0a true
 export type Undefined = undefined | null;
-/** Union of nullish, falsy values and their string representations. @keywords empty, falsy, nullish */
+/** Union of empty or falsy values and their string equivalents @keywords empty, falsy, nullish, blank */
 export type EmptyValue = Undefined | 0 | false | '' | 'undefined' | 'null' | '0' | 'false' | '[]';
 export type NumberOrString = number | string;
 export type NumberOrStringOrBoolean = number | string | boolean;
@@ -9,8 +9,9 @@ export type NormalOrArray<T = NumberOrString> = T | T[];
 export type NormalOrPromise<T> = T | Promise<T>;
 export type ObjectItem<T = any> = Record<string, T>;
 export type ObjectOrArray<T = any> = T[] | ObjectItem<T>;
-/** Extracts item type from an array or returns the type itself. @keywords array, item, unwrap */
+/** Extracts the element type from an array type @keywords array, unwrap, element, infer */
 export type ArrayToItem<T> = T extends any[] ? T[number] : T;
+export type FunctionOr<T = any> = T | FunctionReturn<T>;
 export type FunctionReturn<R = any> = () => R;
 export type FunctionVoid = () => void;
 export type FunctionArgs<T, R> = (...args: T[]) => R;
@@ -31,9 +32,9 @@ export type ItemName<V> = {
 export type ElementOrWindow = HTMLElement | Window;
 export type ElementOrString<E extends ElementOrWindow> = E | string;
 export type EventOptions = AddEventListenerOptions | boolean | undefined;
-/** Event listener callback with optional detail payload. @keywords event, listener, detail */
+/** Event listener callback with optional custom detail payload @keywords event, listener, detail, callback */
 export type EventListenerDetail<O extends Event, D extends Record<string, any>> = (event: O, detail?: D) => void;
-/** Tracks active DOM event listeners and ResizeObservers. @keywords event, listener, observer, activity */
+/** Active event listener or observer tracking entry @keywords event, listener, observer, activity */
 export type EventActivityItem<E extends ElementOrWindow> = {
   element: E | undefined;
   type: string;

@@ -40,23 +40,15 @@ const formValues = ref<Record<string, any>>({
   phone: '+1 555 123 4567',
   telegram: 'johndoe_dev',
   avatar: undefined,
+  bio: 'Passionate developer building awesome web applications with dxt-ui.',
   role: 'frontend',
   experience: 5,
   plan: 'pro',
   category: 'tech',
-  bio: 'Passionate developer building awesome web applications with dxt-ui.',
   agreement: true,
-  radioEmail: true,
-  radioSms: false,
-  newsletter: true
-})
-
-const nativeFormValues = ref<Record<string, any>>({
-  nativeFullName: 'Jane Smith',
-  nativeEmail: 'jane.smith@example.com',
-  nativeCountry: 'vn',
-  nativeBio: 'Hello from native HTML form elements!',
-  nativeAgree: true
+  newsletter: true,
+  twoFactor: false,
+  notification: 'email'
 })
 
 const validityStatus = ref<boolean | null>(null)
@@ -89,28 +81,6 @@ const onFormReset = (...args: unknown[]) => {
   onEvent('reset', ...args)
 }
 
-const onFormSubmit = (event: Event) => {
-  event.preventDefault()
-  onEvent('submit', formValues.value)
-}
-
-const onNativeInput = (...args: unknown[]) => {
-  onEvent('native:input', ...args)
-}
-
-const onNativeChange = (...args: unknown[]) => {
-  onEvent('native:change', ...args)
-}
-
-const onNativeReset = (...args: unknown[]) => {
-  onEvent('native:reset', ...args)
-}
-
-const onNativeSubmit = (event: Event) => {
-  event.preventDefault()
-  onEvent('native:submit', nativeFormValues.value)
-}
-
 const onCheckValidity = () => {
   const isValid = formRef.value?.checkValidity() ?? false
   validityStatus.value = isValid
@@ -127,15 +97,15 @@ const onFillDemoData = () => {
     phone: '+7 900 123 4567',
     telegram: 'alice_w',
     avatar: undefined,
+    bio: 'Senior fullstack engineer and design enthusiast.',
     role: 'fullstack',
     experience: 8,
     plan: 'enterprise',
     category: 'design',
-    bio: 'Senior fullstack engineer and design enthusiast.',
     agreement: true,
-    radioEmail: false,
-    radioSms: true,
-    newsletter: false
+    newsletter: false,
+    twoFactor: true,
+    notification: 'sms'
   }
 
   formRef.value?.setValues(sampleData)
@@ -152,219 +122,240 @@ const onClearData = () => {
   <DemoLinkBlack />
   <D1Page label="Form">
     <D1Section>
-      <D1Form
-        ref="formRef"
-        v-model="formValues"
-        @input="onFormInput"
-        @inputLite="onFormInputLite"
-        @inputValues="onFormInputValues"
-        @change="onFormChange"
-        @changeLite="onFormChangeLite"
-        @changeValues="onFormChangeValues"
-        @reset="onFormReset"
-        @submit="onFormSubmit"
-      >
-        <D1Group label="Text & Contact Inputs (D1Input, D1InputPhone, D1InputSocial)">
-          <D1Input
-            name="username"
-            label="Username"
-            placeholder="Enter your username"
-            required
-          />
+      <D1Grid>
+        <D1GridItem base="12" lg="8">
+          <D1Form
+            ref="formRef"
+            v-model="formValues"
+            @input="onFormInput"
+            @inputLite="onFormInputLite"
+            @inputValues="onFormInputValues"
+            @change="onFormChange"
+            @changeLite="onFormChangeLite"
+            @changeValues="onFormChangeValues"
+            @reset="onFormReset"
+          >
+            <D1Block label="General Usage">
+              <D1Group label="Basic & Personal Information">
+                <D1Grid>
+                  <D1GridItem base="12" sm="6" md="4">
+                    <D1Input
+                      name="username"
+                      label="Username"
+                      placeholder="Enter your username"
+                      required
+                    />
+                  </D1GridItem>
 
-          <D1Input
-            name="email"
-            type="email"
-            label="Email Address"
-            placeholder="name@example.com"
-            required
-          />
+                  <D1GridItem base="12" sm="6" md="4">
+                    <D1Input
+                      name="email"
+                      type="email"
+                      label="Email Address"
+                      placeholder="name@example.com"
+                      required
+                    />
+                  </D1GridItem>
 
-          <D1Input
-            name="password"
-            type="password"
-            label="Password"
-            placeholder="Enter secure password"
-            required
-          />
+                  <D1GridItem base="12" sm="6" md="4">
+                    <D1Input
+                      name="password"
+                      type="password"
+                      label="Password"
+                      placeholder="Enter secure password"
+                      required
+                    />
+                  </D1GridItem>
 
-          <D1Input
-            name="birthDate"
-            type="date"
-            label="Birth Date"
-          />
+                  <D1GridItem base="12" sm="6" md="4">
+                    <D1Input
+                      name="birthDate"
+                      type="date"
+                      label="Birth Date"
+                    />
+                  </D1GridItem>
 
-          <D1Input
-            name="age"
-            type="number"
-            label="Age"
-            placeholder="e.g. 25"
-          />
+                  <D1GridItem base="12" sm="6" md="4">
+                    <D1Input
+                      name="age"
+                      type="number"
+                      label="Age"
+                      placeholder="e.g. 25"
+                    />
+                  </D1GridItem>
+                </D1Grid>
+              </D1Group>
 
-          <D1InputPhone
-            name="phone"
-            label="Phone Number"
-            placeholder="Enter phone number"
-          />
+              <D1Group label="Profile & Contacts">
+                <D1Grid>
+                  <D1GridItem base="12" md="4">
+                    <D1InputImage
+                      name="avatar"
+                      label="Profile Picture (Avatar)"
+                      helperMessage="Upload avatar image with crop support"
+                    />
+                  </D1GridItem>
 
-          <D1InputSocial
-            name="telegram"
-            socialType="telegram"
-            label="Telegram Account"
-            placeholder="username"
-          />
-        </D1Group>
+                  <D1GridItem base="12" md="8">
+                    <D1Grid>
+                      <D1GridItem base="12" sm="6">
+                        <D1InputPhone
+                          name="phone"
+                          label="Phone Number"
+                          placeholder="Enter phone number"
+                        />
+                      </D1GridItem>
 
-        <D1Group label="Media, Menus & Sliders (D1InputImage, D1Select, D1SliderField, D1MenuButton, D1MenuChip)">
-          <D1InputImage
-            name="avatar"
-            label="Profile Picture (Avatar)"
-            helperMessage="Upload avatar image with crop support"
-          />
+                      <D1GridItem base="12" sm="6">
+                        <D1InputSocial
+                          name="telegram"
+                          socialType="telegram"
+                          label="Telegram Account"
+                          placeholder="username"
+                        />
+                      </D1GridItem>
 
-          <D1Select
-            name="role"
-            type="select"
-            label="Occupation / Role"
-            placeholder="Select a role"
-            :option="roleOptions"
-          />
+                      <D1GridItem base="12">
+                        <D1Textarea
+                          name="bio"
+                          label="About Yourself (Bio)"
+                          placeholder="Write a few words about yourself..."
+                          :autosize="true"
+                        />
+                      </D1GridItem>
+                    </D1Grid>
+                  </D1GridItem>
+                </D1Grid>
+              </D1Group>
 
-          <D1SliderField
-            name="experience"
-            label="Years of Experience"
-            :min="0"
-            :max="30"
-          />
+              <D1Group label="Occupation & Experience">
+                <D1Grid>
+                  <D1GridItem base="12" sm="6">
+                    <D1Select
+                      name="role"
+                      type="select"
+                      label="Occupation / Role"
+                      placeholder="Select a role"
+                      :option="roleOptions"
+                    />
+                  </D1GridItem>
 
-          <D1MenuButton
-            name="plan"
-            label="Subscription Plan"
-            :option="planOptions"
-          />
+                  <D1GridItem base="12" sm="6">
+                    <D1SliderField
+                      name="experience"
+                      label="Years of Experience"
+                      :min="0"
+                      :max="30"
+                    />
+                  </D1GridItem>
+                </D1Grid>
+              </D1Group>
 
-          <D1MenuChip
-            name="category"
-            label="Specialization Category"
-            :option="categoryOptions"
-          />
-        </D1Group>
+              <D1Group label="Preferences">
+                <D1Grid>
+                  <D1GridItem base="12" sm="6">
+                    <D1Switch
+                      name="newsletter"
+                      label="Subscribe to weekly newsletter"
+                    />
+                  </D1GridItem>
 
-        <D1Group label="Content, Checks & Radios (D1Textarea, D1Checkbox, D1Radio, D1Switch)">
-          <D1Textarea
-            name="bio"
-            label="About Yourself (Bio)"
-            placeholder="Write a few words about yourself..."
-            :autosize="true"
-          />
+                  <D1GridItem base="12" sm="6">
+                    <D1Switch
+                      name="twoFactor"
+                      label="Enable Two-Factor Authentication"
+                    />
+                  </D1GridItem>
+                </D1Grid>
+              </D1Group>
 
-          <D1Checkbox
-            name="agreement"
-            label="I accept the Terms and Conditions and Privacy Policy"
-            required
-          />
+              <D1Group label="Notifications">
+                <D1Grid>
+                  <D1GridItem base="12" sm="6" md="4">
+                    <D1Radio
+                      name="notification"
+                      valueVariant="email"
+                      label="Receive notifications via Email"
+                    />
+                  </D1GridItem>
 
-          <D1Radio
-            name="radioEmail"
-            valueVariant="email"
-            label="Receive notifications via Email"
-          />
-          <D1Radio
-            name="radioSms"
-            valueVariant="sms"
-            label="Receive notifications via SMS"
-          />
+                  <D1GridItem base="12" sm="6" md="4">
+                    <D1Radio
+                      name="notification"
+                      valueVariant="sms"
+                      label="Receive notifications via SMS"
+                    />
+                  </D1GridItem>
 
-          <D1Switch
-            name="newsletter"
-            label="Subscribe to weekly product updates newsletter"
-          />
-        </D1Group>
+                  <D1GridItem base="12" sm="6" md="4">
+                    <D1Radio
+                      name="notification"
+                      valueVariant="push"
+                      label="Receive Push notifications"
+                    />
+                  </D1GridItem>
+                </D1Grid>
+              </D1Group>
 
-        <D1Group label="Form Controls">
-          <DemoFlex>
-            <D1Button type="submit" label="Submit Form" primary />
-            <D1Button type="reset" label="Reset Form" secondary />
-            <D1Button label="Check Validity" outline @click="onCheckValidity" />
-            <D1Button label="Fill Sample Data" outline @click="onFillDemoData" />
-            <D1Button label="Clear Form" outline @click="onClearData" />
-          </DemoFlex>
-        </D1Group>
-      </D1Form>
+              <D1Group label="Subscription & Category">
+                <D1Grid>
+                  <D1GridItem base="12" sm="6">
+                    <D1MenuButton
+                      name="plan"
+                      label="Subscription Plan"
+                      :option="planOptions"
+                    />
+                  </D1GridItem>
 
-      <D1Group label="Events & Form State">
-        <DemoValue :value="eventName" label="Last Triggered Event" />
-        <DemoValue :value="validityStatus" label="Validity Status" />
-        <DemoValue :value="JSON.stringify(formValues, null, 2)" label="Current Form Values (v-model)" />
-      </D1Group>
+                  <D1GridItem base="12" sm="6">
+                    <D1MenuChip
+                      name="category"
+                      label="Specialization Category"
+                      :option="categoryOptions"
+                    />
+                  </D1GridItem>
+                </D1Grid>
+              </D1Group>
 
-      <D1Group label="Native HTML Elements (D1Form :native=&quot;true&quot;)">
-        <D1Form
-          :native="true"
-          v-model="nativeFormValues"
-          @input="onNativeInput"
-          @change="onNativeChange"
-          @reset="onNativeReset"
-          @submit="onNativeSubmit"
-        >
-          <DemoFlex direction="column">
-            <label>
-              Full Name:
-              <input
-                name="nativeFullName"
-                type="text"
-                placeholder="Enter full name"
-                required
+              <D1Group label="Agreement">
+                <D1Checkbox
+                  name="agreement"
+                  label="I accept Terms and Conditions"
+                  required
+                />
+              </D1Group>
+
+              <D1Group label="Form Controls">
+                <DemoFlex>
+                  <D1Button type="submit" label="Submit Form" primary />
+                  <D1Button type="reset" label="Reset Form" secondary />
+                  <D1Button label="Check Validity" outline @click="onCheckValidity" />
+                  <D1Button label="Fill Sample Data" outline @click="onFillDemoData" />
+                  <D1Button label="Clear Form" outline @click="onClearData" />
+                </DemoFlex>
+              </D1Group>
+            </D1Block>
+          </D1Form>
+        </D1GridItem>
+
+        <D1GridItem base="12" lg="4">
+          <D1Block label="Events & Form State">
+            <D1Group label="Events & Status">
+              <DemoValue :value="eventName" label="Last Triggered Event" />
+              <DemoValue :value="validityStatus ?? 'Not checked'" label="Validity Status" />
+            </D1Group>
+
+            <D1Group label="Current Form Values (v-model)">
+              <DemoValue
+                v-for="(val, key) in formValues"
+                :key="key"
+                :label="String(key)"
+                :value="val ?? '—'"
               />
-            </label>
-
-            <label>
-              Email Address:
-              <input
-                name="nativeEmail"
-                type="email"
-                placeholder="name@example.com"
-                required
-              />
-            </label>
-
-            <label>
-              Country:
-              <select name="nativeCountry">
-                <option value="vn">Vietnam</option>
-                <option value="us">United States</option>
-                <option value="de">Germany</option>
-                <option value="fr">France</option>
-                <option value="jp">Japan</option>
-              </select>
-            </label>
-
-            <label>
-              Native Comments:
-              <textarea
-                name="nativeBio"
-                rows="3"
-                placeholder="Enter comments..."
-              ></textarea>
-            </label>
-
-            <label>
-              <input
-                name="nativeAgree"
-                type="checkbox"
-              />
-              I accept native form terms
-            </label>
-
-            <DemoFlex style="margin-top: 12px;">
-              <D1Button type="submit" label="Submit Native Form" primary />
-              <D1Button type="reset" label="Reset Native Form" secondary />
-            </DemoFlex>
-          </DemoFlex>
-        </D1Form>
-
-        <DemoValue :value="JSON.stringify(nativeFormValues, null, 2)" label="Native Form Values (v-model)" />
-      </D1Group>
+            </D1Group>
+          </D1Block>
+        </D1GridItem>
+      </D1Grid>
     </D1Section>
   </D1Page>
 </template>

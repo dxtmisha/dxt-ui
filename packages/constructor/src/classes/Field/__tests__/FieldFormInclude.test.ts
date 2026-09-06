@@ -99,11 +99,11 @@ describe('FieldFormInclude', () => {
     it('should call updateData on context if context exists', () => {
       vi.mocked(inject).mockReturnValue(mockContext)
       formInclude = new FieldFormInclude({} as any, {} as any, {} as any)
-      const mockEvent = new InputEvent('input')
+      const mockEvent = { type: 'input' } as any
 
-      formInclude.updateData('username', mockData, mockEvent)
+      formInclude.updateData(mockData, mockEvent)
 
-      expect(mockContext.updateData).toHaveBeenCalledWith('username', mockData, mockEvent)
+      expect(mockContext.updateData).toHaveBeenCalledWith(formInclude.id, mockData, mockEvent)
       expect(mockContext.updateData).toHaveBeenCalledTimes(1)
     })
 
@@ -111,7 +111,7 @@ describe('FieldFormInclude', () => {
       vi.mocked(inject).mockReturnValue(undefined)
       formInclude = new FieldFormInclude({} as any, {} as any, {} as any)
 
-      expect(() => formInclude.updateData('username', { value: 'x', status: true })).not.toThrow()
+      expect(() => formInclude.updateData({ value: 'x', status: true })).not.toThrow()
     })
   })
 })

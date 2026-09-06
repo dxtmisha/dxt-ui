@@ -172,6 +172,7 @@ export class SliderDesign<
         h(
           'button',
           {
+            type: 'button',
             ref: this.item.minElement.element,
             class: [
               this.classes?.value.thumb,
@@ -206,6 +207,7 @@ export class SliderDesign<
       h(
         'button',
         {
+          type: 'button',
           ref: this.item.maxElement.element,
           class: [
             this.classes?.value.thumb,

@@ -38,16 +38,17 @@ export class FormProvide {
    * Updates validation data of a registered form child element and triggers form input event.
    *
    * Обновляет данные валидации зарегистрированного дочернего элемента формы и вызывает событие ввода формы.
-   * @param name element name / имя элемента
+   * @param id element identifier or name / идентификатор или имя элемента
    * @param data element validation and input data / данные валидации и ввода элемента
    * @param event event object / объект события
    */
   readonly updateData = (
-    name: string,
+    id: string,
     data?: FieldValidationItem,
     event?: InputEvent
   ): void => {
-    this.elements.updateData(name, data)
+    console.log('updateData', id, data)
+    this.elements.updateData(id, data)
     this.event.onInput(event)
   }
 }

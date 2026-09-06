@@ -13,6 +13,18 @@ export const wikiForm: StorybookArgsToList = {
     },
     hide: true
   },
+  action: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.form,
+      type: 'string',
+      description: {
+        en: 'URL or endpoint for form submission',
+        ru: 'URL или эндпоинт для отправки формы'
+      }
+    },
+    hide: true
+  },
   arrow: {
     type: StorybookControl.select,
     options: {
@@ -126,6 +138,19 @@ export const wikiForm: StorybookArgsToList = {
     },
     hide: true
   },
+  enctype: {
+    type: StorybookControl.select,
+    options: {
+      category: StorybookCategory.form,
+      type: 'string',
+      options: ['application/x-www-form-urlencoded', 'multipart/form-data', 'text/plain'],
+      description: {
+        en: 'Encoding type used when submitting the form to the server',
+        ru: 'Тип кодирования данных при отправке формы на сервер'
+      }
+    },
+    hide: true
+  },
   enterKeyHint: {
     type: StorybookControl.select,
     options: {
@@ -223,6 +248,19 @@ export const wikiForm: StorybookArgsToList = {
         ru: 'Максимально допустимое количество символов'
       },
       value: 100
+    },
+    hide: true
+  },
+  method: {
+    type: StorybookControl.select,
+    options: {
+      category: StorybookCategory.form,
+      type: 'string',
+      options: ['get', 'post', 'dialog'],
+      description: {
+        en: 'HTTP method used for form submission',
+        ru: 'HTTP-метод для отправки формы'
+      }
     },
     hide: true
   },
@@ -340,6 +378,19 @@ export const wikiForm: StorybookArgsToList = {
       description: {
         en: 'Step size for numeric inputs',
         ru: 'Размер шага для числовых инпутов'
+      }
+    },
+    hide: true
+  },
+  target: {
+    type: StorybookControl.select,
+    options: {
+      category: StorybookCategory.form,
+      type: 'string',
+      options: ['_self', '_blank', '_parent', '_top'],
+      description: {
+        en: 'Target browsing context or window where the form response will be displayed',
+        ru: 'Контекст перехода или окно, в котором будет отображен ответ формы'
       }
     },
     hide: true

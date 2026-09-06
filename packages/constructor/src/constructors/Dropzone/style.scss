@@ -17,6 +17,10 @@
     opacity: 0;
   }
 
+  &__label {
+    text-align: center;
+  }
+
   &--disabled,
   &--readonly {
     pointer-events: none;

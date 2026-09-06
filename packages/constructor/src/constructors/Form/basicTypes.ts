@@ -5,6 +5,8 @@ import type { FieldBasicExpose, FieldValidationItem } from '../../types/fieldTyp
  * Интерфейс, описывающий запись дочернего элемента формы
  */
 export type FormElementItem<T = any> = FieldBasicExpose<T> & {
+  /** Unique element identifier / Уникальный идентификатор элемента */
+  id?: string
   /** Element name / Имя элемента */
   name: string
   /** Additional element validation and input data / Дополнительные данные валидации и ввода элемента */
@@ -27,7 +29,7 @@ export type FormElementRegistration<T = any> = {
   /** Register a child element / Зарегистрировать дочерний элемент */
   register: FormElementRegister<T>
   /** Update child element validation data / Обновить данные валидации дочернего элемента */
-  updateData: (name: string, data?: FieldValidationItem<T>, event?: InputEvent) => void
+  updateData: (id: string, data?: FieldValidationItem<T>, event?: InputEvent) => void
 }
 
 /**

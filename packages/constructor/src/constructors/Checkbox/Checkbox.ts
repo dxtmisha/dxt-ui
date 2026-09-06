@@ -26,53 +26,93 @@ import type { CheckboxComponents, CheckboxEmits, CheckboxSlots } from './types'
 import type { CheckboxProps } from './props'
 
 /**
- * Checkbox
+ * Class representing the Checkbox component business logic and state management.
+ * Coordinates input attributes, selection states, validations, labels, icons, and interactions.
+ *
+ * Класс, представляющий бизнес-логику и управление состоянием компонента Checkbox.
+ * Координирует атрибуты ввода, состояния выбора, валидацию, метки, иконки и взаимодействия.
  */
 export class Checkbox {
+  /** Input element type / Тип элемента ввода */
   readonly type: string = 'checkbox'
 
+  /** Object for working with field attributes / Объект для работы с атрибутами поля */
   readonly attributes: FieldAttributesInclude
+
+  /** Object for working with field changes / Объект для работы с изменениями поля */
   readonly change: FieldChangeInclude
+
+  /** Object for working with field code / Объект для работы с кодом поля */
   readonly code: FieldCodeInclude
+
+  /** Object for working with description / Объект для работы с описанием */
   readonly description: DescriptionInclude
+
+  /** Object for working with field DOM element / Объект для работы с DOM-элементом поля */
   readonly elementItem: FieldElementInclude
+
+  /** Object for working with enabled state / Объект для работы с состоянием активности */
   readonly enabled: EnabledInclude
+
+  /** Object for working with field form context / Объект для работы с контекстом формы поля */
   readonly form: FieldFormInclude
+
+  /** Object for working with field events / Объект для работы с событиями поля */
   readonly event: FieldEventInclude
+
+  /** Object for working with checkbox icon / Объект для работы с иконкой флажка */
   readonly icon: CheckboxIcon
+
+  /** Object for working with label / Объект для работы с меткой */
   readonly label: LabelInclude
+
+  /** Object for working with field message / Объект для работы с сообщением поля */
   readonly message: FieldMessageInclude<any, any>
+
+  /** Object for working with progress indicator / Объект для работы с индикатором прогресса */
   readonly progress: ProgressInclude
+
+  /** Object for working with ripple effect / Объект для работы с эффектом волны */
   readonly ripple: RippleInclude
+
+  /** Object for working with skeleton loading / Объект для работы со скелетной загрузкой */
   readonly skeleton: SkeletonInclude
+
+  /** Object for working with field validation / Объект для работы с валидацией поля */
   readonly validation: FieldValidationInclude
+
+  /** Object for working with field value / Объект для работы со значением поля */
   readonly value: FieldValueInclude<boolean>
 
   /**
-   * Constructor
-   * @param props input data/ входные данные
-   * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
-   * @param element input element/ элемент ввода
-   * @param classDesign design name/ название дизайна
-   * @param className class name/ название класса
-   * @param components object for working with components/ объект для работы с компонентами
-   * @param slots object for working with slots/ объект для работы со слотами
-   * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
-   * @param constructors object with classes/ объект с классами
-   * @param constructors.LabelConstructor class for creating a label/ класс для создания метки
-   * @param constructors.DescriptionConstructor class for creating a description/ класс для создания описания
-   * @param constructors.EnabledConstructor class for creating the enabled state/ класс для создания состояния активности
-   * @param constructors.ProgressConstructor class for creating a progress indicator/ класс для создания индикатора прогресса
-   * @param constructors.RippleConstructor class for creating a ripple effect/ класс для создания эффекта волны
-   * @param constructors.SkeletonConstructor class for creating a skeleton/ класс для создания скелета
-   * @param constructors.FieldAttributesIncludeConstructor class for creating field attributes/ класс для создания атрибутов поля
-   * @param constructors.FieldChangeIncludeConstructor class for creating field change attributes/ класс для создания атрибутов изменения поля
-   * @param constructors.FieldElementIncludeConstructor class for creating field element attributes/ класс для создания атрибутов элемента поля
-   * @param constructors.FieldEventIncludeConstructor class for creating field event/ класс для создания событий поля
+   * Constructor for the Checkbox component.
+   *
+   * Конструктор для компонента Checkbox.
+   * @param props input data / входные данные
+   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
+   * @param element input element / элемент ввода
+   * @param classDesign design name / название дизайна
+   * @param className class name / название класса
+   * @param components object for working with components / объект для работы с компонентами
+   * @param slots object for working with slots / объект для работы со слотами
+   * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
+   * @param constructors object with classes / объект с классами
+   * @param constructors.CheckboxIconConstructor class for creating checkbox icon / класс для создания иконки флажка
+   * @param constructors.DescriptionConstructor class for creating description / класс для создания описания
+   * @param constructors.EnabledConstructor class for creating enabled state / класс для создания состояния активности
+   * @param constructors.FieldAttributesIncludeConstructor class for creating field attributes / класс для создания атрибутов поля
+   * @param constructors.FieldChangeIncludeConstructor class for creating field change attributes / класс для создания атрибутов изменения поля
+   * @param constructors.FieldCodeIncludeConstructor class for creating field code / класс для создания кода поля
+   * @param constructors.FieldElementIncludeConstructor class for creating field element attributes / класс для создания атрибутов элемента поля
+   * @param constructors.FieldEventIncludeConstructor class for creating field events / класс для создания событий поля
    * @param constructors.FieldFormIncludeConstructor class for creating field form / класс для создания формы поля
-   * @param constructors.FieldMessageConstructor class for creating field message/ класс для создания сообщения поля
-   * @param constructors.FieldValidationIncludeConstructor class for creating field validation/ класс для создания валидации поля
-   * @param constructors.FieldValueIncludeConstructor class for creating field value attributes/ класс для создания атрибутов значения поля
+   * @param constructors.FieldMessageConstructor class for creating field message / класс для создания сообщения поля
+   * @param constructors.FieldValidationIncludeConstructor class for creating field validation / класс для создания валидации поля
+   * @param constructors.FieldValueIncludeConstructor class for creating field value attributes / класс для создания атрибутов значения поля
+   * @param constructors.LabelConstructor class for creating label / класс для создания метки
+   * @param constructors.ProgressConstructor class for creating progress indicator / класс для создания индикатора прогресса
+   * @param constructors.RippleConstructor class for creating ripple effect / класс для создания эффекта волны
+   * @param constructors.SkeletonConstructor class for creating skeleton / класс для создания скелета
    */
   constructor(
     protected readonly props: CheckboxProps,
@@ -145,7 +185,10 @@ export class Checkbox {
     this.value = new FieldValueIncludeConstructor(
       this.props,
       this.refs,
-      this.elementItem
+      this.elementItem,
+      undefined,
+      false,
+      Boolean(this.props.valueVariant)
     )
 
     this.code = new FieldCodeIncludeConstructor(this.props)
@@ -207,5 +250,15 @@ export class Checkbox {
     this.enabled = new EnabledConstructor(props, this.progress)
 
     this.ripple = new RippleConstructor(className, components, this.enabled)
+  }
+
+  /**
+   * Triggering the event for changes in the checkbox.
+   *
+   * Вызов события для изменения в checkbox.
+   * @param event event object / объект события
+   */
+  readonly onInput = (event: Event): void => {
+    this.event.onChecked(event)
   }
 }

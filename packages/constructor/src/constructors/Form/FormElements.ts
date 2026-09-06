@@ -1,4 +1,5 @@
 import { shallowRef, type ShallowRef } from 'vue'
+import { isNull } from '@dxtmisha/functional-basic'
 
 import type {
   FormElementItem,
@@ -80,7 +81,11 @@ export class FormElements {
     const values: FormElementsValues = {}
 
     this.item.value.forEach((element) => {
-      values[element.name] = this.getElementValue(element)
+      const value = this.getElementValue(element)
+
+      if (!isNull(value)) {
+        values[element.name] = value
+      }
     })
 
     return values
@@ -98,7 +103,6 @@ export class FormElements {
     for (const element of this.item.value) {
       if (element.name === name) {
         this.setElementValue(element, value)
-        break
       }
     }
 
@@ -133,11 +137,32 @@ export class FormElements {
     for (const element of this.item.value) {
       const value = values[element.name]
 
-      if (value !== undefined) {
-        this.setElementValue(element, value)
-      } else if (typeof element.clear === 'function') {
-        element.clear()
-      } else {
+      if (value !== element?.getValue?.()) {
+        if (value !== undefined) {
+          this.setElementValue(element, value)
+        } else if (typeof element.clear === 'function') {
+          element.clear()
+        } else {
+          this.setElementValue(element, undefined)
+        }
+      }
+    }
+
+    return this
+  }
+
+  /**
+   * Clears values and data of registered elements by name.
+   *
+   * Очищает значения и данные зарегистрированных элементов по имени.
+   * @param name element name / имя элемента
+   * @param id optional element identifier to exclude / опциональный идентификатор элемента для исключения
+   * @returns current instance / текущий экземпляр
+   */
+  readonly clearByName = (name: string, id?: string): this => {
+    for (const element of this.item.value) {
+      if (element.name === name && element.id !== id) {
+        element.data = undefined
         this.setElementValue(element, undefined)
       }
     }
@@ -149,13 +174,14 @@ export class FormElements {
    * Updates validation data of a registered form child element.
    *
    * Обновляет данные валидации зарегистрированного дочернего элемента формы.
-   * @param name element name / имя элемента
+   * @param id element identifier or name / идентификатор или имя элемента
    * @param data element validation and input data / данные валидации и ввода элемента
    */
-  readonly updateData = (name: string, data?: FieldValidationItem): void => {
-    const item = this.item.value.find(element => element.name === name)
+  readonly updateData = (id: string, data?: FieldValidationItem): void => {
+    const item = this.item.value.find(element => element.id === id)
 
     if (item) {
+      this.clearByName(item.name, item.id)
       item.data = data
     }
   }
@@ -193,7 +219,7 @@ export class FormElements {
    * @returns element value or undefined / значение элемента или undefined
    */
   protected getElementValue(element?: FormElementItem): any {
-    return element?.getValue?.() ?? element?.value?.value
+    return element?.data?.value ?? element?.getValue?.() ?? undefined
   }
 
   /**

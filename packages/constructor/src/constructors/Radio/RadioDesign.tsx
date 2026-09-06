@@ -24,11 +24,11 @@ export class RadioDesign<
   CLASSES extends RadioClasses,
   P extends RadioPropsBasic
 > extends CheckboxDesign<
-    COMP,
-    EXPOSE,
-    CLASSES,
-    P
-  > {
+  COMP,
+  EXPOSE,
+  CLASSES,
+  P
+> {
   /**
    * Constructor
    * @param name class name/ название класса

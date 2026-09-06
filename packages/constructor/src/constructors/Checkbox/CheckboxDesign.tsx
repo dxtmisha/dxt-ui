@@ -166,7 +166,7 @@ export class CheckboxDesign<
         class: this.classes?.value.input,
         type: this.item.type,
         checked: this.item.value.item.value,
-        onInput: this.item.event.onChecked,
+        onInput: this.item.onInput,
         ...AriaStaticInclude.invalid(this.item.validation.isError())
       }
     ))
@@ -199,7 +199,7 @@ export class CheckboxDesign<
    *
    * Рендеринг внутреннего элемента checkbox.
    */
-  renderCheckedItem(): VNode[] {
+  readonly renderCheckedItem = (): VNode[] => {
     return [
       h(
         'span',

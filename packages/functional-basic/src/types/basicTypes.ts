@@ -51,6 +51,12 @@ export type ArrayToItem<T> = T extends any[] ? T[number] : T
 
 // Function
 /**
+ * Generic type that can be either a direct value or a function returning that value/
+ * Дженерик тип для прямого значения или функции, возвращающей это значение
+ */
+export type FunctionOr<T = any> = T | FunctionReturn<T>
+
+/**
  * Function type that returns a value of type R/
  * Тип функции, возвращающей значение типа R
  */

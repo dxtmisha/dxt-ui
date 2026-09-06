@@ -17,6 +17,7 @@ import {
   type FormExpose,
   type FormSlots
 } from './types'
+import type { FormElementsValues } from './basicTypes'
 
 /**
  * FormDesign component class for rendering form markup and slots.
@@ -84,8 +85,14 @@ export class FormDesign<
       getValues: this.item.value.get,
       reset: this.item.value.reset,
       set: this.item.value.set,
-      setValues: this.item.value.setValues,
-      setValuesAll: this.item.value.setValuesAll,
+      setValues: (values: FormElementsValues) => {
+        this.item.value.setValues(values)
+        this.item.model.emit(values)
+      },
+      setValuesAll: (values: FormElementsValues) => {
+        this.item.value.setValuesAll(values)
+        this.item.model.emit(values)
+      },
       submit: this.item.submit
     } as unknown as EXPOSE
   }

@@ -44,6 +44,8 @@
 
   &__label {
     display: block;
+    position: relative;
+    z-index: 4;
   }
 
   &--required {

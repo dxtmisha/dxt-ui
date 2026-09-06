@@ -4,6 +4,7 @@ import {
   getLength,
   getRef,
   isFilled,
+  type NumberOrStringOrBoolean,
   type RefOrNormal,
   setValues,
   toArray,
@@ -42,13 +43,15 @@ export class FieldValueInclude<Value = any> {
    * @param element object for working with the input element / объект для работы с элементом ввода
    * @param original original values / оригинальные значения
    * @param isMultiple flag enabling multiple selection handling in setValues / флаг включения множественного выбора в setValues
+   * @param isValueVariant flag enabling valueVariant support / флаг включения поддержки valueVariant
    */
   constructor(
-    protected readonly props: FieldValueProps<Value>,
+    protected readonly props: FieldValueProps<Value> & { valueVariant?: NumberOrStringOrBoolean },
     protected readonly refs: ToRefs<FieldValueProps<Value>>,
     protected readonly element?: FieldElementInclude,
     protected readonly original?: RefOrNormal<Value>,
-    protected readonly isMultiple: boolean = true
+    protected readonly isMultiple: boolean = true,
+    protected readonly isValueVariant: boolean = false
   ) {
     this.item.value = this.getOriginal()
 
@@ -62,7 +65,15 @@ export class FieldValueInclude<Value = any> {
 
   /** Returns the current value if isFull is true / Возвращает текущее значение, если isFull истинно */
   readonly itemByFull = computed<Value | undefined>(() => {
-    return this.isFull.value ? this.item.value : undefined
+    if (this.isFull.value) {
+      if (this.isValueVariant) {
+        return this.item.value ? (this.props.valueVariant as unknown as Value) : undefined
+      }
+
+      return this.item.value
+    }
+
+    return undefined
   })
 
   /**
@@ -160,9 +171,15 @@ export class FieldValueInclude<Value = any> {
   readonly expose = () => {
     return {
       value: this.item,
-      getValue: () => this.item.value,
+      getValue: () => {
+        return this.itemByFull.value
+      },
       setValue: (value: any) => {
-        this.set(value)
+        if (this.isValueVariant) {
+          this.setValueByRadio(value)
+        } else {
+          this.set(value)
+        }
       },
       clear: () => {
         this.clear()
@@ -280,6 +297,19 @@ export class FieldValueInclude<Value = any> {
     const value = input.checked ? input.value : ''
 
     return this.set(value)
+  }
+
+  /**
+   * Sets the value for radio type.
+   *
+   * Устанавливает значение для типа radio.
+   * @param value value / значение
+   * @returns current instance / текущий экземпляр
+   */
+  readonly setValueByRadio = (
+    value: any
+  ): this => {
+    return this.set(value === this.props.valueVariant)
   }
 
   /**

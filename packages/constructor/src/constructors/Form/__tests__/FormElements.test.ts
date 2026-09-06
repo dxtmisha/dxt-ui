@@ -297,9 +297,10 @@ describe('FormElements', () => {
     expect(setAgeMock).toHaveBeenCalledWith(20)
   })
 
-  it('updates validation data for registered element via updateData(name, data)', () => {
+  it('updates validation data for registered element via updateData(id, data)', () => {
     const elements = new FormElements()
     const mockElement: FormElementItem = {
+      id: 'user-1',
       name: 'username',
       value: ref('admin'),
       getValue: () => 'admin',
@@ -316,7 +317,7 @@ describe('FormElements', () => {
     elements.register(mockElement)
     expect(elements.getData().username.status).toBe(true)
 
-    elements.updateData('username', {
+    elements.updateData('user-1', {
       value: 'admin',
       status: false,
       validationMessage: 'Username is required'
@@ -328,6 +329,124 @@ describe('FormElements', () => {
       validationMessage: 'Username is required'
     })
     expect(elements.isError()).toBe(true)
+  })
+
+  it('clears values and data of elements with the same name via clearByName', () => {
+    const elements = new FormElements()
+    const setRadio1Mock = vi.fn()
+    const setRadio2Mock = vi.fn()
+
+    const radio1: FormElementItem = {
+      id: 'radio-1',
+      name: 'notification',
+      value: ref(true),
+      getValue: () => 'email',
+      setValue: setRadio1Mock,
+      clear: vi.fn(),
+      checkValidity: () => true,
+      getValidationMessage: () => '',
+      data: { value: 'email', status: true }
+    }
+
+    const radio2: FormElementItem = {
+      id: 'radio-2',
+      name: 'notification',
+      value: ref(false),
+      getValue: () => undefined,
+      setValue: setRadio2Mock,
+      clear: vi.fn(),
+      checkValidity: () => true,
+      getValidationMessage: () => '',
+      data: undefined
+    }
+
+    elements.register(radio1)
+    elements.register(radio2)
+
+    elements.clearByName('notification', 'radio-2')
+
+    expect(radio1.data).toBeUndefined()
+    expect(setRadio1Mock).toHaveBeenCalledWith(undefined)
+    expect(setRadio2Mock).not.toHaveBeenCalled()
+  })
+
+  it('clears all elements with the name when no exclude id provided to clearByName', () => {
+    const elements = new FormElements()
+    const setRadio1Mock = vi.fn()
+    const setRadio2Mock = vi.fn()
+
+    const radio1: FormElementItem = {
+      id: 'radio-1',
+      name: 'notification',
+      value: ref(true),
+      getValue: () => 'email',
+      setValue: setRadio1Mock,
+      clear: vi.fn(),
+      checkValidity: () => true,
+      getValidationMessage: () => '',
+      data: { value: 'email', status: true }
+    }
+
+    const radio2: FormElementItem = {
+      id: 'radio-2',
+      name: 'notification',
+      value: ref(false),
+      getValue: () => undefined,
+      setValue: setRadio2Mock,
+      clear: vi.fn(),
+      checkValidity: () => true,
+      getValidationMessage: () => '',
+      data: { value: 'sms', status: true }
+    }
+
+    elements.register(radio1)
+    elements.register(radio2)
+
+    elements.clearByName('notification')
+
+    expect(radio1.data).toBeUndefined()
+    expect(radio2.data).toBeUndefined()
+    expect(setRadio1Mock).toHaveBeenCalledWith(undefined)
+    expect(setRadio2Mock).toHaveBeenCalledWith(undefined)
+  })
+
+  it('clears other elements with the same name when updateData is called', () => {
+    const elements = new FormElements()
+    const setRadio1Mock = vi.fn()
+    const setRadio2Mock = vi.fn()
+
+    const radio1: FormElementItem = {
+      id: 'radio-1',
+      name: 'notification',
+      value: ref(true),
+      getValue: () => 'email',
+      setValue: setRadio1Mock,
+      clear: vi.fn(),
+      checkValidity: () => true,
+      getValidationMessage: () => '',
+      data: { value: 'email', status: true }
+    }
+
+    const radio2: FormElementItem = {
+      id: 'radio-2',
+      name: 'notification',
+      value: ref(false),
+      getValue: () => undefined,
+      setValue: setRadio2Mock,
+      clear: vi.fn(),
+      checkValidity: () => true,
+      getValidationMessage: () => '',
+      data: undefined
+    }
+
+    elements.register(radio1)
+    elements.register(radio2)
+
+    elements.updateData('radio-2', { value: 'sms', status: true })
+
+    expect(radio1.data).toBeUndefined()
+    expect(setRadio1Mock).toHaveBeenCalledWith(undefined)
+    expect(radio2.data).toEqual({ value: 'sms', status: true })
   })
 
   it('ignores updateData for non-existent element', () => {

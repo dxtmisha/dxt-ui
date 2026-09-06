@@ -433,6 +433,17 @@ export const wikiOption: StorybookArgsToList = {
       }
     }
   },
+  native: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.option,
+      description: {
+        en: 'Works with native elements if true, otherwise with custom component elements',
+        ru: 'Работает с нативными элементами, если true, иначе с кастомными элементами компонентов'
+      }
+    },
+    isDemo: true
+  },
   orientation: {
     type: StorybookControl.select,
     options: {

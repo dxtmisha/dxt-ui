@@ -6,6 +6,14 @@ import { FormElements } from '../FormElements'
 import { FormElementsNative } from '../FormElementsNative'
 import { FormValue } from '../FormValue'
 
+vi.mock('vue', async () => {
+  const actual = await vi.importActual('vue') as any
+  return {
+    ...actual,
+    onMounted: (fn: () => void) => fn()
+  }
+})
+
 describe('FormValue', () => {
   it('delegates reading and writing to FormElements in custom elements mode', () => {
     const elements = new FormElements()

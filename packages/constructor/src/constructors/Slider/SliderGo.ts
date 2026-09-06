@@ -44,6 +44,7 @@ export class SliderGo {
       const markValue = this.marks.toMark(percentage)
 
       this.value.set(markValue, this.focus.get())
+      this.emitsItem.emit('input')
     }
   }
 
@@ -77,6 +78,7 @@ export class SliderGo {
       const targetValue = this.marks.getMarkNeighbor(currentActiveValue, isIncrease)
 
       this.value.set(targetValue, this.focus.get())
+      this.emitsItem.emit('input')
       this.emitsItem.emit('change')
     }
   }

@@ -208,7 +208,7 @@ export class Button {
    */
   get binds() {
     return {
-      'type': this.props.type,
+      'type': this.props.type ?? (this.tag === 'button' ? 'button' : undefined),
       'data-value': this.props.value,
       'disabled': this.enabled.isDisabledOrUndefined,
       ...this.eventList,

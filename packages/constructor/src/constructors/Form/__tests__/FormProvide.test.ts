@@ -46,6 +46,7 @@ describe('FormProvide', () => {
     const onInputSpy = vi.spyOn(formEvent, 'onInput')
 
     const mockElement: FormElementItem = {
+      id: 'username',
       name: 'username',
       value: ref('admin'),
       getValue: () => 'admin',

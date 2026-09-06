@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi } from 'vitest'
-import { ref, nextTick } from 'vue'
+import { ref } from 'vue'
 import { ModelValueInclude } from '../../../classes/ModelValueInclude'
 import type { SliderMarkItem, SliderValueType } from '../basicTypes'
 import { SliderEmit } from '../SliderEmit'
@@ -82,17 +82,17 @@ describe('SliderEmit', () => {
     expect(mockEmits).toHaveBeenCalledWith('changeLite', [10, 80])
   })
 
-  it('should automatically emit input and inputLite when model value changes', async () => {
+  it('should emit input and inputLite when emit is called', () => {
     const mockEmits = vi.fn()
-    const { model } = createSliderEmit(20, { multiple: false }, mockEmits)
+    const { sliderEmit } = createSliderEmit(80, { multiple: false }, mockEmits)
 
-    model.set(50)
-    await nextTick()
+    sliderEmit.emit('input')
 
-    expect(mockEmits).toHaveBeenCalledWith('input', expect.objectContaining({
-      mark: 50,
+    expect(mockEmits).toHaveBeenCalledWith('input', {
+      mark: 80,
+      item: { mark: 80, value: 80, label: '80' },
       value: 80
-    }))
-    expect(mockEmits).toHaveBeenCalledWith('inputLite', 50)
+    })
+    expect(mockEmits).toHaveBeenCalledWith('inputLite', 80)
   })
 })

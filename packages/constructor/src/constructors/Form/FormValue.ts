@@ -30,30 +30,30 @@ export class FormValue {
     protected readonly elements?: FormElements,
     protected readonly native?: FormElementsNative
   ) {
-    if (this.refs?.value) {
-      watch(this.refs.value, (value) => {
-        if (value) {
-          this.setValuesAll(value)
-        }
-      })
-    }
-
-    if (this.refs?.modelValue) {
-      watch(this.refs.modelValue, (value) => {
-        if (value) {
-          this.setValuesAll(value)
-        }
-      })
+    if (this.props?.value) {
+      this.cache = { ...this.props.value }
+    } else if (this.props?.modelValue) {
+      this.cache = { ...this.props.modelValue }
     }
 
     onMounted(() => {
-      if (this.props?.value) {
-        this.cache = { ...this.props.value }
-      } else if (this.props?.modelValue) {
-        this.cache = { ...this.props.modelValue }
+      this.setValues(this.cache)
+
+      if (this.refs?.value) {
+        watch(this.refs.value, (value) => {
+          if (value) {
+            this.setValuesAll(value)
+          }
+        })
       }
 
-      this.setValues(this.cache)
+      if (this.refs?.modelValue) {
+        watch(this.refs.modelValue, (value) => {
+          if (value) {
+            this.setValuesAll(value)
+          }
+        })
+      }
     })
   }
 

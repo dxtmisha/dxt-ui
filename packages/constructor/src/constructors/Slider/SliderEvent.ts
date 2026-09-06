@@ -219,6 +219,7 @@ export class SliderEvent {
    */
   protected set(value: number): void {
     this.value.set(value, this.focus.get())
+    this.emitsItem.emit('input')
     this.emitsItem.emit('change')
   }
 
