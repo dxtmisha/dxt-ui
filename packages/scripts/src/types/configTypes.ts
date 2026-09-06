@@ -116,6 +116,18 @@ export type DesignUiConfig = {
    */
   promptExclude?: string | string[]
 
+  /**
+   * List of library names to include in the ai-prompt.md file; if specified, only these libraries will be included /
+   * Список названий библиотек для включения в файл ai-prompt.md; если указано, включаются только эти библиотеки
+   */
+  promptInclude?: string | string[]
+
+  /**
+   * Flag indicating whether to include only packages listed in package.json in the ai-prompt.md file /
+   * Флаг, указывающий, следует ли включать в файл ai-prompt.md только пакеты, указанные в package.json
+   */
+  promptPackageOnly?: boolean
+
   // AI Configuration / Конфигурация ИИ
 
   /** AI provider type for generating content / Тип ИИ-провайдера для генерации контента */

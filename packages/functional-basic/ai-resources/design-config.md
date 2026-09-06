@@ -29,6 +29,8 @@ Configuration specification for DXT UI packages and monorepo root.
 - `aiResourcesDir` (`string`, default: `'ai-resources'`): Directory path containing AI resource and prompt files.
 - `promptScanDepth` (`number`, default: `6`): Maximum directory scan depth for collecting AI prompt packages.
 - `promptExclude` (`string | string[]`): List of library names to exclude from the `ai-prompt.md` file (e.g. `["@dxtmisha/styles"]`).
+- `promptInclude` (`string | string[]`): Whitelist of library names to include in the `ai-prompt.md` file; if specified, only these libraries will be included (e.g. `["@dxtmisha/d1", "@dxtmisha/constructor"]`).
+- `promptPackageOnly` (`boolean`, default: `false`): When `true`, restricts `ai-prompt.md` package discovery to only libraries defined in the root `package.json` (`dependencies`, `devDependencies`, etc.).
 - `separator` (`string`, default: `'/'`): Token path delimiter used when splitting design tokens into sub-branches.
 - `separatorBasicName` (`string`): Base token name stripped during branch segmentation.
 - `separatorLimit` (`number`): Maximum recursion depth for token key splitting.

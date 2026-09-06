@@ -57,7 +57,10 @@ consolidator.make()
 ---
 
 ### Защищенные вспомогательные методы
+- `isExclude(item: LibraryAiPromptItem): boolean` — Проверяет, должна ли библиотека быть исключена на основе конфигурации.
 - `isFileOnDirs(dirs: string[]): boolean` — Проверяет, является ли хотя бы один элемент в каталоге файлом.
+- `isInPackage(item: LibraryAiPromptItem): boolean` — Проверяет, присутствует ли библиотека в корневом package.json.
+- `getPackageNames(): Set<string>` — Получает набор имен пакетов, определенных в корневом package.json.
 - `getInstruction(): string | undefined` — Считывает и форматирует высокоприоритетные инструкции при наличии файла.
 - `getVuePrompt(): string` — Загружает стандартные правила реализации Vue SFC-компонентов.
 - `getGlobalPrompt(): string` — Загружает глобальные принципы чистого кода проекта.

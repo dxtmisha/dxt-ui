@@ -1,11 +1,4 @@
-import {
-  UI_DIR_AI_TYPES,
-  UI_FILE_AI_MCP_ALL,
-  UI_FILE_AI_MCP_ALL_TS,
-  UI_FILE_AI_PROMPT_INSTRUCTION,
-  UI_FILE_AI_PROMPT_PROMPT,
-  UI_MODULES
-} from '../../config'
+import { getPackageJson } from '../../functions/getPackageJson'
 import { GitIgnore } from '../Git/GitIgnore'
 
 import { PropertiesConfig } from '../Properties/PropertiesConfig'
@@ -15,6 +8,15 @@ import { LibraryAiPromptItem } from './LibraryAiPromptItem'
 
 import vuePromptText from '../../media/templates/prompts/aiCodeVuePrompt.en.md?raw'
 import globalPromptText from '../../media/templates/prompts/aiCodeGlobalPrompt.en.md?raw'
+
+import {
+  UI_DIR_AI_TYPES,
+  UI_FILE_AI_MCP_ALL,
+  UI_FILE_AI_MCP_ALL_TS,
+  UI_FILE_AI_PROMPT_INSTRUCTION,
+  UI_FILE_AI_PROMPT_PROMPT,
+  UI_MODULES
+} from '../../config'
 
 const LIBRARY_AI_PROMPT_LIST_DIRS = [
   UI_MODULES
@@ -30,6 +32,9 @@ const LIBRARY_AI_PROMPT_LIST_DIRS = [
 export class LibraryAiPrompt {
   /** List of directories to scan. / Список директорий для сканирования. */
   protected readonly dirs: string[]
+
+  /** Set of package names from root package.json for filtering. / Набор имен пакетов из корневого package.json для фильтрации. */
+  protected packageNames?: Set<string>
 
   /** Regular expression to identify files in directories. / Регулярное выражение для идентификации файлов в директориях. */
   protected readonly exFileOnDirs = /^.+\.[^.]{2,4}$/
@@ -119,13 +124,24 @@ Consolidated documentation, architectural guidelines, and mandatory rules for th
    * @protected
    */
   protected isExclude(item: LibraryAiPromptItem): boolean {
-    const exclude = PropertiesConfig.getPromptExclude()
+    const projectName = item.getProjectName()
+    const include = PropertiesConfig.getPromptInclude()
 
-    if (!exclude || exclude.length === 0) {
-      return false
+    if (include.length > 0) {
+      return !include.includes(projectName)
     }
 
-    return exclude.includes(item.getProjectName())
+    const exclude = PropertiesConfig.getPromptExclude()
+
+    if (exclude.length > 0 && exclude.includes(projectName)) {
+      return true
+    }
+
+    if (PropertiesConfig.isPromptPackageOnly()) {
+      return !this.isInPackage(item)
+    }
+
+    return false
   }
 
   /**
@@ -138,6 +154,28 @@ Consolidated documentation, architectural guidelines, and mandatory rules for th
    */
   protected isFileOnDirs(dirs: string[]): boolean {
     return dirs.some(path => this.exFileOnDirs.test(path))
+  }
+
+  /**
+   * Checks whether the library is present in the root package.json dependencies.
+   *
+   * Проверяет, присутствует ли библиотека в зависимостях корневого package.json.
+   * @param item prompt item to check / элемент промпта для проверки
+   * @returns true if library is found in package.json / true, если библиотека найдена в package.json
+   * @protected
+   */
+  protected isInPackage(item: LibraryAiPromptItem): boolean {
+    if (item.getDir().length === 0) {
+      return true
+    }
+
+    const projectName = item.getProjectName()
+
+    if (projectName === 'none') {
+      return false
+    }
+
+    return this.getPackageNames().has(projectName)
   }
 
   /**
@@ -260,6 +298,42 @@ ${globalPromptText}
     }
 
     return items
+  }
+
+  /**
+   * Retrieves the set of package names defined in the root package.json.
+   *
+   * Получает набор имен пакетов, определенных в корневом package.json.
+   * @returns set of package names / набор имен пакетов
+   * @protected
+   */
+  protected getPackageNames(): Set<string> {
+    if (!this.packageNames) {
+      const packageJson = getPackageJson()
+      const names = new Set<string>()
+
+      if (packageJson) {
+        if (packageJson.name) {
+          names.add(packageJson.name)
+        }
+        if (packageJson.dependencies) {
+          Object.keys(packageJson.dependencies).forEach(name => names.add(name))
+        }
+        if (packageJson.devDependencies) {
+          Object.keys(packageJson.devDependencies).forEach(name => names.add(name))
+        }
+        if (packageJson.peerDependencies) {
+          Object.keys(packageJson.peerDependencies).forEach(name => names.add(name))
+        }
+        if (packageJson.optionalDependencies) {
+          Object.keys(packageJson.optionalDependencies).forEach(name => names.add(name))
+        }
+      }
+
+      this.packageNames = names
+    }
+
+    return this.packageNames
   }
 
   /**

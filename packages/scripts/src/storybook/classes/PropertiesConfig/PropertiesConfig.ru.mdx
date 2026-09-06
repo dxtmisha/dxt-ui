@@ -52,6 +52,9 @@ const separator = PropertiesConfig.getSeparator()
 - `getAiResourcesDir(): string` — возвращает путь к директории с промптами и правилами ИИ.
 - `getPromptScanDepth(): number` — возвращает максимальную глубину сканирования директорий для промпта ИИ.
 - `getPromptExclude(): string[]` — возвращает список названий библиотек, исключаемых из файла ai-prompt.md.
+- `getPromptInclude(): string[]` — возвращает список названий библиотек для включения в файл ai-prompt.md.
+- `getPromptPackageOnly(): boolean | undefined` — возвращает, следует ли включать в ai-prompt.md только пакеты, указанные в package.json.
+- `isPromptPackageOnly(): boolean` — проверяет, следует ли включать в ai-prompt.md только пакеты, указанные в package.json.
 - `getAiType(): AiType` — возвращает настроенного ИИ-провайдера.
 - `getAiModel(): string` — возвращает название конкретной модели ИИ.
 - `getAiKey(): string` — возвращает API-ключ для сервиса ИИ.

@@ -23,98 +23,14 @@ export class PropertiesConfig {
   /** Loaded design-ui.json configuration object / Загруженный объект конфигурации design-ui.json */
   protected static config: DesignUiConfig
 
-  // Project / Основные параметры проекта
-
   /**
-   * Retrieves the global project identifier.
+   * Checks whether only packages listed in package.json should be included in ai-prompt.md.
    *
-   * Получает глобальный идентификатор проекта.
-   * @returns project name string / строка имени проекта
+   * Проверяет, следует ли включать в ai-prompt.md только пакеты, указанные в package.json.
+   * @returns true if package filtering by package.json is enabled / true, если включена фильтрация пакетов по package.json
    */
-  static getProjectName(): string {
-    return this.config?.project ?? 'ui'
-  }
-
-  /**
-   * Retrieves the primary design system name.
-   *
-   * Получает основное название дизайн-системы.
-   * @returns design system name string / строка названия дизайн-системы
-   */
-  static getDesignName(): string {
-    return this.config?.name ?? 'ui'
-  }
-
-  /**
-   * Returns alternative design system aliases.
-   *
-   * Возвращает альтернативные алиасы дизайн-системы.
-   * @returns array of alternative design names or undefined / массив альтернативных названий дизайна или undefined
-   */
-  static getDesignAlternativeName(): string[] | undefined {
-    return this.config?.alternativeName
-  }
-
-  /**
-   * Returns the prefix for generated npm packages.
-   *
-   * Возвращает префикс для генерируемых npm-пакетов.
-   * @returns package prefix or undefined / префикс пакета или undefined
-   */
-  static getPackagePrefix(): string | undefined {
-    return this.config?.packagePrefix ?? undefined
-  }
-
-  // Types & Compilation / Типизация и компиляция
-
-  /**
-   * Returns the directory path for temporary type compilation.
-   *
-   * Возвращает путь к временной директории компиляции типов.
-   * @returns temporary compilation directory path string / строка пути к временной директории компиляции
-   */
-  static getTypesTemporaryDirectory(): string {
-    return this.config?.typesDir ?? UI_DIR_AI_TYPES_TEMPORARY
-  }
-
-  /**
-   * Returns specific directory paths to scan for types.
-   *
-   * Возвращает определенные пути к директориям для сканирования типов.
-   * @returns array of directory paths or undefined / массив путей к директориям или undefined
-   */
-  static getTypesPaths(): string[] | undefined {
-    return this.config?.typesPaths
-  }
-
-  /**
-   * Returns inclusion match pattern or patterns for types scanning.
-   *
-   * Возвращает шаблон или шаблоны соответствия на включение для сканирования типов.
-   * @returns match pattern string, array of patterns, or undefined / строка шаблона соответствия, массив шаблонов или undefined
-   */
-  static getTypesMatch(): string | string[] | undefined {
-    return this.config?.typesMatch
-  }
-
-  /**
-   * Returns exclusion match pattern or patterns for types scanning.
-   *
-   * Возвращает шаблон или шаблоны исключения для сканирования типов.
-   * @returns exclusion pattern string, array of patterns, or undefined / строка шаблона исключения, массив шаблонов или undefined
-   */
-  static getTypesExclude(): string | string[] | undefined {
-    return this.config?.typesExclude
-  }
-
-  /**
-   * Returns whether Vue components should be excluded from types scanning.
-   *
-   * Возвращает, следует ли исключать компоненты Vue при сканировании типов.
-   * @returns true if Vue processing is disabled, false if enabled, or undefined / true, если обработка Vue отключена, false если включена, или undefined
-   */
-  static getTypesWithoutVue(): boolean | undefined {
-    return this.config?.typesWithoutVue
+  static isPromptPackageOnly(): boolean {
+    return Boolean(this.config?.promptPackageOnly)
   }
 
   /**
@@ -128,6 +44,86 @@ export class PropertiesConfig {
   }
 
   /**
+   * Returns the AI configuration object.
+   *
+   * Возвращает объект конфигурации ИИ.
+   * @returns AI configuration object / объект конфигурации ИИ
+   */
+  static getAiConfig(): Record<string, any> {
+    return this.config?.aiConfig ?? {}
+  }
+
+  /**
+   * Returns the secure API key for AI authentication.
+   *
+   * Возвращает безопасный API-ключ для аутентификации ИИ.
+   * @returns AI API key string / строка API-ключа ИИ
+   */
+  static getAiKey(): string {
+    return this.config?.aiKey ?? ''
+  }
+
+  /**
+   * Returns the specific AI model identifier.
+   *
+   * Возвращает конкретный идентификатор модели ИИ.
+   * @returns AI model name string / строка названия модели ИИ
+   */
+  static getAiModel(): string {
+    return this.config?.aiModel ?? ''
+  }
+
+  /**
+   * Returns the directory path containing AI resources and prompts.
+   *
+   * Возвращает путь к директории ресурсов и промптов ИИ.
+   * @returns AI resources directory path string / строка пути к директории ресурсов ИИ
+   */
+  static getAiResourcesDir(): string {
+    return this.config?.aiResourcesDir ?? 'ai-resources'
+  }
+
+  /**
+   * Returns the configured AI provider type.
+   *
+   * Возвращает настроенный тип ИИ-провайдера.
+   * @returns AI provider type / тип ИИ-провайдера
+   */
+  static getAiType(): AiType {
+    return this.config?.aiType ?? 'gemini'
+  }
+
+  /**
+   * Returns the maximum number of type definition files processed by AI concurrently.
+   *
+   * Возвращает максимальное количество файлов определений типов, обрабатываемых ИИ одновременно.
+   * @returns AI types concurrency limit / лимит параллельной обработки типов ИИ
+   */
+  static getAiTypesConcurrency(): number {
+    return this.config?.aiTypesConcurrency ?? 8
+  }
+
+  /**
+   * Returns alternative design system aliases.
+   *
+   * Возвращает альтернативные алиасы дизайн-системы.
+   * @returns array of alternative design names or undefined / массив альтернативных названий дизайна или undefined
+   */
+  static getDesignAlternativeName(): string[] | undefined {
+    return this.config?.alternativeName
+  }
+
+  /**
+   * Retrieves the primary design system name.
+   *
+   * Получает основное название дизайн-системы.
+   * @returns design system name string / строка названия дизайн-системы
+   */
+  static getDesignName(): string {
+    return this.config?.name ?? 'ui'
+  }
+
+  /**
    * Returns the directory path for compiled distribution files.
    *
    * Возвращает путь к директории собранных файлов.
@@ -137,7 +133,91 @@ export class PropertiesConfig {
     return this.config?.distDir ?? UI_DIR_DIST
   }
 
-  // Separators & Tokens / Разделители и токены
+  /**
+   * Returns the Figma access token.
+   *
+   * Возвращает токен доступа к Figma.
+   * @returns Figma token string / строка токена Figma
+   */
+  static getFigmaToken(): string {
+    return this.config?.figmaToken ?? ''
+  }
+
+  /**
+   * Returns the prefix for generated npm packages.
+   *
+   * Возвращает префикс для генерируемых npm-пакетов.
+   * @returns package prefix or undefined / префикс пакета или undefined
+   */
+  static getPackagePrefix(): string | undefined {
+    return this.config?.packagePrefix ?? undefined
+  }
+
+  /**
+   * Retrieves the global project identifier.
+   *
+   * Получает глобальный идентификатор проекта.
+   * @returns project name string / строка имени проекта
+   */
+  static getProjectName(): string {
+    return this.config?.project ?? 'ui'
+  }
+
+  /**
+   * Returns the list of library names to exclude from the ai-prompt.md file.
+   *
+   * Возвращает список названий библиотек, исключаемых из файла ai-prompt.md.
+   * @returns array of excluded library names / массив названий исключаемых библиотек
+   */
+  static getPromptExclude(): string[] {
+    if (Array.isArray(this.config?.promptExclude)) {
+      return this.config.promptExclude
+    }
+
+    if (this.config?.promptExclude) {
+      return [this.config.promptExclude]
+    }
+
+    return []
+  }
+
+  /**
+   * Returns the list of library names to include in the ai-prompt.md file.
+   *
+   * Возвращает список названий библиотек для включения в файл ai-prompt.md.
+   * @returns array of included library names / массив названий включаемых библиотек
+   */
+  static getPromptInclude(): string[] {
+    if (Array.isArray(this.config?.promptInclude)) {
+      return this.config.promptInclude
+    }
+
+    if (this.config?.promptInclude) {
+      return [this.config.promptInclude]
+    }
+
+    return []
+  }
+
+  /**
+   * Returns whether only packages listed in package.json should be included in ai-prompt.md.
+   *
+   * Возвращает, следует ли включать в ai-prompt.md только пакеты, указанные в package.json.
+   * @returns true if only packages in package.json should be included, false if disabled, or undefined / true, если должны быть включены только пакеты из package.json, false если отключено, или undefined
+   */
+  static getPromptPackageOnly(): boolean | undefined {
+    return this.config?.promptPackageOnly
+  }
+
+  /**
+   * Returns the maximum directory scan depth for collecting AI prompt packages.
+   *
+   * Возвращает максимальную глубину сканирования директорий для сбора пакетов промпта ИИ.
+   * @returns scan depth limit number / число лимита глубины сканирования
+   */
+  static getPromptScanDepth(): number {
+    return this.config?.promptScanDepth ?? 6
+  }
 
   /**
    * Returns the token path separator character.
@@ -169,7 +249,55 @@ export class PropertiesConfig {
     return this.config?.separatorLimit ?? 6
   }
 
-  // Wiki & Documentation / Вики и документация
+  /**
+   * Returns exclusion match pattern or patterns for types scanning.
+   *
+   * Возвращает шаблон или шаблоны исключения для сканирования типов.
+   * @returns exclusion pattern string, array of patterns, or undefined / строка шаблона исключения, массив шаблонов или undefined
+   */
+  static getTypesExclude(): string | string[] | undefined {
+    return this.config?.typesExclude
+  }
+
+  /**
+   * Returns inclusion match pattern or patterns for types scanning.
+   *
+   * Возвращает шаблон или шаблоны соответствия на включение для сканирования типов.
+   * @returns match pattern string, array of patterns, or undefined / строка шаблона соответствия, массив шаблонов или undefined
+   */
+  static getTypesMatch(): string | string[] | undefined {
+    return this.config?.typesMatch
+  }
+
+  /**
+   * Returns specific directory paths to scan for types.
+   *
+   * Возвращает определенные пути к директориям для сканирования типов.
+   * @returns array of directory paths or undefined / массив путей к директориям или undefined
+   */
+  static getTypesPaths(): string[] | undefined {
+    return this.config?.typesPaths
+  }
+
+  /**
+   * Returns the directory path for temporary type compilation.
+   *
+   * Возвращает путь к временной директории компиляции типов.
+   * @returns temporary compilation directory path string / строка пути к временной директории компиляции
+   */
+  static getTypesTemporaryDirectory(): string {
+    return this.config?.typesDir ?? UI_DIR_AI_TYPES_TEMPORARY
+  }
+
+  /**
+   * Returns whether Vue components should be excluded from types scanning.
+   *
+   * Возвращает, следует ли исключать компоненты Vue при сканировании типов.
+   * @returns true if Vue processing is disabled, false if enabled, or undefined / true, если обработка Vue отключена, false если включена, или undefined
+   */
+  static getTypesWithoutVue(): boolean | undefined {
+    return this.config?.typesWithoutVue
+  }
 
   /**
    * Returns the primary language for documentation generation.
@@ -182,114 +310,13 @@ export class PropertiesConfig {
   }
 
   /**
-   * Returns the directory path containing AI resources and prompts.
-   *
-   * Возвращает путь к директории ресурсов и промптов ИИ.
-   * @returns AI resources directory path string / строка пути к директории ресурсов ИИ
-   */
-  static getAiResourcesDir(): string {
-    return this.config?.aiResourcesDir ?? 'ai-resources'
-  }
-
-  /**
-   * Returns the maximum directory scan depth for collecting AI prompt packages.
-   *
-   * Возвращает максимальную глубину сканирования директорий для сбора пакетов промпта ИИ.
-   * @returns scan depth limit number / число лимита глубины сканирования
-   */
-  static getPromptScanDepth(): number {
-    return this.config?.promptScanDepth ?? 6
-  }
-
-  /**
-   * Returns the list of library names to exclude from the ai-prompt.md file.
-   *
-   * Возвращает список названий библиотек, исключаемых из файла ai-prompt.md.
-   * @returns array of excluded library names / массив названий исключаемых библиотек
-   */
-  static getPromptExclude(): string[] {
-    if (Array.isArray(this.config?.promptExclude)) {
-      return this.config.promptExclude
-    }
-
-    if (this.config?.promptExclude) {
-      return [this.config.promptExclude]
-    }
-
-    return []
-  }
-
-  // AI Configuration / Конфигурация ИИ
-
-  /**
-   * Returns the configured AI provider type.
-   *
-   * Возвращает настроенный тип ИИ-провайдера.
-   * @returns AI provider type / тип ИИ-провайдера
-   */
-  static getAiType(): AiType {
-    return this.config?.aiType ?? 'gemini'
-  }
-
-  /**
-   * Returns the specific AI model identifier.
-   *
-   * Возвращает конкретный идентификатор модели ИИ.
-   * @returns AI model name string / строка названия модели ИИ
-   */
-  static getAiModel(): string {
-    return this.config?.aiModel ?? ''
-  }
-
-  /**
-   * Returns the secure API key for AI authentication.
-   *
-   * Возвращает безопасный API-ключ для аутентификации ИИ.
-   * @returns AI API key string / строка API-ключа ИИ
-   */
-  static getAiKey(): string {
-    return this.config?.aiKey ?? ''
-  }
-
-  /**
-   * Returns the AI configuration object.
-   *
-   * Возвращает объект конфигурации ИИ.
-   * @returns AI configuration object / объект конфигурации ИИ
-   */
-  static getAiConfig(): Record<string, any> {
-    return this.config?.aiConfig ?? {}
-  }
-
-  /**
-   * Returns the maximum number of type definition files processed by AI concurrently.
-   *
-   * Возвращает максимальное количество файлов определений типов, обрабатываемых ИИ одновременно.
-   * @returns AI types concurrency limit / лимит параллельной обработки типов ИИ
-   */
-  static getAiTypesConcurrency(): number {
-    return this.config?.aiTypesConcurrency ?? 8
-  }
-
-  // Figma / Интеграция с Figma
-
-  /**
-   * Returns the Figma access token.
-   *
-   * Возвращает токен доступа к Figma.
-   * @returns Figma token string / строка токена Figma
-   */
-  static getFigmaToken(): string {
-    return this.config?.figmaToken ?? ''
-  }
-
-  /**
    * Recursively retrieves and merges extended configuration files.
    *
    * Рекурсивно получает и объединяет расширенные файлы конфигурации.
    * @param file path to the configuration file / путь к файлу конфигурации
    * @param dir array of directory paths / массив путей директорий
    * @returns merged design UI config / объединенная конфигурация design UI
+   * @protected
    */
   protected static getExtends(
     file: string,
@@ -325,6 +352,7 @@ export class PropertiesConfig {
    * Генерирует путь к локальному файлу конфигурации, добавляя суффикс `.local`.
    * @param path path or array of path segments / путь или массив сегментов пути
    * @returns local configuration file path / путь к локальному файлу конфигурации
+   * @protected
    */
   protected static getLocalPath(path: string): string
   protected static getLocalPath(path: string[]): string[]

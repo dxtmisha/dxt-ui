@@ -37,6 +37,9 @@ describe('PropertiesConfig', () => {
     expect(PropertiesConfig.getAiResourcesDir()).toBe('ai-resources')
     expect(PropertiesConfig.getPromptScanDepth()).toBe(6)
     expect(PropertiesConfig.getPromptExclude()).toEqual([])
+    expect(PropertiesConfig.getPromptInclude()).toEqual([])
+    expect(PropertiesConfig.getPromptPackageOnly()).toBeUndefined()
+    expect(PropertiesConfig.isPromptPackageOnly()).toBe(false)
     expect(typeof PropertiesConfig.getAiTypesConcurrency()).toBe('number')
     expect(PropertiesConfig.getAiTypesConcurrency()).toBe(8)
   })
@@ -53,6 +56,39 @@ describe('PropertiesConfig', () => {
 
       configTarget.config = undefined
       expect(PropertiesConfig.getPromptExclude()).toEqual([])
+    })
+  })
+
+  describe('getPromptInclude', () => {
+    it('returns array from config or wraps single string', () => {
+      const configTarget = PropertiesConfig as any
+
+      configTarget.config = { promptInclude: ['pkg1', 'pkg2'] }
+      expect(PropertiesConfig.getPromptInclude()).toEqual(['pkg1', 'pkg2'])
+
+      configTarget.config = { promptInclude: 'single-pkg' }
+      expect(PropertiesConfig.getPromptInclude()).toEqual(['single-pkg'])
+
+      configTarget.config = undefined
+      expect(PropertiesConfig.getPromptInclude()).toEqual([])
+    })
+  })
+
+  describe('promptPackageOnly', () => {
+    it('returns boolean value and evaluates isPromptPackageOnly correctly', () => {
+      const configTarget = PropertiesConfig as any
+
+      configTarget.config = { promptPackageOnly: true }
+      expect(PropertiesConfig.getPromptPackageOnly()).toBe(true)
+      expect(PropertiesConfig.isPromptPackageOnly()).toBe(true)
+
+      configTarget.config = { promptPackageOnly: false }
+      expect(PropertiesConfig.getPromptPackageOnly()).toBe(false)
+      expect(PropertiesConfig.isPromptPackageOnly()).toBe(false)
+
+      configTarget.config = undefined
+      expect(PropertiesConfig.getPromptPackageOnly()).toBeUndefined()
+      expect(PropertiesConfig.isPromptPackageOnly()).toBe(false)
     })
   })
 

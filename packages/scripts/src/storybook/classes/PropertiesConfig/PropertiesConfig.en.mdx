@@ -52,6 +52,9 @@ const separator = PropertiesConfig.getSeparator()
 - `getAiResourcesDir(): string` — returns the AI resources and prompts directory path.
 - `getPromptScanDepth(): number` — returns the maximum directory scan depth for AI prompt collection.
 - `getPromptExclude(): string[]` — returns the list of library names to exclude from the ai-prompt.md file.
+- `getPromptInclude(): string[]` — returns the list of library names to include in the ai-prompt.md file.
+- `getPromptPackageOnly(): boolean | undefined` — returns whether only packages listed in package.json should be included in ai-prompt.md.
+- `isPromptPackageOnly(): boolean` — checks whether only packages listed in package.json should be included in ai-prompt.md.
 - `getAiType(): AiType` — returns the configured AI provider.
 - `getAiModel(): string` — returns the specific AI model name.
 - `getAiKey(): string` — returns the API key for AI services.

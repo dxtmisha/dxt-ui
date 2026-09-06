@@ -57,7 +57,10 @@ Recursively crawls directories up to a specific depth limit, ignoring hidden fil
 ---
 
 ### Protected Helpers
+- `isExclude(item: LibraryAiPromptItem): boolean` — Checks whether the library should be excluded based on configuration.
 - `isFileOnDirs(dirs: string[]): boolean` — Helper that verifies if any targeted path is a direct file.
+- `isInPackage(item: LibraryAiPromptItem): boolean` — Checks whether the library is present in root package.json.
+- `getPackageNames(): Set<string>` — Retrieves the set of package names defined in root package.json.
 - `getInstruction(): string | undefined` — Formats high-priority override instructions if the file exists.
 - `getVuePrompt(): string` — Reads and formats standard Vue SFC creation guidelines.
 - `getGlobalPrompt(): string` — Reads and formats global clean-code guidelines.

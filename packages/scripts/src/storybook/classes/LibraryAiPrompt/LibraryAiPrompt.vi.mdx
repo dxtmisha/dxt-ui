@@ -57,7 +57,10 @@ Quét đệ quy qua các thư mục cho đến giới hạn độ sâu chỉ đ�
 ---
 
 ### Phương thức Trợ giúp được Bảo vệ (Protected)
+- `isExclude(item: LibraryAiPromptItem): boolean` — Kiểm tra xem thư viện có nên bị loại trừ dựa trên cấu hình hay không.
 - `isFileOnDirs(dirs: string[]): boolean` — Phương thức trợ giúp kiểm tra xem có đường dẫn nào trong danh sách là tệp trực tiếp hay không.
+- `isInPackage(item: LibraryAiPromptItem): boolean` — Kiểm tra xem thư viện có tồn tại trong package.json gốc hay không.
+- `getPackageNames(): Set<string>` — Lấy tập hợp các tên gói được định nghĩa trong package.json gốc.
 - `getInstruction(): string | undefined` — Định dạng và trả về các hướng dẫn ưu tiên cao nếu tệp tương ứng tồn tại.
 - `getVuePrompt(): string` — Đọc và định dạng hướng dẫn tiêu chuẩn tạo Vue SFC.
 - `getGlobalPrompt(): string` — Đọc và định dạng hướng dẫn mã nguồn sạch toàn cục.
