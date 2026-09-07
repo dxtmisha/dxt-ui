@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/test",
   "private": false,
-  "version": "0.1.7",
+  "version": "0.1.8",
   "type": "module",
   "description": "Modular Vue 3 UI testing and documentation harness library — structured test containers, visual regression utilities, composition API helpers, and interactive wiki documentation components.",
   "keywords": [

@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.8] - 2026-09-07
+
+### Changed
+- **Dependencies**: Updated workspace package dependencies to explicit `>=` semver ranges (`@dxtmisha/functional`, `@dxtmisha/functional-basic`, `@dxtmisha/styles`, `@dxtmisha/wiki`, `vue`).
+
 ## [0.1.7] - 2026-08-05
 
 ### Changed

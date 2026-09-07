@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.3] - 2026-09-07
+
+### Changed
+- **Dependencies**: Updated workspace package dependencies to explicit `>=` semver ranges.
+- **AI Types**: Reorganized type definitions to use `ai-types-list/` directory structure.
+
+## [0.1.2] - 2026-08-30
+
+### Added
+- **Documentation**: Migrated package documentation to `src/storybook/` with comprehensive guides across English, Russian, and Vietnamese.
+- **LLM Configuration (`llms.txt`)**: Added `llms.txt` summarizing Figma composables and state synchronization architecture.
+- **Exports & Distribution**: Added `ai-screenshot` to package `files` and configured explicit export mappings for `./ai-types.md`, `./ai-description.md`, `./ai-resources/*`, and `./ai-screenshot/*` in `package.json`.
+
+### Changed
+- **Build Configuration**: Migrated `vite.config.ts` to use `viteBasicFunction()` from `@dxtmisha/configuration`.
+
+## [0.1.1] - 2026-05-13
+
+### Fixed
+- **Types Export**: Corrected TypeScript declaration entry point in `package.json` to `dist/src/library.d.ts`.
+
 ## [0.1.0] - 2026-05-10
 
 ### Added

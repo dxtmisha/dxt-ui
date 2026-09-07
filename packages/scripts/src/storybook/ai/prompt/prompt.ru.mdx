@@ -21,7 +21,7 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 - **System Role & Global Principles (AI Code Promise)**
   Строгие правила чистоты кода и дисциплины агента:
-  - **Chronological Guard** — обязательный порядок изучения контекста (`ai-memory.md` ➔ `ai-prompt.md` ➔ `ai-types.md`).
+  - **Chronological Guard** — обязательный порядок изучения контекста (`ai-prompt.md` ➔ `ai-memory.md` ➔ `ai-types.md` ➔ `ai-developer.md`).
   - **Copy-Paste Ready** — генерация полных, готовых к запуску файлов без пропусков и заглушек.
   - **Uncompromising TS** — запрет типа `any`, обязательная строгая типизация параметров и возвращаемых значений.
   - **Strict Scope Lock** — запрет на несанкционированные правки сторонних файлов и самовольный рефакторинг.
@@ -57,9 +57,10 @@ Consolidated documentation, architectural guidelines, and mandatory rules for th
 ## Global Code Implementation Rules
 ### Global Development Principles (AI Code Promise)
 0. Mandatory Deep Study (CHRONOLOGICAL GUARD):
-   - Step 1: Read/create local ai-memory.md strictly in current package root.
-   - Step 2: Read root ai-prompt.md and study library descriptions.
-   - Step 3: Study linked ai-types.md BEFORE writing code.
+   - Step 1: Read root ai-prompt.md and study library descriptions.
+   - Step 2: Read/create local ai-memory.md strictly in current package root.
+   - Step 3: Study ai-types.md via search BEFORE writing code.
+   - Step 4: Study ai-developer.md when directly modifying package code.
 1. "Copy-Paste Ready": Generate complete runnable files. No placeholders.
 2. Zero Hallucinations: Strictly use package.json dependencies.
 3. Uncompromising TS: No any. Interfaces for all I/O.

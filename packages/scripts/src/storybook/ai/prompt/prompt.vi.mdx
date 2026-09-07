@@ -21,7 +21,7 @@ Tệp được cấu thành từ bốn khối logic liên kết chặt chẽ:
 
 - **System Role & Global Principles (AI Code Promise)**
   Các quy tắc nghiêm ngặt về chất lượng mã và kỷ luật của AI:
-  - **Chronological Guard** — Trình tự đọc ngữ cảnh bắt buộc (`ai-memory.md` ➔ `ai-prompt.md` ➔ `ai-types.md`).
+  - **Chronological Guard** — Trình tự đọc ngữ cảnh bắt buộc (`ai-prompt.md` ➔ `ai-memory.md` ➔ `ai-types.md` ➔ `ai-developer.md`).
   - **Copy-Paste Ready** — Sinh mã hoàn chỉnh, sẵn sàng chạy ngay mà không có phần giữ chỗ.
   - **Uncompromising TS** — Kiểu dữ liệu chặt chẽ, cấm `any`, bắt buộc interface cho mọi I/O.
   - **Strict Scope Lock** — Nghiêm cấm tự ý tái cấu trúc mã hoặc sửa đổi các tệp ngoài phạm vi.
@@ -57,9 +57,10 @@ Consolidated documentation, architectural guidelines, and mandatory rules for th
 ## Global Code Implementation Rules
 ### Global Development Principles (AI Code Promise)
 0. Mandatory Deep Study (CHRONOLOGICAL GUARD):
-   - Step 1: Read/create local ai-memory.md strictly in current package root.
-   - Step 2: Read root ai-prompt.md and study library descriptions.
-   - Step 3: Study linked ai-types.md BEFORE writing code.
+   - Step 1: Read root ai-prompt.md and study library descriptions.
+   - Step 2: Read/create local ai-memory.md strictly in current package root.
+   - Step 3: Study ai-types.md via search BEFORE writing code.
+   - Step 4: Study ai-developer.md when directly modifying package code.
 1. "Copy-Paste Ready": Generate complete runnable files. No placeholders.
 2. Zero Hallucinations: Strictly use package.json dependencies.
 3. Uncompromising TS: No any. Interfaces for all I/O.

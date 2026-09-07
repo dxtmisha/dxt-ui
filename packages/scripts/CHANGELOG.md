@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.0] - 2026-09-07
+
+### Added
+- **`GitIgnore` Helper**:
+  - Implemented `GitIgnore` class (`src/classes/Git/GitIgnore.ts`) for parsing, querying, and synchronizing `.gitignore` files across monorepo packages.
+  - Added automated `.gitignore` synchronization during package builds.
+- **`BuildPackages` Enhancements**:
+  - Added support for custom build code execution (`customCode`) before and after package compilation.
+  - Added support for custom log files (`fileLog`) to capture build outputs.
+- **AI Prompt Generation & Configurations**:
+  - Added `promptInclude` and `promptPackageOnly` configuration options in `DesignUiConfigPackagePrompt`.
+  - Added Russian AI prompt templates (`aiCodeGlobalPrompt.ru.md`, `aiDescriptionGeneration.ru.md`, `aiPromptMetadata.ru.md`, `aiTypeOptimization.ru.md`).
+  - Added prompt exclusions support (`promptExclude`).
+- **Storybook Documentation**:
+  - Added Storybook guides for `GitIgnore`, `LibraryAiPrompt`, `PropertiesConfig`, and `BuildPackages` in `src/storybook/`.
+
+### Changed
+- **Dependencies**: Updated workspace package dependencies to explicit `>=` semver ranges.
+- **Error Handling**: Improved error diagnostics and recovery in `DesignTypes` pipeline.
+
 ## [1.0.0] - 2026-08-30
 
 ### Added

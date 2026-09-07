@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.11.0] - 2026-09-07
+
+### Added
+- **Configuration Types**:
+  - Added `DesignUiConfigPackagePrompt`, `promptInclude`, and `promptPackageOnly` type definitions to `src/types/basicTypes.ts`.
+  - Added AI resource documentation for `design-config.md` with prompt exclusion rules.
+
+### Changed
+- **Dependencies**:
+  - Updated workspace package dependencies to explicit `>=` semver ranges (`@dxtmisha/media >= 0.7.3`).
+- **AI Documentation**:
+  - Refined descriptions and updated MD5 hashes in `ai-types-list/resources/` for `design-config.json` and `error-center.json`.
+
 ## [1.10.1] - 2026-08-30
 
 ### Added

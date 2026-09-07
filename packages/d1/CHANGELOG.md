@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.114.0] - 2026-09-07
+
+### Added
+- **`D1Form` UI Component**:
+  - Introduced `D1Form` UI component (`src/components/Ui/Form/`) wrapping the `Form` constructor with form validation, submission handling, action slots, and interactive Storybook stories (`D1Form.stories.ts`, `D1Form.mdx`, `D1FormAiWiki.vue`).
+  - Added component structure (`D1Form.vue`, `props.ts`, `styleToken.scss`, `properties.json`, `wiki.ts`, `wikiData.ts`, `index.ts`).
+  - Added package export entrypoint `./D1Form` in `package.json`.
+- **Layout Bleed Tokens**:
+  - Introduced layout bleed tokens in `src/media/tokens/layout.json` and updated `Ui/Bleed` properties.
+
+### Changed
+- **Styles & SCSS**:
+  - Updated SCSS classes (`d1-layout.scss`, `d1-main.scss`, `d1-system.scss`, `properties.scss`) to support conditional style injection and bleed tokens.
+- **Dependencies**:
+  - Updated workspace package dependencies to explicit `>=` semver ranges.
+
 ## [0.113.0] - 2026-08-30
 
 ### Added

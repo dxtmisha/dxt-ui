@@ -47,10 +47,12 @@ export class LibraryAiPrompt {
    * Конструктор для LibraryAiPrompt.
    * @param dirs Additional directories to scan / Дополнительные директории для сканирования
    * @param isMcp Flag indicating whether to generate MCP configuration file / Флаг, указывающий, нужно ли генерировать конфигурационный файл MCP
+   * @param isVue Flag indicating whether to include Vue component prompt rules / Флаг, указывающий, нужно ли включать правила для Vue-компонентов
    */
   constructor(
     dirs: string[] = [],
-    protected readonly isMcp: boolean = false
+    protected readonly isMcp: boolean = false,
+    protected readonly isVue: boolean = false
   ) {
     this.dirs = [
       ...LIBRARY_AI_PROMPT_LIST_DIRS,
@@ -73,7 +75,7 @@ export class LibraryAiPrompt {
 Consolidated documentation, architectural guidelines, and mandatory rules for the project.
       `.trim(),
       this.getGlobalPrompt(),
-      this.getVuePrompt()
+      ...this.getVuePrompt()
     ]
     const mcpData: Record<string, any>[] = []
 
@@ -218,14 +220,20 @@ ${PropertiesFile.readFileOnly(UI_FILE_AI_PROMPT_INSTRUCTION)}
    * Retrieves the Vue component implementation prompt.
    *
    * Получает промпт по реализации Vue-компонентов.
-   * @returns formatted Vue prompt or undefined / отформатированный промпт Vue или undefined
+   * @returns array with formatted Vue prompt or empty array / массив с отформатированным промптом Vue или пустой массив
    * @protected
    */
-  protected getVuePrompt(): string {
-    return `
+  protected getVuePrompt(): string[] {
+    if (this.isVue) {
+      return [
+        `
 ## Vue Component Implementation Rules
 ${vuePromptText}
-    `.trim()
+        `.trim()
+      ]
+    }
+
+    return []
   }
 
   /**

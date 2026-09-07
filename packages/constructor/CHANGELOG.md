@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.114.0] - 2026-09-07
+
+### Added
+- **`Form` Component Constructor**:
+  - Introduced `Form` constructor (`src/constructors/Form/`) managing form context, validation submission pipelines, child element registration, and serialization.
+  - Implemented `FormContext` for dependency injection and lifecycle tracking of registered form elements.
+  - Added composable `useForm` and export entrypoint `./Form` in `package.json`.
+- **`FieldFormInclude`**:
+  - Implemented `FieldFormInclude` mixin allowing field components (`C3Field`, `C3Input`, `C3Select`, `C3Checkbox`, `C3Radio`, etc.) to automatically register and synchronize their values and validation states with parent `Form` contexts.
+  - Extended `FieldExpose` interface with form association methods and validation hooks.
+- **AI Documentation**:
+  - Added `vue-integration.md` in `ai-resources/` documenting Vue integration patterns, constructor classes, props, and render bindings.
+
+### Changed
+- **Dependencies**: Updated workspace package dependencies to explicit `>=` semver ranges.
+- **Storybook**: Reorganized constructor story titles hierarchy to `1. UI`.
+
+### Fixed
+- **Arrow Geometry**: Fixed arrow geometry and coordinate calculation for non-square dimensions with unequal width and height.
+- **Form Elements**: Fixed element registration and unregistration lifecycle within `FormContext`.
+- **Slider**: Fixed event emission and value clamping behavior in `C3Slider`.
+- **Button**: Corrected TypeScript types and variant declarations for `C3Button`.
+
 ## [0.113.0] - 2026-08-30
 
 ### Added

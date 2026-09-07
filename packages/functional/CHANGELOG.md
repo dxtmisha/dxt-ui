@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.15.16] - 2026-09-07
+
+### Changed
+- **Dependencies**: Updated workspace package dependencies to explicit `>=` semver ranges.
+- **Repository Maintenance**: Updated `.gitignore` to track AI type definitions and ignore AI build caches.
+
+## [1.15.15] - 2026-08-30
+
+### Added
+- **Documentation**: Migrated package documentation to `src/storybook/` with comprehensive guides across English, Russian, and Vietnamese.
+- **LLM Configuration (`llms.txt`)**: Added `llms.txt` summarizing Vue 3 reactive composables, singletons, and storage sync architecture.
+
 ## [1.15.14] - 2026-08-22
 
 ### Added

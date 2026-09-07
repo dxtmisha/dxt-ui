@@ -39,7 +39,7 @@
     "build-packages": "dxt-build-packages",
     "build-types": "dxt-build-packages --code=types --log=types",
     "build-publish-packages": "dxt-build-publish-packages",
-    "prompt": "dxt-prompt",
+    "prompt": "dxt-prompt --vue",
     "prepublishOnly": "npm run build",
     "postinstall": "npm run prompt"
   },

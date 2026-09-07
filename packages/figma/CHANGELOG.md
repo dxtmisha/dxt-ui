@@ -2,10 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.1.4] - 2026-08-14
+## [0.1.4] - 2026-09-07
 
 ### Added
 - **SVG Frame Support**: Added `svg` property to `UiFigmaFramesItem` type for transferring SVG image byte array or Base64 data.
+
+### Changed
+- **Dependencies**: Updated workspace package dependencies to explicit `>=` semver ranges.
+- **AI Types**: Reorganized type definitions to use `ai-types-list/` directory structure.
 
 ## [0.1.0] - 2026-05-10
 

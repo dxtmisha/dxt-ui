@@ -1,73 +1,75 @@
-// md5:3c05237bc4d77bb471ddc39bd52b63e8 true
+// md5:e23bd1e2288b2cc74fb161f5a97e35b2 true
 import type { ConstrClass } from '@dxtmisha/functional';
 
 export type FormComponents = {};
 
 export type FormEmits = ModelEmits & {
-    /** Form input event. @keywords input, event */
-    input: [
-        event: InputEvent,
-        data: FormElementsData,
-        values: FormElementsValues
-    ];
-    /** Form input event (lite version). @keywords input, lite */
-    inputLite: [
-        data: FormElementsData,
-        values: FormElementsValues
-    ];
-    /** Form input values event. @keywords input, values */
-    inputValues: [
-        values: FormElementsValues
-    ];
-    /** Form change event. @keywords change, event */
-    change: [
-        event: Event,
-        data: FormElementsData,
-        values: FormElementsValues
-    ];
-    /** Form change event (lite version). @keywords change, lite */
-    changeLite: [
-        data: FormElementsData,
-        values: FormElementsValues
-    ];
-    /** Form change values event. @keywords change, values */
-    changeValues: [
-        values: FormElementsValues
-    ];
-    /** Form reset event. @keywords reset, event */
-    reset: [
-        event: Event
-    ];
-    /** Form submission event. @keywords submit, event */
-    submit: [
-        event: SubmitEvent
-    ];
+  /** Form input event. @keywords form, input, event */
+  input: [
+    event: InputEvent,
+    data: FormElementsData,
+    values: FormElementsValues
+  ];
+  /** Form input event without native event object. @keywords form, input, lite */
+  inputLite: [
+    data: FormElementsData,
+    values: FormElementsValues
+  ];
+  /** Form input values update event. @keywords form, values, input */
+  inputValues: [
+    values: FormElementsValues
+  ];
+  /** Form change event. @keywords form, change, event */
+  change: [
+    event: InputEvent,
+    data: FormElementsData,
+    values: FormElementsValues
+  ];
+  /** Form change event without native event object. @keywords form, change, lite */
+  changeLite: [
+    data: FormElementsData,
+    values: FormElementsValues
+  ];
+  /** Form change values update event. @keywords form, values, change */
+  changeValues: [
+    values: FormElementsValues
+  ];
+  /** Form reset event. @keywords form, reset, event */
+  reset: [
+    event: Event
+  ];
+  /** Form submission event. @keywords form, submit, event */
+  submit: [
+    event: SubmitEvent
+  ];
 };
 
 export interface FormExpose {
-    /** Returns current form values. @keywords get, values, form data */
-    getValues(): FormElementsValues;
-    /** Sets value of specific form field. @keywords set, field, update */
-    set(name: string, value: any): void;
-    /** Sets multiple form field values. @keywords set values, batch, update */
-    setValues(values: FormElementsValues): void;
-    /** Validates form against validation constraints. @keywords validate, validity, check */
-    checkValidity(): boolean;
-    /** Submits the form programmatically. @keywords submit, send */
-    reset(): void;
-    /** Resets form fields to their initial values. @keywords reset, clear */
-    submit(): void;
+  /** Checks whether the form satisfies validation constraints. @keywords form, checkValidity, validation */
+  checkValidity(): boolean;
+  /** Returns the current form values. @keywords form, getValues, values */
+  getValues(): FormElementsValues;
+  /** Resets the form to its initial state. @keywords form, reset */
+  reset(): void;
+  /** Sets the value of a specific form field. @keywords form, set, field */
+  set(name: string, value: any): void;
+  /** Sets multiple form field values. @keywords form, setValues, batch */
+  setValues(values: FormElementsValues): void;
+  /** Sets values for all form fields and clears omitted fields. @keywords form, setValuesAll, replace */
+  setValuesAll(values: FormElementsValues): void;
+  /** Submits the form. @keywords form, submit */
+  submit(): void;
 }
 
 export interface FormSlots {
-    /** Header slot for form title or top controls. @keywords slot, header */
-    header?(props: any): any;
-    /** Default slot for form content and input elements. @keywords slot, default, body */
-    default?(props: any): any;
-    /** Footer slot for form actions and buttons. @keywords slot, footer, actions */
-    footer?(props: any): any;
+  /** Header slot for form title or top controls. @keywords form, slot, header */
+  header?(props: any): any;
+  /** Default slot for form content and input elements. @keywords form, slot, default */
+  default?(props: any): any;
+  /** Footer slot for form actions and buttons. @keywords form, slot, footer */
+  footer?(props: any): any;
 }
 
 export type FormClasses = {
-    main: ConstrClass;
+  main: ConstrClass;
 };

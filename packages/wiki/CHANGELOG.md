@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.114.0] - 2026-09-07
+
+### Added
+- **`Form` MDX & Wiki Documentation**:
+  - Registered component descriptions (`wikiDescriptionsForm.ts`) and metadata.
+  - Created MDX documentation pages for `Form` (`form.en.mdx`, `form.ru.mdx`, `native.en.mdx`, `native.ru.mdx`, `events.en.mdx`, `events.ru.mdx`, `event.submit.en.mdx`, `event.submit.ru.mdx`, `expose.en.mdx`, `expose.ru.mdx`).
+  - Added property controls module `wikiForm.ts` for form submission, method, encoding, and validation handling.
+- **Slot Documentation**:
+  - Added header and footer slot documentation (`slot/header.en.mdx`, `slot/header.ru.mdx`, `slot/footerAny.en.mdx`, `slot/footerAny.ru.mdx`).
+- **Style Controls**:
+  - Added compact style property control in `wikiStyle.ts`.
+
+### Changed
+- **Dependencies**: Updated workspace package dependencies to explicit `>=` semver ranges.
+- **Storybook**: Reorganized constructor story titles hierarchy to `1. UI`.
+
 ## [0.113.0] - 2026-08-30
 
 ### Added

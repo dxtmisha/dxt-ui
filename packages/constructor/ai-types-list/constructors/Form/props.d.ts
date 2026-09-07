@@ -1,22 +1,25 @@
-// md5:78e2617edab1797279aea0b95ff34f45 true
+// md5:e8f4ac5638a54fa0feba7a6f3a666ccb true
 type FormPropsToken = {};
+
 export type FormPropsBasic = ModelProps<FormElementsValues> & {
-  /** Form submission URL. */
-  action?: string;
-  /** HTTP method for form submission. */
-  method?: FormMethod;
-  /** Encoding type for form data. */
-  enctype?: FormEnctype;
-  /** Target browsing context for form submission. */
-  target?: FormTarget;
-  /** Autocomplete behavior for form elements. */
-  autocomplete?: string;
-  /** Works with native form elements if true, otherwise with custom. */
-  native?: boolean;
-  /** Form value. */
-  value?: FormElementsValues;
+    /** Form values */
+    value?: FormElementsValues;
+    /** Controls native or custom form elements mode */
+    native?: boolean;
+    /** Form submission URL */
+    action?: string;
+    /** HTTP method for form submission */
+    method?: FormMethod;
+    /** Encoding type for form data submission */
+    enctype?: FormEnctype;
+    /** Target browsing context for form submission */
+    target?: FormTarget;
+    /** Autocomplete behavior for form elements */
+    autocomplete?: string;
 };
-/** Form component properties. @keywords form, props */
+
+/** Form component properties @keywords form, props */
 export type FormProps = FormPropsBasic & FormPropsToken;
-/** Default form property values. @keywords form, defaults */
+
+/** Default property values for the form component @keywords defaults, form */
 export declare const defaultsForm: {};

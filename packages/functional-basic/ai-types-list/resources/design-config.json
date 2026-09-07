@@ -1,6 +1,6 @@
 {
   "path": "ai-resources/design-config.md",
-  "md5": "553324d7a829d572b68ca333d905b3b0",
+  "md5": "ffeec1c3d02094f51f7c51100304d0aa",
   "name": "Design System Configuration Guide",
-  "description": "Specification and rules for configuring design.config.json covering UI packages, type scanning, tokens, and AI tools."
+  "description": "Rules and schema for configuring design systems, TypeScript declaration scanning, AI generation, and package settings."
 }

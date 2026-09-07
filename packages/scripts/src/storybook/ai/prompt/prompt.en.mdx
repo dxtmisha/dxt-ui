@@ -21,7 +21,7 @@ The file is structured into four interconnected logical layers:
 
 - **System Role & Global Principles (AI Code Promise)**
   Strict code quality and agent discipline rules:
-  - **Chronological Guard** — Mandatory reading order (`ai-memory.md` ➔ `ai-prompt.md` ➔ `ai-types.md`).
+  - **Chronological Guard** — Mandatory reading order (`ai-prompt.md` ➔ `ai-memory.md` ➔ `ai-types.md` ➔ `ai-developer.md`).
   - **Copy-Paste Ready** — Complete, fully runnable files without missing parts or placeholders.
   - **Uncompromising TS** — Strict typing, prohibition of `any`, mandatory interfaces for all I/O.
   - **Strict Scope Lock** — Prohibition of unsolicited refactorings, configuration changes, or arbitrary edits.
@@ -57,9 +57,10 @@ Consolidated documentation, architectural guidelines, and mandatory rules for th
 ## Global Code Implementation Rules
 ### Global Development Principles (AI Code Promise)
 0. Mandatory Deep Study (CHRONOLOGICAL GUARD):
-   - Step 1: Read/create local ai-memory.md strictly in current package root.
-   - Step 2: Read root ai-prompt.md and study library descriptions.
-   - Step 3: Study linked ai-types.md BEFORE writing code.
+   - Step 1: Read root ai-prompt.md and study library descriptions.
+   - Step 2: Read/create local ai-memory.md strictly in current package root.
+   - Step 3: Study ai-types.md via search BEFORE writing code.
+   - Step 4: Study ai-developer.md when directly modifying package code.
 1. "Copy-Paste Ready": Generate complete runnable files. No placeholders.
 2. Zero Hallucinations: Strictly use package.json dependencies.
 3. Uncompromising TS: No any. Interfaces for all I/O.

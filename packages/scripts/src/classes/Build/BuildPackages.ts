@@ -93,7 +93,7 @@ export class BuildPackages {
         return `npm run ${this.code}`
       }
 
-      return this.code
+      return undefined
     }
 
     return packageFile.getCodeBuildOrRecovery()

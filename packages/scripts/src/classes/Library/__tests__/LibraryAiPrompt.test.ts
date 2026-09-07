@@ -107,6 +107,25 @@ describe('LibraryAiPrompt and LibraryAiPromptItem', () => {
       expect(prompt).toBeDefined()
     })
 
+    it('conditionally includes or excludes Vue prompt based on isVue constructor flag', () => {
+      class TestLibraryAiPrompt extends LibraryAiPrompt {
+        public testGetVuePrompt() {
+          return this.getVuePrompt()
+        }
+      }
+
+      const promptDefault = new TestLibraryAiPrompt()
+      expect(promptDefault.testGetVuePrompt()).toHaveLength(1)
+      expect(promptDefault.testGetVuePrompt()[0]).toContain('## Vue Component Implementation Rules')
+
+      const promptWithVue = new TestLibraryAiPrompt([], false, true)
+      expect(promptWithVue.testGetVuePrompt()).toHaveLength(1)
+      expect(promptWithVue.testGetVuePrompt()[0]).toContain('## Vue Component Implementation Rules')
+
+      const promptWithoutVue = new TestLibraryAiPrompt([], false, false)
+      expect(promptWithoutVue.testGetVuePrompt()).toEqual([])
+    })
+
     it('includes repository root in getList when root prompt exists', () => {
       class TestLibraryAiPrompt extends LibraryAiPrompt {
         public testGetList() {

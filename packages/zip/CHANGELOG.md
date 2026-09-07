@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.5] - 2026-09-07
+
+### Changed
+- **Dependencies**: Updated workspace package dependencies to explicit `>=` semver ranges.
+- **Repository Maintenance**: Updated `.gitignore` to track AI type definitions and ignore AI build caches.
+
 ## [0.1.4] - 2026-08-30
 
 ### Added
