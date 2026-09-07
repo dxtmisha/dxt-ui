@@ -1,6 +1,6 @@
 // export:none
 
-import { forEach, toCamelCaseFirst } from '@dxtmisha/functional-basic'
+import { isArray, isObject, toCamelCaseFirst } from '@dxtmisha/functional-basic'
 import type { WikiDataItem, WikiStorybook, WikiStorybookProp } from '@dxtmisha/wiki'
 
 import { PropertiesConfig } from '../Properties/PropertiesConfig'
@@ -8,9 +8,6 @@ import { PropertiesFile } from '../Properties/PropertiesFile'
 
 import type { LibraryData } from '../../types/libraryTypes'
 import type { WebTypesVueComponentItem, WebTypesPropItem, WebTypesSlots, WebTypesEventItem, WebTypesProperty } from '../../types/webTypes'
-
-/** Regular expression for basic types that do not need to be wrapped in quotes for web-types / Регулярное выражение для базовых типов, которые не нужно оборачивать в кавычки для web-types */
-const BASE_TYPES = /^(boolean|number|string|null|any|void|object|unknown|never)$/
 
 /**
  * Resolver for extracting and formatting IDE metadata for a specific component.
@@ -82,6 +79,16 @@ export class DesignWikiStormItem {
   }
 
   /**
+   * Returns the directory name.
+   *
+   * Возвращает имя директории.
+   * @returns component directory name / имя директории компонента
+   */
+  getDirName(): string {
+    return this.data.dir
+  }
+
+  /**
    * Returns the prop definition.
    *
    * Возвращает определение свойства.
@@ -89,13 +96,31 @@ export class DesignWikiStormItem {
    * @returns prop item definition / определение элемента свойства
    */
   getProp(item: WikiStorybookProp): WebTypesPropItem {
-    const type = this.prepareType(item.getType())
-    const cleaned = type ? this.cleanType(type) : undefined
+    let type: string | undefined
+    const options = item.getOptions()
+
+    if (options) {
+      if (isArray(options)) {
+        type = options
+          .map(opt => typeof opt === 'string' ? `'${opt}'` : String(opt))
+          .join(' | ')
+      } else if (isObject(options)) {
+        type = Object.keys(options)
+          .map(opt => `'${opt}'`)
+          .join(' | ')
+      }
+    }
+
+    if (!type) {
+      const rawType = item.getType()
+      type = rawType ? this.cleanType(rawType) : undefined
+    }
+
     return {
       name: item.getName(),
       description: item.getDescription(),
       default: item.getDefaultValue() ?? undefined,
-      type: cleaned
+      type
     }
   }
 
@@ -189,16 +214,6 @@ export class DesignWikiStormItem {
   }
 
   /**
-   * Returns the directory name.
-   *
-   * Возвращает имя директории.
-   * @returns component directory name / имя директории компонента
-   */
-  getDirName(): string {
-    return this.data.dir
-  }
-
-  /**
    * Initializes the class.
    *
    * Инициализирует класс.
@@ -221,7 +236,7 @@ export class DesignWikiStormItem {
 
       if (PropertiesFile.is(filePath)) {
         try {
-          const wiki: Record<string, any> = await import(filePath.join('/'))
+          const wiki: Record<string, any> = await import(PropertiesFile.toUrl(filePath))
           this.dataComponent = Object.values(wiki).find(item => 'component' in item)
         } catch (error) {
           console.error(filePath, error)
@@ -261,48 +276,43 @@ export class DesignWikiStormItem {
   }
 
   /**
-   * Formats a type string for web-types.
+   * Cleans a type string by removing redundant parentheses and trailing undefined.
    *
-   * Форматирует строку типа для web-types.
-   * @param type original type string / исходная строка типа
-   * @returns formatted type string or undefined / отформатированная строка типа или undefined
-   */
-  protected prepareType(type?: string): string | undefined {
-    if (type) {
-      return forEach(
-        type.split('|'),
-        (item) => {
-          const trimmed = item.trim()
-
-          if (trimmed === 'undefined') {
-            return undefined
-          }
-
-          if (BASE_TYPES.test(trimmed)) {
-            return trimmed
-          }
-
-          return `'${trimmed}'`
-        }
-      )
-        .join(' | ')
-    }
-
-    return type
-  }
-
-  /**
-   * Cleans a type string by removing redundant parentheses, e.g., (CellClassesSub) | undefined -> CellClassesSub | undefined
-   *
-   * Очищает строку типа, удаляя лишние скобки, например: (CellClassesSub) | undefined -> CellClassesSub | undefined
+   * Очищает строку типа, удаляя лишние скобки и завершающий undefined.
    * @param type input type string / входная строка типа
    * @returns cleaned type string / очищенная строка типа
    */
   protected cleanType(type: string): string {
-    return type
-      .replace(/^\(([^()]+)\)$/, '$1')
-      .replace(/^\(([^()]+)\)\s*\|\s*undefined$/, '$1 | undefined')
-      .trim()
+    let result = type.trim()
+
+    result = result.replace(/\s*\|\s*undefined$/, '').trim()
+
+    while (result.startsWith('(') && result.endsWith(')')) {
+      let depth = 0
+      let isEnclosing = true
+
+      for (let i = 0; i < result.length - 1; i++) {
+        const char = result[i]
+        if (char === '(') {
+          depth++
+        } else if (char === ')') {
+          depth--
+        }
+
+        if (depth === 0) {
+          isEnclosing = false
+          break
+        }
+      }
+
+      if (isEnclosing) {
+        result = result.slice(1, -1).trim()
+      } else {
+        break
+      }
+    }
+
+    return result
   }
 
   /**

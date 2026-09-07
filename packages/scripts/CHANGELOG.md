@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.1] - 2026-09-07
+
+### Added
+- **`PropertiesFile.toUrl` Helper**:
+  - Added static `PropertiesFile.toUrl()` method for resolving paths to absolute file URLs for ESM dynamic imports.
+  - Added unit test suite in `src/classes/Properties/__tests__/PropertiesFile.test.ts` and updated Storybook documentation (EN, RU, VI).
+
+### Fixed
+- **Web-Types Generation (`DesignWikiStormItem`)**:
+  - Fixed type formatting in `web-types.json`: string enum options from `getOptions()` are now properly quoted as literal string unions (`'sm' | 'md' | 'lg' | 'auto'`), while interfaces, generics, and function types retain clean TypeScript syntax without invalid outer quotes.
+  - Improved `cleanType()` to remove redundant enclosing parentheses and trailing `| undefined`.
+
 ## [1.1.0] - 2026-09-07
 
 ### Added

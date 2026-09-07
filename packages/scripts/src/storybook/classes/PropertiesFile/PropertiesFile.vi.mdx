@@ -48,6 +48,7 @@ const fullPath = PropertiesFile.joinPath(['src', 'tokens', 'colors.json'])
 - `readDirAndFileRecursive(path: PropertiesFilePath, fullPath?: PropertiesFilePath, isIndex?: boolean): string[]` — đọc đệ quy cả thư mục và tệp.
 - `rename(path: PropertiesFilePath, newPath: PropertiesFilePath): void` — đổi tên hoặc di chuyển tệp/thư mục.
 - `chmod(path: PropertiesFilePath, mode?: string | number): void` — thiết lập quyền truy cập (chmod) cho tệp.
+- `toUrl(path: PropertiesFilePath): string` — chuyển đổi đường dẫn thành file URL tuyệt đối cho các dynamic import ESM.
 
 ## Các phương thức quản lý đường dẫn
 

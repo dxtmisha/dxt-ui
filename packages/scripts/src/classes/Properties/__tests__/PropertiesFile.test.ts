@@ -76,4 +76,9 @@ describe('PropertiesFile', () => {
     PropertiesFile.createDir('new-dir')
     expect(mkdirSpy).toHaveBeenCalledWith(expect.stringContaining('new-dir'))
   })
+
+  it('converts path to file URL via toUrl', () => {
+    const url = PropertiesFile.toUrl(['src', 'components', 'wikiData.ts'])
+    expect(url).toMatch(/^file:\/\/\/.+src\/components\/wikiData\.ts$/)
+  })
 })

@@ -1,6 +1,6 @@
 import requireFs from 'node:fs'
 import requirePath from 'node:path'
-import { fileURLToPath } from 'node:url'
+import { fileURLToPath, pathToFileURL } from 'node:url'
 import { Datetime, forEach, toArray, toKebabCase, transformation } from '@dxtmisha/functional-basic'
 
 import { UI_FILE_INDEX, UI_MODULES, UI_PROJECT_NAME } from '../../config'
@@ -238,6 +238,17 @@ export class PropertiesFile {
     }
 
     return path.replace('/', this.sep())
+  }
+
+  /**
+   * Converts the path into an absolute file URL for dynamic ESM imports.
+   *
+   * Преобразует путь в абсолютный file URL для динамических импортов ESM.
+   * @param path path to the file or directory / путь к файлу или директории
+   * @returns file URL string / строка file URL
+   */
+  static toUrl(path: PropertiesFilePath): string {
+    return pathToFileURL(requirePath.resolve(this.root, this.joinPath(path))).href
   }
 
   /**

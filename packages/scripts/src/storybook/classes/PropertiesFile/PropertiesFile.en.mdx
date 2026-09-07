@@ -48,6 +48,7 @@ const fullPath = PropertiesFile.joinPath(['src', 'tokens', 'colors.json'])
 - `readDirAndFileRecursive(path: PropertiesFilePath, fullPath?: PropertiesFilePath, isIndex?: boolean): string[]` — recursively reads both directories and files.
 - `rename(path: PropertiesFilePath, newPath: PropertiesFilePath): void` — renames or moves a file/directory.
 - `chmod(path: PropertiesFilePath, mode?: string | number): void` — sets file permissions (chmod).
+- `toUrl(path: PropertiesFilePath): string` — converts path to an absolute file URL for dynamic ESM imports.
 
 ## Path Management Methods
 
