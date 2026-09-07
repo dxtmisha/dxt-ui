@@ -1,58 +1,69 @@
 import {Meta} from '@storybook/addon-docs/blocks'
 
-<Meta title='@dxtmisha/vi/scripts/7. Lệnh/dxt-build-packages - Xây Dựng Gói'/>
+<Meta title='@dxtmisha/vi/scripts/7. Lệnh/dxt-build-packages - Xây dựng gói'/>
 
 # dxt-build-packages
 
-Lệnh `dxt-build-packages` cung cấp khả năng tự động xây dựng (build) tăng dần các gói npm trong không gian làm việc monorepo. Công cụ này sử dụng lớp `BuildPackages` và trình bao bọc `PackageFile` để quét các thư mục gói, sắp xếp theo mức độ ưu tiên xây dựng, theo dõi phiên bản qua bộ nhớ đệm nhật ký cục bộ và chỉ biên dịch các gói có phiên bản được cập nhật.
+Công cụ `dxt-build-packages` cung cấp khả năng tự động xây dựng tăng dần các gói npm trong không gian làm việc monorepo. Công cụ này sử dụng lớp `BuildPackages` và lớp bọc `PackageFile` để quét các thư mục gói, sắp xếp chúng theo mức độ ưu tiên, theo dõi các thay đổi phiên bản qua nhật ký bộ nhớ đệm cục bộ và chỉ biên dịch các gói có phiên bản được cập nhật.
 
 ## Các tính năng chính
 
 - **Tự động quét Monorepo**: Quét thư mục gói (`packages/`) và phát hiện tất cả các gói hoạt động có chứa tệp `package.json` hợp lệ.
-- **Sắp xếp theo thứ tự ưu tiên (`ui-priority`)**: Tự động sắp xếp các gói dựa trên thuộc tính `ui-priority` trong `package.json` (mặc định là `500`), đảm bảo thứ tự xây dựng chính xác từ các tiện ích cơ sở đến các thành phần cấp cao.
-- **Bộ nhớ đệm tăng dần theo phiên bản**: Ngăn chặn việc xây dựng lại các gói không thay đổi bằng cách theo dõi phiên bản trong `./logs/ui-build.log.json`. Quá trình biên dịch chỉ được kích hoạt khi phiên bản của gói thay đổi hoặc chưa được lưu trong bộ nhớ đệm.
-- **Giải quyết tập lệnh thông minh**: Tự động chọn lệnh xây dựng đầu tiên có sẵn trong `package.json` theo thứ tự ưu tiên nghiêm ngặt: `prepublishOnly`, sau đó đến `build-recovery`, rồi đến `build`.
-- **Loại trừ gói thử nghiệm**: Tự động bỏ qua các gói được đánh dấu `"ui-test": true` trong `package.json`.
+- **Sắp xếp theo thứ tự ưu tiên (`ui-priority`)**: Tự động sắp xếp các gói dựa trên trường `ui-priority` trong `package.json` (mặc định là `500`), đảm bảo các phần phụ thuộc được xây dựng theo đúng thứ tự từ các tiện ích cơ bản đến các thành phần cấp cao.
+- **Bộ nhớ đệm tăng dần theo phiên bản**: Ngăn chặn việc xây dựng lại các gói không thay đổi bằng cách theo dõi phiên bản trong tệp nhật ký cục bộ. Quá trình biên dịch chỉ được kích hoạt khi phiên bản của gói thay đổi hoặc chưa được lưu trong bộ nhớ đệm.
+- **Mã xây dựng tùy chỉnh (`--code`)**: Cho phép ghi đè lệnh xây dựng (ví dụ: `dxt-build-packages --code=types`).
+- **Tệp nhật ký tùy chỉnh & Đồng bộ hóa `.gitignore` (`--log`)**: Cho phép chỉ định tên/đường dẫn tệp nhật ký (ví dụ: `--log=ui-types`), tự động đăng ký đường dẫn vào `.gitignore`.
+- **Giải quyết tập lệnh thông minh**: Tự động chọn lệnh xây dựng đầu tiên có sẵn trong `package.json` theo thứ tự ưu tiên nghiêm ngặt: `prepublishOnly`, sau đó đến `build-recovery`, sau đó đến `build`.
+- **Loại trừ gói thử nghiệm**: Tự động bỏ qua các gói được đánh dấu bằng `"ui-test": true` trong `package.json`.
 
-## Nó hoạt động như thế nào?
+## Cách thức hoạt động
 
-Quy trình biên dịch gói thực hiện theo các bước chi tiết sau:
+Quy trình biên dịch gói chạy qua các bước sau:
 
-1. **Quét và khởi tạo bộ nhớ đệm**: Lớp `BuildPackages` đọc bộ nhớ đệm `./logs/ui-build.log.json` và quét thư mục chứa các gói (`packages/`).
-2. **Lọc gói**: Một phiên bản `PackageFile` được tạo cho mỗi thư mục, lọc ra các thư mục không phải là gói và các gói thử nghiệm (`"ui-test": true`).
-3. **Sắp xếp theo độ ưu tiên**: Các gói hợp lệ được sắp xếp theo thứ tự tăng dần của giá trị `ui-priority` (mặc định là `500` nếu không được chỉ định).
-4. **Kiểm tra tính nhất quán của phiên bản**: So sánh phiên bản hiện tại trong `package.json` với phiên bản được lưu trong bộ nhớ đệm nhật ký.
-5. **Thực thi lệnh xây dựng**: Nếu phiên bản gói khác biệt (hoặc chưa từng được xây dựng):
-   - Tập lệnh xây dựng được xác định theo thứ tự ưu tiên trong `package.json`:
-     1. Nếu `"prepublishOnly"` được định nghĩa, nó sẽ chạy `npm run prepublishOnly`.
-     2. Ngược lại, nếu `"build-recovery"` được định nghĩa, nó sẽ chạy `npm run build-recovery`.
-     3. Ngược lại, nếu `"build"` được định nghĩa, nó sẽ chạy `npm run build`.
-6. **Cập nhật nhật ký**: Khi xây dựng thành công, phiên bản mới của gói sẽ được ghi nhận vào bộ nhớ tạm.
-7. **Lưu trữ bộ nhớ đệm**: Nếu một hoặc nhiều gói được biên dịch (`changed > 0`), bộ nhớ đệm cập nhật sẽ được lưu lại vào `./logs/ui-build.log.json`. Nếu không có gói nào cần cập nhật, nó sẽ ghi nhật ký `Build packages - no changes`.
+1. **Quét và khởi tạo bộ nhớ đệm**: Lớp `BuildPackages` đọc bộ nhớ đệm (`./logs/ui-build.log.json` hoặc tệp tùy chỉnh) và quét thư mục chứa các gói (`packages/`).
+2. **Lọc gói**: Một thể hiện của `PackageFile` được tạo cho mỗi thư mục, lọc bỏ các thư mục không phải gói và các gói thử nghiệm (`"ui-test": true`).
+3. **Sắp xếp theo thứ tự ưu tiên**: Các gói hợp lệ được sắp xếp theo thứ tự tăng dần dựa trên giá trị `ui-priority` (mặc định là `500` nếu không được chỉ định).
+4. **Kiểm tra tính nhất quán của phiên bản**: So sánh phiên bản hiện tại trong `package.json` với nhật ký phiên bản đã lưu trong bộ nhớ đệm.
+5. **Thực thi xây dựng**: Nếu phiên bản gói khác biệt (hoặc chưa từng được xây dựng):
+   - Nếu có `--code`, thực thi lệnh được chỉ định hoặc `npm run <code-name>`.
+   - Ngược lại, tập lệnh xây dựng được giải quyết từ `package.json` theo mức ưu tiên (`prepublishOnly` -> `build-recovery` -> `build`).
+6. **Cập nhật nhật ký**: Khi xây dựng thành công, phiên bản gói được ghi lại trong bộ nhớ tạm.
+7. **Lưu trữ bộ nhớ đệm & Cập nhật .gitignore**: Nếu một hoặc nhiều gói được biên dịch (`changed > 0`), bộ nhớ đệm cập nhật sẽ được lưu lại vào đĩa và đường dẫn tệp nhật ký được thêm vào `.gitignore`. Nếu không có gói nào cần cập nhật, nó sẽ ghi nhật ký `Build packages - no changes`.
 
 ## Sử dụng
 
-Chạy lệnh xây dựng gói thông qua CLI:
+Chạy lệnh xây dựng qua CLI:
 
 ```bash
+# Xây dựng tăng dần mặc định
 npx dxt-build-packages
+
+# Xây dựng kiểu dữ liệu với tệp nhật ký riêng
+npx dxt-build-packages --code=types --log=ui-types
 ```
 
-Hoặc cấu hình trong phần scripts của tệp `package.json` gốc:
+Hoặc định cấu hình trong các tập lệnh `package.json` ở thư mục gốc của monorepo:
 
 ```json
 {
   "scripts": {
-    "build:packages": "dxt-build-packages"
+    "build:packages": "dxt-build-packages",
+    "build:types": "dxt-build-packages --code=types --log=ui-types"
   }
 }
 ```
 
-## Thông tin chi tiết bổ sung
+### Các tùy chọn CLI có sẵn
 
-### Quản lý mức độ ưu tiên xây dựng (`ui-priority`)
+- `-c, --code <CODE>`: Lệnh xây dựng tùy chỉnh hoặc tên tập lệnh npm (ví dụ: `types` hoặc `npm run build:prod`).
+- `-d, --dir <DIR>`: Đường dẫn thư mục gói (mặc định là `packages`).
+- `-l, --log <LOG>`: Tên hoặc đường dẫn tệp nhật ký tùy chỉnh (mặc định là `ui-build.log.json` trong thư mục `logs/`).
 
-Để đảm bảo các thư viện nền tảng (ví dụ: các tiện ích cơ bản hoặc token thiết kế) được biên dịch trước các thành phần giao diện phụ thuộc, hãy chỉ định mức độ ưu tiên số trong tệp `package.json` của gói (số nhỏ hơn sẽ được xây dựng trước):
+## Thông tin bổ sung
+
+### Quản lý mức độ ưu tiên (`ui-priority`)
+
+Để đảm bảo các thư viện cơ sở (ví dụ: các tiện ích cơ bản hoặc token thiết kế) được biên dịch trước các thành phần UI phụ thuộc, hãy chỉ định mức độ ưu tiên bằng số trong `package.json` của gói (số nhỏ hơn sẽ thực thi trước):
 
 ```json
 {
@@ -61,20 +72,11 @@ Hoặc cấu hình trong phần scripts của tệp `package.json` gốc:
 }
 ```
 
-Các gói có `ui-priority: 100` sẽ được xây dựng trước các gói có độ ưu tiên mặc định `500`.
+Các gói có `ui-priority: 100` sẽ được xây dựng trước các gói có mức ưu tiên mặc định `500`.
 
-### Tệp bộ nhớ đệm nhật ký (`ui-build.log.json`)
+### Loại trừ gói thử nghiệm (`ui-test`)
 
-Bộ nhớ đệm phiên bản cục bộ được lưu trữ tại:
-```
-./logs/ui-build.log.json
-```
-
-Để buộc xây dựng lại toàn bộ tất cả các gói bất kể tính nhất quán của phiên bản, hãy xóa tệp này hoặc đặt lại nội dung của nó thành `{}`.
-
-### Loại trừ các gói thử nghiệm (`ui-test`)
-
-Để loại trừ một gói khỏi quy trình xây dựng tự động, hãy thêm cờ sau vào `package.json` của gói đó:
+Để loại trừ một gói khỏi quá trình xây dựng tự động, hãy thêm cờ sau vào `package.json` của gói:
 
 ```json
 {

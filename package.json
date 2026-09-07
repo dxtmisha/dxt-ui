@@ -37,6 +37,7 @@
     "package-project": "dxt-package project",
     "package-figma": "dxt-package figma",
     "build-packages": "dxt-build-packages",
+    "build-types": "dxt-build-packages --code=types --log=types",
     "build-publish-packages": "dxt-build-publish-packages",
     "prompt": "dxt-prompt",
     "prepublishOnly": "npm run build",

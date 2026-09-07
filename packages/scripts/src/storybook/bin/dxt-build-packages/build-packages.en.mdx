@@ -10,7 +10,9 @@ The `dxt-build-packages` command provides automated incremental building of npm 
 
 - **Automated Monorepo Scanning**: Scans the packages directory (`packages/`) and discovers all active packages containing a valid `package.json`.
 - **Priority-Based Build Ordering (`ui-priority`)**: Automatically sorts packages based on the `ui-priority` field in `package.json` (defaults to `500`), ensuring dependencies build in proper order from foundational utilities to high-level components.
-- **Incremental Version-Based Caching**: Prevents redundant builds by tracking package versions in `./logs/ui-build.log.json`. Compilation is only triggered when a package version changes or is not yet cached.
+- **Incremental Version-Based Caching**: Prevents redundant builds by tracking package versions in a local log cache. Compilation is only triggered when a package version changes or is not yet cached.
+- **Custom Build Code (`--code`)**: Allows overriding the build command (e.g., `dxt-build-packages --code=types`).
+- **Custom Log File & GitIgnore Sync (`--log`)**: Allows specifying a custom log file name/path (e.g., `--log=ui-types`), automatically registering it in `.gitignore`.
 - **Intelligent Script Resolution**: Automatically resolves the first available build command in `package.json` in strict priority order: `prepublishOnly`, then `build-recovery`, then `build`.
 - **Test Package Exclusion**: Automatically skips packages marked with `"ui-test": true` in `package.json`.
 
@@ -18,24 +20,26 @@ The `dxt-build-packages` command provides automated incremental building of npm 
 
 The package compilation workflow runs through the following step-by-step process:
 
-1. **Scan and Cache Initialization**: The `BuildPackages` class reads the build cache `./logs/ui-build.log.json` and scans the packages directory (`packages/`).
+1. **Scan and Cache Initialization**: The `BuildPackages` class reads the build cache (`./logs/ui-build.log.json` or custom file) and scans the packages directory (`packages/`).
 2. **Package Filtering**: A `PackageFile` instance is created for each folder, filtering out non-package folders and test packages (`"ui-test": true`).
 3. **Priority Sorting**: Valid packages are sorted in ascending order according to their `ui-priority` value (defaults to `500` if not specified).
 4. **Version Consistency Check**: Compares the current version in `package.json` against the cached version log.
 5. **Execute Build**: If a package version differs (or has never been built):
-   - The build script is resolved from `package.json` by priority:
-     1. If `"prepublishOnly"` is defined, it runs `npm run prepublishOnly`.
-     2. Otherwise, if `"build-recovery"` is defined, it runs `npm run build-recovery`.
-     3. Otherwise, if `"build"` is defined, it runs `npm run build`.
+   - If `--code` is provided, executes the specified command or `npm run <code-name>`.
+   - Otherwise, the build script is resolved from `package.json` by priority (`prepublishOnly` -> `build-recovery` -> `build`).
 6. **Log Update**: Upon successful build, the package version is recorded in the in-memory log.
-7. **Cache Persistence**: If one or more packages were compiled (`changed > 0`), the updated cache is written back to `./logs/ui-build.log.json`. If no packages required updating, it logs `Build packages - no changes`.
+7. **Cache Persistence & GitIgnore Update**: If one or more packages were compiled (`changed > 0`), the updated cache is written back to disk, and the log file path is added to `.gitignore`. If no packages required updating, it logs `Build packages - no changes`.
 
 ## Usage
 
 Run the build command via CLI:
 
 ```bash
+# Standard incremental packages build
 npx dxt-build-packages
+
+# Types build with dedicated log cache
+npx dxt-build-packages --code=types --log=ui-types
 ```
 
 Or configure it in the monorepo's root `package.json` scripts:
@@ -43,10 +47,17 @@ Or configure it in the monorepo's root `package.json` scripts:
 ```json
 {
   "scripts": {
-    "build:packages": "dxt-build-packages"
+    "build:packages": "dxt-build-packages",
+    "build:types": "dxt-build-packages --code=types --log=ui-types"
   }
 }
 ```
+
+### Available CLI Options
+
+- `-c, --code <CODE>`: Custom build command or npm script name (e.g., `types` or `npm run build:prod`).
+- `-d, --dir <DIR>`: Packages directory path (defaults to `packages`).
+- `-l, --log <LOG>`: Custom build log file name or path (defaults to `ui-build.log.json` inside `logs/`).
 
 ## Additional Information
 
@@ -62,15 +73,6 @@ To ensure foundational libraries (e.g. basic utilities or design tokens) compile
 ```
 
 Packages with `ui-priority: 100` are built prior to packages with default priority `500`.
-
-### Log Cache File (`ui-build.log.json`)
-
-The local version cache is stored at:
-```
-./logs/ui-build.log.json
-```
-
-To force a full rebuild of all packages regardless of version consistency, delete this file or reset its content to `{}`.
 
 ### Excluding Test Packages (`ui-test`)
 

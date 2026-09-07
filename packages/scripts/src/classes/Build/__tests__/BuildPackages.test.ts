@@ -2,11 +2,24 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { BuildPackages } from '../BuildPackages'
 import { PropertiesFile } from '../../Properties/PropertiesFile'
 import { PackageFile } from '../../Package/PackageFile'
+import { GitIgnore } from '../../Git/GitIgnore'
 import * as runModule from '../../../functions/run'
 
 class TestBuildPackages extends BuildPackages {
+  public testGetCode(packageFile: PackageFile) {
+    return this.getCode(packageFile)
+  }
+
+  public testGetLogPath() {
+    return this.getLogPath()
+  }
+
   public testGetVersionLog(name: string) {
     return this.getVersionLog(name)
+  }
+
+  public testInitGitIgnore() {
+    this.initGitIgnore()
   }
 
   public testIsUpdate(packageFile: PackageFile) {
@@ -82,6 +95,7 @@ describe('BuildPackages', () => {
     vi.spyOn(PropertiesFile, 'readDir').mockReturnValue(['pkg-2', 'pkg-1', 'pkg-test'] as any)
     vi.spyOn(PropertiesFile, 'readFile').mockReturnValue({})
     vi.spyOn(PropertiesFile, 'writeByPath').mockImplementation(() => {})
+    vi.spyOn(GitIgnore.prototype, 'make').mockReturnValue(true)
     const runSpy = vi.spyOn(runModule, 'run').mockResolvedValue(true)
 
     vi.spyOn(PackageFile.prototype, 'is').mockReturnValue(true)
@@ -103,5 +117,69 @@ describe('BuildPackages', () => {
     await builder.make()
 
     expect(runSpy).toHaveBeenCalled()
+  })
+
+  it('resolves default and custom build codes in getCode', () => {
+    const pkg = new PackageFile(['packages', 'pkg-custom'])
+    vi.spyOn(pkg, 'getCodeBuildOrRecovery').mockReturnValue('npm run build')
+    vi.spyOn(pkg, 'getScripts').mockReturnValue({
+      types: 'dxt-types',
+      build: 'vite build'
+    })
+
+    const defaultBuilder = new TestBuildPackages()
+    expect(defaultBuilder.testGetCode(pkg)).toBe('npm run build')
+
+    const scriptBuilder = new TestBuildPackages(undefined, 'types')
+    expect(scriptBuilder.testGetCode(pkg)).toBe('npm run types')
+
+    const customCommandBuilder = new TestBuildPackages(undefined, 'npm run build:prod')
+    expect(customCommandBuilder.testGetCode(pkg)).toBe('npm run build:prod')
+
+    const unknownScriptBuilder = new TestBuildPackages(undefined, 'custom')
+    expect(unknownScriptBuilder.testGetCode(pkg)).toBe('custom')
+  })
+
+  it('resolves default and custom log paths in getLogPath', () => {
+    const defaultBuilder = new TestBuildPackages()
+    expect(defaultBuilder.testGetLogPath()).toEqual(['.', 'logs', 'ui-build.log.json'])
+
+    const nameOnlyBuilder = new TestBuildPackages(undefined, undefined, 'ui-types')
+    expect(nameOnlyBuilder.testGetLogPath()).toEqual(['.', 'logs', 'ui-types.log.json'])
+
+    const jsonNameBuilder = new TestBuildPackages(undefined, undefined, 'ui-types.log.json')
+    expect(jsonNameBuilder.testGetLogPath()).toEqual(['.', 'logs', 'ui-types.log.json'])
+
+    const relativePathBuilder = new TestBuildPackages(undefined, undefined, 'custom/logs/types.json')
+    expect(relativePathBuilder.testGetLogPath()).toEqual(['custom/logs/types.json'])
+  })
+
+  it('initializes gitignore with log file path', () => {
+    const gitIgnoreSpy = vi.spyOn(GitIgnore.prototype, 'make').mockReturnValue(true)
+
+    const builder = new TestBuildPackages(undefined, undefined, 'ui-types')
+    builder.testInitGitIgnore()
+
+    expect(gitIgnoreSpy).toHaveBeenCalled()
+  })
+
+  it('executes custom build command during make when code is specified', async () => {
+    vi.spyOn(PropertiesFile, 'readDir').mockReturnValue(['pkg-1'] as any)
+    vi.spyOn(PropertiesFile, 'readFile').mockReturnValue({})
+    vi.spyOn(PropertiesFile, 'writeByPath').mockImplementation(() => {})
+    vi.spyOn(GitIgnore.prototype, 'make').mockReturnValue(true)
+    const runSpy = vi.spyOn(runModule, 'run').mockResolvedValue(true)
+
+    vi.spyOn(PackageFile.prototype, 'is').mockReturnValue(true)
+    vi.spyOn(PackageFile.prototype, 'isTest').mockReturnValue(false)
+    vi.spyOn(PackageFile.prototype, 'getName').mockReturnValue('@dxtmisha/pkg-1')
+    vi.spyOn(PackageFile.prototype, 'getVersion').mockReturnValue('1.0.0')
+    vi.spyOn(PackageFile.prototype, 'isVersionConsistency').mockReturnValue(false)
+    vi.spyOn(PackageFile.prototype, 'getScripts').mockReturnValue({ types: 'dxt-types' })
+
+    const builder = new BuildPackages('packages', 'types', 'ui-types')
+    await builder.make()
+
+    expect(runSpy).toHaveBeenCalledWith(expect.any(PackageFile), 'npm run types')
   })
 })

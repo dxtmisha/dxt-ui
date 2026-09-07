@@ -1,5 +1,6 @@
 import { run } from '../../functions/run'
 
+import { GitIgnore } from '../Git/GitIgnore'
 import { PropertiesFile } from '../Properties/PropertiesFile'
 import { PackageFile } from '../Package/PackageFile'
 
@@ -20,15 +21,19 @@ export class BuildPackages {
   protected log: Record<string, string>
 
   /**
-   * Constructor initializes packages path and loads build log.
+   * Constructor initializes packages path, custom build code, custom log file, and loads build log.
    *
-   * Конструктор инициализирует путь к пакетам и загружает лог сборки.
+   * Конструктор инициализирует путь к пакетам, пользовательский код сборки, пользовательский файл лога и загружает лог сборки.
    * @param path packages directory path / путь к директории пакетов
+   * @param code custom build command or script name / пользовательская команда сборки или имя скрипта
+   * @param logFile custom log file name or path / пользовательское имя или путь к файлу лога
    */
   constructor(
-    protected readonly path: string = UI_DIR_PACKAGES
+    protected readonly path: string = UI_DIR_PACKAGES,
+    protected readonly code?: string,
+    protected readonly logFile?: string
   ) {
-    this.log = PropertiesFile.readFile(UI_BUILD_LOG_FILE) ?? {}
+    this.log = PropertiesFile.readFile(this.getLogPath()) ?? {}
   }
 
   /**
@@ -53,29 +58,13 @@ export class BuildPackages {
     }
 
     this.saveLog()
+    this.initGitIgnore()
 
     if (changed > 0) {
       console.info(`Build packages changed: ${changed}`)
     } else {
       console.info('Build packages - no changes')
     }
-  }
-
-  /**
-   * Executes the build script command for the package.
-   *
-   * Выполняет команду скрипта сборки для пакета.
-   * @param packageFile package file instance / экземпляр файла пакета
-   * @returns boolean indicating build success / флаг успешности сборки
-   */
-  protected async build(packageFile: PackageFile): Promise<boolean> {
-    const code = packageFile.getCodeBuildOrRecovery()
-
-    if (code) {
-      return await run(packageFile, code)
-    }
-
-    return false
   }
 
   /**
@@ -89,6 +78,104 @@ export class BuildPackages {
     return !packageFile.isVersionConsistency(
       this.getVersionLog(packageFile.getName())
     )
+  }
+
+  /**
+   * Returns the command name for build execution.
+   *
+   * Возвращает имя команды для выполнения сборки.
+   * @param packageFile package file instance / экземпляр файла пакета
+   * @returns command string or undefined / строка команды или undefined
+   */
+  protected getCode(packageFile: PackageFile): string | undefined {
+    if (this.code) {
+      if (!this.code.includes(' ') && this.code in packageFile.getScripts()) {
+        return `npm run ${this.code}`
+      }
+
+      return this.code
+    }
+
+    return packageFile.getCodeBuildOrRecovery()
+  }
+
+  /**
+   * Returns the path segments to the build log file.
+   *
+   * Возвращает сегменты пути к файлу лога сборки.
+   * @returns array of path segments / массив сегментов пути
+   */
+  protected getLogPath(): string[] {
+    if (this.logFile) {
+      const fileName = this.logFile.endsWith('.json')
+        ? this.logFile
+        : `${this.logFile}.log.json`
+
+      if (fileName.includes('/') || fileName.includes('\\')) {
+        return [fileName]
+      }
+
+      return ['.', 'logs', fileName]
+    }
+
+    return UI_BUILD_LOG_FILE
+  }
+
+  /**
+   * Returns the cached version of the package from the build log.
+   *
+   * Возвращает кэшированную версию пакета из лога сборки.
+   * @param name package name / имя пакета
+   * @returns cached version string / строка кэшированной версии
+   */
+  protected getVersionLog(name: string): string {
+    return this.log?.[name] ?? '0.0.0'
+  }
+
+  /**
+   * Updates the build log with the current package version in memory.
+   *
+   * Обновляет лог сборки текущей версией пакета в памяти.
+   * @param packageFile package file object / объект файла пакета
+   */
+  protected updateLog(packageFile: PackageFile): void {
+    this.log[packageFile.getName()] = packageFile.getVersion()
+  }
+
+  /**
+   * Executes the build script command for the package.
+   *
+   * Выполняет команду скрипта сборки для пакета.
+   * @param packageFile package file instance / экземпляр файла пакета
+   * @returns boolean indicating build success / флаг успешности сборки
+   */
+  protected async build(packageFile: PackageFile): Promise<boolean> {
+    const code = this.getCode(packageFile)
+
+    if (code) {
+      return await run(packageFile, code)
+    }
+
+    return false
+  }
+
+  /**
+   * Adds the build log file to .gitignore.
+   *
+   * Добавляет файл лога сборки в .gitignore.
+   */
+  protected initGitIgnore(): void {
+    const logPath = PropertiesFile.joinPath(this.getLogPath())
+    new GitIgnore(logPath, 'Logs').make()
+  }
+
+  /**
+   * Saves the build log to a file.
+   *
+   * Сохраняет лог сборки в файл.
+   */
+  protected saveLog(): void {
+    PropertiesFile.writeByPath(this.getLogPath(), this.log)
   }
 
   /**
@@ -119,35 +206,5 @@ export class BuildPackages {
       const priorityB = b.get()?.['ui-priority'] ?? 500
       return priorityA - priorityB
     })
-  }
-
-  /**
-   * Returns the cached version of the package from the build log.
-   *
-   * Возвращает кэшированную версию пакета из лога сборки.
-   * @param name package name / имя пакета
-   * @returns cached version string / строка кэшированной версии
-   */
-  protected getVersionLog(name: string): string {
-    return this.log?.[name] ?? '0.0.0'
-  }
-
-  /**
-   * Updates the build log with the current package version in memory.
-   *
-   * Обновляет лог сборки текущей версией пакета в памяти.
-   * @param packageFile package file object / объект файла пакета
-   */
-  protected updateLog(packageFile: PackageFile): void {
-    this.log[packageFile.getName()] = packageFile.getVersion()
-  }
-
-  /**
-   * Saves the build log to a file.
-   *
-   * Сохраняет лог сборки в файл.
-   */
-  protected saveLog(): void {
-    PropertiesFile.writeByPath(UI_BUILD_LOG_FILE, this.log)
   }
 }
