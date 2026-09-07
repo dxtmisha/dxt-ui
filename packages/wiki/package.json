@@ -67,9 +67,9 @@
     "node": ">=20.0.0"
   },
   "dependencies": {
-    "@dxtmisha/functional": ">=1.15.15",
-    "@dxtmisha/functional-basic": ">=1.10.1",
-    "@dxtmisha/styles": ">=1.0.12",
+    "@dxtmisha/functional": ">=1.15.16",
+    "@dxtmisha/functional-basic": ">=1.11.0",
+    "@dxtmisha/styles": ">=1.0.13",
     "@storybook/addon-docs": ">=10.5.10",
     "react": ">=19.2.8",
     "vue": ">=3.5.42"

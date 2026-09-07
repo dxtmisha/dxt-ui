@@ -50,13 +50,13 @@
     }
   },
   "dependencies": {
-    "@dxtmisha/functional": ">=1.15.15",
-    "@dxtmisha/constructor": ">=0.113.0",
-    "@dxtmisha/styles": ">=1.0.12",
-    "@dxtmisha/media": ">=0.7.3",
-    "@dxtmisha/wiki": ">=0.113.0",
-    "@dxtmisha/configuration": ">=1.0.0",
-    "@dxtmisha/scripts": ">=1.0.0"
+    "@dxtmisha/functional": ">=1.15.16",
+    "@dxtmisha/constructor": ">=0.114.0",
+    "@dxtmisha/styles": ">=1.0.13",
+    "@dxtmisha/media": ">=0.7.4",
+    "@dxtmisha/wiki": ">=0.114.0",
+    "@dxtmisha/configuration": ">=1.0.2",
+    "@dxtmisha/scripts": ">=1.1.0"
   },
   "devDependencies": {},
   "ui-test": true

@@ -57,10 +57,10 @@
     "node": ">=20.0.0"
   },
   "dependencies": {
-    "@dxtmisha/functional": ">=1.15.15",
-    "@dxtmisha/functional-basic": ">=1.10.1",
-    "@dxtmisha/styles": ">=1.0.12",
-    "@dxtmisha/wiki": ">=0.113.0",
+    "@dxtmisha/functional": ">=1.15.16",
+    "@dxtmisha/functional-basic": ">=1.11.0",
+    "@dxtmisha/styles": ">=1.0.13",
+    "@dxtmisha/wiki": ">=0.114.0",
     "vue": ">=3.5.42"
   },
   "devDependencies": {},

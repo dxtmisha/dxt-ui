@@ -61,8 +61,8 @@
   },
   "dependencies": {
     "@dxtmisha/figma": ">=0.1.4",
-    "@dxtmisha/functional-basic": ">=1.10.1",
-    "@dxtmisha/scripts": ">=1.0.0",
+    "@dxtmisha/functional-basic": ">=1.11.0",
+    "@dxtmisha/scripts": ">=1.1.0",
     "@figma/plugin-typings": ">=1.136.0"
   },
   "devDependencies": {},

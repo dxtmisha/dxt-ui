@@ -99,7 +99,7 @@
     "node": ">=20.0.0"
   },
   "dependencies": {
-    "@dxtmisha/media": ">=0.7.3"
+    "@dxtmisha/media": ">=0.7.4"
   },
   "sideEffects": false,
   "ui-priority": 100

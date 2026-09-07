@@ -75,8 +75,8 @@
     "node": ">=20.0.0"
   },
   "dependencies": {
-    "@dxtmisha/functional": ">=1.15.15",
-    "@dxtmisha/functional-basic": ">=1.10.1",
+    "@dxtmisha/functional": ">=1.15.16",
+    "@dxtmisha/functional-basic": ">=1.11.0",
     "nitro": ">=3.0.260610-beta",
     "unctx": ">=3.0.1",
     "vue": ">=3.5.42",
