@@ -4,9 +4,10 @@
  * Тип ИИ-провайдера для генерации кода и контента.
  */
 export type AiType
-  = | 'claude'
-    | 'claude-cli'
+  = | 'antigravity-cli'
+    | 'claude'
     | 'claude-agent'
+    | 'claude-cli'
     | 'gemini'
     | 'gemini-cli'
     | 'openai'

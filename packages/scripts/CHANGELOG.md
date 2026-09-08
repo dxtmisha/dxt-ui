@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 ## [1.1.4] - 2026-09-08
 
 ### Added
+- **`AiAntigravityCli` & `AiAntigravityCliLite` AI Providers**:
+  - Implemented `AiAntigravityCli` (`src/classes/Ai/AiAntigravityCli.ts`) and `AiAntigravityCliLite` (`src/classes/Ai/AiAntigravityCliLite.ts`) classes providing integration with Google Antigravity CLI (`agy`) without a system shell.
+  - Added support for `'antigravity-cli'` provider identifier in `AiType` (`src/types/configTypes.ts`) and registry-based factory resolution in `useAi()` (`src/composables/useAi.ts`).
+  - Exported `AiAntigravityCli` and `AiAntigravityCliLite` in `src/library.ts`.
+  - Added unit test suite in `src/classes/Ai/__tests__/AiAntigravityCli.test.ts` and updated `src/composables/__tests__/useAi.test.ts`.
 - **`DesignScreenshotDescription` Analysis Class**:
   - Implemented `DesignScreenshotDescription` (`src/classes/Design/DesignScreenshotDescription.ts`) to analyze component screenshots using multimodal AI models (Gemini, Claude, OpenAI) and generate structured JSON metadata files (`screenshot.json`).
   - Added prompt templates `aiScreenshotDescription.en.md` and `aiScreenshotDescription.ru.md` instructing AI to identify and describe visible components and documentation showcases.
@@ -16,6 +21,12 @@ All notable changes to this project will be documented in this file.
   - Added automatic annotation of screenshot image references in `ai-prompt.md` with descriptions loaded from `screenshot.json`.
   - Added constants `UI_FILE_AI_PROMPT_SCREENSHOT_JSON`, `UI_FILE_AI_PROMPT_SCREENSHOT_CODE`, and `UI_FILE_AI_PROMPT_SCREENSHOT_STYLES` in `src/config.ts`.
   - Added unit test suite in `src/classes/Library/__tests__/LibraryAiPromptScreenshot.test.ts`.
+- **Global AI Prompt Rule for Visual Context**:
+  - Added rule #9 "Visual Component Reference (`ai-screenshot/`)" to `aiCodeGlobalPrompt.en.md` and `aiCodeGlobalPrompt.ru.md` templates, guiding AI assistants on how to use screenshots, descriptions (`screenshot.json`), DOM structures (`screenshot-code.html`), and computed styles (`screenshot-styles.css`) for accurate UI component reuse without reinvention or token waste.
+- **Storybook Documentation for AI Providers**:
+  - Added multi-language Storybook documentation (EN, RU, VI) for `AiAntigravityCli` and `AiAntigravityCliLite` in `src/storybook/classes/`.
+  - Added comprehensive AI Providers guide (`src/storybook/ai/providers/providers.*.mdx`) covering all supported backends (`gemini`, `gemini-cli`, `antigravity-cli`, `claude`, `claude-cli`, `claude-agent`, `openai`, `zai`).
+  - Updated AI Configuration Storybook documentation (`src/storybook/ai/config/config.*.mdx`) with updated provider lists and configuration details.
 
 ### Changed
 - **AI Prompt Generation (`LibraryAiPrompt` & `LibraryAiPromptItem`)**:

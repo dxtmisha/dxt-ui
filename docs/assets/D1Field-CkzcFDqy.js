@@ -1,0 +1,21 @@
+import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{n as t,r as n}from"./lib-BRDOWE9X.js";import{t as r}from"./jsx-runtime-DeHZSEgm.js";import{f as i,n as a,s as o}from"./blocks-DTffVoCm.js";import{n as s,r as c,t as l}from"./storybook-By9-qgrY.js";import{a as u,c as d,i as f,l as p,n as m,o as h,r as g,s as _,t as v,u as y}from"./D1Field.stories-DjAMgCrF.js";function b(e){let t={h2:`h2`,...n(),...e.components};return(0,S.jsxs)(S.Fragment,{children:[(0,S.jsx)(o,{of:v}),`
+`,(0,S.jsx)(l,{name:p.getName(),description:p.getDescription(),story:m}),`
+`,(0,S.jsx)(c,{componentName:`Field`,type:`field`}),`
+`,(0,S.jsx)(c,{componentName:`Field`,type:`value`}),`
+`,(0,S.jsx)(c,{componentName:`Field`,type:`width`}),`
+`,(0,S.jsx)(a,{of:_}),`
+`,(0,S.jsx)(c,{componentName:`Field`,type:`cancel`}),`
+`,(0,S.jsx)(a,{of:g}),`
+`,(0,S.jsx)(c,{componentName:`Field`,type:`arrows`}),`
+`,(0,S.jsx)(a,{of:f}),`
+`,(0,S.jsx)(c,{componentName:`Style`,type:`isSkeleton`}),`
+`,(0,S.jsx)(a,{of:u}),`
+`,(0,S.jsx)(t.h2,{id:`events`,children:`Events`}),`
+`,(0,S.jsx)(c,{componentName:`Event`,type:`click`}),`
+`,(0,S.jsx)(t.h2,{id:`slots`,children:`Slots`}),`
+`,(0,S.jsx)(a,{of:h}),`
+`,(0,S.jsx)(c,{componentName:`Slot`,type:`label`}),`
+`,(0,S.jsx)(c,{componentName:`Slot`,type:`prefix`}),`
+`,(0,S.jsx)(c,{componentName:`Slot`,type:`suffix`}),`
+`,(0,S.jsx)(c,{componentName:`Slot`,type:`caption`}),`
+`,(0,S.jsx)(c,{componentName:`Field`,type:`slots`})]})}function x(e={}){let{wrapper:t}={...n(),...e.components};return t?(0,S.jsx)(t,{...e,children:(0,S.jsx)(b,{...e})}):b(e)}var S;function C(){return(C=e((()=>{S=r(),t(),i(),s(),d(),y()})))()}C();export{x as default};

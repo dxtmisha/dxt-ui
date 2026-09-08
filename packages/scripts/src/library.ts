@@ -1,5 +1,7 @@
 // Classes
 export * from './classes/Ai/AiAbstract'
+export * from './classes/Ai/AiAntigravityCli'
+export * from './classes/Ai/AiAntigravityCliLite'
 export * from './classes/Ai/AiClaude'
 export * from './classes/Ai/AiClaudeAgent'
 export * from './classes/Ai/AiClaudeAgentLite'

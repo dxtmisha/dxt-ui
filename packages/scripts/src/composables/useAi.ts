@@ -1,6 +1,7 @@
 import { PropertiesConfig } from '../classes/Properties/PropertiesConfig'
 
 import { AiAbstract } from '../classes/Ai/AiAbstract'
+import { AiAntigravityCli } from '../classes/Ai/AiAntigravityCli'
 import { AiClaude } from '../classes/Ai/AiClaude'
 import { AiClaudeAgent } from '../classes/Ai/AiClaudeAgent'
 import { AiClaudeCli } from '../classes/Ai/AiClaudeCli'
@@ -15,6 +16,7 @@ import { AiZAi } from '../classes/Ai/AiZAi'
  * Реестр фабричных функций AI-провайдеров, индексированный по идентификатору типа провайдера.
  */
 const AI_PROVIDER_REGISTRY = new Map<string, () => AiAbstract>([
+  ['antigravity-cli', () => new AiAntigravityCli()],
   ['claude', () => new AiClaude()],
   ['claude-agent', () => new AiClaudeAgent()],
   ['claude-cli', () => new AiClaudeCli()],

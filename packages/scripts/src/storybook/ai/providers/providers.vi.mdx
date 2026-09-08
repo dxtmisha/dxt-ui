@@ -1,0 +1,83 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/2. AI/11. Các nhà cung cấp AI được hỗ trợ' />
+
+# Các nhà cung cấp AI được hỗ trợ
+
+Tài liệu tham khảo nhanh các thông số cấu hình và danh sách các nhà cung cấp AI được hỗ trợ trong `design.config.json` hoặc `design.config.local.json`.
+
+## Các tham số cấu hình
+
+- **`aiType`** — Loại nhà cung cấp hoặc công cụ chạy CLI.
+- **`aiModel`** — Mã định danh mô hình mục tiêu.
+- **`aiKey`** — Khóa API để xác thực (không bắt buộc đối với công cụ CLI nếu đã xác thực trong hệ thống).
+- **`aiConfig`** — Các tùy chọn tạo bổ sung (nhiệt độ, giới hạn token, tiêu đề tùy chỉnh).
+
+## Danh sách nhà cung cấp (aiType)
+
+- **`gemini` (Google Gemini API)**:
+  - **Lớp**: `AiGoogle`
+  - **SDK**: `@google/genai`
+  - **Mô hình**: `gemini-3.7-flash`, `gemini-2.5-pro`, `gemini-2.5-flash`
+  - **Yêu cầu**: Khóa Google AI API trong `aiKey`.
+
+- **`gemini-cli` (Google Gemini CLI)**:
+  - **Lớp**: `AiGoogleCli`
+  - **Yêu cầu**: Tiện ích `gemini` CLI được cài đặt trong PATH.
+  - **Mô hình**: `gemini-3.7-flash`, `gemini-2.5-flash`
+
+- **`antigravity-cli` (Google Antigravity CLI)**:
+  - **Lớp**: `AiAntigravityCli`
+  - **Yêu cầu**: Tiện ích `agy` CLI được cài đặt trong PATH.
+  - **Mô hình**: `gemini-3.7-flash`, `gemini-2.5-flash`
+
+- **`claude` (Anthropic Claude API)**:
+  - **Lớp**: `AiClaude`
+  - **SDK**: `@anthropic-ai/sdk`
+  - **Mô hình**: `claude-3-7-sonnet-20250219`, `claude-3-5-sonnet-20241022`, `claude-3-5-haiku-20241022`
+  - **Yêu cầu**: Khóa Anthropic API trong `aiKey`.
+
+- **`claude-cli` (Anthropic Claude CLI)**:
+  - **Lớp**: `AiClaudeCli`
+  - **Yêu cầu**: Tiện ích `claude` CLI được cài đặt trong PATH.
+  - **Mô hình**: `claude-3-7-sonnet`, `claude-3-5-sonnet`
+
+- **`claude-agent` (Anthropic Claude Agent SDK)**:
+  - **Lớp**: `AiClaudeAgent`
+  - **SDK**: `@anthropic-ai/claude-agent-sdk`
+  - **Yêu cầu**: Khóa Anthropic API trong `aiKey`.
+
+- **`openai` (OpenAI API)**:
+  - **Lớp**: `AiOpenAi`
+  - **SDK**: `openai`
+  - **Mô hình**: `gpt-4o`, `gpt-4o-mini`, `o3-mini`, `o1`
+  - **Yêu cầu**: Khóa OpenAI API trong `aiKey`. Hỗ trợ các điểm cuối tương thích qua `aiConfig.baseURL`.
+
+- **`zai` (xAI Grok)**:
+  - **Lớp**: `AiZAi`
+  - **SDKs**: `@ai-sdk/xai`, `ai`
+  - **Mô hình**: `grok-4.5`, `grok-2`
+  - **Yêu cầu**: Khóa xAI API trong `aiKey`.
+
+## Ví dụ cấu hình (design.config.json)
+
+```json
+{
+  "aiType": "gemini",
+  "aiModel": "gemini-3.7-flash",
+  "aiKey": "AIzaSy...",
+  "aiConfig": {
+    "temperature": 0.2
+  }
+}
+```
+
+Để phát triển cục bộ mà không commit khóa lên Git, hãy sử dụng `design.config.local.json`:
+
+```json
+{
+  "aiType": "gemini",
+  "aiModel": "gemini-3.7-flash",
+  "aiKey": "AIzaSy..."
+}
+```

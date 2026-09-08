@@ -1,0 +1,52 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/AiAntigravityCli - Auto-configured Google Antigravity AI via CLI'/>
+
+# AiAntigravityCli Class
+
+A high-level implementation for interacting with Google Antigravity AI via the `agy` command-line interface. The `AiAntigravityCli` class extends `AiAntigravityCliLite` and simplifies workflow by automatically loading the required API key and model identifier from the project's configuration settings (`getConfigAi()`).
+
+> This implementation requires the `agy` CLI utility to be installed and accessible in the system path.
+
+## Key Features
+
+- **Automated Configuration** — no manual initialization needed; reads credentials and model settings directly from project configuration (`design.config.json` / `design.config.local.json`).
+- **Direct CLI Execution** — invokes `agy` directly without a system shell for reliable execution.
+- **Temporary File Pipeline** — manages the creation and cleanup of temporary prompt files (`ApiTmp`) automatically.
+- **Concise Outputs** — applies the `--yolo` flag and instructions to ensure direct answers without chat preamble.
+
+## Initialization
+
+The `AiAntigravityCli` class is ready to use without constructor arguments.
+
+```typescript
+import { AiAntigravityCli } from '@dxtmisha/scripts'
+
+const ai = new AiAntigravityCli()
+
+// Generate a response using project-defined settings
+const response = await ai.generate('Generate a TypeScript interface for this component.')
+```
+
+## Methods
+
+### Generation
+
+- `generate(contents: string): Promise<string>` — (Inherited) Analyzes input, manages temporary prompt files, and executes the `agy` CLI command to retrieve output.
+
+### Configuration
+
+- `setKey(key: string): this` — (Inherited) Manually overrides the API key if necessary.
+- `setModel(model: string): this` — (Inherited) Switches the active model identifier.
+
+### Context Building
+
+- `addPrompt(prompt: string): void` — (Inherited) Sets a persistent text prefix for system instructions.
+- `addContent(content: string): this` — (Inherited) Appends a text segment to the cumulative request.
+- `resetPrompt(): void` — (Inherited) Clears the persistent prompt prefix.
+- `resetContents(): this` — (Inherited) Clears all accumulated text segments.
+
+## Limitations
+
+- **Multimodal Support** — this CLI-based implementation currently does not support image inputs.
+- **System Dependencies** — requires the `agy` CLI tool installed and accessible in the system PATH.

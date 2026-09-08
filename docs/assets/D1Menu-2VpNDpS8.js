@@ -1,0 +1,24 @@
+import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{n as t,r as n}from"./lib-BRDOWE9X.js";import{t as r}from"./jsx-runtime-DeHZSEgm.js";import{f as i,n as a,s as o}from"./blocks-DTffVoCm.js";import{n as s,r as c,t as l}from"./storybook-By9-qgrY.js";import{a as u,c as d,i as f,n as p,o as m,r as h,s as g,t as _}from"./D1Menu.stories-Cok2vVyv.js";function v(e){let t={h2:`h2`,...n(),...e.components};return(0,b.jsxs)(b.Fragment,{children:[(0,b.jsx)(o,{of:_}),`
+`,(0,b.jsx)(l,{name:g.getName(),description:g.getDescription(),story:p}),`
+`,(0,b.jsx)(c,{componentName:`Menu`,type:`menu`}),`
+`,(0,b.jsx)(c,{componentName:`Menu`,type:`navigation`}),`
+`,(0,b.jsx)(a,{of:f}),`
+`,(0,b.jsx)(c,{componentName:`Menu`,type:`ajax`}),`
+`,(0,b.jsx)(a,{of:h}),`
+`,(0,b.jsx)(c,{componentName:`Value`,type:`v-model`}),`
+`,(0,b.jsx)(a,{of:u}),`
+`,(0,b.jsx)(t.h2,{id:`events`,children:`Events`}),`
+`,(0,b.jsx)(c,{componentName:`Event`,type:`click`}),`
+`,(0,b.jsx)(c,{componentName:`Event`,type:`bars`}),`
+`,(0,b.jsx)(c,{componentName:`Event`,type:`clickSlot`}),`
+`,(0,b.jsx)(c,{componentName:`Menu`,type:`event.updateValue`}),`
+`,(0,b.jsx)(c,{componentName:`Window`,type:`event.window`}),`
+`,(0,b.jsx)(t.h2,{id:`expose`,children:`Expose`}),`
+`,(0,b.jsx)(c,{componentName:`Window`,type:`expose`}),`
+`,(0,b.jsx)(c,{componentName:`Expose`,type:`selected`}),`
+`,(0,b.jsx)(c,{componentName:`Expose`,type:`loading`}),`
+`,(0,b.jsx)(c,{componentName:`Menu`,type:`expose.navigation`}),`
+`,(0,b.jsx)(t.h2,{id:`slots`,children:`Slots`}),`
+`,(0,b.jsx)(c,{componentName:`List`,type:`slot.html`}),`
+`,(0,b.jsx)(c,{componentName:`Menu`,type:`slotsControl`}),`
+`,(0,b.jsx)(c,{componentName:`Menu`,type:`slots`})]})}function y(e={}){let{wrapper:t}={...n(),...e.components};return t?(0,b.jsx)(t,{...e,children:(0,b.jsx)(v,{...e})}):v(e)}var b;function x(){return(x=e((()=>{b=r(),t(),i(),s(),m(),d()})))()}x();export{y as default};

@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { useAi } from '../useAi'
 import { PropertiesConfig } from '../../classes/Properties/PropertiesConfig'
+import { AiAntigravityCli } from '../../classes/Ai/AiAntigravityCli'
 import { AiClaude } from '../../classes/Ai/AiClaude'
 import { AiClaudeAgent } from '../../classes/Ai/AiClaudeAgent'
 import { AiClaudeCli } from '../../classes/Ai/AiClaudeCli'
@@ -12,6 +13,12 @@ import { AiZAi } from '../../classes/Ai/AiZAi'
 describe('useAi', () => {
   afterEach(() => {
     vi.restoreAllMocks()
+  })
+
+  it('instantiates AiAntigravityCli when config type is antigravity-cli', () => {
+    vi.spyOn(PropertiesConfig, 'getAiType').mockReturnValue('antigravity-cli')
+    const ai = useAi()
+    expect(ai).toBeInstanceOf(AiAntigravityCli)
   })
 
   it('instantiates AiClaude when config type is claude', () => {

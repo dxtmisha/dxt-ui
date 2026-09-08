@@ -1,0 +1,57 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/AiAntigravityCliLite - Lớp Google Antigravity AI CLI tinh gọn'/>
+
+# Lớp AiAntigravityCliLite
+
+Triển khai tinh gọn chuyên biệt của `AiAbstract` để tương tác với Google Antigravity AI thông qua tiện ích dòng lệnh (`agy`).
+
+> Triển khai này yêu cầu tiện ích `agy` CLI được cài đặt và có thể truy cập trong biến môi trường PATH của hệ thống.
+
+## Đặc điểm nổi bật
+
+- **Thực thi CLI trực tiếp** — thực hiện các yêu cầu thông qua `execFile` (`node:child_process`) mà không cần vỏ hệ thống trung gian.
+- **Xử lý ngữ cảnh lớn** — ghi dữ liệu lời nhắc lớn vào các tệp tạm thời bằng `ApiTmp`, vượt qua giới hạn độ dài tham số dòng lệnh.
+- **Tự động dọn dẹp tài nguyên** — đảm bảo các tệp lời nhắc tạm thời được xóa ngay sau khi nhận kết quả hoặc khi gặp lỗi.
+- **Chế độ YOLO** — tự động áp dụng cờ `--yolo` và chỉ thị xuất mã nguồn trực tiếp mà không có hội thoại mở đầu.
+
+## Khởi tạo
+
+Khởi tạo `AiAntigravityCliLite` bằng cách truyền khóa API, mã mô hình và cấu hình tùy chọn qua hàm dựng.
+
+**Tham số:**
+- `key: string` — Khóa API (được truyền vào tiến trình CLI qua biến môi trường).
+- `model: string` — Mã định danh mô hình cho Antigravity CLI.
+- `config?: Record<string, any>` — Bản ghi cấu hình tùy chọn.
+
+```typescript
+import { AiAntigravityCliLite } from '@dxtmisha/scripts'
+
+const ai = new AiAntigravityCliLite('KHOA_API_CUA_BAN', 'gemini-3.7-flash')
+
+// Tạo phản hồi
+const response = await ai.generate('Phân tích kiến trúc của gói.')
+```
+
+## Phương thức
+
+### Tạo nội dung
+
+- `generate(contents: string): Promise<string>` — Phương thức thực thi chính. Biên dịch ngữ cảnh tích lũy vào các tệp tạm, chạy lệnh `agy` và trả về kết quả.
+
+### Cấu hình
+
+- `setKey(key: string): this` — Cập nhật khóa API.
+- `setModel(model: string): this` — Chuyển đổi mã định danh mô hình đang hoạt động.
+
+### Xây dựng ngữ cảnh
+
+- `addPrompt(prompt: string): void` — Thiết lập tiền tố lời nhắc hệ thống cố định.
+- `addContent(content: string): this` — Thêm một đoạn văn bản vào ngữ cảnh tích lũy.
+- `resetPrompt(): void` — Xóa tiền tố lời nhắc cố định.
+- `resetContents(): this` — Xóa tất cả các phần văn bản đã tích lũy.
+
+## Giới hạn
+
+- **Hình ảnh** — các tệp hình ảnh đính kèm hiện bị bỏ qua trong chế độ thực thi CLI.
+- **Môi trường** — yêu cầu tệp thực thi `agy` có trong PATH của hệ thống.

@@ -61,14 +61,16 @@ Below is a complete configuration example covering all parameters that govern Ty
 ## Parameter Reference for AI & Type Generation
 
 ### 1. AI Provider Connection Settings
-- **`aiType`** (`string`, default: `'gemini'`) — AI provider backend for JSDoc normalization and summary generation. Supported options:
+- **`aiType`** (`string`, default: `'gemini'`) — AI provider backend for JSDoc normalization and summary generation (see *«11. Supported AI Providers»* for full reference). Supported options:
   - `gemini` — Official Google Gemini API (via `@google/genai`).
-  - `gemini-cli` — Local Gemini CLI invocations.
+  - `gemini-cli` — Local Gemini CLI invocations (`gemini`).
+  - `antigravity-cli` — Google Antigravity CLI invocations (`agy`).
+  - `claude` — Official Anthropic Claude API (via `@anthropic-ai/sdk`).
+  - `claude-cli` — Terminal Claude Code CLI invocations (`claude`).
+  - `claude-agent` — Autonomous agent mode via Anthropic Claude Agent SDK (`@anthropic-ai/claude-agent-sdk`).
   - `openai` — OpenAI models (GPT-4o, GPT-4o-mini, and compatible endpoints).
-  - `claude` — Anthropic Claude API.
-  - `claude-cli` / `claude-agent` — Anthropic CLI and agent runners.
-  - `zai` — Zhipu AI (GLM model family).
-- **`aiModel`** (`string`) — Model identifier string (e.g., `gemini-3.7-flash`, `gpt-4o`, `claude-3-7-sonnet`).
+  - `zai` — xAI Grok models (via `@ai-sdk/xai` and Vercel AI SDK).
+- **`aiModel`** (`string`) — Model identifier string (e.g., `gemini-3.7-flash`, `gpt-4o`, `claude-3-7-sonnet`, `grok-4.5`).
 - **`aiKey`** (`string`) — API authentication key for the selected AI provider.
 - **`aiConfig`** (`object`) — Custom generation options (e.g., response temperature `temperature: 0.2`, token limits, custom headers).
 - **`aiTypesConcurrency`** (`number`, default: `8`) — Maximum number of TypeScript declaration files processed by the AI model concurrently during `dxt-types`.

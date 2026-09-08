@@ -61,14 +61,16 @@ import { Meta } from '@storybook/addon-docs/blocks'
 ## Описание параметров для AI и генерации типов
 
 ### 1. Настройки подключения к ИИ-провайдеру
-- **`aiType`** (`string`, по умолчанию: `'gemini'`) — провайдер искусственного интеллекта для оптимизации JSDoc и генерации описаний. Поддерживаются:
+- **`aiType`** (`string`, по умолчанию: `'gemini'`) — провайдер искусственного интеллекта для оптимизации JSDoc и генерации описаний (подробный обзор см. в разделе *«11. Поддерживаемые AI-провайдеры»*). Поддерживаются:
   - `gemini` — официальный Google Gemini API (через `@google/genai`).
-  - `gemini-cli` — вызовы через локальный интерфейс Gemini CLI.
-  - `openai` — модели OpenAI (GPT-4o, GPT-4o-mini и совместимые эндпоинты).
-  - `claude` — Anthropic Claude API.
-  - `claude-cli` / `claude-agent` — вызовы через CLI/Agent Anthropic.
-  - `zai` — Zhipu AI (GLM модели).
-- **`aiModel`** (`string`) — точный идентификатор модели нейросети (например: `gemini-3.7-flash`, `gpt-4o`, `claude-3-7-sonnet`).
+  - `gemini-cli` — вызовы через локальный интерфейс Gemini CLI (`gemini`).
+  - `antigravity-cli` — вызовы через консольный интерфейс Google Antigravity CLI (`agy`).
+  - `claude` — официальный Anthropic Claude API (через `@anthropic-ai/sdk`).
+  - `claude-cli` — вызовы через терминальную утилиту Claude Code CLI (`claude`).
+  - `claude-agent` — автономный режим через Anthropic Claude Agent SDK (`@anthropic-ai/claude-agent-sdk`).
+  - `openai` — модели OpenAI (GPT-4o, GPT-4o-mini и любые совместимые эндпоинты).
+  - `zai` — модели xAI Grok (через `@ai-sdk/xai` и Vercel AI SDK).
+- **`aiModel`** (`string`) — точный идентификатор модели нейросети (например: `gemini-3.7-flash`, `gpt-4o`, `claude-3-7-sonnet`, `grok-4.5`).
 - **`aiKey`** (`string`) — API-ключ для авторизации в сервисе выбранного провайдера.
 - **`aiConfig`** (`object`) — объект тонких настроек генерации (например, температура генерации `temperature: 0.2`, лимиты токенов и кастомные заголовки).
 - **`aiTypesConcurrency`** (`number`, по умолчанию: `8`) — максимальное количество файлов типов, обрабатываемых моделью параллельно во время работы команды `dxt-types`.

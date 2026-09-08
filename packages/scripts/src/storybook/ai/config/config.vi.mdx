@@ -61,14 +61,16 @@ Dưới đây là ví dụ cấu hình đầy đủ bao gồm toàn bộ các th
 ## Giải thích các thuộc tính cho AI & Tạo kiểu dữ liệu
 
 ### 1. Cài đặt kết nối nhà cung cấp AI
-- **`aiType`** (`string`, mặc định: `'gemini'`) — Nhà cung cấp trí tuệ nhân tạo để tối ưu hóa JSDoc và tạo mô tả. Hỗ trợ:
+- **`aiType`** (`string`, mặc định: `'gemini'`) — Nhà cung cấp trí tuệ nhân tạo để tối ưu hóa JSDoc và tạo mô tả (xem phần *«11. Các nhà cung cấp AI được hỗ trợ»* để biết chi tiết). Hỗ trợ:
   - `gemini` — Google Gemini API chính thức (qua `@google/genai`).
-  - `gemini-cli` — Gọi qua giao diện dòng lệnh Gemini CLI cục bộ.
+  - `gemini-cli` — Gọi qua giao diện dòng lệnh Gemini CLI cục bộ (`gemini`).
+  - `antigravity-cli` — Gọi qua giao diện dòng lệnh Google Antigravity CLI (`agy`).
+  - `claude` — Anthropic Claude API chính thức (qua `@anthropic-ai/sdk`).
+  - `claude-cli` — Gọi qua công cụ dòng lệnh Claude Code CLI (`claude`).
+  - `claude-agent` — Chế độ tác tử tự trị qua Anthropic Claude Agent SDK (`@anthropic-ai/claude-agent-sdk`).
   - `openai` — Các mô hình OpenAI (GPT-4o, GPT-4o-mini và các endpoint tương thích).
-  - `claude` — Anthropic Claude API.
-  - `claude-cli` / `claude-agent` — Gọi qua CLI/Agent của Anthropic.
-  - `zai` — Zhipu AI (dòng mô hình GLM).
-- **`aiModel`** (`string`) — Định danh chính xác của mô hình AI (ví dụ: `gemini-3.7-flash`, `gpt-4o`, `claude-3-7-sonnet`).
+  - `zai` — Các mô hình xAI Grok (qua `@ai-sdk/xai` và Vercel AI SDK).
+- **`aiModel`** (`string`) — Định danh chính xác của mô hình AI (ví dụ: `gemini-3.7-flash`, `gpt-4o`, `claude-3-7-sonnet`, `grok-4.5`).
 - **`aiKey`** (`string`) — Khóa API để xác thực với nhà cung cấp đã chọn.
 - **`aiConfig`** (`object`) — Đối tượng tùy chỉnh nâng cao (ví dụ: nhiệt độ tạo `temperature: 0.2`, giới hạn token, tiêu đề tùy chỉnh).
 - **`aiTypesConcurrency`** (`number`, mặc định: `8`) — Số lượng tệp định nghĩa kiểu tối đa được AI xử lý đồng thời trong quá trình chạy `dxt-types`.

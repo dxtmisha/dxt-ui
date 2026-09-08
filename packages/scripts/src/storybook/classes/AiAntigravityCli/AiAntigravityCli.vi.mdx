@@ -1,0 +1,52 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/scripts/Classes/AiAntigravityCli - Google Antigravity AI tự động cấu hình qua CLI'/>
+
+# Lớp AiAntigravityCli
+
+Triển khai cấp cao để tương tác với Google Antigravity AI thông qua giao diện dòng lệnh (`agy`). Lớp `AiAntigravityCli` mở rộng từ `AiAntigravityCliLite` và đơn giản hóa quy trình bằng cách tự động tải khóa API và mã định danh mô hình từ cấu hình dự án (`getConfigAi()`).
+
+> Triển khai này yêu cầu tiện ích dòng lệnh `agy` đã được cài đặt và có thể truy cập trong biến môi trường PATH của hệ thống.
+
+## Đặc điểm nổi bật
+
+- **Cấu hình tự động** — không cần khởi tạo thủ công; các tham số được lấy trực tiếp từ cấu hình dự án (`design.config.json` / `design.config.local.json`).
+- **Thực thi CLI trực tiếp** — gọi trực tiếp `agy` mà không qua vỏ hệ thống (shell) để thực thi an toàn và đáng tin cậy.
+- **Quản lý tệp tạm thời** — tự động xử lý việc tạo và dọn dẹp các tệp lời nhắc tạm thời (`ApiTmp`).
+- **Kết quả ngắn gọn** — áp dụng cờ `--yolo` và chỉ thị xuất kết quả thuần túy mà không có hội thoại mở đầu.
+
+## Khởi tạo
+
+Lớp `AiAntigravityCli` sẵn sàng sử dụng mà không cần bất kỳ tham số nào trong hàm dựng.
+
+```typescript
+import { AiAntigravityCli } from '@dxtmisha/scripts'
+
+const ai = new AiAntigravityCli()
+
+// Tạo phản hồi bằng các cài đặt của dự án
+const response = await ai.generate('Tạo giao diện TypeScript cho component.')
+```
+
+## Phương thức
+
+### Tạo nội dung
+
+- `generate(contents: string): Promise<string>` — (Kế thừa) Phân tích dữ liệu đầu vào, quản lý tệp tạm và thực thi lệnh CLI `agy` để nhận kết quả.
+
+### Cấu hình
+
+- `setKey(key: string): this` — (Kế thừa) Cho phép ghi đè khóa API theo cách thủ công khi cần.
+- `setModel(model: string): this` — (Kế thừa) Chuyển đổi mã định danh mô hình đang hoạt động.
+
+### Xây dựng ngữ cảnh
+
+- `addPrompt(prompt: string): void` — (Kế thừa) Thiết lập tiền tố văn bản cố định (chỉ thị hệ thống).
+- `addContent(content: string): this` — (Kế thừa) Thêm một phần văn bản vào yêu cầu tích lũy.
+- `resetPrompt(): void` — (Kế thừa) Xóa tiền tố lời nhắc cố định.
+- `resetContents(): this` — (Kế thừa) Xóa tất cả các phần văn bản đã tích lũy.
+
+## Giới hạn
+
+- **Hỗ trợ đa phương thức** — triển khai CLI này hiện không hỗ trợ dữ liệu đầu vào là hình ảnh.
+- **Phụ thuộc hệ thống** — yêu cầu công cụ dòng lệnh `agy` có sẵn trong biến môi trường PATH.

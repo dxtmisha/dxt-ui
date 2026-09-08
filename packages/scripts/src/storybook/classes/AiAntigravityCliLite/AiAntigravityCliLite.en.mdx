@@ -1,0 +1,57 @@
+import {Meta} from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/scripts/Classes/AiAntigravityCliLite - Lightweight Google Antigravity AI CLI Class'/>
+
+# AiAntigravityCliLite Class
+
+A dedicated lightweight implementation of `AiAbstract` that interfaces with Google Antigravity AI via the `agy` command-line utility.
+
+> This implementation requires the `agy` CLI utility to be installed and accessible in your system PATH.
+
+## Key Features
+
+- **Direct CLI Execution** — executes requests via `execFile` (`node:child_process`) without an intermediate shell.
+- **Large Context Streaming** — writes large prompt payloads to temporary files using `ApiTmp`, bypassing terminal argument size limits.
+- **Automatic Resource Cleanup** — ensures prompt files are removed immediately upon receiving output or on failure.
+- **YOLO Mode** — enforces `--yolo` execution and direct, non-conversational code output.
+
+## Initialization
+
+Instantiate `AiAntigravityCliLite` by passing the API key, model ID, and optional configuration to the constructor.
+
+**Parameters:**
+- `key: string` — API key (passed to the CLI process via environment variables).
+- `model: string` — Model identifier for Antigravity CLI.
+- `config?: Record<string, any>` — Optional configuration record.
+
+```typescript
+import { AiAntigravityCliLite } from '@dxtmisha/scripts'
+
+const ai = new AiAntigravityCliLite('YOUR_API_KEY', 'gemini-3.7-flash')
+
+// Generate output
+const response = await ai.generate('Analyze the package architecture.')
+```
+
+## Methods
+
+### Generation
+
+- `generate(contents: string): Promise<string>` — Primary execution method. Compiles accumulated context to temporary files, executes the `agy` command, and returns the response.
+
+### Configuration
+
+- `setKey(key: string): this` — Updates the API key.
+- `setModel(model: string): this` — Switches the active model identifier.
+
+### Context Building
+
+- `addPrompt(prompt: string): void` — Sets a persistent system prompt prefix.
+- `addContent(content: string): this` — Appends a text part to the cumulative context.
+- `resetPrompt(): void` — Clears the persistent prompt prefix.
+- `resetContents(): this` — Clears all accumulated text segments.
+
+## Limitations
+
+- **Images** — image attachments are currently ignored in CLI execution mode.
+- **Environment** — requires the `agy` binary in system PATH.

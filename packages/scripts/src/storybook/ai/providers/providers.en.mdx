@@ -1,0 +1,83 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/2. AI/11. Supported AI Providers' />
+
+# Supported AI Providers
+
+Quick configuration reference of supported AI providers and models for `design.config.json` or `design.config.local.json`.
+
+## Configuration Keys
+
+- **`aiType`** — Provider identifier or CLI runner type.
+- **`aiModel`** — Target model identifier.
+- **`aiKey`** — API authentication key (not required for CLI tools if already authenticated in the system).
+- **`aiConfig`** — Optional generation parameters (temperature, token limits, headers).
+
+## Provider List (aiType)
+
+- **`gemini` (Google Gemini API)**:
+  - **Class**: `AiGoogle`
+  - **SDK**: `@google/genai`
+  - **Models**: `gemini-3.7-flash`, `gemini-2.5-pro`, `gemini-2.5-flash`
+  - **Requires**: Google AI API key in `aiKey`.
+
+- **`gemini-cli` (Google Gemini CLI)**:
+  - **Class**: `AiGoogleCli`
+  - **Requires**: System `gemini` CLI installed in PATH.
+  - **Models**: `gemini-3.7-flash`, `gemini-2.5-flash`
+
+- **`antigravity-cli` (Google Antigravity CLI)**:
+  - **Class**: `AiAntigravityCli`
+  - **Requires**: System `agy` CLI installed in PATH.
+  - **Models**: `gemini-3.7-flash`, `gemini-2.5-flash`
+
+- **`claude` (Anthropic Claude API)**:
+  - **Class**: `AiClaude`
+  - **SDK**: `@anthropic-ai/sdk`
+  - **Models**: `claude-3-7-sonnet-20250219`, `claude-3-5-sonnet-20241022`, `claude-3-5-haiku-20241022`
+  - **Requires**: Anthropic API key in `aiKey`.
+
+- **`claude-cli` (Anthropic Claude CLI)**:
+  - **Class**: `AiClaudeCli`
+  - **Requires**: System `claude` CLI installed in PATH.
+  - **Models**: `claude-3-7-sonnet`, `claude-3-5-sonnet`
+
+- **`claude-agent` (Anthropic Claude Agent SDK)**:
+  - **Class**: `AiClaudeAgent`
+  - **SDK**: `@anthropic-ai/claude-agent-sdk`
+  - **Requires**: Anthropic API key in `aiKey`.
+
+- **`openai` (OpenAI API)**:
+  - **Class**: `AiOpenAi`
+  - **SDK**: `openai`
+  - **Models**: `gpt-4o`, `gpt-4o-mini`, `o3-mini`, `o1`
+  - **Requires**: OpenAI API key in `aiKey`. Supports compatible endpoints via `aiConfig.baseURL`.
+
+- **`zai` (xAI Grok)**:
+  - **Class**: `AiZAi`
+  - **SDKs**: `@ai-sdk/xai`, `ai`
+  - **Models**: `grok-4.5`, `grok-2`
+  - **Requires**: xAI API key in `aiKey`.
+
+## Configuration Example (design.config.json)
+
+```json
+{
+  "aiType": "gemini",
+  "aiModel": "gemini-3.7-flash",
+  "aiKey": "AIzaSy...",
+  "aiConfig": {
+    "temperature": 0.2
+  }
+}
+```
+
+For local development without committing keys to Git, use `design.config.local.json`:
+
+```json
+{
+  "aiType": "gemini",
+  "aiModel": "gemini-3.7-flash",
+  "aiKey": "AIzaSy..."
+}
+```
