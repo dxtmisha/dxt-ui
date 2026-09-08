@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.3] - 2026-09-08
+
+### Added
+- **`DesignScreenshotDescription` Analysis Class**:
+  - Implemented `DesignScreenshotDescription` (`src/classes/Design/DesignScreenshotDescription.ts`) to analyze component screenshots using multimodal AI models (Gemini, Claude, OpenAI) and generate structured JSON metadata files (`screenshot.json`).
+  - Added prompt templates `aiScreenshotDescription.en.md` and `aiScreenshotDescription.ru.md` instructing AI to identify and describe visible components and documentation showcases.
+  - Added `DesignScreenshotItem` and `DesignScreenshotList` types in `src/types/screenshotTypes.ts`.
+  - Added comprehensive test suite in `src/classes/Design/__tests__/DesignScreenshotDescription.test.ts`.
+- **`LibraryAiPromptScreenshot` Handler**:
+  - Implemented dedicated `LibraryAiPromptScreenshot` class (`src/classes/Library/LibraryAiPromptScreenshot.ts`) to modularize screenshot handling, artifact copying, and visual context generation.
+  - Added support for copying `screenshot-code.html` and `screenshot-styles.css` into isolated project directories under `ai-packages-types/<project-folder>/`.
+  - Added automatic annotation of screenshot image references in `ai-prompt.md` with descriptions loaded from `screenshot.json`.
+  - Added constants `UI_FILE_AI_PROMPT_SCREENSHOT_JSON`, `UI_FILE_AI_PROMPT_SCREENSHOT_CODE`, and `UI_FILE_AI_PROMPT_SCREENSHOT_STYLES` in `src/config.ts`.
+  - Added unit test suite in `src/classes/Library/__tests__/LibraryAiPromptScreenshot.test.ts`.
+
+### Changed
+- **AI Prompt Generation (`LibraryAiPrompt` & `LibraryAiPromptItem`)**:
+  - Updated `LibraryAiPrompt.make()` to clean and recreate `ai-packages-types` on each run, ensuring removal of stale type declarations and screenshot artifacts.
+  - Updated `LibraryAiPromptItem` to store package type definitions in dedicated project subdirectories (`ai-packages-types/<project-folder>/ai-types.md`) instead of flat files.
+  - Refactored `LibraryAiPromptItem` to delegate all screenshot operations directly to `LibraryAiPromptScreenshot`.
+- **Multimodal AI Payload (`AiGoogleLite`)**:
+  - Fixed `@google/genai` request payload for multimodal inputs by properly structuring user message parts.
+- **Type Definitions (`screenshotTypes.ts`)**:
+  - Standardized property order (`width` before `height`) and sorted types and constants alphabetically.
+
 ## [1.1.2] - 2026-09-07
 
 ### Fixed
