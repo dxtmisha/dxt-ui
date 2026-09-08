@@ -102,6 +102,12 @@ export const UI_FILE_AI_PROMPT_PROMPT = 'ai-prompt.md'
 export const UI_FILE_AI_PROMPT_TYPES = 'ai-types.md'
 /** AI prompt developer file name / Название файла для разработчика AI */
 export const UI_FILE_AI_PROMPT_DEVELOPER = 'ai-developer.md'
+/** AI prompt screenshot description JSON file name / Название файла с описанием скриншотов AI */
+export const UI_FILE_AI_PROMPT_SCREENSHOT_JSON = 'screenshot.json'
+/** AI prompt screenshot code file name / Название файла с HTML кодом скриншота AI */
+export const UI_FILE_AI_PROMPT_SCREENSHOT_CODE = 'screenshot-code.html'
+/** AI prompt screenshot styles file name / Название файла со стилями скриншота AI */
+export const UI_FILE_AI_PROMPT_SCREENSHOT_STYLES = 'screenshot-styles.css'
 
 /** File name for storing the list of flags/ Название файла для хранения списка флагов */
 export const UI_FILE_NAME_FLAGS = 'flags'

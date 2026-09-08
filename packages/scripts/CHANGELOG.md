@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.2] - 2026-09-07
+
+### Fixed
+- **Web-Types Generator AST Parsing (`DesignWikiStormItem`)**:
+  - Replaced runtime dynamic Node.js ESM imports (`await import(...)`) of `wikiData.ts` with static TypeScript AST parsing via the TypeScript Compiler API (`ts.createSourceFile`).
+  - Fixed `ERR_MODULE_NOT_FOUND` resolution errors occurring when `@dxtmisha/scripts` is installed and executed as an external package in consumer repositories containing extensionless TypeScript imports (`'../../../wiki/wiki'`, `'./props'`).
+  - Added recursive scanning and parsing of all files in the `src/wiki/` directory (e.g. `wikiStyle.ts`, `wiki.ts`, `wikiDescriptions.ts`), merging all `wiki*` dictionaries and descriptions into a centralized AST cache (`wikiDesignCache`).
+  - Added AST evaluation for `PropertyAccessExpression` nodes, supporting `StorybookControl.*` (e.g. `'select'`, `'boolean'`, `'number'`, `'string'`) and `StorybookCategory.*` (e.g. `'Styles'`, `'Actions'`, `'Adaptive'`, `'ARIA'`) enum values.
+  - Added AST-based extraction for default prop values (`getDefaultsFromProps`) from `props.ts`.
+  - Fixed TypeScript typing in `getSlots()` by removing unsupported `description` access on `StorybookSlotProperty`.
+  - Updated unit tests in `src/classes/Design/__tests__/DesignWikiStorm.test.ts` to test AST metadata extraction, directory scanning, and enum evaluation.
+
 ## [1.1.1] - 2026-09-07
 
 ### Added

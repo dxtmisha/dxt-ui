@@ -1,0 +1,34 @@
+[
+  {
+    "name": "screenshot-8_1.webp",
+    "description": "Component Index Grid, D1Accordion, D1ActionSheet, D1Actions, D1Alert, D1Anchor, D1Area, D1Avatar, D1Badge, D1Bars, D1Bleed, D1Block documentation showcases."
+  },
+  {
+    "name": "screenshot-8_2.webp",
+    "description": "D1Block, D1Breadcrumbs, D1Bullet, D1Button, D1ButtonGroup, D1Cell, D1Checkbox, D1Chip, D1ChipGroup, D1ClockDial, D1Container, D1Dialog UI components."
+  },
+  {
+    "name": "screenshot-8_3.webp",
+    "description": "D1Dialog variants, D1Divider, D1Dropzone, D1FormattedNumber, D1FormattedUnit, D1Grid, D1GridItem, D1Group, D1Header, D1HorizontalScroll, D1Icon, D1Image, D1Input, D1InputCode components documentation"
+  },
+  {
+    "name": "screenshot-8_4.webp",
+    "description": "D1InputImage, D1InputPhone, D1InputSocial, D1List, D1ListItem, and D1Menu components showcasing file upload, phone inputs, social inputs, list items, and dropdown menus"
+  },
+  {
+    "name": "screenshot-8_5.webp",
+    "description": "D1Menu, D1MenuButton, D1MenuChip, D1MenuCountry, D1MenuLanguage, and D1Modal dialog components with various configurations, dropdown lists, image layouts, and props."
+  },
+  {
+    "name": "screenshot-8_6.webp",
+    "description": "D1MotionAxis, D1MotionFlip, D1MotionSticky, D1MotionTransform, D1NavigationItem, D1NavigationList, D1NavigationRail, D1NavigationRailItem, D1Page components and states"
+  },
+  {
+    "name": "screenshot-8_7.webp",
+    "description": "D1Pagination, D1Placeholder, D1Progress, D1ProgressBar, D1Radio, D1Section, D1SegmentControl, D1Select, D1Skeleton, D1SkeletonItem, D1Slider, D1SliderField"
+  },
+  {
+    "name": "screenshot-8_8.webp",
+    "description": "D1Skeleton, D1SkeletonItem, D1Slider, D1SliderField, D1SnackbarItem, D1Switch, D1Tabs, D1TabsNavigation, D1TextDescription, D1TextLabel, D1Textarea, D1Tooltip"
+  }
+]

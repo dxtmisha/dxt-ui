@@ -3,13 +3,14 @@ import { ServerStorage } from '@dxtmisha/functional-basic'
 
 import { PropertiesFile } from '../Properties/PropertiesFile'
 import { BrowserItem } from '../BrowserItem'
+import { DesignScreenshotDescription } from './DesignScreenshotDescription'
 
 /**
  * Automates the capturing of full-page component screenshots and extraction of DOM/CSS styles.
- * Spawns a local development server, navigates headless browser, captures screenshots, and dumps HTML and CSS artifacts.
+ * Spawns a local development server, navigates headless browser, captures screenshots, dumps HTML and CSS artifacts, and generates AI visual metadata.
  *
  * Автоматизирует создание полностраничных скриншотов компонентов и извлечение DOM/CSS стилей.
- * Запускает локальный сервер разработки, открывает headless-браузер, делает скриншоты и сохраняет HTML и CSS артефакты.
+ * Запускает локальный сервер разработки, открывает headless-браузер, делает скриншоты, сохраняет HTML и CSS артефакты и генерирует визуальные метаданные с помощью ИИ.
  */
 export class DesignScreenshot {
   /** Indicates if screenshot process is running / Указывает, запущен ли процесс создания скриншота */
@@ -28,6 +29,16 @@ export class DesignScreenshot {
     protected readonly file: string = './ai-screenshot/screenshot'
   ) {
     ServerStorage.setErrorStatus(true)
+  }
+
+  /**
+   * Returns an instance of DesignScreenshotDescription for AI metadata analysis.
+   *
+   * Возвращает экземпляр DesignScreenshotDescription для ИИ анализа метаданных.
+   * @returns instance of DesignScreenshotDescription / экземпляр DesignScreenshotDescription
+   */
+  getDescription(): DesignScreenshotDescription {
+    return new DesignScreenshotDescription(this.file)
   }
 
   /**
@@ -75,6 +86,8 @@ export class DesignScreenshot {
         `${this.file}-styles.css`,
         await browser.getStyles()
       )
+
+      await this.getDescription().make()
 
       return true
     }

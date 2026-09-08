@@ -1,9 +1,9 @@
 import { PropertiesFile } from '../Properties/PropertiesFile'
 import { LibraryAiMcpItem } from './LibraryAiMcpItem'
+import { LibraryAiPromptScreenshot } from './LibraryAiPromptScreenshot'
 import { getPackageJson } from '../../functions/getPackageJson'
 
 import {
-  UI_DIR_AI_PROMPT_SCREENSHOT,
   UI_DIR_AI_TYPES,
   UI_FILE_AI_PROMPT_DESCRIPTION,
   UI_FILE_AI_PROMPT_DEVELOPER,
@@ -24,6 +24,9 @@ export class LibraryAiPromptItem {
   /** Item instance for working with MCP files. / Экземпляр элемента для работы с файлами MCP. */
   protected readonly itemMcp: LibraryAiMcpItem
 
+  /** Item instance for working with screenshot files. / Экземпляр элемента для работы с файлами скриншотов. */
+  protected readonly itemScreenshot: LibraryAiPromptScreenshot
+
   /**
    * Constructor for LibraryAiPromptItem.
    *
@@ -34,6 +37,7 @@ export class LibraryAiPromptItem {
     protected readonly dir: string[] = []
   ) {
     this.itemMcp = new LibraryAiMcpItem(this.dir)
+    this.itemScreenshot = new LibraryAiPromptScreenshot(this.dir, this.getProjectName())
   }
 
   /**
@@ -128,7 +132,7 @@ export class LibraryAiPromptItem {
    * @returns true if screenshot directory exists / true, если директория скриншотов существует
    */
   isScreenshot(): boolean {
-    return PropertiesFile.is(this.getPath(UI_DIR_AI_PROMPT_SCREENSHOT))
+    return this.itemScreenshot.isScreenshot()
   }
 
   /**
@@ -154,7 +158,7 @@ export class LibraryAiPromptItem {
       this.getDescription(),
       this.getInfo(),
       this.getTypes(),
-      this.getScreenshot(),
+      this.itemScreenshot.make(),
       this.getDeveloper()
     ].filter(item => item !== undefined) as string[]
 
@@ -264,45 +268,6 @@ ${this.readFile(UI_FILE_AI_PROMPT_INFO)}
   }
 
   /**
-   * Formats and returns the screenshot section for the prompt.
-   *
-   * Форматирует и возвращает секцию скриншотов для промпта.
-   * @returns formatted screenshot list or undefined / отформатированный список скриншотов или undefined
-   * @protected
-   */
-  protected getScreenshot(): string | undefined {
-    const list = this.getScreenshotList()
-
-    if (list) {
-      console.log('-- Screenshot')
-
-      const prefix = this.getPathString(UI_DIR_AI_PROMPT_SCREENSHOT)
-      const screenshot: string = list.map(item => `- '${prefix}/${item}'`).join('\n')
-
-      return `## Component Visual References (Screenshots)
-${screenshot}
-      `.trim()
-    }
-
-    return undefined
-  }
-
-  /**
-   * Retrieves the list of files in the screenshot directory.
-   *
-   * Получает список файлов в директории скриншотов.
-   * @returns list of screenshot file names or undefined / список имен файлов скриншотов или undefined
-   * @protected
-   */
-  protected getScreenshotList(): string[] | undefined {
-    if (this.isScreenshot()) {
-      return PropertiesFile.readDir(this.getPath(UI_DIR_AI_PROMPT_SCREENSHOT))
-    }
-
-    return undefined
-  }
-
-  /**
    * Formats and returns the types section for the prompt.
    * Copies the types file to the root types directory and links to the copy.
    *
@@ -328,23 +293,21 @@ ${screenshot}
   }
 
   /**
-   * Returns the copied types file name based on the project name.
+   * Returns the directory name for the copied types based on the project name.
    *
-   * Возвращает имя скопированного файла типов на основе названия проекта.
-   * @returns file name / имя файла
+   * Возвращает имя директории для скопированных типов на основе названия проекта.
+   * @returns directory name / имя директории
    * @protected
    */
-  protected getTypesFileName(): string {
+  protected getTypesDirName(): string {
     const projectName = this.getProjectName()
     const baseName = projectName !== 'none'
       ? projectName
       : (this.dir[this.dir.length - 1] ?? 'types')
 
-    const cleanName = baseName
+    return baseName
       .replace(/^@/, '')
       .replace(/[/\\:]+/g, '-')
-
-    return `${cleanName}.md`
   }
 
   /**
@@ -355,7 +318,11 @@ ${screenshot}
    * @protected
    */
   protected getTypesPath(): string[] {
-    return [UI_DIR_AI_TYPES, this.getTypesFileName()]
+    return [
+      UI_DIR_AI_TYPES,
+      this.getTypesDirName(),
+      UI_FILE_AI_PROMPT_TYPES
+    ]
   }
 
   /**

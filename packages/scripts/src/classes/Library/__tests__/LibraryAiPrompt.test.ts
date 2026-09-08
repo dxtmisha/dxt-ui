@@ -20,10 +20,6 @@ class TestLibraryAiPromptItem extends LibraryAiPromptItem {
   public testGetTypes() {
     return this.getTypes()
   }
-
-  public testGetScreenshot() {
-    return this.getScreenshot()
-  }
 }
 
 describe('LibraryAiPrompt and LibraryAiPromptItem', () => {
@@ -68,20 +64,8 @@ describe('LibraryAiPrompt and LibraryAiPromptItem', () => {
 
       const types = item.testGetTypes()
       expect(types).toContain('## Package Type Definitions')
-      expect(types).toContain('ai-packages-types/dxtmisha-scripts.md')
-      expect(copySpy).toHaveBeenCalledWith(['ai-packages-types', 'dxtmisha-scripts.md'], ['packages', 'scripts', 'ai-types.md'])
-    })
-
-    it('formats visual screenshot references when screenshot directory exists', () => {
-      const item = new TestLibraryAiPromptItem(['packages', 'scripts'])
-
-      vi.spyOn(PropertiesFile, 'is').mockReturnValue(true)
-      vi.spyOn(PropertiesFile, 'readDir').mockReturnValue(['screen1.png', 'screen2.webp'])
-
-      const shots = item.testGetScreenshot()
-      expect(shots).toContain('## Component Visual References (Screenshots)')
-      expect(shots).toContain('screen1.png')
-      expect(shots).toContain('screen2.webp')
+      expect(types).toContain('ai-packages-types/dxtmisha-scripts/ai-types.md')
+      expect(copySpy).toHaveBeenCalledWith(['ai-packages-types', 'dxtmisha-scripts', 'ai-types.md'], ['packages', 'scripts', 'ai-types.md'])
     })
 
     it('combines all sections into unified prompt string in make()', () => {
@@ -516,6 +500,21 @@ describe('LibraryAiPrompt and LibraryAiPromptItem', () => {
         false
       )
     })
+
+    it('cleans up and recreates types directory in make()', () => {
+      const removeDirSpy = vi.spyOn(PropertiesFile, 'removeDir').mockImplementation(() => {})
+      const createDirSpy = vi.spyOn(PropertiesFile, 'createDir').mockImplementation(() => {})
+      vi.spyOn(PropertiesFile, 'readDir').mockReturnValue([])
+      vi.spyOn(PropertiesFile, 'is').mockReturnValue(false)
+      vi.spyOn(PropertiesFile, 'writeByPath').mockImplementation(() => {})
+      vi.spyOn(PropertiesFile, 'readFileOnly').mockReturnValue('')
+
+      const prompt = new LibraryAiPrompt()
+      prompt.make()
+
+      expect(removeDirSpy).toHaveBeenCalledWith('ai-packages-types')
+      expect(createDirSpy).toHaveBeenCalledWith('ai-packages-types')
+    })
   })
 
   describe('LibraryAiPromptItem for repository root', () => {
@@ -531,8 +530,7 @@ describe('LibraryAiPrompt and LibraryAiPromptItem', () => {
       vi.spyOn(PropertiesFile, 'copy').mockImplementation(() => {})
 
       expect(rootItem.testGetDeveloper()).toContain('\'ai-developer.md\'')
-      expect(rootItem.testGetTypes()).toContain('dxtmisha-root-pkg.md')
-      expect(rootItem.testGetScreenshot()).toContain('\'ai-screenshot/root-screenshot.webp\'')
+      expect(rootItem.testGetTypes()).toContain('ai-packages-types/dxtmisha-root-pkg/ai-types.md')
 
       const result = rootItem.make()
       expect(result).toBeDefined()

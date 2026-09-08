@@ -71,9 +71,10 @@ export class AiGoogleLite extends AiAbstract<GoogleGenAI> {
     const response = await this.ai?.models.generateContent({
       model,
       contents: [
-        ...this.toImages(),
         {
+          role: 'user',
           parts: [
+            ...this.toImages(),
             ...this.toContents(),
             { text: contents }
           ]

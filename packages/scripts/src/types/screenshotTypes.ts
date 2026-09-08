@@ -1,6 +1,26 @@
 import type { PuppeteerLifeCycleEvent } from 'puppeteer'
 
 /**
+ * Screenshot visual analysis item containing component name and description.
+ *
+ * Элемент визуального анализа скриншота, содержащий название компонента и описание.
+ */
+export type DesignScreenshotItem = {
+  /** Component or visual element name / Название компонента или визуального элемента */
+  name: string
+
+  /** Description of the component or visual element / Описание компонента или визуального элемента */
+  description: string
+}
+
+/**
+ * List of screenshot visual analysis items.
+ *
+ * Список элементов визуального анализа скриншотов.
+ */
+export type DesignScreenshotList = DesignScreenshotItem[]
+
+/**
  * Viewport dimension metrics for taking screenshots.
  *
  * Метрики размеров области просмотра (viewport) для создания скриншотов.
@@ -22,26 +42,26 @@ export interface ScreenshotOptions {
   /** Additional CLI flags for browser launch / Дополнительные CLI-флаги для запуска браузера */
   args?: string[]
 
-  /** Navigation lifecycle event conditions to consider page loaded / Условия событий жизненного цикла навигации для завершения загрузки */
-  waitUntil?: PuppeteerLifeCycleEvent | PuppeteerLifeCycleEvent[]
+  /** Image output format / Формат сохранения изображения */
+  format?: 'png' | 'jpeg' | 'webp'
+
+  /** Whether to capture full scrollable page height / Делать ли снимок всей прокручиваемой страницы */
+  fullPage?: boolean
+
+  /** Image compression quality (1-100) / Качество сжатия изображения (1-100) */
+  quality?: number
 
   /** Maximum timeout in milliseconds for loading the page / Максимальный таймаут в миллисекундах для загрузки страницы */
   timeout?: number
+
+  /** Navigation lifecycle event conditions to consider page loaded / Условия событий жизненного цикла навигации для завершения загрузки */
+  waitUntil?: PuppeteerLifeCycleEvent | PuppeteerLifeCycleEvent[]
 
   /** Width of the screenshot viewport in pixels / Ширина области просмотра скриншота в пикселях */
   width?: number
 
   /** Height of the screenshot viewport in pixels / Высота области просмотра скриншота в пикселях */
   height?: number
-
-  /** Image output format / Формат сохранения изображения */
-  format?: 'png' | 'jpeg' | 'webp'
-
-  /** Image compression quality (1-100) / Качество сжатия изображения (1-100) */
-  quality?: number
-
-  /** Whether to capture full scrollable page height / Делать ли снимок всей прокручиваемой страницы */
-  fullPage?: boolean
 }
 
 /** Default Chromium launch arguments / Стандартные аргументы запуска Chromium */

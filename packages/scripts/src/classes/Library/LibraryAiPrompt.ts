@@ -68,6 +68,9 @@ export class LibraryAiPrompt {
   make(): void {
     console.log('Generating AI prompt...')
 
+    PropertiesFile.removeDir(UI_DIR_AI_TYPES)
+    PropertiesFile.createDir(UI_DIR_AI_TYPES)
+
     const list = this.getList()
     const prompts = [
       `
