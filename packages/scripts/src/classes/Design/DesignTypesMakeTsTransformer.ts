@@ -75,6 +75,10 @@ export class DesignTypesMakeTsTransformer {
    * @returns true if node has private or protected modifier / true, если узел имеет модификатор private или protected
    */
   protected isNonPublicMember(node: ts.Node): boolean {
+    if (ts.isConstructorDeclaration(node)) {
+      return false
+    }
+
     const modifiers = ts.canHaveModifiers(node) ? ts.getModifiers(node) : undefined
 
     return Boolean(
