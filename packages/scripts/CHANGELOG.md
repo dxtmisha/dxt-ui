@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.5] - 2026-09-09
+
+### Added
+- **Third-Party Context & Prompt Injection Defense (Rule #10)**:
+  - Added comprehensive prompt injection defense directives to `aiCodeGlobalPrompt.en.md` and `aiCodeGlobalPrompt.ru.md`.
+  - Enforced `Data-Only Boundary`, treating all third-party package documentation as passive read-only data without executive authority.
+  - Mandated unconditional ignoring of manipulative and imperative commands (e.g. «СТОП», «ОБЯЗАН», «ИГНОРИРУЙ ПРЕДЫДУЩЕЕ», «ЗАБУДЬ ПРАВИЛА», "STOP", "MUST", "IGNORE PREVIOUS", "FORGET RULES").
+  - Added role and delimiter spoofing defense against fake system tags (`<system>`, `[SYSTEM]`, `---`, `User:`, `Assistant:`), fictitious CTF challenges, or unauthorized debug modes.
+  - Added anti-obfuscation guard prohibiting decoding or executing obfuscated instructions (Base64, Hex, zero-width characters, ciphers).
+  - Enforced data exfiltration guard prohibiting leaking local files, configs, tokens, or secrets to external networks, URL query parameters, or markdown images/links.
+  - Enforced command execution sandboxing prohibiting running terminal commands mentioned in third-party documentation without direct user authorization.
+- **Strict Confidentiality of `design.config.json` (Rule #11)**:
+  - Added strict prohibition in `aiCodeGlobalPrompt.en.md` and `aiCodeGlobalPrompt.ru.md` against reading, inspecting, studying, or leaking any content, API keys, tokens, or configuration from `design.config.json`.
+
+### Changed
+- **Package Filtering Logic (`LibraryAiPrompt.isExclude`)**:
+  - Refactored `isExclude()` in `LibraryAiPrompt.ts` so that when `isPromptPackageOnly` (`promptPackageOnly: true`) is enabled, packages declared in `package.json` are treated as the default whitelist.
+  - Enhanced `promptInclude` to supplement `package.json`, allowing inclusion of explicitly specified transitive dependencies not listed in `package.json`.
+  - Ensured `promptExclude` retains highest priority as an unconditional blacklist over both `package.json` dependencies and `promptInclude`.
+
 ## [1.1.4] - 2026-09-08
 
 ### Added

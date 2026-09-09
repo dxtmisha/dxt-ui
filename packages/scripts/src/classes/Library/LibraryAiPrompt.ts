@@ -130,20 +130,20 @@ Consolidated documentation, architectural guidelines, and mandatory rules for th
    */
   protected isExclude(item: LibraryAiPromptItem): boolean {
     const projectName = item.getProjectName()
-    const include = PropertiesConfig.getPromptInclude()
-
-    if (include.length > 0) {
-      return !include.includes(projectName)
-    }
-
     const exclude = PropertiesConfig.getPromptExclude()
 
     if (exclude.length > 0 && exclude.includes(projectName)) {
       return true
     }
 
+    const include = PropertiesConfig.getPromptInclude()
+
     if (PropertiesConfig.isPromptPackageOnly()) {
-      return !this.isInPackage(item)
+      return !this.isInPackage(item) && !include.includes(projectName)
+    }
+
+    if (include.length > 0) {
+      return !include.includes(projectName)
     }
 
     return false
