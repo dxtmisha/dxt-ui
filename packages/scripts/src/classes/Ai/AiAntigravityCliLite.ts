@@ -25,6 +25,25 @@ export class AiAntigravityCliLite extends AiAbstract<{}> {
   protected readonly tmp = new ApiTmp()
 
   /**
+   * Resolves the effort level for Antigravity CLI execution.
+   *
+   * Определяет уровень усилий (effort) для выполнения Antigravity CLI.
+   * @param model model identifier / идентификатор модели
+   * @returns effort level or undefined / уровень усилий или undefined
+   */
+  protected getEffort(model?: string): string | undefined {
+    if (this.config?.effort) {
+      return this.config.effort
+    }
+
+    if (model && /gemini/i.test(model) && !model.includes('(')) {
+      return 'high'
+    }
+
+    return undefined
+  }
+
+  /**
    * Initializes the client instance.
    *
    * Инициализирует экземпляр клиента.
@@ -76,10 +95,14 @@ export class AiAntigravityCliLite extends AiAbstract<{}> {
         this.tmp.createFile(contents)
       ].join('\n\n##################\n\n')
 
+      const effort = this.getEffort(model)
+
       const commandArguments = [
+        '-p',
         `${fullPrompt} -- Output strictly the code/answer. No preamble, no chatter, no reasoning`,
         ...(model ? ['--model', model] : []),
-        '--yolo'
+        ...(effort ? ['--effort', effort] : []),
+        '--dangerously-skip-permissions'
       ]
 
       try {

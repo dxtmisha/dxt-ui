@@ -60,9 +60,12 @@ describe('AiAntigravityCliLite and AiAntigravityCli', () => {
       callback?: (error: any, stdout: string, stderr: string) => void
     ) => {
       expect(file).toBe('agy')
-      expect(args).toContain('--yolo')
+      expect(args).toContain('-p')
+      expect(args).toContain('--dangerously-skip-permissions')
       expect(args).toContain('--model')
       expect(args).toContain('gemini-2.5-pro')
+      expect(args).toContain('--effort')
+      expect(args).toContain('high')
       if (callback) {
         callback(null, '  Generated Antigravity CLI response  \n', '')
       }

@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.6] - 2026-09-10
+
+### Fixed
+- **Antigravity CLI Argument Formatting (`AiAntigravityCliLite`)**:
+  - Fixed command execution by passing prompt via `-p` (`--print`) flag instead of positional argument.
+  - Replaced unsupported `--yolo` flag with `--dangerously-skip-permissions`.
+  - Added automatic `--effort` resolution (`getEffort()`), defaulting to `high` for Gemini models to meet CLI requirements and supporting custom configuration via `aiConfig.effort`.
+  - Updated unit test assertions in `AiAntigravityCli.test.ts`.
+
 ## [1.1.5] - 2026-09-09
 
 ### Added
