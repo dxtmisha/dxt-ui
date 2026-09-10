@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { DesignTypesAi } from '../DesignTypesAi'
 
 describe('DesignTypesAi', () => {
@@ -22,5 +22,21 @@ describe('DesignTypesAi', () => {
     expect(ai.isFile('index.ts')).toBe(false)
     expect(ai.isFileJs('index.js')).toBe(true)
     expect(ai.isFileJs('index.ts')).toBe(false)
+  })
+
+  it('cleans markdown code fences in toAiCode', async () => {
+    const ai = new DesignTypesAi('dist')
+    vi.spyOn(ai, 'toAi').mockResolvedValue('```typescript\nexport type Foo = string;\n```')
+
+    const result = await ai.toAiCode('content', 'prompt')
+    expect(result).toBe('export type Foo = string;')
+  })
+
+  it('returns undefined in toAiCode if toAi returns undefined', async () => {
+    const ai = new DesignTypesAi('dist')
+    vi.spyOn(ai, 'toAi').mockResolvedValue(undefined)
+
+    const result = await ai.toAiCode('content', 'prompt')
+    expect(result).toBeUndefined()
   })
 })

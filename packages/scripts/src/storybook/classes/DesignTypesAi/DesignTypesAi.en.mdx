@@ -44,6 +44,9 @@ Returns the project name resolved from `package.json`.
 ### `toAi(content: string, prompt: string, code?: string): Promise<string | undefined>`
 Sends content and prompt instructions to the configured AI provider and returns the raw string response.
 
+### `toAiCode(content: string, prompt: string, code?: string): Promise<string | undefined>`
+Sends content to the AI via `toAi` and strips markdown code fences (```typescript, ```ts, etc.) from the response.
+
 ### `toAiJson<T>(content: string, prompt: string, code?: string): Promise<T | undefined>`
 Sends an AI prompt and parses the resulting output into a typed JSON object `T`.
 

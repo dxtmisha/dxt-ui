@@ -52,7 +52,7 @@
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
     "test": "vitest",
-    "constructor": "dxt-constructor",
+    "constructor": "dxt-constructor --name InputFile",
     "library": "dxt-library",
     "types": "npm run library && npm run constructor && npm run build && dxt-types",
     "prepublishOnly": "npm run library && npm run constructor && npm run build && dxt-types-save",
@@ -546,6 +546,10 @@
     "./Form": {
       "types": "./dist/constructors/Form/index.d.ts",
       "default": "./dist/form.js"
+    },
+    "./InputFile": {
+      "types": "./dist/constructors/InputFile/index.d.ts",
+      "default": "./dist/inputFile.js"
     }
   },
   "buildOptions": {

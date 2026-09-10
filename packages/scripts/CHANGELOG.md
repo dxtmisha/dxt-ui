@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.7] - 2026-09-10
+
+### Added
+- **`DesignTypesAi.toAiCode()`**:
+  - Implemented `toAiCode(content, prompt, code)` method in `DesignTypesAi` to execute AI generation via `toAi` and automatically strip markdown code block fences (````typescript`, ````ts`, ````javascript`, ```` `, etc.) from the output.
+  - Added unit test coverage for `toAiCode` in `src/classes/Design/__tests__/DesignTypesAi.test.ts`.
+  - Added method documentation in Storybook MDX references (`DesignTypesAi.ru.mdx`, `DesignTypesAi.en.mdx`, `DesignTypesAi.vi.mdx`).
+- **`AiAbstract.getConfigDetails()`**:
+  - Implemented protected `getConfigDetails()` method in `AiAbstract` to format non-empty configuration parameters into a clean parenthetical string (e.g. ` (effort: high)`).
+
+### Changed
+- **Type Optimization Pipeline (`DesignTypesMake.toAiEdit`)**:
+  - Updated `toAiEdit` in `DesignTypesMake` to call `this.ai.toAiCode` instead of `this.ai.toAi`, ensuring generated declaration files are free of markdown syntax artifacts.
+- **AI Client Initialization Logging (`AiAbstract.generate`)**:
+  - Integrated `this.getConfigDetails()` into the initialization log message in `AiAbstract.generate()` to cleanly display active configuration parameters without printing empty brackets.
+
 ## [1.1.6] - 2026-09-10
 
 ### Fixed

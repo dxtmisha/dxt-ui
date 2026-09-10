@@ -197,7 +197,7 @@ export class DesignTypesMake extends DesignTypesMakeAbstract {
    * @returns optimized content string / строка оптимизированного контента
    */
   protected async toAiEdit(content: string, code: string): Promise<string | undefined> {
-    return await this.ai.toAi(
+    return await this.ai.toAiCode(
       content,
       aiTypeOptimizationPrompt,
       code

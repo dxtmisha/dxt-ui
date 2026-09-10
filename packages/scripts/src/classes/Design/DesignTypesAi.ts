@@ -135,6 +135,29 @@ export class DesignTypesAi {
   }
 
   /**
+   * Sends content and a prompt to the AI for processing and cleans markdown code block fences from the result.
+   *
+   * Отправляет контент и промпт ИИ для обработки и очищает разметку markdown-блоков кода из результата.
+   * @param content content for processing / контент для обработки
+   * @param prompt instructions for the AI / инструкции для ИИ
+   * @param code code to optimize / код для оптимизации
+   * @returns cleaned code string or undefined / очищенная строка кода или undefined
+   */
+  async toAiCode(
+    content: string,
+    prompt: string,
+    code?: string
+  ): Promise<string | undefined> {
+    const generate = await this.toAi(content, prompt, code)
+
+    if (generate) {
+      return generate.replace(/```[a-zA-Z]*|```/g, '').trim()
+    }
+
+    return undefined
+  }
+
+  /**
    * Sends content and a prompt to the AI for processing and parses the resulting JSON response.
    *
    * Отправляет контент и промпт ИИ для обработки и парсит полученный JSON-ответ.

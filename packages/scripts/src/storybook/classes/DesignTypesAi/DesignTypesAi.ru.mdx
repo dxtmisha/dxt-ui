@@ -44,6 +44,9 @@ const ai = new DesignTypesAi('ai-types-temp')
 ### `toAi(content: string, prompt: string, code?: string): Promise<string | undefined>`
 Отправляет контент и промпт в ИИ-провайдер и возвращает сгенерированный строковый ответ.
 
+### `toAiCode(content: string, prompt: string, code?: string): Promise<string | undefined>`
+Отправляет запрос ИИ через `toAi` и очищает результат от разметки markdown-блоков кода (```typescript, ```ts и др.).
+
 ### `toAiJson<T>(content: string, prompt: string, code?: string): Promise<T | undefined>`
 Отправляет запрос ИИ и парсит полученный ответ как строго типизированный объект `T`.
 

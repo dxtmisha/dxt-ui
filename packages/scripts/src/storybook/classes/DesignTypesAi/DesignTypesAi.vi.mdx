@@ -44,6 +44,9 @@ Trả về tên dự án hiện tại từ `package.json`.
 ### `toAi(content: string, prompt: string, code?: string): Promise<string | undefined>`
 Gửi nội dung và prompt đến nhà cung cấp AI và trả về phản hồi chuỗi được tạo.
 
+### `toAiCode(content: string, prompt: string, code?: string): Promise<string | undefined>`
+Gửi nội dung đến AI thông qua `toAi` và làm sạch các khối mã markdown (```typescript, ```ts, v.v.) khỏi kết quả trả về.
+
 ### `toAiJson<T>(content: string, prompt: string, code?: string): Promise<T | undefined>`
 Gửi yêu cầu đến AI và phân tích phản hồi nhận được thành một đối tượng định kiểu `T`.
 

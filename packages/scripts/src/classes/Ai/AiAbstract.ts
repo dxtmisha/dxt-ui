@@ -1,4 +1,4 @@
-import { random, sleep } from '@dxtmisha/functional-basic'
+import { isFilled, random, sleep } from '@dxtmisha/functional-basic'
 import type { AiImageItem, AiImageList } from '../../types/aiTypes'
 
 /**
@@ -195,7 +195,7 @@ export abstract class AiAbstract<AI = any> {
       await this.init()
 
       console.log(
-        `[Ai] Initialized AI client with model: ${this.model}`
+        `[Ai] Initialized AI client with model: ${this.model}${this.getConfigDetails()}`
       )
     }
 
@@ -227,6 +227,24 @@ export abstract class AiAbstract<AI = any> {
           }
         }
       }
+    }
+
+    return ''
+  }
+
+  /**
+   * Returns formatted configuration details for logging.
+   *
+   * Возвращает отформатированные детали конфигурации для логирования.
+   * @returns formatted configuration string or empty string / отформатированная строка конфигурации или пустая строка
+   */
+  protected getConfigDetails(): string {
+    if (isFilled(this.config)) {
+      const details = Object.entries(this.config)
+        .map(([key, value]) => `${key}: ${typeof value === 'object' ? JSON.stringify(value) : value}`)
+        .join(', ')
+
+      return ` (${details})`
     }
 
     return ''
