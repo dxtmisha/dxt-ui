@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.8] - 2026-09-10
+
+### Added
+- **Ignored Directory Handling for `ai-packages-types` in AI Prompts**:
+  - Added directives in `aiCodeGlobalPrompt.en.md` and `aiCodeGlobalPrompt.ru.md` regarding the `ai-packages-types/` directory being in `.gitignore`.
+  - Added instructions in Rule 7 ("Package Type Reference") on handling ignored directories during searches: if available search tools cannot search files in `.gitignore`, temporarily remove `ai-packages-types` from `.gitignore` before starting work and restore it after completion.
+  - Updated Rule 0 (Step 3) and Rule 9 (DOM & CSS Inspection) to explicitly account for `ai-packages-types/` in `.gitignore` during text searches for `ai-types.md`, `screenshot-code.html`, and `screenshot-styles.css`.
+
 ## [1.1.7] - 2026-09-10
 
 ### Added
