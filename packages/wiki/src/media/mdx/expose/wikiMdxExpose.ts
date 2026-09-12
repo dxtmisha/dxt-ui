@@ -12,8 +12,12 @@ import exposeFocusEn from './expose.focus.en.mdx'
 import exposeFocusRu from './expose.focus.ru.mdx'
 import exposeGetDetailEn from './expose.getDetail.en.mdx'
 import exposeGetDetailRu from './expose.getDetail.ru.mdx'
+import exposeGetHeightEn from './expose.getHeight.en.mdx'
+import exposeGetHeightRu from './expose.getHeight.ru.mdx'
 import exposeGetValueEn from './expose.getValue.en.mdx'
 import exposeGetValueRu from './expose.getValue.ru.mdx'
+import exposeGetWidthEn from './expose.getWidth.en.mdx'
+import exposeGetWidthRu from './expose.getWidth.ru.mdx'
 import exposeIdEn from './expose.id.en.mdx'
 import exposeIdRu from './expose.id.ru.mdx'
 import exposeLabelIdEn from './expose.labelId.en.mdx'
@@ -62,9 +66,17 @@ export const wikiMdxExpose: StorybookComponentsMdxItem = {
       en: exposeGetDetailEn,
       ru: exposeGetDetailRu
     },
+    getHeight: {
+      en: exposeGetHeightEn,
+      ru: exposeGetHeightRu
+    },
     getValue: {
       en: exposeGetValueEn,
       ru: exposeGetValueRu
+    },
+    getWidth: {
+      en: exposeGetWidthEn,
+      ru: exposeGetWidthRu
     },
     id: {
       en: exposeIdEn,

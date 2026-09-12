@@ -9065,6 +9065,22 @@
           }
         }
       },
+      "collageItem": {
+        "name": "d1-collageItem",
+        "type": "component",
+        "value": {
+          "iconPaddingX": {
+            "name": "--d1-collageItem-iconPaddingX",
+            "type": "var",
+            "value": "{sys.spacing.xs}"
+          },
+          "iconPaddingY": {
+            "name": "--d1-collageItem-iconPaddingY",
+            "type": "var",
+            "value": "{sys.spacing.xs}"
+          }
+        }
+      },
       "container": {
         "name": "d1-container",
         "type": "component",

@@ -1,0 +1,40 @@
+@use "../../../styles/Ui/properties";
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/style.scss" as CollageItem;
+
+@include ui.initDesignBasic('d1.collageItem') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include CollageItem.mixinCollageItem;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+    --d1-collageItem-iconPaddingX: var(--d1-sys-spacing-xs);
+    --d1-collageItem-iconPaddingY: var(--d1-sys-spacing-xs);
+    
+    &__body {
+      @include ui.backgroundColor(#{var(--d1-sys-palette-onSurface)});
+      @include ui.backgroundOpacity(#{var(--d1-sys-opacity-overlay)});
+    }
+    
+    &__icon {
+      @include ui.color(#{var(--d1-ref-palette-white-50)});
+    }
+    
+    &--selected {
+      & .d1-collageItem__body {
+        &::after {
+          content: ' ';
+          @include ui.backgroundOpacity(#{var(--d1-sys-opacity-pressed)}); @include ui.backgroundColor('init');
+          @include ui.paletteBackground(#{var(--d1-sys-palette-primary)});
+        }
+      }
+    }
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

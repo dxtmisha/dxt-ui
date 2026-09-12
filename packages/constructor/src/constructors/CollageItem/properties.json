@@ -1,0 +1,20 @@
+{
+  "iconPaddingX": {
+    "_type": "var"
+  },
+  "iconPaddingY": {
+    "_type": "var"
+  },
+  "#body": {},
+  "#image": {},
+  "#icon": {},
+  "#collageBar": {},
+  "~selected": {},
+  "~span": {
+    "~banner": {},
+    "~huge": {},
+    "~large": {},
+    "~tall": {},
+    "~wide": {}
+  }
+}

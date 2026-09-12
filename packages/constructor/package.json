@@ -52,7 +52,7 @@
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
     "test": "vitest",
-    "constructor": "dxt-constructor --name CollageBar",
+    "constructor": "dxt-constructor --name CollageItem",
     "library": "dxt-library",
     "types": "npm run library && npm run constructor && npm run build && dxt-types",
     "prepublishOnly": "npm run library && npm run constructor && npm run build && dxt-types-save",
@@ -558,6 +558,10 @@
     "./CollageBar": {
       "types": "./dist/constructors/CollageBar/index.d.ts",
       "default": "./dist/collageBar.js"
+    },
+    "./CollageItem": {
+      "types": "./dist/constructors/CollageItem/index.d.ts",
+      "default": "./dist/collageItem.js"
     }
   },
   "buildOptions": {

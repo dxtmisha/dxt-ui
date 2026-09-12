@@ -1,0 +1,92 @@
+@use "@dxtmisha/styles/properties" as ui;
+
+@mixin mixinCollageItem {
+  box-sizing: border-box;
+  position: relative;
+  @include ui.flexDynamic;
+  width: auto;
+
+  &__body {
+    box-sizing: border-box;
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    color: inherit;
+    overflow: hidden;
+  }
+
+  &__icon {
+    position: absolute;
+    top: ui.v('??iconPaddingY', 0);
+    @include ui.right(ui.v('??iconPaddingX', 0));
+    z-index: 4;
+    pointer-events: none;
+
+    transition-property: opacity, transform;
+    transition-duration: ui.v('d.sys.transitionDuration.standard');
+    transition-timing-function: ui.v('d.sys.transitionFunction.standard');
+  }
+
+  &:not(&--selected) &__icon {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+
+  &--selected {
+    @include ui.subclass('body') {
+      &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        pointer-events: none;
+      }
+    }
+  }
+
+  &--span {
+    &--wide {
+      grid-column: auto / span 2;
+
+      @include ui.subclass('body') {
+        @include ui.aspectRatio('2 / 1');
+      }
+    }
+
+    &--tall {
+      grid-row: auto / span 2;
+
+      @include ui.subclass('body') {
+        @include ui.aspectRatio('1 / 2');
+      }
+    }
+
+    &--large {
+      grid-column: auto / span 2;
+      grid-row: auto / span 2;
+
+      @include ui.subclass('body') {
+        @include ui.aspectRatio('1 / 1');
+      }
+    }
+
+    &--banner {
+      grid-column: auto / span 3;
+
+      @include ui.subclass('body') {
+        @include ui.aspectRatio('3 / 1');
+      }
+    }
+
+    &--huge {
+      grid-column: auto / span 3;
+      grid-row: auto / span 2;
+
+      @include ui.subclass('body') {
+        @include ui.aspectRatio('3 / 2');
+      }
+    }
+  }
+}

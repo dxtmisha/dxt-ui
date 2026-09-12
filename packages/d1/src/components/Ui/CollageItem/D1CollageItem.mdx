@@ -1,0 +1,50 @@
+import {Canvas, Meta} from '@storybook/addon-docs/blocks'
+import {
+    StorybookDescriptions,
+    StorybookMain
+} from '@dxtmisha/wiki/storybook'
+
+import * as CollageItem from './D1CollageItem.stories'
+import {CollageItemWikiStorybook} from './wiki'
+
+[//]: # (:documentation-import [!] System label / Системная метка)
+[//]: # (:documentation-import [!] System label / Системная метка)
+
+<Meta of={CollageItem}/>
+<StorybookMain
+    name={CollageItemWikiStorybook.getName()}
+    description={CollageItemWikiStorybook.getDescription()}
+    story={CollageItem.CollageItem}
+/>
+
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+<StorybookDescriptions componentName={'CollageItem'} type={'collageItem'}/>
+<Canvas of={CollageItem.CollageItemSpans}/>
+    
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+[//]: # (:documentation-events [!] System label / Системная метка)
+## Events
+
+<StorybookDescriptions componentName={'Event'} type={'click'}/>
+<StorybookDescriptions componentName={'CollageItem'} type={'load'}/>
+    
+[//]: # (:documentation-events [!] System label / Системная метка)
+
+[//]: # (:documentation-expose [!] System label / Системная метка)
+## Expose
+
+<StorybookDescriptions componentName={'Expose'} type={'getValue'}/>
+<StorybookDescriptions componentName={'Expose'} type={'getDetail'}/>
+<StorybookDescriptions componentName={'Expose'} type={'getHeight'}/>
+<StorybookDescriptions componentName={'Expose'} type={'getWidth'}/>
+    
+[//]: # (:documentation-expose [!] System label / Системная метка)
+
+[//]: # (:documentation-slots [!] System label / Системная метка)
+## Slots
+
+<StorybookDescriptions componentName={'Slot'} type={'bar'}/>
+    
+[//]: # (:documentation-slots [!] System label / Системная метка)

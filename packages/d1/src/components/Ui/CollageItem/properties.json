@@ -1,0 +1,20 @@
+{
+  "main": "{d.collageItem}",
+  "iconPaddingX": "{sys.spacing.xs}",
+  "iconPaddingY": "{sys.spacing.xs}",
+  "#body": {
+    "background-color": "{sys.palette.onSurface}",
+    "background-opacity": "{sys.opacity.overlay}"
+  },
+  "#icon": {
+    "color": "{ref.palette.white.50}"
+  },
+  "~selected": {
+    "#body": {
+      "after": {
+        "palette-background": "{sys.palette.primary}",
+        "background-opacity": "{sys.opacity.pressed}"
+      }
+    }
+  }
+}

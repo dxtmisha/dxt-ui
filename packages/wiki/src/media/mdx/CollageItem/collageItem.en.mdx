@@ -1,0 +1,21 @@
+A media item component designed for collages, galleries, and Bento-style grid layouts.
+
+CollageItem combines image presentation, coordinate positioning, cropping, interactive selection indicators, and an optional CollageBar caption bar. It is engineered to work seamlessly within CSS Grid layouts, supporting predefined span modifiers (wide, tall, large, banner, huge) for building dynamic, modern Bento layouts with consistent aspect ratios.
+
+**Key features:**
+
+- Robust image integration with cropping, scaling, and positioning (`coordinator`, `x`, `y`)
+- Bento grid span presets: `wide` (2:1), `tall` (1:2), `large` (1:1), `banner` (3:1), and `huge` (3:2)
+- Interactive selection state (`selected`) with checkmark indicator and animated overlay
+- Customizable checkmark icon (`iconCheck`) and positioning tokens (`iconPaddingX`, `iconPaddingY`)
+- Integrated CollageBar for titles (`label`), descriptions, and action buttons
+- Flexible HTML container tag for the body element (defaults to `a`, configurable to `div`, etc.)
+- Click event handling with routing and value propagation
+- Slots for custom bar body and trailing components
+
+**Typical usage scenarios:**
+
+- Interactive photo collages and media gallery items
+- Bento grid dashboards and feature showcase cards
+- Image pickers and selectable media portfolios
+- Hero image showcases with overlay action bars

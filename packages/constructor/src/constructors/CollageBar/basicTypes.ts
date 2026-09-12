@@ -14,6 +14,18 @@ export type CollageBarComponentInclude = {
 }
 
 /**
+ * Slots used to include and configure the CollageBar component. /
+ * Слоты для подключения и настройки компонента CollageBar.
+ */
+export type CollageBarSlotsInclude = {
+  /** Trailing slot forwarded to the bar / Замыкающий слот, передаваемый в панель */
+  barTrailing?(props: any): any
+
+  /** Body slot forwarded to the bar / Слот тела, передаваемый в панель */
+  barBody?(props: any): any
+}
+
+/**
  * Type for embedding CollageBar properties in other components. /
  * Тип для внедрения свойств CollageBar в другие компоненты.
  */
