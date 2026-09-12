@@ -1,0 +1,53 @@
+{
+  "main": "{d.collageBar}",
+  "min-height": "{ref.spacing.12}",
+  "gap": "{sys.spacing.xs}",
+  "color": "{sys.palette.onSurface}",
+  "color-opacity": "{sys.opacity.surface.high}",
+  "#label": {
+    "link|font": "{font.labelLarge}"
+  },
+  "#description": {
+    "link|font": "{font.bodySmall}",
+    "color-opacity": "{sys.opacity.surface.medium}"
+  },
+  "~position": {
+    "~top": {
+      "paddingX": "{sys.spacing.xs}",
+      "paddingY": "{sys.spacing.x}",
+      "color": "{sys.palette.onPrimary}",
+      "color-opacity": "{sys.opacity.primary.high}",
+      "background-color": "{sys.palette.scrim}",
+      "background-opacity": "{sys.primary.medium}",
+      "backdrop-filter": "{sys.blur.md}",
+      "#description": {
+        "color-opacity": "{sys.opacity.primary.medium}"
+      }
+    },
+    "~bottom": {
+      "paddingX": "{sys.spacing.xs}",
+      "paddingY": "{sys.spacing.x}",
+      "color": "{sys.palette.onPrimary}",
+      "color-opacity": "{sys.opacity.primary.high}",
+      "background-color": "{sys.palette.scrim}",
+      "background-opacity": "{sys.primary.medium}",
+      "backdrop-filter": "{sys.blur.md}",
+      "#description": {
+        "color-opacity": "{sys.opacity.primary.medium}"
+      }
+    }
+  },
+  "~selected": {
+    "color": "{sys.palette.primaryVariant}",
+    "~position": {
+      "~top": {
+        "palette-background": "{sys.palette.primaryVariant}",
+        "background-opacity": "{sys.opacity.primary.high}"
+      },
+      "~bottom": {
+        "palette-background": "{sys.palette.primaryVariant}",
+        "background-opacity": "{sys.opacity.primary.high}"
+      }
+    }
+  }
+}

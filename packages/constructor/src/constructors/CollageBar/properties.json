@@ -1,0 +1,13 @@
+{
+  "#context": {},
+  "#label": {},
+  "#description": {},
+  "#button": {},
+  "~selected": {},
+  "~position": {
+    "~top": {},
+    "~bottom": {},
+    "~static": {},
+    "_default": "static"
+  }
+}

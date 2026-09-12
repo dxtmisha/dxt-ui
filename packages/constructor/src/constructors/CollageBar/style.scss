@@ -1,0 +1,46 @@
+@use "@dxtmisha/styles/properties" as ui;
+
+@mixin mixinCollageBar {
+  position: relative;
+  box-sizing: border-box;
+  @include ui.flexX;
+  justify-content: space-between;
+  width: 100%;
+
+  &__context {
+    @include ui.flexStretchY;
+    @include ui.flexDynamic;
+  }
+
+  &__label {
+    @include ui.clamp(2);
+  }
+
+  &__description {
+    @include ui.clamp(3);
+  }
+
+  &--position {
+
+    &--bottom,
+    &--top {
+      position: absolute;
+      right: 0;
+      left: 0;
+      z-index: 4;
+      width: auto;
+    }
+
+    &--bottom {
+      bottom: 0;
+    }
+
+    &--top {
+      top: 0;
+    }
+
+    &--static {
+      position: relative;
+    }
+  }
+}

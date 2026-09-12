@@ -25,6 +25,7 @@ import { wikiDescriptionsChip } from './wikiDescriptionsChip'
 import { wikiDescriptionsChipGroup } from './wikiDescriptionsChipGroup'
 import { wikiDescriptionsClientOnly } from './wikiDescriptionsClientOnly'
 import { wikiDescriptionsClockDial } from './wikiDescriptionsClockDial'
+import { wikiDescriptionsCollageBar } from './wikiDescriptionsCollageBar'
 import { wikiDescriptionsContainer } from './wikiDescriptionsContainer'
 import { wikiDescriptionsCropArea } from './wikiDescriptionsCropArea'
 import { wikiDescriptionsDialog } from './wikiDescriptionsDialog'
@@ -141,6 +142,7 @@ export const wikiDescriptions: StorybookComponentsDescription = [
   wikiDescriptionsChipGroup,
   wikiDescriptionsClientOnly,
   wikiDescriptionsClockDial,
+  wikiDescriptionsCollageBar,
   wikiDescriptionsContainer,
   wikiDescriptionsCropArea,
   wikiDescriptionsDialog,
