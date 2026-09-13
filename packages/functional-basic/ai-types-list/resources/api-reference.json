@@ -1,6 +1,6 @@
 {
   "path": "ai-resources/api-reference.md",
-  "md5": "5b6b7850a06fbe60c2ff108599c45dc3",
+  "md5": "8ef6c744aa624d32a61790af5fccf92f",
   "name": "Functional Basic API Reference",
-  "description": "API reference and code examples for HTTP client, storage, localization, DOM, and utility functions."
+  "description": "Provides usage guidelines and API references for HTTP requests, caching, storage, localization, and DOM utility functions."
 }

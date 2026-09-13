@@ -1,10 +1,9 @@
-// md5:cf1f5c7e09092c57cc557a366c6419c9 true
-import { type UiFigmaFrameStylesMessengerAttributes, type UiFigmaFrameStylesMessengerResponse } from '@dxtmisha/figma';
-
-/** Manages and observes frame styles from Figma. @keywords figma, frame styles, composable, observer */
+// md5:73125162fee115e0e45b146f00d2d95c true
+import { type UiFigmaFrameStylesMessengerAttributes } from '@dxtmisha/figma';
+/** Manages and observes Figma frame styles. @keywords figma, frame, styles, observer */
 export declare function useFigmaFrameStyles(): {
-    /** Reactive reference containing current Figma frame styles. */
+    /** Frame styles reactive reference. */
     styles: import("vue").ComputedRef<UiFigmaFrameStylesMessengerResponse>;
-    /** Sends a frame style update request. @keywords figma, frame styles, update, send */
+    /** Sends a style update request. @keywords figma, update, styles, send */
     send(attributes: UiFigmaFrameStylesMessengerAttributes): void;
 };

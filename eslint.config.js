@@ -18,11 +18,12 @@ export default [
     ]
   },
   {
-    files: ['**/*.{js,mjs,cjs,ts,vue}']
-  },
-  {
+    files: ['**/*.{js,mjs,cjs,ts,vue}'],
     languageOptions: {
-      globals: globals.browser
+      globals: {
+        ...globals.browser,
+        ...globals.node
+      }
     }
   },
   pluginJs.configs.recommended,
@@ -36,7 +37,8 @@ export default [
       }
     }
   },
-  stylistic.configs['disable-legacy'], stylistic.configs.customize({
+  stylistic.configs['disable-legacy'],
+  stylistic.configs.customize({
     blockSpacing: true,
     braceStyle: '1tbs',
     commaDangle: 'never',

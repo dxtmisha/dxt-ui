@@ -1,2 +1,4 @@
-// md5:91b4572f6415d230e896e1d652db0106 true
-export {};
+// md5:db5b609362653c6485129a50d4ffd60d true
+export type CollageUpdate = () => void;
+/** Provide token for collage layout update callback. @keywords collage, update */
+export declare const COLLAGE_NAME_UPDATE = "collage-update";

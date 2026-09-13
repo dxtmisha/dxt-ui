@@ -33,4 +33,5 @@ ai-packages-types
 
 ai-tmp
 ai-types-temp
-
+logs/types.log.json
+logs/ui-build.log.json

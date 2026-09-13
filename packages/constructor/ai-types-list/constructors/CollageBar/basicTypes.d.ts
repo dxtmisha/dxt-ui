@@ -1,16 +1,21 @@
-// md5:3403be8bfaa05199d6839fc197cc4103 true
+// md5:e84c490bf75e40b2883bc6807ffb6525 true
 import type { ConstrBind } from '@dxtmisha/functional';
-
-/** Type for including CollageBar component. @keywords collage, bar, component, include */
+/** CollageBar component inclusion configuration @keywords collage, bar, component */
 export type CollageBarComponentInclude = {
-    /** CollageBar component configuration. */
+    /** CollageBar component configuration */
     collageBar?: object;
 };
-
-/** Type for embedding CollageBar properties in other components. @keywords collage, bar, props, include */
+/** Slots for including and configuring the CollageBar component @keywords collage, bar, slots */
+export type CollageBarSlotsInclude = {
+    /** Trailing slot forwarded to the bar */
+    barTrailing?(props: any): any;
+    /** Body slot forwarded to the bar */
+    barBody?(props: any): any;
+};
+/** Properties for embedding CollageBar into composite components @keywords collage, bar, props */
 export type CollageBarPropsInclude<CollageBar extends CollageBarPropsBasic = CollageBarPropsBasic> = LabelProps & DescriptionProps & EventClickProps & {
-    /** CollageBar position. */
+    /** CollageBar position */
     collageBarPosition?: CollageBarProps['position'];
-    /** Bound attributes passed directly to the CollageBar component. */
+    /** Bound attributes forwarded directly to CollageBar */
     collageBarAttrs?: ConstrBind<CollageBar>;
 };
