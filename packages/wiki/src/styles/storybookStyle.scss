@@ -6,26 +6,34 @@
   }
 
   &-group {
+    --wiki-sys-columns: 12;
+    --wiki-sys-gap: 8px;
+
     display: grid;
-    grid-template-columns: repeat(12, 1fr);
+    grid-template-columns: repeat(var(--wiki-sys-columns), minmax(0, 1fr));
     grid-template-rows: auto;
     align-content: stretch;
-    gap: 8px;
+    gap: var(--wiki-sys-gap);
 
     &--col4 {
-      grid-template-columns: repeat(4, 1fr);
+      --wiki-sys-columns: 4;
     }
 
     &--gapX2 {
-      gap: 16px;
+      --wiki-sys-gap: 16px;
     }
 
     &--gapX3 {
-      gap: 24px;
+      --wiki-sys-gap: 24px;
     }
 
     &--gapX4 {
-      gap: 32px;
+      --wiki-sys-gap: 32px;
+    }
+
+    &--squared {
+      grid-auto-rows: calc((100cqw - (var(--wiki-sys-columns) - 1) * var(--wiki-sys-gap)) / var(--wiki-sys-columns));
+      grid-template-rows: unset;
     }
   }
 

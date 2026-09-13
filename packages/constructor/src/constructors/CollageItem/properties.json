@@ -11,10 +11,12 @@
   "#collageBar": {},
   "~selected": {},
   "~span": {
+    "~standard": {},
     "~banner": {},
     "~huge": {},
     "~large": {},
     "~tall": {},
-    "~wide": {}
+    "~wide": {},
+    "_default": "standard"
   }
 }

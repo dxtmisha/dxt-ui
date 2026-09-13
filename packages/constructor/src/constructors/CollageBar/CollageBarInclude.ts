@@ -54,6 +54,7 @@ export class CollageBarInclude extends ComponentIncludeAbstract<
     return {
       ...super.toBinds(),
       position: props.collageBarPosition,
+      selected: props.selected,
       label: props.label,
       labelId: props.labelId,
       description: props.description,

@@ -12,13 +12,16 @@
     "color-opacity": "{sys.opacity.surface.medium}"
   },
   "~position": {
+    "~static": {
+      "padding-top": "{sys.spacing.x}"
+    },
     "~top": {
       "paddingX": "{sys.spacing.xs}",
       "paddingY": "{sys.spacing.x}",
       "color": "{sys.palette.onPrimary}",
       "color-opacity": "{sys.opacity.primary.high}",
       "background-color": "{sys.palette.scrim}",
-      "background-opacity": "{sys.primary.medium}",
+      "background-opacity": "{sys.opacity.scrim}",
       "backdrop-filter": "{sys.blur.md}",
       "#description": {
         "color-opacity": "{sys.opacity.primary.medium}"
@@ -30,7 +33,7 @@
       "color": "{sys.palette.onPrimary}",
       "color-opacity": "{sys.opacity.primary.high}",
       "background-color": "{sys.palette.scrim}",
-      "background-opacity": "{sys.primary.medium}",
+      "background-opacity": "{sys.opacity.scrim}",
       "backdrop-filter": "{sys.blur.md}",
       "#description": {
         "color-opacity": "{sys.opacity.primary.medium}"

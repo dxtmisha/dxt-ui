@@ -1,9 +1,9 @@
-import { h, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
   DesignConstructorAbstract
 } from '@dxtmisha/functional'
+import { h, type VNode } from 'vue'
 
 import { getClassTagAStatic } from '../../functions/getClassTagAStatic'
 
@@ -91,7 +91,7 @@ export class CollageItemDesign<
    */
   protected initClasses(): Partial<CLASSES> {
     return {
-      main: {},
+      main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
         body: this.getSubClass('body'),

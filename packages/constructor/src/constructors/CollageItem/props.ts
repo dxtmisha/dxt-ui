@@ -1,4 +1,4 @@
-import type { ImagePropsBasic, ImagePropsInclude } from '../Image'
+import type { ImageProps, ImagePropsBasic, ImagePropsInclude } from '../Image'
 import type { IconPropsBasic, IconValue } from '../Icon'
 import type { CollageBarPropsBasic, CollageBarPropsInclude } from '../CollageBar'
 
@@ -7,7 +7,7 @@ import type { EventClickProps } from '../../types/eventClickTypes'
 type CollageItemPropsToken = {
   // :type [!] System label / Системная метка
   selected?: boolean
-  span?: 'banner' | 'huge' | 'large' | 'tall' | 'wide'
+  span?: 'standard' | 'banner' | 'huge' | 'large' | 'tall' | 'wide'
   // :type [!] System label / Системная метка
 }
 
@@ -19,6 +19,9 @@ export type CollageItemPropsBasic<
   & CollageBarPropsInclude<CollageBar>
   & EventClickProps
   & {
+    /** Image size / Размер изображения */
+    size?: ImageProps['size']
+
     /** Image coordinator for cropping or positioning / Координаты изображения для обрезки или позиционирования */
     coordinator?: number[] | any
     /** Image X position / Позиция изображения по оси X */
@@ -49,6 +52,7 @@ export const defaultsCollageItem = {
   tag: 'a',
   ...{
     // :default [!] System label / Системная метка
+    span: 'standard'
     // :default [!] System label / Системная метка
   }
 }

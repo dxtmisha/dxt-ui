@@ -1,8 +1,9 @@
-import type { Ref, ToRefs } from 'vue'
 import {
+  type ConstrClassObject,
   type ConstrEmit,
   type DesignComp
 } from '@dxtmisha/functional'
+import type { Ref, ToRefs } from 'vue'
 
 import { EventClickInclude } from '../../classes/EventClickInclude'
 
@@ -12,8 +13,8 @@ import { ImageInclude } from '../Image'
 
 import { CollageItemDimensions } from './CollageItemDimensions'
 
-import type { CollageItemComponents, CollageItemEmits, CollageItemSlots } from './types'
 import type { CollageItemProps } from './props'
+import type { CollageItemComponents, CollageItemEmits, CollageItemSlots } from './types'
 
 /**
  * CollageItem controller class coordinating image presentation, dimensions, selection states, and collage bars. /
@@ -88,6 +89,7 @@ export class CollageItem {
       components,
       () => ({
         tagImg: true,
+        size: this.props.size,
         coordinator: this.props.coordinator,
         x: this.props.x,
         y: this.props.y,
@@ -108,5 +110,19 @@ export class CollageItem {
       props,
       components
     )
+  }
+
+  /**
+   * Values for the class. /
+   * Значения для класса.
+   * @returns classes values / значения классов
+   */
+  get classes(): ConstrClassObject {
+    const position = this.props.collageBarPosition
+      ?? this.props.collageBarAttrs?.position
+
+    return {
+      [`${this.className}--collageBarPosition--${position}`]: Boolean(position)
+    }
   }
 }

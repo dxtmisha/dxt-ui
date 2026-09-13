@@ -137,6 +137,17 @@ export const wikiIconInclude: StorybookArgsToList = {
     },
     hide: true
   },
+  iconCheck: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.icon,
+      description: {
+        en: 'Sets icon for the check indicator',
+        ru: 'Задает иконку для индикатора выбора'
+      }
+    },
+    hide: true
+  },
   iconCheckbox: {
     type: StorybookControl.string,
     options: {

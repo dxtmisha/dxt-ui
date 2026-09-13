@@ -37,6 +37,7 @@ import { wikiCheckbox } from './wikiCheckbox'
 import { wikiChip } from './wikiChip'
 import { wikiChipGroup } from './wikiChipGroup'
 import { wikiClockDial } from './wikiClockDial'
+import { wikiCollageItem } from './wikiCollageItem'
 import { wikiCropArea } from './wikiCropArea'
 import { wikiDialog } from './wikiDialog'
 import { wikiDraggableWrapper } from './wikiDraggableWrapper'
@@ -133,6 +134,7 @@ export const wiki: StorybookArgsToList = {
   ...wikiChip,
   ...wikiChipGroup,
   ...wikiClockDial,
+  ...wikiCollageItem,
   ...wikiCropArea,
   ...wikiDialog,
   ...wikiDraggableWrapper,

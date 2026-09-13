@@ -91,6 +91,19 @@ export const wikiStyle: StorybookArgsToList = {
     },
     isDemo: true
   },
+  collageBarPosition: {
+    type: StorybookControl.select,
+    options: {
+      category: StorybookCategory.style,
+      type: 'string',
+      options: ['top', 'bottom', 'static'],
+      description: {
+        en: 'Position of the CollageBar component',
+        ru: 'Положение панели CollageBar'
+      }
+    },
+    isDemo: true
+  },
   compact: {
     type: StorybookControl.boolean,
     options: {

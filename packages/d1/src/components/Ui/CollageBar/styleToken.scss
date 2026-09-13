@@ -53,6 +53,10 @@
     }
     
     &--position {
+      &--static {
+        padding-top: var(--d1-sys-spacing-x);
+      }
+
       &--top {
         @include ui.paddingX(#{var(--d1-sys-spacing-xs)});
         @include ui.paddingY(#{var(--d1-sys-spacing-x)});
@@ -61,7 +65,7 @@
         @include ui.colorOpacity(#{var(--d1-sys-opacity-primary-high)});
         
         @include ui.backgroundColor(#{var(--d1-sys-palette-scrim)});
-        @include ui.backgroundOpacity(#{var(--d1-sys-primary-medium)});
+        @include ui.backgroundOpacity(#{var(--d1-sys-opacity-scrim)});
         
         backdrop-filter: var(--d1-sys-blur-md);
         
@@ -78,7 +82,7 @@
         @include ui.colorOpacity(#{var(--d1-sys-opacity-primary-high)});
         
         @include ui.backgroundColor(#{var(--d1-sys-palette-scrim)});
-        @include ui.backgroundOpacity(#{var(--d1-sys-primary-medium)});
+        @include ui.backgroundOpacity(#{var(--d1-sys-opacity-scrim)});
         
         backdrop-filter: var(--d1-sys-blur-md);
         

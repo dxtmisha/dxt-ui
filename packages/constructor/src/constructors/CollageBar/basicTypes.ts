@@ -35,6 +35,9 @@ export type CollageBarPropsInclude<
   & DescriptionProps
   & EventClickProps
   & {
+    /** Selected state / Выбранное состояние */
+    selected?: boolean
+
     /** CollageBar position / Позиция панели */
     collageBarPosition?: CollageBarProps['position']
 

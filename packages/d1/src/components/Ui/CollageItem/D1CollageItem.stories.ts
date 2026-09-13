@@ -31,8 +31,10 @@ export const CollageItem: Story = {
     components: { D1CollageItem },
     setup: () => ({ args }),
     template: `
-      <div class="wiki-storybook-group wiki-storybook-group--col4">
-      <D1CollageItem v-bind="args"/>
+      <div class="wiki-storybook-container">
+      <div class="wiki-storybook-group wiki-storybook-group--col4 wiki-storybook-group--squared">
+        <D1CollageItem v-bind="args"/>
+      </div>
     </div>
     `
   })
@@ -45,38 +47,117 @@ export const CollageItemSpans: Story = {
   render: () => ({
     components: { D1CollageItem },
     template: `
-        <div class="wiki-storybook-group wiki-storybook-group--col4">
-          <D1CollageItem
-            image="https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1000&q=80"
-            span="wide"
-            label="Wide Item"
-            description="2 columns x 1 row"
-          />
-          <D1CollageItem
-            image="https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?auto=format&fit=crop&w=1000&q=80"
-            span="wide"
-            selected
-            label="Selected Item"
-            description="2 columns x 1 row (selected)"
-          />
-          <D1CollageItem
-            image="https://images.unsplash.com/photo-1508921912186-1d1a45ebb3c1?auto=format&fit=crop&w=800&q=80"
-            span="tall"
-            label="Tall Item"
-            description="1 column x 2 rows"
-          />
-          <D1CollageItem
-            image="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80"
-            span="large"
-            label="Large Item"
-            description="2 columns x 2 rows"
-          />
-          <D1CollageItem
-            image="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1200&q=80"
-            span="banner"
-            label="Banner Item"
-            description="3 columns x 1 row"
-          />
+        <div class="wiki-storybook-container">
+          <div class="wiki-storybook-group wiki-storybook-group--col4 wiki-storybook-group--squared">
+            <D1CollageItem
+              image="https://picsum.photos/800/600?random=42"
+              span="wide"
+              collageBarPosition="static"
+              label="Standard Position"
+              description="Static bar placed below the image"
+              :collageBarAttrs="{ button: 'Explore' }"
+            />
+            <D1CollageItem
+              image="https://picsum.photos/800/600?random=43"
+              span="wide"
+              selected
+            />
+            <D1CollageItem
+              image="https://picsum.photos/800/600?random=44"
+              span="tall"
+              collageBarPosition="top"
+              label="Vertical Panorama"
+              description="Top overlay bar"
+              :collageBarAttrs="{ icon: 'bookmark' }"
+            />
+            <D1CollageItem
+              image="https://picsum.photos/800/600?random=45"
+              span="huge"
+              collageBarPosition="bottom"
+              label="Huge Showcase (Enlarged 3x2)"
+              description="3 columns x 2 rows enlarged element with action button"
+              :collageBarAttrs="{ button: 'Explore Project' }"
+            />
+            <D1CollageItem
+              image="https://picsum.photos/800/600?random=47"
+              span="large"
+              collageBarPosition="static"
+              label="Large Card"
+              description="2 columns x 2 rows with static caption bar"
+              :collageBarAttrs="{ button: 'Details' }"
+            />
+            <D1CollageItem
+              image="https://picsum.photos/800/600?random=48"
+              span="standard"
+              collageBarPosition="top"
+              selected
+              label="Top Label"
+            />
+            <D1CollageItem
+              image="https://picsum.photos/800/600?random=49"
+              span="standard"
+              selected
+              collageBarPosition="bottom"
+              label="Active"
+              :collageBarAttrs="{ icon: 'favorite' }"
+            />
+            <D1CollageItem
+              image="https://picsum.photos/800/600?random=50"
+              span="wide"
+              collageBarPosition="bottom"
+              label="Wide Banner"
+              description="2 columns x 1 row bottom bar"
+              :collageBarAttrs="{ button: 'Open' }"
+            />
+          </div>
+        </div>
+    `
+  })
+}
+export const ImageSize: Story = {
+  name: 'Отображение',
+  render: () => ({
+    components: { D1CollageItem },
+    template: `
+        <div class="wiki-storybook-container">
+          <div class="wiki-storybook-group wiki-storybook-group--col4 wiki-storybook-group--squared">
+            <D1CollageItem
+              image="https://picsum.photos/800/400?random=55"
+              size="cover"
+              collageBarPosition="static"
+              label="size: cover (default)"
+              description="Fills container, cropping overflow"
+            />
+            <D1CollageItem
+              image="https://picsum.photos/800/400?random=55"
+              size="contain"
+              collageBarPosition="static"
+              label="size: contain"
+              description="Scales image to fit within bounds"
+            />
+            <D1CollageItem
+              image="https://picsum.photos/800/400?random=55"
+              size="auto"
+              collageBarPosition="static"
+              label="size: auto"
+              description="Displays image without scaling"
+            />
+            <D1CollageItem
+              image="https://picsum.photos/800/400?random=55"
+              :coordinator="[60, 10, 10, 40]"
+              collageBarPosition="static"
+              label="coordinator"
+              description="Crops to specified coordinate bounds"
+            />
+            <D1CollageItem
+              image="https://picsum.photos/800/400?random=55"
+              x="20%"
+              y="-10%"
+              collageBarPosition="static"
+              label="x, y offset"
+              description="Custom coordinate shift along axes"
+            />
+          </div>
         </div>
     `
   })

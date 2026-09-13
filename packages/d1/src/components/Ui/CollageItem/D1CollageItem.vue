@@ -11,6 +11,10 @@ import {
   type CollageItemSlots
 } from '@dxtmisha/constructor/CollageItem'
 
+import { D1CollageBar } from '../CollageBar'
+import { D1Icon } from '../Icon'
+import { D1Image } from '../Image'
+
 import { defaults, type CollageItemProps, propsValues } from './props'
 import './styleToken.scss'
 
@@ -41,7 +45,12 @@ const design = new CollageItemDesign(
   {
     emits,
     classes: classesToken,
-    styles: stylesToken
+    styles: stylesToken,
+    components: {
+      collageBar: D1CollageBar,
+      icon: D1Icon,
+      image: D1Image
+    }
   }
 )
 
