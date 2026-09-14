@@ -1,29 +1,33 @@
-import type { ConstrClass } from '@dxtmisha/functional'
+import type { ConstrClass, ListSelectedList } from '@dxtmisha/functional'
+import type { EventClickEmits, EventClickExpose } from '../../types/eventClickTypes'
+
+import type { ModelEmitsSelected } from '../../types/modelTypes'
+
+import type { CollageBarSlotsInclude } from '../CollageBar'
+import type { CollageItemComponentInclude } from '../CollageItem'
 
 /**
  * Interface for describing which components need to be connected for work.
  *
  * Интерфейс для описания, какие компоненты надо подключить для работы.
  */
-export type CollageComponents = {
-  // componentName: object
-}
+export type CollageComponents = CollageItemComponentInclude
 
 /**
  * Type describing available events.
  *
  * Тип, описывающий доступные события.
  */
-export type CollageEmits = {
-  // load: [value: string]
-}
+export type CollageEmits = EventClickEmits & ModelEmitsSelected<ListSelectedList>
 
 /**
  * Type describing available properties.
  *
  * Тип, описывающий доступные свойства.
  */
-export interface CollageExpose {
+export interface CollageExpose extends EventClickExpose {
+  /** Recalculates and updates the layout / Пересчитывает и обновляет макет */
+  update(): void
 }
 
 /**
@@ -31,8 +35,9 @@ export interface CollageExpose {
  *
  * Тип, описывающий доступные слоты.
  */
-export interface CollageSlots {
-  // default? (props: any): any
+export interface CollageSlots extends CollageBarSlotsInclude {
+  /** Default slot for custom content / Слот по умолчанию для пользовательского содержимого */
+  default?(props: any): any
 }
 
 /**
@@ -43,5 +48,6 @@ export interface CollageSlots {
 export type CollageClasses = {
   main: ConstrClass
   // :classes [!] System label / Системная метка
+  item: string
   // :classes [!] System label / Системная метка
 }

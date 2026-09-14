@@ -88,4 +88,8 @@
       grid-row: auto / span 2;
     }
   }
+
+  &--compact {
+    height: 80%;
+  }
 }

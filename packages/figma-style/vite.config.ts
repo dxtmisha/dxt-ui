@@ -4,6 +4,6 @@ import { uiD1VitePlugin } from '@dxtmisha/d1/plugin'
 // https://vite.dev/config/
 export default viteFigma(
   process.argv.includes('--watch'),
-  __dirname,
+  import.meta.dirname,
   [uiD1VitePlugin()]
 )

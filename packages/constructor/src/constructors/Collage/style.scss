@@ -1,5 +1,56 @@
 @use "@dxtmisha/styles/properties" as ui;
 
 @mixin mixinCollage {
+  @include ui.initByCustom('columns', '4');
+  @include ui.initByCustom('gap', ui.v('d.sys.padding.md', 16px));
+  @include ui.initByCustom('cell-size', 160px);
 
+  box-sizing: border-box;
+  display: grid;
+  gap: ui.v('??gap');
+  grid-template-columns: repeat(ui.v('??columns'), minmax(ui.v('??cell-size'), 1fr));
+  grid-template-rows: auto;
+  width: 100%;
+
+  &--appearance {
+    &--quilted {
+      grid-auto-flow: dense;
+    }
+
+    &--woven {
+      @include ui.subclass('item') {
+        align-self: center;
+      }
+    }
+
+    &--masonryHorizontal {
+      grid-auto-flow: dense;
+      grid-template-columns: repeat(auto-fit, minmax(calc((ui.v('??cell-size') - (ui.v('??gap') * 9)) / 10), 1fr));
+
+      #{ui.c('?collageItem')} {
+        grid-column: auto / span calc(#{ui.v('?collageItem-sys-width', 1)} + #{ui.v('??sys-item-grow', 0)});
+      }
+
+      #{ui.c('?collageItem__body')} {
+        aspect-ratio: auto;
+        min-height: ui.v('??cell-size');
+      }
+    }
+
+    &--masonryVertical {
+      grid-auto-flow: dense;
+      grid-template-rows: calc((ui.v('??cell-size') - (ui.v('??gap') * 9)) / 10);
+      grid-auto-rows: calc((ui.v('??cell-size') - (ui.v('??gap') * 9)) / 10);
+
+      #{ui.c('?collageItem')} {
+        min-height: calc((#{ui.v('?collageItem-sys-height', 1)} * ((ui.v('??cell-size') - (ui.v('??gap') * 9)) / 10)) + (ui.v('??gap') * (#{ui.v('?collageItem-sys-height', 1)} - 1)));
+        grid-row: auto / span #{ui.v('??sys-item-grow', ui.v('?collageItem-sys-height', 1))};
+      }
+
+      #{ui.c('?collageItem__body')} {
+        aspect-ratio: auto;
+        min-height: calc((#{ui.v('?collageItem-sys-height', 1)} * ((ui.v('??cell-size') - (ui.v('??gap') * 9)) / 10)) + (ui.v('??gap') * (#{ui.v('?collageItem-sys-height', 1)} - 1)));
+      }
+    }
+  }
 }

@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.10] - 2026-09-14
+
+### Changed
+- **AI Prompt Mandatory Deep Study Enforcement (`aiCodeGlobalPrompt.en.md`, `aiCodeGlobalPrompt.ru.md`)**:
+  - Reinforced Rule 0 as **Strict Chronological Guard (Execution Mandatory)** / **Строгий блокирующий контроль — шаги обязательны к выполнению**, explicitly enforcing that initialization steps must be executed before taking any action, analysis, planning, or code authoring.
+  - Streamlined Rule 0 to contain only unconditional session-start prerequisites: Step 1 (`ai-developer.md` for package modifications) and Step 2 (`ai-memory.md` for package-scoped memory).
+  - Transferred `ai-types.md` conditional search guidance from Rule 0 into Rule 7 ("Package Type Reference").
+  - Added explicit "Local Packages" directive in Rule 7 mandating resolution, inspection, and modification of local workspace sources in `packages/` instead of `node_modules/`.
+
+## [1.1.9] - 2026-09-14
+
+### Changed
+- **AI Prompt Deep Study Workflow Optimization (`aiCodeGlobalPrompt.en.md`, `aiCodeGlobalPrompt.ru.md`)**:
+  - Reorganized Rule 0 ("Mandatory Deep Study") into a streamlined 3-step sequence:
+    - **Step 1 (`ai-types.md`)**: Text-search-first exploration of type declarations prior to planning or writing code.
+    - **Step 2 (`ai-developer.md`)**: Mandatory study at the beginning of each session when developing or modifying the package.
+    - **Step 3 (`ai-memory.md`)**: Mandatory study at the start of each session and **mandatory re-study after each session compaction**, enforcing package-level scoping (`packages/<name>/ai-memory.md`) in monorepos.
+  - Removed redundant step requiring AI to read `ai-prompt.md` within itself.
+
+### Added
+- **AI Model Demo Sessions (`packages/scripts/demo`)**:
+  - Added demonstration chat transcripts and UI verification screenshots for GPT-5.6 Luna and Gemini 3.7 Flash models.
+
 ## [1.1.8] - 2026-09-10
 
 ### Added

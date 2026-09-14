@@ -2,7 +2,8 @@ import { h, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
-  DesignConstructorAbstract
+  DesignConstructorAbstract,
+  toBinds
 } from '@dxtmisha/functional'
 
 import { Collage } from './Collage'
@@ -19,7 +20,9 @@ import {
 } from './types'
 
 /**
- * CollageDesign
+ * CollageDesign class for assembling the Collage component VNode tree.
+ *
+ * Класс CollageDesign для сборки дерева виртуальных узлов VNode компонента Collage.
  */
 export class CollageDesign<
   COMP extends CollageComponents,
@@ -38,11 +41,13 @@ export class CollageDesign<
   protected readonly item: Collage
 
   /**
-   * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor constructors item class/ класс элемента конструкторов
+   * Constructor for CollageDesign.
+   *
+   * Конструктор для CollageDesign.
+   * @param name class name / название класса
+   * @param props properties / свойства
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor constructors item class / класс элемента конструкторов
    */
   constructor(
     name: string,
@@ -67,21 +72,19 @@ export class CollageDesign<
       this.emits
     )
 
-    // TODO: Method for initializing base objects
-    // TODO: Метод для инициализации базовых объектов
-
     this.init()
   }
 
   /**
-   * Initialization of all the necessary properties for work
+   * Initialization of all the necessary properties for work.
    *
    * Инициализация всех необходимых свойств для работы.
+   * @returns expose object / объект экспонируемых свойств
    */
   protected initExpose(): EXPOSE {
     return {
-      // TODO: list of properties for export
-      // TODO: список свойств для экспорта
+      update: this.item.update,
+      ...this.item.event.expose
     } as EXPOSE
   }
 
@@ -89,12 +92,14 @@ export class CollageDesign<
    * Improvement of the obtained list of classes.
    *
    * Доработка полученного списка классов.
+   * @returns partial classes map / частичная карта классов
    */
   protected initClasses(): Partial<CLASSES> {
     return {
-      main: {},
+      main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
+        item: this.getSubClass('item')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -104,26 +109,69 @@ export class CollageDesign<
    * Refinement of the received list of styles.
    *
    * Доработка полученного списка стилей.
+   * @returns styles object / объект стилей
    */
   protected initStyles(): ConstrStyles {
-    return {
-      // TODO: list of user styles
-      // TODO: список пользовательских стилей
-    }
+    return this.item.styles
   }
 
   /**
-   * A method for rendering.
+   * A method for rendering the root container.
    *
-   * Метод для рендеринга.
+   * Метод для рендеринга корневого контейнера.
+   * @returns virtual node / виртуальный узел
    */
   protected initRender(): VNode {
-    // const children: any[] = []
+    return h(
+      'div',
+      {
+        ...this.getAttrs(),
+        ...this.item.binds,
+        ref: this.element,
+        class: this.classes?.value.main,
+        style: this.styles?.value
+      },
+      this.renderList()
+    )
+  }
 
-    return h('div', {
-      // ...this.getAttrs(),
-      ref: this.element,
-      class: this.classes?.value.main
-    })
+  /**
+   * List of items rendering.
+   *
+   * Рендеринг списка элементов.
+   * @returns array of virtual nodes / массив виртуальных узлов
+   */
+  readonly renderList = (): VNode[] => {
+    const children: any[] = []
+
+    if (this.item.isList()) {
+      const list = this.item.getList()
+
+      if (list) {
+        list.forEach((item, key) => {
+          this.components.renderAdd(
+            children,
+            'collageItem',
+            toBinds(
+              item,
+              this.props.collageItemAttrs,
+              {
+                class: this.classes?.value.item,
+                onClick: this.item.event.onClick
+              }
+            ),
+            {
+              barBody: this.slots?.barBody,
+              barTrailing: this.slots?.barTrailing
+            },
+            item?.value || item?.index || key
+          )
+        })
+      }
+
+      this.initSlot('default', children)
+    }
+
+    return children
   }
 }

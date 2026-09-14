@@ -1,2 +1,56 @@
 {
+  "columns": {
+    "_type": "var"
+  },
+  "gap": {
+    "_type": "var"
+  },
+  "#item": {},
+  "~appearance": {
+    "~standard": {},
+    "~quilted": {},
+    "~woven": {},
+    "~masonryHorizontal": {},
+    "~masonryVertical": {},
+    "_default": "standard"
+  },
+  "~columns": {
+    "~1": {
+      "columns": "1"
+    },
+    "~2": {
+      "columns": "2"
+    },
+    "~3": {
+      "columns": "3"
+    },
+    "~4": {
+      "columns": "4"
+    },
+    "~5": {
+      "columns": "5"
+    },
+    "~6": {
+      "columns": "6"
+    },
+    "~7": {
+      "columns": "7"
+    },
+    "~8": {
+      "columns": "8"
+    },
+    "~9": {
+      "columns": "9"
+    },
+    "~10": {
+      "columns": "10"
+    },
+    "~11": {
+      "columns": "11"
+    },
+    "~12": {
+      "columns": "12"
+    },
+    "_default": "4"
+  }
 }

@@ -35,7 +35,7 @@ export const viteFigma = (
             },
             output: {
               manualChunks: undefined,
-              inlineDynamicImports: false,
+              codeSplitting: false,
               entryFileNames: 'code.js'
             }
           }
