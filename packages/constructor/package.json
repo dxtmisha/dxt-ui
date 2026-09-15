@@ -52,7 +52,7 @@
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
     "test": "vitest",
-    "constructor": "dxt-constructor --name CollageItem",
+    "constructor": "dxt-constructor --name CarouselPagination",
     "library": "dxt-library",
     "types": "npm run library && npm run constructor && npm run build && dxt-types",
     "prepublishOnly": "npm run library && npm run constructor && npm run build && dxt-types-save",
@@ -562,6 +562,10 @@
     "./CollageItem": {
       "types": "./dist/constructors/CollageItem/index.d.ts",
       "default": "./dist/collageItem.js"
+    },
+    "./CarouselPagination": {
+      "types": "./dist/constructors/CarouselPagination/index.d.ts",
+      "default": "./dist/carouselPagination.js"
     }
   },
   "buildOptions": {
