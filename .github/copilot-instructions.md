@@ -20,3 +20,14 @@ The `ai-prompt.md` file contains:
 - Responsive design and media query requirements.
 
 Studying this file COMPLETELY in full is critical to ensuring consistency with the design system and project architecture. All of its guidelines must be followed strictly without exception.
+
+## Action Protocol After Reading ai-prompt.md (Routing & Search Guard)
+
+### 1. First Action — Match Against ai-resources (Strict Dispatching)
+Upon receiving any task, the agent **MUST** first match the task topic against the `Mandatory Rules` lists and references to specialized `ai-resources/*.md` files specified in `ai-prompt.md`.
+
+The **FIRST tool call** must be direct reading of the relevant documentation file from `ai-resources/` (or target `ai-types.md`), NOT launching search utilities.
+
+### 2. Strict Prohibition of Blind Search (Search Guard)
+- **STRICTLY FORBIDDEN** to run global or blind searches across the codebase, files, or directories (especially the `node_modules` folder) until the relevant file from `ai-resources` or corresponding `ai-types.md` has been opened and studied.
+- Codebase search is permitted **STRICTLY as a secondary step (fallback)** and only if the target document from `ai-resources` has already been read, but the required signature or implementation detail is missing from it.

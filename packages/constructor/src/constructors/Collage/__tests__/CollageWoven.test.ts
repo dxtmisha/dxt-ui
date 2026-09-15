@@ -1,8 +1,7 @@
 // @vitest-environment jsdom
-import { describe, it, expect, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { ref } from 'vue'
 import { CollageElement } from '../CollageElement'
-import { CollageEven } from '../CollageEven'
 import { CollageWoven } from '../CollageWoven'
 
 describe('CollageWoven', () => {
@@ -13,8 +12,14 @@ describe('CollageWoven', () => {
   })
 
   it('should toggle compact class on item element', () => {
+    class TestCollageWoven extends CollageWoven {
+      override setCompact(itemElement: HTMLElement, compactState: boolean): void {
+        super.setCompact(itemElement, compactState)
+      }
+    }
+
     const item = document.createElement('div')
-    const collageWoven = new CollageWoven('d-collage')
+    const collageWoven = new TestCollageWoven('d-collage')
 
     collageWoven.setCompact(item, true)
     expect(item.classList.contains('d-collage-item--compact')).toBe(true)
@@ -36,10 +41,10 @@ describe('CollageWoven', () => {
     item3.setAttribute('data-value', 'val-3')
 
     // 2 columns:
-    item0.getBoundingClientRect = () => ({ left: 0, top: 0, right: 100, bottom: 50, width: 100, height: 50, x: 0, y: 0, toJSON: () => ({}) })
-    item1.getBoundingClientRect = () => ({ left: 120, top: 0, right: 220, bottom: 50, width: 100, height: 50, x: 120, y: 0, toJSON: () => ({}) })
-    item2.getBoundingClientRect = () => ({ left: 0, top: 60, right: 100, bottom: 110, width: 100, height: 50, x: 0, y: 60, toJSON: () => ({}) })
-    item3.getBoundingClientRect = () => ({ left: 120, top: 60, right: 220, bottom: 110, width: 100, height: 50, x: 120, y: 60, toJSON: () => ({}) })
+    Object.defineProperty(item0, 'offsetLeft', { value: 0, configurable: true })
+    Object.defineProperty(item1, 'offsetLeft', { value: 120, configurable: true })
+    Object.defineProperty(item2, 'offsetLeft', { value: 0, configurable: true })
+    Object.defineProperty(item3, 'offsetLeft', { value: 120, configurable: true })
 
     container.appendChild(item0)
     container.appendChild(item1)
@@ -48,8 +53,7 @@ describe('CollageWoven', () => {
 
     const element = ref<HTMLElement | undefined>(container)
     const collageElement = new CollageElement(element)
-    const even = new CollageEven('d-collage')
-    const collageWoven = new CollageWoven('d-collage', collageElement, even)
+    const collageWoven = new CollageWoven('d-collage', collageElement)
 
     const spyRaf = vi.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
       cb(0)
@@ -64,12 +68,11 @@ describe('CollageWoven', () => {
     expect(item1.classList.contains('d-collage-item--compact')).toBe(true)
     expect(item2.classList.contains('d-collage-item--compact')).toBe(true)
     expect(item3.classList.contains('d-collage-item--compact')).toBe(false)
-    expect(even.is()).toBe(true)
 
     spyRaf.mockRestore()
   })
 
-  it('should recalculate woven layout and update even state via resize()', () => {
+  it('should recalculate woven layout via resize()', () => {
     const container = document.createElement('div')
     const item1 = document.createElement('div')
     item1.setAttribute('data-value', 'val-1')
@@ -78,8 +81,7 @@ describe('CollageWoven', () => {
 
     const element = ref<HTMLElement | undefined>(container)
     const collageElement = new CollageElement(element)
-    const even = new CollageEven('d-collage')
-    const collageWoven = new CollageWoven('d-collage', collageElement, even)
+    const collageWoven = new CollageWoven('d-collage', collageElement)
 
     const spyRaf = vi.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
       cb(0)
@@ -89,7 +91,6 @@ describe('CollageWoven', () => {
     collageWoven.resize()
 
     expect(spyRaf).toHaveBeenCalled()
-    expect(even.is()).toBe(false) // 1 column is odd
 
     spyRaf.mockRestore()
   })
@@ -106,14 +107,13 @@ describe('CollageWoven', () => {
     const item2 = document.createElement('div')
     const item3 = document.createElement('div')
 
-    item0.getBoundingClientRect = () => ({ left: 0, top: 0, right: 100, bottom: 50, width: 100, height: 50, x: 0, y: 0, toJSON: () => ({}) })
-    item1.getBoundingClientRect = () => ({ left: 120, top: 0, right: 220, bottom: 50, width: 100, height: 50, x: 120, y: 0, toJSON: () => ({}) })
-    item2.getBoundingClientRect = () => ({ left: 0, top: 60, right: 100, bottom: 110, width: 100, height: 50, x: 0, y: 60, toJSON: () => ({}) })
-    item3.getBoundingClientRect = () => ({ left: 120, top: 60, right: 220, bottom: 110, width: 100, height: 50, x: 120, y: 60, toJSON: () => ({}) })
+    Object.defineProperty(item0, 'offsetLeft', { value: 0, configurable: true })
+    Object.defineProperty(item1, 'offsetLeft', { value: 120, configurable: true })
+    Object.defineProperty(item2, 'offsetLeft', { value: 0, configurable: true })
+    Object.defineProperty(item3, 'offsetLeft', { value: 120, configurable: true })
 
     const testWoven = new TestCollageWoven('d-collage')
 
     expect(testWoven.getColumns([item0, item1, item2, item3])).toBe(2)
   })
 })
-

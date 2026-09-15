@@ -2,13 +2,13 @@
 import { describe, it, expect } from 'vitest'
 import { ref } from 'vue'
 import { CollageElement } from '../CollageElement'
-import { CollageStyle } from '../CollageStyle'
+import { CollageGrow } from '../CollageGrow'
 
-describe('CollageStyle', () => {
-  it('should initialize property with class name', () => {
-    const style = new CollageStyle('d-collage')
+describe('CollageGrow', () => {
+  it('should initialize propertyGrow with class name', () => {
+    const grow = new CollageGrow('d-collage')
 
-    expect(style.property.grow).toBe('--d-collage-sys-item-grow')
+    expect(grow.propertyGrow).toBe('--d-collage-sys-item-grow')
   })
 
   it('should set and reset grow property on item elements', () => {
@@ -19,18 +19,18 @@ describe('CollageStyle', () => {
 
     const element = ref<HTMLElement | undefined>(container)
     const collageElement = new CollageElement(element)
-    const style = new CollageStyle('d-collage', collageElement)
+    const grow = new CollageGrow('d-collage', collageElement)
 
-    style.setGrow(item, 5)
+    grow.setGrow(item, 5)
     expect(item.style.getPropertyValue('--d-collage-sys-item-grow')).toBe('5')
 
-    style.resetGrowItem(item)
+    grow.resetGrowItem(item)
     expect(item.style.getPropertyValue('--d-collage-sys-item-grow')).toBe('')
 
-    style.setGrow(item, '3')
+    grow.setGrow(item, '3')
     expect(item.style.getPropertyValue('--d-collage-sys-item-grow')).toBe('3')
 
-    style.resetGrow()
+    grow.resetGrow()
     expect(item.style.getPropertyValue('--d-collage-sys-item-grow')).toBe('')
   })
 })

@@ -25,7 +25,18 @@ The `ai-prompt.md` file contains:
 
 Studying this file COMPLETELY in full is critical to ensuring consistency with the design system and project architecture. All of its guidelines must be followed strictly without exception.
 
+## Action Protocol After Reading ai-prompt.md (Routing & Search Guard)
+
+### 1. First Action — Match Against ai-resources (Strict Dispatching)
+Upon receiving any task, the agent **MUST** first match the task topic against the `Mandatory Rules` lists and references to specialized `ai-resources/*.md` files specified in `ai-prompt.md`.
+
+The **FIRST tool call** must be direct reading of the relevant documentation file from `ai-resources/` (or target `ai-types.md`), NOT launching search utilities.
+
+### 2. Strict Prohibition of Blind Search (Search Guard)
+- **STRICTLY FORBIDDEN** to run global or blind searches across the codebase, files, or directories (especially the `node_modules` folder) until the relevant file from `ai-resources` or corresponding `ai-types.md` has been opened and studied.
+- Codebase search is permitted **STRICTLY as a secondary step (fallback)** and only if the target document from `ai-resources` has already been read, but the required signature or implementation detail is missing from it.
+
 ## Browser Automation & Testing
 - **STRICT PROHIBITION**: NEVER invoke `browser_subagent` under any circumstances (causes deadlocks and freezes on macOS).
 - **MANDATORY Desktop**: For desktop browser automation, testing Storybook components, UI checks, DOM inspection, and console verification, always use **Chrome DevTools MCP / Chrome Remote Debugging Protocol (CDP on port 9222)** or `read_url_content`.
-- **MANDATORY Mobile**: For mobile/phone testing («на телефоне», «в симуляторе», «на реальном устройстве»), always use **Apple Xcode Simulator (`Simulator.app` + `xcrun simctl`)** with `DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer` as defined in `browser.md`.
+- **MANDATORY Mobile**: For mobile/phone testing, always use **Apple Xcode Simulator (`Simulator.app` + `xcrun simctl`)** with `DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer` as defined in `browser.md`.

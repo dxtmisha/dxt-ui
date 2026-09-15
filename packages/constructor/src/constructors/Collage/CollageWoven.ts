@@ -1,9 +1,8 @@
 import type { CollageElement } from './CollageElement'
-import type { CollageEven } from './CollageEven'
 
 /**
- * Class managing woven appearance layout, compact item states, and even state for Collage. /
- * Класс, управляющий макетом внешнего вида woven, компактными состояниями элементов и состоянием четности для Collage.
+ * Class managing woven appearance layout and compact item states for Collage. /
+ * Класс, управляющий макетом внешнего вида woven и компактными состояниями элементов для Collage.
  */
 export class CollageWoven {
   /** Class name for compact items in woven appearance / Имя класса для компактных элементов в woven режиме */
@@ -14,29 +13,17 @@ export class CollageWoven {
    * Конструктор для CollageWoven.
    * @param className base class name of the component / базовое имя класса компонента
    * @param element manager for container DOM elements / менеджер DOM-элементов контейнера
-   * @param even manager for even layout state / менеджер состояния четности макета
    */
   constructor(
     protected readonly className: string,
-    protected readonly element?: CollageElement,
-    protected readonly even?: CollageEven
+    protected readonly element?: CollageElement
   ) {
     this.classCompact = `${className}-item--compact`
   }
 
   /**
-   * Toggles the compact class on the given item element. /
-   * Переключает класс компактности на указанном элементе.
-   * @param itemElement target item element / целевой элемент
-   * @param compactState compact state flag / флаг состояния компактности
-   */
-  setCompact(itemElement: HTMLElement, compactState: boolean): void {
-    itemElement.classList.toggle(this.classCompact, compactState)
-  }
-
-  /**
-   * Recalculates woven layout alternating items and even state. /
-   * Пересчитывает макет woven, чередуя элементы и состояние четности.
+   * Recalculates woven layout alternating items. /
+   * Пересчитывает макет woven, чередуя элементы.
    */
   resize(): void {
     requestAnimationFrame(() => {
@@ -48,7 +35,6 @@ export class CollageWoven {
       const columns = this.getColumns(items)
 
       if (columns <= 0) {
-        this.even?.set(false)
         return
       }
 
@@ -59,8 +45,6 @@ export class CollageWoven {
 
         this.setCompact(itemElement, isCompact)
       })
-
-      this.even?.set(columns % 2 === 0)
     })
   }
 
@@ -75,10 +59,10 @@ export class CollageWoven {
       return 0
     }
 
-    let previousLeft = items[0].getBoundingClientRect().left
+    let previousLeft = items[0].offsetLeft
 
     for (let index = 1; index < items.length; index++) {
-      const currentLeft = items[index].getBoundingClientRect().left
+      const currentLeft = items[index].offsetLeft
 
       if (currentLeft <= previousLeft) {
         return index
@@ -88,5 +72,15 @@ export class CollageWoven {
     }
 
     return items.length
+  }
+
+  /**
+   * Toggles the compact class on the given item element. /
+   * Переключает класс компактности на указанном элементе.
+   * @param itemElement target item element / целевой элемент
+   * @param compactState compact state flag / флаг состояния компактности
+   */
+  protected setCompact(itemElement: HTMLElement, compactState: boolean): void {
+    itemElement.classList.toggle(this.classCompact, compactState)
   }
 }

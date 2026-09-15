@@ -1,10 +1,10 @@
-import { h, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
   DesignConstructorAbstract,
   toBinds
 } from '@dxtmisha/functional'
+import { h, type VNode } from 'vue'
 
 import { Collage } from './Collage'
 
@@ -30,14 +30,14 @@ export class CollageDesign<
   CLASSES extends CollageClasses,
   P extends CollagePropsBasic
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
-    COMP,
-    CollageEmits,
-    EXPOSE,
-    CollageSlots,
-    CLASSES,
-    P
-  > {
+  HTMLDivElement,
+  COMP,
+  CollageEmits,
+  EXPOSE,
+  CollageSlots,
+  CLASSES,
+  P
+> {
   protected readonly item: Collage
 
   /**
@@ -83,8 +83,8 @@ export class CollageDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      update: this.item.update,
-      ...this.item.event.expose
+      ...this.item.event.expose,
+      update: this.item.appearance.update
     } as EXPOSE
   }
 
@@ -96,7 +96,7 @@ export class CollageDesign<
    */
   protected initClasses(): Partial<CLASSES> {
     return {
-      main: this.item.classes,
+      main: {},
       ...{
         // :classes [!] System label / Системная метка
         item: this.getSubClass('item')
@@ -126,7 +126,6 @@ export class CollageDesign<
       'div',
       {
         ...this.getAttrs(),
-        ...this.item.binds,
         ref: this.element,
         class: this.classes?.value.main,
         style: this.styles?.value
@@ -144,8 +143,8 @@ export class CollageDesign<
   readonly renderList = (): VNode[] => {
     const children: any[] = []
 
-    if (this.item.isList()) {
-      const list = this.item.getList()
+    if (this.props.images) {
+      const list = this.item.data.data.value
 
       if (list) {
         list.forEach((item, key) => {
@@ -153,24 +152,21 @@ export class CollageDesign<
             children,
             'collageItem',
             toBinds(
-              item,
-              this.props.collageItemAttrs,
               {
                 class: this.classes?.value.item,
                 onClick: this.item.event.onClick
-              }
+              },
+              this.props.collageItemAttrs,
+              item
             ),
-            {
-              barBody: this.slots?.barBody,
-              barTrailing: this.slots?.barTrailing
-            },
+            undefined,
             item?.value || item?.index || key
           )
         })
       }
-
-      this.initSlot('default', children)
     }
+
+    this.initSlot('default', children)
 
     return children
   }

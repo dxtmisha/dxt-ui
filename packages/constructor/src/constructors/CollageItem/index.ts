@@ -1,7 +1,6 @@
 export * from './CollageItem'
 export * from './CollageItemDesign'
 export * from './CollageItemDimensions'
-export * from './CollageItemInclude'
 export * from './props'
 export * from './types'
 export * from './basicTypes'

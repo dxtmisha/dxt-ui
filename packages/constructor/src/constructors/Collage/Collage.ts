@@ -1,25 +1,25 @@
-import type { Ref, ToRefs } from 'vue'
 import {
-  type ConstrClassObject,
   type ConstrEmit,
   type ConstrStyles,
   type DesignComp,
+  isNumber,
   ListDataRef,
-  type ListList,
   type ListSelectedList
 } from '@dxtmisha/functional'
+import type { Ref, ToRefs } from 'vue'
 
 import { EventClickInclude } from '../../classes/EventClickInclude'
 import { ModelValueInclude } from '../../classes/ModelValueInclude'
 
 import { CollageAppearance } from './CollageAppearance'
 import { CollageElement } from './CollageElement'
-import { CollageEven } from './CollageEven'
-import { CollageStyle } from './CollageStyle'
+import { CollageGrow } from './CollageGrow'
+import { CollageMasonryHorizontal } from './CollageMasonryHorizontal'
+import { CollageMasonryVertical } from './CollageMasonryVertical'
 import { CollageWoven } from './CollageWoven'
 
-import type { CollageComponents, CollageEmits, CollageSlots } from './types'
 import type { CollageProps } from './props'
+import type { CollageComponents, CollageEmits, CollageSlots } from './types'
 
 /**
  * Collage orchestrator class coordinating data management, layout modes, events, and selections.
@@ -33,17 +33,20 @@ export class Collage {
   /** Manager for dynamic appearance, woven and masonry layouts / Менеджер динамического внешнего вида, woven и плиточных макетов */
   readonly appearance: CollageAppearance
 
-  /** Manager for even layout state / Менеджер состояния четности макета */
-  readonly even: CollageEven
-
   /** Manager for collage container DOM elements / Менеджер DOM-элементов контейнера коллажа */
   readonly elementItem: CollageElement
+
+  /** Manager for horizontal masonry appearance layout / Менеджер макета внешнего вида горизонтальной кладки */
+  readonly masonryHorizontal: CollageMasonryHorizontal
+
+  /** Manager for vertical masonry appearance layout / Менеджер макета внешнего вида вертикальной кладки */
+  readonly masonryVertical: CollageMasonryVertical
 
   /** Manager for woven appearance layout and item turn classes / Менеджер макета внешнего вида woven и классов поворота элементов */
   readonly woven: CollageWoven
 
-  /** Manager for collage styles, elements, and CSS variables / Менеджер стилей, элементов и CSS-переменных коллажа */
-  readonly style: CollageStyle
+  /** Manager for item grow factors and CSS properties / Менеджер коэффициентов роста элементов и CSS-свойств */
+  readonly grow: CollageGrow
 
   /** Click event helper / Помощник событий клика */
   readonly event: EventClickInclude
@@ -66,8 +69,9 @@ export class Collage {
    * @param constructors object with classes for dependency injection / объект с классами для внедрения зависимостей
    * @param constructors.CollageAppearanceConstructor class for managing appearance / класс для управления внешним видом
    * @param constructors.CollageElementConstructor class for managing container DOM elements / класс для управления DOM-элементами контейнера
-   * @param constructors.CollageEvenConstructor class for managing even state / класс для управления состоянием четности
-   * @param constructors.CollageStyleConstructor class for managing styles and elements / класс для управления стилями и элементами
+   * @param constructors.CollageMasonryHorizontalConstructor class for managing horizontal masonry layout / класс для управления макетом горизонтальной кладки
+   * @param constructors.CollageMasonryVerticalConstructor class for managing vertical masonry layout / класс для управления макетом вертикальной кладки
+   * @param constructors.CollageGrowConstructor class for managing item grow factors / класс для управления коэффициентами роста элементов
    * @param constructors.CollageWovenConstructor class for managing woven appearance layout / класс для управления макетом внешнего вида woven
    * @param constructors.EventClickIncludeConstructor class for managing click events / класс для управления событиями клика
    * @param constructors.ListDataRefConstructor class for managing list data / класс для управления данными списка
@@ -85,8 +89,9 @@ export class Collage {
     constructors: {
       CollageAppearanceConstructor?: typeof CollageAppearance
       CollageElementConstructor?: typeof CollageElement
-      CollageEvenConstructor?: typeof CollageEven
-      CollageStyleConstructor?: typeof CollageStyle
+      CollageMasonryHorizontalConstructor?: typeof CollageMasonryHorizontal
+      CollageMasonryVerticalConstructor?: typeof CollageMasonryVertical
+      CollageGrowConstructor?: typeof CollageGrow
       CollageWovenConstructor?: typeof CollageWoven
       EventClickIncludeConstructor?: typeof EventClickInclude
       ListDataRefConstructor?: typeof ListDataRef
@@ -96,8 +101,9 @@ export class Collage {
     const {
       CollageAppearanceConstructor = CollageAppearance,
       CollageElementConstructor = CollageElement,
-      CollageEvenConstructor = CollageEven,
-      CollageStyleConstructor = CollageStyle,
+      CollageMasonryHorizontalConstructor = CollageMasonryHorizontal,
+      CollageMasonryVerticalConstructor = CollageMasonryVertical,
+      CollageGrowConstructor = CollageGrow,
       CollageWovenConstructor = CollageWoven,
       EventClickIncludeConstructor = EventClickInclude,
       ListDataRefConstructor = ListDataRef,
@@ -105,9 +111,16 @@ export class Collage {
     } = constructors
 
     this.elementItem = new CollageElementConstructor(element)
-    this.style = new CollageStyleConstructor(className, this.elementItem)
-    this.even = new CollageEvenConstructor(className)
-    this.woven = new CollageWovenConstructor(className, this.elementItem, this.even)
+    this.grow = new CollageGrowConstructor(className, this.elementItem)
+    this.woven = new CollageWovenConstructor(className, this.elementItem)
+    this.masonryHorizontal = new CollageMasonryHorizontalConstructor(
+      this.grow,
+      this.elementItem
+    )
+    this.masonryVertical = new CollageMasonryVerticalConstructor(
+      this.grow,
+      this.elementItem
+    )
 
     this.data = new ListDataRefConstructor(
       this.refs.images,
@@ -124,8 +137,9 @@ export class Collage {
       props,
       refs,
       this.elementItem,
-      this.style,
-      this.woven
+      this.woven,
+      this.masonryHorizontal,
+      this.masonryVertical
     )
 
     this.event = new EventClickIncludeConstructor(
@@ -142,18 +156,6 @@ export class Collage {
     )
   }
 
-
-  /**
-   * Classes object for the root element.
-   *
-   * Объект классов для корневого элемента.
-   */
-  get classes(): ConstrClassObject {
-    return {
-      ...this.even.classes
-    }
-  }
-
   /**
    * Inline styles containing CSS custom properties for grid configuration.
    *
@@ -161,54 +163,29 @@ export class Collage {
    */
   get styles(): ConstrStyles {
     const styles: ConstrStyles = {}
+    const cellSize = this.getCellSize()
 
-    if (this.props.cellSize !== undefined) {
-      styles[`--${this.className}-cell-size`] = typeof this.props.cellSize === 'number'
-        ? `${this.props.cellSize}px`
-        : String(this.props.cellSize)
+    if (cellSize !== undefined) {
+      styles[`--${this.className}-cell-size`] = cellSize
     }
 
     return styles
   }
 
   /**
-   * Attributes and event bindings for the root container.
-   *
-   * Атрибуты и привязки событий для корневого контейнера.
+   * Returns formatted cell size CSS property value. /
+   * Возвращает отформатированное значение свойства CSS размера ячейки.
+   * @returns formatted cell size string or undefined / отформатированная строка размера ячейки или undefined
    */
-  get binds(): Record<string, any> {
-    return {}
-  }
+  protected getCellSize(): string | undefined {
+    if (this.props.cellSize !== undefined) {
+      if (isNumber(this.props.cellSize)) {
+        return `${this.props.cellSize}px`
+      }
 
-  /**
-   * Recalculates and updates the collage layout.
-   *
-   * Пересчитывает и обновляет макет коллажа.
-   */
-  readonly update = (): void => {
-    this.appearance.update()
-  }
+      return String(this.props.cellSize)
+    }
 
-  /**
-   * Returns list of normalized items.
-   *
-   * Возвращает список нормализованных элементов.
-   * @returns normalized items list / список нормализованных элементов
-   */
-  getList(): ListList {
-    return this.data.data.value
-  }
-
-  /**
-   * Checks if list or slot content is available.
-   *
-   * Проверяет, доступен ли список или содержимое слота.
-   * @returns true if list or slot is present / true, если список или слот присутствует
-   */
-  isList(): boolean {
-    return Boolean(
-      this.props.images
-      || this.slots?.default
-    )
+    return undefined
   }
 }

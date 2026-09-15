@@ -1,13 +1,14 @@
 import type { Ref } from 'vue'
 
-import type { CollageElementRow } from './basicTypes'
-
 /**
- * Class managing DOM container elements, item queries, and row layout lines for Collage.
+ * Class managing DOM container elements and item queries for Collage.
  *
- * Класс, управляющий DOM-элементами контейнера, запросами элементов и строками макета для Collage.
+ * Класс, управляющий DOM-элементами контейнера и запросами элементов для Collage.
  */
 export class CollageElement {
+  /** Previous width of the container element for resize tracking / Предыдущая ширина элемента контейнера для отслеживания изменения размера */
+  protected previousWidth: number = 0
+
   /**
    * Constructor for CollageElement.
    *
@@ -26,6 +27,22 @@ export class CollageElement {
    */
   is(): boolean {
     return Boolean(this.element.value)
+  }
+
+  /**
+   * Checks if the container element width has changed and updates previous width. /
+   * Проверяет, изменилась ли ширина элемента контейнера, и обновляет предыдущую ширину.
+   * @returns true if width has changed / true, если ширина изменилась
+   */
+  isResize(): boolean {
+    const width = this.element.value?.offsetWidth ?? 0
+
+    if (width !== this.previousWidth) {
+      this.previousWidth = width
+      return true
+    }
+
+    return false
   }
 
   /**
@@ -52,48 +69,5 @@ export class CollageElement {
     return Array.from(
       this.element.value.querySelectorAll<HTMLElement>('>[data-value]')
     )
-  }
-
-  /**
-   * Groups child items into visual horizontal lines (rows) by their vertical center position.
-   *
-   * Группирует дочерние элементы в визуальные горизонтальные линии (строки) по их вертикальному центру.
-   * @returns array of rows containing elements / массив строк, содержащих элементы
-   */
-  getLines(): HTMLElement[][] {
-    if (!this.is()) {
-      return []
-    }
-
-    const rows: CollageElementRow[] = []
-
-    this
-      .getItems()
-      .forEach((itemElement) => {
-        const rowCenter = this.getItemCenter(itemElement)
-        const matchedRow = rows.find(row => Math.abs(row.center - rowCenter) <= 8)
-
-        if (matchedRow) {
-          matchedRow.items.push(itemElement)
-        } else {
-          rows.push({ center: rowCenter, items: [itemElement] })
-        }
-      })
-
-    return rows
-      .sort((firstRow, secondRow) => firstRow.center - secondRow.center)
-      .map(row => row.items)
-  }
-
-  /**
-   * Returns the vertical center coordinate of the given item element.
-   *
-   * Возвращает вертикальную координату центра указанного элемента.
-   * @param itemElement target item element / целевой элемент
-   * @returns vertical center coordinate / вертикальная координата центра
-   */
-  protected getItemCenter(itemElement: HTMLElement): number {
-    const boundingClientRect = itemElement.getBoundingClientRect()
-    return Math.ceil(boundingClientRect.top + boundingClientRect.height / 2)
   }
 }

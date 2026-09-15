@@ -3,7 +3,6 @@ import type { EventClickEmits, EventClickExpose } from '../../types/eventClickTy
 
 import type { ModelEmitsSelected } from '../../types/modelTypes'
 
-import type { CollageBarSlotsInclude } from '../CollageBar'
 import type { CollageItemComponentInclude } from '../CollageItem'
 
 /**
@@ -35,7 +34,7 @@ export interface CollageExpose extends EventClickExpose {
  *
  * Тип, описывающий доступные слоты.
  */
-export interface CollageSlots extends CollageBarSlotsInclude {
+export interface CollageSlots {
   /** Default slot for custom content / Слот по умолчанию для пользовательского содержимого */
   default?(props: any): any
 }
