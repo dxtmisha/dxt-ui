@@ -8,12 +8,12 @@ import type { StorybookComponentsDescriptionItem } from '../../types/storybookTy
 export const wikiDescriptionsCollage: StorybookComponentsDescriptionItem = {
   name: 'Collage',
   description: {
-    en: 'A responsive media container and layout engine for collages, galleries, and Bento grids with dynamic appearance modes',
-    ru: 'Адаптивный медиаконтейнер и макетный движок для коллажей, галерей и Bento-сеток с динамическими режимами раскладки'
+    en: 'A responsive media container and layout engine for collages, galleries, and Bento grids with dynamic layout variants',
+    ru: 'Адаптивный медиаконтейнер и макетный движок для коллажей, галерей и Bento-сеток с динамическими вариантами раскладки'
   },
   possibilities: {
     en: [
-      'multiple layout appearances: standard, quilted, woven, horizontal masonry, and vertical masonry',
+      'multiple layout variants: standard, quilted, woven, horizontal masonry, and vertical masonry',
       'configurable column count from 1 to 12 columns with responsive sizing',
       'customizable cell size token (cellSize)',
       'batch and single selection management with two-way binding (selected, v-model:selected)',
@@ -24,7 +24,7 @@ export const wikiDescriptionsCollage: StorybookComponentsDescriptionItem = {
       'click event forwarding with item payload'
     ],
     ru: [
-      'различные режимы макета: standard, quilted, woven, горизонтальная и вертикальная кладка',
+      'различные варианты макета: standard, quilted, woven, горизонтальная и вертикальная кладка',
       'настройка количества колонок от 1 до 12 с адаптивным масштабированием',
       'настраиваемый размер базовой ячейки (cellSize)',
       'управление одиночным и множественным выбором с двусторонним связыванием (selected, v-model:selected)',
@@ -43,17 +43,17 @@ export const wikiDescriptionsCollage: StorybookComponentsDescriptionItem = {
   `,
   stories: [
     {
-      id: 'CollageAppearances',
+      id: 'CollageVariants',
       name: {
-        en: 'Appearance modes',
-        ru: 'Режимы макета'
+        en: 'Layout variants',
+        ru: 'Варианты макета'
       },
       template: `
         <div class="wiki-storybook-container">
           <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label wiki-storybook-item__label--static">appearance: standard</div>
+            <div class="wiki-storybook-item__label wiki-storybook-item__label--static">variant: standard</div>
             <DesignComponent
-              appearance="standard"
+              variant="standard"
               columns="4"
               :images="[
                 { image: 'https://picsum.photos/800/600?random=1', span: 'wide', label: 'Wide' },
@@ -67,9 +67,9 @@ export const wikiDescriptionsCollage: StorybookComponentsDescriptionItem = {
           </div>
 
           <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label wiki-storybook-item__label--static">appearance: quilted</div>
+            <div class="wiki-storybook-item__label wiki-storybook-item__label--static">variant: quilted</div>
             <DesignComponent
-              appearance="quilted"
+              variant="quilted"
               columns="4"
               :images="[
                 { image: 'https://picsum.photos/800/600?random=7', span: 'large', label: 'Large' },
@@ -83,9 +83,9 @@ export const wikiDescriptionsCollage: StorybookComponentsDescriptionItem = {
           </div>
 
           <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label wiki-storybook-item__label--static">appearance: woven</div>
+            <div class="wiki-storybook-item__label wiki-storybook-item__label--static">variant: woven</div>
             <DesignComponent
-              appearance="woven"
+              variant="woven"
               columns="3"
               :images="[
                 { image: 'https://picsum.photos/800/600?random=13', label: 'Item 1' },
@@ -99,9 +99,9 @@ export const wikiDescriptionsCollage: StorybookComponentsDescriptionItem = {
           </div>
 
           <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label wiki-storybook-item__label--static">appearance: masonryHorizontal</div>
+            <div class="wiki-storybook-item__label wiki-storybook-item__label--static">variant: masonryHorizontal</div>
             <DesignComponent
-              appearance="masonryHorizontal"
+              variant="masonryHorizontal"
               :images="[
                 { image: 'https://picsum.photos/800/600?random=31', span: 'wide', label: 'Wide' },
                 { image: 'https://picsum.photos/800/600?random=32', span: 'standard', label: 'Standard' },
@@ -114,9 +114,9 @@ export const wikiDescriptionsCollage: StorybookComponentsDescriptionItem = {
           </div>
 
           <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label wiki-storybook-item__label--static">appearance: masonryVertical</div>
+            <div class="wiki-storybook-item__label wiki-storybook-item__label--static">variant: masonryVertical</div>
             <DesignComponent
-              appearance="masonryVertical"
+              variant="masonryVertical"
               columns="4"
               :images="[
                 { image: 'https://picsum.photos/800/600?random=41', span: 'tall', label: 'Tall' },
@@ -136,8 +136,8 @@ export const wikiDescriptionsCollage: StorybookComponentsDescriptionItem = {
     body: `
 <StorybookDescriptions componentName={'Collage'} type={'collage'}/>
 
-<StorybookDescriptions componentName={'Collage'} type={'appearance'}/>
-<Canvas of={Component.CollageAppearances}/>
+<StorybookDescriptions componentName={'Collage'} type={'variant'}/>
+<Canvas of={Component.CollageVariants}/>
     `,
     events: `
 <StorybookDescriptions componentName={'Event'} type={'click'}/>
@@ -158,7 +158,7 @@ export const wikiDescriptionsCollage: StorybookComponentsDescriptionItem = {
     `,
     description: `
 A responsive media gallery and layout container designed for photo collections, media walls, and Bento grids.
-Arranges media items using CSS Grid with 5 appearance modes: standard (uniform columns with span tiles), quilted (dense auto-flow filling gaps), woven (alternating compact rhythmic tiles), masonryHorizontal (row justification via dynamic grow calculation), and masonryVertical (dynamic column masonry).
+Arranges media items using CSS Grid with 5 layout variants: standard (uniform columns with span tiles), quilted (dense auto-flow filling gaps), woven (alternating compact rhythmic tiles), masonryHorizontal (row justification via dynamic grow calculation), and masonryVertical (dynamic column masonry).
 Supports configurable column counts (1 to 12), customizable cell dimensions (cellSize), selection tracking (v-model:selected), and batch attribute passing to child items (collageItemAttrs).
 Exposes an update() method to trigger layout recalculation upon dynamic container or content changes.
     `,

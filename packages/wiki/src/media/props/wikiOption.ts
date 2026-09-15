@@ -70,6 +70,16 @@ export const wikiOption: StorybookArgsToList = {
       value: 'Value'
     }
   },
+  cellSize: {
+    type: StorybookControl.text,
+    options: {
+      category: StorybookCategory.option,
+      description: {
+        en: 'Base cell dimension for the grid (width/height)',
+        ru: 'Базовый размер ячейки для сетки (ширина/высота)'
+      }
+    }
+  },
   clickOpen: {
     type: StorybookControl.boolean,
     options: {

@@ -84,7 +84,7 @@ export class CollageDesign<
   protected initExpose(): EXPOSE {
     return {
       ...this.item.event.expose,
-      update: this.item.appearance.update
+      update: this.item.variant.update
     } as EXPOSE
   }
 

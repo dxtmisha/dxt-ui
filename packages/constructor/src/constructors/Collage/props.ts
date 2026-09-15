@@ -4,8 +4,8 @@ import type { CollageItemPropsBasic, CollageItemPropsInclude } from '../CollageI
 
 export type CollagePropsToken = {
   // :type [!] System label / Системная метка
-  appearance?: 'standard' | 'quilted' | 'woven' | 'masonryHorizontal' | 'masonryVertical'
   columns?: '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | '11' | '12'
+  variant?: 'standard' | 'quilted' | 'woven' | 'masonryHorizontal' | 'masonryVertical'
   // :type [!] System label / Системная метка
 }
 
@@ -43,8 +43,8 @@ export type CollageProps = CollagePropsBasic & CollagePropsToken
 export const defaultsCollage = {
   ...{
     // :default [!] System label / Системная метка
-    appearance: 'standard',
-    columns: '4'
+    columns: '4',
+    variant: 'standard'
     // :default [!] System label / Системная метка
   }
 }

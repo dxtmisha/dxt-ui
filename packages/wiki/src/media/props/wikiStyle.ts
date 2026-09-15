@@ -475,6 +475,19 @@ export const wikiStyle: StorybookArgsToList = {
       }
     }
   },
+  variant: {
+    type: StorybookControl.select,
+    options: {
+      category: StorybookCategory.style,
+      type: 'string',
+      options: [],
+      description: {
+        en: 'Defines the structural layout or visual variant of the component',
+        ru: 'Определяет вариант раскладки или визуального оформления компонента'
+      }
+    },
+    isDemo: true
+  },
   width: {
     type: StorybookControl.select,
     options: {

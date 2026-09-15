@@ -120,6 +120,17 @@ export const wikiAttributes: StorybookArgsToList = {
     },
     hide: true
   },
+  collageItemAttrs: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.attributes,
+      description: {
+        en: 'Additional attributes for each CollageItem component',
+        ru: 'Дополнительные атрибуты для каждого компонента CollageItem'
+      }
+    },
+    hide: true
+  },
   cropAreaAttrs: {
     type: StorybookControl.object,
     options: {

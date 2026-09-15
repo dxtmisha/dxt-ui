@@ -1,8 +1,8 @@
 import { Source } from '@storybook/addon-docs/blocks';
 
-## Layout appearance modes
+## Layout variant modes
 
-The `appearance` property controls how items are positioned and distributed within the collage grid:
+The `variant` property controls how items are positioned and distributed within the collage grid:
 
 - `standard` — Standard CSS Grid layout where columns are uniformly distributed (`repeat(columns, minmax(cellSize, 1fr))`). Items span columns and rows according to their individual `span` property (e.g. `wide`, `tall`, `large`, `banner`, `huge`).
 - `quilted` — Dense grid packing (`grid-auto-flow: dense`). Empty gaps created by larger multi-span items are automatically filled by subsequent smaller items, producing an interlocking quilt-like Bento grid.
@@ -17,21 +17,21 @@ The `appearance` property controls how items are positioned and distributed with
   <Collage
     :images="images"
     columns="4"
-    appearance="standard"
+    variant="standard"
   />
 
   <!-- Dense quilted layout -->
   <Collage
     :images="images"
     columns="4"
-    appearance="quilted"
+    variant="quilted"
   />
 
   <!-- Horizontal masonry with full line justification -->
   <Collage
     :images="images"
     columns="4"
-    appearance="masonryHorizontal"
+    variant="masonryHorizontal"
   />
 </template>
 `}

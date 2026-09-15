@@ -1,8 +1,8 @@
 import { Source } from '@storybook/addon-docs/blocks';
 
-## Режимы макета (appearance)
+## Варианты макета (variant)
 
-Свойство `appearance` определяет способ позиционирования и распределения элементов в сетке коллажа:
+Свойство `variant` определяет способ позиционирования и распределения элементов в сетке коллажа:
 
 - `standard` — Стандартная раскладка CSS Grid с равномерным распределением колонок (`repeat(columns, minmax(cellSize, 1fr))`). Элементы занимают колонки и строки в соответствии со своим свойством `span` (например, `wide`, `tall`, `large`, `banner`, `huge`).
 - `quilted` — Плотная упаковка сетки (`grid-auto-flow: dense`). Пространства, остающиеся после крупных элементов, автоматически заполняются последующими меньшими элементами, создавая цельную структуру в стиле Bento.
@@ -17,21 +17,21 @@ import { Source } from '@storybook/addon-docs/blocks';
   <Collage
     :images="images"
     columns="4"
-    appearance="standard"
+    variant="standard"
   />
 
   <!-- Плотная раскладка quilted -->
   <Collage
     :images="images"
     columns="4"
-    appearance="quilted"
+    variant="quilted"
   />
 
   <!-- Горизонтальная кладка с автоматическим заполнением строк -->
   <Collage
     :images="images"
     columns="4"
-    appearance="masonryHorizontal"
+    variant="masonryHorizontal"
   />
 </template>
 `}

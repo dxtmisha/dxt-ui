@@ -2,8 +2,8 @@ import type { CollageElement } from './CollageElement'
 import type { CollageGrow } from './CollageGrow'
 
 /**
- * Class managing vertical masonry appearance layout and grow factors for Collage. /
- * Класс, управляющий макетом внешнего вида вертикальной кладки и коэффициентами роста для Collage.
+ * Class managing vertical masonry variant layout and grow factors for Collage. /
+ * Класс, управляющий макетом варианта вертикальной кладки и коэффициентами роста для Collage.
  */
 export class CollageMasonryVertical {
   /**

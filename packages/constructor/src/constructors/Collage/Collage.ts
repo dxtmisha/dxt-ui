@@ -11,7 +11,7 @@ import type { Ref, ToRefs } from 'vue'
 import { EventClickInclude } from '../../classes/EventClickInclude'
 import { ModelValueInclude } from '../../classes/ModelValueInclude'
 
-import { CollageAppearance } from './CollageAppearance'
+import { CollageVariant } from './CollageVariant'
 import { CollageElement } from './CollageElement'
 import { CollageGrow } from './CollageGrow'
 import { CollageMasonryHorizontal } from './CollageMasonryHorizontal'
@@ -30,19 +30,19 @@ export class Collage {
   /** Reactive list data manager / Реактивный менеджер данных списка */
   readonly data: ListDataRef
 
-  /** Manager for dynamic appearance, woven and masonry layouts / Менеджер динамического внешнего вида, woven и плиточных макетов */
-  readonly appearance: CollageAppearance
+  /** Manager for dynamic layout variant, woven and masonry layouts / Менеджер динамического варианта макета, woven и плиточных макетов */
+  readonly variant: CollageVariant
 
   /** Manager for collage container DOM elements / Менеджер DOM-элементов контейнера коллажа */
   readonly elementItem: CollageElement
 
-  /** Manager for horizontal masonry appearance layout / Менеджер макета внешнего вида горизонтальной кладки */
+  /** Manager for horizontal masonry variant layout / Менеджер макета варианта горизонтальной кладки */
   readonly masonryHorizontal: CollageMasonryHorizontal
 
-  /** Manager for vertical masonry appearance layout / Менеджер макета внешнего вида вертикальной кладки */
+  /** Manager for vertical masonry variant layout / Менеджер макета варианта вертикальной кладки */
   readonly masonryVertical: CollageMasonryVertical
 
-  /** Manager for woven appearance layout and item turn classes / Менеджер макета внешнего вида woven и классов поворота элементов */
+  /** Manager for woven variant layout and item turn classes / Менеджер макета варианта woven и классов поворота элементов */
   readonly woven: CollageWoven
 
   /** Manager for item grow factors and CSS properties / Менеджер коэффициентов роста элементов и CSS-свойств */
@@ -67,12 +67,12 @@ export class Collage {
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
    * @param constructors object with classes for dependency injection / объект с классами для внедрения зависимостей
-   * @param constructors.CollageAppearanceConstructor class for managing appearance / класс для управления внешним видом
+   * @param constructors.CollageVariantConstructor class for managing variant / класс для управления вариантом макета
    * @param constructors.CollageElementConstructor class for managing container DOM elements / класс для управления DOM-элементами контейнера
    * @param constructors.CollageMasonryHorizontalConstructor class for managing horizontal masonry layout / класс для управления макетом горизонтальной кладки
    * @param constructors.CollageMasonryVerticalConstructor class for managing vertical masonry layout / класс для управления макетом вертикальной кладки
    * @param constructors.CollageGrowConstructor class for managing item grow factors / класс для управления коэффициентами роста элементов
-   * @param constructors.CollageWovenConstructor class for managing woven appearance layout / класс для управления макетом внешнего вида woven
+   * @param constructors.CollageWovenConstructor class for managing woven variant layout / класс для управления макетом варианта woven
    * @param constructors.EventClickIncludeConstructor class for managing click events / класс для управления событиями клика
    * @param constructors.ListDataRefConstructor class for managing list data / класс для управления данными списка
    * @param constructors.ModelValueIncludeConstructor class for managing model value / класс для управления значением модели
@@ -87,7 +87,7 @@ export class Collage {
     protected readonly slots?: CollageSlots,
     protected readonly emits?: ConstrEmit<CollageEmits>,
     constructors: {
-      CollageAppearanceConstructor?: typeof CollageAppearance
+      CollageVariantConstructor?: typeof CollageVariant
       CollageElementConstructor?: typeof CollageElement
       CollageMasonryHorizontalConstructor?: typeof CollageMasonryHorizontal
       CollageMasonryVerticalConstructor?: typeof CollageMasonryVertical
@@ -99,7 +99,7 @@ export class Collage {
     } = {}
   ) {
     const {
-      CollageAppearanceConstructor = CollageAppearance,
+      CollageVariantConstructor = CollageVariant,
       CollageElementConstructor = CollageElement,
       CollageMasonryHorizontalConstructor = CollageMasonryHorizontal,
       CollageMasonryVerticalConstructor = CollageMasonryVertical,
@@ -133,7 +133,7 @@ export class Collage {
       this.refs.keyLabel
     )
 
-    this.appearance = new CollageAppearanceConstructor(
+    this.variant = new CollageVariantConstructor(
       props,
       refs,
       this.elementItem,

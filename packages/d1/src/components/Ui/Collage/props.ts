@@ -5,14 +5,14 @@ import type { CollageItemProps } from '../CollageItem'
 export const propsValues = {
   // :values [!] System label / Системная метка
   columns: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
-  appearance: ['standard', 'quilted', 'woven', 'masonryHorizontal', 'masonryVertical']
+  variant: ['standard', 'quilted', 'woven', 'masonryHorizontal', 'masonryVertical']
   // :values [!] System label / Системная метка
 }
 
 type PropsToken = {
   // :type [!] System label / Системная метка
   columns?: '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | '11' | '12'
-  appearance?: 'standard' | 'quilted' | 'woven' | 'masonryHorizontal' | 'masonryVertical'
+  variant?: 'standard' | 'quilted' | 'woven' | 'masonryHorizontal' | 'masonryVertical'
   // :type [!] System label / Системная метка
 }
 
@@ -29,7 +29,7 @@ export const defaults: object = {
   ...{
     // :default [!] System label / Системная метка
     columns: '4',
-    appearance: 'standard'
+    variant: 'standard'
     // :default [!] System label / Системная метка
   }
 }

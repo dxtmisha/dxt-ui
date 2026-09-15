@@ -12,6 +12,7 @@ export const propsValues = {
 
 type PropsToken = {
   // :type [!] System label / Системная метка
+  compact?: boolean
   selected?: boolean
   span?: 'standard' | 'banner' | 'huge' | 'large' | 'tall' | 'wide'
   // :type [!] System label / Системная метка

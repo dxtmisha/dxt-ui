@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import {
-  inArray,
-  type ConstrClasses,
-  type ConstrStyles
-} from '@dxtmisha/functional'
 import {
   CollageDesign,
   type CollageEmits,
   type CollageSlots
 } from '@dxtmisha/constructor/Collage'
+import {
+  inArray,
+  type ConstrClasses,
+  type ConstrStyles
+} from '@dxtmisha/functional'
+import { computed } from 'vue'
 
 import { D1CollageItem } from '../CollageItem'
-import { defaults, type CollageProps, propsValues } from './props'
+import { defaults, propsValues, type CollageProps } from './props'
 import './styleToken.scss'
 
 defineOptions({

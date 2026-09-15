@@ -7,6 +7,7 @@ const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
   { name: 'collageBarAttrs', type: 'ConstrBind<CollageBarProps>' },
   { name: 'collageBarPosition', type: 'string', option: ['top', 'bottom', 'static'] },
+  { name: 'compact', type: 'boolean' },
   { name: 'coordinator', type: 'number[] | any' },
   { name: 'description', type: 'string | number' },
   { name: 'descriptionId', type: 'string' },
@@ -18,6 +19,7 @@ const propsNames: StorybookProps = [
   { name: 'label', type: 'NumberOrString' },
   { name: 'labelId', type: 'string' },
   { name: 'selected', type: 'boolean' },
+  { name: 'size', type: 'string', option: ['auto', 'contain', 'cover'] },
   { name: 'span', type: 'string', option: ['standard', 'banner', 'huge', 'large', 'tall', 'wide'] },
   { name: 'tag', type: 'string' },
   { name: 'to', type: 'string | RouteLocationAsRelativeGeneric | RouteLocationAsPathGeneric' },

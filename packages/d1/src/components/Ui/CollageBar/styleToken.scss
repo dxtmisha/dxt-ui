@@ -53,10 +53,6 @@
     }
     
     &--position {
-      &--static {
-        padding-top: var(--d1-sys-spacing-x);
-      }
-
       &--top {
         @include ui.paddingX(#{var(--d1-sys-spacing-xs)});
         @include ui.paddingY(#{var(--d1-sys-spacing-x)});
@@ -89,6 +85,10 @@
         & .d1-collageBar__description {
           @include ui.colorOpacity(#{var(--d1-sys-opacity-primary-medium)}); @include ui.color('init');
         }
+      }
+      
+      &--static {
+        padding-top: var(--d1-sys-spacing-x);
       }
     }
   }

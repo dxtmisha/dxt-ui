@@ -23,7 +23,7 @@ import type { CollageProps } from './props'
  *
  * Класс, управляющий динамическими режимами макета, расчетами при изменении размера и синхронизацией координат для Collage.
  */
-export class CollageAppearance {
+export class CollageVariant {
   /** Timeout identifier for debounced layout updates / Идентификатор таймера для отложенных обновлений макета */
   protected timeoutResize?: ReturnType<typeof setTimeout>
 
@@ -31,15 +31,15 @@ export class CollageAppearance {
   protected eventResize?: EventItem<HTMLElement, Event>
 
   /**
-   * Constructor for CollageAppearance.
+   * Constructor for CollageVariant.
    *
-   * Конструктор для CollageAppearance.
+   * Конструктор для CollageVariant.
    * @param props input component properties / входные свойства компонента
    * @param refs input reactive properties / входные реактивные свойства
    * @param elementItem manager for container DOM elements / менеджер DOM-элементов контейнера
-   * @param woven manager for woven appearance layout / менеджер макета внешнего вида woven
-   * @param masonryHorizontal manager for horizontal masonry appearance layout / менеджер макета внешнего вида горизонтальной кладки
-   * @param masonryVertical manager for vertical masonry appearance layout / менеджер макета внешнего вида вертикальной кладки
+   * @param woven manager for woven variant layout / менеджер макета варианта woven
+   * @param masonryHorizontal manager for horizontal masonry variant layout / менеджер макета варианта горизонтальной кладки
+   * @param masonryVertical manager for vertical masonry variant layout / менеджер макета варианта вертикальной кладки
    */
   constructor(
     protected readonly props: CollageProps,
@@ -52,7 +52,7 @@ export class CollageAppearance {
     provide<CollageUpdate>(COLLAGE_NAME_UPDATE, this.update)
 
     onMounted(() => {
-      watch([this.refs.appearance], this.update, { immediate: true })
+      watch([this.refs.variant], this.update, { immediate: true })
     })
 
     onUnmounted(() => {
@@ -101,23 +101,23 @@ export class CollageAppearance {
   }
 
   /**
-   * Checks if the current appearance mode requires dynamic resize recalculation. /
-   * Проверяет, требует ли текущий режим внешнего вида динамического перерасчета при изменении размера.
-   * @returns true if appearance requires resize calculation / true, если режим внешнего вида требует перерасчета
+   * Checks if the current variant mode requires dynamic resize recalculation. /
+   * Проверяет, требует ли текущий вариант динамического перерасчета при изменении размера.
+   * @returns true if variant requires resize calculation / true, если вариант требует перерасчета
    */
   protected isResize(): boolean {
-    return this.props.appearance === 'woven'
-      || this.props.appearance === 'masonryHorizontal'
-      || this.props.appearance === 'masonryVertical'
+    return this.props.variant === 'woven'
+      || this.props.variant === 'masonryHorizontal'
+      || this.props.variant === 'masonryVertical'
   }
 
   /**
-   * Dispatches resize recalculation based on current appearance mode.
+   * Dispatches resize recalculation based on current variant mode.
    *
-   * Выполняет перерасчет макета в зависимости от текущего режима внешнего вида.
+   * Выполняет перерасчет макета в зависимости от текущего варианта.
    */
   protected readonly resize = (): void => {
-    switch (this.props.appearance) {
+    switch (this.props.variant) {
       case 'woven':
         this.woven.resize()
         break

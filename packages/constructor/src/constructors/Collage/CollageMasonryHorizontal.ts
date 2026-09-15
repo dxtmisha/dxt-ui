@@ -6,8 +6,8 @@ import type { CollageGrow } from './CollageGrow'
 export const COLLAGE_MASONRY_ROW_TOLERANCE = 16
 
 /**
- * Class managing horizontal masonry appearance layout, row lines, and grow factors for Collage. /
- * Класс, управляющий макетом внешнего вида горизонтальной кладки, строками и коэффициентами роста для Collage.
+ * Class managing horizontal masonry variant layout, row lines, and grow factors for Collage. /
+ * Класс, управляющий макетом варианта горизонтальной кладки, строками и коэффициентами роста для Collage.
  */
 export class CollageMasonryHorizontal {
   /**

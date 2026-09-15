@@ -34,7 +34,7 @@ export class CollageInclude extends ComponentIncludeAbstract<
   override get is(): boolean {
     return Boolean(
       this.binds.value.images
-      || this.binds.value.appearance
+      || this.binds.value.variant
     )
   }
 }

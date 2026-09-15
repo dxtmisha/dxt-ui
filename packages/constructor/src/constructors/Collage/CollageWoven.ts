@@ -1,11 +1,11 @@
 import type { CollageElement } from './CollageElement'
 
 /**
- * Class managing woven appearance layout and compact item states for Collage. /
- * Класс, управляющий макетом внешнего вида woven и компактными состояниями элементов для Collage.
+ * Class managing woven variant layout and compact item states for Collage. /
+ * Класс, управляющий макетом варианта woven и компактными состояниями элементов для Collage.
  */
 export class CollageWoven {
-  /** Class name for compact items in woven appearance / Имя класса для компактных элементов в woven режиме */
+  /** Class name for compact items in woven variant / Имя класса для компактных элементов в woven режиме */
   readonly classCompact: string
 
   /**
