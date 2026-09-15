@@ -1,0 +1,23 @@
+A responsive media container and layout engine for collages, galleries, and Bento grids.
+
+Collage coordinates the arrangement of multiple media items (CollageItem) using CSS Grid with dynamic appearance modes, configurable column counts, responsive cell dimensions, and interactive selection management. It adapts automatically to various visual structures, supporting dense packing, alternating rhythms, and fluid masonry arrangements.
+
+**Key features:**
+
+- Multiple layout appearance modes (`standard`, `quilted`, `woven`, `masonryHorizontal`, and `masonryVertical`)
+- Configurable column grid layout from 1 to 12 columns (`columns`)
+- Custom base cell sizing with automatic calculation (`cellSize`)
+- Reactive selection tracking with two-way binding (`selected` / `v-model:selected`)
+- Unified attribute forwarding to child collage items (`collageItemAttrs`)
+- Flexible data sourcing via `images` array with customizable item value and label keys (`keyValue`, `keyLabel`)
+- Click event delegation with payload and item detail propagation
+- Dynamic layout recalculation method (`update()`) exposed via component API
+- Default slot for rendering custom items or mixed content alongside managed image items
+
+**Typical usage scenarios:**
+
+- Dynamic photo galleries and portfolio showcases
+- Bento grid layouts for feature highlights and dashboard widgets
+- Selectable media pickers with batch operations
+- Wall-style image mosaics and Pinterest-like vertical masonry feeds
+- Compact masonry banners and hero collages with alternating tile rhythm

@@ -67,7 +67,7 @@ export class CollageElement {
     }
 
     return Array.from(
-      this.element.value.querySelectorAll<HTMLElement>('>[data-value]')
+      this.element.value.querySelectorAll<HTMLElement>('[data-collage-item]')
     )
   }
 }

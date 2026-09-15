@@ -51,7 +51,7 @@
     "build": "vue-tsc -b && vite build",
     "build-recovery": "npm run build && npm run wiki-storm",
     "preview": "vite preview",
-    "ui": "dxt-ui --name CollageItem",
+    "ui": "dxt-ui --name Collage",
     "wiki-storm": "dxt-wiki-storm",
     "types": "npm run ui && npm run build && dxt-types",
     "types-only": "dxt-types",
@@ -565,6 +565,10 @@
     "./D1CollageItem": {
       "types": "./dist/library/D1CollageItem.d.ts",
       "default": "./dist/library/D1CollageItem.js"
+    },
+    "./D1Collage": {
+      "types": "./dist/library/D1Collage.d.ts",
+      "default": "./dist/library/D1Collage.js"
     }
   },
   "buildOptions": {

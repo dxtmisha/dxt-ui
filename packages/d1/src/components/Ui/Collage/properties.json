@@ -1,0 +1,4 @@
+{
+  "main": "{d.collage}",
+  "gap": "{sys.spacing.xs}"
+}

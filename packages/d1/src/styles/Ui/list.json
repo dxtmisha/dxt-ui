@@ -9065,6 +9065,17 @@
           }
         }
       },
+      "collage": {
+        "name": "d1-collage",
+        "type": "component",
+        "value": {
+          "gap": {
+            "name": "--d1-collage-gap",
+            "type": "var",
+            "value": "{sys.spacing.xs}"
+          }
+        }
+      },
       "collageItem": {
         "name": "d1-collageItem",
         "type": "component",

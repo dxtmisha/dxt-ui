@@ -1,0 +1,39 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+## Layout appearance modes
+
+The `appearance` property controls how items are positioned and distributed within the collage grid:
+
+- `standard` — Standard CSS Grid layout where columns are uniformly distributed (`repeat(columns, minmax(cellSize, 1fr))`). Items span columns and rows according to their individual `span` property (e.g. `wide`, `tall`, `large`, `banner`, `huge`).
+- `quilted` — Dense grid packing (`grid-auto-flow: dense`). Empty gaps created by larger multi-span items are automatically filled by subsequent smaller items, producing an interlocking quilt-like Bento grid.
+- `woven` — Alternating rhythmic layout where every other item in the grid (`(row + col) % 2 === 1`) receives a compact modification with centered vertical alignment (`align-self: center`), creating a dynamic textured pattern.
+- `masonryHorizontal` — Dynamic row-based masonry layout. Items in each row automatically calculate their aspect ratios and expand via the internal grow factor (`sys-item-grow`) to justify and fill the full line width without ragged gaps.
+- `masonryVertical` — Pinterest-style vertical masonry layout. Columns flow vertically, and row span factors dynamically adapt based on each item's actual rendered content height.
+
+<Source
+  code={`
+<template>
+  <!-- Standard Bento grid -->
+  <Collage
+    :images="images"
+    columns="4"
+    appearance="standard"
+  />
+
+  <!-- Dense quilted layout -->
+  <Collage
+    :images="images"
+    columns="4"
+    appearance="quilted"
+  />
+
+  <!-- Horizontal masonry with full line justification -->
+  <Collage
+    :images="images"
+    columns="4"
+    appearance="masonryHorizontal"
+  />
+</template>
+`}
+  language="html"
+/>

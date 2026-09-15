@@ -1,0 +1,70 @@
+@use "../../../styles/Ui/properties";
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/style.scss" as Collage;
+
+@include ui.initDesignBasic('d1.collage') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include Collage.mixinCollage;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+    --d1-collage-gap: var(--d1-sys-spacing-xs);
+    
+    &--columns {
+      &--1 {
+        columns: 1;
+      }
+      
+      &--2 {
+        columns: 2;
+      }
+      
+      &--3 {
+        columns: 3;
+      }
+      
+      &--4 {
+        columns: 4;
+      }
+      
+      &--5 {
+        columns: 5;
+      }
+      
+      &--6 {
+        columns: 6;
+      }
+      
+      &--7 {
+        columns: 7;
+      }
+      
+      &--8 {
+        columns: 8;
+      }
+      
+      &--9 {
+        columns: 9;
+      }
+      
+      &--10 {
+        columns: 10;
+      }
+      
+      &--11 {
+        columns: 11;
+      }
+      
+      &--12 {
+        columns: 12;
+      }
+    }
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

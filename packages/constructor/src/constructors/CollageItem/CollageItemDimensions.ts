@@ -84,7 +84,7 @@ export class CollageItemDimensions {
    */
   get binds(): Record<string, any> {
     return {
-      'data-value': this.props.value,
+      'data-collage-item': this.props.value,
       'data-height': this.height.value,
       'data-width': this.width.value
     }
