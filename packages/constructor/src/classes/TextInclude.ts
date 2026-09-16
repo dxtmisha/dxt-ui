@@ -175,6 +175,11 @@ export class TextInclude {
     return this.get('textPage')
   }
 
+  /** Pagination text / Текст пагинации */
+  get pagination() {
+    return this.get('textPagination')
+  }
+
   /** Previous text / Текст предыдущего */
   get previous() {
     return this.get('textPrevious')

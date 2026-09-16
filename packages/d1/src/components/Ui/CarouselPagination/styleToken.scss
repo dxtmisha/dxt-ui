@@ -1,0 +1,173 @@
+@use "../../../styles/Ui/properties";
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/style.scss" as CarouselPagination;
+
+@include ui.initDesignBasic('d1.carouselPagination') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include CarouselPagination.mixinCarouselPagination;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+    gap: var(--d1-sys-spacing-xs);
+    
+    &__item {
+      @include ui.color(#{var(--d1-sys-palette-onSurface)});
+      
+      @include ui.backgroundColor(#{var(--d1-sys-palette-onSurface)});
+      @include ui.backgroundOpacity(#{var(--d1-sys-opacity-disabled)});
+      
+      border-radius: var(--d1-sys-rounded-full);
+      
+      @include ui.hover('.d1-carouselPagination') {
+        @include ui.backgroundOpacity(#{var(--d1-sys-opacity-surface-medium)}); @include ui.backgroundColor('init');
+      }
+      
+      &:focus-visible {
+        @include ui.outlineOpacity(#{var(--d1-sys-opacity-outline)});
+        
+        outline-width: var(--d1-ref-spacing-1);
+        outline-style: solid;
+        @include ui.outlineColor(#{var(--d1-sys-palette-primary)});
+      }
+      
+      &--selected {
+        @include ui.backgroundOpacity(#{var(--d1-sys-opacity-primary-high)}); @include ui.backgroundColor('init');
+        @include ui.paletteBackground(#{var(--d1-sys-palette-primary)});
+      }
+    }
+    
+    &__fraction {
+      @include ui.paddingX(#{var(--d1-sys-spacing-xs)});
+      @include ui.paddingY(#{var(--d1-sys-spacing-x)});
+      
+      font-family: var(--d1-sys-font-family-basic), sans-serif;
+      @include ui.fontSize(#{var(--d1-sys-font-size-xs)});
+      font-weight: var(--d1-sys-font-weight-medium);
+      @include ui.lineHeight(#{var(--d1-sys-lineHeight-xs)});
+      letter-spacing: var(--d1-sys-letterSpacing-xl);
+      
+      @include ui.color(#{var(--d1-sys-palette-onSurface)});
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-high)});
+      
+      @include ui.backgroundOpacity(#{var(--d1-sys-opacity-overlay)}); @include ui.backgroundColor('init');
+      @include ui.paletteBackground(#{var(--d1-sys-palette-surface)});
+      
+      border-radius: var(--d1-sys-rounded-full);
+      
+      backdrop-filter: var(--d1-sys-blur-sm);
+    }
+    
+    &__progress {
+      @include ui.height(#{var(--d1-ref-spacing-1)});
+      
+      @include ui.backgroundColor(#{var(--d1-sys-palette-onSurface)});
+      @include ui.backgroundOpacity(#{var(--d1-sys-opacity-overlay)});
+      
+      border-radius: var(--d1-sys-rounded-full);
+    }
+    
+    &__progressBar {
+      @include ui.backgroundOpacity(#{var(--d1-sys-opacity-primary-high)}); @include ui.backgroundColor('init');
+      @include ui.paletteBackground(#{var(--d1-sys-palette-primary)});
+      
+      border-radius: var(--d1-sys-rounded-full);
+    }
+    
+    &--type {
+      &--bullets {
+        & .d1-carouselPagination__item {
+          @include ui.width(#{var(--d1-ref-spacing-2)});
+          @include ui.height(#{var(--d1-ref-spacing-2)});
+          
+          &--selected {
+            @include ui.width(#{var(--d1-ref-spacing-6)});
+          }
+        }
+      }
+      
+      &--lines {
+        & .d1-carouselPagination__item {
+          @include ui.width(#{var(--d1-ref-spacing-6)});
+          @include ui.height(#{var(--d1-ref-spacing-1)});
+        }
+      }
+      
+      &--progressbar {
+        & .d1-carouselPagination__progress {
+          min-width: var(--d1-ref-spacing-32);
+        }
+      }
+    }
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+  &__item {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    flex-shrink: 0;
+    margin: 0;
+    padding: 0;
+    border: none;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+
+    transition:
+      width var(--d-sys-transitionDuration-sm) var(--d-sys-transitionFunction-emphasized),
+      height var(--d-sys-transitionDuration-sm) var(--d-sys-transitionFunction-emphasized),
+      background-color var(--d-sys-transitionDuration-sm) var(--d-sys-transitionFunction-emphasized),
+      opacity var(--d-sys-transitionDuration-sm) var(--d-sys-transitionFunction-emphasized),
+      transform var(--d-sys-transitionDuration-sm) var(--d-sys-transitionFunction-emphasized);
+  }
+
+  &__fraction {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+  }
+
+  &__progress {
+    display: flex;
+    align-items: center;
+  }
+
+  &--dynamic {
+    & .d1-carouselPagination__item {
+      transform-origin: center center;
+    }
+  }
+
+  &--vertical {
+    &.d1-carouselPagination--type--bullets {
+      & .d1-carouselPagination__item--selected {
+        width: var(--d1-ref-spacing-2);
+        height: var(--d1-ref-spacing-6);
+      }
+    }
+
+    &.d1-carouselPagination--type--lines {
+      & .d1-carouselPagination__item {
+        width: var(--d1-ref-spacing-1);
+        height: var(--d1-ref-spacing-6);
+      }
+    }
+
+    &.d1-carouselPagination--type--progressbar {
+      & .d1-carouselPagination__progress {
+        min-width: auto;
+        min-height: var(--d1-ref-spacing-32);
+        width: var(--d1-ref-spacing-1);
+        height: 100%;
+      }
+    }
+  }
+}
+

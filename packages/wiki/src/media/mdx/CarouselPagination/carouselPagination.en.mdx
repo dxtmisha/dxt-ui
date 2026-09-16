@@ -1,0 +1,69 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+The `CarouselPagination` component provides navigation and progress indicators for carousels, sliders, and multi-step viewports. It supports various visual presentation modes including bullets (dots), lines, fractional counters, and linear progress bars.
+
+The component handles slide indexing, dynamic scaling of indicators for long lists, two-way state synchronization, and customizable templates and slots for bespoke designs.
+
+**Key features:**
+
+- Multiple display types: classic dots (`bullets`), line segments (`lines`), fraction counter (`fraction`), and continuous progress bar (`progressbar`)
+- Dynamic scaling mode (`dynamic`) that smoothly scales edge indicators for large slide counts
+- Bidirectional state binding via `v-model:selected`
+- Customizable visible items count in dynamic mode (`visible`)
+- Horizontal and vertical layout orientation support (`vertical`)
+- Configurable interactive bullet clicks (`clickable`)
+- Automatic concealment when only a single slide exists (`hideIfOne`)
+- Template-driven fraction formatting (`template`, e.g. `[active] / [total]`)
+- Comprehensive scoped slots for custom bullet items, fraction displays, and progress bars with pre-computed `binds`
+
+**Common use cases:**
+
+- Indicating active slides and navigation in media carousels and banners
+- Multi-step wizards, onboarding flows, and walkthrough sequences
+- Image galleries with large numbers of slides requiring compact dynamic pagination
+- Story-like cards and mobile viewport progress indicators
+
+<Source
+    code={`
+<script setup>
+import { ref } from 'vue'
+
+const currentSlide = ref(1)
+</script>
+
+<template>
+  <div class="carousel-pagination-demo">
+    <!-- Classic bullets -->
+    <CarouselPagination
+      v-model:selected="currentSlide"
+      :count="5"
+    />
+
+    <!-- Dynamic scaling bullets for long collections -->
+    <CarouselPagination
+      v-model:selected="currentSlide"
+      :count="10"
+      dynamic
+      :visible="5"
+    />
+
+    <!-- Fraction counter -->
+    <CarouselPagination
+      v-model:selected="currentSlide"
+      :count="5"
+      type="fraction"
+    />
+
+    <!-- Linear progress bar -->
+    <CarouselPagination
+      v-model:selected="currentSlide"
+      :count="5"
+      type="progressbar"
+    />
+  </div>
+</template>
+  `}
+    language="html"
+/>
+
+> CarouselPagination offers flexible, accessible pagination indicators and progress tracking with seamless slide selection and responsive adaptations.

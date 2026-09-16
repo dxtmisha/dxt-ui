@@ -1,0 +1,29 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+## Display types
+
+The `type` property determines the visual format and layout of pagination indicators:
+
+- **`bullets`** (default) — Classic circular dot indicators. Each dot corresponds to one slide; the active slide is highlighted.
+- **`lines`** — Elongated line segment indicators. Offers a sleek, minimalist alternative to standard dots.
+- **`fraction`** — Text-based numeric counter indicating the current slide index and total slides (e.g. `1 / 5`). Can be customized using the `template` property.
+- **`progressbar`** — A continuous horizontal progress bar displaying progress proportionally from `0%` to `100%` based on the active slide position.
+
+<Source
+    code={`
+<template>
+  <!-- Classic dots -->
+  <CarouselPagination :count="5" :selected="1" type="bullets" />
+
+  <!-- Modern line segments -->
+  <CarouselPagination :count="5" :selected="2" type="lines" />
+
+  <!-- Numeric fraction counter -->
+  <CarouselPagination :count="5" :selected="3" type="fraction" />
+
+  <!-- Continuous progress bar -->
+  <CarouselPagination :count="5" :selected="4" type="progressbar" />
+</template>
+  `}
+    language="html"
+/>

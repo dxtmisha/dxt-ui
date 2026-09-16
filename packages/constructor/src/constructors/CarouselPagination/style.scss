@@ -5,14 +5,12 @@
   align-items: center;
   justify-content: center;
 
-  gap: ui.v('??gap');
-
   &__item {
     cursor: pointer;
 
-    transition-property: #{ui.v('??transition-property', 'transform, opacity')};
-    transition-duration: #{ui.v('??transition-duration', ui.v('d.sys.transitionDuration.sm'))};
-    transition-timing-function: #{ui.v('??transition-function', ui.v('d.sys.transitionFunction.emphasized'))};
+    transition-property: transform, opacity;
+    transition-duration: ui.v('d.sys.transitionDuration.sm');
+    transition-timing-function: ui.v('d.sys.transitionFunction.emphasized');
   }
 
   &__fraction {
@@ -26,19 +24,25 @@
   }
 
   &__progressBar {
+    width: ui.v('??sys-percent');
     height: 100%;
 
-    transition-property: #{ui.v('??transition-property', 'width, height')};
-    transition-duration: #{ui.v('??transition-duration', ui.v('d.sys.transitionDuration.sm'))};
-    transition-timing-function: #{ui.v('??transition-function', ui.v('d.sys.transitionFunction.emphasized'))};
+    transition-property: width, height;
+    transition-duration: ui.v('d.sys.transitionDuration.sm');
+    transition-timing-function: ui.v('d.sys.transitionFunction.emphasized');
   }
 
   &--vertical {
     flex-direction: column;
 
-    & &__progress {
+    @include ui.subclass('progress') {
       height: 100%;
       width: auto;
+    }
+
+    @include ui.subclass('progressBar') {
+      width: 100%;
+      height: ui.v('??sys-percent');
     }
   }
 

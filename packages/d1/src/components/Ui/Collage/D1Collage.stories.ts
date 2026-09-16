@@ -40,16 +40,16 @@ export const Collage: Story = {
 }
 
 // :story-items [!] System label / Системная метка
-export const CollageAppearances: Story = {
-  name: 'Режимы макета',
+export const CollageVariants: Story = {
+  name: 'Варианты макета',
   render: () => ({
     components: { D1Collage },
     template: `
         <div class="wiki-storybook-container">
           <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label wiki-storybook-item__label--static">appearance: standard</div>
+            <div class="wiki-storybook-item__label wiki-storybook-item__label--static">variant: standard</div>
             <D1Collage
-              appearance="standard"
+              variant="standard"
               columns="4"
               :images="[
                 { image: 'https://picsum.photos/800/600?random=1', span: 'wide', label: 'Wide' },
@@ -63,9 +63,9 @@ export const CollageAppearances: Story = {
           </div>
 
           <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label wiki-storybook-item__label--static">appearance: quilted</div>
+            <div class="wiki-storybook-item__label wiki-storybook-item__label--static">variant: quilted</div>
             <D1Collage
-              appearance="quilted"
+              variant="quilted"
               columns="4"
               :images="[
                 { image: 'https://picsum.photos/800/600?random=7', span: 'large', label: 'Large' },
@@ -79,9 +79,9 @@ export const CollageAppearances: Story = {
           </div>
 
           <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label wiki-storybook-item__label--static">appearance: woven</div>
+            <div class="wiki-storybook-item__label wiki-storybook-item__label--static">variant: woven</div>
             <D1Collage
-              appearance="woven"
+              variant="woven"
               columns="3"
               :images="[
                 { image: 'https://picsum.photos/800/600?random=13', label: 'Item 1' },
@@ -95,9 +95,9 @@ export const CollageAppearances: Story = {
           </div>
 
           <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label wiki-storybook-item__label--static">appearance: masonryHorizontal</div>
+            <div class="wiki-storybook-item__label wiki-storybook-item__label--static">variant: masonryHorizontal</div>
             <D1Collage
-              appearance="masonryHorizontal"
+              variant="masonryHorizontal"
               :images="[
                 { image: 'https://picsum.photos/800/600?random=31', span: 'wide', label: 'Wide' },
                 { image: 'https://picsum.photos/800/600?random=32', span: 'standard', label: 'Standard' },
@@ -110,9 +110,9 @@ export const CollageAppearances: Story = {
           </div>
 
           <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label wiki-storybook-item__label--static">appearance: masonryVertical</div>
+            <div class="wiki-storybook-item__label wiki-storybook-item__label--static">variant: masonryVertical</div>
             <D1Collage
-              appearance="masonryVertical"
+              variant="masonryVertical"
               columns="4"
               :images="[
                 { image: 'https://picsum.photos/800/600?random=41', span: 'tall', label: 'Tall' },

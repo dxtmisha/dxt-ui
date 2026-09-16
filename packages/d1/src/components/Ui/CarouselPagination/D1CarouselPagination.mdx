@@ -4,46 +4,49 @@ import {
     StorybookMain
 } from '@dxtmisha/wiki/storybook'
 
-import * as Collage from './D1Collage.stories'
-import {CollageWikiStorybook} from './wiki'
+import * as CarouselPagination from './D1CarouselPagination.stories'
+import {CarouselPaginationWikiStorybook} from './wiki'
 
 [//]: # (:documentation-import [!] System label / Системная метка)
 [//]: # (:documentation-import [!] System label / Системная метка)
 
-<Meta of={Collage}/>
+<Meta of={CarouselPagination}/>
 <StorybookMain
-    name={CollageWikiStorybook.getName()}
-    description={CollageWikiStorybook.getDescription()}
-    story={Collage.Collage}
+    name={CarouselPaginationWikiStorybook.getName()}
+    description={CarouselPaginationWikiStorybook.getDescription()}
+    story={CarouselPagination.CarouselPagination}
 />
 
 [//]: # (:documentation-body [!] System label / Системная метка)
 
-<StorybookDescriptions componentName={'Collage'} type={'collage'}/>
+<StorybookDescriptions componentName={'CarouselPagination'} type={'carouselPagination'}/>
+<StorybookDescriptions componentName={'CarouselPagination'} type={'type'}/>
+<Canvas of={CarouselPagination.CarouselPaginationBasic}/>
 
-<StorybookDescriptions componentName={'Collage'} type={'variant'}/>
-<Canvas of={Collage.CollageVariants}/>
+<StorybookDescriptions componentName={'Value'} type={'v-model'}/>
+<Canvas of={CarouselPagination.CarouselPaginationVModel}/>
+
+<Canvas of={CarouselPagination.CarouselPaginationSlots}/>
     
 [//]: # (:documentation-body [!] System label / Системная метка)
 
 [//]: # (:documentation-events [!] System label / Системная метка)
 ## Events
 
-<StorybookDescriptions componentName={'Event'} type={'click'}/>
-<StorybookDescriptions componentName={'Value'} type={'v-model:selected'}/>
+<StorybookDescriptions componentName={'CarouselPagination'} type={'events'}/>
     
 [//]: # (:documentation-events [!] System label / Системная метка)
 
 [//]: # (:documentation-expose [!] System label / Системная метка)
 ## Expose
 
-<StorybookDescriptions componentName={'Collage'} type={'expose.update'}/>
+<StorybookDescriptions componentName={'CarouselPagination'} type={'expose'}/>
     
 [//]: # (:documentation-expose [!] System label / Системная метка)
 
 [//]: # (:documentation-slots [!] System label / Системная метка)
 ## Slots
 
-<StorybookDescriptions componentName={'Slot'} type={'default'}/>
+<StorybookDescriptions componentName={'CarouselPagination'} type={'slots'}/>
     
 [//]: # (:documentation-slots [!] System label / Системная метка)

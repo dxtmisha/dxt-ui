@@ -1,10 +1,4 @@
 {
-  "gap": {
-    "_type": "var"
-  },
-  "transition-property": "transform, opacity, width, height",
-  "transition-duration": "{d.sys.transitionDuration.sm}",
-  "transition-function": "{d.sys.transitionFunction.standard}",
   "#item": {},
   "#fraction": {},
   "#progress": {},

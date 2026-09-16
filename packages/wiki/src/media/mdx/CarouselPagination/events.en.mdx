@@ -1,0 +1,69 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+### `change`
+
+Event triggers when the selected active slide changes, passing the new slide index.
+
+**Parameters:**
+- `selected: number` — index of the newly active slide (1-based)
+
+<Source
+    code={`
+<script setup>
+const handleChange = (selected) => {
+  console.log('Active slide changed to:', selected)
+}
+</script>
+
+<template>
+  <CarouselPagination :count="5" @change="handleChange" />
+</template>
+  `}
+    language="html"
+/>
+
+### `click`
+
+Standard click event triggered when a user clicks on a pagination indicator (bullet or line). Passes the original native DOM mouse event and the target slide index.
+
+**Parameters:**
+- `event: MouseEvent` — original DOM mouse click event
+- `selected: number` — index of the clicked slide (1-based)
+
+<Source
+    code={`
+<script setup>
+const handleClick = (event, selected) => {
+  console.log('DOM event:', event)
+  console.log('Clicked slide index:', selected)
+}
+</script>
+
+<template>
+  <CarouselPagination :count="5" @click="handleClick" />
+</template>
+  `}
+    language="html"
+/>
+
+### `clickLite`
+
+Lightweight version of the click event. Triggers when clicking on a pagination indicator, passing only the target slide index without the native DOM event object.
+
+**Parameters:**
+- `selected: number` — index of the clicked slide (1-based)
+
+<Source
+    code={`
+<script setup>
+const handleClickLite = (selected) => {
+  console.log('Clicked slide index:', selected)
+}
+</script>
+
+<template>
+  <CarouselPagination :count="5" @clickLite="handleClickLite" />
+</template>
+  `}
+    language="html"
+/>

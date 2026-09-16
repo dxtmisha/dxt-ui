@@ -1,0 +1,69 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+### `change`
+
+Событие срабатывает при изменении выбранного активного слайда, передавая новый индекс слайда.
+
+**Параметры:**
+- `selected: number` — индекс нового активного слайда (начиная с 1)
+
+<Source
+    code={`
+<script setup>
+const handleChange = (selected) => {
+  console.log('Активный слайд изменился на:', selected)
+}
+</script>
+
+<template>
+  <CarouselPagination :count="5" @change="handleChange" />
+</template>
+  `}
+    language="html"
+/>
+
+### `click`
+
+Стандартное событие клика, срабатывающее при нажатии на индикатор пагинации (буллет или линию). Передает оригинальное DOM-событие мыши и индекс выбранного слайда.
+
+**Параметры:**
+- `event: MouseEvent` — оригинальное DOM-событие клика мыши
+- `selected: number` — индекс слайда, по которому кликнули (начиная с 1)
+
+<Source
+    code={`
+<script setup>
+const handleClick = (event, selected) => {
+  console.log('DOM событие:', event)
+  console.log('Индекс выбранного слайда:', selected)
+}
+</script>
+
+<template>
+  <CarouselPagination :count="5" @click="handleClick" />
+</template>
+  `}
+    language="html"
+/>
+
+### `clickLite`
+
+Облегченная версия события клика. Срабатывает при нажатии на индикатор пагинации, передавая только индекс выбранного слайда без нативного DOM-события.
+
+**Параметры:**
+- `selected: number` — индекс слайда, по которому кликнули (начиная с 1)
+
+<Source
+    code={`
+<script setup>
+const handleClickLite = (selected) => {
+  console.log('Индекс выбранного слайда:', selected)
+}
+</script>
+
+<template>
+  <CarouselPagination :count="5" @clickLite="handleClickLite" />
+</template>
+  `}
+    language="html"
+/>

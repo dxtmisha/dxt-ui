@@ -27,7 +27,7 @@ const classesToken = computed<ConstrClasses>(() => ({
     // :classes-values [!] System label / Системная метка
     'd1-collage': true,
     [`d1-collage--columns--${props.columns}`]: inArray(propsValues.columns, props.columns),
-    [`d1-collage--appearance--${props.appearance}`]: inArray(propsValues.appearance, props.appearance)
+    [`d1-collage--variant--${props.variant}`]: inArray(propsValues.variant, props.variant)
     // :classes-values [!] System label / Системная метка
   }
 }))

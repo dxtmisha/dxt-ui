@@ -25,6 +25,7 @@ export type TextIndex = 'cancel'
   | 'notifications'
   | 'ok'
   | 'page'
+  | 'pagination'
   | 'previous'
   | 'rowsPerPage'
   | 'show'
@@ -178,6 +179,12 @@ export type TextPagePropsInclude = {
   textPage?: TextValue
 }
 
+/** Interface for including pagination text/ Интерфейс для включения текста пагинации */
+export type TextPaginationPropsInclude = {
+  /** Pagination text/ Текст пагинации */
+  textPagination?: TextValue
+}
+
 /** Interface for including previous text/ Интерфейс для включения текста предыдущего */
 export type TextPreviousPropsInclude = {
   /** Previous text/ Текст предыдущего */
@@ -227,6 +234,7 @@ export type TextAllPropsInclude = TextBreadcrumbPropsInclude
   & TextNotificationsPropsInclude
   & TextOkPropsInclude
   & TextPagePropsInclude
+  & TextPaginationPropsInclude
   & TextPreviousPropsInclude
   & TextRowsPerPagePropsInclude
   & TextShowPropsInclude

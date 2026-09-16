@@ -20,6 +20,7 @@ import D1Bullet from '../../src/components/Ui/Bullet/D1BulletAiWiki.vue'
 import D1BulletItem from '../../src/components/Ui/BulletItem/D1BulletItemAiWiki.vue'
 import D1Button from '../../src/components/Ui/Button/D1ButtonAiWiki.vue'
 import D1ButtonGroup from '../../src/components/Ui/ButtonGroup/D1ButtonGroupAiWiki.vue'
+import D1CarouselPagination from '../../src/components/Ui/CarouselPagination/D1CarouselPaginationAiWiki.vue'
 import D1Cell from '../../src/components/Ui/Cell/D1CellAiWiki.vue'
 import D1Checkbox from '../../src/components/Ui/Checkbox/D1CheckboxAiWiki.vue'
 import D1Chip from '../../src/components/Ui/Chip/D1ChipAiWiki.vue'
@@ -139,6 +140,7 @@ export const aiList: any[] = [
   D1BulletItem,
   D1Button,
   D1ButtonGroup,
+  D1CarouselPagination,
   D1Cell,
   D1Checkbox,
   D1Chip,

@@ -1,0 +1,20 @@
+- `item(props: CarouselPaginationItemSlot): any` — Слот для пользовательского рендеринга элемента пагинации.
+- `fraction(props: CarouselPaginationFractionSlot): any` — Слот для пользовательского рендеринга счетчика дроби (`type="fraction"`).
+- `progress(props: CarouselPaginationProgressSlot): any` — Слот для пользовательского рендеринга полосы прогресса (`type="progressbar"`).
+
+> **CarouselPaginationItemSlot:**
+> - `binds: CarouselPaginationItemBinds` — предварительно вычисленные атрибуты кнопки, стили, ARIA-свойства и обработчик клика.
+> - `item: CarouselPaginationItem` — объект конфигурации элемента (`index`, `selected`, `scale`, `style`, `tabindex`, `aria`, `binds`).
+> - `index: number` — номер слайда (начиная с 1).
+
+> **CarouselPaginationFractionSlot:**
+> - `binds: CarouselPaginationFractionBinds` — предварительно вычисленные атрибуты контейнера и свойства доступности ARIA.
+> - `active: number` — номер текущего активного слайда (начиная с 1).
+> - `total: number` — общее количество слайдов.
+> - `text: string` — отформатированная строка дроби (например, `'1 / 5'`).
+
+> **CarouselPaginationProgressSlot:**
+> - `binds: CarouselPaginationProgressBinds` — предварительно вычисленные атрибуты контейнера и ARIA-свойства полосы прогресса.
+> - `active: number` — номер текущего активного слайда (начиная с 1).
+> - `total: number` — общее количество слайдов.
+> - `percent: number` — вычисленный процент прогресса (от 0 до 100).

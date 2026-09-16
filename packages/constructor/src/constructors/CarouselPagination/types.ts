@@ -1,6 +1,11 @@
 import type { ConstrClass } from '@dxtmisha/functional'
 
-import type { CarouselPaginationItem } from './basicTypes'
+import type {
+  CarouselPaginationFractionBinds,
+  CarouselPaginationItem,
+  CarouselPaginationItemBinds,
+  CarouselPaginationProgressBinds
+} from './basicTypes'
 
 import type { ModelEmitsSelected } from '../../types/modelTypes'
 
@@ -33,9 +38,9 @@ export type CarouselPaginationEmits = ModelEmitsSelected<number>
  */
 export interface CarouselPaginationExpose {
   /** Current active slide / Текущий активный слайд */
-  selected(): number
+  getSelected(): number
   /** Total item count / Общее количество элементов */
-  count(): number
+  getCount(): number
   /** Sets the active slide / Устанавливает активный слайд */
   set(selected: number): void
   /** Advances to the next slide / Переходит к следующему слайду */
@@ -51,11 +56,25 @@ export interface CarouselPaginationExpose {
  */
 export interface CarouselPaginationSlots {
   /** Slot for custom rendering of each bullet/item / Слот для кастомного рендеринга элемента пагинации */
-  item?(props: { item: CarouselPaginationItem, index: number }): any
+  item?(props: {
+    binds: CarouselPaginationItemBinds
+    item: CarouselPaginationItem
+    index: number
+  }): any
   /** Slot for custom rendering of fraction text / Слот для кастомного рендеринга дроби */
-  fraction?(props: { active: number, total: number, text: string }): any
+  fraction?(props: {
+    binds: CarouselPaginationFractionBinds
+    active: number
+    total: number
+    text: string
+  }): any
   /** Slot for custom rendering of progress bar / Слот для кастомного рендеринга полосы прогресса */
-  progress?(props: { active: number, total: number, percent: number }): any
+  progress?(props: {
+    binds: CarouselPaginationProgressBinds
+    active: number
+    total: number
+    percent: number
+  }): any
 }
 
 /**

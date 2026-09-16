@@ -19,6 +19,7 @@ import { wikiDescriptionsBullet } from './wikiDescriptionsBullet'
 import { wikiDescriptionsBulletItem } from './wikiDescriptionsBulletItem'
 import { wikiDescriptionsButton } from './wikiDescriptionsButton'
 import { wikiDescriptionsButtonGroup } from './wikiDescriptionsButtonGroup'
+import { wikiDescriptionsCarouselPagination } from './wikiDescriptionsCarouselPagination'
 import { wikiDescriptionsCell } from './wikiDescriptionsCell'
 import { wikiDescriptionsCheckbox } from './wikiDescriptionsCheckbox'
 import { wikiDescriptionsChip } from './wikiDescriptionsChip'
@@ -138,6 +139,7 @@ export const wikiDescriptions: StorybookComponentsDescription = [
   wikiDescriptionsBulletItem,
   wikiDescriptionsButton,
   wikiDescriptionsButtonGroup,
+  wikiDescriptionsCarouselPagination,
   wikiDescriptionsCell,
   wikiDescriptionsCheckbox,
   wikiDescriptionsChip,

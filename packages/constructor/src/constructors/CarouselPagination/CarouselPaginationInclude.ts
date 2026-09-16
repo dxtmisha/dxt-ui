@@ -35,6 +35,6 @@ export class CarouselPaginationInclude<
    * Проверяет, нужно ли отображать компонент пагинации.
    */
   override get is(): boolean {
-    return Boolean(this.getProps().carouselPaginationAttrs || this.propsExtra)
+    return Boolean(this.getProps().carouselPaginationAttrs || this.getExtra())
   }
 }

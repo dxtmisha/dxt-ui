@@ -1,11 +1,18 @@
-import { ref, type Ref, type ToRefs, watch } from 'vue'
-import { type ConstrClassObject, type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
+import type { Ref, ToRefs } from 'vue'
+import {
+  type ConstrClassObject,
+  type ConstrEmit,
+  type ConstrStyles,
+  type DesignComp
+} from '@dxtmisha/functional'
 
-import { EventClickInclude } from '../../classes/EventClickInclude'
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { ModelInclude } from '../../classes/ModelInclude'
+import { TextInclude } from '../../classes/TextInclude'
 import type { AriaList } from '../../types/ariaTypes'
 
 import { CarouselPaginationItems } from './CarouselPaginationItems'
+import { CarouselPaginationSelected } from './CarouselPaginationSelected'
 import type { CarouselPaginationComponents, CarouselPaginationEmits, CarouselPaginationSlots } from './types'
 import type { CarouselPaginationProps } from './props'
 
@@ -15,14 +22,14 @@ import type { CarouselPaginationProps } from './props'
  * Класс-оркестратор CarouselPagination, координирующий элементы пагинации, синхронизацию состояния и клик-взаимодействия.
  */
 export class CarouselPagination {
-  /** Internal active slide ref synchronized with v-model / Внутренняя ссылка на активный слайд, синхронизированная с v-model */
-  readonly selectedItem = ref<number>(1)
-
   /** Helper for calculating items, dynamic bullets, fraction, and progress / Вспомогательный класс для расчетов элементов, динамических буллетов, дроби и прогресса */
   readonly items: CarouselPaginationItems
 
-  /** Click event listener helper / Вспомогательный класс для обработки кликов */
-  readonly eventClick: EventClickInclude
+  /** Slide selection and transition helper / Вспомогательный класс для выбора слайда и навигации */
+  readonly selected: CarouselPaginationSelected
+
+  /** Text manager for pagination / Менеджер текста для пагинации */
+  readonly text: TextInclude
 
   /**
    * Constructor
@@ -36,8 +43,9 @@ export class CarouselPagination {
    * @param emits event emitter callback / функция обратного вызова для генерации событий
    * @param constructors optional custom implementation class constructors / опциональные пользовательские конструкторы классов
    * @param constructors.CarouselPaginationItemsConstructor custom items calculation constructor / пользовательский конструктор расчета элементов
-   * @param constructors.EventClickIncludeConstructor class for working with event click / класс для работы с событием клика
+   * @param constructors.CarouselPaginationSelectedConstructor custom selection constructor / пользовательский конструктор выбора слайда
    * @param constructors.ModelIncludeConstructor class for working with model / класс для работы с моделью
+   * @param constructors.TextIncludeConstructor class for managing text and translations / класс для управления текстом и переводами
    */
   constructor(
     protected readonly props: CarouselPaginationProps,
@@ -50,100 +58,40 @@ export class CarouselPagination {
     protected readonly emits?: ConstrEmit<CarouselPaginationEmits>,
     constructors: {
       CarouselPaginationItemsConstructor?: typeof CarouselPaginationItems
-      EventClickIncludeConstructor?: typeof EventClickInclude
+      CarouselPaginationSelectedConstructor?: typeof CarouselPaginationSelected
       ModelIncludeConstructor?: typeof ModelInclude<number>
+      TextIncludeConstructor?: typeof TextInclude
     } = {}
   ) {
     const {
       CarouselPaginationItemsConstructor = CarouselPaginationItems,
-      EventClickIncludeConstructor = EventClickInclude,
-      ModelIncludeConstructor = ModelInclude
+      CarouselPaginationSelectedConstructor = CarouselPaginationSelected,
+      ModelIncludeConstructor = ModelInclude,
+      TextIncludeConstructor = TextInclude
     } = constructors
 
-    this.items = new CarouselPaginationItemsConstructor(props, refs)
-    this.eventClick = new EventClickIncludeConstructor(undefined, undefined, emits)
+    this.text = new TextIncludeConstructor(props)
+    this.selected = new CarouselPaginationSelectedConstructor(props, refs, emits)
+    this.items = new CarouselPaginationItemsConstructor(
+      props,
+      refs,
+      this.selected,
+      emits
+    )
 
-    this.selectedItem.value = this.items.active.value
-
-    watch(this.items.active, (newActiveSlideIndex: number) => {
-      if (this.selectedItem.value !== newActiveSlideIndex) {
-        this.selectedItem.value = newActiveSlideIndex
-      }
-    })
-
-    new ModelIncludeConstructor('selected', emits, this.selectedItem)
+    new ModelIncludeConstructor('selected', emits, this.selected.item)
   }
 
   /**
-   * Sets the active slide index and emits relevant events.
+   * Returns ARIA attributes for the root element.
    *
-   * Устанавливает индекс активного слайда и испускает соответствующие события.
-   * @param index slide index / индекс слайда
+   * Возвращает ARIA-атрибуты для корневого элемента.
+   * @returns ARIA attributes dictionary / словарь ARIA-атрибутов
    */
-  readonly set = (index: number): void => {
-    const totalCount = this.items.total.value
-    const normalizedIndex = totalCount > 0
-      ? Math.max(1, Math.min(totalCount, Math.floor(index)))
-      : 1
-
-    if (this.selectedItem.value !== normalizedIndex) {
-      this.selectedItem.value = normalizedIndex
-      this.emits?.('change', normalizedIndex)
-      this.emits?.('update:selected', normalizedIndex)
-      this.emits?.('update:modelSelected', normalizedIndex)
-    }
-  }
-
-  /**
-   * Returns the current active slide index.
-   *
-   * Возвращает текущий индекс активного слайда.
-   * @returns active slide index / индекс активного слайда
-   */
-  readonly selected = (): number => this.items.active.value
-
-  /**
-   * Returns the total item count.
-   *
-   * Возвращает общее количество элементов.
-   * @returns total item count / общее количество элементов
-   */
-  readonly count = (): number => this.items.total.value
-
-  /**
-   * Advances to the next slide.
-   *
-   * Переходит к следующему слайду.
-   */
-  readonly next = (): void => {
-    if (this.selectedItem.value < this.items.total.value) {
-      this.set(this.selectedItem.value + 1)
-    }
-  }
-
-  /**
-   * Moves to the previous slide.
-   *
-   * Переходит к предыдущему слайду.
-   */
-  readonly previous = (): void => {
-    if (this.selectedItem.value > 1) {
-      this.set(this.selectedItem.value - 1)
-    }
-  }
-
-  /**
-   * Handles click on an indicator/bullet.
-   *
-   * Обрабатывает клик по индикатору/буллету.
-   * @param event native mouse event / нативное событие мыши
-   * @param index slide index / индекс слайда
-   */
-  readonly onClickItem = (event: MouseEvent, index: number): void => {
-    if (this.props.clickable !== false) {
-      this.set(index)
-      this.emits?.('click', event, index)
-      this.emits?.('clickLite', index)
+  get aria(): AriaList {
+    return {
+      ...AriaStaticInclude.role('tablist'),
+      ...AriaStaticInclude.label(this.text.pagination)
     }
   }
 
@@ -155,20 +103,19 @@ export class CarouselPagination {
    */
   get classes(): ConstrClassObject {
     return {
-      [`${this.className}--hide`]: this.items.isHide
+      [`${this.className}--hide`]: this.items.isHide()
     }
   }
 
   /**
-   * Returns ARIA attributes for the root element.
+   * Returns styles for the root element.
    *
-   * Возвращает ARIA-атрибуты для корневого элемента.
-   * @returns ARIA attributes dictionary / словарь ARIA-атрибутов
+   * Возвращает стили для корневого элемента.
+   * @returns styles dictionary / словарь стилей
    */
-  get aria(): AriaList {
+  get styles(): ConstrStyles {
     return {
-      role: 'tablist',
-      'aria-label': 'Carousel pagination'
+      [`--${this.className}-sys-percent`]: `${this.items.percent}%`
     }
   }
 }

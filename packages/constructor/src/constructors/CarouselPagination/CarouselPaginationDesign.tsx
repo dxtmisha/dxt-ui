@@ -5,9 +5,16 @@ import {
   DesignConstructorAbstract
 } from '@dxtmisha/functional'
 
+import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
+
 import { CarouselPagination } from './CarouselPagination'
-import { type CarouselPaginationItem } from './basicTypes'
-import { type CarouselPaginationPropsBasic } from './props'
+import {
+  type CarouselPaginationFractionBinds,
+  type CarouselPaginationItem,
+  type CarouselPaginationItemBinds,
+  type CarouselPaginationProgressBinds
+} from './basicTypes'
+import { type CarouselPaginationProps } from './props'
 import {
   type CarouselPaginationClasses,
   type CarouselPaginationComponents,
@@ -25,16 +32,16 @@ export class CarouselPaginationDesign<
   COMP extends CarouselPaginationComponents,
   EXPOSE extends CarouselPaginationExpose,
   CLASSES extends CarouselPaginationClasses,
-  P extends CarouselPaginationPropsBasic
+  P extends CarouselPaginationProps
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
-    COMP,
-    CarouselPaginationEmits,
-    EXPOSE,
-    CarouselPaginationSlots,
-    CLASSES,
-    P
-  > {
+  HTMLDivElement,
+  COMP,
+  CarouselPaginationEmits,
+  EXPOSE,
+  CarouselPaginationSlots,
+  CLASSES,
+  P
+> {
   protected readonly item: CarouselPagination
 
   /**
@@ -78,11 +85,11 @@ export class CarouselPaginationDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      selected: this.item.selected,
-      count: this.item.count,
-      set: this.item.set,
-      next: this.item.next,
-      previous: this.item.previous
+      getSelected: this.item.selected.get,
+      getCount: () => this.item.selected.total.value,
+      set: this.item.selected.set,
+      next: this.item.selected.next,
+      previous: this.item.selected.previous
     } as EXPOSE
   }
 
@@ -113,121 +120,22 @@ export class CarouselPaginationDesign<
    * @returns style dictionary / словарь стилей
    */
   protected initStyles(): ConstrStyles {
-    return {}
-  }
-
-  /**
-   * Renders the list of bullets or lines.
-   *
-   * Рендерит список буллетов или линий.
-   * @returns list of bullet VNodes / список VNode буллетов
-   */
-  readonly renderBullets = (): VNode[] => {
-    return this.item.items.list.value.map((paginationItem: CarouselPaginationItem) => {
-      if (this.slots?.item) {
-        return this.slots.item({ item: paginationItem, index: paginationItem.index })
-      }
-
-      const isSelected = paginationItem.selected
-      const itemClasses = [
-        this.classes?.value.item,
-        isSelected && `${this.classes?.value.item}--selected`
-      ]
-
-      const itemStyles = paginationItem.scale !== undefined && paginationItem.scale !== 1
-        ? { transform: `scale(${paginationItem.scale})` }
-        : undefined
-
-      return h('button', {
-        key: paginationItem.index,
-        type: 'button',
-        role: 'tab',
-        class: itemClasses,
-        style: itemStyles,
-        'aria-selected': isSelected,
-        'aria-label': `Slide ${paginationItem.index}`,
-        tabindex: isSelected ? 0 : -1,
-        onClick: (event: MouseEvent) => this.item.onClickItem(event, paginationItem.index)
-      })
-    })
-  }
-
-  /**
-   * Renders the fraction display.
-   *
-   * Рендерит отображение дроби.
-   * @returns fraction VNode / VNode дроби
-   */
-  readonly renderFraction = (): VNode => {
-    const active = this.item.items.active.value
-    const total = this.item.items.total.value
-    const text = this.item.items.fractionText
-
-    if (this.slots?.fraction) {
-      return this.slots.fraction({ active, total, text })
-    }
-
-    return h(
-      'div',
-      {
-        class: this.classes?.value.fraction,
-        'aria-live': 'polite'
-      },
-      text
-    )
-  }
-
-  /**
-   * Renders the progress bar.
-   *
-   * Рендерит полосу прогресса.
-   * @returns progress VNode / VNode прогресса
-   */
-  readonly renderProgress = (): VNode => {
-    const active = this.item.items.active.value
-    const total = this.item.items.total.value
-    const percent = this.item.items.percent
-
-    if (this.slots?.progress) {
-      return this.slots.progress({ active, total, percent })
-    }
-
-    const isVertical = Boolean(this.props.vertical)
-
-    return h(
-      'div',
-      {
-        class: this.classes?.value.progress,
-        role: 'progressbar',
-        'aria-valuenow': active,
-        'aria-valuemin': 1,
-        'aria-valuemax': total
-      },
-      [
-        h('div', {
-          class: this.classes?.value.progressBar,
-          style: {
-            width: isVertical ? undefined : `${percent}%`,
-            height: isVertical ? `${percent}%` : undefined
-          }
-        })
-      ]
-    )
+    return this.item.styles
   }
 
   /**
    * Main render method.
    *
    * Основной метод рендеринга.
-   * @returns rendered virtual node / отрендеренный виртуальный узел
+   * @returns rendered virtual node or undefined / отрендеренный виртуальный узел или undefined
    */
-  protected initRender(): VNode {
-    if (this.item.items.isHide) {
-      return h('span', { style: { display: 'none' } })
+  protected initRender(): VNode | undefined {
+    if (this.item.items.isHide()) {
+      return undefined
     }
 
     const type = this.props.type ?? 'bullets'
-    let children: VNode | VNode[]
+    let children: VNode[]
 
     switch (type) {
       case 'fraction':
@@ -249,9 +157,112 @@ export class CarouselPaginationDesign<
         ...this.getAttrs(),
         ...this.item.aria,
         ref: this.element,
-        class: this.classes?.value.main
+        class: this.classes?.value.main,
+        style: this.styles?.value
       },
-      Array.isArray(children) ? children : [children]
+      children
     )
+  }
+
+  /**
+   * Renders the list of bullets or lines.
+   *
+   * Рендерит список буллетов или линий.
+   * @returns list of bullet VNodes / список VNode буллетов
+   */
+  readonly renderBullets = (): VNode[] => {
+    return this.item.items.list.value
+      .map((paginationItem: CarouselPaginationItem) => {
+        const binds: CarouselPaginationItemBinds = {
+          ...paginationItem.binds,
+          class: {
+            [`${this.classes?.value.item}`]: true,
+            [`${this.classes?.value.item}--selected`]: paginationItem.selected
+          }
+        }
+
+        const slot = this.initSlot('item', undefined, {
+          binds,
+          item: paginationItem,
+          index: paginationItem.index
+        })
+
+        if (slot) {
+          return slot
+        }
+
+        return h('button', binds)
+      })
+  }
+
+  /**
+   * Renders the fraction display.
+   *
+   * Рендерит отображение дроби.
+   * @returns fraction VNode array / массив VNode дроби
+   */
+  readonly renderFraction = (): VNode[] => {
+    const binds: CarouselPaginationFractionBinds = {
+      ...this.getKeyClass('fraction'),
+      ...AriaStaticInclude.live('polite')
+    }
+
+    const slot = this.initSlot('fraction', undefined, {
+      binds,
+      active: this.item.selected.item.value,
+      total: this.item.selected.total.value,
+      text: this.item.items.fractionText
+    })
+
+    if (slot) {
+      return [slot]
+    }
+
+    return [
+      h(
+        'div',
+        binds,
+        this.item.items.fractionText
+      )
+    ]
+  }
+
+  /**
+   * Renders the progress bar.
+   *
+   * Рендерит полосу прогресса.
+   * @returns progress VNode array / массив VNode прогресса
+   */
+  readonly renderProgress = (): VNode[] => {
+    const binds: CarouselPaginationProgressBinds = {
+      ...this.getKeyClass('progress'),
+      ...AriaStaticInclude.role('progressbar'),
+      ...AriaStaticInclude.valueMinMax(
+        this.item.selected.item.value,
+        1,
+        this.item.selected.total.value
+      )
+    }
+
+    const slot = this.initSlot('progress', undefined, {
+      binds,
+      active: this.item.selected.item.value,
+      total: this.item.selected.total.value,
+      percent: this.item.items.percent
+    })
+
+    if (slot) {
+      return [slot]
+    }
+
+    return [
+      h(
+        'div',
+        binds,
+        [
+          h('div', this.getKeyClass('progressBar'))
+        ]
+      )
+    ]
   }
 }

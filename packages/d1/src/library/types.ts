@@ -20,6 +20,7 @@ import _D1Bullet from '../components/Ui/Bullet/D1Bullet.vue'
 import _D1BulletItem from '../components/Ui/BulletItem/D1BulletItem.vue'
 import _D1Button from '../components/Ui/Button/D1Button.vue'
 import _D1ButtonGroup from '../components/Ui/ButtonGroup/D1ButtonGroup.vue'
+import _D1CarouselPagination from '../components/Ui/CarouselPagination/D1CarouselPagination.vue'
 import _D1Cell from '../components/Ui/Cell/D1Cell.vue'
 import _D1Checkbox from '../components/Ui/Checkbox/D1Checkbox.vue'
 import _D1Chip from '../components/Ui/Chip/D1Chip.vue'
@@ -140,6 +141,7 @@ declare module '@vue/runtime-core' {
     D1BulletItem: typeof _D1BulletItem
     D1Button: typeof _D1Button
     D1ButtonGroup: typeof _D1ButtonGroup
+    D1CarouselPagination: typeof _D1CarouselPagination
     D1Cell: typeof _D1Cell
     D1Checkbox: typeof _D1Checkbox
     D1Chip: typeof _D1Chip

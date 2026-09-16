@@ -1,0 +1,20 @@
+- `item(props: CarouselPaginationItemSlot): any` — Slot for custom rendering of each pagination bullet or indicator element.
+- `fraction(props: CarouselPaginationFractionSlot): any` — Slot for custom rendering of the fraction counter (`type="fraction"`).
+- `progress(props: CarouselPaginationProgressSlot): any` — Slot for custom rendering of the progress bar (`type="progressbar"`).
+
+> **CarouselPaginationItemSlot:**
+> - `binds: CarouselPaginationItemBinds` — pre-computed button attributes, styles, ARIA properties, and click event handler.
+> - `item: CarouselPaginationItem` — item configuration object (`index`, `selected`, `scale`, `style`, `tabindex`, `aria`, `binds`).
+> - `index: number` — slide index (1-based).
+
+> **CarouselPaginationFractionSlot:**
+> - `binds: CarouselPaginationFractionBinds` — pre-computed container attributes and ARIA properties.
+> - `active: number` — current active slide index (1-based).
+> - `total: number` — total slide count.
+> - `text: string` — formatted fraction text string (e.g. `'1 / 5'`).
+
+> **CarouselPaginationProgressSlot:**
+> - `binds: CarouselPaginationProgressBinds` — pre-computed container attributes and ARIA progressbar properties.
+> - `active: number` — current active slide index (1-based).
+> - `total: number` — total slide count.
+> - `percent: number` — calculated progress percentage (0 to 100).

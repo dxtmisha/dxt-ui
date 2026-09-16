@@ -34,6 +34,7 @@ export class TextIncludeInstance {
     notifications: 'Notifications',
     ok: 'OK',
     page: 'Page',
+    pagination: 'Pagination',
     previous: 'Previous',
     rowsPerPage: 'Rows per page',
     show: 'Show',
