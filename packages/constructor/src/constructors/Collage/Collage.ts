@@ -139,7 +139,8 @@ export class Collage {
       this.elementItem,
       this.woven,
       this.masonryHorizontal,
-      this.masonryVertical
+      this.masonryVertical,
+      this.grow
     )
 
     this.event = new EventClickIncludeConstructor(

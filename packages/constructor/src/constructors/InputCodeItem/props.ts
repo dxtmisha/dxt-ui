@@ -22,6 +22,9 @@ export type InputCodeItemPropsBasic = TextSymbolPropsInclude
     /** Item index / Индекс элемента */
     index?: NumberOrString
 
+    /** Autocomplete mode / Режим автозаполнения */
+    autocomplete?: AutoFill
+
     /** RegExp for input verification / Регулярное выражение для проверки ввода */
     match?: RegExp
     /** Mode of virtual keyboard / Режим виртуальной клавиатуры */
@@ -45,6 +48,7 @@ export type InputCodeItemProps = InputCodeItemPropsBasic & InputCodeItemPropsTok
  * Значение по умолчанию для свойства.
  */
 export const defaultsInputCodeItem = {
+  autocomplete: 'one-time-code',
   move: true,
   name: 'item-code',
   match: /[0-9]/,

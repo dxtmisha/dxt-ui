@@ -56,18 +56,21 @@ export class CollageElement {
   }
 
   /**
-   * Returns child items matching the data-value attribute.
+   * Returns child items matching data-collage-item attribute and optional selector.
    *
-   * Возвращает дочерние элементы, соответствующие атрибуту data-value.
+   * Возвращает дочерние элементы, соответствующие атрибуту data-collage-item и опциональному селектору.
+   * @param selector optional additional selector string / опциональная строка дополнительного селектора
    * @returns array of item elements / массив элементов
    */
-  getItems(): HTMLElement[] {
+  getItems(selector?: string): HTMLElement[] {
     if (!this.element.value) {
       return []
     }
 
     return Array.from(
-      this.element.value.querySelectorAll<HTMLElement>('[data-collage-item]')
+      this.element.value.querySelectorAll<HTMLElement>(
+        `[data-collage-item]${selector ?? ''}`
+      )
     )
   }
 }

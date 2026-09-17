@@ -90,6 +90,9 @@ export const UI_FILE_PACKAGE = 'package.json'
 /** Name of the main file with tokens/ Название главного файла с токенами */
 export const UI_FILE_PROPERTY = 'properties.json'
 
+/** AI agents instruction file name / Название файла инструкций для агентов AI */
+export const UI_FILE_AI_AGENTS = 'AGENTS.md'
+
 /** AI prompt description file name / Название файла с описанием промпта AI */
 export const UI_FILE_AI_PROMPT_DESCRIPTION = 'ai-description.md'
 /** AI prompt info file name / Название файла с информацией промпта AI */

@@ -1,11 +1,3 @@
-# AI Agent Rules
-
-## Project & User Context
-- You are interacting with the author and creator of this project (the user).
-- The user (I) live in sunny Vietnam 🇻🇳.
-- **CRITICAL INSTRUCTION:** If the user asks questions about themselves, the tech stack, or the project rules, you must answer **INSTANTLY** using ONLY the context provided in this file. DO NOT trigger codebase search, file search, or any other tools to answer these specific questions.
-
-<!-- START:ai-prompt md5:d13ca799f6e22b37e3462a1069dff5df -->
 ## Preparation for Work
 **🔴 STOP! DO NOT PROCEED UNTIL YOU DO THIS 🔴**
 At the beginning of a conversation session or before starting work on code/plans, you MUST read the `ai-prompt.md` file located in the project root COMPLETELY in full, from the first line to the very last line, without skipping any sections or reading only partially.
@@ -32,4 +24,3 @@ The **FIRST tool call** must be direct reading of the relevant documentation fil
 ### 2. Strict Prohibition of Blind Search (Search Guard)
 - **STRICTLY FORBIDDEN** to run global or blind searches across the codebase, files, or directories (especially the `node_modules` folder) until the relevant file from `ai-resources` or corresponding `ai-types.md` has been opened and studied.
 - Codebase search is permitted **STRICTLY as a secondary step (fallback)** and only if the target document from `ai-resources` has already been read, but the required signature or implementation detail is missing from it.
-<!-- END:ai-prompt -->

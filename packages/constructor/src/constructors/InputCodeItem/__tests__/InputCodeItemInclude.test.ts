@@ -53,4 +53,50 @@ describe('InputCodeItemInclude', () => {
     include.onInput()
     expect(onUpdate).toHaveBeenCalledWith('AB')
   })
+
+  it('should update values and focus on the first empty item on update()', () => {
+    const include = new InputCodeItemInclude('base-class', { match: /[0-9]/ })
+    const item1 = {
+      getValue: () => '1',
+      set: vi.fn(),
+      setTabindex: vi.fn(),
+      focusInput: vi.fn()
+    } as any
+    const item2 = {
+      getValue: () => '',
+      set: vi.fn(),
+      setTabindex: vi.fn(),
+      focusInput: vi.fn()
+    } as any
+
+    include.items.value = [item1, item2]
+
+    include.update('1')
+
+    expect(item1.set).toHaveBeenCalledWith('1')
+    expect(item2.set).toHaveBeenCalledWith('')
+    expect(item2.focusInput).toHaveBeenCalled()
+  })
+
+  it('should focus on the last item when all items are filled on focus()', () => {
+    const include = new InputCodeItemInclude('base-class', { match: /[0-9]/ })
+    const item1 = {
+      getValue: () => '1',
+      set: vi.fn(),
+      setTabindex: vi.fn(),
+      focusInput: vi.fn()
+    } as any
+    const item2 = {
+      getValue: () => '2',
+      set: vi.fn(),
+      setTabindex: vi.fn(),
+      focusInput: vi.fn()
+    } as any
+
+    include.items.value = [item1, item2]
+
+    include.update('12')
+
+    expect(item2.focusInput).toHaveBeenCalled()
+  })
 })

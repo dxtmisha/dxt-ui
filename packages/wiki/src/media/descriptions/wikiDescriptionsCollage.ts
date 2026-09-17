@@ -45,8 +45,8 @@ export const wikiDescriptionsCollage: StorybookComponentsDescriptionItem = {
       },
       template: `
         <div class="wiki-storybook-container">
-          <div class="wiki-storybook-item wiki-storybook-item--widescreen">
-            <div class="wiki-storybook-item__label wiki-storybook-item__label--static">variant: standard</div>
+          <div class="wiki-storybook-item wiki-storybook-item--rectangle wiki-storybook-item--overflowAuto wiki-storybook-item--borderNone">
+            <div class="wiki-storybook-item__label">variant: standard</div>
             <DesignComponent
               variant="standard"
               columns="4"

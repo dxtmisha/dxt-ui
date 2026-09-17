@@ -8,6 +8,7 @@ import {
 } from 'vue'
 
 import type { CollageElement } from './CollageElement'
+import type { CollageGrow } from './CollageGrow'
 import type { CollageMasonryHorizontal } from './CollageMasonryHorizontal'
 import type { CollageMasonryVertical } from './CollageMasonryVertical'
 import type { CollageWoven } from './CollageWoven'
@@ -40,6 +41,7 @@ export class CollageVariant {
    * @param woven manager for woven variant layout / менеджер макета варианта woven
    * @param masonryHorizontal manager for horizontal masonry variant layout / менеджер макета варианта горизонтальной кладки
    * @param masonryVertical manager for vertical masonry variant layout / менеджер макета варианта вертикальной кладки
+   * @param grow manager for item grow factors and CSS properties / менеджер коэффициентов роста элементов и CSS-свойств
    */
   constructor(
     protected readonly props: CollageProps,
@@ -47,12 +49,22 @@ export class CollageVariant {
     protected readonly elementItem: CollageElement,
     protected readonly woven: CollageWoven,
     protected readonly masonryHorizontal: CollageMasonryHorizontal,
-    protected readonly masonryVertical: CollageMasonryVertical
+    protected readonly masonryVertical: CollageMasonryVertical,
+    protected readonly grow: CollageGrow
   ) {
     provide<CollageUpdate>(COLLAGE_NAME_UPDATE, this.update)
 
     onMounted(() => {
-      watch([this.refs.variant], this.update, { immediate: true })
+      watch(
+        [
+          this.refs.variant,
+          this.refs.columns,
+          this.refs.cellSize,
+          this.refs.images
+        ],
+        this.update,
+        { immediate: true }
+      )
     })
 
     onUnmounted(() => {
@@ -117,6 +129,9 @@ export class CollageVariant {
    * Выполняет перерасчет макета в зависимости от текущего варианта.
    */
   protected readonly resize = (): void => {
+    this.woven.reset()
+    this.grow.resetGrow()
+
     switch (this.props.variant) {
       case 'woven':
         this.woven.resize()
@@ -145,5 +160,8 @@ export class CollageVariant {
       clearTimeout(this.timeoutResize)
       this.timeoutResize = undefined
     }
+
+    this.woven.reset()
+    this.grow.resetGrow()
   }
 }

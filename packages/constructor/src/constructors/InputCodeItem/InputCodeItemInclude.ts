@@ -73,20 +73,20 @@ export class InputCodeItemInclude extends ComponentIncludeAbstract<
   }
 
   /**
-   * Focuses on the first empty or the first input code item.
+   * Focuses on the first empty or the last input code item.
    *
-   * Фокусируется на первом пустом или на первом элементе ввода кода.
+   * Фокусируется на первом пустом или на последнем элементе ввода кода.
    */
   readonly focus = () => {
     if (this.items.value.length > 0) {
       for (const item of this.items.value) {
         if (!isFilled(item.getValue(), true)) {
-          item.focusInput()
+          item.focusInput?.()
           return
         }
       }
 
-      this.items.value[0]?.focusInput()
+      this.items.value[this.items.value.length - 1]?.focusInput?.()
     }
   }
 
@@ -102,6 +102,7 @@ export class InputCodeItemInclude extends ComponentIncludeAbstract<
     this.items.value.forEach((item, index) => item.set(values?.[index] ?? ''))
 
     this.updateTabindex()
+    this.focus()
   }
 
   /**
@@ -267,6 +268,7 @@ export class InputCodeItemInclude extends ComponentIncludeAbstract<
       hide: props.hide,
       isSkeleton: props.isSkeleton,
       name: props.name,
+      autocomplete: props.autocomplete,
       match: props.match,
       inputMode: props.inputMode,
       placeholder: props.placeholder,

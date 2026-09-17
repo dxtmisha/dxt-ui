@@ -58,6 +58,8 @@ export const defaultsInputCode = {
   length: 4,
   /** Validation regular expression / Регулярное выражение для валидации */
   match: /[0-9]/,
+  /** Autocomplete mode / Режим автозаполнения */
+  autocomplete: 'one-time-code',
   inputMode: 'numeric',
   ...{
     // :default [!] System label / Системная метка

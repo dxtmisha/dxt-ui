@@ -31,6 +31,9 @@ export type InputCodeItemPropsInclude<
   /** Input name / Название поля ввода */
   name?: string
 
+  /** Autocomplete mode / Режим автозаполнения */
+  autocomplete?: InputCodeItemPropsBasic['autocomplete']
+
   /** Regex pattern for input validation / Регулярное выражение для проверки ввода */
   match?: InputCodeItemPropsBasic['match']
   /** Input mode pattern / Режим ввода */

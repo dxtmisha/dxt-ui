@@ -28,10 +28,11 @@
     }
 
     &--woven {
+      align-items: center;
       grid-auto-rows: calc(((100cqw - (ui.v('??columns') - 1) * ui.v('??gap')) / ui.v('??columns')) * 4 / 3);
       grid-template-rows: unset;
 
-      @include ui.subclass('item') {
+      *[data-collage-item] {
         grid-column: auto / span 1;
         grid-row: auto / span 1;
       }
@@ -42,6 +43,7 @@
 
       *[data-collage-item] {
         grid-column: auto / span calc(#{ui.v('?collageItem-sys-width', 1)} + #{ui.v('??sys-item-grow', 0)});
+        grid-row: auto / span 1;
         min-height: ui.v('??cell-size');
       }
     }
@@ -51,8 +53,9 @@
       grid-auto-rows: calc((ui.v('??cell-size') - (ui.v('??gap') * 9)) / 10);
 
       *[data-collage-item] {
-        min-height: calc((#{ui.v('?collageItem-sys-height', 1)} * ((ui.v('??cell-size') - (ui.v('??gap') * 9)) / 10)) + (ui.v('??gap') * (#{ui.v('?collageItem-sys-height', 1)} - 1)));
+        grid-column: auto / span 1;
         grid-row: auto / span #{ui.v('??sys-item-grow', ui.v('?collageItem-sys-height', 1))};
+        min-height: calc((#{ui.v('?collageItem-sys-height', 1)} * ((ui.v('??cell-size') - (ui.v('??gap') * 9)) / 10)) + (ui.v('??gap') * (#{ui.v('?collageItem-sys-height', 1)} - 1)));
       }
     }
   }

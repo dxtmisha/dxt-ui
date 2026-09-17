@@ -8,7 +8,7 @@ describe('CollageWoven', () => {
   it('should initialize classCompact with class name', () => {
     const collageWoven = new CollageWoven('d-collage')
 
-    expect(collageWoven.classCompact).toBe('d-collage-item--compact')
+    expect(collageWoven.classCompact).toBe('d-collageItem--compact')
   })
 
   it('should toggle compact class on item element', () => {
@@ -22,10 +22,46 @@ describe('CollageWoven', () => {
     const collageWoven = new TestCollageWoven('d-collage')
 
     collageWoven.setCompact(item, true)
-    expect(item.classList.contains('d-collage-item--compact')).toBe(true)
+    expect(item.classList.contains(collageWoven.classCompact)).toBe(true)
 
     collageWoven.setCompact(item, false)
-    expect(item.classList.contains('d-collage-item--compact')).toBe(false)
+    expect(item.classList.contains(collageWoven.classCompact)).toBe(false)
+  })
+
+  it('should reset compact class on single item with resetItem()', () => {
+    class TestCollageWoven extends CollageWoven {
+      override resetItem(itemElement: HTMLElement): void {
+        super.resetItem(itemElement)
+      }
+    }
+
+    const item = document.createElement('div')
+    const collageWoven = new TestCollageWoven('d-collage')
+    item.classList.add(collageWoven.classCompact)
+
+    collageWoven.resetItem(item)
+    expect(item.classList.contains(collageWoven.classCompact)).toBe(false)
+  })
+
+  it('should reset compact classes on all items with reset()', () => {
+    const container = document.createElement('div')
+    const item1 = document.createElement('div')
+    const item2 = document.createElement('div')
+    item1.setAttribute('data-collage-item', 'true')
+    item2.setAttribute('data-collage-item', 'true')
+
+    const element = ref<HTMLElement | undefined>(container)
+    const collageElement = new CollageElement(element)
+    const collageWoven = new CollageWoven('d-collage', collageElement)
+
+    item1.classList.add(collageWoven.classCompact)
+    item2.classList.add(collageWoven.classCompact)
+    container.appendChild(item1)
+    container.appendChild(item2)
+
+    collageWoven.reset()
+    expect(item1.classList.contains(collageWoven.classCompact)).toBe(false)
+    expect(item2.classList.contains(collageWoven.classCompact)).toBe(false)
   })
 
   it('should set alternating compact classes using chessboard math on resize()', () => {
@@ -64,10 +100,10 @@ describe('CollageWoven', () => {
 
     // Row 0: item0 (col 0) -> normal, item1 (col 1) -> compact
     // Row 1: item2 (col 0) -> compact, item3 (col 1) -> normal
-    expect(item0.classList.contains('d-collage-item--compact')).toBe(false)
-    expect(item1.classList.contains('d-collage-item--compact')).toBe(true)
-    expect(item2.classList.contains('d-collage-item--compact')).toBe(true)
-    expect(item3.classList.contains('d-collage-item--compact')).toBe(false)
+    expect(item0.classList.contains(collageWoven.classCompact)).toBe(false)
+    expect(item1.classList.contains(collageWoven.classCompact)).toBe(true)
+    expect(item2.classList.contains(collageWoven.classCompact)).toBe(true)
+    expect(item3.classList.contains(collageWoven.classCompact)).toBe(false)
 
     spyRaf.mockRestore()
   })

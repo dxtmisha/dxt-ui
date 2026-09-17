@@ -4,10 +4,11 @@ import { GitIgnore } from '../Git/GitIgnore'
 import { PropertiesConfig } from '../Properties/PropertiesConfig'
 import { PropertiesFile } from '../Properties/PropertiesFile'
 import { LibraryAiMcp } from './LibraryAiMcp'
+import { LibraryAiPromptAgents } from './LibraryAiPromptAgents'
 import { LibraryAiPromptItem } from './LibraryAiPromptItem'
 
-import vuePromptText from '../../media/templates/prompts/aiCodeVuePrompt.en.md?raw'
 import globalPromptText from '../../media/templates/prompts/aiCodeGlobalPrompt.en.md?raw'
+import vuePromptText from '../../media/templates/prompts/aiCodeVuePrompt.en.md?raw'
 
 import {
   UI_DIR_AI_TYPES,
@@ -112,12 +113,33 @@ Consolidated documentation, architectural guidelines, and mandatory rules for th
 
     if (this.isMcp) {
       this.writeMcp(mcpData)
-      new LibraryAiMcp().make()
+      this.makeMcp()
     }
 
+    this.makeAgents()
     this.initGitIgnore()
 
     console.log('end')
+  }
+
+  /**
+   * Injects and synchronizes the ai-prompt guidelines in AGENTS.md.
+   *
+   * Внедряет и синхронизирует инструкции ai-prompt в AGENTS.md.
+   * @protected
+   */
+  protected makeAgents(): void {
+    new LibraryAiPromptAgents().make()
+  }
+
+  /**
+   * Generates MCP configuration and resources.
+   *
+   * Генерирует конфигурацию и ресурсы MCP.
+   * @protected
+   */
+  protected makeMcp(): void {
+    new LibraryAiMcp().make()
   }
 
   /**

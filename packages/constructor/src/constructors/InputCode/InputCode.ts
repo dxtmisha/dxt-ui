@@ -100,7 +100,10 @@ export class InputCode {
           this.refs.modelValue
         ],
         () => {
-          this.inputCodeItem.update(this.props.value ?? this.props.modelValue ?? '')
+          const value = this.props.value ?? this.props.modelValue ?? ''
+
+          this.value.value = value
+          this.inputCodeItem.update(value)
         },
         { immediate: true }
       )

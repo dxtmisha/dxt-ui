@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.0] - 2026-09-18
+
+### Added
+- **`LibraryAiPromptAgents` Class**:
+  - Implemented `LibraryAiPromptAgents` to synchronize and inject `ai-prompt.md` instructions into `AGENTS.md`.
+  - Added boundary markers (`<!-- START:ai-prompt md5:... -->` ... `<!-- END:ai-prompt -->`) with non-fixed length MD5 checksums to detect prompt changes, update the block in place, and preserve surrounding user-defined rules.
+  - Added automatic file initialization if `AGENTS.md` does not exist and appending logic for files without markers.
+  - Exported `LibraryAiPromptAgents` from `src/library.ts`.
+- **AI Agents Prompt Templates**:
+  - Added bilingual template files `src/media/templates/prompts/aiPromptAgents.en.md` and `src/media/templates/prompts/aiPromptAgents.ru.md` specifying preparation rules and strict action protocols for AI agents.
+- **Configuration Constant**:
+  - Added `UI_FILE_AI_AGENTS = 'AGENTS.md'` in `src/config.ts`.
+- **Unit Tests**:
+  - Added comprehensive test suite `LibraryAiPromptAgents.test.ts` for MD5 verification, marker detection, and update mechanics.
+
+### Changed
+- **`LibraryAiPrompt` Workflow**:
+  - Integrated `this.makeAgents()` into `LibraryAiPrompt.make()` to automatically synchronize `AGENTS.md` during prompt generation (`dxt-prompt`).
+  - Extracted `new LibraryAiMcp().make()` into a dedicated protected method `makeMcp()`.
+
 ## [1.1.10] - 2026-09-14
 
 ### Changed

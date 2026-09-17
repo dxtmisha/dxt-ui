@@ -18,7 +18,17 @@ export class CollageWoven {
     protected readonly className: string,
     protected readonly element?: CollageElement
   ) {
-    this.classCompact = `${className}-item--compact`
+    this.classCompact = `${className}Item--compact`
+  }
+
+  /**
+   * Resets injected compact class on all items. /
+   * Сбрасывает внедренный класс компактности на всех элементах.
+   */
+  reset(): void {
+    this.element?.getItems(`.${this.classCompact}`).forEach(
+      itemElement => this.resetItem(itemElement)
+    )
   }
 
   /**
@@ -81,7 +91,15 @@ export class CollageWoven {
    * @param compactState compact state flag / флаг состояния компактности
    */
   protected setCompact(itemElement: HTMLElement, compactState: boolean): void {
-    console.log('compactState', compactState)
     itemElement.classList.toggle(this.classCompact, compactState)
+  }
+
+  /**
+   * Resets injected compact class on the given item element. /
+   * Сбрасывает внедренный класс компактности на указанном элементе.
+   * @param itemElement target item element / целевой элемент
+   */
+  protected resetItem(itemElement: HTMLElement): void {
+    itemElement.classList.remove(this.classCompact)
   }
 }

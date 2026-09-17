@@ -36,6 +36,27 @@ describe('CollageElement', () => {
     expect(items[1]).toBe(item2)
   })
 
+  it('should query items with custom selector while requiring data-collage-item', () => {
+    const container = document.createElement('div')
+    const item1 = document.createElement('div')
+    item1.setAttribute('data-collage-item', 'true')
+    item1.className = 'custom-item'
+    const item2 = document.createElement('div')
+    item2.setAttribute('data-collage-item', 'true')
+    item2.className = 'other-item'
+    const nonItem = document.createElement('div')
+    nonItem.className = 'custom-item'
+
+    container.appendChild(item1)
+    container.appendChild(item2)
+    container.appendChild(nonItem)
+
+    const element = ref<HTMLElement | undefined>(container)
+    const collageElement = new CollageElement(element)
+
+    expect(collageElement.getItems('.custom-item')).toEqual([item1])
+  })
+
   it('should track container element width and detect resize via isResize()', () => {
     const container = document.createElement('div')
     Object.defineProperty(container, 'offsetWidth', { value: 500, configurable: true, writable: true })
