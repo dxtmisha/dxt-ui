@@ -1,5 +1,5 @@
-import { inject, ref } from 'vue'
 import type { ConstrEmit, ConstrStyles } from '@dxtmisha/functional'
+import { inject, ref } from 'vue'
 
 import type { ImageEventData } from '../Image'
 
@@ -9,8 +9,8 @@ import {
   type CollageItemDimensionsExpose,
   type CollageUpdate
 } from './basicTypes'
-import type { CollageItemEmits } from './types'
 import type { CollageItemProps } from './props'
+import type { CollageItemEmits } from './types'
 
 /**
  * Class for managing dimensional properties and aspect ratio calculations for CollageItem. /
@@ -84,7 +84,8 @@ export class CollageItemDimensions {
    */
   get binds(): Record<string, any> {
     return {
-      'data-collage-item': this.props.value,
+      'data-collage-item': 'true',
+      'data-value': this.props.value,
       'data-height': this.height.value,
       'data-width': this.width.value
     }

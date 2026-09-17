@@ -1,5 +1,5 @@
-import { onMounted, ref, type Ref, type ToRefs, watch } from 'vue'
 import { type ConstrEmit, type DesignComp, isFilled } from '@dxtmisha/functional'
+import { onMounted, ref, type Ref, type ToRefs, watch } from 'vue'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { ModelInclude } from '../../classes/ModelInclude'
@@ -9,8 +9,8 @@ import { FieldMessageInclude } from '../FieldMessage'
 import { InputCodeItemInclude } from '../InputCodeItem'
 
 import type { AriaList } from '../../types/ariaTypes'
-import type { InputCodeComponents, InputCodeEmits } from './types'
 import type { InputCodeProps } from './props'
+import type { InputCodeComponents, InputCodeEmits } from './types'
 
 /**
  * Class for managing code input components.
@@ -142,8 +142,8 @@ export class InputCode {
       this.value.value !== value
     ) {
       this.value.value = value
-      this.emits?.('input', value)
       this.model.emit(value)
+      this.emits?.('input', value)
     }
   }
 }

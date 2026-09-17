@@ -81,6 +81,7 @@ export class CollageWoven {
    * @param compactState compact state flag / флаг состояния компактности
    */
   protected setCompact(itemElement: HTMLElement, compactState: boolean): void {
+    console.log('compactState', compactState)
     itemElement.classList.toggle(this.classCompact, compactState)
   }
 }

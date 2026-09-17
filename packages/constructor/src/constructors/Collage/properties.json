@@ -16,40 +16,76 @@
   },
   "~columns": {
     "~1": {
-      "columns": "1"
+      "columns": {
+        "value": "1",
+        "_type": "var"
+      }
     },
     "~2": {
-      "columns": "2"
+      "columns": {
+        "value": "2",
+        "_type": "var"
+      }
     },
     "~3": {
-      "columns": "3"
+      "columns": {
+        "value": "3",
+        "_type": "var"
+      }
     },
     "~4": {
-      "columns": "4"
+      "columns": {
+        "value": "4",
+        "_type": "var"
+      }
     },
     "~5": {
-      "columns": "5"
+      "columns": {
+        "value": "5",
+        "_type": "var"
+      }
     },
     "~6": {
-      "columns": "6"
+      "columns": {
+        "value": "6",
+        "_type": "var"
+      }
     },
     "~7": {
-      "columns": "7"
+      "columns": {
+        "value": "7",
+        "_type": "var"
+      }
     },
     "~8": {
-      "columns": "8"
+      "columns": {
+        "value": "8",
+        "_type": "var"
+      }
     },
     "~9": {
-      "columns": "9"
+      "columns": {
+        "value": "9",
+        "_type": "var"
+      }
     },
     "~10": {
-      "columns": "10"
+      "columns": {
+        "value": "10",
+        "_type": "var"
+      }
     },
     "~11": {
-      "columns": "11"
+      "columns": {
+        "value": "11",
+        "_type": "var"
+      }
     },
     "~12": {
-      "columns": "12"
+      "columns": {
+        "value": "12",
+        "_type": "var"
+      }
     },
     "_default": "4"
   }

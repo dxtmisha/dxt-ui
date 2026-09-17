@@ -36,11 +36,6 @@ export const wikiDescriptionsCollage: StorybookComponentsDescriptionItem = {
     ]
   },
   import: [],
-  render: `
-    <div class="wiki-storybook-container">
-      <DesignComponent v-bind="args"/>
-    </div>
-  `,
   stories: [
     {
       id: 'CollageVariants',

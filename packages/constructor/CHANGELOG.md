@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.114.1] - 2026-09-17
+
+### Changed
+- **Dependencies**:
+  - Updated workspace package dependencies: `@dxtmisha/functional` (`>=1.15.16`), `@dxtmisha/functional-basic` (`>=1.11.0`), `@dxtmisha/media` (`>=0.7.4`), and `@dxtmisha/styles` (`>=1.0.13`).
+- **AI Package Guidelines**:
+  - Refined architectural guidelines in `ai-memory.md` regarding dependency injection in constructor classes, `properties.json` scoping for external control modifiers, and avoiding manual class mapping for design tokens.
+
+### Fixed
+- **Model Event Synchronization**:
+  - Fixed event emission order across `Form`, `InputCode`, and `Window` components (`FormEvent`, `InputCode`, `WindowInclude`).
+  - Guaranteed that reactive `model.emit(...)` is executed before emitting `change`, `input`, or `window` events, ensuring that parent `v-model` binding state is synchronized before event callbacks trigger.
+
 ## [0.114.0] - 2026-09-07
 
 ### Added

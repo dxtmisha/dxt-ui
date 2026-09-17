@@ -140,7 +140,7 @@ export class WindowInclude<
    * @param options event payload / параметры события
    */
   protected readonly onWindow = (options: WindowEmitOptions) => {
-    this.emits?.('window', options)
     this.model?.emit(options.open)
+    this.emits?.('window', options)
   }
 }

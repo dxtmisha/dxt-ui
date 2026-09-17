@@ -9073,6 +9073,144 @@
             "name": "--d1-collage-gap",
             "type": "var",
             "value": "{sys.spacing.xs}"
+          },
+          "columns": {
+            "name": "&--columns",
+            "type": "state",
+            "value": {
+              "1": {
+                "name": "&--1",
+                "type": "state",
+                "value": {
+                  "columns": {
+                    "name": "--d1-collage-columns",
+                    "type": "var",
+                    "value": "1"
+                  }
+                }
+              },
+              "2": {
+                "name": "&--2",
+                "type": "state",
+                "value": {
+                  "columns": {
+                    "name": "--d1-collage-columns",
+                    "type": "var",
+                    "value": "2"
+                  }
+                }
+              },
+              "3": {
+                "name": "&--3",
+                "type": "state",
+                "value": {
+                  "columns": {
+                    "name": "--d1-collage-columns",
+                    "type": "var",
+                    "value": "3"
+                  }
+                }
+              },
+              "4": {
+                "name": "&--4",
+                "type": "state",
+                "value": {
+                  "columns": {
+                    "name": "--d1-collage-columns",
+                    "type": "var",
+                    "value": "4"
+                  }
+                }
+              },
+              "5": {
+                "name": "&--5",
+                "type": "state",
+                "value": {
+                  "columns": {
+                    "name": "--d1-collage-columns",
+                    "type": "var",
+                    "value": "5"
+                  }
+                }
+              },
+              "6": {
+                "name": "&--6",
+                "type": "state",
+                "value": {
+                  "columns": {
+                    "name": "--d1-collage-columns",
+                    "type": "var",
+                    "value": "6"
+                  }
+                }
+              },
+              "7": {
+                "name": "&--7",
+                "type": "state",
+                "value": {
+                  "columns": {
+                    "name": "--d1-collage-columns",
+                    "type": "var",
+                    "value": "7"
+                  }
+                }
+              },
+              "8": {
+                "name": "&--8",
+                "type": "state",
+                "value": {
+                  "columns": {
+                    "name": "--d1-collage-columns",
+                    "type": "var",
+                    "value": "8"
+                  }
+                }
+              },
+              "9": {
+                "name": "&--9",
+                "type": "state",
+                "value": {
+                  "columns": {
+                    "name": "--d1-collage-columns",
+                    "type": "var",
+                    "value": "9"
+                  }
+                }
+              },
+              "10": {
+                "name": "&--10",
+                "type": "state",
+                "value": {
+                  "columns": {
+                    "name": "--d1-collage-columns",
+                    "type": "var",
+                    "value": "10"
+                  }
+                }
+              },
+              "11": {
+                "name": "&--11",
+                "type": "state",
+                "value": {
+                  "columns": {
+                    "name": "--d1-collage-columns",
+                    "type": "var",
+                    "value": "11"
+                  }
+                }
+              },
+              "12": {
+                "name": "&--12",
+                "type": "state",
+                "value": {
+                  "columns": {
+                    "name": "--d1-collage-columns",
+                    "type": "var",
+                    "value": "12"
+                  }
+                }
+              }
+            }
           }
         }
       },
@@ -12491,6 +12629,150 @@
                         "value": "calc((var(--sys-height) - {?icon-_width}) / 2)"
                       }
                     }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "collage": {
+        "name": "d-collage",
+        "type": "component",
+        "value": {
+          "columns": {
+            "name": "&--columns",
+            "type": "state",
+            "value": {
+              "1": {
+                "name": "&--1",
+                "type": "state",
+                "value": {
+                  "columns": {
+                    "name": "--d-collage-columns",
+                    "type": "var",
+                    "value": "1"
+                  }
+                }
+              },
+              "2": {
+                "name": "&--2",
+                "type": "state",
+                "value": {
+                  "columns": {
+                    "name": "--d-collage-columns",
+                    "type": "var",
+                    "value": "2"
+                  }
+                }
+              },
+              "3": {
+                "name": "&--3",
+                "type": "state",
+                "value": {
+                  "columns": {
+                    "name": "--d-collage-columns",
+                    "type": "var",
+                    "value": "3"
+                  }
+                }
+              },
+              "4": {
+                "name": "&--4",
+                "type": "state",
+                "value": {
+                  "columns": {
+                    "name": "--d-collage-columns",
+                    "type": "var",
+                    "value": "4"
+                  }
+                }
+              },
+              "5": {
+                "name": "&--5",
+                "type": "state",
+                "value": {
+                  "columns": {
+                    "name": "--d-collage-columns",
+                    "type": "var",
+                    "value": "5"
+                  }
+                }
+              },
+              "6": {
+                "name": "&--6",
+                "type": "state",
+                "value": {
+                  "columns": {
+                    "name": "--d-collage-columns",
+                    "type": "var",
+                    "value": "6"
+                  }
+                }
+              },
+              "7": {
+                "name": "&--7",
+                "type": "state",
+                "value": {
+                  "columns": {
+                    "name": "--d-collage-columns",
+                    "type": "var",
+                    "value": "7"
+                  }
+                }
+              },
+              "8": {
+                "name": "&--8",
+                "type": "state",
+                "value": {
+                  "columns": {
+                    "name": "--d-collage-columns",
+                    "type": "var",
+                    "value": "8"
+                  }
+                }
+              },
+              "9": {
+                "name": "&--9",
+                "type": "state",
+                "value": {
+                  "columns": {
+                    "name": "--d-collage-columns",
+                    "type": "var",
+                    "value": "9"
+                  }
+                }
+              },
+              "10": {
+                "name": "&--10",
+                "type": "state",
+                "value": {
+                  "columns": {
+                    "name": "--d-collage-columns",
+                    "type": "var",
+                    "value": "10"
+                  }
+                }
+              },
+              "11": {
+                "name": "&--11",
+                "type": "state",
+                "value": {
+                  "columns": {
+                    "name": "--d-collage-columns",
+                    "type": "var",
+                    "value": "11"
+                  }
+                }
+              },
+              "12": {
+                "name": "&--12",
+                "type": "state",
+                "value": {
+                  "columns": {
+                    "name": "--d-collage-columns",
+                    "type": "var",
+                    "value": "12"
                   }
                 }
               }

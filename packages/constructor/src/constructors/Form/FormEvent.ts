@@ -34,10 +34,10 @@ export class FormEvent {
   readonly onChange = (event?: InputEvent): void => {
     const { data, values } = this.getData()
 
+    this.model?.emit(values)
     this.emits?.('change', event as InputEvent, data, values)
     this.emits?.('changeLite', data, values)
     this.emits?.('changeValues', values)
-    this.model?.emit(values)
   }
 
   /**
@@ -50,13 +50,14 @@ export class FormEvent {
 
     const { data, values } = this.getData()
 
+    this.model?.emit(values)
+
     if (event) {
       this.emits?.('input', event, data, values)
     }
 
     this.emits?.('inputLite', data, values)
     this.emits?.('inputValues', values)
-    this.model?.emit(values)
   }
 
   /**
