@@ -1,5 +1,6 @@
 export * from './CarouselPagination'
 export * from './CarouselPaginationDesign'
+export * from './CarouselPaginationFocus'
 export * from './CarouselPaginationItems'
 export * from './CarouselPaginationSelected'
 export * from './CarouselPaginationInclude'

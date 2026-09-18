@@ -18,14 +18,12 @@
       
       @include ui.backgroundColor(#{var(--d1-sys-palette-onSurface)});
       @include ui.backgroundOpacity(#{var(--d1-sys-opacity-disabled)});
+      @include ui.gradient(#{var(--sys-color)});
+      @include ui.gradientOpacity(#{0});
       
       border-radius: var(--d1-sys-rounded-full);
       
-      @include ui.hover('.d1-carouselPagination') {
-        @include ui.backgroundOpacity(#{var(--d1-sys-opacity-surface-medium)}); @include ui.backgroundColor('init');
-      }
-      
-      &:focus-visible {
+      @include ui.focus('.d1-carouselPagination') {
         @include ui.outlineOpacity(#{var(--d1-sys-opacity-outline)});
         
         outline-width: var(--d1-ref-spacing-1);
@@ -33,9 +31,17 @@
         @include ui.outlineColor(#{var(--d1-sys-palette-primary)});
       }
       
+      @include ui.hover('.d1-carouselPagination') {
+        @include ui.gradientOpacity(#{var(--d1-sys-opacity-hover)}); @include ui.gradient('init');
+      }
+      
+      @include ui.active('.d1-carouselPagination') {
+        @include ui.gradientOpacity(#{var(--d1-sys-opacity-pressed)}); @include ui.gradient('init');
+      }
+      
       &--selected {
-        @include ui.backgroundOpacity(#{var(--d1-sys-opacity-primary-high)}); @include ui.backgroundColor('init');
-        @include ui.paletteBackground(#{var(--d1-sys-palette-primary)});
+        @include ui.backgroundOpacity(#{var(--d1-sys-opacity-primary-medium)}); @include ui.backgroundColor('init');
+        @include ui.paletteBackground(#{var(--d1-sys-palette-onSurface)});
       }
     }
     

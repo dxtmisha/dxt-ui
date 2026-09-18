@@ -11,6 +11,7 @@ import { ModelInclude } from '../../classes/ModelInclude'
 import { TextInclude } from '../../classes/TextInclude'
 import type { AriaList } from '../../types/ariaTypes'
 
+import { CarouselPaginationFocus } from './CarouselPaginationFocus'
 import { CarouselPaginationItems } from './CarouselPaginationItems'
 import { CarouselPaginationSelected } from './CarouselPaginationSelected'
 import type { CarouselPaginationComponents, CarouselPaginationEmits, CarouselPaginationSlots } from './types'
@@ -28,6 +29,9 @@ export class CarouselPagination {
   /** Slide selection and transition helper / Вспомогательный класс для выбора слайда и навигации */
   readonly selected: CarouselPaginationSelected
 
+  /** Focus management and keyboard navigation helper / Вспомогательный класс для управления фокусом и клавиатурной навигацией */
+  readonly focus: CarouselPaginationFocus
+
   /** Text manager for pagination / Менеджер текста для пагинации */
   readonly text: TextInclude
 
@@ -42,6 +46,7 @@ export class CarouselPagination {
    * @param slots slot functions wrapper / обертка функций слотов
    * @param emits event emitter callback / функция обратного вызова для генерации событий
    * @param constructors optional custom implementation class constructors / опциональные пользовательские конструкторы классов
+   * @param constructors.CarouselPaginationFocusConstructor custom focus manager constructor / пользовательский конструктор управления фокусом
    * @param constructors.CarouselPaginationItemsConstructor custom items calculation constructor / пользовательский конструктор расчета элементов
    * @param constructors.CarouselPaginationSelectedConstructor custom selection constructor / пользовательский конструктор выбора слайда
    * @param constructors.ModelIncludeConstructor class for working with model / класс для работы с моделью
@@ -57,6 +62,7 @@ export class CarouselPagination {
     protected readonly slots?: CarouselPaginationSlots,
     protected readonly emits?: ConstrEmit<CarouselPaginationEmits>,
     constructors: {
+      CarouselPaginationFocusConstructor?: typeof CarouselPaginationFocus
       CarouselPaginationItemsConstructor?: typeof CarouselPaginationItems
       CarouselPaginationSelectedConstructor?: typeof CarouselPaginationSelected
       ModelIncludeConstructor?: typeof ModelInclude<number>
@@ -64,6 +70,7 @@ export class CarouselPagination {
     } = {}
   ) {
     const {
+      CarouselPaginationFocusConstructor = CarouselPaginationFocus,
       CarouselPaginationItemsConstructor = CarouselPaginationItems,
       CarouselPaginationSelectedConstructor = CarouselPaginationSelected,
       ModelIncludeConstructor = ModelInclude,
@@ -78,6 +85,11 @@ export class CarouselPagination {
       this.selected,
       emits
     )
+    this.focus = new CarouselPaginationFocusConstructor(
+      props,
+      this.element,
+      className
+    )
 
     new ModelIncludeConstructor('selected', emits, this.selected.item)
   }
@@ -91,6 +103,7 @@ export class CarouselPagination {
   get aria(): AriaList {
     return {
       ...AriaStaticInclude.role('tablist'),
+      ...AriaStaticInclude.orientation(this.props.vertical ? 'vertical' : 'horizontal'),
       ...AriaStaticInclude.label(this.text.pagination)
     }
   }

@@ -4,11 +4,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  outline: none;
 
   &__item {
     cursor: pointer;
 
-    transition-property: transform, opacity;
+    transition-property: transform, opacity, width, height;
     transition-duration: ui.v('d.sys.transitionDuration.sm');
     transition-timing-function: ui.v('d.sys.transitionFunction.emphasized');
   }

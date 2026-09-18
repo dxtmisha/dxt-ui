@@ -155,6 +155,7 @@ export class CarouselPaginationDesign<
       this.props.tag || 'div',
       {
         ...this.getAttrs(),
+        ...this.item.focus.binds,
         ...this.item.aria,
         ref: this.element,
         class: this.classes?.value.main,

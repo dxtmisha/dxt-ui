@@ -28,6 +28,7 @@ export const defaults: object = {
   ...defaultsCarouselPagination,
   ...{
     // :default [!] System label / Системная метка
+    type: 'bullets'
     // :default [!] System label / Системная метка
   }
 }

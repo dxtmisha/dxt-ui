@@ -80,6 +80,16 @@ export const wikiOption: StorybookArgsToList = {
       }
     }
   },
+  clickable: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.option,
+      description: {
+        en: 'Whether the component or its elements are clickable',
+        ru: 'Кликабелен ли компонент или его элементы'
+      }
+    }
+  },
   clickOpen: {
     type: StorybookControl.boolean,
     options: {
@@ -236,6 +246,16 @@ export const wikiOption: StorybookArgsToList = {
       }
     },
     hide: true
+  },
+  hideIfOne: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.option,
+      description: {
+        en: 'Whether to hide the component if only one item exists',
+        ru: 'Скрывать ли компонент, если элемент всего один'
+      }
+    }
   },
   hideList: {
     type: StorybookControl.boolean,

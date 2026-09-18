@@ -55,6 +55,7 @@ export const defaultsCarouselPagination = {
   template: '[active] / [total]',
   ...{
     // :default [!] System label / Системная метка
+    type: 'bullets'
     // :default [!] System label / Системная метка
   }
 }

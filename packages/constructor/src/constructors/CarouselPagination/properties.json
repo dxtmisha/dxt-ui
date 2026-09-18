@@ -7,7 +7,8 @@
     "~bullets": {},
     "~lines": {},
     "~fraction": {},
-    "~progressbar": {}
+    "~progressbar": {},
+    "_default": "bullets"
   },
   "~vertical": {},
   "~dynamic": {}

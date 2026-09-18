@@ -74,6 +74,17 @@ export const wikiValue: StorybookArgsToList = {
       type: 'currency'
     }
   },
+  count: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.value,
+      type: ['number', 'string'],
+      description: {
+        en: 'Total item count',
+        ru: 'Общее количество элементов'
+      }
+    }
+  },
   countryDefault: {
     type: StorybookControl.string,
     options: {
