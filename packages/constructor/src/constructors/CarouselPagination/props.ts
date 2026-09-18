@@ -12,27 +12,31 @@ type CarouselPaginationPropsToken = {
 export type CarouselPaginationPropsBasic = ModelPropsSelected<number | string>
   & TextPaginationPropsInclude
   & {
-  /** Current active slide / Текущий активный слайд */
-  selected?: number | string
 
-  /** Total item count / Общее количество элементов */
-  count?: number | string
+    /** Current active slide / Текущий активный слайд */
+    selected?: number | string
 
-  /** Whether the bullets/indicators are clickable / Кликабельны ли буллеты/индикаторы */
-  clickable?: boolean
+    /** Total item count / Общее количество элементов */
+    count?: number | string
 
-  /** Number of visible bullets in dynamic mode / Количество отображаемых буллетов в динамическом режиме */
-  visible?: number | string
+    /** Whether the bullets/indicators are clickable / Кликабельны ли буллеты/индикаторы */
+    clickable?: boolean
 
-  /** Whether to hide pagination if only one slide exists / Скрывать ли пагинацию, если слайд всего один */
-  hideIfOne?: boolean
+    /** Number of visible bullets in dynamic mode / Количество отображаемых буллетов в динамическом режиме */
+    visible?: number | string
 
-  /** HTML tag for the container / HTML-тег для контейнера */
-  tag?: string
+    /** Whether to hide pagination if only one slide exists / Скрывать ли пагинацию, если слайд всего один */
+    hideIfOne?: boolean
 
-  /** Template for formatting fraction display (e.g. '[active] / [total]') / Шаблон для форматирования отображения дроби (например, '[active] / [total]') */
-  template?: string
-}
+    /** HTML tag for the container / HTML-тег для контейнера */
+    tag?: string
+
+    /** Template for formatting fraction display (e.g. '[active] / [total]') / Шаблон для форматирования отображения дроби (например, '[active] / [total]') */
+    template?: string
+
+    /** Whether keyboard control is enabled / Включено ли управление с клавиатуры */
+    control?: boolean
+  }
 
 /**
  * Type describing incoming properties.
@@ -53,6 +57,7 @@ export const defaultsCarouselPagination = {
   visible: 5,
   hideIfOne: true,
   template: '[active] / [total]',
+  control: true,
   ...{
     // :default [!] System label / Системная метка
     type: 'bullets'

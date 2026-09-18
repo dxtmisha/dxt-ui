@@ -1,6 +1,9 @@
 {
   "main": "{d.carouselPagination}",
   "gap": "{sys.spacing.xs}",
+  "focus-visible": {
+    "outline": "{outline.md}"
+  },
   "#item": {
     "color": "{sys.palette.onSurface}",
     "background-color": "{sys.palette.onSurface}",

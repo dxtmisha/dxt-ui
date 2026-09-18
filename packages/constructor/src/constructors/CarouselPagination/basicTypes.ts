@@ -40,6 +40,8 @@ export type CarouselPaginationItemBinds = AriaList & {
   key?: number | string
   /** Button type / Тип кнопки */
   type?: string
+  /** Item index data attribute / Data-атрибут индекса элемента */
+  'data-index'?: number
   /** Item classes / Классы элемента */
   class?: ConstrClass
   /** Item styles / Стили элемента */

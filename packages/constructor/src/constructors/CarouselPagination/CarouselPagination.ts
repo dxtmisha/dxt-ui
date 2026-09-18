@@ -87,8 +87,9 @@ export class CarouselPagination {
     )
     this.focus = new CarouselPaginationFocusConstructor(
       props,
-      this.element,
-      className
+      element,
+      className,
+      this.selected
     )
 
     new ModelIncludeConstructor('selected', emits, this.selected.item)

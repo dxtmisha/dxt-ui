@@ -155,8 +155,8 @@ export class CarouselPaginationItems {
    * @param selected whether item is active / активен ли элемент
    * @returns tabindex number / значение tabindex
    */
-  getTabindex(selected: boolean): number {
-    return selected ? 0 : -1
+  getTabindex(selected?: boolean): number {
+    return this.props.control !== false && selected ? 0 : -1
   }
 
   /**
@@ -206,12 +206,13 @@ export class CarouselPaginationItems {
     scale?: number
   ): CarouselPaginationItemBinds {
     return {
-      key: index,
-      type: 'button',
-      style: this.getStyle(scale),
-      tabindex: this.getTabindex(selected),
+      'key': index,
+      'type': 'button',
+      'data-index': index,
+      'style': this.getStyle(scale),
+      'tabindex': this.getTabindex(selected),
       ...this.getAria(index, selected),
-      onClick: (event: MouseEvent) => this.onClick(event, index)
+      'onClick': (event: MouseEvent) => this.onClick(event, index)
     }
   }
 

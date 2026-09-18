@@ -52,7 +52,8 @@ describe('CarouselPaginationItems', () => {
   it('should generate standard list of bullets', () => {
     const props = reactive<CarouselPaginationProps>({
       count: 3,
-      selected: 2
+      selected: 2,
+      control: true
     })
     const refs = toRefs(props)
     const selected = new CarouselPaginationSelected(props, refs)
@@ -75,6 +76,7 @@ describe('CarouselPaginationItems', () => {
       binds: {
         key: 1,
         type: 'button',
+        'data-index': 1,
         style: undefined,
         tabindex: -1,
         role: 'tab',
@@ -98,6 +100,7 @@ describe('CarouselPaginationItems', () => {
       binds: {
         key: 2,
         type: 'button',
+        'data-index': 2,
         style: undefined,
         tabindex: 0,
         role: 'tab',
@@ -121,6 +124,7 @@ describe('CarouselPaginationItems', () => {
       binds: {
         key: 3,
         type: 'button',
+        'data-index': 3,
         style: undefined,
         tabindex: -1,
         role: 'tab',
@@ -136,7 +140,8 @@ describe('CarouselPaginationItems', () => {
       count: 10,
       selected: 5,
       dynamic: true,
-      visible: 5
+      visible: 5,
+      control: true
     })
     const refs = toRefs(props)
     const selected = new CarouselPaginationSelected(props, refs)
@@ -160,7 +165,9 @@ describe('CarouselPaginationItems', () => {
   })
 
   it('should return item binds', () => {
-    const props = reactive<CarouselPaginationProps>({})
+    const props = reactive<CarouselPaginationProps>({
+      control: true
+    })
     const refs = toRefs(props)
     const selected = new CarouselPaginationSelected(props, refs)
     const items = new CarouselPaginationItems(props, refs, selected)
@@ -169,6 +176,7 @@ describe('CarouselPaginationItems', () => {
     expect(binds).toEqual({
       key: 2,
       type: 'button',
+      'data-index': 2,
       style: { transform: 'scale(0.5)' },
       tabindex: 0,
       role: 'tab',
@@ -204,6 +212,16 @@ describe('CarouselPaginationItems', () => {
       'aria-selected': 'true',
       'aria-label': 'Slide 1',
       tabindex: 0
+    })
+
+    props.control = false
+    expect(items.getTabindex(true)).toBe(-1)
+    expect(items.getTabindex(false)).toBe(-1)
+    expect(items.getAria(1, true)).toEqual({
+      role: 'tab',
+      'aria-selected': 'true',
+      'aria-label': 'Slide 1',
+      tabindex: -1
     })
     expect(items.getAria(2, false)).toEqual({
       role: 'tab',

@@ -33,26 +33,34 @@ describe('CarouselPagination', () => {
   it('should be focusable by default when clickable and bullets/lines', () => {
     const { instance } = createInstance()
 
-    expect(instance.focus.isFocusable()).toBe(true)
-    expect(instance.focus.binds).toHaveProperty('tabindex', 0)
-    expect(instance.focus.binds).toHaveProperty('onFocus')
-    expect(instance.focus.binds).toHaveProperty('onBlur')
+    expect(instance.focus['isFocusable']()).toBe(true)
+    expect(instance.focus.binds).toHaveProperty('onKeydown')
+    expect(instance.focus.binds).not.toHaveProperty('tabindex')
+    expect(instance.focus.binds).not.toHaveProperty('onFocus')
+    expect(instance.focus.binds).not.toHaveProperty('onBlur')
   })
 
-  it('should not be focusable when clickable is false', () => {
-    const { instance } = createInstance({ clickable: false })
+  it('should not be focusable when control is false', () => {
+    const { instance } = createInstance({ control: false })
 
-    expect(instance.focus.isFocusable()).toBe(false)
+    expect(instance.focus['isFocusable']()).toBe(false)
     expect(instance.focus.binds).toEqual({})
   })
 
-  it('should not be focusable when type is fraction or progressbar', () => {
-    const { instance: fractionInstance } = createInstance({ type: 'fraction' })
-    expect(fractionInstance.focus.isFocusable()).toBe(false)
+  it('should not be focusable when clickable is false even if control is true', () => {
+    const { instance } = createInstance({ control: true, clickable: false })
+
+    expect(instance.focus['isFocusable']()).toBe(false)
+    expect(instance.focus.binds).toEqual({})
+  })
+
+  it('should not be focusable when type is fraction or progressbar even if control is true', () => {
+    const { instance: fractionInstance } = createInstance({ control: true, type: 'fraction' })
+    expect(fractionInstance.focus['isFocusable']()).toBe(false)
     expect(fractionInstance.focus.binds).toEqual({})
 
-    const { instance: progressInstance } = createInstance({ type: 'progressbar' })
-    expect(progressInstance.focus.isFocusable()).toBe(false)
+    const { instance: progressInstance } = createInstance({ control: true, type: 'progressbar' })
+    expect(progressInstance.focus['isFocusable']()).toBe(false)
     expect(progressInstance.focus.binds).toEqual({})
   })
 
@@ -70,10 +78,9 @@ describe('CarouselPagination', () => {
     })
   })
 
-  it('should initialize focus helper with appropriate selectors', () => {
+  it('should initialize focus helper', () => {
     const { instance } = createInstance()
 
     expect(instance.focus).toBeDefined()
-    expect(instance.focus.focusDirection).toBeDefined()
   })
 })
