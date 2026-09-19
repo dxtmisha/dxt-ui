@@ -32,6 +32,16 @@
         }
       }
     }
+    
+    &--focus {
+      & .d1-collageItem__body {
+        &::after {
+          content: ' ';
+          @include ui.gradientOpacity(#{var(--d1-sys-opacity-focus)}); @include ui.gradient('init');
+          @include ui.paletteGradient(#{var(--d1-sys-palette-primary)});
+        }
+      }
+    }
   }
   // :style [!] System label / Системная метка
 

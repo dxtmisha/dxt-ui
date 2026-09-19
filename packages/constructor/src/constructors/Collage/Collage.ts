@@ -9,13 +9,14 @@ import {
 import type { Ref, ToRefs } from 'vue'
 
 import { EventClickInclude } from '../../classes/EventClickInclude'
+import { FocusDirectionInclude } from '../../classes/FocusDirectionInclude'
 import { ModelValueInclude } from '../../classes/ModelValueInclude'
 
-import { CollageVariant } from './CollageVariant'
 import { CollageElement } from './CollageElement'
 import { CollageGrow } from './CollageGrow'
 import { CollageMasonryHorizontal } from './CollageMasonryHorizontal'
 import { CollageMasonryVertical } from './CollageMasonryVertical'
+import { CollageVariant } from './CollageVariant'
 import { CollageWoven } from './CollageWoven'
 
 import type { CollageProps } from './props'
@@ -54,6 +55,9 @@ export class Collage {
   /** Model value synchronizer for selected state / Синхронизатор значения модели для состояния выбора */
   readonly model: ModelValueInclude<ListSelectedList>
 
+  /** Instance of FocusDirectionInclude for keyboard directional navigation / Экземпляр FocusDirectionInclude для клавиатурной навигации по направлениям */
+  readonly focusDirection: FocusDirectionInclude
+
   /**
    * Constructor for Collage.
    *
@@ -74,6 +78,7 @@ export class Collage {
    * @param constructors.CollageGrowConstructor class for managing item grow factors / класс для управления коэффициентами роста элементов
    * @param constructors.CollageWovenConstructor class for managing woven variant layout / класс для управления макетом варианта woven
    * @param constructors.EventClickIncludeConstructor class for managing click events / класс для управления событиями клика
+   * @param constructors.FocusDirectionIncludeConstructor class for keyboard directional navigation / класс для клавиатурной навигации по направлениям
    * @param constructors.ListDataRefConstructor class for managing list data / класс для управления данными списка
    * @param constructors.ModelValueIncludeConstructor class for managing model value / класс для управления значением модели
    */
@@ -94,6 +99,7 @@ export class Collage {
       CollageGrowConstructor?: typeof CollageGrow
       CollageWovenConstructor?: typeof CollageWoven
       EventClickIncludeConstructor?: typeof EventClickInclude
+      FocusDirectionIncludeConstructor?: typeof FocusDirectionInclude
       ListDataRefConstructor?: typeof ListDataRef
       ModelValueIncludeConstructor?: typeof ModelValueInclude
     } = {}
@@ -106,6 +112,7 @@ export class Collage {
       CollageGrowConstructor = CollageGrow,
       CollageWovenConstructor = CollageWoven,
       EventClickIncludeConstructor = EventClickInclude,
+      FocusDirectionIncludeConstructor = FocusDirectionInclude,
       ListDataRefConstructor = ListDataRef,
       ModelValueIncludeConstructor = ModelValueInclude
     } = constructors
@@ -154,6 +161,14 @@ export class Collage {
       emits,
       this.event,
       refs.selected
+    )
+
+    this.focusDirection = new FocusDirectionIncludeConstructor(
+      this.element,
+      `[data-collage-item]`,
+      `.${this.classDesign}-collageItem--selected`,
+      `${this.classDesign}-collageItem--focus`,
+      () => this.props.control
     )
   }
 

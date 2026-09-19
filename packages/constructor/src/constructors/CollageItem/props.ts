@@ -7,6 +7,7 @@ import type { EventClickProps } from '../../types/eventClickTypes'
 type CollageItemPropsToken = {
   // :type [!] System label / Системная метка
   compact?: boolean
+  focus?: boolean
   selected?: boolean
   span?: 'standard' | 'banner' | 'huge' | 'large' | 'tall' | 'wide'
   // :type [!] System label / Системная метка

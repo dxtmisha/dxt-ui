@@ -49,4 +49,6 @@ export type EventClickProps = {
   value?: EventClickValue['value']
   /** Additional click event details/ Дополнительные детали события клика */
   detail?: EventClickValue['detail']
+  /** Item index / Индекс элемента */
+  index?: number | string
 }

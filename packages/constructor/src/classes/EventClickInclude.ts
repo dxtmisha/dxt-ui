@@ -60,7 +60,7 @@ export class EventClickInclude {
    */
   get expose(): EventClickExpose {
     return {
-      getValue: () => this.props?.value,
+      getValue: () => this.props?.value ?? this.props?.index,
       getDetail: () => this.props?.detail
     }
   }
@@ -148,7 +148,7 @@ export class EventClickInclude {
   protected getOptions(event: MouseEvent): EventClickValue {
     return {
       type: this.getTargetType(event),
-      value: this.props?.value,
+      value: this.props?.value ?? this.props?.index,
       detail: this.props?.detail
     }
   }

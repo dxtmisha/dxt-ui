@@ -124,4 +124,65 @@ describe('FocusDirectionInclude', () => {
 
     expect(clickSpy).toHaveBeenCalled()
   })
+
+  it('should handle control parameter as boolean and function', () => {
+    const parentRef = ref(parentElement)
+
+    const focusDirDisabled = new FocusDirectionInclude(
+      parentRef,
+      undefined,
+      undefined,
+      undefined,
+      false
+    )
+    expect(focusDirDisabled.is()).toBe(false)
+    expect(focusDirDisabled.binds).toEqual({})
+    expect(focusDirDisabled.bindsItem()).toEqual({})
+    expect(focusDirDisabled.tabindexItem()).toBeUndefined()
+
+    itemA.classList.remove('sys-focusDirection__item--active')
+    focusDirDisabled.activateDefault()
+    expect(itemA.classList.contains('sys-focusDirection__item--active')).toBe(false)
+
+    let controlState = false
+    const focusDirFunction = new FocusDirectionInclude(
+      parentRef,
+      undefined,
+      undefined,
+      undefined,
+      () => controlState
+    )
+    expect(focusDirFunction.is()).toBe(false)
+    expect(focusDirFunction.binds).toEqual({})
+
+    controlState = true
+    expect(focusDirFunction.is()).toBe(true)
+    expect(focusDirFunction.binds.tabindex).toBe(0)
+    expect(focusDirFunction.bindsItem()).toEqual({ tabindex: -1 })
+    expect(focusDirFunction.tabindexItem()).toBe(-1)
+  })
+
+  it('should return item binds and forbid focus when control is enabled', () => {
+    const parentRef = ref(parentElement)
+    const focusDir = new FocusDirectionInclude(parentRef)
+
+    expect(focusDir.bindsItem()).toEqual({ tabindex: -1 })
+    expect(focusDir.bindsItem({ class: 'test-item' })).toEqual({
+      tabindex: -1,
+      class: 'test-item'
+    })
+    expect(focusDir.tabindexItem()).toBe(-1)
+
+    const focusDirDisabled = new FocusDirectionInclude(
+      parentRef,
+      undefined,
+      undefined,
+      undefined,
+      false
+    )
+    expect(focusDirDisabled.bindsItem()).toEqual({})
+    expect(focusDirDisabled.bindsItem({ class: 'test-item' })).toEqual({
+      class: 'test-item'
+    })
+  })
 })

@@ -26,6 +26,9 @@ export type CollagePropsBasic<
 
     /** Base cell size / Базовый размер ячейки */
     cellSize?: string | number
+
+    /** Whether to enable control mode / Включен ли режим управления */
+    control?: boolean
   }
 
 /**

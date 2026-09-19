@@ -1,4 +1,3 @@
-import { h, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
@@ -6,6 +5,7 @@ import {
   forEach,
   toBinds
 } from '@dxtmisha/functional'
+import { h, type VNode } from 'vue'
 
 import { ChipGroup } from './ChipGroup'
 
@@ -30,14 +30,14 @@ export class ChipGroupDesign<
   CLASSES extends ChipGroupClasses,
   P extends ChipGroupPropsBasic
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
-    COMP,
-    ChipGroupEmits,
-    EXPOSE,
-    ChipGroupSlots,
-    CLASSES,
-    P
-  > {
+  HTMLDivElement,
+  COMP,
+  ChipGroupEmits,
+  EXPOSE,
+  ChipGroupSlots,
+  CLASSES,
+  P
+> {
   protected readonly item: ChipGroup
 
   /**
@@ -158,7 +158,7 @@ export class ChipGroupDesign<
         item
       ),
       undefined,
-      item.index
+      String(item.index)
     )
   }
 }

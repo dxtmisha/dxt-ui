@@ -13,6 +13,14 @@
   & {
     --d1-collage-gap: var(--d1-sys-spacing-xs);
     
+    &:focus-visible {
+      @include ui.outlineOpacity(#{var(--d1-sys-opacity-outline)});
+      
+      outline-width: var(--d1-ref-spacing-1);
+      outline-style: solid;
+      @include ui.outlineColor(#{var(--d1-sys-palette-primary)});
+    }
+    
     &--columns {
       &--1 {
         --d1-collage-columns: 1;

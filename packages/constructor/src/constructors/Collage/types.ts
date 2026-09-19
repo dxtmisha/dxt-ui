@@ -47,6 +47,7 @@ export interface CollageSlots {
 export type CollageClasses = {
   main: ConstrClass
   // :classes [!] System label / Системная метка
+  body: string
   item: string
   // :classes [!] System label / Системная метка
 }

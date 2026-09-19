@@ -9,6 +9,14 @@
   "#icon": {
     "color": "{ref.palette.white.50}"
   },
+  "~focus": {
+    "#body": {
+      "after": {
+        "palette-gradient": "{sys.palette.primary}",
+        "gradient-opacity": "{sys.opacity.scrim}"
+      }
+    }
+  },
   "~selected": {
     "#body": {
       "after": {

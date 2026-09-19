@@ -1,10 +1,10 @@
-import { h, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
   DesignConstructorAbstract,
   toBinds
 } from '@dxtmisha/functional'
+import { h, type VNode } from 'vue'
 
 import { SelectValue } from './SelectValue'
 
@@ -33,14 +33,14 @@ export class SelectValueDesign<
   CLASSES extends SelectValueClasses,
   P extends SelectValuePropsBasic
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
-    COMP,
-    SelectValueEmits,
-    EXPOSE,
-    SelectValueSlots,
-    CLASSES,
-    P
-  > {
+  HTMLDivElement,
+  COMP,
+  SelectValueEmits,
+  EXPOSE,
+  SelectValueSlots,
+  CLASSES,
+  P
+> {
   /** SelectValue helper instance / Вспомогательный экземпляр SelectValue */
   protected readonly item: SelectValue
 
@@ -207,7 +207,7 @@ export class SelectValueDesign<
         }
       ),
       undefined,
-      item.index
+      String(item.index)
     )
   }
 }

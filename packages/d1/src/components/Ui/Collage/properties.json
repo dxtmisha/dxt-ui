@@ -1,4 +1,7 @@
 {
   "main": "{d.collage}",
-  "gap": "{sys.spacing.xs}"
+  "gap": "{sys.spacing.xs}",
+  "focus-visible": {
+    "outline": "{outline.md}"
+  }
 }

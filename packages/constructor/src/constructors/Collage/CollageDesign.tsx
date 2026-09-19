@@ -99,6 +99,7 @@ export class CollageDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
+        body: this.getSubClass('body'),
         item: this.getSubClass('item')
         // :classes [!] System label / Системная метка
       }
@@ -128,7 +129,24 @@ export class CollageDesign<
         ...this.getAttrs(),
         ref: this.element,
         class: this.classes?.value.main,
-        style: this.styles?.value
+        style: this.styles?.value,
+        ...this.item.focusDirection.binds
+      },
+      this.renderBody()
+    )
+  }
+
+  /**
+   * Rendering the body container.
+   *
+   * Рендеринг контейнера тела.
+   * @returns virtual node / виртуальный узел
+   */
+  readonly renderBody = (): VNode => {
+    return h(
+      'div',
+      {
+        class: this.classes?.value.body
       },
       this.renderList()
     )
@@ -154,7 +172,8 @@ export class CollageDesign<
             toBinds(
               {
                 class: this.classes?.value.item,
-                onClick: this.item.event.onClick
+                onClick: this.item.event.onClick,
+                ...this.item.focusDirection.bindsItem()
               },
               this.props.collageItemAttrs,
               item

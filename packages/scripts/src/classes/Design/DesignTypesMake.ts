@@ -166,7 +166,7 @@ export class DesignTypesMake extends DesignTypesMakeAbstract {
           )
         }
 
-        if (content) {
+        if (content !== undefined) {
           this.files.saveFile(
             {
               ...item,

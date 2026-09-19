@@ -15,6 +15,7 @@ type PropsToken = {
   compact?: boolean
   selected?: boolean
   span?: 'standard' | 'banner' | 'huge' | 'large' | 'tall' | 'wide'
+  focus?: boolean
   // :type [!] System label / Системная метка
 }
 

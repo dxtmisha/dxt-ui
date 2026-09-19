@@ -39,6 +39,7 @@
     transform: scale(0.8);
   }
 
+  &--focus,
   &--selected {
     @include ui.subclass('body') {
       &::after {

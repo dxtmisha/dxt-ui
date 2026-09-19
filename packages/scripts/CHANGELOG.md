@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.1] - 2026-09-19
+
+### Fixed
+- **Empty Type Declaration File Saving (`DesignTypesMake`)**:
+  - Fixed an issue in `DesignTypesMake.make()` where declaration files with empty content (such as files without exportable declarations or with bodies removed during preprocessing) were treated as failures, triggering false `[Warning] Failed to generate AI types for: ...` warnings. Checking `content !== undefined` instead of `if (content)` ensures empty declaration files are saved and cached properly.
+
+### Changed
+- **Documentation & Workflow Overhaul (`README.md`)**:
+  - Restructured `README.md` to document the full AI pipeline and design system toolchain.
+  - Added a numbered CLI workflow guide covering `dxt-types`, `dxt-types-save`, `dxt-prompt`, `dxt-component`, `dxt-constructor`, `dxt-library`, `dxt-screenshot`, and `dxt-build-packages`.
+  - Updated programmatic usage examples demonstrating `DesignTypes`, `LibraryAiPrompt`, `ComponentCreator`, and `LibraryExport`.
+  - Detailed foundational principles: Zero Hallucination by Design, Search Before Full Scan, Non-Destructive Agent Rules, Developer Experience First, and TypeScript-first.
+  - Clarified architectural differentiation of `@dxtmisha/scripts` as an integrated bridge between design system architecture and AI coding agents.
+
 ## [1.2.0] - 2026-09-18
 
 ### Added

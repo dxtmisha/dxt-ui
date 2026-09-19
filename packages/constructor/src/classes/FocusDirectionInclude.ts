@@ -1,5 +1,10 @@
+import {
+  EventItem,
+  executeFunction,
+  type FunctionOr,
+  isEnter
+} from '@dxtmisha/functional'
 import { onUnmounted, type Ref } from 'vue'
-import { EventItem, isEnter } from '@dxtmisha/functional'
 
 /**
  * Coordinate structure representing element center or coordinates difference.
@@ -35,12 +40,14 @@ export class FocusDirectionInclude {
    * @param selector selector for elements participating in focus / селектор элементов, участвующих в фокусировке
    * @param activeSelector selector for default element to receive focus / селектор элемента, получающего фокус по умолчанию
    * @param activeClass CSS class name indicating that element is focused / имя CSS-класса для указания, что элемент сейчас в фокусе
+   * @param control whether focus navigation is enabled / включено ли управление навигацией фокуса
    */
   constructor(
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly selector: string = '.sys-focusDirection__item',
     protected readonly activeSelector: string = '.sys-focusDirection__item--active',
-    protected readonly activeClass: string = 'sys-focusDirection__item--active'
+    protected readonly activeClass: string = 'sys-focusDirection__item--active',
+    protected readonly control: FunctionOr<boolean | undefined> = true
   ) {
     onUnmounted(() => this.stop())
   }
@@ -51,12 +58,26 @@ export class FocusDirectionInclude {
    * Возвращает свойства привязки для родительского элемента контейнера фокуса.
    * @returns binding properties object / объект свойств привязки
    */
-  get binds() {
+  get binds(): Record<string, any> {
+    if (!this.is()) {
+      return {}
+    }
+
     return {
       tabindex: 0,
       onFocus: this.onFocus,
       onBlur: this.onBlur
     }
+  }
+
+  /**
+   * Checks whether directional navigation control is enabled.
+   *
+   * Проверяет, включено ли управление направленной навигацией.
+   * @returns true if control is enabled / true, если управление включено
+   */
+  is(): boolean {
+    return Boolean(executeFunction(this.control))
   }
 
   /**
@@ -70,6 +91,7 @@ export class FocusDirectionInclude {
 
     if (
       !container
+      || !this.is()
       || this.getActiveElement()
     ) {
       return this
@@ -85,6 +107,26 @@ export class FocusDirectionInclude {
   }
 
   /**
+   * Returns binding properties for a child item element to disable direct tab focus.
+   *
+   * Возвращает свойства привязки для дочернего элемента для запрета прямого фокуса.
+   * @param extra additional properties / дополнительные свойства
+   * @returns binding properties for child element / свойства привязки для дочернего элемента
+   */
+  bindsItem(extra?: Record<string, any>): Record<string, any> {
+    if (this.is()) {
+      return {
+        tabindex: -1,
+        ...extra
+      }
+    }
+
+    return {
+      ...extra
+    }
+  }
+
+  /**
    * Clears the active focus class from all child elements.
    *
    * Удаляет активный класс фокуса со всех дочерних элементов.
@@ -95,6 +137,16 @@ export class FocusDirectionInclude {
     this.clearAllActiveClasses()
 
     return this
+  }
+
+  /**
+   * Returns tabindex value for a child item element to disable direct tab focus.
+   *
+   * Возвращает значение tabindex для дочернего элемента для запрета прямого фокуса.
+   * @returns tabindex number or undefined / значение tabindex или undefined
+   */
+  tabindexItem(): number | undefined {
+    return this.is() ? -1 : undefined
   }
 
   /** Handler for focus event / Обработчик для события фокуса */
