@@ -92,6 +92,16 @@
     
     &--type {
       &--bullets {
+        @include ui.paddingX(#{var(--d1-sys-spacing-xs)});
+        @include ui.paddingY(#{var(--d1-sys-spacing-x)});
+        
+        @include ui.backgroundOpacity(#{var(--d1-sys-opacity-overlay)}); @include ui.backgroundColor('init');
+        @include ui.paletteBackground(#{var(--d1-sys-palette-surface)});
+        
+        border-radius: var(--d1-sys-rounded-full);
+        
+        backdrop-filter: var(--d1-sys-blur-sm);
+        
         & .d1-carouselPagination__item {
           @include ui.width(#{var(--d1-ref-spacing-2)});
           @include ui.height(#{var(--d1-ref-spacing-2)});
@@ -112,6 +122,23 @@
       &--progressbar {
         & .d1-carouselPagination__progress {
           min-width: var(--d1-ref-spacing-32);
+        }
+      }
+      
+      &--dots {
+        @include ui.paddingX(#{var(--d1-sys-spacing-xs)});
+        @include ui.paddingY(#{var(--d1-sys-spacing-x)});
+        
+        @include ui.backgroundOpacity(#{var(--d1-sys-opacity-overlay)}); @include ui.backgroundColor('init');
+        @include ui.paletteBackground(#{var(--d1-sys-palette-surface)});
+        
+        border-radius: var(--d1-sys-rounded-full);
+        
+        backdrop-filter: var(--d1-sys-blur-sm);
+        
+        & .d1-carouselPagination__item {
+          @include ui.width(#{var(--d1-ref-spacing-2)});
+          @include ui.height(#{var(--d1-ref-spacing-2)});
         }
       }
     }

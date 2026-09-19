@@ -6,6 +6,7 @@ import { defaults } from './props'
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
   { name: 'clickable', type: 'boolean' },
+  { name: 'control', type: 'boolean' },
   { name: 'count', type: 'string | number' },
   { name: 'dynamic', type: 'boolean' },
   { name: 'hideIfOne', type: 'boolean' },
@@ -17,7 +18,7 @@ const propsNames: StorybookProps = [
   { name: 'tag', type: 'string' },
   { name: 'template', type: 'string' },
   { name: 'textPagination', type: 'TextValue' },
-  { name: 'type', type: 'string', option: ['bullets', 'lines', 'fraction', 'progressbar'] },
+  { name: 'type', type: 'string', option: ['bullets', 'lines', 'fraction', 'progressbar', 'dots'] },
   { name: 'vertical', type: 'boolean' },
   { name: 'visible', type: 'string | number' }
   // :propsList [!] System label / Системная метка

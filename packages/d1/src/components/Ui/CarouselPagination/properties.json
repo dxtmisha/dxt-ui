@@ -29,7 +29,7 @@
     "link|font": "{font.labelMedium}",
     "color": "{sys.palette.onSurface}",
     "color-opacity": "{sys.opacity.surface.high}",
-    "palette-background": "{sys.palette.surface}",
+    "palette-background": "{sys.palette.onSurface}",
     "background-opacity": "{sys.opacity.overlay}",
     "border-radius": "{sys.rounded.full}",
     "paddingX": "{sys.spacing.xs}",
@@ -49,12 +49,30 @@
   },
   "~type": {
     "~bullets": {
+      "palette-background": "{sys.palette.onSurface}",
+      "background-opacity": "{sys.opacity.overlay}",
+      "border-radius": "{sys.rounded.full}",
+      "paddingX": "{sys.spacing.xs}",
+      "paddingY": "{sys.spacing.x}",
+      "backdrop-filter": "{sys.blur.sm}",
       "#item": {
         "width": "{ref.spacing.2}",
         "height": "{ref.spacing.2}",
         "selected": {
           "width": "{ref.spacing.6}"
         }
+      }
+    },
+    "~dots": {
+      "palette-background": "{sys.palette.onSurface}",
+      "background-opacity": "{sys.opacity.overlay}",
+      "border-radius": "{sys.rounded.full}",
+      "paddingX": "{sys.spacing.xs}",
+      "paddingY": "{sys.spacing.x}",
+      "backdrop-filter": "{sys.blur.sm}",
+      "#item": {
+        "width": "{ref.spacing.2}",
+        "height": "{ref.spacing.2}"
       }
     },
     "~lines": {

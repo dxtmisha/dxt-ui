@@ -2,14 +2,14 @@ import { type CarouselPaginationPropsBasic, defaultsCarouselPagination } from '@
 
 export const propsValues = {
   // :values [!] System label / Системная метка
-  type: ['bullets', 'lines', 'fraction', 'progressbar'],
+  type: ['bullets', 'lines', 'fraction', 'progressbar', 'dots'],
   palette: ['red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose', 'slate', 'gray', 'zinc', 'neutral', 'stone', 'black', 'white']
   // :values [!] System label / Системная метка
 }
 
 type PropsToken = {
   // :type [!] System label / Системная метка
-  type?: 'bullets' | 'lines' | 'fraction' | 'progressbar'
+  type?: 'bullets' | 'lines' | 'fraction' | 'progressbar' | 'dots'
   vertical?: boolean
   dynamic?: boolean
   palette?: 'red' | 'orange' | 'amber' | 'yellow' | 'lime' | 'green' | 'emerald' | 'teal' | 'cyan' | 'sky' | 'blue' | 'indigo' | 'violet' | 'purple' | 'fuchsia' | 'pink' | 'rose' | 'slate' | 'gray' | 'zinc' | 'neutral' | 'stone' | 'black' | 'white'

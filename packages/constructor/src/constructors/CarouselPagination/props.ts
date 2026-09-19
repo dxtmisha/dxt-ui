@@ -1,3 +1,4 @@
+import type { ControlProps } from '../../types/controlTypes'
 import type { ModelPropsSelected } from '../../types/modelTypes'
 import type { TextPaginationPropsInclude } from '../../types/textTypes'
 
@@ -11,6 +12,7 @@ type CarouselPaginationPropsToken = {
 
 export type CarouselPaginationPropsBasic = ModelPropsSelected<number | string>
   & TextPaginationPropsInclude
+  & ControlProps
   & {
 
     /** Current active slide / Текущий активный слайд */
@@ -33,9 +35,6 @@ export type CarouselPaginationPropsBasic = ModelPropsSelected<number | string>
 
     /** Template for formatting fraction display (e.g. '[active] / [total]') / Шаблон для форматирования отображения дроби (например, '[active] / [total]') */
     template?: string
-
-    /** Whether keyboard control is enabled / Включено ли управление с клавиатуры */
-    control?: boolean
   }
 
 /**
