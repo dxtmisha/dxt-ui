@@ -17,13 +17,7 @@ export class FigmaAiText {
   async make(): Promise<this> {
     this.ai.resetImages()
     this.makeImage()
-    console.warn('texts', text.replace('[texts]', this.initTexts()))
-
-    console.log(
-      'getImages',
-      this.ai.getImages(),
-      await this.ai.generate(text.replace('[texts]', this.initTexts()))
-    )
+    await this.ai.generate(text.replace('[texts]', this.initTexts()))
 
     return this
   }

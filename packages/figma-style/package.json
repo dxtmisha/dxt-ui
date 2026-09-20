@@ -1,9 +1,9 @@
 {
   "name": "@dxtmisha/figma-style",
   "private": false,
-  "version": "0.1.0",
+  "version": "1.0.1",
   "type": "module",
-  "description": "[description]",
+  "description": "Figma Dev Mode plugin for exporting computed styles, child node CSS, JSON specs, and SVG previews into ZIP.",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build --mode ui && vite build --mode code",

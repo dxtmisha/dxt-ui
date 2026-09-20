@@ -1,5 +1,5 @@
 {
-  "name": "UI FetchAI",
+  "name": "UI Fetch - Style & Spec Exporter",
   "id": "1633444575027189427",
   "api": "1.0.0",
   "main": "dist/code.js",

@@ -4,7 +4,7 @@ import type { TextPaginationPropsInclude } from '../../types/textTypes'
 
 type CarouselPaginationPropsToken = {
   // :type [!] System label / Системная метка
-  type?: 'bullets' | 'lines' | 'fraction' | 'progressbar'
+  type?: 'bullets' | 'dots' | 'lines' | 'fraction' | 'progressbar'
   vertical?: boolean
   dynamic?: boolean
   // :type [!] System label / Системная метка
