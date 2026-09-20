@@ -1,6 +1,7 @@
 import type { ListRecord, ListSelectedList } from '@dxtmisha/functional'
 
 import type { CollageItemPropsBasic, CollageItemPropsInclude } from '../CollageItem'
+import type { ModelPropsSelected } from '../../types/modelTypes'
 
 export type CollagePropsToken = {
   // :type [!] System label / Системная метка
@@ -12,6 +13,7 @@ export type CollagePropsToken = {
 export type CollagePropsBasic<
   CollageItem extends CollageItemPropsBasic = CollageItemPropsBasic
 > = CollageItemPropsInclude<CollageItem>
+  & ModelPropsSelected<ListSelectedList>
   & {
     /** List of collage images / Список изображений коллажа */
     images?: ListRecord<CollageItem>

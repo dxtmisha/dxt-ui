@@ -8,6 +8,7 @@ const propsNames: StorybookProps = [
   { name: 'detail', type: 'Record<string, any>' },
   { name: 'divider', type: 'boolean' },
   { name: 'href', type: 'string' },
+  { name: 'index', type: 'string | number' },
   { name: 'label', type: 'NumberOrString' },
   { name: 'labelId', type: 'string' },
   { name: 'to', type: 'string | RouteLocationAsRelativeGeneric | RouteLocationAsPathGeneric' },

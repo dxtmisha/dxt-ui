@@ -11,6 +11,9 @@ const propsNames: StorybookProps = [
   { name: 'images', type: 'ListRecord<CollageItemProps>' },
   { name: 'keyLabel', type: 'string' },
   { name: 'keyValue', type: 'string' },
+  { name: 'modelSelected', type: 'ListSelectedList' },
+  { name: 'onUpdate:modelSelected', type: '((value: ListSelectedList) => void)' },
+  { name: 'onUpdate:selected', type: '((value: ListSelectedList) => void)' },
   { name: 'selected', type: 'ListSelectedList' },
   { name: 'variant', type: 'string', option: ['standard', 'quilted', 'woven', 'masonryHorizontal', 'masonryVertical'] }
   // :propsList [!] System label / Системная метка

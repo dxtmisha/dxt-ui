@@ -52,6 +52,7 @@ const propsNames: StorybookProps = [
   { name: 'iconTrailingTurnOnly', type: 'boolean' },
   { name: 'iconTurn', type: 'boolean' },
   { name: 'id', type: 'string | number' },
+  { name: 'index', type: 'string | number' },
   { name: 'isSkeleton', type: 'boolean' },
   { name: 'isValue', type: 'boolean' },
   { name: 'label', type: 'NumberOrString' },

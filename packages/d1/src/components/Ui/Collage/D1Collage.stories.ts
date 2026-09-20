@@ -4,6 +4,7 @@ import D1Collage from './D1Collage.vue'
 import { CollageWikiStorybook } from './wiki'
 
 // :story-import [!] System label / Системная метка
+import { ref } from 'vue'
 // :story-import [!] System label / Системная метка
 
 const meta = {
@@ -124,6 +125,39 @@ export const CollageVariants: Story = {
               ]"
             />
           </div>
+        </div>
+    `
+  })
+}
+export const CollageVModel: Story = {
+  name: 'Двусторонняя привязка (v-model)',
+  render: () => ({
+    components: { D1Collage },
+    setup() {
+      const selected = ref(['select-1', 'select-3'])
+      const images = [
+        { image: 'https://picsum.photos/600/600?random=51', label: 'Item 1', value: 'select-1' },
+        { image: 'https://picsum.photos/600/600?random=52', label: 'Item 2', value: 'select-2' },
+        { image: 'https://picsum.photos/600/600?random=53', label: 'Item 3', value: 'select-3' },
+        { image: 'https://picsum.photos/600/600?random=54', label: 'Item 4', value: 'select-4' }
+      ]
+      return { selected, images }
+    },
+    template: `
+        <div class="wiki-storybook-flex-column">
+          <div class="wiki-storybook-flex-align-center">
+            <span>Selected: {{ selected }}</span>
+            <button class="wiki-storybook-button" @click="selected = ['select-1', 'select-2']">Select 1, 2</button>
+            <button class="wiki-storybook-button wiki-storybook-button--warning" @click="selected = []">Clear</button>
+          </div>
+
+          <D1Collage
+            control
+            columns="4"
+            variant="standard"
+            :images="images"
+            v-model:selected="selected"
+          />
         </div>
     `
   })

@@ -47,6 +47,7 @@ const propsNames: StorybookProps = [
   { name: 'iconTrailingTurnOnly', type: 'boolean' },
   { name: 'iconTurn', type: 'boolean' },
   { name: 'id', type: 'string | number' },
+  { name: 'index', type: 'string | number' },
   { name: 'inputAttrs', type: 'Record<string, any>' },
   { name: 'inputMode', type: 'string', option: ['none', 'text', 'decimal', 'numeric', 'tel', 'search', 'email', 'url'] },
   { name: 'isSkeleton', type: 'boolean' },

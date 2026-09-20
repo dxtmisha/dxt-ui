@@ -15,6 +15,7 @@ const propsNames: StorybookProps = [
   { name: 'href', type: 'string' },
   { name: 'image', type: 'string | ConstrBind<ImageProps>' },
   { name: 'imageAttrs', type: 'ConstrBind<ImageProps>' },
+  { name: 'index', type: 'string | number' },
   { name: 'isSkeleton', type: 'boolean' },
   { name: 'label', type: 'NumberOrString' },
   { name: 'labelId', type: 'string' },

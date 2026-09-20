@@ -12,6 +12,7 @@ const propsNames: StorybookProps = [
   { name: 'icon', type: 'IconValue<IconProps>' },
   { name: 'iconArrowLeft', type: 'string' },
   { name: 'iconArrowRight', type: 'string' },
+  { name: 'index', type: 'string | number' },
   { name: 'isSkeleton', type: 'boolean' },
   { name: 'label', type: 'NumberOrString' },
   { name: 'labelId', type: 'string' },

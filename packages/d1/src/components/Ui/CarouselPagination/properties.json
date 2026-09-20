@@ -1,4 +1,19 @@
 {
+  "mixin|box": {
+    "palette-background": "{sys.palette.onSurface}",
+    "background-opacity": "{sys.opacity.overlay}",
+    "border-radius": "{sys.rounded.full}",
+    "paddingX": "{sys.spacing.xs}",
+    "paddingY": "{sys.spacing.x}",
+    "backdrop-filter": "{sys.blur.sm}"
+  },
+  "mixin|dots": {
+    "link|box": "{??box}",
+    "#item": {
+      "width": "{ref.spacing.2}",
+      "height": "{ref.spacing.2}"
+    }
+  },
   "main": "{d.carouselPagination}",
   "gap": "{sys.spacing.xs}",
   "focus-visible": {
@@ -27,14 +42,9 @@
   },
   "#fraction": {
     "link|font": "{font.labelMedium}",
+    "link|box": "{??box}",
     "color": "{sys.palette.onSurface}",
-    "color-opacity": "{sys.opacity.surface.high}",
-    "palette-background": "{sys.palette.onSurface}",
-    "background-opacity": "{sys.opacity.overlay}",
-    "border-radius": "{sys.rounded.full}",
-    "paddingX": "{sys.spacing.xs}",
-    "paddingY": "{sys.spacing.x}",
-    "backdrop-filter": "{sys.blur.sm}"
+    "color-opacity": "{sys.opacity.surface.high}"
   },
   "#progress": {
     "background-color": "{sys.palette.onSurface}",
@@ -47,31 +57,15 @@
   },
   "~type": {
     "~bullets": {
-      "palette-background": "{sys.palette.onSurface}",
-      "background-opacity": "{sys.opacity.overlay}",
-      "border-radius": "{sys.rounded.full}",
-      "paddingX": "{sys.spacing.xs}",
-      "paddingY": "{sys.spacing.x}",
-      "backdrop-filter": "{sys.blur.sm}",
+      "link|dots": "{??dots}",
       "#item": {
-        "width": "{ref.spacing.2}",
-        "height": "{ref.spacing.2}",
         "selected": {
           "width": "{ref.spacing.6}"
         }
       }
     },
     "~dots": {
-      "palette-background": "{sys.palette.onSurface}",
-      "background-opacity": "{sys.opacity.overlay}",
-      "border-radius": "{sys.rounded.full}",
-      "paddingX": "{sys.spacing.xs}",
-      "paddingY": "{sys.spacing.x}",
-      "backdrop-filter": "{sys.blur.sm}",
-      "#item": {
-        "width": "{ref.spacing.2}",
-        "height": "{ref.spacing.2}"
-      }
+      "link|dots": "{??dots}"
     },
     "~lines": {
       "#item": {

@@ -12,6 +12,7 @@ const propsNames: StorybookProps = [
   { name: 'detail', type: 'Record<string, any>' },
   { name: 'href', type: 'string' },
   { name: 'icon', type: 'IconValue<IconProps>' },
+  { name: 'index', type: 'string | number' },
   { name: 'label', type: 'NumberOrString' },
   { name: 'labelId', type: 'string' },
   { name: 'position', type: 'string', option: ['top', 'bottom', 'static'] },

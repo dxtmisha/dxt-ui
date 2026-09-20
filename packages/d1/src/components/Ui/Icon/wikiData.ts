@@ -21,6 +21,7 @@ const propsNames: StorybookProps = [
   { name: 'href', type: 'string' },
   { name: 'icon', type: 'ImageValue<ImageProps>' },
   { name: 'iconActive', type: 'ImageValue<ImageProps>' },
+  { name: 'index', type: 'string | number' },
   { name: 'inverse', type: 'boolean' },
   { name: 'isSkeleton', type: 'boolean' },
   { name: 'overlay', type: 'boolean' },

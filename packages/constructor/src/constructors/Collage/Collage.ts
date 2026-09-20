@@ -10,7 +10,7 @@ import type { Ref, ToRefs } from 'vue'
 
 import { EventClickInclude } from '../../classes/EventClickInclude'
 import { FocusDirectionInclude } from '../../classes/FocusDirectionInclude'
-import { ModelValueInclude } from '../../classes/ModelValueInclude'
+import { ModelInclude } from '../../classes/ModelInclude'
 
 import { CollageElement } from './CollageElement'
 import { CollageGrow } from './CollageGrow'
@@ -53,7 +53,7 @@ export class Collage {
   readonly event: EventClickInclude
 
   /** Model value synchronizer for selected state / Синхронизатор значения модели для состояния выбора */
-  readonly model: ModelValueInclude<ListSelectedList>
+  readonly model: ModelInclude<ListSelectedList | undefined>
 
   /** Instance of FocusDirectionInclude for keyboard directional navigation / Экземпляр FocusDirectionInclude для клавиатурной навигации по направлениям */
   readonly focusDirection: FocusDirectionInclude
@@ -80,7 +80,7 @@ export class Collage {
    * @param constructors.EventClickIncludeConstructor class for managing click events / класс для управления событиями клика
    * @param constructors.FocusDirectionIncludeConstructor class for keyboard directional navigation / класс для клавиатурной навигации по направлениям
    * @param constructors.ListDataRefConstructor class for managing list data / класс для управления данными списка
-   * @param constructors.ModelValueIncludeConstructor class for managing model value / класс для управления значением модели
+   * @param constructors.ModelIncludeConstructor class for managing model / класс для управления моделью
    */
   constructor(
     protected readonly props: CollageProps,
@@ -101,7 +101,7 @@ export class Collage {
       EventClickIncludeConstructor?: typeof EventClickInclude
       FocusDirectionIncludeConstructor?: typeof FocusDirectionInclude
       ListDataRefConstructor?: typeof ListDataRef
-      ModelValueIncludeConstructor?: typeof ModelValueInclude
+      ModelIncludeConstructor?: typeof ModelInclude<ListSelectedList | undefined>
     } = {}
   ) {
     const {
@@ -114,7 +114,7 @@ export class Collage {
       EventClickIncludeConstructor = EventClickInclude,
       FocusDirectionIncludeConstructor = FocusDirectionInclude,
       ListDataRefConstructor = ListDataRef,
-      ModelValueIncludeConstructor = ModelValueInclude
+      ModelIncludeConstructor = ModelInclude
     } = constructors
 
     this.elementItem = new CollageElementConstructor(element)
@@ -156,10 +156,9 @@ export class Collage {
       emits
     )
 
-    this.model = new ModelValueIncludeConstructor<ListSelectedList>(
+    this.model = new ModelIncludeConstructor(
       'selected',
       emits,
-      this.event,
       refs.selected
     )
 

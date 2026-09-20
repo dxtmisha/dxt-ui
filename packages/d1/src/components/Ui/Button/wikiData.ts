@@ -24,6 +24,7 @@ const propsNames: StorybookProps = [
   { name: 'iconTrailingPalette', type: 'boolean' },
   { name: 'iconTrailingTurnOnly', type: 'boolean' },
   { name: 'iconTurn', type: 'boolean' },
+  { name: 'index', type: 'string | number' },
   { name: 'inverse', type: 'boolean' },
   { name: 'isSkeleton', type: 'boolean' },
   { name: 'label', type: 'NumberOrString' },

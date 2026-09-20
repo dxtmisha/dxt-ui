@@ -35,7 +35,9 @@ export const wikiDescriptionsCollage: StorybookComponentsDescriptionItem = {
       'передача событий клика с данными элемента'
     ]
   },
-  import: [],
+  import: [
+    'import { ref } from \'vue\''
+  ],
   stories: [
     {
       id: 'CollageVariants',
@@ -132,6 +134,40 @@ export const wikiDescriptionsCollage: StorybookComponentsDescriptionItem = {
           </div>
         </div>
       `
+    },
+    {
+      id: 'CollageVModel',
+      name: {
+        en: 'Two-way binding (v-model)',
+        ru: 'Двусторонняя привязка (v-model)'
+      },
+      setup: `
+      const selected = ref(['select-1', 'select-3'])
+      const images = [
+        { image: 'https://picsum.photos/600/600?random=51', label: 'Item 1', value: 'select-1' },
+        { image: 'https://picsum.photos/600/600?random=52', label: 'Item 2', value: 'select-2' },
+        { image: 'https://picsum.photos/600/600?random=53', label: 'Item 3', value: 'select-3' },
+        { image: 'https://picsum.photos/600/600?random=54', label: 'Item 4', value: 'select-4' }
+      ]
+      return { selected, images }
+      `,
+      template: `
+        <div class="wiki-storybook-flex-column">
+          <div class="wiki-storybook-flex-align-center">
+            <span>Selected: {{ selected }}</span>
+            <button class="wiki-storybook-button" @click="selected = ['select-1', 'select-2']">Select 1, 2</button>
+            <button class="wiki-storybook-button wiki-storybook-button--warning" @click="selected = []">Clear</button>
+          </div>
+
+          <DesignComponent
+            control
+            columns="4"
+            variant="standard"
+            :images="images"
+            v-model:selected="selected"
+          />
+        </div>
+      `
     }
   ],
   documentation: {
@@ -140,10 +176,12 @@ export const wikiDescriptionsCollage: StorybookComponentsDescriptionItem = {
 
 <StorybookDescriptions componentName={'Collage'} type={'variant'}/>
 <Canvas of={Component.CollageVariants}/>
+
+<StorybookDescriptions componentName={'Value'} type={'v-model:selected'}/>
+<Canvas of={Component.CollageVModel}/>
     `,
     events: `
 <StorybookDescriptions componentName={'Event'} type={'click'}/>
-<StorybookDescriptions componentName={'Value'} type={'v-model:selected'}/>
     `,
     expose: `
 <StorybookDescriptions componentName={'Collage'} type={'expose.update'}/>
