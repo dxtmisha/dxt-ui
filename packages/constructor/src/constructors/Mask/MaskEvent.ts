@@ -21,6 +21,10 @@ export class MaskEvent {
   protected change: boolean = false
   /** Unidentified selection data/ Данные неопознанного выделения */
   protected unidentified?: MaskEventSelection
+  /** Keydown event presence flag/ Флаг наличия события нажатия клавиши */
+  protected isKeydown: boolean = false
+  /** Paste event presence flag/ Флаг наличия события вставки */
+  protected isPaste: boolean = false
 
   /**
    * Constructor
@@ -54,6 +58,8 @@ export class MaskEvent {
   readonly onFocus = (event: FocusEvent): void => {
     this.change = false
     this.focus.in()
+
+    this.checkAutofill(event)
 
     this.emit
       .set('focus', event)
@@ -110,6 +116,8 @@ export class MaskEvent {
     }
 
     if (this.isKey(event)) {
+      this.isKeydown = true
+
       if (event.key === 'Backspace') {
         if (start > 0 || start !== end) {
           this.data.pop(start, end)
@@ -127,6 +135,7 @@ export class MaskEvent {
         }
       }
     } else {
+      this.isKeydown = false
       this.unidentified = info
     }
   }
@@ -171,7 +180,7 @@ export class MaskEvent {
       .set('beforeinput', event)
       .go()
 
-    if (!this.unidentified) {
+    if (this.isKeydown && !this.unidentified) {
       this.makeChange(event)
       eventStopPropagation(event)
     }
@@ -186,10 +195,17 @@ export class MaskEvent {
   readonly onInput = (event: InputEvent): void => {
     const target = event.target as HTMLInputElement
 
-    if (event.inputType === 'insertReplacementText') {
+    if (this.isPaste) {
+      this.isPaste = false
+      this.isKeydown = false
+      return
+    }
+
+    if (this.isAutofillEvent(event, target)) {
       this.data.reset(target.value)
       this.makeChange(event)
       this.unidentified = undefined
+      this.isKeydown = false
       return
     }
 
@@ -210,6 +226,8 @@ export class MaskEvent {
       this.makeChange(event)
       this.unidentified = undefined
     }
+
+    this.isKeydown = false
   }
 
   /**
@@ -219,6 +237,7 @@ export class MaskEvent {
    * @param event invoked event/ вызываемое событие
    */
   readonly onPaste = (event: ClipboardEvent): void => {
+    this.isPaste = true
     const { start, end } = this.getSelectionInfo(event)
 
     getClipboardData(event)
@@ -254,6 +273,23 @@ export class MaskEvent {
     this.emit
       .set('change', event)
       .go()
+  }
+
+  /**
+   * Intercept animation start event to detect browser autofill.
+   *
+   * Перехват события начала анимации для определения автозаполнения браузером.
+   * @param event invoked event/ вызываемое событие
+   */
+  readonly onAnimationstart = (event: AnimationEvent): void => {
+    if (event.animationName.includes('autofill')) {
+      const target = event.target as HTMLInputElement
+
+      if (target?.value) {
+        this.data.reset(target.value)
+        this.makeChange(event)
+      }
+    }
   }
 
   /**
@@ -306,6 +342,73 @@ export class MaskEvent {
   }
 
   /**
+   * Checks whether the element is in autofill state.
+   *
+   * Проверяет, находится ли элемент в состоянии автозаполнения.
+   * @param element target element/ целевой элемент
+   * @returns is autofilled/ заполнено ли автозаполнением
+   */
+  protected isAutofill(element?: HTMLInputElement): boolean {
+    if (!element) {
+      return false
+    }
+
+    try {
+      if (element.matches(':autofill')) {
+        return true
+      }
+    } catch {
+      // Ignore unsupported pseudo-class
+    }
+
+    try {
+      if (element.matches(':-webkit-autofill')) {
+        return true
+      }
+    } catch {
+      // Ignore unsupported pseudo-class
+    }
+
+    try {
+      if (element.matches(':-moz-ui-autofill')) {
+        return true
+      }
+    } catch {
+      // Ignore unsupported pseudo-class
+    }
+
+    return false
+  }
+
+  /**
+   * Checks whether the input event was triggered by browser autofill or external insertion.
+   *
+   * Проверяет, вызвано ли событие ввода автозаполнением браузера или внешней вставкой.
+   * @param event input event/ событие ввода
+   * @param target input element/ элемент ввода
+   * @returns is autofill event/ является ли событием автозаполнения
+   */
+  protected isAutofillEvent(event: InputEvent, target: HTMLInputElement): boolean {
+    if (event.inputType === 'insertReplacementText') {
+      return true
+    }
+
+    if (this.isAutofill(target)) {
+      return true
+    }
+
+    if (!this.isKeydown && !this.unidentified) {
+      return true
+    }
+
+    if (!event.inputType) {
+      return true
+    }
+
+    return false
+  }
+
+  /**
    * Getting data about selection on the event element.
    *
    * Получение данных о выделении у элемента события.
@@ -319,6 +422,29 @@ export class MaskEvent {
       start: target.selectionStart ?? 0,
       end: target.selectionEnd ?? 0,
       length: target.value.length
+    }
+  }
+
+  /**
+   * Checks element for autofill and applies value if detected.
+   *
+   * Проверяет элемент на наличие автозаполнения и применяет значение при обнаружении.
+   * @param event invoked event/ вызываемое событие
+   */
+  protected checkAutofill(event: Event): void {
+    const target = event.target as HTMLInputElement
+
+    if (
+      target
+      && target.value
+      && (
+        this.isAutofill(target)
+        || !this.characterLength.is()
+        || target.value !== this.valueBasic.item.value
+      )
+    ) {
+      this.data.reset(target.value)
+      this.makeChange(event)
     }
   }
 

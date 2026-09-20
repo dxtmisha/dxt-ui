@@ -362,7 +362,8 @@ export class Mask {
         onInput: this.event.onInput,
         onChange: this.event.onChange,
         onPaste: this.event.onPaste,
-        onClick: this.event.onClick
+        onClick: this.event.onClick,
+        onAnimationstart: this.event.onAnimationstart
       }
     )
   }

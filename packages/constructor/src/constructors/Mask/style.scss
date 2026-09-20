@@ -38,6 +38,29 @@
     &:focus {
       outline: none !important;
     }
+
+    &:autofill {
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+      animation-name: ui.n('??autofill');
+      animation-duration: 0.001s;
+    }
+
+    &:-webkit-autofill {
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+      animation-name: ui.n('??autofill');
+      animation-duration: 0.001s;
+    }
+  }
+
+  @keyframes #{ui.n('??autofill')} {
+    from {
+      display: block;
+    }
+    to {
+      display: block;
+    }
   }
 
   & &__input {
@@ -77,8 +100,14 @@
     @include ui.initByCustom('sys.opacity.all', 1);
 
     @include ui.subclass('input') {
+      &:autofill {
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+      }
+
       &:-webkit-autofill {
         -webkit-text-fill-color: transparent;
+        color: transparent;
       }
     }
   }
