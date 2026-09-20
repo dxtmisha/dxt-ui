@@ -43,8 +43,6 @@
     "height": "{ref.spacing.1}"
   },
   "#progressBar": {
-    "palette-background": "{sys.palette.primary}",
-    "background-opacity": "{sys.opacity.primary.high}",
     "border-radius": "{sys.rounded.full}"
   },
   "~type": {

@@ -8,7 +8,6 @@ const propsNames: StorybookProps = [
   { name: 'cellSize', type: 'string | number' },
   { name: 'collageItemAttrs', type: 'ConstrBind<CollageItemProps>' },
   { name: 'columns', type: 'string', option: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'] },
-  { name: 'control', type: 'boolean' },
   { name: 'images', type: 'ListRecord<CollageItemProps>' },
   { name: 'keyLabel', type: 'string' },
   { name: 'keyValue', type: 'string' },

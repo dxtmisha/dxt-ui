@@ -17,7 +17,6 @@ const propsNames: StorybookProps = [
   { name: 'iconCheck', type: 'IconValue<IconProps>' },
   { name: 'image', type: 'string | ConstrBind<ImageProps>' },
   { name: 'imageAttrs', type: 'ConstrBind<ImageProps>' },
-  { name: 'index', type: 'string | number' },
   { name: 'label', type: 'NumberOrString' },
   { name: 'labelId', type: 'string' },
   { name: 'selected', type: 'boolean' },

@@ -18,7 +18,7 @@ const propsNames: StorybookProps = [
   { name: 'tag', type: 'string' },
   { name: 'template', type: 'string' },
   { name: 'textPagination', type: 'TextValue' },
-  { name: 'type', type: 'string', option: ['bullets', 'lines', 'fraction', 'progressbar', 'dots'] },
+  { name: 'type', type: 'string', option: ['bullets', 'dots', 'lines', 'fraction', 'progressbar'] },
   { name: 'vertical', type: 'boolean' },
   { name: 'visible', type: 'string | number' }
   // :propsList [!] System label / Системная метка

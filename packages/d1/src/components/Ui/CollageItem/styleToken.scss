@@ -23,22 +23,22 @@
       @include ui.color(#{var(--d1-ref-palette-white-50)});
     }
     
+    &--focus {
+      & .d1-collageItem__body {
+        &::after {
+          content: ' ';
+          @include ui.gradientOpacity(#{var(--d1-sys-opacity-scrim)}); @include ui.gradient('init');
+          @include ui.paletteGradient(#{var(--d1-sys-palette-primary)});
+        }
+      }
+    }
+    
     &--selected {
       & .d1-collageItem__body {
         &::after {
           content: ' ';
           @include ui.backgroundColor(#{var(--d1-sys-palette-scrim)});
           @include ui.backgroundOpacity(#{var(--d1-sys-opacity-scrim)});
-        }
-      }
-    }
-    
-    &--focus {
-      & .d1-collageItem__body {
-        &::after {
-          content: ' ';
-          @include ui.gradientOpacity(#{var(--d1-sys-opacity-focus)}); @include ui.gradient('init');
-          @include ui.paletteGradient(#{var(--d1-sys-palette-primary)});
         }
       }
     }
