@@ -30,7 +30,7 @@ describe('CarouselPagination', () => {
     return { instance, props, refs, element, emits }
   }
 
-  it('should be focusable by default when clickable and bullets/lines', () => {
+  it('should be focusable by default when bullets/lines', () => {
     const { instance } = createInstance()
 
     expect(instance.focus['isFocusable']()).toBe(true)
@@ -42,13 +42,6 @@ describe('CarouselPagination', () => {
 
   it('should not be focusable when control is false', () => {
     const { instance } = createInstance({ control: false })
-
-    expect(instance.focus['isFocusable']()).toBe(false)
-    expect(instance.focus.binds).toEqual({})
-  })
-
-  it('should not be focusable when clickable is false even if control is true', () => {
-    const { instance } = createInstance({ control: true, clickable: false })
 
     expect(instance.focus['isFocusable']()).toBe(false)
     expect(instance.focus.binds).toEqual({})

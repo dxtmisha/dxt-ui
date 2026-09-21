@@ -11,7 +11,7 @@
     "link|box": "{??box}",
     "#item": {
       "width": "{ref.spacing.2}",
-      "height": "{ref.spacing.2}"
+      "min-height": "{ref.spacing.2}"
     }
   },
   "main": "{d.carouselPagination}",
@@ -29,15 +29,6 @@
     "selected": {
       "palette-background": "{sys.palette.onSurface}",
       "background-opacity": "{sys.opacity.primary.medium}"
-    },
-    "hover": {
-      "gradient-opacity": "{sys.opacity.hover}"
-    },
-    "active": {
-      "gradient-opacity": "{sys.opacity.pressed}"
-    },
-    "focus": {
-      "outline": "{outline.md}"
     }
   },
   "#fraction": {
@@ -76,6 +67,19 @@
     "~progressbar": {
       "#progress": {
         "min-width": "{ref.spacing.32}"
+      }
+    }
+  },
+  "~control": {
+    "#item": {
+      "hover": {
+        "gradient-opacity": "{sys.opacity.hover}"
+      },
+      "active": {
+        "gradient-opacity": "{sys.opacity.pressed}"
+      },
+      "focus-visible": {
+        "outline": "{outline.sm}"
       }
     }
   },

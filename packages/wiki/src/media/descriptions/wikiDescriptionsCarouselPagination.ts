@@ -16,7 +16,7 @@ export const wikiDescriptionsCarouselPagination: StorybookComponentsDescriptionI
       'multiple display formats: bullets, lines, fraction counter, and progress bar (type)',
       'smooth scaling of indicators for long lists in dynamic mode (dynamic)',
       'bidirectional state management with v-model:selected',
-      'interactive and non-interactive click handling on bullet items (clickable)',
+      'keyboard navigation and interactive click handling on bullet items (control)',
       'configurable visible items count in dynamic mode (visible)',
       'horizontal and vertical orientations (vertical)',
       'automatic concealment when only one slide exists (hideIfOne)',
@@ -27,7 +27,7 @@ export const wikiDescriptionsCarouselPagination: StorybookComponentsDescriptionI
       'различные форматы отображения: буллеты, линии, дробный счетчик и полоса прогресса (type)',
       'плавное масштабирование индикаторов для длинных списков в динамическом режиме (dynamic)',
       'двустороннее управление состоянием через v-model:selected',
-      'интерактивная и неинтерактивная обработка кликов по буллетам (clickable)',
+      'клавиатурная навигация и интерактивная обработка кликов по буллетам (control)',
       'настройка количества видимых элементов в динамическом режиме (visible)',
       'горизонтальная и вертикальная ориентация (vertical)',
       'автоматическое скрытие при наличии всего одного слайда (hideIfOne)',
@@ -38,6 +38,11 @@ export const wikiDescriptionsCarouselPagination: StorybookComponentsDescriptionI
   import: [
     'import { ref } from \'vue\''
   ],
+  render: `
+    <div class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--center">
+      <DesignComponent v-bind="args" />
+    </div>
+  `,
   stories: [
     {
       id: 'CarouselPaginationBasic',
@@ -46,29 +51,25 @@ export const wikiDescriptionsCarouselPagination: StorybookComponentsDescriptionI
         ru: 'Типы отображения'
       },
       template: `
-        <div class="wiki-storybook-flex-column">
-          <div>
-            <span>Bullets</span>
+        <div class="wiki-storybook-group">
+          <div class="wiki-storybook-item wiki-storybook-item--squared--lg wiki-storybook-item--widescreen wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">Bullets</div>
             <DesignComponent :count="5" :selected="2" type="bullets" />
           </div>
-          <div>
-            <span>Dynamic</span>
-            <div class="wiki-storybook-flex-column">
-              <DesignComponent :count="10" :selected="5" dynamic :visible="5" />
-              <DesignComponent :count="10" :selected="1" dynamic :visible="5" />
-              <DesignComponent :count="10" :selected="10" dynamic :visible="5" />
-            </div>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--lg wiki-storybook-item--widescreen wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">Dynamic</div>
+            <DesignComponent :count="10" :selected="5" dynamic :visible="5" />
           </div>
-          <div>
-            <span>Lines</span>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--lg wiki-storybook-item--widescreen wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">Lines</div>
             <DesignComponent :count="5" :selected="2" type="lines" />
           </div>
-          <div>
-            <span>Fraction</span>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--lg wiki-storybook-item--widescreen wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">Fraction</div>
             <DesignComponent :count="5" :selected="2" type="fraction" />
           </div>
-          <div>
-            <span>Progress bar</span>
+          <div class="wiki-storybook-item wiki-storybook-item--squared--lg wiki-storybook-item--widescreen wiki-storybook-item--center">
+            <div class="wiki-storybook-item__label">Progress bar</div>
             <DesignComponent :count="5" :selected="2" type="progressbar" />
           </div>
         </div>
@@ -92,7 +93,9 @@ export const wikiDescriptionsCarouselPagination: StorybookComponentsDescriptionI
             <button class="wiki-storybook-button" @click="selected = 3">Slide 3</button>
             <button class="wiki-storybook-button" @click="selected = 5">Slide 5</button>
           </div>
-          <DesignComponent v-model:selected="selected" :count="5" />
+          <div class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--center">
+            <DesignComponent v-model:selected="selected" :count="5" />
+          </div>
         </div>
       `
     },
@@ -107,7 +110,7 @@ export const wikiDescriptionsCarouselPagination: StorybookComponentsDescriptionI
       return { selected }
       `,
       template: `
-        <div class="wiki-storybook-flex-column">
+        <div class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--center">
           <DesignComponent v-model:selected="selected" :count="4">
             <template #item="{ binds, index, item }">
               <button
@@ -130,8 +133,6 @@ export const wikiDescriptionsCarouselPagination: StorybookComponentsDescriptionI
 
 <StorybookDescriptions componentName={'Value'} type={'v-model'}/>
 <Canvas of={Component.CarouselPaginationVModel}/>
-
-<Canvas of={Component.CarouselPaginationSlots}/>
     `,
     events: `
 <StorybookDescriptions componentName={'CarouselPagination'} type={'events'}/>
@@ -140,6 +141,7 @@ export const wikiDescriptionsCarouselPagination: StorybookComponentsDescriptionI
 <StorybookDescriptions componentName={'CarouselPagination'} type={'expose'}/>
     `,
     slots: `
+<Canvas of={Component.CarouselPaginationSlots}/>
 <StorybookDescriptions componentName={'CarouselPagination'} type={'slots'}/>
     `
   },
@@ -148,7 +150,7 @@ export const wikiDescriptionsCarouselPagination: StorybookComponentsDescriptionI
 CarouselPagination is an indicator and navigation component designed for carousels, slideshows, and walkthroughs.
 Supports multiple visual representations: bullets (dots), lines, fraction counter (e.g., 1 / 5), and progress bar.
 Includes dynamic bullet scaling (dynamic mode) which smoothly shrinks edge indicators to preserve layout compactness across large slide counts.
-Supports two-way binding via v-model:selected, custom clickable behaviors, template-driven fraction formatting, and scoped slots (item, fraction, progress) with pre-computed binds.
+Supports two-way binding via v-model:selected, keyboard and click control (control), template-driven fraction formatting, and scoped slots (item, fraction, progress) with pre-computed binds.
     `,
     hide: true
   }

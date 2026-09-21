@@ -5,7 +5,6 @@ import { defaults } from './props'
 
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
-  { name: 'clickable', type: 'boolean' },
   { name: 'control', type: 'boolean' },
   { name: 'count', type: 'string | number' },
   { name: 'dynamic', type: 'boolean' },

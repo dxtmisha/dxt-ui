@@ -28,6 +28,7 @@ const classesToken = computed<ConstrClasses>(() => ({
     [`d1-carouselPagination--type--${props.type}`]: inArray(propsValues.type, props.type),
     'd1-carouselPagination--vertical': props.vertical,
     'd1-carouselPagination--dynamic': props.dynamic,
+    'd1-carouselPagination--control': props.control,
     [`d1-palette d1-palette--${props.palette}`]: inArray(propsValues.palette, props.palette)
     // :classes-values [!] System label / Системная метка
   }

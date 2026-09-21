@@ -234,7 +234,7 @@ describe('CarouselPaginationItems', () => {
   it('should handle onClick and emit events', () => {
     const props = reactive<CarouselPaginationProps>({
       count: 5,
-      clickable: true
+      control: true
     })
     const refs = toRefs(props)
     const emits = vi.fn()
@@ -248,7 +248,7 @@ describe('CarouselPaginationItems', () => {
     expect(emits).toHaveBeenCalledWith('click', event, 3)
     expect(emits).toHaveBeenCalledWith('clickLite', 3)
 
-    props.clickable = false
+    props.control = false
     items.onClick(event, 1)
     expect(selected.get()).toBe(3)
   })

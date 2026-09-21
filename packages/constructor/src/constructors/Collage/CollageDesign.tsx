@@ -162,7 +162,7 @@ export class CollageDesign<
     const children: any[] = []
 
     if (this.props.images) {
-      const list = this.item.data.data.value
+      const list = this.item.data.fullData.value
 
       if (list) {
         list.forEach((item, key) => {

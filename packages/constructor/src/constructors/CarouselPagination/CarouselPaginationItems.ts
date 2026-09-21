@@ -1,10 +1,10 @@
-import { computed, type ComputedRef, type ToRefs } from 'vue'
 import {
   applyTemplate,
   type ConstrEmit,
   type ConstrStyles,
   toNumber
 } from '@dxtmisha/functional'
+import { computed, type ComputedRef, type ToRefs } from 'vue'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 
@@ -13,8 +13,8 @@ import type {
   CarouselPaginationItem,
   CarouselPaginationItemBinds
 } from './basicTypes'
-import type { CarouselPaginationProps } from './props'
 import type { CarouselPaginationSelected } from './CarouselPaginationSelected'
+import type { CarouselPaginationProps } from './props'
 import type { CarouselPaginationEmits } from './types'
 
 /**
@@ -156,7 +156,14 @@ export class CarouselPaginationItems {
    * @returns tabindex number / значение tabindex
    */
   getTabindex(selected?: boolean): number {
-    return this.props.control !== false && selected ? 0 : -1
+    if (
+      this.props.control !== false
+      && selected
+    ) {
+      return 0
+    }
+
+    return -1
   }
 
   /**
@@ -184,7 +191,7 @@ export class CarouselPaginationItems {
    * @param index slide index / индекс слайда
    */
   readonly onClick = (event: MouseEvent, index: number): void => {
-    if (this.props.clickable !== false) {
+    if (this.props.control !== false) {
       this.selected.set(index)
       this.emits?.('click', event, index)
       this.emits?.('clickLite', index)

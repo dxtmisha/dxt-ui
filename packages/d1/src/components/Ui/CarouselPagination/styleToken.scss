@@ -23,22 +23,6 @@
       
       border-radius: var(--d1-sys-rounded-full);
       
-      @include ui.focus('.d1-carouselPagination') {
-        @include ui.outlineOpacity(#{var(--d1-sys-opacity-outline)});
-        
-        outline-width: var(--d1-ref-spacing-1);
-        outline-style: solid;
-        @include ui.outlineColor(#{var(--d1-sys-palette-primary)});
-      }
-      
-      @include ui.hover('.d1-carouselPagination') {
-        @include ui.gradientOpacity(#{var(--d1-sys-opacity-hover)}); @include ui.gradient('init');
-      }
-      
-      @include ui.active('.d1-carouselPagination') {
-        @include ui.gradientOpacity(#{var(--d1-sys-opacity-pressed)}); @include ui.gradient('init');
-      }
-      
       &--selected {
         @include ui.backgroundOpacity(#{var(--d1-sys-opacity-primary-medium)}); @include ui.backgroundColor('init');
         @include ui.paletteBackground(#{var(--d1-sys-palette-onSurface)});
@@ -101,7 +85,7 @@
         
         & .d1-carouselPagination__item {
           @include ui.width(#{var(--d1-ref-spacing-2)});
-          @include ui.height(#{var(--d1-ref-spacing-2)});
+          min-height: var(--d1-ref-spacing-2);
           
           &--selected {
             @include ui.width(#{var(--d1-ref-spacing-6)});
@@ -122,7 +106,7 @@
         
         & .d1-carouselPagination__item {
           @include ui.width(#{var(--d1-ref-spacing-2)});
-          @include ui.height(#{var(--d1-ref-spacing-2)});
+          min-height: var(--d1-ref-spacing-2);
         }
       }
       
@@ -136,6 +120,26 @@
       &--progressbar {
         & .d1-carouselPagination__progress {
           min-width: var(--d1-ref-spacing-32);
+        }
+      }
+    }
+    
+    &--control {
+      & .d1-carouselPagination__item {
+        @include ui.hover('.d1-carouselPagination') {
+          @include ui.gradientOpacity(#{var(--d1-sys-opacity-hover)}); @include ui.gradient('init');
+        }
+        
+        @include ui.active('.d1-carouselPagination') {
+          @include ui.gradientOpacity(#{var(--d1-sys-opacity-pressed)}); @include ui.gradient('init');
+        }
+        
+        &:focus-visible {
+          @include ui.outlineOpacity(#{var(--d1-sys-opacity-outline)});
+          
+          outline-width: var(--d1-ref-spacing-2px);
+          outline-style: solid;
+          @include ui.outlineColor(#{var(--d1-sys-palette-primary)});
         }
       }
     }

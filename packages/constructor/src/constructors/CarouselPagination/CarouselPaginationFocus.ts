@@ -1,8 +1,8 @@
 import type { Ref } from 'vue'
 
 import { ControlAbstract } from '../../classes/ControlAbstract'
-import type { CarouselPaginationProps } from './props'
 import type { CarouselPaginationSelected } from './CarouselPaginationSelected'
+import type { CarouselPaginationProps } from './props'
 
 /**
  * Class for managing focus state, keyboard navigation, and event bindings in carousel pagination.
@@ -34,7 +34,6 @@ export class CarouselPaginationFocus extends ControlAbstract {
    */
   protected override isFocusable(): boolean {
     return super.isFocusable()
-      && this.props.clickable !== false
       && this.props.type !== 'fraction'
       && this.props.type !== 'progressbar'
   }
