@@ -48,11 +48,14 @@ export class ArrowEvent {
     protected readonly parent: ArrowParent,
     protected readonly position: ArrowPosition
   ) {
+    watch(this.elementTarget.element, this.makeEvents)
+    watch([...Object.values(this.refs)], this.update)
+
     onMounted(async () => {
       await nextTick()
 
-      watch(this.elementTarget.element, this.makeEvents, { immediate: true })
-      watch([...Object.values(this.refs)], this.update, { immediate: true })
+      this.makeEvents()
+      this.update()
     })
 
     onUnmounted(() => {

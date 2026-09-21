@@ -1,4 +1,4 @@
-import { type ComputedRef, onMounted, type Ref, watch } from 'vue'
+import { type ComputedRef, type Ref, watch } from 'vue'
 import {
   computedAsync,
   type ConstrEmit,
@@ -49,22 +49,20 @@ export class ImageData {
       () => this.initSsr()
     )
 
-    onMounted(() => {
-      if (emits) {
-        watch(
-          this.image,
-          (image) => {
-            if (typeof image === 'object') {
-              emits('load', {
-                type: this.type.item.value,
-                image
-              })
-            }
-          },
-          { immediate: true }
-        )
-      }
-    })
+    if (emits) {
+      watch(
+        this.image,
+        (image) => {
+          if (typeof image === 'object') {
+            emits('load', {
+              type: this.type.item.value,
+              image
+            })
+          }
+        },
+        { immediate: true }
+      )
+    }
   }
 
   /**

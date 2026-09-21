@@ -1,4 +1,4 @@
-import { watch, onMounted, onUnmounted } from 'vue'
+import { onUnmounted, watch } from 'vue'
 import { EventItem } from '@dxtmisha/functional'
 
 import { MotionStickyElement } from './MotionStickyElement'
@@ -23,19 +23,17 @@ export class MotionStickyScroll {
     protected readonly props: MotionStickyProps,
     protected readonly stickyElement: MotionStickyElement
   ) {
-    onMounted(() => {
-      watch(
-        [
-          this.stickyElement.element,
-          () => this.stickyElement.eventElement
-        ],
-        () => {
-          this.make()
-          requestAnimationFrame(this.onScroll)
-        },
-        { immediate: true }
-      )
-    })
+    watch(
+      [
+        this.stickyElement.element,
+        () => this.stickyElement.eventElement
+      ],
+      () => {
+        this.make()
+        requestAnimationFrame(this.onScroll)
+      },
+      { immediate: true }
+    )
 
     onUnmounted(() => {
       this.stop()

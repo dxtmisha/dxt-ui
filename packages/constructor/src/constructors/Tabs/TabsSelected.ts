@@ -1,4 +1,4 @@
-import { onMounted, ref, type ToRefs, watch } from 'vue'
+import { ref, type ToRefs, watch } from 'vue'
 import { getFirst, isSelected, type ListSelectedList } from '@dxtmisha/functional'
 
 import type { TabsProps } from './props'
@@ -22,9 +22,7 @@ export class TabsSelected {
   ) {
     this.item.value = props.selected || getFirst(props.tabs)?.value
 
-    onMounted(() => {
-      watch([this.refs.selected], this.update)
-    })
+    watch([this.refs.selected], this.update)
   }
 
   /**

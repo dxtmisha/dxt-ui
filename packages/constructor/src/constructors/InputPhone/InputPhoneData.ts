@@ -1,4 +1,4 @@
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { Geo, GeoPhone, type GeoPhoneMap } from '@dxtmisha/functional'
 
 import type { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
@@ -36,9 +36,7 @@ export class InputPhoneData {
 
     this.value?.set(this.toPhone(this.country.value))
 
-    onMounted(() => {
-      watch(this.valueItem, () => this.updateCountry())
-    })
+    watch(this.valueItem, () => this.updateCountry())
   }
 
   /** Computed info of the current phone map / Вычисляемая информация о текущей карте телефона */

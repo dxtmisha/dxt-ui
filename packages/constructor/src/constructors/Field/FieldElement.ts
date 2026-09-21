@@ -28,14 +28,22 @@ export class FieldElement {
     protected readonly props: FieldProps,
     protected readonly element: Ref<HTMLLabelElement | undefined>
   ) {
+    watch(element, this.update)
+
     onMounted(async () => {
       await nextTick()
-
-      watch(element, () => {
-        this.inputElement.value = this.element.value
-          ?.querySelector<HTMLInputElement>(`*[data-length]`) ?? undefined
-      }, { immediate: true })
+      this.update()
     })
+  }
+
+  /**
+   * Updates the input element reference.
+   *
+   * Обновляет ссылку на элемент ввода.
+   */
+  readonly update = (): void => {
+    this.inputElement.value = this.element.value
+      ?.querySelector<HTMLInputElement>('*[data-length]') ?? undefined
   }
 
   /**

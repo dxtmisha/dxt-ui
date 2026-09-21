@@ -1,4 +1,4 @@
-import { onMounted, type Ref, watch } from 'vue'
+import { type Ref, watch } from 'vue'
 import { EventItem, executeFunction, getRef, type RefOrNormal } from '@dxtmisha/functional'
 
 /**
@@ -21,20 +21,18 @@ export class WindowEsc {
     protected readonly on?: () => void,
     protected readonly active: RefOrNormal<boolean | (() => boolean)> = true
   ) {
-    onMounted(() => {
-      watch(
-        open,
-        (value) => {
-          if (executeFunction(getRef(this.active))) {
-            if (value) {
-              this.start()
-            } else {
-              this.stop()
-            }
+    watch(
+      open,
+      (value) => {
+        if (executeFunction(getRef(this.active))) {
+          if (value) {
+            this.start()
+          } else {
+            this.stop()
           }
         }
-      )
-    })
+      }
+    )
   }
 
   /**

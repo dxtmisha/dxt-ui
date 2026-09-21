@@ -1,5 +1,4 @@
 import {
-  onMounted,
   onUnmounted,
   ref,
   type ToRefs,
@@ -66,13 +65,11 @@ export class Progress {
     this.clientOnly = new ClientOnlyIncludeConstructor(this.props)
     this.text = new TextIncludeConstructor(this.props)
 
-    onMounted(() => {
-      watch(
-        [refs.visible],
-        this.switch,
-        { immediate: true }
-      )
-    })
+    watch(
+      [refs.visible],
+      this.switch,
+      { immediate: true }
+    )
 
     onUnmounted(() => {
       clearTimeout(this.timeout)

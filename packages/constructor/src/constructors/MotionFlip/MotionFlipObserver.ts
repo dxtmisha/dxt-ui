@@ -1,4 +1,4 @@
-import { onMounted, onUnmounted, watch } from 'vue'
+import { onUnmounted, watch } from 'vue'
 
 import type { MotionFlipAction } from './MotionFlipAction'
 import type { MotionFlipElement } from './MotionFlipElement'
@@ -27,18 +27,16 @@ export class MotionFlipObserver {
     protected readonly elementManager: MotionFlipElement,
     protected readonly items: MotionFlipItems
   ) {
-    onMounted(() => {
-      watch(
-        [
-          () => this.props.auto,
-          () => this.elementManager.getElement()
-        ],
-        () => {
-          this.update()
-        },
-        { immediate: true }
-      )
-    })
+    watch(
+      [
+        () => this.props.auto,
+        () => this.elementManager.getElement()
+      ],
+      () => {
+        this.update()
+      },
+      { immediate: true }
+    )
 
     onUnmounted(() => {
       this.stop()

@@ -45,18 +45,18 @@ export class CropAreaPosition {
       this.item.value = this.normalize(value)
     }
 
+    watch(
+      () => this.props.modelValue ?? this.props.value,
+      (value) => {
+        if (value) {
+          this.set(value)
+        }
+      },
+      { deep: true }
+    )
+
     onMounted(() => {
       this.style.set(this.item.value)
-
-      watch(
-        () => this.props.modelValue ?? this.props.value,
-        (value) => {
-          if (value) {
-            this.set(value)
-          }
-        },
-        { deep: true }
-      )
     })
   }
 

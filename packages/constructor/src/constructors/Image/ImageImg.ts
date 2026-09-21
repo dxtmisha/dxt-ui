@@ -4,8 +4,7 @@ import {
   ref,
   toRefs,
   type WatchHandle,
-  watch,
-  onMounted
+  watch
 } from 'vue'
 import {
   type ConstrBind,
@@ -58,24 +57,22 @@ export class ImageImg {
       preloadOffset
     } = toRefs(props)
 
-    onMounted(() => {
-      watch(
-        [lazy, preloadOffset, element],
-        () => {
-          if (
-            this.props.lazy
-            && this.element.value
-          ) {
-            this.makeLazy()
-          } else {
-            this.lazyInit.value = false
-            this.lazyStatus?.stop()
-            this.lazyStatus = undefined
-          }
-        },
-        { immediate: true }
-      )
-    })
+    watch(
+      [lazy, preloadOffset, element],
+      () => {
+        if (
+          this.props.lazy
+          && this.element.value
+        ) {
+          this.makeLazy()
+        } else {
+          this.lazyInit.value = false
+          this.lazyStatus?.stop()
+          this.lazyStatus = undefined
+        }
+      },
+      { immediate: true }
+    )
   }
 
   /**

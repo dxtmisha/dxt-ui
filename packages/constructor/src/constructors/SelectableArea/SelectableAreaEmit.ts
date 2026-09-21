@@ -1,4 +1,4 @@
-import { onMounted, watch } from 'vue'
+import { watch } from 'vue'
 import { type ConstrEmit } from '@dxtmisha/functional'
 
 import type { SelectableAreaClassesData } from './SelectableAreaClassesData'
@@ -25,9 +25,7 @@ export class SelectableAreaEmit {
     protected readonly item: SelectableAreaItem,
     protected readonly emits?: ConstrEmit<SelectableAreaEmits>
   ) {
-    onMounted(() => {
-      watch(this.item.item, this.on)
-    })
+    watch(this.item.item, this.on)
   }
 
   /**

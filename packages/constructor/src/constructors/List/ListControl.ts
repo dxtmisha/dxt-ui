@@ -1,4 +1,4 @@
-import { computed, nextTick, onMounted, onUnmounted, ref, watch, type Ref } from 'vue'
+import { computed, nextTick, onUnmounted, ref, watch, type Ref } from 'vue'
 import { EventItem, getKey, isDomRuntime, isInput, ListDataRef } from '@dxtmisha/functional'
 
 import { ListSearch } from './ListSearch'
@@ -38,19 +38,17 @@ export class ListControl {
     protected readonly go: ListGo,
     protected readonly search?: ListSearch
   ) {
-    onMounted(() => {
-      watch(
-        this.isActive,
-        (status) => {
-          if (status) {
-            this.start()
-          } else {
-            this.stop()
-          }
-        },
-        { immediate: true }
-      )
-    })
+    watch(
+      this.isActive,
+      (status) => {
+        if (status) {
+          this.start()
+        } else {
+          this.stop()
+        }
+      },
+      { immediate: true }
+    )
     onUnmounted(() => this.stop())
   }
 

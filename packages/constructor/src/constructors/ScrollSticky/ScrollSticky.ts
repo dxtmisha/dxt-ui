@@ -4,7 +4,6 @@ import {
   onUnmounted,
   watch,
   ref,
-  onMounted,
   onUpdated,
   nextTick
 } from 'vue'
@@ -69,21 +68,19 @@ export class ScrollSticky {
 
     this.width = new ScrollbarWidthRefConstructor()
 
-    onMounted(() => {
-      watch(
-        [
-          this.element,
-          this.scrollElement,
-          this.width.width
-        ],
-        () => {
-          this.on()
-          this.onMain()
-          this.onResize()
-        },
-        { immediate: true }
-      )
-    })
+    watch(
+      [
+        this.element,
+        this.scrollElement,
+        this.width.width
+      ],
+      () => {
+        this.on()
+        this.onMain()
+        this.onResize()
+      },
+      { immediate: true }
+    )
 
     onUpdated(async () => {
       await nextTick()

@@ -19,6 +19,9 @@ import {
 } from './basicTypes'
 import type { CollageProps } from './props'
 
+/** Debounce delay in milliseconds for resize recalculation / Задержка дебаунса в миллисекундах для пересчета макета */
+export const COLLAGE_RESIZE_DEBOUNCE_MS = 320
+
 /**
  * Class managing dynamic layout modes, resize calculations, and coordinate synchronization for Collage.
  *
@@ -54,18 +57,17 @@ export class CollageVariant {
   ) {
     provide<CollageUpdate>(COLLAGE_NAME_UPDATE, this.update)
 
-    onMounted(() => {
-      watch(
-        [
-          this.refs.variant,
-          this.refs.columns,
-          this.refs.cellSize,
-          this.refs.images
-        ],
-        this.update,
-        { immediate: true }
-      )
-    })
+    watch(
+      [
+        this.refs.variant,
+        this.refs.columns,
+        this.refs.cellSize,
+        this.refs.images
+      ],
+      this.update
+    )
+
+    onMounted(this.update)
 
     onUnmounted(() => {
       this.stopEvents()
@@ -98,9 +100,9 @@ export class CollageVariant {
   }
 
   /**
-   * Debounced layout recalculation triggered by window resize.
+   * Debounced layout recalculation triggered by container resize.
    *
-   * Отложенный перерасчет макета, вызываемый при изменении размера окна.
+   * Отложенный перерасчет макета, вызываемый при изменении размера контейнера.
    */
   readonly updateByTime = (): void => {
     if (this.elementItem.isResize()) {
@@ -108,7 +110,7 @@ export class CollageVariant {
         clearTimeout(this.timeoutResize)
       }
 
-      this.timeoutResize = setTimeout(this.resize, 320)
+      this.timeoutResize = setTimeout(this.resize, COLLAGE_RESIZE_DEBOUNCE_MS)
     }
   }
 

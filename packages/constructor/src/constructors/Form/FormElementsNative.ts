@@ -1,4 +1,4 @@
-import { onMounted, ref, watch, type Ref } from 'vue'
+import { ref, watch, type Ref } from 'vue'
 
 import type { FormElementsData, FormElementsValues } from './basicTypes'
 
@@ -24,10 +24,8 @@ export class FormElementsNative {
   ) {
     this.update()
 
-    onMounted(() => {
-      watch(this.element, () => {
-        this.update()
-      }, { immediate: true })
+    watch(this.element, () => {
+      this.update()
     })
   }
 

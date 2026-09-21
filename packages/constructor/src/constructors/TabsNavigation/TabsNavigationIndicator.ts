@@ -30,12 +30,12 @@ export class TabsNavigationIndicator {
     protected readonly className: string,
     protected readonly selected: TabsNavigationSelected
   ) {
-    onMounted(() => {
-      watch(
-        this.selected.item,
-        (newValue, oldValue) => this.go(newValue, oldValue)
-      )
+    watch(
+      this.selected.item,
+      (newValue, oldValue) => this.go(newValue, oldValue)
+    )
 
+    onMounted(() => {
       requestAnimationFrame(() => {
         const element = this.getElement()
 

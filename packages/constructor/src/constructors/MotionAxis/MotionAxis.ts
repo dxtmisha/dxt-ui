@@ -1,4 +1,4 @@
-import { onMounted, type Ref, type ToRefs, watch } from 'vue'
+import { type Ref, type ToRefs, watch } from 'vue'
 import { type ConstrClassObject, type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
 import { ModelInclude } from '../../classes/ModelInclude'
@@ -128,13 +128,11 @@ export class MotionAxis {
       this.selected.item
     )
 
-    onMounted(() => {
-      watch(
-        [refs.selected],
-        this.updateSelected,
-        { immediate: true }
-      )
-    })
+    watch(
+      [refs.selected],
+      this.updateSelected,
+      { immediate: true }
+    )
   }
 
   /**

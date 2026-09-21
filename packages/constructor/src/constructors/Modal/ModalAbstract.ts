@@ -1,4 +1,4 @@
-import { onMounted, ref, watch, type Ref, type ToRefs } from 'vue'
+import { ref, watch, type Ref, type ToRefs } from 'vue'
 import {
   type ConstrEmit,
   type DesignComp,
@@ -122,10 +122,8 @@ export abstract class ModalAbstract {
       emits
     )
 
-    onMounted(() => {
-      watch([refs.open], () => {
-        this.open.value = Boolean(this.props.open)
-      }, { immediate: true })
-    })
+    watch([refs.open], () => {
+      this.open.value = Boolean(this.props.open)
+    }, { immediate: true })
   }
 }

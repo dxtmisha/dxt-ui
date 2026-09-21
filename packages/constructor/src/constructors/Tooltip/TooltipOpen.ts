@@ -42,13 +42,13 @@ export class TooltipOpen {
     protected readonly position: TooltipPosition,
     protected readonly emits?: ConstrEmit<TooltipEmits>
   ) {
+    watch([refs.open], () => {
+      this.toggle(Boolean(this.props.open)).then()
+    }, { immediate: this.props.open })
+
     onMounted(() => {
       this.event = new EventItem(window, ['scroll-sync'], this.onScroll)
       this.eventBody = new EventItem(document.body, ['mouseleave'], this.onScroll)
-
-      watch([refs.open], () => {
-        this.toggle(Boolean(this.props.open)).then()
-      }, { immediate: this.props.open })
     })
     onUnmounted(() => {
       this.eventStop()

@@ -21,9 +21,9 @@ export class TextareaAutosizeResize {
     protected readonly element: Ref<HTMLTextAreaElement | undefined>,
     protected readonly value: TextareaAutosizeValue
   ) {
-    onMounted(async () => {
-      watch(this.value.item, this.on)
+    watch(this.value.item, this.on)
 
+    onMounted(async () => {
       await nextTick()
       requestAnimationFrame(this.on)
     })

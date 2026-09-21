@@ -1,4 +1,4 @@
-import { onMounted, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 
 import type { FormElements } from './FormElements'
 import type { FormElementsNative } from './FormElementsNative'
@@ -32,19 +32,17 @@ export class FormError {
     protected readonly elements: FormElements,
     protected readonly native: FormElementsNative
   ) {
-    onMounted(() => {
-      watch(
-        [
-          () => this.props.native,
-          this.elements.item,
-          this.native.item
-        ],
-        () => {
-          this.update()
-        },
-        { deep: true, immediate: true }
-      )
-    })
+    watch(
+      [
+        () => this.props.native,
+        this.elements.item,
+        this.native.item
+      ],
+      () => {
+        this.update()
+      },
+      { deep: true, immediate: true }
+    )
   }
 
   /**

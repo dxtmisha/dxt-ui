@@ -1,4 +1,4 @@
-import { onMounted, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 
 import { WindowClassesData } from './WindowClassesData'
 import { WindowElement } from './WindowElement'
@@ -24,21 +24,19 @@ export class WindowPersistent {
     protected readonly classes: WindowClassesData,
     protected readonly element: WindowElement
   ) {
-    onMounted(() => {
-      watch(this.item, (value) => {
-        const element = this.element.getMain()
+    watch(this.item, (value) => {
+      const element = this.element.getMain()
 
-        if (element) {
-          if (value) {
-            this.removeEvent()
+      if (element) {
+        if (value) {
+          this.removeEvent()
 
-            element.classList.add(this.classes.list.persistent)
-            element.addEventListener('animationend', this.onTransitionend)
-          } else {
-            element.classList.remove(this.classes.list.persistent)
-          }
+          element.classList.add(this.classes.list.persistent)
+          element.addEventListener('animationend', this.onTransitionend)
+        } else {
+          element.classList.remove(this.classes.list.persistent)
         }
-      })
+      }
     })
   }
 

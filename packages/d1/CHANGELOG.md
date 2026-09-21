@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.118.0] - 2026-09-21
+
+### Added
+- **`D1CarouselPagination` UI Component**:
+  - Introduced `D1CarouselPagination` UI component (`src/components/Ui/CarouselPagination/`) supporting `bullets`, `dots`, `lines`, `fraction`, and `progressbar` display formats, dynamic bullet scaling, vertical/horizontal orientations, and `palette` theming.
+  - Added complete component structure (`D1CarouselPagination.vue`, `props.ts`, `styleToken.scss`, `properties.json`, `wiki.ts`, `wikiData.ts`, `D1CarouselPagination.stories.ts`, `D1CarouselPagination.mdx`, `D1CarouselPaginationAiWiki.vue`, `index.ts`).
+  - Added package export entrypoint `./D1CarouselPagination` in `package.json`.
+  - Added design tokens for item sizing, transitions, dynamic scale falloffs, and progress bar track in `properties.json` and generated `styleToken.scss`.
+- **`D1Collage`, `D1CollageItem`, and `D1CollageBar` UI Components**:
+  - Introduced `D1Collage` UI component (`src/components/Ui/Collage/`) supporting responsive grid variants (`grid`, `masonry`, `woven`), gap tokens, dynamic container query columns, and selection state binding.
+  - Introduced `D1CollageItem` UI component (`src/components/Ui/CollageItem/`) with aspect ratios, grid spans, action overlays, and selection outlines.
+  - Introduced `D1CollageBar` UI component (`src/components/Ui/CollageBar/`) for floating action bars with action slots and item count badges.
+  - Added package export entrypoints `./D1Collage`, `./D1CollageItem`, and `./D1CollageBar` in `package.json`.
+  - Registered components in `design.ts`, `types.ts`, `ai-list.wiki.ts`, and `properties.scss`.
+
+### Changed
+- **`D1CarouselPagination` Styling & Interaction**:
+  - Scoped `:hover`, `:active`, and `:focus-visible` pseudo-classes on `#item` strictly under the `"~control"` modifier (`.d1-carouselPagination--control .d1-carouselPagination__item`), ensuring pointer and focus rings only activate when `control` is true.
+  - Added gray theme background (`palette-background: {sys.palette.onSurface}`) and medium surface opacity to `#progressBar`.
+- **`D1Collage` Tokens & Layout**:
+  - Configured Collage columns state variables (`--d1-collage-columns`) across style tokens.
+  - Updated variant styling and body grid container tokens.
+
+### Removed
+- **`D1CarouselPagination`**:
+  - Removed `clickable` prop from component prop types and defaults.
+
 ## [0.114.0] - 2026-09-07
 
 ### Added

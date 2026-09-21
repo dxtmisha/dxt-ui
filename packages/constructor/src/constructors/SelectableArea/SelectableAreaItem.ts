@@ -1,4 +1,4 @@
-import { ref, watch, onMounted, type ToRefs } from 'vue'
+import { ref, watch, type ToRefs } from 'vue'
 import { toArray } from '@dxtmisha/functional-basic'
 
 import type { SelectableAreaClassesData } from './SelectableAreaClassesData'
@@ -32,22 +32,20 @@ export class SelectableAreaItem {
   ) {
     this.updateItemByProps()
 
-    onMounted(() => {
-      watch(
-        [refs.selected],
-        () => {
-          this.updateItemByProps()
-          this.updateSelection()
-        },
-        { deep: true }
-      )
+    watch(
+      [refs.selected],
+      () => {
+        this.updateItemByProps()
+        this.updateSelection()
+      },
+      { deep: true }
+    )
 
-      watch(
-        this.item,
-        () => this.updateSelection(),
-        { deep: true }
-      )
-    })
+    watch(
+      this.item,
+      () => this.updateSelection(),
+      { deep: true }
+    )
   }
 
   /**

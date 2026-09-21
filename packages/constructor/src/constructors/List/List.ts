@@ -143,11 +143,11 @@ export class List {
     this.windowClasses = new WindowClassesIncludeConstructor(classDesign)
 
     if (this.props.control) {
+      watch(this.search.item, () => this.go.toHighlight())
+
       onMounted(async () => {
         await nextTick()
         this.go.preparationBySelected()
-
-        watch(this.search.item, () => this.go.toHighlight())
       })
     }
   }

@@ -1,4 +1,4 @@
-import { onMounted, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { MotionAxisStyles } from './MotionAxisStyles'
 
 import type { MotionAxisSelectedValue } from './basicTypes'
@@ -23,14 +23,12 @@ export class MotionAxisPrevious {
   constructor(
     protected readonly styles: MotionAxisStyles
   ) {
-    onMounted(() => {
-      watch(this.item, (value) => {
-        if (value) {
-          this.styles.add(value)
-        } else {
-          this.styles.remove()
-        }
-      })
+    watch(this.item, (value) => {
+      if (value) {
+        this.styles.add(value)
+      } else {
+        this.styles.remove()
+      }
     })
   }
 

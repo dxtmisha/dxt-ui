@@ -26,8 +26,6 @@ export class CollageMasonryHorizontal {
    * Пересчитывает горизонтальный плиточный макет, распределяя коэффициенты роста по элементам строк.
    */
   resize(): void {
-    this.grow.resetGrow()
-
     requestAnimationFrame(() => {
       const lines = this.getLines()
       const { columnsTotals, maxColumns } = this.getColumnsTotals(lines)

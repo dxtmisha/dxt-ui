@@ -38,20 +38,20 @@ export class WindowEvent {
     protected readonly open: WindowOpen,
     protected readonly verification: WindowVerification
   ) {
+    watch(
+      [
+        this.open.item,
+        this.status.item
+      ],
+      () => this.toggle(),
+      { immediate: true }
+    )
+
     onMounted(() => {
       this.event = new EventItem<HTMLBodyElement, MouseEvent>(
         'body',
         ['click', 'contextmenu'],
         this.onGlobal
-      )
-
-      watch(
-        [
-          this.open.item,
-          this.status.item
-        ],
-        () => this.toggle(),
-        { immediate: true }
       )
     })
   }

@@ -1,4 +1,4 @@
-import { computed, onMounted, watch } from 'vue'
+import { computed, watch } from 'vue'
 import {
   type DesignComponents,
   executeFunctionRef,
@@ -52,16 +52,14 @@ export class MaskInclude<
     super(className, props, components, extra, index)
 
     if (this.value) {
-      onMounted(() => {
-        watch(
-          this.active,
-          (active) => {
-            if (!active) {
-              this.value?.setFull(true)
-            }
+      watch(
+        this.active,
+        (active) => {
+          if (!active) {
+            this.value?.setFull(true)
           }
-        )
-      })
+        }
+      )
     }
   }
 

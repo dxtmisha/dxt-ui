@@ -1,4 +1,4 @@
-import { computed, onMounted, type Ref, type ToRefs, watch } from 'vue'
+import { computed, type Ref, type ToRefs, watch } from 'vue'
 import {
   anyToString,
   type ConstrClassObject,
@@ -319,12 +319,10 @@ export class Mask {
       this.data
     )
 
-    onMounted(() => {
-      watch([refs.value], () => this.reset(props.value))
-      watch(this.basic, () => this.data.goSelection(false))
+    watch([refs.value], () => this.reset(props.value))
+    watch(this.basic, () => this.data.goSelection(false))
 
-      watch([GeoRef.getStandard(), refs.language], () => this.reset(this.value.getValueCache()))
-    })
+    watch([GeoRef.getStandard(), refs.language], () => this.reset(this.value.getValueCache()))
 
     if (props.value) {
       this.data.reset(anyToString(props.value))

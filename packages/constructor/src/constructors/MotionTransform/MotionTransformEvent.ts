@@ -32,14 +32,15 @@ export class MotionTransformEvent {
     protected readonly state: MotionTransformState,
     protected readonly emits?: ConstrEmit<MotionTransformEmits>
   ) {
+    watch(
+      this.state.open,
+      () => this.item?.toggle(this.state.open.value),
+      { immediate: true }
+    )
+
     onMounted(() => {
       this.item = new EventItem(document.body, 'click', this.listener)
-
-      watch(
-        this.state.open,
-        () => this.item?.toggle(this.state.open.value),
-        { immediate: true }
-      )
+      this.item.toggle(this.state.open.value)
     })
     onUnmounted(() => this.stop())
   }

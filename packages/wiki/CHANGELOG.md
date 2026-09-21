@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.118.0] - 2026-09-21
+
+### Added
+- **`CarouselPagination` MDX & Wiki Documentation**:
+  - Registered component descriptions (`wikiDescriptionsCarouselPagination.ts`) and main registry entry in `wikiDescriptions.ts`.
+  - Created MDX documentation pages (`carouselPagination.en.mdx`, `carouselPagination.ru.mdx`, `events.en.mdx`, `events.ru.mdx`, `expose.en.mdx`, `expose.ru.mdx`, `slots.en.mdx`, `slots.ru.mdx`, `type.en.mdx`, `type.ru.mdx`).
+  - Added property controls module `wikiCarouselPagination.ts` supporting pagination display types (`bullets`, `dots`, `lines`, `fraction`, `progressbar`), dynamic scaling, `control`, and `v-model:selected`.
+- **`Collage`, `CollageItem`, and `CollageBar` MDX & Wiki Documentation**:
+  - Registered component descriptions (`wikiDescriptionsCollage.ts`, `wikiDescriptionsCollageItem.ts`, `wikiDescriptionsCollageBar.ts`).
+  - Created MDX documentation pages for `Collage` (`collage.en.mdx`, `collage.ru.mdx`, `variant.en.mdx`, `variant.ru.mdx`, `expose.update.en.mdx`, `expose.update.ru.mdx`), `CollageItem` (`collageItem.en.mdx`, `collageItem.ru.mdx`), and `CollageBar` (`collageBar.en.mdx`, `collageBar.ru.mdx`).
+  - Added property control modules `wikiCollage.ts`, `wikiCollageItem.ts`, and bar slot documentation.
+  - Added dimension exposes (`expose.getHeight.*.mdx`, `expose.getWidth.*.mdx`).
+  - Added Storybook demo stories showcasing grid layouts, masonry, selection tracking, and action bars.
+
+### Changed
+- **`CarouselPagination` Documentation**:
+  - Updated wiki descriptions and MDX documentation to reflect interaction unification under `control` (keyboard arrow navigation and click selection).
+- **`Collage` Property Definitions**:
+  - Migrated wiki documentation and property controls from `appearance` to `variant`.
+
 ## [0.114.0] - 2026-09-07
 
 ### Added

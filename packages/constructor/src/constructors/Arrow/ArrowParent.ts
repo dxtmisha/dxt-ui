@@ -26,9 +26,8 @@ export class ArrowParent {
     protected readonly className: string,
     protected readonly elementItem: ArrowElement
   ) {
-    onMounted(() => {
-      watch(element, this.make, { immediate: true })
-    })
+    watch(element, this.make)
+    onMounted(this.make)
     onUnmounted(() => this.unset())
   }
 

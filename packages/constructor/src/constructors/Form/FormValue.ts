@@ -36,24 +36,24 @@ export class FormValue {
       this.cache = { ...this.props.modelValue }
     }
 
+    if (this.refs?.value) {
+      watch(this.refs.value, (value) => {
+        if (value) {
+          this.setValuesAll(value)
+        }
+      })
+    }
+
+    if (this.refs?.modelValue) {
+      watch(this.refs.modelValue, (value) => {
+        if (value) {
+          this.setValuesAll(value)
+        }
+      })
+    }
+
     onMounted(() => {
       this.setValues(this.cache)
-
-      if (this.refs?.value) {
-        watch(this.refs.value, (value) => {
-          if (value) {
-            this.setValuesAll(value)
-          }
-        })
-      }
-
-      if (this.refs?.modelValue) {
-        watch(this.refs.modelValue, (value) => {
-          if (value) {
-            this.setValuesAll(value)
-          }
-        })
-      }
     })
   }
 

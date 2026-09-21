@@ -3,7 +3,10 @@ import { describe, expect, it, vi } from 'vitest'
 import { ref } from 'vue'
 import { CollageElement } from '../CollageElement'
 import { CollageGrow } from '../CollageGrow'
-import { CollageMasonryVertical } from '../CollageMasonryVertical'
+import {
+  COLLAGE_MASONRY_SCROLL_TOLERANCE,
+  CollageMasonryVertical
+} from '../CollageMasonryVertical'
 
 describe('CollageMasonryVertical', () => {
   it('should not throw on resize without elements', () => {
@@ -15,18 +18,6 @@ describe('CollageMasonryVertical', () => {
     expect(() => masonryVertical.resize()).not.toThrow()
   })
 
-  it('should call grow.resetGrow() on resize()', () => {
-    const container = document.createElement('div')
-    const element = ref<HTMLElement | undefined>(container)
-    const collageElement = new CollageElement(element)
-    const grow = new CollageGrow('d-collage', collageElement)
-    const masonryVertical = new CollageMasonryVertical(grow, collageElement)
-
-    const resetGrowSpy = vi.spyOn(grow, 'resetGrow')
-    masonryVertical.resize()
-
-    expect(resetGrowSpy).toHaveBeenCalled()
-  })
 
   it('should compute grow factor and call setGrow when scrollHeight exceeds minHeight + 4', () => {
     const container = document.createElement('div')
@@ -80,7 +71,7 @@ describe('CollageMasonryVertical', () => {
     // item2: minHeight = 100, itemHeight = 1 => heightRatio = 100, computedGrow = Math.round(200 / 100) = 2
     expect(setGrowSpy).toHaveBeenCalledWith(item2, 2)
 
-    // itemNoExceed: scrollHeight (102) is NOT > minHeight (100) + 4 => not called
+    // itemNoExceed: scrollHeight (102) is NOT > minHeight (100) + COLLAGE_MASONRY_SCROLL_TOLERANCE => not called
     expect(setGrowSpy).not.toHaveBeenCalledWith(itemNoExceed, expect.anything())
 
     spyRaf.mockRestore()

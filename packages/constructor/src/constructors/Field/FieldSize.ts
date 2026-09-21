@@ -32,9 +32,11 @@ export class FieldSize {
     protected readonly element: Ref<HTMLLabelElement | undefined>,
     protected readonly className: string
   ) {
+    watch(element, () => this.update())
+
     onMounted(() => {
       this.event = new EventItem(window, 'resize', () => this.update())
-      watch(element, () => this.update(), { immediate: true })
+      this.update()
     })
     onUnmounted(() => this.event?.stop())
     onUpdated(() => this.update())

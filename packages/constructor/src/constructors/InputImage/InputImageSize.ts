@@ -1,4 +1,4 @@
-import { onMounted, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { isObject } from '@dxtmisha/functional'
 
 import { ImageFile } from '../Image'
@@ -30,18 +30,16 @@ export class InputImageSize {
     protected readonly props: InputImageProps,
     protected readonly files: InputImageFiles
   ) {
-    onMounted(() => {
-      watch(
-        [
-          () => this.files.src,
-          () => this.files.file?.value
-        ],
-        ([src, file]) => {
-          void this.init(src, file)
-        },
-        { immediate: true }
-      )
-    })
+    watch(
+      [
+        () => this.files.src,
+        () => this.files.file?.value
+      ],
+      ([src, file]) => {
+        void this.init(src, file)
+      },
+      { immediate: true }
+    )
   }
 
   /**

@@ -1,4 +1,4 @@
-import { onMounted, watch } from 'vue'
+import { watch } from 'vue'
 import { isDomRuntime, isInput } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
@@ -33,29 +33,27 @@ export class WindowHidden {
     protected readonly open: WindowOpen,
     protected readonly teleport: TeleportInclude
   ) {
-    onMounted(() => {
-      watch(
-        this.open.openEnd,
-        (newValue: boolean) => {
-          if (
-            !this.props.inert
-            || this.props.embedded
-            || this.staticMode.item.value
-          ) {
-            return
-          }
-
-          if (newValue) {
-            this.toHidden()
-          } else {
-            this.toShow()
-          }
-        },
-        {
-          immediate: true
+    watch(
+      this.open.openEnd,
+      (newValue: boolean) => {
+        if (
+          !this.props.inert
+          || this.props.embedded
+          || this.staticMode.item.value
+        ) {
+          return
         }
-      )
-    })
+
+        if (newValue) {
+          this.toHidden()
+        } else {
+          this.toShow()
+        }
+      },
+      {
+        immediate: true
+      }
+    )
   }
 
   /**

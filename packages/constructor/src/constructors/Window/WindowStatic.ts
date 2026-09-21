@@ -27,9 +27,9 @@ export class WindowStatic {
     refs: ToRefs<WindowProps>,
     protected readonly element: WindowElement
   ) {
-    onMounted(() => {
-      watch([refs.staticMode], this.make)
+    watch([refs.staticMode], this.make)
 
+    onMounted(() => {
       if (this.is()) {
         requestAnimationFrame(this.listener)
       }

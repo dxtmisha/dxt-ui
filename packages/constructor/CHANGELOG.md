@@ -2,6 +2,45 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.118.0] - 2026-09-21
+
+### Added
+- **`CarouselPagination` Component Constructor**:
+  - Introduced `CarouselPagination` constructor (`src/constructors/CarouselPagination/`) coordinating pagination indicators, slide selection, dynamic scaling, fraction display, and progress bar mode.
+  - Decomposed into specialized helper classes: `CarouselPaginationDesign`, `CarouselPaginationItems`, `CarouselPaginationSelected`, and `CarouselPaginationFocus`.
+  - Added export entrypoint `./CarouselPagination` in `package.json` and styles in `src/library/style.scss`.
+- **`ControlAbstract` & Keyboard Navigation**:
+  - Extracted base controller `ControlAbstract` (`src/classes/ControlAbstract.ts`) for managing roving tabindex, element registration, and keyboard navigation.
+  - Implemented W3C WAI-ARIA Roving Tabindex in `CarouselPaginationFocus` supporting directional navigation (`ArrowRight`, `ArrowLeft`, `ArrowUp`, `ArrowDown`, `Home`, `End`).
+- **`Collage`, `CollageItem`, and `CollageBar` Component Constructors**:
+  - Introduced `Collage` constructor (`src/constructors/Collage/`) supporting multiple layout variants (`grid`, `masonry-vertical`, `masonry-horizontal`, `woven`), dynamic container query column height calculations, selection tracking, and dynamic item scaling.
+  - Introduced `CollageItem` constructor (`src/constructors/CollageItem/`) handling item aspect ratio, grid row/column spans, image fitting, selection states, and focus styling.
+  - Introduced `CollageBar` constructor (`src/constructors/CollageBar/`) for floating or embedded action bars with counter badges and custom actions.
+  - Added export entrypoints `./Collage`, `./CollageItem`, and `./CollageBar` in `package.json` and styles in `src/library/style.scss`.
+- **`ModelValueInclude` Support**:
+  - Added support for function values and primitives in `ModelValueInclude` for dynamic value evaluation and reactivity synchronization.
+
+### Changed
+- **`CarouselPagination` Interactivity**:
+  - Unified all interactive capabilities (mouse click selection and keyboard arrow navigation) strictly under the `control` prop, removing the separate `clickable` prop.
+  - Added `dots` pagination type support alongside `bullets`, `lines`, `fraction`, and `progressbar`.
+- **`Collage` Architecture**:
+  - Renamed `appearance` property to `variant` across constructors, types, and styles.
+  - Introduced `__body` container element to encapsulate grid layouts and provide clean styling isolation.
+- **Watcher Lifecycle Refactoring**:
+  - Moved `watch()` calls outside `onMounted()` to constructor scope across 44 component constructors (`Arrow`, `Bars`, `Checkbox`, `Collage`, `CropArea`, `Field`, `Form`, `Image`, `InputCode`, `InputImage`, `InputPhone`, `List`, `Mask`, `Modal`, `MotionAxis`, `MotionFlip`, `MotionSticky`, `MotionTransform`, `Progress`, `ScrollSticky`, `Scrollbar`, `SelectableArea`, `Tabs`, `TabsNavigation`, `TextareaAutosize`, `Tooltip`, `Window`) ensuring proper Vue 3 effect scope tracking.
+  - Extracted `update` method in `FieldElement` for element querying and reference synchronization.
+
+### Removed
+- **`CarouselPagination`**:
+  - Removed `clickable` prop and default value from `CarouselPaginationPropsBasic`.
+
+### Fixed
+- **`Mask` Cross-Browser Autofill**:
+  - Supported cross-browser autofill detection and model synchronization in `MaskEvent` for Safari and Firefox.
+- **`CollageDesign` Model Synchronization**:
+  - Fixed full dataset retrieval and selection updates using `fullData.value` in bidirectional model bindings.
+
 ## [0.114.1] - 2026-09-17
 
 ### Changed
