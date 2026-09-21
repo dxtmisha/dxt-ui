@@ -60,8 +60,8 @@
     "@dxtmisha/functional": ">=1.15.16",
     "@dxtmisha/functional-basic": ">=1.11.0",
     "@dxtmisha/styles": ">=1.0.13",
-    "@dxtmisha/wiki": ">=0.114.0",
-    "vue": ">=3.5.42"
+    "@dxtmisha/wiki": ">=0.118.0",
+    "vue": ">=3.5.43"
   },
   "devDependencies": {},
   "ui-priority": 450

@@ -70,9 +70,9 @@
     "@dxtmisha/functional": ">=1.15.16",
     "@dxtmisha/functional-basic": ">=1.11.0",
     "@dxtmisha/styles": ">=1.0.13",
-    "@storybook/addon-docs": ">=10.5.10",
+    "@storybook/addon-docs": ">=10.6.0",
     "react": ">=19.2.8",
-    "vue": ">=3.5.42"
+    "vue": ">=3.5.43"
   },
   "ui-priority": 400,
   "devDependencies": {

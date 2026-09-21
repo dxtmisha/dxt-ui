@@ -97,10 +97,10 @@
     "@dxtmisha/functional": ">=1.15.16",
     "@dxtmisha/functional-basic": ">=1.11.0",
     "@dxtmisha/media": ">=0.7.4",
-    "sass": ">=1.103.1",
+    "sass": ">=1.104.1",
     "typescript": ">=6.0.3",
     "vite-node": ">=6.0.0",
-    "vue": ">=3.5.42"
+    "vue": ">=3.5.43"
   },
   "devDependencies": {
     "puppeteer": ">=25.9.0"

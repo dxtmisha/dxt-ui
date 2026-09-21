@@ -64,8 +64,8 @@
     "@dxtmisha/figma": ">=0.1.4",
     "@dxtmisha/functional": ">=1.15.16",
     "@dxtmisha/functional-basic": ">=1.11.0",
-    "@figma/plugin-typings": ">=1.136.0",
-    "vue": ">=3.5.42"
+    "@figma/plugin-typings": ">=1.138.0",
+    "vue": ">=3.5.43"
   },
   "devDependencies": {},
   "sideEffects": false

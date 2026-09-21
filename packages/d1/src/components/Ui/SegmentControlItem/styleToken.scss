@@ -30,7 +30,7 @@
     
     &::before {
       content: ' ';
-      @include ui.backgroundColor(#{var(--d1-sys-palette-onPrimary)});
+      @include ui.backgroundColor(#{var(--d1-sys-palette-surface)});
       @include ui.backgroundOpacity(#{var(--d1-sys-opacity-primary-high)});
       @include ui.paletteBackground(#{var(--d1-sys-palette-primary)});
       

@@ -4,7 +4,7 @@
   "palette-gradient": "{sys.palette.onSurface}",
   "border-radius": "var(--sys-height) * {sys.rounded.adaptive.md}",
   "before": {
-    "background-color": "{sys.palette.onPrimary}",
+    "background-color": "{sys.palette.surface}",
     "background-opacity": "{sys.opacity.primary.high}",
     "box-shadow": "{sys.shadow.sm}",
     "backdrop-filter": "{sys.blur.md}",
