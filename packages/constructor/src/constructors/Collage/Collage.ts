@@ -6,11 +6,11 @@ import {
   ListDataRef,
   type ListSelectedList
 } from '@dxtmisha/functional'
-import type { Ref, ToRefs } from 'vue'
+import { type Ref, type ToRefs } from 'vue'
 
 import { EventClickInclude } from '../../classes/EventClickInclude'
 import { FocusDirectionInclude } from '../../classes/FocusDirectionInclude'
-import { ModelInclude } from '../../classes/ModelInclude'
+import { ModelValueInclude } from '../../classes/ModelValueInclude'
 
 import { CollageElement } from './CollageElement'
 import { CollageGrow } from './CollageGrow'
@@ -53,7 +53,7 @@ export class Collage {
   readonly event: EventClickInclude
 
   /** Model value synchronizer for selected state / Синхронизатор значения модели для состояния выбора */
-  readonly model: ModelInclude<ListSelectedList | undefined>
+  readonly model: ModelValueInclude<ListSelectedList | undefined>
 
   /** Instance of FocusDirectionInclude for keyboard directional navigation / Экземпляр FocusDirectionInclude для клавиатурной навигации по направлениям */
   readonly focusDirection: FocusDirectionInclude
@@ -80,7 +80,7 @@ export class Collage {
    * @param constructors.EventClickIncludeConstructor class for managing click events / класс для управления событиями клика
    * @param constructors.FocusDirectionIncludeConstructor class for keyboard directional navigation / класс для клавиатурной навигации по направлениям
    * @param constructors.ListDataRefConstructor class for managing list data / класс для управления данными списка
-   * @param constructors.ModelIncludeConstructor class for managing model / класс для управления моделью
+   * @param constructors.ModelValueIncludeConstructor class for working with model value / класс для работы со значением модели
    */
   constructor(
     protected readonly props: CollageProps,
@@ -101,7 +101,7 @@ export class Collage {
       EventClickIncludeConstructor?: typeof EventClickInclude
       FocusDirectionIncludeConstructor?: typeof FocusDirectionInclude
       ListDataRefConstructor?: typeof ListDataRef
-      ModelIncludeConstructor?: typeof ModelInclude<ListSelectedList | undefined>
+      ModelValueIncludeConstructor?: typeof ModelValueInclude<ListSelectedList | undefined>
     } = {}
   ) {
     const {
@@ -114,7 +114,7 @@ export class Collage {
       EventClickIncludeConstructor = EventClickInclude,
       FocusDirectionIncludeConstructor = FocusDirectionInclude,
       ListDataRefConstructor = ListDataRef,
-      ModelIncludeConstructor = ModelInclude
+      ModelValueIncludeConstructor = ModelValueInclude
     } = constructors
 
     this.elementItem = new CollageElementConstructor(element)
@@ -129,13 +129,28 @@ export class Collage {
       this.elementItem
     )
 
+    this.event = new EventClickIncludeConstructor(
+      undefined,
+      undefined,
+      emits
+    )
+
+    this.model = new ModelValueIncludeConstructor(
+      'selected',
+      emits,
+      this.event,
+      refs.selected,
+      () => !this.props.control,
+      true
+    )
+
     this.data = new ListDataRefConstructor(
       this.refs.images,
       undefined,
       undefined,
       undefined,
       undefined,
-      this.refs.selected,
+      this.model.value,
       this.refs.keyValue,
       this.refs.keyLabel
     )
@@ -148,18 +163,6 @@ export class Collage {
       this.masonryHorizontal,
       this.masonryVertical,
       this.grow
-    )
-
-    this.event = new EventClickIncludeConstructor(
-      undefined,
-      undefined,
-      emits
-    )
-
-    this.model = new ModelIncludeConstructor(
-      'selected',
-      emits,
-      refs.selected
     )
 
     this.focusDirection = new FocusDirectionIncludeConstructor(

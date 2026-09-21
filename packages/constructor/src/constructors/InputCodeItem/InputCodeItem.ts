@@ -125,7 +125,7 @@ export class InputCodeItem {
       key: 'input',
       class: `${this.className}__input`,
       name: this.getName(),
-      autocomplete: this.props.autocomplete,
+      autocomplete: this.props.autocomplete as AutoFill,
       inputMode: this.props.inputMode,
       maxLength: 1,
       placeholder: this.props.disabled ? undefined : this.props.placeholder,

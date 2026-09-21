@@ -172,7 +172,7 @@ export class CollageDesign<
             toBinds(
               {
                 class: this.classes?.value.item,
-                onClick: this.item.event.onClick,
+                onClick: this.item.model.onClick,
                 ...this.item.focusDirection.bindsItem()
               },
               this.props.collageItemAttrs,

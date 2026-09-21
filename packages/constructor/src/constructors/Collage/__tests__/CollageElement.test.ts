@@ -16,11 +16,13 @@ describe('CollageElement', () => {
     expect(collageElement.getElement()).toBe(element)
   })
 
-  it('should query items with [data-value] attribute', () => {
+  it('should query items with [data-collage-item] attribute', () => {
     const container = document.createElement('div')
     const item1 = document.createElement('div')
+    item1.setAttribute('data-collage-item', 'true')
     item1.setAttribute('data-value', 'item-1')
     const item2 = document.createElement('div')
+    item2.setAttribute('data-collage-item', 'true')
     item2.setAttribute('data-value', 'item-2')
     const nonItem = document.createElement('div')
     container.appendChild(item1)

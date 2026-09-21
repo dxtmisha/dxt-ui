@@ -49,10 +49,13 @@ describe('CollageMasonryHorizontal', () => {
 
     const container = document.createElement('div')
     const item1 = document.createElement('div')
+    item1.setAttribute('data-collage-item', 'true')
     item1.setAttribute('data-value', 'item-1')
     const item2 = document.createElement('div')
+    item2.setAttribute('data-collage-item', 'true')
     item2.setAttribute('data-value', 'item-2')
     const item3 = document.createElement('div')
+    item3.setAttribute('data-collage-item', 'true')
     item3.setAttribute('data-value', 'item-3')
 
     Object.defineProperty(item1, 'offsetTop', { value: 0, configurable: true })
@@ -107,10 +110,13 @@ describe('CollageMasonryHorizontal', () => {
     const item2 = document.createElement('div')
     const item3 = document.createElement('div')
 
+    item1.setAttribute('data-collage-item', 'true')
     item1.setAttribute('data-value', 'val-1')
     item1.setAttribute('data-width', '2')
+    item2.setAttribute('data-collage-item', 'true')
     item2.setAttribute('data-value', 'val-2')
     item2.setAttribute('data-width', '4')
+    item3.setAttribute('data-collage-item', 'true')
     item3.setAttribute('data-value', 'val-3')
     item3.setAttribute('data-width', '2')
 

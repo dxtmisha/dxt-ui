@@ -71,9 +71,13 @@ describe('CollageWoven', () => {
     const item2 = document.createElement('div')
     const item3 = document.createElement('div')
 
+    item0.setAttribute('data-collage-item', 'true')
     item0.setAttribute('data-value', 'val-0')
+    item1.setAttribute('data-collage-item', 'true')
     item1.setAttribute('data-value', 'val-1')
+    item2.setAttribute('data-collage-item', 'true')
     item2.setAttribute('data-value', 'val-2')
+    item3.setAttribute('data-collage-item', 'true')
     item3.setAttribute('data-value', 'val-3')
 
     // 2 columns:
@@ -111,6 +115,7 @@ describe('CollageWoven', () => {
   it('should recalculate woven layout via resize()', () => {
     const container = document.createElement('div')
     const item1 = document.createElement('div')
+    item1.setAttribute('data-collage-item', 'true')
     item1.setAttribute('data-value', 'val-1')
     item1.getBoundingClientRect = () => ({ top: 0, height: 50, bottom: 50, left: 0, right: 50, width: 50, x: 0, y: 0, toJSON: () => ({}) })
     container.appendChild(item1)

@@ -1,5 +1,10 @@
 import { ref, watch } from 'vue'
-import { type RefType, setValues } from '@dxtmisha/functional'
+import {
+  executeFunctionRef,
+  type RefOrNormalOrFunction,
+  type RefType,
+  setValues
+} from '@dxtmisha/functional'
 
 import { EventClickInclude } from './EventClickInclude'
 import { ModelInclude } from './ModelInclude'
@@ -27,16 +32,16 @@ export class ModelValueInclude<Value = any> {
    * @param emits emit function for triggering events / функция эмитов для вызова событий
    * @param event click event handling class / класс для обработки событий клика
    * @param inputValue reference to the input value / ссылка на входное значение
-   * @param readonly reactive flag for readonly state / реактивный флаг состояния только для чтения
-   * @param multiple reactive flag enabling multiple selection / реактивный флаг множественного выбора
+   * @param readonly flag or function for readonly state / флаг или функция состояния только для чтения
+   * @param multiple flag or function enabling multiple selection / флаг или функция множественного выбора
    */
   constructor(
     protected readonly index: string,
     protected readonly emits?: any,
     protected readonly event?: EventClickInclude,
     protected readonly inputValue?: RefType<any>,
-    protected readonly readonly?: RefType<boolean | undefined>,
-    protected readonly multiple?: RefType<boolean | undefined>
+    protected readonly readonly?: RefOrNormalOrFunction<boolean | undefined>,
+    protected readonly multiple?: RefOrNormalOrFunction<boolean | undefined>
   ) {
     if (this.inputValue) {
       this.value.value = this.inputValue?.value
@@ -48,6 +53,26 @@ export class ModelValueInclude<Value = any> {
     }
 
     new ModelInclude(this.index, this.emits, this.value)
+  }
+
+  /**
+   * Checks if multiple selection is enabled.
+   *
+   * Проверяет, включен ли режим множественного выбора.
+   * @returns true if multiple selection is enabled / true, если множественный выбор включен
+   */
+  readonly isMultiple = (): boolean => {
+    return Boolean(executeFunctionRef(this.multiple))
+  }
+
+  /**
+   * Checks if the model is in readonly state.
+   *
+   * Проверяет, находится ли модель в состоянии только для чтения.
+   * @returns true if readonly / true, если только для чтения
+   */
+  readonly isReadonly = (): boolean => {
+    return Boolean(executeFunctionRef(this.readonly))
   }
 
   /**
@@ -86,12 +111,12 @@ export class ModelValueInclude<Value = any> {
     if (
       options
       && 'value' in options
-      && !this.readonly?.value
+      && !this.isReadonly()
     ) {
       this.value.value = setValues(
         this.value.value,
         options.value,
-        { multiple: this.multiple?.value }
+        { multiple: this.isMultiple() }
       ) as Value
     }
 

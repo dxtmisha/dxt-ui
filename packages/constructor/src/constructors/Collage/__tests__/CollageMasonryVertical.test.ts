@@ -31,13 +31,16 @@ describe('CollageMasonryVertical', () => {
   it('should compute grow factor and call setGrow when scrollHeight exceeds minHeight + 4', () => {
     const container = document.createElement('div')
     const item1 = document.createElement('div')
+    item1.setAttribute('data-collage-item', 'true')
     item1.setAttribute('data-value', 'val-1')
     item1.setAttribute('data-height', '2')
 
     const item2 = document.createElement('div')
+    item2.setAttribute('data-collage-item', 'true')
     item2.setAttribute('data-value', 'val-2')
 
     const itemNoExceed = document.createElement('div')
+    itemNoExceed.setAttribute('data-collage-item', 'true')
     itemNoExceed.setAttribute('data-value', 'val-3')
 
     container.appendChild(item1)

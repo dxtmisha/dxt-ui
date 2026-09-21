@@ -23,7 +23,7 @@ export type InputCodeItemPropsBasic = TextSymbolPropsInclude
     index?: NumberOrString
 
     /** Autocomplete mode / Режим автозаполнения */
-    autocomplete?: AutoFillBase
+    autocomplete?: string
 
     /** RegExp for input verification / Регулярное выражение для проверки ввода */
     match?: RegExp

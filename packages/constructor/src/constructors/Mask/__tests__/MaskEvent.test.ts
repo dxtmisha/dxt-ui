@@ -210,7 +210,7 @@ describe('MaskEvent', () => {
 
     const inputElement = document.createElement('input')
     inputElement.value = 'firefox-autofill'
-    inputElement.matches = vi.fn().mockImplementation((selector: string) => selector === ':autofill')
+    vi.spyOn(inputElement, 'matches').mockImplementation((selector: string) => selector === ':autofill')
 
     const firefoxInputEvent = new Event('input', { bubbles: true }) as any
     Object.defineProperty(firefoxInputEvent, 'target', { value: inputElement })

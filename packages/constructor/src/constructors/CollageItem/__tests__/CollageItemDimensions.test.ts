@@ -19,6 +19,7 @@ describe('CollageItemDimensions', () => {
     expect(dimensions.expose.getWidth()).toBeUndefined()
     expect(dimensions.styles).toEqual({})
     expect(dimensions.binds).toEqual({
+      'data-collage-item': 'true',
       'data-value': 'test-item',
       'data-height': undefined,
       'data-width': undefined

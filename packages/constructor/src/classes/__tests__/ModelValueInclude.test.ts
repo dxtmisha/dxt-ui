@@ -62,9 +62,74 @@ describe('ModelValueInclude', () => {
     expect(modelValue.getValue()).toBe('old-val')
   })
 
+  it('should support readonly as a function', () => {
+    let isReadonlyState = true
+    const modelValue = new ModelValueInclude(
+      'index-key',
+      undefined,
+      undefined,
+      ref('old-val'),
+      () => isReadonlyState
+    )
+
+    expect(modelValue.isReadonly()).toBe(true)
+    modelValue.onClick({} as MouseEvent, { type: 'item', value: 'new-val', detail: undefined })
+    expect(modelValue.getValue()).toBe('old-val')
+
+    isReadonlyState = false
+    expect(modelValue.isReadonly()).toBe(false)
+    modelValue.onClick({} as MouseEvent, { type: 'item', value: 'new-val', detail: undefined })
+    expect(modelValue.getValue()).toBe('new-val')
+  })
+
+  it('should support readonly as a primitive boolean', () => {
+    const modelValue = new ModelValueInclude(
+      'index-key',
+      undefined,
+      undefined,
+      ref('old-val'),
+      true
+    )
+
+    expect(modelValue.isReadonly()).toBe(true)
+    modelValue.onClick({} as MouseEvent, { type: 'item', value: 'new-val', detail: undefined })
+    expect(modelValue.getValue()).toBe('old-val')
+  })
+
+  it('should support multiple as a function', () => {
+    const modelValue = new ModelValueInclude(
+      'index-key',
+      undefined,
+      undefined,
+      ref(['first']),
+      false,
+      () => true
+    )
+
+    expect(modelValue.isMultiple()).toBe(true)
+    modelValue.onClick({} as MouseEvent, { type: 'item', value: 'second', detail: undefined })
+    expect(modelValue.getValue()).toEqual(['first', 'second'])
+  })
+
+  it('should support multiple as a primitive boolean', () => {
+    const modelValue = new ModelValueInclude(
+      'index-key',
+      undefined,
+      undefined,
+      ref(['first']),
+      false,
+      true
+    )
+
+    expect(modelValue.isMultiple()).toBe(true)
+    modelValue.onClick({} as MouseEvent, { type: 'item', value: 'second', detail: undefined })
+    expect(modelValue.getValue()).toEqual(['first', 'second'])
+  })
+
   it('should update directly on onUpdate', () => {
     const modelValue = new ModelValueInclude('index-key')
     modelValue.onUpdate('direct-update')
     expect(modelValue.getValue()).toBe('direct-update')
   })
 })
+

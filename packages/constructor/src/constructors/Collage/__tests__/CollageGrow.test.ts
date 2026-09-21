@@ -14,6 +14,7 @@ describe('CollageGrow', () => {
   it('should set and reset grow property on item elements', () => {
     const container = document.createElement('div')
     const item = document.createElement('div')
+    item.setAttribute('data-collage-item', 'true')
     item.setAttribute('data-value', 'item-1')
     container.appendChild(item)
 
