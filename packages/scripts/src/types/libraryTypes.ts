@@ -80,3 +80,16 @@ export type LibraryIconItem = {
   /** Icon value or SVG content / Значение или SVG-содержимое иконки */
   value: string
 }
+
+/**
+ * AI prompt metadata extracted from markdown YAML frontmatter.
+ *
+ * Метаданные промпта ИИ, извлеченные из YAML frontmatter в markdown.
+ */
+export type LibraryAiPromptItemMetadata = {
+  /** Name or identifier of the prompt / Имя или идентификатор промпта */
+  name: string
+
+  /** Description of the prompt rules and usage / Описание правил и использования промпта */
+  description: string
+}

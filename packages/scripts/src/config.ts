@@ -49,6 +49,8 @@ export const UI_DIR_DIST = 'dist'
 export const UI_DIR_DIST_TEMPORARY = 'dist-temporary'
 /** Prompt directory name / Название директории промптов */
 export const UI_DIR_PROMPT = 'prompt'
+/** AI prompts directory name / Название директории промптов AI */
+export const UI_DIR_AI_PROMPTS = 'ai-prompts'
 /** Packages directory name / Название директории пакетов */
 export const UI_DIR_PACKAGES = 'packages'
 

@@ -6,6 +6,7 @@ import { PropertiesFile } from '../Properties/PropertiesFile'
 import { LibraryAiMcp } from './LibraryAiMcp'
 import { LibraryAiPromptAgents } from './LibraryAiPromptAgents'
 import { LibraryAiPromptItem } from './LibraryAiPromptItem'
+import { LibraryAiPromptPrompts } from './LibraryAiPromptPrompts'
 
 import globalPromptText from '../../media/templates/prompts/aiCodeGlobalPrompt.en.md?raw'
 import vuePromptText from '../../media/templates/prompts/aiCodeVuePrompt.en.md?raw'
@@ -99,6 +100,12 @@ Consolidated documentation, architectural guidelines, and mandatory rules for th
           }
         }
       })
+    }
+
+    const promptPrompts = this.getPrompts()
+
+    if (promptPrompts) {
+      prompts.push(promptPrompts)
     }
 
     const instruction = this.getInstruction()
@@ -239,6 +246,17 @@ Consolidated documentation, architectural guidelines, and mandatory rules for th
 ${PropertiesFile.readFileOnly(UI_FILE_AI_PROMPT_INSTRUCTION)}
       `.trim()
     }
+  }
+
+  /**
+   * Retrieves the prompts section from ai-prompts directory.
+   *
+   * Получает секцию промптов из директории ai-prompts.
+   * @returns formatted prompts section or undefined / отформатированная секция промптов или undefined
+   * @protected
+   */
+  protected getPrompts(): string | undefined {
+    return new LibraryAiPromptPrompts().make()
   }
 
   /**

@@ -515,6 +515,29 @@ describe('LibraryAiPrompt and LibraryAiPromptItem', () => {
       expect(removeDirSpy).toHaveBeenCalledWith('ai-packages-types')
       expect(createDirSpy).toHaveBeenCalledWith('ai-packages-types')
     })
+
+    it('includes ai-prompts section in make() when getPrompts returns content', () => {
+      vi.spyOn(PropertiesFile, 'removeDir').mockImplementation(() => {})
+      vi.spyOn(PropertiesFile, 'createDir').mockImplementation(() => {})
+      vi.spyOn(PropertiesFile, 'readDir').mockReturnValue([])
+      vi.spyOn(PropertiesFile, 'is').mockReturnValue(false)
+      const writeSpy = vi.spyOn(PropertiesFile, 'writeByPath').mockImplementation(() => {})
+      vi.spyOn(PropertiesFile, 'readFileOnly').mockReturnValue('')
+
+      class TestLibraryAiPrompt extends LibraryAiPrompt {
+        protected override getPrompts(): string | undefined {
+          return '# Prompts\n## Mandatory Rules\n- \'ai-prompts/jdoc.md\': JSDoc standard'
+        }
+      }
+
+      const prompt = new TestLibraryAiPrompt()
+      prompt.make()
+
+      expect(writeSpy).toHaveBeenCalledWith(
+        'ai-prompt.md',
+        expect.stringContaining('# Prompts\n## Mandatory Rules\n- \'ai-prompts/jdoc.md\': JSDoc standard')
+      )
+    })
   })
 
   describe('LibraryAiPromptItem for repository root', () => {

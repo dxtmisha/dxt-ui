@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.0] - 2026-09-22
+
+### Added
+- **`LibraryAiPromptPrompts` Class**:
+  - Implemented `LibraryAiPromptPrompts` (`src/classes/Library/LibraryAiPromptPrompts.ts`) to scan markdown prompt and skill instruction files in the `ai-prompts/` directory, extract YAML frontmatter metadata (`name`, `description`), and format them into a consolidated `# Skills` section with `## Available Skills & Tasks (Mandatory Workflow Execution)`.
+  - Added support for multiline descriptions with indentation and quotation stripping in frontmatter parsing.
+  - Added constant `UI_DIR_AI_PROMPTS = 'ai-prompts'` in `src/config.ts`.
+  - Added type definition `LibraryAiPromptItemMetadata` in `src/types/libraryTypes.ts`.
+  - Exported `LibraryAiPromptPrompts` from `src/library.ts`.
+  - Added comprehensive unit test suite `LibraryAiPromptPrompts.test.ts` covering directory validation, empty cases, metadata extraction, multiline parsing, line formatting, and markdown section assembly.
+
+### Changed
+- **`LibraryAiPrompt` Skills Integration**:
+  - Added `getPrompts()` method to `LibraryAiPrompt` and integrated it into `LibraryAiPrompt.make()` to automatically include available skills and task workflows into generated `ai-prompt.md`.
+  - Updated unit tests in `LibraryAiPrompt.test.ts` to verify the inclusion of skill prompt definitions.
+
 ## [1.2.1] - 2026-09-19
 
 ### Fixed
