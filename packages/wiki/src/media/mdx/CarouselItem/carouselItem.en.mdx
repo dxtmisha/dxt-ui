@@ -1,0 +1,74 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+The `CarouselItem` component represents an individual slide within carousels, sliders, slideshows, and walkthrough sequences. It provides media presentation, scroll snap alignment, interactive selection handling, and built-in accessibility compliance following the WAI-ARIA Carousel design pattern.
+
+The component encapsulates layout positioning, image cropping and scaling, skeleton loading state, link navigation, and scoped default slots for custom slide contents.
+
+**Key features:**
+
+- Scroll snap alignment modes via `snap`: `start`, `center`, `end`, and `none`
+- Integrated media presentation with image cropping, scaling, and positioning (`image`, `coordinator`, `x`, `y`, `size`)
+- Active slide state management with `selected`
+- Full WAI-ARIA Carousel Pattern compliance: automated `role="group"`, `roledescription="slide"`, `aria-label`, and `aria-hidden` attributes
+- Slide indexing and total slides count for screen reader accessibility (`slide`, `total`)
+- Built-in skeleton loading support (`isSkeleton`)
+- Interactive click handling and navigation routing (`href`, `to`)
+- Customizable container HTML tag (`tag`: defaults to `a` when `to`/`href` is provided, or `div`)
+- Scoped default slot with reactive `{ selected, slide }` parameters
+
+**Common use cases:**
+
+- Full-width hero banners and promotional carousels
+- Card and product showcase slideshows with snap scrolling
+- Onboarding walkthrough steps with custom content overlays
+- Interactive media galleries and image sliders
+
+<Source
+    code={`
+<script setup>
+import { ref } from 'vue'
+
+const activeSlide = ref(1)
+</script>
+
+<template>
+  <div class="carousel-viewport">
+    <CarouselItem
+      :slide="1"
+      :total="3"
+      :selected="activeSlide === 1"
+      snap="start"
+      image="https://example.com/banner-1.jpg"
+      @click="activeSlide = 1"
+    >
+      <template #default="{ selected, slide }">
+        <div class="slide-caption">
+          Slide {{ slide }} — Active: {{ selected }}
+        </div>
+      </template>
+    </CarouselItem>
+
+    <CarouselItem
+      :slide="2"
+      :total="3"
+      :selected="activeSlide === 2"
+      snap="start"
+      image="https://example.com/banner-2.jpg"
+      @click="activeSlide = 2"
+    />
+
+    <CarouselItem
+      :slide="3"
+      :total="3"
+      :selected="activeSlide === 3"
+      snap="start"
+      image="https://example.com/banner-3.jpg"
+      @click="activeSlide = 3"
+    />
+  </div>
+</template>
+  `}
+    language="html"
+/>
+
+> CarouselItem ensures seamless carousel slide integration with robust image handling, precise scroll snap positioning, and comprehensive accessibility features.

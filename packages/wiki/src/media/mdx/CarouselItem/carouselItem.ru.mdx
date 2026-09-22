@@ -1,0 +1,74 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+Компонент `CarouselItem` представляет собой отдельный элемент слайда для каруселей, слайдеров, галерей и пошаговых сценариев. Он обеспечивает отображение медиаконтента, snap-выравнивание прокрутки, управление состоянием активности и соответствие стандартам доступности WAI-ARIA Carousel.
+
+Компонент инкапсулирует позиционирование разметки, кадрирование и масштабирование изображений, состояние загрузки скелетона, поддержку навигационных ссылок и параметризованный слот по умолчанию для кастомного контента слайда.
+
+**Основные возможности:**
+
+- Режимы выравнивания scroll-snap через `snap`: `start`, `center`, `end` и `none`
+- Встроенное отображение медиа с кадрированием, масштабированием и позиционированием (`image`, `coordinator`, `x`, `y`, `size`)
+- Управление состоянием активности слайда через свойство `selected`
+- Полное соответствие шаблону доступности WAI-ARIA Carousel: автоматические атрибуты `role="group"`, `roledescription="slide"`, `aria-label` и `aria-hidden`
+- Индексация номера слайда и общего количества для скринридеров (`slide`, `total`)
+- Встроенная поддержка состояния загрузки через скелетон (`isSkeleton`)
+- Интерактивная обработка кликов и навигация по ссылкам (`href`, `to`)
+- Настраиваемый HTML-тег контейнера (`tag`: по умолчанию `a` при наличии `href`/`to`, либо `div`)
+- Параметризованный слот по умолчанию с реактивными переменными `{ selected, slide }`
+
+**Типичные сценарии использования:**
+
+- Полноэкранные промо-баннеры и слайдеры на главной странице
+- Карточки товаров и витрины с пошаговой snap-прокруткой
+- Обучающие экраны (onboarding) с кастомным контентом поверх слайдов
+- Медиа-галереи и интерактивные слайд-шоу
+
+<Source
+    code={`
+<script setup>
+import { ref } from 'vue'
+
+const activeSlide = ref(1)
+</script>
+
+<template>
+  <div class="carousel-viewport">
+    <CarouselItem
+      :slide="1"
+      :total="3"
+      :selected="activeSlide === 1"
+      snap="start"
+      image="https://example.com/banner-1.jpg"
+      @click="activeSlide = 1"
+    >
+      <template #default="{ selected, slide }">
+        <div class="slide-caption">
+          Слайд {{ slide }} — Активен: {{ selected }}
+        </div>
+      </template>
+    </CarouselItem>
+
+    <CarouselItem
+      :slide="2"
+      :total="3"
+      :selected="activeSlide === 2"
+      snap="start"
+      image="https://example.com/banner-2.jpg"
+      @click="activeSlide = 2"
+    />
+
+    <CarouselItem
+      :slide="3"
+      :total="3"
+      :selected="activeSlide === 3"
+      snap="start"
+      image="https://example.com/banner-3.jpg"
+      @click="activeSlide = 3"
+    />
+  </div>
+</template>
+  `}
+    language="html"
+/>
+
+> CarouselItem предоставляет надежную основу для построения слайдов с поддержкой изображений, плавной привязки прокрутки и встроенной доступности.

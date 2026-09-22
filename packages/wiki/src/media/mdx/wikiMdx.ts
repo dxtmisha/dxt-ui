@@ -25,6 +25,7 @@ import { wikiMdxBullet } from './Bullet/wikiMdxBullet'
 import { wikiMdxBulletItem } from './BulletItem/wikiMdxBulletItem'
 import { wikiMdxButton } from './Button/wikiMdxButton'
 import { wikiMdxButtonGroup } from './ButtonGroup/wikiMdxButtonGroup'
+import { wikiMdxCarouselItem } from './CarouselItem/wikiMdxCarouselItem'
 import { wikiMdxCarouselPagination } from './CarouselPagination/wikiMdxCarouselPagination'
 import { wikiMdxCell } from './Cell/wikiMdxCell'
 import { wikiMdxCheckbox } from './Checkbox/wikiMdxCheckbox'
@@ -151,6 +152,7 @@ export const wikiMdx: StorybookComponentsMdx = [
   wikiMdxBulletItem,
   wikiMdxButton,
   wikiMdxButtonGroup,
+  wikiMdxCarouselItem,
   wikiMdxCarouselPagination,
   wikiMdxCell,
   wikiMdxCheckbox,

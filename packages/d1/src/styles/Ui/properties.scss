@@ -12522,6 +12522,11 @@
         name: 'd1-buttonGroup',
         type: 'component',
       ),
+      'carouselItem':(
+        index: 'carouselItem',
+        name: 'd1-carouselItem',
+        type: 'component',
+      ),
       'carouselPagination':(
         index: 'carouselPagination',
         name: 'd1-carouselPagination',
@@ -13373,6 +13378,11 @@
       'buttonGroup':(
         index: 'buttonGroup',
         name: 'd-buttonGroup',
+        type: 'component',
+      ),
+      'carouselItem':(
+        index: 'carouselItem',
+        name: 'd-carouselItem',
         type: 'component',
       ),
       'carouselPagination':(

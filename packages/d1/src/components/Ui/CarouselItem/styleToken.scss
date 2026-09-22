@@ -1,0 +1,44 @@
+@use "../../../styles/Ui/properties";
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/style.scss" as CarouselItem;
+
+@include ui.initDesignBasic('d1.carouselItem') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include CarouselItem.mixinCarouselItem;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+    --d1-carouselItem-transitionFunction: var(--d-sys-transitionFunction-standard);
+    
+    @include ui.backgroundColor(#{var(--d1-sys-palette-onSurface)});
+    @include ui.backgroundOpacity(#{var(--d1-sys-opacity-overlay)});
+    
+    transition-duration: var(--d-sys-transitionDuration-sm);
+    transition-property: opacity, transform;
+    
+    &--snap {
+      &--start {
+        scroll-snap-align: start;
+      }
+      
+      &--center {
+        scroll-snap-align: center;
+      }
+      
+      &--end {
+        scroll-snap-align: end;
+      }
+      
+      &--none {
+        scroll-snap-align: none;
+      }
+    }
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

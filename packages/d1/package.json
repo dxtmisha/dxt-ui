@@ -573,6 +573,10 @@
     "./D1CarouselPagination": {
       "types": "./dist/library/D1CarouselPagination.d.ts",
       "default": "./dist/library/D1CarouselPagination.js"
+    },
+    "./D1CarouselItem": {
+      "types": "./dist/library/D1CarouselItem.d.ts",
+      "default": "./dist/library/D1CarouselItem.js"
     }
   },
   "buildOptions": {

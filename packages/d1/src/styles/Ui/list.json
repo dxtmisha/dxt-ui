@@ -8326,6 +8326,17 @@
           }
         }
       },
+      "carouselItem": {
+        "name": "d1-carouselItem",
+        "type": "component",
+        "value": {
+          "transitionFunction": {
+            "name": "--d1-carouselItem-transitionFunction",
+            "type": "var",
+            "value": "{d.sys.transitionFunction.standard}"
+          }
+        }
+      },
       "cell": {
         "name": "d1-cell",
         "type": "component",
@@ -12549,6 +12560,17 @@
                 }
               }
             }
+          }
+        }
+      },
+      "carouselItem": {
+        "name": "d-carouselItem",
+        "type": "component",
+        "value": {
+          "transitionFunction": {
+            "name": "--d-carouselItem-transitionFunction",
+            "type": "var",
+            "value": "{d.sys.transitionFunction.standard}"
           }
         }
       },

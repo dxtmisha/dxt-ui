@@ -1,0 +1,5 @@
+{
+  "main": "{d.carouselItem}",
+  "background-color": "{sys.palette.onSurface}",
+  "background-opacity": "{sys.opacity.overlay}"
+}

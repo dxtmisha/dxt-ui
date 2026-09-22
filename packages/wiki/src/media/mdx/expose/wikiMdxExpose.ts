@@ -20,6 +20,8 @@ import exposeGetWidthEn from './expose.getWidth.en.mdx'
 import exposeGetWidthRu from './expose.getWidth.ru.mdx'
 import exposeIdEn from './expose.id.en.mdx'
 import exposeIdRu from './expose.id.ru.mdx'
+import exposeIsSelectedEn from './expose.isSelected.en.mdx'
+import exposeIsSelectedRu from './expose.isSelected.ru.mdx'
 import exposeLabelIdEn from './expose.labelId.en.mdx'
 import exposeLabelIdRu from './expose.labelId.ru.mdx'
 import exposeLoadingEn from './expose.loading.en.mdx'
@@ -81,6 +83,10 @@ export const wikiMdxExpose: StorybookComponentsMdxItem = {
     id: {
       en: exposeIdEn,
       ru: exposeIdRu
+    },
+    isSelected: {
+      en: exposeIsSelectedEn,
+      ru: exposeIsSelectedRu
     },
     labelId: {
       en: exposeLabelIdEn,
