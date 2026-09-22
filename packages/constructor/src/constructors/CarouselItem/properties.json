@@ -1,0 +1,23 @@
+{
+  "transition-property": "opacity, transform",
+  "transition-duration": "{d.sys.transitionDuration.sm}",
+  "transition-function": "{d.sys.transitionFunction.standard}",
+  "#body": {},
+  "#image": {},
+  "~selected": {},
+  "~snap": {
+    "~start": {
+      "scroll-snap-align": "start"
+    },
+    "~center": {
+      "scroll-snap-align": "center"
+    },
+    "~end": {
+      "scroll-snap-align": "end"
+    },
+    "~none": {
+      "scroll-snap-align": "none"
+    },
+    "_default": "start"
+  }
+}

@@ -7,6 +7,11 @@ describe('AriaStaticInclude', () => {
     expect(AriaStaticInclude.role(undefined)).toEqual({ role: undefined })
   })
 
+  it('should return roledescription attribute', () => {
+    expect(AriaStaticInclude.roledescription('slide')).toEqual({ 'aria-roledescription': 'slide' })
+    expect(AriaStaticInclude.roledescription(undefined)).toEqual({})
+  })
+
   it('should return atomic attribute', () => {
     expect(AriaStaticInclude.atomic(true)).toEqual({ 'aria-atomic': 'true' })
     expect(AriaStaticInclude.atomic(false)).toEqual({ 'aria-atomic': 'false' })

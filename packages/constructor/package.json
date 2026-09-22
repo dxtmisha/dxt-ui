@@ -566,6 +566,10 @@
     "./CarouselPagination": {
       "types": "./dist/constructors/CarouselPagination/index.d.ts",
       "default": "./dist/carouselPagination.js"
+    },
+    "./CarouselItem": {
+      "types": "./dist/constructors/CarouselItem/index.d.ts",
+      "default": "./dist/carouselItem.js"
     }
   },
   "buildOptions": {
@@ -582,6 +586,7 @@
     "@dxtmisha/functional-basic": ">=1.11.0",
     "@dxtmisha/media": ">=0.7.4",
     "@dxtmisha/styles": ">=1.0.13",
+    "rollup": ">=4.63.4",
     "vue": ">=3.5.43",
     "vue-router": ">=5.3.1"
   },
