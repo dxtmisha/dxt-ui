@@ -1,3 +1,8 @@
+---
+name: git-push
+description: Analyze code changes with git diff, suggest a Conventional Commits message, and stage, commit, and push changes to remote repository.
+---
+
 Analyze all the changes made in the code by running git diff or reviewing history. Suggest and display a suitable title and description for a git commit.
 Use the Conventional Commits standard (feat, fix, docs, refactor, style, etc.).
 The title should be concise and meaningful, while the description should detail the essence of the changes.

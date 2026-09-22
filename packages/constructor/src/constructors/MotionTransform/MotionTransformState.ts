@@ -38,12 +38,16 @@ export class MotionTransformState {
     protected tabIndex: TabIndexInclude<HTMLDivElement>,
     protected size: MotionTransformSize
   ) {
-    watch([this.element.element, this.show], this.makeShow, { immediate: true })
-    watch([this.element.element, this.open], this.makeOpen, { immediate: true })
-    watch([this.element.element, this.teleport], this.makeTeleport, { immediate: true })
+    watch([this.element.element, this.show], this.makeShow)
+    watch([this.element.element, this.open], this.makeOpen)
+    watch([this.element.element, this.teleport], this.makeTeleport)
     watch([refs.open], () => this.set(Boolean(props.open)))
 
     onMounted(() => {
+      this.makeShow()
+      this.makeOpen()
+      this.makeTeleport()
+
       if (props.open) {
         requestAnimationFrame(() => {
           this.open.value = Boolean(props.open)

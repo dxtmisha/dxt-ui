@@ -1,4 +1,4 @@
-import { onUnmounted, watch } from 'vue'
+import { onMounted, onUnmounted, watch } from 'vue'
 import { EventItem } from '@dxtmisha/functional'
 
 import { MotionStickyElement } from './MotionStickyElement'
@@ -28,16 +28,23 @@ export class MotionStickyScroll {
         this.stickyElement.element,
         () => this.stickyElement.eventElement
       ],
-      () => {
-        this.make()
-        requestAnimationFrame(this.onScroll)
-      },
-      { immediate: true }
+      this.update
     )
 
+    onMounted(this.update)
     onUnmounted(() => {
       this.stop()
     })
+  }
+
+  /**
+   * Updates listeners and performs scroll position calculation.
+   *
+   * Обновляет слушатели и выполняет расчет позиции прокрутки.
+   */
+  readonly update = (): void => {
+    this.make()
+    requestAnimationFrame(this.onScroll)
   }
 
   /**

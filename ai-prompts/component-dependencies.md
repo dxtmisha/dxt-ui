@@ -1,3 +1,8 @@
+---
+name: component-dependencies
+description: Guidelines and patterns for connecting dependent component props types and child components in @dxtmisha/d1.
+---
+
 Study the requirements for connecting dependent components and their properties (props) when developing and modifying UI components in `@dxtmisha/d1`.
 
 ### 1. Connecting Property Types (props) in `props.ts`

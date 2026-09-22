@@ -43,11 +43,21 @@ export declare class VitePluginComponents {
   isStyle(url?: string, bundle?: Rollup.OutputBundle): boolean
 
   /**
+   * Checks if the file is a component Vue file.
+   *
+   * Проверяет, является ли файл vue-файлом компонента.
+   * @param fileName file name to check / имя файла для проверки
+   * @returns check result / результат проверки
+   */
+  isComponentVue(fileName: string): boolean
+
+  /**
    * Checks if the file is a component index file.
    *
    * Проверяет, является ли файл индексным файлом компонента.
    * @param fileName file name to check / имя файла для проверки
    * @returns check result / результат проверки
+   * @deprecated
    */
   isComponentIndex(fileName: string): boolean
 

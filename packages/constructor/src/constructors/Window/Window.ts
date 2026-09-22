@@ -1,4 +1,4 @@
-import { onUnmounted, type Ref, type ToRefs, watch } from 'vue'
+import { onMounted, onUnmounted, type Ref, type ToRefs, watch } from 'vue'
 import { type ConstrClassObject, type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
@@ -297,7 +297,13 @@ export class Window {
 
     new ModelConstructor<boolean>('open', this.emits, this.open.item)
 
-    watch([refs.open], () => this.open.set(props.open), { immediate: true })
+    watch([refs.open], () => this.open.set(props.open))
+
+    onMounted(() => {
+      if (props.open) {
+        this.open.set(props.open)
+      }
+    })
     onUnmounted(this.stop)
   }
 

@@ -4,9 +4,7 @@ import { ImageUint8Array } from '../ImageUint8Array'
 
 describe('ImageUint8Array', () => {
   beforeAll(() => {
-    if (typeof URL.createObjectURL === 'undefined') {
-      URL.createObjectURL = vi.fn().mockReturnValue('blob:mock-url')
-    }
+    URL.createObjectURL = vi.fn().mockReturnValue('blob:mock-url')
   })
 
   it('should check if value is Uint8Array or ArrayBuffer', () => {

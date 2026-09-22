@@ -22,7 +22,6 @@ describe('FieldFormInclude', () => {
     }
   })
 
-
   describe('getElement', () => {
     it('should return undefined if name is missing', () => {
       const include = new FieldFormInclude({} as any, {} as any, {} as any)

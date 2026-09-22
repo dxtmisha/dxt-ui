@@ -2,14 +2,14 @@ import { type TextareaAutosizePropsBasic, defaultsTextareaAutosize } from '@dxtm
 
 export const propsValues = {
   // :values [!] System label / Системная метка
-  height: ['xs', 'sm', 'md', 'lg', 'xl']
+  height: ['xs', 'sm', 'md', 'lg', 'xl', 'auto']
   // :values [!] System label / Системная метка
 }
 
 type PropsToken = {
   // :type [!] System label / Системная метка
   autosize?: boolean
-  height?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+  height?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'auto'
   // :type [!] System label / Системная метка
 }
 

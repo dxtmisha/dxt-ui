@@ -30,14 +30,14 @@ export class ChipGroupDesign<
   CLASSES extends ChipGroupClasses,
   P extends ChipGroupPropsBasic
 > extends DesignConstructorAbstract<
-  HTMLDivElement,
-  COMP,
-  ChipGroupEmits,
-  EXPOSE,
-  ChipGroupSlots,
-  CLASSES,
-  P
-> {
+    HTMLDivElement,
+    COMP,
+    ChipGroupEmits,
+    EXPOSE,
+    ChipGroupSlots,
+    CLASSES,
+    P
+  > {
   protected readonly item: ChipGroup
 
   /**

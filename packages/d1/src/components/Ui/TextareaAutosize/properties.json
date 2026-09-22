@@ -16,6 +16,7 @@
     "xl": {
       "min-height": "{ref.spacing.48}"
     },
+    "auto": {},
     "_default": "md"
   }
 }

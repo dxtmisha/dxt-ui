@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi } from 'vitest'
-import { nextTick, reactive, ref, toRefs } from 'vue'
+import { reactive, ref, toRefs } from 'vue'
 
 import { CarouselPaginationFocus } from '../CarouselPaginationFocus'
 import { CarouselPaginationSelected } from '../CarouselPaginationSelected'
@@ -136,7 +136,7 @@ describe('CarouselPaginationFocus', () => {
     const focusSpy = vi.spyOn(button2, 'focus')
     instance['focus'](2)
 
-    await nextTick()
+    await new Promise(resolve => requestAnimationFrame(resolve))
     expect(focusSpy).toHaveBeenCalled()
 
     document.body.removeChild(container)

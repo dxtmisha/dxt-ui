@@ -1,3 +1,8 @@
+---
+name: jdoc
+description: Guidelines and standard for generating comprehensive bilingual (English and Russian) JSDoc comments for classes, methods, and types.
+---
+
 # Task: JSDoc Generation
 
 Act as a documentation expert. Your goal is to add comprehensive JSDoc comments to all entities in the attached files.

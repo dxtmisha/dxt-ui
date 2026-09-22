@@ -311,4 +311,3 @@ describe('MaskEvent', () => {
     expect(emitMock.set).toHaveBeenCalledWith('focus', focusEvent)
   })
 })
-

@@ -1,5 +1,6 @@
 import {
   computed,
+  onMounted,
   type Ref,
   ref,
   toRefs,
@@ -59,20 +60,27 @@ export class ImageImg {
 
     watch(
       [lazy, preloadOffset, element],
-      () => {
-        if (
-          this.props.lazy
-          && this.element.value
-        ) {
-          this.makeLazy()
-        } else {
-          this.lazyInit.value = false
-          this.lazyStatus?.stop()
-          this.lazyStatus = undefined
-        }
-      },
-      { immediate: true }
+      this.update
     )
+    onMounted(this.update)
+  }
+
+  /**
+   * Updates lazy loading status and listener based on element and props.
+   *
+   * Обновляет статус и слушатель ленивой загрузки на основе элемента и свойств.
+   */
+  readonly update = (): void => {
+    if (
+      this.props.lazy
+      && this.element.value
+    ) {
+      this.makeLazy()
+    } else {
+      this.lazyInit.value = false
+      this.lazyStatus?.stop()
+      this.lazyStatus = undefined
+    }
   }
 
   /**

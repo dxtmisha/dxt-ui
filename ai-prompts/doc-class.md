@@ -1,3 +1,8 @@
+---
+name: doc-class
+description: Generate industrial-grade multilingual MDX documentation for TypeScript classes (English, Russian, Vietnamese) with Storybook Meta tags.
+---
+
 # Task: MDX Documentation Generation for Classes
 
 Act as a documentation specialist for the `dxt-ui` project. Your goal is to generate professional, industrial-grade documentation for TypeScript classes in MDX format.

@@ -1,4 +1,4 @@
-// md5:7e29258368ad50271bfeda514132aec0 true
+// md5:77a58646f99a6720ac3a81bde5e7230c true
 import type { NumberOrString } from '@dxtmisha/functional';
 
 type InputCodeItemPropsToken = {
@@ -9,15 +9,17 @@ type InputCodeItemPropsToken = {
 };
 
 export type InputCodeItemPropsBasic = TextSymbolPropsInclude & SkeletonPropsInclude & {
-  /** Focus movement enabled @keywords focus, navigation */
+  /** Focus movement enabled */
   move?: boolean;
   /** Input name */
   name?: string;
   /** Item index */
   index?: NumberOrString;
-  /** RegExp for input verification @keywords regex, validation */
+  /** Autocomplete mode */
+  autocomplete?: string;
+  /** RegExp for input verification */
   match?: RegExp;
-  /** Virtual keyboard mode @keywords inputMode, keyboard */
+  /** Mode of virtual keyboard */
   inputMode?: 'none' | 'text' | 'decimal' | 'numeric' | 'tel' | 'search' | 'email' | 'url' | string;
   /** Placeholder text */
   placeholder?: string;
@@ -25,11 +27,11 @@ export type InputCodeItemPropsBasic = TextSymbolPropsInclude & SkeletonPropsIncl
   tabindex?: number | string;
 };
 
-/** Properties for code item input @keywords input-code, item, props */
 export type InputCodeItemProps = InputCodeItemPropsBasic & InputCodeItemPropsToken;
 
-/** Default property values for input code item @keywords defaults */
+/** Default property values for input code item @keywords defaults, input-code-item */
 export declare const defaultsInputCodeItem: {
+  autocomplete: string;
   move: boolean;
   name: string;
   match: RegExp;

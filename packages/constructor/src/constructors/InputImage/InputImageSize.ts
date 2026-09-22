@@ -1,4 +1,4 @@
-import { ref, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { isObject } from '@dxtmisha/functional'
 
 import { ImageFile } from '../Image'
@@ -35,11 +35,9 @@ export class InputImageSize {
         () => this.files.src,
         () => this.files.file?.value
       ],
-      ([src, file]) => {
-        void this.init(src, file)
-      },
-      { immediate: true }
+      this.update
     )
+    onMounted(this.update)
   }
 
   /**
@@ -206,6 +204,19 @@ export class InputImageSize {
   }
 
   /**
+   * Updates image size by loading image source and file.
+   *
+   * Обновляет размер изображения загрузкой источника изображения и файла.
+   * @param data array of image source and file object / массив источника изображения и объекта файла
+   */
+  readonly update = async (
+    [src, file]: [string | undefined, File | undefined] = [this.files.src, this.files.file?.value]
+  ): Promise<void> => {
+    this.setFileSize(src, file)
+    await this.setSize(src)
+  }
+
+  /**
    * Initializes image size by loading image source and file.
    *
    * Инициализирует размер изображения загрузкой источника изображения и файла.
@@ -213,7 +224,6 @@ export class InputImageSize {
    * @param file file object / объект файла
    */
   protected async init(src?: string, file?: File): Promise<void> {
-    this.setFileSize(src, file)
-    await this.setSize(src)
+    await this.update([src, file])
   }
 }

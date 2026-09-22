@@ -21,7 +21,7 @@ describe('ControlAbstract', () => {
       public currentIndex: number = 1,
       public maxCount: number = 5,
       public minCount: number = 1,
-      public selectorPattern: (index: number) => string = (index) => `[data-index="${index}"]`
+      public selectorPattern: (index: number) => string = index => `[data-index="${index}"]`
     ) {
       super(props, element)
     }

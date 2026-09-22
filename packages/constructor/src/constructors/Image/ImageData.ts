@@ -1,4 +1,4 @@
-import { type ComputedRef, type Ref, watch } from 'vue'
+import { type ComputedRef, onMounted, type Ref, watch } from 'vue'
 import {
   computedAsync,
   type ConstrEmit,
@@ -52,16 +52,9 @@ export class ImageData {
     if (emits) {
       watch(
         this.image,
-        (image) => {
-          if (typeof image === 'object') {
-            emits('load', {
-              type: this.type.item.value,
-              image
-            })
-          }
-        },
-        { immediate: true }
+        this.onLoad
       )
+      onMounted(this.onLoad)
     }
   }
 
@@ -93,6 +86,21 @@ export class ImageData {
    */
   isImage(): this is { image: Ref<ImageItem> } {
     return this.is() && typeof this.image.value !== 'string'
+  }
+
+  /**
+   * Emits load event when image data is loaded.
+   *
+   * Вызывает событие load при загрузке данных изображения.
+   * @param image image event item / элемент события изображения
+   */
+  readonly onLoad = (image: ImageEventItem = this.image.value): void => {
+    if (typeof image === 'object') {
+      this.emits?.('load', {
+        type: this.type.item.value,
+        image
+      })
+    }
   }
 
   /**

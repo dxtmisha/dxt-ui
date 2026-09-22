@@ -33,14 +33,14 @@ export class SelectValueDesign<
   CLASSES extends SelectValueClasses,
   P extends SelectValuePropsBasic
 > extends DesignConstructorAbstract<
-  HTMLDivElement,
-  COMP,
-  SelectValueEmits,
-  EXPOSE,
-  SelectValueSlots,
-  CLASSES,
-  P
-> {
+    HTMLDivElement,
+    COMP,
+    SelectValueEmits,
+    EXPOSE,
+    SelectValueSlots,
+    CLASSES,
+    P
+  > {
   /** SelectValue helper instance / Вспомогательный экземпляр SelectValue */
   protected readonly item: SelectValue
 

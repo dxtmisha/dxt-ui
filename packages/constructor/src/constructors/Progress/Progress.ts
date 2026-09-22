@@ -1,4 +1,5 @@
 import {
+  onMounted,
   onUnmounted,
   ref,
   type ToRefs,
@@ -67,9 +68,9 @@ export class Progress {
 
     watch(
       [refs.visible],
-      this.switch,
-      { immediate: true }
+      this.switch
     )
+    onMounted(this.switch)
 
     onUnmounted(() => {
       clearTimeout(this.timeout)

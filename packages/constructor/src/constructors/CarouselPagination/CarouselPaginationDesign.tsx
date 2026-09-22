@@ -34,14 +34,14 @@ export class CarouselPaginationDesign<
   CLASSES extends CarouselPaginationClasses,
   P extends CarouselPaginationProps
 > extends DesignConstructorAbstract<
-  HTMLDivElement,
-  COMP,
-  CarouselPaginationEmits,
-  EXPOSE,
-  CarouselPaginationSlots,
-  CLASSES,
-  P
-> {
+    HTMLDivElement,
+    COMP,
+    CarouselPaginationEmits,
+    EXPOSE,
+    CarouselPaginationSlots,
+    CLASSES,
+    P
+  > {
   protected readonly item: CarouselPagination
 
   /**

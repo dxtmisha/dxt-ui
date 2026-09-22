@@ -64,4 +64,3 @@ export type CropAreaPropsInclude<
  * Интерфейс событий для включения CropArea
  */
 export type CropAreaEmitsInclude = CropAreaEmits
-

@@ -29,14 +29,14 @@ export class CollageItemDesign<
   CLASSES extends CollageItemClasses,
   P extends CollageItemProps
 > extends DesignConstructorAbstract<
-  HTMLElement,
-  COMP,
-  CollageItemEmits,
-  EXPOSE,
-  CollageItemSlots,
-  CLASSES,
-  P
-> {
+    HTMLElement,
+    COMP,
+    CollageItemEmits,
+    EXPOSE,
+    CollageItemSlots,
+    CLASSES,
+    P
+  > {
   protected readonly item: CollageItem
 
   /**

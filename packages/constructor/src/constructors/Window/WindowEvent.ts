@@ -1,11 +1,11 @@
-import { onMounted, watch } from 'vue'
 import { EventItem, getMouseClientX, getMouseClientY, isEnter } from '@dxtmisha/functional'
+import { onMounted, watch } from 'vue'
 
 import { TabIndexInclude } from '../../classes/TabIndexInclude'
-import { WindowStatus } from './WindowStatus'
 import { WindowClient } from './WindowClient'
 import { WindowFlash } from './WindowFlash'
 import { WindowOpen } from './WindowOpen'
+import { WindowStatus } from './WindowStatus'
 import { WindowVerification } from './WindowVerification'
 
 import type { WindowEventClickType } from './basicTypes'
@@ -43,8 +43,7 @@ export class WindowEvent {
         this.open.item,
         this.status.item
       ],
-      () => this.toggle(),
-      { immediate: true }
+      () => this.toggle()
     )
 
     onMounted(() => {
@@ -53,6 +52,7 @@ export class WindowEvent {
         ['click', 'contextmenu'],
         this.onGlobal
       )
+      this.toggle()
     })
   }
 

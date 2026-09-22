@@ -30,14 +30,14 @@ export class FormDesign<
   CLASSES extends FormClasses,
   P extends FormPropsBasic
 > extends DesignConstructorAbstract<
-  HTMLFormElement,
-  COMP,
-  FormEmits,
-  EXPOSE,
-  FormSlots,
-  CLASSES,
-  P
-> {
+    HTMLFormElement,
+    COMP,
+    FormEmits,
+    EXPOSE,
+    FormSlots,
+    CLASSES,
+    P
+  > {
   protected readonly item: Form
 
   /**
@@ -148,4 +148,3 @@ export class FormDesign<
     )
   }
 }
-

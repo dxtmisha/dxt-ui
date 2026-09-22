@@ -1,3 +1,8 @@
+---
+name: demo-component
+description: Guidelines and requirements for creating component demo pages in the demo package with router and homepage updates.
+---
+
 To create a demo page for a specific component (e.g., Badge, Button, Checkbox) in the `demo` package, perform the following steps:
 
 ### 0. General Rules

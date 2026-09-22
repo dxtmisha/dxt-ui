@@ -1,3 +1,8 @@
+---
+name: packages-update
+description: Update all package.json dependencies and devDependencies to latest stable versions excluding typescript.
+---
+
 # Task: Update Packages and Dependencies without TypeScript
 
 Your task is to update all dependencies (`dependencies` and `devDependencies`) in `package.json` to their latest stable versions, **excluding** the `typescript` (`ts`) package, and download/install them in the project.

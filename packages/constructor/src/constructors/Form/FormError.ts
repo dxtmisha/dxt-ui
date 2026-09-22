@@ -1,4 +1,4 @@
-import { ref, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 
 import type { FormElements } from './FormElements'
 import type { FormElementsNative } from './FormElementsNative'
@@ -41,8 +41,12 @@ export class FormError {
       () => {
         this.update()
       },
-      { deep: true, immediate: true }
+      { deep: true }
     )
+
+    onMounted(() => {
+      this.update()
+    })
   }
 
   /**

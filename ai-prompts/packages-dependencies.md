@@ -1,3 +1,8 @@
+---
+name: packages-dependencies
+description: Audit and synchronize package.json dependencies across monorepo packages based on actual source code imports.
+---
+
 # Task: Checking and Synchronizing Package Dependencies
 
 Your task is to conduct a complete audit and synchronization of the `dependencies` section in all `package.json` files across the monorepo packages (`packages/*/package.json`) based on the actual usage of modules, components, and styles in the source code (`packages/*/src/`).

@@ -1,4 +1,4 @@
-import { ref, watch, type Ref, type ToRefs } from 'vue'
+import { onMounted, ref, watch, type Ref, type ToRefs } from 'vue'
 import {
   type ConstrEmit,
   type DesignComp,
@@ -122,8 +122,16 @@ export abstract class ModalAbstract {
       emits
     )
 
-    watch([refs.open], () => {
-      this.open.value = Boolean(this.props.open)
-    }, { immediate: true })
+    watch([refs.open], this.update)
+    onMounted(this.update)
+  }
+
+  /**
+   * Updates the open state based on props.
+   *
+   * Обновляет состояние открытия на основе свойств.
+   */
+  readonly update = (): void => {
+    this.open.value = Boolean(this.props.open)
   }
 }

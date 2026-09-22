@@ -9,6 +9,10 @@ import {
 } from '../CollageMasonryVertical'
 
 describe('CollageMasonryVertical', () => {
+  it('should export COLLAGE_MASONRY_SCROLL_TOLERANCE as 4', () => {
+    expect(COLLAGE_MASONRY_SCROLL_TOLERANCE).toBe(4)
+  })
+
   it('should not throw on resize without elements', () => {
     const element = ref<HTMLElement | undefined>(undefined)
     const collageElement = new CollageElement(element)
@@ -17,7 +21,6 @@ describe('CollageMasonryVertical', () => {
 
     expect(() => masonryVertical.resize()).not.toThrow()
   })
-
 
   it('should compute grow factor and call setGrow when scrollHeight exceeds minHeight + 4', () => {
     const container = document.createElement('div')
@@ -40,7 +43,10 @@ describe('CollageMasonryVertical', () => {
 
     Object.defineProperty(item1, 'scrollHeight', { value: 150, configurable: true })
     Object.defineProperty(item2, 'scrollHeight', { value: 200, configurable: true })
-    Object.defineProperty(itemNoExceed, 'scrollHeight', { value: 102, configurable: true })
+    Object.defineProperty(itemNoExceed, 'scrollHeight', {
+      value: 100 + COLLAGE_MASONRY_SCROLL_TOLERANCE,
+      configurable: true
+    })
 
     vi.spyOn(window, 'getComputedStyle').mockImplementation((targetElement: Element) => {
       if (targetElement === item1 || targetElement === item2 || targetElement === itemNoExceed) {

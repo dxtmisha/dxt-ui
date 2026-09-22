@@ -27,14 +27,14 @@ export class CollageBarDesign<
   CLASSES extends CollageBarClasses,
   P extends CollageBarProps
 > extends DesignConstructorAbstract<
-  HTMLElement,
-  COMP,
-  CollageBarEmits,
-  EXPOSE,
-  CollageBarSlots,
-  CLASSES,
-  P
-> {
+    HTMLElement,
+    COMP,
+    CollageBarEmits,
+    EXPOSE,
+    CollageBarSlots,
+    CLASSES,
+    P
+  > {
   protected readonly item: CollageBar
 
   /**

@@ -1,5 +1,5 @@
-import { nextTick, onMounted, onUnmounted, type ToRefs, watch } from 'vue'
 import { type ConstrEmit, EventItem } from '@dxtmisha/functional'
+import { nextTick, onMounted, onUnmounted, type ToRefs, watch } from 'vue'
 
 import { TooltipPosition } from './TooltipPosition'
 import { TooltipStatus } from './TooltipStatus'
@@ -44,9 +44,12 @@ export class TooltipOpen {
   ) {
     watch([refs.open], () => {
       this.toggle(Boolean(this.props.open)).then()
-    }, { immediate: this.props.open })
+    })
 
     onMounted(() => {
+      if (this.props.open) {
+        this.toggle(true).then()
+      }
       this.event = new EventItem(window, ['scroll-sync'], this.onScroll)
       this.eventBody = new EventItem(document.body, ['mouseleave'], this.onScroll)
     })

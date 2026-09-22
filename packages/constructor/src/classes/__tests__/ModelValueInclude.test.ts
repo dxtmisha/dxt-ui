@@ -132,4 +132,3 @@ describe('ModelValueInclude', () => {
     expect(modelValue.getValue()).toBe('direct-update')
   })
 })
-

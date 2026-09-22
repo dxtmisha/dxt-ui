@@ -1,9 +1,9 @@
-import { onUnmounted, type ToRefs, watch } from 'vue'
 import {
   type ConstrEmit,
   type ConstrValue,
   EventItem
 } from '@dxtmisha/functional'
+import { onMounted, onUnmounted, type ToRefs, watch } from 'vue'
 
 import type { ScrollbarProps } from './props'
 import type { ScrollbarEmits } from './types'
@@ -54,7 +54,9 @@ export class ScrollbarBorder {
       refs.dividerTop,
       refs.dividerBottom,
       refs.inverse
-    ], this.reset, { immediate: true })
+    ], this.reset)
+
+    onMounted(this.reset)
     onUnmounted(() => this.stop())
   }
 

@@ -60,13 +60,13 @@ describe('CarouselPagination', () => {
   it('should configure ARIA attributes with tablist and orientation', () => {
     const { instance: horizontalInstance } = createInstance({ vertical: false })
     expect(horizontalInstance.aria).toMatchObject({
-      role: 'tablist',
+      'role': 'tablist',
       'aria-orientation': 'horizontal'
     })
 
     const { instance: verticalInstance } = createInstance({ vertical: true })
     expect(verticalInstance.aria).toMatchObject({
-      role: 'tablist',
+      'role': 'tablist',
       'aria-orientation': 'vertical'
     })
   })

@@ -31,14 +31,14 @@ export class InputImageDesign<
   CLASSES extends InputImageClasses,
   P extends InputImagePropsBasic
 > extends DesignConstructorAbstract<
-  HTMLDivElement,
-  COMP,
-  InputImageEmits,
-  EXPOSE,
-  InputImageSlots,
-  CLASSES,
-  P
-> {
+    HTMLDivElement,
+    COMP,
+    InputImageEmits,
+    EXPOSE,
+    InputImageSlots,
+    CLASSES,
+    P
+  > {
   /** Orchestrator item / Элемент оркестратора */
   protected readonly item: InputImage
 

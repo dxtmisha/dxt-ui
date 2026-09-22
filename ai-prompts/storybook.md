@@ -1,3 +1,8 @@
+---
+name: storybook
+description: Build Storybook documentation and copy static build output to the root docs directory for GitHub Pages.
+---
+
 Your task is to build the project's Storybook and move the built static output to the `docs` folder in the project root.
 
 ### Step-by-Step Execution Algorithm:

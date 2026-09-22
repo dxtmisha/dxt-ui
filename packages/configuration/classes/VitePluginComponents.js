@@ -51,7 +51,7 @@ export class VitePluginComponents {
   generateBundle(_options, bundle) {
     for (const [fileName, chunk] of Object.entries(bundle)) {
       if (
-        this.isComponentIndex(fileName)
+        this.isComponentVue(fileName)
         && 'code' in chunk
         && !chunk.code.includes(FILE_STYLE_TOKEN)
         && this.isStyle(fileName, bundle)
@@ -74,9 +74,23 @@ export class VitePluginComponents {
       return false
     }
 
-    const stylePath = url.replace(/index\.[^/\\]+$/, FILE_STYLE_TOKEN)
+    const stylePath = url.replace(/[^/\\]+$/, FILE_STYLE_TOKEN)
 
     return stylePath in bundle
+  }
+
+  /**
+   * Checks if the file is a component Vue file.
+   *
+   * Проверяет, является ли файл vue-файлом компонента.
+   * @param {string} fileName file name to check / имя файла для проверки
+   * @returns {boolean} check result / результат проверки
+   */
+  isComponentVue(fileName) {
+    const normalized = fileName.replace(/\\/g, '/')
+
+    return normalized.includes('components/Ui/')
+      && normalized.endsWith('.vue.js')
   }
 
   /**
@@ -85,6 +99,7 @@ export class VitePluginComponents {
    * Проверяет, является ли файл индексным файлом компонента.
    * @param {string} fileName file name to check / имя файла для проверки
    * @returns {boolean} check result / результат проверки
+   * @deprecated
    */
   isComponentIndex(fileName) {
     const normalized = fileName.replace(/\\/g, '/')

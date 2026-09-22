@@ -1,6 +1,6 @@
-// md5:71c49431d82b4178d37c03e775cfbd17 true
+// md5:f0608064d1f2db619a60c90fba2c37c5 true
 export type TextValue = string | (() => string) | undefined;
-export type TextIndex = 'cancel' | 'change' | 'characterLimit' | 'characterRemaining' | 'close' | 'copiedClipboard' | 'decrement' | 'dropzone' | 'edit' | 'entriesMatch' | 'first' | 'hide' | 'increment' | 'info' | 'last' | 'loading' | 'more' | 'morePrev' | 'next' | 'notFound' | 'notifications' | 'ok' | 'page' | 'previous' | 'rowsPerPage' | 'show' | 'symbol' | string;
+export type TextIndex = 'cancel' | 'change' | 'characterLimit' | 'characterRemaining' | 'close' | 'copiedClipboard' | 'decrement' | 'dropzone' | 'edit' | 'entriesMatch' | 'first' | 'hide' | 'increment' | 'info' | 'last' | 'loading' | 'more' | 'morePrev' | 'next' | 'notFound' | 'notifications' | 'ok' | 'page' | 'pagination' | 'previous' | 'rowsPerPage' | 'show' | 'symbol' | string;
 export type TextList = Record<TextIndex, TextValue>;
 export type TextBreadcrumbPropsInclude = {
     textBreadcrumb?: TextValue;
@@ -74,6 +74,9 @@ export type TextOkPropsInclude = {
 export type TextPagePropsInclude = {
     textPage?: TextValue;
 };
+export type TextPaginationPropsInclude = {
+    textPagination?: TextValue;
+};
 export type TextPreviousPropsInclude = {
     textPrevious?: TextValue;
 };
@@ -86,5 +89,5 @@ export type TextShowPropsInclude = {
 export type TextSymbolPropsInclude = {
     textSymbol?: TextValue;
 };
-/** Combined interface containing all text property configurations. @keywords text, i18n, props */
-export type TextAllPropsInclude = TextBreadcrumbPropsInclude & TextCancelPropsInclude & TextChangePropsInclude & TextCharacterLimitPropsInclude & TextCharacterRemainingPropsInclude & TextClosePropsInclude & TextCopiedClipboardPropsInclude & TextDecrementPropsInclude & TextDropzonePropsInclude & TextEditPropsInclude & TextEntriesMatchPropsInclude & TextFirstPropsInclude & TextHidePropsInclude & TextIncrementPropsInclude & TextInfoPropsInclude & TextLastPropsInclude & TextLoadingPropsInclude & TextMorePropsInclude & TextMorePrevPropsInclude & TextNextPropsInclude & TextNotFoundPropsInclude & TextNotificationsPropsInclude & TextOkPropsInclude & TextPagePropsInclude & TextPreviousPropsInclude & TextRowsPerPagePropsInclude & TextShowPropsInclude & TextSymbolPropsInclude;
+/** Composite interface containing all localization text properties. @keywords localization, i18n, text */
+export type TextAllPropsInclude = TextBreadcrumbPropsInclude & TextCancelPropsInclude & TextChangePropsInclude & TextCharacterLimitPropsInclude & TextCharacterRemainingPropsInclude & TextClosePropsInclude & TextCopiedClipboardPropsInclude & TextDecrementPropsInclude & TextDropzonePropsInclude & TextEditPropsInclude & TextEntriesMatchPropsInclude & TextFirstPropsInclude & TextHidePropsInclude & TextIncrementPropsInclude & TextInfoPropsInclude & TextLastPropsInclude & TextLoadingPropsInclude & TextMorePropsInclude & TextMorePrevPropsInclude & TextNextPropsInclude & TextNotFoundPropsInclude & TextNotificationsPropsInclude & TextOkPropsInclude & TextPagePropsInclude & TextPaginationPropsInclude & TextPreviousPropsInclude & TextRowsPerPagePropsInclude & TextShowPropsInclude & TextSymbolPropsInclude;

@@ -1,6 +1,7 @@
 import {
   type Ref,
   type ToRefs,
+  onMounted,
   onUnmounted,
   watch,
   ref,
@@ -74,19 +75,26 @@ export class ScrollSticky {
         this.scrollElement,
         this.width.width
       ],
-      () => {
-        this.on()
-        this.onMain()
-        this.onResize()
-      },
-      { immediate: true }
+      this.update
     )
 
+    onMounted(this.update)
     onUpdated(async () => {
       await nextTick()
       this.onResize()
     })
     onUnmounted(() => this.stop())
+  }
+
+  /**
+   * Initializes listeners and resizes elements.
+   *
+   * Инициализирует слушатели и выполняет изменение размеров элементов.
+   */
+  readonly update = (): void => {
+    this.on()
+    this.onMain()
+    this.onResize()
   }
 
   /**

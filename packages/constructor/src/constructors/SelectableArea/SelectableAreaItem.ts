@@ -1,4 +1,4 @@
-import { ref, watch, type ToRefs } from 'vue'
+import { onMounted, ref, watch, type ToRefs } from 'vue'
 import { toArray } from '@dxtmisha/functional-basic'
 
 import type { SelectableAreaClassesData } from './SelectableAreaClassesData'
@@ -46,6 +46,10 @@ export class SelectableAreaItem {
       () => this.updateSelection(),
       { deep: true }
     )
+
+    onMounted(() => {
+      this.updateSelection()
+    })
   }
 
   /**

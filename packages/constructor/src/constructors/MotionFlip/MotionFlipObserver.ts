@@ -1,4 +1,4 @@
-import { onUnmounted, watch } from 'vue'
+import { onMounted, onUnmounted, watch } from 'vue'
 
 import type { MotionFlipAction } from './MotionFlipAction'
 import type { MotionFlipElement } from './MotionFlipElement'
@@ -32,12 +32,10 @@ export class MotionFlipObserver {
         () => this.props.auto,
         () => this.elementManager.getElement()
       ],
-      () => {
-        this.update()
-      },
-      { immediate: true }
+      this.update
     )
 
+    onMounted(this.update)
     onUnmounted(() => {
       this.stop()
     })
@@ -48,7 +46,7 @@ export class MotionFlipObserver {
    *
    * Обновляет состояние наблюдателя в зависимости от свойства auto и доступности элемента.
    */
-  protected update(): void {
+  protected readonly update = (): void => {
     if (this.props.auto) {
       this.start()
     } else {

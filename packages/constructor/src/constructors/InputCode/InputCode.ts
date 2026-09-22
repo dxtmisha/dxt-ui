@@ -1,5 +1,5 @@
 import { type ConstrEmit, type DesignComp, isFilled } from '@dxtmisha/functional'
-import { ref, type Ref, type ToRefs, watch } from 'vue'
+import { onMounted, ref, type Ref, type ToRefs, watch } from 'vue'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { ModelInclude } from '../../classes/ModelInclude'
@@ -98,14 +98,21 @@ export class InputCode {
         this.refs.value,
         this.refs.modelValue
       ],
-      () => {
-        const value = this.props.value ?? this.props.modelValue ?? ''
-
-        this.value.value = value
-        this.inputCodeItem.update(value)
-      },
-      { immediate: true }
+      this.update
     )
+    onMounted(this.update)
+  }
+
+  /**
+   * Updates current code value and synchronizes code items.
+   *
+   * Обновляет текущее значение кода и синхронизирует элементы кода.
+   */
+  readonly update = (): void => {
+    const value = this.props.value ?? this.props.modelValue ?? ''
+
+    this.value.value = value
+    this.inputCodeItem.update(value)
   }
 
   /**

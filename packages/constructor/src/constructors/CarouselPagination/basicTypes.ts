@@ -37,19 +37,19 @@ export type CarouselPaginationItem = {
  */
 export type CarouselPaginationItemBinds = AriaList & {
   /** Item key / Ключ элемента */
-  key?: number | string
+  'key'?: number | string
   /** Button type / Тип кнопки */
-  type?: string
+  'type'?: string
   /** Item index data attribute / Data-атрибут индекса элемента */
   'data-index'?: number
   /** Item classes / Классы элемента */
-  class?: ConstrClass
+  'class'?: ConstrClass
   /** Item styles / Стили элемента */
-  style?: ConstrStyles
+  'style'?: ConstrStyles
   /** Tab index / Индекс табуляции */
-  tabindex?: NumberOrString
+  'tabindex'?: NumberOrString
   /** Click handler / Обработчик клика */
-  onClick?: (event: MouseEvent) => void
+  'onClick'?: (event: MouseEvent) => void
 }
 
 /**

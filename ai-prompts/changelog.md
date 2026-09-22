@@ -1,3 +1,8 @@
+---
+name: changelog
+description: Analyze git change history and generate or update CHANGELOG.md following the Keep a Changelog standard.
+---
+
 Study the project context attached to this message. Your task is to analyze the latest changes in the codebase and, based on them, update or create a CHANGELOG.md file from scratch.
 
 ### Analysis Requirements:

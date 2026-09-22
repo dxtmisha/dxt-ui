@@ -68,21 +68,21 @@ describe('CarouselPaginationItems', () => {
       style: undefined,
       tabindex: -1,
       aria: {
-        role: 'tab',
+        'role': 'tab',
         'aria-selected': 'false',
         'aria-label': 'Slide 1',
-        tabindex: -1
+        'tabindex': -1
       },
       binds: {
-        key: 1,
-        type: 'button',
+        'key': 1,
+        'type': 'button',
         'data-index': 1,
-        style: undefined,
-        tabindex: -1,
-        role: 'tab',
+        'style': undefined,
+        'tabindex': -1,
+        'role': 'tab',
         'aria-selected': 'false',
         'aria-label': 'Slide 1',
-        onClick: expect.any(Function)
+        'onClick': expect.any(Function)
       }
     })
     expect(list[1]).toEqual({
@@ -92,21 +92,21 @@ describe('CarouselPaginationItems', () => {
       style: undefined,
       tabindex: 0,
       aria: {
-        role: 'tab',
+        'role': 'tab',
         'aria-selected': 'true',
         'aria-label': 'Slide 2',
-        tabindex: 0
+        'tabindex': 0
       },
       binds: {
-        key: 2,
-        type: 'button',
+        'key': 2,
+        'type': 'button',
         'data-index': 2,
-        style: undefined,
-        tabindex: 0,
-        role: 'tab',
+        'style': undefined,
+        'tabindex': 0,
+        'role': 'tab',
         'aria-selected': 'true',
         'aria-label': 'Slide 2',
-        onClick: expect.any(Function)
+        'onClick': expect.any(Function)
       }
     })
     expect(list[2]).toEqual({
@@ -116,21 +116,21 @@ describe('CarouselPaginationItems', () => {
       style: undefined,
       tabindex: -1,
       aria: {
-        role: 'tab',
+        'role': 'tab',
         'aria-selected': 'false',
         'aria-label': 'Slide 3',
-        tabindex: -1
+        'tabindex': -1
       },
       binds: {
-        key: 3,
-        type: 'button',
+        'key': 3,
+        'type': 'button',
         'data-index': 3,
-        style: undefined,
-        tabindex: -1,
-        role: 'tab',
+        'style': undefined,
+        'tabindex': -1,
+        'role': 'tab',
         'aria-selected': 'false',
         'aria-label': 'Slide 3',
-        onClick: expect.any(Function)
+        'onClick': expect.any(Function)
       }
     })
   })
@@ -150,14 +150,14 @@ describe('CarouselPaginationItems', () => {
     const list = items.list.value
     expect(list.length).toBe(5)
 
-    const activeItem = list.find((item) => item.index === 5)
+    const activeItem = list.find(item => item.index === 5)
     expect(activeItem).toBeDefined()
     expect(activeItem?.selected).toBe(true)
     expect(activeItem?.scale).toBe(1)
     expect(activeItem?.style).toBeUndefined()
     expect(activeItem?.tabindex).toBe(0)
 
-    const edgeItem = list.find((item) => item.scale === 0.5)
+    const edgeItem = list.find(item => item.scale === 0.5)
     expect(edgeItem?.style).toEqual({ transform: 'scale(0.5)' })
     expect(edgeItem?.tabindex).toBe(-1)
     expect(edgeItem?.binds?.style).toEqual({ transform: 'scale(0.5)' })
@@ -174,15 +174,15 @@ describe('CarouselPaginationItems', () => {
 
     const binds = items.getBinds(2, true, 0.5)
     expect(binds).toEqual({
-      key: 2,
-      type: 'button',
+      'key': 2,
+      'type': 'button',
       'data-index': 2,
-      style: { transform: 'scale(0.5)' },
-      tabindex: 0,
-      role: 'tab',
+      'style': { transform: 'scale(0.5)' },
+      'tabindex': 0,
+      'role': 'tab',
       'aria-selected': 'true',
       'aria-label': 'Slide 2',
-      onClick: expect.any(Function)
+      'onClick': expect.any(Function)
     })
   })
 
@@ -208,26 +208,26 @@ describe('CarouselPaginationItems', () => {
     expect(items.getTabindex(true)).toBe(0)
     expect(items.getTabindex(false)).toBe(-1)
     expect(items.getAria(1, true)).toEqual({
-      role: 'tab',
+      'role': 'tab',
       'aria-selected': 'true',
       'aria-label': 'Slide 1',
-      tabindex: 0
+      'tabindex': 0
     })
 
     props.control = false
     expect(items.getTabindex(true)).toBe(-1)
     expect(items.getTabindex(false)).toBe(-1)
     expect(items.getAria(1, true)).toEqual({
-      role: 'tab',
+      'role': 'tab',
       'aria-selected': 'true',
       'aria-label': 'Slide 1',
-      tabindex: -1
+      'tabindex': -1
     })
     expect(items.getAria(2, false)).toEqual({
-      role: 'tab',
+      'role': 'tab',
       'aria-selected': 'false',
       'aria-label': 'Slide 2',
-      tabindex: -1
+      'tabindex': -1
     })
   })
 

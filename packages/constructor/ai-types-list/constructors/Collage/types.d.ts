@@ -1,10 +1,22 @@
-// md5:90141db6cb3f44b184310edd024c9ab5 true
-import type { ConstrClass } from '@dxtmisha/functional';
+// md5:b2e4523eb6a3cfe560fb0a96c31d0dc8 true
+import type { ConstrClass, ListSelectedList } from '@dxtmisha/functional';
 
-export type CollageComponents = {};
-export type CollageEmits = {};
-export interface CollageExpose {}
-export interface CollageSlots {}
+export type CollageComponents = CollageItemComponentInclude;
+
+export type CollageEmits = EventClickEmits & ModelEmitsSelected<ListSelectedList>;
+
+export interface CollageExpose extends EventClickExpose {
+  /** Recalculates and updates the collage layout. @keywords update, recalculate, layout */
+  update(): void;
+}
+
+export interface CollageSlots {
+  /** Default slot for custom content rendering. @keywords slot, default, template */
+  default?(props: any): any;
+}
+
 export type CollageClasses = {
   main: ConstrClass;
+  body: string;
+  item: string;
 };

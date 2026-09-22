@@ -30,14 +30,14 @@ export class CollageDesign<
   CLASSES extends CollageClasses,
   P extends CollagePropsBasic
 > extends DesignConstructorAbstract<
-  HTMLDivElement,
-  COMP,
-  CollageEmits,
-  EXPOSE,
-  CollageSlots,
-  CLASSES,
-  P
-> {
+    HTMLDivElement,
+    COMP,
+    CollageEmits,
+    EXPOSE,
+    CollageSlots,
+    CLASSES,
+    P
+  > {
   protected readonly item: Collage
 
   /**

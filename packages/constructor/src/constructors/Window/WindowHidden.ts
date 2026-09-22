@@ -1,4 +1,4 @@
-import { watch } from 'vue'
+import { onMounted, watch } from 'vue'
 import { isDomRuntime, isInput } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
@@ -35,25 +35,30 @@ export class WindowHidden {
   ) {
     watch(
       this.open.openEnd,
-      (newValue: boolean) => {
-        if (
-          !this.props.inert
-          || this.props.embedded
-          || this.staticMode.item.value
-        ) {
-          return
-        }
-
-        if (newValue) {
-          this.toHidden()
-        } else {
-          this.toShow()
-        }
-      },
-      {
-        immediate: true
-      }
+      this.update
     )
+    onMounted(this.update)
+  }
+
+  /**
+   * Updates hidden state for elements outside the window based on openEnd status.
+   *
+   * Обновляет состояние скрытия для элементов вне окна на основе статуса openEnd.
+   */
+  readonly update = (): void => {
+    if (
+      !this.props.inert
+      || this.props.embedded
+      || this.staticMode.item.value
+    ) {
+      return
+    }
+
+    if (this.open.openEnd.value) {
+      this.toHidden()
+    } else {
+      this.toShow()
+    }
   }
 
   /**
