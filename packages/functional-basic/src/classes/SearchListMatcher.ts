@@ -1,3 +1,5 @@
+// ai-none
+
 import { getExactSearchExp } from '../functions/getExactSearchExp'
 import { getSearchExp } from '../functions/getSearchExp'
 

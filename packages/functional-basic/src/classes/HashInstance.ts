@@ -1,3 +1,5 @@
+// ai-none
+
 import { isDomRuntime } from '../functions/isDomRuntime'
 import { transformation } from '../functions/transformation'
 import { getRequestString } from '../functions/getRequestString'

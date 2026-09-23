@@ -1,3 +1,5 @@
+// ai-none
+
 import { addTagHighlightMatch } from '../functions/addTagHighlightMatch'
 import { anyToString } from '../functions/anyToString'
 import { getItemByPath } from '../functions/getItemByPath'

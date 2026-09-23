@@ -1,3 +1,5 @@
+// ai-none
+
 import { ApiErrorItem } from './ApiErrorItem'
 import { ApiErrorStorage } from './ApiErrorStorage'
 import { ServerStorage } from './ServerStorage'

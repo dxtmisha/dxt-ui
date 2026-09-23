@@ -1,3 +1,5 @@
+// ai-none
+
 import { forEach } from '../functions/forEach'
 import { executeFunction } from '../functions/executeFunction'
 import { isFunction } from '../functions/isFunction'

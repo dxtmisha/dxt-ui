@@ -1,3 +1,5 @@
+// ai-none
+
 import { ErrorCenterHandler } from './ErrorCenterHandler'
 
 import type { ErrorCenterCauseItem, ErrorCenterCauseList, ErrorCenterGroup, ErrorCenterHandlerCallback, ErrorCenterHandlerIsConsole, ErrorCenterHandlerList } from '../types/errorCenterTypes'

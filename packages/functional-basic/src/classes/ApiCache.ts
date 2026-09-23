@@ -1,3 +1,5 @@
+// ai-none
+
 import { isDomRuntime } from '../functions/isDomRuntime'
 import { ErrorCenter } from './ErrorCenter'
 

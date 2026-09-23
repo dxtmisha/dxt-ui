@@ -1,3 +1,5 @@
+// ai-none
+
 import type { ApiFetch, ApiPreparationEnd } from '../types/apiTypes'
 
 /**

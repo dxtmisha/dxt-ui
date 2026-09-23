@@ -6,7 +6,7 @@ import type { DesignTypesAi } from './DesignTypesAi'
 
 import type { DesignTypesItem, DesignTypesList } from '../../types/designTypes'
 
-import { UI_DIR_AI_TYPES_LIST, UI_FILE_AI_TYPES } from '../../config'
+import { UI_DIR_AI_TYPES_LIST, UI_FILE_AI_TYPES, UI_FLAG_AI_NONE } from '../../config'
 
 /**
  * Handles file reading, directory scanning, caching, MD5 tracking, and file writing for DesignTypesMake.
@@ -255,10 +255,20 @@ export class DesignTypesMakeFile {
           const content = this.readFile(file, directory)
 
           if (this.isContent(content)) {
+            let itemContent = content
+
+            if (directory === this.getTemporaryDirectory()) {
+              const sourceContent = this.getSourceContent(file)
+              
+              if (sourceContent && sourceContent.match(UI_FLAG_AI_NONE)) {
+                itemContent = ''
+              }
+            }
+
             return {
               path: file,
-              content,
-              md5: this.ai.getMd5(content)
+              content: itemContent,
+              md5: this.ai.getMd5(itemContent)
             }
           }
         }
@@ -266,6 +276,30 @@ export class DesignTypesMakeFile {
         return undefined
       }
     ) as DesignTypesList
+  }
+
+  /**
+   * Reads original source code for a declaration file to check for specific directives.
+   *
+   * Читает исходный код для файла декларации для проверки специфичных директив.
+   * @param filePath declaration file path / путь к файлу декларации
+   * @returns file content or undefined / содержимое файла или undefined
+   */
+  protected getSourceContent(filePath: string): string | undefined {
+    let srcPath = filePath.replace(/\.d\.ts$/, '.ts')
+    let content = PropertiesFile.readFileOnly(['src', srcPath])
+
+    if (!isFilled(content)) {
+      srcPath = filePath.replace(/\.d\.ts$/, '.vue')
+      content = PropertiesFile.readFileOnly(['src', srcPath])
+    }
+
+    if (!isFilled(content)) {
+      srcPath = filePath.replace(/\.d\.ts$/, '.tsx')
+      content = PropertiesFile.readFileOnly(['src', srcPath])
+    }
+
+    return content
   }
 
   /**

@@ -1,3 +1,5 @@
+// ai-none
+
 import { executeFunction } from '../functions/executeFunction'
 import { executePromise } from '../functions/executePromise'
 import { isDomRuntime } from '../functions/isDomRuntime'

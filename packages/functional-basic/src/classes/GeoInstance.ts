@@ -1,3 +1,5 @@
+// ai-none
+
 import { executeFunction } from '../functions/executeFunction'
 import { forEach } from '../functions/forEach'
 import { isDomRuntime } from '../functions/isDomRuntime'

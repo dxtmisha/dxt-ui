@@ -1,3 +1,5 @@
+// ai-none
+
 import { MetaManager } from './MetaManager'
 
 import { MetaTwitterCard, MetaTwitterTag } from '../types/metaTypes'

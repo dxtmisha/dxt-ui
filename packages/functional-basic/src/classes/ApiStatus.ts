@@ -1,3 +1,5 @@
+// ai-none
+
 import { isObjectNotArray } from '../functions/isObjectNotArray'
 import type { ApiStatusItem, ApiStatusType } from '../types/apiTypes'
 

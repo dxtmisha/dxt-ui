@@ -1,3 +1,5 @@
+// ai-none
+
 import { DataStorage } from './DataStorage'
 
 /** Storage name for cookie block / Имя хранилища для блокировки cookie */

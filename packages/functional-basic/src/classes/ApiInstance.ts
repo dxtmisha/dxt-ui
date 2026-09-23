@@ -1,3 +1,5 @@
+// ai-none
+
 import { getRequestString } from '../functions/getRequestString'
 import { isDomRuntime } from '../functions/isDomRuntime'
 import { isFilled } from '../functions/isFilled'

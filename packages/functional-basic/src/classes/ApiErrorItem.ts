@@ -1,3 +1,5 @@
+// ai-none
+
 import { executeFunction } from '../library'
 import type { ApiErrorStorageItem, ApiMethodItem } from '../types/apiTypes'
 

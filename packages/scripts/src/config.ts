@@ -19,6 +19,9 @@ export const UI_KEY_CUSTOM = 'custom'
 /** An indicator that this file should not be exported/ Признак того, что не нужно экспортировать этот файл */
 export const UI_FLAG_NOT_EXPORT = /\/\/ *export:none/
 
+/** An indicator that this file should not be processed by AI / Признак того, что не нужно обрабатывать этот файл ИИ */
+export const UI_FLAG_AI_NONE = /\/\/\s*ai-none/
+
 /** Folder where all the code is stored/ Папка, где хранится весь код */
 export const UI_DIR_IN = 'src'
 /** AI folder name / Название папки AI */

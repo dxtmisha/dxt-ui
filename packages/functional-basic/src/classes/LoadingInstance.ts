@@ -1,3 +1,5 @@
+// ai-none
+
 import { isDomRuntime } from '../functions/isDomRuntime'
 
 import { EventItem } from './EventItem'

@@ -1,3 +1,5 @@
+// ai-none
+
 import { createElement } from '../functions/createElement'
 import { encodeAttribute } from '../functions/encodeAttribute'
 import { encodeLiteAttribute } from '../functions/encodeLiteAttribute'

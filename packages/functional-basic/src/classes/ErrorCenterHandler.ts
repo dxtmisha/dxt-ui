@@ -1,3 +1,5 @@
+// ai-none
+
 import { executeFunction } from '../functions/executeFunction'
 import { isDomRuntime } from '../functions/isDomRuntime'
 import type { ErrorCenterCauseItem, ErrorCenterGroup, ErrorCenterHandlerCallback, ErrorCenterHandlerIsConsole, ErrorCenterHandlerItem, ErrorCenterHandlerList } from '../types/errorCenterTypes'

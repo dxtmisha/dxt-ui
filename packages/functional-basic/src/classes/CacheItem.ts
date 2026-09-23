@@ -1,3 +1,5 @@
+// ai-none
+
 /**
  * Class for managing a single cached value with dependency tracking.
  *

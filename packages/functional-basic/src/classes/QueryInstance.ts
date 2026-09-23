@@ -1,3 +1,5 @@
+// ai-none
+
 import { isDomRuntime } from '../functions/isDomRuntime'
 import { UrlInstanceAbstract } from './UrlInstanceAbstract'
 import { UrlItem } from './UrlItem'

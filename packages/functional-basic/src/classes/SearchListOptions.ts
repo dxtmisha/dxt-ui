@@ -1,3 +1,5 @@
+// ai-none
+
 import type { SearchOptions } from '../types/searchTypes'
 
 /**

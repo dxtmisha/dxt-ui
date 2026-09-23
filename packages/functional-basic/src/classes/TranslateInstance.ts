@@ -1,3 +1,5 @@
+// ai-none
+
 import { applyTemplate } from '../functions/applyTemplate'
 import { forEach } from '../functions/forEach'
 import { isApiSuccess } from '../functions/isApiSuccess'

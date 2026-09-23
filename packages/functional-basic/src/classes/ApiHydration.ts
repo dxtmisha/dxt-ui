@@ -1,3 +1,5 @@
+// ai-none
+
 import { getElementSafeScript } from '../functions/getElementSafeScript'
 import { getHydrationData } from '../functions/getHydrationData'
 import { isDomRuntime } from '../functions/isDomRuntime'

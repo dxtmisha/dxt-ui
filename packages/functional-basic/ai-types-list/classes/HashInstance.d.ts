@@ -1,4 +1,1 @@
-// md5:9538ab4eff08e1420fce5785d984c062 true
-/** Class for managing and synchronizing data stored in the URL hash. @keywords url hash, location hash, hash state, url parameters */
-export declare class HashInstance extends UrlInstanceAbstract {
-}
+// md5:d41d8cd98f00b204e9800998ecf8427e true

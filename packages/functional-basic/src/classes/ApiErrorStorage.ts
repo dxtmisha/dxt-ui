@@ -1,3 +1,5 @@
+// ai-none
+
 import { isObjectNotArray } from '../functions/isObjectNotArray'
 import { isString } from '../functions/isString'
 import { toArray } from '../functions/toArray'
