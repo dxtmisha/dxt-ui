@@ -154,6 +154,7 @@
     "vite-plugin-singlefile": "^2.3.3",
     "vite-plugin-svg-loader": "^1.0.0",
     "vitest": "^5.0.1",
+    "vue-eslint-parser": "^10.4.1",
     "vue-tsc": "^3.3.11",
     "zod": "^4.6.5"
   }

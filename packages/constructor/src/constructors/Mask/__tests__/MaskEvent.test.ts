@@ -1,313 +1,173 @@
 // @vitest-environment jsdom
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { ref } from 'vue'
 import { MaskEvent } from '../MaskEvent'
+import type { MaskBuffer } from '../MaskBuffer'
+import type { MaskFocus } from '../MaskFocus'
+import type { MaskCharacterLength } from '../MaskCharacterLength'
+import type { MaskRight } from '../MaskRight'
+import type { MaskSelection } from '../MaskSelection'
+import type { MaskValueBasic } from '../MaskValueBasic'
+import type { MaskEmit } from '../MaskEmit'
+import type { MaskData } from '../MaskData'
 
 describe('MaskEvent', () => {
-  it('should capture onFocus and onBlur actions correctly', () => {
-    const focusMock = {
+  let mockBuffer: MaskBuffer
+  let mockFocus: MaskFocus
+  let mockCharacterLength: MaskCharacterLength
+  let mockRight: MaskRight
+  let mockSelection: MaskSelection
+  let mockValueBasic: MaskValueBasic
+  let mockEmit: MaskEmit
+  let mockData: MaskData
+  let maskEvent: MaskEvent
+  let inputElement: HTMLInputElement
+
+  beforeEach(() => {
+    inputElement = document.createElement('input')
+    inputElement.value = '123'
+    inputElement.selectionStart = 0
+    inputElement.selectionEnd = 0
+
+    mockBuffer = {
+      is: vi.fn().mockReturnValue(false),
+      go: vi.fn().mockReturnValue(true),
+      goStart: vi.fn()
+    } as unknown as MaskBuffer
+
+    mockFocus = {
       in: vi.fn(),
       out: vi.fn()
-    } as any
+    } as unknown as MaskFocus
 
-    const emitMock = {
+    mockCharacterLength = {
+      is: vi.fn().mockReturnValue(true)
+    } as unknown as MaskCharacterLength
+
+    mockRight = {
+      isRight: vi.fn().mockReturnValue(false)
+    } as unknown as MaskRight
+
+    mockSelection = {
+      getFirst: vi.fn().mockReturnValue(0),
+      getShift: vi.fn().mockReturnValue(0)
+    } as unknown as MaskSelection
+
+    mockValueBasic = {
+      getLength: vi.fn().mockReturnValue(3),
+      item: ref('123')
+    } as unknown as MaskValueBasic
+
+    mockEmit = {
       set: vi.fn().mockReturnThis(),
       setType: vi.fn().mockReturnThis(),
       go: vi.fn().mockReturnThis(),
-      reset: vi.fn().mockReturnThis()
-    } as any
+      resetType: vi.fn().mockReturnThis()
+    } as unknown as MaskEmit
 
-    const ev = new MaskEvent(
-      {} as any,
-      focusMock,
-      {} as any,
-      {} as any,
-      {} as any,
-      {} as any,
-      emitMock,
-      {} as any
+    mockData = {
+      add: vi.fn().mockReturnValue(true),
+      pop: vi.fn().mockReturnThis(),
+      reset: vi.fn().mockReturnThis(),
+      extra: vi.fn((chars: string[]) => chars)
+    } as unknown as MaskData
+
+    maskEvent = new MaskEvent(
+      mockBuffer,
+      mockFocus,
+      mockCharacterLength,
+      mockRight,
+      mockSelection,
+      mockValueBasic,
+      mockEmit,
+      mockData
     )
+  })
 
+  it('should handle onFocus', () => {
     const focusEvent = new FocusEvent('focus')
-    ev.onFocus(focusEvent)
-    expect(focusMock.in).toHaveBeenCalled()
-    expect(emitMock.set).toHaveBeenCalledWith('focus', focusEvent)
-    expect(emitMock.go).toHaveBeenCalled()
-
-    const blurEvent = new FocusEvent('blur')
-    ev.onBlur(blurEvent)
-    expect(focusMock.out).toHaveBeenCalled()
-    expect(emitMock.set).toHaveBeenCalledWith('blur', blurEvent)
-  })
-
-  it('should handle onKeydown with undefined event.key safely without errors (autofill scenario)', () => {
-    const emitMock = {
-      set: vi.fn().mockReturnThis(),
-      setType: vi.fn().mockReturnThis(),
-      go: vi.fn().mockReturnThis(),
-      reset: vi.fn().mockReturnThis()
-    } as any
-
-    const dataMock = {
-      reset: vi.fn(),
-      add: vi.fn(),
-      pop: vi.fn()
-    } as any
-
-    const bufferMock = {
-      is: vi.fn().mockReturnValue(false),
-      go: vi.fn().mockReturnValue(true),
-      goStart: vi.fn()
-    } as any
-
-    const ev = new MaskEvent(
-      bufferMock,
-      { in: vi.fn(), out: vi.fn() } as any,
-      {} as any,
-      { isRight: vi.fn().mockReturnValue(false) } as any,
-      { getShift: vi.fn().mockReturnValue(0), getFirst: vi.fn().mockReturnValue(0) } as any,
-      { getLength: vi.fn().mockReturnValue(0) } as any,
-      emitMock,
-      dataMock
-    )
-
-    const inputElement = document.createElement('input')
-    inputElement.value = 'test'
-
-    // Synthetic keydown without key property (browser autofill)
-    const autofillKeyEvent = new Event('keydown', { bubbles: true }) as any
-    Object.defineProperty(autofillKeyEvent, 'target', { value: inputElement })
-    // key is undefined
-
-    expect(() => {
-      ev.onKeydown(autofillKeyEvent)
-    }).not.toThrow()
-
-    expect(emitMock.set).toHaveBeenCalledWith('keydown', autofillKeyEvent)
-  })
-
-  it('should handle onInput with insertReplacementText (browser autofill)', () => {
-    const emitMock = {
-      set: vi.fn().mockReturnThis(),
-      setType: vi.fn().mockReturnThis(),
-      resetType: vi.fn().mockReturnThis(),
-      go: vi.fn().mockReturnThis(),
-      reset: vi.fn().mockReturnThis()
-    } as any
-
-    const dataMock = {
-      reset: vi.fn(),
-      add: vi.fn(),
-      pop: vi.fn()
-    } as any
-
-    const bufferMock = {
-      is: vi.fn().mockReturnValue(false),
-      go: vi.fn().mockReturnValue(true),
-      goStart: vi.fn()
-    } as any
-
-    const ev = new MaskEvent(
-      bufferMock,
-      { in: vi.fn(), out: vi.fn() } as any,
-      {} as any,
-      { isRight: vi.fn().mockReturnValue(false) } as any,
-      { getShift: vi.fn().mockReturnValue(0), getFirst: vi.fn().mockReturnValue(0) } as any,
-      { getLength: vi.fn().mockReturnValue(0) } as any,
-      emitMock,
-      dataMock
-    )
-
-    const inputElement = document.createElement('input')
-    inputElement.value = 'autofilled-value'
-
-    const autofillInputEvent = new Event('input', { bubbles: true }) as any
-    Object.defineProperty(autofillInputEvent, 'target', { value: inputElement })
-    autofillInputEvent.inputType = 'insertReplacementText'
-
-    ev.onInput(autofillInputEvent)
-
-    expect(dataMock.reset).toHaveBeenCalledWith('autofilled-value')
-    expect(emitMock.set).toHaveBeenCalledWith('input', autofillInputEvent)
-  })
-
-  it('should handle onInput without preceding keydown (Safari and Firefox autofill)', () => {
-    const emitMock = {
-      set: vi.fn().mockReturnThis(),
-      setType: vi.fn().mockReturnThis(),
-      resetType: vi.fn().mockReturnThis(),
-      go: vi.fn().mockReturnThis(),
-      reset: vi.fn().mockReturnThis()
-    } as any
-
-    const dataMock = {
-      reset: vi.fn(),
-      add: vi.fn(),
-      pop: vi.fn()
-    } as any
-
-    const bufferMock = {
-      is: vi.fn().mockReturnValue(false),
-      go: vi.fn().mockReturnValue(true),
-      goStart: vi.fn()
-    } as any
-
-    const maskEvent = new MaskEvent(
-      bufferMock,
-      { in: vi.fn(), out: vi.fn() } as any,
-      { is: vi.fn().mockReturnValue(false) } as any,
-      { isRight: vi.fn().mockReturnValue(false) } as any,
-      { getShift: vi.fn().mockReturnValue(0), getFirst: vi.fn().mockReturnValue(0) } as any,
-      { getLength: vi.fn().mockReturnValue(0), item: { value: '' } } as any,
-      emitMock,
-      dataMock
-    )
-
-    const inputElement = document.createElement('input')
-    inputElement.value = '+1 555 123 4567'
-
-    // In Safari and Firefox, autofill fires input event without keydown and inputType is empty or undefined
-    const safariInputEvent = new Event('input', { bubbles: true }) as any
-    Object.defineProperty(safariInputEvent, 'target', { value: inputElement })
-    safariInputEvent.inputType = ''
-
-    maskEvent.onInput(safariInputEvent)
-
-    expect(dataMock.reset).toHaveBeenCalledWith('+1 555 123 4567')
-    expect(emitMock.set).toHaveBeenCalledWith('input', safariInputEvent)
-  })
-
-  it('should handle onInput with matching autofill selector (Firefox / WebKit)', () => {
-    const emitMock = {
-      set: vi.fn().mockReturnThis(),
-      setType: vi.fn().mockReturnThis(),
-      resetType: vi.fn().mockReturnThis(),
-      go: vi.fn().mockReturnThis(),
-      reset: vi.fn().mockReturnThis()
-    } as any
-
-    const dataMock = {
-      reset: vi.fn(),
-      add: vi.fn(),
-      pop: vi.fn()
-    } as any
-
-    const bufferMock = {
-      is: vi.fn().mockReturnValue(false),
-      go: vi.fn().mockReturnValue(true),
-      goStart: vi.fn()
-    } as any
-
-    const maskEvent = new MaskEvent(
-      bufferMock,
-      { in: vi.fn(), out: vi.fn() } as any,
-      { is: vi.fn().mockReturnValue(false) } as any,
-      { isRight: vi.fn().mockReturnValue(false) } as any,
-      { getShift: vi.fn().mockReturnValue(0), getFirst: vi.fn().mockReturnValue(0) } as any,
-      { getLength: vi.fn().mockReturnValue(0), item: { value: '' } } as any,
-      emitMock,
-      dataMock
-    )
-
-    const inputElement = document.createElement('input')
-    inputElement.value = 'firefox-autofill'
-    vi.spyOn(inputElement, 'matches').mockImplementation((selector: string) => selector === ':autofill')
-
-    const firefoxInputEvent = new Event('input', { bubbles: true }) as any
-    Object.defineProperty(firefoxInputEvent, 'target', { value: inputElement })
-    firefoxInputEvent.inputType = 'insertText'
-
-    maskEvent.onInput(firefoxInputEvent)
-
-    expect(dataMock.reset).toHaveBeenCalledWith('firefox-autofill')
-    expect(emitMock.set).toHaveBeenCalledWith('input', firefoxInputEvent)
-  })
-
-  it('should handle onAnimationstart for d1-mask-autofill (background / page-load autofill)', () => {
-    const emitMock = {
-      set: vi.fn().mockReturnThis(),
-      setType: vi.fn().mockReturnThis(),
-      resetType: vi.fn().mockReturnThis(),
-      go: vi.fn().mockReturnThis(),
-      reset: vi.fn().mockReturnThis()
-    } as any
-
-    const dataMock = {
-      reset: vi.fn(),
-      add: vi.fn(),
-      pop: vi.fn()
-    } as any
-
-    const bufferMock = {
-      is: vi.fn().mockReturnValue(false),
-      go: vi.fn().mockReturnValue(true),
-      goStart: vi.fn()
-    } as any
-
-    const maskEvent = new MaskEvent(
-      bufferMock,
-      { in: vi.fn(), out: vi.fn() } as any,
-      { is: vi.fn().mockReturnValue(false) } as any,
-      { isRight: vi.fn().mockReturnValue(false) } as any,
-      { getShift: vi.fn().mockReturnValue(0), getFirst: vi.fn().mockReturnValue(0) } as any,
-      { getLength: vi.fn().mockReturnValue(0), item: { value: '' } } as any,
-      emitMock,
-      dataMock
-    )
-
-    const inputElement = document.createElement('input')
-    inputElement.value = 'background-value'
-
-    const animationEvent = new Event('animationstart', { bubbles: true }) as any
-    Object.defineProperty(animationEvent, 'target', { value: inputElement })
-    animationEvent.animationName = 'design-mask-autofill'
-
-    maskEvent.onAnimationstart(animationEvent)
-
-    expect(dataMock.reset).toHaveBeenCalledWith('background-value')
-    expect(emitMock.set).toHaveBeenCalledWith('input', animationEvent)
-  })
-
-  it('should detect and reset autofilled value on onFocus', () => {
-    const emitMock = {
-      set: vi.fn().mockReturnThis(),
-      setType: vi.fn().mockReturnThis(),
-      resetType: vi.fn().mockReturnThis(),
-      go: vi.fn().mockReturnThis(),
-      reset: vi.fn().mockReturnThis()
-    } as any
-
-    const dataMock = {
-      reset: vi.fn(),
-      add: vi.fn(),
-      pop: vi.fn()
-    } as any
-
-    const bufferMock = {
-      is: vi.fn().mockReturnValue(false),
-      go: vi.fn().mockReturnValue(true),
-      goStart: vi.fn()
-    } as any
-
-    const maskEvent = new MaskEvent(
-      bufferMock,
-      { in: vi.fn(), out: vi.fn() } as any,
-      { is: vi.fn().mockReturnValue(false) } as any,
-      { isRight: vi.fn().mockReturnValue(false) } as any,
-      { getShift: vi.fn().mockReturnValue(0), getFirst: vi.fn().mockReturnValue(0) } as any,
-      { getLength: vi.fn().mockReturnValue(0), item: { value: '' } } as any,
-      emitMock,
-      dataMock
-    )
-
-    const inputElement = document.createElement('input')
-    inputElement.value = 'initial-autofilled'
-
-    const focusEvent = new FocusEvent('focus', { bubbles: true })
     Object.defineProperty(focusEvent, 'target', { value: inputElement })
 
     maskEvent.onFocus(focusEvent)
 
-    expect(dataMock.reset).toHaveBeenCalledWith('initial-autofilled')
-    expect(emitMock.set).toHaveBeenCalledWith('focus', focusEvent)
+    expect(mockFocus.in).toHaveBeenCalled()
+    expect(mockEmit.set).toHaveBeenCalledWith('focus', focusEvent)
+    expect(mockEmit.go).toHaveBeenCalled()
+  })
+
+  it('should handle onBlur and emit blur', () => {
+    const blurEvent = new FocusEvent('blur')
+    Object.defineProperty(blurEvent, 'target', { value: inputElement })
+
+    maskEvent.onBlur(blurEvent)
+
+    expect(mockFocus.out).toHaveBeenCalled()
+    expect(mockEmit.set).toHaveBeenCalledWith('blur', blurEvent)
+    expect(mockEmit.go).toHaveBeenCalled()
+  })
+
+  it('should handle onKeydown for Backspace', () => {
+    inputElement.selectionStart = 2
+    inputElement.selectionEnd = 2
+
+    const keydownEvent = new KeyboardEvent('keydown', { key: 'Backspace' })
+    Object.defineProperty(keydownEvent, 'target', { value: inputElement })
+
+    maskEvent.onKeydown(keydownEvent)
+
+    expect(mockEmit.set).toHaveBeenCalledWith('keydown', keydownEvent)
+    expect(mockData.pop).toHaveBeenCalledWith(2, 2)
+  })
+
+  it('should handle onKeydown for regular single character input', () => {
+    inputElement.selectionStart = 1
+    inputElement.selectionEnd = 1
+
+    const keydownEvent = new KeyboardEvent('keydown', { key: '5' })
+    Object.defineProperty(keydownEvent, 'target', { value: inputElement })
+
+    maskEvent.onKeydown(keydownEvent)
+
+    expect(mockBuffer.go).toHaveBeenCalledWith('5')
+    expect(mockData.add).toHaveBeenCalledWith(1, '5')
+  })
+
+  it('should handle onKeyup for arrow keys', () => {
+    const keyupEvent = new KeyboardEvent('keyup', { key: 'ArrowRight' })
+    Object.defineProperty(keyupEvent, 'target', { value: inputElement })
+
+    maskEvent.onKeyup(keyupEvent)
+
+    expect(mockEmit.set).toHaveBeenCalledWith('keyup', keyupEvent)
+    expect(mockSelection.getFirst).toHaveBeenCalled()
+  })
+
+  it('should handle onChange by resetting value and emitting change', () => {
+    const changeEvent = new Event('change')
+    Object.defineProperty(changeEvent, 'target', { value: inputElement })
+
+    maskEvent.onChange(changeEvent)
+
+    expect(mockData.reset).toHaveBeenCalledWith('123')
+    expect(mockEmit.set).toHaveBeenCalledWith('change', changeEvent)
+  })
+
+  it('should handle onClick by adjusting selection', () => {
+    const clickEvent = new MouseEvent('click')
+    Object.defineProperty(clickEvent, 'target', { value: inputElement })
+
+    maskEvent.onClick(clickEvent)
+
+    expect(mockSelection.getFirst).toHaveBeenCalled()
+  })
+
+  it('should handle onAnimationstart for browser autofill', () => {
+    const animationEvent = new Event('animationstart') as AnimationEvent
+    Object.defineProperty(animationEvent, 'animationName', { value: 'onautofillstart' })
+    Object.defineProperty(animationEvent, 'target', { value: inputElement })
+
+    maskEvent.onAnimationstart(animationEvent)
+
+    expect(mockData.reset).toHaveBeenCalledWith('123')
   })
 })

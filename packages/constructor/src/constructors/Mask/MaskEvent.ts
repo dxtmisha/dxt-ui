@@ -237,6 +237,7 @@ export class MaskEvent {
    * @param event invoked event/ вызываемое событие
    */
   readonly onPaste = (event: ClipboardEvent): void => {
+    eventStopPropagation(event)
     this.isPaste = true
     const { start, end } = this.getSelectionInfo(event)
 
@@ -252,12 +253,16 @@ export class MaskEvent {
             .add(this.selection.getShift(), this.data.extra(text))
         }
 
-        this.change = true
+        this.isPaste = false
+        this.makeChange(event)
         this.emit
           .set('paste', event)
           .go()
       })
-      .catch(error => console.error('getClipboardData', error))
+      .catch((error) => {
+        this.isPaste = false
+        console.error('getClipboardData', error)
+      })
   }
 
   /**

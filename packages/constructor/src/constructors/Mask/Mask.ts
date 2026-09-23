@@ -416,6 +416,16 @@ export class Mask {
   readonly clear = () => {
     this.data.reset((this.props.valueDefault ?? '').toString())
     this.emit.set('reset', {} as Event).go()
-    this.element.value?.focus()
+
+    if (this.element.value) {
+      this.element.value.value = this.basic.value
+    }
+
+    requestAnimationFrame(() => {
+      if (this.element.value) {
+        this.element.value.value = this.basic.value
+        this.element.value.focus()
+      }
+    })
   }
 }
