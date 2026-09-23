@@ -85,8 +85,7 @@ export class InputFileDropzoneDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      open: this.item.eventItem.open,
-      clear: this.item.eventItem.clear
+      open: this.item.eventItem.open
     } as EXPOSE
   }
 
@@ -98,9 +97,11 @@ export class InputFileDropzoneDesign<
    */
   protected initClasses(): Partial<CLASSES> {
     return {
-      main: this.item.classes,
+      main: {},
       ...{
         // :classes [!] System label / Системная метка
+        body: this.getSubClass('body'),
+        dropzone: this.getSubClass('dropzone')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -150,12 +151,8 @@ export class InputFileDropzoneDesign<
     return [
       h(
         'div',
-        {
-          class: this.classes?.value.body
-        },
-        [
-          ...this.renderDropzone()
-        ]
+        this.getKeyClass('body'),
+        this.renderDropzone()
       )
     ]
   }

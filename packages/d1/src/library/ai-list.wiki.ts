@@ -57,6 +57,7 @@ import D1ImageCrop from '../../src/components/Ui/ImageCrop/D1ImageCropAiWiki.vue
 import D1Input from '../../src/components/Ui/Input/D1InputAiWiki.vue'
 import D1InputCode from '../../src/components/Ui/InputCode/D1InputCodeAiWiki.vue'
 import D1InputCodeItem from '../../src/components/Ui/InputCodeItem/D1InputCodeItemAiWiki.vue'
+import D1InputFileDropzone from '../../src/components/Ui/InputFileDropzone/D1InputFileDropzoneAiWiki.vue'
 import D1InputImage from '../../src/components/Ui/InputImage/D1InputImageAiWiki.vue'
 import D1InputPhone from '../../src/components/Ui/InputPhone/D1InputPhoneAiWiki.vue'
 import D1InputPhoneDialCode from '../../src/components/Ui/InputPhoneDialCode/D1InputPhoneDialCodeAiWiki.vue'
@@ -178,6 +179,7 @@ export const aiList: any[] = [
   D1Input,
   D1InputCode,
   D1InputCodeItem,
+  D1InputFileDropzone,
   D1InputImage,
   D1InputPhone,
   D1InputPhoneDialCode,

@@ -32,15 +32,6 @@ export class InputFileDropzoneEvent {
   }
 
   /**
-   * Clears dropzone input.
-   *
-   * Очищает поле ввода области сброса.
-   */
-  readonly clear = (): void => {
-    this.dropzone.expose.clear?.()
-  }
-
-  /**
    * Handles Dropzone input event.
    *
    * Обрабатывает событие ввода Dropzone.

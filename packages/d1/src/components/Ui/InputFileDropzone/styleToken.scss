@@ -1,0 +1,22 @@
+@use "../../../styles/Ui/properties";
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/style.scss" as InputFileDropzone;
+
+@include ui.initDesignBasic('d1.inputFileDropzone') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include InputFileDropzone.mixinInputFileDropzone;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+    &__body {
+      @include ui.height(#{var(--d1-ref-spacing-64)});
+    }
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

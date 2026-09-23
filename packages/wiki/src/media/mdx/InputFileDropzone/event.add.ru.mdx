@@ -1,0 +1,26 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+### `add`
+
+Событие срабатывает при перетаскивании (Drag and Drop) или выборе файлов через диалоговое окно проводника.
+
+**Параметры:**
+- `files: File[]` — Массив валидных файлов, добавленных пользователем и отфильтрованных по `maxFileSize`.
+
+<Source
+    code={`
+<script setup>
+const handleAdd = (files) => {
+  console.log('Добавленные файлы:', files)
+}
+</script>
+
+<template>
+  <InputFileDropzone
+    label="Загрузить файлы"
+    @add="handleAdd"
+  />
+</template>
+  `}
+    language="html"
+/>

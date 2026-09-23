@@ -1,0 +1,45 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+The `InputFileDropzone` component is a form control that pairs a drag-and-drop file upload zone with integrated field label and message containers.
+
+It encapsulates the complete file dropping and selection pipeline into a ready-to-use input field. Built upon `Dropzone`, `FieldLabel`, and `FieldMessage`, it handles file type validation via `accept`, filters files by `maxFileSize`, and emits a validated array of `File` objects through the `@add` event.
+
+**Key features:**
+
+- **Interactive File Upload:** Drag-and-drop file upload zone with click-to-browse file dialog
+- **Single & Multiple Selection:** Configurable single or multi-file selection via `multiple` prop
+- **Type & Size Filtering:** MIME type / extension filtering via `accept` and file size threshold check via `maxFileSize`
+- **Field Anatomy Integration:** Cohesive integration with field label, counter, helper texts, and validation messages
+- **Event Pipeline:** Emits `@add` event with filtered valid files
+- **Programmatic Control:** Exposes `open()` method to trigger native file dialog programmatically
+- **Accessibility:** Full ARIA compliance linking `aria-labelledby` and `aria-describedby`
+- **States:** Built-in support for `disabled`, `readonly`, and `isSkeleton` states
+
+**Common use cases:**
+
+- Document and attachment upload inputs in forms
+- Image collection and resume upload fields
+- Drag-and-drop import areas with validation feedback
+
+<Source
+    code={`
+<script setup>
+const onAdd = (files) => {
+  console.log('Valid files uploaded:', files)
+}
+</script>
+
+<template>
+  <InputFileDropzone
+    label="Upload documents"
+    helper-message="PDF, DOCX up to 10MB"
+    accept=".pdf,.docx"
+    :max-file-size="10485760"
+    @add="onAdd"
+  />
+</template>
+  `}
+    language="html"
+/>
+
+> InputFileDropzone combines intuitive drag-and-drop file selection with form field ergonomics and accessibility standards.

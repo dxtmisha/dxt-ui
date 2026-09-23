@@ -1,0 +1,26 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+### `add`
+
+Event emitted when files are dropped into the dropzone or selected via the native file dialog.
+
+**Parameters:**
+- `files: File[]` — Array of valid files added by the user, filtered according to `maxFileSize`.
+
+<Source
+    code={`
+<script setup>
+const handleAdd = (files) => {
+  console.log('Files added:', files)
+}
+</script>
+
+<template>
+  <InputFileDropzone
+    label="Upload files"
+    @add="handleAdd"
+  />
+</template>
+  `}
+    language="html"
+/>

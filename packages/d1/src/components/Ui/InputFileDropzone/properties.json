@@ -1,0 +1,6 @@
+{
+  "main": "{d.inputFileDropzone}",
+  "#body": {
+    "height": "{ref.spacing.64}"
+  }
+}

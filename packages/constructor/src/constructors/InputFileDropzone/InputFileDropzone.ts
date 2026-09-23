@@ -1,6 +1,5 @@
 import type { Ref, ToRefs } from 'vue'
 import {
-  type ConstrClass,
   type ConstrEmit,
   type DesignComp
 } from '@dxtmisha/functional'
@@ -133,15 +132,5 @@ export class InputFileDropzone {
       this.props,
       this.components
     )
-  }
-
-  /**
-   * Computed list of classes for the main element.
-   *
-   * Вычисляемый список классов для главного элемента.
-   * @returns computed classes / вычисленные классы
-   */
-  get classes(): ConstrClass {
-    return {}
   }
 }

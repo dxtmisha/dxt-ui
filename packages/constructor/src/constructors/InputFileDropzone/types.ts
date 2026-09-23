@@ -34,9 +34,6 @@ export type InputFileDropzoneEmits = {
 export interface InputFileDropzoneExpose {
   /** Open file picker dialog / Открыть диалог выбора файла */
   open: () => void
-
-  /** Clear selected file / Очистить выбранный файл */
-  clear: () => void
 }
 
 /**
@@ -57,5 +54,7 @@ export interface InputFileDropzoneSlots extends LabelAlternativeSlots {
 export type InputFileDropzoneClasses = {
   main: ConstrClass
   // :classes [!] System label / Системная метка
+  body: string
+  dropzone: string
   // :classes [!] System label / Системная метка
 }

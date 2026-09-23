@@ -20,8 +20,7 @@ export class InputFileDropzoneInclude extends ComponentIncludeAbstract<
   protected override readonly name = 'inputFileDropzone'
   protected override readonly propsAttrsName = 'inputFileDropzoneAttrs'
   protected override readonly exposeItems = [
-    { name: 'open' },
-    { name: 'clear' }
+    { name: 'open' }
   ]
 
   /**

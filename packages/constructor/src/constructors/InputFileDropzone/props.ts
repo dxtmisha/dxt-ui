@@ -10,6 +10,8 @@ import type { TextDropzonePropsInclude } from '../../types/textTypes'
 
 export type InputFileDropzonePropsToken = {
   // :type [!] System label / Системная метка
+  disabled?: boolean
+  readonly?: boolean
   // :type [!] System label / Системная метка
 }
 

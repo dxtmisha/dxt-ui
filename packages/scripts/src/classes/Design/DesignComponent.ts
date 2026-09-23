@@ -577,9 +577,7 @@ export class DesignComponent extends DesignCommand {
           (item) => {
             return {
               name: item.name,
-              type: String(item.type)
-                .replace(/([^:,[\] ]+): ([^:,[\]]+)/gi, `{ name: '$1', type: '$2' }`)
-                .replace(/,{/gi, ', {'),
+              type: this.formatEventType(String(item.type)),
               description: item.description
             }
           }
@@ -650,6 +648,80 @@ export class DesignComponent extends DesignCommand {
     }
 
     return undefined
+  }
+
+  /**
+   * Transforms an event tuple type string into a Storybook property array format.
+   *
+   * Преобразует строку типа кортежа события в формат массива свойств Storybook.
+   * @param rawType raw event type string / исходная строка типа события
+   * @returns formatted type string / отформатированная строка типа
+   */
+  private formatEventType(rawType: string): string {
+    const trimmed = rawType.trim()
+
+    if (!trimmed.startsWith('[') || !trimmed.endsWith(']')) {
+      return trimmed
+    }
+
+    const inner = trimmed.slice(1, -1).trim()
+    if (!inner) {
+      return '[]'
+    }
+
+    const params: string[] = []
+    let current = ''
+    let depthBracket = 0
+    let depthAngle = 0
+    let depthParen = 0
+    let depthBrace = 0
+
+    for (let i = 0; i < inner.length; i++) {
+      const char = inner[i]
+      if (char === '<') {
+        depthAngle++
+      } else if (char === '>') {
+        depthAngle = Math.max(0, depthAngle - 1)
+      } else if (char === '[') {
+        depthBracket++
+      } else if (char === ']') {
+        depthBracket = Math.max(0, depthBracket - 1)
+      } else if (char === '(') {
+        depthParen++
+      } else if (char === ')') {
+        depthParen = Math.max(0, depthParen - 1)
+      } else if (char === '{') {
+        depthBrace++
+      } else if (char === '}') {
+        depthBrace = Math.max(0, depthBrace - 1)
+      }
+
+      if (char === ',' && depthBracket === 0 && depthAngle === 0 && depthParen === 0 && depthBrace === 0) {
+        if (current.trim()) {
+          params.push(current.trim())
+        }
+        current = ''
+      } else {
+        current += char
+      }
+    }
+
+    if (current.trim()) {
+      params.push(current.trim())
+    }
+
+    const formatted = params.map((param) => {
+      const colonIndex = param.indexOf(':')
+      if (colonIndex !== -1) {
+        const name = param.slice(0, colonIndex).trim()
+        const type = param.slice(colonIndex + 1).trim()
+        return `{ name: '${name}', type: '${type}' }`
+      }
+
+      return `{ name: '${param}', type: 'any' }`
+    })
+
+    return `[${formatted.join(', ')}]`
   }
 
   /**
