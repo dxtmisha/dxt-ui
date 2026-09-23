@@ -107,6 +107,7 @@ export class CarouselItem {
    */
   get binds(): Record<string, any> {
     return {
+      'data-value': this.props.value,
       ...this.event.binds,
       ...this.data.aria,
       tabindex: this.data.isSelected() ? undefined : -1

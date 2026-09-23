@@ -101,7 +101,7 @@ describe('MaskValue', () => {
 
   it('should return empty string for date type if not full', () => {
     vi.mocked(mockType.isDate).mockReturnValue(true)
-    mockValueBasic.item.value = '+1 1'
+    ;(mockValueBasic.item as any).value = '+1 1'
     mockValueBasic.getChar = vi.fn((index: number) => ['+', '1', ' ', '1'][index])
 
     expect(maskValue.isFull.value).toBe(false)

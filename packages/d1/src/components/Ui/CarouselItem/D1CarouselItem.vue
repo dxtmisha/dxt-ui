@@ -10,6 +10,7 @@ import {
   type CarouselItemEmits,
   type CarouselItemSlots
 } from '@dxtmisha/constructor/CarouselItem'
+import { D1Image } from '../Image'
 
 import { defaults, type CarouselItemProps, propsValues } from './props'
 import './styleToken.scss'
@@ -41,7 +42,10 @@ const design = new CarouselItemDesign(
   {
     emits,
     classes: classesToken,
-    styles: stylesToken
+    styles: stylesToken,
+    components: {
+      image: D1Image
+    }
   }
 )
 

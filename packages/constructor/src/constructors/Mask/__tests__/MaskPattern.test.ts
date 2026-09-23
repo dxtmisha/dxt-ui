@@ -47,7 +47,7 @@ describe('MaskPattern', () => {
   })
 
   it('should detect global check when check prop is set', () => {
-    mockProps.check = /^[0-9]+$/
+    mockProps.check = '^[0-9]+$'
     expect(maskPattern.isCheck()).toBe(true)
   })
 
@@ -55,7 +55,7 @@ describe('MaskPattern', () => {
     const list = maskPattern.list.value
 
     expect(list.d).toBeDefined()
-    expect(list.d?.pattern).toBe('[0-9]+')
+    expect((list.d as any)?.pattern).toBe('[0-9]+')
     expect(list.w).toBeDefined()
   })
 

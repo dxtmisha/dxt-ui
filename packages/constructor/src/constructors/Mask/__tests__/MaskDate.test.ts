@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { MaskDate } from '../MaskDate'
 import type { MaskType } from '../MaskType'
 import type { MaskProps } from '../props'
-import type { FieldMasks } from '../../types/fieldTypes'
+import type { FieldMasks } from '../../../types/fieldTypes'
 
 describe('MaskDate', () => {
   let mockProps: MaskProps

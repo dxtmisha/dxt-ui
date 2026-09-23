@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { ref } from 'vue'
+import { ref, type Ref } from 'vue'
 import { MaskData } from '../MaskData'
 import type { MaskType } from '../MaskType'
 import type { MaskBuffer } from '../MaskBuffer'
@@ -33,7 +33,7 @@ describe('MaskData', () => {
   let mockValueBasic: MaskValueBasic
   let mockValue: MaskValue
   let mockEmit: MaskEmit
-  let inputElementRef: { value: MaskElementInput }
+  let inputElementRef: Ref<MaskElementInput>
   let inputElement: HTMLInputElement
   let maskData: MaskData
 

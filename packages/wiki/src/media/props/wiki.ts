@@ -33,6 +33,7 @@ import { wikiBreadcrumbs } from './wikiBreadcrumbs'
 import { wikiBullet } from './wikiBullet'
 import { wikiButton } from './wikiButton'
 import { wikiButtonGroup } from './wikiButtonGroup'
+import { wikiCarouselItem } from './wikiCarouselItem'
 import { wikiCarouselPagination } from './wikiCarouselPagination'
 import { wikiCheckbox } from './wikiCheckbox'
 import { wikiChip } from './wikiChip'
@@ -132,6 +133,7 @@ export const wiki: StorybookArgsToList = {
   ...wikiBullet,
   ...wikiButton,
   ...wikiButtonGroup,
+  ...wikiCarouselItem,
   ...wikiCarouselPagination,
   ...wikiCheckbox,
   ...wikiChip,

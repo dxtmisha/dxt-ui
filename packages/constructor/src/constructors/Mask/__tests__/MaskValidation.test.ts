@@ -63,7 +63,7 @@ describe('MaskValidation', () => {
       message: 'Too big'
     }
 
-    vi.mocked(mockPattern.item).value = {
+    ;(mockPattern.item as any).value = {
       num: {
         group: 'num',
         check: vi.fn().mockReturnValue(errorCheck)

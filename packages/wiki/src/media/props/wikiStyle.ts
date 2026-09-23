@@ -463,6 +463,20 @@ export const wikiStyle: StorybookArgsToList = {
     },
     isDemo: true
   },
+  snap: {
+    type: StorybookControl.select,
+    options: {
+      category: StorybookCategory.style,
+      type: 'string',
+      options: ['start', 'center', 'end', 'none'],
+      description: {
+        en: 'Scroll snapping alignment',
+        ru: 'Выравнивание привязки прокрутки'
+      }
+    },
+    isDemo: true,
+    demo: 'start'
+  },
   textAlign: {
     type: StorybookControl.select,
     options: {

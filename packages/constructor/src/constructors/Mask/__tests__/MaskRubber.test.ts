@@ -7,7 +7,7 @@ import type { MaskSpecial } from '../MaskSpecial'
 import type { MaskMatch } from '../MaskMatch'
 import type { MaskFormat } from '../MaskFormat'
 import type { MaskProps } from '../props'
-import type { FieldMasks } from '../../types/fieldTypes'
+import type { FieldMasks } from '../../../types/fieldTypes'
 
 describe('MaskRubber', () => {
   let mockProps: MaskProps

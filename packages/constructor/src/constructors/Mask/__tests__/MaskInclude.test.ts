@@ -1,25 +1,25 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { ref } from 'vue'
+import { ref, type Ref } from 'vue'
 import { MaskInclude } from '../MaskInclude'
 import type { MaskPropsInclude } from '../basicTypes'
-import type { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
-import type { FieldTypeInclude } from '../../classes/Field/FieldTypeInclude'
+import type { FieldValueInclude } from '../../../classes/Field/FieldValueInclude'
+import type { FieldTypeInclude } from '../../../classes/Field/FieldTypeInclude'
 
 describe('MaskInclude', () => {
-  let mockPropsRef: ReturnType<typeof ref<MaskPropsInclude>>
+  let mockPropsRef: Ref<MaskPropsInclude>
   let mockValue: FieldValueInclude
   let mockType: FieldTypeInclude
   let maskInclude: MaskInclude
 
   beforeEach(() => {
-    mockPropsRef = ref<MaskPropsInclude>({
+    mockPropsRef = ref({
       mask: '+1 (___) ___-____',
       maskNone: false,
       name: 'phoneInput',
       currency: 'USD',
       fraction: 2,
       modelValue: '123'
-    })
+    } as any)
 
     mockValue = {
       setFull: vi.fn()

@@ -257,6 +257,19 @@ export const wikiValue: StorybookArgsToList = {
     },
     isDemo: true
   },
+  slide: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.value,
+      type: ['number', 'string'],
+      description: {
+        en: 'Current slide number or identifier for accessibility',
+        ru: 'Номер или идентификатор текущего слайда для доступности'
+      }
+    },
+    isDemo: true,
+    demo: '1'
+  },
   tabs: {
     type: StorybookControl.object,
     options: {
@@ -279,6 +292,19 @@ export const wikiValue: StorybookArgsToList = {
       }
     },
     hide: true
+  },
+  total: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.value,
+      type: ['number', 'string'],
+      description: {
+        en: 'Total slides count for accessibility',
+        ru: 'Общее количество слайдов для доступности'
+      }
+    },
+    isDemo: true,
+    demo: '3'
   },
   unit: {
     type: StorybookControl.string,

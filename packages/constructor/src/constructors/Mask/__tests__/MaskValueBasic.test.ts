@@ -61,7 +61,7 @@ describe('MaskValueBasic', () => {
   })
 
   it('should return is() false when length is 0', () => {
-    mockMask.item.value = []
+    (mockMask.item as any).value = []
     mockCharacter.item.value = []
 
     expect(maskValueBasic.item.value).toBe('')

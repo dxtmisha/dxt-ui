@@ -111,7 +111,7 @@ describe('MaskView', () => {
   })
 
   it('should assemble input string replacing deleted character placeholders', () => {
-    mockValueBasic.item.value = `+${MASK_CHAR_DELETE}`
+    (mockValueBasic.item as any).value = `+${MASK_CHAR_DELETE}`
 
     const inputString = maskView.input.value
     expect(inputString).toBe('+_')

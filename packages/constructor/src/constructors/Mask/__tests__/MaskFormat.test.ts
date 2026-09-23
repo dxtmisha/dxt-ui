@@ -3,7 +3,7 @@ import { MaskFormat } from '../MaskFormat'
 import type { MaskType } from '../MaskType'
 import type { MaskRubberItem } from '../MaskRubberItem'
 import type { MaskProps } from '../props'
-import type { FieldMasks } from '../../types/fieldTypes'
+import type { FieldMasks } from '../../../types/fieldTypes'
 
 describe('MaskFormat', () => {
   let mockProps: MaskProps
@@ -33,8 +33,8 @@ describe('MaskFormat', () => {
   })
 
   it('should provide special groups configuration', () => {
-    expect(maskFormat.special.n).toBeDefined()
-    expect(maskFormat.special.f?.defaultValue).toBe('0')
+    expect((maskFormat.special as any).n).toBeDefined()
+    expect((maskFormat.special as any).f?.defaultValue).toBe('0')
     expect(maskFormat.getSpecial()).toEqual(['n', 'f'])
   })
 
