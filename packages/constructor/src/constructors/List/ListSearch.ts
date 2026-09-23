@@ -1,3 +1,5 @@
+// ai-none
+
 import { computed, ref } from 'vue'
 import { isFilled } from '@dxtmisha/functional'
 

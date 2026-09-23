@@ -1,3 +1,5 @@
+// ai-none
+
 import type { ConstrEmit } from '@dxtmisha/functional'
 
 import type { DraggableWrapperClient } from './DraggableWrapperClient'

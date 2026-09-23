@@ -1,3 +1,5 @@
+// ai-none
+
 import { computed } from 'vue'
 import { getColumn, isArray, isSelected, isString, replaceRecursive } from '@dxtmisha/functional'
 

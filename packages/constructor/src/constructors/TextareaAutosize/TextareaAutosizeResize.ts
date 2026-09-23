@@ -1,3 +1,5 @@
+// ai-none
+
 import { nextTick, onMounted, type Ref, ref, watch } from 'vue'
 import { TextareaAutosizeValue } from './TextareaAutosizeValue'
 import type { TextareaAutosizeProps } from './props'

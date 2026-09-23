@@ -1,66 +1,37 @@
-// md5:7b204fd3e71c4c5c3085bfe769eca3c7 true
+// md5:7b452b9351a264335ef74d788b79ad9b true
 import type { ConstrBind, ConstrClass, ConstrStyles, NumberOrString } from '@dxtmisha/functional';
-
-/** Describes an individual carousel pagination bullet item. @keywords carousel pagination bullet item */
+/** Pagination bullet item state and attributes. @keywords carousel, pagination, bullet */
 export type CarouselPaginationItem = {
-    /** 1-based item index. */
     index: number;
-    /** Whether the item is active. */
     selected: boolean;
-    /** Relative scale factor for dynamic bullets. */
     scale?: number;
-    /** Item styles. */
     style?: ConstrStyles;
-    /** Tab index. */
     tabindex?: number;
-    /** ARIA attributes. */
     aria?: AriaList;
-    /** Item button binds. */
     binds?: CarouselPaginationItemBinds;
 };
-
-/** Attributes and handlers bound to a pagination bullet element. @keywords pagination bullet binds attributes */
+/** Element bindings for a pagination bullet button. @keywords carousel, pagination, button, binds */
 export type CarouselPaginationItemBinds = AriaList & {
-    /** Item key. */
-    key?: number | string;
-    /** Button element type. */
-    type?: string;
-    /** Item index data attribute. */
+    'key'?: number | string;
+    'type'?: string;
     'data-index'?: number;
-    /** Item classes. */
-    class?: ConstrClass;
-    /** Item styles. */
-    style?: ConstrStyles;
-    /** Tab index. */
-    tabindex?: NumberOrString;
-    /** Click event handler. */
-    onClick?: (event: MouseEvent) => void;
+    'class'?: ConstrClass;
+    'style'?: ConstrStyles;
+    'tabindex'?: NumberOrString;
+    'onClick'?: (event: MouseEvent) => void;
 };
-
-/** Attributes bound to a pagination fraction container. @keywords pagination fraction binds */
 export type CarouselPaginationFractionBinds = AriaList & {
-    /** Fraction container key. */
     key?: string;
-    /** Fraction container class. */
     class?: string;
 };
-
-/** Attributes bound to a pagination progress bar container. @keywords pagination progress binds */
 export type CarouselPaginationProgressBinds = AriaList & {
-    /** Progress container key. */
     key?: string;
-    /** Progress container class. */
     class?: string;
 };
-
-/** Dependency registration type for embedding CarouselPagination in parent components. @keywords pagination component include */
 export type CarouselPaginationComponentInclude = {
-    /** CarouselPagination component configuration. */
     carouselPagination?: object;
 };
-
-/** Props for embedding CarouselPagination attributes inside another component. @keywords pagination props include */
+/** CarouselPagination attributes for parent component props. @keywords carousel, pagination, props */
 export type CarouselPaginationPropsInclude<CarouselPagination extends CarouselPaginationPropsBasic = CarouselPaginationPropsBasic> = {
-    /** Bound attributes passed directly to CarouselPagination. */
     carouselPaginationAttrs?: ConstrBind<CarouselPagination>;
 };

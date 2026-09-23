@@ -1,3 +1,5 @@
+// ai-none
+
 import { EventItem, getMouseClientX, getMouseClientY, isEnter } from '@dxtmisha/functional'
 import { onMounted, watch } from 'vue'
 

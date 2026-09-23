@@ -1,3 +1,5 @@
+// ai-none
+
 import { type Ref, watch } from 'vue'
 import { EventItem, executeFunction, getRef, type RefOrNormal } from '@dxtmisha/functional'
 

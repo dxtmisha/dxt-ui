@@ -1,3 +1,5 @@
+// ai-none
+
 import { computed, ref, watch } from 'vue'
 import { Geo, GeoPhone, type GeoPhoneMap } from '@dxtmisha/functional'
 

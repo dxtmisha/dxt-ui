@@ -1,3 +1,5 @@
+// ai-none
+
 import { computed } from 'vue'
 import { type ConstrBind, type ListListInputItem } from '@dxtmisha/functional'
 

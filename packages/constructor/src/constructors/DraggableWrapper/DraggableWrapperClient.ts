@@ -1,3 +1,5 @@
+// ai-none
+
 import type { ImageCoordinator } from '@dxtmisha/functional-basic'
 
 import { DraggableWrapperClassesData } from './DraggableWrapperClassesData'

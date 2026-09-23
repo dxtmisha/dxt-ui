@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.0] - 2026-09-23
+
+### Added
+- **`UI_FLAG_AI_NONE` Configuration Flag**:
+  - Added `UI_FLAG_AI_NONE = /\/\/\s*ai-none/` regular expression constant in `src/config.ts` to detect directives that exclude secondary classes from AI processing.
+- **Source Inspection for AI Exclusion (`DesignTypesMakeFile`)**:
+  - Implemented `getSourceContent(filePath: string): string | undefined` in `DesignTypesMakeFile` (`src/classes/Design/DesignTypesMakeFile.ts`) to read the original TypeScript (`.ts`), Vue (`.vue`), or TSX (`.tsx`) source files from the `src/` directory.
+  - Updated temporary directory file scanning (`getTemporaryFiles`): if the corresponding source file contains the `// ai-none` directive, its declaration content is set to empty (`''`), skipping AI type definition generation and drastically reducing token consumption.
+
 ## [1.3.0] - 2026-09-22
 
 ### Added

@@ -1,3 +1,5 @@
+// ai-none
+
 import type { EnabledInclude } from '../../classes/EnabledInclude'
 
 import type { SliderDragEvent } from './SliderDragEvent'

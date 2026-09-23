@@ -1,3 +1,5 @@
+// ai-none
+
 import { type ComputedRef, inject } from 'vue'
 import type { ConstrClassObject } from '@dxtmisha/functional'
 

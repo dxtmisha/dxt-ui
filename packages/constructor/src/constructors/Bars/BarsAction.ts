@@ -1,3 +1,5 @@
+// ai-none
+
 import { onMounted, ref, type ToRefs, watch } from 'vue'
 import type { BarsProps } from './props'
 

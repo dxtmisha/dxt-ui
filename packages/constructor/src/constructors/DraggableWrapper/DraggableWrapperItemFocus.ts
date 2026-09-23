@@ -1,3 +1,5 @@
+// ai-none
+
 /**
  * Class for managing the active focused element during a drag-and-drop action /
  * Класс для управления активным сфокусированным элементом во время перетаскивания

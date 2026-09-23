@@ -1,3 +1,5 @@
+// ai-none
+
 import { computed } from 'vue'
 
 import { MaskRubberTransition } from './MaskRubberTransition'

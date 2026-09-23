@@ -1,3 +1,5 @@
+// ai-none
+
 import type { MotionFlipElementSizeRect } from './basicTypes'
 import { MotionFlipElement } from './MotionFlipElement'
 

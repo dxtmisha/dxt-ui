@@ -1,3 +1,5 @@
+// ai-none
+
 import { onMounted, onUnmounted, onUpdated, type Ref, watch } from 'vue'
 import { EventItem } from '@dxtmisha/functional'
 

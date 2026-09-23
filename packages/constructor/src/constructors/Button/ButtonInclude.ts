@@ -1,3 +1,5 @@
+// ai-none
+
 import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
 
 import type { ButtonPropsInclude } from './basicTypes'

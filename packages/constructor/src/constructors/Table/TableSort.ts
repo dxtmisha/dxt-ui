@@ -1,3 +1,5 @@
+// ai-none
+
 import { provide, ref } from 'vue'
 import { type ConstrEmit, type SortColumnItem, type SortDir } from '@dxtmisha/functional'
 

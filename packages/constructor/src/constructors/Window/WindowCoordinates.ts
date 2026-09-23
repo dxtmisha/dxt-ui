@@ -1,3 +1,5 @@
+// ai-none
+
 import { WindowClassesData } from './WindowClassesData'
 import { WindowElement } from './WindowElement'
 

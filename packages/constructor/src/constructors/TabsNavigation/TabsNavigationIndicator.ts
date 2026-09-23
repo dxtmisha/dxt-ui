@@ -1,3 +1,5 @@
+// ai-none
+
 import { nextTick, onMounted, type ToRefs, watch } from 'vue'
 import { executeFunctionRef, type ListSelectedList, type RefOrNormalOrFunction } from '@dxtmisha/functional'
 

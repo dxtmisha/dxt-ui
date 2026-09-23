@@ -1,3 +1,5 @@
+// ai-none
+
 import { MotionTransformElement } from './MotionTransformElement'
 
 import type { MotionTransformClassList } from './basicTypes'

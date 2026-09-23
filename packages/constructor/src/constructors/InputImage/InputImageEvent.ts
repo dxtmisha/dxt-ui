@@ -1,3 +1,5 @@
+// ai-none
+
 import type { FieldValidationItem } from '../../types/fieldTypes'
 import type { FieldEventInclude } from '../../classes/Field/FieldEventInclude'
 import type { CropAreaEventParameters } from '../CropArea'

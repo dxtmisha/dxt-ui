@@ -1,3 +1,5 @@
+// ai-none
+
 import { computed } from 'vue'
 import { forEach, isArray, isObject, isObjectNotArray } from '@dxtmisha/functional'
 

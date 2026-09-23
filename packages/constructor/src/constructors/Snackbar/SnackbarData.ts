@@ -1,3 +1,5 @@
+// ai-none
+
 import { type Ref, shallowRef } from 'vue'
 import { isElementVisible, ResumableTimer } from '@dxtmisha/functional-basic'
 

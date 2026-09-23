@@ -1,3 +1,5 @@
+// ai-none
+
 import { GeoIntl, strFill } from '@dxtmisha/functional'
 
 import { MaskType } from './MaskType'

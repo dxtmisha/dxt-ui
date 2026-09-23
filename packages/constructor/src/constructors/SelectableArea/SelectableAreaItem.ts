@@ -1,3 +1,5 @@
+// ai-none
+
 import { onMounted, ref, watch, type ToRefs } from 'vue'
 import { toArray } from '@dxtmisha/functional-basic'
 

@@ -1,3 +1,5 @@
+// ai-none
+
 import type { ConstrBind } from '@dxtmisha/functional'
 
 import { AnchorEvent } from './AnchorEvent'

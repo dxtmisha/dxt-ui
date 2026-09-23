@@ -1,3 +1,5 @@
+// ai-none
+
 import type { Ref } from 'vue'
 
 import type { CropAreaCoordinator } from './basicTypes'

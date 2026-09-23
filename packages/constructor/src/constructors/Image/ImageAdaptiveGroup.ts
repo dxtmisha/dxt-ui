@@ -1,3 +1,5 @@
+// ai-none
+
 import { EventItem, forEach } from '@dxtmisha/functional'
 
 import { ImageAdaptiveItem } from './ImageAdaptiveItem'

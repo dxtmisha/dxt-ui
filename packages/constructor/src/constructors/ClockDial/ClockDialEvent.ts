@@ -1,3 +1,5 @@
+// ai-none
+
 import { onUnmounted, type Ref } from 'vue'
 import { getKey, getMouseClient } from '@dxtmisha/functional'
 

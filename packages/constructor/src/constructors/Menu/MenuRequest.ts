@@ -1,3 +1,5 @@
+// ai-none
+
 import { computed, ref } from 'vue'
 import { Api, executePromise, isFunction, type ListRecord } from '@dxtmisha/functional'
 

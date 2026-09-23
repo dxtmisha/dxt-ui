@@ -1,3 +1,5 @@
+// ai-none
+
 import { computed } from 'vue'
 import { type ConstrBind, forEach, type ListList } from '@dxtmisha/functional'
 

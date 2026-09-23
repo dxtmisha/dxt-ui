@@ -1,3 +1,5 @@
+// ai-none
+
 import { onMounted, onUnmounted, ref, type Ref, watch } from 'vue'
 import { toNumber } from '@dxtmisha/functional'
 

@@ -1,3 +1,5 @@
+// ai-none
+
 import { WindowClient } from './WindowClient'
 import { WindowElement } from './WindowElement'
 import { WindowPosition } from './WindowPosition'

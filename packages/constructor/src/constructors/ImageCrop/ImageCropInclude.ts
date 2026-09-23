@@ -1,3 +1,5 @@
+// ai-none
+
 import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
 import type { ImageCropPropsInclude } from './basicTypes'
 import type { ImageCropPropsBasic } from './props'

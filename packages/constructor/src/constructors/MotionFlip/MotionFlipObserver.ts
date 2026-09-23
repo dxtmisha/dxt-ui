@@ -1,3 +1,5 @@
+// ai-none
+
 import { onMounted, onUnmounted, watch } from 'vue'
 
 import type { MotionFlipAction } from './MotionFlipAction'

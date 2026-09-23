@@ -1,3 +1,5 @@
+// ai-none
+
 import { getElement, isDomRuntime } from '@dxtmisha/functional'
 
 import { WindowClient } from './WindowClient'

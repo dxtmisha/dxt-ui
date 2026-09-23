@@ -1,3 +1,5 @@
+// ai-none
+
 import { ImageCoordinator } from './ImageCoordinator'
 
 import type { ImageProps } from './props'

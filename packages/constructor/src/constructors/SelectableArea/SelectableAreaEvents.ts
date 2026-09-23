@@ -1,3 +1,5 @@
+// ai-none
+
 import type { ImageCoordinator } from '@dxtmisha/functional-basic'
 
 import type { SelectableAreaClassesData } from './SelectableAreaClassesData'

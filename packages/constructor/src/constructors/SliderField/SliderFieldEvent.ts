@@ -1,3 +1,5 @@
+// ai-none
+
 import type { FieldEventInclude } from '../../classes/Field/FieldEventInclude'
 import type { SliderValueType } from '../Slider'
 import type { SliderFieldProps } from './props'

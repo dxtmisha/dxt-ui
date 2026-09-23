@@ -1,3 +1,5 @@
+// ai-none
+
 import { nextTick, onMounted, ref, watch, type Ref } from 'vue'
 import { getElementId } from '@dxtmisha/functional'
 

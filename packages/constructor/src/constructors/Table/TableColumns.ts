@@ -1,3 +1,5 @@
+// ai-none
+
 import type { ConstrStyles } from '@dxtmisha/functional'
 import { getLast, isArray, isFilled } from '@dxtmisha/functional'
 

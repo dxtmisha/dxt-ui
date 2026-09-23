@@ -1,3 +1,5 @@
+// ai-none
+
 import { inject, type Ref } from 'vue'
 
 import type { ConstrEmit, SortColumnItem, SortDir } from '@dxtmisha/functional'

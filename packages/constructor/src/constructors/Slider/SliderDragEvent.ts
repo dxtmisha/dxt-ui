@@ -1,3 +1,5 @@
+// ai-none
+
 import type { SliderEmit } from './SliderEmit'
 import type { SliderGo } from './SliderGo'
 

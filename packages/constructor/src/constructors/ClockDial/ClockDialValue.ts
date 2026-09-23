@@ -1,3 +1,5 @@
+// ai-none
+
 import { GeoIntl, isNull } from '@dxtmisha/functional'
 
 import type { ModelValueInclude } from '../../classes/ModelValueInclude'

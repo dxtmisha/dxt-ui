@@ -1,3 +1,5 @@
+// ai-none
+
 import { type VNode, type Reactive, ref } from 'vue'
 import {
   type DesignComponents,

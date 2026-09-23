@@ -1,3 +1,5 @@
+// ai-none
+
 import { type ComputedRef, onMounted, type Ref, watch } from 'vue'
 import {
   computedAsync,

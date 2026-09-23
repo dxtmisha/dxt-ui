@@ -1,3 +1,5 @@
+// ai-none
+
 import { executePromise } from '@dxtmisha/functional'
 
 import type { WindowProps } from './props'

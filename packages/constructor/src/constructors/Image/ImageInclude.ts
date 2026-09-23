@@ -1,3 +1,5 @@
+// ai-none
+
 import { type ConstrEmit, type DesignComponents, getBind, type RefOrNormal } from '@dxtmisha/functional'
 
 import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'

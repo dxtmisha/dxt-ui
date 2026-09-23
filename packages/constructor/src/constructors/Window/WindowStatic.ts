@@ -1,3 +1,5 @@
+// ai-none
+
 import { onMounted, ref, type ToRefs, watch } from 'vue'
 import { EventItem, setRef } from '@dxtmisha/functional'
 

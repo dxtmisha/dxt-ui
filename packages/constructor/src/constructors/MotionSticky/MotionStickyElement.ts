@@ -1,3 +1,5 @@
+// ai-none
+
 import { type Ref } from 'vue'
 import { type ConstrEmit, getElement } from '@dxtmisha/functional'
 

@@ -1,3 +1,5 @@
+// ai-none
+
 import type { ImageItem, ImageUint8ArrayCache, ImageUint8ArrayItem, ImageUint8ArrayType } from './basicTypes'
 
 const cache: ImageUint8ArrayCache = []

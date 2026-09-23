@@ -1,3 +1,5 @@
+// ai-none
+
 import { type Ref } from 'vue'
 import { isFilled, toArray } from '@dxtmisha/functional'
 

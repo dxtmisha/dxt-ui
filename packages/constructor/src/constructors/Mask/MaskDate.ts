@@ -1,3 +1,5 @@
+// ai-none
+
 import { Datetime } from '@dxtmisha/functional'
 
 import { MaskType } from './MaskType'

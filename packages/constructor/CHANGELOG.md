@@ -2,6 +2,37 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.118.1] - 2026-09-23
+
+### Added
+- **`CarouselItem` Component Constructor**:
+  - Introduced `CarouselItem` constructor (`src/constructors/CarouselItem/`) coordinating slide elements, indexing, aspect ratio, image binding, snapping, and layout states in carousel compositions.
+  - Decomposed into helper classes `CarouselItemData` and `CarouselItemDesign`.
+  - Added `data-value` attribute binding and support for image and snap props.
+  - Added export entrypoint `./CarouselItem` in `package.json` and styles in `src/library/style.scss`.
+  - Added dedicated unit tests in `src/constructors/CarouselItem/__tests__/CarouselItemData.test.ts`.
+- **Mask Unit Tests Modularization**:
+  - Split monolithic test suites into 24 dedicated, modular unit test files in `src/constructors/Mask/__tests__/` covering buffer, characters, dates, events, formatting, patterns, rubber transitions, selections, validation, and views.
+
+### Changed
+- **SSR Lifecycle & Watcher Optimization**:
+  - Migrated immediate watchers to `onMounted()` hooks and extracted dedicated update/event handlers across constructor classes (`BarsAction`, `ImageData`, `WindowHidden`, `MotionStickyScroll`, `ScrollSticky`, etc.) to guarantee SSR safety and avoid premature DOM access during server rendering.
+  - Updated unit tests and type declarations across `CarouselPagination`, `Collage`, and `Form`.
+- **Mask Event & Clear Handling**:
+  - Enhanced `clear` method in `Mask` with explicit value assignment and animation frame focus execution.
+  - Enhanced `onPaste` handler in `MaskEvent` with `stopPropagation` and change propagation.
+- **Dependencies**:
+  - Added `rollup` (`>=4.63.4`) dependency to resolve Vite plugin types.
+  - Updated workspace and external dependencies to latest stable versions (`vue` `>=3.5.43`, `vue-router` `>=5.3.1`).
+- **AI Types Optimization**:
+  - Added `// ai-none` directive to secondary helper classes across constructor components to optimize AI types scanning and token consumption.
+- **Documentation**:
+  - Added comprehensive bilingual JSDoc documentation (English and Russian) for all methods and properties in `AriaStaticInclude.ts`.
+
+### Fixed
+- **Mask Unit Tests & Type Safety**:
+  - Fixed deep type instantiation and read-only `Ref` type compatibility errors across `Mask` unit test suites.
+
 ## [0.118.0] - 2026-09-21
 
 ### Added

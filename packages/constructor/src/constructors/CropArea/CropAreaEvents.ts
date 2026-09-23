@@ -1,3 +1,5 @@
+// ai-none
+
 import { onUnmounted } from 'vue'
 import { getKey } from '@dxtmisha/functional'
 import { eventStopPropagation } from '@dxtmisha/functional-basic'

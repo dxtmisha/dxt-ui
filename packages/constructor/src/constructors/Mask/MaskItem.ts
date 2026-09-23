@@ -1,3 +1,5 @@
+// ai-none
+
 import { computed } from 'vue'
 import { getMaxLengthAllArray, isArray } from '@dxtmisha/functional'
 

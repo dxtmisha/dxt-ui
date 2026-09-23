@@ -1,3 +1,5 @@
+// ai-none
+
 import { TooltipOpen } from './TooltipOpen'
 import { TooltipStatus } from './TooltipStatus'
 import { TooltipClassesData } from './TooltipClassesData'

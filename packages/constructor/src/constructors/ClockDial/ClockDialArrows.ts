@@ -1,3 +1,5 @@
+// ai-none
+
 import type { ConstrStyles } from '@dxtmisha/functional'
 import type { ClockDialList } from './ClockDialList'
 import type { ClockDialValue } from './ClockDialValue'

@@ -1,3 +1,5 @@
+// ai-none
+
 import { WindowClassesData } from './WindowClassesData'
 
 import type { WindowClassesList } from './basicTypes'

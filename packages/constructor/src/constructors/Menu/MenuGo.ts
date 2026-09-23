@@ -1,3 +1,5 @@
+// ai-none
+
 import { ListDataRef, type NumberOrStringOrBoolean } from '@dxtmisha/functional'
 
 import { MenuValue } from './MenuValue'

@@ -1,3 +1,5 @@
+// ai-none
+
 import { EventItem, eventStopPropagation, isDomRuntime, ListDataRef } from '@dxtmisha/functional'
 
 import { TabsNavigationFocus } from './TabsNavigationFocus'

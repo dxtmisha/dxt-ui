@@ -1,3 +1,5 @@
+// ai-none
+
 import { h, type VNode } from 'vue'
 import {
   type ConstrEmit,

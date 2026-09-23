@@ -1,3 +1,5 @@
+// ai-none
+
 import { onMounted, onUnmounted, ref, type ToRefs, watch } from 'vue'
 
 import { TabIndexInclude } from '../../classes/TabIndexInclude'

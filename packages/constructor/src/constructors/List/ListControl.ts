@@ -1,3 +1,5 @@
+// ai-none
+
 import { computed, nextTick, onMounted, onUnmounted, ref, watch, type Ref } from 'vue'
 import { EventItem, getKey, isDomRuntime, isInput, ListDataRef } from '@dxtmisha/functional'
 

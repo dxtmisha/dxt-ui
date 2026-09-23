@@ -1,3 +1,5 @@
+// ai-none
+
 import { SliderThumb } from './SliderThumb'
 
 /**

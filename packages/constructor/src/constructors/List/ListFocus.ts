@@ -1,3 +1,5 @@
+// ai-none
+
 import { computed, type Ref, ref } from 'vue'
 import {
   goScroll,

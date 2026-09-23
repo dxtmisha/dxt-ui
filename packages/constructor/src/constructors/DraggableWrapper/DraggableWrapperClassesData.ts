@@ -1,3 +1,5 @@
+// ai-none
+
 import type { Ref } from 'vue'
 import { getElementId } from '@dxtmisha/functional'
 import type { ImageCoordinator } from '@dxtmisha/functional-basic'

@@ -1,3 +1,5 @@
+// ai-none
+
 import { ref, watch, type ToRefs } from 'vue'
 import { getFirst, isSelected, type ListSelectedList } from '@dxtmisha/functional'
 

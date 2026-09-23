@@ -1,3 +1,5 @@
+// ai-none
+
 import { computed } from 'vue'
 import { getElementId, ListDataRef, type NumberOrString } from '@dxtmisha/functional'
 

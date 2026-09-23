@@ -1,3 +1,5 @@
+// ai-none
+
 import { type Ref, ref, type ToRefs, watch } from 'vue'
 
 import { MotionAxisSlides } from './MotionAxisSlides'

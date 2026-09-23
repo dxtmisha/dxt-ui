@@ -1,3 +1,5 @@
+// ai-none
+
 import { getElementId, isDomRuntime } from '@dxtmisha/functional'
 
 /**

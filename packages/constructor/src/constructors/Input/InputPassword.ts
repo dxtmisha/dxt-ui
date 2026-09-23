@@ -1,3 +1,5 @@
+// ai-none
+
 import { FieldVisibilityInclude } from '../../classes/Field/FieldVisibilityInclude'
 import { TextInclude } from '../../classes/TextInclude'
 

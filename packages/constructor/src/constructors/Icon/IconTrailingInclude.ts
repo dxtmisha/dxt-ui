@@ -1,3 +1,5 @@
+// ai-none
+
 import { type VNode } from 'vue'
 import { type ConstrBind, type DesignComponents, getBind, toBinds } from '@dxtmisha/functional'
 

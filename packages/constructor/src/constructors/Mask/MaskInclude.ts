@@ -1,3 +1,5 @@
+// ai-none
+
 import { computed, watch } from 'vue'
 import {
   type DesignComponents,

@@ -1,3 +1,5 @@
+// ai-none
+
 import { ref, type ToRefs, watch } from 'vue'
 import { anyToString, type ConstrEmit } from '@dxtmisha/functional'
 

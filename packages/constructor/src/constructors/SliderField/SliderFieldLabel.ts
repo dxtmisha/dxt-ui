@@ -1,3 +1,5 @@
+// ai-none
+
 import type { SliderFieldValue } from './SliderFieldValue'
 import type { SliderFieldProps } from './props'
 

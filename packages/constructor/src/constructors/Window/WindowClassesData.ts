@@ -1,3 +1,5 @@
+// ai-none
+
 import { domQuerySelector, getElementId } from '@dxtmisha/functional'
 import { type WindowClassesList, WindowStatusControlItem, WindowStatusItem } from './basicTypes'
 

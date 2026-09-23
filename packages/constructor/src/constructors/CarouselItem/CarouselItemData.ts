@@ -1,3 +1,5 @@
+// ai-none
+
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import type { AriaList } from '../../types/ariaTypes'
 import type { CarouselItemProps } from './props'

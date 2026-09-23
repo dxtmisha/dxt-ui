@@ -1,3 +1,5 @@
+// ai-none
+
 import { ImageCalculation } from './ImageCalculation'
 
 /**

@@ -1,3 +1,5 @@
+// ai-none
+
 import { computed, onMounted, onUnmounted, type Ref, ref, watchEffect } from 'vue'
 import { getElementId, toNumber } from '@dxtmisha/functional'
 

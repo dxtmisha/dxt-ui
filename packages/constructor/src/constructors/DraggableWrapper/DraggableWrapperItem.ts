@@ -1,3 +1,5 @@
+// ai-none
+
 import { forEach } from '@dxtmisha/functional'
 
 import { DraggableWrapperItemActive } from './DraggableWrapperItemActive'

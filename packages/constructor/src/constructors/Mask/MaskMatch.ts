@@ -1,3 +1,5 @@
+// ai-none
+
 import { MaskSpecial } from './MaskSpecial'
 import { isString } from '@dxtmisha/functional'
 

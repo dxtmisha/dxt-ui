@@ -1,3 +1,5 @@
+// ai-none
+
 import { type Ref, ref } from 'vue'
 
 import type { MotionAxisClassStatus } from './basicTypes'

@@ -1,3 +1,5 @@
+// ai-none
+
 import type { ConstrEmit, ConstrStyles } from '@dxtmisha/functional'
 import { inject, ref } from 'vue'
 

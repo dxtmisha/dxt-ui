@@ -1,3 +1,5 @@
+// ai-none
+
 import type { MotionFlipCallback } from './basicTypes'
 import type { MotionFlipElement } from './MotionFlipElement'
 import type { MotionFlipItems } from './MotionFlipItems'

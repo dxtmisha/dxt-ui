@@ -1,3 +1,5 @@
+// ai-none
+
 import { MaskValidation } from './MaskValidation'
 import type { ConstrEmit } from '@dxtmisha/functional'
 

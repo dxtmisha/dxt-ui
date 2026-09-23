@@ -1,3 +1,5 @@
+// ai-none
+
 import {
   type ConstrBind,
   type ConstrEmit,

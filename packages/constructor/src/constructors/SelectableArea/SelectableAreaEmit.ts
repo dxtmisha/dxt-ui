@@ -1,3 +1,5 @@
+// ai-none
+
 import { watch } from 'vue'
 import { type ConstrEmit } from '@dxtmisha/functional'
 

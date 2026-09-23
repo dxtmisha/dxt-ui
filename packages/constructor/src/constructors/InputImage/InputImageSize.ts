@@ -1,3 +1,5 @@
+// ai-none
+
 import { onMounted, ref, watch } from 'vue'
 import { isObject } from '@dxtmisha/functional'
 

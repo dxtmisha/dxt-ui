@@ -1,3 +1,5 @@
+// ai-none
+
 import { ref, watch } from 'vue'
 
 import { WindowClassesData } from './WindowClassesData'

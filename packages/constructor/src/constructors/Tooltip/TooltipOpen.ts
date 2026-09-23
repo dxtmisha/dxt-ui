@@ -1,3 +1,5 @@
+// ai-none
+
 import { type ConstrEmit, EventItem } from '@dxtmisha/functional'
 import { nextTick, onMounted, onUnmounted, type ToRefs, watch } from 'vue'
 

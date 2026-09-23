@@ -1,3 +1,5 @@
+// ai-none
+
 import { ref } from 'vue'
 
 import type { DropzoneProps } from './props'

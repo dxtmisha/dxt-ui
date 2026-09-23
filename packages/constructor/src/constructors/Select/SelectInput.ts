@@ -1,3 +1,5 @@
+// ai-none
+
 import { type ConstrBind, toBinds } from '@dxtmisha/functional'
 
 import { FieldAttributesInclude } from '../../classes/Field/FieldAttributesInclude'

@@ -1,3 +1,5 @@
+// ai-none
+
 import { ref } from 'vue'
 import type { ImageCoordinator } from '@dxtmisha/functional-basic'
 

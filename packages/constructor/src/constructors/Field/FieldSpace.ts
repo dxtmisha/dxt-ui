@@ -1,3 +1,5 @@
+// ai-none
+
 import { isString } from '@dxtmisha/functional'
 
 import type { FieldElement } from './FieldElement'

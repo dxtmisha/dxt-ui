@@ -1,3 +1,5 @@
+// ai-none
+
 import { eventStopPropagation, getClipboardData, isMetaKey, writeClipboardData } from '@dxtmisha/functional'
 
 import { MaskBuffer } from './MaskBuffer'

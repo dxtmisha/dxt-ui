@@ -1,3 +1,5 @@
+// ai-none
+
 import { ClientOnlyInclude } from '../../classes/ClientOnlyInclude'
 
 import { WindowPersistent } from './WindowPersistent'

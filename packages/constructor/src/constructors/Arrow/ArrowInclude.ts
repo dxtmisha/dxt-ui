@@ -1,3 +1,5 @@
+// ai-none
+
 import {
   type DesignComponents
 } from '@dxtmisha/functional'

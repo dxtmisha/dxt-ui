@@ -1,3 +1,5 @@
+// ai-none
+
 import { computed, ref, type ToRefs, watch } from 'vue'
 import { type ConstrEmit, isObject, type ListSelectedList } from '@dxtmisha/functional'
 

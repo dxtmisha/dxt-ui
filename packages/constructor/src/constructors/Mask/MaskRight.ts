@@ -1,3 +1,5 @@
+// ai-none
+
 import { MaskType } from './MaskType'
 
 import { type MaskProps } from './props'

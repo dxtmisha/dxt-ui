@@ -1,3 +1,5 @@
+// ai-none
+
 import { onMounted, watch } from 'vue'
 import { isDomRuntime, isInput } from '@dxtmisha/functional'
 

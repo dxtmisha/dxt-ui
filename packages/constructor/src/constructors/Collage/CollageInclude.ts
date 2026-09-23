@@ -1,3 +1,5 @@
+// ai-none
+
 import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
 import type { CollagePropsInclude } from './basicTypes'
 import type { CollagePropsBasic } from './props'

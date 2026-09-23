@@ -1,3 +1,5 @@
+// ai-none
+
 import { shallowRef, type ShallowRef } from 'vue'
 import { isNull } from '@dxtmisha/functional-basic'
 

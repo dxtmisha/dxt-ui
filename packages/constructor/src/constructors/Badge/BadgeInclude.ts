@@ -1,3 +1,5 @@
+// ai-none
+
 import { getBind } from '@dxtmisha/functional'
 
 import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'

@@ -1,3 +1,5 @@
+// ai-none
+
 import { onUpdated, ref } from 'vue'
 
 import { MotionAxisStatus } from './MotionAxisStatus'

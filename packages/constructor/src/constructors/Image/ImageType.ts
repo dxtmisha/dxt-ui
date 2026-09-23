@@ -1,3 +1,5 @@
+// ai-none
+
 import { computed } from 'vue'
 import { Icons, isFilled, isString } from '@dxtmisha/functional'
 

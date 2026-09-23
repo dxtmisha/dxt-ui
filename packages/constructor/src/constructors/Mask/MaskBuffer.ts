@@ -1,3 +1,5 @@
+// ai-none
+
 /**
  * Class for temporary storage of entered symbols to keep input position during fast typing.
  *

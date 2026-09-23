@@ -1,3 +1,5 @@
+// ai-none
+
 import {
   type ConstrEmit,
   eventStopPropagation,

@@ -1,3 +1,5 @@
+// ai-none
+
 import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
 import type { CropAreaPropsInclude } from './basicTypes'
 import type { CropAreaProps } from './props'

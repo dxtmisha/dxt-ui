@@ -1,3 +1,5 @@
+// ai-none
+
 import { EventItem } from '@dxtmisha/functional'
 import {
   type ToRefs,

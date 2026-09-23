@@ -1,3 +1,5 @@
+// ai-none
+
 import { getMouseClient, type ImageCoordinator } from '@dxtmisha/functional-basic'
 
 import type { CropAreaElement } from './CropAreaElement'

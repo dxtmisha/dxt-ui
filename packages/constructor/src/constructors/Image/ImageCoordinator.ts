@@ -1,3 +1,5 @@
+// ai-none
+
 import { isArray, type Undefined } from '@dxtmisha/functional'
 
 import type { ImageCoordinatorItem, ImageSize } from './basicTypes'

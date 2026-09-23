@@ -1,3 +1,5 @@
+// ai-none
+
 import type { VNode } from 'vue'
 
 import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'

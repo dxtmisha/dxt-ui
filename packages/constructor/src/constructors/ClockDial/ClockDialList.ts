@@ -1,3 +1,5 @@
+// ai-none
+
 import { computed, type ComputedRef } from 'vue'
 import { toNumber } from '@dxtmisha/functional'
 

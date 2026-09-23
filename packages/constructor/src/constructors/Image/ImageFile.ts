@@ -1,3 +1,5 @@
+// ai-none
+
 import type { ImageItem } from './basicTypes'
 import { isString, resizeImageByMax } from '@dxtmisha/functional'
 

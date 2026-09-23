@@ -1,3 +1,5 @@
+// ai-none
+
 import { getMouseClient } from '@dxtmisha/functional'
 
 import type { DraggableWrapperClassesData } from './DraggableWrapperClassesData'

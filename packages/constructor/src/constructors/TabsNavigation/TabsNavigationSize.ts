@@ -1,3 +1,5 @@
+// ai-none
+
 import { nextTick, onMounted, onUnmounted } from 'vue'
 import { EventItem } from '@dxtmisha/functional'
 import { HorizontalScrollInclude } from '../HorizontalScroll'

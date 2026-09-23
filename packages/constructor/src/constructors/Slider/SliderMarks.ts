@@ -1,3 +1,5 @@
+// ai-none
+
 import type { SliderMarksData } from './SliderMarksData'
 
 import { SliderFocusType, type SliderMarkItem } from './basicTypes'

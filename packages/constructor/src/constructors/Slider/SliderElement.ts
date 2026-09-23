@@ -1,3 +1,5 @@
+// ai-none
+
 import type { Ref } from 'vue'
 
 import type { SliderThumbMax } from './SliderThumbMax'

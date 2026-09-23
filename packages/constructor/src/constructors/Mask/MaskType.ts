@@ -1,3 +1,5 @@
+// ai-none
+
 import type { GeoDate } from '@dxtmisha/functional'
 
 import type { MaskTypeItem } from './basicTypes'

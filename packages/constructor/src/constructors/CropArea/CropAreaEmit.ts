@@ -1,3 +1,5 @@
+// ai-none
+
 import { isFunction, type ConstrEmit } from '@dxtmisha/functional'
 
 import type { CropAreaPosition } from './CropAreaPosition'

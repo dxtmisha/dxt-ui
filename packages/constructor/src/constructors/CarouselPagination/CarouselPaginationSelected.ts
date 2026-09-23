@@ -1,3 +1,5 @@
+// ai-none
+
 import { computed, ref, watch, type ComputedRef, type Ref, type ToRefs } from 'vue'
 import { toNumber, type ConstrEmit } from '@dxtmisha/functional'
 
