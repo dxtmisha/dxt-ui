@@ -1,8 +1,21 @@
-import { computed, type ComputedRef, inject, provide } from 'vue'
+import {
+  computed,
+  type ComputedRef,
+  inject,
+  onMounted,
+  onUnmounted,
+  provide,
+  ref,
+  type Ref,
+  watch
+} from 'vue'
+import {
+  type ConstrClassObject,
+  toNumber
+} from '@dxtmisha/functional'
 
 import type { SkeletonClassesList } from './basicTypes'
 import type { SkeletonProps } from './props'
-
 import { SKELETON_NAME_STATUS } from './const'
 
 /**
@@ -13,15 +26,21 @@ import { SKELETON_NAME_STATUS } from './const'
  * Координирует реактивные состояния загрузки через внедрение провайдера между родителем и потомком и разрешает списки классов CSS.
  */
 export class Skeleton {
+  /** Timer instance for delayed visibility updates / Экземпляр таймера для отложенного обновления видимости */
+  protected timeout?: ReturnType<typeof setTimeout>
+
   /** Reactive computed status of the parent skeleton / Реактивный вычисляемый статус родительского скелетона */
   protected status?: ComputedRef<boolean>
 
+  /** Reactive state for visible status / Реактивное состояние статуса видимости */
+  protected readonly visible: Ref<boolean> = ref<boolean>(false)
+
   /**
-   * Returns the list of available classes.
+   * Returns the list of available classes for the skeleton.
    *
-   * Возвращает список доступных классов для текущего элемента.
+   * Возвращает список доступных классов для скелетона.
    */
-  readonly classes: SkeletonClassesList
+  readonly classesSkeleton: SkeletonClassesList
 
   /**
    * Constructor
@@ -35,9 +54,31 @@ export class Skeleton {
     protected readonly className: string
   ) {
     this.status = inject<ComputedRef<boolean> | undefined>(SKELETON_NAME_STATUS, undefined)
-    this.classes = Skeleton.getClassesList(this.className)
+    this.classesSkeleton = Skeleton.getClassesList(this.className)
+
+    watch(
+      () => this.isActive(),
+      this.switch
+    )
+    onMounted(this.switch)
+
+    onUnmounted(() => {
+      clearTimeout(this.timeout)
+    })
 
     provide(SKELETON_NAME_STATUS, computed<boolean>(() => this.isActive()))
+  }
+
+  /**
+   * Returns classes for the element.
+   *
+   * Возвращает классы для элемента.
+   * @returns list of computed classes / список вычисленных классов
+   */
+  get classes(): ConstrClassObject {
+    return {
+      [`${this.className}--visible`]: this.visible.value
+    }
   }
 
   /**
@@ -78,5 +119,57 @@ export class Skeleton {
    */
   static getClassesListByDesign(design: string): SkeletonClassesList {
     return this.getClassesList(`${design}-skeleton`)
+  }
+
+  /**
+   * Updates the visible status with a delay or immediately.
+   *
+   * Обновляет статус видимости с задержкой или немедленно.
+   * @param visible new visibility state / новое состояние видимости
+   * @param delay delay before state update / задержка перед обновлением состояния
+   */
+  protected setVisible(visible: boolean, delay?: number | string): void {
+    const delayNumber = toNumber(delay ?? 0)
+
+    if (delayNumber > 0) {
+      this.timeout = setTimeout(() => {
+        this.visible.value = visible
+      }, delayNumber)
+    } else {
+      this.visible.value = visible
+    }
+  }
+
+  /**
+   * Resets the visible status or starts a timer for delayed hiding.
+   *
+   * Сбрасывает статус видимости или запускает таймер для отложенного скрытия.
+   */
+  protected toHide(): void {
+    this.setVisible(false, this.props.delayHide)
+  }
+
+  /**
+   * Enables the visible status or starts a timer for delayed display.
+   *
+   * Включает статус видимости или запускает таймер для отложенного показа.
+   */
+  protected toVisible(): void {
+    this.setVisible(true, this.props.delay)
+  }
+
+  /**
+   * Method triggers when the active property changes to change the status of the output of the element.
+   *
+   * Метод срабатывает при изменении свойства active для изменения статуса вывода элемента.
+   */
+  protected readonly switch = (): void => {
+    clearTimeout(this.timeout)
+
+    if (this.isActive()) {
+      this.toVisible()
+    } else {
+      this.toHide()
+    }
   }
 }

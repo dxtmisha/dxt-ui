@@ -34,7 +34,7 @@ export interface SkeletonExpose {
  * Тип, описывающий доступные слоты.
  */
 export interface SkeletonSlots {
-  /** Slot for default skeleton content/ Слот для основного содержимого скелета */
+  /** Slot for default skeleton content / Слот для основного содержимого скелета */
   default?(props: SkeletonClassesList): any
 }
 

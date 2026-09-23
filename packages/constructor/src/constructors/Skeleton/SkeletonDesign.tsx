@@ -92,7 +92,7 @@ export class SkeletonDesign<
    */
   protected initClasses(): Partial<CLASSES> {
     return {
-      main: {},
+      main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
         // :classes [!] System label / Системная метка
@@ -126,7 +126,7 @@ export class SkeletonDesign<
         ...AriaStaticInclude.busy(this.item.isActive()),
         ...AriaStaticInclude.live('polite')
       },
-      this.initSlot('default', undefined, this.item.classes)
+      this.initSlot('default', undefined, this.item.classesSkeleton)
     )
   }
 }
