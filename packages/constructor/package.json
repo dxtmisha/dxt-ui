@@ -570,6 +570,14 @@
     "./CarouselItem": {
       "types": "./dist/constructors/CarouselItem/index.d.ts",
       "default": "./dist/carouselItem.js"
+    },
+    "./InputFileItem": {
+      "types": "./dist/constructors/InputFileItem/index.d.ts",
+      "default": "./dist/inputFileItem.js"
+    },
+    "./InputFileDropzone": {
+      "types": "./dist/constructors/InputFileDropzone/index.d.ts",
+      "default": "./dist/inputFileDropzone.js"
     }
   },
   "buildOptions": {

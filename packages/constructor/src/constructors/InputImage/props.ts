@@ -51,9 +51,6 @@ export type InputImagePropsBasic<
     /** Initial or current crop coordinates [top, right, bottom, left] / Начальные или текущие координаты кадрирования [сверху, справа, снизу, слева] */
     crop?: CropAreaCoordinator
 
-    /** Maximum file size in bytes / Максимальный размер файла в байтах */
-    maxFileSize?: number
-
     /** Maximum image dimension in pixels / Максимальный размер изображения в пикселях */
     maxPixel?: number
 

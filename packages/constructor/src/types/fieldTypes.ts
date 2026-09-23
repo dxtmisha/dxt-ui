@@ -357,6 +357,8 @@ export type FieldInputFileProps<Value = any>
     accept?: string
     /** Capture mode for media input (mobile)/ Режим захвата для медиа (мобильные устройства) */
     capture?: string | boolean
+    /** Maximum file size in bytes / Максимальный размер файла в байтах */
+    maxFileSize?: number
   }
 
 /**

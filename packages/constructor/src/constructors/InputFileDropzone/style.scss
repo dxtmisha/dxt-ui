@@ -1,0 +1,7 @@
+@use "@dxtmisha/styles/properties" as ui;
+
+@mixin mixinInputFileDropzone {
+  &__body {
+    position: relative;
+  }
+}
