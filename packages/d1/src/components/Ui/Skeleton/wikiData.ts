@@ -7,13 +7,14 @@ const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
   { name: 'active', type: 'boolean' },
   { name: 'delay', type: 'string | number' },
-  { name: 'delayHide', type: 'string | number' }
+  { name: 'delayHide', type: 'string | number' },
+  { name: 'invisible', type: 'boolean' }
   // :propsList [!] System label / Системная метка
 ]
 
 const slotsNames: StorybookSlots = [
   // :slotsList [!] System label / Системная метка
-  { name: 'default', description: `Slot for default skeleton content/ Слот для основного содержимого скелета`, properties: [{ name: 'props', type: '(SkeletonClassesList) | undefined' }] }
+  { name: 'default', description: `Slot for default skeleton content / Слот для основного содержимого скелета`, properties: [{ name: 'props', type: '(SkeletonClassesList) | undefined' }] }
   // :slotsList [!] System label / Системная метка
 ]
 

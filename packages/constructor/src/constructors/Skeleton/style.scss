@@ -10,75 +10,81 @@
   --sys-color-opacity: #{ui.v('??colorOpacity', 1)} !important;
 }
 
+@mixin mixinSkeletonInvisible {
+  @include ui.absoluteAfter {
+    z-index: 999999;
+  }
+
+  * {
+    @include ui.scrollbarHide;
+  }
+
+  *,
+  *::before,
+  *::after,
+  *::placeholder {
+    color: transparent !important;
+    background: transparent !important;
+    border-color: transparent !important;
+
+    box-shadow: none !important;
+  }
+
+  svg {
+    opacity: 0;
+    filter: opacity(0);
+  }
+}
+
 @mixin mixinSkeleton {
   @include ui.initByCustom('opacity', .32);
   @include ui.initByCustom('animation', #{ui.n('??animationType1') ui.v('d.ref.transitionFunction.linear') 2.4s infinite});
 
-  &--active {
-    @include ui.absoluteAfter {
-      z-index: 999999;
+  @include ui.state('invisible') {
+    @include mixinSkeletonInvisible;
+  }
+
+  @include ui.state('visible') {
+    animation: ui.v('??animation');
+
+    @include mixinSkeletonInvisible;
+
+    @include ui.subclass('text') {
+      @include mixinSkeletonText;
+      @include ui.color(ui.v('??color'), ui.v('??colorOpacity'), true, 'text-decoration-color');
     }
 
-    * {
-      @include ui.scrollbarHide;
+    @include ui.subclass('textVariant') {
+      @include mixinSkeletonText;
+      @include ui.color(ui.v('??backgroundColor'), ui.v('??backgroundOpacity'), true, 'text-decoration-color');
     }
 
-    *,
-    *::before,
-    *::after,
-    *::placeholder {
-      color: transparent !important;
-      background: transparent !important;
-      border-color: transparent !important;
-
-      box-shadow: none !important;
+    @include ui.subclass('background') {
+      @include ui.backgroundColor(ui.v('??backgroundColor'), ui.v('??backgroundOpacity', 1), true);
     }
 
-    svg {
-      opacity: 0;
-      filter: opacity(0);
-    }
-
-    @include ui.state('visible') {
-      animation: ui.v('??animation');
-
-      @include ui.subclass('text') {
-        @include mixinSkeletonText;
-        @include ui.color(ui.v('??color'), ui.v('??colorOpacity'), true, 'text-decoration-color');
-      }
-
-      @include ui.subclass('textVariant') {
-        @include mixinSkeletonText;
-        @include ui.color(ui.v('??backgroundColor'), ui.v('??backgroundOpacity'), true, 'text-decoration-color');
-      }
-
-      @include ui.subclass('background') {
+    @include ui.subclass('backgroundAfter') {
+      &:after {
         @include ui.backgroundColor(ui.v('??backgroundColor'), ui.v('??backgroundOpacity', 1), true);
       }
+    }
 
-      @include ui.subclass('backgroundAfter') {
-        &:after {
-          @include ui.backgroundColor(ui.v('??backgroundColor'), ui.v('??backgroundOpacity', 1), true);
-        }
+    @include ui.subclass('backgroundBefore') {
+      &:before {
+        @include ui.backgroundColor(ui.v('??backgroundColor'), ui.v('??backgroundOpacity', 1), true);
       }
+    }
 
-      @include ui.subclass('backgroundBefore') {
-        &:before {
-          @include ui.backgroundColor(ui.v('??backgroundColor'), ui.v('??backgroundOpacity', 1), true);
-        }
-      }
+    @include ui.subclass('backgroundVariant') {
+      @include ui.backgroundColor(ui.v('??color'), ui.v('??colorOpacity', 1), true);
+    }
 
-      @include ui.subclass('backgroundVariant') {
-        @include ui.backgroundColor(ui.v('??color'), ui.v('??colorOpacity', 1), true);
-      }
+    @include ui.subclass('border') {
+      @include ui.borderColor(ui.v('??borderColor'), ui.v('??borderOpacity', 1), true);
+    }
 
-      @include ui.subclass('border') {
-        @include ui.borderColor(ui.v('??borderColor'), ui.v('??borderOpacity', 1), true);
-      }
-
-      @include ui.subclass('borderVariant') {
-        @include ui.borderColor(ui.v('??color'), ui.v('??colorOpacity', 1), true);
-      }
+    @include ui.subclass('borderVariant') {
+      @include ui.borderColor(ui.v('??color'), ui.v('??colorOpacity', 1), true);
     }
 
     @include ui.subclass('none') {

@@ -15,7 +15,7 @@ import {
 } from '@dxtmisha/functional'
 
 import type { SkeletonClassesList } from './basicTypes'
-import type { SkeletonProps } from './props'
+import { defaultsSkeleton, type SkeletonProps } from './props'
 import { SKELETON_NAME_STATUS } from './const'
 
 /**
@@ -33,7 +33,7 @@ export class Skeleton {
   protected status?: ComputedRef<boolean>
 
   /** Reactive state for visible status / Реактивное состояние статуса видимости */
-  protected readonly visible: Ref<boolean> = ref<boolean>(false)
+  protected readonly visible: Ref<boolean>
 
   /**
    * Returns the list of available classes for the skeleton.
@@ -55,6 +55,7 @@ export class Skeleton {
   ) {
     this.status = inject<ComputedRef<boolean> | undefined>(SKELETON_NAME_STATUS, undefined)
     this.classesSkeleton = Skeleton.getClassesList(this.className)
+    this.visible = ref<boolean>(Boolean(this.isActive() && !toNumber(this.props.delay ?? defaultsSkeleton.delay)))
 
     watch(
       () => this.isActive(),
@@ -66,7 +67,7 @@ export class Skeleton {
       clearTimeout(this.timeout)
     })
 
-    provide(SKELETON_NAME_STATUS, computed<boolean>(() => this.isActive()))
+    provide(SKELETON_NAME_STATUS, computed<boolean>(() => this.visible.value))
   }
 
   /**
@@ -77,7 +78,8 @@ export class Skeleton {
    */
   get classes(): ConstrClassObject {
     return {
-      [`${this.className}--visible`]: this.visible.value
+      [`${this.className}--visible`]: this.visible.value,
+      [`${this.className}--invisible`]: Boolean(this.props.invisible && this.isActive())
     }
   }
 
@@ -146,7 +148,7 @@ export class Skeleton {
    * Сбрасывает статус видимости или запускает таймер для отложенного скрытия.
    */
   protected toHide(): void {
-    this.setVisible(false, this.props.delayHide)
+    this.setVisible(false, this.props.delayHide ?? defaultsSkeleton.delayHide)
   }
 
   /**
@@ -155,7 +157,7 @@ export class Skeleton {
    * Включает статус видимости или запускает таймер для отложенного показа.
    */
   protected toVisible(): void {
-    this.setVisible(true, this.props.delay)
+    this.setVisible(true, this.props.delay ?? defaultsSkeleton.delay)
   }
 
   /**
@@ -168,7 +170,7 @@ export class Skeleton {
 
     if (this.isActive()) {
       this.toVisible()
-    } else {
+    } else if (this.visible.value) {
       this.toHide()
     }
   }

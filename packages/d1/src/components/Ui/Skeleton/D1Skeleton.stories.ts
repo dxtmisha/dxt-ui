@@ -4,6 +4,7 @@ import D1Skeleton from './D1Skeleton.vue'
 import { SkeletonWikiStorybook } from './wiki'
 
 // :story-import [!] System label / Системная метка
+import { ref } from 'vue'
 import { image1 } from '@dxtmisha/wiki/media'
 // :story-import [!] System label / Системная метка
 
@@ -125,6 +126,68 @@ export const SkeletonBasic: Story = {
                 Border Variant
               </div>
             </D1Skeleton>
+          </div>
+        </div>
+    `
+  })
+}
+export const SkeletonDelays: Story = {
+  name: 'Задержки',
+  render: () => ({
+    components: { D1Skeleton },
+    setup() {
+      const active = ref(false)
+      return {
+        active,
+        onClick: () => {
+          active.value = !active.value
+        }
+      }
+    },
+    template: `
+        <div class="wiki-storybook-flex-column">
+          <div class="wiki-storybook-flex">
+            <button class="wiki-storybook-button" @click="onClick">Active: {{ active }}</button>
+          </div>
+
+          <div>
+            <div class="wiki-storybook-group">
+              <div class="wiki-storybook-item wiki-storybook-item--squared--md wiki-storybook-item--center">
+                <div class="wiki-storybook-item__label">Standard delay (360/0)</div>
+                <D1Skeleton :active="active" delay="360" delayHide="0">
+                  <div class="d1-skeleton__text">Text placeholder</div>
+                  <div class="d1-skeleton__text">Text placeholder</div>
+                  <div class="d1-skeleton__text">Text placeholder</div>
+                </D1Skeleton>
+              </div>
+
+              <div class="wiki-storybook-item wiki-storybook-item--squared--md wiki-storybook-item--center">
+                <div class="wiki-storybook-item__label">Slow appearance (1000/0)</div>
+                <D1Skeleton :active="active" delay="1000" delayHide="0">
+                  <div class="d1-skeleton__text">Text placeholder</div>
+                  <div class="d1-skeleton__text">Text placeholder</div>
+                  <div class="d1-skeleton__text">Text placeholder</div>
+                </D1Skeleton>
+              </div>
+
+              <div class="wiki-storybook-item wiki-storybook-item--squared--md wiki-storybook-item--center">
+                <div class="wiki-storybook-item__label">Delay before hiding (0/1000)</div>
+                <D1Skeleton :active="active" delay="0" delayHide="1000">
+                  <div class="d1-skeleton__text">Text placeholder</div>
+                  <div class="d1-skeleton__text">Text placeholder</div>
+                  <div class="d1-skeleton__text">Text placeholder</div>
+                </D1Skeleton>
+              </div>
+
+              <div class="wiki-storybook-item wiki-storybook-item--squared--md wiki-storybook-item--center">
+                <div class="wiki-storybook-item__label">No delays (0/0)</div>
+                <D1Skeleton :active="active" delay="0" delayHide="0">
+                  <div class="d1-skeleton__text">Text placeholder</div>
+                  <div class="d1-skeleton__text">Text placeholder</div>
+                  <div class="d1-skeleton__text">Text placeholder</div>
+                </D1Skeleton>
+              </div>
+            </div>
           </div>
         </div>
     `

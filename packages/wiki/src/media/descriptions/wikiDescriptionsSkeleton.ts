@@ -40,6 +40,7 @@ export const wikiDescriptionsSkeleton: StorybookComponentsDescriptionItem = {
     </DesignComponent>
   `,
   import: [
+    'import { ref } from \'vue\'',
     'import { image1 } from \'@dxtmisha/wiki/media\''
   ],
   stories: [
@@ -118,6 +119,69 @@ export const wikiDescriptionsSkeleton: StorybookComponentsDescriptionItem = {
           </div>
         </div>
       `
+    },
+    {
+      id: 'SkeletonDelays',
+      name: {
+        en: 'Delays',
+        ru: 'Задержки'
+      },
+      setup: `
+      const active = ref(false)
+      return {
+        active,
+        onClick: () => {
+          active.value = !active.value
+        }
+      }
+      `,
+      template: `
+        <div class="wiki-storybook-flex-column">
+          <div class="wiki-storybook-flex">
+            <button class="wiki-storybook-button" @click="onClick">Active: {{ active }}</button>
+          </div>
+
+          <div>
+            <div class="wiki-storybook-group">
+              <div class="wiki-storybook-item wiki-storybook-item--squared--md wiki-storybook-item--center">
+                <div class="wiki-storybook-item__label">Standard delay (360/0)</div>
+                <DesignComponent :active="active" delay="360" delayHide="0">
+                  <div class="design-component__text">Text placeholder</div>
+                  <div class="design-component__text">Text placeholder</div>
+                  <div class="design-component__text">Text placeholder</div>
+                </DesignComponent>
+              </div>
+
+              <div class="wiki-storybook-item wiki-storybook-item--squared--md wiki-storybook-item--center">
+                <div class="wiki-storybook-item__label">Slow appearance (1000/0)</div>
+                <DesignComponent :active="active" delay="1000" delayHide="0">
+                  <div class="design-component__text">Text placeholder</div>
+                  <div class="design-component__text">Text placeholder</div>
+                  <div class="design-component__text">Text placeholder</div>
+                </DesignComponent>
+              </div>
+
+              <div class="wiki-storybook-item wiki-storybook-item--squared--md wiki-storybook-item--center">
+                <div class="wiki-storybook-item__label">Delay before hiding (0/1000)</div>
+                <DesignComponent :active="active" delay="0" delayHide="1000">
+                  <div class="design-component__text">Text placeholder</div>
+                  <div class="design-component__text">Text placeholder</div>
+                  <div class="design-component__text">Text placeholder</div>
+                </DesignComponent>
+              </div>
+
+              <div class="wiki-storybook-item wiki-storybook-item--squared--md wiki-storybook-item--center">
+                <div class="wiki-storybook-item__label">No delays (0/0)</div>
+                <DesignComponent :active="active" delay="0" delayHide="0">
+                  <div class="design-component__text">Text placeholder</div>
+                  <div class="design-component__text">Text placeholder</div>
+                  <div class="design-component__text">Text placeholder</div>
+                </DesignComponent>
+              </div>
+            </div>
+          </div>
+        </div>
+      `
     }
   ],
   documentation: {
@@ -125,6 +189,9 @@ export const wikiDescriptionsSkeleton: StorybookComponentsDescriptionItem = {
 <StorybookDescriptions componentName={'Skeleton'} type={'active'}/>
 <StorybookDescriptions componentName={'Skeleton'} type={'classes'}/>
 <Canvas of={Component.SkeletonBasic}/>
+
+<StorybookDescriptions componentName={'Progress'} type={'delays'}/>
+<Canvas of={Component.SkeletonDelays}/>
     `,
     expose: `
 <StorybookDescriptions componentName={'Skeleton'} type={'expose.isActive'}/>

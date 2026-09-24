@@ -9,6 +9,8 @@ export type SkeletonPropsBasic = {
   delay?: number | string
   /** Delay before hiding / Задержка перед скрытием */
   delayHide?: number | string
+  /** Makes content invisible upon activation / Делает контент невидимым при активации */
+  invisible?: boolean
 }
 
 /**
@@ -24,8 +26,9 @@ export type SkeletonProps = SkeletonPropsBasic & SkeletonPropsToken
  * Значение по умолчанию для свойства.
  */
 export const defaultsSkeleton = {
-  delay: 360,
+  delay: 0,
   delayHide: 0,
+  invisible: true,
   ...{
     // :default [!] System label / Системная метка
     // :default [!] System label / Системная метка

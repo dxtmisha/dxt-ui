@@ -136,6 +136,30 @@ export const wikiOption: StorybookArgsToList = {
       }
     }
   },
+  delay: {
+    type: StorybookControl.number,
+    options: {
+      category: StorybookCategory.option,
+      type: ['number', 'string'],
+      description: {
+        en: 'Delay before showing in milliseconds',
+        ru: 'Задержка перед показом в миллисекундах'
+      }
+    },
+    hide: true
+  },
+  delayHide: {
+    type: StorybookControl.number,
+    options: {
+      category: StorybookCategory.option,
+      type: ['number', 'string'],
+      description: {
+        en: 'Delay before hiding in milliseconds',
+        ru: 'Задержка перед скрытием в миллисекундах'
+      }
+    },
+    hide: true
+  },
   dir: {
     type: StorybookControl.boolean,
     options: {
@@ -311,6 +335,16 @@ export const wikiOption: StorybookArgsToList = {
       description: {
         en: 'Enables interactive mode for the component',
         ru: 'Включает интерактивный режим для компонента'
+      }
+    }
+  },
+  invisible: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.option,
+      description: {
+        en: 'Makes content invisible upon activation before display',
+        ru: 'Делает контент невидимым при активации до момента показа'
       }
     }
   },
