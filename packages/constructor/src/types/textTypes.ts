@@ -9,15 +9,18 @@ export type TextIndex = 'cancel'
   | 'close'
   | 'copiedClipboard'
   | 'decrement'
+  | 'delete'
   | 'dropzone'
   | 'edit'
   | 'entriesMatch'
+  | 'error'
   | 'first'
   | 'hide'
   | 'increment'
   | 'info'
   | 'last'
   | 'loading'
+  | 'loadingFile'
   | 'more'
   | 'morePrev'
   | 'next'
@@ -27,9 +30,11 @@ export type TextIndex = 'cancel'
   | 'page'
   | 'pagination'
   | 'previous'
+  | 'retry'
   | 'rowsPerPage'
   | 'show'
   | 'symbol'
+  | 'uploadSuccess'
   | string
 
 /** List of text values/ Список текстовых значений */
@@ -83,6 +88,12 @@ export type TextDecrementPropsInclude = {
   textDecrement?: TextValue
 }
 
+/** Interface for including delete text/ Интерфейс для включения текста удаления */
+export type TextDeletePropsInclude = {
+  /** Delete text/ Текст удаления */
+  textDelete?: TextValue
+}
+
 /** Interface for including dropzone text/ Интерфейс для включения текста области загрузки */
 export type TextDropzonePropsInclude = {
   /** Dropzone text/ Текст области загрузки */
@@ -99,6 +110,12 @@ export type TextEditPropsInclude = {
 export type TextEntriesMatchPropsInclude = {
   /** Text entries match/ Текст о несовпадении записей */
   textEntriesMatch?: TextValue
+}
+
+/** Interface for including error text/ Интерфейс для включения текста ошибки */
+export type TextErrorPropsInclude = {
+  /** Error text/ Текст ошибки */
+  textError?: TextValue
 }
 
 /** Interface for including first text/ Интерфейс для включения текста первой страницы */
@@ -135,6 +152,12 @@ export type TextLastPropsInclude = {
 export type TextLoadingPropsInclude = {
   /** Loading text/ Текст загрузки */
   textLoading?: TextValue
+}
+
+/** Interface for including loading file text/ Интерфейс для включения текста загрузки файла */
+export type TextLoadingFilePropsInclude = {
+  /** Loading file text/ Текст загрузки файла */
+  textLoadingFile?: TextValue
 }
 
 /** Interface for including more text/ Интерфейс для включения текста "показать еще" */
@@ -191,6 +214,12 @@ export type TextPreviousPropsInclude = {
   textPrevious?: TextValue
 }
 
+/** Interface for including retry text/ Интерфейс для включения текста повтора */
+export type TextRetryPropsInclude = {
+  /** Retry text/ Текст повтора */
+  textRetry?: TextValue
+}
+
 /** Interface for including rows per page text/ Интерфейс для включения текста "строк на странице" */
 export type TextRowsPerPagePropsInclude = {
   /** Rows per page text/ Текст "строк на странице" */
@@ -209,6 +238,12 @@ export type TextSymbolPropsInclude = {
   textSymbol?: TextValue
 }
 
+/** Interface for including upload success text/ Интерфейс для включения текста успешной загрузки */
+export type TextUploadSuccessPropsInclude = {
+  /** Upload success text/ Текст успешной загрузки */
+  textUploadSuccess?: TextValue
+}
+
 /** Type for including all text properties/ Тип для включения всех текстовых свойств */
 export type TextAllPropsInclude = TextBreadcrumbPropsInclude
   & TextCancelPropsInclude
@@ -218,15 +253,18 @@ export type TextAllPropsInclude = TextBreadcrumbPropsInclude
   & TextClosePropsInclude
   & TextCopiedClipboardPropsInclude
   & TextDecrementPropsInclude
+  & TextDeletePropsInclude
   & TextDropzonePropsInclude
   & TextEditPropsInclude
   & TextEntriesMatchPropsInclude
+  & TextErrorPropsInclude
   & TextFirstPropsInclude
   & TextHidePropsInclude
   & TextIncrementPropsInclude
   & TextInfoPropsInclude
   & TextLastPropsInclude
   & TextLoadingPropsInclude
+  & TextLoadingFilePropsInclude
   & TextMorePropsInclude
   & TextMorePrevPropsInclude
   & TextNextPropsInclude
@@ -236,6 +274,8 @@ export type TextAllPropsInclude = TextBreadcrumbPropsInclude
   & TextPagePropsInclude
   & TextPaginationPropsInclude
   & TextPreviousPropsInclude
+  & TextRetryPropsInclude
   & TextRowsPerPagePropsInclude
   & TextShowPropsInclude
   & TextSymbolPropsInclude
+  & TextUploadSuccessPropsInclude

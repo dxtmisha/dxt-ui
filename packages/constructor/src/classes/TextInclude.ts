@@ -95,6 +95,11 @@ export class TextInclude {
     return this.get('textDecrement')
   }
 
+  /** Delete text / Текст удаления */
+  get delete() {
+    return this.get('textDelete')
+  }
+
   /** Dropzone default text / Текст области загрузки по умолчанию */
   get dropzone() {
     return this.get('textDropzone')
@@ -108,6 +113,11 @@ export class TextInclude {
   /** Entries match text / Текст о несовпадении записей */
   get entriesMatch() {
     return this.get('textEntriesMatch')
+  }
+
+  /** Error text / Текст ошибки */
+  get error() {
+    return this.get('textError')
   }
 
   /** First page text / Текст первой страницы */
@@ -138,6 +148,11 @@ export class TextInclude {
   /** Loading text / Текст загрузки */
   get loading() {
     return this.get('textLoading')
+  }
+
+  /** Loading file text / Текст загрузки файла */
+  get loadingFile() {
+    return this.get('textLoadingFile')
   }
 
   /** More text / Текст "показать еще" */
@@ -185,6 +200,11 @@ export class TextInclude {
     return this.get('textPrevious')
   }
 
+  /** Retry text / Текст повтора */
+  get retry() {
+    return this.get('textRetry')
+  }
+
   /** Rows per page text / Текст "строк на странице" */
   get rowsPerPage() {
     return this.get('textRowsPerPage')
@@ -198,6 +218,11 @@ export class TextInclude {
   /** Symbol text / Текст символа */
   get symbol() {
     return this.get('textSymbol')
+  }
+
+  /** Upload success text / Текст успешной загрузки */
+  get uploadSuccess() {
+    return this.get('textUploadSuccess')
   }
 
   /**

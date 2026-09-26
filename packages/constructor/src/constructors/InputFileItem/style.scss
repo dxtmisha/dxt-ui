@@ -1,5 +1,239 @@
 @use "@dxtmisha/styles/properties" as ui;
 
 @mixin mixinInputFileItem {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  position: relative;
 
+  border-radius: ui.v('??border-radius', #{ui.v('d.sys.borderRadius.md')});
+  transition-property: #{ui.v('??transition-property', 'background-color, border, opacity, box-shadow')};
+  transition-duration: ui.v('??transition-duration', #{ui.v('d.sys.transitionDuration.fade.enter')});
+  transition-timing-function: ui.v('??transition-function', #{ui.v('d.sys.transitionFunction.standard')});
+
+  @include ui.paddingX(ui.v('??paddingX', 8px));
+  @include ui.paddingY(ui.v('??paddingY', 8px));
+  gap: ui.v('??gap', 12px);
+
+  @include ui.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  @include ui.readonly {
+    pointer-events: none;
+  }
+
+  &--selected {
+    background-color: var(--sys-surface-variant, rgba(0, 0, 0, 0.05));
+  }
+
+  &--error {
+    border-color: var(--sys-error, #dc2626);
+  }
+
+  &__thumbnail {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+
+    width: ui.v('??thumbnailSize', 48px);
+    height: ui.v('??thumbnailSize', 48px);
+    min-width: ui.v('??thumbnailSize', 48px);
+    min-height: ui.v('??thumbnailSize', 48px);
+
+    border-radius: ui.v('??border-radius', #{ui.v('d.sys.borderRadius.md')});
+    background-color: var(--sys-surface-variant, rgba(0, 0, 0, 0.06));
+    border: 1px solid var(--sys-outline-variant, rgba(0, 0, 0, 0.12));
+
+    &--checkered {
+      background-color: var(--sys-surface, #ffffff);
+      background-image: conic-gradient(
+        var(--sys-outline-variant, rgba(0, 0, 0, 0.12)) 0deg 90deg,
+        transparent 90deg 180deg,
+        var(--sys-outline-variant, rgba(0, 0, 0, 0.12)) 180deg 270deg,
+        transparent 270deg 360deg
+      );
+      background-size: 16px 16px;
+    }
+
+    &--error {
+      background-color: var(--sys-error-container, rgba(239, 68, 68, 0.15));
+      border-color: var(--sys-error, #dc2626);
+    }
+  }
+
+  &__thumbnailImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &__thumbnailPlaceholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    color: var(--sys-outline, rgba(0, 0, 0, 0.4));
+  }
+
+  &__body {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    min-width: 0;
+    gap: 4px;
+  }
+
+  &__label {
+    box-sizing: border-box;
+    font-size: var(--sys-title-small-size, 14px);
+    font-weight: 500;
+    line-height: var(--sys-title-small-line-height, 20px);
+    color: var(--sys-on-surface, rgba(0, 0, 0, 0.87));
+    @include ui.truncate;
+  }
+
+  &__caption {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: var(--sys-body-small-size, 12px);
+    line-height: var(--sys-body-small-line-height, 16px);
+    color: var(--sys-on-surface-variant, rgba(0, 0, 0, 0.6));
+    min-width: 0;
+  }
+
+  &__message {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+
+    &--success {
+      color: var(--sys-success, #16a34a);
+    }
+
+    &--error {
+      color: var(--sys-error, #dc2626);
+    }
+  }
+
+  &__progress {
+    flex-grow: 1;
+    max-width: 180px;
+    height: 4px;
+    position: relative;
+  }
+
+  &__status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    &--success {
+      color: var(--sys-success, #16a34a);
+    }
+
+    &--error {
+      color: var(--sys-error, #dc2626);
+    }
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    @include ui.marginLeft(auto);
+    flex-shrink: 0;
+  }
+
+  &__buttonDelete,
+  &__buttonRetry {
+    flex-shrink: 0;
+  }
+
+  // Modifiers - Appearance
+  &--appearance {
+    &--list {
+      flex-direction: row;
+      width: 100%;
+    }
+
+    &--compact {
+      flex-direction: row;
+      width: 100%;
+
+      @include ui.subclass('label') {
+        flex-grow: 1;
+      }
+    }
+
+    &--tile {
+      display: inline-flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 1 / 1;
+      width: ui.v('??thumbnailSize', 80px);
+      height: ui.v('??thumbnailSize', 80px);
+      min-width: ui.v('??thumbnailSize', 80px);
+      min-height: ui.v('??thumbnailSize', 80px);
+      padding: 0;
+      border: 1px solid var(--sys-outline-variant, rgba(0, 0, 0, 0.12));
+
+      @include ui.subclass('thumbnail') {
+        width: 100%;
+        height: 100%;
+        min-width: 100%;
+        min-height: 100%;
+        border-radius: inherit;
+        border: none;
+        position: absolute;
+        inset: 0;
+      }
+
+      @include ui.subclass('status'),
+      @include ui.subclass('progress') {
+        position: absolute;
+        inset: 0;
+        margin: auto;
+        z-index: 2;
+        pointer-events: none;
+      }
+
+      @include ui.subclass('actions') {
+        position: absolute;
+        inset: 0;
+        margin: auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 3;
+        pointer-events: none;
+
+        > * {
+          pointer-events: auto;
+        }
+      }
+
+      @include ui.subclass('buttonDelete') {
+        background-color: var(--sys-scrim, rgba(0, 0, 0, 0.5));
+        color: #ffffff;
+        border-radius: 50%;
+        min-width: 32px;
+        width: 32px;
+        height: 32px;
+      }
+    }
+  }
 }

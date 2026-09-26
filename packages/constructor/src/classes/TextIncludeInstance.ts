@@ -18,15 +18,18 @@ export class TextIncludeInstance {
     close: 'Close',
     copiedClipboard: 'Copied to the clipboard',
     decrement: 'Decrease',
+    delete: 'Delete',
     dropzone: 'Drop files here or click to upload',
     edit: 'Edit',
     entriesMatch: 'Entries do not match',
+    error: 'Error',
     first: 'First',
     hide: 'Hide',
     increment: 'Increase',
     info: '[item] of [count]',
     last: 'Last',
     loading: 'Loading',
+    loadingFile: 'Loading file ...',
     more: 'Show more',
     morePrev: 'Show previous',
     next: 'Next',
@@ -36,9 +39,11 @@ export class TextIncludeInstance {
     page: 'Page',
     pagination: 'Pagination',
     previous: 'Previous',
+    retry: 'Retry',
     rowsPerPage: 'Rows per page',
     show: 'Show',
-    symbol: 'Symbol [index]'
+    symbol: 'Symbol [index]',
+    uploadSuccess: 'Upload successful'
   })
 
   /**
