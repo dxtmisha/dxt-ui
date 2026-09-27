@@ -55,6 +55,11 @@ export class TextInclude {
   ) {
   }
 
+  /** AM text / Текст AM */
+  get am() {
+    return this.get('textAm')
+  }
+
   /** Breadcrumb navigation text / Текст навигации хлебных крошек */
   get breadcrumb() {
     return this.get('textBreadcrumb')
@@ -193,6 +198,11 @@ export class TextInclude {
   /** Pagination text / Текст пагинации */
   get pagination() {
     return this.get('textPagination')
+  }
+
+  /** PM text / Текст PM */
+  get pm() {
+    return this.get('textPm')
   }
 
   /** Previous text / Текст предыдущего */

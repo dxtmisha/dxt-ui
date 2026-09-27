@@ -2,7 +2,8 @@
 export type TextValue = string | (() => string) | undefined
 
 /** List of available text indexes/ Список доступных индексов текста */
-export type TextIndex = 'cancel'
+export type TextIndex = 'am'
+  | 'cancel'
   | 'change'
   | 'characterLimit'
   | 'characterRemaining'
@@ -29,6 +30,7 @@ export type TextIndex = 'cancel'
   | 'ok'
   | 'page'
   | 'pagination'
+  | 'pm'
   | 'previous'
   | 'retry'
   | 'rowsPerPage'
@@ -39,6 +41,12 @@ export type TextIndex = 'cancel'
 
 /** List of text values/ Список текстовых значений */
 export type TextList = Record<TextIndex, TextValue>
+
+/** Interface for including AM text/ Интерфейс для включения текста AM */
+export type TextAmPropsInclude = {
+  /** AM text/ Текст AM */
+  textAm?: TextValue
+}
 
 /** Interface for including breadcrumb text/ Интерфейс для включения текста хлебных крошек */
 export type TextBreadcrumbPropsInclude = {
@@ -208,6 +216,12 @@ export type TextPaginationPropsInclude = {
   textPagination?: TextValue
 }
 
+/** Interface for including PM text/ Интерфейс для включения текста PM */
+export type TextPmPropsInclude = {
+  /** PM text/ Текст PM */
+  textPm?: TextValue
+}
+
 /** Interface for including previous text/ Интерфейс для включения текста предыдущего */
 export type TextPreviousPropsInclude = {
   /** Previous text/ Текст предыдущего */
@@ -245,7 +259,8 @@ export type TextUploadSuccessPropsInclude = {
 }
 
 /** Type for including all text properties/ Тип для включения всех текстовых свойств */
-export type TextAllPropsInclude = TextBreadcrumbPropsInclude
+export type TextAllPropsInclude = TextAmPropsInclude
+  & TextBreadcrumbPropsInclude
   & TextCancelPropsInclude
   & TextChangePropsInclude
   & TextCharacterLimitPropsInclude
@@ -273,6 +288,7 @@ export type TextAllPropsInclude = TextBreadcrumbPropsInclude
   & TextOkPropsInclude
   & TextPagePropsInclude
   & TextPaginationPropsInclude
+  & TextPmPropsInclude
   & TextPreviousPropsInclude
   & TextRetryPropsInclude
   & TextRowsPerPagePropsInclude

@@ -52,7 +52,7 @@
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
     "test": "vitest",
-    "constructor": "dxt-constructor --name InputFileDropzone",
+    "constructor": "dxt-constructor --name ClockPeriod",
     "library": "dxt-library",
     "types": "npm run library && npm run constructor && npm run build && dxt-types",
     "prepublishOnly": "npm run library && npm run constructor && npm run build && dxt-types-save",
@@ -578,6 +578,10 @@
     "./InputFileDropzone": {
       "types": "./dist/constructors/InputFileDropzone/index.d.ts",
       "default": "./dist/inputFileDropzone.js"
+    },
+    "./ClockPeriod": {
+      "types": "./dist/constructors/ClockPeriod/index.d.ts",
+      "default": "./dist/clockPeriod.js"
     }
   },
   "buildOptions": {
