@@ -4,7 +4,6 @@ import type { IconComponentInclude } from '../Icon'
 import type { ImageComponentInclude } from '../Image'
 import type { ProgressComponentInclude } from '../Progress'
 import type { RippleComponentInclude } from '../Ripple'
-import type { SkeletonComponentInclude } from '../Skeleton'
 
 import type { InputFileItemData, InputFileItemStatusType } from './basicTypes'
 
@@ -19,7 +18,6 @@ export type InputFileItemComponents
     & ImageComponentInclude
     & ProgressComponentInclude
     & RippleComponentInclude
-    & SkeletonComponentInclude
 
 /**
  * Type describing available events.
