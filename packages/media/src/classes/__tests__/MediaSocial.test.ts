@@ -1,4 +1,5 @@
 import { describe, expect, it, beforeEach } from 'vitest'
+import { registerSocialIcons, socialIcons } from '../../socials'
 import { MediaSocial } from '../MediaSocial'
 import { InputSocialType } from '../../types/socialTypes'
 
@@ -38,9 +39,16 @@ describe('MediaSocial', () => {
       expect(item1?.name).toBe('GitHub')
     })
 
-    it('should include the default SVG icon by default', () => {
+    it('should return undefined for icon by default when not registered', () => {
       const item = MediaSocial.get(InputSocialType.github)
-      expect(item?.icon).toBeDefined()
+      expect(item?.icon).toBeUndefined()
+    })
+
+    it('should include the registered SVG icon when registered', () => {
+      registerSocialIcons()
+
+      const item = MediaSocial.get(InputSocialType.github)
+      expect(item?.icon).toBe(socialIcons[InputSocialType.github])
       expect(typeof item?.icon).toBe('string')
     })
 

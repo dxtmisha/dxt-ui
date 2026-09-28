@@ -1,4 +1,11 @@
-import { viteFlags } from '@dxtmisha/configuration/viteFlags'
+import { viteBasicFunction } from '@dxtmisha/configuration/viteBasicFunction'
 
 // https://vite.dev/config/
-export default viteFlags
+export default viteBasicFunction({
+  entry: [
+    'src/library.ts',
+    'src/flags.ts',
+    'src/files.ts',
+    'src/socials.ts'
+  ]
+})

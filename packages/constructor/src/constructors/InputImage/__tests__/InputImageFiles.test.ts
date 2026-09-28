@@ -125,6 +125,12 @@ describe('InputImageFiles', () => {
 
     expect(result).toBeDefined()
     expect(files.src).toBeDefined()
+    expect(files.get()).toMatchObject({
+      name: 'avatar.png',
+      size: mockFile.size,
+      type: 'image/png',
+      file: mockFile
+    })
   })
 
   it('should return undefined when file exceeds maxFileSize', async () => {

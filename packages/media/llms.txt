@@ -1,16 +1,28 @@
 # @dxtmisha/media
 
-> Media resources and geographical dataset library for DXT UI — 250+ vector SVG country flags and ISO 3166-1 country metadata.
+> Media resources, vector icon libraries, and geographical datasets for DXT UI — country flags, file types, social networks, and ISO 3166-1 country metadata.
 
-Framework-agnostic, tree-shakeable, zero-dependency library providing vector country flags and structured country information (phone codes, phone masks, timezones, primary languages, and first day of the week).
+Framework-agnostic, tree-shakeable, zero-dependency library providing vector SVG assets (flags, files, social media) and structured metadata registries with object-oriented helpers for file handling, profile URLs, and localized geography.
 
-## Key Exports & Modules
+## Key Classes & Modules
 
-- [geo](src/media/geo.ts): Comprehensive geographical dataset containing ISO 3166-1 country metadata.
-- [flags](src/flags.ts): 250+ SVG country flag exports in PascalCase (`UsSvg`, `FrSvg`, `DeSvg`, `VnSvg`, `RuSvg`, etc.).
-- [library.ts](src/library.ts): Main library barrel exporting datasets and helpers.
+- [MediaFile](src/classes/MediaFile.ts): OOP abstraction for resolving file names, extensions, category checkers (`isImage`, `isDocument`, `isArchive`, `isVideo`, `isAudio`, `isCode`, `isTable`, `isPresentation`), and SVG icons.
+- [MediaFiles](src/classes/MediaFiles.ts): Static utility class for file path validation and metadata lookups (`get`, `getByCategory`, `getNeutral`, `getList`, `isLink`).
+- [MediaFileIcon](src/classes/MediaFileIcon.ts): Registry class for managing and applying standard and custom SVG file icons (`add`, `addList`, `get`, `has`, `toItem`).
+- [MediaSocial](src/classes/MediaSocial.ts): Manager for 35+ social networks with canonical profile URL generation (`getUrl`), handle extraction (`getValue`), and custom icon registries (`addIcon`, `addIcons`).
+- [fileList](src/media/fileList.ts): Pure metadata registry of 85+ file types, extensions, and categories without embedded SVG icons.
+- [socialList](src/media/socialList.ts): Catalog of 35 social media platforms with input masks, validation rules, and URL prefixes/suffixes.
+- [geo](src/media/geo.json): Comprehensive ISO 3166-1 geographical dataset (phone codes, phone masks, timezones, primary languages, first weekday, non-metric unit overrides).
 
-## Optional
+## Dedicated Subpath Exports & Asset Modules
 
-- [README.md](README.md): Quick start guide and usage patterns.
-- [package.json](package.json): Package exports mapping (`@dxtmisha/media/flags`).
+- [library.ts](src/library.ts) (`@dxtmisha/media`): Core barrel exporting classes, metadata registries, and TypeScript types without bundled SVG assets.
+- [flags](src/flags.ts) (`@dxtmisha/media/flags`): 250+ vector SVG country flags in PascalCase (`UsSvg`, `FrSvg`, `DeSvg`, `VnSvg`, `RuSvg`, etc.).
+- [files](src/files.ts) (`@dxtmisha/media/files`): 85 vector SVG file icons (`fileIcons`) and `registerFileIcons()` initialization helper.
+- [socials](src/socials.ts) (`@dxtmisha/media/socials`): 35 vector SVG social network icons (`socialIcons`) and `registerSocialIcons()` initialization helper.
+
+## Optional & Documentation
+
+- [README.md](README.md): Quick start guide, architecture overview, and usage examples.
+- [CHANGELOG.md](CHANGELOG.md): Detailed release notes and version history.
+- [package.json](package.json): Package manifest and subpath exports mapping (`@dxtmisha/media/flags`, `@dxtmisha/media/files`, `@dxtmisha/media/socials`).

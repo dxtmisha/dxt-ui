@@ -62,6 +62,82 @@ describe('MediaFiles', () => {
     })
   })
 
+  describe('static getNeutral', () => {
+    it('should return default neutral file item', () => {
+      const item = MediaFiles.getNeutral()
+
+      expect(item).toBeDefined()
+      expect(item?.code).toBe('file')
+      expect(item?.name).toBe('File')
+      expect(item?.category).toBe(MediaFileCategory.system)
+      expect(item?.group).toBe(MediaFileGroup.neutral)
+    })
+
+    it('should include registered custom icon if present', () => {
+      MediaFileIcon.add('file', 'custom-file-svg')
+
+      const item = MediaFiles.getNeutral()
+      expect(item?.icon).toBe('custom-file-svg')
+    })
+  })
+
+  describe('static getByCategory', () => {
+    it('should return category neutral item when queried by category enum or string', () => {
+      const videoItem = MediaFiles.getByCategory(MediaFileCategory.video)
+      expect(videoItem).toBeDefined()
+      expect(videoItem?.code).toBe('video')
+      expect(videoItem?.category).toBe(MediaFileCategory.video)
+      expect(videoItem?.group).toBe(MediaFileGroup.category)
+
+      const audioItem = MediaFiles.getByCategory('audio')
+      expect(audioItem).toBeDefined()
+      expect(audioItem?.code).toBe('audio')
+      expect(audioItem?.category).toBe(MediaFileCategory.audio)
+      expect(audioItem?.group).toBe(MediaFileGroup.category)
+    })
+
+    it('should resolve category neutral item when queried by file extension/code', () => {
+      const mp4Item = MediaFiles.getByCategory('mp4')
+      expect(mp4Item).toBeDefined()
+      expect(mp4Item?.code).toBe('video')
+      expect(mp4Item?.category).toBe(MediaFileCategory.video)
+      expect(mp4Item?.group).toBe(MediaFileGroup.category)
+
+      const pngItem = MediaFiles.getByCategory('png')
+      expect(pngItem).toBeDefined()
+      expect(pngItem?.code).toBe('image')
+      expect(pngItem?.category).toBe(MediaFileCategory.image)
+      expect(pngItem?.group).toBe(MediaFileGroup.category)
+    })
+
+    it('should return default neutral item for system category or file code', () => {
+      const systemItem = MediaFiles.getByCategory(MediaFileCategory.system)
+      expect(systemItem).toBeDefined()
+      expect(systemItem?.code).toBe('file')
+      expect(systemItem?.group).toBe(MediaFileGroup.neutral)
+
+      const fileItem = MediaFiles.getByCategory('file')
+      expect(fileItem).toBeDefined()
+      expect(fileItem?.code).toBe('file')
+      expect(fileItem?.group).toBe(MediaFileGroup.neutral)
+    })
+
+    it('should return undefined for completely unknown category or code', () => {
+      expect(MediaFiles.getByCategory('unknown_xyz')).toBeUndefined()
+      expect(MediaFiles.getByCategory('')).toBeUndefined()
+    })
+
+    it('should include custom icon when registered for the category neutral code', () => {
+      MediaFileIcon.add('video', 'custom-video-svg')
+
+      const item = MediaFiles.getByCategory('video')
+      expect(item?.icon).toBe('custom-video-svg')
+
+      const mp4Item = MediaFiles.getByCategory('mp4')
+      expect(mp4Item?.icon).toBe('custom-video-svg')
+    })
+  })
+
   describe('static isLink', () => {
     it('should return true for unix paths', () => {
       expect(MediaFiles.isLink('/var/log/file.txt')).toBe(true)

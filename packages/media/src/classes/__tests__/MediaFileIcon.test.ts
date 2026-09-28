@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 import type { MediaFileItem } from '../../types/fileTypes'
+import { fileIcons, registerFileIcons } from '../../files'
 import { MediaFile } from '../MediaFile'
 import { MediaFileIcon } from '../MediaFileIcon'
 import { MediaFiles } from '../MediaFiles'
@@ -51,6 +52,15 @@ describe('MediaFileIcon', () => {
       expect(MediaFileIcon.icons.bar).toBe('bar-svg')
       expect(MediaFileIcon.get('foo')).toBe('foo-svg')
       expect(MediaFileIcon.get('bar')).toBe('bar-svg')
+    })
+
+    it('should register all file icons via registerFileIcons', () => {
+      registerFileIcons()
+
+      expect(MediaFileIcon.get('png')).toBe(fileIcons.png)
+      expect(MediaFileIcon.has('png')).toBe(true)
+      expect(MediaFileIcon.get('pdf')).toBe(fileIcons.pdf)
+      expect(MediaFileIcon.has('pdf')).toBe(true)
     })
   })
 

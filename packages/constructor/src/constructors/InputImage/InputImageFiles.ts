@@ -12,7 +12,8 @@ import type { FieldValueInclude } from '../../classes/Field/FieldValueInclude'
 import type { CropAreaCoordinator } from '../CropArea'
 import { ImageFile } from '../Image'
 
-import type { InputImageItem, InputImageValue } from './basicTypes'
+import type { FieldFileValue } from '../../types/fieldTypes'
+import type { InputImageItem } from './basicTypes'
 import type { InputImageProps } from './props'
 
 /**
@@ -63,7 +64,7 @@ export class InputImageFiles {
    * Возвращает текущий объект значения с источником изображения и координатами кадрирования.
    * @returns image value object or undefined / объект значения изображения или undefined
    */
-  get(): InputImageValue | undefined {
+  get(): FieldFileValue | undefined {
     const raw = this.value.item.value
 
     if (isString(raw) && raw) {
@@ -74,10 +75,7 @@ export class InputImageFiles {
     }
 
     if (isObject(raw)) {
-      return {
-        value: raw.value,
-        crop: raw.crop ?? this.props.crop
-      }
+      return raw
     }
 
     return undefined
@@ -100,10 +98,14 @@ export class InputImageFiles {
    * @param crop crop coordinates / координаты кадрирования
    */
   setCrop(crop?: CropAreaCoordinator): void {
-    this.updateValue({
-      ...this.get(),
-      crop
-    })
+    const current = this.get()
+
+    if (current) {
+      this.updateValue({
+        ...current,
+        crop
+      })
+    }
   }
 
   /**
@@ -123,9 +125,18 @@ export class InputImageFiles {
     const source = await this.processFile(file)
 
     if (source) {
+      const dimensions = await this.getDimensions(source)
+
       this.updateValue({
         value: source,
-        crop: this.props.crop
+        name: file.name,
+        type: file.type,
+        size: file.size,
+        width: dimensions?.width,
+        height: dimensions?.height,
+        lastModified: file.lastModified,
+        crop: this.props.crop,
+        file
       })
 
       return source
@@ -148,6 +159,30 @@ export class InputImageFiles {
       && files.length > 0
     ) {
       return this.setFile(files[0])
+    }
+
+    return undefined
+  }
+
+  /**
+   * Retrieves image dimensions (width and height) from source string.
+   *
+   * Получает размеры изображения (ширину и высоту) из строки источника.
+   * @param source image source string / строка источника изображения
+   * @returns object with width and height or undefined / объект с шириной и высотой или undefined
+   */
+  protected async getDimensions(source: string): Promise<{ width?: number; height?: number } | undefined> {
+    const item = await ImageFile.createImage(source)
+
+    if (
+      isObject(item)
+      && 'width' in item
+      && 'height' in item
+    ) {
+      return {
+        width: item.width,
+        height: item.height
+      }
     }
 
     return undefined
@@ -184,7 +219,7 @@ export class InputImageFiles {
    * Обновляет значение поля и вызывает события ввода/изменения поля.
    * @param value new image value / новое значение изображения
    */
-  protected updateValue(value?: InputImageValue): void {
+  protected updateValue(value?: FieldFileValue): void {
     this.value.item.value = value
   }
 }

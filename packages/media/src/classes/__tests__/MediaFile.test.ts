@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest'
-import { fileIcons } from '../../media/fileList'
+import { fileIcons, registerFileIcons } from '../../files'
 import { MediaFileCategory, MediaFileGroup } from '../../types/fileTypes'
 import { MediaFile } from '../MediaFile'
 import { MediaFileIcon } from '../MediaFileIcon'
@@ -121,7 +121,17 @@ describe('MediaFile', () => {
   })
 
   describe('icon', () => {
-    it('should return matching SVG icon for recognized extension', () => {
+    it('should return empty string when default or custom icon is not registered', () => {
+      const pngFile = new MediaFile('image.png')
+      expect(pngFile.icon).toBe('')
+
+      const unknownFile = new MediaFile('unknown.unrecognized')
+      expect(unknownFile.icon).toBe('')
+    })
+
+    it('should return matching SVG icon for recognized extension when registered', () => {
+      registerFileIcons()
+
       const pngFile = new MediaFile('image.png')
       expect(pngFile.icon).toBe(fileIcons.png)
 
@@ -136,7 +146,9 @@ describe('MediaFile', () => {
       expect(file.icon).toBe('custom-png-icon')
     })
 
-    it('should return default fallback icon when extension is not found or empty', () => {
+    it('should return default fallback icon when extension is not found or empty and icons are registered', () => {
+      registerFileIcons()
+
       const unknownFile = new MediaFile('unknown.unrecognized')
       expect(unknownFile.icon).toBe(fileIcons.file)
 

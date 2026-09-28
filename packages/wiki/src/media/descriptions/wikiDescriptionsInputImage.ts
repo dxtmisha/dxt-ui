@@ -113,7 +113,7 @@ export const wikiDescriptionsInputImage: StorybookComponentsDescriptionItem = {
     description: `
 Composite form input component for selecting, uploading, resizing, and cropping images.
 Integrates Dropzone for drag-and-drop and file picking, ImageCrop for coordinate-based interactive cropping, and Actions for quick image replacement and reset.
-Supports v-model binding with InputImageValue structure ({ value?: string, crop?: CropAreaCoordinator }), automatic downscaling to maxPixel, field validation, and accessible states.
+Supports v-model binding with FieldFileValue structure ({ value?: string, crop?: CropAreaCoordinator, name?: string, size?: number, width?: number, height?: number }), automatic downscaling to maxPixel, field validation, and accessible states.
     `
   }
 }

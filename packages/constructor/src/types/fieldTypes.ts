@@ -1,5 +1,6 @@
 import type { Ref } from 'vue'
 import type { ListRecord, NumberOrString, NumberOrStringOrBoolean } from '@dxtmisha/functional'
+import type { CropAreaCoordinator } from '../constructors/CropArea'
 import type { ListItemPropsBasic } from '../constructors/ListItem'
 import type { ModelEmits, ModelProps } from './modelTypes'
 
@@ -118,6 +119,42 @@ export type FieldValidationItem<Value = any>
       /** Extra details/ Дополнительные данные */
       detail?: Record<string, any>
     }
+
+/**
+ * File field value structure with file metadata, source, dimensions, and optional crop coordinates /
+ * Структура значения поля файла с метаданными файла, источником, размерами и необязательными координатами кадрирования
+ */
+export type FieldFileValue = {
+  /** Unique item identifier / Уникальный идентификатор элемента */
+  id?: string | number
+
+  /** File or image source string (URL, data URL, or base64) / Строка источника файла или изображения (URL, data URL или base64) */
+  value?: string
+
+  /** File name / Имя файла */
+  name?: string
+
+  /** File MIME type / MIME-тип файла */
+  type?: string
+
+  /** File size in bytes / Размер файла в байтах */
+  size?: number
+
+  /** Image or media width in pixels / Ширина изображения или медиа в пикселях */
+  width?: number
+
+  /** Image or media height in pixels / Высота изображения или медиа в пикселях */
+  height?: number
+
+  /** Last modified timestamp / Временная метка последнего изменения */
+  lastModified?: number
+
+  /** Crop coordinates [top, right, bottom, left] / Координаты кадрирования [сверху, справа, снизу, слева] */
+  crop?: CropAreaCoordinator
+
+  /** Raw File instance / Исходный экземпляр файла */
+  file?: File
+}
 
 /**
  * Emitted events for field components/
@@ -349,7 +386,7 @@ export type FieldInputSocialProps = Omit<FieldBasicProps<string>, 'match' | 'pat
  * Props for file input elements (type="file")/
  * Свойства для инпутов выбора файлов (type="file")
  */
-export type FieldInputFileProps<Value = any>
+export type FieldInputFileProps<Value = FieldFileValue>
   = Omit<FieldBasicProps<Value>, 'type'> & FieldLengthProps & FieldUxProps & {
     /** Multiple files selection flag/ Флаг выбора нескольких файлов */
     multiple?: boolean

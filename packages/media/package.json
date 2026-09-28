@@ -44,7 +44,7 @@
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
     "flags": "dxt-flags",
-    "test": "NODE_OPTIONS=\"--no-webstorage\" vitest",
+    "test": "vitest",
     "prepublishOnly": "npm run build",
     "publish-to-npm": "npm publish --access public"
   },
@@ -56,9 +56,17 @@
       "import": "./dist/library.js",
       "types": "./dist/library.d.ts"
     },
+    "./files": {
+      "import": "./dist/files.js",
+      "types": "./dist/files.d.ts"
+    },
     "./flags": {
       "import": "./dist/flags.js",
       "types": "./dist/flags.d.ts"
+    },
+    "./socials": {
+      "import": "./dist/socials.js",
+      "types": "./dist/socials.d.ts"
     },
     "./flags.webp": "./dist/flags.webp",
     "./style.css": "./dist/style.css",

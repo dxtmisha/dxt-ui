@@ -9,15 +9,16 @@ All notable changes to this project will be documented in this file.
   - Implemented `MediaFile` class for working with file configurations, resolving names (`name`), extensionless base names (`baseName`), lowercase extensions (`extension`), categories (`category`), groups (`group`), metadata items (`item`), and SVG icons (`icon`).
   - Added built-in category and group check getters: `isArchive`, `isAudio`, `isCategory`, `isCode`, `isDocument`, `isImage`, `isNeutral`, `isPresentation`, `isStandard`, `isTable`, and `isVideo`.
 - **`MediaFiles` Class**:
-  - Added dedicated static utility class for file path validation and metadata registry lookups (`isLink`, `get`, `getList`).
+  - Added dedicated static utility class for file path validation and metadata registry lookups (`isLink`, `get`, `getByCategory`, `getList`, `getNeutral`).
 - **`MediaFileIcon` Class**:
   - Added specialized registry class for storing and applying custom file icons (`icons`, `has`, `get`, `add`, `addList`, `toCode`, `toItem`).
 - **File Icons Asset Library**:
   - Added 85 vector SVG file icons in `src/assets/files/` and centralized `fileList` registry.
   - Added `MediaFileCategory` and `MediaFileGroup` enum classifications with neutral and category-level fallbacks.
+  - Added dedicated tree-shakeable entry point `src/files.ts` (`@dxtmisha/media/files`) with `fileIcons` dictionary and `registerFileIcons` helper.
 - **Social Media Icons Asset Library**:
   - Added 35 official vector SVG icons in `src/assets/socials/` with standardized dimensions and brand colors for all supported platforms (`alipay`, `baidu`, `dingtalk`, `discord`, `douyin`, `dzen`, `facebook`, `github`, `gitlab`, `habr`, `instagram`, `line`, `linkedin`, `medium`, `messenger`, `ok`, `pinterest`, `qq`, `reddit`, `skype`, `snapchat`, `telegram`, `tiktok`, `tumblr`, `twitter`, `viber`, `vk`, `wechat`, `weibo`, `whatsapp`, `x`, `xiaohongshu`, `youtube`, `zalo`, `zhihu`).
-  - Added `socialIcons` dictionary export and assigned default `icon` properties to all items in `inputSocialList`.
+  - Added dedicated tree-shakeable entry point `src/socials.ts` (`@dxtmisha/media/socials`) with `socialIcons` dictionary and `registerSocialIcons` helper.
 - **Storybook Documentation**:
   - Added multi-language Storybook MDX documentation for `MediaFile` and `MediaSocial` classes in English, Russian, and Vietnamese.
 - **Unit Tests**:
@@ -26,6 +27,8 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - **Architecture Refactoring**:
   - Decomposed static file registry queries and custom icon management out of `MediaFile` into dedicated `MediaFiles` and `MediaFileIcon` classes.
+  - Decoupled SVG asset bundling from core metadata registries: `fileList` and `socialList` now export pure lightweight metadata, category classifications, and input masks without heavy embedded SVG imports.
+  - Added dedicated subpath exports (`./files`, `./socials`) in `package.json` and added entry points in Vite build configuration.
   - Refactored `MediaFile.category` and `MediaFile.icon` to resolve cleanly via `this.item` with automatic fallback to neutral file defaults.
   - Standardized method and getter order alphabetically across media classes according to project conventions.
   - Re-exported `MediaFile`, `MediaFiles`, `MediaFileIcon`, `MediaSocial`, `fileList`, and `socialList` from `library.ts`.

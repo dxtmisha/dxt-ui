@@ -1,24 +1,11 @@
-import type { CropAreaCoordinator } from '../CropArea'
+import type { FieldFileValue } from '../../types/fieldTypes'
 
 /** Counter display mode / Режим отображения счетчика */
 export type InputImageCounterType = 'auto' | 'pixel' | 'size' | 'hide'
 
 /**
- * Image input value structure with image source and crop coordinates.
+ * Raw input item type, either structured file value, plain string, or undefined.
  *
- * Структура значения ввода изображения с источником изображения и координатами кадрирования.
+ * Тип необработанного элемента ввода: структурированное значение файла, простая строка или undefined.
  */
-export type InputImageValue = {
-  /** Image source string (URL, data URL, or base64) / Строка источника изображения (URL, data URL или base64) */
-  value?: string
-
-  /** Crop coordinates [top, right, bottom, left] / Координаты кадрирования [сверху, справа, снизу, слева] */
-  crop?: CropAreaCoordinator
-}
-
-/**
- * Raw input item type, either structured value, plain string, or undefined.
- *
- * Тип необработанного элемента ввода: структурированное значение, простая строка или undefined.
- */
-export type InputImageItem = InputImageValue | string | undefined
+export type InputImageItem = FieldFileValue | string | undefined

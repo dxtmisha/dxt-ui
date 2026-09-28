@@ -77,15 +77,15 @@ const slotsNames: StorybookSlots = [
 const eventsNames: StorybookSlots = [
   // :eventsList [!] System label / Системная метка
   { name: 'change', description: `Emitted when value is committed (blur/confirm)/
-Эмит при подтверждении значения (blur/confirm): [event, value]`, properties: [{ name: 'event', type: 'InputEvent | Event' }, { name: 'value', type: 'FieldValidationItem<InputImageValue>' }] },
+Эмит при подтверждении значения (blur/confirm): [event, value]`, properties: [{ name: 'event', type: 'InputEvent | Event' }, { name: 'value', type: 'FieldValidationItem<FieldFileValue>' }] },
   { name: 'changeLite', description: `Lightweight change emit without DOM event/
-Лёгкий эмит подтверждения без события: [value]`, properties: [{ name: 'value', type: 'FieldValidationItem<InputImageValue>' }] },
+Лёгкий эмит подтверждения без события: [value]`, properties: [{ name: 'value', type: 'FieldValidationItem<FieldFileValue>' }] },
   { name: 'input', description: `Emitted on input events (every change while typing)/
-Эмит при вводе (каждое изменение): [event, value]`, properties: [{ name: 'event', type: 'InputEvent | Event' }, { name: 'value', type: 'FieldValidationItem<InputImageValue>' }] },
+Эмит при вводе (каждое изменение): [event, value]`, properties: [{ name: 'event', type: 'InputEvent | Event' }, { name: 'value', type: 'FieldValidationItem<FieldFileValue>' }] },
   { name: 'inputLite', description: `Lightweight input emit without DOM event/
-Лёгкий эмит ввода без DOM-события: [value]`, properties: [{ name: 'value', type: 'FieldValidationItem<InputImageValue>' }] },
-  { name: 'update:modelValue', description: `Update model value event/ Событие обновления значения модели`, properties: [{ name: 'value', type: 'InputImageValue' }] },
-  { name: 'update:value', description: `Update value event/ Событие обновления значения`, properties: [{ name: 'value', type: 'InputImageValue' }] }
+Лёгкий эмит ввода без DOM-события: [value]`, properties: [{ name: 'value', type: 'FieldValidationItem<FieldFileValue>' }] },
+  { name: 'update:modelValue', description: `Update model value event/ Событие обновления значения модели`, properties: [{ name: 'value', type: 'FieldFileValue' }] },
+  { name: 'update:value', description: `Update value event/ Событие обновления значения`, properties: [{ name: 'value', type: 'FieldFileValue' }] }
   // :eventsList [!] System label / Системная метка
 ]
 

@@ -64,7 +64,7 @@ export type MediaFileItem = {
   /** Display label / Отображаемое название */
   name: string
   /** Imported SVG icon URL or content / Импортированный URL или содержимое SVG иконки */
-  icon: string
+  icon?: string
   /** Category grouping / Группировка по категории */
   category?: MediaFileCategoryValue
   /** Item group classification / Классификация группы элемента */

@@ -6,10 +6,8 @@ import type { FieldLabelComponentInclude } from '../FieldLabel'
 import type { FieldMessageComponentInclude } from '../FieldMessage'
 import type { ImageCropComponentInclude } from '../ImageCrop'
 
-import type { FieldBasicEmits, FieldBasicExpose } from '../../types/fieldTypes'
+import type { FieldBasicEmits, FieldBasicExpose, FieldFileValue } from '../../types/fieldTypes'
 import type { LabelAlternativeSlots } from '../../types/labelTypes'
-
-import type { InputImageValue } from './basicTypes'
 
 /**
  * Interface for describing which components need to be connected for work.
@@ -27,14 +25,14 @@ export type InputImageComponents = ActionsComponentInclude
  *
  * Тип, описывающий доступные события.
  */
-export type InputImageEmits = FieldBasicEmits<InputImageValue>
+export type InputImageEmits = FieldBasicEmits<FieldFileValue>
 
 /**
  * Type describing available properties for export.
  *
  * Тип, описывающий доступные свойства для экспорта.
  */
-export interface InputImageExpose extends FieldBasicExpose<InputImageValue> {
+export interface InputImageExpose extends FieldBasicExpose<FieldFileValue> {
   /** Opens the file selection dialog / Открывает диалог выбора файла */
   open: () => void
   /** Clears the image and crop / Очищает изображение и кадрирование */
