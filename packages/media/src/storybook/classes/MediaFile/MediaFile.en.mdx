@@ -1,0 +1,79 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/media/Classes/MediaFile - File Metadata and Icon Management'/>
+
+# MediaFile Class
+
+The `MediaFile` class is a lightweight utility designed for parsing file paths, URLs, filenames, and file type codes. It resolves SVG file icons, extracts file extensions and base names, and classifies files into high-level categories (such as images, videos, documents, and archives) without requiring MIME types or external dependencies.
+
+## Key Features
+
+- **Universal File Parsing** — seamlessly handles full URLs with query parameters and hash, absolute/relative paths, filenames, dotted extensions (`.png`), and plain type codes (`png`, `pdf`, `7z`).
+- **SVG Icon Resolution** — resolves SVG icon markup from the built-in library of 85 vector file icons, falling back to a generic file icon when unrecognized.
+- **Custom Icon Registry** — allows registering custom SVG icons globally for specific file extensions or codes via `addIcon` and `addIcons`.
+- **Categorization & Type Checks** — provides instant category detection and boolean helpers (`isImage`, `isVideo`, `isDocument`, `isArchive`, etc.).
+- **Zero Runtime Dependencies** — pure string manipulation and set lookups, fully isomorphic and safe for SSR.
+
+## Initialization
+
+Create an instance by providing a file link, URL, filename, or file type code.
+
+```typescript
+import { MediaFile } from '@dxtmisha/media'
+
+// From full URL
+const fileFromUrl = new MediaFile('https://example.com/assets/report.pdf?v=2#page=1')
+
+// From filename
+const fileFromName = new MediaFile('archive.tar.gz')
+
+// From extension or type code
+const fileFromCode = new MediaFile('png')
+```
+
+## Methods
+
+### Static Registry
+
+- `static get(code: string): MediaFileItem | undefined` — returns the file configuration item for a given code or extension, including any registered custom icon.
+- `static getList(): MediaFileList` — returns the complete list of all supported file configuration items.
+- `static addIcon(code: string, icon: string): void` — registers a custom SVG icon string for a specific file code or extension.
+- `static addIcons(icons: MediaFileIcons): void` — registers multiple custom SVG icons in batch.
+
+### File Attributes
+
+- `name: string` — returns the full filename extracted from the path or URL (stripped of query parameters and hash fragments).
+- `baseName: string` — returns the filename without its extension (e.g. `'archive.tar'` for `'archive.tar.gz'`).
+- `category: MediaFileCategory | undefined` — returns the file category enum value (e.g. `'image'`, `'video'`, `'document'`).
+- `extension: string` — returns the normalized lowercase file extension without a dot (e.g. `'png'`, `'pdf'`).
+- `icon: string` — returns the resolved SVG icon markup string.
+- `item: MediaFileItem | undefined` — returns the complete metadata item from the file catalog.
+
+### Category Checks
+
+- `isArchive: boolean` — returns `true` if the file belongs to the archive category (`zip`, `rar`, `7z`, `tar`, `gz`, etc.).
+- `isAudio: boolean` — returns `true` if the file belongs to the audio category (`mp3`, `wav`, `flac`, `aac`, `ogg`, etc.).
+- `isCode: boolean` — returns `true` if the file is a source code or data file (`ts`, `js`, `json`, `html`, `css`, `py`, etc.).
+- `isDocument: boolean` — returns `true` if the file is a document (`pdf`, `doc`, `docx`, `odt`, `rtf`, etc.).
+- `isImage: boolean` — returns `true` if the file is an image (`png`, `jpg`, `jpeg`, `gif`, `svg`, `webp`, etc.).
+- `isPresentation: boolean` — returns `true` if the file is a presentation (`ppt`, `pptx`, `odp`, `presentation`).
+- `isTable: boolean` — returns `true` if the file is a spreadsheet or tabular data (`xls`, `xlsx`, `csv`, `ods`, etc.).
+- `isVideo: boolean` — returns `true` if the file is a video (`mp4`, `webm`, `mkv`, `avi`, `mov`, etc.).
+
+## Usage Example
+
+```typescript
+import { MediaFile, MediaFileCategory } from '@dxtmisha/media'
+
+const file = new MediaFile('https://domain.com/downloads/invoice.2026.pdf?download=true#top')
+
+console.log(file.name) // 'invoice.2026.pdf'
+console.log(file.baseName) // 'invoice.2026'
+console.log(file.extension) // 'pdf'
+console.log(file.category) // MediaFileCategory.document
+console.log(file.isDocument) // true
+console.log(file.isImage) // false
+
+// SVG icon markup ready for rendering
+const svgString = file.icon
+```

@@ -22,4 +22,5 @@
 5.  **Dependencies**: Use only the packages specified in `package.json`. Zero tolerance for hallucinations.
 6.  **Strict Adherence**: Do strictly and only what is requested in the user's prompt. Never make unsolicited changes, refactorings, cleanups, or modifications to other files unless explicitly instructed by the user.
 7.  **Naming**: No abbreviations in variable/function names (`el`, `val`, `temp`, etc. are forbidden). Use full, descriptive names.
+8.  **No Aliases**: Strictly forbidden to create aliases, duplicate exports, or alternative alias variables/functions/types (e.g. `useFile = useMediaFile`, `inputFileList = fileList`, etc.). Always define, export, and use strictly one canonical name without duplicates.
 

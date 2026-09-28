@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
+  <!-- Folder back -->
+  <path d="M6 14C6 11.79 7.79 10 10 10H20L24 14H38C40.21 14 42 15.79 42 18V36C42 38.21 40.21 40 38 40H10C7.79 40 6 38.21 6 36V14Z" fill="#FFA000"/>
+  <!-- Folder front sheet -->
+  <path d="M6 20C6 18.9 6.9 18 8 18H40C41.1 18 42 18.9 42 20V36C42 38.21 40.21 40 38 40H10C7.79 40 6 38.21 6 36V20Z" fill="#FFB300"/>
+  <!-- Zipper on folder -->
+  <path d="M23 20H25M23 22H25M23 24H25M23 26H25M23 28H25" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round"/>
+  <rect x="21.5" y="29" width="5" height="5.5" rx="1" fill="#FFFFFF"/>
+</svg>

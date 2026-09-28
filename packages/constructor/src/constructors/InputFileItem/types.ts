@@ -5,6 +5,8 @@ import type { ImageComponentInclude } from '../Image'
 import type { ProgressComponentInclude } from '../Progress'
 import type { RippleComponentInclude } from '../Ripple'
 
+import type { CaptionSlots } from '../../types/captionTypes'
+import type { LabelAlternativeSlots } from '../../types/labelTypes'
 import type { InputFileItemData, InputFileItemStatusType } from './basicTypes'
 
 /**
@@ -40,9 +42,9 @@ export type InputFileItemEmits = {
  */
 export interface InputFileItemExpose {
   /** File instance / Экземпляр файла */
-  file?: File
+  getFile: () => File | undefined
   /** Current status / Текущий статус */
-  status: InputFileItemStatusType
+  getStatus: () => InputFileItemStatusType
   /** Trigger delete action / Вызов действия удаления */
   delete: () => void
   /** Trigger retry action / Вызов действия повтора */
@@ -54,15 +56,11 @@ export interface InputFileItemExpose {
  *
  * Тип, описывающий доступные слоты.
  */
-export interface InputFileItemSlots {
+export interface InputFileItemSlots extends LabelAlternativeSlots, CaptionSlots {
   /** Default slot / Слот по умолчанию */
   default?(props: any): any
   /** Thumbnail slot / Слот миниатюры */
   thumbnail?(props: any): any
-  /** Label slot / Слот метки */
-  label?(props: any): any
-  /** Caption slot / Слот подписи */
-  caption?(props: any): any
   /** Status indicator slot / Слот индикатора статуса */
   status?(props: any): any
   /** Actions slot / Слот действий */

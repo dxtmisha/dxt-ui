@@ -1,0 +1,66 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/media/Classes/MediaSocial - Профили социальных сетей и URL'/>
+
+# Класс MediaSocial
+
+Класс `MediaSocial` представляет собой **основной класс (статический)**, предназначенный для управления конфигурациями социальных сетей, генерации ссылок на профили, извлечения имени пользователя и переопределения иконок для более чем 35 поддерживаемых платформ.
+
+## Ключевые возможности
+
+- **Встроенный каталог платформ** — готовые конфигурации для более чем 35 международных и региональных социальных сетей (например, GitHub, Telegram, LinkedIn, X, ВКонтакте, WeChat, Zalo).
+- **Построение ссылок на профили** — автоматическое формирование канонических ссылок из имени пользователя или логина (`getUrl`).
+- **Извлечение имени пользователя** — парсинг полных ссылок на профили для безопасного извлечения логина путем удаления префиксов и суффиксов (`getValue`).
+- **Реестр кастомных иконок** — поддержка регистрации собственных SVG-иконок или имен иконок для отдельных платформ (`addIcon`, `addIcons`).
+- **Статический интерфейс** — выполнение всех операций напрямую через класс без необходимости создания экземпляра.
+
+## Методы
+
+### Управление URL и значениями
+
+- `static getUrl(code: InputSocialType | InputSocialTypeValue, value: string): string` — строит полную ссылку на профиль по имени пользователя или частичной строке с использованием настроенного префикса и суффикса платформы. Возвращает значение без изменений, если оно уже начинается с префикса.
+- `static getValue(code: InputSocialType | InputSocialTypeValue, url: string): string` — извлекает чистое имя пользователя или логин из полной ссылки на профиль путем удаления зарегистрированного префикса и суффикса.
+
+### Статический реестр и иконки
+
+- `static get(code: InputSocialType | InputSocialTypeValue): InputSocialItem | undefined` — возвращает конфигурацию социальной сети по ее коду, дополненную кастомной иконкой при ее наличии.
+- `static getList(): InputSocialList` — возвращает полный массив конфигураций всех поддерживаемых социальных сетей.
+- `static addIcon(code: InputSocialTypeValue, icon: string): void` — регистрирует кастомную иконку или SVG-разметку для указанной социальной сети.
+- `static addIcons(icons: InputSocialIcons): void` — пакетно регистрирует несколько кастомных иконок.
+
+## Типы
+
+### InputSocialItem
+
+- `code: InputSocialType | InputSocialTypeValue` — уникальный код-идентификатор социальной сети.
+- `name: string` — отображаемое название социальной сети.
+- `prefix?: string` — префикс URL для ссылки на профиль (например, `'https://github.com/'`).
+- `suffix?: string` — суффикс URL для ссылки на профиль.
+- `mask?: any` — конфигурация маски ввода для полей формы.
+- `icon?: string` — имя или SVG-разметка иконки.
+
+### InputSocialType
+
+Перечисление (enum) кодов поддерживаемых социальных сетей: `alipay`, `baidu`, `dingtalk`, `discord`, `douyin`, `dzen`, `facebook`, `github`, `gitlab`, `habr`, `instagram`, `line`, `linkedin`, `medium`, `messenger`, `ok`, `pinterest`, `qq`, `reddit`, `skype`, `snapchat`, `telegram`, `tiktok`, `tumblr`, `twitter`, `viber`, `vk`, `wechat`, `weibo`, `whatsapp`, `x`, `xiaohongshu`, `youtube`, `zalo`, `zhihu`.
+
+## Пример использования
+
+```typescript
+import { MediaSocial, InputSocialType } from '@dxtmisha/media'
+
+// Построение полной ссылки на профиль по логину
+const profileUrl = MediaSocial.getUrl(InputSocialType.github, 'dxtmisha')
+// Результат: 'https://github.com/dxtmisha'
+
+// Извлечение логина из полной ссылки на профиль
+const username = MediaSocial.getValue(InputSocialType.telegram, 'https://t.me/dxtmisha')
+// Результат: 'dxtmisha'
+
+// Получение объекта конфигурации
+const githubConfig = MediaSocial.get(InputSocialType.github)
+console.log(githubConfig?.name) // 'GitHub'
+console.log(githubConfig?.prefix) // 'https://github.com/'
+
+// Переопределение или добавление кастомной иконки
+MediaSocial.addIcon(InputSocialType.telegram, '<svg class="custom-tg">...</svg>')
+```

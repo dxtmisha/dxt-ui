@@ -1,0 +1,79 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/media/Classes/MediaFile - Управление метаданными и иконками файлов'/>
+
+# Класс MediaFile
+
+Класс `MediaFile` — это легковесная утилита, предназначенная для анализа путей к файлам, URL, имен файлов и кодов типов файлов. Он определяет SVG-иконки файлов, извлекает расширения и базовые имена, а также классифицирует файлы по категориям (изображения, видео, документы, архивы и т.д.) без использования MIME-типов и внешних зависимостей.
+
+## Ключевые возможности
+
+- **Универсальный парсинг файлов** — корректно обрабатывает полные URL с query-параметрами и хэшем, абсолютные/относительные пути, имена файлов, расширения с точкой (`.png`) и чистые коды типов (`png`, `pdf`, `7z`).
+- **Определение SVG-иконок** — сопоставляет расширение с библиотекой из 85 векторных иконок файлов, используя общую иконку файла в качестве фолбэка при неизвестном формате.
+- **Реестр пользовательских иконок** — позволяет глобально регистрировать кастомные SVG-иконки для расширений или кодов через `addIcon` и `addIcons`.
+- **Категоризация и проверки типов** — мгновенно определяет категорию файла и предоставляет логические геттеры (`isImage`, `isVideo`, `isDocument`, `isArchive` и т.д.).
+- **Отсутствие зависимостей во время выполнения** — чистое сопоставление строк, полная изоморфность и безопасность для SSR.
+
+## Инициализация
+
+Создайте экземпляр класса, передав ссылку на файл, URL, имя файла или код типа файла:
+
+```typescript
+import { MediaFile } from '@dxtmisha/media'
+
+// Из полного URL
+const fileFromUrl = new MediaFile('https://example.com/assets/report.pdf?v=2#page=1')
+
+// Из имени файла
+const fileFromName = new MediaFile('archive.tar.gz')
+
+// Из расширения или кода типа
+const fileFromCode = new MediaFile('png')
+```
+
+## Методы
+
+### Статический реестр
+
+- `static get(code: string): MediaFileItem | undefined` — возвращает конфигурацию файла по его коду или расширению, включая зарегистрированную кастомную иконку.
+- `static getList(): MediaFileList` — возвращает полный список всех поддерживаемых конфигураций файлов.
+- `static addIcon(code: string, icon: string): void` — регистрирует пользовательскую строку SVG-иконки для конкретного кода или расширения файла.
+- `static addIcons(icons: MediaFileIcons): void` — регистрирует несколько пользовательских SVG-иконок пакетно.
+
+### Атрибуты файла
+
+- `name: string` — возвращает полное имя файла, извлеченное из пути или URL (без query-параметров и хэша).
+- `baseName: string` — возвращает имя файла без расширения (например, `'archive.tar'` для `'archive.tar.gz'`).
+- `category: MediaFileCategory | undefined` — возвращает категорию файла из перечисления (например, `'image'`, `'video'`, `'document'`).
+- `extension: string` — возвращает нормализованное расширение файла в нижнем регистре без точки (например, `'png'`, `'pdf'`).
+- `icon: string` — возвращает разрешенную строку SVG-разметки иконки.
+- `item: MediaFileItem | undefined` — возвращает полный объект метаданных из каталога файлов.
+
+### Проверки категорий
+
+- `isArchive: boolean` — возвращает `true`, если файл относится к категории архивов (`zip`, `rar`, `7z`, `tar`, `gz` и др.).
+- `isAudio: boolean` — возвращает `true`, если файл относится к категории аудио (`mp3`, `wav`, `flac`, `aac`, `ogg` и др.).
+- `isCode: boolean` — возвращает `true`, если файл является исходным кодом или файлом данных (`ts`, `js`, `json`, `html`, `css`, `py` и др.).
+- `isDocument: boolean` — возвращает `true`, если файл является документом (`pdf`, `doc`, `docx`, `odt`, `rtf` и др.).
+- `isImage: boolean` — возвращает `true`, если файл является изображением (`png`, `jpg`, `jpeg`, `gif`, `svg`, `webp` и др.).
+- `isPresentation: boolean` — возвращает `true`, если файл является презентацией (`ppt`, `pptx`, `odp`, `presentation`).
+- `isTable: boolean` — возвращает `true`, если файл является таблицей или структурированными данными (`xls`, `xlsx`, `csv`, `ods` и др.).
+- `isVideo: boolean` — возвращает `true`, если файл является видео (`mp4`, `webm`, `mkv`, `avi`, `mov` и др.).
+
+## Пример использования
+
+```typescript
+import { MediaFile, MediaFileCategory } from '@dxtmisha/media'
+
+const file = new MediaFile('https://domain.com/downloads/invoice.2026.pdf?download=true#top')
+
+console.log(file.name) // 'invoice.2026.pdf'
+console.log(file.baseName) // 'invoice.2026'
+console.log(file.extension) // 'pdf'
+console.log(file.category) // MediaFileCategory.document
+console.log(file.isDocument) // true
+console.log(file.isImage) // false
+
+// SVG-разметка иконки, готовая к рендерингу
+const svgString = file.icon
+```

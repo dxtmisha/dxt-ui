@@ -83,8 +83,8 @@ export class InputFileItemDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      file: this.props.file,
-      status: this.item.statusItem.status,
+      getFile: () => this.props.file,
+      getStatus: () => this.item.statusItem.status,
       delete: () => this.item.eventItem.onDelete(),
       retry: () => this.item.eventItem.onRetry()
     } as EXPOSE

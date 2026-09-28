@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
+  <!-- Document base -->
+  <path d="M12 4C9.79 4 8 5.79 8 8V40C8 42.21 9.79 44 12 44H36C38.21 44 40 42.21 40 40V16L28 4H12Z" fill="#E53935"/>
+  <!-- Top highlight -->
+  <path d="M12 4C9.79 4 8 5.79 8 8V22H40V16L28 4H12Z" fill="white" opacity="0.08"/>
+  <!-- Corner fold shadow & flap -->
+  <path d="M28 16V17C28 17.55 28.45 18 29 18H38L40 16H28Z" fill="black" opacity="0.12"/>
+  <path d="M28 4V13C28 14.66 29.34 16 31 16H40L28 4Z" fill="black" opacity="0.22"/>
+  <!-- Category icon -->
+  <path d="M22 17C22 15.9 22.9 15 24 15C25.1 15 26 15.9 26 17V22C27.66 22 29 20.66 29 19C29 17.9 28.1 17 27 17M21 21C19.34 21 18 22.34 18 24C18 25.66 19.34 27 21 27C23.5 27 25 24.5 25 22V17M21 27C22.66 27 25 28.5 27 28.5C28.1 28.5 29 27.6 29 26.5C29 25.4 28.1 24.5 27 24.5C25 24.5 23 25.5 21 27" fill="none" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Type pill badge -->
+  <rect x="11" y="32" width="26" height="9" rx="2.5" fill="rgba(0,0,0,0.22)"/>
+  <text x="24" y="38.8" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="6.5" font-weight="800" fill="#FFFFFF" text-anchor="middle" letter-spacing="0.5">PDF</text>
+</svg>

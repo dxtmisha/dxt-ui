@@ -1,0 +1,66 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/media/Classes/MediaSocial - Hồ sơ mạng xã hội và URL'/>
+
+# Lớp MediaSocial
+
+Lớp `MediaSocial` là một **Lớp chính (Tĩnh)** được thiết kế để quản lý cấu hình các mạng xã hội, tạo liên kết hồ sơ người dùng, trích xuất tên người dùng (handle), và quản lý biểu tượng tùy chỉnh cho hơn 35 nền tảng được hỗ trợ.
+
+## Tính năng chính
+
+- **Danh mục mạng xã hội tích hợp** — hỗ trợ sẵn hơn 35 mạng xã hội toàn cầu và khu vực (như GitHub, Telegram, LinkedIn, X, WeChat, Zalo).
+- **Tạo URL hồ sơ cá nhân** — tự động xây dựng liên kết hồ sơ chuẩn từ tên người dùng hoặc handle (`getUrl`).
+- **Trích xuất tên người dùng** — phân tích liên kết hồ sơ đầy đủ để trích xuất handle một cách an toàn bằng cách loại bỏ tiền tố và hậu tố (`getValue`).
+- **Đăng ký biểu tượng tùy chỉnh** — hỗ trợ đăng ký biểu tượng SVG hoặc tên biểu tượng tùy chỉnh cho từng nền tảng (`addIcon`, `addIcons`).
+- **Giao diện tĩnh tiện lợi** — thực thi mọi tác vụ trực tiếp trên lớp mà không cần khởi tạo đối tượng thủ công.
+
+## Phương thức
+
+### Quản lý URL và giá trị
+
+- `static getUrl(code: InputSocialType | InputSocialTypeValue, value: string): string` — xây dựng URL hồ sơ đầy đủ từ tên người dùng hoặc chuỗi giá trị dựa trên tiền tố và hậu tố đã cấu hình của nền tảng. Trả về nguyên giá trị nếu nó đã bắt đầu bằng tiền tố.
+- `static getValue(code: InputSocialType | InputSocialTypeValue, url: string): string` — trích xuất tên người dùng hoặc handle gốc từ một URL hồ sơ đầy đủ bằng cách loại bỏ tiền tố và hậu tố đã đăng ký.
+
+### Đăng ký tĩnh và biểu tượng
+
+- `static get(code: InputSocialType | InputSocialTypeValue): InputSocialItem | undefined` — trả về cấu hình của mạng xã hội theo mã định danh, kết hợp với biểu tượng tùy chỉnh nếu đã đăng ký.
+- `static getList(): InputSocialList` — trả về mảng đầy đủ cấu hình của tất cả các mạng xã hội được hỗ trợ.
+- `static addIcon(code: InputSocialTypeValue, icon: string): void` — đăng ký một biểu tượng hoặc mã SVG tùy chỉnh cho mạng xã hội cụ thể.
+- `static addIcons(icons: InputSocialIcons): void` — đăng ký hàng loạt nhiều biểu tượng tùy chỉnh cùng lúc.
+
+## Kiểu dữ liệu
+
+### InputSocialItem
+
+- `code: InputSocialType | InputSocialTypeValue` — mã định danh duy nhất của mạng xã hội.
+- `name: string` — tên hiển thị trực quan của mạng xã hội.
+- `prefix?: string` — tiền tố URL cho liên kết hồ sơ người dùng (ví dụ: `'https://github.com/'`).
+- `suffix?: string` — hậu tố URL cho liên kết hồ sơ người dùng.
+- `mask?: any` — cấu hình mặt nạ nhập liệu (mask) cho trường biểu mẫu nếu có.
+- `icon?: string` — tên biểu tượng hoặc mã SVG của biểu tượng.
+
+### InputSocialType
+
+Enum các mã mạng xã hội được hỗ trợ: `alipay`, `baidu`, `dingtalk`, `discord`, `douyin`, `dzen`, `facebook`, `github`, `gitlab`, `habr`, `instagram`, `line`, `linkedin`, `medium`, `messenger`, `ok`, `pinterest`, `qq`, `reddit`, `skype`, `snapchat`, `telegram`, `tiktok`, `tumblr`, `twitter`, `viber`, `vk`, `wechat`, `weibo`, `whatsapp`, `x`, `xiaohongshu`, `youtube`, `zalo`, `zhihu`.
+
+## Ví dụ sử dụng
+
+```typescript
+import { MediaSocial, InputSocialType } from '@dxtmisha/media'
+
+// Xây dựng liên kết hồ sơ đầy đủ từ tên người dùng
+const profileUrl = MediaSocial.getUrl(InputSocialType.github, 'dxtmisha')
+// Kết quả: 'https://github.com/dxtmisha'
+
+// Trích xuất tên người dùng từ liên kết đầy đủ
+const username = MediaSocial.getValue(InputSocialType.telegram, 'https://t.me/dxtmisha')
+// Kết quả: 'dxtmisha'
+
+// Lấy thông tin cấu hình của nền tảng
+const githubConfig = MediaSocial.get(InputSocialType.github)
+console.log(githubConfig?.name) // 'GitHub'
+console.log(githubConfig?.prefix) // 'https://github.com/'
+
+// Thêm hoặc ghi đè biểu tượng tùy chỉnh
+MediaSocial.addIcon(InputSocialType.telegram, '<svg class="custom-tg">...</svg>')
+```

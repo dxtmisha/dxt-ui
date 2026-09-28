@@ -5,7 +5,6 @@ import type { IconPropsBasic, IconPropsInclude } from '../Icon'
 import type { ImagePropsBasic, ImagePropsInclude } from '../Image'
 import type { LabelProps } from '../../types/labelTypes'
 import type { ProgressPropsBasic, ProgressPropsInclude } from '../Progress'
-import type { RipplePropsInclude } from '../Ripple'
 import type { SkeletonPropsInclude } from '../Skeleton'
 import type {
   TextCancelPropsInclude,
@@ -40,7 +39,6 @@ export type InputFileItemPropsBasic<
   & ImagePropsInclude<Image>
   & LabelProps
   & ProgressPropsInclude<Progress>
-  & RipplePropsInclude
   & SkeletonPropsInclude
   & TextCancelPropsInclude
   & TextDeletePropsInclude

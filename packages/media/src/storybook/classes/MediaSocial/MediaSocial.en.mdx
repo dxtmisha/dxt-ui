@@ -1,0 +1,66 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/media/Classes/MediaSocial - Social Network Profiles and URLs'/>
+
+# MediaSocial Class
+
+The `MediaSocial` class is a **Primary Class (Static)** designed for managing social network configurations, profile URL generation, handle extraction, and custom icon overrides across 35+ supported platforms.
+
+## Key Features
+
+- **Built-in Social Catalog** — preconfigured settings for over 35 global and regional social networks (e.g., GitHub, Telegram, LinkedIn, X, WeChat, Zalo).
+- **Profile URL Construction** — automatically builds canonical profile links from raw usernames or handles (`getUrl`).
+- **Username Extraction** — parses full profile URLs to safely extract handles by stripping prefixes and suffixes (`getValue`).
+- **Custom Icon Registry** — allows registering custom SVG icons or icon names per platform (`addIcon`, `addIcons`).
+- **Static Interface** — perform all operations directly on the class without manual instantiation.
+
+## Methods
+
+### URL and Value Management
+
+- `static getUrl(code: InputSocialType | InputSocialTypeValue, value: string): string` — constructs the full profile URL from a username or partial string using the platform's configured prefix and suffix. Returns the value unchanged if it already includes the prefix.
+- `static getValue(code: InputSocialType | InputSocialTypeValue, url: string): string` — extracts the raw username or profile handle from a full profile URL by removing the registered prefix and suffix.
+
+### Static Registry & Icons
+
+- `static get(code: InputSocialType | InputSocialTypeValue): InputSocialItem | undefined` — returns the social network configuration by its code, merged with any custom icon registered for that platform.
+- `static getList(): InputSocialList` — returns the complete array of all supported social network configuration items.
+- `static addIcon(code: InputSocialTypeValue, icon: string): void` — registers a custom icon string or SVG markup for the specified social network.
+- `static addIcons(icons: InputSocialIcons): void` — registers multiple custom icons in batch.
+
+## Types
+
+### InputSocialItem
+
+- `code: InputSocialType | InputSocialTypeValue` — unique identifier code for the social network.
+- `name: string` — human-readable display name of the social platform.
+- `prefix?: string` — URL prefix for user profile links (e.g. `'https://github.com/'`).
+- `suffix?: string` — URL suffix for user profile links.
+- `mask?: any` — optional input mask configuration for form controls.
+- `icon?: string` — resolved or custom icon markup/name.
+
+### InputSocialType
+
+Enum of supported social network codes: `alipay`, `baidu`, `dingtalk`, `discord`, `douyin`, `dzen`, `facebook`, `github`, `gitlab`, `habr`, `instagram`, `line`, `linkedin`, `medium`, `messenger`, `ok`, `pinterest`, `qq`, `reddit`, `skype`, `snapchat`, `telegram`, `tiktok`, `tumblr`, `twitter`, `viber`, `vk`, `wechat`, `weibo`, `whatsapp`, `x`, `xiaohongshu`, `youtube`, `zalo`, `zhihu`.
+
+## Usage Example
+
+```typescript
+import { MediaSocial, InputSocialType } from '@dxtmisha/media'
+
+// Build a full profile URL from a username
+const profileUrl = MediaSocial.getUrl(InputSocialType.github, 'dxtmisha')
+// Result: 'https://github.com/dxtmisha'
+
+// Extract raw username from a full profile URL
+const username = MediaSocial.getValue(InputSocialType.telegram, 'https://t.me/dxtmisha')
+// Result: 'dxtmisha'
+
+// Retrieve configuration item
+const githubConfig = MediaSocial.get(InputSocialType.github)
+console.log(githubConfig?.name) // 'GitHub'
+console.log(githubConfig?.prefix) // 'https://github.com/'
+
+// Override or register a custom icon
+MediaSocial.addIcon(InputSocialType.telegram, '<svg class="custom-tg">...</svg>')
+```

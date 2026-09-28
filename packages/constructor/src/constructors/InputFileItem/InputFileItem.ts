@@ -23,7 +23,7 @@ import { InputFileItemFile } from './InputFileItemFile'
 import { InputFileItemStatus } from './InputFileItemStatus'
 
 import type { AriaList } from '../../types/ariaTypes'
-import type { defaultsInputFileItem, InputFileItemProps } from './props'
+import type { InputFileItemProps } from './props'
 import type {
   InputFileItemComponents,
   InputFileItemEmits,
