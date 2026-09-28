@@ -1,81 +1,18 @@
 import { beforeEach, describe, expect, it } from 'vitest'
-import { FileSvg, fileIcons } from '../../media/fileList'
-import { MediaFileCategory } from '../../types/fileTypes'
+import { fileIcons } from '../../media/fileList'
+import { MediaFileCategory, MediaFileGroup } from '../../types/fileTypes'
 import { MediaFile } from '../MediaFile'
+import { MediaFileIcon } from '../MediaFileIcon'
 
 describe('MediaFile', () => {
   beforeEach(() => {
     // Reset custom icons registry before each test to avoid test pollution
-    for (const key in MediaFile.icons) {
-      delete MediaFile.icons[key]
+    for (const key in MediaFileIcon.icons) {
+      delete MediaFileIcon.icons[key]
     }
   })
 
-  describe('static getList', () => {
-    it('should return the full list of file configurations', () => {
-      const list = MediaFile.getList()
 
-      expect(Array.isArray(list)).toBe(true)
-      expect(list.length).toBeGreaterThan(0)
-
-      const pngItem = list.find(item => item.code === 'png')
-      expect(pngItem).toBeDefined()
-      expect(pngItem?.name).toBe('PNG Image')
-      expect(pngItem?.category).toBe(MediaFileCategory.image)
-    })
-  })
-
-  describe('static get', () => {
-    it('should return undefined for a non-existent code', () => {
-      expect(MediaFile.get('nonexistent_code')).toBeUndefined()
-    })
-
-    it('should return a shallow copy of the file configuration item', () => {
-      const item1 = MediaFile.get('pdf')
-      const item2 = MediaFile.get('pdf')
-
-      expect(item1).toBeDefined()
-      expect(item2).toBeDefined()
-      expect(item1).not.toBe(item2)
-      expect(item1?.code).toBe('pdf')
-      expect(item1?.name).toBe('PDF Document')
-      expect(item1?.category).toBe(MediaFileCategory.document)
-    })
-
-    it('should normalize code by trimming and lowercase', () => {
-      const item = MediaFile.get('  PNG  ')
-
-      expect(item).toBeDefined()
-      expect(item?.code).toBe('png')
-    })
-
-    it('should include the registered custom icon if present', () => {
-      MediaFile.addIcon('pdf', 'custom-pdf-svg')
-
-      const item = MediaFile.get('pdf')
-      expect(item?.icon).toBe('custom-pdf-svg')
-    })
-  })
-
-  describe('static addIcon and addIcons', () => {
-    it('should register a single custom icon', () => {
-      MediaFile.addIcon('custom_code', 'custom-svg')
-
-      expect(MediaFile.icons.custom_code).toBe('custom-svg')
-    })
-
-    it('should register multiple custom icons', () => {
-      MediaFile.addIcons({
-        pdf: 'custom-pdf',
-        png: 'custom-png'
-      })
-
-      expect(MediaFile.icons.pdf).toBe('custom-pdf')
-      expect(MediaFile.icons.png).toBe('custom-png')
-      expect(MediaFile.get('pdf')?.icon).toBe('custom-pdf')
-      expect(MediaFile.get('png')?.icon).toBe('custom-png')
-    })
-  })
 
   describe('name and baseName', () => {
     it('should extract name and baseName from full URL with query parameters and hash', () => {
@@ -177,9 +114,9 @@ describe('MediaFile', () => {
       expect(new MediaFile('presentation.pptx').category).toBe(MediaFileCategory.presentation)
     })
 
-    it('should return undefined for unknown extension or empty string', () => {
-      expect(new MediaFile('unknown.xyz').category).toBeUndefined()
-      expect(new MediaFile('').category).toBeUndefined()
+    it('should return system category for unknown extension or empty string', () => {
+      expect(new MediaFile('unknown.xyz').category).toBe(MediaFileCategory.system)
+      expect(new MediaFile('').category).toBe(MediaFileCategory.system)
     })
   })
 
@@ -193,18 +130,18 @@ describe('MediaFile', () => {
     })
 
     it('should return registered custom icon when present', () => {
-      MediaFile.addIcon('png', 'custom-png-icon')
+      MediaFileIcon.add('png', 'custom-png-icon')
 
       const file = new MediaFile('image.png')
       expect(file.icon).toBe('custom-png-icon')
     })
 
-    it('should return default fallback FileSvg when extension is not found or empty', () => {
+    it('should return default fallback icon when extension is not found or empty', () => {
       const unknownFile = new MediaFile('unknown.unrecognized')
-      expect(unknownFile.icon).toBe(fileIcons.file ?? FileSvg)
+      expect(unknownFile.icon).toBe(fileIcons.file)
 
       const emptyFile = new MediaFile('')
-      expect(emptyFile.icon).toBe(fileIcons.file ?? FileSvg)
+      expect(emptyFile.icon).toBe(fileIcons.file)
     })
   })
 
@@ -219,9 +156,10 @@ describe('MediaFile', () => {
       expect(item?.category).toBe(MediaFileCategory.table)
     })
 
-    it('should return undefined for unknown extension', () => {
+    it('should return default neutral item for unknown extension', () => {
       const file = new MediaFile('file.completely_unregistered_extension')
-      expect(file.item).toBeUndefined()
+      expect(file.item).toBeDefined()
+      expect(file.item?.code).toBe('file')
     })
   })
 
@@ -277,6 +215,32 @@ describe('MediaFile', () => {
       expect(new MediaFile('stream.webm').isVideo).toBe(true)
       expect(new MediaFile('movie.mkv').isVideo).toBe(true)
       expect(new MediaFile('song.mp3').isVideo).toBe(false)
+    })
+  })
+
+  describe('group and group checkers', () => {
+    it('should identify neutral general file', () => {
+      const file = new MediaFile('file')
+      expect(file.group).toBe(MediaFileGroup.neutral)
+      expect(file.isNeutral).toBe(true)
+      expect(file.isCategory).toBe(false)
+      expect(file.isStandard).toBe(false)
+    })
+
+    it('should identify category neutral icon', () => {
+      const file = new MediaFile('archive')
+      expect(file.group).toBe(MediaFileGroup.category)
+      expect(file.isNeutral).toBe(false)
+      expect(file.isCategory).toBe(true)
+      expect(file.isStandard).toBe(false)
+    })
+
+    it('should identify standard file format', () => {
+      const file = new MediaFile('photo.png')
+      expect(file.group).toBe(MediaFileGroup.standard)
+      expect(file.isNeutral).toBe(false)
+      expect(file.isCategory).toBe(false)
+      expect(file.isStandard).toBe(true)
     })
   })
 })

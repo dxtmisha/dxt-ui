@@ -40,6 +40,21 @@ export enum MediaFileCategory {
 export type MediaFileCategoryValue = `${MediaFileCategory}` | MediaFileCategory
 
 /**
+ * File item group types / Типы групп элементов файлов
+ */
+export enum MediaFileGroup {
+  /** Default neutral file icon / Основная нейтральная иконка файла */
+  neutral = 'neutral',
+  /** Category neutral icon / Нейтральная иконка категории */
+  category = 'category',
+  /** Standard file extension / Обычный формат или расширение файла */
+  standard = 'standard'
+}
+
+/** Type of file item group value / Тип значения группы элемента файла */
+export type MediaFileGroupValue = `${MediaFileGroup}` | MediaFileGroup
+
+/**
  * Interface describing a file icon item /
  * Интерфейс, описывающий элемент иконки файла
  */
@@ -52,6 +67,8 @@ export type MediaFileItem = {
   icon: string
   /** Category grouping / Группировка по категории */
   category?: MediaFileCategoryValue
+  /** Item group classification / Классификация группы элемента */
+  group?: MediaFileGroupValue
 }
 
 /** List of file configurations / Список конфигураций файлов */

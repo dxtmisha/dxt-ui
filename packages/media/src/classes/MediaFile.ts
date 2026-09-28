@@ -1,13 +1,9 @@
-import {
-  FileSvg,
-  fileIcons,
-  fileList
-} from '../media/fileList'
+import { MediaFiles } from './MediaFiles'
+
 import {
   MediaFileCategory,
-  type MediaFileIcons,
-  type MediaFileItem,
-  type MediaFileList
+  MediaFileGroup,
+  type MediaFileItem
 } from '../types/fileTypes'
 
 /** Regular expression to strip query parameters and hash / Регулярное выражение для удаления query-параметров и hash */
@@ -19,9 +15,6 @@ const REGEX_QUERY_HASH = /[?#].*$/
  * Класс для работы с конфигурациями файлов, определения имен, расширений, категорий и SVG иконок.
  */
 export class MediaFile {
-  /** Custom icons registry / Реестр кастомных иконок */
-  static readonly icons: MediaFileIcons = {}
-
   /**
    * Constructor.
    *
@@ -31,88 +24,6 @@ export class MediaFile {
   constructor(
     protected readonly fileOrExtension: string = ''
   ) {
-  }
-
-  /**
-   * Returns a file metadata item by its code or extension.
-   *
-   * Возвращает элемент метаданных файла по его коду или расширению.
-   * @param code file code or extension / код файла или расширение
-   * @returns file metadata item or undefined / элемент метаданных файла или undefined
-   */
-  static get(code: string): MediaFileItem | undefined {
-    const normalizedCode = code.trim().toLowerCase()
-    const item = fileList.find(element => element.code === normalizedCode)
-
-    if (item) {
-      if (normalizedCode in this.icons) {
-        return {
-          ...item,
-          icon: this.icons[normalizedCode]
-        }
-      }
-
-      return { ...item }
-    }
-
-    return undefined
-  }
-
-  /**
-   * Returns the list of all file metadata configurations.
-   *
-   * Возвращает список всех конфигураций метаданных файлов.
-   * @returns list of file items / список элементов файлов
-   */
-  static getList(): MediaFileList {
-    return fileList
-  }
-
-  /**
-   * Registers a custom icon for a specific file code or extension.
-   *
-   * Регистрирует пользовательскую иконку для определенного кода файла или расширения.
-   * @param code file code or extension / код файла или расширение
-   * @param icon SVG icon string / строка SVG иконки
-   */
-  static addIcon(code: string, icon: string): void {
-    this.icons[code.trim().toLowerCase()] = icon
-  }
-
-  /**
-   * Registers custom icons for multiple file codes or extensions.
-   *
-   * Регистрирует пользовательские иконки для нескольких кодов файлов или расширений.
-   * @param icons dictionary of file codes and SVG icon strings / словарь кодов файлов и строк SVG иконок
-   */
-  static addIcons(icons: MediaFileIcons): void {
-    for (const [code, icon] of Object.entries(icons)) {
-      this.icons[code.trim().toLowerCase()] = icon
-    }
-  }
-
-  /**
-   * Returns the full file name.
-   *
-   * Возвращает полное имя файла.
-   * @returns full file name / полное имя файла
-   */
-  get name(): string {
-    if (!this.fileOrExtension) {
-      return ''
-    }
-
-    if (MediaFile.isLink(this.fileOrExtension)) {
-      const cleanPath = this.fileOrExtension.replace(REGEX_QUERY_HASH, '')
-      const lastSlash = Math.max(
-        cleanPath.lastIndexOf('/'),
-        cleanPath.lastIndexOf('\\')
-      )
-
-      return lastSlash >= 0 ? cleanPath.substring(lastSlash + 1) : cleanPath
-    }
-
-    return this.fileOrExtension
   }
 
   /**
@@ -140,17 +51,7 @@ export class MediaFile {
    * @returns category or undefined / категория или undefined
    */
   get category(): MediaFileCategory | undefined {
-    const ext = this.extension
-
-    if (ext) {
-      const item = MediaFile.get(ext)
-
-      if (item?.category) {
-        return item.category as MediaFileCategory
-      }
-    }
-
-    return undefined
+    return this.item?.category as MediaFileCategory | undefined
   }
 
   /**
@@ -160,18 +61,29 @@ export class MediaFile {
    * @returns file extension / расширение файла
    */
   get extension(): string {
-    if (!this.fileOrExtension) {
+    const name = this.name
+
+    if (!name) {
       return ''
     }
 
-    if (MediaFile.isLink(this.fileOrExtension)) {
-      const fileName = this.name
-      const lastDot = fileName.lastIndexOf('.')
+    const lastDot = name.lastIndexOf('.')
 
-      return lastDot > 0 ? fileName.substring(lastDot + 1).toLowerCase() : ''
+    if (lastDot >= 0) {
+      return name.substring(lastDot + 1).toLowerCase()
     }
 
-    return this.extractExtensionFromString(this.fileOrExtension)
+    return MediaFiles.isLink(this.fileOrExtension) ? '' : name.toLowerCase()
+  }
+
+  /**
+   * Returns the file item group classification.
+   *
+   * Возвращает классификацию группы элемента файла.
+   * @returns file group or undefined / группа файла или undefined
+   */
+  get group(): MediaFileGroup | undefined {
+    return this.item?.group as MediaFileGroup | undefined
   }
 
   /**
@@ -181,12 +93,7 @@ export class MediaFile {
    * @returns SVG icon string / строка SVG иконки
    */
   get icon(): string {
-    const ext = this.extension
-
-    return MediaFile.icons[ext]
-      ?? fileIcons[ext]
-      ?? fileIcons.file
-      ?? FileSvg
+    return this.item?.icon ?? ''
   }
 
   /**
@@ -196,7 +103,31 @@ export class MediaFile {
    * @returns file metadata item or undefined / элемент метаданных файла или undefined
    */
   get item(): MediaFileItem | undefined {
-    return MediaFile.get(this.extension)
+    return MediaFiles.get(this.extension)
+  }
+
+  /**
+   * Returns the full file name.
+   *
+   * Возвращает полное имя файла.
+   * @returns full file name / полное имя файла
+   */
+  get name(): string {
+    if (!this.fileOrExtension) {
+      return ''
+    }
+
+    if (MediaFiles.isLink(this.fileOrExtension)) {
+      const cleanPath = this.fileOrExtension.replace(REGEX_QUERY_HASH, '')
+      const lastSlash = Math.max(
+        cleanPath.lastIndexOf('/'),
+        cleanPath.lastIndexOf('\\')
+      )
+
+      return lastSlash >= 0 ? cleanPath.substring(lastSlash + 1) : cleanPath
+    }
+
+    return this.fileOrExtension
   }
 
   /**
@@ -217,6 +148,16 @@ export class MediaFile {
    */
   get isAudio(): boolean {
     return this.category === MediaFileCategory.audio
+  }
+
+  /**
+   * Checks whether the file is a category-level neutral icon.
+   *
+   * Проверяет, является ли файл нейтральной иконкой категории.
+   * @returns true if category neutral icon / true, если нейтральная иконка категории
+   */
+  get isCategory(): boolean {
+    return this.group === MediaFileGroup.category
   }
 
   /**
@@ -250,6 +191,16 @@ export class MediaFile {
   }
 
   /**
+   * Checks whether the file is a default neutral file icon.
+   *
+   * Проверяет, является ли файл основной нейтральной иконкой файла.
+   * @returns true if neutral file icon / true, если основная нейтральная иконка файла
+   */
+  get isNeutral(): boolean {
+    return this.group === MediaFileGroup.neutral
+  }
+
+  /**
    * Checks whether the file is a presentation.
    *
    * Проверяет, является ли файл презентацией.
@@ -257,6 +208,16 @@ export class MediaFile {
    */
   get isPresentation(): boolean {
     return this.category === MediaFileCategory.presentation
+  }
+
+  /**
+   * Checks whether the file is a standard file format or extension.
+   *
+   * Проверяет, является ли файл обычным форматом или расширением файла.
+   * @returns true if standard file / true, если обычный файл
+   */
+  get isStandard(): boolean {
+    return this.group === MediaFileGroup.standard
   }
 
   /**
@@ -277,39 +238,5 @@ export class MediaFile {
    */
   get isVideo(): boolean {
     return this.category === MediaFileCategory.video
-  }
-
-  /**
-   * Checks whether the specified path is a link or path to a file.
-   *
-   * Проверяет, является ли указанный путь ссылкой или путем к файлу.
-   * @param path file link or path / ссылка или путь к файлу
-   * @returns true if path or link / true, если путь или ссылка
-   */
-  protected static isLink(path: string): boolean {
-    return path.includes('/') || path.includes('\\') || path.startsWith('http://') || path.startsWith('https://')
-  }
-
-  /**
-   * Helper to extract extension from a string filename or extension.
-   *
-   * Вспомогательный метод для извлечения расширения из строки имени файла или расширения.
-   * @param value filename string or extension / строка имени файла или расширение
-   * @returns extension without dot / расширение без точки
-   */
-  protected extractExtensionFromString(value: string): string {
-    const cleanValue = value.trim()
-
-    if (!cleanValue) {
-      return ''
-    }
-
-    const lastDot = cleanValue.lastIndexOf('.')
-
-    if (lastDot >= 0) {
-      return cleanValue.substring(lastDot + 1).toLowerCase()
-    }
-
-    return cleanValue.toLowerCase()
   }
 }

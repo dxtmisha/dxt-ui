@@ -1,91 +1,92 @@
-import File7zSvg from '../assets/files/7z.svg'
-import AacSvg from '../assets/files/aac.svg'
-import AiSvg from '../assets/files/ai.svg'
-import ApkSvg from '../assets/files/apk.svg'
-import AppSvg from '../assets/files/app.svg'
-import ArchiveSvg from '../assets/files/archive.svg'
-import AudioSvg from '../assets/files/audio.svg'
-import AviSvg from '../assets/files/avi.svg'
-import BlankSvg from '../assets/files/blank.svg'
-import BmpSvg from '../assets/files/bmp.svg'
-import BookSvg from '../assets/files/book.svg'
-import CSvg from '../assets/files/c.svg'
-import CodeSvg from '../assets/files/code.svg'
-import ConfigSvg from '../assets/files/config.svg'
-import CppSvg from '../assets/files/cpp.svg'
-import CssSvg from '../assets/files/css.svg'
-import CsvSvg from '../assets/files/csv.svg'
-import DatabaseSvg from '../assets/files/database.svg'
-import DbSvg from '../assets/files/db.svg'
-import DmgSvg from '../assets/files/dmg.svg'
-import DocSvg from '../assets/files/doc.svg'
-import DocumentSvg from '../assets/files/document.svg'
-import DocxSvg from '../assets/files/docx.svg'
-import EpsSvg from '../assets/files/eps.svg'
-import ExeSvg from '../assets/files/exe.svg'
-import ExecutableSvg from '../assets/files/executable.svg'
-import FigSvg from '../assets/files/fig.svg'
-import FileSvg from '../assets/files/file.svg'
-import FlacSvg from '../assets/files/flac.svg'
-import FolderOpenSvg from '../assets/files/folder-open.svg'
-import FolderZipSvg from '../assets/files/folder-zip.svg'
-import FolderSvg from '../assets/files/folder.svg'
-import FontSvg from '../assets/files/font.svg'
-import GifSvg from '../assets/files/gif.svg'
-import GzSvg from '../assets/files/gz.svg'
-import HtmlSvg from '../assets/files/html.svg'
-import IcoSvg from '../assets/files/ico.svg'
-import ImageSvg from '../assets/files/image.svg'
-import IsoSvg from '../assets/files/iso.svg'
-import JavaSvg from '../assets/files/java.svg'
-import JpegSvg from '../assets/files/jpeg.svg'
-import JpgSvg from '../assets/files/jpg.svg'
-import JsSvg from '../assets/files/js.svg'
-import JsonSvg from '../assets/files/json.svg'
-import M4aSvg from '../assets/files/m4a.svg'
-import MdSvg from '../assets/files/md.svg'
-import MkvSvg from '../assets/files/mkv.svg'
-import MovSvg from '../assets/files/mov.svg'
-import Mp3Svg from '../assets/files/mp3.svg'
-import Mp4Svg from '../assets/files/mp4.svg'
-import OdpSvg from '../assets/files/odp.svg'
-import OdsSvg from '../assets/files/ods.svg'
-import OdtSvg from '../assets/files/odt.svg'
-import OggSvg from '../assets/files/ogg.svg'
-import PdfSvg from '../assets/files/pdf.svg'
-import PhpSvg from '../assets/files/php.svg'
-import PngSvg from '../assets/files/png.svg'
-import PptSvg from '../assets/files/ppt.svg'
-import PptxSvg from '../assets/files/pptx.svg'
-import PresentationSvg from '../assets/files/presentation.svg'
-import PsdSvg from '../assets/files/psd.svg'
-import PySvg from '../assets/files/py.svg'
-import RarSvg from '../assets/files/rar.svg'
-import RtfSvg from '../assets/files/rtf.svg'
-import SettingsSvg from '../assets/files/settings.svg'
-import SpreadsheetSvg from '../assets/files/spreadsheet.svg'
-import SqlSvg from '../assets/files/sql.svg'
-import SvgSvg from '../assets/files/svg.svg'
-import TableSvg from '../assets/files/table.svg'
-import TarSvg from '../assets/files/tar.svg'
-import TextSvg from '../assets/files/text.svg'
-import TiffSvg from '../assets/files/tiff.svg'
-import TsSvg from '../assets/files/ts.svg'
-import TxtSvg from '../assets/files/txt.svg'
-import UnknownSvg from '../assets/files/unknown.svg'
-import VectorSvg from '../assets/files/vector.svg'
-import VideoSvg from '../assets/files/video.svg'
-import WavSvg from '../assets/files/wav.svg'
-import WebmSvg from '../assets/files/webm.svg'
-import WebpSvg from '../assets/files/webp.svg'
-import WmvSvg from '../assets/files/wmv.svg'
-import XlsSvg from '../assets/files/xls.svg'
-import XlsxSvg from '../assets/files/xlsx.svg'
-import XmlSvg from '../assets/files/xml.svg'
-import ZipSvg from '../assets/files/zip.svg'
+import fileIcon7z from '../assets/files/7z.svg'
+import fileIconAac from '../assets/files/aac.svg'
+import fileIconAi from '../assets/files/ai.svg'
+import fileIconApk from '../assets/files/apk.svg'
+import fileIconApp from '../assets/files/app.svg'
+import fileIconArchive from '../assets/files/archive.svg'
+import fileIconAudio from '../assets/files/audio.svg'
+import fileIconAvi from '../assets/files/avi.svg'
+import fileIconBlank from '../assets/files/blank.svg'
+import fileIconBmp from '../assets/files/bmp.svg'
+import fileIconBook from '../assets/files/book.svg'
+import fileIconC from '../assets/files/c.svg'
+import fileIconCode from '../assets/files/code.svg'
+import fileIconConfig from '../assets/files/config.svg'
+import fileIconCpp from '../assets/files/cpp.svg'
+import fileIconCss from '../assets/files/css.svg'
+import fileIconCsv from '../assets/files/csv.svg'
+import fileIconDatabase from '../assets/files/database.svg'
+import fileIconDb from '../assets/files/db.svg'
+import fileIconDmg from '../assets/files/dmg.svg'
+import fileIconDoc from '../assets/files/doc.svg'
+import fileIconDocument from '../assets/files/document.svg'
+import fileIconDocx from '../assets/files/docx.svg'
+import fileIconEps from '../assets/files/eps.svg'
+import fileIconExe from '../assets/files/exe.svg'
+import fileIconExecutable from '../assets/files/executable.svg'
+import fileIconFig from '../assets/files/fig.svg'
+import fileIconFile from '../assets/files/file.svg'
+import fileIconFlac from '../assets/files/flac.svg'
+import fileIconFolderOpen from '../assets/files/folder-open.svg'
+import fileIconFolderZip from '../assets/files/folder-zip.svg'
+import fileIconFolder from '../assets/files/folder.svg'
+import fileIconFont from '../assets/files/font.svg'
+import fileIconGif from '../assets/files/gif.svg'
+import fileIconGz from '../assets/files/gz.svg'
+import fileIconHtml from '../assets/files/html.svg'
+import fileIconIco from '../assets/files/ico.svg'
+import fileIconImage from '../assets/files/image.svg'
+import fileIconIso from '../assets/files/iso.svg'
+import fileIconJava from '../assets/files/java.svg'
+import fileIconJpeg from '../assets/files/jpeg.svg'
+import fileIconJpg from '../assets/files/jpg.svg'
+import fileIconJs from '../assets/files/js.svg'
+import fileIconJson from '../assets/files/json.svg'
+import fileIconM4a from '../assets/files/m4a.svg'
+import fileIconMd from '../assets/files/md.svg'
+import fileIconMkv from '../assets/files/mkv.svg'
+import fileIconMov from '../assets/files/mov.svg'
+import fileIconMp3 from '../assets/files/mp3.svg'
+import fileIconMp4 from '../assets/files/mp4.svg'
+import fileIconOdp from '../assets/files/odp.svg'
+import fileIconOds from '../assets/files/ods.svg'
+import fileIconOdt from '../assets/files/odt.svg'
+import fileIconOgg from '../assets/files/ogg.svg'
+import fileIconPdf from '../assets/files/pdf.svg'
+import fileIconPhp from '../assets/files/php.svg'
+import fileIconPng from '../assets/files/png.svg'
+import fileIconPpt from '../assets/files/ppt.svg'
+import fileIconPptx from '../assets/files/pptx.svg'
+import fileIconPresentation from '../assets/files/presentation.svg'
+import fileIconPsd from '../assets/files/psd.svg'
+import fileIconPy from '../assets/files/py.svg'
+import fileIconRar from '../assets/files/rar.svg'
+import fileIconRtf from '../assets/files/rtf.svg'
+import fileIconSettings from '../assets/files/settings.svg'
+import fileIconSpreadsheet from '../assets/files/spreadsheet.svg'
+import fileIconSql from '../assets/files/sql.svg'
+import fileIconSvg from '../assets/files/svg.svg'
+import fileIconTable from '../assets/files/table.svg'
+import fileIconTar from '../assets/files/tar.svg'
+import fileIconText from '../assets/files/text.svg'
+import fileIconTiff from '../assets/files/tiff.svg'
+import fileIconTs from '../assets/files/ts.svg'
+import fileIconTxt from '../assets/files/txt.svg'
+import fileIconUnknown from '../assets/files/unknown.svg'
+import fileIconVector from '../assets/files/vector.svg'
+import fileIconVideo from '../assets/files/video.svg'
+import fileIconWav from '../assets/files/wav.svg'
+import fileIconWebm from '../assets/files/webm.svg'
+import fileIconWebp from '../assets/files/webp.svg'
+import fileIconWmv from '../assets/files/wmv.svg'
+import fileIconXls from '../assets/files/xls.svg'
+import fileIconXlsx from '../assets/files/xlsx.svg'
+import fileIconXml from '../assets/files/xml.svg'
+import fileIconZip from '../assets/files/zip.svg'
 
 import {
   MediaFileCategory,
+  MediaFileGroup,
   type MediaFileIcons,
   type MediaFileList
 } from '../types/fileTypes'
@@ -95,91 +96,96 @@ import {
  * Словарь иконок файлов по коду
  */
 export const fileIcons: MediaFileIcons = {
-  '7z': File7zSvg,
-  aac: AacSvg,
-  ai: AiSvg,
-  apk: ApkSvg,
-  app: AppSvg,
-  archive: ArchiveSvg,
-  audio: AudioSvg,
-  avi: AviSvg,
-  blank: BlankSvg,
-  bmp: BmpSvg,
-  book: BookSvg,
-  c: CSvg,
-  code: CodeSvg,
-  config: ConfigSvg,
-  cpp: CppSvg,
-  css: CssSvg,
-  csv: CsvSvg,
-  database: DatabaseSvg,
-  db: DbSvg,
-  dmg: DmgSvg,
-  doc: DocSvg,
-  document: DocumentSvg,
-  docx: DocxSvg,
-  eps: EpsSvg,
-  exe: ExeSvg,
-  executable: ExecutableSvg,
-  fig: FigSvg,
-  file: FileSvg,
-  flac: FlacSvg,
-  'folder-open': FolderOpenSvg,
-  'folder-zip': FolderZipSvg,
-  folder: FolderSvg,
-  font: FontSvg,
-  gif: GifSvg,
-  gz: GzSvg,
-  html: HtmlSvg,
-  ico: IcoSvg,
-  image: ImageSvg,
-  iso: IsoSvg,
-  java: JavaSvg,
-  jpeg: JpegSvg,
-  jpg: JpgSvg,
-  js: JsSvg,
-  json: JsonSvg,
-  m4a: M4aSvg,
-  md: MdSvg,
-  mkv: MkvSvg,
-  mov: MovSvg,
-  mp3: Mp3Svg,
-  mp4: Mp4Svg,
-  odp: OdpSvg,
-  ods: OdsSvg,
-  odt: OdtSvg,
-  ogg: OggSvg,
-  pdf: PdfSvg,
-  php: PhpSvg,
-  png: PngSvg,
-  ppt: PptSvg,
-  pptx: PptxSvg,
-  presentation: PresentationSvg,
-  psd: PsdSvg,
-  py: PySvg,
-  rar: RarSvg,
-  rtf: RtfSvg,
-  settings: SettingsSvg,
-  spreadsheet: SpreadsheetSvg,
-  sql: SqlSvg,
-  svg: SvgSvg,
-  table: TableSvg,
-  tar: TarSvg,
-  text: TextSvg,
-  tiff: TiffSvg,
-  ts: TsSvg,
-  txt: TxtSvg,
-  unknown: UnknownSvg,
-  vector: VectorSvg,
-  video: VideoSvg,
-  wav: WavSvg,
-  webm: WebmSvg,
-  webp: WebpSvg,
-  wmv: WmvSvg,
-  xls: XlsSvg,
-  xlsx: XlsxSvg,
-  xml: XmlSvg,
-  zip: ZipSvg,
+  // Default neutral file icon / Основная нейтральная иконка файла
+  'file': fileIconFile,
+
+  // Category neutral icons / Нейтральные иконки категорий
+  'archive': fileIconArchive,
+  'audio': fileIconAudio,
+  'code': fileIconCode,
+  'config': fileIconConfig,
+  'database': fileIconDatabase,
+  'document': fileIconDocument,
+  'executable': fileIconExecutable,
+  'folder': fileIconFolder,
+  'font': fileIconFont,
+  'image': fileIconImage,
+  'presentation': fileIconPresentation,
+  'table': fileIconTable,
+  'text': fileIconText,
+  'vector': fileIconVector,
+  'video': fileIconVideo,
+
+  // Specific file formats and extensions / Конкретные форматы и расширения файлов
+  '7z': fileIcon7z,
+  'aac': fileIconAac,
+  'ai': fileIconAi,
+  'apk': fileIconApk,
+  'app': fileIconApp,
+  'avi': fileIconAvi,
+  'blank': fileIconBlank,
+  'bmp': fileIconBmp,
+  'book': fileIconBook,
+  'c': fileIconC,
+  'cpp': fileIconCpp,
+  'css': fileIconCss,
+  'csv': fileIconCsv,
+  'db': fileIconDb,
+  'dmg': fileIconDmg,
+  'doc': fileIconDoc,
+  'docx': fileIconDocx,
+  'eps': fileIconEps,
+  'exe': fileIconExe,
+  'fig': fileIconFig,
+  'flac': fileIconFlac,
+  'folder-open': fileIconFolderOpen,
+  'folder-zip': fileIconFolderZip,
+  'gif': fileIconGif,
+  'gz': fileIconGz,
+  'html': fileIconHtml,
+  'ico': fileIconIco,
+  'iso': fileIconIso,
+  'java': fileIconJava,
+  'jpeg': fileIconJpeg,
+  'jpg': fileIconJpg,
+  'js': fileIconJs,
+  'json': fileIconJson,
+  'm4a': fileIconM4a,
+  'md': fileIconMd,
+  'mkv': fileIconMkv,
+  'mov': fileIconMov,
+  'mp3': fileIconMp3,
+  'mp4': fileIconMp4,
+  'odp': fileIconOdp,
+  'ods': fileIconOds,
+  'odt': fileIconOdt,
+  'ogg': fileIconOgg,
+  'pdf': fileIconPdf,
+  'php': fileIconPhp,
+  'png': fileIconPng,
+  'ppt': fileIconPpt,
+  'pptx': fileIconPptx,
+  'psd': fileIconPsd,
+  'py': fileIconPy,
+  'rar': fileIconRar,
+  'rtf': fileIconRtf,
+  'settings': fileIconSettings,
+  'spreadsheet': fileIconSpreadsheet,
+  'sql': fileIconSql,
+  'svg': fileIconSvg,
+  'tar': fileIconTar,
+  'tiff': fileIconTiff,
+  'ts': fileIconTs,
+  'txt': fileIconTxt,
+  'unknown': fileIconUnknown,
+  'wav': fileIconWav,
+  'webm': fileIconWebm,
+  'webp': fileIconWebp,
+  'wmv': fileIconWmv,
+  'xls': fileIconXls,
+  'xlsx': fileIconXlsx,
+  'xml': fileIconXml,
+  'zip': fileIconZip
 }
 
 /**
@@ -187,602 +193,604 @@ export const fileIcons: MediaFileIcons = {
  * Структурированный список поддерживаемых типов файлов и категорий
  */
 export const fileList: MediaFileList = [
+  // Default neutral file icon / Основная нейтральная иконка файла
   {
-    code: '7z',
-    name: '7-Zip',
-    icon: File7zSvg,
-    category: MediaFileCategory.archive
+    code: 'file',
+    name: 'File',
+    icon: fileIconFile,
+    category: MediaFileCategory.system,
+    group: MediaFileGroup.neutral
   },
-  {
-    code: 'aac',
-    name: 'AAC Audio',
-    icon: AacSvg,
-    category: MediaFileCategory.audio
-  },
-  {
-    code: 'ai',
-    name: 'Adobe Illustrator',
-    icon: AiSvg,
-    category: MediaFileCategory.vector
-  },
-  {
-    code: 'apk',
-    name: 'Android Package',
-    icon: ApkSvg,
-    category: MediaFileCategory.executable
-  },
-  {
-    code: 'app',
-    name: 'Application',
-    icon: AppSvg,
-    category: MediaFileCategory.executable
-  },
+
+  // Category neutral icons / Нейтральные иконки категорий
   {
     code: 'archive',
     name: 'Archive',
-    icon: ArchiveSvg,
-    category: MediaFileCategory.archive
+    icon: fileIconArchive,
+    category: MediaFileCategory.archive,
+    group: MediaFileGroup.category
   },
   {
     code: 'audio',
     name: 'Audio',
-    icon: AudioSvg,
-    category: MediaFileCategory.audio
-  },
-  {
-    code: 'avi',
-    name: 'AVI Video',
-    icon: AviSvg,
-    category: MediaFileCategory.video
-  },
-  {
-    code: 'blank',
-    name: 'Blank File',
-    icon: BlankSvg,
-    category: MediaFileCategory.system
-  },
-  {
-    code: 'bmp',
-    name: 'Bitmap Image',
-    icon: BmpSvg,
-    category: MediaFileCategory.image
-  },
-  {
-    code: 'book',
-    name: 'E-Book',
-    icon: BookSvg,
-    category: MediaFileCategory.text
-  },
-  {
-    code: 'c',
-    name: 'C Source Code',
-    icon: CSvg,
-    category: MediaFileCategory.code
+    icon: fileIconAudio,
+    category: MediaFileCategory.audio,
+    group: MediaFileGroup.category
   },
   {
     code: 'code',
     name: 'Source Code',
-    icon: CodeSvg,
-    category: MediaFileCategory.code
+    icon: fileIconCode,
+    category: MediaFileCategory.code,
+    group: MediaFileGroup.category
   },
   {
     code: 'config',
     name: 'Configuration',
-    icon: ConfigSvg,
-    category: MediaFileCategory.config
-  },
-  {
-    code: 'cpp',
-    name: 'C++ Source Code',
-    icon: CppSvg,
-    category: MediaFileCategory.code
-  },
-  {
-    code: 'css',
-    name: 'Cascading Style Sheets',
-    icon: CssSvg,
-    category: MediaFileCategory.code
-  },
-  {
-    code: 'csv',
-    name: 'CSV Spreadsheet',
-    icon: CsvSvg,
-    category: MediaFileCategory.table
+    icon: fileIconConfig,
+    category: MediaFileCategory.config,
+    group: MediaFileGroup.category
   },
   {
     code: 'database',
     name: 'Database',
-    icon: DatabaseSvg,
-    category: MediaFileCategory.database
-  },
-  {
-    code: 'db',
-    name: 'Database File',
-    icon: DbSvg,
-    category: MediaFileCategory.database
-  },
-  {
-    code: 'dmg',
-    name: 'Apple Disk Image',
-    icon: DmgSvg,
-    category: MediaFileCategory.executable
-  },
-  {
-    code: 'doc',
-    name: 'Word Document',
-    icon: DocSvg,
-    category: MediaFileCategory.document
+    icon: fileIconDatabase,
+    category: MediaFileCategory.database,
+    group: MediaFileGroup.category
   },
   {
     code: 'document',
     name: 'Document',
-    icon: DocumentSvg,
-    category: MediaFileCategory.document
-  },
-  {
-    code: 'docx',
-    name: 'Word Document XML',
-    icon: DocxSvg,
-    category: MediaFileCategory.document
-  },
-  {
-    code: 'eps',
-    name: 'Encapsulated PostScript',
-    icon: EpsSvg,
-    category: MediaFileCategory.vector
-  },
-  {
-    code: 'exe',
-    name: 'Executable File',
-    icon: ExeSvg,
-    category: MediaFileCategory.executable
+    icon: fileIconDocument,
+    category: MediaFileCategory.document,
+    group: MediaFileGroup.category
   },
   {
     code: 'executable',
     name: 'Executable',
-    icon: ExecutableSvg,
-    category: MediaFileCategory.executable
-  },
-  {
-    code: 'fig',
-    name: 'Figma Design',
-    icon: FigSvg,
-    category: MediaFileCategory.vector
-  },
-  {
-    code: 'file',
-    name: 'File',
-    icon: FileSvg,
-    category: MediaFileCategory.system
-  },
-  {
-    code: 'flac',
-    name: 'FLAC Audio',
-    icon: FlacSvg,
-    category: MediaFileCategory.audio
-  },
-  {
-    code: 'folder-open',
-    name: 'Open Folder',
-    icon: FolderOpenSvg,
-    category: MediaFileCategory.folder
-  },
-  {
-    code: 'folder-zip',
-    name: 'Compressed Folder',
-    icon: FolderZipSvg,
-    category: MediaFileCategory.folder
+    icon: fileIconExecutable,
+    category: MediaFileCategory.executable,
+    group: MediaFileGroup.category
   },
   {
     code: 'folder',
     name: 'Folder',
-    icon: FolderSvg,
-    category: MediaFileCategory.folder
+    icon: fileIconFolder,
+    category: MediaFileCategory.folder,
+    group: MediaFileGroup.category
   },
   {
     code: 'font',
     name: 'Font',
-    icon: FontSvg,
-    category: MediaFileCategory.font
-  },
-  {
-    code: 'gif',
-    name: 'GIF Image',
-    icon: GifSvg,
-    category: MediaFileCategory.image
-  },
-  {
-    code: 'gz',
-    name: 'Gzip Archive',
-    icon: GzSvg,
-    category: MediaFileCategory.archive
-  },
-  {
-    code: 'html',
-    name: 'HTML Document',
-    icon: HtmlSvg,
-    category: MediaFileCategory.code
-  },
-  {
-    code: 'ico',
-    name: 'Icon Image',
-    icon: IcoSvg,
-    category: MediaFileCategory.image
+    icon: fileIconFont,
+    category: MediaFileCategory.font,
+    group: MediaFileGroup.category
   },
   {
     code: 'image',
     name: 'Image',
-    icon: ImageSvg,
-    category: MediaFileCategory.image
-  },
-  {
-    code: 'iso',
-    name: 'Disk Image',
-    icon: IsoSvg,
-    category: MediaFileCategory.executable
-  },
-  {
-    code: 'java',
-    name: 'Java Source Code',
-    icon: JavaSvg,
-    category: MediaFileCategory.code
-  },
-  {
-    code: 'jpeg',
-    name: 'JPEG Image',
-    icon: JpegSvg,
-    category: MediaFileCategory.image
-  },
-  {
-    code: 'jpg',
-    name: 'JPG Image',
-    icon: JpgSvg,
-    category: MediaFileCategory.image
-  },
-  {
-    code: 'js',
-    name: 'JavaScript',
-    icon: JsSvg,
-    category: MediaFileCategory.code
-  },
-  {
-    code: 'json',
-    name: 'JSON Document',
-    icon: JsonSvg,
-    category: MediaFileCategory.code
-  },
-  {
-    code: 'm4a',
-    name: 'M4A Audio',
-    icon: M4aSvg,
-    category: MediaFileCategory.audio
-  },
-  {
-    code: 'md',
-    name: 'Markdown Document',
-    icon: MdSvg,
-    category: MediaFileCategory.text
-  },
-  {
-    code: 'mkv',
-    name: 'Matroska Video',
-    icon: MkvSvg,
-    category: MediaFileCategory.video
-  },
-  {
-    code: 'mov',
-    name: 'QuickTime Video',
-    icon: MovSvg,
-    category: MediaFileCategory.video
-  },
-  {
-    code: 'mp3',
-    name: 'MP3 Audio',
-    icon: Mp3Svg,
-    category: MediaFileCategory.audio
-  },
-  {
-    code: 'mp4',
-    name: 'MP4 Video',
-    icon: Mp4Svg,
-    category: MediaFileCategory.video
-  },
-  {
-    code: 'odp',
-    name: 'OpenDocument Presentation',
-    icon: OdpSvg,
-    category: MediaFileCategory.presentation
-  },
-  {
-    code: 'ods',
-    name: 'OpenDocument Spreadsheet',
-    icon: OdsSvg,
-    category: MediaFileCategory.table
-  },
-  {
-    code: 'odt',
-    name: 'OpenDocument Text',
-    icon: OdtSvg,
-    category: MediaFileCategory.document
-  },
-  {
-    code: 'ogg',
-    name: 'Ogg Vorbis Audio',
-    icon: OggSvg,
-    category: MediaFileCategory.audio
-  },
-  {
-    code: 'pdf',
-    name: 'PDF Document',
-    icon: PdfSvg,
-    category: MediaFileCategory.document
-  },
-  {
-    code: 'php',
-    name: 'PHP Script',
-    icon: PhpSvg,
-    category: MediaFileCategory.code
-  },
-  {
-    code: 'png',
-    name: 'PNG Image',
-    icon: PngSvg,
-    category: MediaFileCategory.image
-  },
-  {
-    code: 'ppt',
-    name: 'PowerPoint Presentation',
-    icon: PptSvg,
-    category: MediaFileCategory.presentation
-  },
-  {
-    code: 'pptx',
-    name: 'PowerPoint Presentation XML',
-    icon: PptxSvg,
-    category: MediaFileCategory.presentation
+    icon: fileIconImage,
+    category: MediaFileCategory.image,
+    group: MediaFileGroup.category
   },
   {
     code: 'presentation',
     name: 'Presentation',
-    icon: PresentationSvg,
-    category: MediaFileCategory.presentation
-  },
-  {
-    code: 'psd',
-    name: 'Adobe Photoshop',
-    icon: PsdSvg,
-    category: MediaFileCategory.vector
-  },
-  {
-    code: 'py',
-    name: 'Python Script',
-    icon: PySvg,
-    category: MediaFileCategory.code
-  },
-  {
-    code: 'rar',
-    name: 'RAR Archive',
-    icon: RarSvg,
-    category: MediaFileCategory.archive
-  },
-  {
-    code: 'rtf',
-    name: 'Rich Text Format',
-    icon: RtfSvg,
-    category: MediaFileCategory.document
-  },
-  {
-    code: 'settings',
-    name: 'Settings',
-    icon: SettingsSvg,
-    category: MediaFileCategory.config
-  },
-  {
-    code: 'spreadsheet',
-    name: 'Spreadsheet',
-    icon: SpreadsheetSvg,
-    category: MediaFileCategory.table
-  },
-  {
-    code: 'sql',
-    name: 'SQL Database Script',
-    icon: SqlSvg,
-    category: MediaFileCategory.code
-  },
-  {
-    code: 'svg',
-    name: 'Scalable Vector Graphics',
-    icon: SvgSvg,
-    category: MediaFileCategory.image
+    icon: fileIconPresentation,
+    category: MediaFileCategory.presentation,
+    group: MediaFileGroup.category
   },
   {
     code: 'table',
     name: 'Data Table',
-    icon: TableSvg,
-    category: MediaFileCategory.table
-  },
-  {
-    code: 'tar',
-    name: 'Tar Archive',
-    icon: TarSvg,
-    category: MediaFileCategory.archive
+    icon: fileIconTable,
+    category: MediaFileCategory.table,
+    group: MediaFileGroup.category
   },
   {
     code: 'text',
     name: 'Text Document',
-    icon: TextSvg,
-    category: MediaFileCategory.text
-  },
-  {
-    code: 'tiff',
-    name: 'TIFF Image',
-    icon: TiffSvg,
-    category: MediaFileCategory.image
-  },
-  {
-    code: 'ts',
-    name: 'TypeScript',
-    icon: TsSvg,
-    category: MediaFileCategory.code
-  },
-  {
-    code: 'txt',
-    name: 'Text File',
-    icon: TxtSvg,
-    category: MediaFileCategory.text
-  },
-  {
-    code: 'unknown',
-    name: 'Unknown File',
-    icon: UnknownSvg,
-    category: MediaFileCategory.system
+    icon: fileIconText,
+    category: MediaFileCategory.text,
+    group: MediaFileGroup.category
   },
   {
     code: 'vector',
     name: 'Vector Graphic',
-    icon: VectorSvg,
-    category: MediaFileCategory.vector
+    icon: fileIconVector,
+    category: MediaFileCategory.vector,
+    group: MediaFileGroup.category
   },
   {
     code: 'video',
     name: 'Video',
-    icon: VideoSvg,
-    category: MediaFileCategory.video
+    icon: fileIconVideo,
+    category: MediaFileCategory.video,
+    group: MediaFileGroup.category
+  },
+
+  // Specific file formats and extensions / Конкретные форматы и расширения файлов
+  {
+    code: '7z',
+    name: '7-Zip',
+    icon: fileIcon7z,
+    category: MediaFileCategory.archive,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'aac',
+    name: 'AAC Audio',
+    icon: fileIconAac,
+    category: MediaFileCategory.audio,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'ai',
+    name: 'Adobe Illustrator',
+    icon: fileIconAi,
+    category: MediaFileCategory.vector,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'apk',
+    name: 'Android Package',
+    icon: fileIconApk,
+    category: MediaFileCategory.executable,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'app',
+    name: 'Application',
+    icon: fileIconApp,
+    category: MediaFileCategory.executable,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'avi',
+    name: 'AVI Video',
+    icon: fileIconAvi,
+    category: MediaFileCategory.video,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'blank',
+    name: 'Blank File',
+    icon: fileIconBlank,
+    category: MediaFileCategory.system,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'bmp',
+    name: 'Bitmap Image',
+    icon: fileIconBmp,
+    category: MediaFileCategory.image,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'book',
+    name: 'E-Book',
+    icon: fileIconBook,
+    category: MediaFileCategory.text,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'c',
+    name: 'C Source Code',
+    icon: fileIconC,
+    category: MediaFileCategory.code,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'cpp',
+    name: 'C++ Source Code',
+    icon: fileIconCpp,
+    category: MediaFileCategory.code,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'css',
+    name: 'Cascading Style Sheets',
+    icon: fileIconCss,
+    category: MediaFileCategory.code,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'csv',
+    name: 'CSV Spreadsheet',
+    icon: fileIconCsv,
+    category: MediaFileCategory.table,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'db',
+    name: 'Database File',
+    icon: fileIconDb,
+    category: MediaFileCategory.database,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'dmg',
+    name: 'Apple Disk Image',
+    icon: fileIconDmg,
+    category: MediaFileCategory.executable,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'doc',
+    name: 'Word Document',
+    icon: fileIconDoc,
+    category: MediaFileCategory.document,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'docx',
+    name: 'Word Document XML',
+    icon: fileIconDocx,
+    category: MediaFileCategory.document,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'eps',
+    name: 'Encapsulated PostScript',
+    icon: fileIconEps,
+    category: MediaFileCategory.vector,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'exe',
+    name: 'Executable File',
+    icon: fileIconExe,
+    category: MediaFileCategory.executable,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'fig',
+    name: 'Figma Design',
+    icon: fileIconFig,
+    category: MediaFileCategory.vector,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'flac',
+    name: 'FLAC Audio',
+    icon: fileIconFlac,
+    category: MediaFileCategory.audio,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'folder-open',
+    name: 'Open Folder',
+    icon: fileIconFolderOpen,
+    category: MediaFileCategory.folder,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'folder-zip',
+    name: 'Compressed Folder',
+    icon: fileIconFolderZip,
+    category: MediaFileCategory.folder,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'gif',
+    name: 'GIF Image',
+    icon: fileIconGif,
+    category: MediaFileCategory.image,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'gz',
+    name: 'Gzip Archive',
+    icon: fileIconGz,
+    category: MediaFileCategory.archive,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'html',
+    name: 'HTML Document',
+    icon: fileIconHtml,
+    category: MediaFileCategory.code,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'ico',
+    name: 'Icon Image',
+    icon: fileIconIco,
+    category: MediaFileCategory.image,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'iso',
+    name: 'Disk Image',
+    icon: fileIconIso,
+    category: MediaFileCategory.executable,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'java',
+    name: 'Java Source Code',
+    icon: fileIconJava,
+    category: MediaFileCategory.code,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'jpeg',
+    name: 'JPEG Image',
+    icon: fileIconJpeg,
+    category: MediaFileCategory.image,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'jpg',
+    name: 'JPG Image',
+    icon: fileIconJpg,
+    category: MediaFileCategory.image,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'js',
+    name: 'JavaScript',
+    icon: fileIconJs,
+    category: MediaFileCategory.code,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'json',
+    name: 'JSON Document',
+    icon: fileIconJson,
+    category: MediaFileCategory.code,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'm4a',
+    name: 'M4A Audio',
+    icon: fileIconM4a,
+    category: MediaFileCategory.audio,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'md',
+    name: 'Markdown Document',
+    icon: fileIconMd,
+    category: MediaFileCategory.text,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'mkv',
+    name: 'Matroska Video',
+    icon: fileIconMkv,
+    category: MediaFileCategory.video,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'mov',
+    name: 'QuickTime Video',
+    icon: fileIconMov,
+    category: MediaFileCategory.video,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'mp3',
+    name: 'MP3 Audio',
+    icon: fileIconMp3,
+    category: MediaFileCategory.audio,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'mp4',
+    name: 'MP4 Video',
+    icon: fileIconMp4,
+    category: MediaFileCategory.video,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'odp',
+    name: 'OpenDocument Presentation',
+    icon: fileIconOdp,
+    category: MediaFileCategory.presentation,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'ods',
+    name: 'OpenDocument Spreadsheet',
+    icon: fileIconOds,
+    category: MediaFileCategory.table,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'odt',
+    name: 'OpenDocument Text',
+    icon: fileIconOdt,
+    category: MediaFileCategory.document,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'ogg',
+    name: 'Ogg Vorbis Audio',
+    icon: fileIconOgg,
+    category: MediaFileCategory.audio,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'pdf',
+    name: 'PDF Document',
+    icon: fileIconPdf,
+    category: MediaFileCategory.document,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'php',
+    name: 'PHP Script',
+    icon: fileIconPhp,
+    category: MediaFileCategory.code,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'png',
+    name: 'PNG Image',
+    icon: fileIconPng,
+    category: MediaFileCategory.image,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'ppt',
+    name: 'PowerPoint Presentation',
+    icon: fileIconPpt,
+    category: MediaFileCategory.presentation,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'pptx',
+    name: 'PowerPoint Presentation XML',
+    icon: fileIconPptx,
+    category: MediaFileCategory.presentation,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'psd',
+    name: 'Adobe Photoshop',
+    icon: fileIconPsd,
+    category: MediaFileCategory.vector,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'py',
+    name: 'Python Script',
+    icon: fileIconPy,
+    category: MediaFileCategory.code,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'rar',
+    name: 'RAR Archive',
+    icon: fileIconRar,
+    category: MediaFileCategory.archive,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'rtf',
+    name: 'Rich Text Format',
+    icon: fileIconRtf,
+    category: MediaFileCategory.document,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'settings',
+    name: 'Settings',
+    icon: fileIconSettings,
+    category: MediaFileCategory.config,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'spreadsheet',
+    name: 'Spreadsheet',
+    icon: fileIconSpreadsheet,
+    category: MediaFileCategory.table,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'sql',
+    name: 'SQL Database Script',
+    icon: fileIconSql,
+    category: MediaFileCategory.code,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'svg',
+    name: 'Scalable Vector Graphics',
+    icon: fileIconSvg,
+    category: MediaFileCategory.image,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'tar',
+    name: 'Tar Archive',
+    icon: fileIconTar,
+    category: MediaFileCategory.archive,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'tiff',
+    name: 'TIFF Image',
+    icon: fileIconTiff,
+    category: MediaFileCategory.image,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'ts',
+    name: 'TypeScript',
+    icon: fileIconTs,
+    category: MediaFileCategory.code,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'txt',
+    name: 'Text File',
+    icon: fileIconTxt,
+    category: MediaFileCategory.text,
+    group: MediaFileGroup.standard
+  },
+  {
+    code: 'unknown',
+    name: 'Unknown File',
+    icon: fileIconUnknown,
+    category: MediaFileCategory.system,
+    group: MediaFileGroup.standard
   },
   {
     code: 'wav',
     name: 'WAV Audio',
-    icon: WavSvg,
-    category: MediaFileCategory.audio
+    icon: fileIconWav,
+    category: MediaFileCategory.audio,
+    group: MediaFileGroup.standard
   },
   {
     code: 'webm',
     name: 'WebM Video',
-    icon: WebmSvg,
-    category: MediaFileCategory.video
+    icon: fileIconWebm,
+    category: MediaFileCategory.video,
+    group: MediaFileGroup.standard
   },
   {
     code: 'webp',
     name: 'WebP Image',
-    icon: WebpSvg,
-    category: MediaFileCategory.image
+    icon: fileIconWebp,
+    category: MediaFileCategory.image,
+    group: MediaFileGroup.standard
   },
   {
     code: 'wmv',
     name: 'Windows Media Video',
-    icon: WmvSvg,
-    category: MediaFileCategory.video
+    icon: fileIconWmv,
+    category: MediaFileCategory.video,
+    group: MediaFileGroup.standard
   },
   {
     code: 'xls',
     name: 'Excel Spreadsheet',
-    icon: XlsSvg,
-    category: MediaFileCategory.table
+    icon: fileIconXls,
+    category: MediaFileCategory.table,
+    group: MediaFileGroup.standard
   },
   {
     code: 'xlsx',
     name: 'Excel Spreadsheet XML',
-    icon: XlsxSvg,
-    category: MediaFileCategory.table
+    icon: fileIconXlsx,
+    category: MediaFileCategory.table,
+    group: MediaFileGroup.standard
   },
   {
     code: 'xml',
     name: 'XML Document',
-    icon: XmlSvg,
-    category: MediaFileCategory.code
+    icon: fileIconXml,
+    category: MediaFileCategory.code,
+    group: MediaFileGroup.standard
   },
   {
     code: 'zip',
     name: 'ZIP Archive',
-    icon: ZipSvg,
-    category: MediaFileCategory.archive
-  },
+    icon: fileIconZip,
+    category: MediaFileCategory.archive,
+    group: MediaFileGroup.standard
+  }
 ]
-
-export {
-  File7zSvg,
-  AacSvg,
-  AiSvg,
-  ApkSvg,
-  AppSvg,
-  ArchiveSvg,
-  AudioSvg,
-  AviSvg,
-  BlankSvg,
-  BmpSvg,
-  BookSvg,
-  CSvg,
-  CodeSvg,
-  ConfigSvg,
-  CppSvg,
-  CssSvg,
-  CsvSvg,
-  DatabaseSvg,
-  DbSvg,
-  DmgSvg,
-  DocSvg,
-  DocumentSvg,
-  DocxSvg,
-  EpsSvg,
-  ExeSvg,
-  ExecutableSvg,
-  FigSvg,
-  FileSvg,
-  FlacSvg,
-  FolderOpenSvg,
-  FolderZipSvg,
-  FolderSvg,
-  FontSvg,
-  GifSvg,
-  GzSvg,
-  HtmlSvg,
-  IcoSvg,
-  ImageSvg,
-  IsoSvg,
-  JavaSvg,
-  JpegSvg,
-  JpgSvg,
-  JsSvg,
-  JsonSvg,
-  M4aSvg,
-  MdSvg,
-  MkvSvg,
-  MovSvg,
-  Mp3Svg,
-  Mp4Svg,
-  OdpSvg,
-  OdsSvg,
-  OdtSvg,
-  OggSvg,
-  PdfSvg,
-  PhpSvg,
-  PngSvg,
-  PptSvg,
-  PptxSvg,
-  PresentationSvg,
-  PsdSvg,
-  PySvg,
-  RarSvg,
-  RtfSvg,
-  SettingsSvg,
-  SpreadsheetSvg,
-  SqlSvg,
-  SvgSvg,
-  TableSvg,
-  TarSvg,
-  TextSvg,
-  TiffSvg,
-  TsSvg,
-  TxtSvg,
-  UnknownSvg,
-  VectorSvg,
-  VideoSvg,
-  WavSvg,
-  WebmSvg,
-  WebpSvg,
-  WmvSvg,
-  XlsSvg,
-  XlsxSvg,
-  XmlSvg,
-  ZipSvg,
-}

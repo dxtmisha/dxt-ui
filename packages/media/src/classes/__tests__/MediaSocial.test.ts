@@ -38,6 +38,12 @@ describe('MediaSocial', () => {
       expect(item1?.name).toBe('GitHub')
     })
 
+    it('should include the default SVG icon by default', () => {
+      const item = MediaSocial.get(InputSocialType.github)
+      expect(item?.icon).toBeDefined()
+      expect(typeof item?.icon).toBe('string')
+    })
+
     it('should include the registered custom icon if present', () => {
       MediaSocial.addIcon(InputSocialType.github, 'custom-github-icon')
 
