@@ -38,14 +38,6 @@ export class InputFileItemStatus {
       return 'uploading'
     }
 
-    if (Boolean(this.props.error) || this.props.status === 'error') {
-      return 'error'
-    }
-
-    if (Boolean(this.props.success) || this.props.status === 'uploaded') {
-      return 'uploaded'
-    }
-
     return this.props.status ?? 'idle'
   }
 
@@ -97,29 +89,18 @@ export class InputFileItemStatus {
    */
   get message(): string {
     if (this.isUploading) {
-      return this.props.messageLoading
-        ?? this.text.loadingFile
+      return this.text.loadingFile
         ?? this.text.loading
         ?? 'Loading file ...'
     }
 
     if (this.isUploaded) {
-      if (isString(this.props.success)) {
-        return this.props.success
-      }
-
-      return this.props.messageSuccess
-        ?? this.text.uploadSuccess
+      return this.text.uploadSuccess
         ?? 'Upload successful'
     }
 
     if (this.isError) {
-      if (isString(this.props.error)) {
-        return this.props.error
-      }
-
-      return this.props.messageError
-        ?? this.text.error
+      return this.text.error
         ?? 'Error'
     }
 

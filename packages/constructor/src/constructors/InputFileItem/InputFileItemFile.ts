@@ -1,15 +1,10 @@
-import {
-  isFilled,
-  isNumber,
-  isString
-} from '@dxtmisha/functional'
+import { computed } from 'vue'
+import { isString, toNumber } from '@dxtmisha/functional'
+import { MediaFile } from '@dxtmisha/media'
 
 import { ImageFile } from '../Image'
 
 import type { InputFileItemPropsBasic } from './props'
-
-/** Regular expression to test image file extension / Регулярное выражение для проверки расширения файла изображения */
-const REGEX_IMAGE_EXTENSION = /\.(?:avif|bmp|gif|ico|jpe?g|png|svg|webp)$/i
 
 /**
  * Helper class for processing file attributes, preview generation, and size formatting.
@@ -17,6 +12,21 @@ const REGEX_IMAGE_EXTENSION = /\.(?:avif|bmp|gif|ico|jpe?g|png|svg|webp)$/i
  * Вспомогательный класс для обработки атрибутов файла, генерации предпросмотра и форматирования размера.
  */
 export class InputFileItemFile {
+  /**
+   * Media file analysis helper instance.
+   *
+   * Экземпляр помощника анализа медиа-файла.
+   */
+  readonly mediaFile = computed<MediaFile | undefined>(() => {
+    const source = this.getSource()
+
+    if (source) {
+      return new MediaFile(source)
+    }
+
+    return undefined
+  })
+
   /**
    * Constructor.
    *
@@ -35,41 +45,23 @@ export class InputFileItemFile {
    * @returns file name string / строка с именем файла
    */
   get name(): string {
-    const customName = this.props.label
-
-    if (isFilled(customName)) {
-      return String(customName)
-    }
-
-    const file = this.props.file ?? this.props.value?.file
-    if (file?.name) {
-      return file.name
-    }
-
-    if (this.props.value?.name) {
-      return this.props.value.name
-    }
-
-    return ''
+    return this.getFile()?.name
+      || this.props.value?.name
+      || ''
   }
 
   /**
    * Resolves and returns the raw file size in bytes.
    *
    * Определяет и возвращает исходный размер файла в байтах.
-   * @returns file size number or undefined / размер файла в байтах или undefined
+   * @returns file size number / размер файла в байтах
    */
-  get size(): number | undefined {
-    const file = this.props.file ?? this.props.value?.file
-    if (file?.size) {
-      return file.size
-    }
-
-    if (isNumber(this.props.value?.size)) {
-      return this.props.value.size
-    }
-
-    return undefined
+  get size(): number {
+    return toNumber(
+      this.getFile()?.size
+      ?? this.props.value?.size
+      ?? 0
+    )
   }
 
   /**
@@ -80,7 +72,7 @@ export class InputFileItemFile {
    */
   get sizeFormatted(): string {
     const bytes = this.size
-    if (bytes === undefined || bytes < 0) {
+    if (bytes <= 0) {
       return ''
     }
 
@@ -132,7 +124,7 @@ export class InputFileItemFile {
       return directSrc
     }
 
-    const file = this.props.file ?? this.props.value?.file
+    const file = this.getFile()
     if (file && this.isImage) {
       return file
     }
@@ -147,17 +139,12 @@ export class InputFileItemFile {
    * @returns true if image / true, если изображение
    */
   get isImage(): boolean {
-    const file = this.props.file ?? this.props.value?.file
+    const file = this.getFile()
     if (file) {
-      return ImageFile.isImage(file)
+      return ImageFile.isImage(file) || Boolean(this.mediaFile.value?.isImage())
     }
 
-    const source = this.src ?? this.name
-    if (source) {
-      return REGEX_IMAGE_EXTENSION.test(source)
-    }
-
-    return false
+    return Boolean(this.mediaFile.value?.isImage())
   }
 
   /**
@@ -170,8 +157,29 @@ export class InputFileItemFile {
     return Boolean(
       this.src
       || this.isImage
-      || this.props.file
-      || this.props.value?.file
+      || this.getFile()
     )
+  }
+
+  /**
+   * Resolves and returns the file object if present.
+   *
+   * Определяет и возвращает объект файла, если он передан.
+   * @returns file instance or undefined / экземпляр файла или undefined
+   */
+  getFile(): File | undefined {
+    return this.props.file ?? this.props.value?.file
+  }
+
+  /**
+   * Resolves and returns the file source (File object, URL, or name).
+   *
+   * Определяет и возвращает источник файла (объект File, URL или имя).
+   * @returns file source object, string, or undefined / объект источника файла, строка или undefined
+   */
+  getSource(): File | string | undefined {
+    return this.getFile()
+      ?? this.src
+      ?? (this.name || undefined)
   }
 }

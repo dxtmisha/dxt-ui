@@ -11,12 +11,7 @@ describe('InputFileItemFile', () => {
   }
 
   describe('name', () => {
-    it('returns props.label when provided', () => {
-      const helper = createHelper({ label: 'custom_label.jpg' })
-      expect(helper.name).toBe('custom_label.jpg')
-    })
-
-    it('returns props.file.name when props.label is absent', () => {
+    it('returns props.file.name when file is provided', () => {
       const mockFile = new File([''], 'file_name.png', { type: 'image/png' })
       const helper = createHelper({ file: mockFile })
       expect(helper.name).toBe('file_name.png')
@@ -45,14 +40,14 @@ describe('InputFileItemFile', () => {
       expect(helper.size).toBe(4096)
     })
 
-    it('returns undefined when no size is available', () => {
+    it('returns 0 when no size is available', () => {
       const helper = createHelper({})
-      expect(helper.size).toBeUndefined()
+      expect(helper.size).toBe(0)
     })
   })
 
   describe('sizeFormatted', () => {
-    it('returns empty string when size is undefined or negative', () => {
+    it('returns empty string when size is 0 or negative', () => {
       const helper = createHelper({})
       expect(helper.sizeFormatted).toBe('')
 
@@ -104,6 +99,19 @@ describe('InputFileItemFile', () => {
     })
   })
 
+  describe('mediaFile', () => {
+    it('returns MediaFile instance when file or source is present', () => {
+      const helper = createHelper({ value: { name: 'photo.png' } })
+      expect(helper.mediaFile.value).toBeDefined()
+      expect(helper.mediaFile.value?.extension).toBe('png')
+    })
+
+    it('returns undefined when no source is available', () => {
+      const helper = createHelper({})
+      expect(helper.mediaFile.value).toBeUndefined()
+    })
+  })
+
   describe('isImage', () => {
     it('delegates to ImageFile.isImage when file is present', () => {
       const isImageSpy = vi.spyOn(ImageFile, 'isImage').mockReturnValue(true)
@@ -125,8 +133,8 @@ describe('InputFileItemFile', () => {
       expect(helperPdf.isImage).toBe(false)
     })
 
-    it('detects image extension from name resolved via label', () => {
-      const helper = createHelper({ label: 'photo.JPEG' })
+    it('detects image extension from name resolved via value.name', () => {
+      const helper = createHelper({ value: { name: 'photo.JPEG' } })
       expect(helper.isImage).toBe(true)
     })
 
@@ -174,6 +182,54 @@ describe('InputFileItemFile', () => {
     it('returns false when no file or source is provided', () => {
       const helper = createHelper({})
       expect(helper.hasThumbnail).toBe(false)
+    })
+  })
+
+  describe('getFile', () => {
+    it('returns props.file when provided', () => {
+      const mockFile = new File([''], 'file.txt', { type: 'text/plain' })
+      const helper = createHelper({ file: mockFile })
+      expect(helper.getFile()).toBe(mockFile)
+    })
+
+    it('returns props.value.file when props.file is absent', () => {
+      const mockFile = new File([''], 'value.png', { type: 'image/png' })
+      const helper = createHelper({ value: { file: mockFile } })
+      expect(helper.getFile()).toBe(mockFile)
+    })
+
+    it('returns undefined when no file is provided', () => {
+      const helper = createHelper({})
+      expect(helper.getFile()).toBeUndefined()
+    })
+  })
+
+  describe('getSource', () => {
+    it('returns props.file when provided', () => {
+      const mockFile = new File([''], 'photo.jpg')
+      const helper = createHelper({ file: mockFile })
+      expect(helper.getSource()).toBe(mockFile)
+    })
+
+    it('returns props.value.file when props.file is absent', () => {
+      const mockFile = new File([''], 'value.png')
+      const helper = createHelper({ value: { file: mockFile } })
+      expect(helper.getSource()).toBe(mockFile)
+    })
+
+    it('returns src when file is absent', () => {
+      const helper = createHelper({ url: 'https://example.com/file.jpg' })
+      expect(helper.getSource()).toBe('https://example.com/file.jpg')
+    })
+
+    it('returns name when neither file nor src is provided', () => {
+      const helper = createHelper({ value: { name: 'avatar.webp' } })
+      expect(helper.getSource()).toBe('avatar.webp')
+    })
+
+    it('returns undefined when no source is available', () => {
+      const helper = createHelper({})
+      expect(helper.getSource()).toBeUndefined()
     })
   })
 })

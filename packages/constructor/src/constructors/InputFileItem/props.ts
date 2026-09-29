@@ -7,7 +7,6 @@ import type { SkeletonPropsInclude } from '../Skeleton'
 import type { CaptionProps } from '../../types/captionTypes'
 import type { EnabledProps } from '../../types/enabledTypes'
 import type { FieldFileValue } from '../../types/fieldTypes'
-import type { LabelProps } from '../../types/labelTypes'
 import type {
   TextCancelPropsInclude,
   TextDeletePropsInclude,
@@ -34,7 +33,6 @@ export type InputFileItemPropsBasic<
   Image extends ImagePropsBasic = ImagePropsBasic,
   Progress extends ProgressPropsBasic = ProgressPropsBasic
 > = IconPropsInclude<Icon>
-  & LabelProps
   & CaptionProps
   & EnabledProps
   & ImagePropsInclude<Image>
@@ -60,21 +58,6 @@ export type InputFileItemPropsBasic<
 
     /** File instance / Экземпляр файла */
     file?: File
-
-    /** Error state or error message / Состояние ошибки или текст ошибки */
-    error?: boolean | string
-
-    /** Success state or message / Состояние успеха или сообщение */
-    success?: boolean | string
-
-    /** Message for loading state / Сообщение для состояния загрузки */
-    messageLoading?: string
-
-    /** Message for success state / Сообщение для состояния успеха */
-    messageSuccess?: string
-
-    /** Message for error state / Сообщение для состояния ошибки */
-    messageError?: string
 
     /** Icon for delete button / Иконка для кнопки удаления */
     iconDelete?: string
