@@ -161,7 +161,7 @@ export class InputFileItem {
       this.props,
       this.components,
       () => ({
-        value: this.fileItem.imageValue,
+        value: this.fileItem.image,
         alt: this.fileItem.name,
         class: `${this.className}__thumbnailImage`
       })
@@ -275,8 +275,7 @@ export class InputFileItem {
     return {
       [`${this.className}--uploading`]: this.statusItem.isUploading,
       [`${this.className}--uploaded`]: this.statusItem.isUploaded,
-      [`${this.className}--error`]: this.statusItem.isError,
-      [`${this.className}--hasThumbnail`]: this.fileItem.hasThumbnail
+      [`${this.className}--error`]: this.statusItem.isError
     }
   }
 

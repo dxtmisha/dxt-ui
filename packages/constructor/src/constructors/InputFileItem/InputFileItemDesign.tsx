@@ -200,10 +200,6 @@ export class InputFileItemDesign<
    * @returns array of virtual nodes / массив виртуальных нод
    */
   readonly renderThumbnail = (): VNode[] => {
-    if (!this.item.fileItem.hasThumbnail) {
-      return []
-    }
-
     const slotThumbnail = this.initSlot('thumbnail')
     if (slotThumbnail.length > 0) {
       return [
@@ -245,7 +241,7 @@ export class InputFileItemDesign<
    * @returns array of virtual nodes / массив виртуальных нод
    */
   readonly renderThumbnailContent = (): VNode[] => {
-    if (this.item.fileItem.imageValue) {
+    if (this.item.fileItem.image) {
       return this.item.image.render()
     }
 
