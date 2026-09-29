@@ -1,0 +1,71 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/media/# Giới thiệu'/>
+
+# [@dxtmisha/media](https://github.com/dxtmisha/dxt-ui/tree/main/packages/media)
+
+`@dxtmisha/media` là gói tài nguyên đa phương tiện, biểu tượng vector và tập dữ liệu địa lý gọn nhẹ cho hệ thống thiết kế DXT UI và các ứng dụng web hiện đại. Gói cung cấp khả năng phân loại định dạng tệp, siêu dữ liệu mạng xã hội, cờ các quốc gia vector và dữ liệu địa lý ISO 3166-1 theo cấu trúc module tối ưu hóa tree-shaking và hoàn toàn không phụ thuộc vào thư viện ngoài.
+
+## Cài đặt
+
+Cài đặt thư viện qua npm:
+
+```bash
+npm i @dxtmisha/media
+```
+
+## Tại sao nên dùng thư viện này?
+
+Hầu hết các ứng dụng web đều gặp các tác vụ xử lý tệp tin, liên kết mạng xã hội và định danh quốc tế (mã vùng điện thoại, chọn quốc gia, hiển thị cờ). Việc tự quản lý các thư mục SVG rời rạc hoặc sao chép mã phân loại MIME giữa các dự án dễ gây ra lỗi không đồng nhất và làm nặng dự án.
+
+`@dxtmisha/media` giải quyết triệt để các vấn đề này:
+- **Không có phụ thuộc runtime bên ngoài** — chỉ bao gồm các tài sản SVG tối ưu, dữ liệu thuần và các lớp TypeScript gọn nhẹ.
+- **Hỗ trợ Tree-shaking** — chỉ nạp những tệp, cờ hoặc biểu tượng mạng xã hội thực sự cần thiết.
+- **Độc lập với framework & An toàn cho SSR** — hoạt động trơn tru trong Vue 3, Nuxt, React, Vite và Node.js.
+
+## Các tính năng chính
+
+### 1. Phân loại tệp & Biểu tượng Vector
+- **`MediaFile`** — phân tích đường dẫn URL, tên tệp, phần mở rộng và đối tượng `File` của trình duyệt. Trích xuất tên cơ sở, xác định danh mục tệp (hình ảnh, video, tài liệu, lưu trữ, v.v.) và phân giải biểu tượng vector SVG.
+- **`MediaFiles`** — sổ đăng ký siêu dữ liệu tĩnh hỗ trợ tra cứu hơn 85 phần mở rộng tệp, khớp định dạng MIME và biểu tượng trung tính cấp danh mục.
+- **`MediaFileIcon`** — sổ đăng ký tập trung cho phép thêm hoặc ghi đè biểu tượng SVG tùy chỉnh trên phạm vi toàn cục.
+- **`fileIcons` & `registerFileIcons`** — truy cập toàn bộ từ điển biểu tượng qua `fileIcons` hoặc đăng ký tất cả biểu tượng mặc định vào `MediaFileIcon` chỉ bằng một lệnh gọi `registerFileIcons` từ `@dxtmisha/media/files`.
+
+### 2. Mạng xã hội & Đường dẫn hồ sơ
+- **`MediaSocial`** — cấu hình và hỗ trợ hơn 35 nền tảng mạng xã hội phổ biến (GitHub, Telegram, LinkedIn, X, WeChat, Zalo, v.v.).
+- **Xử lý URL & Tên người dùng** — tự động tạo liên kết hồ sơ chuẩn (`getUrl`) và trích xuất tên người dùng thuần từ URL (`getValue`).
+- **`socialIcons` & `registerSocialIcons`** — truy cập từ điển biểu tượng thương hiệu vector qua `socialIcons` hoặc đăng ký toàn bộ vào `MediaSocial` qua `registerSocialIcons` từ `@dxtmisha/media/socials`.
+
+### 3. Quốc kỳ & Dữ liệu địa lý
+- **Hơn 250 Quốc kỳ** — tệp vector SVG cho tất cả các quốc gia và vùng lãnh thổ theo chuẩn ISO 3166-1 alpha-2 qua `@dxtmisha/media/flags`.
+- **Sprite WebP hiệu năng cao** — tích hợp sẵn ảnh sprite raster (`flags.webp`) kèm kiểu dáng CSS (`style.css`) giúp tải nhanh danh sách cờ dài mà không tốn tài nguyên mạng.
+- **Bộ dữ liệu địa lý (`geo.json`)** — tên quốc gia, mã ISO, mã số điện thoại quốc tế, định dạng mặt nạ số điện thoại và múi giờ.
+
+## Các đường dẫn xuất (Subpath Exports)
+
+Thư viện được chia nhỏ thành các đường dẫn độc lập để tối ưu hóa kích thước gói:
+
+```typescript
+// Điểm truy cập chính của thư viện (lớp, danh mục, dữ liệu địa lý)
+import { MediaFile, MediaFiles, MediaSocial, geo } from '@dxtmisha/media'
+
+// Từ điển biểu tượng tệp và hàm đăng ký hàng loạt
+import { fileIcons, registerFileIcons } from '@dxtmisha/media/files'
+
+// Nhập trực tiếp quốc kỳ vector
+import { UsSvg, VnSvg, JpSvg } from '@dxtmisha/media/flags'
+
+// Từ điển biểu tượng mạng xã hội và hàm đăng ký hàng loạt
+import { socialIcons, registerSocialIcons } from '@dxtmisha/media/socials'
+```
+
+## Nguyên tắc thiết kế
+
+- **Zero Dependencies** — hoàn toàn độc lập, không phát sinh chi phí runtime của bên thứ ba.
+- **Kiểu dữ liệu chặt chẽ** — hỗ trợ TypeScript hoàn chỉnh với các enum (`MediaFileCategory`, `MediaFileGroup`, `InputSocialType`) và interface rõ ràng.
+- **Hiệu năng vượt trội** — chia nhỏ tài nguyên giúp giảm tối đa dung lượng tệp khi đóng gói ứng dụng.
+- **Sẵn sàng cho SSR** — vận hành an toàn và đồng nhất trên cả client và server.
+
+## Git
+
+[https://github.com/dxtmisha/dxt-ui/tree/main/packages/media](https://github.com/dxtmisha/dxt-ui/tree/main/packages/media)

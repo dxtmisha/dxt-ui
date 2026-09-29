@@ -1,0 +1,187 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/media/2. Социальные сети'/>
+
+# Социальные сети: подключение и интеграция
+
+Пакет `@dxtmisha/media` включает комплексную подсистему работы с социальными сетями, охватывающую более 35 международных и региональных платформ (GitHub, Telegram, LinkedIn, X, WeChat, Zalo, Discord, YouTube и др.). Она предоставляет официальные векторные SVG-иконки брендов, префиксы и суффиксы для ссылок, извлечение логинов, маски ввода и динамическую замену иконок.
+
+## Способы подключения
+
+В зависимости от задач вашего приложения доступны три основных способа интеграции социальных ресурсов:
+
+1. **Словарь иконок и регистрация (`@dxtmisha/media/socials`)** — использование полного словаря `socialIcons` по ключам платформ или пакетная инициализация через `registerSocialIcons()`.
+2. **Формирование и парсинг URL через `MediaSocial`** — автоматическое построение канонических ссылок (`getUrl`) и извлечение чистых логинов (`getValue`) для профилей и полей ввода.
+3. **Реестр кастомных иконок** — глобальная замена встроенных SVG-иконок соцсетей или регистрация корпоративных стилей для всех компонентов приложения.
+
+## Модуль `socials.ts` (`@dxtmisha/media/socials`)
+
+Модуль `socials.ts` служит основным источником векторных SVG-иконок брендов в пакете. Он экспортирует:
+- Словарь `socialIcons`, в котором иконки сопоставлены с кодами перечисления `InputSocialType`.
+- Функцию пакетной инициализации `registerSocialIcons()`.
+
+Обратите внимание: отдельные иконки соцсетей не экспортируются в виде отдельных переменных; доступ ко всем SVG осуществляется через словарь `socialIcons` либо динамически через методы класса `MediaSocial`.
+
+### 1. Функция `registerSocialIcons()`
+
+Функция `registerSocialIcons()` автоматически регистрирует все 35+ стандартных брендовых SVG-иконок из словаря `socialIcons` в статическом реестре `MediaSocial` за один вызов:
+
+```typescript
+import { registerSocialIcons } from '@dxtmisha/media/socials'
+
+// Регистрирует все стандартные иконки соцсетей в реестре MediaSocial
+registerSocialIcons()
+```
+
+После вызова этой функции метод `MediaSocial.get(code)` сразу же возвращает зарегистрированную SVG-иконку, которую автоматически подхватывают компоненты формы, такие как `D1InputSocial`.
+
+### 2. Словарь `socialIcons`
+
+Объект `socialIcons` представляет собой типизированный словарь (`InputSocialIcons`), ключами которого выступают значения перечисления `InputSocialType`:
+
+```typescript
+import { socialIcons } from '@dxtmisha/media/socials'
+import { InputSocialType } from '@dxtmisha/media'
+
+// Прямой доступ к иконке бренда по ключу перечисления
+const githubSvg = socialIcons[InputSocialType.github]
+const telegramSvg = socialIcons[InputSocialType.telegram]
+const linkedinSvg = socialIcons[InputSocialType.linkedin]
+```
+
+В шаблонах Vue 3:
+
+```html
+<template>
+  <div class="social-links">
+    <a href="https://github.com/dxtmisha" target="_blank" v-html="socialIcons['github']" />
+    <a href="https://t.me/dxtmisha" target="_blank" v-html="socialIcons['telegram']" />
+  </div>
+</template>
+
+<script setup lang="ts">
+import { socialIcons } from '@dxtmisha/media/socials'
+</script>
+```
+
+## Управление URL через `MediaSocial`
+
+Класс `MediaSocial` берет на себя рутину построения ссылок на профили и извлечения логинов, избавляя от написания регулярных выражений.
+
+### Построение ссылки на профиль (`getUrl`)
+
+Создает полную ссылку на профиль пользователя по коду соцсети и логину:
+
+```typescript
+import { MediaSocial, InputSocialType } from '@dxtmisha/media'
+
+// Возвращает 'https://github.com/dxtmisha'
+const githubUrl = MediaSocial.getUrl(InputSocialType.github, 'dxtmisha')
+
+// Возвращает 'https://t.me/dxtmisha'
+const tgUrl = MediaSocial.getUrl(InputSocialType.telegram, 'dxtmisha')
+
+// Если значение уже содержит префикс платформы, оно возвращается без изменений
+const existingUrl = MediaSocial.getUrl(InputSocialType.github, 'https://github.com/dxtmisha')
+// Возвращает: 'https://github.com/dxtmisha'
+```
+
+### Извлечение логина (`getValue`)
+
+Извлекает чистое имя пользователя из полной ссылки на профиль, удаляя префикс и суффикс платформы:
+
+```typescript
+import { MediaSocial, InputSocialType } from '@dxtmisha/media'
+
+// Возвращает 'dxtmisha'
+const username = MediaSocial.getValue(InputSocialType.telegram, 'https://t.me/dxtmisha')
+
+// Возвращает 'dxtmisha'
+const githubUser = MediaSocial.getValue(InputSocialType.github, 'https://github.com/dxtmisha')
+```
+
+## Регистрация кастомных иконок соцсетей
+
+Если в вашем дизайне используются монохромные, инвертированные или особые корпоративные варианты иконок, зарегистрируйте их с помощью `MediaSocial.addIcon` или `MediaSocial.addIcons`:
+
+### Замена одной иконки
+
+```typescript
+import { MediaSocial, InputSocialType } from '@dxtmisha/media'
+
+// Переопределение иконки Telegram кастомной разметкой
+MediaSocial.addIcon(
+  InputSocialType.telegram,
+  '<svg class="custom-telegram" viewBox="0 0 24 24"><path d="..."/></svg>'
+)
+```
+
+### Пакетная замена
+
+```typescript
+import { MediaSocial, InputSocialType } from '@dxtmisha/media'
+
+MediaSocial.addIcons({
+  [InputSocialType.github]: '<svg class="brand-gh">...</svg>',
+  [InputSocialType.x]: '<svg class="brand-x">...</svg>'
+})
+```
+
+После регистрации любой компонент, обращающийся к `MediaSocial.get(code)` или использующий `D1InputSocial`, автоматически отобразит вашу кастомную иконку.
+
+## Запросы к каталогу соцсетей и метаданным
+
+Вы можете запросить список всех поддерживаемых платформ или конфигурацию отдельной сети:
+
+```typescript
+import { MediaSocial, InputSocialType } from '@dxtmisha/media'
+
+// Получение конфигурации отдельной платформы
+const linkedin = MediaSocial.get(InputSocialType.linkedin)
+console.log(linkedin?.name)   // 'LinkedIn'
+console.log(linkedin?.prefix) // 'https://www.linkedin.com/in/'
+console.log(linkedin?.icon)   // Векторная строка SVG
+
+// Получение массива всех поддерживаемых сетей (35+ платформ)
+const allSocials = MediaSocial.getList()
+```
+
+## Интеграция с компонентами дизайн-системы
+
+`MediaSocial` органично работает в сочетании с компонентами ввода, такими как `D1InputSocial` в `@dxtmisha/d1`:
+
+```html
+<template>
+  <d1-input-social
+    v-model="socialHandle"
+    :type="InputSocialType.telegram"
+    label="Имя пользователя Telegram"
+  />
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue'
+import { InputSocialType } from '@dxtmisha/media'
+
+const socialHandle = ref('dxtmisha')
+</script>
+```
+
+## Справочник поддерживаемых платформ
+
+Перечисление `InputSocialType` определяет более 35 поддерживаемых сетей:
+
+- **GitHub (`github`)** — `https://github.com/`
+- **Telegram (`telegram`)** — `https://t.me/`
+- **LinkedIn (`linkedin`)** — `https://www.linkedin.com/in/`
+- **X / Twitter (`x`, `twitter`)** — `https://x.com/`
+- **Discord (`discord`)** — `https://discord.gg/`
+- **YouTube (`youtube`)** — `https://www.youtube.com/@`
+- **Instagram (`instagram`)** — `https://www.instagram.com/`
+- **Facebook (`facebook`)** — `https://www.facebook.com/`
+- **WeChat (`wechat`)**
+- **Zalo (`zalo`)** — `https://zalo.me/`
+- **VK (`vk`)** — `https://vk.com/`
+- **TikTok (`tiktok`)** — `https://www.tiktok.com/@`
+- **Reddit (`reddit`)** — `https://www.reddit.com/user/`
+- **Medium (`medium`)** — `https://medium.com/@`

@@ -1,0 +1,86 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/media/Classes/MediaFiles - Каталог метаданных файлов и проверка путей'/>
+
+# Класс MediaFiles
+
+Класс `MediaFiles` — это **основной статический класс (Static)**, предоставляющий централизованный поиск по каталогу файлов, сопоставление по MIME-типам, определение нейтральных иконок категорий и валидацию путей/URL. Он служит ключевым поставщиком метаданных для `@dxtmisha/media`, бесшовно взаимодействуя с `MediaFileIcon` для применения кастомных иконок.
+
+## Ключевые возможности
+
+- **Обширный каталог форматов** — встроенные конфигурации для более чем 85 расширений файлов, категорий и MIME-типов.
+- **Интеллектуальный поиск с фолбэком** — находит элементы по коду, расширению или MIME-типу, автоматически возвращая нейтральную иконку при неизвестном формате.
+- **Нейтральные иконки категорий** — быстрый доступ к общим иконкам для целых категорий файлов (например, `image`, `video`, `document`, `table`).
+- **Проверка путей и ссылок** — определяет, является ли переданная строка путем в файловой системе или веб-ссылкой (`isLink`).
+- **Интеграция с кастомными иконками** — автоматически подставляет пользовательские иконки, зарегистрированные в `MediaFileIcon`.
+
+## Инициализация
+
+Класс является статическим и не требует создания экземпляров. Все методы вызываются напрямую через `MediaFiles`.
+
+## Методы
+
+### Проверка путей
+
+- `static isLink(path: string): boolean` — проверяет, является ли указанная строка путем к файлу или веб-ссылкой (наличие слешей `/`, `\` или протоколов `http://`, `https://`).
+
+### Поиск и реестр
+
+- `static get(code: string): MediaFileItem | undefined` — возвращает элемент метаданных файла по расширению или коду, с запасным поиском по MIME-типу или нейтральному элементу по умолчанию, с учетом кастомных иконок.
+- `static getByCategory(category: MediaFileCategory | MediaFileCategoryValue | string): MediaFileItem | undefined` — возвращает нейтральный элемент конфигурации файла для заданной категории или кода файла.
+- `static getByMime(mime: string): MediaFileItem | undefined` — возвращает элемент метаданных файла по его MIME-типу с учетом кастомных иконок.
+- `static getList(): MediaFileList` — возвращает полный массив всех поддерживаемых элементов конфигураций файлов.
+- `static getNeutral(): MediaFileItem | undefined` — возвращает стандартный нейтральный элемент файла с примененной кастомной иконкой при ее наличии.
+
+## Типы
+
+### MediaFileCategory
+
+Перечисление поддерживаемых категорий файлов: `archive`, `audio`, `code`, `config`, `database`, `document`, `executable`, `folder`, `font`, `image`, `presentation`, `system`, `table`, `text`, `vector`, `video`.
+
+### MediaFileGroup
+
+Перечисление классификационных групп элементов файлов:
+- `neutral` — общая нейтральная иконка файла по умолчанию.
+- `category` — общая иконка категории файлов (например, изображение или документ).
+- `standard` — стандартная иконка конкретного формата или расширения (например, PNG, PDF, ZIP).
+
+### MediaFileItem
+
+- `code: string` — уникальный код типа файла или первичное расширение.
+- `name: string` — понятное пользователю отображаемое название формата.
+- `extensions?: string[]` — список поддерживаемых расширений файла.
+- `mime?: string` — связанный MIME-тип.
+- `icon?: string` — разрешенная SVG-разметка иконки или URL.
+- `category?: MediaFileCategoryValue` — категория файла из перечисления.
+- `group?: MediaFileGroupValue` — группа элемента из перечисления.
+
+### MediaFileList
+
+- `MediaFileItem[]` — массив всех элементов конфигураций файлов.
+
+## Пример использования
+
+```typescript
+import { MediaFiles, MediaFileCategory } from '@dxtmisha/media'
+
+// Проверка, является ли строка путем или ссылкой
+MediaFiles.isLink('https://example.com/assets/report.pdf') // true
+MediaFiles.isLink('report.pdf') // false
+
+// Поиск конфигурации по расширению или коду
+const pdf = MediaFiles.get('pdf')
+console.log(pdf?.name) // 'PDF'
+console.log(pdf?.category) // 'document'
+
+// Получение нейтральной иконки категории
+const imageCategory = MediaFiles.getByCategory(MediaFileCategory.image)
+console.log(imageCategory?.name) // 'Image'
+
+// Поиск по MIME-типу
+const jsonFile = MediaFiles.getByMime('application/json')
+console.log(jsonFile?.code) // 'json'
+
+// Базовая нейтральная иконка
+const neutral = MediaFiles.getNeutral()
+```

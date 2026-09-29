@@ -1,0 +1,73 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/media/Classes/MediaFileIcon - Custom File Icon Registry'/>
+
+# MediaFileIcon Class
+
+The `MediaFileIcon` class is a **Primary Class (Static)** designed for managing the registration, storage, normalization, and application of custom SVG icons for file extensions and type codes. It serves as the centralized icon registry utilized by `MediaFiles` and `MediaFile` to override default vector icons across the design system.
+
+## Key Features
+
+- **Static Registry** — maintains an in-memory dictionary of custom SVG markup mapped to normalized file codes.
+- **Code Normalization** — trims whitespace and converts codes to lowercase (`toCode`) ensuring case-insensitive lookups.
+- **Single & Batch Registration** — provides convenient methods for registering individual icons (`add`) or importing dictionaries in bulk (`addList`).
+- **Seamless Item Enrichment** — safely attaches custom icons to `MediaFileItem` metadata objects via `toItem`.
+- **Zero Runtime Dependencies** — pure string and dictionary operations, fully isomorphic and safe for SSR.
+
+## Initialization
+
+The class is static and does not require instantiation. All methods are invoked directly on `MediaFileIcon`.
+
+## Methods
+
+### Registry & Management
+
+- `static has(code: string): boolean` — checks whether a custom icon is registered for the specified file code or extension.
+- `static get(code: string): string | undefined` — returns the custom SVG icon string for the specified code or extension, or `undefined` if not registered.
+- `static add(code: string, icon: string): void` — registers a custom SVG icon string for a specific file code or extension.
+- `static addList(icons: MediaFileIcons): void` — registers multiple custom SVG icons in batch from a dictionary.
+
+### Normalization & Item Transform
+
+- `static toCode(code: string): string` — normalizes a file code or extension by trimming whitespace and converting to lowercase.
+- `static toItem(item?: MediaFileItem): MediaFileItem | undefined` — clones the provided file item and overrides its `icon` property with the custom icon if registered.
+
+## Types
+
+### MediaFileIcons
+
+- `Record<string, string>` — dictionary mapping normalized file codes or extensions to SVG icon markup strings.
+
+### MediaFileItem
+
+- `code: string` — file type code or extension.
+- `name: string` — human-readable display name of the file format.
+- `icon?: string` — resolved or custom SVG icon markup.
+- `extensions?: string[]` — list of supported file extensions.
+- `mime?: string` — associated MIME type.
+- `category?: MediaFileCategoryValue` — high-level file category.
+- `group?: MediaFileGroupValue` — classification group (`neutral`, `category`, `standard`).
+
+## Usage Example
+
+```typescript
+import { MediaFileIcon } from '@dxtmisha/media'
+
+// Register a single custom SVG icon
+MediaFileIcon.add('sketch', '<svg class="icon-sketch">...</svg>')
+
+// Register multiple icons in batch
+MediaFileIcon.addList({
+  psd: '<svg class="icon-psd">...</svg>',
+  ai: '<svg class="icon-ai">...</svg>'
+})
+
+// Check if an icon exists
+if (MediaFileIcon.has('sketch')) {
+  const iconMarkup = MediaFileIcon.get('sketch')
+  console.log(iconMarkup)
+}
+
+// Normalize a code string
+console.log(MediaFileIcon.toCode('  .DOCX  ')) // '.docx'
+```

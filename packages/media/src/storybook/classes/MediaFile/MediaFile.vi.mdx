@@ -4,19 +4,19 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # Lớp MediaFile
 
-Lớp `MediaFile` là một tiện ích gọn nhẹ được thiết kế để phân tích đường dẫn tệp, URL, tên tệp và mã loại tệp. Lớp này hỗ trợ phân giải biểu tượng SVG của tệp, trích xuất phần mở rộng và tên cơ sở, đồng thời phân loại tệp thành các nhóm cấp cao (hình ảnh, video, tài liệu, lưu trữ, v.v.) mà không cần phụ thuộc vào MIME type hay các thư viện ngoài.
+Lớp `MediaFile` là một tiện ích gọn nhẹ được thiết kế để phân tích đường dẫn tệp, URL, tên tệp, mã loại tệp và đối tượng `File`. Lớp này hỗ trợ phân giải biểu tượng SVG của tệp, trích xuất phần mở rộng và tên cơ sở, đồng thời phân loại tệp thành các danh mục (hình ảnh, video, tài liệu, lưu trữ, v.v.) dựa trên `MediaFiles` và `MediaFileIcon`.
 
 ## Các tính năng chính
 
-- **Phân tích cú pháp tệp toàn diện** — xử lý liền mạch các URL đầy đủ có tham số truy vấn và đoạn mã hash, đường dẫn tuyệt đối/tương đối, tên tệp, phần mở rộng có dấu chấm (`.png`) và mã loại thuần túy (`png`, `pdf`, `7z`).
-- **Phân giải biểu tượng SVG** — ánh xạ trực tiếp biểu tượng từ thư viện tích hợp gồm 85 biểu tượng tệp vector, tự động sử dụng biểu tượng tệp mặc định khi không nhận diện được định dạng.
-- **Sổ đăng ký biểu tượng tùy chỉnh** — cho phép đăng ký biểu tượng SVG tùy chỉnh trên phạm vi toàn cục cho các phần mở rộng hoặc mã tệp thông qua `addIcon` và `addIcons`.
-- **Phân loại danh mục và kiểm tra kiểu** — xác định ngay lập tức danh mục tệp và cung cấp các hàm getter logic (`isImage`, `isVideo`, `isDocument`, `isArchive`, v.v.).
-- **Không có phụ thuộc runtime** — hoàn toàn dựa trên xử lý chuỗi, an toàn cho môi trường SSR và isomorphic.
+- **Phân tích cú pháp tệp toàn diện** — xử lý liền mạch đối tượng `File`, URL đầy đủ có tham số truy vấn và đoạn mã hash, đường dẫn tuyệt đối/tương đối, tên tệp, phần mở rộng có dấu chấm (`.png`) và mã loại thuần túy (`png`, `pdf`, `7z`).
+- **Phân giải biểu tượng SVG** — ánh xạ trực tiếp từ thư viện tích hợp hơn 85 biểu tượng tệp vector, tự động dự phòng về biểu tượng danh mục hoặc biểu tượng trung tính mặc định chung khi không nhận diện được định dạng.
+- **Hỗ trợ biểu tượng tùy chỉnh** — tự động áp dụng các biểu tượng SVG tùy chỉnh đã được đăng ký trong `MediaFileIcon`.
+- **Phân loại danh mục và kiểm tra định dạng** — xác định ngay lập tức danh mục tệp và cung cấp các hàm logic hỗ trợ (`isImage`, `isVideo`, `isDocument`, `isStandard`, v.v.).
+- **Không có phụ thuộc runtime** — hoàn toàn dựa trên xử lý chuỗi và tra cứu danh mục, an toàn cho môi trường SSR và isomorphic.
 
 ## Khởi tạo
 
-Tạo một thực thể bằng cách cung cấp liên kết tệp, URL, tên tệp hoặc mã loại tệp:
+Tạo một thực thể bằng cách cung cấp đối tượng `File`, liên kết tệp, URL, tên tệp hoặc mã loại tệp, kèm theo tham số MIME type tùy chọn:
 
 ```typescript
 import { MediaFile } from '@dxtmisha/media'
@@ -29,36 +29,59 @@ const fileFromName = new MediaFile('archive.tar.gz')
 
 // Từ phần mở rộng hoặc mã loại
 const fileFromCode = new MediaFile('png')
+
+// Từ đối tượng File trong trình duyệt
+const fileFromInput = new MediaFile(uploadedFile)
 ```
 
 ## Các phương thức
 
-### Sổ đăng ký tĩnh
+### Thuộc tính và đặc tính tệp
 
-- `static get(code: string): MediaFileItem | undefined` — trả về cấu hình tệp theo mã hoặc phần mở rộng, bao gồm cả biểu tượng tùy chỉnh đã đăng ký.
-- `static getList(): MediaFileList` — trả về toàn bộ danh sách cấu hình tệp được hỗ trợ.
-- `static addIcon(code: string, icon: string): void` — đăng ký chuỗi biểu tượng SVG tùy chỉnh cho một mã hoặc phần mở rộng tệp cụ thể.
-- `static addIcons(icons: MediaFileIcons): void` — đăng ký hàng loạt nhiều biểu tượng SVG tùy chỉnh.
-
-### Thuộc tính tệp
-
-- `name: string` — trả về tên tệp đầy đủ được trích xuất từ đường dẫn hoặc URL (đã loại bỏ query parameter và hash).
 - `baseName: string` — trả về tên tệp không bao gồm phần mở rộng (ví dụ: `'archive.tar'` cho `'archive.tar.gz'`).
 - `category: MediaFileCategory | undefined` — trả về giá trị enum danh mục tệp (ví dụ: `'image'`, `'video'`, `'document'`).
 - `extension: string` — trả về phần mở rộng tệp viết thường đã được chuẩn hóa không có dấu chấm (ví dụ: `'png'`, `'pdf'`).
+- `extensions: string[] | undefined` — trả về danh sách các phần mở rộng được hỗ trợ liên kết với định dạng tệp.
+- `file: File | undefined` — trả về đối tượng `File` của trình duyệt nếu thực thể được khởi tạo bằng đối tượng File.
+- `group: MediaFileGroup | undefined` — trả về nhóm phân loại của phần tử tệp (`neutral`, `category`, `standard`).
 - `icon: string` — trả về chuỗi mã SVG của biểu tượng đã được phân giải.
 - `item: MediaFileItem | undefined` — trả về mục siêu dữ liệu hoàn chỉnh từ danh mục tệp.
+- `mime: string | undefined` — trả về kiểu MIME được phát hiện hoặc được chỉ định rõ ràng.
+- `name: string` — trả về tên tệp đầy đủ được trích xuất từ đường dẫn hoặc URL (đã loại bỏ query parameter và hash).
 
-### Kiểm tra danh mục
+### Kiểm tra danh mục và phân loại
 
-- `isArchive: boolean` — trả về `true` nếu tệp thuộc danh mục lưu trữ (`zip`, `rar`, `7z`, `tar`, `gz`, v.v.).
-- `isAudio: boolean` — trả về `true` nếu tệp thuộc danh mục âm thanh (`mp3`, `wav`, `flac`, `aac`, `ogg`, v.v.).
-- `isCode: boolean` — trả về `true` nếu tệp là mã nguồn hoặc tệp dữ liệu (`ts`, `js`, `json`, `html`, `css`, `py`, v.v.).
-- `isDocument: boolean` — trả về `true` nếu tệp là tài liệu văn bản (`pdf`, `doc`, `docx`, `odt`, `rtf`, v.v.).
-- `isImage: boolean` — trả về `true` nếu tệp là hình ảnh (`png`, `jpg`, `jpeg`, `gif`, `svg`, `webp`, v.v.).
-- `isPresentation: boolean` — trả về `true` nếu tệp là bài thuyết trình (`ppt`, `pptx`, `odp`, `presentation`).
-- `isTable: boolean` — trả về `true` nếu tệp là bảng tính hoặc dữ liệu dạng bảng (`xls`, `xlsx`, `csv`, `ods`, v.v.).
-- `isVideo: boolean` — trả về `true` nếu tệp là video (`mp4`, `webm`, `mkv`, `avi`, `mov`, v.v.).
+- `isArchive(): boolean` — trả về `true` nếu tệp thuộc danh mục lưu trữ (`zip`, `rar`, `7z`, `tar`, `gz`, v.v.).
+- `isAudio(): boolean` — trả về `true` nếu tệp thuộc danh mục âm thanh (`mp3`, `wav`, `flac`, `aac`, `ogg`, v.v.).
+- `isCategory(): boolean` — trả về `true` nếu tệp đại diện cho biểu tượng trung tính cấp danh mục.
+- `isCode(): boolean` — trả về `true` nếu tệp là mã nguồn hoặc tệp dữ liệu (`ts`, `js`, `json`, `html`, `css`, `py`, v.v.).
+- `isDocument(): boolean` — trả về `true` nếu tệp là tài liệu văn bản (`pdf`, `doc`, `docx`, `odt`, `rtf`, v.v.).
+- `isImage(): boolean` — trả về `true` nếu tệp là hình ảnh (`png`, `jpg`, `jpeg`, `gif`, `svg`, `webp`, v.v.).
+- `isNeutral(): boolean` — trả về `true` nếu tệp đại diện cho biểu tượng tệp trung tính mặc định chung.
+- `isPresentation(): boolean` — trả về `true` nếu tệp là bài thuyết trình (`ppt`, `pptx`, `odp`, `presentation`).
+- `isStandard(): boolean` — trả về `true` nếu tệp đại diện cho định dạng hoặc phần mở rộng tệp tiêu chuẩn cụ thể.
+- `isTable(): boolean` — trả về `true` nếu tệp là bảng tính hoặc dữ liệu dạng bảng (`xls`, `xlsx`, `csv`, `ods`, v.v.).
+- `isVideo(): boolean` — trả về `true` nếu tệp là video (`mp4`, `webm`, `mkv`, `avi`, `mov`, v.v.).
+
+## Các kiểu dữ liệu
+
+### MediaFileCategory
+
+Enum đại diện cho các danh mục tệp: `archive`, `audio`, `code`, `config`, `database`, `document`, `executable`, `folder`, `font`, `image`, `presentation`, `system`, `table`, `text`, `vector`, `video`.
+
+### MediaFileGroup
+
+Enum đại diện cho các nhóm phân loại phần tử tệp: `neutral`, `category`, `standard`.
+
+### MediaFileItem
+
+- `code: string` — mã tệp duy nhất hoặc phần mở rộng chính.
+- `name: string` — tên hiển thị trực quan của định dạng tệp.
+- `extensions?: string[]` — danh sách các phần mở rộng tệp được hỗ trợ.
+- `mime?: string` — kiểu MIME tương ứng.
+- `icon?: string` — chuỗi mã SVG biểu tượng đã được giải quyết hoặc liên kết URL.
+- `category?: MediaFileCategoryValue` — giá trị enum danh mục tệp.
+- `group?: MediaFileGroupValue` — giá trị enum nhóm phân loại phần tử.
 
 ## Ví dụ sử dụng
 

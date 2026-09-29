@@ -1,0 +1,192 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/media/1. Иконки файлов'/>
+
+# Иконки файлов: подключение и интеграция
+
+`@dxtmisha/media` предоставляет самодостаточную подсистему иконок и метаданных файлов без внешних зависимостей, ориентированную на современные веб-приложения и дизайн-системы. Она включает более 85 векторных SVG-иконок, автоматическую классификацию форматов и различные сценарии подключения — от использования словаря до динамического анализа и глобального переопределения иконок.
+
+## Способы подключения
+
+В зависимости от архитектуры вашего проекта доступны три основных сценария работы с иконками файлов:
+
+1. **Словарь иконок и регистрация (`@dxtmisha/media/files`)** — доступ к иконкам по коду из словаря `fileIcons` или их пакетная регистрация через `registerFileIcons()`.
+2. **Динамическое определение через `MediaFile`** — идеально для загрузки файлов, списков загрузок и таблиц, где пути или объекты `File` поступают во время выполнения.
+3. **Реестр кастомных иконок через `MediaFileIcon`** — позволяет переопределять встроенные иконки или регистрировать собственные корпоративные форматы глобально для всего приложения.
+
+## Модуль `files.ts` (`@dxtmisha/media/files`)
+
+Модуль `files.ts` служит основным источником векторных SVG-ассетов файлов в пакете. Он экспортирует:
+- Словарь `fileIcons`, объединяющий все иконки по кодам форматов и категориям.
+- Функцию пакетной инициализации `registerFileIcons()`.
+
+Обратите внимание: отдельные иконки не экспортируются в виде отдельных именованных переменных; доступ ко всем SVG осуществляется через словарь `fileIcons` либо динамически через классы `MediaFile` / `MediaFiles`.
+
+### 1. Функция `registerFileIcons()`
+
+Функция `registerFileIcons()` регистрирует все стандартные встроенные SVG-иконки из словаря `fileIcons` в статическом реестре `MediaFileIcon` за один вызов:
+
+```typescript
+import { registerFileIcons } from '@dxtmisha/media/files'
+
+// Регистрирует все стандартные иконки файлов в реестре MediaFileIcon
+registerFileIcons()
+```
+
+После вызова этой функции все методы `MediaFileIcon.get(code)` и `MediaFiles.get(code)` мгновенно получают доступ ко всем зарегистрированным векторным иконкам во всем приложении.
+
+### 2. Словарь `fileIcons`
+
+Объект `fileIcons` представляет собой типизированный словарь (`MediaFileIcons`), в котором сопоставлены коды форматов, категорий и нейтральные идентификаторы со строками SVG-разметки:
+
+- **Основная нейтральная иконка файла**: `fileIcons['file']` — универсальная иконка файла по умолчанию.
+- **Нейтральные иконки категорий**: `fileIcons['archive']`, `fileIcons['audio']`, `fileIcons['code']`, `fileIcons['config']`, `fileIcons['database']`, `fileIcons['document']`, `fileIcons['executable']`, `fileIcons['folder']`, `fileIcons['font']`, `fileIcons['image']`, `fileIcons['presentation']`, `fileIcons['table']`, `fileIcons['text']`, `fileIcons['vector']`, `fileIcons['video']`.
+- **Конкретные форматы**: `fileIcons['7z']`, `fileIcons['pdf']`, `fileIcons['docx']`, `fileIcons['png']`, `fileIcons['zip']`, `fileIcons['xlsx']` и более 70 других.
+
+```typescript
+import { fileIcons } from '@dxtmisha/media/files'
+
+// Прямой доступ к словарю по коду формата или категории
+const pdfSvg = fileIcons['pdf']
+const documentCategorySvg = fileIcons['document']
+const defaultFileSvg = fileIcons['file']
+```
+
+В шаблонах Vue 3:
+
+```html
+<template>
+  <div class="file-item">
+    <span class="file-icon" v-html="fileIcons['pdf']" />
+    <span class="file-name">Annual_Report.pdf</span>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { fileIcons } from '@dxtmisha/media/files'
+</script>
+```
+
+## Динамическое определение через `MediaFile`
+
+Для работы с загруженными пользователем файлами, внешними ссылками или записями в базе данных используйте класс `MediaFile`. Он анализирует имена файлов, пути или объекты `File` и автоматически определяет расширение, категорию и соответствующую SVG-иконку:
+
+```typescript
+import { MediaFile, MediaFileCategory } from '@dxtmisha/media'
+
+// Из удаленного URL с query-параметрами и хэшем
+const remoteFile = new MediaFile('https://cdn.example.com/docs/spec.2026.docx?v=3#summary')
+
+console.log(remoteFile.name)        // 'spec.2026.docx'
+console.log(remoteFile.baseName)    // 'spec.2026'
+console.log(remoteFile.extension)   // 'docx'
+console.log(remoteFile.category)    // MediaFileCategory.document
+console.log(remoteFile.isDocument()) // true
+
+// Готовая SVG-разметка иконки (кастомная, если зарегистрирована, или встроенная)
+const svgMarkup = remoteFile.icon
+```
+
+### Поддержка объектов `File` из браузера
+
+`MediaFile` нативно принимает стандартные объекты `File` (например, из `<input type="file">` или Drag-and-Drop области):
+
+```typescript
+function handleFileUpload(event: Event) {
+  const target = event.target as HTMLInputElement
+  const file = target.files?.[0]
+
+  if (file) {
+    const media = new MediaFile(file)
+
+    console.log(media.name)        // Имя файла из браузера
+    console.log(media.mime)        // Нативный MIME-тип (например, 'image/png')
+    console.log(media.isImage())   // true
+    console.log(media.icon)        // Векторная разметка иконки
+  }
+}
+```
+
+## Регистрация кастомных иконок через `MediaFileIcon`
+
+Если в проекте требуются брендовые стилизованные иконки или поддержка редких проприетарных расширений, зарегистрируйте их глобально с помощью `MediaFileIcon`.
+
+### Регистрация одной иконки
+
+```typescript
+import { MediaFileIcon } from '@dxtmisha/media'
+
+// Регистрация кастомной SVG-иконки для расширения или кода формата
+MediaFileIcon.add('fig', '<svg viewBox="0 0 24 24"><path d="..."/></svg>')
+
+// Проверка наличия и получение иконки
+if (MediaFileIcon.has('fig')) {
+  console.log(MediaFileIcon.get('fig'))
+}
+```
+
+### Пакетная регистрация иконок
+
+```typescript
+import { MediaFileIcon } from '@dxtmisha/media'
+
+MediaFileIcon.addList({
+  sketch: '<svg class="custom-sketch">...</svg>',
+  blender: '<svg class="custom-blend">...</svg>',
+  cad: '<svg class="custom-cad">...</svg>'
+})
+```
+
+После регистрации любой вызов `new MediaFile('design.sketch').icon` или `MediaFiles.get('sketch')` автоматически вернет вашу пользовательскую SVG-иконку.
+
+## Запросы к каталогу через `MediaFiles`
+
+Класс `MediaFiles` предоставляет статические методы для работы со встроенным каталогом форматов без создания экземпляров:
+
+```typescript
+import { MediaFiles, MediaFileCategory } from '@dxtmisha/media'
+
+// Проверка, является ли строка ссылкой или путем
+MediaFiles.isLink('https://example.com/asset.zip') // true
+MediaFiles.isLink('archive.zip')                   // false
+
+// Получение метаданных формата по расширению
+const item = MediaFiles.get('xlsx')
+console.log(item?.name)       // 'Excel'
+console.log(item?.category)   // 'table'
+console.log(item?.extensions) // ['xls', 'xlsx']
+
+// Получение общей нейтральной иконки категории (например, для неизвестных изображений)
+const categoryNeutral = MediaFiles.getByCategory(MediaFileCategory.image)
+
+// Базовая нейтральная иконка файла
+const defaultNeutral = MediaFiles.getNeutral()
+```
+
+## Интеграция с `@dxtmisha/functional-basic` (`Icons`)
+
+Иконки файлов можно зарегистрировать в глобальном реестре `Icons`, чтобы использовать их в любых компонентах дизайн-системы:
+
+```typescript
+import { Icons } from '@dxtmisha/functional-basic'
+import { fileIcons } from '@dxtmisha/media/files'
+
+// Регистрация в глобальном хранилище иконок из словаря fileIcons
+Icons.add('file-pdf', fileIcons['pdf'])
+Icons.add('file-zip', fileIcons['zip'])
+
+// Использование в любой части приложения
+const iconSvg = await Icons.get('file-pdf')
+```
+
+## Поддерживаемые категории файлов
+
+- **Archive (`archive`)** — `zip`, `rar`, `7z`, `tar`, `gz`, `iso`
+- **Audio (`audio`)** — `mp3`, `wav`, `flac`, `aac`, `ogg`, `m4a`
+- **Code (`code`)** — `ts`, `js`, `json`, `html`, `css`, `py`, `cpp`, `php`
+- **Document (`document`)** — `pdf`, `doc`, `docx`, `odt`, `rtf`
+- **Image (`image`)** — `png`, `jpg`, `jpeg`, `gif`, `svg`, `webp`, `bmp`
+- **Presentation (`presentation`)** — `ppt`, `pptx`, `odp`
+- **Table (`table`)** — `xls`, `xlsx`, `csv`, `ods`
+- **Video (`video`)** — `mp4`, `webm`, `mkv`, `avi`, `mov`
+- **System (`system`)** — `exe`, `apk`, `dmg`, `app`

@@ -1,0 +1,192 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/media/1. Biểu tượng tệp'/>
+
+# Biểu tượng tệp: Kết nối và tích hợp
+
+`@dxtmisha/media` cung cấp một hệ thống con biểu tượng và siêu dữ liệu tệp độc lập, không phụ thuộc bên ngoài, được tối ưu hóa cho các ứng dụng web hiện đại và hệ thống thiết kế. Gói bao gồm hơn 85 biểu tượng vector SVG, phân loại định dạng tệp tự động và cung cấp nhiều mô hình kết nối linh hoạt từ từ điển biểu tượng đến nhận diện động và ghi đè biểu tượng tùy chỉnh.
+
+## Các cách tiếp cận kết nối
+
+Tùy theo cấu trúc dự án của bạn, có ba cách chính để kết nối và sử dụng biểu tượng tệp:
+
+1. **Từ điển biểu tượng tệp & Đăng ký (`@dxtmisha/media/files`)** — truy xuất biểu tượng theo mã từ từ điển `fileIcons` hoặc khởi tạo toàn bộ qua `registerFileIcons()`.
+2. **Nhận diện động qua `MediaFile`** — lý tưởng cho chức năng tải tệp lên, danh sách tệp đính kèm và bảng dữ liệu khi đường dẫn hoặc đối tượng `File` chỉ có trong runtime.
+3. **Sổ đăng ký biểu tượng tùy chỉnh qua `MediaFileIcon`** — cho phép ứng dụng hoặc giao diện ghi đè các biểu tượng tích hợp sẵn hoặc đăng ký các định dạng độc quyền trên phạm vi toàn cục.
+
+## Module `files.ts` (`@dxtmisha/media/files`)
+
+Module `files.ts` đóng vai trò là nguồn tài nguyên chính của các biểu tượng vector SVG của tệp. Module này cung cấp:
+- Từ điển `fileIcons` tập hợp tất cả các biểu tượng được lập chỉ mục theo mã định dạng và danh mục.
+- Hàm khởi tạo hàng loạt `registerFileIcons()`.
+
+Lưu ý: Các biểu tượng riêng lẻ không được xuất dưới dạng biến riêng biệt; toàn bộ biểu tượng được truy cập thông qua từ điển `fileIcons` hoặc giải quyết động qua các lớp `MediaFile` / `MediaFiles`.
+
+### 1. Hàm `registerFileIcons()`
+
+Hàm `registerFileIcons()` tự động đăng ký tất cả các biểu tượng vector mặc định từ từ điển `fileIcons` vào sổ đăng ký tĩnh `MediaFileIcon` chỉ với một lệnh gọi:
+
+```typescript
+import { registerFileIcons } from '@dxtmisha/media/files'
+
+// Đăng ký toàn bộ biểu tượng tệp mặc định vào MediaFileIcon
+registerFileIcons()
+```
+
+Sau khi gọi, `MediaFileIcon.get(code)` và `MediaFiles.get(code)` lập tức truy cập được tất cả các biểu tượng vector mặc định trên toàn ứng dụng.
+
+### 2. Từ điển `fileIcons`
+
+Đối tượng `fileIcons` là một từ điển có kiểu dữ liệu (`MediaFileIcons`) ánh xạ mã định dạng, danh mục và mã trung tính sang chuỗi mã SVG:
+
+- **Biểu tượng tệp trung tính mặc định**: `fileIcons['file']` — biểu tượng tệp mặc định chung.
+- **Biểu tượng trung tính cấp danh mục**: `fileIcons['archive']`, `fileIcons['audio']`, `fileIcons['code']`, `fileIcons['config']`, `fileIcons['database']`, `fileIcons['document']`, `fileIcons['executable']`, `fileIcons['folder']`, `fileIcons['font']`, `fileIcons['image']`, `fileIcons['presentation']`, `fileIcons['table']`, `fileIcons['text']`, `fileIcons['vector']`, `fileIcons['video']`.
+- **Định dạng cụ thể**: `fileIcons['7z']`, `fileIcons['pdf']`, `fileIcons['docx']`, `fileIcons['png']`, `fileIcons['zip']`, `fileIcons['xlsx']` và hơn 70 định dạng khác.
+
+```typescript
+import { fileIcons } from '@dxtmisha/media/files'
+
+// Truy cập trực tiếp qua mã định dạng hoặc danh mục
+const pdfSvg = fileIcons['pdf']
+const documentCategorySvg = fileIcons['document']
+const defaultFileSvg = fileIcons['file']
+```
+
+Trong template Vue 3:
+
+```html
+<template>
+  <div class="file-item">
+    <span class="file-icon" v-html="fileIcons['pdf']" />
+    <span class="file-name">Bao_Cao_Tai_Chinh.pdf</span>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { fileIcons } from '@dxtmisha/media/files'
+</script>
+```
+
+## Nhận diện động qua `MediaFile`
+
+Khi xử lý tệp do người dùng tải lên, liên kết từ xa hoặc bản ghi từ máy chủ, hãy sử dụng lớp `MediaFile`. Lớp này phân tích tên tệp, đường dẫn và đối tượng `File` để tự động xác định phần mở rộng, danh mục và biểu tượng SVG tương ứng:
+
+```typescript
+import { MediaFile, MediaFileCategory } from '@dxtmisha/media'
+
+// Từ URL từ xa có tham số truy vấn và đoạn mã hash
+const remoteFile = new MediaFile('https://cdn.example.com/docs/spec.2026.docx?v=3#summary')
+
+console.log(remoteFile.name)        // 'spec.2026.docx'
+console.log(remoteFile.baseName)    // 'spec.2026'
+console.log(remoteFile.extension)   // 'docx'
+console.log(remoteFile.category)    // MediaFileCategory.document
+console.log(remoteFile.isDocument()) // true
+
+// Chuỗi mã SVG biểu tượng đã được giải quyết (dùng biểu tượng tùy chỉnh nếu có, hoặc SVG mặc định)
+const svgMarkup = remoteFile.icon
+```
+
+### Hỗ trợ đối tượng `File` của trình duyệt
+
+`MediaFile` nhận diện tự nhiên các đối tượng `File` chuẩn của trình duyệt (ví dụ từ `<input type="file">` hoặc vùng kéo thả Dropzone):
+
+```typescript
+function handleFileUpload(event: Event) {
+  const target = event.target as HTMLInputElement
+  const file = target.files?.[0]
+
+  if (file) {
+    const media = new MediaFile(file)
+
+    console.log(media.name)        // Tên tệp từ trình duyệt
+    console.log(media.mime)        // MIME type chuẩn (ví dụ: 'image/png')
+    console.log(media.isImage())   // true
+    console.log(media.icon)        // Mã SVG biểu tượng vector
+  }
+}
+```
+
+## Đăng ký biểu tượng tùy chỉnh với `MediaFileIcon`
+
+Nếu dự án yêu cầu bộ biểu tượng riêng theo nhận diện thương hiệu hoặc cần hỗ trợ định dạng tệp chuyên biệt, bạn có thể đăng ký toàn cục bằng `MediaFileIcon`.
+
+### Đăng ký một biểu tượng đơn lẻ
+
+```typescript
+import { MediaFileIcon } from '@dxtmisha/media'
+
+// Đăng ký biểu tượng SVG cho một phần mở rộng hoặc mã định dạng
+MediaFileIcon.add('fig', '<svg viewBox="0 0 24 24"><path d="..."/></svg>')
+
+// Kiểm tra và lấy biểu tượng tùy chỉnh
+if (MediaFileIcon.has('fig')) {
+  console.log(MediaFileIcon.get('fig'))
+}
+```
+
+### Đăng ký hàng loạt biểu tượng
+
+```typescript
+import { MediaFileIcon } from '@dxtmisha/media'
+
+MediaFileIcon.addList({
+  sketch: '<svg class="custom-sketch">...</svg>',
+  blender: '<svg class="custom-blend">...</svg>',
+  cad: '<svg class="custom-cad">...</svg>'
+})
+```
+
+Sau khi đăng ký, bất kỳ lệnh gọi `new MediaFile('design.sketch').icon` hoặc `MediaFiles.get('sketch')` nào cũng sẽ tự động trả về biểu tượng SVG tùy chỉnh của bạn.
+
+## Tra cứu danh mục qua `MediaFiles`
+
+Lớp `MediaFiles` cung cấp các phương thức tĩnh để kiểm tra danh mục định dạng tệp tích hợp sẵn mà không cần tạo thực thể:
+
+```typescript
+import { MediaFiles, MediaFileCategory } from '@dxtmisha/media'
+
+// Kiểm tra xem chuỗi có phải là đường dẫn hoặc liên kết hay không
+MediaFiles.isLink('https://example.com/asset.zip') // true
+MediaFiles.isLink('archive.zip')                   // false
+
+// Lấy thông tin cấu hình theo phần mở rộng
+const item = MediaFiles.get('xlsx')
+console.log(item?.name)       // 'Excel'
+console.log(item?.category)   // 'table'
+console.log(item?.extensions) // ['xls', 'xlsx']
+
+// Lấy biểu tượng trung tính của danh mục (ví dụ cho ảnh hoặc bảng chưa rõ định dạng)
+const categoryNeutral = MediaFiles.getByCategory(MediaFileCategory.image)
+
+// Biểu tượng trung tính mặc định chung
+const defaultNeutral = MediaFiles.getNeutral()
+```
+
+## Tích hợp với `@dxtmisha/functional-basic` (`Icons`)
+
+Bạn có thể đăng ký biểu tượng tệp vào sổ đăng ký `Icons` toàn cục để sử dụng thống nhất trên tất cả các thành phần giao diện:
+
+```typescript
+import { Icons } from '@dxtmisha/functional-basic'
+import { fileIcons } from '@dxtmisha/media/files'
+
+// Đăng ký vào kho biểu tượng toàn cục từ từ điển fileIcons
+Icons.add('file-pdf', fileIcons['pdf'])
+Icons.add('file-zip', fileIcons['zip'])
+
+// Truy xuất ở bất kỳ đâu trong ứng dụng
+const iconSvg = await Icons.get('file-pdf')
+```
+
+## Danh mục tệp được hỗ trợ
+
+- **Archive (`archive`)** — `zip`, `rar`, `7z`, `tar`, `gz`, `iso`
+- **Audio (`audio`)** — `mp3`, `wav`, `flac`, `aac`, `ogg`, `m4a`
+- **Code (`code`)** — `ts`, `js`, `json`, `html`, `css`, `py`, `cpp`, `php`
+- **Document (`document`)** — `pdf`, `doc`, `docx`, `odt`, `rtf`
+- **Image (`image`)** — `png`, `jpg`, `jpeg`, `gif`, `svg`, `webp`, `bmp`
+- **Presentation (`presentation`)** — `ppt`, `pptx`, `odp`
+- **Table (`table`)** — `xls`, `xlsx`, `csv`, `ods`
+- **Video (`video`)** — `mp4`, `webm`, `mkv`, `avi`, `mov`
+- **System (`system`)** — `exe`, `apk`, `dmg`, `app`

@@ -1,0 +1,71 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/media/# About the Library'/>
+
+# [@dxtmisha/media](https://github.com/dxtmisha/dxt-ui/tree/main/packages/media)
+
+`@dxtmisha/media` is a lightweight, zero-dependency media resource and dataset package for the DXT UI design system and modern web applications. It delivers comprehensive file format classification, social network metadata, country flag vectors, and ISO 3166-1 geographic datasets in a modular, tree-shakeable structure.
+
+## Installation
+
+Install the package via npm:
+
+```bash
+npm i @dxtmisha/media
+```
+
+## Why this library?
+
+Modern web applications frequently handle files, social profiles, and international user data (phone codes, country pickers, flag icons). Maintaining separate asset folders, hardcoding MIME types, or manually managing SVG sets across multiple projects leads to inconsistency and code duplication.
+
+`@dxtmisha/media` consolidates these assets and utilities into a unified, high-performance library:
+- **Zero external runtime dependencies** — pure data, optimized SVGs, and lightweight TypeScript classes.
+- **Tree-shakeable subpath exports** — import only the files, flags, or social icons you need without bundling unused assets.
+- **Framework-agnostic & SSR-safe** — works seamlessly with Vue 3, Nuxt, React, Vite, Node.js, and vanilla TypeScript.
+
+## Core Capabilities
+
+### 1. File Classification & Vector Icons
+- **`MediaFile`** — parses URLs, file paths, file extensions, and browser `File` objects. Extracts clean base names, determines extensions, classifies files into high-level categories (images, videos, documents, archives), and resolves vector SVG icons.
+- **`MediaFiles`** — static metadata registry providing catalog lookups across 85+ file extensions, MIME type matching, and category-level neutral icons.
+- **`MediaFileIcon`** — centralized registry for adding custom SVG icons and overriding default file icons globally.
+- **`fileIcons` & `registerFileIcons`** — access the full vector catalog dictionary via `fileIcons` or register all default icons into `MediaFileIcon` in one call via `registerFileIcons` from `@dxtmisha/media/files`.
+
+### 2. Social Networks & Profile URLs
+- **`MediaSocial`** — configuration and profile URL generation for 35+ global and regional social networks (GitHub, Telegram, LinkedIn, X, WeChat, Zalo, etc.).
+- **URL & Handle Helpers** — canonical URL construction (`getUrl`) and safe username extraction (`getValue`).
+- **`socialIcons` & `registerSocialIcons`** — access the complete brand vector dictionary via `socialIcons` or initialize the `MediaSocial` registry with all platforms via `registerSocialIcons` from `@dxtmisha/media/socials`.
+
+### 3. Country Flags & Geographic Datasets
+- **250+ Country Flags** — individual vector SVG flags for all ISO 3166-1 alpha-2 territories via `@dxtmisha/media/flags`.
+- **High-Performance WebP Sprite** — combined raster sprite (`flags.webp`) and accompanying CSS styles (`style.css`) for minimal network overhead in high-density flag lists.
+- **Geographical Metadata (`geo.json`)** — country names, ISO alpha-2/alpha-3 codes, international dial codes, phone input masks, and timezones.
+
+## Subpath Exports
+
+The package provides organized subpath exports to optimize bundle sizes:
+
+```typescript
+// Primary library entry point (classes, catalogs, geo data)
+import { MediaFile, MediaFiles, MediaSocial, geo } from '@dxtmisha/media'
+
+// File icons dictionary & registration
+import { fileIcons, registerFileIcons } from '@dxtmisha/media/files'
+
+// Direct country flag SVGs
+import { UsSvg, VnSvg, DeSvg } from '@dxtmisha/media/flags'
+
+// Social network icons dictionary & registration
+import { socialIcons, registerSocialIcons } from '@dxtmisha/media/socials'
+```
+
+## Principles
+
+- **Zero Dependencies** — completely self-contained with no third-party runtime overhead.
+- **Strict Typing** — exhaustive TypeScript declarations, enums (`MediaFileCategory`, `MediaFileGroup`, `InputSocialType`), and interfaces.
+- **Performance First** — supports granular imports to ensure only required assets enter your production bundle.
+- **SSR Ready** — isomorphic design runs predictably in client and server environments.
+
+## Git
+
+[https://github.com/dxtmisha/dxt-ui/tree/main/packages/media](https://github.com/dxtmisha/dxt-ui/tree/main/packages/media)

@@ -4,19 +4,19 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # MediaFile Class
 
-The `MediaFile` class is a lightweight utility designed for parsing file paths, URLs, filenames, and file type codes. It resolves SVG file icons, extracts file extensions and base names, and classifies files into high-level categories (such as images, videos, documents, and archives) without requiring MIME types or external dependencies.
+The `MediaFile` class is a lightweight utility designed for parsing file paths, URLs, filenames, type codes, and `File` objects. It resolves SVG file icons, extracts file extensions and base names, and classifies files into categories (such as images, videos, documents, and archives) utilizing `MediaFiles` and `MediaFileIcon`.
 
 ## Key Features
 
-- **Universal File Parsing** — seamlessly handles full URLs with query parameters and hash, absolute/relative paths, filenames, dotted extensions (`.png`), and plain type codes (`png`, `pdf`, `7z`).
-- **SVG Icon Resolution** — resolves SVG icon markup from the built-in library of 85 vector file icons, falling back to a generic file icon when unrecognized.
-- **Custom Icon Registry** — allows registering custom SVG icons globally for specific file extensions or codes via `addIcon` and `addIcons`.
-- **Categorization & Type Checks** — provides instant category detection and boolean helpers (`isImage`, `isVideo`, `isDocument`, `isArchive`, etc.).
-- **Zero Runtime Dependencies** — pure string manipulation and set lookups, fully isomorphic and safe for SSR.
+- **Universal File Parsing** — seamlessly handles `File` instances, full URLs with query parameters and hash fragments, absolute/relative paths, filenames, dotted extensions (`.png`), and plain type codes (`png`, `pdf`, `7z`).
+- **SVG Icon Resolution** — resolves SVG icon markup from the built-in library of 85+ vector file icons, falling back to category or generic neutral icons when unrecognized.
+- **Custom Icon Support** — automatically applies custom SVG icons registered in `MediaFileIcon`.
+- **Categorization & Format Checks** — provides instant category detection and boolean helpers (`isImage`, `isVideo`, `isDocument`, `isStandard`, etc.).
+- **Zero Runtime Dependencies** — pure string manipulation and catalog lookups, fully isomorphic and safe for SSR.
 
 ## Initialization
 
-Create an instance by providing a file link, URL, filename, or file type code.
+Create an instance by providing a `File` object, file link, URL, filename, or file type code, with an optional MIME type override:
 
 ```typescript
 import { MediaFile } from '@dxtmisha/media'
@@ -29,36 +29,59 @@ const fileFromName = new MediaFile('archive.tar.gz')
 
 // From extension or type code
 const fileFromCode = new MediaFile('png')
+
+// From browser File object
+const fileFromInput = new MediaFile(uploadedFile)
 ```
 
 ## Methods
 
-### Static Registry
+### Properties & Attributes
 
-- `static get(code: string): MediaFileItem | undefined` — returns the file configuration item for a given code or extension, including any registered custom icon.
-- `static getList(): MediaFileList` — returns the complete list of all supported file configuration items.
-- `static addIcon(code: string, icon: string): void` — registers a custom SVG icon string for a specific file code or extension.
-- `static addIcons(icons: MediaFileIcons): void` — registers multiple custom SVG icons in batch.
-
-### File Attributes
-
-- `name: string` — returns the full filename extracted from the path or URL (stripped of query parameters and hash fragments).
 - `baseName: string` — returns the filename without its extension (e.g. `'archive.tar'` for `'archive.tar.gz'`).
 - `category: MediaFileCategory | undefined` — returns the file category enum value (e.g. `'image'`, `'video'`, `'document'`).
 - `extension: string` — returns the normalized lowercase file extension without a dot (e.g. `'png'`, `'pdf'`).
+- `extensions: string[] | undefined` — returns the list of supported extensions associated with the file format.
+- `file: File | undefined` — returns the underlying browser `File` object if the instance was created with one.
+- `group: MediaFileGroup | undefined` — returns the classification group of the file item (`neutral`, `category`, `standard`).
 - `icon: string` — returns the resolved SVG icon markup string.
 - `item: MediaFileItem | undefined` — returns the complete metadata item from the file catalog.
+- `mime: string | undefined` — returns the detected or explicit MIME type.
+- `name: string` — returns the full filename extracted from the path or URL (stripped of query parameters and hash fragments).
 
-### Category Checks
+### Category & Classification Checks
 
-- `isArchive: boolean` — returns `true` if the file belongs to the archive category (`zip`, `rar`, `7z`, `tar`, `gz`, etc.).
-- `isAudio: boolean` — returns `true` if the file belongs to the audio category (`mp3`, `wav`, `flac`, `aac`, `ogg`, etc.).
-- `isCode: boolean` — returns `true` if the file is a source code or data file (`ts`, `js`, `json`, `html`, `css`, `py`, etc.).
-- `isDocument: boolean` — returns `true` if the file is a document (`pdf`, `doc`, `docx`, `odt`, `rtf`, etc.).
-- `isImage: boolean` — returns `true` if the file is an image (`png`, `jpg`, `jpeg`, `gif`, `svg`, `webp`, etc.).
-- `isPresentation: boolean` — returns `true` if the file is a presentation (`ppt`, `pptx`, `odp`, `presentation`).
-- `isTable: boolean` — returns `true` if the file is a spreadsheet or tabular data (`xls`, `xlsx`, `csv`, `ods`, etc.).
-- `isVideo: boolean` — returns `true` if the file is a video (`mp4`, `webm`, `mkv`, `avi`, `mov`, etc.).
+- `isArchive(): boolean` — returns `true` if the file belongs to the archive category (`zip`, `rar`, `7z`, `tar`, `gz`, etc.).
+- `isAudio(): boolean` — returns `true` if the file belongs to the audio category (`mp3`, `wav`, `flac`, `aac`, `ogg`, etc.).
+- `isCategory(): boolean` — returns `true` if the file represents a category-level neutral icon.
+- `isCode(): boolean` — returns `true` if the file is source code or a data file (`ts`, `js`, `json`, `html`, `css`, `py`, etc.).
+- `isDocument(): boolean` — returns `true` if the file is a document (`pdf`, `doc`, `docx`, `odt`, `rtf`, etc.).
+- `isImage(): boolean` — returns `true` if the file is an image (`png`, `jpg`, `jpeg`, `gif`, `svg`, `webp`, etc.).
+- `isNeutral(): boolean` — returns `true` if the file represents the universal default neutral file icon.
+- `isPresentation(): boolean` — returns `true` if the file is a presentation (`ppt`, `pptx`, `odp`, `presentation`).
+- `isStandard(): boolean` — returns `true` if the file represents a standard specific file format or extension.
+- `isTable(): boolean` — returns `true` if the file is a spreadsheet or tabular data (`xls`, `xlsx`, `csv`, `ods`, etc.).
+- `isVideo(): boolean` — returns `true` if the file is a video (`mp4`, `webm`, `mkv`, `avi`, `mov`, etc.).
+
+## Types
+
+### MediaFileCategory
+
+Enum representing file categories: `archive`, `audio`, `code`, `config`, `database`, `document`, `executable`, `folder`, `font`, `image`, `presentation`, `system`, `table`, `text`, `vector`, `video`.
+
+### MediaFileGroup
+
+Enum representing file item groups: `neutral`, `category`, `standard`.
+
+### MediaFileItem
+
+- `code: string` — unique file code or primary extension.
+- `name: string` — human-readable file format label.
+- `extensions?: string[]` — list of supported file extensions.
+- `mime?: string` — primary MIME type.
+- `icon?: string` — SVG icon markup.
+- `category?: MediaFileCategoryValue` — file category enum value.
+- `group?: MediaFileGroupValue` — classification group enum value.
 
 ## Usage Example
 

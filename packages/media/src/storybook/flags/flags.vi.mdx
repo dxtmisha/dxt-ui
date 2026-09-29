@@ -1,0 +1,171 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/media/3. Quốc kỳ'/>
+
+# Quốc kỳ: Kết nối và tích hợp
+
+Gói `@dxtmisha/media` cung cấp hệ thống tài nguyên quốc kỳ và siêu dữ liệu địa lý toàn diện với hiệu năng cao, bao phủ hơn 250 quốc gia và vùng lãnh thổ theo chuẩn ISO 3166-1 alpha-2. Gói hỗ trợ hai cơ chế hiển thị linh hoạt — nhập trực tiếp vector SVG và sprite raster WebP siêu nhẹ kết hợp các lớp CSS, đồng thời tích hợp bộ dữ liệu địa lý chi tiết (`geo.json`).
+
+## Các cách tiếp cận kết nối
+
+Tùy thuộc vào yêu cầu giao diện và tối ưu hóa hiệu năng, bạn có thể kết nối quốc kỳ theo hai phương thức chính:
+
+1. **Nhập trực tiếp SVG Vector (`@dxtmisha/media/flags`)** — lý tưởng cho các phần tử độc lập, biểu ngữ lớn, phần hero banner và các màn hình yêu cầu độ phân giải vector sắc nét ở mọi kích thước.
+2. **Sprite WebP kết hợp lớp CSS (`@dxtmisha/media/style.css`)** — tối ưu hóa cho danh sách chọn quốc gia, trường nhập số điện thoại (`D1InputPhone`) và bảng dữ liệu dày đặc, nơi việc tải hàng trăm tệp SVG riêng lẻ sẽ gây nghẽn mạng hoặc làm phình to DOM.
+
+## 1. Nhập trực tiếp tệp SVG Vector
+
+Bạn có thể nhập trực tiếp các chuỗi mã SVG vector từ đường dẫn phụ `@dxtmisha/media/flags`. Mỗi quốc kỳ được đặt tên theo mã quốc gia ISO 3166-1 alpha-2 kèm hậu tố `Svg`:
+
+```typescript
+import {
+  UsSvg,
+  VnSvg,
+  DeSvg,
+  GbSvg,
+  FrSvg,
+  JpSvg
+} from '@dxtmisha/media/flags'
+
+// Sử dụng trực tiếp trong mã
+const vietnamFlag = VnSvg
+```
+
+Trong template Vue 3:
+
+```html
+<template>
+  <div class="country-badge">
+    <span class="flag-icon" v-html="VnSvg" />
+    <span class="country-name">Việt Nam</span>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { VnSvg } from '@dxtmisha/media/flags'
+</script>
+```
+
+Bạn cũng có thể nhập đối tượng xuất mặc định chứa toàn bộ hơn 250 cờ SVG:
+
+```typescript
+import flags from '@dxtmisha/media/flags'
+
+const svgMarkup = flags.UsSvg
+```
+
+## 2. Sprite WebP hiệu năng cao (`style.css`)
+
+Đối với trường nhập số điện thoại quốc tế, bộ chuyển đổi ngôn ngữ và các menu thả xuống với hàng trăm quốc gia, việc nhập nhiều tệp SVG riêng biệt tạo ra chi phí lớn. `@dxtmisha/media` tích hợp sẵn ảnh sprite WebP tối ưu hóa cao mà không cần JavaScript khi hiển thị.
+
+### Cài đặt và nhập kiểu dáng
+
+Nhập tệp CSS đã biên dịch một lần tại điểm bắt đầu ứng dụng:
+
+```typescript
+// Trong main.ts, App.vue hoặc tệp kiểu dáng
+import '@dxtmisha/media/style.css'
+```
+
+### Sử dụng với các lớp CSS
+
+Hiển thị bất kỳ quốc kỳ nào bằng lớp cơ sở `.ui-sys-flags` kết hợp với lớp sửa đổi quốc gia `.ui-sys-flags--<MÃ>`:
+
+```html
+<!-- Quốc kỳ Việt Nam -->
+<span class="ui-sys-flags ui-sys-flags--VN" />
+
+<!-- Quốc kỳ Hoa Kỳ -->
+<span class="ui-sys-flags ui-sys-flags--US" />
+
+<!-- Quốc kỳ Đức -->
+<span class="ui-sys-flags ui-sys-flags--DE" />
+
+<!-- Quốc kỳ Nhật Bản -->
+<span class="ui-sys-flags ui-sys-flags--JP" />
+```
+
+### Điều chỉnh kích thước và tùy biến
+
+Kích thước của ảnh sprite có thể được điều chỉnh linh hoạt bằng các biến tùy chỉnh CSS:
+
+```css
+.custom-flag {
+  --sys-flags-width: 32px;
+  --sys-flags-height: 24px;
+}
+```
+
+```html
+<span class="ui-sys-flags ui-sys-flags--VN custom-flag" />
+```
+
+## 3. Siêu dữ liệu địa lý (`geo.json`)
+
+Thư viện xuất toàn bộ tập dữ liệu `geo` chứa thông tin chi tiết về quốc gia, mã điện thoại, mặt nạ nhập liệu số điện thoại và múi giờ:
+
+```typescript
+import { geo } from '@dxtmisha/media'
+
+// Tìm kiếm thông tin quốc gia
+const vietnam = geo.find(item => item.country === 'VN')
+
+console.log(vietnam?.country)   // 'VN'
+console.log(vietnam?.phoneCode) // '84'
+console.log(vietnam?.phoneMask) // ['+84-**-***-****', ...]
+console.log(vietnam?.zone)      // 'Asia/Ho_Chi_Minh'
+```
+
+### Xây dựng bộ chọn quốc gia động
+
+Kết hợp dữ liệu `geo` với ảnh sprite CSS cho phép bạn tạo ra các menu chọn quốc gia cực kỳ gọn nhẹ:
+
+```html
+<template>
+  <div class="country-list">
+    <div
+      v-for="item in geo"
+      :key="item.country"
+      class="country-option"
+      @click="selectCountry(item.country)"
+    >
+      <span :class="['ui-sys-flags', `ui-sys-flags--${item.country}`]" />
+      <span class="country-code">+{{ item.phoneCode }}</span>
+      <span class="country-name">{{ item.country }}</span>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { geo } from '@dxtmisha/media'
+import '@dxtmisha/media/style.css'
+
+function selectCountry(code: string) {
+  console.log('Quốc gia đã chọn:', code)
+}
+</script>
+```
+
+## 4. Tích hợp với các thành phần DXT UI
+
+Hệ thống quốc kỳ được tích hợp nguyên bản trong các thành phần của thư viện `@dxtmisha/d1`:
+- **`D1InputPhone`** — tự động hiển thị quốc kỳ tương ứng từ sprite dựa trên mã số điện thoại đã nhập hoặc quốc gia được chọn.
+- **`D1MenuCountry`** — danh mục chọn quốc gia tải tức thì qua sprite và hỗ trợ điều hướng bàn phím đầy đủ.
+
+## Danh mục các mã quốc gia phổ biến
+
+Các mã quốc gia phổ biến và định danh xuất tương ứng:
+
+- **Việt Nam (`VN`)** — `VnSvg`, `.ui-sys-flags--VN`, mã vùng điện thoại `+84`
+- **Hoa Kỳ (`US`)** — `UsSvg`, `.ui-sys-flags--US`, mã vùng điện thoại `+1`
+- **Vương quốc Anh (`GB`)** — `GbSvg`, `.ui-sys-flags--GB`, mã vùng điện thoại `+44`
+- **Đức (`DE`)** — `DeSvg`, `.ui-sys-flags--DE`, mã vùng điện thoại `+49`
+- **Pháp (`FR`)** — `FrSvg`, `.ui-sys-flags--FR`, mã vùng điện thoại `+33`
+- **Nhật Bản (`JP`)** — `JpSvg`, `.ui-sys-flags--JP`, mã vùng điện thoại `+81`
+- **Trung Quốc (`CN`)** — `CnSvg`, `.ui-sys-flags--CN`, mã vùng điện thoại `+86`
+- **Hàn Quốc (`KR`)** — `KrSvg`, `.ui-sys-flags--KR`, mã vùng điện thoại `+82`
+- **Úc (`AU`)** — `AuSvg`, `.ui-sys-flags--AU`, mã vùng điện thoại `+61`
+- **Canada (`CA`)** — `CaSvg`, `.ui-sys-flags--CA`, mã vùng điện thoại `+1`
+- **Brazil (`BR`)** — `BrSvg`, `.ui-sys-flags--BR`, mã vùng điện thoại `+55`
+- **Ấn Độ (`IN`)** — `InSvg`, `.ui-sys-flags--IN`, mã vùng điện thoại `+91`
+- cùng toàn bộ hơn 240 mã quốc gia khác theo chuẩn ISO 3166-1 alpha-2.

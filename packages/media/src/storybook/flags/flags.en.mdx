@@ -1,0 +1,171 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/media/3. Country Flags'/>
+
+# Country Flags: Connection and Integration
+
+The `@dxtmisha/media` package provides a complete, high-performance country flag and geographic metadata subsystem covering 250+ countries and territories (ISO 3166-1 alpha-2). It offers dual rendering strategies — individual vector SVG imports and an ultra-fast WebP raster sprite with CSS classes — paired with comprehensive country metadata (`geo.json`).
+
+## Connection Approaches
+
+Depending on your UI requirements and performance constraints, flags can be connected using two primary methods:
+
+1. **Vector SVG Imports (`@dxtmisha/media/flags`)** — optimal for standalone displays, large banners, hero sections, and high-DPI crisp vector rendering.
+2. **WebP Sprite with CSS Classes (`@dxtmisha/media/style.css`)** — optimal for country selectors, phone number pickers (`D1InputPhone`), and high-density tables where loading individual SVGs would cause excessive network requests or layout shifts.
+
+## 1. Direct Vector SVG Imports
+
+You can import individual vector SVG strings directly from the `@dxtmisha/media/flags` subpath. Each flag is named after its ISO 3166-1 alpha-2 country code with an `Svg` suffix:
+
+```typescript
+import {
+  UsSvg,
+  VnSvg,
+  DeSvg,
+  GbSvg,
+  FrSvg,
+  JpSvg
+} from '@dxtmisha/media/flags'
+
+// Use directly in your code
+const vietnamFlag = VnSvg
+```
+
+In Vue 3 templates:
+
+```html
+<template>
+  <div class="country-badge">
+    <span class="flag-icon" v-html="VnSvg" />
+    <span class="country-name">Vietnam</span>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { VnSvg } from '@dxtmisha/media/flags'
+</script>
+```
+
+You can also import the default export object containing all 250+ flag SVGs:
+
+```typescript
+import flags from '@dxtmisha/media/flags'
+
+const svgMarkup = flags.UsSvg
+```
+
+## 2. High-Performance WebP Sprite (`style.css`)
+
+For international phone input fields, language switchers, and dropdowns with hundreds of country options, importing dozens of individual SVGs causes unnecessary DOM weight. `@dxtmisha/media` provides a pre-compiled, highly optimized WebP sprite with zero runtime JavaScript.
+
+### Setup and Import
+
+Import the compiled flag stylesheet once in your application entry point:
+
+```typescript
+// In main.ts, App.vue, or component style
+import '@dxtmisha/media/style.css'
+```
+
+### Usage with CSS Classes
+
+Render any flag using the `.ui-sys-flags` base class combined with the country modifier `.ui-sys-flags--<CODE>`:
+
+```html
+<!-- Vietnam Flag -->
+<span class="ui-sys-flags ui-sys-flags--VN" />
+
+<!-- United States Flag -->
+<span class="ui-sys-flags ui-sys-flags--US" />
+
+<!-- Germany Flag -->
+<span class="ui-sys-flags ui-sys-flags--DE" />
+
+<!-- Japan Flag -->
+<span class="ui-sys-flags ui-sys-flags--JP" />
+```
+
+### Sizing and Customization
+
+The sprite dimensions can be scaled using CSS custom properties:
+
+```css
+.custom-flag {
+  --sys-flags-width: 32px;
+  --sys-flags-height: 24px;
+}
+```
+
+```html
+<span class="ui-sys-flags ui-sys-flags--VN custom-flag" />
+```
+
+## 3. Geographic Metadata (`geo.json`)
+
+The package exports the complete `geo` dataset containing country metadata, phone codes, phone input masks, and timezones:
+
+```typescript
+import { geo } from '@dxtmisha/media'
+
+// Find country information
+const vietnam = geo.find(item => item.country === 'VN')
+
+console.log(vietnam?.country)   // 'VN'
+console.log(vietnam?.phoneCode) // '84'
+console.log(vietnam?.phoneMask) // ['+84-**-***-****', ...]
+console.log(vietnam?.zone)      // 'Asia/Ho_Chi_Minh'
+```
+
+### Building a Dynamic Country Picker
+
+Combining `geo` with the CSS sprite allows building lightweight country dropdowns:
+
+```html
+<template>
+  <div class="country-list">
+    <div
+      v-for="item in geo"
+      :key="item.country"
+      class="country-option"
+      @click="selectCountry(item.country)"
+    >
+      <span :class="['ui-sys-flags', `ui-sys-flags--${item.country}`]" />
+      <span class="country-code">+{{ item.phoneCode }}</span>
+      <span class="country-name">{{ item.country }}</span>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { geo } from '@dxtmisha/media'
+import '@dxtmisha/media/style.css'
+
+function selectCountry(code: string) {
+  console.log('Selected:', code)
+}
+</script>
+```
+
+## 4. Integration with DXT UI Components
+
+The flag subsystem is natively integrated into `@dxtmisha/d1` components:
+- **`D1InputPhone`** — automatically renders the appropriate country flag sprite based on the detected phone dial code or selected country.
+- **`D1MenuCountry`** — displays country selectors with fast sprite rendering and keyboard navigation.
+
+## Popular Country Codes Reference
+
+Common country codes and their corresponding export identifiers:
+
+- **Vietnam (`VN`)** — `VnSvg`, `.ui-sys-flags--VN`, dial code `+84`
+- **United States (`US`)** — `UsSvg`, `.ui-sys-flags--US`, dial code `+1`
+- **United Kingdom (`GB`)** — `GbSvg`, `.ui-sys-flags--GB`, dial code `+44`
+- **Germany (`DE`)** — `DeSvg`, `.ui-sys-flags--DE`, dial code `+49`
+- **France (`FR`)** — `FrSvg`, `.ui-sys-flags--FR`, dial code `+33`
+- **Japan (`JP`)** — `JpSvg`, `.ui-sys-flags--JP`, dial code `+81`
+- **China (`CN`)** — `CnSvg`, `.ui-sys-flags--CN`, dial code `+86`
+- **South Korea (`KR`)** — `KrSvg`, `.ui-sys-flags--KR`, dial code `+82`
+- **Australia (`AU`)** — `AuSvg`, `.ui-sys-flags--AU`, dial code `+61`
+- **Canada (`CA`)** — `CaSvg`, `.ui-sys-flags--CA`, dial code `+1`
+- **Brazil (`BR`)** — `BrSvg`, `.ui-sys-flags--BR`, dial code `+55`
+- **India (`IN`)** — `InSvg`, `.ui-sys-flags--IN`, dial code `+91`
+- and all other 240+ ISO 3166-1 alpha-2 country codes.

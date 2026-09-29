@@ -1,0 +1,86 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/media/Classes/MediaFiles - File Metadata Catalog and Path Verification'/>
+
+# MediaFiles Class
+
+The `MediaFiles` class is a **Primary Class (Static)** that provides centralized file catalog lookups, MIME type matching, category-based neutral icon resolution, and path/URL detection. It acts as the core metadata provider for `@dxtmisha/media`, integrating seamlessly with `MediaFileIcon` to deliver custom icons.
+
+## Key Features
+
+- **Comprehensive File Catalog** — preconfigured metadata for 85+ file extensions, categories, and MIME types.
+- **Intelligent Fallback Resolution** — resolves files by extension, code, or MIME type, automatically falling back to category icons or the universal neutral file icon.
+- **Category-level Neutral Icons** — quickly retrieves generic icons representing entire file groups (e.g. `image`, `video`, `document`, `table`).
+- **Path & URL Verification** — detects whether an arbitrary string represents a file system path, relative link, or remote URL (`isLink`).
+- **Custom Icon Integration** — automatically enriches returned items with custom icons registered in `MediaFileIcon`.
+
+## Initialization
+
+The class is static and does not require instantiation. All methods are invoked directly on `MediaFiles`.
+
+## Methods
+
+### Path Inspection
+
+- `static isLink(path: string): boolean` — determines whether the specified string is a file system path or a web URL (checks for `/`, `\`, `http://`, `https://`).
+
+### Lookup & Registry
+
+- `static get(code: string): MediaFileItem | undefined` — retrieves the file metadata item by its extension or code, falling back to MIME matching or the default neutral item, with custom icons applied.
+- `static getByCategory(category: MediaFileCategory | MediaFileCategoryValue | string): MediaFileItem | undefined` — returns a category-level neutral file configuration item matching the specified category or file code.
+- `static getByMime(mime: string): MediaFileItem | undefined` — retrieves a file metadata item matching the given MIME type with custom icons applied.
+- `static getList(): MediaFileList` — returns the complete array of all supported file configuration items.
+- `static getNeutral(): MediaFileItem | undefined` — returns the universal default neutral file item with any registered custom icon applied.
+
+## Types
+
+### MediaFileCategory
+
+Enum of supported file categories: `archive`, `audio`, `code`, `config`, `database`, `document`, `executable`, `folder`, `font`, `image`, `presentation`, `system`, `table`, `text`, `vector`, `video`.
+
+### MediaFileGroup
+
+Enum of file item classification groups:
+- `neutral` — universal fallback file icon.
+- `category` — generic category-level icon (e.g., generic image or document).
+- `standard` — specific format or file extension icon (e.g., PNG, PDF, ZIP).
+
+### MediaFileItem
+
+- `code: string` — unique file code or primary extension.
+- `name: string` — human-readable display label.
+- `extensions?: string[]` — list of supported file extensions.
+- `mime?: string` — associated MIME type.
+- `icon?: string` — resolved SVG icon markup or URL.
+- `category?: MediaFileCategoryValue` — file category enum value.
+- `group?: MediaFileGroupValue` — classification group enum value.
+
+### MediaFileList
+
+- `MediaFileItem[]` — array of all file configuration items.
+
+## Usage Example
+
+```typescript
+import { MediaFiles, MediaFileCategory } from '@dxtmisha/media'
+
+// Check whether a string is a path/link
+MediaFiles.isLink('https://example.com/assets/report.pdf') // true
+MediaFiles.isLink('report.pdf') // false
+
+// Find metadata by extension or format code
+const pdf = MediaFiles.get('pdf')
+console.log(pdf?.name) // 'PDF'
+console.log(pdf?.category) // 'document'
+
+// Retrieve a generic category icon item
+const imageCategory = MediaFiles.getByCategory(MediaFileCategory.image)
+console.log(imageCategory?.name) // 'Image'
+
+// Retrieve by MIME type
+const jsonFile = MediaFiles.getByMime('application/json')
+console.log(jsonFile?.code) // 'json'
+
+// Universal neutral fallback
+const neutral = MediaFiles.getNeutral()
+```

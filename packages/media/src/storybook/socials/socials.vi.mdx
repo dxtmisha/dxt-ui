@@ -1,0 +1,187 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/media/2. Mạng xã hội'/>
+
+# Mạng xã hội: Kết nối và tích hợp
+
+Gói `@dxtmisha/media` tích hợp một hệ thống con mạng xã hội toàn diện bao gồm hơn 35 nền tảng quốc tế và khu vực phổ biến (GitHub, Telegram, LinkedIn, X, WeChat, Zalo, Discord, YouTube, v.v.). Gói cung cấp các biểu tượng vector SVG thương hiệu chính thức, tiền tố/hậu tố định dạng URL, trích xuất tên người dùng, mặt nạ nhập liệu và khả năng ghi đè biểu tượng tùy chỉnh linh hoạt.
+
+## Các cách tiếp cận kết nối
+
+Tùy theo yêu cầu của ứng dụng, bạn có thể tích hợp các tài nguyên mạng xã hội theo ba cách:
+
+1. **Từ điển biểu tượng & Đăng ký (`@dxtmisha/media/socials`)** — truy xuất biểu tượng thương hiệu vector qua từ điển `socialIcons` hoặc khởi tạo toàn bộ qua `registerSocialIcons()`.
+2. **Quản lý & Phân tích URL qua `MediaSocial`** — tự động tạo liên kết hồ sơ chuẩn (`getUrl`) hoặc trích xuất tên người dùng thuần (`getValue`) cho các biểu mẫu và trường nhập liệu.
+3. **Sổ đăng ký biểu tượng tùy chỉnh** — ghi đè các biểu tượng mặc định hoặc thêm các biểu tượng thương hiệu riêng trên toàn bộ ứng dụng.
+
+## Module `socials.ts` (`@dxtmisha/media/socials`)
+
+Module `socials.ts` đóng vai trò là nguồn tài nguyên chính của các biểu tượng vector SVG thương hiệu mạng xã hội. Module này cung cấp:
+- Từ điển `socialIcons` ánh xạ theo các mã enum `InputSocialType`.
+- Hàm khởi tạo hàng loạt `registerSocialIcons()`.
+
+Lưu ý: Các biểu tượng mạng xã hội riêng lẻ không được xuất dưới dạng biến riêng biệt; toàn bộ biểu tượng được truy cập thông qua từ điển `socialIcons` hoặc phương thức của lớp `MediaSocial`.
+
+### 1. Hàm `registerSocialIcons()`
+
+Hàm `registerSocialIcons()` tự động đăng ký toàn bộ hơn 35 biểu tượng SVG thương hiệu mặc định từ từ điển `socialIcons` vào sổ đăng ký tĩnh `MediaSocial` chỉ với một lệnh gọi:
+
+```typescript
+import { registerSocialIcons } from '@dxtmisha/media/socials'
+
+// Đăng ký toàn bộ biểu tượng mạng xã hội mặc định vào MediaSocial
+registerSocialIcons()
+```
+
+Sau khi gọi hàm này, phương thức `MediaSocial.get(code)` sẽ trả về biểu tượng SVG đã đăng ký, được các thành phần biểu mẫu như `D1InputSocial` tự động sử dụng.
+
+### 2. Từ điển `socialIcons`
+
+Đối tượng `socialIcons` là một từ điển có kiểu dữ liệu (`InputSocialIcons`), có khóa là các giá trị enum của `InputSocialType`:
+
+```typescript
+import { socialIcons } from '@dxtmisha/media/socials'
+import { InputSocialType } from '@dxtmisha/media'
+
+// Truy cập trực tiếp biểu tượng qua khóa enum
+const githubSvg = socialIcons[InputSocialType.github]
+const telegramSvg = socialIcons[InputSocialType.telegram]
+const linkedinSvg = socialIcons[InputSocialType.linkedin]
+```
+
+Trong template Vue 3:
+
+```html
+<template>
+  <div class="social-links">
+    <a href="https://github.com/dxtmisha" target="_blank" v-html="socialIcons['github']" />
+    <a href="https://t.me/dxtmisha" target="_blank" v-html="socialIcons['telegram']" />
+  </div>
+</template>
+
+<script setup lang="ts">
+import { socialIcons } from '@dxtmisha/media/socials'
+</script>
+```
+
+## Quản lý URL với `MediaSocial`
+
+Lớp `MediaSocial` cung cấp các phương thức tiện ích để xây dựng liên kết hồ sơ chuẩn và trích xuất tên người dùng thuần mà không cần viết biểu thức chính quy (Regex).
+
+### Tạo liên kết hồ sơ (`getUrl`)
+
+Tạo liên kết hồ sơ hợp lệ từ mã mạng xã hội và tên người dùng:
+
+```typescript
+import { MediaSocial, InputSocialType } from '@dxtmisha/media'
+
+// Trả về 'https://github.com/dxtmisha'
+const githubUrl = MediaSocial.getUrl(InputSocialType.github, 'dxtmisha')
+
+// Trả về 'https://t.me/dxtmisha'
+const tgUrl = MediaSocial.getUrl(InputSocialType.telegram, 'dxtmisha')
+
+// Nếu giá trị nhập vào đã có sẵn tiền tố, hàm sẽ trả về nguyên vẹn giá trị đó
+const existingUrl = MediaSocial.getUrl(InputSocialType.github, 'https://github.com/dxtmisha')
+// Trả về: 'https://github.com/dxtmisha'
+```
+
+### Trích xuất tên người dùng (`getValue`)
+
+Trích xuất tên người dùng thuần từ một liên kết hồ sơ đầy đủ bằng cách loại bỏ tiền tố và hậu tố:
+
+```typescript
+import { MediaSocial, InputSocialType } from '@dxtmisha/media'
+
+// Trả về 'dxtmisha'
+const username = MediaSocial.getValue(InputSocialType.telegram, 'https://t.me/dxtmisha')
+
+// Trả về 'dxtmisha'
+const githubUser = MediaSocial.getValue(InputSocialType.github, 'https://github.com/dxtmisha')
+```
+
+## Đăng ký biểu tượng mạng xã hội tùy chỉnh
+
+Nếu dự án yêu cầu kiểu biểu tượng đơn sắc, màu chủ đạo riêng theo thiết kế hoặc thương hiệu đặc biệt, hãy sử dụng `MediaSocial.addIcon` hoặc `MediaSocial.addIcons`:
+
+### Thay thế một biểu tượng đơn lẻ
+
+```typescript
+import { MediaSocial, InputSocialType } from '@dxtmisha/media'
+
+// Ghi đè biểu tượng Telegram bằng mã SVG tùy chỉnh
+MediaSocial.addIcon(
+  InputSocialType.telegram,
+  '<svg class="custom-telegram" viewBox="0 0 24 24"><path d="..."/></svg>'
+)
+```
+
+### Thay thế hàng loạt
+
+```typescript
+import { MediaSocial, InputSocialType } from '@dxtmisha/media'
+
+MediaSocial.addIcons({
+  [InputSocialType.github]: '<svg class="brand-gh">...</svg>',
+  [InputSocialType.x]: '<svg class="brand-x">...</svg>'
+})
+```
+
+Sau khi đăng ký, bất kỳ thành phần nào gọi `MediaSocial.get(code)` hoặc sử dụng `D1InputSocial` đều sẽ hiển thị biểu tượng tùy chỉnh ngay lập tức.
+
+## Tra cứu danh mục mạng xã hội & Siêu dữ liệu
+
+Bạn có thể truy vấn danh sách tất cả các nền tảng hoặc tra cứu cấu hình chi tiết:
+
+```typescript
+import { MediaSocial, InputSocialType } from '@dxtmisha/media'
+
+// Lấy thông tin cấu hình của một nền tảng
+const linkedin = MediaSocial.get(InputSocialType.linkedin)
+console.log(linkedin?.name)   // 'LinkedIn'
+console.log(linkedin?.prefix) // 'https://www.linkedin.com/in/'
+console.log(linkedin?.icon)   // Chuỗi mã SVG vector
+
+// Lấy mảng toàn bộ hơn 35 nền tảng được hỗ trợ
+const allSocials = MediaSocial.getList()
+```
+
+## Tích hợp với các thành phần giao diện DXT UI
+
+`MediaSocial` hoạt động trơn tru với các thành phần biểu mẫu như `D1InputSocial` trong gói `@dxtmisha/d1`:
+
+```html
+<template>
+  <d1-input-social
+    v-model="socialHandle"
+    :type="InputSocialType.telegram"
+    label="Tài khoản Telegram"
+  />
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue'
+import { InputSocialType } from '@dxtmisha/media'
+
+const socialHandle = ref('dxtmisha')
+</script>
+```
+
+## Bảng tham chiếu các nền tảng được hỗ trợ
+
+Enum `InputSocialType` định nghĩa hơn 35 nền tảng mạng xã hội:
+
+- **GitHub (`github`)** — `https://github.com/`
+- **Telegram (`telegram`)** — `https://t.me/`
+- **LinkedIn (`linkedin`)** — `https://www.linkedin.com/in/`
+- **X / Twitter (`x`, `twitter`)** — `https://x.com/`
+- **Discord (`discord`)** — `https://discord.gg/`
+- **YouTube (`youtube`)** — `https://www.youtube.com/@`
+- **Instagram (`instagram`)** — `https://www.instagram.com/`
+- **Facebook (`facebook`)** — `https://www.facebook.com/`
+- **WeChat (`wechat`)**
+- **Zalo (`zalo`)** — `https://zalo.me/`
+- **VK (`vk`)** — `https://vk.com/`
+- **TikTok (`tiktok`)** — `https://www.tiktok.com/@`
+- **Reddit (`reddit`)** — `https://www.reddit.com/user/`
+- **Medium (`medium`)** — `https://medium.com/@`

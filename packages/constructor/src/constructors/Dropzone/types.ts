@@ -1,7 +1,7 @@
 import type { ConstrClass } from '@dxtmisha/functional'
 
 import type { DescriptionSlots } from '../../types/descriptionTypes'
-import type { FieldBasicEmits } from '../../types/fieldTypes'
+import type { FieldValueEmits } from '../../types/fieldTypes'
 import type { LabelSlots } from '../../types/labelTypes'
 import type { ModelEmitsFiles } from '../../types/modelTypes'
 
@@ -19,7 +19,7 @@ export type DropzoneComponents = IconComponentInclude
  *
  * Тип, описывающий доступные события.
  */
-export type DropzoneEmits = FieldBasicEmits<FileList | undefined> & ModelEmitsFiles
+export type DropzoneEmits = FieldValueEmits<FileList | undefined> & ModelEmitsFiles
 
 /**
  * Type describing available properties.

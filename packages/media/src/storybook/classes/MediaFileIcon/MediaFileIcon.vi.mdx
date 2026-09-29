@@ -1,0 +1,73 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/media/Classes/MediaFileIcon - Sổ đăng ký biểu tượng tệp tùy chỉnh'/>
+
+# Lớp MediaFileIcon
+
+Lớp `MediaFileIcon` là một **Lớp chính tĩnh (Static)** được thiết kế để đăng ký, lưu trữ, chuẩn hóa và áp dụng các biểu tượng SVG tùy chỉnh cho các phần mở rộng và mã loại tệp. Lớp này đóng vai trò như một sổ đăng ký biểu tượng tập trung được `MediaFiles` và `MediaFile` sử dụng nhằm ghi đè các biểu tượng vector mặc định trong hệ thống thiết kế.
+
+## Các tính năng chính
+
+- **Sổ đăng ký tĩnh** — duy trì từ điển lưu trữ mã SVG tùy chỉnh trong bộ nhớ gắn với các mã tệp đã chuẩn hóa.
+- **Chuẩn hóa mã tệp** — tự động loại bỏ khoảng trắng và chuyển về chữ thường (`toCode`), đảm bảo tra cứu không phân biệt chữ hoa chữ thường.
+- **Đăng ký đơn lẻ và hàng loạt** — cung cấp các phương thức thuận tiện để đăng ký từng biểu tượng (`add`) hoặc nhập một từ điển biểu tượng hàng loạt (`addList`).
+- **Bổ sung siêu dữ liệu liền mạch** — gán biểu tượng tùy chỉnh một cách an toàn vào đối tượng cấu hình `MediaFileItem` thông qua phương thức `toItem`.
+- **Không có phụ thuộc runtime** — hoàn toàn thao tác trên chuỗi và từ điển dữ liệu, hỗ trợ môi trường isomorphic và SSR an toàn.
+
+## Khởi tạo
+
+Lớp là tĩnh và không yêu cầu khởi tạo thực thể. Tất cả các phương thức được gọi trực tiếp thông qua `MediaFileIcon`.
+
+## Các phương thức
+
+### Quản lý sổ đăng ký
+
+- `static has(code: string): boolean` — kiểm tra xem biểu tượng tùy chỉnh đã được đăng ký cho mã tệp hoặc phần mở rộng đã chỉ định hay chưa.
+- `static get(code: string): string | undefined` — trả về chuỗi biểu tượng SVG tùy chỉnh cho mã hoặc phần mở rộng cụ thể, hoặc `undefined` nếu chưa đăng ký.
+- `static add(code: string, icon: string): void` — đăng ký chuỗi biểu tượng SVG tùy chỉnh cho một mã tệp hoặc phần mở rộng cụ thể.
+- `static addList(icons: MediaFileIcons): void` — đăng ký hàng loạt nhiều biểu tượng SVG tùy chỉnh từ một từ điển.
+
+### Chuẩn hóa và chuyển đổi phần tử
+
+- `static toCode(code: string): string` — chuẩn hóa mã tệp hoặc phần mở rộng bằng cách cắt tỉa khoảng trắng và chuyển sang chữ thường.
+- `static toItem(item?: MediaFileItem): MediaFileItem | undefined` — nhân bản đối tượng tệp và áp dụng biểu tượng tùy chỉnh nếu đã đăng ký, hoặc trả về đối tượng gốc nếu chưa đăng ký.
+
+## Các kiểu dữ liệu
+
+### MediaFileIcons
+
+- `Record<string, string>` — từ điển ánh xạ các mã hoặc phần mở rộng tệp đã chuẩn hóa sang chuỗi mã SVG.
+
+### MediaFileItem
+
+- `code: string` — mã loại tệp hoặc phần mở rộng.
+- `name: string` — tên hiển thị trực quan của định dạng tệp.
+- `icon?: string` — chuỗi mã SVG biểu tượng đã được giải quyết hoặc tùy chỉnh.
+- `extensions?: string[]` — danh sách các phần mở rộng tệp được hỗ trợ.
+- `mime?: string` — kiểu MIME tương ứng.
+- `category?: MediaFileCategoryValue` — danh mục phân loại cấp cao của tệp.
+- `group?: MediaFileGroupValue` — nhóm phân loại (`neutral`, `category`, `standard`).
+
+## Ví dụ sử dụng
+
+```typescript
+import { MediaFileIcon } from '@dxtmisha/media'
+
+// Đăng ký một biểu tượng SVG tùy chỉnh
+MediaFileIcon.add('sketch', '<svg class="icon-sketch">...</svg>')
+
+// Đăng ký nhiều biểu tượng hàng loạt
+MediaFileIcon.addList({
+  psd: '<svg class="icon-psd">...</svg>',
+  ai: '<svg class="icon-ai">...</svg>'
+})
+
+// Kiểm tra sự tồn tại và lấy biểu tượng
+if (MediaFileIcon.has('sketch')) {
+  const iconMarkup = MediaFileIcon.get('sketch')
+  console.log(iconMarkup)
+}
+
+// Chuẩn hóa chuỗi mã tệp
+console.log(MediaFileIcon.toCode('  .DOCX  ')) // '.docx'
+```

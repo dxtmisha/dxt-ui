@@ -37,6 +37,10 @@ const config: StorybookConfig = {
     '../../nitro-basic/src/storybook/**/*.mdx',
     '../../nitro-basic/src/storybook/**/*.stories.@(js|jsx|mjs|ts|tsx)',
 
+    // Media
+    '../../media/src/storybook/**/*.mdx',
+    '../../media/src/storybook/**/*.stories.@(js|jsx|mjs|ts|tsx)',
+
     // MCP & Scripts
     '../../demo-mcp/src/**/*.mdx',
     '../../demo-mcp/src/**/*.stories.@(js|jsx|mjs|ts|tsx)',

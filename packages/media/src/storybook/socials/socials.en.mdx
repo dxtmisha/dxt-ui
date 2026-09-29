@@ -1,0 +1,187 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/media/2. Social Networks'/>
+
+# Social Networks: Connection and Integration
+
+The `@dxtmisha/media` package includes a complete social network subsystem covering 35+ global and regional platforms (GitHub, Telegram, LinkedIn, X, WeChat, Zalo, Discord, YouTube, etc.). It delivers official brand vector icons, URL prefix/suffix formatting, username parsing, input masks, and dynamic icon overrides.
+
+## Connection Approaches
+
+Depending on your application needs, you can integrate social network assets in three ways:
+
+1. **Social Icons Dictionary & Registration (`@dxtmisha/media/socials`)** — access brand vector icons via the `socialIcons` dictionary or initialize the static registry via `registerSocialIcons()`.
+2. **URL Construction & Parsing via `MediaSocial`** — build canonical profile URLs (`getUrl`) or extract clean handles (`getValue`) for profile forms and input fields.
+3. **Custom Icon Registry** — override built-in social icons or add custom corporate links globally across all components.
+
+## The `socials.ts` Module (`@dxtmisha/media/socials`)
+
+The `socials.ts` module serves as the primary asset source for social brand vector icons. It exports:
+- The `socialIcons` dictionary indexed by `InputSocialType` enum codes.
+- The `registerSocialIcons()` initialization function.
+
+Note: Individual brand icons are not exported as separate variables; all icons are accessed through the `socialIcons` dictionary or resolved dynamically via `MediaSocial`.
+
+### 1. `registerSocialIcons()` Helper
+
+The `registerSocialIcons()` function automatically loads all 35+ default brand SVG icons from `socialIcons` into the `MediaSocial` static registry with a single call:
+
+```typescript
+import { registerSocialIcons } from '@dxtmisha/media/socials'
+
+// Registers all default social brand icons in the MediaSocial registry
+registerSocialIcons()
+```
+
+Once called, `MediaSocial.get(code)` immediately has access to all registered vector icons, which are automatically used by components like `D1InputSocial`.
+
+### 2. The `socialIcons` Dictionary
+
+The `socialIcons` object is a typed dictionary (`InputSocialIcons`) mapping each `InputSocialType` enum key to its vector SVG markup:
+
+```typescript
+import { socialIcons } from '@dxtmisha/media/socials'
+import { InputSocialType } from '@dxtmisha/media'
+
+// Direct dictionary access by enum key
+const githubSvg = socialIcons[InputSocialType.github]
+const telegramSvg = socialIcons[InputSocialType.telegram]
+const linkedinSvg = socialIcons[InputSocialType.linkedin]
+```
+
+In Vue 3 templates:
+
+```html
+<template>
+  <div class="social-links">
+    <a href="https://github.com/dxtmisha" target="_blank" v-html="socialIcons['github']" />
+    <a href="https://t.me/dxtmisha" target="_blank" v-html="socialIcons['telegram']" />
+  </div>
+</template>
+
+<script setup lang="ts">
+import { socialIcons } from '@dxtmisha/media/socials'
+</script>
+```
+
+## URL Management with `MediaSocial`
+
+The `MediaSocial` class provides helpers to construct canonical profile URLs and extract clean handles without manual regular expressions.
+
+### Constructing Profile URLs (`getUrl`)
+
+Constructs a full, valid profile URL from a raw username or handle:
+
+```typescript
+import { MediaSocial, InputSocialType } from '@dxtmisha/media'
+
+// Constructs 'https://github.com/dxtmisha'
+const githubUrl = MediaSocial.getUrl(InputSocialType.github, 'dxtmisha')
+
+// Constructs 'https://t.me/dxtmisha'
+const tgUrl = MediaSocial.getUrl(InputSocialType.telegram, 'dxtmisha')
+
+// If the input already contains the prefix, it is safely returned as-is
+const existingUrl = MediaSocial.getUrl(InputSocialType.github, 'https://github.com/dxtmisha')
+// Returns: 'https://github.com/dxtmisha'
+```
+
+### Extracting Handles (`getValue`)
+
+Extracts the raw username from a full profile URL by stripping the platform's configured prefix and suffix:
+
+```typescript
+import { MediaSocial, InputSocialType } from '@dxtmisha/media'
+
+// Extracts 'dxtmisha'
+const username = MediaSocial.getValue(InputSocialType.telegram, 'https://t.me/dxtmisha')
+
+// Extracts 'dxtmisha'
+const githubUser = MediaSocial.getValue(InputSocialType.github, 'https://github.com/dxtmisha')
+```
+
+## Registering Custom Social Icons
+
+If your design system uses customized brand icons or needs to override default vectors with monochrome or theme-colored variants, use `MediaSocial.addIcon` or `MediaSocial.addIcons`:
+
+### Single Icon Override
+
+```typescript
+import { MediaSocial, InputSocialType } from '@dxtmisha/media'
+
+// Override Telegram icon with a custom SVG
+MediaSocial.addIcon(
+  InputSocialType.telegram,
+  '<svg class="custom-telegram" viewBox="0 0 24 24"><path d="..."/></svg>'
+)
+```
+
+### Batch Override
+
+```typescript
+import { MediaSocial, InputSocialType } from '@dxtmisha/media'
+
+MediaSocial.addIcons({
+  [InputSocialType.github]: '<svg class="brand-gh">...</svg>',
+  [InputSocialType.x]: '<svg class="brand-x">...</svg>'
+})
+```
+
+Once registered, any component calling `MediaSocial.get(code)` or using `D1InputSocial` will immediately render the custom icon.
+
+## Querying Social Catalog & Metadata
+
+You can retrieve the entire list of supported platforms or look up specific configuration items:
+
+```typescript
+import { MediaSocial, InputSocialType } from '@dxtmisha/media'
+
+// Get configuration for a single platform
+const linkedin = MediaSocial.get(InputSocialType.linkedin)
+console.log(linkedin?.name)   // 'LinkedIn'
+console.log(linkedin?.prefix) // 'https://www.linkedin.com/in/'
+console.log(linkedin?.icon)   // Vector SVG string
+
+// Retrieve the full array of all 35+ supported platforms
+const allSocials = MediaSocial.getList()
+```
+
+## Integration with Design System Components
+
+`MediaSocial` integrates seamlessly with form inputs like `D1InputSocial` in `@dxtmisha/d1`:
+
+```html
+<template>
+  <d1-input-social
+    v-model="socialHandle"
+    :type="InputSocialType.telegram"
+    label="Telegram Username"
+  />
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue'
+import { InputSocialType } from '@dxtmisha/media'
+
+const socialHandle = ref('dxtmisha')
+</script>
+```
+
+## Supported Platforms Reference
+
+The `InputSocialType` enum defines 35+ supported social platforms:
+
+- **GitHub (`github`)** — `https://github.com/`
+- **Telegram (`telegram`)** — `https://t.me/`
+- **LinkedIn (`linkedin`)** — `https://www.linkedin.com/in/`
+- **X / Twitter (`x`, `twitter`)** — `https://x.com/`
+- **Discord (`discord`)** — `https://discord.gg/`
+- **YouTube (`youtube`)** — `https://www.youtube.com/@`
+- **Instagram (`instagram`)** — `https://www.instagram.com/`
+- **Facebook (`facebook`)** — `https://www.facebook.com/`
+- **WeChat (`wechat`)**
+- **Zalo (`zalo`)** — `https://zalo.me/`
+- **VK (`vk`)** — `https://vk.com/`
+- **TikTok (`tiktok`)** — `https://www.tiktok.com/@`
+- **Reddit (`reddit`)** — `https://www.reddit.com/user/`
+- **Medium (`medium`)** — `https://medium.com/@`

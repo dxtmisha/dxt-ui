@@ -157,33 +157,42 @@ export type FieldFileValue = {
 }
 
 /**
+ * Emitted events for field value handling/
+ * Эмитируемые события для работы со значением поля
+ */
+export type FieldValueEmits<T = any> = {
+  /**
+   * Emitted on input events (every change while typing)/
+   * Эмит при вводе (каждое изменение): [event, value]
+   */
+  input: [event: InputEvent | Event, value: FieldValidationItem<T>]
+
+  /**
+   * Lightweight input emit without DOM event/
+   * Лёгкий эмит ввода без DOM-события: [value]
+   */
+  inputLite: [value: FieldValidationItem<T>]
+
+  /**
+   * Emitted when value is committed (blur/confirm)/
+   * Эмит при подтверждении значения (blur/confirm): [event, value]
+   */
+  change: [event: InputEvent | Event, value: FieldValidationItem<T>]
+
+  /**
+   * Lightweight change emit without DOM event/
+   * Лёгкий эмит подтверждения без события: [value]
+   */
+  changeLite: [value: FieldValidationItem<T>]
+}
+
+/**
  * Emitted events for field components/
  * Эмитируемые события для компонентов поля
  */
 export type FieldBasicEmits<T = any>
   = ModelEmits<T>
-    & {
-    /**
-     * Emitted on input events (every change while typing)/
-     * Эмит при вводе (каждое изменение): [event, value]
-     */
-      input: [event: InputEvent | Event, value: FieldValidationItem<T>]
-      /**
-* Lightweight input emit without DOM event/
-* Лёгкий эмит ввода без DOM-события: [value]
-*/
-      inputLite: [value: FieldValidationItem<T>]
-      /**
-* Emitted when value is committed (blur/confirm)/
-* Эмит при подтверждении значения (blur/confirm): [event, value]
-*/
-      change: [event: InputEvent | Event, value: FieldValidationItem<T>]
-      /**
-* Lightweight change emit without DOM event/
-* Лёгкий эмит подтверждения без события: [value]
-*/
-      changeLite: [value: FieldValidationItem<T>]
-    }
+    & FieldValueEmits<T>
 
 /**
  * Interface describing exposed properties for basic field functionality/

@@ -1,0 +1,172 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/ru/media/3. Флаги стран'/>
+
+# Флаги стран: подключение и интеграция
+
+Пакет `@dxtmisha/media` предоставляет полноценную высокопроизводительную подсистему работы с флагами стран и географическими метаданными, охватывающую более 250 стран и территорий (стандарт ISO 3166-1 alpha-2). Она предлагает два подхода к отображению — точечный импорт векторных SVG и ультрабыстрый растровый WebP-спрайт с CSS-классами, объединенные с подробным географическим справочником (`geo.json`).
+
+## Способы подключения
+
+В зависимости от интерфейса и требований к производительности флаги можно подключать двумя основными путями:
+
+1. **Векторный импорт SVG (`@dxtmisha/media/flags`)** — оптимален для одиночных элементов, крупных баннеров, промо-блоков и ситуаций, когда требуется идеальная четкость векторов на любых экранах.
+2. **WebP-спрайт с CSS-классами (`@dxtmisha/media/style.css`)** — оптимален для списков выбора стран, телефонных полей ввода (`D1InputPhone`) и плотных таблиц, где импорт сотен отдельных SVG привел бы к избыточным HTTP-запросам или загромождению DOM.
+
+## 1. Прямой векторный импорт SVG
+
+Вы можете импортировать конкретные векторные SVG-строки напрямую из субпути `@dxtmisha/media/flags`. Каждый флаг назван по коду страны ISO 3166-1 alpha-2 с суффиксом `Svg`:
+
+```typescript
+import {
+  UsSvg,
+  VnSvg,
+  DeSvg,
+  GbSvg,
+  FrSvg,
+  JpSvg,
+  RuSvg
+} from '@dxtmisha/media/flags'
+
+// Использование напрямую в коде
+const vietnamFlag = VnSvg
+```
+
+В шаблонах Vue 3:
+
+```html
+<template>
+  <div class="country-badge">
+    <span class="flag-icon" v-html="VnSvg" />
+    <span class="country-name">Вьетнам</span>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { VnSvg } from '@dxtmisha/media/flags'
+</script>
+```
+
+Также доступен экспорт по умолчанию, содержащий объект со всеми 250+ SVG-флагами:
+
+```typescript
+import flags from '@dxtmisha/media/flags'
+
+const svgMarkup = flags.UsSvg
+```
+
+## 2. Высокопроизводительный WebP-спрайт (`style.css`)
+
+Для международных полей ввода телефонов, переключателей языков и селекторов с сотнями вариантов стран импорт сотен отдельных SVG создает лишнюю нагрузку. В `@dxtmisha/media` предусмотрен готовый оптимизированный WebP-спрайт без накладных расходов в JavaScript.
+
+### Подключение стилей
+
+Подключите скомпилированную таблицу стилей один раз в точке входа вашего приложения:
+
+```typescript
+// В main.ts, App.vue или стилях компонента
+import '@dxtmisha/media/style.css'
+```
+
+### Использование CSS-классов
+
+Отображайте любой флаг с помощью базового класса `.ui-sys-flags` и модификатора страны `.ui-sys-flags--<CODE>`:
+
+```html
+<!-- Флаг Вьетнама -->
+<span class="ui-sys-flags ui-sys-flags--VN" />
+
+<!-- Флаг США -->
+<span class="ui-sys-flags ui-sys-flags--US" />
+
+<!-- Флаг Германии -->
+<span class="ui-sys-flags ui-sys-flags--DE" />
+
+<!-- Флаг Японии -->
+<span class="ui-sys-flags ui-sys-flags--JP" />
+```
+
+### Масштабирование и размеры
+
+Размеры спрайта можно легко регулировать через CSS-переменные:
+
+```css
+.custom-flag {
+  --sys-flags-width: 32px;
+  --sys-flags-height: 24px;
+}
+```
+
+```html
+<span class="ui-sys-flags ui-sys-flags--VN custom-flag" />
+```
+
+## 3. Географические метаданные (`geo.json`)
+
+Пакет экспортирует полный набор данных `geo`, содержащий информацию о странах, телефонных кодах, масках ввода номеров и часовых поясах:
+
+```typescript
+import { geo } from '@dxtmisha/media'
+
+// Поиск информации по стране
+const vietnam = geo.find(item => item.country === 'VN')
+
+console.log(vietnam?.country)   // 'VN'
+console.log(vietnam?.phoneCode) // '84'
+console.log(vietnam?.phoneMask) // ['+84-**-***-****', ...]
+console.log(vietnam?.zone)      // 'Asia/Ho_Chi_Minh'
+```
+
+### Построение динамического селектора стран
+
+Связка данных `geo` с CSS-спрайтом позволяет создавать легковесные списки выбора стран:
+
+```html
+<template>
+  <div class="country-list">
+    <div
+      v-for="item in geo"
+      :key="item.country"
+      class="country-option"
+      @click="selectCountry(item.country)"
+    >
+      <span :class="['ui-sys-flags', `ui-sys-flags--${item.country}`]" />
+      <span class="country-code">+{{ item.phoneCode }}</span>
+      <span class="country-name">{{ item.country }}</span>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { geo } from '@dxtmisha/media'
+import '@dxtmisha/media/style.css'
+
+function selectCountry(code: string) {
+  console.log('Выбрана страна:', code)
+}
+</script>
+```
+
+## 4. Интеграция с компонентами DXT UI
+
+Подсистема флагов напрямую задействована в компонентах библиотеки `@dxtmisha/d1`:
+- **`D1InputPhone`** — автоматически отрисовывает нужный флаг страны из спрайта на основе распознанного телефонного кода или выбранного региона.
+- **`D1MenuCountry`** — селектор стран со мгновенным рендерингом через спрайт и поддержкой навигации с клавиатуры.
+
+## Справочник популярных кодов стран
+
+Часто используемые коды стран и соответствующие идентификаторы экспорта:
+
+- **Вьетнам (`VN`)** — `VnSvg`, `.ui-sys-flags--VN`, телефонный код `+84`
+- **США (`US`)** — `UsSvg`, `.ui-sys-flags--US`, телефонный код `+1`
+- **Великобритания (`GB`)** — `GbSvg`, `.ui-sys-flags--GB`, телефонный код `+44`
+- **Германия (`DE`)** — `DeSvg`, `.ui-sys-flags--DE`, телефонный код `+49`
+- **Франция (`FR`)** — `FrSvg`, `.ui-sys-flags--FR`, телефонный код `+33`
+- **Япония (`JP`)** — `JpSvg`, `.ui-sys-flags--JP`, телефонный код `+81`
+- **Китай (`CN`)** — `CnSvg`, `.ui-sys-flags--CN`, телефонный код `+86`
+- **Южная Корея (`KR`)** — `KrSvg`, `.ui-sys-flags--KR`, телефонный код `+82`
+- **Австралия (`AU`)** — `AuSvg`, `.ui-sys-flags--AU`, телефонный код `+61`
+- **Канада (`CA`)** — `CaSvg`, `.ui-sys-flags--CA`, телефонный код `+1`
+- **Бразилия (`BR`)** — `BrSvg`, `.ui-sys-flags--BR`, телефонный код `+55`
+- **Индия (`IN`)** — `InSvg`, `.ui-sys-flags--IN`, телефонный код `+91`
+- и все остальные 240+ кодов стран стандарта ISO 3166-1 alpha-2.
