@@ -83,7 +83,7 @@ export class InputFileItemDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      getFile: () => this.props.file,
+      getFile: () => this.props.file ?? this.props.value?.file,
       getStatus: () => this.item.statusItem.status,
       delete: () => this.item.eventItem.onDelete(),
       retry: () => this.item.eventItem.onRetry()
@@ -213,7 +213,6 @@ export class InputFileItemDesign<
             class: [
               this.classes?.value.thumbnail,
               {
-                [`${this.getName()}__thumbnail--checkered`]: this.props.checkered,
                 [`${this.getName()}__thumbnail--error`]: this.item.statusItem.isError
               }
             ]
@@ -230,7 +229,6 @@ export class InputFileItemDesign<
           class: [
             this.classes?.value.thumbnail,
             {
-              [`${this.getName()}__thumbnail--checkered`]: this.props.checkered,
               [`${this.getName()}__thumbnail--error`]: this.item.statusItem.isError
             }
           ]
@@ -256,7 +254,7 @@ export class InputFileItemDesign<
         'div',
         { class: this.classes?.value.thumbnailPlaceholder },
         this.components?.render('icon', {
-          icon: this.props.iconFile ?? 'description'
+          icon: this.props.icon ?? 'description'
         }) ?? []
       )
     ]

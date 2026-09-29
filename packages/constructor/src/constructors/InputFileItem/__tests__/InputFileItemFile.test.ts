@@ -11,24 +11,19 @@ describe('InputFileItemFile', () => {
   }
 
   describe('name', () => {
-    it('returns props.name when provided', () => {
-      const helper = createHelper({ name: 'document.pdf' })
-      expect(helper.name).toBe('document.pdf')
-    })
-
-    it('returns props.label when name is not provided', () => {
+    it('returns props.label when provided', () => {
       const helper = createHelper({ label: 'custom_label.jpg' })
       expect(helper.name).toBe('custom_label.jpg')
     })
 
-    it('returns props.file.name when props.name is absent', () => {
+    it('returns props.file.name when props.label is absent', () => {
       const mockFile = new File([''], 'file_name.png', { type: 'image/png' })
       const helper = createHelper({ file: mockFile })
       expect(helper.name).toBe('file_name.png')
     })
 
-    it('returns props.item.name when file is absent', () => {
-      const helper = createHelper({ item: { name: 'item_name.txt' } })
+    it('returns props.value.name when file is absent', () => {
+      const helper = createHelper({ value: { name: 'item_name.txt' } })
       expect(helper.name).toBe('item_name.txt')
     })
 
@@ -39,24 +34,14 @@ describe('InputFileItemFile', () => {
   })
 
   describe('size', () => {
-    it('returns numeric size from props.size', () => {
-      const helper = createHelper({ size: 1024 })
-      expect(helper.size).toBe(1024)
-    })
-
-    it('parses numeric string size from props.size', () => {
-      const helper = createHelper({ size: '2048' })
-      expect(helper.size).toBe(2048)
-    })
-
     it('returns size from props.file', () => {
       const mockFile = new File(['hello world'], 'text.txt', { type: 'text/plain' })
       const helper = createHelper({ file: mockFile })
       expect(helper.size).toBe(mockFile.size)
     })
 
-    it('returns size from props.item.size', () => {
-      const helper = createHelper({ item: { size: 4096 } })
+    it('returns size from props.value.size', () => {
+      const helper = createHelper({ value: { size: 4096 } })
       expect(helper.size).toBe(4096)
     })
 
@@ -67,65 +52,50 @@ describe('InputFileItemFile', () => {
   })
 
   describe('sizeFormatted', () => {
-    it('returns custom string as-is when non-numeric string is passed to size', () => {
-      const helper = createHelper({ size: '72 Mb' })
-      expect(helper.sizeFormatted).toBe('72 Mb')
-    })
-
     it('returns empty string when size is undefined or negative', () => {
       const helper = createHelper({})
       expect(helper.sizeFormatted).toBe('')
 
-      const negativeHelper = createHelper({ size: -10 })
+      const negativeHelper = createHelper({ value: { size: -10 } })
       expect(negativeHelper.sizeFormatted).toBe('')
     })
 
     it('formats bytes correctly', () => {
-      const helper = createHelper({ size: 512 })
+      const helper = createHelper({ value: { size: 512 } })
       expect(helper.sizeFormatted).toBe('512 B')
     })
 
     it('formats kilobytes correctly', () => {
-      const helperSmallKb = createHelper({ size: 2.5 * 1024 })
+      const helperSmallKb = createHelper({ value: { size: 2.5 * 1024 } })
       expect(helperSmallKb.sizeFormatted).toBe('2.5 KB')
 
-      const helperLargeKb = createHelper({ size: 150 * 1024 })
+      const helperLargeKb = createHelper({ value: { size: 150 * 1024 } })
       expect(helperLargeKb.sizeFormatted).toBe('150 KB')
     })
 
     it('formats megabytes correctly', () => {
-      const helperSmallMb = createHelper({ size: 5.5 * 1024 * 1024 })
+      const helperSmallMb = createHelper({ value: { size: 5.5 * 1024 * 1024 } })
       expect(helperSmallMb.sizeFormatted).toBe('5.5 Mb')
 
-      const helperLargeMb = createHelper({ size: 72 * 1024 * 1024 })
+      const helperLargeMb = createHelper({ value: { size: 72 * 1024 * 1024 } })
       expect(helperLargeMb.sizeFormatted).toBe('72 Mb')
     })
 
     it('formats gigabytes correctly', () => {
-      const helperGb = createHelper({ size: 1.5 * 1024 * 1024 * 1024 })
+      const helperGb = createHelper({ value: { size: 1.5 * 1024 * 1024 * 1024 } })
       expect(helperGb.sizeFormatted).toBe('1.5 GB')
     })
   })
 
   describe('src', () => {
-    it('returns props.src when provided', () => {
-      const helper = createHelper({ src: 'https://example.com/image.png' })
-      expect(helper.src).toBe('https://example.com/image.png')
+    it('returns props.value.value when provided', () => {
+      const helper = createHelper({ value: { value: 'https://example.com/item.svg' } })
+      expect(helper.src).toBe('https://example.com/item.svg')
     })
 
-    it('returns props.url when src is absent', () => {
+    it('returns props.url when provided', () => {
       const helper = createHelper({ url: 'https://example.com/file.jpg' })
       expect(helper.src).toBe('https://example.com/file.jpg')
-    })
-
-    it('returns props.thumbnail when it is a string URL', () => {
-      const helper = createHelper({ thumbnail: 'https://example.com/thumb.webp' })
-      expect(helper.src).toBe('https://example.com/thumb.webp')
-    })
-
-    it('returns props.item.src when root props are absent', () => {
-      const helper = createHelper({ item: { src: 'https://example.com/item.svg' } })
-      expect(helper.src).toBe('https://example.com/item.svg')
     })
 
     it('returns undefined when no URL is provided', () => {
@@ -144,19 +114,19 @@ describe('InputFileItemFile', () => {
       expect(isImageSpy).toHaveBeenCalledWith(mockFile)
     })
 
-    it('detects image extension from src', () => {
-      const helperPng = createHelper({ src: 'https://example.com/picture.png' })
+    it('detects image extension from value.value', () => {
+      const helperPng = createHelper({ value: { value: 'https://example.com/picture.png' } })
       expect(helperPng.isImage).toBe(true)
 
-      const helperWebp = createHelper({ src: 'picture.webp' })
+      const helperWebp = createHelper({ value: { value: 'picture.webp' } })
       expect(helperWebp.isImage).toBe(true)
 
-      const helperPdf = createHelper({ src: 'document.pdf' })
+      const helperPdf = createHelper({ value: { value: 'document.pdf' } })
       expect(helperPdf.isImage).toBe(false)
     })
 
-    it('detects image extension from name', () => {
-      const helper = createHelper({ name: 'photo.JPEG' })
+    it('detects image extension from name resolved via label', () => {
+      const helper = createHelper({ label: 'photo.JPEG' })
       expect(helper.isImage).toBe(true)
     })
 
@@ -168,7 +138,7 @@ describe('InputFileItemFile', () => {
 
   describe('imageValue', () => {
     it('returns src when available', () => {
-      const helper = createHelper({ src: 'https://example.com/photo.jpg' })
+      const helper = createHelper({ value: { value: 'https://example.com/photo.jpg' } })
       expect(helper.imageValue).toBe('https://example.com/photo.jpg')
     })
 
@@ -190,18 +160,8 @@ describe('InputFileItemFile', () => {
   })
 
   describe('hasThumbnail', () => {
-    it('returns false when thumbnail is explicitly false', () => {
-      const helper = createHelper({ thumbnail: false, src: 'https://example.com/photo.jpg' })
-      expect(helper.hasThumbnail).toBe(false)
-    })
-
-    it('returns true when thumbnail is explicitly true', () => {
-      const helper = createHelper({ thumbnail: true })
-      expect(helper.hasThumbnail).toBe(true)
-    })
-
-    it('returns true when src is provided', () => {
-      const helper = createHelper({ src: 'https://example.com/photo.jpg' })
+    it('returns true when src is available from value', () => {
+      const helper = createHelper({ value: { value: 'https://example.com/photo.jpg' } })
       expect(helper.hasThumbnail).toBe(true)
     })
 
@@ -209,6 +169,11 @@ describe('InputFileItemFile', () => {
       const mockFile = new File([''], 'file.txt', { type: 'text/plain' })
       const helper = createHelper({ file: mockFile })
       expect(helper.hasThumbnail).toBe(true)
+    })
+
+    it('returns false when no file or source is provided', () => {
+      const helper = createHelper({})
+      expect(helper.hasThumbnail).toBe(false)
     })
   })
 })

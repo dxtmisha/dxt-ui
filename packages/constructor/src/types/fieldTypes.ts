@@ -127,31 +127,22 @@ export type FieldValidationItem<Value = any>
 export type FieldFileValue = {
   /** Unique item identifier / Уникальный идентификатор элемента */
   id?: string | number
-
   /** File or image source string (URL, data URL, or base64) / Строка источника файла или изображения (URL, data URL или base64) */
   value?: string
-
   /** File name / Имя файла */
   name?: string
-
   /** File MIME type / MIME-тип файла */
   type?: string
-
   /** File size in bytes / Размер файла в байтах */
   size?: number
-
   /** Image or media width in pixels / Ширина изображения или медиа в пикселях */
   width?: number
-
   /** Image or media height in pixels / Высота изображения или медиа в пикселях */
   height?: number
-
   /** Last modified timestamp / Временная метка последнего изменения */
   lastModified?: number
-
   /** Crop coordinates [top, right, bottom, left] / Координаты кадрирования [сверху, справа, снизу, слева] */
   crop?: CropAreaCoordinator
-
   /** Raw File instance / Исходный экземпляр файла */
   file?: File
 }

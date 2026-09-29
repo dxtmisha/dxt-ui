@@ -1,8 +1,7 @@
 import {
   isFilled,
   isNumber,
-  isString,
-  toNumber
+  isString
 } from '@dxtmisha/functional'
 
 import { ImageFile } from '../Image'
@@ -36,17 +35,19 @@ export class InputFileItemFile {
    * @returns file name string / строка с именем файла
    */
   get name(): string {
-    const customName = this.props.name ?? this.props.label
+    const customName = this.props.label
+
     if (isFilled(customName)) {
       return String(customName)
     }
 
-    if (this.props.file?.name) {
-      return this.props.file.name
+    const file = this.props.file ?? this.props.value?.file
+    if (file?.name) {
+      return file.name
     }
 
-    if (this.props.item?.name) {
-      return this.props.item.name
+    if (this.props.value?.name) {
+      return this.props.value.name
     }
 
     return ''
@@ -59,20 +60,13 @@ export class InputFileItemFile {
    * @returns file size number or undefined / размер файла в байтах или undefined
    */
   get size(): number | undefined {
-    if (isNumber(this.props.size)) {
-      return this.props.size
+    const file = this.props.file ?? this.props.value?.file
+    if (file?.size) {
+      return file.size
     }
 
-    if (isString(this.props.size) && !Number.isNaN(Number(this.props.size))) {
-      return toNumber(this.props.size)
-    }
-
-    if (this.props.file?.size) {
-      return this.props.file.size
-    }
-
-    if (isNumber(this.props.item?.size)) {
-      return this.props.item.size
+    if (isNumber(this.props.value?.size)) {
+      return this.props.value.size
     }
 
     return undefined
@@ -85,10 +79,6 @@ export class InputFileItemFile {
    * @returns formatted size string / отформатированная строка размера
    */
   get sizeFormatted(): string {
-    if (isString(this.props.size) && Number.isNaN(Number(this.props.size))) {
-      return this.props.size
-    }
-
     const bytes = this.size
     if (bytes === undefined || bytes < 0) {
       return ''
@@ -113,30 +103,18 @@ export class InputFileItemFile {
   }
 
   /**
-   * Resolves and returns the image or thumbnail URL source.
+   * Resolves and returns the image URL source.
    *
-   * Определяет и возвращает URL-источник изображения или миниатюры.
+   * Определяет и возвращает URL-источник изображения.
    * @returns source URL string or undefined / строка URL источника или undefined
    */
   get src(): string | undefined {
-    if (isString(this.props.src)) {
-      return this.props.src
-    }
-
     if (isString(this.props.url)) {
       return this.props.url
     }
 
-    if (isString(this.props.thumbnail)) {
-      return this.props.thumbnail
-    }
-
-    if (this.props.item?.src) {
-      return this.props.item.src
-    }
-
-    if (this.props.item?.url) {
-      return this.props.item.url
+    if (this.props.value?.value) {
+      return this.props.value.value
     }
 
     return undefined
@@ -154,8 +132,9 @@ export class InputFileItemFile {
       return directSrc
     }
 
-    if (this.props.file && this.isImage) {
-      return this.props.file
+    const file = this.props.file ?? this.props.value?.file
+    if (file && this.isImage) {
+      return file
     }
 
     return undefined
@@ -168,8 +147,9 @@ export class InputFileItemFile {
    * @returns true if image / true, если изображение
    */
   get isImage(): boolean {
-    if (this.props.file) {
-      return ImageFile.isImage(this.props.file)
+    const file = this.props.file ?? this.props.value?.file
+    if (file) {
+      return ImageFile.isImage(file)
     }
 
     const source = this.src ?? this.name
@@ -187,15 +167,11 @@ export class InputFileItemFile {
    * @returns true if thumbnail enabled / true, если миниатюра включена
    */
   get hasThumbnail(): boolean {
-    if (this.props.thumbnail === false) {
-      return false
-    }
-
     return Boolean(
-      this.props.thumbnail
-      || this.src
+      this.src
       || this.isImage
       || this.props.file
+      || this.props.value?.file
     )
   }
 }

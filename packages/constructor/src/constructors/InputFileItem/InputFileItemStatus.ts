@@ -1,4 +1,4 @@
-import { isFilled, isNumber, isString, toNumber } from '@dxtmisha/functional'
+import { isFilled, isNumber, isObject, isString, toNumber } from '@dxtmisha/functional'
 
 import type { TextInclude } from '../../classes/TextInclude'
 
@@ -131,18 +131,33 @@ export class InputFileItemStatus {
   }
 
   /**
+   * Returns the raw progress value from loading configuration if specified.
+   *
+   * Возвращает исходное значение прогресса из конфигурации loading, если оно задано.
+   */
+  protected get progressValue(): number | string | undefined {
+    if (isObject(this.props.loading) && 'value' in this.props.loading) {
+      return (this.props.loading as Record<string, any>).value
+    }
+
+    return undefined
+  }
+
+  /**
    * Resolves and returns the current upload progress percentage (0-100).
    *
    * Определяет и возвращает текущий процент прогресса загрузки (0-100).
    * @returns progress percentage number / число процента прогресса
    */
   get progress(): number {
-    if (isNumber(this.props.progress)) {
-      return Math.min(100, Math.max(0, this.props.progress))
+    const val = this.progressValue
+
+    if (isNumber(val)) {
+      return Math.min(100, Math.max(0, val))
     }
 
-    if (isString(this.props.progress)) {
-      const parsedNumber = toNumber(this.props.progress)
+    if (isString(val)) {
+      const parsedNumber = toNumber(val)
       return Math.min(100, Math.max(0, parsedNumber))
     }
 
@@ -156,6 +171,6 @@ export class InputFileItemStatus {
    * @returns true if determinate / true, если определено
    */
   get isProgressDeterminate(): boolean {
-    return this.props.progress !== undefined
+    return this.progressValue !== undefined
   }
 }

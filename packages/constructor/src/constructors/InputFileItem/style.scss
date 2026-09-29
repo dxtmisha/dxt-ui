@@ -50,17 +50,6 @@
     background-color: var(--sys-surface-variant, rgba(0, 0, 0, 0.06));
     border: 1px solid var(--sys-outline-variant, rgba(0, 0, 0, 0.12));
 
-    &--checkered {
-      background-color: var(--sys-surface, #ffffff);
-      background-image: conic-gradient(
-        var(--sys-outline-variant, rgba(0, 0, 0, 0.12)) 0deg 90deg,
-        transparent 90deg 180deg,
-        var(--sys-outline-variant, rgba(0, 0, 0, 0.12)) 180deg 270deg,
-        transparent 270deg 360deg
-      );
-      background-size: 16px 16px;
-    }
-
     &--error {
       background-color: var(--sys-error-container, rgba(239, 68, 68, 0.15));
       border-color: var(--sys-error, #dc2626);

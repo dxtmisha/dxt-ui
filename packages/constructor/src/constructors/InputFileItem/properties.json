@@ -33,7 +33,6 @@
     "~tile": {},
     "_default": "list"
   },
-  "~checkered": {},
   "~selected": {},
   "~disabled": {},
   "~readonly": {}

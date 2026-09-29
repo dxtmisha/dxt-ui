@@ -6,8 +6,9 @@ import type { ProgressComponentInclude } from '../Progress'
 import type { RippleComponentInclude } from '../Ripple'
 
 import type { CaptionSlots } from '../../types/captionTypes'
+import type { FieldFileValue } from '../../types/fieldTypes'
 import type { LabelAlternativeSlots } from '../../types/labelTypes'
-import type { InputFileItemData, InputFileItemStatusType } from './basicTypes'
+import type { InputFileItemStatusType } from './basicTypes'
 
 /**
  * Interface for describing which components need to be connected for work.
@@ -30,9 +31,9 @@ export type InputFileItemEmits = {
   /** Click event / Событие клика */
   click: [event: MouseEvent]
   /** Delete event / Событие удаления */
-  delete: [file?: File | InputFileItemData]
+  delete: [file?: File | FieldFileValue]
   /** Retry event / Событие повтора */
-  retry: [file?: File | InputFileItemData]
+  retry: [file?: File | FieldFileValue]
 }
 
 /**

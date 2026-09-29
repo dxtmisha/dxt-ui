@@ -134,17 +134,17 @@ describe('InputFileItemStatus', () => {
     })
 
     it('clamps progress to 0 when negative', () => {
-      const { statusItem } = createHelper({ progress: -10 })
+      const { statusItem } = createHelper({ loading: { value: -10 } })
       expect(statusItem.progress).toBe(0)
     })
 
     it('clamps progress to 100 when exceeding 100', () => {
-      const { statusItem } = createHelper({ progress: 150 })
+      const { statusItem } = createHelper({ loading: { value: 150 } })
       expect(statusItem.progress).toBe(100)
     })
 
     it('parses string progress', () => {
-      const { statusItem } = createHelper({ progress: '80' })
+      const { statusItem } = createHelper({ loading: { value: '80' } })
       expect(statusItem.progress).toBe(80)
     })
 
@@ -157,7 +157,7 @@ describe('InputFileItemStatus', () => {
       const { statusItem: indeterminateStatus } = createHelper({})
       expect(indeterminateStatus.isProgressDeterminate).toBe(false)
 
-      const { statusItem: determinateStatus } = createHelper({ progress: 0 })
+      const { statusItem: determinateStatus } = createHelper({ loading: { value: 0 } })
       expect(determinateStatus.isProgressDeterminate).toBe(true)
     })
   })

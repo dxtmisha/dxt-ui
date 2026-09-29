@@ -1,11 +1,13 @@
 import type { ButtonPropsBasic, ButtonPropsInclude } from '../Button'
-import type { CaptionProps } from '../../types/captionTypes'
-import type { EnabledProps } from '../../types/enabledTypes'
 import type { IconPropsBasic, IconPropsInclude } from '../Icon'
 import type { ImagePropsBasic, ImagePropsInclude } from '../Image'
-import type { LabelProps } from '../../types/labelTypes'
 import type { ProgressPropsBasic, ProgressPropsInclude } from '../Progress'
 import type { SkeletonPropsInclude } from '../Skeleton'
+
+import type { CaptionProps } from '../../types/captionTypes'
+import type { EnabledProps } from '../../types/enabledTypes'
+import type { FieldFileValue } from '../../types/fieldTypes'
+import type { LabelProps } from '../../types/labelTypes'
 import type {
   TextCancelPropsInclude,
   TextDeletePropsInclude,
@@ -15,12 +17,11 @@ import type {
   TextRetryPropsInclude,
   TextUploadSuccessPropsInclude
 } from '../../types/textTypes'
-import type { InputFileItemData, InputFileItemStatusType } from './basicTypes'
+import type { InputFileItemStatusType } from './basicTypes'
 
 type InputFileItemPropsToken = {
   // :type [!] System label / Системная метка
   appearance?: 'list' | 'compact' | 'tile'
-  checkered?: boolean
   selected?: boolean
   disabled?: boolean
   readonly?: boolean
@@ -32,13 +33,13 @@ export type InputFileItemPropsBasic<
   Icon extends IconPropsBasic = IconPropsBasic,
   Image extends ImagePropsBasic = ImagePropsBasic,
   Progress extends ProgressPropsBasic = ProgressPropsBasic
-> = ButtonPropsInclude<Button>
+> = IconPropsInclude<Icon>
+  & LabelProps
   & CaptionProps
   & EnabledProps
-  & IconPropsInclude<Icon>
   & ImagePropsInclude<Image>
-  & LabelProps
   & ProgressPropsInclude<Progress>
+  & ButtonPropsInclude<Button>
   & SkeletonPropsInclude
   & TextCancelPropsInclude
   & TextDeletePropsInclude
@@ -48,38 +49,17 @@ export type InputFileItemPropsBasic<
   & TextRetryPropsInclude
   & TextUploadSuccessPropsInclude
   & {
-    /** File instance / Экземпляр файла */
-    file?: File
-
-    /** File data item / Объект данных файла */
-    item?: InputFileItemData
-
-    /** File name / Имя файла */
-    name?: string
-
-    /** File size in bytes or pre-formatted string / Размер файла в байтах или готовая строка */
-    size?: number | string
-
-    /** Image or thumbnail source URL / URL источника изображения или миниатюры */
-    src?: string
-
-    /** Thumbnail URL or flag / URL миниатюры или флаг отображения */
-    thumbnail?: boolean | string
-
-    /** Enable checkered pattern for transparent PNG / Включить шахматный фон для прозрачного PNG */
-    checkered?: boolean
+    /** Current upload or processing status / Текущий статус загрузки или обработки */
+    status?: InputFileItemStatusType
 
     /** Selected state / Состояние выбора */
     selected?: boolean
 
-    /** Current upload or processing status / Текущий статус загрузки или обработки */
-    status?: InputFileItemStatusType
+    /** File data value / Значение данных файла */
+    value?: FieldFileValue
 
-    /** Loading state flag / Флаг состояния загрузки */
-    loading?: boolean
-
-    /** Current progress value (0-100) / Текущее значение прогресса (0-100) */
-    progress?: number | string
+    /** File instance / Экземпляр файла */
+    file?: File
 
     /** Error state or error message / Состояние ошибки или текст ошибки */
     error?: boolean | string
@@ -107,9 +87,6 @@ export type InputFileItemPropsBasic<
 
     /** Icon for error status / Иконка для статуса ошибки */
     iconError?: string
-
-    /** Fallback icon for non-image file / Резервная иконка для не-изображения */
-    iconFile?: string
   }
 
 /**
@@ -125,11 +102,11 @@ export type InputFileItemProps = InputFileItemPropsBasic & InputFileItemPropsTok
  * Значение по умолчанию для свойства.
  */
 export const defaultsInputFileItem = {
+  icon: 'description',
   iconDelete: 'delete',
   iconRetry: 'refresh',
   iconSuccess: 'check_circle',
   iconError: 'cancel',
-  iconFile: 'description',
   ...{
     // :default [!] System label / Системная метка
     appearance: 'list'

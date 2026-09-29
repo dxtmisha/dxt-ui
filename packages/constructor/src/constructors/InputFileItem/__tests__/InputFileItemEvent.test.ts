@@ -51,12 +51,12 @@ describe('InputFileItemEvent', () => {
       expect(emits).toHaveBeenCalledWith('delete', mockFile)
     })
 
-    it('emits delete with props.item when file is not provided', () => {
-      const mockItem = { id: 'file-123', name: 'report.pdf' }
-      const { emits, eventHandler } = createHelper({ item: mockItem })
+    it('emits delete with props.value when file is not provided', () => {
+      const mockValue = { id: 'file-123', name: 'report.pdf' }
+      const { emits, eventHandler } = createHelper({ value: mockValue })
 
       eventHandler.onDelete()
-      expect(emits).toHaveBeenCalledWith('delete', mockItem)
+      expect(emits).toHaveBeenCalledWith('delete', mockValue)
     })
   })
 
@@ -72,12 +72,12 @@ describe('InputFileItemEvent', () => {
       expect(emits).toHaveBeenCalledWith('retry', mockFile)
     })
 
-    it('emits retry with props.item when file is not provided', () => {
-      const mockItem = { id: 'item-999', name: 'presentation.key' }
-      const { emits, eventHandler } = createHelper({ item: mockItem })
+    it('emits retry with props.value when file is not provided', () => {
+      const mockValue = { id: 'item-999', name: 'presentation.key' }
+      const { emits, eventHandler } = createHelper({ value: mockValue })
 
       eventHandler.onRetry()
-      expect(emits).toHaveBeenCalledWith('retry', mockItem)
+      expect(emits).toHaveBeenCalledWith('retry', mockValue)
     })
   })
 })

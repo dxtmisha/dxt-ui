@@ -42,7 +42,7 @@ export class InputFileItemEvent {
    */
   readonly onDelete = (event?: MouseEvent): void => {
     event?.stopPropagation()
-    this.emits?.('delete', this.props.file ?? this.props.item)
+    this.emits?.('delete', this.props.file ?? this.props.value)
   }
 
   /**
@@ -53,6 +53,6 @@ export class InputFileItemEvent {
    */
   readonly onRetry = (event?: MouseEvent): void => {
     event?.stopPropagation()
-    this.emits?.('retry', this.props.file ?? this.props.item)
+    this.emits?.('retry', this.props.file ?? this.props.value)
   }
 }
