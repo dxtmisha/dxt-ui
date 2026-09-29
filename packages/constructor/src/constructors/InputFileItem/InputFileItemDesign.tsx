@@ -29,14 +29,14 @@ export class InputFileItemDesign<
   CLASSES extends InputFileItemClasses,
   P extends InputFileItemPropsBasic
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
-    COMP,
-    InputFileItemEmits,
-    EXPOSE,
-    InputFileItemSlots,
-    CLASSES,
-    P
-  > {
+  HTMLDivElement,
+  COMP,
+  InputFileItemEmits,
+  EXPOSE,
+  InputFileItemSlots,
+  CLASSES,
+  P
+> {
   /** Orchestrator item / Элемент оркестратора */
   protected readonly item: InputFileItem
 
