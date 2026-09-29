@@ -71,8 +71,8 @@ console.log(file.name) // 'invoice.2026.pdf'
 console.log(file.baseName) // 'invoice.2026'
 console.log(file.extension) // 'pdf'
 console.log(file.category) // MediaFileCategory.document
-console.log(file.isDocument) // true
-console.log(file.isImage) // false
+console.log(file.isDocument()) // true
+console.log(file.isImage()) // false
 
 // SVG-разметка иконки, готовая к рендерингу
 const svgString = file.icon

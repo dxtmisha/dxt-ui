@@ -58,6 +58,19 @@ export class MediaFiles {
   }
 
   /**
+   * Returns a file metadata item by its MIME type.
+   *
+   * Возвращает элемент метаданных файла по его MIME-типу.
+   * @param mime MIME type / MIME-тип
+   * @returns file metadata item or undefined / элемент метаданных файла или undefined
+   */
+  static getByMime(mime: string): MediaFileItem | undefined {
+    const item = this.findByMime(mime)
+
+    return MediaFileIcon.toItem(item)
+  }
+
+  /**
    * Returns the list of all file metadata configurations.
    *
    * Возвращает список всех конфигураций метаданных файлов.
@@ -89,7 +102,8 @@ export class MediaFiles {
   protected static find(code: string): MediaFileItem | undefined {
     const itemCode = MediaFileIcon.toCode(code)
 
-    return fileList.find(element => element.code === itemCode)
+    return fileList.find(element => element.code === itemCode || element.extensions?.includes(itemCode))
+      ?? this.findByMime(code)
       ?? this.findNeutral()
   }
 
@@ -130,6 +144,19 @@ export class MediaFiles {
     }
 
     return undefined
+  }
+
+  /**
+   * Finds a file metadata item by its MIME type.
+   *
+   * Находит элемент метаданных файла по его MIME-типу.
+   * @param mime MIME type / MIME-тип
+   * @returns file metadata item or undefined / элемент метаданных файла или undefined
+   */
+  protected static findByMime(mime: string): MediaFileItem | undefined {
+    const normalized = MediaFileIcon.toCode(mime)
+
+    return fileList.find(element => element.mime === normalized)
   }
 
   /**

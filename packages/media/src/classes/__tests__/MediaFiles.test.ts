@@ -60,6 +60,53 @@ describe('MediaFiles', () => {
       const item = MediaFiles.get('pdf')
       expect(item?.icon).toBe('custom-pdf-svg')
     })
+
+    it('should find item by MIME type', () => {
+      const item = MediaFiles.get('image/png')
+      expect(item).toBeDefined()
+      expect(item?.code).toBe('png')
+      expect(item?.mime).toBe('image/png')
+    })
+
+    it('should find item by secondary extension from extensions list', () => {
+      const item = MediaFiles.get('markdown')
+      expect(item).toBeDefined()
+      expect(item?.code).toBe('md')
+      expect(item?.name).toBe('Markdown Document')
+
+      const dotx = MediaFiles.get('dotx')
+      expect(dotx).toBeDefined()
+      expect(dotx?.code).toBe('docx')
+    })
+  })
+
+  describe('static getByMime', () => {
+    it('should return item matching MIME type', () => {
+      const item = MediaFiles.getByMime('application/pdf')
+      expect(item).toBeDefined()
+      expect(item?.code).toBe('pdf')
+      expect(item?.name).toBe('PDF Document')
+      expect(item?.mime).toBe('application/pdf')
+    })
+
+    it('should normalize MIME type by trimming and lowercase', () => {
+      const item = MediaFiles.getByMime('  IMAGE/JPEG  ')
+      expect(item).toBeDefined()
+      expect(item?.code).toBe('jpeg')
+      expect(item?.mime).toBe('image/jpeg')
+    })
+
+    it('should return undefined for unregistered MIME type', () => {
+      expect(MediaFiles.getByMime('unknown/mime-type')).toBeUndefined()
+      expect(MediaFiles.getByMime('')).toBeUndefined()
+    })
+
+    it('should include registered custom icon if present', () => {
+      MediaFileIcon.add('png', 'custom-png-svg')
+
+      const item = MediaFiles.getByMime('image/png')
+      expect(item?.icon).toBe('custom-png-svg')
+    })
   })
 
   describe('static getNeutral', () => {

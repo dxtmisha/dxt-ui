@@ -71,8 +71,8 @@ console.log(file.name) // 'invoice.2026.pdf'
 console.log(file.baseName) // 'invoice.2026'
 console.log(file.extension) // 'pdf'
 console.log(file.category) // MediaFileCategory.document
-console.log(file.isDocument) // true
-console.log(file.isImage) // false
+console.log(file.isDocument()) // true
+console.log(file.isImage()) // false
 
 // Chuỗi SVG biểu tượng sẵn sàng để hiển thị
 const svgString = file.icon

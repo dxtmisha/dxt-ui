@@ -12,8 +12,6 @@ describe('MediaFile', () => {
     }
   })
 
-
-
   describe('name and baseName', () => {
     it('should extract name and baseName from full URL with query parameters and hash', () => {
       const file = new MediaFile('https://example.com/assets/report.final.pdf?v=2.1#page=5')
@@ -102,6 +100,37 @@ describe('MediaFile', () => {
     })
   })
 
+  describe('extensions', () => {
+    it('should return array of supported extensions for recognized file', () => {
+      const file = new MediaFile('document.docx')
+      expect(file.extensions).toEqual(['docx', 'dotx'])
+
+      const cpp = new MediaFile('main.cpp')
+      expect(cpp.extensions).toContain('cpp')
+      expect(cpp.extensions).toContain('cxx')
+
+      const book = new MediaFile('novel.epub')
+      expect(book.extensions).toContain('epub')
+      expect(book.extensions).toContain('mobi')
+    })
+
+    it('should resolve item when created with secondary extension', () => {
+      const dotx = new MediaFile('template.dotx')
+      expect(dotx.item?.code).toBe('docx')
+      expect(dotx.category).toBe(MediaFileCategory.document)
+      expect(dotx.isDocument()).toBe(true)
+
+      const htm = new MediaFile('index.htm')
+      expect(htm.item?.code).toBe('html')
+      expect(htm.isCode()).toBe(true)
+    })
+
+    it('should return undefined for neutral or unknown file without registered extensions', () => {
+      const unknownFile = new MediaFile('unknown.xyz')
+      expect(unknownFile.extensions).toBeUndefined()
+    })
+  })
+
   describe('category', () => {
     it('should resolve correct category from known extensions and file codes', () => {
       expect(new MediaFile('photo.png').category).toBe(MediaFileCategory.image)
@@ -175,58 +204,134 @@ describe('MediaFile', () => {
     })
   })
 
+  describe('mime', () => {
+    it('should return correct MIME type for known files and extensions', () => {
+      expect(new MediaFile('photo.png').mime).toBe('image/png')
+      expect(new MediaFile('document.pdf').mime).toBe('application/pdf')
+      expect(new MediaFile('video.mp4').mime).toBe('video/mp4')
+      expect(new MediaFile('archive.zip').mime).toBe('application/zip')
+      expect(new MediaFile('audio.mp3').mime).toBe('audio/mpeg')
+    })
+
+    it('should resolve item when created with MIME type string', () => {
+      const file = new MediaFile('image/png')
+      expect(file.mime).toBe('image/png')
+      expect(file.category).toBe(MediaFileCategory.image)
+    })
+
+    it('should return default fallback MIME type for unknown file', () => {
+      expect(new MediaFile('unknown.xyz').mime).toBe('application/octet-stream')
+    })
+  })
+
+  describe('File object input and explicit MIME parameter', () => {
+    it('should support File instance as input', () => {
+      const browserFile = new File(['content'], 'avatar.png', { type: 'image/png' })
+      const mediaFile = new MediaFile(browserFile)
+
+      expect(mediaFile.name).toBe('avatar.png')
+      expect(mediaFile.baseName).toBe('avatar')
+      expect(mediaFile.extension).toBe('png')
+      expect(mediaFile.mime).toBe('image/png')
+      expect(mediaFile.file).toBe(browserFile)
+      expect(mediaFile.isImage()).toBe(true)
+      expect(mediaFile.category).toBe(MediaFileCategory.image)
+    })
+
+    it('should resolve File without extension using its MIME type', () => {
+      const blobFile = new File(['data'], 'document', { type: 'application/pdf' })
+      const mediaFile = new MediaFile(blobFile)
+
+      expect(mediaFile.name).toBe('document')
+      expect(mediaFile.baseName).toBe('document')
+      expect(mediaFile.extension).toBe('pdf')
+      expect(mediaFile.mime).toBe('application/pdf')
+      expect(mediaFile.isDocument()).toBe(true)
+      expect(mediaFile.category).toBe(MediaFileCategory.document)
+
+      const untypedFile = new File(['data'], 'unknown-doc')
+      const untypedMediaFile = new MediaFile(untypedFile)
+      expect(untypedMediaFile.extension).toBe('')
+    })
+
+    it('should support explicit MIME type as second constructor argument', () => {
+      const file = new MediaFile('upload-file', 'image/jpeg')
+
+      expect(file.name).toBe('upload-file')
+      expect(file.extension).toBe('jpg')
+      expect(file.mime).toBe('image/jpeg')
+      expect(file.isImage()).toBe(true)
+      expect(file.category).toBe(MediaFileCategory.image)
+    })
+
+    it('should prioritize explicit MIME type over file.type if provided', () => {
+      const browserFile = new File(['content'], 'archive', { type: 'application/octet-stream' })
+      const mediaFile = new MediaFile(browserFile, 'application/zip')
+
+      expect(mediaFile.extension).toBe('zip')
+      expect(mediaFile.mime).toBe('application/zip')
+      expect(mediaFile.isArchive()).toBe(true)
+      expect(mediaFile.category).toBe(MediaFileCategory.archive)
+    })
+
+    it('should return undefined for file getter when initialized with string', () => {
+      const mediaFile = new MediaFile('report.xlsx')
+      expect(mediaFile.file).toBeUndefined()
+    })
+  })
+
   describe('is* category checkers', () => {
     it('should correctly identify archive files', () => {
-      expect(new MediaFile('data.zip').isArchive).toBe(true)
-      expect(new MediaFile('backup.7z').isArchive).toBe(true)
-      expect(new MediaFile('photo.png').isArchive).toBe(false)
+      expect(new MediaFile('data.zip').isArchive()).toBe(true)
+      expect(new MediaFile('backup.7z').isArchive()).toBe(true)
+      expect(new MediaFile('photo.png').isArchive()).toBe(false)
     })
 
     it('should correctly identify audio files', () => {
-      expect(new MediaFile('song.mp3').isAudio).toBe(true)
-      expect(new MediaFile('track.flac').isAudio).toBe(true)
-      expect(new MediaFile('video.mp4').isAudio).toBe(false)
+      expect(new MediaFile('song.mp3').isAudio()).toBe(true)
+      expect(new MediaFile('track.flac').isAudio()).toBe(true)
+      expect(new MediaFile('video.mp4').isAudio()).toBe(false)
     })
 
     it('should correctly identify code files', () => {
-      expect(new MediaFile('index.ts').isCode).toBe(true)
-      expect(new MediaFile('script.js').isCode).toBe(true)
-      expect(new MediaFile('data.json').isCode).toBe(true)
-      expect(new MediaFile('photo.png').isCode).toBe(false)
+      expect(new MediaFile('index.ts').isCode()).toBe(true)
+      expect(new MediaFile('script.js').isCode()).toBe(true)
+      expect(new MediaFile('data.json').isCode()).toBe(true)
+      expect(new MediaFile('photo.png').isCode()).toBe(false)
     })
 
     it('should correctly identify document files', () => {
-      expect(new MediaFile('document.docx').isDocument).toBe(true)
-      expect(new MediaFile('manual.pdf').isDocument).toBe(true)
-      expect(new MediaFile('notes.rtf').isDocument).toBe(true)
-      expect(new MediaFile('audio.wav').isDocument).toBe(false)
+      expect(new MediaFile('document.docx').isDocument()).toBe(true)
+      expect(new MediaFile('manual.pdf').isDocument()).toBe(true)
+      expect(new MediaFile('notes.rtf').isDocument()).toBe(true)
+      expect(new MediaFile('audio.wav').isDocument()).toBe(false)
     })
 
     it('should correctly identify image files', () => {
-      expect(new MediaFile('photo.jpeg').isImage).toBe(true)
-      expect(new MediaFile('icon.svg').isImage).toBe(true)
-      expect(new MediaFile('picture.webp').isImage).toBe(true)
-      expect(new MediaFile('doc.pdf').isImage).toBe(false)
+      expect(new MediaFile('photo.jpeg').isImage()).toBe(true)
+      expect(new MediaFile('icon.svg').isImage()).toBe(true)
+      expect(new MediaFile('picture.webp').isImage()).toBe(true)
+      expect(new MediaFile('doc.pdf').isImage()).toBe(false)
     })
 
     it('should correctly identify presentation files', () => {
-      expect(new MediaFile('slides.pptx').isPresentation).toBe(true)
-      expect(new MediaFile('presentation.odp').isPresentation).toBe(true)
-      expect(new MediaFile('deck.ppt').isPresentation).toBe(true)
-      expect(new MediaFile('table.xlsx').isPresentation).toBe(false)
+      expect(new MediaFile('slides.pptx').isPresentation()).toBe(true)
+      expect(new MediaFile('presentation.odp').isPresentation()).toBe(true)
+      expect(new MediaFile('deck.ppt').isPresentation()).toBe(true)
+      expect(new MediaFile('table.xlsx').isPresentation()).toBe(false)
     })
 
     it('should correctly identify table files', () => {
-      expect(new MediaFile('sheet.xlsx').isTable).toBe(true)
-      expect(new MediaFile('report.csv').isTable).toBe(true)
-      expect(new MediaFile('archive.rar').isTable).toBe(false)
+      expect(new MediaFile('sheet.xlsx').isTable()).toBe(true)
+      expect(new MediaFile('report.csv').isTable()).toBe(true)
+      expect(new MediaFile('archive.rar').isTable()).toBe(false)
     })
 
     it('should correctly identify video files', () => {
-      expect(new MediaFile('clip.mp4').isVideo).toBe(true)
-      expect(new MediaFile('stream.webm').isVideo).toBe(true)
-      expect(new MediaFile('movie.mkv').isVideo).toBe(true)
-      expect(new MediaFile('song.mp3').isVideo).toBe(false)
+      expect(new MediaFile('clip.mp4').isVideo()).toBe(true)
+      expect(new MediaFile('stream.webm').isVideo()).toBe(true)
+      expect(new MediaFile('movie.mkv').isVideo()).toBe(true)
+      expect(new MediaFile('song.mp3').isVideo()).toBe(false)
     })
   })
 
@@ -234,25 +339,25 @@ describe('MediaFile', () => {
     it('should identify neutral general file', () => {
       const file = new MediaFile('file')
       expect(file.group).toBe(MediaFileGroup.neutral)
-      expect(file.isNeutral).toBe(true)
-      expect(file.isCategory).toBe(false)
-      expect(file.isStandard).toBe(false)
+      expect(file.isNeutral()).toBe(true)
+      expect(file.isCategory()).toBe(false)
+      expect(file.isStandard()).toBe(false)
     })
 
     it('should identify category neutral icon', () => {
       const file = new MediaFile('archive')
       expect(file.group).toBe(MediaFileGroup.category)
-      expect(file.isNeutral).toBe(false)
-      expect(file.isCategory).toBe(true)
-      expect(file.isStandard).toBe(false)
+      expect(file.isNeutral()).toBe(false)
+      expect(file.isCategory()).toBe(true)
+      expect(file.isStandard()).toBe(false)
     })
 
     it('should identify standard file format', () => {
       const file = new MediaFile('photo.png')
       expect(file.group).toBe(MediaFileGroup.standard)
-      expect(file.isNeutral).toBe(false)
-      expect(file.isCategory).toBe(false)
-      expect(file.isStandard).toBe(true)
+      expect(file.isNeutral()).toBe(false)
+      expect(file.isCategory()).toBe(false)
+      expect(file.isStandard()).toBe(true)
     })
   })
 })

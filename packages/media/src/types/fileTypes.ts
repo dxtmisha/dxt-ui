@@ -63,6 +63,10 @@ export type MediaFileItem = {
   code: string
   /** Display label / Отображаемое название */
   name: string
+  /** File extensions list / Список расширений файла */
+  extensions?: string[]
+  /** MIME type / MIME-тип */
+  mime?: string
   /** Imported SVG icon URL or content / Импортированный URL или содержимое SVG иконки */
   icon?: string
   /** Category grouping / Группировка по категории */
