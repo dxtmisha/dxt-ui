@@ -6,15 +6,21 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 - **`MediaFile` Class**:
-  - Implemented `MediaFile` class for working with file configurations, resolving names (`name`), extensionless base names (`baseName`), lowercase extensions (`extension`), categories (`category`), groups (`group`), metadata items (`item`), and SVG icons (`icon`).
-  - Added built-in category and group check getters: `isArchive`, `isAudio`, `isCategory`, `isCode`, `isDocument`, `isImage`, `isNeutral`, `isPresentation`, `isStandard`, `isTable`, and `isVideo`.
+  - Implemented `MediaFile` class for working with file configurations, resolving names (`name`), extensionless base names (`baseName`), lowercase extensions (`extension`), categories (`category`), groups (`group`), MIME types (`mime`), metadata items (`item`), and SVG icons (`icon`).
+  - Added support for native browser `File` instances (`fileOrExtension: File | string`), with `file` getter and `isFileInput()` type guard.
+  - Added optional `mimeType?: string` constructor parameter with automatic MIME detection from `file.type`.
+  - Added automatic file extension resolution from `rawMime` when the file name lacks an extension dot.
+  - Added built-in category and group checker methods: `isArchive()`, `isAudio()`, `isCategory()`, `isCode()`, `isDocument()`, `isImage()`, `isNeutral()`, `isPresentation()`, `isStandard()`, `isTable()`, and `isVideo()`.
+  - Added `extensions` getter returning supported format extensions.
 - **`MediaFiles` Class**:
-  - Added dedicated static utility class for file path validation and metadata registry lookups (`isLink`, `get`, `getByCategory`, `getList`, `getNeutral`).
+  - Added dedicated static utility class for file path validation and metadata registry lookups (`isLink`, `get`, `getByCategory`, `getByMime`, `findByMime`, `getList`, `getNeutral`).
+  - Enhanced `find()` lookup supporting format codes, `extensions` alias arrays, and fallback to MIME types.
 - **`MediaFileIcon` Class**:
   - Added specialized registry class for storing and applying custom file icons (`icons`, `has`, `get`, `add`, `addList`, `toCode`, `toItem`).
-- **File Icons Asset Library**:
+- **File Icons Asset Library & Metadata**:
   - Added 85 vector SVG file icons in `src/assets/files/` and centralized `fileList` registry.
   - Added `MediaFileCategory` and `MediaFileGroup` enum classifications with neutral and category-level fallbacks.
+  - Added canonical IANA `mime` definitions and multi-extension `extensions` arrays across standard formats in `fileList` and `MediaFileItem` type.
   - Added dedicated tree-shakeable entry point `src/files.ts` (`@dxtmisha/media/files`) with `fileIcons` dictionary and `registerFileIcons` helper.
 - **Social Media Icons Asset Library**:
   - Added 35 official vector SVG icons in `src/assets/socials/` with standardized dimensions and brand colors for all supported platforms (`alipay`, `baidu`, `dingtalk`, `discord`, `douyin`, `dzen`, `facebook`, `github`, `gitlab`, `habr`, `instagram`, `line`, `linkedin`, `medium`, `messenger`, `ok`, `pinterest`, `qq`, `reddit`, `skype`, `snapchat`, `telegram`, `tiktok`, `tumblr`, `twitter`, `viber`, `vk`, `wechat`, `weibo`, `whatsapp`, `x`, `xiaohongshu`, `youtube`, `zalo`, `zhihu`).
@@ -22,7 +28,7 @@ All notable changes to this project will be documented in this file.
 - **Storybook Documentation**:
   - Added multi-language Storybook MDX documentation for `MediaFile` and `MediaSocial` classes in English, Russian, and Vietnamese.
 - **Unit Tests**:
-  - Added unit test suites for `MediaFile`, `MediaFiles`, and `MediaFileIcon`, and updated tests for `MediaSocial`.
+  - Added unit test suites for `MediaFile` (covering MIME resolution, File objects, and checker methods), `MediaFiles`, and `MediaFileIcon`, and updated tests for `MediaSocial`.
 
 ### Changed
 - **Architecture Refactoring**:
