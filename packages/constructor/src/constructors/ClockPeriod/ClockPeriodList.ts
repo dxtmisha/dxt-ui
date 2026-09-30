@@ -25,12 +25,12 @@ export class ClockPeriodList {
   /**
    * Constructor
    * @param text text manager instance / экземпляр менеджера текста
-   * @param valueItem period value manager instance / экземпляр менеджера значения периода
+   * @param value period value manager instance / экземпляр менеджера значения периода
    * @param enabled enabled state manager instance / экземпляр менеджера состояния активности
    */
   constructor(
     protected readonly text: TextInclude,
-    protected readonly valueItem: ClockPeriodValue,
+    protected readonly value: ClockPeriodValue,
     protected readonly enabled: EnabledInclude
   ) {}
 
@@ -50,7 +50,7 @@ export class ClockPeriodList {
     return {
       value: period,
       label,
-      selected: this.valueItem.isSelected(period),
+      selected: this.value.isSelected(period),
       disabled: !this.enabled.isEnabled
     }
   }

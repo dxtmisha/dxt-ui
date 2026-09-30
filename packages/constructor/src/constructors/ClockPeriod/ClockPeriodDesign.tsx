@@ -81,10 +81,7 @@ export class ClockPeriodDesign<
   protected initExpose(): EXPOSE {
     return {
       getValue: this.item.model.getValue,
-      setValue: this.item.model.set,
-      toggle: this.item.valueItem.toggle,
-      setAm: this.item.valueItem.setAm,
-      setPm: this.item.valueItem.setPm
+      setValue: this.item.model.set
     } as EXPOSE
   }
 
@@ -160,9 +157,7 @@ export class ClockPeriodDesign<
     const isSelected = item.selected
     const content = this.slots?.item
       ? this.initSlot('item', undefined, { item })
-      : (this.slots?.[item.value]
-        ? this.initSlot(item.value, undefined, { item })
-        : item.label)
+      : item.label
 
     return h(
       'button',

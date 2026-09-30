@@ -1,7 +1,9 @@
 import type { ConstrClass } from '@dxtmisha/functional'
+
+import type { EventClickEmits } from '../../types/eventClickTypes'
 import type { ModelEmits } from '../../types/modelTypes'
+
 import type {
-  ClockPeriodEventItem,
   ClockPeriodSlotData,
   ClockPeriodType
 } from './basicTypes'
@@ -18,16 +20,7 @@ export type ClockPeriodComponents = {}
  *
  * Тип, описывающий доступные события.
  */
-export type ClockPeriodEmits = ModelEmits<ClockPeriodType> & {
-  /** Input event triggered on selection change / Событие ввода, вызываемое при изменении выбора */
-  input: [event: ClockPeriodEventItem, value: ClockPeriodType]
-  /** Input event lite version / Упрощенная версия события ввода */
-  inputLite: [value: ClockPeriodType]
-  /** Change event triggered on selection change / Событие изменения, вызываемое при изменении выбора */
-  change: [event: ClockPeriodEventItem, value: ClockPeriodType]
-  /** Change event lite version / Упрощенная версия события изменения */
-  changeLite: [value: ClockPeriodType]
-}
+export type ClockPeriodEmits = ModelEmits<ClockPeriodType> & EventClickEmits
 
 /**
  * Type describing available exposed properties and methods.
@@ -39,12 +32,6 @@ export interface ClockPeriodExpose {
   getValue(): ClockPeriodType | undefined
   /** Set new period value / Установить новое значение периода */
   setValue(value?: ClockPeriodType): void
-  /** Toggle between AM and PM periods / Переключить между периодами AM и PM */
-  toggle(): void
-  /** Select AM period / Выбрать период AM */
-  setAm(): void
-  /** Select PM period / Выбрать период PM */
-  setPm(): void
 }
 
 /**
@@ -53,14 +40,8 @@ export interface ClockPeriodExpose {
  * Тип, описывающий доступные слоты.
  */
 export interface ClockPeriodSlots {
-  /** Default slot / Слот по умолчанию */
-  default?(props: any): any
   /** Custom item slot / Слот для пользовательского элемента */
   item?(props: ClockPeriodSlotData): any
-  /** AM item slot / Слот для элемента AM */
-  am?(props: ClockPeriodSlotData): any
-  /** PM item slot / Слот для элемента PM */
-  pm?(props: ClockPeriodSlotData): any
 }
 
 /**

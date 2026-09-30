@@ -1,67 +1,78 @@
 // @vitest-environment jsdom
 import { describe, expect, it } from 'vitest'
-import { ref } from 'vue'
-import { ModelValueInclude } from '../../../classes/ModelValueInclude'
+import { nextTick, reactive } from 'vue'
 import { ClockPeriodValue } from '../ClockPeriodValue'
 import type { ClockPeriodProps } from '../props'
-import type { ClockPeriodType } from '../basicTypes'
 
 describe('ClockPeriodValue', () => {
-  it('returns model value if set', () => {
-    const props: ClockPeriodProps = {}
-    const model = new ModelValueInclude<ClockPeriodType>('value', undefined, undefined, ref('pm'))
-    const periodValue = new ClockPeriodValue(props, model)
+  it('returns props value if set', () => {
+    const props: ClockPeriodProps = { value: 'pm' }
+    const periodValue = new ClockPeriodValue(props)
 
-    expect(periodValue.value).toBe('pm')
+    expect(periodValue.value.value).toBe('pm')
     expect(periodValue.isPm()).toBe(true)
     expect(periodValue.isAm()).toBe(false)
   })
 
-  it('deduces period from hour when modelValue is empty', () => {
+  it('deduces period from hour when value is empty', () => {
     const propsPm: ClockPeriodProps = { hour: 14 }
-    const modelPm = new ModelValueInclude<ClockPeriodType>('value', undefined, undefined, ref(undefined))
-    const periodValuePm = new ClockPeriodValue(propsPm, modelPm)
+    const periodValuePm = new ClockPeriodValue(propsPm)
 
-    expect(periodValuePm.value).toBe('pm')
+    expect(periodValuePm.value.value).toBe('pm')
 
     const propsAm: ClockPeriodProps = { hour: 9 }
-    const modelAm = new ModelValueInclude<ClockPeriodType>('value', undefined, undefined, ref(undefined))
-    const periodValueAm = new ClockPeriodValue(propsAm, modelAm)
+    const periodValueAm = new ClockPeriodValue(propsAm)
 
-    expect(periodValueAm.value).toBe('am')
+    expect(periodValueAm.value.value).toBe('am')
   })
 
-  it('defaults to am when neither model nor hour is provided', () => {
+  it('defaults to am when neither value nor hour is provided', () => {
     const props: ClockPeriodProps = {}
-    const model = new ModelValueInclude<ClockPeriodType>('value', undefined, undefined, ref(undefined))
-    const periodValue = new ClockPeriodValue(props, model)
+    const periodValue = new ClockPeriodValue(props)
 
-    expect(periodValue.value).toBe('am')
+    expect(periodValue.value.value).toBe('am')
   })
 
   it('toggles between am and pm', () => {
-    const props: ClockPeriodProps = {}
-    const model = new ModelValueInclude<ClockPeriodType>('value', undefined, undefined, ref('am'))
-    const periodValue = new ClockPeriodValue(props, model)
+    const props: ClockPeriodProps = { value: 'am' }
+    const periodValue = new ClockPeriodValue(props)
 
     expect(periodValue.isAm()).toBe(true)
 
     periodValue.toggle()
-    expect(model.getValue()).toBe('pm')
+    expect(periodValue.value.value).toBe('pm')
 
     periodValue.toggle()
-    expect(model.getValue()).toBe('am')
+    expect(periodValue.value.value).toBe('am')
   })
 
   it('sets am and pm explicitly', () => {
     const props: ClockPeriodProps = {}
-    const model = new ModelValueInclude<ClockPeriodType>('value', undefined, undefined, ref(undefined))
-    const periodValue = new ClockPeriodValue(props, model)
+    const periodValue = new ClockPeriodValue(props)
 
     periodValue.setPm()
-    expect(model.getValue()).toBe('pm')
+    expect(periodValue.value.value).toBe('pm')
 
     periodValue.setAm()
-    expect(model.getValue()).toBe('am')
+    expect(periodValue.value.value).toBe('am')
+  })
+
+  it('updates reactive value when props change', async () => {
+    const props = reactive<ClockPeriodProps>({ value: 'am' })
+    const periodValue = new ClockPeriodValue(props)
+
+    expect(periodValue.value.value).toBe('am')
+
+    props.value = 'pm'
+    await nextTick()
+
+    expect(periodValue.value.value).toBe('pm')
+    expect(periodValue.isPm()).toBe(true)
+
+    props.modelValue = 'am'
+    await nextTick()
+
+    expect(periodValue.value.value).toBe('am')
+    expect(periodValue.isAm()).toBe(true)
   })
 })

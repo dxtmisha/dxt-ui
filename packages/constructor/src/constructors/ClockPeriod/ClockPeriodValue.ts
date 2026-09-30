@@ -1,5 +1,5 @@
+import { ref, watch } from 'vue'
 import { isFilled } from '@dxtmisha/functional'
-import type { ModelValueInclude } from '../../classes/ModelValueInclude'
 import type { ClockPeriodProps } from './props'
 import type { ClockPeriodType } from './basicTypes'
 
@@ -11,34 +11,24 @@ import type { ClockPeriodType } from './basicTypes'
  * Синхронизируется со значением модели и определяет период по свойству часа, если оно передано.
  */
 export class ClockPeriodValue {
+  /** Reactive reference to the period value ('am' or 'pm') / Реактивная ссылка на значение периода ('am' или 'pm') */
+  readonly value = ref<ClockPeriodType>('am')
+
   /**
    * Constructor
    * @param props component input properties / входные свойства компонента
-   * @param model model value helper instance / экземпляр помощника значения модели
    */
   constructor(
-    protected readonly props: ClockPeriodProps,
-    protected readonly model: ModelValueInclude<ClockPeriodType>
-  ) {}
+    protected readonly props: ClockPeriodProps
+  ) {
+    this.value.value = this.initValue()
 
-  /**
-   * Current selected period value ('am' or 'pm').
-   *
-   * Текущее выбранное значение периода ('am' или 'pm').
-   * @returns selected period value / выбранное значение периода
-   */
-  get value(): ClockPeriodType {
-    const modelValue = this.model.getValue()
-
-    if (modelValue) {
-      return String(modelValue).toLowerCase() as ClockPeriodType
-    }
-
-    if (isFilled(this.props.hour)) {
-      return this.props.hour >= 12 ? 'pm' : 'am'
-    }
-
-    return 'am'
+    watch(
+      () => this.props.modelValue ?? this.props.value,
+      () => {
+        this.value.value = this.initValue()
+      }
+    )
   }
 
   /**
@@ -48,7 +38,7 @@ export class ClockPeriodValue {
    * @returns true if AM / true, если AM
    */
   isAm(): boolean {
-    return this.value === 'am'
+    return this.value.value === 'am'
   }
 
   /**
@@ -58,7 +48,7 @@ export class ClockPeriodValue {
    * @returns true if PM / true, если PM
    */
   isPm(): boolean {
-    return this.value === 'pm'
+    return this.value.value === 'pm'
   }
 
   /**
@@ -69,7 +59,17 @@ export class ClockPeriodValue {
    * @returns true if selected / true, если выбран
    */
   isSelected(period: ClockPeriodType): boolean {
-    return this.value === period
+    return this.value.value === period
+  }
+
+  /**
+   * Returns current selected period value ('am' or 'pm').
+   *
+   * Возвращает текущее выбранное значение периода ('am' или 'pm').
+   * @returns selected period value / выбранное значение периода
+   */
+  get(): ClockPeriodType {
+    return this.value.value
   }
 
   /**
@@ -79,7 +79,7 @@ export class ClockPeriodValue {
    * @param value period value to set / устанавливаемое значение периода
    */
   set(value?: ClockPeriodType): void {
-    this.model.set(value)
+    this.value.value = value ?? this.initValue()
   }
 
   /**
@@ -107,5 +107,25 @@ export class ClockPeriodValue {
    */
   toggle(): void {
     this.set(this.isAm() ? 'pm' : 'am')
+  }
+
+  /**
+   * Initializes or calculates the current period value.
+   *
+   * Инициализирует или рассчитывает текущее значение периода.
+   * @returns calculated period value / рассчитанное значение периода
+   */
+  protected initValue(): ClockPeriodType {
+    const value = this.props.modelValue ?? this.props.value
+
+    if (value) {
+      return String(value).toLowerCase() as ClockPeriodType
+    }
+
+    if (isFilled(this.props.hour)) {
+      return this.props.hour >= 12 ? 'pm' : 'am'
+    }
+
+    return 'am'
   }
 }

@@ -1,7 +1,6 @@
 export * from './basicTypes'
 export * from './ClockPeriod'
 export * from './ClockPeriodDesign'
-export * from './ClockPeriodEmit'
 export * from './ClockPeriodEvent'
 export * from './ClockPeriodInclude'
 export * from './ClockPeriodList'

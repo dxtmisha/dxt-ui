@@ -1,8 +1,6 @@
 // @vitest-environment jsdom
 import { describe, expect, it } from 'vitest'
-import { ref } from 'vue'
 import { EnabledInclude } from '../../../classes/EnabledInclude'
-import { ModelValueInclude } from '../../../classes/ModelValueInclude'
 import { TextInclude } from '../../../classes/TextInclude'
 import { ClockPeriodList } from '../ClockPeriodList'
 import { ClockPeriodValue } from '../ClockPeriodValue'
@@ -13,10 +11,9 @@ describe('ClockPeriodList', () => {
   it('generates AM and PM items with correct labels and selected state', () => {
     const props: ClockPeriodProps = { value: 'am' }
     const text = new TextInclude(props)
-    const model = new ModelValueInclude<ClockPeriodType>('value', undefined, undefined, ref('am'))
-    const valueItem = new ClockPeriodValue(props, model)
+    const value = new ClockPeriodValue(props)
     const enabled = new EnabledInclude(props)
-    const list = new ClockPeriodList(text, valueItem, enabled)
+    const list = new ClockPeriodList(text, value, enabled)
 
     const items = list.items.value
     expect(items).toHaveLength(2)
@@ -43,10 +40,9 @@ describe('ClockPeriodList', () => {
       value: 'pm'
     }
     const text = new TextInclude(props)
-    const model = new ModelValueInclude<ClockPeriodType>('value', undefined, undefined, ref('pm'))
-    const valueItem = new ClockPeriodValue(props, model)
+    const value = new ClockPeriodValue(props)
     const enabled = new EnabledInclude(props)
-    const list = new ClockPeriodList(text, valueItem, enabled)
+    const list = new ClockPeriodList(text, value, enabled)
 
     const items = list.items.value
     expect(items[0].label).toBe('Morning')
@@ -58,10 +54,9 @@ describe('ClockPeriodList', () => {
   it('marks items as disabled when component is disabled', () => {
     const props: ClockPeriodProps = { disabled: true }
     const text = new TextInclude(props)
-    const model = new ModelValueInclude<ClockPeriodType>('value', undefined, undefined, ref('am'))
-    const valueItem = new ClockPeriodValue(props, model)
+    const value = new ClockPeriodValue(props)
     const enabled = new EnabledInclude(props)
-    const list = new ClockPeriodList(text, valueItem, enabled)
+    const list = new ClockPeriodList(text, value, enabled)
 
     const items = list.items.value
     expect(items[0].disabled).toBe(true)

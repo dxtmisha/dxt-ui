@@ -22,14 +22,6 @@ export type ClockPeriodSlotData = {
   item: ClockPeriodItem
 }
 
-/** Event payload item for ClockPeriod / Элемент полезной нагрузки события для ClockPeriod */
-export type ClockPeriodEventItem = {
-  /** Selected period item / Выбранный элемент периода */
-  item: ClockPeriodItem
-  /** Selected period value / Выбранное значение периода */
-  value: ClockPeriodType
-}
-
 /** Dependency registration type for parent components / Тип регистрации зависимости для родительских компонентов */
 export type ClockPeriodComponentInclude = {
   /** ClockPeriod component configuration / Конфигурация компонента ClockPeriod */
