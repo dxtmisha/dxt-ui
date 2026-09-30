@@ -5,10 +5,6 @@ import { InputFileItemFile } from '../InputFileItemFile'
 import type { InputFileItemPropsBasic } from '../props'
 
 class TestInputFileItemFile extends InputFileItemFile {
-  override getFile(): File | undefined {
-    return super.getFile()
-  }
-
   override getSource(): File | string | undefined {
     return super.getSource()
   }
@@ -36,15 +32,13 @@ describe('InputFileItemFile', () => {
       expect(helper.image).toBe(mockFile)
     })
 
-    it('returns undefined when src is not an image', () => {
+    it('returns file icon when src or file is not an image', () => {
       const helper = createHelper({ value: { value: 'https://example.com/doc.pdf' } })
-      expect(helper.image).toBeUndefined()
+      expect(helper.image).toBe(helper.getIcon())
     })
 
-    it('returns undefined when neither src nor image file is present', () => {
-      const mockFile = new File([''], 'doc.pdf', { type: 'application/pdf' })
-      const helper = createHelper({ file: mockFile })
-
+    it('returns undefined when neither image nor icon is available', () => {
+      const helper = createHelper({})
       expect(helper.image).toBeUndefined()
     })
   })
@@ -240,19 +234,33 @@ describe('InputFileItemFile', () => {
   describe('getFile', () => {
     it('returns props.file when provided', () => {
       const mockFile = new File([''], 'file.txt', { type: 'text/plain' })
-      const helper = createTestHelper({ file: mockFile })
+      const helper = createHelper({ file: mockFile })
       expect(helper.getFile()).toBe(mockFile)
     })
 
     it('returns props.value.file when props.file is absent', () => {
       const mockFile = new File([''], 'value.png', { type: 'image/png' })
-      const helper = createTestHelper({ value: { file: mockFile } })
+      const helper = createHelper({ value: { file: mockFile } })
       expect(helper.getFile()).toBe(mockFile)
     })
 
     it('returns undefined when no file is provided', () => {
-      const helper = createTestHelper({})
+      const helper = createHelper({})
       expect(helper.getFile()).toBeUndefined()
+    })
+  })
+
+  describe('getIcon', () => {
+    it('returns mediaFile icon when file has a registered icon', () => {
+      const helper = createHelper({
+        value: { name: 'document.pdf' }
+      })
+      expect(helper.getIcon()).toBe(helper.mediaFile.value?.icon || undefined)
+    })
+
+    it('returns undefined when no file or source is provided', () => {
+      const helper = createHelper({})
+      expect(helper.getIcon()).toBeUndefined()
     })
   })
 

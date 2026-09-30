@@ -4,11 +4,11 @@ import { describe, it, expect } from 'vitest'
 import { TextInclude } from '../../../classes/TextInclude'
 import { InputFileItemFile } from '../InputFileItemFile'
 import { InputFileItemStatus } from '../InputFileItemStatus'
-import type { InputFileItemPropsBasic } from '../props'
+import type { InputFileItemProps } from '../props'
 
 describe('InputFileItemStatus', () => {
-  const createHelper = (props: Partial<InputFileItemPropsBasic> = {}) => {
-    const fullProps = { ...props } as InputFileItemPropsBasic
+  const createHelper = (props: Partial<InputFileItemProps> = {}) => {
+    const fullProps = { ...props } as InputFileItemProps
     const text = new TextInclude(fullProps)
     const fileItem = new InputFileItemFile(fullProps)
     const statusItem = new InputFileItemStatus(fullProps, fileItem, text)
@@ -16,47 +16,52 @@ describe('InputFileItemStatus', () => {
     return { fileItem, statusItem, text }
   }
 
-  describe('status and is method', () => {
+  describe('status and is methods', () => {
     it('detects uploading state via loading prop', () => {
       const { statusItem } = createHelper({ loading: true })
       expect(statusItem.status).toBe('uploading')
       expect(statusItem.is('uploading')).toBe(true)
-      expect(statusItem.is('uploaded')).toBe(false)
-      expect(statusItem.is('error')).toBe(false)
-      expect(statusItem.is('idle')).toBe(false)
+      expect(statusItem.isUploading()).toBe(true)
+      expect(statusItem.isUploaded()).toBe(false)
+      expect(statusItem.isError()).toBe(false)
+      expect(statusItem.isIdle()).toBe(false)
     })
 
     it('detects uploading state via status prop', () => {
       const { statusItem } = createHelper({ status: 'uploading' })
       expect(statusItem.status).toBe('uploading')
       expect(statusItem.is('uploading')).toBe(true)
+      expect(statusItem.isUploading()).toBe(true)
     })
 
     it('detects error state via status prop', () => {
       const { statusItem } = createHelper({ status: 'error' })
       expect(statusItem.status).toBe('error')
       expect(statusItem.is('error')).toBe(true)
-      expect(statusItem.is('uploading')).toBe(false)
-      expect(statusItem.is('uploaded')).toBe(false)
-      expect(statusItem.is('idle')).toBe(false)
+      expect(statusItem.isError()).toBe(true)
+      expect(statusItem.isUploading()).toBe(false)
+      expect(statusItem.isUploaded()).toBe(false)
+      expect(statusItem.isIdle()).toBe(false)
     })
 
     it('detects uploaded state via status prop', () => {
       const { statusItem } = createHelper({ status: 'uploaded' })
       expect(statusItem.status).toBe('uploaded')
       expect(statusItem.is('uploaded')).toBe(true)
-      expect(statusItem.is('uploading')).toBe(false)
-      expect(statusItem.is('error')).toBe(false)
-      expect(statusItem.is('idle')).toBe(false)
+      expect(statusItem.isUploaded()).toBe(true)
+      expect(statusItem.isUploading()).toBe(false)
+      expect(statusItem.isError()).toBe(false)
+      expect(statusItem.isIdle()).toBe(false)
     })
 
     it('defaults to idle state when no active state is set', () => {
       const { statusItem } = createHelper({})
       expect(statusItem.status).toBe('idle')
       expect(statusItem.is('idle')).toBe(true)
-      expect(statusItem.is('uploading')).toBe(false)
-      expect(statusItem.is('uploaded')).toBe(false)
-      expect(statusItem.is('error')).toBe(false)
+      expect(statusItem.isIdle()).toBe(true)
+      expect(statusItem.isUploading()).toBe(false)
+      expect(statusItem.isUploaded()).toBe(false)
+      expect(statusItem.isError()).toBe(false)
     })
   })
 
@@ -94,10 +99,6 @@ describe('InputFileItemStatus', () => {
       expect(defaultSuccessStatus.message).toBe('File uploaded successfully')
     })
 
-    it('returns caption if provided in idle state', () => {
-      const { statusItem } = createHelper({ caption: 'Uploaded 2 hours ago' })
-      expect(statusItem.message).toBe('Uploaded 2 hours ago')
-    })
 
     it('falls back to formatted file size in idle state', () => {
       const { statusItem } = createHelper({ value: { size: 72 * 1024 * 1024 } })

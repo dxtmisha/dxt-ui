@@ -1,4 +1,5 @@
 export * from './InputFileItem'
+export * from './InputFileItemAppearance'
 export * from './InputFileItemDesign'
 export * from './InputFileItemEvent'
 export * from './InputFileItemFile'

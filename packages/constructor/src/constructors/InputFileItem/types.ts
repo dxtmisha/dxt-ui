@@ -3,11 +3,8 @@ import type { ButtonComponentInclude } from '../Button'
 import type { IconComponentInclude } from '../Icon'
 import type { ImageComponentInclude } from '../Image'
 import type { ProgressComponentInclude } from '../Progress'
-import type { RippleComponentInclude } from '../Ripple'
 
-import type { CaptionSlots } from '../../types/captionTypes'
 import type { FieldFileValue } from '../../types/fieldTypes'
-import type { LabelAlternativeSlots } from '../../types/labelTypes'
 import type { InputFileItemStatusType } from './basicTypes'
 
 /**
@@ -20,7 +17,6 @@ export type InputFileItemComponents
     & IconComponentInclude
     & ImageComponentInclude
     & ProgressComponentInclude
-    & RippleComponentInclude
 
 /**
  * Type describing available events.
@@ -55,13 +51,11 @@ export interface InputFileItemExpose {
  *
  * Тип, описывающий доступные слоты.
  */
-export interface InputFileItemSlots extends LabelAlternativeSlots, CaptionSlots {
+export interface InputFileItemSlots {
   /** Default slot / Слот по умолчанию */
   default?(props: any): any
   /** Thumbnail slot / Слот миниатюры */
   thumbnail?(props: any): any
-  /** Status indicator slot / Слот индикатора статуса */
-  status?(props: any): any
   /** Actions slot / Слот действий */
   actions?(props: any): any
 }
@@ -76,13 +70,11 @@ export type InputFileItemClasses = {
   // :classes [!] System label / Системная метка
   thumbnail: string
   thumbnailImage: string
-  thumbnailPlaceholder: string
   body: string
   label: string
   caption: string
   message: string
   progress: string
-  status: string
   actions: string
   buttonDelete: string
   buttonRetry: string

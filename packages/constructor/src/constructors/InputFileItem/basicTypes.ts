@@ -3,7 +3,7 @@ import type { ConstrBind } from '@dxtmisha/functional'
 import type { InputFileItemPropsBasic } from './props'
 
 /** Appearance modes for InputFileItem / Режимы отображения InputFileItem */
-export type InputFileItemAppearance = 'list' | 'compact' | 'tile'
+export type InputFileItemAppearanceType = 'list' | 'compact' | 'tile'
 
 /** Status types for InputFileItem / Типы статуса InputFileItem */
 export type InputFileItemStatusType = 'uploading' | 'uploaded' | 'error' | 'idle'

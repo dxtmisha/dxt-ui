@@ -1,10 +1,8 @@
 import type { ButtonPropsBasic, ButtonPropsInclude } from '../Button'
-import type { IconPropsBasic, IconPropsInclude } from '../Icon'
 import type { ImagePropsBasic, ImagePropsInclude } from '../Image'
 import type { ProgressPropsBasic, ProgressPropsInclude } from '../Progress'
 import type { SkeletonPropsInclude } from '../Skeleton'
 
-import type { CaptionProps } from '../../types/captionTypes'
 import type { EnabledProps } from '../../types/enabledTypes'
 import type { FieldFileValue } from '../../types/fieldTypes'
 import type {
@@ -14,11 +12,11 @@ import type {
   TextRetryPropsInclude,
   TextUploadSuccessPropsInclude
 } from '../../types/textTypes'
-import type { InputFileItemStatusType } from './basicTypes'
 
 type InputFileItemPropsToken = {
   // :type [!] System label / Системная метка
   appearance?: 'list' | 'compact' | 'tile'
+  status?: 'uploading' | 'uploaded' | 'error' | 'idle'
   selected?: boolean
   disabled?: boolean
   readonly?: boolean
@@ -27,12 +25,9 @@ type InputFileItemPropsToken = {
 
 export type InputFileItemPropsBasic<
   Button extends ButtonPropsBasic = ButtonPropsBasic,
-  Icon extends IconPropsBasic = IconPropsBasic,
   Image extends ImagePropsBasic = ImagePropsBasic,
   Progress extends ProgressPropsBasic = ProgressPropsBasic
-> = IconPropsInclude<Icon>
-  & CaptionProps
-  & EnabledProps
+> = EnabledProps
   & ImagePropsInclude<Image>
   & ProgressPropsInclude<Progress>
   & ButtonPropsInclude<Button>
@@ -43,9 +38,6 @@ export type InputFileItemPropsBasic<
   & TextRetryPropsInclude
   & TextUploadSuccessPropsInclude
   & {
-    /** Current upload or processing status / Текущий статус загрузки или обработки */
-    status?: InputFileItemStatusType
-
     /** Selected state / Состояние выбора */
     selected?: boolean
 
@@ -81,14 +73,14 @@ export type InputFileItemProps = InputFileItemPropsBasic & InputFileItemPropsTok
  * Значение по умолчанию для свойства.
  */
 export const defaultsInputFileItem = {
-  icon: 'description',
   iconDelete: 'delete',
   iconRetry: 'refresh',
   iconSuccess: 'check_circle',
   iconError: 'cancel',
   ...{
     // :default [!] System label / Системная метка
-    appearance: 'list'
+    appearance: 'list',
+    status: 'idle'
     // :default [!] System label / Системная метка
   }
 }

@@ -1,5 +1,10 @@
 import { type VNode } from 'vue'
-import { isFilled, render } from '@dxtmisha/functional'
+import {
+  executeFunctionRef,
+  isFilled,
+  type RefOrNormalOrFunction,
+  render
+} from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from './AriaStaticInclude'
 import { SkeletonInclude } from '../constructors/Skeleton'
@@ -27,7 +32,7 @@ export class CaptionInclude {
    * @param tag HTML tag for wrapping element / HTML-тег для оборачивающего элемента
    */
   constructor(
-    protected readonly props: Readonly<CaptionProps>,
+    protected readonly props: RefOrNormalOrFunction<CaptionProps>,
     protected readonly className: string,
     protected readonly slots?: CaptionSlots,
     protected readonly skeleton?: SkeletonInclude,
@@ -42,7 +47,7 @@ export class CaptionInclude {
    * @returns checking state / состояние проверки
    */
   get is(): boolean {
-    return Boolean(this.props.caption || this.slots?.caption)
+    return Boolean(this.getProps().caption || this.slots?.caption)
   }
 
   /**
@@ -60,7 +65,7 @@ export class CaptionInclude {
       'data-event-type': 'caption'
     }
 
-    if (this.props.captionDecorative) {
+    if (this.getProps().captionDecorative) {
       return {
         ...binds,
         ...AriaStaticInclude.hidden()
@@ -82,9 +87,10 @@ export class CaptionInclude {
    */
   render(): VNode[] {
     const children: any[] = []
+    const caption = this.getProps().caption
 
-    if (isFilled(this.props.caption)) {
-      children.push(this.props.caption)
+    if (isFilled(caption)) {
+      children.push(caption)
     }
 
     if (this.slots?.caption) {
@@ -103,5 +109,15 @@ export class CaptionInclude {
     }
 
     return []
+  }
+
+  /**
+   * Returns properties resolving functions if needed.
+   *
+   * Возвращает свойства, разрешая функции при необходимости.
+   * @returns resolved caption properties / разрешенные свойства подписи
+   */
+  protected getProps(): CaptionProps {
+    return executeFunctionRef(this.props)
   }
 }

@@ -1,7 +1,6 @@
-import { computed, type Ref, type ToRefs } from 'vue'
+import type { Ref, ToRefs } from 'vue'
 import {
   type ConstrBind,
-  type ConstrClassObject,
   type ConstrEmit,
   type DesignComp
 } from '@dxtmisha/functional'
@@ -18,23 +17,25 @@ import {
 } from '../Button'
 import { IconInclude } from '../Icon'
 import { ImageInclude } from '../Image'
-import { ProgressInclude } from '../Progress'
-import { RippleInclude } from '../Ripple'
+import {
+  ProgressInclude,
+  type ProgressProps
+} from '../Progress'
 import { SkeletonInclude } from '../Skeleton'
 
+import { InputFileItemAppearance } from './InputFileItemAppearance'
 import { InputFileItemEvent } from './InputFileItemEvent'
 import { InputFileItemFile } from './InputFileItemFile'
 import { InputFileItemProgress } from './InputFileItemProgress'
 import { InputFileItemStatus } from './InputFileItemStatus'
 
 import type { AriaList } from '../../types/ariaTypes'
-import type { ProgressProps } from '../Progress'
-import type { InputFileItemProps } from './props'
 import type {
   InputFileItemComponents,
   InputFileItemEmits,
   InputFileItemSlots
 } from './types'
+import type { InputFileItemProps } from './props'
 
 /**
  * Main orchestrator class for managing single file upload item display, states, and user interactions.
@@ -42,6 +43,9 @@ import type {
  * Главный класс-оркестратор для управления отображением отдельного элемента загружаемого файла, состояниями и взаимодействием.
  */
 export class InputFileItem {
+  /** Appearance manager for display mode / Менеджер режима отображения */
+  readonly appearance: InputFileItemAppearance
+
   /** Button include for delete/remove action / Подключение кнопки для действия удаления */
   readonly buttonDelete: ButtonInclude
 
@@ -75,9 +79,6 @@ export class InputFileItem {
   /** Upload progress manager / Менеджер прогресса загрузки */
   readonly progressValue: InputFileItemProgress
 
-  /** Ripple click effect include / Подключение эффекта волны при клике */
-  readonly ripple: RippleInclude
-
   /** Skeleton loading placeholder include / Подключение скелетона загрузки */
   readonly skeleton: SkeletonInclude
 
@@ -105,13 +106,13 @@ export class InputFileItem {
    * @param constructors.EnabledConstructor class for creating the enabled state / класс для создания состояния активности
    * @param constructors.IconIncludeConstructor class for creating an icon / класс для создания иконки
    * @param constructors.ImageIncludeConstructor class for creating an image / класс для создания изображения
+   * @param constructors.InputFileItemAppearanceConstructor class for managing appearance / класс для управления режимом отображения
    * @param constructors.InputFileItemEventConstructor class for managing file events / класс для управления событиями файла
    * @param constructors.InputFileItemFileConstructor class for managing file data / класс для управления данными файла
    * @param constructors.InputFileItemProgressConstructor class for managing file progress / класс для управления прогрессом файла
    * @param constructors.InputFileItemStatusConstructor class for managing file status / класс для управления статусом файла
    * @param constructors.LabelIncludeConstructor class for creating a label / класс для создания метки
    * @param constructors.ProgressIncludeConstructor class for creating a progress indicator / класс для создания индикатора прогресса
-   * @param constructors.RippleIncludeConstructor class for creating a ripple effect / класс для создания эффекта волны
    * @param constructors.SkeletonIncludeConstructor class for creating a skeleton loader / класс для создания скелетона загрузки
    * @param constructors.TextIncludeConstructor class for managing text / класс для управления текстом
    */
@@ -130,13 +131,13 @@ export class InputFileItem {
       EnabledConstructor?: typeof EnabledInclude
       IconIncludeConstructor?: typeof IconInclude
       ImageIncludeConstructor?: typeof ImageInclude
+      InputFileItemAppearanceConstructor?: typeof InputFileItemAppearance
       InputFileItemEventConstructor?: typeof InputFileItemEvent
       InputFileItemFileConstructor?: typeof InputFileItemFile
       InputFileItemProgressConstructor?: typeof InputFileItemProgress
       InputFileItemStatusConstructor?: typeof InputFileItemStatus
       LabelIncludeConstructor?: typeof LabelInclude
       ProgressIncludeConstructor?: typeof ProgressInclude
-      RippleIncludeConstructor?: typeof RippleInclude
       SkeletonIncludeConstructor?: typeof SkeletonInclude
       TextIncludeConstructor?: typeof TextInclude
     } = {}
@@ -147,21 +148,27 @@ export class InputFileItem {
       EnabledConstructor = EnabledInclude,
       IconIncludeConstructor = IconInclude,
       ImageIncludeConstructor = ImageInclude,
+      InputFileItemAppearanceConstructor = InputFileItemAppearance,
       InputFileItemEventConstructor = InputFileItemEvent,
       InputFileItemFileConstructor = InputFileItemFile,
       InputFileItemProgressConstructor = InputFileItemProgress,
       InputFileItemStatusConstructor = InputFileItemStatus,
       LabelIncludeConstructor = LabelInclude,
       ProgressIncludeConstructor = ProgressInclude,
-      RippleIncludeConstructor = RippleInclude,
       SkeletonIncludeConstructor = SkeletonInclude,
       TextIncludeConstructor = TextInclude
     } = constructors
 
+    this.appearance = new InputFileItemAppearanceConstructor(this.props)
     this.enabled = new EnabledConstructor(this.props)
+    this.file = new InputFileItemFileConstructor(this.props)
     this.text = new TextIncludeConstructor(this.props)
 
-    this.file = new InputFileItemFileConstructor(this.props)
+    this.event = new InputFileItemEventConstructor(
+      this.props,
+      this.file,
+      this.emits
+    )
     this.progressValue = new InputFileItemProgressConstructor(
       this.props,
       this.file
@@ -170,28 +177,6 @@ export class InputFileItem {
       this.props,
       this.file,
       this.text
-    )
-    this.event = new InputFileItemEventConstructor(
-      this.props,
-      this.file,
-      this.emits
-    )
-
-    this.image = new ImageIncludeConstructor(
-      this.className,
-      this.props,
-      this.components,
-      () => ({
-        value: this.file.image,
-        alt: this.file.name
-      })
-    )
-
-    this.progress = new ProgressIncludeConstructor(
-      this.className,
-      this.props,
-      this.components,
-      () => this.getProgress()
     )
 
     this.buttonDelete = new ButtonIncludeConstructor(
@@ -210,48 +195,51 @@ export class InputFileItem {
       'buttonRetry'
     )
 
+    this.caption = new CaptionIncludeConstructor(
+      () => ({ caption: this.status.message }),
+      this.className
+    )
+
     this.iconStatus = new IconIncludeConstructor(
       () => ({
-        icon: this.status.is('uploaded')
-          ? this.props.iconSuccess
-          : this.props.iconError
+        selected: this.status.isUploaded(),
+        icon: {
+          icon: this.props.iconError,
+          iconActive: this.props.iconSuccess,
+          success: this.status.isUploaded(),
+          error: this.status.isError()
+        }
       }),
       this.className,
+      this.components
+    )
+
+    this.image = new ImageIncludeConstructor(
+      this.className,
+      this.props,
       this.components,
       () => ({
-        class: {
-          [`${this.className}__statusIcon`]: true,
-          [`${this.className}__statusIcon--success`]: this.status.is('uploaded'),
-          [`${this.className}__statusIcon--error`]: this.status.is('error')
-        }
+        value: this.file.image,
+        alt: this.file.name
       })
     )
 
     this.label = new LabelIncludeConstructor(
-      this.props,
-      this.className,
-      undefined,
-      this.slots,
-      undefined,
-      computed(() => this.file.name)
+      () => ({ label: this.file.name }),
+      this.className
     )
 
-    this.caption = new CaptionIncludeConstructor(
-      this.props,
+    this.progress = new ProgressIncludeConstructor(
       this.className,
-      this.slots
+      this.props,
+      this.components,
+      () => this.progressProps
     )
 
     this.skeleton = new SkeletonIncludeConstructor(
       this.props,
       this.classDesign,
       ['classBackground']
-    )
-
-    this.ripple = new RippleIncludeConstructor(
-      this.className,
-      this.components,
-      this.enabled
     )
   }
 
@@ -264,33 +252,37 @@ export class InputFileItem {
   get aria(): AriaList {
     return {
       ...AriaStaticInclude.disabled(this.props.disabled),
-      ...AriaStaticInclude.busy(this.status.is('uploading'))
+      ...AriaStaticInclude.busy(this.status.isUploading())
     }
   }
 
   /**
-   * Returns root element HTML bindings and event listeners.
+   * Resolves properties and settings for the progress indicator.
    *
-   * Возвращает HTML-привязки и слушатели событий для корневого элемента.
-   * @returns bindings object / объект привязок
+   * Определяет свойства и настройки для индикатора прогресса.
+   * @returns progress configuration object / объект конфигурации прогресса
    */
-  get binds() {
-    return {
-      ...this.aria
+  protected get progressProps(): ProgressProps {
+    const item: ProgressProps = {
+      position: 'static',
+      visible: this.status.isUploading()
     }
-  }
 
-  /**
-   * Returns dynamic internal classes for the component root.
-   *
-   * Возвращает динамические внутренние классы для корневого элемента компонента.
-   * @returns classes values / значения классов
-   */
-  get classes(): ConstrClassObject {
+    if (this.progressValue.isDeterminate()) {
+      item.value = this.progressValue.value
+      item.max = this.progressValue.max
+    }
+
+    if (this.appearance.isCircular()) {
+      return {
+        ...item,
+        circular: true
+      }
+    }
+
     return {
-      [`${this.className}--uploading`]: this.status.is('uploading'),
-      [`${this.className}--uploaded`]: this.status.is('uploaded'),
-      [`${this.className}--error`]: this.status.is('error')
+      ...item,
+      linear: true
     }
   }
 
@@ -298,9 +290,13 @@ export class InputFileItem {
    * Resolves properties and settings for the delete action button.
    *
    * Определяет свойства и настройки для кнопки действия удаления.
-   * @returns button configuration object / объект конфигурации кнопки
+   * @returns button configuration object or undefined / объект конфигурации кнопки или undefined
    */
-  protected getButtonDelete(): ConstrBind<ButtonProps> {
+  protected getButtonDelete(): ConstrBind<ButtonProps> | undefined {
+    if (this.props.readonly) {
+      return undefined
+    }
+
     return {
       title: this.text.delete,
       icon: this.props.iconDelete,
@@ -317,9 +313,13 @@ export class InputFileItem {
    * Resolves properties and settings for the retry action button.
    *
    * Определяет свойства и настройки для кнопки действия повтора.
-   * @returns button configuration object / объект конфигурации кнопки
+   * @returns button configuration object or undefined / объект конфигурации кнопки или undefined
    */
-  protected getButtonRetry(): ConstrBind<ButtonProps> {
+  protected getButtonRetry(): ConstrBind<ButtonProps> | undefined {
+    if (this.props.readonly) {
+      return undefined
+    }
+
     return {
       title: this.text.retry,
       icon: this.props.iconRetry,
@@ -329,35 +329,6 @@ export class InputFileItem {
       ...AriaStaticInclude.label(this.text.retry),
       ...AriaStaticInclude.disabled(Boolean(this.props.disabled)),
       ...AriaStaticInclude.readonly(Boolean(this.props.readonly))
-    }
-  }
-
-  /**
-   * Resolves properties and settings for the progress indicator.
-   *
-   * Определяет свойства и настройки для индикатора прогресса.
-   * @returns progress configuration object / объект конфигурации прогресса
-   */
-  protected getProgress(): ProgressProps {
-    const item: ProgressProps = {
-      visible: this.status.is('uploading')
-    }
-
-    if (this.progressValue.isDeterminate()) {
-      item.value = this.progressValue.value
-      item.max = this.progressValue.max
-    }
-
-    if (this.props.appearance === 'compact' || this.props.appearance === 'tile') {
-      return {
-        ...item,
-        circular: true
-      }
-    }
-
-    return {
-      ...item,
-      linear: true
     }
   }
 }

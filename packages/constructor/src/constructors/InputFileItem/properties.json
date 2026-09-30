@@ -1,39 +1,28 @@
 {
-  "paddingX": {
-    "_type": "var"
-  },
-  "paddingY": {
-    "_type": "var"
-  },
-  "gap": {
-    "_type": "var"
-  },
-  "thumbnailSize": {
-    "_type": "var"
-  },
-  "border-radius": "{d.sys.borderRadius.md}",
-  "transition-property": "background-color, border, opacity, box-shadow",
-  "transition-duration": "{d.sys.transitionDuration.fade.enter}",
-  "transition-function": "{d.sys.transitionFunction.standard}",
   "#thumbnail": {},
   "#thumbnailImage": {},
-  "#thumbnailPlaceholder": {},
   "#body": {},
   "#label": {},
   "#caption": {},
   "#message": {},
   "#progress": {},
-  "#status": {},
   "#actions": {},
   "#buttonDelete": {},
   "#buttonRetry": {},
+  "~selected": {},
+  "~disabled": {},
+  "~readonly": {},
   "~appearance": {
     "~list": {},
     "~compact": {},
     "~tile": {},
     "_default": "list"
   },
-  "~selected": {},
-  "~disabled": {},
-  "~readonly": {}
+  "~status": {
+    "~uploading": {},
+    "~uploaded": {},
+    "~error": {},
+    "~idle": {},
+    "_default": "idle"
+  }
 }

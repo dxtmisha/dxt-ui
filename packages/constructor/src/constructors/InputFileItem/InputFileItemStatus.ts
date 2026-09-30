@@ -1,10 +1,9 @@
-import { isFilled } from '@dxtmisha/functional'
 
 import type { TextInclude } from '../../classes/TextInclude'
 import type { InputFileItemFile } from './InputFileItemFile'
 
 import type { InputFileItemStatusType } from './basicTypes'
-import type { InputFileItemPropsBasic } from './props'
+import type { InputFileItemProps } from './props'
 
 /**
  * Helper class for calculating file item status and state messages.
@@ -21,7 +20,7 @@ export class InputFileItemStatus {
    * @param text text translations manager / менеджер переводов текста
    */
   constructor(
-    protected readonly props: InputFileItemPropsBasic,
+    protected readonly props: InputFileItemProps,
     protected readonly file: InputFileItemFile,
     protected readonly text: TextInclude
   ) {
@@ -34,20 +33,16 @@ export class InputFileItemStatus {
    * @returns message string or undefined / строка сообщения или undefined
    */
   get message(): string | undefined {
-    if (this.is('uploading')) {
+    if (this.isUploading()) {
       return this.text.loadingFile
     }
 
-    if (this.is('uploaded')) {
+    if (this.isUploaded()) {
       return this.text.uploadSuccess
     }
 
-    if (this.is('error')) {
+    if (this.isError()) {
       return this.text.error
-    }
-
-    if (isFilled(this.props.caption)) {
-      return String(this.props.caption)
     }
 
     return this.file.sizeFormatted
@@ -76,5 +71,45 @@ export class InputFileItemStatus {
    */
   is(status: InputFileItemStatusType): boolean {
     return this.status === status
+  }
+
+  /**
+   * Checks whether the current status is error.
+   *
+   * Проверяет, является ли текущий статус ошибкой.
+   * @returns check result / результат проверки
+   */
+  isError(): boolean {
+    return this.is('error')
+  }
+
+  /**
+   * Checks whether the current status is idle.
+   *
+   * Проверяет, является ли текущий статус режимом ожидания.
+   * @returns check result / результат проверки
+   */
+  isIdle(): boolean {
+    return this.is('idle')
+  }
+
+  /**
+   * Checks whether the current status is uploaded.
+   *
+   * Проверяет, является ли текущий статус успешной загрузкой.
+   * @returns check result / результат проверки
+   */
+  isUploaded(): boolean {
+    return this.is('uploaded')
+  }
+
+  /**
+   * Checks whether the current status is uploading.
+   *
+   * Проверяет, является ли текущий статус процессом загрузки.
+   * @returns check result / результат проверки
+   */
+  isUploading(): boolean {
+    return this.is('uploading')
   }
 }

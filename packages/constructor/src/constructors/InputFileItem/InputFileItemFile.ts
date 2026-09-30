@@ -38,17 +38,17 @@ export class InputFileItemFile {
   }
 
   /**
-   * Resolves and returns the image source (File or URL) if the file is an image.
+   * Resolves and returns the image source (File or URL), or file icon if not an image.
    *
-   * Определяет и возвращает источник изображения (File или URL), если файл является изображением.
-   * @returns image source, File instance, or undefined / источник изображения, экземпляр File или undefined
+   * Определяет и возвращает источник изображения (File или URL), либо иконку файла, если это не изображение.
+   * @returns image source, File instance, icon string, or undefined / источник изображения, экземпляр File, строка иконки или undefined
    */
   get image(): string | File | undefined {
     if (this.isImage()) {
       return this.src ?? this.getFile()
     }
 
-    return undefined
+    return this.getIcon()
   }
 
   /**
@@ -140,8 +140,18 @@ export class InputFileItemFile {
    * Определяет и возвращает объект файла, если он передан.
    * @returns file instance or undefined / экземпляр файла или undefined
    */
-  protected getFile(): File | undefined {
+  readonly getFile = (): File | undefined => {
     return this.props.file ?? this.props.value?.file
+  }
+
+  /**
+   * Resolves and returns the file icon depending on the file.
+   *
+   * Определяет и возвращает иконку файла в зависимости от файла.
+   * @returns file icon string or undefined / строка иконки файла или undefined
+   */
+  readonly getIcon = (): string | undefined => {
+    return this.mediaFile.value?.icon
   }
 
   /**

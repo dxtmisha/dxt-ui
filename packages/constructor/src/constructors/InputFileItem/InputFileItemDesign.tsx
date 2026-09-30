@@ -83,7 +83,7 @@ export class InputFileItemDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      getFile: () => this.props.file ?? this.props.value?.file,
+      getFile: this.item.file.getFile,
       getStatus: () => this.item.status.status,
       delete: () => this.item.event.onDelete(),
       retry: () => this.item.event.onRetry()
@@ -98,18 +98,16 @@ export class InputFileItemDesign<
    */
   protected initClasses(): Partial<CLASSES> {
     return {
-      main: this.item.classes,
+      main: {},
       ...{
         // :classes [!] System label / Системная метка
         thumbnail: this.getSubClass('thumbnail'),
         thumbnailImage: this.getSubClass('thumbnailImage'),
-        thumbnailPlaceholder: this.getSubClass('thumbnailPlaceholder'),
         body: this.getSubClass('body'),
         label: this.getSubClass('label'),
         caption: this.getSubClass('caption'),
         message: this.getSubClass('message'),
         progress: this.getSubClass('progress'),
-        status: this.getSubClass('status'),
         actions: this.getSubClass('actions'),
         buttonDelete: this.getSubClass('buttonDelete'),
         buttonRetry: this.getSubClass('buttonRetry')
@@ -135,125 +133,96 @@ export class InputFileItemDesign<
    * @returns rendered virtual node / отрендеренная виртуальная нода
    */
   protected initRender(): VNode {
-    const appearance = this.props.appearance
-
-    if (appearance === 'tile') {
-      return h(
-        'div',
-        {
-          ...this.getAttrs(),
-          ...this.item.binds,
-          ref: this.element,
-          class: this.classes?.value.main,
-          style: this.styles?.value
-        },
-        [
-          ...this.renderThumbnail(),
-          ...(this.item.status.is('uploading') ? this.renderProgress() : []),
-          ...this.renderActions(),
-          ...this.item.ripple.render()
-        ]
-      )
-    }
-
-    if (appearance === 'compact') {
-      return h(
-        'div',
-        {
-          ...this.getAttrs(),
-          ...this.item.binds,
-          ref: this.element,
-          class: this.classes?.value.main,
-          style: this.styles?.value
-        },
-        [
-          ...this.item.label.render(),
-          ...this.renderStatus(),
-          ...this.renderActions(),
-          ...this.item.ripple.render()
-        ]
-      )
-    }
-
     return h(
       'div',
       {
         ...this.getAttrs(),
-        ...this.item.binds,
-        ref: this.element,
-        class: this.classes?.value.main,
-        style: this.styles?.value
+        ...this.item.aria,
+        class: this.classes?.value.main
       },
-      [
-        ...this.renderThumbnail(),
-        ...this.renderBody(),
-        ...this.renderActions(),
-        ...this.item.ripple.render()
-      ]
+      this.renderChildren()
     )
   }
 
   /**
-   * Rendering method for the thumbnail element.
+   * Rendering method for children nodes based on appearance mode.
    *
-   * Метод рендеринга для элемента миниатюры.
+   * Метод рендеринга дочерних узлов в зависимости от режима отображения.
    * @returns array of virtual nodes / массив виртуальных нод
    */
-  readonly renderThumbnail = (): VNode[] => {
-    const slotThumbnail = this.initSlot('thumbnail')
-    if (slotThumbnail.length > 0) {
-      return [
-        h(
-          'div',
-          {
-            class: [
-              this.classes?.value.thumbnail,
-              {
-                [`${this.getName()}__thumbnail--error`]: this.item.status.is('error')
-              }
-            ]
-          },
-          slotThumbnail
-        )
-      ]
+  readonly renderChildren = (): VNode[] => {
+    if (this.item.appearance.isTile()) {
+      return this.renderTile()
     }
 
+    if (this.item.appearance.isCompact()) {
+      return this.renderCompact()
+    }
+
+    return this.renderList()
+  }
+
+  /**
+   * Rendering method for tile appearance layout.
+   *
+   * Метод рендеринга для плиточного режима отображения.
+   * @returns array of virtual nodes / массив виртуальных нод
+   */
+  readonly renderTile = (): VNode[] => {
     return [
-      h(
-        'div',
-        {
-          class: [
-            this.classes?.value.thumbnail,
-            {
-              [`${this.getName()}__thumbnail--error`]: this.item.status.is('error')
-            }
-          ]
-        },
-        this.renderThumbnailContent()
-      )
+      ...this.renderThumbnail(),
+      ...this.renderProgress(),
+      ...this.renderActions()
     ]
   }
 
   /**
-   * Rendering method for the content inside thumbnail.
+   * Rendering method for compact appearance layout.
    *
-   * Метод рендеринга для содержимого внутри миниатюры.
+   * Метод рендеринга для компактного режима отображения.
    * @returns array of virtual nodes / массив виртуальных нод
    */
-  readonly renderThumbnailContent = (): VNode[] => {
-    if (this.item.file.image) {
-      return this.item.image.render(undefined, {
-        class: this.classes?.value.thumbnailImage
-      })
+  readonly renderCompact = (): VNode[] => {
+    return [
+      ...this.item.label.render(),
+      ...this.renderStatus(),
+      ...this.renderActions()
+    ]
+  }
+
+  /**
+   * Rendering method for list (default) appearance layout.
+   *
+   * Метод рендеринга для списочного (по умолчанию) режима отображения.
+   * @returns array of virtual nodes / массив виртуальных нод
+   */
+  readonly renderList = (): VNode[] => {
+    return [
+      ...this.renderThumbnail(),
+      ...this.renderBody(),
+      ...this.renderActions()
+    ]
+  }
+
+  /**
+   * Rendering method for the action buttons (retry, delete).
+   *
+   * Метод рендеринга для кнопок действий (повтор, удаление).
+   * @returns array of virtual nodes / массив виртуальных нод
+   */
+  readonly renderActions = (): VNode[] => {
+    if (this.props.readonly) {
+      return []
     }
 
     return [
       h(
         'div',
-        { class: this.classes?.value.thumbnailPlaceholder },
-        this.components?.render('icon', {
-          icon: this.props.icon
-        }) ?? []
+        { class: this.classes?.value.actions },
+        [
+          ...this.renderButtonRetry(),
+          ...this.renderButtonDelete()
+        ]
       )
     ]
   }
@@ -278,170 +247,6 @@ export class InputFileItemDesign<
   }
 
   /**
-   * Rendering method for the caption and status message line.
-   *
-   * Метод рендеринга для строки подписи и статусного сообщения.
-   * @returns array of virtual nodes / массив виртуальных нод
-   */
-  readonly renderCaption = (): VNode[] => {
-    const slotCaption = this.initSlot('caption')
-    if (slotCaption.length > 0) {
-      return [
-        h(
-          'div',
-          { class: this.classes?.value.caption },
-          slotCaption
-        )
-      ]
-    }
-
-    const children: VNode[] = []
-
-    if (this.item.status.is('uploading')) {
-      children.push(
-        h(
-          'span',
-          { class: this.classes?.value.message },
-          this.item.status.message
-        ),
-        ...this.renderProgress()
-      )
-    } else if (this.item.status.is('uploaded') || this.item.status.is('error')) {
-      children.push(
-        ...this.renderStatus(),
-        h(
-          'span',
-          {
-            class: [
-              this.classes?.value.message,
-              {
-                [`${this.getName()}__message--success`]: this.item.status.is('uploaded'),
-                [`${this.getName()}__message--error`]: this.item.status.is('error')
-              }
-            ]
-          },
-          this.item.status.message
-        )
-      )
-    } else if (this.item.status.message) {
-      children.push(
-        h(
-          'span',
-          { class: this.classes?.value.message },
-          this.item.status.message
-        )
-      )
-    }
-
-    if (children.length === 0) {
-      return []
-    }
-
-    return [
-      h(
-        'div',
-        { class: this.classes?.value.caption },
-        children
-      )
-    ]
-  }
-
-  /**
-   * Rendering method for the status indicator icon or spinner.
-   *
-   * Метод рендеринга для иконки индикатора статуса или спиннера.
-   * @returns array of virtual nodes / массив виртуальных нод
-   */
-  readonly renderStatus = (): VNode[] => {
-    const slotStatus = this.initSlot('status')
-    if (slotStatus.length > 0) {
-      return slotStatus
-    }
-
-    if (this.item.status.is('uploading')) {
-      return this.item.progress.render(undefined, {
-        circular: true,
-        class: this.classes?.value.status
-      })
-    }
-
-    if (this.item.status.is('uploaded') || this.item.status.is('error')) {
-      return [
-        h(
-          'span',
-          {
-            class: [
-              this.classes?.value.status,
-              {
-                [`${this.getName()}__status--success`]: this.item.status.is('uploaded'),
-                [`${this.getName()}__status--error`]: this.item.status.is('error')
-              }
-            ]
-          },
-          this.item.iconStatus.render()
-        )
-      ]
-    }
-
-    return []
-  }
-
-  /**
-   * Rendering method for the progress bar.
-   *
-   * Метод рендеринга для индикатора прогресса.
-   * @returns array of virtual nodes / массив виртуальных нод
-   */
-  readonly renderProgress = (): VNode[] => {
-    if (!this.item.status.is('uploading')) {
-      return []
-    }
-
-    return this.item.progress.render(undefined, {
-      class: this.classes?.value.progress
-    })
-  }
-
-  /**
-   * Rendering method for the action buttons (retry, delete).
-   *
-   * Метод рендеринга для кнопок действий (повтор, удаление).
-   * @returns array of virtual nodes / массив виртуальных нод
-   */
-  readonly renderActions = (): VNode[] => {
-    const slotActions = this.initSlot('actions')
-    if (slotActions.length > 0) {
-      return [
-        h(
-          'div',
-          { class: this.classes?.value.actions },
-          slotActions
-        )
-      ]
-    }
-
-    const buttons: VNode[] = []
-
-    if (this.item.status.is('error')) {
-      buttons.push(...this.renderButtonRetry())
-    }
-
-    buttons.push(...this.renderButtonDelete())
-
-    if (buttons.length === 0) {
-      return []
-    }
-
-    return [
-      h(
-        'div',
-        { class: this.classes?.value.actions },
-        buttons
-      )
-    ]
-  }
-
-  /**
    * Rendering method for the delete action button.
    *
    * Метод рендеринга для кнопки действия удаления.
@@ -460,8 +265,105 @@ export class InputFileItemDesign<
    * @returns array of virtual nodes / массив виртуальных нод
    */
   readonly renderButtonRetry = (): VNode[] => {
-    return this.item.buttonRetry.render(undefined, {
-      class: this.classes?.value.buttonRetry
-    })
+    if (this.item.status.isError()) {
+      return this.item.buttonRetry.render(undefined, {
+        class: this.classes?.value.buttonRetry
+      })
+    }
+
+    return []
+  }
+
+  /**
+   * Rendering method for the caption and status message line.
+   *
+   * Метод рендеринга для строки подписи и статусного сообщения.
+   * @returns array of virtual nodes / массив виртуальных нод
+   */
+  readonly renderCaption = (): VNode[] => {
+    return [
+      h(
+        'div',
+        { class: this.classes?.value.caption },
+        [
+          ...this.renderProgress(),
+          ...this.renderStatus(),
+          ...this.renderMessage()
+        ]
+      )
+    ]
+  }
+
+  /**
+   * Rendering method for the message element.
+   *
+   * Метод рендеринга для элемента сообщения.
+   * @returns array of virtual nodes / массив виртуальных нод
+   */
+  readonly renderMessage = (): VNode[] => {
+    if (this.item.status.message) {
+      return [
+        h(
+          'span',
+          { class: this.classes?.value.message },
+          this.item.status.message
+        )
+      ]
+    }
+
+    return []
+  }
+
+  /**
+   * Rendering method for the progress bar.
+   *
+   * Метод рендеринга для индикатора прогресса.
+   * @returns array of virtual nodes / массив виртуальных нод
+   */
+  readonly renderProgress = (): VNode[] => {
+    if (this.item.status.isUploading()) {
+      return this.item.progress.render(undefined, {
+        class: this.classes?.value.progress
+      })
+    }
+
+    return []
+  }
+
+  /**
+   * Rendering method for the status indicator icon or spinner.
+   *
+   * Метод рендеринга для иконки индикатора статуса или спиннера.
+   * @returns array of virtual nodes / массив виртуальных нод
+   */
+  readonly renderStatus = (): VNode[] => {
+    if (
+      this.item.status.isUploaded()
+      || this.item.status.isError()
+    ) {
+      return this.item.iconStatus.renderIcon()
+    }
+
+    return []
+  }
+
+  /**
+   * Rendering method for the thumbnail element.
+   *
+   * Метод рендеринга для элемента миниатюры.
+   * @returns array of virtual nodes / массив виртуальных нод
+   */
+  readonly renderThumbnail = (): VNode[] => {
+    return [
+      h(
+        'div',
+        {
+          class: this.classes?.value.thumbnail
+        },
+        this.item.image.render(undefined, {
+          class: this.classes?.value.thumbnailImage
+        })
+      )
+    ]
   }
 }
