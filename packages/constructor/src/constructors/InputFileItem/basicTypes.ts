@@ -1,5 +1,5 @@
 import type { ConstrBind } from '@dxtmisha/functional'
-import type { FieldFileValue } from '../../types/fieldTypes'
+
 import type { InputFileItemPropsBasic } from './props'
 
 /** Appearance modes for InputFileItem / Режимы отображения InputFileItem */
@@ -12,16 +12,6 @@ export type InputFileItemStatusType = 'uploading' | 'uploaded' | 'error' | 'idle
 export type InputFileItemComponentInclude = {
   /** InputFileItem component configuration / Конфигурация компонента InputFileItem */
   inputFileItem?: object
-}
-
-/** Available component events for Include / Доступные события компонента для Include */
-export type InputFileItemEmitsInclude = {
-  /** Click event / Событие клика */
-  click: [event: MouseEvent]
-  /** Delete event / Событие удаления */
-  delete: [file?: File | FieldFileValue]
-  /** Retry event / Событие повтора */
-  retry: [file?: File | FieldFileValue]
 }
 
 /** Props for embedding InputFileItem attributes inside another component / Свойства для встраивания атрибутов InputFileItem в другой компонент */

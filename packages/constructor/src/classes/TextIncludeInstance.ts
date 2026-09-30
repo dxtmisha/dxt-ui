@@ -30,7 +30,7 @@ export class TextIncludeInstance {
     info: '[item] of [count]',
     last: 'Last',
     loading: 'Loading',
-    loadingFile: 'Loading file ...',
+    loadingFile: 'Uploading your file',
     more: 'Show more',
     morePrev: 'Show previous',
     next: 'Next',
@@ -45,7 +45,7 @@ export class TextIncludeInstance {
     rowsPerPage: 'Rows per page',
     show: 'Show',
     symbol: 'Symbol [index]',
-    uploadSuccess: 'Upload successful'
+    uploadSuccess: 'File uploaded successfully'
   })
 
   /**

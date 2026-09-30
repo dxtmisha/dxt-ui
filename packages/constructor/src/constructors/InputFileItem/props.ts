@@ -8,11 +8,9 @@ import type { CaptionProps } from '../../types/captionTypes'
 import type { EnabledProps } from '../../types/enabledTypes'
 import type { FieldFileValue } from '../../types/fieldTypes'
 import type {
-  TextCancelPropsInclude,
   TextDeletePropsInclude,
   TextErrorPropsInclude,
   TextLoadingFilePropsInclude,
-  TextLoadingPropsInclude,
   TextRetryPropsInclude,
   TextUploadSuccessPropsInclude
 } from '../../types/textTypes'
@@ -39,11 +37,9 @@ export type InputFileItemPropsBasic<
   & ProgressPropsInclude<Progress>
   & ButtonPropsInclude<Button>
   & SkeletonPropsInclude
-  & TextCancelPropsInclude
   & TextDeletePropsInclude
   & TextErrorPropsInclude
   & TextLoadingFilePropsInclude
-  & TextLoadingPropsInclude
   & TextRetryPropsInclude
   & TextUploadSuccessPropsInclude
   & {

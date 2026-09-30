@@ -1,7 +1,9 @@
 import type { ConstrEmit } from '@dxtmisha/functional'
 
-import type { InputFileItemPropsBasic } from './props'
+import type { InputFileItemFile } from './InputFileItemFile'
+
 import type { InputFileItemEmits } from './types'
+import type { InputFileItemPropsBasic } from './props'
 
 /**
  * Helper class for handling user interaction events in InputFileItem.
@@ -14,24 +16,14 @@ export class InputFileItemEvent {
    *
    * Конструктор.
    * @param props input data / входные данные
+   * @param file file manager instance / экземпляр менеджера файла
    * @param emits event emitter callback / коллбэк отправки событий
    */
   constructor(
     protected readonly props: InputFileItemPropsBasic,
+    protected readonly file: InputFileItemFile,
     protected readonly emits?: ConstrEmit<InputFileItemEmits>
   ) {
-  }
-
-  /**
-   * Click event handler.
-   *
-   * Обработчик события клика.
-   * @param event mouse click event / событие клика мыши
-   */
-  readonly onClick = (event: MouseEvent): void => {
-    if (!this.props.disabled && !this.props.readonly) {
-      this.emits?.('click', event)
-    }
   }
 
   /**
@@ -42,7 +34,7 @@ export class InputFileItemEvent {
    */
   readonly onDelete = (event?: MouseEvent): void => {
     event?.stopPropagation()
-    this.emits?.('delete', this.props.file ?? this.props.value)
+    this.emits?.('delete', this.file.get())
   }
 
   /**
@@ -53,6 +45,6 @@ export class InputFileItemEvent {
    */
   readonly onRetry = (event?: MouseEvent): void => {
     event?.stopPropagation()
-    this.emits?.('retry', this.props.file ?? this.props.value)
+    this.emits?.('retry', this.file.get())
   }
 }

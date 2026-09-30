@@ -2,6 +2,7 @@ import { computed } from 'vue'
 import { GeoIntl, toNumber } from '@dxtmisha/functional'
 import { MediaFile } from '@dxtmisha/media'
 
+import type { FieldFileValue } from '../../types/fieldTypes'
 import type { InputFileItemPropsBasic } from './props'
 
 /**
@@ -107,6 +108,33 @@ export class InputFileItemFile {
   }
 
   /**
+   * Resolves and returns file data in FieldFileValue format, taking into account file and value properties.
+   *
+   * Определяет и возвращает данные файла в формате FieldFileValue, учитывая свойства file и value.
+   * @returns file value object or undefined / объект значения файла или undefined
+   */
+  get(): FieldFileValue | undefined {
+    const file = this.getFile()
+
+    if (file) {
+      return {
+        ...this.props.value,
+        file,
+        name: file.name || this.props.value?.name,
+        size: file.size,
+        type: file.type || this.props.value?.type || undefined,
+        lastModified: file.lastModified || this.props.value?.lastModified
+      }
+    }
+
+    if (this.props.value) {
+      return { ...this.props.value }
+    }
+
+    return undefined
+  }
+
+  /**
    * Resolves and returns the file object if present.
    *
    * Определяет и возвращает объект файла, если он передан.
@@ -125,7 +153,6 @@ export class InputFileItemFile {
   protected getSource(): File | string | undefined {
     return this.getFile()
       ?? this.src
-      ?? this.name
-      ?? undefined
+      ?? (this.name || undefined)
   }
 }

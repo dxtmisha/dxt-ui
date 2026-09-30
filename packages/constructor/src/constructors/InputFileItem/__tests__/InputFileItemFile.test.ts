@@ -1,5 +1,4 @@
-// @vitest-environment jsdom
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect } from 'vitest'
 
 import { GeoIntl } from '@dxtmisha/functional'
 import { InputFileItemFile } from '../InputFileItemFile'
@@ -171,6 +170,72 @@ describe('InputFileItemFile', () => {
     })
   })
 
+  describe('get', () => {
+    it('returns undefined when neither file nor value is provided', () => {
+      const helper = createHelper({})
+      expect(helper.get()).toBeUndefined()
+    })
+
+    it('constructs FieldFileValue from props.file', () => {
+      const mockFile = new File(['hello'], 'document.pdf', { type: 'application/pdf', lastModified: 123456789 })
+      const helper = createHelper({ file: mockFile })
+
+      expect(helper.get()).toEqual({
+        file: mockFile,
+        name: 'document.pdf',
+        size: 5,
+        type: 'application/pdf',
+        lastModified: 123456789
+      })
+    })
+
+    it('returns props.value when file is absent', () => {
+      const value = {
+        id: 'file-123',
+        name: 'remote_photo.jpg',
+        value: 'https://example.com/photo.jpg',
+        size: 1024
+      }
+      const helper = createHelper({ value })
+
+      expect(helper.get()).toEqual(value)
+    })
+
+    it('merges props.file and props.value correctly', () => {
+      const mockFile = new File(['test-data'], 'avatar.png', { type: 'image/png', lastModified: 987654321 })
+      const value = {
+        id: 'user-avatar',
+        value: 'blob:http://localhost/1234',
+        crop: { top: 0, right: 100, bottom: 100, left: 0 }
+      }
+      const helper = createHelper({ file: mockFile, value })
+
+      expect(helper.get()).toEqual({
+        id: 'user-avatar',
+        value: 'blob:http://localhost/1234',
+        crop: { top: 0, right: 100, bottom: 100, left: 0 },
+        file: mockFile,
+        name: 'avatar.png',
+        size: 9,
+        type: 'image/png',
+        lastModified: 987654321
+      })
+    })
+
+    it('extracts file from props.value.file if props.file is omitted', () => {
+      const mockFile = new File(['data'], 'nested.txt', { type: 'text/plain', lastModified: 55555 })
+      const helper = createHelper({ value: { id: 42, file: mockFile } })
+
+      expect(helper.get()).toEqual({
+        id: 42,
+        file: mockFile,
+        name: 'nested.txt',
+        size: 4,
+        type: 'text/plain',
+        lastModified: 55555
+      })
+    })
+  })
 
   describe('getFile', () => {
     it('returns props.file when provided', () => {

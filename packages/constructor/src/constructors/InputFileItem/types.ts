@@ -28,12 +28,10 @@ export type InputFileItemComponents
  * Тип, описывающий доступные события.
  */
 export type InputFileItemEmits = {
-  /** Click event / Событие клика */
-  click: [event: MouseEvent]
   /** Delete event / Событие удаления */
-  delete: [file?: File | FieldFileValue]
+  delete: [file?: FieldFileValue]
   /** Retry event / Событие повтора */
-  retry: [file?: File | FieldFileValue]
+  retry: [file?: FieldFileValue]
 }
 
 /**

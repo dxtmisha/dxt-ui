@@ -1,5 +1,6 @@
 import { computed, type Ref, type ToRefs } from 'vue'
 import {
+  type ConstrBind,
   type ConstrClassObject,
   type ConstrEmit,
   type DesignComp
@@ -11,7 +12,10 @@ import { EnabledInclude } from '../../classes/EnabledInclude'
 import { LabelInclude } from '../../classes/LabelInclude'
 import { TextInclude } from '../../classes/TextInclude'
 
-import { ButtonInclude } from '../Button'
+import {
+  ButtonInclude,
+  type ButtonProps
+} from '../Button'
 import { IconInclude } from '../Icon'
 import { ImageInclude } from '../Image'
 import { ProgressInclude } from '../Progress'
@@ -20,9 +24,11 @@ import { SkeletonInclude } from '../Skeleton'
 
 import { InputFileItemEvent } from './InputFileItemEvent'
 import { InputFileItemFile } from './InputFileItemFile'
+import { InputFileItemProgress } from './InputFileItemProgress'
 import { InputFileItemStatus } from './InputFileItemStatus'
 
 import type { AriaList } from '../../types/ariaTypes'
+import type { ProgressProps } from '../Progress'
 import type { InputFileItemProps } from './props'
 import type {
   InputFileItemComponents,
@@ -49,10 +55,10 @@ export class InputFileItem {
   readonly enabled: EnabledInclude
 
   /** Event interaction manager / Менеджер событий взаимодействия */
-  readonly eventItem: InputFileItemEvent
+  readonly event: InputFileItemEvent
 
   /** File data and formatting helper / Вспомогательный класс для данных и форматирования файла */
-  readonly fileItem: InputFileItemFile
+  readonly file: InputFileItemFile
 
   /** Status icon include / Подключение иконки статуса */
   readonly iconStatus: IconInclude
@@ -66,14 +72,17 @@ export class InputFileItem {
   /** Progress indicator include / Подключение индикатора прогресса */
   readonly progress: ProgressInclude
 
+  /** Upload progress manager / Менеджер прогресса загрузки */
+  readonly progressValue: InputFileItemProgress
+
   /** Ripple click effect include / Подключение эффекта волны при клике */
   readonly ripple: RippleInclude
 
   /** Skeleton loading placeholder include / Подключение скелетона загрузки */
   readonly skeleton: SkeletonInclude
 
-  /** File status and progress manager / Менеджер статуса и прогресса файла */
-  readonly statusItem: InputFileItemStatus
+  /** File status manager / Менеджер статуса файла */
+  readonly status: InputFileItemStatus
 
   /** Text manager for translations / Менеджер текста для переводов */
   readonly text: TextInclude
@@ -98,6 +107,7 @@ export class InputFileItem {
    * @param constructors.ImageIncludeConstructor class for creating an image / класс для создания изображения
    * @param constructors.InputFileItemEventConstructor class for managing file events / класс для управления событиями файла
    * @param constructors.InputFileItemFileConstructor class for managing file data / класс для управления данными файла
+   * @param constructors.InputFileItemProgressConstructor class for managing file progress / класс для управления прогрессом файла
    * @param constructors.InputFileItemStatusConstructor class for managing file status / класс для управления статусом файла
    * @param constructors.LabelIncludeConstructor class for creating a label / класс для создания метки
    * @param constructors.ProgressIncludeConstructor class for creating a progress indicator / класс для создания индикатора прогресса
@@ -122,6 +132,7 @@ export class InputFileItem {
       ImageIncludeConstructor?: typeof ImageInclude
       InputFileItemEventConstructor?: typeof InputFileItemEvent
       InputFileItemFileConstructor?: typeof InputFileItemFile
+      InputFileItemProgressConstructor?: typeof InputFileItemProgress
       InputFileItemStatusConstructor?: typeof InputFileItemStatus
       LabelIncludeConstructor?: typeof LabelInclude
       ProgressIncludeConstructor?: typeof ProgressInclude
@@ -138,6 +149,7 @@ export class InputFileItem {
       ImageIncludeConstructor = ImageInclude,
       InputFileItemEventConstructor = InputFileItemEvent,
       InputFileItemFileConstructor = InputFileItemFile,
+      InputFileItemProgressConstructor = InputFileItemProgress,
       InputFileItemStatusConstructor = InputFileItemStatus,
       LabelIncludeConstructor = LabelInclude,
       ProgressIncludeConstructor = ProgressInclude,
@@ -146,24 +158,32 @@ export class InputFileItem {
       TextIncludeConstructor = TextInclude
     } = constructors
 
-    this.fileItem = new InputFileItemFileConstructor(this.props)
     this.enabled = new EnabledConstructor(this.props)
     this.text = new TextIncludeConstructor(this.props)
-    this.statusItem = new InputFileItemStatusConstructor(
+
+    this.file = new InputFileItemFileConstructor(this.props)
+    this.progressValue = new InputFileItemProgressConstructor(
       this.props,
-      this.fileItem,
+      this.file
+    )
+    this.status = new InputFileItemStatusConstructor(
+      this.props,
+      this.file,
       this.text
     )
-    this.eventItem = new InputFileItemEventConstructor(this.props, this.emits)
+    this.event = new InputFileItemEventConstructor(
+      this.props,
+      this.file,
+      this.emits
+    )
 
     this.image = new ImageIncludeConstructor(
       this.className,
       this.props,
       this.components,
       () => ({
-        value: this.fileItem.image,
-        alt: this.fileItem.name,
-        class: `${this.className}__thumbnailImage`
+        value: this.file.image,
+        alt: this.file.name
       })
     )
 
@@ -171,26 +191,14 @@ export class InputFileItem {
       this.className,
       this.props,
       this.components,
-      () => ({
-        visible: this.statusItem.isUploading,
-        loading: this.statusItem.isUploading,
-        linear: this.props.appearance !== 'compact' && this.props.appearance !== 'tile',
-        circular: this.props.appearance === 'compact' || this.props.appearance === 'tile',
-        value: this.statusItem.isProgressDeterminate ? this.statusItem.progress : undefined,
-        max: 100
-      })
+      () => this.getProgress()
     )
 
     this.buttonDelete = new ButtonIncludeConstructor(
       this.className,
       this.props,
       this.components,
-      () => ({
-        icon: this.props.iconDelete ?? 'delete',
-        disabled: this.props.disabled,
-        readonly: this.props.readonly,
-        onClick: this.eventItem.onDelete
-      }),
+      () => this.getButtonDelete(),
       'buttonDelete'
     )
 
@@ -198,28 +206,23 @@ export class InputFileItem {
       this.className,
       this.props,
       this.components,
-      () => ({
-        icon: this.props.iconRetry ?? 'refresh',
-        disabled: this.props.disabled,
-        readonly: this.props.readonly,
-        onClick: this.eventItem.onRetry
-      }),
+      () => this.getButtonRetry(),
       'buttonRetry'
     )
 
     this.iconStatus = new IconIncludeConstructor(
       () => ({
-        icon: this.statusItem.isUploaded
-          ? (this.props.iconSuccess ?? 'check_circle')
-          : (this.props.iconError ?? 'cancel')
+        icon: this.status.is('uploaded')
+          ? this.props.iconSuccess
+          : this.props.iconError
       }),
       this.className,
       this.components,
       () => ({
         class: {
           [`${this.className}__statusIcon`]: true,
-          [`${this.className}__statusIcon--success`]: this.statusItem.isUploaded,
-          [`${this.className}__statusIcon--error`]: this.statusItem.isError
+          [`${this.className}__statusIcon--success`]: this.status.is('uploaded'),
+          [`${this.className}__statusIcon--error`]: this.status.is('error')
         }
       })
     )
@@ -230,7 +233,7 @@ export class InputFileItem {
       undefined,
       this.slots,
       undefined,
-      computed(() => this.fileItem.name)
+      computed(() => this.file.name)
     )
 
     this.caption = new CaptionIncludeConstructor(
@@ -261,21 +264,7 @@ export class InputFileItem {
   get aria(): AriaList {
     return {
       ...AriaStaticInclude.disabled(this.props.disabled),
-      ...AriaStaticInclude.busy(this.statusItem.isUploading)
-    }
-  }
-
-  /**
-   * Returns dynamic internal classes for the component root.
-   *
-   * Возвращает динамические внутренние классы для корневого элемента компонента.
-   * @returns classes values / значения классов
-   */
-  get classes(): ConstrClassObject {
-    return {
-      [`${this.className}--uploading`]: this.statusItem.isUploading,
-      [`${this.className}--uploaded`]: this.statusItem.isUploaded,
-      [`${this.className}--error`]: this.statusItem.isError
+      ...AriaStaticInclude.busy(this.status.is('uploading'))
     }
   }
 
@@ -287,8 +276,88 @@ export class InputFileItem {
    */
   get binds() {
     return {
-      onClick: this.eventItem.onClick,
       ...this.aria
+    }
+  }
+
+  /**
+   * Returns dynamic internal classes for the component root.
+   *
+   * Возвращает динамические внутренние классы для корневого элемента компонента.
+   * @returns classes values / значения классов
+   */
+  get classes(): ConstrClassObject {
+    return {
+      [`${this.className}--uploading`]: this.status.is('uploading'),
+      [`${this.className}--uploaded`]: this.status.is('uploaded'),
+      [`${this.className}--error`]: this.status.is('error')
+    }
+  }
+
+  /**
+   * Resolves properties and settings for the delete action button.
+   *
+   * Определяет свойства и настройки для кнопки действия удаления.
+   * @returns button configuration object / объект конфигурации кнопки
+   */
+  protected getButtonDelete(): ConstrBind<ButtonProps> {
+    return {
+      title: this.text.delete,
+      icon: this.props.iconDelete,
+      disabled: this.props.disabled,
+      readonly: this.props.readonly,
+      onClick: this.event.onDelete,
+      ...AriaStaticInclude.label(this.text.delete),
+      ...AriaStaticInclude.disabled(Boolean(this.props.disabled)),
+      ...AriaStaticInclude.readonly(Boolean(this.props.readonly))
+    }
+  }
+
+  /**
+   * Resolves properties and settings for the retry action button.
+   *
+   * Определяет свойства и настройки для кнопки действия повтора.
+   * @returns button configuration object / объект конфигурации кнопки
+   */
+  protected getButtonRetry(): ConstrBind<ButtonProps> {
+    return {
+      title: this.text.retry,
+      icon: this.props.iconRetry,
+      disabled: this.props.disabled,
+      readonly: this.props.readonly,
+      onClick: this.event.onRetry,
+      ...AriaStaticInclude.label(this.text.retry),
+      ...AriaStaticInclude.disabled(Boolean(this.props.disabled)),
+      ...AriaStaticInclude.readonly(Boolean(this.props.readonly))
+    }
+  }
+
+  /**
+   * Resolves properties and settings for the progress indicator.
+   *
+   * Определяет свойства и настройки для индикатора прогресса.
+   * @returns progress configuration object / объект конфигурации прогресса
+   */
+  protected getProgress(): ProgressProps {
+    const item: ProgressProps = {
+      visible: this.status.is('uploading')
+    }
+
+    if (this.progressValue.isDeterminate()) {
+      item.value = this.progressValue.value
+      item.max = this.progressValue.max
+    }
+
+    if (this.props.appearance === 'compact' || this.props.appearance === 'tile') {
+      return {
+        ...item,
+        circular: true
+      }
+    }
+
+    return {
+      ...item,
+      linear: true
     }
   }
 }

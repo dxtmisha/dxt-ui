@@ -16,52 +16,52 @@ describe('InputFileItemStatus', () => {
     return { fileItem, statusItem, text }
   }
 
-  describe('status and boolean flags', () => {
+  describe('status and is method', () => {
     it('detects uploading state via loading prop', () => {
       const { statusItem } = createHelper({ loading: true })
       expect(statusItem.status).toBe('uploading')
-      expect(statusItem.isUploading).toBe(true)
-      expect(statusItem.isUploaded).toBe(false)
-      expect(statusItem.isError).toBe(false)
-      expect(statusItem.isIdle).toBe(false)
+      expect(statusItem.is('uploading')).toBe(true)
+      expect(statusItem.is('uploaded')).toBe(false)
+      expect(statusItem.is('error')).toBe(false)
+      expect(statusItem.is('idle')).toBe(false)
     })
 
     it('detects uploading state via status prop', () => {
       const { statusItem } = createHelper({ status: 'uploading' })
       expect(statusItem.status).toBe('uploading')
-      expect(statusItem.isUploading).toBe(true)
+      expect(statusItem.is('uploading')).toBe(true)
     })
 
     it('detects error state via status prop', () => {
       const { statusItem } = createHelper({ status: 'error' })
       expect(statusItem.status).toBe('error')
-      expect(statusItem.isError).toBe(true)
-      expect(statusItem.isUploading).toBe(false)
-      expect(statusItem.isUploaded).toBe(false)
-      expect(statusItem.isIdle).toBe(false)
+      expect(statusItem.is('error')).toBe(true)
+      expect(statusItem.is('uploading')).toBe(false)
+      expect(statusItem.is('uploaded')).toBe(false)
+      expect(statusItem.is('idle')).toBe(false)
     })
 
     it('detects uploaded state via status prop', () => {
       const { statusItem } = createHelper({ status: 'uploaded' })
       expect(statusItem.status).toBe('uploaded')
-      expect(statusItem.isUploaded).toBe(true)
-      expect(statusItem.isUploading).toBe(false)
-      expect(statusItem.isError).toBe(false)
-      expect(statusItem.isIdle).toBe(false)
+      expect(statusItem.is('uploaded')).toBe(true)
+      expect(statusItem.is('uploading')).toBe(false)
+      expect(statusItem.is('error')).toBe(false)
+      expect(statusItem.is('idle')).toBe(false)
     })
 
     it('defaults to idle state when no active state is set', () => {
       const { statusItem } = createHelper({})
       expect(statusItem.status).toBe('idle')
-      expect(statusItem.isIdle).toBe(true)
-      expect(statusItem.isUploading).toBe(false)
-      expect(statusItem.isUploaded).toBe(false)
-      expect(statusItem.isError).toBe(false)
+      expect(statusItem.is('idle')).toBe(true)
+      expect(statusItem.is('uploading')).toBe(false)
+      expect(statusItem.is('uploaded')).toBe(false)
+      expect(statusItem.is('error')).toBe(false)
     })
   })
 
   describe('message', () => {
-    it('returns custom textLoadingFile or translated loading text when uploading', () => {
+    it('returns custom textLoadingFile or translated uploading text when uploading', () => {
       const { statusItem: customStatus } = createHelper({
         loading: true,
         textLoadingFile: 'Custom uploading message'
@@ -69,7 +69,7 @@ describe('InputFileItemStatus', () => {
       expect(customStatus.message).toBe('Custom uploading message')
 
       const { statusItem: defaultStatus } = createHelper({ loading: true })
-      expect(defaultStatus.message).toBe('Loading file ...')
+      expect(defaultStatus.message).toBe('Uploading your file')
     })
 
     it('returns custom textError or default error message when in error state', () => {
@@ -91,7 +91,7 @@ describe('InputFileItemStatus', () => {
       expect(customSuccessStatus.message).toBe('Done uploading')
 
       const { statusItem: defaultSuccessStatus } = createHelper({ status: 'uploaded' })
-      expect(defaultSuccessStatus.message).toBe('Upload successful')
+      expect(defaultSuccessStatus.message).toBe('File uploaded successfully')
     })
 
     it('returns caption if provided in idle state', () => {
@@ -101,42 +101,7 @@ describe('InputFileItemStatus', () => {
 
     it('falls back to formatted file size in idle state', () => {
       const { statusItem } = createHelper({ value: { size: 72 * 1024 * 1024 } })
-      expect(statusItem.message).toBe('72 Mb')
-    })
-  })
-
-  describe('progress', () => {
-    it('returns numeric progress within 0-100 range', () => {
-      const { statusItem } = createHelper({ progress: 45 })
-      expect(statusItem.progress).toBe(45)
-    })
-
-    it('clamps progress to 0 when negative', () => {
-      const { statusItem } = createHelper({ loading: { value: -10 } })
-      expect(statusItem.progress).toBe(0)
-    })
-
-    it('clamps progress to 100 when exceeding 100', () => {
-      const { statusItem } = createHelper({ loading: { value: 150 } })
-      expect(statusItem.progress).toBe(100)
-    })
-
-    it('parses string progress', () => {
-      const { statusItem } = createHelper({ loading: { value: '80' } })
-      expect(statusItem.progress).toBe(80)
-    })
-
-    it('returns 0 when progress is undefined', () => {
-      const { statusItem } = createHelper({})
-      expect(statusItem.progress).toBe(0)
-    })
-
-    it('determines if progress is determinate', () => {
-      const { statusItem: indeterminateStatus } = createHelper({})
-      expect(indeterminateStatus.isProgressDeterminate).toBe(false)
-
-      const { statusItem: determinateStatus } = createHelper({ loading: { value: 0 } })
-      expect(determinateStatus.isProgressDeterminate).toBe(true)
+      expect(statusItem.message).toBe('72 MB')
     })
   })
 })

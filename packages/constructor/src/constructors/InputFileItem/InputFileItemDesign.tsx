@@ -29,14 +29,14 @@ export class InputFileItemDesign<
   CLASSES extends InputFileItemClasses,
   P extends InputFileItemPropsBasic
 > extends DesignConstructorAbstract<
-  HTMLDivElement,
-  COMP,
-  InputFileItemEmits,
-  EXPOSE,
-  InputFileItemSlots,
-  CLASSES,
-  P
-> {
+    HTMLDivElement,
+    COMP,
+    InputFileItemEmits,
+    EXPOSE,
+    InputFileItemSlots,
+    CLASSES,
+    P
+  > {
   /** Orchestrator item / Элемент оркестратора */
   protected readonly item: InputFileItem
 
@@ -84,9 +84,9 @@ export class InputFileItemDesign<
   protected initExpose(): EXPOSE {
     return {
       getFile: () => this.props.file ?? this.props.value?.file,
-      getStatus: () => this.item.statusItem.status,
-      delete: () => this.item.eventItem.onDelete(),
-      retry: () => this.item.eventItem.onRetry()
+      getStatus: () => this.item.status.status,
+      delete: () => this.item.event.onDelete(),
+      retry: () => this.item.event.onRetry()
     } as EXPOSE
   }
 
@@ -135,7 +135,7 @@ export class InputFileItemDesign<
    * @returns rendered virtual node / отрендеренная виртуальная нода
    */
   protected initRender(): VNode {
-    const appearance = this.props.appearance ?? 'list'
+    const appearance = this.props.appearance
 
     if (appearance === 'tile') {
       return h(
@@ -149,7 +149,7 @@ export class InputFileItemDesign<
         },
         [
           ...this.renderThumbnail(),
-          ...(this.item.statusItem.isUploading ? this.renderProgress() : []),
+          ...(this.item.status.is('uploading') ? this.renderProgress() : []),
           ...this.renderActions(),
           ...this.item.ripple.render()
         ]
@@ -209,7 +209,7 @@ export class InputFileItemDesign<
             class: [
               this.classes?.value.thumbnail,
               {
-                [`${this.getName()}__thumbnail--error`]: this.item.statusItem.isError
+                [`${this.getName()}__thumbnail--error`]: this.item.status.is('error')
               }
             ]
           },
@@ -225,7 +225,7 @@ export class InputFileItemDesign<
           class: [
             this.classes?.value.thumbnail,
             {
-              [`${this.getName()}__thumbnail--error`]: this.item.statusItem.isError
+              [`${this.getName()}__thumbnail--error`]: this.item.status.is('error')
             }
           ]
         },
@@ -241,8 +241,10 @@ export class InputFileItemDesign<
    * @returns array of virtual nodes / массив виртуальных нод
    */
   readonly renderThumbnailContent = (): VNode[] => {
-    if (this.item.fileItem.image) {
-      return this.item.image.render()
+    if (this.item.file.image) {
+      return this.item.image.render(undefined, {
+        class: this.classes?.value.thumbnailImage
+      })
     }
 
     return [
@@ -250,7 +252,7 @@ export class InputFileItemDesign<
         'div',
         { class: this.classes?.value.thumbnailPlaceholder },
         this.components?.render('icon', {
-          icon: this.props.icon ?? 'description'
+          icon: this.props.icon
         }) ?? []
       )
     ]
@@ -295,16 +297,16 @@ export class InputFileItemDesign<
 
     const children: VNode[] = []
 
-    if (this.item.statusItem.isUploading) {
+    if (this.item.status.is('uploading')) {
       children.push(
         h(
           'span',
           { class: this.classes?.value.message },
-          this.item.statusItem.message
+          this.item.status.message
         ),
         ...this.renderProgress()
       )
-    } else if (this.item.statusItem.isUploaded || this.item.statusItem.isError) {
+    } else if (this.item.status.is('uploaded') || this.item.status.is('error')) {
       children.push(
         ...this.renderStatus(),
         h(
@@ -313,20 +315,20 @@ export class InputFileItemDesign<
             class: [
               this.classes?.value.message,
               {
-                [`${this.getName()}__message--success`]: this.item.statusItem.isUploaded,
-                [`${this.getName()}__message--error`]: this.item.statusItem.isError
+                [`${this.getName()}__message--success`]: this.item.status.is('uploaded'),
+                [`${this.getName()}__message--error`]: this.item.status.is('error')
               }
             ]
           },
-          this.item.statusItem.message
+          this.item.status.message
         )
       )
-    } else if (this.item.statusItem.message) {
+    } else if (this.item.status.message) {
       children.push(
         h(
           'span',
           { class: this.classes?.value.message },
-          this.item.statusItem.message
+          this.item.status.message
         )
       )
     }
@@ -356,14 +358,14 @@ export class InputFileItemDesign<
       return slotStatus
     }
 
-    if (this.item.statusItem.isUploading) {
+    if (this.item.status.is('uploading')) {
       return this.item.progress.render(undefined, {
         circular: true,
         class: this.classes?.value.status
       })
     }
 
-    if (this.item.statusItem.isUploaded || this.item.statusItem.isError) {
+    if (this.item.status.is('uploaded') || this.item.status.is('error')) {
       return [
         h(
           'span',
@@ -371,8 +373,8 @@ export class InputFileItemDesign<
             class: [
               this.classes?.value.status,
               {
-                [`${this.getName()}__status--success`]: this.item.statusItem.isUploaded,
-                [`${this.getName()}__status--error`]: this.item.statusItem.isError
+                [`${this.getName()}__status--success`]: this.item.status.is('uploaded'),
+                [`${this.getName()}__status--error`]: this.item.status.is('error')
               }
             ]
           },
@@ -391,7 +393,7 @@ export class InputFileItemDesign<
    * @returns array of virtual nodes / массив виртуальных нод
    */
   readonly renderProgress = (): VNode[] => {
-    if (!this.item.statusItem.isUploading) {
+    if (!this.item.status.is('uploading')) {
       return []
     }
 
@@ -420,7 +422,7 @@ export class InputFileItemDesign<
 
     const buttons: VNode[] = []
 
-    if (this.item.statusItem.isError) {
+    if (this.item.status.is('error')) {
       buttons.push(...this.renderButtonRetry())
     }
 
