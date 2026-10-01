@@ -1,0 +1,52 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+The `InputFileItem` component displays a single file item within file upload lists, grids, or galleries, providing file metadata, visual previews, upload progress, status indicators, and user action controls.
+
+It serves as the dedicated visual item representation for file management interfaces. Built on modular constructor abstractions, it integrates `Image` for thumbnail rendering (displaying graphic previews for images or contextual file-type icons for non-image documents), `Label` for the file name, `Caption` and `Progress` for formatted file size, upload progress tracking, and localized state messaging, and `Button` includes for deletion and error retry actions. It supports multiple display modes (`list`, `compact`, `tile`) and dynamically adapts across lifecycle states (`idle`, `uploading`, `uploaded`, `error`).
+
+**Key features:**
+
+- **Adaptive Presentation Modes:** Three distinct layouts via `appearance` prop: standard horizontal `list`, minimal single-line `compact`, and grid-based media `tile`
+- **Thumbnail & File Icon Detection:** Automatic image preview generation for image files and media type icon resolution for documents, archives, and spreadsheets
+- **Upload Progress & States:** Integrated linear or circular progress indicator tracking upload progress (`loading` or `status="uploading"`), with support for determinate and indeterminate values
+- **Lifecycle Status Management:** Clear visual feedback for `idle`, `uploading`, `uploaded`, and `error` states with customizable status icons and localized messages
+- **Interactive Action Controls:** Delete button emitting `@delete` and context-sensitive Retry button emitting `@retry` when in an error state
+- **Selection & State Flags:** Visual selection (`selected`), disabled (`disabled`), and readonly (`readonly`) states preventing unwanted mutations
+- **Accessibility:** Accessible ARIA attributes (`aria-disabled`, `aria-busy`, `aria-label`) dynamically bound across states
+- **Skeleton Loading:** Seamless placeholder integration via `isSkeleton` and `Skeleton` wrapper
+
+**Common use cases:**
+
+- Rendering uploaded file attachments in message composers and forms
+- Interactive file queue items in multi-file upload dropzones
+- Image and asset gallery cards with upload progress and deletion controls
+- Compact file badges in table rows or collapsed panels
+
+<Source
+    code={`
+<script setup>
+import { ref } from 'vue'
+
+const fileItem = ref({
+  name: 'annual-report.pdf',
+  size: 2457600
+})
+
+const onDelete = () => {
+  console.log('Remove file:', fileItem.value.name)
+}
+</script>
+
+<template>
+  <InputFileItem
+    :value="fileItem"
+    appearance="list"
+    status="uploaded"
+    @delete="onDelete"
+  />
+</template>
+  `}
+    language="html"
+/>
+
+> InputFileItem encapsulates file previewing, upload progress observation, and item action controls into a modular, multi-layout design system component.

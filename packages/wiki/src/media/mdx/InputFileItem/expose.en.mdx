@@ -1,0 +1,4 @@
+- `getFile(): File | undefined` — Returns the native `File` instance associated with this item if available.
+- `getStatus(): InputFileItemStatusType` — Returns the current status of the file item (`'idle'`, `'uploading'`, `'uploaded'`, or `'error'`).
+- `delete(): void` — Programmatically triggers the file deletion action and emits the `@delete` event.
+- `retry(): void` — Programmatically triggers the upload retry action and emits the `@retry` event.

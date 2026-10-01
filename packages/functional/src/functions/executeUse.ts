@@ -1,4 +1,4 @@
-import { inject, provide } from 'vue'
+import { getCurrentInstance, inject, provide } from 'vue'
 import { random, ServerStorage } from '@dxtmisha/functional-basic'
 
 import { EffectScopeGlobal } from '../classes/ref/EffectScopeGlobal'
@@ -189,9 +189,18 @@ export function executeUse<
 
       if (itemInject) {
         return itemInject
-      } else {
-        return initProvide(args)
       }
+
+      const instance = getCurrentInstance()
+      const itemProvide = (
+        instance as unknown as { provides?: Record<string, RI | undefined> } | null
+      )?.provides?.[id]
+
+      if (itemProvide) {
+        return itemProvide
+      }
+
+      return initProvide(args)
     }
 
     return ServerStorage.get<RI>(id, () => {

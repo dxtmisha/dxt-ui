@@ -59,6 +59,7 @@ import _D1Input from '../components/Ui/Input/D1Input.vue'
 import _D1InputCode from '../components/Ui/InputCode/D1InputCode.vue'
 import _D1InputCodeItem from '../components/Ui/InputCodeItem/D1InputCodeItem.vue'
 import _D1InputFileDropzone from '../components/Ui/InputFileDropzone/D1InputFileDropzone.vue'
+import _D1InputFileItem from '../components/Ui/InputFileItem/D1InputFileItem.vue'
 import _D1InputImage from '../components/Ui/InputImage/D1InputImage.vue'
 import _D1InputPhone from '../components/Ui/InputPhone/D1InputPhone.vue'
 import _D1InputPhoneDialCode from '../components/Ui/InputPhoneDialCode/D1InputPhoneDialCode.vue'
@@ -183,6 +184,7 @@ declare module '@vue/runtime-core' {
     D1InputCode: typeof _D1InputCode
     D1InputCodeItem: typeof _D1InputCodeItem
     D1InputFileDropzone: typeof _D1InputFileDropzone
+    D1InputFileItem: typeof _D1InputFileItem
     D1InputImage: typeof _D1InputImage
     D1InputPhone: typeof _D1InputPhone
     D1InputPhoneDialCode: typeof _D1InputPhoneDialCode

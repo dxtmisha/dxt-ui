@@ -1,0 +1,228 @@
+@use "../../../styles/Ui/properties";
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/style.scss" as InputFileItem;
+
+@include ui.initDesignBasic('d1.inputFileItem') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include InputFileItem.mixinInputFileItem;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+    --d1-inputFileItem-transitionFunction: var(--d-sys-transitionFunction-standard);
+    
+    align-items: center;
+    gap: var(--d1-sys-spacing-sm);
+    
+    padding: var(--d1-sys-spacing-xs);
+    
+    @include ui.color(#{var(--d1-sys-palette-onSurface)});
+    @include ui.colorOpacity(#{var(--d1-sys-opacity-primary-high)});
+    
+    @include ui.backgroundColor(#{var(--d1-sys-palette-surface)});
+    @include ui.backgroundOpacity(#{var(--d1-sys-opacity-primary-high)});
+    @include ui.gradientOpacity(#{0}); @include ui.gradient('init');
+    @include ui.paletteGradient(#{var(--d1-sys-palette-primary)});
+    
+    border-radius: var(--d1-sys-rounded-md);
+    border-width: var(--d1-sys-spacing-outline);
+    border-style: solid;
+    @include ui.borderColor(#{var(--d1-sys-palette-outline)});
+    @include ui.borderOpacity(#{var(--d1-sys-opacity-outline)});
+    
+    transition-duration: var(--d-sys-transitionDuration-fade-enter);
+    transition-property: background-color, background-image, border, box-shadow;
+    
+    &__thumbnail {
+      overflow: hidden;
+      
+      flex-shrink: 0;
+      
+      @include ui.width(#{var(--d1-ref-spacing-12)});
+      min-width: var(--d1-ref-spacing-12);
+      @include ui.height(#{var(--d1-ref-spacing-12)});
+      
+      @include ui.backgroundColor(#{var(--d1-sys-palette-onSurface)});
+      @include ui.backgroundOpacity(#{var(--d1-sys-opacity-overlay)});
+      
+      border-radius: var(--d1-sys-rounded-sm);
+    }
+    
+    &__thumbnailImage {
+      @include ui.width(#{100%});
+      @include ui.height(#{100%});
+      
+      object-fit: cover;
+      
+      border-radius: inherit;
+    }
+    
+    &__body {
+      flex-grow: 1;
+      gap: var(--d1-sys-spacing-x);
+      
+      min-width: 0;
+    }
+    
+    &__label {
+      overflow: hidden;
+      
+      font-family: var(--d1-sys-font-family-basic), sans-serif;
+      @include ui.fontSize(#{var(--d1-sys-font-size-sm)});
+      font-weight: var(--d1-sys-font-weight-medium);
+      @include ui.lineHeight(#{var(--d1-sys-lineHeight-sm)});
+      letter-spacing: var(--d1-sys-letterSpacing-md);
+      white-space: nowrap;
+      @include ui.textOverflow(#{ellipsis});
+      
+      @include ui.color(#{var(--d1-sys-palette-onSurface)});
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-primary-high)});
+    }
+    
+    &__caption {
+      align-items: center;
+      gap: var(--d1-sys-spacing-xs);
+      
+      font-family: var(--d1-sys-font-family-basic), sans-serif;
+      @include ui.fontSize(#{var(--d1-sys-font-size-xs)});
+      font-weight: var(--d1-sys-font-weight-regular);
+      @include ui.lineHeight(#{var(--d1-sys-lineHeight-xs)});
+      letter-spacing: var(--d1-sys-letterSpacing-lg);
+      
+      @include ui.color(#{var(--d1-sys-palette-onSurface)});
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)});
+    }
+    
+    &__message {
+      font-family: var(--d1-sys-font-family-basic), sans-serif;
+      @include ui.fontSize(#{var(--d1-sys-font-size-xs)});
+      font-weight: var(--d1-sys-font-weight-regular);
+      @include ui.lineHeight(#{var(--d1-sys-lineHeight-xs)});
+      letter-spacing: var(--d1-sys-letterSpacing-lg);
+      
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)}); @include ui.color('init');
+    }
+    
+    &__progress {
+      @include ui.width(#{100%});
+    }
+    
+    &__actions {
+      flex-shrink: 0;
+      align-items: center;
+      gap: var(--d1-sys-spacing-x);
+    }
+    
+    @include ui.focus {
+      @include ui.gradientOpacity(#{var(--d1-sys-opacity-focus)}); @include ui.gradient('init');
+    }
+    
+    @include ui.hover {
+      @include ui.gradientOpacity(#{var(--d1-sys-opacity-hover)}); @include ui.gradient('init');
+    }
+    
+    &--selected {
+      @include ui.backgroundOpacity(#{var(--d1-sys-opacity-overlay)}); @include ui.backgroundColor('init');
+      @include ui.paletteBackground(#{var(--d1-sys-palette-primaryVariant)});
+      
+      @include ui.borderColor(#{var(--d1-sys-palette-primary)});
+      @include ui.borderOpacity(#{var(--d1-sys-opacity-primary-high)});
+    }
+    
+    &--disabled {
+      @include ui.color(#{var(--d1-sys-palette-onSurface)});
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-disabled)});
+      
+      @include ui.backgroundOpacity(#{var(--d1-sys-opacity-disabled)}); @include ui.backgroundColor('init');
+      
+      @include ui.borderOpacity(#{calc(var(--d1-sys-opacity-outline) * var(--d1-sys-opacity-surface-disabled))}); @include ui.borderColor('init');
+      
+      & .d1-inputFileItem__label {
+        @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-disabled)}); @include ui.color('init');
+      }
+      
+      & .d1-inputFileItem__caption {
+        @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-disabled)}); @include ui.color('init');
+      }
+    }
+    
+    &--appearance {
+      &--compact {
+        gap: var(--d1-sys-spacing-xs);
+        
+        @include ui.paddingX(#{var(--d1-sys-spacing-sm)});
+        @include ui.paddingY(#{var(--d1-sys-spacing-x)});
+        
+        & .d1-inputFileItem__label {
+          font-family: var(--d1-sys-font-family-basic), sans-serif;
+          @include ui.fontSize(#{var(--d1-sys-font-size-xs)});
+          font-weight: var(--d1-sys-font-weight-regular);
+          @include ui.lineHeight(#{var(--d1-sys-lineHeight-xs)});
+          letter-spacing: var(--d1-sys-letterSpacing-lg);
+        }
+      }
+      
+      &--tile {
+        @include ui.aspectRatio(#{1 / 1});
+        overflow: hidden;
+        
+        padding: 0;
+        
+        @include ui.width(#{var(--d1-ref-spacing-28)});
+        @include ui.height(#{var(--d1-ref-spacing-28)});
+        
+        & .d1-inputFileItem__thumbnail {
+          @include ui.width(#{100%});
+          @include ui.height(#{100%});
+          
+          border-radius: inherit;
+        }
+        
+        & .d1-inputFileItem__actions {
+          padding: var(--d1-sys-spacing-x);
+          
+          @include ui.backgroundColor(#{var(--d1-sys-palette-scrim)});
+          @include ui.backgroundOpacity(#{var(--d1-sys-opacity-scrim)});
+          
+          border-radius: var(--d1-sys-rounded-full);
+          
+          backdrop-filter: var(--d1-sys-blur-sm);
+        }
+      }
+    }
+    
+    &--status {
+      &--uploading {
+        @include ui.borderColor(#{var(--d1-sys-palette-primary)});
+        @include ui.borderOpacity(#{var(--d1-sys-opacity-surface-medium)});
+      }
+      
+      &--uploaded {
+        & .d1-inputFileItem__caption {
+          @include ui.color(#{var(--d1-sys-palette-success)});
+        }
+      }
+      
+      &--error {
+        @include ui.borderColor(#{var(--d1-sys-palette-error)});
+        @include ui.borderOpacity(#{var(--d1-sys-opacity-surface-high)});
+        
+        & .d1-inputFileItem__caption {
+          @include ui.color(#{var(--d1-sys-palette-error)});
+          @include ui.colorOpacity(#{var(--d1-sys-opacity-primary-high)});
+        }
+        
+        & .d1-inputFileItem__message {
+          @include ui.color(#{var(--d1-sys-palette-error)});
+          @include ui.colorOpacity(#{var(--d1-sys-opacity-primary-high)});
+        }
+      }
+    }
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

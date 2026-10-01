@@ -1,0 +1,46 @@
+import {Canvas, Meta} from '@storybook/addon-docs/blocks'
+import {
+    StorybookDescriptions,
+    StorybookMain
+} from '@dxtmisha/wiki/storybook'
+
+import * as InputFileItem from './D1InputFileItem.stories'
+import {InputFileItemWikiStorybook} from './wiki'
+
+[//]: # (:documentation-import [!] System label / Системная метка)
+[//]: # (:documentation-import [!] System label / Системная метка)
+
+<Meta of={InputFileItem}/>
+<StorybookMain
+    name={InputFileItemWikiStorybook.getName()}
+    description={InputFileItemWikiStorybook.getDescription()}
+    story={InputFileItem.InputFileItem}
+/>
+
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+<StorybookDescriptions componentName={'InputFileItem'} type={'inputFileItem'}/>
+<Canvas of={InputFileItem.InputFileItemAppearance}/>
+
+<StorybookDescriptions componentName={'Style'} type={'isSkeleton'}/>
+<Canvas of={InputFileItem.InputFileItemSkeleton}/>
+    
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+[//]: # (:documentation-events [!] System label / Системная метка)
+## Events
+
+<StorybookDescriptions componentName={'InputFileItem'} type={'event.delete'}/>
+<StorybookDescriptions componentName={'InputFileItem'} type={'event.retry'}/>
+    
+[//]: # (:documentation-events [!] System label / Системная метка)
+
+[//]: # (:documentation-expose [!] System label / Системная метка)
+## Expose
+
+<StorybookDescriptions componentName={'InputFileItem'} type={'expose'}/>
+    
+[//]: # (:documentation-expose [!] System label / Системная метка)
+
+[//]: # (:documentation-slots [!] System label / Системная метка)
+[//]: # (:documentation-slots [!] System label / Системная метка)

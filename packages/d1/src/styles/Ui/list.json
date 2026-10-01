@@ -9902,6 +9902,17 @@
           }
         }
       },
+      "inputFileItem": {
+        "name": "d1-inputFileItem",
+        "type": "component",
+        "value": {
+          "transitionFunction": {
+            "name": "--d1-inputFileItem-transitionFunction",
+            "type": "var",
+            "value": "{d.sys.transitionFunction.standard}"
+          }
+        }
+      },
       "inputPhone": {
         "name": "d1-inputPhone",
         "type": "component",

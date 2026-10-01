@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.15.17] - 2026-10-01
+
+### Fixed
+- **executeUse**: Added check for already provided instances on the current component (`instance.provides`) in `ExecuteUseType.provide`, preventing duplicate initialization when called multiple times within the same component setup.
+
 ## [1.15.16] - 2026-09-07
 
 ### Changed

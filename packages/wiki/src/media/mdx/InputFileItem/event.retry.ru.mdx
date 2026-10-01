@@ -1,0 +1,27 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+### `retry`
+
+Событие срабатывает при нажатии на кнопку повторной попытки загрузки в состоянии ошибки или при программном вызове метода `retry()`.
+
+**Параметры:**
+- `file?: FieldFileValue` — Объект с данными о файле для повторной загрузки (`name`, `size`, `type`, `value`, `file`).
+
+<Source
+    code={`
+<script setup>
+const onRetry = (file) => {
+  console.log('Повтор загрузки файла:', file)
+}
+</script>
+
+<template>
+  <InputFileItem
+    :value="{ name: 'document.pdf', size: 1048576 }"
+    status="error"
+    @retry="onRetry"
+  />
+</template>
+  `}
+    language="html"
+/>

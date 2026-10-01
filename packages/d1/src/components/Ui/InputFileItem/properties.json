@@ -1,0 +1,158 @@
+{
+  "main": "{d.inputFileItem}",
+  "gap": "{sys.spacing.sm}",
+  "padding": "{sys.spacing.xs}",
+  "align-items": "center",
+  "color": "{sys.palette.onSurface}",
+  "color-opacity": "{sys.opacity.primary.high}",
+  "background-color": "{sys.palette.surface}",
+  "background-opacity": "{sys.opacity.primary.high}",
+  "palette-gradient": "{sys.palette.primary}",
+  "gradient-opacity": "0",
+  "border-style": "solid",
+  "border-width": "{sys.spacing.outline}",
+  "border-color": "{sys.palette.outline}",
+  "border-opacity": "{sys.opacity.outline}",
+  "border-radius": "{sys.rounded.md}",
+  "transition-property": "background-color, background-image, border, box-shadow",
+  "transition-duration": "{d.sys.transitionDuration.fade.enter}",
+  "transition-function": "{d.sys.transitionFunction.standard}",
+
+  "#thumbnail": {
+    "width": "{ref.spacing.12}",
+    "height": "{ref.spacing.12}",
+    "min-width": "{ref.spacing.12}",
+    "border-radius": "{sys.rounded.sm}",
+    "background-color": "{sys.palette.onSurface}",
+    "background-opacity": "{sys.opacity.overlay}",
+    "overflow": "hidden",
+    "flex-shrink": "0"
+  },
+  "#thumbnailImage": {
+    "width": "100%",
+    "height": "100%",
+    "object-fit": "cover",
+    "border-radius": "inherit"
+  },
+  "#body": {
+    "gap": "{sys.spacing.x}",
+    "min-width": "0",
+    "flex-grow": "1"
+  },
+  "#label": {
+    "link|font": "{font.bodyMediumEmphasized}",
+    "color": "{sys.palette.onSurface}",
+    "color-opacity": "{sys.opacity.primary.high}",
+    "overflow": "hidden",
+    "text-overflow": "ellipsis",
+    "white-space": "nowrap"
+  },
+  "#caption": {
+    "gap": "{sys.spacing.xs}",
+    "align-items": "center",
+    "link|font": "{font.bodySmall}",
+    "color": "{sys.palette.onSurface}",
+    "color-opacity": "{sys.opacity.surface.medium}"
+  },
+  "#message": {
+    "link|font": "{font.bodySmall}",
+    "color-opacity": "{sys.opacity.surface.medium}"
+  },
+  "#progress": {
+    "width": "100%"
+  },
+  "#actions": {
+    "gap": "{sys.spacing.x}",
+    "align-items": "center",
+    "flex-shrink": "0"
+  },
+  "#buttonDelete": {},
+  "#buttonRetry": {},
+
+  "hover": {
+    "gradient-opacity": "{sys.opacity.hover}"
+  },
+  "focus": {
+    "gradient-opacity": "{sys.opacity.focus}"
+  },
+  "selected": {
+    "palette-background": "{sys.palette.primaryVariant}",
+    "background-opacity": "{sys.opacity.overlay}",
+    "border-color": "{sys.palette.primary}",
+    "border-opacity": "{sys.opacity.primary.high}"
+  },
+  "disabled": {
+    "color": "{sys.palette.onSurface}",
+    "color-opacity": "{sys.opacity.surface.disabled}",
+    "background-opacity": "{sys.opacity.disabled}",
+    "border-opacity": "calc({sys.opacity.outline} * {sys.opacity.surface.disabled})",
+    "#label": {
+      "color-opacity": "{sys.opacity.surface.disabled}"
+    },
+    "#caption": {
+      "color-opacity": "{sys.opacity.surface.disabled}"
+    }
+  },
+
+  "~appearance": {
+    "~list": {
+      "_default": true
+    },
+    "~compact": {
+      "paddingX": "{sys.spacing.sm}",
+      "paddingY": "{sys.spacing.x}",
+      "gap": "{sys.spacing.xs}",
+      "#label": {
+        "link|font": "{font.bodySmall}"
+      }
+    },
+    "~tile": {
+      "width": "{ref.spacing.28}",
+      "height": "{ref.spacing.28}",
+      "aspect-ratio": "1 / 1",
+      "padding": "0",
+      "overflow": "hidden",
+      "#thumbnail": {
+        "width": "100%",
+        "height": "100%",
+        "border-radius": "inherit"
+      },
+      "#actions": {
+        "background-color": "{sys.palette.scrim}",
+        "background-opacity": "{sys.opacity.scrim}",
+        "border-radius": "{sys.rounded.full}",
+        "padding": "{sys.spacing.x}",
+        "backdrop-filter": "{sys.blur.sm}"
+      }
+    }
+  },
+
+  "~status": {
+    "~uploading": {
+      "border-color": "{sys.palette.primary}",
+      "border-opacity": "{sys.opacity.surface.medium}"
+    },
+    "~uploaded": {
+      "#caption": {
+        "color": "{sys.palette.success}"
+      }
+    },
+    "~error": {
+      "border-color": "{sys.palette.error}",
+      "border-opacity": "{sys.opacity.surface.high}",
+      "#caption": {
+        "color": "{sys.palette.error}",
+        "color-opacity": "{sys.opacity.primary.high}"
+      },
+      "#message": {
+        "color": "{sys.palette.error}",
+        "color-opacity": "{sys.opacity.primary.high}"
+      }
+    },
+    "~idle": {
+      "_default": true
+    }
+  },
+
+  "@@palette": "{palette}"
+}

@@ -5,18 +5,9 @@
   @include ui.flexX;
   position: relative;
 
-  @include ui.disabled {
-    pointer-events: none;
-  }
-
-  @include ui.readonly {
-    pointer-events: none;
-  }
-
   &__thumbnail {
     @include ui.flexCenter;
     position: relative;
-    overflow: hidden;
   }
 
   &__body {
@@ -25,70 +16,34 @@
     min-width: 0;
   }
 
-  &__label {
-    @include ui.truncate;
-  }
-
-  &__caption {
-    @include ui.flexX;
-    min-width: 0;
-  }
-
-  &__message {
-    @include ui.flexInlineX;
-    white-space: nowrap;
-  }
-
-  &__progress {
-    flex-grow: 1;
-    position: relative;
-  }
-
   &__actions {
     @include ui.flexX;
-    @include ui.marginLeft(auto);
-    flex-shrink: 0;
   }
 
-  &__buttonDelete,
-  &__buttonRetry {
-    flex-shrink: 0;
-  }
-
-  // Modifiers - Appearance
   &--appearance {
-    &--compact {
-      @include ui.subclass('label') {
-        flex-grow: 1;
-      }
-    }
-
     &--tile {
       @include ui.flexCenter;
       position: relative;
-      overflow: hidden;
 
       @include ui.subclass('thumbnail') {
         @include ui.absolute;
       }
 
       @include ui.subclass('progress') {
-        @include ui.absolute;
-        margin: auto;
-        z-index: 2;
         pointer-events: none;
       }
 
       @include ui.subclass('actions') {
         @include ui.absolute;
-        margin: auto;
         @include ui.flexCenter;
-        z-index: 3;
-        pointer-events: none;
+        margin: auto;
+        z-index: 24;
+      }
+    }
 
-        > * {
-          pointer-events: auto;
-        }
+    &--compact {
+      @include ui.subclass('label') {
+        flex-grow: 1;
       }
     }
   }

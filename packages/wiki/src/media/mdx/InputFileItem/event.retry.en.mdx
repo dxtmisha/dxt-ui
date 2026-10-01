@@ -1,0 +1,27 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+### `retry`
+
+Event emitted when the user clicks the retry button in the error state or triggers the `retry()` method programmatically.
+
+**Parameters:**
+- `file?: FieldFileValue` — Data object containing information about the file to retry (`name`, `size`, `type`, `value`, `file`).
+
+<Source
+    code={`
+<script setup>
+const onRetry = (file) => {
+  console.log('Retry upload:', file)
+}
+</script>
+
+<template>
+  <InputFileItem
+    :value="{ name: 'document.pdf', size: 1048576 }"
+    status="error"
+    @retry="onRetry"
+  />
+</template>
+  `}
+    language="html"
+/>

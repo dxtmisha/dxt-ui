@@ -1,0 +1,26 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+### `delete`
+
+Event emitted when the user clicks the delete button on the file item or triggers the `delete()` method programmatically.
+
+**Parameters:**
+- `file?: FieldFileValue` — Data object containing information about the deleted file (`name`, `size`, `type`, `value`, `file`).
+
+<Source
+    code={`
+<script setup>
+const onDelete = (file) => {
+  console.log('File deleted:', file)
+}
+</script>
+
+<template>
+  <InputFileItem
+    :value="{ name: 'document.pdf', size: 1048576 }"
+    @delete="onDelete"
+  />
+</template>
+  `}
+    language="html"
+/>

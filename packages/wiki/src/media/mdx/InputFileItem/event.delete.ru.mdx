@@ -1,0 +1,26 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+### `delete`
+
+Событие срабатывает при нажатии пользователем на кнопку удаления файла или при программном вызове метода `delete()`.
+
+**Параметры:**
+- `file?: FieldFileValue` — Объект с данными об удаляемом файле (`name`, `size`, `type`, `value`, `file`).
+
+<Source
+    code={`
+<script setup>
+const onDelete = (file) => {
+  console.log('Файл удален:', file)
+}
+</script>
+
+<template>
+  <InputFileItem
+    :value="{ name: 'document.pdf', size: 1048576 }"
+    @delete="onDelete"
+  />
+</template>
+  `}
+    language="html"
+/>
