@@ -4,40 +4,16 @@
   box-sizing: border-box;
   display: inline-flex;
   position: relative;
-  overflow: hidden;
+  border-width: ui.v('??borderWidth', 1px);
+  border-style: solid;
 
   &__item {
     box-sizing: border-box;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    @include ui.flexCenter;
     flex: 1 1 0;
-    position: relative;
-    border: none;
     background-color: transparent;
     cursor: pointer;
-    text-align: center;
-    transition-property: background-color, color, border-color;
-    transition-duration: ui.v('d.sys.transitionDuration.sm');
-
-    @include ui.hover {
-      text-decoration: none;
-    }
-
-    @include ui.disabled {
-      cursor: default;
-      pointer-events: none;
-    }
-
-    @include ui.readonly {
-      cursor: default;
-    }
-  }
-
-  &__label {
-    text-transform: uppercase;
     user-select: none;
-    z-index: 2;
   }
 
   &--orientation {

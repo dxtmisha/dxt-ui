@@ -6,8 +6,8 @@ import {
 } from '@dxtmisha/functional'
 
 import { ClockPeriod } from './ClockPeriod'
+import { ClockPeriodType } from './basicTypes'
 
-import type { ClockPeriodItem } from './basicTypes'
 import type { ClockPeriodProps } from './props'
 import type {
   ClockPeriodClasses,
@@ -28,14 +28,14 @@ export class ClockPeriodDesign<
   CLASSES extends ClockPeriodClasses,
   P extends ClockPeriodProps
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
-    COMP,
-    ClockPeriodEmits,
-    EXPOSE,
-    ClockPeriodSlots,
-    CLASSES,
-    P
-  > {
+  HTMLDivElement,
+  COMP,
+  ClockPeriodEmits,
+  EXPOSE,
+  ClockPeriodSlots,
+  CLASSES,
+  P
+> {
   /** Instance of the ClockPeriod logic controller / Экземпляр контроллера логики ClockPeriod */
   protected readonly item: ClockPeriod
 
@@ -80,8 +80,8 @@ export class ClockPeriodDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      getValue: this.item.model.getValue,
-      setValue: this.item.model.set
+      get: this.item.model.get,
+      set: this.item.model.set
     } as EXPOSE
   }
 
@@ -93,13 +93,12 @@ export class ClockPeriodDesign<
    */
   protected initClasses(): Partial<CLASSES> {
     return {
-      main: {
-        ...this.item.classes
-      },
+      main: {},
       ...{
         // :classes [!] System label / Системная метка
         item: this.getSubClass('item'),
-        label: this.getSubClass('label')
+        am: this.getSubClass('am'),
+        pm: this.getSubClass('pm')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -112,9 +111,7 @@ export class ClockPeriodDesign<
    * @returns custom styles / пользовательские стили
    */
   protected initStyles(): ConstrStyles {
-    return {
-      ...this.item.styles
-    }
+    return {}
   }
 
   /**
@@ -127,63 +124,75 @@ export class ClockPeriodDesign<
     return h(
       'div',
       {
-        ref: this.element,
         class: this.classes?.value.main,
-        style: this.styles?.value,
         ...this.item.binds
       },
-      this.renderItems()
+      [
+        this.renderAm(),
+        this.renderPm()
+      ]
     )
   }
 
   /**
-   * Renders the array of period item buttons.
+   * Renders the AM period button.
    *
-   * Рендерит массив кнопок элементов периода.
-   * @returns array of virtual nodes / массив виртуальных узлов
-   */
-  readonly renderItems = (): VNode[] => {
-    return this.item.list.items.value.map((item: ClockPeriodItem) => this.renderItem(item))
-  }
-
-  /**
-   * Renders an individual period item button.
-   *
-   * Рендерит отдельную кнопку элемента периода.
-   * @param item period item data / данные элемента периода
+   * Рендерит кнопку периода AM.
    * @returns virtual node / виртуальный узел
    */
-  readonly renderItem = (item: ClockPeriodItem): VNode => {
-    const isSelected = item.selected
-    const content = this.slots?.item
-      ? this.initSlot('item', undefined, { item })
-      : item.label
+  readonly renderAm = (): VNode => {
+    const isSelected = this.item.value.isAm()
+    const disabled = !this.item.enabled.isEnabled
 
     return h(
       'button',
       {
-        key: item.value,
+        key: ClockPeriodType.am,
         type: 'button',
         class: {
           [this.classes?.value.item!]: true,
-          [`${this.classes?.value.item}--selected`]: isSelected,
-          [`${this.classes?.value.item}--disabled`]: item.disabled,
-          [`${this.classes?.value.item}--${item.value}`]: true
+          [this.classes?.value[ClockPeriodType.am]!]: true,
+          [this.getStatusClass('selected')]: isSelected
         },
-        disabled: item.disabled,
+        disabled,
         tabindex: -1,
         role: 'radio',
         'aria-checked': isSelected ? 'true' : 'false',
-        'data-value': item.value,
-        onClick: (event: MouseEvent) => this.item.event.onClick(event, item.value)
+        'data-value': ClockPeriodType.am,
+        onClick: this.item.event.onClick
       },
-      [
-        h(
-          'span',
-          { class: this.classes?.value.label },
-          content
-        )
-      ]
+      this.item.text.am
+    )
+  }
+
+  /**
+   * Renders the PM period button.
+   *
+   * Рендерит кнопку периода PM.
+   * @returns virtual node / виртуальный узел
+   */
+  readonly renderPm = (): VNode => {
+    const isSelected = this.item.value.isPm()
+    const disabled = !this.item.enabled.isEnabled
+
+    return h(
+      'button',
+      {
+        key: ClockPeriodType.pm,
+        type: 'button',
+        class: {
+          [this.classes?.value.item!]: true,
+          [this.classes?.value[ClockPeriodType.pm]!]: true,
+          [this.getStatusClass('selected')]: isSelected
+        },
+        disabled,
+        tabindex: -1,
+        role: 'radio',
+        'aria-checked': isSelected ? 'true' : 'false',
+        'data-value': ClockPeriodType.pm,
+        onClick: this.item.event.onClick
+      },
+      this.item.text.pm
     )
   }
 }

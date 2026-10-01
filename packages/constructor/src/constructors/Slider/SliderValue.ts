@@ -80,7 +80,7 @@ export class SliderValue {
    * @returns current model value / текущее значение модели
    */
   get(): SliderValueType | undefined {
-    return this.model.getValue()
+    return this.model.get()
   }
 
   /**

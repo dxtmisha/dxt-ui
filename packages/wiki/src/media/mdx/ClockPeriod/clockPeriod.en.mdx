@@ -1,0 +1,44 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+Component for selecting and toggling between AM (ante meridiem) and PM (post meridiem) time periods in a 12-hour clock format.
+
+`ClockPeriod` provides a compact two-button selector for toggling between AM and PM. It can operate in standalone mode, bind two-way state via `v-model`, or automatically deduce the active period from a 24-hour `hour` value. It supports vertical and horizontal orientations, full keyboard navigation with arrow and toggle keys, custom period labels, and disabled or read-only states.
+
+**Key features:**
+
+- **Binary period selection**: Toggle between `'am'` and `'pm'` periods.
+- **Two-way binding (`v-model`)**: Synchronize active period value with external state.
+- **Automatic period resolution (`hour`)**: Pass hour numbers (`0..23`) to determine the period (`0..11` = AM, `12..23` = PM).
+- **Layout orientations (`orientation`)**: Display buttons in `'vertical'` (default) or `'horizontal'` layout.
+- **Keyboard navigation**: Support for `ArrowUp`/`ArrowLeft` (AM), `ArrowDown`/`ArrowRight` (PM), and `Space`/`Enter` to toggle.
+- **Custom text labels**: Customizable period titles via `textAm` and `textPm` props.
+- **Accessibility**: Built with `role="radiogroup"` and `role="radio"` semantics with `aria-checked` states.
+- **Interactive states**: Support for `disabled` and `readonly` modes.
+
+**Common use cases:**
+
+- 12-hour time pickers alongside `ClockDial`.
+- Scheduling, alarm settings, and appointment booking forms.
+- Internationalized time inputs requiring 12-hour AM/PM distinction.
+
+<Source
+    code={`
+<script setup>
+import { ref } from 'vue'
+
+const period = ref('am')
+</script>
+
+<template>
+  <!-- Two-way binding -->
+  <ClockPeriod v-model="period" />
+
+  <!-- Horizontal layout -->
+  <ClockPeriod v-model="period" orientation="horizontal" />
+
+  <!-- Automatic period based on 24h hour -->
+  <ClockPeriod :hour="15" />
+</template>
+  `}
+    language="html"
+/>

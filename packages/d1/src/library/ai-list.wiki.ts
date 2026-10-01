@@ -28,6 +28,7 @@ import D1Chip from '../../src/components/Ui/Chip/D1ChipAiWiki.vue'
 import D1ChipGroup from '../../src/components/Ui/ChipGroup/D1ChipGroupAiWiki.vue'
 import D1ClientOnly from '../../src/components/Ui/ClientOnly/D1ClientOnlyAiWiki.vue'
 import D1ClockDial from '../../src/components/Ui/ClockDial/D1ClockDialAiWiki.vue'
+import D1ClockPeriod from '../../src/components/Ui/ClockPeriod/D1ClockPeriodAiWiki.vue'
 import D1Collage from '../../src/components/Ui/Collage/D1CollageAiWiki.vue'
 import D1CollageBar from '../../src/components/Ui/CollageBar/D1CollageBarAiWiki.vue'
 import D1CollageItem from '../../src/components/Ui/CollageItem/D1CollageItemAiWiki.vue'
@@ -150,6 +151,7 @@ export const aiList: any[] = [
   D1ChipGroup,
   D1ClientOnly,
   D1ClockDial,
+  D1ClockPeriod,
   D1Collage,
   D1CollageBar,
   D1CollageItem,

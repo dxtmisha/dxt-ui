@@ -38,7 +38,7 @@ describe('ClockDialEvent', () => {
 
     eventManager.onClick(event)
 
-    expect(model.getValue()).toBe(7)
+    expect(model.get()).toBe(7)
     expect(emitsSpy).toHaveBeenCalledWith('input', expect.anything(), 7)
     expect(emitsSpy).toHaveBeenCalledWith('change', expect.anything(), 7)
   })
@@ -49,7 +49,7 @@ describe('ClockDialEvent', () => {
     element.dataset.value = '7'
 
     eventManager.onClick({ target: element } as unknown as MouseEvent)
-    expect(model.getValue()).toBe(2)
+    expect(model.get()).toBe(2)
     expect(emitsSpy).not.toHaveBeenCalled()
   })
 
@@ -105,15 +105,15 @@ describe('ClockDialEvent', () => {
 
     eventManager.onKeydown({ key: 'ArrowRight', preventDefault } as unknown as KeyboardEvent)
     expect(preventDefault).toHaveBeenCalled()
-    expect(model.getValue()).toBe(3)
+    expect(model.get()).toBe(3)
 
     eventManager.onKeydown({ key: 'ArrowDown', preventDefault } as unknown as KeyboardEvent)
-    expect(model.getValue()).toBe(2)
+    expect(model.get()).toBe(2)
 
     eventManager.onKeydown({ key: 'Home', preventDefault } as unknown as KeyboardEvent)
-    expect(model.getValue()).toBe(1)
+    expect(model.get()).toBe(1)
 
     eventManager.onKeydown({ key: 'End', preventDefault } as unknown as KeyboardEvent)
-    expect(model.getValue()).toBe(12)
+    expect(model.get()).toBe(12)
   })
 })

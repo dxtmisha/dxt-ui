@@ -105,7 +105,7 @@ export class ClockDialSelect {
     if (
       closestItem
       && !closestItem.disabled
-      && closestItem.value !== this.model.getValue()
+      && closestItem.value !== this.model.get()
     ) {
       this.model.set(closestItem.value)
       return closestItem

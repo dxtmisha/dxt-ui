@@ -45,7 +45,7 @@ describe('SliderGo', () => {
 
     go.increase()
 
-    expect(model.getValue()).toBe(60)
+    expect(model.get()).toBe(60)
     expect(mockEmit).toHaveBeenCalledWith('change', expect.objectContaining({ mark: 60, value: 60 }))
     expect(mockEmit).toHaveBeenCalledWith('changeLite', 60)
   })
@@ -55,7 +55,7 @@ describe('SliderGo', () => {
 
     go.decrease()
 
-    expect(model.getValue()).toBe(40)
+    expect(model.get()).toBe(40)
     expect(mockEmit).toHaveBeenCalledWith('change', expect.objectContaining({ mark: 40, value: 40 }))
     expect(mockEmit).toHaveBeenCalledWith('changeLite', 40)
   })
@@ -66,17 +66,17 @@ describe('SliderGo', () => {
     focus.set(SliderFocusType.min)
     go.increase()
 
-    expect(model.getValue()).toEqual([30, 80])
+    expect(model.get()).toEqual([30, 80])
   })
 
   it('should do nothing when component is disabled', () => {
     const { go, model } = createSliderGo(50, { disabled: true })
 
     go.increase()
-    expect(model.getValue()).toBe(50)
+    expect(model.get()).toBe(50)
 
     go.decrease()
-    expect(model.getValue()).toBe(50)
+    expect(model.get()).toBe(50)
   })
 
   it('should update value from coordinate along slider container', () => {
@@ -94,6 +94,6 @@ describe('SliderGo', () => {
     // Coordinate 200 is at 50% of (left:100, width:200), so 50% of 100 range = 50
     go.updateFromCoordinate(200)
 
-    expect(model.getValue()).toBe(50)
+    expect(model.get()).toBe(50)
   })
 })

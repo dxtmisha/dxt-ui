@@ -91,11 +91,11 @@ describe('SliderEvent', () => {
 
     sliderEvent.onKeydown(arrowRightEvent)
     expect(preventDefault).toHaveBeenCalledOnce()
-    expect(model.getValue()).toBe(51)
+    expect(model.get()).toBe(51)
 
     const arrowDownEvent = { code: 'ArrowDown', preventDefault: vi.fn() } as unknown as KeyboardEvent
     sliderEvent.onKeydown(arrowDownEvent)
-    expect(model.getValue()).toBe(50)
+    expect(model.get()).toBe(50)
   })
 
   it('should handle Home and End keys to jump to range limits', () => {
@@ -103,11 +103,11 @@ describe('SliderEvent', () => {
 
     const homeEvent = { code: 'Home', preventDefault: vi.fn() } as unknown as KeyboardEvent
     sliderEvent.onKeydown(homeEvent)
-    expect(model.getValue()).toBe(0)
+    expect(model.get()).toBe(0)
 
     const endEvent = { code: 'End', preventDefault: vi.fn() } as unknown as KeyboardEvent
     sliderEvent.onKeydown(endEvent)
-    expect(model.getValue()).toBe(100)
+    expect(model.get()).toBe(100)
   })
 
   it('should handle PageUp and PageDown keys for large step navigation', () => {
@@ -116,11 +116,11 @@ describe('SliderEvent', () => {
     // 10% of range 100 is 10
     const pageUpEvent = { code: 'PageUp', preventDefault: vi.fn() } as unknown as KeyboardEvent
     sliderEvent.onKeydown(pageUpEvent)
-    expect(model.getValue()).toBe(60)
+    expect(model.get()).toBe(60)
 
     const pageDownEvent = { code: 'PageDown', preventDefault: vi.fn() } as unknown as KeyboardEvent
     sliderEvent.onKeydown(pageDownEvent)
-    expect(model.getValue()).toBe(50)
+    expect(model.get()).toBe(50)
   })
 
   it('should ignore keydown events when component is disabled', () => {
@@ -131,7 +131,7 @@ describe('SliderEvent', () => {
 
     sliderEvent.onKeydown(arrowRightEvent)
     expect(preventDefault).not.toHaveBeenCalled()
-    expect(model.getValue()).toBe(50)
+    expect(model.get()).toBe(50)
   })
 
   it('should process mousedown event, update focus, and trigger dragging', () => {

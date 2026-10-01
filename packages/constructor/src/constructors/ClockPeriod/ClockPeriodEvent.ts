@@ -1,10 +1,10 @@
-import type { ClockPeriodProps } from './props'
 import type { EnabledInclude } from '../../classes/EnabledInclude'
 import type { EventClickInclude } from '../../classes/EventClickInclude'
-import type { ModelValueInclude } from '../../classes/ModelValueInclude'
-import type { ClockPeriodList } from './ClockPeriodList'
+
 import type { ClockPeriodValue } from './ClockPeriodValue'
-import type { ClockPeriodType } from './basicTypes'
+
+import type { EventClickValue } from '../../types/eventClickTypes'
+import { ClockPeriodType } from './basicTypes'
 
 /**
  * Class for managing click and keyboard events for ClockPeriod.
@@ -14,21 +14,15 @@ import type { ClockPeriodType } from './basicTypes'
 export class ClockPeriodEvent {
   /**
    * Constructor
-   * @param props component properties / свойства компонента
    * @param enabled enabled state manager instance / экземпляр менеджера состояния активности
    * @param value period value manager instance / экземпляр менеджера значения периода
-   * @param list period list manager instance / экземпляр менеджера списка периодов
    * @param eventClick click event manager instance / экземпляр менеджера событий клика
-   * @param model model value manager instance / экземпляр менеджера значения модели
    */
   constructor(
-    protected readonly props: ClockPeriodProps,
     protected readonly enabled: EnabledInclude,
     protected readonly value: ClockPeriodValue,
-    protected readonly list: ClockPeriodList,
-    protected readonly eventClick: EventClickInclude,
-    protected readonly model: ModelValueInclude<ClockPeriodType>
-  ) {}
+    protected readonly eventClick: EventClickInclude
+  ) { }
 
   /**
    * Selects a period and triggers appropriate events.
@@ -38,22 +32,18 @@ export class ClockPeriodEvent {
    * @param event native mouse event / нативное событие мыши
    */
   select(period: ClockPeriodType, event?: MouseEvent): void {
-    if (!this.enabled.isEnabled || this.props.readonly) {
-      return
-    }
-
-    if (this.value.isSelected(period)) {
+    if (
+      !this.enabled.isEnabled
+      || this.value.isSelected(period)
+    ) {
       return
     }
 
     this.value.set(period)
-
-    const mouseEvent = event ?? (typeof MouseEvent !== 'undefined' ? new MouseEvent('click') : {} as MouseEvent)
-    this.eventClick.onClick(mouseEvent, {
-      type: 'item',
-      value: period,
-      detail: undefined
-    })
+    this.eventClick.onClick(
+      this.getEvent(event),
+      this.getOptions(period)
+    )
   }
 
   /**
@@ -61,11 +51,15 @@ export class ClockPeriodEvent {
    *
    * Обрабатывает клик по кнопке периода.
    * @param event native mouse event / нативное событие мыши
-   * @param period clicked period / период, по которому кликнули
    */
-  readonly onClick = (event: MouseEvent, period: ClockPeriodType): void => {
+  readonly onClick = (event: MouseEvent): void => {
     event.stopPropagation()
-    this.select(period, event)
+
+    const value = (event.target as HTMLElement)?.dataset.value
+
+    if (value === ClockPeriodType.am || value === ClockPeriodType.pm) {
+      this.select(value, event)
+    }
   }
 
   /**
@@ -75,26 +69,58 @@ export class ClockPeriodEvent {
    * @param event native keyboard event / нативное событие клавиатуры
    */
   readonly onKeydown = (event: KeyboardEvent): void => {
-    if (!this.enabled.isEnabled || this.props.readonly) {
-      return
+    if (this.enabled.isEnabled) {
+      switch (event.key) {
+        case 'ArrowUp':
+        case 'ArrowLeft':
+          event.preventDefault()
+          this.select(ClockPeriodType.am)
+          break
+        case 'ArrowDown':
+        case 'ArrowRight':
+          event.preventDefault()
+          this.select(ClockPeriodType.pm)
+          break
+        case ' ':
+        case 'Enter':
+          event.preventDefault()
+          this.select(this.value.isAm() ? ClockPeriodType.pm : ClockPeriodType.am)
+          break
+      }
+    }
+  }
+
+  /**
+   * Returns provided mouse event or creates a fallback synthetic click event.
+   *
+   * Возвращает переданное событие мыши или создает резервное синтетическое событие клика.
+   * @param event native mouse event / нативное событие мыши
+   * @returns mouse event / событие мыши
+   */
+  protected getEvent(event?: MouseEvent): MouseEvent {
+    if (event) {
+      return event
     }
 
-    switch (event.key) {
-      case 'ArrowUp':
-      case 'ArrowLeft':
-        event.preventDefault()
-        this.select('am')
-        break
-      case 'ArrowDown':
-      case 'ArrowRight':
-        event.preventDefault()
-        this.select('pm')
-        break
-      case ' ':
-      case 'Enter':
-        event.preventDefault()
-        this.select(this.value.isAm() ? 'pm' : 'am')
-        break
+    if (typeof MouseEvent !== 'undefined') {
+      return new MouseEvent('click')
+    }
+
+    return {} as MouseEvent
+  }
+
+  /**
+   * Generates click options payload for the selected period.
+   *
+   * Формирует параметры клика для выбранного периода.
+   * @param period period value / значение периода
+   * @returns click options payload / параметры клика
+   */
+  protected getOptions(period: ClockPeriodType): EventClickValue {
+    return {
+      type: 'item',
+      value: period,
+      detail: undefined
     }
   }
 }

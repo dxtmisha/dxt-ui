@@ -33,6 +33,7 @@ import { wikiMdxChip } from './Chip/wikiMdxChip'
 import { wikiMdxChipGroup } from './ChipGroup/wikiMdxChipGroup'
 import { wikiMdxClientOnly } from './ClientOnly/wikiMdxClientOnly'
 import { wikiMdxClockDial } from './ClockDial/wikiMdxClockDial'
+import { wikiMdxClockPeriod } from './ClockPeriod/wikiMdxClockPeriod'
 import { wikiMdxCollage } from './Collage/wikiMdxCollage'
 import { wikiMdxCollageBar } from './CollageBar/wikiMdxCollageBar'
 import { wikiMdxCollageItem } from './CollageItem/wikiMdxCollageItem'
@@ -161,6 +162,7 @@ export const wikiMdx: StorybookComponentsMdx = [
   wikiMdxChipGroup,
   wikiMdxClientOnly,
   wikiMdxClockDial,
+  wikiMdxClockPeriod,
   wikiMdxCollage,
   wikiMdxCollageBar,
   wikiMdxCollageItem,

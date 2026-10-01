@@ -10,6 +10,18 @@ import {
  * Объект wikiText содержит описание всех текстовых свойств
  */
 export const wikiText: StorybookArgsToList = {
+  textAm: {
+    type: StorybookControl.text,
+    options: {
+      category: StorybookCategory.text,
+      type: 'string | (() => string)',
+      description: {
+        en: 'AM text',
+        ru: 'Текст AM'
+      }
+    },
+    hide: true
+  },
   textBreadcrumb: {
     type: StorybookControl.text,
     options: {
@@ -294,6 +306,18 @@ export const wikiText: StorybookArgsToList = {
       description: {
         en: 'Pagination text',
         ru: 'Текст пагинации'
+      }
+    },
+    hide: true
+  },
+  textPm: {
+    type: StorybookControl.text,
+    options: {
+      category: StorybookCategory.text,
+      type: 'string | (() => string)',
+      description: {
+        en: 'PM text',
+        ru: 'Текст PM'
       }
     },
     hide: true

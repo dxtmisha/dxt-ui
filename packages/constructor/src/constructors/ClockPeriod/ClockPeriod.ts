@@ -4,9 +4,7 @@ import {
 } from 'vue'
 
 import {
-  type ConstrClassObject,
   type ConstrEmit,
-  type ConstrStyles,
   type DesignComp
 } from '@dxtmisha/functional'
 
@@ -17,13 +15,12 @@ import { ModelValueInclude } from '../../classes/ModelValueInclude'
 import { TextInclude } from '../../classes/TextInclude'
 
 import { ClockPeriodEvent } from './ClockPeriodEvent'
-import { ClockPeriodList } from './ClockPeriodList'
 import { ClockPeriodValue } from './ClockPeriodValue'
 
 import type { AriaList } from '../../types/ariaTypes'
+import type { ClockPeriodType } from './basicTypes'
 import type { ClockPeriodComponents, ClockPeriodEmits, ClockPeriodSlots } from './types'
 import type { ClockPeriodProps } from './props'
-import type { ClockPeriodType } from './basicTypes'
 
 /**
  * ClockPeriod orchestrator class.
@@ -48,9 +45,6 @@ export class ClockPeriod {
   /** Event click include instance / Экземпляр помощника события клика */
   readonly eventClick: EventClickInclude
 
-  /** Clock period list manager instance / Экземпляр менеджера списка периодов часов */
-  readonly list: ClockPeriodList
-
   /** Event manager instance for interactions / Экземпляр менеджера событий для взаимодействий */
   readonly event: ClockPeriodEvent
 
@@ -70,7 +64,6 @@ export class ClockPeriod {
    * @param constructors.TextIncludeConstructor class for working with text / класс для работы с текстом
    * @param constructors.ClockPeriodValueConstructor class for working with period values / класс для работы со значениями периода
    * @param constructors.EventClickIncludeConstructor class for working with click event / класс для работы с событием клика
-   * @param constructors.ClockPeriodListConstructor class for working with items list / класс для работы со списком элементов
    * @param constructors.ClockPeriodEventConstructor class for working with events / класс для работы с событиями
    */
   constructor(
@@ -88,7 +81,6 @@ export class ClockPeriod {
       TextIncludeConstructor?: typeof TextInclude
       ClockPeriodValueConstructor?: typeof ClockPeriodValue
       EventClickIncludeConstructor?: typeof EventClickInclude
-      ClockPeriodListConstructor?: typeof ClockPeriodList
       ClockPeriodEventConstructor?: typeof ClockPeriodEvent
     } = {}
   ) {
@@ -98,7 +90,6 @@ export class ClockPeriod {
       TextIncludeConstructor = TextInclude,
       ClockPeriodValueConstructor = ClockPeriodValue,
       EventClickIncludeConstructor = EventClickInclude,
-      ClockPeriodListConstructor = ClockPeriodList,
       ClockPeriodEventConstructor = ClockPeriodEvent
     } = constructors
 
@@ -120,14 +111,10 @@ export class ClockPeriod {
       refs.readonly
     )
 
-    this.list = new ClockPeriodListConstructor(this.text, this.value, this.enabled)
     this.event = new ClockPeriodEventConstructor(
-      props,
       this.enabled,
       this.value,
-      this.list,
-      this.eventClick,
-      this.model
+      this.eventClick
     )
   }
 
@@ -157,29 +144,6 @@ export class ClockPeriod {
       onKeydown: this.event.onKeydown,
       ...this.aria
     }
-  }
-
-  /**
-   * Computed class list for root element.
-   *
-   * Вычисляемый список классов для корневого элемента.
-   * @returns computed classes / вычисленные классы
-   */
-  get classes(): ConstrClassObject {
-    return {
-      [`${this.className}--selected-am`]: this.value.isAm(),
-      [`${this.className}--selected-pm`]: this.value.isPm()
-    }
-  }
-
-  /**
-   * Computed CSS custom property styles.
-   *
-   * Вычисляемые стили пользовательских переменных CSS.
-   * @returns style dictionary / словарь стилей
-   */
-  get styles(): ConstrStyles {
-    return {}
   }
 
   /**

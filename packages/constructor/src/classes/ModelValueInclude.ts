@@ -81,7 +81,7 @@ export class ModelValueInclude<Value = any> {
    * Возвращает текущее значение модели.
    * @returns current model value / текущее значение модели
    */
-  readonly getValue = (): Value | undefined => {
+  readonly get = (): Value | undefined => {
     return this.value.value
   }
 

@@ -63,7 +63,7 @@ describe('ClockDialSelect', () => {
     const result = select.selectByCoordinates(215, 215)
 
     expect(result?.value).toBe(2)
-    expect(model.getValue()).toBe(2)
+    expect(model.get()).toBe(2)
   })
 
   it('returns null when component is disabled', () => {

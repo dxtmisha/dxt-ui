@@ -4,7 +4,6 @@ import type { EventClickEmits } from '../../types/eventClickTypes'
 import type { ModelEmits } from '../../types/modelTypes'
 
 import type {
-  ClockPeriodSlotData,
   ClockPeriodType
 } from './basicTypes'
 
@@ -29,9 +28,9 @@ export type ClockPeriodEmits = ModelEmits<ClockPeriodType> & EventClickEmits
  */
 export interface ClockPeriodExpose {
   /** Get current selected period value / Получить текущее выбранное значение периода */
-  getValue(): ClockPeriodType | undefined
+  get(): ClockPeriodType | undefined
   /** Set new period value / Установить новое значение периода */
-  setValue(value?: ClockPeriodType): void
+  set(value?: ClockPeriodType): void
 }
 
 /**
@@ -40,8 +39,6 @@ export interface ClockPeriodExpose {
  * Тип, описывающий доступные слоты.
  */
 export interface ClockPeriodSlots {
-  /** Custom item slot / Слот для пользовательского элемента */
-  item?(props: ClockPeriodSlotData): any
 }
 
 /**
@@ -53,6 +50,7 @@ export type ClockPeriodClasses = {
   main: ConstrClass
   // :classes [!] System label / Системная метка
   item: string
-  label: string
+  am: string
+  pm: string
   // :classes [!] System label / Системная метка
 }

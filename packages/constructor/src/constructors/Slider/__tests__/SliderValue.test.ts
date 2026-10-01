@@ -60,7 +60,7 @@ describe('SliderValue', () => {
     sliderValue.set(60)
 
     expect(focus.get()).toBe(SliderFocusType.max)
-    expect(model.getValue()).toBe(60)
+    expect(model.get()).toBe(60)
   })
 
   it('should set range array value in multiple mode', () => {
@@ -69,7 +69,7 @@ describe('SliderValue', () => {
     sliderValue.set([30, 70], SliderFocusType.min)
 
     expect(focus.get()).toBe(SliderFocusType.min)
-    expect(model.getValue()).toEqual([30, 70])
+    expect(model.get()).toEqual([30, 70])
   })
 
   it('should update min thumb value in multiple mode when setting single number with min focus', () => {
@@ -77,7 +77,7 @@ describe('SliderValue', () => {
 
     sliderValue.set(30, SliderFocusType.min)
 
-    expect(model.getValue()).toEqual([30, 80])
+    expect(model.get()).toEqual([30, 80])
   })
 
   it('should update max thumb value in multiple mode when setting single number with max focus', () => {
@@ -85,6 +85,6 @@ describe('SliderValue', () => {
 
     sliderValue.set(90, SliderFocusType.max)
 
-    expect(model.getValue()).toEqual([20, 90])
+    expect(model.get()).toEqual([20, 90])
   })
 })

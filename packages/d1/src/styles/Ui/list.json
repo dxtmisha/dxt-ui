@@ -9076,6 +9076,17 @@
           }
         }
       },
+      "clockPeriod": {
+        "name": "d1-clockPeriod",
+        "type": "component",
+        "value": {
+          "borderWidth": {
+            "name": "--d1-clockPeriod-borderWidth",
+            "type": "var",
+            "value": "{sys.spacing.outline}"
+          }
+        }
+      },
       "collage": {
         "name": "d1-collage",
         "type": "component",

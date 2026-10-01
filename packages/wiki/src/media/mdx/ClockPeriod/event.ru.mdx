@@ -1,0 +1,37 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+### `click`
+
+Событие срабатывает при клике по кнопке периода (AM / PM), передавая оригинальное DOM-событие и данные компонента.
+
+**Параметры:**
+- `event: MouseEvent` — оригинальное DOM-событие мыши
+- `value: EventClickValue` — объект с данными компонента
+
+**Структура объекта EventClickValue:**
+- `type: string` — идентификатор места нажатия (`'item'`)
+- `value: ClockPeriodType` — выбранное значение периода (`'am'` | `'pm'`)
+- `detail: undefined` — дополнительные данные события
+
+<Source
+    code={`
+<script setup>
+const handleClick = (event, value) => {
+  console.log('DOM-событие:', event)
+  console.log('Выбранный период:', value.value)
+}
+</script>
+
+<template>
+  <ClockPeriod @click="handleClick" />
+</template>
+  `}
+    language="html"
+/>
+
+### `clickLite`
+
+Событие срабатывает при клике по кнопке периода, передавая только данные без оригинального DOM-события (облегченная версия).
+
+**Параметры:**
+- `value: EventClickValue` — объект с данными компонента

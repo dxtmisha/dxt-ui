@@ -1,8 +1,17 @@
 import type { ConstrBind } from '@dxtmisha/functional'
 import type { ClockPeriodPropsBasic } from './props'
 
-/** Clock period item type ('am' | 'pm') / Тип периода часов ('am' | 'pm') */
-export type ClockPeriodType = 'am' | 'pm'
+/**
+ * Enumeration of clock period types (AM / PM).
+ *
+ * Перечисление типов периода часов (AM / PM).
+ */
+export enum ClockPeriodType {
+  /** AM period (ante meridiem) / Период AM (до полудня) */
+  am = 'am',
+  /** PM period (post meridiem) / Период PM (после полудня) */
+  pm = 'pm'
+}
 
 /** Clock period item data / Данные элемента периода часов */
 export type ClockPeriodItem = {

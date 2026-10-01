@@ -44,7 +44,7 @@ export class SliderEmit {
    * @param eventName event key / имя события
    */
   emit(eventName: 'input' | 'change'): void {
-    const value = this.model.getValue()
+    const value = this.model.get()
     const detail = this.getDetail()
     const emits: any = this.emits
 

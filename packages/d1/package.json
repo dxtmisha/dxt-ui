@@ -51,7 +51,7 @@
     "build": "vue-tsc -b && vite build",
     "build-recovery": "npm run build && npm run wiki-storm",
     "preview": "vite preview",
-    "ui": "dxt-ui --name Skeleton",
+    "ui": "dxt-ui --name ClockPeriod",
     "wiki-storm": "dxt-wiki-storm",
     "types": "npm run ui && npm run build && dxt-types",
     "types-only": "dxt-types",
@@ -581,6 +581,10 @@
     "./D1InputFileDropzone": {
       "types": "./dist/library/D1InputFileDropzone.d.ts",
       "default": "./dist/library/D1InputFileDropzone.js"
+    },
+    "./D1ClockPeriod": {
+      "types": "./dist/library/D1ClockPeriod.d.ts",
+      "default": "./dist/library/D1ClockPeriod.js"
     }
   },
   "buildOptions": {

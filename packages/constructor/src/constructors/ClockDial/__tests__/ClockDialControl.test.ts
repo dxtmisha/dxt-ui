@@ -26,66 +26,66 @@ describe('ClockDialControl', () => {
     const { control, model, emitsSpy } = createClockDialControl({ type: '12' }, 2)
 
     control.increase()
-    expect(model.getValue()).toBe(3)
+    expect(model.get()).toBe(3)
     expect(emitsSpy).toHaveBeenCalledWith('input', expect.anything(), 3)
     expect(emitsSpy).toHaveBeenCalledWith('change', expect.anything(), 3)
 
     control.increase()
-    expect(model.getValue()).toBe(4)
+    expect(model.get()).toBe(4)
   })
 
   it('decreases value counterclockwise in 12-hour mode', () => {
     const { control, model, emitsSpy } = createClockDialControl({ type: '12' }, 5)
 
     control.decrease()
-    expect(model.getValue()).toBe(4)
+    expect(model.get()).toBe(4)
     expect(emitsSpy).toHaveBeenCalledWith('input', expect.anything(), 4)
     expect(emitsSpy).toHaveBeenCalledWith('change', expect.anything(), 4)
 
     control.decrease()
-    expect(model.getValue()).toBe(3)
+    expect(model.get()).toBe(3)
   })
 
   it('wraps around 12 to 1 and 1 to 12 in 12-hour mode', () => {
     const { control, model } = createClockDialControl({ type: '12' }, 12)
 
     control.increase()
-    expect(model.getValue()).toBe(1)
+    expect(model.get()).toBe(1)
 
     control.decrease()
-    expect(model.getValue()).toBe(12)
+    expect(model.get()).toBe(12)
   })
 
   it('wraps around 23 to 0 and 0 to 23 in 24-hour mode', () => {
     const { control, model } = createClockDialControl({ type: '24' }, 23)
 
     control.increase()
-    expect(model.getValue()).toBe(0)
+    expect(model.get()).toBe(0)
 
     control.increase()
-    expect(model.getValue()).toBe(1)
+    expect(model.get()).toBe(1)
 
     control.decrease()
-    expect(model.getValue()).toBe(0)
+    expect(model.get()).toBe(0)
 
     control.decrease()
-    expect(model.getValue()).toBe(23)
+    expect(model.get()).toBe(23)
   })
 
   it('navigates by step in minute mode', () => {
     const { control, model } = createClockDialControl({ type: 'minute', step: 5 }, 50)
 
     control.increase()
-    expect(model.getValue()).toBe(55)
+    expect(model.get()).toBe(55)
 
     control.increase()
-    expect(model.getValue()).toBe(0)
+    expect(model.get()).toBe(0)
 
     control.increase()
-    expect(model.getValue()).toBe(5)
+    expect(model.get()).toBe(5)
 
     control.decrease()
-    expect(model.getValue()).toBe(0)
+    expect(model.get()).toBe(0)
   })
 
   it('handles initial undefined value on step', () => {
@@ -99,26 +99,26 @@ describe('ClockDialControl', () => {
     const control = new ClockDialControl(props, emitsItem, enabled, list, valueItem)
 
     control.increase()
-    expect(model.getValue()).toBe(1)
+    expect(model.get()).toBe(1)
   })
 
   it('handles toEdge for first and last elements', () => {
     const { control, model } = createClockDialControl({ type: '12' }, 6)
 
     control.toEdge(false)
-    expect(model.getValue()).toBe(1)
+    expect(model.get()).toBe(1)
 
     control.toEdge(true)
-    expect(model.getValue()).toBe(12)
+    expect(model.get()).toBe(12)
   })
 
   it('does nothing when disabled or clock mode', () => {
     const disabledInstance = createClockDialControl({ type: '12', disabled: true }, 5)
     disabledInstance.control.increase()
-    expect(disabledInstance.model.getValue()).toBe(5)
+    expect(disabledInstance.model.get()).toBe(5)
 
     const clockInstance = createClockDialControl({ type: '12', clock: true }, 5)
     clockInstance.control.increase()
-    expect(clockInstance.model.getValue()).toBe(5)
+    expect(clockInstance.model.get()).toBe(5)
   })
 })

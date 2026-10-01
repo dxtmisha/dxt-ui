@@ -1,7 +1,8 @@
 import { ref, watch } from 'vue'
 import { isFilled } from '@dxtmisha/functional'
+
+import { ClockPeriodType } from './basicTypes'
 import type { ClockPeriodProps } from './props'
-import type { ClockPeriodType } from './basicTypes'
 
 /**
  * Class for managing period value (AM / PM) for ClockPeriod.
@@ -12,7 +13,7 @@ import type { ClockPeriodType } from './basicTypes'
  */
 export class ClockPeriodValue {
   /** Reactive reference to the period value ('am' or 'pm') / Реактивная ссылка на значение периода ('am' или 'pm') */
-  readonly value = ref<ClockPeriodType>('am')
+  readonly value = ref<ClockPeriodType>(ClockPeriodType.am)
 
   /**
    * Constructor
@@ -38,7 +39,7 @@ export class ClockPeriodValue {
    * @returns true if AM / true, если AM
    */
   isAm(): boolean {
-    return this.value.value === 'am'
+    return this.value.value === ClockPeriodType.am
   }
 
   /**
@@ -48,7 +49,7 @@ export class ClockPeriodValue {
    * @returns true if PM / true, если PM
    */
   isPm(): boolean {
-    return this.value.value === 'pm'
+    return this.value.value === ClockPeriodType.pm
   }
 
   /**
@@ -88,7 +89,7 @@ export class ClockPeriodValue {
    * Выбирает период AM.
    */
   setAm(): void {
-    this.set('am')
+    this.set(ClockPeriodType.am)
   }
 
   /**
@@ -97,7 +98,7 @@ export class ClockPeriodValue {
    * Выбирает период PM.
    */
   setPm(): void {
-    this.set('pm')
+    this.set(ClockPeriodType.pm)
   }
 
   /**
@@ -106,7 +107,7 @@ export class ClockPeriodValue {
    * Переключает между AM и PM.
    */
   toggle(): void {
-    this.set(this.isAm() ? 'pm' : 'am')
+    this.set(this.isAm() ? ClockPeriodType.pm : ClockPeriodType.am)
   }
 
   /**
@@ -123,9 +124,11 @@ export class ClockPeriodValue {
     }
 
     if (isFilled(this.props.hour)) {
-      return this.props.hour >= 12 ? 'pm' : 'am'
+      return this.props.hour >= 12
+        ? ClockPeriodType.pm
+        : ClockPeriodType.am
     }
 
-    return 'am'
+    return ClockPeriodType.am
   }
 }

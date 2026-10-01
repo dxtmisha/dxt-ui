@@ -200,14 +200,14 @@ describe('InputFileItemFile', () => {
       const value = {
         id: 'user-avatar',
         value: 'blob:http://localhost/1234',
-        crop: { top: 0, right: 100, bottom: 100, left: 0 }
+        crop: [0, 100, 100, 0] as [number, number, number, number]
       }
       const helper = createHelper({ file: mockFile, value })
 
       expect(helper.get()).toEqual({
         id: 'user-avatar',
         value: 'blob:http://localhost/1234',
-        crop: { top: 0, right: 100, bottom: 100, left: 0 },
+        crop: [0, 100, 100, 0],
         file: mockFile,
         name: 'avatar.png',
         size: 9,
@@ -255,7 +255,7 @@ describe('InputFileItemFile', () => {
       const helper = createHelper({
         value: { name: 'document.pdf' }
       })
-      expect(helper.getIcon()).toBe(helper.mediaFile.value?.icon || undefined)
+      expect(helper.getIcon()).toBe(helper.mediaFile.value?.icon)
     })
 
     it('returns undefined when no file or source is provided', () => {

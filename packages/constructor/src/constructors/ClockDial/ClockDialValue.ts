@@ -75,7 +75,7 @@ export class ClockDialValue {
    * @returns selected numeric value / выбранное числовое значение
    */
   get value(): number {
-    return Number(this.model.getValue() ?? 0)
+    return Number(this.model.get() ?? 0)
   }
 
   /**
@@ -125,7 +125,7 @@ export class ClockDialValue {
    * @returns boolean visibility / флаг видимости
    */
   isSelectVisible(): boolean {
-    return !this.props.clock && !isNull(this.model.getValue())
+    return !this.props.clock && !isNull(this.model.get())
   }
 
   /**

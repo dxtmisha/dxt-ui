@@ -5,8 +5,8 @@ import type { ClockPeriodType } from './basicTypes'
 
 type ClockPeriodPropsToken = {
   // :type [!] System label / Системная метка
-  disabled?: boolean
   readonly?: boolean
+  disabled?: boolean
   orientation?: 'vertical' | 'horizontal'
   // :type [!] System label / Системная метка
 }

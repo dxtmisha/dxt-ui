@@ -1,0 +1,37 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+### `click`
+
+Event fires when clicking on a clock period button (AM / PM), passing the original DOM event and component data.
+
+**Parameters:**
+- `event: MouseEvent` — original DOM mouse event
+- `value: EventClickValue` — object with component data
+
+**Structure of EventClickValue:**
+- `type: string` — click location identifier (`'item'`)
+- `value: ClockPeriodType` — selected period value (`'am'` | `'pm'`)
+- `detail: undefined` — additional event data
+
+<Source
+    code={`
+<script setup>
+const handleClick = (event, value) => {
+  console.log('DOM event:', event)
+  console.log('Selected period:', value.value)
+}
+</script>
+
+<template>
+  <ClockPeriod @click="handleClick" />
+</template>
+  `}
+    language="html"
+/>
+
+### `clickLite`
+
+Event fires when clicking on a clock period button, passing only data without the original DOM event (lightweight version).
+
+**Parameters:**
+- `value: EventClickValue` — object with component data

@@ -28,6 +28,7 @@ import _D1Chip from '../components/Ui/Chip/D1Chip.vue'
 import _D1ChipGroup from '../components/Ui/ChipGroup/D1ChipGroup.vue'
 import _D1ClientOnly from '../components/Ui/ClientOnly/D1ClientOnly.vue'
 import _D1ClockDial from '../components/Ui/ClockDial/D1ClockDial.vue'
+import _D1ClockPeriod from '../components/Ui/ClockPeriod/D1ClockPeriod.vue'
 import _D1Collage from '../components/Ui/Collage/D1Collage.vue'
 import _D1CollageBar from '../components/Ui/CollageBar/D1CollageBar.vue'
 import _D1CollageItem from '../components/Ui/CollageItem/D1CollageItem.vue'
@@ -151,6 +152,7 @@ declare module '@vue/runtime-core' {
     D1ChipGroup: typeof _D1ChipGroup
     D1ClientOnly: typeof _D1ClientOnly
     D1ClockDial: typeof _D1ClockDial
+    D1ClockPeriod: typeof _D1ClockPeriod
     D1Collage: typeof _D1Collage
     D1CollageBar: typeof _D1CollageBar
     D1CollageItem: typeof _D1CollageItem

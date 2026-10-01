@@ -1,0 +1,94 @@
+@use "../../../styles/Ui/properties";
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/style.scss" as ClockPeriod;
+
+@include ui.initDesignBasic('d1.clockPeriod') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include ClockPeriod.mixinClockPeriod;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+    --d1-clockPeriod-borderWidth: var(--d1-sys-spacing-outline);
+    
+    overflow: hidden;
+    
+    @include ui.color(#{var(--d1-sys-palette-onSurface)});
+    @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-high)});
+    
+    @include ui.backgroundColor(#{var(--d1-sys-palette-surface)});
+    
+    border-radius: var(--d1-sys-rounded-md);
+    @include ui.borderColor(#{var(--d1-sys-palette-outline)});
+    @include ui.borderOpacity(#{var(--d1-sys-opacity-outline)});
+    
+    &__item {
+      @include ui.paddingX(#{var(--d1-sys-spacing-md)});
+      @include ui.paddingY(#{var(--d1-sys-spacing-xs)});
+      
+      min-width: var(--d1-ref-spacing-12);
+      min-height: var(--d1-ref-spacing-10);
+      
+      font-family: var(--d1-sys-font-family-basic), sans-serif;
+      @include ui.fontSize(#{var(--d1-sys-font-size-sm)});
+      font-weight: var(--d1-sys-font-weight-medium);
+      @include ui.lineHeight(#{var(--d1-sys-lineHeight-sm)});
+      letter-spacing: var(--d1-sys-letterSpacing-xs);
+      
+      @include ui.gradientOpacity(#{0}); @include ui.gradient('init');
+      @include ui.paletteGradient(#{var(--d1-sys-palette-primary)});
+      
+      @include ui.borderColor(#{var(--d1-sys-palette-outline)});
+      @include ui.borderOpacity(#{var(--d1-sys-opacity-outline)});
+      
+      @include ui.hover('.d1-clockPeriod') {
+        @include ui.gradientOpacity(#{var(--d1-sys-opacity-hover)}); @include ui.gradient('init');
+      }
+      
+      @include ui.active('.d1-clockPeriod') {
+        @include ui.gradientOpacity(#{var(--d1-sys-opacity-pressed)}); @include ui.gradient('init');
+      }
+      
+      &:focus-visible {
+        @include ui.outlineOpacity(#{var(--d1-sys-opacity-outline)});
+        
+        outline-width: var(--d1-ref-spacing-1);
+        outline-style: solid;
+        @include ui.outlineColor(#{var(--d1-sys-palette-primary)});
+      }
+    }
+    
+    &--selected {
+      @include ui.color(#{var(--d1-sys-palette-primaryVariant)});
+      
+      @include ui.backgroundOpacity(#{var(--d1-sys-opacity-selected)}); @include ui.backgroundColor('init');
+      @include ui.paletteBackground(#{var(--d1-sys-palette-primaryVariant)});
+      
+      & .d1-clockPeriod__item {
+        @include ui.paletteGradient(#{var(--d1-sys-palette-primaryVariant)});
+      }
+    }
+    
+    &--disabled {
+      @include ui.color(#{var(--d1-sys-palette-onSurface)});
+      @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-disabled)});
+      
+      @include ui.borderOpacity(#{calc(var(--d1-sys-opacity-outline) * var(--d1-sys-opacity-surface-disabled))}); @include ui.borderColor('init');
+      
+      & .d1-clockPeriod__item {
+        @include ui.color(#{var(--d1-sys-palette-onSurface)});
+        @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-disabled)});
+        
+        @include ui.paletteBackground(#{var(--d1-sys-palette-onSurface)});
+        
+        @include ui.borderOpacity(#{calc(var(--d1-sys-opacity-outline) * var(--d1-sys-opacity-surface-disabled))}); @include ui.borderColor('init');
+      }
+    }
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

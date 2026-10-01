@@ -1,8 +1,15 @@
 {
+  "borderWidth": {
+    "_type": "var"
+  },
   "#item": {},
-  "#label": {},
-  "~disabled": {},
+  "#am": {},
+  "#pm": {},
+  "~selected": {
+    "_prop": false
+  },
   "~readonly": {},
+  "~disabled": {},
   "~orientation": {
     "~vertical": {},
     "~horizontal": {},

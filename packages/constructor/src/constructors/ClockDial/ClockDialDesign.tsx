@@ -80,7 +80,7 @@ export class ClockDialDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      getValue: this.item.model.getValue,
+      getValue: this.item.model.get,
       setValue: this.item.model.set,
       selectByCoordinates: this.item.select.selectByCoordinates
     } as EXPOSE
