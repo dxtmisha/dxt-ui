@@ -14,6 +14,7 @@
     background-color: transparent;
     cursor: pointer;
     user-select: none;
+    color: inherit;
   }
 
   &--orientation {
@@ -40,7 +41,13 @@
     }
   }
 
-  &--disabled {
+  @include ui.readonly {
+    @include ui.subclass('item') {
+      cursor: default;
+    }
+  }
+
+  @include ui.disabled {
     pointer-events: none;
   }
 }

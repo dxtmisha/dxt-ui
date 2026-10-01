@@ -65,10 +65,7 @@
       
       @include ui.backgroundOpacity(#{var(--d1-sys-opacity-selected)}); @include ui.backgroundColor('init');
       @include ui.paletteBackground(#{var(--d1-sys-palette-primaryVariant)});
-      
-      & .d1-clockPeriod__item {
-        @include ui.paletteGradient(#{var(--d1-sys-palette-primaryVariant)});
-      }
+      @include ui.paletteGradient(#{var(--d1-sys-palette-primaryVariant)});
     }
     
     &--disabled {
@@ -81,7 +78,7 @@
         @include ui.color(#{var(--d1-sys-palette-onSurface)});
         @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-disabled)});
         
-        @include ui.paletteBackground(#{var(--d1-sys-palette-onSurface)});
+        @include ui.backgroundOpacity(#{0}); @include ui.backgroundColor('init');
         
         @include ui.borderOpacity(#{calc(var(--d1-sys-opacity-outline) * var(--d1-sys-opacity-surface-disabled))}); @include ui.borderColor('init');
       }

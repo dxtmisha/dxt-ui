@@ -32,9 +32,7 @@
     "color": "{sys.palette.primaryVariant}",
     "palette-background": "{sys.palette.primaryVariant}",
     "background-opacity": "{sys.opacity.selected}",
-    "#item": {
-      "palette-gradient": "{sys.palette.primaryVariant}"
-    }
+    "palette-gradient": "{sys.palette.primaryVariant}"
   },
   "~disabled": {
     "color": "{sys.palette.onSurface}",
@@ -43,7 +41,7 @@
     "#item": {
       "color": "{sys.palette.onSurface}",
       "color-opacity": "{sys.opacity.surface.disabled}",
-      "palette-background": "{sys.palette.onSurface}",
+      "background-opacity": "0",
       "border-opacity": "calc({sys.opacity.outline} * {sys.opacity.surface.disabled})"
     }
   },
