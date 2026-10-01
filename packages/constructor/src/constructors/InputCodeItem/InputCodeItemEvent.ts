@@ -88,11 +88,7 @@ export class InputCodeItemEvent {
    */
   readonly onClick = (): void => {
     if (this.value.is()) {
-      if (this.props.hide) {
-        this.go.focusToNextEmpty()
-      } else {
-        this.go.selection()
-      }
+      this.go.focusToNextEmpty()
     }
   }
 

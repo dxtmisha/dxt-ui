@@ -127,8 +127,11 @@ export class InputCodeItemGo {
         const input = this.getInput(element)
 
         if (
-          input
-          && !isFilled(input.value, true)
+          !element.nextElementSibling
+          || (
+            input
+            && !isFilled(input.value, true)
+          )
         ) {
           this.toFocus(element)
           break
