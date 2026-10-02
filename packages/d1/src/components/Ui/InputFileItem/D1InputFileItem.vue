@@ -12,6 +12,7 @@ import {
 } from '@dxtmisha/constructor/InputFileItem'
 
 import { D1Button } from '../Button'
+import { D1Dialog } from '../Dialog'
 import { D1Icon } from '../Icon'
 import { D1Image } from '../Image'
 import { D1Progress } from '../Progress'
@@ -54,9 +55,24 @@ const design = new InputFileItemDesign(
     styles: stylesToken,
     components: {
       button: D1Button,
+      dialog: D1Dialog,
       icon: D1Icon,
       image: D1Image,
       progress: D1Progress
+    },
+    compMod: {
+      buttonDelete: {
+        secondary: true,
+        roundedFull: true,
+        size: 'xs',
+        palette: 'neutral'
+      },
+      buttonRetry: {
+        secondary: true,
+        roundedFull: true,
+        size: 'xs',
+        palette: 'neutral'
+      }
     }
   }
 )

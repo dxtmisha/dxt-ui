@@ -15,6 +15,7 @@ import {
   ButtonInclude,
   type ButtonProps
 } from '../Button'
+import type { DialogProps } from '../Dialog'
 import { IconInclude } from '../Icon'
 import { ImageInclude } from '../Image'
 import {
@@ -257,6 +258,21 @@ export class InputFileItem {
   }
 
   /**
+   * Resolves properties and settings for the confirmation dialog.
+   *
+   * Определяет свойства и настройки для диалога подтверждения.
+   * @returns dialog configuration object or undefined / объект конфигурации диалога или undefined
+   */
+  get dialog(): ConstrBind<DialogProps> | undefined {
+    return {
+      icon: this.props.iconWarning,
+      description: this.text.deleteConfirm,
+      clickOkAndClose: true,
+      onOk: this.event.onDelete
+    }
+  }
+
+  /**
    * Resolves properties and settings for the progress indicator.
    *
    * Определяет свойства и настройки для индикатора прогресса.
@@ -302,7 +318,7 @@ export class InputFileItem {
       icon: this.props.iconDelete,
       disabled: this.props.disabled,
       readonly: this.props.readonly,
-      onClick: this.event.onDelete,
+      onClick: this.props.confirmDelete === false ? this.event.onDelete : undefined,
       ...AriaStaticInclude.label(this.text.delete),
       ...AriaStaticInclude.disabled(Boolean(this.props.disabled)),
       ...AriaStaticInclude.readonly(Boolean(this.props.readonly))

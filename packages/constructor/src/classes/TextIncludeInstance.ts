@@ -20,6 +20,7 @@ export class TextIncludeInstance {
     copiedClipboard: 'Copied to the clipboard',
     decrement: 'Decrease',
     delete: 'Delete',
+    deleteConfirm: 'Are you sure you want to delete this file?',
     dropzone: 'Drop files here or click to upload',
     edit: 'Edit',
     entriesMatch: 'Entries do not match',

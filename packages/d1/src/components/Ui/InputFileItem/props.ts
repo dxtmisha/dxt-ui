@@ -37,6 +37,11 @@ export type InputFileItemProps = InputFileItemPropsBasic<
  */
 export const defaults: object = {
   ...defaultsInputFileItem,
+  iconDelete: 'delete',
+  iconRetry: 'refresh',
+  iconSuccess: 'check_circle',
+  iconError: 'cancel',
+  iconWarning: 'warning',
   ...{
     // :default [!] System label / Системная метка
     appearance: 'list',

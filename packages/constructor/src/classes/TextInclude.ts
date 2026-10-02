@@ -105,6 +105,11 @@ export class TextInclude {
     return this.get('textDelete')
   }
 
+  /** Delete confirmation text / Текст подтверждения удаления */
+  get deleteConfirm() {
+    return this.get('textDeleteConfirm')
+  }
+
   /** Dropzone default text / Текст области загрузки по умолчанию */
   get dropzone() {
     return this.get('textDropzone')

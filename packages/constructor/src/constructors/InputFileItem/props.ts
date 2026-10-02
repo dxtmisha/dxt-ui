@@ -6,6 +6,7 @@ import type { SkeletonPropsInclude } from '../Skeleton'
 import type { EnabledProps } from '../../types/enabledTypes'
 import type { FieldFileValue } from '../../types/fieldTypes'
 import type {
+  TextDeleteConfirmPropsInclude,
   TextDeletePropsInclude,
   TextErrorPropsInclude,
   TextLoadingFilePropsInclude,
@@ -32,6 +33,7 @@ export type InputFileItemPropsBasic<
   & ProgressPropsInclude<Progress>
   & ButtonPropsInclude<Button>
   & SkeletonPropsInclude
+  & TextDeleteConfirmPropsInclude
   & TextDeletePropsInclude
   & TextErrorPropsInclude
   & TextLoadingFilePropsInclude
@@ -47,6 +49,9 @@ export type InputFileItemPropsBasic<
     /** File instance / Экземпляр файла */
     file?: File
 
+    /** Whether to show confirmation dialog before delete / Показывать ли диалог подтверждения перед удалением */
+    confirmDelete?: boolean
+
     /** Icon for delete button / Иконка для кнопки удаления */
     iconDelete?: string
 
@@ -58,6 +63,9 @@ export type InputFileItemPropsBasic<
 
     /** Icon for error status / Иконка для статуса ошибки */
     iconError?: string
+
+    /** Icon for warning / Иконка для предупреждения */
+    iconWarning?: string
   }
 
 /**
@@ -73,10 +81,7 @@ export type InputFileItemProps = InputFileItemPropsBasic & InputFileItemPropsTok
  * Значение по умолчанию для свойства.
  */
 export const defaultsInputFileItem = {
-  iconDelete: 'delete',
-  iconRetry: 'refresh',
-  iconSuccess: 'check_circle',
-  iconError: 'cancel',
+  confirmDelete: true,
   ...{
     // :default [!] System label / Системная метка
     appearance: 'list',

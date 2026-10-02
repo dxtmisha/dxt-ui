@@ -1,5 +1,6 @@
 import type { ConstrClass } from '@dxtmisha/functional'
 import type { ButtonComponentInclude } from '../Button'
+import type { DialogComponentInclude } from '../Dialog'
 import type { IconComponentInclude } from '../Icon'
 import type { ImageComponentInclude } from '../Image'
 import type { ProgressComponentInclude } from '../Progress'
@@ -14,6 +15,7 @@ import type { InputFileItemStatusType } from './basicTypes'
  */
 export type InputFileItemComponents
   = ButtonComponentInclude
+    & DialogComponentInclude
     & IconComponentInclude
     & ImageComponentInclude
     & ProgressComponentInclude

@@ -11,6 +11,7 @@ export type TextIndex = 'am'
   | 'copiedClipboard'
   | 'decrement'
   | 'delete'
+  | 'deleteConfirm'
   | 'dropzone'
   | 'edit'
   | 'entriesMatch'
@@ -100,6 +101,12 @@ export type TextDecrementPropsInclude = {
 export type TextDeletePropsInclude = {
   /** Delete text/ Текст удаления */
   textDelete?: TextValue
+}
+
+/** Interface for including delete confirmation text/ Интерфейс для включения текста подтверждения удаления */
+export type TextDeleteConfirmPropsInclude = {
+  /** Delete confirmation text/ Текст подтверждения удаления */
+  textDeleteConfirm?: TextValue
 }
 
 /** Interface for including dropzone text/ Интерфейс для включения текста области загрузки */
@@ -269,6 +276,7 @@ export type TextAllPropsInclude = TextAmPropsInclude
   & TextCopiedClipboardPropsInclude
   & TextDecrementPropsInclude
   & TextDeletePropsInclude
+  & TextDeleteConfirmPropsInclude
   & TextDropzonePropsInclude
   & TextEditPropsInclude
   & TextEntriesMatchPropsInclude

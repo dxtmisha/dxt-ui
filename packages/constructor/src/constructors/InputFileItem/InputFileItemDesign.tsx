@@ -7,6 +7,7 @@ import {
 
 import { InputFileItem } from './InputFileItem'
 
+import type { WindowControlItem } from '../Window'
 import type { InputFileItemPropsBasic } from './props'
 import type {
   InputFileItemClasses,
@@ -220,7 +221,7 @@ export class InputFileItemDesign<
         { class: this.classes?.value.actions },
         [
           ...this.renderButtonRetry(),
-          ...this.renderButtonDelete()
+          ...this.renderDialog()
         ]
       )
     ]
@@ -250,10 +251,12 @@ export class InputFileItemDesign<
    * Rendering method for the delete action button.
    *
    * Метод рендеринга для кнопки действия удаления.
+   * @param props control properties from dialog / свойства управления из диалога
    * @returns array of virtual nodes / массив виртуальных нод
    */
-  readonly renderButtonDelete = (): VNode[] => {
+  readonly renderButtonDelete = (props?: WindowControlItem): VNode[] => {
     return this.item.buttonDelete.render(undefined, {
+      ...props?.binds,
       class: this.classes?.value.buttonDelete
     })
   }
@@ -285,6 +288,29 @@ export class InputFileItemDesign<
       ...this.renderStatus(),
       this.item.status.message
     ])
+  }
+
+  /**
+   * Rendering method for the confirmation dialog.
+   *
+   * Метод рендеринга для диалога подтверждения.
+   * @returns array of virtual nodes / массив виртуальных нод
+   */
+  readonly renderDialog = (): VNode[] => {
+    if (
+      this.props.confirmDelete !== false
+      && this.components.is('dialog')
+    ) {
+      return this.components.render(
+        'dialog',
+        this.item.dialog,
+        {
+          control: this.renderButtonDelete
+        }
+      )
+    }
+
+    return this.renderButtonDelete()
   }
 
   /**
