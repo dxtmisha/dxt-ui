@@ -23,9 +23,6 @@ export type ClockPeriodPropsBasic = ModelProps<ClockPeriodType>
   & {
     /** Current period value / Текущее значение периода */
     value?: ClockPeriodType
-
-    /** Current hour value to automatically deduce period / Текущее значение часа для автоматического определения периода */
-    hour?: number
   }
 
 /**

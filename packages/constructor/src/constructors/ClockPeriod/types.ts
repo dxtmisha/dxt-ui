@@ -31,6 +31,8 @@ export interface ClockPeriodExpose {
   get(): ClockPeriodType | undefined
   /** Set new period value / Установить новое значение периода */
   set(value?: ClockPeriodType): void
+  /** Set period value by hour / Установить значение периода по часу */
+  setByHour(hour?: number): void
 }
 
 /**

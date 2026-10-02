@@ -15,19 +15,30 @@ describe('ClockPeriodValue', () => {
     expect(periodValue.isAm()).toBe(false)
   })
 
-  it('deduces period from hour when value is empty', () => {
-    const propsPm: ClockPeriodProps = { hour: 14 }
-    const periodValuePm = new ClockPeriodValue(propsPm)
+  it('sets period value by hour', () => {
+    const props: ClockPeriodProps = {}
+    const periodValue = new ClockPeriodValue(props)
 
-    expect(periodValuePm.value.value).toBe(ClockPeriodType.pm)
+    expect(periodValue.value.value).toBe(ClockPeriodType.am)
 
-    const propsAm: ClockPeriodProps = { hour: 9 }
-    const periodValueAm = new ClockPeriodValue(propsAm)
+    periodValue.setByHour(14)
+    expect(periodValue.value.value).toBe(ClockPeriodType.pm)
+    expect(periodValue.isPm()).toBe(true)
 
-    expect(periodValueAm.value.value).toBe(ClockPeriodType.am)
+    periodValue.setByHour(9)
+    expect(periodValue.value.value).toBe(ClockPeriodType.am)
+    expect(periodValue.isAm()).toBe(true)
+
+    periodValue.setByHour(0)
+    expect(periodValue.value.value).toBe(ClockPeriodType.am)
+    expect(periodValue.isAm()).toBe(true)
+
+    periodValue.setByHour(12)
+    expect(periodValue.value.value).toBe(ClockPeriodType.pm)
+    expect(periodValue.isPm()).toBe(true)
   })
 
-  it('defaults to am when neither value nor hour is provided', () => {
+  it('defaults to am when value is not provided', () => {
     const props: ClockPeriodProps = {}
     const periodValue = new ClockPeriodValue(props)
 

@@ -80,8 +80,9 @@ export class ClockPeriodDesign<
    */
   protected initExpose(): EXPOSE {
     return {
-      get: this.item.model.get,
-      set: this.item.model.set
+      get: this.item.value.get,
+      set: this.item.value.set,
+      setByHour: this.item.value.setByHour
     } as EXPOSE
   }
 

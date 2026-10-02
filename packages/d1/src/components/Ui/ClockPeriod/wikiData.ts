@@ -6,7 +6,6 @@ import { defaults } from './props'
 const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
   { name: 'disabled', type: 'boolean' },
-  { name: 'hour', type: 'number' },
   { name: 'modelValue', type: 'string', option: ['am', 'pm'] },
   { name: 'onUpdate:modelValue', type: '((value: ClockPeriodType) => void)' },
   { name: 'onUpdate:value', type: '((value: ClockPeriodType) => void)' },

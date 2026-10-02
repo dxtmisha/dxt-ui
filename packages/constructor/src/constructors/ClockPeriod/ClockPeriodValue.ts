@@ -1,15 +1,15 @@
 import { ref, watch } from 'vue'
-import { isFilled } from '@dxtmisha/functional'
+import { isNumber } from '@dxtmisha/functional'
 
 import { ClockPeriodType } from './basicTypes'
 import type { ClockPeriodProps } from './props'
 
 /**
  * Class for managing period value (AM / PM) for ClockPeriod.
- * Synchronizes with model value and deduces period from hour prop if provided.
+ * Synchronizes with model value and provides methods for setting period by value or hour.
  *
  * Класс для управления значением периода (AM / PM) для ClockPeriod.
- * Синхронизируется со значением модели и определяет период по свойству часа, если оно передано.
+ * Синхронизируется со значением модели и предоставляет методы для установки периода по значению или часу.
  */
 export class ClockPeriodValue {
   /** Reactive reference to the period value ('am' or 'pm') / Реактивная ссылка на значение периода ('am' или 'pm') */
@@ -69,7 +69,7 @@ export class ClockPeriodValue {
    * Возвращает текущее выбранное значение периода ('am' или 'pm').
    * @returns selected period value / выбранное значение периода
    */
-  get(): ClockPeriodType {
+  readonly get = (): ClockPeriodType => {
     return this.value.value
   }
 
@@ -79,8 +79,20 @@ export class ClockPeriodValue {
    * Устанавливает новое значение периода.
    * @param value period value to set / устанавливаемое значение периода
    */
-  set(value?: ClockPeriodType): void {
+  readonly set = (value?: ClockPeriodType): void => {
     this.value.value = value ?? this.initValue()
+  }
+
+  /**
+   * Sets period value based on hour.
+   *
+   * Устанавливает значение периода по значению часа.
+   * @param hour hour value / значение часа
+   */
+  readonly setByHour = (hour?: number): void => {
+    if (isNumber(hour)) {
+      this.set(Number(hour) >= 12 ? ClockPeriodType.pm : ClockPeriodType.am)
+    }
   }
 
   /**
@@ -121,12 +133,6 @@ export class ClockPeriodValue {
 
     if (value) {
       return String(value).toLowerCase() as ClockPeriodType
-    }
-
-    if (isFilled(this.props.hour)) {
-      return this.props.hour >= 12
-        ? ClockPeriodType.pm
-        : ClockPeriodType.am
     }
 
     return ClockPeriodType.am
