@@ -3,7 +3,8 @@ import {
   executeFunctionRef,
   isFilled,
   type RefOrNormalOrFunction,
-  render
+  render,
+  toBinds
 } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from './AriaStaticInclude'
@@ -80,12 +81,17 @@ export class CaptionInclude {
   }
 
   /**
-   * Renders caption element with content from props or slots.
+   * Renders caption element with content from props, slots, and additional children.
    *
-   * Отображает элемент caption с содержимым из props или slots.
+   * Отображает элемент caption с содержимым из props, слотов и дополнительных дочерних элементов.
+   * @param childrenExtra additional children elements / дополнительные дочерние элементы
+   * @param props additional HTML properties / дополнительные HTML-свойства
    * @returns list of virtual nodes / список виртуальных узлов
    */
-  render(): VNode[] {
+  render(
+    childrenExtra?: any[],
+    props: Record<string, any> = {}
+  ): VNode[] {
     const children: any[] = []
     const caption = this.getProps().caption
 
@@ -97,11 +103,15 @@ export class CaptionInclude {
       children.push(this.slots.caption?.({}))
     }
 
+    if (childrenExtra) {
+      children.push(...childrenExtra)
+    }
+
     if (children.length > 0) {
       return [
         render(
           this.tag,
-          this.binds,
+          toBinds(this.binds, props),
           children,
           'caption'
         )

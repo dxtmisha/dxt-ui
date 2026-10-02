@@ -73,7 +73,6 @@ export type InputFileItemClasses = {
   body: string
   label: string
   caption: string
-  message: string
   progress: string
   actions: string
   buttonDelete: string

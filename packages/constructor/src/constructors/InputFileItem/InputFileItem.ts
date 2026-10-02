@@ -196,7 +196,7 @@ export class InputFileItem {
     )
 
     this.caption = new CaptionIncludeConstructor(
-      () => ({ caption: this.status.message }),
+      {},
       this.className
     )
 

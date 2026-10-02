@@ -11,11 +11,13 @@
   }
 
   &__body {
-    @include ui.flexY;
+    display: flex;
+    flex-direction: column;
     flex-grow: 1;
     min-width: 0;
   }
 
+  &__caption,
   &__actions {
     @include ui.flexX;
   }
@@ -48,4 +50,3 @@
     }
   }
 }
-

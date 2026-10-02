@@ -118,6 +118,18 @@ export const wikiText: StorybookArgsToList = {
     },
     hide: true
   },
+  textDelete: {
+    type: StorybookControl.text,
+    options: {
+      category: StorybookCategory.text,
+      type: 'string | (() => string)',
+      description: {
+        en: 'Delete text',
+        ru: 'Текст удаления'
+      }
+    },
+    hide: true
+  },
   textDropzone: {
     type: StorybookControl.text,
     options: {
@@ -150,6 +162,18 @@ export const wikiText: StorybookArgsToList = {
       description: {
         en: 'Text for entries mismatch validation message',
         ru: 'Текст сообщения валидации о несовпадении записей'
+      }
+    },
+    hide: true
+  },
+  textError: {
+    type: StorybookControl.text,
+    options: {
+      category: StorybookCategory.text,
+      type: 'string | (() => string)',
+      description: {
+        en: 'Error text',
+        ru: 'Текст ошибки'
       }
     },
     hide: true
@@ -222,6 +246,18 @@ export const wikiText: StorybookArgsToList = {
       description: {
         en: 'Loading text',
         ru: 'Текст загрузки'
+      }
+    },
+    hide: true
+  },
+  textLoadingFile: {
+    type: StorybookControl.text,
+    options: {
+      category: StorybookCategory.text,
+      type: 'string | (() => string)',
+      description: {
+        en: 'Loading file text',
+        ru: 'Текст загрузки файла'
       }
     },
     hide: true
@@ -334,6 +370,18 @@ export const wikiText: StorybookArgsToList = {
     },
     hide: true
   },
+  textRetry: {
+    type: StorybookControl.text,
+    options: {
+      category: StorybookCategory.text,
+      type: 'string | (() => string)',
+      description: {
+        en: 'Retry text',
+        ru: 'Текст повтора'
+      }
+    },
+    hide: true
+  },
   textRowsPerPage: {
     type: StorybookControl.text,
     options: {
@@ -366,6 +414,18 @@ export const wikiText: StorybookArgsToList = {
       description: {
         en: 'Symbol text',
         ru: 'Текст символа'
+      }
+    },
+    hide: true
+  },
+  textUploadSuccess: {
+    type: StorybookControl.text,
+    options: {
+      category: StorybookCategory.text,
+      type: 'string | (() => string)',
+      description: {
+        en: 'Upload success text',
+        ru: 'Текст успешной загрузки'
       }
     },
     hide: true

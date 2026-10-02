@@ -85,4 +85,12 @@ describe('CaptionInclude', () => {
     expect(nodes.length).toBe(1)
     expect(nodes[0].type).toBe('caption')
   })
+
+  it('should render childrenExtra when passed to render', () => {
+    const include = new CaptionInclude({ caption: 'Hello' }, 'my-class')
+    const nodes = include.render(['extra content'])
+    expect(nodes.length).toBe(1)
+    expect(nodes[0].children).toContain('Hello')
+    expect(nodes[0].children).toContain('extra content')
+  })
 })

@@ -181,6 +181,17 @@ export const wikiIconInclude: StorybookArgsToList = {
     },
     hide: true
   },
+  iconDelete: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.icon,
+      description: {
+        en: 'Sets icon for delete button',
+        ru: 'Задает иконку для кнопки удаления'
+      }
+    },
+    hide: true
+  },
   iconDir: {
     type: StorybookControl.boolean,
     options: {
@@ -267,6 +278,17 @@ export const wikiIconInclude: StorybookArgsToList = {
       description: {
         en: 'Sets icon for increment / plus action',
         ru: 'Задает иконку для действия увеличения (плюс)'
+      }
+    },
+    hide: true
+  },
+  iconRetry: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.icon,
+      description: {
+        en: 'Sets icon for retry button',
+        ru: 'Задает иконку для кнопки повтора'
       }
     },
     hide: true

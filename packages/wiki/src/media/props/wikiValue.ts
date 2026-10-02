@@ -129,6 +129,18 @@ export const wikiValue: StorybookArgsToList = {
     },
     hide: true
   },
+  file: {
+    type: StorybookControl.object,
+    options: {
+      category: StorybookCategory.value,
+      type: 'File',
+      description: {
+        en: 'File instance',
+        ru: 'Экземпляр файла'
+      }
+    },
+    hide: true
+  },
   files: {
     type: StorybookControl.object,
     options: {

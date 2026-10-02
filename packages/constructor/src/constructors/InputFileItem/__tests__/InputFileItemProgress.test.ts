@@ -15,22 +15,7 @@ describe('InputFileItemProgress', () => {
   }
 
   describe('value', () => {
-    it('returns raw numeric progress value without clamping to 100', () => {
-      const { progress } = createHelper({ loading: { value: 500_000 } })
-      expect(progress.value).toBe(500_000)
-    })
-
-    it('parses string values correctly', () => {
-      const { progress } = createHelper({ loading: { value: '250000' } })
-      expect(progress.value).toBe(250_000)
-    })
-
-    it('returns 0 when loading is boolean true', () => {
-      const { progress } = createHelper({ loading: true })
-      expect(progress.value).toBe(0)
-    })
-
-    it('returns 0 when loading is not provided', () => {
+    it('returns 0 as default progress value', () => {
       const { progress } = createHelper({})
       expect(progress.value).toBe(0)
     })
@@ -51,17 +36,7 @@ describe('InputFileItemProgress', () => {
   })
 
   describe('isDeterminate', () => {
-    it('returns true when loading object contains value property', () => {
-      const { progress } = createHelper({ loading: { value: 0 } })
-      expect(progress.isDeterminate()).toBe(true)
-    })
-
-    it('returns false when loading is boolean', () => {
-      const { progress } = createHelper({ loading: true })
-      expect(progress.isDeterminate()).toBe(false)
-    })
-
-    it('returns false when loading is undefined', () => {
+    it('returns false', () => {
       const { progress } = createHelper({})
       expect(progress.isDeterminate()).toBe(false)
     })

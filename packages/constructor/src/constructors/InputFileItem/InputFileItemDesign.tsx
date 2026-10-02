@@ -29,14 +29,14 @@ export class InputFileItemDesign<
   CLASSES extends InputFileItemClasses,
   P extends InputFileItemPropsBasic
 > extends DesignConstructorAbstract<
-    HTMLDivElement,
-    COMP,
-    InputFileItemEmits,
-    EXPOSE,
-    InputFileItemSlots,
-    CLASSES,
-    P
-  > {
+  HTMLDivElement,
+  COMP,
+  InputFileItemEmits,
+  EXPOSE,
+  InputFileItemSlots,
+  CLASSES,
+  P
+> {
   /** Orchestrator item / Элемент оркестратора */
   protected readonly item: InputFileItem
 
@@ -106,7 +106,6 @@ export class InputFileItemDesign<
         body: this.getSubClass('body'),
         label: this.getSubClass('label'),
         caption: this.getSubClass('caption'),
-        message: this.getSubClass('message'),
         progress: this.getSubClass('progress'),
         actions: this.getSubClass('actions'),
         buttonDelete: this.getSubClass('buttonDelete'),
@@ -240,6 +239,7 @@ export class InputFileItemDesign<
         { class: this.classes?.value.body },
         [
           ...this.item.label.render(),
+          ...this.renderProgress(),
           ...this.renderCaption()
         ]
       )
@@ -281,37 +281,10 @@ export class InputFileItemDesign<
    * @returns array of virtual nodes / массив виртуальных нод
    */
   readonly renderCaption = (): VNode[] => {
-    return [
-      h(
-        'div',
-        { class: this.classes?.value.caption },
-        [
-          ...this.renderProgress(),
-          ...this.renderStatus(),
-          ...this.renderMessage()
-        ]
-      )
-    ]
-  }
-
-  /**
-   * Rendering method for the message element.
-   *
-   * Метод рендеринга для элемента сообщения.
-   * @returns array of virtual nodes / массив виртуальных нод
-   */
-  readonly renderMessage = (): VNode[] => {
-    if (this.item.status.message) {
-      return [
-        h(
-          'span',
-          { class: this.classes?.value.message },
-          this.item.status.message
-        )
-      ]
-    }
-
-    return []
+    return this.item.caption.render([
+      ...this.renderStatus(),
+      this.item.status.message
+    ])
   }
 
   /**

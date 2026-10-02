@@ -137,6 +137,19 @@ export const wikiStatus: StorybookArgsToList = {
     },
     isDemo: true
   },
+  status: {
+    type: StorybookControl.select,
+    options: {
+      category: StorybookCategory.status,
+      type: 'string',
+      options: [],
+      description: {
+        en: 'Current status or state of the component',
+        ru: 'Текущий статус или состояние компонента'
+      }
+    },
+    isDemo: true
+  },
   success: {
     type: StorybookControl.boolean,
     options: {

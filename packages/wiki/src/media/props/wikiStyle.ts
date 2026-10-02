@@ -49,6 +49,19 @@ export const wikiStyle: StorybookArgsToList = {
     },
     isDemo: true
   },
+  appearance: {
+    type: StorybookControl.select,
+    options: {
+      category: StorybookCategory.style,
+      type: 'string',
+      options: [],
+      description: {
+        en: 'Defines the visual appearance or layout mode of the component',
+        ru: 'Определяет внешний вид или режим компоновки компонента'
+      }
+    },
+    isDemo: true
+  },
   asPalette: {
     type: StorybookControl.boolean,
     options: {
