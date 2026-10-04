@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.11.1] - 2026-10-04
+
+### Changed
+- **`ErrorCenter`**:
+  - Implemented lazy singleton initialization for `ErrorCenter.getItem()`, avoiding premature top-level module instantiation of `ErrorCenterInstance` and improving tree-shaking and SSR execution safety.
+- **Tree-Shaking & Top-Level Purity**:
+  - Replaced dynamic regular expressions (`new RegExp(...)`) with static regex literals in `addTagHighlightMatch` (`/___HIGHLIGHT_START___|___HIGHLIGHT_END___/g`) and `applyTemplate` (`/%(d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v)/g`) to eliminate module initialization side effects.
+  - Replaced dynamic `random()`-based tag generation in `addTagHighlightMatch` with static tags (`___HIGHLIGHT_START___` / `___HIGHLIGHT_END___`).
+  - Simplified `Icons.getUrlGlobal()` by removing unused `Api` import and redundant localhost ternary check.
+  - Extracted `API_CACHE_DEFAULT_STEP_AGE_CLEAR_OLD` constant in `ApiCache` for cache cleanup intervals.
+- **AI Type Definitions**:
+  - Applied `// ai-none` annotations across secondary class files to optimize AI context window and documentation size.
+
 ## [1.11.0] - 2026-09-07
 
 ### Added

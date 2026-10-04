@@ -19,8 +19,11 @@ export class ComponentCreator {
    * Constructor initializes ComponentCreator instance.
    *
    * Конструктор инициализирует экземпляр ComponentCreator.
+   * @param isLibrary whether to generate library entry files / генерировать ли файлы точек входа библиотеки
    */
-  constructor() {
+  constructor(
+    protected readonly isLibrary: boolean = false
+  ) {
   }
 
   /**
@@ -31,7 +34,7 @@ export class ComponentCreator {
   make(): void {
     this
       .getDirs()
-      .forEach(path => new ComponentItem(path).make())
+      .forEach(path => new ComponentItem(path, this.isLibrary).make())
   }
 
   /**
@@ -39,6 +42,7 @@ export class ComponentCreator {
    *
    * Собирает только пустые директории компонентов.
    * @returns array of empty component directory paths / массив путей пустых директорий компонентов
+   * @protected
    */
   protected getDirs(): string[] {
     return PropertiesFile.readDirOnlyRecursive(UI_DIRS_COMPONENTS)

@@ -1,7 +1,4 @@
-import {
-  InputSocialType,
-  type InputSocialList
-} from '../types/socialTypes'
+import type { InputSocialList } from '../types/socialTypes'
 
 /**
  * Match only letters (case-insensitive) /
@@ -199,112 +196,112 @@ const maskPhone = { mask: '+*', special: specialPhone }
  */
 export const inputSocialList: InputSocialList = [
   {
-    code: InputSocialType.alipay,
+    code: 'alipay',
     name: 'Alipay',
     mask: maskId
   },
   {
-    code: InputSocialType.baidu,
+    code: 'baidu',
     name: 'Baidu',
     mask: maskId
   },
   {
-    code: InputSocialType.dingtalk,
+    code: 'dingtalk',
     name: 'DingTalk',
     mask: maskId
   },
   {
-    code: InputSocialType.discord,
+    code: 'discord',
     name: 'Discord',
     mask: maskUsername
   },
   {
-    code: InputSocialType.douyin,
+    code: 'douyin',
     name: 'Douyin',
     mask: maskId
   },
   {
-    code: InputSocialType.dzen,
+    code: 'dzen',
     name: 'Dzen',
     prefix: 'https://dzen.ru/',
     mask: maskId
   },
   {
-    code: InputSocialType.facebook,
+    code: 'facebook',
     name: 'Facebook',
     prefix: 'https://www.facebook.com/',
     mask: maskFacebook
   },
   {
-    code: InputSocialType.github,
+    code: 'github',
     name: 'GitHub',
     prefix: 'https://github.com/',
     mask: maskHyphenIdStartAlphaNum
   },
   {
-    code: InputSocialType.gitlab,
+    code: 'gitlab',
     name: 'GitLab',
     prefix: 'https://gitlab.com/',
     mask: maskHyphenIdStartAlphaNum
   },
   {
-    code: InputSocialType.habr,
+    code: 'habr',
     name: 'Habr',
     prefix: 'https://habr.com/ru/users/',
     mask: maskId
   },
   {
-    code: InputSocialType.instagram,
+    code: 'instagram',
     name: 'Instagram',
     mask: maskUsername
   },
   {
-    code: InputSocialType.line,
+    code: 'line',
     name: 'Line',
     mask: maskId
   },
   {
-    code: InputSocialType.linkedin,
+    code: 'linkedin',
     name: 'LinkedIn',
     prefix: 'https://www.linkedin.com/in/',
     mask: maskHyphenIdStartAlphaNum
   },
   {
-    code: InputSocialType.medium,
+    code: 'medium',
     name: 'Medium',
     mask: { mask: '@*', special: specialId }
   },
   {
-    code: InputSocialType.messenger,
+    code: 'messenger',
     name: 'Messenger',
     prefix: 'https://m.me/',
     mask: maskFacebook
   },
   {
-    code: InputSocialType.ok,
+    code: 'ok',
     name: 'Odnoklassniki',
     prefix: 'https://ok.ru/',
     mask: maskId
   },
   {
-    code: InputSocialType.pinterest,
+    code: 'pinterest',
     name: 'Pinterest',
     prefix: 'https://www.pinterest.com/',
     mask: maskId
   },
   {
-    code: InputSocialType.qq,
+    code: 'qq',
     name: 'QQ',
     mask: maskNumber
   },
   {
-    code: InputSocialType.reddit,
+    code: 'reddit',
     name: 'Reddit',
     prefix: 'https://www.reddit.com/user/',
     mask: maskUnderHyphenId
   },
   {
-    code: InputSocialType.skype,
+    code: 'skype',
     name: 'Skype',
     prefix: 'skype:',
     mask: {
@@ -316,82 +313,82 @@ export const inputSocialList: InputSocialList = [
     }
   },
   {
-    code: InputSocialType.snapchat,
+    code: 'snapchat',
     name: 'Snapchat',
     mask: maskSnapchatStartLetter
   },
   {
-    code: InputSocialType.telegram,
+    code: 'telegram',
     name: 'Telegram',
     mask: maskUsernameStrictStartLetter
   },
   {
-    code: InputSocialType.tiktok,
+    code: 'tiktok',
     name: 'TikTok',
     mask: maskUsername
   },
   {
-    code: InputSocialType.tumblr,
+    code: 'tumblr',
     name: 'Tumblr',
     mask: maskFacebook
   },
   {
-    code: InputSocialType.twitter,
+    code: 'twitter',
     name: 'Twitter',
     mask: maskUsernameStrict
   },
   {
-    code: InputSocialType.viber,
+    code: 'viber',
     name: 'Viber',
     mask: maskPhone
   },
   {
-    code: InputSocialType.vk,
+    code: 'vk',
     name: 'VKontakte',
     prefix: 'https://vk.com/',
     mask: maskVkStartLetter
   },
   {
-    code: InputSocialType.wechat,
+    code: 'wechat',
     name: 'WeChat',
     mask: maskWechatStartLetter
   },
   {
-    code: InputSocialType.weibo,
+    code: 'weibo',
     name: 'Weibo',
     prefix: 'https://weibo.com/',
     mask: maskId
   },
   {
-    code: InputSocialType.whatsapp,
+    code: 'whatsapp',
     name: 'WhatsApp',
     prefix: 'https://wa.me/',
     mask: maskPhone
   },
   {
-    code: InputSocialType.x,
+    code: 'x',
     name: 'X',
     mask: maskUsernameStrict
   },
   {
-    code: InputSocialType.xiaohongshu,
+    code: 'xiaohongshu',
     name: 'Xiaohongshu',
     mask: maskId
   },
   {
-    code: InputSocialType.youtube,
+    code: 'youtube',
     name: 'YouTube',
     prefix: 'https://www.youtube.com/@',
     mask: maskId
   },
   {
-    code: InputSocialType.zalo,
+    code: 'zalo',
     name: 'Zalo',
     prefix: 'https://zalo.me/',
     mask: maskPhone
   },
   {
-    code: InputSocialType.zhihu,
+    code: 'zhihu',
     name: 'Zhihu',
     prefix: 'https://www.zhihu.com/people/',
     mask: maskId

@@ -10,7 +10,7 @@ import type { ErrorCenterCauseItem, ErrorCenterCauseList, ErrorCenterGroup, Erro
  */
 export class ErrorCenter {
   /** Instance of the error center / Экземпляр центра ошибок */
-  protected static item = new ErrorCenterInstance(errorCauseList)
+  protected static item?: ErrorCenterInstance
 
   /**
    * Returns a request-isolated instance of ErrorCenterInstance.
@@ -19,6 +19,10 @@ export class ErrorCenter {
    * @returns ErrorCenterInstance instance / экземпляр ErrorCenterInstance
    */
   static getItem(): ErrorCenterInstance {
+    if (!this.item) {
+      this.item = new ErrorCenterInstance(errorCauseList)
+    }
+
     return this.item
   }
 

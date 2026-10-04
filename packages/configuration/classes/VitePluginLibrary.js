@@ -62,7 +62,7 @@ export class VitePluginLibrary {
    * Processes the bundle and injects style import into library entries if CSS was emitted.
    *
    * Обрабатывает бандл и внедряет импорт стилей в точки входа библиотеки, если был сгенерирован CSS.
-   * @param {import('rollup').NormalizedOutputOptions} options output options / параметры вывода
+   * @param {import('rollup').NormalizedOutputOptions} _options output options / параметры вывода
    * @param {import('rollup').OutputBundle} bundle output bundle / бандл вывода
    */
   processBundle(_options, bundle) {

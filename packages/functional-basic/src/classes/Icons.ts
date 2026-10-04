@@ -1,8 +1,6 @@
 import { forEach } from '../functions/forEach'
 import { isFunction } from '../functions/isFunction'
 
-import { Api } from './Api'
-
 /** Icon item type definition / Определение типа элемента иконки */
 export type IconsItem = string | Promise<string | any> | (() => Promise<string | any>)
 /** Icon configuration object / Объект конфигурации иконок */
@@ -115,7 +113,7 @@ export class Icons {
    * @returns string global link/ глобальная ссылка
    */
   static getUrlGlobal() {
-    return `${Api.isLocalhost() ? '' : ''}${this.url}`
+    return this.url
   }
 
   /**

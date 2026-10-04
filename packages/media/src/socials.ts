@@ -35,51 +35,48 @@ import socialIconZalo from './assets/socials/zalo.svg'
 import socialIconZhihu from './assets/socials/zhihu.svg'
 
 import { MediaSocial } from './classes/MediaSocial'
-import {
-  InputSocialType,
-  type InputSocialIcons
-} from './types/socialTypes'
+import type { InputSocialIcons } from './types/socialTypes'
 
 /**
  * Social icons dictionary by code /
  * Словарь иконок социальных сетей по коду
  */
 export const socialIcons: InputSocialIcons = {
-  [InputSocialType.alipay]: socialIconAlipay,
-  [InputSocialType.baidu]: socialIconBaidu,
-  [InputSocialType.dingtalk]: socialIconDingtalk,
-  [InputSocialType.discord]: socialIconDiscord,
-  [InputSocialType.douyin]: socialIconDouyin,
-  [InputSocialType.dzen]: socialIconDzen,
-  [InputSocialType.facebook]: socialIconFacebook,
-  [InputSocialType.github]: socialIconGithub,
-  [InputSocialType.gitlab]: socialIconGitlab,
-  [InputSocialType.habr]: socialIconHabr,
-  [InputSocialType.instagram]: socialIconInstagram,
-  [InputSocialType.line]: socialIconLine,
-  [InputSocialType.linkedin]: socialIconLinkedin,
-  [InputSocialType.medium]: socialIconMedium,
-  [InputSocialType.messenger]: socialIconMessenger,
-  [InputSocialType.ok]: socialIconOk,
-  [InputSocialType.pinterest]: socialIconPinterest,
-  [InputSocialType.qq]: socialIconQq,
-  [InputSocialType.reddit]: socialIconReddit,
-  [InputSocialType.skype]: socialIconSkype,
-  [InputSocialType.snapchat]: socialIconSnapchat,
-  [InputSocialType.telegram]: socialIconTelegram,
-  [InputSocialType.tiktok]: socialIconTiktok,
-  [InputSocialType.tumblr]: socialIconTumblr,
-  [InputSocialType.twitter]: socialIconTwitter,
-  [InputSocialType.viber]: socialIconViber,
-  [InputSocialType.vk]: socialIconVk,
-  [InputSocialType.wechat]: socialIconWechat,
-  [InputSocialType.weibo]: socialIconWeibo,
-  [InputSocialType.whatsapp]: socialIconWhatsapp,
-  [InputSocialType.x]: socialIconX,
-  [InputSocialType.xiaohongshu]: socialIconXiaohongshu,
-  [InputSocialType.youtube]: socialIconYoutube,
-  [InputSocialType.zalo]: socialIconZalo,
-  [InputSocialType.zhihu]: socialIconZhihu
+  alipay: socialIconAlipay,
+  baidu: socialIconBaidu,
+  dingtalk: socialIconDingtalk,
+  discord: socialIconDiscord,
+  douyin: socialIconDouyin,
+  dzen: socialIconDzen,
+  facebook: socialIconFacebook,
+  github: socialIconGithub,
+  gitlab: socialIconGitlab,
+  habr: socialIconHabr,
+  instagram: socialIconInstagram,
+  line: socialIconLine,
+  linkedin: socialIconLinkedin,
+  medium: socialIconMedium,
+  messenger: socialIconMessenger,
+  ok: socialIconOk,
+  pinterest: socialIconPinterest,
+  qq: socialIconQq,
+  reddit: socialIconReddit,
+  skype: socialIconSkype,
+  snapchat: socialIconSnapchat,
+  telegram: socialIconTelegram,
+  tiktok: socialIconTiktok,
+  tumblr: socialIconTumblr,
+  twitter: socialIconTwitter,
+  viber: socialIconViber,
+  vk: socialIconVk,
+  wechat: socialIconWechat,
+  weibo: socialIconWeibo,
+  whatsapp: socialIconWhatsapp,
+  x: socialIconX,
+  xiaohongshu: socialIconXiaohongshu,
+  youtube: socialIconYoutube,
+  zalo: socialIconZalo,
+  zhihu: socialIconZhihu
 }
 
 /**
@@ -89,4 +86,42 @@ export const socialIcons: InputSocialIcons = {
  */
 export function registerSocialIcons(): void {
   MediaSocial.addIcons(socialIcons)
+}
+
+export {
+  socialIconAlipay,
+  socialIconBaidu,
+  socialIconDingtalk,
+  socialIconDiscord,
+  socialIconDouyin,
+  socialIconDzen,
+  socialIconFacebook,
+  socialIconGithub,
+  socialIconGitlab,
+  socialIconHabr,
+  socialIconInstagram,
+  socialIconLine,
+  socialIconLinkedin,
+  socialIconMedium,
+  socialIconMessenger,
+  socialIconOk,
+  socialIconPinterest,
+  socialIconQq,
+  socialIconReddit,
+  socialIconSkype,
+  socialIconSnapchat,
+  socialIconTelegram,
+  socialIconTiktok,
+  socialIconTumblr,
+  socialIconTwitter,
+  socialIconViber,
+  socialIconVk,
+  socialIconWechat,
+  socialIconWeibo,
+  socialIconWhatsapp,
+  socialIconX,
+  socialIconXiaohongshu,
+  socialIconYoutube,
+  socialIconZalo,
+  socialIconZhihu
 }

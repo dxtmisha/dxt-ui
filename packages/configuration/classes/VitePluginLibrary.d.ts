@@ -42,14 +42,13 @@ export declare class VitePluginLibrary {
   init(): Plugin
 
   /**
-   * Processes a code chunk and injects the style import if it matches a library entry.
+   * Processes the bundle and injects style import into library entries if CSS was emitted.
    *
-   * Обрабатывает чанк кода и внедряет импорт стилей, если он соответствует точке входа библиотеки.
-   * @param code source code of the chunk / исходный код чанка
-   * @param chunk rendered chunk information / информация об отрендренном чанке
-   * @returns transformed code or null / трансформированный код или null
+   * Обрабатывает бандл и внедряет импорт стилей в точки входа библиотеки, если был сгенерирован CSS.
+   * @param _options output options / параметры вывода
+   * @param bundle output bundle / бандл вывода
    */
-  renderChunk(code: string, chunk: Rollup.RenderedChunk): { code: string; map: null } | null
+  processBundle(_options: Rollup.NormalizedOutputOptions, bundle: Rollup.OutputBundle): void
 
   /**
    * Checks if the file is a library index file.

@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.5.0] - 2026-10-04
+
+### Added
+- **`--library` Option in `dxt-component` CLI**:
+  - Added `--library` (`-l`) boolean option in `bin/design-component.ts` (default `false`) allowing explicit generation of library entry files when scaffolding new components.
+  - Added `makeLibrary()` method to `ComponentItem` (`src/classes/Component/ComponentItem.ts`) which conditionally creates `src/library/component-[Name].ts` exporting the component index.
+- **Global AI Rules for Pure Annotations & PurgeCSS**:
+  - Added Rule 12 (**Mandatory Pure Annotations (`/*#__PURE__*/`)**) to `aiCodeGlobalPrompt.en.md` and `aiCodeGlobalPrompt.ru.md` requiring top-level calls, constructor invocations, and pure factory functions to be annotated with `/*#__PURE__*/` for dead-code elimination.
+  - Added Rule 13 (**PurgeCSS & CSS Tree-Shaking Compatibility**) to `aiCodeGlobalPrompt.en.md` and `aiCodeGlobalPrompt.ru.md` prohibiting dynamic class name string concatenation and requiring unbroken class name literals, dictionaries, or safelist blocks.
+
+### Changed
+- **Default `isLibrary` Value in Component Generator**:
+  - Changed default constructor parameter `isLibrary: boolean = false` in `ComponentCreator` (`src/classes/Component/ComponentCreator.ts`).
+  - Changed default constructor parameter `isLibrary: boolean = false` in `ComponentItem` (`src/classes/Component/ComponentItem.ts`).
+  - Updated CLI instantiation in `bin/design-component.ts` to `new ComponentCreator(Boolean(values.library)).make()`.
+  - Updated test suites in `ComponentCreator.test.ts` and `ComponentItem.test.ts` to test default behavior and explicit `isLibrary: true` generation.
+
 ## [1.4.0] - 2026-09-23
 
 ### Added

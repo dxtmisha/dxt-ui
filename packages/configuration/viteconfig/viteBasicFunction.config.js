@@ -8,6 +8,7 @@ import dts from 'vite-plugin-dts'
 import browserslist from 'browserslist'
 import { browserslistToTargets } from 'lightningcss'
 
+import { getLibraryEntries } from '../functions/getLibraryEntries.js'
 import { vitePluginLibrary } from '../functions/vitePluginLibrary.js'
 
 // https://vite.dev/config/
@@ -17,14 +18,15 @@ import { vitePluginLibrary } from '../functions/vitePluginLibrary.js'
  *
  * Создаёт базовую конфигурацию Vite для библиотек с функциями/композаблами/классами.
  * @param {import('./viteBasicFunction.config').ViteBasicFunctionOptions} [options] configuration options / параметры конфигурации
- * @returns {import('vite').UserConfigExport} Vite config / конфигурация Vite
+ * @returns {import('vite').UserConfig} Vite config / конфигурация Vite
  */
 export const viteBasicFunction = ({
   entry = 'src/library.ts',
   name = 'dxt-ui',
-  target = 'es2018',
+  target = 'es2022',
   minify = true,
 
+  isLibraryEntries = false,
   isPluginLibrary = false,
   fileCssName = 'style.css',
   fileLibraryName = undefined,
@@ -75,8 +77,19 @@ export const viteBasicFunction = ({
   rollupTypes = false,
 
   browserslistValue = '>= 5%',
-  noDiscovery = true
+  noDiscovery = true,
+
+  cssCodeSplit = undefined,
+  preserveModules = undefined,
+  assetFileNames = undefined
 } = {}) => {
+  const finalEntry = isLibraryEntries
+    ? [
+      ...getLibraryEntries(),
+      ...(Array.isArray(entry) ? entry : (entry ? [entry] : []))
+    ]
+    : entry
+
   const isBundleTypes = bundleTypes || rollupTypes
   const bundleTypesConfig = isBundleTypes
     ? (bundledPackages ? { bundledPackages } : true)
@@ -92,13 +105,16 @@ export const viteBasicFunction = ({
         ...excludeExtended
       ],
       include: [
-        ...(Array.isArray(entry) ? entry : [entry]),
+        ...(Array.isArray(finalEntry) ? finalEntry : [finalEntry]),
         ...include,
         ...includeExtended
       ],
+      // vite-plugin-dts v5+ / vite-plugin-dts v5+
+      outDirs: 'dist',
+      bundleTypes: bundleTypesConfig,
+      // vite-plugin-dts v4 (backward compatibility) / vite-plugin-dts v4 (обратная совместимость)
       outDir: 'dist',
       bundledPackages,
-      bundleTypes: bundleTypesConfig,
       rollupTypes: isBundleTypes,
       staticImport: true,
       tsconfigPath: './tsconfig.app.json'
@@ -113,8 +129,9 @@ export const viteBasicFunction = ({
     build: {
       minify,
       target,
+      ...(cssCodeSplit !== undefined && { cssCodeSplit }),
       lib: {
-        entry,
+        entry: finalEntry,
         name,
         formats: ['es'],
         fileName: (_, entryName) => `${entryName}.js`
@@ -142,19 +159,22 @@ export const viteBasicFunction = ({
           return externalsList.some(ext => id === ext || id.startsWith(`${ext}/`))
         },
         output: {
-          assetFileNames: (assetInfo) => {
-            const fileName = assetInfo.names?.[0] || assetInfo.originalFileName
+          ...(preserveModules !== undefined && { preserveModules }),
+          assetFileNames: assetFileNames !== undefined
+            ? assetFileNames
+            : (assetInfo) => {
+              const fileName = assetInfo.names?.[0] || assetInfo.originalFileName
 
-            if (
-              fileCssName
-              && fileName
-              && fileName.endsWith('.css')
-            ) {
-              return fileCssName
+              if (
+                fileCssName
+                && fileName
+                && fileName.endsWith('.css')
+              ) {
+                return fileCssName
+              }
+
+              return '[name]-[hash][extname]'
             }
-
-            return '[name]-[hash][extname]'
-          }
         }
       }
     },

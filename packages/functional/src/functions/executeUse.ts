@@ -1,5 +1,5 @@
 import { getCurrentInstance, inject, provide } from 'vue'
-import { random, ServerStorage } from '@dxtmisha/functional-basic'
+import { ServerStorage } from '@dxtmisha/functional-basic'
 
 import { EffectScopeGlobal } from '../classes/ref/EffectScopeGlobal'
 
@@ -37,11 +37,8 @@ export type ExecuteUseReturn<R>
 
 let globalId: number = 1
 
-/** The unique code/ Уникальный код */
-const globalCode = random(100000, 999999)
-
 /** The unique identifier of the component/ Уникальный идентификатор компонента */
-const getId = () => `__execute_use${globalCode}::${globalId++}`
+const getId = () => `__execute_use::${globalId++}`
 
 /** The global callbacks/ Глобальные callback */
 const getGlobalMethods = () => ServerStorage.get<(() => any)[]>('__ui:execute-use-global__', () => [])

@@ -11,6 +11,9 @@ import type { ApiCacheItem, ApiCacheList, ApiFetch } from '../types/apiTypes'
  */
 const API_CACHE_DEFAULT_AGE = 24 * 60 * 60
 
+/** Default number of data retrieval requests before cleaning old cache / Количество запросов получения данных по умолчанию перед очисткой старого кэша */
+const API_CACHE_DEFAULT_STEP_AGE_CLEAR_OLD = 16_384
+
 /**
  * Class for caching API responses.
  *
@@ -36,10 +39,10 @@ export class ApiCache {
    * Number of data retrieval requests before starting the cleaning of old cache/
    * Количество запросов получения данных перед началом очистки старого кэша
    */
-  protected static cacheStepAgeClearOld = 16_384
+  protected static cacheStepAgeClearOld = API_CACHE_DEFAULT_STEP_AGE_CLEAR_OLD
 
   /** Number of data retrieval requests before starting the cleaning of old cache / Количество запросов получения данных перед началом очистки старого кэша */
-  protected static stepAgeClearOld: number = this.cacheStepAgeClearOld
+  protected static stepAgeClearOld: number = API_CACHE_DEFAULT_STEP_AGE_CLEAR_OLD
 
   /**
    * Initializes the storage with listeners.

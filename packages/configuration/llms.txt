@@ -4,20 +4,31 @@
 
 Provides centralized and standardized Vite configs, Rollup plugins, and TypeScript presets to eliminate boilerplate across packages.
 
-## Exports & Presets
+## Vite Presets
 
-- [viteBasic](viteconfig/viteBasic.config.js): Default Vite configuration for standard libraries.
-- [viteBasicFunction](viteconfig/viteBasicFunction.config.js): Vite config optimized for functional utility packages.
-- [viteComponents](viteconfig/viteComponents.config.js): Vite configuration for component libraries with auto-import and styles.
-- [viteConstructors](viteconfig/viteConstructors.config.js): Vite config for constructor-based packages.
-- [viteFigma](viteconfig/viteFigma.config.js): Specialized config for Figma plugin bundles (sandbox code + iframe UI).
-- [viteFlags](viteconfig/viteFlags.config.js): Optimized build config for SVG flag asset packages.
-- [viteLibrariesRollup](viteconfig/viteLibrariesRollup.config.js): Rollup-specific library configuration.
+- [viteBasic](viteconfig/viteBasic.config.js): Default Vite configuration preset for standard libraries.
+- [viteBasicFunction](viteconfig/viteBasicFunction.config.js): Parameterized Vite config factory for functional utilities, composables, and classes.
+- [viteComponents](viteconfig/viteComponents.config.js): Vite configuration for component libraries with module preservation, MDX support, and style injection.
+- [viteConstructors](viteconfig/viteConstructors.config.js): Vite config for constructor packages aggregating library entries and MDX support.
+- [viteFigma](viteconfig/viteFigma.config.js): Specialized config factory for Figma plugin bundles (sandbox code + iframe UI).
+- [viteFlags](viteconfig/viteFlags.config.js): Optimized build config preset for SVG flag and geographic asset packages.
+- [viteLibrariesRollup](viteconfig/viteLibrariesRollup.config.js): Multi-entry aggregate library configuration with bundled TypeScript declarations.
 - [viteMdx](viteconfig/viteMdx.config.js): Vite configuration with MDX documentation support.
-- [tsconfig.app.json](tsconfig/tsconfig.app.json): Base TypeScript configuration for browser application code.
-- [tsconfig.node.json](tsconfig/tsconfig.node.json): Base TypeScript configuration for Node.js build scripts.
+- [vitePurgeCss](viteconfig/vitePurgeCss.config.js): Vite configuration extending viteBasicFunction with PurgeCSS for unused CSS elimination.
+
+## Rollup & Vite Plugins
+
+- [vitePluginComponents](functions/vitePluginComponents.js): Post-build Vite plugin injecting component styles (`styleToken.css`) into output chunks.
+- [vitePluginLibrary](functions/vitePluginLibrary.js): Post-build Vite plugin injecting library CSS imports (`style.css`) into entry bundles.
+- [vitePluginPurgeCss](functions/vitePluginPurgeCss.js): Post-build Vite plugin for removing unused CSS selectors using PurgeCSS.
+
+## TypeScript Presets
+
+- [tsconfig.app.json](tsconfig/tsconfig.app.json): Base TypeScript configuration preset for browser application and library client code.
+- [tsconfig.node.json](tsconfig/tsconfig.node.json): Base TypeScript configuration preset for Node.js build scripts and tooling.
 
 ## Optional
 
-- [README](README.md): Package overview and usage examples.
+- [README.md](README.md): Package overview and usage examples.
+- [CHANGELOG.md](CHANGELOG.md): Project changelog and release history.
 - [package.json](package.json): Package metadata and export maps.

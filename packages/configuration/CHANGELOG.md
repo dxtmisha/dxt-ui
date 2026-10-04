@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.0] - 2026-10-04
+
+### Added
+- **`VitePluginPurgeCss`**: Added Vite plugin (`classes/VitePluginPurgeCss.js` / `functions/vitePluginPurgeCss.js`) for eliminating unused CSS from production bundles using PurgeCSS:
+  - Batch-processes all CSS assets in a single pass (`getCss`, `getCssAssets`, `getContent`, `updateCss`) to avoid redundant filesystem scanning.
+  - Supports custom scan globs (`content`), selector preservation (`safelist`), and dynamic PurgeCSS options (`purgeCssOptions`).
+  - Safely decodes both `string` and `Uint8Array` asset sources with `TextDecoder`.
+  - Added companion factory function `vitePluginPurgeCss` in `functions/vitePluginPurgeCss.js`.
+- **`vitePurgeCss`**: Added Vite configuration preset (`viteconfig/vitePurgeCss.config.js`) combining `viteBasicFunction` with `vitePluginPurgeCss`.
+- **Dependencies**: Added `@vue/tsconfig`, `purgecss`, and `rollup` to `peerDependencies` with `optional: true` metadata.
+
+### Changed
+- **`viteBasicFunction`**:
+  - Added `outDirs: 'dist'` for `vite-plugin-dts` v5+ while preserving `outDir`, `bundledPackages`, and `rollupTypes` for v4 backwards compatibility.
+  - Updated return type to `UserConfig`.
+- **`VitePluginLibrary`**:
+  - Corrected declaration in `VitePluginLibrary.d.ts` from obsolete `renderChunk` to the actual `processBundle` method.
+- **Type Definitions**:
+  - Replaced `{}` return types with `UserConfig` across configuration presets (`viteBasic`, `viteComponents`, `viteConstructors`, `viteFlags`, `viteLibrariesRollup`, `viteMdx`, `vitePurgeCss`).
+  - Replaced `any` types across all declaration files with strict types (`VitePluginPurgeCssRawCss`, `VitePluginPurgeCssRawContent`, `Rollup.PreRenderedAsset`, `PluginOption[]`).
+
 ## [1.0.4] - 2026-09-22
 
 ### Added

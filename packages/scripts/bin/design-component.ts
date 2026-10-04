@@ -3,9 +3,17 @@
 import { parseCliArguments } from './arguments'
 import { ComponentCreator } from '../dist/library-ui.js'
 
-parseCliArguments(
+const { values } = parseCliArguments(
   'Discovers empty component directories and scaffolds their initial structure from templates.',
-  'Usage: dxt-component'
+  'Usage: dxt-component [--library]',
+  {
+    library: {
+      type: 'boolean',
+      short: 'l',
+      default: false,
+      description: 'Generate library entry files for components'
+    }
+  }
 )
 
-new ComponentCreator().make()
+new ComponentCreator(Boolean(values.library)).make()

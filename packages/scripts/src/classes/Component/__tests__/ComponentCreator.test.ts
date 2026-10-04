@@ -46,4 +46,17 @@ describe('ComponentCreator', () => {
 
     expect(makeSpy).toHaveBeenCalled()
   })
+
+  it('passes isLibrary parameter to ComponentItem', () => {
+    vi.spyOn(PropertiesFile, 'readDirOnlyRecursive').mockReturnValue([
+      'src/components/Button'
+    ])
+    vi.spyOn(PropertiesFile, 'readDir').mockReturnValue([])
+    const makeSpy = vi.spyOn(ComponentItem.prototype, 'make').mockImplementation(() => {})
+
+    const creator = new ComponentCreator(true)
+    creator.make()
+
+    expect(makeSpy).toHaveBeenCalled()
+  })
 })

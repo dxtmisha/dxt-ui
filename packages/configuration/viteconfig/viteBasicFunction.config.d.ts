@@ -1,4 +1,4 @@
-import type { UserConfigExport } from 'vite'
+import type { Rollup, UserConfig } from 'vite'
 import type { VitePluginLibraryTarget } from '../classes/VitePluginLibrary'
 
 /** Options for base Vite library configuration / Параметры базовой конфигурации Vite для библиотек */
@@ -11,6 +11,9 @@ export interface ViteBasicFunctionOptions {
   target?: string
   /** Whether to minify the output / Минифицировать ли выходной код */
   minify?: boolean | 'esbuild' | 'terser'
+
+  /** Whether to automatically connect library entry points from src/library / Подключать ли автоматически точки входа библиотеки из src/library */
+  isLibraryEntries?: boolean
 
   /** Whether to enable the library plugin (injecting styles into library bundle) / Подключать ли плагин библиотеки (внедрение стилей в бандл библиотеки) */
   isPluginLibrary?: boolean
@@ -43,7 +46,7 @@ export interface ViteBasicFunctionOptions {
   /** Packages to bundle types for / Пакеты, типы которых нужно собрать */
   bundledPackages?: string[]
   /** Whether to bundle types into single declaration files / Объединять ли типы в единые файлы деклараций */
-  bundleTypes?: boolean | Record<string, any>
+  bundleTypes?: boolean | Record<string, unknown>
   /** Whether to use rollupTypes in dts plugin (alias for bundleTypes) / Использовать ли rollupTypes в плагине dts */
   rollupTypes?: boolean
 
@@ -51,9 +54,16 @@ export interface ViteBasicFunctionOptions {
   browserslistValue?: string
   /** Disable automatic dependency discovery for pre-bundling / Отключить автоматическое сканирование зависимостей для пре-бандлинга */
   noDiscovery?: boolean
+
+  /** Whether to enable CSS code splitting / Включать ли разделение CSS кода */
+  cssCodeSplit?: boolean
+  /** Whether to preserve module structure in output / Сохранять ли структуру исходных модулей в выводе */
+  preserveModules?: boolean
+  /** Asset file names pattern or function / Шаблон или функция для имен файлов ассетов */
+  assetFileNames?: string | ((assetInfo: Rollup.PreRenderedAsset) => string)
 }
 
-/****
+/**
  * Creates a base Vite config for libraries with functions/composables/classes.
  *
  * Создаёт базовую конфигурацию Vite для библиотек с функциями/композаблами/классами.
@@ -62,4 +72,4 @@ export interface ViteBasicFunctionOptions {
  */
 export declare const viteBasicFunction: (
   options?: ViteBasicFunctionOptions
-) => UserConfigExport
+) => UserConfig

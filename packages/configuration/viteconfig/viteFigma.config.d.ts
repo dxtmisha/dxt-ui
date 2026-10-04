@@ -1,3 +1,5 @@
+import type { PluginOption, UserConfigExport } from 'vite'
+
 /**
  * Generates the Vite configuration for Figma plugin development.
  *
@@ -10,5 +12,5 @@
 export declare const viteFigma: (
   isWatch: boolean,
   dirname: string,
-  plugins?: any[]
-) => import('vite').UserConfigExport
+  plugins?: PluginOption[]
+) => UserConfigExport

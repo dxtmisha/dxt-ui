@@ -26,7 +26,7 @@ const LIST_NAME: string[] = [
  * Regular expression for matching list macros /
  * Регулярное выражение для сопоставления макросов списка
  */
-const expListMacros = new RegExp(`%(${LIST_NAME.join('|')})`, 'g')
+const expListMacros = /%(d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v)/g
 
 /**
  * Applies a template to the text, replacing keys with values from the replacement object

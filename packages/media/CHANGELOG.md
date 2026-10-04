@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.8.1] - 2026-10-04
+
+### Added
+- **Named SVG Asset Exports**:
+  - Re-exported all individual country flag SVG components (`AdSvg`, `AeSvg`, `RuSvg`, `UsSvg`, etc. — 250 flags) from `src/flags.ts` (`@dxtmisha/media/flags`).
+  - Re-exported all individual file icon SVG components (`fileIcon7z`, `fileIconPdf`, `fileIconZip`, etc. — 87 icons) from `src/files.ts` (`@dxtmisha/media/files`).
+  - Re-exported all individual social media icon SVG components (`socialIconTelegram`, `socialIconGithub`, `socialIconVk`, etc. — 35 icons) from `src/socials.ts` (`@dxtmisha/media/socials`).
+
+### Changed
+- **Tree-Shaking & Optimization**:
+  - Added `"sideEffects": ["*.css", "**/*.css"]` to `package.json`, marking all JavaScript/TypeScript modules as pure for bundlers.
+  - Replaced enum member accesses (`MediaFileCategory.*`, `MediaFileGroup.*`, `InputSocialType.*`) with direct string literals in `fileList.ts`, `socialList.ts`, and `socials.ts` (`socialIcons` keys), eliminating runtime enum object evaluation during module initialization.
+
 ## [0.8.0] - 2026-09-28
 
 ### Added

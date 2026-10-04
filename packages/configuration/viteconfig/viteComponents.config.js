@@ -29,18 +29,12 @@ export const viteComponents = mergeConfig(
       '**/main.tsx'
     ],
     bundleTypes: false,
-    rollupTypes: false
+    rollupTypes: false,
+    cssCodeSplit: true,
+    preserveModules: true,
+    assetFileNames: '[name][extname]'
   }),
   {
-    build: {
-      cssCodeSplit: true,
-      rollupOptions: {
-        output: {
-          preserveModules: true,
-          assetFileNames: '[name][extname]'
-        }
-      }
-    },
     plugins: [
       mdx({
         exclude: [/\?raw$/, /media\/templates/]

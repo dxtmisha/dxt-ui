@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/configuration",
   "private": false,
-  "version": "1.0.4",
+  "version": "1.1.0",
   "type": "module",
   "description": "Shared configuration files for DXT UI - Vite configs and TypeScript configs for building UI components",
   "keywords": [
@@ -72,6 +72,10 @@
       "types": "./viteconfig/viteMdx.config.d.ts",
       "default": "./viteconfig/viteMdx.config.js"
     },
+    "./vitePurgeCss": {
+      "types": "./viteconfig/vitePurgeCss.config.d.ts",
+      "default": "./viteconfig/vitePurgeCss.config.js"
+    },
     "./vitePluginComponents": {
       "types": "./functions/vitePluginComponents.d.ts",
       "default": "./functions/vitePluginComponents.js"
@@ -79,6 +83,10 @@
     "./vitePluginLibrary": {
       "types": "./functions/vitePluginLibrary.d.ts",
       "default": "./functions/vitePluginLibrary.js"
+    },
+    "./vitePluginPurgeCss": {
+      "types": "./functions/vitePluginPurgeCss.d.ts",
+      "default": "./functions/vitePluginPurgeCss.js"
     }
   },
   "engines": {
@@ -94,6 +102,25 @@
     "vite": ">=8.3.0",
     "vite-plugin-dts": ">=5.1.1",
     "vite-plugin-singlefile": ">=2.3.3"
+  },
+  "optionalDependencies": {
+    "purgecss": ">=7.0.0"
+  },
+  "peerDependencies": {
+    "@vue/tsconfig": ">=0.9.1",
+    "purgecss": ">=7.0.0",
+    "rollup": ">=4.63.4"
+  },
+  "peerDependenciesMeta": {
+    "@vue/tsconfig": {
+      "optional": true
+    },
+    "purgecss": {
+      "optional": true
+    },
+    "rollup": {
+      "optional": true
+    }
   },
   "ui-test": true
 }

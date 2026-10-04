@@ -8,7 +8,7 @@ import { executeUseLocal } from '../../functions/executeUse'
  *
  * Singleton экземпляр для управления мета-тегами.
  */
-const item = executeUseLocal(() => {
+const item = /*#__PURE__*/ executeUseLocal(() => {
   const meta = MetaStatic.getItem()
 
   /** Reactive page title (without suffix) / Реактивный заголовок страницы (без суффикса) */

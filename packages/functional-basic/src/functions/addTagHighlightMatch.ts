@@ -1,16 +1,15 @@
 import { encodeAttribute } from './encodeAttribute'
 import { getSeparatingSearchExp } from './getSeparatingSearchExp'
 import { isFilled } from './isFilled'
-import { random } from './random'
 import { toString } from './toString'
 
 /** Unique tag for highlighting the match in the string / Уникальный тег для выделения совпадения в строке */
-const TAG_START = `___HIGHLIGHT_START_${random(100_000, 999_999)}___`
+const TAG_START = '___HIGHLIGHT_START___'
 
 /** Unique tag for highlighting the match in the string / Уникальный тег для выделения совпадения в строке */
-const TAG_END = `___HIGHLIGHT_END_${random(100_000, 999_999)}___`
+const TAG_END = '___HIGHLIGHT_END___'
 
-const expTag = new RegExp(`${TAG_START}|${TAG_END}`, 'g')
+const expTag = /___HIGHLIGHT_START___|___HIGHLIGHT_END___/g
 
 /**
  * Adds a tag to highlight the match in the string.
