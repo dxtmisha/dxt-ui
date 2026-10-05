@@ -59,6 +59,10 @@ export const wikiDescriptionsInputFileItem: StorybookComponentsDescriptionItem =
                 appearance="list"
                 :value="{ name: 'document-contract.pdf', size: 1048576 }"
               />
+              <DesignComponent
+                appearance="list"
+                :value="{ name: 'image.jpg', size: 2097152, value: image1 }"
+              />
             </div>
           </div>
 
