@@ -20,8 +20,34 @@ import {
  * Отвечает за поиск, загрузку и слияние файла конфигурации `design-ui.json`, обработку рекурсивных расширений и предоставление централизованного интерфейса для доступа к общепроектным настройкам, включая именование, разделители и параметры интеграции ИИ.
  */
 export class PropertiesConfig {
-  /** Loaded design-ui.json configuration object / Загруженный объект конфигурации design-ui.json */
-  protected static config: DesignUiConfig
+  /** Cached design-ui.json configuration object / Кэшированный объект конфигурации design-ui.json */
+  protected static _config?: DesignUiConfig
+
+  /**
+   * Loaded design-ui.json configuration object.
+   *
+   * Загруженный объект конфигурации design-ui.json.
+   * @returns loaded configuration / загруженная конфигурация
+   * @protected
+   */
+  protected static get config(): DesignUiConfig {
+    if (!this._config) {
+      this._config = this.loadConfig()
+    }
+
+    return this._config
+  }
+
+  /**
+   * Sets the design-ui.json configuration object.
+   *
+   * Устанавливает объект конфигурации design-ui.json.
+   * @param value configuration object / объект конфигурации
+   * @protected
+   */
+  protected static set config(value: DesignUiConfig | undefined) {
+    this._config = value
+  }
 
   /**
    * Checks whether only packages listed in package.json should be included in ai-prompt.md.
@@ -416,9 +442,5 @@ export class PropertiesConfig {
     }
 
     return {} as DesignUiConfig
-  }
-
-  static {
-    this.config = this.loadConfig()
   }
 }

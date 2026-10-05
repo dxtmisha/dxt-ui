@@ -2,22 +2,38 @@
 
 > CLI tools, AI integration scripts, and automation utilities for the DXT UI ecosystem.
 
-Provides automated Vue component scaffolding, Figma layout synchronization, library packaging, documentation generation via AI (Gemini, Claude, OpenAI), visual regression screenshot capturing, and prompt builders.
+Provides automated Vue component scaffolding, Figma layout synchronization, library packaging, documentation generation via AI (Gemini, Claude, OpenAI), visual regression screenshot capturing, prompt builders, and monorepo build orchestration.
 
 ## CLI Commands & Binaries
 
 - [dxt-component](bin/design-component.ts): Scaffolds complete Vue component directory structure (`.vue`, `props.ts`, `styleToken.scss`, and exports).
-- [dxt-component-wiki](bin/design-component-wiki.ts): Generates Storybook and MDX wiki documentation for components.
-- [dxt-constructor](bin/design-constructor.ts): Builds and links component constructors.
-- [dxt-library](bin/design-library.ts): Automatically generates `library.ts` barrel files across packages.
-- [dxt-ui](bin/design-ui.ts): Full UI component and documentation rebuild pipeline.
+- [dxt-constructor](bin/design-constructor.ts): Builds and links component constructors and token bindings.
 - [dxt-figma-layout](bin/design-figma.ts): Synchronizes Figma layout tokens with code.
 - [dxt-flags](bin/design-flags.ts): Rebuilds SVG flag assets and country dataset.
-- [dxt-prompt](bin/design-prompt.ts): Generates consolidated `ai-prompt.md` files for AI coding assistants.
+- [dxt-library](bin/design-library.ts): Automatically generates `library.ts` barrel files across packages.
+- [dxt-package](bin/design-package.ts): Scaffolds new monorepo packages with standard directory structure and templates.
+- [dxt-prompt](bin/design-prompt.ts): Generates consolidated `ai-prompt.md` files and synchronizes `AGENTS.md` rules.
 - [dxt-screenshot](bin/design-screenshot.ts): Puppeteer-based automated component screenshot capture across themes.
-- [dxt-types / dxt-types-save](bin/design-types.ts): Generates AI-optimized `ai-types.md` technical references.
+- [dxt-types](bin/design-types.ts): Generates AI-optimized `ai-types.md` technical references, MCP config, and description files.
+- [dxt-types-save](bin/design-types-save.ts): Fast offline rebuild of `ai-types.md` and MCP resources from cache without calling AI APIs.
+- [dxt-ui](bin/design-ui.ts): Full UI component, constructors, and documentation rebuild pipeline.
+- [dxt-wiki-storm](bin/design-wiki-storm.ts): Scans component wiki definitions and generates WebStorm / IDE live templates and metadata.
+- [dxt-build-packages](bin/build-packages.ts): Builds monorepo packages that have version changes or custom build commands.
+- [dxt-build-publish-packages](bin/build-publish-packages.ts): Scans and publishes changed monorepo packages to the npm registry.
 
-## Optional
+## Programmatic Entry Points
 
+- `.` ([src/library.ts](src/library.ts)): Full suite of classes including `DesignTypes`, `LibraryAiPrompt`, `ComponentCreator`, `PackageFile`, `PropertiesFile`, and `PropertiesConfig`.
+- `./ai` ([src/library-ai.ts](src/library-ai.ts)): AI providers (`AiGoogle`, `AiGoogleLite`, `AiClaude`, `AiOpenAi`, `AiZAi`, `AiAntigravityCli`) and composable `useAi`.
+- `./figma` ([src/library-figma.ts](src/library-figma.ts)): Figma API orchestration (`DesignFigma`, `DesignFigmaTokens`, `DesignFigmaClasses`).
+- `./ui` ([src/library-ui.ts](src/library-ui.ts)): UI constructors and component scaffolding (`ComponentCreator`, `DesignConstructors`, `DesignFlags`, `DesignUi`, `DesignWikiStorm`, `PackageInit`).
+- `./config` ([src/config.ts](src/config.ts)): Ecosystem constants, regex patterns, and default file paths.
+
+## Optional & AI Resources
+
+- [ai-resources/componentPrompt.md](ai-resources/componentPrompt.md): Rules and schema for prompt generation and AGENTS.md synchronization.
+- [ai-resources/componentMaterials.md](ai-resources/componentMaterials.md): Standards for analyzing component mockups and specifications.
+- [ai-resources/componentWiki.md](ai-resources/componentWiki.md): Guidelines for component documentation and wiki generation.
 - [README.md](README.md): Command documentation and programmatic usage guide.
 - [CHANGELOG.md](CHANGELOG.md): Version history and feature updates.
+- [package.json](package.json): Package metadata, dependencies, binaries, and export maps.

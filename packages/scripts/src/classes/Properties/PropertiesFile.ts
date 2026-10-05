@@ -8,8 +8,6 @@ import { UI_FILE_INDEX, UI_MODULES, UI_PROJECT_NAME } from '../../config'
 export type PropertiesFilePath = string | string[]
 export type PropertiesFileValue<T = any> = string | Record<string, T> | Buffer
 
-const dirnamePath = requirePath.dirname(fileURLToPath(import.meta.url))
-
 /**
  * Universal static utility for filesystem orchestration.
  * This class provides a standardized interface for all IO operations within the design system, including path normalization, recursive directory traversal, synchronized file reading/writing, and metadata retrieval. It abstracts platform-specific path differences and ensures consistent data handling across the toolchain.
@@ -18,8 +16,61 @@ const dirnamePath = requirePath.dirname(fileURLToPath(import.meta.url))
  * Этот класс предоставляет стандартизированный интерфейс для всех операций ввода-вывода в рамках дизайн-системы, включая нормализацию путей, рекурсивный обход директорий, синхронное чтение/запись файлов и получение метаданных. Он абстрагирует различия путей в разных ОС и обеспечивает согласованную обработку данных во всей цепочке инструментов.
  */
 export class PropertiesFile {
-  protected static root: string
-  protected static module: boolean
+  protected static _root?: string
+  protected static _module?: boolean
+
+  /**
+   * Root directory path (lazily evaluated).
+   *
+   * Корневой путь директории (ленивая инициализация).
+   * @returns root path / корневой путь
+   * @protected
+   */
+  protected static get root(): string {
+    if (this._root === undefined) {
+      this._root = process.cwd()
+    }
+
+    return this._root
+  }
+
+  /**
+   * Sets the root directory path.
+   *
+   * Устанавливает корневой путь директории.
+   * @param value root path / корневой путь
+   * @protected
+   */
+  protected static set root(value: string | undefined) {
+    this._root = value
+  }
+
+  /**
+   * Whether the package is connected as a module (lazily evaluated).
+   *
+   * Подключен ли пакет как модуль (ленивая инициализация).
+   * @returns boolean
+   * @protected
+   */
+  protected static get module(): boolean {
+    if (this._module === undefined) {
+      const dirnamePath = requirePath.dirname(fileURLToPath(import.meta.url))
+      this._module = Boolean(dirnamePath.match('node_modules'))
+    }
+
+    return this._module
+  }
+
+  /**
+   * Sets whether the package is connected as a module.
+   *
+   * Устанавливает, подключен ли пакет как модуль.
+   * @param value boolean
+   * @protected
+   */
+  protected static set module(value: boolean | undefined) {
+    this._module = value
+  }
 
   /**
    * Synchronously checks for the existence of a file or directory at the specified path.
@@ -351,9 +402,13 @@ export class PropertiesFile {
    */
   static readFile<R>(path: PropertiesFilePath): R | undefined {
     if (this.is(path)) {
-      return transformation(
-        requireFs.readFileSync(this.joinPath(path)).toString()
-      )
+      try {
+        return transformation(
+          requireFs.readFileSync(this.joinPath(path)).toString()
+        )
+      } catch {
+        return undefined
+      }
     }
 
     return undefined
@@ -367,7 +422,11 @@ export class PropertiesFile {
    */
   static readFileOnly(path: PropertiesFilePath): string | undefined {
     if (this.is(path)) {
-      return requireFs.readFileSync(this.joinPath(path)).toString()
+      try {
+        return requireFs.readFileSync(this.joinPath(path)).toString()
+      } catch {
+        return undefined
+      }
     }
 
     return undefined
@@ -519,10 +578,5 @@ export class PropertiesFile {
     return this.joinPath(path)
       .replace(`${this.root}${requirePath.sep}`, '')
       .replace(`${this.root}`, '')
-  }
-
-  static {
-    this.module = Boolean(dirnamePath.match('node_modules'))
-    this.root = process.cwd()
   }
 }

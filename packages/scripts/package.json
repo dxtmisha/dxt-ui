@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/scripts",
   "private": false,
-  "version": "1.5.0",
+  "version": "1.5.1",
   "type": "module",
   "description": "CLI tools, AI integration scripts, and automation utilities for DXT UI — automated component scaffolding, Figma layout generation, library packaging, documentation building, screenshot captures, and AI prompt processing.",
   "keywords": [
@@ -84,6 +84,10 @@
       "types": "./dist/library-figma.d.ts",
       "default": "./dist/library-figma.js"
     },
+    "./ui": {
+      "types": "./dist/library-ui.d.ts",
+      "default": "./dist/library-ui.js"
+    },
     "./config": {
       "types": "./dist/config.d.ts",
       "default": "./dist/config.js"
@@ -94,27 +98,27 @@
     "node": ">=20.0.0"
   },
   "dependencies": {
-    "@dxtmisha/functional": ">=1.15.16",
-    "@dxtmisha/functional-basic": ">=1.11.0",
-    "@dxtmisha/media": ">=0.7.4",
-    "sass": ">=1.104.1",
+    "@dxtmisha/functional": ">=1.15.18",
+    "@dxtmisha/functional-basic": ">=1.11.2",
+    "@dxtmisha/media": ">=0.8.1",
+    "sass": ">=1.105.1",
     "typescript": ">=6.0.3",
     "vite-node": ">=6.0.0",
     "vue": ">=3.5.43"
   },
   "devDependencies": {
-    "puppeteer": ">=25.9.0"
+    "puppeteer": ">=25.12.0"
   },
   "peerDependencies": {
-    "@ai-sdk/xai": ">=4.0.50",
-    "@anthropic-ai/claude-agent-sdk": ">=0.3.251",
-    "@anthropic-ai/sdk": ">=0.122.0",
-    "@dxtmisha/wiki": ">=0.114.0",
-    "@google/genai": ">=2.19.0",
-    "@napi-rs/canvas": ">=1.0.8",
-    "ai": ">=7.0.85",
-    "openai": ">=7.8.0",
-    "puppeteer": ">=25.9.0"
+    "@ai-sdk/xai": ">=5.0.14",
+    "@anthropic-ai/claude-agent-sdk": ">=0.3.289",
+    "@anthropic-ai/sdk": ">=0.131.0",
+    "@dxtmisha/wiki": ">=0.118.1",
+    "@google/genai": ">=2.27.0",
+    "@napi-rs/canvas": ">=1.0.10",
+    "ai": ">=7.0.127",
+    "openai": ">=7.28.0",
+    "puppeteer": ">=25.12.0"
   },
   "peerDependenciesMeta": {
     "@ai-sdk/xai": {
@@ -144,5 +148,6 @@
     "puppeteer": {
       "optional": true
     }
-  }
+  },
+  "sideEffects": false
 }

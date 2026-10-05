@@ -2,6 +2,46 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.118.2] - 2026-10-05
+
+### Added
+- **`InputFileItem` Component Constructor**:
+  - Introduced `InputFileItem` constructor (`src/constructors/InputFileItem/`) for rendering and managing individual uploaded files with metadata display, preview thumbnail, upload progress, and status indicators.
+  - Decomposed into modular helper classes:
+    - `InputFileItem`: Master orchestrator class coordinating file resolution, appearance modes, progress state, delete confirmation dialog, and events.
+    - `InputFileItemAppearance`: Resolves visual appearance variants (`standard`, `card`, `list`) and design token bindings.
+    - `InputFileItemDesign`: JSX rendering engine assembling thumbnails, captions, status icons, progress bars, delete buttons, and confirmation dialogs.
+    - `InputFileItemEvent`: Manages click events and delete actions (`onDelete`, `onDeleteConfirm`).
+    - `InputFileItemFile`: Handles file parsing, object URL creation, type detection via `@dxtmisha/media` `MediaFile`, and size formatting.
+    - `InputFileItemProgress`: Manages upload and processing progress state.
+    - `InputFileItemStatus`: Manages file status states (`pending`, `uploading`, `uploaded`, `error`) and status icons.
+  - Added delete confirmation dialog with customizable texts (`textDeleteConfirmTitle`, `textDeleteConfirmMessage`, `textDelete`, `textCancel`).
+  - Added support for warning icon (`iconWarning`) and custom status icons.
+  - Added library export entrypoint in `src/library/inputFileItem.ts` and export mapping in `package.json`.
+  - Added comprehensive unit tests in `src/constructors/InputFileItem/__tests__/`.
+- **`InputFileDropzone` Component Constructor**:
+  - Introduced `InputFileDropzone` constructor (`src/constructors/InputFileDropzone/`) for drag-and-drop file upload zones.
+  - Decomposed into helper classes `InputFileDropzone`, `InputFileDropzoneDesign`, `InputFileDropzoneEvent`, `InputFileDropzoneFiles`, and `InputFileDropzoneInclude`.
+  - Added library export entrypoint in `src/library/inputFileDropzone.ts` and export mapping in `package.json`.
+  - Added unit tests in `src/constructors/InputFileDropzone/__tests__/`.
+- **`ClockPeriod` Component Constructor**:
+  - Introduced `ClockPeriod` constructor (`src/constructors/ClockPeriod/`) providing AM/PM period selection logic and keyboard/click navigation for time picker components.
+  - Decomposed into helper classes `ClockPeriod`, `ClockPeriodDesign`, `ClockPeriodEvent`, and `ClockPeriodValue`.
+  - Exposed `setByHour(hour)` method to dynamically synchronize AM/PM period with selected hour value.
+  - Added library export entrypoint in `src/library/clockPeriod.ts` and export mapping in `package.json`.
+  - Added unit tests in `src/constructors/ClockPeriod/__tests__/`.
+- **`Skeleton` Enhancements**:
+  - Added `invisible` prop to preserve skeleton layout dimensions while hiding visual shimmer elements.
+  - Added configurable display delay and smooth visibility transitions (`delayHide`, opacity state management).
+- **`TextInclude` & Localization**:
+  - Added delete confirmation translation properties (`textDeleteConfirmTitle`, `textDeleteConfirmMessage`, `textDelete`, `textCancel`, `textLoading`) with default English/Russian translations.
+
+### Changed
+- **`CaptionInclude` Refactoring**:
+  - Enhanced caption and subcaption rendering logic to support flexible custom formats and slot fallbacks.
+- **`InputImage` Improvements**:
+  - Standardized file handling with `FieldFileValue` and updated `InputImageFiles` resolution.
+
 ## [0.118.1] - 2026-09-23
 
 ### Added

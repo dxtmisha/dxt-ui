@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.118.1] - 2026-10-05
+
+### Added
+- **`InputFileItem` MDX & Wiki Documentation**:
+  - Registered component descriptions (`wikiDescriptionsInputFileItem.ts`) in the central registry `wikiDescriptions.ts`.
+  - Created bilingual MDX documentation pages (`inputFileItem.en.mdx`, `inputFileItem.ru.mdx`), events documentation (`event.delete.*.mdx`, `event.retry.*.mdx`), expose signatures (`expose.*.mdx`), and mapping `wikiMdxInputFileItem.ts`.
+  - Documented file thumbnail preview, status management (`pending`, `uploading`, `uploaded`, `error`), progress bar, delete confirmation dialog, and layout variants.
+- **`InputFileDropzone` MDX & Wiki Documentation**:
+  - Registered component descriptions (`wikiDescriptionsInputFileDropzone.ts`) and MDX mapping (`wikiMdxInputFileDropzone.ts`).
+  - Created bilingual MDX documentation pages (`inputFileDropzone.en.mdx`, `inputFileDropzone.ru.mdx`) and event documentation (`event.add.*.mdx`).
+  - Documented drag-and-drop zone interactions, file selection events, and slot customization.
+- **`ClockPeriod` MDX & Wiki Documentation**:
+  - Registered component descriptions (`wikiDescriptionsClockPeriod.ts`) and MDX mapping (`wikiMdxClockPeriod.ts`).
+  - Created bilingual MDX documentation pages (`clockPeriod.en.mdx`, `clockPeriod.ru.mdx`), event handling (`event.*.mdx`), and exposed methods (`expose.*.mdx`, `setByHour`).
+- **`CarouselItem` MDX & Wiki Documentation**:
+  - Registered component descriptions (`wikiDescriptionsCarouselItem.ts`) and property controls `wikiCarouselItem.ts`.
+  - Created bilingual MDX documentation pages (`carouselItem.en.mdx`, `carouselItem.ru.mdx`), slots documentation (`slots.*.mdx`), and slide access expose (`expose.getSlide.*.mdx`).
+- **`Skeleton` Documentation**:
+  - Added component descriptions in `wikiDescriptionsSkeleton.ts` covering `invisible` prop behavior, display delay, and opacity transition states.
+- **Shared Wiki Property Controls & Exposes**:
+  - Added property modules: `wikiIconInclude.ts`, `wikiOption.ts`, `wikiStatus.ts`, `wikiStyle.ts`, `wikiText.ts`, `wikiValue.ts`.
+  - Added bilingual expose documentation for `expose.isSelected` (`expose.isSelected.en.mdx`, `expose.isSelected.ru.mdx`).
+
+### Changed
+- **`InputImage` Documentation**:
+  - Updated `wikiDescriptionsInputImage.ts` with standardized `FieldFileValue` typing, improved file handling descriptions, and enhanced Storybook examples.
+
 ## [0.118.0] - 2026-09-21
 
 ### Added

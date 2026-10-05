@@ -2,17 +2,29 @@
 
 > Storybook documentation toolkit, component metadata registry, and MDX documentation system for DXT UI.
 
-Centralizes component metadata, prop categories, Storybook argTypes builders (`WikiStorybook`), React documentation components (`StorybookMain`), and bilingual MDX documentation (en/ru/vi).
+Centralizes component metadata, prop categories, Storybook argTypes builders (`WikiStorybook`), React documentation components (`StorybookMain`, `StorybookDescriptions`), prop presets, and bilingual MDX documentation (English/Russian).
 
 ## Key Classes & Modules
 
-- [WikiStorybook](src/classes/WikiStorybook.ts): Builder class creating Storybook-compatible `argTypes` maps from component props and presets.
-- [WikiStorybookItem](src/classes/WikiStorybookItem.ts): Represents individual prop metadata, categories (`Status`, `Values`, `Styles`, `Adaptive`, `Technical`, `Hook`), and control configs.
-- [StorybookMain / StorybookDescriptions](src/components): Pre-built React components for rendering standard Storybook documentation layouts.
-- [media presets](src/media): Pre-configured prop control maps (`wikiStatus`, `wikiValue`, `wikiStyle`, `wikiButton`, `wikiField`, etc.).
-- [MDX documentation](src/media/functional): Structured bilingual markdown/MDX files for design system utilities and components.
+- [WikiStorybook](src/classes/WikiStorybook.ts): Builder class generating Storybook-compatible `argTypes` maps from component properties and presets.
+- [WikiStorybookItem](src/classes/WikiStorybookItem.ts): Represents individual prop metadata, categories (`Status`, `Values`, `Styles`, `Adaptive`, `Technical`, `Hook`), and control configurations.
+- [WikiStorybookProp](src/classes/WikiStorybookProp.ts): Property-level handler configuring description, default values, controls, and category bindings.
+- [StorybookMain / StorybookDescriptions](src/documentation/storybook/StorybookMain.tsx): Pre-built React components for rendering standard Storybook component documentation layouts and description panels.
+- [wiki prop presets](src/media/props/wiki.ts) (`@dxtmisha/wiki/media`): Centralized Storybook control presets (`wikiStatus`, `wikiValue`, `wikiStyle`, `wikiButton`, `wikiField`, `wikiIconInclude`, `wikiOption`, etc.).
+- [wikiDescriptions](src/media/descriptions/wikiDescriptions.ts) (`@dxtmisha/wiki/media`): Central registry of component descriptions, metadata, headers, argTypes, and layouts for 80+ design system components.
+- [MDX documentation](src/media/mdx): Structured bilingual Markdown/MDX documentation files for components, properties, events, slots, and exposed methods.
+- [functional MDX](src/media/functional) (`@dxtmisha/wiki/functional/*`): MDX documentation for isomorphic utility functions and framework modules.
 
-## Optional
+## Subpath Exports
 
-- [README.md](README.md): Usage guide for integrating with Storybook.
-- [package.json](package.json): Package exports and dependencies.
+- `@dxtmisha/wiki` (`.`): Core classes (`WikiStorybook`, `WikiStorybookItem`, `WikiStorybookProp`) and Storybook types.
+- `@dxtmisha/wiki/storybook`: React components (`StorybookMain`, `StorybookDescriptions`).
+- `@dxtmisha/wiki/media`: Sample media assets, prop control presets, and component descriptions registry.
+- `@dxtmisha/wiki/functional/*`: Direct access to functional MDX documentation files.
+- `@dxtmisha/wiki/storybook/styles`: Base SCSS styles for Storybook documentation pages.
+
+## Optional & Documentation
+
+- [README.md](README.md): Quick start guide, architecture overview, and integration instructions.
+- [CHANGELOG.md](CHANGELOG.md): Project changelog and release history.
+- [package.json](package.json): Package metadata, subpath export maps, and dependencies.

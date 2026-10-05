@@ -6,13 +6,17 @@ Extends `@dxtmisha/functional-basic` with Composition API primitives, reactive A
 
 ## Key Modules & Composables
 
-- [executeUseGlobal / executeUseLocal / executeUseProvide](src/functions): Singleton factories for reusable service state and decoupled API management.
-- [useApiRef / useApiManagementRef](src/composables): Reactive HTTP client composables with loading states, caching, pagination, search, and SSR hydration.
-- [useStorageRef / useSessionRef / useCookieRef](src/composables): Reactive wrappers for persistent storage with automatic cross-tab synchronization.
-- [useGeoIntlRef / useGeoUnitRef / t](src/composables): Locale-aware formatting for numbers, dates, currencies, units, and reactive translations.
-- [DesignConstructorAbstract / DesignComponents](src/classes): Class-based base architecture for building component constructors with lifecycle management.
-- [useMeta](src/composables): Reactive document title, Open Graph, and Twitter card synchronization.
-- [computedAsync / computedEternity](src/functions): Async computed property helpers for Vue 3.
+- [executeUseGlobal / executeUseLocal / executeUseProvide](src/functions/executeUse.ts): Scope-isolated singleton factories for service state, decoupled business logic, and API management.
+- [useApiRef / useApiManagementRef / useApiManagementAsyncRef](src/composables/ref/useApiManagementRef.ts): Reactive HTTP client composables with loading tracking, caching, pagination, client-side search, and SSR prefetching.
+- [useStorageRef / useSessionRef / useCookieRef / useBroadcastValueRef](src/composables/ref/useStorageRef.ts): Reactive wrappers for LocalStorage, SessionStorage, cookies, and BroadcastChannel with automatic cross-tab synchronization.
+- [useHashRef / useQueryRef](src/composables/ref/useQueryRef.ts): Reactive URL hash and query string parameter synchronization composables.
+- [useGeoIntlRef / useGeoUnitRef / useTranslateRef](src/composables/ref/useGeoIntlRef.ts): Locale-aware reactive formatting for numbers, dates, currencies, units, and dynamic translation loader (`t`).
+- [useSearchRef / useSearchValueRef / ListDataRef](src/composables/ref/useSearchRef.ts): Debounced multi-field search and reactive list data model with selection state management.
+- [useLazyRef / useLazyItemByMarginRef](src/composables/ref/useLazyRef.ts): IntersectionObserver composable for lazy rendering and viewport visibility tracking.
+- [DesignConstructorAbstract / DesignComponents](src/classes/design/DesignConstructorAbstract.ts): Class-based architectural primitives for creating token-driven component constructors with automatic lifecycle and prop bindings.
+- [useMeta](src/composables/ref/useMeta.ts): Reactive document `<title>`, Open Graph, and Twitter Cards synchronization.
+- [computedAsync / computedEternity](src/functions/computedAsync.ts): Async computed property helpers for resolving promises and caching asynchronous evaluations.
+- [dxtFunctionalPlugin](src/functions/dxtFunctionalPlugin.ts): Vue application plugin registering global configuration, router binding, and social media icons.
 
 ## Optional & AI Resources
 
@@ -20,4 +24,7 @@ Extends `@dxtmisha/functional-basic` with Composition API primitives, reactive A
 - [ai-resources/api-reference.md](ai-resources/api-reference.md): API management and singleton factory guidelines.
 - [ai-resources/storage-state.md](ai-resources/storage-state.md): Reactive storage and cross-tab state management patterns.
 - [ai-resources/localization-seo.md](ai-resources/localization-seo.md): Internationalization and SEO meta handling.
-- [README.md](README.md): Full documentation, principles, and difference from `functional-basic`.
+- [ai-resources/reactivity-lists.md](ai-resources/reactivity-lists.md): Asynchronous reactivity helpers, list state models, search filtering, and DOM observer utilities.
+- [README.md](README.md): Full documentation, architectural principles, and difference from `functional-basic`.
+- [CHANGELOG.md](CHANGELOG.md): Project changelog and release history.
+- [package.json](package.json): Package metadata, dependencies, and export maps.

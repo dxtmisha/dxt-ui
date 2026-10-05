@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.5.1] - 2026-10-05
+
+### Added
+- **`./ui` Export Subpath**:
+  - Added `"./ui"` export in `package.json` pointing to `./dist/library-ui.d.ts` and `./dist/library-ui.js`, enabling granular tree-shakeable imports of UI scaffolding and design system constructors (`ComponentCreator`, `DesignConstructors`, `DesignFlags`, `DesignUi`, `DesignWikiStorm`, `PackageInit`).
+
+### Changed
+- **Lazy Initialization in `PropertiesConfig`**:
+  - Converted `PropertiesConfig.config` from an eager static property evaluated at module load time (`static { this.config = this.loadConfig() }`) to a lazy caching getter `get config()`, eliminating top-level module side effects and enabling complete tree shaking.
+- **Lazy Initialization in `PropertiesFile`**:
+  - Converted `PropertiesFile.root` and `PropertiesFile.module` from eager static initialization to lazy getters `get root()` and `get module()`, moving directory resolution inside getter execution and eliminating static block evaluation.
+- **Dependency & Peer Dependency Updates**:
+  - Updated dependencies `@dxtmisha/functional` (>=1.15.18), `@dxtmisha/functional-basic` (>=1.11.2), `@dxtmisha/media` (>=0.8.1), and `sass` (>=1.105.1).
+  - Updated optional peer dependencies including `@ai-sdk/xai`, `@anthropic-ai/sdk`, `@google/genai`, `ai`, `openai`, and `puppeteer`.
+
+### Fixed
+- **Tree-Shaking Pure Annotations (`/*#__PURE__*/`)**:
+  - Added `/*#__PURE__*/` annotations to top-level `promisify(execFile)` in `src/functions/run.ts` and `src/classes/Build/BuildPublishPackages.ts`.
+  - Added `/*#__PURE__*/` annotation to top-level `AI_PROVIDER_REGISTRY = new Map(...)` in `src/composables/useAi.ts`, preventing bundlers from treating module initialization as an unshakeable side effect.
+- **Resilient File Reading in `PropertiesFile`**:
+  - Added safe `try / catch` handling in `PropertiesFile.readFile` and `PropertiesFile.readFileOnly` to safely return `undefined` when reading non-existent, unreadable, or mocked files without throwing uncaught filesystem exceptions.
+
 ## [1.5.0] - 2026-10-04
 
 ### Added

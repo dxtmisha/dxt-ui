@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.15.18] - 2026-10-05
+
+### Changed
+- **Tree-Shaking & Top-Level Purity**:
+  - Annotated `useMeta` singleton factory call with `/*#__PURE__*/` (`const item = /*#__PURE__*/ executeUseLocal(...)`) to ensure bundlers safely tree-shake unused exports without treating top-level module initialization as a side effect.
+  - Simplified component ID generation in `executeUse.ts`: removed dynamic `random()` code and unused `random` import from `@dxtmisha/functional-basic`, switching to sequential IDs (`__execute_use::${globalId++}`).
+- **Dependencies**:
+  - Updated `@dxtmisha/functional-basic` to `>=1.11.2`.
+  - Updated `@dxtmisha/media` to `>=0.8.1`.
+
+### Removed
+- **`flags` Subpath Export**:
+  - Removed `src/flags.ts`, `ai-types-list/flags.d.ts`, and `./flags` export from `package.json` following migration of flag SVG assets to `@dxtmisha/media/flags`.
+- **Empty Stylesheet**:
+  - Removed unused `src/style.scss` and its import from `src/library.ts`.
+
 ## [1.15.17] - 2026-10-01
 
 ### Fixed
