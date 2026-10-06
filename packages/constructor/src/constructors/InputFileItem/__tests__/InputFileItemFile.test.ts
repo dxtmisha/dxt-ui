@@ -20,26 +20,65 @@ describe('InputFileItemFile', () => {
   }
 
   describe('image', () => {
+    it('returns props.image when set', () => {
+      const helper = createHelper({ image: 'https://example.com/custom.png' })
+      expect(helper.image).toBe('https://example.com/custom.png')
+    })
+
+    it('prioritizes props.image over thumbnail', () => {
+      const helper = createHelper({
+        image: 'https://example.com/custom.png',
+        value: { thumbnail: 'https://example.com/thumb.png' }
+      })
+      expect(helper.image).toBe('https://example.com/custom.png')
+    })
+
+    it('returns props.value.thumbnail when thumbnail is set on value', () => {
+      const helper = createHelper({ value: { thumbnail: 'https://example.com/value-thumb.png' } })
+      expect(helper.image).toBe('https://example.com/value-thumb.png')
+    })
+
+    it('returns thumbnail even when file is not an image (e.g. PDF)', () => {
+      const mockFile = new File([''], 'doc.pdf', { type: 'application/pdf' })
+      const helper = createHelper({
+        file: mockFile,
+        value: { thumbnail: 'https://example.com/pdf-preview.png' }
+      })
+      expect(helper.image).toBe('https://example.com/pdf-preview.png')
+    })
+
     it('returns src when available and is an image', () => {
       const helper = createHelper({ value: { value: 'https://example.com/photo.jpg' } })
       expect(helper.image).toBe('https://example.com/photo.jpg')
     })
 
-    it('returns file instance when file is an image and no src is set', () => {
+    it('returns file instance when file is an image and no value is set', () => {
       const mockFile = new File([''], 'photo.png', { type: 'image/png' })
       const helper = createHelper({ file: mockFile })
 
       expect(helper.image).toBe(mockFile)
     })
 
-    it('returns file icon when src or file is not an image', () => {
+    it('returns file icon when value or file is not an image and no thumbnail is set', () => {
       const helper = createHelper({ value: { value: 'https://example.com/doc.pdf' } })
       expect(helper.image).toBe(helper.getIcon())
     })
 
-    it('returns undefined when neither image nor icon is available', () => {
+    it('returns undefined when neither image, thumbnail, nor icon is available', () => {
       const helper = createHelper({})
       expect(helper.image).toBeUndefined()
+    })
+  })
+
+  describe('thumbnail', () => {
+    it('returns props.value.thumbnail when provided', () => {
+      const helper = createHelper({ value: { thumbnail: 'https://example.com/val-thumb.webp' } })
+      expect(helper.thumbnail).toBe('https://example.com/val-thumb.webp')
+    })
+
+    it('returns undefined when no thumbnail is set', () => {
+      const helper = createHelper({})
+      expect(helper.thumbnail).toBeUndefined()
     })
   })
 
@@ -229,6 +268,41 @@ describe('InputFileItemFile', () => {
         lastModified: 55555
       })
     })
+
+    it('includes thumbnail from props.value in returned FieldFileValue', () => {
+      const helper = createHelper({
+        value: {
+          id: 1,
+          name: 'doc.pdf',
+          thumbnail: 'https://example.com/thumb.jpg'
+        }
+      })
+
+      expect(helper.get()).toEqual({
+        id: 1,
+        name: 'doc.pdf',
+        thumbnail: 'https://example.com/thumb.jpg'
+      })
+    })
+
+    it('merges thumbnail with file when file is provided and value has thumbnail', () => {
+      const mockFile = new File([''], 'doc.pdf', { type: 'application/pdf', lastModified: 111 })
+      const helper = createHelper({
+        file: mockFile,
+        value: {
+          thumbnail: 'https://example.com/pdf-thumb.jpg'
+        }
+      })
+
+      expect(helper.get()).toEqual({
+        file: mockFile,
+        name: 'doc.pdf',
+        size: 0,
+        type: 'application/pdf',
+        lastModified: 111,
+        thumbnail: 'https://example.com/pdf-thumb.jpg'
+      })
+    })
   })
 
   describe('getFile', () => {
@@ -265,24 +339,37 @@ describe('InputFileItemFile', () => {
   })
 
   describe('getSource', () => {
-    it('returns props.file when provided', () => {
+    it('returns thumbnail in priority when provided', () => {
+      const mockFile = new File([''], 'photo.jpg')
+      const helper = createTestHelper({
+        file: mockFile,
+        value: {
+          value: 'https://example.com/file.jpg',
+          name: 'photo.jpg',
+          thumbnail: 'https://example.com/thumb.png'
+        }
+      })
+      expect(helper.getSource()).toBe('https://example.com/thumb.png')
+    })
+
+    it('returns props.file when thumbnail is absent', () => {
       const mockFile = new File([''], 'photo.jpg')
       const helper = createTestHelper({ file: mockFile })
       expect(helper.getSource()).toBe(mockFile)
     })
 
-    it('returns props.value.file when props.file is absent', () => {
+    it('returns props.value.file when thumbnail and props.file are absent', () => {
       const mockFile = new File([''], 'value.png')
       const helper = createTestHelper({ value: { file: mockFile } })
       expect(helper.getSource()).toBe(mockFile)
     })
 
-    it('returns src when file is absent', () => {
+    it('returns src when thumbnail and file are absent', () => {
       const helper = createTestHelper({ value: { value: 'https://example.com/file.jpg' } })
       expect(helper.getSource()).toBe('https://example.com/file.jpg')
     })
 
-    it('returns name when neither file nor src is provided', () => {
+    it('returns name when neither thumbnail, file, nor src is provided', () => {
       const helper = createTestHelper({ value: { name: 'avatar.webp' } })
       expect(helper.getSource()).toBe('avatar.webp')
     })

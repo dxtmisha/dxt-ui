@@ -143,6 +143,8 @@ export type FieldFileValue = {
   lastModified?: number
   /** Crop coordinates [top, right, bottom, left] / Координаты кадрирования [сверху, справа, снизу, слева] */
   crop?: CropAreaCoordinator
+  /** Thumbnail image source (URL, data URL, or base64) / Строка источника миниатюры (URL, data URL или base64) */
+  thumbnail?: string
   /** Raw File instance / Исходный экземпляр файла */
   file?: File
 }

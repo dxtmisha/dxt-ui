@@ -53,59 +53,57 @@ export const wikiDescriptionsInputFileItem: StorybookComponentsDescriptionItem =
       template: `
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-item wiki-storybook-item--auto wiki-storybook-item--padding">
+            <span class="wiki-storybook-item__label wiki-storybook-item__label--static">List appearance:</span>
             <div class="wiki-storybook-flex-column">
-              <span class="wiki-storybook-item__label wiki-storybook-item__label--static">List appearance:</span>
               <DesignComponent
                 appearance="list"
                 :value="{ name: 'document-contract.pdf', size: 1048576 }"
               />
               <DesignComponent
                 appearance="list"
-                :value="{ name: 'image.jpg', size: 2097152, value: image1 }"
+                :value="{ name: 'image.jpg', size: 2097152, thumbnail: image1 }"
+              />
+              <DesignComponent
+                appearance="list"
+                :value="{ name: 'photo.jpg', size: 3145728, thumbnail: 'https://picsum.photos/200/200?random=1' }"
               />
             </div>
           </div>
 
           <div class="wiki-storybook-item wiki-storybook-item--auto wiki-storybook-item--padding">
-            <div class="wiki-storybook-flex-column">
-              <span class="wiki-storybook-item__label wiki-storybook-item__label--static">Compact appearance:</span>
-              <div class="wiki-storybook-flex">
-                <DesignComponent
-                  appearance="compact"
-                  status="uploaded"
-                  :value="{ name: 'avatar.png', size: 512000 }"
-                />
-                <DesignComponent
-                  appearance="compact"
-                  status="error"
-                  :value="{ name: 'invoice.pdf', size: 120000 }"
-                />
-              </div>
+            <span class="wiki-storybook-item__label wiki-storybook-item__label--static">Compact appearance:</span>
+            <DesignComponent
+              appearance="compact"
+              status="uploaded"
+              :value="{ name: 'avatar.png', size: 512000 }"
+            />
+            <DesignComponent
+              appearance="compact"
+              status="error"
+              :value="{ name: 'invoice.pdf', size: 120000 }"
+            />
+          </div>
+
+          <div class="wiki-storybook-item wiki-storybook-item--auto wiki-storybook-item--padding">
+            <span class="wiki-storybook-item__label wiki-storybook-item__label--static">Tile appearance:</span>
+            <div class="wiki-storybook-flex">
+              <DesignComponent
+                appearance="tile"
+                status="uploaded"
+                :value="{ name: 'scenery.jpg', size: 4194304, value: image1 }"
+              />
+              <DesignComponent
+                appearance="tile"
+                status="uploading"
+                :loading="{ value: 40 }"
+                :value="{ name: 'uploading.jpg', size: 2097152, value: image1 }"
+              />
             </div>
           </div>
 
           <div class="wiki-storybook-item wiki-storybook-item--auto wiki-storybook-item--padding">
+            <span class="wiki-storybook-item__label wiki-storybook-item__label--static">States:</span>
             <div class="wiki-storybook-flex-column">
-              <span class="wiki-storybook-item__label wiki-storybook-item__label--static">Tile appearance:</span>
-              <div class="wiki-storybook-flex">
-                <DesignComponent
-                  appearance="tile"
-                  status="uploaded"
-                  :value="{ name: 'scenery.jpg', size: 4194304, value: image1 }"
-                />
-                <DesignComponent
-                  appearance="tile"
-                  status="uploading"
-                  :loading="{ value: 40 }"
-                  :value="{ name: 'uploading.jpg', size: 2097152, value: image1 }"
-                />
-              </div>
-            </div>
-          </div>
-
-          <div class="wiki-storybook-item wiki-storybook-item--auto wiki-storybook-item--padding">
-            <div class="wiki-storybook-flex-column">
-              <span class="wiki-storybook-item__label wiki-storybook-item__label--static">States:</span>
               <DesignComponent
                 selected
                 :value="{ name: 'selected-item.pdf', size: 854000 }"

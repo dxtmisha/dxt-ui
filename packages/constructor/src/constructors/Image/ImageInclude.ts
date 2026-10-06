@@ -1,8 +1,9 @@
 // ai-none
 
-import { type ConstrEmit, type DesignComponents, getBind, type RefOrNormal } from '@dxtmisha/functional'
+import { type ConstrEmit, type DesignComponents, getBind } from '@dxtmisha/functional'
 
 import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
+import type { ComponentIncludeExtra, ComponentIncludeProps } from '../../types/componentInclude'
 
 import type { ImageEventData, ImageComponentInclude, ImageEmitsInclude, ImagePropsInclude } from './basicTypes'
 import type { ImageProps } from './props'
@@ -38,9 +39,9 @@ export class ImageInclude extends ComponentIncludeAbstract<
    */
   constructor(
     className: string,
-    props: ImagePropsInclude,
+    props: ComponentIncludeProps<ImagePropsInclude>,
     components?: DesignComponents<ImageComponentInclude, ImagePropsInclude>,
-    extra?: RefOrNormal<Record<string, any>>,
+    extra?: ComponentIncludeExtra<ImageProps>,
     protected readonly emits?: ConstrEmit<ImageEmitsInclude>
   ) {
     super(className, props, components, extra)

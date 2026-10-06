@@ -38,17 +38,35 @@ export class InputFileItemFile {
   }
 
   /**
-   * Resolves and returns the image source (File or URL), or file icon if not an image.
+   * Resolves and returns the image source (File, URL, thumbnail, or prop image), or file icon if not an image.
    *
-   * Определяет и возвращает источник изображения (File или URL), либо иконку файла, если это не изображение.
+   * Определяет и возвращает источник изображения (File, URL, миниатюру или свойство image), либо иконку файла, если это не изображение.
    * @returns image source, File instance, icon string, or undefined / источник изображения, экземпляр File, строка иконки или undefined
    */
-  get image(): string | File | undefined {
+  get image(): InputFileItemPropsBasic['image'] | File | undefined {
+    if (this.props.image) {
+      return this.props.image
+    }
+
+    if (this.thumbnail) {
+      return this.thumbnail
+    }
+
     if (this.isImage()) {
       return this.src ?? this.getFile()
     }
 
     return this.getIcon()
+  }
+
+  /**
+   * Resolves and returns the thumbnail source.
+   *
+   * Определяет и возвращает источник миниатюры.
+   * @returns thumbnail source string or undefined / строка источника миниатюры или undefined
+   */
+  get thumbnail(): string | undefined {
+    return this.props.value?.thumbnail
   }
 
   /**
@@ -161,7 +179,8 @@ export class InputFileItemFile {
    * @returns file source object, string, or undefined / объект источника файла, строка или undefined
    */
   protected getSource(): File | string | undefined {
-    return this.getFile()
+    return this.thumbnail
+      ?? this.getFile()
       ?? this.src
       ?? (this.name || undefined)
   }

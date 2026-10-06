@@ -217,10 +217,12 @@ export class InputFileItem {
 
     this.image = new ImageIncludeConstructor(
       this.className,
-      this.props,
+      () => ({
+        ...this.props,
+        image: this.file.image
+      }),
       this.components,
       () => ({
-        value: this.file.image,
         alt: this.file.name
       })
     )

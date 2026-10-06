@@ -7,6 +7,7 @@ const propsNames: StorybookProps = [
   // :propsList [!] System label / Системная метка
   { name: 'appearance', type: 'string', option: ['list', 'compact', 'tile'] },
   { name: 'buttonAttrs', type: 'ConstrBind<ButtonProps>' },
+  { name: 'confirmDelete', type: 'boolean' },
   { name: 'disabled', type: 'boolean' },
   { name: 'file', type: 'File' },
   { name: 'focus', type: 'boolean' },
@@ -14,6 +15,7 @@ const propsNames: StorybookProps = [
   { name: 'iconError', type: 'string' },
   { name: 'iconRetry', type: 'string' },
   { name: 'iconSuccess', type: 'string' },
+  { name: 'iconWarning', type: 'string' },
   { name: 'image', type: 'string | ConstrBind<ImageProps>' },
   { name: 'imageAttrs', type: 'ConstrBind<ImageProps>' },
   { name: 'isSkeleton', type: 'boolean' },
@@ -23,6 +25,7 @@ const propsNames: StorybookProps = [
   { name: 'selected', type: 'boolean' },
   { name: 'status', type: 'string', option: ['uploading', 'uploaded', 'error', 'idle'] },
   { name: 'textDelete', type: 'TextValue' },
+  { name: 'textDeleteConfirm', type: 'TextValue' },
   { name: 'textError', type: 'TextValue' },
   { name: 'textLoadingFile', type: 'TextValue' },
   { name: 'textRetry', type: 'TextValue' },
