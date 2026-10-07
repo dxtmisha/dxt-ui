@@ -10,7 +10,7 @@
     "preview": "vite preview",
     "test": "vitest",
     "component": "dxt-component",
-    "library": "dxt-library",
+    "library": "dxt-library --no-style",
     "types": "npm run library && npm run build && dxt-types",
     "screenshot": "dxt-screenshot",
     "prepublishOnly": "npm run library && npm run build && dxt-types-save",
