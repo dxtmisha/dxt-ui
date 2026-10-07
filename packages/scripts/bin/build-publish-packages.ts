@@ -1,5 +1,8 @@
 #!/usr/bin/env vite-node
 
+// Scans changed packages, compares versions with the npm registry, builds and publishes updates.
+// Сканирует измененные пакеты, сравнивает версии с реестром npm, собирает и публикует обновления.
+
 import process from 'node:process'
 import { parseCliArguments } from './arguments'
 import { BuildPublishPackages } from '../dist/library.js'

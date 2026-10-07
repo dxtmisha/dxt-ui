@@ -17,6 +17,8 @@ export interface ViteBasicFunctionOptions {
 
   /** Whether to enable the library plugin (injecting styles into library bundle) / Подключать ли плагин библиотеки (внедрение стилей в бандл библиотеки) */
   isPluginLibrary?: boolean
+  /** Whether to enable the style plugin (injecting styles into JS chunks) / Подключать ли плагин стилей (внедрение стилей в JS-чанки) */
+  isPluginStyle?: boolean
   /** Name of the output CSS file / Имя выходного CSS файла */
   fileCssName?: string
   /** Target library file name(s) / Имя(имена) целевых файлов библиотеки */

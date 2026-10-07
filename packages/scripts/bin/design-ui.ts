@@ -1,5 +1,8 @@
 #!/usr/bin/env vite-node
 
+// Orchestrates design system generation: styles, documentation, component structures, and library exports.
+// Управляет генерацией дизайн-системы: стилями, документацией, структурами компонентов и экспортом библиотеки.
+
 import { parseCliArguments } from './arguments'
 import { DesignUi } from '../dist/library-ui.js'
 

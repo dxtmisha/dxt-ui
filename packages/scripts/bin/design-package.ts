@@ -1,5 +1,8 @@
 #!/usr/bin/env vite-node
 
+// Initializes the package structure and development environment from templates.
+// Инициализирует структуру пакета и среду разработки по шаблонам.
+
 import { parseCliArguments } from './arguments'
 import { PackageInit } from '../dist/library-ui.js'
 import { UI_DIR_PACKAGES } from '../dist/config.js'

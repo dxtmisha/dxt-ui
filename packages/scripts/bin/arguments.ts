@@ -1,3 +1,6 @@
+// Helper utility for parsing CLI command arguments and formatting help messages.
+// Вспомогательная утилита для разбора аргументов CLI-команд и форматирования сообщений справки.
+
 import process from 'node:process'
 import { parseArgs } from 'node:util'
 

@@ -48,6 +48,9 @@ Configuring Vite build pipelines and TypeScript options across multiple packages
 - **`vitePluginLibrary`** (`@dxtmisha/configuration/vitePluginLibrary`)
   Post-build Vite plugin for library packages that automatically injects `./style.css` (or custom CSS file) imports into the library bundle (`library.js`).
 
+- **`vitePluginStyle`** (`@dxtmisha/configuration/vitePluginStyle`)
+  Post-build Vite plugin that automatically discovers and injects associated CSS style imports (`import './[name]-[hash].css'`) into corresponding JavaScript chunks and files.
+
 ### TypeScript Presets
 
 - **`tsconfig/tsconfig.app.json`**

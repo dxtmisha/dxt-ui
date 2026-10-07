@@ -57,31 +57,53 @@ export const wikiDescriptionsInputFileItem: StorybookComponentsDescriptionItem =
             <div class="wiki-storybook-flex-column">
               <DesignComponent
                 appearance="list"
+                status="idle"
                 :value="{ name: 'document-contract.pdf', size: 1048576 }"
               />
               <DesignComponent
                 appearance="list"
+                status="uploading"
+                :loading="{ value: 1400000 }"
                 :value="{ name: 'image.jpg', size: 2097152, thumbnail: image1 }"
               />
               <DesignComponent
                 appearance="list"
+                status="uploaded"
                 :value="{ name: 'photo.jpg', size: 3145728, thumbnail: 'https://picsum.photos/200/200?random=1' }"
+              />
+              <DesignComponent
+                appearance="list"
+                status="error"
+                :value="{ name: 'archive-backup.zip', size: 5242880 }"
               />
             </div>
           </div>
 
           <div class="wiki-storybook-item wiki-storybook-item--auto wiki-storybook-item--padding">
             <span class="wiki-storybook-item__label wiki-storybook-item__label--static">Compact appearance:</span>
-            <DesignComponent
-              appearance="compact"
-              status="uploaded"
-              :value="{ name: 'avatar.png', size: 512000 }"
-            />
-            <DesignComponent
-              appearance="compact"
-              status="error"
-              :value="{ name: 'invoice.pdf', size: 120000 }"
-            />
+            <div class="wiki-storybook-flex">
+              <DesignComponent
+                appearance="compact"
+                status="idle"
+                :value="{ name: 'document.pdf', size: 1048576 }"
+              />
+              <DesignComponent
+                appearance="compact"
+                status="uploading"
+                :loading="{ value: 500000 }"
+                :value="{ name: 'archive.zip', size: 1048576 }"
+              />
+              <DesignComponent
+                appearance="compact"
+                status="uploaded"
+                :value="{ name: 'avatar.png', size: 512000 }"
+              />
+              <DesignComponent
+                appearance="compact"
+                status="error"
+                :value="{ name: 'invoice.pdf', size: 120000 }"
+              />
+            </div>
           </div>
 
           <div class="wiki-storybook-item wiki-storybook-item--auto wiki-storybook-item--padding">
@@ -89,14 +111,24 @@ export const wikiDescriptionsInputFileItem: StorybookComponentsDescriptionItem =
             <div class="wiki-storybook-flex">
               <DesignComponent
                 appearance="tile"
-                status="uploaded"
-                :value="{ name: 'scenery.jpg', size: 4194304, value: image1 }"
+                status="idle"
+                :value="{ name: 'scenery.jpg', size: 4194304, thumbnail: image1 }"
               />
               <DesignComponent
                 appearance="tile"
                 status="uploading"
-                :loading="{ value: 40 }"
-                :value="{ name: 'uploading.jpg', size: 2097152, value: image1 }"
+                :loading="{ value: 1400000 }"
+                :value="{ name: 'uploading.jpg', size: 2097152, thumbnail: image1 }"
+              />
+              <DesignComponent
+                appearance="tile"
+                status="uploaded"
+                :value="{ name: 'photo.jpg', size: 3145728, thumbnail: 'https://picsum.photos/200/200?random=1' }"
+              />
+              <DesignComponent
+                appearance="tile"
+                status="error"
+                :value="{ name: 'corrupted.jpg', size: 1048576, thumbnail: image1 }"
               />
             </div>
           </div>

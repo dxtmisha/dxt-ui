@@ -1,5 +1,8 @@
 #!/usr/bin/env vite-node
 
+// Scans, sorts, and builds monorepo packages managing build order by priorities.
+// Сканирует, сортирует и собирает пакеты монорепозитория с учетом приоритетов сборки.
+
 import process from 'node:process'
 import { parseCliArguments } from './arguments'
 import { BuildPackages } from '../dist/library.js'

@@ -1,5 +1,8 @@
 #!/usr/bin/env vite-node
 
+// Compiles package declarations and generates AI-optimized type definitions (ai-types.md).
+// Компилирует объявления пакетов и генерирует оптимизированные для AI определения типов (ai-types.md).
+
 import process from 'node:process'
 import { parseCliArguments } from './arguments'
 import { DesignTypes } from '../dist/library.js'

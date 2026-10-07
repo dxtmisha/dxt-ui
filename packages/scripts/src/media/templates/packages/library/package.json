@@ -45,5 +45,8 @@
   },
   "dependencies": {},
   "devDependencies": {},
-  "sideEffects": false
+  "sideEffects": [
+    "*.css",
+    "**/*.css"
+  ]
 }

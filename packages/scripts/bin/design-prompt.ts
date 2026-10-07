@@ -1,5 +1,8 @@
 #!/usr/bin/env vite-node
 
+// Generates the consolidated AI prompt file ai-prompt.md for the project.
+// Генерирует единый файл AI-промпта ai-prompt.md для проекта.
+
 import process from 'node:process'
 import { parseCliArguments } from './arguments'
 import { LibraryAiPrompt } from '../dist/library.js'

@@ -87,6 +87,10 @@
     "./vitePluginPurgeCss": {
       "types": "./functions/vitePluginPurgeCss.d.ts",
       "default": "./functions/vitePluginPurgeCss.js"
+    },
+    "./vitePluginStyle": {
+      "types": "./functions/vitePluginStyle.d.ts",
+      "default": "./functions/vitePluginStyle.js"
     }
   },
   "engines": {

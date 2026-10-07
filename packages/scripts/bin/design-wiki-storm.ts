@@ -1,5 +1,8 @@
 #!/usr/bin/env vite-node
 
+// Generates web-types.json with component metadata for JetBrains IDE IntelliSense support.
+// Генерирует web-types.json с метаданными компонентов для поддержки IntelliSense в IDE JetBrains.
+
 import process from 'node:process'
 import { parseCliArguments } from './arguments'
 import { DesignWikiStorm } from '../dist/library-ui.js'

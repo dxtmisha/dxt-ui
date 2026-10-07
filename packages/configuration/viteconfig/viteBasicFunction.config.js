@@ -10,6 +10,7 @@ import { browserslistToTargets } from 'lightningcss'
 
 import { getLibraryEntries } from '../functions/getLibraryEntries.js'
 import { vitePluginLibrary } from '../functions/vitePluginLibrary.js'
+import { vitePluginStyle } from '../functions/vitePluginStyle.js'
 
 // https://vite.dev/config/
 
@@ -28,6 +29,7 @@ export const viteBasicFunction = ({
 
   isLibraryEntries = false,
   isPluginLibrary = false,
+  isPluginStyle = false,
   fileCssName = 'style.css',
   fileLibraryName = undefined,
 
@@ -123,6 +125,10 @@ export const viteBasicFunction = ({
 
   if (isPluginLibrary) {
     plugins.push(vitePluginLibrary(fileCssName, fileLibraryName))
+  }
+
+  if (isPluginStyle) {
+    plugins.push(vitePluginStyle())
   }
 
   return defineConfig({

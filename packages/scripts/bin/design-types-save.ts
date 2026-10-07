@@ -1,5 +1,8 @@
 #!/usr/bin/env vite-node
 
+// Rebuilds ai-types.md from the cached ai-types-list directory without running AI.
+// Пересобирает ai-types.md из кэшированной директории ai-types-list без повторного вызова AI.
+
 import process from 'node:process'
 import { parseCliArguments } from './arguments'
 import { DesignTypes } from '../dist/library.js'

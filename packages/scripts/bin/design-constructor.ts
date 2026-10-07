@@ -1,5 +1,8 @@
 #!/usr/bin/env vite-node
 
+// Generates constructor files: property definitions, types, styles, and integration logic.
+// Генерирует файлы конструктора: определения свойств, типы, стили и логику интеграции.
+
 import process from 'node:process'
 import { parseCliArguments } from './arguments'
 import { DesignConstructors } from '../dist/library-ui.js'

@@ -1,5 +1,8 @@
 #!/usr/bin/env vite-node
 
+// Generates exportable data and aggregate module entries for the library.
+// Генерирует экспортируемые данные и агрегирующие точки входа модулей для библиотеки.
+
 import { parseCliArguments } from './arguments'
 import { LibraryExport } from '../dist/library.js'
 

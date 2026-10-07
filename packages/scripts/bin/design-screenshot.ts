@@ -1,5 +1,8 @@
 #!/usr/bin/env vite-node
 
+// Captures full-page component screenshots and extracts DOM/CSS artifacts via a headless browser.
+// Создает полностраничные скриншоты компонентов и извлекает DOM/CSS-артефакты через headless-браузер.
+
 import process from 'node:process'
 import { parseCliArguments } from './arguments'
 import { DesignScreenshot } from '../dist/library.js'

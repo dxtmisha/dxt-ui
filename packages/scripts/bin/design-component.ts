@@ -1,5 +1,8 @@
 #!/usr/bin/env vite-node
 
+// Discovers empty component directories and scaffolds their initial structure from templates.
+// Находит пустые директории компонентов и создает их начальную структуру по шаблонам.
+
 import { parseCliArguments } from './arguments'
 import { ComponentCreator } from '../dist/library-ui.js'
 

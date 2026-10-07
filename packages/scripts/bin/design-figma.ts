@@ -1,5 +1,8 @@
 #!/usr/bin/env vite-node
 
+// Downloads and processes design assets (SVG graphics, frames) from the Figma API.
+// Загружает и обрабатывает ресурсы дизайна (SVG-графику, фреймы) через Figma API.
+
 import process from 'node:process'
 import { parseCliArguments } from './arguments'
 import { DesignFigma } from '../dist/library-figma.js'
