@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.5.2] - 2026-10-07
+
+### Added
+- **Package Modification Date Tracking in `BuildPackages`**:
+  - Added `--date` (`-t`) CLI option to `dxt-build-packages` (`bin/build-packages.ts`) enabling rebuilds when package modification dates or git commit timestamps change.
+  - Added `BuildPackagesOptions` interface with `{ path, code, logFile, date }` configuration properties.
+  - Added `BuildPackageLogItem` interface (`{ version: string, date?: string }`) supporting structured build log entries.
+  - Added `getDate(packageFile)` method resolving commit timestamp via `GitRead.getFileDate()` with filesystem mtime fallback via `PropertiesFile.getTime()`.
+  - Added `getDateLog(name)` method to extract cached package timestamps from memory/file build logs.
+
+### Changed
+- **`BuildPackages` Constructor & Options Refactoring**:
+  - Refactored `BuildPackages` constructor to accept a unified `BuildPackagesOptions` object instead of separate positional arguments.
+  - Enhanced `updateLog()` to record both `version` and `date` in `ui-build.log.json`.
+  - Updated `getVersionLog()` to maintain backward compatibility with both legacy string-based and new object-based log records.
+  - Updated `isUpdate()` logic to evaluate date invalidation when `date: true` option is enabled.
+  - Updated unit test suite in `BuildPackages.test.ts` covering object-based options, date-driven rebuild detection, and log persistence.
+
 ## [1.5.1] - 2026-10-05
 
 ### Added

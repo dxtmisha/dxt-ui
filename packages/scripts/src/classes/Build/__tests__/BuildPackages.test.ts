@@ -6,8 +6,16 @@ import { GitIgnore } from '../../Git/GitIgnore'
 import * as runModule from '../../../functions/run'
 
 class TestBuildPackages extends BuildPackages {
+  public override getDate(packageFile: PackageFile): string {
+    return super.getDate(packageFile)
+  }
+
   public testGetCode(packageFile: PackageFile) {
     return this.getCode(packageFile)
+  }
+
+  public testGetDateLog(name: string) {
+    return this.getDateLog(name)
   }
 
   public testGetLogPath() {
@@ -46,12 +54,20 @@ describe('BuildPackages', () => {
 
   it('loads existing build log on constructor initialization', () => {
     vi.spyOn(PropertiesFile, 'readFile').mockReturnValue({
-      '@dxtmisha/core': '1.0.0'
+      '@dxtmisha/core': '1.0.0',
+      '@dxtmisha/modern': {
+        version: '2.0.0',
+        date: '2026-10-07 00:00:00 +0700'
+      }
     })
 
     const builder = new TestBuildPackages()
     expect(builder.testGetVersionLog('@dxtmisha/core')).toBe('1.0.0')
+    expect(builder.testGetDateLog('@dxtmisha/core')).toBeUndefined()
+    expect(builder.testGetVersionLog('@dxtmisha/modern')).toBe('2.0.0')
+    expect(builder.testGetDateLog('@dxtmisha/modern')).toBe('2026-10-07 00:00:00 +0700')
     expect(builder.testGetVersionLog('@dxtmisha/unknown')).toBe('0.0.0')
+    expect(builder.testGetDateLog('@dxtmisha/unknown')).toBeUndefined()
   })
 
   it('checks version consistency in isUpdate', () => {
@@ -73,6 +89,30 @@ describe('BuildPackages', () => {
     expect(builder.testIsUpdate(pkgDiff)).toBe(true)
   })
 
+  it('checks date comparison in isUpdate when date option is enabled', () => {
+    vi.spyOn(PropertiesFile, 'readFile').mockReturnValue({
+      '@dxtmisha/pkg-date': {
+        version: '1.0.0',
+        date: '2026-10-06 12:00:00 +0700'
+      }
+    })
+
+    const pkg = new PackageFile(['packages', 'pkg-date'])
+    vi.spyOn(pkg, 'getName').mockReturnValue('@dxtmisha/pkg-date')
+    vi.spyOn(pkg, 'isVersionConsistency').mockReturnValue(true)
+
+    const defaultBuilder = new TestBuildPackages()
+    vi.spyOn(defaultBuilder, 'getDate').mockReturnValue('2026-10-07 00:00:00 +0700')
+    expect(defaultBuilder.testIsUpdate(pkg)).toBe(false)
+
+    const dateBuilder = new TestBuildPackages({ date: true })
+    const dateSpy = vi.spyOn(dateBuilder, 'getDate').mockReturnValue('2026-10-07 00:00:00 +0700')
+    expect(dateBuilder.testIsUpdate(pkg)).toBe(true)
+
+    dateSpy.mockReturnValue('2026-10-06 12:00:00 +0700')
+    expect(dateBuilder.testIsUpdate(pkg)).toBe(false)
+  })
+
   it('updates memory log and writes to file on saveLog', () => {
     vi.spyOn(PropertiesFile, 'readFile').mockReturnValue({})
     const writeSpy = vi.spyOn(PropertiesFile, 'writeByPath').mockImplementation(() => {})
@@ -81,13 +121,20 @@ describe('BuildPackages', () => {
     const pkg = new PackageFile(['packages', 'my-pkg'])
     vi.spyOn(pkg, 'getName').mockReturnValue('@dxtmisha/my-pkg')
     vi.spyOn(pkg, 'getVersion').mockReturnValue('2.1.0')
+    vi.spyOn(builder, 'getDate').mockReturnValue('2026-10-07 00:39:49 +0700')
 
     builder.testUpdateLog(pkg)
-    expect(builder.getLog()['@dxtmisha/my-pkg']).toBe('2.1.0')
+    expect(builder.getLog()['@dxtmisha/my-pkg']).toEqual({
+      version: '2.1.0',
+      date: '2026-10-07 00:39:49 +0700'
+    })
 
     builder.testSaveLog()
     expect(writeSpy).toHaveBeenCalledWith(['.', 'logs', 'ui-build.log.json'], {
-      '@dxtmisha/my-pkg': '2.1.0'
+      '@dxtmisha/my-pkg': {
+        version: '2.1.0',
+        date: '2026-10-07 00:39:49 +0700'
+      }
     })
   })
 
@@ -113,7 +160,7 @@ describe('BuildPackages', () => {
       return { 'ui-priority': 200 }
     })
 
-    const builder = new BuildPackages('packages')
+    const builder = new BuildPackages({ path: 'packages' })
     await builder.make()
 
     expect(runSpy).toHaveBeenCalled()
@@ -130,34 +177,34 @@ describe('BuildPackages', () => {
     const defaultBuilder = new TestBuildPackages()
     expect(defaultBuilder.testGetCode(pkg)).toBe('npm run build')
 
-    const scriptBuilder = new TestBuildPackages(undefined, 'types')
+    const scriptBuilder = new TestBuildPackages({ code: 'types' })
     expect(scriptBuilder.testGetCode(pkg)).toBe('npm run types')
 
-    const customCommandBuilder = new TestBuildPackages(undefined, 'npm run build:prod')
-    expect(customCommandBuilder.testGetCode(pkg)).toBe('npm run build:prod')
+    const customCommandBuilder = new TestBuildPackages({ code: 'npm run build:prod' })
+    expect(customCommandBuilder.testGetCode(pkg)).toBeUndefined()
 
-    const unknownScriptBuilder = new TestBuildPackages(undefined, 'custom')
-    expect(unknownScriptBuilder.testGetCode(pkg)).toBe('custom')
+    const unknownScriptBuilder = new TestBuildPackages({ code: 'custom' })
+    expect(unknownScriptBuilder.testGetCode(pkg)).toBeUndefined()
   })
 
   it('resolves default and custom log paths in getLogPath', () => {
     const defaultBuilder = new TestBuildPackages()
     expect(defaultBuilder.testGetLogPath()).toEqual(['.', 'logs', 'ui-build.log.json'])
 
-    const nameOnlyBuilder = new TestBuildPackages(undefined, undefined, 'ui-types')
+    const nameOnlyBuilder = new TestBuildPackages({ logFile: 'ui-types' })
     expect(nameOnlyBuilder.testGetLogPath()).toEqual(['.', 'logs', 'ui-types.log.json'])
 
-    const jsonNameBuilder = new TestBuildPackages(undefined, undefined, 'ui-types.log.json')
+    const jsonNameBuilder = new TestBuildPackages({ logFile: 'ui-types.log.json' })
     expect(jsonNameBuilder.testGetLogPath()).toEqual(['.', 'logs', 'ui-types.log.json'])
 
-    const relativePathBuilder = new TestBuildPackages(undefined, undefined, 'custom/logs/types.json')
+    const relativePathBuilder = new TestBuildPackages({ logFile: 'custom/logs/types.json' })
     expect(relativePathBuilder.testGetLogPath()).toEqual(['custom/logs/types.json'])
   })
 
   it('initializes gitignore with log file path', () => {
     const gitIgnoreSpy = vi.spyOn(GitIgnore.prototype, 'make').mockReturnValue(true)
 
-    const builder = new TestBuildPackages(undefined, undefined, 'ui-types')
+    const builder = new TestBuildPackages({ logFile: 'ui-types' })
     builder.testInitGitIgnore()
 
     expect(gitIgnoreSpy).toHaveBeenCalled()
@@ -177,7 +224,7 @@ describe('BuildPackages', () => {
     vi.spyOn(PackageFile.prototype, 'isVersionConsistency').mockReturnValue(false)
     vi.spyOn(PackageFile.prototype, 'getScripts').mockReturnValue({ types: 'dxt-types' })
 
-    const builder = new BuildPackages('packages', 'types', 'ui-types')
+    const builder = new BuildPackages({ path: 'packages', code: 'types', logFile: 'ui-types' })
     await builder.make()
 
     expect(runSpy).toHaveBeenCalledWith(expect.any(PackageFile), 'npm run types')

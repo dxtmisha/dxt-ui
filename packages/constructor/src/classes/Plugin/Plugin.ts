@@ -79,6 +79,15 @@ export class Plugin {
   }
 
   /**
+   * Checks if the main style file should be processed.
+   *
+   * Проверяет, нужно ли обрабатывать главный файл стилей.
+   */
+  protected isStyleMain(): boolean {
+    return Boolean(this.options?.styleMain ?? true)
+  }
+
+  /**
    * Checks if styles should be processed.
    *
    * Проверяет, нужно ли обрабатывать стили.
@@ -99,7 +108,10 @@ export class Plugin {
       this.first
       && PluginTool.isJs(id)
     ) {
-      code = this.initMain(code)
+      if (this.isStyleMain()) {
+        code = this.initMain(code)
+      }
+
       this.first = false
     }
 

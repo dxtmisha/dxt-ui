@@ -20,6 +20,8 @@ export type PluginOptions = {
   style?: boolean
   /** Namespace for styles in the SCSS `@use` rule / Пространство имен для стилей в правиле SCSS `@use` */
   styleNamespace?: string
+  /** Whether to include the main style file / Включать ли главный файл стилей */
+  styleMain?: boolean
   /** Whether to include components / Включать ли компоненты */
   component?: boolean
   /** Additional Vite plugin options/ Дополнительные опции плагина Vite */

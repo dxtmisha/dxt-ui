@@ -1,6 +1,7 @@
 import { run } from '../../functions/run'
 
 import { GitIgnore } from '../Git/GitIgnore'
+import { GitRead } from '../Git/GitRead'
 import { PropertiesFile } from '../Properties/PropertiesFile'
 import { PackageFile } from '../Package/PackageFile'
 
@@ -10,6 +11,38 @@ import { UI_DIR_PACKAGES } from '../../config'
 const UI_BUILD_LOG_FILE = ['.', 'logs', 'ui-build.log.json']
 
 /**
+ * Configuration options for BuildPackages.
+ *
+ * Параметры конфигурации для BuildPackages.
+ */
+export interface BuildPackagesOptions {
+  /** Directory path to packages / Путь к директории пакетов */
+  path?: string
+
+  /** Custom build command or script name / Пользовательская команда сборки или имя скрипта */
+  code?: string
+
+  /** Custom log file name or path / Пользовательское имя или путь к файлу лога */
+  logFile?: string
+
+  /** Whether to compare package modification date in addition to version / Сравнивать ли дату изменения пакета дополнительно к версии */
+  date?: boolean
+}
+
+/**
+ * Cached package build log entry.
+ *
+ * Запись лога сборки пакета в кэше.
+ */
+export interface BuildPackageLogItem {
+  /** Package version / Версия пакета */
+  version: string
+
+  /** Last modification date or commit timestamp / Дата последнего изменения или временная метка коммита */
+  date?: string
+}
+
+/**
  * Orchestrator for scanning, sorting, and building monorepo packages.
  * Manages build order based on package priorities and tracks build versions via log cache.
  *
@@ -17,22 +50,27 @@ const UI_BUILD_LOG_FILE = ['.', 'logs', 'ui-build.log.json']
  * Управляет порядком сборки на основе приоритетов пакетов и отслеживает версии сборки через лог-кэш.
  */
 export class BuildPackages {
-  /** Map of cached package build versions / Карта кэшированных версий сборки пакетов */
-  protected log: Record<string, string>
+  /** Map of cached package build logs / Карта кэшированных логов сборки пакетов */
+  protected log: Record<string, BuildPackageLogItem | string>
+
+  protected readonly path: string
+  protected readonly code?: string
+  protected readonly logFile?: string
+  protected readonly date?: boolean
 
   /**
-   * Constructor initializes packages path, custom build code, custom log file, and loads build log.
+   * Constructor initializes packages path, custom build code, custom log file, date comparison flag, and loads build log.
    *
-   * Конструктор инициализирует путь к пакетам, пользовательский код сборки, пользовательский файл лога и загружает лог сборки.
-   * @param path packages directory path / путь к директории пакетов
-   * @param code custom build command or script name / пользовательская команда сборки или имя скрипта
-   * @param logFile custom log file name or path / пользовательское имя или путь к файлу лога
+   * Конструктор инициализирует путь к пакетам, пользовательский код сборки, пользовательский файл лога, флаг сравнения дат и загружает лог сборки.
+   * @param options configuration options / параметры конфигурации
    */
   constructor(
-    protected readonly path: string = UI_DIR_PACKAGES,
-    protected readonly code?: string,
-    protected readonly logFile?: string
+    protected readonly options: BuildPackagesOptions = {}
   ) {
+    this.path = options.path ?? UI_DIR_PACKAGES
+    this.code = options.code
+    this.logFile = options.logFile
+    this.date = options.date
     this.log = PropertiesFile.readFile(this.getLogPath()) ?? {}
   }
 
@@ -72,12 +110,20 @@ export class BuildPackages {
    *
    * Проверяет, нужно ли обновлять пакет.
    * @param packageFile package file object / объект файла пакета
-   * @returns true if version differs from log cache / true, если версия отличается от кэша лога
+   * @returns true if version or modification date differs from log cache / true, если версия или дата изменения отличается от кэша лога
    */
   protected isUpdate(packageFile: PackageFile): boolean {
-    return !packageFile.isVersionConsistency(
-      this.getVersionLog(packageFile.getName())
-    )
+    if (!packageFile.isVersionConsistency(this.getVersionLog(packageFile.getName()))) {
+      return true
+    }
+
+    if (this.date) {
+      const date = this.getDate(packageFile)
+
+      return Boolean(date) && date !== this.getDateLog(packageFile.getName())
+    }
+
+    return false
   }
 
   /**
@@ -97,6 +143,44 @@ export class BuildPackages {
     }
 
     return packageFile.getCodeBuildOrRecovery()
+  }
+
+  /**
+   * Returns the last modification date of the package.
+   *
+   * Возвращает дату последнего изменения пакета.
+   * @param packageFile package file instance / экземпляр файла пакета
+   * @returns commit date string / строка даты коммита
+   */
+  protected getDate(packageFile: PackageFile): string {
+    const path = PropertiesFile.joinPath(packageFile.getDir())
+    const date = GitRead.getFileDate(path)
+
+    if (date) {
+      return date
+    }
+
+    return PropertiesFile.getTime(packageFile.getDir()) ?? ''
+  }
+
+  /**
+   * Returns the cached modification date of the package from the build log.
+   *
+   * Возвращает кэшированную дату изменения пакета из лога сборки.
+   * @param name package name / имя пакета
+   * @returns cached date string or undefined / строка кэшированной даты или undefined
+   */
+  protected getDateLog(name: string): string | undefined {
+    const item = this.log?.[name]
+
+    if (
+      typeof item === 'object'
+      && item !== null
+    ) {
+      return item.date
+    }
+
+    return undefined
   }
 
   /**
@@ -129,17 +213,36 @@ export class BuildPackages {
    * @returns cached version string / строка кэшированной версии
    */
   protected getVersionLog(name: string): string {
-    return this.log?.[name] ?? '0.0.0'
+    const item = this.log?.[name]
+
+    if (
+      typeof item === 'object'
+      && item !== null
+    ) {
+      return item.version ?? '0.0.0'
+    }
+
+    return item ?? '0.0.0'
   }
 
   /**
-   * Updates the build log with the current package version in memory.
+   * Updates the build log with the current package version and date in memory.
    *
-   * Обновляет лог сборки текущей версией пакета в памяти.
+   * Обновляет лог сборки текущей версией и датой пакета в памяти.
    * @param packageFile package file object / объект файла пакета
    */
   protected updateLog(packageFile: PackageFile): void {
-    this.log[packageFile.getName()] = packageFile.getVersion()
+    const item: BuildPackageLogItem = {
+      version: packageFile.getVersion()
+    }
+
+    const date = this.getDate(packageFile)
+
+    if (date) {
+      item.date = date
+    }
+
+    this.log[packageFile.getName()] = item
   }
 
   /**

@@ -16,11 +16,11 @@ import type {
 
 type InputFileItemPropsToken = {
   // :type [!] System label / Системная метка
-  appearance?: 'list' | 'compact' | 'tile'
-  status?: 'uploading' | 'uploaded' | 'error' | 'idle'
   selected?: boolean
   disabled?: boolean
   readonly?: boolean
+  appearance?: 'list' | 'compact' | 'tile'
+  status?: 'uploading' | 'uploaded' | 'error' | 'idle'
   // :type [!] System label / Системная метка
 }
 

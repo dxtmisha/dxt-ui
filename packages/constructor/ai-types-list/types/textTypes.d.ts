@@ -1,93 +1,116 @@
-// md5:f0608064d1f2db619a60c90fba2c37c5 true
+// md5:5fdb89aaa2e35121f8c8b6064e242965 true
 export type TextValue = string | (() => string) | undefined;
-export type TextIndex = 'cancel' | 'change' | 'characterLimit' | 'characterRemaining' | 'close' | 'copiedClipboard' | 'decrement' | 'dropzone' | 'edit' | 'entriesMatch' | 'first' | 'hide' | 'increment' | 'info' | 'last' | 'loading' | 'more' | 'morePrev' | 'next' | 'notFound' | 'notifications' | 'ok' | 'page' | 'pagination' | 'previous' | 'rowsPerPage' | 'show' | 'symbol' | string;
+export type TextIndex = 'am' | 'cancel' | 'change' | 'characterLimit' | 'characterRemaining' | 'close' | 'copiedClipboard' | 'decrement' | 'delete' | 'deleteConfirm' | 'dropzone' | 'edit' | 'entriesMatch' | 'error' | 'first' | 'hide' | 'increment' | 'info' | 'last' | 'loading' | 'loadingFile' | 'more' | 'morePrev' | 'next' | 'notFound' | 'notifications' | 'ok' | 'page' | 'pagination' | 'pm' | 'previous' | 'retry' | 'rowsPerPage' | 'show' | 'symbol' | 'uploadSuccess' | string;
 export type TextList = Record<TextIndex, TextValue>;
+export type TextAmPropsInclude = {
+  textAm?: TextValue;
+};
 export type TextBreadcrumbPropsInclude = {
-    textBreadcrumb?: TextValue;
+  textBreadcrumb?: TextValue;
 };
 export type TextCancelPropsInclude = {
-    textCancel?: TextValue;
+  textCancel?: TextValue;
 };
 export type TextChangePropsInclude = {
-    textChange?: TextValue;
+  textChange?: TextValue;
 };
 export type TextCharacterLimitPropsInclude = {
-    textCharacterLimit?: TextValue;
+  textCharacterLimit?: TextValue;
 };
 export type TextCharacterRemainingPropsInclude = {
-    textCharacterRemaining?: TextValue;
+  textCharacterRemaining?: TextValue;
 };
 export type TextClosePropsInclude = {
-    textClose?: TextValue;
+  textClose?: TextValue;
 };
 export type TextCopiedClipboardPropsInclude = {
-    textCopiedClipboard?: TextValue;
+  textCopiedClipboard?: TextValue;
 };
 export type TextDecrementPropsInclude = {
-    textDecrement?: TextValue;
+  textDecrement?: TextValue;
+};
+export type TextDeletePropsInclude = {
+  textDelete?: TextValue;
+};
+export type TextDeleteConfirmPropsInclude = {
+  textDeleteConfirm?: TextValue;
 };
 export type TextDropzonePropsInclude = {
-    textDropzone?: TextValue;
+  textDropzone?: TextValue;
 };
 export type TextEditPropsInclude = {
-    textEdit?: TextValue;
+  textEdit?: TextValue;
 };
 export type TextEntriesMatchPropsInclude = {
-    textEntriesMatch?: TextValue;
+  textEntriesMatch?: TextValue;
+};
+export type TextErrorPropsInclude = {
+  textError?: TextValue;
 };
 export type TextFirstPropsInclude = {
-    textFirst?: TextValue;
+  textFirst?: TextValue;
 };
 export type TextHidePropsInclude = {
-    textHide?: TextValue;
+  textHide?: TextValue;
 };
 export type TextIncrementPropsInclude = {
-    textIncrement?: TextValue;
+  textIncrement?: TextValue;
 };
 export type TextInfoPropsInclude = {
-    textInfo?: TextValue;
+  textInfo?: TextValue;
 };
 export type TextLastPropsInclude = {
-    textLast?: TextValue;
+  textLast?: TextValue;
 };
 export type TextLoadingPropsInclude = {
-    textLoading?: TextValue;
+  textLoading?: TextValue;
+};
+export type TextLoadingFilePropsInclude = {
+  textLoadingFile?: TextValue;
 };
 export type TextMorePropsInclude = {
-    textMore?: TextValue;
+  textMore?: TextValue;
 };
 export type TextMorePrevPropsInclude = {
-    textMorePrev?: TextValue;
+  textMorePrev?: TextValue;
 };
 export type TextNextPropsInclude = {
-    textNext?: TextValue;
+  textNext?: TextValue;
 };
 export type TextNotFoundPropsInclude = {
-    textNotFound?: TextValue;
+  textNotFound?: TextValue;
 };
 export type TextNotificationsPropsInclude = {
-    textNotifications?: TextValue;
+  textNotifications?: TextValue;
 };
 export type TextOkPropsInclude = {
-    textOk?: TextValue;
+  textOk?: TextValue;
 };
 export type TextPagePropsInclude = {
-    textPage?: TextValue;
+  textPage?: TextValue;
 };
 export type TextPaginationPropsInclude = {
-    textPagination?: TextValue;
+  textPagination?: TextValue;
+};
+export type TextPmPropsInclude = {
+  textPm?: TextValue;
 };
 export type TextPreviousPropsInclude = {
-    textPrevious?: TextValue;
+  textPrevious?: TextValue;
+};
+export type TextRetryPropsInclude = {
+  textRetry?: TextValue;
 };
 export type TextRowsPerPagePropsInclude = {
-    textRowsPerPage?: TextValue;
+  textRowsPerPage?: TextValue;
 };
 export type TextShowPropsInclude = {
-    textShow?: TextValue;
+  textShow?: TextValue;
 };
 export type TextSymbolPropsInclude = {
-    textSymbol?: TextValue;
+  textSymbol?: TextValue;
 };
-/** Composite interface containing all localization text properties. @keywords localization, i18n, text */
-export type TextAllPropsInclude = TextBreadcrumbPropsInclude & TextCancelPropsInclude & TextChangePropsInclude & TextCharacterLimitPropsInclude & TextCharacterRemainingPropsInclude & TextClosePropsInclude & TextCopiedClipboardPropsInclude & TextDecrementPropsInclude & TextDropzonePropsInclude & TextEditPropsInclude & TextEntriesMatchPropsInclude & TextFirstPropsInclude & TextHidePropsInclude & TextIncrementPropsInclude & TextInfoPropsInclude & TextLastPropsInclude & TextLoadingPropsInclude & TextMorePropsInclude & TextMorePrevPropsInclude & TextNextPropsInclude & TextNotFoundPropsInclude & TextNotificationsPropsInclude & TextOkPropsInclude & TextPagePropsInclude & TextPaginationPropsInclude & TextPreviousPropsInclude & TextRowsPerPagePropsInclude & TextShowPropsInclude & TextSymbolPropsInclude;
+export type TextUploadSuccessPropsInclude = {
+  textUploadSuccess?: TextValue;
+};
+export type TextAllPropsInclude = TextAmPropsInclude & TextBreadcrumbPropsInclude & TextCancelPropsInclude & TextChangePropsInclude & TextCharacterLimitPropsInclude & TextCharacterRemainingPropsInclude & TextClosePropsInclude & TextCopiedClipboardPropsInclude & TextDecrementPropsInclude & TextDeletePropsInclude & TextDeleteConfirmPropsInclude & TextDropzonePropsInclude & TextEditPropsInclude & TextEntriesMatchPropsInclude & TextErrorPropsInclude & TextFirstPropsInclude & TextHidePropsInclude & TextIncrementPropsInclude & TextInfoPropsInclude & TextLastPropsInclude & TextLoadingPropsInclude & TextLoadingFilePropsInclude & TextMorePropsInclude & TextMorePrevPropsInclude & TextNextPropsInclude & TextNotFoundPropsInclude & TextNotificationsPropsInclude & TextOkPropsInclude & TextPagePropsInclude & TextPaginationPropsInclude & TextPmPropsInclude & TextPreviousPropsInclude & TextRetryPropsInclude & TextRowsPerPagePropsInclude & TextShowPropsInclude & TextSymbolPropsInclude & TextUploadSuccessPropsInclude;

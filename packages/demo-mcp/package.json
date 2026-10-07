@@ -35,5 +35,6 @@
   },
   "dependencies": {},
   "devDependencies": {},
-  "sideEffects": false
+  "sideEffects": false,
+  "ui-test": true
 }

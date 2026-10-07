@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.118.3] - 2026-10-07
+
+### Added
+- **`Plugin` Style Main Configuration**:
+  - Added `styleMain?: boolean` option to `PluginOptions` in `src/types/pluginTypes.ts` to control automatic injection of the library's main style file (`style.css`).
+  - Added `isStyleMain()` helper method in `Plugin` class (`src/classes/Plugin/Plugin.ts`).
+  - Updated `transform()` in `Plugin` to conditionally execute `this.initMain(code)` when `isStyleMain()` is `true`, resetting `this.first = false` on the first JS/TS file regardless of the style import setting.
+
 ## [0.118.2] - 2026-10-05
 
 ### Added
