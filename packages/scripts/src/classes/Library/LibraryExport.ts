@@ -16,6 +16,17 @@ import {
  */
 export class LibraryExport {
   /**
+   * Constructor for LibraryExport.
+   *
+   * Конструктор для LibraryExport.
+   * @param style whether to include styles in export / подключать ли стили в экспорт
+   */
+  constructor(
+    protected readonly style: boolean = true
+  ) {
+  }
+
+  /**
    * Start of data generation.
    *
    * Начало генерации данных.
@@ -51,6 +62,16 @@ export class LibraryExport {
    */
   protected isExport(path: string | string[]): boolean {
     return !PropertiesFile.joinPath(path).match('.test.') && !this.getFile(path).match(UI_FLAG_NOT_EXPORT)
+  }
+
+  /**
+   * Checks whether styles should be included in export.
+   *
+   * Проверяет, нужно ли подключать стили в экспорт.
+   * @returns true if styles should be included / true, если стили нужно подключать
+   */
+  protected isStyle(): boolean {
+    return this.style
   }
 
   /**
@@ -109,9 +130,13 @@ export class LibraryExport {
    */
   protected initFile(): string {
     const files: LibraryFiles = this.getDirectory()
-    const imports: string[] = [
-      this.initStyles()
-    ]
+    const imports: string[] = []
+    const styles = this.initStyles()
+
+    if (styles) {
+      imports.push(styles)
+    }
+
     const html: string[] = []
 
     files.forEach((file) => {
@@ -142,10 +167,12 @@ export class LibraryExport {
       )
     })
 
-    return imports.join('\r\n').trim()
-      + '\r\n'
-      + '\r\n'
-      + html.join('\r\n').trim()
+    const importsString = imports.join('\r\n').trim()
+    const htmlString = html.join('\r\n').trim()
+
+    return importsString
+      ? `${importsString}\r\n\r\n${htmlString}`
+      : htmlString
   }
 
   /**
@@ -155,6 +182,10 @@ export class LibraryExport {
    * @returns generated style import statements / сгенерированные инструкции импорта стилей
    */
   protected initStyles(): string {
+    if (!this.isStyle()) {
+      return ''
+    }
+
     const imports: string[] = []
     const paths: string[] = [
       'style.scss',

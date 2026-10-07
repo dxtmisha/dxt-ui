@@ -41,7 +41,7 @@ export const defaults: object = {
   iconRetry: 'refresh',
   iconSuccess: 'check_circle',
   iconError: 'cancel',
-  iconWarning: 'warning',
+  iconWarning: 'error',
   ...{
     // :default [!] System label / Системная метка
     appearance: 'list',

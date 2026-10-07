@@ -15,6 +15,10 @@ class TestLibraryExport extends LibraryExport {
     return this.getName(name)
   }
 
+  public testIsStyle() {
+    return this.isStyle()
+  }
+
   public testInitStyles() {
     return this.initStyles()
   }
@@ -60,6 +64,15 @@ describe('LibraryExport', () => {
     const styles = exporter.testInitStyles()
     expect(styles).toContain('import \'./style.scss\'')
     expect(styles).not.toContain('import \'./style.css\'')
+  })
+
+  it('respects style constructor parameter', () => {
+    const defaultExporter = new TestLibraryExport()
+    expect(defaultExporter.testIsStyle()).toBe(true)
+
+    const noStyleExporter = new TestLibraryExport(false)
+    expect(noStyleExporter.testIsStyle()).toBe(false)
+    expect(noStyleExporter.testInitStyles()).toBe('')
   })
 
   it('writes exported index file in make()', () => {

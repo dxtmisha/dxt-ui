@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.5.3] - 2026-10-07
+
+### Added
+- **Configurable Style Import in `LibraryExport`**:
+  - Added `style` constructor parameter (default `true`) and `isStyle()` check to `LibraryExport` (`src/classes/Library/LibraryExport.ts`) to conditionally control inclusion of global styles (`style.scss` / `style.css`).
+  - Added `--no-style` CLI option to `dxt-library` (`bin/design-library.ts`) allowing generation of library barrel exports without global style imports.
+  - Added unit test coverage in `LibraryExport.test.ts` for the `style` constructor option.
+
 ## [1.5.2] - 2026-10-07
 
 ### Added

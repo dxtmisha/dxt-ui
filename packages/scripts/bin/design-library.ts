@@ -3,9 +3,17 @@
 import { parseCliArguments } from './arguments'
 import { LibraryExport } from '../dist/library.js'
 
-parseCliArguments(
+const { values } = parseCliArguments(
   'Generates exportable data and aggregate module entries for the library.',
-  'Usage: dxt-library'
+  'Usage: dxt-library [--no-style]',
+  {
+    'no-style': {
+      type: 'boolean',
+      description: 'Exclude styles from the exported library'
+    }
+  }
 )
 
-new LibraryExport().make()
+const style = !values['no-style']
+
+new LibraryExport(style).make()
