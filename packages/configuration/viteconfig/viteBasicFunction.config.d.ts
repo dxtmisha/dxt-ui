@@ -9,6 +9,8 @@ export interface ViteBasicFunctionOptions {
   name?: string
   /** Build target / Цель сборки */
   target?: string
+  /** Output directory / Выходная директория */
+  outDir?: string
   /** Whether to minify the output / Минифицировать ли выходной код */
   minify?: boolean | 'esbuild' | 'terser'
 

@@ -12,6 +12,7 @@ The `dxt-library` command is a CLI utility that generates a consolidated entry p
 - **Smart Module Handling**: Automatically handles wildcard exports for TypeScript utilities and creates named exports for Vue components.
 - **Intelligent Filtering**: Excludes unit test files and files marked with a non-export directive.
 - **Global Style Bundling**: Automatically incorporates global styles into the generated entry file.
+- **Sub-Library Generation**: Optionally creates an additional export file (`src/library/_library.ts`) containing utilities, composables, classes, and types without Vue components or styles.
 
 ## How does it work?
 
@@ -21,20 +22,39 @@ The entry point compilation workflow automates the assembly of all module export
 2. It filters out unit test files (containing `.test.`) and files containing the `// export:none` directive.
 3. For each valid TypeScript file (`.ts`), it appends a standard wildcard export.
 4. For each Vue SFC file (`.vue`), it generates an import and maps it to a named constant export for clean consumption.
-5. It checks for the existence of `style.scss` or `style.css` in the base input directory and prepends their import statements if found.
+5. It checks for the existence of `style.scss` or `style.css` in the base input directory and prepends their import statements if found (unless `--no-style` is specified).
 6. It writes the compiled code directly to `src/library.ts`.
+7. If the `--sub` option is specified, it additionally generates `src/library/_library.ts` omitting the `components` folder and styles, with adjusted relative export paths.
 
 ## How to configure and run
 
 No complex setup is required to run the library entry point generator. The script automatically reads configurations and processes the preset export directories.
 
-To execute the generation workflow, run:
+### CLI Options
+
+- `--no-style`: Excludes global style imports from the generated library.
+- `--sub` / `--sub-library`: Generates an additional `src/library/_library.ts` sub-library entry point without components or styles.
+
+### Usage Examples
+
+Standard generation:
 ```bash
 npx dxt-library
 ```
 
+Generate without styles:
+```bash
+npx dxt-library --no-style
+```
+
+Generate with an additional sub-library file:
+```bash
+npx dxt-library --sub
+```
+
 ## Generated File Structure
 
-Upon successful execution, the tool creates or updates the following file in the package:
+Upon successful execution, the tool creates or updates the following files in the package:
 
 - `src/library.ts`: The unified entry point containing all imports, named component exports, and wildcards.
+- `src/library/_library.ts` *(optional, when `--sub` is enabled)*: The sub-library entry point without components and styles, intended for non-UI or headless usage.

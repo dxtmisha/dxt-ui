@@ -259,7 +259,7 @@ export class DesignTypesMakeFile {
 
             if (directory === this.getTemporaryDirectory()) {
               const sourceContent = this.getSourceContent(file)
-              
+
               if (sourceContent && sourceContent.match(UI_FLAG_AI_NONE)) {
                 itemContent = ''
               }

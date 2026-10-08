@@ -77,6 +77,8 @@ export const UI_DIRS_WIKI = [UI_DIR_IN, UI_DIR_WIKI]
 
 /** File with the list of exportable data/ Файл со списком экспортируемых данных */
 export const UI_DIRS_FILE_EXPORT = [UI_DIR_IN, 'library.ts']
+/** File with the list of exportable data for sub-library without components / Файл со списком экспортируемых данных для подбиблиотеки без компонентов */
+export const UI_DIRS_FILE_EXPORT_SUB = [...UI_DIRS_LIBRARY, '_library.ts']
 
 /** List of directories available for export/ Список директорий, доступных для экспорта */
 export const UI_DIRS_LIST_EXPORT = [

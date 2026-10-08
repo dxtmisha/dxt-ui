@@ -5,6 +5,7 @@ import type { LibraryFiles } from '../../types/libraryTypes'
 import {
   UI_DIRS_LIST_EXPORT,
   UI_DIRS_FILE_EXPORT,
+  UI_DIRS_FILE_EXPORT_SUB,
   UI_DIR_IN,
   UI_FLAG_NOT_EXPORT
 } from '../../config'
@@ -20,9 +21,11 @@ export class LibraryExport {
    *
    * Конструктор для LibraryExport.
    * @param style whether to include styles in export / подключать ли стили в экспорт
+   * @param sub whether to generate sub-library file without components / генерировать ли файл подбиблиотеки без компонентов
    */
   constructor(
-    protected readonly style: boolean = true
+    protected readonly style: boolean = true,
+    protected readonly sub: boolean = false
   ) {
   }
 
@@ -38,6 +41,15 @@ export class LibraryExport {
       UI_DIRS_FILE_EXPORT,
       `${this.initFile().trim()}\r\n`
     )
+
+    if (this.isSub()) {
+      console.log('Library sub export')
+
+      PropertiesFile.writeByPath(
+        UI_DIRS_FILE_EXPORT_SUB,
+        `${this.initFile(true).trim()}\r\n`
+      )
+    }
 
     console.log('\r\nfinish')
   }
@@ -72,6 +84,16 @@ export class LibraryExport {
    */
   protected isStyle(): boolean {
     return this.style
+  }
+
+  /**
+   * Checks whether the sub-library file should be created.
+   *
+   * Проверяет, нужно ли создавать файл подбиблиотеки.
+   * @returns true if sub-library file should be generated / true, если нужно генерировать файл подбиблиотеки
+   */
+  protected isSub(): boolean {
+    return this.sub
   }
 
   /**
@@ -126,12 +148,14 @@ export class LibraryExport {
    * File generation for saving.
    *
    * Генерация файла для сохранения.
+   * @param isSub whether to generate sub-library export without components / генерировать ли экспорт подбиблиотеки без компонентов
    * @returns generated export code / сгенерированный код экспорта
    */
-  protected initFile(): string {
+  protected initFile(isSub: boolean = false): string {
     const files: LibraryFiles = this.getDirectory()
     const imports: string[] = []
-    const styles = this.initStyles()
+    const prefix = isSub ? '..' : '.'
+    const styles = isSub ? '' : this.initStyles()
 
     if (styles) {
       imports.push(styles)
@@ -141,6 +165,13 @@ export class LibraryExport {
 
     files.forEach((file) => {
       const name = file.name
+
+      if (
+        isSub
+        && name === 'components'
+      ) {
+        return
+      }
 
       html.push('')
       html.push(`// ${this.getName(name)}`)
@@ -153,13 +184,16 @@ export class LibraryExport {
             console.log(`  ${item}`)
 
             if (item.match(/\.ts$/)) {
-              html.push(`export * from './${name}/${item.replace(/\.ts$/, '')}'`)
-            } else if (item.match(/\.vue$/)) {
+              html.push(`export * from '${prefix}/${name}/${item.replace(/\.ts$/, '')}'`)
+            } else if (
+              !isSub
+              && item.match(/\.vue$/)
+            ) {
               const componentName = item
                 .replace(/\.vue$/, '')
                 .replace(/^(.*?)([^/]+)$/, '$2')
 
-              imports.push(`import _${componentName} from './${name}/${item}'`)
+              imports.push(`import _${componentName} from '${prefix}/${name}/${item}'`)
               html.push(`export const ${componentName} = _${componentName}`)
             }
           }

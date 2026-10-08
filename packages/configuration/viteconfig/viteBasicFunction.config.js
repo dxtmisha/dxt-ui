@@ -25,6 +25,7 @@ export const viteBasicFunction = ({
   entry = 'src/library.ts',
   name = 'dxt-ui',
   target = 'es2022',
+  outDir = 'dist',
   minify = true,
 
   isLibraryEntries = false,
@@ -87,9 +88,9 @@ export const viteBasicFunction = ({
 } = {}) => {
   const finalEntry = isLibraryEntries
     ? [
-      ...getLibraryEntries(),
-      ...(Array.isArray(entry) ? entry : (entry ? [entry] : []))
-    ]
+        ...getLibraryEntries(),
+        ...(Array.isArray(entry) ? entry : (entry ? [entry] : []))
+      ]
     : entry
 
   const isBundleTypes = bundleTypes || rollupTypes
@@ -112,10 +113,10 @@ export const viteBasicFunction = ({
         ...includeExtended
       ],
       // vite-plugin-dts v5+ / vite-plugin-dts v5+
-      outDirs: 'dist',
+      outDirs: outDir,
       bundleTypes: bundleTypesConfig,
       // vite-plugin-dts v4 (backward compatibility) / vite-plugin-dts v4 (обратная совместимость)
-      outDir: 'dist',
+      outDir,
       bundledPackages,
       rollupTypes: isBundleTypes,
       staticImport: true,
@@ -133,6 +134,7 @@ export const viteBasicFunction = ({
 
   return defineConfig({
     build: {
+      outDir,
       minify,
       target,
       ...(cssCodeSplit !== undefined && { cssCodeSplit }),
@@ -169,18 +171,18 @@ export const viteBasicFunction = ({
           assetFileNames: assetFileNames !== undefined
             ? assetFileNames
             : (assetInfo) => {
-              const fileName = assetInfo.names?.[0] || assetInfo.originalFileName
+                const fileName = assetInfo.names?.[0] || assetInfo.originalFileName
 
-              if (
-                fileCssName
-                && fileName
-                && fileName.endsWith('.css')
-              ) {
-                return fileCssName
+                if (
+                  fileCssName
+                  && fileName
+                  && fileName.endsWith('.css')
+                ) {
+                  return fileCssName
+                }
+
+                return '[name]-[hash][extname]'
               }
-
-              return '[name]-[hash][extname]'
-            }
         }
       }
     },

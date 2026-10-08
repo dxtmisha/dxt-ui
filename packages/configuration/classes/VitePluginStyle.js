@@ -6,39 +6,8 @@ import path from 'node:path'
  * Класс для создания плагина Vite, который обрабатывает операции после сборки путем внедрения ассоциированных стилей CSS в соответствующие JS-чанки/файлы.
  */
 export class VitePluginStyle {
-  /** Target file filter / Фильтр целевых файлов */
-  filter = undefined
-
   /** Output directory path / Путь к выходной директории */
   outputDirectory = 'dist'
-
-  /** Custom CSS resolver function / Пользовательская функция сопоставления CSS */
-  resolveCss = undefined
-
-  /**
-   * Constructor for VitePluginStyle.
-   *
-   * Конструктор для VitePluginStyle.
-   * @param {import('./VitePluginStyle').VitePluginStyleOptions | import('./VitePluginStyle').VitePluginStyleTarget} [options] plugin options or target filter / параметры плагина или фильтр целевых файлов
-   */
-  constructor(options = {}) {
-    if (
-      typeof options === 'function'
-      || typeof options === 'string'
-      || options instanceof RegExp
-      || Array.isArray(options)
-    ) {
-      this.filter = options
-    } else if (options && typeof options === 'object') {
-      if (options.filter !== undefined) {
-        this.filter = options.filter
-      }
-
-      if (options.resolveCss !== undefined) {
-        this.resolveCss = options.resolveCss
-      }
-    }
-  }
 
   /**
    * Checks if the file should be processed by the plugin.
@@ -48,25 +17,7 @@ export class VitePluginStyle {
    * @returns {boolean} check result / результат проверки
    */
   isTarget(fileName) {
-    if (typeof this.filter === 'function') {
-      return this.filter(fileName)
-    }
-
-    if (this.filter instanceof RegExp) {
-      return this.filter.test(fileName)
-    }
-
-    if (Array.isArray(this.filter)) {
-      return this.filter.some(item => fileName === item || fileName.endsWith(`/${item}`))
-    }
-
-    if (typeof this.filter === 'string') {
-      return fileName === this.filter || fileName.endsWith(`/${this.filter}`)
-    }
-
     return fileName.endsWith('.js')
-      || fileName.endsWith('.mjs')
-      || fileName.endsWith('.cjs')
   }
 
   /**
@@ -78,17 +29,12 @@ export class VitePluginStyle {
    * @returns {string[]} array of CSS file names / массив имен CSS-файлов
    */
   getCssFiles(chunk, bundle) {
-    if (typeof this.resolveCss === 'function') {
-      const custom = this.resolveCss(chunk, bundle)
-
-      if (Array.isArray(custom)) {
-        return custom
-      }
-    }
-
     const list = []
 
-    if (chunk.viteMetadata?.importedCss && chunk.viteMetadata.importedCss.size > 0) {
+    if (
+      chunk.viteMetadata?.importedCss
+      && chunk.viteMetadata.importedCss.size > 0
+    ) {
       for (const cssFileName of chunk.viteMetadata.importedCss) {
         if (cssFileName in bundle) {
           list.push(cssFileName)
@@ -96,48 +42,18 @@ export class VitePluginStyle {
       }
     }
 
-    if (list.length > 0) {
-      return list
-    }
-
-    const chunkName = chunk.name || ''
-    const baseName = chunkName || path.posix.basename(chunk.fileName, path.posix.extname(chunk.fileName)).replace(/-[A-Za-z0-9_-]{8,}$/, '')
-
-    for (const [assetFileName, asset] of Object.entries(bundle)) {
-      if (asset.type !== 'asset' || !assetFileName.endsWith('.css')) {
-        continue
-      }
-
-      const assetBase = path.posix.basename(assetFileName, '.css')
-      const assetName = asset.name ? asset.name.replace(/\.css$/, '') : ''
-
-      const isMatch = Boolean(
-        (chunkName && assetName === chunkName)
-        || (chunkName && (assetBase === chunkName || assetBase.startsWith(`${chunkName}-`)))
-        || (baseName && (assetBase === baseName || assetBase.startsWith(`${baseName}-`)))
-        || (asset.originalFileName && chunk.moduleIds?.includes(asset.originalFileName))
-      )
-
-      if (isMatch && !list.includes(assetFileName)) {
-        list.push(assetFileName)
-      }
-    }
-
     return list
   }
 
   /**
-   * Returns import or require statement for the style file depending on output format.
+   * Returns import statement for the style file.
    *
-   * Возвращает инструкцию import или require для файла стилей в зависимости от формата вывода.
+   * Возвращает инструкцию import для файла стилей.
    * @param {string} relativePath relative path to the CSS file / относительный путь к CSS файлу
-   * @param {boolean} [isCjs] whether output is CommonJS / является ли вывод CommonJS
    * @returns {string} import statement / инструкция импорта
    */
-  getImportStatement(relativePath, isCjs = false) {
-    return isCjs
-      ? `require('${relativePath}');`
-      : `import '${relativePath}';`
+  getImportStatement(relativePath) {
+    return `import '${relativePath}';`
   }
 
   /**
@@ -167,7 +83,7 @@ export class VitePluginStyle {
    */
   init() {
     return {
-      name: 'vite-plugin-style',
+      name: 'vite-ui-plugin-style',
       enforce: 'post',
       configResolved: (config) => {
         this.outputDirectory = config.build.outDir || 'dist'
@@ -182,12 +98,10 @@ export class VitePluginStyle {
    * Processes generated bundle chunks and injects style imports into matching JS chunks.
    *
    * Обрабатывает чанки сгенерированного бандла и внедряет импорт стилей в соответствующие JS-чанки.
-   * @param {import('rollup').NormalizedOutputOptions} options output options / параметры вывода
+   * @param {import('rollup').NormalizedOutputOptions} _options output options / параметры вывода
    * @param {import('rollup').OutputBundle} bundle output bundle / бандл вывода
    */
-  processBundle(options, bundle) {
-    const isCjs = options?.format === 'cjs'
-
+  processBundle(_options, bundle) {
     for (const [fileName, chunk] of Object.entries(bundle)) {
       if (
         chunk.type === 'chunk'
@@ -208,7 +122,7 @@ export class VitePluginStyle {
             !chunk.code.includes(relativePath)
             && !chunk.code.includes(cssFileName)
           ) {
-            imports.push(this.getImportStatement(relativePath, isCjs))
+            imports.push(this.getImportStatement(relativePath))
           }
         }
 

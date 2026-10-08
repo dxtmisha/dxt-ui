@@ -1,0 +1,1 @@
+import{n as e}from"./rolldown-runtime-DkW27tQK.js";var t;function n(){return(n=e((()=>{t=class{className;components;enabled;constructor(e,t,n){this.className=e,this.components=t,this.enabled=n}render=()=>this.components&&this.components.is(`ripple`)&&(!this.enabled||this.enabled.isEnabled)?this.components.render(`ripple`,{class:`${this.className}__ripple`}):[]}})))()}export{n,t};

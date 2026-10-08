@@ -1,48 +1,13 @@
 import type { Plugin, Rollup } from 'vite'
 
-/** Target JS chunk file filter type / Тип фильтра целевых файлов JS-чанков */
-export type VitePluginStyleTarget =
-  | string
-  | string[]
-  | RegExp
-  | ((fileName: string) => boolean)
-
-/** Custom CSS resolver function type / Тип пользовательской функции сопоставления CSS */
-export type VitePluginStyleResolver = (
-  chunk: Rollup.OutputChunk,
-  bundle: Rollup.OutputBundle
-) => string[] | undefined
-
-/** Options for VitePluginStyle / Параметры для VitePluginStyle */
-export interface VitePluginStyleOptions {
-  /** Target JS chunk file filter / Фильтр целевых файлов JS-чанков */
-  filter?: VitePluginStyleTarget
-  /** Custom CSS resolver function / Пользовательская функция сопоставления CSS */
-  resolveCss?: VitePluginStyleResolver
-}
-
 /**
  * Class for creating a Vite plugin that handles post-build operations by injecting associated CSS styles into corresponding JavaScript chunks/files.
  *
  * Класс для создания плагина Vite, который обрабатывает операции после сборки путем внедрения ассоциированных стилей CSS в соответствующие JS-чанки/файлы.
  */
 export declare class VitePluginStyle {
-  /** Target file filter / Фильтр целевых файлов */
-  filter?: VitePluginStyleTarget
-
   /** Output directory path / Путь к выходной директории */
   outputDirectory: string
-
-  /** Custom CSS resolver function / Пользовательская функция сопоставления CSS */
-  resolveCss?: VitePluginStyleResolver
-
-  /**
-   * Constructor for VitePluginStyle.
-   *
-   * Конструктор для VitePluginStyle.
-   * @param options plugin options or target filter / параметры плагина или фильтр целевых файлов
-   */
-  constructor(options?: VitePluginStyleOptions | VitePluginStyleTarget)
 
   /**
    * Checks if the file should be processed by the plugin.
@@ -64,14 +29,13 @@ export declare class VitePluginStyle {
   getCssFiles(chunk: Rollup.OutputChunk, bundle: Rollup.OutputBundle): string[]
 
   /**
-   * Returns import or require statement for the style file depending on output format.
+   * Returns import statement for the style file.
    *
-   * Возвращает инструкцию import или require для файла стилей в зависимости от формата вывода.
+   * Возвращает инструкцию import для файла стилей.
    * @param relativePath relative path to the CSS file / относительный путь к CSS файлу
-   * @param isCjs whether output is CommonJS / является ли вывод CommonJS
    * @returns import statement / инструкция импорта
    */
-  getImportStatement(relativePath: string, isCjs?: boolean): string
+  getImportStatement(relativePath: string): string
 
   /**
    * Calculates relative path from chunk file to CSS file.

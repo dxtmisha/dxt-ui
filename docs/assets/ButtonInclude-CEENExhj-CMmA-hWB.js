@@ -1,0 +1,1 @@
+import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{n as t,t as n}from"./ComponentIncludeAbstract-BSJ_gXSk-01afegtM.js";var r;function i(){return(i=e((()=>{n(),r=class extends t{name=`button`;propsAttrsName=`buttonAttrs`;hasInitElement=!1;get is(){return`label`in this.binds.value||`icon`in this.binds.value||`iconTrailing`in this.binds.value}}})))()}export{r as n,i as t};

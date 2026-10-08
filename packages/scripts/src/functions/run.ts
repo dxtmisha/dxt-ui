@@ -4,7 +4,7 @@ import { execFile } from 'node:child_process'
 import { PackageFile } from '../classes/Package/PackageFile'
 import { PropertiesFile } from '../classes/Properties/PropertiesFile'
 
-const execFileAsync = /*#__PURE__*/ promisify(execFile)
+const execFileAsync = /* #__PURE__ */ promisify(execFile)
 
 /**
  * Executes a shell command inside the directory of a specific package and logs output.

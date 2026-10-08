@@ -48,4 +48,3 @@ export const getConstructorProperties = (names: string[]): PropertyList => {
 
   return data
 }
-

@@ -91,7 +91,7 @@ description: only-description
   it('formats prompt line correctly in getPromptLine with mandatory name and ./ prefix', () => {
     const instance = new TestLibraryAiPromptPrompts()
     const line = instance.testGetPromptLine('jdoc', 'ai-prompts/jdoc.md', 'JSDoc instructions')
-    expect(line).toBe("- jdoc ('./ai-prompts/jdoc.md'): JSDoc instructions")
+    expect(line).toBe('- jdoc (\'./ai-prompts/jdoc.md\'): JSDoc instructions')
   })
 
   it('generates consolidated prompts markdown section in make()', () => {
@@ -123,7 +123,7 @@ description: Analyze git change history and generate CHANGELOG.md.
     expect(result).toContain('# Skills')
     expect(result).toContain('## Available Skills & Tasks')
     expect(result).toContain('All skill file paths are specified relative to the project root.')
-    expect(result).toContain("- changelog ('./ai-prompts/changelog.md'): Analyze git change history and generate CHANGELOG.md.")
-    expect(result).toContain("- jdoc ('./ai-prompts/jdoc.md'): Guidelines and standard for generating comprehensive bilingual JSDoc comments.")
+    expect(result).toContain('- changelog (\'./ai-prompts/changelog.md\'): Analyze git change history and generate CHANGELOG.md.')
+    expect(result).toContain('- jdoc (\'./ai-prompts/jdoc.md\'): Guidelines and standard for generating comprehensive bilingual JSDoc comments.')
   })
 })

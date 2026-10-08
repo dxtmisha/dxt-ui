@@ -122,7 +122,6 @@ describe('GitIgnore', () => {
       expect(gitIgnore.getComment()).toBe('New Comment')
     })
 
-
     it('manages gitignorePath via setGitignorePath and getGitignorePath', () => {
       const gitIgnore = new GitIgnore()
       expect(gitIgnore.getGitignorePath()).toBe(UI_FILE_GITIGNORE)
@@ -202,5 +201,3 @@ describe('GitIgnore', () => {
     })
   })
 })
-
-

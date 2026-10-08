@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.0] - 2026-10-08
+
+### Added
+- **`VitePluginStyle`**: Added Vite plugin (`classes/VitePluginStyle.js` / `functions/vitePluginStyle.js`) for post-build style injection into JavaScript chunks:
+  - Discovers associated CSS style assets from `chunk.viteMetadata.importedCss` and injects `import` statements into matching `.js` chunks.
+  - Automatically calculates relative import paths from chunk files to CSS asset files.
+  - Added companion factory function `vitePluginStyle` in `functions/vitePluginStyle.js`.
+  - Added package export entrypoint `./vitePluginStyle` in `package.json`.
+- **`viteBasicFunction`**:
+  - Added `isPluginStyle?: boolean` option to enable automatic CSS style injection into JavaScript chunks via `vitePluginStyle`.
+  - Added `outDir?: string` option (defaulting to `'dist'`) to configure the build output directory across `build.outDir` and `vite-plugin-dts` (`outDirs` and `outDir`).
+
 ## [1.1.0] - 2026-10-04
 
 ### Added

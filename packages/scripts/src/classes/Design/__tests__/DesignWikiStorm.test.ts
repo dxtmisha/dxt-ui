@@ -162,5 +162,3 @@ export const wikiStyle = {
     expect(wikiDesign.adaptive.options.description.en).toBe('Controls adaptive display behavior')
   })
 })
-
-

@@ -20,7 +20,7 @@ Configuring Vite build pipelines and TypeScript options across multiple packages
   Default ready-to-use Vite configuration preset for standard libraries, built on top of `viteBasicFunction` with default options.
 
 - **`viteBasicFunction`** (`@dxtmisha/configuration/viteBasicFunction`)
-  Flexible, parameterized factory function for creating customized Vite configurations for functional libraries, composables, classes, and utilities. Accepts an options object (`entry`, `target`, `external`, `fileCssName`, `fileLibraryName`, `rollupTypes`, `include`, `exclude`, etc.) and automatically integrates `vitePluginLibrary` to inject CSS imports into library bundles.
+  Flexible, parameterized factory function for creating customized Vite configurations for functional libraries, composables, classes, and utilities. Accepts an options object (`entry`, `name`, `target`, `outDir`, `minify`, `external`, `isPluginLibrary`, `isPluginStyle`, `fileCssName`, `fileLibraryName`, `rollupTypes`, `include`, `exclude`, etc.) and automatically integrates plugins to inject CSS imports into output bundles.
 
 - **`viteComponents`** (`@dxtmisha/configuration/viteComponents`)
   Optimized Vite configuration for Vue 3 UI component libraries (e.g. `d1`, `ui`). Preserves module structure (`preserveModules: true`), enables MDX documentation support, and integrates `vitePluginComponents` to automatically import component styles (`styleToken.css`).
@@ -40,6 +40,9 @@ Configuring Vite build pipelines and TypeScript options across multiple packages
 - **`viteMdx`** (`@dxtmisha/configuration/viteMdx`)
   Vite configuration with `@mdx-js/rollup` integration for compiling MDX documentation and interactive component examples.
 
+- **`vitePurgeCss`** (`@dxtmisha/configuration/vitePurgeCss`)
+  Vite configuration preset combining `viteBasicFunction` with `vitePluginPurgeCss` to eliminate unused CSS from production bundles.
+
 ### Rollup & Vite Plugins
 
 - **`vitePluginComponents`** (`@dxtmisha/configuration/vitePluginComponents`)
@@ -48,8 +51,11 @@ Configuring Vite build pipelines and TypeScript options across multiple packages
 - **`vitePluginLibrary`** (`@dxtmisha/configuration/vitePluginLibrary`)
   Post-build Vite plugin for library packages that automatically injects `./style.css` (or custom CSS file) imports into the library bundle (`library.js`).
 
+- **`vitePluginPurgeCss`** (`@dxtmisha/configuration/vitePluginPurgeCss`)
+  Post-build Vite plugin for eliminating unused CSS from production bundles using PurgeCSS.
+
 - **`vitePluginStyle`** (`@dxtmisha/configuration/vitePluginStyle`)
-  Post-build Vite plugin that automatically discovers and injects associated CSS style imports (`import './[name]-[hash].css'`) into corresponding JavaScript chunks and files.
+  Post-build Vite plugin (`vite-ui-plugin-style`) that automatically discovers associated CSS style assets (`chunk.viteMetadata.importedCss`) and injects relative `import` statements into corresponding `.js` chunks and files.
 
 ### TypeScript Presets
 
@@ -84,6 +90,7 @@ import { viteBasicFunction } from '@dxtmisha/configuration/viteBasicFunction'
 
 export default viteBasicFunction({
   entry: 'src/library.ts',
+  isPluginStyle: true,
   rollupTypes: true
 })
 ```

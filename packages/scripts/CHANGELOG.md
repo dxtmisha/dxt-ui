@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.5.4] - 2026-10-08
+
+### Added
+- **Sub-Library Export in `LibraryExport`**:
+  - Added `sub` constructor parameter (default `false`) and `isSub()` method to `LibraryExport` (`src/classes/Library/LibraryExport.ts`) to conditionally generate an additional sub-library export file (`_library.ts`) without components and global styles.
+  - Added `UI_DIRS_FILE_EXPORT_SUB` constant (`[...UI_DIRS_LIBRARY, '_library.ts']`) to `src/config.ts` specifying the sub-library export destination path.
+  - Added `--sub` and `--sub-library` CLI options to `dxt-library` (`bin/design-library.ts`) to enable generation of `src/library/_library.ts`.
+  - Added unit test coverage in `LibraryExport.test.ts` for `sub` option, component and style omission, parent path resolution (`../`), and dual-file export in `make()`.
+
 ## [1.5.3] - 2026-10-07
 
 ### Added

@@ -6,7 +6,7 @@ import { PackageFile } from '../Package/PackageFile'
 import { run } from '../../functions/run'
 import { UI_DIR_PACKAGES } from '../../config'
 
-const execFileAsync = /*#__PURE__*/ promisify(execFile)
+const execFileAsync = /* #__PURE__ */ promisify(execFile)
 
 /**
  * Orchestrator for scanning and publishing changed packages to the npm registry.
