@@ -2,13 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.5.5] - 2026-10-08
+
+### Changed
+- **Export Directory Order in `UI_DIRS_LIST_EXPORT`**:
+  - Moved `'components'` to the end of `UI_DIRS_LIST_EXPORT` in `src/config.ts` (`['classes', 'composables', 'functions', 'global', 'types', 'components']`), ensuring components are compiled and exported last after base classes, composables, functions, and types.
+- **CLI Options Cleanup in `dxt-library`**:
+  - Removed redundant `'sub-library'` alias in `bin/design-library.ts` to strictly maintain the canonical `--sub` flag.
+
 ## [1.5.4] - 2026-10-08
 
 ### Added
 - **Sub-Library Export in `LibraryExport`**:
   - Added `sub` constructor parameter (default `false`) and `isSub()` method to `LibraryExport` (`src/classes/Library/LibraryExport.ts`) to conditionally generate an additional sub-library export file (`_library.ts`) without components and global styles.
   - Added `UI_DIRS_FILE_EXPORT_SUB` constant (`[...UI_DIRS_LIBRARY, '_library.ts']`) to `src/config.ts` specifying the sub-library export destination path.
-  - Added `--sub` and `--sub-library` CLI options to `dxt-library` (`bin/design-library.ts`) to enable generation of `src/library/_library.ts`.
+  - Added `--sub` CLI option to `dxt-library` (`bin/design-library.ts`) to enable generation of `src/library/_library.ts`.
   - Added unit test coverage in `LibraryExport.test.ts` for `sub` option, component and style omission, parent path resolution (`../`), and dual-file export in `make()`.
 
 ## [1.5.3] - 2026-10-07

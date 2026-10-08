@@ -83,11 +83,11 @@ export const UI_DIRS_FILE_EXPORT_SUB = [...UI_DIRS_LIBRARY, '_library.ts']
 /** List of directories available for export/ Список директорий, доступных для экспорта */
 export const UI_DIRS_LIST_EXPORT = [
   'classes',
-  'components',
   'composables',
   'functions',
   'global',
-  'types'
+  'types',
+  'components'
 ]
 
 /** Gitignore file name / Название файла .gitignore */

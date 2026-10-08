@@ -17,15 +17,11 @@ const { values } = parseCliArguments(
     'sub': {
       type: 'boolean',
       description: 'Generate additional _library.ts without components in the library folder'
-    },
-    'sub-library': {
-      type: 'boolean',
-      description: 'Alias for --sub'
     }
   }
 )
 
 const style = !values['no-style']
-const sub = Boolean(values.sub || values['sub-library'])
+const sub = Boolean(values.sub)
 
 new LibraryExport(style, sub).make()
