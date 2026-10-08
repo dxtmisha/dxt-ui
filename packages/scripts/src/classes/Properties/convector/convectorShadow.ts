@@ -20,7 +20,7 @@ export type ConvectorShadowItem = {
  * @param item values for conversion/ значения для преобразования
  */
 export function convectorShadow(item: PropertyItemInput): void {
-  const data: string | ConvectorShadowItem | ConvectorShadowItem[] = item?.value
+  const data: string | ConvectorShadowItem | ConvectorShadowItem[] = item?.value ?? item?.$value
 
   if (isObject(data)) {
     const shadows: string[] = []
@@ -56,6 +56,14 @@ export function convectorShadow(item: PropertyItemInput): void {
         shadows.push(shadow.join(' ').trim())
       })
 
-    item.value = shadows.join(', ')
+    const formatted = shadows.join(', ')
+
+    if ('$value' in item) {
+      item.$value = formatted
+    }
+
+    if ('value' in item) {
+      item.value = formatted
+    }
   }
 }

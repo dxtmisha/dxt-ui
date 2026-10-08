@@ -11,9 +11,19 @@ import { type PropertyItemInput } from '../../../types/propertyTypes'
  * @param item values for conversion/ значения для преобразования
  */
 export function convectorTypography(item: PropertyItemInput): void {
-  if (isString(item?.value)) {
-    item.value = {
-      basic: item.value
+  const value = item?.value ?? item?.$value
+
+  if (isString(value)) {
+    const formatted = {
+      basic: value
+    }
+
+    if ('$value' in item) {
+      item.$value = formatted
+    }
+
+    if ('value' in item) {
+      item.value = formatted
     }
   }
 }

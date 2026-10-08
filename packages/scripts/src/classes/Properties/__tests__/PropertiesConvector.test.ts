@@ -36,6 +36,16 @@ describe('Properties Convectors', () => {
       convectorFontFamilies(item)
       expect(item.value).toBe('\'Roboto\', sans-serif')
     })
+
+    it('formats font family with $value and $type', () => {
+      const item: any = {
+        $type: 'fontFamilies',
+        $value: 'Roboto'
+      }
+
+      convectorFontFamilies(item)
+      expect(item.$value).toBe('\'Roboto\', sans-serif')
+    })
   })
 
   describe('convectorShadow', () => {
@@ -55,6 +65,23 @@ describe('Properties Convectors', () => {
       convectorShadow(item)
       expect(item.value).toContain('0 4px 8px 0 #000000')
     })
+
+    it('converts shadow item with $value and $type', () => {
+      const item: any = {
+        $type: 'boxShadow',
+        $value: {
+          x: '0',
+          y: '4',
+          blur: '8',
+          spread: '0',
+          color: '#000000',
+          type: 'dropShadow'
+        }
+      }
+
+      convectorShadow(item)
+      expect(item.$value).toContain('0 4px 8px 0 #000000')
+    })
   })
 
   describe('convectorTypography', () => {
@@ -70,6 +97,16 @@ describe('Properties Convectors', () => {
 
       convectorTypography(item)
       expect(item.value).toBeDefined()
+    })
+
+    it('processes typography with $value string', () => {
+      const item: any = {
+        $type: 'typography',
+        $value: '16px'
+      }
+
+      convectorTypography(item)
+      expect(item.$value).toEqual({ basic: '16px' })
     })
   })
 })

@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.5.6] - 2026-10-08
+
+### Added
+- **DTCG Design Tokens Specification Support (`$value`, `$type`, `$description`)**:
+  - Added support for Design Tokens Community Group (DTCG) formatted tokens containing `$value`, `$type`, and `$description` properties.
+  - Added unit test suite in `PropertiesStandard.test.ts` covering standardization of flat DTCG tokens, deeply nested groups, and tokens with `$type` specified at the group level.
+  - Added unit test coverage in `PropertiesConvector.test.ts` verifying semantic conversions on tokens containing `$value` and `$type`.
+
+### Changed
+- **Centralized DTCG Normalization in `PropertiesStandard`**:
+  - Implemented centralized token normalization in `PropertiesStandard.toItem`, converting `$value`, `$type`, and `$description` into standard `value`, `type`, and `description` properties and deleting the `$`-prefixed variants so all downstream processors operate strictly on standard token schemas.
+  - Added empty object initialization guard (`!isObjectNotArray(data.value)`) in `PropertiesStandard.getValueAndSpecial` to safely accommodate non-special child tokens.
+- **Early DTCG Token Resolution in `PropertiesConvector`**:
+  - Updated `PropertiesConvector.to` to inspect both `item.type ?? item.$type` and `item.value ?? item.$value`, allowing specialized convectors (`boxShadow`, `fontFamilies`, `typography`, `color`) to properly detect and process raw DTCG tokens before standardization.
+  - Updated `convectorFontFamilies`, `convectorShadow`, and `convectorTypography` to read raw values via `item?.value ?? item?.$value` and update both `$value` and `value` if present.
+
 ## [1.5.5] - 2026-10-08
 
 ### Changed

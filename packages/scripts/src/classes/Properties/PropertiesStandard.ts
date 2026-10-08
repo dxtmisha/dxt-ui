@@ -87,6 +87,10 @@ export class PropertiesStandard {
       if (PropertiesKeys.isSpecialKey(name)) {
         data[name] = item
       } else {
+        if (!isObjectNotArray(data.value)) {
+          data.value = {}
+        }
+
         data.value[name] = item as PropertyItemPartial['value']
       }
     })
@@ -165,14 +169,31 @@ export class PropertiesStandard {
     }
 
     if (isFilled(value)) {
-      if (
-        !('value' in value)
-        || isObjectNotArray(value.value)
-      ) {
-        return this.getValueAndSpecial(value)
+      const item: Record<string, any> = { ...value }
+
+      if ('$value' in item) {
+        item.value = item.value ?? item.$value
+        delete item.$value
       }
 
-      return value
+      if ('$type' in item) {
+        item.type = item.type ?? item.$type
+        delete item.$type
+      }
+
+      if ('$description' in item) {
+        item.description = item.description ?? item.$description
+        delete item.$description
+      }
+
+      if (
+        !('value' in item)
+        || isObjectNotArray(item.value)
+      ) {
+        return this.getValueAndSpecial(item)
+      }
+
+      return item as PropertyItemPartial
     }
 
     return { value: {} }

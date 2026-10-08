@@ -9,10 +9,20 @@ import { type PropertyItemInput } from '../../../types/propertyTypes'
  * @param item values for conversion/ значения для преобразования
  */
 export function convectorFontFamilies(item: PropertyItemInput): void {
+  const value = item?.value ?? item?.$value
+
   if (
-    typeof item?.value === 'string'
-    && !item.value.match(/[{}]/)
+    typeof value === 'string'
+    && !value.match(/[{}]/)
   ) {
-    item.value = `'${item.value}', sans-serif`
+    const formatted = `'${value}', sans-serif`
+
+    if ('$value' in item) {
+      item.$value = formatted
+    }
+
+    if ('value' in item) {
+      item.value = formatted
+    }
   }
 }

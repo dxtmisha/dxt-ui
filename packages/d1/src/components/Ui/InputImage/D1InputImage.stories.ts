@@ -30,6 +30,15 @@ type Story = StoryObj<typeof meta>
 
 export const InputImage: Story = {
   // :story-main [!] System label / Системная метка
+  render: (args: any) => ({
+    components: { D1InputImage },
+    setup: () => ({ args }),
+    template: `
+      <div class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--squared--sm wiki-storybook-item--borderNone">
+        <D1InputImage v-bind="args"/>
+      </div>
+    `
+  })
   // :story-main [!] System label / Системная метка
 }
 
@@ -51,7 +60,7 @@ export const InputImageVModel: Story = {
         <div class="wiki-storybook-flex-column">
           <div class="wiki-storybook-flex-align-center">
             <span>Current crop: {{ value?.crop }}</span>
-            <button class="wiki-storybook-button" @click="value = ''">Clear</button>
+            <button class="wiki-storybook-button" @click="value = undefined">Clear</button>
             <button class="wiki-storybook-button" @click="value = { value: image1, crop: [20, 20, 20, 20] }">Reset crop</button>
           </div>
 
@@ -59,6 +68,43 @@ export const InputImageVModel: Story = {
             label="User avatar"
             helperMessage="Drop an image here or click to select"
             v-model="value"
+          />
+        </div>
+    `
+  })
+}
+export const InputImageCounter: Story = {
+  name: 'Счетчик и ограничения',
+  render: () => ({
+    components: { D1InputImage },
+    setup() {
+      return {
+        image1,
+        pixelValue: ref({
+          value: image1,
+          crop: [5, 5, 5, 5]
+        }),
+        sizeValue: ref({
+          value: image1,
+          crop: [10, 10, 10, 10]
+        })
+      }
+    },
+    template: `
+        <div class="wiki-storybook-flex-column">
+          <D1InputImage
+            label="Pixel dimension counter (max 1920px)"
+            helperMessage="Displays image pixel dimension and maxPixel limit"
+            counterType="pixel"
+            :maxPixel="1920"
+            v-model="pixelValue"
+          />
+          <D1InputImage
+            label="File size counter (max 5MB)"
+            helperMessage="Displays file size in bytes and maxFileSize limit"
+            counterType="size"
+            :maxFileSize="5242880"
+            v-model="sizeValue"
           />
         </div>
     `
@@ -74,6 +120,21 @@ export const InputImageSkeleton: Story = {
             <D1InputImage isSkeleton />
           </div>
         </D1Skeleton>
+    `
+  })
+}
+export const InputImageSlots: Story = {
+  name: 'Использование слотов',
+  render: () => ({
+    components: { D1InputImage },
+    template: `
+        <div class="wiki-storybook-item wiki-storybook-item--widescreen wiki-storybook-item--squared--sm wiki-storybook-item--borderNone">
+          <D1InputImage>
+            <template #label>
+              <strong>Custom Image Uploader Label</strong>
+            </template>
+          </D1InputImage>
+        </div>
     `
   })
 }

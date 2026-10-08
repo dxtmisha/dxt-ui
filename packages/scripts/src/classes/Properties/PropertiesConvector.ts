@@ -34,16 +34,19 @@ export class PropertiesConvector {
    */
   static to(properties: PropertyListOrData): void {
     forEach(properties, (item) => {
+      const type = item?.type ?? item?.$type
+      const value = item?.value ?? item?.$value
+
       if (
-        item?.type
-        && item.type in LIST
+        type
+        && type in LIST
       ) {
-        LIST[item.type]?.(item)
+        LIST[type]?.(item)
       } else if (
-        item?.value
-        && isObjectNotArray(item.value)
+        value
+        && isObjectNotArray(value)
       ) {
-        this.to(item.value)
+        this.to(value)
       } else if (isObjectNotArray(item)) {
         this.to(item)
       }

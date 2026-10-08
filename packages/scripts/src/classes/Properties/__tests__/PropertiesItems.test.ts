@@ -12,6 +12,7 @@ describe('PropertiesItems and PropertiesKeys', () => {
     it('identifies special system keys and separators', () => {
       expect(PropertiesKeys.isSpecialKey('value')).toBe(true)
       expect(PropertiesKeys.isSpecialKey('type')).toBe(true)
+      expect(PropertiesKeys.isSpecialKey('description')).toBe(true)
       expect(PropertiesKeys.isSpecialKey('_custom')).toBe(true)
       expect(PropertiesKeys.isSpecialKey('customProp')).toBe(false)
 

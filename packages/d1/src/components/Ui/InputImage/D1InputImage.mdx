@@ -24,6 +24,8 @@ import {InputImageWikiStorybook} from './wiki'
 <StorybookDescriptions componentName={'Value'} type={'v-model'}/>
 <Canvas of={InputImage.InputImageVModel}/>
 
+<Canvas of={InputImage.InputImageCounter}/>
+
 <StorybookDescriptions componentName={'Style'} type={'isSkeleton'}/>
 <Canvas of={InputImage.InputImageSkeleton}/>
     
@@ -42,12 +44,17 @@ import {InputImageWikiStorybook} from './wiki'
 
 <StorybookDescriptions componentName={'Expose'} type={'open'}/>
 <StorybookDescriptions componentName={'Expose'} type={'clear'}/>
+<StorybookDescriptions componentName={'Expose'} type={'value'}/>
+<StorybookDescriptions componentName={'Expose'} type={'getValue'}/>
+<StorybookDescriptions componentName={'Expose'} type={'checkValidity'}/>
+<StorybookDescriptions componentName={'Expose'} type={'getValidationMessage'}/>
     
 [//]: # (:documentation-expose [!] System label / Системная метка)
 
 [//]: # (:documentation-slots [!] System label / Системная метка)
 ## Slots
 
+<Canvas of={InputImage.InputImageSlots}/>
 <StorybookDescriptions componentName={'Slot'} type={'label'}/>
     
 [//]: # (:documentation-slots [!] System label / Системная метка)

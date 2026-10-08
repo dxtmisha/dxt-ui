@@ -21,9 +21,13 @@ defineOptions({
     <template #render="{ args, classDemo }">
     <div
   :class="classDemo.item"
-  style="position: relative; width: 320px; min-height: 240px;"
+  style="position: relative; width: 320px;"
 >
-  <D1InputImage v-bind="args" />
+  <D1InputImage
+    label="Upload Image"
+    helper-message="PNG, JPG up to 10MB"
+    v-bind="args"
+  />
 </div>
     </template>
     <!-- :component-render [!] System label / Системная метка -->

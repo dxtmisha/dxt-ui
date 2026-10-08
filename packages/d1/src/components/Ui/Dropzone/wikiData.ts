@@ -47,9 +47,7 @@ const eventsNames: StorybookSlots = [
   { name: 'inputLite', description: `Lightweight input emit without DOM event/
 Лёгкий эмит ввода без DOM-события: [value]`, properties: [{ name: 'value', type: 'FieldValidationItem<FileList | undefined>' }] },
   { name: 'update:files', description: `Update files event/ Событие обновления файлов`, properties: [{ name: 'value', type: 'FileList | undefined' }] },
-  { name: 'update:modelFiles', description: `Update model files event/ Событие обновления файлов модели`, properties: [{ name: 'value', type: 'FileList | undefined' }] },
-  { name: 'update:modelValue', description: `Update model value event/ Событие обновления значения модели`, properties: [{ name: 'value', type: 'FileList | undefined' }] },
-  { name: 'update:value', description: `Update value event/ Событие обновления значения`, properties: [{ name: 'value', type: 'FileList | undefined' }] }
+  { name: 'update:modelFiles', description: `Update model files event/ Событие обновления файлов модели`, properties: [{ name: 'value', type: 'FileList | undefined' }] }
   // :eventsList [!] System label / Системная метка
 ]
 
