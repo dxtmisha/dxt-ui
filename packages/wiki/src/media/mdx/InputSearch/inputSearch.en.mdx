@@ -1,0 +1,40 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+Search input field component with debouncing, minimum query length, and clear button support.
+
+InputSearch is a specialized input component tailored for search interactions. It provides built-in debouncing, query threshold filtering via minimum query length, an automatic loading indicator while waiting for the debounce delay, as well as a quick clear button and immediate search execution on Enter key press.
+
+**Key Features:**
+
+- Built-in debounce delay before search query emission (`delay`)
+- Configurable minimum query length threshold (`minQuery`)
+- Search icon and quick cancel/clear button enabled by default
+- Immediate query dispatch on `Enter` key press
+- Dynamic loading status indicator during debounce wait (`loading`)
+- Optimized search input UX (autocomplete, autocorrect, and spellcheck disabled by default)
+- Supports two-way data binding (`v-model:value`)
+- Complete Field integration: floating labels, validation states, helper messages, and counter support
+
+**Typical Use Cases:**
+
+- Catalog and product search bars
+- Searching users, documents, or data table records
+- Auto-complete search inputs and dynamic filter bars
+
+<Source
+    code={`
+<script setup>
+import { ref } from 'vue'
+
+const query = ref('')
+</script>
+
+<template>
+  <InputSearch
+    v-model:value="query"
+    placeholder="Search website..."
+  />
+</template>
+  `}
+    language="html"
+/>

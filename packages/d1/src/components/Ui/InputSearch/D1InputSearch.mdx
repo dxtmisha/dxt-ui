@@ -1,0 +1,53 @@
+import {Canvas, Meta} from '@storybook/addon-docs/blocks'
+import {
+    StorybookDescriptions,
+    StorybookMain
+} from '@dxtmisha/wiki/storybook'
+
+import * as InputSearch from './D1InputSearch.stories'
+import {InputSearchWikiStorybook} from './wiki'
+
+[//]: # (:documentation-import [!] System label / Системная метка)
+[//]: # (:documentation-import [!] System label / Системная метка)
+
+<Meta of={InputSearch}/>
+<StorybookMain
+    name={InputSearchWikiStorybook.getName()}
+    description={InputSearchWikiStorybook.getDescription()}
+    story={InputSearch.InputSearch}
+/>
+
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+<StorybookDescriptions componentName={'InputSearch'} type={'inputSearch'}/>
+
+<StorybookDescriptions componentName={'Value'} type={'v-model'}/>
+<Canvas of={InputSearch.InputSearchVModel}/>
+
+<StorybookDescriptions componentName={'InputSearch'} type={'query'}/>
+<Canvas of={InputSearch.InputSearchQuery}/>
+    
+[//]: # (:documentation-body [!] System label / Системная метка)
+
+[//]: # (:documentation-events [!] System label / Системная метка)
+## Events
+
+<StorybookDescriptions componentName={'Event'} type={'input'}/>
+<StorybookDescriptions componentName={'Event'} type={'change'}/>
+    
+[//]: # (:documentation-events [!] System label / Системная метка)
+
+[//]: # (:documentation-expose [!] System label / Системная метка)
+[//]: # (:documentation-expose [!] System label / Системная метка)
+
+[//]: # (:documentation-slots [!] System label / Системная метка)
+## Slots
+
+<StorybookDescriptions componentName={'Slot'} type={'label'} />
+<StorybookDescriptions componentName={'Slot'} type={'prefix'} />
+<StorybookDescriptions componentName={'Slot'} type={'suffix'} />
+<StorybookDescriptions componentName={'Slot'} type={'caption'} />
+<StorybookDescriptions componentName={'Slot'} type={'leading'} />
+<StorybookDescriptions componentName={'Slot'} type={'trailing'} />
+    
+[//]: # (:documentation-slots [!] System label / Системная метка)

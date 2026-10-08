@@ -35,6 +35,7 @@ export type TextIndex = 'am'
   | 'previous'
   | 'retry'
   | 'rowsPerPage'
+  | 'search'
   | 'show'
   | 'symbol'
   | 'uploadSuccess'
@@ -247,6 +248,12 @@ export type TextRowsPerPagePropsInclude = {
   textRowsPerPage?: TextValue
 }
 
+/** Interface for including search text/ Интерфейс для включения текста поиска */
+export type TextSearchPropsInclude = {
+  /** Search text/ Текст поиска */
+  textSearch?: TextValue
+}
+
 /** Interface for including show text/ Интерфейс для включения текста показа */
 export type TextShowPropsInclude = {
   /** Show text/ Текст показа */
@@ -300,6 +307,7 @@ export type TextAllPropsInclude = TextAmPropsInclude
   & TextPreviousPropsInclude
   & TextRetryPropsInclude
   & TextRowsPerPagePropsInclude
+  & TextSearchPropsInclude
   & TextShowPropsInclude
   & TextSymbolPropsInclude
   & TextUploadSuccessPropsInclude

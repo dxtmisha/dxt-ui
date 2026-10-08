@@ -63,6 +63,7 @@ import D1InputFileItem from '../../src/components/Ui/InputFileItem/D1InputFileIt
 import D1InputImage from '../../src/components/Ui/InputImage/D1InputImageAiWiki.vue'
 import D1InputPhone from '../../src/components/Ui/InputPhone/D1InputPhoneAiWiki.vue'
 import D1InputPhoneDialCode from '../../src/components/Ui/InputPhoneDialCode/D1InputPhoneDialCodeAiWiki.vue'
+import D1InputSearch from '../../src/components/Ui/InputSearch/D1InputSearchAiWiki.vue'
 import D1InputSocial from '../../src/components/Ui/InputSocial/D1InputSocialAiWiki.vue'
 import D1List from '../../src/components/Ui/List/D1ListAiWiki.vue'
 import D1ListGroup from '../../src/components/Ui/ListGroup/D1ListGroupAiWiki.vue'
@@ -187,6 +188,7 @@ export const aiList: any[] = [
   D1InputImage,
   D1InputPhone,
   D1InputPhoneDialCode,
+  D1InputSearch,
   D1InputSocial,
   D1List,
   D1ListGroup,

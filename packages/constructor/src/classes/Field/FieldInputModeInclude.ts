@@ -1,4 +1,4 @@
-import { FieldTypeInclude } from './FieldTypeInclude'
+import type { FieldTypeInclude } from './FieldTypeInclude'
 
 import type { FieldAllProps } from '../../types/fieldTypes'
 
@@ -17,7 +17,7 @@ export class FieldInputModeInclude {
    */
   constructor(
     protected readonly props: FieldAllProps,
-    protected readonly type: FieldTypeInclude
+    protected readonly type?: FieldTypeInclude
   ) {
   }
 
@@ -32,7 +32,7 @@ export class FieldInputModeInclude {
       return this.props.inputMode
     }
 
-    switch (this.type.item) {
+    switch (this.type?.item) {
       case 'number':
       case 'datetime':
       case 'date':
@@ -63,7 +63,7 @@ export class FieldInputModeInclude {
       return this.props.autocomplete
     }
 
-    switch (this.type.item) {
+    switch (this.type?.item) {
       case 'search':
         return 'off'
       case 'email':

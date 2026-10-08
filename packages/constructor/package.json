@@ -52,7 +52,7 @@
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
     "test": "vitest",
-    "constructor": "dxt-constructor",
+    "constructor": "dxt-constructor --name InputSearch",
     "library": "dxt-library",
     "types": "npm run library && npm run constructor && npm run build && dxt-types",
     "prepublishOnly": "npm run library && npm run constructor && npm run build && dxt-types-save",
@@ -582,6 +582,10 @@
     "./ClockPeriod": {
       "types": "./dist/constructors/ClockPeriod/index.d.ts",
       "default": "./dist/clockPeriod.js"
+    },
+    "./InputSearch": {
+      "types": "./dist/constructors/InputSearch/index.d.ts",
+      "default": "./dist/inputSearch.js"
     }
   },
   "buildOptions": {

@@ -1,8 +1,8 @@
-import { toBinds } from '@dxtmisha/functional'
+import { executeFunction, toBinds, type FunctionOr } from '@dxtmisha/functional'
 
-import { FieldTypeInclude } from './FieldTypeInclude'
-import { FieldPatternInclude } from './FieldPatternInclude'
-import { FieldInputModeInclude } from './FieldInputModeInclude'
+import type { FieldTypeInclude } from './FieldTypeInclude'
+import type { FieldPatternInclude } from './FieldPatternInclude'
+import type { FieldInputModeInclude } from './FieldInputModeInclude'
 
 import type { FieldAllProps } from '../../types/fieldTypes'
 
@@ -14,7 +14,7 @@ import type { FieldAllProps } from '../../types/fieldTypes'
 export class FieldAttributesInclude {
   /**
    * Constructor
-   * @param props input data / входные данные
+   * @param props input data or function returning input data / входные данные или функция, возвращающая входные данные
    * @param type object for working with input type / объект для работы с типом ввода
    * @param pattern object for working with checks by regular expressions /
    * объект для работы с проверкой по регулярным выражениям
@@ -22,12 +22,22 @@ export class FieldAttributesInclude {
    * @param typeDefault default value for type / значение по умолчанию для типа
    */
   constructor(
-    protected readonly props: FieldAllProps,
+    protected readonly props: FunctionOr<FieldAllProps>,
     protected readonly type?: FieldTypeInclude,
     protected readonly pattern?: FieldPatternInclude,
     protected readonly inputMode?: FieldInputModeInclude,
     protected readonly typeDefault: string = 'text'
   ) {
+  }
+
+  /**
+   * Returns properties.
+   *
+   * Возвращает свойства.
+   * @returns properties object / объект свойств
+   */
+  protected getProps(): FieldAllProps {
+    return executeFunction(this.props)
   }
 
   /**
@@ -51,11 +61,12 @@ export class FieldAttributesInclude {
    */
   get listForCheck(): Record<string, any> {
     const data = this.list
+    const props = this.getProps()
 
     if (
-      this.props.min
-      || this.props.max
-      || this.props.step
+      props.min
+      || props.max
+      || props.step
     ) {
       return {
         ...data,
@@ -85,7 +96,7 @@ export class FieldAttributesInclude {
   get listForCheckbox(): Record<string, any> {
     return {
       ...this.getData(this.getInputAttributes()),
-      value: this.props.valueVariant
+      value: this.getProps().valueVariant
     }
   }
 
@@ -94,7 +105,7 @@ export class FieldAttributesInclude {
    *
    * Возвращает список атрибутов, которые нужно установить на элемент ввода.
    */
-  protected getAttributes(): (keyof typeof this.props)[] {
+  protected getAttributes(): (keyof FieldAllProps)[] {
     return [
       'type',
       'name',
@@ -118,7 +129,7 @@ export class FieldAttributesInclude {
    *
    * Возвращает список атрибутов, которые нужно установить на элемент ввода.
    */
-  protected getInputAttributes(): (keyof typeof this.props)[] {
+  protected getInputAttributes(): (keyof FieldAllProps)[] {
     return [
       ...this.getAttributes(),
 
@@ -151,44 +162,45 @@ export class FieldAttributesInclude {
    * Возвращает данные для указанных атрибутов.
    * @param attributes list of attributes / список атрибутов
    */
-  protected getData(attributes: (keyof typeof this.props)[]): Record<string, any> {
+  protected getData(attributes: (keyof FieldAllProps)[]): Record<string, any> {
     const data: Record<string, any> = {}
+    const props = this.getProps()
 
     attributes.forEach((index) => {
       let value: any = undefined
 
-      if (index in this.props) {
+      if (index in props) {
         switch (index) {
           case 'type':
             if (this.type) {
               value = this.type.item
             } else {
-              value = this.props.type
+              value = props.type
             }
             break
           case 'pattern':
             if (this.pattern) {
               value = this.pattern.item
             } else {
-              value = this.props.pattern
+              value = props.pattern
             }
             break
           case 'inputMode':
             if (this.inputMode) {
               value = this.inputMode.item
             } else {
-              value = this.props.inputMode
+              value = props.inputMode
             }
             break
           case 'autocomplete':
             if (this.inputMode) {
               value = this.inputMode.autocomplete
             } else {
-              value = this.props.autocomplete
+              value = props.autocomplete
             }
             break
           default:
-            value = this.props[index]
+            value = props[index]
         }
       }
 
@@ -197,6 +209,6 @@ export class FieldAttributesInclude {
       }
     })
 
-    return toBinds(data, this.props.inputAttrs)
+    return toBinds(data, props.inputAttrs)
   }
 }

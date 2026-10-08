@@ -44,6 +44,7 @@ export class TextIncludeInstance {
     previous: 'Previous',
     retry: 'Retry',
     rowsPerPage: 'Rows per page',
+    search: 'Search',
     show: 'Show',
     symbol: 'Symbol [index]',
     uploadSuccess: 'File uploaded successfully'

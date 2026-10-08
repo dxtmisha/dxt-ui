@@ -58,4 +58,18 @@ describe('FieldAttributesInclude', () => {
     const attrs = new FieldAttributesInclude({ valueVariant: 'checked-state' })
     expect(attrs.listForCheckbox.value).toBe('checked-state')
   })
+
+  it('should accept props as a function', () => {
+    let required = false
+    const attrs = new FieldAttributesInclude(() => ({
+      name: 'dynamic-input',
+      required
+    }))
+
+    expect(attrs.list.name).toBe('dynamic-input')
+    expect(attrs.list.required).toBe(false)
+
+    required = true
+    expect(attrs.list.required).toBe(true)
+  })
 })

@@ -9913,6 +9913,17 @@
           }
         }
       },
+      "inputSearch": {
+        "name": "d1-inputSearch",
+        "type": "component",
+        "value": {
+          "main": {
+            "name": "--d1-inputSearch-main",
+            "type": "var",
+            "value": "{d.inputSearch}"
+          }
+        }
+      },
       "inputSocial": {
         "name": "d1-inputSocial",
         "type": "component",

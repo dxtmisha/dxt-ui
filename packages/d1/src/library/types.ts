@@ -63,6 +63,7 @@ import _D1InputFileItem from '../components/Ui/InputFileItem/D1InputFileItem.vue
 import _D1InputImage from '../components/Ui/InputImage/D1InputImage.vue'
 import _D1InputPhone from '../components/Ui/InputPhone/D1InputPhone.vue'
 import _D1InputPhoneDialCode from '../components/Ui/InputPhoneDialCode/D1InputPhoneDialCode.vue'
+import _D1InputSearch from '../components/Ui/InputSearch/D1InputSearch.vue'
 import _D1InputSocial from '../components/Ui/InputSocial/D1InputSocial.vue'
 import _D1List from '../components/Ui/List/D1List.vue'
 import _D1ListGroup from '../components/Ui/ListGroup/D1ListGroup.vue'
@@ -188,6 +189,7 @@ declare module '@vue/runtime-core' {
     D1InputImage: typeof _D1InputImage
     D1InputPhone: typeof _D1InputPhone
     D1InputPhoneDialCode: typeof _D1InputPhoneDialCode
+    D1InputSearch: typeof _D1InputSearch
     D1InputSocial: typeof _D1InputSocial
     D1List: typeof _D1List
     D1ListGroup: typeof _D1ListGroup

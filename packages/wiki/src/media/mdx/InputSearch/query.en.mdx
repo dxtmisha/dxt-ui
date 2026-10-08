@@ -1,0 +1,29 @@
+import { Source } from '@storybook/addon-docs/blocks';
+
+## Search Query Control (minQuery and delay)
+
+The `minQuery` and `delay` properties control the conditions and timing for triggering a search query:
+
+- `minQuery` — minimum number of characters required before a search query is triggered (default is `2`). Search debouncing and event emissions only trigger when the input length is greater than or equal to `minQuery`. Clearing the field entirely (string length of `0`) always triggers immediately to reset search results.
+- `delay` — debounce waiting time in milliseconds before dispatching input and triggering search (default is `320` ms). Debouncing prevents excessive requests while the user is actively typing. Pressing `Enter` immediately flushes the pending debounce timer and executes the query without waiting.
+
+<Source
+    code={`
+<script setup>
+import { ref } from 'vue'
+
+const search = ref('')
+</script>
+
+<template>
+  <!-- Search initiates with 500ms delay after typing at least 3 characters -->
+  <InputSearch
+    v-model:value="search"
+    :min-query="3"
+    :delay="500"
+    placeholder="Enter at least 3 characters..."
+  />
+</template>
+  `}
+    language="html"
+/>

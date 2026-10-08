@@ -1,0 +1,20 @@
+@use "../../../styles/Ui/properties";
+@use "@dxtmisha/styles/properties" as ui;
+@use "@dxtmisha/constructor/style.scss" as InputSearch;
+
+@include ui.initDesignBasic('d1.inputSearch') {
+  // Basic styles for a component
+  // Базовый стили для компонента
+  @include InputSearch.mixinInputSearch;
+
+  // Styles from tokens
+  // Стили из токенов
+  // :style [!] System label / Системная метка
+  & {
+    --d1-inputSearch-main: var(--d-inputSearch);
+  }
+  // :style [!] System label / Системная метка
+
+  // Here are the user styles
+  // Здесь пользовательские стили
+}

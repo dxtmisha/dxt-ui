@@ -225,6 +225,11 @@ export class TextInclude {
     return this.get('textRowsPerPage')
   }
 
+  /** Search text / Текст поиска */
+  get search() {
+    return this.get('textSearch')
+  }
+
   /** Show text / Текст показа */
   get show() {
     return this.get('textShow')

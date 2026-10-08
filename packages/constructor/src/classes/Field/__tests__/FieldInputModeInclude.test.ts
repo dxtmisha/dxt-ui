@@ -53,4 +53,17 @@ describe('FieldInputModeInclude', () => {
     const autocompleteText = new FieldInputModeInclude({}, textType)
     expect(autocompleteText.autocomplete).toBeUndefined()
   })
+
+  it('should handle optional type when type is not provided', () => {
+    const inputMode = new FieldInputModeInclude({})
+    expect(inputMode.item).toBeUndefined()
+    expect(inputMode.autocomplete).toBeUndefined()
+
+    const inputModeWithProps = new FieldInputModeInclude({
+      inputMode: 'search',
+      autocomplete: 'off'
+    })
+    expect(inputModeWithProps.item).toBe('search')
+    expect(inputModeWithProps.autocomplete).toBe('off')
+  })
 })
