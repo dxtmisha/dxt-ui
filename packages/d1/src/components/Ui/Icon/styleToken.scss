@@ -219,6 +219,28 @@
       @include ui.backgroundColor(#{var(--d1-sys-palette-inverseSurface)});
     }
     
+    &--success {
+      @include ui.color(#{var(--d1-sys-palette-success)});
+      
+      &.d1-icon--inverse {
+        @include ui.color(#{var(--d1-sys-palette-inverseOnSurface)});
+        @include ui.colorOpacity(#{var(--d1-sys-opacity-primary-high)});
+        
+        @include ui.paletteBackground(#{var(--d1-sys-palette-success)});
+      }
+    }
+    
+    &--error {
+      @include ui.color(#{var(--d1-sys-palette-error)});
+      
+      &.d1-icon--inverse {
+        @include ui.color(#{var(--d1-sys-palette-inverseOnSurface)});
+        @include ui.colorOpacity(#{var(--d1-sys-opacity-primary-high)});
+        
+        @include ui.paletteBackground(#{var(--d1-sys-palette-error)});
+      }
+    }
+    
     &--rounded {
       &--sm {
         border-radius: var(--d1-sys-rounded-xs);

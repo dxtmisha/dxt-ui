@@ -81,7 +81,7 @@ export const wikiDescriptionsInputFileItem: StorybookComponentsDescriptionItem =
 
           <div class="wiki-storybook-item wiki-storybook-item--auto wiki-storybook-item--padding">
             <span class="wiki-storybook-item__label wiki-storybook-item__label--static">Compact appearance:</span>
-            <div class="wiki-storybook-flex">
+            <div class="wiki-storybook-column">
               <DesignComponent
                 appearance="compact"
                 status="idle"
@@ -112,23 +112,44 @@ export const wikiDescriptionsInputFileItem: StorybookComponentsDescriptionItem =
               <DesignComponent
                 appearance="tile"
                 status="idle"
-                :value="{ name: 'scenery.jpg', size: 4194304, thumbnail: image1 }"
+                :value="{ name: 'scenery.jpg', size: 4194304, thumbnail: 'https://picsum.photos/200/200?random=1' }"
               />
               <DesignComponent
                 appearance="tile"
                 status="uploading"
                 :loading="{ value: 1400000 }"
-                :value="{ name: 'uploading.jpg', size: 2097152, thumbnail: image1 }"
+                :value="{ name: 'uploading.jpg', size: 2097152, thumbnail: 'https://picsum.photos/200/200?random=2' }"
               />
               <DesignComponent
                 appearance="tile"
                 status="uploaded"
-                :value="{ name: 'photo.jpg', size: 3145728, thumbnail: 'https://picsum.photos/200/200?random=1' }"
+                :value="{ name: 'photo.jpg', size: 3145728, thumbnail: 'https://picsum.photos/200/200?random=3' }"
               />
               <DesignComponent
                 appearance="tile"
                 status="error"
-                :value="{ name: 'corrupted.jpg', size: 1048576, thumbnail: image1 }"
+                :value="{ name: 'corrupted.jpg', size: 1048576, thumbnail: 'https://picsum.photos/200/200?random=4' }"
+              />
+              <DesignComponent
+                appearance="tile"
+                status="idle"
+                :value="{ name: 'document.pdf', size: 1048576 }"
+              />
+              <DesignComponent
+                appearance="tile"
+                status="uploading"
+                :loading="{ value: 650000 }"
+                :value="{ name: 'archive.zip', size: 2097152 }"
+              />
+              <DesignComponent
+                appearance="tile"
+                status="uploaded"
+                :value="{ name: 'spreadsheet.xlsx', size: 524288 }"
+              />
+              <DesignComponent
+                appearance="tile"
+                status="error"
+                :value="{ name: 'presentation.key', size: 8388608 }"
               />
             </div>
           </div>

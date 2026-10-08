@@ -61,18 +61,20 @@ const design = new InputFileItemDesign(
       progress: D1Progress
     },
     compMod: {
-      buttonDelete: {
+      buttonDelete: computed(() => ({
         secondary: true,
         roundedFull: true,
         size: 'xs',
-        palette: 'neutral'
-      },
-      buttonRetry: {
+        palette: 'neutral',
+        inverse: props.appearance === 'tile'
+      })),
+      buttonRetry: computed(() => ({
         secondary: true,
         roundedFull: true,
         size: 'xs',
-        palette: 'neutral'
-      }
+        palette: 'neutral',
+        inverse: props.appearance === 'tile'
+      }))
     }
   }
 )

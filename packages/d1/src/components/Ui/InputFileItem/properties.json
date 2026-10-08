@@ -1,12 +1,8 @@
 {
   "main": "{d.inputFileItem}",
   "gap": "{sys.spacing.md}",
-  "margin": "{sys.spacing.x}",
-  "paddingX": "{layout.paddingX}",
-  "paddingY": "{sys.spacing.xs}",
   "palette-gradient": "{sys.palette.primary}",
   "gradient-opacity": "0",
-  "border-radius": "{sys.rounded.md}",
   "#thumbnail": {
     "width": "{ref.spacing.12}",
     "aspect-ratio": "1/1",
@@ -61,10 +57,13 @@
   },
   "~appearance": {
     "~list": {
-      "_default": true
+      "margin": "{sys.spacing.x}",
+      "paddingX": "{layout.paddingX}",
+      "paddingY": "{sys.spacing.xs}",
+      "border-radius": "{sys.rounded.md}"
     },
     "~compact": {
-      "paddingX": "{sys.spacing.sm}",
+      "paddingX": "{layout.paddingX}",
       "paddingY": "{sys.spacing.x}",
       "gap": "{sys.spacing.xs}",
       "#label": {
@@ -72,23 +71,10 @@
       }
     },
     "~tile": {
+      "color": "{sys.palette.surface}",
       "width": "{ref.spacing.28}",
-      "height": "{ref.spacing.28}",
       "aspect-ratio": "1 / 1",
-      "padding": "0",
-      "overflow": "hidden",
-      "#thumbnail": {
-        "width": "100%",
-        "height": "100%",
-        "border-radius": "inherit"
-      },
-      "#actions": {
-        "background-color": "{sys.palette.scrim}",
-        "background-opacity": "{sys.opacity.scrim}",
-        "border-radius": "{sys.rounded.full}",
-        "padding": "{sys.spacing.x}",
-        "backdrop-filter": "{sys.blur.sm}"
-      }
+      "border-radius": "{sys.rounded.lg}"
     }
   },
   "~status": {

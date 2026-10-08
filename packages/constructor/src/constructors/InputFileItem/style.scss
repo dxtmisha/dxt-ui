@@ -29,6 +29,10 @@
 
       @include ui.subclass('thumbnail') {
         @include ui.absolute;
+        width: auto;
+        height: auto;
+        aspect-ratio: unset;
+        border-radius: inherit;
       }
 
       @include ui.subclass('progress') {
@@ -40,6 +44,22 @@
         @include ui.flexCenter;
         margin: auto;
         z-index: 24;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      @include ui.hover {
+        @include ui.subclass('actions') {
+          opacity: 1;
+          pointer-events: auto;
+        }
+      }
+
+      @include ui.focus {
+        @include ui.subclass('actions') {
+          opacity: 1;
+          pointer-events: auto;
+        }
       }
     }
 

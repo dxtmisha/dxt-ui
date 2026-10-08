@@ -44,6 +44,8 @@ const classesToken = computed<ConstrClasses>(() => ({
     'd1-icon--rect': props.rect,
     [`d1-icon--size--${props.size}`]: inArray(propsValues.size, props.size),
     'd1-icon--inverse': props.inverse,
+    'd1-icon--success': props.success,
+    'd1-icon--error': props.error,
     [`d1-icon--rounded--${props.rounded}`]: inArray(propsValues.rounded, props.rounded)
     // :classes-values [!] System label / Системная метка
   }

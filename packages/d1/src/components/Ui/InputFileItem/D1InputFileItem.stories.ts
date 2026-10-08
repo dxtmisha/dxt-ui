@@ -73,7 +73,7 @@ export const InputFileItemAppearance: Story = {
 
           <div class="wiki-storybook-item wiki-storybook-item--auto wiki-storybook-item--padding">
             <span class="wiki-storybook-item__label wiki-storybook-item__label--static">Compact appearance:</span>
-            <div class="wiki-storybook-flex">
+            <div class="wiki-storybook-column">
               <D1InputFileItem
                 appearance="compact"
                 status="idle"
@@ -104,23 +104,44 @@ export const InputFileItemAppearance: Story = {
               <D1InputFileItem
                 appearance="tile"
                 status="idle"
-                :value="{ name: 'scenery.jpg', size: 4194304, thumbnail: image1 }"
+                :value="{ name: 'scenery.jpg', size: 4194304, thumbnail: 'https://picsum.photos/200/200?random=1' }"
               />
               <D1InputFileItem
                 appearance="tile"
                 status="uploading"
                 :loading="{ value: 1400000 }"
-                :value="{ name: 'uploading.jpg', size: 2097152, thumbnail: image1 }"
+                :value="{ name: 'uploading.jpg', size: 2097152, thumbnail: 'https://picsum.photos/200/200?random=2' }"
               />
               <D1InputFileItem
                 appearance="tile"
                 status="uploaded"
-                :value="{ name: 'photo.jpg', size: 3145728, thumbnail: 'https://picsum.photos/200/200?random=1' }"
+                :value="{ name: 'photo.jpg', size: 3145728, thumbnail: 'https://picsum.photos/200/200?random=3' }"
               />
               <D1InputFileItem
                 appearance="tile"
                 status="error"
-                :value="{ name: 'corrupted.jpg', size: 1048576, thumbnail: image1 }"
+                :value="{ name: 'corrupted.jpg', size: 1048576, thumbnail: 'https://picsum.photos/200/200?random=4' }"
+              />
+              <D1InputFileItem
+                appearance="tile"
+                status="idle"
+                :value="{ name: 'document.pdf', size: 1048576 }"
+              />
+              <D1InputFileItem
+                appearance="tile"
+                status="uploading"
+                :loading="{ value: 650000 }"
+                :value="{ name: 'archive.zip', size: 2097152 }"
+              />
+              <D1InputFileItem
+                appearance="tile"
+                status="uploaded"
+                :value="{ name: 'spreadsheet.xlsx', size: 524288 }"
+              />
+              <D1InputFileItem
+                appearance="tile"
+                status="error"
+                :value="{ name: 'presentation.key', size: 8388608 }"
               />
             </div>
           </div>

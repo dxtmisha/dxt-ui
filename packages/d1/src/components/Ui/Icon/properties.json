@@ -87,6 +87,22 @@
       "palette-background": "{sys.palette.primary}"
     }
   },
+  "~success": {
+    "color": "{sys.palette.success}",
+    "~inverse": {
+      "color": "{sys.palette.inverseOnSurface}",
+      "color-opacity": "{sys.opacity.primary.high}",
+      "palette-background": "{sys.palette.success}"
+    }
+  },
+  "~error": {
+    "color": "{sys.palette.error}",
+    "~inverse": {
+      "color": "{sys.palette.inverseOnSurface}",
+      "color-opacity": "{sys.opacity.primary.high}",
+      "palette-background": "{sys.palette.error}"
+    }
+  },
   "~rounded": {
     "auto": {},
     "sm": {
