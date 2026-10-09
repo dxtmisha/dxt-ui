@@ -71,7 +71,7 @@
   },
   "dependencies": {
     "@dxtmisha/functional-basic": ">=1.11.0",
-    "@modelcontextprotocol/sdk": ">=1.30.0"
+    "@modelcontextprotocol/sdk": ">=1.32.1"
   },
   "devDependencies": {},
   "sideEffects": false,

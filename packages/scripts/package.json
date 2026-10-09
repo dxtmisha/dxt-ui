@@ -107,18 +107,18 @@
     "vue": ">=3.5.43"
   },
   "devDependencies": {
-    "puppeteer": ">=25.12.0"
+    "puppeteer": ">=25.13.0"
   },
   "peerDependencies": {
-    "@ai-sdk/xai": ">=5.0.14",
-    "@anthropic-ai/claude-agent-sdk": ">=0.3.289",
-    "@anthropic-ai/sdk": ">=0.131.0",
+    "@ai-sdk/xai": ">=5.0.20",
+    "@anthropic-ai/claude-agent-sdk": ">=0.3.295",
+    "@anthropic-ai/sdk": ">=0.133.0",
     "@dxtmisha/wiki": ">=0.118.1",
-    "@google/genai": ">=2.27.0",
+    "@google/genai": ">=2.28.0",
     "@napi-rs/canvas": ">=1.0.10",
-    "ai": ">=7.0.127",
-    "openai": ">=7.28.0",
-    "puppeteer": ">=25.12.0"
+    "ai": ">=7.0.137",
+    "openai": ">=7.31.0",
+    "puppeteer": ">=25.13.0"
   },
   "peerDependenciesMeta": {
     "@ai-sdk/xai": {

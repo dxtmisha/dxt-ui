@@ -80,7 +80,7 @@
     "nitro": ">=3.0.260903-beta",
     "unctx": ">=3.0.1",
     "vue": ">=3.5.43",
-    "vue-router": ">=5.3.1"
+    "vue-router": ">=5.4.0"
   },
   "sideEffects": false,
   "ui-priority": 300

@@ -38,8 +38,8 @@
     "node": ">=20.0.0"
   },
   "peerDependencies": {
-    "vue": ">=3.5.42",
-    "sass": ">=1.103.1"
+    "vue": ">=3.5.43",
+    "sass": ">=1.105.1"
   },
   "peerDependenciesMeta": {
     "vue": {

@@ -98,13 +98,13 @@
   },
   "dependencies": {
     "@mdx-js/rollup": ">=3.1.1",
-    "@microsoft/api-extractor": ">=7.59.0",
+    "@microsoft/api-extractor": ">=7.59.4",
     "@vitejs/plugin-vue": ">=6.0.9",
-    "browserslist": ">=4.29.0",
+    "browserslist": ">=4.29.3",
     "lightningcss": ">=1.33.0",
     "typescript": ">=6.0.3",
-    "vite": ">=8.3.0",
-    "vite-plugin-dts": ">=5.1.1",
+    "vite": ">=8.3.4",
+    "vite-plugin-dts": ">=5.1.2",
     "vite-plugin-singlefile": ">=2.3.3"
   },
   "optionalDependencies": {
@@ -112,8 +112,8 @@
   },
   "peerDependencies": {
     "@vue/tsconfig": ">=0.9.1",
-    "purgecss": ">=7.0.0",
-    "rollup": ">=4.63.4"
+    "purgecss": ">=8.0.0",
+    "rollup": ">=4.64.3"
   },
   "peerDependenciesMeta": {
     "@vue/tsconfig": {

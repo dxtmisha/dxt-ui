@@ -59,7 +59,7 @@
     "node": ">=20.0.0"
   },
   "peerDependencies": {
-    "sass": ">=1.103.1"
+    "sass": ">=1.105.1"
   },
   "peerDependenciesMeta": {
     "sass": {
