@@ -39,7 +39,6 @@ describe('InputFileItemButton', () => {
         icon: 'crop-icon',
         disabled: undefined,
         readonly: undefined,
-        onClick: undefined,
         'aria-label': text.crop
       }))
     })
@@ -64,7 +63,6 @@ describe('InputFileItemButton', () => {
       expect(button.delete).toEqual(expect.objectContaining({
         title: text.delete,
         icon: 'delete-icon',
-        onClick: undefined,
         'aria-label': text.delete
       }))
     })

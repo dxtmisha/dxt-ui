@@ -191,6 +191,7 @@ describe('InputFileItemCrop', () => {
       expect(dialogConfig?.closeButton).toBe(true)
       expect(dialogConfig?.clickOkAndClose).toBe(true)
       expect(typeof dialogConfig?.beforeOpening).toBe('function')
+      expect(dialogConfig?.beforeOpening?.()).toBe(true)
       expect(typeof dialogConfig?.onOk).toBe('function')
     })
   })

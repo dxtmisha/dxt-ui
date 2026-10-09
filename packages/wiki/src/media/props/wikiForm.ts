@@ -300,6 +300,18 @@ export const wikiForm: StorybookArgsToList = {
     },
     hide: true
   },
+  minQuery: {
+    type: StorybookControl.number,
+    options: {
+      category: StorybookCategory.form,
+      type: ['number', 'string'],
+      description: {
+        en: 'Minimum number of characters to trigger search',
+        ru: 'Минимальное количество символов для запуска поиска'
+      }
+    },
+    hide: true
+  },
   multiple: {
     type: StorybookControl.boolean,
     options: {

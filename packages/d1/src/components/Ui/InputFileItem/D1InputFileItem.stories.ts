@@ -55,7 +55,7 @@ export const InputFileItemAppearance: Story = {
               <D1InputFileItem
                 appearance="list"
                 status="uploading"
-                :loading="{ value: 1400000 }"
+                :loading="{ visible: true, value: 1400000 }"
                 :value="{ name: 'image.jpg', size: 2097152, thumbnail: image1 }"
               />
               <D1InputFileItem
@@ -82,7 +82,7 @@ export const InputFileItemAppearance: Story = {
               <D1InputFileItem
                 appearance="compact"
                 status="uploading"
-                :loading="{ value: 500000 }"
+                :loading="{ visible: true, value: 500000 }"
                 :value="{ name: 'archive.zip', size: 1048576 }"
               />
               <D1InputFileItem
@@ -109,7 +109,7 @@ export const InputFileItemAppearance: Story = {
               <D1InputFileItem
                 appearance="tile"
                 status="uploading"
-                :loading="{ value: 1400000 }"
+                :loading="{ visible: true, value: 1400000 }"
                 :value="{ name: 'uploading.jpg', size: 2097152, thumbnail: 'https://picsum.photos/200/200?random=2' }"
               />
               <D1InputFileItem
@@ -130,7 +130,7 @@ export const InputFileItemAppearance: Story = {
               <D1InputFileItem
                 appearance="tile"
                 status="uploading"
-                :loading="{ value: 650000 }"
+                :loading="{ visible: true, value: 650000 }"
                 :value="{ name: 'archive.zip', size: 2097152 }"
               />
               <D1InputFileItem

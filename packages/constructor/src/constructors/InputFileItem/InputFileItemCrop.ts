@@ -108,9 +108,12 @@ export class InputFileItemCrop {
    * Resets current working crop to the last saved value.
    *
    * Сбрасывает текущее рабочее кадрирование к последнему сохраненному значению.
+   * @returns true to confirm dialog opening / true для подтверждения открытия диалога
    */
-  protected readonly reset = (): void => {
+  protected readonly reset = (): boolean => {
     this.current.value = this.value.value
+
+    return true
   }
 
   /**

@@ -418,6 +418,18 @@ export const wikiText: StorybookArgsToList = {
     },
     hide: true
   },
+  textSearch: {
+    type: StorybookControl.text,
+    options: {
+      category: StorybookCategory.text,
+      type: 'string | (() => string)',
+      description: {
+        en: 'Search text',
+        ru: 'Текст поиска'
+      }
+    },
+    hide: true
+  },
   textShow: {
     type: StorybookControl.text,
     options: {

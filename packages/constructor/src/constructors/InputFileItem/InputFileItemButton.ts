@@ -72,25 +72,30 @@ export class InputFileItemButton {
    * Resolves common configuration properties for action buttons.
    *
    * Определяет общие свойства конфигурации для кнопок действий.
-   * @param title button title and label / заголовок и метка кнопки
+   * @param label button label / метка кнопки
    * @param icon button icon / иконка кнопки
    * @param onClick optional click handler callback / необязательный коллбэк обработчика клика
    * @returns button configuration object / объект конфигурации кнопки
    */
   protected getButton(
-    title?: string,
+    label?: string,
     icon?: ButtonProps['icon'],
     onClick?: (event?: MouseEvent) => void
   ): ConstrBind<ButtonProps> {
-    return {
-      title,
+    const item: ConstrBind<ButtonProps> = {
+      title: label,
       icon,
       disabled: this.props.disabled,
       readonly: this.props.readonly,
-      onClick,
-      ...AriaStaticInclude.label(title),
+      ...AriaStaticInclude.label(label),
       ...AriaStaticInclude.disabled(Boolean(this.props.disabled)),
       ...AriaStaticInclude.readonly(Boolean(this.props.readonly))
     }
+
+    if (onClick) {
+      item.onClick = onClick
+    }
+
+    return item
   }
 }

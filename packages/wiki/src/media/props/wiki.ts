@@ -55,6 +55,7 @@ import { wikiImageCrop } from './wikiImageCrop'
 import { wikiInput } from './wikiInput'
 import { wikiInputCode } from './wikiInputCode'
 import { wikiInputCodeItem } from './wikiInputCodeItem'
+import { wikiInputFileItem } from './wikiInputFileItem'
 import { wikiInputSocial } from './wikiInputSocial'
 import { wikiList } from './wikiList'
 import { wikiListItem } from './wikiListItem'
@@ -155,6 +156,7 @@ export const wiki: StorybookArgsToList = {
   ...wikiInput,
   ...wikiInputCode,
   ...wikiInputCodeItem,
+  ...wikiInputFileItem,
   ...wikiInputSocial,
   ...wikiList,
   ...wikiListItem,
