@@ -10,6 +10,13 @@ import _DxtTestWikiPossibilities from './components/Wiki/DxtTestWikiPossibilitie
 import _DxtTestWikiPropItem from './components/Wiki/DxtTestWikiPropItem.vue'
 import _DxtTestWikiTitle from './components/Wiki/DxtTestWikiTitle.vue'
 
+// Composables
+export * from './composables/useWikiItemFocus'
+export * from './composables/useWikiPropsHide'
+
+// Types
+export * from './types/wikiTypes'
+
 // Components
 export const DxtTestBlock = _DxtTestBlock
 export const DxtTestButton = _DxtTestButton
@@ -22,10 +29,3 @@ export const DxtTestWikiHide = _DxtTestWikiHide
 export const DxtTestWikiPossibilities = _DxtTestWikiPossibilities
 export const DxtTestWikiPropItem = _DxtTestWikiPropItem
 export const DxtTestWikiTitle = _DxtTestWikiTitle
-
-// Composables
-export * from './composables/useWikiItemFocus'
-export * from './composables/useWikiPropsHide'
-
-// Types
-export * from './types/wikiTypes'

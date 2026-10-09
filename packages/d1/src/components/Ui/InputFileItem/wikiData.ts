@@ -8,9 +8,11 @@ const propsNames: StorybookProps = [
   { name: 'appearance', type: 'string', option: ['list', 'compact', 'tile'] },
   { name: 'buttonAttrs', type: 'ConstrBind<ButtonProps>' },
   { name: 'confirmDelete', type: 'boolean' },
+  { name: 'crop', type: 'boolean' },
   { name: 'disabled', type: 'boolean' },
   { name: 'file', type: 'File' },
   { name: 'focus', type: 'boolean' },
+  { name: 'iconCrop', type: 'string' },
   { name: 'iconDelete', type: 'string' },
   { name: 'iconError', type: 'string' },
   { name: 'iconRetry', type: 'string' },
@@ -18,12 +20,14 @@ const propsNames: StorybookProps = [
   { name: 'iconWarning', type: 'string' },
   { name: 'image', type: 'string | ConstrBind<ImageProps>' },
   { name: 'imageAttrs', type: 'ConstrBind<ImageProps>' },
+  { name: 'imageCropAttrs', type: 'ConstrBind<ImageCropProps>' },
   { name: 'isSkeleton', type: 'boolean' },
   { name: 'loading', type: 'boolean | ConstrBind<ProgressProps>' },
   { name: 'palette', type: 'string', option: ['red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose', 'slate', 'gray', 'zinc', 'neutral', 'stone', 'black', 'white'] },
   { name: 'readonly', type: 'boolean' },
   { name: 'selected', type: 'boolean' },
   { name: 'status', type: 'string', option: ['uploading', 'uploaded', 'error', 'idle'] },
+  { name: 'textCrop', type: 'TextValue' },
   { name: 'textDelete', type: 'TextValue' },
   { name: 'textDeleteConfirm', type: 'TextValue' },
   { name: 'textError', type: 'TextValue' },
@@ -44,6 +48,7 @@ const slotsNames: StorybookSlots = [
 
 const eventsNames: StorybookSlots = [
   // :eventsList [!] System label / Системная метка
+  { name: 'crop', description: `Crop event / Событие кадрирования`, properties: [{ name: 'file?', type: 'FieldFileValue | undefined' }] },
   { name: 'delete', description: `Delete event / Событие удаления`, properties: [{ name: 'file?', type: 'FieldFileValue | undefined' }] },
   { name: 'retry', description: `Retry event / Событие повтора`, properties: [{ name: 'file?', type: 'FieldFileValue | undefined' }] }
   // :eventsList [!] System label / Системная метка
