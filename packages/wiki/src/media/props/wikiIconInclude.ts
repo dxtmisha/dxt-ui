@@ -181,6 +181,17 @@ export const wikiIconInclude: StorybookArgsToList = {
     },
     hide: true
   },
+  iconCrop: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.icon,
+      description: {
+        en: 'Sets icon for crop button',
+        ru: 'Задает иконку для кнопки кадрирования'
+      }
+    },
+    hide: true
+  },
   iconDelete: {
     type: StorybookControl.string,
     options: {
@@ -461,6 +472,17 @@ export const wikiIconInclude: StorybookArgsToList = {
       description: {
         en: 'Sets icon for visibility off state (hide password)',
         ru: 'Задает иконку для состояния скрытия (скрыть пароль)'
+      }
+    },
+    hide: true
+  },
+  iconWarning: {
+    type: StorybookControl.string,
+    options: {
+      category: StorybookCategory.icon,
+      description: {
+        en: 'Sets icon for warning',
+        ru: 'Задает иконку для предупреждения'
       }
     },
     hide: true

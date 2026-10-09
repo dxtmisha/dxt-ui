@@ -86,6 +86,7 @@ export class InputFileItemDesign<
     return {
       getFile: this.item.file.getFile,
       getStatus: () => this.item.status.status,
+      getCrop: () => this.item.crop.coordinator,
       delete: () => this.item.event.onDelete(),
       retry: () => this.item.event.onRetry()
     } as EXPOSE
@@ -103,12 +104,12 @@ export class InputFileItemDesign<
       ...{
         // :classes [!] System label / Системная метка
         thumbnail: this.getSubClass('thumbnail'),
-        thumbnailImage: this.getSubClass('thumbnailImage'),
         body: this.getSubClass('body'),
         label: this.getSubClass('label'),
         caption: this.getSubClass('caption'),
         progress: this.getSubClass('progress'),
         actions: this.getSubClass('actions'),
+        buttonCrop: this.getSubClass('buttonCrop'),
         buttonDelete: this.getSubClass('buttonDelete'),
         buttonRetry: this.getSubClass('buttonRetry')
         // :classes [!] System label / Системная метка
@@ -221,6 +222,7 @@ export class InputFileItemDesign<
         { class: this.classes?.value.actions },
         [
           ...this.renderButtonRetry(),
+          ...this.renderDialogCrop(),
           ...this.renderDialog()
         ]
       )
@@ -245,6 +247,20 @@ export class InputFileItemDesign<
         ]
       )
     ]
+  }
+
+  /**
+   * Rendering method for the crop action button.
+   *
+   * Метод рендеринга для кнопки действия кадрирования.
+   * @param props control properties from dialog / свойства управления из диалога
+   * @returns array of virtual nodes / массив виртуальных нод
+   */
+  readonly renderButtonCrop = (props?: WindowControlItem): VNode[] => {
+    return this.item.buttonCrop.render(undefined, {
+      ...props?.binds,
+      class: this.classes?.value.buttonCrop
+    })
   }
 
   /**
@@ -291,6 +307,16 @@ export class InputFileItemDesign<
   }
 
   /**
+   * Rendering method for the image crop editor.
+   *
+   * Метод рендеринга для редактора кадрирования изображения.
+   * @returns array of virtual nodes / массив виртуальных нод
+   */
+  readonly renderCrop = (): VNode[] => {
+    return this.item.imageCrop.render()
+  }
+
+  /**
    * Rendering method for the confirmation dialog.
    *
    * Метод рендеринга для диалога подтверждения.
@@ -298,12 +324,12 @@ export class InputFileItemDesign<
    */
   readonly renderDialog = (): VNode[] => {
     if (
-      this.props.confirmDelete !== false
+      this.item.delete.is()
       && this.components.is('dialog')
     ) {
       return this.components.render(
         'dialog',
-        this.item.dialog,
+        this.item.delete.dialog,
         {
           control: this.renderButtonDelete
         }
@@ -311,6 +337,30 @@ export class InputFileItemDesign<
     }
 
     return this.renderButtonDelete()
+  }
+
+  /**
+   * Rendering method for the crop dialog.
+   *
+   * Метод рендеринга для диалога кадрирования.
+   * @returns array of virtual nodes / массив виртуальных нод
+   */
+  readonly renderDialogCrop = (): VNode[] => {
+    if (
+      this.item.crop.is()
+      && this.components.is('dialog')
+    ) {
+      return this.components.render(
+        'dialog',
+        this.item.crop.dialog,
+        {
+          default: this.renderCrop,
+          control: this.renderButtonCrop
+        }
+      )
+    }
+
+    return []
   }
 
   /**
@@ -359,9 +409,7 @@ export class InputFileItemDesign<
         {
           class: this.classes?.value.thumbnail
         },
-        this.item.image.render(undefined, {
-          class: this.classes?.value.thumbnailImage
-        })
+        this.item.image.render()
       )
     ]
   }

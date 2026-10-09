@@ -1,6 +1,5 @@
 import type { Ref, ToRefs } from 'vue'
 import {
-  type ConstrBind,
   type ConstrEmit,
   type DesignComp
 } from '@dxtmisha/functional'
@@ -11,13 +10,10 @@ import { EnabledInclude } from '../../classes/EnabledInclude'
 import { LabelInclude } from '../../classes/LabelInclude'
 import { TextInclude } from '../../classes/TextInclude'
 
-import {
-  ButtonInclude,
-  type ButtonProps
-} from '../Button'
-import type { DialogProps } from '../Dialog'
+import { ButtonInclude } from '../Button'
 import { IconInclude } from '../Icon'
 import { ImageInclude } from '../Image'
+import { ImageCropInclude } from '../ImageCrop'
 import {
   ProgressInclude,
   type ProgressProps
@@ -25,6 +21,9 @@ import {
 import { SkeletonInclude } from '../Skeleton'
 
 import { InputFileItemAppearance } from './InputFileItemAppearance'
+import { InputFileItemButton } from './InputFileItemButton'
+import { InputFileItemCrop } from './InputFileItemCrop'
+import { InputFileItemDelete } from './InputFileItemDelete'
 import { InputFileItemEvent } from './InputFileItemEvent'
 import { InputFileItemFile } from './InputFileItemFile'
 import { InputFileItemProgress } from './InputFileItemProgress'
@@ -47,6 +46,12 @@ export class InputFileItem {
   /** Appearance manager for display mode / Менеджер режима отображения */
   readonly appearance: InputFileItemAppearance
 
+  /** Action buttons manager / Менеджер кнопок действий */
+  readonly button: InputFileItemButton
+
+  /** Button include for crop action / Подключение кнопки для действия кадрирования */
+  readonly buttonCrop: ButtonInclude
+
   /** Button include for delete/remove action / Подключение кнопки для действия удаления */
   readonly buttonDelete: ButtonInclude
 
@@ -55,6 +60,12 @@ export class InputFileItem {
 
   /** Caption manager for secondary text / Менеджер подписи для вторичного текста */
   readonly caption: CaptionInclude
+
+  /** Image crop manager / Менеджер кадрирования изображения */
+  readonly crop: InputFileItemCrop
+
+  /** Delete manager for confirmation dialog / Менеджер удаления для диалога подтверждения */
+  readonly delete: InputFileItemDelete
 
   /** Enabled state controller / Контроллер состояния активности */
   readonly enabled: EnabledInclude
@@ -70,6 +81,9 @@ export class InputFileItem {
 
   /** Thumbnail image include / Подключение изображения миниатюры */
   readonly image: ImageInclude
+
+  /** ImageCrop component inclusion controller / Контроллер включения компонента ImageCrop */
+  readonly imageCrop: ImageCropInclude
 
   /** Label manager for file name / Менеджер метки для имени файла */
   readonly label: LabelInclude
@@ -107,7 +121,11 @@ export class InputFileItem {
    * @param constructors.EnabledConstructor class for creating the enabled state / класс для создания состояния активности
    * @param constructors.IconIncludeConstructor class for creating an icon / класс для создания иконки
    * @param constructors.ImageIncludeConstructor class for creating an image / класс для создания изображения
+   * @param constructors.ImageCropIncludeConstructor class for creating an image crop / класс для создания кадрирования изображения
    * @param constructors.InputFileItemAppearanceConstructor class for managing appearance / класс для управления режимом отображения
+   * @param constructors.InputFileItemButtonConstructor class for managing action buttons / класс для управления кнопками действий
+   * @param constructors.InputFileItemCropConstructor class for managing crop / класс для управления кадрированием
+   * @param constructors.InputFileItemDeleteConstructor class for managing delete confirmation / класс для управления подтверждением удаления
    * @param constructors.InputFileItemEventConstructor class for managing file events / класс для управления событиями файла
    * @param constructors.InputFileItemFileConstructor class for managing file data / класс для управления данными файла
    * @param constructors.InputFileItemProgressConstructor class for managing file progress / класс для управления прогрессом файла
@@ -132,7 +150,11 @@ export class InputFileItem {
       EnabledConstructor?: typeof EnabledInclude
       IconIncludeConstructor?: typeof IconInclude
       ImageIncludeConstructor?: typeof ImageInclude
+      ImageCropIncludeConstructor?: typeof ImageCropInclude
       InputFileItemAppearanceConstructor?: typeof InputFileItemAppearance
+      InputFileItemButtonConstructor?: typeof InputFileItemButton
+      InputFileItemCropConstructor?: typeof InputFileItemCrop
+      InputFileItemDeleteConstructor?: typeof InputFileItemDelete
       InputFileItemEventConstructor?: typeof InputFileItemEvent
       InputFileItemFileConstructor?: typeof InputFileItemFile
       InputFileItemProgressConstructor?: typeof InputFileItemProgress
@@ -149,7 +171,11 @@ export class InputFileItem {
       EnabledConstructor = EnabledInclude,
       IconIncludeConstructor = IconInclude,
       ImageIncludeConstructor = ImageInclude,
+      ImageCropIncludeConstructor = ImageCropInclude,
       InputFileItemAppearanceConstructor = InputFileItemAppearance,
+      InputFileItemButtonConstructor = InputFileItemButton,
+      InputFileItemCropConstructor = InputFileItemCrop,
+      InputFileItemDeleteConstructor = InputFileItemDelete,
       InputFileItemEventConstructor = InputFileItemEvent,
       InputFileItemFileConstructor = InputFileItemFile,
       InputFileItemProgressConstructor = InputFileItemProgress,
@@ -170,6 +196,17 @@ export class InputFileItem {
       this.file,
       this.emits
     )
+    this.crop = new InputFileItemCropConstructor(
+      this.props,
+      this.file,
+      this.event,
+      this.text
+    )
+    this.delete = new InputFileItemDeleteConstructor(
+      this.props,
+      this.event,
+      this.text
+    )
     this.progressValue = new InputFileItemProgressConstructor(
       this.props,
       this.file
@@ -180,11 +217,25 @@ export class InputFileItem {
       this.text
     )
 
+    this.button = new InputFileItemButtonConstructor(
+      this.props,
+      this.event,
+      this.text
+    )
+
+    this.buttonCrop = new ButtonIncludeConstructor(
+      this.className,
+      this.props,
+      this.components,
+      () => this.button.crop,
+      'buttonCrop'
+    )
+
     this.buttonDelete = new ButtonIncludeConstructor(
       this.className,
       this.props,
       this.components,
-      () => this.getButtonDelete(),
+      () => this.button.delete,
       'buttonDelete'
     )
 
@@ -192,7 +243,7 @@ export class InputFileItem {
       this.className,
       this.props,
       this.components,
-      () => this.getButtonRetry(),
+      () => this.button.retry,
       'buttonRetry'
     )
 
@@ -219,11 +270,23 @@ export class InputFileItem {
       this.className,
       () => ({
         ...this.props,
-        image: this.file.image
+        image: this.file.image,
+        coordinator: this.crop.coordinator
       }),
       this.components,
       () => ({
         alt: this.file.name
+      })
+    )
+
+    this.imageCrop = new ImageCropIncludeConstructor(
+      this.className,
+      this.props,
+      this.components,
+      () => ({
+        coordinator: this.crop.coordinator,
+        image: this.file.imageOriginal,
+        onResize: this.crop.onResize
       })
     )
 
@@ -260,21 +323,6 @@ export class InputFileItem {
   }
 
   /**
-   * Resolves properties and settings for the confirmation dialog.
-   *
-   * Определяет свойства и настройки для диалога подтверждения.
-   * @returns dialog configuration object or undefined / объект конфигурации диалога или undefined
-   */
-  get dialog(): ConstrBind<DialogProps> | undefined {
-    return {
-      icon: this.props.iconWarning,
-      description: this.text.deleteConfirm,
-      clickOkAndClose: true,
-      onOk: this.event.onDelete
-    }
-  }
-
-  /**
    * Resolves properties and settings for the progress indicator.
    *
    * Определяет свойства и настройки для индикатора прогресса.
@@ -282,8 +330,11 @@ export class InputFileItem {
    */
   protected get progressProps(): ProgressProps {
     const item: ProgressProps = {
-      position: 'static',
       visible: this.status.isUploading()
+    }
+
+    if (!this.appearance.isTile()) {
+      item.position = 'static'
     }
 
     if (this.progressValue.isDeterminate()) {
@@ -301,52 +352,6 @@ export class InputFileItem {
     return {
       ...item,
       linear: true
-    }
-  }
-
-  /**
-   * Resolves properties and settings for the delete action button.
-   *
-   * Определяет свойства и настройки для кнопки действия удаления.
-   * @returns button configuration object or undefined / объект конфигурации кнопки или undefined
-   */
-  protected getButtonDelete(): ConstrBind<ButtonProps> | undefined {
-    if (this.props.readonly) {
-      return undefined
-    }
-
-    return {
-      title: this.text.delete,
-      icon: this.props.iconDelete,
-      disabled: this.props.disabled,
-      readonly: this.props.readonly,
-      onClick: this.props.confirmDelete === false ? this.event.onDelete : undefined,
-      ...AriaStaticInclude.label(this.text.delete),
-      ...AriaStaticInclude.disabled(Boolean(this.props.disabled)),
-      ...AriaStaticInclude.readonly(Boolean(this.props.readonly))
-    }
-  }
-
-  /**
-   * Resolves properties and settings for the retry action button.
-   *
-   * Определяет свойства и настройки для кнопки действия повтора.
-   * @returns button configuration object or undefined / объект конфигурации кнопки или undefined
-   */
-  protected getButtonRetry(): ConstrBind<ButtonProps> | undefined {
-    if (this.props.readonly) {
-      return undefined
-    }
-
-    return {
-      title: this.text.retry,
-      icon: this.props.iconRetry,
-      disabled: this.props.disabled,
-      readonly: this.props.readonly,
-      onClick: this.event.onRetry,
-      ...AriaStaticInclude.label(this.text.retry),
-      ...AriaStaticInclude.disabled(Boolean(this.props.disabled)),
-      ...AriaStaticInclude.readonly(Boolean(this.props.readonly))
     }
   }
 }

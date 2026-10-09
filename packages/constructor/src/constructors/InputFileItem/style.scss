@@ -23,6 +23,12 @@
   }
 
   &--appearance {
+    &--list {
+      @include ui.subclass('thumbnail') {
+        @include ui.aspectRatio(#{'1/1'});
+      }
+    }
+
     &--tile {
       @include ui.flexCenter;
       position: relative;
@@ -46,6 +52,7 @@
         z-index: 24;
         opacity: 0;
         pointer-events: none;
+        border-radius: inherit;
       }
 
       @include ui.hover {

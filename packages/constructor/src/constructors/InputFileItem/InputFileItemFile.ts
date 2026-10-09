@@ -2,6 +2,7 @@ import { computed } from 'vue'
 import { GeoIntl, toNumber } from '@dxtmisha/functional'
 import { MediaFile } from '@dxtmisha/media'
 
+import type { CropAreaCoordinator } from '../CropArea'
 import type { FieldFileValue } from '../../types/fieldTypes'
 import type { InputFileItemPropsBasic } from './props'
 
@@ -44,6 +45,16 @@ export class InputFileItemFile {
    * @returns image source, File instance, icon string, or undefined / источник изображения, экземпляр File, строка иконки или undefined
    */
   get image(): InputFileItemPropsBasic['image'] | File | undefined {
+    return this.imageOriginal ?? this.getIcon()
+  }
+
+  /**
+   * Resolves and returns the original image source.
+   *
+   * Определяет и возвращает исходный источник изображения.
+   * @returns image source, File instance, or undefined / источник изображения, экземпляр File или undefined
+   */
+  get imageOriginal(): InputFileItemPropsBasic['image'] | File | undefined {
     if (this.props.image) {
       return this.props.image
     }
@@ -56,7 +67,7 @@ export class InputFileItemFile {
       return this.src ?? this.getFile()
     }
 
-    return this.getIcon()
+    return undefined
   }
 
   /**
@@ -122,22 +133,29 @@ export class InputFileItemFile {
    * @returns true if image / true, если изображение
    */
   isImage(): boolean {
-    return Boolean(this.mediaFile.value?.isImage())
+    return Boolean(
+      this.mediaFile.value?.isImage()
+      || this.props.value?.type?.startsWith('image/')
+      || this.getFile()?.type?.startsWith('image/')
+    )
   }
 
   /**
-   * Resolves and returns file data in FieldFileValue format, taking into account file and value properties.
+   * Resolves and returns file data in FieldFileValue format, taking into account file, value properties, and crop coordinates.
    *
-   * Определяет и возвращает данные файла в формате FieldFileValue, учитывая свойства file и value.
+   * Определяет и возвращает данные файла в формате FieldFileValue, учитывая свойства file, value и координаты кадрирования.
+   * @param crop optional crop coordinates / необязательные координаты кадрирования
    * @returns file value object or undefined / объект значения файла или undefined
    */
-  get(): FieldFileValue | undefined {
+  get(crop?: CropAreaCoordinator): FieldFileValue | undefined {
     const file = this.getFile()
+    const cropValue = crop ?? this.props.value?.crop
 
     if (file) {
       return {
         ...this.props.value,
         file,
+        crop: cropValue,
         name: file.name || this.props.value?.name,
         size: file.size,
         type: file.type || this.props.value?.type || undefined,
@@ -146,7 +164,10 @@ export class InputFileItemFile {
     }
 
     if (this.props.value) {
-      return { ...this.props.value }
+      return {
+        ...this.props.value,
+        crop: cropValue
+      }
     }
 
     return undefined

@@ -9,6 +9,7 @@ export type TextIndex = 'am'
   | 'characterRemaining'
   | 'close'
   | 'copiedClipboard'
+  | 'crop'
   | 'decrement'
   | 'delete'
   | 'deleteConfirm'
@@ -90,6 +91,12 @@ export type TextClosePropsInclude = {
 export type TextCopiedClipboardPropsInclude = {
   /** Copied to the clipboard text/ Текст о копировании в буфер обмена */
   textCopiedClipboard?: TextValue
+}
+
+/** Interface for including crop text/ Интерфейс для включения текста кадрирования */
+export type TextCropPropsInclude = {
+  /** Crop text/ Текст кадрирования */
+  textCrop?: TextValue
 }
 
 /** Interface for including decrement text/ Интерфейс для включения текста уменьшения */
@@ -281,6 +288,7 @@ export type TextAllPropsInclude = TextAmPropsInclude
   & TextCharacterRemainingPropsInclude
   & TextClosePropsInclude
   & TextCopiedClipboardPropsInclude
+  & TextCropPropsInclude
   & TextDecrementPropsInclude
   & TextDeletePropsInclude
   & TextDeleteConfirmPropsInclude

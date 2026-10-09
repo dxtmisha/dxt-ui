@@ -1,11 +1,13 @@
 import type { ButtonPropsBasic, ButtonPropsInclude } from '../Button'
 import type { ImagePropsBasic, ImagePropsInclude } from '../Image'
+import type { ImageCropPropsBasic, ImageCropPropsInclude } from '../ImageCrop'
 import type { ProgressPropsBasic, ProgressPropsInclude } from '../Progress'
 import type { SkeletonPropsInclude } from '../Skeleton'
 
 import type { EnabledProps } from '../../types/enabledTypes'
 import type { FieldFileValue } from '../../types/fieldTypes'
 import type {
+  TextCropPropsInclude,
   TextDeleteConfirmPropsInclude,
   TextDeletePropsInclude,
   TextErrorPropsInclude,
@@ -27,12 +29,15 @@ type InputFileItemPropsToken = {
 export type InputFileItemPropsBasic<
   Button extends ButtonPropsBasic = ButtonPropsBasic,
   Image extends ImagePropsBasic = ImagePropsBasic,
-  Progress extends ProgressPropsBasic = ProgressPropsBasic
+  Progress extends ProgressPropsBasic = ProgressPropsBasic,
+  ImageCrop extends ImageCropPropsBasic = ImageCropPropsBasic
 > = EnabledProps
   & ImagePropsInclude<Image>
+  & ImageCropPropsInclude<ImageCrop>
   & ProgressPropsInclude<Progress>
   & ButtonPropsInclude<Button>
   & SkeletonPropsInclude
+  & TextCropPropsInclude
   & TextDeleteConfirmPropsInclude
   & TextDeletePropsInclude
   & TextErrorPropsInclude
@@ -49,8 +54,14 @@ export type InputFileItemPropsBasic<
     /** File instance / Экземпляр файла */
     file?: File
 
+    /** Whether to enable image cropping / Включить ли кадрирование изображения */
+    crop?: boolean
+
     /** Whether to show confirmation dialog before delete / Показывать ли диалог подтверждения перед удалением */
     confirmDelete?: boolean
+
+    /** Icon for crop button / Иконка для кнопки кадрирования */
+    iconCrop?: string
 
     /** Icon for delete button / Иконка для кнопки удаления */
     iconDelete?: string

@@ -1,6 +1,7 @@
 import { type InputFileItemPropsBasic, defaultsInputFileItem } from '@dxtmisha/constructor/InputFileItem'
 import type { ButtonProps } from '../Button'
 import type { ImageProps } from '../Image'
+import type { ImageCropProps } from '../ImageCrop'
 import type { ProgressProps } from '../Progress'
 
 export const propsValues = {
@@ -29,7 +30,8 @@ type PropsToken = {
 export type InputFileItemProps = InputFileItemPropsBasic<
   ButtonProps,
   ImageProps,
-  ProgressProps
+  ProgressProps,
+  ImageCropProps
 > & PropsToken
 
 /**
@@ -37,6 +39,7 @@ export type InputFileItemProps = InputFileItemPropsBasic<
  */
 export const defaults: object = {
   ...defaultsInputFileItem,
+  iconCrop: 'crop',
   iconDelete: 'delete',
   iconRetry: 'refresh',
   iconSuccess: 'check_circle',

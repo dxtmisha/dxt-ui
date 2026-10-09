@@ -1,8 +1,10 @@
 import type { ConstrClass } from '@dxtmisha/functional'
 import type { ButtonComponentInclude } from '../Button'
+import type { CropAreaCoordinator } from '../CropArea'
 import type { DialogComponentInclude } from '../Dialog'
 import type { IconComponentInclude } from '../Icon'
 import type { ImageComponentInclude } from '../Image'
+import type { ImageCropComponentInclude } from '../ImageCrop'
 import type { ProgressComponentInclude } from '../Progress'
 
 import type { FieldFileValue } from '../../types/fieldTypes'
@@ -18,6 +20,7 @@ export type InputFileItemComponents
     & DialogComponentInclude
     & IconComponentInclude
     & ImageComponentInclude
+    & ImageCropComponentInclude
     & ProgressComponentInclude
 
 /**
@@ -26,6 +29,8 @@ export type InputFileItemComponents
  * Тип, описывающий доступные события.
  */
 export type InputFileItemEmits = {
+  /** Crop event / Событие кадрирования */
+  crop: [file?: FieldFileValue]
   /** Delete event / Событие удаления */
   delete: [file?: FieldFileValue]
   /** Retry event / Событие повтора */
@@ -42,6 +47,8 @@ export interface InputFileItemExpose {
   getFile: () => File | undefined
   /** Current status / Текущий статус */
   getStatus: () => InputFileItemStatusType
+  /** Current crop coordinates / Текущие координаты кадрирования */
+  getCrop: () => CropAreaCoordinator | undefined
   /** Trigger delete action / Вызов действия удаления */
   delete: () => void
   /** Trigger retry action / Вызов действия повтора */
@@ -71,12 +78,12 @@ export type InputFileItemClasses = {
   main: ConstrClass
   // :classes [!] System label / Системная метка
   thumbnail: string
-  thumbnailImage: string
   body: string
   label: string
   caption: string
   progress: string
   actions: string
+  buttonCrop: string
   buttonDelete: string
   buttonRetry: string
   // :classes [!] System label / Системная метка

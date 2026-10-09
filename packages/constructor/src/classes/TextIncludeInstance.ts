@@ -18,6 +18,7 @@ export class TextIncludeInstance {
     characterRemaining: 'Remaining [left] characters',
     close: 'Close',
     copiedClipboard: 'Copied to the clipboard',
+    crop: 'Crop',
     decrement: 'Decrease',
     delete: 'Delete',
     deleteConfirm: 'Are you sure you want to delete this file?',

@@ -1,11 +1,11 @@
 {
   "#thumbnail": {},
-  "#thumbnailImage": {},
   "#body": {},
   "#label": {},
   "#caption": {},
   "#progress": {},
   "#actions": {},
+  "#buttonCrop": {},
   "#buttonDelete": {},
   "#buttonRetry": {},
   "~selected": {},

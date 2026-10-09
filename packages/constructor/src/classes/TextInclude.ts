@@ -95,6 +95,11 @@ export class TextInclude {
     return this.get('textCopiedClipboard')
   }
 
+  /** Crop text / Текст кадрирования */
+  get crop() {
+    return this.get('textCrop')
+  }
+
   /** Text for decreasing value / Текст для уменьшения значения */
   get decrement() {
     return this.get('textDecrement')

@@ -4,9 +4,6 @@
   "palette-gradient": "{sys.palette.primary}",
   "gradient-opacity": "0",
   "#thumbnail": {
-    "width": "{ref.spacing.12}",
-    "aspect-ratio": "1/1",
-    "border-radius": "{sys.rounded.sm}",
     "background-color": "{sys.palette.onSurface}",
     "background-opacity": "{sys.opacity.overlay}"
   },
@@ -21,14 +18,12 @@
     "link|font": "{font.bodySmall}",
     "color-opacity": "{sys.opacity.surface.medium}"
   },
-  "#progress": {
-    "width": "100%"
-  },
   "#actions": {
     "gap": "{sys.spacing.x}",
     "align-items": "center",
     "flex-shrink": "0"
   },
+  "#buttonCrop": {},
   "#buttonDelete": {},
   "#buttonRetry": {},
   "hover": {
@@ -60,7 +55,11 @@
       "margin": "{sys.spacing.x}",
       "paddingX": "{layout.paddingX}",
       "paddingY": "{sys.spacing.xs}",
-      "border-radius": "{sys.rounded.md}"
+      "border-radius": "{sys.rounded.md}",
+      "#thumbnail": {
+        "width": "{ref.spacing.12}",
+        "border-radius": "{sys.rounded.sm}"
+      }
     },
     "~compact": {
       "paddingX": "{layout.paddingX}",
@@ -74,7 +73,11 @@
       "color": "{sys.palette.surface}",
       "width": "{ref.spacing.28}",
       "aspect-ratio": "1 / 1",
-      "border-radius": "{sys.rounded.lg}"
+      "border-radius": "{sys.rounded.lg}",
+      "#actions": {
+        "background-color": "{sys.palette.scrim}",
+        "background-opacity": "{sys.opacity.scrim}"
+      }
     }
   },
   "~status": {

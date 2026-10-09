@@ -70,6 +70,50 @@ describe('InputFileItemFile', () => {
     })
   })
 
+  describe('imageOriginal', () => {
+    it('returns props.image when set', () => {
+      const helper = createHelper({ image: 'https://example.com/custom.png' })
+      expect(helper.imageOriginal).toBe('https://example.com/custom.png')
+    })
+
+    it('prioritizes props.image over thumbnail', () => {
+      const helper = createHelper({
+        image: 'https://example.com/custom.png',
+        value: { thumbnail: 'https://example.com/thumb.png' }
+      })
+      expect(helper.imageOriginal).toBe('https://example.com/custom.png')
+    })
+
+    it('returns props.value.thumbnail when thumbnail is set on value', () => {
+      const helper = createHelper({ value: { thumbnail: 'https://example.com/value-thumb.png' } })
+      expect(helper.imageOriginal).toBe('https://example.com/value-thumb.png')
+    })
+
+    it('returns src when available and is an image', () => {
+      const helper = createHelper({ value: { value: 'https://example.com/photo.jpg' } })
+      expect(helper.imageOriginal).toBe('https://example.com/photo.jpg')
+    })
+
+    it('returns file instance when file is an image and no value is set', () => {
+      const mockFile = new File([''], 'photo.png', { type: 'image/png' })
+      const helper = createHelper({ file: mockFile })
+
+      expect(helper.imageOriginal).toBe(mockFile)
+    })
+
+    it('returns undefined when file is not an image and no image or thumbnail is set', () => {
+      const mockFile = new File([''], 'doc.pdf', { type: 'application/pdf' })
+      const helper = createHelper({ file: mockFile })
+
+      expect(helper.imageOriginal).toBeUndefined()
+    })
+
+    it('returns undefined when neither image, thumbnail, nor file is available', () => {
+      const helper = createHelper({})
+      expect(helper.imageOriginal).toBeUndefined()
+    })
+  })
+
   describe('thumbnail', () => {
     it('returns props.value.thumbnail when provided', () => {
       const helper = createHelper({ value: { thumbnail: 'https://example.com/val-thumb.webp' } })

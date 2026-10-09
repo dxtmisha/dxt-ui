@@ -111,6 +111,36 @@ export const wikiOption: StorybookArgsToList = {
       }
     }
   },
+  confirmDelete: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.option,
+      description: {
+        en: 'Whether to show confirmation dialog before delete',
+        ru: 'Показывать ли диалог подтверждения перед удалением'
+      }
+    }
+  },
+  countryBlock: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.option,
+      description: {
+        en: 'Flag to disable dynamic country detection by phone number',
+        ru: 'Флаг для отключения динамического определения страны по номеру телефона'
+      }
+    }
+  },
+  crop: {
+    type: StorybookControl.boolean,
+    options: {
+      category: StorybookCategory.option,
+      description: {
+        en: 'Enables image cropping for image files',
+        ru: 'Включает кадрирование изображения для файлов-изображений'
+      }
+    }
+  },
   currencyHide: {
     type: StorybookControl.boolean,
     options: {
@@ -124,16 +154,6 @@ export const wikiOption: StorybookArgsToList = {
     demoOptions: {
       currency: 'USD',
       type: 'currency'
-    }
-  },
-  countryBlock: {
-    type: StorybookControl.boolean,
-    options: {
-      category: StorybookCategory.option,
-      description: {
-        en: 'Flag to disable dynamic country detection by phone number',
-        ru: 'Флаг для отключения динамического определения страны по номеру телефона'
-      }
     }
   },
   delay: {

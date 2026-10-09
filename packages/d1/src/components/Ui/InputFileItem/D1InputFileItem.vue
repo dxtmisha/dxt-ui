@@ -15,6 +15,7 @@ import { D1Button } from '../Button'
 import { D1Dialog } from '../Dialog'
 import { D1Icon } from '../Icon'
 import { D1Image } from '../Image'
+import { D1ImageCrop } from '../ImageCrop'
 import { D1Progress } from '../Progress'
 
 import { defaults, type InputFileItemProps, propsValues } from './props'
@@ -58,9 +59,17 @@ const design = new InputFileItemDesign(
       dialog: D1Dialog,
       icon: D1Icon,
       image: D1Image,
+      imageCrop: D1ImageCrop,
       progress: D1Progress
     },
     compMod: {
+      buttonCrop: computed(() => ({
+        secondary: true,
+        roundedFull: true,
+        size: 'xs',
+        palette: 'neutral',
+        inverse: props.appearance === 'tile'
+      })),
       buttonDelete: computed(() => ({
         secondary: true,
         roundedFull: true,

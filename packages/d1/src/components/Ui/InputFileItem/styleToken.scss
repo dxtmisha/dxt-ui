@@ -17,14 +17,8 @@
     @include ui.paletteGradient(#{var(--d1-sys-palette-primary)});
     
     &__thumbnail {
-      @include ui.aspectRatio(#{1/1});
-      
-      @include ui.width(#{var(--d1-ref-spacing-12)});
-      
       @include ui.backgroundColor(#{var(--d1-sys-palette-onSurface)});
       @include ui.backgroundOpacity(#{var(--d1-sys-opacity-overlay)});
-      
-      border-radius: var(--d1-sys-rounded-sm);
     }
     
     &__body {
@@ -49,10 +43,6 @@
       letter-spacing: var(--d1-sys-letterSpacing-lg);
       
       @include ui.colorOpacity(#{var(--d1-sys-opacity-surface-medium)}); @include ui.color('init');
-    }
-    
-    &__progress {
-      @include ui.width(#{100%});
     }
     
     &__actions {
@@ -101,6 +91,12 @@
         @include ui.paddingY(#{var(--d1-sys-spacing-xs)});
         
         border-radius: var(--d1-sys-rounded-md);
+        
+        & .d1-inputFileItem__thumbnail {
+          @include ui.width(#{var(--d1-ref-spacing-12)});
+          
+          border-radius: var(--d1-sys-rounded-sm);
+        }
       }
       
       &--compact {
@@ -126,6 +122,11 @@
         @include ui.color(#{var(--d1-sys-palette-surface)});
         
         border-radius: var(--d1-sys-rounded-lg);
+        
+        & .d1-inputFileItem__actions {
+          @include ui.backgroundColor(#{var(--d1-sys-palette-scrim)});
+          @include ui.backgroundOpacity(#{var(--d1-sys-opacity-scrim)});
+        }
       }
     }
     

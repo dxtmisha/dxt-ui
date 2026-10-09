@@ -106,6 +106,18 @@ export const wikiText: StorybookArgsToList = {
     },
     hide: true
   },
+  textCrop: {
+    type: StorybookControl.text,
+    options: {
+      category: StorybookCategory.text,
+      type: 'string | (() => string)',
+      description: {
+        en: 'Crop text',
+        ru: 'Текст кадрирования'
+      }
+    },
+    hide: true
+  },
   textDecrement: {
     type: StorybookControl.text,
     options: {
@@ -126,6 +138,18 @@ export const wikiText: StorybookArgsToList = {
       description: {
         en: 'Delete text',
         ru: 'Текст удаления'
+      }
+    },
+    hide: true
+  },
+  textDeleteConfirm: {
+    type: StorybookControl.text,
+    options: {
+      category: StorybookCategory.text,
+      type: 'string | (() => string)',
+      description: {
+        en: 'Delete confirmation text',
+        ru: 'Текст подтверждения удаления'
       }
     },
     hide: true

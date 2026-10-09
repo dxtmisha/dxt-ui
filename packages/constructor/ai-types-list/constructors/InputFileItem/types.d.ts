@@ -23,7 +23,6 @@ export interface InputFileItemSlots {
 export type InputFileItemClasses = {
     main: ConstrClass;
     thumbnail: string;
-    thumbnailImage: string;
     body: string;
     label: string;
     caption: string;
