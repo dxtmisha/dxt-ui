@@ -10,9 +10,9 @@ import {
 const item = executeUse(() => {
   /** Translations / Переводы */
   const translate = useTranslateRef([
+    'translate-configuration',
     'translate-key_creation',
-    'translate-localization',
-    'translate-settings'
+    'translate-localization'
   ] as const)
 
   /** List of pages / Список страниц */
@@ -20,16 +20,16 @@ const item = executeUse(() => {
     () => {
       return [
         {
+          label: translate.value['translate-configuration'],
+          value: 'configuration'
+        },
+        {
           label: translate.value['translate-key_creation'],
           value: 'key-creation'
         },
         {
           label: translate.value['translate-localization'],
           value: 'localization'
-        },
-        {
-          label: translate.value['translate-settings'],
-          value: 'settings'
         }
       ]
     },
