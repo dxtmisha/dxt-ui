@@ -2,8 +2,8 @@ import { computed } from 'vue'
 import { GeoIntl, toNumber } from '@dxtmisha/functional'
 import { MediaFile } from '@dxtmisha/media'
 
-import type { CropAreaCoordinator } from '../CropArea'
 import type { FieldFileValue } from '../../types/fieldTypes'
+import type { InputFileItemCrop } from './InputFileItemCrop'
 import type { InputFileItemPropsBasic } from './props'
 
 /**
@@ -32,9 +32,11 @@ export class InputFileItemFile {
    *
    * Конструктор.
    * @param props input data / входные данные
+   * @param crop crop manager instance / экземпляр менеджера кадрирования
    */
   constructor(
-    protected readonly props: InputFileItemPropsBasic
+    protected readonly props: InputFileItemPropsBasic,
+    protected readonly crop: InputFileItemCrop
   ) {
   }
 
@@ -144,18 +146,17 @@ export class InputFileItemFile {
    * Resolves and returns file data in FieldFileValue format, taking into account file, value properties, and crop coordinates.
    *
    * Определяет и возвращает данные файла в формате FieldFileValue, учитывая свойства file, value и координаты кадрирования.
-   * @param crop optional crop coordinates / необязательные координаты кадрирования
    * @returns file value object or undefined / объект значения файла или undefined
    */
-  get(crop?: CropAreaCoordinator): FieldFileValue | undefined {
+  get(): FieldFileValue | undefined {
     const file = this.getFile()
-    const cropValue = crop ?? this.props.value?.crop
+    const crop = this.crop.coordinator
 
     if (file) {
       return {
         ...this.props.value,
         file,
-        crop: cropValue,
+        crop,
         name: file.name || this.props.value?.name,
         size: file.size,
         type: file.type || this.props.value?.type || undefined,
@@ -166,7 +167,7 @@ export class InputFileItemFile {
     if (this.props.value) {
       return {
         ...this.props.value,
-        crop: cropValue
+        crop
       }
     }
 

@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest'
 
 import { GeoIntl } from '@dxtmisha/functional'
 import { InputFileItemFile } from '../InputFileItemFile'
+import type { InputFileItemCrop } from '../InputFileItemCrop'
 import type { InputFileItemPropsBasic } from '../props'
 
 class TestInputFileItemFile extends InputFileItemFile {
@@ -11,12 +12,22 @@ class TestInputFileItemFile extends InputFileItemFile {
 }
 
 describe('InputFileItemFile', () => {
-  const createHelper = (props: Partial<InputFileItemPropsBasic> = {}) => {
-    return new InputFileItemFile(props as InputFileItemPropsBasic)
+  const createMockCrop = (coordinator?: any) => {
+    return { coordinator } as unknown as InputFileItemCrop
   }
 
-  const createTestHelper = (props: Partial<InputFileItemPropsBasic> = {}) => {
-    return new TestInputFileItemFile(props as InputFileItemPropsBasic)
+  const createHelper = (
+    props: Partial<InputFileItemPropsBasic> = {},
+    crop: InputFileItemCrop = createMockCrop()
+  ) => {
+    return new InputFileItemFile(props as InputFileItemPropsBasic, crop)
+  }
+
+  const createTestHelper = (
+    props: Partial<InputFileItemPropsBasic> = {},
+    crop: InputFileItemCrop = createMockCrop()
+  ) => {
+    return new TestInputFileItemFile(props as InputFileItemPropsBasic, crop)
   }
 
   describe('image', () => {
@@ -279,13 +290,13 @@ describe('InputFileItemFile', () => {
     })
 
     it('merges props.file and props.value correctly', () => {
+      const mockCrop = createMockCrop([0, 100, 100, 0])
       const mockFile = new File(['test-data'], 'avatar.png', { type: 'image/png', lastModified: 987654321 })
       const value = {
         id: 'user-avatar',
-        value: 'blob:http://localhost/1234',
-        crop: [0, 100, 100, 0] as [number, number, number, number]
+        value: 'blob:http://localhost/1234'
       }
-      const helper = createHelper({ file: mockFile, value })
+      const helper = createHelper({ file: mockFile, value }, mockCrop)
 
       expect(helper.get()).toEqual({
         id: 'user-avatar',
@@ -346,6 +357,16 @@ describe('InputFileItemFile', () => {
         lastModified: 111,
         thumbnail: 'https://example.com/pdf-thumb.jpg'
       })
+    })
+
+    it('retrieves crop from crop manager instance', () => {
+      const mockCrop = { coordinator: [10, 20, 30, 40] } as unknown as InputFileItemCrop
+      const mockFile = new File(['data'], 'photo.jpg', { type: 'image/jpeg' })
+      const helper = createHelper({ file: mockFile }, mockCrop)
+
+      expect(helper.get()).toEqual(expect.objectContaining({
+        crop: [10, 20, 30, 40]
+      }))
     })
   })
 

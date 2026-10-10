@@ -3,6 +3,7 @@ import { describe, it, expect } from 'vitest'
 
 import { TextInclude } from '../../../classes/TextInclude'
 import { InputFileItemFile } from '../InputFileItemFile'
+import type { InputFileItemCrop } from '../InputFileItemCrop'
 import { InputFileItemStatus } from '../InputFileItemStatus'
 import type { InputFileItemProps } from '../props'
 
@@ -10,7 +11,8 @@ describe('InputFileItemStatus', () => {
   const createHelper = (props: Partial<InputFileItemProps> = {}) => {
     const fullProps = { ...props } as InputFileItemProps
     const text = new TextInclude(fullProps)
-    const fileItem = new InputFileItemFile(fullProps)
+    const mockCrop = { coordinator: undefined } as unknown as InputFileItemCrop
+    const fileItem = new InputFileItemFile(fullProps, mockCrop)
     const statusItem = new InputFileItemStatus(fullProps, fileItem, text)
 
     return { fileItem, statusItem, text }

@@ -1,6 +1,9 @@
 import { isObject, toNumber } from '@dxtmisha/functional'
 
+import type { ProgressProps } from '../Progress'
+import type { InputFileItemAppearance } from './InputFileItemAppearance'
 import type { InputFileItemFile } from './InputFileItemFile'
+import type { InputFileItemStatus } from './InputFileItemStatus'
 import type { InputFileItemPropsBasic } from './props'
 
 /**
@@ -15,10 +18,14 @@ export class InputFileItemProgress {
    * Конструктор.
    * @param props input data / входные данные
    * @param file file manager instance / экземпляр менеджера файла
+   * @param appearance appearance manager instance / экземпляр менеджера внешнего вида
+   * @param status status manager instance / экземпляр менеджера статуса
    */
   constructor(
     protected readonly props: InputFileItemPropsBasic,
-    protected readonly file: InputFileItemFile
+    protected readonly file: InputFileItemFile,
+    protected readonly appearance: InputFileItemAppearance,
+    protected readonly status: InputFileItemStatus
   ) {
   }
 
@@ -30,6 +37,39 @@ export class InputFileItemProgress {
    */
   get max(): number {
     return this.file.size
+  }
+
+  /**
+   * Resolves properties and settings for the progress indicator.
+   *
+   * Определяет свойства и настройки для индикатора прогресса.
+   * @returns progress configuration object / объект конфигурации прогресса
+   */
+  get progressProps(): ProgressProps {
+    const item: ProgressProps = {
+      visible: this.status.isUploading()
+    }
+
+    if (!this.appearance.isTile()) {
+      item.position = 'static'
+    }
+
+    if (this.isDeterminate()) {
+      item.value = this.value
+      item.max = this.max
+    }
+
+    if (this.appearance.isCircular()) {
+      return {
+        ...item,
+        circular: true
+      }
+    }
+
+    return {
+      ...item,
+      linear: true
+    }
   }
 
   /**

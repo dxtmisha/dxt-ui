@@ -2,7 +2,8 @@ import { h, type VNode } from 'vue'
 import {
   type ConstrOptions,
   type ConstrStyles,
-  DesignConstructorAbstract
+  DesignConstructorAbstract,
+  toBinds
 } from '@dxtmisha/functional'
 
 import { InputFileItem } from './InputFileItem'
@@ -257,10 +258,10 @@ export class InputFileItemDesign<
    * @returns array of virtual nodes / массив виртуальных нод
    */
   readonly renderButtonCrop = (props?: WindowControlItem): VNode[] => {
-    return this.item.buttonCrop.render(undefined, {
-      ...props?.binds,
-      class: this.classes?.value.buttonCrop
-    })
+    return this.item.buttonCrop.render(undefined, toBinds(
+      props?.binds,
+      { class: this.classes?.value.buttonCrop }
+    ))
   }
 
   /**
@@ -271,10 +272,10 @@ export class InputFileItemDesign<
    * @returns array of virtual nodes / массив виртуальных нод
    */
   readonly renderButtonDelete = (props?: WindowControlItem): VNode[] => {
-    return this.item.buttonDelete.render(undefined, {
-      ...props?.binds,
-      class: this.classes?.value.buttonDelete
-    })
+    return this.item.buttonDelete.render(undefined, toBinds(
+      props?.binds,
+      { class: this.classes?.value.buttonDelete }
+    ))
   }
 
   /**

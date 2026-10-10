@@ -297,7 +297,10 @@ export class InputFileItem {
 
     this.progress = new ProgressIncludeConstructor(
       this.className,
-      this.props,
+      () => ({
+        ...this.props,
+        loading: this.props.loading ?? this.status.isUploading()
+      }),
       this.components,
       () => this.progressProps
     )

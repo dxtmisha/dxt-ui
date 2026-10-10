@@ -93,6 +93,7 @@ export type InputFileItemProps = InputFileItemPropsBasic & InputFileItemPropsTok
  */
 export const defaultsInputFileItem = {
   confirmDelete: true,
+  crop: true,
   ...{
     // :default [!] System label / Системная метка
     appearance: 'list',
