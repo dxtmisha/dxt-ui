@@ -1,6 +1,5 @@
 import type { ConstrEmit } from '@dxtmisha/functional'
 
-import type { CropAreaCoordinator } from '../CropArea'
 import type { InputFileItemFile } from './InputFileItemFile'
 
 import type { InputFileItemEmits } from './types'
@@ -31,10 +30,9 @@ export class InputFileItemEvent {
    * Crop change action handler.
    *
    * Обработчик действия изменения кадрирования.
-   * @param coordinator optional crop coordinates / необязательные координаты кадрирования
    */
-  readonly onCrop = (coordinator?: CropAreaCoordinator): void => {
-    this.emits?.('crop', this.file.get(coordinator))
+  readonly onCrop = (): void => {
+    this.emits?.('crop', this.file.get())
   }
 
   /**

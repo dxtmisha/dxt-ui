@@ -1,10 +1,8 @@
 // @vitest-environment jsdom
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect } from 'vitest'
 
 import { TextInclude } from '../../../classes/TextInclude'
 import { InputFileItemCrop } from '../InputFileItemCrop'
-import { InputFileItemEvent } from '../InputFileItemEvent'
-import { InputFileItemFile } from '../InputFileItemFile'
 import type { CropAreaCoordinator, CropAreaEventParameters } from '../../CropArea'
 import type { InputFileItemPropsBasic } from '../props'
 
@@ -33,33 +31,21 @@ class TestInputFileItemCrop extends InputFileItemCrop {
 describe('InputFileItemCrop', () => {
   const createHelper = (props: Partial<InputFileItemPropsBasic> = {}) => {
     const fullProps = props as InputFileItemPropsBasic
-    const file = new InputFileItemFile(fullProps)
-    const emits = vi.fn()
-    const eventHandler = new InputFileItemEvent(fullProps, file, emits)
     const text = new TextInclude(fullProps)
-    const cropHelper = new TestInputFileItemCrop(fullProps, file, eventHandler, text)
+    const cropHelper = new TestInputFileItemCrop(fullProps, text)
 
-    return { cropHelper, emits, eventHandler, file, text }
+    return { cropHelper, text }
   }
 
   describe('is', () => {
-    it('returns true when crop is enabled and file is an image', () => {
-      const mockFile = new File([''], 'photo.jpg', { type: 'image/jpeg' })
-      const { cropHelper } = createHelper({ crop: true, file: mockFile })
+    it('returns true when crop is enabled', () => {
+      const { cropHelper } = createHelper({ crop: true })
 
       expect(cropHelper.is()).toBe(true)
     })
 
     it('returns false when crop is false', () => {
-      const mockFile = new File([''], 'photo.jpg', { type: 'image/jpeg' })
-      const { cropHelper } = createHelper({ crop: false, file: mockFile })
-
-      expect(cropHelper.is()).toBe(false)
-    })
-
-    it('returns false when file is not an image', () => {
-      const mockFile = new File([''], 'document.pdf', { type: 'application/pdf' })
-      const { cropHelper } = createHelper({ crop: true, file: mockFile })
+      const { cropHelper } = createHelper({ crop: false })
 
       expect(cropHelper.is()).toBe(false)
     })
@@ -159,9 +145,9 @@ describe('InputFileItemCrop', () => {
   })
 
   describe('onSave', () => {
-    it('updates value and emits crop event with updated coordinates', () => {
+    it('updates value and coordinator with updated coordinates', () => {
       const mockFile = new File([''], 'photo.png', { type: 'image/png' })
-      const { cropHelper, emits } = createHelper({
+      const { cropHelper } = createHelper({
         crop: true,
         file: mockFile
       })
@@ -176,9 +162,6 @@ describe('InputFileItemCrop', () => {
 
       expect(cropHelper.valueRef.value).toEqual(newCoordinates)
       expect(cropHelper.coordinator).toEqual(newCoordinates)
-      expect(emits).toHaveBeenCalledWith('crop', expect.objectContaining({
-        crop: newCoordinates
-      }))
     })
   })
 

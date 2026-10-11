@@ -5,12 +5,14 @@ import { TextInclude } from '../../../classes/TextInclude'
 import { InputFileItemButton } from '../InputFileItemButton'
 import { InputFileItemEvent } from '../InputFileItemEvent'
 import { InputFileItemFile } from '../InputFileItemFile'
+import type { InputFileItemCrop } from '../InputFileItemCrop'
 import type { InputFileItemPropsBasic } from '../props'
 
 describe('InputFileItemButton', () => {
   const createHelper = (props: Partial<InputFileItemPropsBasic> = {}) => {
     const fullProps = props as InputFileItemPropsBasic
-    const file = new InputFileItemFile(fullProps)
+    const mockCrop = { coordinator: undefined } as unknown as InputFileItemCrop
+    const file = new InputFileItemFile(fullProps, mockCrop)
     const emits = vi.fn()
     const eventHandler = new InputFileItemEvent(fullProps, file, emits)
     const text = new TextInclude(fullProps)

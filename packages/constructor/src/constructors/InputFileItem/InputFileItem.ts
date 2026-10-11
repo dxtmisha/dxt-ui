@@ -188,33 +188,36 @@ export class InputFileItem {
 
     this.appearance = new InputFileItemAppearanceConstructor(this.props)
     this.enabled = new EnabledConstructor(this.props)
-    this.file = new InputFileItemFileConstructor(this.props)
     this.text = new TextIncludeConstructor(this.props)
+    this.crop = new InputFileItemCropConstructor(
+      this.props,
+      this.text
+    )
+    this.file = new InputFileItemFileConstructor(
+      this.props,
+      this.crop
+    )
 
     this.event = new InputFileItemEventConstructor(
       this.props,
       this.file,
       this.emits
     )
-    this.crop = new InputFileItemCropConstructor(
-      this.props,
-      this.file,
-      this.event,
-      this.text
-    )
     this.delete = new InputFileItemDeleteConstructor(
       this.props,
       this.event,
       this.text
     )
-    this.progressValue = new InputFileItemProgressConstructor(
-      this.props,
-      this.file
-    )
     this.status = new InputFileItemStatusConstructor(
       this.props,
       this.file,
       this.text
+    )
+    this.progressValue = new InputFileItemProgressConstructor(
+      this.props,
+      this.file,
+      this.appearance,
+      this.status
     )
 
     this.button = new InputFileItemButtonConstructor(

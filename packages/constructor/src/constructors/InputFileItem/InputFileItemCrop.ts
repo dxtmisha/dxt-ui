@@ -5,8 +5,6 @@ import type { CropAreaCoordinator, CropAreaEventParameters } from '../CropArea'
 import type { DialogProps } from '../Dialog'
 import type { TextInclude } from '../../classes/TextInclude'
 
-import type { InputFileItemEvent } from './InputFileItemEvent'
-import type { InputFileItemFile } from './InputFileItemFile'
 import type { InputFileItemPropsBasic } from './props'
 
 /**
@@ -26,21 +24,16 @@ export class InputFileItemCrop {
    *
    * Конструктор.
    * @param props input data / входные данные
-   * @param file file manager instance / экземпляр менеджера файла
-   * @param event event manager instance / экземпляр менеджера событий
    * @param text text manager instance / экземпляр менеджера текста
    */
   constructor(
     protected readonly props: InputFileItemPropsBasic,
-    protected readonly file: InputFileItemFile,
-    protected readonly event: InputFileItemEvent,
     protected readonly text: TextInclude
   ) {
-    this.updateCoordinator()
-
     watch(
       () => this.props.value?.crop,
-      crop => this.updateCoordinator(crop)
+      crop => this.updateCoordinator(crop),
+      { immediate: true }
     )
   }
 
@@ -74,10 +67,10 @@ export class InputFileItemCrop {
    * Checks whether the crop feature is available and enabled.
    *
    * Проверяет, доступна ли и включена ли функция кадрирования.
-   * @returns true if crop is enabled and file is an image / true, если кадрирование включено и файл является изображением
+   * @returns true if crop is enabled / true, если кадрирование включено
    */
   is(): boolean {
-    return Boolean(this.props.crop && this.file.isImage())
+    return Boolean(this.props.crop)
   }
 
   /**
@@ -117,12 +110,11 @@ export class InputFileItemCrop {
   }
 
   /**
-   * Saves current working crop coordinates and emits crop event.
+   * Saves current working crop coordinates.
    *
-   * Сохраняет текущие рабочие координаты кадрирования и отправляет событие кадрирования.
+   * Сохраняет текущие рабочие координаты кадрирования.
    */
   protected readonly onSave = (): void => {
     this.value.value = this.current.value
-    this.event.onCrop(this.value.value)
   }
 }
