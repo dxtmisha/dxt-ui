@@ -7,8 +7,7 @@ describe('ErrorCenter', () => {
   beforeEach(() => {
     // Reset the static instance state (causes and handlers)
     // Since we can't easily replace the static item, we access its internal protected members
-    // @ts-expect-error: Accessing protected member
-    const instance = ErrorCenter.item
+    const instance = ErrorCenter.getItem()
     // @ts-expect-error: Accessing protected member
     instance.causes = []
     // @ts-expect-error: Accessing protected member

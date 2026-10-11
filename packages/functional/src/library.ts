@@ -1,7 +1,4 @@
 // Classes
-export * from './classes/design/DesignAbstract'
-export * from './classes/design/DesignAsyncAbstract'
-export * from './classes/design/DesignChanged'
 export * from './classes/design/DesignComp'
 export * from './classes/design/DesignComponents'
 export * from './classes/design/DesignConstructorAbstract'

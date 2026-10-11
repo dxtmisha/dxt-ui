@@ -60,6 +60,8 @@ export * from './classes/TranslateFile'
 export * from './classes/TranslateInstance'
 export * from './classes/UrlInstanceAbstract'
 export * from './classes/UrlItem'
+export * from './classes/design/DesignComponentsAbstract'
+export * from './classes/design/DesignConstructorBasicAbstract'
 
 // Functions
 export * from './functions/addTagHighlightMatch'
@@ -187,6 +189,7 @@ export * from './functions/writeClipboardData'
 // Types
 export * from './types/apiTypes'
 export * from './types/basicTypes'
+export * from './types/constructorTypes'
 export * from './types/errorCenterTypes'
 export * from './types/formattersTypes'
 export * from './types/geoTypes'

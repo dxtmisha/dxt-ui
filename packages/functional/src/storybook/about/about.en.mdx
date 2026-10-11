@@ -48,7 +48,7 @@ Reactive hooks like `useStorageRef`, `useSessionRef`, `useCookieRef`, and `useHa
 Tools like `useTranslateRef`, `useGeoIntlRef`, `DatetimeRef`, and `GeoFlagRef` are functions that respond on the fly to changes in environment parameters (changing language, selecting a different currency, or region). They automatically rebuild date formats, adapt currencies, and translate texts. Component updates happen independently, without writing additional event listeners.
 
 **UI Component Engineering**
-The base class system: `DesignAbstract`, `DesignComp`, `DesignChanged`, `DesignAsyncAbstract`. It allows developers to encapsulate the internal logic of non-standard UI elements (custom selectors, complex forms, modal windows with states) into independent classes. This makes business logic detachable from the markup, easy to test, and allows functionality to be reused in other projects.
+The base class system: `DesignConstructorAbstract` and `DesignComponents`. It allows developers to encapsulate the internal logic of non-standard UI elements (custom selectors, complex forms, modal windows with states) into independent classes. This makes business logic detachable from the markup, easy to test, and allows functionality to be reused in other projects.
 
 **Auxiliary utilities**
 The package includes many focused reactive solutions:

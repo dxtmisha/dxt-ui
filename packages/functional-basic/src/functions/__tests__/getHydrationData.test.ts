@@ -1,7 +1,7 @@
 /**
  * @vitest-environment jsdom
  */
-import { describe, it, expect, beforeEach, afterEach } from 'vitest'
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { getHydrationData } from '../getHydrationData'
 
 describe('getHydrationData', () => {
@@ -17,7 +17,7 @@ describe('getHydrationData', () => {
 
   afterEach(() => {
     // Clean up test scripts after each test
-    const script = document.getElementById(testId)
+    const script = typeof document !== 'undefined' ? document.getElementById(testId) : null
     if (script) {
       script.remove()
     }
@@ -165,18 +165,14 @@ describe('getHydrationData', () => {
   })
 
   it('should not throw errors when document is undefined', () => {
-    // Mock document as undefined (SSR scenario)
-    const originalDocument = globalThis.document
-    // @ts-expect-error - intentionally setting to undefined for testing
-    global.document = undefined as any
+    vi.stubGlobal('document', undefined)
 
     try {
       const defaultValue = { ssr: 'value' }
       const result = getHydrationData(testId, defaultValue)
       expect(result).toEqual(defaultValue)
     } finally {
-      // Restore document
-      globalThis.document = originalDocument
+      vi.unstubAllGlobals()
     }
   })
 })

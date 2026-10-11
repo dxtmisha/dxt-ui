@@ -22,7 +22,7 @@ For **browser state management** — convenient reactive hooks (`useStorageRef`,
 
 For **geolocation and internationalization** — utilities like `useTranslateRef` (`t`), `useGeoIntlRef`, `useGeoUnitRef`, `GeoFlagRef`, and `DatetimeRef` that automatically respond to changes in global environment settings (language, currency, region) and dynamically rebuild dates, numbers, units, and translations without manual event listeners.
 
-For **UI component architecture** — a powerful system of base classes (`DesignConstructorAbstract`, `DesignComponents`, `DesignComp`, `DesignAbstract`, `DesignAsyncAbstract`) that provides a structured class-based inheritance model for building complex UI component constructors with automatic lifecycle, slot rendering, and BEM styling.
+For **UI component architecture** — a powerful system of base classes (`DesignConstructorAbstract`, `DesignComponents`, `DesignComp`) that provides a structured class-based inheritance model for building complex UI component constructors with automatic lifecycle, slot rendering, and BEM styling.
 
 For **auxiliary utilities** — specialized reactive modules for SEO meta tags (`useMeta`), reactive scrollbar tracking (`ScrollbarWidthRef`), IntersectionObserver lazy loading (`useLazyRef`), list selection management (`ListDataRef`), debounced list search (`useSearchRef`), and asynchronous computation primitives (`computedAsync`, `computedEternity`).
 
