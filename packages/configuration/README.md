@@ -19,8 +19,14 @@ Configuring Vite build pipelines and TypeScript options across multiple packages
 - **`viteBasic`** (`@dxtmisha/configuration/viteBasic`)
   Default ready-to-use Vite configuration preset for standard libraries, built on top of `viteBasicFunction` with default options.
 
+- **`viteBasicBase`** (`@dxtmisha/configuration/viteBasicBase`)
+  Flexible base Vite configuration factory for libraries (functions, composables, classes, TypeScript) without framework-specific plugins. Supports custom `plugins`, lightningcss, `vite-plugin-dts`, Rollup options, and CSS asset plugins.
+
 - **`viteBasicFunction`** (`@dxtmisha/configuration/viteBasicFunction`)
-  Flexible, parameterized factory function for creating customized Vite configurations for functional libraries, composables, classes, and utilities. Accepts an options object (`entry`, `name`, `target`, `outDir`, `minify`, `external`, `isPluginLibrary`, `isPluginStyle`, `fileCssName`, `fileLibraryName`, `rollupTypes`, `include`, `exclude`, etc.) and automatically integrates plugins to inject CSS imports into output bundles.
+  Vite configuration factory for Vue functional libraries, built on top of `viteBasicBase` with `@vitejs/plugin-vue` automatically included. Accepts an options object (`entry`, `name`, `target`, `outDir`, `minify`, `external`, `isPluginLibrary`, `isPluginStyle`, `fileCssName`, `fileLibraryName`, `rollupTypes`, `include`, `exclude`, etc.).
+
+- **`viteBasicReact`** (`@dxtmisha/configuration/viteBasicReact`)
+  Vite configuration factory for React functional libraries and component packages, built on top of `viteBasicBase` with `@vitejs/plugin-react` automatically included. Accepts standard `ViteBasicReactOptions` (`entry`, `name`, `target`, `outDir`, `minify`, `external`, `rollupTypes`, `include`, `exclude`, etc.).
 
 - **`viteComponents`** (`@dxtmisha/configuration/viteComponents`)
   Optimized Vite configuration for Vue 3 UI component libraries (e.g. `d1`, `ui`). Preserves module structure (`preserveModules: true`), enables MDX documentation support, and integrates `vitePluginComponents` to automatically import component styles (`styleToken.css`).
@@ -62,6 +68,9 @@ Configuring Vite build pipelines and TypeScript options across multiple packages
 - **`tsconfig/tsconfig.app.json`**
   Base TypeScript configuration preset for browser application and library client code (ESNext, DOM, strict type-checking, JSX preservation).
 
+- **`tsconfig/tsconfig.react.json`**
+  Base TypeScript configuration preset for React applications and libraries (`jsx: react-jsx`, `jsxImportSource: react`, strict type-checking, DOM lib, and Vite client types).
+
 - **`tsconfig/tsconfig.node.json`**
   Base TypeScript configuration preset for Node.js build scripts, Vite configs, and CLI tools.
 
@@ -83,7 +92,7 @@ export default viteBasic
 ```
 
 ### Customized Functional Library
-
+ 
 ```javascript
 // vite.config.js
 import { viteBasicFunction } from '@dxtmisha/configuration/viteBasicFunction'
@@ -91,6 +100,18 @@ import { viteBasicFunction } from '@dxtmisha/configuration/viteBasicFunction'
 export default viteBasicFunction({
   entry: 'src/library.ts',
   isPluginStyle: true,
+  rollupTypes: true
+})
+```
+
+### React Functional Library
+
+```javascript
+// vite.config.js
+import { viteBasicReact } from '@dxtmisha/configuration/viteBasicReact'
+
+export default viteBasicReact({
+  entry: 'src/library.ts',
   rollupTypes: true
 })
 ```

@@ -4,6 +4,8 @@ export * from './classes/design/DesignConstructorReactAbstract'
 
 // Composables
 export * from './composables/useDatetimeReact'
+export * from './composables/useGeoFlagReact'
+export * from './composables/useGeoIntlReact'
 export * from './composables/useItemReact'
 
 // Functions

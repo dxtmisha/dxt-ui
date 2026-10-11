@@ -1,7 +1,7 @@
 {
   "name": "@dxtmisha/configuration",
   "private": false,
-  "version": "1.2.0",
+  "version": "1.3.0",
   "type": "module",
   "description": "Shared configuration files for DXT UI - Vite configs and TypeScript configs for building UI components",
   "keywords": [
@@ -44,9 +44,17 @@
       "types": "./viteconfig/viteBasic.config.d.ts",
       "default": "./viteconfig/viteBasic.config.js"
     },
+    "./viteBasicBase": {
+      "types": "./viteconfig/viteBasicBase.config.d.ts",
+      "default": "./viteconfig/viteBasicBase.config.js"
+    },
     "./viteBasicFunction": {
       "types": "./viteconfig/viteBasicFunction.config.d.ts",
       "default": "./viteconfig/viteBasicFunction.config.js"
+    },
+    "./viteBasicReact": {
+      "types": "./viteconfig/viteBasicReact.config.d.ts",
+      "default": "./viteconfig/viteBasicReact.config.js"
     },
     "./viteComponents": {
       "types": "./viteconfig/viteComponents.config.d.ts",
@@ -99,7 +107,6 @@
   "dependencies": {
     "@mdx-js/rollup": ">=3.1.1",
     "@microsoft/api-extractor": ">=7.59.4",
-    "@vitejs/plugin-vue": ">=6.0.9",
     "browserslist": ">=4.29.3",
     "lightningcss": ">=1.33.0",
     "typescript": ">=6.0.3",
@@ -108,14 +115,25 @@
     "vite-plugin-singlefile": ">=2.3.3"
   },
   "optionalDependencies": {
+    "@vitejs/plugin-react": ">=6.1.2",
+    "@vitejs/plugin-vue": ">=6.0.9",
+    "@vue/tsconfig": ">=0.9.1",
     "purgecss": ">=7.0.0"
   },
   "peerDependencies": {
+    "@vitejs/plugin-react": ">=6.1.2",
+    "@vitejs/plugin-vue": ">=6.0.9",
     "@vue/tsconfig": ">=0.9.1",
     "purgecss": ">=8.0.0",
     "rollup": ">=4.64.3"
   },
   "peerDependenciesMeta": {
+    "@vitejs/plugin-react": {
+      "optional": true
+    },
+    "@vitejs/plugin-vue": {
+      "optional": true
+    },
     "@vue/tsconfig": {
       "optional": true
     },

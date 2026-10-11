@@ -17,7 +17,7 @@ describe('useItemReact', () => {
     callback
   }: {
     item?: unknown
-    callback?: (value: unknown) => unknown
+    callback?: ((value: unknown) => unknown) | ((value: string | undefined) => string) | ((value: number) => number)
   }) {
     latestResult = useItemReact(item as never, callback as never)
     return null
