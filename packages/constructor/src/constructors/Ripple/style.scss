@@ -11,15 +11,6 @@
     display: none;
   }
 
-  &__item {
-    @include ui.absolute;
-
-    @include ui.backgroundColor(
-                    ui.v('??sys.color', var(--sys-color, ui.v('??backgroundColor'))),
-                    ui.v('??backgroundOpacity', 1)
-    );
-  }
-
   %ripple-end {
     opacity: 0;
 
@@ -29,6 +20,13 @@
   }
 
   &__item {
+    @include ui.absolute;
+
+    @include ui.backgroundColor(
+      ui.v('??sys.color', var(--sys-color, ui.v('??backgroundColor'))),
+      ui.v('??backgroundOpacity', 1)
+    );
+
     animation-duration: ui.v('d.sys.transitionDuration.fade.through');
     animation-fill-mode: forwards;
     animation-name: ui.n('??start');

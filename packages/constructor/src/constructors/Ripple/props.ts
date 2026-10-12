@@ -1,10 +1,12 @@
+/** Ripple properties controlled by design tokens / Свойства Ripple, управляемые токенами дизайна */
 export type RipplePropsToken = {
   // :type [!] System label / Системная метка
   // :type [!] System label / Системная метка
 }
 
+/** Basic properties of the Ripple component / Базовые свойства компонента Ripple */
 export type RipplePropsBasic = {
-  /** Whether the ripple is disabled/ Отключена ли пульсация */
+  /** Whether the ripple is disabled / Отключён ли эффект волны */
   disabled?: boolean
 }
 

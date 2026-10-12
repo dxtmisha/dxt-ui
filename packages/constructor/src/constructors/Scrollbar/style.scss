@@ -1,8 +1,6 @@
 @use "@dxtmisha/styles/properties" as ui;
 
 @mixin mixinScrollbar {
-  $thisBorder: &;
-
   position: relative;
   overflow-x: hidden;
   overflow-y: auto;
@@ -31,7 +29,7 @@
       @include ui.backgroundColor(ui.v('??background'), ui.v('??backgroundOpacity'));
     }
 
-    &:hover {
+    @include ui.hover {
       @include ui.initByCustom('thumb.opacity', ui.v('??thumb.hover.opacity'));
     }
   }
@@ -48,27 +46,27 @@
     &::after {
       display: block;
       position: sticky;
-      margin-left: ui.v('??sys.outline.marginX', 0);
-      margin-right: calc(#{ui.v('??sys.outline.marginX', 0)} - #{ui.v('??size', var(--sys-scrollbar-offset, 0))});
+      @include ui.marginLeft(ui.v('??sys.outline.marginX', 0));
+      @include ui.marginRight(calc(#{ui.v('??sys.outline.marginX', 0)} - #{ui.v('??size', var(--sys-scrollbar-offset, 0))}));
 
       transition-property: border-color;
       transition-duration: ui.v('d.sys.transitionDuration.standard');
       transition-timing-function: linear;
     }
 
-    &--top {
-      @include ui.initByCustom('sys.outline.top', #{ui.v('??outline.opacity')})
+    &[data-top="top"] {
+      @include ui.initByCustom('sys.outline.top', #{ui.v('??outline.opacity')});
     }
 
-    &--bottom {
-      @include ui.initByCustom('sys.outline.bottom', #{ui.v('??outline.opacity')})
+    &[data-bottom="bottom"] {
+      @include ui.initByCustom('sys.outline.bottom', #{ui.v('??outline.opacity')});
     }
 
     @include ui.state('inverse') {
       @include ui.initByCustom('sys.outline.opacity.top', ui.v('??sys.outline.bottom'));
       @include ui.initByCustom('sys.outline.opacity.bottom', ui.v('??sys.outline.top'));
 
-      &#{$thisBorder}--divider--top#{$thisBorder}--divider--bottom {
+      &[data-top="top"][data-bottom="bottom"] {
         @include ui.initByCustom('sys.outline.opacity.top', 0);
         @include ui.initByCustom('sys.outline.opacity.bottom', 0);
       }

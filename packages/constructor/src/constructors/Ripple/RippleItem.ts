@@ -2,13 +2,18 @@
 
 import { type Ref } from 'vue'
 import { createElement } from '@dxtmisha/functional'
+import type { ImageCoordinator } from '@dxtmisha/functional-basic'
 
 import type { RippleProps } from './props'
 
 /**
- * Class for managing the ripple effect element.
+ * Class for managing ripple wave elements.
+ * Imperatively creates a span for each press, positions it via CSS variables
+ * and removes it after the end animation (or by a fallback timeout).
  *
- * Класс для управления элементом эффекта свечения (ripple).
+ * Класс для управления элементами волны (ripple).
+ * Императивно создаёт span на каждое нажатие, позиционирует его через CSS-переменные
+ * и удаляет после завершающей анимации (или по резервному таймауту).
  */
 export class RippleItem {
   /** CSS class name for the ripple item element / CSS-класс для элемента эффекта */
@@ -26,7 +31,7 @@ export class RippleItem {
    *
    * Конструктор для создания экземпляра элемента эффекта.
    * @param props input properties / входные свойства
-   * @param element span element containing the ripple effects / span-элемент, содержащий эффекты свечения
+   * @param element span element containing the ripple effects / span-элемент, содержащий эффекты волны
    * @param className base CSS class name / базовое имя CSS-класса
    */
   constructor(
@@ -42,28 +47,44 @@ export class RippleItem {
   }
 
   /**
-   * Adding a new ripple element at the specified coordinates.
+   * Adding a new ripple element at the specified coordinates, or at the center if omitted.
    *
-   * Добавление нового элемента свечения по указанным координатам.
-   * @param x x-coordinate / координата по оси X
-   * @param y y-coordinate / координата по оси Y
+   * Добавление нового элемента волны по указанным координатам или по центру, если они не указаны.
+   * @param coordinator layout coordinates / координаты макета
    */
-  add(x: number, y: number): void {
-    if (this.props?.disabled) {
+  add(coordinator?: ImageCoordinator): void {
+    if (this.props.disabled) {
       return
     }
 
     const element = this.element.value
 
     if (element) {
+      const x = coordinator?.x ?? element.offsetWidth / 2
+      const y = coordinator?.y ?? element.offsetHeight / 2
+
       createElement<HTMLSpanElement>(element, 'span', (item) => {
+        const timeout = setTimeout(() => item.parentElement?.removeChild(item), 1000)
+
         item.onanimationend = () => item.classList.add(this.classEnd)
-        item.ontransitionend = () => item.parentElement?.removeChild(item)
+        item.ontransitionend = () => {
+          clearTimeout(timeout)
+          item.parentElement?.removeChild(item)
+        }
 
         item.style.setProperty(this.styleX, `${x}px`)
         item.style.setProperty(this.styleY, `${y}px`)
         item.classList.add(this.classItem)
       })
     }
+  }
+
+  /**
+   * Adding a new ripple element at the center of the target element.
+   *
+   * Добавление нового элемента волны по центру целевого элемента.
+   */
+  addCenter(): void {
+    this.add()
   }
 }

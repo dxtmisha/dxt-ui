@@ -20,7 +20,13 @@ import {
 } from './types'
 
 /**
- * RippleDesign
+ * Rendering class for the Ripple component.
+ * Creates the logic class instance, builds CSS classes and renders the root span
+ * that listens to pointer presses and hosts the ripple wave elements.
+ *
+ * Класс рендеринга компонента Ripple.
+ * Создаёт экземпляр класса логики, формирует CSS-классы и рендерит корневой span,
+ * который отслеживает нажатия указателя и содержит элементы волн.
  */
 export class RippleDesign<
   COMP extends RippleComponents,
@@ -36,14 +42,17 @@ export class RippleDesign<
     CLASSES,
     P
   > {
+  /** Ripple logic class instance / Экземпляр класса логики Ripple */
   protected readonly item: Ripple
 
   /**
-   * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor ripple item class/ класс элемента ripple
+   * Constructor for creating a ripple design instance.
+   *
+   * Конструктор для создания экземпляра дизайна эффекта волны.
+   * @param name class name / название класса
+   * @param props properties / свойства
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor ripple logic class / класс логики ripple
    */
   constructor(
     name: string,
@@ -71,16 +80,23 @@ export class RippleDesign<
   }
 
   /**
-   * Initialization of all the necessary properties for work<br>
+   * Initialization of all the necessary properties for work.
+   *
    * Инициализация всех необходимых свойств для работы.
+   * @returns exposed properties / открытые свойства
    */
   protected initExpose(): EXPOSE {
-    return {} as EXPOSE
+    return {
+      add: coordinator => this.item.item.add(coordinator),
+      addCenter: () => this.item.item.addCenter()
+    } as EXPOSE
   }
 
   /**
-   * Improvement of the obtained list of classes.<br>
+   * Improvement of the obtained list of classes.
+   *
    * Доработка полученного списка классов.
+   * @returns list of classes / список классов
    */
   protected initClasses(): Partial<CLASSES> {
     return {
@@ -94,8 +110,10 @@ export class RippleDesign<
   }
 
   /**
-   * Refinement of the received list of styles.<br>
+   * Refinement of the received list of styles.
+   *
    * Доработка полученного списка стилей.
+   * @returns list of styles / список стилей
    */
   protected initStyles(): ConstrStyles {
     return {}
@@ -103,14 +121,16 @@ export class RippleDesign<
 
   /**
    * A method for rendering.
+   *
    * Метод для рендеринга.
+   * @returns virtual node of the root element / виртуальный узел корневого элемента
    */
   protected initRender(): VNode {
     return h('span', {
       ref: this.element,
       key: 'ripple',
       class: this.classes?.value.main,
-      onPointerdown: this.item.onClick,
+      onPointerdown: this.item.onPointerdown,
       ...AriaStaticInclude.hidden()
     })
   }

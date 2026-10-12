@@ -7,18 +7,22 @@ import type { RippleComponents, RippleEmits, RippleSlots } from './types'
 import type { RippleProps } from './props'
 
 /**
- * Base Ripple class for working in Vue.
+ * Base Ripple logic class (orchestrator).
+ * Handles pointer presses on the ripple container and delegates creation
+ * of wave elements to the RippleItem helper class.
  *
- * Базовый класс Ripple для работы во Vue.
+ * Базовый класс логики Ripple (оркестратор).
+ * Обрабатывает нажатия указателя на контейнере эффекта и делегирует создание
+ * элементов волны вспомогательному классу RippleItem.
  */
 export class Ripple {
-  /** Ripple item manager instance / Экземпляр менеджера эффекта свечения */
-  protected readonly item: RippleItem
+  /** Ripple item manager instance / Экземпляр менеджера элементов волны */
+  readonly item: RippleItem
 
   /**
    * Constructor for creating a ripple instance.
    *
-   * Конструктор для создания экземпляра эффекта свечения (ripple).
+   * Конструктор для создания экземпляра эффекта волны (ripple).
    * @param props input properties / входные свойства
    * @param refs input properties in the form of reactive references / входные свойства в виде реактивных ссылок
    * @param element target element where ripples are rendered / целевой элемент, в котором рендерятся волны
@@ -49,10 +53,22 @@ export class Ripple {
   }
 
   /**
-   * Click event handler that adds a new ripple effect element at the cursor coordinates.
+   * Pointer press handler that adds a new ripple effect element at the cursor coordinates.
+   * Only the main button of the primary pointer triggers the effect.
    *
-   * Обработчик события клика, который добавляет новый элемент эффекта волны по координатам курсора.
-   * @param event mouse click event / событие клика мыши
+   * Обработчик нажатия указателя, который добавляет новый элемент эффекта волны по координатам курсора.
+   * Эффект запускается только основной кнопкой основного указателя.
+   * @param event pointer press event / событие нажатия указателя
    */
-  readonly onClick = (event: MouseEvent) => this.item.add(event.offsetX, event.offsetY)
+  readonly onPointerdown = (event: PointerEvent): void => {
+    if (
+      event.button === 0
+      && event.isPrimary
+    ) {
+      this.item.add({
+        x: event.offsetX,
+        y: event.offsetY
+      })
+    }
+  }
 }

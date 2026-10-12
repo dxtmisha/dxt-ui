@@ -73,7 +73,7 @@ export class Scrollbar {
     this.border = new ScrollbarBorderConstructor(
       props,
       refs,
-      element as any,
+      element,
       className,
       emits
     )

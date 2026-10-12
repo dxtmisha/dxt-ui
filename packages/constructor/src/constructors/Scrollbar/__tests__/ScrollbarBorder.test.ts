@@ -1,27 +1,24 @@
-// @vitest-environment jsdom
 import { describe, it, expect, vi } from 'vitest'
 import { ref, toRefs, reactive } from 'vue'
 import { ScrollbarBorder } from '../ScrollbarBorder'
+import type { ScrollbarProps } from '../props'
 
 vi.mock('vue', async () => {
-  const actual = await vi.importActual('vue') as any
+  const actual = await vi.importActual<typeof import('vue')>('vue')
   return {
     ...actual,
     onMounted: (fn: () => void) => fn(),
-    onUnmounted: (fn: () => void) => fn(),
-    watch: (_src: any, cb: any) => {
-      cb()
-    }
+    onUnmounted: (fn: () => void) => fn()
   }
 })
 
 describe('ScrollbarBorder', () => {
   it('should initialize and watch changes correctly', () => {
-    const props = reactive({
+    const props = reactive<ScrollbarProps>({
       divider: true,
       dividerTop: false,
       dividerBottom: false
-    }) as any
+    })
     const refs = toRefs(props)
 
     const element = document.createElement('div')
@@ -37,11 +34,11 @@ describe('ScrollbarBorder', () => {
   })
 
   it('should toggle start and stop monitoring depending on divider props', () => {
-    const props = reactive({
+    const props = reactive<ScrollbarProps>({
       divider: false,
       dividerTop: false,
       dividerBottom: false
-    }) as any
+    })
     const refs = toRefs(props)
 
     const element = document.createElement('div')
@@ -63,11 +60,11 @@ describe('ScrollbarBorder', () => {
   })
 
   it('should update classes and data attributes on scroll boundary checks', () => {
-    const props = reactive({
+    const props = reactive<ScrollbarProps>({
       divider: true,
       dividerTop: false,
       dividerBottom: false
-    }) as any
+    })
     const refs = toRefs(props)
 
     const element = document.createElement('div')
@@ -86,23 +83,47 @@ describe('ScrollbarBorder', () => {
     // @ts-expect-error accessing protected method
     border.on()
 
-    expect(element.classList.contains('d1-scrollbar--divider--top')).toBe(true)
-    expect(element.classList.contains('d1-scrollbar--divider--bottom')).toBe(true)
+    expect(element.dataset.top).toBe('top')
+    expect(element.dataset.bottom).toBe('bottom')
     expect(element.dataset.scrollbarDivider).toBe('divider')
 
-    expect(emits).toHaveBeenCalledWith('top', true)
-    expect(emits).toHaveBeenCalledWith('bottom', true)
+    expect(emits).toHaveBeenCalledWith('top', false)
+    expect(emits).toHaveBeenCalledWith('leaveTop')
 
-    // Set scrollTop to 0 (top should be false, bottom true)
+    // Set scrollTop to 0 (user reaches top)
     element.scrollTop = 0
     emits.mockClear()
     // @ts-expect-error accessing protected method
     border.on()
 
-    expect(element.classList.contains('d1-scrollbar--divider--top')).toBe(false)
-    expect(element.classList.contains('d1-scrollbar--divider--bottom')).toBe(true)
-    expect(emits).toHaveBeenCalledWith('top', false)
-    expect(emits).toHaveBeenCalledWith('edge', false, true, 'top')
-    expect(emits).toHaveBeenCalledWith('leaveTop')
+    expect(element.dataset.top).toBe('none')
+    expect(element.dataset.bottom).toBe('bottom')
+    expect(emits).toHaveBeenCalledWith('top', true)
+    expect(emits).toHaveBeenCalledWith('edge', true, false, 'top')
+    expect(emits).toHaveBeenCalledWith('reachTop')
+
+    // Set scrollTop to 50 (user reaches bottom)
+    element.scrollTop = 50
+    emits.mockClear()
+    // @ts-expect-error accessing protected method
+    border.on()
+
+    expect(element.dataset.top).toBe('top')
+    expect(element.dataset.bottom).toBe('none')
+    expect(emits).toHaveBeenCalledWith('bottom', true)
+    expect(emits).toHaveBeenCalledWith('edge', false, true, 'bottom')
+    expect(emits).toHaveBeenCalledWith('reachBottom')
+
+    // Scroll back up to 10 (user leaves bottom)
+    element.scrollTop = 10
+    emits.mockClear()
+    // @ts-expect-error accessing protected method
+    border.on()
+
+    expect(element.dataset.top).toBe('top')
+    expect(element.dataset.bottom).toBe('bottom')
+    expect(emits).toHaveBeenCalledWith('bottom', false)
+    expect(emits).toHaveBeenCalledWith('edge', false, false, 'bottom')
+    expect(emits).toHaveBeenCalledWith('leaveBottom')
   })
 })

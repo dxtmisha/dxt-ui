@@ -1,4 +1,5 @@
 import type { ConstrClass } from '@dxtmisha/functional'
+import type { ImageCoordinator } from '@dxtmisha/functional-basic'
 
 /**
  * Interface for describing which components need to be connected for work.
@@ -15,11 +16,16 @@ export type RippleComponents = {}
 export type RippleEmits = {}
 
 /**
- * Type describing available properties.
+ * Type describing available properties and methods for defineExpose.
  *
- * Тип, описывающий доступные свойства.
+ * Тип, описывающий доступные свойства и методы для defineExpose.
  */
-export interface RippleExpose {}
+export interface RippleExpose {
+  /** Adding a ripple element at coordinates or at the center / Добавление элемента волны по координатам или по центру */
+  add(coordinator?: ImageCoordinator): void
+  /** Adding a ripple element at the center / Добавление элемента волны по центру */
+  addCenter(): void
+}
 
 /**
  * Type describing available slots.

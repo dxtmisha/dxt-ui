@@ -10,6 +10,7 @@ export const wikiDescriptionsRipple: StorybookComponentsDescriptionItem = {
     en: [
       'it creates a ripple wave effect on click',
       'automatic positioning based on click coordinates',
+      'programmatic wave triggering with `add()` and `addCenter()` methods',
       'disabling effect with `disabled` property',
       'Material Design inspired animation',
       'it works with any interactive elements'
@@ -17,6 +18,7 @@ export const wikiDescriptionsRipple: StorybookComponentsDescriptionItem = {
     ru: [
       'создает эффект волны при клике',
       'автоматическое позиционирование по координатам клика',
+      'программный запуск волны с помощью методов `add()` и `addCenter()`',
       'отключение эффекта свойством `disabled`',
       'анимация в стиле Material Design',
       'работает с любыми интерактивными элементами'
@@ -32,6 +34,10 @@ export const wikiDescriptionsRipple: StorybookComponentsDescriptionItem = {
   documentation: {
     body: `
 <StorybookDescriptions componentName={'Ripple'} type={'ripple'}/>
+    `,
+    expose: `
+<StorybookDescriptions componentName={'Ripple'} type={'expose.add'}/>
+<StorybookDescriptions componentName={'Ripple'} type={'expose.addCenter'}/>
     `
   },
   ai: {

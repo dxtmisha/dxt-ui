@@ -19,7 +19,9 @@ import {
 } from './types'
 
 /**
- * ScrollbarDesign
+ * ScrollbarDesign class handles rendering of the Scrollbar component.
+ *
+ * Класс ScrollbarDesign управляет рендерингом компонента Scrollbar.
  */
 export class ScrollbarDesign<
   COMP extends ScrollbarComponents,
@@ -38,11 +40,13 @@ export class ScrollbarDesign<
   protected readonly item: Scrollbar
 
   /**
-   * Constructor
-   * @param name class name/ название класса
-   * @param props properties/ свойства
-   * @param options list of additional parameters/ список дополнительных параметров
-   * @param ItemConstructor class for working with the item/ класс для работы с элементом
+   * Constructor for ScrollbarDesign class.
+   *
+   * Конструктор класса ScrollbarDesign.
+   * @param name class name / название класса
+   * @param props properties / свойства
+   * @param options list of additional parameters / список дополнительных параметров
+   * @param ItemConstructor class for working with the item / класс для работы с элементом
    */
   constructor(
     name: string,
@@ -71,7 +75,7 @@ export class ScrollbarDesign<
   }
 
   /**
-   * Initialization of all the necessary properties for work
+   * Initialization of all the necessary properties for work.
    *
    * Инициализация всех необходимых свойств для работы.
    */
@@ -109,8 +113,6 @@ export class ScrollbarDesign<
    * Метод для рендеринга.
    */
   protected initRender(): VNode {
-    const children: any[] = [this.initSlot('default')]
-
     return h(
       this.props.tag ?? 'div',
       {
@@ -118,7 +120,7 @@ export class ScrollbarDesign<
         ref: this.element,
         class: this.classes?.value.main
       },
-      children
+      this.initSlot('default')
     )
   }
 }
