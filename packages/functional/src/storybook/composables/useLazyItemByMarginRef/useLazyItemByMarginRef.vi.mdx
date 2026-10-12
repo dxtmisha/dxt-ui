@@ -8,11 +8,13 @@ Composable để theo dõi sự xuất hiện của một phần tử trên màn
 
 **Tham số:**
 - `element: RefType<HTMLElement | undefined>` — tham chiếu phản ứng đến phần tử HTML được theo dõi.
-- `rootMargin: string` — lề cho `IntersectionObserver` (ví dụ: `'100px 0px'`).
+- `rootMargin: string` — lề cho `IntersectionObserver` (ví dụ: `'100px 0px'`). Mặc định: `'128px 0px'`.
+- `unmounted: boolean` — tự động xóa phần tử khỏi theo dõi khi component bị hủy (unmounted). Mặc định: `true`.
 
 **Trả về:**
 - `lazyItemStatus: ShallowRef<boolean>` — trạng thái hiển thị của phần tử (liệu nó có cắt vùng quan sát dựa trên `rootMargin` hay không).
 - `lazyItem: LazyItem | undefined` — (getter) đối tượng chứa thông tin theo dõi chi tiết (tỷ lệ, mục nhập, v.v.).
+- `removeLazyItem: () => void` — xóa phần tử khỏi theo dõi.
 
 ## Ví dụ sử dụng
 

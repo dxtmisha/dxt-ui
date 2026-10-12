@@ -1,6 +1,6 @@
 ---
 name: code-review
-description: Conduct a rigorous code review assessing architecture, modern engineering standards vs obsolete patterns, bugs and edge cases, adherence to project rules, and design quality of components, classes, functions, and composables compared to industry-leading solutions.
+description: Conduct a rigorous code review assessing architecture, modern engineering standards vs obsolete patterns, bugs and edge cases, adherence to project rules, accessibility & ARIA compliance, and design quality, saved as an AI artifact in the language specified by wikiLanguage in ./design.config.json.
 ---
 
 # Task: Strict Architectural and Quality Code Review
@@ -8,6 +8,29 @@ description: Conduct a rigorous code review assessing architecture, modern engin
 Act as an elite Principal Software Architect and Senior Code Reviewer. Your goal is to conduct an uncompromising, deep-dive code review of the specified files, components, classes, functions, or composables/hooks.
 
 Your analysis must not be a superficial lint check. You must evaluate architectural soundness, technological relevance vs obsolete patterns, code flaws and subtle bugs, adherence to strict project conventions, and benchmark the implementation against industry-leading state-of-the-art standards.
+
+---
+
+## 🔴 Mandatory Pre-Review Protocol (Language & Delivery Target)
+
+Before analyzing any code or generating any review text, you MUST execute these two mandatory steps:
+
+### 1. Mandatory Language Determination (`design.config.json` -> `wikiLanguage`)
+- **Direct Instruction**: The AI agent **MUST open and inspect `./design.config.json`** to retrieve the `wikiLanguage` property (e.g., `"wikiLanguage": "ru"` or `"wikiLanguage": "en"`).
+- **Explicit Override**: Reading `./design.config.json` specifically to extract `wikiLanguage` is an **explicit, mandatory user directive**. The AI agent must NEVER skip this check, assume English without checking `design.config.json`, or refuse to read the language configuration.
+- **Language Enforcement**:
+  - If `wikiLanguage` is `"ru"`, the **entire code review report MUST be written strictly in Russian** (all headings, explanations, findings, summaries, and recommendations in Russian).
+  - If `wikiLanguage` is `"en"`, write in English.
+  - Code snippets, TypeScript type names, variable names, and file paths must always remain untranslated in their original form.
+
+### 2. Artifact Delivery (Do NOT Describe in Chat, Do NOT Pollute Repository)
+- **Zero Chat Dumping**: It is **STRICTLY FORBIDDEN to output the full review, tables, or detailed bug descriptions into the current chat**. Dumping long text into the conversation reduces readability and clutters the session.
+- **Save as an AI Artifact / Temporary Markdown Document**:
+  - The review MUST be saved as an **AI Artifact** (e.g., in `<appDataDir>/brain/<conversation-id>/code_review_<target>.md` or the agent's artifact directory) using the artifact creation tool (`write_to_file` in the artifacts directory).
+  - Artifacts are natively supported by the AI agent interface with a dedicated preview/reading panel, allowing comfortable, structured reading without cluttering the chat.
+  - Do NOT save permanent review files to the project repository root (do not write to `./code-review.md` in the git workspace).
+- **Chat Response**:
+  - In the chat response, provide **ONLY a concise 1–2 sentence notification** with a clickable link to the generated artifact (e.g., `[code_review_<target>.md](file:///...)`) and an overall rating. Never re-summarize or duplicate the findings in the chat.
 
 ---
 
@@ -46,8 +69,10 @@ Evaluate the target according to its specific entity type:
   - Cleanest possible HTML markup.
   - Zero function calls, complex calculations, or inline styles in templates.
   - Always unique, non-index `:key` in `v-for`. Never combine `v-if` with `v-for` on the same tag.
-- **Accessibility (A11y)**:
-  - Semantic HTML tags, correct ARIA roles, states, keyboard navigation, and focus management.
+- **Accessibility & ARIA (A11y)**:
+  - Full WAI-ARIA compliance: correct roles (`role="img"`, `role="button"`, `role="dialog"`, etc.), dynamic attributes, and states (`aria-expanded`, `aria-controls`, `aria-selected`, `aria-checked`, `aria-disabled`, `aria-live`, `aria-haspopup`).
+  - Screen reader support: descriptive `aria-label` or `aria-labelledby`, `aria-describedby`, and mandatory hiding of purely decorative elements (`aria-hidden="true"`).
+  - Keyboard accessibility and focus management: logical tab order, focus restoration, focus trapping in modals/dialogs, focus-visible styling, and standard keyboard handlers (Enter, Space, Escape, Arrow keys).
 - **Styles & Design System**:
   - Strict SCSS mixin usage from `@dxtmisha/styles`.
   - Zero hardcoded colors, borders, or spacing values.
@@ -62,6 +87,9 @@ Evaluate the target according to its specific entity type:
   - Immutability where possible (`readonly`, `as const`).
 - **Reuse of Project Primitives**:
   - Use helper primitives from `@dxtmisha/functional-basic` (`isFunction`, `isFilled`, `isObject`, `isArray`, etc.) instead of ad-hoc checks.
+- **Accessibility & ARIA Integration (Constructors & Controllers)**:
+  - ARIA attribute encapsulation: ARIA attributes must be encapsulated within dedicated `aria` getters (e.g. `get aria(): AriaList`) or via `AriaStaticInclude` (`AriaStaticInclude.role()`, `label()`, `hidden()`) inside constructor classes rather than fragmented across inline template bindings.
+  - Automatic decorative asset hiding: automatically assigning `AriaStaticInclude.hidden()` / `aria-hidden="true"` when meaningful text/labels (like `alt` or `label`) are absent.
 
 ### C. Functions & Utilities (`function`)
 - **Purity & Determinism**:
@@ -132,14 +160,33 @@ Check compliance against the core rules of `dxt-ui`:
   - All top-level module function/constructor calls assigned to constants MUST have `/*#__PURE__*/`.
 - **PurgeCSS Compatibility**:
   - No dynamic CSS class concatenation (`'btn-' + size`). Complete literal strings only.
+- **Accessibility & ARIA Standards (WAI-ARIA & A11y)**:
+  - Mandatory ARIA support for interactive, graphical, and informative UI components.
+  - Proper use of `AriaStaticInclude` (`role()`, `label()`, `hidden()`, etc.) and dedicated `aria` getters in component constructor classes.
+  - Correct role assignments and state synchronization (`role="img"`, `role="button"`, `role="dialog"`, etc.).
+  - Never omit accessibility labels (`alt`, `aria-label`) on interactive or meaningful elements; hide purely decorative elements with `aria-hidden="true"` or `AriaStaticInclude.hidden()`.
 
 ---
 
 ## 5. Review Output Format
 
-Provide the code review results in a clear, structured markdown report with the following sections:
+### A. Delivery & Language Requirements
+1. **Output Language (Strict `wikiLanguage` from `./design.config.json`)**:
+   - The AI agent MUST open and read `./design.config.json` to extract the `wikiLanguage` property.
+   - If `wikiLanguage` is `'ru'`, the entire review document MUST be written strictly in Russian (все разделы, заголовки, категории, описания багов и рекомендации должны быть написаны на русском языке).
+   - If `wikiLanguage` is `'en'`, write in English.
+   - If no language is found after reading `./design.config.json`, default to English (`'en'`).
+   - Technical identifiers, type names, code snippets, and file paths must always remain untranslated in their original form.
+2. **AI Artifact Delivery (Do NOT Describe in Chat, Do NOT Pollute Repository)**:
+   - Save the full report exclusively as an **AI Artifact** (e.g., in `<appDataDir>/brain/<conversation-id>/code_review_<target>.md` or the agent's artifact directory).
+   - Do NOT output the full report, tables, or detailed findings into the current chat.
+   - In the chat response, provide ONLY a concise 1–2 sentence notification with an overall score and a clickable markdown link to the generated artifact.
+   - Do NOT create permanent review files in the project root (avoid creating `./code-review.md` in the git repository tree).
 
-### 1. Executive Summary & Quality Score
+### B. Report Structure & Sections
+Document the review in the artifact markdown file with the following sections (translate section titles and contents according to `wikiLanguage`, e.g. in Russian if `wikiLanguage` is `'ru'`):
+
+#### 1. Executive Summary & Quality Score
 - **Overall Rating**: Grade (e.g., `A`, `B`, `C`, `D`, `F`) or Score (0-100).
 - **Core Verdict**: High-level summary of the implementation's strengths, weaknesses, and readiness for production.
 - **Category Scores**:
@@ -148,14 +195,15 @@ Provide the code review results in a clear, structured markdown report with the 
   | **Architecture & Modularity** | Excellent / Good / Needs Improvement / Poor | ... |
   | **Modernity vs Legacy Patterns** | Modern / Outdated / Mixed | ... |
   | **Component / Class / Hook Design** | Excellent / Good / Needs Improvement / Poor | ... |
+  | **Accessibility & ARIA (A11y)** | Fully Accessible / Minor Gaps / Inaccessible | ... |
   | **Bugs, Edge Cases & Leaks** | Clean / Minor Issues / Critical Bugs | ... |
   | **Project Rules & Conventions** | 100% Compliant / Minor Discrepancies / Non-compliant | ... |
 
-### 2. Deep Dive: Architectural & Design Quality
+#### 2. Deep Dive: Architectural & Design Quality
 - Analysis of decomposition, encapsulation, and scalability.
 - Evaluation of whether the entity is modern or relies on outdated practices compared to top-tier industry libraries.
 
-### 3. Detailed Findings & Bugs (Categorized by Severity)
+#### 3. Detailed Findings & Bugs (Categorized by Severity)
 - **Critical (P0 / Blocker)**: Bugs causing runtime crashes, data loss, memory leaks, SSR breaking issues, or reactivity breakage.
 - **Major (P1 / Architecture & Modernity)**: Outdated techniques, violation of single responsibility, suboptimal paradigms, missing cleanup.
 - **Minor (P2 / Conventions & Typing)**: Naming abbreviations, missing `/*#__PURE__*/`, missing or malformed bilingual JSDoc, missing explicit return types.
@@ -163,9 +211,9 @@ Provide the code review results in a clear, structured markdown report with the 
 
 *For each finding, provide: File, line number, explanation of the issue, and the exact reason why it is problematic.*
 
-### 4. Comparison with Industry Top Solutions
+#### 4. Comparison with Industry Top Solutions
 - Compare the reviewed solution with how leading open-source libraries (e.g., VueUse, Radix, Nuxt, TanStack) solve similar architectural problems.
 - Highlight concrete lessons or patterns that could be adopted to elevate the code to top-tier quality.
 
-### 5. Actionable Refactoring & Code Fixes
+#### 5. Actionable Refactoring & Code Fixes
 - Provide ready-to-use before/after code diffs or refactored code blocks illustrating the recommended improvements.

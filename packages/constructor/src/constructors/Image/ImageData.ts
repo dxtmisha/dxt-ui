@@ -1,13 +1,12 @@
 // ai-none
 
-import { type ComputedRef, onMounted, type Ref, watch } from 'vue'
+import { type ComputedRef, onMounted, onUnmounted, type Ref, watch } from 'vue'
 import {
   computedAsync,
   type ConstrEmit,
   ErrorCenter,
   Icons,
   isString,
-  sleep,
   type Undefined
 } from '@dxtmisha/functional'
 
@@ -32,6 +31,9 @@ import { CONSTRUCTOR_ERROR_GROUP } from '../../types/errorTypes'
 export class ImageData {
   /** Image data / Данные изображения */
   readonly image: ComputedRef<ImageEventItem>
+
+  /** Manager for working with images in Uint8Array format / Менеджер для работы с изображениями в формате Uint8Array */
+  protected uint8Array?: ImageUint8Array
 
   /**
    * Constructor
@@ -58,6 +60,8 @@ export class ImageData {
       )
       onMounted(this.onLoad)
     }
+
+    onUnmounted(() => this.uint8Array?.reset())
   }
 
   /**
@@ -106,6 +110,20 @@ export class ImageData {
   }
 
   /**
+   * Getting the instance for working with Uint8Array images.
+   *
+   * Получение экземпляра для работы с изображениями Uint8Array.
+   * @returns ImageUint8Array instance / экземпляр ImageUint8Array
+   */
+  protected getUint8Array(): ImageUint8Array {
+    if (!this.uint8Array) {
+      this.uint8Array = new ImageUint8Array(this.props)
+    }
+
+    return this.uint8Array
+  }
+
+  /**
    * Data initialization.
    *
    * Инициализация данных.
@@ -117,10 +135,11 @@ export class ImageData {
     if (image) {
       switch (this.type.item.value) {
         case ImageTypeValue.pdf:
-          await sleep(320)
+          await new Promise(resolve => requestAnimationFrame(resolve))
+
           return await ImagePdf.get(image)
         case ImageTypeValue.array:
-          return ImageUint8Array.createImage(image)
+          return await this.getUint8Array().createImage(image)
         case ImageTypeValue.image:
         case ImageTypeValue.file:
           try {

@@ -3,6 +3,13 @@
 import { type ImageSize } from './basicTypes'
 
 /**
+ * Initial maximum offset threshold (8K resolution boundary) for calculating minimum dimensions in a group.
+ *
+ * Начальное максимальное пороговое значение (граница 8K разрешения) для расчета минимальных размеров в группе.
+ */
+export const MAX_IMAGE_OFFSET = 7680
+
+/**
  * A class for storing data for adaptive computation of image scaling for a specific group.
  * It manages physical sizes and multipliers to ensure consistent scaling across related images.
  *
@@ -21,8 +28,8 @@ export class ImageCalculation {
 
   /** Minimum actual sizes (offset) in the group / Минимальные фактические размеры (offset) в группе */
   protected offset: ImageSize = {
-    width: 7680,
-    height: 7680
+    width: MAX_IMAGE_OFFSET,
+    height: MAX_IMAGE_OFFSET
   }
 
   /**
@@ -187,8 +194,8 @@ export class ImageCalculation {
     }
 
     this.offset = {
-      width: 7680,
-      height: 7680
+      width: MAX_IMAGE_OFFSET,
+      height: MAX_IMAGE_OFFSET
     }
 
     return this

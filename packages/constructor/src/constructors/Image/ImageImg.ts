@@ -33,7 +33,10 @@ import type { ImageProps } from './props'
  */
 export class ImageImg {
   /** Lazy initialization status / Статус отложенной инициализации */
-  protected lazyInit = ref<boolean>(false)
+  protected readonly lazyInit = ref<boolean>(false)
+
+  /** Lazy item tracking instance / Экземпляр отслеживания появления */
+  protected lazyItem?: ReturnType<typeof useLazyItemByMarginRef>
 
   /** Watch handle for lazy loading / Дескриптор наблюдения за ленивой загрузкой */
   protected lazyStatus?: WatchHandle
@@ -62,58 +65,9 @@ export class ImageImg {
 
     watch(
       [lazy, preloadOffset, element],
-      this.update
+      () => this.update()
     )
-    onMounted(this.update)
-  }
-
-  /**
-   * Updates lazy loading status and listener based on element and props.
-   *
-   * Обновляет статус и слушатель ленивой загрузки на основе элемента и свойств.
-   */
-  readonly update = (): void => {
-    if (
-      this.props.lazy
-      && this.element.value
-    ) {
-      this.makeLazy()
-    } else {
-      this.lazyInit.value = false
-      this.lazyStatus?.stop()
-      this.lazyStatus = undefined
-    }
-  }
-
-  /**
-   * Determines whether to use the img tag.
-   *
-   * Определяет, использовать ли тег img.
-   * @returns true if tag is used / true, если тег используется
-   */
-  is(): boolean {
-    return Boolean(this.props.tagImg)
-      && this.isType()
-  }
-
-  /**
-   * Determines whether lazy loading is enabled.
-   *
-   * Определяет, включена ли ленивя загрузка.
-   * @returns true if lazy loading is enabled / true, если ленивя загрузка включена
-   */
-  isLazy(): boolean {
-    return Boolean(this.props.lazy) && !this.lazyInit.value
-  }
-
-  /**
-   * Determines whether to use the picture tag.
-   *
-   * Определяет, использовать ли тег picture.
-   * @returns true if picture tag is used / true, если тег picture используется
-   */
-  isPicture(): boolean {
-    return this.is() && Boolean(this.props.picture)
+    onMounted(() => this.update())
   }
 
   /**
@@ -197,6 +151,53 @@ export class ImageImg {
   }
 
   /**
+   * Determines whether to use the img tag.
+   *
+   * Определяет, использовать ли тег img.
+   * @returns true if tag is used / true, если тег используется
+   */
+  is(): boolean {
+    return Boolean(this.props.tagImg)
+      && this.isType()
+  }
+
+  /**
+   * Determines whether lazy loading is enabled.
+   *
+   * Определяет, включена ли ленивая загрузка.
+   * @returns true if lazy loading is enabled / true, если ленивая загрузка включена
+   */
+  isLazy(): boolean {
+    return Boolean(this.props.lazy) && !this.lazyInit.value
+  }
+
+  /**
+   * Determines whether to use the picture tag.
+   *
+   * Определяет, использовать ли тег picture.
+   * @returns true if picture tag is used / true, если тег picture используется
+   */
+  isPicture(): boolean {
+    return this.is() && Boolean(this.props.picture)
+  }
+
+  /**
+   * Updates lazy loading status and listener based on element and props.
+   *
+   * Обновляет статус и слушатель ленивой загрузки на основе элемента и свойств.
+   */
+  update(): void {
+    if (
+      this.props.lazy
+      && this.element.value
+    ) {
+      this.makeLazy()
+    } else {
+      this.resetLazy()
+    }
+  }
+
+  /**
    * Checks if the type is file or image.
    *
    * Проверяет, является ли тип файлом или изображением.
@@ -225,7 +226,7 @@ export class ImageImg {
    * Возвращает значение для свойства transform scale.
    * @returns scale value / значение масштаба
    */
-  protected getSize() {
+  protected getSize(): string | undefined {
     return this.background.size.value
       ?.replace('auto', '')
       ?.trim()
@@ -252,14 +253,16 @@ export class ImageImg {
   }
 
   /**
-   * Converts the srcset key to a string.
+   * Resets lazy loading status and stops the active watcher.
    *
-   * Преобразует ключ srcset в строку.
-   * @param key key / ключ
-   * @returns srcset key string / строка ключа srcset
+   * Сбрасывает статус ленивой загрузки и останавливает активный наблюдатель.
    */
-  protected toSrcsetKey(key: string | number): string {
-    return isNumber(key) ? `${key}w` : String(key)
+  protected resetLazy(): void {
+    this.lazyInit.value = false
+    this.lazyStatus?.stop()
+    this.lazyStatus = undefined
+    this.lazyItem?.removeLazyItem()
+    this.lazyItem = undefined
   }
 
   /**
@@ -268,11 +271,23 @@ export class ImageImg {
    * Инициализирует ленивую загрузку.
    */
   protected makeLazy(): void {
-    const lazyStatus = useLazyItemByMarginRef(this.element, `${this.props.preloadOffset} 0px`)
-      .lazyItemStatus
+    this.resetLazy()
 
-    this.lazyStatus = watch(lazyStatus, () => {
-      this.lazyInit.value = lazyStatus.value
+    this.lazyItem = useLazyItemByMarginRef(this.element, `${this.props.preloadOffset} 0px`)
+
+    this.lazyStatus = watch(this.lazyItem.lazyItemStatus, () => {
+      this.lazyInit.value = Boolean(this.lazyItem?.lazyItemStatus.value)
     }, { immediate: true })
+  }
+
+  /**
+   * Converts the srcset key to a string.
+   *
+   * Преобразует ключ srcset в строку.
+   * @param key key / ключ
+   * @returns srcset key string / строка ключа srcset
+   */
+  protected toSrcsetKey(key: string | number): string {
+    return isNumber(key) ? `${key}w` : String(key)
   }
 }

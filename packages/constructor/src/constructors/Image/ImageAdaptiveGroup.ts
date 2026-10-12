@@ -1,9 +1,20 @@
 // ai-none
 
-import { EventItem, forEach } from '@dxtmisha/functional'
+import { forEach, isDomRuntime, ServerStorage } from '@dxtmisha/functional'
 
 import { ImageAdaptiveItem } from './ImageAdaptiveItem'
 import { ImageCalculationList } from './ImageCalculationList'
+
+/** Storage structure for adaptive group / Структура хранилища для адаптивной группы */
+type ImageAdaptiveGroupStorage = {
+  cache: string[]
+  objects: ImageAdaptiveItem[]
+  objectsAdaptive: ImageAdaptiveItem[]
+  time?: boolean
+}
+
+/** Server storage key for image adaptive group / Ключ серверного хранилища для адаптивной группы изображений */
+const SERVER_STORAGE_KEY_ADAPTIVE = '__ui:image-adaptive-group__'
 
 /**
  * Class for working with image scaling according to the physical size of the object in the image.
@@ -11,21 +22,6 @@ import { ImageCalculationList } from './ImageCalculationList'
  * Класс для работы с масштабированием изображения по физическому размеру объекта на изображении.
  */
 export class ImageAdaptiveGroup {
-  /** Cache of IDs of visible elements / Кэш идентификаторов видимых элементов */
-  protected static cache: string[] = []
-
-  /** Scroll event handler / Обработчик события прокрутки */
-  protected static event?: EventItem<Window, Event, any>
-
-  /** List of all elements for tracking / Список всех элементов для отслеживания */
-  protected static objects: ImageAdaptiveItem[] = []
-
-  /** List of elements that are currently being calculated / Список элементов, которые рассчитываются в данный момент */
-  protected static objectsAdaptive: ImageAdaptiveItem[] = []
-
-  /** Flag for tracking the frame calculation time / Флаг для отслеживания времени вычисления кадра */
-  protected static time?: boolean
-
   /**
    * Checks if an element is present in the list.
    *
@@ -83,25 +79,85 @@ export class ImageAdaptiveGroup {
    * Запускает процесс вычисления или отключает его, если в списке нет активных элементов.
    */
   static make(): void {
-    if (
-      this.event
-      && this.objects.length < 1
-    ) {
-      this.event.stop()
-      this.event = undefined
-    } else if (this.objects.length > 0) {
-      if (!this.event) {
-        this.event = new EventItem(window, ['scroll-sync'], () => this.start()).start()
-      }
-
-      if (!this.time) {
-        this.time = true
-        requestAnimationFrame(() => {
-          this.time = false
-          this.start()
-        })
-      }
+    if (this.objects.length < 1) {
+      this.objectsAdaptive = []
+      this.cache = []
+      return
     }
+
+    if (!this.time && isDomRuntime()) {
+      this.time = true
+      requestAnimationFrame(() => {
+        this.time = false
+        this.start()
+      })
+    }
+  }
+
+  /**
+   * Returns a request-isolated storage object from ServerStorage.
+   *
+   * Возвращает изолированный в рамках запроса объект хранилища из ServerStorage.
+   * @returns storage object / объект хранилища
+   */
+  protected static get storage(): ImageAdaptiveGroupStorage {
+    return ServerStorage.get(SERVER_STORAGE_KEY_ADAPTIVE, () => ({
+      cache: [],
+      objects: [],
+      objectsAdaptive: []
+    }))
+  }
+
+  /**
+   * Returns cache of IDs of visible elements.
+   *
+   * Возвращает кэш идентификаторов видимых элементов.
+   * @returns array of element IDs / массив идентификаторов элементов
+   */
+  protected static get cache(): string[] {
+    return this.storage.cache
+  }
+
+  protected static set cache(value: string[]) {
+    this.storage.cache = value
+  }
+
+  /**
+   * Returns list of all elements for tracking.
+   *
+   * Возвращает список всех элементов для отслеживания.
+   * @returns array of adaptive items / массив адаптивных элементов
+   */
+  protected static get objects(): ImageAdaptiveItem[] {
+    return this.storage.objects
+  }
+
+  /**
+   * Returns list of elements currently being calculated.
+   *
+   * Возвращает список элементов, рассчитываемых в данный момент.
+   * @returns array of adaptive items / массив адаптивных элементов
+   */
+  protected static get objectsAdaptive(): ImageAdaptiveItem[] {
+    return this.storage.objectsAdaptive
+  }
+
+  protected static set objectsAdaptive(value: ImageAdaptiveItem[]) {
+    this.storage.objectsAdaptive = value
+  }
+
+  /**
+   * Returns flag for tracking frame calculation time.
+   *
+   * Возвращает флаг для отслеживания времени вычисления кадра.
+   * @returns boolean flag or undefined / булев флаг или undefined
+   */
+  protected static get time(): boolean | undefined {
+    return this.storage.time
+  }
+
+  protected static set time(value: boolean | undefined) {
+    this.storage.time = value
   }
 
   /**
@@ -236,8 +292,6 @@ export class ImageAdaptiveGroup {
         this.makePercent()
         this.makeFactorMax()
       }
-    } else {
-      this.event?.stop()
     }
   }
 }

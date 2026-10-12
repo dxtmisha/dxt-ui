@@ -1,8 +1,9 @@
 // ai-none
 
-import type { ImageItem, ImageUint8ArrayCache, ImageUint8ArrayItem, ImageUint8ArrayType } from './basicTypes'
+import { onUnmounted } from 'vue'
 
-const cache: ImageUint8ArrayCache = []
+import type { ImageItem, ImageUint8ArrayItem, ImageUint8ArrayType } from './basicTypes'
+import type { ImageProps } from './props'
 
 /**
  * Class for working with an image in Uint8Array format.
@@ -22,39 +23,6 @@ export class ImageUint8Array {
   }
 
   /**
-   * Create an image from a Uint8Array or ArrayBuffer.
-   *
-   * Создает изображение из Uint8Array или ArrayBuffer.
-   * @param value image / изображение
-   * @param type image type / тип изображения
-   * @returns image object or undefined / объект изображения или undefined
-   */
-  static createImage(
-    value: ImageUint8ArrayType,
-    type: string = 'image/jpeg'
-  ): ImageItem | undefined {
-    const cacheItem = this.getCacheItem(value, type)
-    const image = new Image()
-
-    if (cacheItem) {
-      image.src = cacheItem.src
-    } else {
-      const blob = new Blob([this.toUint8Array(value)], { type })
-      const url = URL.createObjectURL(blob)
-
-      image.src = url
-      this.addCacheItem(value, type, url)
-    }
-
-    return {
-      image,
-      src: image.src,
-      width: image.naturalWidth,
-      height: image.naturalHeight
-    }
-  }
-
-  /**
    * Convert an image to a Uint8Array.
    *
    * Преобразует изображение в Uint8Array.
@@ -69,34 +37,150 @@ export class ImageUint8Array {
     return value
   }
 
+  /** Cached image data / Кэшированные данные изображения */
+  protected cacheItem?: ImageUint8ArrayItem
+
   /**
-   * Get cache item.
+   * Constructor for creating a manager for images in Uint8Array format.
    *
-   * Получает элемент из кэша.
-   * @param value image / изображение
-   * @param type image type / тип изображения
-   * @returns cache item if found, otherwise undefined / элемент кэша, если найден, иначе undefined
+   * Конструктор для создания менеджера изображений в формате Uint8Array.
+   * @param props input data / входные данные
    */
-  protected static getCacheItem(
-    value: ImageUint8ArrayType,
-    type: string
-  ): ImageUint8ArrayItem | undefined {
-    return cache.find(item => item.item === value && item.type === type)
+  constructor(
+    protected readonly props?: ImageProps
+  ) {
+    onUnmounted(() => this.reset())
   }
 
   /**
-   * Add cache item.
+   * Create an image from a Uint8Array or ArrayBuffer.
    *
-   * Добавляет элемент в кэш.
+   * Создает изображение из Uint8Array или ArrayBuffer.
    * @param value image / изображение
    * @param type image type / тип изображения
-   * @param src image src / src изображения
+   * @returns image object or undefined / объект изображения или undefined
    */
-  protected static addCacheItem(
+  async createImage(
+    value?: ImageUint8ArrayType,
+    type: string = 'image/jpeg'
+  ): Promise<ImageItem | undefined> {
+    const targetValue = this.getValue(value)
+
+    if (!ImageUint8Array.is(targetValue)) {
+      return undefined
+    }
+
+    const cache = this.getCache(targetValue, type)
+
+    if (cache) {
+      return cache
+    }
+
+    this.reset()
+
+    const item = this.setCache(targetValue, type)
+
+    return this.initImage(item.src)
+  }
+
+  /**
+   * Resets the cache and revokes created object URL.
+   *
+   * Сбрасывает кэш и отзывает созданный URL-адрес объекта.
+   */
+  reset(): void {
+    if (this.cacheItem) {
+      URL.revokeObjectURL(this.cacheItem.src)
+      this.cacheItem = undefined
+    }
+  }
+
+  /**
+   * Returns the cached image item if it matches the value and type.
+   *
+   * Возвращает кэшированный элемент изображения, если он соответствует значению и типу.
+   * @param value image / изображение
+   * @param type image type / тип изображения
+   * @returns cached image item or undefined / кэшированный элемент изображения или undefined
+   */
+  protected getCache(
     value: ImageUint8ArrayType,
-    type: string,
-    src: string
-  ): void {
-    cache.push({ item: value, type, src })
+    type: string
+  ): ImageItem | undefined {
+    if (
+      this.cacheItem
+      && this.cacheItem.item === value
+      && this.cacheItem.type === type
+    ) {
+      return this.cacheItem.image
+    }
+
+    return undefined
+  }
+
+  /**
+   * Returns the image value.
+   *
+   * Возвращает значение изображения.
+   * @param value image / изображение
+   * @returns image value or undefined / значение изображения или undefined
+   */
+  protected getValue(value?: ImageUint8ArrayType): ImageUint8ArrayType | undefined {
+    return value ?? (this.props?.value as ImageUint8ArrayType)
+  }
+
+  /**
+   * Sets cached item by creating a new Blob and object URL.
+   *
+   * Устанавливает кэшированный элемент, создавая новый Blob и URL-адрес объекта.
+   * @param value image / изображение
+   * @param type image type / тип изображения
+   * @returns cached item / кэшированный элемент
+   */
+  protected setCache(
+    value: ImageUint8ArrayType,
+    type: string
+  ): ImageUint8ArrayItem {
+    const blob = new Blob([ImageUint8Array.toUint8Array(value)], { type })
+    const url = URL.createObjectURL(blob)
+
+    this.cacheItem = {
+      item: value,
+      type,
+      src: url
+    }
+
+    return this.cacheItem
+  }
+
+  /**
+   * Initializes and loads the image element by its source URL.
+   *
+   * Инициализирует и загружает элемент изображения по его исходному URL.
+   * @param src source URL / URL-источник
+   * @returns image item or undefined / элемент изображения или undefined
+   */
+  protected initImage(src: string): Promise<ImageItem | undefined> {
+    return new Promise((resolve) => {
+      const image = new Image()
+
+      image.onerror = () => resolve(undefined)
+      image.onload = () => {
+        const item: ImageItem = {
+          image,
+          src,
+          width: image.naturalWidth,
+          height: image.naturalHeight
+        }
+
+        if (this.cacheItem) {
+          this.cacheItem.image = item
+        }
+
+        resolve(item)
+      }
+
+      image.src = src
+    })
   }
 }

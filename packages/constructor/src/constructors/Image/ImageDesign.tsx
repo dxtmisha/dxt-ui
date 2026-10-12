@@ -68,6 +68,29 @@ export class ImageDesign<
   }
 
   /**
+   * Properties for the image tag.
+   *
+   * Свойства для тега image.
+   */
+  readonly propsImage = computed<any>(() => ({
+    ...this.getAttrs(),
+    ref: this.element,
+    key: 'image',
+    class: this.classes?.value.main
+  }))
+
+  /**
+   * Main properties.
+   *
+   * Основные свойства.
+   */
+  readonly propsMain = computed<any>(() => ({
+    ...this.propsImage.value,
+    ...this.item.binds,
+    style: this.styles?.value
+  }))
+
+  /**
    * Initialization of all the necessary properties for work
    *
    * Инициализация всех необходимых свойств для работы.
@@ -125,36 +148,14 @@ export class ImageDesign<
   }
 
   /**
-   * Properties for the image tag.
-   *
-   * Свойства для тега image.
-   */
-  readonly propsImage = computed<any>(() => ({
-    ...this.getAttrs(),
-    ref: this.element,
-    key: 'image',
-    class: this.classes?.value.main
-  }))
-
-  /**
-   * Main properties.
-   *
-   * Основные свойства.
-   */
-  readonly propsMain = computed<any>(() => ({
-    ...this.propsImage.value,
-    ...this.item.binds,
-    style: this.styles?.value
-  }))
-
-  /**
    * Rendering the picture tag.
    *
    * Рендеринг тега picture.
+   * @returns rendered picture VNode / отрендеренный VNode picture
    */
-  readonly renderPicture = (): VNode => {
+  protected renderPicture(): VNode {
     const list = this.item.img.picture.value
-    const children: any[] = []
+    const children: VNode[] = []
 
     if (list) {
       list.forEach(
@@ -171,8 +172,9 @@ export class ImageDesign<
    * Rendering the img tag.
    *
    * Рендеринг тега img.
+   * @returns rendered img VNode / отрендеренный VNode img
    */
-  readonly renderImg = (): VNode => {
+  protected renderImg(): VNode {
     return h('span', this.propsImage.value, this.renderImgItem())
   }
 
@@ -180,8 +182,9 @@ export class ImageDesign<
    * Rendering the img item.
    *
    * Рендеринг элемента img.
+   * @returns rendered img item VNode / отрендеренный VNode элемента img
    */
-  readonly renderImgItem = (): VNode => {
+  protected renderImgItem(): VNode {
     return h('img', this.item.img.binds.value)
   }
 
@@ -189,8 +192,9 @@ export class ImageDesign<
    * Rendering the value for the component.
    *
    * Рендеринг значения для компонента.
+   * @returns rendered value / отрендеренное значение
    */
-  readonly renderValue = (): string | VNode | undefined => {
+  protected renderValue(): string | VNode | undefined {
     if (this.item.type.item.value === ImageTypeValue.pdf) {
       return h(
         'object',

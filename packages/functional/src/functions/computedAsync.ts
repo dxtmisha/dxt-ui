@@ -35,8 +35,6 @@ export function computedAsync<R>(
 
       if (isDomRuntime()) {
         watchEffect(update)
-      } else {
-        update().then()
       }
     }
   }

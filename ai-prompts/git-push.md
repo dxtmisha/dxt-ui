@@ -25,6 +25,7 @@ Your task is to perform a thorough, rigorous code review of all changes and affe
      - **Bilingual JSDoc/TSDoc**: Ensure mandatory bilingual (English and Russian) documentation is present and formatted according to `jdoc.md` on all modified or newly introduced classes, functions, methods, interfaces, and types.
      - **Styles & Design System (if applicable)**: Ensure styles strictly reuse mixins and tokens from `@dxtmisha/styles`, strictly no hardcoded color values, and strict BEM naming.
      - **Vue Standards (if applicable)**: Strictly `<script setup lang="ts">`, semantic HTML, accessible ARIA attributes, clean templates without inline logic or styles.
+     - **Accessibility & ARIA (A11y)**: Ensure correct ARIA roles, states, attributes, screen reader labeling, decorative element hiding (`aria-hidden="true"` / `AriaStaticInclude.hidden()`), and keyboard accessibility.
    - **Review Gate & Halt on Defects (STRICT PROCESS HALT)**:
      - **If ANY flaws, dead code, typing violations, or standards discrepancies are discovered**:
        1. **HALT THE PROCESS IMMEDIATELY**. Do NOT proceed to staging, committing, or pushing (`git add`, `git commit`, `git push` are strictly forbidden at this stage).

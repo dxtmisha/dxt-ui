@@ -1,7 +1,19 @@
 // ai-none
 
-import { computed, onMounted, onUnmounted, type Ref, ref, watchEffect } from 'vue'
-import { getElementId, toNumber } from '@dxtmisha/functional'
+import {
+  computed,
+  onMounted,
+  onUnmounted,
+  type Ref,
+  ref,
+  watch,
+  watchEffect
+} from 'vue'
+import {
+  getElementId,
+  toNumber,
+  useLazyItemByMarginRef
+} from '@dxtmisha/functional'
 
 import { ClientOnlyInclude } from '../../classes/ClientOnlyInclude'
 
@@ -50,11 +62,11 @@ export class ImageAdaptiveItem {
     height: 0
   })
 
+  /** Lazy item tracking instance / Экземпляр отслеживания появления */
+  readonly lazy: ReturnType<typeof useLazyItemByMarginRef>
+
   /** Checks if the element is beyond the screen / Проверяет, вышел ли элемент за экран */
   protected beyond: boolean = false
-
-  /** Checks if the element is visible / Проверяет, видим ли элемент */
-  protected visible: boolean = false
 
   /**
    * Constructor for creating a scaling manager for an element.
@@ -71,6 +83,8 @@ export class ImageAdaptiveItem {
     protected readonly data: ImageData,
     public readonly element: Ref<ImageElement>
   ) {
+    this.lazy = useLazyItemByMarginRef(this.element, `${MAX_BEYOND}px 0px`)
+
     onMounted(() => {
       watchEffect(() => {
         if (this.is()) {
@@ -79,10 +93,17 @@ export class ImageAdaptiveItem {
           ImageAdaptiveGroup.remove(this)
         }
       })
+
+      watch(this.lazy.lazyItemStatus, () => {
+        if (this.is()) {
+          ImageAdaptiveGroup.make()
+        }
+      })
     })
 
     onUnmounted(() => {
       ImageAdaptiveGroup.remove(this)
+      this.lazy.removeLazyItem()
     })
   }
 
@@ -278,16 +299,6 @@ export class ImageAdaptiveItem {
   }
 
   /**
-   * Is the element visible.
-   *
-   * Виден ли элемент.
-   * @returns true if element is visible / true, если элемент видим
-   */
-  isVisible(): boolean {
-    return this.visible
-  }
-
-  /**
    * Size change for calculation.
    *
    * Изменение размера для вычисления.
@@ -317,6 +328,7 @@ export class ImageAdaptiveItem {
   remove(): void {
     if (this.active) {
       ImageAdaptiveGroup.remove(this)
+      this.lazy.removeLazyItem()
     }
   }
 
@@ -328,28 +340,12 @@ export class ImageAdaptiveItem {
    */
   make(): this {
     this.beyond = false
-    this.visible = false
 
     if (
       this.element.value
       && this.is()
     ) {
-      if (this.props.adaptiveAlways) {
-        this.beyond = true
-        this.visible = true
-      } else {
-        const rect = this.element.value.getBoundingClientRect()
-
-        this.beyond = !(
-          rect.bottom < (0 - MAX_BEYOND)
-          || rect.top > (window.innerHeight + MAX_BEYOND)
-        )
-
-        this.visible = !(
-          rect.bottom < 0
-          || rect.top > window.innerHeight
-        )
-      }
+      this.beyond = Boolean(this.props.adaptiveAlways || this.lazy.lazyItemStatus.value)
     }
 
     return this

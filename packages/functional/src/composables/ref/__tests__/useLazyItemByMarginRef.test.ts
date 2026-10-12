@@ -74,4 +74,12 @@ describe('useLazyItemByMarginRef', () => {
     mockLazyItem.status.value = true
     expect(lazyItemStatus.value).toBe(true)
   })
+
+  it('should remove item from observer on removeLazyItem call', () => {
+    const element = ref<HTMLElement>(document.createElement('div'))
+    const { removeLazyItem } = useLazyItemByMarginRef(element, '50px')
+
+    removeLazyItem()
+    expect(mockLazyRef.removeLazyItem).toHaveBeenCalledWith(element.value)
+  })
 })

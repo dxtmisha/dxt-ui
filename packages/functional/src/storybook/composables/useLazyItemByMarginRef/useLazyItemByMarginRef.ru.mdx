@@ -8,11 +8,13 @@ Composable для отслеживания появления элемента �
 
 **Параметры:**
 - `element: RefType<HTMLElement | undefined>` — реактивная ссылка на отслеживаемый HTML-элемент.
-- `rootMargin: string` — отступ для `IntersectionObserver` (например, `'100px 0px'`).
+- `rootMargin: string` — отступ для `IntersectionObserver` (например, `'100px 0px'`). По умолчанию: `'128px 0px'`.
+- `unmounted: boolean` — автоматическое удаление элемента из отслеживания при размонтировании компонента. По умолчанию: `true`.
 
 **Возвращает:**
 - `lazyItemStatus: ShallowRef<boolean>` — статус видимости элемента (пересекает ли он область с учетом `rootMargin`).
 - `lazyItem: LazyItem | undefined` — (getter) объект с подробной информацией об отслеживании (ratio, entry и т.д.).
+- `removeLazyItem: () => void` — удаление элемента из отслеживания.
 
 ## Пример использования
 

@@ -23,7 +23,7 @@ const REGEX_FLAG = /^flag-[a-z]{2}$/
 /** Regular expression for checking the compressed flag / Регулярное выражение для проверки сжатого флага */
 const REGEX_FLAG_COMPRESSED = /^f-[a-z]{2}$/
 /** Regular expression for checking the icon type / Регулярное выражение для проверки типа иконки */
-const REGEX_SUB = /^(outlined|round|sharp|material)-/
+const REGEX_SUB = /^(filled|outlined|round|sharp|two-tone|material)-/
 
 /**
  * Class for working with the image type.

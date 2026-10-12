@@ -38,6 +38,29 @@ export class ImageBackground {
   }
 
   /**
+   * Reactive computed value for the CSS `background-size` property.
+   * Resolves priority: coordinator → adaptive → props size.
+   *
+   * Реактивное вычисляемое значение для свойства CSS `background-size`.
+   * Приоритет: координатор → адаптивный → размер из props.
+   */
+  readonly size = computed<string | null>(() => {
+    if (this.coordinator.is()) {
+      return this.getSizeByCoordinator()
+    }
+
+    if (this.adaptive.is()) {
+      const size = this.adaptive.backgroundSize
+
+      if (size) {
+        return size
+      }
+    }
+
+    return this.getSizeForItem()
+  })
+
+  /**
    * Returns the CSS `url(...)` string for the background-image property,
    * or `null` if no image source is available.
    *
@@ -81,35 +104,12 @@ export class ImageBackground {
   }
 
   /**
-   * Reactive computed value for the CSS `background-size` property.
-   * Resolves priority: coordinator → adaptive → props size.
-   *
-   * Реактивное вычисляемое значение для свойства CSS `background-size`.
-   * Приоритет: координатор → адаптивный → размер из props.
-   */
-  readonly size = computed<string | null>(() => {
-    if (this.coordinator.is()) {
-      return this.getSizeByCoordinator()
-    }
-
-    if (this.adaptive.is()) {
-      const size = this.adaptive.backgroundSize
-
-      if (size) {
-        return size
-      }
-    }
-
-    return this.getSizeForItem()
-  })
-
-  /**
    * Returns `true` if a background image value is present.
    *
    * Возвращает `true`, если значение фонового изображения присутствует.
    * @returns boolean indicating image presence / булево значение наличия изображения
    */
-  isImage() {
+  isImage(): boolean {
     return Boolean(this.image)
   }
 

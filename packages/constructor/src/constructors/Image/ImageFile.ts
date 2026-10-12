@@ -1,7 +1,9 @@
 // ai-none
 
+import { ErrorCenter, isString, resizeImageByMax } from '@dxtmisha/functional'
+
 import type { ImageItem } from './basicTypes'
-import { isString, resizeImageByMax } from '@dxtmisha/functional'
+import { CONSTRUCTOR_ERROR_GROUP } from '../../types/errorTypes'
 
 /** Maximum size allowed without conversion / Максимальный размер, допустимый без преобразования */
 export const MAX_SIZE: number = 1280
@@ -100,6 +102,9 @@ export class ImageFile {
   static getFileReader(file: File): Promise<string> {
     return new Promise((resolve) => {
       const reader = new FileReader()
+
+      reader.onerror = () => resolve(this.onError(reader.error))
+      reader.onabort = () => resolve(this.onError(reader.error))
       reader.onload = () => resolve(typeof reader.result === 'string' ? reader.result : '')
       reader.readAsDataURL(file)
     })
@@ -133,5 +138,22 @@ export class ImageFile {
     } else {
       return image.src
     }
+  }
+
+  /**
+   * Registers an error in ErrorCenter and returns an empty string.
+   *
+   * Регистрирует ошибку в ErrorCenter и возвращает пустую строку.
+   * @param details error details / детали ошибки
+   * @returns empty string / пустая строка
+   */
+  protected static onError(details?: unknown): string {
+    ErrorCenter.on({
+      group: CONSTRUCTOR_ERROR_GROUP,
+      code: 'image-file',
+      details
+    })
+
+    return ''
   }
 }

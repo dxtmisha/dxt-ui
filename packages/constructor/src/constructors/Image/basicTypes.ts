@@ -77,6 +77,8 @@ export type ImageUint8ArrayItem = {
   type: string
   /** Source URL/ URL-источник */
   src: string
+  /** Image item / Элемент изображения */
+  image?: ImageItem
 }
 /** Image Uint8Array cache / Кэш Image Uint8Array */
 export type ImageUint8ArrayCache = ImageUint8ArrayItem[]

@@ -3,6 +3,7 @@ import {
   type ConstrClassObject,
   type ConstrEmit,
   type ConstrStyles,
+  isFilled,
   isString
 } from '@dxtmisha/functional'
 
@@ -66,6 +67,7 @@ export class Image {
    * @param constructors.ImageImgConstructor class for working with image tag/ класс для работы с тегом изображения
    * @param constructors.ImagePositionConstructor class for working with image position/ класс для работы с позицией изображения
    * @param constructors.ImageTypeConstructor class for working with image type/ класс для работы с типом изображения
+   * @param constructors.ClientOnlyConstructor class for working with ClientOnly / класс для работы с ClientOnly
    */
   constructor(
     protected readonly props: ImageProps,
@@ -97,7 +99,12 @@ export class Image {
     this.clientOnly = new ClientOnlyConstructor({ clientOnly: true })
 
     this.type = new ImageTypeConstructor(props, this.clientOnly)
-    this.data = new ImageDataConstructor(props, this.clientOnly, this.type, this.emits)
+    this.data = new ImageDataConstructor(
+      props,
+      this.clientOnly,
+      this.type,
+      this.emits
+    )
 
     this.coordinator = new ImageCoordinatorConstructor(props)
     this.position = new ImagePositionConstructor(props, this.coordinator)
@@ -126,13 +133,49 @@ export class Image {
   }
 
   /**
-   * Determines the tag to use.
+   * Values for the text. Text is used for the type of icon that works as a background.
    *
-   * Определяет используемый тег.
+   * Значения для текста. Текст используется для типа иконки, который работает как фон.
    */
-  get tag(): string {
-    return this.img.is() ? 'img' : 'span'
-  }
+  readonly text = computed<string | undefined>(() => {
+    const type = this.type.item.value
+
+    if (type === ImageTypeValue.pdf) {
+      const image = this.data.image.value
+
+      if (isString(image)) {
+        return image
+      }
+    }
+
+    const value = this.props.value
+
+    if (
+      type === ImageTypeValue.flagCompressed
+      && value
+    ) {
+      return String(value)
+        .replace('f-', '')
+        .toUpperCase()
+    }
+
+    if (
+      type
+      && isString(value)
+      && [
+        'filled',
+        'outlined',
+        'round',
+        'sharp',
+        'two-tone',
+        'material'
+      ].indexOf(type) !== -1
+    ) {
+      return value.replace(/^(filled|outlined|round|sharp|two-tone)-/, '')
+    }
+
+    return undefined
+  })
 
   /**
    * Values for the class.
@@ -215,10 +258,17 @@ export class Image {
    * Вычисляемые привязки для элемента изображения.
    */
   get binds() {
+    if (isFilled(this.props.alt)) {
+      return {
+        translate: 'no',
+        ...AriaStaticInclude.role('img'),
+        ...AriaStaticInclude.label(this.props.alt)
+      }
+    }
+
     return {
       translate: 'no',
       ...AriaStaticInclude.role('img'),
-      ...AriaStaticInclude.label(this.props.alt),
       ...AriaStaticInclude.hidden()
     }
   }
@@ -234,49 +284,4 @@ export class Image {
       data: this.data.image.value
     }
   }
-
-  /**
-   * Values for the text. Text is used for the type of icon that works as a background.
-   *
-   * Значения для текста. Текст используется для типа иконки, который работает как фон.
-   */
-  readonly text = computed<string | undefined>(() => {
-    const type = this.type.item.value
-
-    if (type === ImageTypeValue.pdf) {
-      const image = this.data.image.value
-
-      if (isString(image)) {
-        return image
-      }
-    }
-
-    const value = this.props.value
-
-    if (
-      type === ImageTypeValue.flagCompressed
-      && value
-    ) {
-      return String(value)
-        .replace('f-', '')
-        .toUpperCase()
-    }
-
-    if (
-      type
-      && isString(value)
-      && [
-        'filled',
-        'outlined',
-        'round',
-        'sharp',
-        'two-tone',
-        'material'
-      ].indexOf(type) !== -1
-    ) {
-      return value.replace(/^(filled|outlined|round|sharp|two-tone)-/, '')
-    }
-
-    return undefined
-  })
 }

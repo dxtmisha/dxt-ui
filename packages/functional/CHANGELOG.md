@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.16.0] - 2026-10-13
+
+### Added
+- **`useLazyItemByMarginRef`**:
+  - Added `removeLazyItem(): void` method to the returned object, allowing explicit removal of the tracked element from the underlying `IntersectionObserver` instance.
+  - Added automatic removal on component unmount via `onUnmounted` when invoked inside an active Vue component setup scope.
+  - Added `unmounted` parameter (`boolean`, defaults to `true`) to allow consumers to toggle or disable automatic `onUnmounted` cleanup when managing lifecycle externally.
+  - Added unit test coverage for `removeLazyItem` in `useLazyItemByMarginRef.test.ts`.
+  - Updated documentation across English, Russian, and Vietnamese Storybook guides.
+
+### Changed
+- **Design Abstractions & Inheritance**:
+  - Refactored `DesignComponents` and `DesignConstructorAbstract` to inherit from base design abstractions (`DesignComponentsAbstract`, `DesignConstructorBasicAbstract`) extracted to `@dxtmisha/functional-basic`.
+  - Streamlined `constructorTypes.ts` by delegating shared constructor interfaces and types to `@dxtmisha/functional-basic`.
+- **Dependencies**:
+  - Updated `@dxtmisha/functional-basic` dependency to `>=1.12.0`.
+
+### Fixed
+- **`computedAsync`**:
+  - Removed redundant background `update().then()` execution on the SSR path (`!isDomRuntime()`). Prevents unhandled promises and potential `ReferenceError` crashes from DOM-dependent getters during server-side rendering, ensuring `computedAsync` strictly returns `initialState` on the server and defers async reactive evaluation to client hydration.
+
+### Removed
+- **Deprecated Design Classes**:
+  - Removed legacy `DesignAbstract`, `DesignAsyncAbstract`, and `DesignChanged` classes, their unit tests, and corresponding documentation.
+  - Removed unused flag asset `src/assets/flags.webp`.
+
 ## [1.15.18] - 2026-10-05
 
 ### Changed

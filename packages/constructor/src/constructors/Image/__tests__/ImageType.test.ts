@@ -26,5 +26,11 @@ describe('ImageType', () => {
 
     const t4 = new ImageType({ value: 'outlined-home' }, clientOnly)
     expect(t4.item.value).toBe('outlined')
+
+    const t5 = new ImageType({ value: 'two-tone-home' }, clientOnly)
+    expect(t5.item.value).toBe('two-tone')
+
+    const t6 = new ImageType({ value: 'filled-home' }, clientOnly)
+    expect(t6.item.value).toBe('filled')
   })
 })

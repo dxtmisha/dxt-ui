@@ -1,3 +1,4 @@
+import { getCurrentInstance, onUnmounted } from 'vue'
 import { ServerStorage } from '@dxtmisha/functional-basic'
 import { useLazyRef } from './useLazyRef'
 import type { RefType } from '../../types/refTypes'
@@ -45,13 +46,33 @@ const getItemByMargin = (rootMargin: string): ReturnType<typeof useLazyRef> => {
  * Хук для инициализации отслеживания появления элемента на экране по отступу.
  * @param element element for tracking/ элемента для отслеживания
  * @param rootMargin root margin for IntersectionObserver/ отступ для IntersectionObserver
+ * @param unmounted whether to remove tracking when component is unmounted / нужно ли удалять отслеживание при размонтировании компонента
  */
 export const useLazyItemByMarginRef = (
   element: RefType<HTMLElement | undefined>,
-  rootMargin: string = '128px 0px'
+  rootMargin: string = '128px 0px',
+  unmounted: boolean = true
 ) => {
   const observer = getItemByMargin(rootMargin)
   const status = observer.addLazyItem(element)
+
+  /**
+   * Removing an element from tracking.
+   *
+   * Удаление элемента из отслеживания.
+   */
+  const removeLazyItem = (): void => {
+    observer.removeLazyItem(element.value)
+  }
+
+  if (
+    unmounted
+    && getCurrentInstance()
+  ) {
+    onUnmounted(() => {
+      removeLazyItem()
+    })
+  }
 
   return {
     /** Lazy item status/ Статус ленивого элемента */
@@ -64,6 +85,13 @@ export const useLazyItemByMarginRef = (
      */
     get lazyItem() {
       return observer.getItem(element.value)
-    }
+    },
+
+    /**
+     * Removing an element from tracking.
+     *
+     * Удаление элемента из отслеживания.
+     */
+    removeLazyItem
   }
 }
