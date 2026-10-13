@@ -2,14 +2,6 @@
 import { describe, it, expect, vi, beforeAll, afterAll } from 'vitest'
 import { ImageUint8Array } from '../ImageUint8Array'
 
-vi.mock('vue', async () => {
-  const actual = await vi.importActual('vue') as any
-  return {
-    ...actual,
-    onUnmounted: (fn: () => void) => fn()
-  }
-})
-
 describe('ImageUint8Array', () => {
   let originalImage: typeof Image
 
@@ -57,16 +49,13 @@ describe('ImageUint8Array', () => {
     expect(ImageUint8Array.toUint8Array(u8)).toBe(u8)
   })
 
-  it('should create images with caching and cleanup on reset', async () => {
+  it('should create images and cleanup on reset', async () => {
     const helper = new ImageUint8Array()
     const data = new Uint8Array([1, 2, 3])
-    const res1 = await helper.createImage(data)
-    expect(res1?.src).toBe('blob:mock-url')
-    expect(res1?.width).toBe(200)
-    expect(res1?.height).toBe(100)
-
-    const res2 = await helper.createImage(data)
-    expect(res2?.src).toBe(res1?.src)
+    const res = await helper.createImage(data)
+    expect(res?.src).toBe('blob:mock-url')
+    expect(res?.width).toBe(200)
+    expect(res?.height).toBe(100)
 
     helper.reset()
     expect(URL.revokeObjectURL).toHaveBeenCalledWith('blob:mock-url')

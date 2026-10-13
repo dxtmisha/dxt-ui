@@ -1,8 +1,6 @@
 // ai-none
 
-import { onUnmounted } from 'vue'
-
-import type { ImageItem, ImageUint8ArrayItem, ImageUint8ArrayType } from './basicTypes'
+import type { ImageItem, ImageUint8ArrayType } from './basicTypes'
 import type { ImageProps } from './props'
 
 /**
@@ -37,8 +35,8 @@ export class ImageUint8Array {
     return value
   }
 
-  /** Cached image data / Кэшированные данные изображения */
-  protected cacheItem?: ImageUint8ArrayItem
+  /** Active object URL / Активный URL объекта */
+  protected src?: string
 
   /**
    * Constructor for creating a manager for images in Uint8Array format.
@@ -48,9 +46,7 @@ export class ImageUint8Array {
    */
   constructor(
     protected readonly props?: ImageProps
-  ) {
-    onUnmounted(() => this.reset())
-  }
+  ) {}
 
   /**
    * Create an image from a Uint8Array or ArrayBuffer.
@@ -70,52 +66,24 @@ export class ImageUint8Array {
       return undefined
     }
 
-    const cache = this.getCache(targetValue, type)
-
-    if (cache) {
-      return cache
-    }
-
     this.reset()
 
-    const item = this.setCache(targetValue, type)
+    const blob = new Blob([ImageUint8Array.toUint8Array(targetValue)], { type })
+    this.src = URL.createObjectURL(blob)
 
-    return this.initImage(item.src)
+    return this.initImage(this.src)
   }
 
   /**
-   * Resets the cache and revokes created object URL.
+   * Resets and revokes the created object URL.
    *
-   * Сбрасывает кэш и отзывает созданный URL-адрес объекта.
+   * Сбрасывает и отзывает созданный URL-адрес объекта.
    */
   reset(): void {
-    if (this.cacheItem) {
-      URL.revokeObjectURL(this.cacheItem.src)
-      this.cacheItem = undefined
+    if (this.src) {
+      URL.revokeObjectURL(this.src)
+      this.src = undefined
     }
-  }
-
-  /**
-   * Returns the cached image item if it matches the value and type.
-   *
-   * Возвращает кэшированный элемент изображения, если он соответствует значению и типу.
-   * @param value image / изображение
-   * @param type image type / тип изображения
-   * @returns cached image item or undefined / кэшированный элемент изображения или undefined
-   */
-  protected getCache(
-    value: ImageUint8ArrayType,
-    type: string
-  ): ImageItem | undefined {
-    if (
-      this.cacheItem
-      && this.cacheItem.item === value
-      && this.cacheItem.type === type
-    ) {
-      return this.cacheItem.image
-    }
-
-    return undefined
   }
 
   /**
@@ -127,30 +95,6 @@ export class ImageUint8Array {
    */
   protected getValue(value?: ImageUint8ArrayType): ImageUint8ArrayType | undefined {
     return value ?? (this.props?.value as ImageUint8ArrayType)
-  }
-
-  /**
-   * Sets cached item by creating a new Blob and object URL.
-   *
-   * Устанавливает кэшированный элемент, создавая новый Blob и URL-адрес объекта.
-   * @param value image / изображение
-   * @param type image type / тип изображения
-   * @returns cached item / кэшированный элемент
-   */
-  protected setCache(
-    value: ImageUint8ArrayType,
-    type: string
-  ): ImageUint8ArrayItem {
-    const blob = new Blob([ImageUint8Array.toUint8Array(value)], { type })
-    const url = URL.createObjectURL(blob)
-
-    this.cacheItem = {
-      item: value,
-      type,
-      src: url
-    }
-
-    return this.cacheItem
   }
 
   /**
@@ -166,18 +110,12 @@ export class ImageUint8Array {
 
       image.onerror = () => resolve(undefined)
       image.onload = () => {
-        const item: ImageItem = {
+        resolve({
           image,
           src,
           width: image.naturalWidth,
           height: image.naturalHeight
-        }
-
-        if (this.cacheItem) {
-          this.cacheItem.image = item
-        }
-
-        resolve(item)
+        })
       }
 
       image.src = src

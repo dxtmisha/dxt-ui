@@ -1,19 +1,19 @@
 ---
 name: code-review
-description: Conduct a rigorous code review assessing architecture, modern engineering standards vs obsolete patterns, bugs and edge cases, adherence to project rules, accessibility & ARIA compliance, and design quality, saved as an AI artifact in the language specified by wikiLanguage in ./design.config.json.
+description: Conduct a rigorous code review assessing architecture, dependencies and inbound usage across the codebase, modern engineering standards vs obsolete patterns, bugs and edge cases, adherence to project rules, accessibility & ARIA compliance, design quality, and test suite completeness (auditing test quality, rewriting incomplete tests, refining fragile tests, or creating comprehensive unit tests from scratch), saved as an AI artifact in the language specified by wikiLanguage in ./design.config.json.
 ---
 
 # Task: Strict Architectural and Quality Code Review
 
 Act as an elite Principal Software Architect and Senior Code Reviewer. Your goal is to conduct an uncompromising, deep-dive code review of the specified files, components, classes, functions, or composables/hooks.
 
-Your analysis must not be a superficial lint check. You must evaluate architectural soundness, technological relevance vs obsolete patterns, code flaws and subtle bugs, adherence to strict project conventions, and benchmark the implementation against industry-leading state-of-the-art standards.
+Your analysis must not be a superficial lint check. You must evaluate architectural soundness, dependency health, real-world usage across the codebase, technological relevance vs obsolete patterns, code flaws and subtle bugs, adherence to strict project conventions, and benchmark the implementation against industry-leading state-of-the-art standards.
 
 ---
 
-## 🔴 Mandatory Pre-Review Protocol (Language & Delivery Target)
+## 🔴 Mandatory Pre-Review Protocol (Language, Delivery Target, Usage Graph & Test Coverage)
 
-Before analyzing any code or generating any review text, you MUST execute these two mandatory steps:
+Before analyzing any code or generating any review text, you MUST execute these four mandatory steps:
 
 ### 1. Mandatory Language Determination (`design.config.json` -> `wikiLanguage`)
 - **Direct Instruction**: The AI agent **MUST open and inspect `./design.config.json`** to retrieve the `wikiLanguage` property (e.g., `"wikiLanguage": "ru"` or `"wikiLanguage": "en"`).
@@ -32,6 +32,31 @@ Before analyzing any code or generating any review text, you MUST execute these 
 - **Chat Response**:
   - In the chat response, provide **ONLY a concise 1–2 sentence notification** with a clickable link to the generated artifact (e.g., `[code_review_<target>.md](file:///...)`) and an overall rating. Never re-summarize or duplicate the findings in the chat.
 
+### 3. Mandatory Dependency & Inbound Usage Investigation (Graph & Blast Radius Audit)
+- **Never Review in Isolation**: You must NEVER review a target entity in a vacuum. Code review is incomplete without inspecting its dependencies and all places where it is consumed.
+- **Outbound Dependencies Audit (What it depends on)**:
+  - Inspect all imports, utilities, classes, and packages used by the target.
+  - Verify layer boundaries: Ensure dependencies flow strictly in the correct architectural direction (`functional-basic` -> `functional` -> `constructor` -> `d1`). A lower-level package must never import from a higher-level package.
+  - Verify `package.json` synchronization: Ensure all imported external or monorepo packages are declared in `package.json` with valid version constraints (`>=`).
+  - Detect redundant, bloated, or circular dependencies.
+- **Inbound Usages Audit (Where and how it is used across the codebase)**:
+  - Search and inspect **all call sites, components, composables, and files that import and use the target entity**.
+  - Analyze real-world consumption patterns: How do callers interact with it? Are callers forced to write boilerplate or workarounds due to flaws in the target's API?
+  - **Blast Radius & Backward Compatibility**: Evaluate the exact impact of any proposed changes, refactorings, or type adjustments on existing consumers. Flag any breaking changes.
+  - Identify obsolete, inconsistent, or antipattern usages at call sites that should be refactored alongside the entity.
+
+### 4. Mandatory Unit Test Audit & Quality Inspection (Rewrite, Refine, or Create)
+- **Locate and Inspect Tests**: Search for corresponding unit tests in the adjacent or package `__tests__/` directory (e.g., `__tests__/<Entity>.test.ts` or `<name>.test.ts`).
+- **Assess Test Quality & Completeness (Audit)**:
+  - Do not merely check if a test file exists. Critically inspect the quality, depth, and thoroughness of the test suite.
+  - Detect incomplete, superficial, or low-quality tests: superficial smoke tests with only 1 shallow assertion, missing edge cases (empty strings, `null`, `undefined`, 0, negative values, invalid objects), unhandled error branches, untested reactive properties, unverified event emissions, or ignored lifecycle hooks (`onMounted`, `onUnmounted`, resource cleanup).
+- **Rewrite or Refine Incomplete / Low-Quality Tests**:
+  - If existing tests are **incomplete, shallow, fragile, or of low quality**, do NOT settle for minor cosmetic edits: **completely rewrite (`перепиши`) or deeply refine (`доработай`)** them into a robust, comprehensive test suite.
+  - Ensure all public APIs, states, methods, branches, asynchronous workflows, and lifecycles are explicitly tested with clean assertions.
+- **Add Tests from Scratch if Missing**:
+  - If the entity **has no unit tests at all**, it is **strictly mandatory to author and implement a complete unit test suite** (`__tests__/<Entity>.test.ts`) from scratch.
+- **Execution & Clean Pass Verification**: Run tests using the test runner (e.g. `npx vitest run <path-to-test>`) to ensure 100% test success with 0 failures and 0 framework/Vue warnings.
+
 ---
 
 ## 1. Architectural Integrity & Modernity vs Obsolete Patterns
@@ -41,6 +66,7 @@ Before analyzing any code or generating any review text, you MUST execute these 
 - **Modularity & Decoupling**: Is the entity self-contained and modular? Are dependencies injected cleanly or tightly coupled?
 - **Single Responsibility & Cohesion**: Does the entity do one thing well, or is it a "Swiss army knife" / God object that needs decomposition?
 - **Scalability & Extensibility**: Can this code be extended without breaking existing contracts (Open/Closed Principle)? Are extension points (inheritance, composition, hooks, slots, events) designed intentionally?
+- **Dependency Graph & Inbound/Outbound Coupling**: Does the entity maintain a clean dependency graph? Are its outbound dependencies minimal and aligned with package layering? Are inbound call sites clean and consistent across the codebase?
 
 ### B. Modern Solutions vs Obsolete Techniques
 - **Outdated Techniques Detection**:
@@ -148,6 +174,8 @@ Check compliance against the core rules of `dxt-ui`:
 - **Zero Hallucinations & Dependency Integrity**:
   - Strictly use dependencies declared in `package.json`.
   - Do not invent non-existent APIs, options, or utilities.
+  - Outbound imports must strictly respect monorepo package hierarchy (`functional-basic` -> `functional` -> `constructor` -> `d1`).
+  - Zero circular dependencies.
 - **Bilingual JSDoc/TSDoc (`jdoc.md`)**:
   - Classes and functions: Multiline English and Russian descriptions with `@param` and `@returns` bilingual comments (`EN / RU`).
   - Properties, interfaces, types, enums: Compact bilingual lines (`/** English / Russian */`).
@@ -164,7 +192,9 @@ Check compliance against the core rules of `dxt-ui`:
   - Mandatory ARIA support for interactive, graphical, and informative UI components.
   - Proper use of `AriaStaticInclude` (`role()`, `label()`, `hidden()`, etc.) and dedicated `aria` getters in component constructor classes.
   - Correct role assignments and state synchronization (`role="img"`, `role="button"`, `role="dialog"`, etc.).
-  - Never omit accessibility labels (`alt`, `aria-label`) on interactive or meaningful elements; hide purely decorative elements with `aria-hidden="true"` or `AriaStaticInclude.hidden()`.
+- **Mandatory Unit Tests Quality & Coverage**:
+  - Every entity (constructor class, utility function, composable, helper) must be backed by thorough, high-quality unit tests in its corresponding `__tests__/` directory.
+  - Test suites must be critically audited for completeness and quality: if tests are incomplete, superficial, or low-quality, they must be rewritten or deeply refined; if tests are missing for an entity, comprehensive tests must be created from scratch.
 
 ---
 
@@ -193,15 +223,20 @@ Document the review in the artifact markdown file with the following sections (t
   | Category | Rating | Summary |
   | :--- | :---: | :--- |
   | **Architecture & Modularity** | Excellent / Good / Needs Improvement / Poor | ... |
+  | **Dependencies & Usages (Impact & Graph)** | Clean & Decoupled / Tight Coupling / Breaking Risks | ... |
   | **Modernity vs Legacy Patterns** | Modern / Outdated / Mixed | ... |
   | **Component / Class / Hook Design** | Excellent / Good / Needs Improvement / Poor | ... |
   | **Accessibility & ARIA (A11y)** | Fully Accessible / Minor Gaps / Inaccessible | ... |
   | **Bugs, Edge Cases & Leaks** | Clean / Minor Issues / Critical Bugs | ... |
+  | **Unit Tests & Quality** | Comprehensive & High-Quality / Rewritten & Refined / Created from Scratch / Incomplete or Missing | ... |
   | **Project Rules & Conventions** | 100% Compliant / Minor Discrepancies / Non-compliant | ... |
 
 #### 2. Deep Dive: Architectural & Design Quality
 - Analysis of decomposition, encapsulation, and scalability.
 - Evaluation of whether the entity is modern or relies on outdated practices compared to top-tier industry libraries.
+- **Dependency & Inbound Usage Audit**:
+  - **Outbound Dependencies**: Review of all imported modules, layer compliance (`functional-basic` -> `functional` -> `constructor` -> `d1`), `package.json` declaration, and tree-shakeability.
+  - **Inbound Usages & Blast Radius**: Comprehensive scan and list of where the entity is used across the codebase, analysis of caller patterns, potential breaking change risks, and suggestions for caller refactoring.
 
 #### 3. Detailed Findings & Bugs (Categorized by Severity)
 - **Critical (P0 / Blocker)**: Bugs causing runtime crashes, data loss, memory leaks, SSR breaking issues, or reactivity breakage.
@@ -215,5 +250,11 @@ Document the review in the artifact markdown file with the following sections (t
 - Compare the reviewed solution with how leading open-source libraries (e.g., VueUse, Radix, Nuxt, TanStack) solve similar architectural problems.
 - Highlight concrete lessons or patterns that could be adopted to elevate the code to top-tier quality.
 
-#### 5. Actionable Refactoring & Code Fixes
+#### 5. Actionable Refactoring, Code Fixes & Test Suite
 - Provide ready-to-use before/after code diffs or refactored code blocks illustrating the recommended improvements.
+- **Unit Test Rewrites, Refinements & Implementation**:
+  - If existing tests are incomplete, superficial, or low-quality: rewrite or deeply refine them into an exhaustive test suite covering all branches, edge cases, and lifecycles.
+  - If tests require updates due to code changes or uncovered branches: update and expand them.
+  - If no tests exist for the entity: author and implement the complete unit test file in `__tests__/<Entity>.test.ts` from scratch.
+
+

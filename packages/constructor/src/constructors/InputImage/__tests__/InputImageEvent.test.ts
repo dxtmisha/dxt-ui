@@ -1,71 +1,129 @@
 // @vitest-environment jsdom
-import { describe, expect, it, vi, beforeEach } from 'vitest'
+import { describe, expect, it, vi, beforeEach, type Mock } from 'vitest'
+
 import { InputImageEvent } from '../InputImageEvent'
+
 import type { FieldEventInclude } from '../../../classes/Field/FieldEventInclude'
+import type { FieldValidationItem } from '../../../types/fieldTypes'
+import type { CropAreaEventParameters } from '../../CropArea'
 import type { DropzoneInclude } from '../../Dropzone'
 import type { InputImageFiles } from '../InputImageFiles'
-import type { CropAreaEventParameters } from '../../CropArea'
 
 describe('InputImageEvent', () => {
-  let filesMock: InputImageFiles
-  let dropzoneMock: DropzoneInclude
-  let eventMock: FieldEventInclude
+  let setCrop: Mock<InputImageFiles['setCrop']>
+  let setFiles: Mock<InputImageFiles['setFiles']>
+  let open: Mock<() => void>
+  let onValue: Mock<FieldEventInclude['onValue']>
+  let onAndChange: Mock<FieldEventInclude['onAndChange']>
+
+  /**
+   * Creates an InputImageEvent instance with mocked collaborators.
+   *
+   * Создаёт экземпляр InputImageEvent с замоканными зависимостями.
+   * @param expose dropzone expose object / объект expose дропзоны
+   * @returns InputImageEvent instance / экземпляр InputImageEvent
+   */
+  const createEvent = (
+    expose: { open?: () => void } = { open }
+  ): InputImageEvent => new InputImageEvent(
+    { setCrop, setFiles } as unknown as InputImageFiles,
+    { expose } as unknown as DropzoneInclude,
+    { onValue, onAndChange } as unknown as FieldEventInclude
+  )
+
+  /**
+   * Creates a FileList-like object.
+   *
+   * Создаёт объект, подобный FileList.
+   * @returns FileList-like object / объект, подобный FileList
+   */
+  const createFileList = (): FileList => ({
+    0: new File(['1'], 'image.png', { type: 'image/png' }),
+    length: 1
+  }) as unknown as FileList
 
   beforeEach(() => {
-    filesMock = {
-      setCrop: vi.fn(),
-      setFiles: vi.fn().mockResolvedValue('image-data-url')
-    } as unknown as InputImageFiles
+    setCrop = vi.fn<InputImageFiles['setCrop']>()
+    setFiles = vi.fn<InputImageFiles['setFiles']>().mockResolvedValue('data:image/png;base64,bW9jaw==')
+    open = vi.fn<() => void>()
+    onValue = vi.fn<FieldEventInclude['onValue']>()
+    onAndChange = vi.fn<FieldEventInclude['onAndChange']>()
+  })
 
-    dropzoneMock = {
-      expose: {
-        open: vi.fn()
+  describe('open', () => {
+    it('opens the dropzone file dialog', () => {
+      createEvent().open()
+
+      expect(open).toHaveBeenCalledTimes(1)
+    })
+
+    it('does not throw when the dropzone exposes no open method', () => {
+      expect(() => createEvent({}).open()).not.toThrow()
+    })
+
+    it('keeps the context when used as a detached callback', () => {
+      const { open: detached } = createEvent()
+
+      detached()
+
+      expect(open).toHaveBeenCalledTimes(1)
+    })
+  })
+
+  describe('onCropResize', () => {
+    it('stores the crop coordinates and emits value events', () => {
+      const parameters: CropAreaEventParameters = {
+        direction: 'center',
+        value: 0,
+        coordinator: [10, 20, 100, 200]
       }
-    } as unknown as DropzoneInclude
 
-    eventMock = {
-      onValue: vi.fn(),
-      onAndChange: vi.fn()
-    } as unknown as FieldEventInclude
+      createEvent().onCropResize(parameters)
+
+      expect(setCrop).toHaveBeenCalledWith([10, 20, 100, 200])
+      expect(onValue).toHaveBeenCalledTimes(1)
+      expect(onValue).toHaveBeenCalledWith()
+      expect(setCrop.mock.invocationCallOrder[0]).toBeLessThan(onValue.mock.invocationCallOrder[0])
+    })
   })
 
-  it('should call dropzone.expose.open on open', () => {
-    const inputImageEvent = new InputImageEvent(filesMock, dropzoneMock, eventMock)
-    inputImageEvent.open()
+  describe('onDropzoneInput', () => {
+    it('processes files before emitting input and change events', async () => {
+      const event = new Event('input')
+      const fileList = createFileList()
+      const data: FieldValidationItem<FileList | undefined> = { value: fileList }
 
-    expect(dropzoneMock.expose.open).toHaveBeenCalledTimes(1)
-  })
+      await createEvent().onDropzoneInput(event, data)
 
-  it('should not throw when dropzone.expose.open is undefined', () => {
-    const dropzoneNoOpen = {
-      expose: {}
-    } as unknown as DropzoneInclude
+      expect(setFiles).toHaveBeenCalledWith(fileList)
+      expect(onAndChange).toHaveBeenCalledWith(event)
+      expect(setFiles.mock.invocationCallOrder[0]).toBeLessThan(onAndChange.mock.invocationCallOrder[0])
+    })
 
-    const inputImageEvent = new InputImageEvent(filesMock, dropzoneNoOpen, eventMock)
+    it('waits for asynchronous file processing before emitting', async () => {
+      let resolveFiles: (value: string) => void = () => undefined
+      setFiles.mockReturnValue(new Promise<string>((resolve) => {
+        resolveFiles = resolve
+      }))
 
-    expect(() => inputImageEvent.open()).not.toThrow()
-  })
+      const pending = createEvent().onDropzoneInput(new Event('input'), { value: createFileList() })
 
-  it('should update crop and trigger onValue on onCropResize', () => {
-    const inputImageEvent = new InputImageEvent(filesMock, dropzoneMock, eventMock)
-    const mockParameters: CropAreaEventParameters = {
-      coordinator: [10, 20, 100, 200]
-    } as unknown as CropAreaEventParameters
+      await Promise.resolve()
+      expect(onAndChange).not.toHaveBeenCalled()
 
-    inputImageEvent.onCropResize(mockParameters)
+      resolveFiles('data:image/png;base64,bW9jaw==')
+      await pending
 
-    expect(filesMock.setCrop).toHaveBeenCalledWith([10, 20, 100, 200])
-    expect(eventMock.onValue).toHaveBeenCalledTimes(1)
-  })
+      expect(onAndChange).toHaveBeenCalledTimes(1)
+    })
 
-  it('should process files and trigger onAndChange on onDropzoneInput', async () => {
-    const inputImageEvent = new InputImageEvent(filesMock, dropzoneMock, eventMock)
-    const mockEvent = new Event('input')
-    const mockFileList = { length: 1 } as unknown as FileList
+    it('forwards an empty selection and still emits events', async () => {
+      const event = new Event('input')
 
-    await inputImageEvent.onDropzoneInput(mockEvent, { value: mockFileList } as any)
+      await createEvent().onDropzoneInput(event, { value: undefined })
 
-    expect(filesMock.setFiles).toHaveBeenCalledWith(mockFileList)
-    expect(eventMock.onAndChange).toHaveBeenCalledWith(mockEvent)
+      expect(setFiles).toHaveBeenCalledWith(undefined)
+      expect(onAndChange).toHaveBeenCalledWith(event)
+    })
   })
 })

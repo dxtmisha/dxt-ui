@@ -55,7 +55,7 @@ export class ImageFile {
         }
 
         (async () => {
-          image.src = src instanceof File ? await this.getFileResult(src) : src
+          image.src = src instanceof File ? await this.getImageDataUrl(src) : src
         })()
       } else {
         resolve(undefined)
@@ -76,28 +76,30 @@ export class ImageFile {
   }
 
   /**
-   * Applications asynchronously read the contents of files (or raw data buffers) stored on the user's computer.
+   * Asynchronously reads the image file and returns its content as a Data URL (Base64).
+   * Returns an empty string if the file is not an image.
    *
-   * Асинхронно читает содержимое файлов (или буферы данных), хранящиеся на компьютере пользователя.
-   * @param file the Blob or File from which to read / Blob или File, которые следует прочитать
-   * @returns loaded file content as a string / загруженное содержимое файла в виде строки
+   * Асинхронно читает файл изображения и возвращает его содержимое в виде Data URL (Base64).
+   * Возвращает пустую строку, если файл не является изображением.
+   * @param file image file to read / файл изображения для чтения
+   * @returns Data URL string or empty string / строка Data URL или пустая строка
    */
-  static getFileResult(file: File): Promise<string> {
-    return new Promise((resolve) => {
-      if (this.isImage(file)) {
-        this.getFileReader(file).then(result => resolve(result))
-      } else {
-        resolve('')
-      }
-    })
+  static async getImageDataUrl(file: File): Promise<string> {
+    if (this.isImage(file)) {
+      return await this.getFileReader(file)
+    }
+
+    return ''
   }
 
   /**
-   * Applications asynchronously read the contents of files (or raw data buffers) stored on the user's computer.
+   * Asynchronously reads the contents of any file (or Blob) as a Data URL using FileReader.
+   * In case of read error or abort, registers an error in ErrorCenter and returns an empty string.
    *
-   * Асинхронно читает содержимое файлов (или буферы данных), хранящиеся на компьютере пользователя.
-   * @param file the Blob or File from which to read / Blob или File, которые следует прочитать
-   * @returns loaded file content as a string / загруженное содержимое файла в виде строки
+   * Асинхронно читает содержимое любого файла (или Blob) в формате Data URL с помощью FileReader.
+   * В случае ошибки чтения или отмены регистрирует ошибку в ErrorCenter и возвращает пустую строку.
+   * @param file the Blob or File from which to read / Blob или File для чтения
+   * @returns loaded file content as a Data URL string / загруженное содержимое файла в виде строки Data URL
    */
   static getFileReader(file: File): Promise<string> {
     return new Promise((resolve) => {

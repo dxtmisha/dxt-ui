@@ -1,0 +1,34 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/en/functional-basic/Functions/skipFrame - Skip animation frames'/>
+
+# `skipFrame`
+
+An asynchronous utility that skips the specified number of animation frames (`requestAnimationFrame`) or executes a callback within them.
+
+It is useful for waiting for DOM updates and browser repaints before executing subsequent operations (e.g., measuring element dimensions or preparing rendering), as well as running code on a specific animation frame.
+
+**SSR Behavior:**
+In non-DOM environments (such as SSR), `requestAnimationFrame` is not used. The function resolves immediately without calling `requestAnimationFrame` to prevent thread blocking on the server.
+
+**Parameters:**
+- `callback?: () => T | Promise<T>` — Optional callback function to execute on the target animation frame.
+- `count: number = 1` — The number of animation frames to skip (default is `1`).
+
+**Returns:**
+`Promise<T | void>` — A promise resolving on the animation frame with the callback result (or `undefined` if no callback was provided).
+
+```typescript
+import { skipFrame } from '@dxtmisha/functional-basic'
+
+// Wait for the next animation frame (1 frame by default)
+await skipFrame()
+
+// Skip multiple frames (e.g. 2 frames)
+await skipFrame(undefined, 2)
+
+// Execute a callback after skipping frames
+const result = await skipFrame(() => {
+  return document.getElementById('box')?.getBoundingClientRect()
+}, 2)
+```

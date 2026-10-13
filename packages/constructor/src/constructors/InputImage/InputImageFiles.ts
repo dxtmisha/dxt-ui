@@ -171,7 +171,7 @@ export class InputImageFiles {
    * @param source image source string / строка источника изображения
    * @returns object with width and height or undefined / объект с шириной и высотой или undefined
    */
-  protected async getDimensions(source: string): Promise<{ width?: number; height?: number } | undefined> {
+  protected async getDimensions(source: string): Promise<{ width?: number, height?: number } | undefined> {
     const item = await ImageFile.createImage(source)
 
     if (
@@ -204,7 +204,7 @@ export class InputImageFiles {
       return undefined
     }
 
-    const dataUrl = await ImageFile.getFileResult(file)
+    const dataUrl = await ImageFile.getImageDataUrl(file)
 
     if (!dataUrl) {
       return undefined

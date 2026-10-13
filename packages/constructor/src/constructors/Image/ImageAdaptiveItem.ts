@@ -7,7 +7,7 @@ import {
   type Ref,
   ref,
   watch,
-  watchEffect
+  type WatchHandle
 } from 'vue'
 import {
   getElementId,
@@ -63,7 +63,10 @@ export class ImageAdaptiveItem {
   })
 
   /** Lazy item tracking instance / Экземпляр отслеживания появления */
-  readonly lazy: ReturnType<typeof useLazyItemByMarginRef>
+  lazy?: ReturnType<typeof useLazyItemByMarginRef>
+
+  /** Watch handle for lazy loading / Дескриптор наблюдения за ленивой загрузкой */
+  protected lazyStatus?: WatchHandle
 
   /** Checks if the element is beyond the screen / Проверяет, вышел ли элемент за экран */
   protected beyond: boolean = false
@@ -83,27 +86,25 @@ export class ImageAdaptiveItem {
     protected readonly data: ImageData,
     public readonly element: Ref<ImageElement>
   ) {
-    this.lazy = useLazyItemByMarginRef(this.element, `${MAX_BEYOND}px 0px`)
-
     onMounted(() => {
-      watchEffect(() => {
-        if (this.is()) {
-          ImageAdaptiveGroup.add(this)
-        } else {
-          ImageAdaptiveGroup.remove(this)
-        }
-      })
-
-      watch(this.lazy.lazyItemStatus, () => {
-        if (this.is()) {
-          ImageAdaptiveGroup.make()
-        }
-      })
+      watch(
+        () => this.is(),
+        (isAdaptive) => {
+          if (isAdaptive) {
+            this.initLazy()
+            ImageAdaptiveGroup.add(this)
+          } else {
+            this.resetLazy()
+            ImageAdaptiveGroup.remove(this)
+          }
+        },
+        { immediate: true }
+      )
     })
 
     onUnmounted(() => {
       ImageAdaptiveGroup.remove(this)
-      this.lazy.removeLazyItem()
+      this.resetLazy()
     })
   }
 
@@ -321,15 +322,22 @@ export class ImageAdaptiveItem {
   }
 
   /**
-   * Removal of an element from the scaling list.
+   * Initializes lazy tracking if needed.
    *
-   * Удаление элемента из списка для масштабирования.
+   * Инициализирует ленивое отслеживание при необходимости.
+   * @returns instance of this class / экземпляр этого класса
    */
-  remove(): void {
-    if (this.active) {
-      ImageAdaptiveGroup.remove(this)
-      this.lazy.removeLazyItem()
+  initLazy(): this {
+    if (!this.lazy) {
+      this.lazy = useLazyItemByMarginRef(this.element, `${MAX_BEYOND}px 0px`)
+      this.lazyStatus = watch(this.lazy.lazyItemStatus, () => {
+        if (this.is()) {
+          ImageAdaptiveGroup.make()
+        }
+      })
     }
+
+    return this
   }
 
   /**
@@ -345,7 +353,27 @@ export class ImageAdaptiveItem {
       this.element.value
       && this.is()
     ) {
-      this.beyond = Boolean(this.props.adaptiveAlways || this.lazy.lazyItemStatus.value)
+      this.beyond = Boolean(this.props.adaptiveAlways || this.lazy?.lazyItemStatus.value)
+    }
+
+    return this
+  }
+
+  /**
+   * Resets lazy tracking and stops the active watcher.
+   *
+   * Сбрасывает ленивое отслеживание и останавливает активный наблюдатель.
+   * @returns instance of this class / экземпляр этого класса
+   */
+  resetLazy(): this {
+    if (this.lazyStatus) {
+      this.lazyStatus()
+      this.lazyStatus = undefined
+    }
+
+    if (this.lazy) {
+      this.lazy.removeLazyItem()
+      this.lazy = undefined
     }
 
     return this

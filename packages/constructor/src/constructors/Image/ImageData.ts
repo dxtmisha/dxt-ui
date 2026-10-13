@@ -1,12 +1,13 @@
 // ai-none
 
-import { type ComputedRef, onMounted, onUnmounted, type Ref, watch } from 'vue'
+import { type ComputedRef, onUnmounted, type Ref, watch } from 'vue'
 import {
   computedAsync,
   type ConstrEmit,
   ErrorCenter,
   Icons,
   isString,
+  skipFrame,
   type Undefined
 } from '@dxtmisha/functional'
 
@@ -53,13 +54,7 @@ export class ImageData {
       () => this.initSsr()
     )
 
-    if (emits) {
-      watch(
-        this.image,
-        this.onLoad
-      )
-      onMounted(this.onLoad)
-    }
+    watch(this.image, this.onLoad)
 
     onUnmounted(() => this.uint8Array?.reset())
   }
@@ -135,8 +130,7 @@ export class ImageData {
     if (image) {
       switch (this.type.item.value) {
         case ImageTypeValue.pdf:
-          await new Promise(resolve => requestAnimationFrame(resolve))
-
+          await skipFrame()
           return await ImagePdf.get(image)
         case ImageTypeValue.array:
           return await this.getUint8Array().createImage(image)
