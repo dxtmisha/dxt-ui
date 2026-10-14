@@ -6,10 +6,14 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 Creates a computed property that can handle asynchronous getters. Unlike Vue's standard `computed`, `computedAsync` accepts async functions, synchronous functions, or raw values — the result is automatically resolved and exposed as a reactive computed ref. Initialization is lazy and occurs upon first access to the property.
 
+Only the current evaluation updates the result; late results and errors from previous evaluations are ignored. The watcher belongs to the effect scope where the property was created, even when first accessed later. Pending results are discarded when that scope stops. On the server, only `initialState` is returned without evaluating the getter.
+
+When `ignore` is omitted, a returned `undefined` clears previous data. Explicitly pass `undefined` as the third argument to retain previous data for that result. A current getter error clears the data and is reported through `ErrorCenter` with group `functional` and code `computed-async`.
+
 **Parameters:**
 - `getter: (() => Promise<R>) | (() => R) | R` — An async function, synchronous function, or raw value to compute the result from.
-- `initialState?: R` — The initial value of the result.
-- `ignore?: R` — A value to be ignored (will not be set as the result).
+- `initialState?: (() => R) | R` — The initial result or a factory evaluated once when the property is created.
+- `ignore?: R` — An explicitly supplied value that will not be set as the result. No values are excluded when the argument is omitted.
 - `debugOptions?: DebuggerOptions` — Options used for debugging reactive computations, supported by Vue.js.
 
 **Returns:**

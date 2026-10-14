@@ -66,6 +66,7 @@ export * from './functions/toBinds'
 // Types
 export * from './types/apiTypes'
 export * from './types/constructorTypes'
+export * from './types/errorTypes'
 export * from './types/listTypes'
 export * from './types/refTypes'
 export * from './types/searchTypes'

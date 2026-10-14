@@ -7,9 +7,13 @@ import { ImageCalculationList } from './ImageCalculationList'
 
 /** Storage structure for adaptive group / Структура хранилища для адаптивной группы */
 type ImageAdaptiveGroupStorage = {
+  /** Cache of visible element IDs / Кэш идентификаторов видимых элементов */
   cache: string[]
+  /** List of all tracked adaptive items / Список всех отслеживаемых адаптивных элементов */
   objects: ImageAdaptiveItem[]
+  /** List of currently calculated adaptive items / Список рассчитываемых в данный момент адаптивных элементов */
   objectsAdaptive: ImageAdaptiveItem[]
+  /** Flag for tracking frame calculation time / Флаг отслеживания времени вычисления кадра */
   time?: boolean
 }
 
@@ -17,9 +21,13 @@ type ImageAdaptiveGroupStorage = {
 const SERVER_STORAGE_KEY_ADAPTIVE = '__ui:image-adaptive-group__'
 
 /**
- * Class for working with image scaling according to the physical size of the object in the image.
+ * Class for managing and coordinating image scaling according to the physical size of objects across a group.
+ * It tracks active adaptive items, calculates base scaling proportions relative to viewport bounds,
+ * and synchronizes background sizes to ensure consistent visual dimensions.
  *
- * Класс для работы с масштабированием изображения по физическому размеру объекта на изображении.
+ * Класс для управления и координации масштабирования изображений по физическому размеру объектов внутри группы.
+ * Отслеживает активные адаптивные элементы, вычисляет базовые пропорции масштабирования относительно границ экрана
+ * и синхронизирует размеры фона для обеспечения визуальной согласованности.
  */
 export class ImageAdaptiveGroup {
   /**
@@ -27,16 +35,16 @@ export class ImageAdaptiveGroup {
    *
    * Проверяет, присутствует ли элемент в списке.
    * @param item object for working with images / объект для работы с изображениями
-   * @returns element status / статус элемента
+   * @returns true if the element is present in the list / true, если элемент присутствует в списке
    */
   static is(item: ImageAdaptiveItem): boolean {
     return this.objects.findIndex(itemValue => itemValue === item) !== -1
   }
 
   /**
-   * Adding a new element for tracking.
+   * Adds a new element for tracking and schedules calculation if needed.
    *
-   * Добавление нового элемента для отслеживания.
+   * Добавляет новый элемент для отслеживания и планирует вычисление при необходимости.
    * @param item object for working with images / объект для работы с изображениями
    */
   static add(item: ImageAdaptiveItem): void {
@@ -47,9 +55,9 @@ export class ImageAdaptiveGroup {
   }
 
   /**
-   * Removal of the element.
+   * Removes an element from tracking and clears the cache.
    *
-   * Удаление элемента.
+   * Удаляет элемент из отслеживания и очищает кэш.
    * @param item object for working with images / объект для работы с изображениями
    */
   static remove(item: ImageAdaptiveItem): void {
@@ -58,9 +66,8 @@ export class ImageAdaptiveGroup {
     if (key !== -1) {
       this.objects.splice(key, 1)
       this.cache = []
+      this.make()
     }
-
-    this.make()
   }
 
   /**
@@ -118,6 +125,12 @@ export class ImageAdaptiveGroup {
     return this.storage.cache
   }
 
+  /**
+   * Sets cache of IDs of visible elements.
+   *
+   * Устанавливает кэш идентификаторов видимых элементов.
+   * @param value array of element IDs / массив идентификаторов элементов
+   */
   protected static set cache(value: string[]) {
     this.storage.cache = value
   }
@@ -142,6 +155,12 @@ export class ImageAdaptiveGroup {
     return this.storage.objectsAdaptive
   }
 
+  /**
+   * Sets list of elements currently being calculated.
+   *
+   * Устанавливает список элементов, рассчитываемых в данный момент.
+   * @param value array of adaptive items / массив адаптивных элементов
+   */
   protected static set objectsAdaptive(value: ImageAdaptiveItem[]) {
     this.storage.objectsAdaptive = value
   }
@@ -156,6 +175,12 @@ export class ImageAdaptiveGroup {
     return this.storage.time
   }
 
+  /**
+   * Sets flag for tracking frame calculation time.
+   *
+   * Устанавливает флаг для отслеживания времени вычисления кадра.
+   * @param value boolean flag or undefined / булев флаг или undefined
+   */
   protected static set time(value: boolean | undefined) {
     this.storage.time = value
   }
@@ -164,7 +189,7 @@ export class ImageAdaptiveGroup {
    * Checks if there is an active element at the moment.
    *
    * Проверяет, есть ли в текущий момент активный элемент.
-   * @returns active element status / статус активного элемента
+   * @returns true if an active element exists / true, если существует активный элемент
    */
   protected static isAdaptive(): boolean {
     return Boolean(this.objects.find(item => item.is()))
@@ -175,7 +200,7 @@ export class ImageAdaptiveGroup {
    *
    * Проверяет, изменился ли состав видимых элементов.
    * @param visible list of IDs of visible elements / список идентификаторов видимых элементов
-   * @returns cache status / статус кэша
+   * @returns true if the list of visible elements has changed / true, если список видимых элементов изменился
    */
   protected static isCache(visible: string[]): boolean {
     return this.cache.join('|') !== visible.join('|')
@@ -235,7 +260,7 @@ export class ImageAdaptiveGroup {
   protected static makePercent(): void {
     if (ImageCalculationList.isSize()) {
       this.objectsAdaptive.forEach((item) => {
-        const element = item.element.value
+        const element = item.getElement()
         const calculation = ImageCalculationList.get(item.group)
 
         if (element) {
@@ -262,7 +287,7 @@ export class ImageAdaptiveGroup {
     ImageCalculationList.reset()
 
     this.objectsAdaptive.forEach((item) => {
-      const element = item.element.value
+      const element = item.getElement()
 
       if (element) {
         ImageCalculationList.get(item.group)

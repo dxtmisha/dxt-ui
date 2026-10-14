@@ -18,6 +18,7 @@ import { ImagePosition } from './ImagePosition'
 import { ImageAdaptiveItem } from './ImageAdaptiveItem'
 import { ImageBackground } from './ImageBackground'
 import { ImageImg } from './ImageImg'
+import { ImageLazy } from './ImageLazy'
 
 import { ImageTypeValue } from './basicTypes'
 import type { ImageEmits } from './types'
@@ -50,6 +51,9 @@ export class Image {
   /** Image background manager / Менеджер фона изображения */
   readonly background: ImageBackground
 
+  /** Image lazy loading manager / Менеджер ленивой загрузки изображения */
+  readonly lazy: ImageLazy
+
   /** Image tag manager / Менеджер тега изображения */
   readonly img: ImageImg
 
@@ -65,6 +69,7 @@ export class Image {
    * @param constructors.ImageCoordinatorConstructor class for working with image coordinates/ класс для работы с координатами изображения
    * @param constructors.ImageDataConstructor class for working with image data/ класс для работы с данными изображения
    * @param constructors.ImageImgConstructor class for working with image tag/ класс для работы с тегом изображения
+   * @param constructors.ImageLazyConstructor class for working with image lazy loading / класс для работы с ленивой загрузкой изображения
    * @param constructors.ImagePositionConstructor class for working with image position/ класс для работы с позицией изображения
    * @param constructors.ImageTypeConstructor class for working with image type/ класс для работы с типом изображения
    * @param constructors.ClientOnlyConstructor class for working with ClientOnly / класс для работы с ClientOnly
@@ -80,6 +85,7 @@ export class Image {
       ImageCoordinatorConstructor?: typeof ImageCoordinator
       ImageDataConstructor?: typeof ImageData
       ImageImgConstructor?: typeof ImageImg
+      ImageLazyConstructor?: typeof ImageLazy
       ImagePositionConstructor?: typeof ImagePosition
       ImageTypeConstructor?: typeof ImageType
       ClientOnlyConstructor?: typeof ClientOnlyInclude
@@ -91,18 +97,24 @@ export class Image {
       ImageCoordinatorConstructor = ImageCoordinator,
       ImageDataConstructor = ImageData,
       ImageImgConstructor = ImageImg,
+      ImageLazyConstructor = ImageLazy,
       ImagePositionConstructor = ImagePosition,
       ImageTypeConstructor = ImageType,
       ClientOnlyConstructor = ClientOnlyInclude
     } = constructors
 
     this.clientOnly = new ClientOnlyConstructor({ clientOnly: true })
+    this.lazy = new ImageLazyConstructor(
+      props,
+      element
+    )
 
     this.type = new ImageTypeConstructor(props, this.clientOnly)
     this.data = new ImageDataConstructor(
       props,
       this.clientOnly,
       this.type,
+      this.lazy,
       this.emits
     )
 
@@ -128,7 +140,8 @@ export class Image {
       element,
       this.type,
       this.position,
-      this.background
+      this.background,
+      this.lazy
     )
   }
 

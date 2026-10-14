@@ -14,6 +14,7 @@ import {
 import { ClientOnlyInclude } from '../../classes/ClientOnlyInclude'
 
 import { ImageFile } from './ImageFile'
+import type { ImageLazy } from './ImageLazy'
 import { ImagePdf } from './ImagePdf'
 import { ImageType } from './ImageType'
 import { ImageUint8Array } from './ImageUint8Array'
@@ -41,12 +42,14 @@ export class ImageData {
    * @param props input data / входные данные
    * @param clientOnly class for working with ClientOnly / класс для работы с ClientOnly
    * @param type image type / тип изображения
+   * @param lazy class for working with lazy loading / класс для работы с ленивой загрузкой
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
    */
   constructor(
     protected readonly props: ImageProps,
     protected readonly clientOnly: ClientOnlyInclude,
     protected readonly type: ImageType,
+    protected readonly lazy: ImageLazy,
     protected readonly emits?: ConstrEmit<ImageEmits>
   ) {
     this.image = computedAsync<ImageEventItem>(
@@ -139,7 +142,7 @@ export class ImageData {
           try {
             if (
               !this.clientOnly.isRender()
-              || this.props.lazy
+              || this.lazy.isLazy()
             ) {
               return image
             }

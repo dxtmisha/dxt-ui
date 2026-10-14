@@ -13,7 +13,7 @@ vi.mock('vue', async () => {
 
 describe('ImageImg', () => {
   it('should check if img tag is needed', () => {
-    const props = reactive({ tagImg: true, lazy: false, preloadOffset: '0px' })
+    const props = reactive({ tagImg: true, lazy: true, preloadOffset: '0px' })
     const mockType = {
       item: { value: 'image' }
     } as any
@@ -21,8 +21,13 @@ describe('ImageImg', () => {
     const mockBackground = {
       size: { value: 'cover' }
     } as any
+    const mockLazy = {
+      isLazy: vi.fn(() => false)
+    } as any
 
-    const img = new ImageImg(props, ref(undefined), mockType, mockPosition, mockBackground)
+    const img = new ImageImg(props, ref(undefined), mockType, mockPosition, mockBackground, mockLazy)
     expect(img.is()).toBe(true)
+    expect(img.binds.value.loading).toBe('auto')
+    expect(mockLazy.isLazy).toHaveBeenCalled()
   })
 })

@@ -1,6 +1,5 @@
 import { computed, type ComputedRef, type VNode } from 'vue'
 import {
-  DesignComponentsAbstract,
   forEach,
   isObjectNotArray
 } from '@dxtmisha/functional-basic'
@@ -27,12 +26,7 @@ import type {
 export class DesignComponents<
   COMP extends ConstrComponent,
   P extends ConstrItem
-> extends DesignComponentsAbstract<
-    COMP,
-    P,
-    VNode,
-  RawChildren | RawSlots
-  > {
+> {
   /** Cache for computed properties / Кэш для вычисляемых свойств */
   protected caching: Record<string, ComputedRef<ConstrItem>> = {}
 
@@ -42,10 +36,31 @@ export class DesignComponents<
    * @param modification data for modification / данные для модификации
    */
   constructor(
-    components: COMP = {} as COMP,
-    modification?: ConstrComponentMod<P>
+    protected readonly components: COMP = {} as COMP,
+    protected readonly modification?: ConstrComponentMod<P>
   ) {
-    super(components, modification)
+  }
+
+  /**
+   * Check the presence of the component.
+   *
+   * Проверить наличие компонента.
+   * @param name name of the component / названия компонента
+   * @returns true if the component is connected / true, если компонент подключён
+   */
+  is<K extends keyof COMP>(name: K): name is K {
+    return Boolean(this.components?.[name])
+  }
+
+  /**
+   * Getting the object of the component.
+   *
+   * Получение объекта компонента.
+   * @param name name of the component / названия компонента
+   * @returns component / компонент
+   */
+  get<K extends keyof COMP>(name: K): COMP[K] {
+    return this.components?.[name]
   }
 
   /**
@@ -80,6 +95,39 @@ export class DesignComponents<
   }
 
   /**
+   * Rendering a component by its name and returning an array with one component.
+   *
+   * Рендеринг компонента по его имени и возвращение массива с одним компонентом.
+   * @param name name of the component / названия компонента
+   * @param props property of the component / свойство компонента
+   * @param children sub-elements of the component / под элементы компонента
+   * @param index the name of the key / названия ключа
+   * @returns array with rendered component or empty array / массив с отрендеренным компонентом или пустой массив
+   */
+  render<
+    K extends keyof COMP,
+    PK extends keyof P
+  >(
+    name: K & string,
+    props?: P[PK] & ConstrItem | ConstrItem,
+    children?: RawChildren | RawSlots,
+    index?: PK & string | string
+  ): VNode[] {
+    const item = this.renderOne(
+      name,
+      props,
+      children,
+      index
+    )
+
+    if (item) {
+      return [item]
+    }
+
+    return []
+  }
+
+  /**
    * Rendering a component by its name.
    *
    * Рендеринг компонента по его имени.
@@ -110,6 +158,33 @@ export class DesignComponents<
     }
 
     return undefined
+  }
+
+  /**
+   * Rendering the component by its name and adding it to the array.
+   *
+   * Рендеринг компонента по его имени и добавление его в массив.
+   * @param item an array to which the rendered object will be added /
+   * массив, по которому будет добавлять объект
+   * @param name name of the component / названия компонента
+   * @param props property of the component / свойство компонента
+   * @param children sub-elements of the component / под элементы компонента
+   * @param index the name of the key / названия ключа
+   * @returns current instance / текущий экземпляр
+   */
+  renderAdd<
+    K extends keyof COMP,
+    PK extends keyof P
+  >(
+    item: unknown[],
+    name: K & string,
+    props?: P[PK] & ConstrItem | ConstrItem,
+    children?: RawChildren | RawSlots,
+    index?: PK & string | string
+  ): this {
+    item.push(...this.render(name, props, children, index))
+
+    return this
   }
 
   /**

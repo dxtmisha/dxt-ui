@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.16.0] - 2026-10-13
+## [1.16.0] - 2026-10-14
 
 ### Added
 - **`useLazyItemByMarginRef`**:
@@ -11,16 +11,26 @@ All notable changes to this project will be documented in this file.
   - Added `unmounted` parameter (`boolean`, defaults to `true`) to allow consumers to toggle or disable automatic `onUnmounted` cleanup when managing lifecycle externally.
   - Added unit test coverage for `removeLazyItem` in `useLazyItemByMarginRef.test.ts`.
   - Updated documentation across English, Russian, and Vietnamese Storybook guides.
+- **`FUNCTIONAL_ERROR_GROUP`**:
+  - Added the exported `FUNCTIONAL_ERROR_GROUP = 'functional'` constant in `src/types/errorTypes.ts` and re-exported it from `src/library.ts` for consistent `ErrorCenter` grouping across functional utilities.
+- **`computedAsync` Tests**:
+  - Expanded regression coverage for concurrent evaluations, ignored and empty results, synchronous errors and rejected promises, recovery, SSR, effect scope disposal, and component unmount.
 
 ### Changed
-- **Design Abstractions & Inheritance**:
-  - Refactored `DesignComponents` and `DesignConstructorAbstract` to inherit from base design abstractions (`DesignComponentsAbstract`, `DesignConstructorBasicAbstract`) extracted to `@dxtmisha/functional-basic`.
-  - Streamlined `constructorTypes.ts` by delegating shared constructor interfaces and types to `@dxtmisha/functional-basic`.
+- **`computedAsync`**:
+  - Changed default result handling: when the `ignore` argument is omitted, `undefined` now clears previous data. Explicitly pass `undefined` as the third argument to preserve the previous behavior of ignoring that result.
+  - Current getter errors now clear the result and are reported through `ErrorCenter` using `FUNCTIONAL_ERROR_GROUP` and the `computed-async` code.
+  - Expanded bilingual JSDoc and updated English, Russian, and Vietnamese Storybook guides to document evaluation invalidation, scope ownership, error handling, and the `ignore` contract.
+- **Design Classes & Types**:
+  - Restored full standalone implementations of `DesignComponents` and `DesignConstructorAbstract` in `src/classes/design/`, consolidating component registry management, BEM naming conventions, custom CSS variable generation, attribute filtering, and class/style resolution without intermediate base abstractions.
+  - Restored all core constructor interfaces and types directly in `src/types/constructorTypes.ts` with comprehensive bilingual JSDoc documentation.
 - **Dependencies**:
   - Updated `@dxtmisha/functional-basic` dependency to `>=1.12.0`.
 
 ### Fixed
 - **`computedAsync`**:
+  - Prevented outdated asynchronous evaluations from overwriting the current result, including when a newer result is ignored or still pending. Errors from invalidated evaluations are discarded.
+  - Bound the lazily initialized watcher to the effect scope where the computed property was created, even when first accessed outside that scope. Pending results are discarded after scope disposal, and disposed properties no longer initialize watchers.
   - Removed redundant background `update().then()` execution on the SSR path (`!isDomRuntime()`). Prevents unhandled promises and potential `ReferenceError` crashes from DOM-dependent getters during server-side rendering, ensuring `computedAsync` strictly returns `initialState` on the server and defers async reactive evaluation to client hydration.
 
 ### Removed

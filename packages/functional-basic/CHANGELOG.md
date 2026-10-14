@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.12.0] - 2026-10-14
+
+### Added
+- **`skipFrame`**:
+  - Added `skipFrame(callback?: () => T | Promise<T>, count: number = 1): Promise<T | void>` utility function to wait for or skip a specified number of animation frames (`requestAnimationFrame`) before executing a callback or resolving.
+  - Added SSR-safe resolution: immediately resolves in non-DOM environments (`!isDomRuntime()`) without invoking `requestAnimationFrame`.
+  - Added comprehensive unit test suite in `src/functions/__tests__/skipFrame.test.ts`.
+  - Added multilingual Storybook documentation across English, Russian, and Vietnamese.
+
+### Changed
+- **Dependencies**:
+  - Updated `@dxtmisha/media` dependency to `>=0.8.1`.
+- **Tests & AI Documentation**:
+  - Improved hydration test mocks in `getHydrationData.test.ts`.
+  - Updated AI type declarations and package descriptions.
+
 ## [1.11.1] - 2026-10-04
 
 ### Changed

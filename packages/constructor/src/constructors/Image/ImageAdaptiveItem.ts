@@ -57,13 +57,13 @@ export const MAX_BEYOND = 512
  */
 export class ImageAdaptiveItem {
   /** Scaling percentages / Проценты масштабирования */
-  readonly percent = ref<ImageSize>({
+  protected readonly percent = ref<ImageSize>({
     width: 0,
     height: 0
   })
 
   /** Lazy item tracking instance / Экземпляр отслеживания появления */
-  lazy?: ReturnType<typeof useLazyItemByMarginRef>
+  protected lazy?: ReturnType<typeof useLazyItemByMarginRef>
 
   /** Watch handle for lazy loading / Дескриптор наблюдения за ленивой загрузкой */
   protected lazyStatus?: WatchHandle
@@ -84,28 +84,23 @@ export class ImageAdaptiveItem {
     protected readonly props: ImageProps,
     protected readonly clientOnly: ClientOnlyInclude,
     protected readonly data: ImageData,
-    public readonly element: Ref<ImageElement>
+    protected readonly element: Ref<ImageElement>
   ) {
     onMounted(() => {
       watch(
         () => this.is(),
         (isAdaptive) => {
           if (isAdaptive) {
-            this.initLazy()
-            ImageAdaptiveGroup.add(this)
+            this.add()
           } else {
-            this.resetLazy()
-            ImageAdaptiveGroup.remove(this)
+            this.remove()
           }
         },
         { immediate: true }
       )
     })
 
-    onUnmounted(() => {
-      ImageAdaptiveGroup.remove(this)
-      this.resetLazy()
-    })
+    onUnmounted(this.remove)
   }
 
   /**
@@ -300,6 +295,16 @@ export class ImageAdaptiveItem {
   }
 
   /**
+   * Returns target image element.
+   *
+   * Возвращает целевой элемент изображения.
+   * @returns image element / элемент изображения
+   */
+  getElement(): ImageElement {
+    return this.element.value
+  }
+
+  /**
    * Size change for calculation.
    *
    * Изменение размера для вычисления.
@@ -322,6 +327,32 @@ export class ImageAdaptiveItem {
   }
 
   /**
+   * Adds the element to the adaptive group and initializes lazy tracking.
+   *
+   * Добавляет элемент в адаптивную группу и инициализирует ленивое отслеживание.
+   * @returns instance of this class / экземпляр этого класса
+   */
+  readonly add = (): this => {
+    this.initLazy()
+    ImageAdaptiveGroup.add(this)
+
+    return this
+  }
+
+  /**
+   * Removes the element from the adaptive group and resets lazy tracking.
+   *
+   * Удаляет элемент из адаптивной группы и сбрасывает ленивое отслеживание.
+   * @returns instance of this class / экземпляр этого класса
+   */
+  readonly remove = (): this => {
+    this.resetLazy()
+    ImageAdaptiveGroup.remove(this)
+
+    return this
+  }
+
+  /**
    * Initializes lazy tracking if needed.
    *
    * Инициализирует ленивое отслеживание при необходимости.
@@ -331,9 +362,7 @@ export class ImageAdaptiveItem {
     if (!this.lazy) {
       this.lazy = useLazyItemByMarginRef(this.element, `${MAX_BEYOND}px 0px`)
       this.lazyStatus = watch(this.lazy.lazyItemStatus, () => {
-        if (this.is()) {
-          ImageAdaptiveGroup.make()
-        }
+        ImageAdaptiveGroup.make()
       })
     }
 

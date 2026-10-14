@@ -1,5 +1,6 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { effectScope, nextTick } from 'vue'
 import { ImageData } from '../ImageData'
 import { ClientOnlyInclude } from '../../../classes/ClientOnlyInclude'
 import { ImageType } from '../ImageType'
@@ -22,6 +23,14 @@ vi.mock('vue', async () => {
   }
 })
 
+const defaultLazy = {
+  isLazy: vi.fn(() => false)
+} as any
+
+const activeLazy = {
+  isLazy: vi.fn(() => true)
+} as any
+
 describe('ImageData', () => {
   beforeEach(() => {
     unmountedCallback = undefined
@@ -32,7 +41,7 @@ describe('ImageData', () => {
     const clientOnly = new ClientOnlyInclude({ clientOnly: false })
     const type = new ImageType({ value: 'http://path/to/img.png' }, clientOnly)
 
-    const data = new ImageData({ value: 'http://path/to/img.png' }, clientOnly, type)
+    const data = new ImageData({ value: 'http://path/to/img.png' }, clientOnly, type, defaultLazy)
     expect(data.is()).toBe(true)
     expect(data.isLink()).toBe(true)
     expect(data.isImage()).toBe(false)
@@ -48,7 +57,7 @@ describe('ImageData', () => {
     }
     const type = { item: { value: ImageTypeValue.image } } as any
 
-    const data = new ImageData({ value: mockImageItem as any }, clientOnly, type)
+    const data = new ImageData({ value: mockImageItem as any }, clientOnly, type, defaultLazy)
     expect(data.is()).toBe(true)
     expect(data.isLink()).toBe(false)
     expect(data.isImage()).toBe(true)
@@ -58,7 +67,7 @@ describe('ImageData', () => {
     const clientOnly = new ClientOnlyInclude({ clientOnly: false })
     const type = new ImageType({}, clientOnly)
 
-    const data = new ImageData({}, clientOnly, type)
+    const data = new ImageData({}, clientOnly, type, defaultLazy)
     expect(data.is()).toBe(false)
     expect(data.isLink()).toBe(false)
     expect(data.isImage()).toBe(false)
@@ -69,7 +78,7 @@ describe('ImageData', () => {
     const type = new ImageType({ value: 'http://path/to/img.png' }, clientOnly)
     const emits = vi.fn()
 
-    const data = new ImageData({ value: 'http://path/to/img.png' }, clientOnly, type, emits)
+    const data = new ImageData({ value: 'http://path/to/img.png' }, clientOnly, type, defaultLazy, emits)
     const mockItem = {
       image: {} as HTMLImageElement,
       src: 'http://path/to/img.png',
@@ -89,7 +98,7 @@ describe('ImageData', () => {
     const type = new ImageType({ value: 'http://path/to/img.png' }, clientOnly)
     const emits = vi.fn()
 
-    const data = new ImageData({ value: 'http://path/to/img.png' }, clientOnly, type, emits)
+    const data = new ImageData({ value: 'http://path/to/img.png' }, clientOnly, type, defaultLazy, emits)
 
     data.onLoad('http://path/to/img.png')
     expect(emits).not.toHaveBeenCalled()
@@ -104,7 +113,7 @@ describe('ImageData', () => {
     const spySkipFrame = vi.spyOn(skipFrameModule, 'skipFrame').mockResolvedValue(undefined)
     const spyPdf = vi.spyOn(ImagePdf, 'get').mockResolvedValue('data:application/pdf;base64,...')
 
-    const data = new ImageData({ value: 'document.pdf' }, clientOnly, type)
+    const data = new ImageData({ value: 'document.pdf' }, clientOnly, type, defaultLazy)
     const result = await (data as any).init()
 
     expect(spySkipFrame).toHaveBeenCalled()
@@ -126,24 +135,70 @@ describe('ImageData', () => {
     const spyCreate = vi.spyOn(ImageFile, 'createImage').mockResolvedValue(mockImageItem)
 
     const file = new File([], 'photo.png', { type: 'image/png' })
-    const data = new ImageData({ value: file }, clientOnly, type)
+    const data = new ImageData({ value: file }, clientOnly, type, defaultLazy)
     const result = await (data as any).init()
 
     expect(spyCreate).toHaveBeenCalledWith(file)
     expect(result).toBe(mockImageItem)
   })
 
-  it('should return raw image if lazy is true', async () => {
-    const clientOnly = new ClientOnlyInclude({ clientOnly: false })
-    vi.spyOn(clientOnly, 'isRender').mockReturnValue(true)
-    const type = { item: { value: ImageTypeValue.image } } as any
-    const spyCreate = vi.spyOn(ImageFile, 'createImage')
+  it('should preserve a lazy URL without processing it as a file', async () => {
+    const scope = effectScope()
 
-    const data = new ImageData({ value: 'photo.png', lazy: true }, clientOnly, type)
-    const result = await (data as any).init()
+    try {
+      await scope.run(async () => {
+        const props = { value: 'https://example.test/photo.png', lazy: true }
+        const clientOnly = new ClientOnlyInclude({ clientOnly: false })
+        vi.spyOn(clientOnly, 'isRender').mockReturnValue(true)
+        const type = new ImageType(props, clientOnly)
+        const createImage = vi.spyOn(ImageFile, 'createImage')
+        const data = new ImageData(props, clientOnly, type, activeLazy)
 
-    expect(spyCreate).not.toHaveBeenCalled()
-    expect(result).toBe('photo.png')
+        expect(type.item.value).toBe(ImageTypeValue.image)
+        expect(data.image.value).toBe(props.value)
+        await nextTick()
+        expect(createImage).not.toHaveBeenCalled()
+        expect(data.image.value).toBe(props.value)
+      })
+    } finally {
+      scope.stop()
+    }
+  })
+
+  it('should process a lazy File and emit image data with a source and dimensions', async () => {
+    const scope = effectScope()
+
+    try {
+      await scope.run(async () => {
+        const file = new File([], 'photo.png', { type: 'image/png' })
+        const props = { value: file, lazy: true }
+        const clientOnly = new ClientOnlyInclude({ clientOnly: false })
+        vi.spyOn(clientOnly, 'isRender').mockReturnValue(true)
+        const type = new ImageType(props, clientOnly)
+        const image = {
+          image: document.createElement('img'),
+          src: 'data:image/png;base64,test',
+          width: 200,
+          height: 100
+        }
+        const createImage = vi.spyOn(ImageFile, 'createImage').mockResolvedValue(image)
+        const emits = vi.fn()
+        const data = new ImageData(props, clientOnly, type, defaultLazy, emits)
+
+        expect(type.item.value).toBe(ImageTypeValue.file)
+        expect(createImage).toHaveBeenCalledExactlyOnceWith(file)
+
+        await vi.waitFor(() => {
+          expect(data.image.value).toBe(image)
+          expect(emits).toHaveBeenCalledExactlyOnceWith('load', {
+            type: ImageTypeValue.file,
+            image
+          })
+        })
+      })
+    } finally {
+      scope.stop()
+    }
   })
 
   it('should fetch icon for icon types', async () => {
@@ -156,7 +211,7 @@ describe('ImageData', () => {
       height: 24
     } as any)
 
-    const data = new ImageData({ value: 'home', url: '/icons/' }, clientOnly, type)
+    const data = new ImageData({ value: 'home', url: '/icons/' }, clientOnly, type, defaultLazy)
     const result = await (data as any).init()
 
     expect(spyIcon).toHaveBeenCalledWith('home', '/icons/')
@@ -167,7 +222,7 @@ describe('ImageData', () => {
     const clientOnly = new ClientOnlyInclude({ clientOnly: false })
     const type = { item: { value: ImageTypeValue.array } } as any
 
-    const data = new ImageData({ value: new Uint8Array([1, 2, 3]) }, clientOnly, type)
+    const data = new ImageData({ value: new Uint8Array([1, 2, 3]) }, clientOnly, type, defaultLazy)
     const uint8Array = (data as any).getUint8Array()
     const spyReset = vi.spyOn(uint8Array, 'reset')
 

@@ -6,10 +6,14 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 Tạo một thuộc tính computed có thể xử lý các getter bất đồng bộ. Khác với `computed` thông thường của Vue, `computedAsync` cho phép truyền vào hàm bất đồng bộ, hàm đồng bộ, hoặc giá trị trực tiếp — kết quả sẽ tự động được giải quyết và trở thành một computed ref phản ứng. Khởi tạo ở chế độ lazy (lười biếng) và chỉ xảy ra khi truy cập thuộc tính lần đầu tiên.
 
+Chỉ lần tính toán hiện tại được cập nhật kết quả; kết quả và lỗi đến muộn từ các lần trước bị bỏ qua. Watcher thuộc về phạm vi hiệu ứng nơi thuộc tính được tạo, kể cả khi lần đọc đầu tiên xảy ra sau đó. Khi phạm vi dừng, các kết quả đang chờ không còn được áp dụng. Trên máy chủ, chỉ trả về `initialState` mà không thực thi getter.
+
+Khi không truyền `ignore`, kết quả `undefined` sẽ xóa dữ liệu trước đó. Truyền rõ ràng `undefined` ở đối số thứ ba để giữ dữ liệu cũ khi nhận kết quả này. Lỗi từ getter hiện tại sẽ xóa dữ liệu và được chuyển tới `ErrorCenter` với nhóm `functional` và mã `computed-async`.
+
 **Tham số:**
 - `getter: (() => Promise<R>) | (() => R) | R` — Hàm bất đồng bộ, hàm đồng bộ, hoặc giá trị trực tiếp dùng để tính toán kết quả.
-- `initialState?: R` — Giá trị ban đầu của kết quả.
-- `ignore?: R` — Giá trị cần bỏ qua (sẽ không được thiết lập vào kết quả).
+- `initialState?: (() => R) | R` — Giá trị ban đầu hoặc hàm được gọi một lần khi tạo thuộc tính.
+- `ignore?: R` — Giá trị được truyền rõ ràng sẽ không được áp dụng vào kết quả. Nếu bỏ qua đối số này, không loại trừ giá trị nào.
 - `debugOptions?: DebuggerOptions` — Tùy chọn dùng để gỡ lỗi các phép tính phản ứng, được hỗ trợ bởi Vue.js.
 
 **Trả về:**

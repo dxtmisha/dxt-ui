@@ -47,9 +47,10 @@ describe('ImageAdaptiveItem', () => {
       ref(mockEl)
     )
 
-    expect(item.lazy).toBeUndefined()
+    expect((item as any).lazy).toBeUndefined()
     expect(item.active).toBe(false)
     expect(item.is()).toBe(false)
+    expect(item.getElement()).toBe(mockEl)
   })
 
   it('should initialize lazy only when needed via initLazy and reset it via resetLazy', () => {
@@ -68,21 +69,21 @@ describe('ImageAdaptiveItem', () => {
 
     // Not yet in DOM -> is() is false -> lazy is undefined
     expect(item.is()).toBe(false)
-    expect(item.lazy).toBeUndefined()
+    expect((item as any).lazy).toBeUndefined()
 
     // Explicitly initialize lazy
     item.initLazy()
-    expect(item.lazy).toBeDefined()
-    expect(item.lazy?.lazyItemStatus).toBeDefined()
+    expect((item as any).lazy).toBeDefined()
+    expect((item as any).lazy?.lazyItemStatus).toBeDefined()
 
     // Calling initLazy again should be idempotent
-    const currentLazy = item.lazy
+    const currentLazy = (item as any).lazy
     item.initLazy()
-    expect(item.lazy).toBe(currentLazy)
+    expect((item as any).lazy).toBe(currentLazy)
 
     // Reset lazy
     item.resetLazy()
-    expect(item.lazy).toBeUndefined()
+    expect((item as any).lazy).toBeUndefined()
   })
 
   it('should set beyond to true when adaptiveAlways is true', () => {
@@ -117,24 +118,25 @@ describe('ImageAdaptiveItem', () => {
 
     expect(item.is()).toBe(true)
     item.make()
-    expect(item.lazy).toBeDefined()
+    expect((item as any).lazy).toBeDefined()
 
     // Default lazy status is initially false
-    if (item.lazy) {
-      item.lazy.lazyItemStatus.value = false
+    if ((item as any).lazy) {
+      (item as any).lazy.lazyItemStatus.value = false
     }
     item.make()
     expect(item.isBeyond()).toBe(false)
 
     // When element enters viewport margin
-    if (item.lazy) {
-      item.lazy.lazyItemStatus.value = true
+    if ((item as any).lazy) {
+      (item as any).lazy.lazyItemStatus.value = true
     }
     item.make()
     expect(item.isBeyond()).toBe(true)
   })
 
   it('should clean up lazy on remove() and onUnmounted', () => {
+    const addSpy = vi.spyOn(ImageAdaptiveGroup, 'add')
     const removeSpy = vi.spyOn(ImageAdaptiveGroup, 'remove')
     const clientOnly = new ClientOnlyInclude({ clientOnly: false })
     const mockData = {
@@ -148,13 +150,22 @@ describe('ImageAdaptiveItem', () => {
       ref(mockEl)
     )
 
-    item.initLazy()
-    expect(item.lazy).toBeDefined()
+    // Test explicit add()
+    item.add()
+    expect(addSpy).toHaveBeenCalledWith(item)
+    expect((item as any).lazy).toBeDefined()
+
+    // Test explicit remove()
+    item.remove()
+    expect(removeSpy).toHaveBeenCalledWith(item)
+    expect((item as any).lazy).toBeUndefined()
 
     // Test onUnmounted trigger
+    item.initLazy()
+    expect((item as any).lazy).toBeDefined()
     unmountedCallbacks.forEach(cb => cb())
-    expect(removeSpy).toHaveBeenCalledWith(item)
-    expect(item.lazy).toBeUndefined()
+    expect(removeSpy).toHaveBeenCalledTimes(2)
+    expect((item as any).lazy).toBeUndefined()
   })
 
   it('should handle group, dimensions and axis type', () => {
@@ -182,7 +193,7 @@ describe('ImageAdaptiveItem', () => {
 
     // Setting percent for width (X axis)
     item.setPercent(0.8, 0)
-    expect(item.percent.value.width).toBe(0.8)
+    expect((item as any).percent.value.width).toBe(0.8)
     expect(item.type).toBe('x')
     expect(item.backgroundSize).toContain('% auto')
 

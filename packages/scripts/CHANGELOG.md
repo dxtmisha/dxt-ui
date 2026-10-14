@@ -2,15 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.5.6] - 2026-10-08
+## [1.5.6] - 2026-10-14
 
 ### Added
+- **Mockup Layout Guard in AI Prompts (`aiCodeGlobalPrompt.en.md`, `aiCodeGlobalPrompt.ru.md`)**:
+  - Added Step 3 to the AI prompt initialization workflow requiring thorough inspection of visual screenshots (`ai-screenshot/`) and component metadata (`screenshot.json`) before planning or authoring UI code from mockups or designs.
+  - Added mandatory blocking check in Rule 9 prohibiting custom component or style creation when building from mockups without checking and reusing existing library components.
 - **DTCG Design Tokens Specification Support (`$value`, `$type`, `$description`)**:
   - Added support for Design Tokens Community Group (DTCG) formatted tokens containing `$value`, `$type`, and `$description` properties.
   - Added unit test suite in `PropertiesStandard.test.ts` covering standardization of flat DTCG tokens, deeply nested groups, and tokens with `$type` specified at the group level.
   - Added unit test coverage in `PropertiesConvector.test.ts` verifying semantic conversions on tokens containing `$value` and `$type`.
 
 ### Changed
+- **Build Execution Guard in AI Prompts (`aiCodeGlobalPrompt.en.md`, `aiCodeGlobalPrompt.ru.md`)**:
+  - Refined Rule 8 ("Build Execution Guard" / "Запрет на самовольный запуск сборки") to restrict only proactive project builds (`npm run build`, `storybook build`, etc.), removing prohibitions on running test suites during code authoring.
+- **Dependencies**:
+  - Updated workspace and root dependencies to latest stable versions.
 - **Centralized DTCG Normalization in `PropertiesStandard`**:
   - Implemented centralized token normalization in `PropertiesStandard.toItem`, converting `$value`, `$type`, and `$description` into standard `value`, `type`, and `description` properties and deleting the `$`-prefixed variants so all downstream processors operate strictly on standard token schemas.
   - Added empty object initialization guard (`!isObjectNotArray(data.value)`) in `PropertiesStandard.getValueAndSpecial` to safely accommodate non-special child tokens.

@@ -2,22 +2,17 @@
 
 import {
   computed,
-  onMounted,
-  type Ref,
-  ref,
-  toRefs,
-  type WatchHandle,
-  watch
+  type Ref
 } from 'vue'
 import {
   type ConstrBind,
   forEach,
   isArray,
-  isNumber,
-  useLazyItemByMarginRef
+  isNumber
 } from '@dxtmisha/functional'
 
 import { ImageBackground } from './ImageBackground'
+import type { ImageLazy } from './ImageLazy'
 import { ImagePosition } from './ImagePosition'
 import { ImageType } from './ImageType'
 
@@ -26,21 +21,12 @@ import type { ImageProps } from './props'
 
 /**
  * A class for working with the img tag.
- * It manages attributes, styles, and lazy loading for the HTML img and picture elements.
+ * It manages attributes and styles for the HTML img and picture elements.
  *
  * Класс для работы с тегом img.
- * Управляет атрибутами, стилями и ленивой загрузкой для элементов HTML img и picture.
+ * Управляет атрибутами и стилями для элементов HTML img и picture.
  */
 export class ImageImg {
-  /** Lazy initialization status / Статус отложенной инициализации */
-  protected readonly lazyInit = ref<boolean>(false)
-
-  /** Lazy item tracking instance / Экземпляр отслеживания появления */
-  protected lazyItem?: ReturnType<typeof useLazyItemByMarginRef>
-
-  /** Watch handle for lazy loading / Дескриптор наблюдения за ленивой загрузкой */
-  protected lazyStatus?: WatchHandle
-
   /**
    * Constructor for creating a manager for the img tag.
    *
@@ -50,24 +36,16 @@ export class ImageImg {
    * @param type class for working with types / класс для работы с типами
    * @param position class for working with position / класс для работы с позицией
    * @param background class for working with background / класс для работы с фоном
+   * @param lazy class for working with lazy loading / класс для работы с ленивой загрузкой
    */
   constructor(
     protected readonly props: ImageProps,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly type: ImageType,
     protected readonly position: ImagePosition,
-    protected readonly background: ImageBackground
+    protected readonly background: ImageBackground,
+    protected readonly lazy: ImageLazy
   ) {
-    const {
-      lazy,
-      preloadOffset
-    } = toRefs(props)
-
-    watch(
-      [lazy, preloadOffset, element],
-      () => this.update()
-    )
-    onMounted(() => this.update())
   }
 
   /**
@@ -90,7 +68,7 @@ export class ImageImg {
         attrs.style = this.styles
 
         if (this.props.lazy) {
-          attrs.loading = this.isLazy() ? 'lazy' : 'auto'
+          attrs.loading = this.lazy.isLazy() ? 'lazy' : 'auto'
           attrs.fetchPriority = this.props.fetchPriority
         }
 
@@ -162,16 +140,6 @@ export class ImageImg {
   }
 
   /**
-   * Determines whether lazy loading is enabled.
-   *
-   * Определяет, включена ли ленивая загрузка.
-   * @returns true if lazy loading is enabled / true, если ленивая загрузка включена
-   */
-  isLazy(): boolean {
-    return Boolean(this.props.lazy) && !this.lazyInit.value
-  }
-
-  /**
    * Determines whether to use the picture tag.
    *
    * Определяет, использовать ли тег picture.
@@ -179,22 +147,6 @@ export class ImageImg {
    */
   isPicture(): boolean {
     return this.is() && Boolean(this.props.picture)
-  }
-
-  /**
-   * Updates lazy loading status and listener based on element and props.
-   *
-   * Обновляет статус и слушатель ленивой загрузки на основе элемента и свойств.
-   */
-  update(): void {
-    if (
-      this.props.lazy
-      && this.element.value
-    ) {
-      this.makeLazy()
-    } else {
-      this.resetLazy()
-    }
   }
 
   /**
@@ -250,34 +202,6 @@ export class ImageImg {
     return Object.entries(this.props.srcset)
       .map(([key, value]) => `${value} ${this.toSrcsetKey(key)}`)
       .join(', ')
-  }
-
-  /**
-   * Resets lazy loading status and stops the active watcher.
-   *
-   * Сбрасывает статус ленивой загрузки и останавливает активный наблюдатель.
-   */
-  protected resetLazy(): void {
-    this.lazyInit.value = false
-    this.lazyStatus?.stop()
-    this.lazyStatus = undefined
-    this.lazyItem?.removeLazyItem()
-    this.lazyItem = undefined
-  }
-
-  /**
-   * Initializes lazy loading.
-   *
-   * Инициализирует ленивую загрузку.
-   */
-  protected makeLazy(): void {
-    this.resetLazy()
-
-    this.lazyItem = useLazyItemByMarginRef(this.element, `${this.props.preloadOffset} 0px`)
-
-    this.lazyStatus = watch(this.lazyItem.lazyItemStatus, () => {
-      this.lazyInit.value = Boolean(this.lazyItem?.lazyItemStatus.value)
-    }, { immediate: true })
   }
 
   /**

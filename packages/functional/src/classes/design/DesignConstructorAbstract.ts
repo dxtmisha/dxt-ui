@@ -8,13 +8,22 @@ import {
   useSlots,
   type VNode
 } from 'vue'
-import { DesignConstructorBasicAbstract } from '@dxtmisha/functional-basic'
+import {
+  forEach,
+  isObject,
+  isObjectNotArray,
+  toArray,
+  toCamelCase
+} from '@dxtmisha/functional-basic'
 
 import { DesignComponents } from './DesignComponents'
 
 import type {
+  ConstrClass,
   ConstrClasses,
+  ConstrClassObject,
   ConstrComponent,
+  ConstrEmit,
   ConstrExpose,
   ConstrItem,
   ConstrOptions,
@@ -38,14 +47,9 @@ export abstract class DesignConstructorAbstract<
   SLOTS extends ConstrItem,
   CLASSES extends ConstrClasses,
   P extends ConstrItem
-> extends DesignConstructorBasicAbstract<
-    COMP,
-    EMITS,
-    EXPOSE,
-    SLOTS,
-    CLASSES,
-    P
-  > {
+> {
+  /** Component name split by levels / Название компонента, разбитое по уровням */
+  protected readonly name: string[]
   /** Root DOM element reference / Реактивная ссылка на корневой DOM-элемент */
   protected readonly element = ref<E | undefined>()
   /** Reactive references to component props / Реактивные ссылки на свойства компонента */
@@ -53,6 +57,8 @@ export abstract class DesignConstructorAbstract<
 
   /** Connected design subcomponents / Подключенные подкомпоненты дизайна */
   protected readonly components: DesignComponents<COMP, P>
+  /** Emit handlers / Обработчики emit */
+  protected readonly emits?: ConstrEmit<EMITS>
 
   /** Final computed list of classes / Итоговый вычисляемый список классов */
   protected readonly classes?: ComputedRef<CLASSES>
@@ -64,6 +70,14 @@ export abstract class DesignConstructorAbstract<
   /** Computed styles defined by constructor / Вычисляемые стили, определённые конструктором */
   protected stylesSub?: ComputedRef<ConstrStyles>
 
+  /** Additional attributes / Дополнительные атрибуты */
+  protected attrs?: ConstrItem
+  /** Named slots / Именованные слоты */
+  protected slots?: SLOTS
+
+  /** Exposed data / Экспортируемые данные */
+  protected dataExpose?: EXPOSE
+
   /**
    * Constructor
    * @param name class name / название класса
@@ -72,19 +86,93 @@ export abstract class DesignConstructorAbstract<
    */
   protected constructor(
     name: string,
-    props: Readonly<P>,
+    protected readonly props: Readonly<P>,
     protected readonly options?: ConstrOptions<COMP, EMITS, P>
   ) {
-    super(name, props, options)
-
+    this.name = this.initName(name)
     this.refs = this.props ? toRefs(this.props) : {} as ToRefs<P>
+
     this.components = new DesignComponents(options?.components, options?.compMod)
 
+    this.emits = options?.emits
     this.classes = computed(() => this.updateClasses())
     this.styles = computed(() => this.updateStyles())
 
     this.attrs = useAttrs()
     this.slots = useSlots() as SLOTS
+  }
+
+  /**
+   * Getting the class name.
+   *
+   * Получение названия класса.
+   * @returns class name / название класса
+   */
+  getName(): string {
+    return this.name.join('-')
+  }
+
+  /**
+   * Getting the design name.
+   *
+   * Получение названия дизайна.
+   * @returns design name / название дизайна
+   */
+  getDesign(): string {
+    return String(this.name[0])
+  }
+
+  /**
+   * Getting the class name of a sub-element.
+   *
+   * Получение названия класса подэлемента.
+   * @param name list of class names by levels / список названий классов по уровням
+   * @returns sub-element class name / название класса подэлемента
+   */
+  getSubClass(name: string | string[]): string {
+    return `${this.getName()}__${toArray(name).join('__')}`
+  }
+
+  /**
+   * Getting the class name for the status.
+   *
+   * Получение названия класса для статуса.
+   * @param name list of class names by levels / список названий классов по уровням
+   * @returns status class name / название класса статуса
+   */
+  getStatusClass(name: string | string[]): string {
+    return `${this.getName()}--${toArray(name).join('--')}`
+  }
+
+  /**
+   * Getting the property name for the style.
+   *
+   * Получение названия свойства для стиля.
+   * @param name list of class names by levels / список названий классов по уровням
+   * @returns CSS custom property name / название CSS-переменной
+   */
+  getStyle(name: string | string[]): string {
+    return `--${this.getName()}-sys-${toArray(name).join('-')}`
+  }
+
+  /**
+   * Getting additional parameters.
+   *
+   * Получение дополнительных параметров.
+   * @returns additional attributes / дополнительные атрибуты
+   */
+  getAttrs(): ConstrItem {
+    const attrs: ConstrItem = { ...this.attrs ?? {} }
+
+    if ('class' in attrs) {
+      delete attrs.class
+    }
+
+    if ('style' in attrs) {
+      delete attrs.style
+    }
+
+    return attrs
   }
 
   /**
@@ -141,6 +229,30 @@ export abstract class DesignConstructorAbstract<
   }
 
   /**
+   * Initialization of all the necessary properties for work.
+   *
+   * Инициализация всех необходимых свойств для работы.
+   * @returns exposed data / экспортируемые данные
+   */
+  protected abstract initExpose(): EXPOSE
+
+  /**
+   * Improvement of the obtained list of classes.
+   *
+   * Доработка полученного списка классов.
+   * @returns partial list of classes / частичный список классов
+   */
+  protected abstract initClasses(): Partial<CLASSES>
+
+  /**
+   * Refinement of the received list of styles.
+   *
+   * Доработка полученного списка стилей.
+   * @returns styles object / объект стилей
+   */
+  protected abstract initStyles(): ConstrStyles
+
+  /**
    * Rendering method returning VNode tree.
    *
    * Метод рендеринга, возвращающий дерево VNode.
@@ -178,6 +290,73 @@ export abstract class DesignConstructorAbstract<
     }
 
     return undefined
+  }
+
+  /**
+   * Transformation of the class value into an object.
+   *
+   * Преобразование значения класса в объект.
+   * @param classes list of classes for transformation / список классов для преобразования
+   * @returns object of classes / объект классов
+   */
+  protected toClass(classes?: ConstrClass): ConstrClassObject {
+    if (isObjectNotArray(classes)) {
+      return classes
+    }
+
+    if (Array.isArray(classes)) {
+      const name = classes
+        .filter(item => typeof item === 'string' && item.trim() !== '')
+        .join(' ')
+
+      return name === '' ? {} : { [name]: true }
+    }
+
+    if (typeof classes === 'string') {
+      const name = classes.trim()
+
+      return name === '' ? {} : { [name]: true }
+    }
+
+    return {}
+  }
+
+  /**
+   * Converts the class name to standard for the current component.
+   *
+   * Преобразовывает название класса в стандартное для текущего компонента.
+   * @param classes list of classes / список классов
+   * @returns object with converted class names / объект с преобразованными названиями классов
+   */
+  protected toClassName<T extends ConstrItem>(classes?: ConstrItem): T {
+    if (isObject(classes)) {
+      const data: ConstrItem = {}
+
+      forEach(classes, (value, name: string) => {
+        if (name.match(/\?\?/)) {
+          data[name.replace(/\?\?/, this.getName())] = value
+        } else if (name.match(/\?/)) {
+          data[name.replace(/\?/, this.getDesign())] = value
+        } else {
+          data[name] = value
+        }
+      })
+
+      return data as T
+    }
+
+    return {} as T
+  }
+
+  /**
+   * Getting component names as an array.
+   *
+   * Получение названий компонентов в виде массива.
+   * @param name component name for transformation / название компонента для преобразования
+   * @returns component names by levels / названия компонента по уровням
+   */
+  private initName(name: string): string[] {
+    return forEach(name.split('.', 2), item => toCamelCase(item))
   }
 
   /**
