@@ -70,8 +70,6 @@ export class CollageDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -165,7 +163,7 @@ export class CollageDesign<
 
       if (list) {
         list.forEach((item, key) => {
-          this.components.renderAdd(
+          this.components?.renderAdd(
             children,
             'collageItem',
             toBinds(

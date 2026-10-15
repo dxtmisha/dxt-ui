@@ -68,8 +68,6 @@ export class ConstructorsDesign<
 
     // TODO: Method for initializing base objects
     // TODO: Метод для инициализации базовых объектов
-
-    this.init()
   }
 
   /**

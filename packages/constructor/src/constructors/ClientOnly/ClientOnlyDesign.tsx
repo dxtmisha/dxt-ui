@@ -65,8 +65,6 @@ export class ClientOnlyDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**

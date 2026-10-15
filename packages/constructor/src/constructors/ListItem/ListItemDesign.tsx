@@ -70,8 +70,6 @@ export class ListItemDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -222,7 +220,7 @@ export class ListItemDesign<
 
     switch (this.props.selectionStyle) {
       case 'checkbox':
-        this.components.renderAdd(
+        this.components?.renderAdd(
           children,
           'checkbox',
           toBinds(
@@ -234,7 +232,7 @@ export class ListItemDesign<
         )
         break
       case 'radio':
-        this.components.renderAdd(
+        this.components?.renderAdd(
           children,
           'radio',
           toBinds(
@@ -247,7 +245,7 @@ export class ListItemDesign<
         break
       case 'checkmark':
         if (this.props.selected) {
-          this.components.renderAdd(
+          this.components?.renderAdd(
             children,
             'icon',
             getBind(this.props.iconCheckbox, 'icon')

@@ -66,8 +66,6 @@ export class BadgeDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**

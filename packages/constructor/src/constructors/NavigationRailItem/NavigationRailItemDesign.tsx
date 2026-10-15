@@ -68,8 +68,6 @@ export class NavigationRailItemDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**

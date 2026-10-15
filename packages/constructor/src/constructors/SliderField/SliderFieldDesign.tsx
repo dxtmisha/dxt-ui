@@ -73,8 +73,6 @@ export class SliderFieldDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -349,7 +347,7 @@ export class SliderFieldDesign<
    * @returns slider virtual nodes / виртуальные узлы слайдера
    */
   readonly renderSlider = (): VNode[] => {
-    const slider = this.components.renderOne(
+    const slider = this.components?.renderOne(
       'slider',
       toBinds(
         {

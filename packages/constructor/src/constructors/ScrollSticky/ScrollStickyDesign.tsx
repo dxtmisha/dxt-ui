@@ -72,8 +72,6 @@ export class ScrollStickyDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**

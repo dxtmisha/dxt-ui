@@ -67,8 +67,6 @@ export class TextareaDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -137,7 +135,7 @@ export class TextareaDesign<
       this.item.bindsInput
     )
 
-    if (this.components.is('textareaAutosize')) {
+    if (this.components?.is('textareaAutosize')) {
       return [this.components.renderOne('textareaAutosize', {
         ...this.item.binds,
         inputAttrs: props

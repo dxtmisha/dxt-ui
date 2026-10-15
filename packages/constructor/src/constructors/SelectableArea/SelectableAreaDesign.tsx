@@ -70,8 +70,6 @@ export class SelectableAreaDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**

@@ -69,8 +69,6 @@ export class ProgressBarDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**

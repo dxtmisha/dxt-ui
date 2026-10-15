@@ -68,8 +68,6 @@ export class BlockDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**

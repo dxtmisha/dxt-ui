@@ -72,8 +72,6 @@ export class FieldDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -279,7 +277,7 @@ export class FieldDesign<
     const icons: any[] = [...this.item.icon.render()]
 
     if (this.item.icons.isCancel()) {
-      this.components.renderAdd(
+      this.components?.renderAdd(
         icons,
         'icon',
         this.item.icons.cancelBind,
@@ -289,7 +287,7 @@ export class FieldDesign<
     }
 
     if (this.item.icons.isArrow()) {
-      this.components.renderAdd(
+      this.components?.renderAdd(
         icons,
         'icon',
         this.item.icons.previousBind,
@@ -297,7 +295,7 @@ export class FieldDesign<
         'previous'
       )
 
-      this.components.renderAdd(
+      this.components?.renderAdd(
         icons,
         'icon',
         this.item.icons.nextBind,

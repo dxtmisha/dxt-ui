@@ -68,8 +68,6 @@ export class ProgressDesign<
       this.props,
       this.getName()
     )
-
-    this.init()
   }
 
   /**

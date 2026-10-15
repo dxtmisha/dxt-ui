@@ -69,8 +69,6 @@ export class MenuDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -189,7 +187,7 @@ export class MenuDesign<
 
       if (!this.props.hideList) {
         children.push(
-          this.components.render(
+          this.components?.render(
             'list',
             toBinds(
               {
@@ -207,7 +205,7 @@ export class MenuDesign<
               this.props.listAttrs
             ),
             this.slots as RawSlots
-          )
+          ) ?? []
         )
       }
 

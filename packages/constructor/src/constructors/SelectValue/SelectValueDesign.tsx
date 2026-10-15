@@ -72,8 +72,6 @@ export class SelectValueDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -188,7 +186,7 @@ export class SelectValueDesign<
    * @returns chip VNode or undefined / VNode чипа или undefined
    */
   readonly renderItem = (item: ChipGroupItem): VNode | undefined => {
-    return this.components.renderOne(
+    return this.components?.renderOne(
       'chip',
       toBinds(
         this.props.chipAttrs,

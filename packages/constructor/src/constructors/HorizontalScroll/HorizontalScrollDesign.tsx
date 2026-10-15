@@ -72,8 +72,6 @@ export class HorizontalScrollDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**

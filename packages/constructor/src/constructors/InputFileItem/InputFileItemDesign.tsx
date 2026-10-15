@@ -72,8 +72,6 @@ export class InputFileItemDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -325,7 +323,7 @@ export class InputFileItemDesign<
   readonly renderDialog = (): VNode[] => {
     if (
       this.item.delete.is()
-      && this.components.is('dialog')
+      && this.components?.is('dialog')
     ) {
       return this.components.render(
         'dialog',
@@ -348,7 +346,7 @@ export class InputFileItemDesign<
   readonly renderDialogCrop = (): VNode[] => {
     if (
       this.item.crop.is()
-      && this.components.is('dialog')
+      && this.components?.is('dialog')
     ) {
       return this.components.render(
         'dialog',

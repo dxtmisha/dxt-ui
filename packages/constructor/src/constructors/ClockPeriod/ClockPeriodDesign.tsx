@@ -67,8 +67,6 @@ export class ClockPeriodDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**

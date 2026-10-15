@@ -71,8 +71,6 @@ export class CropAreaDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**

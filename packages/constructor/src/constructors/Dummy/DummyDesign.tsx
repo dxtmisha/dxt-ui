@@ -65,8 +65,6 @@ export class DummyDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**

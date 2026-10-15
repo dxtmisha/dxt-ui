@@ -66,8 +66,6 @@ export class TabsDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**

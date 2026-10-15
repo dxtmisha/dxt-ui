@@ -66,8 +66,6 @@ export class SnackbarDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -183,7 +181,7 @@ export class SnackbarDesign<
       return h(component, props)
     }
 
-    return this.components.renderOne(
+    return this.components?.renderOne(
       'snackbarItem',
       props,
       undefined,

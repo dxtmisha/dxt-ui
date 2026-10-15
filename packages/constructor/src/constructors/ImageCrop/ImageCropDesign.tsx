@@ -70,8 +70,6 @@ export class ImageCropDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**

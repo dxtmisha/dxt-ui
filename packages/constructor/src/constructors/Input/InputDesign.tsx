@@ -68,8 +68,6 @@ export class InputDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**

@@ -66,8 +66,6 @@ export class SnackbarItemDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -231,7 +229,7 @@ export class SnackbarItemDesign<
    */
   readonly renderClose = (): VNode[] => {
     if (this.props.closeButton) {
-      return this.components.render(
+      return this.components?.render(
         'button',
         {
           key: 'button-close',
@@ -242,7 +240,7 @@ export class SnackbarItemDesign<
         },
         undefined,
         'button-close'
-      )
+      ) ?? []
     }
 
     return []

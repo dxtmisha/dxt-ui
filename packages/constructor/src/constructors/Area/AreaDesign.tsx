@@ -65,8 +65,6 @@ export class AreaDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**

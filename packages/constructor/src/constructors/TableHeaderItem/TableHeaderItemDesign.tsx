@@ -69,8 +69,6 @@ export class TableHeaderItemDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -201,7 +199,7 @@ export class TableHeaderItemDesign<
   readonly renderTooltipControl = (
     control: TooltipControl
   ): VNode | undefined => {
-    return this.components.renderOne(
+    return this.components?.renderOne(
       'icon',
       toBinds(
         this.item.tooltipControlBind,

@@ -75,8 +75,6 @@ export class NavigationRailDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -165,7 +163,7 @@ export class NavigationRailDesign<
     item: ListDataItem,
     inMenu: boolean = false
   ): VNode => {
-    return this.components.renderOne(
+    return this.components?.renderOne(
       inMenu ? 'navigationItem' : 'navigationRailItem',
       this.getItemAttrs(type, item)
     ) as VNode
@@ -184,7 +182,7 @@ export class NavigationRailDesign<
     props: WindowControlItem,
     inMenu: boolean = false
   ): VNode => {
-    return this.components.renderOne(
+    return this.components?.renderOne(
       inMenu ? 'navigationItem' : 'navigationRailItem',
       toBinds(
         {
@@ -260,7 +258,7 @@ export class NavigationRailDesign<
     item: ListDataItem,
     inMenu: boolean = false
   ): VNode => {
-    return this.components.renderOne(
+    return this.components?.renderOne(
       'listMenu',
       {
         divider: this.props.divider,

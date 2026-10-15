@@ -71,8 +71,6 @@ export class FieldMessageDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**

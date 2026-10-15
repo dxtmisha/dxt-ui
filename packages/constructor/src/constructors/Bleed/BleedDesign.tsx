@@ -65,8 +65,6 @@ export class BleedDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**

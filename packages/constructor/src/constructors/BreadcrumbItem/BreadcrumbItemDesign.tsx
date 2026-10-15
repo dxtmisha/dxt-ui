@@ -68,8 +68,6 @@ export class BreadcrumbItemDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**

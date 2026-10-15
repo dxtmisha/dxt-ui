@@ -68,8 +68,6 @@ export class TableItemDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**

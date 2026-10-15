@@ -68,8 +68,6 @@ export class AnchorDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -192,7 +190,7 @@ export class AnchorDesign<
    */
   readonly renderIcon = (): VNode[] => {
     if (this.item.icon.is()) {
-      return this.components.render('icon', this.item.icon.binds)
+      return this.components?.render('icon', this.item.icon.binds) ?? []
     }
 
     return []

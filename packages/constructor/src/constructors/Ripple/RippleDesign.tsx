@@ -74,8 +74,6 @@ export class RippleDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**

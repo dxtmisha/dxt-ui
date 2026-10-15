@@ -65,8 +65,6 @@ export class GridItemDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**

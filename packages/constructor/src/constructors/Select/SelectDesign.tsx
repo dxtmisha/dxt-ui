@@ -69,8 +69,6 @@ export class SelectDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -223,7 +221,7 @@ export class SelectDesign<
     input: FieldControl,
     props: MenuControlItem
   ): VNode => {
-    return this.components.renderOne(
+    return this.components?.renderOne(
       'selectValue',
       toBinds(
         props.binds,

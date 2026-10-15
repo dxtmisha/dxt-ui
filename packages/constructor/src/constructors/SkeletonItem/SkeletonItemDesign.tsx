@@ -66,8 +66,6 @@ export class SkeletonItemDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**

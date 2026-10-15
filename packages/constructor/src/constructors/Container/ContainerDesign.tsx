@@ -65,8 +65,6 @@ export class ContainerDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**

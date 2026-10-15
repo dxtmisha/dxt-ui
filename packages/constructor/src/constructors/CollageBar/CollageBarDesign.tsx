@@ -65,8 +65,6 @@ export class CollageBarDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**

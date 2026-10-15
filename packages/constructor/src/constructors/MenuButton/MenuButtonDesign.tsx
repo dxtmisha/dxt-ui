@@ -78,8 +78,6 @@ export class MenuButtonDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**

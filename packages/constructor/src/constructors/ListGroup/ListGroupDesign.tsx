@@ -67,8 +67,6 @@ export class ListGroupDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -133,7 +131,7 @@ export class ListGroupDesign<
    * Рендер элемента трансформации.
    */
   readonly renderTransform = (): VNode[] => {
-    return this.components.render(
+    return this.components?.render(
       'motionTransform',
       {
         ...this.item.transformBinds(),
@@ -143,7 +141,7 @@ export class ListGroupDesign<
         head: this.renderHead,
         body: this.renderList
       }
-    )
+    ) ?? []
   }
 
   /**

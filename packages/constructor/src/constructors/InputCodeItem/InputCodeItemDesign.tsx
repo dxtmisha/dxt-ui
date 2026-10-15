@@ -74,8 +74,6 @@ export class InputCodeItemDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**

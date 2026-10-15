@@ -69,8 +69,6 @@ export class BreadcrumbsDesign<
       this.props,
       this.slots
     )
-
-    this.init()
   }
 
   /**
@@ -136,7 +134,7 @@ export class BreadcrumbsDesign<
     const length = (this.props.list?.length ?? 1) - 1
 
     this.props.list?.forEach((item, key) => {
-      this.components.renderAdd(
+      this.components?.renderAdd(
         children,
         'breadcrumbItem',
         toBinds(

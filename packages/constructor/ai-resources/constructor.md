@@ -301,9 +301,6 @@ export class ButtonDesign<
       this.slots,
       this.emits
     )
-
-    // MUST call this.init() as the last statement
-    this.init()
   }
 
   protected initExpose(): EXPOSE {
@@ -351,7 +348,7 @@ export class ButtonDesign<
 ```
 
 #### Rules
-- Always call `this.init()` at the very end of the constructor.
+- `initExpose()` is invoked by `expose()` after the design instance is constructed.
 - `initRender()` returns `VNode` or `VNode[]`.
 - Use `this.initSlot('slotName', undefined, props)` to render slots.
 - For complex views, extract sub-renderers into `readonly renderPart = (): VNode[] => {}`.
@@ -647,7 +644,7 @@ export class MyModal {
 | `this.getSubClass('el')` | `string` | Sub-element class name (`ComponentName__el`) |
 | `this.getAttrs()` | `Record<string, any>` | External bound attributes |
 | `this.initSlot('name', fallback, props)` | `VNode[]` | Render named slot |
-| `this.init()` | `void` | Final initialization (must be called last in constructor) |
+| `this.expose()` | `ConstrExpose` | Public API from `initExpose()` with the root element reference |
 | `this.classes?.value.main` | `ConstrClass` | Reactive root element class object |
 | `this.styles?.value` | `ConstrStyles` | Reactive root element inline styles |
 | `this.props` | `Readonly<P>` | Input props proxy; use getters for watch sources and `toRef(props, 'key')` when a dependency requires a Ref |
@@ -683,22 +680,6 @@ export class MyModal {
 ---
 
 ## 6. Common Pitfalls & Anti-Patterns
-
-### ❌ Omitting `this.init()` in Design Class
-```ts
-// ❌ WRONG: this.init() omitted
-constructor(...) {
-  super(name, props, options)
-  this.item = new Button(...)
-}
-
-// ✅ CORRECT: this.init() called last
-constructor(...) {
-  super(name, props, options)
-  this.item = new Button(...)
-  this.init()
-}
-```
 
 ### ❌ Incorrect Include Dependency Order
 ```ts
@@ -765,7 +746,7 @@ constructor(props, ..., constructors: {
 - [ ] `properties.json`: Tokens, states, sub-elements (`#`), modifiers (`~`)
 - [ ] `style.scss`: `mixin<Name>` with `@use "@dxtmisha/styles/properties" as ui;`
 - [ ] `<Name>.ts`: Logic class with DI `constructors` parameter
-- [ ] `<Name>Design.tsx`: Extends `DesignConstructorAbstract`, `this.init()` at constructor end
+- [ ] `<Name>Design.tsx`: Extends `DesignConstructorAbstract` and implements `initExpose()`
 - [ ] `<Name>Include.ts`: *(Optional)* If embedded into parent components
 - [ ] `index.ts`: Re-export all entities
 - [ ] Register constructor in package root `index.ts`

@@ -65,8 +65,6 @@ export class AccordionDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -154,7 +152,7 @@ export class AccordionDesign<
       }
     }
 
-    return this.components.renderOne(
+    return this.components?.renderOne(
       'cell',
       toBinds(
         this.item.bindsCell,

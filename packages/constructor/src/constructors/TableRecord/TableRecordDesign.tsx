@@ -68,8 +68,6 @@ export class TableRecordDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**

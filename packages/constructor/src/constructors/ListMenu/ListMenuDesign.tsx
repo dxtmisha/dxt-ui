@@ -66,8 +66,6 @@ export class ListMenuDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**

@@ -68,8 +68,6 @@ export class MotionStickyDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**

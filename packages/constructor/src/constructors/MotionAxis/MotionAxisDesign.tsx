@@ -76,8 +76,6 @@ export class MotionAxisDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**

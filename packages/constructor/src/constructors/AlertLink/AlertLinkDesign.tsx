@@ -70,8 +70,6 @@ export class AlertLinkDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**

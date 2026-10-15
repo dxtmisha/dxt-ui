@@ -66,8 +66,6 @@ export class PageAreaDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -126,6 +124,6 @@ export class PageAreaDesign<
         break
     }
 
-    return this.components.renderOne(componentName as never, this.props, this.slots as RawSlots)
+    return this.components?.renderOne(componentName as never, this.props, this.slots as RawSlots)
   }
 }

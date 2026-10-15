@@ -72,8 +72,6 @@ export class FieldCounterDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**

@@ -83,8 +83,6 @@ export class TabsNavigationDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -181,7 +179,7 @@ export class TabsNavigationDesign<
   ): VNode => {
     const isSelected = this.item.selected.isSelected(item.index)
 
-    return this.components.renderOne(
+    return this.components?.renderOne(
       this.itemComponent as never,
       toBinds(
         this.props.itemAttrs,

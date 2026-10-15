@@ -69,8 +69,6 @@ export class SliderDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -346,7 +344,7 @@ export class SliderDesign<
   readonly renderRipple = (): VNode[] => {
     return this.components?.render('ripple', {
       visible: this.item.isRipple()
-    })
+    }) ?? []
   }
 
   /**

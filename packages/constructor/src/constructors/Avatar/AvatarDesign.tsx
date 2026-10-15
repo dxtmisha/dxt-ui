@@ -70,8 +70,6 @@ export class AvatarDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**

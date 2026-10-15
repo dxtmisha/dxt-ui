@@ -66,8 +66,6 @@ export class WindowDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -186,10 +184,10 @@ export class WindowDesign<
       {
         key: 'body',
         ...this.getAttrs(),
-        class: {
-          [String(this.classes?.value.body)]: true,
-          ...this.toClass(this.attrs?.class)
-        }
+        class: [
+          this.classes?.value.body,
+          this.attrs?.class
+        ]
       },
       [
         ...this.renderBodyImage(),
@@ -250,7 +248,7 @@ export class WindowDesign<
    */
   readonly renderBodyClose = (): VNode[] => {
     if (this.props.closeButton) {
-      return this.components.render(
+      return this.components?.render(
         'button',
         {
           key: 'button-close',
@@ -261,7 +259,7 @@ export class WindowDesign<
           icon: this.props.iconClose,
           ...AriaStaticInclude.label(this.item.text.close)
         }
-      )
+      ) ?? []
     }
 
     return []

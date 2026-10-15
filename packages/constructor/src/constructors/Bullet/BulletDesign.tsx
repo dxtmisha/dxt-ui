@@ -66,8 +66,6 @@ export class BulletDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**

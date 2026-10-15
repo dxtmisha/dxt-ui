@@ -65,8 +65,6 @@ export class MenuCountryDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**

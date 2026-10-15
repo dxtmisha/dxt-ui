@@ -67,8 +67,6 @@ export class TableDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**

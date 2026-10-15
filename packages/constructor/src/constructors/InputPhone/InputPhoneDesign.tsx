@@ -73,8 +73,6 @@ export class InputPhoneDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**

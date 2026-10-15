@@ -68,8 +68,6 @@ export class HeaderDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**

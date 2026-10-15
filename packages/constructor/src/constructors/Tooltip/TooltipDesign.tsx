@@ -68,8 +68,6 @@ export class TooltipDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**

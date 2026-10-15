@@ -65,8 +65,6 @@ export class DropzoneDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**

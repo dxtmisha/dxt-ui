@@ -73,8 +73,6 @@ export class ArrowDesign<
       this.getName()
     )
 
-    this.init()
-
     watch(() => this.classes?.value, () => {
       nextTick().then(
         () => requestAnimationFrame(() => {

@@ -70,8 +70,6 @@ export class CellDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**

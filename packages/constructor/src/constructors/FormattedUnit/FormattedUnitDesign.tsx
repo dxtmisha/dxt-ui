@@ -70,8 +70,6 @@ export class FormattedUnitDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**

@@ -72,8 +72,6 @@ export class InputImageDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**

@@ -71,8 +71,6 @@ export class InputSearchDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**

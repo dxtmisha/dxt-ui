@@ -65,8 +65,6 @@ export class TextDescriptionDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**

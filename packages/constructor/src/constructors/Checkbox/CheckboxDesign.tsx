@@ -67,8 +67,6 @@ export class CheckboxDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -217,7 +215,7 @@ export class CheckboxDesign<
               ]
             },
             [
-              this.components.renderOne(
+              this.components?.renderOne(
                 'image',
                 this.item.icon.item
               )

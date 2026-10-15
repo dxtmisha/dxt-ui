@@ -8,8 +8,7 @@ import {
 } from 'vue'
 import {
   forEach,
-  isObject,
-  isObjectNotArray,
+  isFilled,
   toArray,
   toCamelCase
 } from '@dxtmisha/functional-basic'
@@ -17,9 +16,7 @@ import {
 import { DesignComponents } from './DesignComponents'
 
 import type {
-  ConstrClass,
   ConstrClasses,
-  ConstrClassObject,
   ConstrComponent,
   ConstrEmit,
   ConstrExpose,
@@ -52,27 +49,20 @@ export abstract class DesignConstructorAbstract<
   protected readonly element = ref<E | undefined>()
 
   /** Connected design subcomponents / Подключенные подкомпоненты дизайна */
-  protected readonly components: DesignComponents<COMP, P>
+  protected readonly components?: DesignComponents<COMP, P>
   /** Emit handlers / Обработчики emit */
   protected readonly emits?: ConstrEmit<EMITS>
 
   /** Final computed list of classes / Итоговый вычисляемый список классов */
   protected readonly classes?: ComputedRef<CLASSES>
-  /** Computed classes defined by constructor / Вычисляемые классы, определённые конструктором */
-  protected classesSub?: ComputedRef<Partial<CLASSES>>
 
   /** Final computed list of styles / Итоговый вычисляемый список стилей */
   protected readonly styles?: ComputedRef<ConstrStyles>
-  /** Computed styles defined by constructor / Вычисляемые стили, определённые конструктором */
-  protected stylesSub?: ComputedRef<ConstrStyles>
 
   /** Additional attributes / Дополнительные атрибуты */
   protected attrs?: ConstrItem
   /** Named slots / Именованные слоты */
   protected slots?: SLOTS
-
-  /** Exposed data / Экспортируемые данные */
-  protected dataExpose?: EXPOSE
 
   /**
    * Constructor
@@ -87,7 +77,9 @@ export abstract class DesignConstructorAbstract<
   ) {
     this.name = this.initName(name)
 
-    this.components = new DesignComponents(options?.components, options?.compMod)
+    if (isFilled(options?.components)) {
+      this.components = new DesignComponents(options.components, options.compMod)
+    }
 
     this.emits = options?.emits
     this.classes = computed(() => this.updateClasses())
@@ -157,15 +149,7 @@ export abstract class DesignConstructorAbstract<
    * @returns additional attributes / дополнительные атрибуты
    */
   getAttrs(): ConstrItem {
-    const attrs: ConstrItem = { ...this.attrs ?? {} }
-
-    if ('class' in attrs) {
-      delete attrs.class
-    }
-
-    if ('style' in attrs) {
-      delete attrs.style
-    }
+    const { class: _class, style: _style, ...attrs } = this.attrs ?? {}
 
     return attrs
   }
@@ -192,7 +176,7 @@ export abstract class DesignConstructorAbstract<
    */
   expose(): ConstrExpose<E, EXPOSE> {
     return {
-      ...(this.dataExpose ?? {}),
+      ...this.initExpose(),
       elementHtml: this.element
     } as ConstrExpose<E, EXPOSE>
   }
@@ -205,22 +189,6 @@ export abstract class DesignConstructorAbstract<
    */
   render(): () => VNode | (VNode | any)[] | undefined {
     return () => this.initRender()
-  }
-
-  /**
-   * Final initialization of computed classes, styles, and exposed data.
-   * Must be called as the last statement in the constructor of the child class.
-   *
-   * Финальная инициализация вычисляемых классов, стилей и экспортируемых данных.
-   * Должна вызываться последней инструкцией в конструкторе дочернего класса.
-   * @returns current instance / текущий экземпляр
-   */
-  protected init(): this {
-    this.classesSub = computed(() => this.initClasses())
-    this.stylesSub = computed(() => this.initStyles())
-    this.dataExpose = this.initExpose()
-
-    return this
   }
 
   /**
@@ -288,62 +256,6 @@ export abstract class DesignConstructorAbstract<
   }
 
   /**
-   * Transformation of the class value into an object.
-   *
-   * Преобразование значения класса в объект.
-   * @param classes list of classes for transformation / список классов для преобразования
-   * @returns object of classes / объект классов
-   */
-  protected toClass(classes?: ConstrClass): ConstrClassObject {
-    if (isObjectNotArray(classes)) {
-      return classes
-    }
-
-    if (Array.isArray(classes)) {
-      const name = classes
-        .filter(item => typeof item === 'string' && item.trim() !== '')
-        .join(' ')
-
-      return name === '' ? {} : { [name]: true }
-    }
-
-    if (typeof classes === 'string') {
-      const name = classes.trim()
-
-      return name === '' ? {} : { [name]: true }
-    }
-
-    return {}
-  }
-
-  /**
-   * Converts the class name to standard for the current component.
-   *
-   * Преобразовывает название класса в стандартное для текущего компонента.
-   * @param classes list of classes / список классов
-   * @returns object with converted class names / объект с преобразованными названиями классов
-   */
-  protected toClassName<T extends ConstrItem>(classes?: ConstrItem): T {
-    if (isObject(classes)) {
-      const data: ConstrItem = {}
-
-      forEach(classes, (value, name: string) => {
-        if (name.match(/\?\?/)) {
-          data[name.replace(/\?\?/, this.getName())] = value
-        } else if (name.match(/\?/)) {
-          data[name.replace(/\?/, this.getDesign())] = value
-        } else {
-          data[name] = value
-        }
-      })
-
-      return data as T
-    }
-
-    return {} as T
-  }
-
-  /**
    * Getting component names as an array.
    *
    * Получение названий компонентов в виде массива.
@@ -361,7 +273,7 @@ export abstract class DesignConstructorAbstract<
    * @returns updated classes / обновленные классы
    */
   private updateClasses(): CLASSES {
-    const classes = this.classesSub?.value
+    const classes = this.initClasses()
     const classesProps = this.options?.classes?.value
 
     if (
@@ -371,11 +283,11 @@ export abstract class DesignConstructorAbstract<
       return {
         ...classes,
         ...classesProps,
-        main: {
-          ...this.toClass(classes?.main),
-          ...this.toClass(classesProps?.main),
-          ...this.toClass(this.attrs?.class)
-        }
+        main: [
+          classes?.main,
+          classesProps?.main,
+          this.attrs?.class
+        ]
       } as CLASSES
     }
 
@@ -395,7 +307,7 @@ export abstract class DesignConstructorAbstract<
    * @returns updated styles / обновленные стили
    */
   private updateStyles(): ConstrStyles {
-    const styles = this.stylesSub?.value
+    const styles = this.initStyles()
     const stylesProps = this.options?.styles?.value
 
     if (

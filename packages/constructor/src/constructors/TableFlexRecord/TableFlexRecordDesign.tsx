@@ -70,8 +70,6 @@ export class TableFlexRecordDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**

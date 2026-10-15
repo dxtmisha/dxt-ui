@@ -70,8 +70,6 @@ export class FormattedNumberDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**

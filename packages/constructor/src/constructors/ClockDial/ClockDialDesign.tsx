@@ -67,8 +67,6 @@ export class ClockDialDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**

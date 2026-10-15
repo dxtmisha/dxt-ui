@@ -65,8 +65,6 @@ export class CarouselItemDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**

@@ -67,8 +67,6 @@ export class MenuChipDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**

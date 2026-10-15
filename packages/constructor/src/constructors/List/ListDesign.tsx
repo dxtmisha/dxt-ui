@@ -73,8 +73,6 @@ export class ListDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -168,7 +166,7 @@ export class ListDesign<
     type: ListType,
     item: ListDataItem
   ): VNode => {
-    return this.components.renderOne(
+    return this.components?.renderOne(
       'listItem',
       this.getItemAttrs(type, item)
     ) as VNode
@@ -182,7 +180,7 @@ export class ListDesign<
    * @param props data for working with the group/ данные для работы с группой
    */
   readonly renderItemGroup = (item: ListDataItem, props: ListGroupSlotsPropsInclude): VNode => {
-    return this.components.renderOne(
+    return this.components?.renderOne(
       'listItem',
       this.item.getItemManagementFormGroup(item, props)
     ) as VNode
@@ -199,7 +197,7 @@ export class ListDesign<
     item: ListDataItem,
     props: WindowControlItem
   ): VNode => {
-    return this.components.renderOne(
+    return this.components?.renderOne(
       'listItem',
       toBinds(
         this.item.getItemManagementFormMenu(item, Boolean(props.open.value)),
@@ -224,7 +222,7 @@ export class ListDesign<
               this.item.windowClasses.get().static
             ]
           },
-          this.components.renderOne(
+          this.components?.renderOne(
             'input',
             toBinds(
               {
@@ -357,7 +355,7 @@ export class ListDesign<
    * @param item selected element/ выбранный элемент
    */
   readonly renderGroup = (item: ListDataItem): VNode => {
-    return this.components.renderOne(
+    return this.components?.renderOne(
       'listGroup',
       {
         open: this.item.isOpenGroup(item),
@@ -379,7 +377,7 @@ export class ListDesign<
    * @param first is the first element/ является ли первым элементом
    */
   readonly renderMenu = (item: ListDataItem, first: boolean): VNode => {
-    return this.components.renderOne(
+    return this.components?.renderOne(
       'listMenu',
       {
         divider: this.props.divider,

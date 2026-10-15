@@ -67,8 +67,6 @@ export class BarsDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -149,7 +147,7 @@ export class BarsDesign<
     }
 
     return [
-      this.components.renderOne(
+      this.components?.renderOne(
         'button',
         {
           ...this.item.backBinds.value,
@@ -225,7 +223,7 @@ export class BarsDesign<
 
     if (list) {
       list.forEach(
-        item => this.components.renderAdd(children, 'button', item)
+        item => this.components?.renderAdd(children, 'button', item)
       )
     }
 

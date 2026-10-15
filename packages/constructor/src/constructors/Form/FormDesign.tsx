@@ -68,8 +68,6 @@ export class FormDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**

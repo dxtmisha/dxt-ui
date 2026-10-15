@@ -69,8 +69,6 @@ export class AlertDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**

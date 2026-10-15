@@ -61,7 +61,6 @@ export abstract class ModalDesignAbstract<
     )
 
     this.item = this.initItem(ItemConstructor)
-    this.init()
   }
 
   /**

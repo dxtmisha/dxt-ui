@@ -70,8 +70,6 @@ export class ButtonDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**

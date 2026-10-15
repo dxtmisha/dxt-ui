@@ -66,8 +66,6 @@ export class TextareaAutosizeDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**

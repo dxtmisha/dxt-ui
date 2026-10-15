@@ -66,8 +66,6 @@ export class ButtonGroupDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -131,7 +129,7 @@ export class ButtonGroupDesign<
     if (this.item.isList()) {
       if (this.props.list) {
         this.props.list.forEach((item, key) => {
-          this.components.renderAdd(
+          this.components?.renderAdd(
             children,
             'button',
             toBinds(

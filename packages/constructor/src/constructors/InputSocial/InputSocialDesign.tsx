@@ -74,8 +74,6 @@ export class InputSocialDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**

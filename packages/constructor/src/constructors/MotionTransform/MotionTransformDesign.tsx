@@ -73,8 +73,6 @@ export class MotionTransformDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**

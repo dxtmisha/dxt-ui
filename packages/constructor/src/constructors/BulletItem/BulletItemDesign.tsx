@@ -68,8 +68,6 @@ export class BulletItemDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**

@@ -68,8 +68,6 @@ export class ChipGroupDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -145,7 +143,7 @@ export class ChipGroupDesign<
    * @param item selected element/ выбранный элемент
    */
   readonly renderItem = (item: ChipGroupItem): VNode | undefined => {
-    return this.components.renderOne(
+    return this.components?.renderOne(
       'chip',
       toBinds(
         {

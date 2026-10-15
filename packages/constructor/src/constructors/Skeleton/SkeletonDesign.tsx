@@ -68,8 +68,6 @@ export class SkeletonDesign<
       this.props,
       this.getName()
     )
-
-    this.init()
   }
 
   /**

@@ -71,8 +71,6 @@ export class DraggableWrapperDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**

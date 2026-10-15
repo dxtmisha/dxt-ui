@@ -70,8 +70,6 @@ export class ImageDesign<
       this.getName(),
       this.emits
     )
-
-    this.init()
   }
 
   /** Shared image element bindings / Общие привязки элемента изображения */

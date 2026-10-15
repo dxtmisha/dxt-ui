@@ -76,8 +76,6 @@ export class PaginationDesign<
       this.slots,
       this.emits
     )
-
-    this.init()
   }
 
   /**
@@ -274,7 +272,7 @@ export class PaginationDesign<
    * @returns limit selector menu VNode or undefined / VNode меню выбора лимита или undefined
    */
   readonly renderMenuControl = (): VNode[] => {
-    const menu = this.components.renderOne(
+    const menu = this.components?.renderOne(
       'menu',
       this.item.menuRows.binds,
       { control: this.renderMenuButton }
@@ -502,7 +500,7 @@ export class PaginationDesign<
     props: ConstrBind<ButtonPropsBasic>,
     index: string | undefined = props.selected ? 'selected' : undefined
   ): VNode | undefined => {
-    return this.components.renderOne(
+    return this.components?.renderOne(
       'button',
       toBinds(
         props,
