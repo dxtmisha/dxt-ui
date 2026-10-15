@@ -162,7 +162,7 @@ Encapsulates all state, reactivity, and business logic. **Must contain zero rend
 
 ```ts
 import { type Ref } from 'vue'
-import { type ConstrClass, type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
+import { type ConstrClass, type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
 
 import { LabelInclude } from '../../classes/LabelInclude'
 import { EnabledInclude } from '../../classes/EnabledInclude'
@@ -189,8 +189,7 @@ export class Button {
   constructor(
     protected readonly props: ButtonPropsBasic,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<ButtonComponents, ButtonPropsBasic>,
     protected readonly slots?: ButtonSlots,
     protected readonly emits?: ConstrEmit<ButtonEmits>,
@@ -216,12 +215,12 @@ export class Button {
     } = constructors
 
     // 2. Initialize in strict dependency order
-    this.progress = new ProgressConstructor(className, props, components, { circular: true })
-    this.label = new LabelConstructor(props, className, undefined, slots)
+    this.progress = new ProgressConstructor(naming.getName(), props, components, { circular: true })
+    this.label = new LabelConstructor(props, naming.getName(), undefined, slots)
     this.enabled = new EnabledConstructor(props, this.progress)
-    this.icon = new IconConstructor(props, className, components)
-    this.ripple = new RippleConstructor(className, components, this.enabled)
-    this.skeleton = new SkeletonConstructor(props, classDesign, ['classBackground'])
+    this.icon = new IconConstructor(props, naming.getName(), components)
+    this.ripple = new RippleConstructor(naming.getName(), components, this.enabled)
+    this.skeleton = new SkeletonConstructor(props, naming.getDesign(), ['classBackground'])
     this.event = new EventConstructor(props, this.enabled, emits)
   }
 
@@ -295,8 +294,7 @@ export class ButtonDesign<
     this.item = new ItemConstructor(
       this.props,
       this.element,
-      this.getDesign(),
-      this.getName(),
+      this.naming,
       this.components,
       this.slots,
       this.emits
@@ -314,10 +312,10 @@ export class ButtonDesign<
       main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
-        label: this.getSubClass('label'),
-        icon: this.getSubClass('icon'),
-        trailing: this.getSubClass('trailing'),
-        loading: this.getSubClass('loading')
+        label: this.naming.getSubClass('label'),
+        icon: this.naming.getSubClass('icon'),
+        trailing: this.naming.getSubClass('trailing'),
+        loading: this.naming.getSubClass('loading')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -556,7 +554,7 @@ export class ModalDesign<...> extends ModalDesignAbstract<Modal, ...> {
   protected initItem(Item?: typeof Modal): Modal {
     return new (Item ?? Modal)(
       this.props, this.element,
-      this.getDesign(), this.getName(),
+      this.naming,
       this.components, this.slots, this.emits
     )
   }
@@ -572,7 +570,7 @@ Used when one component conditionally renders another:
 ```tsx
 // 1. In Parent Logic Class
 this.button = new ButtonInclude(
-  className,
+  this.naming.getName(),
   props,
   components,
   () => ({ label: props.buttonLabel, icon: props.buttonIcon })
@@ -639,9 +637,9 @@ export class MyModal {
 
 | Method / Property | Return Type | Description |
 |---|---|---|
-| `this.getName()` | `string` | Component name in kebab-case |
-| `this.getDesign()` | `string` | Design system prefix (e.g. `d1`) |
-| `this.getSubClass('el')` | `string` | Sub-element class name (`ComponentName__el`) |
+| `this.naming.getName()` | `string` | Component name in kebab-case |
+| `this.naming.getDesign()` | `string` | Design system prefix (e.g. `d1`) |
+| `this.naming.getSubClass('el')` | `string` | Sub-element class name (`ComponentName__el`) |
 | `this.getAttrs()` | `Record<string, any>` | External bound attributes |
 | `this.initSlot('name', fallback, props)` | `VNode[]` | Render named slot |
 | `this.expose()` | `ConstrExpose` | Public API from `initExpose()` with the root element reference |

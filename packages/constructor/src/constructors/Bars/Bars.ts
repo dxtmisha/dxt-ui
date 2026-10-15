@@ -3,6 +3,7 @@ import {
   type ConstrClass,
   type ConstrEmit,
   type DesignComp,
+  type DesignName,
   forEach,
   getBind,
   toBinds
@@ -53,8 +54,7 @@ export class Bars {
    * Constructor
    * @param props input data/ входные данные
    * @param element input element/ элемент ввода
-   * @param classDesign design name/ название дизайна
-   * @param className class name/ название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
@@ -72,8 +72,7 @@ export class Bars {
   constructor(
     protected readonly props: BarsProps,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<BarsComponents, BarsProps>,
     protected readonly slots?: BarsSlots,
     protected readonly emits?: ConstrEmit<BarsEmits>,
@@ -101,9 +100,9 @@ export class Bars {
       WindowClassesConstructor = WindowClassesInclude
     } = constructors
 
-    this.skeleton = new SkeletonConstructor(props, classDesign, ['classTextVariant'])
-    this.windowClasses = new WindowClassesConstructor(classDesign)
-    this.motionTransformClasses = new MotionTransformClassesConstructor(classDesign)
+    this.skeleton = new SkeletonConstructor(props, naming.getDesign(), ['classTextVariant'])
+    this.windowClasses = new WindowClassesConstructor(naming.getDesign())
+    this.motionTransformClasses = new MotionTransformClassesConstructor(naming.getDesign())
     this.text = new TextConstructor(props)
 
     this.label = new LabelConstructor(
@@ -111,7 +110,7 @@ export class Bars {
         label: this.action.action.value ? this.props.actionLabel : this.props.label,
         labelId: this.props.labelId
       }),
-      className,
+      naming.getName(),
       undefined,
       slots,
       undefined,
@@ -124,7 +123,7 @@ export class Bars {
         description: this.action.action.value ? this.props.actionDescription : this.props.description,
         descriptionId: this.props.descriptionId
       }),
-      className,
+      naming.getName(),
       slots,
       this.skeleton
     )
@@ -164,7 +163,7 @@ export class Bars {
    */
   get classes(): ConstrClass {
     return {
-      [`${this.className}--action`]: this.action.action.value
+      [`${this.naming.getName()}--action`]: this.action.action.value
     }
   }
 

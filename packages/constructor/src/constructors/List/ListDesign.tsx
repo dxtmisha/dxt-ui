@@ -67,8 +67,7 @@ export class ListDesign<
     this.item = new ItemConstructor(
       this.props,
       this.element,
-      this.getDesign(),
-      this.getName(),
+      this.naming,
       this.components,
       this.slots,
       this.emits
@@ -99,15 +98,15 @@ export class ListDesign<
       main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
-        space: this.getSubClass('space'),
-        line: this.getSubClass('line'),
-        subtitle: this.getSubClass('subtitle'),
-        html: this.getSubClass('html'),
-        management: this.getSubClass('management'),
-        group: this.getSubClass('group'),
-        menu: this.getSubClass('menu'),
-        filterInput: this.getSubClass('filterInput'),
-        none: this.getSubClass('none')
+        space: this.naming.getSubClass('space'),
+        line: this.naming.getSubClass('line'),
+        subtitle: this.naming.getSubClass('subtitle'),
+        html: this.naming.getSubClass('html'),
+        management: this.naming.getSubClass('management'),
+        group: this.naming.getSubClass('group'),
+        menu: this.naming.getSubClass('menu'),
+        filterInput: this.naming.getSubClass('filterInput'),
+        none: this.naming.getSubClass('none')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

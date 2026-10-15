@@ -1,5 +1,5 @@
 import { type Ref } from 'vue'
-import { type ConstrEmit, type DesignComp, getBind } from '@dxtmisha/functional'
+import { type ConstrEmit, type DesignComp, type DesignName, getBind } from '@dxtmisha/functional'
 
 import { DescriptionInclude } from '../../classes/DescriptionInclude'
 import { LabelInclude } from '../../classes/LabelInclude'
@@ -41,8 +41,7 @@ export class Dialog extends ModalAbstract {
    * Конструктор для инициализации всех подкомпонентов, иконок и текстов диалога.
    * @param props input data / входные данные
    * @param element target element / целевой элемент
-   * @param classDesign design name / название дизайна
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param slots slots / слоты
    * @param emits the function called when an event is triggered / функция вызывается, когда срабатывает событие
@@ -59,8 +58,7 @@ export class Dialog extends ModalAbstract {
   constructor(
     protected override readonly props: DialogProps,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<DialogComponents, DialogProps>,
     protected readonly slots?: DialogSlots,
     protected readonly emits?: ConstrEmit<DialogEmits>,
@@ -86,8 +84,7 @@ export class Dialog extends ModalAbstract {
     super(
       props,
       element,
-      classDesign,
-      className,
+      naming,
       components,
       slots,
       emits,
@@ -105,22 +102,22 @@ export class Dialog extends ModalAbstract {
 
     this.icon = new IconIncludeConstructor(
       () => ({ icon: this.iconValue }),
-      className,
+      naming.getName(),
       components,
       () => props.iconAttrs
     )
     this.label = new LabelIncludeConstructor(
       props,
-      className,
+      naming.getName(),
       undefined,
       slots,
       undefined,
       undefined,
       true
     )
-    this.description = new DescriptionIncludeConstructor(props, className, slots)
+    this.description = new DescriptionIncludeConstructor(props, naming.getName(), slots)
 
-    this.windowClasses = new WindowClassesIncludeConstructor(classDesign)
+    this.windowClasses = new WindowClassesIncludeConstructor(naming.getDesign())
     this.text = new TextIncludeConstructor(props)
   }
 

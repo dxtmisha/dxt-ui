@@ -2,6 +2,7 @@ import {
   type ConstrEmit,
   type ConstrStyles,
   type DesignComp,
+  type DesignName,
   isNumber,
   ListDataRef,
   type ListSelectedList
@@ -64,8 +65,7 @@ export class Collage {
    * Конструктор для Collage.
    * @param props input data / входные данные
    * @param element container element reference / ссылка на элемент контейнера
-   * @param classDesign design name / название дизайна
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
@@ -84,8 +84,7 @@ export class Collage {
   constructor(
     protected readonly props: CollageProps,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<CollageComponents, CollageProps>,
     protected readonly slots?: CollageSlots,
     protected readonly emits?: ConstrEmit<CollageEmits>,
@@ -116,8 +115,8 @@ export class Collage {
     } = constructors
 
     this.elementItem = new CollageElementConstructor(element)
-    this.grow = new CollageGrowConstructor(className, this.elementItem)
-    this.woven = new CollageWovenConstructor(className, this.elementItem)
+    this.grow = new CollageGrowConstructor(naming.getName(), this.elementItem)
+    this.woven = new CollageWovenConstructor(naming.getName(), this.elementItem)
     this.masonryHorizontal = new CollageMasonryHorizontalConstructor(
       this.grow,
       this.elementItem
@@ -165,8 +164,8 @@ export class Collage {
     this.focusDirection = new FocusDirectionIncludeConstructor(
       this.element,
       `[data-collage-item]`,
-      `.${this.classDesign}-collageItem--selected`,
-      `${this.classDesign}-collageItem--focus`,
+      `.${this.naming.getDesign()}-collageItem--selected`,
+      `${this.naming.getDesign()}-collageItem--focus`,
       () => this.props.control
     )
   }
@@ -181,7 +180,7 @@ export class Collage {
     const cellSize = this.getCellSize()
 
     if (cellSize !== undefined) {
-      styles[`--${this.className}-cell-size`] = cellSize
+      styles[`--${this.naming.getName()}-cell-size`] = cellSize
     }
 
     return styles

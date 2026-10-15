@@ -1,5 +1,5 @@
 import { type Ref } from 'vue'
-import { type ConstrBind, type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
+import { type ConstrBind, type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { TextInclude } from '../../classes/TextInclude'
@@ -38,8 +38,7 @@ export class InputCodeItem {
    * Конструктор
    * @param props input data / входные данные
    * @param element input element / элемент ввода
-   * @param classDesign design name / название дизайна
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
@@ -54,8 +53,7 @@ export class InputCodeItem {
   constructor(
     protected readonly props: InputCodeItemProps,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<InputCodeItemComponents, InputCodeItemProps>,
     protected readonly slots?: InputCodeItemSlots,
     protected readonly emits?: ConstrEmit<InputCodeItemEmits>,
@@ -88,7 +86,7 @@ export class InputCodeItem {
     )
     this.skeleton = new SkeletonIncludeConstructor(
       props,
-      classDesign,
+      naming.getDesign(),
       ['classBackground']
     )
     this.text = new TextIncludeConstructor(props)
@@ -121,7 +119,7 @@ export class InputCodeItem {
   get inputBinds(): ConstrBind<Partial<HTMLInputElement>> {
     return {
       key: 'input',
-      class: `${this.className}__input`,
+      class: `${this.naming.getName()}__input`,
       name: this.getName(),
       autocomplete: this.props.autocomplete as AutoFill,
       inputMode: this.props.inputMode,

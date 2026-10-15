@@ -67,7 +67,7 @@ export class ImageDesign<
     this.item = new ItemConstructor(
       this.props,
       this.element,
-      this.getName(),
+      this.naming.getName(),
       this.emits
     )
   }

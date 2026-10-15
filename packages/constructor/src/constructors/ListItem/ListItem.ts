@@ -1,5 +1,5 @@
 import { type Ref } from 'vue'
-import { type ConstrClassObject, type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
+import { type ConstrClassObject, type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
 
 import { getClassTagAStatic } from '../../functions/getClassTagAStatic'
 
@@ -58,8 +58,7 @@ export class ListItem {
    * Constructor
    * @param props input data / входные данные
    * @param element input element / элемент ввода
-   * @param classDesign design name / название дизайна
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
@@ -80,8 +79,7 @@ export class ListItem {
   constructor(
     protected readonly props: ListItemProps,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<ListItemComponents, ListItemProps>,
     protected readonly slots?: ListItemSlots,
     protected readonly emits?: ConstrEmit<ListItemEmits>,
@@ -116,7 +114,7 @@ export class ListItem {
     } = constructors
 
     const progress = new ProgressIncludeConstructor(
-      className,
+      naming.getName(),
       props,
       components,
       {
@@ -125,26 +123,26 @@ export class ListItem {
     )
     const skeleton = new SkeletonIncludeConstructor(
       props,
-      classDesign,
+      naming.getDesign(),
       ['classTextVariant']
     )
     const enabled = new EnabledIncludeConstructor(props, progress)
 
-    this.icon = new IconTrailingIncludeConstructor(props, className, components)
+    this.icon = new IconTrailingIncludeConstructor(props, naming.getName(), components)
     this.label = new LabelHighlightIncludeConstructor(
       props,
-      className,
+      naming.getName(),
       undefined,
       slots,
       undefined,
       skeleton
     )
-    this.prefix = new PrefixIncludeConstructor(props, className, slots, skeleton)
-    this.caption = new CaptionIncludeConstructor(props, className, slots)
-    this.suffix = new SuffixIncludeConstructor(props, className, slots)
-    this.description = new DescriptionIncludeConstructor(props, className, slots, skeleton)
+    this.prefix = new PrefixIncludeConstructor(props, naming.getName(), slots, skeleton)
+    this.caption = new CaptionIncludeConstructor(props, naming.getName(), slots)
+    this.suffix = new SuffixIncludeConstructor(props, naming.getName(), slots)
+    this.description = new DescriptionIncludeConstructor(props, naming.getName(), slots, skeleton)
     this.badge = new BadgeIncludeConstructor(
-      className,
+      naming.getName(),
       props,
       components,
       {
@@ -152,7 +150,7 @@ export class ListItem {
       }
     )
 
-    this.ripple = new RippleIncludeConstructor(className, components, enabled)
+    this.ripple = new RippleIncludeConstructor(naming.getName(), components, enabled)
     this.progress = progress
     this.skeleton = skeleton
 
@@ -176,11 +174,11 @@ export class ListItem {
   /** Values for the class / Значения для класса */
   get classes(): ConstrClassObject {
     return {
-      [`${this.className}--selected`]: this.props.selected && this.props.selectionStyle === 'none',
-      [`${this.className}--selectionStyle`]: this.props.selectionStyle !== 'none',
-      [`${this.className}--selectionStyle--${this.props.selectionStyle}`]: Boolean(this.props.selectionStyle),
-      [`${this.className}--description`]: this.description.is,
-      [getClassTagAStatic(this.classDesign)]: true
+      [`${this.naming.getName()}--selected`]: this.props.selected && this.props.selectionStyle === 'none',
+      [`${this.naming.getName()}--selectionStyle`]: this.props.selectionStyle !== 'none',
+      [`${this.naming.getName()}--selectionStyle--${this.props.selectionStyle}`]: Boolean(this.props.selectionStyle),
+      [`${this.naming.getName()}--description`]: this.description.is,
+      [getClassTagAStatic(this.naming.getDesign())]: true
     }
   }
 

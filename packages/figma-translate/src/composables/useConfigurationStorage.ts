@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 import { executeUseLocal } from '@dxtmisha/functional'
 
-const item = executeUseLocal(() => {
+const item = /* #__PURE__ */ executeUseLocal(() => {
   /** Save in document / Хранить в макете */
   const inDocument = ref(false)
 

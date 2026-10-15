@@ -3,6 +3,7 @@ import type { Ref } from 'vue'
 import {
   type ConstrEmit,
   type DesignComp,
+  type DesignName,
   isArray,
   isFilled,
   isObjectNotArray,
@@ -33,8 +34,7 @@ export class ProgressBar {
    * Конструктор
    * @param props input data / входные данные
    * @param element input element / элемент ввода
-   * @param classDesign design name / название дизайна
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
@@ -44,8 +44,7 @@ export class ProgressBar {
   constructor(
     protected readonly props: ProgressBarProps,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<ProgressBarComponents, ProgressBarProps>,
     protected readonly slots?: ProgressBarSlots,
     protected readonly emits?: ConstrEmit<ProgressBarEmits>,
@@ -59,7 +58,7 @@ export class ProgressBar {
 
     this.skeleton = new SkeletonIncludeConstructor(
       props,
-      classDesign,
+      naming.getDesign(),
       ['classBackgroundVariant']
     )
   }
@@ -156,7 +155,7 @@ export class ProgressBar {
    * @returns class name / название класса
    */
   protected getItemClassName(): string {
-    return `${this.className}__item`
+    return `${this.naming.getName()}__item`
   }
 
   /**
@@ -180,11 +179,11 @@ export class ProgressBar {
         [`${classNameItem}--focus`]: Boolean(this.props.focus) && this.props.focus === item.index,
         [`${classNameItem}--palette`]: Boolean(palette),
         [`${classNameItem}--color`]: Boolean(color),
-        [`${this.classDesign}-palette--${palette}`]: Boolean(palette)
+        [`${this.naming.getDesign()}-palette--${palette}`]: Boolean(palette)
       },
       style: {
-        [`--${this.className}-sys-percent`]: `${percent}%`,
-        [`--${this.className}-sys-color`]: color
+        [`--${this.naming.getName()}-sys-percent`]: `${percent}%`,
+        [`--${this.naming.getName()}-sys-color`]: color
       },
       aria: {
         ...AriaStaticInclude.role('progressbar'),
@@ -213,7 +212,7 @@ export class ProgressBar {
         [`${this.getItemClassName()}--space`]: true
       },
       style: {
-        [`--${this.className}-sys-percent`]: `${remainder}%`
+        [`--${this.naming.getName()}-sys-percent`]: `${remainder}%`
       },
       aria: {
         ...AriaStaticInclude.hidden()

@@ -10,6 +10,7 @@ import {
 import {
   type ConstrEmit,
   type DesignComp,
+  type DesignName,
   EventRef,
   ScrollbarWidthRef
 } from '@dxtmisha/functional'
@@ -40,8 +41,7 @@ export class ScrollSticky {
    * Constructor
    * @param props input data / входные данные
    * @param element input element / элемент ввода
-   * @param classDesign design name / название дизайна
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
@@ -51,8 +51,7 @@ export class ScrollSticky {
   constructor(
     protected readonly props: ScrollStickyProps,
     protected readonly element: Ref<HTMLDivElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<ScrollStickyComponents, ScrollStickyProps>,
     protected readonly slots?: ScrollStickySlots,
     protected readonly emits?: ConstrEmit<ScrollStickyEmits>,
@@ -204,11 +203,11 @@ export class ScrollSticky {
   readonly onResize = (): void => {
     this.checkScroll((element, scrollElement) => {
       scrollElement.style.setProperty(
-        `--${this.className}-sys-width`,
+        `--${this.naming.getName()}-sys-width`,
         `${element.scrollWidth ?? 0}px`
       )
       scrollElement.style.setProperty(
-        `--${this.className}-sys-scrollHeight`,
+        `--${this.naming.getName()}-sys-scrollHeight`,
         `${this.width.width.value ?? 0}px`
       )
     })

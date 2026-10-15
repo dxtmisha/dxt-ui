@@ -2,6 +2,7 @@
 export * from './classes/design/DesignComp'
 export * from './classes/design/DesignComponents'
 export * from './classes/design/DesignConstructorAbstract'
+export * from './classes/design/DesignName'
 export * from './classes/ref/DatetimeRef'
 export * from './classes/ref/EffectScopeGlobal'
 export * from './classes/ref/EventRef'

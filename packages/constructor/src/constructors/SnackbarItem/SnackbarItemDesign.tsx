@@ -60,8 +60,7 @@ export class SnackbarItemDesign<
     this.item = new ItemConstructor(
       this.props,
       this.element,
-      this.getDesign(),
-      this.getName(),
+      this.naming,
       this.components,
       this.slots,
       this.emits
@@ -90,16 +89,16 @@ export class SnackbarItemDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        tool: this.getSubClass('tool'),
-        icon: this.getSubClass('icon'),
-        trailing: this.getSubClass('trailing'),
-        context: this.getSubClass('context'),
-        label: this.getSubClass('label'),
-        description: this.getSubClass('description'),
-        body: this.getSubClass('body'),
-        button: this.getSubClass('button'),
-        close: this.getSubClass('close'),
-        actions: this.getSubClass('actions')
+        tool: this.naming.getSubClass('tool'),
+        icon: this.naming.getSubClass('icon'),
+        trailing: this.naming.getSubClass('trailing'),
+        context: this.naming.getSubClass('context'),
+        label: this.naming.getSubClass('label'),
+        description: this.naming.getSubClass('description'),
+        body: this.naming.getSubClass('body'),
+        button: this.naming.getSubClass('button'),
+        close: this.naming.getSubClass('close'),
+        actions: this.naming.getSubClass('actions')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

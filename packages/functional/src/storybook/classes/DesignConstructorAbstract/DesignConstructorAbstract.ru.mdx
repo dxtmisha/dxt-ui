@@ -69,11 +69,13 @@ class ButtonDesign extends DesignConstructorAbstract<
 
 ## Вспомогательные методы именования
 
-- `getName(): string` — Возвращает полное название компонента (например, `button-large`).
-- `getDesign(): string` — Возвращает базовое название дизайна (первая часть названия).
-- `getSubClass(name: string | string[]): string` — Генерирует название класса для подэлемента (BEM: `__`).
-- `getStatusClass(name: string | string[]): string` — Генерирует название класса состояния (BEM: `--`).
-- `getStyle(name: string | string[]): string` — Генерирует название системной CSS-переменной.
+Методы именования доступны в наследниках через защищённое поле `naming` (`DesignName`).
+
+- `naming.getName(): string` — Возвращает полное название компонента (например, `button-large`).
+- `naming.getDesign(): string` — Возвращает базовое название дизайна (первая часть названия).
+- `naming.getSubClass(name: string | string[]): string` — Генерирует название класса для подэлемента (BEM: `__`).
+- `naming.getStatusClass(name: string | string[]): string` — Генерирует название класса состояния (BEM: `--`).
+- `naming.getStyle(name: string | string[]): string` — Генерирует название системной CSS-переменной.
 
 ## Данные компонента
 

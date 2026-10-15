@@ -65,8 +65,7 @@ export class DraggableWrapperDesign<
     this.item = new ItemConstructor(
       this.props,
       this.element,
-      this.getDesign(),
-      this.getName(),
+      this.naming,
       this.components,
       this.slots,
       this.emits
@@ -94,11 +93,11 @@ export class DraggableWrapperDesign<
   protected initClasses(): Partial<CLASSES> {
     return {
       main: {
-        [this.getStatusClass('disabled')]: this.props.disabled === true
+        [this.naming.getStatusClass('disabled')]: this.props.disabled === true
       },
       ...{
         // :classes [!] System label / Системная метка
-        square: this.getSubClass('square')
+        square: this.naming.getSubClass('square')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -121,7 +120,7 @@ export class DraggableWrapperDesign<
    * @returns virtual node / виртуальный узел
    */
   protected initRender(): VNode {
-    const classesList = DraggableWrapperClassesData.getClassesList(this.getDesign())
+    const classesList = DraggableWrapperClassesData.getClassesList(this.naming.getDesign())
     return h(
       this.props.tag || 'div',
       {
@@ -132,7 +131,7 @@ export class DraggableWrapperDesign<
       },
       [
         this.slots?.default?.({
-          className: `${this.getSubClass('item')} ${this.item.classes.getId()}`,
+          className: `${this.naming.getSubClass('item')} ${this.item.classes.getId()}`,
           classClick: classesList.click,
           classDrop: classesList.drop,
           classPosition: classesList.position

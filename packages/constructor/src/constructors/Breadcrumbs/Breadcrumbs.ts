@@ -1,7 +1,8 @@
 import type { Ref } from 'vue'
 import {
   type ConstrEmit,
-  type DesignComp
+  type DesignComp,
+  type DesignName
 } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
@@ -26,8 +27,7 @@ export class Breadcrumbs {
    * Constructor for Breadcrumbs.
    *
    * Конструктор для Breadcrumbs.
-   * @param classDesign design name / название дизайна
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param element input element / элемент ввода
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
@@ -38,8 +38,7 @@ export class Breadcrumbs {
    * @param constructors.TextIncludeConstructor class for working with text / класс для работы с текстом
    */
   constructor(
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components: DesignComp<BreadcrumbsComponents, BreadcrumbsProps> | undefined,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly emits: ConstrEmit<BreadcrumbsEmits> | undefined,

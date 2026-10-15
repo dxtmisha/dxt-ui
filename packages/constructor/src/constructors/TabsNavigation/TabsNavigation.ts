@@ -1,5 +1,5 @@
 import { toRef, type Ref } from 'vue'
-import { type ConstrEmit, type DesignComp, ListDataRef, type ListSelectedList } from '@dxtmisha/functional'
+import { type ConstrEmit, type DesignComp, type DesignName, ListDataRef, type ListSelectedList } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { EventClickInclude } from '../../classes/EventClickInclude'
@@ -59,8 +59,7 @@ export class TabsNavigation {
    * Конструктор для инициализации всех необходимых компонентов навигации вкладок.
    * @param props input configuration properties / входные конфигурационные свойства
    * @param element main HTML element / главный HTML-элемент
-   * @param classDesign design class token name / имя токена класса дизайна
-   * @param className base class name / базовое имя класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components registry of design components / реестр дизайн-компонентов
    * @param slots slot functions wrapper / обертка функций слотов
    * @param emits event emitter callback / функция обратного вызова для генерации событий
@@ -69,8 +68,7 @@ export class TabsNavigation {
   constructor(
     protected readonly props: TabsNavigationProps,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<TabsNavigationComponents, TabsNavigationProps>,
     protected readonly slots?: TabsNavigationSlots,
     protected readonly emits?: ConstrEmit<TabsNavigationEmits>,
@@ -101,7 +99,7 @@ export class TabsNavigation {
     } = constructors
 
     this.scroll = new HorizontalScrollIncludeConstructor(
-      className,
+      naming.getName(),
       props,
       components
     )
@@ -130,8 +128,7 @@ export class TabsNavigation {
     this.indicator = new TabsNavigationIndicatorConstructor(
       props,
       () => this.scroll.elementHtml,
-      classDesign,
-      className,
+      naming,
       this.selected
     )
     this.control = new TabsNavigationControlConstructor(

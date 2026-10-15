@@ -1,5 +1,5 @@
 import { onMounted, type Ref, watch } from 'vue'
-import { type ConstrClassObject, type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
+import { type ConstrClassObject, type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
 
 import { ModelInclude } from '../../classes/ModelInclude'
 
@@ -43,8 +43,7 @@ export class MotionAxis {
    * Конструктор для инициализации контроллера MotionAxis.
    * @param props input data / входные данные
    * @param element input element / элемент ввода
-   * @param classDesign design name / название дизайна
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
@@ -61,8 +60,7 @@ export class MotionAxis {
   constructor(
     protected readonly props: MotionAxisProps,
     protected readonly element: Ref<HTMLDivElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<MotionAxisComponents, MotionAxisProps>,
     protected readonly slots?: MotionAxisSlots,
     protected readonly emits?: ConstrEmit<MotionAxisEmits>,
@@ -92,12 +90,12 @@ export class MotionAxis {
 
     this.elementItem = new MotionAxisElementConstructor(
       this.element,
-      this.className
+      this.naming.getName()
     )
 
     this.styles = new MotionAxisStylesConstructor(
       this.element,
-      this.className,
+      this.naming.getName(),
       this.selected
     )
 
@@ -140,10 +138,10 @@ export class MotionAxis {
    */
   get classes(): ConstrClassObject {
     return {
-      [`${this.className}--axis--${this.go.axis.value}`]: true,
-      [`${this.className}--direction--${this.go.direction.value}`]: true,
-      [`${this.className}--start`]: this.elementItem.getStart() && Boolean(this.props.animationHeight),
-      [`${this.className}--move`]: this.elementItem.getMove() && Boolean(this.props.animationHeight)
+      [`${this.naming.getName()}--axis--${this.go.axis.value}`]: true,
+      [`${this.naming.getName()}--direction--${this.go.direction.value}`]: true,
+      [`${this.naming.getName()}--start`]: this.elementItem.getStart() && Boolean(this.props.animationHeight),
+      [`${this.naming.getName()}--move`]: this.elementItem.getMove() && Boolean(this.props.animationHeight)
     }
   }
 

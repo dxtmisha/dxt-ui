@@ -1,5 +1,5 @@
 import { type Ref } from 'vue'
-import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
+import { type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { CaptionInclude } from '../../classes/CaptionInclude'
@@ -83,8 +83,7 @@ export class Field {
    * Конструктор для инициализации всех подмодулей поля и утилит управления состоянием.
    * @param props input data / входные данные
    * @param element input element / элемент ввода
-   * @param classDesign design name / название дизайна
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
@@ -106,8 +105,7 @@ export class Field {
   constructor(
     protected readonly props: FieldProps,
     protected readonly element: Ref<HTMLLabelElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<FieldComponents, FieldProps>,
     protected readonly slots?: FieldSlots,
     protected readonly emits?: ConstrEmit<FieldEmits>,
@@ -146,17 +144,17 @@ export class Field {
     this.text = new TextIncludeConstructor(props)
     this.skeleton = new SkeletonIncludeConstructor(
       props,
-      this.classDesign,
+      this.naming.getDesign(),
       ['classBackground']
     )
 
-    this.icon = new IconTrailingIncludeConstructor(props, className, components)
-    this.caption = new CaptionIncludeConstructor(props, className, slots)
-    this.prefix = new PrefixIncludeConstructor(props, className, slots)
-    this.suffix = new SuffixIncludeConstructor(props, className, slots)
+    this.icon = new IconTrailingIncludeConstructor(props, naming.getName(), components)
+    this.caption = new CaptionIncludeConstructor(props, naming.getName(), slots)
+    this.prefix = new PrefixIncludeConstructor(props, naming.getName(), slots)
+    this.suffix = new SuffixIncludeConstructor(props, naming.getName(), slots)
 
     this.progress = new ProgressIncludeConstructor(
-      className,
+      naming.getName(),
       props,
       components,
       {
@@ -169,12 +167,12 @@ export class Field {
     this.enabled = new EnabledIncludeConstructor(props, this.progress)
     this.event = new EventClickIncludeConstructor(props, this.enabled, emits)
 
-    this.icons = new FieldIconsConstructor(props, className, this.text)
-    this.size = new FieldSizeConstructor(element, className)
+    this.icons = new FieldIconsConstructor(props, naming.getName(), this.text)
+    this.size = new FieldSizeConstructor(element, naming.getName())
 
     this.fieldElement = new FieldElement(props, element)
     this.fieldLabel = new FieldLabelIncludeConstructor(
-      className,
+      naming.getName(),
       props,
       components,
       () => this.skeleton.binds,
@@ -183,7 +181,7 @@ export class Field {
       () => props.counterTop
     )
     this.fieldMessage = new FieldMessageIncludeConstructor(
-      className,
+      naming.getName(),
       props,
       components,
       () => this.skeleton.binds,
@@ -219,13 +217,13 @@ export class Field {
    */
   get control(): FieldControl {
     const id = this.fieldElement.id
-    const className = `${this.className}__body__input ${this.skeleton.classesSkeleton.classText}`
+    const className = `${this.naming.getName()}__body__input ${this.skeleton.classesSkeleton.classText}`
 
     return {
       id,
       className,
-      classHidden: `${this.className}__body__hidden`,
-      classForFocus: `${this.className}__body__focus`,
+      classHidden: `${this.naming.getName()}__body__hidden`,
+      classForFocus: `${this.naming.getName()}__body__focus`,
       binds: {
         'id': id,
         'class': className,
@@ -246,9 +244,9 @@ export class Field {
    */
   get classes() {
     return {
-      [`${this.className}--cancel`]: this.icons.isCancel(),
-      [`${this.className}--suffix`]: this.props.suffix,
-      [`${this.className}--validation`]: this.fieldElement.isValidation()
+      [`${this.naming.getName()}--cancel`]: this.icons.isCancel(),
+      [`${this.naming.getName()}--suffix`]: this.props.suffix,
+      [`${this.naming.getName()}--validation`]: this.fieldElement.isValidation()
     }
   }
 }

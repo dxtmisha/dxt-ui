@@ -62,8 +62,7 @@ export class TableItemDesign<
     this.item = new ItemConstructor(
       this.props,
       this.element,
-      this.getDesign(),
-      this.getName(),
+      this.naming,
       this.components,
       this.slots,
       this.emits
@@ -91,8 +90,8 @@ export class TableItemDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        label: this.getSubClass('label'),
-        description: this.getSubClass('description')
+        label: this.naming.getSubClass('label'),
+        description: this.naming.getSubClass('description')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

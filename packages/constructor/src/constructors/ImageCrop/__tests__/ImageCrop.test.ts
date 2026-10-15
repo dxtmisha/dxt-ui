@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi } from 'vitest'
 import { reactive, ref } from 'vue'
+import { DesignName } from '@dxtmisha/functional'
 
 import { ImageCrop } from '../ImageCrop'
 import type { ImageCropProps } from '../props'
@@ -19,8 +20,7 @@ describe('ImageCrop', () => {
     const imageCrop = new ImageCrop(
       props,
       elementRef,
-      'd1',
-      'd1-image-crop',
+      new DesignName('d1.imageCrop'),
       undefined,
       undefined,
       emits
@@ -47,8 +47,7 @@ describe('ImageCrop', () => {
     const imageCrop = new ImageCrop(
       props,
       elementRef,
-      'd1',
-      'd1-image-crop',
+      new DesignName('d1.imageCrop'),
       undefined,
       undefined,
       emits
@@ -67,9 +66,9 @@ describe('ImageCrop', () => {
     })
 
     expect(imageCrop.cropImage.styles).toEqual({
-      '--d1-image-crop-sys-aspect-ratio': '1920 / 1080',
-      '--d1-image-crop-sys-width': 'auto',
-      '--d1-image-crop-sys-height': 'auto'
+      '--d1-imageCrop-sys-aspect-ratio': '1920 / 1080',
+      '--d1-imageCrop-sys-width': 'auto',
+      '--d1-imageCrop-sys-height': 'auto'
     })
     expect(emits).toHaveBeenCalledWith('load', expect.any(Object))
   })
@@ -82,7 +81,7 @@ describe('ImageCrop', () => {
       disabled: true
     }) as ImageCropProps
 
-    const imageCrop = new ImageCrop(props, elementRef, 'd1', 'd1-image-crop')
+    const imageCrop = new ImageCrop(props, elementRef, new DesignName('d1.imageCrop'))
 
     expect(imageCrop.aria).toEqual({ 'aria-disabled': 'true' })
   })
@@ -100,8 +99,7 @@ describe('ImageCrop', () => {
     const imageCrop = new ImageCrop(
       props,
       elementRef,
-      'd1',
-      'd1-image-crop',
+      new DesignName('d1.imageCrop'),
       undefined,
       undefined,
       emits

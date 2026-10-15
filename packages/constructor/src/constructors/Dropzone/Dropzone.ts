@@ -1,5 +1,5 @@
 import { type Ref } from 'vue'
-import { type ConstrClass, type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
+import { type ConstrClass, type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { DescriptionInclude } from '../../classes/DescriptionInclude'
@@ -52,8 +52,7 @@ export class Dropzone {
    * Constructor
    * @param props input data / входные данные
    * @param element input element / элемент ввода
-   * @param classDesign design name / название дизайна
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
@@ -71,8 +70,7 @@ export class Dropzone {
   constructor(
     protected readonly props: DropzoneProps,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<DropzoneComponents, DropzoneProps>,
     protected readonly slots?: DropzoneSlots,
     protected readonly emits?: ConstrEmit<DropzoneEmits>,
@@ -102,14 +100,14 @@ export class Dropzone {
 
     this.skeleton = new SkeletonIncludeConstructor(
       this.props,
-      this.classDesign,
+      this.naming.getDesign(),
       ['classBackground']
     )
     this.text = new TextIncludeConstructor(this.props)
 
     this.icon = new IconIncludeConstructor(
       this.props,
-      this.className,
+      this.naming.getName(),
       this.components
     )
     this.label = new LabelIncludeConstructor(
@@ -117,7 +115,7 @@ export class Dropzone {
         ...this.props,
         label: this.props.label || this.text.dropzone
       }),
-      this.className,
+      this.naming.getName(),
       undefined,
       this.slots,
       undefined,
@@ -127,7 +125,7 @@ export class Dropzone {
     )
     this.description = new DescriptionIncludeConstructor(
       this.props,
-      this.className,
+      this.naming.getName(),
       this.slots
     )
 
@@ -146,7 +144,7 @@ export class Dropzone {
    */
   get classes(): ConstrClass {
     return {
-      [`${this.className}--enter`]: this.events.enter.value && !this.props.disabled && !this.props.readonly,
+      [`${this.naming.getName()}--enter`]: this.events.enter.value && !this.props.disabled && !this.props.readonly,
       ...this.skeleton.classes
     }
   }

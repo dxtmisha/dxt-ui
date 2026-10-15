@@ -4,6 +4,7 @@ import {
   type ConstrClassObject,
   type ConstrEmit,
   type DesignComp,
+  type DesignName,
   GeoRef,
   isFloat,
   toBinds
@@ -97,8 +98,7 @@ export class Mask {
    * Constructor
    * @param props input data/ входные данные
    * @param element input element/ элемент ввода
-   * @param classDesign design name/ название дизайна
-   * @param className class name/ название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
@@ -130,8 +130,7 @@ export class Mask {
   constructor(
     protected readonly props: MaskProps,
     protected readonly element: Ref<MaskElementInput>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<MaskComponents, MaskProps>,
     protected readonly slots?: MaskSlots,
     protected readonly emits?: ConstrEmit<MaskEmits>,
@@ -280,7 +279,7 @@ export class Mask {
       this.item,
       this.valueBasic,
       this.validation,
-      this.className
+      this.naming.getName()
     )
 
     this.emit = new MaskEmitConstructor(
@@ -367,8 +366,8 @@ export class Mask {
   /** Values for CSS class/ Значения для CSS-класса */
   get classes(): ConstrClassObject {
     return {
-      [`${this.className}--value`]: this.characterLength.is(),
-      [`${this.className}--end`]: this.right.isEnd()
+      [`${this.naming.getName()}--value`]: this.characterLength.is(),
+      [`${this.naming.getName()}--end`]: this.right.isEnd()
     }
   }
 

@@ -2,7 +2,8 @@ import type { Ref } from 'vue'
 import {
   type ConstrClassObject,
   type ConstrEmit,
-  type DesignComp
+  type DesignComp,
+  type DesignName
 } from '@dxtmisha/functional'
 
 import { EventClickInclude } from '../../classes/EventClickInclude'
@@ -38,8 +39,7 @@ export class CarouselItem {
    * Конструктор для CarouselItem.
    * @param props input reactive properties / входные реактивные свойства
    * @param element root DOM element reference / ссылка на корневой DOM-элемент
-   * @param classDesign design name / название дизайна
-   * @param className base class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits event emission function / функция отправки событий
@@ -48,8 +48,7 @@ export class CarouselItem {
   constructor(
     protected readonly props: CarouselItemProps,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<CarouselItemComponents, CarouselItemProps>,
     protected readonly slots?: CarouselItemSlots,
     protected readonly emits?: ConstrEmit<CarouselItemEmits>,
@@ -68,10 +67,10 @@ export class CarouselItem {
     } = constructors
 
     this.data = new CarouselItemDataConstructor(props)
-    this.skeleton = new SkeletonIncludeConstructor(props, classDesign, ['classBackground'])
+    this.skeleton = new SkeletonIncludeConstructor(props, naming.getDesign(), ['classBackground'])
     this.event = new EventClickIncludeConstructor(props, undefined, emits)
     this.image = new ImageIncludeConstructor(
-      className,
+      naming.getName(),
       props,
       components,
       undefined,

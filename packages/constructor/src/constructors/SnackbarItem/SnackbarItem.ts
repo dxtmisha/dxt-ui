@@ -1,5 +1,5 @@
 import { type Ref } from 'vue'
-import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
+import { type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { AreaInclude } from '../../classes/AreaInclude'
@@ -42,8 +42,7 @@ export class SnackbarItem {
    * Constructor
    * @param props input data/ входные данные
    * @param element input element/ элемент ввода
-   * @param classDesign design name/ название дизайна
-   * @param className class name/ название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
@@ -60,8 +59,7 @@ export class SnackbarItem {
   constructor(
     protected readonly props: SnackbarItemProps,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<SnackbarItemComponents, SnackbarItemProps>,
     protected readonly slots?: SnackbarItemSlots,
     protected readonly emits?: ConstrEmit<SnackbarItemEmits>,
@@ -89,18 +87,18 @@ export class SnackbarItem {
 
     this.event = new EventConstructor(undefined, undefined, emits)
 
-    this.label = new LabelConstructor(props, className, undefined, slots)
-    this.description = new DescriptionConstructor(props, className, slots)
-    this.icon = new IconConstructor(props, className, components)
+    this.label = new LabelConstructor(props, naming.getName(), undefined, slots)
+    this.description = new DescriptionConstructor(props, naming.getName(), slots)
+    this.icon = new IconConstructor(props, naming.getName(), components)
 
     this.button = new ButtonConstructor(
-      className,
+      naming.getName(),
       () => this.props?.button,
       components,
       { onClick: this.event.onClick }
     )
     this.actions = new ActionsConstructor(
-      className,
+      naming.getName(),
       props,
       components,
       { align: 'left' } as ActionsProps,

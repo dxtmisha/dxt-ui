@@ -1,5 +1,5 @@
 import type { Ref } from 'vue'
-import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
+import { type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
 
 import { ModelInclude } from '../../classes/ModelInclude'
 import { SelectableAreaClassesData } from './SelectableAreaClassesData'
@@ -36,8 +36,7 @@ export class SelectableArea {
    * Constructor
    * @param props input data / входные данные
    * @param element input element / элемент ввода
-   * @param classDesign design name / название дизайна
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
@@ -52,8 +51,7 @@ export class SelectableArea {
   constructor(
     protected readonly props: SelectableAreaProps,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<SelectableAreaComponents, SelectableAreaProps>,
     protected readonly slots?: SelectableAreaSlots,
     protected readonly emits?: ConstrEmit<SelectableAreaEmits>,
@@ -75,7 +73,7 @@ export class SelectableArea {
       SelectableAreaSquareConstructor = SelectableAreaSquare
     } = constructors
 
-    this.classes = new SelectableAreaClassesConstructor(element, classDesign, className)
+    this.classes = new SelectableAreaClassesConstructor(element, naming)
     this.item = new SelectableAreaItemConstructor(props, this.classes)
 
     this.square = new SelectableAreaSquareConstructor(this.classes)
@@ -109,7 +107,7 @@ export class SelectableArea {
    */
   get slotData(): SelectableAreaControl {
     return {
-      className: `${this.className}__item ${this.classes.getId()}`,
+      className: `${this.naming.getName()}__item ${this.classes.getId()}`,
       classSelection: this.classes.list.selected,
       classClick: this.classes.list.click,
       selected: this.item.get(),

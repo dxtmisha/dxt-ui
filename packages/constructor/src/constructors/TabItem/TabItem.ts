@@ -1,5 +1,5 @@
 import { type Ref } from 'vue'
-import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
+import { type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { EnabledInclude } from '../../classes/EnabledInclude'
@@ -43,8 +43,7 @@ export class TabItem {
    * Конструктор для TabItem.
    * @param props input data / входные данные
    * @param element input element / элемент ввода
-   * @param classDesign design name / название дизайна
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
@@ -60,8 +59,7 @@ export class TabItem {
   constructor(
     protected readonly props: TabItemProps,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<TabItemComponents, TabItemProps>,
     protected readonly slots?: TabItemSlots,
     protected readonly emits?: ConstrEmit<TabItemEmits>,
@@ -85,13 +83,13 @@ export class TabItem {
       SkeletonIncludeConstructor = SkeletonInclude
     } = constructors
 
-    this.skeleton = new SkeletonIncludeConstructor(this.props, this.classDesign, ['classTextVariant'])
+    this.skeleton = new SkeletonIncludeConstructor(this.props, this.naming.getDesign(), ['classTextVariant'])
     this.enabled = new EnabledIncludeConstructor(this.props)
 
-    this.icon = new IconTrailingIncludeConstructor(this.props, this.className, this.components)
+    this.icon = new IconTrailingIncludeConstructor(this.props, this.naming.getName(), this.components)
     this.label = new LabelIncludeConstructor(
       this.props,
-      this.className,
+      this.naming.getName(),
       undefined,
       this.slots,
       undefined,
@@ -100,7 +98,7 @@ export class TabItem {
       this.skeleton
     )
     this.badge = new BadgeIncludeConstructor(
-      this.className,
+      this.naming.getName(),
       this.props,
       this.components,
       {
@@ -108,7 +106,7 @@ export class TabItem {
       }
     )
 
-    this.ripple = new RippleIncludeConstructor(this.className, this.components, this.enabled)
+    this.ripple = new RippleIncludeConstructor(this.naming.getName(), this.components, this.enabled)
     this.event = new EventClickIncludeConstructor(
       this.props,
       this.enabled,

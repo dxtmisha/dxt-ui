@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { ref } from 'vue'
+import { DesignName } from '@dxtmisha/functional'
 import { Table } from '../Table'
 import type { TableProps } from '../props'
 
@@ -11,7 +12,7 @@ describe('Table caption', () => {
 
     const element = ref<HTMLElement>()
 
-    const table = new Table(props, element, 'd1', 'd1-table')
+    const table = new Table(props, element, new DesignName('d1.table'))
 
     expect(table.tagCaption).toBe('caption')
     expect(table.caption.is).toBe(true)
@@ -27,7 +28,7 @@ describe('Table caption', () => {
       caption: () => 'Slot Caption Content'
     }
 
-    const table = new Table(props, element, 'd1', 'd1-table', undefined, slots)
+    const table = new Table(props, element, new DesignName('d1.table'), undefined, slots)
 
     expect(table.caption.is).toBe(true)
     const rendered = table.caption.render()
@@ -42,7 +43,7 @@ describe('Table caption', () => {
 
     const element = ref<HTMLElement>()
 
-    const table = new Table(props, element, 'd1', 'd1-table')
+    const table = new Table(props, element, new DesignName('d1.table'))
     expect(table.caption.is).toBe(true)
   })
 })
@@ -58,7 +59,7 @@ describe('Table foot', () => {
 
     const element = ref<HTMLElement>()
 
-    const table = new Table(props, element, 'd1', 'd1-table')
+    const table = new Table(props, element, new DesignName('d1.table'))
     expect(table).toBeDefined()
   })
 })
@@ -72,7 +73,7 @@ describe('Table colgroup', () => {
 
     const element = ref<HTMLElement>()
 
-    const table = new Table(props, element, 'd1', 'd1-table')
+    const table = new Table(props, element, new DesignName('d1.table'))
     expect(table.columns.list).toEqual(['id', 'name'])
   })
 })
@@ -92,7 +93,7 @@ describe('Table sort', () => {
 
     const element = ref<HTMLElement>()
 
-    const table = new Table(props, element, 'd1', 'd1-table')
+    const table = new Table(props, element, new DesignName('d1.table'))
     expect(table.sort.isSort()).toBe(true)
     expect(table.sort.getList().map(item => item.name)).toEqual(['Alice', 'Bob', 'Charlie'])
     expect(table.pagination.list.map(item => item.name)).toEqual(['Alice', 'Bob', 'Charlie'])

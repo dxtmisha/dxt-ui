@@ -1,16 +1,17 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi } from 'vitest'
 import { ref } from 'vue'
+import { DesignName } from '@dxtmisha/functional'
 import { SelectableAreaClassesData } from '../SelectableAreaClassesData'
 
 describe('SelectableAreaClassesData', () => {
   it('should initialize lists and unique ID correctly', () => {
     const element = document.createElement('div')
     const elementRef = ref(element)
-    const data = new SelectableAreaClassesData(elementRef, 'd1', 'd1-selectable-area')
+    const data = new SelectableAreaClassesData(elementRef, new DesignName('d1.selectableArea'))
 
     expect(data.getId()).toContain('selectable-area--')
-    expect(data.getName()).toBe('d1-selectable-area')
+    expect(data.getName()).toBe('d1-selectableArea')
     expect(data.getElement()).toBe(element)
 
     expect(data.list).toEqual({
@@ -27,19 +28,19 @@ describe('SelectableAreaClassesData', () => {
     element.getBoundingClientRect = vi.fn().mockReturnValue(rectMock)
 
     const elementRef = ref(element)
-    const data = new SelectableAreaClassesData(elementRef, 'd1', 'd1-selectable-area')
+    const data = new SelectableAreaClassesData(elementRef, new DesignName('d1.selectableArea'))
 
     expect(data.getRect()).toBe(rectMock)
   })
 
   it('should check isMain target element correctly', () => {
     const element = document.createElement('div')
-    element.className = 'd1-selectable-area'
+    element.className = 'd1-selectableArea'
     const elementRef = ref(element)
-    const data = new SelectableAreaClassesData(elementRef, 'd1', 'd1-selectable-area')
+    const data = new SelectableAreaClassesData(elementRef, new DesignName('d1.selectableArea'))
 
     // Since element does not have child elements with id classes, target is not an item.
-    // target closest 'd1-selectable-area' is element itself.
+    // target closest 'd1-selectableArea' is element itself.
     expect(data.isMain(element)).toBe(true)
 
     // Let's create an item child
@@ -52,9 +53,9 @@ describe('SelectableAreaClassesData', () => {
 
   it('should find click triggers, items and selections', () => {
     const element = document.createElement('div')
-    element.className = 'd1-selectable-area'
+    element.className = 'd1-selectableArea'
     const elementRef = ref(element)
-    const data = new SelectableAreaClassesData(elementRef, 'd1', 'd1-selectable-area')
+    const data = new SelectableAreaClassesData(elementRef, new DesignName('d1.selectableArea'))
 
     const id = data.getId()
 
@@ -84,7 +85,7 @@ describe('SelectableAreaClassesData', () => {
   it('should toggle body classes using setBlockSelection', () => {
     const element = document.createElement('div')
     const elementRef = ref(element)
-    const data = new SelectableAreaClassesData(elementRef, 'd1', 'd1-selectable-area')
+    const data = new SelectableAreaClassesData(elementRef, new DesignName('d1.selectableArea'))
 
     expect(document.body.classList.contains(data.list.body)).toBe(false)
     data.setBlockSelection(true)

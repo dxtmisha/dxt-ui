@@ -69,11 +69,13 @@ class ButtonDesign extends DesignConstructorAbstract<
 
 ## Các phương thức Hỗ trợ Đặt tên
 
-- `getName(): string` — Trả về tên đầy đủ của thành phần (ví dụ: `button-large`).
-- `getDesign(): string` — Trả về tên thiết kế cơ sở (phần đầu tiên của tên).
-- `getSubClass(name: string | string[]): string` — Tạo tên lớp cho phần tử con theo phong cách BEM (`__`).
-- `getStatusClass(name: string | string[]): string` — Tạo tên lớp trạng thái theo phong cách BEM (`--`).
-- `getStyle(name: string | string[]): string` — Tạo tên biến CSS hệ thống.
+Các phương thức đặt tên có thể được sử dụng trong lớp con thông qua thuộc tính protected `naming` (`DesignName`).
+
+- `naming.getName(): string` — Trả về tên đầy đủ của thành phần (ví dụ: `button-large`).
+- `naming.getDesign(): string` — Trả về tên thiết kế cơ sở (phần đầu tiên của tên).
+- `naming.getSubClass(name: string | string[]): string` — Tạo tên lớp cho phần tử con theo phong cách BEM (`__`).
+- `naming.getStatusClass(name: string | string[]): string` — Tạo tên lớp trạng thái theo phong cách BEM (`--`).
+- `naming.getStyle(name: string | string[]): string` — Tạo tên biến CSS hệ thống.
 
 ## Dữ liệu Thành phần
 

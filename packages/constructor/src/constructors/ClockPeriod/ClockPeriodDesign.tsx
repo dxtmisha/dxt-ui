@@ -61,8 +61,7 @@ export class ClockPeriodDesign<
     this.item = new ItemConstructor(
       this.props,
       this.element,
-      this.getDesign(),
-      this.getName(),
+      this.naming,
       this.components,
       this.slots,
       this.emits
@@ -94,9 +93,9 @@ export class ClockPeriodDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        item: this.getSubClass('item'),
-        am: this.getSubClass('am'),
-        pm: this.getSubClass('pm')
+        item: this.naming.getSubClass('item'),
+        am: this.naming.getSubClass('am'),
+        pm: this.naming.getSubClass('pm')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -150,7 +149,7 @@ export class ClockPeriodDesign<
         class: {
           [this.classes?.value.item!]: true,
           [this.classes?.value[ClockPeriodType.am]!]: true,
-          [this.getStatusClass('selected')]: isSelected
+          [this.naming.getStatusClass('selected')]: isSelected
         },
         disabled,
         tabindex: -1,
@@ -181,7 +180,7 @@ export class ClockPeriodDesign<
         class: {
           [this.classes?.value.item!]: true,
           [this.classes?.value[ClockPeriodType.pm]!]: true,
-          [this.getStatusClass('selected')]: isSelected
+          [this.naming.getStatusClass('selected')]: isSelected
         },
         disabled,
         tabindex: -1,

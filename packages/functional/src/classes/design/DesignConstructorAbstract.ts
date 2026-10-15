@@ -6,14 +6,10 @@ import {
   useSlots,
   type VNode
 } from 'vue'
-import {
-  forEach,
-  isFilled,
-  toArray,
-  toCamelCase
-} from '@dxtmisha/functional-basic'
+import { isFilled } from '@dxtmisha/functional-basic'
 
 import { DesignComponents } from './DesignComponents'
+import { DesignName } from './DesignName'
 
 import type {
   ConstrClasses,
@@ -43,8 +39,8 @@ export abstract class DesignConstructorAbstract<
   CLASSES extends ConstrClasses,
   P extends ConstrItem
 > {
-  /** Component name split by levels / Название компонента, разбитое по уровням */
-  protected readonly name: string[]
+  /** Component naming helper / Помощник именования компонента */
+  protected readonly naming: DesignName
   /** Root DOM element reference / Реактивная ссылка на корневой DOM-элемент */
   protected readonly element = ref<E | undefined>()
 
@@ -75,7 +71,7 @@ export abstract class DesignConstructorAbstract<
     protected readonly props: Readonly<P>,
     protected readonly options?: ConstrOptions<COMP, EMITS, P>
   ) {
-    this.name = this.initName(name)
+    this.naming = new DesignName(name)
 
     if (isFilled(options?.components)) {
       this.components = new DesignComponents(options.components, options.compMod)
@@ -87,59 +83,6 @@ export abstract class DesignConstructorAbstract<
 
     this.attrs = useAttrs()
     this.slots = useSlots() as SLOTS
-  }
-
-  /**
-   * Getting the class name.
-   *
-   * Получение названия класса.
-   * @returns class name / название класса
-   */
-  getName(): string {
-    return this.name.join('-')
-  }
-
-  /**
-   * Getting the design name.
-   *
-   * Получение названия дизайна.
-   * @returns design name / название дизайна
-   */
-  getDesign(): string {
-    return String(this.name[0])
-  }
-
-  /**
-   * Getting the class name of a sub-element.
-   *
-   * Получение названия класса подэлемента.
-   * @param name list of class names by levels / список названий классов по уровням
-   * @returns sub-element class name / название класса подэлемента
-   */
-  getSubClass(name: string | string[]): string {
-    return `${this.getName()}__${toArray(name).join('__')}`
-  }
-
-  /**
-   * Getting the class name for the status.
-   *
-   * Получение названия класса для статуса.
-   * @param name list of class names by levels / список названий классов по уровням
-   * @returns status class name / название класса статуса
-   */
-  getStatusClass(name: string | string[]): string {
-    return `${this.getName()}--${toArray(name).join('--')}`
-  }
-
-  /**
-   * Getting the property name for the style.
-   *
-   * Получение названия свойства для стиля.
-   * @param name list of class names by levels / список названий классов по уровням
-   * @returns CSS custom property name / название CSS-переменной
-   */
-  getStyle(name: string | string[]): string {
-    return `--${this.getName()}-sys-${toArray(name).join('-')}`
   }
 
   /**
@@ -169,6 +112,16 @@ export abstract class DesignConstructorAbstract<
   }
 
   /**
+   * Returns the component naming helper.
+   *
+   * Возвращает помощник именования компонента.
+   * @returns current naming helper instance / текущий экземпляр помощника именования
+   */
+  getNaming(): DesignName {
+    return this.naming
+  }
+
+  /**
    * List of available external variables.
    *
    * Список доступных переменных извне.
@@ -187,7 +140,7 @@ export abstract class DesignConstructorAbstract<
    * Метод рендеринга для метода настройки.
    * @returns render function / функция рендеринга
    */
-  render(): () => VNode | (VNode | any)[] | undefined {
+  render(): () => VNode | VNode[] | undefined {
     return () => this.initRender()
   }
 
@@ -221,7 +174,7 @@ export abstract class DesignConstructorAbstract<
    * Метод рендеринга, возвращающий дерево VNode.
    * @returns rendered element / отрендеренный элемент
    */
-  protected abstract initRender(): VNode | (VNode | any)[] | undefined
+  protected abstract initRender(): VNode | VNode[] | undefined
 
   /**
    * Initializes the slot.
@@ -235,7 +188,7 @@ export abstract class DesignConstructorAbstract<
    */
   protected initSlot<K extends keyof SLOTS>(
     name: K,
-    children?: any[],
+    children?: VNode[],
     props: ConstrItem = {}
   ): VNode | undefined {
     if (
@@ -253,17 +206,6 @@ export abstract class DesignConstructorAbstract<
     }
 
     return undefined
-  }
-
-  /**
-   * Getting component names as an array.
-   *
-   * Получение названий компонентов в виде массива.
-   * @param name component name for transformation / название компонента для преобразования
-   * @returns component names by levels / названия компонента по уровням
-   */
-  private initName(name: string): string[] {
-    return forEach(name.split('.', 2), item => toCamelCase(item))
   }
 
   /**

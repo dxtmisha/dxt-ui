@@ -4,6 +4,7 @@ import {
   type ConstrClassObject,
   type ConstrEmit,
   type DesignComp,
+  type DesignName,
   isFilled
 } from '@dxtmisha/functional'
 
@@ -37,8 +38,7 @@ export class SelectValue {
    * Constructor / Конструктор
    * @param props input data / входные данные
    * @param element input element / элемент ввода
-   * @param classDesign design name / название дизайна
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
@@ -50,8 +50,7 @@ export class SelectValue {
   constructor(
     protected readonly props: SelectValueProps,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<SelectValueComponents, SelectValueProps>,
     protected readonly slots?: SelectValueSlots,
     protected readonly emits?: ConstrEmit<SelectValueEmits>,
@@ -74,7 +73,7 @@ export class SelectValue {
       this.emits
     )
 
-    this.window = new WindowClassesConstructor(classDesign)
+    this.window = new WindowClassesConstructor(naming.getDesign())
   }
 
   /** Icon for canceling selection / Иконка для отмены выбора */
@@ -84,7 +83,7 @@ export class SelectValue {
         icon: this.props.iconCancel,
         dynamic: true,
         class: [
-          `${this.className}__trailing`,
+          `${this.naming.getName()}__trailing`,
           this.window.get().controlStatic
         ]
       }
@@ -96,8 +95,8 @@ export class SelectValue {
   /** Returns data for the main style class / Возвращает данные для главного класса стиля */
   get classes(): ConstrClassObject {
     return {
-      [`${this.className}--placeholder`]: this.isPlaceholder(),
-      [`${this.className}--multiple`]: Boolean(this.props.multiple)
+      [`${this.naming.getName()}--placeholder`]: this.isPlaceholder(),
+      [`${this.naming.getName()}--multiple`]: Boolean(this.props.multiple)
     }
   }
 

@@ -1,7 +1,8 @@
 import { type Ref } from 'vue'
 import {
   type ConstrEmit,
-  type DesignComp
+  type DesignComp,
+  type DesignName
 } from '@dxtmisha/functional'
 
 import type { DraggableWrapperComponents, DraggableWrapperEmits, DraggableWrapperSlots } from './types'
@@ -58,8 +59,7 @@ export class DraggableWrapper {
    * Конструктор.
    * @param props input data / входные данные
    * @param element input element / элемент ввода
-   * @param classDesign design name / название дизайна
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
@@ -81,8 +81,7 @@ export class DraggableWrapper {
   constructor(
     protected readonly props: DraggableWrapperProps,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<DraggableWrapperComponents, DraggableWrapperProps>,
     protected readonly slots?: DraggableWrapperSlots,
     protected readonly emits?: ConstrEmit<DraggableWrapperEmits>,
@@ -120,8 +119,7 @@ export class DraggableWrapper {
 
     this.classes = new DraggableWrapperClassesConstructor(
       this.element,
-      this.classDesign,
-      this.className
+      this.naming
     )
     this.delay = new DraggableWrapperDelayConstructor(props)
 

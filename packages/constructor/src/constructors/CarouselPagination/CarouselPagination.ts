@@ -3,7 +3,8 @@ import {
   type ConstrClassObject,
   type ConstrEmit,
   type ConstrStyles,
-  type DesignComp
+  type DesignComp,
+  type DesignName
 } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
@@ -39,8 +40,7 @@ export class CarouselPagination {
    * Constructor
    * @param props input configuration properties / входные конфигурационные свойства
    * @param element main HTML element / главный HTML-элемент
-   * @param classDesign design class token name / имя токена класса дизайна
-   * @param className base class name / базовое имя класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components registry of design components / реестр дизайн-компонентов
    * @param slots slot functions wrapper / обертка функций слотов
    * @param emits event emitter callback / функция обратного вызова для генерации событий
@@ -54,8 +54,7 @@ export class CarouselPagination {
   constructor(
     protected readonly props: CarouselPaginationProps,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<CarouselPaginationComponents, CarouselPaginationProps>,
     protected readonly slots?: CarouselPaginationSlots,
     protected readonly emits?: ConstrEmit<CarouselPaginationEmits>,
@@ -85,7 +84,7 @@ export class CarouselPagination {
     this.focus = new CarouselPaginationFocusConstructor(
       props,
       element,
-      className,
+      naming.getName(),
       this.selected
     )
 
@@ -114,7 +113,7 @@ export class CarouselPagination {
    */
   get classes(): ConstrClassObject {
     return {
-      [`${this.className}--hide`]: this.items.isHide()
+      [`${this.naming.getName()}--hide`]: this.items.isHide()
     }
   }
 
@@ -126,7 +125,7 @@ export class CarouselPagination {
    */
   get styles(): ConstrStyles {
     return {
-      [`--${this.className}-sys-percent`]: `${this.items.percent}%`
+      [`--${this.naming.getName()}-sys-percent`]: `${this.items.percent}%`
     }
   }
 }

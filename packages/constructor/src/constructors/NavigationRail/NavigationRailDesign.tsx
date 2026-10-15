@@ -69,8 +69,7 @@ export class NavigationRailDesign<
     this.item = new ItemConstructor(
       this.props,
       this.element,
-      this.getDesign(),
-      this.getName(),
+      this.naming,
       this.components,
       this.slots,
       this.emits
@@ -101,11 +100,11 @@ export class NavigationRailDesign<
       main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
-        space: this.getSubClass('space'),
-        line: this.getSubClass('line'),
-        html: this.getSubClass('html'),
-        management: this.getSubClass('management'),
-        menu: this.getSubClass('menu')
+        space: this.naming.getSubClass('space'),
+        line: this.naming.getSubClass('line'),
+        html: this.naming.getSubClass('html'),
+        management: this.naming.getSubClass('management'),
+        menu: this.naming.getSubClass('menu')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

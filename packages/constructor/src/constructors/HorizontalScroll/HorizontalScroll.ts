@@ -1,5 +1,5 @@
 import { nextTick, onMounted, type Ref } from 'vue'
-import { type ConstrEmit, type DesignComp, goScrollTo } from '@dxtmisha/functional'
+import { type ConstrEmit, type DesignComp, type DesignName, goScrollTo } from '@dxtmisha/functional'
 
 import { ScrollToXInclude } from '../../classes/ScrollToXInclude'
 
@@ -28,8 +28,7 @@ export class HorizontalScroll {
    * Конструктор для HorizontalScroll.
    * @param props input data / входные данные
    * @param element input element / элемент ввода
-   * @param classDesign design name / название дизайна
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
@@ -39,8 +38,7 @@ export class HorizontalScroll {
   constructor(
     protected readonly props: HorizontalScrollProps,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<HorizontalScrollComponents, HorizontalScrollProps>,
     protected readonly slots?: HorizontalScrollSlots,
     protected readonly emits?: ConstrEmit<HorizontalScrollEmits>,
@@ -77,10 +75,10 @@ export class HorizontalScroll {
   /** Returns data for managing slot data / Возвращает данные для управления данными слотами */
   get slotData(): HorizontalScrollControlItem {
     return {
-      classItem: `${this.className}__item`,
-      classItemSelected: `${this.className}__item--selected`,
+      classItem: `${this.naming.getName()}__item`,
+      classItemSelected: `${this.naming.getName()}__item--selected`,
       binds: {
-        class: `${this.className}__item`
+        class: `${this.naming.getName()}__item`
       }
     }
   }

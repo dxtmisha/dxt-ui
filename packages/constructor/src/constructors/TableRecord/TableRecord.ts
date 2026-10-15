@@ -2,6 +2,7 @@ import { type Ref, type VNode } from 'vue'
 import {
   type ConstrEmit,
   type DesignComp,
+  type DesignName,
   isString,
   isObjectNotArray,
   type SortColumnItem
@@ -33,8 +34,7 @@ export class TableRecord {
    * Конструктор для TableRecord.
    * @param props input properties / входные свойства
    * @param element target HTML element / целевой HTML-элемент
-   * @param classDesign design system prefix / префикс дизайн-системы
-   * @param className base CSS class name / базовое имя CSS-класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits callback function triggered on events / функция обратного вызова, запускаемая при событиях
@@ -45,8 +45,7 @@ export class TableRecord {
   constructor(
     protected readonly props: TableRecordProps,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<TableRecordComponents, TableRecordProps>,
     protected readonly slots?: TableRecordSlots,
     protected readonly emits?: ConstrEmit<TableRecordEmits>,
@@ -61,8 +60,7 @@ export class TableRecord {
     } = constructors
 
     this.tableHeaderItem = new TableHeaderItemIncludeConstructor(
-      classDesign,
-      className,
+      naming,
       props,
       components,
       { onSort: (item: SortColumnItem) => this.emits?.('sort', item) },
@@ -70,8 +68,7 @@ export class TableRecord {
     )
 
     this.tableItem = new TableItemIncludeConstructor(
-      classDesign,
-      className,
+      naming,
       props,
       components,
       undefined,

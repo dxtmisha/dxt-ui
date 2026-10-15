@@ -68,8 +68,7 @@ export class InputPhoneDialCodeDesign<
     this.item = new ItemConstructor(
       this.props,
       this.element,
-      this.getDesign(),
-      this.getName(),
+      this.naming,
       this.components,
       this.slots,
       this.emits
@@ -97,8 +96,8 @@ export class InputPhoneDialCodeDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        button: this.getSubClass('button'),
-        menuCountry: this.getSubClass('menuCountry')
+        button: this.naming.getSubClass('button'),
+        menuCountry: this.naming.getSubClass('menuCountry')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

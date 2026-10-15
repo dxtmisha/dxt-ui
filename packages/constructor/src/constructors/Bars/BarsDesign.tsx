@@ -61,8 +61,7 @@ export class BarsDesign<
     this.item = new ItemConstructor(
       this.props,
       this.element,
-      this.getDesign(),
-      this.getName(),
+      this.naming,
       this.components,
       this.slots,
       this.emits
@@ -88,9 +87,9 @@ export class BarsDesign<
       main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
-        context: this.getSubClass('context'),
-        label: this.getSubClass('label'),
-        description: this.getSubClass('description')
+        context: this.naming.getSubClass('context'),
+        label: this.naming.getSubClass('label'),
+        description: this.naming.getSubClass('description')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

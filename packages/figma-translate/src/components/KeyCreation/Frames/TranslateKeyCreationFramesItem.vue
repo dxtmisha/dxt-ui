@@ -41,7 +41,7 @@ const onSelection = () => {
 
 <template>
   <D1Cell
-    :icon="{ icon: { value: image, size: 'contain' }, size: '3xl' }"
+    :icon="{ icon: { value: image as Uint8Array<ArrayBuffer> | string, size: 'contain' }, size: '3xl' }"
     :label="name"
     :description="id"
     :divider="false"

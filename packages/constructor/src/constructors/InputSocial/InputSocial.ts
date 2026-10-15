@@ -1,6 +1,6 @@
 import { computed, type Ref } from 'vue'
 import { MediaSocial, type InputSocialItem } from '@dxtmisha/media'
-import type { ConstrEmit, DesignComp, NumberOrString } from '@dxtmisha/functional'
+import type { ConstrEmit, DesignComp, DesignName, NumberOrString } from '@dxtmisha/functional'
 
 import { FieldAttributesInclude } from '../../classes/Field/FieldAttributesInclude'
 import { FieldChangeInclude } from '../../classes/Field/FieldChangeInclude'
@@ -62,8 +62,7 @@ export class InputSocial {
    * Конструктор для InputSocial.
    * @param props input data / входные данные
    * @param element input element / элемент ввода
-   * @param classDesign design name / название дизайна
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
@@ -82,8 +81,7 @@ export class InputSocial {
   constructor(
     protected readonly props: InputSocialProps,
     protected readonly element: Ref<FieldElementInput>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<InputSocialComponents, InputSocialProps>,
     protected readonly slots?: InputSocialSlots,
     protected readonly emits?: ConstrEmit<InputSocialEmits>,
@@ -150,7 +148,7 @@ export class InputSocial {
     )
 
     this.field = new FieldIncludeConstructor(
-      this.className,
+      this.naming.getName(),
       this.props,
       this.components,
       undefined,
@@ -159,7 +157,7 @@ export class InputSocial {
       this.event
     )
     this.mask = new MaskIncludeConstructor(
-      this.className,
+      this.naming.getName(),
       () => this.bindsMask,
       this.components,
       undefined,

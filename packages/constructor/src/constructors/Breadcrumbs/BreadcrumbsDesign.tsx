@@ -61,8 +61,7 @@ export class BreadcrumbsDesign<
     )
 
     this.item = new ItemConstructor(
-      this.getDesign(),
-      this.getName(),
+      this.naming,
       this.components,
       this.element,
       this.emits,
@@ -92,7 +91,7 @@ export class BreadcrumbsDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        item: this.getSubClass('item')
+        item: this.naming.getSubClass('item')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

@@ -1,5 +1,5 @@
 import { type Ref } from 'vue'
-import { type ConstrClass, type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
+import { type ConstrClass, type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
 import { getClassTagAStatic } from '../../functions/getClassTagAStatic'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
@@ -49,8 +49,7 @@ export class Button {
    * Constructor
    * @param props input data / входные данные
    * @param element input element / элемент ввода
-   * @param classDesign design name / название дизайна
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
@@ -66,8 +65,7 @@ export class Button {
   constructor(
     protected readonly props: ButtonPropsBasic,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<ButtonComponents, ButtonPropsBasic>,
     protected readonly slots?: ButtonSlots,
     protected readonly emits?: ConstrEmit<ButtonEmits>,
@@ -92,7 +90,7 @@ export class Button {
     } = constructors
 
     this.progress = new ProgressConstructor(
-      className,
+      naming.getName(),
       props,
       components,
       {
@@ -101,19 +99,19 @@ export class Button {
       }
     )
 
-    this.label = new LabelConstructor(props, className, undefined, slots)
+    this.label = new LabelConstructor(props, naming.getName(), undefined, slots)
     this.enabled = new EnabledConstructor(props, this.progress)
 
     this.icon = new IconConstructor(
       props,
-      className,
+      naming.getName(),
       components,
       () => ({ disabled: this.props.disabled })
     )
-    this.ripple = new RippleConstructor(className, components, this.enabled)
+    this.ripple = new RippleConstructor(naming.getName(), components, this.enabled)
     this.skeleton = new SkeletonConstructor(
       props,
-      classDesign,
+      naming.getDesign(),
       ['classBackground']
     )
 
@@ -193,8 +191,8 @@ export class Button {
    */
   get classes(): ConstrClass {
     return {
-      [`${this.className}--icon`]: this.icon.isIcon(),
-      [getClassTagAStatic(this.classDesign)]: true,
+      [`${this.naming.getName()}--icon`]: this.icon.isIcon(),
+      [getClassTagAStatic(this.naming.getDesign())]: true,
       ...this.skeleton.classes
     }
   }

@@ -1,5 +1,5 @@
 import { type Ref } from 'vue'
-import { isFilled, type ConstrEmit, type DesignComp, GeoUnit } from '@dxtmisha/functional'
+import { isFilled, type ConstrEmit, type DesignComp, type DesignName, GeoUnit } from '@dxtmisha/functional'
 
 import type { FormattedUnitComponents, FormattedUnitEmits, FormattedUnitSlots } from './types'
 import type { FormattedUnitProps } from './props'
@@ -16,8 +16,7 @@ export class FormattedUnit {
    * Конструктор.
    * @param props input data / входные данные
    * @param element input element / элемент ввода
-   * @param classDesign design name / название дизайна
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
@@ -25,8 +24,7 @@ export class FormattedUnit {
   constructor(
     protected readonly props: FormattedUnitProps,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<FormattedUnitComponents, FormattedUnitProps>,
     protected readonly slots?: FormattedUnitSlots,
     protected readonly emits?: ConstrEmit<FormattedUnitEmits>

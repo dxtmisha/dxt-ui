@@ -7,7 +7,8 @@ import {
   type ConstrClassObject,
   type ConstrEmit,
   type ConstrStyles,
-  type DesignComp
+  type DesignComp,
+  type DesignName
 } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
@@ -65,8 +66,7 @@ export class ClockDial {
    * Constructor
    * @param props input data / входные данные
    * @param element input element / элемент ввода
-   * @param classDesign design name / название дизайна
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
@@ -84,8 +84,7 @@ export class ClockDial {
   constructor(
     protected readonly props: ClockDialProps,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<ClockDialComponents, ClockDialProps>,
     protected readonly slots?: ClockDialSlots,
     protected readonly emits?: ConstrEmit<ClockDialEmits>,
@@ -123,11 +122,11 @@ export class ClockDial {
       () => props.readonly
     )
 
-    this.list = new ClockDialListConstructor(props, className)
+    this.list = new ClockDialListConstructor(props, naming.getName())
     this.valueItem = new ClockDialValueConstructor(props, this.model)
     this.arrows = new ClockDialArrowsConstructor(
       props,
-      className,
+      naming.getName(),
       this.list,
       this.valueItem
     )
@@ -199,8 +198,8 @@ export class ClockDial {
    */
   get classes(): ConstrClassObject {
     return {
-      [`${this.className}--section`]: this.list.isSection(this.valueItem.value),
-      [`${this.className}--selected`]: this.valueItem.isSelectVisible()
+      [`${this.naming.getName()}--section`]: this.list.isSection(this.valueItem.value),
+      [`${this.naming.getName()}--selected`]: this.valueItem.isSelectVisible()
     }
   }
 

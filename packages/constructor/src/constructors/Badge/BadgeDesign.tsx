@@ -60,8 +60,7 @@ export class BadgeDesign<
     this.item = new ItemConstructor(
       this.props,
       this.element,
-      this.getDesign(),
-      this.getName(),
+      this.naming,
       this.components,
       this.slots,
       this.emits
@@ -87,8 +86,8 @@ export class BadgeDesign<
       main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
-        label: this.getSubClass('label'),
-        icon: this.getSubClass('icon')
+        label: this.naming.getSubClass('label'),
+        icon: this.naming.getSubClass('icon')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

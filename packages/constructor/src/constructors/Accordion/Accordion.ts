@@ -1,5 +1,5 @@
 import { ref, type Ref } from 'vue'
-import { type ConstrEmit, type DesignComp, getElementId, toBinds } from '@dxtmisha/functional'
+import { type ConstrEmit, type DesignComp, type DesignName, getElementId, toBinds } from '@dxtmisha/functional'
 
 import { EventClickInclude } from '../../classes/EventClickInclude'
 import { ModelInclude } from '../../classes/ModelInclude'
@@ -47,8 +47,7 @@ export class Accordion {
    * Конструктор для инициализации свойств Accordion и включенных менеджеров.
    * @param props input data / входные данные
    * @param element input element / элемент ввода
-   * @param classDesign design name / название дизайна
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
@@ -60,8 +59,7 @@ export class Accordion {
   constructor(
     protected readonly props: AccordionProps,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<AccordionComponents, AccordionProps>,
     protected readonly slots?: AccordionSlots,
     protected readonly emits?: ConstrEmit<AccordionEmits>,
@@ -78,7 +76,7 @@ export class Accordion {
     } = constructors
 
     this.motionTransform = new MotionTransformIncludeConstructor(
-      this.className,
+      this.naming.getName(),
       this.props,
       this.components,
       () => ({

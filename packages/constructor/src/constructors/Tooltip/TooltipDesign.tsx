@@ -62,8 +62,7 @@ export class TooltipDesign<
     this.item = new ItemConstructor(
       this.props,
       this.element,
-      this.getDesign(),
-      this.getName(),
+      this.naming,
       this.components,
       this.slots,
       this.emits
@@ -93,9 +92,9 @@ export class TooltipDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        label: this.getSubClass('label'),
-        description: this.getSubClass('description'),
-        body: this.getSubClass('body')
+        label: this.naming.getSubClass('label'),
+        description: this.naming.getSubClass('description'),
+        body: this.naming.getSubClass('body')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

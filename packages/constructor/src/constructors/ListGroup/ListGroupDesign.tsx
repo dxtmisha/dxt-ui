@@ -61,8 +61,7 @@ export class ListGroupDesign<
     this.item = new ItemConstructor(
       this.props,
       this.element,
-      this.getDesign(),
-      this.getName(),
+      this.naming,
       this.components,
       this.slots,
       this.emits
@@ -90,8 +89,8 @@ export class ListGroupDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        head: this.getSubClass('head'),
-        list: this.getSubClass('list')
+        head: this.naming.getSubClass('head'),
+        list: this.naming.getSubClass('list')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

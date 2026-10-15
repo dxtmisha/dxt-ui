@@ -1,9 +1,10 @@
 import { executeUseLocal } from '@dxtmisha/functional'
 import { useFigmaStorageMulti } from '@dxtmisha/figma-ref'
+
 import { getKey } from '../functions/getKey'
 import { useConfigurationStorage } from './useConfigurationStorage'
 
-const item = executeUseLocal(() => {
+const item = /* #__PURE__ */ executeUseLocal(() => {
   const { inDocument, inLocal } = useConfigurationStorage()
 
   /** AI key / Ключ ИИ */

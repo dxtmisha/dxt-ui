@@ -63,8 +63,7 @@ export class ProgressBarDesign<
     this.item = new ItemConstructor(
       this.props,
       this.element,
-      this.getDesign(),
-      this.getName(),
+      this.naming,
       this.components,
       this.slots,
       this.emits
@@ -90,9 +89,9 @@ export class ProgressBarDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        item: this.getSubClass('item'),
-        itemLabel: this.getSubClass('item__label'),
-        itemProgress: this.getSubClass('item__progress')
+        item: this.naming.getSubClass('item'),
+        itemLabel: this.naming.getSubClass('item__label'),
+        itemProgress: this.naming.getSubClass('item__progress')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

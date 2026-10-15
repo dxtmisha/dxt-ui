@@ -2,6 +2,7 @@ import { type Ref } from 'vue'
 import {
   type ConstrEmit,
   type DesignComp,
+  type DesignName,
   executeFunction,
   isFilled
 } from '@dxtmisha/functional'
@@ -61,8 +62,7 @@ export abstract class SelectAbstract {
    * Конструктор для SelectAbstract.
    * @param props input data / входные данные
    * @param element input element / элемент ввода
-   * @param classDesign design name / название дизайна
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
@@ -80,8 +80,7 @@ export abstract class SelectAbstract {
   constructor(
     protected readonly props: SelectProps,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<SelectComponents, SelectProps>,
     protected readonly slots?: SelectSlots,
     protected readonly emits?: ConstrEmit<SelectEmits>,
@@ -145,7 +144,7 @@ export abstract class SelectAbstract {
     )
 
     this.menu = new MenuIncludeConstructor(
-      this.className,
+      this.naming.getName(),
       this.props,
       this.components,
       () => ({

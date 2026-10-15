@@ -1,5 +1,5 @@
 import type { Ref } from 'vue'
-import type { ConstrEmit, DesignComp } from '@dxtmisha/functional'
+import type { ConstrEmit, DesignComp, DesignName } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { ClientOnlyInclude } from '../../classes/ClientOnlyInclude'
@@ -29,8 +29,7 @@ export class TableFlexRecord extends TableRecord {
    * Конструктор для TableFlexRecord.
    * @param props input properties / входные свойства
    * @param element target HTML element / целевой HTML-элемент
-   * @param classDesign design system prefix / префикс дизайн-системы
-   * @param className base CSS class name / базовое имя CSS-класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits callback function triggered on events / функция обратного вызова, запускаемая при событиях
@@ -41,8 +40,7 @@ export class TableFlexRecord extends TableRecord {
   constructor(
     props: TableFlexRecordProps,
     element: Ref<HTMLElement | undefined>,
-    classDesign: string,
-    className: string,
+    naming: DesignName,
     components?: DesignComp<TableFlexRecordComponents, TableFlexRecordProps>,
     slots?: TableFlexRecordSlots,
     emits?: ConstrEmit<TableFlexRecordEmits>,
@@ -54,8 +52,7 @@ export class TableFlexRecord extends TableRecord {
     super(
       props,
       element,
-      classDesign,
-      className,
+      naming,
       components,
       slots,
       emits
@@ -70,7 +67,7 @@ export class TableFlexRecord extends TableRecord {
     this.lazy = new TableFlexRecordLazyConstructor(
       props,
       element,
-      className,
+      naming.getName(),
       this.clientOnly
     )
   }

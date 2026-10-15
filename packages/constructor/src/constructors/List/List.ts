@@ -10,6 +10,7 @@ import {
   type ConstrBind,
   type ConstrEmit,
   type DesignComp,
+  type DesignName,
   ListDataRef,
   type ListDataItem,
   type ListList,
@@ -59,8 +60,7 @@ export class List {
    * Constructor
    * @param props input data/ входные данные
    * @param element input element/ элемент ввода
-   * @param classDesign design name/ название дизайна
-   * @param className class name/ название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
@@ -77,8 +77,7 @@ export class List {
   constructor(
     protected readonly props: ListProps,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<ListComponents, ListProps>,
     protected readonly slots?: ListSlots,
     protected readonly emits?: ConstrEmit<ListEmits>,
@@ -138,7 +137,7 @@ export class List {
     )
 
     this.event = new EventClickIncludeConstructor(undefined, undefined, emits)
-    this.windowClasses = new WindowClassesIncludeConstructor(classDesign)
+    this.windowClasses = new WindowClassesIncludeConstructor(naming.getDesign())
 
     if (this.props.control) {
       watch(this.search.item, () => this.go.toHighlight())
@@ -170,8 +169,8 @@ export class List {
    */
   get classes(): ConstrClass {
     return {
-      [`${this.className}--highlightActive`]: Boolean(this.props.filterMode) && this.data.isHighlight(),
-      [`${this.className}--searchActive`]: Boolean(this.props.filterMode) && this.search.is()
+      [`${this.naming.getName()}--highlightActive`]: Boolean(this.props.filterMode) && this.data.isHighlight(),
+      [`${this.naming.getName()}--searchActive`]: Boolean(this.props.filterMode) && this.search.is()
     }
   }
 
@@ -241,7 +240,7 @@ export class List {
       item,
       {
         key: item.value,
-        class: `${this.className}__group`
+        class: `${this.naming.getName()}__group`
       }
     )
   }
@@ -261,7 +260,7 @@ export class List {
       item,
       {
         key: item.value,
-        class: `${this.className}__menu`
+        class: `${this.naming.getName()}__menu`
       }
     )
   }
@@ -341,7 +340,7 @@ export class List {
       item,
       {
         'class': [
-          `${this.className}__management`,
+          `${this.naming.getName()}__management`,
           this.windowClasses.get().static
         ],
         'focus': item?.index === this.focus.focus.value,

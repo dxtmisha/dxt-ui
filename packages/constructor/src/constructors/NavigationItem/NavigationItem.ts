@@ -1,5 +1,5 @@
 import type { Ref } from 'vue'
-import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
+import { type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
 
 import { ListItem } from '../ListItem'
 
@@ -18,8 +18,7 @@ export class NavigationItem extends ListItem {
    * Constructor
    * @param props input data / входные данные
    * @param element input element / элемент ввода
-   * @param classDesign design name / название дизайна
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
@@ -28,8 +27,7 @@ export class NavigationItem extends ListItem {
   constructor(
     protected override readonly props: NavigationItemPropsBasic,
     protected override readonly element: Ref<HTMLElement | undefined>,
-    protected override readonly classDesign: string,
-    protected override readonly className: string,
+    protected override readonly naming: DesignName,
     protected override readonly components?: DesignComp<NavigationItemComponents, NavigationItemPropsBasic>,
     protected override readonly slots?: NavigationItemSlots,
     protected override readonly emits?: ConstrEmit<NavigationItemEmits>,
@@ -38,8 +36,7 @@ export class NavigationItem extends ListItem {
     super(
       props,
       element,
-      classDesign,
-      className,
+      naming,
       components,
       slots,
       emits,

@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi } from 'vitest'
 import { reactive, ref } from 'vue'
+import { DesignName } from '@dxtmisha/functional'
 
 import { CarouselPagination } from '../CarouselPagination'
 import type { CarouselPaginationProps } from '../props'
@@ -19,8 +20,7 @@ describe('CarouselPagination', () => {
     const instance = new CarouselPagination(
       props,
       element,
-      'test-design',
-      'test-pagination',
+      new DesignName('test.pagination'),
       undefined,
       undefined,
       emits

@@ -3,6 +3,7 @@ import {
   type ConstrClassObject,
   type ConstrEmit,
   type DesignComp,
+  type DesignName,
   getBind
 } from '@dxtmisha/functional'
 
@@ -36,8 +37,7 @@ export class Icon {
    * Constructor
    * @param props input data/ входные данные
    * @param element input element/ элемент ввода
-   * @param classDesign design name/ название дизайна
-   * @param className class name/ название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
@@ -48,8 +48,7 @@ export class Icon {
   constructor(
     protected readonly props: IconProps,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<IconComponents, IconProps>,
     protected readonly slots?: IconSlots,
     protected readonly emits?: ConstrEmit<IconEmits>,
@@ -71,7 +70,7 @@ export class Icon {
 
     this.skeleton = new SkeletonIncludeConstructor(
       props,
-      classDesign,
+      naming.getDesign(),
       ['classBackgroundVariant']
     )
   }
@@ -119,7 +118,7 @@ export class Icon {
       this.props.icon,
       {
         key: 'mainIcon',
-        class: `${this.className}__icon`,
+        class: `${this.naming.getName()}__icon`,
         turn: this.props.turn,
         disabled: this.props.disabled,
         hide: this.isActive(),
@@ -136,7 +135,7 @@ export class Icon {
       this.props.iconActive,
       {
         key: 'activeIcon',
-        class: `${this.className}__iconActive`,
+        class: `${this.naming.getName()}__iconActive`,
         turn: this.props.turn,
         disabled: this.props.disabled,
         hide: !this.isActive()

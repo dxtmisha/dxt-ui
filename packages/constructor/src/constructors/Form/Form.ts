@@ -1,5 +1,5 @@
 import type { Ref } from 'vue'
-import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
+import { type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
 
 import { ModelInclude } from '../../classes/ModelInclude'
 import { FormElements } from './FormElements'
@@ -46,8 +46,7 @@ export class Form {
    * Constructor
    * @param props input data / входные данные
    * @param element input element / элемент ввода
-   * @param classDesign design name / название дизайна
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
@@ -63,8 +62,7 @@ export class Form {
   constructor(
     protected readonly props: FormProps,
     protected readonly element: Ref<HTMLFormElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<FormComponents, FormProps>,
     protected readonly slots?: FormSlots,
     protected readonly emits?: ConstrEmit<FormEmits>,

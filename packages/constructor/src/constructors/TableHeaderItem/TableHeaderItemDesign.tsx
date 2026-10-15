@@ -63,8 +63,7 @@ export class TableHeaderItemDesign<
     this.item = new ItemConstructor(
       this.props,
       this.element,
-      this.getDesign(),
-      this.getName(),
+      this.naming,
       this.components,
       this.slots,
       this.emits
@@ -92,11 +91,11 @@ export class TableHeaderItemDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        label: this.getSubClass('label'),
-        description: this.getSubClass('description'),
-        body: this.getSubClass('body'),
-        sort: this.getSubClass('sort'),
-        tooltip: this.getSubClass('tooltip')
+        label: this.naming.getSubClass('label'),
+        description: this.naming.getSubClass('description'),
+        body: this.naming.getSubClass('body'),
+        sort: this.naming.getSubClass('sort'),
+        tooltip: this.naming.getSubClass('tooltip')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

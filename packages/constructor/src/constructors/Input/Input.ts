@@ -1,5 +1,5 @@
 import type { Ref } from 'vue'
-import type { ConstrEmit, DesignComp } from '@dxtmisha/functional'
+import type { ConstrEmit, DesignComp, DesignName } from '@dxtmisha/functional'
 
 import { FieldChangeInclude } from '../../classes/Field/FieldChangeInclude'
 import { FieldVisibilityInclude } from '../../classes/Field/FieldVisibilityInclude'
@@ -60,8 +60,7 @@ export class Input {
    * Constructor
    * @param props input data/ входные данные
    * @param element input element/ элемент ввода
-   * @param classDesign design name/ название дизайна
-   * @param className class name/ название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components/ объект для работы с компонентами
    * @param slots object for working with slots/ объект для работы со слотами
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
@@ -88,8 +87,7 @@ export class Input {
   constructor(
     protected readonly props: InputProps,
     protected readonly element: Ref<FieldElementInput>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<InputComponents, InputProps>,
     protected readonly slots?: InputSlots,
     protected readonly emits?: ConstrEmit<InputEmits>,
@@ -189,7 +187,7 @@ export class Input {
     )
 
     this.field = new FieldIncludeConstructor(
-      this.className,
+      this.naming.getName(),
       this.props,
       this.components,
       () => ({
@@ -204,7 +202,7 @@ export class Input {
       this.password.toggle
     )
     this.mask = new MaskIncludeConstructor(
-      this.className,
+      this.naming.getName(),
       this.props,
       this.components,
       undefined,

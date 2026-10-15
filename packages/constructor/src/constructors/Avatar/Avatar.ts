@@ -1,5 +1,5 @@
 import { type Ref } from 'vue'
-import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
+import { type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { EnabledInclude } from '../../classes/EnabledInclude'
@@ -46,8 +46,7 @@ export class Avatar {
    * Конструктор для Avatar.
    * @param props input data / входные данные
    * @param element input element / элемент ввода
-   * @param classDesign design name / название дизайна
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
@@ -62,8 +61,7 @@ export class Avatar {
   constructor(
     protected readonly props: AvatarProps,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<AvatarComponents, AvatarProps>,
     protected readonly slots?: AvatarSlots,
     protected readonly emits?: ConstrEmit<AvatarEmits>,
@@ -85,11 +83,11 @@ export class Avatar {
       EnabledIncludeConstructor = EnabledInclude
     } = constructors
 
-    this.skeleton = new SkeletonIncludeConstructor(props, classDesign, ['classBackground'])
+    this.skeleton = new SkeletonIncludeConstructor(props, naming.getDesign(), ['classBackground'])
     this.enabled = new EnabledIncludeConstructor(props)
 
     this.image = new ImageIncludeConstructor(
-      className,
+      naming.getName(),
       props,
       components,
       () => ({
@@ -100,7 +98,7 @@ export class Avatar {
 
     this.label = new LabelIncludeConstructor(
       () => this.labelProps,
-      className,
+      naming.getName(),
       undefined,
       slots,
       undefined,
@@ -109,7 +107,7 @@ export class Avatar {
       this.skeleton
     )
     this.badge = new BadgeIncludeConstructor(
-      className,
+      naming.getName(),
       props,
       components,
       { overlap: 'circular' }

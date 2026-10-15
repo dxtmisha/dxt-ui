@@ -60,8 +60,7 @@ export class TabsDesign<
     this.item = new ItemConstructor(
       this.props,
       this.element,
-      this.getDesign(),
-      this.getName(),
+      this.naming,
       this.components,
       this.slots,
       this.emits
@@ -89,7 +88,7 @@ export class TabsDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        slide: this.getSubClass('slide')
+        slide: this.naming.getSubClass('slide')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

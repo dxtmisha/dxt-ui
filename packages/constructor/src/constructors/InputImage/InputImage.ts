@@ -2,7 +2,8 @@ import type { Ref } from 'vue'
 import {
   type ConstrClass,
   type ConstrEmit,
-  type DesignComp
+  type DesignComp,
+  type DesignName
 } from '@dxtmisha/functional'
 
 import { EnabledInclude } from '../../classes/EnabledInclude'
@@ -99,8 +100,7 @@ export class InputImage {
    * Конструктор.
    * @param props input data / входные данные
    * @param element input element / элемент ввода
-   * @param classDesign design name / название дизайна
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
@@ -127,8 +127,7 @@ export class InputImage {
   constructor(
     protected readonly props: InputImageProps,
     protected readonly element: Ref<FieldElementInput>,
-    protected readonly classDesign: string,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<InputImageComponents, InputImageProps>,
     protected readonly slots?: InputImageSlots,
     protected readonly emits?: ConstrEmit<InputImageEmits>,
@@ -218,7 +217,7 @@ export class InputImage {
     this.text = new TextIncludeConstructor(this.props)
 
     this.dropzone = new DropzoneIncludeConstructor(
-      this.className,
+      this.naming.getName(),
       this.props,
       this.components,
       () => ({
@@ -238,7 +237,7 @@ export class InputImage {
     )
 
     this.label = new FieldLabelConstructor(
-      this.className,
+      this.naming.getName(),
       this.props,
       this.components,
       () => ({
@@ -251,7 +250,7 @@ export class InputImage {
     )
 
     this.message = new FieldMessageConstructor(
-      this.className,
+      this.naming.getName(),
       this.props,
       this.components,
       undefined,
@@ -260,7 +259,7 @@ export class InputImage {
     )
 
     this.imageCrop = new ImageCropIncludeConstructor(
-      this.className,
+      this.naming.getName(),
       this.props,
       this.components,
       () => ({
@@ -273,7 +272,7 @@ export class InputImage {
     )
 
     this.actions = new ActionsIncludeConstructor(
-      this.className,
+      this.naming.getName(),
       props,
       this.components,
       () => ({
@@ -301,7 +300,7 @@ export class InputImage {
    */
   get classes(): ConstrClass {
     return {
-      [`${this.className}--hasImage`]: this.files.hasImage()
+      [`${this.naming.getName()}--hasImage`]: this.files.hasImage()
     }
   }
 }
