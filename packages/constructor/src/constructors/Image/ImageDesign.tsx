@@ -207,10 +207,10 @@ export class ImageDesign<
     ) {
       return h(
         'span',
-        { class: `ui-sys-flags ui-sys-flags--${this.item.text.value}` }
+        { class: `ui-sys-flags ui-sys-flags--${this.item.data.text.value}` }
       )
     }
 
-    return this.item.text.value
+    return this.item.data.text.value
   }
 }

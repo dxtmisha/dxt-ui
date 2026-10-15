@@ -1,5 +1,7 @@
 // ai-none
 
+import { ref } from 'vue'
+
 import { type ImageSize } from './basicTypes'
 
 /**
@@ -17,8 +19,8 @@ export const MAX_IMAGE_OFFSET = 7680
  * Управляет физическими размерами и множителями для обеспечения согласованного масштабирования связанных изображений.
  */
 export class ImageCalculation {
-  /** Maximum scaling multiplier / Максимальный множитель масштабирования */
-  factorMax: number = 1
+  /** Reactive maximum scaling multiplier / Реактивный максимальный множитель масштабирования */
+  protected readonly factorMaxState = ref<number>(1)
 
   /** Maximum physical dimensions in the group / Максимальные физические размеры в группе */
   protected size: ImageSize = {
@@ -41,6 +43,16 @@ export class ImageCalculation {
   constructor(
     protected readonly name: string
   ) {
+  }
+
+  /**
+   * Returns the reactive maximum scaling multiplier for the group.
+   *
+   * Возвращает реактивный максимальный множитель масштабирования группы.
+   * @returns maximum scaling multiplier / максимальный множитель масштабирования
+   */
+  get factorMax(): number {
+    return this.factorMaxState.value
   }
 
   /**
@@ -81,6 +93,16 @@ export class ImageCalculation {
    */
   get offsetHeight(): number {
     return this.offset.height
+  }
+
+  /**
+   * Updates the maximum scaling multiplier and invalidates dependent backgrounds.
+   *
+   * Обновляет максимальный множитель масштабирования и сбрасывает зависимые вычисления фона.
+   * @param value scaling multiplier / множитель масштабирования
+   */
+  set factorMax(value: number) {
+    this.factorMaxState.value = value
   }
 
   /**

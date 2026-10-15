@@ -1,14 +1,11 @@
 // ai-none
 
-import { isString } from '@dxtmisha/functional'
+import { isString, strSplit } from '@dxtmisha/functional'
 
 import { ImageFile } from './ImageFile'
 
-/** PDF toolbar parameters for the URL / Параметры панели инструментов PDF для URL */
-const IMAGE_PDF_TOOL = '#toolbar=0&scrollbar=1'
-
 /** Regular expression to check PDF extension / Регулярное выражение для проверки расширения PDF */
-const REGEX_EXTENSION = /\.pdf$/i
+const REGEX_EXTENSION = /^[^?#]*\.pdf(?:[?#]|$)/i
 
 /** Regular expression to check PDF mime type / Регулярное выражение для проверки mime-типа PDF */
 const REGEX_TYPE = /\/pdf$/i
@@ -44,21 +41,44 @@ export class ImagePdf {
   }
 
   /**
-   * Applications asynchronously read the contents of files (or raw data buffers) stored on the user's computer.
+   * Returns a PDF source with viewer parameters while preserving its query and fragment options.
    *
-   * Асинхронно читает содержимое файлов (или буферы данных), хранящиеся на компьютере пользователя.
-   * @param file the Blob or File from which to read / Blob или File, которые следует прочитать
-   * @returns loaded file content as a string / загруженное содержимое файла в виде строки
+   * Возвращает источник PDF с параметрами просмотра, сохраняя его query и параметры fragment.
+   * @param file PDF URL or file to read / URL PDF или файл для чтения
+   * @returns PDF source with viewer parameters or an empty string / источник PDF с параметрами просмотра или пустая строка
    */
   static async get(file: string | File): Promise<string> {
+    if (!file) {
+      return ''
+    }
+
     if (isString(file)) {
-      return `${file}${IMAGE_PDF_TOOL}`
+      return this.getSource(file)
     }
 
     if (this.isPdf(file)) {
-      return `${(await ImageFile.getFileReader(file))}${IMAGE_PDF_TOOL}`
+      const source = await ImageFile.getFileReader(file)
+
+      return source ? this.getSource(source) : ''
     }
 
     return ''
+  }
+
+  /**
+   * Merges viewer parameters into a single fragment without changing the resource URL.
+   *
+   * Объединяет параметры просмотра в одном fragment, не изменяя URL ресурса.
+   * @param source PDF source URL / URL источника PDF
+   * @returns PDF source with merged viewer parameters / источник PDF с объединёнными параметрами просмотра
+   */
+  protected static getSource(source: string): string {
+    const [sourceUrl, fragment] = strSplit(source, '#', 2)
+    const parameters = new URLSearchParams(fragment)
+
+    parameters.set('toolbar', '0')
+    parameters.set('scrollbar', '1')
+
+    return `${sourceUrl}#${parameters.toString()}`
   }
 }

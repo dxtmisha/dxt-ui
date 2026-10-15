@@ -14,8 +14,8 @@ export type ImagePropsToken = {
 export type ImagePropsBasic = {
   // Value
   /**
-   * Accepts icon name, image URL, File object or PDF link/
-   * Принимает название иконки, ссылку на изображение, объект File или ссылку на PDF файл
+   * Icon name, image URL, File or PDF link; use image:photo.png for an explicit image path /
+   * Название иконки, URL изображения, File или ссылка на PDF; image:photo.png явно задаёт путь изображения
    */
   value?: string | any
 

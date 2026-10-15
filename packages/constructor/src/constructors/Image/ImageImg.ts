@@ -67,9 +67,12 @@ export class ImageImg {
         attrs.height = '100%'
         attrs.style = this.styles
 
+        if (this.props.fetchPriority) {
+          attrs.fetchPriority = this.props.fetchPriority
+        }
+
         if (this.props.lazy) {
           attrs.loading = this.lazy.isLazy() ? 'lazy' : 'auto'
-          attrs.fetchPriority = this.props.fetchPriority
         }
 
         if (this.props.srcset) {
@@ -150,14 +153,16 @@ export class ImageImg {
   }
 
   /**
-   * Checks if the type is file or image.
+   * Checks if the source is a file, image URL or binary buffer.
    *
-   * Проверяет, является ли тип файлом или изображением.
+   * Проверяет, является ли источник файлом, URL изображения или бинарным буфером.
    * @returns true if type matches / true, если тип совпадает
    */
   protected isType(): boolean {
     const type = this.type.item.value
-    return type === ImageTypeValue.file || type === ImageTypeValue.image
+    return type === ImageTypeValue.file
+      || type === ImageTypeValue.image
+      || type === ImageTypeValue.array
   }
 
   /**

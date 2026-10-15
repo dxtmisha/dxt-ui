@@ -2,6 +2,8 @@
 
 import {
   computed,
+  effectScope,
+  type EffectScope,
   onMounted,
   onUnmounted,
   type Ref,
@@ -10,16 +12,17 @@ import {
   type WatchHandle
 } from 'vue'
 import {
+  EventRef,
   getElementId,
   toNumber,
   useLazyItemByMarginRef
 } from '@dxtmisha/functional'
 
-import { ClientOnlyInclude } from '../../classes/ClientOnlyInclude'
+import type { ClientOnlyInclude } from '../../classes/ClientOnlyInclude'
 
 import { ImageAdaptiveGroup } from './ImageAdaptiveGroup'
 import { ImageCalculationList } from './ImageCalculationList'
-import { ImageData } from './ImageData'
+import type { ImageData } from './ImageData'
 
 import { type ImageElement, type ImageItem, type ImageSize } from './basicTypes'
 import { type ImageProps } from './props'
@@ -62,6 +65,15 @@ export class ImageAdaptiveItem {
     height: 0
   })
 
+  /** Reactive DOM dimensions / Реактивные размеры DOM */
+  protected readonly elementSize = ref<ImageSize>({ width: 0, height: 0 })
+
+  /** Resize manager available only during active adaptation / Менеджер resize, доступный только при активной адаптации */
+  protected resize?: EventRef<HTMLElement, Event>
+
+  /** Scope of reactive resize watchers / Область реактивных наблюдателей resize */
+  protected resizeScope?: EffectScope
+
   /** Lazy item tracking instance / Экземпляр отслеживания появления */
   protected lazy?: ReturnType<typeof useLazyItemByMarginRef>
 
@@ -88,8 +100,16 @@ export class ImageAdaptiveItem {
   ) {
     onMounted(() => {
       watch(
-        () => this.is(),
-        (isAdaptive) => {
+        () => [
+          this.is(),
+          this.width,
+          this.height,
+          this.group,
+          this.props.adaptiveAlways,
+          this.element.value,
+          this.data.image.value
+        ] as const,
+        ([isAdaptive]) => {
           if (isAdaptive) {
             this.add()
           } else {
@@ -220,13 +240,13 @@ export class ImageAdaptiveItem {
             return 0
           }
 
-          return data.height * (this.element.value.offsetWidth * this.percent.value.width / data.width)
+          return data.height * (this.elementSize.value.width * this.percent.value.width / data.width)
         case ImageAdaptiveItemType.y:
           if (!data.height) {
             return 0
           }
 
-          return data.width * (this.element.value.offsetHeight * this.percent.value.height / data.height)
+          return data.width * (this.elementSize.value.height * this.percent.value.height / data.height)
       }
     }
 
@@ -240,23 +260,22 @@ export class ImageAdaptiveItem {
    * @returns scaling factor / коэффициент масштабирования
    */
   readonly factor = computed<number>(() => {
-    const element = this.element.value
-
-    if (element) {
+    if (this.element.value) {
       const size = this.size.value
+      const { width, height } = this.elementSize.value
 
       if (
         this.type === ImageAdaptiveItemType.x
-        && size > element.offsetHeight
+        && size > height
       ) {
-        return element.offsetHeight / size
+        return height / size
       }
 
       if (
         this.type === ImageAdaptiveItemType.y
-        && size > element.offsetWidth
+        && size > width
       ) {
-        return element.offsetWidth / size
+        return width / size
       }
     }
 
@@ -327,27 +346,43 @@ export class ImageAdaptiveItem {
   }
 
   /**
-   * Adds the element to the adaptive group and initializes lazy tracking.
+   * Adds the element to the adaptive group and initializes lazy and resize tracking.
    *
-   * Добавляет элемент в адаптивную группу и инициализирует ленивое отслеживание.
+   * Добавляет элемент в адаптивную группу и инициализирует ленивое отслеживание и resize.
    * @returns instance of this class / экземпляр этого класса
    */
   readonly add = (): this => {
     this.initLazy()
+    this.initResize()
+    this.setElementSize()
     ImageAdaptiveGroup.add(this)
 
     return this
   }
 
   /**
-   * Removes the element from the adaptive group and resets lazy tracking.
+   * Removes the element from the adaptive group and resets lazy and resize tracking.
    *
-   * Удаляет элемент из адаптивной группы и сбрасывает ленивое отслеживание.
+   * Удаляет элемент из адаптивной группы и сбрасывает ленивое отслеживание и resize.
    * @returns instance of this class / экземпляр этого класса
    */
   readonly remove = (): this => {
     this.resetLazy()
+    this.resetResize()
     ImageAdaptiveGroup.remove(this)
+
+    return this
+  }
+
+  /**
+   * Updates reactive DOM dimensions and schedules group recalculation.
+   *
+   * Обновляет реактивные размеры DOM и планирует пересчёт группы.
+   * @returns instance of this class / экземпляр этого класса
+   */
+  readonly update = (): this => {
+    this.setElementSize()
+    ImageAdaptiveGroup.make()
 
     return this
   }
@@ -376,6 +411,7 @@ export class ImageAdaptiveItem {
    * @returns instance of this class / экземпляр этого класса
    */
   make(): this {
+    this.setElementSize()
     this.beyond = false
 
     if (
@@ -403,6 +439,61 @@ export class ImageAdaptiveItem {
     if (this.lazy) {
       this.lazy.removeLazyItem()
       this.lazy = undefined
+    }
+
+    return this
+  }
+
+  /**
+   * Reads current DOM dimensions into reactive state when they change.
+   *
+   * Считывает текущие размеры DOM в реактивное состояние при их изменении.
+   * @returns instance of this class / экземпляр этого класса
+   */
+  protected setElementSize(): this {
+    const width = this.element.value?.offsetWidth ?? 0
+    const height = this.element.value?.offsetHeight ?? 0
+
+    if (
+      this.elementSize.value.width !== width
+      || this.elementSize.value.height !== height
+    ) {
+      this.elementSize.value = { width, height }
+    }
+
+    return this
+  }
+
+  /**
+   * Stops resize tracking, disposes its reactive watchers and clears the manager.
+   *
+   * Останавливает отслеживание resize, освобождает его реактивные наблюдатели и очищает менеджер.
+   * @returns instance of this class / экземпляр этого класса
+   */
+  protected resetResize(): this {
+    this.resize?.stop()
+    this.resizeScope?.stop()
+    this.resize = undefined
+    this.resizeScope = undefined
+
+    return this
+  }
+
+  /**
+   * Creates resize tracking only for an active adaptive element.
+   *
+   * Создаёт отслеживание resize только для активного адаптивного элемента.
+   * @returns instance of this class / экземпляр этого класса
+   */
+  protected initResize(): this {
+    if (!this.resize && this.is()) {
+      this.resizeScope = effectScope(true)
+      this.resize = this.resizeScope.run(() => new EventRef<HTMLElement, Event>(
+        this.element,
+        undefined,
+        'resize',
+        this.update
+      ).start())
     }
 
     return this

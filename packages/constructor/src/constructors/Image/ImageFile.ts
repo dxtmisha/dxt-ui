@@ -34,33 +34,50 @@ export class ImageFile {
 
   /**
    * Creates an image based on a file or a link.
+   * Returns undefined for empty sources or image loading errors.
+   * Rejects the promise if source preparation or image processing throws.
    *
    * Создает изображение на основе файла или ссылки.
+   * Возвращает undefined для пустых источников или ошибок загрузки изображения.
+   * Отклоняет промис, если подготовка источника или обработка изображения выбрасывает исключение.
    * @param src file or link / файл или ссылка
    * @returns image item, source string, or undefined / элемент изображения, строка источника или undefined
    */
-  static createImage(src: string | File): Promise<ImageItem | string | undefined> {
-    return new Promise((resolve) => {
-      if (src) {
+  static async createImage(src: string | File): Promise<ImageItem | string | undefined> {
+    if (!src) {
+      return undefined
+    }
+
+    try {
+      const source = src instanceof File ? await this.getImageDataUrl(src) : src
+
+      if (!source) {
+        return undefined
+      }
+
+      return await new Promise((resolve, reject) => {
         const image = new Image()
 
         image.onerror = () => resolve(undefined)
         image.onload = () => {
-          resolve({
-            image,
-            src: this.getSRC(image, src),
-            width: image.naturalWidth,
-            height: image.naturalHeight
-          })
+          try {
+            resolve({
+              image,
+              src: this.getSRC(image, src),
+              width: image.naturalWidth,
+              height: image.naturalHeight
+            })
+          } catch (error) {
+            reject(error)
+          }
         }
 
-        (async () => {
-          image.src = src instanceof File ? await this.getImageDataUrl(src) : src
-        })()
-      } else {
-        resolve(undefined)
-      }
-    })
+        image.src = source
+      })
+    } catch (error) {
+      this.onError(error)
+      throw error
+    }
   }
 
   /**

@@ -1,4 +1,4 @@
-import { computed, type Ref } from 'vue'
+import type { Ref } from 'vue'
 import {
   type ConstrClassObject,
   type ConstrEmit,
@@ -144,51 +144,6 @@ export class Image {
       this.lazy
     )
   }
-
-  /**
-   * Values for the text. Text is used for the type of icon that works as a background.
-   *
-   * Значения для текста. Текст используется для типа иконки, который работает как фон.
-   */
-  readonly text = computed<string | undefined>(() => {
-    const type = this.type.item.value
-
-    if (type === ImageTypeValue.pdf) {
-      const image = this.data.image.value
-
-      if (isString(image)) {
-        return image
-      }
-    }
-
-    const value = this.props.value
-
-    if (
-      type === ImageTypeValue.flagCompressed
-      && value
-    ) {
-      return String(value)
-        .replace('f-', '')
-        .toUpperCase()
-    }
-
-    if (
-      type
-      && isString(value)
-      && [
-        'filled',
-        'outlined',
-        'round',
-        'sharp',
-        'two-tone',
-        'material'
-      ].indexOf(type) !== -1
-    ) {
-      return value.replace(/^(filled|outlined|round|sharp|two-tone)-/, '')
-    }
-
-    return undefined
-  })
 
   /**
    * Values for the class.

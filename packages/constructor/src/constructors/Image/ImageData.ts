@@ -1,6 +1,6 @@
 // ai-none
 
-import { type ComputedRef, onUnmounted, type Ref, watch } from 'vue'
+import { computed, type ComputedRef, onUnmounted, type Ref, watch } from 'vue'
 import {
   computedAsync,
   type ConstrEmit,
@@ -16,7 +16,8 @@ import { ClientOnlyInclude } from '../../classes/ClientOnlyInclude'
 import { ImageFile } from './ImageFile'
 import type { ImageLazy } from './ImageLazy'
 import { ImagePdf } from './ImagePdf'
-import { ImageType } from './ImageType'
+import { ImageSource } from './ImageSource'
+import type { ImageType } from './ImageType'
 import { ImageUint8Array } from './ImageUint8Array'
 
 import { type ImageEventItem, type ImageItem, ImageTypeValue } from './basicTypes'
@@ -24,6 +25,9 @@ import { type ImageEmits } from './types'
 import { type ImageProps } from './props'
 
 import { CONSTRUCTOR_ERROR_GROUP } from '../../types/errorTypes'
+
+/** Regular expression for removing the font icon prefix / Регулярное выражение для удаления префикса шрифтовой иконки */
+const REGEX_ICON_PREFIX = /^(?:(?:filled|outlined|round|sharp|two-tone|material)-|\$)/
 
 /**
  * A class for obtaining image or icon data.
@@ -61,6 +65,51 @@ export class ImageData {
 
     onUnmounted(() => this.uint8Array?.reset())
   }
+
+  /**
+   * Text for font icons and compressed flags, or the loaded source for a PDF.
+   *
+   * Текст для шрифтовых иконок и сжатых флагов либо загруженный источник PDF.
+   */
+  readonly text = computed<string | undefined>(() => {
+    const type = this.type.item.value
+
+    if (type === ImageTypeValue.pdf) {
+      const image = this.image.value
+
+      if (isString(image)) {
+        return image
+      }
+    }
+
+    const value = this.props.value
+
+    if (
+      type === ImageTypeValue.flagCompressed
+      && value
+    ) {
+      return String(value)
+        .replace('f-', '')
+        .toUpperCase()
+    }
+
+    if (
+      type
+      && isString(value)
+      && [
+        'filled',
+        'outlined',
+        'round',
+        'sharp',
+        'two-tone',
+        'material'
+      ].indexOf(type) !== -1
+    ) {
+      return value.replace(REGEX_ICON_PREFIX, '')
+    }
+
+    return undefined
+  })
 
   /**
    * Checks if there are values.
@@ -144,10 +193,12 @@ export class ImageData {
               !this.clientOnly.isRender()
               || this.lazy.isLazy()
             ) {
-              return image
+              return this.initSsr()
             }
 
-            return await ImageFile.createImage(image)
+            return await ImageFile.createImage(
+              ImageSource.getName(image) ?? image
+            )
           } catch {
             ErrorCenter.on({
               group: CONSTRUCTOR_ERROR_GROUP,
@@ -170,10 +221,10 @@ export class ImageData {
   }
 
   /**
-   * Data initialization for server-side rendering (SSR).
+   * Initial image data for server-side rendering (SSR) and deferred loading.
    *
-   * Инициализация данных для серверного рендеринга (SSR).
-   * @returns initialized image event item for SSR / инициализированный элемент события изображения для SSR
+   * Начальные данные изображения для серверного рендеринга (SSR) и отложенной загрузки.
+   * @returns initial image data / начальные данные изображения
    */
   protected initSsr(): ImageEventItem {
     const image = this.props.value
@@ -182,7 +233,11 @@ export class ImageData {
       switch (this.type.item.value) {
         case ImageTypeValue.image:
         case ImageTypeValue.file:
-          return image
+          if (isString(image) && (!this.props.lazy || this.props.tagImg)) {
+            return ImageSource.getName(image) ?? image
+          }
+
+          return undefined
         case ImageTypeValue.public:
         case ImageTypeValue.icon:
         case ImageTypeValue.flag:

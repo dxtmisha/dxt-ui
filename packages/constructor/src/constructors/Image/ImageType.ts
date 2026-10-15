@@ -4,6 +4,7 @@ import { computed } from 'vue'
 import { Icons, isFilled, isString } from '@dxtmisha/functional'
 
 import { ImagePdf } from './ImagePdf'
+import { ImageSource } from './ImageSource'
 import { ImageUint8Array } from './ImageUint8Array'
 import { ClientOnlyInclude } from '../../classes/ClientOnlyInclude'
 
@@ -57,17 +58,21 @@ export class ImageType {
   readonly item = computed<ImageTypeItem>(() => {
     const image = this.props.value
 
+    if (ImageSource.is(image)) {
+      return ImageSource.getType(image)
+    }
+
     if (this.clientOnly.isRender()) {
+      if (ImagePdf.isPdf(image)) {
+        return ImageTypeValue.pdf
+      }
+
       if (image instanceof File) {
         return ImageTypeValue.file
       }
 
       if (ImageUint8Array.is(image)) {
         return ImageTypeValue.array
-      }
-
-      if (ImagePdf.isPdf(image)) {
-        return ImageTypeValue.pdf
       }
     }
 
