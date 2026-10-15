@@ -1,4 +1,4 @@
-import type { Ref, ToRefs } from 'vue'
+import type { Ref } from 'vue'
 import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
 import { RippleItem } from './RippleItem'
@@ -24,7 +24,6 @@ export class Ripple {
    *
    * Конструктор для создания экземпляра эффекта волны (ripple).
    * @param props input properties / входные свойства
-   * @param refs input properties in the form of reactive references / входные свойства в виде реактивных ссылок
    * @param element target element where ripples are rendered / целевой элемент, в котором рендерятся волны
    * @param className base CSS class name / базовое имя CSS-класса
    * @param components object for working with components / объект для работы с компонентами
@@ -35,7 +34,6 @@ export class Ripple {
    */
   constructor(
     protected readonly props: RippleProps,
-    protected readonly refs: ToRefs<RippleProps>,
     protected readonly element: Ref<HTMLSpanElement | undefined>,
     protected readonly className: string,
     protected readonly components?: DesignComp<RippleComponents, RippleProps>,

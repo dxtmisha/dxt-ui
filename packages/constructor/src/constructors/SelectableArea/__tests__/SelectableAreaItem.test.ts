@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi } from 'vitest'
-import { toRefs, reactive, nextTick } from 'vue'
+import { reactive, nextTick } from 'vue'
 import { SelectableAreaItem } from '../SelectableAreaItem'
 
 vi.mock('vue', async () => {
@@ -16,13 +16,13 @@ describe('SelectableAreaItem', () => {
     const props = reactive({
       selected: ['1', '2']
     }) as any
-    const refs = toRefs(props)
+
     const mockClasses = {
       findItems: vi.fn().mockReturnValue([]),
       list: { selected: 'selected-class' }
     } as any
 
-    const manager = new SelectableAreaItem(props, refs, mockClasses)
+    const manager = new SelectableAreaItem(props, mockClasses)
 
     expect(manager.get()).toEqual(['1', '2'])
     expect(manager.getNewArray()).toEqual(['1', '2'])
@@ -32,13 +32,13 @@ describe('SelectableAreaItem', () => {
     const props = reactive({
       selected: undefined
     }) as any
-    const refs = toRefs(props)
+
     const mockClasses = {
       findItems: vi.fn().mockReturnValue([]),
       list: { selected: 'selected-class' }
     } as any
 
-    const manager = new SelectableAreaItem(props, refs, mockClasses)
+    const manager = new SelectableAreaItem(props, mockClasses)
 
     expect(manager.get()).toEqual([])
 
@@ -56,7 +56,6 @@ describe('SelectableAreaItem', () => {
     const props = reactive({
       selected: undefined
     }) as any
-    const refs = toRefs(props)
 
     const element1 = document.createElement('div')
     element1.dataset.value = '1'
@@ -73,7 +72,7 @@ describe('SelectableAreaItem', () => {
       list: { selected: 'selected-class' }
     } as any
 
-    const manager = new SelectableAreaItem(props, refs, mockClasses)
+    const manager = new SelectableAreaItem(props, mockClasses)
 
     manager.selectionByClick('1')
     await nextTick()
@@ -90,14 +89,14 @@ describe('SelectableAreaItem', () => {
     const props = reactive({
       selected: ['1']
     }) as any
-    const refs = toRefs(props)
+
     const element1 = document.createElement('div')
     const mockClasses = {
       findItems: vi.fn().mockReturnValue([element1]),
       list: { selected: 'selected-class' }
     } as any
 
-    const manager = new SelectableAreaItem(props, refs, mockClasses)
+    const manager = new SelectableAreaItem(props, mockClasses)
 
     // Toggle existing value -> removes it
     manager.selectionByMeta('1')
@@ -112,7 +111,6 @@ describe('SelectableAreaItem', () => {
     const props = reactive({
       selected: undefined
     }) as any
-    const refs = toRefs(props)
 
     const item1 = document.createElement('div')
     item1.dataset.value = '10'
@@ -132,7 +130,7 @@ describe('SelectableAreaItem', () => {
       list: { selected: 'selected-class' }
     } as any
 
-    const manager = new SelectableAreaItem(props, refs, mockClasses)
+    const manager = new SelectableAreaItem(props, mockClasses)
 
     // First click sets lastSelection
     manager.selectionByClick('10')

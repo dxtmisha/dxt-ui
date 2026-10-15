@@ -1,4 +1,4 @@
-import type { Ref, ToRefs } from 'vue'
+import type { Ref } from 'vue'
 import {
   type ConstrClass,
   type ConstrEmit,
@@ -98,7 +98,6 @@ export class InputImage {
    *
    * Конструктор.
    * @param props input data / входные данные
-   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
    * @param element input element / элемент ввода
    * @param classDesign design name / название дизайна
    * @param className class name / название класса
@@ -127,7 +126,6 @@ export class InputImage {
    */
   constructor(
     protected readonly props: InputImageProps,
-    protected readonly refs: ToRefs<InputImageProps>,
     protected readonly element: Ref<FieldElementInput>,
     protected readonly classDesign: string,
     protected readonly className: string,
@@ -189,7 +187,6 @@ export class InputImage {
 
     this.value = new FieldValueIncludeConstructor(
       this.props,
-      this.refs,
       this.elementItem
     )
 

@@ -6,7 +6,7 @@ import {
   type ConstrStyles,
   toNumber
 } from '@dxtmisha/functional'
-import { computed, type ComputedRef, type ToRefs } from 'vue'
+import { computed, type ComputedRef } from 'vue'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 
@@ -28,13 +28,11 @@ export class CarouselPaginationItems {
   /**
    * Constructor
    * @param props input reactive properties / входные реактивные свойства
-   * @param refs raw properties wrapped as refs / исходные свойства в виде ссылок (refs)
    * @param selected slide selection manager instance / экземпляр менеджера выбора слайдов
    * @param emits event emitter callback / функция обратного вызова для генерации событий
    */
   constructor(
     protected readonly props: CarouselPaginationProps,
-    protected readonly refs: ToRefs<CarouselPaginationProps>,
     protected readonly selected: CarouselPaginationSelected,
     protected readonly emits?: ConstrEmit<CarouselPaginationEmits>
   ) { }

@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi } from 'vitest'
-import { reactive, ref, toRefs } from 'vue'
+import { reactive, ref } from 'vue'
 
 import { CarouselPaginationFocus } from '../CarouselPaginationFocus'
 import { CarouselPaginationSelected } from '../CarouselPaginationSelected'
@@ -13,8 +13,8 @@ describe('CarouselPaginationFocus', () => {
       selected: 1,
       ...customProps
     })
-    const refs = toRefs(props)
-    const selected = new CarouselPaginationSelected(props, refs)
+
+    const selected = new CarouselPaginationSelected(props)
     const element = ref<HTMLDivElement>()
 
     const instance = new CarouselPaginationFocus(

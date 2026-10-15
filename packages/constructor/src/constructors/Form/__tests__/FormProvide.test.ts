@@ -23,7 +23,7 @@ describe('FormProvide', () => {
 
   it('calls provide with FORM_NAME_ELEMENT and registration object on construction', () => {
     const elements = new FormElements()
-    const formValue = new FormValue({}, undefined, elements)
+    const formValue = new FormValue({}, elements)
     const formEvent = new FormEvent({}, formValue)
     const formProvide = new FormProvide(elements, formEvent)
 
@@ -36,7 +36,7 @@ describe('FormProvide', () => {
 
   it('updates validation data in FormElements and calls FormEvent.onInput on updateData', () => {
     const elements = new FormElements()
-    const formValue = new FormValue({}, undefined, elements)
+    const formValue = new FormValue({}, elements)
     const formEvent = new FormEvent({}, formValue)
     const formProvide = new FormProvide(elements, formEvent)
 

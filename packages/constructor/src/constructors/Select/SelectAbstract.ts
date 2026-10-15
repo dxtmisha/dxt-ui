@@ -1,4 +1,4 @@
-import { type Ref, type ToRefs } from 'vue'
+import { type Ref } from 'vue'
 import {
   type ConstrEmit,
   type DesignComp,
@@ -60,7 +60,6 @@ export abstract class SelectAbstract {
    *
    * Конструктор для SelectAbstract.
    * @param props input data / входные данные
-   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
    * @param element input element / элемент ввода
    * @param classDesign design name / название дизайна
    * @param className class name / название класса
@@ -80,7 +79,6 @@ export abstract class SelectAbstract {
    */
   constructor(
     protected readonly props: SelectProps,
-    protected readonly refs: ToRefs<SelectProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly classDesign: string,
     protected readonly className: string,
@@ -121,7 +119,6 @@ export abstract class SelectAbstract {
 
     this.value = new FieldValueIncludeConstructor(
       this.props,
-      this.refs,
       this.elementItem
     )
 

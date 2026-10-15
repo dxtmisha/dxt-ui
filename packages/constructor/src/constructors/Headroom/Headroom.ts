@@ -1,4 +1,4 @@
-import { type Ref, type ToRefs } from 'vue'
+import { type Ref } from 'vue'
 import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
 import { HeadroomInclude } from '../../classes/HeadroomInclude'
@@ -18,7 +18,6 @@ export class Headroom {
   /**
    * Constructor
    * @param props input data / входные данные
-   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
    * @param element input element / элемент ввода
    * @param classDesign design name / название дизайна
    * @param className class name / название класса
@@ -30,7 +29,6 @@ export class Headroom {
    */
   constructor(
     protected readonly props: HeadroomProps,
-    protected readonly refs: ToRefs<HeadroomProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly classDesign: string,
     protected readonly className: string,
@@ -47,7 +45,6 @@ export class Headroom {
 
     this.headroom = new HeadroomConstructor(
       this.props,
-      this.refs,
       this.element,
       this.className,
       this.emits

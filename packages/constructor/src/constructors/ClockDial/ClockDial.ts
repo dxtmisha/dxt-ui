@@ -1,7 +1,6 @@
 import {
   computed,
-  type Ref,
-  type ToRefs
+  type Ref
 } from 'vue'
 
 import {
@@ -65,7 +64,6 @@ export class ClockDial {
   /**
    * Constructor
    * @param props input data / входные данные
-   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
    * @param element input element / элемент ввода
    * @param classDesign design name / название дизайна
    * @param className class name / название класса
@@ -85,7 +83,6 @@ export class ClockDial {
    */
   constructor(
     protected readonly props: ClockDialProps,
-    protected readonly refs: ToRefs<ClockDialProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly classDesign: string,
     protected readonly className: string,
@@ -123,7 +120,7 @@ export class ClockDial {
       emits,
       undefined,
       computed(() => this.props.modelValue ?? this.props.value),
-      refs.readonly
+      () => props.readonly
     )
 
     this.list = new ClockDialListConstructor(props, className)

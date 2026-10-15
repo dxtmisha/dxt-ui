@@ -1,4 +1,4 @@
-import type { Ref, ToRefs } from 'vue'
+import type { Ref } from 'vue'
 import type { ConstrEmit, DesignComp } from '@dxtmisha/functional'
 
 import { FieldAttributesInclude } from '../../classes/Field/FieldAttributesInclude'
@@ -58,7 +58,6 @@ export class InputSearch {
    *
    * Конструктор
    * @param props input data / входные данные
-   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
    * @param element input element ref / ссылка на элемент ввода
    * @param classDesign design name / название дизайна
    * @param className class name / название класса
@@ -81,7 +80,6 @@ export class InputSearch {
    */
   constructor(
     protected readonly props: InputSearchProps,
-    protected readonly refs: ToRefs<InputSearchProps>,
     protected readonly element: Ref<FieldElementInput>,
     protected readonly classDesign: string,
     protected readonly className: string,
@@ -139,7 +137,6 @@ export class InputSearch {
 
     this.value = new FieldValueIncludeConstructor(
       this.props,
-      this.refs,
       this.elementItem
     )
 

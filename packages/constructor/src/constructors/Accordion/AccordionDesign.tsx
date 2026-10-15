@@ -58,7 +58,6 @@ export class AccordionDesign<
 
     this.item = new Accordion(
       this.props,
-      this.refs,
       this.element,
       this.getDesign(),
       this.getName(),

@@ -24,7 +24,6 @@ describe('TabsNavigationIndicator', () => {
 
   it('should initialize and perform selection changes animation', async () => {
     const props = {} as any
-    const refs = {} as any
 
     const mainEl = document.createElement('div')
     const item1 = document.createElement('div')
@@ -47,7 +46,6 @@ describe('TabsNavigationIndicator', () => {
 
     const indicator = new TabsNavigationIndicator(
       props,
-      refs,
       elementRef,
       'dxt-tabs',
       'dxt-tabs-item',

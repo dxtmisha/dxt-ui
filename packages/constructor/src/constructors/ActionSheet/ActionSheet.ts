@@ -1,4 +1,4 @@
-import { type Ref, type ToRefs } from 'vue'
+import { type Ref } from 'vue'
 import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
 import { TouchEventInclude } from '../../classes/TouchEventInclude'
@@ -25,7 +25,6 @@ export class ActionSheet extends ModalAbstract {
   /**
    * Constructor
    * @param props input data/ входные данные
-   * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
    * @param element input element/ элемент ввода
    * @param classDesign design name/ название дизайна
    * @param className class name/ название класса
@@ -40,7 +39,6 @@ export class ActionSheet extends ModalAbstract {
    */
   constructor(
     protected readonly props: ActionSheetProps,
-    protected readonly refs: ToRefs<ActionSheetProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly classDesign: string,
     protected readonly className: string,
@@ -60,7 +58,6 @@ export class ActionSheet extends ModalAbstract {
 
     super(
       props,
-      refs,
       element,
       classDesign,
       className,

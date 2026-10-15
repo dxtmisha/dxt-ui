@@ -1,4 +1,4 @@
-import { type Ref, type ToRefs } from 'vue'
+import { type Ref } from 'vue'
 import {
   type ConstrClassObject,
   type ConstrEmit,
@@ -35,7 +35,6 @@ export class Icon {
   /**
    * Constructor
    * @param props input data/ входные данные
-   * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
    * @param element input element/ элемент ввода
    * @param classDesign design name/ название дизайна
    * @param className class name/ название класса
@@ -48,7 +47,6 @@ export class Icon {
    */
   constructor(
     protected readonly props: IconProps,
-    protected readonly refs: ToRefs<IconProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly classDesign: string,
     protected readonly className: string,

@@ -1,4 +1,4 @@
-import { type Ref, type ToRefs } from 'vue'
+import { type Ref } from 'vue'
 import { type ConstrEmit, type DesignComp, getBind } from '@dxtmisha/functional'
 
 import { DescriptionInclude } from '../../classes/DescriptionInclude'
@@ -40,7 +40,6 @@ export class Dialog extends ModalAbstract {
    *
    * Конструктор для инициализации всех подкомпонентов, иконок и текстов диалога.
    * @param props input data / входные данные
-   * @param refs input data references / ссылки на входные данные
    * @param element target element / целевой элемент
    * @param classDesign design name / название дизайна
    * @param className class name / название класса
@@ -59,7 +58,6 @@ export class Dialog extends ModalAbstract {
    */
   constructor(
     protected override readonly props: DialogProps,
-    protected readonly refs: ToRefs<DialogProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly classDesign: string,
     protected readonly className: string,
@@ -87,7 +85,6 @@ export class Dialog extends ModalAbstract {
 
     super(
       props,
-      refs,
       element,
       classDesign,
       className,

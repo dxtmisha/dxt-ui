@@ -1,4 +1,4 @@
-import { type Ref, type ToRefs } from 'vue'
+import { type Ref } from 'vue'
 import {
   type ConstrClass,
   type ConstrEmit,
@@ -55,7 +55,6 @@ export class Cell {
   /**
    * Constructor
    * @param props input properties / входные свойства
-   * @param refs input properties in the form of reactive references / входные свойства в виде реактивных ссылок
    * @param element target HTML element / целевой HTML-элемент
    * @param classDesign design system prefix / префикс дизайн-системы
    * @param className base CSS class name / базовое имя CSS-класса
@@ -75,7 +74,6 @@ export class Cell {
    */
   constructor(
     protected readonly props: CellProps,
-    protected readonly refs: ToRefs<CellProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly classDesign: string,
     protected readonly className: string,

@@ -1,6 +1,6 @@
 // ai-none
 
-import { ref, watch, type ToRefs } from 'vue'
+import { ref, watch } from 'vue'
 import { getFirst, isSelected, type ListSelectedList } from '@dxtmisha/functional'
 
 import type { TabsNavigationProps } from './props'
@@ -22,11 +22,9 @@ export class TabsNavigationSelected {
    *
    * Конструктор для инициализации помощника управления выделением.
    * @param props input configuration properties / входные конфигурационные свойства
-   * @param refs reactive references of properties / реактивные ссылки свойств
    */
   constructor(
-    protected readonly props: TabsNavigationProps,
-    protected readonly refs: ToRefs<TabsNavigationProps>
+    protected readonly props: TabsNavigationProps
   ) {
     const selected = props.selected || getFirst(props.list)?.value
 
@@ -34,7 +32,7 @@ export class TabsNavigationSelected {
     this.actualItem.value = selected
 
     watch(
-      [refs.selected],
+      () => props.selected,
       () => this.set(props.selected)
     )
   }

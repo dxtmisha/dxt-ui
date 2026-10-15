@@ -1,4 +1,4 @@
-import { computed, type Ref, type ToRefs } from 'vue'
+import { computed, type Ref } from 'vue'
 import {
   type ConstrClass,
   type ConstrEmit,
@@ -52,7 +52,6 @@ export class Bars {
   /**
    * Constructor
    * @param props input data/ входные данные
-   * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
    * @param element input element/ элемент ввода
    * @param classDesign design name/ название дизайна
    * @param className class name/ название класса
@@ -72,7 +71,6 @@ export class Bars {
    */
   constructor(
     protected readonly props: BarsProps,
-    protected readonly refs: ToRefs<BarsProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly classDesign: string,
     protected readonly className: string,
@@ -131,7 +129,7 @@ export class Bars {
       this.skeleton
     )
 
-    this.action = new BarsActionConstructor(props, refs)
+    this.action = new BarsActionConstructor(props)
 
     this.event = new EventConstructor(undefined, undefined, emits)
     new ModelConstructor('action', emits, this.action.action)

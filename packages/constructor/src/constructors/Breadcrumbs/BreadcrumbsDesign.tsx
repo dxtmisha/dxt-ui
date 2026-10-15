@@ -67,7 +67,6 @@ export class BreadcrumbsDesign<
       this.element,
       this.emits,
       this.props,
-      this.refs,
       this.slots
     )
 

@@ -1,4 +1,4 @@
-import { onMounted, onUnmounted, type Ref, type ToRefs, watch } from 'vue'
+import { onMounted, onUnmounted, type Ref, watch } from 'vue'
 import { type ConstrClassObject, type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
@@ -106,7 +106,6 @@ export class Window {
   /**
    * Constructor
    * @param props input data/ входные данные
-   * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
    * @param element input element/ элемент ввода
    * @param classDesign design name/ название дизайна
    * @param className class name/ название класса
@@ -141,7 +140,6 @@ export class Window {
    */
   constructor(
     protected readonly props: WindowPropsBasic,
-    protected readonly refs: ToRefs<WindowPropsBasic>,
     element: Ref<HTMLDivElement | undefined>,
     protected readonly classDesign: string,
     protected readonly className: string,
@@ -222,7 +220,7 @@ export class Window {
     this.coordinates = new WindowCoordinatesConstructor(this.classes, this.element)
     this.position = new WindowPositionConstructor(props, this.client, this.element, this.coordinates)
     this.origin = new WindowOriginConstructor(this.client, this.element, this.position)
-    this.staticMode = new WindowStaticConstructor(props, refs, this.element)
+    this.staticMode = new WindowStaticConstructor(props, this.element)
     this.emit = new WindowEmitConstructor(this.classes, this.element, emits)
 
     this.styles = new WindowStylesConstructor(
@@ -297,7 +295,7 @@ export class Window {
 
     new ModelConstructor<boolean>('open', this.emits, this.open.item)
 
-    watch([refs.open], () => this.open.set(props.open))
+    watch(() => props.open, () => this.open.set(props.open))
 
     onMounted(() => {
       if (props.open) {

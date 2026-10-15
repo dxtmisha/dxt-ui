@@ -1,4 +1,4 @@
-import type { Ref, ToRefs } from 'vue'
+import type { Ref } from 'vue'
 import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
 import type { ChipComponents, ChipEmits, ChipSlots } from './types'
@@ -11,7 +11,6 @@ export class Chip {
   /**
    * Constructor
    * @param props input data/ входные данные
-   * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
    * @param element input element/ элемент ввода
    * @param classDesign design name/ название дизайна
    * @param className class name/ название класса
@@ -21,7 +20,6 @@ export class Chip {
    */
   constructor(
     protected readonly props: ChipPropsBasic,
-    protected readonly refs: ToRefs<ChipPropsBasic>,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly classDesign: string,
     protected readonly className: string,

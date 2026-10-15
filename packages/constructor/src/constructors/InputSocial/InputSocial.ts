@@ -1,4 +1,4 @@
-import { computed, type Ref, type ToRefs } from 'vue'
+import { computed, type Ref } from 'vue'
 import { MediaSocial, type InputSocialItem } from '@dxtmisha/media'
 import type { ConstrEmit, DesignComp, NumberOrString } from '@dxtmisha/functional'
 
@@ -61,7 +61,6 @@ export class InputSocial {
    *
    * Конструктор для InputSocial.
    * @param props input data / входные данные
-   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
    * @param element input element / элемент ввода
    * @param classDesign design name / название дизайна
    * @param className class name / название класса
@@ -82,7 +81,6 @@ export class InputSocial {
    */
   constructor(
     protected readonly props: InputSocialProps,
-    protected readonly refs: ToRefs<InputSocialProps>,
     protected readonly element: Ref<FieldElementInput>,
     protected readonly classDesign: string,
     protected readonly className: string,
@@ -125,7 +123,6 @@ export class InputSocial {
 
     this.value = new FieldValueIncludeConstructor(
       this.props,
-      this.refs,
       this.elementItem
     )
 

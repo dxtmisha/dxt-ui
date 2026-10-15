@@ -1,6 +1,5 @@
 import {
-  type Ref,
-  type ToRefs
+  type Ref
 } from 'vue'
 
 import {
@@ -51,7 +50,6 @@ export class ClockPeriod {
   /**
    * Constructor
    * @param props input data / входные данные
-   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
    * @param element input element / элемент ввода
    * @param classDesign design name / название дизайна
    * @param className class name / название класса
@@ -68,7 +66,6 @@ export class ClockPeriod {
    */
   constructor(
     protected readonly props: ClockPeriodProps,
-    protected readonly refs: ToRefs<ClockPeriodProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly classDesign: string,
     protected readonly className: string,
@@ -108,7 +105,7 @@ export class ClockPeriod {
       emits,
       this.eventClick,
       this.value.value,
-      refs.readonly
+      () => props.readonly
     )
 
     this.event = new ClockPeriodEventConstructor(

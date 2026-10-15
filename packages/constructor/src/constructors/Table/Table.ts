@@ -1,4 +1,4 @@
-import { type Ref, type ToRefs, ref } from 'vue'
+import { type Ref, ref } from 'vue'
 import {
   type ConstrEmit,
   type DesignComp
@@ -44,7 +44,6 @@ export class Table {
   /**
    * Constructor
    * @param props input properties / входные свойства
-   * @param refs input properties in the form of reactive references / входные свойства в виде реактивных ссылок
    * @param element target HTML element / целевой HTML-элемент
    * @param classDesign design system prefix / префикс дизайн-системы
    * @param className base CSS class name / базовое имя CSS-класса
@@ -62,7 +61,6 @@ export class Table {
    */
   constructor(
     protected readonly props: TableProps,
-    protected readonly refs: ToRefs<TableProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly classDesign: string,
     protected readonly className: string,

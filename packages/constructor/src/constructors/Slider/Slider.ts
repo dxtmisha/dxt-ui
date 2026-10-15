@@ -1,8 +1,7 @@
 import {
   computed,
   onUnmounted,
-  type Ref,
-  type ToRefs
+  type Ref
 } from 'vue'
 
 import {
@@ -85,7 +84,6 @@ export class Slider {
   /**
    * Constructor
    * @param props input data / входные данные
-   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
    * @param element input element / элемент ввода
    * @param classDesign design name / название дизайна
    * @param className class name / название класса
@@ -97,7 +95,6 @@ export class Slider {
    */
   constructor(
     protected readonly props: SliderProps,
-    protected readonly refs: ToRefs<SliderProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly classDesign: string,
     protected readonly className: string,
@@ -150,8 +147,8 @@ export class Slider {
       emits,
       undefined,
       computed(() => props.modelValue || props.value),
-      refs.readonly,
-      refs.multiple
+      () => props.readonly,
+      () => props.multiple
     )
 
     this.marksData = new SliderMarksDataConstructor(props, className)

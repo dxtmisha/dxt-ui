@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi } from 'vitest'
-import { nextTick, reactive, toRefs } from 'vue'
+import { nextTick, reactive } from 'vue'
 
 import { CarouselPaginationSelected } from '../CarouselPaginationSelected'
 import type { CarouselPaginationProps } from '../props'
@@ -10,8 +10,8 @@ describe('CarouselPaginationSelected', () => {
     const props = reactive<CarouselPaginationProps>({
       count: 5
     })
-    const refs = toRefs(props)
-    const selected = new CarouselPaginationSelected(props, refs)
+
+    const selected = new CarouselPaginationSelected(props)
 
     expect(selected.total.value).toBe(5)
 
@@ -27,8 +27,8 @@ describe('CarouselPaginationSelected', () => {
       count: 5,
       selected: 3
     })
-    const refs = toRefs(props)
-    const selected = new CarouselPaginationSelected(props, refs)
+
+    const selected = new CarouselPaginationSelected(props)
 
     expect(selected.get()).toBe(3)
     expect(selected.item.value).toBe(3)
@@ -52,8 +52,8 @@ describe('CarouselPaginationSelected', () => {
       count: 5,
       selected: 2
     })
-    const refs = toRefs(props)
-    const selected = new CarouselPaginationSelected(props, refs)
+
+    const selected = new CarouselPaginationSelected(props)
 
     props.selected = 4
     await nextTick()
@@ -68,8 +68,8 @@ describe('CarouselPaginationSelected', () => {
       count: 5,
       selected: 1
     })
-    const refs = toRefs(props)
-    const selected = new CarouselPaginationSelected(props, refs, emits)
+
+    const selected = new CarouselPaginationSelected(props, emits)
 
     selected.set(3)
     expect(selected.get()).toBe(3)
@@ -89,8 +89,8 @@ describe('CarouselPaginationSelected', () => {
       count: 3,
       selected: 2
     })
-    const refs = toRefs(props)
-    const selected = new CarouselPaginationSelected(props, refs)
+
+    const selected = new CarouselPaginationSelected(props)
 
     selected.next()
     expect(selected.get()).toBe(3)
@@ -114,8 +114,8 @@ describe('CarouselPaginationSelected', () => {
     const props = reactive<CarouselPaginationProps>({
       count: 5
     })
-    const refs = toRefs(props)
-    const selected = new CarouselPaginationSelected(props, refs)
+
+    const selected = new CarouselPaginationSelected(props)
 
     expect(selected.get()).toBe(1)
     expect(selected.item.value).toBe(1)
@@ -129,8 +129,8 @@ describe('CarouselPaginationSelected', () => {
     const props = reactive<CarouselPaginationProps>({
       count: 4
     })
-    const refs = toRefs(props)
-    const selected = new CarouselPaginationSelected(props, refs)
+
+    const selected = new CarouselPaginationSelected(props)
 
     expect((selected as any).toIndex(2)).toBe(2)
     expect((selected as any).toIndex('3')).toBe(3)

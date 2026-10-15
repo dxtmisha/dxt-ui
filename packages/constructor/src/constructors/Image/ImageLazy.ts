@@ -5,7 +5,6 @@ import {
   onMounted,
   type Ref,
   ref,
-  toRefs,
   type WatchHandle,
   watch
 } from 'vue'
@@ -43,15 +42,10 @@ export class ImageLazy {
     protected readonly props: ImageProps,
     protected readonly element: Ref<HTMLElement | undefined>
   ) {
-    const {
-      lazy,
-      preloadOffset
-    } = toRefs(props)
-
     watch([
       element,
-      lazy,
-      preloadOffset
+      () => props.lazy,
+      () => props.preloadOffset
     ], () => this.update())
 
     onMounted(() => this.update())

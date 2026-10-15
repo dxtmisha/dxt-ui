@@ -1,4 +1,4 @@
-import type { Ref, ToRefs } from 'vue'
+import type { Ref } from 'vue'
 import {
   type ConstrEmit,
   type DesignComp
@@ -32,7 +32,6 @@ export class Breadcrumbs {
    * @param element input element / элемент ввода
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
    * @param props input data / входные данные
-   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
    * @param slots object for working with slots / объект для работы со слотами
    * @param constructors object with classes / объект с классами
    * @param constructors.EventClickIncludeConstructor class for working with click event / класс для работы с событием клика
@@ -45,7 +44,6 @@ export class Breadcrumbs {
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly emits: ConstrEmit<BreadcrumbsEmits> | undefined,
     protected readonly props: BreadcrumbsProps,
-    protected readonly refs: ToRefs<BreadcrumbsProps>,
     protected readonly slots: BreadcrumbsSlots | undefined,
     constructors: {
       EventClickIncludeConstructor?: typeof EventClickInclude

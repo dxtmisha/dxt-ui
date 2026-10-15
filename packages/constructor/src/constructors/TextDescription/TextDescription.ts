@@ -1,4 +1,4 @@
-import type { Ref, ToRefs } from 'vue'
+import { toRef, type Ref } from 'vue'
 import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
 import { DescriptionInclude } from '../../classes/DescriptionInclude'
@@ -16,7 +16,6 @@ export class TextDescription {
   /**
    * Constructor
    * @param props input data/ входные данные
-   * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
    * @param element input element/ элемент ввода
    * @param classDesign design name/ название дизайна
    * @param className class name/ название класса
@@ -28,7 +27,6 @@ export class TextDescription {
    */
   constructor(
     protected readonly props: TextDescriptionProps,
-    protected readonly refs: ToRefs<TextDescriptionProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly classDesign: string,
     protected readonly className: string,
@@ -48,7 +46,7 @@ export class TextDescription {
       this.className,
       this.slots,
       undefined,
-      this.refs.tag
+      toRef(this.props, 'tag')
     )
   }
 }

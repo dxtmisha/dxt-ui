@@ -1,4 +1,4 @@
-import { type Ref, type ToRefs } from 'vue'
+import { type Ref } from 'vue'
 import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
 import { AreaInclude } from '../../classes/AreaInclude'
@@ -30,7 +30,6 @@ export class Header {
    * Constructor /
    * Конструктор
    * @param props input data / входные данные
-   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
    * @param element input element / элемент ввода
    * @param classDesign design name / название дизайна
    * @param className class name / название класса
@@ -41,7 +40,6 @@ export class Header {
    */
   constructor(
     protected readonly props: HeaderProps,
-    protected readonly refs: ToRefs<HeaderProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly classDesign: string,
     protected readonly className: string,

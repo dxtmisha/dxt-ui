@@ -1,4 +1,4 @@
-import { type Ref, type ToRefs } from 'vue'
+import { toRef, type Ref } from 'vue'
 import { type ConstrEmit, type DesignComp, ListDataRef } from '@dxtmisha/functional'
 
 import { EventClickInclude } from '../../classes/EventClickInclude'
@@ -47,7 +47,6 @@ export class Menu {
   /**
    * Constructor
    * @param props input data/ входные данные
-   * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
    * @param element input element/ элемент ввода
    * @param classDesign design name/ название дизайна
    * @param className class name/ название класса
@@ -66,7 +65,6 @@ export class Menu {
    */
   constructor(
     protected readonly props: MenuProps,
-    protected readonly refs: ToRefs<MenuProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly classDesign: string,
     protected readonly className: string,
@@ -96,7 +94,7 @@ export class Menu {
     } = constructors
 
     this.request = new MenuRequestConstructor(this.props)
-    this.value = new MenuValueConstructor(this.props, this.refs, this.emits)
+    this.value = new MenuValueConstructor(this.props, this.emits)
 
     this.data = new ListDataRefConstructor(
       this.request.item,
@@ -105,8 +103,8 @@ export class Menu {
       undefined,
       undefined,
       this.value.selected,
-      this.refs.keyValue,
-      this.refs.keyLabel
+      toRef(this.props, 'keyValue'),
+      toRef(this.props, 'keyLabel')
     )
     this.go = new MenuGoConstructor(this.props, this.value, this.data)
 

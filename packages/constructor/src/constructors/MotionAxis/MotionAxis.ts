@@ -1,4 +1,4 @@
-import { onMounted, type Ref, type ToRefs, watch } from 'vue'
+import { onMounted, type Ref, watch } from 'vue'
 import { type ConstrClassObject, type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
 import { ModelInclude } from '../../classes/ModelInclude'
@@ -42,7 +42,6 @@ export class MotionAxis {
    *
    * Конструктор для инициализации контроллера MotionAxis.
    * @param props input data / входные данные
-   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
    * @param element input element / элемент ввода
    * @param classDesign design name / название дизайна
    * @param className class name / название класса
@@ -61,7 +60,6 @@ export class MotionAxis {
    */
   constructor(
     protected readonly props: MotionAxisProps,
-    protected readonly refs: ToRefs<MotionAxisProps>,
     protected readonly element: Ref<HTMLDivElement | undefined>,
     protected readonly classDesign: string,
     protected readonly className: string,
@@ -116,7 +114,6 @@ export class MotionAxis {
     this.slides = new MotionAxisSlidesConstructor(this.status, slots)
     this.go = new MotionAxisGoConstructor(
       props,
-      refs,
       element,
       this.slides,
       this.status
@@ -129,7 +126,7 @@ export class MotionAxis {
     )
 
     watch(
-      [refs.selected],
+      () => props.selected,
       this.updateSelected
     )
     onMounted(this.updateSelected)

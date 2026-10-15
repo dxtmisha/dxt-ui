@@ -1,6 +1,6 @@
 import {
+  toRef,
   type Ref,
-  type ToRefs,
   computed,
   onMounted,
   nextTick,
@@ -58,7 +58,6 @@ export class List {
   /**
    * Constructor
    * @param props input data/ входные данные
-   * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
    * @param element input element/ элемент ввода
    * @param classDesign design name/ название дизайна
    * @param className class name/ название класса
@@ -77,7 +76,6 @@ export class List {
    */
   constructor(
     protected readonly props: ListProps,
-    protected readonly refs: ToRefs<ListProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly classDesign: string,
     protected readonly className: string,
@@ -111,17 +109,17 @@ export class List {
     this.text = new TextIncludeConstructor(this.props)
 
     this.data = new ListDataRefConstructor(
-      this.refs.list,
+      toRef(this.props, 'list'),
       this.focus.focus,
       this.search.highlight,
-      this.refs.highlightLengthStart,
-      this.refs.filterMode,
-      this.refs.selected,
-      this.refs.keyValue,
-      this.refs.keyLabel,
-      this.refs.liteThreshold,
+      toRef(this.props, 'highlightLengthStart'),
+      toRef(this.props, 'filterMode'),
+      toRef(this.props, 'selected'),
+      toRef(this.props, 'keyValue'),
+      toRef(this.props, 'keyLabel'),
+      toRef(this.props, 'liteThreshold'),
       undefined,
-      this.refs.max
+      toRef(this.props, 'max')
     )
 
     this.go = new ListGoConstructor(

@@ -1,6 +1,6 @@
 // ai-none
 
-import { onMounted, ref, watch, type ToRefs } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { toArray } from '@dxtmisha/functional-basic'
 
 import type { SelectableAreaClassesData } from './SelectableAreaClassesData'
@@ -24,18 +24,16 @@ export class SelectableAreaItem {
    *
    * Конструктор.
    * @param props properties / свойства
-   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
    * @param classes classes manager / менеджер классов
    */
   constructor(
     protected readonly props: SelectableAreaProps,
-    protected readonly refs: ToRefs<SelectableAreaProps>,
     protected readonly classes: SelectableAreaClassesData
   ) {
     this.updateItemByProps()
 
     watch(
-      [refs.selected],
+      () => props.selected,
       () => {
         this.updateItemByProps()
         this.updateSelection()

@@ -1,4 +1,4 @@
-import type { Ref, ToRefs } from 'vue'
+import type { Ref } from 'vue'
 import { type ConstrClass, type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 import { getClassTagAStatic } from '../../functions/getClassTagAStatic'
 
@@ -23,7 +23,6 @@ export class AlertLink {
   /**
    * Constructor
    * @param props input data/ входные данные
-   * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
    * @param element input element/ элемент ввода
    * @param classDesign design name/ название дизайна
    * @param className class name/ название класса
@@ -36,7 +35,6 @@ export class AlertLink {
    */
   constructor(
     protected readonly props: AlertLinkProps,
-    protected readonly refs: ToRefs<AlertLinkProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly classDesign: string,
     protected readonly className: string,

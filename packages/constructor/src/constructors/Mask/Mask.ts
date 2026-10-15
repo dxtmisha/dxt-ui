@@ -1,4 +1,4 @@
-import { computed, type Ref, type ToRefs, watch } from 'vue'
+import { computed, type Ref, watch } from 'vue'
 import {
   anyToString,
   type ConstrClassObject,
@@ -96,7 +96,6 @@ export class Mask {
   /**
    * Constructor
    * @param props input data/ входные данные
-   * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
    * @param element input element/ элемент ввода
    * @param classDesign design name/ название дизайна
    * @param className class name/ название класса
@@ -130,7 +129,6 @@ export class Mask {
    */
   constructor(
     protected readonly props: MaskProps,
-    protected readonly refs: ToRefs<MaskProps>,
     protected readonly element: Ref<MaskElementInput>,
     protected readonly classDesign: string,
     protected readonly className: string,
@@ -319,10 +317,10 @@ export class Mask {
       this.data
     )
 
-    watch([refs.value], () => this.reset(props.value))
+    watch(() => props.value, () => this.reset(props.value))
     watch(this.basic, () => this.data.goSelection(false))
 
-    watch([GeoRef.getStandard(), refs.language], () => this.reset(this.value.getValueCache()))
+    watch([GeoRef.getStandard(), () => props.language], () => this.reset(this.value.getValueCache()))
 
     if (props.value) {
       this.data.reset(anyToString(props.value))

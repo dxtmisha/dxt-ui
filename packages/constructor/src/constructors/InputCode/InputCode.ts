@@ -1,5 +1,5 @@
 import { type ConstrEmit, type DesignComp, isFilled } from '@dxtmisha/functional'
-import { onMounted, ref, type Ref, type ToRefs, watch } from 'vue'
+import { onMounted, ref, type Ref, watch } from 'vue'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { ModelInclude } from '../../classes/ModelInclude'
@@ -40,7 +40,6 @@ export class InputCode {
   /**
    * Constructor
    * @param props input properties / входные свойства
-   * @param refs input properties as reactive references / входные свойства в виде реактивных ссылок
    * @param element main HTML element ref / ссылка на основной HTML-элемент
    * @param classDesign design class name / название класса дизайна
    * @param className basic CSS class name / базовое имя CSS-класса
@@ -55,7 +54,6 @@ export class InputCode {
    */
   constructor(
     protected readonly props: InputCodeProps,
-    protected readonly refs: ToRefs<InputCodeProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly classDesign: string,
     protected readonly className: string,
@@ -95,8 +93,8 @@ export class InputCode {
 
     watch(
       [
-        this.refs.value,
-        this.refs.modelValue
+        () => this.props.value,
+        () => this.props.modelValue
       ],
       this.update
     )

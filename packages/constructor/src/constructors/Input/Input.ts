@@ -1,4 +1,4 @@
-import type { Ref, ToRefs } from 'vue'
+import type { Ref } from 'vue'
 import type { ConstrEmit, DesignComp } from '@dxtmisha/functional'
 
 import { FieldChangeInclude } from '../../classes/Field/FieldChangeInclude'
@@ -59,7 +59,6 @@ export class Input {
   /**
    * Constructor
    * @param props input data/ входные данные
-   * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
    * @param element input element/ элемент ввода
    * @param classDesign design name/ название дизайна
    * @param className class name/ название класса
@@ -88,7 +87,6 @@ export class Input {
    */
   constructor(
     protected readonly props: InputProps,
-    protected readonly refs: ToRefs<InputProps>,
     protected readonly element: Ref<FieldElementInput>,
     protected readonly classDesign: string,
     protected readonly className: string,
@@ -157,7 +155,6 @@ export class Input {
 
     this.value = new FieldValueIncludeConstructor(
       this.props,
-      this.refs,
       this.elementItem
     )
     this.arrow = new FieldArrowIncludeConstructor(this.props, this.value, this.type)

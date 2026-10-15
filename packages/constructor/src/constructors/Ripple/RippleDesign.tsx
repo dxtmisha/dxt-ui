@@ -68,7 +68,6 @@ export class RippleDesign<
 
     this.item = new ItemConstructor(
       this.props,
-      this.refs,
       this.element,
       this.getName(),
       this.components,

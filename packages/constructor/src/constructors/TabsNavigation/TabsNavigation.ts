@@ -1,4 +1,4 @@
-import { type Ref, type ToRefs } from 'vue'
+import { toRef, type Ref } from 'vue'
 import { type ConstrEmit, type DesignComp, ListDataRef, type ListSelectedList } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
@@ -58,7 +58,6 @@ export class TabsNavigation {
    *
    * Конструктор для инициализации всех необходимых компонентов навигации вкладок.
    * @param props input configuration properties / входные конфигурационные свойства
-   * @param refs reactive references of properties / реактивные ссылки свойств
    * @param element main HTML element / главный HTML-элемент
    * @param classDesign design class token name / имя токена класса дизайна
    * @param className base class name / базовое имя класса
@@ -69,7 +68,6 @@ export class TabsNavigation {
    */
   constructor(
     protected readonly props: TabsNavigationProps,
-    protected readonly refs: ToRefs<TabsNavigationProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly classDesign: string,
     protected readonly className: string,
@@ -108,20 +106,20 @@ export class TabsNavigation {
       components
     )
 
-    this.selected = new TabsNavigationSelectedConstructor(props, refs)
+    this.selected = new TabsNavigationSelectedConstructor(props)
     this.focus = new TabsNavigationFocusConstructor(
       this.scroll,
       this.selected
     )
     this.data = new ListDataRefConstructor(
-      refs.list,
+      toRef(props, 'list'),
       this.focus.item,
       undefined,
       undefined,
       undefined,
       this.selected.actualItem,
-      refs.keyValue,
-      refs.keyLabel
+      toRef(props, 'keyValue'),
+      toRef(props, 'keyLabel')
     )
 
     this.ids = new TabsNavigationIdsConstructor(
@@ -131,7 +129,6 @@ export class TabsNavigation {
 
     this.indicator = new TabsNavigationIndicatorConstructor(
       props,
-      refs,
       () => this.scroll.elementHtml,
       classDesign,
       className,

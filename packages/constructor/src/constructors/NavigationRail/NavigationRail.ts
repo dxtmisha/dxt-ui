@@ -1,6 +1,6 @@
 import {
+  toRef,
   type Ref,
-  type ToRefs,
   computed,
   onMounted,
   nextTick
@@ -53,7 +53,6 @@ export class NavigationRail {
   /**
    * Constructor
    * @param props input data / входные данные
-   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
    * @param element input element / элемент ввода
    * @param classDesign design name / название дизайна
    * @param className class name / название класса
@@ -69,7 +68,6 @@ export class NavigationRail {
    */
   constructor(
     protected readonly props: NavigationRailProps,
-    protected readonly refs: ToRefs<NavigationRailProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly classDesign: string,
     protected readonly className: string,
@@ -95,14 +93,14 @@ export class NavigationRail {
     this.focus = new ListFocusConstructor(this.props as any, this.element, this.id)
 
     this.data = new ListDataRefConstructor(
-      this.refs.list,
+      toRef(this.props, 'list'),
       this.focus.focus,
       undefined,
       undefined,
       undefined,
-      this.refs.selected,
-      this.refs.keyValue,
-      this.refs.keyLabel
+      toRef(this.props, 'selected'),
+      toRef(this.props, 'keyValue'),
+      toRef(this.props, 'keyLabel')
     )
 
     this.go = new ListGoConstructor(

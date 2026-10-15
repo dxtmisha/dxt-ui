@@ -1,4 +1,4 @@
-import type { Ref, ToRefs } from 'vue'
+import type { Ref } from 'vue'
 import type { ConstrEmit, DesignComp } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
@@ -28,7 +28,6 @@ export class TableFlexRecord extends TableRecord {
    *
    * Конструктор для TableFlexRecord.
    * @param props input properties / входные свойства
-   * @param refs input properties in the form of reactive references / входные свойства в виде реактивных ссылок
    * @param element target HTML element / целевой HTML-элемент
    * @param classDesign design system prefix / префикс дизайн-системы
    * @param className base CSS class name / базовое имя CSS-класса
@@ -41,7 +40,6 @@ export class TableFlexRecord extends TableRecord {
    */
   constructor(
     props: TableFlexRecordProps,
-    refs: ToRefs<TableFlexRecordProps>,
     element: Ref<HTMLElement | undefined>,
     classDesign: string,
     className: string,
@@ -55,7 +53,6 @@ export class TableFlexRecord extends TableRecord {
   ) {
     super(
       props,
-      refs,
       element,
       classDesign,
       className,

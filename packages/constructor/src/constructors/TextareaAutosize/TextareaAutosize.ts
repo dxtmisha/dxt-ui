@@ -1,4 +1,4 @@
-import type { Ref, ToRefs } from 'vue'
+import type { Ref } from 'vue'
 import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
 import { TextareaAutosizeValue } from './TextareaAutosizeValue'
@@ -17,7 +17,6 @@ export class TextareaAutosize {
   /**
    * Constructor
    * @param props input data/ входные данные
-   * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
    * @param element input element/ элемент ввода
    * @param classDesign design name/ название дизайна
    * @param className class name/ название класса
@@ -30,7 +29,6 @@ export class TextareaAutosize {
    */
   constructor(
     protected readonly props: TextareaAutosizeProps,
-    protected readonly refs: ToRefs<TextareaAutosizeProps>,
     protected readonly element: Ref<HTMLTextAreaElement | undefined>,
     protected readonly classDesign: string,
     protected readonly className: string,
@@ -47,7 +45,7 @@ export class TextareaAutosize {
       TextareaAutosizeValueConstructor = TextareaAutosizeValue
     } = constructors
 
-    this.value = new TextareaAutosizeValueConstructor(props, refs, emits)
+    this.value = new TextareaAutosizeValueConstructor(props, emits)
     this.resize = new TextareaAutosizeResizeConstructor(props, element, this.value)
   }
 }

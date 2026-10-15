@@ -40,7 +40,6 @@ export class DialogDesign<
   protected initItem(): Dialog {
     return new Dialog(
       this.props,
-      this.refs,
       this.element,
       this.getDesign(),
       this.getName(),

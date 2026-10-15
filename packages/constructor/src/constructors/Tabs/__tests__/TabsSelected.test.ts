@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi } from 'vitest'
-import { toRefs, reactive, nextTick } from 'vue'
+import { reactive, nextTick } from 'vue'
 import { TabsSelected } from '../TabsSelected'
 
 vi.mock('vue', async () => {
@@ -20,9 +20,8 @@ describe('TabsSelected', () => {
         { value: 'tab-2', label: 'Tab 2' }
       ]
     }) as any
-    const refs = toRefs(props)
 
-    const tabsSelected = new TabsSelected(props, refs)
+    const tabsSelected = new TabsSelected(props)
 
     expect(tabsSelected.item.value).toBe('tab-2')
     expect(tabsSelected.is('tab-2')).toBe(true)
@@ -37,9 +36,8 @@ describe('TabsSelected', () => {
         { value: 'tab-2', label: 'Tab 2' }
       ]
     }) as any
-    const refs = toRefs(props)
 
-    const tabsSelected = new TabsSelected(props, refs)
+    const tabsSelected = new TabsSelected(props)
 
     expect(tabsSelected.item.value).toBe('tab-1')
     expect(tabsSelected.is('tab-1')).toBe(true)
@@ -49,16 +47,15 @@ describe('TabsSelected', () => {
     const props = reactive({
       selected: 'tab-1'
     }) as any
-    const refs = toRefs(props)
 
-    const tabsSelected = new TabsSelected(props, refs)
+    const tabsSelected = new TabsSelected(props)
     expect(tabsSelected.item.value).toBe('tab-1')
 
     tabsSelected.set('tab-3')
     expect(tabsSelected.item.value).toBe('tab-3')
   })
 
-  it('should update selection reactively when refs.selected changes', async () => {
+  it('should update selection reactively when props.selected changes', async () => {
     const props = reactive({
       selected: 'tab-1',
       tabs: [
@@ -66,9 +63,8 @@ describe('TabsSelected', () => {
         { value: 'tab-2', label: 'Tab 2' }
       ]
     }) as any
-    const refs = toRefs(props)
 
-    const tabsSelected = new TabsSelected(props, refs)
+    const tabsSelected = new TabsSelected(props)
     expect(tabsSelected.item.value).toBe('tab-1')
 
     // change selection prop

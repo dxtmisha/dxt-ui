@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi } from 'vitest'
-import { reactive, ref, toRefs } from 'vue'
+import { reactive, ref } from 'vue'
 
 import { ImageCrop } from '../ImageCrop'
 import type { ImageCropProps } from '../props'
@@ -14,12 +14,10 @@ describe('ImageCrop', () => {
       disabled: false
     }) as ImageCropProps
 
-    const refs = toRefs(props)
     const emits = vi.fn()
 
     const imageCrop = new ImageCrop(
       props,
-      refs,
       elementRef,
       'd1',
       'd1-image-crop',
@@ -44,12 +42,10 @@ describe('ImageCrop', () => {
       disabled: false
     }) as ImageCropProps
 
-    const refs = toRefs(props)
     const emits = vi.fn()
 
     const imageCrop = new ImageCrop(
       props,
-      refs,
       elementRef,
       'd1',
       'd1-image-crop',
@@ -86,8 +82,7 @@ describe('ImageCrop', () => {
       disabled: true
     }) as ImageCropProps
 
-    const refs = toRefs(props)
-    const imageCrop = new ImageCrop(props, refs, elementRef, 'd1', 'd1-image-crop')
+    const imageCrop = new ImageCrop(props, elementRef, 'd1', 'd1-image-crop')
 
     expect(imageCrop.aria).toEqual({ 'aria-disabled': 'true' })
   })
@@ -100,12 +95,10 @@ describe('ImageCrop', () => {
       disabled: false
     }) as ImageCropProps
 
-    const refs = toRefs(props)
     const emits = vi.fn()
 
     const imageCrop = new ImageCrop(
       props,
-      refs,
       elementRef,
       'd1',
       'd1-image-crop',

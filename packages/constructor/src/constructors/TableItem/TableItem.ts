@@ -1,4 +1,4 @@
-import { type Ref, type ToRefs } from 'vue'
+import { type Ref } from 'vue'
 import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
@@ -31,7 +31,6 @@ export class TableItem {
    *
    * Конструктор для TableItem.
    * @param props input properties / входные свойства
-   * @param refs input properties in the form of reactive references / входные свойства в виде реактивных ссылок
    * @param element target HTML element / целевой HTML-элемент
    * @param classDesign design system prefix / префикс дизайн-системы
    * @param className base CSS class name / базовое имя CSS-класса
@@ -45,7 +44,6 @@ export class TableItem {
    */
   constructor(
     protected readonly props: TableItemProps,
-    protected readonly refs: ToRefs<TableItemProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly classDesign: string,
     protected readonly className: string,

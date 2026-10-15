@@ -1,4 +1,4 @@
-import type { Ref, ToRefs } from 'vue'
+import type { Ref } from 'vue'
 import {
   type ConstrClassObject,
   type ConstrEmit,
@@ -37,7 +37,6 @@ export class CarouselItem {
    *
    * Конструктор для CarouselItem.
    * @param props input reactive properties / входные реактивные свойства
-   * @param refs raw properties wrapped as refs / исходные свойства в виде ссылок (refs)
    * @param element root DOM element reference / ссылка на корневой DOM-элемент
    * @param classDesign design name / название дизайна
    * @param className base class name / название класса
@@ -48,7 +47,6 @@ export class CarouselItem {
    */
   constructor(
     protected readonly props: CarouselItemProps,
-    protected readonly refs: ToRefs<CarouselItemProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly classDesign: string,
     protected readonly className: string,

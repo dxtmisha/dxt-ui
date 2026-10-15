@@ -1,4 +1,4 @@
-import type { Ref, ToRefs } from 'vue'
+import type { Ref } from 'vue'
 import {
   type ConstrBind,
   type ConstrEmit,
@@ -40,7 +40,6 @@ export class TableHeaderItem extends TableItem {
    *
    * Конструктор для TableHeaderItem.
    * @param props input parameters / входные параметры
-   * @param refs input parameters in the form of reactive elements / входные параметры в виде реактивных элементов
    * @param element element / элемент
    * @param classDesign design name / название дизайна
    * @param className class name / название класса
@@ -57,7 +56,6 @@ export class TableHeaderItem extends TableItem {
    */
   constructor(
     protected readonly props: TableHeaderItemProps,
-    protected readonly refs: ToRefs<TableHeaderItemProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly classDesign: string,
     protected readonly className: string,
@@ -84,7 +82,6 @@ export class TableHeaderItem extends TableItem {
 
     super(
       props,
-      refs,
       element,
       classDesign,
       className,

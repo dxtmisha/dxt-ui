@@ -1,4 +1,4 @@
-import { nextTick, onMounted, type Ref, type ToRefs } from 'vue'
+import { nextTick, onMounted, type Ref } from 'vue'
 import { type ConstrEmit, type DesignComp, goScrollTo } from '@dxtmisha/functional'
 
 import { ScrollToXInclude } from '../../classes/ScrollToXInclude'
@@ -27,7 +27,6 @@ export class HorizontalScroll {
    *
    * Конструктор для HorizontalScroll.
    * @param props input data / входные данные
-   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
    * @param element input element / элемент ввода
    * @param classDesign design name / название дизайна
    * @param className class name / название класса
@@ -39,7 +38,6 @@ export class HorizontalScroll {
    */
   constructor(
     protected readonly props: HorizontalScrollProps,
-    protected readonly refs: ToRefs<HorizontalScrollProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly classDesign: string,
     protected readonly className: string,

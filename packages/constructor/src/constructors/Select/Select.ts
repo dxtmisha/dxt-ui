@@ -1,4 +1,4 @@
-import type { Ref, ToRefs } from 'vue'
+import type { Ref } from 'vue'
 import type { ConstrEmit, DesignComp } from '@dxtmisha/functional'
 
 import { FieldElementInclude } from '../../classes/Field/FieldElementInclude'
@@ -38,7 +38,6 @@ export class Select extends SelectAbstract {
    *
    * Конструктор для компонента Select.
    * @param props input data / входные данные
-   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
    * @param element input element / элемент ввода
    * @param classDesign design name / название дизайна
    * @param className class name / название класса
@@ -60,7 +59,6 @@ export class Select extends SelectAbstract {
    */
   constructor(
     props: SelectProps,
-    refs: ToRefs<SelectProps>,
     element: Ref<HTMLElement | undefined>,
     classDesign: string,
     className: string,
@@ -83,7 +81,6 @@ export class Select extends SelectAbstract {
   ) {
     super(
       props,
-      refs,
       element,
       classDesign,
       className,

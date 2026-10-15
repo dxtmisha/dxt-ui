@@ -1,4 +1,4 @@
-import { onMounted, ref, watch, type Ref, type ToRefs } from 'vue'
+import { onMounted, ref, watch, type Ref } from 'vue'
 import {
   type ConstrEmit,
   type DesignComp,
@@ -41,7 +41,6 @@ export abstract class ModalAbstract {
    *
    * Конструктор для инициализации всех подкомпонентов модального окна.
    * @param props input data / входные данные
-   * @param refs input data references / ссылки на входные данные
    * @param element element / элемент
    * @param classDesign class design / дизайн класса
    * @param className class name / название класса
@@ -58,7 +57,6 @@ export abstract class ModalAbstract {
    */
   protected constructor(
     protected readonly props: ModalProps,
-    protected readonly refs: ToRefs<ModalProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly classDesign: string,
     protected readonly className: string,
@@ -122,7 +120,7 @@ export abstract class ModalAbstract {
       emits
     )
 
-    watch([refs.open], this.update)
+    watch(() => props.open, this.update)
     onMounted(this.update)
   }
 

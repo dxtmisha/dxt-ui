@@ -1,4 +1,4 @@
-import { type Ref, type ToRefs } from 'vue'
+import { type Ref } from 'vue'
 import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 import { getAreaValue } from '../../functions/getAreaValue'
 
@@ -15,7 +15,6 @@ export class PageArea {
    * Constructor
    *
    * @param props input data / входные данные
-   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
    * @param element input element / элемент ввода
    * @param classDesign design name / название дизайна
    * @param className class name / название класса
@@ -25,7 +24,6 @@ export class PageArea {
    */
   constructor(
     protected readonly props: PageAreaProps,
-    protected readonly refs: ToRefs<PageAreaProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly classDesign: string,
     protected readonly className: string,

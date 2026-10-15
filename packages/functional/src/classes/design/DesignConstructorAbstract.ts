@@ -2,8 +2,6 @@ import {
   computed,
   type ComputedRef,
   ref,
-  toRefs,
-  type ToRefs,
   useAttrs,
   useSlots,
   type VNode
@@ -52,8 +50,6 @@ export abstract class DesignConstructorAbstract<
   protected readonly name: string[]
   /** Root DOM element reference / Реактивная ссылка на корневой DOM-элемент */
   protected readonly element = ref<E | undefined>()
-  /** Reactive references to component props / Реактивные ссылки на свойства компонента */
-  protected readonly refs: ToRefs<P>
 
   /** Connected design subcomponents / Подключенные подкомпоненты дизайна */
   protected readonly components: DesignComponents<COMP, P>
@@ -90,7 +86,6 @@ export abstract class DesignConstructorAbstract<
     protected readonly options?: ConstrOptions<COMP, EMITS, P>
   ) {
     this.name = this.initName(name)
-    this.refs = this.props ? toRefs(this.props) : {} as ToRefs<P>
 
     this.components = new DesignComponents(options?.components, options?.compMod)
 

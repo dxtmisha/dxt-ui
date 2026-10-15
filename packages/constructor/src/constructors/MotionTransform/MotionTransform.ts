@@ -1,4 +1,4 @@
-import { type Ref, type ToRefs } from 'vue'
+import { type Ref } from 'vue'
 import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
@@ -49,7 +49,6 @@ export class MotionTransform {
   /**
    * Constructor
    * @param props input properties / входные свойства
-   * @param refs input properties in the form of reactive references / входные свойства в виде реактивных ссылок
    * @param element target window element / элемент окна
    * @param elementContext substrate element / элемент подложка
    * @param classDesign design system prefix / префикс дизайна
@@ -70,7 +69,6 @@ export class MotionTransform {
    */
   constructor(
     protected readonly props: MotionTransformProps,
-    protected readonly refs: ToRefs<MotionTransformProps>,
     element: Ref<HTMLDivElement | undefined>,
     elementContext: Ref<HTMLDivElement | undefined>,
     protected readonly classDesign: string,
@@ -116,7 +114,6 @@ export class MotionTransform {
     this.size = new MotionTransformSizeConstructor(this.element)
     this.state = new MotionTransformStateConstructor(
       props,
-      refs,
       this.element,
       this.tabIndex,
       this.size

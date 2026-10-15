@@ -1,6 +1,6 @@
 // ai-none
 
-import { nextTick, onMounted, type ToRefs, watch } from 'vue'
+import { nextTick, onMounted, watch } from 'vue'
 import { executeFunctionRef, type ListSelectedList, type RefOrNormalOrFunction } from '@dxtmisha/functional'
 
 import { TabsNavigationSelected } from './TabsNavigationSelected'
@@ -18,7 +18,6 @@ export class TabsNavigationIndicator {
    *
    * Конструктор для инициализации отслеживания анимации индикатора выбора.
    * @param props input configuration properties / входные конфигурационные свойства
-   * @param refs reactive references of properties / реактивные ссылки свойств
    * @param element main scrollable HTML element or getter function / главный прокручиваемый HTML-элемент или функция-геттер
    * @param classDesign design class token name / имя токена класса дизайна
    * @param className base class name of the component / базовое имя класса компонента
@@ -26,7 +25,6 @@ export class TabsNavigationIndicator {
    */
   constructor(
     protected readonly props: TabsNavigationProps,
-    protected readonly refs: ToRefs<TabsNavigationProps>,
     protected readonly element: RefOrNormalOrFunction<HTMLElement | undefined>,
     protected readonly classDesign: string,
     protected readonly className: string,

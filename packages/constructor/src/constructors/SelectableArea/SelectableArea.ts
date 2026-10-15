@@ -1,4 +1,4 @@
-import type { Ref, ToRefs } from 'vue'
+import type { Ref } from 'vue'
 import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
 import { ModelInclude } from '../../classes/ModelInclude'
@@ -35,7 +35,6 @@ export class SelectableArea {
   /**
    * Constructor
    * @param props input data / входные данные
-   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
    * @param element input element / элемент ввода
    * @param classDesign design name / название дизайна
    * @param className class name / название класса
@@ -52,7 +51,6 @@ export class SelectableArea {
    */
   constructor(
     protected readonly props: SelectableAreaProps,
-    protected readonly refs: ToRefs<SelectableAreaProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly classDesign: string,
     protected readonly className: string,
@@ -78,7 +76,7 @@ export class SelectableArea {
     } = constructors
 
     this.classes = new SelectableAreaClassesConstructor(element, classDesign, className)
-    this.item = new SelectableAreaItemConstructor(props, refs, this.classes)
+    this.item = new SelectableAreaItemConstructor(props, this.classes)
 
     this.square = new SelectableAreaSquareConstructor(this.classes)
 

@@ -1,4 +1,4 @@
-import { type Ref, type ToRefs } from 'vue'
+import { type Ref } from 'vue'
 import {
   type ConstrClassObject,
   type ConstrStyles,
@@ -47,7 +47,6 @@ export class Arrow {
   /**
    * Constructor
    * @param props input data / входные данные
-   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
    * @param element input element / элемент ввода
    * @param className class name / название класса
    * @param constructors object with classes / объект с классами
@@ -59,7 +58,6 @@ export class Arrow {
    */
   constructor(
     protected readonly props: ArrowProps,
-    protected readonly refs: ToRefs<ArrowProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly className: string,
     constructors: {
@@ -93,7 +91,6 @@ export class Arrow {
 
     this.event = new ArrowEventConstructor(
       props,
-      refs,
       element,
       this.elementTarget,
       this.parent,

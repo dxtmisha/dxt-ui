@@ -1,4 +1,4 @@
-import { type Ref, type ToRefs } from 'vue'
+import { toRef, type Ref } from 'vue'
 import {
   type ConstrEmit,
   type DesignComp,
@@ -24,7 +24,6 @@ export class ChipGroup {
   /**
    * Constructor
    * @param props input data/ входные данные
-   * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
    * @param element input element/ элемент ввода
    * @param classDesign design name/ название дизайна
    * @param className class name/ название класса
@@ -38,7 +37,6 @@ export class ChipGroup {
    */
   constructor(
     protected readonly props: ChipGroupProps,
-    protected readonly refs: ToRefs<ChipGroupProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly classDesign: string,
     protected readonly className: string,
@@ -62,20 +60,20 @@ export class ChipGroup {
       'selected',
       this.emits,
       this.event,
-      this.refs.selected,
-      this.refs.readonly,
-      this.refs.multiple
+      toRef(this.props, 'selected'),
+      () => this.props.readonly,
+      () => this.props.multiple
     )
 
     this.data = new ListDataRefConstructor(
-      this.refs.list,
+      toRef(this.props, 'list'),
       undefined,
       undefined,
       undefined,
       undefined,
       this.model.value,
-      this.refs.keyValue,
-      this.refs.keyLabel
+      toRef(this.props, 'keyValue'),
+      toRef(this.props, 'keyLabel')
     )
   }
 

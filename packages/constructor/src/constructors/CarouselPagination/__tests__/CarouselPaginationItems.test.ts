@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi } from 'vitest'
-import { reactive, toRefs } from 'vue'
+import { reactive } from 'vue'
 
 import { CarouselPaginationItems } from '../CarouselPaginationItems'
 import { CarouselPaginationSelected } from '../CarouselPaginationSelected'
@@ -12,9 +12,9 @@ describe('CarouselPaginationItems', () => {
       count: 1,
       hideIfOne: true
     })
-    const refs = toRefs(props)
-    const selected = new CarouselPaginationSelected(props, refs)
-    const items = new CarouselPaginationItems(props, refs, selected)
+
+    const selected = new CarouselPaginationSelected(props)
+    const items = new CarouselPaginationItems(props, selected)
 
     expect(items.isHide()).toBe(true)
 
@@ -31,9 +31,9 @@ describe('CarouselPaginationItems', () => {
       count: 4,
       selected: 2
     })
-    const refs = toRefs(props)
-    const selected = new CarouselPaginationSelected(props, refs)
-    const items = new CarouselPaginationItems(props, refs, selected)
+
+    const selected = new CarouselPaginationSelected(props)
+    const items = new CarouselPaginationItems(props, selected)
 
     expect(items.fractionText).toBe('2 / 4')
     expect(items.percent).toBe(50)
@@ -55,9 +55,9 @@ describe('CarouselPaginationItems', () => {
       selected: 2,
       control: true
     })
-    const refs = toRefs(props)
-    const selected = new CarouselPaginationSelected(props, refs)
-    const items = new CarouselPaginationItems(props, refs, selected)
+
+    const selected = new CarouselPaginationSelected(props)
+    const items = new CarouselPaginationItems(props, selected)
 
     const list = items.list.value
     expect(list.length).toBe(3)
@@ -143,9 +143,9 @@ describe('CarouselPaginationItems', () => {
       visible: 5,
       control: true
     })
-    const refs = toRefs(props)
-    const selected = new CarouselPaginationSelected(props, refs)
-    const items = new CarouselPaginationItems(props, refs, selected)
+
+    const selected = new CarouselPaginationSelected(props)
+    const items = new CarouselPaginationItems(props, selected)
 
     const list = items.list.value
     expect(list.length).toBe(5)
@@ -168,9 +168,9 @@ describe('CarouselPaginationItems', () => {
     const props = reactive<CarouselPaginationProps>({
       control: true
     })
-    const refs = toRefs(props)
-    const selected = new CarouselPaginationSelected(props, refs)
-    const items = new CarouselPaginationItems(props, refs, selected)
+
+    const selected = new CarouselPaginationSelected(props)
+    const items = new CarouselPaginationItems(props, selected)
 
     const binds = items.getBinds(2, true, 0.5)
     expect(binds).toEqual({
@@ -188,9 +188,9 @@ describe('CarouselPaginationItems', () => {
 
   it('should return item style based on scale', () => {
     const props = reactive<CarouselPaginationProps>({})
-    const refs = toRefs(props)
-    const selected = new CarouselPaginationSelected(props, refs)
-    const items = new CarouselPaginationItems(props, refs, selected)
+
+    const selected = new CarouselPaginationSelected(props)
+    const items = new CarouselPaginationItems(props, selected)
 
     expect(items.getStyle(1)).toBeUndefined()
     expect(items.getStyle(undefined)).toBeUndefined()
@@ -201,9 +201,9 @@ describe('CarouselPaginationItems', () => {
 
   it('should return tabindex and aria attributes', () => {
     const props = reactive<CarouselPaginationProps>({})
-    const refs = toRefs(props)
-    const selected = new CarouselPaginationSelected(props, refs)
-    const items = new CarouselPaginationItems(props, refs, selected)
+
+    const selected = new CarouselPaginationSelected(props)
+    const items = new CarouselPaginationItems(props, selected)
 
     expect(items.getTabindex(true)).toBe(0)
     expect(items.getTabindex(false)).toBe(-1)
@@ -236,10 +236,10 @@ describe('CarouselPaginationItems', () => {
       count: 5,
       control: true
     })
-    const refs = toRefs(props)
+
     const emits = vi.fn()
-    const selected = new CarouselPaginationSelected(props, refs, emits)
-    const items = new CarouselPaginationItems(props, refs, selected, emits)
+    const selected = new CarouselPaginationSelected(props, emits)
+    const items = new CarouselPaginationItems(props, selected, emits)
 
     const event = new MouseEvent('click')
     items.onClick(event, 3)

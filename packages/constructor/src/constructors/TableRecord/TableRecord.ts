@@ -1,4 +1,4 @@
-import { type Ref, type ToRefs, type VNode } from 'vue'
+import { type Ref, type VNode } from 'vue'
 import {
   type ConstrEmit,
   type DesignComp,
@@ -32,7 +32,6 @@ export class TableRecord {
    *
    * Конструктор для TableRecord.
    * @param props input properties / входные свойства
-   * @param refs input properties in the form of reactive references / входные свойства в виде реактивных ссылок
    * @param element target HTML element / целевой HTML-элемент
    * @param classDesign design system prefix / префикс дизайн-системы
    * @param className base CSS class name / базовое имя CSS-класса
@@ -45,7 +44,6 @@ export class TableRecord {
    */
   constructor(
     protected readonly props: TableRecordProps,
-    protected readonly refs: ToRefs<TableRecordProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly classDesign: string,
     protected readonly className: string,

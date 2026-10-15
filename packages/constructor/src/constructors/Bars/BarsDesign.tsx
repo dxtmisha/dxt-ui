@@ -60,7 +60,6 @@ export class BarsDesign<
 
     this.item = new ItemConstructor(
       this.props,
-      this.refs,
       this.element,
       this.getDesign(),
       this.getName(),

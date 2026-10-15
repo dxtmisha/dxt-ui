@@ -65,7 +65,6 @@ export class MotionTransformDesign<
 
     this.item = new ItemConstructor(
       this.props,
-      this.refs,
       this.element,
       this.elementContext,
       this.getDesign(),

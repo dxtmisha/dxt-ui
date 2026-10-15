@@ -1,4 +1,4 @@
-import type { Ref, ToRefs } from 'vue'
+import type { Ref } from 'vue'
 import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
 import type { DividerComponents, DividerEmits, DividerSlots } from './types'
@@ -11,7 +11,6 @@ export class Divider {
   /**
    * Constructor
    * @param props input data/ входные данные
-   * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
    * @param element input element/ элемент ввода
    * @param classDesign design name/ название дизайна
    * @param className class name/ название класса
@@ -21,7 +20,6 @@ export class Divider {
    */
   constructor(
     protected readonly props: DividerProps,
-    protected readonly refs: ToRefs<DividerProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly classDesign: string,
     protected readonly className: string,

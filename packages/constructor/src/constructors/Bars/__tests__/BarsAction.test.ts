@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi } from 'vitest'
-import { ref, toRefs, nextTick } from 'vue'
-import type { ToRefs } from 'vue'
+import { ref, nextTick } from 'vue'
+
 import { BarsAction } from '../BarsAction'
 import type { BarsProps } from '../props'
 
@@ -21,8 +21,8 @@ function createBarsAction(initialProps: Partial<BarsProps>) {
     actionBars: undefined,
     ...initialProps
   })
-  const references = toRefs(reactiveProperties.value as any) as unknown as ToRefs<BarsProps>
-  const barsAction = new BarsAction(reactiveProperties.value as unknown as BarsProps, references)
+
+  const barsAction = new BarsAction(reactiveProperties.value as unknown as BarsProps)
   return { barsAction, reactiveProperties }
 }
 

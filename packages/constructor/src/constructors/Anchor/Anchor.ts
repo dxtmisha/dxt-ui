@@ -1,4 +1,4 @@
-import { onMounted, type Ref, type ToRefs } from 'vue'
+import { onMounted, type Ref } from 'vue'
 import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
 import { LabelInclude } from '../../classes/LabelInclude'
@@ -30,7 +30,6 @@ export class Anchor {
   /**
    * Constructor
    * @param props input data/ входные данные
-   * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
    * @param element input element/ элемент ввода
    * @param classDesign design name/ название дизайна
    * @param className class name/ название класса
@@ -48,7 +47,6 @@ export class Anchor {
    */
   constructor(
     protected readonly props: AnchorProps,
-    protected readonly refs: ToRefs<AnchorProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly classDesign: string,
     protected readonly className: string,

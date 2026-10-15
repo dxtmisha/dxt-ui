@@ -1,10 +1,11 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi } from 'vitest'
-import { nextTick, ref, toRefs } from 'vue'
+import { effectScope, nextTick, reactive, ref } from 'vue'
 
 import { FormElements } from '../FormElements'
 import { FormElementsNative } from '../FormElementsNative'
 import { FormValue } from '../FormValue'
+import type { FormPropsBasic } from '../props'
 
 vi.mock('vue', async () => {
   const actual = await vi.importActual('vue') as any
@@ -15,6 +16,36 @@ vi.mock('vue', async () => {
 })
 
 describe('FormValue', () => {
+  it.each(['value', 'modelValue'] as const)('tracks initially absent %s and stops watching on disposal', async (property) => {
+    const scope = effectScope()
+    const props = reactive<FormPropsBasic>({})
+    const elements = new FormElements()
+    const setValues = vi.spyOn(elements, 'setValuesAll')
+    scope.run(() => new FormValue(props, elements))
+
+    try {
+      expect(setValues).not.toHaveBeenCalled()
+      props[property] = { title: 'first' }
+      await nextTick()
+      expect(setValues).toHaveBeenCalledExactlyOnceWith({ title: 'first' })
+
+      props[property] = undefined
+      await nextTick()
+      expect(setValues).toHaveBeenCalledTimes(1)
+
+      props[property] = { title: 'second' }
+      await nextTick()
+      expect(setValues).toHaveBeenLastCalledWith({ title: 'second' })
+
+      scope.stop()
+      props[property] = { title: 'after disposal' }
+      await nextTick()
+      expect(setValues).toHaveBeenCalledTimes(2)
+    } finally {
+      scope.stop()
+    }
+  })
+
   it('delegates reading and writing to FormElements in custom elements mode', () => {
     const elements = new FormElements()
     const setUsernameMock = vi.fn()
@@ -44,7 +75,7 @@ describe('FormValue', () => {
       getValidationMessage: () => ''
     })
 
-    const formValue = new FormValue({ native: false }, undefined, elements)
+    const formValue = new FormValue({ native: false }, elements)
 
     expect(formValue.get()).toEqual({
       username: 'admin',
@@ -77,7 +108,7 @@ describe('FormValue', () => {
     form.appendChild(input)
 
     const native = new FormElementsNative(ref(form))
-    const formValue = new FormValue({ native: true }, undefined, undefined, native)
+    const formValue = new FormValue({ native: true }, undefined, native)
 
     expect(formValue.get()).toEqual({
       email: 'test@example.com'
@@ -95,7 +126,7 @@ describe('FormValue', () => {
     })
   })
 
-  it('watches refs.value and updates form elements on change', async () => {
+  it('watches props.value and updates form elements on change', async () => {
     const elements = new FormElements()
     const setMock = vi.fn()
 
@@ -112,9 +143,8 @@ describe('FormValue', () => {
     const reactiveProps = ref({
       value: { title: 'Hello' }
     })
-    const refs = toRefs(reactiveProps.value)
 
-    const formValue = new FormValue(reactiveProps.value, refs, elements)
+    const formValue = new FormValue(reactiveProps.value, elements)
 
     reactiveProps.value.value = { title: 'New World' }
     await nextTick()
@@ -126,7 +156,7 @@ describe('FormValue', () => {
   it('resets custom elements in non-native mode with cached initial values', () => {
     const elements = new FormElements()
     const resetSpy = vi.spyOn(elements, 'reset')
-    const formValue = new FormValue({ native: false, value: { username: 'initial' } }, undefined, elements)
+    const formValue = new FormValue({ native: false, value: { username: 'initial' } }, elements)
 
     expect(formValue.getCache()).toEqual({ username: 'initial' })
 
@@ -138,7 +168,7 @@ describe('FormValue', () => {
     const form = document.createElement('form')
     const native = new FormElementsNative(ref(form))
     const resetSpy = vi.spyOn(native, 'reset')
-    const formValue = new FormValue({ native: true, value: { email: 'orig@test.com' } }, undefined, undefined, native)
+    const formValue = new FormValue({ native: true, value: { email: 'orig@test.com' } }, undefined, native)
 
     expect(formValue.getCache()).toEqual({ email: 'orig@test.com' })
 
@@ -149,7 +179,7 @@ describe('FormValue', () => {
   it('delegates setValuesAll to elements and native respectively', () => {
     const elements = new FormElements()
     const elementsSpy = vi.spyOn(elements, 'setValuesAll')
-    const formValueCustom = new FormValue({ native: false }, undefined, elements)
+    const formValueCustom = new FormValue({ native: false }, elements)
 
     formValueCustom.setValuesAll({ name: 'Alice' })
     expect(elementsSpy).toHaveBeenCalledWith({ name: 'Alice' })
@@ -157,7 +187,7 @@ describe('FormValue', () => {
     const form = document.createElement('form')
     const native = new FormElementsNative(ref(form))
     const nativeSpy = vi.spyOn(native, 'setValuesAll')
-    const formValueNative = new FormValue({ native: true }, undefined, undefined, native)
+    const formValueNative = new FormValue({ native: true }, undefined, native)
 
     formValueNative.setValuesAll({ email: 'bob@example.com' })
     expect(nativeSpy).toHaveBeenCalledWith({ email: 'bob@example.com' })

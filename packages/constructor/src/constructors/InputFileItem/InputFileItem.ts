@@ -1,4 +1,4 @@
-import type { Ref, ToRefs } from 'vue'
+import type { Ref } from 'vue'
 import {
   type ConstrEmit,
   type DesignComp
@@ -108,7 +108,6 @@ export class InputFileItem {
    *
    * Конструктор.
    * @param props input data / входные данные
-   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
    * @param element input element / элемент ввода
    * @param classDesign design name / название дизайна
    * @param className class name / название класса
@@ -137,7 +136,6 @@ export class InputFileItem {
    */
   constructor(
     protected readonly props: InputFileItemProps,
-    protected readonly refs: ToRefs<InputFileItemProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly classDesign: string,
     protected readonly className: string,

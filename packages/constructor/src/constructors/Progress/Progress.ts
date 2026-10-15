@@ -2,7 +2,6 @@ import {
   onMounted,
   onUnmounted,
   ref,
-  type ToRefs,
   watch
 } from 'vue'
 import {
@@ -45,13 +44,11 @@ export class Progress {
    *
    * Конструктор для управления прогрессом.
    * @param props input data / входные данные
-   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
    * @param className class name / название класса
    * @param constructors object with helper classes / объект с вспомогательными классами
    */
   constructor(
     protected readonly props: ProgressProps,
-    protected readonly refs: ToRefs<ProgressProps>,
     protected readonly className: string,
     constructors: {
       TextIncludeConstructor?: typeof TextInclude
@@ -67,7 +64,7 @@ export class Progress {
     this.text = new TextIncludeConstructor(this.props)
 
     watch(
-      [refs.visible],
+      () => props.visible,
       this.switch
     )
     onMounted(this.switch)

@@ -1,4 +1,4 @@
-import { type Ref, type ToRefs } from 'vue'
+import { type Ref } from 'vue'
 import { isFilled, type ConstrEmit, type DesignComp, GeoUnit } from '@dxtmisha/functional'
 
 import type { FormattedUnitComponents, FormattedUnitEmits, FormattedUnitSlots } from './types'
@@ -15,7 +15,6 @@ export class FormattedUnit {
    *
    * Конструктор.
    * @param props input data / входные данные
-   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
    * @param element input element / элемент ввода
    * @param classDesign design name / название дизайна
    * @param className class name / название класса
@@ -25,7 +24,6 @@ export class FormattedUnit {
    */
   constructor(
     protected readonly props: FormattedUnitProps,
-    protected readonly refs: ToRefs<FormattedUnitProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly classDesign: string,
     protected readonly className: string,

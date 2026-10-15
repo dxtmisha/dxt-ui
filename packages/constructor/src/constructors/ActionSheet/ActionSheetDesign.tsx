@@ -40,7 +40,6 @@ export class ActionSheetDesign<
   protected initItem(): ActionSheet {
     return new ActionSheet(
       this.props,
-      this.refs,
       this.element,
       this.getDesign(),
       this.getName(),

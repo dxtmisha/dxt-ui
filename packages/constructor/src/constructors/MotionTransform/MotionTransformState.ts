@@ -1,6 +1,6 @@
 // ai-none
 
-import { onMounted, onUnmounted, ref, type ToRefs, watch } from 'vue'
+import { onMounted, onUnmounted, ref, watch } from 'vue'
 
 import { TabIndexInclude } from '../../classes/TabIndexInclude'
 import { MotionTransformElement } from './MotionTransformElement'
@@ -28,14 +28,12 @@ export class MotionTransformState {
    *
    * Конструктор.
    * @param props input data/ входные данные
-   * @param refs reactive proxies/ реактивные прокси
    * @param element class object for managing an element/ объект класса для управления элементом
    * @param tabIndex class object for managing tab indices/ объект класса для управления табуляцией
    * @param size class object for managing sizes/ объект класса для управления размерами
    */
   constructor(
     props: MotionTransformProps,
-    refs: ToRefs<MotionTransformProps>,
     protected element: MotionTransformElement,
     protected tabIndex: TabIndexInclude<HTMLDivElement>,
     protected size: MotionTransformSize
@@ -43,7 +41,7 @@ export class MotionTransformState {
     watch([this.element.element, this.show], this.makeShow)
     watch([this.element.element, this.open], this.makeOpen)
     watch([this.element.element, this.teleport], this.makeTeleport)
-    watch([refs.open], () => this.set(Boolean(props.open)))
+    watch(() => props.open, () => this.set(Boolean(props.open)))
 
     onMounted(() => {
       this.makeShow()

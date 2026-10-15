@@ -69,14 +69,13 @@ export class ArrowDesign<
 
     this.item = new ItemConstructor(
       this.props,
-      this.refs,
       this.element,
       this.getName()
     )
 
     this.init()
 
-    watch([this.classes], () => {
+    watch(() => this.classes?.value, () => {
       nextTick().then(
         () => requestAnimationFrame(() => {
           this.points.value = this.item.points

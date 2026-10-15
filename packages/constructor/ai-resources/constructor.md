@@ -161,7 +161,7 @@ export type ButtonPropsInclude<
 Encapsulates all state, reactivity, and business logic. **Must contain zero rendering code.**
 
 ```ts
-import { type Ref, type ToRefs } from 'vue'
+import { type Ref } from 'vue'
 import { type ConstrClass, type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
 import { LabelInclude } from '../../classes/LabelInclude'
@@ -188,7 +188,6 @@ export class Button {
 
   constructor(
     protected readonly props: ButtonPropsBasic,
-    protected readonly refs: ToRefs<ButtonPropsBasic>,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly classDesign: string,
     protected readonly className: string,
@@ -295,7 +294,6 @@ export class ButtonDesign<
 
     this.item = new ItemConstructor(
       this.props,
-      this.refs,
       this.element,
       this.getDesign(),
       this.getName(),
@@ -560,7 +558,7 @@ export abstract class ModalDesignAbstract<
 export class ModalDesign<...> extends ModalDesignAbstract<Modal, ...> {
   protected initItem(Item?: typeof Modal): Modal {
     return new (Item ?? Modal)(
-      this.props, this.refs, this.element,
+      this.props, this.element,
       this.getDesign(), this.getName(),
       this.components, this.slots, this.emits
     )
@@ -626,11 +624,11 @@ export class MyModal {
   readonly open = ref<boolean>(false)
   readonly model: ModelInclude<boolean>
 
-  constructor(props, refs, ..., emits) {
+  constructor(props, ..., emits) {
     this.model = new ModelInclude('open', emits, this.open)
 
     onMounted(() => {
-      watch([refs.open], () => {
+      watch(() => props.open, () => {
         this.open.value = Boolean(props.open)
       }, { immediate: true })
     })
@@ -652,8 +650,7 @@ export class MyModal {
 | `this.init()` | `void` | Final initialization (must be called last in constructor) |
 | `this.classes?.value.main` | `ConstrClass` | Reactive root element class object |
 | `this.styles?.value` | `ConstrStyles` | Reactive root element inline styles |
-| `this.props` | `Readonly<P>` | Input props proxy |
-| `this.refs` | `ToRefs<P>` | Reactive property refs |
+| `this.props` | `Readonly<P>` | Input props proxy; use getters for watch sources and `toRef(props, 'key')` when a dependency requires a Ref |
 | `this.element` | `Ref<HTMLElement>` | Root DOM element reference |
 | `this.components` | `DesignComp` | Child component renderer helper |
 | `this.slots` | `Slots` | Component slots object |

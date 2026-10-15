@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi } from 'vitest'
-import { toRefs, reactive, nextTick } from 'vue'
+import { reactive, nextTick } from 'vue'
 import { TabsNavigationSelected } from '../TabsNavigationSelected'
 
 vi.mock('vue', async () => {
@@ -20,9 +20,8 @@ describe('TabsNavigationSelected', () => {
         { value: 'tab-2', label: 'Tab 2' }
       ]
     }) as any
-    const refs = toRefs(props)
 
-    const selected = new TabsNavigationSelected(props, refs)
+    const selected = new TabsNavigationSelected(props)
 
     expect(selected.item.value).toBe('tab-2')
     expect(selected.actualItem.value).toBe('tab-2')
@@ -38,9 +37,8 @@ describe('TabsNavigationSelected', () => {
         { value: 'tab-2', label: 'Tab 2' }
       ]
     }) as any
-    const refs = toRefs(props)
 
-    const selected = new TabsNavigationSelected(props, refs)
+    const selected = new TabsNavigationSelected(props)
 
     expect(selected.item.value).toBe('tab-1')
     expect(selected.actualItem.value).toBe('tab-1')
@@ -48,7 +46,7 @@ describe('TabsNavigationSelected', () => {
 
   it('should set item and actualItem values', () => {
     const props = reactive({ selected: 'tab-1' }) as any
-    const selected = new TabsNavigationSelected(props, toRefs(props))
+    const selected = new TabsNavigationSelected(props)
 
     selected.set('tab-3')
     expect(selected.item.value).toBe('tab-3')
@@ -61,9 +59,8 @@ describe('TabsNavigationSelected', () => {
     const props = reactive({
       selected: 'tab-1'
     }) as any
-    const refs = toRefs(props)
 
-    const selected = new TabsNavigationSelected(props, refs)
+    const selected = new TabsNavigationSelected(props)
 
     props.selected = 'tab-2'
     await nextTick()

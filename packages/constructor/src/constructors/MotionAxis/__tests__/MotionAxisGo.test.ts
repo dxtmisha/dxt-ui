@@ -24,7 +24,6 @@ describe('MotionAxisGo', () => {
 
     const go = new MotionAxisGo(
       { axis: 'x', direction: 'next' },
-      { axis: ref('x'), direction: ref('next') } as any,
       ref(undefined),
       mockSlides,
       mockStatus

@@ -1,6 +1,6 @@
 // ai-none
 
-import { computed, ref, type ToRefs, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { type ConstrEmit, isObject, type ListSelectedList } from '@dxtmisha/functional'
 
 import { ModelInclude } from '../../classes/ModelInclude'
@@ -19,19 +19,17 @@ export class MenuValue {
   /**
    * Constructor
    * @param props input data/ входные данные
-   * @param refs input data in the form of reactive elements/ входные данные в виде реактивных элементов
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
    */
   constructor(
     protected readonly props: MenuProps,
-    protected readonly refs: ToRefs<MenuProps>,
     protected readonly emits?: ConstrEmit<MenuEmits>
   ) {
     if (this.props.isSelectedByValue) {
       new ModelInclude('selected', this.emits, this.value)
 
       watch(
-        [refs.selected],
+        () => props.selected,
         () => {
           this.value.value = this.props.selected
         },

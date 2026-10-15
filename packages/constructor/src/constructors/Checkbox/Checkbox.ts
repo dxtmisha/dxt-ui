@@ -1,4 +1,4 @@
-import type { Ref, ToRefs } from 'vue'
+import type { Ref } from 'vue'
 import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
 import { DescriptionInclude } from '../../classes/DescriptionInclude'
@@ -89,7 +89,6 @@ export class Checkbox {
    *
    * Конструктор для компонента Checkbox.
    * @param props input data / входные данные
-   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
    * @param element input element / элемент ввода
    * @param classDesign design name / название дизайна
    * @param className class name / название класса
@@ -116,7 +115,6 @@ export class Checkbox {
    */
   constructor(
     protected readonly props: CheckboxProps,
-    protected readonly refs: ToRefs<CheckboxProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly classDesign: string,
     protected readonly className: string,
@@ -184,7 +182,6 @@ export class Checkbox {
 
     this.value = new FieldValueIncludeConstructor(
       this.props,
-      this.refs,
       this.elementItem,
       undefined,
       false,
@@ -242,7 +239,6 @@ export class Checkbox {
 
     new CheckboxSelected(
       this.props,
-      this.refs,
       this.value,
       this.emits
     )

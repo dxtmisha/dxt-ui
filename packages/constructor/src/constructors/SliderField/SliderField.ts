@@ -1,4 +1,4 @@
-import type { Ref, ToRefs } from 'vue'
+import type { Ref } from 'vue'
 import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
 import { FieldAttributesInclude } from '../../classes/Field/FieldAttributesInclude'
@@ -65,7 +65,6 @@ export class SliderField {
   /**
    * Constructor
    * @param props input data / входные данные
-   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
    * @param element input element / элемент ввода
    * @param classDesign design name / название дизайна
    * @param className class name / название класса
@@ -88,7 +87,6 @@ export class SliderField {
    */
   constructor(
     protected readonly props: SliderFieldProps,
-    protected readonly refs: ToRefs<SliderFieldProps>,
     protected readonly element: Ref<FieldElementInput>,
     protected readonly classDesign: string,
     protected readonly className: string,
@@ -130,7 +128,7 @@ export class SliderField {
     this.change = new FieldChangeIncludeConstructor(props)
     this.attributes = new FieldAttributesIncludeConstructor(props)
 
-    this.value = new FieldValueIncludeConstructor<SliderValueType>(props, refs, undefined, undefined, false)
+    this.value = new FieldValueIncludeConstructor<SliderValueType>(props, undefined, undefined, false)
     this.valueItem = new SliderFieldValueConstructor(props, this.value)
 
     this.code = new FieldCodeIncludeConstructor(props)

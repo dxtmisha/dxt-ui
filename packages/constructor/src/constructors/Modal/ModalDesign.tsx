@@ -32,7 +32,6 @@ export class ModalDesign<
   protected initItem(Item?: typeof Modal): Modal {
     return new (Item ?? Modal)(
       this.props,
-      this.refs,
       this.element,
       this.getDesign(),
       this.getName(),

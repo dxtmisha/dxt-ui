@@ -1,4 +1,4 @@
-import type { Ref, ToRefs } from 'vue'
+import type { Ref } from 'vue'
 import {
   type ConstrClassObject,
   type ConstrEmit,
@@ -38,7 +38,6 @@ export class CarouselPagination {
   /**
    * Constructor
    * @param props input configuration properties / входные конфигурационные свойства
-   * @param refs reactive references of properties / реактивные ссылки свойств
    * @param element main HTML element / главный HTML-элемент
    * @param classDesign design class token name / имя токена класса дизайна
    * @param className base class name / базовое имя класса
@@ -54,7 +53,6 @@ export class CarouselPagination {
    */
   constructor(
     protected readonly props: CarouselPaginationProps,
-    protected readonly refs: ToRefs<CarouselPaginationProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly classDesign: string,
     protected readonly className: string,
@@ -78,10 +76,9 @@ export class CarouselPagination {
     } = constructors
 
     this.text = new TextIncludeConstructor(props)
-    this.selected = new CarouselPaginationSelectedConstructor(props, refs, emits)
+    this.selected = new CarouselPaginationSelectedConstructor(props, emits)
     this.items = new CarouselPaginationItemsConstructor(
       props,
-      refs,
       this.selected,
       emits
     )

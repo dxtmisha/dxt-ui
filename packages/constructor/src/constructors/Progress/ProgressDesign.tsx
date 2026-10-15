@@ -66,7 +66,6 @@ export class ProgressDesign<
 
     this.item = new ItemConstructor(
       this.props,
-      this.refs,
       this.getName()
     )
 

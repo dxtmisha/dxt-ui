@@ -61,7 +61,6 @@ export class BreadcrumbItemDesign<
 
     this.item = new ItemConstructor(
       this.props,
-      this.refs,
       this.element,
       this.getDesign(),
       this.getName(),

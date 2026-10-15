@@ -1,4 +1,4 @@
-import type { Ref, ToRefs } from 'vue'
+import type { Ref } from 'vue'
 import type { ConstrEmit, DesignComp } from '@dxtmisha/functional'
 
 import { ModelInclude } from '../../classes/ModelInclude'
@@ -25,7 +25,6 @@ export class Modal extends ModalAbstract {
    *
    * Конструктор для инициализации всех подкомпонентов модального окна.
    * @param props input data / входные данные
-   * @param refs input data references / ссылки на входные данные
    * @param element element / элемент
    * @param classDesign class design / дизайн класса
    * @param className class name / название класса
@@ -39,7 +38,6 @@ export class Modal extends ModalAbstract {
    */
   constructor(
     protected readonly props: ModalProps,
-    protected readonly refs: ToRefs<ModalProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly classDesign: string,
     protected readonly className: string,
@@ -55,7 +53,6 @@ export class Modal extends ModalAbstract {
   ) {
     super(
       props,
-      refs,
       element,
       classDesign,
       className,

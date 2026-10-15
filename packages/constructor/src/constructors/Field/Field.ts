@@ -1,4 +1,4 @@
-import { type Ref, type ToRefs } from 'vue'
+import { type Ref } from 'vue'
 import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
@@ -82,7 +82,6 @@ export class Field {
    *
    * Конструктор для инициализации всех подмодулей поля и утилит управления состоянием.
    * @param props input data / входные данные
-   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
    * @param element input element / элемент ввода
    * @param classDesign design name / название дизайна
    * @param className class name / название класса
@@ -106,7 +105,6 @@ export class Field {
    */
   constructor(
     protected readonly props: FieldProps,
-    protected readonly refs: ToRefs<FieldProps>,
     protected readonly element: Ref<HTMLLabelElement | undefined>,
     protected readonly classDesign: string,
     protected readonly className: string,

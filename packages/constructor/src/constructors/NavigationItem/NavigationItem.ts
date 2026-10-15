@@ -1,4 +1,4 @@
-import type { Ref, ToRefs } from 'vue'
+import type { Ref } from 'vue'
 import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
 import { ListItem } from '../ListItem'
@@ -17,7 +17,6 @@ export class NavigationItem extends ListItem {
   /**
    * Constructor
    * @param props input data / входные данные
-   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
    * @param element input element / элемент ввода
    * @param classDesign design name / название дизайна
    * @param className class name / название класса
@@ -28,7 +27,6 @@ export class NavigationItem extends ListItem {
    */
   constructor(
     protected override readonly props: NavigationItemPropsBasic,
-    protected override readonly refs: ToRefs<NavigationItemPropsBasic>,
     protected override readonly element: Ref<HTMLElement | undefined>,
     protected override readonly classDesign: string,
     protected override readonly className: string,
@@ -39,7 +37,6 @@ export class NavigationItem extends ListItem {
   ) {
     super(
       props,
-      refs,
       element,
       classDesign,
       className,

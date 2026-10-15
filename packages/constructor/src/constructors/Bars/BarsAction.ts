@@ -1,6 +1,6 @@
 // ai-none
 
-import { onMounted, ref, type ToRefs, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import type { BarsProps } from './props'
 
 /**
@@ -19,13 +19,11 @@ export class BarsAction {
    *
    * Конструктор для инициализации свойств BarsAction.
    * @param props input data / входные данные
-   * @param refs input data in the form of reactive elements / входные данные в виде реактивных элементов
    */
   constructor(
-    protected readonly props: BarsProps,
-    protected readonly refs: ToRefs<BarsProps>
+    protected readonly props: BarsProps
   ) {
-    watch([refs.action], this.update)
+    watch(() => props.action, this.update)
     onMounted(this.update)
   }
 

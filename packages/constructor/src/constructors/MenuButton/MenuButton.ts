@@ -1,4 +1,4 @@
-import { type Ref, type ToRefs } from 'vue'
+import { type Ref } from 'vue'
 import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
 
 import { FieldAttributesInclude } from '../../classes/Field/FieldAttributesInclude'
@@ -36,7 +36,6 @@ export class MenuButton extends SelectAbstract {
    *
    * Инициализирует все необходимые суб-контроллеры и включения для компонента MenuButton.
    * @param props input properties / входные свойства
-   * @param refs reactive references of the input properties / реактивные ссылки на входные свойства
    * @param element reference to the root HTML element / ссылка на корневой HTML-элемент
    * @param classDesign design style class name / имя класса стилевого оформления
    * @param className base CSS class name / базовое имя CSS-класса
@@ -57,7 +56,6 @@ export class MenuButton extends SelectAbstract {
    */
   constructor(
     protected readonly props: MenuButtonProps,
-    protected readonly refs: ToRefs<MenuButtonProps>,
     protected readonly element: Ref<HTMLElement | undefined>,
     protected readonly classDesign: string,
     protected readonly className: string,
@@ -79,7 +77,6 @@ export class MenuButton extends SelectAbstract {
   ) {
     super(
       props,
-      refs,
       element,
       classDesign,
       className,
