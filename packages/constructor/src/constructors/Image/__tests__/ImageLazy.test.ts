@@ -1,94 +1,78 @@
 // @vitest-environment jsdom
-import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { nextTick, ref, reactive } from 'vue'
+import { describe, expect, it } from 'vitest'
+import { reactive } from 'vue'
 import { ImageLazy } from '../ImageLazy'
-
-const mockLazyItemStatus = ref(false)
-const mockRemoveLazyItem = vi.fn()
-
-vi.mock('@dxtmisha/functional', async () => {
-  const actual = await vi.importActual('@dxtmisha/functional') as any
-  return {
-    ...actual,
-    useLazyItemByMarginRef: vi.fn(() => ({
-      lazyItemStatus: mockLazyItemStatus,
-      removeLazyItem: mockRemoveLazyItem
-    }))
-  }
-})
-
-let unmountedCallbacks: Array<() => void> = []
-
-vi.mock('vue', async () => {
-  const actual = await vi.importActual('vue') as any
-  return {
-    ...actual,
-    onMounted: vi.fn((callback: () => void) => callback()),
-    onUnmounted: vi.fn((callback: () => void) => {
-      unmountedCallbacks.push(callback)
-    })
-  }
-})
+import { browser, flushUpdates, intersect, mountHelper } from './domFixtures'
+import type { ImageProps } from '../props'
 
 describe('ImageLazy', () => {
-  beforeEach(() => {
-    unmountedCallbacks = []
-    mockLazyItemStatus.value = false
-    mockRemoveLazyItem.mockClear()
-    vi.clearAllMocks()
+  it('releases the previous target when its element reference changes', async () => {
+    const fixture = mountHelper(element => new ImageLazy(reactive({ lazy: true, preloadOffset: '0px' }), element))
+    await flushUpdates()
+    const previous = fixture.element.value!
+    const replacement = document.createElement('div')
+    previous.replaceWith(replacement)
+    fixture.element.value = replacement
+    await flushUpdates()
+    expect(browser.intersections.every(observation => !observation.targets.has(previous))).toBe(true)
+    expect(browser.intersections.some(observation => observation.targets.has(replacement))).toBe(true)
   })
 
-  it('should return false for isLazy when props.lazy is not set', () => {
-    const props = reactive({ lazy: false, preloadOffset: '0px' })
-    const element = ref<HTMLElement | undefined>(undefined)
-    const lazy = new ImageLazy(props, element)
-
-    expect(lazy.isLazy()).toBe(false)
+  it('does not observe eager images', async () => {
+    const props = reactive({ lazy: false, preloadOffset: '100px' })
+    const fixture = mountHelper(element => new ImageLazy(props, element))
+    await flushUpdates()
+    expect(fixture.item.isLazy()).toBe(false)
+    expect(browser.intersections.every(observation => observation.targets.size === 0)).toBe(true)
   })
 
-  it('should return true for isLazy when props.lazy is true but not yet initialized', () => {
-    const props = reactive({ lazy: true, preloadOffset: '50px' })
-    const element = ref<HTMLElement | undefined>(undefined)
-    const lazy = new ImageLazy(props, element)
-
-    expect(lazy.isLazy()).toBe(true)
-  })
-
-  it('should initialize lazy loading when element is present and lazy is true', async () => {
+  it('waits for intersection, ignores invisible notifications and stops after visibility', async () => {
     const props = reactive({ lazy: true, preloadOffset: '100px' })
-    const mockElement = document.createElement('div')
-    const element = ref<HTMLElement | undefined>(mockElement)
-
-    const lazy = new ImageLazy(props, element)
-    expect(lazy.isLazy()).toBe(true)
-
-    mockLazyItemStatus.value = true
-    await nextTick()
-    expect(lazy.isLazy()).toBe(false)
-    expect(mockRemoveLazyItem).toHaveBeenCalled()
+    const fixture = mountHelper(element => new ImageLazy(props, element))
+    await flushUpdates()
+    const observation = browser.intersections.find(item => item.targets.has(fixture.element.value!))
+    expect(observation?.observer.rootMargin).toBe('100px 0px')
+    expect(fixture.item.isLazy()).toBe(true)
+    intersect(fixture.element.value!, false)
+    await flushUpdates()
+    expect(fixture.item.isLazy()).toBe(true)
+    intersect(fixture.element.value!)
+    await flushUpdates()
+    expect(fixture.item.isLazy()).toBe(false)
+    expect(observation?.targets.size).toBe(0)
+    fixture.item.stop()
+    expect(fixture.item.isLazy()).toBe(false)
+    fixture.item.reset()
+    expect(fixture.item.isLazy()).toBe(true)
   })
 
-  it('should stop tracking and reset state on reset()', () => {
-    const props = reactive({ lazy: true, preloadOffset: '0px' })
-    const mockElement = document.createElement('div')
-    const element = ref<HTMLElement | undefined>(mockElement)
-
-    const lazy = new ImageLazy(props, element)
-    lazy.reset()
-
-    expect(lazy.isLazy()).toBe(true)
-    expect(mockRemoveLazyItem).toHaveBeenCalled()
+  it('reconfigures the observer when preload distance or lazy mode changes', async () => {
+    const props = reactive<ImageProps>({ lazy: true, preloadOffset: '50px' })
+    const fixture = mountHelper(element => new ImageLazy(props, element))
+    await flushUpdates()
+    const previous = browser.intersections.find(item => item.targets.has(fixture.element.value!))
+    props.preloadOffset = '200px'
+    await flushUpdates()
+    expect(previous?.targets.size).toBe(0)
+    expect(browser.intersections.some(item => item.targets.has(fixture.element.value!) && item.observer.rootMargin === '200px 0px')).toBe(true)
+    props.lazy = false
+    await flushUpdates()
+    expect(fixture.item.isLazy()).toBe(false)
+    expect(browser.intersections.every(item => item.targets.size === 0)).toBe(true)
+    props.lazy = true
+    await flushUpdates()
+    expect(fixture.item.isLazy()).toBe(true)
+    expect(browser.intersections.some(item => item.targets.has(fixture.element.value!))).toBe(true)
   })
 
-  it('should clean up on unmounted', () => {
-    const props = reactive({ lazy: true, preloadOffset: '0px' })
-    const mockElement = document.createElement('div')
-    const element = ref<HTMLElement | undefined>(mockElement)
-
-    const lazy = new ImageLazy(props, element)
-    unmountedCallbacks.forEach(callback => callback())
-
-    expect(lazy.isLazy()).toBe(true)
-    expect(mockRemoveLazyItem).toHaveBeenCalled()
+  it('detaches observers and ignores events after unmount', async () => {
+    const fixture = mountHelper(element => new ImageLazy(reactive({ lazy: true, preloadOffset: '0px' }), element))
+    await flushUpdates()
+    const element = fixture.element.value!
+    fixture.unmount()
+    expect(browser.intersections.every(item => item.targets.size === 0)).toBe(true)
+    intersect(element)
+    await flushUpdates()
+    expect(fixture.item.isLazy()).toBe(true)
   })
 })

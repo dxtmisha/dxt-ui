@@ -1,4 +1,5 @@
 // @vitest-environment jsdom
+import './testWarnings'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { ImagePdf } from '../ImagePdf'
 import { ImageFile } from '../ImageFile'
@@ -8,6 +9,19 @@ afterEach(() => {
 })
 
 describe('ImagePdf', () => {
+  it('merges viewer parameters idempotently without corrupting encoded destinations', async () => {
+    const source = '/document.pdf?token=a%23b#nameddest=A%26B&zoom=125'
+    const prepared = await ImagePdf.get(source)
+    expect(prepared).toBe('/document.pdf?token=a%23b#nameddest=A%26B&zoom=125&toolbar=0&scrollbar=1')
+    expect(await ImagePdf.get(prepared)).toBe(prepared)
+  })
+
+  it('propagates rejected file reads through its returned promise', async () => {
+    const failure = new Error('PDF read failed')
+    vi.spyOn(ImageFile, 'getFileReader').mockRejectedValue(failure)
+    await expect(ImagePdf.get(new File([], 'document.pdf', { type: 'application/pdf' }))).rejects.toBe(failure)
+  })
+
   it.each([
     'document.pdf',
     'DOCUMENT.PDF',

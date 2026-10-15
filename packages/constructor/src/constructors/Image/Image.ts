@@ -9,6 +9,7 @@ import {
 
 import { AriaStaticInclude } from '../../classes/AriaStaticInclude'
 import { ClientOnlyInclude } from '../../classes/ClientOnlyInclude'
+import type { AriaList } from '../../types/ariaTypes'
 
 import { ImageType } from './ImageType'
 import { ImageData } from './ImageData'
@@ -20,7 +21,7 @@ import { ImageBackground } from './ImageBackground'
 import { ImageImg } from './ImageImg'
 import { ImageLazy } from './ImageLazy'
 
-import { ImageTypeValue } from './basicTypes'
+import { type ImageBinds, ImageTypeValue, type ImageValueBinds } from './basicTypes'
 import type { ImageEmits } from './types'
 import type { ImageProps } from './props'
 
@@ -58,7 +59,9 @@ export class Image {
   readonly img: ImageImg
 
   /**
-   * Constructor
+   * Connects the image helpers in dependency order.
+   *
+   * Соединяет помощники изображения в порядке зависимостей.
    * @param props input data/ входные данные
    * @param element input element/ элемент ввода
    * @param className class name/ название класса
@@ -146,9 +149,38 @@ export class Image {
   }
 
   /**
+   * Returns the accessible name or decorative state of the image.
+   *
+   * Возвращает доступное имя или декоративное состояние изображения.
+   * @returns image ARIA attributes / ARIA-атрибуты изображения
+   */
+  get aria(): AriaList {
+    return {
+      ...AriaStaticInclude.role('img'),
+      ...(isFilled(this.props.alt)
+        ? AriaStaticInclude.label(this.props.alt)
+        : AriaStaticInclude.hidden())
+    }
+  }
+
+  /**
+   * Returns the image root attributes, including accessibility bindings.
+   *
+   * Возвращает атрибуты корневого элемента изображения, включая привязки доступности.
+   * @returns root element bindings / привязки корневого элемента
+   */
+  get binds(): ImageBinds {
+    return {
+      translate: 'no',
+      ...this.aria
+    }
+  }
+
+  /**
    * Values for the class.
    *
    * Значения для класса.
+   * @returns image state and font classes / классы состояния и шрифта изображения
    */
   get classes(): ConstrClassObject {
     const type = this.type.item.value
@@ -184,6 +216,7 @@ export class Image {
    * Calculates all properties for the style of the element.
    *
    * Вычисляет все свойства для стиля элемента.
+   * @returns image styles / стили изображения
    */
   get styles(): ConstrStyles {
     const value = this.props.value
@@ -221,32 +254,12 @@ export class Image {
   }
 
   /**
-   * Computed bindings for the image element.
-   *
-   * Вычисляемые привязки для элемента изображения.
-   */
-  get binds() {
-    if (isFilled(this.props.alt)) {
-      return {
-        translate: 'no',
-        ...AriaStaticInclude.role('img'),
-        ...AriaStaticInclude.label(this.props.alt)
-      }
-    }
-
-    return {
-      translate: 'no',
-      ...AriaStaticInclude.role('img'),
-      ...AriaStaticInclude.hidden()
-    }
-  }
-
-  /**
    * Bindings for the image value.
    *
    * Привязки для значения изображения.
+   * @returns value element bindings / привязки элемента значения
    */
-  get valueBinds() {
+  get valueBinds(): ImageValueBinds {
     return {
       key: 'value',
       data: this.data.image.value

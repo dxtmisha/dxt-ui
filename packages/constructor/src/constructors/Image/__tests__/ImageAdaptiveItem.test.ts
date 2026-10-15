@@ -1,4 +1,5 @@
 // @vitest-environment jsdom
+import './testWarnings'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { createApp, h, nextTick, reactive, ref, shallowRef, type Ref, type ShallowRef, type VNode } from 'vue'
 import { type EventRef, isString, ServerStorage } from '@dxtmisha/functional'
@@ -212,6 +213,35 @@ async function createAdaptive(overrides: Partial<ImageProps> = {}): Promise<Adap
 }
 
 describe('ImageAdaptiveItem', () => {
+  it.each([
+    [200, undefined, 0, 100],
+    [undefined, 100, 100, 0]
+  ] as const)('keeps scaling finite with physical %s by %s and intrinsic %s by %s', async (objectWidth, objectHeight, width, height) => {
+    const fixture = await createAdaptive({ objectWidth, objectHeight })
+    fixture.image.value = { image: document.createElement('img'), src: '/zero.png', width, height }
+    await flushCalculations()
+    expect(fixture.item.size.value).toBe(0)
+    expect(fixture.item.factor.value).toBe(1)
+    expect(fixture.background.size.value).not.toMatch(/NaN|Infinity/)
+  })
+
+  it('exposes identity, group and physical dimensions without losing numeric precision', async () => {
+    const fixture = await createAdaptive({ objectWidth: '200.5', objectHeight: '100.25' })
+    expect(fixture.item.getElement()).toBe(fixture.element.value)
+    expect(fixture.item.id).not.toBe('')
+    expect(fixture.item.group).toBe('gallery')
+    expect(fixture.item.isGroup('gallery')).toBe(true)
+    expect(fixture.item.isGroup('other')).toBe(false)
+    expect([fixture.item.width, fixture.item.height]).toEqual([200.5, 100.25])
+    expect(fixture.item.setPercent(1, 1)).toBe(fixture.item)
+    fixture.props.objectWidth = undefined
+    fixture.props.objectHeight = undefined
+    await flushCalculations()
+    expect(fixture.item.active).toBe(false)
+    expect(fixture.item.type).toBeUndefined()
+    expect(fixture.item.size.value).toBe(0)
+  })
+
   it('registers active images and calculates their initial sizes', async () => {
     const fixture = await createAdaptive()
     expect(ImageAdaptiveGroup.is(fixture.item)).toBe(true)

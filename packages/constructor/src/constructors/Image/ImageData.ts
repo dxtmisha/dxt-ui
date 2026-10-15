@@ -1,14 +1,13 @@
 // ai-none
 
-import { computed, type ComputedRef, onUnmounted, type Ref, watch } from 'vue'
+import { computed, type ComputedRef, onUnmounted, watch } from 'vue'
 import {
   computedAsync,
   type ConstrEmit,
   ErrorCenter,
   Icons,
   isString,
-  skipFrame,
-  type Undefined
+  skipFrame
 } from '@dxtmisha/functional'
 
 import { ClientOnlyInclude } from '../../classes/ClientOnlyInclude'
@@ -117,7 +116,7 @@ export class ImageData {
    * Проверяет, есть ли значения.
    * @returns true if the value is not undefined / true, если значение не является undefined
    */
-  is(): this is { image: Exclude<ImageEventItem, Undefined> } {
+  is(): this is { readonly image: ComputedRef<NonNullable<ImageEventItem>> } {
     return this.image.value !== undefined
   }
 
@@ -127,7 +126,7 @@ export class ImageData {
    * Проверяет, является ли значение ссылкой, то есть видом строки.
    * @returns true if the value is a string link / true, если значение является строковой ссылкой
    */
-  isLink(): this is { image: Ref<string> } {
+  isLink(): this is { readonly image: ComputedRef<string> } {
     return this.is() && typeof this.image.value === 'string'
   }
 
@@ -137,7 +136,7 @@ export class ImageData {
    * Проверяет, является ли значение объектом изображения.
    * @returns true if the value is an image object / true, если значение является объектом изображения
    */
-  isImage(): this is { image: Ref<ImageItem> } {
+  isImage(): this is { readonly image: ComputedRef<ImageItem> } {
     return this.is() && typeof this.image.value !== 'string'
   }
 
@@ -182,10 +181,18 @@ export class ImageData {
     if (image) {
       switch (this.type.item.value) {
         case ImageTypeValue.pdf:
-          await skipFrame()
-          return await ImagePdf.get(image)
+          if (isString(image) || image instanceof File) {
+            await skipFrame()
+            return await ImagePdf.get(image)
+          }
+
+          break
         case ImageTypeValue.array:
-          return await this.getUint8Array().createImage(image)
+          if (ImageUint8Array.is(image)) {
+            return await this.getUint8Array().createImage(image)
+          }
+
+          break
         case ImageTypeValue.image:
         case ImageTypeValue.file:
           try {
@@ -196,9 +203,11 @@ export class ImageData {
               return this.initSsr()
             }
 
-            return await ImageFile.createImage(
-              ImageSource.getName(image) ?? image
-            )
+            if (isString(image) || image instanceof File) {
+              return await ImageFile.createImage(
+                ImageSource.getName(image) ?? image
+              )
+            }
           } catch {
             ErrorCenter.on({
               group: CONSTRUCTOR_ERROR_GROUP,

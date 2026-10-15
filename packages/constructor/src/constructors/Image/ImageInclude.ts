@@ -23,9 +23,9 @@ export class ImageInclude extends ComponentIncludeAbstract<
   ImageSlots
 > {
   /** Sub-component key identifier / Идентификатор ключа субкомпонента */
-  protected name = 'image'
+  protected override readonly name = 'image'
   /** Property name containing image attributes / Имя свойства, содержащего атрибуты изображения */
-  protected propsAttrsName = 'imageAttrs'
+  protected override readonly propsAttrsName = 'imageAttrs'
 
   /**
    * Constructor for working with images.
@@ -61,7 +61,7 @@ export class ImageInclude extends ComponentIncludeAbstract<
    * Обрабатывает событие загрузки изображения и передает его через emits.
    * @param event image event payload data / данные события изображения
    */
-  readonly onLoad = (event: ImageEventData) => this.emits?.('load', event)
+  readonly onLoad = (event: ImageEventData): void => this.emits?.('load', event)
 
   /**
    * Resolves and returns design properties specifically bound for the image.

@@ -1,8 +1,8 @@
 // ai-none
 
 import {
+  onBeforeUnmount,
   onMounted,
-  onUnmounted,
   type Ref,
   ref,
   toRefs,
@@ -55,7 +55,7 @@ export class ImageLazy {
     ], () => this.update())
 
     onMounted(() => this.update())
-    onUnmounted(() => this.reset())
+    onBeforeUnmount(() => this.reset())
   }
 
   /**

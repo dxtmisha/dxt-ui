@@ -1,6 +1,6 @@
 // ai-none
 
-import { isArray, isNumber, type Undefined } from '@dxtmisha/functional'
+import { isArray, isNumber } from '@dxtmisha/functional'
 
 import type { ImageCoordinatorItem, ImageSize } from './basicTypes'
 import type { ImageProps } from './props'
@@ -39,8 +39,9 @@ export class ImageCoordinator {
    * @returns full coordinates array / массив полных координат
    */
   get coordinator(): ImageCoordinatorItemFull {
-    if (this.is()) {
-      const coordinator: number[] = this.props.coordinator
+    const coordinator = this.props.coordinator
+
+    if (this.is() && coordinator) {
       const top = this.getValue(coordinator[0])
       const right = coordinator.length > 1 ? this.getValue(coordinator[1]) : top
       const bottom = coordinator.length > 2 ? this.getValue(coordinator[2]) : top
@@ -90,10 +91,10 @@ export class ImageCoordinator {
    * Проверяет, есть ли координаты для вычисления.
    * @returns true if valid coordinates are present / true, если присутствуют валидные координаты
    */
-  is(): this is { coordinator: Exclude<ImageCoordinatorItem, Undefined> } {
+  is(): boolean {
     const coordinator = this.props.coordinator
 
-    return isArray(coordinator)
+    return isArray<ImageCoordinatorItem | unknown[], unknown>(coordinator)
       && coordinator.length > 0
       && coordinator.length < 5
   }

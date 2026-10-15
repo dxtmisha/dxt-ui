@@ -127,30 +127,37 @@ export class ImageCalculation {
   }
 
   /**
-   * Updating size.width, if it is less than the selected value.
+   * Restoring the value to its original state.
    *
-   * Обновление size.width, если она меньше выбранного значения.
-   * @param width value of the selected width / значение выбранной ширины
+   * Восстановление значения в изначальное состояние.
    * @returns instance of this class / экземпляр этого класса
    */
-  makeWidth(width: number): this {
-    if (width > this.size.width) {
-      this.size.width = width
+  reset(): this {
+    this.factorMax = 1
+
+    this.size = {
+      width: 0,
+      height: 0
+    }
+
+    this.offset = {
+      width: MAX_IMAGE_OFFSET,
+      height: MAX_IMAGE_OFFSET
     }
 
     return this
   }
 
   /**
-   * Updating size.height, if it is less than the selected value.
+   * Changes the multiplier value if it is greater than the checked value.
    *
-   * Обновление size.height, если она меньше выбранного значения.
-   * @param height value of the selected height / значение выбранной высоты
+   * Изменяет значение множителя, если оно больше проверяемого значения.
+   * @param value values for verification / значения для проверки
    * @returns instance of this class / экземпляр этого класса
    */
-  makeHeight(height: number): this {
-    if (height > this.size.height) {
-      this.size.height = height
+  makeFactorMax(value: number): this {
+    if (value < this.factorMax) {
+      this.factorMax = value
     }
 
     return this
@@ -187,37 +194,30 @@ export class ImageCalculation {
   }
 
   /**
-   * Changes the multiplier value if it is greater than the checked value.
+   * Updating size.width, if it is less than the selected value.
    *
-   * Изменяет значение множителя, если оно больше проверяемого значения.
-   * @param value values for verification / значения для проверки
+   * Обновление size.width, если она меньше выбранного значения.
+   * @param width value of the selected width / значение выбранной ширины
    * @returns instance of this class / экземпляр этого класса
    */
-  makeFactorMax(value: number): this {
-    if (value < this.factorMax) {
-      this.factorMax = value
+  makeWidth(width: number): this {
+    if (width > this.size.width) {
+      this.size.width = width
     }
 
     return this
   }
 
   /**
-   * Restoring the value to its original state.
+   * Updating size.height, if it is less than the selected value.
    *
-   * Восстановление значения в изначальное состояние.
+   * Обновление size.height, если она меньше выбранного значения.
+   * @param height value of the selected height / значение выбранной высоты
    * @returns instance of this class / экземпляр этого класса
    */
-  reset(): this {
-    this.factorMax = 1
-
-    this.size = {
-      width: 0,
-      height: 0
-    }
-
-    this.offset = {
-      width: MAX_IMAGE_OFFSET,
-      height: MAX_IMAGE_OFFSET
+  makeHeight(height: number): this {
+    if (height > this.size.height) {
+      this.size.height = height
     }
 
     return this

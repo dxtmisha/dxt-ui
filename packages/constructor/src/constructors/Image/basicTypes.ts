@@ -1,4 +1,6 @@
-import type { ConstrBind, Undefined } from '@dxtmisha/functional'
+import type { HTMLAttributes, ImgHTMLAttributes, SourceHTMLAttributes, VNodeProps } from 'vue'
+import type { ConstrBind, ConstrClass, ConstrStyles, Undefined } from '@dxtmisha/functional'
+import type { AriaList } from '../../types/ariaTypes'
 import type { ImageEmits } from './types'
 import type { ImagePropsBasic } from './props'
 
@@ -39,15 +41,30 @@ export enum ImageTypeValue {
 /** Image element type / Тип элемента изображения */
 export type ImageElement = HTMLElement | undefined
 
-/** Image attribute type / Тип атрибутов изображения */
-export type ImageAttrs = Record<keyof HTMLImageElement, any>
+/** Native image bindings / Привязки нативного изображения */
+export interface ImageAttrs extends Omit<ImgHTMLAttributes, 'loading' | 'src'>, Pick<VNodeProps, 'key'> {
+  /** Image URL or absent source / URL изображения или отсутствующий источник */
+  src?: string | null
+  /** Loading mode, including the existing automatic fallback / Режим загрузки, включая существующее автоматическое значение */
+  loading?: ImgHTMLAttributes['loading'] | 'auto'
+  /** Fetch priority bound through the DOM property / Приоритет загрузки, передаваемый через DOM-свойство */
+  fetchPriority?: ImgHTMLAttributes['fetchpriority']
+}
+
+/** Root renderer bindings / Привязки корневого элемента рендерера */
+export interface ImageRootAttrs extends Omit<HTMLAttributes, keyof AriaList | 'class' | 'style'>, AriaList, Pick<VNodeProps, 'key' | 'ref'> {
+  /** Design system classes / Классы дизайн-системы */
+  class?: ConstrClass
+  /** Design system styles / Стили дизайн-системы */
+  style?: ConstrStyles
+}
 
 /** Image coordinator item type / Тип элемента координат изображения */
 export type ImageCoordinatorItem
-  = [number]
-    | [number, number]
-    | [number, number, number]
-    | [number, number, number, number]
+  = readonly [number]
+    | readonly [number, number]
+    | readonly [number, number, number]
+    | readonly [number, number, number, number]
     | Undefined
 
 /** Image size type / Тип размера изображения */
@@ -58,8 +75,13 @@ export type ImageSize<T = number> = {
   height: T
 }
 
-/** Image picture item type / Тип элемента изображения picture */
-export type ImagePictureItem = Record<keyof HTMLSourceElement & 'key', any>
+/** Picture source attributes and virtual node key / Атрибуты источника picture и ключ виртуального узла */
+export interface ImagePictureItem extends Pick<SourceHTMLAttributes, 'media' | 'sizes' | 'src' | 'srcset' | 'type'>, Pick<VNodeProps, 'key'> {
+  /** Source image width / Ширина изображения источника */
+  width?: ImgHTMLAttributes['width']
+  /** Source image height / Высота изображения источника */
+  height?: ImgHTMLAttributes['height']
+}
 
 /** List of image picture items / Список элементов изображения picture */
 export type ImagePictureList = ImagePictureItem[]
@@ -98,6 +120,20 @@ export type ImageTypeItem = ImageTypeValue | Undefined
 
 /** Image event item type / Тип элемента события изображения */
 export type ImageEventItem = ImageItem | string | undefined
+
+/** Image root bindings / Привязки корневого элемента изображения */
+export type ImageBinds = AriaList & {
+  /** Automatic translation policy / Правило автоматического перевода */
+  translate: 'no'
+}
+
+/** Image value element bindings / Привязки элемента значения изображения */
+export type ImageValueBinds = {
+  /** Value element key / Ключ элемента значения */
+  key: 'value'
+  /** Current image data / Текущие данные изображения */
+  data: ImageEventItem
+}
 
 /** Image event type / Тип события изображения */
 export type ImageEventType = {

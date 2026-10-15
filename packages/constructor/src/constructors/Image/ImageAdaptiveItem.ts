@@ -24,7 +24,7 @@ import { ImageAdaptiveGroup } from './ImageAdaptiveGroup'
 import { ImageCalculationList } from './ImageCalculationList'
 import type { ImageData } from './ImageData'
 
-import { type ImageElement, type ImageItem, type ImageSize } from './basicTypes'
+import { type ImageElement, type ImageSize } from './basicTypes'
 import { type ImageProps } from './props'
 
 /**
@@ -124,104 +124,6 @@ export class ImageAdaptiveItem {
   }
 
   /**
-   * Is the element active for size alignment.
-   *
-   * Активен ли элемент для выравнивания размера.
-   * @returns true if active / true, если активен
-   */
-  get active(): boolean {
-    return Boolean(
-      this.props.adaptive
-      && this.clientOnly.isRender()
-      && (this.width || this.height)
-    )
-    && this.data.isImage()
-  }
-
-  /**
-   * Returns the identifier of the element.
-   *
-   * Возвращает идентификатор элемента.
-   * @returns identifier string / строка идентификатора
-   */
-  get id(): string {
-    return getElementId(this.element.value)
-  }
-
-  /**
-   * Returns the name of the group.
-   *
-   * Возвращает название группы.
-   * @returns group name / название группы
-   */
-  get group(): string {
-    return this.props.adaptiveGroup ?? GROUP_BASIC
-  }
-
-  /**
-   * Returns the physical width of the object.
-   *
-   * Возвращает физическую ширину объекта.
-   * @returns physical width / физическая ширина
-   */
-  get width(): number {
-    return toNumber(this.props.objectWidth ?? 0)
-  }
-
-  /**
-   * Returns the physical height of the object.
-   *
-   * Возвращает физическую высоту объекта.
-   * @returns physical height / физическая высота
-   */
-  get height(): number {
-    return toNumber(this.props?.objectHeight ?? 0)
-  }
-
-  /**
-   * Returns the axis for scaling.
-   *
-   * Возвращает ось для масштабирования.
-   * @returns adaptive item type or undefined / тип адаптивного элемента или undefined
-   */
-  get type(): ImageAdaptiveItemType | undefined {
-    if (
-      this.width
-      && this.percent.value.width > 0
-    ) {
-      return ImageAdaptiveItemType.x
-    }
-
-    if (
-      this.height
-      && this.percent.value.height > 0
-    ) {
-      return ImageAdaptiveItemType.y
-    }
-
-    return undefined
-  }
-
-  /**
-   * Returns values for the background-size property.
-   *
-   * Возвращает значения для свойства background-size.
-   * @returns background size string or null / строка размера фона или null
-   */
-  get backgroundSize(): string | null {
-    const factorMax = ImageCalculationList.get(this.group).factorMax
-
-    switch (this.type) {
-      case ImageAdaptiveItemType.x:
-        return `${100 * this.percent.value.width * factorMax}% auto`
-      case ImageAdaptiveItemType.y:
-        return `auto ${100 * this.percent.value.height * factorMax}%`
-    }
-
-    return null
-  }
-
-  /**
    * Calculation of the base size of the image to determine how to scale the image.
    *
    * Вычисление базового размера изображения, чтобы определить, как надо масштабировать изображение.
@@ -232,7 +134,7 @@ export class ImageAdaptiveItem {
       this.element.value
       && this.data.isImage()
     ) {
-      const data = this.data.image.value as ImageItem
+      const data = this.data.image.value
 
       switch (this.type) {
         case ImageAdaptiveItemType.x:
@@ -283,6 +185,104 @@ export class ImageAdaptiveItem {
   })
 
   /**
+   * Is the element active for size alignment.
+   *
+   * Активен ли элемент для выравнивания размера.
+   * @returns true if active / true, если активен
+   */
+  get active(): boolean {
+    return Boolean(
+      this.props.adaptive
+      && this.clientOnly.isRender()
+      && (this.width || this.height)
+    )
+    && this.data.isImage()
+  }
+
+  /**
+   * Returns values for the background-size property.
+   *
+   * Возвращает значения для свойства background-size.
+   * @returns background size string or null / строка размера фона или null
+   */
+  get backgroundSize(): string | null {
+    const factorMax = ImageCalculationList.get(this.group).factorMax
+
+    switch (this.type) {
+      case ImageAdaptiveItemType.x:
+        return `${100 * this.percent.value.width * factorMax}% auto`
+      case ImageAdaptiveItemType.y:
+        return `auto ${100 * this.percent.value.height * factorMax}%`
+    }
+
+    return null
+  }
+
+  /**
+   * Returns the name of the group.
+   *
+   * Возвращает название группы.
+   * @returns group name / название группы
+   */
+  get group(): string {
+    return this.props.adaptiveGroup ?? GROUP_BASIC
+  }
+
+  /**
+   * Returns the identifier of the element.
+   *
+   * Возвращает идентификатор элемента.
+   * @returns identifier string / строка идентификатора
+   */
+  get id(): string {
+    return getElementId(this.element.value)
+  }
+
+  /**
+   * Returns the axis for scaling.
+   *
+   * Возвращает ось для масштабирования.
+   * @returns adaptive item type or undefined / тип адаптивного элемента или undefined
+   */
+  get type(): ImageAdaptiveItemType | undefined {
+    if (
+      this.width
+      && this.percent.value.width > 0
+    ) {
+      return ImageAdaptiveItemType.x
+    }
+
+    if (
+      this.height
+      && this.percent.value.height > 0
+    ) {
+      return ImageAdaptiveItemType.y
+    }
+
+    return undefined
+  }
+
+  /**
+   * Returns the physical width of the object.
+   *
+   * Возвращает физическую ширину объекта.
+   * @returns physical width / физическая ширина
+   */
+  get width(): number {
+    return toNumber(this.props.objectWidth ?? 0)
+  }
+
+  /**
+   * Returns the physical height of the object.
+   *
+   * Возвращает физическую высоту объекта.
+   * @returns physical height / физическая высота
+   */
+  get height(): number {
+    return toNumber(this.props?.objectHeight ?? 0)
+  }
+
+  /**
    * Checks if the element’s conditions are suitable for scaling.
    *
    * Проверяет, подходить ли у элемента условия для масштабирования.
@@ -290,6 +290,16 @@ export class ImageAdaptiveItem {
    */
   is(): boolean {
     return this.active && Boolean(this.element.value?.closest('body'))
+  }
+
+  /**
+   * Is it available for calculation.
+   *
+   * Доступен ли для вычисления.
+   * @returns true if element is beyond the screen area / true, если элемент находится за пределами области экрана
+   */
+  isBeyond(): boolean {
+    return this.beyond
   }
 
   /**
@@ -301,16 +311,6 @@ export class ImageAdaptiveItem {
    */
   isGroup(name: string): boolean {
     return this.group === name
-  }
-
-  /**
-   * Is it available for calculation.
-   *
-   * Доступен ли для вычисления.
-   * @returns true if element is beyond the screen area / true, если элемент находится за пределами области экрана
-   */
-  isBeyond(): boolean {
-    return this.beyond
   }
 
   /**
@@ -388,6 +388,26 @@ export class ImageAdaptiveItem {
   }
 
   /**
+   * Resets lazy tracking and stops the active watcher.
+   *
+   * Сбрасывает ленивое отслеживание и останавливает активный наблюдатель.
+   * @returns instance of this class / экземпляр этого класса
+   */
+  resetLazy(): this {
+    if (this.lazyStatus) {
+      this.lazyStatus()
+      this.lazyStatus = undefined
+    }
+
+    if (this.lazy) {
+      this.lazy.removeLazyItem()
+      this.lazy = undefined
+    }
+
+    return this
+  }
+
+  /**
    * Initializes lazy tracking if needed.
    *
    * Инициализирует ленивое отслеживание при необходимости.
@@ -419,26 +439,6 @@ export class ImageAdaptiveItem {
       && this.is()
     ) {
       this.beyond = Boolean(this.props.adaptiveAlways || this.lazy?.lazyItemStatus.value)
-    }
-
-    return this
-  }
-
-  /**
-   * Resets lazy tracking and stops the active watcher.
-   *
-   * Сбрасывает ленивое отслеживание и останавливает активный наблюдатель.
-   * @returns instance of this class / экземпляр этого класса
-   */
-  resetLazy(): this {
-    if (this.lazyStatus) {
-      this.lazyStatus()
-      this.lazyStatus = undefined
-    }
-
-    if (this.lazy) {
-      this.lazy.removeLazyItem()
-      this.lazy = undefined
     }
 
     return this

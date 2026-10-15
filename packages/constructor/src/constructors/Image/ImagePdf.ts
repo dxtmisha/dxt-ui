@@ -27,7 +27,7 @@ export class ImagePdf {
    * @param file verified file / проверяемый файл
    * @returns returns true if the file is a PDF / возвращает true, если файл является PDF
    */
-  static isPdf(file?: string | File): boolean {
+  static isPdf(file?: unknown): boolean {
     if (!file) {
       return false
     }

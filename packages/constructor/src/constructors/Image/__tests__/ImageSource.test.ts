@@ -1,3 +1,4 @@
+import './testWarnings'
 import { describe, expect, it } from 'vitest'
 import { ImageSource } from '../ImageSource'
 import { ImageTypeValue } from '../basicTypes'
@@ -7,6 +8,7 @@ describe('ImageSource', () => {
     ['image:photo.png', 'photo.png'],
     ['image:https://example.test/photo.png', 'https://example.test/photo.png'],
     ['image:data:image/png;base64,dGVzdA==', 'data:image/png;base64,dGVzdA=='],
+    ['image:image:photo.png', 'image:photo.png'],
     ['image:photo.png?part=image:test#preview', 'photo.png?part=image:test#preview']
   ])('returns the image type and unprefixed name for %s', (value, name) => {
     expect(ImageSource.is(value)).toBe(true)
@@ -17,11 +19,16 @@ describe('ImageSource', () => {
 
   it.each([
     undefined,
+    null,
+    false,
+    0,
+    [],
+    Symbol('image:photo.png'),
     'photo.png',
     'https://example.test/photo.png',
     'outlined-home',
     { name: 'image:photo.png' }
-  ])('leaves an unmarked value unrecognized: %s', (value) => {
+  ].map(value => ({ value })))('leaves an unmarked value unrecognized: %j', ({ value }) => {
     expect(ImageSource.is(value)).toBe(false)
     expect(ImageSource.isValid(value)).toBe(false)
     expect(ImageSource.getType(value)).toBeUndefined()

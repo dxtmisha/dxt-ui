@@ -1,5 +1,7 @@
 // @vitest-environment jsdom
-import { describe, expect, it } from 'vitest'
+import './testWarnings'
+import { describe, expect, it, vi } from 'vitest'
+import { Icons } from '@dxtmisha/functional'
 import { reactive, ref } from 'vue'
 import { ImageType } from '../ImageType'
 import { ImageTypeValue } from '../basicTypes'
@@ -12,6 +14,17 @@ const clientOnly = {
 } as unknown as ClientOnlyInclude
 
 describe('ImageType', () => {
+  it.each([undefined, null, '', ' ', 0, false, {}, [], 'image:', 'image: '].map(value => ({ value })))('rejects unsupported or empty input %j', ({ value }) => {
+    // Exercise runtime input from untyped callers / Проверяем входные данные нетипизированных потребителей
+    expect(new ImageType({ value } as ImageProps, clientOnly).item.value).toBeUndefined()
+  })
+
+  it('respects registered icons before the default font type', () => {
+    vi.spyOn(Icons, 'is').mockImplementation(value => value === 'registered_home')
+    expect(new ImageType({ value: 'registered_home' }, clientOnly).item.value).toBe(ImageTypeValue.public)
+    expect(new ImageType({ value: 'unknown_home' }, clientOnly).item.value).toBe(ImageTypeValue.outlined)
+  })
+
   it.each([
     ['https://example.test/photo.png', ImageTypeValue.image],
     ['photo.png', ImageTypeValue.outlined],
@@ -19,7 +32,13 @@ describe('ImageType', () => {
     ['flag-us', ImageTypeValue.flag],
     ['outlined-home', ImageTypeValue.outlined],
     ['two-tone-home', ImageTypeValue.twoTone],
-    ['filled-home', ImageTypeValue.filled]
+    ['filled-home', ImageTypeValue.filled],
+    ['round-home', ImageTypeValue.round],
+    ['sharp-home', ImageTypeValue.sharp],
+    ['material-home', ImageTypeValue.material],
+    ['$home', ImageTypeValue.material],
+    ['@home', ImageTypeValue.public],
+    ['f-vn', ImageTypeValue.flagCompressed]
   ])('preserves the classification of %s', (value, expected) => {
     expect(new ImageType({ value }, clientOnly).item.value).toBe(expected)
   })

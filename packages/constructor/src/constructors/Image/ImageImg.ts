@@ -2,10 +2,10 @@
 
 import {
   computed,
+  type CSSProperties,
   type Ref
 } from 'vue'
 import {
-  type ConstrBind,
   forEach,
   isArray,
   isNumber
@@ -16,7 +16,7 @@ import type { ImageLazy } from './ImageLazy'
 import { ImagePosition } from './ImagePosition'
 import { ImageType } from './ImageType'
 
-import { type ImageAttrs, type ImagePictureList, ImageTypeValue } from './basicTypes'
+import { type ImageAttrs, type ImagePictureItem, type ImagePictureList, ImageTypeValue } from './basicTypes'
 import type { ImageProps } from './props'
 
 /**
@@ -54,9 +54,9 @@ export class ImageImg {
    * Вычисляет все свойства для привязки к элементу.
    * @returns attributes for binding / атрибуты для привязки
    */
-  readonly binds = computed<ConstrBind<ImageAttrs>>(
+  readonly binds = computed<ImageAttrs>(
     () => {
-      const attrs: ConstrBind<any> = {
+      const attrs: ImageAttrs = {
         key: 'img'
       }
 
@@ -99,7 +99,7 @@ export class ImageImg {
       return this.props.picture
     }
 
-    return forEach(
+    return forEach<string, ImagePictureItem, Record<string, string>>(
       this.props.picture,
       (value, media) => {
         return {
@@ -108,7 +108,7 @@ export class ImageImg {
           media: `(width >= ${media})`
         }
       }
-    ) as ImagePictureList
+    )
   })
 
   /**
@@ -117,8 +117,8 @@ export class ImageImg {
    * Возвращает стили для привязки к элементу.
    * @returns styles object / объект стилей
    */
-  get styles(): Record<string, any> {
-    const styles: any = {
+  get styles(): CSSProperties {
+    const styles: CSSProperties = {
       'object-position': `${this.position.x} ${this.position.y}`,
       '--sys-transform-originX': this.position.x,
       '--sys-transform-originY': this.position.y
