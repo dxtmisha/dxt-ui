@@ -1,13 +1,13 @@
 ---
 name: code-review
-description: Conduct a rigorous code review assessing architecture, dependencies and inbound usage across the codebase, modern engineering standards vs obsolete patterns, bugs and edge cases, adherence to project rules, accessibility & ARIA compliance, design quality, and test suite completeness (auditing test quality, rewriting incomplete tests, refining fragile tests, or creating comprehensive unit tests from scratch), saved as an AI artifact in the language specified by wikiLanguage in ./design.config.json.
+description: Conduct a rigorous code review assessing architecture, dependencies and inbound usage across the codebase, modern engineering standards vs obsolete patterns, bugs and edge cases, adherence to project rules, accessibility & ARIA compliance, design quality, SSR compatibility & isomorphism, memory leak prevention & resource cleanup, and test suite completeness (auditing test quality, rewriting incomplete tests, refining fragile tests, or creating comprehensive unit tests from scratch), saved as an AI artifact in the language specified by wikiLanguage in ./design.config.json.
 ---
 
 # Task: Strict Architectural and Quality Code Review
 
 Act as an elite Principal Software Architect and Senior Code Reviewer. Your goal is to conduct an uncompromising, deep-dive code review of the specified files, components, classes, functions, or composables/hooks.
 
-Your analysis must not be a superficial lint check. You must evaluate architectural soundness, dependency health, real-world usage across the codebase, technological relevance vs obsolete patterns, code flaws and subtle bugs, adherence to strict project conventions, and benchmark the implementation against industry-leading state-of-the-art standards.
+Your analysis must not be a superficial lint check. You must evaluate architectural soundness, dependency health, real-world usage across the codebase, technological relevance vs obsolete patterns, code flaws and subtle bugs, adherence to strict project conventions, full SSR compatibility and memory leak prevention, and benchmark the implementation against industry-leading state-of-the-art standards.
 
 ---
 
@@ -49,7 +49,7 @@ Before analyzing any code or generating any review text, you MUST execute these 
 - **Locate and Inspect Tests**: Search for corresponding unit tests in the adjacent or package `__tests__/` directory (e.g., `__tests__/<Entity>.test.ts` or `<name>.test.ts`).
 - **Assess Test Quality & Completeness (Audit)**:
   - Do not merely check if a test file exists. Critically inspect the quality, depth, and thoroughness of the test suite.
-  - Detect incomplete, superficial, or low-quality tests: superficial smoke tests with only 1 shallow assertion, missing edge cases (empty strings, `null`, `undefined`, 0, negative values, invalid objects), unhandled error branches, untested reactive properties, unverified event emissions, or ignored lifecycle hooks (`onMounted`, `onUnmounted`, resource cleanup).
+  - Detect incomplete, superficial, or low-quality tests: superficial smoke tests with only 1 shallow assertion, missing edge cases (empty strings, `null`, `undefined`, 0, negative values, invalid objects), unhandled error branches, untested reactive properties, unverified event emissions, ignored lifecycle hooks (`onMounted`, `onUnmounted`, resource cleanup), or unverified SSR behavior (server-side rendering safety and hydration compatibility).
 - **Rewrite or Refine Incomplete / Low-Quality Tests**:
   - If existing tests are **incomplete, shallow, fragile, or of low quality**, do NOT settle for minor cosmetic edits: **completely rewrite (`перепиши`) or deeply refine (`доработай`)** them into a robust, comprehensive test suite.
   - Ensure all public APIs, states, methods, branches, asynchronous workflows, and lifecycles are explicitly tested with clean assertions.
@@ -103,6 +103,13 @@ Evaluate the target according to its specific entity type:
   - Strict SCSS mixin usage from `@dxtmisha/styles`.
   - Zero hardcoded colors, borders, or spacing values.
   - PurgeCSS compliance: All class names must exist as unbroken string literals (no dynamic string concatenation).
+- **SSR Compatibility & Hydration Safety**:
+  - Browser-only globals (`window`, `document`, `navigator`, `localStorage`, `sessionStorage`, `location`) must NEVER be accessed at root level of `<script setup>` or in `beforeMount`/`created`. They must be guarded by `isDomRuntime()` or deferred to `onMounted`.
+  - Hydration mismatch prevention: Ensure server-rendered and client-rendered initial markup match identically (avoid non-deterministic random IDs, client-only timestamps/dates during initial render, or invalid HTML element nesting like `<p><div>...</div></p>`).
+  - Safe Teleport & ClientOnly: Teleport targets must exist in DOM before mounting; client-only third-party widgets must be encapsulated properly.
+- **Memory Safety & Resource Cleanup**:
+  - Event listener cleanup: All manual event listeners attached to `window`, `document`, or external targets must be explicitly removed in `onUnmounted` or `onScopeDispose` (or use managed composables like `useEventListener`).
+  - Observer & Timer disposal: Disconnect `ResizeObserver`, `IntersectionObserver`, `MutationObserver`, and clear all `setTimeout`, `setInterval`, and `requestAnimationFrame` before component unmount.
 
 ### B. TypeScript Classes (`class`)
 - **Structure & Ordering**:
@@ -116,6 +123,12 @@ Evaluate the target according to its specific entity type:
 - **Accessibility & ARIA Integration (Constructors & Controllers)**:
   - ARIA attribute encapsulation: ARIA attributes must be encapsulated within dedicated `aria` getters (e.g. `get aria(): AriaList`) or via `AriaStaticInclude` (`AriaStaticInclude.role()`, `label()`, `hidden()`) inside constructor classes rather than fragmented across inline template bindings.
   - Automatic decorative asset hiding: automatically assigning `AriaStaticInclude.hidden()` / `aria-hidden="true"` when meaningful text/labels (like `alt` or `label`) are absent.
+- **SSR Request Isolation & State Safety**:
+  - Zero cross-request pollution: Classes must NOT store user- or request-specific state in static properties or module-level singletons. In Node.js/Nitro SSR, module globals persist across concurrent HTTP requests.
+  - Request-isolated singletons: Use `ServerStorage.get('key', () => new Class())` for stateful instances that must be scoped per request rather than shared globally.
+- **Memory Management & Teardown Lifecycle**:
+  - Explicit destruction contract: Any class holding subscriptions, listeners, DOM elements, or caches must implement an explicit `destroy()` / `dispose()` / `reset()` method to release memory references.
+  - Cache size & retention guards: Internal registries, caches, and event listener arrays must prevent unbounded growth and detached memory retention.
 
 ### C. Functions & Utilities (`function`)
 - **Purity & Determinism**:
@@ -135,10 +148,13 @@ Evaluate the target according to its specific entity type:
   - Proper lifecycle boundaries: Wrapping in `executeUseGlobal`, `executeUseLocal`, or `executeUseProvide` when dealing with shared or session-scoped state.
   - Components must never call raw state singletons directly; they consume the wrapped composable hook.
 - **Cleanup & Memory Safety**:
-  - All side effects, intervals, observers, and event listeners must be cleaned up on scope disposal (`onScopeDispose`).
-- **SSR Safety**:
-  - Safe browser API access guarded by `isDomRuntime()`.
-  - Zero request-leaking global state.
+  - Mandatory `onScopeDispose` cleanup: All side effects, intervals (`setInterval`), timeouts (`setTimeout`), `requestAnimationFrame`, observers (`ResizeObserver`, `IntersectionObserver`), and event listeners must be cleaned up on scope disposal (`onScopeDispose`).
+  - Watcher lifecycle safety: Any `watch` or `watchEffect` created inside composables must be bound to the active effect scope. Watchers created outside setup or in asynchronous callbacks without explicit stopping handles will cause permanent memory leaks.
+  - Unbounded cache prevention: In-memory maps, caches, or event registries must have clear eviction policies or bounds to avoid progressive memory consumption over long sessions.
+- **SSR Safety & Isomorphism**:
+  - Safe browser API access guarded strictly by `isDomRuntime()`.
+  - Zero request-leaking global state: Never share mutable request/user state across requests in SSR via module-level refs or globals. Use `executeUseLocal`, `executeUseProvide`, or `ServerStorage`.
+  - Isomorphic reactivity: Avoid running client-only asynchronous side effects (e.g. continuous polling, timer intervals) during server-side execution.
 
 ---
 
@@ -153,14 +169,21 @@ Rigorously search for subtle defects, including:
    - Race conditions in async data fetches or event debounces.
    - Unhandled promise rejections or uncancelled pending requests.
 3. **Memory Leaks & Cleanup Failures**:
-   - Missing `removeEventListener`, lingering `setInterval`/`setTimeout`, unobserved DOM nodes.
-   - Detached DOM nodes retained in memory caches or closures.
+   - Missing `removeEventListener` on `window`, `document`, or external DOM elements.
+   - Lingering `setInterval`, `setTimeout`, or `requestAnimationFrame` that continue running after component unmount or scope disposal (especially devastating in SSR where Node processes keep timers alive indefinitely).
+   - Unstopped watchers (`watch`, `watchEffect`) created outside synchronous `setup()` or outside active `effectScope()`.
+   - Detached DOM nodes retained in closures, static arrays, caches, or Map/Set references.
+   - Undisposed observers (`ResizeObserver`, `IntersectionObserver`, `MutationObserver`) or media query listeners (`matchMedia`).
+   - Missing cleanup for subscriptions (`BroadcastChannel`, `WebSocket`, custom event emitters, Rx/Store subscriptions).
 4. **Edge Cases & Boundary Conditions**:
    - Unhandled `null`, `undefined`, empty string, empty array/object, `NaN`, 0, negative numbers.
    - Boundary checks, division by zero, off-by-one errors.
 5. **SSR Hydration & Isomorphic Flaws**:
-   - Access to `window`, `document`, `navigator`, or `localStorage` during server execution without `isDomRuntime()`.
-   - Hydration mismatch risks between server-rendered and client-rendered DOM trees.
+   - Direct execution of `window`, `document`, `navigator`, `localStorage`, `sessionStorage`, or `location` on the server without checking `isDomRuntime()`.
+   - Cross-request state pollution: Storing user or request-dependent data in module-level global variables or shared singletons, leaking sensitive state between concurrent requests in SSR.
+   - Timers or continuous background loops executing during server rendering.
+   - Hydration mismatch risks between server-rendered and client-rendered DOM trees (differing timestamps, random IDs, browser-conditional markup rendered during hydration).
+   - DOM manipulation or measurement during server render (e.g. attempting to read `offsetWidth`, `getBoundingClientRect`, or canvas context on server).
 
 ---
 
@@ -192,6 +215,15 @@ Check compliance against the core rules of `dxt-ui`:
   - Mandatory ARIA support for interactive, graphical, and informative UI components.
   - Proper use of `AriaStaticInclude` (`role()`, `label()`, `hidden()`, etc.) and dedicated `aria` getters in component constructor classes.
   - Correct role assignments and state synchronization (`role="img"`, `role="button"`, `role="dialog"`, etc.).
+- **SSR Safety & Isomorphic Standards**:
+  - Fully isomorphic code across all packages.
+  - Never store request state in globals or module-level singletons.
+  - Mandatory use of `isDomRuntime()` before accessing `window`, `document`, or browser APIs.
+  - Use `ServerStorage.get('key', () => new Class())` for request-isolated singletons in Nitro/Node.js SSR environments.
+- **Memory Leak Prevention & Scope Disposal**:
+  - Mandatory disposal of all listeners, timers, observers, and subscriptions in `onScopeDispose` / `onUnmounted`.
+  - Explicit `destroy()` / `dispose()` methods on stateful classes holding references or subscriptions.
+  - Zero unstopped watchers or detached DOM references.
 - **Mandatory Unit Tests Quality & Coverage**:
   - Every entity (constructor class, utility function, composable, helper) must be backed by thorough, high-quality unit tests in its corresponding `__tests__/` directory.
   - Test suites must be critically audited for completeness and quality: if tests are incomplete, superficial, or low-quality, they must be rewritten or deeply refined; if tests are missing for an entity, comprehensive tests must be created from scratch.
@@ -227,7 +259,9 @@ Document the review in the artifact markdown file with the following sections (t
   | **Modernity vs Legacy Patterns** | Modern / Outdated / Mixed | ... |
   | **Component / Class / Hook Design** | Excellent / Good / Needs Improvement / Poor | ... |
   | **Accessibility & ARIA (A11y)** | Fully Accessible / Minor Gaps / Inaccessible | ... |
-  | **Bugs, Edge Cases & Leaks** | Clean / Minor Issues / Critical Bugs | ... |
+  | **SSR Compatibility & Isomorphism** | Safe & Isomorphic / Hydration Risks / Leaking Server State | ... |
+  | **Memory Safety & Leak Prevention** | Zero Leaks & Clean Disposal / Lingering Listeners or Timers / Critical Memory Leaks | ... |
+  | **Bugs & Edge Cases** | Clean / Minor Issues / Critical Bugs | ... |
   | **Unit Tests & Quality** | Comprehensive & High-Quality / Rewritten & Refined / Created from Scratch / Incomplete or Missing | ... |
   | **Project Rules & Conventions** | 100% Compliant / Minor Discrepancies / Non-compliant | ... |
 
@@ -239,8 +273,8 @@ Document the review in the artifact markdown file with the following sections (t
   - **Inbound Usages & Blast Radius**: Comprehensive scan and list of where the entity is used across the codebase, analysis of caller patterns, potential breaking change risks, and suggestions for caller refactoring.
 
 #### 3. Detailed Findings & Bugs (Categorized by Severity)
-- **Critical (P0 / Blocker)**: Bugs causing runtime crashes, data loss, memory leaks, SSR breaking issues, or reactivity breakage.
-- **Major (P1 / Architecture & Modernity)**: Outdated techniques, violation of single responsibility, suboptimal paradigms, missing cleanup.
+- **Critical (P0 / Blocker)**: Bugs causing runtime crashes, data loss, memory leaks, SSR breaking issues / cross-request leaks, or reactivity breakage.
+- **Major (P1 / Architecture & Modernity)**: Outdated techniques, violation of single responsibility, suboptimal paradigms, missing cleanup / potential leak risks, SSR hydration mismatches.
 - **Minor (P2 / Conventions & Typing)**: Naming abbreviations, missing `/*#__PURE__*/`, missing or malformed bilingual JSDoc, missing explicit return types.
 - **Nit / Suggestion (P3)**: Minor stylistic polish, code ergonomics, micro-optimizations.
 

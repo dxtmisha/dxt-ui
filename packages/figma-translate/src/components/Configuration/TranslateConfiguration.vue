@@ -10,9 +10,7 @@ defineOptions({
 <template>
   <div class="translate-configuration">
     <D1Block>
-      <D1Group label="AI">
-        <TranslateConfigurationAiKey/>
-      </D1Group>
+      <TranslateConfigurationAiKey/>
       <TranslateConfigurationStorage/>
     </D1Block>
   </div>
