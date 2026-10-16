@@ -60,7 +60,7 @@ export class Header {
 
     this.label = new LabelIncludeConstructor(
       props,
-      naming.getName(),
+      naming,
       undefined,
       slots,
       undefined,
@@ -69,8 +69,8 @@ export class Header {
       undefined,
       () => String(this.props.tag)
     )
-    this.caption = new CaptionIncludeConstructor(props, naming.getName(), slots)
-    this.icon = new IconIncludeConstructor(props, naming.getName(), components)
+    this.caption = new CaptionIncludeConstructor(props, naming, slots)
+    this.icon = new IconIncludeConstructor(props, naming, components)
     this.area = new AreaIncludeConstructor(props)
   }
 

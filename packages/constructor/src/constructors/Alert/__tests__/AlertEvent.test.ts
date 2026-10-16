@@ -1,5 +1,6 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { DesignName } from '@dxtmisha/functional'
 import { AlertEvent } from '../AlertEvent'
 import { AlertHide } from '../AlertHide'
 
@@ -8,7 +9,7 @@ describe('AlertEvent', () => {
   let emitsSpy: any
 
   beforeEach(() => {
-    mockHide = new AlertHide('my-alert')
+    mockHide = new AlertHide(new DesignName('my.alert'))
     emitsSpy = vi.fn()
   })
 

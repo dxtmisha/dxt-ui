@@ -90,12 +90,12 @@ export class MotionAxis {
 
     this.elementItem = new MotionAxisElementConstructor(
       this.element,
-      this.naming.getName()
+      this.naming
     )
 
     this.styles = new MotionAxisStylesConstructor(
       this.element,
-      this.naming.getName(),
+      this.naming,
       this.selected
     )
 
@@ -138,10 +138,10 @@ export class MotionAxis {
    */
   get classes(): ConstrClassObject {
     return {
-      [`${this.naming.getName()}--axis--${this.go.axis.value}`]: true,
-      [`${this.naming.getName()}--direction--${this.go.direction.value}`]: true,
-      [`${this.naming.getName()}--start`]: this.elementItem.getStart() && Boolean(this.props.animationHeight),
-      [`${this.naming.getName()}--move`]: this.elementItem.getMove() && Boolean(this.props.animationHeight)
+      [this.naming.getStatusClass(`axis--${this.go.axis.value}`)]: true,
+      [this.naming.getStatusClass(`direction--${this.go.direction.value}`)]: true,
+      [this.naming.getStatusClass('start')]: this.elementItem.getStart() && Boolean(this.props.animationHeight),
+      [this.naming.getStatusClass('move')]: this.elementItem.getMove() && Boolean(this.props.animationHeight)
     }
   }
 

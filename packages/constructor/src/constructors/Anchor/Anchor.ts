@@ -71,10 +71,10 @@ export class Anchor {
       TooltipIncludeConstructor = TooltipInclude
     } = constructors
 
-    this.label = new LabelIncludeConstructor(props, naming.getName(), undefined, slots)
+    this.label = new LabelIncludeConstructor(props, naming, undefined, slots)
     this.text = new TextIncludeConstructor(this.props)
     this.tooltip = new TooltipIncludeConstructor(
-      this.naming.getName(),
+      this.naming,
       this.props,
       this.components,
       slots,

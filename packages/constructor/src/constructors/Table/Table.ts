@@ -86,7 +86,7 @@ export class Table {
       TableRecordIncludeConstructor = TableRecordInclude
     } = constructors
 
-    this.caption = new CaptionIncludeConstructor(props, naming.getName(), slots, undefined, this.tagCaption)
+    this.caption = new CaptionIncludeConstructor(props, naming, slots, undefined, this.tagCaption)
     this.columns = new TableColumnsConstructor(props)
 
     this.search = new SearchIncludeConstructor(props, () => this.columns.list)
@@ -106,7 +106,7 @@ export class Table {
         stickyScrollBottom: this.props.stickyScrollBottom,
         stickyEnable: this.props.headerTop
       }),
-      naming.getName(),
+      naming,
       this.headerElement,
       element
     )

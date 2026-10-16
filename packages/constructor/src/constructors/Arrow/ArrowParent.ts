@@ -1,7 +1,7 @@
 // ai-none
 
 import { onMounted, onUnmounted, ref, type Ref, watch } from 'vue'
-import { toNumber } from '@dxtmisha/functional'
+import { toNumber, type DesignName } from '@dxtmisha/functional'
 
 import { ArrowElement } from './ArrowElement'
 
@@ -20,12 +20,12 @@ export class ArrowParent {
   /**
    * Constructor
    * @param element input element / элемент ввода
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param elementItem arrow element / элемент стрелки
    */
   constructor(
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly elementItem: ArrowElement
   ) {
     watch(element, this.make)
@@ -86,8 +86,8 @@ export class ArrowParent {
         this.styles.value = getComputedStyle(elementParent)
         this.borderColorParent.value = this.styles.value.borderColor
 
-        elementParent.classList.add(`${this.className}__parent`)
-        elementParent.style.setProperty(`--${this.className}-sys-height`, String(this.elementItem.height))
+        elementParent.classList.add(this.naming.getSubClass('parent'))
+        elementParent.style.setProperty(this.naming.getStyle('height'), String(this.elementItem.height))
 
         if (this.isBorder()) {
           elementParent.dataset.arrow = 'border'
@@ -105,8 +105,8 @@ export class ArrowParent {
     const elementParent = this.elementParent
 
     if (elementParent) {
-      elementParent.classList.remove(`${this.className}__parent`)
-      elementParent.style.removeProperty(`--${this.className}-sys-height`)
+      elementParent.classList.remove(this.naming.getSubClass('parent'))
+      elementParent.style.removeProperty(this.naming.getStyle('height'))
       delete elementParent.dataset.arrow
     }
   }

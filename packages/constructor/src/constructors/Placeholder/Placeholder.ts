@@ -67,7 +67,7 @@ export class Placeholder {
     } = constructors
 
     this.image = new ImageIncludeConstructor(
-      naming.getName(),
+      naming,
       props,
       components,
       undefined,
@@ -76,19 +76,19 @@ export class Placeholder {
 
     this.description = new DescriptionIncludeConstructor(
       props,
-      naming.getName(),
+      naming,
       slots
     )
 
     this.label = new LabelIncludeConstructor(
       props,
-      naming.getName(),
+      naming,
       undefined,
       slots
     )
 
     this.actions = new ActionsIncludeConstructor(
-      naming.getName(),
+      naming,
       props,
       components,
       () => ({ align: 'center' }),

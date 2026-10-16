@@ -114,7 +114,7 @@ export class ListItem {
     } = constructors
 
     const progress = new ProgressIncludeConstructor(
-      naming.getName(),
+      naming,
       props,
       components,
       {
@@ -123,26 +123,26 @@ export class ListItem {
     )
     const skeleton = new SkeletonIncludeConstructor(
       props,
-      naming.getDesign(),
+      naming,
       ['classTextVariant']
     )
     const enabled = new EnabledIncludeConstructor(props, progress)
 
-    this.icon = new IconTrailingIncludeConstructor(props, naming.getName(), components)
+    this.icon = new IconTrailingIncludeConstructor(props, naming, components)
     this.label = new LabelHighlightIncludeConstructor(
       props,
-      naming.getName(),
+      naming,
       undefined,
       slots,
       undefined,
       skeleton
     )
-    this.prefix = new PrefixIncludeConstructor(props, naming.getName(), slots, skeleton)
-    this.caption = new CaptionIncludeConstructor(props, naming.getName(), slots)
-    this.suffix = new SuffixIncludeConstructor(props, naming.getName(), slots)
-    this.description = new DescriptionIncludeConstructor(props, naming.getName(), slots, skeleton)
+    this.prefix = new PrefixIncludeConstructor(props, naming, slots, skeleton)
+    this.caption = new CaptionIncludeConstructor(props, naming, slots)
+    this.suffix = new SuffixIncludeConstructor(props, naming, slots)
+    this.description = new DescriptionIncludeConstructor(props, naming, slots, skeleton)
     this.badge = new BadgeIncludeConstructor(
-      naming.getName(),
+      naming,
       props,
       components,
       {
@@ -150,7 +150,7 @@ export class ListItem {
       }
     )
 
-    this.ripple = new RippleIncludeConstructor(naming.getName(), components, enabled)
+    this.ripple = new RippleIncludeConstructor(naming, components, enabled)
     this.progress = progress
     this.skeleton = skeleton
 
@@ -174,10 +174,10 @@ export class ListItem {
   /** Values for the class / Значения для класса */
   get classes(): ConstrClassObject {
     return {
-      [`${this.naming.getName()}--selected`]: this.props.selected && this.props.selectionStyle === 'none',
-      [`${this.naming.getName()}--selectionStyle`]: this.props.selectionStyle !== 'none',
-      [`${this.naming.getName()}--selectionStyle--${this.props.selectionStyle}`]: Boolean(this.props.selectionStyle),
-      [`${this.naming.getName()}--description`]: this.description.is,
+      [this.naming.getStatusClass('selected')]: this.props.selected && this.props.selectionStyle === 'none',
+      [this.naming.getStatusClass('selectionStyle')]: this.props.selectionStyle !== 'none',
+      [this.naming.getStatusClass(`selectionStyle--${this.props.selectionStyle}`)]: Boolean(this.props.selectionStyle),
+      [this.naming.getStatusClass('description')]: this.description.is,
       [getClassTagAStatic(this.naming.getDesign())]: true
     }
   }

@@ -4,6 +4,7 @@ import { h, type VNode } from 'vue'
 import {
   type ConstrEmit,
   type DesignComponents,
+  type DesignName,
   toBinds
 } from '@dxtmisha/functional'
 
@@ -37,18 +38,18 @@ export class AlertLinkInclude<
 
   /**
    * Constructor
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param props input parameter / входной параметр
    * @param components object for working with components / объект для работы с компонентами
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
    */
   constructor(
-    className: string,
+    naming: DesignName,
     props: Readonly<Props>,
     components?: DesignComponents<any, Props>,
     protected readonly emits?: ConstrEmit<AlertLinkEmitsInclude>
   ) {
-    super(className, props, components)
+    super(naming, props, components)
   }
 
   /**
@@ -108,7 +109,7 @@ export class AlertLinkInclude<
               this.getPropsAttrs(),
               link,
               {
-                class: `${this.className}__links__item`,
+                class: this.naming.getSubClass('links__item'),
                 onClick: this.onLink
               }
             ),
@@ -121,7 +122,7 @@ export class AlertLinkInclude<
         'div',
         toBinds(
           attrs,
-          { class: `${this.className}__links` }
+          { class: this.naming.getSubClass('links') }
         ),
         listElement
       )]

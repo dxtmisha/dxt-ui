@@ -46,7 +46,7 @@ export class ListMenu {
     this.open = new ListGroupOpenConstructor(this.props)
 
     this.window = new WindowIncludeConstructor(
-      this.naming.getName(),
+      this.naming,
       this.props,
       this.components,
       () => ({

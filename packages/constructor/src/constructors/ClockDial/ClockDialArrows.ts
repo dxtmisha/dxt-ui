@@ -1,6 +1,6 @@
 // ai-none
 
-import type { ConstrStyles } from '@dxtmisha/functional'
+import type { ConstrStyles, DesignName } from '@dxtmisha/functional'
 import type { ClockDialList } from './ClockDialList'
 import type { ClockDialValue } from './ClockDialValue'
 import type { ClockDialProps } from './props'
@@ -14,13 +14,13 @@ export class ClockDialArrows {
   /**
    * Constructor
    * @param props component input properties / входные свойства компонента
-   * @param className base CSS class name / базовое имя CSS класса
+   * @param naming component naming helper / помощник именования компонента
    * @param list clock dial list manager / менеджер списка циферблата часов
    * @param valueItem time values manager / менеджер значений времени
    */
   constructor(
     protected readonly props: ClockDialProps,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly list: ClockDialList,
     protected readonly valueItem: ClockDialValue
   ) { }
@@ -44,7 +44,7 @@ export class ClockDialArrows {
       }
 
       return {
-        [`--${this.className}-sys-arrowRotate`]: `${rotateDegrees}deg`
+        [this.naming.getStyle('arrowRotate')]: `${rotateDegrees}deg`
       }
     }
 
@@ -66,7 +66,7 @@ export class ClockDialArrows {
       }
 
       return {
-        [`--${this.className}-sys-arrowRotate`]: `${rotateDegrees}deg`
+        [this.naming.getStyle('arrowRotate')]: `${rotateDegrees}deg`
       }
     }
 
@@ -84,7 +84,7 @@ export class ClockDialArrows {
       const rotateDegrees = (360 / 60) * this.valueItem.second
 
       return {
-        [`--${this.className}-sys-arrowRotate`]: `${rotateDegrees}deg`
+        [this.naming.getStyle('arrowRotate')]: `${rotateDegrees}deg`
       }
     }
 
@@ -102,7 +102,7 @@ export class ClockDialArrows {
       const rotateDegrees = this.list.rotate * this.valueItem.value
 
       return {
-        [`--${this.className}-sys-arrowRotate`]: `${rotateDegrees}deg`
+        [this.naming.getStyle('arrowRotate')]: `${rotateDegrees}deg`
       }
     }
 

@@ -102,20 +102,20 @@ export class Dialog extends ModalAbstract {
 
     this.icon = new IconIncludeConstructor(
       () => ({ icon: this.iconValue }),
-      naming.getName(),
+      naming,
       components,
       () => props.iconAttrs
     )
     this.label = new LabelIncludeConstructor(
       props,
-      naming.getName(),
+      naming,
       undefined,
       slots,
       undefined,
       undefined,
       true
     )
-    this.description = new DescriptionIncludeConstructor(props, naming.getName(), slots)
+    this.description = new DescriptionIncludeConstructor(props, naming, slots)
 
     this.windowClasses = new WindowClassesIncludeConstructor(naming.getDesign())
     this.text = new TextIncludeConstructor(props)

@@ -3,6 +3,7 @@
 import { onMounted, onUnmounted, type Ref, watch } from 'vue'
 import {
   type ConstrEmit,
+  type DesignName,
   EventItem
 } from '@dxtmisha/functional'
 
@@ -41,13 +42,13 @@ export class ScrollbarBorder {
    * Конструктор класса ScrollbarBorder.
    * @param props properties / свойства
    * @param element input element / элемент ввода
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
    */
   constructor(
     protected readonly props: ScrollbarProps,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly emits?: ConstrEmit<ScrollbarEmits>
   ) {
     watch([

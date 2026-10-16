@@ -1,5 +1,5 @@
 import type { Ref } from 'vue'
-import { type ConstrEmit, type DesignComp } from '@dxtmisha/functional'
+import { type ConstrEmit, type DesignComp, type DesignName } from '@dxtmisha/functional'
 
 import { RippleItem } from './RippleItem'
 
@@ -25,7 +25,7 @@ export class Ripple {
    * Конструктор для создания экземпляра эффекта волны (ripple).
    * @param props input properties / входные свойства
    * @param element target element where ripples are rendered / целевой элемент, в котором рендерятся волны
-   * @param className base CSS class name / базовое имя CSS-класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param slots object for working with slots / объект для работы со слотами
    * @param emits callback function triggered on events / функция обратного вызова, запускаемая при событиях
@@ -35,7 +35,7 @@ export class Ripple {
   constructor(
     protected readonly props: RippleProps,
     protected readonly element: Ref<HTMLSpanElement | undefined>,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComp<RippleComponents, RippleProps>,
     protected readonly slots?: RippleSlots,
     protected readonly emits?: ConstrEmit<RippleEmits>,
@@ -47,7 +47,7 @@ export class Ripple {
       RippleItemConstructor = RippleItem
     } = constructors
 
-    this.item = new RippleItemConstructor(props, element, className)
+    this.item = new RippleItemConstructor(props, element, naming)
   }
 
   /**

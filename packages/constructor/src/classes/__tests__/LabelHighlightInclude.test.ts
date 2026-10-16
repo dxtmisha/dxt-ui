@@ -1,21 +1,22 @@
 // @vitest-environment jsdom
 import { describe, it, expect } from 'vitest'
+import { DesignName } from '@dxtmisha/functional'
 import { LabelHighlightInclude } from '../LabelHighlightInclude'
 
 describe('LabelHighlightInclude', () => {
   it('should determine if highlight is required', () => {
-    const includeNoHighlight = new LabelHighlightInclude({ label: 'Hello World' }, 'prefix')
+    const includeNoHighlight = new LabelHighlightInclude({ label: 'Hello World' }, new DesignName('prefix'))
     expect(includeNoHighlight.isHighlight()).toBe(true)
 
-    const includeWithHighlight = new LabelHighlightInclude({ label: 'Hello World', highlight: 'hello' }, 'prefix')
+    const includeWithHighlight = new LabelHighlightInclude({ label: 'Hello World', highlight: 'hello' }, new DesignName('prefix'))
     expect(includeWithHighlight.isHighlight()).toBe(true)
 
-    const includeNoMatch = new LabelHighlightInclude({ label: 'Hello World', highlight: 'missing' }, 'prefix')
+    const includeNoMatch = new LabelHighlightInclude({ label: 'Hello World', highlight: 'missing' }, new DesignName('prefix'))
     expect(includeNoMatch.isHighlight()).toBe(false)
   })
 
   it('should highlight label text when matching', () => {
-    const include = new LabelHighlightInclude({ label: 'Hello World', highlight: 'world' }, 'prefix')
+    const include = new LabelHighlightInclude({ label: 'Hello World', highlight: 'world' }, new DesignName('prefix'))
     const nodes = include.render()
     expect(nodes.length).toBe(1)
 
@@ -25,7 +26,7 @@ describe('LabelHighlightInclude', () => {
   })
 
   it('should fallback to highlight entire label if value matches', () => {
-    const include = new LabelHighlightInclude({ label: 'Title', value: 'val', highlight: 'val' }, 'prefix')
+    const include = new LabelHighlightInclude({ label: 'Title', value: 'val', highlight: 'val' }, new DesignName('prefix'))
     const nodes = include.render()
     expect(nodes.length).toBe(1)
 

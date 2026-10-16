@@ -70,19 +70,19 @@ export class CollageBar {
 
     this.label = new LabelIncludeConstructor(
       props,
-      naming.getName(),
+      naming,
       undefined,
       slots
     )
 
     this.description = new DescriptionIncludeConstructor(
       props,
-      naming.getName(),
+      naming,
       slots
     )
 
     this.button = new ButtonIncludeConstructor(
-      naming.getName(),
+      naming,
       props,
       components,
       () => ({

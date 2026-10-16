@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import { describe, expect, it } from 'vitest'
 import { ref } from 'vue'
+import { DesignName } from '@dxtmisha/functional'
 import { EnabledInclude } from '../../../classes/EnabledInclude'
 import { ModelValueInclude } from '../../../classes/ModelValueInclude'
 import { ClockDialList } from '../ClockDialList'
@@ -10,7 +11,7 @@ import type { ClockDialProps } from '../props'
 describe('ClockDialSelect', () => {
   function createClockDialSelect(props: ClockDialProps = { type: '12' }, initialValue: number | undefined = undefined) {
     const enabled = new EnabledInclude(props)
-    const list = new ClockDialList(props, 'd-clock-dial')
+    const list = new ClockDialList(props, new DesignName('d.clock-dial'))
     const model = new ModelValueInclude<number>('value', undefined, undefined, ref(initialValue))
     const select = new ClockDialSelect(props, list, model, enabled)
 

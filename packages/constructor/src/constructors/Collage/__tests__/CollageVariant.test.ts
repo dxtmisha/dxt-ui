@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi } from 'vitest'
 import { ref } from 'vue'
+import { DesignName } from '@dxtmisha/functional'
 import { CollageVariant } from '../CollageVariant'
 import { CollageElement } from '../CollageElement'
 import { CollageMasonryHorizontal } from '../CollageMasonryHorizontal'
@@ -17,8 +18,8 @@ describe('CollageVariant', () => {
     }
 
     const elementItem = new CollageElement(element)
-    const grow = new CollageGrow('d-collage', elementItem)
-    const woven = new CollageWoven('d-collage', elementItem)
+    const grow = new CollageGrow(new DesignName('d.collage'), elementItem)
+    const woven = new CollageWoven(new DesignName('d.collage'), elementItem)
     const masonryHorizontal = new CollageMasonryHorizontal(grow, elementItem)
     const masonryVertical = new CollageMasonryVertical(grow, elementItem)
     const variant = new CollageVariant(props, elementItem, woven, masonryHorizontal, masonryVertical, grow)
@@ -39,8 +40,8 @@ describe('CollageVariant', () => {
     }
 
     const elementItem = new CollageElement(element)
-    const grow = new CollageGrow('d-collage', elementItem)
-    const woven = new CollageWoven('d-collage', elementItem)
+    const grow = new CollageGrow(new DesignName('d.collage'), elementItem)
+    const woven = new CollageWoven(new DesignName('d.collage'), elementItem)
     const masonryHorizontal = new CollageMasonryHorizontal(grow, elementItem)
     const masonryVertical = new CollageMasonryVertical(grow, elementItem)
     const variant = new CollageVariant(props, elementItem, woven, masonryHorizontal, masonryVertical, grow)
@@ -61,8 +62,8 @@ describe('CollageVariant', () => {
     }
 
     const elementItem = new CollageElement(element)
-    const grow = new CollageGrow('d-collage', elementItem)
-    const woven = new CollageWoven('d-collage', elementItem)
+    const grow = new CollageGrow(new DesignName('d.collage'), elementItem)
+    const woven = new CollageWoven(new DesignName('d.collage'), elementItem)
     const masonryHorizontal = new CollageMasonryHorizontal(grow, elementItem)
     const masonryVertical = new CollageMasonryVertical(grow, elementItem)
     const variant = new CollageVariant(props, elementItem, woven, masonryHorizontal, masonryVertical, grow)
@@ -83,8 +84,8 @@ describe('CollageVariant', () => {
     }
 
     const elementItem = new CollageElement(element)
-    const grow = new CollageGrow('d-collage', elementItem)
-    const woven = new CollageWoven('d-collage', elementItem)
+    const grow = new CollageGrow(new DesignName('d.collage'), elementItem)
+    const woven = new CollageWoven(new DesignName('d.collage'), elementItem)
     const masonryHorizontal = new CollageMasonryHorizontal(grow, elementItem)
     const masonryVertical = new CollageMasonryVertical(grow, elementItem)
     const variant = new CollageVariant(props, elementItem, woven, masonryHorizontal, masonryVertical, grow)
@@ -101,8 +102,8 @@ describe('CollageVariant', () => {
 
     const element = ref<HTMLElement | undefined>(undefined)
     const elementItem = new CollageElement(element)
-    const grow = new CollageGrow('d-collage', elementItem)
-    const woven = new CollageWoven('d-collage', elementItem)
+    const grow = new CollageGrow(new DesignName('d.collage'), elementItem)
+    const woven = new CollageWoven(new DesignName('d.collage'), elementItem)
     const masonryHorizontal = new CollageMasonryHorizontal(grow, elementItem)
     const masonryVertical = new CollageMasonryVertical(grow, elementItem)
 
@@ -128,8 +129,8 @@ describe('CollageVariant', () => {
 
     const element = ref<HTMLElement | undefined>(undefined)
     const elementItem = new CollageElement(element)
-    const grow = new CollageGrow('d-collage', elementItem)
-    const woven = new CollageWoven('d-collage', elementItem)
+    const grow = new CollageGrow(new DesignName('d.collage'), elementItem)
+    const woven = new CollageWoven(new DesignName('d.collage'), elementItem)
     const masonryHorizontal = new CollageMasonryHorizontal(grow, elementItem)
     const masonryVertical = new CollageMasonryVertical(grow, elementItem)
 
@@ -154,8 +155,8 @@ describe('CollageVariant', () => {
 
     const element = ref<HTMLElement | undefined>(container)
     const elementItem = new CollageElement(element)
-    const grow = new CollageGrow('d-collage', elementItem)
-    const woven = new CollageWoven('d-collage', elementItem)
+    const grow = new CollageGrow(new DesignName('d.collage'), elementItem)
+    const woven = new CollageWoven(new DesignName('d.collage'), elementItem)
     const masonryHorizontal = new CollageMasonryHorizontal(grow, elementItem)
     const masonryVertical = new CollageMasonryVertical(grow, elementItem)
 
@@ -174,8 +175,8 @@ describe('CollageVariant', () => {
 
     const element = ref<HTMLElement | undefined>(undefined)
     const elementItem = new CollageElement(element)
-    const grow = new CollageGrow('d-collage', elementItem)
-    const woven = new CollageWoven('d-collage', elementItem)
+    const grow = new CollageGrow(new DesignName('d.collage'), elementItem)
+    const woven = new CollageWoven(new DesignName('d.collage'), elementItem)
     const masonryHorizontal = new CollageMasonryHorizontal(grow, elementItem)
     const masonryVertical = new CollageMasonryVertical(grow, elementItem)
 

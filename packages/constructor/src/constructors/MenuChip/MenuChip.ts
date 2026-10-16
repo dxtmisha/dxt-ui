@@ -80,7 +80,7 @@ export class MenuChip extends SelectAbstract {
     } = constructors
 
     this.chip = new ChipConstructor(
-      this.naming.getName(),
+      this.naming,
       this.props,
       this.components,
       () => ({

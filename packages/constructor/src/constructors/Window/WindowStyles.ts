@@ -1,6 +1,7 @@
 // ai-none
 
 import { watch } from 'vue'
+import type { DesignName } from '@dxtmisha/functional'
 
 import { WindowElement } from './WindowElement'
 import { WindowCoordinates } from './WindowCoordinates'
@@ -19,14 +20,14 @@ export class WindowStyles {
    * @param coordinates object for working with coordinates/ объект для работы с координатами
    * @param position object for working with the position of the element/ объект для работы с положением элемента
    * @param origin the object for work is in the initial position upon opening/ объект для работы в начальной позиции при открытии
-   * @param className class name/ название класса
+   * @param naming component naming helper / помощник именования компонента
    */
   constructor(
     protected readonly element: WindowElement,
     protected readonly coordinates: WindowCoordinates,
     protected readonly position: WindowPosition,
     protected readonly origin: WindowOrigin,
-    protected readonly className: string
+    protected readonly naming: DesignName
   ) {
     watch(this.element.element, () => this.update())
   }
@@ -40,13 +41,13 @@ export class WindowStyles {
     const element = this.element.getMain()
 
     if (element) {
-      element.style.setProperty(`--${this.className}-sys-inset-x`, this.position.getStyleX())
-      element.style.setProperty(`--${this.className}-sys-inset-y`, this.position.getStyleY())
-      element.style.setProperty(`--${this.className}-origin-x`, this.origin.getStyleX())
-      element.style.setProperty(`--${this.className}-origin-y`, this.origin.getStyleY())
-      element.style.setProperty(`--${this.className}-sys-control-width`, `${this.coordinates.getControlWidth()}px`)
-      element.style.setProperty(`--${this.className}-sys-control-height`, `${this.coordinates.getControlHeight()}px`)
-      element.style.setProperty(`--${this.className}-sys-location`, this.coordinates.getLocation())
+      element.style.setProperty(this.naming.getStyle('inset-x'), this.position.getStyleX())
+      element.style.setProperty(this.naming.getStyle('inset-y'), this.position.getStyleY())
+      element.style.setProperty(`--${this.naming.getName()}-origin-x`, this.origin.getStyleX())
+      element.style.setProperty(`--${this.naming.getName()}-origin-y`, this.origin.getStyleY())
+      element.style.setProperty(this.naming.getStyle('control-width'), `${this.coordinates.getControlWidth()}px`)
+      element.style.setProperty(this.naming.getStyle('control-height'), `${this.coordinates.getControlHeight()}px`)
+      element.style.setProperty(this.naming.getStyle('location'), this.coordinates.getLocation())
     }
   }
 

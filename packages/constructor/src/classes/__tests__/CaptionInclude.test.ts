@@ -1,21 +1,22 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi } from 'vitest'
+import { DesignName } from '@dxtmisha/functional'
 import { CaptionInclude } from '../CaptionInclude'
 
 describe('CaptionInclude', () => {
   it('should return correct is value', () => {
-    const include1 = new CaptionInclude({ caption: 'Hello' }, 'my-class')
+    const include1 = new CaptionInclude({ caption: 'Hello' }, new DesignName('my.class'))
     expect(include1.is).toBe(true)
 
-    const include2 = new CaptionInclude({ caption: undefined }, 'my-class')
+    const include2 = new CaptionInclude({ caption: undefined }, new DesignName('my.class'))
     expect(include2.is).toBe(false)
 
-    const include3 = new CaptionInclude({}, 'my-class', { caption: () => 'slot content' })
+    const include3 = new CaptionInclude({}, new DesignName('my.class'), { caption: () => 'slot content' })
     expect(include3.is).toBe(true)
   })
 
   it('should return correct binds when not decorative', () => {
-    const include = new CaptionInclude({ caption: 'Hello' }, 'my-class')
+    const include = new CaptionInclude({ caption: 'Hello' }, new DesignName('my.class'))
     expect(include.binds).toEqual({
       'class': {
         'my-class__caption': true
@@ -27,7 +28,7 @@ describe('CaptionInclude', () => {
   })
 
   it('should return correct binds when decorative', () => {
-    const include = new CaptionInclude({ caption: 'Hello', captionDecorative: true }, 'my-class')
+    const include = new CaptionInclude({ caption: 'Hello', captionDecorative: true }, new DesignName('my.class'))
     expect(include.binds).toEqual({
       'class': {
         'my-class__caption': true
@@ -41,7 +42,7 @@ describe('CaptionInclude', () => {
     const skeletonMock = {
       classes: { 'sys-skeleton': true, 'sys-skeleton--loading': true }
     } as any
-    const include = new CaptionInclude({ caption: 'Hello' }, 'my-class', undefined, skeletonMock)
+    const include = new CaptionInclude({ caption: 'Hello' }, new DesignName('my.class'), undefined, skeletonMock)
     expect(include.binds.class).toEqual({
       'my-class__caption': true,
       'sys-skeleton': true,
@@ -50,7 +51,7 @@ describe('CaptionInclude', () => {
   })
 
   it('should render correct vnodes when caption is present', () => {
-    const include = new CaptionInclude({ caption: 'Hello' }, 'my-class')
+    const include = new CaptionInclude({ caption: 'Hello' }, new DesignName('my.class'))
     const nodes = include.render()
     expect(nodes.length).toBe(1)
     expect(nodes[0].type).toBe('div')
@@ -66,7 +67,7 @@ describe('CaptionInclude', () => {
 
   it('should render slot content when slot is present', () => {
     const slotMock = vi.fn().mockReturnValue('slot content')
-    const include = new CaptionInclude({}, 'my-class', { caption: slotMock })
+    const include = new CaptionInclude({}, new DesignName('my.class'), { caption: slotMock })
     const nodes = include.render()
     expect(nodes.length).toBe(1)
     expect(slotMock).toHaveBeenCalled()
@@ -74,20 +75,20 @@ describe('CaptionInclude', () => {
   })
 
   it('should render empty array when no caption and no slot', () => {
-    const include = new CaptionInclude({}, 'my-class')
+    const include = new CaptionInclude({}, new DesignName('my.class'))
     const nodes = include.render()
     expect(nodes).toEqual([])
   })
 
   it('should render custom tag when tag parameter is provided', () => {
-    const include = new CaptionInclude({ caption: 'Hello' }, 'my-class', undefined, undefined, 'caption')
+    const include = new CaptionInclude({ caption: 'Hello' }, new DesignName('my.class'), undefined, undefined, 'caption')
     const nodes = include.render()
     expect(nodes.length).toBe(1)
     expect(nodes[0].type).toBe('caption')
   })
 
   it('should render childrenExtra when passed to render', () => {
-    const include = new CaptionInclude({ caption: 'Hello' }, 'my-class')
+    const include = new CaptionInclude({ caption: 'Hello' }, new DesignName('my.class'))
     const nodes = include.render(['extra content'])
     expect(nodes.length).toBe(1)
     expect(nodes[0].children).toContain('Hello')

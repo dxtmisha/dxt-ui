@@ -1,10 +1,11 @@
 // @vitest-environment jsdom
 import { describe, expect, it } from 'vitest'
+import { DesignName } from '@dxtmisha/functional'
 import { ClockDialList } from '../ClockDialList'
 
 describe('ClockDialList', () => {
   it('generates 12 items for type 12', () => {
-    const listManager = new ClockDialList({ type: '12' }, 'd-clock-dial')
+    const listManager = new ClockDialList({ type: '12' }, new DesignName('d.clock-dial'))
     const items = listManager.marks.value
 
     expect(items.length).toBe(12)
@@ -17,7 +18,7 @@ describe('ClockDialList', () => {
   })
 
   it('generates 24 items for type 24 with section flags', () => {
-    const listManager = new ClockDialList({ type: '24' }, 'd-clock-dial')
+    const listManager = new ClockDialList({ type: '24' }, new DesignName('d.clock-dial'))
     const items = listManager.marks.value
 
     expect(items.length).toBe(24)
@@ -31,7 +32,7 @@ describe('ClockDialList', () => {
   })
 
   it('generates 60 items for minute mode', () => {
-    const listManager = new ClockDialList({ type: 'minute' }, 'd-clock-dial')
+    const listManager = new ClockDialList({ type: 'minute' }, new DesignName('d.clock-dial'))
     const items = listManager.marks.value
 
     expect(items.length).toBe(60)
@@ -43,7 +44,7 @@ describe('ClockDialList', () => {
   })
 
   it('marks items as disabled when outside min/max bounds', () => {
-    const listManager = new ClockDialList({ type: '12', min: 3, max: 8 }, 'd-clock-dial')
+    const listManager = new ClockDialList({ type: '12', min: 3, max: 8 }, new DesignName('d.clock-dial'))
     const items = listManager.marks.value
 
     expect(items[0].disabled).toBe(true)
@@ -54,7 +55,7 @@ describe('ClockDialList', () => {
   })
 
   it('correctly checks isSection for 24-hour clock', () => {
-    const listManager = new ClockDialList({ type: '24' }, 'd-clock-dial')
+    const listManager = new ClockDialList({ type: '24' }, new DesignName('d.clock-dial'))
 
     expect(listManager.isSection(5)).toBe(false)
     expect(listManager.isSection(13)).toBe(true)
@@ -63,7 +64,7 @@ describe('ClockDialList', () => {
   })
 
   it('marks items as disabled when not matching step constraint', () => {
-    const listManager = new ClockDialList({ type: 'minute', step: 5 }, 'd-clock-dial')
+    const listManager = new ClockDialList({ type: 'minute', step: 5 }, new DesignName('d.clock-dial'))
     const items = listManager.marks.value
 
     expect(items[0].value).toBe(1)
@@ -77,7 +78,7 @@ describe('ClockDialList', () => {
   })
 
   it('finds clock mark items by value', () => {
-    const listManager = new ClockDialList({ type: '12' }, 'd-clock-dial')
+    const listManager = new ClockDialList({ type: '12' }, new DesignName('d.clock-dial'))
 
     expect(listManager.find(5)?.value).toBe(5)
     expect(listManager.find(99)).toBeUndefined()

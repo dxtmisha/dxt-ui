@@ -144,17 +144,17 @@ export class Field {
     this.text = new TextIncludeConstructor(props)
     this.skeleton = new SkeletonIncludeConstructor(
       props,
-      this.naming.getDesign(),
+      this.naming,
       ['classBackground']
     )
 
-    this.icon = new IconTrailingIncludeConstructor(props, naming.getName(), components)
-    this.caption = new CaptionIncludeConstructor(props, naming.getName(), slots)
-    this.prefix = new PrefixIncludeConstructor(props, naming.getName(), slots)
-    this.suffix = new SuffixIncludeConstructor(props, naming.getName(), slots)
+    this.icon = new IconTrailingIncludeConstructor(props, naming, components)
+    this.caption = new CaptionIncludeConstructor(props, naming, slots)
+    this.prefix = new PrefixIncludeConstructor(props, naming, slots)
+    this.suffix = new SuffixIncludeConstructor(props, naming, slots)
 
     this.progress = new ProgressIncludeConstructor(
-      naming.getName(),
+      naming,
       props,
       components,
       {
@@ -167,12 +167,12 @@ export class Field {
     this.enabled = new EnabledIncludeConstructor(props, this.progress)
     this.event = new EventClickIncludeConstructor(props, this.enabled, emits)
 
-    this.icons = new FieldIconsConstructor(props, naming.getName(), this.text)
-    this.size = new FieldSizeConstructor(element, naming.getName())
+    this.icons = new FieldIconsConstructor(props, naming, this.text)
+    this.size = new FieldSizeConstructor(element, naming)
 
     this.fieldElement = new FieldElement(props, element)
     this.fieldLabel = new FieldLabelIncludeConstructor(
-      naming.getName(),
+      naming,
       props,
       components,
       () => this.skeleton.binds,
@@ -181,7 +181,7 @@ export class Field {
       () => props.counterTop
     )
     this.fieldMessage = new FieldMessageIncludeConstructor(
-      naming.getName(),
+      naming,
       props,
       components,
       () => this.skeleton.binds,
@@ -217,13 +217,13 @@ export class Field {
    */
   get control(): FieldControl {
     const id = this.fieldElement.id
-    const className = `${this.naming.getName()}__body__input ${this.skeleton.classesSkeleton.classText}`
+    const className = `${this.naming.getSubClass('body__input')} ${this.skeleton.classesSkeleton.classText}`
 
     return {
       id,
       className,
-      classHidden: `${this.naming.getName()}__body__hidden`,
-      classForFocus: `${this.naming.getName()}__body__focus`,
+      classHidden: this.naming.getSubClass('body__hidden'),
+      classForFocus: this.naming.getSubClass('body__focus'),
       binds: {
         'id': id,
         'class': className,
@@ -244,9 +244,9 @@ export class Field {
    */
   get classes() {
     return {
-      [`${this.naming.getName()}--cancel`]: this.icons.isCancel(),
-      [`${this.naming.getName()}--suffix`]: this.props.suffix,
-      [`${this.naming.getName()}--validation`]: this.fieldElement.isValidation()
+      [this.naming.getStatusClass('cancel')]: this.icons.isCancel(),
+      [this.naming.getStatusClass('suffix')]: this.props.suffix,
+      [this.naming.getStatusClass('validation')]: this.fieldElement.isValidation()
     }
   }
 }

@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import { describe, it, expect } from 'vitest'
 import { ref } from 'vue'
+import { DesignName } from '@dxtmisha/functional'
 import { MotionTransformElement } from '../MotionTransformElement'
 
 describe('MotionTransformElement', () => {
@@ -11,7 +12,7 @@ describe('MotionTransformElement', () => {
       { animationShow: true } as any,
       ref(div),
       ref(contextDiv),
-      'base-class'
+      new DesignName('base.class')
     )
 
     expect(element.getElement()).toBe(div)

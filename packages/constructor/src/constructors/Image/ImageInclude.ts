@@ -1,6 +1,6 @@
 // ai-none
 
-import { type ConstrEmit, type DesignComponents, getBind } from '@dxtmisha/functional'
+import { type ConstrEmit, type DesignComponents, type DesignName, getBind } from '@dxtmisha/functional'
 
 import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
 import type { ComponentIncludeExtra, ComponentIncludeProps } from '../../types/componentInclude'
@@ -31,20 +31,20 @@ export class ImageInclude extends ComponentIncludeAbstract<
    * Constructor for working with images.
    *
    * Конструктор для работы с изображениями.
-   * @param className base class name of the parent / имя базового класса родителя
+   * @param naming component naming helper / помощник именования компонента
    * @param props input component properties / входные свойства компонента
    * @param components registry of design components / реестр дизайн-компонентов
    * @param extra additional design attributes or settings / дополнительные дизайн-атрибуты или настройки
    * @param emits constructor emitter for component events / конструктор событий для событий компонента
    */
   constructor(
-    className: string,
+    naming: DesignName,
     props: ComponentIncludeProps<ImagePropsInclude>,
     components?: DesignComponents<ImageComponentInclude, ImagePropsInclude>,
     extra?: ComponentIncludeExtra<ImageProps>,
     protected readonly emits?: ConstrEmit<ImageEmitsInclude>
   ) {
-    super(className, props, components, extra)
+    super(naming, props, components, extra)
   }
 
   /**

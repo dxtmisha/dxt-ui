@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import { describe, expect, it, vi } from 'vitest'
 import { ref } from 'vue'
+import { DesignName } from '@dxtmisha/functional'
 import { ModelValueInclude } from '../../../classes/ModelValueInclude'
 import { ClockDialEmit } from '../ClockDialEmit'
 import { ClockDialList } from '../ClockDialList'
@@ -11,7 +12,7 @@ describe('ClockDialEmit', () => {
   it('emits input and inputLite with full payload and numeric value', () => {
     const emitsSpy = vi.fn()
     const props: ClockDialProps = { type: '12' }
-    const list = new ClockDialList(props, 'd-clock-dial')
+    const list = new ClockDialList(props, new DesignName('d.clock-dial'))
     const model = new ModelValueInclude<number>('value', emitsSpy, undefined, ref(4))
     const valueItem = new ClockDialValue(props, model)
     const emitManager = new ClockDialEmit(props, list, valueItem, emitsSpy as any)
@@ -33,7 +34,7 @@ describe('ClockDialEmit', () => {
   it('emits change and changeLite with full payload and numeric value', () => {
     const emitsSpy = vi.fn()
     const props: ClockDialProps = { type: '24' }
-    const list = new ClockDialList(props, 'd-clock-dial')
+    const list = new ClockDialList(props, new DesignName('d.clock-dial'))
     const model = new ModelValueInclude<number>('value', emitsSpy, undefined, ref(14))
     const valueItem = new ClockDialValue(props, model)
     const emitManager = new ClockDialEmit(props, list, valueItem, emitsSpy as any)

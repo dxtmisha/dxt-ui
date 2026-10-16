@@ -103,12 +103,12 @@ export class Cell {
       SkeletonConstructor = SkeletonInclude
     } = constructors
 
-    this.progress = new ProgressConstructor(naming.getName(), props, components, { position: 'bottom' })
-    this.skeleton = new SkeletonConstructor(props, naming.getDesign(), ['classTextVariant'])
+    this.progress = new ProgressConstructor(naming, props, components, { position: 'bottom' })
+    this.skeleton = new SkeletonConstructor(props, naming, ['classTextVariant'])
 
     this.label = new LabelConstructor(
       props,
-      naming.getName(),
+      naming,
       undefined,
       slots,
       undefined,
@@ -116,12 +116,12 @@ export class Cell {
       undefined,
       this.skeleton
     )
-    this.caption = new CaptionConstructor(props, naming.getName(), slots)
-    this.description = new DescriptionConstructor(props, naming.getName(), slots, this.skeleton)
+    this.caption = new CaptionConstructor(props, naming, slots)
+    this.description = new DescriptionConstructor(props, naming, slots, this.skeleton)
     this.enabled = new EnabledConstructor(props, this.progress)
 
-    this.icon = new IconConstructor(props, naming.getName(), components)
-    this.ripple = new RippleConstructor(naming.getName(), components, this.enabled)
+    this.icon = new IconConstructor(props, naming, components)
+    this.ripple = new RippleConstructor(naming, components, this.enabled)
 
     this.event = new EventConstructor(props, this.enabled, emits)
   }
@@ -133,7 +133,7 @@ export class Cell {
    */
   get classes(): ConstrClass {
     return {
-      [`${this.naming.getName()}--description`]: this.description.is,
+      [this.naming.getStatusClass('description')]: this.description.is,
       [getClassTagAStatic(this.naming.getDesign())]: true
     }
   }
@@ -145,10 +145,10 @@ export class Cell {
    */
   get classesSub(): CellClassesSub {
     return {
-      label: `${this.naming.getName()}__label`,
-      description: `${this.naming.getName()}__description`,
-      caption: `${this.naming.getName()}__caption`,
-      trailing: `${this.naming.getName()}__trailing`
+      label: this.naming.getSubClass('label'),
+      description: this.naming.getSubClass('description'),
+      caption: this.naming.getSubClass('caption'),
+      trailing: this.naming.getSubClass('trailing')
     }
   }
 

@@ -60,11 +60,11 @@ export class TableItem {
       SkeletonConstructor = SkeletonInclude
     } = constructors
 
-    this.skeleton = new SkeletonConstructor(props, naming.getDesign(), ['classTextVariant'])
-    this.description = new DescriptionConstructor(props, naming.getName(), slots, this.skeleton)
+    this.skeleton = new SkeletonConstructor(props, naming, ['classTextVariant'])
+    this.description = new DescriptionConstructor(props, naming, slots, this.skeleton)
     this.label = new LabelConstructor(
       props,
-      naming.getName(),
+      naming,
       undefined,
       slots,
       undefined,

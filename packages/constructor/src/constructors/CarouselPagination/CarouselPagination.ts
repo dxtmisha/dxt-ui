@@ -84,7 +84,7 @@ export class CarouselPagination {
     this.focus = new CarouselPaginationFocusConstructor(
       props,
       element,
-      naming.getName(),
+      naming,
       this.selected
     )
 
@@ -113,7 +113,7 @@ export class CarouselPagination {
    */
   get classes(): ConstrClassObject {
     return {
-      [`${this.naming.getName()}--hide`]: this.items.isHide()
+      [this.naming.getStatusClass('hide')]: this.items.isHide()
     }
   }
 
@@ -125,7 +125,7 @@ export class CarouselPagination {
    */
   get styles(): ConstrStyles {
     return {
-      [`--${this.naming.getName()}-sys-percent`]: `${this.items.percent}%`
+      [this.naming.getStyle('percent')]: `${this.items.percent}%`
     }
   }
 }

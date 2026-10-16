@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi } from 'vitest'
 import { ref } from 'vue'
+import { DesignName } from '@dxtmisha/functional'
 import { ComponentIncludeAbstract } from '../ComponentIncludeAbstract'
 import type { ComponentIncludeExposeItem } from '../../types/componentInclude'
 
@@ -47,33 +48,33 @@ class TestComponentInclude extends ComponentIncludeAbstract<any, any, any, any> 
 
 describe('ComponentIncludeAbstract', () => {
   it('should return correct BEM class name', () => {
-    const include = new TestComponentInclude('parent-class', {})
+    const include = new TestComponentInclude(new DesignName('parent.class'), {})
     expect(include.testGetClassName()).toBe('parent-class__test-sub')
   })
 
   it('should resolve and clean properties with getProps()', () => {
     const propsFn = () => ({ val1: 'value', val2: undefined })
-    const include = new TestComponentInclude('parent-class', propsFn)
+    const include = new TestComponentInclude(new DesignName('parent.class'), propsFn)
 
     expect(include.testGetProps()).toEqual({ val1: 'value' })
   })
 
   it('should resolve custom attributes from props using getPropsAttrs()', () => {
     const props = { subAttrs: { 'data-custom': 'hello' } }
-    const include = new TestComponentInclude('parent-class', props)
+    const include = new TestComponentInclude(new DesignName('parent.class'), props)
 
     expect(include.testGetPropsAttrs()).toEqual({ 'data-custom': 'hello' })
   })
 
   it('should resolve additional attributes using getExtra()', () => {
     const extraRef = ref({ 'aria-expanded': true })
-    const include = new TestComponentInclude('parent-class', {}, undefined, extraRef)
+    const include = new TestComponentInclude(new DesignName('parent.class'), {}, undefined, extraRef)
 
     expect(include.testGetExtra()).toEqual({ 'aria-expanded': true })
   })
 
   it('should construct correct binds including element ref', () => {
-    const include = new TestComponentInclude('parent-class', {})
+    const include = new TestComponentInclude(new DesignName('parent.class'), {})
     const binds = include.binds.value
 
     expect(binds.ref).toBeDefined()
@@ -81,7 +82,7 @@ describe('ComponentIncludeAbstract', () => {
   })
 
   it('should construct exposed proxy methods', () => {
-    const include = new TestComponentInclude('parent-class', {})
+    const include = new TestComponentInclude(new DesignName('parent.class'), {})
     const expose = include.expose
 
     expect(expose.focus).toBeDefined()
@@ -113,7 +114,7 @@ describe('ComponentIncludeAbstract', () => {
       render: renderMock
     } as any
 
-    const include = new TestComponentInclude('parent-class', {}, componentsMock)
+    const include = new TestComponentInclude(new DesignName('parent.class'), {}, componentsMock)
     const result = include.render()
 
     expect(renderMock).toHaveBeenCalledWith(

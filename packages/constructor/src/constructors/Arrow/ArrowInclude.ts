@@ -1,7 +1,8 @@
 // ai-none
 
 import {
-  type DesignComponents
+  type DesignComponents,
+  type DesignName
 } from '@dxtmisha/functional'
 
 import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
@@ -38,7 +39,7 @@ export class ArrowInclude<
    * Constructor for ArrowInclude
    *
    * Конструктор для ArrowInclude
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param props input parameter / входной параметр
    * @param components object for working with components / объект для работы с компонентами
    * @param extra additional parameter or property name / дополнительный параметр или имя свойства
@@ -46,14 +47,14 @@ export class ArrowInclude<
    * @param elementTarget target element or selector / целевой элемент или селектор
    */
   constructor(
-    className: string,
+    naming: DesignName,
     props: Readonly<Props>,
     components?: DesignComponents<ArrowComponentInclude, Props>,
     extra?: ComponentIncludeExtra<PropsExtra>,
     index?: string,
     protected readonly elementTarget?: HTMLElement | string
   ) {
-    super(className, props, components, extra, index)
+    super(naming, props, components, extra, index)
   }
 
   /**

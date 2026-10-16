@@ -75,10 +75,10 @@ export class HorizontalScroll {
   /** Returns data for managing slot data / Возвращает данные для управления данными слотами */
   get slotData(): HorizontalScrollControlItem {
     return {
-      classItem: `${this.naming.getName()}__item`,
-      classItemSelected: `${this.naming.getName()}__item--selected`,
+      classItem: this.naming.getSubClass('item'),
+      classItemSelected: this.naming.getSubClass('item--selected'),
       binds: {
-        class: `${this.naming.getName()}__item`
+        class: this.naming.getSubClass('item')
       }
     }
   }

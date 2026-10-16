@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import { describe, it, expect } from 'vitest'
 import { ref } from 'vue'
+import { DesignName } from '@dxtmisha/functional'
 import { ModelValueInclude } from '../../../classes/ModelValueInclude'
 import { SliderFocusType, type SliderValueType } from '../basicTypes'
 import { SliderFocus } from '../SliderFocus'
@@ -20,10 +21,10 @@ function createSliderValue(
     ...props
   } as SliderProps
 
-  const className = 'dxt-slider'
+  const naming = new DesignName('dxt.slider')
   const focus = new SliderFocus()
-  const marksData = new SliderMarksData(fullProps, className)
-  const marks = new SliderMarks(fullProps, className, marksData)
+  const marksData = new SliderMarksData(fullProps, naming)
+  const marks = new SliderMarks(fullProps, naming, marksData)
   const model = new ModelValueInclude<SliderValueType>('modelValue', undefined, undefined, ref(initialValue))
   const sliderValue = new SliderValue(focus, marks, model, fullProps)
 

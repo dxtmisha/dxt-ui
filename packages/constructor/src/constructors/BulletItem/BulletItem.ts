@@ -42,7 +42,7 @@ export class BulletItem {
 
     this.description = new DescriptionConstructor(
       this.props,
-      this.naming.getName(),
+      this.naming,
       this.slots,
       undefined,
       'span'

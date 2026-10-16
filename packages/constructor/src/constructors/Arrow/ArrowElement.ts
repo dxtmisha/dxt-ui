@@ -1,6 +1,7 @@
 // ai-none
 
 import { type Ref } from 'vue'
+import type { DesignName } from '@dxtmisha/functional'
 
 /**
  * Class for working with the arrow element.
@@ -13,11 +14,11 @@ export class ArrowElement {
   /**
    * Constructor
    * @param element input element / элемент ввода
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    */
   constructor(
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly className: string
+    protected readonly naming: DesignName
   ) {
   }
 
@@ -75,7 +76,7 @@ export class ArrowElement {
    */
   getRectBorder(): DOMRect | undefined {
     return this.element.value
-      ?.querySelector(`.${this.className}__border`)
+      ?.querySelector(`.${this.naming.getSubClass('border')}`)
       ?.getBoundingClientRect()
   }
 
@@ -87,18 +88,18 @@ export class ArrowElement {
    */
   getRectArrowLine(): DOMRect | undefined {
     return this.element.value
-      ?.querySelector(`.${this.className}__arrowLine`)
+      ?.querySelector(`.${this.naming.getSubClass('arrowLine')}`)
       ?.getBoundingClientRect()
   }
 
   /** The name of the arrow width variable / Имя переменной ширины стрелки */
   protected get nameArrowWidth(): string {
-    return `--${this.className}-arrowWidth`
+    return `--${this.naming.getName()}-arrowWidth`
   }
 
   /** The name of the arrow height variable / Имя переменной высоты стрелки */
   protected get nameArrowHeight(): string {
-    return `--${this.className}-arrowHeight`
+    return `--${this.naming.getName()}-arrowHeight`
   }
 
   /**

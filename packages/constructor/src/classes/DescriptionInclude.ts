@@ -1,6 +1,7 @@
 import { type VNode } from 'vue'
 import {
   getElementId,
+  type DesignName,
   getRef,
   isFilled,
   type RefOrNormal,
@@ -30,14 +31,14 @@ export class DescriptionInclude {
    *
    * Конструктор для инициализации свойств DescriptionInclude.
    * @param props input properties / входные свойства
-   * @param className base class name / название базового класса
+   * @param naming component naming helper / помощник именования компонента
    * @param slots slots dictionary / объект слотов
    * @param skeleton optional loading skeleton include / необязательный скелетон загрузки
    * @param tag HTML tag for wrapping element / HTML-тег для оборачивающего элемента
    */
   constructor(
     protected readonly props: RefOrNormalOrFunction<DescriptionProps>,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly slots?: DescriptionSlots,
     protected readonly skeleton?: SkeletonInclude,
     protected readonly tag?: RefOrNormal<string | undefined>
@@ -99,7 +100,7 @@ export class DescriptionInclude {
             {
               id: this.id,
               class: {
-                [`${this.className}__description`]: true,
+                [this.naming.getSubClass('description')]: true,
                 ...this.skeleton?.classes
               }
             },

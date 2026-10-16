@@ -3,6 +3,7 @@
 import { type Ref } from 'vue'
 import {
   type ConstrClassObject,
+  type DesignName,
   type ConstrStyles,
   isNumber,
   useLazyItemByMarginRef
@@ -29,13 +30,13 @@ export class TableFlexRecordLazy {
    * Конструктор для TableFlexRecordLazy.
    * @param props input properties / входные свойства
    * @param element target HTML element reference / ссылка на целевой HTML-элемент
-   * @param className base CSS class name / базовое имя CSS-класса
+   * @param naming component naming helper / помощник именования компонента
    * @param clientOnly client-only rendering handler instance / экземпляр обработчика рендеринга только на клиенте
    */
   constructor(
     protected readonly props: TableFlexRecordProps,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly clientOnly: ClientOnlyInclude
   ) {
     this.lazyItem = useLazyItemByMarginRef(this.element)
@@ -52,9 +53,9 @@ export class TableFlexRecordLazy {
     const isVisible = this.is()
 
     return {
-      [`${this.className}--lazy`]: isLazy,
-      [`${this.className}--lazy--visible`]: isLazy && isVisible,
-      [`${this.className}--lazy--hidden`]: isLazy && !isVisible
+      [this.naming.getStatusClass('lazy')]: isLazy,
+      [this.naming.getStatusClass('lazy--visible')]: isLazy && isVisible,
+      [this.naming.getStatusClass('lazy--hidden')]: isLazy && !isVisible
     }
   }
 
@@ -69,7 +70,7 @@ export class TableFlexRecordLazy {
 
     if (minHeight) {
       return {
-        [`--${this.className}-sys-minHeight`]: minHeight
+        [this.naming.getStyle('minHeight')]: minHeight
       }
     }
 

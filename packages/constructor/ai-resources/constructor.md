@@ -215,12 +215,12 @@ export class Button {
     } = constructors
 
     // 2. Initialize in strict dependency order
-    this.progress = new ProgressConstructor(naming.getName(), props, components, { circular: true })
-    this.label = new LabelConstructor(props, naming.getName(), undefined, slots)
+    this.progress = new ProgressConstructor(naming, props, components, { circular: true })
+    this.label = new LabelConstructor(props, naming, undefined, slots)
     this.enabled = new EnabledConstructor(props, this.progress)
-    this.icon = new IconConstructor(props, naming.getName(), components)
-    this.ripple = new RippleConstructor(naming.getName(), components, this.enabled)
-    this.skeleton = new SkeletonConstructor(props, naming.getDesign(), ['classBackground'])
+    this.icon = new IconConstructor(props, naming, components)
+    this.ripple = new RippleConstructor(naming, components, this.enabled)
+    this.skeleton = new SkeletonConstructor(props, naming, ['classBackground'])
     this.event = new EventConstructor(props, this.enabled, emits)
   }
 
@@ -570,7 +570,7 @@ Used when one component conditionally renders another:
 ```tsx
 // 1. In Parent Logic Class
 this.button = new ButtonInclude(
-  this.naming.getName(),
+  this.naming,
   props,
   components,
   () => ({ label: props.buttonLabel, icon: props.buttonIcon })
@@ -640,6 +640,8 @@ export class MyModal {
 | `this.naming.getName()` | `string` | Component name in kebab-case |
 | `this.naming.getDesign()` | `string` | Design system prefix (e.g. `d1`) |
 | `this.naming.getSubClass('el')` | `string` | Sub-element class name (`ComponentName__el`) |
+| `this.naming.getStatusClass('active')` | `string` | State class name (`ComponentName--active`) |
+| `this.naming.getStyle('width')` | `string` | CSS custom property name (`--ComponentName-sys-width`) |
 | `this.getAttrs()` | `Record<string, any>` | External bound attributes |
 | `this.initSlot('name', fallback, props)` | `VNode[]` | Render named slot |
 | `this.expose()` | `ConstrExpose` | Public API from `initExpose()` with the root element reference |

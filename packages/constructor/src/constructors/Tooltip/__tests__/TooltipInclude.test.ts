@@ -1,5 +1,6 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { DesignName } from '@dxtmisha/functional'
 import { TooltipInclude } from '../TooltipInclude'
 import type { TooltipPropsInclude } from '../basicTypes'
 
@@ -23,7 +24,7 @@ describe('TooltipInclude', () => {
     }
 
     tooltipInclude = new TooltipInclude(
-      'd1-button',
+      new DesignName('d1.button'),
       () => mockProps as TooltipPropsInclude,
       undefined, // design components
       undefined, // slots

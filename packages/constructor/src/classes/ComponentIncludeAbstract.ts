@@ -2,6 +2,7 @@ import { computed, ref, type VNode } from 'vue'
 import {
   type ConstrBind,
   type DesignComponents,
+  type DesignName,
   executeFunction,
   executeFunctionRef,
   getObjectNoUndefined,
@@ -63,14 +64,14 @@ export abstract class ComponentIncludeAbstract<
    * Abstract constructor for initializing basic component inclusion properties.
    *
    * Абстрактный конструктор для инициализации базовых свойств включения компонента.
-   * @param className base class name of the parent component / имя базового класса родительского компонента
+   * @param naming component naming helper / помощник именования компонента
    * @param props input properties / входные свойства
    * @param components design components registry / реестр дизайн-компонентов
    * @param extra additional properties or attributes / дополнительные свойства или атрибуты
    * @param index unique index key for rendering / уникальный ключ индекса для рендеринга
    */
   constructor(
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly props: ComponentIncludeProps<Props>,
     protected readonly components?: DesignComponents<any, Props>,
     protected readonly extra?: ComponentIncludeExtra<PropsExtra>,
@@ -129,7 +130,7 @@ export abstract class ComponentIncludeAbstract<
    * @returns BEM-formatted class name / имя класса в формате BEM
    */
   protected getClassName(): string {
-    return `${this.className}__${this.name}`
+    return this.naming.getSubClass(this.name)
   }
 
   /**

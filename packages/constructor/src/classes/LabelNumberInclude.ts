@@ -1,5 +1,5 @@
 import { computed, type VNode } from 'vue'
-import { type ConstrClass, GeoRef, isNumber, toNumberByMax } from '@dxtmisha/functional'
+import { type ConstrClass, type DesignName, GeoRef, isNumber, toNumberByMax } from '@dxtmisha/functional'
 
 import { LabelInclude } from './LabelInclude'
 import { SkeletonInclude } from '../constructors/Skeleton'
@@ -19,7 +19,7 @@ export class LabelNumberInclude extends LabelInclude {
    *
    * Конструктор для работы с текстом, у которого есть максимальные значения.
    * @param props input property / входное свойство
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param classesExtra additional classes / дополнительные классы
    * @param slots object for working with slots / объект для работы со слотами
    * @param elementsExtra additional elements / дополнительные элементы
@@ -27,7 +27,7 @@ export class LabelNumberInclude extends LabelInclude {
    */
   constructor(
     protected readonly props: Readonly<LabelNumberProps>,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly classesExtra?: ConstrClass,
     protected readonly slots?: LabelNumberSlots,
     protected readonly elementsExtra?: () => VNode[],
@@ -35,7 +35,7 @@ export class LabelNumberInclude extends LabelInclude {
   ) {
     super(
       props,
-      className,
+      naming,
       classesExtra,
       slots,
       elementsExtra,

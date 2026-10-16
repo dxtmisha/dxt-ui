@@ -107,7 +107,7 @@ export class Menu {
     this.go = new MenuGoConstructor(this.props, this.value, this.data)
 
     this.bars = new BarsIncludeConstructor(
-      this.naming.getName(),
+      this.naming,
       this.props,
       this.components,
       undefined,
@@ -117,7 +117,7 @@ export class Menu {
 
     this.menuWindow = new MenuWindowConstructor(this.props, this.request)
     this.window = new WindowIncludeConstructor(
-      this.naming.getName(),
+      this.naming,
       this.props,
       this.components,
       this.menuWindow.getExtra(),
@@ -210,7 +210,7 @@ export class Menu {
 
     if (
       item
-      && !element.closest(`.${this.naming.getName()}__list`)
+      && !element.closest(`.${this.naming.getSubClass('list')}`)
     ) {
       this.emits?.('clickSlot', item.dataset.value)
     }

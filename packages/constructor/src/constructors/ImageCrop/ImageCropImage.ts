@@ -3,6 +3,7 @@
 import { ref, watch } from 'vue'
 import {
   type ConstrEmit,
+  type DesignName,
   type ConstrStyles,
   isObject
 } from '@dxtmisha/functional'
@@ -37,19 +38,19 @@ export class ImageCropImage {
    * Constructor.
    *
    * Конструктор.
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param props input data / входные данные
    * @param emits the function is called when an event is triggered / функция вызывается, когда срабатывает событие
    */
   constructor(
-    className: string,
+    naming: DesignName,
     protected readonly props: ImageCropProps,
     protected readonly emits?: ConstrEmit<ImageCropEmits>
   ) {
     this.property = {
-      aspectRatio: `--${className}-sys-aspect-ratio`,
-      width: `--${className}-sys-width`,
-      height: `--${className}-sys-height`
+      aspectRatio: naming.getStyle('aspect-ratio'),
+      width: naming.getStyle('width'),
+      height: naming.getStyle('height')
     }
 
     watch(

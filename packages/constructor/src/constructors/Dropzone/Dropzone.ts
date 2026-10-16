@@ -100,14 +100,14 @@ export class Dropzone {
 
     this.skeleton = new SkeletonIncludeConstructor(
       this.props,
-      this.naming.getDesign(),
+      this.naming,
       ['classBackground']
     )
     this.text = new TextIncludeConstructor(this.props)
 
     this.icon = new IconIncludeConstructor(
       this.props,
-      this.naming.getName(),
+      this.naming,
       this.components
     )
     this.label = new LabelIncludeConstructor(
@@ -115,7 +115,7 @@ export class Dropzone {
         ...this.props,
         label: this.props.label || this.text.dropzone
       }),
-      this.naming.getName(),
+      this.naming,
       undefined,
       this.slots,
       undefined,
@@ -125,7 +125,7 @@ export class Dropzone {
     )
     this.description = new DescriptionIncludeConstructor(
       this.props,
-      this.naming.getName(),
+      this.naming,
       this.slots
     )
 
@@ -144,7 +144,7 @@ export class Dropzone {
    */
   get classes(): ConstrClass {
     return {
-      [`${this.naming.getName()}--enter`]: this.events.enter.value && !this.props.disabled && !this.props.readonly,
+      [this.naming.getStatusClass('enter')]: this.events.enter.value && !this.props.disabled && !this.props.readonly,
       ...this.skeleton.classes
     }
   }

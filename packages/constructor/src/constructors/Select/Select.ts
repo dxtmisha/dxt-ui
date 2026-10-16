@@ -100,7 +100,7 @@ export class Select extends SelectAbstract {
     )
 
     this.field = new FieldIncludeConstructor(
-      this.naming.getName(),
+      this.naming,
       this.props,
       this.components,
       () => ({

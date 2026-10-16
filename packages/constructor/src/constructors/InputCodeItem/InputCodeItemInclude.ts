@@ -3,6 +3,7 @@
 import { type VNode, type Reactive, ref } from 'vue'
 import {
   type DesignComponents,
+  type DesignName,
   isFilled,
   forEach
 } from '@dxtmisha/functional'
@@ -36,18 +37,18 @@ export class InputCodeItemInclude extends ComponentIncludeAbstract<
    * Constructor
    *
    * Конструктор
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param props input parameter / входной параметр
    * @param components object for working with components / объект для работы с компонентами
    * @param onUpdate event for value update / событие обновления значения
    */
   constructor(
-    className: string,
+    naming: DesignName,
     props: Readonly<InputCodeItemPropsInclude>,
     components?: DesignComponents<InputCodeItemComponentInclude, InputCodeItemPropsInclude>,
     protected readonly onUpdate?: (value: string) => void
   ) {
-    super(className, props, components)
+    super(naming, props, components)
   }
 
   /**

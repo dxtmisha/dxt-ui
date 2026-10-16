@@ -203,7 +203,7 @@ export class Window {
     this.hook = new WindowHookConstructor(props)
     this.clientOnly = new ClientOnlyIncludeConstructor()
 
-    this.classes = new WindowClassesConstructor(naming.getName())
+    this.classes = new WindowClassesConstructor(naming)
     this.element = new WindowElementConstructor(this.classes, element)
     this.client = new WindowClientConstructor(this.element)
     this.tabIndex = new TabIndexConstructor(
@@ -226,7 +226,7 @@ export class Window {
       this.coordinates,
       this.position,
       this.origin,
-      naming.getName()
+      naming
     )
     this.open = new WindowOpenConstructor(
       props,
@@ -265,12 +265,12 @@ export class Window {
 
     this.scrollbar = new ScrollbarConstructor(
       props,
-      naming.getName(),
+      naming,
       components,
       emits
     )
     this.image = new ImageConstructor(
-      naming.getName(),
+      naming,
       props,
       components,
       undefined,
@@ -362,8 +362,8 @@ export class Window {
   get classesList(): ConstrClassObject {
     return {
       [this.classes.getId()]: true,
-      [`${this.naming.getName()}--staticMode`]: this.staticMode.item.value,
-      [`${this.naming.getName()}--embedded`]: Boolean(this.props.embedded)
+      [this.naming.getStatusClass('staticMode')]: this.staticMode.item.value,
+      [this.naming.getStatusClass('embedded')]: Boolean(this.props.embedded)
     }
   }
 

@@ -90,7 +90,7 @@ export class Button {
     } = constructors
 
     this.progress = new ProgressConstructor(
-      naming.getName(),
+      naming,
       props,
       components,
       {
@@ -99,19 +99,19 @@ export class Button {
       }
     )
 
-    this.label = new LabelConstructor(props, naming.getName(), undefined, slots)
+    this.label = new LabelConstructor(props, naming, undefined, slots)
     this.enabled = new EnabledConstructor(props, this.progress)
 
     this.icon = new IconConstructor(
       props,
-      naming.getName(),
+      naming,
       components,
       () => ({ disabled: this.props.disabled })
     )
-    this.ripple = new RippleConstructor(naming.getName(), components, this.enabled)
+    this.ripple = new RippleConstructor(naming, components, this.enabled)
     this.skeleton = new SkeletonConstructor(
       props,
-      naming.getDesign(),
+      naming,
       ['classBackground']
     )
 
@@ -191,7 +191,7 @@ export class Button {
    */
   get classes(): ConstrClass {
     return {
-      [`${this.naming.getName()}--icon`]: this.icon.isIcon(),
+      [this.naming.getStatusClass('icon')]: this.icon.isIcon(),
       [getClassTagAStatic(this.naming.getDesign())]: true,
       ...this.skeleton.classes
     }

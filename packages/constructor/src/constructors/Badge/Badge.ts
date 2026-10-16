@@ -50,14 +50,14 @@ export class Badge {
 
     this.label = new LabelNumberIncludeConstructor(
       props,
-      naming.getName(),
+      naming,
       undefined,
       slots
     )
 
     this.icon = new IconIncludeConstructor(
       props,
-      naming.getName(),
+      naming,
       components
     )
   }
@@ -80,7 +80,7 @@ export class Badge {
    */
   get classes() {
     return {
-      [`${this.naming.getName()}--hideAuto`]: this.autoHide
+      [this.naming.getStatusClass('hideAuto')]: this.autoHide
     }
   }
 

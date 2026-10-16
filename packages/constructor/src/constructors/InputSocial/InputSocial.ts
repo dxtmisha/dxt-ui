@@ -148,7 +148,7 @@ export class InputSocial {
     )
 
     this.field = new FieldIncludeConstructor(
-      this.naming.getName(),
+      this.naming,
       this.props,
       this.components,
       undefined,
@@ -157,7 +157,7 @@ export class InputSocial {
       this.event
     )
     this.mask = new MaskIncludeConstructor(
-      this.naming.getName(),
+      this.naming,
       () => this.bindsMask,
       this.components,
       undefined,

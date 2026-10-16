@@ -5,6 +5,7 @@ export default {
   'translate-prefix': 'Префикс',
   'translate-description': 'Описание',
   'translate-configuration': 'Конфигурация',
+  'translate-configuration-ai-key': 'API-ключ',
   'translate-configuration-storage': 'Хранилище',
   'translate-configuration-storage-document': 'Хранить в макете',
   'translate-configuration-storage-document_description': 'Сохранять конфигурацию внутри файла Figma для совместной работы в команде',

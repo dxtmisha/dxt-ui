@@ -136,7 +136,7 @@ export class Slider {
 
     this.skeleton = new SkeletonIncludeConstructor(
       props,
-      naming.getDesign()
+      naming
     )
     this.enabled = new EnabledIncludeConstructor(props)
     this.focus = new SliderFocusConstructor()
@@ -150,8 +150,8 @@ export class Slider {
       () => props.multiple
     )
 
-    this.marksData = new SliderMarksDataConstructor(props, naming.getName())
-    this.marks = new SliderMarksConstructor(props, naming.getName(), this.marksData)
+    this.marksData = new SliderMarksDataConstructor(props, naming)
+    this.marks = new SliderMarksConstructor(props, naming, this.marksData)
     this.value = new SliderValueConstructor(this.focus, this.marks, this.model, props)
 
     this.minElement = new SliderThumbMinConstructor(props, this.marksData, this.marks, this.value)
@@ -213,7 +213,7 @@ export class Slider {
    */
   get classes(): ConstrClassObject {
     return {
-      [`${this.naming.getName()}--mark`]: this.marksData.is()
+      [this.naming.getStatusClass('mark')]: this.marksData.is()
     }
   }
 
@@ -225,8 +225,8 @@ export class Slider {
    */
   get styles(): ConstrStyles {
     return {
-      [`--${this.naming.getName()}-sys-thumb-min-x`]: `${this.marksData.toPercent(this.value.min)}%`,
-      [`--${this.naming.getName()}-sys-thumb-max-x`]: `${this.marksData.toPercent(this.value.max)}%`
+      [this.naming.getStyle('thumb-min-x')]: `${this.marksData.toPercent(this.value.min)}%`,
+      [this.naming.getStyle('thumb-max-x')]: `${this.marksData.toPercent(this.value.max)}%`
     }
   }
 

@@ -161,7 +161,7 @@ export class InputPhone {
     this.phoneMask = new InputPhoneMaskConstructor(props, this.data, this.value)
 
     this.field = new FieldIncludeConstructor(
-      this.naming.getName(),
+      this.naming,
       this.props,
       this.components,
       undefined,
@@ -170,7 +170,7 @@ export class InputPhone {
       this.event
     )
     this.mask = new MaskIncludeConstructor(
-      this.naming.getName(),
+      this.naming,
       () => this.phoneMask.maskProps,
       this.components,
       undefined,
@@ -179,7 +179,7 @@ export class InputPhone {
       this.data.valueDefault
     )
     this.dialCode = new InputPhoneDialCodeIncludeConstructor(
-      this.naming.getName(),
+      this.naming,
       this.props,
       this.components,
       () => ({

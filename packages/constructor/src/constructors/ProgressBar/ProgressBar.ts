@@ -58,7 +58,7 @@ export class ProgressBar {
 
     this.skeleton = new SkeletonIncludeConstructor(
       props,
-      naming.getDesign(),
+      naming,
       ['classBackgroundVariant']
     )
   }
@@ -155,7 +155,7 @@ export class ProgressBar {
    * @returns class name / название класса
    */
   protected getItemClassName(): string {
-    return `${this.naming.getName()}__item`
+    return this.naming.getSubClass('item')
   }
 
   /**
@@ -182,8 +182,8 @@ export class ProgressBar {
         [`${this.naming.getDesign()}-palette--${palette}`]: Boolean(palette)
       },
       style: {
-        [`--${this.naming.getName()}-sys-percent`]: `${percent}%`,
-        [`--${this.naming.getName()}-sys-color`]: color
+        [this.naming.getStyle('percent')]: `${percent}%`,
+        [this.naming.getStyle('color')]: color
       },
       aria: {
         ...AriaStaticInclude.role('progressbar'),
@@ -212,7 +212,7 @@ export class ProgressBar {
         [`${this.getItemClassName()}--space`]: true
       },
       style: {
-        [`--${this.naming.getName()}-sys-percent`]: `${remainder}%`
+        [this.naming.getStyle('percent')]: `${remainder}%`
       },
       aria: {
         ...AriaStaticInclude.hidden()

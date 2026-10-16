@@ -70,7 +70,7 @@ export class ArrowDesign<
     this.item = new ItemConstructor(
       this.props,
       this.element,
-      this.naming.getName()
+      this.naming
     )
 
     watch(() => this.classes?.value, () => {

@@ -41,7 +41,7 @@ export class TextDescription {
 
     this.description = new DescriptionConstructor(
       this.props,
-      this.naming.getName(),
+      this.naming,
       this.slots,
       undefined,
       toRef(this.props, 'tag')

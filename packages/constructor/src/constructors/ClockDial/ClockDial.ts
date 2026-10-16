@@ -122,11 +122,11 @@ export class ClockDial {
       () => props.readonly
     )
 
-    this.list = new ClockDialListConstructor(props, naming.getName())
+    this.list = new ClockDialListConstructor(props, naming)
     this.valueItem = new ClockDialValueConstructor(props, this.model)
     this.arrows = new ClockDialArrowsConstructor(
       props,
-      naming.getName(),
+      naming,
       this.list,
       this.valueItem
     )
@@ -198,8 +198,8 @@ export class ClockDial {
    */
   get classes(): ConstrClassObject {
     return {
-      [`${this.naming.getName()}--section`]: this.list.isSection(this.valueItem.value),
-      [`${this.naming.getName()}--selected`]: this.valueItem.isSelectVisible()
+      [this.naming.getStatusClass('section')]: this.list.isSection(this.valueItem.value),
+      [this.naming.getStatusClass('selected')]: this.valueItem.isSelectVisible()
     }
   }
 

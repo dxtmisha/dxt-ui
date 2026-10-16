@@ -1,6 +1,6 @@
 import {
   forEach,
-  toArray,
+  isString,
   toCamelCase
 } from '@dxtmisha/functional-basic'
 
@@ -14,6 +14,10 @@ import {
 export class DesignName {
   /** Component name split by levels / Название компонента, разбитое по уровням */
   protected readonly name: string[]
+  /** Cached component class name / Кэшированное название класса компонента */
+  protected readonly className: string
+  /** Cached design name / Кэшированное название дизайна */
+  protected readonly designName: string
 
   /**
    * Creates a naming helper for a design component.
@@ -23,6 +27,8 @@ export class DesignName {
    */
   constructor(name: string) {
     this.name = this.initName(name)
+    this.className = this.name.join('-')
+    this.designName = String(this.name[0])
   }
 
   /**
@@ -32,7 +38,7 @@ export class DesignName {
    * @returns design name / название дизайна
    */
   getDesign(): string {
-    return String(this.name[0])
+    return this.designName
   }
 
   /**
@@ -42,7 +48,7 @@ export class DesignName {
    * @returns class name / название класса
    */
   getName(): string {
-    return this.name.join('-')
+    return this.className
   }
 
   /**
@@ -53,7 +59,7 @@ export class DesignName {
    * @returns status class name / название класса для статуса
    */
   getStatusClass(name: string | string[]): string {
-    return `${this.getName()}--${toArray(name).join('--')}`
+    return `${this.getName()}--${isString(name) ? name : name.join('--')}`
   }
 
   /**
@@ -64,7 +70,7 @@ export class DesignName {
    * @returns CSS custom property name / название CSS-переменной
    */
   getStyle(name: string | string[]): string {
-    return `--${this.getName()}-sys-${toArray(name).join('-')}`
+    return `--${this.getName()}-sys-${isString(name) ? name : name.join('-')}`
   }
 
   /**
@@ -75,7 +81,7 @@ export class DesignName {
    * @returns sub-element class name / название класса подэлемента
    */
   getSubClass(name: string | string[]): string {
-    return `${this.getName()}__${toArray(name).join('__')}`
+    return `${this.getName()}__${isString(name) ? name : name.join('__')}`
   }
 
   /**

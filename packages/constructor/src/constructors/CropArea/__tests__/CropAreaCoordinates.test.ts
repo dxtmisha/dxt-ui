@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi } from 'vitest'
 import { reactive, ref } from 'vue'
+import { DesignName } from '@dxtmisha/functional'
 import { CropAreaCoordinates } from '../CropAreaCoordinates'
 import { CropAreaElement } from '../CropAreaElement'
 import { CropAreaEmit } from '../CropAreaEmit'
@@ -19,8 +20,8 @@ describe('CropAreaCoordinates', () => {
     }) as CropAreaProps
 
     const emits = vi.fn()
-    const elementItem = new CropAreaElement(elementRef, 'd1-crop-area')
-    const style = new CropAreaStyle(elementRef, 'd1-crop-area')
+    const elementItem = new CropAreaElement(elementRef, new DesignName('d1.crop-area'))
+    const style = new CropAreaStyle(elementRef, new DesignName('d1.crop-area'))
     const position = new CropAreaPosition(props, style)
     const emit = new CropAreaEmit(position, emits)
     const coordinates = new CropAreaCoordinates(elementItem, position, emit)

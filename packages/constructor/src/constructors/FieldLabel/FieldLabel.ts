@@ -61,11 +61,11 @@ export class FieldLabel {
       SkeletonConstructor = SkeletonInclude
     } = constructors
 
-    this.skeleton = new SkeletonConstructor(this.props, this.naming.getDesign(), ['classTextVariant'])
+    this.skeleton = new SkeletonConstructor(this.props, this.naming, ['classTextVariant'])
 
     this.label = new LabelConstructor(
       this.props,
-      this.naming.getName(),
+      this.naming,
       undefined,
       this.slots,
       undefined,
@@ -75,13 +75,13 @@ export class FieldLabel {
     )
 
     this.fieldCounter = new FieldCounterConstructor(
-      naming.getName(),
+      naming,
       props,
       components
     )
 
     this.progress = new ProgressConstructor(
-      naming.getName(),
+      naming,
       props,
       components,
       {

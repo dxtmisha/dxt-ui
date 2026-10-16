@@ -85,7 +85,7 @@ export abstract class ModalAbstract {
     this.model = new ModelIncludeConstructor('open', emits, this.open)
 
     this.window = new WindowConstructor(
-      naming.getName(),
+      naming,
       props,
       components,
       () => ({
@@ -100,7 +100,7 @@ export abstract class ModalAbstract {
     )
 
     this.bars = new BarsConstructor(
-      naming.getName(),
+      naming,
       props,
       components,
       () => executeFunctionRef(extraBars),
@@ -111,7 +111,7 @@ export abstract class ModalAbstract {
     )
 
     this.actions = new ActionsConstructor(
-      naming.getName(),
+      naming,
       props,
       components,
       () => executeFunctionRef(extraActions),

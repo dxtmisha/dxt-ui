@@ -1,14 +1,15 @@
 // @vitest-environment jsdom
 import { describe, it, expect, beforeEach, afterEach } from 'vitest'
+import { DesignName } from '@dxtmisha/functional'
 import { WindowClassesData } from '../WindowClassesData'
 import { WindowStatusItem } from '../basicTypes'
 
 describe('WindowClassesData', () => {
   let classesData: WindowClassesData
-  const baseClassName = 'd1-window'
+  const naming = new DesignName('d1.window')
 
   beforeEach(() => {
-    classesData = new WindowClassesData(baseClassName)
+    classesData = new WindowClassesData(naming)
   })
 
   afterEach(() => {
@@ -22,13 +23,13 @@ describe('WindowClassesData', () => {
     expect(id.startsWith('window--')).toBe(true)
     expect(controlId).toBe(`${id}-control`)
 
-    const otherClassesData = new WindowClassesData(baseClassName)
+    const otherClassesData = new WindowClassesData(naming)
     expect(otherClassesData.getId()).not.toBe(id)
   })
 
   it('should identify window elements correctly', () => {
     const windowElement = document.createElement('div')
-    windowElement.className = baseClassName
+    windowElement.className = naming.getName()
 
     const otherElement = document.createElement('div')
     otherElement.className = 'other'
@@ -40,7 +41,7 @@ describe('WindowClassesData', () => {
 
   it('should identify window teleport elements correctly', () => {
     const teleportElement = document.createElement('div')
-    teleportElement.className = `${baseClassName}__teleport`
+    teleportElement.className = `${naming.getName()}__teleport`
 
     const otherElement = document.createElement('div')
     otherElement.className = 'other'
@@ -52,10 +53,10 @@ describe('WindowClassesData', () => {
 
   it('should identify window or teleport elements correctly', () => {
     const windowElement = document.createElement('div')
-    windowElement.className = baseClassName
+    windowElement.className = naming.getName()
 
     const teleportElement = document.createElement('div')
-    teleportElement.className = `${baseClassName}__teleport`
+    teleportElement.className = `${naming.getName()}__teleport`
 
     const otherElement = document.createElement('div')
 
@@ -66,17 +67,17 @@ describe('WindowClassesData', () => {
 
   it('should return correct status class selector', () => {
     const statusClass = classesData.getClassStatus(WindowStatusItem.open)
-    expect(statusClass).toBe(`${baseClassName}[data-status="open"]`)
+    expect(statusClass).toBe(`${naming.getName()}[data-status="open"]`)
   })
 
   it('should return correct selector for control element', () => {
     const id = classesData.getId()
-    expect(classesData.getSelectorControl()).toBe(`.${baseClassName}__control.${id}`)
+    expect(classesData.getSelectorControl()).toBe(`.${naming.getName()}__control.${id}`)
   })
 
   it('should find closest window element using findMain', () => {
     const windowElement = document.createElement('div')
-    windowElement.className = baseClassName
+    windowElement.className = naming.getName()
 
     const childElement = document.createElement('span')
     windowElement.appendChild(childElement)
@@ -86,7 +87,7 @@ describe('WindowClassesData', () => {
 
   it('should find control element in the DOM', () => {
     const controlElement = document.createElement('button')
-    controlElement.className = `${baseClassName}__control ${classesData.getId()}`
+    controlElement.className = `${naming.getName()}__control ${classesData.getId()}`
     document.body.appendChild(controlElement)
 
     expect(classesData.findControl()).toBe(controlElement)
@@ -94,7 +95,7 @@ describe('WindowClassesData', () => {
 
   it('should find control by referencing an element dataset window', () => {
     const controlElement = document.createElement('button')
-    controlElement.className = `${baseClassName}__control target-window-id`
+    controlElement.className = `${naming.getName()}__control target-window-id`
     document.body.appendChild(controlElement)
 
     const referencedElement = document.createElement('div')
@@ -106,10 +107,10 @@ describe('WindowClassesData', () => {
 
   it('should find body element in the DOM', () => {
     const mainElement = document.createElement('div')
-    mainElement.className = `${baseClassName} ${classesData.getId()}`
+    mainElement.className = `${naming.getName()} ${classesData.getId()}`
 
     const bodyElement = document.createElement('div')
-    bodyElement.className = `${baseClassName}__body`
+    bodyElement.className = `${naming.getName()}__body`
 
     mainElement.appendChild(bodyElement)
     document.body.appendChild(mainElement)
@@ -119,10 +120,10 @@ describe('WindowClassesData', () => {
 
   it('should find body context element in the DOM', () => {
     const mainElement = document.createElement('div')
-    mainElement.className = `${baseClassName} ${classesData.getId()}`
+    mainElement.className = `${naming.getName()} ${classesData.getId()}`
 
     const contextElement = document.createElement('div')
-    contextElement.className = `${baseClassName}__body__context`
+    contextElement.className = `${naming.getName()}__body__context`
 
     mainElement.appendChild(contextElement)
     document.body.appendChild(mainElement)
@@ -132,11 +133,11 @@ describe('WindowClassesData', () => {
 
   it('should find body other elements based on status and selector query', () => {
     const mainElement = document.createElement('div')
-    mainElement.className = `${baseClassName} other-window-id`
+    mainElement.className = `${naming.getName()} other-window-id`
     mainElement.dataset.status = 'open'
 
     const bodyElement = document.createElement('div')
-    bodyElement.className = `${baseClassName}__body`
+    bodyElement.className = `${naming.getName()}__body`
 
     const targetElement = document.createElement('span')
     targetElement.className = 'target-class'
@@ -150,10 +151,10 @@ describe('WindowClassesData', () => {
   })
 
   it('should return correct static classes list', () => {
-    const list = WindowClassesData.getClassesList(baseClassName, 'test-id')
-    expect(list.control).toBe(`${baseClassName}__control`)
-    expect(list.controlId).toBe(`${baseClassName}__control window__control test-id`)
-    expect(list.block).toBe(`${baseClassName}--block`)
+    const list = WindowClassesData.getClassesList(naming.getName(), 'test-id')
+    expect(list.control).toBe(`${naming.getName()}__control`)
+    expect(list.controlId).toBe(`${naming.getName()}__control window__control test-id`)
+    expect(list.block).toBe(`${naming.getName()}--block`)
   })
 
   it('should return correct classes list by design name', () => {

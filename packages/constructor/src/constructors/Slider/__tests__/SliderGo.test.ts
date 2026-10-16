@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi } from 'vitest'
 import { ref } from 'vue'
+import { DesignName } from '@dxtmisha/functional'
 import { EnabledInclude } from '../../../classes/EnabledInclude'
 import { ModelValueInclude } from '../../../classes/ModelValueInclude'
 import { SliderFocusType, type SliderValueType } from '../basicTypes'
@@ -17,12 +18,12 @@ import type { SliderProps } from '../props'
 
 function createSliderGo(initialValue: SliderValueType, props: Partial<SliderProps> = {}) {
   const fullProps = { min: 0, max: 100, step: 10, disabled: false, ...props } as SliderProps
-  const className = 'dxt-slider'
+  const naming = new DesignName('dxt.slider')
 
   const enabled = new EnabledInclude(fullProps)
   const focus = new SliderFocus()
-  const marksData = new SliderMarksData(fullProps, className)
-  const marks = new SliderMarks(fullProps, className, marksData)
+  const marksData = new SliderMarksData(fullProps, naming)
+  const marks = new SliderMarks(fullProps, naming, marksData)
   const model = new ModelValueInclude<SliderValueType>('modelValue', undefined, undefined, ref(initialValue))
   const value = new SliderValue(focus, marks, model, fullProps)
 

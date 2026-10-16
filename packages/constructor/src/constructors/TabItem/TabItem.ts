@@ -83,13 +83,13 @@ export class TabItem {
       SkeletonIncludeConstructor = SkeletonInclude
     } = constructors
 
-    this.skeleton = new SkeletonIncludeConstructor(this.props, this.naming.getDesign(), ['classTextVariant'])
+    this.skeleton = new SkeletonIncludeConstructor(this.props, this.naming, ['classTextVariant'])
     this.enabled = new EnabledIncludeConstructor(this.props)
 
-    this.icon = new IconTrailingIncludeConstructor(this.props, this.naming.getName(), this.components)
+    this.icon = new IconTrailingIncludeConstructor(this.props, this.naming, this.components)
     this.label = new LabelIncludeConstructor(
       this.props,
-      this.naming.getName(),
+      this.naming,
       undefined,
       this.slots,
       undefined,
@@ -98,7 +98,7 @@ export class TabItem {
       this.skeleton
     )
     this.badge = new BadgeIncludeConstructor(
-      this.naming.getName(),
+      this.naming,
       this.props,
       this.components,
       {
@@ -106,7 +106,7 @@ export class TabItem {
       }
     )
 
-    this.ripple = new RippleIncludeConstructor(this.naming.getName(), this.components, this.enabled)
+    this.ripple = new RippleIncludeConstructor(this.naming, this.components, this.enabled)
     this.event = new EventClickIncludeConstructor(
       this.props,
       this.enabled,

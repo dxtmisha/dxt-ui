@@ -96,7 +96,7 @@ export class InputFileDropzone {
     this.text = new TextIncludeConstructor(this.props)
 
     this.dropzone = new DropzoneIncludeConstructor(
-      this.naming.getName(),
+      this.naming,
       this.props,
       this.components,
       () => ({
@@ -116,7 +116,7 @@ export class InputFileDropzone {
     )
 
     this.label = new FieldLabelConstructor(
-      this.naming.getName(),
+      this.naming,
       this.props,
       this.components,
       () => ({
@@ -125,7 +125,7 @@ export class InputFileDropzone {
     )
 
     this.message = new FieldMessageConstructor(
-      this.naming.getName(),
+      this.naming,
       this.props,
       this.components
     )

@@ -64,7 +64,7 @@ export class Tabs {
     new ModelIncludeConstructor('selected', emits, this.selected.item)
 
     this.tabsNavigation = new TabsNavigationIncludeConstructor(
-      this.naming.getName(),
+      this.naming,
       this.props,
       this.components,
       () => ({
@@ -75,7 +75,7 @@ export class Tabs {
     )
 
     this.motionAxis = new MotionAxisIncludeConstructor(
-      this.naming.getName(),
+      this.naming,
       this.props,
       this.components,
       undefined,

@@ -91,11 +91,11 @@ export class NavigationRailItem {
 
     this.skeleton = new SkeletonIncludeConstructor(
       props,
-      naming.getDesign(),
+      naming,
       ['classTextVariant']
     )
     this.progress = new ProgressIncludeConstructor(
-      naming.getName(),
+      naming,
       props,
       components,
       {
@@ -104,10 +104,10 @@ export class NavigationRailItem {
     )
     this.enabled = new EnabledIncludeConstructor(props, this.progress)
 
-    this.icon = new IconIncludeConstructor(props, naming.getName(), components, { isSkeleton: true })
+    this.icon = new IconIncludeConstructor(props, naming, components, { isSkeleton: true })
     this.label = new LabelIncludeConstructor(
       props,
-      naming.getName(),
+      naming,
       undefined,
       slots,
       undefined,
@@ -116,7 +116,7 @@ export class NavigationRailItem {
       this.skeleton
     )
     this.badge = new BadgeIncludeConstructor(
-      naming.getName(),
+      naming,
       props,
       components,
       () => ({
@@ -124,7 +124,7 @@ export class NavigationRailItem {
       })
     )
 
-    this.ripple = new RippleIncludeConstructor(naming.getName(), components, this.enabled)
+    this.ripple = new RippleIncludeConstructor(naming, components, this.enabled)
     this.event = new EventClickIncludeConstructor(props, this.enabled, emits)
   }
 
@@ -144,7 +144,7 @@ export class NavigationRailItem {
   /** Values for the class / Значения для класса */
   get classes(): ConstrClassObject {
     return {
-      [`${this.naming.getName()}--selected`]: Boolean(this.props.selected),
+      [this.naming.getStatusClass('selected')]: Boolean(this.props.selected),
       [getClassTagAStatic(this.naming.getDesign())]: true
     }
   }

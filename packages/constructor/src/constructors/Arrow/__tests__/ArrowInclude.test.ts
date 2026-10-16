@@ -1,20 +1,21 @@
 // @vitest-environment jsdom
 import { describe, it, expect } from 'vitest'
+import { DesignName } from '@dxtmisha/functional'
 import { ArrowInclude } from '../ArrowInclude'
 
 describe('ArrowInclude', () => {
   it('should return correct display presence (is)', () => {
-    const arrowShow = new ArrowInclude('my-class', { arrowShow: true })
+    const arrowShow = new ArrowInclude(new DesignName('my.class'), { arrowShow: true })
     expect(arrowShow.is).toBe(true)
 
-    const arrowHide = new ArrowInclude('my-class', { arrowShow: false })
+    const arrowHide = new ArrowInclude(new DesignName('my.class'), { arrowShow: false })
     expect(arrowHide.is).toBe(false)
   })
 
   it('should compile component binds correctly', () => {
     const targetElement = document.createElement('div')
     const arrow = new ArrowInclude(
-      'my-class',
+      new DesignName('my.class'),
       { arrowShow: true, arrowPosition: 'bottom' },
       undefined,
       undefined,

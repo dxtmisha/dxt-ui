@@ -217,7 +217,7 @@ export class InputImage {
     this.text = new TextIncludeConstructor(this.props)
 
     this.dropzone = new DropzoneIncludeConstructor(
-      this.naming.getName(),
+      this.naming,
       this.props,
       this.components,
       () => ({
@@ -237,7 +237,7 @@ export class InputImage {
     )
 
     this.label = new FieldLabelConstructor(
-      this.naming.getName(),
+      this.naming,
       this.props,
       this.components,
       () => ({
@@ -250,7 +250,7 @@ export class InputImage {
     )
 
     this.message = new FieldMessageConstructor(
-      this.naming.getName(),
+      this.naming,
       this.props,
       this.components,
       undefined,
@@ -259,7 +259,7 @@ export class InputImage {
     )
 
     this.imageCrop = new ImageCropIncludeConstructor(
-      this.naming.getName(),
+      this.naming,
       this.props,
       this.components,
       () => ({
@@ -272,7 +272,7 @@ export class InputImage {
     )
 
     this.actions = new ActionsIncludeConstructor(
-      this.naming.getName(),
+      this.naming,
       props,
       this.components,
       () => ({
@@ -300,7 +300,7 @@ export class InputImage {
    */
   get classes(): ConstrClass {
     return {
-      [`${this.naming.getName()}--hasImage`]: this.files.hasImage()
+      [this.naming.getStatusClass('hasImage')]: this.files.hasImage()
     }
   }
 }

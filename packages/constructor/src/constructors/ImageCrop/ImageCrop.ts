@@ -77,10 +77,10 @@ export class ImageCrop {
     } = constructors
 
     this.model = new ModelIncludeConstructor('value', this.emits)
-    this.cropImage = new ImageCropImageConstructor(naming.getName(), props, emits)
+    this.cropImage = new ImageCropImageConstructor(naming, props, emits)
 
     this.image = new ImageIncludeConstructor(
-      naming.getName(),
+      naming,
       props,
       components,
       () => ({
@@ -95,7 +95,7 @@ export class ImageCrop {
     )
 
     this.cropArea = new CropAreaIncludeConstructor(
-      naming.getName(),
+      naming,
       props,
       components,
       () => ({
@@ -111,7 +111,7 @@ export class ImageCrop {
     )
 
     this.progress = new ProgressConstructor(
-      naming.getName(),
+      naming,
       () => ({
         loading: this.cropImage.isLoading()
       }),

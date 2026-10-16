@@ -72,7 +72,7 @@ export class MotionFlip {
       MotionFlipObserverConstructor = MotionFlipObserver
     } = constructors
 
-    this.elementManager = new MotionFlipElementConstructor(this.element, this.naming.getName())
+    this.elementManager = new MotionFlipElementConstructor(this.element, this.naming)
     this.items = new MotionFlipItemsConstructor(this.elementManager)
     this.action = new MotionFlipActionConstructor(this.props, this.elementManager, this.items)
     this.observer = new MotionFlipObserverConstructor(this.props, this.action, this.elementManager, this.items)

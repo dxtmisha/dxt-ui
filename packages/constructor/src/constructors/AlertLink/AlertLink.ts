@@ -57,7 +57,7 @@ export class AlertLink {
 
     this.label = new LabelIncludeConstructor(
       props,
-      naming.getName(),
+      naming,
       undefined,
       slots
     )

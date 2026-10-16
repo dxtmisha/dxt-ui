@@ -1,6 +1,7 @@
 import type { Ref } from 'vue'
 import {
   type ConstrClassObject,
+  type DesignName,
   type ConstrEmit,
   type ConstrStyles,
   isFilled,
@@ -64,7 +65,7 @@ export class Image {
    * Соединяет помощники изображения в порядке зависимостей.
    * @param props input data/ входные данные
    * @param element input element/ элемент ввода
-   * @param className class name/ название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param emits the function is called when an event is triggered/ функция вызывается, когда срабатывает событие
    * @param constructors object with classes/ объект с классами
    * @param constructors.ImageAdaptiveItemConstructor class for working with adaptive image item/ класс для работы с адаптивным элементом изображения
@@ -80,7 +81,7 @@ export class Image {
   constructor(
     protected readonly props: ImageProps,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly emits?: ConstrEmit<ImageEmits>,
     constructors: {
       ImageAdaptiveItemConstructor?: typeof ImageAdaptiveItem
@@ -185,13 +186,13 @@ export class Image {
   get classes(): ConstrClassObject {
     const type = this.type.item.value
     const data: ConstrClassObject = {
-      [`${this.className}--type--${type}`]: type !== undefined,
-      [`${this.className}--background`]: this.background.isImage(),
+      [this.naming.getStatusClass(`type--${type}`)]: type !== undefined,
+      [this.naming.getStatusClass('background')]: this.background.isImage(),
       notranslate: true
     }
 
     if (this.img.is()) {
-      data[`${this.className}--img`] = true
+      data[this.naming.getStatusClass('img')] = true
     }
 
     switch (type) {

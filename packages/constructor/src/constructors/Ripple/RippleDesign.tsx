@@ -69,7 +69,7 @@ export class RippleDesign<
     this.item = new ItemConstructor(
       this.props,
       this.element,
-      this.naming.getName(),
+      this.naming,
       this.components,
       this.slots,
       this.emits

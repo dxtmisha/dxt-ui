@@ -3,6 +3,7 @@
 import {
   type ConstrBind,
   type DesignComponents,
+  type DesignName,
   executeFunctionRef,
   getBind,
   type RefOrNormalOrFunction,
@@ -30,7 +31,7 @@ export class IconInclude<
    *
    * Конструктор для инициализации помощника IconInclude.
    * @param props input parameter / входной параметр
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param extra additional parameter / дополнительный параметр
    * @param turn should the icon be flipped / надо ли перевернуть иконку
@@ -40,7 +41,7 @@ export class IconInclude<
    */
   constructor(
     protected readonly props: Readonly<Props> | (() => Readonly<Props>),
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComponents<IconComponentInclude, Props>,
     protected readonly extra?: ComponentIncludeExtra<IconPropsBasic>,
     protected readonly turn?: RefOrNormalOrFunction<boolean>,
@@ -48,7 +49,7 @@ export class IconInclude<
     protected readonly start: RefOrNormalOrFunction<boolean | undefined> = false,
     protected readonly end: RefOrNormalOrFunction<boolean | undefined> = false
   ) {
-    super(props, className, components, extra)
+    super(props, naming, components, extra)
   }
 
   /** List of properties for the icon component / Список свойств для компонента иконки */

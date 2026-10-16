@@ -60,7 +60,7 @@ export class TableItemInclude extends ComponentIncludeAbstract<
     protected readonly slots?: Record<string, any>,
     index?: string
   ) {
-    super(naming.getName(), props, components, extra, index)
+    super(naming, props, components, extra, index)
   }
 
   /**
@@ -172,7 +172,7 @@ export class TableItemInclude extends ComponentIncludeAbstract<
    * @returns class name / имя класса
    */
   protected getItemClassName(): string {
-    return `${this.className}-tableItem`
+    return `${this.naming.getName()}-tableItem`
   }
 
   /**
@@ -219,7 +219,7 @@ export class TableItemInclude extends ComponentIncludeAbstract<
   protected getCellAttrs(value: any): Record<string, any> | undefined {
     if (value === '*none') {
       return {
-        class: `${this.className}--none`
+        class: this.naming.getStatusClass('none')
       }
     }
 

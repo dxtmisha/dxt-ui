@@ -1,7 +1,7 @@
 // ai-none
 
 import { type ComputedRef, inject } from 'vue'
-import type { ConstrClassObject } from '@dxtmisha/functional'
+import type { ConstrClassObject, DesignName } from '@dxtmisha/functional'
 
 import { Skeleton } from './Skeleton'
 
@@ -26,15 +26,15 @@ export class SkeletonInclude {
    *
    * Конструктор для инициализации свойств SkeletonInclude.
    * @param props input data / входные данные
-   * @param classDesign design name / название дизайна
+   * @param naming component naming helper / помощник именования компонента
    * @param classesList list of available classes / список доступных классов
    */
   constructor(
     protected readonly props: SkeletonPropsInclude,
-    protected readonly classDesign: string,
+    protected readonly naming: DesignName,
     protected readonly classesList?: (keyof SkeletonClassesList)[]
   ) {
-    this.classesSkeleton = Skeleton.getClassesListByDesign(classDesign)
+    this.classesSkeleton = Skeleton.getClassesListByDesign(naming.getDesign())
   }
 
   /**

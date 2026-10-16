@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi } from 'vitest'
 import { ref } from 'vue'
+import { DesignName } from '@dxtmisha/functional'
 import { ModelValueInclude } from '../../../classes/ModelValueInclude'
 import type { SliderValueType } from '../basicTypes'
 import { SliderFocus } from '../SliderFocus'
@@ -30,10 +31,10 @@ class ConcreteSliderThumb extends SliderThumb {
 
 function createConcreteSliderThumb() {
   const props = { min: 0, max: 100 } as SliderProps
-  const className = 'dxt-slider'
+  const naming = new DesignName('dxt.slider')
   const focus = new SliderFocus()
-  const marksData = new SliderMarksData(props, className)
-  const marks = new SliderMarks(props, className, marksData)
+  const marksData = new SliderMarksData(props, naming)
+  const marks = new SliderMarks(props, naming, marksData)
   const model = new ModelValueInclude<SliderValueType>('modelValue', undefined, undefined, ref(50))
   const value = new SliderValue(focus, marks, model, props)
 

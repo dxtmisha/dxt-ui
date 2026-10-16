@@ -1,16 +1,18 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi } from 'vitest'
 import { InputCodeItemEvent } from '../InputCodeItemEvent'
+import type { InputCodeItemGo } from '../InputCodeItemGo'
+import type { InputCodeItemValue } from '../InputCodeItemValue'
 
 describe('InputCodeItemEvent', () => {
   it('should trigger onFocus selection/previousEmpty checks', () => {
     const mockValue = {
       is: vi.fn()
-    } as any
+    } as unknown as InputCodeItemValue
     const mockGo = {
       selection: vi.fn(),
       focusToPreviousEmpty: vi.fn()
-    } as any
+    } as unknown as InputCodeItemGo
 
     const ev = new InputCodeItemEvent({}, mockValue, mockGo)
 
@@ -27,8 +29,8 @@ describe('InputCodeItemEvent', () => {
     const mockGo = {
       focusToPrevious: vi.fn(),
       focusToNext: vi.fn()
-    } as any
-    const ev = new InputCodeItemEvent({}, {} as any, mockGo)
+    } as unknown as InputCodeItemGo
+    const ev = new InputCodeItemEvent({}, {} as unknown as InputCodeItemValue, mockGo)
 
     const eventPrev = new KeyboardEvent('keydown', { key: 'ArrowLeft' })
     const prevSpy = vi.spyOn(eventPrev, 'preventDefault')
@@ -46,20 +48,20 @@ describe('InputCodeItemEvent', () => {
   it('should handle onClick selection', () => {
     const mockValue = {
       is: vi.fn()
-    } as any
+    } as unknown as InputCodeItemValue
     const mockGo = {
       selection: vi.fn(),
       focusToNextEmpty: vi.fn()
-    } as any
+    } as unknown as InputCodeItemGo
 
     const ev = new InputCodeItemEvent({ hide: false }, mockValue, mockGo)
 
     mockValue.is.mockReturnValue(true)
     ev.onClick()
-    expect(mockGo.selection).toHaveBeenCalled()
-
-    const evHide = new InputCodeItemEvent({ hide: true }, mockValue, mockGo)
-    evHide.onClick()
     expect(mockGo.focusToNextEmpty).toHaveBeenCalled()
+
+    mockValue.is.mockReturnValue(false)
+    ev.onClick()
+    expect(mockGo.focusToNextEmpty).toHaveBeenCalledTimes(1)
   })
 })

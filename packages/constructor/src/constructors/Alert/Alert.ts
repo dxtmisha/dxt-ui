@@ -104,23 +104,23 @@ export class Alert {
       TextIncludeConstructor = TextInclude
     } = constructors
 
-    this.hide = new AlertHideConstructor(naming.getName())
+    this.hide = new AlertHideConstructor(naming)
 
     this.event = new EventClickIncludeConstructor(undefined, undefined, emits)
     this.alertEvent = new AlertEventConstructor(this.hide, emits)
 
-    this.icon = new IconTrailingIncludeConstructor(props, naming.getName(), components)
-    this.label = new LabelIncludeConstructor(props, naming.getName(), undefined, slots)
-    this.description = new DescriptionIncludeConstructor(props, naming.getName(), slots)
+    this.icon = new IconTrailingIncludeConstructor(props, naming, components)
+    this.label = new LabelIncludeConstructor(props, naming, undefined, slots)
+    this.description = new DescriptionIncludeConstructor(props, naming, slots)
 
     this.button = new ButtonIncludeConstructor(
-      naming.getName(),
+      naming,
       undefined,
       components,
       () => getBind(props.button, 'label')
     )
     this.buttonClose = new ButtonIncludeConstructor(
-      naming.getName(),
+      naming,
       undefined,
       components,
       () => ({
@@ -131,7 +131,7 @@ export class Alert {
     )
 
     this.actions = new ActionsIncludeConstructor(
-      naming.getName(),
+      naming,
       props,
       components,
       undefined,
@@ -139,7 +139,7 @@ export class Alert {
       emits
     )
     this.link = new AlertLinkIncludeConstructor(
-      naming.getName(),
+      naming,
       props,
       components,
       emits

@@ -144,7 +144,7 @@ export abstract class SelectAbstract {
     )
 
     this.menu = new MenuIncludeConstructor(
-      this.naming.getName(),
+      this.naming,
       this.props,
       this.components,
       () => ({

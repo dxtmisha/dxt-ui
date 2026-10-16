@@ -58,9 +58,9 @@ export class FieldMessage {
       SkeletonIncludeConstructor = SkeletonInclude
     } = constructors
 
-    this.fieldCounter = new FieldCounterIncludeConstructor(naming.getName(), props, components)
+    this.fieldCounter = new FieldCounterIncludeConstructor(naming, props, components)
     this.message = new FieldMessageMessageConstructor(props, slots)
-    this.skeleton = new SkeletonIncludeConstructor(props, naming.getDesign(), ['classTextVariant'])
+    this.skeleton = new SkeletonIncludeConstructor(props, naming, ['classTextVariant'])
   }
 
   /**
@@ -71,7 +71,7 @@ export class FieldMessage {
    */
   get classes(): ConstrClassObject {
     return {
-      [`${this.naming.getName()}--validation`]: this.message.isValidation()
+      [this.naming.getStatusClass('validation')]: this.message.isValidation()
     }
   }
 

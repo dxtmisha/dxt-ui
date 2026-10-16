@@ -76,7 +76,7 @@ export class Accordion {
     } = constructors
 
     this.motionTransform = new MotionTransformIncludeConstructor(
-      this.naming.getName(),
+      this.naming,
       this.props,
       this.components,
       () => ({

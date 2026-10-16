@@ -1,14 +1,15 @@
 // @vitest-environment jsdom
 import { describe, it, expect } from 'vitest'
+import { DesignName } from '@dxtmisha/functional'
 import { SliderMarksData } from '../SliderMarksData'
 import type { SliderPropsBasic } from '../props'
 
-function createSliderMarksData(props: Partial<SliderPropsBasic> = {}, className: string = 'dxt-slider') {
+function createSliderMarksData(props: Partial<SliderPropsBasic> = {}, naming: DesignName = new DesignName('dxt.slider')) {
   const fullProps = {
     ...props
   } as SliderPropsBasic
 
-  return new SliderMarksData(fullProps, className)
+  return new SliderMarksData(fullProps, naming)
 }
 
 describe('SliderMarksData', () => {

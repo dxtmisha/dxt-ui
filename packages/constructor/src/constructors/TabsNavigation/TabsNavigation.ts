@@ -99,7 +99,7 @@ export class TabsNavigation {
     } = constructors
 
     this.scroll = new HorizontalScrollIncludeConstructor(
-      naming.getName(),
+      naming,
       props,
       components
     )

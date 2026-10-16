@@ -2,7 +2,8 @@
 
 import {
   type ConstrEmit,
-  type DesignComponents
+  type DesignComponents,
+  type DesignName
 } from '@dxtmisha/functional'
 
 import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
@@ -51,7 +52,7 @@ export class WindowInclude<
 
   /**
    * Constructor
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param props input parameter / входной параметр
    * @param components object for working with components / объект для работы с компонентами
    * @param extra additional parameter or property name / дополнительный параметр или имя свойства
@@ -62,7 +63,7 @@ export class WindowInclude<
    * @param model instance for managing modal open state / экземпляр для управления состоянием открытия модального окна
    */
   constructor(
-    className: string,
+    naming: DesignName,
     props: Readonly<Props>,
     components?: DesignComponents<WindowComponentInclude, Props>,
     extra?: ComponentIncludeExtra<PropsExtra>,
@@ -72,7 +73,7 @@ export class WindowInclude<
     protected readonly ariaDescribedby?: string,
     protected readonly model?: ModelInclude<boolean>
   ) {
-    super(className, props, components, extra, index)
+    super(naming, props, components, extra, index)
   }
 
   /**

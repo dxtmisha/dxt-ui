@@ -169,8 +169,8 @@ export class List {
    */
   get classes(): ConstrClass {
     return {
-      [`${this.naming.getName()}--highlightActive`]: Boolean(this.props.filterMode) && this.data.isHighlight(),
-      [`${this.naming.getName()}--searchActive`]: Boolean(this.props.filterMode) && this.search.is()
+      [this.naming.getStatusClass('highlightActive')]: Boolean(this.props.filterMode) && this.data.isHighlight(),
+      [this.naming.getStatusClass('searchActive')]: Boolean(this.props.filterMode) && this.search.is()
     }
   }
 
@@ -240,7 +240,7 @@ export class List {
       item,
       {
         key: item.value,
-        class: `${this.naming.getName()}__group`
+        class: this.naming.getSubClass('group')
       }
     )
   }
@@ -260,7 +260,7 @@ export class List {
       item,
       {
         key: item.value,
-        class: `${this.naming.getName()}__menu`
+        class: this.naming.getSubClass('menu')
       }
     )
   }
@@ -340,7 +340,7 @@ export class List {
       item,
       {
         'class': [
-          `${this.naming.getName()}__management`,
+          this.naming.getSubClass('management'),
           this.windowClasses.get().static
         ],
         'focus': item?.index === this.focus.focus.value,

@@ -88,7 +88,7 @@ export class MenuButton extends SelectAbstract {
     } = constructors
 
     this.button = new ButtonConstructor(
-      this.naming.getName(),
+      this.naming,
       this.props,
       this.components,
       () => ({

@@ -187,7 +187,7 @@ export class Input {
     )
 
     this.field = new FieldIncludeConstructor(
-      this.naming.getName(),
+      this.naming,
       this.props,
       this.components,
       () => ({
@@ -202,7 +202,7 @@ export class Input {
       this.password.toggle
     )
     this.mask = new MaskIncludeConstructor(
-      this.naming.getName(),
+      this.naming,
       this.props,
       this.components,
       undefined,

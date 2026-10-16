@@ -83,11 +83,11 @@ export class Avatar {
       EnabledIncludeConstructor = EnabledInclude
     } = constructors
 
-    this.skeleton = new SkeletonIncludeConstructor(props, naming.getDesign(), ['classBackground'])
+    this.skeleton = new SkeletonIncludeConstructor(props, naming, ['classBackground'])
     this.enabled = new EnabledIncludeConstructor(props)
 
     this.image = new ImageIncludeConstructor(
-      naming.getName(),
+      naming,
       props,
       components,
       () => ({
@@ -98,7 +98,7 @@ export class Avatar {
 
     this.label = new LabelIncludeConstructor(
       () => this.labelProps,
-      naming.getName(),
+      naming,
       undefined,
       slots,
       undefined,
@@ -107,7 +107,7 @@ export class Avatar {
       this.skeleton
     )
     this.badge = new BadgeIncludeConstructor(
-      naming.getName(),
+      naming,
       props,
       components,
       { overlap: 'circular' }

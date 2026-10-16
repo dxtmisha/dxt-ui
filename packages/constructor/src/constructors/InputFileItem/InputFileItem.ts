@@ -224,7 +224,7 @@ export class InputFileItem {
     )
 
     this.buttonCrop = new ButtonIncludeConstructor(
-      this.naming.getName(),
+      this.naming,
       this.props,
       this.components,
       () => this.button.crop,
@@ -232,7 +232,7 @@ export class InputFileItem {
     )
 
     this.buttonDelete = new ButtonIncludeConstructor(
-      this.naming.getName(),
+      this.naming,
       this.props,
       this.components,
       () => this.button.delete,
@@ -240,7 +240,7 @@ export class InputFileItem {
     )
 
     this.buttonRetry = new ButtonIncludeConstructor(
-      this.naming.getName(),
+      this.naming,
       this.props,
       this.components,
       () => this.button.retry,
@@ -249,7 +249,7 @@ export class InputFileItem {
 
     this.caption = new CaptionIncludeConstructor(
       {},
-      this.naming.getName()
+      this.naming
     )
 
     this.iconStatus = new IconIncludeConstructor(
@@ -262,12 +262,12 @@ export class InputFileItem {
           error: this.status.isError()
         }
       }),
-      this.naming.getName(),
+      this.naming,
       this.components
     )
 
     this.image = new ImageIncludeConstructor(
-      this.naming.getName(),
+      this.naming,
       () => ({
         ...this.props,
         image: this.file.image,
@@ -280,7 +280,7 @@ export class InputFileItem {
     )
 
     this.imageCrop = new ImageCropIncludeConstructor(
-      this.naming.getName(),
+      this.naming,
       this.props,
       this.components,
       () => ({
@@ -292,11 +292,11 @@ export class InputFileItem {
 
     this.label = new LabelIncludeConstructor(
       () => ({ label: this.file.name }),
-      this.naming.getName()
+      this.naming
     )
 
     this.progress = new ProgressIncludeConstructor(
-      this.naming.getName(),
+      this.naming,
       () => ({
         ...this.props,
         loading: this.props.loading ?? this.status.isUploading()
@@ -307,7 +307,7 @@ export class InputFileItem {
 
     this.skeleton = new SkeletonIncludeConstructor(
       this.props,
-      this.naming.getDesign(),
+      this.naming,
       ['classBackground']
     )
   }

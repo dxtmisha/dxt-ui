@@ -102,8 +102,8 @@ export class Tooltip {
       TooltipStyleConstructor = TooltipStyle
     } = constructors
 
-    this.classes = new TooltipClassesConstructor(this.naming.getName())
-    this.style = new TooltipStyleConstructor(this.element, this.naming.getName())
+    this.classes = new TooltipClassesConstructor(this.naming)
+    this.style = new TooltipStyleConstructor(this.element, this.naming)
     this.status = new TooltipStatusConstructor(this.props, this.slots)
     this.position = new TooltipPositionConstructor(
       this.props,
@@ -127,7 +127,7 @@ export class Tooltip {
     )
 
     this.arrow = new ArrowIncludeConstructor(
-      this.naming.getName(),
+      this.naming,
       this.props,
       this.components,
       undefined,
@@ -137,13 +137,13 @@ export class Tooltip {
 
     this.label = new LabelIncludeConstructor(
       this.props,
-      this.naming.getName(),
+      this.naming,
       undefined,
       this.slots
     )
     this.description = new DescriptionIncludeConstructor(
       this.props,
-      this.naming.getName(),
+      this.naming,
       this.slots
     )
 

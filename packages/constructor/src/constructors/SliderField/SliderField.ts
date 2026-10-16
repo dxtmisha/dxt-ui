@@ -157,13 +157,13 @@ export class SliderField {
     )
 
     this.fieldLabel = new FieldLabelIncludeConstructor(
-      this.naming.getName(),
+      this.naming,
       () => this.label.labelProps,
       this.components
     )
 
     this.fieldMessage = new FieldMessageIncludeConstructor(
-      this.naming.getName(),
+      this.naming,
       props,
       this.components,
       undefined,
@@ -171,7 +171,7 @@ export class SliderField {
       () => this.validation.message
     )
 
-    this.icon = new IconTrailingIncludeConstructor(props, this.naming.getName(), this.components)
+    this.icon = new IconTrailingIncludeConstructor(props, this.naming, this.components)
     this.label = new SliderFieldLabelConstructor(props, this.valueItem)
   }
 

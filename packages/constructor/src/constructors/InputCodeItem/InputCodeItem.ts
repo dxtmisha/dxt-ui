@@ -86,7 +86,7 @@ export class InputCodeItem {
     )
     this.skeleton = new SkeletonIncludeConstructor(
       props,
-      naming.getDesign(),
+      naming,
       ['classBackground']
     )
     this.text = new TextIncludeConstructor(props)
@@ -119,7 +119,7 @@ export class InputCodeItem {
   get inputBinds(): ConstrBind<Partial<HTMLInputElement>> {
     return {
       key: 'input',
-      class: `${this.naming.getName()}__input`,
+      class: this.naming.getSubClass('input'),
       name: this.getName(),
       autocomplete: this.props.autocomplete as AutoFill,
       inputMode: this.props.inputMode,

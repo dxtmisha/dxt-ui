@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { ref } from 'vue'
+import { DesignName } from '@dxtmisha/functional'
 import { TooltipPosition } from '../TooltipPosition'
 import { TooltipClassesData } from '../TooltipClassesData'
 import { TooltipStyle } from '../TooltipStyle'
@@ -17,8 +18,8 @@ describe('TooltipPosition', () => {
     textareaElement = document.createElement('div')
     controlElement = document.createElement('div')
 
-    classesData = new TooltipClassesData('d1-tooltip')
-    tooltipStyle = new TooltipStyle(ref(textareaElement), 'd1-tooltip')
+    classesData = new TooltipClassesData(new DesignName('d1.tooltip'))
+    tooltipStyle = new TooltipStyle(ref(textareaElement), new DesignName('d1.tooltip'))
 
     mockProps = {
       top: false,

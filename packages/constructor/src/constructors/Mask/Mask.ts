@@ -279,7 +279,7 @@ export class Mask {
       this.item,
       this.valueBasic,
       this.validation,
-      this.naming.getName()
+      this.naming
     )
 
     this.emit = new MaskEmitConstructor(
@@ -366,8 +366,8 @@ export class Mask {
   /** Values for CSS class/ Значения для CSS-класса */
   get classes(): ConstrClassObject {
     return {
-      [`${this.naming.getName()}--value`]: this.characterLength.is(),
-      [`${this.naming.getName()}--end`]: this.right.isEnd()
+      [this.naming.getStatusClass('value')]: this.characterLength.is(),
+      [this.naming.getStatusClass('end')]: this.right.isEnd()
     }
   }
 

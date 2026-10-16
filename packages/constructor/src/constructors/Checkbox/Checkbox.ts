@@ -157,9 +157,9 @@ export class Checkbox {
       SkeletonConstructor = SkeletonInclude
     } = constructors
 
-    this.skeleton = new SkeletonConstructor(this.props, this.naming.getDesign(), ['classText'])
+    this.skeleton = new SkeletonConstructor(this.props, this.naming, ['classText'])
     this.progress = new ProgressConstructor(
-      this.naming.getName(),
+      this.naming,
       this.props,
       this.components,
       {
@@ -209,7 +209,7 @@ export class Checkbox {
     )
 
     this.message = new FieldMessageConstructor(
-      this.naming.getName(),
+      this.naming,
       this.props,
       this.components,
       undefined,
@@ -220,7 +220,7 @@ export class Checkbox {
     this.icon = new CheckboxIconConstructor(this.props, this.value)
     this.label = new LabelConstructor(
       props,
-      naming.getName(),
+      naming,
       undefined,
       slots,
       undefined,
@@ -230,7 +230,7 @@ export class Checkbox {
     )
     this.description = new DescriptionConstructor(
       props,
-      naming.getName(),
+      naming,
       slots,
       this.skeleton
     )
@@ -243,7 +243,7 @@ export class Checkbox {
 
     this.enabled = new EnabledConstructor(props, this.progress)
 
-    this.ripple = new RippleConstructor(naming.getName(), components, this.enabled)
+    this.ripple = new RippleConstructor(naming, components, this.enabled)
   }
 
   /**

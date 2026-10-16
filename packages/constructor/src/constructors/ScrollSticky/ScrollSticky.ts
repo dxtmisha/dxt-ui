@@ -203,11 +203,11 @@ export class ScrollSticky {
   readonly onResize = (): void => {
     this.checkScroll((element, scrollElement) => {
       scrollElement.style.setProperty(
-        `--${this.naming.getName()}-sys-width`,
+        this.naming.getStyle('width'),
         `${element.scrollWidth ?? 0}px`
       )
       scrollElement.style.setProperty(
-        `--${this.naming.getName()}-sys-scrollHeight`,
+        this.naming.getStyle('scrollHeight'),
         `${this.width.width.value ?? 0}px`
       )
     })

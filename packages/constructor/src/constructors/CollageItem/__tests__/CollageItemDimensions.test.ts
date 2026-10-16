@@ -1,5 +1,6 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi } from 'vitest'
+import { DesignName } from '@dxtmisha/functional'
 import { CollageItemDimensions } from '../CollageItemDimensions'
 import type { ImageEventData, ImageItem } from '../../Image'
 import type { CollageItemProps } from '../props'
@@ -9,7 +10,7 @@ describe('CollageItemDimensions', () => {
     const props: CollageItemProps = {
       value: 'test-item'
     }
-    const dimensions = new CollageItemDimensions(props, 'd-collage-item')
+    const dimensions = new CollageItemDimensions(props, new DesignName('d.collage-item'))
 
     expect(dimensions.height.value).toBeUndefined()
     expect(dimensions.width.value).toBeUndefined()
@@ -31,7 +32,7 @@ describe('CollageItemDimensions', () => {
       value: 'item-1'
     }
     const emit = vi.fn()
-    const dimensions = new CollageItemDimensions(props, 'd-collage-item', emit)
+    const dimensions = new CollageItemDimensions(props, new DesignName('d.collage-item'), emit)
 
     const payload: ImageEventData = {
       type: undefined,
@@ -55,8 +56,8 @@ describe('CollageItemDimensions', () => {
     expect(dimensions.expose.getWidth()).toBe(13)
     expect(emit).toHaveBeenCalledWith('load', payload)
     expect(dimensions.styles).toEqual({
-      '--d-collage-item-sys-height': '7',
-      '--d-collage-item-sys-width': '13'
+      '--d-collageItem-sys-height': '7',
+      '--d-collageItem-sys-width': '13'
     })
   })
 
@@ -64,7 +65,7 @@ describe('CollageItemDimensions', () => {
     const props: CollageItemProps = {
       value: 'item-2'
     }
-    const dimensions = new CollageItemDimensions(props, 'd-collage-item')
+    const dimensions = new CollageItemDimensions(props, new DesignName('d.collage-item'))
     const update = vi.fn()
     Object.defineProperty(dimensions, 'update', { value: update })
 

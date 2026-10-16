@@ -4,7 +4,7 @@ import type { VNode } from 'vue'
 
 import { ComponentIncludeAbstract } from '../../classes/ComponentIncludeAbstract'
 import type { ComponentIncludeExtra, ComponentIncludeProps } from '../../types/componentInclude'
-import type { DesignComponents } from '@dxtmisha/functional'
+import type { DesignComponents, DesignName } from '@dxtmisha/functional'
 
 import type { TooltipPropsInclude, TooltipSlotsInclude } from './basicTypes'
 import type { TooltipExpose, TooltipSlots } from './types'
@@ -34,7 +34,7 @@ export class TooltipInclude extends ComponentIncludeAbstract<
    * Constructor for initializing TooltipInclude properties.
    *
    * Конструктор для инициализации свойств TooltipInclude.
-   * @param className base class name / название базового класса
+   * @param naming component naming helper / помощник именования компонента
    * @param props input properties / входные свойства
    * @param components design components registry / реестр дизайн-компонентов
    * @param slots tooltip slots / слоты тултипа
@@ -42,14 +42,14 @@ export class TooltipInclude extends ComponentIncludeAbstract<
    * @param index unique index key for rendering / уникальный ключ индекса для рендеринга
    */
   constructor(
-    className: string,
+    naming: DesignName,
     props: ComponentIncludeProps<TooltipPropsInclude>,
     components?: DesignComponents<any, TooltipPropsInclude>,
     protected readonly slots?: TooltipSlotsInclude,
     extra?: ComponentIncludeExtra<any>,
     index?: string
   ) {
-    super(className, props, components, extra, index)
+    super(naming, props, components, extra, index)
   }
 
   /**

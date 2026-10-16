@@ -1,7 +1,7 @@
 // ai-none
 
 import { type Ref } from 'vue'
-import { createElement } from '@dxtmisha/functional'
+import { createElement, type DesignName } from '@dxtmisha/functional'
 import type { ImageCoordinator } from '@dxtmisha/functional-basic'
 
 import type { RippleProps } from './props'
@@ -32,18 +32,18 @@ export class RippleItem {
    * Конструктор для создания экземпляра элемента эффекта.
    * @param props input properties / входные свойства
    * @param element span element containing the ripple effects / span-элемент, содержащий эффекты волны
-   * @param className base CSS class name / базовое имя CSS-класса
+   * @param naming component naming helper / помощник именования компонента
    */
   constructor(
     protected readonly props: RippleProps,
     protected readonly element: Ref<HTMLSpanElement | undefined>,
-    protected readonly className: string
+    protected readonly naming: DesignName
   ) {
-    this.classItem = `${this.className}__item`
-    this.classEnd = `${this.className}--end`
+    this.classItem = this.naming.getSubClass('item')
+    this.classEnd = this.naming.getStatusClass('end')
 
-    this.styleX = `--${this.className}-sys-x`
-    this.styleY = `--${this.className}-sys-y`
+    this.styleX = this.naming.getStyle('x')
+    this.styleY = this.naming.getStyle('y')
   }
 
   /**

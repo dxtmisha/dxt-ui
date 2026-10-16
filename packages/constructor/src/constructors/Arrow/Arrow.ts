@@ -1,6 +1,7 @@
 import { type Ref } from 'vue'
 import {
   type ConstrClassObject,
+  type DesignName,
   type ConstrStyles,
   isFilled
 } from '@dxtmisha/functional'
@@ -48,7 +49,7 @@ export class Arrow {
    * Constructor
    * @param props input data / входные данные
    * @param element input element / элемент ввода
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param constructors object with classes / объект с классами
    * @param constructors.ArrowElementConstructor class for working with the arrow element / класс для работы с элементом стрелки
    * @param constructors.ArrowElementTargetConstructor class for working with the target element of the arrow / класс для работы с целевым элементом стрелки
@@ -59,7 +60,7 @@ export class Arrow {
   constructor(
     protected readonly props: ArrowProps,
     protected readonly element: Ref<HTMLElement | undefined>,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     constructors: {
       ArrowElementConstructor?: typeof ArrowElement
       ArrowElementTargetConstructor?: typeof ArrowElementTarget
@@ -78,9 +79,9 @@ export class Arrow {
 
     this.clientOnly = new ClientOnlyInclude(props)
 
-    this.elementItem = new ArrowElementConstructor(element, className)
+    this.elementItem = new ArrowElementConstructor(element, naming)
     this.elementTarget = new ArrowElementTargetConstructor(props)
-    this.parent = new ArrowParentConstructor(element, className, this.elementItem)
+    this.parent = new ArrowParentConstructor(element, naming, this.elementItem)
 
     this.position = new ArrowPositionConstructor(
       props,
@@ -131,31 +132,31 @@ export class Arrow {
   /** Classes for the component / Классы для компонента */
   get classes(): ConstrClassObject {
     return {
-      [`${this.className}--direction--${this.direction}`]: Boolean(this.direction)
+      [this.naming.getStatusClass(`direction--${this.direction}`)]: Boolean(this.direction)
     }
   }
 
   /** Styles for the component / Стили для компонента */
   get styles(): ConstrStyles {
     const styles = {
-      [`--${this.className}-sys-background`]: this.parent.background,
-      [`--${this.className}-sys-borderWidth`]: this.parent.borderWidth,
-      [`--${this.className}-sys-borderColor`]: this.parent.borderColor,
-      [`--${this.className}-sys-borderRadius`]: this.parent.borderRadius
+      [this.naming.getStyle('background')]: this.parent.background,
+      [this.naming.getStyle('borderWidth')]: this.parent.borderWidth,
+      [this.naming.getStyle('borderColor')]: this.parent.borderColor,
+      [this.naming.getStyle('borderRadius')]: this.parent.borderRadius
     }
 
     if (
       this.parent.isBorder()
       && this.position.clipPath.value
     ) {
-      styles[`--${this.className}-sys-clipPath`] = this.position.clipPath.value
+      styles[this.naming.getStyle('clipPath')] = this.position.clipPath.value
     }
 
     if (
       this.elementTarget.is()
       && this.position.shift.value
     ) {
-      styles[`--${this.className}-sys-shift`] = this.position.shift.value
+      styles[this.naming.getStyle('shift')] = this.position.shift.value
     }
 
     return styles

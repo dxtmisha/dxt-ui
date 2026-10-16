@@ -64,7 +64,7 @@ export class Snackbar {
     this.data = new DataConstructor(
       props,
       element as any,
-      naming.getName(),
+      naming,
       this.event
     )
 

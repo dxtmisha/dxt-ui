@@ -73,15 +73,15 @@ export class InputCode {
     } = constructors
 
     this.fieldLabel = new FieldLabelIncludeConstructor(
-      naming.getName(),
+      naming,
       props,
       components,
       () => ({ loading: props.loading })
     )
-    this.fieldMessage = new FieldMessageIncludeConstructor(naming.getName(), props, components)
+    this.fieldMessage = new FieldMessageIncludeConstructor(naming, props, components)
 
     this.inputCodeItem = new InputCodeItemIncludeConstructor(
-      naming.getName(),
+      naming,
       props,
       components,
       this.onInput

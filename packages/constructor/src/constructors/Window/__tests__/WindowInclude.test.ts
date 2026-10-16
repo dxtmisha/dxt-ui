@@ -1,5 +1,6 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { DesignName } from '@dxtmisha/functional'
 import { WindowInclude } from '../WindowInclude'
 import type { WindowPropsInclude } from '../basicTypes'
 
@@ -35,7 +36,7 @@ describe('WindowInclude', () => {
     }
 
     windowInclude = new WindowInclude(
-      'd1-dialog',
+      new DesignName('d1.dialog'),
       mockProps as WindowPropsInclude,
       undefined, // components
       () => mockExtra, // extra

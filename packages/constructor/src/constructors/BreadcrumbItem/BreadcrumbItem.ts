@@ -73,19 +73,19 @@ export class BreadcrumbItem {
 
     this.icon = new IconLiteIncludeConstructor(
       props,
-      naming.getName(),
+      naming,
       components
     )
 
     this.skeleton = new SkeletonIncludeConstructor(
       props,
-      naming.getDesign(),
+      naming,
       ['classTextVariant']
     )
 
     this.label = new LabelIncludeConstructor(
       props,
-      naming.getName(),
+      naming,
       undefined,
       slots,
       undefined,

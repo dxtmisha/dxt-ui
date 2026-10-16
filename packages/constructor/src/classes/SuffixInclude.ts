@@ -1,5 +1,5 @@
 import { type VNode } from 'vue'
-import { getElementId, isFilled, render } from '@dxtmisha/functional'
+import { getElementId, type DesignName, isFilled, render } from '@dxtmisha/functional'
 
 import { SkeletonInclude } from '../constructors/Skeleton'
 
@@ -23,13 +23,13 @@ export class SuffixInclude {
    *
    * Конструктор
    * @param props input property / входное свойство
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param slots object for working with slots / объект для работы со слотами
    * @param skeleton optional skeleton for loading state / необязательный скелетон для состояния загрузки
    */
   constructor(
     protected readonly props: Readonly<SuffixProps>,
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly slots?: SuffixSlots,
     protected readonly skeleton?: SkeletonInclude
   ) {
@@ -96,7 +96,7 @@ export class SuffixInclude {
           {
             'id': this.id,
             'class': {
-              [`${this.className}__suffix`]: true,
+              [this.naming.getSubClass('suffix')]: true,
               ...this.skeleton?.classes
             },
             'data-event-type': 'suffix'

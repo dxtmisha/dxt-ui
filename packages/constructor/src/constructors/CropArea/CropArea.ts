@@ -86,8 +86,8 @@ export class CropArea {
       ModelIncludeConstructor = ModelInclude
     } = constructors
 
-    this.elementItem = new CropAreaElementConstructor(element, naming.getName())
-    this.style = new CropAreaStyleConstructor(element, naming.getName())
+    this.elementItem = new CropAreaElementConstructor(element, naming)
+    this.style = new CropAreaStyleConstructor(element, naming)
     this.position = new CropAreaPositionConstructor(props, this.style)
     this.emit = new CropAreaEmitConstructor(this.position, emits)
     this.coordinates = new CropAreaCoordinatesConstructor(this.elementItem, this.position, this.emit)

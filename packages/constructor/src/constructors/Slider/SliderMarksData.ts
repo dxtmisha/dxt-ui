@@ -4,6 +4,7 @@ import { computed, type ComputedRef } from 'vue'
 
 import {
   isArray,
+  type DesignName,
   isObject,
   isObjectNotArray,
   toNumber,
@@ -34,7 +35,7 @@ export class SliderMarksData {
           value,
           label: this.getItemLabel(item, value),
           style: {
-            [`--${this.className}-sys-mark`]: `${this.toPercent(mark)}%`
+            [this.naming.getStyle('mark')]: `${this.toPercent(mark)}%`
           }
         })
       })
@@ -51,11 +52,11 @@ export class SliderMarksData {
   /**
    * Constructor
    * @param props input properties / входящие свойства
-   * @param className class name prefix / префикс названия класса
+   * @param naming component naming helper / помощник именования компонента
    */
   constructor(
     protected readonly props: SliderPropsBasic,
-    protected readonly className: string
+    protected readonly naming: DesignName
   ) {
   }
 

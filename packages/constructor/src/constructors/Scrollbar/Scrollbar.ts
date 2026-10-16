@@ -70,7 +70,7 @@ export class Scrollbar {
     this.border = new ScrollbarBorderConstructor(
       props,
       element,
-      naming.getName(),
+      naming,
       emits
     )
   }
@@ -83,7 +83,7 @@ export class Scrollbar {
    */
   get classes(): ConstrClassObject {
     return {
-      [`${this.naming.getName()}--disabled`]: this.clientOnly.isRender() && Boolean(this.width.item.value)
+      [this.naming.getStatusClass('disabled')]: this.clientOnly.isRender() && Boolean(this.width.item.value)
     }
   }
 }

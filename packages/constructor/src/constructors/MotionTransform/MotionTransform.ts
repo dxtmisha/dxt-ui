@@ -102,7 +102,7 @@ export class MotionTransform {
       props,
       element,
       elementContext,
-      naming.getName()
+      naming
     )
     this.tabIndex = new TabIndexIncludeConstructor(
       () => this.element.elementBody,

@@ -67,7 +67,7 @@ export class TableFlexRecord extends TableRecord {
     this.lazy = new TableFlexRecordLazyConstructor(
       props,
       element,
-      naming.getName(),
+      naming,
       this.clientOnly
     )
   }

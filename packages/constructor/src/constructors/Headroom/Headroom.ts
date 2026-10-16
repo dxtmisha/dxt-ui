@@ -44,7 +44,7 @@ export class Headroom {
     this.headroom = new HeadroomConstructor(
       this.props,
       this.element,
-      this.naming.getName(),
+      this.naming,
       this.emits
     )
   }

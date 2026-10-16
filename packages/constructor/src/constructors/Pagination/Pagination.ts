@@ -113,7 +113,7 @@ export class Pagination {
 
     this.focusDirection = new FocusDirectionIncludeConstructor(
       this.element,
-      `.${naming.getName()}__button:not(:disabled)`,
+      `.${naming.getSubClass('button')}:not(:disabled)`,
       `.${this.naming.getDesign()}-button--selected`,
       `${this.naming.getDesign()}-button--focus`
     )

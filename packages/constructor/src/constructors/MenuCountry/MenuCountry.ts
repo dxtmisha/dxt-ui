@@ -77,7 +77,7 @@ export class MenuCountry {
     this.model = new ModelIncludeConstructor('selected', this.emits)
 
     this.menu = new MenuIncludeConstructor(
-      this.naming.getName(),
+      this.naming,
       this.props,
       this.components,
       () => ({

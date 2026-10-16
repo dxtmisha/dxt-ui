@@ -87,18 +87,18 @@ export class SnackbarItem {
 
     this.event = new EventConstructor(undefined, undefined, emits)
 
-    this.label = new LabelConstructor(props, naming.getName(), undefined, slots)
-    this.description = new DescriptionConstructor(props, naming.getName(), slots)
-    this.icon = new IconConstructor(props, naming.getName(), components)
+    this.label = new LabelConstructor(props, naming, undefined, slots)
+    this.description = new DescriptionConstructor(props, naming, slots)
+    this.icon = new IconConstructor(props, naming, components)
 
     this.button = new ButtonConstructor(
-      naming.getName(),
+      naming,
       () => this.props?.button,
       components,
       { onClick: this.event.onClick }
     )
     this.actions = new ActionsConstructor(
-      naming.getName(),
+      naming,
       props,
       components,
       { align: 'left' } as ActionsProps,

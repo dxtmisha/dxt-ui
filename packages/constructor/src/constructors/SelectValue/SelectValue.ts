@@ -83,7 +83,7 @@ export class SelectValue {
         icon: this.props.iconCancel,
         dynamic: true,
         class: [
-          `${this.naming.getName()}__trailing`,
+          this.naming.getSubClass('trailing'),
           this.window.get().controlStatic
         ]
       }
@@ -95,8 +95,8 @@ export class SelectValue {
   /** Returns data for the main style class / Возвращает данные для главного класса стиля */
   get classes(): ConstrClassObject {
     return {
-      [`${this.naming.getName()}--placeholder`]: this.isPlaceholder(),
-      [`${this.naming.getName()}--multiple`]: Boolean(this.props.multiple)
+      [this.naming.getStatusClass('placeholder')]: this.isPlaceholder(),
+      [this.naming.getStatusClass('multiple')]: Boolean(this.props.multiple)
     }
   }
 

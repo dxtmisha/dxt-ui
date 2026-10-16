@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi } from 'vitest'
 import { reactive, ref } from 'vue'
+import { DesignName } from '@dxtmisha/functional'
 
 import { CarouselPaginationFocus } from '../CarouselPaginationFocus'
 import { CarouselPaginationSelected } from '../CarouselPaginationSelected'
@@ -20,7 +21,7 @@ describe('CarouselPaginationFocus', () => {
     const instance = new CarouselPaginationFocus(
       props,
       element,
-      'test-carouselPagination',
+      new DesignName('test.carouselPagination'),
       selected
     )
 

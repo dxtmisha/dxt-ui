@@ -1,7 +1,7 @@
 // ai-none
 
 import { type VNode } from 'vue'
-import { type ConstrBind, type DesignComponents, getBind, toBinds } from '@dxtmisha/functional'
+import { type ConstrBind, type DesignComponents, type DesignName, getBind, toBinds } from '@dxtmisha/functional'
 
 import { IconInclude } from './IconInclude'
 
@@ -24,19 +24,19 @@ export class IconTrailingInclude<
    *
    * Конструктор для инициализации помощника IconTrailingInclude.
    * @param props input parameter / входной параметр
-   * @param className class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param extra additional parameter / дополнительный параметр
    */
   constructor(
     protected readonly props: Readonly<Props> | (() => Readonly<Props>),
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComponents<IconComponentInclude, Props>,
     protected readonly extra?: ComponentIncludeExtra<IconPropsBasic>
   ) {
     super(
       props,
-      className,
+      naming,
       components,
       extra,
       () => this.isTurn(),

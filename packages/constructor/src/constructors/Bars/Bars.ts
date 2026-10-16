@@ -100,7 +100,7 @@ export class Bars {
       WindowClassesConstructor = WindowClassesInclude
     } = constructors
 
-    this.skeleton = new SkeletonConstructor(props, naming.getDesign(), ['classTextVariant'])
+    this.skeleton = new SkeletonConstructor(props, naming, ['classTextVariant'])
     this.windowClasses = new WindowClassesConstructor(naming.getDesign())
     this.motionTransformClasses = new MotionTransformClassesConstructor(naming.getDesign())
     this.text = new TextConstructor(props)
@@ -110,7 +110,7 @@ export class Bars {
         label: this.action.action.value ? this.props.actionLabel : this.props.label,
         labelId: this.props.labelId
       }),
-      naming.getName(),
+      naming,
       undefined,
       slots,
       undefined,
@@ -123,7 +123,7 @@ export class Bars {
         description: this.action.action.value ? this.props.actionDescription : this.props.description,
         descriptionId: this.props.descriptionId
       }),
-      naming.getName(),
+      naming,
       slots,
       this.skeleton
     )
@@ -163,7 +163,7 @@ export class Bars {
    */
   get classes(): ConstrClass {
     return {
-      [`${this.naming.getName()}--action`]: this.action.action.value
+      [this.naming.getStatusClass('action')]: this.action.action.value
     }
   }
 

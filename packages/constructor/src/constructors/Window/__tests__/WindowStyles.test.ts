@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { ref } from 'vue'
+import { DesignName } from '@dxtmisha/functional'
 import { WindowStyles } from '../WindowStyles'
 
 vi.mock('vue', async () => {
@@ -52,7 +53,7 @@ describe('WindowStyles', () => {
   })
 
   it('should set style properties on update()', () => {
-    const styles = new WindowStyles(mockElement, mockCoordinates, mockPosition, mockOrigin, 'd1-window')
+    const styles = new WindowStyles(mockElement, mockCoordinates, mockPosition, mockOrigin, new DesignName('d1.window'))
     styles.update()
 
     expect(mainElement.style.getPropertyValue('--d1-window-sys-inset-x')).toBe('30px')
@@ -65,7 +66,7 @@ describe('WindowStyles', () => {
   })
 
   it('should update window type datasets', () => {
-    const styles = new WindowStyles(mockElement, mockCoordinates, mockPosition, mockOrigin, 'd1-window')
+    const styles = new WindowStyles(mockElement, mockCoordinates, mockPosition, mockOrigin, new DesignName('d1.window'))
 
     // Initial state setup to trigger update
     mainElement.dataset.windowMenu = 'modal'

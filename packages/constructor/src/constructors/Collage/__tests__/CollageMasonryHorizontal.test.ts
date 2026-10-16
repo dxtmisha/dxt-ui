@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import { describe, expect, it, vi } from 'vitest'
 import { ref } from 'vue'
+import { DesignName } from '@dxtmisha/functional'
 import { CollageElement } from '../CollageElement'
 import { CollageGrow } from '../CollageGrow'
 import {
@@ -16,7 +17,7 @@ describe('CollageMasonryHorizontal', () => {
   it('should not throw on resize without elements', () => {
     const element = ref<HTMLElement | undefined>(undefined)
     const collageElement = new CollageElement(element)
-    const grow = new CollageGrow('d-collage', collageElement)
+    const grow = new CollageGrow(new DesignName('d.collage'), collageElement)
     const masonryHorizontal = new CollageMasonryHorizontal(grow, collageElement)
     expect(() => masonryHorizontal.resize()).not.toThrow()
   })
@@ -34,7 +35,7 @@ describe('CollageMasonryHorizontal', () => {
 
     const element = ref<HTMLElement | undefined>(undefined)
     const collageElement = new CollageElement(element)
-    const grow = new CollageGrow('d-collage', collageElement)
+    const grow = new CollageGrow(new DesignName('d.collage'), collageElement)
     const masonryHorizontal = new TestCollageMasonryHorizontal(grow, collageElement)
 
     expect(masonryHorizontal.getItemCenter(item)).toBe(50)
@@ -71,7 +72,7 @@ describe('CollageMasonryHorizontal', () => {
 
     const element = ref<HTMLElement | undefined>(container)
     const collageElement = new CollageElement(element)
-    const grow = new CollageGrow('d-collage', collageElement)
+    const grow = new CollageGrow(new DesignName('d.collage'), collageElement)
     const masonryHorizontal = new TestCollageMasonryHorizontal(grow, collageElement)
 
     const lines = masonryHorizontal.getLines()
@@ -96,7 +97,7 @@ describe('CollageMasonryHorizontal', () => {
 
     const element = ref<HTMLElement | undefined>(undefined)
     const collageElement = new CollageElement(element)
-    const grow = new CollageGrow('d-collage', collageElement)
+    const grow = new CollageGrow(new DesignName('d.collage'), collageElement)
     const masonryHorizontal = new TestCollageMasonryHorizontal(grow, collageElement)
 
     const result = masonryHorizontal.getColumnsTotals([[item1, item2], [item3]])
@@ -133,7 +134,7 @@ describe('CollageMasonryHorizontal', () => {
 
     const element = ref<HTMLElement | undefined>(container)
     const collageElement = new CollageElement(element)
-    const grow = new CollageGrow('d-collage', collageElement)
+    const grow = new CollageGrow(new DesignName('d.collage'), collageElement)
     const masonryHorizontal = new CollageMasonryHorizontal(grow, collageElement)
 
     const spyRaf = vi.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {

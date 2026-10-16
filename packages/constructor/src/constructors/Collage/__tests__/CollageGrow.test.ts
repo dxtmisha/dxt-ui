@@ -1,12 +1,13 @@
 // @vitest-environment jsdom
 import { describe, it, expect } from 'vitest'
 import { ref } from 'vue'
+import { DesignName } from '@dxtmisha/functional'
 import { CollageElement } from '../CollageElement'
 import { CollageGrow } from '../CollageGrow'
 
 describe('CollageGrow', () => {
   it('should initialize propertyGrow with class name', () => {
-    const grow = new CollageGrow('d-collage')
+    const grow = new CollageGrow(new DesignName('d.collage'))
 
     expect(grow.propertyGrow).toBe('--d-collage-sys-item-grow')
   })
@@ -20,7 +21,7 @@ describe('CollageGrow', () => {
 
     const element = ref<HTMLElement | undefined>(container)
     const collageElement = new CollageElement(element)
-    const grow = new CollageGrow('d-collage', collageElement)
+    const grow = new CollageGrow(new DesignName('d.collage'), collageElement)
 
     grow.setGrow(item, 5)
     expect(item.style.getPropertyValue('--d-collage-sys-item-grow')).toBe('5')

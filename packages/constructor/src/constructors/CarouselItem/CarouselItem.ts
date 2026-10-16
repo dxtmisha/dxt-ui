@@ -67,10 +67,10 @@ export class CarouselItem {
     } = constructors
 
     this.data = new CarouselItemDataConstructor(props)
-    this.skeleton = new SkeletonIncludeConstructor(props, naming.getDesign(), ['classBackground'])
+    this.skeleton = new SkeletonIncludeConstructor(props, naming, ['classBackground'])
     this.event = new EventClickIncludeConstructor(props, undefined, emits)
     this.image = new ImageIncludeConstructor(
-      naming.getName(),
+      naming,
       props,
       components,
       undefined,

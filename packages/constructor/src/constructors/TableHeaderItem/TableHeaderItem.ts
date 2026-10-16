@@ -96,13 +96,13 @@ export class TableHeaderItem extends TableItem {
     this.sort = new TableHeaderItemSortConstructor(props, emits)
 
     this.chip = new ChipIncludeConstructor(
-      naming.getName(),
+      naming,
       props,
       components,
       this.sort.chipExtra
     )
 
-    this.tooltip = new TooltipIncludeConstructor(naming.getName(), props, components, this.slots)
+    this.tooltip = new TooltipIncludeConstructor(naming, props, components, this.slots)
   }
 
   /**
@@ -127,7 +127,7 @@ export class TableHeaderItem extends TableItem {
    */
   get tooltipControlBind(): ConstrBind<IconPropsBasic> {
     return {
-      'class': `${this.naming.getName()}__tooltip`,
+      'class': this.naming.getSubClass('tooltip'),
       'icon': this.props.iconTooltip || 'help-circle',
       'data-event-type': 'tooltip'
     }

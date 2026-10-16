@@ -1,19 +1,25 @@
 <script setup lang="ts">
+import { useTranslateRef } from '@dxtmisha/functional'
 import { useConfigurationAi } from '../../composables/useConfigurationAi'
 
 defineOptions({
   name: 'TranslateConfigurationAiKey'
 })
 
+/** Translations / Переводы */
+const translate = useTranslateRef([
+  'translate-configuration-ai-key'
+] as const)
+
 const { key } = useConfigurationAi()
 </script>
 
 <template>
-  <div class="translate-configuration-ai-key">
-    <D1Input
-      v-model="key"
-    />
-  </div>
+  <D1Input
+    v-model="key"
+    class="translate-configuration-ai-key"
+    :label="translate['translate-configuration-ai-key']"
+  />
 </template>
 
 <style lang="scss"></style>

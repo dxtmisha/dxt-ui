@@ -60,7 +60,7 @@ export class Block {
     } = constructors
 
     this.header = new HeaderIncludeConstructor(
-      naming.getName(),
+      naming,
       props,
       components,
       undefined,
@@ -68,7 +68,7 @@ export class Block {
       this.labelId
     )
 
-    this.description = new DescriptionIncludeConstructor(props, naming.getName(), slots)
+    this.description = new DescriptionIncludeConstructor(props, naming, slots)
     this.area = new AreaIncludeConstructor(props)
   }
 

@@ -63,7 +63,7 @@ export class TableRecordInclude extends ComponentIncludeAbstract<
     protected readonly slots?: Record<string, any>,
     index?: string
   ) {
-    super(naming.getName(), props, components, extra, index)
+    super(naming, props, components, extra, index)
   }
 
   /**

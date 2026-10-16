@@ -89,8 +89,8 @@ export class TabsNavigationIndicator {
    */
   readonly reset = (item: HTMLElement) => {
     setTimeout(() => {
-      item.style.removeProperty(`--${this.naming.getName()}-sys-left`)
-      item.style.removeProperty(`--${this.naming.getName()}-sys-width`)
+      item.style.removeProperty(this.naming.getStyle('left'))
+      item.style.removeProperty(this.naming.getStyle('width'))
     }, 384)
   }
 

@@ -1,7 +1,7 @@
 // ai-none
 
 import type { VNode } from 'vue'
-import { type DesignComponents } from '@dxtmisha/functional'
+import { type DesignComponents, type DesignName } from '@dxtmisha/functional'
 
 import { EnabledInclude } from '../../classes/EnabledInclude'
 
@@ -18,12 +18,12 @@ export class RippleInclude {
    * Constructor for creating a RippleInclude instance.
    *
    * Конструктор для создания экземпляра RippleInclude.
-   * @param className base CSS class name / базовое имя CSS-класса
+   * @param naming component naming helper / помощник именования компонента
    * @param components object for working with components / объект для работы с компонентами
    * @param enabled enabled state manager / менеджер состояния активности
    */
   constructor(
-    protected readonly className: string,
+    protected readonly naming: DesignName,
     protected readonly components?: DesignComponents<RippleComponentInclude, RipplePropsBasic>,
     protected readonly enabled?: EnabledInclude
   ) {
@@ -46,7 +46,7 @@ export class RippleInclude {
     ) {
       return this.components.render(
         'ripple',
-        { class: `${this.className}__ripple` }
+        { class: this.naming.getSubClass('ripple') }
       )
     }
 

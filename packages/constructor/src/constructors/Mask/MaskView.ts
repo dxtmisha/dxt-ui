@@ -1,6 +1,7 @@
 // ai-none
 
 import { computed } from 'vue'
+import type { DesignName } from '@dxtmisha/functional'
 
 import { MaskType } from './MaskType'
 import { MaskDate } from './MaskDate'
@@ -34,7 +35,7 @@ export class MaskView {
    * @param mask object for managing masks/ объект управления маской
    * @param valueBasic object for working with base values/ объект для работы с базовыми значениями
    * @param validation object for working with validation/ объект для работы с валидацией
-   * @param className define class names for each symbol/ определить название класса для каждого символа
+   * @param naming component naming helper / помощник именования компонента
    */
   constructor(
     protected readonly props: MaskProps,
@@ -46,9 +47,9 @@ export class MaskView {
     protected readonly mask: MaskItem,
     protected readonly valueBasic: MaskValueBasic,
     protected readonly validation: MaskValidation,
-    className: string
+    naming: DesignName
   ) {
-    this.classNameItem = `${className}__character__item`
+    this.classNameItem = naming.getSubClass('character__item')
   }
 
   /** View items list/ Список данных для отображения */

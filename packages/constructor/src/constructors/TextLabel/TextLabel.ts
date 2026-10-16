@@ -41,7 +41,7 @@ export class TextLabel {
 
     this.label = new LabelConstructor(
       this.props,
-      this.naming.getName(),
+      this.naming,
       undefined,
       this.slots,
       undefined,

@@ -1,7 +1,7 @@
 // ai-none
 
 import { type Ref } from 'vue'
-import { getElementId } from '@dxtmisha/functional'
+import { getElementId, type DesignName } from '@dxtmisha/functional'
 
 import { __MOTION_TRANSFORM_TYPE_BODY_NAME, type MotionTransformClassList, type MotionTransformStyle } from './basicTypes'
 import type { MotionTransformProps } from './props'
@@ -29,29 +29,29 @@ export class MotionTransformElement {
    * @param props input properties / входные свойства
    * @param element window element / элемент окна
    * @param elementContext substrate element / элемент подложка
-   * @param className base class name / название класса
+   * @param naming component naming helper / помощник именования компонента
    */
   constructor(
     protected readonly props: MotionTransformProps,
     readonly element: Ref<HTMLDivElement | undefined>,
     protected readonly elementContext: Ref<HTMLDivElement | undefined>,
-    protected readonly className: string
+    protected readonly naming: DesignName
   ) {
-    this.classes = MotionTransformElement.getClassesList(className)
+    this.classes = MotionTransformElement.getClassesList(naming.getName())
     this.style = {
-      top: `--${this.className}-sys-top`,
-      left: `--${this.className}-sys-left`,
-      height: `--${this.className}-sys-height`,
-      scale: `--${this.className}-sys-scale`,
+      top: this.naming.getStyle('top'),
+      left: this.naming.getStyle('left'),
+      height: this.naming.getStyle('height'),
+      scale: this.naming.getStyle('scale'),
 
-      contextWidth: `--${this.className}-sys-context-width`,
-      contextHeight: `--${this.className}-sys-context-height`,
+      contextWidth: this.naming.getStyle('context-width'),
+      contextHeight: this.naming.getStyle('context-height'),
 
-      headWidth: `--${this.className}-sys-head-width`,
-      headHeight: `--${this.className}-sys-head-height`,
-      headScale: `--${this.className}-sys-head-scale`,
+      headWidth: this.naming.getStyle('head-width'),
+      headHeight: this.naming.getStyle('head-height'),
+      headScale: this.naming.getStyle('head-scale'),
 
-      bodyHeight: `--${this.className}-sys-body-height`
+      bodyHeight: this.naming.getStyle('body-height')
     }
   }
 
@@ -70,7 +70,7 @@ export class MotionTransformElement {
    * Возвращает элемент заголовка.
    */
   get elementHead(): HTMLDivElement | undefined {
-    return this.getElement()?.querySelector<HTMLDivElement>(`.${this.className}__head`) || undefined
+    return this.getElement()?.querySelector<HTMLDivElement>(`.${this.naming.getSubClass('head')}`) || undefined
   }
 
   /**
@@ -79,7 +79,7 @@ export class MotionTransformElement {
    * Возвращает элемент тела.
    */
   get elementBody(): HTMLDivElement | undefined {
-    return this.getElement()?.querySelector<HTMLDivElement>(`.${this.className}__body`) || undefined
+    return this.getElement()?.querySelector<HTMLDivElement>(`.${this.naming.getSubClass('body')}`) || undefined
   }
 
   /**

@@ -115,8 +115,8 @@ export class Collage {
     } = constructors
 
     this.elementItem = new CollageElementConstructor(element)
-    this.grow = new CollageGrowConstructor(naming.getName(), this.elementItem)
-    this.woven = new CollageWovenConstructor(naming.getName(), this.elementItem)
+    this.grow = new CollageGrowConstructor(naming, this.elementItem)
+    this.woven = new CollageWovenConstructor(naming, this.elementItem)
     this.masonryHorizontal = new CollageMasonryHorizontalConstructor(
       this.grow,
       this.elementItem

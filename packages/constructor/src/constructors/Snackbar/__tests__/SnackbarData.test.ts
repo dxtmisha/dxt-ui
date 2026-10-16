@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { ref } from 'vue'
+import { DesignName } from '@dxtmisha/functional'
 import { SnackbarData } from '../SnackbarData'
 
 vi.mock('@dxtmisha/functional-basic', async () => {
@@ -27,7 +28,7 @@ describe('SnackbarData', () => {
     const container = document.createElement('div')
     const elementRef = ref(container)
 
-    const data = new SnackbarData(props, elementRef, 'd1-snackbar')
+    const data = new SnackbarData(props, elementRef, new DesignName('d1.snackbar'))
 
     expect(data.isItem()).toBe(false)
     expect(data.isPriority()).toBe(false)
@@ -56,7 +57,7 @@ describe('SnackbarData', () => {
       hide: vi.fn()
     } as any
 
-    const data = new SnackbarData(props, elementRef, 'd1-snackbar', mockEvent)
+    const data = new SnackbarData(props, elementRef, new DesignName('d1.snackbar'), mockEvent)
 
     // Case 1: Custom value and custom delay
     data.add({ data: { label: 'Message 1' }, value: 'my-id', delay: 2000 })
@@ -73,7 +74,7 @@ describe('SnackbarData', () => {
 
   it('should retrieve item by value', () => {
     const props = {} as any
-    const data = new SnackbarData(props, ref(undefined), 'd1-snackbar')
+    const data = new SnackbarData(props, ref(undefined), new DesignName('d1.snackbar'))
     const testItem = { value: 'target-id', text: 'Hello' } as any
     data.item.value = [testItem]
 
@@ -91,7 +92,7 @@ describe('SnackbarData', () => {
       hide: vi.fn()
     } as any
 
-    const data = new SnackbarData(props, elementRef, 'd1-snackbar', mockEvent)
+    const data = new SnackbarData(props, elementRef, new DesignName('d1.snackbar'), mockEvent)
 
     const testItem = { value: 'item-1', text: 'Hello' } as any
     data.item.value = [testItem]
@@ -114,7 +115,7 @@ describe('SnackbarData', () => {
       hide: vi.fn()
     } as any
 
-    const data = new SnackbarData(props, elementRef, 'd1-snackbar', mockEvent)
+    const data = new SnackbarData(props, elementRef, new DesignName('d1.snackbar'), mockEvent)
 
     const testItem = { value: 'item-1', text: 'Hello' } as any
     data.item.value = [testItem]
@@ -138,7 +139,7 @@ describe('SnackbarData', () => {
 
   it('should pause and resume timers', () => {
     const props = {} as any
-    const data = new SnackbarData(props, ref(undefined), 'd1-snackbar')
+    const data = new SnackbarData(props, ref(undefined), new DesignName('d1.snackbar'))
 
     const timerMock1 = { pause: vi.fn(), resume: vi.fn() } as any
     const timerMock2 = { pause: vi.fn(), resume: vi.fn() } as any
@@ -159,7 +160,7 @@ describe('SnackbarData', () => {
 
   it('should clear all items', () => {
     const props = {} as any
-    const data = new SnackbarData(props, ref(undefined), 'd1-snackbar')
+    const data = new SnackbarData(props, ref(undefined), new DesignName('d1.snackbar'))
     const spyRemove = vi.spyOn(data, 'remove')
 
     data.item.value = [

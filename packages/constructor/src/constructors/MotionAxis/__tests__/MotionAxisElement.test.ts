@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import { describe, it, expect } from 'vitest'
 import { ref } from 'vue'
+import { DesignName } from '@dxtmisha/functional'
 import { MotionAxisElement } from '../MotionAxisElement'
 
 describe('MotionAxisElement', () => {
@@ -10,7 +11,7 @@ describe('MotionAxisElement', () => {
     scrollDiv.className = 'base-class__scroll'
     scrollDiv.appendChild(div)
 
-    const el = new MotionAxisElement(ref(div), 'base-class')
+    const el = new MotionAxisElement(ref(div), new DesignName('base.class'))
 
     expect(el.getStart()).toBe(false)
     el.toStart()

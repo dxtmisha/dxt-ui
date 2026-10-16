@@ -70,7 +70,7 @@ export class Icon {
 
     this.skeleton = new SkeletonIncludeConstructor(
       props,
-      naming.getDesign(),
+      naming,
       ['classBackgroundVariant']
     )
   }
@@ -118,7 +118,7 @@ export class Icon {
       this.props.icon,
       {
         key: 'mainIcon',
-        class: `${this.naming.getName()}__icon`,
+        class: this.naming.getSubClass('icon'),
         turn: this.props.turn,
         disabled: this.props.disabled,
         hide: this.isActive(),
@@ -135,7 +135,7 @@ export class Icon {
       this.props.iconActive,
       {
         key: 'activeIcon',
-        class: `${this.naming.getName()}__iconActive`,
+        class: this.naming.getSubClass('iconActive'),
         turn: this.props.turn,
         disabled: this.props.disabled,
         hide: !this.isActive()

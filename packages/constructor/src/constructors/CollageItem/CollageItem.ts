@@ -77,11 +77,11 @@ export class CollageItem {
       ImageIncludeConstructor = ImageInclude
     } = constructors
 
-    this.dimensions = new DimensionsConstructor(props, naming.getName(), emits)
+    this.dimensions = new DimensionsConstructor(props, naming, emits)
     this.event = new EventClickIncludeConstructor(props, undefined, emits)
 
     this.image = new ImageIncludeConstructor(
-      naming.getName(),
+      naming,
       props,
       components,
       () => ({
@@ -98,12 +98,12 @@ export class CollageItem {
       () => ({
         icon: this.props.iconCheck ?? 'check_circle'
       }),
-      naming.getName(),
+      naming,
       components
     )
 
     this.collageBar = new CollageBarIncludeConstructor(
-      naming.getName(),
+      naming,
       props,
       components
     )
@@ -119,7 +119,7 @@ export class CollageItem {
       ?? this.props.collageBarAttrs?.position
 
     return {
-      [`${this.naming.getName()}--collageBarPosition--${position}`]: Boolean(position)
+      [this.naming.getStatusClass(`collageBarPosition--${position}`)]: Boolean(position)
     }
   }
 }

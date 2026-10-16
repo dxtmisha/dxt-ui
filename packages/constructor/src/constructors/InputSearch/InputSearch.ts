@@ -167,7 +167,7 @@ export class InputSearch {
     )
 
     this.field = new FieldIncludeConstructor(
-      this.naming.getName(),
+      this.naming,
       this.props,
       this.components,
       () => ({

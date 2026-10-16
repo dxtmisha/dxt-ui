@@ -212,7 +212,7 @@ export class NavigationRail {
       item,
       {
         key: item.value,
-        class: `${this.naming.getName()}__menu`
+        class: this.naming.getSubClass('menu')
       }
     )
   }
@@ -268,7 +268,7 @@ export class NavigationRail {
       this.props.itemManagementAttrs,
       item,
       {
-        'class': `${this.naming.getName()}__management`,
+        'class': this.naming.getSubClass('management'),
         'focus': item?.index === this.focus.focus.value,
         'selectedChild': this.isOpenGroup(item),
         open,

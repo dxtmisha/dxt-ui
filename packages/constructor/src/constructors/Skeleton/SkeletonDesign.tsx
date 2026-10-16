@@ -66,7 +66,7 @@ export class SkeletonDesign<
 
     this.item = new ItemConstructor(
       this.props,
-      this.naming.getName()
+      this.naming
     )
   }
 
