@@ -4,24 +4,33 @@ import { Meta } from '@storybook/addon-docs/blocks'
 
 # `getElementImage`
 
-Служит для безопасного получения узла `HTMLImageElement`. Если на вход подана строка (ссылка на изображение), функция автоматически создаст тег `<img>` и назначит ему эту ссылку (`src`). Если на вход уже передан объект изображения `HTMLImageElement`, он просто возвращается без изменений.
+Служит для безопасного получения узла `HTMLImageElement`. Если на вход подана строка (ссылка на изображение), функция создаёт новый тег `<img>`, опционально привязывает обработчики событий `onload` и `onerror`, а затем назначает ссылку в `src`. Если на вход уже передан объект изображения `HTMLImageElement`, он возвращается сразу без изменений.
 
 **Параметры:**
-- `image: HTMLImageElement | string` — Элемент изображения или строковый источник (URL).
+- `image?: HTMLImageElement | string` — Элемент изображения или строковый источник (URL / Base64 / Blob URL).
+- `onload?: (image: HTMLImageElement, event?: Event | string) => void` — Опциональный колбэк успешной загрузки изображения.
+- `onerror?: (image: HTMLImageElement, event?: Event | string) => void` — Опциональный колбэк ошибки загрузки изображения.
 
 **Возвращает:**
-`HTMLImageElement | undefined` — Готовый к использованию тег `<img>`, либо `undefined` если окружение не позволяет его создать (например, нет DOM).
+`HTMLImageElement | undefined` — Готовый к использованию тег `<img>`, либо `undefined`, если окружение не позволяет его создать (например, в SSR) или если аргумент `image` не передан.
 
 ```typescript
 import { getElementImage } from '@dxtmisha/functional-basic'
 
-// Передаем строку - ссылка
+// 1. Простое создание тега по строковому URL
 const img1 = getElementImage('/path/to/image.png')
 console.log(img1 instanceof HTMLImageElement) // true
 console.log(img1?.src) // 'http://.../path/to/image.png'
 
-// Передаем существующий тег img
+// 2. Создание с отслеживанием загрузки и ошибок
+const imgWithEvents = getElementImage(
+  '/path/to/avatar.jpg',
+  (image) => console.log('Картинка успешно загрузилась:', image.naturalWidth),
+  (image) => console.error('Ошибка загрузки картинки:', image.src)
+)
+
+// 3. Передача существующего тега img (возвращается без изменений)
 const existingImg = document.createElement('img')
 const img2 = getElementImage(existingImg)
-console.log(img1 === existingImg) // true
+console.log(img2 === existingImg) // true
 ```

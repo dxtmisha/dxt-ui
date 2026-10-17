@@ -1,6 +1,6 @@
 ---
 name: code-review
-description: Conduct a rigorous code review assessing architecture, dependencies and inbound usage across the codebase, modern engineering standards vs obsolete patterns, bugs and edge cases, adherence to project rules, accessibility & ARIA compliance, design quality, SSR compatibility & isomorphism, memory leak prevention & resource cleanup, and test suite completeness (auditing test quality, rewriting incomplete tests, refining fragile tests, or creating comprehensive unit tests from scratch), saved as an AI artifact in the language specified by wikiLanguage in ./design.config.json.
+description: Conduct a rigorous read-only code review assessing architecture, dependencies and inbound usage across the codebase, modern engineering standards vs obsolete patterns, bugs and edge cases, adherence to project rules, accessibility & ARIA compliance, design quality, SSR compatibility & isomorphism, memory leak prevention & resource cleanup, and test suite completeness, with all findings, refactorings, and proposed test suites saved exclusively as an AI artifact (strictly prohibiting any workspace file modifications until explicitly instructed by the developer), in the language specified by wikiLanguage in ./design.config.json.
 ---
 
 # Task: Strict Architectural and Quality Code Review
@@ -11,9 +11,9 @@ Your analysis must not be a superficial lint check. You must evaluate architectu
 
 ---
 
-## 🔴 Mandatory Pre-Review Protocol (Language, Delivery Target, Usage Graph & Test Coverage)
+## 🔴 Mandatory Pre-Review Protocol (Language, Delivery Target, Read-Only Mandate, Usage Graph, Context & Test Coverage)
 
-Before analyzing any code or generating any review text, you MUST execute these four mandatory steps:
+Before analyzing any code or generating any review text, you MUST execute these six mandatory steps:
 
 ### 1. Mandatory Language Determination (`design.config.json` -> `wikiLanguage`)
 - **Direct Instruction**: The AI agent **MUST open and inspect `./design.config.json`** to retrieve the `wikiLanguage` property (e.g., `"wikiLanguage": "ru"` or `"wikiLanguage": "en"`).
@@ -32,7 +32,13 @@ Before analyzing any code or generating any review text, you MUST execute these 
 - **Chat Response**:
   - In the chat response, provide **ONLY a concise 1–2 sentence notification** with a clickable link to the generated artifact (e.g., `[code_review_<target>.md](file:///...)`) and an overall rating. Never re-summarize or duplicate the findings in the chat.
 
-### 3. Mandatory Dependency & Inbound Usage Investigation (Graph & Blast Radius Audit)
+### 3. Strict Prohibition of Proactive File Modifications (Read-Only Mandate / Запрет на редактирование файлов)
+- **Strict Read-Only Workflow**: Code review is **STRICTLY a diagnostic, analytical, and advisory task**.
+- **PROHIBITION OF UNSOLICITED CODE MODIFICATIONS**: During code review, the AI agent is **STRICTLY FORBIDDEN to edit, rewrite, refactor, or touch ANY files in the project workspace** (source files, components, classes, tests, documentation, or configurations). Proactive, self-directed code editing during code review is a severe violation.
+- **Artifact-Only Recommendations**: All code fixes, before/after diffs, architectural refactorings, and proposed unit test suites must be documented **EXCLUSIVELY within the AI Artifact report**, NEVER applied directly to the codebase.
+- **Developer-Driven Execution**: The AI agent is authorized to modify, edit, or refactor workspace files **STRICTLY and ONLY when the developer explicitly issues a direct instruction** (e.g., "исправь", "примени фиксы", "исправь замечания", "обнови тесты", etc.). Fix and edit strictly what the developer tells you to fix!
+
+### 4. Mandatory Dependency & Inbound Usage Investigation (Graph & Blast Radius Audit)
 - **Never Review in Isolation**: You must NEVER review a target entity in a vacuum. Code review is incomplete without inspecting its dependencies and all places where it is consumed.
 - **Outbound Dependencies Audit (What it depends on)**:
   - Inspect all imports, utilities, classes, and packages used by the target.
@@ -45,17 +51,22 @@ Before analyzing any code or generating any review text, you MUST execute these 
   - **Blast Radius & Backward Compatibility**: Evaluate the exact impact of any proposed changes, refactorings, or type adjustments on existing consumers. Flag any breaking changes.
   - Identify obsolete, inconsistent, or antipattern usages at call sites that should be refactored alongside the entity.
 
-### 4. Mandatory Unit Test Audit & Quality Inspection (Rewrite, Refine, or Create)
+### 5. Mandatory Unit Test Audit & Quality Inspection (Audit in Artifact, Do NOT Modify Files Proactively)
 - **Locate and Inspect Tests**: Search for corresponding unit tests in the adjacent or package `__tests__/` directory (e.g., `__tests__/<Entity>.test.ts` or `<name>.test.ts`).
 - **Assess Test Quality & Completeness (Audit)**:
   - Do not merely check if a test file exists. Critically inspect the quality, depth, and thoroughness of the test suite.
   - Detect incomplete, superficial, or low-quality tests: superficial smoke tests with only 1 shallow assertion, missing edge cases (empty strings, `null`, `undefined`, 0, negative values, invalid objects), unhandled error branches, untested reactive properties, unverified event emissions, ignored lifecycle hooks (`onMounted`, `onUnmounted`, resource cleanup), or unverified SSR behavior (server-side rendering safety and hydration compatibility).
-- **Rewrite or Refine Incomplete / Low-Quality Tests**:
-  - If existing tests are **incomplete, shallow, fragile, or of low quality**, do NOT settle for minor cosmetic edits: **completely rewrite (`перепиши`) or deeply refine (`доработай`)** them into a robust, comprehensive test suite.
-  - Ensure all public APIs, states, methods, branches, asynchronous workflows, and lifecycles are explicitly tested with clean assertions.
-- **Add Tests from Scratch if Missing**:
-  - If the entity **has no unit tests at all**, it is **strictly mandatory to author and implement a complete unit test suite** (`__tests__/<Entity>.test.ts`) from scratch.
-- **Execution & Clean Pass Verification**: Run tests using the test runner (e.g. `npx vitest run <path-to-test>`) to ensure 100% test success with 0 failures and 0 framework/Vue warnings.
+- **Read-Only Verification (Run Test Runner)**:
+  - Run tests using the test runner (e.g. `npx vitest run <path-to-test>`) in read-only mode to verify current test status, failure points, and execution coverage.
+- **Formulate Comprehensive Test Suite in the Artifact (Do NOT Modify Test Files)**:
+  - If existing tests are incomplete, shallow, fragile, or missing: author the recommended, robust unit test suite **STRICTLY inside Section 5 of the AI Artifact report**, ready for review and copy-pasting.
+  - **STRICT PROHIBITION**: Do NOT rewrite, overwrite, or create test files in the workspace repository during code review. Modifying or adding test files is permitted **STRICTLY and ONLY upon explicit developer command**.
+
+### 6. Context & Purpose Awareness (Anti-Overengineering Guard / Учёт среды использования и назначения)
+- **Evaluate Real-World Context & Purpose**: The reviewer MUST assess the code through the lens of its **actual execution environment, consumer call sites, and intended functional purpose**.
+- **Ban on "All-Life-Cases" Paranoia (Запрет проверок «на все случаи жизни»)**: It is **STRICTLY FORBIDDEN to demand checks, guards, or complex algorithmic layers for absurd, contrived, or statistically impossible hypothetical scenarios**. Demanding defensive code for every conceivable theoretical edge case leads to **code bloat and severe over-engineering (`избыточный код / оверинжиниринг`)**.
+- **Real vs Contrived Boundaries**: Distinguish between genuine production edge cases (e.g., `0`, `false`, `null`, XSS injection in user attributes, SSR hydration mismatches, unhandled promise rejections, lifecycle teardown) and paranoid edge cases that never occur in the real system architecture or that contradict the component's defined scope.
+- **Proportionality & Cleanliness**: Defensive checks must remain strictly proportional to the entity's purpose. If a theoretical scenario requires bloating a simple, focused helper with dozens of lines of redundant defensive code, demanding this in code review is a severe anti-pattern. Keep the code lean, fast, and purposeful.
 
 ---
 
@@ -178,6 +189,7 @@ Rigorously search for subtle defects, including:
 4. **Edge Cases & Boundary Conditions**:
    - Unhandled `null`, `undefined`, empty string, empty array/object, `NaN`, 0, negative numbers.
    - Boundary checks, division by zero, off-by-one errors.
+   - **Pragmatic Boundaries vs Code Bloat (Без избыточного кода)**: Evaluate edge cases strictly within the entity's intended purpose and usage environment. Do NOT penalize code or demand defensive layers for absurd, impossible edge cases that bloat the codebase without real benefit.
 5. **SSR Hydration & Isomorphic Flaws**:
    - Direct execution of `window`, `document`, `navigator`, `localStorage`, `sessionStorage`, or `location` on the server without checking `isDomRuntime()`.
    - Cross-request state pollution: Storing user or request-dependent data in module-level global variables or shared singletons, leaking sensitive state between concurrent requests in SSR.
@@ -224,9 +236,9 @@ Check compliance against the core rules of `dxt-ui`:
   - Mandatory disposal of all listeners, timers, observers, and subscriptions in `onScopeDispose` / `onUnmounted`.
   - Explicit `destroy()` / `dispose()` methods on stateful classes holding references or subscriptions.
   - Zero unstopped watchers or detached DOM references.
-- **Mandatory Unit Tests Quality & Coverage**:
-  - Every entity (constructor class, utility function, composable, helper) must be backed by thorough, high-quality unit tests in its corresponding `__tests__/` directory.
-  - Test suites must be critically audited for completeness and quality: if tests are incomplete, superficial, or low-quality, they must be rewritten or deeply refined; if tests are missing for an entity, comprehensive tests must be created from scratch.
+- **Mandatory Unit Tests Quality & Coverage (Audit & Artifact Specification)**:
+  - Every entity (constructor class, utility function, composable, helper) must be evaluated against thorough, high-quality testing standards.
+  - Test suites must be critically audited for completeness and quality: if tests are incomplete, superficial, or low-quality, the reviewer must document the gaps and prepare a comprehensive test suite specification **inside the review artifact**. Modifying or creating test files in the workspace is permitted **STRICTLY and ONLY upon explicit instruction from the developer**.
 
 ---
 
@@ -284,11 +296,15 @@ Document the review in the artifact markdown file with the following sections (t
 - Compare the reviewed solution with how leading open-source libraries (e.g., VueUse, Radix, Nuxt, TanStack) solve similar architectural problems.
 - Highlight concrete lessons or patterns that could be adopted to elevate the code to top-tier quality.
 
-#### 5. Actionable Refactoring, Code Fixes & Test Suite
-- Provide ready-to-use before/after code diffs or refactored code blocks illustrating the recommended improvements.
-- **Unit Test Rewrites, Refinements & Implementation**:
-  - If existing tests are incomplete, superficial, or low-quality: rewrite or deeply refine them into an exhaustive test suite covering all branches, edge cases, and lifecycles.
-  - If tests require updates due to code changes or uncovered branches: update and expand them.
-  - If no tests exist for the entity: author and implement the complete unit test file in `__tests__/<Entity>.test.ts` from scratch.
+#### 5. Actionable Refactoring, Code Fixes & Test Suite (Advisory Proposals)
+- Provide ready-to-use before/after code diffs or refactored code blocks illustrating the recommended improvements as advisory proposals for the developer.
+- **Proportional & Lean Fixes (Без оверинжиниринга)**: Ensure refactored code remains lean and focused on the entity's actual purpose and environment. Do NOT introduce over-engineered defensive wrappers or bloated code for contrived "all-life" edge cases.
+- **Unit Test Recommendations & Code Blocks (In Artifact Only)**:
+  - If existing tests are incomplete, superficial, or low-quality: provide a complete, copy-paste ready unit test suite covering all branches, edge cases, and lifecycles **strictly within the report artifact**.
+  - If no tests exist: author the complete recommended unit test suite inside the artifact.
+- **Strict Prohibition of Proactive Workspace Modifications**:
+  - **STRICTLY FORBIDDEN to modify, edit, or refactor the codebase or test files proactively during code review**.
+  - All refactorings and code fixes remain purely advisory proposals until the developer explicitly instructs to apply them (e.g., "исправь", "примени рекомендации", "исправь пункт 2"). Fix and edit strictly what the developer tells you to fix!
+
 
 

@@ -43,6 +43,18 @@ describe('createElement', () => {
     expect(el?.title).toBe('test title')
   })
 
+  it('should handle boolean aria-* and numeric attributes via options object', () => {
+    const element = createElement(parentElement, 'div', {
+      'aria-hidden': true,
+      'aria-expanded': false,
+      'data-count': 0
+    })
+
+    expect(element?.getAttribute('aria-hidden')).toBe('true')
+    expect(element?.getAttribute('aria-expanded')).toBe('false')
+    expect(element?.getAttribute('data-count')).toBe('0')
+  })
+
   it('should invoke the options function for custom processing', () => {
     const mockOptionsFn = vi.fn((el: HTMLElement) => {
       el.id = 'processed-id'
@@ -88,13 +100,34 @@ describe('createElement', () => {
   })
 
   it('should handle function options with no parentElement', () => {
-    const mockOptionsFn = vi.fn((el: HTMLElement) => {
-      el.id = 'no-parent-id'
+    const mockOptionsFn = vi.fn((element: HTMLElement) => {
+      element.id = 'no-parent-id'
     })
 
-    const el = createElement<HTMLDivElement>(undefined, 'div', mockOptionsFn)
+    const element = createElement<HTMLDivElement>(undefined, 'div', mockOptionsFn)
 
-    expect(mockOptionsFn).toHaveBeenCalledWith(el)
-    expect(el?.id).toBe('no-parent-id')
+    expect(mockOptionsFn).toHaveBeenCalledWith(element)
+    expect(element?.id).toBe('no-parent-id')
+  })
+
+  it('should support appending to a DocumentFragment container', () => {
+    const fragment = document.createDocumentFragment()
+    const element = createElement(fragment, 'div', { id: 'fragment-child' })
+
+    expect(element).toBeInstanceOf(HTMLDivElement)
+    expect(fragment.contains(element!)).toBe(true)
+
+    parentElement.appendChild(fragment)
+    expect(parentElement.querySelector('#fragment-child')).toBe(element)
+  })
+
+  it('should insert before a comment anchor node', () => {
+    const commentAnchor = document.createComment('template-anchor')
+    parentElement.appendChild(commentAnchor)
+
+    const element = createElement(parentElement, 'span', undefined, commentAnchor)
+
+    expect(parentElement.firstChild).toBe(element)
+    expect(element?.nextSibling).toBe(commentAnchor)
   })
 })

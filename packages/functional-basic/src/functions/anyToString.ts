@@ -5,10 +5,12 @@ import { isString } from './isString'
 
 /**
  * Conversion of a value to a string.
+ * Flat arrays without objects are joined with commas if `isArrayString` is true, otherwise serialized as JSON.
  *
  * Преобразование значения в строку.
+ * Плоские массивы без объектов при `isArrayString=true` склеиваются через запятую, иначе сериализуются в JSON.
  * @param value values for conversion / значения для преобразования
- * @param isArrayString if true, then arrays will be converted to strings / если true, то массивы будут преобразованы в строки
+ * @param isArrayString if true, arrays without objects are joined with commas; if false, serialized as JSON string / если true, массивы без объектов склеиваются через запятую; если false, сериализуются в JSON-строку
  * @param trim if true, then the resulting string will be trimmed / если true, то результирующая строка будет обрезана
  * @returns string representation of the passed value / строковое представление переданного значения
  */
@@ -37,7 +39,11 @@ export function anyToString<V>(
     try {
       return JSON.stringify(value)
     } catch {
-      return String(value)
+      try {
+        return String(value)
+      } catch {
+        return Object.prototype.toString.call(value)
+      }
     }
   }
 

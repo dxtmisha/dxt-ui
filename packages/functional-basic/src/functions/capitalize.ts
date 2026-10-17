@@ -1,3 +1,5 @@
+import { toString } from './toString'
+
 import { Geo } from '../classes/Geo'
 
 /**
@@ -5,22 +7,27 @@ import { Geo } from '../classes/Geo'
  *
  * Делает первую букву строки заглавной.
  * @param value string to capitalize / строка для капитализации
- * @param isLocale use locale / использовать локаль
+ * @param locale use locale or explicit locale tag / использовать локаль или явный код локали
  * @returns capitalized string / капитализированная строка
  */
-export function capitalize(
-  value: string,
-  isLocale: boolean = false
-): string {
-  const text = String(value)
+export function capitalize<T extends string = string>(
+  value?: T,
+  locale: boolean | string = false
+): Capitalize<T> {
+  const text = toString(value)
 
   if (text.length > 0) {
-    if (isLocale) {
-      return text.charAt(0).toLocaleUpperCase(Geo.getLocation()) + text.slice(1)
+    const charLength = (text.codePointAt(0) ?? 0) > 0xFFFF ? 2 : 1
+    const firstChar = text.slice(0, charLength)
+    const restText = text.slice(charLength)
+
+    if (locale) {
+      const localeCode = typeof locale === 'string' ? locale : Geo.getLocation()
+      return (firstChar.toLocaleUpperCase(localeCode) + restText) as Capitalize<T>
     }
 
-    return text.charAt(0).toUpperCase() + text.slice(1)
+    return (firstChar.toUpperCase() + restText) as Capitalize<T>
   }
 
-  return text
+  return text as Capitalize<T>
 }

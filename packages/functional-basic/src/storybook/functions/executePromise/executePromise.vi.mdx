@@ -9,11 +9,12 @@ Một tiện ích mạnh mẽ để thực thi và chờ đợi kết quả từ
 Bên dưới, nó tận dụng `executeFunction` để thực thi các hàm và sau đó đảm bảo rằng nếu kết quả là một `Promise`, nó sẽ được chờ đợi (await) đúng cách.
 
 **Tham số:**
-- `callback: ((...args: any[]) => Promise<T>) | ((...args: any[]) => T) | T` — Nguồn để thực thi hoặc giải quyết.
-- `...args: any[]` (tùy chọn) — Các đối số được truyền vào hàm nếu `callback` có thể gọi được.
+- `callback: ((...args: Args) => PromiseLike<T> | T) | PromiseLike<T> | T` — Nguồn để thực thi hoặc giải quyết.
+- `...args: Args` (tùy chọn) — Các đối số được truyền vào hàm nếu `callback` có thể gọi được.
 
 **Trả về:**
-`Promise<T>` — Một promise giải quyết thành giá trị cuối cùng được tính toán hoặc được cung cấp.
+`Promise<Awaited<T>>` — Một promise giải quyết thành giá trị cuối cùng được tính toán hoặc được cung cấp.
+
 
 ```typescript
 import { executePromise } from '@dxtmisha/functional-basic'

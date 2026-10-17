@@ -29,6 +29,10 @@ Tests in this repository must **never be superficial smoke checks**. They must s
      ```
    - 100% test pass rate is strictly required (0 errors, 0 failures, 0 uncaught exceptions, and 0 framework/Vue warnings).
    - Never commit `it.only`, `it.skip`, or commented-out assertions.
+5. **Context & Purpose Awareness (Anti-Overengineering Guard / Учёт среды использования и назначения)**:
+   - Tests must evaluate the entity strictly in the context of its **actual environment, real consumers, and intended purpose**.
+   - **Ban on "All-Life-Cases" Paranoia (Запрет тестов «на все случаи жизни»)**: Do NOT write tests for absurd, impossible, or contrived edge cases that never occur in real usage. Forcing production code to accommodate unrealistic scenarios causes **code bloat, unnecessary defensive checks, performance degradation, and over-engineering (`избыточный код / оверинжиниринг`)**.
+   - **Pragmatic Contract Verification**: Focus on real contracts and valid domain boundaries (such as `0`, `false`, `null`, empty strings, Unicode diacritics, XSS where HTML is generated, lifecycle disposal). If an entity is an internal helper or strictly typed utility, do not write tests demanding runtime defenses against impossible or out-of-scope inputs.
 
 ---
 
@@ -97,6 +101,9 @@ describe('myFunction', () => {
 ---
 
 ## 4. Mandatory Edge Cases Checklist
+
+> [!IMPORTANT]
+> **Pragmatic Application (No Code Bloat / Без избыточного кода)**: Apply this checklist strictly through the lens of the entity's **actual purpose and usage environment**. Do NOT blindly test every conceivable permutation or invent paranoid edge cases outside the entity's scope, as doing so forces production code to become bloated and over-engineered.
 
 Every unit test suite MUST thoroughly evaluate the following boundary conditions:
 

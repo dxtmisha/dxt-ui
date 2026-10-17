@@ -1,0 +1,44 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title='@dxtmisha/vi/functional-basic/Functions/hasKey - Kiểm tra khóa thuộc tính riêng của đối tượng'/>
+
+# `hasKey`
+
+Kiểm tra xem thuộc tính được chỉ định có phải là thuộc tính riêng của đối tượng hoặc hàm hay không bằng cách gọi an toàn `Object.prototype.hasOwnProperty.call`.
+
+Hàm cung cấp khả năng bảo vệ mạnh mẽ chống lại **Prototype Pollution** và loại bỏ các trường hợp nhận diện nhầm các thuộc tính kế thừa từ chuỗi prototype (chẳng hạn như `toString`, `valueOf`, `constructor`, `__proto__`, `hasOwnProperty`). Hàm an toàn khi làm việc với `null`, `undefined`, các giá trị nguyên thủy và các đối tượng không có prototype (`Object.create(null)`). Trong TypeScript, hàm hoạt động như một type guard, tự động thu hẹp kiểu đối tượng để truy cập an toàn.
+
+**Tham số:**
+- `object: unknown` — đối tượng, hàm hoặc giá trị bất kỳ cần kiểm tra.
+- `key: PropertyKey` — khóa thuộc tính cần tìm (`string | number | symbol`).
+
+**Trả về:**
+`boolean` — `true` nếu thuộc tính tồn tại và thuộc trực tiếp về đối tượng (thuộc tính riêng), ngược lại là `false`.
+
+```typescript
+import { hasKey } from '@dxtmisha/functional-basic'
+
+const user = { name: 'Alice', age: 30 }
+console.log(hasKey(user, 'name')) // true
+console.log(hasKey(user, 'email')) // false
+
+// Bảo vệ chống prototype pollution:
+console.log(hasKey({}, 'toString')) // false
+console.log(hasKey({ toString: 'custom' }, 'toString')) // true
+
+// An toàn với null, undefined và kiểu nguyên thủy:
+console.log(hasKey(null, 'foo')) // false
+console.log(hasKey(123, 'foo')) // false
+
+// Đối tượng không có prototype (Object.create(null)):
+const dict = Object.create(null)
+dict.item = 'value'
+console.log(hasKey(dict, 'item')) // true
+console.log(hasKey(dict, 'toString')) // false
+
+// Thu hẹp kiểu trong TypeScript (Type Guard):
+const data: unknown = { id: 1, title: 'DXT' }
+if (hasKey(data, 'title')) {
+  console.log(data.title) // data được thu hẹp kiểu để truy cập an toàn thuộc tính title
+}
+```
