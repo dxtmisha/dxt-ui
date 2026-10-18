@@ -37,7 +37,7 @@ describe('StylesProperties', () => {
     const stylesProperties = new StylesProperties('  ', mockProperty)
     const result = stylesProperties.make()
 
-    expect(result).toContain('  @include ui.color(#{#123456});')
+    expect(result).toContain('  @include ui.color(#123456);')
     expect(result).toContain('  --custom-var: 24px;')
   })
 
@@ -204,6 +204,6 @@ describe('StylesProperties', () => {
     const result = stylesProperties.make()
 
     expect(result.some(line => line.includes('& {'))).toBe(true)
-    expect(result.some(line => line.includes('@include ui.color(#{#f00})'))).toBe(true)
+    expect(result.some(line => line.includes('@include ui.color(#f00)'))).toBe(true)
   })
 })

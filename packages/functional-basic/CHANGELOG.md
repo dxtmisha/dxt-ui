@@ -2,6 +2,114 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.13.0] - 2026-10-18
+
+### Added
+- **`hasKey`**:
+  - Added `hasKey<K extends PropertyKey, T extends object = Record<K, unknown>>(object: unknown, key: K): object is T & Record<K, unknown>` utility function to safely check for own object properties (`Object.prototype.hasOwnProperty`) with TypeScript type narrowing.
+  - Exported `hasKey` in public library exports (`src/library.ts`).
+  - Added comprehensive unit test suite in `src/functions/__tests__/hasKey.test.ts`.
+  - Added multilingual Storybook documentation in English, Russian, and Vietnamese.
+  - Generated AI type definitions in `ai-types-list/functions/hasKey.d.ts`.
+- **`resetGetElementId`**:
+  - Added `resetGetElementId(): void` function to reset the registered SSR context listener back to `undefined`.
+- **Type Definitions**:
+  - Exported `GetElementImageCallback` type for image `onload` and `onerror` event callback signatures.
+  - Exported `ResizeImageByMaxType` ('auto' | 'width' | 'height') type definition.
+
+### Changed
+- **`executePromise`**:
+  - Enhanced type signature to accept `PromiseLike<T> | T` and generic arguments `Args extends unknown[]`, returning `Promise<Awaited<T>>` with zero `any`.
+  - Simplified asynchronous resolution with native `await`.
+- **`ensureMaxSize`**:
+  - Refactored `file` parameter typing to `Uint8Array` / `BlobPart` with safe fallback to `blobToBase64` when image dimensions are within size limits or resizing is not required.
+  - Ensured reliable object URL revocation (`URL.revokeObjectURL`) in all execution branches (`onload`, `onerror`, and fallback).
+- **`getElementImage`**:
+  - Added optional `onload` and `onerror` callbacks (`GetElementImageCallback`) for `HTMLImageElement` creation from string sources.
+  - Directly returns existing `HTMLImageElement` instances without re-wrapping.
+- **`resizeImageByMax`**:
+  - Added explicit `maxSize > 0` validation guard and rounded dimensions (`Math.round`) for canvas scaling.
+  - Documented design rationale for returning `undefined` when resizing is unneeded or impossible to prevent unnecessary canvas re-encoding.
+- **`applyTemplate`**:
+  - Refactored template macro matching with static precompiled regexes (`EXP_LIST_MACROS`, `EXP_TAG_MACROS`, `EXP_KEY_MACROS`, `EXP_CONTENT_MACROS`).
+  - Integrated `hasKey` for checking replacement object own properties, avoiding prototype pollution.
+  - Added string fast-path checks (`includes('[') || includes('{')`) before executing regex replacements.
+- **`addTagHighlightMatch`**:
+  - Replaced inline tags with uppercase constants (`TAG_START`, `TAG_END`, `EXP_TAG`) and extracted tag helper functions (`getTagStart`, `getTagEnd`).
+  - Added `isSearchValid` helper to safely validate search strings and regular expressions.
+  - Added direct fast-path return when `shouldEscape` is `false`.
+- **`getAttributes`**:
+  - Modernized attribute extraction to use standard `item.getAttributeNames()` and `item.getAttribute(name)` with `getAttributeNames in item` guard, eliminating deprecated `NamedNodeMap` iteration.
+- **`forEach`**:
+  - Added overloaded TypeScript signatures for `readonly T[]`, `Set<T>`, `Map<K, V>`, and `Record<string, T>` collections with strongly typed keys (`ForEachKey<D>`).
+  - Optimized array and object iteration using standard `for` loops and `Object.keys()` instead of native `forEach` and `for...in`.
+- **`frame`**:
+  - Added `timestamp: DOMHighResTimeStamp` parameter to `callback` and `next` functions.
+  - Passed `0` timestamp fallback in SSR/non-DOM environments.
+- **`getObjectNoUndefined`**:
+  - Added overloads for `readonly V[]` and `Record<PropertyKey, unknown>` with strict types.
+  - Replaced `forEach` with `Object.entries()` and `Object.is()` comparison for exception value filtering.
+- **`getElementId`**:
+  - Added `Window` support: assigning and retrieving ID directly on `document.body` when a `Window` object is passed.
+  - Extracted `SERVER_STORAGE_KEY` constant (`__ui:getElementId__`).
+  - Hardened context ID check with `!isNull(contextId) && contextId !== ''`.
+  - Added explicit `void` return type for `initGetElementId`.
+- **`getElementItem`**:
+  - Renamed parameter `index` to `property` for clarity and consistency across element accessor functions.
+- **`getElementSafeScript`**:
+  - Added generic type parameter `T = unknown` for data input.
+  - Added fallback `?? 'null'` when `JSON.stringify` returns `undefined`.
+- **`getItemByPath`**:
+  - Hardened nested path resolution when intermediate properties are missing or undefined.
+- **`getLast`**:
+  - Supported `readonly T[]` in value parameter type.
+  - Optimized object property access via `Object.keys()` without full value array allocations.
+- **`getLength`**:
+  - Replaced `value: any` with `value: unknown` and `Array.isArray` with `isArray` helper.
+- **`setElementItem`**:
+  - Extracted helper functions `setElementItemProperty` and `setElementItemBoolean`.
+  - Added support for CSS custom properties (`--*`) on style targets via `setProperty()`.
+  - Added direct `cssText` assignment when setting `'style'` with a string value.
+  - Used `Reflect.set` for safe element property assignment.
+- **`createElement`**:
+  - Supported `Element | DocumentFragment` for `parentElement` parameter and `Node | null` for `referenceElement`.
+  - Replaced `typeof options === 'function'` with `isFunction(options)`.
+  - Documented `document.createElementNS` usage recommendation for SVG/MathML elements in `@remarks`.
+- **`domContentLoaded`**:
+  - Added optional `isServer` parameter (default `true`) allowing callers to disable SSR fallback execution.
+  - Allowed calling without arguments to return a promise that resolves upon DOM readiness.
+- **`anyToString`**:
+  - Added double `try...catch` fallback resolving `Object.prototype.toString.call(value)` when standard serialization fails.
+- **`encodeAttribute` / `encodeLiteAttribute`**:
+  - Replaced `String(text)` with `toString(text)` helper for safe nullish coercion.
+  - Standardized constants naming to `SPECIAL_CHARACTERS` and `SPECIAL_CHARACTERS_LITE`.
+- **`isDifferent`**:
+  - Replaced `forEach` with a fast breakable `for...in` loop.
+- **Tests & AI Documentation**:
+  - Overhauled and expanded unit test suites across all core utility functions (`addTagHighlightMatch`, `anyToString`, `applyTemplate`, `arrFill`, `blobToBase64`, `capitalize`, `createElement`, `domContentLoaded`, `encodeAttribute`, `encodeLiteAttribute`, `ensureMaxSize`, `escapeExp`, `executePromise`, `forEach`, `frame`, `getArrayHighlightMatch`, `getAttributes`, `getColumn`, `getElementId`, `getElementImage`, `getElementItem`, `getElementSafeScript`, `getHydrationData`, `getItemByPath`, `getLast`, `getLength`, `getObjectNoUndefined`, `getSeparatingSearchExp`, `hasKey`, `resizeImageByMax`, `setElementItem`, `toString`) following zero-`any` and edge-case boundary testing standards.
+  - Updated Storybook documentation for `executePromise`, `frame`, `getElementImage`, and `hasKey` across English, Russian, and Vietnamese.
+  - Refreshed AI type definitions and search keywords in `ai-types-list/`.
+
+### Fixed
+- **`getSeparatingSearchExp`**:
+  - Fixed word matching ordering by sorting terms by descending length (`b.length - a.length`), ensuring longer terms match before shorter substrings.
+  - Fixed empty or whitespace-only search returning `/^/` (which falsely matched empty lines) by returning a never-matching regex `/(?!)/`.
+- **`getArrayHighlightMatch`**:
+  - Guaranteed global flag (`g`) on regular expressions via `toGlobalExp`.
+  - Fixed potential infinite loop on zero-width matches by manually advancing `lastIndex`.
+- **`getHydrationData`**:
+  - Replaced `typeof document !== 'undefined'` with isomorphic helper `isDomRuntime()`.
+  - Added `script.tagName === 'SCRIPT'` tag validation guard.
+  - Wrapped `script.remove()` in a `finally` block to guarantee DOM cleanup even on JSON parse errors.
+- **`setElementItem`**:
+  - Fixed boolean and ARIA attribute handling: formatted `aria-*` attributes as `'true'`/`'false'`, set empty string for true boolean attributes, and removed attributes when value is `false` or `null`.
+- **`capitalize`**:
+  - Fixed capitalization of astral plane Unicode characters / surrogate pairs (code points > 0xFFFF) by extracting code-point-aware character slices.
+- **`escapeExp`**:
+  - Fixed regex escaping to escape hyphen (`-`) characters in character class expressions.
+- **`blobToBase64`**:
+  - Wrapped conversion logic in a safe `try...catch` block to return `undefined` on unhandled FileReader or corrupt blob errors.
+
 ## [1.12.0] - 2026-10-14
 
 ### Added

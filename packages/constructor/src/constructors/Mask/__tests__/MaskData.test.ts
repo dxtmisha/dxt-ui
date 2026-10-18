@@ -197,7 +197,7 @@ describe('MaskData', () => {
 
     maskData.goSelection(false)
 
-    await new Promise((resolve) => requestAnimationFrame(resolve))
+    await new Promise(resolve => requestAnimationFrame(resolve))
 
     expect(inputElement.selectionStart).toBe(2)
     expect(inputElement.selectionEnd).toBe(2)

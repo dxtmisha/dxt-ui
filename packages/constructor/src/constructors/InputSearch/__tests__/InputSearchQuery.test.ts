@@ -201,4 +201,3 @@ describe('InputSearchQuery', () => {
     expect((customSearchQuery as any).getDelay()).toBe(500)
   })
 })
-

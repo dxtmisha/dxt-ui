@@ -38,8 +38,8 @@ export const PlaceholderBasic: Story = {
     components: { D1Placeholder },
     setup() {
       return {
-          image1
-        }
+        image1
+      }
     },
     template: `
         <div class="wiki-storybook-flex-column">
@@ -59,8 +59,8 @@ export const PlaceholderSlots: Story = {
     components: { D1Placeholder },
     setup() {
       return {
-          image1
-        }
+        image1
+      }
     },
     template: `
         <div class="wiki-storybook-flex-column">

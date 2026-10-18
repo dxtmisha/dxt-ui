@@ -48,7 +48,7 @@ describe('MaskDate', () => {
 
   it('should execute D pattern dynamic function to calculate max days', () => {
     const pattern = maskDate.getPattern()
-    const dPatternFunc = pattern.D as (item: FieldMasks) => { type: string; min: string; max: string }
+    const dPatternFunc = pattern.D as (item: FieldMasks) => { type: string, min: string, max: string }
 
     const leapFeb = dPatternFunc({
       Y: { value: '2024' } as any,

@@ -107,7 +107,7 @@ export class CarouselItem {
       'data-value': this.props.value,
       ...this.event.binds,
       ...this.data.aria,
-      tabindex: this.data.isSelected() ? undefined : -1
+      'tabindex': this.data.isSelected() ? undefined : -1
     }
   }
 

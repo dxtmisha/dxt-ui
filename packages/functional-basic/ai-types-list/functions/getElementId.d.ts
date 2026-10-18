@@ -1,18 +1,18 @@
-// md5:ef30ec5766e6322190da66b291934ba1 true
-/** Returns the element ID or generates a new unique ID if missing. @keywords element id, generate id, get id, dom id */
+// md5:6a8442dd8571aaea52c57c3c8d63f5f0 true
+/** Returns or generates a unique element ID, targeting document.body if Window is provided. @keywords element id, get id, generate id, dom id */
 export declare function getElementId<E extends ElementOrWindow>(element?: ElementOrString<E>, selector?: string): string;
 /**
- * Initializes the element ID generator listener for SSR context synchronization.
+ * Initializes the getElementId function with a context ID provider.
  * @warning Initialization is mandatory for correct functioning of SSR on both server and client sides.
  * @example
- * ```typescript
+ * 
  * import { useId } from 'vue'
  * import { initGetElementId } from '@dxtmisha/functional-basic'
  *
  * initGetElementId(() => useId())
- * ```
- * @keywords init id, ssr id listener, setup getElementId
+ * 
+ * @keywords init element id, ssr id provider, listener setup
  */
 export declare function initGetElementId(newListener: () => string | number): void;
-/** Resets the getElementId listener. @keywords reset id, reset getElementId */
+/** Resets the getElementId listener. @keywords reset element id, clear id listener */
 export declare function resetGetElementId(): void;

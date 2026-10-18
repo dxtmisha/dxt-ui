@@ -45,12 +45,12 @@ describe('StylesClasses', () => {
 
     expect(result.classes.btnPrimary).toBeDefined()
     expect(result.classes.btnPrimary).toContain('.btnPrimary {')
-    expect(result.classes.btnPrimary).toContain('  @include ui.color(#{#fff});')
+    expect(result.classes.btnPrimary).toContain('  @include ui.color(#fff);')
     expect(result.classes.btnPrimary).toContain('}')
 
     expect(result.classes.themeDark).toBeDefined()
     expect(result.classes.themeDark).toContain('.themeDark {')
-    expect(result.classes.themeDark).toContain('  @include ui.backgroundColor(#{#000});')
+    expect(result.classes.themeDark).toContain('  @include ui.backgroundColor(#000);')
     expect(result.classes.themeDark).toContain('}')
   })
 

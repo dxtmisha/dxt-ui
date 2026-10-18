@@ -187,7 +187,7 @@ describe('applyTemplate', () => {
 
     it('should support keys with hyphens, underscores, dots, and colons', () => {
       expect(applyTemplate('[user_name]-[user-id]-{user.role}-[app:status]', {
-        user_name: 'Alex',
+        'user_name': 'Alex',
         'user-id': '99',
         'user.role': 'lead',
         'app:status': 'active'

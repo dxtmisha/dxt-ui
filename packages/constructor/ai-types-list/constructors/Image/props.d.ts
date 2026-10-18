@@ -1,4 +1,4 @@
-// md5:03a466a5ff32c8965475ba4d94fc4c52 true
+// md5:6ee7aee3ccb54021b9f2d887bbcf4c30 true
 export type ImagePropsToken = {
     turn?: boolean;
     disabled?: boolean;
@@ -7,42 +7,34 @@ export type ImagePropsToken = {
     static?: boolean;
     size?: 'auto' | 'contain' | 'cover';
 };
+/** Image source, layout, and loading properties. @keywords image, layout, loading */
 export type ImagePropsBasic = {
-    /** Icon name, image URL, File object, or PDF link */
-    value?: string | any;
-    /** Image URL */
+    /** Icon name, URL, File, or binary buffer; 'image:' prefix marks an explicit image path. */
+    value?: string | File | ImageUint8ArrayType | null;
     url?: string;
-    /** Adaptive resolution group identifier */
+    /** Adaptive group name for resolution switching. */
     adaptiveGroup?: string;
-    /** Always enable adaptivity */
     adaptiveAlways?: boolean;
-    /** Image object width */
     objectWidth?: string | number;
-    /** Image object height */
     objectHeight?: string | number;
-    /** Image crop or position coordinates */
-    coordinator?: number[] | any;
-    /** X-axis position */
+    /** Image cropping or positioning coordinates. */
+    coordinator?: ImageCoordinatorItem;
     x?: string | number;
-    /** Y-axis position */
     y?: string | number;
-    /** Render as `<img>` tag instead of background image */
+    /** Render as <img> tag instead of CSS background image. */
     tagImg?: boolean;
-    /** Responsive image source set */
+    /** Image source set for responsive resolutions. */
     srcset?: string | Record<string, string>;
-    /** `<picture>` element source configurations */
+    /** Picture sources for <picture> element rendering. */
     picture?: ImagePicture;
-    /** Alternative text description */
     alt?: string;
-    /** Enable lazy loading */
     lazy?: boolean;
-    /** Preload viewport offset threshold */
     preloadOffset?: string;
-    /** Image fetch priority hint */
-    fetchPriority?: HTMLImageElement['fetchPriority'];
+    fetchPriority?: ImageAttrs['fetchPriority'];
 };
+/** Image component incoming properties. @keywords image, props */
 export type ImageProps = ImagePropsBasic & ImagePropsToken;
-/** Default image property values @keywords image, defaults */
+/** Default values for image properties. @keywords image, defaults */
 export declare const defaultsImage: {
     adaptiveGroup: string;
     preloadOffset: string;

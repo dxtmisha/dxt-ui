@@ -2,6 +2,66 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.0] - 2026-10-18
+
+### Added
+- **`InputSearch` Component Constructor**:
+  - Introduced `InputSearch` constructor (`src/constructors/InputSearch/`) coordinating search input, URL query state synchronization (`query`), debounced typing, clear actions, and loading states.
+  - Decomposed into modular helper classes: `InputSearch` (master orchestrator), `InputSearchDesign` (JSX rendering engine), and `InputSearchQuery` (URL query synchronization and debounced input handling).
+  - Added `textSearch` property to `TextInclude` and `textTypes.ts` with English and Russian translations.
+  - Added library export entrypoint in `src/library/inputSearch.ts` and style registration in `src/library/style.scss`.
+  - Added unit test suite in `src/constructors/InputSearch/__tests__/InputSearchQuery.test.ts`.
+- **`InputFileItem` Crop Integration**:
+  - Integrated image cropping dialog into `InputFileItem` via `crop` prop, `iconCrop`, `textCrop`, and `onCrop` event emission.
+  - Added `getCrop()` method to `InputFileItemExpose` to retrieve current `CropAreaCoordinator` values.
+  - Decomposed crop handling into dedicated `InputFileItemCrop` class.
+  - Added `#buttonCrop` subclass in `properties.json`.
+- **`ImageSource` Helper**:
+  - Introduced `ImageSource` utility class to handle explicit image prefixes (`image:*`) and isolate image type detection from font icon fallbacks.
+  - Added support for `Uint8Array` image sources in `isType()`.
+- **`Image` Unit & Integration Test Suites**:
+  - Added `Image.integration.test.ts`, `Image.ssr.test.ts`, `Image.types.test.ts`, and `domFixtures.ts` for comprehensive DOM and SSR testing.
+- **`Ripple` Programmatic Control**:
+  - Added `add(eventOrCoordinator)` and `addCenter()` methods in `RippleItem` and exposed them on `RippleExpose` and `RippleDesign`.
+  - Added support for `ImageCoordinator` coordinates in `RippleItem.add`.
+
+### Changed
+- **Architecture & Lifecycle Overhaul (Removal of `this.init()` and `this.refs`)**:
+  - **Removed Manual `this.init()`**: Eliminated manual `this.init()` requirement across all 99 component design classes (`*Design.tsx`); classes, styles, and exposed data are now dynamically evaluated.
+  - **Migrated to `DesignName`**: Subclass resolution migrated from `this.getSubClass(...)` to `this.naming.getSubClass(...)` across all design constructors.
+  - **Removed `refs` Parameter**: Eliminated unused `refs` (`toRefs`) parameter across all design constructors to streamline constructor signatures and reduce reactive overhead.
+  - **Optional `components`**: `this.components` is now instantiated conditionally with safe optional chaining (`?.`) on child component renders.
+- **`Image` Constructor Overhaul**:
+  - Extracted lazy loading logic into dedicated `ImageLazy` helper class with margin tracking, preload offsets, and lifecycle management.
+  - Injected `ImageLazy` into `ImageData` and `ImageImg` via dependency injection, orchestrated by `Image.ts`.
+  - Decomposed sub-element renderers in `ImageDesign` into readonly arrow function properties (`renderImage`, `renderPicture`, `renderAdaptive`, `renderBackground`).
+  - Added reactive `elementSize` and `EventRef` resize listeners to `ImageAdaptiveItem`, disposing properly on unmount.
+  - Made `ImageCalculation.factorMax` reactive via `ref<number>(1)`.
+  - Normalized coordinates in `ImageCoordinator` to percentages (0–100) via `getValue()`.
+  - Preserved query parameters and merged viewer parameters into PDF URLs in `ImagePdf`.
+  - Supported standalone `fetchPriority` in `ImageImg` regardless of lazy loading state.
+  - Strictly typed `ImageAttrs`, `ImagePictureItem`, and `CSSProperties`, eliminating residual `any` types.
+- **`InputFileItem` Enhancements**:
+  - Decomposed file actions into `InputFileItemButton`, `InputFileItemDelete`, and `InputFileItemCrop`.
+  - Added `tile` appearance overlay improvements with border-radius inheritance.
+- **`Ripple` Improvements**:
+  - Filtered `pointerdown` events to primary button and primary pointer only.
+  - Added timeout fallback cleanup to prevent orphaned DOM ripple elements.
+- **`Field` Include Enhancements**:
+  - Supported optional `type` in `FieldInputModeInclude` and functional props evaluation in `FieldAttributesInclude`.
+- **`Scrollbar`**:
+  - Refactored `ScrollbarBorder` coordinate calculations and refined SCSS selectors.
+- **Dependencies**:
+  - Updated `@dxtmisha/functional` dependency to `>=1.15.18`.
+  - Updated `@dxtmisha/functional-basic` dependency to `>=1.11.2`.
+
+### Fixed
+- **Circular Dependencies**:
+  - Decoupled `InputFileItemCrop` to eliminate circular dependency issues between `InputFileItem` and `ImageCrop`.
+- **DOM & SSR Stability**:
+  - Added `jsdom` test directives and stabilized click handling in `ScrollbarBorder` and `InputCodeItemEvent` tests.
+  - Stabilized dynamic slot updates and keyed pagination content preservation.
+
 ## [0.118.3] - 2026-10-07
 
 ### Added

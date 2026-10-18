@@ -1,4 +1,4 @@
-// md5:36f3aae0d9bb6130263f74ff89f295da true
+// md5:e534ca9dee9cb85450e8b6f515ec0551 true
 type InputFileItemPropsToken = {
     selected?: boolean;
     disabled?: boolean;
@@ -6,30 +6,36 @@ type InputFileItemPropsToken = {
     appearance?: 'list' | 'compact' | 'tile';
     status?: 'uploading' | 'uploaded' | 'error' | 'idle';
 };
-export type InputFileItemPropsBasic<Button extends ButtonPropsBasic = ButtonPropsBasic, Image extends ImagePropsBasic = ImagePropsBasic, Progress extends ProgressPropsBasic = ProgressPropsBasic> = EnabledProps & ImagePropsInclude<Image> & ProgressPropsInclude<Progress> & ButtonPropsInclude<Button> & SkeletonPropsInclude & TextDeleteConfirmPropsInclude & TextDeletePropsInclude & TextErrorPropsInclude & TextLoadingFilePropsInclude & TextRetryPropsInclude & TextUploadSuccessPropsInclude & {
-    /** Selected state */
+export type InputFileItemPropsBasic<Button extends ButtonPropsBasic = ButtonPropsBasic, Image extends ImagePropsBasic = ImagePropsBasic, Progress extends ProgressPropsBasic = ProgressPropsBasic, ImageCrop extends ImageCropPropsBasic = ImageCropPropsBasic> = EnabledProps & ImagePropsInclude<Image> & ImageCropPropsInclude<ImageCrop> & ProgressPropsInclude<Progress> & ButtonPropsInclude<Button> & SkeletonPropsInclude & TextCropPropsInclude & TextDeleteConfirmPropsInclude & TextDeletePropsInclude & TextErrorPropsInclude & TextLoadingFilePropsInclude & TextRetryPropsInclude & TextUploadSuccessPropsInclude & {
+    /** Selected state. */
     selected?: boolean;
-    /** File data value */
+    /** File data value. */
     value?: FieldFileValue;
-    /** File instance */
+    /** File instance. */
     file?: File;
-    /** Whether to show confirmation dialog before delete */
+    /** Whether to enable image cropping. */
+    crop?: boolean;
+    /** Whether to show confirmation dialog before delete. */
     confirmDelete?: boolean;
-    /** Icon for delete button */
+    /** Icon for crop button. */
+    iconCrop?: string;
+    /** Icon for delete button. */
     iconDelete?: string;
-    /** Icon for retry button */
+    /** Icon for retry button. */
     iconRetry?: string;
-    /** Icon for success status */
+    /** Icon for success status. */
     iconSuccess?: string;
-    /** Icon for error status */
+    /** Icon for error status. */
     iconError?: string;
-    /** Icon for warning */
+    /** Icon for warning status. */
     iconWarning?: string;
 };
+/** Properties for the input file item component. @keywords input, file item, props */
 export type InputFileItemProps = InputFileItemPropsBasic & InputFileItemPropsToken;
-/** Default properties for input file item. @keywords defaults, input file item */
+/** Default properties for the input file item component. @keywords defaults, file item, config */
 export declare const defaultsInputFileItem: {
     appearance: string;
     status: string;
     confirmDelete: boolean;
+    crop: boolean;
 };

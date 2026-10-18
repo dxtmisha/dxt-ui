@@ -139,49 +139,49 @@
     /* Color */
           $name == 'palette'
   ) {
-    @include color.palette(#{$value});
+    @include color.palette($value);
   } @else if ($name == 'palette-color') {
-    @include color.paletteColor(#{$value});
+    @include color.paletteColor($value);
   } @else if ($name == 'palette-stroke') {
-    @include color.paletteStroke(#{$value});
+    @include color.paletteStroke($value);
   } @else if ($name == 'palette-background') {
-    @include color.paletteBackground(#{$value});
+    @include color.paletteBackground($value);
   } @else if ($name == 'palette-fill') {
-    @include color.paletteFill(#{$value});
+    @include color.paletteFill($value);
   } @else if ($name == 'palette-gradient') {
-    @include color.paletteGradient(#{$value});
+    @include color.paletteGradient($value);
   } @else if ($name == 'palette-border') {
-    @include color.paletteBorder(#{$value});
+    @include color.paletteBorder($value);
   } @else if ($name == 'color') {
-    @include color.color(#{$value});
+    @include color.color($value);
   } @else if ($name == 'color-opacity') {
-    @include color.colorOpacity(#{$value});
+    @include color.colorOpacity($value);
   } @else if ($name == 'stroke') {
-    @include color.stroke(#{$value});
+    @include color.stroke($value);
   } @else if ($name == 'stroke-opacity') {
-    @include color.strokeOpacity(#{$value});
+    @include color.strokeOpacity($value);
   } @else if ($name == 'background-color') {
-    @include color.backgroundColor(#{$value});
+    @include color.backgroundColor($value);
   } @else if ($name == 'background-opacity') {
-    @include color.backgroundOpacity(#{$value});
+    @include color.backgroundOpacity($value);
   } @else if ($name == 'background-size') {
     @include color.backgroundSize(#{$value});
   } @else if ($name == 'fill') {
-    @include color.fill(#{$value});
+    @include color.fill($value);
   } @else if ($name == 'fill-opacity') {
-    @include color.fillOpacity(#{$value});
+    @include color.fillOpacity($value);
   } @else if ($name == 'gradient') {
-    @include color.gradient(#{$value});
+    @include color.gradient($value);
   } @else if ($name == 'gradient-opacity') {
-    @include color.gradientOpacity(#{$value});
+    @include color.gradientOpacity($value);
   } @else if ($name == 'border-color') {
-    @include color.borderColor(#{$value});
+    @include color.borderColor($value);
   } @else if ($name == 'border-opacity') {
-    @include color.borderOpacity(#{$value});
+    @include color.borderOpacity($value);
   } @else if ($name == 'outline-color') {
-    @include color.outlineColor(#{$value});
+    @include color.outlineColor($value);
   } @else if ($name == 'outline-opacity') {
-    @include color.outlineOpacity(#{$value});
+    @include color.outlineOpacity($value);
   } @else if (
     /* Transform */
           $name == 'translate-x'

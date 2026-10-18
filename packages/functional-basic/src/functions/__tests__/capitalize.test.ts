@@ -29,7 +29,6 @@ describe('capitalize', () => {
       const typeCheck: 'User' = result
       expect(typeCheck).toBe('User')
     })
-
   })
 
   describe('Boundary values and length limits', () => {

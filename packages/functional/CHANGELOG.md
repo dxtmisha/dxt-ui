@@ -2,6 +2,48 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.0] - 2026-10-18
+
+### Added
+- **`DesignName`**:
+  - Introduced `DesignName` class for component naming, BEM class resolution, and CSS custom property generation (`getName()`, `getDesign()`, `getSubClass()`, `getStatusClass()`, `getStyle()`).
+  - Cached normalized class and design names to optimize performance during component rendering.
+  - Exported `DesignName` in package entry point (`src/library.ts`).
+- **`DesignLifecycleAbstract`**:
+  - Introduced `DesignLifecycleAbstract` base class declaring optional synchronous lifecycle callbacks (`onMounted`, `onUnmounted`) for logic helpers and sub-constructors.
+  - Exported `DesignLifecycleAbstract` in package entry point (`src/library.ts`).
+- **`DesignLogicAbstract`**:
+  - Introduced `DesignLogicAbstract` base orchestrator for component business logic, dependency injection, and effect scope management.
+  - Added lazy dependency instantiation within captured `EffectScope` via `getInstance(name)`.
+  - Added automated lifecycle callback coordination with Vue (`onMounted`, `onUnmounted`) via `callLifecycle()`.
+  - Integrated centralized error reporting via `ErrorCenter` (`group: 'design'`) on lifecycle callback failures.
+  - Added comprehensive unit test suites in `DesignLogicAbstract.test.ts` and `DesignLogicAbstract.ssr.test.ts`.
+  - Exported `DesignLogicAbstract` in package entry point (`src/library.ts`).
+- **Constructor Types**:
+  - Added `ConstrConstructors`, `ConstrParameters`, and `ConstrInstance` type definitions in `src/types/constructorTypes.ts` for typed dependency injection in design logic classes.
+- **`DesignConstructorAbstract` Tests**:
+  - Added comprehensive test suite in `src/classes/design/__tests__/DesignConstructorAbstract.test.ts`.
+
+### Changed
+- **`DesignConstructorAbstract` (Major Architecture Refactoring)**:
+  - **Removed Manual `this.init()`**: Eliminated the requirement to manually call `this.init()` at the end of constructor classes; classes, styles, and expose data are now dynamically computed from `initClasses()`, `initStyles()`, and `initExpose()`.
+  - **Delegated Naming to `DesignName`**: Integrated `DesignName` as `this.naming` and exposed via `getNaming()`, replacing direct naming methods on the constructor instance.
+  - **Optional Components**: `this.components` is now optional (`DesignComponents | undefined`), instantiated only when `options.components` is provided (`isFilled(options?.components)`).
+  - **Vue Native Class & Style Normalization**: Replaced manual class and style conversions with Vue's `normalizeClass` and `normalizeStyle` to merge constructor, option, and attribute styles (`this.attrs?.class`, `this.attrs?.style`).
+  - **Reactive Slot Tracking**: Updated `render()` to track slot changes reactively via `shallowRef` and `onBeforeUpdate` with `isDifferent`, ensuring slots re-render when changed.
+  - **`initSlot` Rendering**: Updated `initSlot` to use Vue's `renderSlot` for consistent slot fragment rendering, typing children as `VNode[]`.
+  - **Attribute Filtering**: Streamlined `getAttrs()` using rest destructuring `{ class: _class, style: _style, ...attrs }` to cleanly exclude class and style.
+- **Dependencies**:
+  - Updated `@dxtmisha/functional-basic` dependency to `>=1.13.0`.
+- **Documentation & Types**:
+  - Updated Storybook documentation for `DesignConstructorAbstract` across English, Russian, and Vietnamese.
+  - Updated AI type declarations in `ai-types-list/`.
+
+### Removed
+- **`DesignConstructorAbstract`**:
+  - Removed `this.refs` (`toRefs(this.props)`) property to eliminate unnecessary reactive wrapper overhead and simplify constructor signatures.
+  - Removed deprecated helper methods: `getName()`, `getDesign()`, `getSubClass()`, `getStatusClass()`, `getStyle()`, `toClass()`, and `toClassName()` (migrated to `DesignName`).
+
 ## [1.16.0] - 2026-10-14
 
 ### Added

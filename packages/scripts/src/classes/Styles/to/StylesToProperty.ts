@@ -3,6 +3,7 @@
 import { isObjectNotArray, toCamelCase } from '@dxtmisha/functional-basic'
 
 import { PropertiesTool } from '../../Properties/PropertiesTool'
+import { PropertiesValues } from '../../Properties/PropertiesValues'
 
 import { StylesTool } from '../StylesTool'
 import { StylesToAbstract } from './StylesToAbstract'
@@ -73,7 +74,9 @@ export class StylesToProperty extends StylesToAbstract {
       this.item?.[PropertyKey.modification] !== false
       && styleTypes.indexOf(name) !== -1
     ) {
-      return `@include ui.${toCamelCase(name)}(#{${value}});${this.initAuxiliaryValue()}`
+      const argument = PropertiesValues.isColor(value) ? value : `#{${value}}`
+
+      return `@include ui.${toCamelCase(name)}(${argument});${this.initAuxiliaryValue()}`
     }
 
     const property = `${name}: ${StylesTool.toFunctionCss(value)}`

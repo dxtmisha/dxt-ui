@@ -1,9 +1,105 @@
 @use 'sass:color';
 @use "sass:meta";
 @use "sass:string";
+@use "sass:map";
+@use "sass:math";
 
 @use "variables";
 @use "rules";
+
+$hex-digits: (
+  '0': 0, '1': 1, '2': 2, '3': 3, '4': 4,
+  '5': 5, '6': 6, '7': 7, '8': 8, '9': 9,
+  'a': 10, 'b': 11, 'c': 12, 'd': 13, 'e': 14, 'f': 15,
+  'A': 10, 'B': 11, 'C': 12, 'D': 13, 'E': 14, 'F': 15
+);
+
+/// Converts a hex string slice to a decimal number
+/// Преобразует срез hex-строки в десятичное число
+/// @param {String} $str - Hex substring / Срез hex-строки
+/// @return {Number|null} - Decimal value or null / Десятичное число или null
+@function hexToDec($str) {
+  $res: 0;
+  @for $i from 1 through string.length($str) {
+    $digit: map.get($hex-digits, string.slice($str, $i, $i));
+    @if ($digit == null) {
+      @return null;
+    }
+    $res: $res * 16 + $digit;
+  }
+  @return $res;
+}
+
+/// Checks if a string is a hex color with alpha channel (#RGBA or #RRGGBBAA)
+/// Проверяет, является ли строка hex-цветом с альфа-каналом (#RGBA или #RRGGBBAA)
+/// @param {String} $color - Color string / Строка цвета
+/// @return {Boolean} - True if hex with alpha / True, если hex с альфа-каналом
+@function isHexAlphaString($color) {
+  @if (meta.type-of($color) == string and string.slice($color, 1, 1) == '#') {
+    $len: string.length($color);
+    @return $len == 9 or $len == 5;
+  }
+  @return false;
+}
+
+/// Extracts alpha channel value [0..1] from a hex string
+/// Извлекает значение альфа-канала [0..1] из hex-строки
+/// @param {String} $color - Hex color string / Hex-строка цвета
+/// @return {Number|null} - Opacity value [0..1] or null / Значение прозрачности [0..1] или null
+@function hexStringToAlpha($color) {
+  $len: string.length($color);
+  @if ($len == 9) {
+    $a: hexToDec(string.slice($color, 8, 9));
+    @if ($a != null) {
+      @return math.div($a, 255);
+    }
+  } @else if ($len == 5) {
+    $a: hexToDec(string.slice($color, 5, 5));
+    @if ($a != null) {
+      @return math.div($a * 17, 255);
+    }
+  }
+  @return null;
+}
+
+/// Converts a hex string (#RGB, #RGBA, #RRGGBB, #RRGGBBAA) to "R, G, B" channels
+/// Преобразует hex-строку (#RGB, #RGBA, #RRGGBB, #RRGGBBAA) в каналы "R, G, B"
+/// @param {String} $color - Hex color string / Hex-строка цвета
+/// @return {String} - "R, G, B" channels / Каналы "R, G, B"
+@function hexStringToRgb($color) {
+  $len: string.length($color);
+  @if ($len == 9 or $len == 7) {
+    $r: hexToDec(string.slice($color, 2, 3));
+    $g: hexToDec(string.slice($color, 4, 5));
+    $b: hexToDec(string.slice($color, 6, 7));
+    @if ($r != null and $g != null and $b != null) {
+      @return '#{$r}, #{$g}, #{$b}';
+    }
+  } @else if ($len == 5 or $len == 4) {
+    $r: hexToDec(string.slice($color, 2, 2));
+    $g: hexToDec(string.slice($color, 3, 3));
+    $b: hexToDec(string.slice($color, 4, 4));
+    @if ($r != null and $g != null and $b != null) {
+      @return '#{$r * 17}, #{$g * 17}, #{$b * 17}';
+    }
+  }
+  @return $color;
+}
+
+/// Checks if a color has an alpha channel less than 1
+/// Проверяет, имеет ли цвет альфа-канал меньше 1
+/// @group Color-Basic
+/// @param {Color|String} $color - Color value or variable / Значение цвета или переменная
+/// @return {Boolean} - True if color has alpha < 1 / True, если цвет имеет альфа-канал < 1
+@function isColorAlpha($color) {
+  @if (meta.type-of($color) == color) {
+    @return color.alpha($color) < 1;
+  } @else if (isHexAlphaString($color)) {
+    $alpha: hexStringToAlpha($color);
+    @return $alpha != null and $alpha < 1;
+  }
+  @return false;
+}
 
 /// Checks if a value is a color or a special CSS keyword
 /// Проверяет, является ли значение цветом или специальным ключевым словом CSS
@@ -26,10 +122,10 @@
 /// Checks if a color name or variable is suitable for the palette
 /// Проверяет, подходит ли имя цвета или переменная для палитры
 /// @group Color-Palette
-/// @param {String} $color - Color variable name / Имя переменной цвета
+/// @param {Color|String} $color - Color or variable name / Цвет или имя переменной
 /// @return {Boolean} - True if it's a palette variable / True, если это переменная палитры
 @function isPalette($color) {
-  @return string.index($color, '--') != null;
+  @return meta.type-of($color) == string and string.index($color, '--') != null;
 }
 
 /// Returns a color value by its code, optionally with opacity or as a gradient
@@ -44,13 +140,20 @@
 ///   $g: getColor(#f00, 1, true); // linear-gradient(0deg, #f00, #f00)
 @function getColor(
   $color,
-  $opacity: 1,
+  $opacity: null,
   $gradient: false
 ) {
   $value: $color;
 
-  @if (meta.type-of($color) == color) {
-    $value: rgba(#{toColorRbg($color)}, #{$opacity});
+  @if (meta.type-of($color) == color or (meta.type-of($color) == string and string.slice($color, 1, 1) == '#')) {
+    $alpha: $opacity;
+    @if ($alpha == null) {
+      $alpha: toColorOpacity($color);
+      @if ($alpha == null or not (meta.type-of($alpha) == number)) {
+        $alpha: 1;
+      }
+    }
+    $value: string.unquote("rgba(#{toColorRbg($color)}, #{$alpha})");
   }
 
   @if $gradient {
@@ -186,15 +289,20 @@
 /// @return {String} - CSS rgba() function call / Вызов функции rgba() для CSS
 @function getColorValue($name, $defaultValue: null) {
   @if ($defaultValue) {
+    $fallback-opacity: 1;
+    @if (isColorAlpha($defaultValue)) {
+      $fallback-opacity: toColorOpacity($defaultValue);
+    }
+
     @return rgba(
-                    var(#{$name}, #{toColorRbg($defaultValue)}),
-                    var(#{$name}-opacity, var(#{$name}-opacity-custom, 1))
+      var(#{$name}, #{toColorRbg($defaultValue)}),
+      var(#{$name}-opacity, var(#{$name}-opacity-custom, #{$fallback-opacity}))
     );
   }
 
   @return rgba(
-                  var(#{$name}),
-                  var(#{$name}-opacity, var(#{$name}-opacity-custom, 1))
+    var(#{$name}),
+    var(#{$name}-opacity, var(#{$name}-opacity-custom, 1))
   );
 }
 
@@ -217,6 +325,8 @@
     @return color.channel($color, 'red', rgb) + ', '
       + color.channel($color, 'green', rgb) + ', '
       + color.channel($color, 'blue', rgb);
+  } @else if (meta.type-of($color) == string and string.slice($color, 1, 1) == '#') {
+    @return hexStringToRgb($color);
   }
 
   @return $color;
@@ -230,11 +340,32 @@
 @function toColorOpacity($color) {
   @if (meta.type-of($color) == color) {
     @return color.alpha($color);
+  } @else if (isHexAlphaString($color)) {
+    @return hexStringToAlpha($color);
   } @else if (rules.isCustomVar(#{$color})) {
     @return toCustomVarOpacity($color);
   }
 
   @return $color;
+}
+
+/// Normalizes an opacity parameter to a valid CSS opacity value
+/// If a color is passed, its alpha channel is extracted.
+/// If a CSS variable, number, or other value is passed, it is preserved as-is.
+/// Нормализует параметр прозрачности в корректное значение прозрачности CSS.
+/// Если передан цвет, извлекается его альфа-канал.
+/// Если передана переменная CSS, число или другое значение, оно сохраняется как есть.
+/// @group Color-Basic
+/// @param {Color|Number|String} $opacity - Opacity value or color / Значение прозрачности или цвет
+/// @return {Number|String} - Normalized opacity / Нормализованная прозрачность
+@function toOpacityValue($opacity) {
+  @if (meta.type-of($opacity) == color) {
+    @return color.alpha($opacity);
+  } @else if (isHexAlphaString($opacity)) {
+    @return hexStringToAlpha($opacity);
+  }
+
+  @return $opacity;
 }
 
 /// Wraps a color in a linear-gradient for background-image usage
@@ -267,7 +398,7 @@
 /// @return {String} - Modified CSS variable chain / Измененная цепочка переменных CSS
 @function toCustomVarOpacity($color, $defaultValue: null) {
   @if ($defaultValue) {
-    @return rules.strReplace($color, ')', '-opacity, '#{$defaultValue}')');
+    @return rules.strReplace($color, ')', '-opacity, #{$defaultValue})');
   }
 
   @return rules.strReplace($color, ')', '-opacity)');
@@ -288,15 +419,43 @@
 /// @param {String} $name - Variable suffix (e.g. 'color', 'background') / Суффикс переменной
 /// @param {Color|String} $color - Value to assign / Присваиваемое значение
 /// @param {Boolean} $important [false] - Add !important to declarations / Добавить !important к объявлениям
-@mixin colorSys($name, $color, $important: false) {
-  @if ($important) {
+/// @param {Number|String|null} $opacity [null] - Opacity level [0..1] / Уровень прозрачности [0..1]
+@mixin colorSys($name, $color, $important: false, $opacity: null) {
+  $resolved-important: false;
+  $resolved-opacity: $opacity;
+
+  @if ($important == true) {
+    $resolved-important: true;
+  } @else if ($important != false and $important != null) {
+    $resolved-opacity: $important;
+    @if ($opacity == true) {
+      $resolved-important: true;
+    }
+  }
+
+  @if ($resolved-important) {
     --sys-#{$name}: #{toColorRbg($color)} !important;
   } @else {
     --sys-#{$name}: #{toColorRbg($color)};
   }
 
+  @if ($resolved-opacity != null) {
+    $val: toOpacityValue($resolved-opacity);
+    @if ($resolved-important) {
+      --sys-#{$name}-opacity: #{$val} !important;
+    } @else {
+      --sys-#{$name}-opacity: #{$val};
+    }
+  } @else if (isColorAlpha($color)) {
+    @if ($resolved-important) {
+      --sys-#{$name}-opacity: #{toColorOpacity($color)} !important;
+    } @else {
+      --sys-#{$name}-opacity: #{toColorOpacity($color)};
+    }
+  }
+
   @if (rules.isCustomVar($color)) {
-    @if ($important) {
+    @if ($resolved-important) {
       --sys-#{$name}-opacity-custom: #{toCustomVarOpacity($color)} !important;
     } @else {
       --sys-#{$name}-opacity-custom: #{toCustomVarOpacity($color)};
@@ -312,7 +471,7 @@
 @mixin colorSysPalette($name, $color) {
   --sys-palette-#{$name}: #{getPalette($color)};
 
-  @if (rules.isCustomVar($color)) {
+  @if (rules.isCustomVar($color) or isColorAlpha($color)) {
     --sys-palette-#{$name}-opacity: #{getPaletteOpacity($color)};
   }
 }
@@ -398,8 +557,7 @@
   @if ($color == 'init') {
     @include colorInit($important, $propertyName);
   } @else if (isColorRbgOrVar($color)) {
-    @include colorSys('color', $color, $important);
-    @include colorOpacity($opacity, $important, false, $propertyName);
+    @include colorSys('color', $color, $important, $opacity);
     @include colorInit($important, $propertyName);
   } @else {
     #{$propertyName}: $color;
@@ -415,14 +573,15 @@
 /// @param {String} $propertyName ['color'] - Property name / Имя свойства
 @mixin colorOpacity($opacity, $important: false, $init: false, $propertyName: 'color') {
   @if ($opacity != null) {
+    $value: toOpacityValue($opacity);
     @if ($important) {
-      --sys-color-opacity: #{$opacity} !important;
+      --sys-color-opacity: #{$value} !important;
     } @else {
-      --sys-color-opacity: #{$opacity};
+      --sys-color-opacity: #{$value};
     }
 
     @if ($init) {
-      @include colorInit($propertyName, $important);
+      @include colorInit($important, $propertyName);
     }
   }
 }
@@ -433,10 +592,22 @@
 /// @param {Boolean} $important [false] - Add !important / Добавить !important
 /// @param {String} $propertyName ['color'] - Property name / Имя свойства
 @mixin colorInit($important: false, $propertyName: 'color') {
-  @if ($important) {
-    #{$propertyName}: getColorValueSys('color') !important;
+  $resolved-important: false;
+  $resolved-prop: $propertyName;
+
+  @if ($important == true) {
+    $resolved-important: true;
+  } @else if ($important != false and $important != null) {
+    $resolved-prop: $important;
+    @if ($propertyName == true) {
+      $resolved-important: true;
+    }
+  }
+
+  @if ($resolved-important) {
+    #{$resolved-prop}: getColorValueSys('color') !important;
   } @else {
-    #{$propertyName}: getColorValueSys('color');
+    #{$resolved-prop}: getColorValueSys('color');
   }
 }
 
@@ -483,8 +654,7 @@
   } @else if ($color == transparent) {
     @include backgroundColor(#000000, 0, $important, $propertyName);
   } @else if (isColorRbgOrVar($color)) {
-    @include colorSys('background', $color, $important);
-    @include backgroundOpacity($opacity, $important, false, $propertyName);
+    @include colorSys('background', $color, $important, $opacity);
     @include backgroundInit($important, $propertyName);
   } @else {
     #{$propertyName}: $color;
@@ -500,14 +670,15 @@
 /// @param {String} $propertyName ['background-color'] - Property name / Имя свойства
 @mixin backgroundOpacity($opacity, $important: false, $init: false, $propertyName: 'background-color') {
   @if ($opacity != null) {
+    $value: toOpacityValue($opacity);
     @if ($important) {
-      --sys-background-opacity: #{$opacity} !important;
+      --sys-background-opacity: #{$value} !important;
     } @else {
-      --sys-background-opacity: #{$opacity};
+      --sys-background-opacity: #{$value};
     }
 
     @if ($init) {
-      @include backgroundInit($propertyName, $important);
+      @include backgroundInit($important, $propertyName);
     }
   }
 }
@@ -527,10 +698,22 @@
 /// @param {Boolean} $important [false] - Add !important / Добавить !important
 /// @param {String} $propertyName ['background-color'] - Property name / Имя свойства
 @mixin backgroundInit($important: false, $propertyName: 'background-color') {
-  @if ($important) {
-    #{$propertyName}: #{getColorValueSys('background')} !important;
+  $resolved-important: false;
+  $resolved-prop: $propertyName;
+
+  @if ($important == true) {
+    $resolved-important: true;
+  } @else if ($important != false and $important != null) {
+    $resolved-prop: $important;
+    @if ($propertyName == true) {
+      $resolved-important: true;
+    }
+  }
+
+  @if ($resolved-important) {
+    #{$resolved-prop}: #{getColorValueSys('background')} !important;
   } @else {
-    #{$propertyName}: getColorValueSys('background');
+    #{$resolved-prop}: getColorValueSys('background');
   }
 }
 
@@ -572,8 +755,7 @@
   @if ($color == 'init') {
     @include gradientInit($important);
   } @else if (isColorRbgOrVar($color)) {
-    @include colorSys('gradient', $color, $important);
-    @include gradientOpacity($opacity, $important, false);
+    @include colorSys('gradient', $color, $important, $opacity);
     @include gradientInit($important);
   } @else {
     background-image: $color;
@@ -588,10 +770,11 @@
 /// @param {Boolean} $init [false] - Immediately apply gradient / Намеренно применить градиент
 @mixin gradientOpacity($opacity, $important: false, $init: false) {
   @if ($opacity != null) {
+    $value: toOpacityValue($opacity);
     @if ($important) {
-      --sys-gradient-opacity: #{$opacity} !important;
+      --sys-gradient-opacity: #{$value} !important;
     } @else {
-      --sys-gradient-opacity: #{$opacity};
+      --sys-gradient-opacity: #{$value};
     }
 
     @if ($init) {
@@ -624,8 +807,7 @@
   } @else if ($color == 'as-color') {
     @include borderAsColor;
   } @else if (isColorRbgOrVar($color)) {
-    @include colorSys('border', $color, $important);
-    @include borderOpacity($opacity, $important, false);
+    @include colorSys('border', $color, $important, $opacity);
     @include borderInit($important);
   } @else {
     border-color: $color;
@@ -640,10 +822,11 @@
 /// @param {Boolean} $init [false] - Immediately apply border / Намеренно применить границу
 @mixin borderOpacity($opacity, $important: false, $init: false) {
   @if ($opacity != null) {
+    $value: toOpacityValue($opacity);
     @if ($important) {
-      --sys-border-opacity: #{$opacity} !important;
+      --sys-border-opacity: #{$value} !important;
     } @else {
-      --sys-border-opacity: #{$opacity};
+      --sys-border-opacity: #{$value};
     }
 
     @if ($init) {
@@ -688,8 +871,7 @@
   } @else if ($color == 'as-color') {
     @include outlineAsColor;
   } @else if (isColorRbgOrVar($color)) {
-    @include colorSys('outline', $color, $important);
-    @include outlineOpacity($opacity, $important, false);
+    @include colorSys('outline', $color, $important, $opacity);
     @include outlineInit($important);
   } @else {
     outline-color: $color;
@@ -704,10 +886,11 @@
 /// @param {Boolean} $init [false] - Immediately apply outline / Намеренно применить контур
 @mixin outlineOpacity($opacity, $important: false, $init: false) {
   @if ($opacity != null) {
+    $value: toOpacityValue($opacity);
     @if ($important) {
-      --sys-outline-opacity: #{$opacity} !important;
+      --sys-outline-opacity: #{$value} !important;
     } @else {
-      --sys-outline-opacity: #{$opacity};
+      --sys-outline-opacity: #{$value};
     }
 
     @if ($init) {

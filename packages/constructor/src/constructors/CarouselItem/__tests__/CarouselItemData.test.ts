@@ -54,7 +54,7 @@ describe('CarouselItemData', () => {
     const data = new CarouselItemData(props)
 
     expect(data.aria).toEqual({
-      role: 'group',
+      'role': 'group',
       'aria-roledescription': 'slide',
       'aria-label': '1 / 3',
       'aria-hidden': 'false'
@@ -62,7 +62,7 @@ describe('CarouselItemData', () => {
 
     props.selected = false
     expect(data.aria).toEqual({
-      role: 'group',
+      'role': 'group',
       'aria-roledescription': 'slide',
       'aria-label': '1 / 3',
       'aria-hidden': 'true'

@@ -51,14 +51,14 @@ export const SelectBasic: Story = {
     components: { D1Select },
     setup() {
       const options = ref([
-        {label: 'JavaScript', value: 'js'},
-        {label: 'TypeScript', value: 'ts'},
-        {label: 'Python', value: 'py'},
-        {label: 'Java', value: 'java'},
-        {label: 'C++', value: 'cpp'},
-        {label: 'Ruby', value: 'rb'},
-        {label: 'Go', value: 'go'},
-        {label: 'PHP', value: 'php'}
+        { label: 'JavaScript', value: 'js' },
+        { label: 'TypeScript', value: 'ts' },
+        { label: 'Python', value: 'py' },
+        { label: 'Java', value: 'java' },
+        { label: 'C++', value: 'cpp' },
+        { label: 'Ruby', value: 'rb' },
+        { label: 'Go', value: 'go' },
+        { label: 'PHP', value: 'php' }
       ])
 
       return { options }

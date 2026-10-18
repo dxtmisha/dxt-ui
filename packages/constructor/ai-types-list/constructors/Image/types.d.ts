@@ -1,22 +1,18 @@
-// md5:3e6198993cbf28355bc474c3e55982b0 true
+// md5:a6467e0b9f2fa18f3b2572ab8b5488fc true
 import { type ConstrClass } from '@dxtmisha/functional';
-
 export type ImageComponents = {};
-
 export type ImageEmits = {
-  /** Event triggered when the image is loaded @keywords image, load, event */
+  /** Triggered when image finishes loading. @keywords load, event */
   load: [image: ImageEventData];
 };
-
 export type ImageExpose = {
-  /** Get current image type @keywords image, type */
+  /** Returns the current image type. @keywords type, image */
   getType: () => ImageTypeItem;
-  /** Get current image data @keywords image, data */
+  /** Returns the current image data. @keywords data, image */
   getData: () => ImageEventItem;
 };
-
 export interface ImageSlots {}
-
 export type ImageClasses = {
+  /** Root element class names. @keywords classes, main */
   main: ConstrClass;
 };

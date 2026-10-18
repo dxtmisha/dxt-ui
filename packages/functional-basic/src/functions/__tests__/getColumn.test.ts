@@ -25,7 +25,7 @@ describe('getColumn', () => {
     })
 
     it('должен корректно работать с объектом-словарем (Record<string, T>)', () => {
-      const obj: Record<string, { name: string; role: string }> = {
+      const obj: Record<string, { name: string, role: string }> = {
         user1: { name: 'Alice', role: 'admin' },
         user2: { name: 'Bob', role: 'user' }
       }
@@ -122,7 +122,7 @@ describe('getColumn', () => {
     })
 
     it('должен работать с массивами, помеченными как readonly', () => {
-      const readonlyData: readonly { readonly id: number; readonly title: string }[] = [
+      const readonlyData: readonly { readonly id: number, readonly title: string }[] = [
         { id: 101, title: 'Item 1' },
         { id: 102, title: 'Item 2' }
       ]

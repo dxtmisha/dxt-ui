@@ -31,13 +31,13 @@ export const SliderField: Story = {
   args: {
     multiple: true,
     selected: false,
-    icon: "",
+    icon: '',
     disabled: false,
-    labelLeading: "",
-    labelSeparator: "",
-    labelTrailing: "",
-    placeholder: "",
-    validationMessage: "",
+    labelLeading: '',
+    labelSeparator: '',
+    labelTrailing: '',
+    placeholder: '',
+    validationMessage: '',
     showValue: true,
     showInput: true
   }

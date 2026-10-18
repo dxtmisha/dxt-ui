@@ -1,3 +1,3 @@
-// md5:06a3e56f8f9658762165f8b877d1e4f7 true
-/** Retrieves an element property value by key with an optional fallback. @keywords element, get, property, item, value */
+// md5:339436aecce2fae8e2e43596cec64e8e true
+/** Retrieves an element or window property value by key, with an optional default fallback. @keywords element property getter window dom */
 export declare function getElementItem<T extends ElementOrWindow, K extends keyof T, D>(element: ElementOrString<T>, property: K | string, defaultValue?: D): T[K] | D | undefined;

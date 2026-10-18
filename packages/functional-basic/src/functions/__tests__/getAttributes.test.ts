@@ -144,7 +144,7 @@ describe('getAttributes', () => {
       link.setAttribute('aria-label', 'Trang chủ')
 
       expect(getAttributes(link)).toEqual({
-        title: 'Главная страница',
+        'title': 'Главная страница',
         'aria-label': 'Trang chủ'
       })
     })

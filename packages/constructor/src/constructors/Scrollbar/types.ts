@@ -1,4 +1,3 @@
-import type { VNode } from 'vue'
 import type { ConstrClass } from '@dxtmisha/functional'
 import type { ScrollbarEdgeType } from './basicTypes'
 
@@ -46,7 +45,7 @@ export interface ScrollbarExpose {
  */
 export interface ScrollbarSlots {
   /** Slot for default scrollbar content / Слот для основного содержимого скроллбара */
-  default?(props?: Record<string, never>): VNode[] | undefined
+  default?(props: any): any
 }
 
 /**

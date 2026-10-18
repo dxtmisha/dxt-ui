@@ -101,7 +101,6 @@ describe('InputFileItemStatus', () => {
       expect(defaultSuccessStatus.message).toBe('File uploaded successfully')
     })
 
-
     it('falls back to formatted file size in idle state', () => {
       const { statusItem } = createHelper({ value: { size: 72 * 1024 * 1024 } })
       expect(statusItem.message).toBe('72 MB')

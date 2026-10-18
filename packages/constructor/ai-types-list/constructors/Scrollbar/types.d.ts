@@ -1,30 +1,33 @@
-// md5:7fccbff8afc6127696b593bd26dd5aec true
+// md5:695685a4f3ccdc9c10ea664a24186fc8 true
+import type { VNode } from 'vue';
 import type { ConstrClass } from '@dxtmisha/functional';
 
 export type ScrollbarComponents = {};
 
+/** Scrollbar event definitions and payloads @keywords scrollbar, emits, events */
 export type ScrollbarEmits = {
-    /** Triggered on top edge status change. @keywords top, scroll */
+    /** Triggered when reaching or leaving the top edge @keywords top, scroll */
     top: [isTop: boolean];
-    /** Triggered when precisely reaching the top edge. @keywords reachTop, scroll */
+    /** Triggered when reaching the exact top position @keywords reachTop, top */
     reachTop: [];
-    /** Triggered when leaving the top edge. @keywords leaveTop, scroll */
+    /** Triggered when scrolling away from the top position @keywords leaveTop, top */
     leaveTop: [];
-    /** Triggered on bottom edge status change. @keywords bottom, scroll */
+    /** Triggered when reaching or leaving the bottom edge @keywords bottom, scroll */
     bottom: [isBottom: boolean];
-    /** Triggered when precisely reaching the bottom edge. @keywords reachBottom, scroll */
+    /** Triggered when reaching the exact bottom position @keywords reachBottom, bottom */
     reachBottom: [];
-    /** Triggered when leaving the bottom edge. @keywords leaveBottom, scroll */
+    /** Triggered when scrolling away from the bottom position @keywords leaveBottom, bottom */
     leaveBottom: [];
-    /** Triggered when reaching any edge boundary. @keywords edge, scroll */
+    /** Triggered when reaching any boundary edge @keywords edge, boundary */
     edge: [isTop: boolean, isBottom: boolean, edge: ScrollbarEdgeType];
 };
 
 export interface ScrollbarExpose {}
 
+/** Scrollbar slot definitions @keywords scrollbar, slots */
 export interface ScrollbarSlots {
-    /** Default slot for scrollbar content. */
-    default?(props: any): any;
+    /** Main content slot @keywords slot, default */
+    default?(props?: Record<string, never>): VNode[] | undefined;
 }
 
 export type ScrollbarClasses = {

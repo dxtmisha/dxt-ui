@@ -26,7 +26,7 @@ describe('InputFileItemButton', () => {
       const { button } = createHelper({ readonly: true })
 
       expect(button.crop).toEqual(expect.objectContaining({
-        readonly: true,
+        'readonly': true,
         'aria-readonly': 'true'
       }))
     })
@@ -37,10 +37,10 @@ describe('InputFileItemButton', () => {
       })
 
       expect(button.crop).toEqual(expect.objectContaining({
-        title: text.crop,
-        icon: 'crop-icon',
-        disabled: undefined,
-        readonly: undefined,
+        'title': text.crop,
+        'icon': 'crop-icon',
+        'disabled': undefined,
+        'readonly': undefined,
         'aria-label': text.crop
       }))
     })
@@ -51,7 +51,7 @@ describe('InputFileItemButton', () => {
       const { button } = createHelper({ readonly: true })
 
       expect(button.delete).toEqual(expect.objectContaining({
-        readonly: true,
+        'readonly': true,
         'aria-readonly': 'true'
       }))
     })
@@ -63,8 +63,8 @@ describe('InputFileItemButton', () => {
       })
 
       expect(button.delete).toEqual(expect.objectContaining({
-        title: text.delete,
-        icon: 'delete-icon',
+        'title': text.delete,
+        'icon': 'delete-icon',
         'aria-label': text.delete
       }))
     })
@@ -76,9 +76,9 @@ describe('InputFileItemButton', () => {
       })
 
       expect(button.delete).toEqual(expect.objectContaining({
-        title: text.delete,
-        icon: 'delete-icon',
-        onClick: eventHandler.onDelete,
+        'title': text.delete,
+        'icon': 'delete-icon',
+        'onClick': eventHandler.onDelete,
         'aria-label': text.delete
       }))
     })
@@ -89,7 +89,7 @@ describe('InputFileItemButton', () => {
       const { button } = createHelper({ readonly: true })
 
       expect(button.retry).toEqual(expect.objectContaining({
-        readonly: true,
+        'readonly': true,
         'aria-readonly': 'true'
       }))
     })
@@ -100,9 +100,9 @@ describe('InputFileItemButton', () => {
       })
 
       expect(button.retry).toEqual(expect.objectContaining({
-        title: text.retry,
-        icon: 'retry-icon',
-        onClick: eventHandler.onRetry,
+        'title': text.retry,
+        'icon': 'retry-icon',
+        'onClick': eventHandler.onRetry,
         'aria-label': text.retry
       }))
     })
@@ -116,7 +116,7 @@ describe('InputFileItemButton', () => {
       })
 
       expect(button.retry).toEqual(expect.objectContaining({
-        disabled: true,
+        'disabled': true,
         'aria-disabled': 'true'
       }))
     })

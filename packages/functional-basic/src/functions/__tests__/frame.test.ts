@@ -96,7 +96,7 @@ describe('frame', () => {
       let iterations = 0
 
       frame(
-        (timestamp) => timestamps.push(timestamp),
+        timestamp => timestamps.push(timestamp),
         () => {
           iterations++
           return iterations < 3
@@ -145,12 +145,12 @@ describe('frame', () => {
       let count2 = 0
 
       frame(
-        (timestamp) => loop1Calls.push(timestamp),
+        timestamp => loop1Calls.push(timestamp),
         () => ++count1 < 2
       )
 
       frame(
-        (timestamp) => loop2Calls.push(timestamp),
+        timestamp => loop2Calls.push(timestamp),
         () => ++count2 < 4
       )
 
