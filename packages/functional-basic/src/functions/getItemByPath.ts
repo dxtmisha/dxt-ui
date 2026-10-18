@@ -6,8 +6,8 @@ import { strSplit } from './strSplit'
  * Returns data by their path.
  *
  * Возвращает данные по их пути.
- * @param item object for work/ объект для работы
- * @param path data path/ путь к данным
+ * @param item object for work / объект для работы
+ * @param path data path / путь к данным
  * @returns data by path or undefined / данные по пути или undefined
  */
 export function getItemByPath<
@@ -30,5 +30,9 @@ export function getItemByPath<
     return getItemByPath(item[column], paths[1])
   }
 
-  return item?.[column] ?? undefined
+  if (paths?.[1]) {
+    return undefined
+  }
+
+  return item?.[column]
 }

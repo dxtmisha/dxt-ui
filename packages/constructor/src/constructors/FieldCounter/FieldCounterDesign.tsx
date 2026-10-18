@@ -94,7 +94,7 @@ export class FieldCounterDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        aria: this.getSubClass('aria')
+        aria: this.naming.getSubClass('aria')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

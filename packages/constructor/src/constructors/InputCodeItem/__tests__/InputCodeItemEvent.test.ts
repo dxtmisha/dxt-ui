@@ -6,8 +6,9 @@ import type { InputCodeItemValue } from '../InputCodeItemValue'
 
 describe('InputCodeItemEvent', () => {
   it('should trigger onFocus selection/previousEmpty checks', () => {
+    const valueIsMock = vi.fn()
     const mockValue = {
-      is: vi.fn()
+      is: valueIsMock
     } as unknown as InputCodeItemValue
     const mockGo = {
       selection: vi.fn(),
@@ -16,11 +17,11 @@ describe('InputCodeItemEvent', () => {
 
     const ev = new InputCodeItemEvent({}, mockValue, mockGo)
 
-    mockValue.is.mockReturnValue(true)
+    valueIsMock.mockReturnValue(true)
     ev.onFocus()
     expect(mockGo.selection).toHaveBeenCalled()
 
-    mockValue.is.mockReturnValue(false)
+    valueIsMock.mockReturnValue(false)
     ev.onFocus()
     expect(mockGo.focusToPreviousEmpty).toHaveBeenCalled()
   })
@@ -46,8 +47,9 @@ describe('InputCodeItemEvent', () => {
   })
 
   it('should handle onClick selection', () => {
+    const valueIsMock = vi.fn()
     const mockValue = {
-      is: vi.fn()
+      is: valueIsMock
     } as unknown as InputCodeItemValue
     const mockGo = {
       selection: vi.fn(),
@@ -56,11 +58,11 @@ describe('InputCodeItemEvent', () => {
 
     const ev = new InputCodeItemEvent({ hide: false }, mockValue, mockGo)
 
-    mockValue.is.mockReturnValue(true)
+    valueIsMock.mockReturnValue(true)
     ev.onClick()
     expect(mockGo.focusToNextEmpty).toHaveBeenCalled()
 
-    mockValue.is.mockReturnValue(false)
+    valueIsMock.mockReturnValue(false)
     ev.onClick()
     expect(mockGo.focusToNextEmpty).toHaveBeenCalledTimes(1)
   })

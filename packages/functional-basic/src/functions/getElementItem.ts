@@ -6,12 +6,12 @@ import {
 } from '../types/basicTypes'
 
 /**
- * Returns the value of an element by its key.
+ * Returns the value of an element property by its key.
  *
- * Возвращает значение элемента по его ключу.
- * @param element checked element/ проверяемый элемент
- * @param index index at which we retrieve values/ индекс, по которому получаем значения
- * @param defaultValue returns this parameter if the value is missing/ возвращает этот параметр,
+ * Возвращает значение свойства элемента по его ключу.
+ * @param element checked element / проверяемый элемент
+ * @param property property key to retrieve / ключ свойства для получения значения
+ * @param defaultValue returns this parameter if the value is missing / возвращает этот параметр,
  * если значение отсутствует
  * @returns element value or default value / значение элемента или значение по умолчанию
  */
@@ -21,8 +21,8 @@ export function getElementItem<
   D
 >(
   element: ElementOrString<T>,
-  index: K | string,
+  property: K | string,
   defaultValue?: D
 ): T[K] | D | undefined {
-  return getElement(element)?.[index as K] ?? defaultValue
+  return getElement(element)?.[property as K] ?? defaultValue
 }

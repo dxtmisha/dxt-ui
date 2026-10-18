@@ -95,13 +95,13 @@ export class WindowDesign<
       main: this.item.classesList,
       ...{
         // :classes [!] System label / Системная метка
-        body: this.getSubClass('body'),
-        bodyGroup: this.getSubClass('body__group'),
-        bodyContext: this.getSubClass('body__context'),
-        control: this.getSubClass('control'),
-        image: this.getSubClass('image'),
-        close: this.getSubClass('close'),
-        teleport: this.getSubClass('teleport')
+        body: this.naming.getSubClass('body'),
+        bodyGroup: this.naming.getSubClass('body__group'),
+        bodyContext: this.naming.getSubClass('body__context'),
+        control: this.naming.getSubClass('control'),
+        image: this.naming.getSubClass('image'),
+        close: this.naming.getSubClass('close'),
+        teleport: this.naming.getSubClass('teleport')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

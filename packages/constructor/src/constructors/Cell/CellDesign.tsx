@@ -94,15 +94,15 @@ export class CellDesign<
       main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
-        context: this.getSubClass('context'),
-        contextTrailing: this.getSubClass('contextTrailing'),
-        label: this.getSubClass('label'),
-        description: this.getSubClass('description'),
-        caption: this.getSubClass('caption'),
-        icon: this.getSubClass('icon'),
-        trailing: this.getSubClass('trailing'),
-        body: this.getSubClass('body'),
-        loading: this.getSubClass('loading')
+        context: this.naming.getSubClass('context'),
+        contextTrailing: this.naming.getSubClass('contextTrailing'),
+        label: this.naming.getSubClass('label'),
+        description: this.naming.getSubClass('description'),
+        caption: this.naming.getSubClass('caption'),
+        icon: this.naming.getSubClass('icon'),
+        trailing: this.naming.getSubClass('trailing'),
+        body: this.naming.getSubClass('body'),
+        loading: this.naming.getSubClass('loading')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

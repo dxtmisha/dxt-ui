@@ -95,8 +95,8 @@ export class SelectableAreaDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        item: this.getSubClass('item'),
-        square: this.getSubClass('square')
+        item: this.naming.getSubClass('item'),
+        square: this.naming.getSubClass('square')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

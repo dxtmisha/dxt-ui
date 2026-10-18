@@ -96,8 +96,8 @@ export class InputFileDropzoneDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        body: this.getSubClass('body'),
-        dropzone: this.getSubClass('dropzone')
+        body: this.naming.getSubClass('body'),
+        dropzone: this.naming.getSubClass('dropzone')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

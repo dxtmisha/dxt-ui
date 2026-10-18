@@ -61,8 +61,8 @@ export class TableFlexItemDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        label: this.getSubClass('label'),
-        description: this.getSubClass('description')
+        label: this.naming.getSubClass('label'),
+        description: this.naming.getSubClass('description')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

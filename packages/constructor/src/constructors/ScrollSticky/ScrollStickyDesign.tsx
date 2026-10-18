@@ -94,8 +94,8 @@ export class ScrollStickyDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        context: this.getSubClass('context'),
-        scroll: this.getSubClass('scroll')
+        context: this.naming.getSubClass('context'),
+        scroll: this.naming.getSubClass('scroll')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

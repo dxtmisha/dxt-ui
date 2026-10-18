@@ -98,15 +98,15 @@ export class PaginationDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        button: this.getSubClass('button'),
-        navigation: this.getSubClass('navigation'),
-        more: this.getSubClass('more'),
-        morePrev: this.getSubClass('morePrev'),
-        info: this.getSubClass('info'),
-        menuRows: this.getSubClass('menuRows'),
-        menuRowsLabel: this.getSubClass('menuRows__label'),
-        ellipsis: this.getSubClass('ellipsis'),
-        spacer: this.getSubClass('spacer')
+        button: this.naming.getSubClass('button'),
+        navigation: this.naming.getSubClass('navigation'),
+        more: this.naming.getSubClass('more'),
+        morePrev: this.naming.getSubClass('morePrev'),
+        info: this.naming.getSubClass('info'),
+        menuRows: this.naming.getSubClass('menuRows'),
+        menuRowsLabel: this.naming.getSubClass('menuRows__label'),
+        ellipsis: this.naming.getSubClass('ellipsis'),
+        spacer: this.naming.getSubClass('spacer')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

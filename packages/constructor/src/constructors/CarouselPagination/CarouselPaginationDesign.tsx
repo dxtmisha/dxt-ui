@@ -100,10 +100,10 @@ export class CarouselPaginationDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        item: this.getSubClass('item'),
-        fraction: this.getSubClass('fraction'),
-        progress: this.getSubClass('progress'),
-        progressBar: this.getSubClass('progressBar')
+        item: this.naming.getSubClass('item'),
+        fraction: this.naming.getSubClass('fraction'),
+        progress: this.naming.getSubClass('progress'),
+        progressBar: this.naming.getSubClass('progressBar')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
@@ -179,6 +179,7 @@ export class CarouselPaginationDesign<
         }
 
         const slot = this.initSlot('item', undefined, {
+          key: paginationItem.index,
           binds,
           item: paginationItem,
           index: paginationItem.index

@@ -1,12 +1,18 @@
 import {
   computed,
   type ComputedRef,
+  normalizeClass,
+  normalizeStyle,
+  onBeforeUpdate,
   ref,
+  renderSlot,
+  shallowRef,
+  type Slots,
   useAttrs,
   useSlots,
   type VNode
 } from 'vue'
-import { isFilled } from '@dxtmisha/functional-basic'
+import { isDifferent, isFilled } from '@dxtmisha/functional-basic'
 
 import { DesignComponents } from './DesignComponents'
 import { DesignName } from './DesignName'
@@ -135,13 +141,27 @@ export abstract class DesignConstructorAbstract<
   }
 
   /**
-   * The rendering method for the setup method.
+   * Creates a render function that tracks changes to slot names and functions.
    *
-   * Метод рендеринга для метода настройки.
+   * Создает функцию рендеринга, отслеживающую изменения имен и функций слотов.
    * @returns render function / функция рендеринга
    */
   render(): () => VNode | VNode[] | undefined {
-    return () => this.initRender()
+    const slotsState = shallowRef<Record<string, unknown>>({
+      ...this.slots
+    })
+
+    onBeforeUpdate(() => {
+      if (isDifferent(this.slots ?? {}, slotsState.value)) {
+        slotsState.value = { ...this.slots }
+      }
+    })
+
+    return () => {
+      // Track slot changes in the render effect / Отслеживаем изменения слотов в эффекте рендеринга
+      void slotsState.value
+      return this.initRender()
+    }
   }
 
   /**
@@ -177,14 +197,14 @@ export abstract class DesignConstructorAbstract<
   protected abstract initRender(): VNode | VNode[] | undefined
 
   /**
-   * Initializes the slot.
+   * Initializes the named slot as a keyed fragment and optionally appends it to children.
    *
-   * Инициализирует слот.
+   * Инициализирует именованный слот как фрагмент с ключом и при необходимости добавляет его в дочерние элементы.
    * @param name slot name / название слота
    * @param children if you pass this element, the slot will be added to it /
    * если передать этот элемент, то слот добавится в него
    * @param props property for the slot / свойство для слота
-   * @returns rendered slot / отрендеренный слот
+   * @returns rendered slot fragment / отрендеренный фрагмент слота
    */
   protected initSlot<K extends keyof SLOTS>(
     name: K,
@@ -196,7 +216,7 @@ export abstract class DesignConstructorAbstract<
       && this.slots?.[name]
       && typeof this.slots[name] === 'function'
     ) {
-      const slot = (this.slots[name] as ((props?: ConstrItem) => VNode))(props)
+      const slot = renderSlot(this.slots as Slots, String(name), props)
 
       if (children) {
         children.push(slot)
@@ -225,11 +245,11 @@ export abstract class DesignConstructorAbstract<
       return {
         ...classes,
         ...classesProps,
-        main: [
+        main: normalizeClass([
           classes?.main,
           classesProps?.main,
           this.attrs?.class
-        ]
+        ])
       } as CLASSES
     }
 
@@ -243,25 +263,16 @@ export abstract class DesignConstructorAbstract<
   }
 
   /**
-   * Refinement of the received list of styles by merging constructor and option styles.
+   * Merges constructor, option, and external attribute styles.
    *
-   * Доработка полученного списка стилей путем объединения стилей конструктора и опций.
+   * Объединяет стили конструктора, опций и внешних атрибутов.
    * @returns updated styles / обновленные стили
    */
   private updateStyles(): ConstrStyles {
-    const styles = this.initStyles()
-    const stylesProps = this.options?.styles?.value
-
-    if (
-      styles
-      && stylesProps
-    ) {
-      return {
-        ...styles,
-        ...stylesProps
-      }
-    }
-
-    return stylesProps ?? styles ?? {}
+    return normalizeStyle([
+      this.initStyles(),
+      this.options?.styles?.value,
+      this.attrs?.style
+    ]) as ConstrStyles
   }
 }

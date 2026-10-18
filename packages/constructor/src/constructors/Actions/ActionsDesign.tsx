@@ -95,10 +95,10 @@ export class ActionsDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        item: this.getSubClass('item'),
-        list: this.getSubClass('list'),
-        secondary: this.getSubClass('secondary'),
-        spacer: this.getSubClass('spacer')
+        item: this.naming.getSubClass('item'),
+        list: this.naming.getSubClass('list'),
+        secondary: this.naming.getSubClass('secondary'),
+        spacer: this.naming.getSubClass('spacer')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

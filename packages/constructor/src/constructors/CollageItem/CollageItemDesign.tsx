@@ -90,10 +90,10 @@ export class CollageItemDesign<
       main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
-        body: this.getSubClass('body'),
-        image: this.getSubClass('image'),
-        icon: this.getSubClass('icon'),
-        collageBar: this.getSubClass('collageBar')
+        body: this.naming.getSubClass('body'),
+        image: this.naming.getSubClass('image'),
+        icon: this.naming.getSubClass('icon'),
+        collageBar: this.naming.getSubClass('collageBar')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

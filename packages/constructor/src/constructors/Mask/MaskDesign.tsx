@@ -91,9 +91,9 @@ export class MaskDesign<
       main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
-        input: this.getSubClass('input'),
-        character: this.getSubClass('character'),
-        characterItem: this.getSubClass('character__item')
+        input: this.naming.getSubClass('input'),
+        character: this.naming.getSubClass('character'),
+        characterItem: this.naming.getSubClass('character__item')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

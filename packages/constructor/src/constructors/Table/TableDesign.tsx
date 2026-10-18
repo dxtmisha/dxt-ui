@@ -87,13 +87,13 @@ export class TableDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        table: this.getSubClass('table'),
-        colgroup: this.getSubClass('colgroup'),
-        col: this.getSubClass('col'),
-        header: this.getSubClass('header'),
-        foot: this.getSubClass('foot'),
-        items: this.getSubClass('items'),
-        caption: this.getSubClass('caption')
+        table: this.naming.getSubClass('table'),
+        colgroup: this.naming.getSubClass('colgroup'),
+        col: this.naming.getSubClass('col'),
+        header: this.naming.getSubClass('header'),
+        foot: this.naming.getSubClass('foot'),
+        items: this.naming.getSubClass('items'),
+        caption: this.naming.getSubClass('caption')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

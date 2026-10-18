@@ -99,10 +99,10 @@ export class InputImageDesign<
       main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
-        body: this.getSubClass('body'),
-        crop: this.getSubClass('crop'),
-        dropzone: this.getSubClass('dropzone'),
-        actions: this.getSubClass('actions')
+        body: this.naming.getSubClass('body'),
+        crop: this.naming.getSubClass('crop'),
+        dropzone: this.naming.getSubClass('dropzone'),
+        actions: this.naming.getSubClass('actions')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

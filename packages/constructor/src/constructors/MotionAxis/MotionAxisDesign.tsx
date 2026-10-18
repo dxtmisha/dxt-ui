@@ -109,7 +109,7 @@ export class MotionAxisDesign<
       main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
-        slide: this.getSubClass('slide')
+        slide: this.naming.getSubClass('slide')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

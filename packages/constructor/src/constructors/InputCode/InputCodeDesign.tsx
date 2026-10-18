@@ -99,7 +99,7 @@ export class InputCodeDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        context: this.getSubClass('context')
+        context: this.naming.getSubClass('context')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

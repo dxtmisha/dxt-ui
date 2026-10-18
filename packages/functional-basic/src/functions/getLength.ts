@@ -1,3 +1,4 @@
+import { isArray } from './isArray'
 import { isObject } from './isObject'
 
 /**
@@ -9,12 +10,12 @@ import { isObject } from './isObject'
  * @param value input value to measure / входное значение для измерения
  * @returns the length or size of the value / длина или размер значения
  */
-export function getLength(value: any): number {
+export function getLength(value: unknown): number {
   if (value === null || value === undefined) {
     return 0
   }
 
-  if (typeof value === 'string' || Array.isArray(value)) {
+  if (typeof value === 'string' || isArray(value)) {
     return value.length
   }
 

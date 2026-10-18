@@ -87,10 +87,10 @@ export class CollageBarDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        context: this.getSubClass('context'),
-        label: this.getSubClass('label'),
-        description: this.getSubClass('description'),
-        button: this.getSubClass('button')
+        context: this.naming.getSubClass('context'),
+        label: this.naming.getSubClass('label'),
+        description: this.naming.getSubClass('description'),
+        button: this.naming.getSubClass('button')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

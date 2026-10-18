@@ -97,11 +97,11 @@ export class CropAreaDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        left: this.getSubClass('left'),
-        center: this.getSubClass('center'),
-        right: this.getSubClass('right'),
-        crop: this.getSubClass('crop'),
-        move: this.getSubClass('move')
+        left: this.naming.getSubClass('left'),
+        center: this.naming.getSubClass('center'),
+        right: this.naming.getSubClass('right'),
+        crop: this.naming.getSubClass('crop'),
+        move: this.naming.getSubClass('move')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

@@ -87,8 +87,8 @@ export class AccordionDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        head: this.getSubClass('head'),
-        body: this.getSubClass('body')
+        head: this.naming.getSubClass('head'),
+        body: this.naming.getSubClass('body')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

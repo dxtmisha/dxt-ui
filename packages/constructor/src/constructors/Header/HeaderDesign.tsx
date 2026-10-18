@@ -88,10 +88,10 @@ export class HeaderDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        label: this.getSubClass('label'),
-        caption: this.getSubClass('caption'),
-        icon: this.getSubClass('icon'),
-        space: this.getSubClass('space')
+        label: this.naming.getSubClass('label'),
+        caption: this.naming.getSubClass('caption'),
+        icon: this.naming.getSubClass('icon'),
+        space: this.naming.getSubClass('space')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

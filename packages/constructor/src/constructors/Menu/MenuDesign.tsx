@@ -100,8 +100,8 @@ export class MenuDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        bars: this.getSubClass('bars'),
-        list: this.getSubClass('list')
+        bars: this.naming.getSubClass('bars'),
+        list: this.naming.getSubClass('list')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

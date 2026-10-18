@@ -6,9 +6,9 @@
  * @param data data to be stored / данные для хранения
  * @returns generated script tag string / сгенерированная строка тега скрипта
  */
-export function getElementSafeScript(id: string, data: any): string {
+export function getElementSafeScript<T = unknown>(id: string, data: T): string {
   const safeId = id.replace(/"/g, '&quot;')
-  const json = JSON.stringify(data).replace(/<\/(script)>/gi, '<\\/$1>')
+  const json = JSON.stringify(data)?.replace(/<\/(script)/gi, '<\\/$1') ?? 'null'
 
   return `<script id="${safeId}" type="application/json">${json}</script>`
 }

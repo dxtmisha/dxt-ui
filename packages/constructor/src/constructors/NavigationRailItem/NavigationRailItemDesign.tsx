@@ -92,10 +92,10 @@ export class NavigationRailItemDesign<
       main: this.item.classes,
       ...{
         // :classes [!] System label / Системная метка
-        label: this.getSubClass('label'),
-        context: this.getSubClass('context'),
-        contextLine: this.getSubClass('contextLine'),
-        badge: this.getSubClass('badge')
+        label: this.naming.getSubClass('label'),
+        context: this.naming.getSubClass('context'),
+        contextLine: this.naming.getSubClass('contextLine'),
+        badge: this.naming.getSubClass('badge')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

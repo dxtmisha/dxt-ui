@@ -1,5 +1,3 @@
-import { forEach } from './forEach'
-
 import { type ObjectItem } from '../types/basicTypes'
 
 /**
@@ -17,11 +15,12 @@ export function isDifferent<T>(
   let different = Object.keys(value).length !== Object.keys(old).length
 
   if (!different) {
-    forEach(value, (item, key) => {
-      if (item !== old?.[key]) {
+    for (const key in value) {
+      if (value[key] !== old?.[key]) {
         different = true
+        break
       }
-    })
+    }
   }
 
   return different

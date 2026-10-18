@@ -98,18 +98,18 @@ export class SliderFieldDesign<
       main: {},
       ...{
         // :classes [!] System label / Системная метка
-        body: this.getSubClass('body'),
-        hidden: this.getSubClass('hidden'),
-        labelSlider: this.getSubClass('labelSlider'),
-        labelLeading: this.getSubClass('labelLeading'),
-        labelTrailing: this.getSubClass('labelTrailing'),
-        input: this.getSubClass('input'),
-        inputMin: this.getSubClass('inputMin'),
-        inputMax: this.getSubClass('inputMax'),
-        value: this.getSubClass('value'),
-        valueMin: this.getSubClass('valueMin'),
-        valueMax: this.getSubClass('valueMax'),
-        slider: this.getSubClass('slider')
+        body: this.naming.getSubClass('body'),
+        hidden: this.naming.getSubClass('hidden'),
+        labelSlider: this.naming.getSubClass('labelSlider'),
+        labelLeading: this.naming.getSubClass('labelLeading'),
+        labelTrailing: this.naming.getSubClass('labelTrailing'),
+        input: this.naming.getSubClass('input'),
+        inputMin: this.naming.getSubClass('inputMin'),
+        inputMax: this.naming.getSubClass('inputMax'),
+        value: this.naming.getSubClass('value'),
+        valueMin: this.naming.getSubClass('valueMin'),
+        valueMax: this.naming.getSubClass('valueMax'),
+        slider: this.naming.getSubClass('slider')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>

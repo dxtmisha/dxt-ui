@@ -1,4 +1,5 @@
 import { ErrorCenter } from '../classes/ErrorCenter'
+import { isDomRuntime } from './isDomRuntime'
 
 /**
  * Retrieves and parses JSON data from a script tag in the DOM.
@@ -14,24 +15,22 @@ export function getHydrationData<T>(
   defaultValue: T,
   remove: boolean = true
 ): T {
-  if (typeof document !== 'undefined') {
+  if (isDomRuntime()) {
     const script = document.getElementById(id)
 
-    if (script) {
+    if (script && script.tagName === 'SCRIPT') {
       try {
-        const data = JSON.parse(script.textContent || '') as T
-
-        if (remove) {
-          script.remove()
-        }
-
-        return data
+        return JSON.parse(script.textContent || '') as T
       } catch (error) {
         ErrorCenter.on({
           group: 'hydration',
           code: 'error',
           details: { id, error }
         })
+      } finally {
+        if (remove) {
+          script.remove()
+        }
       }
     }
   }

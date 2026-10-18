@@ -91,18 +91,18 @@ export class AlertDesign<
       main: this.item.hide.classes,
       ...{
         // :classes [!] System label / Системная метка
-        icon: this.getSubClass('icon'),
-        trailing: this.getSubClass('trailing'),
-        context: this.getSubClass('context'),
-        label: this.getSubClass('label'),
-        description: this.getSubClass('description'),
-        body: this.getSubClass('body'),
-        button: this.getSubClass('button'),
-        buttons: this.getSubClass('buttons'),
-        buttonClose: this.getSubClass('buttonClose'),
-        links: this.getSubClass('links'),
-        linksItem: this.getSubClass('links__item'),
-        actions: this.getSubClass('actions')
+        icon: this.naming.getSubClass('icon'),
+        trailing: this.naming.getSubClass('trailing'),
+        context: this.naming.getSubClass('context'),
+        label: this.naming.getSubClass('label'),
+        description: this.naming.getSubClass('description'),
+        body: this.naming.getSubClass('body'),
+        button: this.naming.getSubClass('button'),
+        buttons: this.naming.getSubClass('buttons'),
+        buttonClose: this.naming.getSubClass('buttonClose'),
+        links: this.naming.getSubClass('links'),
+        linksItem: this.naming.getSubClass('links__item'),
+        actions: this.naming.getSubClass('actions')
         // :classes [!] System label / Системная метка
       }
     } as Partial<CLASSES>
